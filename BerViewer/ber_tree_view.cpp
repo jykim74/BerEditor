@@ -39,19 +39,19 @@ QString BerTreeView::GetEditView( const BIN *pBer, BerItem *pItem)
     strPart = "Class: " + pItem->GetClassString();
     strView += strPart;
 
-    strPart = QString( "  ID: %1").arg(pItem->GetId());
+    strPart.sprintf( "  ID: %d", pItem->GetId());
     strView += strPart;
 
-    strPart = QString( "  TAG: %1").arg(pItem->GetTag());
+    strPart.sprintf( "  TAG: %d", pItem->GetTag());
     strView += strPart;
 
-    strPart = QString( "  OFFSET: %1(%2xh)").arg( pItem->GetOffset() ).arg( pItem->GetOffset());
+    strPart.sprintf("  OFFSET: %d(%xh)", pItem->GetOffset(), pItem->GetOffset());
     strView += strPart;
 
-    strPart = QString("  LENGTH: %1(%2xh)").arg(pItem->GetLength()).arg(pItem->GetLength());
+    strPart.sprintf("  LENGTH: %d(%xh)", pItem->GetLength(), pItem->GetLength());
     strView += strPart;
 
-    strPart = QString( "  LEVEL: %1" ).arg( pItem->GetLevel() );
+    strPart.sprintf( "  LEVEL: %d", pItem->GetLevel() );
     strView += strPart;
 
     BIN binPart = {0,0};

@@ -17,6 +17,7 @@ void BerModel::initialize()
 {
     clear();
 
+    /*
     JS_BIN_reset( &binBer_ );
     BerItem *root = new BerItem();
     BerItem *sec = new BerItem();
@@ -35,7 +36,7 @@ void BerModel::initialize()
     insertRow( 1, sec );
 
     root->insertRow( 0, third );
-
+    */
 
 //   setItem(0,0, root);
 }
@@ -70,18 +71,22 @@ int BerModel::parseTree()
     int indefinite = 0;
     BerItem *pRootItem = new BerItem();
 
+
     clear();
     QStringList labels;
     labels << "BerViewer";
     setHorizontalHeaderLabels( labels );
 
-    offset = getItem( 0, pRootItem );
-    pRootItem->setText( pRootItem->GetTagString() );
+    pRootItem->SetOffset(offset);
+    pRootItem->SetLevel(0);
 
-    //pRootItem->setText( "BER viewer" );
+    offset = getItem( 0, pRootItem );
     insertRow( 0, pRootItem );
 
-    ret = parseBer( offset, 0, pRootItem->GetIndefinite(), pRootItem );
+    pRootItem->setText( pRootItem->GetTagString() );
+
+    if( (pRootItem->GetId() & FORM_MASK) == CONSTRUCTED )
+        ret = parseBer( pRootItem->GetHeaderSize(), 1, pRootItem->GetIndefinite(), pRootItem );
 
     return 0;
 }
@@ -92,9 +97,11 @@ int BerModel::parseBer(int offset, int level, int indefinite, BerItem *pParentIt
     int     next_offset = 0;
     int     isConstructed = 0;
 
-    if( offset >= binBer_.nLen ) return -1;
+
 
     do {
+        if( offset >= binBer_.nLen ) break;
+
         BerItem *pItem = new BerItem();
         pItem->SetOffset(offset);
         pItem->SetLevel(level);
@@ -102,6 +109,8 @@ int BerModel::parseBer(int offset, int level, int indefinite, BerItem *pParentIt
 
         if( next_offset <= 0 ) return -1;
         pItem->setText( pItem->GetTagString() );
+
+
         pParentItem->appendRow( pItem );
 
         if( (pItem->GetId() & FORM_MASK) == CONSTRUCTED )
@@ -140,8 +149,10 @@ int BerModel::getItem(int offset, BerItem *pItem)
 
     pItem->SetId( tag & ~TAG_MASK );
     pItem->SetHeaderByte( binBer_.pVal[offset + position], position );
+    pItem->SetIndefinite(0);
 
     tag &= TAG_MASK;
+    position++;
 
     if( tag == TAG_MASK )
     {
@@ -160,6 +171,8 @@ int BerModel::getItem(int offset, BerItem *pItem)
     }
 
     pItem->SetTag(tag);
+
+    if( (offset + position) > binBer_.nLen ) return -1;
 
     length = binBer_.pVal[offset + position];
     pItem->SetHeaderByte( binBer_.pVal[offset + position], position );
