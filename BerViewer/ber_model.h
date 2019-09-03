@@ -1,11 +1,28 @@
-#ifndef ASN_MODEL_H
-#define ASN_MODEL_H
+#ifndef BER_MODEL_H
+#define BER_MODEL_H
 
+#include <QStandardItemModel>
+#include "ber_item.h"
+#include "js_bin.h"
 
-class AsnModel
+class BerModel : public QStandardItemModel
 {
+    Q_OBJECT
 public:
-    AsnModel();
+    BerModel( QObject *parent = 0 );
+
+    int openFile( const QString& filePath );
+    void setBer( const BIN *pBer );
+
+    int parseTree();
+    int parseBer( int offset, int level, int indefinite, BerItem *pItem );
+    BIN& getBer() { return binBer_; };
+
+private:
+    void initialize();
+    int getItem( int offset, BerItem *pItem );
+
+    BIN     binBer_;
 };
 
-#endif // ASN_MODEL_H
+#endif // BER_MODEL_H

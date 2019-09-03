@@ -2,6 +2,7 @@
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QCommandLineOption>
+#include "ber_applet.h"
 
 
 int main(int argc, char *argv[])
@@ -20,12 +21,17 @@ int main(int argc, char *argv[])
     parser.addPositionalArgument( "file", "The file to open" );
     parser.process(app);
 
+    BerApplet mApplet;
+    berApplet = &mApplet;
 
+    berApplet->start();
+
+/*
     MainWindow mw;
     if( !parser.positionalArguments().isEmpty() )
         mw.loadFile( parser.positionalArguments().first() );
 
     mw.show();
-
+*/
     return app.exec();
 }

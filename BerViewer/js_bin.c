@@ -6,10 +6,12 @@
 
 #include "js_bin.h"
 
+
 void * JS_malloc(size_t size)
 {
 	return malloc(size);
 }
+
 
 void * JS_calloc(size_t nelem, size_t elsize)
 {
@@ -25,6 +27,7 @@ void JS_free(void * ptr)
 {
 	free(ptr);
 }
+
 
 int JS_BIN_set(BIN * pBin, const unsigned char * pValue, int nLength)
 {
@@ -82,6 +85,7 @@ int JS_BIN_append(BIN * pBIN, const unsigned char * pAppendVal, int nAppendLen)
 	return 0;
 }
 
+
 int JS_BIN_appendBin( BIN *pBin, const BIN *pAppend )
 {
 	if( pBin == NULL || pAppend == NULL ) return -1;
@@ -115,6 +119,8 @@ int JS_BIN_cmp( const BIN *pSrc, const BIN *pDst )
 	return nRet;
 }
 
+
+
 int JS_BIN_fileWrite( const BIN *pBin, const char *pFilePath )
 {
 	int			nRet = -1;
@@ -140,6 +146,8 @@ int JS_BIN_fileWrite( const BIN *pBin, const char *pFilePath )
 	fclose( pFP );
 	return 0;
 }
+
+
 
 int JS_BIN_fileRead( const char *pFilePath, BIN *pBin )
 {
@@ -190,6 +198,8 @@ int JS_BIN_fileRead( const char *pFilePath, BIN *pBin )
 	return 0;
 }
 
+
+
 int JS_BIN_encodeHex( const BIN *pBin, char **ppHex )
 {
 	int			i;
@@ -206,6 +216,7 @@ int JS_BIN_encodeHex( const BIN *pBin, char **ppHex )
 
 	return 0;
 }
+
 
 int JS_BIN_decodeHex( const char *pHex, BIN *pBin )
 {
@@ -226,6 +237,7 @@ int JS_BIN_decodeHex( const char *pHex, BIN *pBin )
 	return 0;
 }
 
+
 int JS_BIN_encodeBase64( const BIN *pBin, char **ppBase64 )
 {
 	unsigned char *pOutput = NULL;
@@ -236,7 +248,7 @@ int JS_BIN_encodeBase64( const BIN *pBin, char **ppBase64 )
 
 	if ( pBin == NULL || pBin->nLen <= 0) return -1;
 
-	pOutput = (unsigned char *)M_calloc(1, pBin->nLen * 2 + 4);
+    pOutput = (unsigned char *)JS_calloc(1, pBin->nLen * 2 + 4);
 
 	for (i = 0; i < pBin->nLen; i++) {
 		if (((i / 3) > 0) && ((i % 3) == 0)) {
@@ -279,6 +291,7 @@ int JS_BIN_encodeBase64( const BIN *pBin, char **ppBase64 )
 	return 0;
 }
 
+
 int JS_BIN_decodeBase64( const char *pBase64, BIN *pBin )
 {
 	int i, j = 0;
@@ -292,8 +305,8 @@ int JS_BIN_decodeBase64( const char *pBase64, BIN *pBin )
 
 	if (nIn <= 0) return -1;
 
-	pBin->pVal = (unsigned char *)M_calloc(1, nIn + 1);
-	pSrc = (unsigned char *)M_calloc(1, nIn + 1);
+    pBin->pVal = (unsigned char *)JS_calloc(1, nIn + 1);
+    pSrc = (unsigned char *)JS_calloc(1, nIn + 1);
 
 	memcpy(pSrc, pBase64, nIn);
 
@@ -627,3 +640,5 @@ int JS_BIN_decodeBase64URL( const char *pBase64URL, BIN *pBin )
 	
 	return 0;
 }
+
+

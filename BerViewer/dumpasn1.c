@@ -3013,6 +3013,7 @@ static void usageExit( void )
 	exit( EXIT_FAILURE );
 	}
 
+#if 0
 int main( int argc, char *argv[] )
 	{
 	FILE *inFile, *outFile = NULL;
@@ -3310,3 +3311,5 @@ int main( int argc, char *argv[] )
 
 	return( ( noErrors ) ? noErrors : EXIT_SUCCESS );
 	}
+#endif
+

@@ -5,6 +5,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
+
 #define			JS_PEM_TYPE_RSA_PRIVATE_KEY			1
 #define			JS_PEM_TYPE_RSA_PUBLIC_KEY			2
 #define			JS_PEM_TYPE_CSR						3
@@ -46,5 +52,9 @@ int JS_BIN_encodePEM( int nType, const BIN *pBin, char **ppPEM );
 int JS_BIN_decodePEM( const char *pPEM, int *pType, BIN *pBin );
 int JS_BIN_encodeBase64URL( const BIN *pBin, char **ppBase64URL );
 int JS_BIN_decodeBase64URL( const char *pBase64URL, BIN *pBin );
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
