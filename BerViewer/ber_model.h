@@ -15,7 +15,7 @@ public:
     void setBer( const BIN *pBer );
 
     int parseTree();
-    int parseBer( int offset, int level, int indefinite, BerItem *pItem );
+    int parseBer( int offset, BerItem *pItem );
     BIN& getBer() { return binBer_; };
 
 private:

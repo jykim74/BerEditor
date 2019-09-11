@@ -1,14 +1,13 @@
 #include "gen_otp_dlg.h"
-#include "ui_gen_otp_dlg.h"
+
 
 GenOTPDlg::GenOTPDlg(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::GenOTPDlg)
+    QDialog(parent)
 {
-    ui->setupUi(this);
+    setupUi(this);
 }
 
 GenOTPDlg::~GenOTPDlg()
 {
-    delete ui;
+
 }

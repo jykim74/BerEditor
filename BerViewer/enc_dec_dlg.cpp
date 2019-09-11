@@ -2,13 +2,12 @@
 #include "ui_enc_dec_dlg.h"
 
 EncDecDlg::EncDecDlg(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::EncDecDlg)
+    QDialog(parent)
 {
-    ui->setupUi(this);
+    setupUi(this);
 }
 
 EncDecDlg::~EncDecDlg()
 {
-    delete ui;
+
 }

@@ -1,9 +1,12 @@
 #ifndef BER_TRAY_ICON_H
 #define BER_TRAY_ICON_H
 
+#include <QSystemTrayIcon>
 
-class BerTrayIcon
+class BerTrayIcon : public QSystemTrayIcon
 {
+    Q_OBJECT
+
 public:
     BerTrayIcon();
 };

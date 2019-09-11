@@ -68,7 +68,7 @@ int BerModel::parseTree()
 {
     int ret = 0;
     int offset = 0;
-    int indefinite = 0;
+
     BerItem *pRootItem = new BerItem();
 
 
@@ -86,29 +86,32 @@ int BerModel::parseTree()
     pRootItem->setText( pRootItem->GetTagString() );
 
     if( (pRootItem->GetId() & FORM_MASK) == CONSTRUCTED )
-        ret = parseBer( pRootItem->GetHeaderSize(), 1, pRootItem->GetIndefinite(), pRootItem );
+        ret = parseBer( pRootItem->GetHeaderSize(), pRootItem );
 
     return 0;
 }
 
-int BerModel::parseBer(int offset, int level, int indefinite, BerItem *pParentItem)
+int BerModel::parseBer(int offset, BerItem *pParentItem)
 {
     int     ret = 0;
     int     next_offset = 0;
     int     isConstructed = 0;
+    int     start_offset = offset;
+    int     level = pParentItem->GetLevel() + 1;
 
-
+    if( offset >= binBer_.nLen ) return -1;
 
     do {
-        if( offset >= binBer_.nLen ) break;
+        if( offset >= (start_offset + pParentItem->GetLength()) ) break;
 
         BerItem *pItem = new BerItem();
         pItem->SetOffset(offset);
-        pItem->SetLevel(level);
+        pItem->SetLevel(level );
         next_offset = getItem( offset, pItem );
 
         if( next_offset <= 0 ) return -1;
-        pItem->setText( pItem->GetTagString() );
+//        pItem->setText( pItem->GetTagString() );
+        pItem->setText( pItem->GetInfoString( &binBer_));
 
 
         pParentItem->appendRow( pItem );
@@ -121,12 +124,16 @@ int BerModel::parseBer(int offset, int level, int indefinite, BerItem *pParentIt
 
         if( isConstructed )
         {
-            parseBer( offset + pItem->GetHeaderSize(), level+1, pItem->GetIndefinite(), pItem );
+            parseBer( offset + pItem->GetHeaderSize(), pItem );
         }
 
-        if( indefinite )
+        if( pParentItem->GetIndefinite() )
         {
-
+            if( pItem->GetLength() == 0 && pItem->GetId() == 0 )
+            {
+                pParentItem->SetLength( pItem->GetOffset() + pItem->GetHeaderSize() - pParentItem->GetOffset() - pParentItem->GetHeaderSize() );
+                break;
+            }
         }
         else {
                 if( next_offset >= binBer_.nLen ) break;

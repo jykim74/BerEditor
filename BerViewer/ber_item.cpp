@@ -1,139 +1,6 @@
 #include "ber_item.h"
 #include "js_bin.h"
-
-static int oidToString( char *textOID, const BIN *pOID )
-{
-    BYTE uuidBuffer[ 32 ];
-    long value;
-    int length = 0, uuidBufPos = -1, uuidBitCount = 5, i;
-    int validEncoding = TRUE, isUUID = FALSE;
-
-    for( i = 0, value = 0; i < pOID->nLen; i++ )
-        {
-        const BYTE data = pOID->pVal[ i ];
-        const long valTmp = value << 7;
-
-        /* Pick apart the encoding.  We keep going after hitting an encoding
-           error at the start of an arc because the overall length is
-           bounded and we may still be able to recover something worth
-           printing */
-        if( value == 0 && data == 0x80 )
-            {
-            /* Invalid leading zero value, 0x80 & 0x7F == 0 */
-            validEncoding = FALSE;
-            }
-        if( isUUID )
-            {
-            value = 1;	/* Set up dummy value since we're bypassing normal read */
-            if( uuidBitCount == 0 )
-                uuidBuffer[ uuidBufPos ] = data << 1;
-            else
-                {
-                if( uuidBufPos >= 0 )
-                    uuidBuffer[ uuidBufPos ] |= ( data & 0x7F ) >> ( 7 - uuidBitCount );
-                uuidBufPos++;
-                if( uuidBitCount < 7 )
-                    uuidBuffer[ uuidBufPos ] = data << ( uuidBitCount + 1 );
-                }
-            uuidBitCount++;
-            if( uuidBitCount > 7 )
-                uuidBitCount = 0;
-            if( !( data & 0x80 ) )
-                {
-                /* The following check isn't completely accurate since we
-                   could have less than 16 bytes present if there are
-                   leading zeroes, however to handle this properly we'd
-                   have to decode the entire value as a bignum and then
-                   format it appropriately, and given the fact that the use
-                   of these things is practically nonexistent it's probably
-                   not worth the code space to deal with this */
-                if( uuidBufPos != 16 )
-                    {
-                    validEncoding = FALSE;
-                    break;
-                    }
-                length += sprintf( textOID + length,
-                                   " { %02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x }",
-                                   uuidBuffer[ 0 ], uuidBuffer[ 1 ],
-                                   uuidBuffer[ 2 ], uuidBuffer[ 3 ],
-                                   uuidBuffer[ 4 ], uuidBuffer[ 5 ],
-                                   uuidBuffer[ 6 ], uuidBuffer[ 7 ],
-                                   uuidBuffer[ 8 ], uuidBuffer[ 9 ],
-                                   uuidBuffer[ 10 ], uuidBuffer[ 11 ],
-                                   uuidBuffer[ 12 ], uuidBuffer[ 13 ],
-                                   uuidBuffer[ 14 ], uuidBuffer[ 15 ] );
-                value = 0;
-                }
-            continue;
-            }
-        if( value >= ( LONG_MAX >> 7 ) || \
-            valTmp >= LONG_MAX - ( data & 0x7F ) )
-            {
-            validEncoding = FALSE;
-            break;
-            }
-        value = valTmp | ( data & 0x7F );
-        if( value < 0 || value > LONG_MAX / 2 )
-            {
-            validEncoding = FALSE;
-            break;
-            }
-        if( !( data & 0x80 ) )
-            {
-            if( length == 0 )
-                {
-                long x, y;
-
-                /* The first two levels are encoded into one byte since the
-                   root level has only 3 nodes (40*x + y), however if x =
-                   joint-iso-itu-t(2) then y may be > 39, so we have to add
-                   special-case handling for this */
-                x = value / 40;
-                y = value % 40;
-                if( x > 2 )
-                    {
-                    /* Handle special case for large y if x == 2 */
-                    y += ( x - 2 ) * 40;
-                    x = 2;
-                    }
-                if( x < 0 || x > 2 || y < 0 || \
-                    ( ( x < 2 && y > 39 ) || \
-                      ( x == 2 && ( y > 50 && y != 100 ) ) ) )
-                    {
-                    /* If x = 0 or 1 then y has to be 0...39, for x = 3
-                       it can take any value but there are no known
-                       assigned values over 50 except for one contrived
-                       example in X.690 which sets y = 100, so if we see
-                       something outside this range it's most likely an
-                       encoding error rather than some bizarre new ID
-                       that's just appeared */
-                    validEncoding = FALSE;
-                    break;
-                    }
-                length = sprintf( textOID, "%ld %ld", x, y );
-
-                /* An insane ITU facility lets people register UUIDs as OIDs
-                   (see http://www.itu.int/ITU-T/asn1/uuid.html), if we find
-                   one of these, which live under the arc '2 25' = 0x69 we
-                   have to continue decoding the OID as a UUID instead of a
-                   standard OID */
-                if( data == 0x69 )
-                    isUUID = TRUE;
-                }
-            else
-                length += sprintf( textOID + length, " %ld", value );
-            value = 0;
-            }
-        }
-    if( value != 0 )
-        {
-        /* We stopped in the middle of a continued value */
-        validEncoding = FALSE;
-        }
-    textOID[ length ] = '\0';
-
-    return( validEncoding );
-}
+#include "js_pki_tools.h"
 
 
 BerItem::BerItem()
@@ -276,14 +143,112 @@ QString BerItem::GetValueString( const BIN *pBer )
 {
     QString strVal;
     BIN     binVal = {0,0};
-    char    *pHex = NULL;
 
     JS_BIN_set( &binVal, pBer->pVal + offset_ + header_size_, length_ );
 
+    if( tag_ == OID )
+    {
+        char sOID[1024];
+        JS_PKI_getStringFromOID( &binVal, sOID );
+        strVal = sOID;
+    }
+    else if( tag_ == NULLTAG )
+    {
+        strVal = "NULL";
+    }
+    else if( tag_ == INTEGER )
+    {
+        char *pDecimal = NULL;
+        JS_PKI_binToDecimal( &binVal, &pDecimal );
+        if( pDecimal )
+        {
+            strVal = pDecimal;
+            JS_free( pDecimal );
+        }
+    }
+    else if( tag_ == PRINTABLESTRING || tag_ == IA5STRING || tag_ == UTF8STRING \
+             || tag_ == UTCTIME || tag_ == GENERALIZEDTIME )
+    {
+        char *pStr = NULL;
+        pStr = (char *)JS_calloc(1, binVal.nLen + 1 );
+        memcpy( pStr, binVal.pVal, binVal.nLen );
+        strVal = pStr;
+        JS_free(pStr);
+    }
+    else if( tag_ == BITSTRING )
+    {
+        int iUnused = 0;
+        char *pBitStr = (char *)JS_malloc( binVal.nLen * 8 + 8 );
+        JS_PKI_getBitString( &binVal, &iUnused, pBitStr );
+        strVal = pBitStr;
+//        strVal.sprintf( "%s(%d bits unused)", pBitStr, iUnused );
+        JS_free(pBitStr);
+    }
+    else {
+        char *pHex = NULL;
+        JS_BIN_encodeHex( &binVal, &pHex );
+        strVal = pHex;
+        if( pHex ) JS_free(pHex);
+    }
 
-    JS_BIN_encodeHex( &binVal, &pHex );
-    strVal = pHex;
-    if( pHex ) JS_free(pHex);
-
+    JS_BIN_reset( &binVal );
     return strVal;
+}
+
+QString BerItem::GetInfoString(const BIN *pBer)
+{
+    QString strMsg;
+    QString strTag = GetTagString();
+    QString strVal;
+
+    strMsg = strTag;
+
+    if( id_ & CLASS_MASK ) return strMsg;
+
+    if( tag_ == OID )
+    {
+        strVal = GetValueString(pBer);
+        strMsg = QString( "%1 %2(%3)" ).arg(strTag).arg(JS_PKI_getSNFromOID(strVal.toStdString().c_str())).arg(strVal);
+    }
+    else if( tag_ == INTEGER )
+    {
+        strVal = GetValueString(pBer);
+        if( strVal.length() > 16 )
+        {
+            strVal = strVal.mid(0,15);
+            strVal += "...";
+        }
+
+        strMsg = QString( "%1 %2").arg(strTag).arg(strVal);
+    }
+    else if( tag_ == BITSTRING )
+    {
+        int iUnused = 0;
+        BIN     binVal = {0,0};
+        char *pTextBit = NULL;
+
+        JS_BIN_set( &binVal, pBer->pVal + offset_ + header_size_, length_ );
+
+        pTextBit = (char *)JS_malloc( binVal.nLen * 8 + 8 );
+        JS_PKI_getBitString( &binVal, &iUnused, pTextBit );
+
+        QString tmpStr = pTextBit;
+        if( tmpStr.length() > 16 )
+        {
+            tmpStr.mid(0,15);
+            tmpStr += "...";
+        }
+
+        strMsg = QString( "%1 %2(unused %3)").arg( strTag ).arg(tmpStr).arg(iUnused);
+        JS_BIN_reset(&binVal);
+        if( pTextBit ) JS_free( pTextBit );
+    }
+    else if( tag_ == PRINTABLESTRING || tag_ == IA5STRING || tag_ == UTF8STRING \
+             || tag_ == UTCTIME || tag_ == GENERALIZEDTIME )
+    {
+        strVal = GetValueString(pBer);
+        strMsg = QString( "%1 '%2'").arg( strTag).arg( strVal);
+    }
+
+    return strMsg;
 }

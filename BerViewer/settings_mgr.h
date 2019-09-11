@@ -7,11 +7,16 @@ class SettingsMgr : public QObject
 {
     Q_OBJECT
 public:
-    explicit SettingsMgr(QObject *parent = nullptr);
+    SettingsMgr(QObject *parent = nullptr);
+
+    void setShowFullText( bool val );
+    bool showFullText();
 
 signals:
 
 public slots:
+private:
+    Q_DISABLE_COPY(SettingsMgr)
 };
 
 #endif // SETTINGS_MGR_H

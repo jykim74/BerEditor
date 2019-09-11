@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QSplitter>
 #include <QTreeView>
+#include <QTableWidget>
 #include <QTextBrowser>
 
 #include "ber_model.h"
@@ -27,19 +28,37 @@ public:
     QTextEdit* getRightText() { return rightText_; };
     void showTextMsg( const QString& msg );
 
+    void showWindow();
+
 private slots:
     void newFile();
     void open();
+    void about();
+    void setting();
+    void test();
+    void dataEncoder();
+    void hash();
+    void hmac();
+    void oidInfo();
+    void encDec();
+    void signVerify();
+    void rsaEncDec();
+    void genOTP();
 
 private:
     Ui::MainWindow *ui;
     void createActions();
     void createStatusBar();
 
-    QSplitter   *splitter_;
+    void createTableMenu();
+
+    QSplitter   *hsplitter_;
+    QSplitter   *vsplitter_;
     BerTreeView   *leftTree_;
     QTextEdit       *rightText_;
     BerModel        *ber_model_;
+    QTableWidget      *rightTable_;
+
 
 };
 

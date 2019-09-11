@@ -2,12 +2,13 @@
 #define OID_INFO_DLG_H
 
 #include <QDialog>
+#include "ui_oid_info_dlg.h"
 
 namespace Ui {
 class OIDInfoDlg;
 }
 
-class OIDInfoDlg : public QDialog
+class OIDInfoDlg : public QDialog, public Ui::OIDInfoDlg
 {
     Q_OBJECT
 
@@ -16,7 +17,7 @@ public:
     ~OIDInfoDlg();
 
 private:
-    Ui::OIDInfoDlg *ui;
+
 };
 
 #endif // OID_INFO_DLG_H

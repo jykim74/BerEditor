@@ -2,12 +2,13 @@
 #define GEN_HMAC_DLG_H
 
 #include <QDialog>
+#include "ui_gen_hmac_dlg.h"
 
 namespace Ui {
 class GenHmacDlg;
 }
 
-class GenHmacDlg : public QDialog
+class GenHmacDlg : public QDialog, public Ui::GenHmacDlg
 {
     Q_OBJECT
 
@@ -16,7 +17,7 @@ public:
     ~GenHmacDlg();
 
 private:
-    Ui::GenHmacDlg *ui;
+//    Ui::GenHmacDlg *ui;
 };
 
 #endif // GEN_HMAC_DLG_H

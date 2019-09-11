@@ -94,6 +94,8 @@ public:
     QString GetTagString();
     QString GetClassString();
     QString GetValueString( const BIN *pBer );
+    QString GetInfoString( const BIN *pBer );
+
 public:
     int     id_;
     int     tag_;

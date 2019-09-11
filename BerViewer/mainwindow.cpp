@@ -5,6 +5,17 @@
 #include "ber_tree_view.h"
 
 #include "insert_data_dlg.h"
+#include "ber_applet.h"
+#include "settings_dlg.h"
+#include "data_encoder_dlg.h"
+#include "gen_hash_dlg.h"
+#include "gen_hmac_dlg.h"
+#include "oid_info_dlg.h"
+#include "enc_dec_dlg.h"
+#include "sign_verify_dlg.h"
+#include "rsa_enc_dec_dlg.h"
+#include "gen_otp_dlg.h"
+#include "about_dlg.h"
 
 #include <QtWidgets>
 
@@ -32,25 +43,61 @@ MainWindow::~MainWindow()
 
 void MainWindow::initialize()
 {
-    splitter_ = new QSplitter();
+    hsplitter_ = new QSplitter(Qt::Horizontal);
+    vsplitter_ = new QSplitter(Qt::Vertical);
+
     leftTree_ = new BerTreeView(this);
     rightText_ = new QTextEdit();
     leftTree_->setTextEdit(rightText_);
+    rightTable_ = new QTableWidget;
+    leftTree_->setTable(rightTable_);
 
 
     ber_model_ = new BerModel(this);
 
     leftTree_->setModel(ber_model_);
 
-    splitter_->addWidget(leftTree_);
-    splitter_->addWidget(rightText_);
+    hsplitter_->addWidget(leftTree_);
+    hsplitter_->addWidget(vsplitter_);
+
+    vsplitter_->addWidget(rightTable_);
+    vsplitter_->addWidget(rightText_);
+
+    QList <int> vsizes;
+    vsizes << 1200 << 500;
+    vsplitter_->setSizes(vsizes);
 
     QList<int> sizes;
 
     sizes << 500 << 1200;
-    splitter_->setSizes(sizes);
+    hsplitter_->setSizes(sizes);
 
-    setCentralWidget(splitter_);
+    setCentralWidget(hsplitter_);
+    resize( 1024, 768 );
+
+    createTableMenu();
+
+}
+
+void MainWindow::createTableMenu()
+{
+    QStringList labels;
+    labels << "Address" << "0" << "1" << "2" << "3" << "4" << "5" << "6" << "7" << "8" << "9"
+           << "A" << "B" << "C" << "D" << "E" << "F" << "Text";
+    rightTable_->setColumnCount(18);
+
+    for( int i=1; i <= 16; i++ )
+        rightTable_->setColumnWidth(i, 30);
+
+    rightTable_->setHorizontalHeaderLabels( labels );
+}
+
+void MainWindow::showWindow()
+{
+    showNormal();
+    show();
+    raise();
+    activateWindow();
 }
 
 void MainWindow::loadFile(const QString &filename)
@@ -80,6 +127,61 @@ void MainWindow::createActions()
     fileToolBar->addAction(openAct);
 
     fileMenu->addSeparator();
+
+    QMenu *editMenu = menuBar()->addMenu(tr("&Edit"));
+    QToolBar *editToolBar = addToolBar(tr("Edit"));
+
+    const QIcon cutIcon = QIcon::fromTheme("edit-cut", QIcon(":/images/cut.png"));
+    QAction *cutAct = new QAction( cutIcon, tr("Cu&t"), this);
+    cutAct->setShortcut(QKeySequence::Cut);
+    cutAct->setStatusTip(tr("Cut the current selection's contents to the clipboard"));
+    connect( cutAct, &QAction::triggered, rightText_, &QTextEdit::cut);
+    editMenu->addAction(cutAct);
+    editToolBar->addAction(cutAct);
+
+
+    menuBar()->addSeparator();
+
+    QMenu *cryptMenu = menuBar()->addMenu(tr("&Crypt"));
+    QAction *hashAct = cryptMenu->addAction(tr("&Hash"), this, &MainWindow::hash);
+    hashAct->setStatusTip(tr("Generate hash value" ));
+
+    QAction *hmacAct = cryptMenu->addAction(tr("&Hmac"), this, &MainWindow::hmac);
+    hmacAct->setStatusTip(tr("Generate hmac value"));
+
+    QAction *encDecAct = cryptMenu->addAction(tr("&Encrypt/Decrypt"), this, &MainWindow::encDec);
+    encDecAct->setStatusTip(tr("Data encrypt decrypt"));
+
+    QAction *signVerifyAct = cryptMenu->addAction(tr("&Sign/Verify"), this, &MainWindow::signVerify);
+    signVerifyAct->setStatusTip(tr("Data signature and verify"));
+
+    QAction *rsaEncDecAct = cryptMenu->addAction(tr("&RSA Encrypt/Decrypt"), this, &MainWindow::rsaEncDec);
+    rsaEncDecAct->setStatusTip(tr("Data rsa encrypt decrypt"));
+
+    QAction *genOTPAct = cryptMenu->addAction(tr("&OTP generate"), this, &MainWindow::genOTP);
+    genOTPAct->setStatusTip(tr("Generate OTP value"));
+
+    QMenu *toolMenu = menuBar()->addMenu(tr("&Tool"));
+
+    QAction *settingAct = toolMenu->addAction(tr("&Settings"), this, &MainWindow::setting);
+    settingAct->setStatusTip(tr("Set the variable"));
+
+    QAction *testAct = toolMenu->addAction(tr("&Test"), this, &MainWindow::test);
+    testAct->setStatusTip(tr("This is test menu"));
+
+    QAction *dataEncodeAct = toolMenu->addAction(tr("Data&Encoder"), this, &MainWindow::dataEncoder);
+    dataEncodeAct->setStatusTip(tr("This is tool for encoding data" ));
+
+    QAction *oidAct = toolMenu->addAction(tr("&OID Information"), this, &MainWindow::oidInfo);
+    oidAct->setStatusTip(tr("Show OID information" ));
+
+    QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
+
+    QAction *aboutAct = helpMenu->addAction(tr("&About"), this, &MainWindow::about);
+    aboutAct->setStatusTip(tr("Show the BerViewer's about box"));
+
+
+
     menuBar()->show();
 }
 
@@ -115,7 +217,10 @@ void MainWindow::newFile()
 
 void MainWindow::open()
 {
-    QString fileName = QFileDialog::getOpenFileName(this);
+    QString fileName = QFileDialog::getOpenFileName(this,
+                                                    "/home",
+                                                    QDir::currentPath(),
+                                                    "All files (*.*) ;; BER files (*.ber *.der);; PEM files (*.crt *.pem)" );
 
     if( !fileName.isEmpty() )
     {
@@ -153,3 +258,86 @@ void MainWindow::showTextMsg(const QString &msg)
     rightText_->setText( msg );
 }
 
+
+void MainWindow::about()
+{
+    /*
+    QMessageBox::about(this, tr("About BerViewer"),
+                       tr("The <b>BerViewer</b> is ASN.1 and BER viewer(Version:%1)").arg(STRINGIZE(BER_VIEWER_VERSION)));
+                       */
+
+    berApplet->aboutDlg()->show();
+    berApplet->aboutDlg()->raise();
+    berApplet->aboutDlg()->activateWindow();
+}
+
+
+void MainWindow::setting()
+{
+    berApplet->settingsDlg()->show();
+    berApplet->settingsDlg()->raise();
+    berApplet->settingsDlg()->activateWindow();
+}
+
+void MainWindow::test()
+{
+    berApplet->settingsDlg()->show();
+    berApplet->settingsDlg()->raise();
+    berApplet->settingsDlg()->activateWindow();
+}
+
+void MainWindow::dataEncoder()
+{
+    berApplet->dataEncoderDlg()->show();
+    berApplet->dataEncoderDlg()->raise();
+    berApplet->dataEncoderDlg()->activateWindow();
+}
+
+void MainWindow::hash()
+{
+    berApplet->genHashDlg()->show();
+    berApplet->genHashDlg()->raise();
+    berApplet->genHashDlg()->activateWindow();
+}
+
+void MainWindow::hmac()
+{
+    berApplet->genHmacDlg()->show();
+    berApplet->genHmacDlg()->raise();
+    berApplet->genHmacDlg()->activateWindow();
+}
+
+void MainWindow::oidInfo()
+{
+    berApplet->oidInfoDlg()->show();
+    berApplet->oidInfoDlg()->raise();
+    berApplet->oidInfoDlg()->activateWindow();
+}
+
+void MainWindow::encDec()
+{
+    berApplet->encDecDlg()->show();
+    berApplet->encDecDlg()->raise();
+    berApplet->encDecDlg()->activateWindow();
+}
+
+void MainWindow::signVerify()
+{
+    berApplet->signVerifyDlg()->show();
+    berApplet->signVerifyDlg()->raise();
+    berApplet->signVerifyDlg()->activateWindow();
+}
+
+void MainWindow::rsaEncDec()
+{
+    berApplet->rsaEncDecDlg()->show();
+    berApplet->rsaEncDecDlg()->raise();
+    berApplet->rsaEncDecDlg()->activateWindow();
+}
+
+void MainWindow::genOTP()
+{
+    berApplet->genOTPDlg()->show();
+    berApplet->genOTPDlg()->raise();
+    berApplet->genOTPDlg()->activateWindow();
+}

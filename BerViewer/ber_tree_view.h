@@ -3,6 +3,7 @@
 
 #include <QTreeView>
 #include <QTextBrowser>
+#include <QTableWidget>
 #include "js_bin.h"
 
 class BerItem;
@@ -12,16 +13,23 @@ class BerTreeView : public QTreeView
     Q_OBJECT
 public:
     BerTreeView( QWidget* parent = 0 );
-    void setTextEdit( QTextEdit *txtEdit_ );
+    void setTextEdit( QTextEdit *txtEdit );
+    void setTable( QTableWidget *table );
 
 private slots:
     void onItemClicked( const QModelIndex& index );
+    void ShowContextMenu( QPoint point );
+    void CopyAsHex();
+    void CopyAsBase64();
 
 private:
     QTextEdit *textEdit_;
+    QTableWidget *table_;
 
-    QString GetEditView( const BIN *pBer, BerItem *pItem );
+    void GetEditView( const BIN *pBer, BerItem *pItem );
     QString GetDataView( const BIN *pData, const BerItem *pItem );
+    void GetTableView( const BIN *pBer, BerItem *pItem );
+    void GetTableFullView( const BIN *pBer, BerItem *pItem );
 };
 
 #endif // BER_TREE_VIEW_H

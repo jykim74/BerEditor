@@ -1,14 +1,13 @@
 #include "sign_verify_dlg.h"
-#include "ui_sign_verify_dlg.h"
+
 
 SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::SignVerifyDlg)
+    QDialog(parent)
 {
-    ui->setupUi(this);
+    setupUi(this);
 }
 
 SignVerifyDlg::~SignVerifyDlg()
 {
-    delete ui;
+
 }

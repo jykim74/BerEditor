@@ -2,12 +2,13 @@
 #define ENC_DEC_DLG_H
 
 #include <QDialog>
+#include "ui_enc_dec_dlg.h"
 
 namespace Ui {
 class EncDecDlg;
 }
 
-class EncDecDlg : public QDialog
+class EncDecDlg : public QDialog, public Ui::EncDecDlg
 {
     Q_OBJECT
 
@@ -16,7 +17,7 @@ public:
     ~EncDecDlg();
 
 private:
-    Ui::EncDecDlg *ui;
+
 };
 
 #endif // ENC_DEC_DLG_H

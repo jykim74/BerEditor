@@ -10,12 +10,14 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = BerViewer
 TEMPLATE = app
+PROJECT_VERSION = "0.8.1"
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
+DEFINES += BER_VIEWER_VERSION=$$PROJECT_VERSION
 
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -26,41 +28,107 @@ CONFIG += c++11
 
 
 SOURCES += \
+    about_dlg.cpp \
+    auto_update_service.cpp \
     ber_applet.cpp \
-        ber_item.cpp \
-        ber_item_delegate.cpp \
-        ber_model.cpp \
-        ber_tree_view.cpp \
-        dumpasn1.c \
- #       js_bin.c \
+    ber_item.cpp \
+    ber_item_delegate.cpp \
+    ber_model.cpp \
+    ber_tray_icon.cpp \
+    ber_tree_view.cpp \
+    data_encoder_dlg.cpp \
+    dumpasn1.c \
+    enc_dec_dlg.cpp \
+    gen_hash_dlg.cpp \
+    gen_hmac_dlg.cpp \
+    gen_otp_dlg.cpp \
+    i18n_helper.cpp \
     insert_data_dlg.cpp \
-        main.cpp \
-        mainwindow.cpp
+    main.cpp \
+    mainwindow.cpp \
+    oid_info_dlg.cpp \
+    rsa_enc_dec_dlg.cpp \
+    settings_dlg.cpp \
+    settings_mgr.cpp \
+    sign_verify_dlg.cpp
 
 HEADERS += \
+    about_dlg.h \
+    auto_update_service.h \
     ber_applet.h \
-        ber_item.h \
-        ber_item_delegate.h \
-        ber_model.h \
-        ber_tree_view.h \
-#        js_bin.h \
+    ber_define.h \
+    ber_item.h \
+    ber_item_delegate.h \
+    ber_model.h \
+    ber_tray_icon.h \
+    ber_tree_view.h \
+    data_encoder_dlg.h \
+    enc_dec_dlg.h \
+    gen_hash_dlg.h \
+    gen_hmac_dlg.h \
+    gen_otp_dlg.h \
+    i18n_helper.h \
     insert_data_dlg.h \
-        mainwindow.h
+    mainwindow.h \
+    oid_info_dlg.h \
+    rsa_enc_dec_dlg.h \
+    settings_dlg.h \
+    settings_mgr.h \
+    sign_verify_dlg.h \
+    singleton.h
+
+DEFINES += _AUTO_UPDATE
+
+# Sparkle.framework 를 Qt/5.11.3/clang_64/lib/ 에 복사 해 주었음
+
+mac {
+    QMAKE_LFLAGS += -Wl,-rpath,@loader_path/../Frameworks
+    HEADERS += mac_sparkle_support.h
+    OBJECTIVE_SOURCES += mac_sparkle_support.mm
+    LIBS += -framework AppKit
+    LIBS += -framework Carbon
+    LIBS += -framework Foundation
+    LIBS += -framework ApplicationServices
+    LIBS += -framework Sparkle
+    INCLUDEPATH += "/usr/local/Sparkle.framework/Headers"
+}
 
 FORMS += \
+        about_dlg.ui \
+        data_encoder_dlg.ui \
+        enc_dec_dlg.ui \
+        gen_hash_dlg.ui \
+        gen_hmac_dlg.ui \
+        gen_otp_dlg.ui \
         insert_data_dlg.ui \
-        mainwindow.ui
+        mainwindow.ui \
+        oid_info_dlg.ui \
+        rsa_enc_dec_dlg.ui \
+        settings_dlg.ui \
+        sign_verify_dlg.ui
+
+RESOURCES += \
+    berviewer.qrc
+
+TRANSLATIONS += i18n/berviewer_ko_KR.ts
+
+
+
+target.path = i18n
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-RESOURCES += \
-    berviewer.qrc
+
 
 LIBS += -lc
 
 
 INCLUDEPATH += "../../PKILib"
+
 LIBS += -L"../../build-PKILib-Desktop_Qt_5_11_3_clang_64bit-Debug" -lPKILib
+LIBS += -L"../../PKILib/lib/mac/openssl/lib" -lcrypto
+
+DISTFILES +=

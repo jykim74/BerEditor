@@ -2,12 +2,13 @@
 #define GEN_OTP_DLG_H
 
 #include <QDialog>
+#include "ui_gen_otp_dlg.h"
 
 namespace Ui {
 class GenOTPDlg;
 }
 
-class GenOTPDlg : public QDialog
+class GenOTPDlg : public QDialog, public Ui::GenOTPDlg
 {
     Q_OBJECT
 
@@ -16,7 +17,7 @@ public:
     ~GenOTPDlg();
 
 private:
-    Ui::GenOTPDlg *ui;
+
 };
 
 #endif // GEN_OTP_DLG_H

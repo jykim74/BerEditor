@@ -2,16 +2,31 @@
 #define AUTO_UPDATE_SERVICE_H
 
 #include <QObject>
+#include "singleton.h"
+
+class AutoUpdateAdapter;
 
 class AutoUpdateService : public QObject
 {
+    SINGLETON_DEFINE(AutoUpdateService)
     Q_OBJECT
 public:
-    explicit AutoUpdateService(QObject *parent = nullptr);
+    AutoUpdateService(QObject *parent = nullptr);
 
-signals:
+    bool shouldSupportAutoUpdate() const;
+    void setRequestParams();
+    bool autoUpdateEnabled() const;
+    void setAutoUpdateEnabled(bool enabled);
 
-public slots:
+    void start();
+    void stop();
+
+    void checkUpdate();
+
+private:
+    void enableUpdateByDefault();
+    QString getAppcastURI();
+    AutoUpdateAdapter *adapter_;
 };
 
 #endif // AUTO_UPDATE_SERVICE_H

@@ -2,12 +2,13 @@
 #define RSA_ENC_DEC_DLG_H
 
 #include <QDialog>
+#include "ui_rsa_enc_dec_dlg.h"
 
 namespace Ui {
 class RSAEncDecDlg;
 }
 
-class RSAEncDecDlg : public QDialog
+class RSAEncDecDlg : public QDialog, public Ui::RSAEncDecDlg
 {
     Q_OBJECT
 
@@ -16,7 +17,7 @@ public:
     ~RSAEncDecDlg();
 
 private:
-    Ui::RSAEncDecDlg *ui;
+
 };
 
 #endif // RSA_ENC_DEC_DLG_H
