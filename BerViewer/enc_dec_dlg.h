@@ -16,7 +16,13 @@ public:
     explicit EncDecDlg(QWidget *parent = nullptr);
     ~EncDecDlg();
 
+private slots:
+    void showEvent(QShowEvent *event );
+    virtual void accept();
+
 private:
+    void initialize();
+
 
 };
 

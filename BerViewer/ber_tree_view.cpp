@@ -18,7 +18,7 @@ BerTreeView::BerTreeView( QWidget *parent )
     setAcceptDrops(false);
     setContextMenuPolicy(Qt::CustomContextMenu);
 
-//    setItemDelegate( new BerItemDelegate(this));
+    setItemDelegate( new BerItemDelegate(this));
 
     connect( this, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(ShowContextMenu(QPoint)));
 }

@@ -39,9 +39,9 @@
     </rect>
    </property>
    <property name="title">
-    <string>GroupBox</string>
+    <string>Input data type</string>
    </property>
-   <widget class="QRadioButton" name="radioButton">
+   <widget class="QRadioButton" name="mInputStringBtn">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -51,10 +51,13 @@
      </rect>
     </property>
     <property name="text">
-     <string>RadioButton</string>
+     <string>String</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
     </property>
    </widget>
-   <widget class="QRadioButton" name="radioButton_2">
+   <widget class="QRadioButton" name="mInputHexBtn">
     <property name="geometry">
      <rect>
       <x>120</x>
@@ -64,10 +67,10 @@
      </rect>
     </property>
     <property name="text">
-     <string>RadioButton</string>
+     <string>Hex</string>
     </property>
    </widget>
-   <widget class="QRadioButton" name="radioButton_3">
+   <widget class="QRadioButton" name="mInputBase64Btn">
     <property name="geometry">
      <rect>
       <x>230</x>
@@ -77,11 +80,11 @@
      </rect>
     </property>
     <property name="text">
-     <string>RadioButton</string>
+     <string>Base64</string>
     </property>
    </widget>
   </widget>
-  <widget class="QPlainTextEdit" name="plainTextEdit">
+  <widget class="QPlainTextEdit" name="mInputText">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -101,7 +104,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>GroupBox</string>
+    <string>Key and IV</string>
    </property>
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
@@ -116,28 +119,28 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>TextLabel</string>
+        <string>Key</string>
        </property>
       </widget>
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>TextLabel</string>
+        <string>IV</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QComboBox" name="comboBox"/>
+      <widget class="QComboBox" name="mIVTypeCombo"/>
      </item>
      <item row="0" column="2">
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="mIVText"/>
      </item>
      <item row="1" column="1">
-      <widget class="QComboBox" name="comboBox_2"/>
+      <widget class="QComboBox" name="mKeyTypeCombo"/>
      </item>
      <item row="1" column="2">
-      <widget class="QLineEdit" name="lineEdit_2"/>
+      <widget class="QLineEdit" name="mKeyText"/>
      </item>
     </layout>
    </widget>
@@ -152,7 +155,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>GroupBox</string>
+    <string>Method</string>
    </property>
    <widget class="QWidget" name="gridLayoutWidget_2">
     <property name="geometry">
@@ -164,22 +167,19 @@
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="1">
-      <widget class="QComboBox" name="comboBox_4"/>
+     <item row="0" column="2">
+      <widget class="QComboBox" name="mMethodCombo"/>
      </item>
      <item row="0" column="0">
-      <widget class="QComboBox" name="comboBox_3"/>
+      <widget class="QComboBox" name="mAlgCombo"/>
      </item>
-     <item row="0" column="2">
-      <widget class="QComboBox" name="comboBox_5"/>
-     </item>
-     <item row="0" column="3">
-      <widget class="QComboBox" name="comboBox_6"/>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="mOutputTypeCombo"/>
      </item>
     </layout>
    </widget>
   </widget>
-  <widget class="QPlainTextEdit" name="plainTextEdit_2">
+  <widget class="QPlainTextEdit" name="mOutputText">
    <property name="geometry">
     <rect>
      <x>10</x>

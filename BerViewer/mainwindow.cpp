@@ -47,6 +47,8 @@ void MainWindow::initialize()
     vsplitter_ = new QSplitter(Qt::Vertical);
 
     leftTree_ = new BerTreeView(this);
+
+
     rightText_ = new QTextEdit();
     leftTree_->setTextEdit(rightText_);
     rightTable_ = new QTableWidget;

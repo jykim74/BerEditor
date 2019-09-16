@@ -83,7 +83,7 @@ int BerModel::parseTree()
     offset = getItem( 0, pRootItem );
     insertRow( 0, pRootItem );
 
-    pRootItem->setText( pRootItem->GetTagString() );
+    pRootItem->setText( pRootItem->GetInfoString( &binBer_) );
 
     if( (pRootItem->GetId() & FORM_MASK) == CONSTRUCTED )
         ret = parseBer( pRootItem->GetHeaderSize(), pRootItem );

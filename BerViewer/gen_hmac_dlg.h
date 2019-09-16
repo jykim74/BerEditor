@@ -16,6 +16,9 @@ public:
     explicit GenHmacDlg(QWidget *parent = nullptr);
     ~GenHmacDlg();
 
+private slots:
+        virtual void accept();
+
 private:
 //    Ui::GenHmacDlg *ui;
 };

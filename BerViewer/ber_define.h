@@ -8,4 +8,9 @@ enum {
     DATA_URL
 };
 
+enum {
+    METHOD_ENCRYPT,
+    METHOD_DECRYPT
+};
+
 #endif // BER_DEFINE_H

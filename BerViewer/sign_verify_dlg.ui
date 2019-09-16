@@ -39,7 +39,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>GroupBox</string>
+    <string>Input data type</string>
    </property>
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
@@ -52,30 +52,33 @@
     </property>
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="1">
-      <widget class="QRadioButton" name="radioButton_2">
+      <widget class="QRadioButton" name="mInputHexBtn">
        <property name="text">
-        <string>RadioButton</string>
+        <string>Hex</string>
        </property>
       </widget>
      </item>
      <item row="0" column="0">
-      <widget class="QRadioButton" name="radioButton">
+      <widget class="QRadioButton" name="mInputStringBtn">
        <property name="text">
-        <string>RadioButton</string>
+        <string>String</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
      <item row="0" column="2">
-      <widget class="QRadioButton" name="radioButton_3">
+      <widget class="QRadioButton" name="mInputBase64Btn">
        <property name="text">
-        <string>RadioButton</string>
+        <string>Base64</string>
        </property>
       </widget>
      </item>
     </layout>
    </widget>
   </widget>
-  <widget class="QPlainTextEdit" name="plainTextEdit">
+  <widget class="QPlainTextEdit" name="mInputText">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -95,7 +98,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>GroupBox</string>
+    <string>Private and Publie keys</string>
    </property>
    <widget class="QWidget" name="gridLayoutWidget_2">
     <property name="geometry">
@@ -108,22 +111,22 @@
     </property>
     <layout class="QGridLayout" name="gridLayout_2">
      <item row="0" column="0">
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="mPriKeyPath"/>
      </item>
      <item row="0" column="1">
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="mPriKeyBtn">
        <property name="text">
-        <string>PushButton</string>
+        <string>Private Key</string>
        </property>
       </widget>
      </item>
      <item row="1" column="0">
-      <widget class="QLineEdit" name="lineEdit_2"/>
+      <widget class="QLineEdit" name="mPubKeyPath"/>
      </item>
      <item row="1" column="1">
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="mPubKeyBtn">
        <property name="text">
-        <string>PushButton</string>
+        <string>Public Key</string>
        </property>
       </widget>
      </item>
@@ -140,7 +143,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>GroupBox</string>
+    <string>Properties and Method</string>
    </property>
    <widget class="QWidget" name="gridLayoutWidget_3">
     <property name="geometry">
@@ -153,21 +156,21 @@
     </property>
     <layout class="QGridLayout" name="gridLayout_3">
      <item row="0" column="1">
-      <widget class="QComboBox" name="comboBox_2"/>
+      <widget class="QComboBox" name="mHashTypeCombo"/>
      </item>
      <item row="0" column="0">
-      <widget class="QComboBox" name="comboBox"/>
+      <widget class="QComboBox" name="mAlgTypeCombo"/>
      </item>
      <item row="0" column="2">
-      <widget class="QComboBox" name="comboBox_3"/>
+      <widget class="QComboBox" name="mVersionCombo"/>
      </item>
      <item row="0" column="3">
-      <widget class="QComboBox" name="comboBox_4"/>
+      <widget class="QComboBox" name="mMethodCombo"/>
      </item>
     </layout>
    </widget>
   </widget>
-  <widget class="QPlainTextEdit" name="plainTextEdit_2">
+  <widget class="QPlainTextEdit" name="mOutputText">
    <property name="geometry">
     <rect>
      <x>10</x>
