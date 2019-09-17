@@ -16,6 +16,8 @@ public:
     void setTextEdit( QTextEdit *txtEdit );
     void setTable( QTableWidget *table );
 
+    void viewRoot();
+
 private slots:
     void onItemClicked( const QModelIndex& index );
     void ShowContextMenu( QPoint point );

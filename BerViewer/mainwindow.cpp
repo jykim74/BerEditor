@@ -86,8 +86,8 @@ void MainWindow::initialize()
 void MainWindow::createTableMenu()
 {
     QStringList labels;
-    labels << "Address" << "0" << "1" << "2" << "3" << "4" << "5" << "6" << "7" << "8" << "9"
-           << "A" << "B" << "C" << "D" << "E" << "F" << "Text";
+    labels << tr("Address") << "0" << "1" << "2" << "3" << "4" << "5" << "6" << "7" << "8" << "9"
+           << "A" << "B" << "C" << "D" << "E" << "F" << tr("Text");
     rightTable_->setColumnCount(18);
 
     for( int i=1; i <= 16; i++ )
@@ -252,6 +252,8 @@ void MainWindow::insertData()
         JS_BIN_reset(&binData);
 
         ber_model_->parseTree();
+
+        leftTree_->viewRoot();
     }
 
 }
@@ -296,6 +298,8 @@ void MainWindow::berFileOpen(const QString berPath)
             JS_BIN_reset(&binRead);
             ber_model_->parseTree();
         }
+
+        leftTree_->viewRoot();
     }
 }
 

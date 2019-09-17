@@ -44,6 +44,24 @@ void BerTreeView::onItemClicked(const QModelIndex& index )
 
 }
 
+void BerTreeView::viewRoot()
+{
+    BerModel *tree_model = (BerModel *)model();
+    BerItem* rootItem = (BerItem *)tree_model->item(0);
+
+    BIN& binBer = tree_model->getBer();
+    GetEditView( &binBer, rootItem );
+
+    SettingsMgr *set_mgr = berApplet->settingsMgr();
+
+    if( set_mgr->showFullText() )
+        GetTableFullView(&binBer, rootItem);
+    else
+        GetTableView(&binBer, rootItem );
+
+    setExpanded( rootIndex(), true );
+}
+
 void BerTreeView::setTextEdit(QTextEdit *txtEdit)
 {
     textEdit_ = txtEdit;

@@ -531,6 +531,16 @@
         <translation>데이타&amp;인코딩</translation>
     </message>
     <message>
+        <location filename="../mainwindow.cpp" line="89"/>
+        <source>Address</source>
+        <translation>위치</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="90"/>
+        <source>Text</source>
+        <translation>문자열</translation>
+    </message>
+    <message>
         <location filename="../mainwindow.cpp" line="201"/>
         <source>This is tool for encoding data</source>
         <translation>이것은 데이타 인코딩 도구</translation>
