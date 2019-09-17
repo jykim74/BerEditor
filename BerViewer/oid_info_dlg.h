@@ -16,7 +16,12 @@ public:
     explicit OIDInfoDlg(QWidget *parent = nullptr);
     ~OIDInfoDlg();
 
+private slots:
+    virtual void accept();
+    void findOID();
+
 private:
+    void initialize();
 
 };
 

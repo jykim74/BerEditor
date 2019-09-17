@@ -9,8 +9,13 @@ enum {
 };
 
 enum {
-    METHOD_ENCRYPT,
-    METHOD_DECRYPT
+    ENC_ENCRYPT,
+    ENC_DECRYPT
+};
+
+enum {
+    SIGN_SIGNATURE,
+    SIGN_VERIFY
 };
 
 #endif // BER_DEFINE_H

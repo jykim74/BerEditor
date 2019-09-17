@@ -39,7 +39,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>GroupBox</string>
+    <string>Date and Time</string>
    </property>
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
@@ -52,12 +52,23 @@
     </property>
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="0">
-      <widget class="QDateTimeEdit" name="dateTimeEdit"/>
+      <widget class="QDateTimeEdit" name="mDateTime">
+       <property name="dateTime">
+        <datetime>
+         <hour>0</hour>
+         <minute>0</minute>
+         <second>0</second>
+         <year>2000</year>
+         <month>1</month>
+         <day>1</day>
+        </datetime>
+       </property>
+      </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="mSetNowBtn">
        <property name="text">
-        <string>PushButton</string>
+        <string>Set now</string>
        </property>
       </widget>
      </item>
@@ -74,7 +85,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>GroupBox</string>
+    <string>OTP Properties</string>
    </property>
    <widget class="QWidget" name="gridLayoutWidget_2">
     <property name="geometry">
@@ -86,35 +97,38 @@
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_2">
+     <property name="horizontalSpacing">
+      <number>0</number>
+     </property>
      <item row="0" column="4">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>TextLabel</string>
+        <string>Length</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QComboBox" name="comboBox"/>
+      <widget class="QComboBox" name="mHashTypeCombo"/>
      </item>
      <item row="0" column="3">
-      <widget class="QSpinBox" name="spinBox"/>
+      <widget class="QSpinBox" name="mIntervalSpin"/>
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>TextLabel</string>
+        <string>Hash</string>
        </property>
       </widget>
      </item>
      <item row="0" column="2">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>TextLabel</string>
+        <string>Interval</string>
        </property>
       </widget>
      </item>
      <item row="0" column="5">
-      <widget class="QSpinBox" name="spinBox_2"/>
+      <widget class="QSpinBox" name="mLengthSpin"/>
      </item>
     </layout>
    </widget>
@@ -129,7 +143,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>GroupBox</string>
+    <string>Key properties</string>
    </property>
    <widget class="QWidget" name="gridLayoutWidget_3">
     <property name="geometry">
@@ -142,10 +156,10 @@
     </property>
     <layout class="QGridLayout" name="gridLayout_3">
      <item row="0" column="0">
-      <widget class="QComboBox" name="comboBox_2"/>
+      <widget class="QComboBox" name="mKeyTypeCombo"/>
      </item>
      <item row="0" column="1">
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="mKeyText"/>
      </item>
     </layout>
    </widget>
@@ -160,7 +174,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>GroupBox</string>
+    <string>OTP value</string>
    </property>
    <widget class="QWidget" name="gridLayoutWidget_4">
     <property name="geometry">
@@ -175,22 +189,22 @@
      <item row="0" column="2">
       <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>TextLabel</string>
+        <string>OTP</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QLineEdit" name="lineEdit_2"/>
+      <widget class="QLineEdit" name="mTValueText"/>
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>TextLabel</string>
+        <string>T value</string>
        </property>
       </widget>
      </item>
      <item row="0" column="3">
-      <widget class="QLineEdit" name="lineEdit_3"/>
+      <widget class="QLineEdit" name="mOTPValueText"/>
      </item>
     </layout>
    </widget>

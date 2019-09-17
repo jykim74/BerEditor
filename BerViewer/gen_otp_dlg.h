@@ -16,7 +16,12 @@ public:
     explicit GenOTPDlg(QWidget *parent = nullptr);
     ~GenOTPDlg();
 
+private slots:
+    void setNow();
+    virtual void accept();
+
 private:
+    void initialize();
 
 };
 

@@ -16,8 +16,13 @@ public:
     explicit SignVerifyDlg(QWidget *parent = nullptr);
     ~SignVerifyDlg();
 
+private slots:
+    void findPrivateKey();
+    void findPublicKey();
+    virtual void accept();
+
 private:
-;
+    void initialize();
 };
 
 #endif // SIGN_VERIFY_DLG_H

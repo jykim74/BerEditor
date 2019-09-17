@@ -13,8 +13,8 @@ SettingsMgr::SettingsMgr(QObject *parent) : QObject(parent)
 
 void SettingsMgr::setShowFullText(bool val)
 {
-    QSettings settings( "myapp.plist", QSettings::NativeFormat );
-//    QSettings settings;
+//    QSettings settings( "myapp.plist", QSettings::NativeFormat );
+    QSettings settings;
 
     settings.beginGroup(kBehaviorGroup);
     settings.value( kShowFullText, val );
@@ -23,8 +23,8 @@ void SettingsMgr::setShowFullText(bool val)
 
 bool SettingsMgr::showFullText()
 {
-    QSettings settings( "myapp.plist", QSettings::NativeFormat );
-//    QSettings settings;
+//    QSettings settings( "myapp.plist", QSettings::NativeFormat );
+    QSettings settings;
 
     bool val;
 

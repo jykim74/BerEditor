@@ -16,7 +16,13 @@ public:
     explicit RSAEncDecDlg(QWidget *parent = nullptr);
     ~RSAEncDecDlg();
 
+private slots:
+    virtual void accept();
+    void findPublicKey();
+    void findPrivateKey();
+
 private:
+    void initialize();
 
 };
 

@@ -52,15 +52,15 @@
     </property>
     <layout class="QGridLayout" name="gridLayout_2">
      <item row="0" column="0">
-      <widget class="QComboBox" name="comboBox"/>
+      <widget class="QComboBox" name="mInputTypeCombo"/>
      </item>
      <item row="0" column="1">
-      <widget class="QLineEdit" name="lineEdit_5"/>
+      <widget class="QLineEdit" name="mInputText"/>
      </item>
      <item row="0" column="2">
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="mFindBtn">
        <property name="text">
-        <string>PushButton</string>
+        <string>Find</string>
        </property>
       </widget>
      </item>
@@ -92,42 +92,42 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>TextLabel</string>
+        <string>OID</string>
        </property>
       </widget>
      </item>
      <item row="3" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>TextLabel</string>
+        <string>Long Name</string>
        </property>
       </widget>
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>TextLabel</string>
+        <string>Short Name</string>
        </property>
       </widget>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>TextLabel</string>
+        <string>OID Hex</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="mOIDText"/>
      </item>
      <item row="1" column="1">
-      <widget class="QLineEdit" name="lineEdit_2"/>
+      <widget class="QLineEdit" name="mOIDHexText"/>
      </item>
      <item row="2" column="1">
-      <widget class="QLineEdit" name="lineEdit_3"/>
+      <widget class="QLineEdit" name="mSNText"/>
      </item>
      <item row="3" column="1">
-      <widget class="QLineEdit" name="lineEdit_4"/>
+      <widget class="QLineEdit" name="mLNText"/>
      </item>
     </layout>
    </widget>
