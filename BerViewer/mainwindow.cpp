@@ -31,6 +31,8 @@ MainWindow::MainWindow(QWidget *parent) :
     createStatusBar();
 
     setUnifiedTitleAndToolBarOnMac(true);
+
+    setAcceptDrops(true);
 }
 
 MainWindow::~MainWindow()
@@ -128,6 +130,19 @@ void MainWindow::createActions()
     fileMenu->addAction(openAct);
     fileToolBar->addAction(openAct);
 
+    const QIcon saveIcon = QIcon::fromTheme("document-save", QIcon(":/images/save.png"));
+    QAction *saveAct = new QAction(saveIcon, tr("&Save"), this);
+    saveAct->setShortcuts(QKeySequence::Save);
+    saveAct->setStatusTip(tr("Save the document to disk"));
+    connect(saveAct, &QAction::triggered, this, &MainWindow::save);
+    fileMenu->addAction(saveAct);
+    fileToolBar->addAction(saveAct);
+
+    const QIcon saveAsIcon = QIcon::fromTheme("document-save-as");
+    QAction *saveAsAct = fileMenu->addAction(saveAsIcon, tr("Save &As..."), this, &MainWindow::saveAs);
+    saveAsAct->setShortcuts(QKeySequence::SaveAs);
+    saveAsAct->setStatusTip(tr("Save the document under a new name"));
+
     fileMenu->addSeparator();
 
     QMenu *editMenu = menuBar()->addMenu(tr("&Edit"));
@@ -141,6 +156,23 @@ void MainWindow::createActions()
     editMenu->addAction(cutAct);
     editToolBar->addAction(cutAct);
 
+    const QIcon copyIcon = QIcon::fromTheme("edit-copy", QIcon(":/images/copy.png"));
+    QAction *copyAct = new QAction(copyIcon, tr("&Copy"), this);
+    copyAct->setShortcuts(QKeySequence::Copy);
+    copyAct->setStatusTip(tr("Copy the current selection's contents to the "
+                             "clipboard"));
+    connect(copyAct, &QAction::triggered, rightText_, &QTextEdit::copy);
+    editMenu->addAction(copyAct);
+    editToolBar->addAction(copyAct);
+
+    const QIcon pasteIcon = QIcon::fromTheme("edit-paste", QIcon(":/images/paste.png"));
+    QAction *pasteAct = new QAction(pasteIcon, tr("&Paste"), this);
+    pasteAct->setShortcuts(QKeySequence::Paste);
+    pasteAct->setStatusTip(tr("Paste the clipboard's contents into the current "
+                              "selection"));
+    connect(pasteAct, &QAction::triggered, rightText_, &QTextEdit::paste);
+    editMenu->addAction(pasteAct);
+    editToolBar->addAction(pasteAct);
 
     menuBar()->addSeparator();
 
@@ -165,24 +197,26 @@ void MainWindow::createActions()
 
     QMenu *toolMenu = menuBar()->addMenu(tr("&Tool"));
 
-    QAction *settingAct = toolMenu->addAction(tr("&Settings"), this, &MainWindow::setting);
-    settingAct->setStatusTip(tr("Set the variable"));
-
-    QAction *testAct = toolMenu->addAction(tr("&Test"), this, &MainWindow::test);
-    testAct->setStatusTip(tr("This is test menu"));
-
     QAction *dataEncodeAct = toolMenu->addAction(tr("Data&Encoder"), this, &MainWindow::dataEncoder);
     dataEncodeAct->setStatusTip(tr("This is tool for encoding data" ));
 
     QAction *oidAct = toolMenu->addAction(tr("&OID Information"), this, &MainWindow::oidInfo);
     oidAct->setStatusTip(tr("Show OID information" ));
 
+    QAction *insertDataAct = toolMenu->addAction(tr("&Insert data"), this, &MainWindow::insertData);
+    insertDataAct->setStatusTip(tr("Insert ber data"));
+
+
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
+
+    QAction *settingAct = helpMenu->addAction(tr("&Settings"), this, &MainWindow::setting);
+    settingAct->setStatusTip(tr("Set the variable"));
 
     QAction *aboutAct = helpMenu->addAction(tr("&About"), this, &MainWindow::about);
     aboutAct->setStatusTip(tr("Show the BerViewer's about box"));
 
-
+//    QAction *testAct = helpMenu->addAction(tr("&Test"), this, &MainWindow::test);
+//    testAct->setStatusTip(tr("This is test menu"));
 
     menuBar()->show();
 }
@@ -193,6 +227,11 @@ void MainWindow::createStatusBar()
 }
 
 void MainWindow::newFile()
+{
+    insertData();
+}
+
+void MainWindow::insertData()
 {
     int ret = -1;
     BIN binData = {0,0};
@@ -226,31 +265,36 @@ void MainWindow::open()
 
     if( !fileName.isEmpty() )
     {
-        BIN binRead = {0,0};
+        berFileOpen(fileName);
+    }
+}
 
-        int ret = JS_BIN_fileRead( fileName.toStdString().c_str(), &binRead );
+void MainWindow::berFileOpen(const QString berPath)
+{
+    BIN binRead = {0,0};
 
-        if( ret == 0 )
+    int ret = JS_BIN_fileRead( berPath.toStdString().c_str(), &binRead );
+
+    if( ret == 0 )
+    {
+        if( strstr((const char *)binRead.pVal, "-----BEGIN ") != NULL )
         {
-            if( strstr((const char *)binRead.pVal, "-----BEGIN ") != NULL )
-            {
-                int type = 0;
-                BIN binData = {0,0};
-                char *pPEM = NULL;
-                pPEM = (char *)JS_calloc( 1, binRead.nLen + 1 );
-                memcpy( pPEM, binRead.pVal, binRead.nLen );
-                JS_BIN_decodePEM( pPEM, &type, &binData );
+            int type = 0;
+            BIN binData = {0,0};
+            char *pPEM = NULL;
+            pPEM = (char *)JS_calloc( 1, binRead.nLen + 1 );
+            memcpy( pPEM, binRead.pVal, binRead.nLen );
+            JS_BIN_decodePEM( pPEM, &type, &binData );
 
-                ber_model_->setBer( &binData );
-                JS_BIN_reset(&binRead);
-                JS_BIN_reset(&binData);
-                ber_model_->parseTree();
-            }
-            else {
-                ber_model_->setBer( &binRead );
-                JS_BIN_reset(&binRead);
-                ber_model_->parseTree();
-            }
+            ber_model_->setBer( &binData );
+            JS_BIN_reset(&binRead);
+            JS_BIN_reset(&binData);
+            ber_model_->parseTree();
+        }
+        else {
+            ber_model_->setBer( &binRead );
+            JS_BIN_reset(&binRead);
+            ber_model_->parseTree();
         }
     }
 }
@@ -342,4 +386,31 @@ void MainWindow::genOTP()
     berApplet->genOTPDlg()->show();
     berApplet->genOTPDlg()->raise();
     berApplet->genOTPDlg()->activateWindow();
+}
+
+void MainWindow::dragEnterEvent(QDragEnterEvent *event)
+{
+    if (event->mimeData()->hasUrls()) {
+        event->acceptProposedAction();
+    }
+}
+
+void MainWindow::dropEvent(QDropEvent *event)
+{
+    foreach (const QUrl &url, event->mimeData()->urls()) {
+        QString fileName = url.toLocalFile();
+        qDebug() << "Dropped file:" << fileName;
+        berFileOpen(fileName);
+        return;
+    }
+}
+
+void MainWindow::save()
+{
+
+}
+
+void MainWindow::saveAs()
+{
+
 }

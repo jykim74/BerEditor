@@ -20,6 +20,7 @@ public:
 private slots:
     void updateSettings();
     void onOkBtnClicked();
+    void onCancelBtnClicked();
 
     void closeEvent(QCloseEvent *event );
     void showEvent(QShowEvent *event);

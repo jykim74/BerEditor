@@ -88,7 +88,7 @@ void SignVerifyDlg::findPrivateKey()
 
     QString selectedFilter;
     QString fileName = QFileDialog::getOpenFileName( this,
-                                                     tr("QFileDialog::getOpenFileName()"),
+                                                     tr("File name"),
                                                      "/",
                                                      tr("All Files (*);;DER Files (*.der)"),
                                                      &selectedFilter,
@@ -104,7 +104,7 @@ void SignVerifyDlg::findPublicKey()
 
     QString selectedFilter;
     QString fileName = QFileDialog::getOpenFileName( this,
-                                                     tr("QFileDialog::getOpenFileName()"),
+                                                     tr("File name"),
                                                      "/",
                                                      tr("All Files (*);;DER Files (*.der)"),
                                                      &selectedFilter,

@@ -21,6 +21,9 @@ private slots:
     void ShowContextMenu( QPoint point );
     void CopyAsHex();
     void CopyAsBase64();
+    void ExpandValue();
+    void SaveNode();
+    void SaveNodeValue();
 
 private:
     QTextEdit *textEdit_;
@@ -30,6 +33,8 @@ private:
     QString GetDataView( const BIN *pData, const BerItem *pItem );
     void GetTableView( const BIN *pBer, BerItem *pItem );
     void GetTableFullView( const BIN *pBer, BerItem *pItem );
+
+    BerItem* currentItem();
 };
 
 #endif // BER_TREE_VIEW_H

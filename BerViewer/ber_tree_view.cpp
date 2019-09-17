@@ -9,6 +9,9 @@
 #include <QStandardItemModel>
 #include <QTreeView>
 #include <QMenu>
+#include <QGuiApplication>
+#include <QClipboard>
+#include <QFileDialog>
 
 BerTreeView::BerTreeView( QWidget *parent )
     : QTreeView (parent)
@@ -302,18 +305,117 @@ void BerTreeView::ShowContextMenu(QPoint point)
 
 
     QMenu menu(this);
-    menu.addAction("Copy as hex", this, SLOT(CopyAsHex()));
-    menu.addAction("Copy as base64", this, SLOT(CopyAsBase64()));
+    menu.addAction(tr("Copy as hex"), this, SLOT(CopyAsHex()));
+    menu.addAction(tr("Copy as base64"), this, SLOT(CopyAsBase64()));
+    menu.addAction(tr("Save node"), this, SLOT(SaveNode()));
+    menu.addAction(tr("Save node value"), this, SLOT(SaveNodeValue()));
+
+    BerItem* item = currentItem();
+
+    if( item->GetTag() == OCTETSTRING || item->GetTag() == BITSTRING )
+        menu.addAction( tr("Expand value"), this, SLOT(ExpandValue()));
 
     menu.exec(QCursor::pos());
 }
 
 void BerTreeView::CopyAsHex()
 {
+    char *pHex = NULL;
+    BerItem* item = currentItem();
+    QClipboard *clipboard = QGuiApplication::clipboard();
+    BIN binData = {0,0};
+    BerModel *tree_model = (BerModel *)model();
 
+    BIN& binBer = tree_model->getBer();
+    JS_BIN_set( &binData, binBer.pVal + item->GetOffset(), item->GetHeaderSize() + item->GetLength() );
+    JS_BIN_encodeHex( &binData, &pHex );
+    clipboard->setText(pHex);
+    if( pHex ) JS_free(pHex);
+    JS_BIN_reset(&binData);
 }
 
 void BerTreeView::CopyAsBase64()
 {
+    char *pBase64 = NULL;
+    BerItem* item = currentItem();
+    QClipboard *clipboard = QGuiApplication::clipboard();
+    BIN binData = {0,0};
+    BerModel *tree_model = (BerModel *)model();
 
+    BIN& binBer = tree_model->getBer();
+    JS_BIN_set( &binData, binBer.pVal + item->GetOffset(), item->GetHeaderSize() + item->GetLength() );
+    JS_BIN_encodeBase64( &binData, &pBase64 );
+    clipboard->setText(pBase64);
+    if( pBase64 ) JS_free(pBase64);
+    JS_BIN_reset(&binData);
+}
+
+BerItem* BerTreeView::currentItem()
+{
+    QModelIndex index = currentIndex();
+
+    BerModel *tree_model = (BerModel *)model();
+    BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
+
+    return item;
+}
+
+void BerTreeView::ExpandValue()
+{
+    QModelIndex index = currentIndex();
+
+    BerModel *tree_model = (BerModel *)model();
+    BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
+
+    tree_model->parseBer( item->GetOffset() + item->GetHeaderSize(), item );
+}
+
+void BerTreeView::SaveNode()
+{
+    QFileDialog::Options options;
+    options |= QFileDialog::DontUseNativeDialog;
+
+    QString selectedFilter;
+    QString fileName = QFileDialog::getOpenFileName( this,
+                                                     tr("File name"),
+                                                     "/",
+                                                     tr("All Files (*);;BER Files (*.ber)"),
+                                                     &selectedFilter,
+                                                     options );
+
+    QModelIndex index = currentIndex();
+
+    BerModel *tree_model = (BerModel *)model();
+    BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
+    BIN binData = {0,0};
+    BIN& binBer = tree_model->getBer();
+
+    JS_BIN_set( &binData, binBer.pVal + item->GetOffset(), item->GetHeaderSize() + item->GetLength() );
+    JS_BIN_fileWrite( &binData, fileName.toStdString().c_str());
+    JS_BIN_reset( &binData );
+}
+
+void BerTreeView::SaveNodeValue()
+{
+    QFileDialog::Options options;
+    options |= QFileDialog::DontUseNativeDialog;
+
+    QString selectedFilter;
+    QString fileName = QFileDialog::getOpenFileName( this,
+                                                     tr("File name"),
+                                                     "/",
+                                                     tr("All Files (*);;BER Files (*.ber)"),
+                                                     &selectedFilter,
+                                                     options );
+
+    QModelIndex index = currentIndex();
+
+    BerModel *tree_model = (BerModel *)model();
+    BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
+    BIN binData = {0,0};
+    BIN& binBer = tree_model->getBer();
+
+    JS_BIN_set( &binData, binBer.pVal + item->GetOffset() + item->GetHeaderSize(), item->GetLength() );
+    JS_BIN_fileWrite( &binData, fileName.toStdString().c_str());
+    JS_BIN_reset(&binData);
 }

@@ -44,6 +44,12 @@ private slots:
     void signVerify();
     void rsaEncDec();
     void genOTP();
+    void insertData();
+    void save();
+    void saveAs();
+
+    virtual void dragEnterEvent(QDragEnterEvent *event);
+    virtual void dropEvent(QDropEvent *event );
 
 private:
     Ui::MainWindow *ui;
@@ -51,6 +57,7 @@ private:
     void createStatusBar();
 
     void createTableMenu();
+    void berFileOpen( const QString berPath );
 
     QSplitter   *hsplitter_;
     QSplitter   *vsplitter_;

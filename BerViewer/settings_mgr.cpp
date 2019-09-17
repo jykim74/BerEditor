@@ -17,7 +17,7 @@ void SettingsMgr::setShowFullText(bool val)
     QSettings settings;
 
     settings.beginGroup(kBehaviorGroup);
-    settings.value( kShowFullText, val );
+    settings.setValue( kShowFullText, val );
     settings.endGroup();
 }
 

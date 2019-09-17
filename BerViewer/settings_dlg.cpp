@@ -10,19 +10,18 @@
 
 SettingsDlg::SettingsDlg(QWidget *parent) :
     QDialog(parent)
-//    ui(new Ui::SettingsDlg)
 {
- //   ui->setupUi(this);
     setupUi(this);
 
     mLangComboBox->addItems(I18NHelper::getInstance()->getLanguages());
 
     connect( mOkBtn, SIGNAL(clicked()), this, SLOT(onOkBtnClicked()));
+    connect( mCancelBtn, SIGNAL(clicked()), this, SLOT(onCancelBtnClicked()));
 }
 
 SettingsDlg::~SettingsDlg()
 {
-//    delete ui;
+
 }
 
 void SettingsDlg::updateSettings()
@@ -54,6 +53,11 @@ void SettingsDlg::onOkBtnClicked()
 {
     updateSettings();
     accept();
+}
+
+void SettingsDlg::onCancelBtnClicked()
+{
+    reject();
 }
 
 void SettingsDlg::closeEvent(QCloseEvent *event)
