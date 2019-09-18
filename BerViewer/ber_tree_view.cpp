@@ -119,12 +119,12 @@ void BerTreeView::GetEditView( const BIN *pBer, BerItem *pItem)
 
     if( pItem->GetId() && CONSTRUCTED )
     {
-        strView += "\r\n[";
+        strView += "\r\n\r\n[";
         strView += pItem->GetTagString();
         strView += "]\r\n";
     }
     else {
-        strView += "\r\n[ VALUE ]\r\n";
+        strView += "\r\n\r\n[ VALUE ]\r\n";
 
         for( int i=0; (i*80) < strPartNL.length(); i++ )
         {

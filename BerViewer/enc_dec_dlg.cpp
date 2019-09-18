@@ -101,7 +101,17 @@ void EncDecDlg::accept()
     else if( mKeyTypeCombo->currentIndex() == DATA_BASE64 )
         JS_BIN_decodeBase64( strKey.toStdString().c_str(), &binKey );
 
+    QString strIV = mIVText->text();
+
+    if( mIVTypeCombo->currentIndex() == DATA_STRING )
+        JS_BIN_set( &binIV, (unsigned char *)strIV.toStdString().c_str(), strIV.length() );
+    else if( mIVTypeCombo->currentIndex() == DATA_HEX )
+        JS_BIN_decodeHex( strIV.toStdString().c_str(), &binIV );
+    else if( mIVTypeCombo->currentIndex() == DATA_BASE64 )
+        JS_BIN_decodeBase64( strIV.toStdString().c_str(), &binIV );
+
     QString strAlg = mAlgCombo->currentText();
+
 
     if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
         ret = JS_PKI_encryptData( strAlg.toStdString().c_str(), &binSrc, &binIV, &binKey, &binOut );

@@ -200,7 +200,7 @@ void MainWindow::createActions()
     QAction *dataEncodeAct = toolMenu->addAction(tr("Data&Encoder"), this, &MainWindow::dataEncoder);
     dataEncodeAct->setStatusTip(tr("This is tool for encoding data" ));
 
-    QAction *oidAct = toolMenu->addAction(tr("&OID Information"), this, &MainWindow::oidInfo);
+    QAction *oidAct = toolMenu->addAction(tr("O&ID Information"), this, &MainWindow::oidInfo);
     oidAct->setStatusTip(tr("Show OID information" ));
 
     QAction *insertDataAct = toolMenu->addAction(tr("&Insert data"), this, &MainWindow::insertData);
