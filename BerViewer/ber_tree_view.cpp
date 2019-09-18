@@ -77,10 +77,25 @@ void BerTreeView::GetEditView( const BIN *pBer, BerItem *pItem)
     QString strView;
     QString strPart;
 
+    BIN bin = {0,0};
+    char *pBitString = NULL;
+    JS_BIN_set( &bin, pBer->pVal + pItem->GetOffset(), 1 );
+    JS_BIN_bitString( &bin, &pBitString );
+
+    strPart.sprintf( "[T] %s ", pBitString );
+    strView += strPart;
+
     strPart = "Class: " + pItem->GetClassString();
     strView += strPart;
 
     strPart.sprintf( "  ID: %d", pItem->GetId());
+    strView += strPart;
+
+    if( (pItem->GetId() & FORM_MASK) == CONSTRUCTED )
+        strPart = " Construted";
+    else
+        strPart = " Primitive";
+
     strView += strPart;
 
     strPart.sprintf( "  TAG: %d", pItem->GetTag());
@@ -92,7 +107,7 @@ void BerTreeView::GetEditView( const BIN *pBer, BerItem *pItem)
     strPart.sprintf("  LENGTH: %d(%xh)", pItem->GetLength(), pItem->GetLength());
     strView += strPart;
 
-    strPart.sprintf( "  LEVEL: %d", pItem->GetLevel() );
+    strPart.sprintf( "\r\nLEVEL: %d", pItem->GetLevel() );
     strView += strPart;
 
 //    BIN binPart = {0,0};
@@ -123,6 +138,9 @@ void BerTreeView::GetEditView( const BIN *pBer, BerItem *pItem)
 //    strView += GetDataView( &binPart, pItem );
 
     textEdit_->setText(strView);
+
+    if( pBitString ) JS_free( pBitString );
+    JS_BIN_reset(&bin);
 }
 
 static char getch( unsigned char c )
@@ -385,7 +403,10 @@ void BerTreeView::ExpandValue()
     BerModel *tree_model = (BerModel *)model();
     BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
 
-    tree_model->parseConstruct( item->GetOffset() + item->GetHeaderSize(), item );
+    if( item->GetIndefinite() )
+        tree_model->parseIndefiniteConstruct( item->GetOffset() + item->GetHeaderSize(), item );
+    else
+        tree_model->parseConstruct( item->GetOffset() + item->GetHeaderSize(), item );
 }
 
 void BerTreeView::SaveNode()

@@ -62,39 +62,39 @@
 <context>
     <name>BerTreeView</name>
     <message>
-        <location filename="../ber_tree_view.cpp" line="308"/>
+        <location filename="../ber_tree_view.cpp" line="326"/>
         <source>Copy as hex</source>
         <translation>Hex로 복사</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="309"/>
+        <location filename="../ber_tree_view.cpp" line="327"/>
         <source>Copy as base64</source>
         <translation>Base64로 복사</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="310"/>
+        <location filename="../ber_tree_view.cpp" line="328"/>
         <source>Save node</source>
         <translation>노드 저장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="311"/>
+        <location filename="../ber_tree_view.cpp" line="329"/>
         <source>Save node value</source>
         <translation>노드 값 저장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="316"/>
+        <location filename="../ber_tree_view.cpp" line="334"/>
         <source>Expand value</source>
         <translation>확장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="380"/>
-        <location filename="../ber_tree_view.cpp" line="405"/>
+        <location filename="../ber_tree_view.cpp" line="398"/>
+        <location filename="../ber_tree_view.cpp" line="423"/>
         <source>File name</source>
         <translation>파일 이름</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="382"/>
-        <location filename="../ber_tree_view.cpp" line="407"/>
+        <location filename="../ber_tree_view.cpp" line="400"/>
+        <location filename="../ber_tree_view.cpp" line="425"/>
         <source>All Files (*);;BER Files (*.ber)</source>
         <translatorcomment>모든파일(*);;BER 파일(*.ber)</translatorcomment>
         <translation></translation>
@@ -337,6 +337,11 @@
         <source>Base64</source>
         <translation>베이스64</translation>
     </message>
+    <message>
+        <location filename="../insert_data_dlg.cpp" line="26"/>
+        <source>You have to insert data</source>
+        <translation>데이타를 입력 하세요</translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>
@@ -526,6 +531,16 @@
         <translation>값 설정</translation>
     </message>
     <message>
+        <location filename="../mainwindow.cpp" line="215"/>
+        <source>&amp;About BerViewer</source>
+        <translation>&amp;BerViewer에 대해서</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="216"/>
+        <source>Show the BerViewer</source>
+        <translation>BerViewer 에 대해 보여 줌</translation>
+    </message>
+    <message>
         <location filename="../mainwindow.cpp" line="200"/>
         <source>Data&amp;Encoder</source>
         <translation>데이타&amp;인코딩</translation>
@@ -561,14 +576,12 @@
         <translation>&amp;도움</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="215"/>
         <source>&amp;About</source>
-        <translation>&amp;대해서..</translation>
+        <translation type="vanished">&amp;대해서..</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="216"/>
         <source>Show the BerViewer&apos;s about box</source>
-        <translation>BerViewer 에 대해 보여줌</translation>
+        <translation type="vanished">BerViewer 에 대해 보여줌</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="226"/>
