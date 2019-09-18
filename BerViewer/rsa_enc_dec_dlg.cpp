@@ -90,9 +90,15 @@ void RSAEncDecDlg::accept()
     if( mInputStringBtn->isChecked() )
         JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
     else if( mInputHexBtn->isChecked() )
+    {
+        strInput.remove(QRegExp("[\t\r\n\\s]"));
         JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
+    }
     else if( mInputBase64Btn->isChecked() )
+    {
+        strInput.remove(QRegExp("[\t\r\n\\s]"));
         JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
+    }
 
     QString strHash = mHashTypeCombo->currentText();
 

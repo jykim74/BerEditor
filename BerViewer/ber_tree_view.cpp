@@ -385,7 +385,7 @@ void BerTreeView::ExpandValue()
     BerModel *tree_model = (BerModel *)model();
     BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
 
-    tree_model->parseBer( item->GetOffset() + item->GetHeaderSize(), item );
+    tree_model->parseConstruct( item->GetOffset() + item->GetHeaderSize(), item );
 }
 
 void BerTreeView::SaveNode()

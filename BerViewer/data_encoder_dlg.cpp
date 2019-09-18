@@ -52,13 +52,22 @@ void DataEncoderDlg::onClickEncodeBtn()
         mOutputTextEdit->setPlainText( mInputTextEdit->toPlainText() );
     else {
         QString inputStr = mInputTextEdit->toPlainText();
+
         if( input_type == DATA_STRING )
+        {
             JS_BIN_set( &binSrc, (unsigned char *)inputStr.toStdString().c_str(), inputStr.length() );
-        else if( inputStr == DATA_HEX )
+        }
+        else if( input_type == DATA_HEX )
+        {
+            inputStr.remove(QRegExp("[\t\r\n\\s]"));
             JS_BIN_decodeHex( inputStr.toStdString().c_str(), &binSrc );
-        else if( inputStr == DATA_BASE64)
+        }
+        else if( input_type == DATA_BASE64)
+        {
+            inputStr.remove(QRegExp("[\t\r\n\\s]"));
             JS_BIN_decodeBase64( inputStr.toStdString().c_str(), &binSrc );
-        else if( inputStr == DATA_URL )
+        }
+        else if( input_type == DATA_URL )
         {
             char *pStr = NULL;
             JS_UTIL_decodeURL( inputStr.toStdString().c_str(), &pStr );

@@ -212,8 +212,8 @@ void MainWindow::createActions()
     QAction *settingAct = helpMenu->addAction(tr("&Settings"), this, &MainWindow::setting);
     settingAct->setStatusTip(tr("Set the variable"));
 
-    QAction *aboutAct = helpMenu->addAction(tr("&About"), this, &MainWindow::about);
-    aboutAct->setStatusTip(tr("Show the BerViewer's about box"));
+    QAction *aboutAct = helpMenu->addAction(tr("&About BerViewer"), this, &MainWindow::about);
+    aboutAct->setStatusTip(tr("Show the BerViewer"));
 
 //    QAction *testAct = helpMenu->addAction(tr("&Test"), this, &MainWindow::test);
 //    testAct->setStatusTip(tr("This is test menu"));
@@ -243,10 +243,14 @@ void MainWindow::insertData()
 
     if( ret == QDialog::Accepted )
     {
+        QString strInput = insData.getTextData();
+        strInput.remove(QRegExp("[\t\r\n\\s]"));
+
+
         if( insData.GetType() == 0 )
-            JS_BIN_decodeHex( insData.getTextData().toStdString().c_str(), &binData );
+            JS_BIN_decodeHex( strInput.toStdString().c_str(), &binData );
         else if( insData.GetType() == 1 )
-            JS_BIN_decodeBase64( insData.getTextData().toStdString().c_str(), &binData );
+            JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binData );
 
         ber_model_->setBer(&binData);
         JS_BIN_reset(&binData);

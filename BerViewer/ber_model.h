@@ -11,11 +11,12 @@ class BerModel : public QStandardItemModel
 public:
     BerModel( QObject *parent = 0 );
 
-    int openFile( const QString& filePath );
     void setBer( const BIN *pBer );
 
     int parseTree();
-    int parseBer( int offset, BerItem *pItem );
+    int parseConstruct( int offset, BerItem *pParentItem );
+    int parseIndefiniteConstruct( int offset, BerItem *pParentItem );
+
     BIN& getBer() { return binBer_; };
 
 private:

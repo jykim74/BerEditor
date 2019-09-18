@@ -128,9 +128,15 @@ void SignVerifyDlg::accept()
     if( mInputStringBtn->isChecked() )
         JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
     else if( mInputHexBtn->isChecked() )
+    {
+        strInput.remove(QRegExp("[\t\r\n\\s]"));
         JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
+    }
     else if( mInputBase64Btn->isChecked() )
+    {
+        strInput.remove(QRegExp("[\t\r\n\\s]"));
         JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
+    }
 
     if( mVersionCombo->currentIndex() == 0 )
         nVersion = JS_PKI_RSA_PADDING_V15;

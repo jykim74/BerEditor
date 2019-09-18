@@ -1,11 +1,9 @@
 #include "insert_data_dlg.h"
-//#include "ui_insert_data_dlg.h"
+#include "ber_applet.h"
 
 InsertDataDlg::InsertDataDlg(QWidget *parent) :
     QDialog(parent)
-//    ui(new Ui::InsertDataDlg)
 {
-//    ui->setupUi(this);
     setupUi(this);
 
     mTypeHex->setChecked(true);
@@ -13,7 +11,7 @@ InsertDataDlg::InsertDataDlg(QWidget *parent) :
 
 InsertDataDlg::~InsertDataDlg()
 {
-//    delete ui;
+
 }
 
 void InsertDataDlg::accept()
@@ -22,6 +20,12 @@ void InsertDataDlg::accept()
         type_ = 0;
     else if( mTypeBase64->isChecked() )
         type_ = 1;
+
+    if( mTextData->toPlainText().isEmpty() )
+    {
+        berApplet->warningBox( tr( "You have to insert data"), this );
+        return;
+    }
 
     QDialog::accept();
 }

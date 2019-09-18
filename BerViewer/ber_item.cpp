@@ -250,5 +250,8 @@ QString BerItem::GetInfoString(const BIN *pBer)
         strMsg = QString( "%1 '%2'").arg( strTag).arg( strVal);
     }
 
+    if( tag_ == 0 && id_ == 0 && length_ == 0 )
+        strMsg = "EOC";
+
     return strMsg;
 }

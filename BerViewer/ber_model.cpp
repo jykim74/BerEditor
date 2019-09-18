@@ -17,43 +17,8 @@ void BerModel::initialize()
 {
     clear();
 
-    /*
-    JS_BIN_reset( &binBer_ );
-    BerItem *root = new BerItem();
-    BerItem *sec = new BerItem();
-    BerItem *third = new BerItem();
-
-    QStringList labels;
-    labels << "BerViewer";
-    setHorizontalHeaderLabels( labels );
-
-    root->setText( "aaa" );
-    sec->setText( "sec" );
-    third->setText( "third" );
-
-
-    insertRow( 0, root );
-    insertRow( 1, sec );
-
-    root->insertRow( 0, third );
-    */
-
-//   setItem(0,0, root);
 }
 
-
-int BerModel::openFile( const QString& filePath )
-{
-    int         nRet = 0;
-
-    BIN         bData;
-
-//    memset( &bData, 0x00, sizeof(BIN));
-
-//    nRet = JS_BIN_fileRead( filePath.toStdString().c_str(), &bData );
-
-    return nRet;
-}
 
 void BerModel::setBer(const BIN *pBer )
 {
@@ -86,12 +51,17 @@ int BerModel::parseTree()
     pRootItem->setText( pRootItem->GetInfoString( &binBer_) );
 
     if( (pRootItem->GetId() & FORM_MASK) == CONSTRUCTED )
-        ret = parseBer( pRootItem->GetHeaderSize(), pRootItem );
+    {
+        if( pRootItem->GetIndefinite() )
+            ret = parseIndefiniteConstruct( pRootItem->GetHeaderSize(), pRootItem );
+        else
+            ret = parseConstruct( pRootItem->GetHeaderSize(), pRootItem );
+    }
 
     return 0;
 }
 
-int BerModel::parseBer(int offset, BerItem *pParentItem)
+int BerModel::parseConstruct(int offset, BerItem *pParentItem)
 {
     int     ret = 0;
     int     next_offset = 0;
@@ -102,15 +72,13 @@ int BerModel::parseBer(int offset, BerItem *pParentItem)
     if( offset >= binBer_.nLen ) return -1;
 
     do {
-        if( offset >= (start_offset + pParentItem->GetLength()) ) break;
-
         BerItem *pItem = new BerItem();
         pItem->SetOffset(offset);
         pItem->SetLevel(level );
         next_offset = getItem( offset, pItem );
 
         if( next_offset <= 0 ) return -1;
-//        pItem->setText( pItem->GetTagString() );
+
         pItem->setText( pItem->GetInfoString( &binBer_));
 
 
@@ -124,26 +92,74 @@ int BerModel::parseBer(int offset, BerItem *pParentItem)
 
         if( isConstructed )
         {
-            parseBer( offset + pItem->GetHeaderSize(), pItem );
-        }
-
-        if( pParentItem->GetIndefinite() )
-        {
-            if( pItem->GetLength() == 0 && pItem->GetId() == 0 )
+            if( pItem->GetIndefinite() )
             {
-                pParentItem->SetLength( pItem->GetOffset() + pItem->GetHeaderSize() - pParentItem->GetOffset() - pParentItem->GetHeaderSize() );
-                break;
+                ret = parseIndefiniteConstruct( offset + pItem->GetHeaderSize(), pItem );
+                if( ret <= 0 ) return -1;
+                next_offset += ret;
             }
-        }
-        else {
-                if( next_offset >= binBer_.nLen ) break;
+            else
+                parseConstruct( offset + pItem->GetHeaderSize(), pItem );
         }
 
         offset = next_offset;
 
-    } while( next_offset > 0 );
+    } while( next_offset > 0 && next_offset < (start_offset + pParentItem->GetLength()) );
 
     return 0;
+}
+
+int BerModel::parseIndefiniteConstruct( int offset, BerItem *pParentItem )
+{
+    int     ret = 0;
+    int     next_offset = 0;
+    int     isConstructed = 0;
+    int     start_offset = offset;
+    int     level = pParentItem->GetLevel() + 1;
+    int     length = -1;
+
+    if( offset >= binBer_.nLen ) return -1;
+
+    do {
+        if( offset >= binBer_.nLen ) return -1;
+
+        BerItem *pItem = new BerItem();
+        pItem->SetOffset(offset);
+        pItem->SetLevel(level );
+        next_offset = getItem( offset, pItem );
+
+        pItem->setText( pItem->GetInfoString( &binBer_));
+        pParentItem->appendRow( pItem );
+
+        if( (pItem->GetId() & FORM_MASK) == CONSTRUCTED )
+            isConstructed = 1;
+        else {
+            isConstructed = 0;
+        }
+
+        if( isConstructed )
+        {
+            if( pItem->GetIndefinite() )
+            {
+                ret = parseIndefiniteConstruct( offset + pItem->GetHeaderSize(), pItem );
+                if( ret <= 0 ) return -1;
+                next_offset += ret;
+            }
+            else
+                parseConstruct( offset + pItem->GetHeaderSize(), pItem );
+        }
+
+        if( pItem->GetId() == 0 && pItem->GetLength() == 0 && pItem->GetTag() == 0 )
+        {
+            length = (pItem->GetOffset() + pItem->GetHeaderSize() - start_offset );
+            pParentItem->SetLength(length);
+            return length;
+        }
+
+        offset = next_offset;
+    } while ( 1 );
+
+    return -1;
 }
 
 int BerModel::getItem(int offset, BerItem *pItem)
