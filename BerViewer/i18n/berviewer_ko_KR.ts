@@ -24,37 +24,47 @@
         <translation>확인</translation>
     </message>
     <message>
+        <location filename="../about_dlg.ui" line="128"/>
+        <source>about BerViewer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../about_dlg.cpp" line="11"/>
         <source>&lt;H2&gt;%1 (%2)&lt;H2&gt;</source>
         <translation>&lt;H2&gt;%1(%2)&lt;H2&gt;</translation>
+    </message>
+    <message>
+        <location filename="../about_dlg.cpp" line="23"/>
+        <source>This is freeware tool to decode ASN.1 and BER If you do not use this for commercial purposes, you can use it freely If you have any opinions on this tool, please send me a mailmailto : jykim74@gmail.com</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>BerApplet</name>
     <message>
-        <location filename="../ber_applet.cpp" line="76"/>
-        <location filename="../ber_applet.cpp" line="91"/>
+        <location filename="../ber_applet.cpp" line="78"/>
+        <location filename="../ber_applet.cpp" line="93"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="102"/>
-        <location filename="../ber_applet.cpp" line="116"/>
-        <location filename="../ber_applet.cpp" line="132"/>
-        <location filename="../ber_applet.cpp" line="156"/>
+        <location filename="../ber_applet.cpp" line="104"/>
+        <location filename="../ber_applet.cpp" line="118"/>
+        <location filename="../ber_applet.cpp" line="134"/>
+        <location filename="../ber_applet.cpp" line="158"/>
         <source>Yes</source>
         <translation>예</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="103"/>
-        <location filename="../ber_applet.cpp" line="133"/>
-        <location filename="../ber_applet.cpp" line="157"/>
+        <location filename="../ber_applet.cpp" line="105"/>
+        <location filename="../ber_applet.cpp" line="135"/>
+        <location filename="../ber_applet.cpp" line="159"/>
         <source>No</source>
         <translation>아니오</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="117"/>
-        <location filename="../ber_applet.cpp" line="134"/>
+        <location filename="../ber_applet.cpp" line="119"/>
+        <location filename="../ber_applet.cpp" line="136"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
@@ -62,42 +72,44 @@
 <context>
     <name>BerTreeView</name>
     <message>
-        <location filename="../ber_tree_view.cpp" line="326"/>
+        <location filename="../ber_tree_view.cpp" line="345"/>
         <source>Copy as hex</source>
         <translation>Hex로 복사</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="327"/>
+        <location filename="../ber_tree_view.cpp" line="346"/>
         <source>Copy as base64</source>
         <translation>Base64로 복사</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="328"/>
+        <location filename="../ber_tree_view.cpp" line="347"/>
         <source>Save node</source>
         <translation>노드 저장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="329"/>
+        <location filename="../ber_tree_view.cpp" line="348"/>
         <source>Save node value</source>
         <translation>노드 값 저장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="334"/>
+        <location filename="../ber_tree_view.cpp" line="349"/>
+        <source>Edit value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ber_tree_view.cpp" line="354"/>
         <source>Expand value</source>
         <translation>확장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="398"/>
-        <location filename="../ber_tree_view.cpp" line="423"/>
-        <source>File name</source>
-        <translation>파일 이름</translation>
+        <location filename="../ber_tree_view.cpp" line="419"/>
+        <location filename="../ber_tree_view.cpp" line="440"/>
+        <source>Save as...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="400"/>
-        <location filename="../ber_tree_view.cpp" line="425"/>
-        <source>All Files (*);;BER Files (*.ber)</source>
-        <translatorcomment>모든파일(*);;BER 파일(*.ber)</translatorcomment>
-        <translation></translation>
+        <source>File name</source>
+        <translation type="vanished">파일 이름</translation>
     </message>
 </context>
 <context>
@@ -141,6 +153,59 @@
         <location filename="../data_encoder_dlg.ui" line="153"/>
         <source>Encode</source>
         <translation>인코딩</translation>
+    </message>
+</context>
+<context>
+    <name>EditValueDlg</name>
+    <message>
+        <location filename="../edit_value_dlg.ui" line="14"/>
+        <source>Dialog</source>
+        <translation type="unfinished">대화창</translation>
+    </message>
+    <message>
+        <location filename="../edit_value_dlg.ui" line="42"/>
+        <source>Type information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../edit_value_dlg.ui" line="57"/>
+        <source>Class</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../edit_value_dlg.ui" line="64"/>
+        <source>Tag</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../edit_value_dlg.ui" line="78"/>
+        <source>Offset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../edit_value_dlg.ui" line="109"/>
+        <source>TLV information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../edit_value_dlg.ui" line="131"/>
+        <source>Length</source>
+        <translation type="unfinished">길이</translation>
+    </message>
+    <message>
+        <location filename="../edit_value_dlg.ui" line="145"/>
+        <source>Level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../edit_value_dlg.ui" line="152"/>
+        <source>Header</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../edit_value_dlg.cpp" line="70"/>
+        <source>The changed lengh have to be the same of the original value</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -511,6 +576,11 @@
         <translation>&amp;도구</translation>
     </message>
     <message>
+        <location filename="../mainwindow.cpp" line="203"/>
+        <source>O&amp;ID Information</source>
+        <translation>O&amp;ID 정보</translation>
+    </message>
+    <message>
         <location filename="../mainwindow.cpp" line="206"/>
         <source>&amp;Insert data</source>
         <translation>&amp;데이타 입력</translation>
@@ -561,9 +631,8 @@
         <translation>이것은 데이타 인코딩 도구</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="203"/>
         <source>&amp;OID Information</source>
-        <translation>&amp;OID 정보</translation>
+        <translation type="vanished">&amp;OID 정보</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="204"/>
@@ -798,6 +867,16 @@
         <location filename="../sign_verify_dlg.cpp" line="109"/>
         <source>All Files (*);;DER Files (*.der)</source>
         <translation>모든 파일(*);;DER 파일(*.der)</translation>
+    </message>
+    <message>
+        <location filename="../sign_verify_dlg.cpp" line="174"/>
+        <source>Verify Success</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../sign_verify_dlg.cpp" line="176"/>
+        <source>Verify Fail</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
