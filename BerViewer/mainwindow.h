@@ -48,6 +48,10 @@ private slots:
     void save();
     void saveAs();
 
+    void print();
+    void printPreview();
+    void quit();
+
     virtual void dragEnterEvent(QDragEnterEvent *event);
     virtual void dropEvent(QDropEvent *event );
 
@@ -59,14 +63,13 @@ private:
     void createTableMenu();
     void berFileOpen( const QString berPath );
 
-    QSplitter   *hsplitter_;
-    QSplitter   *vsplitter_;
-    BerTreeView   *leftTree_;
+    QSplitter       *hsplitter_;
+    QSplitter       *vsplitter_;
+    BerTreeView     *leftTree_;
     QTextEdit       *rightText_;
     BerModel        *ber_model_;
-    QTableWidget      *rightTable_;
-
-
+    QTableWidget    *rightTable_;
+    QString          file_path_;
 };
 
 #endif // MAINWINDOW_H

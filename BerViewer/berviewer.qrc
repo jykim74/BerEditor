@@ -11,5 +11,8 @@
         <file>images/bad.png</file>
         <file>images/heart.png</file>
         <file>images/trash.png</file>
+        <file>images/penguin_960_720.png</file>
+        <file>images/berviewer.icns</file>
+        <file>images/fileprint.png</file>
     </qresource>
 </RCC>

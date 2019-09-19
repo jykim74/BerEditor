@@ -8,6 +8,9 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+requires(qtConfig(filedialog))
+qtHaveModule(printsupport): QT += printsupport
+
 TARGET = BerViewer
 TEMPLATE = app
 PROJECT_VERSION = "0.8.1"
@@ -84,6 +87,8 @@ DEFINES += _AUTO_UPDATE
 # Sparkle.framework 를 Qt/5.11.3/clang_64/lib/ 에 복사 해 주었음
 
 mac {
+    ICON = berviewer.icns
+
     QMAKE_LFLAGS += -Wl,-rpath,@loader_path/../Frameworks
     HEADERS += mac_sparkle_support.h
     OBJECTIVE_SOURCES += mac_sparkle_support.mm

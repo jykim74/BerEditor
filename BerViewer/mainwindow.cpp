@@ -18,6 +18,26 @@
 #include "about_dlg.h"
 
 #include <QtWidgets>
+#include <QFileDialog>
+#include <QAction>
+#include <QApplication>
+#include <QClipboard>
+#include <QFile>
+#include <QtPrintSupport/qtprintsupportglobal.h>
+
+#if defined(QT_PRINTSUPPORT_LIB)
+#include <QtPrintSupport/qtprintsupportglobal.h>
+#if QT_CONFIG(printer)
+#if QT_CONFIG(printdialog)
+#include <QPrintDialog>
+#endif
+#include <QPrinter>
+#if QT_CONFIG(printpreviewdialog)
+#include <QPrintPreviewDialog>
+#endif
+#endif
+#endif
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -144,6 +164,26 @@ void MainWindow::createActions()
     saveAsAct->setStatusTip(tr("Save the document under a new name"));
 
     fileMenu->addSeparator();
+
+    const QIcon printIcon = QIcon::fromTheme("documet-print", QIcon(":/images/fileprint.png"));
+    QAction *printAct = new QAction(printIcon, tr("&Print"), this);
+    printAct->setShortcut(QKeySequence::Print);
+    connect( printAct, &QAction::triggered, this, &MainWindow::print);
+    fileMenu->addAction(printAct);
+    fileToolBar->addAction(printAct);
+
+    QAction *printPreAct = new QAction(printIcon, tr("&Print Preview"), this);
+    printPreAct->setStatusTip(tr( "Print preview"));
+    connect( printPreAct, &QAction::triggered, this, &MainWindow::printPreview);
+    fileMenu->addAction(printPreAct);
+
+
+    fileMenu->addSeparator();
+
+    QAction *quitAct = new QAction( tr("&Quit"), this );
+    quitAct->setStatusTip( tr( "Quit BerViewer" ));
+    connect( quitAct, &QAction::triggered, this, &MainWindow::quit);
+    fileMenu->addAction(quitAct);
 
     QMenu *editMenu = menuBar()->addMenu(tr("&Edit"));
     QToolBar *editToolBar = addToolBar(tr("Edit"));
@@ -272,6 +312,7 @@ void MainWindow::open()
     if( !fileName.isEmpty() )
     {
         berFileOpen(fileName);
+        file_path_ = fileName;
     }
 }
 
@@ -409,17 +450,64 @@ void MainWindow::dropEvent(QDropEvent *event)
         QString fileName = url.toLocalFile();
         qDebug() << "Dropped file:" << fileName;
         berFileOpen(fileName);
+        file_path_ = fileName;
         return;
     }
 }
 
 void MainWindow::save()
 {
-
+    if( file_path_.isEmpty() )
+        saveAs();
+    else {
+        BIN& binBer = ber_model_->getBer();
+        JS_BIN_fileWrite( &binBer, file_path_.toStdString().c_str() );
+    }
 }
 
 void MainWindow::saveAs()
 {
+    QFileDialog fileDlg(this, tr("Save as..."));
+    fileDlg.setAcceptMode(QFileDialog::AcceptSave);
+    fileDlg.setDefaultSuffix("ber");
 
+    if( fileDlg.exec() != QDialog::Accepted )
+        return;
+
+    file_path_ = fileDlg.selectedFiles().first();
+    BIN& binBer = ber_model_->getBer();
+    JS_BIN_fileWrite( &binBer, file_path_.toStdString().c_str());
 }
 
+void MainWindow::print()
+{
+//    QPrinter printer(QPrinter::HighResolution);
+//    rightText_->print(&printer);
+
+#if QT_CONFIG(printdialog)
+    QPrinter printer(QPrinter::HighResolution);
+    QPrintDialog *dlg = new QPrintDialog(&printer, this);
+    if (rightText_->textCursor().hasSelection())
+        dlg->addEnabledOption(QAbstractPrintDialog::PrintSelection);
+    dlg->setWindowTitle(tr("Print Document"));
+    if (dlg->exec() == QDialog::Accepted)
+        rightText_->print(&printer);
+    delete dlg;
+#endif
+}
+
+void MainWindow::printPreview()
+{
+#if QT_CONFIG(printpreviewdialog)
+    QPrinter printer(QPrinter::HighResolution);
+    QPrintPreviewDialog preview(&printer, this);
+    rightText_->print(&printer);
+    preview.exec();
+#endif
+}
+
+
+void MainWindow::quit()
+{
+    exit(0);
+}
