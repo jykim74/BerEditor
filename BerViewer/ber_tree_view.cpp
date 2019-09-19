@@ -5,6 +5,7 @@
 #include "settings_mgr.h"
 #include "ber_applet.h"
 #include "ber_item_delegate.h"
+#include "edit_value_dlg.h"
 
 #include <QStandardItemModel>
 #include <QTreeView>
@@ -345,6 +346,7 @@ void BerTreeView::ShowContextMenu(QPoint point)
     menu.addAction(tr("Copy as base64"), this, SLOT(CopyAsBase64()));
     menu.addAction(tr("Save node"), this, SLOT(SaveNode()));
     menu.addAction(tr("Save node value"), this, SLOT(SaveNodeValue()));
+    menu.addAction(tr("Edit value"), this, SLOT(EditValue()));
 
     BerItem* item = currentItem();
 
@@ -403,25 +405,24 @@ void BerTreeView::ExpandValue()
     BerModel *tree_model = (BerModel *)model();
     BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
 
+    int offset = item->GetOffset();
+    if( item->GetTag() == BITSTRING ) offset += 1; // skip unused bits
+
     if( item->GetIndefinite() )
-        tree_model->parseIndefiniteConstruct( item->GetOffset() + item->GetHeaderSize(), item );
+        tree_model->parseIndefiniteConstruct( offset + item->GetHeaderSize(), item );
     else
-        tree_model->parseConstruct( item->GetOffset() + item->GetHeaderSize(), item );
+        tree_model->parseConstruct( offset + item->GetHeaderSize(), item );
 }
 
 void BerTreeView::SaveNode()
 {
-    QFileDialog::Options options;
-    options |= QFileDialog::DontUseNativeDialog;
+    QFileDialog fileDlg(this, tr("Save as..."));
+    fileDlg.setAcceptMode(QFileDialog::AcceptSave);
+    fileDlg.setDefaultSuffix("ber");
+    if( fileDlg.exec() != QDialog::Accepted )
+        return;
 
-    QString selectedFilter;
-    QString fileName = QFileDialog::getOpenFileName( this,
-                                                     tr("File name"),
-                                                     "/",
-                                                     tr("All Files (*);;BER Files (*.ber)"),
-                                                     &selectedFilter,
-                                                     options );
-
+    QString fileName = fileDlg.selectedFiles().first();
     QModelIndex index = currentIndex();
 
     BerModel *tree_model = (BerModel *)model();
@@ -436,16 +437,13 @@ void BerTreeView::SaveNode()
 
 void BerTreeView::SaveNodeValue()
 {
-    QFileDialog::Options options;
-    options |= QFileDialog::DontUseNativeDialog;
+    QFileDialog fileDlg(this, tr("Save as..."));
+    fileDlg.setAcceptMode(QFileDialog::AcceptSave);
+    fileDlg.setDefaultSuffix("ber");
+    if( fileDlg.exec() != QDialog::Accepted )
+        return;
 
-    QString selectedFilter;
-    QString fileName = QFileDialog::getOpenFileName( this,
-                                                     tr("File name"),
-                                                     "/",
-                                                     tr("All Files (*);;BER Files (*.ber)"),
-                                                     &selectedFilter,
-                                                     options );
+    QString fileName = fileDlg.selectedFiles().first();
 
     QModelIndex index = currentIndex();
 
@@ -457,4 +455,17 @@ void BerTreeView::SaveNodeValue()
     JS_BIN_set( &binData, binBer.pVal + item->GetOffset() + item->GetHeaderSize(), item->GetLength() );
     JS_BIN_fileWrite( &binData, fileName.toStdString().c_str());
     JS_BIN_reset(&binData);
+}
+
+void BerTreeView::EditValue()
+{
+    QModelIndex index = currentIndex();
+
+    BerModel *tree_model = (BerModel *)model();
+    BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
+
+    berApplet->editValueDlg()->setItem( item );
+    berApplet->editValueDlg()->show();
+    berApplet->editValueDlg()->raise();
+    berApplet->editValueDlg()->activateWindow();
 }

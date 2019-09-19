@@ -59,10 +59,6 @@ void RSAEncDecDlg::initialize()
 
     mOutputTypeCombo->addItems(dataList);
 
-    QStringList hashList;
-    for( int i=0; i < (sizeof(hashTypes) / sizeof(hashTypes[0])); i++ )
-        hashList.push_back(hashTypes[i]);
-    mHashTypeCombo->addItems(hashList);
 
     QStringList versionList;
     for( int i=0; i < (sizeof(versionTypes) / sizeof(versionTypes[0])); i++)
@@ -99,8 +95,6 @@ void RSAEncDecDlg::accept()
         strInput.remove(QRegExp("[\t\r\n\\s]"));
         JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
     }
-
-    QString strHash = mHashTypeCombo->currentText();
 
     if( mVersionTypeCombo->currentIndex() == 0 )
         nVersion = JS_PKI_RSA_PADDING_V15;

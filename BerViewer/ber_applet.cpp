@@ -17,6 +17,7 @@
 #include "sign_verify_dlg.h"
 #include "rsa_enc_dec_dlg.h"
 #include "gen_otp_dlg.h"
+#include "edit_value_dlg.h"
 
 #include "auto_update_service.h"
 #include "about_dlg.h"
@@ -37,6 +38,7 @@ BerApplet::BerApplet(QObject *parent) : QObject(parent)
     sign_verify_dlg_ = new SignVerifyDlg;
     rsa_enc_dec_dlg_ = new RSAEncDecDlg;
     gen_otp_dlg_ = new GenOTPDlg;
+    edit_value_dlg_ = new EditValueDlg;
 
     started_ = false;
     in_exit_ = false;

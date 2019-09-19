@@ -170,10 +170,10 @@ void SignVerifyDlg::accept()
             ret = JS_PKI_ECCVerifySign( strHash.toStdString().c_str(), &binSrc, &binOut, &binPub );
         }
 
-        if( ret == 0 )
-            berApplet->messageBox( "Verify Success" );
+        if( ret == 1 )
+            berApplet->messageBox( tr("Verify Success") );
         else {
-            berApplet->warningBox( "Verify Fail" );
+            berApplet->warningBox( tr("Verify Fail") );
         }
     }
 

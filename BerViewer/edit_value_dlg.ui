@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>RSAEncDecDlg</class>
- <widget class="QDialog" name="RSAEncDecDlg">
+ <class>EditValueDlg</class>
+ <widget class="QDialog" name="EditValueDlg">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>464</height>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>420</y>
+     <y>250</y>
      <width>341</width>
      <height>32</height>
     </rect>
@@ -35,143 +35,139 @@
      <x>10</x>
      <y>10</y>
      <width>381</width>
-     <height>71</height>
+     <height>61</height>
     </rect>
    </property>
    <property name="title">
-    <string>Input data type</string>
+    <string>Type information</string>
    </property>
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>20</y>
-      <width>361</width>
+      <x>0</x>
+      <y>19</y>
+      <width>381</width>
       <height>41</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="1">
-      <widget class="QRadioButton" name="mInputHexBtn">
-       <property name="text">
-        <string>Hex</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
-      <widget class="QRadioButton" name="mInputStringBtn">
+      <widget class="QLabel" name="label">
        <property name="text">
-        <string>String</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
+        <string>Class</string>
        </property>
       </widget>
      </item>
      <item row="0" column="2">
-      <widget class="QRadioButton" name="mInputBase64Btn">
+      <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Base64</string>
+        <string>Tag</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="mClassText">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Offset</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLineEdit" name="mTagText">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
+      <widget class="QLineEdit" name="mOffsetText">
+       <property name="readOnly">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
     </layout>
    </widget>
-  </widget>
-  <widget class="QPlainTextEdit" name="mInputText">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>90</y>
-     <width>381</width>
-     <height>71</height>
-    </rect>
-   </property>
   </widget>
   <widget class="QGroupBox" name="groupBox_2">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>170</y>
-     <width>381</width>
-     <height>91</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>Private and Public keys</string>
-   </property>
-   <widget class="QWidget" name="gridLayoutWidget_2">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>20</y>
-      <width>361</width>
-      <height>68</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="0">
-      <widget class="QLineEdit" name="mPriKeyPath"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLineEdit" name="mPubKeyPath"/>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mPriKeyBtn">
-       <property name="text">
-        <string>Private Key</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="mPubKeyBtn">
-       <property name="text">
-        <string>Public Key</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-  </widget>
-  <widget class="QGroupBox" name="groupBox_3">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>270</y>
+     <y>80</y>
      <width>381</width>
      <height>61</height>
     </rect>
    </property>
    <property name="title">
-    <string>Properties and Method</string>
+    <string>TLV information</string>
    </property>
-   <widget class="QWidget" name="gridLayoutWidget_3">
+   <widget class="QWidget" name="gridLayoutWidget_2">
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>20</y>
-      <width>376</width>
-      <height>32</height>
+      <width>381</width>
+      <height>41</height>
      </rect>
     </property>
-    <layout class="QGridLayout" name="gridLayout_3">
+    <layout class="QGridLayout" name="gridLayout_2">
      <item row="0" column="1">
-      <widget class="QComboBox" name="mOutputTypeCombo"/>
-     </item>
-     <item row="0" column="0">
-      <widget class="QComboBox" name="mVersionTypeCombo"/>
+      <widget class="QLineEdit" name="mHeaderText">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
      <item row="0" column="2">
-      <widget class="QComboBox" name="mMethodTypeCombo"/>
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Length</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLineEdit" name="mLengthText">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>Level</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Header</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
+      <widget class="QLineEdit" name="mLevelText">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
   </widget>
-  <widget class="QPlainTextEdit" name="mOutputText">
+  <widget class="QPlainTextEdit" name="mValueText">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>340</y>
+     <y>160</y>
      <width>381</width>
      <height>71</height>
     </rect>
@@ -183,7 +179,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>RSAEncDecDlg</receiver>
+   <receiver>EditValueDlg</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -199,7 +195,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>RSAEncDecDlg</receiver>
+   <receiver>EditValueDlg</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

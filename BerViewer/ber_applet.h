@@ -15,6 +15,7 @@ class SignVerifyDlg;
 class RSAEncDecDlg;
 class GenOTPDlg;
 class AboutDlg;
+class EditValueDlg;
 
 class MainWindow;
 
@@ -37,6 +38,7 @@ public:
     SignVerifyDlg *signVerifyDlg() { return sign_verify_dlg_; };
     RSAEncDecDlg *rsaEncDecDlg() { return rsa_enc_dec_dlg_; };
     GenOTPDlg *genOTPDlg() { return gen_otp_dlg_; };
+    EditValueDlg *editValueDlg() { return edit_value_dlg_; };
     AboutDlg *aboutDlg() { return about_dlg_; };
 
     void messageBox(const QString& msg, QWidget *parent=0);
@@ -71,6 +73,7 @@ private:
     SignVerifyDlg* sign_verify_dlg_;
     RSAEncDecDlg* rsa_enc_dec_dlg_;
     GenOTPDlg*    gen_otp_dlg_;
+    EditValueDlg* edit_value_dlg_;
 
     AboutDlg* about_dlg_;
 

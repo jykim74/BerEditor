@@ -26,6 +26,7 @@ private slots:
     void ExpandValue();
     void SaveNode();
     void SaveNodeValue();
+    void EditValue();
 
 private:
     QTextEdit *textEdit_;

@@ -38,6 +38,7 @@ SOURCES += \
     ber_tree_view.cpp \
     data_encoder_dlg.cpp \
     dumpasn1.c \
+    edit_value_dlg.cpp \
     enc_dec_dlg.cpp \
     gen_hash_dlg.cpp \
     gen_hmac_dlg.cpp \
@@ -63,6 +64,7 @@ HEADERS += \
     ber_tray_icon.h \
     ber_tree_view.h \
     data_encoder_dlg.h \
+    edit_value_dlg.h \
     enc_dec_dlg.h \
     gen_hash_dlg.h \
     gen_hmac_dlg.h \
@@ -96,6 +98,7 @@ mac {
 FORMS += \
         about_dlg.ui \
         data_encoder_dlg.ui \
+        edit_value_dlg.ui \
         enc_dec_dlg.ui \
         gen_hash_dlg.ui \
         gen_hmac_dlg.ui \

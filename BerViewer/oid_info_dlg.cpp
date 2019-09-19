@@ -64,7 +64,7 @@ void OIDInfoDlg::findOID()
    mOIDText->setText( sOID );
    JS_PKI_getOIDFromString( sOID, &binOID );
    JS_BIN_encodeHex( &binOID, &pHex );
-   mOIDHexText->setText( pHex );
+   mOIDHexText->setText( &pHex[2] ); // skip TL values
    mSNText->setText( JS_PKI_getSNFromOID(sOID));
    mLNText->setText(JS_PKI_getLNFromOID(sOID));
 
