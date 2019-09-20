@@ -336,6 +336,27 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
     table_->scrollToItem( item );
 }
 
+void BerTreeView::copy()
+{
+    char *pHex = NULL;
+    BerItem* item = currentItem();
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "There is no selected item"), this );
+        return;
+    }
+
+    QClipboard *clipboard = QGuiApplication::clipboard();
+    BIN binData = {0,0};
+    BerModel *tree_model = (BerModel *)model();
+
+    BIN& binBer = tree_model->getBer();
+    JS_BIN_set( &binData, binBer.pVal + item->GetOffset(), item->GetHeaderSize() + item->GetLength() );
+    QString strData = GetDataView( &binData, item );
+
+    clipboard->setText(strData);
+}
+
 void BerTreeView::ShowContextMenu(QPoint point)
 {
     BerModel *tree_model = (BerModel *)model();
@@ -360,6 +381,12 @@ void BerTreeView::CopyAsHex()
 {
     char *pHex = NULL;
     BerItem* item = currentItem();
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "There is no selected item"), this );
+        return;
+    }
+
     QClipboard *clipboard = QGuiApplication::clipboard();
     BIN binData = {0,0};
     BerModel *tree_model = (BerModel *)model();
@@ -376,6 +403,12 @@ void BerTreeView::CopyAsBase64()
 {
     char *pBase64 = NULL;
     BerItem* item = currentItem();
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "There is no selected item"), this );
+        return;
+    }
+
     QClipboard *clipboard = QGuiApplication::clipboard();
     BIN binData = {0,0};
     BerModel *tree_model = (BerModel *)model();

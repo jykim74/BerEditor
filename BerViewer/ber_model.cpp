@@ -16,7 +16,9 @@ BerModel::BerModel( QObject *parent )
 void BerModel::initialize()
 {
     clear();
-
+    QStringList labels;
+    labels << tr("BER structure");
+    setHorizontalHeaderLabels( labels );
 }
 
 
@@ -39,7 +41,7 @@ int BerModel::parseTree()
 
     clear();
     QStringList labels;
-    labels << "BerViewer";
+    labels << tr("BER structure");
     setHorizontalHeaderLabels( labels );
 
     pRootItem->SetOffset(offset);
@@ -57,6 +59,7 @@ int BerModel::parseTree()
         else
             ret = parseConstruct( pRootItem->GetHeaderSize(), pRootItem );
     }
+
 
     return 0;
 }

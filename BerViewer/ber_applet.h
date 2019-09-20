@@ -40,6 +40,7 @@ public:
     GenOTPDlg *genOTPDlg() { return gen_otp_dlg_; };
     EditValueDlg *editValueDlg() { return edit_value_dlg_; };
     AboutDlg *aboutDlg() { return about_dlg_; };
+    QString cmd() { return cmd_; };
 
     void messageBox(const QString& msg, QWidget *parent=0);
     void warningBox(const QString& msg, QWidget *parent=0);
@@ -54,6 +55,7 @@ public:
     bool closingDown() { return in_exit_ || about_to_quit_; };
 
     void restartApp();
+    void setCmd( const QString cmd );
 
 signals:
 
@@ -80,6 +82,8 @@ private:
     bool started_;
     bool in_exit_;
     bool about_to_quit_;
+
+    QString cmd_;
 };
 
 extern BerApplet *berApplet;

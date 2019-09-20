@@ -18,15 +18,20 @@ public:
 
     void viewRoot();
 
+
 private slots:
     void onItemClicked( const QModelIndex& index );
     void ShowContextMenu( QPoint point );
-    void CopyAsHex();
-    void CopyAsBase64();
     void ExpandValue();
     void SaveNode();
     void SaveNodeValue();
     void EditValue();
+
+
+public slots:
+    void CopyAsHex();
+    void CopyAsBase64();
+    void copy();
 
 private:
     QTextEdit *textEdit_;

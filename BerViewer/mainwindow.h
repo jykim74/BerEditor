@@ -48,6 +48,7 @@ private slots:
     void save();
     void saveAs();
 
+
     void print();
     void printPreview();
     void quit();

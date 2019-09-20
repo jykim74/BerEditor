@@ -59,6 +59,11 @@ BerApplet::~BerApplet()
 #endif
 }
 
+void BerApplet::setCmd(const QString cmd)
+{
+    cmd_ = cmd;
+}
+
 void BerApplet::start()
 {
     main_win_->show();

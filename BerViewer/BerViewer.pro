@@ -13,7 +13,7 @@ qtHaveModule(printsupport): QT += printsupport
 
 TARGET = BerViewer
 TEMPLATE = app
-PROJECT_VERSION = "0.8.1"
+PROJECT_VERSION = "0.9.0"
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings

@@ -22,6 +22,7 @@
 #include <QAction>
 #include <QApplication>
 #include <QClipboard>
+#include <QProcess>
 #include <QFile>
 #include <QtPrintSupport/qtprintsupportglobal.h>
 
@@ -188,6 +189,7 @@ void MainWindow::createActions()
     QMenu *editMenu = menuBar()->addMenu(tr("&Edit"));
     QToolBar *editToolBar = addToolBar(tr("Edit"));
 
+    /*
     const QIcon cutIcon = QIcon::fromTheme("edit-cut", QIcon(":/images/cut.png"));
     QAction *cutAct = new QAction( cutIcon, tr("Cu&t"), this);
     cutAct->setShortcut(QKeySequence::Cut);
@@ -195,16 +197,24 @@ void MainWindow::createActions()
     connect( cutAct, &QAction::triggered, rightText_, &QTextEdit::cut);
     editMenu->addAction(cutAct);
     editToolBar->addAction(cutAct);
+    */
 
     const QIcon copyIcon = QIcon::fromTheme("edit-copy", QIcon(":/images/copy.png"));
     QAction *copyAct = new QAction(copyIcon, tr("&Copy"), this);
     copyAct->setShortcuts(QKeySequence::Copy);
-    copyAct->setStatusTip(tr("Copy the current selection's contents to the "
-                             "clipboard"));
-    connect(copyAct, &QAction::triggered, rightText_, &QTextEdit::copy);
+    copyAct->setStatusTip(tr("Copy the current selection's contents to the clipboard"));
+//    connect(copyAct, &QAction::triggered, rightText_, &QTextEdit::copy);
+    connect( copyAct, &QAction::triggered, leftTree_, &BerTreeView::copy );
     editMenu->addAction(copyAct);
     editToolBar->addAction(copyAct);
 
+    QAction *copyAsHexAct = editMenu->addAction(tr("Copy As &Hex"), leftTree_, &BerTreeView::CopyAsHex);
+    copyAsHexAct->setStatusTip(tr("Copy ber data as hex"));
+
+    QAction *copyAsBase64Act = editMenu->addAction(tr("Copy As &Base64"), leftTree_, &BerTreeView::CopyAsBase64);
+    copyAsBase64Act->setStatusTip(tr("Copy ber data as base64"));
+
+    /*
     const QIcon pasteIcon = QIcon::fromTheme("edit-paste", QIcon(":/images/paste.png"));
     QAction *pasteAct = new QAction(pasteIcon, tr("&Paste"), this);
     pasteAct->setShortcuts(QKeySequence::Paste);
@@ -213,6 +223,7 @@ void MainWindow::createActions()
     connect(pasteAct, &QAction::triggered, rightText_, &QTextEdit::paste);
     editMenu->addAction(pasteAct);
     editToolBar->addAction(pasteAct);
+    */
 
     menuBar()->addSeparator();
 
@@ -268,7 +279,10 @@ void MainWindow::createStatusBar()
 
 void MainWindow::newFile()
 {
-    insertData();
+    QString cmd = berApplet->cmd();
+    QProcess *process = new QProcess();
+    process->setProgram( berApplet->cmd() );
+    process->start();
 }
 
 void MainWindow::insertData()
@@ -345,6 +359,8 @@ void MainWindow::berFileOpen(const QString berPath)
         }
 
         leftTree_->viewRoot();
+        QModelIndex ri = ber_model_->index(0,0);
+        leftTree_->expand(ri);
     }
 }
 
@@ -481,9 +497,6 @@ void MainWindow::saveAs()
 
 void MainWindow::print()
 {
-//    QPrinter printer(QPrinter::HighResolution);
-//    rightText_->print(&printer);
-
 #if QT_CONFIG(printdialog)
     QPrinter printer(QPrinter::HighResolution);
     QPrintDialog *dlg = new QPrintDialog(&printer, this);
