@@ -11,6 +11,8 @@
 #include "ber_tree_view.h"
 #include "js_bin.h"
 
+class QPrinter;
+
 namespace Ui {
 class MainWindow;
 }
@@ -50,7 +52,8 @@ private slots:
 
 
     void print();
-    void printPreview();
+    void printPreview(QPrinter *printer);
+    void filePrintPreview();
     void quit();
 
     virtual void dragEnterEvent(QDragEnterEvent *event);

@@ -175,7 +175,7 @@ void MainWindow::createActions()
 
     QAction *printPreAct = new QAction(printIcon, tr("&Print Preview"), this);
     printPreAct->setStatusTip(tr( "Print preview"));
-    connect( printPreAct, &QAction::triggered, this, &MainWindow::printPreview);
+    connect( printPreAct, &QAction::triggered, this, &MainWindow::filePrintPreview);
     fileMenu->addAction(printPreAct);
 
 
@@ -509,16 +509,25 @@ void MainWindow::print()
 #endif
 }
 
-void MainWindow::printPreview()
+
+void MainWindow::filePrintPreview()
 {
 #if QT_CONFIG(printpreviewdialog)
     QPrinter printer(QPrinter::HighResolution);
     QPrintPreviewDialog preview(&printer, this);
-    rightText_->print(&printer);
+    connect(&preview, &QPrintPreviewDialog::paintRequested, this, &MainWindow::printPreview);
     preview.exec();
 #endif
 }
 
+void MainWindow::printPreview(QPrinter *printer)
+{
+#ifdef QT_NO_PRINTER
+    Q_UNUSED(printer);
+#else
+    rightText_->print(printer);
+#endif
+}
 
 void MainWindow::quit()
 {
