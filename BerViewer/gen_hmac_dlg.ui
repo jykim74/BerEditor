@@ -104,7 +104,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>150</y>
+     <y>140</y>
      <width>381</width>
      <height>61</height>
     </rect>
@@ -112,35 +112,26 @@
    <property name="title">
     <string>Key value</string>
    </property>
-   <widget class="QComboBox" name="mKeyTypeCombo">
+   <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>100</x>
+      <x>0</x>
       <y>20</y>
-      <width>91</width>
-      <height>32</height>
+      <width>381</width>
+      <height>41</height>
      </rect>
     </property>
-   </widget>
-   <widget class="QLineEdit" name="mKeyText">
-    <property name="geometry">
-     <rect>
-      <x>190</x>
-      <y>26</y>
-      <width>181</width>
-      <height>21</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="mAlgTypeCombo">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>20</y>
-      <width>91</width>
-      <height>32</height>
-     </rect>
-    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QComboBox" name="mAlgTypeCombo"/>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="mKeyTypeCombo"/>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLineEdit" name="mKeyText"/>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QPlainTextEdit" name="mOutputText">
