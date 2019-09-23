@@ -30,11 +30,13 @@ BerTreeView::BerTreeView( QWidget *parent )
 
 void BerTreeView::onItemClicked(const QModelIndex& index )
 {
+    QString strInfo;
     BerModel *tree_model = (BerModel *)model();
     BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
 
     BIN& binBer = tree_model->getBer();
-    GetEditView( &binBer, item );
+    strInfo = GetInfoView( &binBer, item );
+    textEdit_->setText(strInfo);
 
     SettingsMgr *set_mgr = berApplet->settingsMgr();
 
@@ -47,11 +49,13 @@ void BerTreeView::onItemClicked(const QModelIndex& index )
 
 void BerTreeView::viewRoot()
 {
+    QString strInfo;
     BerModel *tree_model = (BerModel *)model();
     BerItem* rootItem = (BerItem *)tree_model->item(0);
 
     BIN& binBer = tree_model->getBer();
-    GetEditView( &binBer, rootItem );
+    strInfo = GetInfoView( &binBer, rootItem );
+    textEdit_->setText(strInfo);
 
     SettingsMgr *set_mgr = berApplet->settingsMgr();
 
@@ -73,7 +77,7 @@ void BerTreeView::setTable(QTableWidget *table)
     table_ = table;
 }
 
-void BerTreeView::GetEditView( const BIN *pBer, BerItem *pItem)
+QString BerTreeView::GetInfoView( const BIN *pBer, BerItem *pItem)
 {
     QString strView;
     QString strPart;
@@ -138,10 +142,12 @@ void BerTreeView::GetEditView( const BIN *pBer, BerItem *pItem)
 //    strView += "--------------------------------------------------------------------------------\r\n";
 //    strView += GetDataView( &binPart, pItem );
 
-    textEdit_->setText(strView);
+//    textEdit_->setText(strView);
 
     if( pBitString ) JS_free( pBitString );
     JS_BIN_reset(&bin);
+
+    return strView;
 }
 
 static char getch( unsigned char c )
@@ -210,6 +216,27 @@ QString BerTreeView::GetDataView(const BIN *pData, const BerItem *pItem )
 
     return strView;
 }
+
+QString BerTreeView::GetTextView()
+{
+    BerModel *tree_model = (BerModel *)model();
+    QModelIndex idx = tree_model->index(0,0);
+    BerItem *item = (BerItem *)tree_model->itemFromIndex(idx);
+
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "There is no selected item"), this );
+        return "";
+    }
+
+    BIN& binBer = tree_model->getBer();
+
+    QString strText = GetInfoView( &binBer, item );
+    strText += GetDataView( &binBer, item );
+
+    return strText;
+}
+
 
 void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
 {

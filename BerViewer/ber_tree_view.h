@@ -17,6 +17,7 @@ public:
     void setTable( QTableWidget *table );
 
     void viewRoot();
+    QString GetTextView();
 
 
 private slots:
@@ -37,7 +38,7 @@ private:
     QTextEdit *textEdit_;
     QTableWidget *table_;
 
-    void GetEditView( const BIN *pBer, BerItem *pItem );
+    QString GetInfoView( const BIN *pBer, BerItem *pItem );
     QString GetDataView( const BIN *pData, const BerItem *pItem );
     void GetTableView( const BIN *pBer, BerItem *pItem );
     void GetTableFullView( const BIN *pBer, BerItem *pItem );

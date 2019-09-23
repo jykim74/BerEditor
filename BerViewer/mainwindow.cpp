@@ -504,7 +504,13 @@ void MainWindow::print()
         dlg->addEnabledOption(QAbstractPrintDialog::PrintSelection);
     dlg->setWindowTitle(tr("Print Document"));
     if (dlg->exec() == QDialog::Accepted)
-        rightText_->print(&printer);
+    {
+        QTextEdit txtEdit;
+        QString strText = leftTree_->GetTextView();
+        txtEdit.setText(strText);
+        txtEdit.print(&printer);
+//        rightText_->print(&printer);
+    }
     delete dlg;
 #endif
 }
@@ -525,7 +531,11 @@ void MainWindow::printPreview(QPrinter *printer)
 #ifdef QT_NO_PRINTER
     Q_UNUSED(printer);
 #else
-    rightText_->print(printer);
+    QTextEdit txtEdit;
+    QString strText = leftTree_->GetTextView();
+    txtEdit.setText(strText);
+    txtEdit.print(printer);
+//    rightText_->print(printer);
 #endif
 }
 
