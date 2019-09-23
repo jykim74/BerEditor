@@ -1,7 +1,7 @@
 #include <QSettings>
 
 #ifdef Q_OS_WIN32
-#include "winsparkle.h>
+#include "winsparkle.h"
 #else
 #include "mac_sparkle_support.h"
 #endif
@@ -53,8 +53,8 @@ public:
         win_sparkle_set_appcast_url(getAppcastURI().toUtf8().data());
         win_sparkle_set_app_details(
                     L"BerViewer",
-                    L"BerViewer",
-                    QString(STRINGIZE(BER_VIEWER_VERSION).toStdWString().c_str());
+                    L"ASN Decoder",
+                    L"Version" );
     }
 
     void start() {

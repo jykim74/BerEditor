@@ -43,6 +43,7 @@
    complain about that, see "Program Indentation and Comprehensiblity",
    Richard Miara, Joyce Musselman, Juan Navarro, and Ben Shneiderman,
    Communications of the ACM, Vol.26, No.11 (November 1983), p.861) */
+#if 0
 
 #include <ctype.h>
 #include <limits.h>
@@ -3313,3 +3314,4 @@ int main( int argc, char *argv[] )
 	}
 #endif
 
+#endif

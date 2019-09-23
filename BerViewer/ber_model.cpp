@@ -52,7 +52,7 @@ int BerModel::parseTree()
 
     pRootItem->setText( pRootItem->GetInfoString( &binBer_) );
 
-    if( (pRootItem->GetId() & FORM_MASK) == CONSTRUCTED )
+    if( (pRootItem->GetId() & JS_FORM_MASK) == JS_CONSTRUCTED )
     {
         if( pRootItem->GetIndefinite() )
             ret = parseIndefiniteConstruct( pRootItem->GetHeaderSize(), pRootItem );
@@ -87,7 +87,7 @@ int BerModel::parseConstruct(int offset, BerItem *pParentItem)
 
         pParentItem->appendRow( pItem );
 
-        if( (pItem->GetId() & FORM_MASK) == CONSTRUCTED )
+        if( (pItem->GetId() & JS_FORM_MASK) == JS_CONSTRUCTED )
             isConstructed = 1;
         else {
             isConstructed = 0;
@@ -134,7 +134,7 @@ int BerModel::parseIndefiniteConstruct( int offset, BerItem *pParentItem )
         pItem->setText( pItem->GetInfoString( &binBer_));
         pParentItem->appendRow( pItem );
 
-        if( (pItem->GetId() & FORM_MASK) == CONSTRUCTED )
+        if( (pItem->GetId() & JS_FORM_MASK) == JS_CONSTRUCTED )
             isConstructed = 1;
         else {
             isConstructed = 0;
@@ -173,14 +173,14 @@ int BerModel::getItem(int offset, BerItem *pItem)
 
     int tag = binBer_.pVal[offset + position];
 
-    pItem->SetId( tag & ~TAG_MASK );
+    pItem->SetId( tag & ~JS_TAG_MASK );
     pItem->SetHeaderByte( binBer_.pVal[offset + position], position );
     pItem->SetIndefinite(0);
 
-    tag &= TAG_MASK;
+    tag &= JS_TAG_MASK;
     position++;
 
-    if( tag == TAG_MASK )
+    if( tag == JS_TAG_MASK )
     {
         int value;
 
@@ -191,7 +191,7 @@ int BerModel::getItem(int offset, BerItem *pItem)
             tag = (tag << 7) | (value & 0x7F);
             pItem->SetHeaderByte( value, position );
             position++;
-        } while ( value & LEN_XTND && position < 5 && (offset + position + 1) < binBer_.nLen );
+        } while ( value & JS_LEN_XTND && position < 5 && (offset + position + 1) < binBer_.nLen );
 
         if( position >= 5 ) return -1;
     }
@@ -206,11 +206,11 @@ int BerModel::getItem(int offset, BerItem *pItem)
 
     pItem->SetHeaderSize( position );
 
-    if( length & LEN_XTND )
+    if( length & JS_LEN_XTND )
     {
         int i;
 
-        length &= LEN_MASK;
+        length &= JS_LEN_MASK;
 
         if( length > 4 ) return -2;
 

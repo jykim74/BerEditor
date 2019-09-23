@@ -98,6 +98,16 @@ mac {
     LIBS += -framework ApplicationServices
     LIBS += -framework Sparkle
     INCLUDEPATH += "/usr/local/Sparkle.framework/Headers"
+
+    LIBS += -L"../../build-PKILib-Desktop_Qt_5_11_3_clang_64bit-Debug" -lPKILib
+    LIBS += -L"../../PKILib/lib/mac/openssl/lib" -lcrypto
+}
+
+win32 {
+    INCLUDEPATH += "../../PKILib/lib/win32/winsparkle/include"
+    LIBS += -L"../../build-PKILib-Desktop_Qt_5_12_2_MinGW_32_bit-Debug/debug" -lPKILib
+    LIBS += -L"../../PKILib/lib/win32/cmpossl-mingw32/lib" -lcrypto
+    LIBS += -L"../../PKILib/lib/win32/winsparkle/Release" -lWinSparkle
 }
 
 FORMS += \
@@ -131,12 +141,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 
 
-LIBS += -lc
-
-
 INCLUDEPATH += "../../PKILib"
 
-LIBS += -L"../../build-PKILib-Desktop_Qt_5_11_3_clang_64bit-Debug" -lPKILib
-LIBS += -L"../../PKILib/lib/mac/openssl/lib" -lcrypto
+
 
 DISTFILES +=

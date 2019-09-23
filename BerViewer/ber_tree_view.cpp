@@ -96,7 +96,7 @@ QString BerTreeView::GetInfoView( const BIN *pBer, BerItem *pItem)
     strPart.sprintf( "  ID: %d", pItem->GetId());
     strView += strPart;
 
-    if( (pItem->GetId() & FORM_MASK) == CONSTRUCTED )
+    if( (pItem->GetId() & JS_FORM_MASK) == JS_CONSTRUCTED )
         strPart = " Construted";
     else
         strPart = " Primitive";
@@ -122,7 +122,7 @@ QString BerTreeView::GetInfoView( const BIN *pBer, BerItem *pItem)
 
     QString strPartNL = pItem->GetValueString( pBer );
 
-    if( pItem->GetId() && CONSTRUCTED )
+    if( pItem->GetId() && JS_CONSTRUCTED )
     {
         strView += "\r\n\r\n[";
         strView += pItem->GetTagString();
@@ -275,7 +275,7 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
         {
             table_->item( line, 2)->setBackgroundColor(yellow);
 
-            if( binPart.pVal[i] & LEN_XTND ) len_len = binPart.pVal[i] & LEN_MASK;
+            if( binPart.pVal[i] & JS_LEN_XTND ) len_len = binPart.pVal[i] & JS_LEN_MASK;
         }
         else if( i <= (1 + len_len))
             table_->item( line, i + 1 )->setBackgroundColor(cyan);
@@ -337,7 +337,7 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
         {
             table_->item( line, pos)->setBackgroundColor(yellow);
 
-            if( pBer->pVal[i] & LEN_XTND ) len_len = pBer->pVal[i] & LEN_MASK;
+            if( pBer->pVal[i] & JS_LEN_XTND ) len_len = pBer->pVal[i] & JS_LEN_MASK;
         }
         else if( (i > pItem->GetOffset() + 1 ) && (i <= (pItem->GetOffset() + 1 + len_len)))
         {
@@ -398,7 +398,7 @@ void BerTreeView::ShowContextMenu(QPoint point)
 
     BerItem* item = currentItem();
 
-    if( item->GetTag() == OCTETSTRING || item->GetTag() == BITSTRING )
+    if( item->GetTag() == JS_OCTETSTRING || item->GetTag() == JS_BITSTRING )
         menu.addAction( tr("Expand value"), this, SLOT(ExpandValue()));
 
     menu.exec(QCursor::pos());
@@ -466,7 +466,7 @@ void BerTreeView::ExpandValue()
     BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
 
     int offset = item->GetOffset();
-    if( item->GetTag() == BITSTRING ) offset += 1; // skip unused bits
+    if( item->GetTag() == JS_BITSTRING ) offset += 1; // skip unused bits
 
     if( item->GetIndefinite() )
         tree_model->parseIndefiniteConstruct( offset + item->GetHeaderSize(), item );

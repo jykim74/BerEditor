@@ -75,44 +75,44 @@ QString BerItem::GetTagString()
 
     if( id_ < 0 ) return "Error";
 
-    if( id_ & CLASS_MASK )
+    if( id_ & JS_CLASS_MASK )
     {
         QString strOut = "";
 
-        if( id_ & CONTEXT ) strOut.sprintf( "Context-specific[%0x]", tag_);
-        else if( id_ & APPLICATION ) strOut.sprintf( "Application[%0x]", tag_ );
-        else if( id_ & PRIVATE ) strOut.sprintf( "Private[%0x]", tag_ );
+        if( id_ & JS_CONTEXT ) strOut.sprintf( "Context-specific[%0x]", tag_);
+        else if( id_ & JS_APPLICATION ) strOut.sprintf( "Application[%0x]", tag_ );
+        else if( id_ & JS_PRIVATE ) strOut.sprintf( "Private[%0x]", tag_ );
 
         return strOut;
     }
     else
     {
-        if( tag_ == BOOLEAN ) return "BOOLEAN";
-        else if( tag_ == INTEGER ) return "INTEGER";
-        else if( tag_ == BITSTRING ) return "BITSTRING";
-        else if( tag_ == OCTETSTRING ) return "OCTETSTRING";
-        else if( tag_ == NULLTAG ) return "NULL";
-        else if( tag_ == OID ) return "OID";
-        else if( tag_ == OBJDESCRIPTOR ) return "OBJDESCRIPTOR";
-        else if( tag_ == EXTERNAL ) return "EXTERNAL";
-        else if( tag_ == REAL ) return "REAL";
-        else if( tag_ == ENUMERATED ) return "ENUMERATED";
-        else if( tag_ == EMBEDDED_PDV ) return "EMBEDDED_PDV";
-        else if( tag_ == UTF8STRING ) return "UTF8STRING";
-        else if( tag_ == SEQUENCE) return "SEQUENCE(OF)";
-        else if( tag_ == SET) return "SET(OF)";
-        else if( tag_ == NUMERICSTRING ) return "NUMERICSTR";
-        else if( tag_ == PRINTABLESTRING ) return "PRINTABLESTRING";
-        else if( tag_ == T61STRING ) return "T61STRING";
-        else if( tag_ == VIDEOTEXSTRING ) return "VIDEOTEXSTRING";
-        else if( tag_ == IA5STRING ) return "IA5STRING";
-        else if( tag_ == UTCTIME ) return "UTCTIME";
-        else if( tag_ == GENERALIZEDTIME ) return "GENERALIZEDTIME";
-        else if( tag_ == GRAPHICSTRING) return "GRAPHICSTRING";
-        else if( tag_ == VISIBLESTRING) return "VISIBLESTRING";
-        else if( tag_ == GENERALSTRING) return "GENERALSTRING";
-        else if( tag_ == UNIVERSALSTRING ) return "UNIVERSALSTRING";
-        else if( tag_ == BMPSTRING ) return "BMPSTRING";
+        if( tag_ == JS_BOOLEAN ) return "BOOLEAN";
+        else if( tag_ == JS_INTEGER ) return "INTEGER";
+        else if( tag_ == JS_BITSTRING ) return "BITSTRING";
+        else if( tag_ == JS_OCTETSTRING ) return "OCTETSTRING";
+        else if( tag_ == JS_NULLTAG ) return "NULL";
+        else if( tag_ == JS_OID ) return "OID";
+        else if( tag_ == JS_OBJDESCRIPTOR ) return "OBJDESCRIPTOR";
+        else if( tag_ == JS_EXTERNAL ) return "EXTERNAL";
+        else if( tag_ == JS_REAL ) return "REAL";
+        else if( tag_ == JS_ENUMERATED ) return "ENUMERATED";
+        else if( tag_ == JS_EMBEDDED_PDV ) return "EMBEDDED_PDV";
+        else if( tag_ == JS_UTF8STRING ) return "UTF8STRING";
+        else if( tag_ == JS_SEQUENCE) return "SEQUENCE(OF)";
+        else if( tag_ == JS_SET) return "SET(OF)";
+        else if( tag_ == JS_NUMERICSTRING ) return "NUMERICSTR";
+        else if( tag_ == JS_PRINTABLESTRING ) return "PRINTABLESTRING";
+        else if( tag_ == JS_T61STRING ) return "T61STRING";
+        else if( tag_ == JS_VIDEOTEXSTRING ) return "VIDEOTEXSTRING";
+        else if( tag_ == JS_IA5STRING ) return "IA5STRING";
+        else if( tag_ == JS_UTCTIME ) return "UTCTIME";
+        else if( tag_ == JS_GENERALIZEDTIME ) return "GENERALIZEDTIME";
+        else if( tag_ == JS_GRAPHICSTRING) return "GRAPHICSTRING";
+        else if( tag_ == JS_VISIBLESTRING) return "VISIBLESTRING";
+        else if( tag_ == JS_GENERALSTRING) return "GENERALSTRING";
+        else if( tag_ == JS_UNIVERSALSTRING ) return "UNIVERSALSTRING";
+        else if( tag_ == JS_BMPSTRING ) return "BMPSTRING";
         else
         {
             QString strTag;
@@ -126,11 +126,11 @@ QString BerItem::GetTagString()
 
 QString BerItem::GetClassString()
 {
-    if( id_ & CLASS_MASK )
+    if( id_ & JS_CLASS_MASK )
     {
-        if( id_ & CONTEXT ) return "Context-specific";
-        else if( id_ & APPLICATION ) return "Application";
-        else if( id_ & PRIVATE ) return "Private";
+        if( id_ & JS_CONTEXT ) return "Context-specific";
+        else if( id_ & JS_APPLICATION ) return "Application";
+        else if( id_ & JS_PRIVATE ) return "Private";
     }
     else {
         return "Universal";
@@ -146,17 +146,17 @@ QString BerItem::GetValueString( const BIN *pBer )
 
     JS_BIN_set( &binVal, pBer->pVal + offset_ + header_size_, length_ );
 
-    if( tag_ == OID )
+    if( tag_ == JS_OID )
     {
         char sOID[1024];
         JS_PKI_getStringFromOID( &binVal, sOID );
         strVal = sOID;
     }
-    else if( tag_ == NULLTAG )
+    else if( tag_ == JS_NULLTAG )
     {
         strVal = "NULL";
     }
-    else if( tag_ == INTEGER )
+    else if( tag_ == JS_INTEGER )
     {
         char *pDecimal = NULL;
         JS_PKI_binToDecimal( &binVal, &pDecimal );
@@ -166,8 +166,8 @@ QString BerItem::GetValueString( const BIN *pBer )
             JS_free( pDecimal );
         }
     }
-    else if( tag_ == PRINTABLESTRING || tag_ == IA5STRING || tag_ == UTF8STRING \
-             || tag_ == UTCTIME || tag_ == GENERALIZEDTIME )
+    else if( tag_ == JS_PRINTABLESTRING || tag_ == JS_IA5STRING || tag_ == JS_UTF8STRING \
+             || tag_ == JS_UTCTIME || tag_ == JS_GENERALIZEDTIME )
     {
         char *pStr = NULL;
         pStr = (char *)JS_calloc(1, binVal.nLen + 1 );
@@ -175,7 +175,7 @@ QString BerItem::GetValueString( const BIN *pBer )
         strVal = pStr;
         JS_free(pStr);
     }
-    else if( tag_ == BITSTRING )
+    else if( tag_ == JS_BITSTRING )
     {
         int iUnused = 0;
         char *pBitStr = (char *)JS_malloc( binVal.nLen * 8 + 8 );
@@ -203,14 +203,14 @@ QString BerItem::GetInfoString(const BIN *pBer)
 
     strMsg = strTag;
 
-    if( id_ & CLASS_MASK ) return strMsg;
+    if( id_ & JS_CLASS_MASK ) return strMsg;
 
-    if( tag_ == OID )
+    if( tag_ == JS_OID )
     {
         strVal = GetValueString(pBer);
         strMsg = QString( "%1 %2(%3)" ).arg(strTag).arg(JS_PKI_getSNFromOID(strVal.toStdString().c_str())).arg(strVal);
     }
-    else if( tag_ == INTEGER )
+    else if( tag_ == JS_INTEGER )
     {
         strVal = GetValueString(pBer);
         if( strVal.length() > 16 )
@@ -221,7 +221,7 @@ QString BerItem::GetInfoString(const BIN *pBer)
 
         strMsg = QString( "%1 %2").arg(strTag).arg(strVal);
     }
-    else if( tag_ == BITSTRING )
+    else if( tag_ == JS_BITSTRING )
     {
         int iUnused = 0;
         BIN     binVal = {0,0};
@@ -243,8 +243,8 @@ QString BerItem::GetInfoString(const BIN *pBer)
         JS_BIN_reset(&binVal);
         if( pTextBit ) JS_free( pTextBit );
     }
-    else if( tag_ == PRINTABLESTRING || tag_ == IA5STRING || tag_ == UTF8STRING \
-             || tag_ == UTCTIME || tag_ == GENERALIZEDTIME )
+    else if( tag_ == JS_PRINTABLESTRING || tag_ == JS_IA5STRING || tag_ == JS_UTF8STRING \
+             || tag_ == JS_UTCTIME || tag_ == JS_GENERALIZEDTIME )
     {
         strVal = GetValueString(pBer);
         strMsg = QString( "%1 '%2'").arg( strTag).arg( strVal);
