@@ -7,6 +7,8 @@ AboutDlg::AboutDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
+    setWindowTitle(tr("About %1").arg(berApplet->getBrand()));
+    setWindowFlags( (windowFlags() & ~Qt::WindowContextHelpButtonHint) | Qt::WindowStaysOnTopHint );
 
     version_label_ = tr( "<H2>%1 (%2)<H2>").arg( "BerViewer").arg(STRINGIZE(BER_VIEWER_VERSION));
     mVersionLabel->setText( version_label_ );

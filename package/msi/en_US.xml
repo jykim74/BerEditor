@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WixLocalization Culture="en-us" xmlns="http://schemas.microsoft.com/wix/2006/localization">
+
+  <String Id="AppName">BerViewer</String>
+  <String Id="PackageDescription">BerViewer Installer</String>
+  <String Id="PackageComments">BerViewer Installer</String>
+  <String Id="Manufacturer">HaiWenHuZhi ltd.</String>
+  <String Id="DowngradeErrorMessage">A more up-to-date version of BerViewer is detected on your machine. The installer will now quit</String>
+  <String Id="UninstallBerViewer">Uninstall BerViewer</String>
+  <String Id="StartBerViewer">Start BerViewer</String>
+  <String Id="AutoStartText">Start BerViewer on startup</String>
+
+</WixLocalization>
+

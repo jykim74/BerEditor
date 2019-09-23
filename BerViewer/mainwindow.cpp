@@ -51,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
     createActions();
     createStatusBar();
 
-    setUnifiedTitleAndToolBarOnMac(true);
+//    setUnifiedTitleAndToolBarOnMac(true);
 
     setAcceptDrops(true);
 }
