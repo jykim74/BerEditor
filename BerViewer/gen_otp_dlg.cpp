@@ -75,6 +75,12 @@ void GenOTPDlg::accept()
     memset( sOTP, 0x00, sizeof(sOTP));
     QString strKey = mKeyText->text();
 
+    if( strKey.isEmpty() )
+    {
+        berApplet->warningBox( tr( "You have to insert key"), this );
+        return;
+    }
+
     if( mKeyTypeCombo->currentIndex() == DATA_STRING )
         JS_BIN_set( &binKey, (unsigned char *)strKey.toStdString().c_str(), strKey.length() );
     else if( mKeyTypeCombo->currentIndex() == DATA_HEX )

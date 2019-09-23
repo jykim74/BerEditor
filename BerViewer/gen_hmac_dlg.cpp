@@ -2,6 +2,7 @@
 #include "gen_hmac_dlg.h"
 #include "js_bin.h"
 #include "js_pki.h"
+#include "ber_applet.h"
 
 static const char *hashTypes[] = {
     "md5",
@@ -63,7 +64,20 @@ void GenHmacDlg::accept()
         JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
     }
 
+    if( strInput.isEmpty() )
+    {
+        berApplet->warningBox( tr( "You have to insert data" ), this );
+        return;
+    }
+
     QString strKey = mKeyText->text();
+
+    if( strKey.isEmpty() )
+    {
+        berApplet->warningBox( tr( "You have to insert key"), this );
+        JS_BIN_reset(&binSrc);
+        return;
+    }
 
     if( mKeyTypeCombo->currentIndex() == 0 )
         JS_BIN_set( &binKey, (unsigned char *)strKey.toStdString().c_str(), strKey.length() );
@@ -82,6 +96,7 @@ void GenHmacDlg::accept()
        mOutputText->setPlainText( pHex );
        if( pHex ) JS_free(pHex);
    }
+
 
    JS_BIN_reset(&binSrc);
    JS_BIN_reset(&binKey);

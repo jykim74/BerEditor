@@ -3,6 +3,7 @@
 #include "ber_define.h"
 #include "js_bin.h"
 #include "js_pki.h"
+#include "ber_applet.h"
 
 static const char *dataTypes[] = {
     "String",
@@ -79,6 +80,12 @@ void EncDecDlg::accept()
 
     QString strInput = mInputText->toPlainText();
 
+    if( strInput.isEmpty() )
+    {
+        berApplet->warningBox( tr( "You have to insert data"), this );
+        return;
+    }
+
     if( mInputStringBtn->isChecked() )
         JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
     else if( mInputHexBtn->isChecked() )
@@ -93,6 +100,13 @@ void EncDecDlg::accept()
     }
 
     QString strKey = mKeyText->text();
+
+    if( strKey.isEmpty() )
+    {
+        berApplet->warningBox( tr( "You have to insert key" ), this );
+        JS_BIN_reset(&binSrc);
+        return;
+    }
 
     if( mKeyTypeCombo->currentIndex() == DATA_STRING )
         JS_BIN_set( &binKey, (unsigned char *)strKey.toStdString().c_str(), strKey.length() );

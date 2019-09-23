@@ -4,6 +4,7 @@
 #include "js_bin.h"
 #include "js_pki.h"
 #include "ber_define.h"
+#include "ber_applet.h"
 
 static const char *dataTypes[] = {
     "String",
@@ -82,6 +83,11 @@ void RSAEncDecDlg::accept()
     char *pOut = NULL;
 
     QString strInput = mInputText->toPlainText();
+    if( strInput.isEmpty() )
+    {
+        berApplet->warningBox( tr( "You have to insert data"), this );
+        return;
+    }
 
     if( mInputStringBtn->isChecked() )
         JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
@@ -104,10 +110,22 @@ void RSAEncDecDlg::accept()
 
     if( mMethodTypeCombo->currentIndex() == ENC_ENCRYPT )
     {
+        if( mPubKeyBtn->text().isEmpty() )
+        {
+            berApplet->warningBox( tr( "You have to find public key"), this );
+            goto end;
+        }
+
         JS_BIN_fileRead( mPubKeyPath->text().toStdString().c_str(), &binPub );
         JS_PKI_RSAEncryptWithPub( nVersion, &binSrc, &binPub, &binOut );
     }
     else {
+        if( mPriKeyPath->text().isEmpty() )
+        {
+            berApplet->warningBox( tr( "You have to find private key" ), this );
+            goto end;
+        }
+
         JS_BIN_fileRead( mPriKeyPath->text().toStdString().c_str(), &binPri );
         JS_PKI_RSADecryptWithPri( nVersion, &binSrc, &binPri, &binOut );
     }
@@ -121,6 +139,7 @@ void RSAEncDecDlg::accept()
 
     mOutputText->setPlainText(pOut);
 
+end :
     JS_BIN_reset(&binSrc);
     JS_BIN_reset(&binPri);
     JS_BIN_reset(&binPub);

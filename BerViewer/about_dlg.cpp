@@ -24,6 +24,7 @@ AboutDlg::AboutDlg(QWidget *parent) :
             "If you do not use this for commercial purposes, "
             "you can use it freely "
             "If you have any opinions on this tool, please send me a mail"
+            "\r\n\r\nCopyright (C) 2019 ~ 2020 JongYeob Kim\r\n"
             "mailto : jykim74@gmail.com");
 
     mAboutText->setText( strAbout );

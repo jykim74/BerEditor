@@ -3,6 +3,7 @@
 #include "ui_gen_hash_dlg.h"
 #include "js_bin.h"
 #include "js_pki.h"
+#include "ber_applet.h"
 
 #include <QDialogButtonBox>
 
@@ -40,6 +41,12 @@ void GenHashDlg::accept()
     BIN binSrc = {0,0};
     BIN binHash = {0,0};
     QString inputStr = mInputText->toPlainText();
+
+    if( inputStr.isEmpty() )
+    {
+        berApplet->warningBox( tr( "You have to insert data" ), this );
+        return;
+    }
 
     if( mInputStringBtn->isChecked() )
         JS_BIN_set( &binSrc, (unsigned char *)inputStr.toStdString().c_str(), inputStr.length() );

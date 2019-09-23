@@ -2,6 +2,7 @@
 #include "data_encoder_dlg.h"
 #include "js_bin.h"
 #include "js_util.h"
+#include "ber_applet.h"
 
 static const char* entypes[] = {
     "string",
@@ -37,6 +38,13 @@ void DataEncoderDlg::onClickEncodeBtn()
     BIN binSrc = {0,0};
     char *pOut = NULL;
 
+    QString inputStr = mInputTextEdit->toPlainText();
+    if( inputStr.isEmpty() )
+    {
+        berApplet->warningBox( tr( "You have to insert data" ), this );
+        return;
+    }
+
     if( mInputTypeStringBtn->isChecked() )
         input_type = DATA_STRING;
     else if( mInputTypeHexBtn->isChecked() )
@@ -51,7 +59,8 @@ void DataEncoderDlg::onClickEncodeBtn()
     if( input_type == output_type )
         mOutputTextEdit->setPlainText( mInputTextEdit->toPlainText() );
     else {
-        QString inputStr = mInputTextEdit->toPlainText();
+
+
 
         if( input_type == DATA_STRING )
         {

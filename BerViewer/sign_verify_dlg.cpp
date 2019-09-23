@@ -124,6 +124,11 @@ void SignVerifyDlg::accept()
     char *pOut = NULL;
 
     QString strInput = mInputText->toPlainText();
+    if( strInput.isEmpty() )
+    {
+        berApplet->warningBox( tr( "You have to insert data"), this );
+        return;
+    }
 
     if( mInputStringBtn->isChecked() )
         JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
@@ -148,6 +153,12 @@ void SignVerifyDlg::accept()
 
     if( mMethodCombo->currentIndex() == SIGN_SIGNATURE )
     {
+        if( mPriKeyPath->text().isEmpty() )
+        {
+            berApplet->warningBox( tr( "You have to find private key" ), this );
+            goto end;
+        }
+
         JS_BIN_fileRead( mPriKeyPath->text().toStdString().c_str(), &binPri );
 
         if( mAlgTypeCombo->currentIndex() == 0 )
@@ -161,6 +172,12 @@ void SignVerifyDlg::accept()
     }
     else
     {
+        if( mPubKeyPath->text().isEmpty() )
+        {
+            berApplet->warningBox( tr( "You have to find public key"), this );
+            goto end;
+        }
+
         JS_BIN_fileRead( mPubKeyPath->text().toStdString().c_str(), &binPub );
         JS_BIN_decodeHex( mOutputText->toPlainText().toStdString().c_str(), &binOut );
 
@@ -176,6 +193,8 @@ void SignVerifyDlg::accept()
             berApplet->warningBox( tr("Verify Fail") );
         }
     }
+
+end :
 
     JS_BIN_reset( &binSrc );
     JS_BIN_reset( &binPri );

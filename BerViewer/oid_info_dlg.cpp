@@ -3,6 +3,7 @@
 #include "js_bin.h"
 #include "js_pki.h"
 #include "js_pki_tools.h"
+#include "ber_applet.h"
 
 static const char *oidTypes[] = {
     "OID",
@@ -43,6 +44,12 @@ void OIDInfoDlg::findOID()
     char *pHex = NULL;
     memset( sOID, 0x00, sizeof(sOID) );
     QString strInput = mInputText->text();
+
+    if( strInput.isEmpty() )
+    {
+        berApplet->warningBox(tr( "You have to insert OID data" ), this );
+        return;
+    }
 
    if( mInputTypeCombo->currentIndex() == 0 )
        sprintf( sOID, "%s", strInput.toStdString().c_str() );
