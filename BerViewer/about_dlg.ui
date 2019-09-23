@@ -125,7 +125,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>about BerViewer</string>
+    <string>About BerViewer</string>
    </property>
    <widget class="QTextEdit" name="mAboutText">
     <property name="geometry">

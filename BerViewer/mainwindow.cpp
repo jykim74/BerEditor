@@ -334,7 +334,7 @@ void MainWindow::berFileOpen(const QString berPath)
 {
     BIN binRead = {0,0};
 
-    int ret = JS_BIN_fileRead( berPath.toStdString().c_str(), &binRead );
+    int ret = JS_BIN_fileRead( berPath.toLocal8Bit().toStdString().c_str(), &binRead );
 
     if( ret == 0 )
     {
