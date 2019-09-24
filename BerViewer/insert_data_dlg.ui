@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>418</width>
     <height>368</height>
    </rect>
   </property>
@@ -30,11 +30,18 @@
        <rect>
         <x>0</x>
         <y>20</y>
-        <width>381</width>
+        <width>401</width>
         <height>41</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="1">
+        <widget class="QRadioButton" name="mTypeBase64">
+         <property name="text">
+          <string>Base64</string>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="0">
         <widget class="QRadioButton" name="mTypeHex">
          <property name="text">
@@ -42,12 +49,18 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="QRadioButton" name="mTypeBase64">
-         <property name="text">
-          <string>Base64</string>
+       <item row="0" column="2">
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
          </property>
-        </widget>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -57,7 +70,7 @@
     <widget class="QPlainTextEdit" name="mTextData">
      <property name="minimumSize">
       <size>
-       <width>0</width>
+       <width>400</width>
        <height>200</height>
       </size>
      </property>
