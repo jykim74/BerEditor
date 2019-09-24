@@ -54,7 +54,7 @@ public:
         win_sparkle_set_app_details(
                     L"BerViewer",
                     L"ASN Decoder",
-                    L"Version" );
+                    QString(STRINGIZE(BER_VIEWER_VERSION)).toStdWString().c_str() );
     }
 
     void start() {

@@ -94,11 +94,18 @@ void MainWindow::initialize()
 
     QList<int> sizes;
 
+#ifdef Q_OS_WIN32
+    sizes << 400 << 1600;
+    resize( 1940, 1024 );
+#else
     sizes << 500 << 1200;
+    resize( 1024, 768 );
+#endif
+
     hsplitter_->setSizes(sizes);
 
     setCentralWidget(hsplitter_);
-    resize( 1024, 768 );
+
 
     createTableMenu();
 
@@ -109,12 +116,15 @@ void MainWindow::createTableMenu()
     QStringList labels;
     labels << tr("Address") << "0" << "1" << "2" << "3" << "4" << "5" << "6" << "7" << "8" << "9"
            << "A" << "B" << "C" << "D" << "E" << "F" << tr("Text");
+
     rightTable_->setColumnCount(18);
+
 
     for( int i=1; i <= 16; i++ )
         rightTable_->setColumnWidth(i, 30);
 
     rightTable_->setHorizontalHeaderLabels( labels );
+    rightTable_->verticalHeader()->setVisible(false);
 }
 
 void MainWindow::showWindow()
