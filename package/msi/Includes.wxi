@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Include Id="BerViewerInclude">
-  <?define CurrentSeafileVersion="0.9.1" ?>
+  <?define CurrentBerViewerVersion="0.9.1" ?>
 
   <!-- Update Guid 不能变 -->
   <?define CurrentUpdateGuid="2956EB6D-8FE0-46A2-8C86-BEA1A9872841" ?>

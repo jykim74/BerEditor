@@ -6,8 +6,8 @@
   <String Id="PackageComments">BerViewer 설치프로그램</String>
   <String Id="Manufacturer">JS .Inc</String>
   <String Id="DowngradeErrorMessage">이미 더 최신 버전의 BerViewer가 설치 되어 있습니다. 설치를 끝내겠습니다.</String>
-  <String Id="UninstallSeafile">BerViewer 제거</String>
-  <String Id="StartSeafile">BerViewer 시작</String>
+  <String Id="UninstallBerViewer">BerViewer 제거</String>
+  <String Id="StartBerViewer">BerViewer 시작</String>
   <String Id="AutoStartText">시작 메뉴에서 BerViewer 시작</String>
 
 
