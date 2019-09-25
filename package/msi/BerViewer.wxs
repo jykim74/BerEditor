@@ -8,18 +8,18 @@
 			Manufacturer='!(loc.Manufacturer)'
 			UpgradeCode="$(var.CurrentUpdateGuid)" >
 
-<!-- We set InstallScope to perMachine to install for all users -->
+		<!-- We set InstallScope to perMachine to install for all users -->
 		<Package Description='!(loc.PackageDescription)' Comments='!(loc.PackageComments)'
 				Manufacturer='!(loc.Manufacturer)'
 				InstallerVersion='200'
 				InstallPrivileges='elevated' InstallScope='perMachine'
 				Compressed='yes' />
 
-<!-- http://wixtoolset.org/documentation/manual/v3/howtos/ui_and_localization/configure_arp_appearance.html -->
+		<!-- http://wixtoolset.org/documentation/manual/v3/howtos/ui_and_localization/configure_arp_appearance.html -->
 		<Icon Id="icon.ico" SourceFile="berviewer.ico"/>
 		<Property Id="ARPPRODUCTICON" value="icon.ico" />
 
-	<!-- Don't allow downgrade. -->
+		<!-- Don't allow downgrade. -->
 		<MajorUpgrade DowngradeErrorMessage='!(loc.DowngradeErrorMessage)' />
 
 		<Property Id="SUPPRESS_LAUNCH_BERVIEWER_AFTER_INSTALL_FINISH">
@@ -39,7 +39,7 @@
 		<Media Id='1' Cabinet='berviewer.cab' EmbedCab='yes' />
 		<Property Id="BERVIEWER_AUTO_START">1</Property>
 
-	<!-- Auto-start via REgistry -->
+		<!-- Auto-start via REgistry -->
 		<DirectoryRef Id="INSTALLDIR">
 			<Component Id="BerViewerAutoStart" Guid="$(var.GuidOfAutoStartComponent)">
 				<RegistryKey Root="HKCU"
@@ -71,7 +71,7 @@
 			</Component>
 		<DirectoryRef>
 
-	<!-- UI related -->
+		<!-- UI related -->
 		<Property Id='WIXUI_INSTALLDIR' Value="INSTALLDIR" />
 		<UI>
 			<UIRef Id='WixUI_InstallDir_NoLicense' />
