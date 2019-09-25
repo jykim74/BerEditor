@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns='http://schemas.microsoft.com/wix/2006/wi'>
 	<?include Includes.wxi?>
-	<Product id="$(var.ProductGuid)"
+	<Product Id="$(var.ProductGuid)"
 			Name='!(loc.AppName) $(var.CurrentBerViewerVersion)'
 			Language='1033'
 			Version='$(var.CurrentBerViewerVersion)'
@@ -17,7 +17,7 @@
 
 		<!-- http://wixtoolset.org/documentation/manual/v3/howtos/ui_and_localization/configure_arp_appearance.html -->
 		<Icon Id="icon.ico" SourceFile="berviewer.ico"/>
-		<Property Id="ARPPRODUCTICON" value="icon.ico" />
+		<Property Id="ARPPRODUCTICON" Value="icon.ico" />
 
 		<!-- Don't allow downgrade. -->
 		<MajorUpgrade DowngradeErrorMessage='!(loc.DowngradeErrorMessage)' />
@@ -37,6 +37,21 @@
 		</Property>
 
 		<Media Id='1' Cabinet='berviewer.cab' EmbedCab='yes' />
+	
+		<Directory Id='TARGETDIR' Name='SourceDir'>
+			<Directory Id='DesktopFolder' Name="DesktopFolder" />
+			<Directory Id="ProgramMenuFolder">
+				<Directory Id="BerViewerStartMenuFolder" Name='!(loc.AppName)' />
+			</Directory>
+
+			<Directory Id='ProgramFilesFolder' Name='PFiles'>
+				<Directory Id='INSTALLDIR' Name='!(loc.AppName)'>
+					<Directory Id='bin' Name='bin'>
+					</Directory>
+				</Directory>
+			</Directory>
+		</Directory>
+
 		<Property Id="BERVIEWER_AUTO_START">1</Property>
 
 		<!-- Auto-start via REgistry -->
@@ -61,15 +76,15 @@
 				<!-- shortcut to 'start berviewer' -->
 				<Shortcut Id="ApplicationStartMenuShortCut" Directory="BerViewerStartMenuFolder"
 							Name="!(loc.StartBerViewer)" Target="[#berviewer.exe]"
-							HotKey="0" IconIndex="0" Show="normal"
+							Hotkey="0" IconIndex="0" Show="normal"
 							WorkingDirectory="bin" />
 
 				<!-- shortcut to 'Uninstall' -->
-				<Shortcut Id="UninstallProduct" name="!(loc.UninstallBerViewer)"
+				<Shortcut Id="UninstallProduct" Name="!(loc.UninstallBerViewer)"
 							Target="[SystemFolder]msiexec.exe" IconIndex="0"
 							Arguments="/x [ProductCode]" Description="!(loc.UninstallBerViewer)" />
 			</Component>
-		<DirectoryRef>
+		</DirectoryRef>
 
 		<!-- UI related -->
 		<Property Id='WIXUI_INSTALLDIR' Value="INSTALLDIR" />

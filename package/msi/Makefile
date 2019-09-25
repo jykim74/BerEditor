@@ -16,8 +16,8 @@ CC=/home/jykim/bin/wix/candle.exe
 LD=/home/jykim/bin/wix/light.exe
 PARAFFIN=/home/jykim/bin/Paraffin.exe
 
-CFLAGS = -nolog -ext WixUIExtension -ext WixUtilExtension
-LDFLAGS = -nolog -spdb -ext WixUIExtension -ext WixUtilExtension \
+CFLAGS = -ext WixUIExtension -ext WixUtilExtension
+LDFLAGS = -spdb -ext WixUIExtension -ext WixUtilExtension \
 		-loc ${LANG_FILE} -cultures:${CULTURE} -sice:ICE80
 
 sources = WixUI_InstallDir_NoLicense.wxs MyInstallDirDlg.wxs fragment.wxs BerViewer.wxs
