@@ -2,16 +2,11 @@
 <Include Id="BerViewerInclude">
   <?define CurrentBerViewerVersion="0.9.1" ?>
 
-  <!-- Update Guid 不能变 -->
-  <?define CurrentUpdateGuid="2956EB6D-8FE0-46A2-8C86-BEA1A9872841" ?>
+  <!-- BerViewer Product Guid  -->
+  <?define ProductGuid="AC80483F-C23F-4BD8-806D-C8A907D777A0" ?> <!-- Version 0.9.1 -->
 
-  <!-- Darmsc Product Guid  -->
-  <!-- <?define ProductGuid="190AF397-B2DD-4A5B-B1CD-C3E10F37D2E4" ?> (0.9.5) -->
-  <!-- <?define ProductGuid="FE289854-6C41-4607-BFC6-E4871965A930" ?> (0.9.6) -->
-  <!-- ?define ProductGuid="CB8931AB-5A75-45FC-91D9-BB2F5742ED74" ?> (0.9.7) -->
-  <?define ProductGuid="87E084FD-AE3E-4D4B-92D4-1936ABF555EF" ?>
-
-  <?define GuidOfCustomComponent="AD201805-3CBD-4834-9097-5D934F7E0000" ?>
-  <?define GuidOfAutoStartComponent="AD201805-3CBD-4834-9097-5D934F7E0001" ?>
-  <?define GuidOfStartMenuShortCutComponent="AD201805-3CBD-4834-9097-5D934F7E0002" ?>
+  <?define CurrentUpdateGuid="AC80483F-C23F-4BD8-806D-C8A907D777AF" ?>
+  <?define GuidOfCustomComponent="AC80483F-C23F-4BD8-806D-C8A907D77700" ?>
+  <?define GuidOfAutoStartComponent="AC80483F-C23F-4BD8-806D-C8A907D77701" ?>
+  <?define GuidOfStartMenuShortCutComponent="AC80483F-C23F-4BD8-806D-C8A907D77702" ?>
 </Include>
