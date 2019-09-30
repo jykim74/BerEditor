@@ -27,7 +27,7 @@ public:
 
     void initialize();
     void loadFile( const QString &filename );
-    QTextEdit* getRightText() { return rightText_; };
+    QTextEdit* getRightText() { return right_text_; };
     void showTextMsg( const QString& msg );
 
     void showWindow();
@@ -69,10 +69,10 @@ private:
 
     QSplitter       *hsplitter_;
     QSplitter       *vsplitter_;
-    BerTreeView     *leftTree_;
-    QTextEdit       *rightText_;
+    BerTreeView     *left_tree_;
+    QTextEdit       *right_text_;
     BerModel        *ber_model_;
-    QTableWidget    *rightTable_;
+    QTableWidget    *right_table_;
     QString          file_path_;
 };
 

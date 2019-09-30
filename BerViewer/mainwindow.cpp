@@ -60,8 +60,8 @@ MainWindow::~MainWindow()
 {
 //    delete ui;
     delete  ber_model_;
-    delete  leftTree_;
-    delete  rightText_;
+    delete  left_tree_;
+    delete  right_text_;
 }
 
 void MainWindow::initialize()
@@ -69,24 +69,24 @@ void MainWindow::initialize()
     hsplitter_ = new QSplitter(Qt::Horizontal);
     vsplitter_ = new QSplitter(Qt::Vertical);
 
-    leftTree_ = new BerTreeView(this);
+    left_tree_ = new BerTreeView(this);
 
 
-    rightText_ = new QTextEdit();
-    leftTree_->setTextEdit(rightText_);
-    rightTable_ = new QTableWidget;
-    leftTree_->setTable(rightTable_);
+    right_text_ = new QTextEdit();
+    left_tree_->setTextEdit(right_text_);
+    right_table_ = new QTableWidget;
+    left_tree_->setTable(right_table_);
 
 
     ber_model_ = new BerModel(this);
 
-    leftTree_->setModel(ber_model_);
+    left_tree_->setModel(ber_model_);
 
-    hsplitter_->addWidget(leftTree_);
+    hsplitter_->addWidget(left_tree_);
     hsplitter_->addWidget(vsplitter_);
 
-    vsplitter_->addWidget(rightTable_);
-    vsplitter_->addWidget(rightText_);
+    vsplitter_->addWidget(right_table_);
+    vsplitter_->addWidget(right_text_);
 
     QList <int> vsizes;
     vsizes << 1200 << 500;
@@ -117,14 +117,14 @@ void MainWindow::createTableMenu()
     labels << tr("Address") << "0" << "1" << "2" << "3" << "4" << "5" << "6" << "7" << "8" << "9"
            << "A" << "B" << "C" << "D" << "E" << "F" << tr("Text");
 
-    rightTable_->setColumnCount(18);
+    right_table_->setColumnCount(18);
 
 
     for( int i=1; i <= 16; i++ )
-        rightTable_->setColumnWidth(i, 30);
+        right_table_->setColumnWidth(i, 30);
 
-    rightTable_->setHorizontalHeaderLabels( labels );
-    rightTable_->verticalHeader()->setVisible(false);
+    right_table_->setHorizontalHeaderLabels( labels );
+    right_table_->verticalHeader()->setVisible(false);
 }
 
 void MainWindow::showWindow()
@@ -214,14 +214,14 @@ void MainWindow::createActions()
     copyAct->setShortcuts(QKeySequence::Copy);
     copyAct->setStatusTip(tr("Copy the current selection's contents to the clipboard"));
 //    connect(copyAct, &QAction::triggered, rightText_, &QTextEdit::copy);
-    connect( copyAct, &QAction::triggered, leftTree_, &BerTreeView::copy );
+    connect( copyAct, &QAction::triggered, left_tree_, &BerTreeView::copy );
     editMenu->addAction(copyAct);
     editToolBar->addAction(copyAct);
 
-    QAction *copyAsHexAct = editMenu->addAction(tr("Copy As &Hex"), leftTree_, &BerTreeView::CopyAsHex);
+    QAction *copyAsHexAct = editMenu->addAction(tr("Copy As &Hex"), left_tree_, &BerTreeView::CopyAsHex);
     copyAsHexAct->setStatusTip(tr("Copy ber data as hex"));
 
-    QAction *copyAsBase64Act = editMenu->addAction(tr("Copy As &Base64"), leftTree_, &BerTreeView::CopyAsBase64);
+    QAction *copyAsBase64Act = editMenu->addAction(tr("Copy As &Base64"), left_tree_, &BerTreeView::CopyAsBase64);
     copyAsBase64Act->setStatusTip(tr("Copy ber data as base64"));
 
     /*
@@ -321,7 +321,7 @@ void MainWindow::insertData()
 
         ber_model_->parseTree();
 
-        leftTree_->viewRoot();
+        left_tree_->viewRoot();
     }
 
 }
@@ -368,15 +368,15 @@ void MainWindow::berFileOpen(const QString berPath)
             ber_model_->parseTree();
         }
 
-        leftTree_->viewRoot();
+        left_tree_->viewRoot();
         QModelIndex ri = ber_model_->index(0,0);
-        leftTree_->expand(ri);
+        left_tree_->expand(ri);
     }
 }
 
 void MainWindow::showTextMsg(const QString &msg)
 {
-    rightText_->setText( msg );
+    right_text_->setText( msg );
 }
 
 
@@ -510,13 +510,13 @@ void MainWindow::print()
 #if QT_CONFIG(printdialog)
     QPrinter printer(QPrinter::HighResolution);
     QPrintDialog *dlg = new QPrintDialog(&printer, this);
-    if (rightText_->textCursor().hasSelection())
+    if (right_text_->textCursor().hasSelection())
         dlg->addEnabledOption(QAbstractPrintDialog::PrintSelection);
     dlg->setWindowTitle(tr("Print Document"));
     if (dlg->exec() == QDialog::Accepted)
     {
         QTextEdit txtEdit;
-        QString strText = leftTree_->GetTextView();
+        QString strText = left_tree_->GetTextView();
         txtEdit.setText(strText);
         txtEdit.print(&printer);
 //        rightText_->print(&printer);
@@ -542,7 +542,7 @@ void MainWindow::printPreview(QPrinter *printer)
     Q_UNUSED(printer);
 #else
     QTextEdit txtEdit;
-    QString strText = leftTree_->GetTextView();
+    QString strText = left_tree_->GetTextView();
     txtEdit.setText(strText);
     txtEdit.print(printer);
 //    rightText_->print(printer);
