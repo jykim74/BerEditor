@@ -15,6 +15,7 @@
 #include "sign_verify_dlg.h"
 #include "rsa_enc_dec_dlg.h"
 #include "gen_otp_dlg.h"
+#include "get_ldap_dlg.h"
 #include "about_dlg.h"
 
 #include <QtWidgets>
@@ -267,6 +268,9 @@ void MainWindow::createActions()
     QAction *insertDataAct = toolMenu->addAction(tr("&Insert data"), this, &MainWindow::insertData);
     insertDataAct->setStatusTip(tr("Insert ber data"));
 
+    QAction *getLdapAct = toolMenu->addAction(tr("&Get LDAP data"), this, &MainWindow::getLdap);
+    getLdapAct->setStatusTip(tr("Get Ber data from LDAP server"));
+
 
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
 
@@ -461,6 +465,13 @@ void MainWindow::genOTP()
     berApplet->genOTPDlg()->show();
     berApplet->genOTPDlg()->raise();
     berApplet->genOTPDlg()->activateWindow();
+}
+
+void MainWindow::getLdap()
+{
+    berApplet->getLdapDlg()->show();
+    berApplet->getLdapDlg()->raise();
+    berApplet->getLdapDlg()->activateWindow();
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
