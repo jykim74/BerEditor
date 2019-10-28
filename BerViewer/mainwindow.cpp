@@ -97,6 +97,7 @@ void MainWindow::initialize()
 #ifdef Q_OS_WIN32
     sizes << 400 << 1600;
     resize( 1940, 1024 );
+//    resize( 1024, 768 );
 #else
     sizes << 500 << 1200;
     resize( 1024, 768 );
@@ -112,11 +113,11 @@ void MainWindow::initialize()
 }
 
 void MainWindow::createTableMenu()
-{
-    QStringList labels;
-    labels << tr("Address") << "0" << "1" << "2" << "3" << "4" << "5" << "6" << "7" << "8" << "9"
-           << "A" << "B" << "C" << "D" << "E" << "F" << tr("Text");
+{    
+    QStringList     labels = { tr("Field"), "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+                               "A", "B", "C", "D", "E", "F", tr("Text") };
 
+    right_table_->horizontalHeader()->setStretchLastSection(true);
     right_table_->setColumnCount(18);
 
 
@@ -199,21 +200,11 @@ void MainWindow::createActions()
     QMenu *editMenu = menuBar()->addMenu(tr("&Edit"));
     QToolBar *editToolBar = addToolBar(tr("Edit"));
 
-    /*
-    const QIcon cutIcon = QIcon::fromTheme("edit-cut", QIcon(":/images/cut.png"));
-    QAction *cutAct = new QAction( cutIcon, tr("Cu&t"), this);
-    cutAct->setShortcut(QKeySequence::Cut);
-    cutAct->setStatusTip(tr("Cut the current selection's contents to the clipboard"));
-    connect( cutAct, &QAction::triggered, rightText_, &QTextEdit::cut);
-    editMenu->addAction(cutAct);
-    editToolBar->addAction(cutAct);
-    */
 
     const QIcon copyIcon = QIcon::fromTheme("edit-copy", QIcon(":/images/copy.png"));
     QAction *copyAct = new QAction(copyIcon, tr("&Copy"), this);
     copyAct->setShortcuts(QKeySequence::Copy);
     copyAct->setStatusTip(tr("Copy the current selection's contents to the clipboard"));
-//    connect(copyAct, &QAction::triggered, rightText_, &QTextEdit::copy);
     connect( copyAct, &QAction::triggered, left_tree_, &BerTreeView::copy );
     editMenu->addAction(copyAct);
     editToolBar->addAction(copyAct);
@@ -224,16 +215,6 @@ void MainWindow::createActions()
     QAction *copyAsBase64Act = editMenu->addAction(tr("Copy As &Base64"), left_tree_, &BerTreeView::CopyAsBase64);
     copyAsBase64Act->setStatusTip(tr("Copy ber data as base64"));
 
-    /*
-    const QIcon pasteIcon = QIcon::fromTheme("edit-paste", QIcon(":/images/paste.png"));
-    QAction *pasteAct = new QAction(pasteIcon, tr("&Paste"), this);
-    pasteAct->setShortcuts(QKeySequence::Paste);
-    pasteAct->setStatusTip(tr("Paste the clipboard's contents into the current "
-                              "selection"));
-    connect(pasteAct, &QAction::triggered, rightText_, &QTextEdit::paste);
-    editMenu->addAction(pasteAct);
-    editToolBar->addAction(pasteAct);
-    */
 
     menuBar()->addSeparator();
 
@@ -275,9 +256,6 @@ void MainWindow::createActions()
 
     QAction *aboutAct = helpMenu->addAction(tr("&About BerViewer"), this, &MainWindow::about);
     aboutAct->setStatusTip(tr("Show the BerViewer"));
-
-//    QAction *testAct = helpMenu->addAction(tr("&Test"), this, &MainWindow::test);
-//    testAct->setStatusTip(tr("This is test menu"));
 
     menuBar()->show();
 }
