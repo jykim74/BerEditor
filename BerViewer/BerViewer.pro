@@ -46,6 +46,7 @@ SOURCES += \
     gen_hash_dlg.cpp \
     gen_hmac_dlg.cpp \
     gen_otp_dlg.cpp \
+    get_ldap_dlg.cpp \
     i18n_helper.cpp \
     insert_data_dlg.cpp \
     main.cpp \
@@ -72,6 +73,7 @@ HEADERS += \
     gen_hash_dlg.h \
     gen_hmac_dlg.h \
     gen_otp_dlg.h \
+    get_ldap_dlg.h \
     i18n_helper.h \
     insert_data_dlg.h \
     mainwindow.h \
@@ -118,6 +120,7 @@ FORMS += \
         gen_hash_dlg.ui \
         gen_hmac_dlg.ui \
         gen_otp_dlg.ui \
+        get_ldap_dlg.ui \
         insert_data_dlg.ui \
         mainwindow.ui \
         oid_info_dlg.ui \

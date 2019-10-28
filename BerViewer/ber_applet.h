@@ -16,6 +16,7 @@ class RSAEncDecDlg;
 class GenOTPDlg;
 class AboutDlg;
 class EditValueDlg;
+class GetLdapDlg;
 
 class MainWindow;
 
@@ -40,6 +41,7 @@ public:
     GenOTPDlg *genOTPDlg() { return gen_otp_dlg_; };
     EditValueDlg *editValueDlg() { return edit_value_dlg_; };
     AboutDlg *aboutDlg() { return about_dlg_; };
+    GetLdapDlg *getLdapDlg() { return get_ldap_dlg_; };
     QString cmd() { return cmd_; };
 
     void messageBox(const QString& msg, QWidget *parent=0);
@@ -76,6 +78,7 @@ private:
     RSAEncDecDlg* rsa_enc_dec_dlg_;
     GenOTPDlg*    gen_otp_dlg_;
     EditValueDlg* edit_value_dlg_;
+    GetLdapDlg* get_ldap_dlg_;
 
     AboutDlg* about_dlg_;
 

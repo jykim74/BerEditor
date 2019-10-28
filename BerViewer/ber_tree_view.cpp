@@ -384,7 +384,7 @@ void BerTreeView::copy()
     clipboard->setText(strData);
 }
 
-void BerTreeView::ShowContextMenu(QPoint point)
+void BerTreeView::  ShowContextMenu(QPoint point)
 {
     BerModel *tree_model = (BerModel *)model();
 

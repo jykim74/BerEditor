@@ -4,6 +4,8 @@
 #include <QObject>
 #include "singleton.h"
 
+
+
 class AutoUpdateAdapter;
 
 class AutoUpdateService : public QObject
