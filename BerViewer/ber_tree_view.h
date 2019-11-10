@@ -13,8 +13,6 @@ class BerTreeView : public QTreeView
     Q_OBJECT
 public:
     BerTreeView( QWidget* parent = 0 );
-    void setTextEdit( QTextEdit *txtEdit );
-    void setTable( QTableWidget *table );
 
     void viewRoot();
     QString GetTextView();
@@ -35,8 +33,8 @@ public slots:
     void copy();
 
 private:
-    QTextEdit *textEdit_;
-    QTableWidget *table_;
+//    QTextEdit *textEdit_;
+//    QTableWidget *table_;
 
     QString GetInfoView( const BIN *pBer, BerItem *pItem );
     QString GetDataView( const BIN *pData, const BerItem *pItem );

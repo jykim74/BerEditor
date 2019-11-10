@@ -33,10 +33,11 @@ void BerTreeView::onItemClicked(const QModelIndex& index )
     QString strInfo;
     BerModel *tree_model = (BerModel *)model();
     BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
+    QTextEdit* rightText = berApplet->mainWindow()->rightText();
 
     BIN& binBer = tree_model->getBer();
     strInfo = GetInfoView( &binBer, item );
-    textEdit_->setText(strInfo);
+    rightText->setText(strInfo);
 
     SettingsMgr *set_mgr = berApplet->settingsMgr();
 
@@ -52,10 +53,11 @@ void BerTreeView::viewRoot()
     QString strInfo;
     BerModel *tree_model = (BerModel *)model();
     BerItem* rootItem = (BerItem *)tree_model->item(0);
+    QTextEdit* rightText = berApplet->mainWindow()->rightText();
 
     BIN& binBer = tree_model->getBer();
     strInfo = GetInfoView( &binBer, rootItem );
-    textEdit_->setText(strInfo);
+    rightText->setText(strInfo);
 
     SettingsMgr *set_mgr = berApplet->settingsMgr();
 
@@ -67,15 +69,7 @@ void BerTreeView::viewRoot()
     setExpanded( rootIndex(), true );
 }
 
-void BerTreeView::setTextEdit(QTextEdit *txtEdit)
-{
-    textEdit_ = txtEdit;
-}
 
-void BerTreeView::setTable(QTableWidget *table)
-{
-    table_ = table;
-}
 
 QString BerTreeView::GetInfoView( const BIN *pBer, BerItem *pItem)
 {
@@ -251,46 +245,48 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
 
     JS_BIN_set( &binPart, pBer->pVal + pItem->GetOffset(), pItem->GetHeaderSize() + pItem->GetLength() );
 
-    int row_cnt = table_->rowCount();
+    QTableWidget* rightTable = berApplet->mainWindow()->rightTable();
+
+    int row_cnt = rightTable->rowCount();
     for( int k = 0; k < row_cnt; k++ )
-        table_->removeRow(0);
+        rightTable->removeRow(0);
 
     for( int i = 0; i < binPart.nLen; i++ )
     {
         if( i % 16 == 0 )
         {
-            table_->insertRow(line);
+            rightTable->insertRow(line);
             QString address;
             address.sprintf( "0x%08X", i + pItem->GetOffset() );
-            table_->setItem( line, 0, new QTableWidgetItem( address ));
+            rightTable->setItem( line, 0, new QTableWidgetItem( address ));
         }
 
         hex.sprintf( "%02X", binPart.pVal[i] );
-        table_->setItem( line, (i%16)+1, new QTableWidgetItem(hex));
+        rightTable->setItem( line, (i%16)+1, new QTableWidgetItem(hex));
         if( i== 0 )
         {
-            table_->item( line, 1)->setBackgroundColor(green);
+            rightTable->item( line, 1)->setBackgroundColor(green);
         }
         else if( i== 1 )
         {
-            table_->item( line, 2)->setBackgroundColor(yellow);
+            rightTable->item( line, 2)->setBackgroundColor(yellow);
 
             if( binPart.pVal[i] & JS_LEN_XTND ) len_len = binPart.pVal[i] & JS_LEN_MASK;
         }
         else if( i <= (1 + len_len))
-            table_->item( line, i + 1 )->setBackgroundColor(cyan);
+            rightTable->item( line, i + 1 )->setBackgroundColor(cyan);
 
         text += getch( binPart.pVal[i]);
 
         if( i % 16 - 15 == 0 )
         {
-            table_->setItem( line, 17, new QTableWidgetItem(text));
+            rightTable->setItem( line, 17, new QTableWidgetItem(text));
             text.clear();
             line++;
         }
     }
 
-    if( !text.isEmpty() ) table_->setItem(line, 17, new QTableWidgetItem(text));
+    if( !text.isEmpty() ) rightTable->setItem(line, 17, new QTableWidgetItem(text));
     JS_BIN_reset(&binPart);
 }
 
@@ -309,58 +305,60 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
     int start_col = 0;
     int start_row = 0;
 
-    int row_cnt = table_->rowCount();
+    QTableWidget* rightTable = berApplet->mainWindow()->rightTable();
+
+    int row_cnt = rightTable->rowCount();
     for( int k = 0; k < row_cnt; k++ )
-        table_->removeRow(0);
+        rightTable->removeRow(0);
 
     for( int i = 0; i < pBer->nLen; i++ )
     {
         int pos = 0;
         if( i % 16 == 0 )
         {
-            table_->insertRow(line);
+            rightTable->insertRow(line);
             QString address;
             address.sprintf( "0x%08X", i );
-            table_->setItem( line, 0, new QTableWidgetItem( address ));
+            rightTable->setItem( line, 0, new QTableWidgetItem( address ));
         }
 
         hex.sprintf( "%02X", pBer->pVal[i] );
         pos = (i%16) + 1;
-        table_->setItem( line, pos, new QTableWidgetItem(hex));
+        rightTable->setItem( line, pos, new QTableWidgetItem(hex));
         if( i== pItem->GetOffset() )
         {
-            table_->item( line, pos)->setBackgroundColor(green);
+            rightTable->item( line, pos)->setBackgroundColor(green);
             start_row = line;
             start_col = pos;
         }
         else if( i== pItem->GetOffset()+1 )
         {
-            table_->item( line, pos)->setBackgroundColor(yellow);
+            rightTable->item( line, pos)->setBackgroundColor(yellow);
 
             if( pBer->pVal[i] & JS_LEN_XTND ) len_len = pBer->pVal[i] & JS_LEN_MASK;
         }
         else if( (i > pItem->GetOffset() + 1 ) && (i <= (pItem->GetOffset() + 1 + len_len)))
         {
-            table_->item( line, pos )->setBackgroundColor(cyan);
+            rightTable->item( line, pos )->setBackgroundColor(cyan);
         }
         else if( (i > pItem->GetOffset() + 1 ) && ( i < pItem->GetOffset() + pItem->GetHeaderSize() + pItem->GetLength() ))
         {
-            table_->item(line, pos )->setBackgroundColor(lightGray);
+            rightTable->item(line, pos )->setBackgroundColor(lightGray);
         }
 
         text += getch( pBer->pVal[i]);
 
         if( i % 16 - 15 == 0 )
         {
-            table_->setItem( line, 17, new QTableWidgetItem(text));
+            rightTable->setItem( line, 17, new QTableWidgetItem(text));
             text.clear();
             line++;
         }
     }
 
-    if( !text.isEmpty() ) table_->setItem(line, 17, new QTableWidgetItem(text));
-    QTableWidgetItem *item = table_->item( start_row, start_col );
-    table_->scrollToItem( item );
+    if( !text.isEmpty() ) rightTable->setItem(line, 17, new QTableWidgetItem(text));
+    QTableWidgetItem *item = rightTable->item( start_row, start_col );
+    rightTable->scrollToItem( item );
 }
 
 void BerTreeView::copy()
@@ -384,11 +382,8 @@ void BerTreeView::copy()
     clipboard->setText(strData);
 }
 
-void BerTreeView::  ShowContextMenu(QPoint point)
+void BerTreeView::ShowContextMenu(QPoint point)
 {
-    BerModel *tree_model = (BerModel *)model();
-
-
     QMenu menu(this);
     menu.addAction(tr("Copy as hex"), this, SLOT(CopyAsHex()));
     menu.addAction(tr("Copy as base64"), this, SLOT(CopyAsBase64()));

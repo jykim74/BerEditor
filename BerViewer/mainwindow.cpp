@@ -74,9 +74,7 @@ void MainWindow::initialize()
 
 
     right_text_ = new QTextEdit();
-    left_tree_->setTextEdit(right_text_);
     right_table_ = new QTableWidget;
-    left_tree_->setTable(right_table_);
 
 
     ber_model_ = new BerModel(this);

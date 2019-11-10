@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QMessageBox>
 
+class MainWindow;
 class SettingsDlg;
 class SettingsMgr;
 class DataEncoderDlg;
@@ -29,6 +30,7 @@ public:
 
     void start();
 
+    MainWindow* mainWindow() { return main_win_; };
     SettingsDlg *settingsDlg() { return settings_dlg_; };
     SettingsMgr *settingsMgr() { return settings_mgr_; };
     DataEncoderDlg *dataEncoderDlg() { return data_encoder_dlg_; };
