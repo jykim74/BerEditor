@@ -27,7 +27,8 @@ public:
 
     void initialize();
     void loadFile( const QString &filename );
-    QTextEdit* getRightText() { return right_text_; };
+    QTextEdit* rightText() { return right_text_; };
+    QTableWidget* rightTable() { return right_table_; };
     void showTextMsg( const QString& msg );
 
     void showWindow();
