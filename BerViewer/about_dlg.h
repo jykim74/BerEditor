@@ -24,6 +24,7 @@ private:
 //    Ui::AboutDlg *ui;
     Q_DISABLE_COPY(AboutDlg)
     QString version_label_;
+    QString getBuild();
 };
 
 #endif // ABOUT_DLG_H

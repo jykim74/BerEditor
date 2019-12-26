@@ -101,8 +101,10 @@ mac {
     LIBS += -framework Sparkle
     INCLUDEPATH += "/usr/local/Sparkle.framework/Headers"
 
+    INCLUDEPATH += "/usr/local/include"
     LIBS += -L"../../build-PKILib-Desktop_Qt_5_11_3_clang_64bit-Debug" -lPKILib
-    LIBS += -L"../../PKILib/lib/mac/openssl/lib" -lcrypto
+    LIBS += -L"../../PKILib/lib/mac/debug/cmpossl/lib" -lcrypto
+    LIBS += -L"/usr/local/lib" -lltdl
 }
 
 win32 {

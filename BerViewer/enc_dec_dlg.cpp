@@ -127,10 +127,12 @@ void EncDecDlg::accept()
     QString strAlg = mAlgCombo->currentText();
 
 
+    bool bPad = mPadCheck->isChecked();
+
     if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
-        ret = JS_PKI_encryptData( strAlg.toStdString().c_str(), &binSrc, &binIV, &binKey, &binOut );
+        ret = JS_PKI_encryptData( strAlg.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
     else if( mMethodCombo->currentIndex() == ENC_DECRYPT )
-        ret = JS_PKI_decryptData( strAlg.toStdString().c_str(), &binSrc, &binIV, &binKey, &binOut );
+        ret = JS_PKI_decryptData( strAlg.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
 
     char *pOut = NULL;
 

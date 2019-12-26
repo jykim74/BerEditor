@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>417</height>
+    <height>465</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -135,6 +135,13 @@
      </item>
      <item>
       <widget class="QComboBox" name="mMethodCombo"/>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="mPadCheck">
+       <property name="text">
+        <string>Padding</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

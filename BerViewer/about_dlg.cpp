@@ -1,6 +1,7 @@
 #include "about_dlg.h"
 #include "ber_applet.h"
 #include "auto_update_service.h"
+#include "js_gen.h"
 
 
 AboutDlg::AboutDlg(QWidget *parent) :
@@ -25,9 +26,21 @@ AboutDlg::AboutDlg(QWidget *parent) :
     QString strAbout = tr("This is freeware tool to decode ASN.1 and BER "
             "If you do not use this for commercial purposes, "
             "you can use it freely "
-            "If you have any opinions on this tool, please send me a mail"
-            "\r\n\r\nCopyright (C) 2019 ~ 2020 JongYeob Kim\r\n"
+            "If you have any opinions on this tool, please send me a mail\r\n" );
+
+    QString strLibVersion = JS_GEN_getBuildInfo();
+
+    strAbout += "\r\nLibrary: ";
+    strAbout += strLibVersion;
+
+    strAbout += "\r\nBuild Date: ";
+    strAbout += getBuild();
+    strAbout += "\r\n";
+
+    QString strAppend = tr( "\r\nCopyright (C) 2019 ~ 2020 JongYeob Kim\r\n"
             "mailto : jykim74@gmail.com");
+
+    strAbout += strAppend;
 
     mAboutText->setText( strAbout );
 }
@@ -37,6 +50,11 @@ AboutDlg::~AboutDlg()
 //    delete ui;
 }
 
+QString AboutDlg::getBuild()
+{
+    QString strBuild = QString( "Build Date: %1 %2").arg( __DATE__ ).arg( __TIME__ );
+    return strBuild;
+}
 
 #ifdef _AUTO_UPDATE
 void AboutDlg::checkUpdate()

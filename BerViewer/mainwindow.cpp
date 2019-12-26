@@ -348,6 +348,7 @@ void MainWindow::berFileOpen(const QString berPath)
             ber_model_->parseTree();
         }
 
+        left_tree_->header()->setVisible(false);
         left_tree_->viewRoot();
         QModelIndex ri = ber_model_->index(0,0);
         left_tree_->expand(ri);
