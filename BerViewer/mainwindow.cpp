@@ -301,6 +301,7 @@ void MainWindow::insertData()
 
         ber_model_->parseTree();
 
+        left_tree_->header()->setVisible(false);
         left_tree_->viewRoot();
     }
 
