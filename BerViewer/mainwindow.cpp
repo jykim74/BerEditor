@@ -237,6 +237,7 @@ void MainWindow::createActions()
     genOTPAct->setStatusTip(tr("Generate OTP value"));
 
     QMenu *toolMenu = menuBar()->addMenu(tr("&Tool"));
+    QToolBar *toolToolBar = addToolBar(tr("Tool"));
 
     QAction *dataEncodeAct = toolMenu->addAction(tr("Data&Encoder"), this, &MainWindow::dataEncoder);
     dataEncodeAct->setStatusTip(tr("This is tool for encoding data" ));
@@ -244,8 +245,12 @@ void MainWindow::createActions()
     QAction *oidAct = toolMenu->addAction(tr("O&ID Information"), this, &MainWindow::oidInfo);
     oidAct->setStatusTip(tr("Show OID information" ));
 
-    QAction *insertDataAct = toolMenu->addAction(tr("&Insert data"), this, &MainWindow::insertData);
+    const QIcon insertIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/insert.png"));
+    QAction *insertDataAct = new QAction(insertIcon, tr("&Insert data"), this);
+    connect( insertDataAct, &QAction::triggered, this, &MainWindow::insertData );
     insertDataAct->setStatusTip(tr("Insert ber data"));
+    toolMenu->addAction( insertDataAct );
+    toolToolBar->addAction( insertDataAct );
 
     QAction *getLdapAct = toolMenu->addAction(tr("&Get LDAP data"), this, &MainWindow::getLdap);
     getLdapAct->setStatusTip(tr("Get Ber data from LDAP server"));

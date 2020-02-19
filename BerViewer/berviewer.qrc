@@ -14,5 +14,6 @@
         <file>images/penguin_960_720.png</file>
         <file>images/berviewer.icns</file>
         <file>images/fileprint.png</file>
+        <file>images/insert.png</file>
     </qresource>
 </RCC>
