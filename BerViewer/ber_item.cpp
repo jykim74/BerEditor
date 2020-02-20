@@ -13,6 +13,8 @@ BerItem::BerItem()
     memset( header_, 0x00, sizeof(header_));
     offset_ = -1;
     level_ = -1;
+
+    setEditable(false);
 }
 
 void BerItem::SetId( int id )
