@@ -103,7 +103,9 @@ int BerModel::parseConstruct(int offset, BerItem *pParentItem)
                 next_offset += ret;
             }
             else
-                parseConstruct( offset + pItem->GetHeaderSize(), pItem );
+            {
+                if( pItem->length_ > 0 ) parseConstruct( offset + pItem->GetHeaderSize(), pItem );
+            }
         }
 
         offset = next_offset;

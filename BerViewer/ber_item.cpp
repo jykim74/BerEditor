@@ -169,7 +169,7 @@ QString BerItem::GetValueString( const BIN *pBer )
         }
     }
     else if( tag_ == JS_PRINTABLESTRING || tag_ == JS_IA5STRING || tag_ == JS_UTF8STRING \
-             || tag_ == JS_UTCTIME || tag_ == JS_GENERALIZEDTIME )
+             || tag_ == JS_UTCTIME || tag_ == JS_GENERALIZEDTIME || tag_ == JS_VISIBLESTRING )
     {
         char *pStr = NULL;
         pStr = (char *)JS_calloc(1, binVal.nLen + 1 );
