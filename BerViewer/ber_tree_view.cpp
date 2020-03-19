@@ -464,9 +464,14 @@ void BerTreeView::ExpandValue()
     if( item->GetTag() == JS_BITSTRING ) offset += 1; // skip unused bits
 
     if( item->GetIndefinite() )
+    {
         tree_model->parseIndefiniteConstruct( offset + item->GetHeaderSize(), item );
+    }
     else
-        tree_model->parseConstruct( offset + item->GetHeaderSize(), item );
+    {
+        if( item->GetLength() > 0 )
+            tree_model->parseConstruct( offset + item->GetHeaderSize(), item );
+    }
 }
 
 void BerTreeView::SaveNode()
