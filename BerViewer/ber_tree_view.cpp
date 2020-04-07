@@ -265,6 +265,8 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
 
         hex.sprintf( "%02X", binPart.pVal[i] );
         rightTable->setItem( line, (i%16)+1, new QTableWidgetItem(hex));
+        rightTable->item( line, (i%16) +1 )->setBackgroundColor(lightGray);
+
         if( i== 0 )
         {
             rightTable->item( line, 1)->setBackgroundColor(green);
@@ -279,10 +281,7 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
         {
             rightTable->item( line, i + 1 )->setBackgroundColor(cyan);
         }
-        else if( (i > (1 + len_len) ) && ( i < pItem->GetHeaderSize() + pItem->GetLength() ))
-        {
-            rightTable->item(line, i + 1 )->setBackgroundColor(lightGray);
-        }
+
 
         text += getch( binPart.pVal[i]);
 
