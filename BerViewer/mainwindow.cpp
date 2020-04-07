@@ -93,14 +93,14 @@ void MainWindow::initialize()
 
     QList<int> sizes;
 
-#ifdef Q_OS_WIN32
-    sizes << 400 << 1600;
-    resize( 1940, 1024 );
+//#ifdef Q_OS_WIN32
+//    sizes << 400 << 1600;
+//    resize( 1940, 1024 );
 //    resize( 1024, 768 );
-#else
-    sizes << 500 << 1200;
+// #else
+    sizes << 400 << 1200;
     resize( 1024, 768 );
-#endif
+// #endif
 
     hsplitter_->setSizes(sizes);
 

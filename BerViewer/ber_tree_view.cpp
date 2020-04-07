@@ -241,6 +241,8 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
     QColor green(Qt::green);
     QColor yellow(Qt::yellow);
     QColor cyan(Qt::cyan);
+    QColor lightGray(Qt::lightGray);
+
     int len_len = 0;
 
     JS_BIN_set( &binPart, pBer->pVal + pItem->GetOffset(), pItem->GetHeaderSize() + pItem->GetLength() );
@@ -274,7 +276,13 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
             if( binPart.pVal[i] & JS_LEN_XTND ) len_len = binPart.pVal[i] & JS_LEN_MASK;
         }
         else if( i <= (1 + len_len))
+        {
             rightTable->item( line, i + 1 )->setBackgroundColor(cyan);
+        }
+        else if( (i > (1 + len_len) ) && ( i < pItem->GetHeaderSize() + pItem->GetLength() ))
+        {
+            rightTable->item(line, i + 1 )->setBackgroundColor(lightGray);
+        }
 
         text += getch( binPart.pVal[i]);
 
