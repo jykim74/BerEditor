@@ -68,6 +68,7 @@ private:
 
     void createTableMenu();
     void berFileOpen( const QString berPath );
+    void setTitle( const QString strName );
 
     QSplitter       *hsplitter_;
     QSplitter       *vsplitter_;

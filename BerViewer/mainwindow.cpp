@@ -308,6 +308,8 @@ void MainWindow::insertData()
 
         left_tree_->header()->setVisible(false);
         left_tree_->viewRoot();
+
+        setTitle( QString("Unknown" ));
     }
 
 }
@@ -323,6 +325,7 @@ void MainWindow::open()
     {
         berFileOpen(fileName);
         file_path_ = fileName;
+        setTitle( fileName );
     }
 }
 
@@ -359,6 +362,13 @@ void MainWindow::berFileOpen(const QString berPath)
         QModelIndex ri = ber_model_->index(0,0);
         left_tree_->expand(ri);
     }
+}
+
+void MainWindow::setTitle( const QString strName )
+{
+   QString strWinTitle = QString( "%1 - %2" ).arg( berApplet->getBrand() ).arg( strName );
+
+   setWindowTitle( strWinTitle );
 }
 
 void MainWindow::showTextMsg(const QString &msg)
@@ -471,6 +481,8 @@ void MainWindow::dropEvent(QDropEvent *event)
         qDebug() << "Dropped file:" << fileName;
         berFileOpen(fileName);
         file_path_ = fileName;
+
+        setTitle( fileName );
         return;
     }
 }

@@ -13,7 +13,7 @@ qtHaveModule(printsupport): QT += printsupport
 
 TARGET = BerViewer
 TEMPLATE = app
-PROJECT_VERSION = "0.9.1"
+PROJECT_VERSION = "0.9.3"
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -113,7 +113,8 @@ win32 {
 
     LIBS += -L"../../PKILib/lib/win32/winsparkle/Release" -lWinSparkle
 
-    LIBS += -L"../../build-PKILib-Desktop_Qt_5_13_2_MinGW_32_bit-Debug/debug" -lPKILib
+#    LIBS += -L"../../build-PKILib-Desktop_Qt_5_13_2_MinGW_32_bit-Debug/debug" -lPKILib
+    LIBS += -L"../../build-PKILib-Desktop_Qt_5_13_2_MinGW_32_bit-Release/release" -lPKILib
     LIBS += -L"../../PKILib/lib/win32/debug/cmpossl/lib" -lcrypto
     LIBS += -L"../../PKILib/lib/win32/ltdl/lib" -lltdl
 }
