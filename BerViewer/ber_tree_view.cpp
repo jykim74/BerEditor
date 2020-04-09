@@ -81,32 +81,35 @@ QString BerTreeView::GetInfoView( const BIN *pBer, BerItem *pItem)
     JS_BIN_set( &bin, pBer->pVal + pItem->GetOffset(), 1 );
     JS_BIN_bitString( &bin, &pBitString );
 
-    strPart.sprintf( "[T] %s ", pBitString );
+    strPart.sprintf( "[T] <b>%s</b> ", pBitString );
     strView += strPart;
 
-    strPart = "Class: " + pItem->GetClassString();
+    strPart = "Class: <b>" + pItem->GetClassString();
+    strPart += "</b>";
+
     strView += strPart;
 
-    strPart.sprintf( "  ID: %d(0x%X)", pItem->GetId(), pItem->GetId());
+    strPart.sprintf( "  ID: <b>%d(0x%X)</b>", pItem->GetId(), pItem->GetId());
     strView += strPart;
 
+    strPart = "  P/C: ";
     if( (pItem->GetId() & JS_FORM_MASK) == JS_CONSTRUCTED )
-        strPart = " Construted";
+        strPart += " <b>Constructed</b>";
     else
-        strPart = " Primitive";
+        strPart += " <b>Primitive</b>";
 
     strView += strPart;
 
-    strPart.sprintf( "  Tag: %d(0x%X)", pItem->GetTag(), pItem->GetTag());
+    strPart.sprintf( "  Tag: <b>%d(0x%X)</b>", pItem->GetTag(), pItem->GetTag());
     strView += strPart;
 
-    strPart.sprintf("  Offset: %d(0x%X)", pItem->GetOffset(), pItem->GetOffset());
+    strPart.sprintf("  Offset: <b>%d(0x%X)</b>", pItem->GetOffset(), pItem->GetOffset());
     strView += strPart;
 
-    strPart.sprintf("  Length: %d(0x%X)", pItem->GetLength(), pItem->GetLength());
+    strPart.sprintf("  Length: <b>%d(0x%X)</b>", pItem->GetLength(), pItem->GetLength());
     strView += strPart;
 
-    strPart.sprintf( "  Level: %d", pItem->GetLevel() );
+    strPart.sprintf( "  Level: <b>%d</b>", pItem->GetLevel() );
     strView += strPart;
 
 //    BIN binPart = {0,0};
@@ -118,18 +121,18 @@ QString BerTreeView::GetInfoView( const BIN *pBer, BerItem *pItem)
 
     if( pItem->GetId() && JS_CONSTRUCTED )
     {
-        strView += "\r\n\r\n[";
+        strView += "<p><p>[";
         strView += pItem->GetTagString();
-        strView += "]\r\n";
+        strView += "]<p>";
     }
     else {
-        strView += "\r\n\r\n[ Value ]\r\n";
+        strView += "<p><p>[ Value ]<p>";
 
         for( int i=0; (i*80) < strPartNL.length(); i++ )
         {
             QString strTmp = strPartNL.mid( 80 * i, 80 );
             strView += strTmp;
-            strView += "\r\n";
+            strView += "<br>";
         }
     }
 
