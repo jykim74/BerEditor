@@ -87,7 +87,7 @@ QString BerTreeView::GetInfoView( const BIN *pBer, BerItem *pItem)
     strPart = "Class: " + pItem->GetClassString();
     strView += strPart;
 
-    strPart.sprintf( "  ID: %d", pItem->GetId());
+    strPart.sprintf( "  ID: %d(0x%X)", pItem->GetId(), pItem->GetId());
     strView += strPart;
 
     if( (pItem->GetId() & JS_FORM_MASK) == JS_CONSTRUCTED )
@@ -97,16 +97,16 @@ QString BerTreeView::GetInfoView( const BIN *pBer, BerItem *pItem)
 
     strView += strPart;
 
-    strPart.sprintf( "  TAG: %d", pItem->GetTag());
+    strPart.sprintf( "  Tag: %d(0x%X)", pItem->GetTag(), pItem->GetTag());
     strView += strPart;
 
-    strPart.sprintf("  OFFSET: %d(%xh)", pItem->GetOffset(), pItem->GetOffset());
+    strPart.sprintf("  Offset: %d(0x%X)", pItem->GetOffset(), pItem->GetOffset());
     strView += strPart;
 
-    strPart.sprintf("  LENGTH: %d(%xh)", pItem->GetLength(), pItem->GetLength());
+    strPart.sprintf("  Length: %d(0x%X)", pItem->GetLength(), pItem->GetLength());
     strView += strPart;
 
-    strPart.sprintf( "\r\nLEVEL: %d", pItem->GetLevel() );
+    strPart.sprintf( "  Level: %d", pItem->GetLevel() );
     strView += strPart;
 
 //    BIN binPart = {0,0};
@@ -123,7 +123,7 @@ QString BerTreeView::GetInfoView( const BIN *pBer, BerItem *pItem)
         strView += "]\r\n";
     }
     else {
-        strView += "\r\n\r\n[ VALUE ]\r\n";
+        strView += "\r\n\r\n[ Value ]\r\n";
 
         for( int i=0; (i*80) < strPartNL.length(); i++ )
         {
