@@ -23,8 +23,7 @@ private slots:
 
 private:
     void initialize();
-
-
+    bool isCCM( const QString strAlg );
 };
 
 #endif // ENC_DEC_DLG_H

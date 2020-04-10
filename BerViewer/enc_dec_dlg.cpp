@@ -28,7 +28,9 @@ static QStringList algTypes = {
 };
 
 static QStringList algAETypes = {
+    "aes-128-ccm",
     "aes-256-ccm",
+    "aes-128-gcm",
     "aes-256-gcm"
 };
 
@@ -138,7 +140,7 @@ void EncDecDlg::accept()
         {
             char *pTag = NULL;
 
-            if( strAlg == "aes-256-ccm" )
+            if( isCCM(strAlg) )
                 ret = JS_PKI_encryptCCM( strAlg.toStdString().c_str(), bPad, &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
             else
                 ret = JS_PKI_encrytGCM( strAlg.toStdString().c_str(), bPad, &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
@@ -162,7 +164,7 @@ void EncDecDlg::accept()
             else if( mTagTypeCombo->currentIndex() == DATA_BASE64 )
                 JS_BIN_decodeBase64( strTag.toStdString().c_str(), &binTag );
 
-            if( strAlg == "aes-256-ccm" )
+            if( isCCM( strAlg ) )
                 ret = JS_PKI_decryptCCM( strAlg.toStdString().c_str(), bPad, &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
             else if( strAlg == "aes-256-gcm" )
                 ret = JS_PKI_decryptGCM( strAlg.toStdString().c_str(), bPad, &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
@@ -221,4 +223,19 @@ void EncDecDlg::clickUseAE()
     mAADTypeCombo->setEnabled( bStatus );
     mTagText->setEnabled( bStatus );
     mTagTypeCombo->setEnabled( bStatus );
+}
+
+
+bool EncDecDlg::isCCM( const QString strAlg )
+{
+    QStringList strList = strAlg.split( "-" );
+
+    if( strList.size() < 3 ) return false;
+
+    QString strMode = strList.at(2);
+
+    if( strMode == "ccm" || strMode == "CCM" )
+        return true;
+
+    return false;
 }
