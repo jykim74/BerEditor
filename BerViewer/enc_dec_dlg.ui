@@ -119,6 +119,59 @@
     </layout>
    </item>
    <item>
+    <widget class="QCheckBox" name="mUseAECheck">
+     <property name="text">
+      <string>Use AE(Authenticated Encryption)</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_7">
+     <item>
+      <widget class="QLabel" name="label_6">
+       <property name="minimumSize">
+        <size>
+         <width>30</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>AAD</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="mAADTypeCombo"/>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="mAADText"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_8">
+     <item>
+      <widget class="QLabel" name="label_7">
+       <property name="minimumSize">
+        <size>
+         <width>30</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Tag</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="mTagTypeCombo"/>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="mTagText"/>
+     </item>
+    </layout>
+   </item>
+   <item>
     <widget class="QLabel" name="label_4">
      <property name="text">
       <string>Method</string>

@@ -19,6 +19,7 @@ public:
 private slots:
     void showEvent(QShowEvent *event );
     virtual void accept();
+    void clickUseAE();
 
 private:
     void initialize();
