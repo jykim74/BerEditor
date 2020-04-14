@@ -166,7 +166,7 @@ void EncDecDlg::accept()
 
             if( isCCM( strAlg ) )
                 ret = JS_PKI_decryptCCM( strAlg.toStdString().c_str(), bPad, &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
-            else if( strAlg == "aes-256-gcm" )
+            else
                 ret = JS_PKI_decryptGCM( strAlg.toStdString().c_str(), bPad, &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
         }
     }
