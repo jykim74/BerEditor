@@ -471,7 +471,10 @@ void BerTreeView::ExpandValue()
     BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
 
     int offset = item->GetOffset();
-    if( item->GetTag() == JS_BITSTRING ) offset += 1; // skip unused bits
+    if( item->GetTag() == JS_BITSTRING )
+    {
+        offset += 1; // skip unused bits
+    }
 
     if( item->GetIndefinite() )
     {

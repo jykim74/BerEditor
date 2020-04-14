@@ -83,6 +83,7 @@ int BerModel::parseConstruct(int offset, BerItem *pParentItem)
 
         if( next_offset <= 0 ) return -1;
 
+
         pItem->setText( pItem->GetInfoString( &binBer_));
 
 
@@ -105,6 +106,11 @@ int BerModel::parseConstruct(int offset, BerItem *pParentItem)
             else
             {
                 if( pItem->length_ > 0 ) parseConstruct( offset + pItem->GetHeaderSize(), pItem );
+
+                int end = start_offset + pParentItem->GetLength();
+                if( pParentItem->GetTag() == JS_BITSTRING ) end--;
+
+                if( next_offset >= end ) break;
             }
         }
 
