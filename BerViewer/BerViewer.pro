@@ -108,6 +108,7 @@ mac {
 }
 
 win32 {
+    RC_ICONS = berviewer.ico
     INCLUDEPATH += "../../PKILib/lib/win32/winsparkle/include"
 
 

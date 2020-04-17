@@ -118,6 +118,9 @@ void MainWindow::createTableMenu()
 
     right_table_->horizontalHeader()->setStretchLastSection(true);
     right_table_->setColumnCount(18);
+    QString style = "QHeaderView::section {background-color:#404040;color:#FFFFFF;}";
+
+    right_table_->horizontalHeader()->setStyleSheet( style );
 
 
     for( int i=1; i <= 16; i++ )

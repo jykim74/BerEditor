@@ -264,6 +264,7 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
             QString address;
             address.sprintf( "0x%08X", i + pItem->GetOffset() );
             rightTable->setItem( line, 0, new QTableWidgetItem( address ));
+            rightTable->item( line, 0 )->setBackgroundColor( QColor(220,220,250) );
         }
 
         hex.sprintf( "%02X", binPart.pVal[i] );
@@ -291,12 +292,18 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
         if( i % 16 - 15 == 0 )
         {
             rightTable->setItem( line, 17, new QTableWidgetItem(text));
+            rightTable->item( line, 17 )->setBackgroundColor(QColor(210,240,210));
             text.clear();
             line++;
         }
     }
 
-    if( !text.isEmpty() ) rightTable->setItem(line, 17, new QTableWidgetItem(text));
+    if( !text.isEmpty() )
+    {
+        rightTable->setItem(line, 17, new QTableWidgetItem(text));
+        rightTable->item( line, 17 )->setBackgroundColor(QColor(210,240,210));
+    }
+
     JS_BIN_reset(&binPart);
 }
 
@@ -330,6 +337,7 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
             QString address;
             address.sprintf( "0x%08X", i );
             rightTable->setItem( line, 0, new QTableWidgetItem( address ));
+            rightTable->item( line, 0 )->setBackgroundColor( QColor(220,220,250) );
         }
 
         hex.sprintf( "%02X", pBer->pVal[i] );
@@ -361,12 +369,18 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
         if( i % 16 - 15 == 0 )
         {
             rightTable->setItem( line, 17, new QTableWidgetItem(text));
+            rightTable->item( line, 17 )->setBackgroundColor(QColor(210,240,210));
             text.clear();
             line++;
         }
     }
 
-    if( !text.isEmpty() ) rightTable->setItem(line, 17, new QTableWidgetItem(text));
+    if( !text.isEmpty() )
+    {
+        rightTable->setItem(line, 17, new QTableWidgetItem(text));
+        rightTable->item( line, 17 )->setBackgroundColor(QColor(210,240,210));
+    }
+
     QTableWidgetItem *item = rightTable->item( start_row, start_col );
     rightTable->scrollToItem( item );
 }
