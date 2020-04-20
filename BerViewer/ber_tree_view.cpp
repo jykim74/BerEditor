@@ -24,6 +24,10 @@ BerTreeView::BerTreeView( QWidget *parent )
 
     setItemDelegate( new BerItemDelegate(this));
 
+ //   QFile qss(":/berviewer.qss");
+ //   qss.open( QFile::ReadOnly );
+ //   setStyleSheet(qss.readAll());
+
     connect( this, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(ShowContextMenu(QPoint)));
 }
 

@@ -16,6 +16,9 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain( "jssoft.com" );
     QCoreApplication::setApplicationName( "BerViewer" );
 
+    QFile qss(":/berviewer.qss");
+    qss.open( QFile::ReadOnly );
+    app.setStyleSheet(qss.readAll());
 
     QCommandLineParser parser;
     parser.setApplicationDescription( QCoreApplication::applicationName());
