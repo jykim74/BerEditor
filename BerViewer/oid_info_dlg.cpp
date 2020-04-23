@@ -19,6 +19,7 @@ OIDInfoDlg::OIDInfoDlg(QWidget *parent) :
     initialize();
 
     connect( mFindBtn, SIGNAL(clicked()), this, SLOT(findOID()));
+    connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(closeDlg()));
 }
 
 OIDInfoDlg::~OIDInfoDlg()
@@ -35,6 +36,11 @@ void OIDInfoDlg::initialize()
 
 
     mInputTypeCombo->addItems( oidList );
+}
+
+void OIDInfoDlg::closeDlg()
+{
+    close();
 }
 
 void OIDInfoDlg::findOID()
@@ -71,7 +77,7 @@ void OIDInfoDlg::findOID()
    mOIDText->setText( sOID );
    JS_PKI_getOIDFromString( sOID, &binOID );
    JS_BIN_encodeHex( &binOID, &pHex );
-   mOIDHexText->setText( &pHex[2] ); // skip TL values
+   mOIDHexText->setText( pHex );
    mSNText->setText( JS_PKI_getSNFromOID(sOID));
    mLNText->setText(JS_PKI_getLNFromOID(sOID));
 

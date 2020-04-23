@@ -19,6 +19,7 @@ public:
 private slots:
     virtual void accept();
     void findOID();
+    void closeDlg();
 
 private:
     void initialize();

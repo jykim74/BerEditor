@@ -53,7 +53,8 @@
         <location filename="../about_dlg.cpp" line="26"/>
         <source>This is freeware tool to decode ASN.1 and BER If you do not use this for commercial purposes, you can use it freely If you have any opinions on this tool, please send me a mail<byte value="xd"/>
 </source>
-        <translation>이 프로그램은 ASN.1 과 BER 디코딩을 위한 프리웨어 소프트웨어 이다. 상업적 목적이 아니면 자유롭게 사용 할 수 있습니다. 의견이나 요청이 있으면 메일로 연락주세요 메일주소:jykim74@gmail.com</translation>
+        <translation>이 프로그램은 ASN.1 과 BER 디코딩을 위한 프리웨어 소프트웨어 이다. 상업적 목적이 아니면 자유롭게 사용 할 수 있습니다. 의견이나 요청이 있으면 메일로 연락주세요
+</translation>
     </message>
     <message>
         <location filename="../about_dlg.cpp" line="40"/>

@@ -75,7 +75,7 @@
 
 				<!-- shortcut to 'start berviewer' -->
 				<Shortcut Id="ApplicationStartMenuShortCut" Directory="BerViewerStartMenuFolder"
-							Name="!(loc.StartBerViewer)" Target="[#berviewer.exe]"
+							Name="!(loc.AppName)" Target="[#berviewer.exe]"
 							Hotkey="0" IconIndex="0" Show="normal"
 							WorkingDirectory="bin" />
 
@@ -91,14 +91,17 @@
 		<UI>
 			<UIRef Id='WixUI_InstallDir_NoLicense' />
 			<UIRef Id='WixUI_ErrorProgressText' />
+<!--
 			<Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="LaunchApplication">
-				<!-- Launch BerViewer after setup. -->
 				(NOT Installed) AND (NOT SUPPRESS_LAUNCH_BERVIEWER_AFTER_INSTALL_FINISH)
 			</Publish>
+-->
 		</UI>
 
+<!--
 		<Property Id="WixShellExecTarget" Value="[#berviewer.exe]" />
-		<CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
+        <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
+-->
 
 		<Feature Id='Main' Level='1'>
 			<ComponentRef Id='BerViewer_StartMenuShortCut' />
