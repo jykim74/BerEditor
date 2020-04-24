@@ -387,87 +387,75 @@ void MainWindow::about()
                        tr("The <b>BerViewer</b> is ASN.1 and BER viewer(Version:%1)").arg(STRINGIZE(BER_VIEWER_VERSION)));
                        */
 
-    berApplet->aboutDlg()->show();
-    berApplet->aboutDlg()->raise();
-    berApplet->aboutDlg()->activateWindow();
+    AboutDlg aboutDlg;
+    aboutDlg.exec();
 }
 
 
 void MainWindow::setting()
 {
-    berApplet->settingsDlg()->show();
-    berApplet->settingsDlg()->raise();
-    berApplet->settingsDlg()->activateWindow();
+    SettingsDlg settingsDlg;
+    settingsDlg.exec();
 }
 
 void MainWindow::test()
 {
-    berApplet->settingsDlg()->show();
-    berApplet->settingsDlg()->raise();
-    berApplet->settingsDlg()->activateWindow();
+    SettingsDlg settingsDlg;
+    settingsDlg.exec();
 }
 
 void MainWindow::dataEncoder()
 {
-    berApplet->dataEncoderDlg()->show();
-    berApplet->dataEncoderDlg()->raise();
-    berApplet->dataEncoderDlg()->activateWindow();
+    DataEncoderDlg dataEncoderDlg;
+    dataEncoderDlg.exec();
 }
 
 void MainWindow::hash()
 {
-    berApplet->genHashDlg()->show();
-    berApplet->genHashDlg()->raise();
-    berApplet->genHashDlg()->activateWindow();
+    GenHashDlg genHashDlg;
+    genHashDlg.exec();
 }
 
 void MainWindow::hmac()
 {
-    berApplet->genHmacDlg()->show();
-    berApplet->genHmacDlg()->raise();
-    berApplet->genHmacDlg()->activateWindow();
+    GenHashDlg genHmacDlg;
+    genHmacDlg.exec();
 }
 
 void MainWindow::oidInfo()
 {
-    berApplet->oidInfoDlg()->show();
-    berApplet->oidInfoDlg()->raise();
-    berApplet->oidInfoDlg()->activateWindow();
+    OIDInfoDlg oidInfoDlg;
+    oidInfoDlg.exec();
 }
 
 void MainWindow::encDec()
 {
-    berApplet->encDecDlg()->show();
-    berApplet->encDecDlg()->raise();
-    berApplet->encDecDlg()->activateWindow();
+    EncDecDlg encDecDlg;
+    encDecDlg.exec();
 }
 
 void MainWindow::signVerify()
 {
-    berApplet->signVerifyDlg()->show();
-    berApplet->signVerifyDlg()->raise();
-    berApplet->signVerifyDlg()->activateWindow();
+    SignVerifyDlg signVerifyDlg;
+    signVerifyDlg.exec();
 }
 
 void MainWindow::rsaEncDec()
 {
-    berApplet->rsaEncDecDlg()->show();
-    berApplet->rsaEncDecDlg()->raise();
-    berApplet->rsaEncDecDlg()->activateWindow();
+    RSAEncDecDlg rsaEncDecDlg;
+    rsaEncDecDlg.exec();
 }
 
 void MainWindow::genOTP()
 {
-    berApplet->genOTPDlg()->show();
-    berApplet->genOTPDlg()->raise();
-    berApplet->genOTPDlg()->activateWindow();
+    GenOTPDlg genOTPDlg;
+    genOTPDlg.exec();
 }
 
 void MainWindow::getLdap()
 {
-    berApplet->getLdapDlg()->show();
-    berApplet->getLdapDlg()->raise();
-    berApplet->getLdapDlg()->activateWindow();
+    GetLdapDlg getLdapDlg;
+    getLdapDlg.exec();
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)

@@ -555,8 +555,9 @@ void BerTreeView::EditValue()
     BerModel *tree_model = (BerModel *)model();
     BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
 
-    berApplet->editValueDlg()->setItem( item );
-    berApplet->editValueDlg()->show();
-    berApplet->editValueDlg()->raise();
-    berApplet->editValueDlg()->activateWindow();
+    EditValueDlg editValueDlg;
+    editValueDlg.setItem( item );
+    editValueDlg.exec();
+
+    onItemClicked(index);
 }

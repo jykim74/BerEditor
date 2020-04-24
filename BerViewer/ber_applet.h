@@ -5,19 +5,8 @@
 #include <QMessageBox>
 
 class MainWindow;
-class SettingsDlg;
+
 class SettingsMgr;
-class DataEncoderDlg;
-class GenHashDlg;
-class GenHmacDlg;
-class OIDInfoDlg;
-class EncDecDlg;
-class SignVerifyDlg;
-class RSAEncDecDlg;
-class GenOTPDlg;
-class AboutDlg;
-class EditValueDlg;
-class GetLdapDlg;
 
 class MainWindow;
 
@@ -31,19 +20,8 @@ public:
     void start();
 
     MainWindow* mainWindow() { return main_win_; };
-    SettingsDlg *settingsDlg() { return settings_dlg_; };
     SettingsMgr *settingsMgr() { return settings_mgr_; };
-    DataEncoderDlg *dataEncoderDlg() { return data_encoder_dlg_; };
-    GenHashDlg *genHashDlg() { return gen_hash_dlg_; };
-    GenHmacDlg *genHmacDlg() { return gen_hmac_dlg_; };
-    OIDInfoDlg *oidInfoDlg() { return oid_info_dlg_; };
-    EncDecDlg *encDecDlg() { return enc_dec_dlg_; };
-    SignVerifyDlg *signVerifyDlg() { return sign_verify_dlg_; };
-    RSAEncDecDlg *rsaEncDecDlg() { return rsa_enc_dec_dlg_; };
-    GenOTPDlg *genOTPDlg() { return gen_otp_dlg_; };
-    EditValueDlg *editValueDlg() { return edit_value_dlg_; };
-    AboutDlg *aboutDlg() { return about_dlg_; };
-    GetLdapDlg *getLdapDlg() { return get_ldap_dlg_; };
+
     QString cmd() { return cmd_; };
 
     void messageBox(const QString& msg, QWidget *parent=0);
@@ -69,20 +47,9 @@ private:
     Q_DISABLE_COPY(BerApplet)
 
     MainWindow* main_win_;
-    SettingsDlg* settings_dlg_;
-    SettingsMgr* settings_mgr_;
-    DataEncoderDlg* data_encoder_dlg_;
-    GenHashDlg* gen_hash_dlg_;
-    GenHmacDlg* gen_hmac_dlg_;
-    OIDInfoDlg* oid_info_dlg_;
-    EncDecDlg* enc_dec_dlg_;
-    SignVerifyDlg* sign_verify_dlg_;
-    RSAEncDecDlg* rsa_enc_dec_dlg_;
-    GenOTPDlg*    gen_otp_dlg_;
-    EditValueDlg* edit_value_dlg_;
-    GetLdapDlg* get_ldap_dlg_;
 
-    AboutDlg* about_dlg_;
+    SettingsMgr* settings_mgr_;
+
 
     bool started_;
     bool in_exit_;

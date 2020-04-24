@@ -73,6 +73,8 @@ void EditValueDlg::accept()
     }
 
     memcpy( &binBer.pVal[ber_item_->GetOffset() + ber_item_->GetHeaderSize()], binNewVal.pVal, binNewVal.nLen );
+    ber_item_->setText( ber_item_->GetInfoString( &binBer ));
+
     JS_BIN_reset( &binNewVal );
     QDialog::accept();
 }

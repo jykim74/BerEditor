@@ -28,19 +28,8 @@ BerApplet *berApplet;
 BerApplet::BerApplet(QObject *parent) : QObject(parent)
 {
     main_win_ = new MainWindow;
-    settings_dlg_ = new SettingsDlg;
+
     settings_mgr_ = new SettingsMgr;
-    data_encoder_dlg_ = new DataEncoderDlg;
-    gen_hash_dlg_ = new GenHashDlg;
-    gen_hmac_dlg_ = new GenHmacDlg;
-    oid_info_dlg_ = new OIDInfoDlg;
-    about_dlg_ = new AboutDlg;
-    enc_dec_dlg_ = new EncDecDlg;
-    sign_verify_dlg_ = new SignVerifyDlg;
-    rsa_enc_dec_dlg_ = new RSAEncDecDlg;
-    gen_otp_dlg_ = new GenOTPDlg;
-    edit_value_dlg_ = new EditValueDlg;
-    get_ldap_dlg_ = new GetLdapDlg;
 
     started_ = false;
     in_exit_ = false;

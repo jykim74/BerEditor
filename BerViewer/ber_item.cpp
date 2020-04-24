@@ -186,6 +186,13 @@ QString BerItem::GetValueString( const BIN *pBer )
 //        strVal.sprintf( "%s(%d bits unused)", pBitStr, iUnused );
         JS_free(pBitStr);
     }
+    else if( tag_ == JS_BOOLEAN )
+    {
+        if( binVal.pVal[0] == 0x00 )
+            strVal = "False";
+        else
+            strVal = "True";
+    }
     else {
         char *pHex = NULL;
         JS_BIN_encodeHex( &binVal, &pHex );
@@ -250,6 +257,11 @@ QString BerItem::GetInfoString(const BIN *pBer)
     {
         strVal = GetValueString(pBer);
         strMsg = QString( "%1 '%2'").arg( strTag).arg( strVal);
+    }
+    else if( tag_ == JS_BOOLEAN )
+    {
+        strVal = GetValueString( pBer );
+        strMsg = QString( "%1(%2)").arg( strTag ).arg( strVal );
     }
 
     if( tag_ == 0 && id_ == 0 && length_ == 0 )
