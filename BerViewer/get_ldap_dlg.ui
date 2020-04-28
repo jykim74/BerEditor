@@ -14,64 +14,108 @@
    <string>Getting LDAP data</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="3" column="0">
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>Host</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0" colspan="2">
+   <item row="7" column="0" colspan="2">
     <widget class="QLabel" name="label_4">
      <property name="text">
       <string>Search Condition</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
-    <widget class="QLineEdit" name="mHostText"/>
+   <item row="5" column="3">
+    <widget class="QLineEdit" name="mPortText"/>
    </item>
-   <item row="2" column="0" colspan="2">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>LDAP Information</string>
+   <item row="1" column="0" colspan="4">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QCheckBox" name="mURIUseCheck">
-     <property name="text">
-      <string>Use URI</string>
+   <item row="3" column="0" colspan="4">
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </item>
-   <item row="1" column="1" colspan="3">
-    <widget class="QLineEdit" name="mURIText"/>
+   <item row="8" column="2">
+    <widget class="QLabel" name="label_9">
+     <property name="text">
+      <string>Type</string>
+     </property>
+    </widget>
    </item>
-   <item row="7" column="1" colspan="3">
-    <widget class="QLineEdit" name="mDNText"/>
+   <item row="10" column="0">
+    <widget class="QLabel" name="label_5">
+     <property name="text">
+      <string>DN</string>
+     </property>
+    </widget>
    </item>
-   <item row="6" column="0">
+   <item row="9" column="0">
     <widget class="QLabel" name="label_7">
      <property name="text">
       <string>Filter</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="2">
+   <item row="5" column="1">
+    <widget class="QLineEdit" name="mHostText"/>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Host</string>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="1" colspan="3">
+    <widget class="QLineEdit" name="mDNText"/>
+   </item>
+   <item row="4" column="0" colspan="2">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>LDAP Information</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="3">
+    <widget class="QComboBox" name="mTypeCombo"/>
+   </item>
+   <item row="5" column="2">
     <widget class="QLabel" name="label_6">
      <property name="text">
       <string>Port</string>
      </property>
     </widget>
    </item>
-   <item row="8" column="3">
+   <item row="2" column="0">
+    <widget class="QCheckBox" name="mURIUseCheck">
+     <property name="text">
+      <string>Use URI</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="1">
+    <widget class="QComboBox" name="mScopeCombo"/>
+   </item>
+   <item row="11" column="3">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="1" colspan="3">
+    <widget class="QLineEdit" name="mFilterText"/>
+   </item>
+   <item row="8" column="0">
+    <widget class="QLabel" name="label_8">
+     <property name="text">
+      <string>Scope</string>
      </property>
     </widget>
    </item>
@@ -82,38 +126,15 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="3">
-    <widget class="QLineEdit" name="mPortText"/>
+   <item row="2" column="1" colspan="3">
+    <widget class="QLineEdit" name="mURIText"/>
    </item>
-   <item row="5" column="3">
-    <widget class="QComboBox" name="mTypeCombo"/>
-   </item>
-   <item row="7" column="0">
-    <widget class="QLabel" name="label_5">
-     <property name="text">
-      <string>DN</string>
+   <item row="6" column="0" colspan="4">
+    <widget class="Line" name="line_3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
      </property>
     </widget>
-   </item>
-   <item row="5" column="1">
-    <widget class="QComboBox" name="mScopeCombo"/>
-   </item>
-   <item row="5" column="0">
-    <widget class="QLabel" name="label_8">
-     <property name="text">
-      <string>Scope</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="2">
-    <widget class="QLabel" name="label_9">
-     <property name="text">
-      <string>Type</string>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="1" colspan="3">
-    <widget class="QLineEdit" name="mFilterText"/>
    </item>
   </layout>
  </widget>

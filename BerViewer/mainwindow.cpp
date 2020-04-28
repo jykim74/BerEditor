@@ -418,7 +418,7 @@ void MainWindow::hash()
 
 void MainWindow::hmac()
 {
-    GenHashDlg genHmacDlg;
+    GenHmacDlg genHmacDlg;
     genHmacDlg.exec();
 }
 
