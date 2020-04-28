@@ -11,6 +11,7 @@ static const char *hashTypes[] = {
     "md5",
     "sha1",
     "sha224",
+    "sha256",
     "sha384",
     "sha512"
 };
@@ -44,21 +45,23 @@ void GenHashDlg::accept()
 
     if( inputStr.isEmpty() )
     {
-        berApplet->warningBox( tr( "You have to insert data" ), this );
-        return;
+ //       berApplet->warningBox( tr( "You have to insert data" ), this );
+ //       return;
     }
-
-    if( mInputStringBtn->isChecked() )
-        JS_BIN_set( &binSrc, (unsigned char *)inputStr.toStdString().c_str(), inputStr.length() );
-    else if( mInputHexBtn->isChecked() )
+    else
     {
-        inputStr.remove(QRegExp("[\t\r\n\\s]"));
-        JS_BIN_decodeHex( inputStr.toStdString().c_str(), &binSrc );
-    }
-    else if( mInputBase64Btn->isChecked() )
-    {
-        inputStr.remove(QRegExp("[\t\r\n\\s]"));
-        JS_BIN_decodeBase64( inputStr.toStdString().c_str(), &binSrc );
+        if( mInputStringBtn->isChecked() )
+            JS_BIN_set( &binSrc, (unsigned char *)inputStr.toStdString().c_str(), inputStr.length() );
+        else if( mInputHexBtn->isChecked() )
+        {
+            inputStr.remove(QRegExp("[\t\r\n\\s]"));
+            JS_BIN_decodeHex( inputStr.toStdString().c_str(), &binSrc );
+        }
+        else if( mInputBase64Btn->isChecked() )
+        {
+            inputStr.remove(QRegExp("[\t\r\n\\s]"));
+            JS_BIN_decodeBase64( inputStr.toStdString().c_str(), &binSrc );
+        }
     }
 
     hash_sel = mOutputHashCombo->currentIndex();
