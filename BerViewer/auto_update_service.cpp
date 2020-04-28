@@ -111,10 +111,14 @@ AutoUpdateService::AutoUpdateService(QObject *parent) : QObject(parent)
 {
 #ifdef Q_OS_WIN32
     adapter_ = new WindowsAutoUpdateAdapter;
-#else
+#elif Q_OS_MAC
     adapter_ = new MacAutoUpdateAdapter;
+#else
+
 #endif
 }
+
+
 
 void AutoUpdateService::start()
 {
@@ -159,3 +163,4 @@ bool AutoUpdateService::autoUpdateEnabled() const {
 void AutoUpdateService::setAutoUpdateEnabled(bool enabled) {
     adapter_->setAutoUpdateEnabled(enabled);
 }
+

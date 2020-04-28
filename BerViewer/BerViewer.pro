@@ -84,13 +84,13 @@ HEADERS += \
     sign_verify_dlg.h \
     singleton.h
 
-DEFINES += _AUTO_UPDATE
+
 
 # Sparkle.framework 를 Qt/5.11.3/clang_64/lib/ 에 복사 해 주었음
 
 mac {
     ICON = berviewer.icns
-
+    DEFINES += _AUTO_UPDATE
     QMAKE_LFLAGS += -Wl,-rpath,@loader_path/../Frameworks
     HEADERS += mac_sparkle_support.h
     OBJECTIVE_SOURCES += mac_sparkle_support.mm
@@ -107,7 +107,14 @@ mac {
     LIBS += -L"/usr/local/lib" -lltdl
 }
 
+linux {
+    LIBS += -L"../../build-PKILib-Desktop_Qt_5_13_2_GCC_64bit-Debug" -lPKILib
+    LIBS += -L"../../PKILib/lib/linux/debug/cmpossl/lib" -lcrypto
+    LIBS += -lltdl
+}
+
 win32 {
+    DEFINES += _AUTO_UPDATE
     RC_ICONS = berviewer.ico
     INCLUDEPATH += "../../PKILib/lib/win32/winsparkle/include"
 
