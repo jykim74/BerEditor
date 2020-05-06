@@ -42,6 +42,7 @@ private slots:
     void dataEncoder();
     void hash();
     void hmac();
+    void keyAgree();
     void oidInfo();
     void encDec();
     void signVerify();

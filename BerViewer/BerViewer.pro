@@ -49,6 +49,7 @@ SOURCES += \
     get_ldap_dlg.cpp \
     i18n_helper.cpp \
     insert_data_dlg.cpp \
+    key_agree_dlg.cpp \
     main.cpp \
     mainwindow.cpp \
     oid_info_dlg.cpp \
@@ -76,6 +77,7 @@ HEADERS += \
     get_ldap_dlg.h \
     i18n_helper.h \
     insert_data_dlg.h \
+    key_agree_dlg.h \
     mainwindow.h \
     oid_info_dlg.h \
     rsa_enc_dec_dlg.h \
@@ -137,6 +139,7 @@ FORMS += \
         gen_otp_dlg.ui \
         get_ldap_dlg.ui \
         insert_data_dlg.ui \
+        key_agree_dlg.ui \
         mainwindow.ui \
         oid_info_dlg.ui \
         rsa_enc_dec_dlg.ui \

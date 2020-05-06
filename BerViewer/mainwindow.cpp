@@ -16,6 +16,7 @@
 #include "rsa_enc_dec_dlg.h"
 #include "gen_otp_dlg.h"
 #include "get_ldap_dlg.h"
+#include "key_agree_dlg.h"
 #include "about_dlg.h"
 
 #include <QtWidgets>
@@ -224,7 +225,7 @@ void MainWindow::createActions()
     QAction *hashAct = cryptMenu->addAction(tr("&Hash"), this, &MainWindow::hash);
     hashAct->setStatusTip(tr("Generate hash value" ));
 
-    QAction *hmacAct = cryptMenu->addAction(tr("&Hmac"), this, &MainWindow::hmac);
+    QAction *hmacAct = cryptMenu->addAction(tr("H&mac"), this, &MainWindow::hmac);
     hmacAct->setStatusTip(tr("Generate hmac value"));
 
     QAction *encDecAct = cryptMenu->addAction(tr("&Encrypt/Decrypt"), this, &MainWindow::encDec);
@@ -235,6 +236,9 @@ void MainWindow::createActions()
 
     QAction *rsaEncDecAct = cryptMenu->addAction(tr("&RSA Encrypt/Decrypt"), this, &MainWindow::rsaEncDec);
     rsaEncDecAct->setStatusTip(tr("Data rsa encrypt decrypt"));
+
+    QAction *keyAgreeAct = cryptMenu->addAction(tr("&Key Agreement"), this, &MainWindow::keyAgree);
+    keyAgreeAct->setStatusTip(tr("Key Agreement"));
 
     QAction *genOTPAct = cryptMenu->addAction(tr("&OTP generate"), this, &MainWindow::genOTP);
     genOTPAct->setStatusTip(tr("Generate OTP value"));
@@ -420,6 +424,12 @@ void MainWindow::hmac()
 {
     GenHmacDlg genHmacDlg;
     genHmacDlg.exec();
+}
+
+void MainWindow::keyAgree()
+{
+    KeyAgreeDlg keyAgreeDlg;
+    keyAgreeDlg.exec();
 }
 
 void MainWindow::oidInfo()
