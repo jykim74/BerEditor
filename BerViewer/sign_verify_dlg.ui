@@ -68,7 +68,7 @@
    <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>Private and Public keys</string>
+      <string>Private key and Certificate</string>
      </property>
     </widget>
    </item>
@@ -89,12 +89,12 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <widget class="QLineEdit" name="mPubKeyPath"/>
+      <widget class="QLineEdit" name="mCertPath"/>
      </item>
      <item>
-      <widget class="QPushButton" name="mPubKeyBtn">
+      <widget class="QPushButton" name="mCertBtn">
        <property name="text">
-        <string>Public Key</string>
+        <string>Certificate</string>
        </property>
       </widget>
      </item>

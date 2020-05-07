@@ -314,17 +314,17 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <location filename="../enc_dec_dlg.ui" line="124"/>
         <source>Use AE(Authenticated Encryption)</source>
-        <translation type="unfinished"></translation>
+        <translation>AE(Authenticated Encryption) 사용</translation>
     </message>
     <message>
         <location filename="../enc_dec_dlg.ui" line="139"/>
         <source>AAD</source>
-        <translation type="unfinished"></translation>
+        <translation>AAD</translation>
     </message>
     <message>
         <location filename="../enc_dec_dlg.ui" line="162"/>
         <source>Tag</source>
-        <translation type="unfinished">태그</translation>
+        <translation>태그</translation>
     </message>
     <message>
         <location filename="../enc_dec_dlg.ui" line="195"/>
@@ -525,7 +525,7 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <location filename="../get_ldap_dlg.ui" line="14"/>
         <source>Getting LDAP data</source>
-        <translation type="unfinished"></translation>
+        <translation>LDAP 데이타 가져오기</translation>
     </message>
     <message>
         <location filename="../get_ldap_dlg.ui" line="68"/>
@@ -616,108 +616,108 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../key_agree_dlg.ui" line="14"/>
         <location filename="../key_agree_dlg.ui" line="74"/>
         <source>Key Agreement</source>
-        <translation type="unfinished">키 동의</translation>
+        <translation>키 동의</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.ui" line="35"/>
         <source>Calculate</source>
-        <translation type="unfinished"></translation>
+        <translation>계산</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.ui" line="42"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>닫기</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.ui" line="81"/>
         <source>Algorithm</source>
-        <translation type="unfinished"></translation>
+        <translation>알고리즘</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.ui" line="95"/>
         <source>Secret Key</source>
-        <translation type="unfinished"></translation>
+        <translation>비밀키</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.ui" line="107"/>
         <source>ECDH</source>
-        <translation type="unfinished"></translation>
+        <translation>ECDH</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.ui" line="113"/>
         <source>Certificate</source>
-        <translation type="unfinished"></translation>
+        <translation>인증서</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.ui" line="123"/>
         <location filename="../key_agree_dlg.ui" line="173"/>
         <source>PrivateKey</source>
-        <translation type="unfinished"></translation>
+        <translation>개인키</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.ui" line="133"/>
         <source>FindCert</source>
-        <translation type="unfinished"></translation>
+        <translation>인증서 찾기</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.ui" line="140"/>
         <source>FindPriKey</source>
-        <translation type="unfinished"></translation>
+        <translation>개인키 찾기</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.ui" line="150"/>
         <source>DH</source>
-        <translation type="unfinished"></translation>
+        <translation>DH</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.ui" line="156"/>
         <source>g value</source>
-        <translation type="unfinished"></translation>
+        <translation>g 값</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.ui" line="163"/>
         <source>Length</source>
-        <translation type="unfinished">길이</translation>
+        <translation>길이</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.ui" line="183"/>
         <source>GenParam</source>
-        <translation type="unfinished"></translation>
+        <translation>파라미터 생성</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.ui" line="190"/>
         <source>p value</source>
-        <translation type="unfinished"></translation>
+        <translation>p 값</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.ui" line="210"/>
         <source>PublicKey</source>
-        <translation type="unfinished"></translation>
+        <translation>공개키</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.ui" line="217"/>
         <source>GenDHKey</source>
-        <translation type="unfinished"></translation>
+        <translation>DH 키생성</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.cpp" line="174"/>
         <source>ECC PrivateKey file</source>
-        <translation type="unfinished"></translation>
+        <translation>ECC 개인키 파일</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.cpp" line="176"/>
         <source>Key DER File (*.der);;Key Files (*.key);;All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>키(DER) 파일</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.cpp" line="190"/>
         <source>ECC Certificate file</source>
-        <translation type="unfinished"></translation>
+        <translation>ECC 인증서 파일</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.cpp" line="192"/>
         <source>ECC Cert File (*.crt);;DER File (*.der);;All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -1019,7 +1019,7 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <location filename="../mainwindow.cpp" line="228"/>
         <source>H&amp;mac</source>
-        <translation type="unfinished"></translation>
+        <translation>Hmac(&amp;M)</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="250"/>
@@ -1081,7 +1081,7 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <location filename="../oid_info_dlg.ui" line="126"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>닫기</translation>
     </message>
     <message>
         <location filename="../oid_info_dlg.ui" line="150"/>
@@ -1123,7 +1123,7 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <location filename="../rsa_enc_dec_dlg.ui" line="39"/>
         <source>Hex</source>
-        <translation>Hex</translation>
+        <translation>16진수</translation>
     </message>
     <message>
         <location filename="../rsa_enc_dec_dlg.ui" line="29"/>
@@ -1138,12 +1138,26 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <location filename="../rsa_enc_dec_dlg.ui" line="46"/>
         <source>Base64</source>
-        <translation>Base64</translation>
+        <translation>베이스64</translation>
     </message>
     <message>
         <location filename="../rsa_enc_dec_dlg.ui" line="71"/>
+        <source>Private key and Certificate</source>
+        <translation>개인키 및 인증서</translation>
+    </message>
+    <message>
+        <location filename="../rsa_enc_dec_dlg.ui" line="97"/>
+        <source>Certificate</source>
+        <translation>인증서</translation>
+    </message>
+    <message>
+        <location filename="../rsa_enc_dec_dlg.ui" line="137"/>
+        <source>Change</source>
+        <translation>교환</translation>
+    </message>
+    <message>
         <source>Public and Private keys</source>
-        <translation>공개키 및 개인키</translation>
+        <translation type="vanished">공개키 및 개인키</translation>
     </message>
     <message>
         <location filename="../rsa_enc_dec_dlg.ui" line="106"/>
@@ -1160,38 +1174,41 @@ mailto : jykim74@gmail.com</translation>
         <translation>개인 키</translation>
     </message>
     <message>
-        <location filename="../rsa_enc_dec_dlg.ui" line="97"/>
         <source>Public Key</source>
-        <translation>공개 키</translation>
+        <translation type="vanished">공개 키</translation>
     </message>
     <message>
         <source>Properties and Method</source>
         <translation type="vanished">속성 및 방식</translation>
     </message>
     <message>
-        <location filename="../rsa_enc_dec_dlg.cpp" line="88"/>
+        <location filename="../rsa_enc_dec_dlg.cpp" line="64"/>
         <source>You have to insert data</source>
         <translation>데이타를 입력 하세요</translation>
     </message>
     <message>
-        <location filename="../rsa_enc_dec_dlg.cpp" line="115"/>
         <source>You have to find public key</source>
-        <translation>공개키를 선택하세요.</translation>
+        <translation type="vanished">공개키를 선택하세요.</translation>
     </message>
     <message>
-        <location filename="../rsa_enc_dec_dlg.cpp" line="125"/>
+        <location filename="../rsa_enc_dec_dlg.cpp" line="91"/>
+        <source>You have to find certificate</source>
+        <translation>인증서를 선택하세요</translation>
+    </message>
+    <message>
+        <location filename="../rsa_enc_dec_dlg.cpp" line="101"/>
         <source>You have to find private key</source>
         <translation>개인키를 선택하세요.</translation>
     </message>
     <message>
-        <location filename="../rsa_enc_dec_dlg.cpp" line="157"/>
-        <location filename="../rsa_enc_dec_dlg.cpp" line="173"/>
+        <location filename="../rsa_enc_dec_dlg.cpp" line="133"/>
+        <location filename="../rsa_enc_dec_dlg.cpp" line="149"/>
         <source>File name</source>
         <translation>파일 이름</translation>
     </message>
     <message>
-        <location filename="../rsa_enc_dec_dlg.cpp" line="159"/>
-        <location filename="../rsa_enc_dec_dlg.cpp" line="175"/>
+        <location filename="../rsa_enc_dec_dlg.cpp" line="135"/>
+        <location filename="../rsa_enc_dec_dlg.cpp" line="151"/>
         <source>All Files (*);;DER Files (*.der)</source>
         <translation>모든 파일(*);;DER 파일(*.der)</translation>
     </message>
@@ -1262,7 +1279,7 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <location filename="../sign_verify_dlg.ui" line="39"/>
         <source>Hex</source>
-        <translation>Hex</translation>
+        <translation>16진수</translation>
     </message>
     <message>
         <location filename="../sign_verify_dlg.ui" line="29"/>
@@ -1277,12 +1294,21 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <location filename="../sign_verify_dlg.ui" line="46"/>
         <source>Base64</source>
-        <translation>Base64</translation>
+        <translation>베이스64</translation>
     </message>
     <message>
         <location filename="../sign_verify_dlg.ui" line="71"/>
+        <source>Private key and Certificate</source>
+        <translation>개인키 및 인증서</translation>
+    </message>
+    <message>
+        <location filename="../sign_verify_dlg.ui" line="97"/>
+        <source>Certificate</source>
+        <translation>인증서</translation>
+    </message>
+    <message>
         <source>Private and Public keys</source>
-        <translation>공개키 및 개인키</translation>
+        <translation type="vanished">공개키 및 개인키</translation>
     </message>
     <message>
         <location filename="../sign_verify_dlg.ui" line="106"/>
@@ -1299,48 +1325,51 @@ mailto : jykim74@gmail.com</translation>
         <translation>개인 키</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.ui" line="97"/>
         <source>Public Key</source>
-        <translation>공개 키</translation>
+        <translation type="vanished">공개 키</translation>
     </message>
     <message>
         <source>Properties and Method</source>
         <translation type="vanished">속성 및 방식</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="91"/>
-        <location filename="../sign_verify_dlg.cpp" line="107"/>
+        <location filename="../sign_verify_dlg.cpp" line="63"/>
+        <location filename="../sign_verify_dlg.cpp" line="79"/>
         <source>File name</source>
         <translation>파일 이름</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="93"/>
-        <location filename="../sign_verify_dlg.cpp" line="109"/>
+        <location filename="../sign_verify_dlg.cpp" line="65"/>
+        <location filename="../sign_verify_dlg.cpp" line="81"/>
         <source>All Files (*);;DER Files (*.der)</source>
         <translation>모든 파일(*);;DER 파일(*.der)</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="129"/>
+        <location filename="../sign_verify_dlg.cpp" line="101"/>
         <source>You have to insert data</source>
         <translation>데이타를 입력 하세요</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="158"/>
+        <location filename="../sign_verify_dlg.cpp" line="130"/>
         <source>You have to find private key</source>
         <translation>개인키를 선택하세요.</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="177"/>
-        <source>You have to find public key</source>
-        <translation>공개키를 선택하세요.</translation>
+        <location filename="../sign_verify_dlg.cpp" line="149"/>
+        <source>You have to find certificate</source>
+        <translation>인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="191"/>
+        <source>You have to find public key</source>
+        <translation type="vanished">공개키를 선택하세요.</translation>
+    </message>
+    <message>
+        <location filename="../sign_verify_dlg.cpp" line="163"/>
         <source>Verify Success</source>
         <translation>검증 성공</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="193"/>
+        <location filename="../sign_verify_dlg.cpp" line="165"/>
         <source>Verify Fail</source>
         <translation>검증 실패</translation>
     </message>

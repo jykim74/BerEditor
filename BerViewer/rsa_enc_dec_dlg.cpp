@@ -6,32 +6,19 @@
 #include "ber_define.h"
 #include "ber_applet.h"
 
-static const char *dataTypes[] = {
+static QStringList dataTypes = {
     "String",
     "Hex",
     "Base64"
 };
 
-static const char *algTypes[] = {
-    "RSA",
-    "ECDSA"
-};
 
-static const char *hashTypes[] = {
-    "MD5",
-    "SHA1",
-    "SHA224",
-    "SHA256",
-    "SHA384",
-    "SHA512"
-};
-
-static const char *versionTypes[] = {
+static QStringList versionTypes = {
     "V15",
     "V21"
 };
 
-static const char *methodTypes[] = {
+static QStringList methodTypes = {
     "Encrypt",
     "Decrypt"
 };
@@ -43,7 +30,8 @@ RSAEncDecDlg::RSAEncDecDlg(QWidget *parent) :
     initialize();
 
     connect( mPriKeyBtn, SIGNAL(clicked()), this, SLOT(findPrivateKey()));
-    connect( mPubKeyBtn, SIGNAL(clicked()), this, SLOT(findPublicKey()));
+    connect( mCertBtn, SIGNAL(clicked()), this, SLOT(findCert()));
+    connect( mChangeBtn, SIGNAL(clicked()), this, SLOT(changeValue()));
 }
 
 RSAEncDecDlg::~RSAEncDecDlg()
@@ -53,23 +41,11 @@ RSAEncDecDlg::~RSAEncDecDlg()
 
 void RSAEncDecDlg::initialize()
 {
-    QStringList dataList;
+    mOutputTypeCombo->addItems(dataTypes);
+    mOutputTypeCombo->setCurrentIndex(1);
 
-    for( int i=0; i < (sizeof(dataTypes) / sizeof(dataTypes[0])); i++ )
-        dataList.push_back( dataTypes[i] );
-
-    mOutputTypeCombo->addItems(dataList);
-
-
-    QStringList versionList;
-    for( int i=0; i < (sizeof(versionTypes) / sizeof(versionTypes[0])); i++)
-        versionList.push_back(versionTypes[i]);
-    mVersionTypeCombo->addItems(versionList);
-
-    QStringList methodList;
-    for( int i=0; i < (sizeof(methodTypes) / sizeof(methodTypes[0])); i++ )
-        methodList.push_back(methodTypes[i] );
-    mMethodTypeCombo->addItems(methodList);
+    mVersionTypeCombo->addItems(versionTypes);
+    mMethodTypeCombo->addItems(methodTypes);
 }
 
 void RSAEncDecDlg::accept()
@@ -78,7 +54,7 @@ void RSAEncDecDlg::accept()
     int nVersion = 0;
     BIN binSrc = {0,0};
     BIN binPri = {0,0};
-    BIN binPub = {0,0};
+    BIN binCert = {0,0};
     BIN binOut = {0,0};
     char *pOut = NULL;
 
@@ -110,14 +86,14 @@ void RSAEncDecDlg::accept()
 
     if( mMethodTypeCombo->currentIndex() == ENC_ENCRYPT )
     {
-        if( mPubKeyBtn->text().isEmpty() )
+        if( mCertBtn->text().isEmpty() )
         {
-            berApplet->warningBox( tr( "You have to find public key"), this );
+            berApplet->warningBox( tr( "You have to find certificate"), this );
             goto end;
         }
 
-        JS_BIN_fileRead( mPubKeyPath->text().toStdString().c_str(), &binPub );
-        JS_PKI_RSAEncryptWithPub( nVersion, &binSrc, &binPub, &binOut );
+        JS_BIN_fileRead( mCertPath->text().toStdString().c_str(), &binCert );
+        JS_PKI_RSAEncryptWithCert( nVersion, &binSrc, &binCert, &binOut );
     }
     else {
         if( mPriKeyPath->text().isEmpty() )
@@ -142,12 +118,12 @@ void RSAEncDecDlg::accept()
 end :
     JS_BIN_reset(&binSrc);
     JS_BIN_reset(&binPri);
-    JS_BIN_reset(&binPub);
+    JS_BIN_reset(&binCert);
     JS_BIN_reset(&binOut);
     if( pOut ) JS_free(pOut);
 }
 
-void RSAEncDecDlg::findPublicKey()
+void RSAEncDecDlg::findCert()
 {
     QFileDialog::Options options;
     options |= QFileDialog::DontUseNativeDialog;
@@ -160,7 +136,7 @@ void RSAEncDecDlg::findPublicKey()
                                                      &selectedFilter,
                                                      options );
 
-    mPubKeyPath->setText(fileName);
+    mCertPath->setText(fileName);
 }
 
 void RSAEncDecDlg::findPrivateKey()
@@ -177,4 +153,21 @@ void RSAEncDecDlg::findPrivateKey()
                                                      options );
 
     mPriKeyPath->setText(fileName);
+}
+
+void RSAEncDecDlg::changeValue()
+{
+//    QString strInput = mInputText->toPlainText();
+    QString strOutput = mOutputText->toPlainText();
+
+    mInputText->setPlainText( strOutput );
+//    mOutputText->setPlainText( "" );
+    mOutputText->clear();
+
+    if( mOutputTypeCombo->currentIndex() == 0 )
+        mInputStringBtn->setChecked(true);
+    else if( mOutputTypeCombo->currentIndex() == 1 )
+        mInputHexBtn->setChecked(true);
+    else if( mOutputTypeCombo->currentIndex() == 2 )
+        mInputBase64Btn->setChecked(true);
 }

@@ -18,8 +18,9 @@ public:
 
 private slots:
     virtual void accept();
-    void findPublicKey();
+    void findCert();
     void findPrivateKey();
+    void changeValue();
 
 private:
     void initialize();

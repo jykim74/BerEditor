@@ -6,18 +6,12 @@
 #include "js_bin.h"
 #include "js_pki.h"
 
-static const char *dataTypes[] = {
-    "String",
-    "Hex",
-    "Base64"
-};
-
-static const char *algTypes[] = {
+static QStringList algTypes = {
     "RSA",
     "ECDSA"
 };
 
-static const char *hashTypes[] = {
+static QStringList hashTypes = {
     "MD5",
     "SHA1",
     "SHA224",
@@ -26,12 +20,12 @@ static const char *hashTypes[] = {
     "SHA512"
 };
 
-static const char *versionTypes[] = {
+static QStringList versionTypes = {
     "V15",
     "V21"
 };
 
-static const char *methodTypes[] = {
+static QStringList methodTypes = {
     "Signature",
     "Verify"
 };
@@ -43,7 +37,8 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     initialize();
 
     connect( mPriKeyBtn, SIGNAL(clicked()), this, SLOT(findPrivateKey()));
-    connect( mPubKeyBtn, SIGNAL(clicked()), this, SLOT(findPublicKey()));
+    connect( mCertBtn, SIGNAL(clicked()), this, SLOT(findCert()));
+    connect( mAlgTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(algChanged(int)));
 }
 
 SignVerifyDlg::~SignVerifyDlg()
@@ -53,32 +48,10 @@ SignVerifyDlg::~SignVerifyDlg()
 
 void SignVerifyDlg::initialize()
 {
-    /*
-    QStringList dataList;
-
-    for( int i=0; i < (sizeof(dataTypes) / sizeof(dataTypes[0])); i++ )
-        dataList.push_back( dataTypes[i] );
-    */
-
-    QStringList algList;
-    for( int i=0; i < (sizeof(algTypes) / sizeof(algTypes[0])); i++ )
-        algList.push_back( algTypes[i]);
-    mAlgTypeCombo->addItems(algList);
-
-    QStringList hashList;
-    for( int i=0; i < (sizeof(hashTypes) / sizeof(hashTypes[0])); i++ )
-        hashList.push_back(hashTypes[i]);
-    mHashTypeCombo->addItems(hashList);
-
-    QStringList versionList;
-    for( int i=0; i < (sizeof(versionTypes) / sizeof(versionTypes[0])); i++)
-        versionList.push_back(versionTypes[i]);
-    mVersionCombo->addItems(versionList);
-
-    QStringList methodList;
-    for( int i=0; i < (sizeof(methodTypes) / sizeof(methodTypes[0])); i++ )
-        methodList.push_back(methodTypes[i] );
-    mMethodCombo->addItems(methodList);
+    mAlgTypeCombo->addItems(algTypes);
+    mHashTypeCombo->addItems(hashTypes);
+    mVersionCombo->addItems(versionTypes);
+    mMethodCombo->addItems(methodTypes);
 }
 
 void SignVerifyDlg::findPrivateKey()
@@ -97,7 +70,7 @@ void SignVerifyDlg::findPrivateKey()
     mPriKeyPath->setText(fileName);
 }
 
-void SignVerifyDlg::findPublicKey()
+void SignVerifyDlg::findCert()
 {
     QFileDialog::Options options;
     options |= QFileDialog::DontUseNativeDialog;
@@ -110,7 +83,15 @@ void SignVerifyDlg::findPublicKey()
                                                      &selectedFilter,
                                                      options );
 
-    mPubKeyPath->setText( fileName );
+    mCertPath->setText( fileName );
+}
+
+void SignVerifyDlg::algChanged(int index)
+{
+    if( index == 0 )
+        mVersionCombo->setEnabled(true);
+    else
+        mVersionCombo->setEnabled(false);
 }
 
 void SignVerifyDlg::accept()
@@ -118,7 +99,7 @@ void SignVerifyDlg::accept()
     int ret = 0;
     BIN binSrc = {0,0};
     BIN binPri = {0,0};
-    BIN binPub = {0,0};
+    BIN binCert = {0,0};
     BIN binOut = {0,0};
     int nVersion = 0;
     char *pOut = NULL;
@@ -172,19 +153,19 @@ void SignVerifyDlg::accept()
     }
     else
     {
-        if( mPubKeyPath->text().isEmpty() )
+        if( mCertPath->text().isEmpty() )
         {
-            berApplet->warningBox( tr( "You have to find public key"), this );
+            berApplet->warningBox( tr( "You have to find certificate"), this );
             goto end;
         }
 
-        JS_BIN_fileRead( mPubKeyPath->text().toStdString().c_str(), &binPub );
+        JS_BIN_fileRead( mCertPath->text().toStdString().c_str(), &binCert );
         JS_BIN_decodeHex( mOutputText->toPlainText().toStdString().c_str(), &binOut );
 
         if( mAlgTypeCombo->currentIndex() == 0 )
-            ret = JS_PKI_RSAVerifySign( strHash.toStdString().c_str(), nVersion, &binSrc, &binOut, &binPub );
+            ret = JS_PKI_RSAVerifySignWithCert( strHash.toStdString().c_str(), nVersion, &binSrc, &binOut, &binCert );
         else {
-            ret = JS_PKI_ECCVerifySign( strHash.toStdString().c_str(), &binSrc, &binOut, &binPub );
+            ret = JS_PKI_ECCVerifySignWithCert( strHash.toStdString().c_str(), &binSrc, &binOut, &binCert );
         }
 
         if( ret == 1 )
@@ -198,7 +179,7 @@ end :
 
     JS_BIN_reset( &binSrc );
     JS_BIN_reset( &binPri );
-    JS_BIN_reset( &binPub );
+    JS_BIN_reset( &binCert );
     JS_BIN_reset( &binOut );
     if( pOut ) JS_free( pOut );
 }

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Include Id="BerViewerInclude">
-  <?define CurrentBerViewerVersion="0.9.6" ?>
+  <?define CurrentBerViewerVersion="0.9.7" ?>
 
   <!-- BerViewer Product Guid  -->
-  <?define ProductGuid="dc0e0a56-e59d-4e42-9a03-04708a46cf9e" ?> <!-- Version 0.9.6 -->
+  <?define ProductGuid="436074f4-a61e-4e95-9034-586d12625bf4" ?> <!-- Version 0.9.7 -->
+  <!-- ?define ProductGuid="dc0e0a56-e59d-4e42-9a03-04708a46cf9e" ?> Version 0.9.6 -->
   <!-- ?define ProductGuid="d82c7fb3-b085-40b1-b3a6-02a7c6766112" ?>  Version 0.9.5 -->
   <!-- <?define ProductGuid="8474e1a3-d4e0-4fab-869c-dde71a89639b" ?> Version 0.9.4 -->
   <!-- <?define ProductGuid="3d38f7ed-155f-4241-9e51-0433f692d60e" ?> Version 0.9.3 -->
