@@ -278,8 +278,12 @@ void MainWindow::createActions()
     QMenu *toolMenu = menuBar()->addMenu(tr("&Tool"));
     QToolBar *toolToolBar = addToolBar(tr("Tool"));
 
-    QAction *dataEncodeAct = toolMenu->addAction(tr("Data&Encoder"), this, &MainWindow::dataEncoder);
+    const QIcon dataTransIcon = QIcon::fromTheme("data-trans", QIcon(":/images/data_trans.png"));
+    QAction *dataEncodeAct = new QAction( dataTransIcon, tr("Data&Encoder"), this );
+    connect( dataEncodeAct, &QAction::triggered, this, &MainWindow::dataEncoder );
     dataEncodeAct->setStatusTip(tr("This is tool for encoding data" ));
+    toolMenu->addAction( dataEncodeAct );
+    toolToolBar->addAction( dataEncodeAct );
 
     QAction *oidAct = toolMenu->addAction(tr("O&ID Information"), this, &MainWindow::oidInfo);
     oidAct->setStatusTip(tr("Show OID information" ));
