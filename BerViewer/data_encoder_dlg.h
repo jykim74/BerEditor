@@ -20,6 +20,7 @@ public:
 
 private slots:
     void onClickEncodeBtn();
+    void outTypeChanged( int index );
 
 private:
 //    Ui::DataEncoderDlg *ui;

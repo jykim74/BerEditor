@@ -4,10 +4,10 @@
 #include "js_util.h"
 #include "ber_applet.h"
 
-static const char* entypes[] = {
-    "string",
-    "hex",
-    "base64",
+static QStringList enTypes = {
+    "String",
+    "Hex",
+    "Base64",
     "URL"
 };
 
@@ -16,19 +16,24 @@ DataEncoderDlg::DataEncoderDlg(QWidget *parent) :
 {
     setupUi(this);
 
-    QStringList typeList;
-
-    for( int i=0; i < (sizeof(entypes) / sizeof(entypes[0])); i++ )
-        typeList.push_back( entypes[i] );
-
-    mOutputTypeCombo->addItems(typeList);
+    mOutputTypeCombo->addItems( enTypes );
 
     connect( mEncodeBtn, SIGNAL(clicked()), this, SLOT(onClickEncodeBtn()));
+    connect( mOutputTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(outTypeChanged(int)));
 }
 
 DataEncoderDlg::~DataEncoderDlg()
 {
 
+}
+
+static char getch( unsigned char c )
+{
+    if( isprint(c) )
+        return c;
+    else {
+        return '.';
+    }
 }
 
 void DataEncoderDlg::onClickEncodeBtn()
@@ -90,6 +95,14 @@ void DataEncoderDlg::onClickEncodeBtn()
         if( output_type == DATA_STRING )
         {
             JS_BIN_string( &binSrc, &pOut );
+
+            if( mShowPrintTextCheck->isChecked() )
+            {
+                int len = strlen( pOut );
+                for( int i=0; i < len; i++ )
+                    pOut[i] = getch( pOut[i] );
+            }
+
             mOutputTextEdit->setPlainText( pOut );
         }
         else if( output_type == DATA_HEX )
@@ -114,4 +127,16 @@ void DataEncoderDlg::onClickEncodeBtn()
 
     JS_BIN_reset(&binSrc);
     if( pOut ) JS_free( pOut );
+}
+
+void DataEncoderDlg::outTypeChanged(int index)
+{
+    if( index == 0 )
+    {
+        mShowPrintTextCheck->setEnabled(true);
+    }
+    else
+    {
+        mShowPrintTextCheck->setEnabled(false);
+    }
 }

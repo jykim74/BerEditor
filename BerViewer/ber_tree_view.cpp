@@ -410,6 +410,28 @@ void BerTreeView::copy()
     clipboard->setText(strData);
 }
 
+void BerTreeView::treeExpandAll()
+{
+    expandAll();
+}
+
+void BerTreeView::treeExpandNode()
+{
+    QModelIndex index = currentIndex();
+    expand(index);
+}
+
+void BerTreeView::treeCollapseAll()
+{
+    collapseAll();
+}
+
+void BerTreeView::treeCollapseNode()
+{
+    QModelIndex index = currentIndex();
+    collapse(index);
+}
+
 void BerTreeView::ShowContextMenu(QPoint point)
 {
     QMenu menu(this);

@@ -122,6 +122,7 @@ void MainWindow::createTableMenu()
     QString style = "QHeaderView::section {background-color:#404040;color:#FFFFFF;}";
 
     right_table_->horizontalHeader()->setStyleSheet( style );
+    right_table_->setColumnWidth(0, 80);
 
 
     for( int i=1; i <= 16; i++ )
@@ -218,6 +219,37 @@ void MainWindow::createActions()
     QAction *copyAsBase64Act = editMenu->addAction(tr("Copy As &Base64"), left_tree_, &BerTreeView::CopyAsBase64);
     copyAsBase64Act->setStatusTip(tr("Copy ber data as base64"));
 
+    const QIcon expandAllIcon = QIcon::fromTheme("expand-all", QIcon(":/images/expand_all.png"));
+    QAction *expandAllAct = new QAction(expandAllIcon, tr("&Expand All"), this );
+    expandAllAct->setShortcut( QKeySequence(Qt::Key_F5) );
+    expandAllAct->setStatusTip(tr("Show all nodes"));
+    connect( expandAllAct, &QAction::triggered, left_tree_, &BerTreeView::treeExpandAll );
+    editMenu->addAction(expandAllAct);
+    editToolBar->addAction(expandAllAct);
+
+    const QIcon expandNodeIcon = QIcon::fromTheme("expand-node", QIcon(":/images/expand_node.png"));
+    QAction *expandNodeAct = new QAction(expandNodeIcon, tr("&Expand Node"), this );
+    expandNodeAct->setStatusTip(tr("Show node"));
+    expandNodeAct->setShortcut( QKeySequence(Qt::Key_F6));
+    connect( expandNodeAct, &QAction::triggered, left_tree_, &BerTreeView::treeExpandNode );
+    editMenu->addAction(expandNodeAct);
+    editToolBar->addAction(expandNodeAct);
+
+    const QIcon collapseAllIcon = QIcon::fromTheme("collapse-all", QIcon(":/images/collapse_all.png"));
+    QAction *collapseAllAct = new QAction(collapseAllIcon, tr("&Collapse All"), this );
+    collapseAllAct->setStatusTip(tr("Collapse all nodes"));
+    collapseAllAct->setShortcut( QKeySequence(Qt::Key_F7));
+    connect( collapseAllAct, &QAction::triggered, left_tree_, &BerTreeView::treeCollapseAll );
+    editMenu->addAction(collapseAllAct);
+    editToolBar->addAction(collapseAllAct);
+
+    const QIcon collapseNodeIcon = QIcon::fromTheme("collapse-node", QIcon(":/images/collapse_node.png"));
+    QAction *collapseNodeAct = new QAction(collapseNodeIcon, tr("&Collapse Node"), this );
+    collapseNodeAct->setStatusTip(tr("Show node"));
+    collapseNodeAct->setShortcut( QKeySequence(Qt::Key_F8));
+    connect( collapseNodeAct, &QAction::triggered, left_tree_, &BerTreeView::treeCollapseNode );
+    editMenu->addAction(collapseNodeAct);
+    editToolBar->addAction(collapseNodeAct);
 
     menuBar()->addSeparator();
 
@@ -511,6 +543,7 @@ void MainWindow::saveAs()
     BIN& binBer = ber_model_->getBer();
     JS_BIN_fileWrite( &binBer, file_path_.toStdString().c_str());
 }
+
 
 void MainWindow::print()
 {

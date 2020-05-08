@@ -54,7 +54,7 @@
 
 		<Property Id="BERVIEWER_AUTO_START">1</Property>
 
-		<!-- Auto-start via REgistry -->
+		<!-- Auto-start via Registry -->
 		<DirectoryRef Id="INSTALLDIR">
 			<Component Id="BerViewerAutoStart" Guid="$(var.GuidOfAutoStartComponent)">
 				<RegistryKey Root="HKCU"
@@ -91,17 +91,7 @@
 		<UI>
 			<UIRef Id='WixUI_InstallDir_NoLicense' />
 			<UIRef Id='WixUI_ErrorProgressText' />
-<!--
-			<Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="LaunchApplication">
-				(NOT Installed) AND (NOT SUPPRESS_LAUNCH_BERVIEWER_AFTER_INSTALL_FINISH)
-			</Publish>
--->
 		</UI>
-
-<!--
-		<Property Id="WixShellExecTarget" Value="[#berviewer.exe]" />
-        <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
--->
 
 		<Feature Id='Main' Level='1'>
 			<ComponentRef Id='BerViewer_StartMenuShortCut' />

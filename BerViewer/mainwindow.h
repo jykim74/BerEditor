@@ -54,6 +54,7 @@ private slots:
     void saveAs();
 
 
+
     void print();
     void printPreview(QPrinter *printer);
     void filePrintPreview();

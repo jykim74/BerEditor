@@ -186,12 +186,12 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <location filename="../data_encoder_dlg.ui" line="44"/>
         <source>Hex</source>
-        <translation>Hex</translation>
+        <translation>16진수</translation>
     </message>
     <message>
         <location filename="../data_encoder_dlg.ui" line="51"/>
         <source>Base64</source>
-        <translation>Base64</translation>
+        <translation>베이스64</translation>
     </message>
     <message>
         <location filename="../data_encoder_dlg.ui" line="58"/>
@@ -200,8 +200,12 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../data_encoder_dlg.ui" line="94"/>
+        <source>Show printable text</source>
+        <translation>인쇄 가능 문자 표시</translation>
+    </message>
+    <message>
         <source>show plain text</source>
-        <translation>문자 형태로 보여줌</translation>
+        <translation type="vanished">문자 형태로 보여줌</translation>
     </message>
     <message>
         <location filename="../data_encoder_dlg.ui" line="101"/>
@@ -209,7 +213,7 @@ mailto : jykim74@gmail.com</translation>
         <translation>인코딩</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.cpp" line="44"/>
+        <location filename="../data_encoder_dlg.cpp" line="49"/>
         <source>You have to insert data</source>
         <translation>데이타를 입력 하세요</translation>
     </message>
@@ -1333,29 +1337,29 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">속성 및 방식</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="63"/>
-        <location filename="../sign_verify_dlg.cpp" line="79"/>
+        <location filename="../sign_verify_dlg.cpp" line="64"/>
+        <location filename="../sign_verify_dlg.cpp" line="80"/>
         <source>File name</source>
         <translation>파일 이름</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="65"/>
-        <location filename="../sign_verify_dlg.cpp" line="81"/>
+        <location filename="../sign_verify_dlg.cpp" line="66"/>
+        <location filename="../sign_verify_dlg.cpp" line="82"/>
         <source>All Files (*);;DER Files (*.der)</source>
         <translation>모든 파일(*);;DER 파일(*.der)</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="101"/>
+        <location filename="../sign_verify_dlg.cpp" line="110"/>
         <source>You have to insert data</source>
         <translation>데이타를 입력 하세요</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="130"/>
+        <location filename="../sign_verify_dlg.cpp" line="139"/>
         <source>You have to find private key</source>
         <translation>개인키를 선택하세요.</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="149"/>
+        <location filename="../sign_verify_dlg.cpp" line="158"/>
         <source>You have to find certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
@@ -1364,12 +1368,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">공개키를 선택하세요.</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="163"/>
+        <location filename="../sign_verify_dlg.cpp" line="172"/>
         <source>Verify Success</source>
         <translation>검증 성공</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="165"/>
+        <location filename="../sign_verify_dlg.cpp" line="174"/>
         <source>Verify Fail</source>
         <translation>검증 실패</translation>
     </message>

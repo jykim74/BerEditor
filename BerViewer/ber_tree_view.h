@@ -32,6 +32,11 @@ public slots:
     void CopyAsBase64();
     void copy();
 
+    void treeExpandAll();
+    void treeExpandNode();
+    void treeCollapseAll();
+    void treeCollapseNode();
+
 private:
 
     QString GetInfoView( const BIN *pBer, BerItem *pItem );

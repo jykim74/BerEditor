@@ -89,9 +89,9 @@
       <widget class="QComboBox" name="mOutputTypeCombo"/>
      </item>
      <item>
-      <widget class="QCheckBox" name="mOrgTextCheck">
+      <widget class="QCheckBox" name="mShowPrintTextCheck">
        <property name="text">
-        <string>show plain text</string>
+        <string>Show printable text</string>
        </property>
       </widget>
      </item>

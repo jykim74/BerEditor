@@ -21,5 +21,9 @@
         <file>images/branch-open.png</file>
         <file>images/vline.png</file>
         <file>berviewer.qss</file>
+        <file>images/collapse_all.png</file>
+        <file>images/collapse_node.png</file>
+        <file>images/expand_all.png</file>
+        <file>images/expand_node.png</file>
     </qresource>
 </RCC>
