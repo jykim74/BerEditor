@@ -18,8 +18,12 @@ public:
 
 private slots:
     virtual void accept();
+    void hashInit();
+    void hashUpdate();
+    void hashFinal();
 
 private:
+    void *pctx_;
 //    Ui::GenHashDlg *ui;
 };
 

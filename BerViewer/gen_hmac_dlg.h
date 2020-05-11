@@ -18,9 +18,12 @@ public:
 
 private slots:
         virtual void accept();
+        void hmacInit();
+        void hmacUpdate();
+        void hmacFinal();
 
 private:
-//    Ui::GenHmacDlg *ui;
+        void *hctx_;
 };
 
 #endif // GEN_HMAC_DLG_H

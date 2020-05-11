@@ -1,10 +1,12 @@
+#include <QStringList>
+
 #include "ber_define.h"
 #include "gen_hmac_dlg.h"
 #include "js_bin.h"
 #include "js_pki.h"
 #include "ber_applet.h"
 
-static const char *hashTypes[] = {
+static QStringList hashTypes = {
     "md5",
     "sha1",
     "sha224",
@@ -13,7 +15,7 @@ static const char *hashTypes[] = {
     "sha512"
 };
 
-static const char *keyTypes[] = {
+static QStringList keyTypes = {
     "String",
     "Hex",
     "Base64"
@@ -22,26 +24,108 @@ static const char *keyTypes[] = {
 GenHmacDlg::GenHmacDlg(QWidget *parent) :
     QDialog(parent)
 {
+    hctx_ = NULL;
     setupUi(this);
 
-    QStringList algList;
+    mAlgTypeCombo->addItems( hashTypes );
+    mKeyTypeCombo->addItems( keyTypes );
 
-    for( int i=0; i < (sizeof(hashTypes) / sizeof(hashTypes[0])); i++ )
-        algList.push_back( hashTypes[i] );
-
-    mAlgTypeCombo->addItems( algList );
-
-    QStringList typeList;
-
-    for( int i=0; i < (sizeof(keyTypes) / sizeof(keyTypes[0])); i++ )
-        typeList.push_back( keyTypes[i] );
-
-    mKeyTypeCombo->addItems(typeList);
+    connect( mInitBtn, SIGNAL(clicked()), this, SLOT(hmacInit()));
+    connect( mUpdateBtn, SIGNAL(clicked()), this, SLOT(hmacUpdate()));
+    connect( mFinalBtn, SIGNAL(clicked()), this, SLOT(hmacFinal()));
 }
 
 GenHmacDlg::~GenHmacDlg()
 {
+    if( hctx_ ) JS_PKI_hmacFree( &hctx_ );
+}
 
+void GenHmacDlg::hmacInit()
+{
+    int ret = 0;
+    if( hctx_ )
+    {
+        JS_PKI_hmacFree( &hctx_ );
+        hctx_ = NULL;
+    }
+
+    BIN binKey = {0,0};
+
+    QString strKey = mKeyText->text();
+
+    if( mKeyTypeCombo->currentIndex() == 0 )
+        JS_BIN_set( &binKey, (unsigned char *)strKey.toStdString().c_str(), strKey.length() );
+    else if( mKeyTypeCombo->currentIndex() == 1 )
+        JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey );
+    else if( mKeyTypeCombo->currentIndex() == 2 )
+        JS_BIN_decodeBase64( strKey.toStdString().c_str(), &binKey );
+
+
+   QString strAlg = mAlgTypeCombo->currentText();
+
+   ret = JS_PKI_hmacInit( &hctx_, strAlg.toStdString().c_str(), &binKey );
+   if( ret == 0 )
+   {
+       mOutputText->setPlainText( "Init OK" );
+   }
+   else
+       mOutputText->setPlainText( "Init fail" );
+
+   JS_BIN_reset( &binKey );
+}
+
+void GenHmacDlg::hmacUpdate()
+{
+    int ret = 0;
+    BIN binSrc = {0,0};
+
+    QString strInput = mInputText->toPlainText();
+
+    if( strInput.length() > 0 )
+    {
+        if( mInputStringBtn->isChecked() )
+            JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
+        else if( mInputHexBtn->isChecked() )
+        {
+            strInput.remove(QRegExp("[\t\r\n\\s]"));
+            JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
+        }
+        else if( mInputBase64Btn->isChecked() )
+        {
+            strInput.remove(QRegExp("[\t\r\n\\s]"));
+            JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
+        }
+    }
+
+    ret = JS_PKI_hmacUpdate( hctx_, &binSrc );
+    if( ret == 0 )
+    {
+        mOutputText->setPlainText( "Update OK" );
+    }
+    else
+        mOutputText->setPlainText( "Updata fail" );
+
+    JS_BIN_reset( &binSrc );
+}
+
+void GenHmacDlg::hmacFinal()
+{
+    int ret = 0;
+    BIN binHMAC = {0,0};
+
+    ret = JS_PKI_hmacFinal( hctx_, &binHMAC );
+    if( ret == 0 )
+    {
+        char *pHex = NULL;
+        JS_BIN_encodeHex( &binHMAC, &pHex );
+        mOutputText->setPlainText( pHex );
+        JS_free( pHex );
+    }
+    else
+        mOutputText->setPlainText( "Final fail" );
+
+    if( hctx_ ) JS_PKI_hmacFree( &hctx_ );
+    JS_BIN_reset( &binHMAC );
 }
 
 void GenHmacDlg::accept()

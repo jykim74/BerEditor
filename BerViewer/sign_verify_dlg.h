@@ -21,9 +21,13 @@ private slots:
     void findCert();
     void algChanged(int index);
     virtual void accept();
+    void signVerifyInit();
+    void signVerifyUpdate();
+    void signVerifyFinal();
 
 private:
     void initialize();
+    void *sctx_;
 };
 
 #endif // SIGN_VERIFY_DLG_H

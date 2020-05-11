@@ -6,22 +6,80 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>426</height>
+    <width>491</width>
+    <height>503</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Signature / Verify</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="10" column="0" colspan="5">
+    <widget class="QLabel" name="mStatusLabel">
+     <property name="text">
+      <string>Status</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="5">
+    <widget class="QPlainTextEdit" name="mInputText"/>
+   </item>
+   <item row="9" column="0" colspan="5">
+    <widget class="QPlainTextEdit" name="mOutputText"/>
+   </item>
+   <item row="12" column="4">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="2">
     <widget class="QLabel" name="label">
      <property name="text">
       <string>Input data type</string>
      </property>
     </widget>
    </item>
-   <item>
+   <item row="12" column="2">
+    <widget class="QPushButton" name="mFinalBtn">
+     <property name="text">
+      <string>Final</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="2">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Private key and Certificate</string>
+     </property>
+    </widget>
+   </item>
+   <item row="12" column="0">
+    <widget class="QPushButton" name="mInitBtn">
+     <property name="text">
+      <string>Init</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0" colspan="5">
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLineEdit" name="mCertPath"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="mCertBtn">
+       <property name="text">
+        <string>Certificate</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0" colspan="5">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QRadioButton" name="mInputStringBtn">
@@ -62,17 +120,14 @@
      </item>
     </layout>
    </item>
-   <item>
-    <widget class="QPlainTextEdit" name="mInputText"/>
-   </item>
-   <item>
-    <widget class="QLabel" name="label_2">
+   <item row="12" column="1">
+    <widget class="QPushButton" name="mUpdateBtn">
      <property name="text">
-      <string>Private key and Certificate</string>
+      <string>Update</string>
      </property>
     </widget>
    </item>
-   <item>
+   <item row="4" column="0" colspan="5">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QLineEdit" name="mPriKeyPath"/>
@@ -86,28 +141,14 @@
      </item>
     </layout>
    </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <widget class="QLineEdit" name="mCertPath"/>
-     </item>
-     <item>
-      <widget class="QPushButton" name="mCertBtn">
-       <property name="text">
-        <string>Certificate</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
+   <item row="6" column="0" colspan="2">
     <widget class="QLabel" name="label_3">
      <property name="text">
       <string>Property and Method</string>
      </property>
     </widget>
    </item>
-   <item>
+   <item row="7" column="0" colspan="5">
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
       <widget class="QComboBox" name="mAlgTypeCombo"/>
@@ -119,29 +160,55 @@
       <widget class="QComboBox" name="mVersionCombo"/>
      </item>
      <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
       <widget class="QComboBox" name="mMethodCombo"/>
      </item>
     </layout>
    </item>
-   <item>
+   <item row="12" column="3">
+    <spacer name="horizontalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="8" column="0" colspan="5">
     <widget class="Line" name="line">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </item>
-   <item>
-    <widget class="QPlainTextEdit" name="mOutputText"/>
-   </item>
-   <item>
-    <widget class="QDialogButtonBox" name="buttonBox">
+   <item row="11" column="1">
+    <spacer name="verticalSpacer">
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Vertical</enum>
      </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
      </property>
-    </widget>
+    </spacer>
    </item>
   </layout>
  </widget>
