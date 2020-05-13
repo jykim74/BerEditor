@@ -20,10 +20,15 @@ private slots:
     void showEvent(QShowEvent *event );
     virtual void accept();
     void clickUseAE();
+    void encDecInit();
+    void encDecUpdate();
+    void encDecFinal();
+    void dataChange();
 
 private:
     void initialize();
     bool isCCM( const QString strAlg );
+    void *ctx_;
 };
 
 #endif // ENC_DEC_DLG_H

@@ -17,6 +17,7 @@
 #include "gen_otp_dlg.h"
 #include "get_ldap_dlg.h"
 #include "key_agree_dlg.h"
+#include "key_derive_dlg.h"
 #include "about_dlg.h"
 
 #include <QtWidgets>
@@ -254,6 +255,10 @@ void MainWindow::createActions()
     menuBar()->addSeparator();
 
     QMenu *cryptMenu = menuBar()->addMenu(tr("&Crypt"));
+
+    QAction *keyDeriveAct = cryptMenu->addAction(tr("&KeyDerive"), this, &MainWindow::keyDerive);
+    keyDeriveAct->setStatusTip(tr("Key Derive function" ));
+
     QAction *hashAct = cryptMenu->addAction(tr("&Hash"), this, &MainWindow::hash);
     hashAct->setStatusTip(tr("Generate hash value" ));
 
@@ -448,6 +453,12 @@ void MainWindow::dataEncoder()
 {
     DataEncoderDlg dataEncoderDlg;
     dataEncoderDlg.exec();
+}
+
+void MainWindow::keyDerive()
+{
+    KeyDeriveDlg keyDeriveDlg;
+    keyDeriveDlg.exec();
 }
 
 void MainWindow::hash()
