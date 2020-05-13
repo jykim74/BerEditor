@@ -790,37 +790,37 @@ mailto : jykim74@gmail.com</translation>
 </translation>
     </message>
     <message>
-        <location filename="../key_derive_dlg.ui" line="33"/>
+        <location filename="../key_derive_dlg.ui" line="23"/>
         <source>Iteration count</source>
-        <translation>반복 회수</translation>
+        <translation type="unfinished">반복 회수(c)</translation>
     </message>
     <message>
-        <location filename="../key_derive_dlg.ui" line="40"/>
+        <location filename="../key_derive_dlg.ui" line="30"/>
         <source>Key length</source>
-        <translation>키 길이</translation>
+        <translation type="unfinished">키 길이</translation>
     </message>
     <message>
-        <location filename="../key_derive_dlg.ui" line="66"/>
+        <location filename="../key_derive_dlg.ui" line="63"/>
         <source>Key Value</source>
         <translation>키 값</translation>
     </message>
     <message>
-        <location filename="../key_derive_dlg.ui" line="73"/>
+        <location filename="../key_derive_dlg.ui" line="70"/>
         <source>Password</source>
-        <translation>암호</translation>
+        <translation type="unfinished">암호</translation>
     </message>
     <message>
-        <location filename="../key_derive_dlg.ui" line="86"/>
+        <location filename="../key_derive_dlg.ui" line="90"/>
         <source>Salt</source>
-        <translation>첨가값</translation>
+        <translation type="unfinished">첨가값(Salt)</translation>
     </message>
     <message>
-        <location filename="../key_derive_dlg.ui" line="106"/>
+        <location filename="../key_derive_dlg.ui" line="117"/>
         <source>Hash</source>
         <translation>해쉬</translation>
     </message>
     <message>
-        <location filename="../key_derive_dlg.ui" line="120"/>
+        <location filename="../key_derive_dlg.ui" line="131"/>
         <source>Key paramters</source>
         <translation>키 파라미터</translation>
     </message>
