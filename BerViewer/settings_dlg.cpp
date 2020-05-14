@@ -29,6 +29,7 @@ void SettingsDlg::updateSettings()
     SettingsMgr *mgr = berApplet->settingsMgr();
 
     mgr->setShowFullText( mCheckBoxShowFullText->checkState() == Qt::Checked );
+    mgr->setSaveOpenFolder( mCheckSaveOpenFolder->checkState() == Qt::Checked );
 
 #ifdef _AUTO_UPDATE
     if( AutoUpdateService::instance()->shouldSupportAutoUpdate() ) {
@@ -74,6 +75,9 @@ void SettingsDlg::showEvent(QShowEvent *event)
 
     state = mgr->showFullText() ? Qt::Checked : Qt::Unchecked;
     mCheckBoxShowFullText->setCheckState(state);
+
+    state = mgr->isSaveOpenFolder() ? Qt::Checked : Qt::Unchecked;
+    mCheckSaveOpenFolder->setCheckState(state);
 
 #ifdef _AUTO_UPDATE
     if( AutoUpdateService::instance()->shouldSupportAutoUpdate()) {

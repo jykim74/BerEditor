@@ -24,14 +24,24 @@ static QStringList algTypes = {
     "aes-256-cbc",
     "aes-256-ecb",
     "des-cbc",
-    "des-ebc"
+    "des-ebc",
+    "aria-128-cbc",
+    "aria-128-ecb",
+    "aria-192-cbc",
+    "aria-192-ecb",
+    "aria-256-cbc",
+    "aria-256-ecb"
 };
 
 static QStringList algAETypes = {
     "aes-128-ccm",
     "aes-256-ccm",
     "aes-128-gcm",
-    "aes-256-gcm"
+    "aes-256-gcm",
+    "aria-128-ccm",
+    "aria-256-ccm",
+    "aria-128-gcm",
+    "aria-256-gcm"
 };
 
 EncDecDlg::EncDecDlg(QWidget *parent) :
@@ -85,8 +95,8 @@ void EncDecDlg::accept()
 
     if( strInput.isEmpty() )
     {
-        berApplet->warningBox( tr( "You have to insert data"), this );
-        return;
+//        berApplet->warningBox( tr( "You have to insert data"), this );
+//        return;
     }
 
     if( mInputStringBtn->isChecked() )
@@ -335,8 +345,8 @@ void EncDecDlg::encDecUpdate()
 
     if( strInput.isEmpty() )
     {
-        berApplet->warningBox( tr( "You have to insert data"), this );
-        return;
+//        berApplet->warningBox( tr( "You have to insert data"), this );
+//        return;
     }
 
     if( mInputStringBtn->isChecked() )

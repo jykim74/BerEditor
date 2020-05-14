@@ -7,6 +7,7 @@
 #include "insert_data_dlg.h"
 #include "ber_applet.h"
 #include "settings_dlg.h"
+#include "settings_mgr.h"
 #include "data_encoder_dlg.h"
 #include "gen_hash_dlg.h"
 #include "gen_hmac_dlg.h"
@@ -364,9 +365,20 @@ void MainWindow::insertData()
 
 void MainWindow::open()
 {
+    bool bSavePath = berApplet->settingsMgr()->isSaveOpenFolder();
+    QString strPath = QDir::currentPath();
+
+    if( bSavePath )
+    {
+        QSettings settings;
+        settings.beginGroup( "berviewer" );
+        strPath = settings.value( "openPath", "" ).toString();
+        settings.endGroup();
+    }
+
     QString fileName = QFileDialog::getOpenFileName(this,
-                                                    "/home",
-                                                    QDir::currentPath(),
+                                                    "BerViewer file open",
+                                                    strPath,
                                                     "All files (*.*) ;; BER files (*.ber *.der);; PEM files (*.crt *.pem)" );
 
     if( !fileName.isEmpty() )
@@ -374,6 +386,17 @@ void MainWindow::open()
         berFileOpen(fileName);
         file_path_ = fileName;
         setTitle( fileName );
+
+        if( bSavePath )
+        {
+            QFileInfo fileInfo(fileName);
+            QString strDir = fileInfo.dir().path();
+
+            QSettings settings;
+            settings.beginGroup("berviewer");
+            settings.setValue( "openPath", strDir );
+            settings.endGroup();
+        }
     }
 }
 
@@ -540,6 +563,11 @@ void MainWindow::save()
     if( file_path_.isEmpty() )
         saveAs();
     else {
+        if( berApplet->yesOrNoBox( tr("Do you want to overwrite %1 as BER file?").arg(file_path_), this ) == 0)
+        {
+            return;
+        }
+
         BIN& binBer = ber_model_->getBer();
         JS_BIN_fileWrite( &binBer, file_path_.toStdString().c_str() );
     }

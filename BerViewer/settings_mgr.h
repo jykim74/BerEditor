@@ -12,6 +12,8 @@ public:
     void setShowFullText( bool val );
     bool showFullText();
 
+    void setSaveOpenFolder( bool val );
+    bool isSaveOpenFolder();
 signals:
 
 public slots:

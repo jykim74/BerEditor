@@ -31,7 +31,14 @@
    <item row="10" column="0" colspan="5">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QComboBox" name="mAlgCombo"/>
+      <widget class="QComboBox" name="mAlgCombo">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>0</height>
+        </size>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QComboBox" name="mOutputTypeCombo"/>
