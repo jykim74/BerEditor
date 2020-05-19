@@ -43,5 +43,11 @@ int main(int argc, char *argv[])
 
     mw.show();
 */
+#ifdef Q_OS_WIN32
+    QFont font;
+    font.setFamily(QString("굴림체"));
+    app.setFont(font);
+#endif
+
     return app.exec();
 }

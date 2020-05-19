@@ -17,12 +17,24 @@ public:
     ~KeyAgreeDlg();
 
 private slots:
-    void calcualte();
+    void calcualteA();
+    void calcualteB();
+    void secretClear();
     void genDHParam();
-    void genDHKey();
-    void findPriKey();
-    void findCert();
-    void mechChanged( int index );
+    void genADHPri();
+    void genBDHPri();
+    void genADHKey();
+    void genBDHKey();
+
+
+    void genAECDHPriKey();
+    void genAECDHPubKey();
+    void findAECDHPriKey();
+    void genBECDHPriKey();
+    void genBECDHPubKey();
+    void findBECDHPriKey();
+
+    void mechChanged();
 
 
 private:

@@ -7,14 +7,282 @@
     <x>0</x>
     <y>0</y>
     <width>564</width>
-    <height>520</height>
+    <height>678</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Key Agreement</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="7" column="0" colspan="2">
+   <item row="1" column="0" colspan="4">
+    <widget class="QGroupBox" name="mDHGroup">
+     <property name="title">
+      <string>DH</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_9">
+        <property name="text">
+         <string>A PublicKey</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Length</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="mLengthText"/>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>g value</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>p value</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="6">
+       <widget class="QPlainTextEdit" name="mPText"/>
+      </item>
+      <item row="4" column="1" colspan="3">
+       <widget class="QLineEdit" name="mAPrivateKeyText"/>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="label_11">
+        <property name="text">
+         <string>B PublicKey</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_8">
+        <property name="text">
+         <string>A PrivateKey</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1" colspan="3">
+       <widget class="QLineEdit" name="mAPublicKeyText"/>
+      </item>
+      <item row="2" column="5">
+       <widget class="QPushButton" name="mGenParamBtn">
+        <property name="text">
+         <string>GenParam</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1" colspan="3">
+       <widget class="QLineEdit" name="mBPublicKeyText"/>
+      </item>
+      <item row="1" column="5">
+       <widget class="QComboBox" name="mGCombo"/>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_10">
+        <property name="text">
+         <string>B PrivateKey</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1" colspan="3">
+       <widget class="QLineEdit" name="mBPrivateKeyText"/>
+      </item>
+      <item row="1" column="3">
+       <widget class="QLineEdit" name="mGText">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="5">
+       <widget class="QPushButton" name="mBGenDHKeyBtn">
+        <property name="text">
+         <string>B GenDHKey</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="5">
+       <widget class="QPushButton" name="mAGenDHKeyBtn">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>A GenDHKey</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="5">
+       <widget class="QPushButton" name="mADHPriBtn">
+        <property name="text">
+         <string>A GenDHPri</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="5">
+       <widget class="QPushButton" name="mBDHPriBtn">
+        <property name="text">
+         <string>B GenDHPri</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="2" column="0" colspan="4">
+    <widget class="QGroupBox" name="mECDHGroup">
+     <property name="title">
+      <string>ECDH</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_13">
+        <property name="text">
+         <string>B PrivateKey</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="QLabel" name="label_14">
+        <property name="text">
+         <string>B PublicKey</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_12">
+        <property name="text">
+         <string>Parameter</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>A PrivateKey</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="5">
+       <widget class="QPushButton" name="mAFindPriKeyBtn">
+        <property name="text">
+         <string>A Find PriKey</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="4">
+       <widget class="QPushButton" name="mAGenPubKeyBtn">
+        <property name="text">
+         <string>A GenPubKey</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" colspan="5">
+       <widget class="QLineEdit" name="mAECDHPriKeyText"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_7">
+        <property name="text">
+         <string>A PublicKey</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1" colspan="5">
+       <widget class="QLineEdit" name="mAECDHPubKeyText"/>
+      </item>
+      <item row="9" column="4">
+       <widget class="QPushButton" name="mBGenPubKeyBtn">
+        <property name="text">
+         <string>B GenPubKey</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="5">
+       <widget class="QPushButton" name="mBFindPriKeyBtn">
+        <property name="text">
+         <string>B Find PriKey</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1" colspan="5">
+       <widget class="QLineEdit" name="mBECDHPriKeyText"/>
+      </item>
+      <item row="8" column="1" colspan="5">
+       <widget class="QLineEdit" name="mBECDHPubKeyText"/>
+      </item>
+      <item row="9" column="3">
+       <widget class="QPushButton" name="mBGenPriKeyBtn">
+        <property name="text">
+         <string>B GenPriKey</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="3">
+       <widget class="QPushButton" name="mAGenPriKeyBtn">
+        <property name="text">
+         <string>A GenPriKey</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1" colspan="2">
+       <widget class="QComboBox" name="mECDHParamCombo"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QRadioButton" name="mDHBtn">
+     <property name="text">
+      <string>DH</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="3">
+    <widget class="QRadioButton" name="mECDHBtn">
+     <property name="text">
+      <string>ECDH</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Algorithm</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0" colspan="4">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <spacer name="horizontalSpacer">
@@ -30,9 +298,23 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="mCalcBtn">
+      <widget class="QPushButton" name="mSecretClearBtn">
        <property name="text">
-        <string>Calculate</string>
+        <string>Secret Clear</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="mACalcBtn">
+       <property name="text">
+        <string>A Calculate</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="mBCalcBtn">
+       <property name="text">
+        <string>B Calculate</string>
        </property>
       </widget>
      </item>
@@ -45,51 +327,7 @@
      </item>
     </layout>
    </item>
-   <item row="2" column="1">
-    <widget class="QComboBox" name="mMechCombo">
-     <property name="maximumSize">
-      <size>
-       <width>80</width>
-       <height>16777215</height>
-      </size>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="0">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>Key Agreement</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>Algorithm</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0" colspan="2">
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="0" colspan="2">
+   <item row="3" column="0" colspan="4">
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
       <string>Secret Key</string>
@@ -101,131 +339,18 @@
      </layout>
     </widget>
    </item>
-   <item row="4" column="0" colspan="2">
-    <widget class="QGroupBox" name="mECDHGroup">
-     <property name="title">
-      <string>ECDH</string>
+   <item row="0" column="1">
+    <spacer name="horizontalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
      </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_7">
-        <property name="text">
-         <string>Certificate</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLineEdit" name="mCertPathText"/>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_6">
-        <property name="text">
-         <string>PrivateKey</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="mPriKeyPathText"/>
-      </item>
-      <item row="1" column="2">
-       <widget class="QPushButton" name="mFindCertBtn">
-        <property name="text">
-         <string>FindCert</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QPushButton" name="mFindPriKeyBtn">
-        <property name="text">
-         <string>FindPriKey</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="3" column="0" colspan="2">
-    <widget class="QGroupBox" name="mDHGroup">
-     <property name="title">
-      <string>DH</string>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="1" column="2">
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>g value</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Length</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLineEdit" name="mLengthText"/>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_8">
-        <property name="text">
-         <string>PrivateKey</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="5">
-       <widget class="QComboBox" name="mGCombo"/>
-      </item>
-      <item row="2" column="5">
-       <widget class="QPushButton" name="mGenParamBtn">
-        <property name="text">
-         <string>GenParam</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>p value</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0" colspan="6">
-       <widget class="QPlainTextEdit" name="mPText"/>
-      </item>
-      <item row="1" column="3">
-       <widget class="QLineEdit" name="mGText">
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="label_9">
-        <property name="text">
-         <string>PublicKey</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="5">
-       <widget class="QPushButton" name="mGenDHKeyBtn">
-        <property name="text">
-         <string>GenDHKey</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1" colspan="3">
-       <widget class="QLineEdit" name="mPrivateKeyText"/>
-      </item>
-      <item row="5" column="1" colspan="3">
-       <widget class="QLineEdit" name="mPublicKeyText"/>
-      </item>
-     </layout>
-    </widget>
+    </spacer>
    </item>
   </layout>
  </widget>

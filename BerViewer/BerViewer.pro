@@ -53,6 +53,7 @@ SOURCES += \
     key_derive_dlg.cpp \
     main.cpp \
     mainwindow.cpp \
+    num_trans_dlg.cpp \
     oid_info_dlg.cpp \
     rsa_enc_dec_dlg.cpp \
     settings_dlg.cpp \
@@ -81,6 +82,7 @@ HEADERS += \
     key_agree_dlg.h \
     key_derive_dlg.h \
     mainwindow.h \
+    num_trans_dlg.h \
     oid_info_dlg.h \
     rsa_enc_dec_dlg.h \
     settings_dlg.h \
@@ -150,6 +152,7 @@ FORMS += \
         key_agree_dlg.ui \
         key_derive_dlg.ui \
         mainwindow.ui \
+        num_trans_dlg.ui \
         oid_info_dlg.ui \
         rsa_enc_dec_dlg.ui \
         settings_dlg.ui \

@@ -19,6 +19,7 @@
 #include "get_ldap_dlg.h"
 #include "key_agree_dlg.h"
 #include "key_derive_dlg.h"
+#include "num_trans_dlg.h"
 #include "about_dlg.h"
 
 #include <QtWidgets>
@@ -291,6 +292,9 @@ void MainWindow::createActions()
     toolMenu->addAction( dataEncodeAct );
     toolToolBar->addAction( dataEncodeAct );
 
+    QAction *numTransAct = toolMenu->addAction(tr("&NumTrans"), this, &MainWindow::numTrans);
+    numTransAct->setStatusTip(tr("Number transmission" ));
+
     QAction *oidAct = toolMenu->addAction(tr("O&ID Information"), this, &MainWindow::oidInfo);
     oidAct->setStatusTip(tr("Show OID information" ));
 
@@ -361,6 +365,12 @@ void MainWindow::insertData()
         setTitle( QString("Unknown" ));
     }
 
+}
+
+void MainWindow::numTrans()
+{
+    NumTransDlg numTransDlg;
+    numTransDlg.exec();
 }
 
 void MainWindow::open()

@@ -56,6 +56,7 @@
 
 		<!-- Auto-start via Registry -->
 		<DirectoryRef Id="INSTALLDIR">
+			<!--
 			<Component Id="BerViewerAutoStart" Guid="$(var.GuidOfAutoStartComponent)">
 				<RegistryKey Root="HKCU"
 							Key="Software\Microsoft\Windows\CurrentVersion\Run"
@@ -65,6 +66,7 @@
 
 				<Condition>BERVIEWER_AUTO_START</Condition>
 			</Component>
+			-->
 		</DirectoryRef>
 
 		<DirectoryRef Id="BerViewerStartMenuFolder">
@@ -74,11 +76,12 @@
 						Name="Installed" Type="integer" Value="1" KeyPath='yes' />
 
 				<!-- shortcut to 'start berviewer' -->
+				<!--
 				<Shortcut Id="ApplicationStartMenuShortCut" Directory="BerViewerStartMenuFolder"
 							Name="!(loc.AppName)" Target="[#berviewer.exe]"
 							Hotkey="0" IconIndex="0" Show="normal"
 							WorkingDirectory="bin" />
-
+				-->
 				<!-- shortcut to 'Uninstall' -->
 				<Shortcut Id="UninstallProduct" Name="!(loc.UninstallBerViewer)"
 							Target="[SystemFolder]msiexec.exe" IconIndex="0"
@@ -95,7 +98,9 @@
 
 		<Feature Id='Main' Level='1'>
 			<ComponentRef Id='BerViewer_StartMenuShortCut' />
+			<!--
 			<ComponentRef Id='BerViewerAutoStart' />
+			-->
 			<!-- defined in fragment.wxs -->
 			<ComponentGroupRef Id='group_bin' />
 		</Feature>

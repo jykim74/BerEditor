@@ -50,6 +50,7 @@ private slots:
     void rsaEncDec();
     void genOTP();
     void insertData();
+    void numTrans();
     void getLdap();
     void save();
     void saveAs();
