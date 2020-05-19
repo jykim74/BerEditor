@@ -40,9 +40,6 @@ KeyAgreeDlg::KeyAgreeDlg(QWidget *parent) :
     connect( mBCalcBtn, SIGNAL(clicked()), this, SLOT(calcualteB()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
-    connect( mDHBtn, SIGNAL(clicked()), this, SLOT(mechChanged()));
-    connect( mECDHBtn, SIGNAL(clicked()), this, SLOT(mechChanged()));
-
     initialize();
 
 }
@@ -59,7 +56,7 @@ void KeyAgreeDlg::calcualteA()
     BIN binPub = {0,0};
     BIN binSecret = {0,0};
 
-    if( mDHBtn->isChecked() )
+    if( mTabWidget->currentIndex() == 0 )
     {
         BIN binP = {0,0};
         BIN binG = {0,0};
@@ -103,7 +100,7 @@ void KeyAgreeDlg::calcualteB()
     BIN binPub = {0,0};
     BIN binSecret = {0,0};
 
-    if( mDHBtn->isChecked() )
+    if( mTabWidget->currentIndex() == 0 )
     {
         BIN binP = {0,0};
         BIN binG = {0,0};
@@ -151,8 +148,7 @@ void KeyAgreeDlg::initialize()
     mECDHParamCombo->addItems( sECCParamList );
 
     mLengthText->setText( "128" );
-
-    mechChanged();
+    mTabWidget->setCurrentIndex(0);
 }
 
 void KeyAgreeDlg::genDHParam()
@@ -430,20 +426,5 @@ void KeyAgreeDlg::findBECDHPriKey()
 
 
     JS_PKI_resetECKeyVal( &sECKeyVal );
-}
-
-
-void KeyAgreeDlg::mechChanged()
-{
-    bool bVal;
-
-    if( mDHBtn->isChecked() )
-        bVal = true;
-    else {
-        bVal = false;
-    }
-
-    mDHGroup->setEnabled(bVal);
-    mECDHGroup->setEnabled(!bVal);
 }
 

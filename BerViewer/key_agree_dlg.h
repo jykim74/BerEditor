@@ -34,8 +34,6 @@ private slots:
     void genBECDHPubKey();
     void findBECDHPriKey();
 
-    void mechChanged();
-
 
 private:
     void initialize();
