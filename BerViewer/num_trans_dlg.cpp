@@ -3,6 +3,7 @@
 #include "num_trans_dlg.h"
 #include "js_pki.h"
 #include "js_pki_tools.h"
+#include "js_util.h"
 
 const QStringList sTypeList = { "Bit", "Decimal", "Hex" };
 
@@ -49,7 +50,16 @@ void NumTransDlg::dataTrans()
     else if( mOutputTypeCombo->currentIndex() == 2 )
         JS_BIN_encodeHex( &binSrc, &pOutput );
 
-    mOutputText->setPlainText( pOutput );
+    if( mOutputTypeCombo->currentIndex() == 0 )
+    {
+        char *pTrimOut = JS_UTIL_trimChLeft( '0', pOutput );
+        mOutputText->setPlainText( pTrimOut );
+    }
+    else
+    {
+        mOutputText->setPlainText( pOutput );
+    }
+
     if( pOutput ) JS_free( pOutput );
 }
 

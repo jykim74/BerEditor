@@ -17,10 +17,12 @@ public:
     ~GenHashDlg();
 
 private slots:
-    virtual void accept();
+    void digest();
     void hashInit();
     void hashUpdate();
     void hashFinal();
+    void clearInput();
+    void clearOutput();
 
 private:
     void *pctx_;

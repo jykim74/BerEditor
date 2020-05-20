@@ -19,7 +19,6 @@ static QStringList hashTypes = {
 GenHashDlg::GenHashDlg(QWidget *parent) :
     QDialog(parent)
 {
-//    ui->setupUi(this);
     setupUi(this);
     pctx_ = NULL;
 
@@ -28,6 +27,11 @@ GenHashDlg::GenHashDlg(QWidget *parent) :
     connect( mInitBtn, SIGNAL(clicked()), this, SLOT(hashInit()));
     connect( mUpdateBtn, SIGNAL(clicked()), this, SLOT(hashUpdate()));
     connect( mFinalBtn, SIGNAL(clicked()), this, SLOT(hashFinal()));
+
+    connect( mDigestBtn, SIGNAL(clicked()), this, SLOT(digest()));
+    connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mInputClearBtn, SIGNAL(clicked()), this, SLOT(clearInput()));
+    connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clearOutput()));
 }
 
 GenHashDlg::~GenHashDlg()
@@ -51,10 +55,10 @@ void GenHashDlg::hashInit()
     ret = JS_PKI_hashInit( &pctx_, strAlg.toStdString().c_str() );
     if( ret == 0 )
     {
-        mOutputText->setPlainText( "Init OK" );
+        mStatusLabel->setText( "Init OK" );
     }
     else
-        mOutputText->setPlainText( "Init fail" );
+        mStatusLabel->setText( "Init Fail" );
 }
 
 void GenHashDlg::hashUpdate()
@@ -88,10 +92,10 @@ void GenHashDlg::hashUpdate()
     ret = JS_PKI_hashUpdate( pctx_, &binSrc );
     if( ret == 0 )
     {
-        mOutputText->setPlainText( "Update OK" );
+        mStatusLabel->setText( "Update OK" );
     }
     else
-        mOutputText->setPlainText( "Update fail" );
+        mStatusLabel->setText( "Update fail" );
 
     JS_BIN_reset( &binSrc );
 }
@@ -107,11 +111,12 @@ void GenHashDlg::hashFinal()
         char *pHex = NULL;
         JS_BIN_encodeHex( &binMD, &pHex );
         mOutputText->setPlainText( pHex );
+        mStatusLabel->setText( "Final OK" );
         JS_free( pHex );
     }
     else
     {
-        mOutputText->setPlainText( "Final fail" );
+        mStatusLabel->setText( "Final Fail" );
     }
 
     JS_PKI_hashFree( &pctx_ );
@@ -119,7 +124,7 @@ void GenHashDlg::hashFinal()
     JS_BIN_reset( &binMD );
 }
 
-void GenHashDlg::accept()
+void GenHashDlg::digest()
 {
     int ret = 0;
 
@@ -156,12 +161,24 @@ void GenHashDlg::accept()
         JS_BIN_encodeHex( &binHash, &pHex );
         mOutputText->setPlainText( pHex );
         if( pHex ) JS_free(pHex );
+
+        mStatusLabel->setText( "Digest OK" );
     }
     else
     {
-
+        mStatusLabel->setText( "Digest Fail" );
     }
 
     JS_BIN_reset(&binSrc);
     JS_BIN_reset(&binHash);
+}
+
+void GenHashDlg::clearInput()
+{
+    mInputText->clear();
+}
+
+void GenHashDlg::clearOutput()
+{
+    mOutputText->clear();
 }

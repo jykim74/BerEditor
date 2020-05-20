@@ -292,8 +292,12 @@ void MainWindow::createActions()
     toolMenu->addAction( dataEncodeAct );
     toolToolBar->addAction( dataEncodeAct );
 
-    QAction *numTransAct = toolMenu->addAction(tr("&NumTrans"), this, &MainWindow::numTrans);
+    const QIcon numTransIcon = QIcon::fromTheme("number-trans", QIcon(":/images/number.jpg"));
+    QAction *numTransAct = new QAction( numTransIcon, tr("&NumTrans"), this);
+    connect( numTransAct, &QAction::triggered, this, &MainWindow::numTrans );
     numTransAct->setStatusTip(tr("Number transmission" ));
+    toolMenu->addAction( numTransAct );
+    toolToolBar->addAction( numTransAct );
 
     QAction *oidAct = toolMenu->addAction(tr("O&ID Information"), this, &MainWindow::oidInfo);
     oidAct->setStatusTip(tr("Show OID information" ));

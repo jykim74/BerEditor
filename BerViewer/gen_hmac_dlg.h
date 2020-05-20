@@ -17,10 +17,13 @@ public:
     ~GenHmacDlg();
 
 private slots:
-        virtual void accept();
+        void hmac();
         void hmacInit();
         void hmacUpdate();
         void hmacFinal();
+
+        void inputClear();
+        void outputClear();
 
 private:
         void *hctx_;

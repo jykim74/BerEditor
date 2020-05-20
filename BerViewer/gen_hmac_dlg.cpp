@@ -33,6 +33,11 @@ GenHmacDlg::GenHmacDlg(QWidget *parent) :
     connect( mInitBtn, SIGNAL(clicked()), this, SLOT(hmacInit()));
     connect( mUpdateBtn, SIGNAL(clicked()), this, SLOT(hmacUpdate()));
     connect( mFinalBtn, SIGNAL(clicked()), this, SLOT(hmacFinal()));
+
+    connect( mHMACBtn, SIGNAL(clicked()), this, SLOT(hmac()));
+    connect( mInputClearBtn, SIGNAL(clicked()), this, SLOT(inputClear()));
+    connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(outputClear()));
+    connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 }
 
 GenHmacDlg::~GenHmacDlg()
@@ -66,10 +71,10 @@ void GenHmacDlg::hmacInit()
    ret = JS_PKI_hmacInit( &hctx_, strAlg.toStdString().c_str(), &binKey );
    if( ret == 0 )
    {
-       mOutputText->setPlainText( "Init OK" );
+       mStatusLabel->setText( "Init OK" );
    }
    else
-       mOutputText->setPlainText( "Init fail" );
+       mStatusLabel->setText( "Init fail" );
 
    JS_BIN_reset( &binKey );
 }
@@ -100,10 +105,10 @@ void GenHmacDlg::hmacUpdate()
     ret = JS_PKI_hmacUpdate( hctx_, &binSrc );
     if( ret == 0 )
     {
-        mOutputText->setPlainText( "Update OK" );
+        mStatusLabel->setText( "Update OK" );
     }
     else
-        mOutputText->setPlainText( "Updata fail" );
+        mStatusLabel->setText( "Updata fail" );
 
     JS_BIN_reset( &binSrc );
 }
@@ -119,16 +124,17 @@ void GenHmacDlg::hmacFinal()
         char *pHex = NULL;
         JS_BIN_encodeHex( &binHMAC, &pHex );
         mOutputText->setPlainText( pHex );
+        mStatusLabel->setText( "Final OK" );
         JS_free( pHex );
     }
     else
-        mOutputText->setPlainText( "Final fail" );
+        mStatusLabel->setText( "Final fail" );
 
     if( hctx_ ) JS_PKI_hmacFree( &hctx_ );
     JS_BIN_reset( &binHMAC );
 }
 
-void GenHmacDlg::accept()
+void GenHmacDlg::hmac()
 {
     BIN binSrc = {0,0};
     BIN binKey = {0,0};
@@ -176,11 +182,26 @@ void GenHmacDlg::accept()
        char *pHex = NULL;
        JS_BIN_encodeHex( &binHmac, &pHex );
        mOutputText->setPlainText( pHex );
+       mStatusLabel->setText( "HMAC OK" );
        if( pHex ) JS_free(pHex);
+   }
+   else
+   {
+       mStatusLabel->setText( "HMAC FAIL" );
    }
 
 
    JS_BIN_reset(&binSrc);
    JS_BIN_reset(&binKey);
    JS_BIN_reset(&binHmac);
+}
+
+void GenHmacDlg::inputClear()
+{
+    mInputText->clear();
+}
+
+void GenHmacDlg::outputClear()
+{
+    mOutputText->clear();
 }

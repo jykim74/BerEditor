@@ -26,5 +26,6 @@
         <file>images/expand_all.png</file>
         <file>images/expand_node.png</file>
         <file>images/data_trans.png</file>
+        <file>images/number.jpg</file>
     </qresource>
 </RCC>
