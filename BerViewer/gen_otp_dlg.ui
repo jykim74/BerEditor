@@ -38,13 +38,6 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="mSetNowBtn">
-       <property name="text">
-        <string>Set now</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -56,6 +49,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="mSetNowBtn">
+       <property name="text">
+        <string>Set now</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -86,6 +86,19 @@
       <widget class="QComboBox" name="mHashTypeCombo"/>
      </item>
      <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
         <string>Interval</string>
@@ -104,19 +117,6 @@
      </item>
      <item>
       <widget class="QSpinBox" name="mLengthSpin"/>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
      </item>
     </layout>
    </item>

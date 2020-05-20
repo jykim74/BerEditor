@@ -6,16 +6,17 @@
 #include "js_bin.h"
 #include "js_pki.h"
 
-static const char *dataTypes[] = {
+static QStringList dataTypes = {
     "String",
     "Hex",
     "Base64"
 };
 
-static const char *hashTypes[] = {
+static QStringList hashTypes = {
     "md5",
     "sha1",
     "sha224",
+    "sha256",
     "sha384",
     "sha512"
 };
@@ -39,19 +40,10 @@ void GenOTPDlg::initialize()
     QDateTime dateTime = QDateTime::currentDateTime();
     mDateTime->setDateTime(dateTime);
 
-    QStringList hashList;
-
-    for( int i=0; i < (sizeof(hashTypes) / sizeof(hashTypes[0])); i++ )
-        hashList.push_back( hashTypes[i] );
-
-    mHashTypeCombo->addItems(hashList);
-
-    QStringList dataList;
-
-    for( int i=0; i < (sizeof(dataTypes) / sizeof(dataTypes[0])); i++ )
-        dataList.push_back( dataTypes[i] );
-
-    mKeyTypeCombo->addItems(dataList);
+    mHashTypeCombo->addItems(hashTypes);
+    mKeyTypeCombo->addItems(dataTypes);
+    mIntervalSpin->setValue(60);
+    mLengthSpin->setValue(6);
 }
 
 
