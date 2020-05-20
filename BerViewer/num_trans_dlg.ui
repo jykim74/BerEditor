@@ -14,23 +14,6 @@
    <string>Number Transmission</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="0" colspan="4">
-    <widget class="QPlainTextEdit" name="mInputText"/>
-   </item>
-   <item row="2" column="2">
-    <widget class="QPushButton" name="mTransBtn">
-     <property name="text">
-      <string>Transmission</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="3">
-    <widget class="QPushButton" name="mChangeBtn">
-     <property name="text">
-      <string>Change</string>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="0" colspan="4">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
@@ -77,8 +60,11 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QComboBox" name="mOutputTypeCombo"/>
+   <item row="3" column="0" colspan="4">
+    <widget class="QPlainTextEdit" name="mOutputText"/>
+   </item>
+   <item row="1" column="0" colspan="4">
+    <widget class="QPlainTextEdit" name="mInputText"/>
    </item>
    <item row="2" column="1">
     <spacer name="horizontalSpacer">
@@ -93,54 +79,52 @@
      </property>
     </spacer>
    </item>
-   <item row="3" column="0" colspan="4">
-    <widget class="QPlainTextEdit" name="mOutputText"/>
-   </item>
-   <item row="4" column="1" colspan="3">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+   <item row="2" column="3">
+    <widget class="QPushButton" name="mChangeBtn">
+     <property name="text">
+      <string>Change</string>
      </property>
     </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QComboBox" name="mOutputTypeCombo"/>
+   </item>
+   <item row="4" column="0" colspan="4">
+    <layout class="QGridLayout" name="gridLayout_3">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mCloseBtn">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mTransBtn">
+       <property name="text">
+        <string>Transmission</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>NumTransDlg</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>157</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>rejected()</signal>
-   <receiver>NumTransDlg</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>286</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

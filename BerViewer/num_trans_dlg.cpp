@@ -16,6 +16,7 @@ NumTransDlg::NumTransDlg(QWidget *parent) :
 
      connect( mTransBtn, SIGNAL(clicked()), this, SLOT(dataTrans()));
      connect( mChangeBtn, SIGNAL(clicked()), this, SLOT(dataChange()));
+     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 }
 
 NumTransDlg::~NumTransDlg()
@@ -23,10 +24,6 @@ NumTransDlg::~NumTransDlg()
 
 }
 
-void NumTransDlg::accept()
-{
-
-}
 
 void NumTransDlg::dataTrans()
 {

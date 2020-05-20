@@ -570,7 +570,7 @@ mailto : jykim74@gmail.com</translation>
         <translation>날짜 및 시간</translation>
     </message>
     <message>
-        <location filename="../gen_otp_dlg.ui" line="43"/>
+        <location filename="../gen_otp_dlg.ui" line="56"/>
         <source>Set now</source>
         <translation>지금 설정</translation>
     </message>
@@ -580,7 +580,7 @@ mailto : jykim74@gmail.com</translation>
         <translation>OTP 속성</translation>
     </message>
     <message>
-        <location filename="../gen_otp_dlg.ui" line="101"/>
+        <location filename="../gen_otp_dlg.ui" line="114"/>
         <source>Length</source>
         <translation>길이</translation>
     </message>
@@ -595,7 +595,7 @@ mailto : jykim74@gmail.com</translation>
         <translation>OTP 값 생성</translation>
     </message>
     <message>
-        <location filename="../gen_otp_dlg.ui" line="91"/>
+        <location filename="../gen_otp_dlg.ui" line="104"/>
         <source>Interval</source>
         <translation>간격</translation>
     </message>
@@ -620,7 +620,7 @@ mailto : jykim74@gmail.com</translation>
         <translation>T 값</translation>
     </message>
     <message>
-        <location filename="../gen_otp_dlg.cpp" line="80"/>
+        <location filename="../gen_otp_dlg.cpp" line="72"/>
         <source>You have to insert key</source>
         <translation>키 값을 입력하세요.</translation>
     </message>
@@ -1363,32 +1363,37 @@ mailto : jykim74@gmail.com</translation>
         <translation>숫자 변환창</translation>
     </message>
     <message>
-        <location filename="../num_trans_dlg.ui" line="23"/>
+        <location filename="../num_trans_dlg.ui" line="100"/>
+        <source>Close</source>
+        <translation>닫기</translation>
+    </message>
+    <message>
+        <location filename="../num_trans_dlg.ui" line="107"/>
         <source>Transmission</source>
         <translation>변환</translation>
     </message>
     <message>
-        <location filename="../num_trans_dlg.ui" line="30"/>
+        <location filename="../num_trans_dlg.ui" line="85"/>
         <source>Change</source>
         <translation>교환</translation>
     </message>
     <message>
-        <location filename="../num_trans_dlg.ui" line="37"/>
+        <location filename="../num_trans_dlg.ui" line="20"/>
         <source>Number Type</source>
         <translation>숫자 타입</translation>
     </message>
     <message>
-        <location filename="../num_trans_dlg.ui" line="43"/>
+        <location filename="../num_trans_dlg.ui" line="26"/>
         <source>Bit</source>
         <translation>2진수</translation>
     </message>
     <message>
-        <location filename="../num_trans_dlg.ui" line="50"/>
+        <location filename="../num_trans_dlg.ui" line="33"/>
         <source>Decimal</source>
         <translation>10진수</translation>
     </message>
     <message>
-        <location filename="../num_trans_dlg.ui" line="60"/>
+        <location filename="../num_trans_dlg.ui" line="43"/>
         <source>Hex</source>
         <translation>16진수</translation>
     </message>

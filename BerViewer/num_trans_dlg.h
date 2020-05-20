@@ -17,7 +17,6 @@ public:
     ~NumTransDlg();
 
 private slots:
-    virtual void accept();
     void dataTrans();
     void dataChange();
 
