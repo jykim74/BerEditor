@@ -343,8 +343,6 @@ void MainWindow::insertData()
     BIN binData = {0,0};
 
     InsertDataDlg insData(this);
-
-
     ret = insData.exec();
 
     if( ret == QDialog::Accepted )
@@ -548,8 +546,21 @@ void MainWindow::genOTP()
 
 void MainWindow::getLdap()
 {
+    int ret = -1;
     GetLdapDlg getLdapDlg;
-    getLdapDlg.exec();
+    ret = getLdapDlg.exec();
+
+    if( ret == QDialog::Accepted )
+    {
+        ber_model_->setBer(&getLdapDlg.getData());
+
+        ber_model_->parseTree();
+
+        left_tree_->header()->setVisible(false);
+        left_tree_->viewRoot();
+
+        setTitle( QString("Unknown" ));
+    }
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)

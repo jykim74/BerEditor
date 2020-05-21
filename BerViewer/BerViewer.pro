@@ -129,7 +129,7 @@ win32 {
     DEFINES += _AUTO_UPDATE
     RC_ICONS = berviewer.ico
     INCLUDEPATH += "../../PKILib/lib/win32/winsparkle/include"
-
+    INCLUDEPATH += "C:\msys64\mingw32\include"
 
     LIBS += -L"../../PKILib/lib/win32/winsparkle/Release" -lWinSparkle
 
@@ -141,7 +141,7 @@ win32 {
         LIBS += -L"../../PKILib/lib/win32/cmpossl/lib" -lcrypto
     }
 
-
+    LIBS += -L"C:\msys64\mingw32\lib" -lltdl -lldap -llber
     LIBS += -L"../../PKILib/lib/win32/ltdl/lib" -lltdl
 }
 

@@ -18,12 +18,12 @@
         <translation>현재 버전</translation>
     </message>
     <message>
-        <location filename="../about_dlg.ui" line="113"/>
+        <location filename="../about_dlg.ui" line="116"/>
         <source>Check For Update</source>
         <translation>업데이트 확인</translation>
     </message>
     <message>
-        <location filename="../about_dlg.ui" line="120"/>
+        <location filename="../about_dlg.ui" line="123"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
@@ -637,52 +637,60 @@ mailto : jykim74@gmail.com</translation>
         <translation>LDAP 데이타 가져오기</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="68"/>
+        <location filename="../get_ldap_dlg.ui" line="27"/>
+        <source>LDAP URI address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../get_ldap_dlg.ui" line="62"/>
+        <source>LDAP Host Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../get_ldap_dlg.ui" line="90"/>
         <source>Host</source>
         <translation>서버</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="20"/>
+        <location filename="../get_ldap_dlg.ui" line="146"/>
         <source>Search Condition</source>
         <translation>검색 조건</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="78"/>
         <source>LDAP Information</source>
-        <translation>LDAP 정보</translation>
+        <translation type="vanished">LDAP 정보</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="95"/>
+        <location filename="../get_ldap_dlg.ui" line="20"/>
         <source>Use URI</source>
-        <translation>사용 URI</translation>
+        <translation>URI 사용</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="58"/>
+        <location filename="../get_ldap_dlg.ui" line="68"/>
         <source>Filter</source>
         <translation>필터</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="88"/>
+        <location filename="../get_ldap_dlg.ui" line="83"/>
         <source>Port</source>
         <translation>포트</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="125"/>
         <source>URI address</source>
-        <translation>URI 주소</translation>
+        <translation type="vanished">URI 주소</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="51"/>
+        <location filename="../get_ldap_dlg.ui" line="139"/>
         <source>DN</source>
         <translation>DN</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="118"/>
+        <location filename="../get_ldap_dlg.ui" line="132"/>
         <source>Scope</source>
         <translation>범위</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="44"/>
+        <location filename="../get_ldap_dlg.ui" line="125"/>
         <source>Type</source>
         <translation>타입</translation>
     </message>
@@ -1223,17 +1231,17 @@ mailto : jykim74@gmail.com</translation>
         <translation>BerViewer 에 대해 보여 줌</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="580"/>
+        <location filename="../mainwindow.cpp" line="591"/>
         <source>Do you want to overwrite %1 as BER file?</source>
         <translation>파일(%1)을 BER로 덮어 쓰겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="592"/>
+        <location filename="../mainwindow.cpp" line="603"/>
         <source>Save as...</source>
         <translation>다른 이름으로 저장...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="612"/>
+        <location filename="../mainwindow.cpp" line="623"/>
         <source>Print Document</source>
         <translation>문서 인쇄</translation>
     </message>

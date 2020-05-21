@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "ui_get_ldap_dlg.h"
+#include "js_bin.h"
 
 namespace Ui {
 class GetLdapDlg;
@@ -15,9 +16,15 @@ class GetLdapDlg : public QDialog, public Ui::GetLdapDlg
 public:
     explicit GetLdapDlg(QWidget *parent = nullptr);
     ~GetLdapDlg();
+    BIN& getData() { return data_; };
+
+private slots:
+    virtual void accept();
+    void clickUseURI();
 
 private:
     void initUI();
+    BIN data_;
 };
 
 #endif // GET_LDAP_DLG_H
