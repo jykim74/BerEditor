@@ -637,22 +637,22 @@ mailto : jykim74@gmail.com</translation>
         <translation>LDAP 데이타 가져오기</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="27"/>
+        <location filename="../get_ldap_dlg.ui" line="30"/>
         <source>LDAP URI address</source>
-        <translation type="unfinished"></translation>
+        <translation>LDAP 주소</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="62"/>
+        <location filename="../get_ldap_dlg.ui" line="49"/>
         <source>LDAP Host Information</source>
-        <translation type="unfinished"></translation>
+        <translation>LDAP 호스트 정보</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="90"/>
+        <location filename="../get_ldap_dlg.ui" line="80"/>
         <source>Host</source>
         <translation>서버</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="146"/>
+        <location filename="../get_ldap_dlg.ui" line="122"/>
         <source>Search Condition</source>
         <translation>검색 조건</translation>
     </message>
@@ -661,17 +661,17 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">LDAP 정보</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="20"/>
+        <location filename="../get_ldap_dlg.ui" line="42"/>
         <source>Use URI</source>
         <translation>URI 사용</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="68"/>
+        <location filename="../get_ldap_dlg.ui" line="148"/>
         <source>Filter</source>
         <translation>필터</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="83"/>
+        <location filename="../get_ldap_dlg.ui" line="87"/>
         <source>Port</source>
         <translation>포트</translation>
     </message>
@@ -680,19 +680,34 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">URI 주소</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="139"/>
+        <location filename="../get_ldap_dlg.ui" line="107"/>
         <source>DN</source>
         <translation>DN</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="132"/>
+        <location filename="../get_ldap_dlg.ui" line="138"/>
         <source>Scope</source>
         <translation>범위</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="125"/>
+        <location filename="../get_ldap_dlg.ui" line="131"/>
         <source>Type</source>
         <translation>타입</translation>
+    </message>
+    <message>
+        <location filename="../get_ldap_dlg.cpp" line="78"/>
+        <source>fail to connnect LDAP server</source>
+        <translation>LDAP 서버 연결 실패</translation>
+    </message>
+    <message>
+        <location filename="../get_ldap_dlg.cpp" line="85"/>
+        <source>fail to bind LDAP server</source>
+        <translation>LDAP 서버 바인드 실패</translation>
+    </message>
+    <message>
+        <location filename="../get_ldap_dlg.cpp" line="92"/>
+        <source>fail to get data from LDAP server</source>
+        <translation>LDAP 서버로 부터 데이타 가져오기 실패</translation>
     </message>
 </context>
 <context>

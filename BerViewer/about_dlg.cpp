@@ -33,7 +33,7 @@ AboutDlg::AboutDlg(QWidget *parent) :
     strAbout += "\r\nLibrary: ";
     strAbout += strLibVersion;
 
-    strAbout += "\r\nBuild Date: ";
+    strAbout += "\r\n";
     strAbout += getBuild();
     strAbout += "\r\n";
 
