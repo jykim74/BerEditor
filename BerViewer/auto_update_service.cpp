@@ -111,7 +111,7 @@ AutoUpdateService::AutoUpdateService(QObject *parent) : QObject(parent)
 {
 #ifdef Q_OS_WIN32
     adapter_ = new WindowsAutoUpdateAdapter;
-#elif Q_OS_MAC
+#elif defined(Q_OS_MAC)
     adapter_ = new MacAutoUpdateAdapter;
 #else
 

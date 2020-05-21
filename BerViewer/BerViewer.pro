@@ -116,6 +116,7 @@ mac {
         LIBS += -L"../../PKILib/lib/mac/cmpossl/lib" -lcrypto
     }
 
+    LIBS += -lldap -llber
     LIBS += -L"/usr/local/lib" -lltdl
 }
 
