@@ -30,44 +30,70 @@ GetLdapDlg::~GetLdapDlg()
 void GetLdapDlg::accept()
 {
     int ret = -1;
-    int nType = -1;
     LDAP *pLD = NULL;
+
+    int nPort = -1;
+    QString strFilter = "(objectClass=*)";
+    int nScope = LDAP_SCOPE_BASE;
+    int nType = -1;
+    QString strDN = "";
+    QString strHost = "";
 
 
     if( mURIUseCheck->isChecked() )
     {
         char    sHost[1024];
         char    sDN[1024];
-        int     nPort = -1;
-        int     nScope = -1;
         char    sFilter[256];
         char    sAttribute[256];
+
+        memset( sHost, 0x00, sizeof(sHost));
+        memset( sDN, 0x00, sizeof(sDN) );
+        memset( sFilter, 0x00, sizeof(sFilter));
+        memset( sAttribute, 0x00, sizeof(sAttribute));
 
         QString strURI = mURIText->text();
 
         ret = JS_LDAP_parseURI( strURI.toStdString().c_str(), sHost, &nPort, sDN, &nScope, sFilter, sAttribute );
         nType = JS_LDAP_getType( sAttribute );
 
-        pLD = JS_LDAP_init( sHost, nPort );
-        if( pLD == NULL ) return;
-
-        ret = JS_LDAP_bind( pLD, NULL, NULL );
-        ret = JS_LDAP_getData( pLD, sDN, sFilter, nType, nScope, &data_ );
+        if( sHost[0] != 0x00 ) strHost = sHost;
+        if( sDN[0] != 0x00 ) strDN = sDN;
+        if( sFilter[0] != 0 ) strFilter = sFilter;
     }
     else {
-        nType = JS_LDAP_getType( mTypeCombo->currentText().toStdString().c_str() );
-        pLD = JS_LDAP_init( mHostText->text().toStdString().c_str(), mPortText->text().toInt());
-        if( pLD == NULL ) return;
-
-        ret = JS_LDAP_bind( pLD, NULL, NULL );
-        ret = JS_LDAP_getData( pLD,
-                               mDNText->text().toStdString().c_str(),
-                               mFilterText->text().toStdString().c_str(),
-                               nType,
-                               LDAP_SCOPE_BASE,
-                               &data_ );
+        strHost = mHostText->text();
+        nPort = mPortText->text().toInt();
+        strDN = mDNText->text();
+        strFilter = mFilterText->text();
     }
 
+    if( nType < 0 ) nType = JS_LDAP_getType( mTypeCombo->currentText().toStdString().c_str() );
+    if( nScope < 0 ) nScope = LDAP_SCOPE_BASE;
+    if( strFilter.length() < 1 ) strFilter = "(objectClass=*)";
+
+    pLD = JS_LDAP_init( strHost.toStdString().c_str(), nPort );
+    if( pLD == NULL )
+    {
+        berApplet->warningBox( tr("fail to connnect LDAP server" ), this );
+        return;
+    }
+
+    ret = JS_LDAP_bind( pLD, NULL, NULL );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr("fail to bind LDAP server"), this );
+        goto end;
+    }
+
+    ret = JS_LDAP_getData( pLD, strDN.toStdString().c_str(), strFilter.toStdString().c_str(), nType, nScope, &data_ );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "fail to get data from LDAP server"), this );
+        goto end;
+    }
+
+end :
     if( pLD ) JS_LDAP_close(pLD);
 
     if( ret == 0 ) QDialog::accept();
