@@ -151,6 +151,8 @@ QString BerItem::GetValueString( const BIN *pBer )
     if( tag_ == JS_OID )
     {
         char sOID[1024];
+        memset( sOID, 0x00, sizeof(sOID));
+        //strcpy( sOID, "OID" );
         JS_PKI_getStringFromOID( &binVal, sOID );
         strVal = sOID;
     }

@@ -125,7 +125,7 @@ void MainWindow::createTableMenu()
     QString style = "QHeaderView::section {background-color:#404040;color:#FFFFFF;}";
 
     right_table_->horizontalHeader()->setStyleSheet( style );
-    right_table_->setColumnWidth(0, 80);
+    right_table_->setColumnWidth(0, 100);
 
 
     for( int i=1; i <= 16; i++ )
