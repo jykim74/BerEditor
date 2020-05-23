@@ -88,6 +88,7 @@ void KeyAgreeDlg::calcualteA()
         JS_free( pHex );
     }
 
+    repaint();
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binPub );
     JS_BIN_reset( &binSecret );
@@ -132,6 +133,7 @@ void KeyAgreeDlg::calcualteB()
         JS_free( pHex );
     }
 
+    repaint();
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binPub );
     JS_BIN_reset( &binSecret );
@@ -140,6 +142,7 @@ void KeyAgreeDlg::calcualteB()
 void KeyAgreeDlg::secretClear()
 {
     mSecretKeyText->clear();
+    repaint();
 }
 
 void KeyAgreeDlg::initialize()
@@ -184,6 +187,7 @@ void KeyAgreeDlg::genDHParam()
 
     JS_BIN_reset( &binP );
     JS_BIN_reset( &binG );
+    repaint();
 }
 
 void KeyAgreeDlg::genADHPri()
@@ -198,6 +202,7 @@ void KeyAgreeDlg::genADHPri()
     mAPrivateKeyText->setText( pHex );
 
     if( pHex ) JS_free( pHex );
+    repaint();
 }
 
 void KeyAgreeDlg::genBDHPri()
@@ -212,6 +217,7 @@ void KeyAgreeDlg::genBDHPri()
     mBPrivateKeyText->setText( pHex );
 
     if( pHex ) JS_free( pHex );
+    repaint();
 }
 
 void KeyAgreeDlg::genADHKey()
@@ -259,6 +265,7 @@ void KeyAgreeDlg::genADHKey()
     JS_BIN_reset( &binG );
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binPub );
+    repaint();
 }
 
 void KeyAgreeDlg::genBDHKey()
@@ -306,6 +313,7 @@ void KeyAgreeDlg::genBDHKey()
     JS_BIN_reset( &binG );
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binPub );
+    repaint();
 }
 
 void KeyAgreeDlg::genAECDHPriKey()
@@ -319,6 +327,8 @@ void KeyAgreeDlg::genAECDHPriKey()
     mAECDHPriKeyText->setText( pHex );
 
     if( pHex ) JS_free( pHex );
+
+    repaint();
 }
 
 void KeyAgreeDlg::genAECDHPubKey()
@@ -332,6 +342,8 @@ void KeyAgreeDlg::genAECDHPubKey()
     JS_BIN_encodeHex( &binAPub, &pHex );
     mAECDHPubKeyText->setText( pHex );
     if( pHex ) JS_free( pHex );
+
+    repaint();
 }
 
 void KeyAgreeDlg::findAECDHPriKey()
@@ -379,6 +391,7 @@ void KeyAgreeDlg::genBECDHPriKey()
     mBECDHPriKeyText->setText( pHex );
 
     if( pHex ) JS_free( pHex );
+    repaint();
 }
 
 void KeyAgreeDlg::genBECDHPubKey()
@@ -392,6 +405,7 @@ void KeyAgreeDlg::genBECDHPubKey()
     JS_BIN_encodeHex( &binPub, &pHex );
     mBECDHPubKeyText->setText( pHex );
     if( pHex ) JS_free( pHex );
+    repaint();
 }
 
 void KeyAgreeDlg::findBECDHPriKey()

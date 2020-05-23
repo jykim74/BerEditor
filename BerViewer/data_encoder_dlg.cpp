@@ -127,6 +127,7 @@ void DataEncoderDlg::onClickEncodeBtn()
 
     JS_BIN_reset(&binSrc);
     if( pOut ) JS_free( pOut );
+    repaint();
 }
 
 void DataEncoderDlg::outTypeChanged(int index)

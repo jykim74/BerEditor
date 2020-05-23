@@ -116,6 +116,8 @@ void RSAEncDecDlg::accept()
     mOutputText->setPlainText(pOut);
 
 end :
+    mOutputText->repaint();
+
     JS_BIN_reset(&binSrc);
     JS_BIN_reset(&binPri);
     JS_BIN_reset(&binCert);
@@ -170,4 +172,7 @@ void RSAEncDecDlg::changeValue()
         mInputHexBtn->setChecked(true);
     else if( mOutputTypeCombo->currentIndex() == 2 )
         mInputBase64Btn->setChecked(true);
+
+    mInputText->repaint();
+    mOutputText->repaint();
 }

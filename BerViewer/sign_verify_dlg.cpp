@@ -150,6 +150,8 @@ void SignVerifyDlg::signVerifyInit()
     else
         mStatusLabel->setText( "Init fail" );
 
+    mStatusLabel->repaint();
+
 end :
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binCert );
@@ -193,6 +195,7 @@ void SignVerifyDlg::signVerifyUpdate()
     else
         mStatusLabel->setText( "Update Fail" );
 
+    mStatusLabel->repaint();
     JS_BIN_reset( &binSrc );
 }
 
@@ -231,6 +234,9 @@ void SignVerifyDlg::signVerifyFinal()
     }
     else
         mStatusLabel->setText( "Final Fail" );
+
+    mOutputText->repaint();
+    mStatusLabel->repaint();
 
     JS_BIN_reset( &binSign );
     JS_PKI_signFree( &sctx_ );
@@ -319,6 +325,8 @@ void SignVerifyDlg::accept()
     }
 
 end :
+    mOutputText->repaint();
+    mStatusLabel->repaint();
 
     JS_BIN_reset( &binSrc );
     JS_BIN_reset( &binPri );

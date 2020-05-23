@@ -58,6 +58,7 @@ void NumTransDlg::dataTrans()
     }
 
     if( pOutput ) JS_free( pOutput );
+    repaint();
 }
 
 void NumTransDlg::dataChange()
@@ -73,4 +74,6 @@ void NumTransDlg::dataChange()
         mDecimalBtn->setChecked(true);
     else if( mOutputTypeCombo->currentIndex() == 2 )
         mHexBtn->setChecked(true);
+
+    repaint();
 }

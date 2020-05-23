@@ -5,7 +5,7 @@
 #include "js_pki_tools.h"
 #include "ber_applet.h"
 
-static const char *oidTypes[] = {
+static QStringList oidTypes = {
     "OID",
     "OID Hex",
     "Short Name",
@@ -29,13 +29,8 @@ OIDInfoDlg::~OIDInfoDlg()
 
 void OIDInfoDlg::initialize()
 {
-    QStringList oidList;
-
-    for( int i=0; i < (sizeof(oidTypes) / sizeof(oidTypes[0])); i++ )
-        oidList.push_back( oidTypes[i] );
-
-
-    mInputTypeCombo->addItems( oidList );
+    mInputTypeCombo->addItems( oidTypes );
+    mInputText->setFocus();
 }
 
 void OIDInfoDlg::closeDlg()
@@ -83,6 +78,8 @@ void OIDInfoDlg::findOID()
 
    JS_BIN_reset(&binOID);
    if( pHex ) JS_free(pHex);
+
+   repaint();
 }
 
 void OIDInfoDlg::accept()

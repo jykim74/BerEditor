@@ -211,6 +211,10 @@ void EncDecDlg::accept()
 
     mOutputText->setPlainText( pOut );
 
+    mOutputText->repaint();
+    mTagText->repaint();
+    mStatusLabel->repaint();
+
     if( pOut ) JS_free(pOut);
     JS_BIN_reset( &binIV );
     JS_BIN_reset( &binKey );
@@ -329,6 +333,9 @@ void EncDecDlg::encDecInit()
     else
         mStatusLabel->setText( "Init Fail" );
 
+    mOutputText->repaint();
+    mStatusLabel->repaint();
+
     JS_BIN_reset( &binKey );
     JS_BIN_reset( &binIV );
     JS_BIN_reset( &binAAD );
@@ -430,6 +437,9 @@ void EncDecDlg::encDecUpdate()
     }
     else
         mStatusLabel->setText( "Update Fail" );
+
+    mOutputText->repaint();
+    mStatusLabel->repaint();
 
     JS_BIN_reset( &binSrc );
     JS_BIN_reset( &binDst );
@@ -535,6 +545,10 @@ void EncDecDlg::encDecFinal()
     else
         mStatusLabel->setText( "Final Fail" );
 
+    mOutputText->repaint();
+    mStatusLabel->repaint();
+    mTagText->repaint();
+
     JS_BIN_reset( &binOut );
     JS_BIN_reset( &binDst );
     JS_BIN_reset( &binTag );
@@ -553,6 +567,9 @@ void EncDecDlg::dataChange()
         mInputHexBtn->setChecked(true);
     else if( mOutputTypeCombo->currentIndex() == 2 )
         mInputBase64Btn->setChecked(true);
+
+    mInputText->repaint();
+    mOutputText->repaint();
 }
 
 bool EncDecDlg::isCCM( const QString strAlg )
