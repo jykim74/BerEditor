@@ -76,8 +76,8 @@ void GenHmacDlg::hmacInit()
    else
        mStatusLabel->setText( "Init fail" );
 
-   mStatusLabel->repaint();
    JS_BIN_reset( &binKey );
+   repaint();
 }
 
 void GenHmacDlg::hmacUpdate()
@@ -111,8 +111,8 @@ void GenHmacDlg::hmacUpdate()
     else
         mStatusLabel->setText( "Updata fail" );
 
-    mStatusLabel->repaint();
     JS_BIN_reset( &binSrc );
+    repaint();
 }
 
 void GenHmacDlg::hmacFinal()
@@ -132,11 +132,10 @@ void GenHmacDlg::hmacFinal()
     else
         mStatusLabel->setText( "Final fail" );
 
-    mOutputText->repaint();
-    mStatusLabel->repaint();
-
     if( hctx_ ) JS_PKI_hmacFree( &hctx_ );
     JS_BIN_reset( &binHMAC );
+
+    repaint();
 }
 
 void GenHmacDlg::hmac()
@@ -195,22 +194,21 @@ void GenHmacDlg::hmac()
        mStatusLabel->setText( "HMAC FAIL" );
    }
 
-   mOutputText->repaint();
-   mStatusLabel->repaint();
-
    JS_BIN_reset(&binSrc);
    JS_BIN_reset(&binKey);
    JS_BIN_reset(&binHmac);
+
+   repaint();
 }
 
 void GenHmacDlg::inputClear()
 {
     mInputText->clear();
-    mInputText->repaint();
+    repaint();
 }
 
 void GenHmacDlg::outputClear()
 {
     mOutputText->clear();
-    mOutputText->repaint();
+    repaint();
 }

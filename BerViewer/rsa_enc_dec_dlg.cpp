@@ -116,7 +116,7 @@ void RSAEncDecDlg::accept()
     mOutputText->setPlainText(pOut);
 
 end :
-    mOutputText->repaint();
+    repaint();
 
     JS_BIN_reset(&binSrc);
     JS_BIN_reset(&binPri);
@@ -139,6 +139,8 @@ void RSAEncDecDlg::findCert()
                                                      options );
 
     mCertPath->setText(fileName);
+
+    repaint();
 }
 
 void RSAEncDecDlg::findPrivateKey()
@@ -155,6 +157,8 @@ void RSAEncDecDlg::findPrivateKey()
                                                      options );
 
     mPriKeyPath->setText(fileName);
+
+    repaint();
 }
 
 void RSAEncDecDlg::changeValue()
@@ -173,6 +177,5 @@ void RSAEncDecDlg::changeValue()
     else if( mOutputTypeCombo->currentIndex() == 2 )
         mInputBase64Btn->setChecked(true);
 
-    mInputText->repaint();
-    mOutputText->repaint();
+    repaint();
 }

@@ -61,7 +61,7 @@ void GenHashDlg::hashInit()
     else
         mStatusLabel->setText( "Init Fail" );
 
-    mStatusLabel->repaint();
+    repaint();
 }
 
 void GenHashDlg::hashUpdate()
@@ -100,8 +100,8 @@ void GenHashDlg::hashUpdate()
     else
         mStatusLabel->setText( "Update fail" );
 
-    mStatusLabel->repaint();
     JS_BIN_reset( &binSrc );
+    repaint();
 }
 
 void GenHashDlg::hashFinal()
@@ -123,12 +123,11 @@ void GenHashDlg::hashFinal()
         mStatusLabel->setText( "Final Fail" );
     }
 
-    mStatusLabel->repaint();
-    mOutputText->repaint();
-
     JS_PKI_hashFree( &pctx_ );
     pctx_ = NULL;
     JS_BIN_reset( &binMD );
+
+    repaint();
 }
 
 void GenHashDlg::digest()
@@ -176,21 +175,20 @@ void GenHashDlg::digest()
         mStatusLabel->setText( "Digest Fail" );
     }
 
-    mStatusLabel->repaint();
-    mOutputText->repaint();
-
     JS_BIN_reset(&binSrc);
     JS_BIN_reset(&binHash);
+
+    repaint();
 }
 
 void GenHashDlg::clearInput()
 {
     mInputText->clear();
-    mInputText->repaint();
+    repaint();
 }
 
 void GenHashDlg::clearOutput()
 {
     mOutputText->clear();
-    mOutputText->repaint();
+    repaint();
 }

@@ -51,15 +51,15 @@
     </message>
     <message>
         <location filename="../about_dlg.cpp" line="26"/>
-        <source>This is freeware tool to decode ASN.1 and BER If you do not use this for commercial purposes, you can use it freely If you have any opinions on this tool, please send me a mail<byte value="xd"/>
+        <source>This is freeware tool to decode ASN.1 and BER If you do not use this for commercial purposes, you can use it freely If you have any opinions on this tool, please send me a mail
 </source>
         <translation>이 프로그램은 ASN.1 과 BER 디코딩을 위한 프리웨어 소프트웨어 이다. 상업적 목적이 아니면 자유롭게 사용 할 수 있습니다. 의견이나 요청이 있으면 메일로 연락주세요
 </translation>
     </message>
     <message>
         <location filename="../about_dlg.cpp" line="40"/>
-        <source><byte value="xd"/>
-Copyright (C) 2019 ~ 2020 JongYeob Kim<byte value="xd"/>
+        <source>
+Copyright (C) 2019 ~ 2020 JongYeob Kim
 mailto : jykim74@gmail.com</source>
         <translation></translation>
     </message>
@@ -637,22 +637,22 @@ mailto : jykim74@gmail.com</translation>
         <translation>LDAP 데이타 가져오기</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="30"/>
+        <location filename="../get_ldap_dlg.ui" line="27"/>
         <source>LDAP URI address</source>
         <translation>LDAP 주소</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="49"/>
+        <location filename="../get_ldap_dlg.ui" line="101"/>
         <source>LDAP Host Information</source>
         <translation>LDAP 호스트 정보</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="80"/>
+        <location filename="../get_ldap_dlg.ui" line="107"/>
         <source>Host</source>
         <translation>서버</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="122"/>
+        <location filename="../get_ldap_dlg.ui" line="49"/>
         <source>Search Condition</source>
         <translation>검색 조건</translation>
     </message>
@@ -661,17 +661,17 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">LDAP 정보</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="42"/>
+        <location filename="../get_ldap_dlg.ui" line="20"/>
         <source>Use URI</source>
         <translation>URI 사용</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="148"/>
+        <location filename="../get_ldap_dlg.ui" line="58"/>
         <source>Filter</source>
         <translation>필터</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="87"/>
+        <location filename="../get_ldap_dlg.ui" line="124"/>
         <source>Port</source>
         <translation>포트</translation>
     </message>
@@ -680,17 +680,17 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">URI 주소</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="107"/>
+        <location filename="../get_ldap_dlg.ui" line="134"/>
         <source>DN</source>
         <translation>DN</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="138"/>
+        <location filename="../get_ldap_dlg.ui" line="75"/>
         <source>Scope</source>
         <translation>범위</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="131"/>
+        <location filename="../get_ldap_dlg.ui" line="68"/>
         <source>Type</source>
         <translation>타입</translation>
     </message>

@@ -73,6 +73,8 @@ void SignVerifyDlg::findPrivateKey()
                                                      options );
 
     mPriKeyPath->setText(fileName);
+
+    repaint();
 }
 
 void SignVerifyDlg::findCert()
@@ -89,6 +91,8 @@ void SignVerifyDlg::findCert()
                                                      options );
 
     mCertPath->setText( fileName );
+
+    repaint();
 }
 
 void SignVerifyDlg::algChanged(int index)
@@ -150,7 +154,7 @@ void SignVerifyDlg::signVerifyInit()
     else
         mStatusLabel->setText( "Init fail" );
 
-    mStatusLabel->repaint();
+    repaint();
 
 end :
     JS_BIN_reset( &binPri );
@@ -195,7 +199,7 @@ void SignVerifyDlg::signVerifyUpdate()
     else
         mStatusLabel->setText( "Update Fail" );
 
-    mStatusLabel->repaint();
+    repaint();
     JS_BIN_reset( &binSrc );
 }
 
@@ -235,11 +239,10 @@ void SignVerifyDlg::signVerifyFinal()
     else
         mStatusLabel->setText( "Final Fail" );
 
-    mOutputText->repaint();
-    mStatusLabel->repaint();
-
     JS_BIN_reset( &binSign );
     JS_PKI_signFree( &sctx_ );
+
+    repaint();
 }
 
 void SignVerifyDlg::accept()
@@ -324,9 +327,8 @@ void SignVerifyDlg::accept()
         }
     }
 
+    repaint();
 end :
-    mOutputText->repaint();
-    mStatusLabel->repaint();
 
     JS_BIN_reset( &binSrc );
     JS_BIN_reset( &binPri );

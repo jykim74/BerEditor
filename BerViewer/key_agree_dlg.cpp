@@ -378,6 +378,7 @@ void KeyAgreeDlg::findAECDHPriKey()
 
 
     JS_PKI_resetECKeyVal( &sECKeyVal );
+    repaint();
 }
 
 void KeyAgreeDlg::genBECDHPriKey()
@@ -440,5 +441,6 @@ void KeyAgreeDlg::findBECDHPriKey()
 
 
     JS_PKI_resetECKeyVal( &sECKeyVal );
+    repaint();
 }
 

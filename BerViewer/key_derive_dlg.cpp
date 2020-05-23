@@ -74,7 +74,8 @@ void KeyDeriveDlg::accept()
         if( pHex ) JS_free( pHex );
     }
 
-    mKeyValueText->repaint();
     JS_BIN_reset( &binSalt );
     JS_BIN_reset( &binKey );
+
+    repaint();
 }
