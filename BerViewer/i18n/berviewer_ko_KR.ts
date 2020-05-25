@@ -51,17 +51,26 @@
     </message>
     <message>
         <location filename="../about_dlg.cpp" line="26"/>
-        <source>This is freeware tool to decode ASN.1 and BER If you do not use this for commercial purposes, you can use it freely If you have any opinions on this tool, please send me a mail
+        <source>This is freeware tool to decode ASN.1 and BER If you do not use this for commercial purposes, you can use it freely If you have any opinions on this tool, please send me a mail.</source>
+        <translation>이 프로그램은 ASN.1 과 BER 디코딩을 위한 프리웨어 소프트웨어 이다. 상업적 목적이 아니면 자유롭게 사용 할 수 있습니다. 의견이나 요청이 있으면 메일로 연락주세요.</translation>
+    </message>
+    <message>
+        <source>This is freeware tool to decode ASN.1 and BER If you do not use this for commercial purposes, you can use it freely If you have any opinions on this tool, please send me a mail<byte value="xd"/>
 </source>
-        <translation>이 프로그램은 ASN.1 과 BER 디코딩을 위한 프리웨어 소프트웨어 이다. 상업적 목적이 아니면 자유롭게 사용 할 수 있습니다. 의견이나 요청이 있으면 메일로 연락주세요
-</translation>
+        <translation type="vanished">이 프로그램은 ASN.1 과 BER 디코딩을 위한 프리웨어 소프트웨어 입니다. 상업적 목적이 아니면 자유롭게 사용 할 수 있습니다. 의견이나 요청이 있으면 메일로 연락주세요</translation>
     </message>
     <message>
         <location filename="../about_dlg.cpp" line="40"/>
-        <source>
-Copyright (C) 2019 ~ 2020 JongYeob Kim
+        <source><byte value="xd"/>
+Copyright (C) 2019 ~ 2020 JongYeob Kim<byte value="xd"/>
 mailto : jykim74@gmail.com</source>
         <translation></translation>
+    </message>
+    <message>
+        <source>This is freeware tool to decode ASN.1 and BER If you do not use this for commercial purposes, you can use it freely If you have any opinions on this tool, please send me a mail
+</source>
+        <translation type="vanished">이 프로그램은 ASN.1 과 BER 디코딩을 위한 프리웨어 소프트웨어 이다. 상업적 목적이 아니면 자유롭게 사용 할 수 있습니다. 의견이나 요청이 있으면 메일로 연락주세요
+</translation>
     </message>
     <message>
         <source>This is freeware tool to decode ASN.1 and BER If you do not use this for commercial purposes, you can use it freely If you have any opinions on this tool, please send me a mail
@@ -381,7 +390,7 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../enc_dec_dlg.cpp" line="119"/>
-        <location filename="../enc_dec_dlg.cpp" line="263"/>
+        <location filename="../enc_dec_dlg.cpp" line="265"/>
         <source>You have to insert key</source>
         <translation>키 값을 입력하세요.</translation>
     </message>
@@ -553,7 +562,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">데이타를 입력 하세요</translation>
     </message>
     <message>
-        <location filename="../gen_hmac_dlg.cpp" line="165"/>
+        <location filename="../gen_hmac_dlg.cpp" line="169"/>
         <source>You have to insert key</source>
         <translation>키 값을 입력하세요.</translation>
     </message>
@@ -918,14 +927,14 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">DH 키생성</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="351"/>
-        <location filename="../key_agree_dlg.cpp" line="411"/>
+        <location filename="../key_agree_dlg.cpp" line="363"/>
+        <location filename="../key_agree_dlg.cpp" line="426"/>
         <source>ECC PrivateKey file</source>
         <translation>ECC 개인키 파일</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="353"/>
-        <location filename="../key_agree_dlg.cpp" line="413"/>
+        <location filename="../key_agree_dlg.cpp" line="365"/>
+        <location filename="../key_agree_dlg.cpp" line="428"/>
         <source>Key DER File (*.der);;Key Files (*.key);;All Files (*)</source>
         <translation></translation>
     </message>
@@ -1471,7 +1480,7 @@ mailto : jykim74@gmail.com</translation>
         <translation>OID 16진수 값</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.cpp" line="56"/>
+        <location filename="../oid_info_dlg.cpp" line="51"/>
         <source>You have to insert OID data</source>
         <translation>OID 값을 입력하세요.</translation>
     </message>
@@ -1568,14 +1577,14 @@ mailto : jykim74@gmail.com</translation>
         <translation>개인키를 선택하세요.</translation>
     </message>
     <message>
-        <location filename="../rsa_enc_dec_dlg.cpp" line="133"/>
-        <location filename="../rsa_enc_dec_dlg.cpp" line="149"/>
+        <location filename="../rsa_enc_dec_dlg.cpp" line="135"/>
+        <location filename="../rsa_enc_dec_dlg.cpp" line="153"/>
         <source>File name</source>
         <translation>파일 이름</translation>
     </message>
     <message>
-        <location filename="../rsa_enc_dec_dlg.cpp" line="135"/>
-        <location filename="../rsa_enc_dec_dlg.cpp" line="151"/>
+        <location filename="../rsa_enc_dec_dlg.cpp" line="137"/>
+        <location filename="../rsa_enc_dec_dlg.cpp" line="155"/>
         <source>All Files (*);;DER Files (*.der)</source>
         <translation>모든 파일(*);;DER 파일(*.der)</translation>
     </message>
@@ -1726,13 +1735,13 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../sign_verify_dlg.cpp" line="69"/>
-        <location filename="../sign_verify_dlg.cpp" line="85"/>
+        <location filename="../sign_verify_dlg.cpp" line="87"/>
         <source>File name</source>
         <translation>파일 이름</translation>
     </message>
     <message>
         <location filename="../sign_verify_dlg.cpp" line="71"/>
-        <location filename="../sign_verify_dlg.cpp" line="87"/>
+        <location filename="../sign_verify_dlg.cpp" line="89"/>
         <source>All Files (*);;DER Files (*.der)</source>
         <translation>모든 파일(*);;DER 파일(*.der)</translation>
     </message>
@@ -1741,14 +1750,14 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">데이타를 입력 하세요</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="126"/>
-        <location filename="../sign_verify_dlg.cpp" line="282"/>
+        <location filename="../sign_verify_dlg.cpp" line="130"/>
+        <location filename="../sign_verify_dlg.cpp" line="291"/>
         <source>You have to find private key</source>
         <translation>개인키를 선택하세요.</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="138"/>
-        <location filename="../sign_verify_dlg.cpp" line="301"/>
+        <location filename="../sign_verify_dlg.cpp" line="142"/>
+        <location filename="../sign_verify_dlg.cpp" line="310"/>
         <source>You have to find certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
@@ -1757,14 +1766,14 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">공개키를 선택하세요.</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="222"/>
-        <location filename="../sign_verify_dlg.cpp" line="315"/>
+        <location filename="../sign_verify_dlg.cpp" line="229"/>
+        <location filename="../sign_verify_dlg.cpp" line="324"/>
         <source>Verify Success</source>
         <translation>검증 성공</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="224"/>
-        <location filename="../sign_verify_dlg.cpp" line="317"/>
+        <location filename="../sign_verify_dlg.cpp" line="231"/>
+        <location filename="../sign_verify_dlg.cpp" line="326"/>
         <source>Verify Fail</source>
         <translation>검증 실패</translation>
     </message>
