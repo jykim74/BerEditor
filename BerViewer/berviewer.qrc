@@ -27,5 +27,6 @@
         <file>images/expand_node.png</file>
         <file>images/data_trans.png</file>
         <file>images/number.jpg</file>
+        <file>images/berviewer.png</file>
     </qresource>
 </RCC>

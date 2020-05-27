@@ -314,12 +314,17 @@ void MainWindow::createActions()
 
 
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
+    QToolBar *helpToolBar = addToolBar(tr("Help"));
 
     QAction *settingAct = helpMenu->addAction(tr("&Settings"), this, &MainWindow::setting);
     settingAct->setStatusTip(tr("Set the variable"));
 
-    QAction *aboutAct = helpMenu->addAction(tr("&About BerViewer"), this, &MainWindow::about);
+    const QIcon aboutIcon = QIcon::fromTheme("berview-icon", QIcon(":/images/berviewer.png"));
+    QAction *aboutAct = new QAction( aboutIcon, tr("&About BerViewer"), this );
+    connect( aboutAct, &QAction::triggered, this, &MainWindow::about );
     aboutAct->setStatusTip(tr("Show the BerViewer"));
+    helpMenu->addAction( aboutAct );
+    helpToolBar->addAction( aboutAct );
 
     menuBar()->show();
 }
