@@ -13,17 +13,17 @@
         <translation>BerViewer 에 대해서</translation>
     </message>
     <message>
-        <location filename="../about_dlg.ui" line="40"/>
+        <location filename="../about_dlg.ui" line="41"/>
         <source>Current Version</source>
         <translation>현재 버전</translation>
     </message>
     <message>
-        <location filename="../about_dlg.ui" line="116"/>
+        <location filename="../about_dlg.ui" line="117"/>
         <source>Check For Update</source>
         <translation>업데이트 확인</translation>
     </message>
     <message>
-        <location filename="../about_dlg.ui" line="123"/>
+        <location filename="../about_dlg.ui" line="124"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
@@ -52,24 +52,25 @@
     <message>
         <location filename="../about_dlg.cpp" line="26"/>
         <source>This is freeware tool to decode ASN.1 and BER If you do not use this for commercial purposes, you can use it freely If you have any opinions on this tool, please send me a mail.</source>
-        <translation>이 프로그램은 ASN.1 과 BER 디코딩을 위한 프리웨어 소프트웨어 이다. 상업적 목적이 아니면 자유롭게 사용 할 수 있습니다. 의견이나 요청이 있으면 메일로 연락주세요.</translation>
-    </message>
-    <message>
-        <source>This is freeware tool to decode ASN.1 and BER If you do not use this for commercial purposes, you can use it freely If you have any opinions on this tool, please send me a mail<byte value="xd"/>
-</source>
-        <translation type="vanished">이 프로그램은 ASN.1 과 BER 디코딩을 위한 프리웨어 소프트웨어 입니다. 상업적 목적이 아니면 자유롭게 사용 할 수 있습니다. 의견이나 요청이 있으면 메일로 연락주세요</translation>
+        <translation>이 프로그램은 ASN.1 과 BER 디코딩을 위한 프리웨어 소프트웨어 이다. 상업적 목적이 아니면 자유롭게 사용 할 수 있습니다. 의견이나 요청이 있으면 메일로 연락주세요</translation>
     </message>
     <message>
         <location filename="../about_dlg.cpp" line="40"/>
-        <source><byte value="xd"/>
-Copyright (C) 2019 ~ 2020 JongYeob Kim<byte value="xd"/>
+        <source>Copyright (C) 2019 ~ 2020 JongYeob Kim
 mailto : jykim74@gmail.com</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>
+Copyright (C) 2019 ~ 2020 JongYeob Kim
+mailto : jykim74@gmail.com</source>
+        <translation type="obsolete">Copyright (C) 2019 ~2020 JongYeob Kim
+메일:jykim74@gmail.com</translation>
     </message>
     <message>
         <source>This is freeware tool to decode ASN.1 and BER If you do not use this for commercial purposes, you can use it freely If you have any opinions on this tool, please send me a mail
 </source>
-        <translation type="vanished">이 프로그램은 ASN.1 과 BER 디코딩을 위한 프리웨어 소프트웨어 이다. 상업적 목적이 아니면 자유롭게 사용 할 수 있습니다. 의견이나 요청이 있으면 메일로 연락주세요
+        <translation type="obsolete">이 프로그램은 ASN.1 과 BER 디코딩을 위한 프리웨어 소프트웨어 이다. 상업적 목적이 아니면 자유롭게 사용 할 수 있습니다. 의견이나 요청이 있으면 메일로 연락주세요
 </translation>
     </message>
     <message>
@@ -948,8 +949,7 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <location filename="../key_derive_dlg.ui" line="14"/>
         <source>Key Derive Dialog</source>
-        <translation>키 추출 창
-</translation>
+        <translation>키 추출 창</translation>
     </message>
     <message>
         <location filename="../key_derive_dlg.ui" line="23"/>
@@ -1235,37 +1235,42 @@ mailto : jykim74@gmail.com</translation>
         <translation>LDAP 서버로 부터 데이타 가져오기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="318"/>
+        <location filename="../mainwindow.cpp" line="317"/>
+        <source>Help</source>
+        <translation>도움말</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="319"/>
         <source>&amp;Settings</source>
         <translation>설정(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="319"/>
+        <location filename="../mainwindow.cpp" line="320"/>
         <source>Set the variable</source>
         <translation>값 설정</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="321"/>
+        <location filename="../mainwindow.cpp" line="323"/>
         <source>&amp;About BerViewer</source>
         <translation>BerViewer에 대해서(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="322"/>
+        <location filename="../mainwindow.cpp" line="325"/>
         <source>Show the BerViewer</source>
         <translation>BerViewer 에 대해 보여 줌</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="591"/>
+        <location filename="../mainwindow.cpp" line="596"/>
         <source>Do you want to overwrite %1 as BER file?</source>
         <translation>파일(%1)을 BER로 덮어 쓰겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="603"/>
+        <location filename="../mainwindow.cpp" line="608"/>
         <source>Save as...</source>
         <translation>다른 이름으로 저장...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="623"/>
+        <location filename="../mainwindow.cpp" line="628"/>
         <source>Print Document</source>
         <translation>문서 인쇄</translation>
     </message>
@@ -1382,7 +1387,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">BerViewer 에 대해 보여줌</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="329"/>
+        <location filename="../mainwindow.cpp" line="334"/>
         <source>Ready</source>
         <translation>준비</translation>
     </message>
