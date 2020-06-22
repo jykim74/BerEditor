@@ -82,11 +82,13 @@ void SignVerifyDlg::findPrivateKey()
     QFileDialog::Options options;
     options |= QFileDialog::DontUseNativeDialog;
 
+    QString strPath = QDir::currentPath();
+
     QString selectedFilter;
     QString fileName = QFileDialog::getOpenFileName( this,
-                                                     tr("File name"),
-                                                     "/",
-                                                     tr("All Files (*);;DER Files (*.der)"),
+                                                     tr("Private Key File"),
+                                                     strPath,
+                                                     tr("Key Files (*.key);;DER Files (*.der);;All Files(*.*)"),
                                                      &selectedFilter,
                                                      options );
 
@@ -100,11 +102,13 @@ void SignVerifyDlg::findCert()
     QFileDialog::Options options;
     options |= QFileDialog::DontUseNativeDialog;
 
+    QString strPath = QDir::currentPath();
+
     QString selectedFilter;
     QString fileName = QFileDialog::getOpenFileName( this,
-                                                     tr("File name"),
-                                                     "/",
-                                                     tr("All Files (*);;DER Files (*.der)"),
+                                                     tr("Certificate File"),
+                                                     strPath,
+                                                     tr("Cert Files(*.crt);;DER Files (*.der);;All Files(*.*)"),
                                                      &selectedFilter,
                                                      options );
 
