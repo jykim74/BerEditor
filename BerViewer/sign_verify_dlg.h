@@ -17,6 +17,7 @@ public:
     ~SignVerifyDlg();
 
 private slots:
+    void clickPubKeyVerify();
     void findPrivateKey();
     void findCert();
     void algChanged(int index);

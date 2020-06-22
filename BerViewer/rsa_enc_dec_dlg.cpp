@@ -32,6 +32,7 @@ RSAEncDecDlg::RSAEncDecDlg(QWidget *parent) :
     connect( mPriKeyBtn, SIGNAL(clicked()), this, SLOT(findPrivateKey()));
     connect( mCertBtn, SIGNAL(clicked()), this, SLOT(findCert()));
     connect( mChangeBtn, SIGNAL(clicked()), this, SLOT(changeValue()));
+    connect( mPubKeyEncryptCheck, SIGNAL(clicked()), this, SLOT(clickPubKeyEncryt()));
 }
 
 RSAEncDecDlg::~RSAEncDecDlg()
@@ -48,6 +49,21 @@ void RSAEncDecDlg::initialize()
     mMethodTypeCombo->addItems(methodTypes);
 }
 
+void RSAEncDecDlg::clickPubKeyEncryt()
+{
+    bool bVal = mPubKeyEncryptCheck->isChecked();
+
+    if( bVal )
+    {
+        mCertBtn->setText(tr("Public Key"));
+        mPriKeyAndCertLabel->setText( tr("Private key and Public key" ));
+    }
+    else
+    {
+        mCertBtn->setText(tr("Certificate"));
+        mPriKeyAndCertLabel->setText( tr("Private key and Certificate"));
+    }
+}
 void RSAEncDecDlg::accept()
 {
     int ret = 0;
@@ -93,7 +109,11 @@ void RSAEncDecDlg::accept()
         }
 
         JS_BIN_fileRead( mCertPath->text().toStdString().c_str(), &binCert );
-        JS_PKI_RSAEncryptWithCert( nVersion, &binSrc, &binCert, &binOut );
+
+        if( mPubKeyEncryptCheck->isChecked() )
+            JS_PKI_RSAEncryptWithPub( nVersion, &binSrc, &binCert, &binOut );
+        else
+            JS_PKI_RSAEncryptWithCert( nVersion, &binSrc, &binCert, &binOut );
     }
     else {
         if( mPriKeyPath->text().isEmpty() )

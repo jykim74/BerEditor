@@ -44,6 +44,8 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     connect( mInitBtn, SIGNAL(clicked()), this, SLOT(signVerifyInit()));
     connect( mUpdateBtn, SIGNAL(clicked()), this, SLOT(signVerifyUpdate()));
     connect( mFinalBtn, SIGNAL(clicked()), this, SLOT(signVerifyFinal()));
+
+    connect( mPubKeyVerifyCheck, SIGNAL(clicked()), this, SLOT(clickPubKeyVerify()));
 }
 
 SignVerifyDlg::~SignVerifyDlg()
@@ -57,6 +59,22 @@ void SignVerifyDlg::initialize()
     mHashTypeCombo->addItems(hashTypes);
     mVersionCombo->addItems(versionTypes);
     mMethodCombo->addItems(methodTypes);
+}
+
+void SignVerifyDlg::clickPubKeyVerify()
+{
+    bool bVal = mPubKeyVerifyCheck->isChecked();
+
+    if( bVal )
+    {
+        mCertBtn->setText( tr("Public Key" ) );
+        mPriKeyAndCertLabel->setText( tr("Private key and Public key" ));
+    }
+    else
+    {
+        mCertBtn->setText( tr("Certificate") );
+        mPriKeyAndCertLabel->setText( tr( "Private key and Certificate" ));
+    }
 }
 
 void SignVerifyDlg::findPrivateKey()
@@ -144,7 +162,11 @@ void SignVerifyDlg::signVerifyInit()
         }
 
         JS_BIN_fileRead( mCertPath->text().toStdString().c_str(), &binCert );
-        ret = JS_PKI_verifyInitWithCert( &sctx_, strHash.toStdString().c_str(), &binCert );
+
+        if( mPubKeyVerifyCheck->isChecked() )
+            ret = JS_PKI_verifyInit( &sctx_, strHash.toStdString().c_str(), &binCert );
+        else
+            ret = JS_PKI_verifyInitWithCert( &sctx_, strHash.toStdString().c_str(), &binCert );
     }
 
     if( ret == 0 )
@@ -315,9 +337,17 @@ void SignVerifyDlg::accept()
         JS_BIN_decodeHex( mOutputText->toPlainText().toStdString().c_str(), &binOut );
 
         if( mAlgTypeCombo->currentIndex() == 0 )
-            ret = JS_PKI_RSAVerifySignWithCert( strHash.toStdString().c_str(), nVersion, &binSrc, &binOut, &binCert );
+        {
+            if( mPubKeyVerifyCheck->isChecked() )
+                ret = JS_PKI_RSAVerifySign( strHash.toStdString().c_str(), nVersion, &binSrc, &binOut, &binCert );
+            else
+                ret = JS_PKI_RSAVerifySignWithCert( strHash.toStdString().c_str(), nVersion, &binSrc, &binOut, &binCert );
+        }
         else {
-            ret = JS_PKI_ECCVerifySignWithCert( strHash.toStdString().c_str(), &binSrc, &binOut, &binCert );
+            if( mPubKeyVerifyCheck->isChecked() )
+                ret = JS_PKI_ECCVerifySign( strHash.toStdString().c_str(), &binSrc, &binOut, &binCert );
+            else
+                ret = JS_PKI_ECCVerifySignWithCert( strHash.toStdString().c_str(), &binSrc, &binOut, &binCert );
         }
 
         if( ret == 1 )
