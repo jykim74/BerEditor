@@ -362,7 +362,7 @@ void KeyAgreeDlg::findAECDHPriKey()
     QString fileName = QFileDialog::getOpenFileName( this,
                                                      tr("ECC PrivateKey file"),
                                                      QDir::currentPath(),
-                                                     tr("Key DER File (*.der);;Key Files (*.key);;All Files (*)"),
+                                                     tr("Key DER File (*.der);;Key Files (*.key);;All Files (*.*)"),
                                                      &selectedFilter,
                                                      options );
 
@@ -425,7 +425,7 @@ void KeyAgreeDlg::findBECDHPriKey()
     QString fileName = QFileDialog::getOpenFileName( this,
                                                      tr("ECC PrivateKey file"),
                                                      QDir::currentPath(),
-                                                     tr("Key DER File (*.der);;Key Files (*.key);;All Files (*)"),
+                                                     tr("Key DER File (*.der);;Key Files (*.key);;All Files (*.*)"),
                                                      &selectedFilter,
                                                      options );
 
