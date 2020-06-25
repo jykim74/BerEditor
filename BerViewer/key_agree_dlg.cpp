@@ -362,12 +362,12 @@ void KeyAgreeDlg::findAECDHPriKey()
     QString fileName = QFileDialog::getOpenFileName( this,
                                                      tr("ECC PrivateKey file"),
                                                      QDir::currentPath(),
-                                                     tr("Key DER File (*.der);;Key Files (*.key);;All Files (*.*)"),
+                                                     tr("Key Files (*.key);;DER Files (*.der);;All Files (*.*)"),
                                                      &selectedFilter,
                                                      options );
 
     JS_BIN_fileRead( fileName.toStdString().c_str(), &binECKey );
-    JS_PKI_getECKeVal( &binECKey, &sECKeyVal );
+    JS_PKI_getECKeyVal( &binECKey, &sECKeyVal );
     JS_BIN_decodeHex( sECKeyVal.pGroup, &binOID );
     JS_PKI_getStringFromOID( &binOID, sTextOID );
     pSN = JS_PKI_getSNFromOID( sTextOID );
@@ -425,12 +425,12 @@ void KeyAgreeDlg::findBECDHPriKey()
     QString fileName = QFileDialog::getOpenFileName( this,
                                                      tr("ECC PrivateKey file"),
                                                      QDir::currentPath(),
-                                                     tr("Key DER File (*.der);;Key Files (*.key);;All Files (*.*)"),
+                                                     tr("Key Files (*.key);;DER Files (*.der);;All Files (*.*)"),
                                                      &selectedFilter,
                                                      options );
 
     JS_BIN_fileRead( fileName.toStdString().c_str(), &binECKey );
-    JS_PKI_getECKeVal( &binECKey, &sECKeyVal );
+    JS_PKI_getECKeyVal( &binECKey, &sECKeyVal );
     JS_BIN_decodeHex( sECKeyVal.pGroup, &binOID );
     JS_PKI_getStringFromOID( &binOID, sTextOID );
     pSN = JS_PKI_getSNFromOID( sTextOID );

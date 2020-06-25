@@ -44,6 +44,7 @@
 #endif
 #endif
 
+const int kMaxRecentFiles = 10;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -181,6 +182,24 @@ void MainWindow::createActions()
     QAction *saveAsAct = fileMenu->addAction(saveAsIcon, tr("Save &As..."), this, &MainWindow::saveAs);
     saveAsAct->setShortcuts(QKeySequence::SaveAs);
     saveAsAct->setStatusTip(tr("Save the document under a new name"));
+
+    QAction* recentFileAct = NULL;
+    for( auto i = 0; i < kMaxRecentFiles; ++i )
+    {
+        recentFileAct = new QAction(this);
+        recentFileAct->setVisible(false);
+
+        QObject::connect( recentFileAct, &QAction::triggered, this, &MainWindow::openRecent );
+        recent_file_list_.append( recentFileAct );
+    }
+
+    QMenu* recentMenu = fileMenu->addMenu( tr("Recent Files" ) );
+    for( int i = 0; i < kMaxRecentFiles; i++ )
+    {
+        recentMenu->addAction( recent_file_list_.at(i) );
+    }
+
+    updateRecentActionList();
 
     fileMenu->addSeparator();
 
@@ -401,8 +420,8 @@ void MainWindow::open()
     if( !fileName.isEmpty() )
     {
         berFileOpen(fileName);
-        file_path_ = fileName;
-        setTitle( fileName );
+//        file_path_ = fileName;
+//        setTitle( fileName );
 
         if( bSavePath )
         {
@@ -415,6 +434,13 @@ void MainWindow::open()
             settings.endGroup();
         }
     }
+}
+
+void MainWindow::openRecent()
+{
+    QAction *action = qobject_cast<QAction *>(sender());
+    if( action )
+        berFileOpen( action->data().toString() );
 }
 
 void MainWindow::berFileOpen(const QString berPath)
@@ -449,6 +475,10 @@ void MainWindow::berFileOpen(const QString berPath)
         left_tree_->viewRoot();
         QModelIndex ri = ber_model_->index(0,0);
         left_tree_->expand(ri);
+
+        file_path_ = berPath;
+        adjustForCurrentFile( berPath );
+        setTitle( berPath );
     }
 }
 
@@ -464,6 +494,45 @@ void MainWindow::showTextMsg(const QString &msg)
     right_text_->setText( msg );
 }
 
+void MainWindow::adjustForCurrentFile( const QString& filePath )
+{
+    QSettings settings;
+    QStringList recentFilePaths = settings.value( "recentFiles" ).toStringList();
+
+    recentFilePaths.removeAll( filePath );
+    recentFilePaths.prepend( filePath );
+
+    while( recentFilePaths.size() > kMaxRecentFiles )
+        recentFilePaths.removeLast();
+
+    settings.setValue( "recentFiles", recentFilePaths );
+
+    updateRecentActionList();
+}
+
+void MainWindow::updateRecentActionList()
+{
+    QSettings settings;
+    QStringList recentFilePaths = settings.value( "recentFiles" ).toStringList();
+
+    auto itEnd = 0u;
+
+    if( recentFilePaths.size() <= kMaxRecentFiles )
+        itEnd = recentFilePaths.size();
+    else
+        itEnd = kMaxRecentFiles;
+
+    for( auto i = 0u; i < itEnd; ++i )
+    {
+        QString strippedName = QFileInfo(recentFilePaths.at(i)).fileName();
+        recent_file_list_.at(i)->setText(strippedName);
+        recent_file_list_.at(i)->setData( recentFilePaths.at(i));
+        recent_file_list_.at(i)->setVisible(true);
+    }
+
+    for( auto i = itEnd; i < kMaxRecentFiles; ++i )
+        recent_file_list_.at(i)->setVisible(false);
+}
 
 void MainWindow::about()
 {

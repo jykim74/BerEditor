@@ -6,6 +6,7 @@
 #include <QTreeView>
 #include <QTableWidget>
 #include <QTextBrowser>
+#include <QList>
 
 #include "ber_model.h"
 #include "ber_tree_view.h"
@@ -36,6 +37,7 @@ public:
 private slots:
     void newFile();
     void open();
+    void openRecent();
     void about();
     void setting();
     void test();
@@ -73,6 +75,11 @@ private:
     void createTableMenu();
     void berFileOpen( const QString berPath );
     void setTitle( const QString strName );
+
+    void adjustForCurrentFile( const QString& filePath );
+    void updateRecentActionList();
+
+    QList<QAction *>  recent_file_list_;
 
     QSplitter       *hsplitter_;
     QSplitter       *vsplitter_;
