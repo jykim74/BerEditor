@@ -21,6 +21,7 @@
 #include "key_derive_dlg.h"
 #include "num_trans_dlg.h"
 #include "about_dlg.h"
+#include "cms_dlg.h"
 
 #include <QtWidgets>
 #include <QFileDialog>
@@ -298,6 +299,9 @@ void MainWindow::createActions()
     QAction *keyAgreeAct = cryptMenu->addAction(tr("&Key Agreement"), this, &MainWindow::keyAgree);
     keyAgreeAct->setStatusTip(tr("Key Agreement"));
 
+    QAction *cmsAct = cryptMenu->addAction(tr("&CMS"), this, &MainWindow::cms );
+    cmsAct->setStatusTip(tr("PKCS#7 Cryptographic Message Syntax" ));
+
     QAction *genOTPAct = cryptMenu->addAction(tr("&OTP generate"), this, &MainWindow::genOTP);
     genOTPAct->setStatusTip(tr("Generate OTP value"));
 
@@ -443,6 +447,17 @@ void MainWindow::openRecent()
         berFileOpen( action->data().toString() );
 }
 
+void MainWindow::openBer( const BIN *pBer )
+{
+    ber_model_->setBer( pBer );
+    ber_model_->parseTree();
+
+    left_tree_->header()->setVisible(false);
+    left_tree_->viewRoot();
+    QModelIndex ri = ber_model_->index(0,0);
+    left_tree_->expand(ri);
+}
+
 void MainWindow::berFileOpen(const QString berPath)
 {
     BIN binRead = {0,0};
@@ -460,21 +475,14 @@ void MainWindow::berFileOpen(const QString berPath)
             memcpy( pPEM, binRead.pVal, binRead.nLen );
             JS_BIN_decodePEM( pPEM, &type, &binData );
 
-            ber_model_->setBer( &binData );
+            openBer( &binData );
             JS_BIN_reset(&binRead);
             JS_BIN_reset(&binData);
-            ber_model_->parseTree();
         }
         else {
-            ber_model_->setBer( &binRead );
+            openBer( &binRead );
             JS_BIN_reset(&binRead);
-            ber_model_->parseTree();
         }
-
-        left_tree_->header()->setVisible(false);
-        left_tree_->viewRoot();
-        QModelIndex ri = ber_model_->index(0,0);
-        left_tree_->expand(ri);
 
         file_path_ = berPath;
         adjustForCurrentFile( berPath );
@@ -610,6 +618,12 @@ void MainWindow::rsaEncDec()
 {
     RSAEncDecDlg rsaEncDecDlg;
     rsaEncDecDlg.exec();
+}
+
+void MainWindow::cms()
+{
+    CMSDlg cmsDlg;
+    cmsDlg.exec();
 }
 
 void MainWindow::genOTP()

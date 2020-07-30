@@ -33,6 +33,7 @@ public:
     void showTextMsg( const QString& msg );
 
     void showWindow();
+    void openBer( const BIN *pBer );
 
 private slots:
     void newFile();
@@ -50,13 +51,13 @@ private slots:
     void encDec();
     void signVerify();
     void rsaEncDec();
+    void cms();
     void genOTP();
     void insertData();
     void numTrans();
     void getLdap();
     void save();
     void saveAs();
-
 
 
     void print();

@@ -39,6 +39,7 @@ SOURCES += \
     ber_model.cpp \
     ber_tray_icon.cpp \
     ber_tree_view.cpp \
+    cms_dlg.cpp \
     data_encoder_dlg.cpp \
     dumpasn1.c \
     edit_value_dlg.cpp \
@@ -70,6 +71,7 @@ HEADERS += \
     ber_model.h \
     ber_tray_icon.h \
     ber_tree_view.h \
+    cms_dlg.h \
     data_encoder_dlg.h \
     edit_value_dlg.h \
     enc_dec_dlg.h \
@@ -148,6 +150,7 @@ win32 {
 
 FORMS += \
         about_dlg.ui \
+        cms_dlg.ui \
         data_encoder_dlg.ui \
         edit_value_dlg.ui \
         enc_dec_dlg.ui \
