@@ -23,7 +23,7 @@ CMSDlg::CMSDlg(QWidget *parent) :
     connect( mEnvelopedDataBtn, SIGNAL(clicked()), this, SLOT(clickEnvelopedData()));
     connect( mSignAndEnvelopedBtn, SIGNAL(clicked()), this, SLOT(clickSignAndEnvloped()));
     connect( mVerifyDataBtn, SIGNAL(clicked()), this, SLOT(clickVerifyData()));
-    connect( mDevelopedDataBtn, SIGNAL(clicked()), this, SLOT(clickVerifyData()));
+    connect( mDevelopedDataBtn, SIGNAL(clicked()), this, SLOT(clickDevelopedData()));
     connect( mDevelopedAndVerifyBtn, SIGNAL(clicked()), this, SLOT(clickDevelopedAndVerify()));
 }
 
@@ -277,7 +277,7 @@ void CMSDlg::clickSignAndEnvloped()
     }
 
     QString strKMCertPath = mKMCertPathText->text();
-    if( strSignCertPath.isEmpty() )
+    if( strKMCertPath.isEmpty() )
     {
         berApplet->warningBox(tr("find km certificate" ), this );
         return;
