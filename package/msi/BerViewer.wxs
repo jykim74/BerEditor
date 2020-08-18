@@ -76,12 +76,10 @@
 						Name="Installed" Type="integer" Value="1" KeyPath='yes' />
 
 				<!-- shortcut to 'start berviewer' -->
-				<!--
 				<Shortcut Id="ApplicationStartMenuShortCut" Directory="BerViewerStartMenuFolder"
 							Name="!(loc.AppName)" Target="[#berviewer.exe]"
 							Hotkey="0" IconIndex="0" Show="normal"
 							WorkingDirectory="bin" />
-				-->
 				<!-- shortcut to 'Uninstall' -->
 				<Shortcut Id="UninstallProduct" Name="!(loc.UninstallBerViewer)"
 							Target="[SystemFolder]msiexec.exe" IconIndex="0"
