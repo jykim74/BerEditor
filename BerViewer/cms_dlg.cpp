@@ -355,7 +355,7 @@ void CMSDlg::clickVerifyData()
     else if( mSrcBase64Radio->isChecked() )
         JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
 
-    ret = JS_PKCS7_verifySigneData( &binSrc, &binCert, &binOutput );
+    ret = JS_PKCS7_verifySignedData( &binSrc, &binCert, &binOutput );
 
     if( mOutputStringRadio->isChecked() )
         JS_BIN_string( &binOutput, &pOutput );
