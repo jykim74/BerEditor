@@ -9,7 +9,7 @@ static QStringList oidTypes = {
     "OID",
     "OID Hex",
     "Short Name",
-    "Long Hame"
+    "Long Name"
 };
 
 OIDInfoDlg::OIDInfoDlg(QWidget *parent) :
