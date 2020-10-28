@@ -296,7 +296,7 @@ void MainWindow::createActions()
     QAction *rsaEncDecAct = cryptMenu->addAction(tr("&RSA Encrypt/Decrypt"), this, &MainWindow::rsaEncDec);
     rsaEncDecAct->setStatusTip(tr("Data rsa encrypt decrypt"));
 
-    QAction *keyAgreeAct = cryptMenu->addAction(tr("&Key Agreement"), this, &MainWindow::keyAgree);
+    QAction *keyAgreeAct = cryptMenu->addAction(tr("Key&Agreement"), this, &MainWindow::keyAgree);
     keyAgreeAct->setStatusTip(tr("Key Agreement"));
 
     QAction *cmsAct = cryptMenu->addAction(tr("&CMS"), this, &MainWindow::cms );
@@ -322,7 +322,7 @@ void MainWindow::createActions()
     toolMenu->addAction( numTransAct );
     toolToolBar->addAction( numTransAct );
 
-    QAction *oidAct = toolMenu->addAction(tr("O&ID Information"), this, &MainWindow::oidInfo);
+    QAction *oidAct = toolMenu->addAction(tr("&OID Information"), this, &MainWindow::oidInfo);
     oidAct->setStatusTip(tr("Show OID information" ));
 
     const QIcon insertIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/insert.png"));
