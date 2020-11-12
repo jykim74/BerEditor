@@ -40,6 +40,7 @@ SOURCES += \
     ber_tray_icon.cpp \
     ber_tree_view.cpp \
     cms_dlg.cpp \
+    common.cpp \
     data_encoder_dlg.cpp \
     dumpasn1.c \
     edit_value_dlg.cpp \
@@ -72,6 +73,7 @@ HEADERS += \
     ber_tray_icon.h \
     ber_tree_view.h \
     cms_dlg.h \
+    common.h \
     data_encoder_dlg.h \
     edit_value_dlg.h \
     enc_dec_dlg.h \

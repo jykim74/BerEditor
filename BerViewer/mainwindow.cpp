@@ -22,6 +22,7 @@
 #include "num_trans_dlg.h"
 #include "about_dlg.h"
 #include "cms_dlg.h"
+#include "common.h"
 
 #include <QtWidgets>
 #include <QFileDialog>
@@ -406,26 +407,13 @@ void MainWindow::numTrans()
 void MainWindow::open()
 {
     bool bSavePath = berApplet->settingsMgr()->isSaveOpenFolder();
-    QString strPath = QDir::currentPath();
 
-    if( bSavePath )
-    {
-        QSettings settings;
-        settings.beginGroup( "berviewer" );
-        strPath = settings.value( "openPath", "" ).toString();
-        settings.endGroup();
-    }
-
-    QString fileName = QFileDialog::getOpenFileName(this,
-                                                    "BerViewer file open",
-                                                    strPath,
-                                                    "All files (*.*) ;; BER files (*.ber *.der);; PEM files (*.crt *.pem)" );
+    QString strPath = getSetPath();
+    QString fileName = findFile( this, JS_FILE_TYPE_BIN, strPath );
 
     if( !fileName.isEmpty() )
     {
         berFileOpen(fileName);
-//        file_path_ = fileName;
-//        setTitle( fileName );
 
         if( bSavePath )
         {
@@ -540,6 +528,22 @@ void MainWindow::updateRecentActionList()
 
     for( auto i = itEnd; i < kMaxRecentFiles; ++i )
         recent_file_list_.at(i)->setVisible(false);
+}
+
+QString MainWindow::getSetPath()
+{
+    bool bSavePath = berApplet->settingsMgr()->isSaveOpenFolder();
+    QString strPath = QDir::currentPath();
+
+    if( bSavePath )
+    {
+        QSettings settings;
+        settings.beginGroup( "berviewer" );
+        strPath = settings.value( "openPath", "" ).toString();
+        settings.endGroup();
+    }
+
+    return strPath;
 }
 
 void MainWindow::about()

@@ -80,6 +80,8 @@ private:
     void adjustForCurrentFile( const QString& filePath );
     void updateRecentActionList();
 
+    QString getSetPath();
+
     QList<QAction *>  recent_file_list_;
 
     QSplitter       *hsplitter_;

@@ -156,7 +156,7 @@ void RSAEncDecDlg::findCert()
     QString fileName = QFileDialog::getOpenFileName( this,
                                                      tr("Certificate File"),
                                                      strPath,
-                                                     tr("Certificate Files (*.crt);;DER Files (*.der);;All Files (*.*)"),
+                                                     tr("Certificate Files (*.crt *.der);;All Files (*.*)"),
                                                      &selectedFilter,
                                                      options );
 
@@ -176,7 +176,7 @@ void RSAEncDecDlg::findPrivateKey()
     QString fileName = QFileDialog::getOpenFileName( this,
                                                      tr("Private Key File"),
                                                      strPath,
-                                                     tr("Key Files (*.key);;DER Files (*.der);;All Files (*.*)"),
+                                                     tr("Key Files (*.key *.der);;All Files (*.*)"),
                                                      &selectedFilter,
                                                      options );
 
