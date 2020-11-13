@@ -408,8 +408,8 @@ void MainWindow::open()
 {
     bool bSavePath = berApplet->settingsMgr()->isSaveOpenFolder();
 
-    QString strPath = getSetPath();
-    QString fileName = findFile( this, JS_FILE_TYPE_BIN, strPath );
+    QString strPath = berApplet->getSetPath();
+    QString fileName = findFile( this, JS_FILE_TYPE_BER, strPath );
 
     if( !fileName.isEmpty() )
     {
@@ -530,21 +530,6 @@ void MainWindow::updateRecentActionList()
         recent_file_list_.at(i)->setVisible(false);
 }
 
-QString MainWindow::getSetPath()
-{
-    bool bSavePath = berApplet->settingsMgr()->isSaveOpenFolder();
-    QString strPath = QDir::currentPath();
-
-    if( bSavePath )
-    {
-        QSettings settings;
-        settings.beginGroup( "berviewer" );
-        strPath = settings.value( "openPath", "" ).toString();
-        settings.endGroup();
-    }
-
-    return strPath;
-}
 
 void MainWindow::about()
 {

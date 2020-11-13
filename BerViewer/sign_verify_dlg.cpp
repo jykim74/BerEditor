@@ -5,6 +5,7 @@
 #include "ber_applet.h"
 #include "js_bin.h"
 #include "js_pki.h"
+#include "common.h"
 
 static QStringList algTypes = {
     "RSA",
@@ -79,18 +80,10 @@ void SignVerifyDlg::clickPubKeyVerify()
 
 void SignVerifyDlg::findPrivateKey()
 {
-    QFileDialog::Options options;
-    options |= QFileDialog::DontUseNativeDialog;
+    QString strPath = berApplet->getSetPath();
 
-    QString strPath = QDir::currentPath();
-
-    QString selectedFilter;
-    QString fileName = QFileDialog::getOpenFileName( this,
-                                                     tr("Private Key File"),
-                                                     strPath,
-                                                     tr("Key Files (*.key);;DER Files (*.der);;All Files(*.*)"),
-                                                     &selectedFilter,
-                                                     options );
+    QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
+    if( fileName.isEmpty() ) return;
 
     mPriKeyPath->setText(fileName);
 
@@ -99,18 +92,10 @@ void SignVerifyDlg::findPrivateKey()
 
 void SignVerifyDlg::findCert()
 {
-    QFileDialog::Options options;
-    options |= QFileDialog::DontUseNativeDialog;
+    QString strPath = berApplet->getSetPath();
 
-    QString strPath = QDir::currentPath();
-
-    QString selectedFilter;
-    QString fileName = QFileDialog::getOpenFileName( this,
-                                                     tr("Certificate File"),
-                                                     strPath,
-                                                     tr("Cert Files(*.crt);;DER Files (*.der);;All Files(*.*)"),
-                                                     &selectedFilter,
-                                                     options );
+    QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    if( fileName.isEmpty() ) return;
 
     mCertPath->setText( fileName );
 

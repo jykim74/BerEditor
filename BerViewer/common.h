@@ -4,7 +4,7 @@
 #include <QString>
 #include <QWidget>
 
-enum { JS_FILE_TYPE_CERT, JS_FILE_TYPE_PRIKEY, JS_FILE_TYPE_TXT, JS_FILE_TYPE_BIN };
+enum { JS_FILE_TYPE_CERT, JS_FILE_TYPE_PRIKEY, JS_FILE_TYPE_TXT, JS_FILE_TYPE_BER };
 
 QString findFile( QWidget *parent, int nType, const QString strPath );
 

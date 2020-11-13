@@ -6,6 +6,7 @@
 
 #include "mainwindow.h"
 #include "ber_applet.h"
+#include "common.h"
 
 CMSDlg::CMSDlg(QWidget *parent) :
     QDialog(parent)
@@ -27,30 +28,7 @@ CMSDlg::CMSDlg(QWidget *parent) :
     connect( mDevelopedAndVerifyBtn, SIGNAL(clicked()), this, SLOT(clickDevelopedAndVerify()));
 }
 
-QString CMSDlg::findPath(int bPri)
-{
-    QFileDialog::Options options;
-    options |= QFileDialog::DontUseNativeDialog;
 
-    QString strPath = QDir::currentPath();
-
-    QString strType;
-    QString selectedFilter;
-
-    if( bPri )
-        strType = tr("Key Files (*.key);;DER Files (*.der);;All Files(*.*)");
-    else
-        strType = tr("Cert Files (*.crt);;DER Files (*.der);;All Files(*.*)");
-
-    QString fileName = QFileDialog::getOpenFileName( this,
-                                                     tr("Private Key File"),
-                                                     strPath,
-                                                     strType,
-                                                     &selectedFilter,
-                                                     options );
-
-    return fileName;
-}
 
 CMSDlg::~CMSDlg()
 {
@@ -99,25 +77,40 @@ void CMSDlg::clickChange()
 
 void CMSDlg::clickSignPriFind()
 {
-    QString fileName = findPath( 1 );
+    QString strPath = berApplet->getSetPath();
+
+    QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
+    if( fileName.isEmpty() ) return;
     mSignPriKeyPathText->setText( fileName );
 }
 
 void CMSDlg::clickSignCertFind()
 {
-    QString fileName = findPath( 0 );
+    QString strPath = berApplet->getSetPath();
+
+    QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    if( fileName.isEmpty() ) return;
+
     mSignCertPathText->setText( fileName );
 }
 
 void CMSDlg::clickKMPriFind()
 {
-    QString fileName = findPath( 1 );
+    QString strPath = berApplet->getSetPath();
+
+    QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
+    if( fileName.isEmpty() ) return;
+
     mKMPriKeyPathText->setText( fileName );
 }
 
 void CMSDlg::clickKMCertFind()
 {
-    QString fileName = findPath( 0 );
+    QString strPath = berApplet->getSetPath();
+
+    QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    if( fileName.isEmpty() ) return;
+
     mKMCertPathText->setText( fileName );
 }
 

@@ -80,7 +80,6 @@ private:
     void adjustForCurrentFile( const QString& filePath );
     void updateRecentActionList();
 
-    QString getSetPath();
 
     QList<QAction *>  recent_file_list_;
 

@@ -5,6 +5,7 @@
 #include "js_pki.h"
 #include "ber_define.h"
 #include "ber_applet.h"
+#include "common.h"
 
 static QStringList dataTypes = {
     "String",
@@ -147,18 +148,10 @@ end :
 
 void RSAEncDecDlg::findCert()
 {
-    QFileDialog::Options options;
-    options |= QFileDialog::DontUseNativeDialog;
+    QString strPath = berApplet->getSetPath();
 
-    QString strPath = QDir::currentPath();
-
-    QString selectedFilter;
-    QString fileName = QFileDialog::getOpenFileName( this,
-                                                     tr("Certificate File"),
-                                                     strPath,
-                                                     tr("Certificate Files (*.crt *.der);;All Files (*.*)"),
-                                                     &selectedFilter,
-                                                     options );
+    QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    if( fileName.isEmpty() ) return;
 
     mCertPath->setText(fileName);
 
@@ -167,18 +160,10 @@ void RSAEncDecDlg::findCert()
 
 void RSAEncDecDlg::findPrivateKey()
 {
-    QFileDialog::Options options;
-    options |= QFileDialog::DontUseNativeDialog;
+    QString strPath = berApplet->getSetPath();
 
-    QString strPath = QDir::currentPath();
-
-    QString selectedFilter;
-    QString fileName = QFileDialog::getOpenFileName( this,
-                                                     tr("Private Key File"),
-                                                     strPath,
-                                                     tr("Key Files (*.key *.der);;All Files (*.*)"),
-                                                     &selectedFilter,
-                                                     options );
+    QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
+    if( fileName.isEmpty() ) return;
 
     mPriKeyPath->setText(fileName);
 

@@ -55,6 +55,23 @@ void BerApplet::setCmd(const QString cmd)
     cmd_ = cmd;
 }
 
+QString BerApplet::getSetPath()
+{
+    bool bSavePath = settings_mgr_->isSaveOpenFolder();
+
+    QString strPath = QDir::currentPath();
+
+    if( bSavePath )
+    {
+        QSettings settings;
+        settings.beginGroup( "berviewer" );
+        strPath = settings.value( "openPath", "" ).toString();
+        settings.endGroup();
+    }
+
+    return strPath;
+}
+
 void BerApplet::start()
 {
     main_win_->show();

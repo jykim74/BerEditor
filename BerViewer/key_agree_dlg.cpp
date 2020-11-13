@@ -4,6 +4,8 @@
 #include "key_agree_dlg.h"
 #include "js_pki.h"
 #include "js_pki_tools.h"
+#include "common.h"
+#include "ber_applet.h"
 
 
 const QStringList sGList = { "0", "2", "5" };
@@ -355,16 +357,11 @@ void KeyAgreeDlg::findAECDHPriKey()
     const char  *pSN = NULL;
 
     memset( &sECKeyVal, 0x00, sizeof(sECKeyVal));
-    QFileDialog::Options options;
-    options |= QFileDialog::DontUseNativeDialog;
 
-    QString selectedFilter;
-    QString fileName = QFileDialog::getOpenFileName( this,
-                                                     tr("ECC PrivateKey file"),
-                                                     QDir::currentPath(),
-                                                     tr("Key Files (*.key);;DER Files (*.der);;All Files (*.*)"),
-                                                     &selectedFilter,
-                                                     options );
+    QString strPath = berApplet->getSetPath();
+
+    QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
+    if( fileName.isEmpty() ) return;
 
     JS_BIN_fileRead( fileName.toStdString().c_str(), &binECKey );
     JS_PKI_getECKeyVal( &binECKey, &sECKeyVal );
@@ -418,16 +415,11 @@ void KeyAgreeDlg::findBECDHPriKey()
     const char  *pSN = NULL;
 
     memset( &sECKeyVal, 0x00, sizeof(sECKeyVal));
-    QFileDialog::Options options;
-    options |= QFileDialog::DontUseNativeDialog;
 
-    QString selectedFilter;
-    QString fileName = QFileDialog::getOpenFileName( this,
-                                                     tr("ECC PrivateKey file"),
-                                                     QDir::currentPath(),
-                                                     tr("Key Files (*.key);;DER Files (*.der);;All Files (*.*)"),
-                                                     &selectedFilter,
-                                                     options );
+    QString strPath = berApplet->getSetPath();
+
+    QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
+    if( fileName.isEmpty() ) return;
 
     JS_BIN_fileRead( fileName.toStdString().c_str(), &binECKey );
     JS_PKI_getECKeyVal( &binECKey, &sECKeyVal );

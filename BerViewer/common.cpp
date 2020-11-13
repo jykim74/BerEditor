@@ -26,8 +26,8 @@ QString findFile( QWidget *parent, int nType, const QString strPath )
         strType = QObject::tr("Key Files (*.key *.der *.pem);;All Files(*.*)");
     else if( nType == JS_FILE_TYPE_TXT )
         strType = QObject::tr("TXT Files (*.txt *.log);;All Files(*.*)");
-    else if( nType == JS_FILE_TYPE_BIN )
-        strType = QObject::tr("Binary Files (*.bin *.der);;All Files(*.*)");
+    else if( nType == JS_FILE_TYPE_BER )
+        strType = QObject::tr("BER Files (*.ber *.der *.pem);;All Files(*.*)");
 
     QString fileName = QFileDialog::getOpenFileName( parent,
                                                      QObject::tr( "Open File" ),

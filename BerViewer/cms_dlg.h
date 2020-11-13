@@ -32,7 +32,7 @@ private slots:
     void clickDevelopedAndVerify();
 
 private:
-    QString findPath( int bPri );
+
 };
 
 #endif // CMS_DLG_H

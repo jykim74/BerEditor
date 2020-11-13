@@ -38,6 +38,7 @@ public:
 
     void restartApp();
     void setCmd( const QString cmd );
+    QString getSetPath();
 
 signals:
 
