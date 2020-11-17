@@ -24,6 +24,9 @@ private slots:
 
 private:
     void initUI();
+    QStringList getUsedURI();
+    void saveUsedURI( const QString &strURL );
+
     BIN data_;
 };
 

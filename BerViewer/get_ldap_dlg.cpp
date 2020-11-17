@@ -1,9 +1,14 @@
+#include <QSettings>
+
 #include "get_ldap_dlg.h"
 #include "mainwindow.h"
 #include "ber_applet.h"
 
 #include "js_ldap.h"
 #include "js_bin.h"
+
+const char *kUsedURI = "UsedURI";
+const char *kLDAP = "LDAP";
 
 static QStringList sScopeList = { "BASE" };
 static QStringList sTypeList = { "caCertificate", "signCertificate", "userCertificate",
@@ -25,6 +30,30 @@ GetLdapDlg::GetLdapDlg(QWidget *parent) :
 GetLdapDlg::~GetLdapDlg()
 {
     JS_BIN_reset( &data_ );
+}
+
+QStringList GetLdapDlg::getUsedURI()
+{
+    QSettings settings;
+    QStringList retList;
+
+    settings.beginGroup( kUsedURI );
+    retList = settings.value( kLDAP ).toStringList();
+    settings.endGroup();
+
+    return retList;
+}
+
+void GetLdapDlg::saveUsedURI( const QString &strURL )
+{
+
+    QSettings settings;
+    settings.beginGroup( kUsedURI );
+    QStringList list = settings.value( kLDAP ).toStringList();
+    list.removeAll( strURL );
+    list.insert( 0, strURL );
+    settings.setValue( kLDAP, list );
+    settings.endGroup();
 }
 
 void GetLdapDlg::accept()
@@ -52,7 +81,7 @@ void GetLdapDlg::accept()
         memset( sFilter, 0x00, sizeof(sFilter));
         memset( sAttribute, 0x00, sizeof(sAttribute));
 
-        QString strURI = mURIText->text();
+        QString strURI = mURICombo->currentText();
 
         ret = JS_LDAP_parseURI( strURI.toStdString().c_str(), sHost, &nPort, sDN, &nScope, sFilter, sAttribute );
         nType = JS_LDAP_getType( sAttribute );
@@ -60,6 +89,8 @@ void GetLdapDlg::accept()
         if( sHost[0] != 0x00 ) strHost = sHost;
         if( sDN[0] != 0x00 ) strDN = sDN;
         if( sFilter[0] != 0 ) strFilter = sFilter;
+
+        saveUsedURI( strURI );
     }
     else {
         strHost = mHostText->text();
@@ -113,7 +144,16 @@ void GetLdapDlg::clickUseURI()
     bool bVal = mURIUseCheck->isChecked();
 
     mURIGroup->setEnabled( bVal );
+    mURICombo->setEditable( bVal );
+
+    if( bVal )
+    {
+        mURICombo->addItems( getUsedURI() );
+        mURICombo->clearEditText();
+    }
+
     mHostInfoGroup->setEnabled( !bVal );
+
 
     /*
     mURIText->setEnabled( bVal );
