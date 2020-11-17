@@ -520,7 +520,9 @@ void MainWindow::updateRecentActionList()
 
     for( auto i = 0u; i < itEnd; ++i )
     {
-        QString strippedName = QFileInfo(recentFilePaths.at(i)).fileName();
+        QString strippedName = QString( "%1 ").arg(i);
+        strippedName += QFileInfo(recentFilePaths.at(i)).fileName();
+
         recent_file_list_.at(i)->setText(strippedName);
         recent_file_list_.at(i)->setData( recentFilePaths.at(i));
         recent_file_list_.at(i)->setVisible(true);
