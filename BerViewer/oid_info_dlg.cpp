@@ -18,8 +18,8 @@ OIDInfoDlg::OIDInfoDlg(QWidget *parent) :
     setupUi(this);
     initialize();
 
-    connect( mFindBtn, SIGNAL(clicked()), this, SLOT(findOID()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(closeDlg()));
+    connect( mInputText, SIGNAL(textChanged(const QString&)), this, SLOT(findOID()));
 }
 
 OIDInfoDlg::~OIDInfoDlg()
@@ -48,7 +48,12 @@ void OIDInfoDlg::findOID()
 
     if( strInput.isEmpty() )
     {
-        berApplet->warningBox(tr( "You have to insert OID data" ), this );
+//        berApplet->warningBox(tr( "You have to insert OID data" ), this );
+        mOIDText->clear();
+        mOIDHexText->clear();
+        mSNText->clear();
+        mLNText->clear();
+
         return;
     }
 

@@ -120,13 +120,6 @@
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QPushButton" name="mFindBtn">
-       <property name="text">
-        <string>Find</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
    <item row="1" column="0">
