@@ -241,6 +241,7 @@ void EncDecDlg::clickUseAE()
     mAADTypeCombo->setEnabled( bStatus );
     mTagText->setEnabled( bStatus );
     mTagTypeCombo->setEnabled( bStatus );
+    mCCMInitLength->setEnabled( bStatus );
 
     mPadCheck->setEnabled( !bStatus );
 }
@@ -297,17 +298,19 @@ void EncDecDlg::encDecInit()
         else if( mAADTypeCombo->currentIndex() == DATA_BASE64 )
             JS_BIN_decodeBase64( strAAD.toStdString().c_str(), &binAAD );
 
+        int nInitLen = mCCMInitLength->text().toInt();
+
         if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
         {
             if( isCCM( strAlg) )
-                ret = JS_PKI_encryptCCMInit( &ctx_, strAlg.toStdString().c_str(), &binIV, &binKey, &binAAD );
+                ret = JS_PKI_encryptCCMInit( &ctx_, strAlg.toStdString().c_str(), &binIV, &binKey, &binAAD, nInitLen );
             else
                 ret = JS_PKI_encryptGCMInit( &ctx_, strAlg.toStdString().c_str(), &binIV, &binKey, &binAAD );
         }
         else
         {
             if( isCCM( strAlg ) )
-                ret = JS_PKI_decryptCCMInit( &ctx_, strAlg.toStdString().c_str(), &binIV, &binKey, &binAAD );
+                ret = JS_PKI_decryptCCMInit( &ctx_, strAlg.toStdString().c_str(), &binIV, &binKey, &binAAD, nInitLen );
             else
                 ret = JS_PKI_decryptGCMInit( &ctx_, strAlg.toStdString().c_str(), &binIV, &binKey, &binAAD );
         }
