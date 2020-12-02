@@ -72,6 +72,7 @@ void EncDecDlg::initialize()
     mAADTypeCombo->addItems( dataTypes );
     mTagTypeCombo->addItems( dataTypes );
     mOutputTypeCombo->addItems( dataTypes );
+    mOutputTypeCombo->setCurrentIndex(1);
 
     mMethodCombo->addItems( methodTypes );
 }
@@ -92,6 +93,7 @@ void EncDecDlg::accept()
     BIN binTag = {0,0};
 
     QString strInput = mInputText->toPlainText();
+    mOutputText->clear();
 
     if( strInput.isEmpty() )
     {
@@ -211,6 +213,13 @@ void EncDecDlg::accept()
 
     mOutputText->setPlainText( pOut );
 
+    if( ret == 0 )
+    {
+        mStatusLabel->setText( "OK" );
+    }
+    else
+        mStatusLabel->setText( "Fail" );
+
     if( pOut ) JS_free(pOut);
     JS_BIN_reset( &binIV );
     JS_BIN_reset( &binKey );
@@ -266,6 +275,8 @@ void EncDecDlg::encDecInit()
         berApplet->warningBox( tr( "You have to insert key" ), this );
         return;
     }
+
+    mOutputText->clear();
 
     if( mKeyTypeCombo->currentIndex() == DATA_STRING )
         JS_BIN_set( &binKey, (unsigned char *)strKey.toStdString().c_str(), strKey.length() );
