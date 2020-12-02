@@ -258,6 +258,7 @@ void EncDecDlg::clickUseAE()
 void EncDecDlg::encDecInit()
 {
     int ret = -1;
+    BIN binSrc = {0,0};
     BIN binKey = {0,0};
     BIN binIV = {0,0};
     BIN binAAD = {0,0};
@@ -277,6 +278,21 @@ void EncDecDlg::encDecInit()
     }
 
     mOutputText->clear();
+
+    QString strInput = mInputText->toPlainText();
+
+    if( mInputStringBtn->isChecked() )
+        JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
+    else if( mInputHexBtn->isChecked() )
+    {
+        strInput.remove(QRegExp("[\t\r\n\\s]"));
+        JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
+    }
+    else if( mInputBase64Btn->isChecked() )
+    {
+        strInput.remove(QRegExp("[\t\r\n\\s]"));
+        JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
+    }
 
     if( mKeyTypeCombo->currentIndex() == DATA_STRING )
         JS_BIN_set( &binKey, (unsigned char *)strKey.toStdString().c_str(), strKey.length() );
@@ -310,6 +326,11 @@ void EncDecDlg::encDecInit()
             JS_BIN_decodeBase64( strAAD.toStdString().c_str(), &binAAD );
 
         int nInitLen = mCCMInitLength->text().toInt();
+        if( nInitLen <= 0 )
+        {
+            nInitLen = binSrc.nLen;
+            mCCMInitLength->setText( QString("%1").arg( nInitLen ));
+        }
 
         if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
         {
@@ -348,6 +369,7 @@ void EncDecDlg::encDecInit()
     JS_BIN_reset( &binKey );
     JS_BIN_reset( &binIV );
     JS_BIN_reset( &binAAD );
+    JS_BIN_reset( &binSrc );
 
     repaint();
 }
