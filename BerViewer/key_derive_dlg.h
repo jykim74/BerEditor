@@ -17,7 +17,7 @@ public:
     ~KeyDeriveDlg();
 
 private slots:
-    virtual void accept();
+    void Run();
 
 private:
 

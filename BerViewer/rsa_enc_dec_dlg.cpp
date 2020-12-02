@@ -34,6 +34,8 @@ RSAEncDecDlg::RSAEncDecDlg(QWidget *parent) :
     connect( mCertBtn, SIGNAL(clicked()), this, SLOT(findCert()));
     connect( mChangeBtn, SIGNAL(clicked()), this, SLOT(changeValue()));
     connect( mPubKeyEncryptCheck, SIGNAL(clicked()), this, SLOT(clickPubKeyEncryt()));
+    connect( mRunBtn, SIGNAL(clicked()), this, SLOT(Run()));
+    connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 }
 
 RSAEncDecDlg::~RSAEncDecDlg()
@@ -65,7 +67,7 @@ void RSAEncDecDlg::clickPubKeyEncryt()
         mPriKeyAndCertLabel->setText( tr("Private key and Certificate"));
     }
 }
-void RSAEncDecDlg::accept()
+void RSAEncDecDlg::Run()
 {
     int ret = 0;
     int nVersion = 0;

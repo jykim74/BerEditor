@@ -56,6 +56,8 @@ EncDecDlg::EncDecDlg(QWidget *parent) :
     connect( mUpdateBtn, SIGNAL(clicked()), this, SLOT(encDecUpdate()));
     connect( mFinalBtn, SIGNAL(clicked()), this, SLOT(encDecFinal()));
     connect( mChangeBtn, SIGNAL(clicked()), this, SLOT(dataChange()));
+    connect( mRunBtn, SIGNAL(clicked()), this, SLOT(Run()));
+    connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
     clickUseAE();
 }
@@ -82,7 +84,7 @@ void EncDecDlg::showEvent( QShowEvent *event )
 
 }
 
-void EncDecDlg::accept()
+void EncDecDlg::Run()
 {
     int ret = 0;
     BIN binSrc = {0,0};

@@ -23,6 +23,9 @@ KeyDeriveDlg::KeyDeriveDlg(QWidget *parent) :
 {
     setupUi(this);
 
+    connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mRunBtn, SIGNAL(clicked()), this, SLOT(Run()));
+
     mHashCombo->addItems( hashTypes );
     mSaltTypeCombo->addItems( dataTypes );
 
@@ -35,7 +38,7 @@ KeyDeriveDlg::~KeyDeriveDlg()
 
 }
 
-void KeyDeriveDlg::accept()
+void KeyDeriveDlg::Run()
 {
     int ret = 0;
     BIN binSalt = { 0,0 };

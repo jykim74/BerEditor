@@ -21,7 +21,7 @@ private slots:
     void findPrivateKey();
     void findCert();
     void algChanged(int index);
-    virtual void accept();
+    void Run();
     void signVerifyInit();
     void signVerifyUpdate();
     void signVerifyFinal();

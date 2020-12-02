@@ -47,6 +47,8 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     connect( mFinalBtn, SIGNAL(clicked()), this, SLOT(signVerifyFinal()));
 
     connect( mPubKeyVerifyCheck, SIGNAL(clicked()), this, SLOT(clickPubKeyVerify()));
+    connect( mRunBtn, SIGNAL(clicked()), this, SLOT(Run()));
+    connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 }
 
 SignVerifyDlg::~SignVerifyDlg()
@@ -256,7 +258,7 @@ void SignVerifyDlg::signVerifyFinal()
     repaint();
 }
 
-void SignVerifyDlg::accept()
+void SignVerifyDlg::Run()
 {
     int ret = 0;
     BIN binSrc = {0,0};

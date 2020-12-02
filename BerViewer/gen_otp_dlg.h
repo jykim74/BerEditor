@@ -18,7 +18,7 @@ public:
 
 private slots:
     void setNow();
-    virtual void accept();
+    void Run();
 
 private:
     void initialize();

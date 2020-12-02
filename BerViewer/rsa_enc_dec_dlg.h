@@ -17,7 +17,7 @@ public:
     ~RSAEncDecDlg();
 
 private slots:
-    virtual void accept();
+    void Run();
     void clickPubKeyEncryt();
     void findCert();
     void findPrivateKey();
