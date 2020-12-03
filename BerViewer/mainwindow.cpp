@@ -113,7 +113,6 @@ void MainWindow::initialize()
 
     setCentralWidget(hsplitter_);
 
-
     createTableMenu();
 
 }

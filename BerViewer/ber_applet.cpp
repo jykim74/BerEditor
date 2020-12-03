@@ -22,6 +22,7 @@
 
 #include "auto_update_service.h"
 #include "about_dlg.h"
+#include "common.h"
 
 BerApplet *berApplet;
 
@@ -75,6 +76,9 @@ QString BerApplet::getSetPath()
 void BerApplet::start()
 {
     main_win_->show();
+    QString strOIDPath = settings_mgr_->OIDConfigPath();
+
+    setOIDList( strOIDPath );
 }
 
 QString BerApplet::getBrand()

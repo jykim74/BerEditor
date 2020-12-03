@@ -5,6 +5,7 @@ namespace  {
 const char *kBehaviorGroup = "Behavior";
 const char *kShowFullText = "showFullText";
 const char *kSaveOpenFolder = "saveOpenFolder";
+const char *kOIDConfigPath = "OIDConfigPath";
 }
 
 SettingsMgr::SettingsMgr(QObject *parent) : QObject(parent)
@@ -56,4 +57,24 @@ bool SettingsMgr::isSaveOpenFolder()
     settings.endGroup();
 
     return val;
+}
+
+void SettingsMgr::setOIDConfigPath( const QString& strPath )
+{
+    QSettings   settings;
+    settings.beginGroup( kBehaviorGroup );
+    settings.setValue( kOIDConfigPath, strPath );
+    settings.endGroup();
+}
+
+QString SettingsMgr::OIDConfigPath()
+{
+    QSettings settings;
+    QString strPath;
+
+    settings.beginGroup( kBehaviorGroup );
+    strPath = settings.value( kOIDConfigPath, "" ).toString();
+    settings.endGroup();
+
+    return strPath;
 }

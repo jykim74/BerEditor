@@ -14,6 +14,9 @@ public:
 
     void setSaveOpenFolder( bool val );
     bool isSaveOpenFolder();
+
+    void setOIDConfigPath( const QString& strPath );
+    QString OIDConfigPath();
 signals:
 
 public slots:

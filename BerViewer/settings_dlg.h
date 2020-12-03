@@ -21,6 +21,7 @@ private slots:
     void updateSettings();
     void onOkBtnClicked();
     void onCancelBtnClicked();
+    void findOIDConfig();
 
     void closeEvent(QCloseEvent *event );
     void showEvent(QShowEvent *event);
