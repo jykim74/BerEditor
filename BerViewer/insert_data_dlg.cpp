@@ -6,6 +6,9 @@ InsertDataDlg::InsertDataDlg(QWidget *parent) :
 {
     setupUi(this);
 
+    connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mViewBtn, SIGNAL(clicked()), this, SLOT(viewData()));
+
     mTypeHex->setChecked(true);
 }
 
@@ -14,7 +17,7 @@ InsertDataDlg::~InsertDataDlg()
 
 }
 
-void InsertDataDlg::accept()
+void InsertDataDlg::viewData()
 {
     if( mTypeHex->isChecked() )
         type_ = 0;

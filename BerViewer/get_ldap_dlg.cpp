@@ -24,6 +24,9 @@ GetLdapDlg::GetLdapDlg(QWidget *parent) :
     data_.pVal = 0;
 
     connect( mURIUseCheck, SIGNAL(clicked()), this, SLOT(clickUseURI()));
+    connect( mGetBtn, SIGNAL(clicked()), this, SLOT(runGet()));
+    connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+
     initUI();
 }
 
@@ -56,7 +59,7 @@ void GetLdapDlg::saveUsedURI( const QString &strURL )
     settings.endGroup();
 }
 
-void GetLdapDlg::accept()
+void GetLdapDlg::runGet()
 {
     int ret = -1;
     LDAP *pLD = NULL;

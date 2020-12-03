@@ -19,7 +19,7 @@ public:
     BIN& getData() { return data_; };
 
 private slots:
-    virtual void accept();
+    void runGet();
     void clickUseURI();
 
 private:

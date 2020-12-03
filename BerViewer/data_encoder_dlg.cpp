@@ -20,6 +20,7 @@ DataEncoderDlg::DataEncoderDlg(QWidget *parent) :
 
     connect( mEncodeBtn, SIGNAL(clicked()), this, SLOT(onClickEncodeBtn()));
     connect( mOutputTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(outTypeChanged(int)));
+    connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 }
 
 DataEncoderDlg::~DataEncoderDlg()

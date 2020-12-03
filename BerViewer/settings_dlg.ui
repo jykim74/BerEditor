@@ -23,7 +23,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -158,19 +158,19 @@
       </spacer>
      </item>
      <item>
+      <widget class="QPushButton" name="mOkBtn">
+       <property name="text">
+        <string>OK</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="mCancelBtn">
        <property name="text">
         <string>Cancel</string>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="mOkBtn">
-       <property name="text">
-        <string>OK</string>
        </property>
       </widget>
      </item>

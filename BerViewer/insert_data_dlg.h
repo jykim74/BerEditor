@@ -20,7 +20,7 @@ public:
     QString getTextData();
 
 private slots :
-    virtual void accept();
+    void viewData();
 
 private:
 //    Ui::InsertDataDlg *ui;

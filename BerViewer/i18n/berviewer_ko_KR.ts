@@ -347,32 +347,37 @@ mailto : jykim74@gmail.com</translation>
         <translation>데이타 인코더</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="26"/>
+        <location filename="../data_encoder_dlg.ui" line="31"/>
+        <source>Close</source>
+        <translation>닫기</translation>
+    </message>
+    <message>
+        <location filename="../data_encoder_dlg.ui" line="83"/>
         <source>Input data type</source>
         <translation>입력 데이타 타입</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="34"/>
+        <location filename="../data_encoder_dlg.ui" line="91"/>
         <source>String</source>
         <translation>문자열</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="44"/>
+        <location filename="../data_encoder_dlg.ui" line="101"/>
         <source>Hex</source>
         <translation>16진수</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="51"/>
+        <location filename="../data_encoder_dlg.ui" line="108"/>
         <source>Base64</source>
         <translation>베이스64</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="58"/>
+        <location filename="../data_encoder_dlg.ui" line="115"/>
         <source>URL</source>
         <translation>URL</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="94"/>
+        <location filename="../data_encoder_dlg.ui" line="61"/>
         <source>Show printable text</source>
         <translation>인쇄 가능 문자 표시</translation>
     </message>
@@ -381,12 +386,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">문자 형태로 보여줌</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="101"/>
+        <location filename="../data_encoder_dlg.ui" line="68"/>
         <source>Encode</source>
         <translation>인코딩</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.cpp" line="49"/>
+        <location filename="../data_encoder_dlg.cpp" line="50"/>
         <source>You have to insert data</source>
         <translation>데이타를 입력 하세요</translation>
     </message>
@@ -835,22 +840,32 @@ mailto : jykim74@gmail.com</translation>
         <translation>LDAP 데이타 가져오기</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="27"/>
+        <location filename="../get_ldap_dlg.ui" line="79"/>
         <source>LDAP URI address</source>
         <translation>LDAP 주소</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="101"/>
+        <location filename="../get_ldap_dlg.ui" line="91"/>
         <source>LDAP Host Information</source>
         <translation>LDAP 호스트 정보</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="107"/>
+        <location filename="../get_ldap_dlg.ui" line="97"/>
         <source>Host</source>
         <translation>서버</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="49"/>
+        <location filename="../get_ldap_dlg.ui" line="142"/>
+        <source>Get</source>
+        <translation>가겨오기</translation>
+    </message>
+    <message>
+        <location filename="../get_ldap_dlg.ui" line="149"/>
+        <source>Close</source>
+        <translation>닫기</translation>
+    </message>
+    <message>
+        <location filename="../get_ldap_dlg.ui" line="20"/>
         <source>Search Condition</source>
         <translation>검색 조건</translation>
     </message>
@@ -859,17 +874,17 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">LDAP 정보</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="20"/>
+        <location filename="../get_ldap_dlg.ui" line="72"/>
         <source>Use URI</source>
         <translation>URI 사용</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="58"/>
+        <location filename="../get_ldap_dlg.ui" line="29"/>
         <source>Filter</source>
         <translation>필터</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="124"/>
+        <location filename="../get_ldap_dlg.ui" line="114"/>
         <source>Port</source>
         <translation>포트</translation>
     </message>
@@ -878,32 +893,32 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">URI 주소</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="134"/>
+        <location filename="../get_ldap_dlg.ui" line="124"/>
         <source>DN</source>
         <translation>DN</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="75"/>
+        <location filename="../get_ldap_dlg.ui" line="46"/>
         <source>Scope</source>
         <translation>범위</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.ui" line="68"/>
+        <location filename="../get_ldap_dlg.ui" line="39"/>
         <source>Type</source>
         <translation>타입</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.cpp" line="109"/>
+        <location filename="../get_ldap_dlg.cpp" line="112"/>
         <source>fail to connnect LDAP server</source>
         <translation>LDAP 서버 연결 실패</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.cpp" line="116"/>
+        <location filename="../get_ldap_dlg.cpp" line="119"/>
         <source>fail to bind LDAP server</source>
         <translation>LDAP 서버 바인드 실패</translation>
     </message>
     <message>
-        <location filename="../get_ldap_dlg.cpp" line="123"/>
+        <location filename="../get_ldap_dlg.cpp" line="126"/>
         <source>fail to get data from LDAP server</source>
         <translation>LDAP 서버로 부터 데이타 가져오기 실패</translation>
     </message>
@@ -920,22 +935,32 @@ mailto : jykim74@gmail.com</translation>
         <translation>데이타 입력하세요</translation>
     </message>
     <message>
-        <location filename="../insert_data_dlg.ui" line="36"/>
+        <location filename="../insert_data_dlg.ui" line="25"/>
+        <source>View</source>
+        <translation>보기</translation>
+    </message>
+    <message>
+        <location filename="../insert_data_dlg.ui" line="32"/>
+        <source>Close</source>
+        <translation>닫기</translation>
+    </message>
+    <message>
+        <location filename="../insert_data_dlg.ui" line="60"/>
         <source>Data Type</source>
         <translation>데이타 타입</translation>
     </message>
     <message>
-        <location filename="../insert_data_dlg.ui" line="42"/>
+        <location filename="../insert_data_dlg.ui" line="66"/>
         <source>Hex</source>
         <translation>16진수</translation>
     </message>
     <message>
-        <location filename="../insert_data_dlg.ui" line="49"/>
+        <location filename="../insert_data_dlg.ui" line="73"/>
         <source>Base64</source>
         <translation>베이스64</translation>
     </message>
     <message>
-        <location filename="../insert_data_dlg.cpp" line="26"/>
+        <location filename="../insert_data_dlg.cpp" line="29"/>
         <source>You have to insert data</source>
         <translation>데이타를 입력 하세요</translation>
     </message>
@@ -1957,12 +1982,12 @@ mailto : jykim74@gmail.com</translation>
         <translation>언어(재시동 필요함)</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="163"/>
+        <location filename="../settings_dlg.ui" line="170"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="173"/>
+        <location filename="../settings_dlg.ui" line="163"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
