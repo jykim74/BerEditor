@@ -190,4 +190,5 @@ INCLUDEPATH += "../../PKILib"
 
 
 
-DISTFILES +=
+DISTFILES += \
+    oid.cfg

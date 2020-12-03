@@ -73,7 +73,7 @@ QString SettingsMgr::OIDConfigPath()
     QString strPath;
 
     settings.beginGroup( kBehaviorGroup );
-    strPath = settings.value( kOIDConfigPath, "" ).toString();
+    strPath = settings.value( kOIDConfigPath, "oid.cfg" ).toString();
     settings.endGroup();
 
     return strPath;

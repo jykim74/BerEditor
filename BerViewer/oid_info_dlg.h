@@ -20,9 +20,11 @@ private slots:
     virtual void accept();
     void findOID();
     void closeDlg();
+    void createOID();
 
 private:
     void initialize();
+    int writeOIDConfig( const QString& strMsg );
 
 };
 
