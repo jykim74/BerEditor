@@ -37,7 +37,7 @@ AboutDlg::AboutDlg(QWidget *parent) :
     strAbout += getBuild();
     strAbout += "\r\n";
 
-    strAbout += "Copyright (C) 2019 ~ 2020 JongYeob Kim";
+    strAbout += "Copyright (C) 2020 ~ 2021 JongYeob Kim";
     strAbout += "\r\n\r\n";
     strAbout += "http://jykim74.tistory.com";
     strAbout += "\r\n";
