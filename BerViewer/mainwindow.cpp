@@ -82,7 +82,7 @@ void MainWindow::initialize()
 
     right_text_ = new QTextEdit();
     right_table_ = new QTableWidget;
-
+    right_text_->setReadOnly(true);
 
     ber_model_ = new BerModel(this);
 
