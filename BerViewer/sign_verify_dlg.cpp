@@ -49,6 +49,8 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     connect( mPubKeyVerifyCheck, SIGNAL(clicked()), this, SLOT(clickPubKeyVerify()));
     connect( mRunBtn, SIGNAL(clicked()), this, SLOT(Run()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+
+    mCloseBtn->setFocus();
 }
 
 SignVerifyDlg::~SignVerifyDlg()

@@ -28,5 +28,8 @@
         <file>images/data_trans.png</file>
         <file>images/number.jpg</file>
         <file>images/berviewer.png</file>
+        <file>images/setting.png</file>
+        <file>images/oid.png</file>
+        <file>images/ldap.jpg</file>
     </qresource>
 </RCC>

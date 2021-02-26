@@ -10,6 +10,7 @@ InsertDataDlg::InsertDataDlg(QWidget *parent) :
     connect( mViewBtn, SIGNAL(clicked()), this, SLOT(viewData()));
 
     mTypeHex->setChecked(true);
+    mCloseBtn->setFocus();
 }
 
 InsertDataDlg::~InsertDataDlg()

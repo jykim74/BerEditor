@@ -322,8 +322,12 @@ void MainWindow::createActions()
     toolMenu->addAction( numTransAct );
     toolToolBar->addAction( numTransAct );
 
-    QAction *oidAct = toolMenu->addAction(tr("&OID Information"), this, &MainWindow::oidInfo);
-    oidAct->setStatusTip(tr("Show OID information" ));
+    const QIcon oidIcon = QIcon::fromTheme("tool-oid", QIcon(":/images/oid.png"));
+    QAction *oidAct = new QAction(oidIcon, tr("&OID Information"), this);
+    connect( oidAct, &QAction::triggered, this, &MainWindow::oidInfo );
+    oidAct->setStatusTip(tr("Show OID information"));
+    toolMenu->addAction( oidAct );
+    toolToolBar->addAction( oidAct );
 
     const QIcon insertIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/insert.png"));
     QAction *insertDataAct = new QAction(insertIcon, tr("&Insert data"), this);
@@ -332,15 +336,22 @@ void MainWindow::createActions()
     toolMenu->addAction( insertDataAct );
     toolToolBar->addAction( insertDataAct );
 
-    QAction *getLdapAct = toolMenu->addAction(tr("&Get LDAP data"), this, &MainWindow::getLdap);
+    const QIcon ldapIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/ldap.jpg"));
+    QAction *getLdapAct = new QAction(ldapIcon, tr("&Get LDAP data"), this);
+    connect( getLdapAct, &QAction::triggered, this, &MainWindow::getLdap );
     getLdapAct->setStatusTip(tr("Get Ber data from LDAP server"));
-
+    toolMenu->addAction( getLdapAct );
+    toolToolBar->addAction( getLdapAct );
 
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
     QToolBar *helpToolBar = addToolBar(tr("Help"));
 
-    QAction *settingAct = helpMenu->addAction(tr("&Settings"), this, &MainWindow::setting);
+    const QIcon settingIcon = QIcon::fromTheme("berview-help", QIcon(":/images/setting.png"));
+    QAction *settingAct = new QAction( settingIcon, tr("&Settings"), this );
+    connect( settingAct, &QAction::triggered, this, &MainWindow::setting );
     settingAct->setStatusTip(tr("Set the variable"));
+    helpMenu->addAction( settingAct );
+    helpToolBar->addAction( settingAct );
 
     const QIcon aboutIcon = QIcon::fromTheme("berview-icon", QIcon(":/images/berviewer.png"));
     QAction *aboutAct = new QAction( aboutIcon, tr("&About BerViewer"), this );

@@ -140,6 +140,7 @@ void GetLdapDlg::initUI()
     mPortText->setText( "389" );
 
     clickUseURI();
+    mCloseBtn->setFocus();
 }
 
 void GetLdapDlg::clickUseURI()

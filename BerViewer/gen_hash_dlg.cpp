@@ -33,6 +33,7 @@ GenHashDlg::GenHashDlg(QWidget *parent) :
     connect( mInputClearBtn, SIGNAL(clicked()), this, SLOT(clearInput()));
     connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clearOutput()));
 
+    mCloseBtn->setFocus();
 }
 
 GenHashDlg::~GenHashDlg()

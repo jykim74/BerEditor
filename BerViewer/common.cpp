@@ -111,5 +111,7 @@ int setOIDList( const QString& strOIDPath )
         line = in.readLine();
     }
 
+    file.close();
+
     return nCount;
 }

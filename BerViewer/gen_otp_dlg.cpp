@@ -30,6 +30,8 @@ GenOTPDlg::GenOTPDlg(QWidget *parent) :
     connect( mSetNowBtn, SIGNAL(clicked()), this, SLOT(setNow()));
     connect( mRunBtn, SIGNAL(clicked()), this, SLOT(Run()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+
+    mCloseBtn->setFocus();
 }
 
 GenOTPDlg::~GenOTPDlg()

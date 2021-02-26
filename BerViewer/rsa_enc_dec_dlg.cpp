@@ -36,6 +36,8 @@ RSAEncDecDlg::RSAEncDecDlg(QWidget *parent) :
     connect( mPubKeyEncryptCheck, SIGNAL(clicked()), this, SLOT(clickPubKeyEncryt()));
     connect( mRunBtn, SIGNAL(clicked()), this, SLOT(Run()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+
+    mCloseBtn->setFocus();
 }
 
 RSAEncDecDlg::~RSAEncDecDlg()

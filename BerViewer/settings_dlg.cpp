@@ -19,6 +19,7 @@ SettingsDlg::SettingsDlg(QWidget *parent) :
     connect( mOkBtn, SIGNAL(clicked()), this, SLOT(onOkBtnClicked()));
     connect( mCancelBtn, SIGNAL(clicked()), this, SLOT(onCancelBtnClicked()));
     connect( mFindOIDConfig, SIGNAL(clicked()), this, SLOT(findOIDConfig()));
+
 }
 
 SettingsDlg::~SettingsDlg()

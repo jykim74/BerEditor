@@ -43,7 +43,7 @@ KeyAgreeDlg::KeyAgreeDlg(QWidget *parent) :
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
     initialize();
-
+    mCloseBtn->setFocus();
 }
 
 KeyAgreeDlg::~KeyAgreeDlg()

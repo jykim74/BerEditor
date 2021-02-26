@@ -38,6 +38,8 @@ GenHmacDlg::GenHmacDlg(QWidget *parent) :
     connect( mInputClearBtn, SIGNAL(clicked()), this, SLOT(inputClear()));
     connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(outputClear()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+
+    mCloseBtn->setFocus();
 }
 
 GenHmacDlg::~GenHmacDlg()

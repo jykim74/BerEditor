@@ -31,6 +31,8 @@ KeyDeriveDlg::KeyDeriveDlg(QWidget *parent) :
 
     mKeySizeText->setText( "32" );
     mIterCountText->setText( "1024" );
+
+    mCloseBtn->setFocus();
 }
 
 KeyDeriveDlg::~KeyDeriveDlg()

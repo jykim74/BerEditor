@@ -19,18 +19,25 @@ static QStringList methodTypes = {
 static QStringList algTypes = {
     "aes-128-cbc",
     "aes-128-ecb",
+    "aes-128-ctr",
     "aes-192-cbc",
     "aes-192-ecb",
+    "aes-192-ctr",
     "aes-256-cbc",
     "aes-256-ecb",
+    "aes-256-ctr",
     "des-cbc",
     "des-ebc",
+    "des-ctr",
     "aria-128-cbc",
     "aria-128-ecb",
+    "aria-128-ctr",
     "aria-192-cbc",
     "aria-192-ecb",
+    "aria-192-ctr",
     "aria-256-cbc",
-    "aria-256-ecb"
+    "aria-256-ecb",
+    "aria-256-ctr"
 };
 
 static QStringList algAETypes = {
@@ -60,6 +67,7 @@ EncDecDlg::EncDecDlg(QWidget *parent) :
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
     clickUseAE();
+    mCloseBtn->setFocus();
 }
 
 EncDecDlg::~EncDecDlg()
