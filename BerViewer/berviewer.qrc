@@ -31,5 +31,14 @@
         <file>images/setting.png</file>
         <file>images/oid.png</file>
         <file>images/ldap.jpg</file>
+        <file>images/key.jpg</file>
+        <file>images/hash.png</file>
+        <file>images/mac.png</file>
+        <file>images/enc.png</file>
+        <file>images/sign.png</file>
+        <file>images/rsa_enc.png</file>
+        <file>images/agree.png</file>
+        <file>images/cms.png</file>
+        <file>images/otp.png</file>
     </qresource>
 </RCC>

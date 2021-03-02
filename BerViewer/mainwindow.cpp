@@ -277,33 +277,73 @@ void MainWindow::createActions()
     menuBar()->addSeparator();
 
     QMenu *cryptMenu = menuBar()->addMenu(tr("&Crypt"));
+    QToolBar *cryptToolBar = addToolBar( "Crypt" );
 
-    QAction *keyDeriveAct = cryptMenu->addAction(tr("&KeyDerive"), this, &MainWindow::keyDerive);
+    const QIcon keyIcon = QIcon::fromTheme("key-derive", QIcon(":/images/key.jpg"));
+    QAction *keyDeriveAct = new QAction( keyIcon, tr("&KeyDerive"), this );
+    connect( keyDeriveAct, &QAction::triggered, this, &MainWindow::keyDerive );
     keyDeriveAct->setStatusTip(tr("Key Derive function" ));
+    cryptMenu->addAction( keyDeriveAct );
+    cryptToolBar->addAction( keyDeriveAct );
 
-    QAction *hashAct = cryptMenu->addAction(tr("&Hash"), this, &MainWindow::hash);
+    const QIcon hashIcon = QIcon::fromTheme("Hash", QIcon(":/images/hash.png"));
+    QAction *hashAct = new QAction( hashIcon, tr("&Hash"), this );
+    connect( hashAct, &QAction::triggered, this, &MainWindow::hash );
     hashAct->setStatusTip(tr("Generate hash value" ));
+    cryptMenu->addAction( hashAct );
+    cryptToolBar->addAction( hashAct );
 
-    QAction *hmacAct = cryptMenu->addAction(tr("H&mac"), this, &MainWindow::hmac);
-    hmacAct->setStatusTip(tr("Generate hmac value"));
+    const QIcon macIcon = QIcon::fromTheme("Hmac", QIcon(":/images/mac.png"));
+    QAction *hmacAct = new QAction( macIcon, tr("H&mac"), this );
+    connect( hmacAct, &QAction::triggered, this, &MainWindow::hmac );
+    hmacAct->setStatusTip(tr("Generate hmac value" ));
+    cryptMenu->addAction( hmacAct );
+    cryptToolBar->addAction( hmacAct );
 
-    QAction *encDecAct = cryptMenu->addAction(tr("&Encrypt/Decrypt"), this, &MainWindow::encDec);
-    encDecAct->setStatusTip(tr("Data encrypt decrypt"));
+    const QIcon encIcon = QIcon::fromTheme("Encrypt_Decrypt", QIcon(":/images/enc.png"));
+    QAction *encDecAct = new QAction( encIcon, tr("&Encrypt/Decrypt"), this );
+    connect( encDecAct, &QAction::triggered, this, &MainWindow::encDec );
+    encDecAct->setStatusTip(tr("Data encrypt decrypt" ));
+    cryptMenu->addAction( encDecAct );
+    cryptToolBar->addAction( encDecAct );
 
-    QAction *signVerifyAct = cryptMenu->addAction(tr("&Sign/Verify"), this, &MainWindow::signVerify);
-    signVerifyAct->setStatusTip(tr("Data signature and verify"));
+    const QIcon signIcon = QIcon::fromTheme("Sign/Verify", QIcon(":/images/sign.png"));
+    QAction *signVerifyAct = new QAction( signIcon, tr("&Sign/Verify"), this );
+    connect( signVerifyAct, &QAction::triggered, this, &MainWindow::signVerify );
+    signVerifyAct->setStatusTip(tr("Data signature and verifyt" ));
+    cryptMenu->addAction( signVerifyAct );
+    cryptToolBar->addAction( signVerifyAct );
 
-    QAction *rsaEncDecAct = cryptMenu->addAction(tr("&RSA Encrypt/Decrypt"), this, &MainWindow::rsaEncDec);
-    rsaEncDecAct->setStatusTip(tr("Data rsa encrypt decrypt"));
+    const QIcon rsaEncIcon = QIcon::fromTheme("RSA Encrypt/Decrypt", QIcon(":/images/rsa_enc.png"));
+    QAction *rsaEncDecAct = new QAction( rsaEncIcon, tr("&RSA Encrypt/Decrypt"), this );
+    connect( rsaEncDecAct, &QAction::triggered, this, &MainWindow::rsaEncDec );
+    rsaEncDecAct->setStatusTip(tr("Data RSA encrypt decrypt" ));
+    cryptMenu->addAction( rsaEncDecAct );
+    cryptToolBar->addAction( rsaEncDecAct );
 
-    QAction *keyAgreeAct = cryptMenu->addAction(tr("Key&Agreement"), this, &MainWindow::keyAgree);
-    keyAgreeAct->setStatusTip(tr("Key Agreement"));
+    const QIcon agreeIcon = QIcon::fromTheme("Key Agreement", QIcon(":/images/agree.png"));
+    QAction *keyAgreeAct = new QAction( agreeIcon, tr("Key&Agreement"), this );
+    connect( keyAgreeAct, &QAction::triggered, this, &MainWindow::keyAgree );
+    keyAgreeAct->setStatusTip(tr("Key Agreement" ));
+    cryptMenu->addAction( keyAgreeAct );
+    cryptToolBar->addAction( keyAgreeAct );
 
-    QAction *cmsAct = cryptMenu->addAction(tr("&CMS"), this, &MainWindow::cms );
+
+    const QIcon cmsIcon = QIcon::fromTheme("CMS", QIcon(":/images/cms.png"));
+    QAction *cmsAct = new QAction( cmsIcon, tr("&CMS"), this );
+    connect( cmsAct, &QAction::triggered, this, &MainWindow::cms );
     cmsAct->setStatusTip(tr("PKCS#7 Cryptographic Message Syntax" ));
+    cryptMenu->addAction( cmsAct );
+    cryptToolBar->addAction( cmsAct );
 
-    QAction *genOTPAct = cryptMenu->addAction(tr("&OTP generate"), this, &MainWindow::genOTP);
-    genOTPAct->setStatusTip(tr("Generate OTP value"));
+
+    const QIcon otpIcon = QIcon::fromTheme("OTP", QIcon(":/images/otp.png"));
+    QAction *genOTPAct = new QAction( otpIcon, tr("&OTP generate"), this );
+    connect( genOTPAct, &QAction::triggered, this, &MainWindow::genOTP );
+    genOTPAct->setStatusTip(tr("Generate OTP value" ));
+    cryptMenu->addAction( genOTPAct );
+    cryptToolBar->addAction( genOTPAct );
+
 
     QMenu *toolMenu = menuBar()->addMenu(tr("&Tool"));
     QToolBar *toolToolBar = addToolBar(tr("Tool"));
