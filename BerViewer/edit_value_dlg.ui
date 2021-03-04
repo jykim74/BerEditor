@@ -22,9 +22,22 @@
     </widget>
    </item>
    <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QLabel" name="label">
+       <property name="minimumSize">
+        <size>
+         <width>50</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="text">
         <string>Class</string>
        </property>
@@ -39,6 +52,12 @@
      </item>
      <item>
       <widget class="QLabel" name="label_2">
+       <property name="minimumSize">
+        <size>
+         <width>50</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="text">
         <string>Tag</string>
        </property>
@@ -53,6 +72,12 @@
      </item>
      <item>
       <widget class="QLabel" name="label_3">
+       <property name="minimumSize">
+        <size>
+         <width>50</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="text">
         <string>Offset</string>
        </property>
@@ -68,16 +93,15 @@
     </layout>
    </item>
    <item>
-    <widget class="QLabel" name="label_8">
-     <property name="text">
-      <string>TLV Information</string>
-     </property>
-    </widget>
-   </item>
-   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QLabel" name="label_4">
+       <property name="minimumSize">
+        <size>
+         <width>50</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="text">
         <string>Header</string>
        </property>
@@ -92,6 +116,12 @@
      </item>
      <item>
       <widget class="QLabel" name="label_5">
+       <property name="minimumSize">
+        <size>
+         <width>50</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="text">
         <string>Length</string>
        </property>
@@ -106,6 +136,12 @@
      </item>
      <item>
       <widget class="QLabel" name="label_6">
+       <property name="minimumSize">
+        <size>
+         <width>50</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="text">
         <string>Level</string>
        </property>
@@ -121,7 +157,21 @@
     </layout>
    </item>
    <item>
+    <widget class="Line" name="line_3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QPlainTextEdit" name="mValueText"/>
+   </item>
+   <item>
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
@@ -135,6 +185,15 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mClassText</tabstop>
+  <tabstop>mTagText</tabstop>
+  <tabstop>mOffsetText</tabstop>
+  <tabstop>mHeaderText</tabstop>
+  <tabstop>mLengthText</tabstop>
+  <tabstop>mLevelText</tabstop>
+  <tabstop>mValueText</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

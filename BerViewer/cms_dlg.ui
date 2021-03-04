@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>551</width>
     <height>530</height>
    </rect>
   </property>
@@ -14,6 +14,44 @@
    <string>PKCS#7 Cryptographic Message Syntax</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="4" column="0">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>KM PrivateKey</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Sign PrivateKey</string>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="2">
+    <widget class="QPushButton" name="mCloseBtn">
+     <property name="text">
+      <string>Close</string>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="0">
+    <widget class="QPushButton" name="mViewBtn">
+     <property name="text">
+      <string>View</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QLineEdit" name="mKMPriKeyPathText"/>
+   </item>
+   <item row="2" column="2">
+    <widget class="QPushButton" name="mSignPriKeyFindBtn">
+     <property name="text">
+      <string>Find</string>
+     </property>
+    </widget>
+   </item>
    <item row="7" column="0" colspan="3">
     <widget class="QGroupBox" name="groupBox_2">
      <property name="minimumSize">
@@ -26,19 +64,6 @@
       <string>Output Data</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="3">
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
       <item row="0" column="2">
        <widget class="QRadioButton" name="mOutputBase64Radio">
         <property name="text">
@@ -56,6 +81,19 @@
         </property>
        </widget>
       </item>
+      <item row="0" column="3">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
       <item row="0" column="0">
        <widget class="QRadioButton" name="mOutputStringRadio">
         <property name="text">
@@ -63,24 +101,18 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0" colspan="4">
+      <item row="0" column="4">
+       <widget class="QPushButton" name="mChangeBtn">
+        <property name="text">
+         <string>Change</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="5">
        <widget class="QPlainTextEdit" name="mOutputText"/>
       </item>
      </layout>
     </widget>
-   </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>KM PrivateKey</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QLineEdit" name="mSignPriKeyPathText"/>
-   </item>
-   <item row="3" column="1">
-    <widget class="QLineEdit" name="mSignCertPathText"/>
    </item>
    <item row="1" column="0" colspan="3">
     <widget class="QGroupBox" name="groupBox">
@@ -131,26 +163,8 @@
      </layout>
     </widget>
    </item>
-   <item row="6" column="2">
-    <widget class="QPushButton" name="mChangeBtn">
-     <property name="text">
-      <string>Change</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="0">
-    <widget class="QLabel" name="label_4">
-     <property name="text">
-      <string>KM Certificate</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>Sign Certificate</string>
-     </property>
-    </widget>
+   <item row="5" column="1">
+    <widget class="QLineEdit" name="mKMCertPathText"/>
    </item>
    <item row="8" column="0" colspan="3">
     <layout class="QGridLayout" name="gridLayout_4">
@@ -201,10 +215,10 @@
      </item>
     </layout>
    </item>
-   <item row="4" column="2">
-    <widget class="QPushButton" name="mKMPriKeyFindBtn">
+   <item row="5" column="0">
+    <widget class="QLabel" name="label_4">
      <property name="text">
-      <string>Find</string>
+      <string>KM Certificate</string>
      </property>
     </widget>
    </item>
@@ -215,14 +229,8 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="1">
-    <widget class="QLineEdit" name="mKMPriKeyPathText"/>
-   </item>
-   <item row="5" column="1">
-    <widget class="QLineEdit" name="mKMCertPathText"/>
-   </item>
-   <item row="2" column="2">
-    <widget class="QPushButton" name="mSignPriKeyFindBtn">
+   <item row="4" column="2">
+    <widget class="QPushButton" name="mKMPriKeyFindBtn">
      <property name="text">
       <string>Find</string>
      </property>
@@ -235,29 +243,54 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="label">
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>Sign PrivateKey</string>
+      <string>Sign Certificate</string>
      </property>
     </widget>
    </item>
-   <item row="9" column="2">
-    <widget class="QPushButton" name="mCloseBtn">
-     <property name="text">
-      <string>Close</string>
-     </property>
-    </widget>
+   <item row="2" column="1">
+    <widget class="QLineEdit" name="mSignPriKeyPathText"/>
    </item>
-   <item row="9" column="0">
-    <widget class="QPushButton" name="mViewBtn">
-     <property name="text">
-      <string>View</string>
+   <item row="3" column="1">
+    <widget class="QLineEdit" name="mSignCertPathText"/>
+   </item>
+   <item row="9" column="0" colspan="3">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mSrcStringRadio</tabstop>
+  <tabstop>mSrcHexRadio</tabstop>
+  <tabstop>mSrcBase64Radio</tabstop>
+  <tabstop>mSrcText</tabstop>
+  <tabstop>mSignPriKeyPathText</tabstop>
+  <tabstop>mSignPriKeyFindBtn</tabstop>
+  <tabstop>mSignCertPathText</tabstop>
+  <tabstop>mSignCertFindBtn</tabstop>
+  <tabstop>mKMPriKeyPathText</tabstop>
+  <tabstop>mKMPriKeyFindBtn</tabstop>
+  <tabstop>mKMCertPathText</tabstop>
+  <tabstop>mKMCertFindBtn</tabstop>
+  <tabstop>mOutputStringRadio</tabstop>
+  <tabstop>mOutputHexRadio</tabstop>
+  <tabstop>mOutputBase64Radio</tabstop>
+  <tabstop>mOutputText</tabstop>
+  <tabstop>mSignedDataBtn</tabstop>
+  <tabstop>mEnvelopedDataBtn</tabstop>
+  <tabstop>mSignAndEnvelopedBtn</tabstop>
+  <tabstop>mVerifyDataBtn</tabstop>
+  <tabstop>mDevelopedDataBtn</tabstop>
+  <tabstop>mDevelopedAndVerifyBtn</tabstop>
+  <tabstop>mViewBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

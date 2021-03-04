@@ -14,33 +14,6 @@
    <string>Key Derive Dialog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="6" column="1">
-    <widget class="QLineEdit" name="mKeySizeText">
-     <property name="maximumSize">
-      <size>
-       <width>100</width>
-       <height>16777215</height>
-      </size>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>Salt</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="2" colspan="2">
-    <widget class="QLineEdit" name="mSaltText"/>
-   </item>
-   <item row="1" column="0" colspan="4">
-    <widget class="Line" name="line_2">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
    <item row="8" column="0">
     <widget class="QLabel" name="label_6">
      <property name="text">
@@ -48,43 +21,16 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="3">
-    <widget class="QComboBox" name="mHashCombo"/>
+   <item row="3" column="2" colspan="2">
+    <widget class="QLineEdit" name="mSaltText"/>
    </item>
-   <item row="4" column="1">
-    <widget class="QLineEdit" name="mIterCountText">
+   <item row="6" column="1">
+    <widget class="QLineEdit" name="mKeySizeText">
      <property name="maximumSize">
       <size>
        <width>100</width>
        <height>16777215</height>
       </size>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>Password</string>
-     </property>
-    </widget>
-   </item>
-   <item row="9" column="0" colspan="4">
-    <widget class="QPlainTextEdit" name="mKeyValueText"/>
-   </item>
-   <item row="3" column="1">
-    <widget class="QComboBox" name="mSaltTypeCombo">
-     <property name="maximumSize">
-      <size>
-       <width>100</width>
-       <height>16777215</height>
-      </size>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="0">
-    <widget class="QLabel" name="label_5">
-     <property name="text">
-      <string>Key length</string>
      </property>
     </widget>
    </item>
@@ -102,24 +48,31 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="2">
-    <widget class="QLabel" name="label_7">
-     <property name="text">
-      <string>Hash</string>
-     </property>
-    </widget>
-   </item>
    <item row="2" column="1" colspan="3">
     <widget class="QLineEdit" name="mPasswordText"/>
    </item>
-   <item row="0" column="0" colspan="2">
-    <widget class="QLabel" name="label">
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_3">
      <property name="text">
-      <string>Key paramters</string>
+      <string>Salt</string>
      </property>
     </widget>
    </item>
-   <item row="10" column="0" colspan="4">
+   <item row="1" column="0" colspan="4">
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0">
+    <widget class="QLabel" name="label_5">
+     <property name="text">
+      <string>Key length</string>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="0" colspan="4">
     <layout class="QGridLayout" name="gridLayout_2">
      <property name="topMargin">
       <number>0</number>
@@ -153,8 +106,73 @@
      </item>
     </layout>
    </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Password</string>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="0" colspan="4">
+    <widget class="QPlainTextEdit" name="mKeyValueText"/>
+   </item>
+   <item row="0" column="0" colspan="2">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Key paramters</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="3">
+    <widget class="QComboBox" name="mHashCombo"/>
+   </item>
+   <item row="4" column="1">
+    <widget class="QLineEdit" name="mIterCountText">
+     <property name="maximumSize">
+      <size>
+       <width>100</width>
+       <height>16777215</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QComboBox" name="mSaltTypeCombo">
+     <property name="maximumSize">
+      <size>
+       <width>100</width>
+       <height>16777215</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="2">
+    <widget class="QLabel" name="label_7">
+     <property name="text">
+      <string>Hash</string>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="0" colspan="4">
+    <widget class="Line" name="line_3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mPasswordText</tabstop>
+  <tabstop>mSaltTypeCombo</tabstop>
+  <tabstop>mSaltText</tabstop>
+  <tabstop>mIterCountText</tabstop>
+  <tabstop>mHashCombo</tabstop>
+  <tabstop>mKeySizeText</tabstop>
+  <tabstop>mKeyValueText</tabstop>
+  <tabstop>mRunBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

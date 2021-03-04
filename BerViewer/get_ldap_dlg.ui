@@ -14,6 +14,52 @@
    <string>Getting LDAP data</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0" colspan="3">
+    <widget class="QGroupBox" name="mHostInfoGroup">
+     <property name="title">
+      <string>LDAP Host Information</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Host</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="mHostText">
+        <property name="minimumSize">
+         <size>
+          <width>200</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Port</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QLineEdit" name="mPortText"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>DN</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" colspan="3">
+       <widget class="QLineEdit" name="mDNText"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
    <item row="3" column="0" colspan="3">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
@@ -73,65 +119,7 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0" colspan="3">
-    <widget class="QGroupBox" name="mURIGroup">
-     <property name="title">
-      <string>LDAP URI address</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="0">
-       <widget class="QComboBox" name="mURICombo"/>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="0" column="0" colspan="3">
-    <widget class="QGroupBox" name="mHostInfoGroup">
-     <property name="title">
-      <string>LDAP Host Information</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_4">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Host</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="mHostText">
-        <property name="minimumSize">
-         <size>
-          <width>200</width>
-          <height>0</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QLabel" name="label_6">
-        <property name="text">
-         <string>Port</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="3">
-       <widget class="QLineEdit" name="mPortText"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>DN</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1" colspan="3">
-       <widget class="QLineEdit" name="mDNText"/>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="5" column="2">
+   <item row="6" column="2">
     <layout class="QGridLayout" name="gridLayout_2">
      <property name="topMargin">
       <number>0</number>
@@ -165,8 +153,39 @@
      </item>
     </layout>
    </item>
+   <item row="2" column="0" colspan="3">
+    <widget class="QGroupBox" name="mURIGroup">
+     <property name="title">
+      <string>LDAP URI address</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <widget class="QComboBox" name="mURICombo"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="5" column="2">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mHostText</tabstop>
+  <tabstop>mPortText</tabstop>
+  <tabstop>mDNText</tabstop>
+  <tabstop>mURIUseCheck</tabstop>
+  <tabstop>mURICombo</tabstop>
+  <tabstop>mScopeCombo</tabstop>
+  <tabstop>mTypeCombo</tabstop>
+  <tabstop>mFilterText</tabstop>
+  <tabstop>mGetBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -14,7 +14,7 @@
    <string>Insert data</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="0">
+   <item row="3" column="0">
     <layout class="QGridLayout" name="gridLayout_2">
      <property name="topMargin">
       <number>0</number>
@@ -100,8 +100,22 @@
      </property>
     </widget>
    </item>
+   <item row="2" column="0">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mTypeHex</tabstop>
+  <tabstop>mTypeBase64</tabstop>
+  <tabstop>mTextData</tabstop>
+  <tabstop>mViewBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

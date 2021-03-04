@@ -7,14 +7,26 @@
     <x>0</x>
     <y>0</y>
     <width>564</width>
-    <height>482</height>
+    <height>500</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Key Agreement</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="3" column="0" colspan="2">
+   <item row="1" column="0" colspan="2">
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>Secret Key</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="0" column="0">
+       <widget class="QPlainTextEdit" name="mSecretKeyText"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <spacer name="horizontalSpacer">
@@ -59,22 +71,10 @@
      </item>
     </layout>
    </item>
-   <item row="1" column="0" colspan="2">
-    <widget class="QGroupBox" name="groupBox_3">
-     <property name="title">
-      <string>Secret Key</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_4">
-      <item row="0" column="0">
-       <widget class="QPlainTextEdit" name="mSecretKeyText"/>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item row="0" column="0" colspan="2">
     <widget class="QTabWidget" name="mTabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -364,8 +364,47 @@
      </property>
     </spacer>
    </item>
+   <item row="3" column="0" colspan="2">
+    <widget class="Line" name="line_5">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mTabWidget</tabstop>
+  <tabstop>mLengthText</tabstop>
+  <tabstop>mGText</tabstop>
+  <tabstop>mGCombo</tabstop>
+  <tabstop>mGenParamBtn</tabstop>
+  <tabstop>mPText</tabstop>
+  <tabstop>mAPrivateKeyText</tabstop>
+  <tabstop>mADHPriBtn</tabstop>
+  <tabstop>mAPublicKeyText</tabstop>
+  <tabstop>mAGenDHKeyBtn</tabstop>
+  <tabstop>mBPrivateKeyText</tabstop>
+  <tabstop>mBDHPriBtn</tabstop>
+  <tabstop>mBPublicKeyText</tabstop>
+  <tabstop>mBGenDHKeyBtn</tabstop>
+  <tabstop>mECDHParamCombo</tabstop>
+  <tabstop>mAECDHPriKeyText</tabstop>
+  <tabstop>mAECDHPubKeyText</tabstop>
+  <tabstop>mAGenPriKeyBtn</tabstop>
+  <tabstop>mAGenPubKeyBtn</tabstop>
+  <tabstop>mAFindPriKeyBtn</tabstop>
+  <tabstop>mBECDHPriKeyText</tabstop>
+  <tabstop>mBECDHPubKeyText</tabstop>
+  <tabstop>mBGenPriKeyBtn</tabstop>
+  <tabstop>mBGenPubKeyBtn</tabstop>
+  <tabstop>mBFindPriKeyBtn</tabstop>
+  <tabstop>mSecretKeyText</tabstop>
+  <tabstop>mSecretClearBtn</tabstop>
+  <tabstop>mACalcBtn</tabstop>
+  <tabstop>mBCalcBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -63,9 +63,6 @@
    <item row="3" column="0" colspan="4">
     <widget class="QPlainTextEdit" name="mOutputText"/>
    </item>
-   <item row="1" column="0" colspan="4">
-    <widget class="QPlainTextEdit" name="mInputText"/>
-   </item>
    <item row="2" column="1">
     <spacer name="horizontalSpacer">
      <property name="orientation">
@@ -79,17 +76,13 @@
      </property>
     </spacer>
    </item>
-   <item row="2" column="3">
-    <widget class="QPushButton" name="mChangeBtn">
-     <property name="text">
-      <string>Change</string>
-     </property>
-    </widget>
+   <item row="1" column="0" colspan="4">
+    <widget class="QPlainTextEdit" name="mInputText"/>
    </item>
    <item row="2" column="0">
     <widget class="QComboBox" name="mOutputTypeCombo"/>
    </item>
-   <item row="4" column="0" colspan="4">
+   <item row="5" column="0" colspan="4">
     <layout class="QGridLayout" name="gridLayout_3">
      <property name="topMargin">
       <number>0</number>
@@ -123,8 +116,33 @@
      </item>
     </layout>
    </item>
+   <item row="2" column="3">
+    <widget class="QPushButton" name="mChangeBtn">
+     <property name="text">
+      <string>Change</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="4">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mBitBtn</tabstop>
+  <tabstop>mDecimalBtn</tabstop>
+  <tabstop>mHexBtn</tabstop>
+  <tabstop>mInputText</tabstop>
+  <tabstop>mOutputTypeCombo</tabstop>
+  <tabstop>mChangeBtn</tabstop>
+  <tabstop>mOutputText</tabstop>
+  <tabstop>mTransBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

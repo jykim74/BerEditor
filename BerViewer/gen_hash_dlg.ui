@@ -14,41 +14,24 @@
    <string>Generate hash value</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="8" column="0" colspan="6">
-    <widget class="QLabel" name="mStatusLabel">
-     <property name="text">
-      <string>Status</string>
+   <item row="8" column="0" colspan="2">
+    <widget class="Line" name="line_3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </item>
-   <item row="2" column="0" colspan="6">
-    <widget class="QPlainTextEdit" name="mInputText"/>
+   <item row="6" column="0" colspan="2">
+    <widget class="QPlainTextEdit" name="mOutputText"/>
    </item>
-   <item row="3" column="0" colspan="6">
+   <item row="3" column="0" colspan="2">
     <widget class="Line" name="line">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </item>
-   <item row="7" column="0" colspan="6">
-    <widget class="Line" name="line_2">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>Output property</string>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="0" colspan="6">
-    <widget class="QPlainTextEdit" name="mOutputText"/>
-   </item>
-   <item row="9" column="0" colspan="6">
+   <item row="9" column="0" colspan="2">
     <layout class="QGridLayout" name="gridLayout_2">
      <property name="topMargin">
       <number>0</number>
@@ -103,7 +86,14 @@
      </item>
     </layout>
    </item>
-   <item row="5" column="0" colspan="6">
+   <item row="7" column="0" colspan="2">
+    <widget class="QLabel" name="mStatusLabel">
+     <property name="text">
+      <string>Status</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QComboBox" name="mOutputHashCombo"/>
@@ -144,7 +134,17 @@
      </item>
     </layout>
    </item>
-   <item row="1" column="0" colspan="6">
+   <item row="2" column="0" colspan="2">
+    <widget class="QPlainTextEdit" name="mInputText"/>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Output property</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="topMargin">
       <number>0</number>
@@ -197,6 +197,21 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mInputStringBtn</tabstop>
+  <tabstop>mInputHexBtn</tabstop>
+  <tabstop>mInputBase64Btn</tabstop>
+  <tabstop>mInputText</tabstop>
+  <tabstop>mOutputHashCombo</tabstop>
+  <tabstop>mInputClearBtn</tabstop>
+  <tabstop>mOutputClearBtn</tabstop>
+  <tabstop>mOutputText</tabstop>
+  <tabstop>mInitBtn</tabstop>
+  <tabstop>mUpdateBtn</tabstop>
+  <tabstop>mFinalBtn</tabstop>
+  <tabstop>mDigestBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

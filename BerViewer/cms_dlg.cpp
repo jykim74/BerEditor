@@ -26,6 +26,8 @@ CMSDlg::CMSDlg(QWidget *parent) :
     connect( mVerifyDataBtn, SIGNAL(clicked()), this, SLOT(clickVerifyData()));
     connect( mDevelopedDataBtn, SIGNAL(clicked()), this, SLOT(clickDevelopedData()));
     connect( mDevelopedAndVerifyBtn, SIGNAL(clicked()), this, SLOT(clickDevelopedAndVerify()));
+
+    mCloseBtn->setFocus();
 }
 
 
