@@ -310,7 +310,7 @@ void MainWindow::createActions()
     const QIcon signIcon = QIcon::fromTheme("Sign/Verify", QIcon(":/images/sign.png"));
     QAction *signVerifyAct = new QAction( signIcon, tr("&Sign/Verify"), this );
     connect( signVerifyAct, &QAction::triggered, this, &MainWindow::signVerify );
-    signVerifyAct->setStatusTip(tr("Data signature and verifyt" ));
+    signVerifyAct->setStatusTip(tr("Data signature and verify" ));
     cryptMenu->addAction( signVerifyAct );
     cryptToolBar->addAction( signVerifyAct );
 
@@ -738,7 +738,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 {
     if( isChanged() )
     {
-        bool bVal = berApplet->yesOrNoBox( tr("Do you want to write changed date"), this, false );
+        bool bVal = berApplet->yesOrNoBox( tr("Do you want to write changed date?"), this, false );
         if( bVal ) saveAs();
     }
 }
