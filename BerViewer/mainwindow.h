@@ -34,6 +34,7 @@ public:
 
     void showWindow();
     void openBer( const BIN *pBer );
+    bool isChanged();
 
 private slots:
     void newFile();
@@ -67,6 +68,7 @@ private slots:
 
     virtual void dragEnterEvent(QDragEnterEvent *event);
     virtual void dropEvent(QDropEvent *event );
+    void closeEvent(QCloseEvent *event);
 
 private:
     Ui::MainWindow *ui;

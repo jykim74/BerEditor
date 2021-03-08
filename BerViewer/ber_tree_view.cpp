@@ -37,6 +37,8 @@ void BerTreeView::onItemClicked(const QModelIndex& index )
     QString strInfo;
     BerModel *tree_model = (BerModel *)model();
     BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
+    if( item == NULL ) return;
+
     QTextEdit* rightText = berApplet->mainWindow()->rightText();
 
     BIN& binBer = tree_model->getBer();
@@ -80,6 +82,9 @@ QString BerTreeView::GetInfoView( const BIN *pBer, BerItem *pItem)
     QString strView;
     QString strPart;
 
+    int nPos = treePosition();
+    QModelIndex index = pItem->index();
+
     BIN bin = {0,0};
     char *pBitString = NULL;
     JS_BIN_set( &bin, pBer->pVal + pItem->GetOffset(), 1 );
@@ -104,7 +109,7 @@ QString BerTreeView::GetInfoView( const BIN *pBer, BerItem *pItem)
 
     strView += strPart;
 
-    strPart.sprintf( "  Tag: <b>%d(0x%X)</b>", pItem->GetTag(), pItem->GetTag());
+    strPart.sprintf( "  Tag: <b>%d(0x%X)</b><br>", pItem->GetTag(), pItem->GetTag());
     strView += strPart;
 
     strPart.sprintf("  Offset: <b>%d(0x%X)</b>", pItem->GetOffset(), pItem->GetOffset());
@@ -268,26 +273,26 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
             QString address;
             address.sprintf( "0x%08X", i + pItem->GetOffset() );
             rightTable->setItem( line, 0, new QTableWidgetItem( address ));
-            rightTable->item( line, 0 )->setBackgroundColor( QColor(220,220,250) );
+            rightTable->item( line, 0 )->setBackground( QColor(220,220,250) );
         }
 
         hex.sprintf( "%02X", binPart.pVal[i] );
         rightTable->setItem( line, (i%16)+1, new QTableWidgetItem(hex));
-        rightTable->item( line, (i%16) +1 )->setBackgroundColor(lightGray);
+        rightTable->item( line, (i%16) +1 )->setBackground(lightGray);
 
         if( i== 0 )
         {
-            rightTable->item( line, 1)->setBackgroundColor(green);
+            rightTable->item( line, 1)->setBackground(green);
         }
         else if( i== 1 )
         {
-            rightTable->item( line, 2)->setBackgroundColor(yellow);
+            rightTable->item( line, 2)->setBackground(yellow);
 
             if( binPart.pVal[i] & JS_LEN_XTND ) len_len = binPart.pVal[i] & JS_LEN_MASK;
         }
         else if( i <= (1 + len_len))
         {
-            rightTable->item( line, i + 1 )->setBackgroundColor(cyan);
+            rightTable->item( line, i + 1 )->setBackground(cyan);
         }
 
 
@@ -296,7 +301,7 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
         if( i % 16 - 15 == 0 )
         {
             rightTable->setItem( line, 17, new QTableWidgetItem(text));
-            rightTable->item( line, 17 )->setBackgroundColor(QColor(210,240,210));
+            rightTable->item( line, 17 )->setBackground(QColor(210,240,210));
             text.clear();
             line++;
         }
@@ -305,7 +310,7 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
     if( !text.isEmpty() )
     {
         rightTable->setItem(line, 17, new QTableWidgetItem(text));
-        rightTable->item( line, 17 )->setBackgroundColor(QColor(210,240,210));
+        rightTable->item( line, 17 )->setBackground(QColor(210,240,210));
     }
 
     JS_BIN_reset(&binPart);
@@ -341,7 +346,7 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
             QString address;
             address.sprintf( "0x%08X", i );
             rightTable->setItem( line, 0, new QTableWidgetItem( address ));
-            rightTable->item( line, 0 )->setBackgroundColor( QColor(220,220,250) );
+            rightTable->item( line, 0 )->setBackground( QColor(220,220,250) );
         }
 
         hex.sprintf( "%02X", pBer->pVal[i] );
@@ -349,23 +354,23 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
         rightTable->setItem( line, pos, new QTableWidgetItem(hex));
         if( i== pItem->GetOffset() )
         {
-            rightTable->item( line, pos)->setBackgroundColor(green);
+            rightTable->item( line, pos)->setBackground(green);
             start_row = line;
             start_col = pos;
         }
         else if( i== pItem->GetOffset()+1 )
         {
-            rightTable->item( line, pos)->setBackgroundColor(yellow);
+            rightTable->item( line, pos)->setBackground(yellow);
 
             if( pBer->pVal[i] & JS_LEN_XTND ) len_len = pBer->pVal[i] & JS_LEN_MASK;
         }
         else if( (i > pItem->GetOffset() + 1 ) && (i <= (pItem->GetOffset() + 1 + len_len)))
         {
-            rightTable->item( line, pos )->setBackgroundColor(cyan);
+            rightTable->item( line, pos )->setBackground(cyan);
         }
         else if( (i > pItem->GetOffset() + 1 ) && ( i < pItem->GetOffset() + pItem->GetHeaderSize() + pItem->GetLength() ))
         {
-            rightTable->item(line, pos )->setBackgroundColor(lightGray);
+            rightTable->item(line, pos )->setBackground(lightGray);
         }
 
         text += getch( pBer->pVal[i]);
@@ -373,7 +378,7 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
         if( i % 16 - 15 == 0 )
         {
             rightTable->setItem( line, 17, new QTableWidgetItem(text));
-            rightTable->item( line, 17 )->setBackgroundColor(QColor(210,240,210));
+            rightTable->item( line, 17 )->setBackground(QColor(210,240,210));
             text.clear();
             line++;
         }
@@ -382,7 +387,7 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
     if( !text.isEmpty() )
     {
         rightTable->setItem(line, 17, new QTableWidgetItem(text));
-        rightTable->item( line, 17 )->setBackgroundColor(QColor(210,240,210));
+        rightTable->item( line, 17 )->setBackground(QColor(210,240,210));
     }
 
     QTableWidgetItem *item = rightTable->item( start_row, start_col );
@@ -572,14 +577,25 @@ void BerTreeView::SaveNodeValue()
 
 void BerTreeView::EditValue()
 {
+    int ret = 0;
     QModelIndex index = currentIndex();
 
     BerModel *tree_model = (BerModel *)model();
     BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
 
+
     EditValueDlg editValueDlg;
     editValueDlg.setItem( item );
-    editValueDlg.exec();
+    ret = editValueDlg.exec();
 
-    onItemClicked(index);
+//    index = item->index();
+
+    if( ret == QDialog::Accepted )
+    {
+        tree_model->parseTree();
+    }
+
+ //   item->index()
+ //   index = currentIndex();
+//    onItemClicked( index );
 }

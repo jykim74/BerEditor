@@ -37,6 +37,9 @@ public:
     QString GetValueString( const BIN *pBer );
     QString GetInfoString( const BIN *pBer );
 
+    int changeLength( int nNewLen, int *pnDiffLen );
+    int getHeaderBin( BIN *pHeader );
+
 public:
     int     id_;
     int     tag_;

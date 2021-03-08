@@ -18,10 +18,11 @@ public:
     int parseIndefiniteConstruct( int offset, BerItem *pParentItem );
 
     BIN& getBer() { return binBer_; };
+    int getItem( int offset, BerItem *pItem );
 
 private:
     void initialize();
-    int getItem( int offset, BerItem *pItem );
+
 
     BIN     binBer_;
 };

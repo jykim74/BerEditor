@@ -271,3 +271,72 @@ QString BerItem::GetInfoString(const BIN *pBer)
 
     return strMsg;
 }
+
+int BerItem::changeLength( int nNewLen, int *pnDiffLen )
+{
+    int nDiff = 0;
+    int nCurHeaderSize = header_size_;
+
+    if( length_ == nNewLen )
+    {
+        *pnDiffLen = 0;
+        return 0;
+    }
+
+    nDiff = nNewLen - length_;
+
+    if( indefinite_ == true ) return nDiff;
+
+    if( nNewLen <= 127 )
+    {
+        header_size_ = 2;
+        header_[1] = nNewLen;
+    }
+    else if( nNewLen <= 255 )
+    {
+        header_size_ = 3;
+        header_[1] = 0x81;
+        header_[2] = nNewLen & 0xFF;
+    }
+    else if( nNewLen <= 65535 )
+    {
+        header_size_ = 4;
+        header_[1] = 0x82;
+        header_[2] = (nNewLen >> 8) & 0xFF;
+        header_[3] = nNewLen & 0xFF;
+    }
+    else if( nNewLen <= 1677215 )
+    {
+        header_size_ = 5;
+        header_[1] = 0x83;
+        header_[2] = (nNewLen >> 16) & 0xFF;
+        header_[3] = (nNewLen >> 8) & 0xFF;
+        header_[4] = nNewLen & 0xFF;
+    }
+    else if( nNewLen <= 2147483647 )
+    {
+        header_size_ = 6;
+        header_[1] = 0x84;
+        header_[2] = (nNewLen >> 24) & 0xFF;
+        header_[3] = (nNewLen >> 16) & 0xFF;
+        header_[4] = (nNewLen >> 8) & 0xFF;
+        header_[5] = nNewLen & 0xFF;
+    }
+    else
+    {
+        return -1;
+    }
+
+    nDiff += (header_size_ - nCurHeaderSize);
+    *pnDiffLen = nDiff;
+
+    return 0;
+}
+
+int BerItem::getHeaderBin( BIN *pHeader )
+{
+    if( pHeader == NULL ) return -1;
+
+    JS_BIN_set( pHeader, header_, header_size_ );
+    return 0;
+}

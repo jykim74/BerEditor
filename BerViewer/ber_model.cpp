@@ -41,7 +41,6 @@ int BerModel::parseTree()
 
     clear();
     QStringList labels;
-//    labels << tr("BER structure");
     setHorizontalHeaderLabels( labels );
 
 

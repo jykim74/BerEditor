@@ -496,6 +496,28 @@ void MainWindow::openBer( const BIN *pBer )
     left_tree_->expand(ri);
 }
 
+bool MainWindow::isChanged()
+{
+    BIN& binBer = ber_model_->getBer();
+
+    if( binBer.nLen > 0 )
+    {
+        BIN binFile = {0,0};
+
+        if( file_path_.length() < 1 )
+            return true;
+
+        JS_BIN_fileRead( file_path_.toLocal8Bit().toStdString().c_str(), &binFile );
+        if( JS_BIN_cmp( &binBer, &binFile ) != 0 )
+        {
+            JS_BIN_reset( &binFile );
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void MainWindow::berFileOpen(const QString berPath)
 {
     BIN binRead = {0,0};
@@ -712,6 +734,15 @@ void MainWindow::dropEvent(QDropEvent *event)
     }
 }
 
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if( isChanged() )
+    {
+        bool bVal = berApplet->yesOrNoBox( tr("Do you want to write changed date"), this, false );
+        if( bVal ) saveAs();
+    }
+}
+
 void MainWindow::save()
 {
     if( file_path_.isEmpty() )
@@ -729,16 +760,25 @@ void MainWindow::save()
 
 void MainWindow::saveAs()
 {
-    QFileDialog fileDlg(this, tr("Save as..."));
-    fileDlg.setAcceptMode(QFileDialog::AcceptSave);
-    fileDlg.setDefaultSuffix("ber");
+    QFileDialog::Options options;
+    options |= QFileDialog::DontUseNativeDialog;
 
-    if( fileDlg.exec() != QDialog::Accepted )
-        return;
+    QString strFilter;
+    strFilter = tr("BIN Files (*.ber *.der);;All Files (*.*)");
 
-    file_path_ = fileDlg.selectedFiles().first();
-    BIN& binBer = ber_model_->getBer();
-    JS_BIN_fileWrite( &binBer, file_path_.toStdString().c_str());
+    QString selectedFilter;
+    QString fileName = QFileDialog::getSaveFileName( this,
+                                                     tr("Save As..."),
+                                                     file_path_,
+                                                     strFilter,
+                                                     &selectedFilter,
+                                                     options );
+
+    if( fileName.length() > 0 )
+    {
+        BIN& binBer = ber_model_->getBer();
+        JS_BIN_fileWrite( &binBer, fileName.toLocal8Bit().toStdString().c_str() );
+    }
 }
 
 
@@ -788,5 +828,6 @@ void MainWindow::printPreview(QPrinter *printer)
 
 void MainWindow::quit()
 {
-    exit(0);
+//    exit(0);
+    close();
 }

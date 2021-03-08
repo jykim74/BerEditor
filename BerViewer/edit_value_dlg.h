@@ -19,7 +19,12 @@ public:
     ~EditValueDlg();
 
     void setItem( BerItem *pItem );
-    virtual void accept();
+
+private slots:
+    void runChange();
+    void runDelete();
+    void runAdd();
+    void changeValueText();
 
 private:
     BerItem *ber_item_;
