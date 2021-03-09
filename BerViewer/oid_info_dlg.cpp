@@ -2,7 +2,7 @@
 #include <QTextStream>
 
 #include "oid_info_dlg.h"
-#include "ber_define.h"
+#include "js_ber.h"
 #include "js_bin.h"
 #include "js_pki.h"
 #include "js_pki_tools.h"

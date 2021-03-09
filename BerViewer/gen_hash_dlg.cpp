@@ -1,8 +1,8 @@
-#include "ber_define.h"
 #include "gen_hash_dlg.h"
 #include "ui_gen_hash_dlg.h"
 #include "js_bin.h"
 #include "js_pki.h"
+#include "js_ber.h"
 #include "ber_applet.h"
 
 #include <QDialogButtonBox>

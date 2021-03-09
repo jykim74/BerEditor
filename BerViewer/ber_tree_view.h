@@ -25,6 +25,7 @@ private slots:
     void SaveNode();
     void SaveNodeValue();
     void EditValue();
+    void InsertBER();
 
 
 public slots:

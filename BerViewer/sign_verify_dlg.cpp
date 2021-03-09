@@ -1,7 +1,7 @@
 #include <QFileDialog>
 
 #include "sign_verify_dlg.h"
-#include "ber_define.h"
+#include "js_ber.h"
 #include "ber_applet.h"
 #include "js_bin.h"
 #include "js_pki.h"

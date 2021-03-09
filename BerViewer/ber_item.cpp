@@ -340,3 +340,11 @@ int BerItem::getHeaderBin( BIN *pHeader )
     JS_BIN_set( pHeader, header_, header_size_ );
     return 0;
 }
+
+bool BerItem::isConstructed()
+{
+    if( id_ & JS_CONSTRUCTED )
+        return true;
+    else
+        return false;
+}

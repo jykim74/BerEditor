@@ -50,6 +50,7 @@ SOURCES += \
     gen_otp_dlg.cpp \
     get_ldap_dlg.cpp \
     i18n_helper.cpp \
+    insert_ber_dlg.cpp \
     insert_data_dlg.cpp \
     key_agree_dlg.cpp \
     key_derive_dlg.cpp \
@@ -66,7 +67,6 @@ HEADERS += \
     about_dlg.h \
     auto_update_service.h \
     ber_applet.h \
-    ber_define.h \
     ber_item.h \
     ber_item_delegate.h \
     ber_model.h \
@@ -82,6 +82,7 @@ HEADERS += \
     gen_otp_dlg.h \
     get_ldap_dlg.h \
     i18n_helper.h \
+    insert_ber_dlg.h \
     insert_data_dlg.h \
     key_agree_dlg.h \
     key_derive_dlg.h \
@@ -160,6 +161,7 @@ FORMS += \
         gen_hmac_dlg.ui \
         gen_otp_dlg.ui \
         get_ldap_dlg.ui \
+        insert_ber_dlg.ui \
         insert_data_dlg.ui \
         key_agree_dlg.ui \
         key_derive_dlg.ui \

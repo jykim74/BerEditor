@@ -1,6 +1,6 @@
 #include "enc_dec_dlg.h"
 #include "ui_enc_dec_dlg.h"
-#include "ber_define.h"
+#include "js_ber.h"
 #include "js_bin.h"
 #include "js_pki.h"
 #include "ber_applet.h"

@@ -3,7 +3,7 @@
 #include "rsa_enc_dec_dlg.h"
 #include "js_bin.h"
 #include "js_pki.h"
-#include "ber_define.h"
+#include "js_ber.h"
 #include "ber_applet.h"
 #include "common.h"
 

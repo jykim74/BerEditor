@@ -6,6 +6,7 @@
 #include "ber_applet.h"
 #include "ber_item_delegate.h"
 #include "edit_value_dlg.h"
+#include "insert_ber_dlg.h"
 
 #include <QStandardItemModel>
 #include <QTreeView>
@@ -121,10 +122,8 @@ QString BerTreeView::GetInfoView( const BIN *pBer, BerItem *pItem)
     strPart.sprintf( "  Level: <b>%d</b>", pItem->GetLevel() );
     strView += strPart;
 
-//    BIN binPart = {0,0};
-//    QString strVal;
-
-//    JS_BIN_set( &binPart, pBer->pVal + pItem->GetOffset(), pItem->GetHeaderSize() + pItem->GetLength() );
+    strPart.sprintf( " Row: %d Col: %d", pItem->row(), pItem->column() );
+    strView += strPart;
 
     QString strPartNL = pItem->GetValueString( pBer );
 
@@ -451,6 +450,9 @@ void BerTreeView::ShowContextMenu(QPoint point)
     if( item->GetTag() == JS_OCTETSTRING || item->GetTag() == JS_BITSTRING )
         menu.addAction( tr("Expand value"), this, SLOT(ExpandValue()));
 
+    if( item->isConstructed() )
+        menu.addAction( tr( "Insert BER" ), this, SLOT(InsertBER()));
+
     menu.exec(QCursor::pos());
 }
 
@@ -583,19 +585,66 @@ void BerTreeView::EditValue()
     BerModel *tree_model = (BerModel *)model();
     BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
 
-
     EditValueDlg editValueDlg;
     editValueDlg.setItem( item );
     ret = editValueDlg.exec();
 
-//    index = item->index();
-
     if( ret == QDialog::Accepted )
     {
         tree_model->parseTree();
+        QModelIndex ri = tree_model->index(0,0);
+        expand(ri);
+    }
+}
+
+void BerTreeView::InsertBER()
+{
+    int ret = 0;
+    BIN binData = {0,0};
+    BIN binHeader = {0,0};
+
+    QModelIndex index = currentIndex();
+
+    BerModel *tree_model = (BerModel *)model();
+    BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
+
+    if( item->isConstructed() == false ) return;
+
+    BIN& binBer = tree_model->getBer();
+
+    InsertBerDlg insertBerDlg;
+
+    ret = insertBerDlg.exec();
+
+    if( ret == QDialog::Accepted )
+    {
+        int nOrgLen = 0;
+        int nOrgHeaderLen = 0;
+        int nDiffLen = 0;
+
+        QModelIndexList indexList;
+        QString strData = insertBerDlg.getData();
+
+        JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
+
+        nOrgLen = item->GetLength();
+        nOrgHeaderLen = item->GetHeaderSize();
+
+        JS_BIN_insertBin( item->GetOffset() + nOrgHeaderLen + nOrgLen, &binData, &binBer );
+
+        item->changeLength( nOrgLen + binData.nLen, &nDiffLen );
+        if( nDiffLen == 0 ) goto end;
+
+        item->getHeaderBin( &binHeader );
+        JS_BIN_changeBin( item->GetOffset(), nOrgHeaderLen, &binHeader, &binBer );
+        tree_model->resizeParentHeader( nDiffLen, item, indexList );
+
+        tree_model->parseTree();       
+        QModelIndex ri = tree_model->index(0,0);
+        expand(ri);
     }
 
- //   item->index()
- //   index = currentIndex();
-//    onItemClicked( index );
+end:
+    JS_BIN_reset( &binData );
+    JS_BIN_reset( &binHeader );
 }

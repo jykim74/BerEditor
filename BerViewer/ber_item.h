@@ -3,7 +3,7 @@
 
 #include <QStandardItem>
 #include "js_bin.h"
-#include "ber_define.h"
+#include "js_ber.h"
 
 
 class BerItem : public QStandardItem
@@ -39,6 +39,7 @@ public:
 
     int changeLength( int nNewLen, int *pnDiffLen );
     int getHeaderBin( BIN *pHeader );
+    bool isConstructed();
 
 public:
     int     id_;

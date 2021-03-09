@@ -22,6 +22,7 @@
 #include "num_trans_dlg.h"
 #include "about_dlg.h"
 #include "cms_dlg.h"
+#include "insert_ber_dlg.h"
 #include "common.h"
 
 #include <QtWidgets>
@@ -369,8 +370,15 @@ void MainWindow::createActions()
     toolMenu->addAction( oidAct );
     toolToolBar->addAction( oidAct );
 
+    const QIcon berIcon = QIcon::fromTheme("ber-insert", QIcon(":/images/ber.jpg"));
+    QAction *insertBerAct = new QAction(berIcon, tr("Insert &BER"), this);
+    connect( insertBerAct, &QAction::triggered, this, &MainWindow::insertBER );
+    insertBerAct->setStatusTip(tr("Insert BER record"));
+    toolMenu->addAction( insertBerAct );
+    toolToolBar->addAction( insertBerAct );
+
     const QIcon insertIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/insert.png"));
-    QAction *insertDataAct = new QAction(insertIcon, tr("&Insert data"), this);
+    QAction *insertDataAct = new QAction(insertIcon, tr("&Insert Data"), this);
     connect( insertDataAct, &QAction::triggered, this, &MainWindow::insertData );
     insertDataAct->setStatusTip(tr("Insert ber data"));
     toolMenu->addAction( insertDataAct );
@@ -414,6 +422,31 @@ void MainWindow::newFile()
     QProcess *process = new QProcess();
     process->setProgram( berApplet->cmd() );
     process->start();
+}
+
+void MainWindow::insertBER()
+{
+    int ret = 0;
+
+    InsertBerDlg insertBerDlg;
+    ret = insertBerDlg.exec();
+
+    if( ret == QDialog::Accepted )
+    {
+        BIN binData = {0,0};
+        QString strData = insertBerDlg.getData();
+
+        JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
+        ber_model_->setBer( &binData );
+        JS_BIN_reset( &binData );
+
+        ber_model_->parseTree();
+
+        left_tree_->header()->setVisible(false);
+        left_tree_->viewRoot();
+
+        setTitle( QString("Unknown" ));
+    }
 }
 
 void MainWindow::insertData()

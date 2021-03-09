@@ -38,7 +38,6 @@ int BerModel::parseTree()
 
     BerItem *pRootItem = new BerItem();
 
-
     clear();
     QStringList labels;
     setHorizontalHeaderLabels( labels );
@@ -242,4 +241,109 @@ int BerModel::getItem(int offset, BerItem *pItem)
     next_offset = offset + position + pItem->length_;
 
     return next_offset;
+}
+
+int getItem( const BIN *pBer, BerItem *pItem )
+{
+    int next_offset = 0;
+    int position = 0;
+    int length = 0;
+
+    int tag = pBer->pVal[position];
+
+    pItem->SetId( tag & ~JS_TAG_MASK );
+    pItem->SetHeaderByte( pBer->pVal[position], position );
+    pItem->SetIndefinite(0);
+
+    tag &= JS_TAG_MASK;
+    position++;
+
+    if( tag == JS_TAG_MASK )
+    {
+        int value;
+
+        tag = 0;
+
+        do {
+            value = pBer->pVal[position];
+            tag = (tag << 7) | (value & 0x7F);
+            pItem->SetHeaderByte( value, position );
+            position++;
+        } while ( value & JS_LEN_XTND && position < 5 && (position + 1) < pBer->nLen );
+
+        if( position >= 5 ) return -1;
+    }
+
+    pItem->SetTag(tag);
+
+    if( (position) > pBer->nLen ) return -1;
+
+    length = pBer->pVal[position];
+    pItem->SetHeaderByte( pBer->pVal[position], position );
+    position++;
+
+    pItem->SetHeaderSize( position );
+
+    if( length & JS_LEN_XTND )
+    {
+        int i;
+
+        length &= JS_LEN_MASK;
+
+        if( length > 4 ) return -2;
+
+        pItem->SetHeaderSize( pItem->header_size_ + length );
+        pItem->SetLength(0);
+
+        for( i = 0; i < length; i++ )
+        {
+            int ch = pBer->pVal[position];
+            pItem->SetLength( (pItem->length_ << 8) | ch );
+            pItem->SetHeaderByte( pBer->pVal[position], position );
+            position++;
+        }
+
+        if( !length ) pItem->SetIndefinite(1);
+    }
+    else {
+        pItem->SetLength(length);
+    }
+
+    return 0;
+}
+
+int BerModel::resizeParentHeader( int nDiffLen, const BerItem *pItem, QModelIndexList &indexList )
+{
+    int nResizeLen = 0;
+    if( pItem == NULL ) return -1;
+
+    if( nDiffLen == 0 ) return 0;
+
+    nResizeLen = nDiffLen;
+
+    BerItem *pParent = (BerItem *)pItem->parent();
+
+    while( pParent )
+    {
+        int nOldLen = 0;
+        int nOldHeaderLen = 0;
+
+        BIN binHeader = {0,0};
+
+        indexList.append( pParent->index() );
+
+        nOldLen = pParent->GetLength();
+        nOldHeaderLen = pParent->GetHeaderSize();
+
+        pParent->changeLength( nOldLen + nResizeLen, &nResizeLen );
+        if( nResizeLen == 0 ) break;
+
+        pParent->getHeaderBin( &binHeader );
+        JS_BIN_changeBin( pParent->GetOffset(), nOldHeaderLen, &binHeader, &binBer_ );
+        JS_BIN_reset( &binHeader );
+
+        pParent = (BerItem *)pParent->parent();
+    }
+
+    return 0;
 }

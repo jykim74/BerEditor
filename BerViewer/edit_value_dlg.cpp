@@ -110,6 +110,7 @@ void EditValueDlg::runChange()
     BIN binNewVal = {0,0};
     BIN binHeader = {0,0};
     BIN binNewItem = {0,0};
+    QModelIndexList indexList;
 
     BerModel *ber_model = (BerModel *)ber_item_->model();
     BIN& binBer = ber_model->getBer();
@@ -124,29 +125,7 @@ void EditValueDlg::runChange()
     JS_BIN_appendBin( &binNewItem, &binNewVal );
 
     ret = JS_BIN_changeBin( ber_item_->GetOffset(), nOrgHeaderLen + nOrgLen, &binNewItem, &binBer );
-
-    if( nDiffLen != 0 )
-    {
-        BerItem *parentItem = (BerItem *)ber_item_->parent();
-
-        while( parentItem )
-        {
-            BIN binPHeader = {0,0};
-
-            nOrgLen = parentItem->GetLength();
-            nOrgHeaderLen = parentItem->GetHeaderSize();
-
-            parentItem->changeLength( nOrgLen + nDiffLen, &nDiffLen );
-
-            if( nDiffLen == 0 ) break;
-
-            parentItem->getHeaderBin( &binPHeader );
-            JS_BIN_changeBin( parentItem->GetOffset(), nOrgHeaderLen, &binPHeader, &binBer );
-            JS_BIN_reset( &binPHeader );
-
-            parentItem = (BerItem *)parentItem->parent();
-        }
-    }
+    ber_model->resizeParentHeader( nDiffLen, ber_item_, indexList );
 
     JS_BIN_reset( &binNewVal );
     JS_BIN_reset( &binHeader );
@@ -162,6 +141,7 @@ void EditValueDlg::runDelete()
     int nDiffLen = 0;
     BerModel *ber_model = (BerModel *)ber_item_->model();
     BIN& binBer = ber_model->getBer();
+    QModelIndexList indexList;
 
     BerItem *parentItem = (BerItem *)ber_item_->parent();
     if( parentItem == NULL )
@@ -175,33 +155,7 @@ void EditValueDlg::runDelete()
     nDiffLen += ber_item_->GetLength();
 
     ret = JS_BIN_removeBin( ber_item_->GetOffset(), nDiffLen, &binBer );
-
-
-    if( nDiffLen > 0 )
-    {
-        int nRemoveLen = -nDiffLen;
-        parentItem = (BerItem *)ber_item_->parent();
-
-        while( parentItem )
-        {
-            int nOrgLen = 0;
-            int nOrgHeaderLen = 0;
-            BIN binPHeader = {0,0};
-
-            nOrgLen = parentItem->GetLength();
-            nOrgHeaderLen = parentItem->GetHeaderSize();
-
-            parentItem->changeLength( nOrgLen + nRemoveLen, &nRemoveLen );
-
-            if( nDiffLen == 0 ) break;
-
-            parentItem->getHeaderBin( &binPHeader );
-            JS_BIN_changeBin( parentItem->GetOffset(), nOrgHeaderLen, &binPHeader, &binBer );
-            JS_BIN_reset( &binPHeader );
-
-            parentItem = (BerItem *)parentItem->parent();
-        }
-    }
+    ber_model->resizeParentHeader( -nDiffLen, ber_item_, indexList );
 
     if( ret == 0 ) QDialog::accept();
 }
@@ -215,7 +169,7 @@ void EditValueDlg::runAdd()
     BerModel *ber_model = (BerModel *)ber_item_->model();
     BerItem *parentItem = (BerItem *)ber_item_->parent();
     BIN& binBer = ber_model->getBer();
-
+    QModelIndexList indexList;
 
     if( parentItem == NULL )
     {
@@ -234,31 +188,7 @@ void EditValueDlg::runAdd()
     JS_BIN_appendBin( &binItem, &binVal );
 
     JS_BIN_insertBin( parentItem->GetOffset() + parentItem->GetHeaderSize() + parentItem->GetLength(), &binItem, &binBer );
-
-    if( nDiffLen > 0 )
-    {
-        parentItem = (BerItem *)ber_item_->parent();
-
-        while( parentItem )
-        {
-            int nOrgLen = 0;
-            int nOrgHeaderLen = 0;
-            BIN binPHeader = {0,0};
-
-            nOrgLen = parentItem->GetLength();
-            nOrgHeaderLen = parentItem->GetHeaderSize();
-
-            parentItem->changeLength( nOrgLen + nDiffLen, &nDiffLen );
-
-            if( nDiffLen == 0 ) break;
-
-            parentItem->getHeaderBin( &binPHeader );
-            JS_BIN_changeBin( parentItem->GetOffset(), nOrgHeaderLen, &binPHeader, &binBer );
-            JS_BIN_reset( &binPHeader );
-
-            parentItem = (BerItem *)parentItem->parent();
-        }
-    }
+    ber_model->resizeParentHeader( nDiffLen, ber_item_, indexList );
 
     JS_BIN_reset( &binVal );
     JS_BIN_reset( &binItem );

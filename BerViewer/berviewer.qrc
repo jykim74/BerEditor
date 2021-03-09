@@ -40,5 +40,6 @@
         <file>images/agree.png</file>
         <file>images/cms.png</file>
         <file>images/otp.png</file>
+        <file>images/ber.jpg</file>
     </qresource>
 </RCC>

@@ -1,8 +1,9 @@
-#include "ber_define.h"
 #include "data_encoder_dlg.h"
 #include "js_bin.h"
 #include "js_util.h"
+#include "js_ber.h"
 #include "ber_applet.h"
+#include "common.h"
 
 static QStringList enTypes = {
     "String",

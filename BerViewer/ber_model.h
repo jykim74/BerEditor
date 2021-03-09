@@ -19,10 +19,11 @@ public:
 
     BIN& getBer() { return binBer_; };
     int getItem( int offset, BerItem *pItem );
+    int getItem( const BIN *pBer, BerItem *pItem );
+    int resizeParentHeader( int nDiffLen, const BerItem *pItem, QModelIndexList &indexList );
 
 private:
     void initialize();
-
 
     BIN     binBer_;
 };
