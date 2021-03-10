@@ -20,6 +20,7 @@ SettingsDlg::SettingsDlg(QWidget *parent) :
     connect( mCancelBtn, SIGNAL(clicked()), this, SLOT(onCancelBtnClicked()));
     connect( mFindOIDConfig, SIGNAL(clicked()), this, SLOT(findOIDConfig()));
 
+    mTabWidget->setCurrentIndex(0);
 }
 
 SettingsDlg::~SettingsDlg()
