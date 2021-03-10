@@ -25,8 +25,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="berviewer.qrc">
-         <normaloff>:/images/berviewer.png</normaloff>:/images/berviewer.png</iconset>
+        <iconset resource="bereditor.qrc">
+         <normaloff>:/images/bereditor.png</normaloff>:/images/bereditor.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -130,7 +130,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="berviewer.qrc"/>
+  <include location="bereditor.qrc"/>
  </resources>
  <connections/>
 </ui>

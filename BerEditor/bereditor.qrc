@@ -6,13 +6,13 @@
         <file>images/open.png</file>
         <file>images/paste.png</file>
         <file>images/save.png</file>
-        <file>i18n/berviewer_ko_KR.ts</file>
-        <file>i18n/berviewer_ko_KR.qm</file>
+        <file>i18n/bereditor_ko_KR.ts</file>
+        <file>i18n/bereditor_ko_KR.qm</file>
         <file>images/bad.png</file>
         <file>images/heart.png</file>
         <file>images/trash.png</file>
         <file>images/penguin_960_720.png</file>
-        <file>images/berviewer.icns</file>
+        <file>images/bereditor.icns</file>
         <file>images/fileprint.png</file>
         <file>images/insert.png</file>
         <file>images/branch-closed.png</file>
@@ -20,14 +20,14 @@
         <file>images/branch-more.png</file>
         <file>images/branch-open.png</file>
         <file>images/vline.png</file>
-        <file>berviewer.qss</file>
+        <file>bereditor.qss</file>
         <file>images/collapse_all.png</file>
         <file>images/collapse_node.png</file>
         <file>images/expand_all.png</file>
         <file>images/expand_node.png</file>
         <file>images/data_trans.png</file>
         <file>images/number.jpg</file>
-        <file>images/berviewer.png</file>
+        <file>images/bereditor.png</file>
         <file>images/setting.png</file>
         <file>images/oid.png</file>
         <file>images/ldap.jpg</file>

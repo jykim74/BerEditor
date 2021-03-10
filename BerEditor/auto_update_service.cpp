@@ -14,7 +14,7 @@ SINGLETON_IMPL(AutoUpdateService)
 namespace  {
 #ifdef Q_OS_WIN32
     const char *kSparkleAppcastURI = "https://www.aaa.bbb/update/win_appcast.xml";
-    const char *kWinSparkleRegPath = "SOFTWARE\\BerViewer\\WinSparkle";
+    const char *kWinSparkleRegPath = "SOFTWARE\\BerEditor\\WinSparkle";
 #else
     const char *kSparkleAppcastURI = "https://www.aaa.bbb/update/mac_appcast.xml";
 #endif
@@ -52,7 +52,7 @@ public:
         win_sparkle_set_registry_path(kWinSparkleRegPath);
         win_sparkle_set_appcast_url(getAppcastURI().toUtf8().data());
         win_sparkle_set_app_details(
-                    L"BerViewer",
+                    L"BerEditor",
                     L"ASN Decoder",
                     QString(STRINGIZE(BER_VIEWER_VERSION)).toStdWString().c_str() );
     }
@@ -153,7 +153,7 @@ void AutoUpdateService::checkUpdate()
 }
 
 bool AutoUpdateService::shouldSupportAutoUpdate() const {
-    return QString("BerViewer") == "BerViewer";
+    return QString("BerEditor") == "BerEditor";
 }
 
 bool AutoUpdateService::autoUpdateEnabled() const {

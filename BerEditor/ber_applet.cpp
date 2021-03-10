@@ -65,7 +65,7 @@ QString BerApplet::getSetPath()
     if( bSavePath )
     {
         QSettings settings;
-        settings.beginGroup( "berviewer" );
+        settings.beginGroup( "bereditor" );
         strPath = settings.value( "openPath", "" ).toString();
         settings.endGroup();
     }
@@ -83,7 +83,7 @@ void BerApplet::start()
 
 QString BerApplet::getBrand()
 {
-    return QString::fromUtf8( "BerViewer" );
+    return QString::fromUtf8( "BerEditor" );
 }
 
 void BerApplet::warningBox(const QString& msg, QWidget *parent)

@@ -11,9 +11,9 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 requires(qtConfig(filedialog))
 qtHaveModule(printsupport): QT += printsupport
 
-TARGET = BerViewer
+TARGET = BerEditor
 TEMPLATE = app
-PROJECT_VERSION = "0.9.14"
+PROJECT_VERSION = "0.9.1"
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -100,7 +100,7 @@ HEADERS += \
 # Sparkle.framework 를 Qt/5.11.3/clang_64/lib/ 에 복사 해 주었음
 
 mac {
-    ICON = berviewer.icns
+    ICON = bereditor.icns
     DEFINES += _AUTO_UPDATE
     QMAKE_LFLAGS += -Wl,-rpath,@loader_path/../Frameworks
     HEADERS += mac_sparkle_support.h
@@ -133,7 +133,7 @@ linux {
 
 win32 {
     DEFINES += _AUTO_UPDATE
-    RC_ICONS = berviewer.ico
+    RC_ICONS = bereditor.ico
     INCLUDEPATH += "../../PKILib/lib/win32/winsparkle/include"
     INCLUDEPATH += "C:\msys64\mingw32\include"
 
@@ -173,9 +173,9 @@ FORMS += \
         sign_verify_dlg.ui
 
 RESOURCES += \
-    berviewer.qrc
+    bereditor.qrc
 
-TRANSLATIONS += i18n/berviewer_ko_KR.ts
+TRANSLATIONS += i18n/bereditor_ko_KR.ts
 
 
 

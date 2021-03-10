@@ -8,15 +8,15 @@
 
 int main(int argc, char *argv[])
 {
-    Q_INIT_RESOURCE(berviewer);
+    Q_INIT_RESOURCE(bereditor);
 
     QApplication app(argc, argv);
 
     QCoreApplication::setOrganizationName( "JS" );
     QCoreApplication::setOrganizationDomain( "jssoft.com" );
-    QCoreApplication::setApplicationName( "BerViewer" );
+    QCoreApplication::setApplicationName( "BerEditor" );
 
-    QFile qss(":/berviewer.qss");
+    QFile qss(":/bereditor.qss");
     qss.open( QFile::ReadOnly );
     app.setStyleSheet(qss.readAll());
 

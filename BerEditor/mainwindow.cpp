@@ -224,7 +224,7 @@ void MainWindow::createActions()
     fileMenu->addSeparator();
 
     QAction *quitAct = new QAction( tr("&Quit"), this );
-    quitAct->setStatusTip( tr( "Quit BerViewer" ));
+    quitAct->setStatusTip( tr( "Quit BerEditor" ));
     connect( quitAct, &QAction::triggered, this, &MainWindow::quit);
     fileMenu->addAction(quitAct);
 
@@ -404,10 +404,10 @@ void MainWindow::createActions()
     helpMenu->addAction( settingAct );
     helpToolBar->addAction( settingAct );
 
-    const QIcon aboutIcon = QIcon::fromTheme("berview-icon", QIcon(":/images/berviewer.png"));
-    QAction *aboutAct = new QAction( aboutIcon, tr("&About BerViewer"), this );
+    const QIcon aboutIcon = QIcon::fromTheme("berview-icon", QIcon(":/images/bereditor.png"));
+    QAction *aboutAct = new QAction( aboutIcon, tr("&About BerEditor"), this );
     connect( aboutAct, &QAction::triggered, this, &MainWindow::about );
-    aboutAct->setStatusTip(tr("Show the BerViewer"));
+    aboutAct->setStatusTip(tr("Show the BerEditor"));
     helpMenu->addAction( aboutAct );
     helpToolBar->addAction( aboutAct );
 
@@ -507,7 +507,7 @@ void MainWindow::open()
             QString strDir = fileInfo.dir().path();
 
             QSettings settings;
-            settings.beginGroup("berviewer");
+            settings.beginGroup("bereditor");
             settings.setValue( "openPath", strDir );
             settings.endGroup();
         }
@@ -663,11 +663,6 @@ void MainWindow::updateRecentActionList()
 
 void MainWindow::about()
 {
-    /*
-    QMessageBox::about(this, tr("About BerViewer"),
-                       tr("The <b>BerViewer</b> is ASN.1 and BER viewer(Version:%1)").arg(STRINGIZE(BER_VIEWER_VERSION)));
-                       */
-
     AboutDlg aboutDlg;
     aboutDlg.exec();
 }
