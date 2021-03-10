@@ -26,6 +26,8 @@ int main(int argc, char *argv[])
     parser.addPositionalArgument( "file", "The file to open" );
     parser.process(app);
 
+//    app.setFont( QFont( "Courier New" ));
+
     qDebug( "command : %s\n", argv[0] );
 
     I18NHelper::getInstance()->init();

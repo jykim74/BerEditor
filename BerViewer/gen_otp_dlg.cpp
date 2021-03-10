@@ -5,6 +5,7 @@
 #include "js_ber.h"
 #include "js_bin.h"
 #include "js_pki.h"
+#include "common.h"
 
 static QStringList dataTypes = {
     "String",

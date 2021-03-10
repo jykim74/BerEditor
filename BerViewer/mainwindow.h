@@ -28,13 +28,16 @@ public:
 
     void initialize();
     void loadFile( const QString &filename );
-    QTextEdit* rightText() { return right_text_; };
+    QTextEdit* logText() { return log_text_; };
     QTableWidget* rightTable() { return right_table_; };
     void showTextMsg( const QString& msg );
 
     void showWindow();
     void openBer( const BIN *pBer );
     bool isChanged();
+
+    void log( const QString strLog, QColor cr = QColor(0x00, 0x00, 0x00) );
+    QString getLog();
 
 private slots:
     void newFile();
@@ -89,7 +92,7 @@ private:
     QSplitter       *hsplitter_;
     QSplitter       *vsplitter_;
     BerTreeView     *left_tree_;
-    QTextEdit       *right_text_;
+    QTextEdit       *log_text_;
     BerModel        *ber_model_;
     QTableWidget    *right_table_;
     QString          file_path_;

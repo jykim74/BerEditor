@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QWidget>
+#include "js_bin.h"
 
 enum {
     DATA_STRING,
@@ -25,5 +26,8 @@ enum { JS_FILE_TYPE_CERT, JS_FILE_TYPE_PRIKEY, JS_FILE_TYPE_TXT, JS_FILE_TYPE_BE
 
 QString findFile( QWidget *parent, int nType, const QString strPath );
 int setOIDList( const QString& strOIDPath );
+QString getHexString( const QString& strVal );
+QString getHexString( unsigned char *pData, int nDataLen );
+QString getHexView( const char *pName, const BIN *pBin );
 
 #endif // COMMON_H

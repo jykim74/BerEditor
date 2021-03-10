@@ -7,6 +7,7 @@
 #include "ber_item_delegate.h"
 #include "edit_value_dlg.h"
 #include "insert_ber_dlg.h"
+#include "common.h"
 
 #include <QStandardItemModel>
 #include <QTreeView>
@@ -40,11 +41,7 @@ void BerTreeView::onItemClicked(const QModelIndex& index )
     BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
     if( item == NULL ) return;
 
-    QTextEdit* rightText = berApplet->mainWindow()->rightText();
-
     BIN& binBer = tree_model->getBer();
-    strInfo = GetInfoView( &binBer, item );
-    rightText->setText(strInfo);
 
     SettingsMgr *set_mgr = berApplet->settingsMgr();
 
@@ -53,106 +50,77 @@ void BerTreeView::onItemClicked(const QModelIndex& index )
     else
         GetTableView(&binBer, item );
 
+    logItem( item );
 }
 
 void BerTreeView::viewRoot()
 {
-    QString strInfo;
     BerModel *tree_model = (BerModel *)model();
-    BerItem* rootItem = (BerItem *)tree_model->item(0);
-    QTextEdit* rightText = berApplet->mainWindow()->rightText();
-
-    BIN& binBer = tree_model->getBer();
-    strInfo = GetInfoView( &binBer, rootItem );
-    rightText->setText(strInfo);
-
-    SettingsMgr *set_mgr = berApplet->settingsMgr();
-
-    if( set_mgr->showFullText() )
-        GetTableFullView(&binBer, rootItem);
-    else
-        GetTableView(&binBer, rootItem );
-
+    QModelIndex ri = tree_model->index(0,0);
+    onItemClicked( ri );
     setExpanded( rootIndex(), true );
 }
 
-
-
-QString BerTreeView::GetInfoView( const BIN *pBer, BerItem *pItem)
+void BerTreeView::logItem( BerItem *pItem )
 {
-    QString strView;
-    QString strPart;
-
-    int nPos = treePosition();
-    QModelIndex index = pItem->index();
+    BerModel *tree_model = (BerModel *)model();
+    BIN& binBer = tree_model->getBer();
 
     BIN bin = {0,0};
+    BIN header = {0,0};
+
     char *pBitString = NULL;
-    JS_BIN_set( &bin, pBer->pVal + pItem->GetOffset(), 1 );
+    JS_BIN_set( &bin, binBer.pVal + pItem->GetOffset(), 1 );
     JS_BIN_bitString( &bin, &pBitString );
+    unsigned char cID = pItem->GetId();
+    unsigned char cLen = 0x00;
+    int nLenSize = 0;
+    unsigned char sLen[4];
 
-    strPart.sprintf( "[T] <b>%s</b> ", pBitString );
-    strView += strPart;
+    pItem->getHeaderBin( &header );
+    if( header.nLen < 2 ) return;
 
-    strPart = "Class: <b>" + pItem->GetClassString();
-    strPart += "</b>";
-
-    strView += strPart;
-
-    strPart.sprintf( "  ID: <b>%d(0x%X)</b>", pItem->GetId(), pItem->GetId());
-    strView += strPart;
-
-    strPart = "  P/C: ";
-    if( (pItem->GetId() & JS_FORM_MASK) == JS_CONSTRUCTED )
-        strPart += " <b>Constructed</b>";
-    else
-        strPart += " <b>Primitive</b>";
-
-    strView += strPart;
-
-    strPart.sprintf( "  Tag: <b>%d(0x%X)</b><br>", pItem->GetTag(), pItem->GetTag());
-    strView += strPart;
-
-    strPart.sprintf("  Offset: <b>%d(0x%X)</b>", pItem->GetOffset(), pItem->GetOffset());
-    strView += strPart;
-
-    strPart.sprintf("  Length: <b>%d(0x%X)</b>", pItem->GetLength(), pItem->GetLength());
-    strView += strPart;
-
-    strPart.sprintf( "  Level: <b>%d</b>", pItem->GetLevel() );
-    strView += strPart;
-
-    strPart.sprintf( " Row: %d Col: %d", pItem->row(), pItem->column() );
-    strView += strPart;
-
-    QString strPartNL = pItem->GetValueString( pBer );
-
-    if( pItem->GetId() && JS_CONSTRUCTED )
+    cLen = header.pVal[1];
+    if( cLen & JS_LEN_XTND )
     {
-        strView += "<p><p>[";
-        strView += pItem->GetTagString();
-        strView += "]<p>";
+        nLenSize = cLen & JS_LEN_MASK;
+        memcpy( sLen, &header.pVal[2], nLenSize );
     }
-    else {
-        strView += "<p><p>[ Value ]<p>";
-
-        for( int i=0; (i*80) < strPartNL.length(); i++ )
-        {
-            QString strTmp = strPartNL.mid( 80 * i, 80 );
-            strView += strTmp;
-            strView += "<br>";
-        }
+    else
+    {
+        nLenSize = 1;
+        sLen[0] = cLen;
     }
 
-//    strView += "--------------------------------------------------------------------------------\r\n";
-//    strView += GetDataView( &binPart, pItem );
+    QString strPC;
+    if( pItem->GetId() & JS_CONSTRUCTED )
+        strPC = "Constructed";
+    else
+        strPC = "Primitive";
 
-//    textEdit_->setText(strView);
+    QString strOffset;
+    strOffset.sprintf( "0x%08X", pItem->GetOffset() );
+
+    berApplet->mainWindow()->logText()->clear();
+    berApplet->log( "====================================================================================\n" );
+    berApplet->log( QString( "== BER Information [Depth:%1]\n" ).arg(pItem->GetLevel()) );
+    berApplet->log( "====================================================================================\n" );
+    berApplet->log( QString( "Header      : %1\n").arg( getHexString(header.pVal, header.nLen)));
+    berApplet->log( QString( "[T]         : %1 - %2\n" ).arg(getHexString(bin.pVal,1)).arg(pBitString) );
+    berApplet->log( QString( "Class       : %1\n").arg( pItem->GetClassString()));
+    berApplet->log( QString( "ID          : %1 - %2\n").arg( getHexString( &cID, 1) ).arg( cID ));
+    berApplet->log( QString( "P/C         : %1\n").arg(strPC));
+    berApplet->log( QString( "Tag         : %1 - %2\n").arg( pItem->GetTag(), 2, 16, QChar('0')).arg(pItem->GetTagString()));
+    berApplet->log( QString( "Offset      : %1 - %2\n" ).arg( strOffset ).arg(pItem->GetOffset()));
+    berApplet->log( QString( "Length      : %1 - %2 Bytes\n" ).arg( getHexString(sLen, nLenSize) ).arg(pItem->GetLength()));
+    berApplet->log( "====================================================================================\n" );
+
+    QString strVal = pItem->GetValueString( &binBer );
+    berApplet->log( strVal );
 
     if( pBitString ) JS_free( pBitString );
-    JS_BIN_reset(&bin);
-
-    return strView;
+    JS_BIN_reset( &bin );
+    JS_BIN_reset( &header );
 }
 
 static char getch( unsigned char c )
@@ -164,69 +132,10 @@ static char getch( unsigned char c )
     }
 }
 
-QString BerTreeView::GetDataView(const BIN *pData, const BerItem *pItem )
-{
-    int i;
-    QString strView;
-    QString strPart;
-
-
-    for( i = 0; i < pData->nLen; i++ )
-    {
-        if( i % 16 == 0 )
-        {
-            strPart.sprintf( "0x%08X | ", i + pItem->offset_ );
-            strView += strPart;
-        }
-
-        strPart.sprintf( "%02X", pData->pVal[i] );
-        strView += strPart;
-
-        if( i % 16 - 15 == 0 )
-        {
-            int j;
-            strView += " | ";
-
-            for( j = i-15; j <= i; j++ )
-            {
-                strPart.sprintf( "%c", getch(pData->pVal[j]));
-                strView += strPart;
-            }
-
-            strView += "\r\n";
-        }
-    }
-
-    if( i % 16 != 0 )
-    {
-        int j;
-        int left = pData->nLen % 16;
-        int spaces = 49 - left * 3;
-
-        for( j = 0; j < spaces; j++ )
-        {
-            strView += " ";
-        }
-
-        strView += "| ";
-
-        for( j = i - i % 16; j < pData->nLen; j++ )
-        {
-            strPart.sprintf( "%c", getch(pData->pVal[j]));
-            strView += strPart;
-        }
-    }
-
-    strView += "\r\n";
-
-    return strView;
-}
-
 QString BerTreeView::GetTextView()
 {
     BerModel *tree_model = (BerModel *)model();
-    QModelIndex idx = tree_model->index(0,0);
-    BerItem *item = (BerItem *)tree_model->itemFromIndex(idx);
+    BerItem *item = currentItem();
 
     if( item == NULL )
     {
@@ -234,10 +143,15 @@ QString BerTreeView::GetTextView()
         return "";
     }
 
-    BIN& binBer = tree_model->getBer();
 
-    QString strText = GetInfoView( &binBer, item );
-    strText += GetDataView( &binBer, item );
+    BIN& binBer = tree_model->getBer();
+    BIN binData = {0,0};
+
+    JS_BIN_set( &binData, &binBer.pVal[item->GetOffset()], item->GetHeaderSize() + item->GetLength() );
+    QString strText = berApplet->mainWindow()->getLog();
+    strText += "\n====================================================================================\n";
+    strText += getHexView( "All Data", &binData );
+    JS_BIN_reset( &binData );
 
     return strText;
 }
@@ -395,7 +309,6 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
 
 void BerTreeView::copy()
 {
-    char *pHex = NULL;
     BerItem* item = currentItem();
     if( item == NULL )
     {
@@ -404,14 +317,9 @@ void BerTreeView::copy()
     }
 
     QClipboard *clipboard = QGuiApplication::clipboard();
-    BIN binData = {0,0};
-    BerModel *tree_model = (BerModel *)model();
 
-    BIN& binBer = tree_model->getBer();
-    JS_BIN_set( &binData, binBer.pVal + item->GetOffset(), item->GetHeaderSize() + item->GetLength() );
-    QString strData = GetDataView( &binData, item );
-
-    clipboard->setText(strData);
+    QString strLog = berApplet->mainWindow()->getLog();
+    clipboard->setText(strLog);
 }
 
 void BerTreeView::treeExpandAll()
@@ -434,6 +342,11 @@ void BerTreeView::treeCollapseNode()
 {
     QModelIndex index = currentIndex();
     collapse(index);
+}
+
+void BerTreeView::treeExpandItem( int nRow, int nCol )
+{
+
 }
 
 void BerTreeView::ShowContextMenu(QPoint point)

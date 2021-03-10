@@ -37,14 +37,13 @@ public slots:
     void treeExpandNode();
     void treeCollapseAll();
     void treeCollapseNode();
+    void treeExpandItem( int nRow, int nCol );
 
 private:
-
-    QString GetInfoView( const BIN *pBer, BerItem *pItem );
-    QString GetDataView( const BIN *pData, const BerItem *pItem );
     void GetTableView( const BIN *pBer, BerItem *pItem );
     void GetTableFullView( const BIN *pBer, BerItem *pItem );
 
+    void logItem( BerItem *pItem );
     BerItem* currentItem();
 };
 

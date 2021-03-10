@@ -70,7 +70,7 @@ MainWindow::~MainWindow()
 //    delete ui;
     delete  ber_model_;
     delete  left_tree_;
-    delete  right_text_;
+    delete  log_text_;
 }
 
 void MainWindow::initialize()
@@ -81,9 +81,12 @@ void MainWindow::initialize()
     left_tree_ = new BerTreeView(this);
 
 
-    right_text_ = new QTextEdit();
+    log_text_ = new QTextEdit();
+    log_text_->setReadOnly(true);
+//    log_text_->setFont( QFont("Courier New") );
+    log_text_->setFont( QFont("굴림체") );
+
     right_table_ = new QTableWidget;
-    right_text_->setReadOnly(true);
 
     ber_model_ = new BerModel(this);
 
@@ -93,7 +96,7 @@ void MainWindow::initialize()
     hsplitter_->addWidget(vsplitter_);
 
     vsplitter_->addWidget(right_table_);
-    vsplitter_->addWidget(right_text_);
+    vsplitter_->addWidget(log_text_);
 
     QList <int> vsizes;
     vsizes << 1200 << 500;
@@ -551,6 +554,26 @@ bool MainWindow::isChanged()
     return false;
 }
 
+void MainWindow::log( const QString strLog, QColor cr )
+{
+    QTextCursor cursor = log_text_->textCursor();
+//    cursor.movePosition( QTextCursor::End );
+
+    QTextCharFormat format;
+    format.setForeground( cr );
+    cursor.mergeCharFormat(format);
+
+    cursor.insertText( strLog );
+
+    log_text_->setTextCursor( cursor );
+    log_text_->repaint();
+}
+
+QString MainWindow::getLog()
+{
+    return log_text_->toPlainText();
+}
+
 void MainWindow::berFileOpen(const QString berPath)
 {
     BIN binRead = {0,0};
@@ -592,7 +615,7 @@ void MainWindow::setTitle( const QString strName )
 
 void MainWindow::showTextMsg(const QString &msg)
 {
-    right_text_->setText( msg );
+    log_text_->setText( msg );
 }
 
 void MainWindow::adjustForCurrentFile( const QString& filePath )
@@ -820,7 +843,7 @@ void MainWindow::print()
 #if QT_CONFIG(printdialog)
     QPrinter printer(QPrinter::HighResolution);
     QPrintDialog *dlg = new QPrintDialog(&printer, this);
-    if (right_text_->textCursor().hasSelection())
+    if (log_text_->textCursor().hasSelection())
         dlg->addEnabledOption(QAbstractPrintDialog::PrintSelection);
     dlg->setWindowTitle(tr("Print Document"));
     if (dlg->exec() == QDialog::Accepted)

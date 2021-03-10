@@ -101,6 +101,11 @@ void BerApplet::warningBox(const QString& msg, QWidget *parent)
     qWarning("%s", msg.toUtf8().data());
 }
 
+void BerApplet::log( const QString strLog, QColor cr )
+{
+    main_win_->log( strLog, cr );
+}
+
 void BerApplet::messageBox(const QString& msg, QWidget *parent)
 {
     QMessageBox box(parent ? parent : main_win_);

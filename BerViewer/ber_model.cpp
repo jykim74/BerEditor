@@ -245,7 +245,6 @@ int BerModel::getItem(int offset, BerItem *pItem)
 
 int getItem( const BIN *pBer, BerItem *pItem )
 {
-    int next_offset = 0;
     int position = 0;
     int length = 0;
 

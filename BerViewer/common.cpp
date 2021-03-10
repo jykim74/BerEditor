@@ -115,3 +115,115 @@ int setOIDList( const QString& strOIDPath )
 
     return nCount;
 }
+
+QString getHexString( const QString& strVal )
+{
+    char *pHex = NULL;
+    BIN binVal = {0,0};
+    QString strHex;
+
+    JS_BIN_set( &binVal, (unsigned char *)strVal.toStdString().c_str(), strVal.length() );
+    JS_BIN_encodeHex( &binVal, &pHex );
+
+    if( pHex )
+    {
+        strHex = pHex;
+        JS_free( pHex );
+    }
+
+    return strHex;
+}
+
+QString getHexString( unsigned char *pData, int nDataLen )
+{
+    BIN binData = {0,0};
+    char *pHex = NULL;
+    JS_BIN_set( &binData, pData, nDataLen );
+    JS_BIN_encodeHex( &binData, &pHex );
+
+    QString strHex = pHex;
+
+    JS_BIN_reset( &binData );
+    if(pHex) JS_free( pHex );
+
+    return strHex;
+}
+
+static char _getPrint( unsigned char c )
+{
+    if( isprint(c))
+      return c;
+    else
+      return '.';
+}
+
+QString getHexView( const char *pName, const BIN *pBin )
+{
+    int n = 0;
+    int left = 0;
+    char  sText[16 + 1];
+    int length = 0;
+    unsigned char *packet = NULL;
+
+    QString strOut;
+    QString strTmp;
+
+    if( pName ) strOut += QString( "-- %1 --\n" ).arg( pName );
+
+    if( pBin == NULL || pBin->nLen <= 0 ) return "";
+
+    length = pBin->nLen;
+    packet = pBin->pVal;
+
+    memset( sText, 0x00, sizeof(sText));
+
+    while (length--)
+    {
+        if (n % 16 == 0)
+        {
+            strTmp.sprintf( "%08X ",n);
+            strOut += strTmp;
+        }
+
+        sText[n%16] = _getPrint( *packet );
+        strTmp.sprintf( "%02X ", *packet++);
+        strOut += strTmp;
+
+        n++;
+        if (n % 8 == 0)
+        {
+            if (n % 16 == 0)
+            {
+                strTmp.sprintf( "  %s\n", sText);
+                strOut += strTmp;
+                memset( sText, 0x00, sizeof(sText));
+            }
+            else
+            {
+                strTmp.sprintf(" ");
+                strOut += strTmp;
+            }
+        }
+    }
+
+    left = n % 16;
+    if( left > 0 )
+    {
+        for( int i = left; i < 16; i++ )
+        {
+            strTmp.sprintf( "   " );
+            strOut += strTmp;
+        }
+
+        if( left < 8 )
+        {
+            strTmp.sprintf( " " );
+            strOut += strTmp;
+        }
+
+        strTmp.sprintf( "  %s\n", sText );
+        strOut += strTmp;
+    }
+
+    return strOut;
+}
