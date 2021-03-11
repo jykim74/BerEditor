@@ -1,24 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Include Id="BerViewerInclude">
-  <?define CurrentBerViewerVersion="0.9.13" ?>
+<Include Id="BerEditorInclude">
+  <?define CurrentBerEditorVersion="0.9.1" ?>
 
-  <!-- BerViewer Product Guid  -->
-  <?define ProductGuid="ff187565-0b39-4f03-8261-231d67fbcdae" ?> <!-- Version 0.9.13 -->
-  <!-- ?define ProductGuid="82f1fe2f-8f2b-4ee7-a91a-2005a0e61587" ? --> <!-- Version 0.9.12 -->
-  <!-- ?define ProductGuid="164ae749-dc73-4122-84f0-709ef25460e6" ? --> <!-- Version 0.9.11 -->
-  <!-- ?define ProductGuid="3414ae85-4578-44f2-9799-9900ad5e42fb" ?> Version 0.9.10 -->
-  <!-- ?define ProductGuid="e960240a-cd84-4932-8cbe-9de593886088" ?> Version 0.9.9 -->
-  <!-- ?define ProductGuid="8bd90dbc-6030-4838-a43f-7f27ab5e287e" ?> Version 0.9.8 -->
-  <!--?define ProductGuid="436074f4-a61e-4e95-9034-586d12625bf4" ?> Version 0.9.7 -->
-  <!-- ?define ProductGuid="dc0e0a56-e59d-4e42-9a03-04708a46cf9e" ?> Version 0.9.6 -->
-  <!-- ?define ProductGuid="d82c7fb3-b085-40b1-b3a6-02a7c6766112" ?>  Version 0.9.5 -->
-  <!-- <?define ProductGuid="8474e1a3-d4e0-4fab-869c-dde71a89639b" ?> Version 0.9.4 -->
-  <!-- <?define ProductGuid="3d38f7ed-155f-4241-9e51-0433f692d60e" ?> Version 0.9.3 -->
-  <!-- <?define ProductGuid="57e8a953-05e4-4505-a7b4-4092d9ae2d9f" ?> Version 0.9.2 -->
-  <!-- <?define ProductGuid="AC80483F-C23F-4BD8-806D-C8A907D777A0" ?> Version 0.9.1 -->
+  <!-- BerEditor Product Guid  -->
+  <?define ProductGuid="e2732e6c-3f73-428e-b38d-53dc5d49877b" ?> <!-- Version 0.9.1 -->
 
-  <?define CurrentUpdateGuid="AC80483F-C23F-4BD8-806D-C8A907D777AF" ?>
-  <?define GuidOfCustomComponent="AC80483F-C23F-4BD8-806D-C8A907D77700" ?>
-  <?define GuidOfAutoStartComponent="AC80483F-C23F-4BD8-806D-C8A907D77701" ?>
-  <?define GuidOfStartMenuShortCutComponent="AC80483F-C23F-4BD8-806D-C8A907D77702" ?>
+  <?define CurrentUpdateGuid="7c9bf1b0-53ff-4945-a480-5e5d82c24cea" ?>
+  <?define GuidOfCustomComponent="7c9bf1b0-53ff-4945-a480-5e5d82c24ce1" ?>
+  <?define GuidOfAutoStartComponent="7c9bf1b0-53ff-4945-a480-5e5d82c24ce2" ?>
+  <?define GuidOfStartMenuShortCutComponent="7c9bf1b0-53ff-4945-a480-5e5d82c24ce3" ?>
 </Include>

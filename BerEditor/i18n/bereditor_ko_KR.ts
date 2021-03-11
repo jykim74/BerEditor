@@ -124,51 +124,51 @@ mailto : jykim74@gmail.com</translation>
 <context>
     <name>BerTreeView</name>
     <message>
-        <location filename="../ber_tree_view.cpp" line="142"/>
-        <location filename="../ber_tree_view.cpp" line="315"/>
-        <location filename="../ber_tree_view.cpp" line="378"/>
-        <location filename="../ber_tree_view.cpp" line="400"/>
+        <location filename="../ber_tree_view.cpp" line="138"/>
+        <location filename="../ber_tree_view.cpp" line="311"/>
+        <location filename="../ber_tree_view.cpp" line="374"/>
+        <location filename="../ber_tree_view.cpp" line="396"/>
         <source>There is no selected item</source>
         <translation>선택한 노드가 없습니다.</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="355"/>
+        <location filename="../ber_tree_view.cpp" line="351"/>
         <source>Copy as hex</source>
         <translation>Hex로 복사</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="356"/>
+        <location filename="../ber_tree_view.cpp" line="352"/>
         <source>Copy as base64</source>
         <translation>Base64로 복사</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="357"/>
+        <location filename="../ber_tree_view.cpp" line="353"/>
         <source>Save node</source>
         <translation>노드 저장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="358"/>
+        <location filename="../ber_tree_view.cpp" line="354"/>
         <source>Save node value</source>
         <translation>노드 값 저장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="359"/>
+        <location filename="../ber_tree_view.cpp" line="355"/>
         <source>Edit value</source>
         <translation>값 수정</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="364"/>
+        <location filename="../ber_tree_view.cpp" line="360"/>
         <source>Expand value</source>
         <translation>확장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="367"/>
+        <location filename="../ber_tree_view.cpp" line="363"/>
         <source>Insert BER</source>
         <translation>BER 추가</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="452"/>
-        <location filename="../ber_tree_view.cpp" line="473"/>
+        <location filename="../ber_tree_view.cpp" line="448"/>
+        <location filename="../ber_tree_view.cpp" line="469"/>
         <source>Save as...</source>
         <translation>다른 이름으로 저장</translation>
     </message>
@@ -1385,9 +1385,8 @@ mailto : jykim74@gmail.com</translation>
         <translation>끝내기(&amp;Q)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="227"/>
         <source>Quit BerViewer</source>
-        <translation>BerViewer 끝내기</translation>
+        <translation type="vanished">BerViewer 끝내기</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="231"/>
@@ -1571,21 +1570,19 @@ mailto : jykim74@gmail.com</translation>
         <translation>값 설정</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="408"/>
         <source>&amp;About BerViewer</source>
-        <translation>BerViewer에 대해서(&amp;A)</translation>
+        <translation type="vanished">BerViewer에 대해서(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="410"/>
         <source>Show the BerViewer</source>
-        <translation>BerViewer 에 대해 보여 줌</translation>
+        <translation type="vanished">BerViewer 에 대해 보여 줌</translation>
     </message>
     <message>
         <source>Do you want to write changed date</source>
         <translation type="vanished">변경 데이타를 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="807"/>
+        <location filename="../mainwindow.cpp" line="802"/>
         <source>Do you want to overwrite %1 as BER file?</source>
         <translation>파일(%1)을 BER로 덮어 쓰겠습니까?</translation>
     </message>
@@ -1594,7 +1591,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">다른 이름으로 저장...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="848"/>
+        <location filename="../mainwindow.cpp" line="843"/>
         <source>Print Document</source>
         <translation>문서 인쇄</translation>
     </message>
@@ -1611,6 +1608,11 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../mainwindow.cpp" line="127"/>
         <source>Text</source>
         <translation>문자열</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="227"/>
+        <source>Quit BerEditor</source>
+        <translation>BerEditor 끝내기</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="243"/>
@@ -1729,17 +1731,27 @@ mailto : jykim74@gmail.com</translation>
         <translation>도움(&amp;H)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="797"/>
+        <location filename="../mainwindow.cpp" line="408"/>
+        <source>&amp;About BerEditor</source>
+        <translation>BerEditor란(&amp;A)</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="410"/>
+        <source>Show the BerEditor</source>
+        <translation>BerEditor 보여 줌</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="792"/>
         <source>Do you want to write changed date?</source>
         <translation>변경 된 데이타를 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="823"/>
+        <location filename="../mainwindow.cpp" line="818"/>
         <source>BIN Files (*.ber *.der);;All Files (*.*)</source>
         <translation>BIN 파일 (*.ber *.der);;모든 파일들(*.*)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="827"/>
+        <location filename="../mainwindow.cpp" line="822"/>
         <source>Save As...</source>
         <translation>다른 이름으로 저장 하기</translation>
     </message>
