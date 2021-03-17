@@ -87,6 +87,7 @@ void MainWindow::initialize()
     log_text_->setFont( QFont("굴림체") );
 
     right_table_ = new QTableWidget;
+    right_table_->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     ber_model_ = new BerModel(this);
 

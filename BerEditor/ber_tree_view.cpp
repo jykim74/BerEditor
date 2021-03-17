@@ -114,6 +114,7 @@ void BerTreeView::logItem( BerItem *pItem )
     QString strVal = pItem->GetValueString( &binBer );
     berApplet->log( strVal );
 
+    berApplet->mainWindow()->logText()->moveCursor(QTextCursor::Start);
     if( pBitString ) JS_free( pBitString );
     JS_BIN_reset( &bin );
     JS_BIN_reset( &header );
