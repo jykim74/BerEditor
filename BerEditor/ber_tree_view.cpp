@@ -41,10 +41,10 @@ void BerTreeView::onItemClicked(const QModelIndex& index )
 
     SettingsMgr *set_mgr = berApplet->settingsMgr();
 
-    if( set_mgr->showFullText() )
-        GetTableFullView(&binBer, item);
-    else
+    if( set_mgr->showPartOnly() )
         GetTableView(&binBer, item );
+    else
+        GetTableFullView(&binBer, item);
 
     logItem( item );
 }

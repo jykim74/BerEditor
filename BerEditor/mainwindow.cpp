@@ -493,8 +493,6 @@ void MainWindow::numTrans()
 
 void MainWindow::open()
 {
-    bool bSavePath = berApplet->settingsMgr()->isSaveOpenFolder();
-
     QString strPath = berApplet->getSetPath();
     QString fileName = findFile( this, JS_FILE_TYPE_BER, strPath );
 
@@ -502,16 +500,13 @@ void MainWindow::open()
     {
         berFileOpen(fileName);
 
-        if( bSavePath )
-        {
-            QFileInfo fileInfo(fileName);
-            QString strDir = fileInfo.dir().path();
+        QFileInfo fileInfo(fileName);
+        QString strDir = fileInfo.dir().path();
 
-            QSettings settings;
-            settings.beginGroup("bereditor");
-            settings.setValue( "openPath", strDir );
-            settings.endGroup();
-        }
+        QSettings settings;
+        settings.beginGroup("bereditor");
+        settings.setValue( "openPath", strDir );
+        settings.endGroup();
     }
 }
 

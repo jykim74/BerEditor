@@ -9,11 +9,8 @@ class SettingsMgr : public QObject
 public:
     SettingsMgr(QObject *parent = nullptr);
 
-    void setShowFullText( bool val );
-    bool showFullText();
-
-    void setSaveOpenFolder( bool val );
-    bool isSaveOpenFolder();
+    void setShowPartOnly( bool val );
+    bool showPartOnly();
 
     void setOIDConfigPath( const QString& strPath );
     QString OIDConfigPath();

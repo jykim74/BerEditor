@@ -23,7 +23,8 @@ AboutDlg::AboutDlg(QWidget *parent) :
     }
 #endif
 
-    QString strAbout = tr("This is freeware tool to decode ASN.1 and BER "
+    QString strAbout = tr("This is freeware tool to decode and to encode ASN.1 and BER. "
+                          "and to test cryptographic funtions"
             "If you do not use this for commercial purposes, "
             "you can use it freely "
             "If you have any opinions on this tool, please send me a mail." );
@@ -44,6 +45,7 @@ AboutDlg::AboutDlg(QWidget *parent) :
     strAbout += "mailto: jykim74@gmail.com";
 
     mAboutText->setText( strAbout );
+    mOKBtn->setFocus();
 }
 
 AboutDlg::~AboutDlg()

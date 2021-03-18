@@ -23,7 +23,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -49,16 +49,9 @@
           </widget>
          </item>
          <item>
-          <widget class="QCheckBox" name="mCheckBoxShowFullText">
+          <widget class="QCheckBox" name="mCheckShowPartOnly">
            <property name="text">
-            <string>Show full text in viewer</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="mCheckSaveOpenFolder">
-           <property name="text">
-            <string>Save open folder</string>
+            <string>Show selected data only in body</string>
            </property>
           </widget>
          </item>
@@ -181,8 +174,7 @@
  <tabstops>
   <tabstop>mTabWidget</tabstop>
   <tabstop>mCheckBoxLatestVersion</tabstop>
-  <tabstop>mCheckBoxShowFullText</tabstop>
-  <tabstop>mCheckSaveOpenFolder</tabstop>
+  <tabstop>mCheckShowPartOnly</tabstop>
   <tabstop>mLangComboBox</tabstop>
   <tabstop>mOIDConfigPathText</tabstop>
   <tabstop>mFindOIDConfig</tabstop>

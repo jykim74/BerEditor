@@ -58,17 +58,12 @@ void BerApplet::setCmd(const QString cmd)
 
 QString BerApplet::getSetPath()
 {
-    bool bSavePath = settings_mgr_->isSaveOpenFolder();
-
     QString strPath = QDir::currentPath();
 
-    if( bSavePath )
-    {
-        QSettings settings;
-        settings.beginGroup( "bereditor" );
-        strPath = settings.value( "openPath", "" ).toString();
-        settings.endGroup();
-    }
+    QSettings settings;
+    settings.beginGroup( "bereditor" );
+    strPath = settings.value( "openPath", "" ).toString();
+    settings.endGroup();
 
     return strPath;
 }
