@@ -40,6 +40,7 @@ public:
     void restartApp();
     void setCmd( const QString cmd );
     QString getSetPath();
+    bool isPRO() { return is_pro_; };
 
 signals:
 
@@ -53,6 +54,7 @@ private:
     SettingsMgr* settings_mgr_;
 
 
+    bool is_pro_;
     bool started_;
     bool in_exit_;
     bool about_to_quit_;

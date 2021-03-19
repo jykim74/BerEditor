@@ -28,9 +28,13 @@ BerApplet *berApplet;
 
 BerApplet::BerApplet(QObject *parent) : QObject(parent)
 {
-    main_win_ = new MainWindow;
-
     settings_mgr_ = new SettingsMgr;
+
+#ifdef JS_PRO
+    is_pro_ = true;
+#else
+    is_pro_ = false;
+#endif
 
     started_ = false;
     in_exit_ = false;
@@ -70,7 +74,9 @@ QString BerApplet::getSetPath()
 
 void BerApplet::start()
 {
+    main_win_ = new MainWindow;
     main_win_->show();
+
     QString strOIDPath = settings_mgr_->OIDConfigPath();
 
     setOIDList( strOIDPath );
