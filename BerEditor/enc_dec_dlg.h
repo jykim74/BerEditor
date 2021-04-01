@@ -25,6 +25,13 @@ private slots:
     void encDecFinal();
     void dataChange();
 
+    void inputChanged();
+    void outputChanged();
+    void keyChanged();
+    void ivChanged();
+    void aadChanged();
+    void tagChanged();
+
 private:
     void initialize();
     bool isCCM( const QString strAlg );

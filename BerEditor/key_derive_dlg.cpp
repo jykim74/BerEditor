@@ -1,5 +1,6 @@
 #include "key_derive_dlg.h"
 #include "ber_applet.h"
+#include "common.h"
 
 #include "js_pki.h"
 
@@ -25,6 +26,11 @@ KeyDeriveDlg::KeyDeriveDlg(QWidget *parent) :
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mRunBtn, SIGNAL(clicked()), this, SLOT(Run()));
+    connect( mKeyValueText, SIGNAL(textChanged()), this, SLOT(keyValueChanged()));
+
+    connect( mPasswordText, SIGNAL(textChanged(const QString&)), this, SLOT(passwordChanged()));
+    connect( mSaltText, SIGNAL(textChanged(const QString&)), this, SLOT(saltChanged()));
+    connect( mSaltTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(saltChanged()));
 
     mHashCombo->addItems( hashTypes );
     mSaltTypeCombo->addItems( dataTypes );
@@ -83,4 +89,23 @@ void KeyDeriveDlg::Run()
     JS_BIN_reset( &binKey );
 
     repaint();
+}
+
+void KeyDeriveDlg::passwordChanged()
+{
+    int nLen = getDataLen( DATA_STRING, mPasswordText->text() );
+    mPasswordLenText->setText(QString("%1").arg(nLen));
+}
+
+void KeyDeriveDlg::saltChanged()
+{
+    int nLen = getDataLen( mSaltTypeCombo->currentText(), mSaltText->text() );
+    mSaltLenText->setText( QString("%1").arg(nLen));
+}
+
+
+void KeyDeriveDlg::keyValueChanged()
+{
+    int nLen = getDataLen( DATA_HEX, mKeyValueText->toPlainText() );
+    mKeyValueLenText->setText( QString("%1").arg(nLen));
 }

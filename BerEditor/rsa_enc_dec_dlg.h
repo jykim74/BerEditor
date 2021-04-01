@@ -23,6 +23,9 @@ private slots:
     void findPrivateKey();
     void changeValue();
 
+    void inputChanged();
+    void outputChanged();
+
 private:
     void initialize();
 

@@ -34,6 +34,19 @@ private slots:
     void genBECDHPubKey();
     void findBECDHPriKey();
 
+    void pChanged();
+
+    void APriKeyChanged();
+    void APubKeyChanged();
+    void BPriKeyChanged();
+    void BPubKeyChanged();
+
+    void AECDHPriKeyChanged();
+    void AECDHPubKeyChanged();
+    void BECDHPriKeyChanged();
+    void BECDHPubKeyChanged();
+
+    void secretKeyChanged();
 
 private:
     void initialize();

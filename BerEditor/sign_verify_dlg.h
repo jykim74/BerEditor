@@ -26,6 +26,9 @@ private slots:
     void signVerifyUpdate();
     void signVerifyFinal();
 
+    void inputChanged();
+    void outputChanged();
+
 private:
     void initialize();
     void *sctx_;

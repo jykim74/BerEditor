@@ -31,6 +31,9 @@ private slots:
     void clickDevelopedData();
     void clickDevelopedAndVerify();
 
+    void srcChanged();
+    void outputChanged();
+
 private:
 
 };

@@ -27,6 +27,15 @@ CMSDlg::CMSDlg(QWidget *parent) :
     connect( mDevelopedDataBtn, SIGNAL(clicked()), this, SLOT(clickDevelopedData()));
     connect( mDevelopedAndVerifyBtn, SIGNAL(clicked()), this, SLOT(clickDevelopedAndVerify()));
 
+    connect( mSrcText, SIGNAL(textChanged()), this, SLOT(srcChanged()));
+    connect( mOutputText, SIGNAL(textChanged()), this, SLOT(outputChanged()));
+    connect( mSrcStringRadio, SIGNAL(clicked()), this, SLOT(srcChanged()));
+    connect( mSrcHexRadio, SIGNAL(clicked()), this, SLOT(srcChanged()));
+    connect( mSrcBase64Radio, SIGNAL(clicked()), this, SLOT(srcChanged()));
+    connect( mOutputStringRadio, SIGNAL(clicked()), this, SLOT(outputChanged()));
+    connect( mOutputHexRadio, SIGNAL(clicked()), this, SLOT(outputChanged()));
+    connect( mOutputBase64Radio, SIGNAL(clicked()), this, SLOT(outputChanged()));
+
     mCloseBtn->setFocus();
 }
 
@@ -514,4 +523,30 @@ end :
     JS_BIN_reset( &binSignCert );
     JS_BIN_reset( &binKMPri );
     JS_BIN_reset( &binKMCert );
+}
+
+void CMSDlg::srcChanged()
+{
+    int nType = DATA_STRING;
+
+    if( mSrcHexRadio->isChecked() )
+        nType = DATA_HEX;
+    else if( mSrcBase64Radio->isChecked() )
+        nType = DATA_BASE64;
+
+    int nLen = getDataLen( nType, mSrcText->toPlainText() );
+    mSrcLenText->setText( QString("%1").arg(nLen));
+}
+
+void CMSDlg::outputChanged()
+{
+    int nType = DATA_STRING;
+
+    if( mOutputHexRadio->isChecked() )
+        nType = DATA_HEX;
+    else if( mOutputBase64Radio->isChecked() )
+        nType = DATA_BASE64;
+
+    int nLen = getDataLen( nType, mOutputText->toPlainText() );
+    mOutputLenText->setText( QString("%1").arg(nLen));
 }

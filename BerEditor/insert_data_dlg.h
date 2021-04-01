@@ -21,6 +21,7 @@ public:
 
 private slots :
     void viewData();
+    void dataChanged();
 
 private:
 //    Ui::InsertDataDlg *ui;

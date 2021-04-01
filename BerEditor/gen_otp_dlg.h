@@ -19,6 +19,7 @@ public:
 private slots:
     void setNow();
     void Run();
+    void keyChanged();
 
 private:
     void initialize();

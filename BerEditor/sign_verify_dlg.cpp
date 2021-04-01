@@ -50,6 +50,12 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     connect( mRunBtn, SIGNAL(clicked()), this, SLOT(Run()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
+    connect( mInputText, SIGNAL(textChanged()), this, SLOT(inputChanged()));
+    connect( mOutputText, SIGNAL(textChanged()), this, SLOT(outputChanged()));
+    connect( mInputStringRadio, SIGNAL(clicked()), this, SLOT(inputChanged()));
+    connect( mInputHexRadio, SIGNAL(clicked()), this, SLOT(inputChanged()));
+    connect( mInputBase64Radio, SIGNAL(clicked()), this, SLOT(inputChanged()));
+
     mCloseBtn->setFocus();
 }
 
@@ -189,14 +195,14 @@ void SignVerifyDlg::signVerifyUpdate()
 //        return;
     }
 
-    if( mInputStringBtn->isChecked() )
+    if( mInputStringRadio->isChecked() )
         JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
-    else if( mInputHexBtn->isChecked() )
+    else if( mInputHexRadio->isChecked() )
     {
         strInput.remove(QRegExp("[\t\r\n\\s]"));
         JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
     }
-    else if( mInputBase64Btn->isChecked() )
+    else if( mInputBase64Radio->isChecked() )
     {
         strInput.remove(QRegExp("[\t\r\n\\s]"));
         JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
@@ -278,14 +284,14 @@ void SignVerifyDlg::Run()
 //        return;
     }
 
-    if( mInputStringBtn->isChecked() )
+    if( mInputStringRadio->isChecked() )
         JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
-    else if( mInputHexBtn->isChecked() )
+    else if( mInputHexRadio->isChecked() )
     {
         strInput.remove(QRegExp("[\t\r\n\\s]"));
         JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
     }
-    else if( mInputBase64Btn->isChecked() )
+    else if( mInputBase64Radio->isChecked() )
     {
         strInput.remove(QRegExp("[\t\r\n\\s]"));
         JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
@@ -358,4 +364,22 @@ end :
     JS_BIN_reset( &binCert );
     JS_BIN_reset( &binOut );
     if( pOut ) JS_free( pOut );
+}
+
+void SignVerifyDlg::inputChanged()
+{
+    int nType = DATA_STRING;
+    if( mInputHexRadio->isChecked() )
+        nType = DATA_HEX;
+    else if( mInputBase64Radio->isChecked() )
+        nType = DATA_BASE64;
+
+    int nLen = getDataLen( nType, mInputText->toPlainText() );
+    mInputLenText->setText( QString("%1").arg(nLen));
+}
+
+void SignVerifyDlg::outputChanged()
+{
+    int nLen = getDataLen( DATA_HEX, mOutputText->toPlainText() );
+    mOutputLenText->setText( QString("%1").arg(nLen));
 }

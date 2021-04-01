@@ -42,6 +42,17 @@ KeyAgreeDlg::KeyAgreeDlg(QWidget *parent) :
     connect( mBCalcBtn, SIGNAL(clicked()), this, SLOT(calcualteB()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
+    connect( mPText, SIGNAL(textChanged()), this, SLOT(pChanged()));
+    connect( mSecretKeyText, SIGNAL(textChanged()), this, SLOT(secretKeyChanged()));
+    connect( mAPrivateKeyText, SIGNAL(textChanged(const QString&)), this, SLOT(APriKeyChanged()));
+    connect( mAPublicKeyText, SIGNAL(textChanged(const QString&)), this, SLOT(APubKeyChanged()));
+    connect( mBPrivateKeyText, SIGNAL(textChanged(const QString&)), this, SLOT(BPriKeyChanged()));
+    connect( mBPublicKeyText, SIGNAL(textChanged(const QString&)), this, SLOT(BPubKeyChanged()));
+    connect( mAECDHPriKeyText, SIGNAL(textChanged(const QString&)), this, SLOT(AECDHPriKeyChanged()));
+    connect( mAECDHPubKeyText, SIGNAL(textChanged(const QString&)), this, SLOT(AECDHPubKeyChanged()));
+    connect( mBECDHPriKeyText, SIGNAL(textChanged(const QString&)), this, SLOT(BECDHPriKeyChanged()));
+    connect( mBECDHPubKeyText, SIGNAL(textChanged(const QString&)), this, SLOT(BECDHPubKeyChanged()));
+
     initialize();
     mCloseBtn->setFocus();
 }
@@ -436,3 +447,62 @@ void KeyAgreeDlg::findBECDHPriKey()
     repaint();
 }
 
+void KeyAgreeDlg::pChanged()
+{
+    int nLen = getDataLen( DATA_HEX, mPText->toPlainText() );
+    mPLenText->setText( QString("%1").arg(nLen));
+}
+
+void KeyAgreeDlg::APriKeyChanged()
+{
+    int nLen = getDataLen( DATA_HEX, mAPrivateKeyText->text() );
+    mAPrivateKeyLenText->setText( QString("%1").arg(nLen));
+}
+
+void KeyAgreeDlg::APubKeyChanged()
+{
+    int nLen = getDataLen( DATA_HEX, mAPublicKeyText->text() );
+    mAPublicKeyLenText->setText( QString("%1").arg(nLen));
+}
+
+void KeyAgreeDlg::BPriKeyChanged()
+{
+    int nLen = getDataLen( DATA_HEX, mBPrivateKeyText->text() );
+    mBPrivateKeyLenText->setText( QString("%1").arg(nLen));
+}
+
+void KeyAgreeDlg::BPubKeyChanged()
+{
+    int nLen = getDataLen( DATA_HEX, mBPublicKeyText->text() );
+    mBPublicKeyLenText->setText( QString("%1").arg(nLen));
+}
+
+void KeyAgreeDlg::AECDHPriKeyChanged()
+{
+    int nLen = getDataLen( DATA_HEX, mAECDHPriKeyText->text() );
+    mAECDHPriKeyLenText->setText( QString("%1").arg(nLen));
+}
+
+void KeyAgreeDlg::AECDHPubKeyChanged()
+{
+    int nLen = getDataLen( DATA_HEX, mAECDHPubKeyText->text() );
+    mAECDHPubKeyLenText->setText( QString("%1").arg(nLen));
+}
+
+void KeyAgreeDlg::BECDHPriKeyChanged()
+{
+    int nLen = getDataLen( DATA_HEX, mBECDHPriKeyText->text() );
+    mBECDHPriKeyLenText->setText( QString("%1").arg(nLen));
+}
+
+void KeyAgreeDlg::BECDHPubKeyChanged()
+{
+    int nLen = getDataLen( DATA_HEX, mBECDHPubKeyText->text() );
+    mBECDHPubKeyLenText->setText( QString("%1").arg(nLen));
+}
+
+void KeyAgreeDlg::secretKeyChanged()
+{
+    int nLen = getDataLen( DATA_HEX, mSecretKeyText->toPlainText() );
+    mSecretKeyLenText->setText( QString("%1").arg(nLen));
+}

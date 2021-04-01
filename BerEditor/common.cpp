@@ -227,3 +227,39 @@ QString getHexView( const char *pName, const BIN *pBin )
 
     return strOut;
 }
+
+int getDataLen( int nType, const QString strData )
+{
+    int nLen = 0;
+    if( strData.isEmpty() ) return 0;
+
+    if( nType == DATA_HEX )
+    {
+        nLen = strData.length() / 2;
+        return nLen;
+    }
+    else if( nType == DATA_BASE64 )
+    {
+        BIN bin = {0,0};
+        JS_BIN_decodeBase64( strData.toStdString().c_str(), &bin );
+        nLen = bin.nLen;
+        JS_BIN_reset( &bin );
+        return nLen;
+    }
+
+    return strData.length();
+}
+
+int getDataLen( const QString strType, const QString strData )
+{
+    int nType = DATA_STRING;
+
+    QString strLower = strType.toLower();
+
+    if( strLower == "hex" )
+        nType = DATA_HEX;
+    else if( strLower == "base64" )
+        nType = DATA_BASE64;
+
+    return getDataLen( nType, strData );
+}

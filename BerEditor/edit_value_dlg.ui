@@ -179,7 +179,7 @@
       <widget class="QLineEdit" name="mValueLenText">
        <property name="maximumSize">
         <size>
-         <width>60</width>
+         <width>40</width>
          <height>16777215</height>
         </size>
        </property>

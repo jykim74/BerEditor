@@ -21,6 +21,8 @@ public:
 private slots:
     void onClickEncodeBtn();
     void outTypeChanged( int index );
+    void inputChanged();
+    void outputChanged();
 
 private:
 //    Ui::DataEncoderDlg *ui;

@@ -142,6 +142,25 @@
      <item>
       <widget class="QLineEdit" name="mKeyText"/>
      </item>
+     <item>
+      <widget class="QLineEdit" name="mKeyLenText">
+       <property name="minimumSize">
+        <size>
+         <width>40</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>

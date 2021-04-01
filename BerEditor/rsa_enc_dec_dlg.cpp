@@ -37,6 +37,15 @@ RSAEncDecDlg::RSAEncDecDlg(QWidget *parent) :
     connect( mRunBtn, SIGNAL(clicked()), this, SLOT(Run()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
+    connect( mInputText, SIGNAL(textChanged()), this, SLOT(inputChanged()));
+    connect( mOutputText, SIGNAL(textChanged()), this, SLOT(outputChanged()));
+
+    connect( mInputStringRadio, SIGNAL(clicked()), this, SLOT(inputChanged()));
+    connect( mInputHexRadio, SIGNAL(clicked()), this, SLOT(inputChanged()));
+    connect( mInputBase64Radio, SIGNAL(clicked()), this, SLOT(inputChanged()));
+
+    connect( mOutputTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(outputChanged()));
+
     mCloseBtn->setFocus();
 }
 
@@ -86,14 +95,14 @@ void RSAEncDecDlg::Run()
         return;
     }
 
-    if( mInputStringBtn->isChecked() )
+    if( mInputStringRadio->isChecked() )
         JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
-    else if( mInputHexBtn->isChecked() )
+    else if( mInputHexRadio->isChecked() )
     {
         strInput.remove(QRegExp("[\t\r\n\\s]"));
         JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
     }
-    else if( mInputBase64Btn->isChecked() )
+    else if( mInputBase64Radio->isChecked() )
     {
         strInput.remove(QRegExp("[\t\r\n\\s]"));
         JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
@@ -184,11 +193,30 @@ void RSAEncDecDlg::changeValue()
     mOutputText->clear();
 
     if( mOutputTypeCombo->currentIndex() == 0 )
-        mInputStringBtn->setChecked(true);
+        mInputStringRadio->setChecked(true);
     else if( mOutputTypeCombo->currentIndex() == 1 )
-        mInputHexBtn->setChecked(true);
+        mInputHexRadio->setChecked(true);
     else if( mOutputTypeCombo->currentIndex() == 2 )
-        mInputBase64Btn->setChecked(true);
+        mInputBase64Radio->setChecked(true);
 
     repaint();
+}
+
+void RSAEncDecDlg::inputChanged()
+{
+    int nType = DATA_STRING;
+
+    if( mInputHexRadio->isChecked() )
+        nType = DATA_HEX;
+    else if( mInputBase64Radio->isChecked() )
+        nType = DATA_BASE64;
+
+    int nLen = getDataLen( nType, mInputText->toPlainText() );
+    mInputLenText->setText( QString("%1").arg(nLen));
+}
+
+void RSAEncDecDlg::outputChanged()
+{
+    int nLen = getDataLen( mOutputTypeCombo->currentText(), mOutputText->toPlainText() );
+    mOutputLenText->setText( QString("%1").arg(nLen));
 }

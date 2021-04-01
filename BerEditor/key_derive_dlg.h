@@ -18,6 +18,9 @@ public:
 
 private slots:
     void Run();
+    void passwordChanged();
+    void saltChanged();
+    void keyValueChanged();
 
 private:
 

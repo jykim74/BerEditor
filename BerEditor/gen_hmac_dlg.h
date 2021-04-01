@@ -25,6 +25,10 @@ private slots:
         void inputClear();
         void outputClear();
 
+        void inputChanged();
+        void outputChanged();
+        void keyChanged();
+
 private:
         void *hctx_;
 };

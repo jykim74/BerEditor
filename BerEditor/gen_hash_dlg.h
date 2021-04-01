@@ -23,6 +23,8 @@ private slots:
     void hashFinal();
     void clearInput();
     void clearOutput();
+    void inputChanged();
+    void outputChanged();
 
 private:
     void *pctx_;

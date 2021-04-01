@@ -27,6 +27,8 @@ OIDInfoDlg::OIDInfoDlg(QWidget *parent) :
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(closeDlg()));
     connect( mInputText, SIGNAL(textChanged(const QString&)), this, SLOT(findOID()));
     connect( mCreateBtn, SIGNAL(clicked()), this, SLOT(createOID()));
+
+    mCloseBtn->setFocus();
 }
 
 OIDInfoDlg::~OIDInfoDlg()

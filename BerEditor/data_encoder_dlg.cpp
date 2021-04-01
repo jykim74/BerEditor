@@ -22,6 +22,12 @@ DataEncoderDlg::DataEncoderDlg(QWidget *parent) :
     connect( mEncodeBtn, SIGNAL(clicked()), this, SLOT(onClickEncodeBtn()));
     connect( mOutputTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(outTypeChanged(int)));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mInputText, SIGNAL(textChanged()), this, SLOT(inputChanged()));
+    connect( mInputTypeURL, SIGNAL(clicked()), this, SLOT(inputChanged()));
+    connect( mInputTypeHexBtn, SIGNAL(clicked()), this, SLOT(inputChanged()));
+    connect( mInputTypeBase64Btn, SIGNAL(clicked()), this, SLOT(inputChanged()));
+    connect( mInputTypeStringBtn, SIGNAL(clicked()), this, SLOT(inputChanged()));
+    connect( mOutputText, SIGNAL(textChanged()), this, SLOT(outputChanged()));
 
     mCloseBtn->setFocus();
 }
@@ -47,7 +53,7 @@ void DataEncoderDlg::onClickEncodeBtn()
     BIN binSrc = {0,0};
     char *pOut = NULL;
 
-    QString inputStr = mInputTextEdit->toPlainText();
+    QString inputStr = mInputText->toPlainText();
     if( inputStr.isEmpty() )
     {
         berApplet->warningBox( tr( "You have to insert data" ), this );
@@ -66,10 +72,8 @@ void DataEncoderDlg::onClickEncodeBtn()
     output_type = mOutputTypeCombo->currentIndex();
 
     if( input_type == output_type )
-        mOutputTextEdit->setPlainText( mInputTextEdit->toPlainText() );
+        mOutputText->setPlainText( mInputText->toPlainText() );
     else {
-
-
 
         if( input_type == DATA_STRING )
         {
@@ -107,24 +111,24 @@ void DataEncoderDlg::onClickEncodeBtn()
                     pOut[i] = getch( pOut[i] );
             }
 
-            mOutputTextEdit->setPlainText( pOut );
+            mOutputText->setPlainText( pOut );
         }
         else if( output_type == DATA_HEX )
         {
             JS_BIN_encodeHex( &binSrc, &pOut);
-            mOutputTextEdit->setPlainText(pOut);
+            mOutputText->setPlainText(pOut);
         }
         else if( output_type == DATA_BASE64 )
         {
             JS_BIN_encodeBase64( &binSrc, &pOut );
-            mOutputTextEdit->setPlainText(pOut);
+            mOutputText->setPlainText(pOut);
         }
         else if( output_type == DATA_URL )
         {
             char *pStr = NULL;
             JS_BIN_string( &binSrc, &pStr );
             JS_UTIL_encodeURL( pStr, &pOut );
-            mOutputTextEdit->setPlainText(pOut);
+            mOutputText->setPlainText(pOut);
             if( pStr ) JS_free(pStr);
         }
     }
@@ -144,4 +148,27 @@ void DataEncoderDlg::outTypeChanged(int index)
     {
         mShowPrintTextCheck->setEnabled(false);
     }
+}
+
+void DataEncoderDlg::inputChanged()
+{
+    int nInputType = 0;
+
+    if( mInputTypeStringBtn->isChecked() )
+        nInputType = DATA_STRING;
+    else if( mInputTypeHexBtn->isChecked() )
+        nInputType = DATA_HEX;
+    else if( mInputTypeBase64Btn->isChecked() )
+        nInputType = DATA_BASE64;
+    else if( mInputTypeURL->isChecked() )
+        nInputType = DATA_URL;
+
+    int nLen = getDataLen( nInputType, mInputText->toPlainText() );
+    mInputLenText->setText( QString("%1").arg(nLen));
+}
+
+void DataEncoderDlg::outputChanged()
+{
+    int nLen = getDataLen( mOutputTypeCombo->currentText(), mOutputText->toPlainText() );
+    mOutputLenText->setText( QString("%1").arg(nLen));
 }

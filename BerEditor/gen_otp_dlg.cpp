@@ -32,6 +32,9 @@ GenOTPDlg::GenOTPDlg(QWidget *parent) :
     connect( mRunBtn, SIGNAL(clicked()), this, SLOT(Run()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
+    connect( mKeyText, SIGNAL(textChanged(const QString&)), this, SLOT(keyChanged()));
+    connect( mKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(keyChanged()));
+
     mCloseBtn->setFocus();
 }
 
@@ -98,4 +101,10 @@ void GenOTPDlg::Run()
     JS_BIN_reset(&binKey);
     JS_BIN_reset(&binT);
     repaint();
+}
+
+void GenOTPDlg::keyChanged()
+{
+    int nLen = getDataLen( mKeyTypeCombo->currentText(), mKeyText->text() );
+    mKeyLenText->setText( QString("%1").arg(nLen));
 }

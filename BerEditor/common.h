@@ -29,5 +29,7 @@ int setOIDList( const QString& strOIDPath );
 QString getHexString( const QString& strVal );
 QString getHexString( unsigned char *pData, int nDataLen );
 QString getHexView( const char *pName, const BIN *pBin );
+int getDataLen( int nType, const QString strData );
+int getDataLen( const QString strType, const QString strData );
 
 #endif // COMMON_H

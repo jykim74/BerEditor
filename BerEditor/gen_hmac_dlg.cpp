@@ -5,6 +5,7 @@
 #include "js_bin.h"
 #include "js_pki.h"
 #include "ber_applet.h"
+#include "common.h"
 
 static QStringList hashTypes = {
     "md5",
@@ -38,6 +39,15 @@ GenHmacDlg::GenHmacDlg(QWidget *parent) :
     connect( mInputClearBtn, SIGNAL(clicked()), this, SLOT(inputClear()));
     connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(outputClear()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+
+    connect( mInputText, SIGNAL(textChanged()), this, SLOT(inputChanged()));
+    connect( mOutputText, SIGNAL(textChanged()), this, SLOT(outputChanged()));
+    connect( mInputStringRadio, SIGNAL(clicked()), this, SLOT(inputChanged()));
+    connect( mInputHexRadio, SIGNAL(clicked()), this, SLOT(inputChanged()));
+    connect( mInputBase64Radio, SIGNAL(clicked()), this, SLOT(inputChanged()));
+
+    connect( mKeyText, SIGNAL(textChanged(const QString&)), this, SLOT(keyChanged()));
+    connect( mKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(keyChanged()));
 
     mCloseBtn->setFocus();
 }
@@ -91,14 +101,14 @@ void GenHmacDlg::hmacUpdate()
 
     if( strInput.length() > 0 )
     {
-        if( mInputStringBtn->isChecked() )
+        if( mInputStringRadio->isChecked() )
             JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
-        else if( mInputHexBtn->isChecked() )
+        else if( mInputHexRadio->isChecked() )
         {
             strInput.remove(QRegExp("[\t\r\n\\s]"));
             JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
         }
-        else if( mInputBase64Btn->isChecked() )
+        else if( mInputBase64Radio->isChecked() )
         {
             strInput.remove(QRegExp("[\t\r\n\\s]"));
             JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
@@ -150,14 +160,14 @@ void GenHmacDlg::hmac()
 
     if( strInput.length() > 0 )
     {
-        if( mInputStringBtn->isChecked() )
+        if( mInputStringRadio->isChecked() )
             JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
-        else if( mInputHexBtn->isChecked() )
+        else if( mInputHexRadio->isChecked() )
         {
             strInput.remove(QRegExp("[\t\r\n\\s]"));
             JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
         }
-        else if( mInputBase64Btn->isChecked() )
+        else if( mInputBase64Radio->isChecked() )
         {
             strInput.remove(QRegExp("[\t\r\n\\s]"));
             JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
@@ -213,4 +223,29 @@ void GenHmacDlg::outputClear()
 {
     mOutputText->clear();
     repaint();
+}
+
+void GenHmacDlg::inputChanged()
+{
+    int nType = DATA_STRING;
+
+    if( mInputHexRadio->isChecked() )
+        nType = DATA_HEX;
+    else if( mInputBase64Radio->isChecked() )
+        nType = DATA_BASE64;
+
+    int nLen = getDataLen( nType, mInputText->toPlainText() );
+    mInputLenText->setText( QString("%1").arg(nLen));
+}
+
+void GenHmacDlg::outputChanged()
+{
+    int nLen = getDataLen( DATA_HEX, mOutputText->toPlainText() );
+    mOutputLenText->setText( QString("%1").arg(nLen));
+}
+
+void GenHmacDlg::keyChanged()
+{
+    int nLen = getDataLen( mKeyTypeCombo->currentText(), mKeyText->text() );
+    mKeyLenText->setText( QString("%1").arg(nLen));
 }
