@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>301</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -291,9 +291,15 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>mPasswordText</tabstop>
+  <tabstop>mPasswordLenText</tabstop>
+  <tabstop>mSaltTypeCombo</tabstop>
+  <tabstop>mSaltText</tabstop>
+  <tabstop>mSaltLenText</tabstop>
   <tabstop>mIterCountText</tabstop>
   <tabstop>mHashCombo</tabstop>
   <tabstop>mKeySizeText</tabstop>
+  <tabstop>mKeyValueLenText</tabstop>
   <tabstop>mKeyValueText</tabstop>
   <tabstop>mRunBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>

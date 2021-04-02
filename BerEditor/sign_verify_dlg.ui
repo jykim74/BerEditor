@@ -340,6 +340,7 @@
   <tabstop>mInputStringRadio</tabstop>
   <tabstop>mInputHexRadio</tabstop>
   <tabstop>mInputBase64Radio</tabstop>
+  <tabstop>mInputLenText</tabstop>
   <tabstop>mInputText</tabstop>
   <tabstop>mPubKeyVerifyCheck</tabstop>
   <tabstop>mPriKeyPath</tabstop>
@@ -350,6 +351,7 @@
   <tabstop>mHashTypeCombo</tabstop>
   <tabstop>mVersionCombo</tabstop>
   <tabstop>mMethodCombo</tabstop>
+  <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
   <tabstop>mInitBtn</tabstop>
   <tabstop>mUpdateBtn</tabstop>

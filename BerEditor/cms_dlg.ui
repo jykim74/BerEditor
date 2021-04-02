@@ -349,6 +349,11 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>mSrcStringRadio</tabstop>
+  <tabstop>mSrcHexRadio</tabstop>
+  <tabstop>mSrcBase64Radio</tabstop>
+  <tabstop>mSrcLenText</tabstop>
+  <tabstop>mSrcText</tabstop>
   <tabstop>mSignPriKeyPathText</tabstop>
   <tabstop>mSignPriKeyFindBtn</tabstop>
   <tabstop>mSignCertPathText</tabstop>
@@ -357,12 +362,20 @@
   <tabstop>mKMPriKeyFindBtn</tabstop>
   <tabstop>mKMCertPathText</tabstop>
   <tabstop>mKMCertFindBtn</tabstop>
+  <tabstop>mOutputStringRadio</tabstop>
+  <tabstop>mOutputHexRadio</tabstop>
+  <tabstop>mOutputBase64Radio</tabstop>
+  <tabstop>mOutputLenText</tabstop>
+  <tabstop>mOutputText</tabstop>
   <tabstop>mSignedDataBtn</tabstop>
   <tabstop>mEnvelopedDataBtn</tabstop>
   <tabstop>mSignAndEnvelopedBtn</tabstop>
   <tabstop>mVerifyDataBtn</tabstop>
   <tabstop>mDevelopedDataBtn</tabstop>
   <tabstop>mDevelopedAndVerifyBtn</tabstop>
+  <tabstop>mViewBtn</tabstop>
+  <tabstop>mChangeBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>
  <connections/>

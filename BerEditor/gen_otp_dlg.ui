@@ -262,6 +262,7 @@
   <tabstop>mLengthSpin</tabstop>
   <tabstop>mKeyTypeCombo</tabstop>
   <tabstop>mKeyText</tabstop>
+  <tabstop>mKeyLenText</tabstop>
   <tabstop>mTValueText</tabstop>
   <tabstop>mOTPValueText</tabstop>
   <tabstop>mRunBtn</tabstop>

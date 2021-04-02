@@ -523,22 +523,28 @@
   <tabstop>mInputStringRadio</tabstop>
   <tabstop>mInputHexRadio</tabstop>
   <tabstop>mInputBase64Radio</tabstop>
+  <tabstop>mInputLenText</tabstop>
   <tabstop>mInputText</tabstop>
   <tabstop>mIVTypeCombo</tabstop>
   <tabstop>mIVText</tabstop>
+  <tabstop>mIVLenText</tabstop>
   <tabstop>mKeyTypeCombo</tabstop>
   <tabstop>mKeyText</tabstop>
+  <tabstop>mKeyLenText</tabstop>
   <tabstop>mUseAECheck</tabstop>
   <tabstop>mCCMInitLength</tabstop>
   <tabstop>mAADTypeCombo</tabstop>
   <tabstop>mAADText</tabstop>
+  <tabstop>mAADLenText</tabstop>
   <tabstop>mTagTypeCombo</tabstop>
   <tabstop>mTagText</tabstop>
+  <tabstop>mTagLenText</tabstop>
   <tabstop>mAlgCombo</tabstop>
   <tabstop>mOutputTypeCombo</tabstop>
   <tabstop>mMethodCombo</tabstop>
   <tabstop>mPadCheck</tabstop>
   <tabstop>mChangeBtn</tabstop>
+  <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
   <tabstop>mInitBtn</tabstop>
   <tabstop>mUpdateBtn</tabstop>

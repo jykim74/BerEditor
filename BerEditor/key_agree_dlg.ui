@@ -691,6 +691,41 @@
  </widget>
  <tabstops>
   <tabstop>mTabWidget</tabstop>
+  <tabstop>mLengthText</tabstop>
+  <tabstop>mGText</tabstop>
+  <tabstop>mGCombo</tabstop>
+  <tabstop>mGenParamBtn</tabstop>
+  <tabstop>mPLenText</tabstop>
+  <tabstop>mPText</tabstop>
+  <tabstop>mAPrivateKeyText</tabstop>
+  <tabstop>mAPrivateKeyLenText</tabstop>
+  <tabstop>mADHPriBtn</tabstop>
+  <tabstop>mAPublicKeyText</tabstop>
+  <tabstop>mAPublicKeyLenText</tabstop>
+  <tabstop>mAGenDHKeyBtn</tabstop>
+  <tabstop>mBPrivateKeyText</tabstop>
+  <tabstop>mBPrivateKeyLenText</tabstop>
+  <tabstop>mBDHPriBtn</tabstop>
+  <tabstop>mBPublicKeyText</tabstop>
+  <tabstop>mBPublicKeyLenText</tabstop>
+  <tabstop>mBGenDHKeyBtn</tabstop>
+  <tabstop>mECDHParamCombo</tabstop>
+  <tabstop>mAECDHPriKeyText</tabstop>
+  <tabstop>mAECDHPriKeyLenText</tabstop>
+  <tabstop>mAECDHPubKeyText</tabstop>
+  <tabstop>mAECDHPubKeyLenText</tabstop>
+  <tabstop>mAGenPriKeyBtn</tabstop>
+  <tabstop>mAGenPubKeyBtn</tabstop>
+  <tabstop>mAFindPriKeyBtn</tabstop>
+  <tabstop>mBECDHPriKeyText</tabstop>
+  <tabstop>mBECDHPriKeyLenText</tabstop>
+  <tabstop>mBECDHPubKeyText</tabstop>
+  <tabstop>mBECDHPubKeyLenText</tabstop>
+  <tabstop>mBGenPriKeyBtn</tabstop>
+  <tabstop>mBGenPubKeyBtn</tabstop>
+  <tabstop>mBFindPriKeyBtn</tabstop>
+  <tabstop>mSecretKeyLenText</tabstop>
+  <tabstop>mSecretKeyText</tabstop>
   <tabstop>mSecretClearBtn</tabstop>
   <tabstop>mACalcBtn</tabstop>
   <tabstop>mBCalcBtn</tabstop>

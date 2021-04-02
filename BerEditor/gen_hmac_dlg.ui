@@ -316,12 +316,15 @@
   <tabstop>mInputStringRadio</tabstop>
   <tabstop>mInputHexRadio</tabstop>
   <tabstop>mInputBase64Radio</tabstop>
+  <tabstop>mInputLenText</tabstop>
   <tabstop>mInputText</tabstop>
   <tabstop>mAlgTypeCombo</tabstop>
   <tabstop>mInputClearBtn</tabstop>
   <tabstop>mOutputClearBtn</tabstop>
   <tabstop>mKeyTypeCombo</tabstop>
   <tabstop>mKeyText</tabstop>
+  <tabstop>mKeyLenText</tabstop>
+  <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
   <tabstop>mInitBtn</tabstop>
   <tabstop>mUpdateBtn</tabstop>

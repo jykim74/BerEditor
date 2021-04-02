@@ -142,6 +142,9 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>mTypeHex</tabstop>
+  <tabstop>mTypeBase64</tabstop>
+  <tabstop>mDataLenText</tabstop>
   <tabstop>mDataText</tabstop>
   <tabstop>mViewBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>

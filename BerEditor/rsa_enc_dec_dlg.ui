@@ -296,6 +296,7 @@
   <tabstop>mInputStringRadio</tabstop>
   <tabstop>mInputHexRadio</tabstop>
   <tabstop>mInputBase64Radio</tabstop>
+  <tabstop>mInputLenText</tabstop>
   <tabstop>mInputText</tabstop>
   <tabstop>mPubKeyEncryptCheck</tabstop>
   <tabstop>mPriKeyPath</tabstop>
@@ -306,6 +307,7 @@
   <tabstop>mOutputTypeCombo</tabstop>
   <tabstop>mMethodTypeCombo</tabstop>
   <tabstop>mChangeBtn</tabstop>
+  <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
   <tabstop>mRunBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
