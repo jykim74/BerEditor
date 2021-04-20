@@ -236,6 +236,9 @@ int getDataLen( int nType, const QString strData )
     if( nType == DATA_HEX )
     {
         nLen = strData.length() / 2;
+
+        if( strData.length() % 2 ) nLen++;
+
         return nLen;
     }
     else if( nType == DATA_BASE64 )
