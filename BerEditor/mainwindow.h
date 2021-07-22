@@ -56,6 +56,7 @@ private slots:
     void signVerify();
     void rsaEncDec();
     void cms();
+    void sss();
     void genOTP();
     void insertBER();
     void insertData();

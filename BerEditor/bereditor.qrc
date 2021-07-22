@@ -41,5 +41,6 @@
         <file>images/cms.png</file>
         <file>images/otp.png</file>
         <file>images/ber.jpg</file>
+        <file>images/sss.png</file>
     </qresource>
 </RCC>

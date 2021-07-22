@@ -22,6 +22,7 @@
 #include "num_trans_dlg.h"
 #include "about_dlg.h"
 #include "cms_dlg.h"
+#include "sss_dlg.h"
 #include "insert_ber_dlg.h"
 #include "common.h"
 
@@ -340,6 +341,13 @@ void MainWindow::createActions()
     cmsAct->setStatusTip(tr("PKCS#7 Cryptographic Message Syntax" ));
     cryptMenu->addAction( cmsAct );
     cryptToolBar->addAction( cmsAct );
+
+    const QIcon sssIcon = QIcon::fromTheme("SSS", QIcon(":/images/sss.png"));
+    QAction *sssAct = new QAction( sssIcon, tr("&SSS"), this );
+    connect( sssAct, &QAction::triggered, this, &MainWindow::sss );
+    sssAct->setStatusTip(tr("Shamir Secret Sharing Scheme" ));
+    cryptMenu->addAction( sssAct );
+    cryptToolBar->addAction( sssAct );
 
 
     const QIcon otpIcon = QIcon::fromTheme("OTP", QIcon(":/images/otp.png"));
@@ -734,6 +742,12 @@ void MainWindow::cms()
 {
     CMSDlg cmsDlg;
     cmsDlg.exec();
+}
+
+void MainWindow::sss()
+{
+    SSSDlg sssDlg;
+    sssDlg.exec();
 }
 
 void MainWindow::genOTP()
