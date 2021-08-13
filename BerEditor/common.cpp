@@ -233,18 +233,25 @@ int getDataLen( int nType, const QString strData )
     int nLen = 0;
     if( strData.isEmpty() ) return 0;
 
+    QString strMsg = strData;
+
+    if( nType != DATA_STRING )
+    {
+        strMsg.remove( QRegExp("[\t\r\n\\s]") );
+    }
+
     if( nType == DATA_HEX )
     {
-        nLen = strData.length() / 2;
+        nLen = strMsg.length() / 2;
 
-        if( strData.length() % 2 ) nLen++;
+        if( strMsg.length() % 2 ) nLen++;
 
         return nLen;
     }
     else if( nType == DATA_BASE64 )
     {
         BIN bin = {0,0};
-        JS_BIN_decodeBase64( strData.toStdString().c_str(), &bin );
+        JS_BIN_decodeBase64( strMsg.toStdString().c_str(), &bin );
         nLen = bin.nLen;
         JS_BIN_reset( &bin );
         return nLen;
