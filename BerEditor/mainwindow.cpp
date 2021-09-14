@@ -18,7 +18,7 @@
 #include "gen_otp_dlg.h"
 #include "get_ldap_dlg.h"
 #include "key_agree_dlg.h"
-#include "key_derive_dlg.h"
+#include "key_man_dlg.h"
 #include "num_trans_dlg.h"
 #include "about_dlg.h"
 #include "cms_dlg.h"
@@ -285,12 +285,12 @@ void MainWindow::createActions()
     QMenu *cryptMenu = menuBar()->addMenu(tr("&Crypt"));
     QToolBar *cryptToolBar = addToolBar( "Crypt" );
 
-    const QIcon keyIcon = QIcon::fromTheme("key-derive", QIcon(":/images/key.jpg"));
-    QAction *keyDeriveAct = new QAction( keyIcon, tr("&KeyDerive"), this );
-    connect( keyDeriveAct, &QAction::triggered, this, &MainWindow::keyDerive );
-    keyDeriveAct->setStatusTip(tr("Key Derive function" ));
-    cryptMenu->addAction( keyDeriveAct );
-    cryptToolBar->addAction( keyDeriveAct );
+    const QIcon keyIcon = QIcon::fromTheme("key-man", QIcon(":/images/key.jpg"));
+    QAction *keyManAct = new QAction( keyIcon, tr("&KeyManage"), this );
+    connect( keyManAct, &QAction::triggered, this, &MainWindow::keyManage );
+    keyManAct->setStatusTip(tr("Key Manage function" ));
+    cryptMenu->addAction( keyManAct );
+    cryptToolBar->addAction( keyManAct );
 
     const QIcon hashIcon = QIcon::fromTheme("Hash", QIcon(":/images/hash.png"));
     QAction *hashAct = new QAction( hashIcon, tr("&Hash"), this );
@@ -690,10 +690,10 @@ void MainWindow::dataEncoder()
     dataEncoderDlg.exec();
 }
 
-void MainWindow::keyDerive()
+void MainWindow::keyManage()
 {
-    KeyDeriveDlg keyDeriveDlg;
-    keyDeriveDlg.exec();
+    KeyManDlg keyManDlg;
+    keyManDlg.exec();
 }
 
 void MainWindow::hash()

@@ -47,7 +47,7 @@ private slots:
     void setting();
     void test();
     void dataEncoder();
-    void keyDerive();
+    void keyManage();
     void hash();
     void hmac();
     void keyAgree();
