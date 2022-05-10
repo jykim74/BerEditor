@@ -427,6 +427,8 @@ void BerTreeView::ExpandValue()
     BerModel *tree_model = (BerModel *)model();
     BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
 
+    item->removeRow(0);
+
     int offset = item->GetOffset();
     if( item->GetTag() == JS_BITSTRING )
     {
