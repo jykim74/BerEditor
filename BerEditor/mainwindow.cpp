@@ -573,6 +573,11 @@ void MainWindow::log( const QString strLog, QColor cr )
     log_text_->repaint();
 }
 
+void MainWindow::elog( const QString strLog )
+{
+    log( strLog, QColor(0xFF,0x00,0x00));
+}
+
 QString MainWindow::getLog()
 {
     return log_text_->toPlainText();

@@ -107,6 +107,11 @@ void BerApplet::log( const QString strLog, QColor cr )
     main_win_->log( strLog, cr );
 }
 
+void BerApplet::elog( const QString strLog )
+{
+    main_win_->elog( strLog );
+}
+
 void BerApplet::messageBox(const QString& msg, QWidget *parent)
 {
     QMessageBox box(parent ? parent : main_win_);

@@ -20,11 +20,14 @@
       <widget class="QComboBox" name="mAlgCombo">
        <property name="minimumSize">
         <size>
-         <width>100</width>
+         <width>0</width>
          <height>0</height>
         </size>
        </property>
       </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="mModeCombo"/>
      </item>
      <item>
       <widget class="QComboBox" name="mOutputTypeCombo"/>
@@ -35,7 +38,7 @@
      <item>
       <widget class="QCheckBox" name="mPadCheck">
        <property name="text">
-        <string>Padding</string>
+        <string>Pad</string>
        </property>
       </widget>
      </item>

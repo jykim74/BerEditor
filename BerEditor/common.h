@@ -31,6 +31,7 @@ QString getHexString( unsigned char *pData, int nDataLen );
 QString getHexView( const char *pName, const BIN *pBin );
 int getDataLen( int nType, const QString strData );
 int getDataLen( const QString strType, const QString strData );
+QString getSymAlg( const QString strAlg, const QString strMode, int nKeyLen );
 
 
 #endif // COMMON_H

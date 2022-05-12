@@ -17,6 +17,23 @@ static QStringList methodTypes = {
     "Decrypt"
 };
 
+static QStringList algList = {
+    "AES",
+    "ARIA",
+    "DES",
+    "DES3",
+    "SEED"
+};
+
+static QStringList modeList = {
+  "ECB", "CBC", "CTR", "CFB1", "CFB8", "CFB", "OFB1", "OFB8", "OFB"
+};
+
+static QStringList modeAEList = {
+    "GCM", "CCM"
+};
+
+/*
 static QStringList algTypes = {
     "aes-128-cbc",
     "aes-128-ecb",
@@ -63,6 +80,7 @@ static QStringList algAETypes = {
     "aria-128-gcm",
     "aria-256-gcm"
 };
+*/
 
 EncDecDlg::EncDecDlg(QWidget *parent) :
     QDialog(parent)
@@ -114,6 +132,7 @@ void EncDecDlg::initialize()
     mOutputTypeCombo->setCurrentIndex(1);
 
     mMethodCombo->addItems( methodTypes );
+    mAlgCombo->addItems( algList );
 }
 
 void EncDecDlg::showEvent( QShowEvent *event )
@@ -180,7 +199,18 @@ void EncDecDlg::Run()
 
     bool bPad = mPadCheck->isChecked();
 
+    char *pOut = NULL;
     QString strAlg = mAlgCombo->currentText();
+    QString strMode = mModeCombo->currentText();
+    QString strSymAlg = getSymAlg( strAlg, strMode, binKey.nLen );
+
+    berApplet->log( QString("SymAlg: %1\n").arg( strSymAlg ));
+
+    if( strSymAlg.isEmpty() || strSymAlg.isNull() )
+    {
+        berApplet->elog( QString("Sym Alg is invalid\n" ));
+        goto end;
+    }
 
     if( mUseAECheck->isChecked() )
     {
@@ -197,10 +227,10 @@ void EncDecDlg::Run()
         {
             char *pTag = NULL;
 
-            if( isCCM(strAlg) )
-                ret = JS_PKI_encryptCCM( strAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
+            if( isCCM(strSymAlg) )
+                ret = JS_PKI_encryptCCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
             else
-                ret = JS_PKI_encrytGCM( strAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
+                ret = JS_PKI_encrytGCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
 
             mTagTypeCombo->setCurrentIndex( DATA_HEX );
             JS_BIN_encodeHex( &binTag, &pTag );
@@ -221,21 +251,21 @@ void EncDecDlg::Run()
             else if( mTagTypeCombo->currentIndex() == DATA_BASE64 )
                 JS_BIN_decodeBase64( strTag.toStdString().c_str(), &binTag );
 
-            if( isCCM( strAlg ) )
-                ret = JS_PKI_decryptCCM( strAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
+            if( isCCM( strSymAlg ) )
+                ret = JS_PKI_decryptCCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
             else
-                ret = JS_PKI_decryptGCM( strAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
+                ret = JS_PKI_decryptGCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
         }
     }
     else
     {
         if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
-            ret = JS_PKI_encryptData( strAlg.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
+            ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
         else if( mMethodCombo->currentIndex() == ENC_DECRYPT )
-            ret = JS_PKI_decryptData( strAlg.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
+            ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
     }
 
-    char *pOut = NULL;
+
 
     if( mOutputTypeCombo->currentIndex() == DATA_STRING )
     {
@@ -259,6 +289,7 @@ void EncDecDlg::Run()
     else
         mStatusLabel->setText( "Fail" );
 
+end :
     if( pOut ) JS_free(pOut);
     JS_BIN_reset( &binIV );
     JS_BIN_reset( &binKey );
@@ -274,15 +305,15 @@ void EncDecDlg::clickUseAE()
 {
     bool bStatus = mUseAECheck->isChecked();
 
-    mAlgCombo->clear();
+    mModeCombo->clear();
 
     if( bStatus )
     {
-        mAlgCombo->addItems( algAETypes );
+        mModeCombo->addItems( modeAEList );
     }
     else
     {
-        mAlgCombo->addItems( algTypes );
+        mModeCombo->addItems( modeList );
     }
 
     mAADText->setEnabled( bStatus );

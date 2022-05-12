@@ -37,6 +37,8 @@ public:
     bool isChanged();
 
     void log( const QString strLog, QColor cr = QColor(0x00, 0x00, 0x00) );
+    void elog( const QString strLog );
+
     QString getLog();
 
 private slots:

@@ -427,6 +427,7 @@ void BerTreeView::ExpandValue()
     BerModel *tree_model = (BerModel *)model();
     BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
 
+    // 기존에 열었던 아이템 먼저 제거
     item->removeRow(0);
 
     int offset = item->GetOffset();
