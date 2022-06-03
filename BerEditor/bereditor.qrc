@@ -42,5 +42,6 @@
         <file>images/otp.png</file>
         <file>images/ber.jpg</file>
         <file>images/sss.png</file>
+        <file>images/cavp.png</file>
     </qresource>
 </RCC>

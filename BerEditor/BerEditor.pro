@@ -40,6 +40,7 @@ SOURCES += \
     ber_model.cpp \
     ber_tray_icon.cpp \
     ber_tree_view.cpp \
+    cavp_dlg.cpp \
     cms_dlg.cpp \
     common.cpp \
     data_encoder_dlg.cpp \
@@ -74,6 +75,7 @@ HEADERS += \
     ber_model.h \
     ber_tray_icon.h \
     ber_tree_view.h \
+    cavp_dlg.h \
     cms_dlg.h \
     common.h \
     data_encoder_dlg.h \
@@ -156,6 +158,7 @@ win32 {
 
 FORMS += \
         about_dlg.ui \
+        cavp_dlg.ui \
         cms_dlg.ui \
         data_encoder_dlg.ui \
         edit_value_dlg.ui \

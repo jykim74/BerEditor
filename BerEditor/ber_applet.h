@@ -25,6 +25,7 @@ public:
     QString cmd() { return cmd_; };
     void log( const QString strLog, QColor cr = QColor(00,00,00) );
     void elog( const QString strLog );
+    void info( const QString strLog, QColor cr = QColor(00,00,00) );
 
     void messageBox(const QString& msg, QWidget *parent=0);
     void warningBox(const QString& msg, QWidget *parent=0);

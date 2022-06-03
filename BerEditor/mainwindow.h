@@ -29,6 +29,7 @@ public:
     void initialize();
     void loadFile( const QString &filename );
     QTextEdit* logText() { return log_text_; };
+    QTextEdit* infoText() { return info_text_; };
     QTableWidget* rightTable() { return right_table_; };
     void showTextMsg( const QString& msg );
 
@@ -38,6 +39,7 @@ public:
 
     void log( const QString strLog, QColor cr = QColor(0x00, 0x00, 0x00) );
     void elog( const QString strLog );
+    void info( const QString strLog, QColor cr = QColor(0x00, 0x00, 0x00) );
 
     QString getLog();
 
@@ -59,6 +61,7 @@ private slots:
     void rsaEncDec();
     void cms();
     void sss();
+    void CAVP();
     void genOTP();
     void insertBER();
     void insertData();
@@ -66,6 +69,7 @@ private slots:
     void getLdap();
     void save();
     void saveAs();
+
 
 
     void print();
@@ -96,6 +100,7 @@ private:
     QSplitter       *vsplitter_;
     BerTreeView     *left_tree_;
     QTextEdit       *log_text_;
+    QTextEdit       *info_text_;
     BerModel        *ber_model_;
     QTableWidget    *right_table_;
     QString          file_path_;

@@ -46,7 +46,7 @@ void BerTreeView::onItemClicked(const QModelIndex& index )
     else
         GetTableFullView(&binBer, item);
 
-    logItem( item );
+    infoItem( item );
 }
 
 void BerTreeView::viewRoot()
@@ -57,7 +57,7 @@ void BerTreeView::viewRoot()
     setExpanded( rootIndex(), true );
 }
 
-void BerTreeView::logItem( BerItem *pItem )
+void BerTreeView::infoItem( BerItem *pItem )
 {
     BerModel *tree_model = (BerModel *)model();
     BIN& binBer = tree_model->getBer();
@@ -98,23 +98,23 @@ void BerTreeView::logItem( BerItem *pItem )
     strOffset.sprintf( "0x%08X", pItem->GetOffset() );
 
     berApplet->mainWindow()->logText()->clear();
-    berApplet->log( "====================================================================================\n" );
-    berApplet->log( QString( "== BER Information [Depth:%1]\n" ).arg(pItem->GetLevel()) );
-    berApplet->log( "====================================================================================\n" );
-    berApplet->log( QString( "Header      : %1\n").arg( getHexString(header.pVal, header.nLen)));
-    berApplet->log( QString( "[T]         : %1 - %2\n" ).arg(getHexString(bin.pVal,1)).arg(pBitString) );
-    berApplet->log( QString( "Class       : %1\n").arg( pItem->GetClassString()));
-    berApplet->log( QString( "ID          : %1 - %2\n").arg( getHexString( &cID, 1) ).arg( cID ));
-    berApplet->log( QString( "P/C         : %1\n").arg(strPC));
-    berApplet->log( QString( "Tag         : %1 - %2\n").arg( pItem->GetTag(), 2, 16, QChar('0')).arg(pItem->GetTagString()));
-    berApplet->log( QString( "Offset      : %1 - %2\n" ).arg( strOffset ).arg(pItem->GetOffset()));
-    berApplet->log( QString( "Length      : %1 - %2 Bytes\n" ).arg( getHexString(sLen, nLenSize) ).arg(pItem->GetLength()));
-    berApplet->log( "====================================================================================\n" );
+    berApplet->info( "====================================================================================\n" );
+    berApplet->info( QString( "== BER Information [Depth:%1]\n" ).arg(pItem->GetLevel()) );
+    berApplet->info( "====================================================================================\n" );
+    berApplet->info( QString( "Header      : %1\n").arg( getHexString(header.pVal, header.nLen)));
+    berApplet->info( QString( "[T]         : %1 - %2\n" ).arg(getHexString(bin.pVal,1)).arg(pBitString) );
+    berApplet->info( QString( "Class       : %1\n").arg( pItem->GetClassString()));
+    berApplet->info( QString( "ID          : %1 - %2\n").arg( getHexString( &cID, 1) ).arg( cID ));
+    berApplet->info( QString( "P/C         : %1\n").arg(strPC));
+    berApplet->info( QString( "Tag         : %1 - %2\n").arg( pItem->GetTag(), 2, 16, QChar('0')).arg(pItem->GetTagString()));
+    berApplet->info( QString( "Offset      : %1 - %2\n" ).arg( strOffset ).arg(pItem->GetOffset()));
+    berApplet->info( QString( "Length      : %1 - %2 Bytes\n" ).arg( getHexString(sLen, nLenSize) ).arg(pItem->GetLength()));
+    berApplet->info( "====================================================================================\n" );
 
     QString strVal = pItem->GetValueString( &binBer );
-    berApplet->log( strVal );
+    berApplet->info( strVal );
 
-    berApplet->mainWindow()->logText()->moveCursor(QTextCursor::Start);
+    berApplet->mainWindow()->infoText()->moveCursor(QTextCursor::Start);
     if( pBitString ) JS_free( pBitString );
     JS_BIN_reset( &bin );
     JS_BIN_reset( &header );

@@ -43,7 +43,7 @@ private:
     void GetTableView( const BIN *pBer, BerItem *pItem );
     void GetTableFullView( const BIN *pBer, BerItem *pItem );
 
-    void logItem( BerItem *pItem );
+    void infoItem( BerItem *pItem );
     BerItem* currentItem();
 };
 

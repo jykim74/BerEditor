@@ -23,6 +23,7 @@
 #include "about_dlg.h"
 #include "cms_dlg.h"
 #include "sss_dlg.h"
+#include "cavp_dlg.h"
 #include "insert_ber_dlg.h"
 #include "common.h"
 
@@ -87,6 +88,10 @@ void MainWindow::initialize()
 //    log_text_->setFont( QFont("Courier New") );
     log_text_->setFont( QFont("굴림체") );
 
+    info_text_ = new QTextEdit;
+    info_text_->setReadOnly(true);
+    info_text_->setFont( QFont("굴림체" ));
+
     right_table_ = new QTableWidget;
     right_table_->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
@@ -98,7 +103,15 @@ void MainWindow::initialize()
     hsplitter_->addWidget(vsplitter_);
 
     vsplitter_->addWidget(right_table_);
-    vsplitter_->addWidget(log_text_);
+//    vsplitter_->addWidget(log_text_);
+
+
+    QTabWidget *tab = new QTabWidget;
+    vsplitter_->addWidget( tab );
+    tab->addTab( info_text_, "information" );
+    tab->addTab( log_text_, "log" );
+
+
 
     QList <int> vsizes;
     vsizes << 1200 << 500;
@@ -403,6 +416,13 @@ void MainWindow::createActions()
     toolMenu->addAction( getLdapAct );
     toolToolBar->addAction( getLdapAct );
 
+    const QIcon cavpIcon = QIcon::fromTheme( "tool-cavp", QIcon(":/images/cavp.png"));
+    QAction *cavpAct = new QAction(cavpIcon, tr("&CAVP"), this);
+    connect( cavpAct, &QAction::triggered, this, &MainWindow::CAVP );
+    cavpAct->setStatusTip(tr("CAVP Test"));
+    toolMenu->addAction( cavpAct );
+    toolToolBar->addAction( cavpAct );
+
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
     QToolBar *helpToolBar = addToolBar(tr("Help"));
 
@@ -576,6 +596,20 @@ void MainWindow::log( const QString strLog, QColor cr )
 void MainWindow::elog( const QString strLog )
 {
     log( strLog, QColor(0xFF,0x00,0x00));
+}
+
+void MainWindow::info( const QString strLog, QColor cr )
+{
+    QTextCursor cursor = info_text_->textCursor();
+
+    QTextCharFormat format;
+    format.setForeground( cr );
+    cursor.mergeCharFormat(format);
+
+    cursor.insertText( strLog );
+
+    info_text_->setTextCursor( cursor );
+    info_text_->repaint();
 }
 
 QString MainWindow::getLog()
@@ -753,6 +787,12 @@ void MainWindow::sss()
 {
     SSSDlg sssDlg;
     sssDlg.exec();
+}
+
+void MainWindow::CAVP()
+{
+    CAVPDlg cavpDlg;
+    cavpDlg.exec();
 }
 
 void MainWindow::genOTP()
