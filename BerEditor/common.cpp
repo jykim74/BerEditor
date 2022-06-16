@@ -296,3 +296,18 @@ QString getSymAlg( const QString strAlg, const QString strMode, int nKeyLen )
 
     return strRes;
 }
+
+int getNameValue( const QString strLine, QString& name, QString& value )
+{
+    if( strLine.isEmpty() ) return -1;
+
+    QStringList nameVal = strLine.split( "=" );
+
+    if( nameVal.size() >= 1 )
+        name = nameVal.at(0).trimmed();
+
+    if( nameVal.size() >= 2 )
+        value = nameVal.at(1).trimmed();
+
+    return 0;
+}

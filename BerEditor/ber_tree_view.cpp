@@ -97,7 +97,7 @@ void BerTreeView::infoItem( BerItem *pItem )
     QString strOffset;
     strOffset.sprintf( "0x%08X", pItem->GetOffset() );
 
-    berApplet->mainWindow()->logText()->clear();
+    berApplet->mainWindow()->infoText()->clear();
     berApplet->info( "====================================================================================\n" );
     berApplet->info( QString( "== BER Information [Depth:%1]\n" ).arg(pItem->GetLevel()) );
     berApplet->info( "====================================================================================\n" );

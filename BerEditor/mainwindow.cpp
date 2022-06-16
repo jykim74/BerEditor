@@ -588,6 +588,7 @@ void MainWindow::log( const QString strLog, QColor cr )
     cursor.mergeCharFormat(format);
 
     cursor.insertText( strLog );
+    cursor.insertText( "\n" );
 
     log_text_->setTextCursor( cursor );
     log_text_->repaint();
