@@ -57,6 +57,10 @@ private:
     void initialize();
     QString getRspFile(const QString &reqFileName );
     int makeSymData( const QString strKey, const QString strIV, const QString strPT );
+    int makeSymCBC_MCT( const QString strKey, const QString strIV, const QString strPT );
+    int makeSymECB_MCT( const QString strKey, const QString strPT );
+    int makeSymCTR_MCT( const QString strKey, const QString strIV, const QString strPT );
+
     int makeAEData( const QString strKey, const QString strIV, const QString strPT, const QString strAAD, int nTagLen );
     int makeADData( const QString strKey, const QString strIV, const QString strCT, const QString strAAD, const QString strTag );
     int makeHashData( int nLen, const QString strVal );
@@ -71,6 +75,23 @@ private:
                   const QString strAdditionalInputReseed,
                   const QString strAdditionalInput1,
                   const QString strAdditionalInput2 );
+
+    int makeRSA_ES_DET( int nKeyIndex, const QString strC );
+    int makeRSA_ES_ENT( int nKeyIndex, const QString strM );
+    int makeRSA_ES_KGT( int nKeyLen, int nE, int nCount );
+
+    int makeRSA_PSS_KPG( int nLen, int nCount );
+    int makeRSA_PSS_SGT( int nNum, const QString strM );
+    int makeRSA_PSS_SVT( int nNum, const QString strM, const QString strS );
+
+    int makeECDH_KPG( int nCount );
+    int makeECDH_PKV( const QString strPubX, const QString strPubY );
+    int makeECDH_KAKAT( const QString strRA, const QString strRB, const QString strKTA1X, const QString strKTA1Y );
+
+    int makeECDSA_KPG( int nNum );
+    int makeECDSA_PKV( const QString strYX, const QString strYY );
+    int makeECDSA_SGT( const QString strM );
+    int makeECDSA_SVT( const QString strM, const QString strYX, const QString strYY, const QString strR, const QString strS );
 };
 
 #endif // CAVP_DLG_H

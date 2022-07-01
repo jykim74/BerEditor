@@ -36,6 +36,8 @@ KeyAgreeDlg::KeyAgreeDlg(QWidget *parent) :
     connect( mBGenPriKeyBtn, SIGNAL(clicked()), this, SLOT(genBECDHPriKey()));
     connect( mBGenPubKeyBtn, SIGNAL(clicked()), this, SLOT(genBECDHPubKey()));
     connect( mBFindPriKeyBtn, SIGNAL(clicked()), this, SLOT(findBECDHPriKey()));
+    connect( mAGenKeyPairBtn, SIGNAL(clicked()), this, SLOT(genAKeyPair()));
+    connect( mBGenKeyPairBtn, SIGNAL(clicked()), this, SLOT(genBKeyPair()));
 
     connect( mSecretClearBtn, SIGNAL(clicked()), this, SLOT(secretClear()));
     connect( mACalcBtn, SIGNAL(clicked()), this, SLOT(calcualteA()));
@@ -88,9 +90,18 @@ void KeyAgreeDlg::calcualteA()
     }
     else
     {
+        BIN binX = {0,0};
+        BIN binY = {0,0};
+
         JS_BIN_decodeHex( mAECDHPriKeyText->text().toStdString().c_str(), &binPri );
         JS_BIN_decodeHex( mBECDHPubKeyText->text().toStdString().c_str(), &binPub );
-        ret = JS_PKI_getECDHSecretWithValue( mECDHParamCombo->currentText().toStdString().c_str(), &binPri, &binPub, &binSecret );
+
+        JS_BIN_set( &binX, binPub.pVal, binPub.nLen / 2 );
+        JS_BIN_set( &binY, &binPub.pVal[binX.nLen], binPub.nLen / 2);
+        ret = JS_PKI_getECDHSecretWithValue( mECDHParamCombo->currentText().toStdString().c_str(), &binPri, &binX, &binY, &binSecret );
+
+        JS_BIN_reset( &binX );
+        JS_BIN_reset( &binY );
     }
 
     if( ret == 0 )
@@ -133,9 +144,19 @@ void KeyAgreeDlg::calcualteB()
     }
     else
     {
+        BIN binX = {0,0};
+        BIN binY = {0,0};
+
         JS_BIN_decodeHex( mBECDHPriKeyText->text().toStdString().c_str(), &binPri );
         JS_BIN_decodeHex( mAECDHPubKeyText->text().toStdString().c_str(), &binPub );
-        ret = JS_PKI_getECDHSecretWithValue( mECDHParamCombo->currentText().toStdString().c_str(), &binPri, &binPub, &binSecret );
+
+        JS_BIN_set( &binX, binPub.pVal, binPub.nLen/2 );
+        JS_BIN_set( &binY, &binPub.pVal[binX.nLen], binPub.nLen/2 );
+
+        ret = JS_PKI_getECDHSecretWithValue( mECDHParamCombo->currentText().toStdString().c_str(), &binPri, &binX, &binY, &binSecret );
+
+        JS_BIN_reset( &binX );
+        JS_BIN_reset( &binY );
     }
 
     if( ret == 0 )
@@ -329,6 +350,68 @@ void KeyAgreeDlg::genBDHKey()
     repaint();
 }
 
+void KeyAgreeDlg::genAKeyPair()
+{
+    int ret = 0;
+    BIN binPri = {0,0};
+    BIN binPub = {0,0};
+    JECKeyVal sKeyVal;
+    QString strPub;
+
+    memset( &sKeyVal, 0x00, sizeof(sKeyVal));
+
+    QString strParam = mECDHParamCombo->currentText();
+    int nNid = JS_PKI_getNidFromSN( strParam.toStdString().c_str() );
+
+    ret = JS_PKI_ECCGenKeyPair( nNid, &binPub, &binPri );
+    if( ret != 0 ) goto end;
+
+    ret = JS_PKI_getECKeyVal( &binPri, &sKeyVal );
+    if( ret != 0 ) goto end;
+
+    strPub = sKeyVal.pPubX;
+    strPub += sKeyVal.pPubY;
+
+    mAECDHPriKeyText->setText( sKeyVal.pPrivate );
+    mAECDHPubKeyText->setText( strPub );
+
+end :
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binPub );
+    JS_PKI_resetECKeyVal( &sKeyVal );
+}
+
+void KeyAgreeDlg::genBKeyPair()
+{
+    int ret = 0;
+    BIN binPri = {0,0};
+    BIN binPub = {0,0};
+    JECKeyVal sKeyVal;
+    QString strPub;
+
+    memset( &sKeyVal, 0x00, sizeof(sKeyVal));
+
+    QString strParam = mECDHParamCombo->currentText();
+    int nNid = JS_PKI_getNidFromSN( strParam.toStdString().c_str() );
+
+    ret = JS_PKI_ECCGenKeyPair( nNid, &binPub, &binPri );
+    if( ret != 0 ) goto end;
+
+    ret = JS_PKI_getECKeyVal( &binPri, &sKeyVal );
+    if( ret != 0 ) goto end;
+
+    strPub = sKeyVal.pPubX;
+    strPub += sKeyVal.pPubY;
+
+    mBECDHPriKeyText->setText( sKeyVal.pPrivate );
+    mBECDHPubKeyText->setText( strPub );
+
+end :
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binPub );
+    JS_PKI_resetECKeyVal( &sKeyVal );
+}
+
 void KeyAgreeDlg::genAECDHPriKey()
 {
     BIN binPri = {0,0};
@@ -347,14 +430,22 @@ void KeyAgreeDlg::genAECDHPriKey()
 void KeyAgreeDlg::genAECDHPubKey()
 {
     BIN binAPri = {0,0};
-    BIN binAPub = {0,0};
-    char *pHex = NULL;
-    JS_BIN_decodeHex( mAECDHPriKeyText->text().toStdString().c_str(), &binAPri );
-    JS_PKI_genECPubKey( mECDHParamCombo->currentText().toStdString().c_str(), &binAPri, &binAPub );
+    BIN binAPubX = {0,0};
+    BIN binAPubY = {0,0};
+    QString strPub;
 
-    JS_BIN_encodeHex( &binAPub, &pHex );
-    mAECDHPubKeyText->setText( pHex );
-    if( pHex ) JS_free( pHex );
+
+    JS_BIN_decodeHex( mAECDHPriKeyText->text().toStdString().c_str(), &binAPri );
+    JS_PKI_genECPubKey( mECDHParamCombo->currentText().toStdString().c_str(), &binAPri, &binAPubX, &binAPubY );
+
+    strPub = getHexString( binAPubX.pVal, binAPubX.nLen );
+    strPub += getHexString( binAPubY.pVal, binAPubY.nLen );
+
+    mAECDHPubKeyText->setText( strPub );
+
+    JS_BIN_reset( &binAPri );
+    JS_BIN_reset( &binAPubX );
+    JS_BIN_reset( &binAPubY );
 
     repaint();
 }
@@ -370,6 +461,7 @@ void KeyAgreeDlg::findAECDHPriKey()
     memset( &sECKeyVal, 0x00, sizeof(sECKeyVal));
 
     QString strPath = berApplet->getSetPath();
+    QString strPub;
 
     QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( fileName.isEmpty() ) return;
@@ -380,8 +472,11 @@ void KeyAgreeDlg::findAECDHPriKey()
     JS_PKI_getStringFromOID( &binOID, sTextOID );
     pSN = JS_PKI_getSNFromOID( sTextOID );
 
+    strPub += sECKeyVal.pPubX;
+    strPub += sECKeyVal.pPubY;
+
     mAECDHPriKeyText->setText( sECKeyVal.pPrivate );
-    mAECDHPubKeyText->setText( sECKeyVal.pECPoint );
+    mAECDHPubKeyText->setText( strPub );
     mECDHParamCombo->setCurrentText( pSN );
 
 
@@ -406,14 +501,23 @@ void KeyAgreeDlg::genBECDHPriKey()
 void KeyAgreeDlg::genBECDHPubKey()
 {
     BIN binPri = {0,0};
-    BIN binPub = {0,0};
-    char *pHex = NULL;
-    JS_BIN_decodeHex( mBECDHPriKeyText->text().toStdString().c_str(), &binPri );
-    JS_PKI_genECPubKey( mECDHParamCombo->currentText().toStdString().c_str(), &binPri, &binPub );
+    BIN binPubX = {0,0};
+    BIN binPubY = {0,0};
 
-    JS_BIN_encodeHex( &binPub, &pHex );
-    mBECDHPubKeyText->setText( pHex );
-    if( pHex ) JS_free( pHex );
+    QString strPub;
+
+    JS_BIN_decodeHex( mBECDHPriKeyText->text().toStdString().c_str(), &binPri );
+    JS_PKI_genECPubKey( mECDHParamCombo->currentText().toStdString().c_str(), &binPri, &binPubX, &binPubY );
+
+    strPub = getHexString( binPubX.pVal, binPubX.nLen );
+    strPub += getHexString( binPubY.pVal, binPubY.nLen );
+
+    mBECDHPubKeyText->setText( strPub );
+
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binPubX );
+    JS_BIN_reset( &binPubY );
+
     repaint();
 }
 
@@ -428,6 +532,7 @@ void KeyAgreeDlg::findBECDHPriKey()
     memset( &sECKeyVal, 0x00, sizeof(sECKeyVal));
 
     QString strPath = berApplet->getSetPath();
+    QString strPub;
 
     QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( fileName.isEmpty() ) return;
@@ -438,8 +543,11 @@ void KeyAgreeDlg::findBECDHPriKey()
     JS_PKI_getStringFromOID( &binOID, sTextOID );
     pSN = JS_PKI_getSNFromOID( sTextOID );
 
+    strPub += sECKeyVal.pPubX;
+    strPub += sECKeyVal.pPubY;
+
     mBECDHPriKeyText->setText( sECKeyVal.pPrivate );
-    mBECDHPubKeyText->setText( sECKeyVal.pECPoint );
+    mBECDHPubKeyText->setText( strPub );
     mECDHParamCombo->setCurrentText( pSN );
 
 
