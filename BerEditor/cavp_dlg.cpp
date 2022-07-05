@@ -2095,6 +2095,7 @@ int CAVPDlg::makeECDH_PKV( const QString strPubX, const QString strPubY )
 
     BIN binPubX = {0,0};
     BIN binPubY = {0,0};
+    QString strParam = "P-256";
 
     JS_BIN_decodeHex( strPubX.toStdString().c_str(), &binPubX );
     JS_BIN_decodeHex( strPubY.toStdString().c_str(), &binPubY );
@@ -2102,7 +2103,7 @@ int CAVPDlg::makeECDH_PKV( const QString strPubX, const QString strPubY )
     berApplet->log( QString( "Qx = %1" ).arg( strPubX ));
     berApplet->log( QString( "Qy = %1").arg( strPubY));
 
-    ret = JS_PKI_IsValidECCPubKey( nGroupID, &binPubX, &binPubY );
+    ret = JS_PKI_IsValidECCPubKey( strParam.toStdString().c_str(), &binPubX, &binPubY );
 
     if( ret == 0 )
         berApplet->log( "Result = P" );
@@ -2211,11 +2212,12 @@ int CAVPDlg::makeECDSA_PKV( const QString strYX, const QString strYY )
 
     BIN binPubX = {0,0};
     BIN binPubY = {0,0};
+    QString strParam = "P-256";
 
     JS_BIN_decodeHex( strYX.toStdString().c_str(), &binPubX );
     JS_BIN_decodeHex( strYY.toStdString().c_str(), &binPubY );
 
-    ret = JS_PKI_IsValidECCPubKey( nGroupID, &binPubX, &binPubY );
+    ret = JS_PKI_IsValidECCPubKey( strParam.toStdString().c_str(), &binPubX, &binPubY );
 
     berApplet->log( QString( "Yx = %1" ).arg( strYX ));
     berApplet->log( QString( "Yy = %1").arg( strYY ));

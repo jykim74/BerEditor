@@ -27,6 +27,10 @@ private slots:
     void genBDHKey();
     void genAKeyPair();
     void genBKeyPair();
+    void checkAPubKey();
+    void checkBPubKey();
+    void checkAKeyPair();
+    void checkBKeyPair();
 
     void genAECDHPriKey();
     void genAECDHPubKey();

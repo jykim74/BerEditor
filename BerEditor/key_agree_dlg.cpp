@@ -38,6 +38,10 @@ KeyAgreeDlg::KeyAgreeDlg(QWidget *parent) :
     connect( mBFindPriKeyBtn, SIGNAL(clicked()), this, SLOT(findBECDHPriKey()));
     connect( mAGenKeyPairBtn, SIGNAL(clicked()), this, SLOT(genAKeyPair()));
     connect( mBGenKeyPairBtn, SIGNAL(clicked()), this, SLOT(genBKeyPair()));
+    connect( mACheckPubKeyBtn, SIGNAL(clicked()), this, SLOT(checkAPubKey()));
+    connect( mBCheckPubKeyBtn, SIGNAL(clicked()), this, SLOT(checkBPubKey()));
+    connect( mACheckKeyPairBtn, SIGNAL(clicked()), this, SLOT(checkAKeyPair()));
+    connect( mBCheckKeyPairBtn, SIGNAL(clicked()), this, SLOT(checkBKeyPair()));
 
     connect( mSecretClearBtn, SIGNAL(clicked()), this, SLOT(secretClear()));
     connect( mACalcBtn, SIGNAL(clicked()), this, SLOT(calcualteA()));
@@ -410,6 +414,114 @@ end :
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binPub );
     JS_PKI_resetECKeyVal( &sKeyVal );
+}
+
+void KeyAgreeDlg::checkAPubKey()
+{
+    int ret = 0;
+    BIN binPub = {0,0};
+    BIN binX = {0,0};
+    BIN binY = {0,0};
+
+    QString strParam = mECDHParamCombo->currentText();
+
+    JS_BIN_decodeHex( mAECDHPubKeyText->text().toStdString().c_str(), &binPub );
+
+    JS_BIN_set( &binX, binPub.pVal, binPub.nLen / 2 );
+    JS_BIN_set( &binY, &binPub.pVal[binX.nLen], binPub.nLen / 2);
+
+    ret = JS_PKI_IsValidECCPubKey( strParam.toStdString().c_str(), &binX, &binY );
+    if( ret == 1 )
+        berApplet->messageBox( "PubKey is valid", this );
+    else
+        berApplet->warningBox( "PubKey is invalid", this );
+
+    JS_BIN_reset( &binPub );
+    JS_BIN_reset( &binX );
+    JS_BIN_reset( &binY );
+}
+
+void KeyAgreeDlg::checkBPubKey()
+{
+    int ret = 0;
+    BIN binPub = {0,0};
+    BIN binX = {0,0};
+    BIN binY = {0,0};
+
+    QString strParam = mECDHParamCombo->currentText();
+
+    JS_BIN_decodeHex( mBECDHPubKeyText->text().toStdString().c_str(), &binPub );
+
+    JS_BIN_set( &binX, binPub.pVal, binPub.nLen / 2 );
+    JS_BIN_set( &binY, &binPub.pVal[binX.nLen], binPub.nLen / 2);
+
+    ret = JS_PKI_IsValidECCPubKey( strParam.toStdString().c_str(), &binX, &binY );
+    if( ret == 1 )
+        berApplet->messageBox( "PubKey is valid", this );
+    else
+        berApplet->warningBox( "PubKey is invalid", this );
+
+    JS_BIN_reset( &binPub );
+    JS_BIN_reset( &binX );
+    JS_BIN_reset( &binY );
+}
+
+void KeyAgreeDlg::checkAKeyPair()
+{
+    int ret = 0;
+    BIN binPri = {0,0};
+    BIN binPub = {0,0};
+    BIN binX = {0,0};
+    BIN binY = {0,0};
+
+    QString strParam = mECDHParamCombo->currentText();
+
+    JS_BIN_decodeHex( mAECDHPubKeyText->text().toStdString().c_str(), &binPub );
+    JS_BIN_decodeHex( mAECDHPriKeyText->text().toStdString().c_str(), &binPri );
+
+    JS_BIN_set( &binX, binPub.pVal, binPub.nLen / 2 );
+    JS_BIN_set( &binY, &binPub.pVal[binX.nLen], binPub.nLen / 2);
+
+
+    ret = JS_PKI_IsValidECCKeyPair( strParam.toStdString().c_str(), &binPri, &binX, &binY );
+    if( ret == 1 )
+        berApplet->messageBox( "ECC KeyPair is valid", this );
+    else
+        berApplet->warningBox( "ECC KeyPair is invalid", this );
+
+    JS_BIN_reset( &binPub );
+    JS_BIN_reset( &binX );
+    JS_BIN_reset( &binY );
+    JS_BIN_reset( &binPri );
+}
+
+void KeyAgreeDlg::checkBKeyPair()
+{
+    int ret = 0;
+    BIN binPri = {0,0};
+    BIN binPub = {0,0};
+    BIN binX = {0,0};
+    BIN binY = {0,0};
+
+    QString strParam = mECDHParamCombo->currentText();
+
+    JS_BIN_decodeHex( mBECDHPubKeyText->text().toStdString().c_str(), &binPub );
+    JS_BIN_decodeHex( mBECDHPriKeyText->text().toStdString().c_str(), &binPri );
+
+    JS_BIN_set( &binX, binPub.pVal, binPub.nLen / 2 );
+    JS_BIN_set( &binY, &binPub.pVal[binX.nLen], binPub.nLen / 2);
+
+
+    ret = JS_PKI_IsValidECCKeyPair( strParam.toStdString().c_str(), &binPri, &binX, &binY );
+    if( ret == 1 )
+        berApplet->messageBox( "ECC KeyPair is valid", this );
+    else
+        berApplet->warningBox( "ECC KeyPair is invalid", this );
+
+    JS_BIN_reset( &binPub );
+    JS_BIN_reset( &binX );
+    JS_BIN_reset( &binY );
+    JS_BIN_reset( &binPri );
 }
 
 void KeyAgreeDlg::genAECDHPriKey()

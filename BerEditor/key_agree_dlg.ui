@@ -447,14 +447,42 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="2">
+         <item row="0" column="3">
+          <widget class="QPushButton" name="mBGenKeyPairBtn">
+           <property name="text">
+            <string>GenKeyPair</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="6">
+          <widget class="QPushButton" name="mBFindPriKeyBtn">
+           <property name="text">
+            <string>FindPriKey</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
           <widget class="QPushButton" name="mBGenPriKeyBtn">
            <property name="text">
-            <string>B GenPriKey</string>
+            <string>GenPriKey</string>
            </property>
           </widget>
          </item>
          <item row="0" column="0">
+          <widget class="QPushButton" name="mBCheckPubKeyBtn">
+           <property name="text">
+            <string>CheckPubKey</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="5">
+          <widget class="QPushButton" name="mBGenPubKeyBtn">
+           <property name="text">
+            <string>GenPubKey</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
           <spacer name="horizontalSpacer_4">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -467,24 +495,10 @@
            </property>
           </spacer>
          </item>
-         <item row="0" column="4">
-          <widget class="QPushButton" name="mBFindPriKeyBtn">
-           <property name="text">
-            <string>B Find PriKey</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
-          <widget class="QPushButton" name="mBGenPubKeyBtn">
-           <property name="text">
-            <string>B GenPubKey</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="1">
-          <widget class="QPushButton" name="mBGenKeyPairBtn">
+          <widget class="QPushButton" name="mBCheckKeyPairBtn">
            <property name="text">
-            <string>B GenKeyPair</string>
+            <string>CheckKeyPair</string>
            </property>
           </widget>
          </item>
@@ -508,28 +522,35 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="2">
-          <widget class="QPushButton" name="mAGenPriKeyBtn">
-           <property name="text">
-            <string>A GenPriKey</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
-          <widget class="QPushButton" name="mAGenPubKeyBtn">
-           <property name="text">
-            <string>A GenPubKey</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="4">
+         <item row="0" column="6">
           <widget class="QPushButton" name="mAFindPriKeyBtn">
            <property name="text">
-            <string>A Find PriKey</string>
+            <string>FindPriKey</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="5">
+          <widget class="QPushButton" name="mAGenPubKeyBtn">
+           <property name="text">
+            <string>GenPubKey</string>
            </property>
           </widget>
          </item>
          <item row="0" column="0">
+          <widget class="QPushButton" name="mACheckPubKeyBtn">
+           <property name="text">
+            <string>CheckPubKey</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QPushButton" name="mAGenPriKeyBtn">
+           <property name="text">
+            <string>GenPriKey</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
           <spacer name="horizontalSpacer_6">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -542,10 +563,17 @@
            </property>
           </spacer>
          </item>
-         <item row="0" column="1">
+         <item row="0" column="3">
           <widget class="QPushButton" name="mAGenKeyPairBtn">
            <property name="text">
-            <string>A GenKeyPair</string>
+            <string>GenKeyPair</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="mACheckKeyPairBtn">
+           <property name="text">
+            <string>CheckKeyPair</string>
            </property>
           </widget>
          </item>
