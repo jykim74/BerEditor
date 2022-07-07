@@ -56,6 +56,8 @@ private slots:
 private:
     void initialize();
     QString getRspFile(const QString &reqFileName );
+    void logRsp( const QString& strLog );
+
     int makeSymData( const QString strKey, const QString strIV, const QString strPT );
     int makeSymCBC_MCT( const QString strKey, const QString strIV, const QString strPT );
     int makeSymECB_MCT( const QString strKey, const QString strPT );
@@ -81,8 +83,8 @@ private:
     int makeRSA_ES_KGT( int nKeyLen, int nE, int nCount );
 
     int makeRSA_PSS_KPG( int nLen, int nCount );
-    int makeRSA_PSS_SGT( int nNum, const QString strM );
-    int makeRSA_PSS_SVT( int nNum, const QString strM, const QString strS );
+    int makeRSA_PSS_SGT( int nE, const QString strHash, const QString strM );
+    int makeRSA_PSS_SVT( const QString strE, const QString strN, const QString strHash, const QString strM, const QString strS );
 
     int makeECDH_KPG( int nCount );
     int makeECDH_PKV( const QString strPubX, const QString strPubY );
@@ -92,6 +94,9 @@ private:
     int makeECDSA_PKV( const QString strYX, const QString strYY );
     int makeECDSA_SGT( const QString strM );
     int makeECDSA_SVT( const QString strM, const QString strYX, const QString strYY, const QString strR, const QString strS );
+
+private:
+    QString rsp_name_;
 };
 
 #endif // CAVP_DLG_H

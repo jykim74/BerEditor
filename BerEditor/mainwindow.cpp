@@ -75,6 +75,7 @@ MainWindow::~MainWindow()
     delete  log_text_;
 }
 
+
 void MainWindow::initialize()
 {
     hsplitter_ = new QSplitter(Qt::Horizontal);
@@ -432,6 +433,13 @@ void MainWindow::createActions()
     settingAct->setStatusTip(tr("Set the variable"));
     helpMenu->addAction( settingAct );
     helpToolBar->addAction( settingAct );
+
+    const QIcon clearIcon = QIcon::fromTheme( "clear-log", QIcon(":/images/clear.png"));
+    QAction *clearAct = new QAction( clearIcon, tr("&Clear Log"), this );
+    connect( clearAct, &QAction::triggered, this, &MainWindow::clearLog );
+    clearAct->setStatusTip(tr("clear information and log"));
+    helpMenu->addAction( clearAct );
+    helpToolBar->addAction( clearAct );
 
     const QIcon aboutIcon = QIcon::fromTheme("berview-icon", QIcon(":/images/bereditor.png"));
     QAction *aboutAct = new QAction( aboutIcon, tr("&About BerEditor"), this );
@@ -792,8 +800,15 @@ void MainWindow::sss()
 
 void MainWindow::CAVP()
 {
+    /*
     CAVPDlg cavpDlg;
     cavpDlg.exec();
+    */
+
+    CAVPDlg *cavpDlg = berApplet->cavpDlg();
+    cavpDlg->show();
+    cavpDlg->raise();
+    cavpDlg->activateWindow();
 }
 
 void MainWindow::genOTP()
@@ -848,6 +863,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
         bool bVal = berApplet->yesOrNoBox( tr("Do you want to write changed date?"), this, false );
         if( bVal ) saveAs();
     }
+
+    exit(0);
 }
 
 void MainWindow::save()
@@ -888,6 +905,11 @@ void MainWindow::saveAs()
     }
 }
 
+void MainWindow::clearLog()
+{
+    log_text_->clear();
+//    info_text_->clear();
+}
 
 void MainWindow::print()
 {

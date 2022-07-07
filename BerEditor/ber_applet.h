@@ -5,10 +5,8 @@
 #include <QMessageBox>
 
 class MainWindow;
-
 class SettingsMgr;
-
-class MainWindow;
+class CAVPDlg;
 
 class BerApplet : public QObject
 {
@@ -21,6 +19,7 @@ public:
 
     MainWindow* mainWindow() { return main_win_; };
     SettingsMgr *settingsMgr() { return settings_mgr_; };
+    CAVPDlg *cavpDlg() { return cavp_dlg_; };
 
     QString cmd() { return cmd_; };
     void log( const QString strLog, QColor cr = QColor(00,00,00) );
@@ -52,8 +51,8 @@ private:
     Q_DISABLE_COPY(BerApplet)
 
     MainWindow* main_win_;
-
     SettingsMgr* settings_mgr_;
+    CAVPDlg* cavp_dlg_;
 
 
     bool is_pro_;

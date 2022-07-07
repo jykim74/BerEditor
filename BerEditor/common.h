@@ -22,7 +22,13 @@ enum {
     SIGN_VERIFY
 };
 
-enum { JS_FILE_TYPE_CERT, JS_FILE_TYPE_PRIKEY, JS_FILE_TYPE_TXT, JS_FILE_TYPE_BER, JS_FILE_TYPE_CFG };
+enum {
+    JS_FILE_TYPE_CERT,
+    JS_FILE_TYPE_PRIKEY,
+    JS_FILE_TYPE_TXT,
+    JS_FILE_TYPE_BER,
+    JS_FILE_TYPE_CFG,
+    JS_FILE_TYPE_REQ };
 
 QString findFile( QWidget *parent, int nType, const QString strPath );
 int setOIDList( const QString& strOIDPath );

@@ -69,7 +69,7 @@ private slots:
     void getLdap();
     void save();
     void saveAs();
-
+    void clearLog();
 
 
     void print();

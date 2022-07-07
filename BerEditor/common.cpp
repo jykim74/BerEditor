@@ -33,6 +33,8 @@ QString findFile( QWidget *parent, int nType, const QString strPath )
         strType = QObject::tr("BER Files (*.ber *.der *.pem);;All Files(*.*)");
     else if( nType == JS_FILE_TYPE_CFG )
         strType = QObject::tr("Config Files (*.cfg *.ini);;All Files(*.*)" );
+    else if( nType == JS_FILE_TYPE_REQ )
+        strType = QObject::tr("Req Files (*.req *.txt);;All Files(*.*)" );
 
     QString fileName = QFileDialog::getOpenFileName( parent,
                                                      QObject::tr( "Open File" ),
@@ -287,7 +289,7 @@ QString getSymAlg( const QString strAlg, const QString strMode, int nKeyLen )
 
     if( strAlg.isEmpty() || strMode.isEmpty() ) return strRes;
 
-    if( strLAlg == "des" )
+    if( strLAlg == "des" || strLAlg == "seed" )
         strRes = QString( "%1-%2").arg(strLAlg).arg(strLMode );
     else if( strLAlg == "des3" )
         strRes = QString( "des-ede-%1").arg(strLMode);

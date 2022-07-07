@@ -43,5 +43,6 @@
         <file>images/ber.jpg</file>
         <file>images/sss.png</file>
         <file>images/cavp.png</file>
+        <file>images/clear.png</file>
     </qresource>
 </RCC>

@@ -19,6 +19,7 @@
 #include "gen_otp_dlg.h"
 #include "edit_value_dlg.h"
 #include "get_ldap_dlg.h"
+#include "cavp_dlg.h"
 
 #include "auto_update_service.h"
 #include "about_dlg.h"
@@ -29,6 +30,7 @@ BerApplet *berApplet;
 BerApplet::BerApplet(QObject *parent) : QObject(parent)
 {
     settings_mgr_ = new SettingsMgr;
+    cavp_dlg_ = new CAVPDlg;
 
 #ifdef JS_PRO
     is_pro_ = true;

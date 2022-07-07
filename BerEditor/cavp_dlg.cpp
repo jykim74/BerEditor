@@ -6,6 +6,7 @@
 
 #include "js_bin.h"
 #include "js_pki.h"
+#include "js_pki_tools.h"
 
 #include "cavp_dlg.h"
 #include "ber_applet.h"
@@ -18,7 +19,7 @@ const QStringList kAEAlgList = { "AES", "ARIA" };
 const QStringList kAEModeList = { "GCM", "CCM" };
 const QStringList kAETypeList = { "AE", "AD" };
 const QStringList kSymTypeList = { "KAT", "MCT", "MMT" };
-const QStringList kHashAlgList = { "MD5", "SHA1", "SHA-224", "SHA-256", "SHA-384", "SHA-512" };
+const QStringList kHashAlgList = { "MD5", "SHA1", "SHA224", "SHA256", "SHA384", "SHA512" };
 const QStringList kHashTypeList = { "Short", "Long", "Monte" };
 
 const QStringList kECDHType = { "KAKAT", "PKV", "KPG" };
@@ -134,7 +135,20 @@ QString CAVPDlg::getRspFile(const QString &reqFileName )
     QString fileRspName = QString( "%1.rsp" ).arg( fileName );
     QString strPath = QString( "%1/CAVP_RSP/%2").arg( filePath ).arg( fileRspName );
 
+    berApplet->log( QString( "RspName: %1").arg(strPath));
+
     return strPath;
+}
+
+void CAVPDlg::logRsp( const QString& strLog )
+{
+    QFile file( rsp_name_ );
+    file.open(QFile::WriteOnly | QFile::Append| QFile::Text );
+    QTextStream SaveFile( &file );
+    SaveFile << strLog << "\n";
+    file.close();
+
+    berApplet->log( strLog );
 }
 
 void CAVPDlg::clickECC_ECDSARadio()
@@ -184,6 +198,7 @@ void CAVPDlg::clickSymRun()
     QString strPath = mSymReqFileText->text();
     QFile reqFile( strPath );
 
+    rsp_name_ = getRspFile( strPath );
 
     if( !reqFile.open( QIODevice::ReadOnly | QIODevice::Text ))
     {
@@ -225,9 +240,9 @@ void CAVPDlg::clickSymRun()
         {
             if( strKey.length() > 0 )
             {
-                berApplet->log( QString( "Key = %1").arg( strKey ));
-                berApplet->log( QString( "IV = %1").arg( strIV ));
-                berApplet->log( QString( "PT = %1").arg( strPT ));
+                if( strKey.length() > 0 ) berApplet->log( QString( "Key = %1").arg( strKey ));
+                if( strIV.length() > 0 ) berApplet->log( QString( "IV = %1").arg( strIV ));
+                if( strPT.length() > 0 ) berApplet->log( QString( "PT = %1").arg( strPT ));
 
                 if( strType == "MCT" )
                 {
@@ -254,6 +269,12 @@ void CAVPDlg::clickSymRun()
                 }
                 else
                     ret = makeSymData( strKey, strIV, strPT );
+
+                if( ret != 0 )
+                {
+                    berApplet->warningBox( QString( "fail to run Sym:%1").arg(ret));
+                    return;
+                }
             }
 
             strKey.clear();
@@ -264,6 +285,8 @@ void CAVPDlg::clickSymRun()
         strLine = strNext;
         nPos++;
     }
+
+    berApplet->messageBox( "SymRun Done", this );
 }
 
 void CAVPDlg::clickAERun()
@@ -280,6 +303,7 @@ void CAVPDlg::clickAERun()
     QString strPath = mAEReqFileText->text();
     QFile reqFile( strPath );
 
+    rsp_name_ = getRspFile( strPath );
 
     if( !reqFile.open( QIODevice::ReadOnly | QIODevice::Text ))
     {
@@ -313,7 +337,7 @@ void CAVPDlg::clickAERun()
         QString strNext = in.readLine();
 
         nLen = strLine.length();
-        berApplet->log( QString( "%1 %2 %3").arg( nPos ).arg( nLen ).arg( strLine ));
+//        berApplet->log( QString( "%1 %2 %3").arg( nPos ).arg( nLen ).arg( strLine ));
 
         if( nLen > 0 )
         {
@@ -400,6 +424,8 @@ void CAVPDlg::clickAERun()
         strLine = strNext;
         nPos++;
     }
+
+    berApplet->messageBox( "AERun Done", this );
 }
 
 void CAVPDlg::clickHMACRun()
@@ -416,6 +442,7 @@ void CAVPDlg::clickHMACRun()
     QString strPath = mHMACReqFileText->text();
     QFile reqFile( strPath );
 
+    rsp_name_ = getRspFile( strPath );
 
     if( !reqFile.open( QIODevice::ReadOnly | QIODevice::Text ))
     {
@@ -444,7 +471,7 @@ void CAVPDlg::clickHMACRun()
         QString strNext = in.readLine();
 
         nLen = strLine.length();
-        berApplet->log( QString( "%1 %2 %3").arg( nPos ).arg( nLen ).arg( strLine ));
+//        berApplet->log( QString( "%1 %2 %3").arg( nPos ).arg( nLen ).arg( strLine ));
 
         if( nLen > 0 )
         {
@@ -479,7 +506,11 @@ void CAVPDlg::clickHMACRun()
             {
                 ret = makeHMACData( strCount, strKLen, strTLen, strKey, strMsg );
 
-                if( ret != 0 ) return;
+                if( ret != 0 )
+                {
+                    berApplet->warningBox( QString( "fail to run HMAC: %1").arg(ret));
+                    return;
+                }
             }
 
             strCount.clear();
@@ -493,6 +524,7 @@ void CAVPDlg::clickHMACRun()
         nPos++;
     }
 
+    berApplet->messageBox( "HMAC Run Done", this );
 }
 
 void CAVPDlg::clickHashRun()
@@ -509,6 +541,7 @@ void CAVPDlg::clickHashRun()
     QString strPath = mHashReqFileText->text();
     QFile reqFile( strPath );
 
+    rsp_name_ = getRspFile( strPath );
 
     if( !reqFile.open( QIODevice::ReadOnly | QIODevice::Text ))
     {
@@ -535,7 +568,7 @@ void CAVPDlg::clickHashRun()
         QString strNext = in.readLine();
 
         nLen = strLine.length();
-        berApplet->log( QString( "%1 %2 %3").arg( nPos ).arg( nLen ).arg( strLine ));
+//        berApplet->log( QString( "%1 %2 %3").arg( nPos ).arg( nLen ).arg( strLine ));
 
         if( nLen > 0 )
         {
@@ -564,22 +597,28 @@ void CAVPDlg::clickHashRun()
             if( strMsg.length() > 0 && strLen.length() > 0 )
             {
                 ret = makeHashData( strLen.toInt(), strMsg );
-                if( ret != 0 ) return;
             }
             else if( strSeed.length() > 0 )
             {
                 ret = makeHashMCT( strSeed );
-                return;
             }
 
             strMsg.clear();
             strLen.clear();
             strSeed.clear();
+
+            if( ret != 0 )
+            {
+                berApplet->warningBox( QString( "fail to run Hash : %1" ).arg(ret));
+                return;
+            }
         }
 
         strLine = strNext;
         nPos++;
     }
+
+    berApplet->messageBox( "Hash Run Done", this );
 }
 
 void CAVPDlg::clickECCRun()
@@ -596,6 +635,8 @@ void CAVPDlg::clickECCRun()
 
     QString strPath = mECCReqFileText->text();
     QFile reqFile( strPath );
+
+    rsp_name_ = getRspFile( strPath );
 
     if( !reqFile.open( QIODevice::ReadOnly | QIODevice::Text ))
     {
@@ -622,7 +663,7 @@ void CAVPDlg::clickECCRun()
         QString strNext = in.readLine();
 
         nLen = strLine.length();
-        berApplet->log( QString( "%1 %2 %3").arg( nPos ).arg( nLen ).arg( strLine ));
+ //       berApplet->log( QString( "%1 %2 %3").arg( nPos ).arg( nLen ).arg( strLine ));
 
         if( nLen > 0 )
         {
@@ -654,7 +695,11 @@ void CAVPDlg::clickECCRun()
                 }
 
                 ret = makeECDSA_KPG( 10 );
-                return;
+                if( ret != 0 )
+                {
+                    berApplet->warningBox( QString( "fail to run ECC: %1").arg(ret));
+                    return;
+                }
             }
             else if( mECCTypeCombo->currentText() == "PKV" )
             {
@@ -668,8 +713,11 @@ void CAVPDlg::clickECCRun()
                 if( strYX.length() > 0 && strYY.length() > 0 )
                 {
                     ret = makeECDSA_PKV( strYX, strYY );
-
-                    if( ret != 0 ) return;
+                    if( ret != 0 )
+                    {
+                        berApplet->warningBox( QString( "fail to run ECC: %1").arg(ret));
+                        return;
+                    }
                 }
             }
             else if( mECCTypeCombo->currentText() == "SGT" )
@@ -683,8 +731,11 @@ void CAVPDlg::clickECCRun()
                 if( strM.length() > 0 )
                 {
                     ret = makeECDSA_SGT( strM );
-
-                    if( ret != 0 ) return;
+                    if( ret != 0 )
+                    {
+                        berApplet->warningBox( QString( "fail to run ECC: %1").arg(ret));
+                        return;
+                    }
                 }
             }
             else if( mECCTypeCombo->currentText() == "SVT" )
@@ -699,12 +750,16 @@ void CAVPDlg::clickECCRun()
 
                 if( strM.length() > 0 && strYX.length() > 0 && strYY.length() > 0 && strR.length() > 0 && strS.length() > 0 )
                 {
-
                     ret = makeECDSA_SVT( strM, strYX, strYY, strR, strS );
-
-                    if( ret != 0 ) return;
+                    if( ret != 0 )
+                    {
+                        berApplet->warningBox( QString( "fail to run ECC: %1").arg(ret));
+                        return;
+                    }
                 }
             }
+
+
 
             strM.clear();
             strYX.clear();
@@ -716,6 +771,8 @@ void CAVPDlg::clickECCRun()
         strLine = strNext;
         nPos++;
     }
+
+    berApplet->messageBox( "ECC Run Done", this );
 }
 
 void CAVPDlg::clickRSARun()
@@ -739,6 +796,8 @@ void CAVPDlg::clickRSARun()
         return;
     }
 
+    rsp_name_ = getRspFile( strPath );
+
     int nPos = 0;
     int nLen = 0;
 
@@ -748,6 +807,8 @@ void CAVPDlg::clickRSARun()
     QString strM;
     QString strS;
     QString strN;
+    QString strE;
+    QString strHash;
 
     QTextStream in( &reqFile );
     QString strLine = in.readLine();
@@ -759,7 +820,7 @@ void CAVPDlg::clickRSARun()
         QString strNext = in.readLine();
 
         nLen = strLine.length();
-        berApplet->log( QString( "%1 %2 %3").arg( nPos ).arg( nLen ).arg( strLine ));
+ //       berApplet->log( QString( "%1 %2 %3").arg( nPos ).arg( nLen ).arg( strLine ));
 
         if( nLen > 0 )
         {
@@ -773,6 +834,10 @@ void CAVPDlg::clickRSARun()
                 strM = strValue;
             else if( strName == "S" )
                 strS = strValue;
+            else if( strName == "e" || strName == "v" )
+                strE = strValue;
+            else if( strName == "HashAlg" )
+                strHash = strValue;
         }
 
         if( nLen == 0 || strNext.isNull() )
@@ -790,25 +855,35 @@ void CAVPDlg::clickRSARun()
 
                     ret = makeRSA_PSS_KPG( nKeyLen, 10 );
                     nKeyLen = -1;
-                    return;
+                    if( ret != 0 )
+                    {
+                        berApplet->warningBox( QString( "fail to run RSA : %1").arg(ret));
+                        return;
+                    }
                 }
             }
             else if( mRSATypeCombo->currentText() == "SGT" )
             {
-                if( strM.length() > 0 )
+                if( strM.length() > 0 && strE.length() > 0 && strHash.length() > 0 )
                 {
-
-                    ret = makeRSA_PSS_SGT( 0, strM );
-                    if( ret != 0 ) return;
+                    ret = makeRSA_PSS_SGT( strE.toInt(), strHash, strM );
+                    if( ret != 0 )
+                    {
+                        berApplet->warningBox( QString( "fail to run RSA : %1").arg(ret));
+                        return;
+                    }
                 }
             }
             else if( mRSATypeCombo->currentText() == "SVT" )
             {
                 if( strS.length() > 0 && strM.length() > 0 )
                 {
-                    ret = makeRSA_PSS_SVT( 0, strM, strS );
-
-                    if( ret != 0 ) return;
+                    ret = makeRSA_PSS_SVT( strE, strN, strHash, strM, strS );
+                    if( ret != 0 )
+                    {
+                        berApplet->warningBox( QString( "fail to run RSA : %1").arg(ret));
+                        return;
+                    }
                 }
             }
 
@@ -822,6 +897,7 @@ void CAVPDlg::clickRSARun()
         nPos++;
     }
 
+    berApplet->messageBox( "RSA Run Done", this );
 }
 
 void CAVPDlg::clickDRBGRun()
@@ -843,6 +919,8 @@ void CAVPDlg::clickDRBGRun()
         berApplet->elog( QString( "fail to open file(%1)").arg(strPath));
         return;
     }
+
+    rsp_name_ = getRspFile( strPath );
 
     int nPos = 0;
     int nLen = 0;
@@ -972,6 +1050,8 @@ void CAVPDlg::clickDRBGRun()
         strLine = strNext;
         nPos++;
     }
+
+    berApplet->messageBox( "DRBG Run Done", this );
 }
 
 void CAVPDlg::clickPBKDFRun()
@@ -994,6 +1074,8 @@ void CAVPDlg::clickPBKDFRun()
         return;
     }
 
+    rsp_name_ = getRspFile( strPath );
+
     int nPos = 0;
     int nLen = 0;
     int nCount = -1;
@@ -1014,7 +1096,7 @@ void CAVPDlg::clickPBKDFRun()
         QString strNext = in.readLine();
 
         nLen = strLine.length();
-        berApplet->log( QString( "%1 %2 %3").arg( nPos ).arg( nLen ).arg( strLine ));
+//        berApplet->log( QString( "%1 %2 %3").arg( nPos ).arg( nLen ).arg( strLine ));
 
         if( nLen > 0 )
         {
@@ -1056,7 +1138,11 @@ void CAVPDlg::clickPBKDFRun()
 
                 nKLen = -1;
                 nCount = -1;
-                if( ret != 0 ) return;
+                if( ret != 0 )
+                {
+                    berApplet->warningBox( QString( "fail to run PBKDF: %1").arg(ret), this );
+                    return;
+                }
             }
 
             strPasswd.clear();
@@ -1066,76 +1152,78 @@ void CAVPDlg::clickPBKDFRun()
         strLine = strNext;
         nPos++;
     }
+
+    berApplet->messageBox( "PBKDF Run Done", this );
 }
 
 void CAVPDlg::clickSymFind()
 {
-    QString strPath = QDir::homePath();
+    QString strPath = mSymReqFileText->text();
 
-    QString strFile = findFile( this, JS_FILE_TYPE_TXT, strPath );
+    QString strFile = findFile( this, JS_FILE_TYPE_REQ, strPath );
     if( strFile.length() > 0 )
         mSymReqFileText->setText( strFile );
 }
 
 void CAVPDlg::clickAEFind()
 {
-    QString strPath = QDir::homePath();
+    QString strPath = mAEReqFileText->text();
 
-    QString strFile = findFile( this, JS_FILE_TYPE_TXT, strPath );
+    QString strFile = findFile( this, JS_FILE_TYPE_REQ, strPath );
     if( strFile.length() > 0 )
         mAEReqFileText->setText( strFile );
 }
 
 void CAVPDlg::clickHashFind()
 {
-    QString strPath = QDir::homePath();
+    QString strPath = mHashReqFileText->text();
 
-    QString strFile = findFile( this, JS_FILE_TYPE_TXT, strPath );
+    QString strFile = findFile( this, JS_FILE_TYPE_REQ, strPath );
     if( strFile.length() > 0 )
         mHashReqFileText->setText( strFile );
 }
 
 void CAVPDlg::clickHMACFind()
 {
-    QString strPath = QDir::homePath();
+    QString strPath = mHMACReqFileText->text();
 
-    QString strFile = findFile( this, JS_FILE_TYPE_TXT, strPath );
+    QString strFile = findFile( this, JS_FILE_TYPE_REQ, strPath );
     if( strFile.length() > 0 )
         mHMACReqFileText->setText( strFile );
 }
 
 void CAVPDlg::clickECCFind()
 {
-    QString strPath = QDir::homePath();
+    QString strPath = mECCReqFileText->text();
 
-    QString strFile = findFile( this, JS_FILE_TYPE_TXT, strPath );
+    QString strFile = findFile( this, JS_FILE_TYPE_REQ, strPath );
     if( strFile.length() > 0 )
         mECCReqFileText->setText( strFile );
 }
 
 void CAVPDlg::clickRSAFind()
 {
-    QString strPath = QDir::homePath();
+    QString strPath = mRSAReqFileText->text();
 
-    QString strFile = findFile( this, JS_FILE_TYPE_TXT, strPath );
+    QString strFile = findFile( this, JS_FILE_TYPE_REQ, strPath );
     if( strFile.length() > 0 )
         mRSAReqFileText->setText( strFile );
 }
 
 void CAVPDlg::clickDRBGFind()
 {
-    QString strPath = QDir::homePath();
+    QString strPath = mDRBGReqFileText->text();
 
-    QString strFile = findFile( this, JS_FILE_TYPE_TXT, strPath );
+    QString strFile = findFile( this, JS_FILE_TYPE_REQ, strPath );
     if( strFile.length() > 0 )
         mDRBGReqFileText->setText( strFile );
 }
 
 void CAVPDlg::clickPBKDFFind()
 {
-    QString strPath = QDir::homePath();
+    QString strPath = mPBKDFReqFileText->text();
 
-    QString strFile = findFile( this, JS_FILE_TYPE_TXT, strPath );
+    QString strFile = findFile( this, JS_FILE_TYPE_REQ, strPath );
     if( strFile.length() > 0 )
         mPBKDFReqFileText->setText( strFile );
 }
@@ -1989,17 +2077,21 @@ end :
     return ret;
 }
 
-int CAVPDlg::makeRSA_PSS_SGT( int nNum, const QString strM )
+int CAVPDlg::makeRSA_PSS_SGT( int nE, const QString strHash, const QString strM )
 {
     int ret = 0;
     BIN binM = {0,0};
     BIN binS = {0,0};
     BIN binPri = {0,0};
+    BIN binPub = {0,0};
 
-    QString strAlg;
+
     JS_BIN_decodeHex( strM.toStdString().c_str(), &binM );
 
-    ret = JS_PKI_RSAMakeSign( strAlg.toStdString().c_str(), JS_PKI_RSA_PADDING_V21, &binM, &binPri, &binS );
+    ret = JS_PKI_RSAGenKeyPair( 2048, nE, &binPub, &binPri );
+    if( ret != 0 ) goto end;
+
+    ret = JS_PKI_RSAMakeSign( strHash.toStdString().c_str(), JS_PKI_RSA_PADDING_V21, &binM, &binPri, &binS );
     if( ret != 0 ) goto end;
 
     berApplet->log( QString( "M = %1").arg( getHexString(binM.pVal, binM.nLen)));
@@ -2010,39 +2102,48 @@ end :
     JS_BIN_reset( &binM );
     JS_BIN_reset( &binS );
     JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binPub );
 
     return ret;
 }
 
-int CAVPDlg::makeRSA_PSS_SVT( int nNum, const QString strM, const QString strS )
+int CAVPDlg::makeRSA_PSS_SVT( const QString strE, const QString strN, const QString strHash, const QString strM, const QString strS )
 {
     int ret = 0;
     BIN binM = {0,0};
     BIN binS = {0,0};
     BIN binPub = {0,0};
 
-    QString strAlg;
+    JRSAKeyVal sKeyVal;
+
+    memset( &sKeyVal, 0x00, sizeof(sKeyVal));
+
+    JS_PKI_setRSAKeyVal( &sKeyVal, strN.toStdString().c_str(), strE.toStdString().c_str(), NULL, NULL, NULL, NULL, NULL, NULL );
 
     JS_BIN_decodeHex( strM.toStdString().c_str(), &binM );
     JS_BIN_decodeHex( strS.toStdString().c_str(), &binS );
 
-    ret = JS_PKI_RSAVerifySign( strAlg.toStdString().c_str(), JS_PKI_RSA_PADDING_V21, &binM, &binS, &binPub );
+    ret = JS_PKI_encodeRSAPublicKey( &sKeyVal, &binPub );
+    if( ret != 0 ) goto end;
+
+    ret = JS_PKI_RSAVerifySign( strHash.toStdString().c_str(), JS_PKI_RSA_PADDING_V21, &binM, &binS, &binPub );
 
     berApplet->log( QString( "M = %1").arg( getHexString(binM.pVal, binM.nLen)));
     berApplet->log( QString( "S = %1").arg(getHexString(binS.pVal, binS.nLen)));
 
-    if( ret == 0 )
+    if( ret == 1 )
         berApplet->log( "Result = P" );
     else
         berApplet->log( "Result = F" );
 
     berApplet->log( "" );
 
-
+    ret = 0;
 end :
     JS_BIN_reset( &binM );
     JS_BIN_reset( &binS );
     JS_BIN_reset( &binPub );
+    JS_PKI_resetRSAKeyVal( &sKeyVal );
 
     return ret;
 }
@@ -2172,7 +2273,7 @@ end :
 int CAVPDlg::makeECDSA_KPG( int nNum )
 {
     int ret = 0;
-    int nGroupID = 0;
+    int nGroupID = JS_PKI_getNidFromSN( "prime256v1" );
 
     BIN binPri = {0,0};
     BIN binPub = {0,0};
@@ -2208,11 +2309,10 @@ end :
 int CAVPDlg::makeECDSA_PKV( const QString strYX, const QString strYY )
 {
     int ret = 0;
-    int nGroupID = 0;
 
     BIN binPubX = {0,0};
     BIN binPubY = {0,0};
-    QString strParam = "P-256";
+    QString strParam = "prime256v1";
 
     JS_BIN_decodeHex( strYX.toStdString().c_str(), &binPubX );
     JS_BIN_decodeHex( strYY.toStdString().c_str(), &binPubY );
@@ -2232,13 +2332,13 @@ int CAVPDlg::makeECDSA_PKV( const QString strYX, const QString strYY )
 end:
     JS_BIN_reset( &binPubX );
     JS_BIN_reset( &binPubY );
-    return ret;
+    return 0;
 }
 
 int CAVPDlg::makeECDSA_SGT( const QString strM )
 {
     int ret = 0;
-    int nGroupID = 0;
+    int nGroupID = JS_PKI_getNidFromSN( "prime256v1" );
 
     BIN binPub = {0,0};
     BIN binPri = {0,0};
@@ -2291,10 +2391,26 @@ int CAVPDlg::makeECDSA_SVT( const QString strM, const QString strYX, const QStri
     int nIndex = 0;
 
     BIN binPub = {0,0};
+    BIN binPubX = {0,0};
+    BIN binPubY = {0,0};
     BIN binSign = {0,0};
+    BIN binSignR = {0,0};
+    BIN binSignS = {0,0};
     BIN binM = {0,0};
 
+    QString strParam = "prime256v1";
+
     JS_BIN_decodeHex( strM.toStdString().c_str(), &binM );
+    JS_BIN_decodeHex( strYX.toStdString().c_str(), &binPubX );
+    JS_BIN_decodeHex( strYY.toStdString().c_str(), &binPubY );
+    JS_BIN_decodeHex( strR.toStdString().c_str(), &binSignR );
+    JS_BIN_decodeHex( strS.toStdString().c_str(), &binSignS );
+
+    ret = JS_PKI_encodeECPublicKeyValue( strParam.toStdString().c_str(), &binPubX, &binPubY, &binPub );
+    if( ret != 0 ) goto end;
+
+    ret = JS_PKI_ECCEncodeSignValue( &binSignR, &binSignS, &binSign );
+    if( ret != 0 ) goto end;
 
     ret = JS_PKI_ECCVerifySign( "SHA256", &binM, &binSign, &binPub );
 
@@ -2304,17 +2420,22 @@ int CAVPDlg::makeECDSA_SVT( const QString strM, const QString strYX, const QStri
     berApplet->log( QString( "R = %1" ).arg( strR ));
     berApplet->log( QString( "S = %1").arg( strS ));
 
-    if( ret == 0 )
+    if( ret == 1 )
         berApplet->log( "Result = P" );
     else
         berApplet->log( "Result = F" );
 
 
     berApplet->log( "" );
+    ret = 0;
 
 end :
     JS_BIN_reset( &binPub );
+    JS_BIN_reset( &binPubX );
+    JS_BIN_reset( &binPubY );
     JS_BIN_reset( &binSign );
+    JS_BIN_reset( &binSignR );
+    JS_BIN_reset( &binSignS );
     JS_BIN_reset( &binM );
 
     return ret;
