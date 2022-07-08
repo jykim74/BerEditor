@@ -18,6 +18,7 @@ public:
 
 private slots:
     void clickPubKeyVerify();
+    void clickCheckKeyPair();
     void findPrivateKey();
     void findCert();
     void algChanged(int index);

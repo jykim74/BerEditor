@@ -135,6 +135,13 @@
       </spacer>
      </item>
      <item>
+      <widget class="QPushButton" name="mCheckKeyPairBtn">
+       <property name="text">
+        <string>Check KeyPair</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="mChangeBtn">
        <property name="text">
         <string>Change</string>

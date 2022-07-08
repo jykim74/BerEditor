@@ -47,6 +47,7 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     connect( mFinalBtn, SIGNAL(clicked()), this, SLOT(signVerifyFinal()));
 
     connect( mPubKeyVerifyCheck, SIGNAL(clicked()), this, SLOT(clickPubKeyVerify()));
+    connect( mCheckKeyPairBtn, SIGNAL(clicked()), this, SLOT(clickCheckKeyPair()));
     connect( mRunBtn, SIGNAL(clicked()), this, SLOT(Run()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
@@ -86,6 +87,66 @@ void SignVerifyDlg::clickPubKeyVerify()
         mCertBtn->setText( tr("Certificate") );
         mPriKeyAndCertLabel->setText( tr( "Private key and Certificate" ));
     }
+}
+
+void SignVerifyDlg::clickCheckKeyPair()
+{
+    int ret = 0;
+    BIN binPri = {0,0};
+    BIN binPub = {0,0};
+    BIN binCert = {0,0};
+    BIN binPubVal = {0,0};
+
+    QString strPriPath = mPriKeyPath->text();
+    QString strCertPath = mCertPath->text();
+
+    if( strPriPath.length() < 1 )
+    {
+        berApplet->elog( "You have to find private key" );
+        return;
+    }
+
+    if( strCertPath.length() < 1 )
+    {
+        berApplet->elog( "You have to find cert" );
+        return;
+    }
+
+    JS_BIN_fileRead( strPriPath.toStdString().c_str(), &binPri );
+
+    if( mPubKeyVerifyCheck->isChecked() )
+    {
+        JS_BIN_fileRead( strCertPath.toStdString().c_str(), &binPub );
+    }
+    else
+    {
+        JS_BIN_fileRead( strCertPath.toStdString().c_str(), &binCert );
+        ret = JS_PKI_getPubKeyFromCert( &binCert, &binPub );
+        if( ret != 0 ) goto end;
+    }
+
+    ret = JS_PKI_getPublicKeyValue( &binPub, &binPubVal );
+    if( ret != 0 ) goto end;
+
+    if( mAlgTypeCombo->currentText() == "RSA" )
+    {
+        ret = JS_PKI_IsValidRSAKeyPair( &binPri, &binPubVal );
+    }
+    else
+    {
+        ret = JS_PKI_IsValidECCKeyPair( &binPri, &binPubVal );
+    }
+
+    if( ret == 1 )
+        berApplet->messageBox( "KeyPair is good", this );
+    else
+        berApplet->warningBox( QString( "Invalid key pair: %1").arg(ret));
+
+end :
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binPub );
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binPubVal );
 }
 
 void SignVerifyDlg::findPrivateKey()

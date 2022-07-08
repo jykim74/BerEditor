@@ -18,7 +18,8 @@ public:
 
 private slots:
     void Run();
-    void clickPubKeyEncryt();
+    void clickPubKeyEncrypt();
+    void clickCheckKeyPair();
     void findCert();
     void findPrivateKey();
     void changeValue();

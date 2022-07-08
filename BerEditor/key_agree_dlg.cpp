@@ -483,7 +483,7 @@ void KeyAgreeDlg::checkAKeyPair()
     JS_BIN_set( &binY, &binPub.pVal[binX.nLen], binPub.nLen / 2);
 
 
-    ret = JS_PKI_IsValidECCKeyPair( strParam.toStdString().c_str(), &binPri, &binX, &binY );
+    ret = JS_PKI_IsValidECCKeyPairValue( strParam.toStdString().c_str(), &binPri, &binX, &binY );
     if( ret == 1 )
         berApplet->messageBox( "ECC KeyPair is valid", this );
     else
@@ -512,7 +512,7 @@ void KeyAgreeDlg::checkBKeyPair()
     JS_BIN_set( &binY, &binPub.pVal[binX.nLen], binPub.nLen / 2);
 
 
-    ret = JS_PKI_IsValidECCKeyPair( strParam.toStdString().c_str(), &binPri, &binX, &binY );
+    ret = JS_PKI_IsValidECCKeyPairValue( strParam.toStdString().c_str(), &binPri, &binX, &binY );
     if( ret == 1 )
         berApplet->messageBox( "ECC KeyPair is valid", this );
     else
