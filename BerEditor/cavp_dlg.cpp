@@ -78,6 +78,11 @@ CAVPDlg::CAVPDlg(QWidget *parent) :
     connect( mPBKDFFindBtn, SIGNAL(clicked()), this, SLOT(clickPBKDFFind() ));
     connect( mPBKDFRunBtn, SIGNAL(clicked()), this, SLOT(clickPBKDFRun() ));
 
+    connect( mSymMCTRunBtn, SIGNAL(clicked()), this, SLOT(clickSymMCTRun()));
+    connect( mSymMCTClearBtn, SIGNAL(clicked()), this, SLOT(clickSymMCTClear()));
+    connect( mHashMCTRunBtn, SIGNAL(clicked()), this, SLOT(clickHashMCTRun()));
+    connect( mHashMCTClearBtn, SIGNAL(clicked()), this, SLOT(clickHashMCTClear()));
+
     initialize();
 }
 
@@ -118,7 +123,7 @@ void CAVPDlg::initialize()
     QButtonGroup *pRSAGroup = new QButtonGroup();
     pRSAGroup->addButton( mRSA_ESRadio );
     pRSAGroup->addButton( mRSA_PSSRadio );
-    mRSA_ESRadio->setChecked(true);
+    mRSA_PSSRadio->setChecked(true);
     clickRSA_ESRadio();
 }
 
@@ -260,11 +265,11 @@ void CAVPDlg::clickSymRun()
                     }
                     else if( strMode == "CFB" )
                     {
-
+                        ret = makeSymCFB_MCT( strKey, strIV, strPT );
                     }
                     else if( strMode == "OFB" )
                     {
-
+                        ret = makeSymOFB_MCT( strKey, strIV, strPT );
                     }
                 }
                 else
@@ -653,6 +658,14 @@ void CAVPDlg::clickECCRun()
     QString strR;
     QString strS;
 
+    QString strQX;
+    QString strQY;
+    QString strRA;
+    QString strRB;
+    QString strKTA1X;
+    QString strKTA1Y;
+    QString strP;
+
     QTextStream in( &reqFile );
     QString strLine = in.readLine();
 
@@ -682,11 +695,25 @@ void CAVPDlg::clickECCRun()
                 strR = strValue;
             else if( strName == "S" )
                 strS = strValue;
+            else if( strName == "Qx" )
+                strQX = strValue;
+            else if( strName == "Qy" )
+                strQY = strValue;
+            else if( strName == "rA" )
+                strRA = strValue;
+            else if( strName == "rB" )
+                strRB = strValue;
+            else if( strName == "KTA1x" )
+                strKTA1X = strValue;
+            else if( strName == "KTA1y" )
+                strKTA1Y = strValue;
+            else if( strName == "P-256" )
+                strP = "prime256v1";
         }
 
         if( nLen == 0 || strNext.isNull() )
         {
-            if( mECCTypeCombo->currentText() == "KPG" )
+            if( mECC_ECDSARadio->isChecked() && mECCTypeCombo->currentText() == "KPG" )
             {
                 if( bInit == true )
                 {
@@ -701,7 +728,7 @@ void CAVPDlg::clickECCRun()
                     return;
                 }
             }
-            else if( mECCTypeCombo->currentText() == "PKV" )
+            else if( mECC_ECDSARadio->isChecked() && mECCTypeCombo->currentText() == "PKV" )
             {
                 if( bInit == true )
                 {
@@ -720,7 +747,7 @@ void CAVPDlg::clickECCRun()
                     }
                 }
             }
-            else if( mECCTypeCombo->currentText() == "SGT" )
+            else if( mECC_ECDSARadio->isChecked() && mECCTypeCombo->currentText() == "SGT" )
             {
                 if( bInit == true )
                 {
@@ -738,7 +765,7 @@ void CAVPDlg::clickECCRun()
                     }
                 }
             }
-            else if( mECCTypeCombo->currentText() == "SVT" )
+            else if( mECC_ECDSARadio->isChecked() && mECCTypeCombo->currentText() == "SVT" )
             {
                 if( bInit == true )
                 {
@@ -758,14 +785,73 @@ void CAVPDlg::clickECCRun()
                     }
                 }
             }
+            else if( mECC_ECDHRadio->isChecked() && mECCTypeCombo->currentText() == "KPG" )
+            {
+                if( bInit )
+                {
+                    berApplet->log( "[P-256]" );
+                    berApplet->log( "" );
+                    bInit = false;
+                }
 
+                ret = makeECDH_KPG( 15 );
+                if( ret != 0 )
+                {
+                    berApplet->warningBox( QString( "fail to run ECC: %1").arg(ret));
+                    return;
+                }
+            }
+            else if( mECC_ECDHRadio->isChecked() && mECCTypeCombo->currentText() == "PKV" )
+            {
+                if( bInit )
+                {
+                    berApplet->log( "[P-256]" );
+                    bInit = false;
+                }
 
+                if( strQX.length() > 0 && strQY.length() > 0 )
+                {
+                    ret = makeECDH_PKV( strQX, strQY );
+
+                    if( ret != 0 )
+                    {
+                        berApplet->warningBox( QString( "fail to run ECC: %1").arg(ret));
+                        return;
+                    }
+                }
+            }
+            else if( mECC_ECDHRadio->isChecked() && mECCTypeCombo->currentText() == "KAKAT" )
+            {
+                if( bInit )
+                {
+                    berApplet->log( "[P-256]" );
+                    bInit = false;
+                }
+
+                if( strRA.length() > 0 && strRB.length() > 0 && strKTA1X.length() > 0 && strKTA1Y.length() > 0 )
+                {
+                    ret = makeECDH_KAKAT( strRA, strRB, strKTA1X, strKTA1Y );
+
+                    if( ret != 0 )
+                    {
+                        berApplet->warningBox( QString( "fail to run ECC: %1").arg(ret));
+                        return;
+                    }
+                }
+            }
 
             strM.clear();
             strYX.clear();
             strYY.clear();
             strR.clear();
             strS.clear();
+
+            strQX.clear();
+            strQY.clear();
+            strRA.clear();
+            strRB.clear();
+            strKTA1X.clear();
+            strKTA1Y.clear();
         }
 
         strLine = strNext;
@@ -809,6 +895,7 @@ void CAVPDlg::clickRSARun()
     QString strN;
     QString strE;
     QString strHash;
+    QString strC;
 
     QTextStream in( &reqFile );
     QString strLine = in.readLine();
@@ -836,13 +923,15 @@ void CAVPDlg::clickRSARun()
                 strS = strValue;
             else if( strName == "e" || strName == "v" )
                 strE = strValue;
-            else if( strName == "HashAlg" )
+            else if( strName == "C" )
+                strC = strValue;
+            else if( strName == "HashAlg" || strName == "SHAAlg" )
                 strHash = strValue;
         }
 
         if( nLen == 0 || strNext.isNull() )
         {
-            if( mRSATypeCombo->currentText() == "KPG" )
+            if( mRSA_PSSRadio->isChecked() && mRSATypeCombo->currentText() == "KPG" )
             {
                 if( nKeyLen > 0 )
                 {
@@ -862,7 +951,7 @@ void CAVPDlg::clickRSARun()
                     }
                 }
             }
-            else if( mRSATypeCombo->currentText() == "SGT" )
+            else if( mRSA_PSSRadio->isChecked() && mRSATypeCombo->currentText() == "SGT" )
             {
                 if( strM.length() > 0 && strE.length() > 0 && strHash.length() > 0 )
                 {
@@ -874,7 +963,7 @@ void CAVPDlg::clickRSARun()
                     }
                 }
             }
-            else if( mRSATypeCombo->currentText() == "SVT" )
+            else if( mRSA_PSSRadio->isChecked() && mRSATypeCombo->currentText() == "SVT" )
             {
                 if( strS.length() > 0 && strM.length() > 0 )
                 {
@@ -886,10 +975,74 @@ void CAVPDlg::clickRSARun()
                     }
                 }
             }
+            else if( mRSA_ESRadio->isChecked() && mRSATypeCombo->currentText() == "DET" )
+            {
+                int nKeyIndex = 0;
+                const QString strPri = "";
+
+                if( bInit == true )
+                {
+                    berApplet->log( QString( "|n| = %1").arg(nKeyLen));
+                    berApplet->log( QString( "n = %1").arg( strN ));
+                    berApplet->log( "e = 10001" );
+                    berApplet->log( "" );
+                    bInit = false;
+                }
+
+                if( strC.length() > 0 && strHash.length() > 0 )
+                {
+                    berApplet->log( QString( "SHAAlg = %1").arg(strHash));
+
+                    ret = makeRSA_ES_DET( strPri, strC );
+
+                    if( ret != 0 ) return;
+                }
+            }
+            else if( mRSA_ESRadio->isChecked() && mRSATypeCombo->currentText() == "ENT" )
+            {
+                const QString strPub = "";
+
+                if( strN.length() > 0 && nE > 0 )
+                {
+                    berApplet->log( QString("|n| = %1").arg( strN.length()/2 ));
+                    berApplet->log( QString( "n = %1").arg( strN));
+                    berApplet->log( QString( "e = %1").arg(nE));
+                    berApplet->log( "" );
+                    berApplet->log( "hash = SHA256" );
+                    berApplet->log( "" );
+                }
+
+                if( strM.length() > 0 )
+                {
+                    ret = makeRSA_ES_ENT( strPub, strM );
+
+                    if( ret != 0 ) return;
+                }
+            }
+            else if( mRSA_ESRadio->isChecked() && mRSATypeCombo->currentText() == "KGT" )
+            {
+                if( nKeyLen > 0 && nE > 0 )
+                {
+                    if( bInit == true )
+                    {
+                        berApplet->log( QString( "|n| = %1").arg(nKeyLen));
+                        berApplet->log( QString( "e = %1").arg(nE));
+                        berApplet->log( "" );
+                        bInit = false;
+                    }
+
+                    ret = makeRSA_ES_KGT( nKeyLen, nE, 10 );
+                    nKeyLen = -1;
+                    if( ret != 0 ) return;
+                }
+            }
 
             strS.clear();
             strM.clear();
             strN.clear();
+            strC.clear();
+
+            if( mRSA_ESRadio->isChecked() ) strHash.clear();
         }
 
 
@@ -951,7 +1104,7 @@ void CAVPDlg::clickDRBGRun()
         QString strNext = in.readLine();
 
         nLen = strLine.length();
-        berApplet->log( QString( "%1 %2 %3").arg( nPos ).arg( nLen ).arg( strLine ));
+//        berApplet->log( QString( "%1 %2 %3").arg( nPos ).arg( nLen ).arg( strLine ));
 
         if( nLen > 0 )
         {
@@ -1294,6 +1447,98 @@ void CAVPDlg::MCTSHA256LastMDChanged( const QString& text )
     mHashMCTLastMDLenText->setText( QString("%1").arg(nLen));
 }
 
+void CAVPDlg::clickSymMCTRun()
+{
+    int nRet = 0;
+
+    QString strKey = mSymMCTKeyText->text();
+    QString strIV = mSymMCTIVText->text();
+    QString strPT = mSymMCTPTText->text();
+
+    if( strKey.length() < 1 )
+    {
+        berApplet->elog( "You have to insert KEY" );
+        return;
+    }
+
+    if( strPT.length() < 1 )
+    {
+        berApplet->elog( "You have to insert PT" );
+        return;
+    }
+
+    rsp_name_ = QString( "%1_%2_%d_MCT.req")
+            .arg( mSymMCTAlgCombo->currentText() )
+            .arg( mSymMCTModeCombo->currentText() )
+            .arg( strKey.length() / 2 );
+
+
+    mSymMCTCTText->clear();
+    mSymMCTLastKeyText->clear();
+    mSymMCTLastIVText->clear();
+    mSymMCTLastPTText->clear();
+    mSymMCTLastCTText->clear();
+
+    if( mSymMCTModeCombo->currentText() == "ECB" )
+        nRet = makeSymECB_MCT( strKey, strPT, true );
+    else if( mSymMCTModeCombo->currentText() == "CBC" )
+        nRet = makeSymCBC_MCT( strKey, strIV, strPT, true );
+    else if( mSymMCTModeCombo->currentText() == "CTR" )
+        nRet = makeSymCTR_MCT( strKey, strIV, strPT, true );
+    else if( mSymMCTModeCombo->currentText() == "CFB" )
+        nRet = makeSymCFB_MCT( strKey, strIV, strPT, true );
+    else if( mSymMCTModeCombo->currentText() == "OFB" )
+        nRet = makeSymOFB_MCT( strKey, strIV, strPT, true );
+
+    if( nRet == 0 )
+        berApplet->messageBox( "Sym MCT Done", this );
+    else
+        berApplet->warningBox( QString( "fail to run Sym MCT: %1").arg(nRet), this);
+}
+
+void CAVPDlg::clickSymMCTClear()
+{
+    mSymMCTKeyText->clear();
+    mSymMCTIVText->clear();
+    mSymMCTPTText->clear();
+    mSymMCTCTText->clear();
+    mSymMCTLastKeyText->clear();
+    mSymMCTLastIVText->clear();
+    mSymMCTLastPTText->clear();
+    mSymMCTLastCTText->clear();
+}
+
+void CAVPDlg::clickHashMCTRun()
+{
+    int ret = 0;
+    QString strPath;
+
+    QString strSeed = mHashMCTSeedText->text();
+
+    if( strSeed.length() < 1 )
+    {
+        berApplet->elog( "You have to insert Seed" );
+        return;
+    }
+
+    rsp_name_ = QString( "SHA256_MCT.req" );
+
+    ret = makeHashMCT( strSeed, true );
+
+    if( ret == 0 )
+        berApplet->messageBox( "Hash MCT Done", this );
+    else
+        berApplet->warningBox( QString( "fail to run hash MCT: %1").arg(ret), this);
+}
+
+void CAVPDlg::clickHashMCTClear()
+{
+    mHashMCTSeedText->clear();
+    mHashMCTFirstMDText->clear();
+    mHashMCTLastMDText->clear();
+    mHashMCTCountText->clear();
+}
+
 int CAVPDlg::makeSymData( const QString strKey, const QString strIV, const QString strPT )
 {
     int ret = 0;
@@ -1330,7 +1575,7 @@ end :
     return ret;
 }
 
-int CAVPDlg::makeSymCBC_MCT( const QString strKey, const QString strIV, const QString strPT )
+int CAVPDlg::makeSymCBC_MCT( const QString strKey, const QString strIV, const QString strPT, bool bInfo )
 {
     int ret = 0;
     int i = 0;
@@ -1358,6 +1603,18 @@ int CAVPDlg::makeSymCBC_MCT( const QString strKey, const QString strIV, const QS
 
     for( i = 0; i < 100; i++ )
     {
+        if( bInfo )
+        {
+            mSymMCTCountText->setText( QString("%1").arg(i) );
+
+            if( i == 99 )
+            {
+                mSymMCTLastKeyText->setText( getHexString(binKey[i].pVal, binKey[i].nLen));
+                mSymMCTLastIVText->setText(getHexString(binIV[i].pVal, binIV[i].nLen));
+                mSymMCTLastPTText->setText( getHexString(binPT[0].pVal, binPT[0].nLen));
+            }
+        }
+
         berApplet->log( QString("COUNT = %1").arg(i));
         berApplet->log( QString("KEY = %1").arg( getHexString(binKey[i].pVal, binKey[i].nLen)));
         berApplet->log( QString("IV = %1").arg( getHexString(binIV[i].pVal, binIV[i].nLen)));
@@ -1382,6 +1639,18 @@ int CAVPDlg::makeSymCBC_MCT( const QString strKey, const QString strIV, const QS
         }
 
         j = j - 1;
+
+        if( bInfo )
+        {
+            if( i == 0 )
+            {
+                mSymMCTCTText->setText( getHexString(binCT[j].pVal, binCT[j].nLen) );
+            }
+            else if( i == 99 )
+            {
+                mSymMCTLastCTText->setText( getHexString(binCT[j].pVal, binCT[j].nLen) );
+            }
+        }
 
         berApplet->log( QString("CT = %1").arg(getHexString(binCT[j].pVal, binCT[j].nLen)));
         berApplet->log( "" );
@@ -1434,7 +1703,7 @@ end :
     }
 }
 
-int CAVPDlg::makeSymECB_MCT( const QString strKey, const QString strPT )
+int CAVPDlg::makeSymECB_MCT( const QString strKey, const QString strPT, bool bInfo )
 {
     int i = 0;
     int j = 0;
@@ -1464,6 +1733,17 @@ int CAVPDlg::makeSymECB_MCT( const QString strKey, const QString strPT )
         berApplet->log( QString("KEY = %1").arg( getHexString(binKey[i].pVal, binKey[i].nLen)));
         berApplet->log( QString("PT = %1").arg(getHexString(binPT[0].pVal, binPT[0].nLen)));
 
+        if( bInfo )
+        {
+            mSymMCTCountText->setText( QString("%1").arg(i) );
+
+            if( i == 99 )
+            {
+                mSymMCTLastKeyText->setText( getHexString(binKey[i].pVal, binKey[i].nLen));
+                mSymMCTLastPTText->setText( getHexString(binPT[0].pVal, binPT[0].nLen));
+            }
+        }
+
         for( j = 0; j < 1000; j++ )
         {
             ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], NULL, &binKey[i], &binCT[j] );
@@ -1474,6 +1754,18 @@ int CAVPDlg::makeSymECB_MCT( const QString strKey, const QString strPT )
         }
 
         j = j - 1;
+
+        if( bInfo )
+        {
+            if( i == 0 )
+            {
+                mSymMCTCTText->setText( getHexString(binCT[j].pVal, binCT[j].nLen) );
+            }
+            else if( i == 99 )
+            {
+                mSymMCTLastCTText->setText( getHexString(binCT[j].pVal, binCT[j].nLen) );
+            }
+        }
 
         berApplet->log( QString("CT = %1").arg(getHexString(binCT[j].pVal, binCT[j].nLen)));
         berApplet->log( "" );
@@ -1526,7 +1818,7 @@ int CAVPDlg::makeSymECB_MCT( const QString strKey, const QString strPT )
     return ret;
 }
 
-int CAVPDlg::makeSymCTR_MCT( const QString strKey, const QString strIV, const QString strPT )
+int CAVPDlg::makeSymCTR_MCT( const QString strKey, const QString strIV, const QString strPT, bool bInfo )
 {
     int i = 0;
     int j = 0;
@@ -1553,6 +1845,18 @@ int CAVPDlg::makeSymCTR_MCT( const QString strKey, const QString strIV, const QS
 
     for( i = 0; i < 100; i++ )
     {
+        if( bInfo )
+        {
+            mSymMCTCountText->setText( QString("%1").arg(i) );
+
+            if( i == 99 )
+            {
+                mSymMCTLastKeyText->setText( getHexString(binKey[i].pVal, binKey[i].nLen));
+                mSymMCTLastIVText->setText(getHexString( binCTR.pVal, binCTR.nLen ));
+                mSymMCTLastPTText->setText( getHexString(binPT[0].pVal, binPT[0].nLen));
+            }
+        }
+
         berApplet->log( QString("COUNT = %1").arg(i));
         berApplet->log( QString("KEY = %1").arg( getHexString(binKey[i].pVal, binKey[i].nLen)));
         berApplet->log( QString("CTR = %1").arg( getHexString(binCTR.pVal, binCTR.nLen)));
@@ -1570,6 +1874,18 @@ int CAVPDlg::makeSymCTR_MCT( const QString strKey, const QString strIV, const QS
         }
 
         j = j - 1;
+
+        if( bInfo )
+        {
+            if( i == 0 )
+            {
+                mSymMCTCTText->setText( getHexString(binCT[j].pVal, binCT[j].nLen) );
+            }
+            else if( i == 99 )
+            {
+                mSymMCTLastCTText->setText( getHexString(binCT[j].pVal, binCT[j].nLen) );
+            }
+        }
 
         berApplet->log( QString("CT = %1").arg(getHexString(binCT[j].pVal, binCT[j].nLen)));
         berApplet->log( "" );
@@ -1612,6 +1928,266 @@ int CAVPDlg::makeSymCTR_MCT( const QString strKey, const QString strIV, const QS
     for( int i = 0; i < 101; i++ )
     {
         JS_BIN_reset( &binKey[i] );
+    }
+
+    for( int i = 0; i < 1001; i++ )
+    {
+        JS_BIN_reset( &binPT[i] );
+        JS_BIN_reset( &binCT[i] );
+    }
+
+    return ret;
+}
+
+int CAVPDlg::makeSymCFB_MCT( const QString strKey, const QString strIV, const QString strPT, bool bInfo )
+{
+    int ret = 0;
+    int i = 0;
+    int j = 0;
+
+    BIN binKey[100 + 1];
+    BIN binIV[100 + 1];
+    BIN binPT[100 + 1];
+    BIN binCT[100 + 1];
+
+    QString strAlg = mSymAlgCombo->currentText();
+    QString strMode = mSymModeCombo->currentText();
+
+    if( strKey.length() > 0 )
+        JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey[0] );
+
+    if( strIV.length() > 0 )
+        JS_BIN_decodeHex( strIV.toStdString().c_str(), &binIV[0] );
+
+    if( strPT.length() > 0 )
+        JS_BIN_decodeHex( strPT.toStdString().c_str(), &binPT[0] );
+
+    QString strSymAlg = getSymAlg( strAlg, strMode, binKey[0].nLen );
+    berApplet->log( QString("Symmetric Alg: %1").arg( strSymAlg ));
+
+    for( i = 0; i < 100; i++ )
+    {
+        if( bInfo )
+        {
+            mSymMCTCountText->setText( QString("%1").arg(i) );
+
+            if( i == 99 )
+            {
+                mSymMCTLastKeyText->setText( getHexString(binKey[i].pVal, binKey[i].nLen));
+                mSymMCTLastIVText->setText(getHexString(binIV[i].pVal, binIV[i].nLen));
+                mSymMCTLastPTText->setText( getHexString(binPT[0].pVal, binPT[0].nLen));
+            }
+        }
+
+        berApplet->log( QString("COUNT = %1").arg(i));
+        berApplet->log( QString("KEY = %1").arg( getHexString(binKey[i].pVal, binKey[i].nLen)));
+        berApplet->log( QString("IV = %1").arg( getHexString(binIV[i].pVal, binIV[i].nLen)));
+        berApplet->log( QString("PT = %1").arg(getHexString(binPT[0].pVal, binPT[0].nLen)));
+
+        for( j = 0; j < 1000; j++ )
+        {
+            JS_BIN_reset( &binCT[j] );
+            ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binCT[j] );
+            if( ret != 0 ) goto end;
+
+            if( j == 0 )
+            {
+                JS_BIN_reset( &binPT[j+1] );
+                JS_BIN_copy( &binPT[j+1], &binIV[i] );
+            }
+            else
+            {
+                JS_BIN_reset( &binPT[j+1] );
+                JS_BIN_copy( &binPT[j+1], &binCT[j-1] );
+            }
+        }
+
+        j = j - 1;
+
+        if( bInfo )
+        {
+            if( i == 0 )
+            {
+                mSymMCTCTText->setText( getHexString(binCT[j].pVal, binCT[j].nLen) );
+            }
+            else if( i == 99 )
+            {
+                mSymMCTLastCTText->setText( getHexString(binCT[j].pVal, binCT[j].nLen) );
+            }
+        }
+
+        berApplet->log( QString("CT = %1").arg(getHexString(binCT[j].pVal, binCT[j].nLen)));
+        berApplet->log( "" );
+
+        if( (strKey.length()/2) == 16 )
+        {
+            JS_BIN_reset( &binKey[i+1] );
+            JS_BIN_XOR( &binKey[i+1], &binKey[i], &binCT[j] );
+        }
+        else if( (strKey.length()/2) == 24 )
+        {
+            BIN binTmp = {0,0};
+
+            JS_BIN_set( &binTmp, &binCT[j-1].pVal[8], 8 );
+            JS_BIN_appendBin( &binTmp, &binCT[j] );
+
+            JS_BIN_reset( &binKey[i+1] );
+            JS_BIN_XOR( &binKey[i+1], &binKey[i], &binTmp );
+            JS_BIN_reset( &binTmp );
+        }
+        else if( (strKey.length()/2) == 32 )
+        {
+            BIN binTmp = {0,0};
+
+            JS_BIN_copy( &binTmp, &binCT[j-1] );
+            JS_BIN_appendBin( &binTmp, &binCT[j] );
+
+            JS_BIN_reset( &binKey[i+1] );
+            JS_BIN_XOR( &binKey[i+1], &binKey[i], &binTmp );
+            JS_BIN_reset( &binTmp );
+        }
+
+        JS_BIN_reset( &binIV[i+1] );
+        JS_BIN_copy( &binIV[i+1], &binCT[j] );
+        JS_BIN_reset( &binPT[0] );
+        JS_BIN_copy( &binPT[0], &binCT[j-1]);
+    }
+
+end :
+    for( int i = 0; i < 101; i++ )
+    {
+        JS_BIN_reset( &binKey[i]);
+        JS_BIN_reset( &binIV[i]);
+    }
+
+    for( int i = 0; i < 1001; i++ )
+    {
+        JS_BIN_reset( &binPT[i] );
+        JS_BIN_reset( &binCT[i] );
+    }
+
+    return ret;
+}
+
+int CAVPDlg::makeSymOFB_MCT( const QString strKey, const QString strIV, const QString strPT, bool bInfo )
+{
+    int ret = 0;
+    int i = 0;
+    int j = 0;
+
+    BIN binKey[100 + 1];
+    BIN binIV[100 + 1];
+    BIN binPT[100 + 1];
+    BIN binCT[100 + 1];
+
+    QString strAlg = mSymAlgCombo->currentText();
+    QString strMode = mSymModeCombo->currentText();
+
+    if( strKey.length() > 0 )
+        JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey[0] );
+
+    if( strIV.length() > 0 )
+        JS_BIN_decodeHex( strIV.toStdString().c_str(), &binIV[0] );
+
+    if( strPT.length() > 0 )
+        JS_BIN_decodeHex( strPT.toStdString().c_str(), &binPT[0] );
+
+    QString strSymAlg = getSymAlg( strAlg, strMode, binKey[0].nLen );
+    berApplet->log( QString("Symmetric Alg: %1").arg( strSymAlg ));
+
+    for( i = 0; i < 100; i++ )
+    {
+        if( bInfo )
+        {
+            mSymMCTCountText->setText( QString("%1").arg(i) );
+
+            if( i == 99 )
+            {
+                mSymMCTLastKeyText->setText( getHexString(binKey[i].pVal, binKey[i].nLen));
+                mSymMCTLastIVText->setText(getHexString(binIV[i].pVal, binIV[i].nLen));
+                mSymMCTLastPTText->setText( getHexString(binPT[0].pVal, binPT[0].nLen));
+            }
+        }
+
+        berApplet->log( QString("COUNT = %1").arg(i));
+        berApplet->log( QString("KEY = %1").arg( getHexString(binKey[i].pVal, binKey[i].nLen)));
+        berApplet->log( QString("IV = %1").arg( getHexString(binIV[i].pVal, binIV[i].nLen)));
+        berApplet->log( QString("PT = %1").arg(getHexString(binPT[0].pVal, binPT[0].nLen)));
+
+        for( j = 0; j < 1000; j++ )
+        {
+            JS_BIN_reset( &binCT[j] );
+            ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binCT[j] );
+            if( ret != 0 ) goto end;
+
+            if( j == 0 )
+            {
+                JS_BIN_reset( &binPT[j+1] );
+                JS_BIN_copy( &binPT[j+1], &binIV[i] );
+            }
+            else
+            {
+                JS_BIN_reset( &binPT[j+1] );
+                JS_BIN_copy( &binPT[j+1], &binCT[j-1] );
+            }
+        }
+
+        j = j - 1;
+
+        if( bInfo )
+        {
+            if( i == 0 )
+            {
+                mSymMCTCTText->setText( getHexString(binCT[j].pVal, binCT[j].nLen) );
+            }
+            else if( i == 99 )
+            {
+                mSymMCTLastCTText->setText( getHexString(binCT[j].pVal, binCT[j].nLen) );
+            }
+        }
+
+        berApplet->log( QString("CT = %1").arg(getHexString(binCT[j].pVal, binCT[j].nLen)));
+        berApplet->log( "" );
+
+        if( (strKey.length()/2) == 16 )
+        {
+            JS_BIN_reset( &binKey[i+1] );
+            JS_BIN_XOR( &binKey[i+1], &binKey[i], &binCT[j] );
+        }
+        else if( (strKey.length()/2) == 24 )
+        {
+            BIN binTmp = {0,0};
+
+            JS_BIN_set( &binTmp, &binCT[j-1].pVal[8], 8 );
+            JS_BIN_appendBin( &binTmp, &binCT[j] );
+
+            JS_BIN_reset( &binKey[i+1] );
+            JS_BIN_XOR( &binKey[i+1], &binKey[i], &binTmp );
+            JS_BIN_reset( &binTmp );
+        }
+        else if( (strKey.length()/2) == 32 )
+        {
+            BIN binTmp = {0,0};
+
+            JS_BIN_copy( &binTmp, &binCT[j-1] );
+            JS_BIN_appendBin( &binTmp, &binCT[j] );
+
+            JS_BIN_reset( &binKey[i+1] );
+            JS_BIN_XOR( &binKey[i+1], &binKey[i], &binTmp );
+            JS_BIN_reset( &binTmp );
+        }
+
+        JS_BIN_reset( &binIV[i+1] );
+        JS_BIN_copy( &binIV[i+1], &binCT[j] );
+        JS_BIN_reset( &binPT[0] );
+        JS_BIN_copy( &binPT[0], &binCT[j-1]);
+    }
+
+end :
+    for( int i = 0; i < 101; i++ )
+    {
+        JS_BIN_reset( &binKey[i]);
+        JS_BIN_reset( &binIV[i]);
     }
 
     for( int i = 0; i < 1001; i++ )
@@ -1760,7 +2336,7 @@ end :
     return ret;
 }
 
-int CAVPDlg::makeHashMCT( const QString strSeed )
+int CAVPDlg::makeHashMCT( const QString strSeed, bool bInfo )
 {
     int ret = 0;
     BIN binMD[1003 + 1];
@@ -1787,6 +2363,8 @@ int CAVPDlg::makeHashMCT( const QString strSeed )
         JS_BIN_copy( &binMD[1], &binSeed );
         JS_BIN_copy( &binMD[2], &binSeed );
 
+        if( bInfo ) mHashMCTCountText->setText( QString("%1").arg(j));
+
         for( int i = 3; i < 1003; i++ )
         {
             JS_BIN_reset( &binM[i] );
@@ -1803,6 +2381,15 @@ int CAVPDlg::makeHashMCT( const QString strSeed )
         JS_BIN_reset( &binSeed );
         JS_BIN_copy( &binSeed, &binMD[1002] );
         JS_BIN_copy( &binMD[j], &binSeed );
+
+        if( bInfo )
+        {
+            if( j == 0 )
+                mHashMCTFirstMDText->setText( getHexString(binMD[j].pVal, binMD[j].nLen));
+
+            if( j == 99 )
+                mHashMCTFirstMDText->setText( getHexString(binMD[j].pVal, binMD[j].nLen));
+        }
 
         berApplet->log( QString( "COUNT = %1").arg(j));
         berApplet->log( QString( "MD = %1").arg(getHexString(binMD[j].pVal, binMD[j].nLen)));
@@ -1911,17 +2498,17 @@ int CAVPDlg::makeDRBG( int nReturnedBitsLen,
     JS_BIN_decodeHex( strAdditionalInput1.toStdString().c_str(), &binAdditionalInput1 );
     JS_BIN_decodeHex( strAdditionalInput2.toStdString().c_str(), &binAdditionalInput2 );
 
-    /*
-    ret = JS_PKI_CreateDRBG( nReturnedBitsLen,
-                              &binEntropyInput,
-                              &binNonce,
-                              &binAdditionalInput1,
-                              &binAdditionalInput2,
-                              &binAdditionalInputReseed,
-                              &binPersionalizationString,
-                              &binEntropyInputReseed,
-                              &binDRBG );
-    */
+    ret = JS_PKI_genCTR_DRBG(
+                nReturnedBitsLen / 8,
+                0,
+                &binEntropyInput,
+                &binNonce,
+                &binPersionalizationString,
+                &binEntropyInputReseed,
+                &binAdditionalInputReseed,
+                &binAdditionalInput1,
+                &binAdditionalInput2,
+                &binDRBG );
 
     if( ret != 0 ) goto end;
 
@@ -1948,13 +2535,14 @@ end :
     return ret;
 }
 
-int CAVPDlg::makeRSA_ES_DET( int nKeyIndex, const QString strC )
+int CAVPDlg::makeRSA_ES_DET( const QString strPri, const QString strC )
 {
     int ret = 0;
     BIN binC = {0,0};
     BIN binM = {0,0};
     BIN binPri = {0,0};
 
+    JS_BIN_decodeHex( strPri.toStdString().c_str(), &binPri );
     JS_BIN_decodeHex( strC.toStdString().c_str(), &binC );
 
     /* need to set private key */
@@ -1975,14 +2563,14 @@ end :
     return ret;
 }
 
-int CAVPDlg::makeRSA_ES_ENT( int nKeyIndex, const QString strM )
+int CAVPDlg::makeRSA_ES_ENT( const QString strPub, const QString strM )
 {
     int ret = 0;
     BIN binM = {0,0};
     BIN binC = {0,0};
     BIN binPub = {0,0};
 
-
+    JS_BIN_decodeHex( strPub.toStdString().c_str(), &binPub );
     JS_BIN_decodeHex( strM.toStdString().c_str(), &binM );
 
     /* need to set public key */
@@ -2151,8 +2739,7 @@ end :
 int CAVPDlg::makeECDH_KPG( int nCount )
 {
     int ret = 0;
-    int nIndex = 0;
-    int nGroupID = 0;
+    int nGroupID = JS_PKI_getNidFromSN( "prime256v1" );
 
     JECKeyVal sKeyVal;
 
@@ -2192,11 +2779,10 @@ end :
 int CAVPDlg::makeECDH_PKV( const QString strPubX, const QString strPubY )
 {
     int ret = 0;
-    int nGroupID = 0;
 
     BIN binPubX = {0,0};
     BIN binPubY = {0,0};
-    QString strParam = "P-256";
+    QString strParam = "prime256v1";
 
     JS_BIN_decodeHex( strPubX.toStdString().c_str(), &binPubX );
     JS_BIN_decodeHex( strPubY.toStdString().c_str(), &binPubY );
@@ -2211,9 +2797,8 @@ int CAVPDlg::makeECDH_PKV( const QString strPubX, const QString strPubY )
     else
         berApplet->log( "Result = F" );
 
-
     berApplet->log( "" );
-
+    ret = 0;
 
 end :
     JS_BIN_reset( &binPubX );
@@ -2241,10 +2826,10 @@ int CAVPDlg::makeECDH_KAKAT( const QString strRA, const QString strRB, const QSt
     JS_BIN_decodeHex( strKTA1X.toStdString().c_str(), &binKTA1X );
     JS_BIN_decodeHex( strKTA1Y.toStdString().c_str(), &binKTA1Y );
 
-    ret = JS_PKI_genECPubKey( "P-256", &binRA, &binPubX, &binPubY );
+    ret = JS_PKI_genECPubKey( "prime256v1", &binRA, &binPubX, &binPubY );
     if( ret != 0 ) goto end;
 
-    ret = JS_PKI_getECDHSecretByPublic( &binRA, &binRB, &binSecret );
+    ret = JS_PKI_getECDHSecretWithValue( "prime256v1", &binRB, &binPubX, &binPubY, &binSecret );
     if( ret != 0 ) goto end;
 
     berApplet->log( "j = 1" );
@@ -2255,7 +2840,7 @@ int CAVPDlg::makeECDH_KAKAT( const QString strRA, const QString strRB, const QSt
     berApplet->log( QString( "KABx = %1").arg(getHexString( &binSecret.pVal[0], 32)));
 
     /* need to check secret length */
-    berApplet->log( QString( "KABy = %1").arg(getHexString( &binSecret.pVal[32], 32)));
+//    berApplet->log( QString( "KABy = %1").arg(getHexString( &binSecret.pVal[32], 32)));
     berApplet->log( "" );
 
 end :

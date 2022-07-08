@@ -53,20 +53,27 @@ private slots:
     void MCTSHA256FirstMDChanged( const QString& text );
     void MCTSHA256LastMDChanged( const QString& text );
 
+    void clickSymMCTRun();
+    void clickSymMCTClear();
+    void clickHashMCTRun();
+    void clickHashMCTClear();
+
 private:
     void initialize();
     QString getRspFile(const QString &reqFileName );
     void logRsp( const QString& strLog );
 
     int makeSymData( const QString strKey, const QString strIV, const QString strPT );
-    int makeSymCBC_MCT( const QString strKey, const QString strIV, const QString strPT );
-    int makeSymECB_MCT( const QString strKey, const QString strPT );
-    int makeSymCTR_MCT( const QString strKey, const QString strIV, const QString strPT );
+    int makeSymCBC_MCT( const QString strKey, const QString strIV, const QString strPT, bool bInfo = false );
+    int makeSymECB_MCT( const QString strKey, const QString strPT, bool bInfo = false );
+    int makeSymCTR_MCT( const QString strKey, const QString strIV, const QString strPT, bool bInfo = false );
+    int makeSymCFB_MCT( const QString strKey, const QString strIV, const QString strPT, bool bInfo = false );
+    int makeSymOFB_MCT( const QString strKey, const QString strIV, const QString strPT, bool bInfo = false );
 
     int makeAEData( const QString strKey, const QString strIV, const QString strPT, const QString strAAD, int nTagLen );
     int makeADData( const QString strKey, const QString strIV, const QString strCT, const QString strAAD, const QString strTag );
     int makeHashData( int nLen, const QString strVal );
-    int makeHashMCT( const QString strSeed );
+    int makeHashMCT( const QString strSeed, bool bInfo = false );
     int makeHMACData( const QString strCount, const QString strKLen, const QString strTLen, const QString strKey, const QString strMsg );
     int makePBKDF( int nIteration, const QString strPass, QString strSalt, int nKLen );
     int makeDRBG( int nReturnedBitsLen,
@@ -78,8 +85,8 @@ private:
                   const QString strAdditionalInput1,
                   const QString strAdditionalInput2 );
 
-    int makeRSA_ES_DET( int nKeyIndex, const QString strC );
-    int makeRSA_ES_ENT( int nKeyIndex, const QString strM );
+    int makeRSA_ES_DET( const QString strPri, const QString strC );
+    int makeRSA_ES_ENT( const QString strPub, const QString strM );
     int makeRSA_ES_KGT( int nKeyLen, int nE, int nCount );
 
     int makeRSA_PSS_KPG( int nLen, int nCount );
