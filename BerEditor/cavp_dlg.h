@@ -29,6 +29,7 @@ private slots:
     void clickECCRun();
     void clickRSARun();
     void clickDRBGRun();
+    void clickDRBGTest();
     void clickPBKDFRun();
 
     void clickSymFind();

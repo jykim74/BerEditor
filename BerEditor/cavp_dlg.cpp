@@ -27,6 +27,8 @@ const QStringList kECDSAType = { "KPG", "PKV", "SGT", "SVT" };
 const QStringList kRSAESType = { "DET", "ENT", "KGT" };
 const QStringList kRSA_PSSType = { "KPG", "SGT", "SVT" };
 
+const QStringList kDRBGAlgList = { "ARIA-128-CTR", "ARIA-192-CTR", "ARIA-256-CTR", "AES-128-CTR", "AES-192-CTR", "AES-256-CTR" };
+
 
 CAVPDlg::CAVPDlg(QWidget *parent) :
     QDialog(parent)
@@ -73,6 +75,7 @@ CAVPDlg::CAVPDlg(QWidget *parent) :
     connect( mRSARunBtn, SIGNAL(clicked()), this, SLOT(clickRSARun() ));
 
     connect( mDRBGFindBtn, SIGNAL(clicked()), this, SLOT(clickDRBGFind() ));
+//    connect( mDRBGTestBtn, SIGNAL(clicked()), this, SLOT(clickDRBGTest()));
     connect( mDRBGRunBtn, SIGNAL(clicked()), this, SLOT(clickDRBGRun() ));
 
     connect( mPBKDFFindBtn, SIGNAL(clicked()), this, SLOT(clickPBKDFFind() ));
@@ -125,6 +128,9 @@ void CAVPDlg::initialize()
     pRSAGroup->addButton( mRSA_PSSRadio );
     mRSA_PSSRadio->setChecked(true);
     clickRSA_ESRadio();
+
+    mDRBGAlgCombo->addItems( kDRBGAlgList );
+    mDRBGUseDFCheck->setChecked(true);
 }
 
 QString CAVPDlg::getRspFile(const QString &reqFileName )
@@ -1051,6 +1057,20 @@ void CAVPDlg::clickRSARun()
     }
 
     berApplet->messageBox( "RSA Run Done", this );
+}
+
+void CAVPDlg::clickDRBGTest()
+{
+    BIN binRand1 = {0,0};
+    BIN binRand2 = {0,0};
+
+    JS_PKI_DRBGTest( &binRand1, &binRand2 );
+
+    berApplet->log( QString( "Rand1: %1" ).arg(getHexString(binRand1.pVal, binRand1.nLen)));
+    berApplet->log( QString( "Rand2: %1").arg(getHexString(binRand2.pVal, binRand2.nLen)));
+
+    JS_BIN_reset( &binRand1 );
+    JS_BIN_reset( &binRand2 );
 }
 
 void CAVPDlg::clickDRBGRun()
@@ -2469,6 +2489,7 @@ end:
     return ret;
 }
 
+
 int CAVPDlg::makeDRBG( int nReturnedBitsLen,
               const QString strEntropyInput,
               const QString strNonce,
@@ -2489,6 +2510,13 @@ int CAVPDlg::makeDRBG( int nReturnedBitsLen,
     BIN binAdditionalInput2 = {0,0};
     BIN binDRBG = {0,0};
 
+    int nDF = 0;
+    int nPR = 0;
+
+    QString strAlg = mDRBGAlgCombo->currentText();
+
+    if( mDRBGUseDFCheck->isChecked() ) nDF = 1;
+    if( mDRBGUsePRCheck->isChecked() ) nPR = 1;
 
     JS_BIN_decodeHex( strEntropyInput.toStdString().c_str(), &binEntropyInput );
     JS_BIN_decodeHex( strNonce.toStdString().c_str(), &binNonce );
@@ -2499,8 +2527,10 @@ int CAVPDlg::makeDRBG( int nReturnedBitsLen,
     JS_BIN_decodeHex( strAdditionalInput2.toStdString().c_str(), &binAdditionalInput2 );
 
     ret = JS_PKI_genCTR_DRBG(
-                nReturnedBitsLen / 8,
-                0,
+                nReturnedBitsLen,
+                nDF,
+                nPR,
+                strAlg.toStdString().c_str(),
                 &binEntropyInput,
                 &binNonce,
                 &binPersionalizationString,
