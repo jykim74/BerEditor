@@ -56,6 +56,15 @@ CAVPDlg::CAVPDlg(QWidget *parent) :
     connect( mHashMCTFirstMDText, SIGNAL(textChanged(const QString&)), this, SLOT(MCTSHA256FirstMDChanged(const QString&)));
     connect( mHashMCTLastMDText, SIGNAL(textChanged(const QString&)), this, SLOT(MCTSHA256LastMDChanged(const QString&)));
 
+    connect( mDRBG2EntropyInputText, SIGNAL(textChanged(const QString&)), this, SLOT(DRBG2EntropyInputChanged(const QString&)));
+    connect( mDRBG2NonceText, SIGNAL(textChanged(const QString&)), this, SLOT(DRBG2NonceChanged(const QString&)));
+    connect( mDRBG2PersonalStringText, SIGNAL(textChanged(const QString&)), this, SLOT(DRBG2PersonalStringChanged(const QString&)));
+    connect( mDRBG2EntropyInputReseedText, SIGNAL(textChanged(const QString&)), this, SLOT(DRBG2EntropyInputReseedChanged(const QString&)));
+    connect( mDRBG2AdditionalInputReseedText, SIGNAL(textChanged(const QString&)), this, SLOT(DRBG2AdditionalInputReseedChanged(const QString&)));
+    connect( mDRBG2AdditionalInputText, SIGNAL(textChanged(const QString&)), this, SLOT(DRBG2AdditionalInputChanged(const QString&)));
+    connect( mDRBG2AdditionalInput2Text, SIGNAL(textChanged(const QString&)), this, SLOT(DRBG2AdditionalInput2Changed(const QString&)));
+    connect( mDRBG2ReturnedBitsText, SIGNAL(textChanged()), this, SLOT(DRBG2ReturnedBitsChanged()));
+
     connect( mSymFindBtn, SIGNAL(clicked()), this, SLOT(clickSymFind() ));
     connect( mSymRunBtn, SIGNAL(clicked()), this, SLOT(clickSymRun() ));
 
@@ -85,6 +94,9 @@ CAVPDlg::CAVPDlg(QWidget *parent) :
     connect( mSymMCTClearBtn, SIGNAL(clicked()), this, SLOT(clickSymMCTClear()));
     connect( mHashMCTRunBtn, SIGNAL(clicked()), this, SLOT(clickHashMCTRun()));
     connect( mHashMCTClearBtn, SIGNAL(clicked()), this, SLOT(clickHashMCTClear()));
+
+    connect( mDRBG2ClearBtn, SIGNAL(clicked()), this, SLOT(clickDRBG2Clear()));
+    connect( mDRBG2RunBtn, SIGNAL(clicked()), this, SLOT(clickDRBG2Run()));
 
     initialize();
 }
@@ -131,6 +143,10 @@ void CAVPDlg::initialize()
 
     mDRBGAlgCombo->addItems( kDRBGAlgList );
     mDRBGUseDFCheck->setChecked(true);
+
+    mDRBG2AlgCombo->addItems( kDRBGAlgList );
+    mDRBG2UseDFCheck->setChecked( true );
+    mDRBG2RandLenText->setText( "512" );
 }
 
 QString CAVPDlg::getRspFile(const QString &reqFileName )
@@ -1198,6 +1214,9 @@ void CAVPDlg::clickDRBGRun()
                 berApplet->log( QString( "COUNT = %1").arg( nCount ));
 
                 ret = makeDRBG( nReturnedBitsLen,
+                                mDRBGAlgCombo->currentText(),
+                                mDRBGUseDFCheck->isChecked(),
+                                mDRBGUsePRCheck->isChecked(),
                                 strEntropyInput,
                                 strNonce,
                                 strPersonalizationString,
@@ -1467,6 +1486,54 @@ void CAVPDlg::MCTSHA256LastMDChanged( const QString& text )
     mHashMCTLastMDLenText->setText( QString("%1").arg(nLen));
 }
 
+void CAVPDlg::DRBG2EntropyInputChanged( const QString& text )
+{
+    int nLen = text.length() / 2;
+    mDRBG2EntropyInputLenText->setText( QString("%1").arg(nLen));
+}
+
+void CAVPDlg::DRBG2NonceChanged( const QString& text )
+{
+    int nLen = text.length() / 2;
+    mDRBG2NonceLenText->setText( QString("%1").arg(nLen));
+}
+
+void CAVPDlg::DRBG2PersonalStringChanged( const QString& text )
+{
+    int nLen = text.length() / 2;
+    mDRBG2PersonalStringLenText->setText( QString("%1").arg(nLen));
+}
+
+void CAVPDlg::DRBG2EntropyInputReseedChanged( const QString& text )
+{
+    int nLen = text.length() / 2;
+    mDRBG2EntropyInputReseedLenText->setText( QString("%1").arg(nLen));
+}
+
+void CAVPDlg::DRBG2AdditionalInputReseedChanged( const QString& text )
+{
+    int nLen = text.length() / 2;
+    mDRBG2AdditionalInputReseedLenText->setText( QString("%1").arg(nLen));
+}
+
+void CAVPDlg::DRBG2AdditionalInputChanged( const QString& text )
+{
+    int nLen = text.length() / 2;
+    mDRBG2AdditionalInputLenText->setText( QString("%1").arg(nLen));
+}
+
+void CAVPDlg::DRBG2AdditionalInput2Changed( const QString& text )
+{
+    int nLen = text.length() / 2;
+    mDRBG2AdditionalInput2LenText->setText( QString("%1").arg(nLen));
+}
+
+void CAVPDlg::DRBG2ReturnedBitsChanged()
+{
+    int nLen = mDRBG2ReturnedBitsText->toPlainText().length() / 2;
+    mDRBG2ReturnedBitsLenText->setText( QString("%1").arg(nLen));
+}
+
 void CAVPDlg::clickSymMCTRun()
 {
     int nRet = 0;
@@ -1557,6 +1624,51 @@ void CAVPDlg::clickHashMCTClear()
     mHashMCTFirstMDText->clear();
     mHashMCTLastMDText->clear();
     mHashMCTCountText->clear();
+}
+
+void CAVPDlg::clickDRBG2Clear()
+{
+    mDRBG2EntropyInputText->clear();
+    mDRBG2NonceText->clear();
+    mDRBG2PersonalStringText->clear();
+    mDRBG2EntropyInputReseedText->clear();
+    mDRBG2AdditionalInputReseedText->clear();
+    mDRBG2AdditionalInputText->clear();
+    mDRBG2AdditionalInput2Text->clear();
+    mDRBG2ReturnedBitsText->clear();
+}
+
+void CAVPDlg::clickDRBG2Run()
+{
+    int ret = 0;
+    int nRandLen = mDRBG2RandLenText->text().toInt() / 8;
+
+    QString strEntroypInput = mDRBG2EntropyInputText->text();
+    QString strNonce = mDRBG2NonceText->text();
+    QString strPersonalString = mDRBG2PersonalStringText->text();
+    QString strEntropyInputReseed = mDRBG2EntropyInputReseedText->text();
+    QString strAdditionalInputReseed = mDRBG2AdditionalInputReseedText->text();
+    QString strAdditionalInput = mDRBG2AdditionalInputText->text();
+    QString strAdditionalInput2 = mDRBG2AdditionalInput2Text->text();
+
+    ret = makeDRBG( nRandLen,
+                    mDRBG2AlgCombo->currentText(),
+                    mDRBG2UseDFCheck->isChecked(),
+                    mDRBG2UsePRCheck->isChecked(),
+                    strEntroypInput,
+                    strNonce,
+                    strPersonalString,
+                    strEntropyInputReseed,
+                    strAdditionalInputReseed,
+                    strAdditionalInput,
+                    strAdditionalInput2,
+                    true );
+
+    if( ret == 0 )
+        berApplet->messageBox( QString( "DRBG2 Run Success" ), this );
+    else
+        berApplet->warningBox( QString( "DRBG2 Run fail: %1").arg(ret), this );
+
 }
 
 int CAVPDlg::makeSymData( const QString strKey, const QString strIV, const QString strPT )
@@ -2491,13 +2603,17 @@ end:
 
 
 int CAVPDlg::makeDRBG( int nReturnedBitsLen,
+              const QString strAlg,
+              int nDF,
+              int nPR,
               const QString strEntropyInput,
               const QString strNonce,
               const QString strPersonalizationString,
               const QString strEntropyInputReseed,
               const QString strAdditionalInputReseed,
               const QString strAdditionalInput1,
-              const QString strAdditionalInput2 )
+              const QString strAdditionalInput2,
+              bool bInfo )
 {
     int ret = 0;
 
@@ -2510,13 +2626,6 @@ int CAVPDlg::makeDRBG( int nReturnedBitsLen,
     BIN binAdditionalInput2 = {0,0};
     BIN binDRBG = {0,0};
 
-    int nDF = 0;
-    int nPR = 0;
-
-    QString strAlg = mDRBGAlgCombo->currentText();
-
-    if( mDRBGUseDFCheck->isChecked() ) nDF = 1;
-    if( mDRBGUsePRCheck->isChecked() ) nPR = 1;
 
     JS_BIN_decodeHex( strEntropyInput.toStdString().c_str(), &binEntropyInput );
     JS_BIN_decodeHex( strNonce.toStdString().c_str(), &binNonce );
@@ -2551,6 +2660,8 @@ int CAVPDlg::makeDRBG( int nReturnedBitsLen,
     berApplet->log( QString( "AdditionalInput = %1").arg( strAdditionalInput2 ));
     berApplet->log( QString( "ReturnedBits = %1").arg( getHexString( binDRBG.pVal, binDRBG.nLen )));
     berApplet->log( "" );
+
+    if( bInfo ) mDRBG2ReturnedBitsText->setPlainText( getHexString( binDRBG.pVal, binDRBG.nLen ));
 
 end :
     JS_BIN_reset( &binEntropyInput );

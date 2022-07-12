@@ -54,10 +54,22 @@ private slots:
     void MCTSHA256FirstMDChanged( const QString& text );
     void MCTSHA256LastMDChanged( const QString& text );
 
+    void DRBG2EntropyInputChanged( const QString& text );
+    void DRBG2NonceChanged( const QString& text );
+    void DRBG2PersonalStringChanged( const QString& text );
+    void DRBG2EntropyInputReseedChanged( const QString& text );
+    void DRBG2AdditionalInputReseedChanged( const QString& text );
+    void DRBG2AdditionalInputChanged( const QString& text );
+    void DRBG2AdditionalInput2Changed( const QString& text );
+    void DRBG2ReturnedBitsChanged();
+
     void clickSymMCTRun();
     void clickSymMCTClear();
     void clickHashMCTRun();
     void clickHashMCTClear();
+
+    void clickDRBG2Clear();
+    void clickDRBG2Run();
 
 private:
     void initialize();
@@ -78,13 +90,17 @@ private:
     int makeHMACData( const QString strCount, const QString strKLen, const QString strTLen, const QString strKey, const QString strMsg );
     int makePBKDF( int nIteration, const QString strPass, QString strSalt, int nKLen );
     int makeDRBG( int nReturnedBitsLen,
+                  const QString strAlg,
+                  int nDF,
+                  int nPR,
                   const QString strEntropyInput,
                   const QString strNonce,
                   const QString strPersonalizationString,
                   const QString strEntropyInputReseed,
                   const QString strAdditionalInputReseed,
                   const QString strAdditionalInput1,
-                  const QString strAdditionalInput2 );
+                  const QString strAdditionalInput2,
+                  bool bInfo = false );
 
     int makeRSA_ES_DET( const QString strPri, const QString strC );
     int makeRSA_ES_ENT( const QString strPub, const QString strM );
