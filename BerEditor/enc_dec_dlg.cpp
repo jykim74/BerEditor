@@ -26,7 +26,7 @@ static QStringList algList = {
 };
 
 static QStringList modeList = {
-  "ECB", "CBC", "CTR", "CFB1", "CFB8", "CFB", "OFB1", "OFB8", "OFB"
+  "ECB", "CBC", "CTR", "CFB", "OFB"
 };
 
 static QStringList modeAEList = {
@@ -260,9 +260,19 @@ void EncDecDlg::Run()
     else
     {
         if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
-            ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
+        {
+            if( strAlg == "SEED" )
+                ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
+            else
+                ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
+        }
         else if( mMethodCombo->currentIndex() == ENC_DECRYPT )
-            ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
+        {
+            if( strAlg == "SEED" )
+                ret = JS_PKI_decryptSEED( strMode.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
+            else
+                ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
+        }
     }
 
 
