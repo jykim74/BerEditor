@@ -44,7 +44,7 @@
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -62,6 +62,12 @@
         <layout class="QGridLayout" name="gridLayout_3">
          <item row="0" column="5">
           <widget class="QLabel" name="label_4">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
             <string>Type</string>
            </property>
@@ -111,7 +117,14 @@
           <widget class="QLineEdit" name="mSymReqFileText"/>
          </item>
          <item row="0" column="6">
-          <widget class="QComboBox" name="mSymTypeCombo"/>
+          <widget class="QComboBox" name="mSymTypeCombo">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item row="1" column="0">
           <widget class="QLabel" name="label_5">
@@ -587,16 +600,35 @@
         <layout class="QGridLayout" name="gridLayout_8">
          <item row="1" column="4">
           <widget class="QPushButton" name="mDRBGRunBtn">
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>Run</string>
            </property>
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QComboBox" name="mDRBGAlgCombo"/>
+          <widget class="QComboBox" name="mDRBGAlgCombo">
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item row="0" column="4">
           <widget class="QCheckBox" name="mDRBGUsePRCheck">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
             <string>Use PR</string>
            </property>
@@ -604,6 +636,12 @@
          </item>
          <item row="1" column="3">
           <widget class="QPushButton" name="mDRBGFindBtn">
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>Find</string>
            </property>
@@ -611,6 +649,12 @@
          </item>
          <item row="0" column="3">
           <widget class="QCheckBox" name="mDRBGUseDFCheck">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
             <string>Use DF</string>
            </property>
@@ -681,6 +725,12 @@
          </item>
          <item row="1" column="3">
           <widget class="QPushButton" name="mPBKDFFindBtn">
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>Find</string>
            </property>
@@ -688,6 +738,12 @@
          </item>
          <item row="1" column="4">
           <widget class="QPushButton" name="mPBKDFRunBtn">
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>Run</string>
            </property>

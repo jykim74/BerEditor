@@ -1688,7 +1688,11 @@ int CAVPDlg::makeSymData( const QString strKey, const QString strIV, const QStri
 
     QString strSymAlg = getSymAlg( strAlg, strMode, binKey.nLen );
 
-    ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT, &binIV, &binKey, &binEnc );
+    if( strAlg == "SEED" )
+        ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binPT, &binIV, &binKey, &binEnc );
+    else
+        ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT, &binIV, &binKey, &binEnc );
+
     if( ret != 0 )
     {
         berApplet->elog( QString( "fail to encrypt:%1").arg(ret));
@@ -1755,7 +1759,11 @@ int CAVPDlg::makeSymCBC_MCT( const QString strKey, const QString strIV, const QS
         for( j = 0; j < 1000; j++ )
         {
             JS_BIN_reset( &binCT[j] );
-            ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binCT[j] );
+            if( strAlg == "SEED" )
+                ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binCT[j] );
+            else
+                ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binCT[j] );
+
             if( ret != 0 ) goto end;
 
             if( j == 0 )
@@ -1878,7 +1886,11 @@ int CAVPDlg::makeSymECB_MCT( const QString strKey, const QString strPT, bool bIn
 
         for( j = 0; j < 1000; j++ )
         {
-            ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], NULL, &binKey[i], &binCT[j] );
+            if( strAlg == "SEED" )
+                ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binPT[j], NULL, &binKey[i], &binCT[j] );
+            else
+                ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], NULL, &binKey[i], &binCT[j] );
+
             if( ret != 0 ) goto end;
 
             JS_BIN_reset( &binPT[j+1] );
@@ -1996,7 +2008,10 @@ int CAVPDlg::makeSymCTR_MCT( const QString strKey, const QString strIV, const QS
 
         for( j = 0; j < 1000; j++ )
         {
-            ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], &binCTR, &binKey[i], &binCT[j] );
+            if( strAlg == "SEED" )
+                ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binPT[j], &binCTR, &binKey[i], &binCT[j] );
+            else
+                ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], &binCTR, &binKey[i], &binCT[j] );
             if( ret != 0 ) goto end;
 
             JS_BIN_INC( &binCTR );
@@ -2119,7 +2134,12 @@ int CAVPDlg::makeSymCFB_MCT( const QString strKey, const QString strIV, const QS
         for( j = 0; j < 1000; j++ )
         {
             JS_BIN_reset( &binCT[j] );
-            ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binCT[j] );
+
+            if( strAlg == "SEED" )
+                ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binCT[j] );
+            else
+                ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binCT[j] );
+
             if( ret != 0 ) goto end;
 
             if( j == 0 )
@@ -2249,7 +2269,11 @@ int CAVPDlg::makeSymOFB_MCT( const QString strKey, const QString strIV, const QS
         for( j = 0; j < 1000; j++ )
         {
             JS_BIN_reset( &binCT[j] );
-            ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binCT[j] );
+            if( strMode == "SEED" )
+                ret = JS_PKI_encryptSEED( strAlg.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binCT[j] );
+            else
+                ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binCT[j] );
+
             if( ret != 0 ) goto end;
 
             if( j == 0 )
