@@ -102,7 +102,8 @@ void KeyAgreeDlg::calcualteA()
 
         JS_BIN_set( &binX, binPub.pVal, binPub.nLen / 2 );
         JS_BIN_set( &binY, &binPub.pVal[binX.nLen], binPub.nLen / 2);
-        ret = JS_PKI_getECDHSecretWithValue( mECDHParamCombo->currentText().toStdString().c_str(), &binPri, &binX, &binY, &binSecret );
+ //       ret = JS_PKI_getECDHSecretWithValue( mECDHParamCombo->currentText().toStdString().c_str(), &binPri, &binX, &binY, &binSecret );
+        ret = JS_PKI_getECDHComputeKey( mECDHParamCombo->currentText().toStdString().c_str(), &binPri, &binX, &binY, &binSecret );
 
         JS_BIN_reset( &binX );
         JS_BIN_reset( &binY );
@@ -157,7 +158,7 @@ void KeyAgreeDlg::calcualteB()
         JS_BIN_set( &binX, binPub.pVal, binPub.nLen/2 );
         JS_BIN_set( &binY, &binPub.pVal[binX.nLen], binPub.nLen/2 );
 
-        ret = JS_PKI_getECDHSecretWithValue( mECDHParamCombo->currentText().toStdString().c_str(), &binPri, &binX, &binY, &binSecret );
+        ret = JS_PKI_getECDHComputeKey( mECDHParamCombo->currentText().toStdString().c_str(), &binPri, &binX, &binY, &binSecret );
 
         JS_BIN_reset( &binX );
         JS_BIN_reset( &binY );
