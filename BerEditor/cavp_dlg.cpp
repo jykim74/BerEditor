@@ -36,6 +36,7 @@ CAVPDlg::CAVPDlg(QWidget *parent) :
     setupUi(this);
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mRspPathFindBtn, SIGNAL(clicked()), this, SLOT(clickRspPathFind()));
 
     connect( mECC_ECDSARadio, SIGNAL(clicked()), this, SLOT(clickECC_ECDSARadio()));
     connect( mECC_ECDHRadio, SIGNAL(clicked()), this, SLOT(clickECC_ECDHRadio()));
@@ -154,13 +155,15 @@ QString CAVPDlg::getRspFile(const QString &reqFileName )
     QFileInfo fileInfo;
     fileInfo.setFile( reqFileName );
 
+    QString strRspPath = mRspPathText->text();
+
 
     QString fileName = fileInfo.baseName();
     QString extName = fileInfo.completeSuffix();
     QString filePath = fileInfo.canonicalPath();
 
     QString fileRspName = QString( "%1.rsp" ).arg( fileName );
-    QString strPath = QString( "%1/%2").arg( filePath ).arg( fileRspName );
+    QString strPath = QString( "%1/%2").arg( strRspPath ).arg( fileRspName );
 
     berApplet->log( QString( "RspName: %1").arg(strPath));
 
@@ -176,6 +179,15 @@ void CAVPDlg::logRsp( const QString& strLog )
     file.close();
 
     berApplet->log( strLog );
+}
+
+void CAVPDlg::clickRspPathFind()
+{
+    QString strPath = mRspPathText->text();
+
+    QString folderName = findFolder( this, strPath );
+
+    if( folderName.length() > 0 ) mRspPathText->setText( folderName );
 }
 
 void CAVPDlg::clickECC_ECDSARadio()

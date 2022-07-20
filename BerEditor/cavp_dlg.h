@@ -17,6 +17,8 @@ public:
     ~CAVPDlg();
 
 private slots:
+    void clickRspPathFind();
+
     void clickECC_ECDSARadio();
     void clickECC_ECDHRadio();
     void clickRSA_ESRadio();

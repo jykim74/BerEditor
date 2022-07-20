@@ -46,6 +46,19 @@ QString findFile( QWidget *parent, int nType, const QString strPath )
     return fileName;
 };
 
+QString findFolder( QWidget *parent, const QString strPath )
+{
+    QFileDialog::Options options;
+    options |= QFileDialog::ShowDirsOnly;
+    options |= QFileDialog::DontResolveSymlinks;
+
+
+    QString folderName = QFileDialog::getExistingDirectory(
+                parent, QObject::tr("Open Directory"), strPath, options);
+
+    return folderName;
+}
+
 int setOIDList( const QString& strOIDPath )
 {
     int ret = 0;

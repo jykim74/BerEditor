@@ -31,6 +31,8 @@ enum {
     JS_FILE_TYPE_REQ };
 
 QString findFile( QWidget *parent, int nType, const QString strPath );
+QString findFolder( QWidget *parent, const QString strPath );
+
 int setOIDList( const QString& strOIDPath );
 QString getHexString( const QString& strVal );
 QString getHexString( unsigned char *pData, int nDataLen );
