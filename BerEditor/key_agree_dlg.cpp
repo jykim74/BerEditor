@@ -9,15 +9,7 @@
 
 
 const QStringList sGList = { "0", "2", "5" };
-const QStringList sECCParamList = {
-    "secp112r1", "secp112r2", "secp128r1", "secp128r2", "secp160k1",
-    "secp160r1", "secp160r2", "secp192r1", "secp192k1", "secp224k1",
-    "secp224r1", "prime256v1", "secp256k1", "secp384r1", "secp521r1",
-    "sect113r1", "sect113r2", "sect131r1", "sect131r2", "sect163k1",
-    "sect163r1", "sect163r2", "sect193r1", "sect193r2", "sect233k1",
-    "sect233r1", "sect239k1", "sect283k1", "sect283r1", "sect409k1",
-    "sect409r1", "sect571k1", "sect571r1"
-};
+
 
 
 KeyAgreeDlg::KeyAgreeDlg(QWidget *parent) :
@@ -187,7 +179,8 @@ void KeyAgreeDlg::secretClear()
 void KeyAgreeDlg::initialize()
 {
     mGCombo->addItems( sGList );
-    mECDHParamCombo->addItems( sECCParamList );
+    mECDHParamCombo->addItems( kECCParamList );
+    mECDHParamCombo->setCurrentText( "prime256v1" );
 
     mLengthText->setText( "128" );
     mTabWidget->setCurrentIndex(0);

@@ -469,30 +469,23 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_6">
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_17">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_15">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
-            <string>Req File</string>
+            <string>Algorithm</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="4">
-          <widget class="QPushButton" name="mECCFindBtn">
+         <item row="0" column="2">
+          <widget class="QRadioButton" name="mECC_ECDHRadio">
            <property name="text">
-            <string>Find</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="5">
-          <widget class="QComboBox" name="mECCTypeCombo"/>
-         </item>
-         <item row="1" column="1" colspan="3">
-          <widget class="QLineEdit" name="mECCReqFileText"/>
-         </item>
-         <item row="0" column="1">
-          <widget class="QRadioButton" name="mECC_ECDSARadio">
-           <property name="text">
-            <string>ECDSA</string>
+            <string>ECDH</string>
            </property>
           </widget>
          </item>
@@ -509,20 +502,28 @@
            </property>
           </spacer>
          </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_15">
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>0</height>
-            </size>
-           </property>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_17">
            <property name="text">
-            <string>Algorithm</string>
+            <string>Req File</string>
            </property>
           </widget>
          </item>
          <item row="0" column="4">
+          <widget class="QLabel" name="label_63">
+           <property name="text">
+            <string>Param</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="6">
+          <widget class="QPushButton" name="mECCFindBtn">
+           <property name="text">
+            <string>Find</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="6">
           <widget class="QLabel" name="label_16">
            <property name="minimumSize">
             <size>
@@ -535,19 +536,28 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="5">
+         <item row="0" column="7">
+          <widget class="QComboBox" name="mECCTypeCombo"/>
+         </item>
+         <item row="0" column="1">
+          <widget class="QRadioButton" name="mECC_ECDSARadio">
+           <property name="text">
+            <string>ECDSA</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="7">
           <widget class="QPushButton" name="mECCRunBtn">
            <property name="text">
             <string>Run</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
-          <widget class="QRadioButton" name="mECC_ECDHRadio">
-           <property name="text">
-            <string>ECDH</string>
-           </property>
-          </widget>
+         <item row="0" column="5">
+          <widget class="QComboBox" name="mECCParamCombo"/>
+         </item>
+         <item row="1" column="1" colspan="5">
+          <widget class="QLineEdit" name="mECCReqFileText"/>
          </item>
         </layout>
        </item>
@@ -567,32 +577,8 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_7">
-         <item row="1" column="5">
-          <widget class="QPushButton" name="mRSARunBtn">
-           <property name="text">
-            <string>Run</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QRadioButton" name="mRSA_ESRadio">
-           <property name="text">
-            <string>RSAES</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="4">
-          <widget class="QLabel" name="label_20">
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Type</string>
-           </property>
-          </widget>
+         <item row="0" column="6">
+          <widget class="QComboBox" name="mRSATypeCombo"/>
          </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label_19">
@@ -604,6 +590,34 @@
            </property>
            <property name="text">
             <string>Mode</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QRadioButton" name="mRSA_PSSRadio">
+           <property name="text">
+            <string>RSA PSS</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QRadioButton" name="mRSA_ESRadio">
+           <property name="text">
+            <string>RSAES</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="5">
+          <widget class="QPushButton" name="mRSAFindBtn">
+           <property name="text">
+            <string>Find</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="6">
+          <widget class="QPushButton" name="mRSARunBtn">
+           <property name="text">
+            <string>Run</string>
            </property>
           </widget>
          </item>
@@ -620,12 +634,6 @@
            </property>
           </spacer>
          </item>
-         <item row="1" column="1" colspan="3">
-          <widget class="QLineEdit" name="mRSAReqFileText"/>
-         </item>
-         <item row="0" column="5">
-          <widget class="QComboBox" name="mRSATypeCombo"/>
-         </item>
          <item row="1" column="0">
           <widget class="QLabel" name="label_21">
            <property name="text">
@@ -633,17 +641,19 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="4">
-          <widget class="QPushButton" name="mRSAFindBtn">
-           <property name="text">
-            <string>Find</string>
-           </property>
-          </widget>
+         <item row="1" column="1" colspan="4">
+          <widget class="QLineEdit" name="mRSAReqFileText"/>
          </item>
-         <item row="0" column="2">
-          <widget class="QRadioButton" name="mRSA_PSSRadio">
+         <item row="0" column="5">
+          <widget class="QLabel" name="label_20">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
-            <string>RSA PSS</string>
+            <string>Type</string>
            </property>
           </widget>
          </item>

@@ -75,6 +75,7 @@ private slots:
 
 private:
     void initialize();
+    bool isNameValid( const QString strPathName, const QString strVal1, const QString strVal2, const QString strVal3 );
     QString getRspFile(const QString &reqFileName );
     void logRsp( const QString& strLog );
 

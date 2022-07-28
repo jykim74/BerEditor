@@ -130,6 +130,9 @@ void CAVPDlg::initialize()
 
     mPBKDFAlgCombo->addItems( kHashAlgList );
 
+    mECCParamCombo->addItems( kECCParamList );
+    mECCParamCombo->setCurrentText( "prime256v1" );
+
     QButtonGroup *pECCGroup = new QButtonGroup();
     pECCGroup->addButton( mECC_ECDSARadio );
     pECCGroup->addButton(mECC_ECDHRadio );
@@ -148,6 +151,43 @@ void CAVPDlg::initialize()
     mDRBG2AlgCombo->addItems( kDRBGAlgList );
     mDRBG2UseDFCheck->setChecked( true );
     mDRBG2RandLenText->setText( "512" );
+}
+
+bool CAVPDlg::isNameValid( const QString strPathName, const QString strVal1, const QString strVal2, const QString strVal3 )
+{
+    QFileInfo fileInfo;
+    fileInfo.setFile( strPathName );
+
+    QString fileName = fileInfo.baseName();
+
+    if( strVal1.length() > 0 )
+    {
+        if( fileName.contains( strVal1 ) == false )
+        {
+            berApplet->elog( QString( "%1 is not included in filename").arg(strVal1));
+            return false;
+        }
+    }
+
+    if( strVal2.length() > 0 )
+    {
+        if( fileName.contains( strVal2 ) == false )
+        {
+            berApplet->elog( QString( "%1 is not included in filename").arg(strVal2));
+            return false;
+        }
+    }
+
+    if( strVal3.length() > 0 )
+    {
+        if( fileName.contains( strVal3 ) == false )
+        {
+            berApplet->elog( QString( "%1 is not included in filename").arg(strVal3));
+            return false;
+        }
+    }
+
+    return true;
 }
 
 QString CAVPDlg::getRspFile(const QString &reqFileName )
@@ -236,6 +276,16 @@ void CAVPDlg::clickSymRun()
 
     QString strPath = mSymReqFileText->text();
     QFile reqFile( strPath );
+    QString strAlg = mSymAlgCombo->currentText();
+
+
+    if( isNameValid( strPath, strAlg, mSymTypeCombo->currentText(), mSymModeCombo->currentText() ) == false )
+    {
+        QString strMsg = QString( "Are you sure that test file is %1" ).arg( strPath );
+        bool bVal = berApplet->yesOrCancelBox( strMsg, this, true );
+
+        if( bVal == false ) return;
+    }
 
     rsp_name_ = getRspFile( strPath );
 
@@ -341,6 +391,15 @@ void CAVPDlg::clickAERun()
 
     QString strPath = mAEReqFileText->text();
     QFile reqFile( strPath );
+    QString strAlg = mAEAlgCombo->currentText();
+
+    if( isNameValid( strPath, strAlg, mAEModeCombo->currentText(), mAETypeCombo->currentText() ) == false )
+    {
+        QString strMsg = QString( "Are you sure that test file is %1" ).arg( strPath );
+        bool bVal = berApplet->yesOrCancelBox( strMsg, this, true );
+
+        if( bVal == false ) return;
+    }
 
     rsp_name_ = getRspFile( strPath );
 
@@ -481,6 +540,14 @@ void CAVPDlg::clickHMACRun()
     QString strPath = mHMACReqFileText->text();
     QFile reqFile( strPath );
 
+    if( isNameValid( strPath, "HMAC", mHMACHashCombo->currentText(), "" ) == false )
+    {
+        QString strMsg = QString( "Are you sure that test file is %1" ).arg( strPath );
+        bool bVal = berApplet->yesOrCancelBox( strMsg, this, true );
+
+        if( bVal == false ) return;
+    }
+
     rsp_name_ = getRspFile( strPath );
 
     if( !reqFile.open( QIODevice::ReadOnly | QIODevice::Text ))
@@ -579,6 +646,15 @@ void CAVPDlg::clickHashRun()
 
     QString strPath = mHashReqFileText->text();
     QFile reqFile( strPath );
+    QString strAlg = mHashAlgCombo->currentText();
+
+    if( isNameValid( strPath, strAlg.toStdString().c_str(), mHashTypeCombo->currentText(), "" ) == false )
+    {
+        QString strMsg = QString( "Are you sure that test file is %1" ).arg( strPath );
+        bool bVal = berApplet->yesOrCancelBox( strMsg, this, true );
+
+        if( bVal == false ) return;
+    }
 
     rsp_name_ = getRspFile( strPath );
 
@@ -674,6 +750,15 @@ void CAVPDlg::clickECCRun()
 
     QString strPath = mECCReqFileText->text();
     QFile reqFile( strPath );
+
+
+    if( isNameValid( strPath, mECC_ECDSARadio->isChecked() ? "ECDSA":"ECDH", mECCTypeCombo->currentText(), "" ) == false )
+    {
+        QString strMsg = QString( "Are you sure that test file is %1" ).arg( strPath );
+        bool bVal = berApplet->yesOrCancelBox( strMsg, this, true );
+
+        if( bVal == false ) return;
+    }
 
     rsp_name_ = getRspFile( strPath );
 
@@ -910,6 +995,14 @@ void CAVPDlg::clickRSARun()
     QString strPath = mRSAReqFileText->text();
     QFile reqFile( strPath );
 
+    if( isNameValid( strPath, "RSA", mRSATypeCombo->currentText(), "" ) == false )
+    {
+        QString strMsg = QString( "Are you sure that test file is %1" ).arg( strPath );
+        bool bVal = berApplet->yesOrCancelBox( strMsg, this, true );
+
+        if( bVal == false ) return;
+    }
+
     if( !reqFile.open( QIODevice::ReadOnly | QIODevice::Text ))
     {
         berApplet->elog( QString( "fail to open file(%1)").arg(strPath));
@@ -1115,6 +1208,14 @@ void CAVPDlg::clickDRBGRun()
     QString strPath = mDRBGReqFileText->text();
     QFile reqFile( strPath );
 
+    if( isNameValid( strPath, "CTR_DRBG", "DF", "PR" ) == false )
+    {
+        QString strMsg = QString( "Are you sure that test file is %1" ).arg( strPath );
+        bool bVal = berApplet->yesOrCancelBox( strMsg, this, true );
+
+        if( bVal == false ) return;
+    }
+
     if( !reqFile.open( QIODevice::ReadOnly | QIODevice::Text ))
     {
         berApplet->elog( QString( "fail to open file(%1)").arg(strPath));
@@ -1271,6 +1372,14 @@ void CAVPDlg::clickPBKDFRun()
 
     QString strPath = mPBKDFReqFileText->text();
     QFile reqFile( strPath );
+
+    if( isNameValid( strPath, "PBKDF", "HMAC", mPBKDFAlgCombo->currentText() ) == false )
+    {
+        QString strMsg = QString( "Are you sure that test file is %1" ).arg( strPath );
+        bool bVal = berApplet->yesOrCancelBox( strMsg, this, true );
+
+        if( bVal == false ) return;
+    }
 
     if( !reqFile.open( QIODevice::ReadOnly | QIODevice::Text ))
     {
@@ -2918,7 +3027,8 @@ end :
 int CAVPDlg::makeECDH_KPG( int nCount )
 {
     int ret = 0;
-    int nGroupID = JS_PKI_getNidFromSN( "prime256v1" );
+    QString strParam = mECCParamCombo->currentText();
+    int nGroupID = JS_PKI_getNidFromSN( strParam.toStdString().c_str() );
 
     JECKeyVal sKeyVal;
 
@@ -2961,7 +3071,7 @@ int CAVPDlg::makeECDH_PKV( const QString strPubX, const QString strPubY )
 
     BIN binPubX = {0,0};
     BIN binPubY = {0,0};
-    QString strParam = "prime256v1";
+    QString strParam = mECCParamCombo->currentText();
 
     JS_BIN_decodeHex( strPubX.toStdString().c_str(), &binPubX );
     JS_BIN_decodeHex( strPubY.toStdString().c_str(), &binPubY );
@@ -2990,7 +3100,6 @@ int CAVPDlg::makeECDH_KAKAT( const QString strRA, const QString strRB, const QSt
 {
     int ret = 0;
 
-
     BIN binRA = {0,0};
     BIN binRB = {0,0};
     BIN binKTA1X = {0,0};
@@ -3000,16 +3109,18 @@ int CAVPDlg::makeECDH_KAKAT( const QString strRA, const QString strRB, const QSt
     BIN binPubY = {0,0};
     BIN binSecret = {0,0};
 
+    QString strParam = mECCParamCombo->currentText();
+
     JS_BIN_decodeHex( strRA.toStdString().c_str(), &binRA );
     JS_BIN_decodeHex( strRB.toStdString().c_str(), &binRB );
     JS_BIN_decodeHex( strKTA1X.toStdString().c_str(), &binKTA1X );
     JS_BIN_decodeHex( strKTA1Y.toStdString().c_str(), &binKTA1Y );
 
-    ret = JS_PKI_genECPubKey( "prime256v1", &binRA, &binPubX, &binPubY );
+    ret = JS_PKI_genECPubKey( strParam.toStdString().c_str(), &binRA, &binPubX, &binPubY );
     if( ret != 0 ) goto end;
 
 //    ret = JS_PKI_getECDHSecretWithValue( "prime256v1", &binRB, &binPubX, &binPubY, &binSecret );
-    ret = JS_PKI_getECDHComputeKey( "prime256v1", &binRB, &binPubX, &binPubY, &binSecret );
+    ret = JS_PKI_getECDHComputeKey( strParam.toStdString().c_str(), &binRB, &binPubX, &binPubY, &binSecret );
     if( ret != 0 ) goto end;
 
     logRsp( "j = 1" );
@@ -3036,7 +3147,8 @@ end :
 int CAVPDlg::makeECDSA_KPG( int nNum )
 {
     int ret = 0;
-    int nGroupID = JS_PKI_getNidFromSN( "prime256v1" );
+    QString strParam = mECCParamCombo->currentText();
+    int nGroupID = JS_PKI_getNidFromSN( strParam.toStdString().c_str() );
 
     BIN binPri = {0,0};
     BIN binPub = {0,0};
@@ -3075,7 +3187,7 @@ int CAVPDlg::makeECDSA_PKV( const QString strYX, const QString strYY )
 
     BIN binPubX = {0,0};
     BIN binPubY = {0,0};
-    QString strParam = "prime256v1";
+    QString strParam = mECCParamCombo->currentText();
 
     JS_BIN_decodeHex( strYX.toStdString().c_str(), &binPubX );
     JS_BIN_decodeHex( strYY.toStdString().c_str(), &binPubY );
@@ -3101,7 +3213,8 @@ end:
 int CAVPDlg::makeECDSA_SGT( const QString strM )
 {
     int ret = 0;
-    int nGroupID = JS_PKI_getNidFromSN( "prime256v1" );
+    QString strParam = mECCParamCombo->currentText();
+    int nGroupID = JS_PKI_getNidFromSN( strParam.toStdString().c_str() );
 
     BIN binPub = {0,0};
     BIN binPri = {0,0};
@@ -3151,7 +3264,6 @@ end :
 int CAVPDlg::makeECDSA_SVT( const QString strM, const QString strYX, const QString strYY, const QString strR, const QString strS )
 {
     int ret = 0;
-    int nIndex = 0;
 
     BIN binPub = {0,0};
     BIN binPubX = {0,0};
@@ -3161,7 +3273,7 @@ int CAVPDlg::makeECDSA_SVT( const QString strM, const QString strYX, const QStri
     BIN binSignS = {0,0};
     BIN binM = {0,0};
 
-    QString strParam = "prime256v1";
+    QString strParam = mECCParamCombo->currentText();
 
     JS_BIN_decodeHex( strM.toStdString().c_str(), &binM );
     JS_BIN_decodeHex( strYX.toStdString().c_str(), &binPubX );
