@@ -1842,11 +1842,27 @@ int CAVPDlg::makeSymCBC_MCT( const QString strKey, const QString strIV, const QS
 
     BIN binKey[100 + 1];
     BIN binIV[100 + 1];
-    BIN binPT[100 + 1];
-    BIN binCT[100 + 1];
+    BIN binPT[1000 + 1];
+    BIN binCT[1000 + 1];
 
-    QString strAlg = mSymAlgCombo->currentText();
-    QString strMode = mSymModeCombo->currentText();
+    QString strAlg;
+    QString strMode;
+
+    memset( &binKey, 0x00, sizeof(BIN) * 101 );
+    memset( &binIV, 0x00, sizeof(BIN) * 101 );
+    memset( &binPT, 0x00, sizeof(BIN) * 1001 );
+    memset( &binCT, 0x00, sizeof(BIN) * 1001 );
+
+    if( bInfo == true )
+    {
+        strAlg = mSymMCTAlgCombo->currentText();
+        strMode = mSymMCTModeCombo->currentText();
+    }
+    else
+    {
+        strAlg = mSymAlgCombo->currentText();
+        strMode = mSymModeCombo->currentText();
+    }
 
     if( strKey.length() > 0 )
         JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey[0] );
@@ -1883,9 +1899,23 @@ int CAVPDlg::makeSymCBC_MCT( const QString strKey, const QString strIV, const QS
         {
             JS_BIN_reset( &binCT[j] );
             if( strAlg == "SEED" )
-                ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binCT[j] );
+            {
+                if( j == 0 )
+                {
+                    ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binCT[j] );
+                }
+                else
+                {
+                    ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binPT[j], &binCT[j-1], &binKey[i], &binCT[j] );
+                }
+            }
             else
-                ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binCT[j] );
+            {
+                if( j == 0 )
+                    ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binCT[j] );
+                else
+                    ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], &binCT[j-1], &binKey[i], &binCT[j]);
+            }
 
             if( ret != 0 ) goto end;
 
@@ -1983,8 +2013,19 @@ int CAVPDlg::makeSymECB_MCT( const QString strKey, const QString strPT, bool bIn
     JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey[0] );
     JS_BIN_decodeHex( strPT.toStdString().c_str(), &binPT[0] );
 
-    QString strAlg = mSymAlgCombo->currentText();
-    QString strMode = mSymModeCombo->currentText();
+    QString strAlg;
+    QString strMode;
+
+    if( bInfo == true )
+    {
+        strAlg = mSymMCTAlgCombo->currentText();
+        strMode = mSymMCTModeCombo->currentText();
+    }
+    else
+    {
+        strAlg = mSymAlgCombo->currentText();
+        strMode = mSymModeCombo->currentText();
+    }
 
     QString strSymAlg = getSymAlg( strAlg, strMode, binKey[0].nLen );
     berApplet->log( QString("Symmetric Alg: %1").arg( strSymAlg ));
@@ -2104,8 +2145,19 @@ int CAVPDlg::makeSymCTR_MCT( const QString strKey, const QString strIV, const QS
     JS_BIN_decodeHex( strIV.toStdString().c_str(), &binCTR );
     JS_BIN_decodeHex( strPT.toStdString().c_str(), &binPT[0] );
 
-    QString strAlg = mSymAlgCombo->currentText();
-    QString strMode = mSymModeCombo->currentText();
+    QString strAlg;
+    QString strMode;
+
+    if( bInfo == true )
+    {
+        strAlg = mSymMCTAlgCombo->currentText();
+        strMode = mSymMCTModeCombo->currentText();
+    }
+    else
+    {
+        strAlg = mSymAlgCombo->currentText();
+        strMode = mSymModeCombo->currentText();
+    }
 
     QString strSymAlg = getSymAlg( strAlg, strMode, binKey[0].nLen );
     berApplet->log( QString("Symmetric Alg: %1").arg( strSymAlg ));
@@ -2217,11 +2269,27 @@ int CAVPDlg::makeSymCFB_MCT( const QString strKey, const QString strIV, const QS
 
     BIN binKey[100 + 1];
     BIN binIV[100 + 1];
-    BIN binPT[100 + 1];
-    BIN binCT[100 + 1];
+    BIN binPT[1000 + 1];
+    BIN binCT[1000 + 1];
 
-    QString strAlg = mSymAlgCombo->currentText();
-    QString strMode = mSymModeCombo->currentText();
+    QString strAlg;
+    QString strMode;
+
+    memset( &binKey, 0x00, sizeof(BIN) * 101 );
+    memset( &binIV, 0x00, sizeof(BIN) * 101 );
+    memset( &binPT, 0x00, sizeof(BIN) * 1001 );
+    memset( &binCT, 0x00, sizeof(BIN) * 1001 );
+
+    if( bInfo == true )
+    {
+        strAlg = mSymMCTAlgCombo->currentText();
+        strMode = mSymMCTModeCombo->currentText();
+    }
+    else
+    {
+        strAlg = mSymAlgCombo->currentText();
+        strMode = mSymModeCombo->currentText();
+    }
 
     if( strKey.length() > 0 )
         JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey[0] );
@@ -2259,9 +2327,19 @@ int CAVPDlg::makeSymCFB_MCT( const QString strKey, const QString strIV, const QS
             JS_BIN_reset( &binCT[j] );
 
             if( strAlg == "SEED" )
-                ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binCT[j] );
+            {
+                if( j == 0 )
+                    ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binCT[j] );
+                else
+                    ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binPT[j], &binCT[j-1], &binKey[i], &binCT[j] );
+            }
             else
-                ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binCT[j] );
+            {
+                if( j == 0 )
+                    ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binCT[j] );
+                else
+                    ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], &binCT[j-1], &binKey[i], &binCT[j]);
+            }
 
             if( ret != 0 ) goto end;
 
@@ -2352,11 +2430,29 @@ int CAVPDlg::makeSymOFB_MCT( const QString strKey, const QString strIV, const QS
 
     BIN binKey[100 + 1];
     BIN binIV[100 + 1];
-    BIN binPT[100 + 1];
-    BIN binCT[100 + 1];
+    BIN binPT[1000 + 1];
+    BIN binCT[1000 + 1];
+    BIN binOT[1000 + 1];
 
-    QString strAlg = mSymAlgCombo->currentText();
-    QString strMode = mSymModeCombo->currentText();
+    QString strAlg;
+    QString strMode;
+
+    memset( &binKey, 0x00, sizeof(BIN) * 101 );
+    memset( &binIV, 0x00, sizeof(BIN) * 101 );
+    memset( &binPT, 0x00, sizeof(BIN) * 1001 );
+    memset( &binCT, 0x00, sizeof(BIN) * 1001 );
+    memset( &binOT, 0x00, sizeof(BIN) * 1001 );
+
+    if( bInfo == true )
+    {
+        strAlg = mSymMCTAlgCombo->currentText();
+        strMode = mSymMCTModeCombo->currentText();
+    }
+    else
+    {
+        strAlg = mSymAlgCombo->currentText();
+        strMode = mSymModeCombo->currentText();
+    }
 
     if( strKey.length() > 0 )
         JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey[0] );
@@ -2391,13 +2487,27 @@ int CAVPDlg::makeSymOFB_MCT( const QString strKey, const QString strIV, const QS
 
         for( j = 0; j < 1000; j++ )
         {
+            JS_BIN_reset( &binOT[j] );
             JS_BIN_reset( &binCT[j] );
-            if( strMode == "SEED" )
-                ret = JS_PKI_encryptSEED( strAlg.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binCT[j] );
+
+            if( strAlg == "SEED" )
+            {
+                if( j == 0 )
+                    ret = JS_PKI_encryptSEED( "ECB", 0, &binIV[i], NULL, &binKey[i], &binOT[j] );
+                else
+                    ret = JS_PKI_encryptSEED( "ECB", 0, &binOT[j-1], NULL, &binKey[i], &binOT[j] );
+            }
             else
-                ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binCT[j] );
+            {
+                if( j == 0 )
+                    ret = JS_PKI_encryptData( "ECB", 0, &binIV[i], NULL, &binKey[i], &binOT[j] );
+                else
+                    ret = JS_PKI_encryptData( "ECB", 0, &binOT[j-1], NULL, &binKey[i], &binOT[j]);
+            }
 
             if( ret != 0 ) goto end;
+
+            JS_BIN_XOR( &binCT[j], &binPT[j], &binOT[j] );
 
             if( j == 0 )
             {
@@ -2473,6 +2583,7 @@ end :
     {
         JS_BIN_reset( &binPT[i] );
         JS_BIN_reset( &binCT[i] );
+        JS_BIN_reset( &binOT[i] );
     }
 
     return ret;
