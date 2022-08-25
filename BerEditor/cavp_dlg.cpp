@@ -582,7 +582,7 @@ void CAVPDlg::clickHMACRun()
         if( nLen > 0 )
         {
             getNameValue( strLine, strName, strValue );
-            berApplet->log( QString( "Name:%1 Value:%2").arg(strName).arg(strValue));
+//            berApplet->log( QString( "Name:%1 Value:%2").arg(strName).arg(strValue));
 
             if( strName == "COUNT" )
                 strCount = strValue;
@@ -2824,7 +2824,7 @@ int CAVPDlg::makeHMACData( const QString strCount, const QString strKLen, const 
         goto end;
     }
 
-    logRsp( QString( "Mac = %1").arg(getHexString(binMAC.pVal, binMAC.nLen)));
+    logRsp( QString( "Mac = %1").arg(getHexString(binMAC.pVal, strTLen.toInt())));
     logRsp( "" );
 
 end :
