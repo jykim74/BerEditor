@@ -13,13 +13,13 @@
 #include "mainwindow.h"
 #include "common.h"
 
-const QStringList kSymAlgList = { "AES", "ARIA", "SEED" };
+const QStringList kSymAlgList = { "AES", "ARIA", "SEED", "SM4" };
 const QStringList kSymModeList = { "ECB", "CBC", "CTR", "CFB", "OFB" };
 const QStringList kAEAlgList = { "AES", "ARIA" };
 const QStringList kAEModeList = { "GCM", "CCM" };
 const QStringList kAETypeList = { "AE", "AD" };
 const QStringList kSymTypeList = { "KAT", "MCT", "MMT" };
-const QStringList kHashAlgList = { "MD5", "SHA1", "SHA224", "SHA256", "SHA384", "SHA512" };
+const QStringList kHashAlgList = { "MD5", "SHA1", "SHA224", "SHA256", "SHA384", "SHA512", "SM3" };
 const QStringList kHashTypeList = { "Short", "Long", "Monte" };
 
 const QStringList kECDHType = { "KAKAT", "PKV", "KPG" };

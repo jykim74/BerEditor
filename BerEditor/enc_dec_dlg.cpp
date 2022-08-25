@@ -22,7 +22,8 @@ static QStringList algList = {
     "ARIA",
     "DES",
     "DES3",
-    "SEED"
+    "SEED",
+    "SM4"
 };
 
 static QStringList modeList = {

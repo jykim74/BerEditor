@@ -13,7 +13,8 @@ static QStringList hashTypes = {
     "sha224",
     "sha256",
     "sha384",
-    "sha512"
+    "sha512",
+    "sm3"
 };
 
 static QStringList keyTypes = {
