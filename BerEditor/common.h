@@ -37,7 +37,7 @@ const QStringList kECCParamList = {
     "sect113r1", "sect113r2", "sect131r1", "sect131r2", "sect163k1",
     "sect163r1", "sect163r2", "sect193r1", "sect193r2", "sect233k1",
     "sect233r1", "sect239k1", "sect283k1", "sect283r1", "sect409k1",
-    "sect409r1", "sect571k1", "sect571r1"
+    "sect409r1", "sect571k1", "sect571r1", "SM2"
 };
 
 QString findFile( QWidget *parent, int nType, const QString strPath );
