@@ -19,7 +19,8 @@ static QStringList hashTypes = {
     "sha224",
     "sha256",
     "sha384",
-    "sha512"
+    "sha512",
+    "SM3"
 };
 
 GenOTPDlg::GenOTPDlg(QWidget *parent) :
