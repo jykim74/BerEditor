@@ -8,13 +8,13 @@
 #include "common.h"
 
 static QStringList hashTypes = {
-    "md5",
-    "sha1",
-    "sha224",
-    "sha256",
-    "sha384",
-    "sha512",
-    "sm3"
+    "MD5",
+    "SHA1",
+    "SHA224",
+    "SHA256",
+    "SHA384",
+    "SHA512",
+    "SM3"
 };
 
 static QStringList keyTypes = {
