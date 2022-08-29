@@ -2,19 +2,19 @@
 #define RSA_ENC_DEC_DLG_H
 
 #include <QDialog>
-#include "ui_rsa_enc_dec_dlg.h"
+#include "ui_pub_enc_dec_dlg.h"
 
 namespace Ui {
-class RSAEncDecDlg;
+class PubEncDecDlg;
 }
 
-class RSAEncDecDlg : public QDialog, public Ui::RSAEncDecDlg
+class PubEncDecDlg : public QDialog, public Ui::PubEncDecDlg
 {
     Q_OBJECT
 
 public:
-    explicit RSAEncDecDlg(QWidget *parent = nullptr);
-    ~RSAEncDecDlg();
+    explicit PubEncDecDlg(QWidget *parent = nullptr);
+    ~PubEncDecDlg();
 
 private slots:
     void Run();
@@ -26,6 +26,7 @@ private slots:
 
     void inputChanged();
     void outputChanged();
+    void algChanged();
 
 private:
     void initialize();

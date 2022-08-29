@@ -1,11 +1,16 @@
 #include <QFileDialog>
 
-#include "rsa_enc_dec_dlg.h"
+#include "pub_enc_dec_dlg.h"
 #include "js_bin.h"
 #include "js_pki.h"
 #include "js_ber.h"
 #include "ber_applet.h"
 #include "common.h"
+
+static QStringList algTypes = {
+    "RSA",
+    "SM2"
+};
 
 static QStringList dataTypes = {
     "String",
@@ -24,7 +29,7 @@ static QStringList methodTypes = {
     "Decrypt"
 };
 
-RSAEncDecDlg::RSAEncDecDlg(QWidget *parent) :
+PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
@@ -46,17 +51,20 @@ RSAEncDecDlg::RSAEncDecDlg(QWidget *parent) :
     connect( mInputBase64Radio, SIGNAL(clicked()), this, SLOT(inputChanged()));
 
     connect( mOutputTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(outputChanged()));
+    connect( mAlgCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(algChanged()));
 
     mCloseBtn->setFocus();
 }
 
-RSAEncDecDlg::~RSAEncDecDlg()
+PubEncDecDlg::~PubEncDecDlg()
 {
 
 }
 
-void RSAEncDecDlg::initialize()
+void PubEncDecDlg::initialize()
 {
+    mAlgCombo->addItems( algTypes );
+
     mOutputTypeCombo->addItems(dataTypes);
     mOutputTypeCombo->setCurrentIndex(1);
 
@@ -64,7 +72,7 @@ void RSAEncDecDlg::initialize()
     mMethodTypeCombo->addItems(methodTypes);
 }
 
-void RSAEncDecDlg::clickPubKeyEncrypt()
+void PubEncDecDlg::clickPubKeyEncrypt()
 {
     bool bVal = mPubKeyEncryptCheck->isChecked();
 
@@ -80,7 +88,7 @@ void RSAEncDecDlg::clickPubKeyEncrypt()
     }
 }
 
-void RSAEncDecDlg::clickCheckKeyPair()
+void PubEncDecDlg::clickCheckKeyPair()
 {
     int ret = 0;
 
@@ -91,6 +99,7 @@ void RSAEncDecDlg::clickCheckKeyPair()
 
     QString strPriPath = mPriKeyPath->text();
     QString strCertPath = mCertPath->text();
+    QString strAlg = mAlgCombo->currentText();
 
     if( strPriPath.length() < 1 )
     {
@@ -120,11 +129,15 @@ void RSAEncDecDlg::clickCheckKeyPair()
     ret = JS_PKI_getPublicKeyValue( &binPub, &binPubVal );
     if( ret != 0 ) goto end;
 
-    ret = JS_PKI_IsValidRSAKeyPair( &binPri, &binPubVal );
+    if( strAlg == "RSA" )
+        ret = JS_PKI_IsValidRSAKeyPair( &binPri, &binPubVal );
+    else
+        ret = JS_PKI_IsValidECCKeyPair( &binPri, &binPub );
+
     if( ret == 1 )
         berApplet->messageBox( "KeyPair is good", this );
     else
-        berApplet->warningBox( QString( "Invalid key pair: %1").arg(ret));
+        berApplet->warningBox( QString( "Invalid key pair: %1").arg(ret), this );
 
 end :
     JS_BIN_reset( &binPri );
@@ -133,7 +146,7 @@ end :
     JS_BIN_reset( &binCert );
 }
 
-void RSAEncDecDlg::Run()
+void PubEncDecDlg::Run()
 {
     int ret = 0;
     int nVersion = 0;
@@ -143,6 +156,7 @@ void RSAEncDecDlg::Run()
     BIN binOut = {0,0};
     char *pOut = NULL;
 
+    QString strAlg = mAlgCombo->currentText();
     QString strInput = mInputText->toPlainText();
     if( strInput.isEmpty() )
     {
@@ -170,7 +184,7 @@ void RSAEncDecDlg::Run()
     }
 
     if( mMethodTypeCombo->currentIndex() == ENC_ENCRYPT )
-    {
+    {     
         if( mCertBtn->text().isEmpty() )
         {
             berApplet->warningBox( tr( "You have to find certificate"), this );
@@ -179,10 +193,20 @@ void RSAEncDecDlg::Run()
 
         JS_BIN_fileRead( mCertPath->text().toStdString().c_str(), &binCert );
 
-        if( mPubKeyEncryptCheck->isChecked() )
-            JS_PKI_RSAEncryptWithPub( nVersion, &binSrc, &binCert, &binOut );
+        if( strAlg == "RSA" )
+        {
+            if( mPubKeyEncryptCheck->isChecked() )
+                JS_PKI_RSAEncryptWithPub( nVersion, &binSrc, &binCert, &binOut );
+            else
+                JS_PKI_RSAEncryptWithCert( nVersion, &binSrc, &binCert, &binOut );
+        }
         else
-            JS_PKI_RSAEncryptWithCert( nVersion, &binSrc, &binCert, &binOut );
+        {
+            if( mPubKeyEncryptCheck->isChecked() )
+                JS_PKI_SM2EncryptWithPub( &binSrc, &binCert, &binOut );
+            else
+                JS_PKI_SM2EncryptWithCert( &binSrc, &binCert, &binOut );
+        }
     }
     else {
         if( mPriKeyPath->text().isEmpty() )
@@ -192,7 +216,11 @@ void RSAEncDecDlg::Run()
         }
 
         JS_BIN_fileRead( mPriKeyPath->text().toStdString().c_str(), &binPri );
-        JS_PKI_RSADecryptWithPri( nVersion, &binSrc, &binPri, &binOut );
+
+        if( strAlg == "RSA" )
+            JS_PKI_RSADecryptWithPri( nVersion, &binSrc, &binPri, &binOut );
+        else
+            JS_PKI_SM2DecryptWithPri( &binSrc, &binPri, &binOut );
     }
 
     if( mOutputTypeCombo->currentIndex() == DATA_STRING )
@@ -214,7 +242,7 @@ end :
     if( pOut ) JS_free(pOut);
 }
 
-void RSAEncDecDlg::findCert()
+void PubEncDecDlg::findCert()
 {
     QString strPath = berApplet->getSetPath();
 
@@ -226,7 +254,7 @@ void RSAEncDecDlg::findCert()
     repaint();
 }
 
-void RSAEncDecDlg::findPrivateKey()
+void PubEncDecDlg::findPrivateKey()
 {
     QString strPath = berApplet->getSetPath();
 
@@ -238,7 +266,7 @@ void RSAEncDecDlg::findPrivateKey()
     repaint();
 }
 
-void RSAEncDecDlg::changeValue()
+void PubEncDecDlg::changeValue()
 {
 //    QString strInput = mInputText->toPlainText();
     QString strOutput = mOutputText->toPlainText();
@@ -257,7 +285,7 @@ void RSAEncDecDlg::changeValue()
     repaint();
 }
 
-void RSAEncDecDlg::inputChanged()
+void PubEncDecDlg::inputChanged()
 {
     int nType = DATA_STRING;
 
@@ -270,8 +298,18 @@ void RSAEncDecDlg::inputChanged()
     mInputLenText->setText( QString("%1").arg(nLen));
 }
 
-void RSAEncDecDlg::outputChanged()
+void PubEncDecDlg::outputChanged()
 {
     int nLen = getDataLen( mOutputTypeCombo->currentText(), mOutputText->toPlainText() );
     mOutputLenText->setText( QString("%1").arg(nLen));
+}
+
+void PubEncDecDlg::algChanged()
+{
+    QString strAlg = mAlgCombo->currentText();
+
+    if( strAlg == "RSA" )
+        mVersionTypeCombo->setEnabled( true );
+    else
+        mVersionTypeCombo->setEnabled( false );
 }

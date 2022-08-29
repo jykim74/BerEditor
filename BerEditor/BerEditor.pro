@@ -60,7 +60,7 @@ SOURCES += \
     mainwindow.cpp \
     num_trans_dlg.cpp \
     oid_info_dlg.cpp \
-    rsa_enc_dec_dlg.cpp \
+    pub_enc_dec_dlg.cpp \
     settings_dlg.cpp \
     settings_mgr.cpp \
     sign_verify_dlg.cpp \
@@ -93,7 +93,7 @@ HEADERS += \
     mainwindow.h \
     num_trans_dlg.h \
     oid_info_dlg.h \
-    rsa_enc_dec_dlg.h \
+    pub_enc_dec_dlg.h \
     settings_dlg.h \
     settings_mgr.h \
     sign_verify_dlg.h \
@@ -174,7 +174,7 @@ FORMS += \
         mainwindow.ui \
         num_trans_dlg.ui \
         oid_info_dlg.ui \
-        rsa_enc_dec_dlg.ui \
+        pub_enc_dec_dlg.ui \
         settings_dlg.ui \
         sign_verify_dlg.ui \
         sss_dlg.ui

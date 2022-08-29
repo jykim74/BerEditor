@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>RSAEncDecDlg</class>
- <widget class="QDialog" name="RSAEncDecDlg">
+ <class>PubEncDecDlg</class>
+ <widget class="QDialog" name="PubEncDecDlg">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>445</width>
+    <width>526</width>
     <height>473</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>RSA Encrypt/Decrypt</string>
+   <string>PubKey Encrypt/Decrypt</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="12" column="0" colspan="3">
@@ -112,6 +112,9 @@
    </item>
    <item row="7" column="0" colspan="3">
     <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QComboBox" name="mAlgCombo"/>
+     </item>
      <item>
       <widget class="QComboBox" name="mVersionTypeCombo"/>
      </item>

@@ -14,7 +14,7 @@
 #include "oid_info_dlg.h"
 #include "enc_dec_dlg.h"
 #include "sign_verify_dlg.h"
-#include "rsa_enc_dec_dlg.h"
+#include "pub_enc_dec_dlg.h"
 #include "gen_otp_dlg.h"
 #include "get_ldap_dlg.h"
 #include "key_agree_dlg.h"
@@ -334,12 +334,12 @@ void MainWindow::createActions()
     cryptMenu->addAction( signVerifyAct );
     cryptToolBar->addAction( signVerifyAct );
 
-    const QIcon rsaEncIcon = QIcon::fromTheme("RSA Encrypt/Decrypt", QIcon(":/images/rsa_enc.png"));
-    QAction *rsaEncDecAct = new QAction( rsaEncIcon, tr("&RSA Encrypt/Decrypt"), this );
-    connect( rsaEncDecAct, &QAction::triggered, this, &MainWindow::rsaEncDec );
-    rsaEncDecAct->setStatusTip(tr("Data RSA encrypt decrypt" ));
-    cryptMenu->addAction( rsaEncDecAct );
-    cryptToolBar->addAction( rsaEncDecAct );
+    const QIcon pubEncIcon = QIcon::fromTheme("PubKey Encrypt/Decrypt", QIcon(":/images/pub_enc.png"));
+    QAction *pubEncDecAct = new QAction( pubEncIcon, tr("&PubKey Encrypt/Decrypt"), this );
+    connect( pubEncDecAct, &QAction::triggered, this, &MainWindow::pubEncDec );
+    pubEncDecAct->setStatusTip(tr("Data PubKey encrypt decrypt" ));
+    cryptMenu->addAction( pubEncDecAct );
+    cryptToolBar->addAction( pubEncDecAct );
 
     const QIcon agreeIcon = QIcon::fromTheme("Key Agreement", QIcon(":/images/agree.png"));
     QAction *keyAgreeAct = new QAction( agreeIcon, tr("Key&Agreement"), this );
@@ -780,10 +780,10 @@ void MainWindow::signVerify()
     signVerifyDlg.exec();
 }
 
-void MainWindow::rsaEncDec()
+void MainWindow::pubEncDec()
 {
-    RSAEncDecDlg rsaEncDecDlg;
-    rsaEncDecDlg.exec();
+    PubEncDecDlg pubEncDecDlg;
+    pubEncDecDlg.exec();
 }
 
 void MainWindow::cms()

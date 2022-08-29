@@ -58,7 +58,7 @@ private slots:
     void oidInfo();
     void encDec();
     void signVerify();
-    void rsaEncDec();
+    void pubEncDec();
     void cms();
     void sss();
     void CAVP();

@@ -412,9 +412,9 @@ void SignVerifyDlg::Run()
         }
 
         if( ret == 1 )
-            berApplet->messageBox( tr("Verify Success") );
+            berApplet->messageBox( tr("Verify Success"), this );
         else {
-            berApplet->warningBox( tr("Verify Fail") );
+            berApplet->warningBox( tr("Verify Fail"), this );
         }
     }
 

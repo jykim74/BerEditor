@@ -15,7 +15,7 @@
 #include "oid_info_dlg.h"
 #include "enc_dec_dlg.h"
 #include "sign_verify_dlg.h"
-#include "rsa_enc_dec_dlg.h"
+#include "pub_enc_dec_dlg.h"
 #include "gen_otp_dlg.h"
 #include "edit_value_dlg.h"
 #include "get_ldap_dlg.h"
