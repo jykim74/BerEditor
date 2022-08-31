@@ -102,13 +102,13 @@ void BerTreeView::infoItem( BerItem *pItem )
     berApplet->info( QString( "== BER Information [Depth:%1]\n" ).arg(pItem->GetLevel()) );
     berApplet->info( "====================================================================================\n" );
     berApplet->info( QString( "Header      : %1\n").arg( getHexString(header.pVal, header.nLen)));
-    berApplet->info( QString( "[T]         : %1 - %2\n" ).arg(getHexString(bin.pVal,1)).arg(pBitString) );
+    berApplet->info( QString( "[T]         : 0x%1 - %2\n" ).arg(getHexString(bin.pVal,1)).arg(pBitString) );
     berApplet->info( QString( "Class       : %1\n").arg( pItem->GetClassString()));
-    berApplet->info( QString( "ID          : %1 - %2\n").arg( getHexString( &cID, 1) ).arg( cID ));
+    berApplet->info( QString( "ID          : 0x%1 - %2\n").arg( getHexString( &cID, 1) ).arg( cID ));
     berApplet->info( QString( "P/C         : %1\n").arg(strPC));
-    berApplet->info( QString( "Tag         : %1 - %2\n").arg( pItem->GetTag(), 2, 16, QChar('0')).arg(pItem->GetTagString()));
+    berApplet->info( QString( "Tag         : 0x%1 - %2\n").arg( pItem->GetTag(), 2, 16, QChar('0')).arg(pItem->GetTagString()));
     berApplet->info( QString( "Offset      : %1 - %2\n" ).arg( strOffset ).arg(pItem->GetOffset()));
-    berApplet->info( QString( "Length      : %1 - %2 Bytes\n" ).arg( getHexString(sLen, nLenSize) ).arg(pItem->GetLength()));
+    berApplet->info( QString( "Length      : 0x%1 - %2 Bytes\n" ).arg( getHexString(sLen, nLenSize) ).arg(pItem->GetLength()));
     berApplet->info( "====================================================================================\n" );
 
     QString strVal = pItem->GetValueString( &binBer );

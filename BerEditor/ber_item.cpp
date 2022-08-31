@@ -81,9 +81,9 @@ QString BerItem::GetTagString()
     {
         QString strOut = "";
 
-        if( id_ & JS_CONTEXT ) strOut.sprintf( "Context-specific[%0x]", tag_);
-        else if( id_ & JS_APPLICATION ) strOut.sprintf( "Application[%0x]", tag_ );
-        else if( id_ & JS_PRIVATE ) strOut.sprintf( "Private[%0x]", tag_ );
+        if( id_ & JS_CONTEXT ) strOut.sprintf( "Context-specific[%d]", tag_);
+        else if( id_ & JS_APPLICATION ) strOut.sprintf( "Application[%d]", tag_ );
+        else if( id_ & JS_PRIVATE ) strOut.sprintf( "Private[%d]", tag_ );
 
         return strOut;
     }
