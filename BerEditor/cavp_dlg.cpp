@@ -3218,7 +3218,8 @@ int CAVPDlg::makeECDH_KAKAT( const QString strRA, const QString strRB, const QSt
 
     BIN binPubX = {0,0};
     BIN binPubY = {0,0};
-    BIN binSecret = {0,0};
+    BIN binSecX = {0,0};
+    BIN binSecY = {0,0};
 
     QString strParam = mECCParamCombo->currentText();
 
@@ -3231,7 +3232,7 @@ int CAVPDlg::makeECDH_KAKAT( const QString strRA, const QString strRB, const QSt
     if( ret != 0 ) goto end;
 
 //    ret = JS_PKI_getECDHSecretWithValue( "prime256v1", &binRB, &binPubX, &binPubY, &binSecret );
-    ret = JS_PKI_getECDHComputeKey( strParam.toStdString().c_str(), &binRB, &binPubX, &binPubY, &binSecret );
+    ret = JS_PKI_getECDHComputeKey( strParam.toStdString().c_str(), &binRB, &binPubX, &binPubY, &binSecX, &binSecY );
     if( ret != 0 ) goto end;
 
     logRsp( "j = 1" );
@@ -3239,8 +3240,8 @@ int CAVPDlg::makeECDH_KAKAT( const QString strRA, const QString strRB, const QSt
     logRsp( QString( "rB = %1").arg( strRB ));
     logRsp( QString( "KTA1x = %1").arg( strKTA1X ));
     logRsp( QString( "KTA1y = %1").arg( strKTA1Y ));
-    logRsp( QString( "KABx = %1").arg(getHexString( &binSecret.pVal[0], 32)));
-    logRsp( QString( "KABy = %1").arg(getHexString( &binSecret.pVal[32], 32)));
+    logRsp( QString( "KABx = %1").arg(getHexString( binSecX.pVal, binSecX.nLen)));
+    logRsp( QString( "KABy = %1").arg(getHexString( binSecY.pVal, binSecY.nLen)));
     logRsp( "" );
 
 end :
@@ -3250,7 +3251,8 @@ end :
     JS_BIN_reset( &binKTA1Y );
     JS_BIN_reset( &binPubX );
     JS_BIN_reset( &binPubY );
-    JS_BIN_reset( &binSecret );
+    JS_BIN_reset( &binSecX );
+    JS_BIN_reset( &binSecY );
 
     return ret;
 }

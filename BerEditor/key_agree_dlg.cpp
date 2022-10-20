@@ -65,7 +65,8 @@ void KeyAgreeDlg::calcualteA()
     int ret = 0;
     BIN binPri = {0,0};
     BIN binPub = {0,0};
-    BIN binSecret = {0,0};
+    BIN binSecX = {0,0};
+    BIN binSecY = {0,0};
 
     if( mTabWidget->currentIndex() == 0 )
     {
@@ -79,7 +80,7 @@ void KeyAgreeDlg::calcualteA()
         JS_BIN_decodeHex( mBPublicKeyText->text().toStdString().c_str(), &binPub );
 
 
-        ret = JS_PKI_getDHSecret( &binP, &binG, &binPri, &binPub, &binSecret );
+        ret = JS_PKI_getDHSecret( &binP, &binG, &binPri, &binPub, &binSecX );
 
         JS_BIN_reset( &binP );
         JS_BIN_reset( &binG );
@@ -95,7 +96,7 @@ void KeyAgreeDlg::calcualteA()
         JS_BIN_set( &binX, binPub.pVal, binPub.nLen / 2 );
         JS_BIN_set( &binY, &binPub.pVal[binX.nLen], binPub.nLen / 2);
  //       ret = JS_PKI_getECDHSecretWithValue( mECDHParamCombo->currentText().toStdString().c_str(), &binPri, &binX, &binY, &binSecret );
-        ret = JS_PKI_getECDHComputeKey( mECDHParamCombo->currentText().toStdString().c_str(), &binPri, &binX, &binY, &binSecret );
+        ret = JS_PKI_getECDHComputeKey( mECDHParamCombo->currentText().toStdString().c_str(), &binPri, &binX, &binY, &binSecX, &binSecY );
 
         JS_BIN_reset( &binX );
         JS_BIN_reset( &binY );
@@ -103,16 +104,15 @@ void KeyAgreeDlg::calcualteA()
 
     if( ret == 0 )
     {
-        char *pHex = NULL;
-        JS_BIN_encodeHex( &binSecret, &pHex );
-        mSecretKeyText->setPlainText(pHex);
-        JS_free( pHex );
+        mSecretKeyText->setPlainText(getHexString(binSecX.pVal, binSecX.nLen));
+        if( binSecY.nLen > 0 ) mSecretKeyText->appendPlainText(getHexString(binSecY.pVal, binSecY.nLen));
     }
 
     repaint();
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binPub );
-    JS_BIN_reset( &binSecret );
+    JS_BIN_reset( &binSecX );
+    JS_BIN_reset( &binSecY );
 }
 
 void KeyAgreeDlg::calcualteB()
@@ -120,7 +120,8 @@ void KeyAgreeDlg::calcualteB()
     int ret = 0;
     BIN binPri = {0,0};
     BIN binPub = {0,0};
-    BIN binSecret = {0,0};
+    BIN binSecX = {0,0};
+    BIN binSecY = {0,0};
 
     if( mTabWidget->currentIndex() == 0 )
     {
@@ -134,7 +135,7 @@ void KeyAgreeDlg::calcualteB()
         JS_BIN_decodeHex( mAPublicKeyText->text().toStdString().c_str(), &binPub );
 
 
-        ret = JS_PKI_getDHSecret( &binP, &binG, &binPri, &binPub, &binSecret );
+        ret = JS_PKI_getDHSecret( &binP, &binG, &binPri, &binPub, &binSecX );
 
         JS_BIN_reset( &binP );
         JS_BIN_reset( &binG );
@@ -150,7 +151,7 @@ void KeyAgreeDlg::calcualteB()
         JS_BIN_set( &binX, binPub.pVal, binPub.nLen/2 );
         JS_BIN_set( &binY, &binPub.pVal[binX.nLen], binPub.nLen/2 );
 
-        ret = JS_PKI_getECDHComputeKey( mECDHParamCombo->currentText().toStdString().c_str(), &binPri, &binX, &binY, &binSecret );
+        ret = JS_PKI_getECDHComputeKey( mECDHParamCombo->currentText().toStdString().c_str(), &binPri, &binX, &binY, &binSecX, &binSecY );
 
         JS_BIN_reset( &binX );
         JS_BIN_reset( &binY );
@@ -158,16 +159,15 @@ void KeyAgreeDlg::calcualteB()
 
     if( ret == 0 )
     {
-        char *pHex = NULL;
-        JS_BIN_encodeHex( &binSecret, &pHex );
-        mSecretKeyText->setPlainText(pHex);
-        JS_free( pHex );
+        mSecretKeyText->setPlainText(getHexString( binSecX.pVal, binSecX.nLen ));
+        if( binSecY.nLen > 0 ) mSecretKeyText->appendPlainText(getHexString(binSecY.pVal, binSecY.nLen));
     }
 
     repaint();
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binPub );
-    JS_BIN_reset( &binSecret );
+    JS_BIN_reset( &binSecX );
+    JS_BIN_reset( &binSecY );
 }
 
 void KeyAgreeDlg::secretClear()
@@ -182,7 +182,7 @@ void KeyAgreeDlg::initialize()
     mECDHParamCombo->addItems( kECCParamList );
     mECDHParamCombo->setCurrentText( "prime256v1" );
 
-    mLengthText->setText( "128" );
+    mLengthText->setText( "512" );
     mTabWidget->setCurrentIndex(0);
 }
 
