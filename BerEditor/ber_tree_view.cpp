@@ -69,12 +69,19 @@ void BerTreeView::infoItem( BerItem *pItem )
     JS_BIN_set( &bin, binBer.pVal + pItem->GetOffset(), 1 );
     JS_BIN_bitString( &bin, &pBitString );
     unsigned char cID = pItem->GetId();
+    char sID[3+1];
     unsigned char cLen = 0x00;
     int nLenSize = 0;
     unsigned char sLen[4];
 
     pItem->getHeaderBin( &header );
     if( header.nLen < 2 ) return;
+
+    memset( sID, 0x00, sizeof(sID));
+    if( pBitString )
+    {
+        memcpy( sID, pBitString, 3 );
+    }
 
     cLen = header.pVal[1];
     if( cLen & JS_LEN_XTND )
@@ -104,7 +111,7 @@ void BerTreeView::infoItem( BerItem *pItem )
     berApplet->info( QString( "Header      : %1\n").arg( getHexString(header.pVal, header.nLen)));
     berApplet->info( QString( "[T]         : 0x%1 - %2\n" ).arg(getHexString(bin.pVal,1)).arg(pBitString) );
     berApplet->info( QString( "Class       : %1\n").arg( pItem->GetClassString()));
-    berApplet->info( QString( "ID          : 0x%1 - %2\n").arg( getHexString( &cID, 1) ).arg( cID ));
+    berApplet->info( QString( "ID          : 0x%1 - %2\n").arg( getHexString( &cID, 1) ).arg( sID ));
     berApplet->info( QString( "P/C         : %1\n").arg(strPC));
     berApplet->info( QString( "Tag         : 0x%1 - %2\n").arg( pItem->GetTag(), 2, 16, QChar('0')).arg(pItem->GetTagString()));
     berApplet->info( QString( "Offset      : %1 - %2\n" ).arg( strOffset ).arg(pItem->GetOffset()));
