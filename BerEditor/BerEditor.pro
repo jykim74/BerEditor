@@ -13,7 +13,7 @@ qtHaveModule(printsupport): QT += printsupport
 
 TARGET = BerEditor
 TEMPLATE = app
-PROJECT_VERSION = "0.9.8"
+PROJECT_VERSION = "1.0.1"
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -48,7 +48,7 @@ SOURCES += \
     edit_value_dlg.cpp \
     enc_dec_dlg.cpp \
     gen_hash_dlg.cpp \
-    gen_hmac_dlg.cpp \
+    gen_mac_dlg.cpp \
     gen_otp_dlg.cpp \
     get_ldap_dlg.cpp \
     i18n_helper.cpp \
@@ -82,7 +82,7 @@ HEADERS += \
     edit_value_dlg.h \
     enc_dec_dlg.h \
     gen_hash_dlg.h \
-    gen_hmac_dlg.h \
+    gen_mac_dlg.h \
     gen_otp_dlg.h \
     get_ldap_dlg.h \
     i18n_helper.h \
@@ -164,7 +164,7 @@ FORMS += \
         edit_value_dlg.ui \
         enc_dec_dlg.ui \
         gen_hash_dlg.ui \
-        gen_hmac_dlg.ui \
+        gen_mac_dlg.ui \
         gen_otp_dlg.ui \
         get_ldap_dlg.ui \
         insert_ber_dlg.ui \

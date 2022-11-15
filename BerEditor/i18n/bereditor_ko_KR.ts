@@ -128,51 +128,51 @@ mailto : jykim74@gmail.com</translation>
 <context>
     <name>BerTreeView</name>
     <message>
-        <location filename="../ber_tree_view.cpp" line="139"/>
-        <location filename="../ber_tree_view.cpp" line="312"/>
-        <location filename="../ber_tree_view.cpp" line="375"/>
-        <location filename="../ber_tree_view.cpp" line="397"/>
+        <location filename="../ber_tree_view.cpp" line="146"/>
+        <location filename="../ber_tree_view.cpp" line="319"/>
+        <location filename="../ber_tree_view.cpp" line="382"/>
+        <location filename="../ber_tree_view.cpp" line="404"/>
         <source>There is no selected item</source>
         <translation>선택한 노드가 없습니다.</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="352"/>
+        <location filename="../ber_tree_view.cpp" line="359"/>
         <source>Copy as hex</source>
         <translation>Hex로 복사</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="353"/>
+        <location filename="../ber_tree_view.cpp" line="360"/>
         <source>Copy as base64</source>
         <translation>Base64로 복사</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="354"/>
+        <location filename="../ber_tree_view.cpp" line="361"/>
         <source>Save node</source>
         <translation>노드 저장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="355"/>
+        <location filename="../ber_tree_view.cpp" line="362"/>
         <source>Save node value</source>
         <translation>노드 값 저장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="356"/>
+        <location filename="../ber_tree_view.cpp" line="363"/>
         <source>Edit value</source>
         <translation>값 수정</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="361"/>
+        <location filename="../ber_tree_view.cpp" line="368"/>
         <source>Expand value</source>
         <translation>확장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="364"/>
+        <location filename="../ber_tree_view.cpp" line="371"/>
         <source>Insert BER</source>
         <translation>BER 추가</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="452"/>
-        <location filename="../ber_tree_view.cpp" line="473"/>
+        <location filename="../ber_tree_view.cpp" line="459"/>
+        <location filename="../ber_tree_view.cpp" line="480"/>
         <source>Save as...</source>
         <translation>다른 이름으로 저장</translation>
     </message>
@@ -751,32 +751,32 @@ mailto : jykim74@gmail.com</translation>
         <translation>태그</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="82"/>
+        <location filename="../edit_value_dlg.ui" line="165"/>
         <source>Offset</source>
         <translation>오프셋</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="174"/>
+        <location filename="../edit_value_dlg.ui" line="193"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="224"/>
+        <location filename="../edit_value_dlg.ui" line="243"/>
         <source>Add</source>
         <translation>추가</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="231"/>
+        <location filename="../edit_value_dlg.ui" line="250"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="238"/>
+        <location filename="../edit_value_dlg.ui" line="257"/>
         <source>Delete</source>
         <translation>삭제</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="258"/>
+        <location filename="../edit_value_dlg.ui" line="277"/>
         <source>Modify</source>
         <translation>변경</translation>
     </message>
@@ -789,17 +789,17 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">TLV 정보</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="126"/>
+        <location filename="../edit_value_dlg.ui" line="119"/>
         <source>Length</source>
         <translation>길이</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="146"/>
+        <location filename="../edit_value_dlg.ui" line="139"/>
         <source>Level</source>
         <translation>레벨</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="106"/>
+        <location filename="../edit_value_dlg.ui" line="99"/>
         <source>Header</source>
         <translation>헤더</translation>
     </message>
@@ -1056,13 +1056,13 @@ mailto : jykim74@gmail.com</translation>
     </message>
 </context>
 <context>
-    <name>GenHmacDlg</name>
+    <name>GenMacDlg</name>
     <message>
         <source>Dialog</source>
         <translation type="vanished">대화창</translation>
     </message>
     <message>
-        <location filename="../gen_hmac_dlg.ui" line="14"/>
+        <location filename="../gen_mac_dlg.ui" line="14"/>
         <source>Generate Hmac value</source>
         <translation>HMAC 값을 생성</translation>
     </message>
@@ -1071,83 +1071,83 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">입력 데이타 타입</translation>
     </message>
     <message>
-        <location filename="../gen_hmac_dlg.ui" line="137"/>
+        <location filename="../gen_mac_dlg.ui" line="137"/>
         <source>String</source>
         <translation>문자열</translation>
     </message>
     <message>
-        <location filename="../gen_hmac_dlg.ui" line="96"/>
+        <location filename="../gen_mac_dlg.ui" line="96"/>
         <source>Update</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../gen_hmac_dlg.ui" line="89"/>
+        <location filename="../gen_mac_dlg.ui" line="89"/>
         <source>Final</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../gen_hmac_dlg.ui" line="68"/>
+        <location filename="../gen_mac_dlg.ui" line="68"/>
         <source>Init</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../gen_hmac_dlg.ui" line="75"/>
+        <location filename="../gen_mac_dlg.ui" line="75"/>
         <source>HMAC</source>
         <translation>HMAC</translation>
     </message>
     <message>
-        <location filename="../gen_hmac_dlg.ui" line="82"/>
+        <location filename="../gen_mac_dlg.ui" line="82"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../gen_hmac_dlg.ui" line="130"/>
+        <location filename="../gen_mac_dlg.ui" line="130"/>
         <source>Input Data</source>
         <translation>입력 데이타</translation>
     </message>
     <message>
-        <location filename="../gen_hmac_dlg.ui" line="147"/>
+        <location filename="../gen_mac_dlg.ui" line="147"/>
         <source>Hex</source>
         <translation>16진수</translation>
     </message>
     <message>
-        <location filename="../gen_hmac_dlg.ui" line="154"/>
+        <location filename="../gen_mac_dlg.ui" line="154"/>
         <source>Base64</source>
         <translation>베이스64</translation>
     </message>
     <message>
-        <location filename="../gen_hmac_dlg.ui" line="174"/>
-        <location filename="../gen_hmac_dlg.ui" line="261"/>
+        <location filename="../gen_mac_dlg.ui" line="174"/>
+        <location filename="../gen_mac_dlg.ui" line="261"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
     <message>
-        <location filename="../gen_hmac_dlg.ui" line="214"/>
+        <location filename="../gen_mac_dlg.ui" line="214"/>
         <source>InputClear</source>
         <translation>입력 지움</translation>
     </message>
     <message>
-        <location filename="../gen_hmac_dlg.ui" line="237"/>
+        <location filename="../gen_mac_dlg.ui" line="237"/>
         <source>HMAC Algorithm</source>
         <translation>HMAC 알고리즘</translation>
     </message>
     <message>
-        <location filename="../gen_hmac_dlg.ui" line="268"/>
+        <location filename="../gen_mac_dlg.ui" line="268"/>
         <source>Output Data</source>
         <translation>결과 데이타</translation>
     </message>
     <message>
-        <location filename="../gen_hmac_dlg.ui" line="207"/>
+        <location filename="../gen_mac_dlg.ui" line="207"/>
         <source>OutputClear</source>
         <translation>출력 지움</translation>
     </message>
     <message>
-        <location filename="../gen_hmac_dlg.ui" line="29"/>
+        <location filename="../gen_mac_dlg.ui" line="29"/>
         <source>Key value</source>
         <translation>키 값</translation>
     </message>
     <message>
-        <location filename="../gen_hmac_dlg.ui" line="20"/>
+        <location filename="../gen_mac_dlg.ui" line="20"/>
         <source>Status</source>
         <translation>상태</translation>
     </message>
@@ -1156,7 +1156,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">데이타를 입력 하세요</translation>
     </message>
     <message>
-        <location filename="../gen_hmac_dlg.cpp" line="182"/>
+        <location filename="../gen_mac_dlg.cpp" line="182"/>
         <source>You have to insert key</source>
         <translation>키 값을 입력하세요.</translation>
     </message>
@@ -2190,13 +2190,17 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">키 추출 기능</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="317"/>
         <source>H&amp;mac</source>
-        <translation>Hmac(&amp;M)</translation>
+        <translation type="vanished">Hmac(&amp;M)</translation>
     </message>
     <message>
         <source>Data RSA encrypt decrypt</source>
         <translation type="vanished">RSA 암호화 복호화</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="317"/>
+        <source>M&amp;ac</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="338"/>

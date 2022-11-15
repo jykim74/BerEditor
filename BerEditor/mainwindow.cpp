@@ -10,7 +10,7 @@
 #include "settings_mgr.h"
 #include "data_encoder_dlg.h"
 #include "gen_hash_dlg.h"
-#include "gen_hmac_dlg.h"
+#include "gen_mac_dlg.h"
 #include "oid_info_dlg.h"
 #include "enc_dec_dlg.h"
 #include "sign_verify_dlg.h"
@@ -313,12 +313,12 @@ void MainWindow::createActions()
     cryptMenu->addAction( hashAct );
     cryptToolBar->addAction( hashAct );
 
-    const QIcon macIcon = QIcon::fromTheme("Hmac", QIcon(":/images/mac.png"));
-    QAction *hmacAct = new QAction( macIcon, tr("H&mac"), this );
-    connect( hmacAct, &QAction::triggered, this, &MainWindow::hmac );
-    hmacAct->setStatusTip(tr("Generate hmac value" ));
-    cryptMenu->addAction( hmacAct );
-    cryptToolBar->addAction( hmacAct );
+    const QIcon macIcon = QIcon::fromTheme("MAC", QIcon(":/images/mac.png"));
+    QAction *macAct = new QAction( macIcon, tr("M&AC"), this );
+    connect( macAct, &QAction::triggered, this, &MainWindow::mac );
+    macAct->setStatusTip(tr("Generate MAC value" ));
+    cryptMenu->addAction( macAct );
+    cryptToolBar->addAction( macAct );
 
     const QIcon encIcon = QIcon::fromTheme("Encrypt_Decrypt", QIcon(":/images/enc.png"));
     QAction *encDecAct = new QAction( encIcon, tr("&Encrypt/Decrypt"), this );
@@ -750,10 +750,10 @@ void MainWindow::hash()
     genHashDlg.exec();
 }
 
-void MainWindow::hmac()
+void MainWindow::mac()
 {
-    GenHmacDlg genHmacDlg;
-    genHmacDlg.exec();
+    GenMacDlg genMacDlg;
+    genMacDlg.exec();
 }
 
 void MainWindow::keyAgree()

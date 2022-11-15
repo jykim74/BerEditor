@@ -1,11 +1,15 @@
 #include <QStringList>
+#include <QButtonGroup>
 
 #include "js_ber.h"
-#include "gen_hmac_dlg.h"
+#include "gen_mac_dlg.h"
 #include "js_bin.h"
 #include "js_pki.h"
 #include "ber_applet.h"
 #include "common.h"
+
+#define JS_TYPE_HMAC    0
+#define JS_TYPE_CMAC    1
 
 static QStringList hashTypes = {
     "MD5",
@@ -17,26 +21,39 @@ static QStringList hashTypes = {
     "SM3"
 };
 
+static QStringList cryptList = {
+    "AES",
+    "ARIA",
+    "DES3",
+    "SM4"
+};
+
+static QStringList modeList = {
+  "ECB", "CBC", "CTR", "CFB", "OFB"
+};
+
+
 static QStringList keyTypes = {
     "String",
     "Hex",
     "Base64"
 };
 
-GenHmacDlg::GenHmacDlg(QWidget *parent) :
+GenMacDlg::GenMacDlg(QWidget *parent) :
     QDialog(parent)
 {
     hctx_ = NULL;
+    type_ = 0;
+    group_ = new QButtonGroup;
     setupUi(this);
 
-    mAlgTypeCombo->addItems( hashTypes );
-    mKeyTypeCombo->addItems( keyTypes );
 
-    connect( mInitBtn, SIGNAL(clicked()), this, SLOT(hmacInit()));
-    connect( mUpdateBtn, SIGNAL(clicked()), this, SLOT(hmacUpdate()));
-    connect( mFinalBtn, SIGNAL(clicked()), this, SLOT(hmacFinal()));
 
-    connect( mHMACBtn, SIGNAL(clicked()), this, SLOT(hmac()));
+    connect( mInitBtn, SIGNAL(clicked()), this, SLOT(macInit()));
+    connect( mUpdateBtn, SIGNAL(clicked()), this, SLOT(macUpdate()));
+    connect( mFinalBtn, SIGNAL(clicked()), this, SLOT(macFinal()));
+
+    connect( mMACBtn, SIGNAL(clicked()), this, SLOT(mac()));
     connect( mInputClearBtn, SIGNAL(clicked()), this, SLOT(inputClear()));
     connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(outputClear()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
@@ -49,23 +66,50 @@ GenHmacDlg::GenHmacDlg(QWidget *parent) :
 
     connect( mKeyText, SIGNAL(textChanged(const QString&)), this, SLOT(keyChanged()));
     connect( mKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(keyChanged()));
+    connect( mHMACRadio, SIGNAL(clicked()), this, SLOT(checkHMAC()));
+    connect( mCMACRadio, SIGNAL(clicked()), this, SLOT(checkCMAC()));
+
+    initialize();
 
     mCloseBtn->setFocus();
 }
 
-GenHmacDlg::~GenHmacDlg()
+GenMacDlg::~GenMacDlg()
 {
-    if( hctx_ ) JS_PKI_hmacFree( &hctx_ );
+    if( group_ ) delete group_;
+    freeCTX();
 }
 
-void GenHmacDlg::hmacInit()
+void GenMacDlg::initialize()
 {
-    int ret = 0;
+    mKeyTypeCombo->addItems( keyTypes );
+    mModeTypeCombo->addItems( modeList );
+
+    group_->addButton( mHMACRadio );
+    group_->addButton( mCMACRadio );
+
+    checkHMAC();
+}
+
+void GenMacDlg::freeCTX()
+{
     if( hctx_ )
     {
-        JS_PKI_hmacFree( &hctx_ );
+        if( type_ == JS_TYPE_CMAC )
+            JS_PKI_cmacFree( &hctx_ );
+        else
+            JS_PKI_hmacFree( &hctx_ );
+
         hctx_ = NULL;
     }
+
+    type_ = 0;
+}
+
+void GenMacDlg::macInit()
+{
+    int ret = 0;
+
 
     BIN binKey = {0,0};
 
@@ -80,8 +124,21 @@ void GenHmacDlg::hmacInit()
 
 
    QString strAlg = mAlgTypeCombo->currentText();
+   QString strMode = mModeTypeCombo->currentText();
 
-   ret = JS_PKI_hmacInit( &hctx_, strAlg.toStdString().c_str(), &binKey );
+   if( mCMACRadio->isChecked() )
+   {
+        QString strSymAlg = getSymAlg( strAlg, strMode, binKey.nLen );
+
+        ret = JS_PKI_cmacInit( &hctx_, strSymAlg.toStdString().c_str(), &binKey );
+        if( ret == 0 ) type_ = JS_TYPE_CMAC;
+   }
+   else
+   {
+        ret = JS_PKI_hmacInit( &hctx_, strAlg.toStdString().c_str(), &binKey );
+        if( ret == 0 ) type_ = JS_TYPE_HMAC;
+   }
+
    if( ret == 0 )
    {
        mStatusLabel->setText( "Init OK" );
@@ -93,7 +150,7 @@ void GenHmacDlg::hmacInit()
    repaint();
 }
 
-void GenHmacDlg::hmacUpdate()
+void GenMacDlg::macUpdate()
 {
     int ret = 0;
     BIN binSrc = {0,0};
@@ -116,7 +173,27 @@ void GenHmacDlg::hmacUpdate()
         }
     }
 
-    ret = JS_PKI_hmacUpdate( hctx_, &binSrc );
+    if( mCMACRadio->isChecked() )
+    {
+        if( type_ == JS_TYPE_HMAC )
+        {
+            berApplet->elog( "Invalid context type" );
+            return;
+        }
+
+        ret = JS_PKI_cmacUpdate( hctx_, &binSrc );
+    }
+    else
+    {
+        if( type_ == JS_TYPE_CMAC )
+        {
+            berApplet->elog( "Invalid context type" );
+            return;
+        }
+
+        ret = JS_PKI_hmacUpdate( hctx_, &binSrc );
+    }
+
     if( ret == 0 )
     {
         mStatusLabel->setText( "Update OK" );
@@ -128,16 +205,36 @@ void GenHmacDlg::hmacUpdate()
     repaint();
 }
 
-void GenHmacDlg::hmacFinal()
+void GenMacDlg::macFinal()
 {
     int ret = 0;
-    BIN binHMAC = {0,0};
+    BIN binMAC = {0,0};
 
-    ret = JS_PKI_hmacFinal( hctx_, &binHMAC );
+    if( mCMACRadio->isChecked() )
+    {
+        if( type_ == JS_TYPE_HMAC )
+        {
+            berApplet->elog( "Invalid context type" );
+            return;
+        }
+
+        ret = JS_PKI_cmacFinal( hctx_, &binMAC );
+    }
+    else
+    {
+        if( type_ == JS_TYPE_CMAC )
+        {
+            berApplet->elog( "Invalid context type" );
+            return;
+        }
+
+        ret = JS_PKI_hmacFinal( hctx_, &binMAC );
+    }
+
     if( ret == 0 )
     {
         char *pHex = NULL;
-        JS_BIN_encodeHex( &binHMAC, &pHex );
+        JS_BIN_encodeHex( &binMAC, &pHex );
         mOutputText->setPlainText( pHex );
         mStatusLabel->setText( "Final OK" );
         JS_free( pHex );
@@ -145,17 +242,19 @@ void GenHmacDlg::hmacFinal()
     else
         mStatusLabel->setText( "Final fail" );
 
-    if( hctx_ ) JS_PKI_hmacFree( &hctx_ );
-    JS_BIN_reset( &binHMAC );
+    freeCTX();
+
+    JS_BIN_reset( &binMAC );
 
     repaint();
 }
 
-void GenHmacDlg::hmac()
+void GenMacDlg::mac()
 {
+    int ret = 0;
     BIN binSrc = {0,0};
     BIN binKey = {0,0};
-    BIN binHmac = {0,0};
+    BIN binMAC = {0,0};
 
     QString strInput = mInputText->toPlainText();
 
@@ -193,40 +292,51 @@ void GenHmacDlg::hmac()
 
 
    QString strAlg = mAlgTypeCombo->currentText();
-   int ret = JS_PKI_genHMAC( strAlg.toStdString().c_str(), &binSrc, &binKey, &binHmac );
+   QString strMode = mModeTypeCombo->currentText();
+
+   if( mCMACRadio->isChecked() )
+   {
+       QString strSymAlg = getSymAlg( strAlg, strMode, binKey.nLen );
+       ret = JS_PKI_genCMAC( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binMAC );
+   }
+   else
+   {
+        ret = JS_PKI_genHMAC( strAlg.toStdString().c_str(), &binSrc, &binKey, &binMAC );
+   }
+
    if( ret == 0 )
    {
        char *pHex = NULL;
-       JS_BIN_encodeHex( &binHmac, &pHex );
+       JS_BIN_encodeHex( &binMAC, &pHex );
        mOutputText->setPlainText( pHex );
-       mStatusLabel->setText( "HMAC OK" );
+       mStatusLabel->setText( "MAC OK" );
        if( pHex ) JS_free(pHex);
    }
    else
    {
-       mStatusLabel->setText( "HMAC FAIL" );
+       mStatusLabel->setText( "MAC FAIL" );
    }
 
    JS_BIN_reset(&binSrc);
    JS_BIN_reset(&binKey);
-   JS_BIN_reset(&binHmac);
+   JS_BIN_reset(&binMAC);
 
    repaint();
 }
 
-void GenHmacDlg::inputClear()
+void GenMacDlg::inputClear()
 {
     mInputText->clear();
     repaint();
 }
 
-void GenHmacDlg::outputClear()
+void GenMacDlg::outputClear()
 {
     mOutputText->clear();
     repaint();
 }
 
-void GenHmacDlg::inputChanged()
+void GenMacDlg::inputChanged()
 {
     int nType = DATA_STRING;
 
@@ -239,14 +349,32 @@ void GenHmacDlg::inputChanged()
     mInputLenText->setText( QString("%1").arg(nLen));
 }
 
-void GenHmacDlg::outputChanged()
+void GenMacDlg::outputChanged()
 {
     int nLen = getDataLen( DATA_HEX, mOutputText->toPlainText() );
     mOutputLenText->setText( QString("%1").arg(nLen));
 }
 
-void GenHmacDlg::keyChanged()
+void GenMacDlg::keyChanged()
 {
     int nLen = getDataLen( mKeyTypeCombo->currentText(), mKeyText->text() );
     mKeyLenText->setText( QString("%1").arg(nLen));
+}
+
+void GenMacDlg::checkHMAC()
+{
+    mHMACRadio->setChecked(true);
+    mModeTypeCombo->setDisabled(true);
+
+    mAlgTypeCombo->clear();
+    mAlgTypeCombo->addItems( hashTypes );
+}
+
+void GenMacDlg::checkCMAC()
+{
+    mCMACRadio->setChecked(true);
+    mModeTypeCombo->setDisabled(false);
+
+    mAlgTypeCombo->clear();
+    mAlgTypeCombo->addItems( cryptList );
 }

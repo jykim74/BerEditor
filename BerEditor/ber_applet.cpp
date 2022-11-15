@@ -11,7 +11,7 @@
 #include "settings_mgr.h"
 #include "data_encoder_dlg.h"
 #include "gen_hash_dlg.h"
-#include "gen_hmac_dlg.h"
+#include "gen_mac_dlg.h"
 #include "oid_info_dlg.h"
 #include "enc_dec_dlg.h"
 #include "sign_verify_dlg.h"

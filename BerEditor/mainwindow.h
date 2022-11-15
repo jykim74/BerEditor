@@ -53,7 +53,7 @@ private slots:
     void dataEncoder();
     void keyManage();
     void hash();
-    void hmac();
+    void mac();
     void keyAgree();
     void oidInfo();
     void encDec();
