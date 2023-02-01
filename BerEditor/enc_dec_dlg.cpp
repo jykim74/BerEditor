@@ -394,6 +394,8 @@ void EncDecDlg::encDecInit()
     bool bPad = mPadCheck->isChecked();
 
     QString strAlg = mAlgCombo->currentText();
+    QString strMode = mModeCombo->currentText();
+    QString strSymAlg = getSymAlg( strAlg, strMode, binKey.nLen );
 
     if( mUseAECheck->isChecked() )
     {
@@ -416,26 +418,26 @@ void EncDecDlg::encDecInit()
         if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
         {
             if( isCCM( strAlg) )
-                ret = JS_PKI_encryptCCMInit( &ctx_, strAlg.toStdString().c_str(), &binIV, &binKey, &binAAD, nInitLen );
+                ret = JS_PKI_encryptCCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD, nInitLen );
             else
-                ret = JS_PKI_encryptGCMInit( &ctx_, strAlg.toStdString().c_str(), &binIV, &binKey, &binAAD );
+                ret = JS_PKI_encryptGCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD );
         }
         else
         {
             if( isCCM( strAlg ) )
-                ret = JS_PKI_decryptCCMInit( &ctx_, strAlg.toStdString().c_str(), &binIV, &binKey, &binAAD, nInitLen );
+                ret = JS_PKI_decryptCCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD, nInitLen );
             else
-                ret = JS_PKI_decryptGCMInit( &ctx_, strAlg.toStdString().c_str(), &binIV, &binKey, &binAAD );
+                ret = JS_PKI_decryptGCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD );
         }
     }
     else {
         if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
         {
-            ret = JS_PKI_encryptInit( &ctx_, strAlg.toStdString().c_str(), bPad, &binIV, &binKey );
+            ret = JS_PKI_encryptInit( &ctx_, strSymAlg.toStdString().c_str(), bPad, &binIV, &binKey );
         }
         else
         {
-            ret = JS_PKI_decryptInit( &ctx_, strAlg.toStdString().c_str(), bPad, &binIV, &binKey );
+            ret = JS_PKI_decryptInit( &ctx_, strSymAlg.toStdString().c_str(), bPad, &binIV, &binKey );
         }
     }
 

@@ -9,7 +9,8 @@
 
 static QStringList algTypes = {
     "RSA",
-    "ECDSA"
+    "ECDSA",
+    "SM2"
 };
 
 static QStringList hashTypes = {
