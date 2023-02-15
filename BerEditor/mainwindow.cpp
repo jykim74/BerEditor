@@ -16,7 +16,7 @@
 #include "sign_verify_dlg.h"
 #include "pub_enc_dec_dlg.h"
 #include "gen_otp_dlg.h"
-#include "get_ldap_dlg.h"
+#include "get_uri_dlg.h"
 #include "key_agree_dlg.h"
 #include "key_man_dlg.h"
 #include "num_trans_dlg.h"
@@ -25,6 +25,7 @@
 #include "sss_dlg.h"
 #include "cavp_dlg.h"
 #include "insert_ber_dlg.h"
+#include "cert_pvd_dlg.h"
 #include "common.h"
 
 #include <QtWidgets>
@@ -363,6 +364,13 @@ void MainWindow::createActions()
     cryptMenu->addAction( sssAct );
     cryptToolBar->addAction( sssAct );
 
+    const QIcon certPVDIcon = QIcon::fromTheme("Cert PathValidation", QIcon(":/images/cert_pvd.png"));
+    QAction *certPVDAct = new QAction( certPVDIcon, tr( "Cert &PathValidation"), this );
+    connect( certPVDAct, &QAction::triggered, this, &MainWindow::certPVD );
+    certPVDAct->setStatusTip(tr("Certificate Path Validation"));
+    cryptMenu->addAction( certPVDAct );
+    cryptToolBar->addAction( certPVDAct );
+
 
     const QIcon otpIcon = QIcon::fromTheme("OTP", QIcon(":/images/otp.png"));
     QAction *genOTPAct = new QAction( otpIcon, tr("&OTP generate"), this );
@@ -410,12 +418,12 @@ void MainWindow::createActions()
     toolMenu->addAction( insertDataAct );
     toolToolBar->addAction( insertDataAct );
 
-    const QIcon ldapIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/ldap.jpg"));
-    QAction *getLdapAct = new QAction(ldapIcon, tr("&Get LDAP data"), this);
-    connect( getLdapAct, &QAction::triggered, this, &MainWindow::getLdap );
-    getLdapAct->setStatusTip(tr("Get Ber data from LDAP server"));
-    toolMenu->addAction( getLdapAct );
-    toolToolBar->addAction( getLdapAct );
+    const QIcon uriIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/uri.jpg"));
+    QAction *getURIAct = new QAction(uriIcon, tr("&Get URI data"), this);
+    connect( getURIAct, &QAction::triggered, this, &MainWindow::getURI );
+    getURIAct->setStatusTip(tr("Get Ber data from URI"));
+    toolMenu->addAction( getURIAct );
+    toolToolBar->addAction( getURIAct );
 
     const QIcon cavpIcon = QIcon::fromTheme( "tool-cavp", QIcon(":/images/cavp.png"));
     QAction *cavpAct = new QAction(cavpIcon, tr("&CAVP"), this);
@@ -798,6 +806,12 @@ void MainWindow::sss()
     sssDlg.exec();
 }
 
+void MainWindow::certPVD()
+{
+    CertPVDDlg certPVDDlg;
+    certPVDDlg.exec();
+}
+
 void MainWindow::CAVP()
 {
     /*
@@ -817,15 +831,15 @@ void MainWindow::genOTP()
     genOTPDlg.exec();
 }
 
-void MainWindow::getLdap()
+void MainWindow::getURI()
 {
     int ret = -1;
-    GetLdapDlg getLdapDlg;
-    ret = getLdapDlg.exec();
+    GetURIDlg getURIDlg;
+    ret = getURIDlg.exec();
 
     if( ret == QDialog::Accepted )
     {
-        ber_model_->setBer(&getLdapDlg.getData());
+        ber_model_->setBer(&getURIDlg.getData());
 
         ber_model_->parseTree();
 

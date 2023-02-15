@@ -1,11 +1,12 @@
 #include <QSettings>
 
-#include "get_ldap_dlg.h"
+#include "get_uri_dlg.h"
 #include "mainwindow.h"
 #include "ber_applet.h"
 
 #include "js_ldap.h"
 #include "js_bin.h"
+#include "js_http.h"
 
 const char *kUsedURI = "UsedURI";
 const char *kLDAP = "LDAP";
@@ -16,26 +17,26 @@ static QStringList sTypeList = { "caCertificate", "signCertificate", "userCertif
                                "deltaRevocationList", "certificateTrustList"
 };
 
-GetLdapDlg::GetLdapDlg(QWidget *parent) :
+GetURIDlg::GetURIDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
     data_.nLen = 0;
     data_.pVal = 0;
 
-    connect( mURIUseCheck, SIGNAL(clicked()), this, SLOT(clickUseURI()));
+    connect( mUseLDAPHostCheck, SIGNAL(clicked()), this, SLOT(clickUseLDAPHost()));
     connect( mGetBtn, SIGNAL(clicked()), this, SLOT(runGet()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
     initUI();
 }
 
-GetLdapDlg::~GetLdapDlg()
+GetURIDlg::~GetURIDlg()
 {
     JS_BIN_reset( &data_ );
 }
 
-QStringList GetLdapDlg::getUsedURI()
+QStringList GetURIDlg::getUsedURI()
 {
     QSettings settings;
     QStringList retList;
@@ -47,7 +48,7 @@ QStringList GetLdapDlg::getUsedURI()
     return retList;
 }
 
-void GetLdapDlg::saveUsedURI( const QString &strURL )
+void GetURIDlg::saveUsedURI( const QString &strURL )
 {
 
     QSettings settings;
@@ -59,7 +60,42 @@ void GetLdapDlg::saveUsedURI( const QString &strURL )
     settings.endGroup();
 }
 
-void GetLdapDlg::runGet()
+void GetURIDlg::runGet()
+{
+    int ret = -1;
+    if( mUseLDAPHostCheck->isChecked() )
+    {
+        ret = getLDAP();
+    }
+    else
+    {
+        QString strURI = mURICombo->currentText();
+        QStringList strList = strURI.split( ":" );
+        if( strList.size() < 2 )
+        {
+            ret = -1;
+            goto end;
+        }
+
+        QString strProto = strList.at(0).toUpper();
+
+        if( strProto == "LDAP" )
+            ret = getLDAP();
+        else if( strProto == "HTTP" || strProto == "HTTPS" )
+            ret = getHTTP();
+        else
+        {
+            berApplet->elog( QString("Invalid Protocol : %1").arg( strProto));
+            ret = -1;
+        }
+    }
+
+end :
+
+    if( ret == 0 ) QDialog::accept();
+}
+
+int GetURIDlg::getLDAP()
 {
     int ret = -1;
     LDAP *pLD = NULL;
@@ -72,8 +108,14 @@ void GetLdapDlg::runGet()
     QString strHost = "";
 
 
-    if( mURIUseCheck->isChecked() )
+    if( mUseLDAPHostCheck->isChecked() )
     {
+        strHost = mHostText->text();
+        nPort = mPortText->text().toInt();
+        strDN = mDNText->text();
+        strFilter = mFilterText->text();
+    }
+    else {
         char    sHost[1024];
         char    sDN[1024];
         char    sFilter[256];
@@ -93,13 +135,8 @@ void GetLdapDlg::runGet()
         if( sDN[0] != 0x00 ) strDN = sDN;
         if( sFilter[0] != 0 ) strFilter = sFilter;
 
+
         saveUsedURI( strURI );
-    }
-    else {
-        strHost = mHostText->text();
-        nPort = mPortText->text().toInt();
-        strDN = mDNText->text();
-        strFilter = mFilterText->text();
     }
 
     if( nType < 0 ) nType = JS_LDAP_getType( mTypeCombo->currentText().toStdString().c_str() );
@@ -110,7 +147,7 @@ void GetLdapDlg::runGet()
     if( pLD == NULL )
     {
         berApplet->warningBox( tr("fail to connnect LDAP server" ), this );
-        return;
+        return -1;
     }
 
     ret = JS_LDAP_bind( pLD, NULL, NULL );
@@ -129,34 +166,47 @@ void GetLdapDlg::runGet()
 
 end :
     if( pLD ) JS_LDAP_close(pLD);
-
-    if( ret == 0 ) QDialog::accept();
+    return ret;
 }
 
-void GetLdapDlg::initUI()
+int GetURIDlg::getHTTP()
+{
+    int ret = 0;
+    int nStatus = 0;
+
+    QString strURI = mURICombo->currentText();
+
+    ret = JS_HTTP_requestGetBin2( strURI.toStdString().c_str(), NULL, NULL, &nStatus, &data_ );
+
+     saveUsedURI( strURI );
+
+    return ret;
+}
+
+void GetURIDlg::initUI()
 {
     mScopeCombo->addItems(sScopeList);
     mTypeCombo->addItems(sTypeList);
     mPortText->setText( "389" );
 
-    clickUseURI();
+    clickUseLDAPHost();
     mCloseBtn->setFocus();
 }
 
-void GetLdapDlg::clickUseURI()
+void GetURIDlg::clickUseLDAPHost()
 {
-    bool bVal = mURIUseCheck->isChecked();
+    bool bVal = mUseLDAPHostCheck->isChecked();
 
-    mURIGroup->setEnabled( bVal );
-    mURICombo->setEditable( bVal );
+    mURIGroup->setEnabled( !bVal );
+    mURICombo->setEditable( !bVal );
 
-    if( bVal )
+    if( !bVal )
     {
         mURICombo->addItems( getUsedURI() );
         mURICombo->clearEditText();
     }
 
-    mHostInfoGroup->setEnabled( !bVal );
+    mHostInfoGroup->setEnabled( bVal );
 
 
     /*

@@ -13,7 +13,7 @@ qtHaveModule(printsupport): QT += printsupport
 
 TARGET = BerEditor
 TEMPLATE = app
-PROJECT_VERSION = "1.0.2"
+PROJECT_VERSION = "1.0.3"
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -41,8 +41,11 @@ SOURCES += \
     ber_tray_icon.cpp \
     ber_tree_view.cpp \
     cavp_dlg.cpp \
+    cert_info_dlg.cpp \
+    cert_pvd_dlg.cpp \
     cms_dlg.cpp \
     common.cpp \
+    crl_info_dlg.cpp \
     data_encoder_dlg.cpp \
     dumpasn1.c \
     edit_value_dlg.cpp \
@@ -50,7 +53,7 @@ SOURCES += \
     gen_hash_dlg.cpp \
     gen_mac_dlg.cpp \
     gen_otp_dlg.cpp \
-    get_ldap_dlg.cpp \
+    get_uri_dlg.cpp \
     i18n_helper.cpp \
     insert_ber_dlg.cpp \
     insert_data_dlg.cpp \
@@ -76,15 +79,18 @@ HEADERS += \
     ber_tray_icon.h \
     ber_tree_view.h \
     cavp_dlg.h \
+    cert_info_dlg.h \
+    cert_pvd_dlg.h \
     cms_dlg.h \
     common.h \
+    crl_info_dlg.h \
     data_encoder_dlg.h \
     edit_value_dlg.h \
     enc_dec_dlg.h \
     gen_hash_dlg.h \
     gen_mac_dlg.h \
     gen_otp_dlg.h \
-    get_ldap_dlg.h \
+    get_uri_dlg.h \
     i18n_helper.h \
     insert_ber_dlg.h \
     insert_data_dlg.h \
@@ -139,6 +145,7 @@ linux {
 win32 {
     DEFINES += _AUTO_UPDATE
     RC_ICONS = bereditor.ico
+    INCLUDEPATH += "../../PKILib/lib/win32/openssl3/include"
     INCLUDEPATH += "../../PKILib/lib/win32/winsparkle/include"
     INCLUDEPATH += "C:\msys64\mingw32\include"
 
@@ -159,14 +166,17 @@ win32 {
 FORMS += \
         about_dlg.ui \
         cavp_dlg.ui \
+        cert_info_dlg.ui \
+        cert_pvd_dlg.ui \
         cms_dlg.ui \
+        crl_info_dlg.ui \
         data_encoder_dlg.ui \
         edit_value_dlg.ui \
         enc_dec_dlg.ui \
         gen_hash_dlg.ui \
         gen_mac_dlg.ui \
         gen_otp_dlg.ui \
-        get_ldap_dlg.ui \
+        get_uri_dlg.ui \
         insert_ber_dlg.ui \
         insert_data_dlg.ui \
         key_agree_dlg.ui \

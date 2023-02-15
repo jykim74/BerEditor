@@ -18,7 +18,7 @@
 #include "pub_enc_dec_dlg.h"
 #include "gen_otp_dlg.h"
 #include "edit_value_dlg.h"
-#include "get_ldap_dlg.h"
+#include "get_uri_dlg.h"
 #include "cavp_dlg.h"
 
 #include "auto_update_service.h"

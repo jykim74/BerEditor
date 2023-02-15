@@ -30,7 +30,7 @@
         <file>images/bereditor.png</file>
         <file>images/setting.png</file>
         <file>images/oid.png</file>
-        <file>images/ldap.jpg</file>
+        <file>images/uri.jpg</file>
         <file>images/key.jpg</file>
         <file>images/hash.png</file>
         <file>images/mac.png</file>
@@ -44,5 +44,6 @@
         <file>images/sss.png</file>
         <file>images/cavp.png</file>
         <file>images/clear.png</file>
+        <file>images/cert_pvd.png</file>
     </qresource>
 </RCC>

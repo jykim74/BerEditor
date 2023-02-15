@@ -40,6 +40,8 @@ const QStringList kECCParamList = {
     "sect409r1", "sect571k1", "sect571r1", "SM2"
 };
 
+const QString kTableStyle = "QHeaderView::section {background-color:#404040;color:#FFFFFF;}";
+
 QString findFile( QWidget *parent, int nType, const QString strPath );
 QString findFolder( QWidget *parent, const QString strPath );
 

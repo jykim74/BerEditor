@@ -61,12 +61,13 @@ private slots:
     void pubEncDec();
     void cms();
     void sss();
+    void certPVD();
     void CAVP();
     void genOTP();
     void insertBER();
     void insertData();
     void numTrans();
-    void getLdap();
+    void getURI();
     void save();
     void saveAs();
     void clearLog();
