@@ -43,6 +43,7 @@ private slots:
     void clickPathValidation();
 private:
     void initialize();
+    QString last_path_;
 
 };
 

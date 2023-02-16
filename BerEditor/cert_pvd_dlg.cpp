@@ -82,44 +82,56 @@ void CertPVDDlg::clickTrustFind()
 {
     QString strPath = mTrustPathText->text();
 
-    if( strPath.length() < 1 ) strPath = "D:\pvd_certs";
+    if( strPath.length() < 1 ) strPath = last_path_;
 
     QString strFile = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( strFile.length() > 0 )
+    {
         mTrustPathText->setText( strFile );
+        last_path_ = strFile;
+    }
 }
 
 void CertPVDDlg::clickUntrustFind()
 {
     QString strPath = mUntrustPathText->text();
 
-    if( strPath.length() < 1 ) strPath = "D:\pvd_certs";
+    if( strPath.length() < 1 ) strPath = last_path_;
 
     QString strFile = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( strFile.length() > 0 )
+    {
         mUntrustPathText->setText( strFile );
+        last_path_ = strFile;
+    }
 }
 
 void CertPVDDlg::clickCRLFind()
 {
     QString strPath = mCRLPathText->text();
 
-    if( strPath.length() < 1 ) strPath = "D:\pvd_certs";
+    if( strPath.length() < 1 ) strPath = last_path_;
 
     QString strFile = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( strFile.length() > 0 )
+    {
         mCRLPathText->setText( strFile );
+        last_path_ = strFile;
+    }
 }
 
 void CertPVDDlg::clickTargetFind()
 {
     QString strPath = mTargetPathText->text();
 
-    if( strPath.length() < 1 ) strPath = "D:\pvd_certs";
+    if( strPath.length() < 1 ) strPath = last_path_;
 
     QString strFile = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( strFile.length() > 0 )
+    {
         mTargetPathText->setText( strFile );
+        last_path_ = strFile;
+    }
 }
 
 void CertPVDDlg::clickCertVerify()
@@ -155,7 +167,7 @@ void CertPVDDlg::clickCertVerify()
         JS_BIN_fileRead( strCLRPath.toLocal8Bit().toStdString().c_str(), &binCRL );
     }
 
-    ret = JS_PKI_PVDCertValid( &binTrust, &binCRL, &binUntrust, sMsg );
+    ret = JS_PKI_CertVerify( &binTrust, &binCRL, &binUntrust, sMsg );
 
     berApplet->log( QString( "PVDCertValid : %1").arg(ret));
     if( ret == 1 )
@@ -317,13 +329,15 @@ void CertPVDDlg::clickPathValidation()
     if( mSuiteB192LosCheck->isChecked() ) _addParamFlag( &pParamList,JS_PVD_FLAG_SUITEB_192_LOS );
     if( mSuiteB128LogCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_SUITEB_128_LOS );
     if( mPartialChainCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_PARTIAL_CHAIN );
+    if( mNoALTChainsCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_NO_ALT_CHAINS );
+    if( mNoCheckTimeCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_NO_CHECK_TIME );
 
     nCount = mParamTable->rowCount();
     for( int i = 0; i < nCount; i++ )
     {
         int nID = 0;
-        QString strParam = mPathTable->item( i, 0 )->text();
-        QString strValue = mPathTable->item( i, 1 )->text();
+        QString strParam = mParamTable->item( i, 0 )->text();
+        QString strValue = mParamTable->item( i, 1 )->text();
 
         nID = _getParamID( strParam );
         if( nID < 0 ) continue;
