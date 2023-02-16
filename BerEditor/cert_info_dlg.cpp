@@ -52,7 +52,7 @@ void CertInfoDlg::initialize()
 
     clearTable();
 
-    JS_BIN_fileRead( cert_path_.toLocal8Bit().toStdString().c_str(), &binCert );
+    JS_BIN_fileReadBER( cert_path_.toLocal8Bit().toStdString().c_str(), &binCert );
 
     ret = JS_PKI_getCertInfo( &binCert, &sCertInfo, &pExtInfoList );
     if( ret != 0 )

@@ -149,12 +149,12 @@ void CertPVDDlg::clickCertVerify()
 
     if( strTrustPath.length() > 1 )
     {
-        JS_BIN_fileRead( strTrustPath.toLocal8Bit().toStdString().c_str(), &binTrust );
+        JS_BIN_fileReadBER( strTrustPath.toLocal8Bit().toStdString().c_str(), &binTrust );
     }
 
     if( strUntrustPath.length() > 1 )
     {
-        JS_BIN_fileRead( strUntrustPath.toLocal8Bit().toStdString().c_str(), &binUntrust );
+        JS_BIN_fileReadBER( strUntrustPath.toLocal8Bit().toStdString().c_str(), &binUntrust );
     }
     else
     {
@@ -164,7 +164,7 @@ void CertPVDDlg::clickCertVerify()
 
     if( strCLRPath.length() > 1 )
     {
-        JS_BIN_fileRead( strCLRPath.toLocal8Bit().toStdString().c_str(), &binCRL );
+        JS_BIN_fileReadBER( strCLRPath.toLocal8Bit().toStdString().c_str(), &binCRL );
     }
 
     ret = JS_PKI_CertVerify( &binTrust, &binCRL, &binUntrust, sMsg );
@@ -254,21 +254,21 @@ void CertPVDDlg::clickPathValidation()
 
     if( strTrustPath.length() > 1 )
     {
-        JS_BIN_fileRead( strTrustPath.toLocal8Bit().toStdString().c_str(), &binTrust );
+        JS_BIN_fileReadBER( strTrustPath.toLocal8Bit().toStdString().c_str(), &binTrust );
         JS_BIN_addList( &pTrustList, &binTrust );
         JS_BIN_reset( &binTrust );
     }
 
     if( strUntrustPath.length() > 1 )
     {
-        JS_BIN_fileRead( strUntrustPath.toLocal8Bit().toStdString().c_str(), &binUntrust );
+        JS_BIN_fileReadBER( strUntrustPath.toLocal8Bit().toStdString().c_str(), &binUntrust );
         JS_BIN_addList( &pTrustList, &binUntrust );
         JS_BIN_reset( &binUntrust );
     }
 
     if( strCLRPath.length() > 1 )
     {
-        JS_BIN_fileRead( strCLRPath.toLocal8Bit().toStdString().c_str(), &binCRL );
+        JS_BIN_fileReadBER( strCLRPath.toLocal8Bit().toStdString().c_str(), &binCRL );
         JS_BIN_addList( &pCRLList, &binCRL );
         JS_BIN_reset( &binCRL );
     }
@@ -279,7 +279,7 @@ void CertPVDDlg::clickPathValidation()
         goto end;
     }
 
-    JS_BIN_fileRead( strTargetPath.toLocal8Bit().toStdString().c_str(), &binTarget );
+    JS_BIN_fileReadBER( strTargetPath.toLocal8Bit().toStdString().c_str(), &binTarget );
 
     nCount = mPathTable->rowCount();
     for( int i = 0; i < nCount; i++ )
@@ -288,7 +288,7 @@ void CertPVDDlg::clickPathValidation()
         QString strType = mPathTable->item( i, 0 )->text();
         QString strPath = mPathTable->item( i, 1 )->text();
 
-        JS_BIN_fileRead( strPath.toLocal8Bit().toStdString().c_str(), &binData );
+        JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
 
         if( strType == "Trust" )
         {
@@ -313,7 +313,14 @@ void CertPVDDlg::clickPathValidation()
         _addParamValue( &pParamList, JS_PVD_VERIFY_ATTIME, strValue.toStdString().c_str() );
     }
 
-    if( mUseCheckTimeCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_USE_CHECK_TIME );
+    if( mUseCheckTimeCheck->isChecked() )
+    {
+//        _addParamFlag( &pParamList, JS_PVD_FLAG_USE_CHECK_TIME );
+        QString strValue = QString( "%1" ).arg( time(NULL) );
+        berApplet->log( QString( "CheckTime: %1").arg( strValue ));
+        _addParamValue( &pParamList, JS_PVD_VERIFY_ATTIME, strValue.toStdString().c_str() );
+    }
+
     if( mCRLCheckCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_CRL_CHECK );
     if( mIgnoreCriticalCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_IGNORE_CRITICAL );
     if( mX509StrictCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_X509_STRICT );

@@ -58,7 +58,7 @@ void CRLInfoDlg::initialize()
     if( ext_info_list_ ) JS_PKI_resetExtensionInfoList( &ext_info_list_ );
     if( revoke_info_list_ ) JS_PKI_resetRevokeInfoList( &revoke_info_list_ );
 
-    JS_BIN_fileRead( crl_path_.toLocal8Bit().toStdString().c_str(), &binCRL );
+    JS_BIN_fileReadBER( crl_path_.toLocal8Bit().toStdString().c_str(), &binCRL );
 
     ret = JS_PKI_getCRLInfo( &binCRL, &crl_info_, &ext_info_list_, &revoke_info_list_ );
     if( ret != 0 )
