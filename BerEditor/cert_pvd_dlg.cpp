@@ -313,7 +313,7 @@ void CertPVDDlg::clickPathValidation()
         _addParamValue( &pParamList, JS_PVD_VERIFY_ATTIME, strValue.toStdString().c_str() );
     }
 
-    if( mUseCheckTimeCheck->isChecked() )
+    if( mUseCheckTimeCheck->isChecked() && mATTimeCheck->isChecked() == false )
     {
 //        _addParamFlag( &pParamList, JS_PVD_FLAG_USE_CHECK_TIME );
         QString strValue = QString( "%1" ).arg( time(NULL) );
@@ -518,6 +518,8 @@ void CertPVDDlg::checkATTime()
 {
     bool bVal = mATTimeCheck->isChecked();
     mVerifyDateTime->setEnabled(bVal);
+
+    mUseCheckTimeCheck->setDisabled( bVal );
 }
 
 void CertPVDDlg::clickParamAdd()
