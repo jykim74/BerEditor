@@ -34,7 +34,7 @@ private slots:
     void clickListClear();
     void clickPathClear();
 
-    void checkUseCheckTime();
+    void checkATTime();
 
     void clickParamAdd();
     void clickParamListClear();

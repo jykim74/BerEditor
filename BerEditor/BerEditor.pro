@@ -145,7 +145,6 @@ linux {
 win32 {
     DEFINES += _AUTO_UPDATE
     RC_ICONS = bereditor.ico
-    INCLUDEPATH += "../../PKILib/lib/win32/openssl3/include"
     INCLUDEPATH += "../../PKILib/lib/win32/winsparkle/include"
     INCLUDEPATH += "C:\msys64\mingw32\include"
 

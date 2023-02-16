@@ -34,7 +34,7 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mCertVerifyBtn, SIGNAL(clicked()), this, SLOT(clickCertVerify()));
 
-    connect( mUseCheckTimeCheck, SIGNAL(clicked()), this, SLOT(checkUseCheckTime()));
+    connect( mATTimeCheck, SIGNAL(clicked()), this, SLOT(checkATTime()));
     connect( mParamAddBtn, SIGNAL(clicked()), this, SLOT(clickParamAdd()));
     connect( mParamListClearBtn, SIGNAL(clicked()), this, SLOT(clickParamListClear()));
 
@@ -75,7 +75,7 @@ void CertPVDDlg::initialize()
 
     mParamCombo->addItems( kParamList );
 
-    checkUseCheckTime();
+    checkATTime();
 }
 
 void CertPVDDlg::clickTrustFind()
@@ -306,12 +306,14 @@ void CertPVDDlg::clickPathValidation()
         JS_BIN_reset( &binData );
     }
 
-    if( mUseCheckTimeCheck->isChecked() )
+    if( mATTimeCheck->isChecked() )
     {
         QString strValue = QString( "%1" ).arg( mVerifyDateTime->dateTime().toTime_t() );
-        _addParamValue( &pParamList, JS_PVD_FLAG_USE_CHECK_TIME, strValue.toStdString().c_str() );
+        berApplet->log( QString( "CheckTime: %1").arg( strValue ));
+        _addParamValue( &pParamList, JS_PVD_VERIFY_ATTIME, strValue.toStdString().c_str() );
     }
 
+    if( mUseCheckTimeCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_USE_CHECK_TIME );
     if( mCRLCheckCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_CRL_CHECK );
     if( mIgnoreCriticalCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_IGNORE_CRITICAL );
     if( mX509StrictCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_X509_STRICT );
@@ -505,9 +507,9 @@ void CertPVDDlg::clickPathClear()
     mTargetPathText->clear();
 }
 
-void CertPVDDlg::checkUseCheckTime()
+void CertPVDDlg::checkATTime()
 {
-    bool bVal = mUseCheckTimeCheck->isChecked();
+    bool bVal = mATTimeCheck->isChecked();
     mVerifyDateTime->setEnabled(bVal);
 }
 

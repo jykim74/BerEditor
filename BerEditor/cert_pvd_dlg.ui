@@ -244,6 +244,16 @@
      <property name="topMargin">
       <number>0</number>
      </property>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mListClearBtn">
+       <property name="text">
+        <string>List Clear</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QDateTimeEdit" name="mVerifyDateTime"/>
+     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_5">
        <property name="text">
@@ -264,28 +274,12 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mListClearBtn">
-       <property name="text">
-        <string>List Clear</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="2">
-      <widget class="QLabel" name="label_7">
-       <property name="minimumSize">
-        <size>
-         <width>80</width>
-         <height>0</height>
-        </size>
-       </property>
+      <widget class="QCheckBox" name="mATTimeCheck">
        <property name="text">
-        <string>Verify Time</string>
+        <string>At Time</string>
        </property>
       </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QDateTimeEdit" name="mVerifyDateTime"/>
      </item>
     </layout>
    </item>
