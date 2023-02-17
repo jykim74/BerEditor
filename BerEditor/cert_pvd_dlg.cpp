@@ -452,7 +452,7 @@ void CertPVDDlg::clickTrustAdd()
     int row = mPathTable->rowCount();
     mPathTable->insertRow( row );
     mPathTable->setRowHeight(row, 10 );
-    mPathTable->setItem( row, 0, new QTableWidgetItem( tr("Trust")));
+    mPathTable->setItem( row, 0, new QTableWidgetItem( "Trust" ));
     mPathTable->setItem( row, 1, new QTableWidgetItem( strPath ));
 
     mTrustPathText->clear();
@@ -471,7 +471,7 @@ void CertPVDDlg::clickUntrustAdd()
     int row = mPathTable->rowCount();
     mPathTable->insertRow( row );
     mPathTable->setRowHeight(row, 10 );
-    mPathTable->setItem( row, 0, new QTableWidgetItem( tr("Untrust")));
+    mPathTable->setItem( row, 0, new QTableWidgetItem( "Untrust" ));
     mPathTable->setItem( row, 1, new QTableWidgetItem( strPath ));
 
     mUntrustPathText->clear();
@@ -490,7 +490,7 @@ void CertPVDDlg::clickCRLAdd()
     int row = mPathTable->rowCount();
     mPathTable->insertRow( row );
     mPathTable->setRowHeight(row, 10 );
-    mPathTable->setItem( row, 0, new QTableWidgetItem( tr("CRL")));
+    mPathTable->setItem( row, 0, new QTableWidgetItem( "CRL" ));
     mPathTable->setItem( row, 1, new QTableWidgetItem( strPath ));
 
     mCRLPathText->clear();
