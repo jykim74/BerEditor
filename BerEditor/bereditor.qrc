@@ -45,5 +45,7 @@
         <file>images/cavp.png</file>
         <file>images/clear.png</file>
         <file>images/cert_pvd.png</file>
+        <file>images/critical.png</file>
+        <file>images/normal.png</file>
     </qresource>
 </RCC>

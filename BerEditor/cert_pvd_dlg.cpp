@@ -434,9 +434,9 @@ void CertPVDDlg::clickTargetInfo()
         return;
     }
 
-    CRLInfoDlg crlInfoDlg;
-    crlInfoDlg.setCRLPath( strPath );
-    crlInfoDlg.exec();
+    CertInfoDlg certInfoDlg;
+    certInfoDlg.setCertPath( strPath );
+    certInfoDlg.exec();
 }
 
 void CertPVDDlg::clickTrustAdd()

@@ -4,6 +4,7 @@
 #include <QString>
 #include <QWidget>
 #include "js_bin.h"
+#include "js_pki_x509.h"
 
 enum {
     DATA_STRING,
@@ -40,6 +41,23 @@ const QStringList kECCParamList = {
     "sect409r1", "sect571k1", "sect571r1", "SM2"
 };
 
+const QString kExtNameAIA = "authorityInfoAccess";
+const QString kExtNameAKI = "authorityKeyIdentifier";
+const QString kExtNameBC = "basicConstraints";
+const QString kExtNameCRLDP = "crlDistributionPoints";
+const QString kExtNameEKU = "extendedKeyUsage";
+const QString kExtNameIAN = "issuerAltName";
+const QString kExtNameKeyUsage = "keyUsage";
+const QString kExtNameNC = "nameConstraints";
+const QString kExtNamePolicy = "certificatePolicies";
+const QString kExtNamePC = "policyConstraints";
+const QString kExtNamePM = "policyMappings";
+const QString kExtNameSKI = "subjectKeyIdentifier";
+const QString kExtNameSAN = "subjectAltName";
+const QString kExtNameCRLNum = "crlNumber";
+const QString kExtNameIDP = "issuingDistributionPoint";
+const QString kExtNameCRLReason = "CRLReason";
+
 const QString kTableStyle = "QHeaderView::section {background-color:#404040;color:#FFFFFF;}";
 
 QString findFile( QWidget *parent, int nType, const QString strPath );
@@ -53,6 +71,8 @@ int getDataLen( int nType, const QString strData );
 int getDataLen( const QString strType, const QString strData );
 QString getSymAlg( const QString strAlg, const QString strMode, int nKeyLen );
 int getNameValue( const QString strLine, QString& name, QString& value );
+
+void getInfoValue( const JExtensionInfo *pExtInfo, QString& strVal );
 
 
 #endif // COMMON_H

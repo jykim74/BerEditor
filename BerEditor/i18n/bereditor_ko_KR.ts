@@ -711,22 +711,22 @@ mailto : jykim74@gmail.com</translation>
         <translation>서명</translation>
     </message>
     <message>
-        <location filename="../crl_info_dlg.cpp" line="161"/>
+        <location filename="../crl_info_dlg.cpp" line="169"/>
         <source>Field</source>
         <translation>필드</translation>
     </message>
     <message>
-        <location filename="../crl_info_dlg.cpp" line="161"/>
+        <location filename="../crl_info_dlg.cpp" line="169"/>
         <source>Value</source>
         <translation>값</translation>
     </message>
     <message>
-        <location filename="../crl_info_dlg.cpp" line="172"/>
+        <location filename="../crl_info_dlg.cpp" line="180"/>
         <source>Serial</source>
         <translation>일련번호</translation>
     </message>
     <message>
-        <location filename="../crl_info_dlg.cpp" line="172"/>
+        <location filename="../crl_info_dlg.cpp" line="180"/>
         <source>RevokedDate</source>
         <translation>폐기 날짜</translation>
     </message>
@@ -814,12 +814,12 @@ mailto : jykim74@gmail.com</translation>
         <translation>서명</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="169"/>
+        <location filename="../cert_info_dlg.cpp" line="178"/>
         <source>Field</source>
         <translation>필드</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="169"/>
+        <location filename="../cert_info_dlg.cpp" line="178"/>
         <source>Value</source>
         <translation>값</translation>
     </message>
@@ -1026,8 +1026,12 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../cert_pvd_dlg.ui" line="519"/>
+        <source>TargetInfo</source>
+        <translation type="unfinished">타겟 정보</translation>
+    </message>
+    <message>
         <source>Target</source>
-        <translation>타겟</translation>
+        <translation type="vanished">타겟</translation>
     </message>
     <message>
         <location filename="../cert_pvd_dlg.ui" line="537"/>
@@ -1065,19 +1069,16 @@ mailto : jykim74@gmail.com</translation>
         <translation>타겟 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="455"/>
         <source>Trust</source>
-        <translation>신뢰</translation>
+        <translation type="vanished">신뢰</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="474"/>
         <source>Untrust</source>
-        <translation>비 신뢰</translation>
+        <translation type="vanished">비 신뢰</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="493"/>
         <source>CRL</source>
-        <translation>CRL</translation>
+        <translation type="vanished">CRL</translation>
     </message>
 </context>
 <context>
@@ -3109,42 +3110,42 @@ mailto : jykim74@gmail.com</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../common.cpp" line="27"/>
+        <location filename="../common.cpp" line="28"/>
         <source>Cert Files (*.crt *.der *.pem);;All Files(*.*)</source>
         <translation>인증서 파일들(*.crt *.der *.pem);;모든 파일들(*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="29"/>
+        <location filename="../common.cpp" line="30"/>
         <source>Key Files (*.key *.der *.pem);;All Files(*.*)</source>
         <translation>키 파일 (*.key *.der *.pem);;모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="31"/>
+        <location filename="../common.cpp" line="32"/>
         <source>TXT Files (*.txt *.log);;All Files(*.*)</source>
         <translation>텍스트 파일들 (*.txt *.log);;모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="33"/>
+        <location filename="../common.cpp" line="34"/>
         <source>BER Files (*.ber *.der *.pem);;All Files(*.*)</source>
         <translation>BER 파일들 (*.ber *.der *.pem);;모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="35"/>
+        <location filename="../common.cpp" line="36"/>
         <source>Config Files (*.cfg *.ini);;All Files(*.*)</source>
         <translation>설정 파일들 (*.cfg *.ini);;모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="37"/>
+        <location filename="../common.cpp" line="38"/>
         <source>Req Files (*.req *.txt);;All Files(*.*)</source>
         <translation>요청 파일들(*.req *.txt);;모든 파일들(*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="40"/>
+        <location filename="../common.cpp" line="41"/>
         <source>Open File</source>
         <translation>파일 열기</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="57"/>
+        <location filename="../common.cpp" line="58"/>
         <source>Open Directory</source>
         <translation>디렉토리 열기</translation>
     </message>
