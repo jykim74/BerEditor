@@ -39,7 +39,8 @@ private slots:
     void clickParamAdd();
     void clickParamListClear();
 
-    void clickCertVerify();
+    void clickVerifyCert();
+    void clickVerifyCRL();
     void clickPathValidation();
 private:
     void initialize();

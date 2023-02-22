@@ -206,14 +206,21 @@
     </layout>
    </item>
    <item>
+    <widget class="Line" name="line_4">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QGridLayout" name="gridLayout_8">
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mCertVerifyBtn">
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mVerifyCertBtn">
        <property name="text">
-        <string>CertVerify</string>
+        <string>VerifyCert</string>
        </property>
       </widget>
      </item>
@@ -229,6 +236,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mVerifyCRLBtn">
+       <property name="text">
+        <string>VerifyCRL</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

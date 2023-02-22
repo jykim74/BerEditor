@@ -32,7 +32,8 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
     connect( mListClearBtn, SIGNAL(clicked()), this, SLOT(clickListClear()));
     connect( mPathClearBtn, SIGNAL(clicked()), this, SLOT(clickPathClear()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
-    connect( mCertVerifyBtn, SIGNAL(clicked()), this, SLOT(clickCertVerify()));
+    connect( mVerifyCRLBtn, SIGNAL(clicked()), this, SLOT(clickVerifyCRL()));
+    connect( mVerifyCertBtn, SIGNAL(clicked()), this, SLOT(clickVerifyCert()));
 
     connect( mATTimeCheck, SIGNAL(clicked()), this, SLOT(checkATTime()));
     connect( mParamAddBtn, SIGNAL(clicked()), this, SLOT(clickParamAdd()));
@@ -134,7 +135,7 @@ void CertPVDDlg::clickTargetFind()
     }
 }
 
-void CertPVDDlg::clickCertVerify()
+void CertPVDDlg::clickVerifyCert()
 {
     int ret = 0;
     char sMsg[1024];
@@ -190,6 +191,61 @@ void CertPVDDlg::clickCertVerify()
 end :
     JS_BIN_reset( &binTrust );
     JS_BIN_reset( &binUntrust );
+    JS_BIN_reset( &binCRL );
+}
+
+void CertPVDDlg::clickVerifyCRL()
+{
+    int ret = 0;
+    bool bTrust = true;
+    QString strMsg;
+
+    BIN binCRL = {0,0};
+    BIN binCA = {0,0};
+
+    QString strCAPath = mTrustPathText->text();
+    QString strCRLPath = mCRLPathText->text();
+
+    if( strCAPath.length() < 1 )
+    {
+        strCAPath = mUntrustPathText->text();
+        bTrust = false;
+    }
+
+    if( strCAPath.length() < 1 )
+    {
+        berApplet->warningBox( "You have to find trust certificate or untrust certificate", this );
+        goto end;
+    }
+
+    if( strCRLPath.length() < 1 )
+    {
+        berApplet->warningBox( "You have to find CRL", this );
+        goto end;
+    }
+
+    JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
+    JS_BIN_fileReadBER( strCRLPath.toLocal8Bit().toStdString().c_str(), &binCRL );
+
+    ret = JS_PKI_verifyCRL( &binCRL, &binCA );
+
+
+    if( ret == 1 )
+    {
+        strMsg = QString( "Verify CRL OK with %1").arg( bTrust ? "Trust Cert" : "Untrust Cert");
+        berApplet->messageBox( strMsg, this );
+        berApplet->log( strMsg );
+    }
+    else
+    {
+        strMsg = QString( "Verify fail with %1").arg( bTrust ? "Trust Cert" : "Untrust Cert" );
+        berApplet->warningBox( strMsg, this );
+        berApplet->elog( strMsg );
+    }
+
+
+end :
+    JS_BIN_reset( &binCA );
     JS_BIN_reset( &binCRL );
 }
 

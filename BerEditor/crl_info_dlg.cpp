@@ -41,6 +41,8 @@ void CRLInfoDlg::initialize()
     int i = 0;
 
     BIN binCRL = {0,0};
+    BIN binFinger = {0,0};
+
     char    sLastUpdate[64];
     char    sNextUpdate[64];
 
@@ -68,6 +70,8 @@ void CRLInfoDlg::initialize()
         close();
         return;
     }
+
+    JS_PKI_genHash( "SHA1", &binCRL, &binFinger );
 
     mCRLListTable->insertRow(i);
     mCRLListTable->setRowHeight(i,10);
@@ -144,6 +148,12 @@ void CRLInfoDlg::initialize()
         }
     }
 
+    mCRLListTable->insertRow(i);
+    mCRLListTable->setRowHeight(i,10);
+    mCRLListTable->setItem(i, 0, new QTableWidgetItem(tr("FingerPrint")));
+    mCRLListTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(getHexString(binFinger.pVal, binFinger.nLen))));
+    i++;
+
     if( revoke_info_list_ )
     {
         int k = 0;
@@ -162,6 +172,7 @@ void CRLInfoDlg::initialize()
     }
 
     JS_BIN_reset( &binCRL );
+    JS_BIN_reset( &binFinger );
 }
 
 void CRLInfoDlg::initUI()

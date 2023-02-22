@@ -847,7 +847,7 @@ static int _getCRLReason( const BIN *pBinExt, bool bShow, QString& strVal )
 
     ret = JS_PKI_getCRLReasonValue( pBinExt, &nReason );
 
-    if( nReason > 0 ) strVal = crl_reasons[nReason];
+    if( nReason >= 0 ) strVal = crl_reasons[nReason];
 
     return 0;
 }
