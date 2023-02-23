@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
-    QCoreApplication::setOrganizationName( "JS" );
+    QCoreApplication::setOrganizationName( "JS Inc" );
     QCoreApplication::setOrganizationDomain( "jssoft.com" );
     QCoreApplication::setApplicationName( "BerEditor" );
 

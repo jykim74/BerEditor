@@ -4,7 +4,7 @@
   <String Id="AppName">BerEditor</String>
   <String Id="PackageDescription">BerEditor Installer</String>
   <String Id="PackageComments">BerEditor Installer</String>
-  <String Id="Manufacturer">HaiWenHuZhi ltd.</String>
+  <String Id="Manufacturer">JS Inc</String>
   <String Id="DowngradeErrorMessage">A more up-to-date version of BerEditor is detected on your machine. The installer will now quit</String>
   <String Id="UninstallBerEditor">Uninstall BerEditor</String>
   <String Id="StartBerEditor">Start BerEditor</String>

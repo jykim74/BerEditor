@@ -4,7 +4,7 @@
   <String Id="AppName">BerEditor</String>
   <String Id="PackageDescription">BerEditor 설치프로그램</String>
   <String Id="PackageComments">BerEditor 설치프로그램</String>
-  <String Id="Manufacturer">JS .Inc</String>
+  <String Id="Manufacturer">JS Inc</String>
   <String Id="DowngradeErrorMessage">이미 더 최신 버전의 BerEditor가 설치 되어 있습니다. 설치를 끝내겠습니다.</String>
   <String Id="UninstallBerEditor">BerEditor 제거</String>
   <String Id="StartBerEditor">BerEditor 시작</String>
