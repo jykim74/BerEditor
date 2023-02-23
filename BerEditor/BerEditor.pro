@@ -13,7 +13,7 @@ qtHaveModule(printsupport): QT += printsupport
 
 TARGET = BerEditor
 TEMPLATE = app
-PROJECT_VERSION = "1.0.6"
+PROJECT_VERSION = "1.0.8"
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -22,6 +22,7 @@ PROJECT_VERSION = "1.0.6"
 DEFINES += QT_DEPRECATED_WARNINGS
 DEFINES += BER_VIEWER_VERSION=$$PROJECT_VERSION
 DEFINES += JS_PRO
+# DEFINES += _AUTO_UPDATE
 
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -112,7 +113,6 @@ HEADERS += \
 
 mac {
     ICON = bereditor.icns
-    DEFINES += _AUTO_UPDATE
     QMAKE_LFLAGS += -Wl,-rpath,@loader_path/../Frameworks
     HEADERS += mac_sparkle_support.h
     OBJECTIVE_SOURCES += mac_sparkle_support.mm
@@ -143,7 +143,6 @@ linux {
 }
 
 win32 {
-    DEFINES += _AUTO_UPDATE
     RC_ICONS = bereditor.ico
     INCLUDEPATH += "../../PKILib/lib/win32/winsparkle/include"
     INCLUDEPATH += "C:\msys64\mingw32\include"

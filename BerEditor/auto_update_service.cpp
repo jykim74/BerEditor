@@ -14,7 +14,7 @@ SINGLETON_IMPL(AutoUpdateService)
 namespace  {
 #ifdef Q_OS_WIN32
     const char *kSparkleAppcastURI = "https://www.aaa.bbb/update/win_appcast.xml";
-    const char *kWinSparkleRegPath = "SOFTWARE\\BerEditor\\WinSparkle";
+    const char *kWinSparkleRegPath = "SOFTWARE\\JS Inc\\BerEditor\\WinSparkle";
 #else
     const char *kSparkleAppcastURI = "https://www.aaa.bbb/update/mac_appcast.xml";
 #endif
@@ -22,11 +22,11 @@ namespace  {
 }
 
 QString getAppcastURI() {
-    QString url_from_env = qgetenv("BERVIEWER_APPCAST_URI");
+    QString url_from_env = qgetenv("BER_EDITOR_APPCAST_URI");
 
     if( !url_from_env.isEmpty() )
     {
-        qWarning( "winsparkle: using app cast url from BERVIEWER_APPCAST_URI: "
+        qWarning( "winsparkle: using app cast url from BER_EDITOR_APPCAST_URI: "
                   "%s", url_from_env.toUtf8().data() );
 
         return url_from_env;
