@@ -103,11 +103,9 @@ void DataEncoderDlg::onClickEncodeBtn()
         if( output_type == DATA_STRING )
         {
             int i = 0;
- //           JS_BIN_string( &binSrc, &pOut );
 
             if( mShowPrintTextCheck->isChecked() )
             {
- //               int len = strlen( pOut );
                 if( binSrc.nLen > 0 )
                 {
                     pOut = (char *)JS_malloc(binSrc.nLen + 1);
@@ -117,6 +115,10 @@ void DataEncoderDlg::onClickEncodeBtn()
 
                     pOut[i] = 0x00;
                 }
+            }
+            else
+            {
+                JS_BIN_string( &binSrc, &pOut );
             }
 
             mOutputText->setPlainText( pOut );
