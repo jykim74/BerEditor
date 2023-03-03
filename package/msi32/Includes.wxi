@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include Id="BerEditorInclude">
+  <?define CurrentBerEditorVersion="1.0.8" ?>
+
+  <!-- BerEditor Product Guid  -->
+  <?define ProductGuid="525777be-87ef-4918-9549-27552457fcea" ?> <!-- Version 1.0.8 -->
+  <!-- ?define ProductGuid="c82d07f8-ebc6-4a8c-b9ef-51df8c57a524" ? --> <!-- Version 1.0.6 -->
+  <!-- ?define ProductGuid="21377fa5-ba36-46f6-9456-07814438d985" ? --> <!-- Version 1.0.4 -->
+  <!-- ?define ProductGuid="e6d6c94f-b9be-40de-a22e-ab60f67d5ac3" ? --> <!-- Version 1.0.2 -->
+  <!-- ?define ProductGuid="609663e6-f8eb-40ca-8d2a-f4295225008e" ? --> <!-- Version 1.0.0 -->
+  <!-- ?define ProductGuid="ad52154b-2792-495e-9435-4d78f838c060" ? --> <!-- Version 0.9.8 -->
+  <!-- ?define ProductGuid="a6793a0d-035e-434f-9006-f43e2190cb60" ? --> <!-- Version 0.9.7 -->
+  <!--?define ProductGuid="6b47b06f-101b-4c6d-98eb-9a63b0fd1ccd" ? --> <!-- Version 0.9.6 -->
+  <!--?define ProductGuid="6b2931e8-2be1-4d0e-bea5-47b6af220409" ? --> <!-- Version 0.9.5 -->
+  <!--?define ProductGuid="fc0cac11-e90f-4e6e-b05c-2ad2b0ce7da0" ? --> <!-- Version 0.9.4 -->
+  <!-- ?define ProductGuid="9856b9ba-14ca-4493-a306-22b16c7ed56d" ? --> <!-- Version 0.9.3 -->
+  <!-- ?define ProductGuid="7ce290ec-f2a7-4f95-9ed8-95ca3ee6fcdb" ? --> <!-- Version 0.9.2 -->
+  <!-- ?define ProductGuid="e2732e6c-3f73-428e-b38d-53dc5d49877b" ? --> <!-- Version 0.9.1 -->
+
+  <?define CurrentUpdateGuid="7c9bf1b0-53ff-4945-a480-5e5d82c24cea" ?>
+  <?define GuidOfCustomComponent="7c9bf1b0-53ff-4945-a480-5e5d82c24ce1" ?>
+  <?define GuidOfAutoStartComponent="7c9bf1b0-53ff-4945-a480-5e5d82c24ce2" ?>
+  <?define GuidOfStartMenuShortCutComponent="7c9bf1b0-53ff-4945-a480-5e5d82c24ce3" ?>
+</Include>
