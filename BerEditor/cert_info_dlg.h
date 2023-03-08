@@ -19,6 +19,7 @@ public:
 
     QString getCertPath() { return cert_path_; };
     void setCertPath( const QString strPath );
+    QTableWidgetItem* getExtNameItem( const QString strSN );
 
 private slots:
     void showEvent(QShowEvent *event);

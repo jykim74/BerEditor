@@ -3,8 +3,52 @@
 #include "crl_info_dlg.h"
 #include "js_pki.h"
 #include "js_pki_x509.h"
+#include "js_pki_ext.h"
 #include "js_util.h"
 #include "common.h"
+
+QTableWidgetItem* CRLInfoDlg::getExtNameItem( const QString strSN )
+{
+    QTableWidgetItem* item = NULL;
+
+    if( strSN == JS_PKI_ExtNameAIA )
+        item = new QTableWidgetItem( tr( "authorityInfoAccess" ));
+    else if( strSN == JS_PKI_ExtNameAKI )
+        item = new QTableWidgetItem( tr( "authorityKeyIdentifier" ) );
+    else if( strSN == JS_PKI_ExtNameBC )
+        item = new QTableWidgetItem( tr( "basicConstraints" ) );
+    else if( strSN == JS_PKI_ExtNameCRLDP )
+        item = new QTableWidgetItem( tr( "crlDistributionPoints" ) );
+    else if( strSN == JS_PKI_ExtNameEKU )
+        item = new QTableWidgetItem( tr( "extendedKeyUsage" ) );
+    else if( strSN == JS_PKI_ExtNameIAN )
+        item = new QTableWidgetItem( tr( "issuerAltName" ) );
+    else if( strSN == JS_PKI_ExtNameKeyUsage )
+        item = new QTableWidgetItem( tr( "keyUsage" ) );
+    else if( strSN == JS_PKI_ExtNameNC )
+        item = new QTableWidgetItem( tr( "nameConstraints" ) );
+    else if( strSN == JS_PKI_ExtNamePolicy )
+        item = new QTableWidgetItem( tr( "certificatePolicies" ) );
+    else if( strSN == JS_PKI_ExtNamePC )
+        item = new QTableWidgetItem( tr( "policyConstraints" ) );
+    else if( strSN == JS_PKI_ExtNamePM )
+        item = new QTableWidgetItem( tr( "policyMappings" ) );
+    else if( strSN == JS_PKI_ExtNameSKI )
+        item = new QTableWidgetItem( tr( "subjectKeyIdentifier" ) );
+    else if( strSN == JS_PKI_ExtNameSAN )
+        item = new QTableWidgetItem( tr( "subjectAltName" ) );
+    else if( strSN == JS_PKI_ExtNameCRLNum )
+        item = new QTableWidgetItem( tr( "crlNumber" ) );
+    else if( strSN == JS_PKI_ExtNameIDP )
+        item = new QTableWidgetItem( tr( "issuingDistributionPoint" ) );
+    else if( strSN == JS_PKI_ExtNameCRLReason )
+        item = new QTableWidgetItem( tr( "CRLReason" ) );
+    else
+        item = new QTableWidgetItem( strSN );
+
+
+    return item;
+}
 
 CRLInfoDlg::CRLInfoDlg(QWidget *parent) :
     QDialog(parent)
@@ -140,7 +184,7 @@ void CRLInfoDlg::initialize()
 
             mCRLListTable->insertRow(i);
             mCRLListTable->setRowHeight(i,10);
-            mCRLListTable->setItem(i,0, new QTableWidgetItem(QString("%1").arg(strSN)));
+            mCRLListTable->setItem(i,0, getExtNameItem(strSN));
             mCRLListTable->setItem(i,1, item );
 
             pCurList = pCurList->pNext;

@@ -671,62 +671,147 @@ mailto : jykim74@gmail.com</translation>
         <translation>폐기 목록</translation>
     </message>
     <message>
-        <location filename="../crl_info_dlg.cpp" line="53"/>
+        <location filename="../crl_info_dlg.cpp" line="15"/>
+        <source>authorityInfoAccess</source>
+        <translation>기관 정보 액세스</translation>
+    </message>
+    <message>
+        <location filename="../crl_info_dlg.cpp" line="17"/>
+        <source>authorityKeyIdentifier</source>
+        <translation>기관 키 식별자</translation>
+    </message>
+    <message>
+        <location filename="../crl_info_dlg.cpp" line="19"/>
+        <source>basicConstraints</source>
+        <translation>기본 제한</translation>
+    </message>
+    <message>
+        <location filename="../crl_info_dlg.cpp" line="21"/>
+        <source>crlDistributionPoints</source>
+        <translation>CRL 배포 지점</translation>
+    </message>
+    <message>
+        <location filename="../crl_info_dlg.cpp" line="23"/>
+        <source>extendedKeyUsage</source>
+        <translation>확장된 키 사용</translation>
+    </message>
+    <message>
+        <location filename="../crl_info_dlg.cpp" line="25"/>
+        <source>issuerAltName</source>
+        <translation>발급자 대체 이름</translation>
+    </message>
+    <message>
+        <location filename="../crl_info_dlg.cpp" line="27"/>
+        <source>keyUsage</source>
+        <translation>키 용도</translation>
+    </message>
+    <message>
+        <location filename="../crl_info_dlg.cpp" line="29"/>
+        <source>nameConstraints</source>
+        <translation>이름 제한</translation>
+    </message>
+    <message>
+        <location filename="../crl_info_dlg.cpp" line="31"/>
+        <source>certificatePolicies</source>
+        <translation>인증서 정책</translation>
+    </message>
+    <message>
+        <location filename="../crl_info_dlg.cpp" line="33"/>
+        <source>policyConstraints</source>
+        <translation>정책 제약 조건</translation>
+    </message>
+    <message>
+        <location filename="../crl_info_dlg.cpp" line="35"/>
+        <source>policyMappings</source>
+        <translation>정책 매핑</translation>
+    </message>
+    <message>
+        <location filename="../crl_info_dlg.cpp" line="37"/>
+        <source>subjectKeyIdentifier</source>
+        <translation>주체 키 식별자</translation>
+    </message>
+    <message>
+        <location filename="../crl_info_dlg.cpp" line="39"/>
+        <source>subjectAltName</source>
+        <translation>주체 대체 이름</translation>
+    </message>
+    <message>
+        <location filename="../crl_info_dlg.cpp" line="41"/>
+        <source>crlNumber</source>
+        <translation>CRL 번호</translation>
+    </message>
+    <message>
+        <location filename="../crl_info_dlg.cpp" line="43"/>
+        <source>issuingDistributionPoint</source>
+        <translation>발급 배포 지점</translation>
+    </message>
+    <message>
+        <location filename="../crl_info_dlg.cpp" line="45"/>
+        <source>CRLReason</source>
+        <translation>폐기 사유</translation>
+    </message>
+    <message>
+        <location filename="../crl_info_dlg.cpp" line="99"/>
         <source>Select CRL</source>
         <translation>CRL 을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../crl_info_dlg.cpp" line="66"/>
+        <location filename="../crl_info_dlg.cpp" line="112"/>
         <source>fail to get CRL information</source>
         <translation>CRL 정보 읽기 실패 하였습니다.</translation>
     </message>
     <message>
-        <location filename="../crl_info_dlg.cpp" line="74"/>
+        <location filename="../crl_info_dlg.cpp" line="122"/>
         <source>Version</source>
         <translation>버젼</translation>
     </message>
     <message>
-        <location filename="../crl_info_dlg.cpp" line="82"/>
+        <location filename="../crl_info_dlg.cpp" line="130"/>
         <source>IssuerName</source>
         <translation>발급자 이름</translation>
     </message>
     <message>
-        <location filename="../crl_info_dlg.cpp" line="91"/>
+        <location filename="../crl_info_dlg.cpp" line="139"/>
         <source>LastUpdate</source>
         <translation>마지막 갱신</translation>
     </message>
     <message>
-        <location filename="../crl_info_dlg.cpp" line="98"/>
+        <location filename="../crl_info_dlg.cpp" line="146"/>
         <source>NextUpdate</source>
         <translation>다음 갱신</translation>
     </message>
     <message>
-        <location filename="../crl_info_dlg.cpp" line="106"/>
+        <location filename="../crl_info_dlg.cpp" line="154"/>
         <source>SignAlgorithm</source>
         <translation>서명 알고리즘</translation>
     </message>
     <message>
-        <location filename="../crl_info_dlg.cpp" line="115"/>
+        <location filename="../crl_info_dlg.cpp" line="163"/>
         <source>Signature</source>
         <translation>서명</translation>
     </message>
     <message>
-        <location filename="../crl_info_dlg.cpp" line="169"/>
+        <location filename="../crl_info_dlg.cpp" line="197"/>
+        <source>FingerPrint</source>
+        <translation>지문</translation>
+    </message>
+    <message>
+        <location filename="../crl_info_dlg.cpp" line="224"/>
         <source>Field</source>
         <translation>필드</translation>
     </message>
     <message>
-        <location filename="../crl_info_dlg.cpp" line="169"/>
+        <location filename="../crl_info_dlg.cpp" line="224"/>
         <source>Value</source>
         <translation>값</translation>
     </message>
     <message>
-        <location filename="../crl_info_dlg.cpp" line="180"/>
+        <location filename="../crl_info_dlg.cpp" line="235"/>
         <source>Serial</source>
         <translation>일련번호</translation>
     </message>
     <message>
-        <location filename="../crl_info_dlg.cpp" line="180"/>
+        <location filename="../crl_info_dlg.cpp" line="235"/>
         <source>RevokedDate</source>
         <translation>폐기 날짜</translation>
     </message>
@@ -759,67 +844,152 @@ mailto : jykim74@gmail.com</translation>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="48"/>
+        <location filename="../cert_info_dlg.cpp" line="15"/>
+        <source>authorityInfoAccess</source>
+        <translation>기관 정보 액세스</translation>
+    </message>
+    <message>
+        <location filename="../cert_info_dlg.cpp" line="17"/>
+        <source>authorityKeyIdentifier</source>
+        <translation>기관 키 식별자</translation>
+    </message>
+    <message>
+        <location filename="../cert_info_dlg.cpp" line="19"/>
+        <source>basicConstraints</source>
+        <translation>기본 제한</translation>
+    </message>
+    <message>
+        <location filename="../cert_info_dlg.cpp" line="21"/>
+        <source>crlDistributionPoints</source>
+        <translation>CRL 배포 지점</translation>
+    </message>
+    <message>
+        <location filename="../cert_info_dlg.cpp" line="23"/>
+        <source>extendedKeyUsage</source>
+        <translation>확장된 키 사용</translation>
+    </message>
+    <message>
+        <location filename="../cert_info_dlg.cpp" line="25"/>
+        <source>issuerAltName</source>
+        <translation>발급자 대체 이름</translation>
+    </message>
+    <message>
+        <location filename="../cert_info_dlg.cpp" line="27"/>
+        <source>keyUsage</source>
+        <translation>키 용도</translation>
+    </message>
+    <message>
+        <location filename="../cert_info_dlg.cpp" line="29"/>
+        <source>nameConstraints</source>
+        <translation>이름 제한</translation>
+    </message>
+    <message>
+        <location filename="../cert_info_dlg.cpp" line="31"/>
+        <source>certificatePolicies</source>
+        <translation>인증서 정책</translation>
+    </message>
+    <message>
+        <location filename="../cert_info_dlg.cpp" line="33"/>
+        <source>policyConstraints</source>
+        <translation>정책 제약 조건</translation>
+    </message>
+    <message>
+        <location filename="../cert_info_dlg.cpp" line="35"/>
+        <source>policyMappings</source>
+        <translation>정책 매핑</translation>
+    </message>
+    <message>
+        <location filename="../cert_info_dlg.cpp" line="37"/>
+        <source>subjectKeyIdentifier</source>
+        <translation>주체 키 식별자</translation>
+    </message>
+    <message>
+        <location filename="../cert_info_dlg.cpp" line="39"/>
+        <source>subjectAltName</source>
+        <translation>주체 대체 이름</translation>
+    </message>
+    <message>
+        <location filename="../cert_info_dlg.cpp" line="41"/>
+        <source>crlNumber</source>
+        <translation>CRL 번호</translation>
+    </message>
+    <message>
+        <location filename="../cert_info_dlg.cpp" line="43"/>
+        <source>issuingDistributionPoint</source>
+        <translation>발급 배포 지점</translation>
+    </message>
+    <message>
+        <location filename="../cert_info_dlg.cpp" line="45"/>
+        <source>CRLReason</source>
+        <translation>폐기 사유</translation>
+    </message>
+    <message>
+        <location filename="../cert_info_dlg.cpp" line="94"/>
         <source>Select certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="60"/>
+        <location filename="../cert_info_dlg.cpp" line="106"/>
         <source>fail to get certificate information</source>
         <translation>인증서 정보 읽기에 실패하였습니다.</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="68"/>
+        <location filename="../cert_info_dlg.cpp" line="116"/>
         <source>Version</source>
         <translation>버젼</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="76"/>
+        <location filename="../cert_info_dlg.cpp" line="124"/>
         <source>Serial</source>
         <translation>일련 번호</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="84"/>
+        <location filename="../cert_info_dlg.cpp" line="132"/>
         <source>NotBefore</source>
         <translation>유효 시작 기간</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="91"/>
+        <location filename="../cert_info_dlg.cpp" line="139"/>
         <source>NotAfter</source>
         <translation>유효 끝 기간</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="101"/>
+        <location filename="../cert_info_dlg.cpp" line="149"/>
         <source>SubjectName</source>
         <translation>주체자 이름</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="110"/>
+        <location filename="../cert_info_dlg.cpp" line="158"/>
         <source>PublicKey</source>
         <translation>공개키</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="119"/>
+        <location filename="../cert_info_dlg.cpp" line="167"/>
         <source>IssuerName</source>
         <translation>발급자 이름</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="128"/>
+        <location filename="../cert_info_dlg.cpp" line="176"/>
         <source>SigAlgorithm</source>
         <translation>서명 알고리즘</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="137"/>
+        <location filename="../cert_info_dlg.cpp" line="185"/>
         <source>Signature</source>
         <translation>서명</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="178"/>
+        <location filename="../cert_info_dlg.cpp" line="220"/>
+        <source>FingerPrint</source>
+        <translation>지문</translation>
+    </message>
+    <message>
+        <location filename="../cert_info_dlg.cpp" line="234"/>
         <source>Field</source>
         <translation>필드</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="178"/>
+        <location filename="../cert_info_dlg.cpp" line="234"/>
         <source>Value</source>
         <translation>값</translation>
     </message>
@@ -850,7 +1020,7 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../cert_pvd_dlg.ui" line="71"/>
         <location filename="../cert_pvd_dlg.ui" line="133"/>
         <location filename="../cert_pvd_dlg.ui" line="166"/>
-        <location filename="../cert_pvd_dlg.ui" line="499"/>
+        <location filename="../cert_pvd_dlg.ui" line="513"/>
         <source>Find</source>
         <translation>찾기</translation>
     </message>
@@ -858,7 +1028,7 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../cert_pvd_dlg.ui" line="84"/>
         <location filename="../cert_pvd_dlg.ui" line="146"/>
         <location filename="../cert_pvd_dlg.ui" line="202"/>
-        <location filename="../cert_pvd_dlg.ui" line="466"/>
+        <location filename="../cert_pvd_dlg.ui" line="480"/>
         <source>Add</source>
         <translation>추가</translation>
     </message>
@@ -883,188 +1053,197 @@ mailto : jykim74@gmail.com</translation>
         <translation>CRL 경로</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="216"/>
         <source>CertVerify</source>
+        <translation type="vanished">인증서 검증</translation>
+    </message>
+    <message>
+        <location filename="../cert_pvd_dlg.ui" line="223"/>
+        <source>VerifyCert</source>
         <translation>인증서 검증</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="250"/>
-        <location filename="../cert_pvd_dlg.ui" line="479"/>
+        <location filename="../cert_pvd_dlg.ui" line="243"/>
+        <source>VerifyCRL</source>
+        <translation>CRL 검증</translation>
+    </message>
+    <message>
+        <location filename="../cert_pvd_dlg.ui" line="264"/>
+        <location filename="../cert_pvd_dlg.ui" line="493"/>
         <source>List Clear</source>
         <translation>목록 지우기</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="260"/>
+        <location filename="../cert_pvd_dlg.ui" line="274"/>
         <source>Path List</source>
         <translation>경로 목록</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="280"/>
+        <location filename="../cert_pvd_dlg.ui" line="294"/>
         <source>At Time</source>
         <translation>시간 설정</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="298"/>
+        <location filename="../cert_pvd_dlg.ui" line="312"/>
         <source>Flags Option</source>
         <translation>플래그 옵션</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="304"/>
+        <location filename="../cert_pvd_dlg.ui" line="318"/>
         <source>X509Strict</source>
         <translation>X509Strict</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="311"/>
+        <location filename="../cert_pvd_dlg.ui" line="325"/>
         <source>SuiteB128Los</source>
         <translation>SuiteB128Los</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="318"/>
+        <location filename="../cert_pvd_dlg.ui" line="332"/>
         <source>AllowProxyCerts</source>
         <translation>AllowProxyCerts</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="325"/>
+        <location filename="../cert_pvd_dlg.ui" line="339"/>
         <source>PolicyCheck</source>
         <translation>PolicyCheck</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="332"/>
+        <location filename="../cert_pvd_dlg.ui" line="346"/>
         <source>SuiteB128LosOnly</source>
         <translation>SuiteB128LosOnly</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="339"/>
+        <location filename="../cert_pvd_dlg.ui" line="353"/>
         <source>ExplicitPolicy</source>
         <translation>ExplicitPolicy</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="346"/>
+        <location filename="../cert_pvd_dlg.ui" line="360"/>
         <source>IgnoreCritical</source>
         <translation>IgnoreCritical</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="353"/>
+        <location filename="../cert_pvd_dlg.ui" line="367"/>
         <source>InhibitMap</source>
         <translation>InhibitMap</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="360"/>
+        <location filename="../cert_pvd_dlg.ui" line="374"/>
         <source>NotifyPolicy</source>
         <translation>NotifyPolicy</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="367"/>
+        <location filename="../cert_pvd_dlg.ui" line="381"/>
         <source>ExtendedCRLSupport</source>
         <translation>ExtendedCRLSupport</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="374"/>
+        <location filename="../cert_pvd_dlg.ui" line="388"/>
         <source>InhibitAny</source>
         <translation>InhibitAny</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="381"/>
+        <location filename="../cert_pvd_dlg.ui" line="395"/>
         <source>CRLCheckAll</source>
         <translation>CRLCheckAll</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="388"/>
+        <location filename="../cert_pvd_dlg.ui" line="402"/>
         <source>NoALTChains</source>
         <translation>NoALTChains</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="395"/>
+        <location filename="../cert_pvd_dlg.ui" line="409"/>
         <source>TrustedFirst</source>
         <translation>TrustedFirst</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="402"/>
+        <location filename="../cert_pvd_dlg.ui" line="416"/>
         <source>CRLCheck</source>
         <translation>CRLCheck</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="409"/>
+        <location filename="../cert_pvd_dlg.ui" line="423"/>
         <source>PartialChain</source>
         <translation>PartialChain</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="416"/>
+        <location filename="../cert_pvd_dlg.ui" line="430"/>
         <source>CheckSSSignature</source>
         <translation>CheckSSSignature</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="423"/>
+        <location filename="../cert_pvd_dlg.ui" line="437"/>
         <source>UseCheckTime</source>
         <translation>UseCheckTime</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="430"/>
+        <location filename="../cert_pvd_dlg.ui" line="444"/>
         <source>UseDeltas</source>
         <translation>UseDeltas</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="437"/>
+        <location filename="../cert_pvd_dlg.ui" line="451"/>
         <source>SuiteB192Los</source>
         <translation>SuiteB192Los</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="444"/>
+        <location filename="../cert_pvd_dlg.ui" line="458"/>
         <source>NoCheckTime</source>
         <translation>NoCheckTime</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="459"/>
-        <location filename="../cert_pvd_dlg.cpp" line="62"/>
+        <location filename="../cert_pvd_dlg.ui" line="473"/>
+        <location filename="../cert_pvd_dlg.cpp" line="63"/>
         <source>Param</source>
         <translation>파라미터</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="512"/>
+        <location filename="../cert_pvd_dlg.ui" line="526"/>
         <source>Target Path</source>
         <translation>타겟 경로</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="519"/>
+        <location filename="../cert_pvd_dlg.ui" line="533"/>
         <source>TargetInfo</source>
-        <translation type="unfinished">타겟 정보</translation>
+        <translation>타겟 정보</translation>
     </message>
     <message>
         <source>Target</source>
         <translation type="vanished">타겟</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="537"/>
+        <location filename="../cert_pvd_dlg.ui" line="551"/>
         <source>Path Validation</source>
         <translation>경로 검증</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="544"/>
+        <location filename="../cert_pvd_dlg.ui" line="558"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="564"/>
+        <location filename="../cert_pvd_dlg.ui" line="578"/>
         <source>PathClear</source>
         <translation>경로 지우기</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="51"/>
+        <location filename="../cert_pvd_dlg.cpp" line="52"/>
         <source>Type</source>
         <translation>타입</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="51"/>
+        <location filename="../cert_pvd_dlg.cpp" line="52"/>
         <source>Path</source>
         <translation>경로</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="62"/>
+        <location filename="../cert_pvd_dlg.cpp" line="63"/>
         <source>Value</source>
         <translation>값</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="278"/>
+        <location filename="../cert_pvd_dlg.cpp" line="334"/>
         <source>You have to find target certificate</source>
         <translation>타겟 인증서를 선택하세요</translation>
     </message>
@@ -3110,9 +3289,13 @@ mailto : jykim74@gmail.com</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../common.cpp" line="28"/>
         <source>Cert Files (*.crt *.der *.pem);;All Files(*.*)</source>
-        <translation>인증서 파일들(*.crt *.der *.pem);;모든 파일들(*.*)</translation>
+        <translation type="vanished">인증서 파일들(*.crt *.der *.pem);;모든 파일들(*.*)</translation>
+    </message>
+    <message>
+        <location filename="../common.cpp" line="28"/>
+        <source>Cert CRL Files (*.crt *.der *.crl *.pem);;All Files(*.*)</source>
+        <translation>인증서 CRL 파일 (*.crt *.der *.crl *.pem);;모든 파일들(*.*)</translation>
     </message>
     <message>
         <location filename="../common.cpp" line="30"/>

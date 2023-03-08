@@ -20,6 +20,7 @@ public:
 
     void setCRLPath( const QString strPath );
     QString getCRLPath() { return crl_path_; };
+    QTableWidgetItem* getExtNameItem( const QString strSN );
 
 private slots:
     void clickCRLField( QModelIndex index );
