@@ -6,6 +6,8 @@
 class SettingsMgr : public QObject
 {
     Q_OBJECT
+private:
+
 public:
     SettingsMgr(QObject *parent = nullptr);
 
@@ -14,6 +16,9 @@ public:
 
     void setOIDConfigPath( const QString& strPath );
     QString OIDConfigPath();
+
+    void setShowLogTab( bool bVal );
+    bool showLogTab();
 signals:
 
 public slots:

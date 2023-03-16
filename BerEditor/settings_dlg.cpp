@@ -8,6 +8,7 @@
 #include "auto_update_service.h"
 #include "settings_mgr.h"
 #include "common.h"
+#include "mainwindow.h"
 
 SettingsDlg::SettingsDlg(QWidget *parent) :
     QDialog(parent)
@@ -34,6 +35,9 @@ void SettingsDlg::updateSettings()
 
     mgr->setShowPartOnly( mCheckShowPartOnly->checkState() == Qt::Checked );
 
+    mgr->setShowLogTab( mShowLogTabCheck->checkState() == Qt::Checked );
+    berApplet->mainWindow()->logView( mShowLogTabCheck->checkState() == Qt::Checked );
+
 #ifdef _AUTO_UPDATE
     if( AutoUpdateService::instance()->shouldSupportAutoUpdate() ) {
         bool enabled = mCheckBoxLatestVersion->checkState() == Qt::Checked;
@@ -53,6 +57,9 @@ void SettingsDlg::updateSettings()
         berApplet->restartApp();
 
     mgr->setOIDConfigPath( mOIDConfigPathText->text() );
+
+    mgr->setShowLogTab( mShowLogTabCheck->checkState() == Qt::Checked );
+    berApplet->mainWindow()->logView( mShowLogTabCheck->checkState() == Qt::Checked );
 }
 
 void SettingsDlg::onOkBtnClicked()
@@ -90,6 +97,9 @@ void SettingsDlg::showEvent(QShowEvent *event)
     mCheckShowPartOnly->setCheckState(state);
 
     mOIDConfigPathText->setText( mgr->OIDConfigPath() );
+
+    state = mgr->showLogTab() ? Qt::Checked : Qt::Unchecked;
+    mShowLogTabCheck->setCheckState(state);
 
 #ifdef _AUTO_UPDATE
     if( AutoUpdateService::instance()->shouldSupportAutoUpdate()) {

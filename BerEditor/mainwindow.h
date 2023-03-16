@@ -42,6 +42,7 @@ public:
     void info( const QString strLog, QColor cr = QColor(0x00, 0x00, 0x00) );
 
     QString getLog();
+    void logView( bool bShow = true );
 
 private slots:
     void newFile();
@@ -100,6 +101,8 @@ private:
     QSplitter       *hsplitter_;
     QSplitter       *vsplitter_;
     BerTreeView     *left_tree_;
+
+    QTabWidget      *text_tab_;
     QTextEdit       *log_text_;
     QTextEdit       *info_text_;
     BerModel        *ber_model_;

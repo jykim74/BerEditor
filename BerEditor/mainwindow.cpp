@@ -108,12 +108,10 @@ void MainWindow::initialize()
 //    vsplitter_->addWidget(log_text_);
 
 
-    QTabWidget *tab = new QTabWidget;
-    vsplitter_->addWidget( tab );
-    tab->addTab( info_text_, "information" );
-    tab->addTab( log_text_, "log" );
-
-
+    text_tab_ = new QTabWidget;
+    vsplitter_->addWidget( text_tab_ );
+    text_tab_->addTab( info_text_, tr("information") );
+//    text_tab_->addTab( log_text_, tr("log") );
 
     QList <int> vsizes;
     vsizes << 1200 << 500;
@@ -596,6 +594,8 @@ bool MainWindow::isChanged()
 
 void MainWindow::log( const QString strLog, QColor cr )
 {
+    if( text_tab_->count() <= 1 ) return;
+
     QTextCursor cursor = log_text_->textCursor();
 //    cursor.movePosition( QTextCursor::End );
 
@@ -923,6 +923,20 @@ void MainWindow::clearLog()
 {
     log_text_->clear();
 //    info_text_->clear();
+}
+
+void MainWindow::logView( bool bShow )
+{
+    if( bShow == true )
+    {
+        if( text_tab_->count() <= 1 )
+            text_tab_->addTab( log_text_, tr("log") );
+    }
+    else
+    {
+        if( text_tab_->count() == 2 )
+            text_tab_->removeTab(1);
+    }
 }
 
 void MainWindow::print()

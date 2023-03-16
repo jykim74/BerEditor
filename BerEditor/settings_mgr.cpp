@@ -6,6 +6,7 @@ const char *kBehaviorGroup = "Behavior";
 const char *kShowPartOnly = "showPartOnly";
 const char *kSaveOpenFolder = "saveOpenFolder";
 const char *kOIDConfigPath = "OIDConfigPath";
+const char *kShowLogTab = "showLogTab";
 }
 
 SettingsMgr::SettingsMgr(QObject *parent) : QObject(parent)
@@ -55,4 +56,26 @@ QString SettingsMgr::OIDConfigPath()
     settings.endGroup();
 
     return strPath;
+}
+
+void SettingsMgr::setShowLogTab( bool bVal )
+{
+    QSettings settings;
+
+    settings.beginGroup( kBehaviorGroup );
+    settings.setValue( kShowLogTab, bVal );
+    settings.endGroup();
+}
+
+bool SettingsMgr::showLogTab()
+{
+    QSettings settings;
+
+    bool val;
+
+    settings.beginGroup(kBehaviorGroup);
+    val = settings.value( kShowLogTab, false).toBool();
+    settings.endGroup();
+
+    return val;
 }

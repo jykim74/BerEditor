@@ -82,6 +82,9 @@ void BerApplet::start()
     QString strOIDPath = settings_mgr_->OIDConfigPath();
 
     setOIDList( strOIDPath );
+
+    if( settings_mgr_->showLogTab() )
+        main_win_->logView();
 }
 
 QString BerApplet::getBrand()
