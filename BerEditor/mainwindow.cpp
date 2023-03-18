@@ -293,6 +293,59 @@ void MainWindow::createActions()
     editMenu->addAction(collapseNodeAct);
     editToolBar->addAction(collapseNodeAct);
 
+    QMenu *toolMenu = menuBar()->addMenu(tr("&Tool"));
+    QToolBar *toolToolBar = addToolBar(tr("Tool"));
+
+    const QIcon dataTransIcon = QIcon::fromTheme("data-trans", QIcon(":/images/data_trans.png"));
+    QAction *dataEncodeAct = new QAction( dataTransIcon, tr("Data&Encoder"), this );
+    connect( dataEncodeAct, &QAction::triggered, this, &MainWindow::dataEncoder );
+    dataEncodeAct->setStatusTip(tr("This is tool for encoding data" ));
+    toolMenu->addAction( dataEncodeAct );
+    toolToolBar->addAction( dataEncodeAct );
+
+    const QIcon numTransIcon = QIcon::fromTheme("number-trans", QIcon(":/images/number.jpg"));
+    QAction *numTransAct = new QAction( numTransIcon, tr("&NumTrans"), this);
+    connect( numTransAct, &QAction::triggered, this, &MainWindow::numTrans );
+    numTransAct->setStatusTip(tr("Number transmission" ));
+    toolMenu->addAction( numTransAct );
+    toolToolBar->addAction( numTransAct );
+
+    const QIcon oidIcon = QIcon::fromTheme("tool-oid", QIcon(":/images/oid.png"));
+    QAction *oidAct = new QAction(oidIcon, tr("&OID Information"), this);
+    connect( oidAct, &QAction::triggered, this, &MainWindow::oidInfo );
+    oidAct->setStatusTip(tr("Show OID information"));
+    toolMenu->addAction( oidAct );
+    toolToolBar->addAction( oidAct );
+
+    const QIcon berIcon = QIcon::fromTheme("ber-insert", QIcon(":/images/ber.jpg"));
+    QAction *insertBerAct = new QAction(berIcon, tr("Insert &BER"), this);
+    connect( insertBerAct, &QAction::triggered, this, &MainWindow::insertBER );
+    insertBerAct->setStatusTip(tr("Insert BER record"));
+    toolMenu->addAction( insertBerAct );
+    toolToolBar->addAction( insertBerAct );
+
+    const QIcon insertIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/insert.png"));
+    QAction *insertDataAct = new QAction(insertIcon, tr("&Insert Data"), this);
+    connect( insertDataAct, &QAction::triggered, this, &MainWindow::insertData );
+    insertDataAct->setStatusTip(tr("Insert ber data"));
+    toolMenu->addAction( insertDataAct );
+    toolToolBar->addAction( insertDataAct );
+
+    const QIcon uriIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/uri.jpg"));
+    QAction *getURIAct = new QAction(uriIcon, tr("&Get URI data"), this);
+    connect( getURIAct, &QAction::triggered, this, &MainWindow::getURI );
+    getURIAct->setStatusTip(tr("Get Ber data from URI"));
+    toolMenu->addAction( getURIAct );
+    toolToolBar->addAction( getURIAct );
+
+    const QIcon cavpIcon = QIcon::fromTheme( "tool-cavp", QIcon(":/images/cavp.png"));
+    QAction *cavpAct = new QAction(cavpIcon, tr("&CAVP"), this);
+    connect( cavpAct, &QAction::triggered, this, &MainWindow::CAVP );
+    cavpAct->setStatusTip(tr("CAVP Test"));
+    toolMenu->addAction( cavpAct );
+    toolToolBar->addAction( cavpAct );
+
+
     menuBar()->addSeparator();
 
     QMenu *cryptMenu = menuBar()->addMenu(tr("&Crypt"));
@@ -377,58 +430,6 @@ void MainWindow::createActions()
     cryptMenu->addAction( genOTPAct );
     cryptToolBar->addAction( genOTPAct );
 
-
-    QMenu *toolMenu = menuBar()->addMenu(tr("&Tool"));
-    QToolBar *toolToolBar = addToolBar(tr("Tool"));
-
-    const QIcon dataTransIcon = QIcon::fromTheme("data-trans", QIcon(":/images/data_trans.png"));
-    QAction *dataEncodeAct = new QAction( dataTransIcon, tr("Data&Encoder"), this );
-    connect( dataEncodeAct, &QAction::triggered, this, &MainWindow::dataEncoder );
-    dataEncodeAct->setStatusTip(tr("This is tool for encoding data" ));
-    toolMenu->addAction( dataEncodeAct );
-    toolToolBar->addAction( dataEncodeAct );
-
-    const QIcon numTransIcon = QIcon::fromTheme("number-trans", QIcon(":/images/number.jpg"));
-    QAction *numTransAct = new QAction( numTransIcon, tr("&NumTrans"), this);
-    connect( numTransAct, &QAction::triggered, this, &MainWindow::numTrans );
-    numTransAct->setStatusTip(tr("Number transmission" ));
-    toolMenu->addAction( numTransAct );
-    toolToolBar->addAction( numTransAct );
-
-    const QIcon oidIcon = QIcon::fromTheme("tool-oid", QIcon(":/images/oid.png"));
-    QAction *oidAct = new QAction(oidIcon, tr("&OID Information"), this);
-    connect( oidAct, &QAction::triggered, this, &MainWindow::oidInfo );
-    oidAct->setStatusTip(tr("Show OID information"));
-    toolMenu->addAction( oidAct );
-    toolToolBar->addAction( oidAct );
-
-    const QIcon berIcon = QIcon::fromTheme("ber-insert", QIcon(":/images/ber.jpg"));
-    QAction *insertBerAct = new QAction(berIcon, tr("Insert &BER"), this);
-    connect( insertBerAct, &QAction::triggered, this, &MainWindow::insertBER );
-    insertBerAct->setStatusTip(tr("Insert BER record"));
-    toolMenu->addAction( insertBerAct );
-    toolToolBar->addAction( insertBerAct );
-
-    const QIcon insertIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/insert.png"));
-    QAction *insertDataAct = new QAction(insertIcon, tr("&Insert Data"), this);
-    connect( insertDataAct, &QAction::triggered, this, &MainWindow::insertData );
-    insertDataAct->setStatusTip(tr("Insert ber data"));
-    toolMenu->addAction( insertDataAct );
-    toolToolBar->addAction( insertDataAct );
-
-    const QIcon uriIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/uri.jpg"));
-    QAction *getURIAct = new QAction(uriIcon, tr("&Get URI data"), this);
-    connect( getURIAct, &QAction::triggered, this, &MainWindow::getURI );
-    getURIAct->setStatusTip(tr("Get Ber data from URI"));
-    toolMenu->addAction( getURIAct );
-    toolToolBar->addAction( getURIAct );
-
-    const QIcon cavpIcon = QIcon::fromTheme( "tool-cavp", QIcon(":/images/cavp.png"));
-    QAction *cavpAct = new QAction(cavpIcon, tr("&CAVP"), this);
-    connect( cavpAct, &QAction::triggered, this, &MainWindow::CAVP );
-    cavpAct->setStatusTip(tr("CAVP Test"));
-    toolMenu->addAction( cavpAct );
-    toolToolBar->addAction( cavpAct );
 
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
     QToolBar *helpToolBar = addToolBar(tr("Help"));

@@ -120,16 +120,18 @@ mac {
     LIBS += -framework Carbon
     LIBS += -framework Foundation
     LIBS += -framework ApplicationServices
-    LIBS += -framework Sparkle
-    INCLUDEPATH += "/usr/local/Sparkle.framework/Headers"
+#    LIBS += -framework Sparkle
+#    INCLUDEPATH += "/usr/local/Sparkle.framework/Headers"
 
     INCLUDEPATH += "/usr/local/include"
     debug {
-        LIBS += -L"../../build-PKILib-Desktop_Qt_5_11_3_clang_64bit-Debug" -lPKILib
-        LIBS += -L"../../PKILib/lib/mac/debug/openssl3/lib" -lcrypto
+        LIBS += -L"../../build-PKILib-Desktop_Qt_5_15_2_clang_64bit-Debug" -lPKILib
+        LIBS += -L"../../PKILib/lib/mac/debug/openssl3/lib" -lcrypto -lssl
+        INCLUDEPATH += "../../PKILib/lib/mac/debug/openssl3/include"
     } else {
-        LIBS += -L"../../build-PKILib-Desktop_Qt_5_11_3_clang_64bit-Release" -lPKILib
-        LIBS += -L"../../PKILib/lib/mac/openssl3/lib" -lcrypto
+        LIBS += -L"../../build-PKILib-Desktop_Qt_5_15_2_clang_64bit-Release" -lPKILib
+        LIBS += -L"../../PKILib/lib/mac/openssl3/lib" -lcryptob -lssl
+        INCLUDEPATH += "../../PKILib/lib/mac/openssl3/include"
     }
 
     LIBS += -lldap -llber

@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include <QApplication>
+#include <QFile>
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 #include "ber_applet.h"
