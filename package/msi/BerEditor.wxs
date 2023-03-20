@@ -41,13 +41,26 @@
 	
 		<Directory Id='TARGETDIR' Name='SourceDir'>
 			<Directory Id='DesktopFolder' Name="DesktopFolder" />
+
 			<Directory Id="ProgramMenuFolder">
 				<Directory Id="BerEditorStartMenuFolder" Name='!(loc.AppName)' />
-			</Directory>
+				</Directory>
 
 			<Directory Id='ProgramFiles64Folder' Name='PFiles'>
 				<Directory Id='INSTALLDIR' Name='!(loc.Manufacturer)'>
-				<!--Directory Id='INSTALLDIR' Name='!(loc.AppName)' -->
+            		<Component Id='ApplicationDesktopShortcut' Guid="$(var.GuidOfCustomComponent)">
+              			<RegistryKey Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Action="createAndRemoveOnUninstall">
+                			<RegistryValue Name="CustomComponent" Value="1" Type="integer" KeyPath='yes' />
+              			</RegistryKey>
+
+              			<File Id="bereditor.ico" Name="bereditor.ico" Source="bereditor.ico" />
+
+              			<!-- bereditor shortcut on desktop -->
+              			<Shortcut Id="ApplicationDesktopShortCut" Directory="DesktopFolder"
+                        	Name='!(loc.AppName)' Target="[#bereditor.exe]"
+                        	Hotkey="0" IconIndex="0" Show="normal"
+                        	WorkingDirectory="bin_Dir" />
+            		</Component>
 				</Directory>
 			</Directory>
 		</Directory>
@@ -96,6 +109,7 @@
 
 		<Feature Id='Main' Level='1'>
 			<ComponentRef Id='BerEditor_StartMenuShortCut' />
+			<ComponentRef Id='ApplicationDesktopShortcut' />
 			<!--
 			<ComponentRef Id='BerEditorAutoStart' />
 			-->
