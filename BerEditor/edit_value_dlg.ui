@@ -288,6 +288,7 @@
   <tabstop>mHeaderText</tabstop>
   <tabstop>mLengthText</tabstop>
   <tabstop>mLevelText</tabstop>
+  <tabstop>mOffsetText</tabstop>
   <tabstop>mValueLenText</tabstop>
   <tabstop>mValueText</tabstop>
   <tabstop>mAddBtn</tabstop>

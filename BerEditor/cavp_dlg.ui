@@ -44,7 +44,7 @@
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -1691,6 +1691,109 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>mRspPathText</tabstop>
+  <tabstop>mRspPathFindBtn</tabstop>
+  <tabstop>mSymAlgCombo</tabstop>
+  <tabstop>mSymModeCombo</tabstop>
+  <tabstop>mSymTypeCombo</tabstop>
+  <tabstop>mSymReqFileText</tabstop>
+  <tabstop>mSymFindBtn</tabstop>
+  <tabstop>mSymRunBtn</tabstop>
+  <tabstop>mAEAlgCombo</tabstop>
+  <tabstop>mAEModeCombo</tabstop>
+  <tabstop>mAETypeCombo</tabstop>
+  <tabstop>mAEReqFileText</tabstop>
+  <tabstop>mAEFindBtn</tabstop>
+  <tabstop>mAERunBtn</tabstop>
+  <tabstop>mHashAlgCombo</tabstop>
+  <tabstop>mHashTypeCombo</tabstop>
+  <tabstop>mHashReqFileText</tabstop>
+  <tabstop>mHashFindBtn</tabstop>
+  <tabstop>mHashRunBtn</tabstop>
+  <tabstop>mHMACHashCombo</tabstop>
+  <tabstop>mHMACReqFileText</tabstop>
+  <tabstop>mHMACFindBtn</tabstop>
+  <tabstop>mHMACRunBtn</tabstop>
+  <tabstop>mECC_ECDSARadio</tabstop>
+  <tabstop>mECC_ECDHRadio</tabstop>
+  <tabstop>mECCParamCombo</tabstop>
+  <tabstop>mECCTypeCombo</tabstop>
+  <tabstop>mECCReqFileText</tabstop>
+  <tabstop>mECCFindBtn</tabstop>
+  <tabstop>mECCRunBtn</tabstop>
+  <tabstop>mRSA_ESRadio</tabstop>
+  <tabstop>mRSA_PSSRadio</tabstop>
+  <tabstop>mRSATypeCombo</tabstop>
+  <tabstop>mRSAReqFileText</tabstop>
+  <tabstop>mRSAFindBtn</tabstop>
+  <tabstop>mRSARunBtn</tabstop>
+  <tabstop>mDRBGAlgCombo</tabstop>
+  <tabstop>mDRBGUseDFCheck</tabstop>
+  <tabstop>mDRBGUsePRCheck</tabstop>
+  <tabstop>mDRBGReqFileText</tabstop>
+  <tabstop>mDRBGFindBtn</tabstop>
+  <tabstop>mDRBGRunBtn</tabstop>
+  <tabstop>mPBKDFAlgCombo</tabstop>
+  <tabstop>mPBKDFReqFileText</tabstop>
+  <tabstop>mPBKDFFindBtn</tabstop>
+  <tabstop>mPBKDFRunBtn</tabstop>
+  <tabstop>mSymMCTAlgCombo</tabstop>
+  <tabstop>mSymMCTModeCombo</tabstop>
+  <tabstop>mSymMCTCountText</tabstop>
+  <tabstop>mSymMCTKeyText</tabstop>
+  <tabstop>mSymMCTKeyLenText</tabstop>
+  <tabstop>mSymMCTIVText</tabstop>
+  <tabstop>mSymMCTIVLenText</tabstop>
+  <tabstop>mSymMCTPTText</tabstop>
+  <tabstop>mSymMCTPTLenText</tabstop>
+  <tabstop>mSymMCTCTText</tabstop>
+  <tabstop>mSymMCTCTLenText</tabstop>
+  <tabstop>mSymMCTLastKeyText</tabstop>
+  <tabstop>mSymMCTLastKeyLenText</tabstop>
+  <tabstop>mSymMCTLastIVText</tabstop>
+  <tabstop>mSymMCTLastIVLenText</tabstop>
+  <tabstop>mSymMCTLastPTText</tabstop>
+  <tabstop>mSymMCTLastPTLenText</tabstop>
+  <tabstop>mSymMCTLastCTText</tabstop>
+  <tabstop>mSymMCTLastCTLenText</tabstop>
+  <tabstop>mSymMCTClearBtn</tabstop>
+  <tabstop>mSymMCTRunBtn</tabstop>
+  <tabstop>mHashMCTAlgCombo</tabstop>
+  <tabstop>mHashMCTCountText</tabstop>
+  <tabstop>mHashMCTSeedText</tabstop>
+  <tabstop>mHashMCTSeedLenText</tabstop>
+  <tabstop>mHashMCTFirstMDText</tabstop>
+  <tabstop>mHashMCTFirstMDLenText</tabstop>
+  <tabstop>mHashMCTLastMDText</tabstop>
+  <tabstop>mHashMCTLastMDLenText</tabstop>
+  <tabstop>mHashMCTClearBtn</tabstop>
+  <tabstop>mHashMCTRunBtn</tabstop>
+  <tabstop>mDRBG2AlgCombo</tabstop>
+  <tabstop>mDRBG2RandLenText</tabstop>
+  <tabstop>mDRBG2UseDFCheck</tabstop>
+  <tabstop>mDRBG2UsePRCheck</tabstop>
+  <tabstop>mDRBG2EntropyInputText</tabstop>
+  <tabstop>mDRBG2EntropyInputLenText</tabstop>
+  <tabstop>mDRBG2NonceText</tabstop>
+  <tabstop>mDRBG2NonceLenText</tabstop>
+  <tabstop>mDRBG2PersonalStringText</tabstop>
+  <tabstop>mDRBG2PersonalStringLenText</tabstop>
+  <tabstop>mDRBG2EntropyInputReseedText</tabstop>
+  <tabstop>mDRBG2EntropyInputReseedLenText</tabstop>
+  <tabstop>mDRBG2AdditionalInputReseedText</tabstop>
+  <tabstop>mDRBG2AdditionalInputReseedLenText</tabstop>
+  <tabstop>mDRBG2AdditionalInputText</tabstop>
+  <tabstop>mDRBG2AdditionalInputLenText</tabstop>
+  <tabstop>mDRBG2AdditionalInput2Text</tabstop>
+  <tabstop>mDRBG2AdditionalInput2LenText</tabstop>
+  <tabstop>mDRBG2ReturnedBitsLenText</tabstop>
+  <tabstop>mDRBG2ReturnedBitsText</tabstop>
+  <tabstop>mDRBG2ClearBtn</tabstop>
+  <tabstop>mDRBG2RunBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -543,6 +543,7 @@
   <tabstop>mTagText</tabstop>
   <tabstop>mTagLenText</tabstop>
   <tabstop>mAlgCombo</tabstop>
+  <tabstop>mModeCombo</tabstop>
   <tabstop>mOutputTypeCombo</tabstop>
   <tabstop>mMethodCombo</tabstop>
   <tabstop>mPadCheck</tabstop>

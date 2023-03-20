@@ -213,6 +213,20 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mSrcTypeCombo</tabstop>
+  <tabstop>mSrcLenText</tabstop>
+  <tabstop>mSrcText</tabstop>
+  <tabstop>mShareText</tabstop>
+  <tabstop>mAddBtn</tabstop>
+  <tabstop>mClearBtn</tabstop>
+  <tabstop>mShareTable</tabstop>
+  <tabstop>mNText</tabstop>
+  <tabstop>mKText</tabstop>
+  <tabstop>mSplitBtn</tabstop>
+  <tabstop>mJoinBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

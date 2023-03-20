@@ -357,6 +357,7 @@
   <tabstop>mAlgTypeCombo</tabstop>
   <tabstop>mHashTypeCombo</tabstop>
   <tabstop>mVersionCombo</tabstop>
+  <tabstop>mCheckKeyPairBtn</tabstop>
   <tabstop>mMethodCombo</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>

@@ -442,6 +442,33 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>mPasswordText</tabstop>
+  <tabstop>mPasswordLenText</tabstop>
+  <tabstop>mSaltTypeCombo</tabstop>
+  <tabstop>mSaltText</tabstop>
+  <tabstop>mSaltLenText</tabstop>
+  <tabstop>mIterCntText</tabstop>
+  <tabstop>mHashCombo</tabstop>
+  <tabstop>mKeyLenText</tabstop>
+  <tabstop>mOutputLenText</tabstop>
+  <tabstop>mOutputText</tabstop>
+  <tabstop>mOKBtn</tabstop>
+  <tabstop>mKWRadio</tabstop>
+  <tabstop>mKWPRadio</tabstop>
+  <tabstop>mSrcLenText</tabstop>
+  <tabstop>mSrcText</tabstop>
+  <tabstop>mKEKText</tabstop>
+  <tabstop>mKEKLenText</tabstop>
+  <tabstop>mDstLenText</tabstop>
+  <tabstop>mDstText</tabstop>
+  <tabstop>mWrapBtn</tabstop>
+  <tabstop>mUnwrapBtn</tabstop>
+  <tabstop>mChangeBtn</tabstop>
+  <tabstop>mClearBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

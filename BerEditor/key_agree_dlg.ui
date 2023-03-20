@@ -756,6 +756,9 @@
   <tabstop>mAECDHPriKeyLenText</tabstop>
   <tabstop>mAECDHPubKeyText</tabstop>
   <tabstop>mAECDHPubKeyLenText</tabstop>
+  <tabstop>mACheckPubKeyBtn</tabstop>
+  <tabstop>mACheckKeyPairBtn</tabstop>
+  <tabstop>mAGenKeyPairBtn</tabstop>
   <tabstop>mAGenPriKeyBtn</tabstop>
   <tabstop>mAGenPubKeyBtn</tabstop>
   <tabstop>mAFindPriKeyBtn</tabstop>
@@ -763,6 +766,9 @@
   <tabstop>mBECDHPriKeyLenText</tabstop>
   <tabstop>mBECDHPubKeyText</tabstop>
   <tabstop>mBECDHPubKeyLenText</tabstop>
+  <tabstop>mBCheckPubKeyBtn</tabstop>
+  <tabstop>mBCheckKeyPairBtn</tabstop>
+  <tabstop>mBGenKeyPairBtn</tabstop>
   <tabstop>mBGenPriKeyBtn</tabstop>
   <tabstop>mBGenPubKeyBtn</tabstop>
   <tabstop>mBFindPriKeyBtn</tabstop>

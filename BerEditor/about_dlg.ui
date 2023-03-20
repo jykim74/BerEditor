@@ -129,6 +129,11 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mAboutText</tabstop>
+  <tabstop>mCheckUpdatBtn</tabstop>
+  <tabstop>mOKBtn</tabstop>
+ </tabstops>
  <resources>
   <include location="bereditor.qrc"/>
  </resources>

@@ -195,10 +195,11 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>mURICombo</tabstop>
+  <tabstop>mUseLDAPHostCheck</tabstop>
   <tabstop>mHostText</tabstop>
   <tabstop>mPortText</tabstop>
   <tabstop>mDNText</tabstop>
-  <tabstop>mURICombo</tabstop>
   <tabstop>mScopeCombo</tabstop>
   <tabstop>mTypeCombo</tabstop>
   <tabstop>mFilterText</tabstop>

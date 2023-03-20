@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>526</width>
+    <width>527</width>
     <height>473</height>
    </rect>
   </property>
@@ -313,9 +313,11 @@
   <tabstop>mPriKeyBtn</tabstop>
   <tabstop>mCertPath</tabstop>
   <tabstop>mCertBtn</tabstop>
+  <tabstop>mAlgCombo</tabstop>
   <tabstop>mVersionTypeCombo</tabstop>
   <tabstop>mOutputTypeCombo</tabstop>
   <tabstop>mMethodTypeCombo</tabstop>
+  <tabstop>mCheckKeyPairBtn</tabstop>
   <tabstop>mChangeBtn</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
