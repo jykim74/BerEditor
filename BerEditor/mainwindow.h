@@ -102,11 +102,14 @@ private:
     QSplitter       *vsplitter_;
     BerTreeView     *left_tree_;
 
+    QTabWidget      *table_tab_;
     QTabWidget      *text_tab_;
     QTextEdit       *log_text_;
     QTextEdit       *info_text_;
     BerModel        *ber_model_;
     QTableWidget    *right_table_;
+    QTextEdit       *right_text_;
+    QTextEdit       *right_xml_;
     QString          file_path_;
 };
 

@@ -94,6 +94,7 @@ void MainWindow::initialize()
     info_text_->setReadOnly(true);
     info_text_->setFont( QFont("굴림체" ));
 
+
     right_table_ = new QTableWidget;
     right_table_->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
@@ -104,12 +105,23 @@ void MainWindow::initialize()
     hsplitter_->addWidget(left_tree_);
     hsplitter_->addWidget(vsplitter_);
 
-    vsplitter_->addWidget(right_table_);
+    table_tab_ = new QTabWidget;
+    table_tab_->setTabPosition( QTabWidget::South );
+    table_tab_->addTab( right_table_, tr( "Hex" ));
+
+    right_xml_ = new QTextEdit;
+    table_tab_->addTab( right_xml_, tr( "XML" ));
+    right_text_ = new QTextEdit;
+    table_tab_->addTab( right_text_, tr( "Text" ));
+//    vsplitter_->addWidget(right_table_);
+    vsplitter_->addWidget( table_tab_ );
+
 //    vsplitter_->addWidget(log_text_);
 
 
     text_tab_ = new QTabWidget;
     vsplitter_->addWidget( text_tab_ );
+    text_tab_->setTabPosition( QTabWidget::South );
     text_tab_->addTab( info_text_, tr("information") );
 //    text_tab_->addTab( log_text_, tr("log") );
 
