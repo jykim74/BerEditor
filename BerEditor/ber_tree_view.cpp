@@ -759,8 +759,9 @@ void BerTreeView::showTextView()
     QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
     txtEdit->clear();
 
-    showText( 0, "Text Decoded Message\n", QColor(Qt::blue) );
+    showText( 0, "-- Text Decoded Message --\n", QColor(Qt::blue) );
     showItemText( root );
+    txtEdit->moveCursor(QTextCursor::Start);
 }
 
 void BerTreeView::showXMLView()
@@ -771,6 +772,7 @@ void BerTreeView::showXMLView()
     QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
     xmlEdit->clear();
 
-    showXML( 0, "XML Decoded Message\n", QColor(Qt::darkGreen) );
+    showXML( 0, "<!-- XML Decoded Message -->\n", QColor(Qt::darkGreen) );
     showItemXML( root );
+    xmlEdit->moveCursor(QTextCursor::Start);
 }
