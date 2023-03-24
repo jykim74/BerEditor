@@ -51,8 +51,8 @@ private:
     void showItemText( BerItem* item );
     void showItemXML( BerItem* item );
 
-    void showText( int level, const QString& strMsg, QColor cr = QColor(0x00, 0x00, 0x00) );
-    void showXML( int level, const QString& strMsg, QColor cr = QColor(0x00, 0x00, 0x00) );
+    void showText( int level, const QString& strMsg, QColor cr = QColor(0x00, 0x00, 0x00), bool bBold = false );
+    void showXML( int level, const QString& strMsg, QColor cr = QColor(0x00, 0x00, 0x00), bool bBold = false );
 };
 
 #endif // BER_TREE_VIEW_H

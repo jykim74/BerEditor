@@ -111,9 +111,11 @@ void MainWindow::initialize()
 
     right_xml_ = new QTextEdit;
     right_xml_->setReadOnly(true);
+    right_xml_->setFont( QFont("굴림체") );
     table_tab_->addTab( right_xml_, tr( "XML" ));
     right_text_ = new QTextEdit;
     right_text_->setReadOnly(true);
+    right_text_->setFont( QFont("굴림체") );
     table_tab_->addTab( right_text_, tr( "Text" ));
 //    vsplitter_->addWidget(right_table_);
     vsplitter_->addWidget( table_tab_ );
@@ -164,7 +166,7 @@ void MainWindow::createTableMenu()
     QString style = "QHeaderView::section {background-color:#404040;color:#FFFFFF;}";
 
     right_table_->horizontalHeader()->setStyleSheet( style );
-    right_table_->setColumnWidth(0, 100);
+    right_table_->setColumnWidth(0, 80);
 
 
     for( int i=1; i <= 16; i++ )
@@ -321,7 +323,7 @@ void MainWindow::createActions()
     toolMenu->addAction( dataEncodeAct );
     toolToolBar->addAction( dataEncodeAct );
 
-    const QIcon numTransIcon = QIcon::fromTheme("number-trans", QIcon(":/images/number.jpg"));
+    const QIcon numTransIcon = QIcon::fromTheme("number-trans", QIcon(":/images/two.png"));
     QAction *numTransAct = new QAction( numTransIcon, tr("&NumTrans"), this);
     connect( numTransAct, &QAction::triggered, this, &MainWindow::numTrans );
     numTransAct->setStatusTip(tr("Number transmission" ));

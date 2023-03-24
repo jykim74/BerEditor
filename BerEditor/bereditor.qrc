@@ -26,7 +26,6 @@
         <file>images/expand_all.png</file>
         <file>images/expand_node.png</file>
         <file>images/data_trans.png</file>
-        <file>images/number.jpg</file>
         <file>images/bereditor.png</file>
         <file>images/setting.png</file>
         <file>images/oid.png</file>
@@ -46,6 +45,7 @@
         <file>images/clear.png</file>
         <file>images/cert_pvd.png</file>
         <file>images/critical.png</file>
+        <file>images/two.png</file>
         <file>images/normal.png</file>
     </qresource>
 </RCC>
