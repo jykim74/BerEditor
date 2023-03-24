@@ -351,7 +351,7 @@ void MainWindow::createActions()
     toolMenu->addAction( insertDataAct );
     toolToolBar->addAction( insertDataAct );
 
-    const QIcon uriIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/uri.jpg"));
+    const QIcon uriIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/uri.png"));
     QAction *getURIAct = new QAction(uriIcon, tr("&Get URI data"), this);
     connect( getURIAct, &QAction::triggered, this, &MainWindow::getURI );
     getURIAct->setStatusTip(tr("Get Ber data from URI"));
@@ -371,7 +371,7 @@ void MainWindow::createActions()
     QMenu *cryptMenu = menuBar()->addMenu(tr("&Crypt"));
     QToolBar *cryptToolBar = addToolBar( "Crypt" );
 
-    const QIcon keyIcon = QIcon::fromTheme("key-man", QIcon(":/images/key.jpg"));
+    const QIcon keyIcon = QIcon::fromTheme("key-man", QIcon(":/images/key.png"));
     QAction *keyManAct = new QAction( keyIcon, tr("&KeyManage"), this );
     connect( keyManAct, &QAction::triggered, this, &MainWindow::keyManage );
     keyManAct->setStatusTip(tr("Key Manage function" ));

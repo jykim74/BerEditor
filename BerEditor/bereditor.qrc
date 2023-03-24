@@ -29,8 +29,6 @@
         <file>images/bereditor.png</file>
         <file>images/setting.png</file>
         <file>images/oid.png</file>
-        <file>images/uri.jpg</file>
-        <file>images/key.jpg</file>
         <file>images/hash.png</file>
         <file>images/mac.png</file>
         <file>images/enc.png</file>
@@ -47,5 +45,7 @@
         <file>images/critical.png</file>
         <file>images/two.png</file>
         <file>images/normal.png</file>
+        <file>images/key.png</file>
+        <file>images/uri.png</file>
     </qresource>
 </RCC>
