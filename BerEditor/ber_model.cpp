@@ -81,9 +81,7 @@ int BerModel::parseConstruct(int offset, BerItem *pParentItem)
 
         if( next_offset <= 0 ) return -1;
 
-
         pItem->setText( pItem->GetInfoString( &binBer_));
-
 
         pParentItem->appendRow( pItem );
 
@@ -243,7 +241,8 @@ int BerModel::getItem(int offset, BerItem *pItem)
     return next_offset;
 }
 
-int getItem( const BIN *pBer, BerItem *pItem )
+#if 0
+int getItemA( const BIN *pBer, BerItem *pItem )
 {
     int position = 0;
     int length = 0;
@@ -310,6 +309,7 @@ int getItem( const BIN *pBer, BerItem *pItem )
 
     return 0;
 }
+#endif
 
 int BerModel::resizeParentHeader( int nDiffLen, const BerItem *pItem, QModelIndexList &indexList )
 {

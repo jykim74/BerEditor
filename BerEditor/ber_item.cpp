@@ -93,7 +93,7 @@ QString BerItem::GetTagString()
         else if( tag_ == JS_INTEGER ) return "Integer";
         else if( tag_ == JS_BITSTRING ) return "BitString";
         else if( tag_ == JS_OCTETSTRING ) return "OctetString";
-        else if( tag_ == JS_NULLTAG ) return "NULL";
+        else if( tag_ == JS_NULLTAG ) return "NullTag";
         else if( tag_ == JS_OID ) return "OID";
         else if( tag_ == JS_OBJDESCRIPTOR ) return "OBJDescriptor";
         else if( tag_ == JS_EXTERNAL ) return "External";
@@ -120,6 +120,56 @@ QString BerItem::GetTagString()
             QString strTag;
             strTag.sprintf ( "%0x", tag_ );
             return strTag;
+        }
+    }
+
+    return strRes;
+}
+
+QString BerItem::GetTagXMLString()
+{
+    QString strRes;
+
+    if( id_ < 0 ) return "Error";
+
+    if( id_ & JS_CLASS_MASK )
+    {
+        QString strOut = "NODE";
+        return strOut;
+    }
+    else
+    {
+        if( tag_ == JS_BOOLEAN ) return "BOOLEAN";
+        else if( tag_ == JS_INTEGER ) return "INTEGER";
+        else if( tag_ == JS_BITSTRING ) return "BIT_STRING";
+        else if( tag_ == JS_OCTETSTRING ) return "OCTET_STRING";
+        else if( tag_ == JS_NULLTAG ) return "NULL_TAG";
+        else if( tag_ == JS_OID ) return "OBJECT_IDENTIFIER";
+        else if( tag_ == JS_OBJDESCRIPTOR ) return "OBJ_DESCRIPTOR";
+        else if( tag_ == JS_EXTERNAL ) return "EXTERNAL";
+        else if( tag_ == JS_REAL ) return "REAL";
+        else if( tag_ == JS_ENUMERATED ) return "ENUMERATED";
+        else if( tag_ == JS_EMBEDDED_PDV ) return "EMBEDDED_PDV";
+        else if( tag_ == JS_UTF8STRING ) return "UTF8_STRING";
+        else if( tag_ == JS_SEQUENCE) return "SEQUENCE";
+        else if( tag_ == JS_SET) return "SET";
+        else if( tag_ == JS_NUMERICSTRING ) return "NUMERIC_STRING";
+        else if( tag_ == JS_PRINTABLESTRING ) return "PRINTABLE_STRING";
+        else if( tag_ == JS_T61STRING ) return "T61_STRING";
+        else if( tag_ == JS_VIDEOTEXSTRING ) return "VIDEO_TEX_STRING";
+        else if( tag_ == JS_IA5STRING ) return "IA5_STRING";
+        else if( tag_ == JS_UTCTIME ) return "UTC_TIME";
+        else if( tag_ == JS_GENERALIZEDTIME ) return "GENERALIZED_TIME";
+        else if( tag_ == JS_GRAPHICSTRING) return "GRAPHIC_STRING";
+        else if( tag_ == JS_VISIBLESTRING) return "VISIBLE_STRING";
+        else if( tag_ == JS_GENERALSTRING) return "GENERAL_STRING";
+        else if( tag_ == JS_UNIVERSALSTRING ) return "UNIVERSAL_STRING";
+        else if( tag_ == JS_BMPSTRING ) return "BMP_STRING";
+        else
+        {
+            QString strTag;
+            strTag.sprintf ( "%0x", tag_ );
+            return strTag.toUpper();
         }
     }
 

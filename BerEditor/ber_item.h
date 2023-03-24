@@ -33,6 +33,7 @@ public:
     int GetLevel() { return level_; };
 
     QString GetTagString();
+    QString GetTagXMLString();
     QString GetClassString();
     QString GetValueString( const BIN *pBer );
     QString GetInfoString( const BIN *pBer );

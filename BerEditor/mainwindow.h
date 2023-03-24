@@ -31,6 +31,8 @@ public:
     QTextEdit* logText() { return log_text_; };
     QTextEdit* infoText() { return info_text_; };
     QTableWidget* rightTable() { return right_table_; };
+    QTextEdit* rightText() { return right_text_; };
+    QTextEdit* rightXML() { return right_xml_; };
     void showTextMsg( const QString& msg );
 
     void showWindow();

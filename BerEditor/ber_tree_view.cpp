@@ -8,6 +8,7 @@
 #include "edit_value_dlg.h"
 #include "insert_ber_dlg.h"
 #include "common.h"
+#include "js_pki_tools.h"
 
 #include <QStandardItemModel>
 #include <QTreeView>
@@ -64,6 +65,11 @@ void BerTreeView::infoItem( BerItem *pItem )
 
     BIN bin = {0,0};
     BIN header = {0,0};
+
+    int row = pItem->row();
+    int rowCount = pItem->rowCount();
+    int col = pItem->column();
+    int colCount = pItem->columnCount();
 
     char *pBitString = NULL;
     JS_BIN_set( &bin, binBer.pVal + pItem->GetOffset(), 1 );
@@ -514,6 +520,9 @@ void BerTreeView::EditValue()
         tree_model->parseTree();
         QModelIndex ri = tree_model->index(0,0);
         expand(ri);
+
+        showTextView();
+        showXMLView();
     }
 }
 
@@ -567,4 +576,185 @@ void BerTreeView::InsertBER()
 end:
     JS_BIN_reset( &binData );
     JS_BIN_reset( &binHeader );
+}
+
+void BerTreeView::showText( int level, const QString& strMsg, QColor cr )
+{
+    QString strEmpty = QString( "%1" ).arg( " ", 4 * level, QLatin1Char( ' ' ));
+    QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
+
+    QTextCursor cursor = txtEdit->textCursor();
+    QTextCharFormat format;
+    format.setForeground( cr );
+    cursor.mergeCharFormat( format );
+
+    if( level > 0 ) cursor.insertText( strEmpty );
+    cursor.insertText( strMsg );
+
+    txtEdit->setTextCursor( cursor );
+    txtEdit->repaint();
+}
+
+void BerTreeView::showXML( int level, const QString& strMsg, QColor cr )
+{
+    QString strEmpty = QString( "%1" ).arg( " ", 4 * level, QLatin1Char( ' ' ));
+    QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
+
+    QTextCursor cursor = xmlEdit->textCursor();
+    QTextCharFormat format;
+    format.setForeground( cr );
+    cursor.mergeCharFormat( format );
+
+    if( level > 0 ) cursor.insertText( strEmpty );
+    cursor.insertText( strMsg );
+
+    xmlEdit->setTextCursor( cursor );
+    xmlEdit->repaint();
+}
+
+void BerTreeView::showItemText( BerItem* item )
+{
+    int row = 0;
+    int col = 0;
+    int pos = 0;
+    int level = 0;
+
+    if( item == NULL ) return;
+
+    BerModel *tree_model = (BerModel *)model();
+    BIN& binBer = tree_model->getBer();
+
+    row = item->row();
+    col = item->column();
+    level = item->GetLevel();
+
+    berApplet->log( QString( "Item row: %1 col: %2 level: %3" ).arg(row).arg(col).arg(level));
+
+    if( item->isConstructed() )
+    {
+        showText( level, QString("%1 {\n").arg( item->text()), QColor(Qt::darkCyan) );
+
+        while( 1 )
+        {
+            BerItem* child = (BerItem *)item->child( pos++ );
+            if( child == NULL ) break;
+
+            showItemText( child );
+        }
+
+        showText( level, "}\n", QColor(Qt::darkCyan) );
+    }
+    else
+    {
+        QString strName = item->GetTagString();
+        QString strValue = item->GetValueString( &binBer );
+
+        showText( level, QString( "%1" ).arg( strName ), QColor(Qt::darkMagenta));
+        showText( 0, QString( " = %1\n" ).arg( strValue ));
+    }
+}
+
+void BerTreeView::showItemXML( BerItem* item )
+{
+    int row = 0;
+    int col = 0;
+    int pos = 0;
+    int level = 0;
+
+    if( item == NULL ) return;
+
+    BerModel *tree_model = (BerModel *)model();
+    BIN& binBer = tree_model->getBer();
+    QString strName = item->GetTagXMLString();
+
+    row = item->row();
+    col = item->column();
+    level = item->GetLevel();
+
+    berApplet->log( QString( "Item row: %1 col: %2 level: %3" ).arg(row).arg(col).arg(level));
+
+    if( item->isConstructed() )
+    {
+        if( strName == "NODE" )
+        {
+            showXML( level, QString( "<%1 Sign=" ).arg(strName), QColor(Qt::darkCyan));
+            showXML( 0, QString( "\"%1\"" ).arg( item->GetTag() | item->GetId(), 2, 16, QLatin1Char('0')), QColor(Qt::darkRed));
+            showXML( 0, QString( ">\n"), QColor(Qt::darkCyan) );
+        }
+        else
+        {
+            showXML( level, QString("<%1>\n").arg( strName), QColor(Qt::darkCyan) );
+        }
+
+        while( 1 )
+        {
+            BerItem* child = (BerItem *)item->child( pos++ );
+            if( child == NULL ) break;
+
+            showItemXML( child );
+        }
+
+        showXML( level, QString("</%1>\n").arg( strName ), QColor(Qt::darkCyan) );
+    }
+    else
+    {
+        QString strValue = item->GetValueString( &binBer );
+
+        if( strName == "OBJECT_IDENTIFIER" )
+        {
+            QString strComment;
+            QString strDesc;
+
+            strComment = JS_PKI_getLNFromOID( strValue.toStdString().c_str() );
+            strDesc = JS_PKI_getSNFromOID( strValue.toStdString().c_str() );
+
+            showXML( level, QString( "<%1" ).arg( strName ), QColor(Qt::darkMagenta));
+
+            if( strComment.length() > 0 )
+            {
+                showXML( 0, " Comment=", QColor(Qt::blue));
+                showXML( 0, QString("\"%1\"").arg( strComment), QColor(Qt::darkRed));
+            }
+
+            if( strDesc.length() > 0 )
+            {
+                showXML( 0, " Description=", QColor(Qt::blue));
+                showXML( 0, QString("\"%1\"").arg( strDesc), QColor(Qt::darkRed));
+            }
+
+            showXML( 0, ">", QColor(Qt::darkMagenta));
+        }
+        else
+        {
+            showXML( level, QString( "<%1>" ).arg( strName ), QColor(Qt::darkMagenta));
+        }
+
+        showXML( 0, QString( "%1" ).arg( strValue ));
+        showXML( 0, QString( "</%1>\n" ).arg( strName ), QColor(Qt::darkMagenta));
+    }
+}
+
+
+void BerTreeView::showTextView()
+{
+    BerModel *tree_model = (BerModel *)model();
+    BerItem *root = (BerItem *)tree_model->item(0,0);
+
+    QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
+    txtEdit->clear();
+
+    showText( 0, "Text Decoded Message\n", QColor(Qt::blue) );
+    showItemText( root );
+}
+
+void BerTreeView::showXMLView()
+{
+    BerModel *tree_model = (BerModel *)model();
+    BerItem *root = (BerItem *)tree_model->item(0,0);
+
+    QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
+    xmlEdit->clear();
+
+    showXML( 0, "XML Decoded Message\n", QColor(Qt::darkGreen) );
+    showItemXML( root );
 }

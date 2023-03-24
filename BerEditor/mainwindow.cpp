@@ -110,8 +110,10 @@ void MainWindow::initialize()
     table_tab_->addTab( right_table_, tr( "Hex" ));
 
     right_xml_ = new QTextEdit;
+    right_xml_->setReadOnly(true);
     table_tab_->addTab( right_xml_, tr( "XML" ));
     right_text_ = new QTextEdit;
+    right_text_->setReadOnly(true);
     table_tab_->addTab( right_text_, tr( "Text" ));
 //    vsplitter_->addWidget(right_table_);
     vsplitter_->addWidget( table_tab_ );
@@ -508,6 +510,9 @@ void MainWindow::insertBER()
         left_tree_->header()->setVisible(false);
         left_tree_->viewRoot();
 
+        left_tree_->showTextView();
+        left_tree_->showXMLView();
+
         setTitle( QString("Unknown" ));
     }
 }
@@ -538,6 +543,9 @@ void MainWindow::insertData()
 
         left_tree_->header()->setVisible(false);
         left_tree_->viewRoot();
+
+        left_tree_->showTextView();
+        left_tree_->showXMLView();
 
         setTitle( QString("Unknown" ));
     }
@@ -585,6 +593,9 @@ void MainWindow::openBer( const BIN *pBer )
     left_tree_->viewRoot();
     QModelIndex ri = ber_model_->index(0,0);
     left_tree_->expand(ri);
+
+    left_tree_->showTextView();
+    left_tree_->showXMLView();
 }
 
 bool MainWindow::isChanged()
@@ -862,6 +873,9 @@ void MainWindow::getURI()
 
         left_tree_->header()->setVisible(false);
         left_tree_->viewRoot();
+
+        left_tree_->showTextView();
+        left_tree_->showXMLView();
 
         setTitle( QString("Unknown" ));
     }

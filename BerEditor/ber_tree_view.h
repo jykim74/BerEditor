@@ -17,6 +17,8 @@ public:
     void viewRoot();
     QString GetTextView();
 
+    void showTextView();
+    void showXMLView();
 
 private slots:
     void onItemClicked( const QModelIndex& index );
@@ -45,6 +47,12 @@ private:
 
     void infoItem( BerItem *pItem );
     BerItem* currentItem();
+
+    void showItemText( BerItem* item );
+    void showItemXML( BerItem* item );
+
+    void showText( int level, const QString& strMsg, QColor cr = QColor(0x00, 0x00, 0x00) );
+    void showXML( int level, const QString& strMsg, QColor cr = QColor(0x00, 0x00, 0x00) );
 };
 
 #endif // BER_TREE_VIEW_H
