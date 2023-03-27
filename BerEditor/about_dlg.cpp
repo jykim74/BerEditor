@@ -38,11 +38,17 @@ AboutDlg::AboutDlg(QWidget *parent) :
     strAbout += getBuild();
     strAbout += "\r\n";
 
-    strAbout += "Copyright (C) 2020 ~ 2021 JongYeob Kim";
+    strAbout += "Copyright (C) 2020 ~ 2023 JongYeob Kim";
     strAbout += "\r\n\r\n";
-    strAbout += "http://jykim74.tistory.com";
+    strAbout += "https://jykim74.tistory.com";
     strAbout += "\r\n";
     strAbout += "mailto: jykim74@gmail.com";
+
+#ifdef _AUTO_UPDATE
+    mCheckUpdatBtn->show();
+#else
+    mCheckUpdatBtn->hide();
+#endif
 
     mAboutText->setText( strAbout );
     mOKBtn->setFocus();

@@ -234,6 +234,11 @@ int BerModel::getItem(int offset, BerItem *pItem)
     }
     else {
         pItem->SetLength(length);
+        if( length >  ( 1024 * 1024 * 1024 ) )
+        {
+            fprintf( stderr, "The message length is longer than 1 GBytes(len : %d)\n", length );
+            return -1;
+        }
     }
 
     next_offset = offset + position + pItem->length_;

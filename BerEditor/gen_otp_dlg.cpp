@@ -100,7 +100,7 @@ void GenOTPDlg::Run()
     }
 
     berApplet->log( QString( "Hash : %1" ).arg( mHashTypeCombo->currentText() ));
-    berApplet->log( QString( "DateTime : %1").arg( mDateTime->dateTime().toString()));
+    berApplet->log( QString( "DateTime : %1").arg( mDateTime->dateTime().toString( "yyyy-MM-dd HH:mm:00")));
     berApplet->log( QString( "Interval : %1 Len : %2" ).arg( nInterval ).arg(nLen));
     berApplet->log( QString( "Key : %1" ).arg( getHexString( &binKey )));
     berApplet->log( QString( "T : %1" ).arg( getHexString(&binT)));

@@ -25,7 +25,8 @@ SSSDlg::SSSDlg(QWidget *parent) :
     connect( mJoinBtn, SIGNAL(clicked()), this, SLOT(clickJoin()));
 
     connect( mSrcTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(srcChanged()));
-    connect( mSrcText, SIGNAL(textChanged()), this, SLOT(srcChanged()));
+    connect( mSrcText, SIGNAL(textChanged(const QString&)), this, SLOT(srcChanged()));
+    connect( mJoinedText, SIGNAL(textChanged(const QString&)), this, SLOT(joinedChanged()));
 
     connect( mShareTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotShareList(QPoint)));
 
@@ -45,6 +46,8 @@ void SSSDlg::initialize()
     QStringList headerList = { tr( "Seq"), tr( "Value") };
 
     mSrcTypeCombo->addItems( dataTypes );
+    mJoinedTypeCombo->addItems( dataTypes );
+
     mShareTable->horizontalHeader()->setStretchLastSection(true);
     QString style = "QHeaderView::section {background-color:#404040;color:#FFFFFF;}";
     mShareTable->horizontalHeader()->setStyleSheet( style );
@@ -70,8 +73,25 @@ void SSSDlg::srcChanged()
     else
         nInputType = DATA_HEX;
 
-    int nLen = getDataLen( nInputType, mSrcText->toPlainText() );
+    int nLen = getDataLen( nInputType, mSrcText->text() );
     mSrcLenText->setText( QString("%1").arg(nLen));
+}
+
+void SSSDlg::joinedChanged()
+{
+    int nInputType = 0;
+
+    if( mJoinedTypeCombo->currentText() == "String" )
+        nInputType = DATA_STRING;
+    else if( mJoinedTypeCombo->currentText() == "Hex" )
+        nInputType = DATA_HEX;
+    else if( mJoinedTypeCombo->currentText() == "Base64" )
+        nInputType = DATA_BASE64;
+    else
+        nInputType = DATA_HEX;
+
+    int nLen = getDataLen( nInputType, mJoinedText->text() );
+    mJoinedLenText->setText( QString("%1").arg(nLen));
 }
 
 void SSSDlg::clickClear()
@@ -82,6 +102,8 @@ void SSSDlg::clickClear()
     {
         mShareTable->removeRow( nRow - 1 - i );
     }
+
+    mJoinedText->clear();
 }
 
 void SSSDlg::clickAdd()
@@ -107,7 +129,7 @@ void SSSDlg::clickSplit()
     int nN = mNText->text().toInt();
     int nK = mKText->text().toInt();
     int nCount = 0;
-    QString strSrc = mSrcText->toPlainText();
+    QString strSrc = mSrcText->text();
 
     BIN binSrc = {0,0};
     BINList *pShareList = NULL;
@@ -176,10 +198,7 @@ void SSSDlg::clickJoin()
         QString strVal = item->text();
         JS_BIN_decodeHex( strVal.toStdString().c_str(), &binVal );
 
-        if( pShareList == NULL )
-            JS_BIN_createList( &binVal, &pShareList );
-        else
-            JS_BIN_appendList( pShareList, &binVal );
+        JS_BIN_addList( &pShareList, &binVal );
 
         JS_BIN_reset( &binVal );
     }
@@ -187,18 +206,18 @@ void SSSDlg::clickJoin()
     ret = JS_SSS_joinKey( nK, pShareList, &binKey );
     if( ret != 0 ) goto end;
 
-    if( mSrcTypeCombo->currentText() == "String" )
+    if( mJoinedTypeCombo->currentText() == "String" )
     {
         JS_BIN_string( &binKey, &pKeyVal );
     }
-    else if( mSrcTypeCombo->currentText() == "Hex" )
+    else if( mJoinedTypeCombo->currentText() == "Hex" )
         JS_BIN_encodeHex( &binKey, &pKeyVal );
-    else if( mSrcTypeCombo->currentText() == "Base64" )
+    else if( mJoinedTypeCombo->currentText() == "Base64" )
         JS_BIN_encodeBase64( &binKey, &pKeyVal );
 
     berApplet->log( QString( "Joined Key : %1").arg( getHexString( &binKey )));
 
-    mSrcText->setPlainText( pKeyVal );
+    mJoinedText->setText( pKeyVal );
 
 end :
     JS_BIN_reset( &binKey );

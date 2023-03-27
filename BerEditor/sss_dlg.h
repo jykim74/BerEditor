@@ -18,6 +18,7 @@ public:
 
 private slots:
     void srcChanged();
+    void joinedChanged();
     void clickClear();
     void clickAdd();
     void clickSplit();

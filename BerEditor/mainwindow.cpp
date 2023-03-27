@@ -143,8 +143,10 @@ void MainWindow::initialize()
     sizes << 400 << 1200;
 #ifdef Q_OS_MAC
     resize( 960, 768 );
+    setFixedSize( 960, 768 );
 #else
     resize( 1024, 768 );
+    setFixedSize( 1024, 768 );
 #endif
 // #endif
 
@@ -153,7 +155,6 @@ void MainWindow::initialize()
     setCentralWidget(hsplitter_);
 
     createTableMenu();
-
 }
 
 void MainWindow::createTableMenu()
