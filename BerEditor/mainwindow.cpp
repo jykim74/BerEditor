@@ -337,7 +337,7 @@ void MainWindow::createActions()
     toolMenu->addAction( oidAct );
     toolToolBar->addAction( oidAct );
 
-    const QIcon berIcon = QIcon::fromTheme("ber-insert", QIcon(":/images/ber.jpg"));
+    const QIcon berIcon = QIcon::fromTheme("ber-insert", QIcon(":/images/ber.png"));
     QAction *insertBerAct = new QAction(berIcon, tr("Insert &BER"), this);
     connect( insertBerAct, &QAction::triggered, this, &MainWindow::insertBER );
     insertBerAct->setStatusTip(tr("Insert BER record"));

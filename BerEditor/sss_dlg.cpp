@@ -4,6 +4,8 @@
 #include "js_sss.h"
 #include "sss_dlg.h"
 #include "common.h"
+#include "mainwindow.h"
+#include "ber_applet.h"
 
 static QStringList dataTypes = {
     "String",
@@ -122,6 +124,8 @@ void SSSDlg::clickSplit()
     else if( mSrcTypeCombo->currentText() == "Base64" )
         JS_BIN_decodeBase64( strSrc.toStdString().c_str(), &binSrc );
 
+    berApplet->log( QString( "Src : %1").arg( getHexString( &binSrc )));
+
     ret = JS_SSS_splitKey( nN, nK, &binSrc, &pShareList );
     if( ret != 0 ) goto end;
 
@@ -137,6 +141,8 @@ void SSSDlg::clickSplit()
         mShareTable->setRowHeight( i, 10 );
         mShareTable->setItem( i, 0, new QTableWidgetItem( QString( "%1").arg(i)));
         mShareTable->setItem( i, 1, new QTableWidgetItem( strVal ));
+
+        berApplet->log( QString( "Split Key Value : %1").arg( getHexString(&pCurList->Bin)));
 
         pCurList = pCurList->pNext;
         i++;
@@ -189,6 +195,8 @@ void SSSDlg::clickJoin()
         JS_BIN_encodeHex( &binKey, &pKeyVal );
     else if( mSrcTypeCombo->currentText() == "Base64" )
         JS_BIN_encodeBase64( &binKey, &pKeyVal );
+
+    berApplet->log( QString( "Joined Key : %1").arg( getHexString( &binKey )));
 
     mSrcText->setPlainText( pKeyVal );
 

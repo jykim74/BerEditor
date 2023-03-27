@@ -644,7 +644,7 @@ void BerTreeView::showItemText( BerItem* item )
     col = item->column();
     level = item->GetLevel();
 
-    berApplet->log( QString( "Item row: %1 col: %2 level: %3" ).arg(row).arg(col).arg(level));
+//    berApplet->log( QString( "Item row: %1 col: %2 level: %3" ).arg(row).arg(col).arg(level));
 
     if( item->isConstructed() )
     {
@@ -687,7 +687,7 @@ void BerTreeView::showItemXML( BerItem* item )
     col = item->column();
     level = item->GetLevel();
 
-    berApplet->log( QString( "Item row: %1 col: %2 level: %3" ).arg(row).arg(col).arg(level));
+//    berApplet->log( QString( "Item row: %1 col: %2 level: %3" ).arg(row).arg(col).arg(level));
 
     if( item->isConstructed() )
     {

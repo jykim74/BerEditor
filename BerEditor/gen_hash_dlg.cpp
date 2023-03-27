@@ -66,6 +66,8 @@ void GenHashDlg::hashInit()
     if( ret == 0 )
     {
         mStatusLabel->setText( "Init OK" );
+
+        berApplet->log( QString( "Hash Init Algorithm: %1" ).arg( strAlg ));
     }
     else
         mStatusLabel->setText( "Init Fail" );
@@ -104,6 +106,7 @@ void GenHashDlg::hashUpdate()
     ret = JS_PKI_hashUpdate( pctx_, &binSrc );
     if( ret == 0 )
     {
+        berApplet->log( QString( "Hash Update Src : %1" ).arg( getHexString(&binSrc)));
         mStatusLabel->setText( "Update OK" );
     }
     else
@@ -126,6 +129,8 @@ void GenHashDlg::hashFinal()
         mOutputText->setPlainText( pHex );
         mStatusLabel->setText( "Final OK" );
         JS_free( pHex );
+
+        berApplet->log( QString("Hash Final Digest: %1").arg( getHexString(&binMD)));
     }
     else
     {
@@ -178,6 +183,10 @@ void GenHashDlg::digest()
         if( pHex ) JS_free(pHex );
 
         mStatusLabel->setText( "Digest OK" );
+
+        berApplet->log( QString( "Hash Algorithm: %1" ).arg( strHash ));
+        berApplet->log( QString( "Input : %1" ).arg( getHexString( &binSrc) ));
+        berApplet->log( QString( "Digest : %1" ).arg(getHexString(&binHash)));
     }
     else
     {

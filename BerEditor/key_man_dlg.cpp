@@ -102,6 +102,11 @@ void KeyManDlg::PBKDF()
         JS_BIN_encodeHex( &binKey, &pHex );
         mOutputText->setPlainText( pHex );
         if( pHex ) JS_free( pHex );
+
+        berApplet->log( QString( "Passwd : %1").arg( strPasswd ));
+        berApplet->log( QString( "Hash   : %1 Iteration Count: %2").arg( strHash ).arg( nIter ));
+        berApplet->log( QString( "Salt   : %1" ).arg(getHexString(&binSalt)));
+        berApplet->log( QString( "Key    : %1" ).arg(getHexString(&binKey)));
     }
 
     JS_BIN_reset( &binSalt );
@@ -170,6 +175,10 @@ void KeyManDlg::clickWrap()
 
     mDstText->setPlainText( getHexString(binOutput.pVal, binOutput.nLen));
 
+    berApplet->log( QString( "Input Key: %1" ).arg(getHexString(&binInput)));
+    berApplet->log( QString( "Wrapping Key: %1" ).arg( getHexString( &binWrappingKey)));
+    berApplet->log( QString( "Wrapped Key: %1" ).arg( getHexString(&binOutput)));
+
 end :
     JS_BIN_reset( &binInput );
     JS_BIN_reset( &binWrappingKey );
@@ -215,6 +224,10 @@ void KeyManDlg::clickUnwrap()
     }
 
     mDstText->setPlainText( getHexString(binOutput.pVal, binOutput.nLen));
+
+    berApplet->log( QString( "Input Key: %1" ).arg(getHexString(&binInput)));
+    berApplet->log( QString( "Unwrapping Key: %1" ).arg( getHexString( &binWrappingKey)));
+    berApplet->log( QString( "Unwrapped Key: %1" ).arg( getHexString(&binOutput)));
 
 end :
     JS_BIN_reset( &binInput );

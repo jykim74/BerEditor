@@ -37,7 +37,6 @@
         <file>images/agree.png</file>
         <file>images/cms.png</file>
         <file>images/otp.png</file>
-        <file>images/ber.jpg</file>
         <file>images/sss.png</file>
         <file>images/cavp.png</file>
         <file>images/clear.png</file>
@@ -47,5 +46,6 @@
         <file>images/normal.png</file>
         <file>images/key.png</file>
         <file>images/uri.png</file>
+        <file>images/ber.png</file>
     </qresource>
 </RCC>

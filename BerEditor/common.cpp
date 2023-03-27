@@ -165,6 +165,13 @@ QString getHexString( unsigned char *pData, int nDataLen )
     return strHex;
 }
 
+QString getHexString( const BIN *pData )
+{
+    if( pData == NULL ) return "";
+
+    return getHexString( pData->pVal, pData->nLen );
+}
+
 static char _getPrint( unsigned char c )
 {
     if( isprint(c))

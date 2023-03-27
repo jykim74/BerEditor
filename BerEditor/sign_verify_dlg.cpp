@@ -203,6 +203,8 @@ void SignVerifyDlg::signVerifyInit()
     else
         nType = JS_PKI_KEY_TYPE_ECC;
 
+    berApplet->log( QString( "Sign Algorithm : %1 Hash : %2" ).arg( mAlgTypeCombo->currentText() ).arg( strHash ));
+
     if( mMethodCombo->currentIndex() == SIGN_SIGNATURE )
     {
         if( mPriKeyPath->text().isEmpty() )
@@ -214,6 +216,8 @@ void SignVerifyDlg::signVerifyInit()
         JS_BIN_fileRead( mPriKeyPath->text().toStdString().c_str(), &binPri );
 
         ret = JS_PKI_signInit( &sctx_, strHash.toStdString().c_str(), nType, &binPri );
+
+        berApplet->log( QString ( "Sign Init Private Key : %1" ).arg( getHexString( &binPri )));
     }
     else
     {
@@ -229,6 +233,8 @@ void SignVerifyDlg::signVerifyInit()
             ret = JS_PKI_verifyInit( &sctx_, strHash.toStdString().c_str(), &binCert );
         else
             ret = JS_PKI_verifyInitWithCert( &sctx_, strHash.toStdString().c_str(), &binCert );
+
+        berApplet->log( QString( "Verify Init Public Key or Cert : %1" ).arg(getHexString(&binCert)));
     }
 
     if( ret == 0 )
@@ -272,9 +278,15 @@ void SignVerifyDlg::signVerifyUpdate()
     }
 
     if( mMethodCombo->currentIndex() == SIGN_SIGNATURE )
+    {
         ret = JS_PKI_signUpdate( sctx_, &binSrc );
+        berApplet->log( QString("Sign Update Src : %1").arg( getHexString(&binSrc)));
+    }
     else
+    {
         ret = JS_PKI_verifyUpdate( sctx_, &binSrc );
+        berApplet->log( QString("Verify Update Src : %1").arg( getHexString(&binSrc)));
+    }
 
     if( ret == 0 )
     {
@@ -302,6 +314,8 @@ void SignVerifyDlg::signVerifyFinal()
             mOutputText->setPlainText( pHex );
             JS_free( pHex );
         }
+
+        berApplet->log( QString( "Sign Final Signature : %1" ).arg( getHexString(&binSign)));
     }
     else
     {
@@ -368,6 +382,8 @@ void SignVerifyDlg::Run()
 
     QString strHash = mHashTypeCombo->currentText();
 
+    berApplet->log( QString( "Sign Algorithm: %1 Hash %2").arg( mAlgTypeCombo->currentText()).arg( strHash ));
+
     if( mMethodCombo->currentIndex() == SIGN_SIGNATURE )
     {
         if( mPriKeyPath->text().isEmpty() )
@@ -386,6 +402,10 @@ void SignVerifyDlg::Run()
 
         JS_BIN_encodeHex( &binOut, &pOut );
         mOutputText->setPlainText(pOut);
+
+        berApplet->log( QString( "Sign Src : %1" ).arg(getHexString(&binSrc)));
+        berApplet->log( QString( "Sign Private Key : %1" ).arg(getHexString( &binPri )));
+        berApplet->log( QString( "Signature : %1" ).arg( getHexString( &binOut )));
     }
     else
     {
@@ -411,6 +431,9 @@ void SignVerifyDlg::Run()
             else
                 ret = JS_PKI_ECCVerifySignWithCert( strHash.toStdString().c_str(), &binSrc, &binOut, &binCert );
         }
+
+        berApplet->log( QString( "Verify Src : %1" ).arg(getHexString(&binSrc)));
+        berApplet->log( QString( "Verify Public Key or Cert : %1" ).arg(getHexString( &binCert )));
 
         if( ret == 1 )
             berApplet->messageBox( tr("Verify Success"), this );
