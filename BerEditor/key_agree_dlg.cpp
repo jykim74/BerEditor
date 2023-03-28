@@ -82,11 +82,11 @@ void KeyAgreeDlg::calcualteA()
 
         ret = JS_PKI_getDHSecret( &binP, &binG, &binPri, &binPub, &binSecX );
 
-        berApplet->log( QString ( "P : %1" ).arg( getHexString(&binP)));
-        berApplet->log( QString ( "G : %1" ).arg( getHexString(&binG)));
+        berApplet->log( QString ( "P          : %1" ).arg( getHexString(&binP)));
+        berApplet->log( QString ( "G          : %1" ).arg( getHexString(&binG)));
         berApplet->log( QString ( "PrivateKey : %1" ).arg( getHexString(&binPri)));
-        berApplet->log( QString ( "PublicKey : %1" ).arg( getHexString(&binPub)));
-        berApplet->log( QString ( "Secret : %1" ).arg( getHexString(&binSecX)));
+        berApplet->log( QString ( "PublicKey  : %1" ).arg( getHexString(&binPub)));
+        berApplet->log( QString ( "Secret     : %1" ).arg( getHexString(&binSecX)));
 
         JS_BIN_reset( &binP );
         JS_BIN_reset( &binG );
@@ -105,10 +105,10 @@ void KeyAgreeDlg::calcualteA()
         ret = JS_PKI_getECDHComputeKey( mECDHParamCombo->currentText().toStdString().c_str(), &binPri, &binX, &binY, &binSecX, &binSecY );
 
         berApplet->log( QString( "PrivateKey : %1").arg( getHexString( &binPri )));
-        berApplet->log( QString( "X : %1").arg( getHexString( &binX )));
-        berApplet->log( QString( "Y : %1").arg( getHexString( &binY )));
-        berApplet->log( QString( "SecretX : %1").arg( getHexString( &binSecX )));
-        berApplet->log( QString( "SecretY : %1").arg( getHexString( &binSecY )));
+        berApplet->log( QString( "X          : %1").arg( getHexString( &binX )));
+        berApplet->log( QString( "Y          : %1").arg( getHexString( &binY )));
+        berApplet->log( QString( "SecretX    : %1").arg( getHexString( &binSecX )));
+        berApplet->log( QString( "SecretY    : %1").arg( getHexString( &binSecY )));
 
         JS_BIN_reset( &binX );
         JS_BIN_reset( &binY );
@@ -149,11 +149,11 @@ void KeyAgreeDlg::calcualteB()
 
         ret = JS_PKI_getDHSecret( &binP, &binG, &binPri, &binPub, &binSecX );
 
-        berApplet->log( QString ( "P : %1" ).arg( getHexString(&binP)));
-        berApplet->log( QString ( "G : %1" ).arg( getHexString(&binG)));
+        berApplet->log( QString ( "P          : %1" ).arg( getHexString(&binP)));
+        berApplet->log( QString ( "G          : %1" ).arg( getHexString(&binG)));
         berApplet->log( QString ( "PrivateKey : %1" ).arg( getHexString(&binPri)));
-        berApplet->log( QString ( "PublicKey : %1" ).arg( getHexString(&binPub)));
-        berApplet->log( QString ( "Secret : %1" ).arg( getHexString(&binSecX)));
+        berApplet->log( QString ( "PublicKey  : %1" ).arg( getHexString(&binPub)));
+        berApplet->log( QString ( "Secret     : %1" ).arg( getHexString(&binSecX)));
 
         JS_BIN_reset( &binP );
         JS_BIN_reset( &binG );
@@ -172,10 +172,10 @@ void KeyAgreeDlg::calcualteB()
         ret = JS_PKI_getECDHComputeKey( mECDHParamCombo->currentText().toStdString().c_str(), &binPri, &binX, &binY, &binSecX, &binSecY );
 
         berApplet->log( QString( "PrivateKey : %1").arg( getHexString( &binPri )));
-        berApplet->log( QString( "X : %1").arg( getHexString( &binX )));
-        berApplet->log( QString( "Y : %1").arg( getHexString( &binY )));
-        berApplet->log( QString( "SecretX : %1").arg( getHexString( &binSecX )));
-        berApplet->log( QString( "SecretY : %1").arg( getHexString( &binSecY )));
+        berApplet->log( QString( "X          : %1").arg( getHexString( &binX )));
+        berApplet->log( QString( "Y          : %1").arg( getHexString( &binY )));
+        berApplet->log( QString( "SecretX    : %1").arg( getHexString( &binSecX )));
+        berApplet->log( QString( "SecretY    : %1").arg( getHexString( &binSecY )));
 
         JS_BIN_reset( &binX );
         JS_BIN_reset( &binY );

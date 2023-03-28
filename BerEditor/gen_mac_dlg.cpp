@@ -134,6 +134,7 @@ void GenMacDlg::macInit()
         if( ret == 0 ) type_ = JS_TYPE_CMAC;
 
         berApplet->log( QString( "Algorithm : %1" ).arg( strSymAlg ));
+        berApplet->log( QString( "Key       : %1" ).arg( getHexString( &binKey )));
    }
    else
    {
@@ -141,15 +142,15 @@ void GenMacDlg::macInit()
         if( ret == 0 ) type_ = JS_TYPE_HMAC;
 
         berApplet->log( QString( "Algorithm : %1" ).arg( strAlg ));
+        berApplet->log( QString( "Key       : %1" ).arg( getHexString( &binKey )));
    }
 
    if( ret == 0 )
    {
        mStatusLabel->setText( "Init OK" );
-       berApplet->log( "HMAC Init" );
    }
    else
-       mStatusLabel->setText( "Init fail" );
+       mStatusLabel->setText( QString("Init fail:%1").arg( ret ) );
 
    JS_BIN_reset( &binKey );
    repaint();
@@ -199,13 +200,14 @@ void GenMacDlg::macUpdate()
         ret = JS_PKI_hmacUpdate( hctx_, &binSrc );
     }
 
+    berApplet->log( QString( "Update Src : %1" ).arg( getHexString(&binSrc)));
+
     if( ret == 0 )
     {
         mStatusLabel->setText( "Update OK" );
-        berApplet->log( QString( "HMAC Update Src : %1" ).arg( getHexString(&binSrc)));
     }
     else
-        mStatusLabel->setText( "Updata fail" );
+        mStatusLabel->setText( QString("Updata fail:%1").arg(ret) );
 
     JS_BIN_reset( &binSrc );
     repaint();
@@ -245,10 +247,10 @@ void GenMacDlg::macFinal()
         mStatusLabel->setText( "Final OK" );
         JS_free( pHex );
 
-        berApplet->log( QString( "HMAC Final Digest : %1" ).arg( getHexString( &binMAC )) );
+        berApplet->log( QString( "Final Digest : %1" ).arg( getHexString( &binMAC )) );
     }
     else
-        mStatusLabel->setText( "Final fail" );
+        mStatusLabel->setText( QString("Final fail:%1").arg(ret) );
 
     freeCTX();
 
@@ -324,12 +326,12 @@ void GenMacDlg::mac()
        if( pHex ) JS_free(pHex);
 
        berApplet->log( QString( "Input : %1" ).arg(getHexString(&binSrc)));
-       berApplet->log( QString( "Key : %1" ).arg( getHexString(&binKey)));
-       berApplet->log( QString( "MAC : %1" ).arg( getHexString(&binKey)));
+       berApplet->log( QString( "Key   : %1" ).arg( getHexString(&binKey)));
+       berApplet->log( QString( "MAC   : %1" ).arg( getHexString(&binKey)));
    }
    else
    {
-       mStatusLabel->setText( "MAC FAIL" );
+       mStatusLabel->setText( QString("MAC fail:%1").arg(ret) );
    }
 
    JS_BIN_reset(&binSrc);

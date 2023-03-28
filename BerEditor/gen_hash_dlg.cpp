@@ -67,10 +67,10 @@ void GenHashDlg::hashInit()
     {
         mStatusLabel->setText( "Init OK" );
 
-        berApplet->log( QString( "Hash Init Algorithm: %1" ).arg( strAlg ));
+        berApplet->log( QString( "Init Algorithm : %1" ).arg( strAlg ));
     }
     else
-        mStatusLabel->setText( "Init Fail" );
+        mStatusLabel->setText( QString("Init Fail:%1").arg(ret) );
 
     repaint();
 }
@@ -106,11 +106,11 @@ void GenHashDlg::hashUpdate()
     ret = JS_PKI_hashUpdate( pctx_, &binSrc );
     if( ret == 0 )
     {
-        berApplet->log( QString( "Hash Update Src : %1" ).arg( getHexString(&binSrc)));
+        berApplet->log( QString( "Update Src : %1" ).arg( getHexString(&binSrc)));
         mStatusLabel->setText( "Update OK" );
     }
     else
-        mStatusLabel->setText( "Update fail" );
+        mStatusLabel->setText( QString("Update fail:%1").arg(ret) );
 
     JS_BIN_reset( &binSrc );
     repaint();
@@ -130,11 +130,11 @@ void GenHashDlg::hashFinal()
         mStatusLabel->setText( "Final OK" );
         JS_free( pHex );
 
-        berApplet->log( QString("Hash Final Digest: %1").arg( getHexString(&binMD)));
+        berApplet->log( QString("Final Digest : %1").arg( getHexString(&binMD)));
     }
     else
     {
-        mStatusLabel->setText( "Final Fail" );
+        mStatusLabel->setText( QString("Final Fail:%1").arg(ret) );
     }
 
     JS_PKI_hashFree( &pctx_ );
@@ -184,13 +184,13 @@ void GenHashDlg::digest()
 
         mStatusLabel->setText( "Digest OK" );
 
-        berApplet->log( QString( "Hash Algorithm: %1" ).arg( strHash ));
-        berApplet->log( QString( "Input : %1" ).arg( getHexString( &binSrc) ));
-        berApplet->log( QString( "Digest : %1" ).arg(getHexString(&binHash)));
+        berApplet->log( QString( "Algorithm : %1" ).arg( strHash ));
+        berApplet->log( QString( "Input     : %1" ).arg( getHexString( &binSrc) ));
+        berApplet->log( QString( "Digest    : %1" ).arg(getHexString(&binHash)));
     }
     else
     {
-        mStatusLabel->setText( "Digest Fail" );
+        mStatusLabel->setText( QString("Digest Fail:%1").arg(ret) );
     }
 
     JS_BIN_reset(&binSrc);

@@ -210,9 +210,9 @@ void PubEncDecDlg::Run()
                 JS_PKI_SM2EncryptWithCert( &binSrc, &binCert, &binOut );
         }
 
-        berApplet->log( QString( "Public Enc Src : %1").arg( getHexString(&binSrc)));
-        berApplet->log( QString( "Public Enc PublicKey or Cert : %1").arg(getHexString(&binCert)));
-        berApplet->log( QString( "Public Enc Output : %1" ).arg( getHexString( &binOut )));
+        berApplet->log( QString( "Enc Src               : %1").arg( getHexString(&binSrc)));
+        berApplet->log( QString( "Enc PublicKey or Cert : %1").arg(getHexString(&binCert)));
+        berApplet->log( QString( "Enc Output            : %1" ).arg( getHexString( &binOut )));
     }
     else {
         if( mPriKeyPath->text().isEmpty() )
@@ -228,9 +228,9 @@ void PubEncDecDlg::Run()
         else
             JS_PKI_SM2DecryptWithPri( &binSrc, &binPri, &binOut );
 
-        berApplet->log( QString( "Private Dec Src : %1").arg( getHexString(&binSrc)));
-        berApplet->log( QString( "Private Dec PrivateKey : %1").arg(getHexString(&binPri)));
-        berApplet->log( QString( "Private Dec Output : %1" ).arg( getHexString( &binOut )));
+        berApplet->log( QString( "Dec Src        : %1").arg( getHexString(&binSrc)));
+        berApplet->log( QString( "Dec PrivateKey : %1").arg(getHexString(&binPri)));
+        berApplet->log( QString( "Dec Output     : %1" ).arg( getHexString( &binOut )));
     }
 
     if( mOutputTypeCombo->currentIndex() == DATA_STRING )
