@@ -249,7 +249,7 @@ void MainWindow::createActions()
     printAct->setShortcut(QKeySequence::Print);
     connect( printAct, &QAction::triggered, this, &MainWindow::print);
     fileMenu->addAction(printAct);
-    fileToolBar->addAction(printAct);
+//    fileToolBar->addAction(printAct);
 
     QAction *printPreAct = new QAction(printIcon, tr("&Print Preview"), this);
     printPreAct->setStatusTip(tr( "Print preview"));
@@ -364,7 +364,7 @@ void MainWindow::createActions()
     connect( cavpAct, &QAction::triggered, this, &MainWindow::CAVP );
     cavpAct->setStatusTip(tr("CAVP Test"));
     toolMenu->addAction( cavpAct );
-    toolToolBar->addAction( cavpAct );
+//    toolToolBar->addAction( cavpAct );
 
 
     menuBar()->addSeparator();
@@ -449,7 +449,7 @@ void MainWindow::createActions()
     connect( genOTPAct, &QAction::triggered, this, &MainWindow::genOTP );
     genOTPAct->setStatusTip(tr("Generate OTP value" ));
     cryptMenu->addAction( genOTPAct );
-    cryptToolBar->addAction( genOTPAct );
+//    cryptToolBar->addAction( genOTPAct );
 
 
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
