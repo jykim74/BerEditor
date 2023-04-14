@@ -11,7 +11,7 @@ AboutDlg::AboutDlg(QWidget *parent) :
     setWindowTitle(tr("About %1").arg(berApplet->getBrand()));
     setWindowFlags( (windowFlags() & ~Qt::WindowContextHelpButtonHint) | Qt::WindowStaysOnTopHint );
 
-    version_label_ = tr( "About %1 (%2)").arg(berApplet->getBrand()).arg(STRINGIZE(BER_VIEWER_VERSION));
+    version_label_ = tr( "About %1 [Ver %2]").arg(berApplet->getBrand()).arg(STRINGIZE(BER_VIEWER_VERSION));
     mVersionLabel->setText( version_label_ );
 
     connect(mOKBtn, SIGNAL(clicked()), this, SLOT(close()));
@@ -23,6 +23,8 @@ AboutDlg::AboutDlg(QWidget *parent) :
     }
 #endif
 
+    mAboutText->setOpenExternalLinks(true);
+
     QString strAbout = tr("This is freeware tool to decode and to encode ASN.1 and BER. "
                           "and to test cryptographic funtions"
             "If you do not use this for commercial purposes, "
@@ -31,18 +33,18 @@ AboutDlg::AboutDlg(QWidget *parent) :
 
     QString strLibVersion = JS_GEN_getBuildInfo();
 
-    strAbout += "\r\n\r\nLibrary: ";
+    strAbout += "<br><br>Library: ";
     strAbout += strLibVersion;
 
-    strAbout += "\r\n";
+    strAbout += "<br>";
     strAbout += getBuild();
-    strAbout += "\r\n";
+    strAbout += "<br>";
 
     strAbout += "Copyright (C) 2020 ~ 2023 JongYeob Kim";
-    strAbout += "\r\n\r\n";
-    strAbout += "https://jykim74.tistory.com";
-    strAbout += "\r\n";
-    strAbout += "mailto: jykim74@gmail.com";
+    strAbout += "<br><br>blog: ";
+    strAbout += "<a href=https://jykim74.tistory.com>https://jykim74.tistory.com</a>";
+    strAbout += "<br>mail: ";
+    strAbout += "<a href=mailto:jykim74@gmail.com>jykim74@gmail.com</a>";
 
 #ifdef _AUTO_UPDATE
     mCheckUpdatBtn->show();
@@ -50,7 +52,8 @@ AboutDlg::AboutDlg(QWidget *parent) :
     mCheckUpdatBtn->hide();
 #endif
 
-    mAboutText->setText( strAbout );
+//    mAboutText->setText( strAbout );
+    mAboutText->setHtml( strAbout );
     mOKBtn->setFocus();
 }
 
