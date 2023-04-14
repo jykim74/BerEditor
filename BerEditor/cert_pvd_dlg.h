@@ -41,6 +41,7 @@ private slots:
 
     void clickVerifyCert();
     void clickVerifyCRL();
+    void clickPolicyCheck();
     void clickPathValidation();
 private:
     void initialize();

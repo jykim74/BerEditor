@@ -20,6 +20,7 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
     connect( mUntrustFindBtn, SIGNAL(clicked()), this, SLOT(clickUntrustFind()));
     connect( mCRLFindBtn, SIGNAL(clicked()), this, SLOT(clickCRLFind()));
     connect( mTargetFindBtn, SIGNAL(clicked()), this, SLOT(clickTargetFind()));
+    connect( mPolicyCheckBtn, SIGNAL(clicked()), this, SLOT(clickPolicyCheck()));
     connect( mPathValidationBtn, SIGNAL(clicked()), this, SLOT(clickPathValidation()));
     connect( mTrustInfoBtn, SIGNAL(clicked()), this, SLOT(clickTrustInfo()));
     connect( mUntrustInfoBtn, SIGNAL(clicked()), this, SLOT(clickUntrustInfo()));
@@ -283,6 +284,134 @@ static int _getParamID( const QString strParam )
     return -1;
 }
 
+void CertPVDDlg::clickPolicyCheck()
+{
+    int ret = 0;
+
+    BIN binCert = {0,0};
+    BINList *pCertList = NULL;
+
+    time_t tCheckTime = 0;
+
+    QString strTrustPath = mTrustPathText->text();
+    QString strUntrustPath = mUntrustPathText->text();
+    QString strTargetPath = mTargetPathText->text();
+
+    JNumValList *pParamList = NULL;
+
+    int nCount = 0;
+    int nExpPolicy = 0;
+
+    if( strTrustPath.length() > 1 )
+    {
+        JS_BIN_fileReadBER( strTrustPath.toLocal8Bit().toStdString().c_str(), &binCert );
+        JS_BIN_addList( &pCertList, &binCert );
+        JS_BIN_reset( &binCert );
+    }
+
+    if( strUntrustPath.length() > 1 )
+    {
+        JS_BIN_fileReadBER( strUntrustPath.toLocal8Bit().toStdString().c_str(), &binCert );
+        JS_BIN_addList( &pCertList, &binCert );
+        JS_BIN_reset( &binCert );
+    }
+
+    if( strTargetPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "You have to find target certificate" ), this );
+        goto end;
+    }
+
+    JS_BIN_fileReadBER( strTargetPath.toLocal8Bit().toStdString().c_str(), &binCert );
+
+    nCount = mPathTable->rowCount();
+    for( int i = 0; i < nCount; i++ )
+    {
+        BIN binData = {0,0};
+        QString strType = mPathTable->item( i, 0 )->text();
+        QString strPath = mPathTable->item( i, 1 )->text();
+
+        JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
+
+        if( strType == "Trust" || strType == "Untrust" )
+        {
+            JS_BIN_addList( &pCertList, &binData );
+        }
+
+        JS_BIN_reset( &binData );
+    }
+
+    if( mATTimeCheck->isChecked() )
+    {
+        QString strValue = QString( "%1" ).arg( mVerifyDateTime->dateTime().toTime_t() );
+        berApplet->log( QString( "CheckTime: %1").arg( strValue ));
+        _addParamValue( &pParamList, JS_PVD_VERIFY_ATTIME, strValue.toStdString().c_str() );
+    }
+
+    if( mUseCheckTimeCheck->isChecked() && mATTimeCheck->isChecked() == false )
+    {
+//        _addParamFlag( &pParamList, JS_PVD_FLAG_USE_CHECK_TIME );
+        QString strValue = QString( "%1" ).arg( time(NULL) );
+        berApplet->log( QString( "CheckTime: %1").arg( strValue ));
+        _addParamValue( &pParamList, JS_PVD_VERIFY_ATTIME, strValue.toStdString().c_str() );
+    }
+
+    if( mCRLCheckCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_CRL_CHECK );
+    if( mIgnoreCriticalCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_IGNORE_CRITICAL );
+    if( mX509StrictCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_X509_STRICT );
+    if( mAllowProxyCertsCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_ALLOW_PROXY_CERTS );
+    if( mPolicyCheckCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_POLICY_CHECK );
+    if( mExplicitPolicyCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_EXPLICIT_POLICY );
+    if( mInhibitAnyCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_INHIBIT_ANY );
+    if( mInhibitMapCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_INHIBIT_MAP );
+    if( mNotifyPolicyCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_NOTIFY_POLICY );
+    if( mExtendedCRLSupportCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_EXTENDED_CRL_SUPPORT );
+    if( mUseDeltasCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_USE_DELTAS );
+    if( mCheckSSSignatureCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_CHECK_SS_SIGNATURE );
+    if( mTrustedFirstCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_TRUSTED_FIRST );
+    if( mSuiteB128LosOnlyCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_SUITEB_128_LOS_ONLY );
+    if( mSuiteB192LosCheck->isChecked() ) _addParamFlag( &pParamList,JS_PVD_FLAG_SUITEB_192_LOS );
+    if( mSuiteB128LogCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_SUITEB_128_LOS );
+    if( mPartialChainCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_PARTIAL_CHAIN );
+    if( mNoALTChainsCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_NO_ALT_CHAINS );
+    if( mNoCheckTimeCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_NO_CHECK_TIME );
+
+    nCount = mParamTable->rowCount();
+    for( int i = 0; i < nCount; i++ )
+    {
+        int nID = 0;
+        QString strParam = mParamTable->item( i, 0 )->text();
+        QString strValue = mParamTable->item( i, 1 )->text();
+
+        nID = _getParamID( strParam );
+        if( nID < 0 ) continue;
+
+        _addParamValue( &pParamList, nID, strValue.toStdString().c_str() );
+    }
+
+    tCheckTime = mVerifyDateTime->dateTime().toTime_t();
+    ret = JS_PKI_CheckPolicy( pCertList, pParamList, &nExpPolicy );
+
+    berApplet->log( QString( "CheckPolicy : Ret: %1 ExpPolicy: %2").arg(ret).arg( nExpPolicy));
+    if( ret == 1 )
+    {
+        QString strOK = "It is OK to check policy";
+        berApplet->log( strOK );
+        berApplet->messageBox( strOK, this );
+    }
+    else
+    {
+        QString strErr = QString( "It is fail to check policy: %1" ).arg(ret);
+        berApplet->elog( strErr );
+        berApplet->warningBox( strErr, this );
+    }
+
+end :
+    if( pCertList ) JS_BIN_resetList( &pCertList );
+    if( pParamList ) JS_UTIL_resetNumValList( &pParamList );
+    JS_BIN_reset( &binCert );
+}
+
 void CertPVDDlg::clickPathValidation()
 {
     int ret = 0;
@@ -306,7 +435,6 @@ void CertPVDDlg::clickPathValidation()
 
     char sMsg[1024];
     int nCount = 0;
-    int nFlags = 0;
 
     if( strTrustPath.length() > 1 )
     {
