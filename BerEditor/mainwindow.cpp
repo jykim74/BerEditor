@@ -369,8 +369,8 @@ void MainWindow::createActions()
 
     menuBar()->addSeparator();
 
-    QMenu *cryptMenu = menuBar()->addMenu(tr("&Crypt"));
-    QToolBar *cryptToolBar = addToolBar( "Crypt" );
+    QMenu *cryptMenu = menuBar()->addMenu(tr("&Cryptogram"));
+    QToolBar *cryptToolBar = addToolBar( "Cryptogram" );
 
     const QIcon keyIcon = QIcon::fromTheme("key-man", QIcon(":/images/key.png"));
     QAction *keyManAct = new QAction( keyIcon, tr("&KeyManage"), this );
