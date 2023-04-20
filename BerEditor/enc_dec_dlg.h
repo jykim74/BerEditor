@@ -31,6 +31,7 @@ private slots:
     void ivChanged();
     void aadChanged();
     void tagChanged();
+    void modeChanged();
 
 private:
     void initialize();

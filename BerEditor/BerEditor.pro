@@ -179,7 +179,7 @@ win32 {
             LIBS += -L"../../PKILib/lib/win64/openssl3/lib64" -lcrypto -lssl
         }
 
-        LIBS += -L"C:\msys64\mingw64\lib" -lltdl -lldap -llber
+        LIBS += -L"C:\msys64\mingw64\lib" -lltdl -lldap -llber -lgmp
         LIBS += -L"../../PKILib/lib/win64/winsparkle/x64/Release" -lWinSparkle -lws2_32
     }
 }

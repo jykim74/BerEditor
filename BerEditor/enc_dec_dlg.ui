@@ -132,7 +132,7 @@
       </widget>
      </item>
      <item row="0" column="3">
-      <widget class="QLineEdit" name="mCCMInitLength">
+      <widget class="QLineEdit" name="mCCMDataLength">
        <property name="maximumSize">
         <size>
          <width>40</width>
@@ -144,7 +144,7 @@
      <item row="0" column="2">
       <widget class="QLabel" name="label_8">
        <property name="text">
-        <string>CCM Init Length</string>
+        <string>CCM Data Length</string>
        </property>
       </widget>
      </item>
@@ -535,7 +535,7 @@
   <tabstop>mKeyText</tabstop>
   <tabstop>mKeyLenText</tabstop>
   <tabstop>mUseAECheck</tabstop>
-  <tabstop>mCCMInitLength</tabstop>
+  <tabstop>mCCMDataLength</tabstop>
   <tabstop>mAADTypeCombo</tabstop>
   <tabstop>mAADText</tabstop>
   <tabstop>mAADLenText</tabstop>

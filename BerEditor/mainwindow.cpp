@@ -274,7 +274,7 @@ void MainWindow::createActions()
     copyAct->setStatusTip(tr("Copy the current selection's contents to the clipboard"));
     connect( copyAct, &QAction::triggered, left_tree_, &BerTreeView::copy );
     editMenu->addAction(copyAct);
-    editToolBar->addAction(copyAct);
+//    editToolBar->addAction(copyAct);
 
     QAction *copyAsHexAct = editMenu->addAction(tr("Copy As &Hex"), left_tree_, &BerTreeView::CopyAsHex);
     copyAsHexAct->setStatusTip(tr("Copy ber data as hex"));

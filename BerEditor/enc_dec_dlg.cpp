@@ -113,6 +113,7 @@ EncDecDlg::EncDecDlg(QWidget *parent) :
     connect( mIVTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(ivChanged()));
     connect( mAADTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(aadChanged()));
     connect( mTagTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(tagChanged()));
+    connect( mModeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(modeChanged()));
 
     clickUseAE();
     mCloseBtn->setFocus();
@@ -355,9 +356,11 @@ void EncDecDlg::clickUseAE()
     mAADTypeCombo->setEnabled( bStatus );
     mTagText->setEnabled( bStatus );
     mTagTypeCombo->setEnabled( bStatus );
-    mCCMInitLength->setEnabled( bStatus );
+    mCCMDataLength->setEnabled( bStatus );
 
     mPadCheck->setEnabled( !bStatus );
+
+    modeChanged();
 }
 
 void EncDecDlg::encDecInit()
@@ -434,17 +437,17 @@ void EncDecDlg::encDecInit()
         else if( mAADTypeCombo->currentIndex() == DATA_BASE64 )
             JS_BIN_decodeBase64( strAAD.toStdString().c_str(), &binAAD );
 
-        int nInitLen = mCCMInitLength->text().toInt();
-        if( nInitLen <= 0 )
+        int nDataLen = mCCMDataLength->text().toInt();
+        if( nDataLen <= 0 )
         {
-            nInitLen = binSrc.nLen;
-            mCCMInitLength->setText( QString("%1").arg( nInitLen ));
+            nDataLen = binSrc.nLen;
+            mCCMDataLength->setText( QString("%1").arg( nDataLen ));
         }
 
         if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
         {
             if( isCCM( strAlg) )
-                ret = JS_PKI_encryptCCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD, nInitLen );
+                ret = JS_PKI_encryptCCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD, nDataLen );
             else
                 ret = JS_PKI_encryptGCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD );
 
@@ -456,7 +459,7 @@ void EncDecDlg::encDecInit()
         else
         {
             if( isCCM( strAlg ) )
-                ret = JS_PKI_decryptCCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD, nInitLen );
+                ret = JS_PKI_decryptCCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD, nDataLen );
             else
                 ret = JS_PKI_decryptGCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD );
 
@@ -799,4 +802,14 @@ void EncDecDlg::tagChanged()
 {
     int nLen = getDataLen( mTagTypeCombo->currentText(), mTagText->text() );
     mTagLenText->setText( QString("%1").arg(nLen));
+}
+
+void EncDecDlg::modeChanged()
+{
+    QString strMode = mModeCombo->currentText();
+
+    if( strMode.toUpper() == "CCM" )
+        mCCMDataLength->setEnabled( true );
+    else
+        mCCMDataLength->setEnabled( false );
 }
