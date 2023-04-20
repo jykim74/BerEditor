@@ -197,6 +197,7 @@ void SSSDlg::clickJoin()
 
         QString strVal = item->text();
         JS_BIN_decodeHex( strVal.toStdString().c_str(), &binVal );
+        berApplet->log( QString( "Joined Key Value : %1").arg( strVal ));
 
         JS_BIN_addList( &pShareList, &binVal );
 
@@ -215,7 +216,7 @@ void SSSDlg::clickJoin()
     else if( mJoinedTypeCombo->currentText() == "Base64" )
         JS_BIN_encodeBase64( &binKey, &pKeyVal );
 
-    berApplet->log( QString( "Joined Key : %1").arg( getHexString( &binKey )));
+    berApplet->log( QString( "Combined Key : %1").arg( getHexString( &binKey )));
 
     mJoinedText->setText( pKeyVal );
 
