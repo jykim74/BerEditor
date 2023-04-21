@@ -40,8 +40,8 @@ SSSDlg::~SSSDlg()
 
 void SSSDlg::initialize()
 {
-    mNText->setText( "5" );
-    mKText->setText( "3" );
+    mSharesText->setText( "5" );
+    mThresholdText->setText( "3" );
 
     QStringList headerList = { tr( "Seq"), tr( "Value") };
 
@@ -126,8 +126,8 @@ void SSSDlg::clickSplit()
 {
     int ret = 0;
     int i = 0;
-    int nN = mNText->text().toInt();
-    int nK = mKText->text().toInt();
+    int nShares = mSharesText->text().toInt();
+    int nThreshold = mThresholdText->text().toInt();
     int nCount = 0;
     QString strSrc = mSrcText->text();
 
@@ -148,7 +148,7 @@ void SSSDlg::clickSplit()
 
     berApplet->log( QString( "Src : %1").arg( getHexString( &binSrc )));
 
-    ret = JS_SSS_splitKey( nN, nK, &binSrc, &pShareList );
+    ret = JS_SSS_splitKey( nShares, nThreshold, &binSrc, &pShareList );
     if( ret != 0 ) goto end;
 
     pCurList = pShareList;
@@ -179,15 +179,12 @@ void SSSDlg::clickJoin()
 {
     int ret = 0;
     int nRow = mShareTable->rowCount();
-    int nN = mNText->text().toInt();
-    int nK = mKText->text().toInt();
+
     BINList *pShareList = NULL;
     BIN binKey = {0,0};
     char *pKeyVal = NULL;
 
     if( nRow < 1 ) return;
-
-    mSrcText->clear();
 
     for( int i = 0; i < nRow; i++ )
     {
@@ -204,7 +201,7 @@ void SSSDlg::clickJoin()
         JS_BIN_reset( &binVal );
     }
 
-    ret = JS_SSS_joinKey( nK, pShareList, &binKey );
+    ret = JS_SSS_joinKey( nRow, pShareList, &binKey );
     if( ret != 0 ) goto end;
 
     if( mJoinedTypeCombo->currentText() == "String" )
