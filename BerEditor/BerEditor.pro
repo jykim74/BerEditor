@@ -20,7 +20,7 @@ PROJECT_VERSION = "1.2.0"
 # depend on your compiler). Please consult the documentation of the
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
-DEFINES += BER_VIEWER_VERSION=$$PROJECT_VERSION
+DEFINES += BER_EDITOR_VERSION=$$PROJECT_VERSION
 DEFINES += JS_PRO
 # DEFINES += _AUTO_UPDATE
 

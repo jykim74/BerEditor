@@ -11,7 +11,7 @@ AboutDlg::AboutDlg(QWidget *parent) :
     setWindowTitle(tr("About %1").arg(berApplet->getBrand()));
     setWindowFlags( (windowFlags() & ~Qt::WindowContextHelpButtonHint) | Qt::WindowStaysOnTopHint );
 
-    version_label_ = tr( "About %1 [Ver %2]").arg(berApplet->getBrand()).arg(STRINGIZE(BER_VIEWER_VERSION));
+    version_label_ = tr( "About %1 [Ver %2]").arg(berApplet->getBrand()).arg(STRINGIZE(BER_EDITOR_VERSION));
     mVersionLabel->setText( version_label_ );
 
     connect(mOKBtn, SIGNAL(clicked()), this, SLOT(close()));

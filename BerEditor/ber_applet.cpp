@@ -85,6 +85,11 @@ void BerApplet::start()
 
     if( settings_mgr_->showLogTab() )
         main_win_->logView();
+
+    QString strVersion = STRINGIZE(BER_EDITOR_VERSION);
+    log( "======================================================");
+    log( QString( "== Start BerEditor Version: %1" ).arg( strVersion ));
+    log( "======================================================");
 }
 
 QString BerApplet::getBrand()
