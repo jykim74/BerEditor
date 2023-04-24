@@ -136,7 +136,7 @@ mac {
         INCLUDEPATH += "../../PKILib/lib/mac/openssl3/include"
     }
 
-    LIBS += -lldap -llber
+    LIBS += -lldap -llber -lgmp
     LIBS += -L"/usr/local/lib" -lltdl
 }
 
