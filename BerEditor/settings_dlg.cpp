@@ -106,6 +106,8 @@ void SettingsDlg::showEvent(QShowEvent *event)
         state = AutoUpdateService::instance()->autoUpdateEnabled() ? Qt::Checked : Qt::Unchecked;
         mCheckBoxLatestVersion->setCheckState(state);
     }
+#else
+    mCheckBoxLatestVersion->hide();
 #endif
 
     mLangComboBox->setCurrentIndex(I18NHelper::getInstance()->preferredLanguage());

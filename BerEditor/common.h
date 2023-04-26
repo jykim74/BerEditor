@@ -75,5 +75,10 @@ int getNameValue( const QString strLine, QString& name, QString& value );
 
 void getInfoValue( const JExtensionInfo *pExtInfo, QString& strVal );
 
+void getBINFromString( BIN *pBin, const QString& strType, const QString& strString );
+void getBINFromString( BIN *pBin, int nType, const QString& strString );
+QString getStringFromBIN( const BIN *pBin, const QString& strType, bool bSeenOnly = false );
+QString getStringFromBIN( const BIN *pBin, int nType, bool bSeenOnly = false );
+
 
 #endif // COMMON_H

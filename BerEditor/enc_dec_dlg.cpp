@@ -447,9 +447,14 @@ void EncDecDlg::encDecInit()
         if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
         {
             if( isCCM( strAlg) )
+            {
                 ret = JS_PKI_encryptCCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD, nDataLen );
+                berApplet->log( QString( "Init Data Len : %1" ).arg( nDataLen ));
+            }
             else
+            {
                 ret = JS_PKI_encryptGCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD );
+            }
 
             berApplet->log( QString( "Enc Src : %1" ).arg( getHexString( &binSrc )));
             berApplet->log( QString( "Enc Key : %1" ).arg( getHexString( &binKey )));
