@@ -1341,7 +1341,7 @@ mailto : jykim74@gmail.com</translation>
         <translation>인코딩</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.cpp" line="59"/>
+        <location filename="../data_encoder_dlg.cpp" line="60"/>
         <source>You have to insert data</source>
         <translation>데이타를 입력 하세요</translation>
     </message>
@@ -1452,7 +1452,17 @@ mailto : jykim74@gmail.com</translation>
         <translation>교환</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="251"/>
+        <location filename="../enc_dec_dlg.ui" line="137"/>
+        <source>CCM Data Len</source>
+        <translation>CCM 데이타 길이</translation>
+    </message>
+    <message>
+        <location filename="../enc_dec_dlg.ui" line="167"/>
+        <source>ReqTag Len</source>
+        <translation>요청 태그 길이</translation>
+    </message>
+    <message>
+        <location filename="../enc_dec_dlg.ui" line="274"/>
         <source>String</source>
         <translation>문자열</translation>
     </message>
@@ -1461,12 +1471,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">CCM Init 길이</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="261"/>
+        <location filename="../enc_dec_dlg.ui" line="284"/>
         <source>Hex</source>
         <translation>16진수</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="268"/>
+        <location filename="../enc_dec_dlg.ui" line="291"/>
         <source>Base64</source>
         <translation>베이스64</translation>
     </message>
@@ -1501,38 +1511,37 @@ mailto : jykim74@gmail.com</translation>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="147"/>
         <source>CCM Data Length</source>
-        <translation>CCM 데이타 길이</translation>
+        <translation type="vanished">CCM 데이타 길이</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="244"/>
+        <location filename="../enc_dec_dlg.ui" line="267"/>
         <source>Input Data</source>
         <translation>입력 데이타</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="288"/>
-        <location filename="../enc_dec_dlg.ui" line="517"/>
+        <location filename="../enc_dec_dlg.ui" line="311"/>
+        <location filename="../enc_dec_dlg.ui" line="540"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="424"/>
+        <location filename="../enc_dec_dlg.ui" line="447"/>
         <source>Key and IV</source>
         <translation>키 와 IV</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="510"/>
+        <location filename="../enc_dec_dlg.ui" line="533"/>
         <source>Output Data</source>
         <translation>결과 데이타</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="169"/>
+        <location filename="../enc_dec_dlg.ui" line="192"/>
         <source>Status</source>
         <translation>상태</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="383"/>
+        <location filename="../enc_dec_dlg.ui" line="406"/>
         <source>Key</source>
         <translation>키</translation>
     </message>
@@ -1542,12 +1551,12 @@ mailto : jykim74@gmail.com</translation>
         <translation>AE(Authenticated Encryption) 사용</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="334"/>
+        <location filename="../enc_dec_dlg.ui" line="357"/>
         <source>AAD</source>
         <translation>AAD</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="194"/>
+        <location filename="../enc_dec_dlg.ui" line="217"/>
         <source>Tag</source>
         <translation>태그</translation>
     </message>
@@ -1556,7 +1565,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">패딩</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="439"/>
+        <location filename="../enc_dec_dlg.ui" line="462"/>
         <source>IV</source>
         <translation>IV</translation>
     </message>
@@ -1566,7 +1575,7 @@ mailto : jykim74@gmail.com</translation>
         <translation>암호화 / 복호화</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="228"/>
+        <location filename="../enc_dec_dlg.ui" line="251"/>
         <source>Method</source>
         <translation>방식</translation>
     </message>
@@ -1575,10 +1584,16 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">데이타를 입력 하세요</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="181"/>
-        <location filename="../enc_dec_dlg.cpp" line="384"/>
+        <location filename="../enc_dec_dlg.cpp" line="183"/>
+        <location filename="../enc_dec_dlg.cpp" line="394"/>
         <source>You have to insert key</source>
         <translation>키 값을 입력하세요.</translation>
+    </message>
+    <message>
+        <location filename="../enc_dec_dlg.cpp" line="283"/>
+        <location filename="../enc_dec_dlg.cpp" line="490"/>
+        <source>Invalid IV length</source>
+        <translation>유효하지 않은 IV 길이</translation>
     </message>
 </context>
 <context>

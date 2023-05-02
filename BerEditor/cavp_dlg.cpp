@@ -2618,11 +2618,11 @@ int CAVPDlg::makeAEData( const QString strKey, const QString strIV, const QStrin
 
     if( strMode == "GCM" )
     {
-        ret = JS_PKI_encrytGCM( strEncAlg.toStdString().c_str(), &binPT, &binKey, &binIV, &binAAD, &binTag, &binEnc );
+        ret = JS_PKI_encrytGCM( strEncAlg.toStdString().c_str(), &binPT, &binKey, &binIV, &binAAD, 16, &binTag, &binEnc );
     }
     else
     {
-        ret = JS_PKI_encryptCCM( strEncAlg.toStdString().c_str(), &binPT, &binKey, &binIV, &binAAD, &binTag, &binEnc );
+        ret = JS_PKI_encryptCCM( strEncAlg.toStdString().c_str(), &binPT, &binKey, &binIV, &binAAD, 16, &binTag, &binEnc );
     }
 
     if( ret != 0 ) goto end;

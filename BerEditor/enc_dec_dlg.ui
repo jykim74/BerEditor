@@ -131,20 +131,10 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
-      <widget class="QLineEdit" name="mCCMDataLength">
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>16777215</height>
-        </size>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="2">
       <widget class="QLabel" name="label_8">
        <property name="text">
-        <string>CCM Data Length</string>
+        <string>CCM Data Len</string>
        </property>
       </widget>
      </item>
@@ -160,6 +150,39 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLineEdit" name="mCCMDataLength">
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QLabel" name="label_12">
+       <property name="text">
+        <string>ReqTag Len</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
+      <widget class="QLineEdit" name="mReqTagLenText">
+       <property name="minimumSize">
+        <size>
+         <width>40</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

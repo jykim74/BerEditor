@@ -135,6 +135,8 @@ void EncDecDlg::initialize()
 
     mMethodCombo->addItems( methodTypes );
     mAlgCombo->addItems( algList );
+
+    mReqTagLenText->setText( "16" );
 }
 
 void EncDecDlg::showEvent( QShowEvent *event )
@@ -214,6 +216,7 @@ void EncDecDlg::Run()
 
     if( mUseAECheck->isChecked() )
     {
+        int nReqTagLen = mReqTagLenText->text().toInt();
         QString strAAD = mAADText->text();
 
         if( mAADTypeCombo->currentIndex() == DATA_STRING )
@@ -228,9 +231,9 @@ void EncDecDlg::Run()
             char *pTag = NULL;
 
             if( isCCM(strSymAlg) )
-                ret = JS_PKI_encryptCCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
+                ret = JS_PKI_encryptCCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, nReqTagLen, &binTag, &binOut );
             else
-                ret = JS_PKI_encrytGCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
+                ret = JS_PKI_encrytGCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, nReqTagLen, &binTag, &binOut );
 
             mTagTypeCombo->setCurrentIndex( DATA_HEX );
             JS_BIN_encodeHex( &binTag, &pTag );
@@ -275,6 +278,12 @@ void EncDecDlg::Run()
     }
     else
     {
+        if( binIV.nLen != 0 && binIV.nLen != 16 )
+        {
+            berApplet->warningBox( tr("Invalid IV length" ), this );
+            goto end;
+        }
+
         if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
         {
             if( strAlg == "SEED" )
@@ -357,6 +366,7 @@ void EncDecDlg::clickUseAE()
     mTagText->setEnabled( bStatus );
     mTagTypeCombo->setEnabled( bStatus );
     mCCMDataLength->setEnabled( bStatus );
+    mReqTagLenText->setEnabled( bStatus );
 
     mPadCheck->setEnabled( !bStatus );
 
@@ -475,6 +485,12 @@ void EncDecDlg::encDecInit()
         }
     }
     else {
+        if( binIV.nLen != 0 && binIV.nLen != 16 )
+        {
+            berApplet->warningBox( tr("Invalid IV length" ), this );
+            goto end;
+        }
+
         if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
         {
             ret = JS_PKI_encryptInit( &ctx_, strSymAlg.toStdString().c_str(), bPad, &binIV, &binKey );
@@ -501,6 +517,7 @@ void EncDecDlg::encDecInit()
     else
         mStatusLabel->setText( QString("Init Fail:%1").arg(ret) );
 
+end :
     JS_BIN_reset( &binKey );
     JS_BIN_reset( &binIV );
     JS_BIN_reset( &binAAD );
@@ -642,12 +659,14 @@ void EncDecDlg::encDecFinal()
 
     if( mUseAECheck->isChecked() )
     {
+        int nReqTagLen = mReqTagLenText->text().toInt();
+
         if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
         {
             if( isCCM(strAlg) )
-                ret = JS_PKI_encryptCCMFinal( ctx_, &binDst, &binTag );
+                ret = JS_PKI_encryptCCMFinal( ctx_, &binDst, nReqTagLen, &binTag );
             else
-                ret = JS_PKI_encryptGCMFinal( ctx_, &binDst, &binTag );
+                ret = JS_PKI_encryptGCMFinal( ctx_, &binDst, nReqTagLen, &binTag );
 
             if( binTag.nLen > 0 )
             {
