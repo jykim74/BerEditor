@@ -53,10 +53,8 @@ AboutDlg::AboutDlg(QWidget *parent) :
         strAbout += "SID: ";
         strAbout += sLicenseInfo.sSID;
         strAbout += "<br>";
-        strAbout += "License Period: ";
-        strAbout += sLicenseInfo.sIssued;
-        strAbout += " ~ ";
-        strAbout += sLicenseInfo.sExpire;
+        strAbout += "Key: ";
+        strAbout += sLicenseInfo.sKey;
     }
 
 #ifdef _AUTO_UPDATE
