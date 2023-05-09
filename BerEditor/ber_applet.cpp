@@ -47,6 +47,9 @@ BerApplet::BerApplet(QObject *parent) : QObject(parent)
         AutoUpdateService::instance()->start();
     }
 #endif
+
+    is_license_ = false;
+    memset( &license_info_, 0x00, sizeof(license_info_));
 }
 
 BerApplet::~BerApplet()
@@ -86,10 +89,54 @@ void BerApplet::start()
     if( settings_mgr_->showLogTab() )
         main_win_->logView();
 
+    if( checkLicense() == false )
+    {
+        warningBox( "This tool is not licensed", NULL );
+        exit(0);
+        return;
+    }
+
     QString strVersion = STRINGIZE(BER_EDITOR_VERSION);
     log( "======================================================");
     log( QString( "== Start BerEditor Version: %1" ).arg( strVersion ));
     log( "======================================================");
+}
+
+int BerApplet::checkLicense()
+{
+    QFile resFile( ":/bereditor_license.lcn" );
+    resFile.open(QIODevice::ReadOnly);
+    QByteArray data = resFile.readAll();
+    resFile.close();
+
+    char sKey[128];
+
+    memset( sKey, 0x00, sizeof(sKey));
+    memcpy( &license_info_, data.data(), data.size() );
+
+    if( memcmp( license_info_.sProduct, "BerEditor", 9 ) != 0 )
+    {
+        is_license_ = false;
+        return is_license_;
+    }
+
+    JS_License_DeriveKey( sKey, &license_info_ );
+
+    QDate expireDate = QDate::fromString( license_info_.sExpire, "yyyy-MM-dd" );
+    QDate nowDate = QDate::currentDate();
+
+    if( expireDate < nowDate )
+    {
+        is_license_ = false;
+        return is_license_;
+    }
+
+    if( memcmp( sKey, license_info_.sKey, sizeof(license_info_.sKey)) == 0 )
+        is_license_ = true;
+    else
+        is_license_ = false;
+
+    return is_license_;
 }
 
 QString BerApplet::getBrand()

@@ -2,7 +2,7 @@
 #include "ber_applet.h"
 #include "auto_update_service.h"
 #include "js_gen.h"
-
+#include "js_license.h"
 
 AboutDlg::AboutDlg(QWidget *parent) :
     QDialog(parent)
@@ -45,6 +45,19 @@ AboutDlg::AboutDlg(QWidget *parent) :
     strAbout += "<a href=https://jykim74.tistory.com>https://jykim74.tistory.com</a>";
     strAbout += "<br>mail: ";
     strAbout += "<a href=mailto:jykim74@gmail.com>jykim74@gmail.com</a>";
+
+    if( berApplet->isLicense() )
+    {
+        JS_LICENSE_INFO sLicenseInfo = berApplet->LicenseInfo();
+        strAbout += "<br><br>";
+        strAbout += "SID: ";
+        strAbout += sLicenseInfo.sSID;
+        strAbout += "<br>";
+        strAbout += "License Period: ";
+        strAbout += sLicenseInfo.sIssued;
+        strAbout += " ~ ";
+        strAbout += sLicenseInfo.sExpire;
+    }
 
 #ifdef _AUTO_UPDATE
     mCheckUpdatBtn->show();

@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QMessageBox>
+#include "js_license.h"
 
 class MainWindow;
 class SettingsMgr;
@@ -16,6 +17,8 @@ public:
     ~BerApplet();
 
     void start();
+    int checkLicense();
+    JS_LICENSE_INFO& LicenseInfo() { return license_info_; };
 
     MainWindow* mainWindow() { return main_win_; };
     SettingsMgr *settingsMgr() { return settings_mgr_; };
@@ -42,6 +45,8 @@ public:
     void setCmd( const QString cmd );
     QString getSetPath();
     bool isPRO() { return is_pro_; };
+    bool isLicense() { return is_license_; };
+
 
 signals:
 
@@ -59,6 +64,8 @@ private:
     bool started_;
     bool in_exit_;
     bool about_to_quit_;
+    bool is_license_;
+    JS_LICENSE_INFO license_info_;
 
     QString cmd_;
 };
