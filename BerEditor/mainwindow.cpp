@@ -340,6 +340,13 @@ void MainWindow::createActions()
         insertBerAct->setStatusTip(tr("Insert BER record"));
         toolMenu->addAction( insertBerAct );
         toolToolBar->addAction( insertBerAct );
+
+        const QIcon cavpIcon = QIcon::fromTheme( "tool-cavp", QIcon(":/images/cavp.png"));
+        QAction *cavpAct = new QAction(cavpIcon, tr("&CAVP"), this);
+        connect( cavpAct, &QAction::triggered, this, &MainWindow::CAVP );
+        cavpAct->setStatusTip(tr("CAVP Test"));
+        toolMenu->addAction( cavpAct );
+    //    toolToolBar->addAction( cavpAct );
     }
 
     const QIcon insertIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/insert.png"));
@@ -356,12 +363,6 @@ void MainWindow::createActions()
     toolMenu->addAction( getURIAct );
     toolToolBar->addAction( getURIAct );
 
-    const QIcon cavpIcon = QIcon::fromTheme( "tool-cavp", QIcon(":/images/cavp.png"));
-    QAction *cavpAct = new QAction(cavpIcon, tr("&CAVP"), this);
-    connect( cavpAct, &QAction::triggered, this, &MainWindow::CAVP );
-    cavpAct->setStatusTip(tr("CAVP Test"));
-    toolMenu->addAction( cavpAct );
-//    toolToolBar->addAction( cavpAct );
 
 
     menuBar()->addSeparator();
