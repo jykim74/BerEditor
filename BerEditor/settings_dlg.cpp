@@ -106,6 +106,8 @@ void SettingsDlg::showEvent(QShowEvent *event)
         state = mgr->showLogTab() ? Qt::Checked : Qt::Unchecked;
         mShowLogTabCheck->setCheckState(state);
     }
+    else
+        mShowLogTabCheck->hide();
 
 #ifdef _AUTO_UPDATE
     if( AutoUpdateService::instance()->shouldSupportAutoUpdate()) {
