@@ -370,7 +370,9 @@ void BerTreeView::ShowContextMenu(QPoint point)
     menu.addAction(tr("Copy as base64"), this, SLOT(CopyAsBase64()));
     menu.addAction(tr("Save node"), this, SLOT(SaveNode()));
     menu.addAction(tr("Save node value"), this, SLOT(SaveNodeValue()));
-    menu.addAction(tr("Edit value"), this, SLOT(EditValue()));
+
+    if( berApplet->isLicense() )
+        menu.addAction(tr("Edit value"), this, SLOT(EditValue()));
 
     BerItem* item = currentItem();
 

@@ -109,25 +109,24 @@ void MainWindow::initialize()
     table_tab_->setTabPosition( QTabWidget::South );
     table_tab_->addTab( right_table_, tr( "Hex" ));
 
-    right_xml_ = new QTextEdit;
-    right_xml_->setReadOnly(true);
-    right_xml_->setFont( QFont("굴림체") );
-    table_tab_->addTab( right_xml_, tr( "XML" ));
-    right_text_ = new QTextEdit;
-    right_text_->setReadOnly(true);
-    right_text_->setFont( QFont("굴림체") );
-    table_tab_->addTab( right_text_, tr( "Text" ));
-//    vsplitter_->addWidget(right_table_);
+    if( berApplet->isLicense() )
+    {
+        right_xml_ = new QTextEdit;
+        right_xml_->setReadOnly(true);
+        right_xml_->setFont( QFont("굴림체") );
+        table_tab_->addTab( right_xml_, tr( "XML" ));
+        right_text_ = new QTextEdit;
+        right_text_->setReadOnly(true);
+        right_text_->setFont( QFont("굴림체") );
+        table_tab_->addTab( right_text_, tr( "Text" ));
+    }
+
     vsplitter_->addWidget( table_tab_ );
-
-//    vsplitter_->addWidget(log_text_);
-
 
     text_tab_ = new QTabWidget;
     vsplitter_->addWidget( text_tab_ );
     text_tab_->setTabPosition( QTabWidget::South );
     text_tab_->addTab( info_text_, tr("information") );
-//    text_tab_->addTab( log_text_, tr("log") );
 
     QList <int> vsizes;
     vsizes << 1200 << 500;
@@ -333,12 +332,15 @@ void MainWindow::createActions()
     toolMenu->addAction( oidAct );
     toolToolBar->addAction( oidAct );
 
-    const QIcon berIcon = QIcon::fromTheme("ber-insert", QIcon(":/images/ber.png"));
-    QAction *insertBerAct = new QAction(berIcon, tr("Insert &BER"), this);
-    connect( insertBerAct, &QAction::triggered, this, &MainWindow::insertBER );
-    insertBerAct->setStatusTip(tr("Insert BER record"));
-    toolMenu->addAction( insertBerAct );
-    toolToolBar->addAction( insertBerAct );
+    if( berApplet->isLicense() )
+    {
+        const QIcon berIcon = QIcon::fromTheme("ber-insert", QIcon(":/images/ber.png"));
+        QAction *insertBerAct = new QAction(berIcon, tr("Insert &BER"), this);
+        connect( insertBerAct, &QAction::triggered, this, &MainWindow::insertBER );
+        insertBerAct->setStatusTip(tr("Insert BER record"));
+        toolMenu->addAction( insertBerAct );
+        toolToolBar->addAction( insertBerAct );
+    }
 
     const QIcon insertIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/insert.png"));
     QAction *insertDataAct = new QAction(insertIcon, tr("&Insert Data"), this);
@@ -364,87 +366,92 @@ void MainWindow::createActions()
 
     menuBar()->addSeparator();
 
-    QMenu *cryptMenu = menuBar()->addMenu(tr("&Cryptogram"));
-    QToolBar *cryptToolBar = addToolBar( "Cryptogram" );
 
-    const QIcon keyIcon = QIcon::fromTheme("key-man", QIcon(":/images/key.png"));
-    QAction *keyManAct = new QAction( keyIcon, tr("&KeyManage"), this );
-    connect( keyManAct, &QAction::triggered, this, &MainWindow::keyManage );
-    keyManAct->setStatusTip(tr("Key Manage function" ));
-    cryptMenu->addAction( keyManAct );
-    cryptToolBar->addAction( keyManAct );
+    if( berApplet->isLicense() )
+    {
+        QMenu *cryptMenu = menuBar()->addMenu(tr("&Cryptogram"));
+        QToolBar *cryptToolBar = addToolBar( "Cryptogram" );
 
-    const QIcon hashIcon = QIcon::fromTheme("Hash", QIcon(":/images/hash.png"));
-    QAction *hashAct = new QAction( hashIcon, tr("&Hash"), this );
-    connect( hashAct, &QAction::triggered, this, &MainWindow::hash );
-    hashAct->setStatusTip(tr("Generate hash value" ));
-    cryptMenu->addAction( hashAct );
-    cryptToolBar->addAction( hashAct );
+        const QIcon keyIcon = QIcon::fromTheme("key-man", QIcon(":/images/key.png"));
+        QAction *keyManAct = new QAction( keyIcon, tr("&KeyManage"), this );
+        connect( keyManAct, &QAction::triggered, this, &MainWindow::keyManage );
+        keyManAct->setStatusTip(tr("Key Manage function" ));
+        cryptMenu->addAction( keyManAct );
+        cryptToolBar->addAction( keyManAct );
 
-    const QIcon macIcon = QIcon::fromTheme("MAC", QIcon(":/images/mac.png"));
-    QAction *macAct = new QAction( macIcon, tr("M&AC"), this );
-    connect( macAct, &QAction::triggered, this, &MainWindow::mac );
-    macAct->setStatusTip(tr("Generate MAC value" ));
-    cryptMenu->addAction( macAct );
-    cryptToolBar->addAction( macAct );
+        const QIcon hashIcon = QIcon::fromTheme("Hash", QIcon(":/images/hash.png"));
+        QAction *hashAct = new QAction( hashIcon, tr("&Hash"), this );
+        connect( hashAct, &QAction::triggered, this, &MainWindow::hash );
+        hashAct->setStatusTip(tr("Generate hash value" ));
+        cryptMenu->addAction( hashAct );
+        cryptToolBar->addAction( hashAct );
 
-    const QIcon encIcon = QIcon::fromTheme("Encrypt_Decrypt", QIcon(":/images/enc.png"));
-    QAction *encDecAct = new QAction( encIcon, tr("&Encrypt/Decrypt"), this );
-    connect( encDecAct, &QAction::triggered, this, &MainWindow::encDec );
-    encDecAct->setStatusTip(tr("Data encrypt decrypt" ));
-    cryptMenu->addAction( encDecAct );
-    cryptToolBar->addAction( encDecAct );
+        const QIcon macIcon = QIcon::fromTheme("MAC", QIcon(":/images/mac.png"));
+        QAction *macAct = new QAction( macIcon, tr("M&AC"), this );
+        connect( macAct, &QAction::triggered, this, &MainWindow::mac );
+        macAct->setStatusTip(tr("Generate MAC value" ));
+        cryptMenu->addAction( macAct );
+        cryptToolBar->addAction( macAct );
 
-    const QIcon signIcon = QIcon::fromTheme("Sign/Verify", QIcon(":/images/sign.png"));
-    QAction *signVerifyAct = new QAction( signIcon, tr("&Sign/Verify"), this );
-    connect( signVerifyAct, &QAction::triggered, this, &MainWindow::signVerify );
-    signVerifyAct->setStatusTip(tr("Data signature and verify" ));
-    cryptMenu->addAction( signVerifyAct );
-    cryptToolBar->addAction( signVerifyAct );
+        const QIcon encIcon = QIcon::fromTheme("Encrypt_Decrypt", QIcon(":/images/enc.png"));
+        QAction *encDecAct = new QAction( encIcon, tr("&Encrypt/Decrypt"), this );
+        connect( encDecAct, &QAction::triggered, this, &MainWindow::encDec );
+        encDecAct->setStatusTip(tr("Data encrypt decrypt" ));
+        cryptMenu->addAction( encDecAct );
+        cryptToolBar->addAction( encDecAct );
 
-    const QIcon pubEncIcon = QIcon::fromTheme("PubKey Encrypt/Decrypt", QIcon(":/images/pub_enc.png"));
-    QAction *pubEncDecAct = new QAction( pubEncIcon, tr("&PubKey Encrypt/Decrypt"), this );
-    connect( pubEncDecAct, &QAction::triggered, this, &MainWindow::pubEncDec );
-    pubEncDecAct->setStatusTip(tr("Data PubKey encrypt decrypt" ));
-    cryptMenu->addAction( pubEncDecAct );
-    cryptToolBar->addAction( pubEncDecAct );
+        const QIcon signIcon = QIcon::fromTheme("Sign/Verify", QIcon(":/images/sign.png"));
+        QAction *signVerifyAct = new QAction( signIcon, tr("&Sign/Verify"), this );
+        connect( signVerifyAct, &QAction::triggered, this, &MainWindow::signVerify );
+        signVerifyAct->setStatusTip(tr("Data signature and verify" ));
+        cryptMenu->addAction( signVerifyAct );
+        cryptToolBar->addAction( signVerifyAct );
 
-    const QIcon agreeIcon = QIcon::fromTheme("Key Agreement", QIcon(":/images/agree.png"));
-    QAction *keyAgreeAct = new QAction( agreeIcon, tr("Key&Agreement"), this );
-    connect( keyAgreeAct, &QAction::triggered, this, &MainWindow::keyAgree );
-    keyAgreeAct->setStatusTip(tr("Key Agreement" ));
-    cryptMenu->addAction( keyAgreeAct );
-    cryptToolBar->addAction( keyAgreeAct );
+        const QIcon pubEncIcon = QIcon::fromTheme("PubKey Encrypt/Decrypt", QIcon(":/images/pub_enc.png"));
+        QAction *pubEncDecAct = new QAction( pubEncIcon, tr("&PubKey Encrypt/Decrypt"), this );
+        connect( pubEncDecAct, &QAction::triggered, this, &MainWindow::pubEncDec );
+        pubEncDecAct->setStatusTip(tr("Data PubKey encrypt decrypt" ));
+        cryptMenu->addAction( pubEncDecAct );
+        cryptToolBar->addAction( pubEncDecAct );
 
-
-    const QIcon cmsIcon = QIcon::fromTheme("CMS", QIcon(":/images/cms.png"));
-    QAction *cmsAct = new QAction( cmsIcon, tr("&CMS"), this );
-    connect( cmsAct, &QAction::triggered, this, &MainWindow::cms );
-    cmsAct->setStatusTip(tr("PKCS#7 Cryptographic Message Syntax" ));
-    cryptMenu->addAction( cmsAct );
-    cryptToolBar->addAction( cmsAct );
-
-    const QIcon sssIcon = QIcon::fromTheme("SSS", QIcon(":/images/sss.png"));
-    QAction *sssAct = new QAction( sssIcon, tr("&SSS"), this );
-    connect( sssAct, &QAction::triggered, this, &MainWindow::sss );
-    sssAct->setStatusTip(tr("Shamir Secret Sharing Scheme" ));
-    cryptMenu->addAction( sssAct );
-    cryptToolBar->addAction( sssAct );
-
-    const QIcon certPVDIcon = QIcon::fromTheme("Cert PathValidation", QIcon(":/images/cert_pvd.png"));
-    QAction *certPVDAct = new QAction( certPVDIcon, tr( "Cert &PathValidation"), this );
-    connect( certPVDAct, &QAction::triggered, this, &MainWindow::certPVD );
-    certPVDAct->setStatusTip(tr("Certificate Path Validation"));
-    cryptMenu->addAction( certPVDAct );
-    cryptToolBar->addAction( certPVDAct );
+        const QIcon agreeIcon = QIcon::fromTheme("Key Agreement", QIcon(":/images/agree.png"));
+        QAction *keyAgreeAct = new QAction( agreeIcon, tr("Key&Agreement"), this );
+        connect( keyAgreeAct, &QAction::triggered, this, &MainWindow::keyAgree );
+        keyAgreeAct->setStatusTip(tr("Key Agreement" ));
+        cryptMenu->addAction( keyAgreeAct );
+        cryptToolBar->addAction( keyAgreeAct );
 
 
-    const QIcon otpIcon = QIcon::fromTheme("OTP", QIcon(":/images/otp.png"));
-    QAction *genOTPAct = new QAction( otpIcon, tr("&OTP generate"), this );
-    connect( genOTPAct, &QAction::triggered, this, &MainWindow::genOTP );
-    genOTPAct->setStatusTip(tr("Generate OTP value" ));
-    cryptMenu->addAction( genOTPAct );
-//    cryptToolBar->addAction( genOTPAct );
+        const QIcon cmsIcon = QIcon::fromTheme("CMS", QIcon(":/images/cms.png"));
+        QAction *cmsAct = new QAction( cmsIcon, tr("&CMS"), this );
+        connect( cmsAct, &QAction::triggered, this, &MainWindow::cms );
+        cmsAct->setStatusTip(tr("PKCS#7 Cryptographic Message Syntax" ));
+        cryptMenu->addAction( cmsAct );
+        cryptToolBar->addAction( cmsAct );
+
+        const QIcon sssIcon = QIcon::fromTheme("SSS", QIcon(":/images/sss.png"));
+        QAction *sssAct = new QAction( sssIcon, tr("&SSS"), this );
+        connect( sssAct, &QAction::triggered, this, &MainWindow::sss );
+        sssAct->setStatusTip(tr("Shamir Secret Sharing Scheme" ));
+        cryptMenu->addAction( sssAct );
+        cryptToolBar->addAction( sssAct );
+
+        const QIcon certPVDIcon = QIcon::fromTheme("Cert PathValidation", QIcon(":/images/cert_pvd.png"));
+        QAction *certPVDAct = new QAction( certPVDIcon, tr( "Cert &PathValidation"), this );
+        connect( certPVDAct, &QAction::triggered, this, &MainWindow::certPVD );
+        certPVDAct->setStatusTip(tr("Certificate Path Validation"));
+        cryptMenu->addAction( certPVDAct );
+        cryptToolBar->addAction( certPVDAct );
+
+
+        const QIcon otpIcon = QIcon::fromTheme("OTP", QIcon(":/images/otp.png"));
+        QAction *genOTPAct = new QAction( otpIcon, tr("&OTP generate"), this );
+        connect( genOTPAct, &QAction::triggered, this, &MainWindow::genOTP );
+        genOTPAct->setStatusTip(tr("Generate OTP value" ));
+        cryptMenu->addAction( genOTPAct );
+//      cryptToolBar->addAction( genOTPAct );
+    }
+
 
 
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
@@ -508,8 +515,11 @@ void MainWindow::insertBER()
         left_tree_->header()->setVisible(false);
         left_tree_->viewRoot();
 
-        left_tree_->showTextView();
-        left_tree_->showXMLView();
+        if( berApplet->isLicense() )
+        {
+            left_tree_->showTextView();
+            left_tree_->showXMLView();
+        }
 
         setTitle( QString("Unknown" ));
     }
@@ -592,8 +602,11 @@ void MainWindow::openBer( const BIN *pBer )
     QModelIndex ri = ber_model_->index(0,0);
     left_tree_->expand(ri);
 
-    left_tree_->showTextView();
-    left_tree_->showXMLView();
+    if( berApplet->isLicense() )
+    {
+        left_tree_->showTextView();
+        left_tree_->showXMLView();
+    }
 }
 
 bool MainWindow::isChanged()
@@ -872,8 +885,11 @@ void MainWindow::getURI()
         left_tree_->header()->setVisible(false);
         left_tree_->viewRoot();
 
-        left_tree_->showTextView();
-        left_tree_->showXMLView();
+        if( berApplet->isLicense() )
+        {
+            left_tree_->showTextView();
+            left_tree_->showXMLView();
+        }
 
         setTitle( QString("Unknown" ));
     }

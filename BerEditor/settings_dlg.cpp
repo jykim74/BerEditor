@@ -35,8 +35,11 @@ void SettingsDlg::updateSettings()
 
     mgr->setShowPartOnly( mCheckShowPartOnly->checkState() == Qt::Checked );
 
-    mgr->setShowLogTab( mShowLogTabCheck->checkState() == Qt::Checked );
-    berApplet->mainWindow()->logView( mShowLogTabCheck->checkState() == Qt::Checked );
+    if( berApplet->isLicense() )
+    {
+        mgr->setShowLogTab( mShowLogTabCheck->checkState() == Qt::Checked );
+        berApplet->mainWindow()->logView( mShowLogTabCheck->checkState() == Qt::Checked );
+    }
 
 #ifdef _AUTO_UPDATE
     if( AutoUpdateService::instance()->shouldSupportAutoUpdate() ) {
@@ -98,8 +101,11 @@ void SettingsDlg::showEvent(QShowEvent *event)
 
     mOIDConfigPathText->setText( mgr->OIDConfigPath() );
 
-    state = mgr->showLogTab() ? Qt::Checked : Qt::Unchecked;
-    mShowLogTabCheck->setCheckState(state);
+    if( berApplet->isLicense() )
+    {
+        state = mgr->showLogTab() ? Qt::Checked : Qt::Unchecked;
+        mShowLogTabCheck->setCheckState(state);
+    }
 
 #ifdef _AUTO_UPDATE
     if( AutoUpdateService::instance()->shouldSupportAutoUpdate()) {
