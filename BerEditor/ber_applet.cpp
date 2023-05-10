@@ -78,11 +78,8 @@ QString BerApplet::getSetPath()
 }
 
 void BerApplet::start()
-{
-    if( checkLicense() == false )
-    {
-        info( "The BerEditor is not licensed" );
-    }
+{    
+    checkLicense();
 
     main_win_ = new MainWindow;
     main_win_->show();
@@ -95,6 +92,10 @@ void BerApplet::start()
     {
         if( settings_mgr_->showLogTab() )
             main_win_->logView();
+    }
+    else
+    {
+        info( "The BerEditor is not licensed" );
     }
 
     QString strVersion = STRINGIZE(BER_EDITOR_VERSION);
