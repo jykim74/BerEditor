@@ -465,12 +465,15 @@ void MainWindow::createActions()
     helpMenu->addAction( settingAct );
     helpToolBar->addAction( settingAct );
 
-    const QIcon clearIcon = QIcon::fromTheme( "clear-log", QIcon(":/images/clear.png"));
-    QAction *clearAct = new QAction( clearIcon, tr("&Clear Log"), this );
-    connect( clearAct, &QAction::triggered, this, &MainWindow::clearLog );
-    clearAct->setStatusTip(tr("clear information and log"));
-    helpMenu->addAction( clearAct );
-    helpToolBar->addAction( clearAct );
+    if( berApplet->isLicense() )
+    {
+        const QIcon clearIcon = QIcon::fromTheme( "clear-log", QIcon(":/images/clear.png"));
+        QAction *clearAct = new QAction( clearIcon, tr("&Clear Log"), this );
+        connect( clearAct, &QAction::triggered, this, &MainWindow::clearLog );
+        clearAct->setStatusTip(tr("clear information and log"));
+        helpMenu->addAction( clearAct );
+        helpToolBar->addAction( clearAct );
+    }
 
     const QIcon aboutIcon = QIcon::fromTheme("berview-icon", QIcon(":/images/bereditor.png"));
     QAction *aboutAct = new QAction( aboutIcon, tr("&About BerEditor"), this );
