@@ -86,7 +86,7 @@ private slots:
     void closeEvent(QCloseEvent *event);
 
 private:
-    Ui::MainWindow *ui;
+ //   Ui::MainWindow *ui;
     void createActions();
     void createStatusBar();
 

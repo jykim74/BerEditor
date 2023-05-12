@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
+// #include "ui_mainwindow.h"
 
 #include "ber_model.h"
 #include "ber_tree_view.h"
@@ -53,11 +53,8 @@
 const int kMaxRecentFiles = 10;
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    QMainWindow(parent)
 {
- //   ui->setupUi(this);
-
     initialize();
 
     createActions();
@@ -70,12 +67,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-//    delete ui;
-    delete  ber_model_;
-    delete  left_tree_;
-    delete  log_text_;
+    delete ber_model_;
+    delete hsplitter_;
+    delete vsplitter_;
+    delete left_tree_;
+    delete table_tab_;
+    delete text_tab_;
+    delete log_text_;
+    delete info_text_;
+    delete right_table_;
+    delete right_xml_;
 }
-
 
 void MainWindow::initialize()
 {
@@ -84,10 +86,8 @@ void MainWindow::initialize()
 
     left_tree_ = new BerTreeView(this);
 
-
     log_text_ = new QTextEdit();
     log_text_->setReadOnly(true);
-//    log_text_->setFont( QFont("Courier New") );
     log_text_->setFont( QFont("굴림체") );
 
     info_text_ = new QTextEdit;
@@ -135,19 +135,17 @@ void MainWindow::initialize()
     QList<int> sizes;
 
     sizes << 400 << 1200;
-#ifdef Q_OS_MAC
-    resize( 960, 768 );
-    setFixedSize( 960, 768 );
-#else
-    resize( 1024, 768 );
-    setFixedSize( 1024, 768 );
-#endif
-// #endif
-
     hsplitter_->setSizes(sizes);
 
-    setCentralWidget(hsplitter_);
+#ifdef Q_OS_MAC
+    resize( 960, 768 );
+//    setFixedSize( 960, 768 );
+#else
+    resize( 1024, 768 );
+//    setFixedSize( 1024, 768 );
+#endif
 
+    setCentralWidget(hsplitter_);
     createTableMenu();
 }
 

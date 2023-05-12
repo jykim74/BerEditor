@@ -84,6 +84,7 @@ void BerApplet::start()
     main_win_ = new MainWindow;
     main_win_->show();
 
+
     QString strOIDPath = settings_mgr_->OIDConfigPath();
 
     setOIDList( strOIDPath );
