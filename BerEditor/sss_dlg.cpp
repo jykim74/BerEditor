@@ -146,6 +146,12 @@ void SSSDlg::clickSplit()
     else if( mSrcTypeCombo->currentText() == "Base64" )
         JS_BIN_decodeBase64( strSrc.toStdString().c_str(), &binSrc );
 
+    if( binSrc.nLen < 8 )
+    {
+        berApplet->warningBox( tr( "Source Value have to be more 8bytes"), this );
+        goto end;
+    }
+
     berApplet->log( QString( "Src : %1").arg( getHexString( &binSrc )));
 
     ret = JS_SSS_splitKey( nShares, nThreshold, &binSrc, &pShareList );
