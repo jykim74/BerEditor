@@ -259,7 +259,7 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="2">
+     <item row="0" column="3">
       <widget class="QCheckBox" name="mPubKeyVerifyCheck">
        <property name="text">
         <string>Verify with public key</string>
@@ -285,6 +285,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="2">
+      <widget class="QCheckBox" name="mAutoCertPubKeyCheck">
+       <property name="text">
+        <string>Cert or PubKey Auto</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

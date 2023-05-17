@@ -6,6 +6,7 @@
 #include "settings_mgr.h"
 #include "js_bin.h"
 #include "js_pki.h"
+#include "js_pki_tools.h"
 #include "common.h"
 
 static QStringList algTypes = {
@@ -39,7 +40,8 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     connect( mUpdateBtn, SIGNAL(clicked()), this, SLOT(signVerifyUpdate()));
     connect( mFinalBtn, SIGNAL(clicked()), this, SLOT(signVerifyFinal()));
 
-    connect( mPubKeyVerifyCheck, SIGNAL(clicked()), this, SLOT(clickPubKeyVerify()));
+    connect( mAutoCertPubKeyCheck, SIGNAL(clicked()), this, SLOT(checkAutoCertOrPubKey()));
+    connect( mPubKeyVerifyCheck, SIGNAL(clicked()), this, SLOT(checkPubKeyVerify()));
     connect( mCheckKeyPairBtn, SIGNAL(clicked()), this, SLOT(clickCheckKeyPair()));
     connect( mRunBtn, SIGNAL(clicked()), this, SLOT(Run()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
@@ -68,7 +70,7 @@ void SignVerifyDlg::initialize()
     mMethodCombo->addItems(methodTypes);
 }
 
-void SignVerifyDlg::clickPubKeyVerify()
+void SignVerifyDlg::checkPubKeyVerify()
 {
     bool bVal = mPubKeyVerifyCheck->isChecked();
 
@@ -82,6 +84,13 @@ void SignVerifyDlg::clickPubKeyVerify()
         mCertBtn->setText( tr("Certificate") );
         mPriKeyAndCertLabel->setText( tr( "Private key and Certificate" ));
     }
+}
+
+void SignVerifyDlg::checkAutoCertOrPubKey()
+{
+    bool bVal = mAutoCertPubKeyCheck->isChecked();
+
+    mPubKeyVerifyCheck->setEnabled( !bVal );
 }
 
 void SignVerifyDlg::clickCheckKeyPair()
@@ -107,15 +116,23 @@ void SignVerifyDlg::clickCheckKeyPair()
         return;
     }
 
-    JS_BIN_fileRead( strPriPath.toStdString().c_str(), &binPri );
+    JS_BIN_fileRead( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    JS_BIN_fileRead( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+
+    if( mAutoCertPubKeyCheck->isChecked() )
+    {
+        if( JS_PKI_isCert( &binCert ) == 0 )
+            mPubKeyVerifyCheck->setChecked( true );
+        else
+            mPubKeyVerifyCheck->setChecked( false );
+    }
 
     if( mPubKeyVerifyCheck->isChecked() )
     {
-        JS_BIN_fileRead( strCertPath.toStdString().c_str(), &binPub );
+        JS_BIN_fileRead( strCertPath.toLocal8Bit().toStdString().c_str(), &binPub );
     }
     else
     {
-        JS_BIN_fileRead( strCertPath.toStdString().c_str(), &binCert );
         ret = JS_PKI_getPubKeyFromCert( &binCert, &binPub );
         if( ret != 0 ) goto end;
     }
@@ -415,6 +432,14 @@ void SignVerifyDlg::Run()
 
         JS_BIN_fileRead( mCertPath->text().toStdString().c_str(), &binCert );
         JS_BIN_decodeHex( mOutputText->toPlainText().toStdString().c_str(), &binOut );
+
+        if( mAutoCertPubKeyCheck->isChecked() )
+        {
+            if( JS_PKI_isCert( &binCert ) == 0 )
+                mPubKeyVerifyCheck->setChecked(true);
+            else
+                mPubKeyVerifyCheck->setChecked(false);
+        }
 
         if( mAlgTypeCombo->currentIndex() == 0 )
         {

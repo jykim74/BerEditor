@@ -6,6 +6,7 @@
 #include "js_ber.h"
 #include "ber_applet.h"
 #include "common.h"
+#include "js_pki_tools.h"
 
 static QStringList algTypes = {
     "RSA",
@@ -38,7 +39,8 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
     connect( mPriKeyBtn, SIGNAL(clicked()), this, SLOT(findPrivateKey()));
     connect( mCertBtn, SIGNAL(clicked()), this, SLOT(findCert()));
     connect( mChangeBtn, SIGNAL(clicked()), this, SLOT(changeValue()));
-    connect( mPubKeyEncryptCheck, SIGNAL(clicked()), this, SLOT(clickPubKeyEncrypt()));
+    connect( mAutoCertPubKeyCheck, SIGNAL(clicked()), this, SLOT(checkAutoCertOrPubKey()));
+    connect( mPubKeyEncryptCheck, SIGNAL(clicked()), this, SLOT(checkPubKeyEncrypt()));
     connect( mCheckKeyPairBtn, SIGNAL(clicked()), this, SLOT(clickCheckKeyPair()));
     connect( mRunBtn, SIGNAL(clicked()), this, SLOT(Run()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
@@ -72,7 +74,7 @@ void PubEncDecDlg::initialize()
     mMethodTypeCombo->addItems(methodTypes);
 }
 
-void PubEncDecDlg::clickPubKeyEncrypt()
+void PubEncDecDlg::checkPubKeyEncrypt()
 {
     bool bVal = mPubKeyEncryptCheck->isChecked();
 
@@ -86,6 +88,13 @@ void PubEncDecDlg::clickPubKeyEncrypt()
         mCertBtn->setText(tr("Certificate"));
         mPriKeyAndCertLabel->setText( tr("Private key and Certificate"));
     }
+}
+
+void PubEncDecDlg::checkAutoCertOrPubKey()
+{
+    bool bVal = mAutoCertPubKeyCheck->isChecked();
+
+    mPubKeyEncryptCheck->setEnabled( !bVal );
 }
 
 void PubEncDecDlg::clickCheckKeyPair()
@@ -113,15 +122,23 @@ void PubEncDecDlg::clickCheckKeyPair()
         return;
     }
 
-    JS_BIN_fileRead( strPriPath.toStdString().c_str(), &binPri );
+    JS_BIN_fileRead( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    JS_BIN_fileRead( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+
+    if( mAutoCertPubKeyCheck->isChecked() )
+    {
+        if( JS_PKI_isCert( &binCert ) == 0 )
+            mPubKeyEncryptCheck->setChecked( true );
+        else
+            mPubKeyEncryptCheck->setChecked( false );
+    }
 
     if( mPubKeyEncryptCheck->isChecked() )
     {
-        JS_BIN_fileRead( strCertPath.toStdString().c_str(), &binPub );
+        JS_BIN_fileRead( strCertPath.toLocal8Bit().toStdString().c_str(), &binPub );
     }
     else
     {
-        JS_BIN_fileRead( strCertPath.toStdString().c_str(), &binCert );
         ret = JS_PKI_getPubKeyFromCert( &binCert, &binPub );
         if( ret != 0 ) goto end;
     }
@@ -194,6 +211,14 @@ void PubEncDecDlg::Run()
         }
 
         JS_BIN_fileRead( mCertPath->text().toStdString().c_str(), &binCert );
+
+        if( mAutoCertPubKeyCheck->isChecked() )
+        {
+            if( JS_PKI_isCert( &binCert ) == 0 )
+                mPubKeyEncryptCheck->setChecked(true);
+            else
+                mPubKeyEncryptCheck->setChecked(false);
+        }
 
         if( strAlg == "RSA" )
         {
