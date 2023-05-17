@@ -790,7 +790,6 @@ void MainWindow::dataEncoder()
 void MainWindow::keyManage()
 {
     KeyManDlg keyManDlg;
-    keyManDlg.setModal(false);
     keyManDlg.exec();
 }
 
