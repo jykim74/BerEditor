@@ -41,6 +41,16 @@ const QStringList kECCParamList = {
     "sect409r1", "sect571k1", "sect571r1", "SM2"
 };
 
+static QStringList kHashList = {
+    "MD5",
+    "SHA1",
+    "SHA224",
+    "SHA256",
+    "SHA384",
+    "SHA512",
+    "SM3"
+};
+
 const QString kExtNameAIA = "authorityInfoAccess";
 const QString kExtNameAKI = "authorityKeyIdentifier";
 const QString kExtNameBC = "basicConstraints";

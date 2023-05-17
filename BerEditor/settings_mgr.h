@@ -19,9 +19,18 @@ public:
 
     void setShowLogTab( bool bVal );
     bool showLogTab();
+
+    void setDefaultHash( const QString& strHash );
+    QString getDefaultHash();
+    QString defaultHash() { return default_hash_; };
 signals:
 
-public slots:
+private:
+    void initialize();
+
+private:
+    QString default_hash_;
+
 private:
     Q_DISABLE_COPY(SettingsMgr)
 };

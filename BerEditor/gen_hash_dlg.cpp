@@ -4,27 +4,18 @@
 #include "js_pki.h"
 #include "js_ber.h"
 #include "ber_applet.h"
+#include "settings_mgr.h"
 #include "common.h"
 
 #include <QDialogButtonBox>
 
-static QStringList hashTypes = {
-    "md5",
-    "sha1",
-    "sha224",
-    "sha256",
-    "sha384",
-    "sha512",
-    "sm3"
-};
+
 
 GenHashDlg::GenHashDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
     pctx_ = NULL;
-
-    mOutputHashCombo->addItems( hashTypes );
 
     connect( mInitBtn, SIGNAL(clicked()), this, SLOT(hashInit()));
     connect( mUpdateBtn, SIGNAL(clicked()), this, SLOT(hashUpdate()));
@@ -41,6 +32,8 @@ GenHashDlg::GenHashDlg(QWidget *parent) :
     connect( mInputHexRadio, SIGNAL(clicked()), this, SLOT(inputChanged()));
     connect( mInputBase64Radio, SIGNAL(clicked()), this, SLOT(inputChanged()));
 
+    initialize();
+
     mCloseBtn->setFocus();
 }
 
@@ -48,6 +41,14 @@ GenHashDlg::~GenHashDlg()
 {
 //    delete ui;
     if( pctx_ ) JS_PKI_hashFree( &pctx_ );
+}
+
+void GenHashDlg::initialize()
+{
+    SettingsMgr *setMgr = berApplet->settingsMgr();
+
+    mOutputHashCombo->addItems( kHashList );
+    mOutputHashCombo->setCurrentText( setMgr->defaultHash() );
 }
 
 void GenHashDlg::hashInit()

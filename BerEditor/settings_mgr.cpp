@@ -7,11 +7,17 @@ const char *kShowPartOnly = "showPartOnly";
 const char *kSaveOpenFolder = "saveOpenFolder";
 const char *kOIDConfigPath = "OIDConfigPath";
 const char *kShowLogTab = "showLogTab";
+const char *kDefaultHash = "defaultHash";
 }
 
 SettingsMgr::SettingsMgr(QObject *parent) : QObject(parent)
 {
+    initialize();
+}
 
+void SettingsMgr::initialize()
+{
+    getDefaultHash();
 }
 
 void SettingsMgr::setShowPartOnly(bool val)
@@ -78,4 +84,25 @@ bool SettingsMgr::showLogTab()
     settings.endGroup();
 
     return val;
+}
+
+void SettingsMgr::setDefaultHash( const QString& strHash )
+{
+    QSettings sets;
+    sets.beginGroup( kBehaviorGroup );
+    sets.setValue( kDefaultHash, strHash );
+    sets.endGroup();
+
+    default_hash_ = strHash;
+}
+
+QString SettingsMgr::getDefaultHash()
+{
+    QSettings sets;
+
+    sets.beginGroup( kBehaviorGroup );
+    default_hash_ = sets.value( kDefaultHash, "SHA256" ).toString();
+    sets.endGroup();
+
+    return default_hash_;
 }

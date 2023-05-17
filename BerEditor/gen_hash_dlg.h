@@ -27,6 +27,8 @@ private slots:
     void outputChanged();
 
 private:
+    void initialize();
+
     void *pctx_;
 //    Ui::GenHashDlg *ui;
 };

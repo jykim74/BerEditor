@@ -4,21 +4,13 @@
 
 #include "key_man_dlg.h"
 #include "ber_applet.h"
+#include "settings_mgr.h"
 #include "common.h"
 
 static QStringList dataTypes = {
     "String",
     "Hex",
     "Base64"
-};
-
-static QStringList hashTypes = {
-    "md5",
-    "sha1",
-    "sha224",
-    "sha256",
-    "sha384",
-    "sha512"
 };
 
 
@@ -55,7 +47,11 @@ KeyManDlg::~KeyManDlg()
 
 void KeyManDlg::initialize()
 {
-    mHashCombo->addItems( hashTypes );
+    SettingsMgr *setMgr = berApplet->settingsMgr();
+
+    mHashCombo->addItems( kHashList );
+    mHashCombo->setCurrentText( setMgr->defaultHash() );
+
     mSaltTypeCombo->addItems( dataTypes );
 
     mKeyLenText->setText( "32" );

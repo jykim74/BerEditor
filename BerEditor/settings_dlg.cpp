@@ -48,6 +48,8 @@ void SettingsDlg::updateSettings()
     }
 #endif
 
+    mgr->setDefaultHash( mDefaultHashCombo->currentText() );
+
     bool language_changed = false;
 
     if( mLangComboBox->currentIndex() != I18NHelper::getInstance()->preferredLanguage() )
@@ -117,6 +119,9 @@ void SettingsDlg::showEvent(QShowEvent *event)
 #else
     mCheckBoxLatestVersion->hide();
 #endif
+
+    mDefaultHashCombo->addItems( kHashList );
+    mDefaultHashCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
 
     mLangComboBox->setCurrentIndex(I18NHelper::getInstance()->preferredLanguage());
 

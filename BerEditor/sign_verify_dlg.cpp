@@ -3,6 +3,7 @@
 #include "sign_verify_dlg.h"
 #include "js_ber.h"
 #include "ber_applet.h"
+#include "settings_mgr.h"
 #include "js_bin.h"
 #include "js_pki.h"
 #include "common.h"
@@ -11,16 +12,6 @@ static QStringList algTypes = {
     "RSA",
     "ECDSA",
     "SM2"
-};
-
-static QStringList hashTypes = {
-    "MD5",
-    "SHA1",
-    "SHA224",
-    "SHA256",
-    "SHA384",
-    "SHA512",
-    "SM3"
 };
 
 static QStringList versionTypes = {
@@ -70,7 +61,9 @@ SignVerifyDlg::~SignVerifyDlg()
 void SignVerifyDlg::initialize()
 {
     mAlgTypeCombo->addItems(algTypes);
-    mHashTypeCombo->addItems(hashTypes);
+    mHashTypeCombo->addItems(kHashList);
+    mHashTypeCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
+
     mVersionCombo->addItems(versionTypes);
     mMethodCombo->addItems(methodTypes);
 }

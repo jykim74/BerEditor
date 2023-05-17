@@ -6,20 +6,11 @@
 #include "js_bin.h"
 #include "js_pki.h"
 #include "ber_applet.h"
+#include "settings_mgr.h"
 #include "common.h"
 
 #define JS_TYPE_HMAC    0
 #define JS_TYPE_CMAC    1
-
-static QStringList hashTypes = {
-    "MD5",
-    "SHA1",
-    "SHA224",
-    "SHA256",
-    "SHA384",
-    "SHA512",
-    "SM3"
-};
 
 static QStringList cryptList = {
     "AES",
@@ -46,8 +37,6 @@ GenMacDlg::GenMacDlg(QWidget *parent) :
     type_ = 0;
     group_ = new QButtonGroup;
     setupUi(this);
-
-
 
     connect( mInitBtn, SIGNAL(clicked()), this, SLOT(macInit()));
     connect( mUpdateBtn, SIGNAL(clicked()), this, SLOT(macUpdate()));
@@ -384,7 +373,9 @@ void GenMacDlg::checkHMAC()
     mModeTypeCombo->setDisabled(true);
 
     mAlgTypeCombo->clear();
-    mAlgTypeCombo->addItems( hashTypes );
+
+    mAlgTypeCombo->addItems( kHashList );
+    mAlgTypeCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
 }
 
 void GenMacDlg::checkCMAC()
