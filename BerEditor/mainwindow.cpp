@@ -339,12 +339,7 @@ void MainWindow::createActions()
         toolMenu->addAction( insertBerAct );
         toolToolBar->addAction( insertBerAct );
 
-        const QIcon cavpIcon = QIcon::fromTheme( "tool-cavp", QIcon(":/images/cavp.png"));
-        QAction *cavpAct = new QAction(cavpIcon, tr("&CAVP"), this);
-        connect( cavpAct, &QAction::triggered, this, &MainWindow::CAVP );
-        cavpAct->setStatusTip(tr("CAVP Test"));
-        toolMenu->addAction( cavpAct );
-    //    toolToolBar->addAction( cavpAct );
+
     }
 
     const QIcon insertIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/insert.png"));
@@ -442,13 +437,19 @@ void MainWindow::createActions()
         cryptMenu->addAction( certPVDAct );
         cryptToolBar->addAction( certPVDAct );
 
-
         const QIcon otpIcon = QIcon::fromTheme("OTP", QIcon(":/images/otp.png"));
         QAction *genOTPAct = new QAction( otpIcon, tr("&OTP generate"), this );
         connect( genOTPAct, &QAction::triggered, this, &MainWindow::genOTP );
         genOTPAct->setStatusTip(tr("Generate OTP value" ));
         cryptMenu->addAction( genOTPAct );
 //      cryptToolBar->addAction( genOTPAct );
+
+        const QIcon cavpIcon = QIcon::fromTheme( "tool-cavp", QIcon(":/images/cavp.png"));
+        QAction *cavpAct = new QAction(cavpIcon, tr("&CAVP"), this);
+        connect( cavpAct, &QAction::triggered, this, &MainWindow::CAVP );
+        cavpAct->setStatusTip(tr("CAVP Test"));
+        cryptMenu->addAction( cavpAct );
+    //    cryptToolBar->addAction( cavpAct );
     }
 
 
