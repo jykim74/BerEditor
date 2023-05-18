@@ -223,7 +223,7 @@ void SignVerifyDlg::signVerifyInit()
             goto end;
         }
 
-        JS_BIN_fileRead( mPriKeyPath->text().toStdString().c_str(), &binPri );
+        JS_BIN_fileRead( mPriKeyPath->text().toLocal8Bit().toStdString().c_str(), &binPri );
 
         ret = JS_PKI_signInit( &sctx_, strHash.toStdString().c_str(), nType, &binPri );
 
@@ -237,7 +237,7 @@ void SignVerifyDlg::signVerifyInit()
             goto end;
         }
 
-        JS_BIN_fileRead( mCertPath->text().toStdString().c_str(), &binCert );
+        JS_BIN_fileRead( mCertPath->text().toLocal8Bit().toStdString().c_str(), &binCert );
 
         if( mPubKeyVerifyCheck->isChecked() )
             ret = JS_PKI_verifyInit( &sctx_, strHash.toStdString().c_str(), &binCert );
@@ -402,7 +402,7 @@ void SignVerifyDlg::Run()
             goto end;
         }
 
-        JS_BIN_fileRead( mPriKeyPath->text().toStdString().c_str(), &binPri );
+        JS_BIN_fileRead( mPriKeyPath->text().toLocal8Bit().toStdString().c_str(), &binPri );
 
         if( mAlgTypeCombo->currentIndex() == 0 )
             ret = JS_PKI_RSAMakeSign( strHash.toStdString().c_str(), nVersion, &binSrc, &binPri, &binOut );
@@ -430,7 +430,7 @@ void SignVerifyDlg::Run()
             goto end;
         }
 
-        JS_BIN_fileRead( mCertPath->text().toStdString().c_str(), &binCert );
+        JS_BIN_fileRead( mCertPath->text().toLocal8Bit().toStdString().c_str(), &binCert );
         JS_BIN_decodeHex( mOutputText->toPlainText().toStdString().c_str(), &binOut );
 
         if( mAutoCertPubKeyCheck->isChecked() )

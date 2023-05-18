@@ -972,7 +972,7 @@ void MainWindow::save()
         }
 
         BIN& binBer = ber_model_->getBer();
-        JS_BIN_fileWrite( &binBer, file_path_.toStdString().c_str() );
+        JS_BIN_fileWrite( &binBer, file_path_.toLocal8Bit().toStdString().c_str() );
     }
 }
 

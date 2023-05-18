@@ -483,7 +483,7 @@ void BerTreeView::SaveNode()
     BIN& binBer = tree_model->getBer();
 
     JS_BIN_set( &binData, binBer.pVal + item->GetOffset(), item->GetHeaderSize() + item->GetLength() );
-    JS_BIN_fileWrite( &binData, fileName.toStdString().c_str());
+    JS_BIN_fileWrite( &binData, fileName.toLocal8Bit().toStdString().c_str());
     JS_BIN_reset( &binData );
 }
 
@@ -505,7 +505,7 @@ void BerTreeView::SaveNodeValue()
     BIN& binBer = tree_model->getBer();
 
     JS_BIN_set( &binData, binBer.pVal + item->GetOffset() + item->GetHeaderSize(), item->GetLength() );
-    JS_BIN_fileWrite( &binData, fileName.toStdString().c_str());
+    JS_BIN_fileWrite( &binData, fileName.toLocal8Bit().toStdString().c_str());
     JS_BIN_reset(&binData);
 }
 

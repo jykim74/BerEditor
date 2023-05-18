@@ -158,8 +158,8 @@ void CMSDlg::clickSignedData()
         return;
     }
 
-    JS_BIN_fileRead( strSignPriPath.toStdString().c_str(), &binPri );
-    JS_BIN_fileRead( strSignCertPath.toStdString().c_str(), &binCert );
+    JS_BIN_fileRead( strSignPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    JS_BIN_fileRead( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
 
     if( mSrcStringRadio->isChecked() )
         JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
@@ -225,7 +225,7 @@ void CMSDlg::clickEnvelopedData()
         return;
     }
 
-    JS_BIN_fileRead( strKMCertPath.toStdString().c_str(), &binCert );
+    JS_BIN_fileRead( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
 
     if( mSrcStringRadio->isChecked() )
         JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
@@ -297,9 +297,9 @@ void CMSDlg::clickSignAndEnvloped()
         return;
     }
 
-    JS_BIN_fileRead( strSignPriPath.toStdString().c_str(), &binSignPri );
-    JS_BIN_fileRead( strSignCertPath.toStdString().c_str(), &binSignCert );
-    JS_BIN_fileRead( strKMCertPath.toStdString().c_str(), &binKMCert );
+    JS_BIN_fileRead( strSignPriPath.toLocal8Bit().toStdString().c_str(), &binSignPri );
+    JS_BIN_fileRead( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binSignCert );
+    JS_BIN_fileRead( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binKMCert );
 
     if( mSrcStringRadio->isChecked() )
         JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
@@ -366,7 +366,7 @@ void CMSDlg::clickVerifyData()
         return;
     }
 
-    JS_BIN_fileRead( strSignCertPath.toStdString().c_str(), &binCert );
+    JS_BIN_fileRead( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
 
     if( mSrcStringRadio->isChecked() )
         JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
@@ -431,8 +431,8 @@ void CMSDlg::clickDevelopedData()
         return;
     }
 
-    JS_BIN_fileRead( strKMPriPath.toStdString().c_str(), &binPri );
-    JS_BIN_fileRead( strKMCertPath.toStdString().c_str(), &binCert );
+    JS_BIN_fileRead( strKMPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    JS_BIN_fileRead( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
 
     if( mSrcStringRadio->isChecked() )
         JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
@@ -513,9 +513,9 @@ void CMSDlg::clickDevelopedAndVerify()
         return;
     }
 
-    JS_BIN_fileRead( strSignCertPath.toStdString().c_str(), &binSignCert );
-    JS_BIN_fileRead( strKMPriPath.toStdString().c_str(), &binKMPri );
-    JS_BIN_fileRead( strKMCertPath.toStdString().c_str(), &binKMCert );
+    JS_BIN_fileRead( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binSignCert );
+    JS_BIN_fileRead( strKMPriPath.toLocal8Bit().toStdString().c_str(), &binKMPri );
+    JS_BIN_fileRead( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binKMCert );
 
     if( mSrcStringRadio->isChecked() )
         JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );

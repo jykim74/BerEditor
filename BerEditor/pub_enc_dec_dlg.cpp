@@ -210,7 +210,7 @@ void PubEncDecDlg::Run()
             goto end;
         }
 
-        JS_BIN_fileRead( mCertPath->text().toStdString().c_str(), &binCert );
+        JS_BIN_fileRead( mCertPath->text().toLocal8Bit().toStdString().c_str(), &binCert );
 
         if( mAutoCertPubKeyCheck->isChecked() )
         {
@@ -246,7 +246,7 @@ void PubEncDecDlg::Run()
             goto end;
         }
 
-        JS_BIN_fileRead( mPriKeyPath->text().toStdString().c_str(), &binPri );
+        JS_BIN_fileRead( mPriKeyPath->text().toLocal8Bit().toStdString().c_str(), &binPri );
 
         if( strAlg == "RSA" )
             JS_PKI_RSADecryptWithPri( nVersion, &binSrc, &binPri, &binOut );

@@ -599,7 +599,7 @@ void KeyAgreeDlg::findAECDHPriKey()
     QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( fileName.isEmpty() ) return;
 
-    JS_BIN_fileRead( fileName.toStdString().c_str(), &binECKey );
+    JS_BIN_fileRead( fileName.toLocal8Bit().toStdString().c_str(), &binECKey );
     JS_PKI_getECKeyVal( &binECKey, &sECKeyVal );
     JS_BIN_decodeHex( sECKeyVal.pGroup, &binOID );
     JS_PKI_getStringFromOID( &binOID, sTextOID );
@@ -670,7 +670,7 @@ void KeyAgreeDlg::findBECDHPriKey()
     QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( fileName.isEmpty() ) return;
 
-    JS_BIN_fileRead( fileName.toStdString().c_str(), &binECKey );
+    JS_BIN_fileRead( fileName.toLocal8Bit().toStdString().c_str(), &binECKey );
     JS_PKI_getECKeyVal( &binECKey, &sECKeyVal );
     JS_BIN_decodeHex( sECKeyVal.pGroup, &binOID );
     JS_PKI_getStringFromOID( &binOID, sTextOID );
