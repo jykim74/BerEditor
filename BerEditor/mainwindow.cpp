@@ -57,6 +57,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     initialize();
 
+    createCryptoDlg();
     createActions();
     createStatusBar();
 
@@ -77,6 +78,19 @@ MainWindow::~MainWindow()
     delete info_text_;
     delete right_table_;
     delete right_xml_;
+
+    delete key_man_dlg_;
+    delete gen_hash_dlg_;
+    delete gen_mac_dlg_;
+    delete enc_dec_dlg_;
+    delete sign_verify_dlg_;
+    delete pub_enc_dec_dlg_;
+    delete key_agree_dlg_;
+    delete cms_dlg_;
+    delete sss_dlg_;
+    delete cert_pvd_dlg_;
+    delete gen_otp_dlg_;
+    delete cavp_dlg_;
 }
 
 void MainWindow::initialize()
@@ -356,10 +370,7 @@ void MainWindow::createActions()
     toolMenu->addAction( getURIAct );
     toolToolBar->addAction( getURIAct );
 
-
-
     menuBar()->addSeparator();
-
 
     if( berApplet->isLicense() )
     {
@@ -487,6 +498,22 @@ void MainWindow::createActions()
 void MainWindow::createStatusBar()
 {
     statusBar()->showMessage(tr("Ready"));
+}
+
+void MainWindow::createCryptoDlg()
+{
+    key_man_dlg_ = new KeyManDlg;
+    gen_hash_dlg_ = new GenHashDlg;
+    gen_mac_dlg_ = new GenMacDlg;
+    enc_dec_dlg_ = new EncDecDlg;
+    sign_verify_dlg_ = new SignVerifyDlg;
+    pub_enc_dec_dlg_ = new PubEncDecDlg;
+    key_agree_dlg_ = new KeyAgreeDlg;
+    cms_dlg_ = new CMSDlg;
+    sss_dlg_ = new SSSDlg;
+    cert_pvd_dlg_ = new CertPVDDlg;
+    gen_otp_dlg_ = new GenOTPDlg;
+    cavp_dlg_ = new CAVPDlg;
 }
 
 void MainWindow::newFile()
@@ -790,26 +817,30 @@ void MainWindow::dataEncoder()
 
 void MainWindow::keyManage()
 {
-    KeyManDlg keyManDlg;
-    keyManDlg.exec();
+    key_man_dlg_->show();
+    key_man_dlg_->raise();
+    key_man_dlg_->activateWindow();
 }
 
 void MainWindow::hash()
 {
-    GenHashDlg genHashDlg;
-    genHashDlg.exec();
+    gen_hash_dlg_->show();
+    gen_hash_dlg_->raise();
+    gen_hash_dlg_->activateWindow();
 }
 
 void MainWindow::mac()
-{
-    GenMacDlg genMacDlg;
-    genMacDlg.exec();
+{    
+    gen_mac_dlg_->show();
+    gen_mac_dlg_->raise();
+    gen_mac_dlg_->activateWindow();
 }
 
 void MainWindow::keyAgree()
 {
-    KeyAgreeDlg keyAgreeDlg;
-    keyAgreeDlg.exec();
+    key_agree_dlg_->show();
+    key_agree_dlg_->raise();
+    key_agree_dlg_->activateWindow();
 }
 
 void MainWindow::oidInfo()
@@ -820,57 +851,58 @@ void MainWindow::oidInfo()
 
 void MainWindow::encDec()
 {
-    EncDecDlg encDecDlg;
-    encDecDlg.exec();
+    enc_dec_dlg_->show();
+    enc_dec_dlg_->raise();
+    enc_dec_dlg_->activateWindow();
 }
 
 void MainWindow::signVerify()
 {
-    SignVerifyDlg signVerifyDlg;
-    signVerifyDlg.exec();
+    sign_verify_dlg_->show();
+    sign_verify_dlg_->raise();
+    sign_verify_dlg_->activateWindow();
 }
 
 void MainWindow::pubEncDec()
 {
-    PubEncDecDlg pubEncDecDlg;
-    pubEncDecDlg.exec();
+    pub_enc_dec_dlg_->show();
+    pub_enc_dec_dlg_->raise();
+    pub_enc_dec_dlg_->activateWindow();
 }
 
 void MainWindow::cms()
 {
-    CMSDlg cmsDlg;
-    cmsDlg.exec();
+    cms_dlg_->show();
+    cms_dlg_->raise();
+    cms_dlg_->activateWindow();
 }
 
 void MainWindow::sss()
 {
-    SSSDlg sssDlg;
-    sssDlg.exec();
+    sss_dlg_->show();
+    sss_dlg_->raise();
+    sss_dlg_->activateWindow();
 }
 
 void MainWindow::certPVD()
 {
-    CertPVDDlg certPVDDlg;
-    certPVDDlg.exec();
+    cert_pvd_dlg_->show();
+    cert_pvd_dlg_->raise();
+    cert_pvd_dlg_->activateWindow();
 }
 
 void MainWindow::CAVP()
 {
-    /*
-    CAVPDlg cavpDlg;
-    cavpDlg.exec();
-    */
-
-    CAVPDlg *cavpDlg = berApplet->cavpDlg();
-    cavpDlg->show();
-    cavpDlg->raise();
-    cavpDlg->activateWindow();
+    cavp_dlg_->show();
+    cavp_dlg_->raise();
+    cavp_dlg_->activateWindow();
 }
 
 void MainWindow::genOTP()
 {
-    GenOTPDlg genOTPDlg;
-    genOTPDlg.exec();
+    gen_otp_dlg_->show();
+    gen_otp_dlg_->raise();
+    gen_otp_dlg_->activateWindow();
 }
 
 void MainWindow::getURI()

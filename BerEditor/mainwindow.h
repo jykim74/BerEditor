@@ -14,6 +14,19 @@
 
 class QPrinter;
 
+class KeyManDlg;
+class GenHashDlg;
+class GenMacDlg;
+class EncDecDlg;
+class SignVerifyDlg;
+class PubEncDecDlg;
+class KeyAgreeDlg;
+class CMSDlg;
+class SSSDlg;
+class CertPVDDlg;
+class GenOTPDlg;
+class CAVPDlg;
+
 namespace Ui {
 class MainWindow;
 }
@@ -89,6 +102,7 @@ private:
  //   Ui::MainWindow *ui;
     void createActions();
     void createStatusBar();
+    void createCryptoDlg();
 
     void createTableMenu();
     void berFileOpen( const QString berPath );
@@ -113,6 +127,20 @@ private:
     QTextEdit       *right_text_;
     QTextEdit       *right_xml_;
     QString          file_path_;
+
+    // Cryptogram dlg
+    KeyManDlg       *key_man_dlg_;
+    GenHashDlg      *gen_hash_dlg_;
+    GenMacDlg       *gen_mac_dlg_;
+    EncDecDlg       *enc_dec_dlg_;
+    SignVerifyDlg   *sign_verify_dlg_;
+    PubEncDecDlg    *pub_enc_dec_dlg_;
+    KeyAgreeDlg     *key_agree_dlg_;
+    CMSDlg          *cms_dlg_;
+    SSSDlg          *sss_dlg_;
+    CertPVDDlg      *cert_pvd_dlg_;
+    GenOTPDlg       *gen_otp_dlg_;
+    CAVPDlg         *cavp_dlg_;
 };
 
 #endif // MAINWINDOW_H

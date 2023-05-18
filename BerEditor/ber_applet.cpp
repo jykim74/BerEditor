@@ -30,7 +30,6 @@ BerApplet *berApplet;
 BerApplet::BerApplet(QObject *parent) : QObject(parent)
 {
     settings_mgr_ = new SettingsMgr;
-    cavp_dlg_ = new CAVPDlg;
 
 #ifdef JS_PRO
     is_pro_ = true;
