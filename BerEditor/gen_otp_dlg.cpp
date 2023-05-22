@@ -6,6 +6,7 @@
 #include "js_bin.h"
 #include "js_pki.h"
 #include "common.h"
+#include "settings_mgr.h"
 
 static QStringList dataTypes = {
     "String",
@@ -13,15 +14,6 @@ static QStringList dataTypes = {
     "Base64"
 };
 
-static QStringList hashTypes = {
-    "md5",
-    "sha1",
-    "sha224",
-    "sha256",
-    "sha384",
-    "sha512",
-    "SM3"
-};
 
 GenOTPDlg::GenOTPDlg(QWidget *parent) :
     QDialog(parent)
@@ -46,10 +38,14 @@ GenOTPDlg::~GenOTPDlg()
 
 void GenOTPDlg::initialize()
 {
+    SettingsMgr *setMgr = berApplet->settingsMgr();
+
     QDateTime dateTime = QDateTime::currentDateTime();
     mDateTime->setDateTime(dateTime);
+    mDateTime->setTimeSpec( Qt::LocalTime );
 
-    mHashTypeCombo->addItems(hashTypes);
+    mHashTypeCombo->addItems(kHashList);
+    mHashTypeCombo->setCurrentText( setMgr->defaultHash() );
     mKeyTypeCombo->addItems(dataTypes);
     mIntervalSpin->setValue(60);
     mLengthSpin->setValue(6);
@@ -69,12 +65,15 @@ void GenOTPDlg::Run()
     BIN binT = {0,0};
     char sOTP[128];
 
+    update();
+
     time_t tTime = mDateTime->dateTime().toTime_t();
     int nInterval = mIntervalSpin->value();
     int nLen = mLengthSpin->value();
 
     memset( sOTP, 0x00, sizeof(sOTP));
     QString strKey = mKeyText->text();
+    QString strHash = mHashTypeCombo->currentText();
 
     if( strKey.isEmpty() )
     {
@@ -89,7 +88,7 @@ void GenOTPDlg::Run()
     else if( mKeyTypeCombo->currentIndex() == DATA_BASE64 )
         JS_BIN_decodeBase64( strKey.toStdString().c_str(), &binKey );
 
-    ret = JS_PKI_genOTP( mHashTypeCombo->currentText().toStdString().c_str(), tTime, nInterval, nLen, &binKey, &binT, sOTP );
+    ret = JS_PKI_genOTP( strHash.toStdString().c_str(), tTime, nInterval, nLen, &binKey, &binT, sOTP );
     if( ret == 0 )
     {
         char *pHex = NULL;
@@ -100,7 +99,8 @@ void GenOTPDlg::Run()
     }
 
     berApplet->log( QString( "Hash     : %1" ).arg( mHashTypeCombo->currentText() ));
-    berApplet->log( QString( "DateTime : %1").arg( mDateTime->dateTime().toString( "yyyy-MM-dd HH:mm:00")));
+    berApplet->log( QString( "DateTime : %1").arg( mDateTime->dateTime().toString( "yyyy-MM-dd HH:mm:ss")));
+    berApplet->log( QString( "Time_t   : %1").arg( tTime ));
     berApplet->log( QString( "Interval : %1 Len : %2" ).arg( nInterval ).arg(nLen));
     berApplet->log( QString( "Key      : %1" ).arg( getHexString( &binKey )));
     berApplet->log( QString( "T        : %1" ).arg( getHexString(&binT)));

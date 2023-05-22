@@ -35,6 +35,12 @@
          <day>1</day>
         </datetime>
        </property>
+       <property name="displayFormat">
+        <string>yyyy-MM-dd hh:mm:ss</string>
+       </property>
+       <property name="timeSpec">
+        <enum>Qt::LocalTime</enum>
+       </property>
       </widget>
      </item>
      <item>
