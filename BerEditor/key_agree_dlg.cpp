@@ -8,7 +8,7 @@
 #include "ber_applet.h"
 
 
-const QStringList sGList = { "0", "2", "5" };
+const QStringList sGList = { "2", "5" };
 
 
 
@@ -260,6 +260,8 @@ void KeyAgreeDlg::genADHPri()
     JS_BIN_encodeHex( &binPri, &pHex );
     mAPrivateKeyText->setText( pHex );
 
+    berApplet->log( QString( "A PrivteKey : %1").arg( pHex ));
+
     if( pHex ) JS_free( pHex );
     repaint();
 }
@@ -274,6 +276,8 @@ void KeyAgreeDlg::genBDHPri()
     JS_PKI_genRandom( nLen, &binPri );
     JS_BIN_encodeHex( &binPri, &pHex );
     mBPrivateKeyText->setText( pHex );
+
+    berApplet->log( QString( "B PrivteKey : %1").arg( pHex ));
 
     if( pHex ) JS_free( pHex );
     repaint();
@@ -293,31 +297,24 @@ void KeyAgreeDlg::genADHKey()
     JS_BIN_decodeHex( mAPrivateKeyText->text().toStdString().c_str(), &binPri );
 
     if( binPri.nLen > 0 )
+    {
         ret = JS_PKI_genDHPub( &binP, &binG, &binPri, &binPub );
+    }
     else
+    {
         ret = JS_PKI_genDHKey( &binP, &binG, &binPri, &binPub );
+
+        if( ret == 0 )
+        {
+            mAPrivateKeyText->setText( getHexString( binPri.pVal, binPri.nLen ));
+            berApplet->log( QString( "A PrivateKey : %1").arg( getHexString( binPub.pVal, binPub.nLen) ));
+        }
+    }
 
     if( ret == 0 )
     {
-        char *pHex = NULL;
-
-        JS_BIN_encodeHex( &binPri, &pHex );
-
-        if( pHex )
-        {
-            mAPrivateKeyText->setText( pHex );
-            JS_free( pHex );
-            pHex = NULL;
-        }
-
-        JS_BIN_encodeHex( &binPub, &pHex );
-        if( pHex )
-        {
-            mAPublicKeyText->setText( pHex );
-            JS_free( pHex );
-            pHex = NULL;
-        }
-
+        mAPublicKeyText->setText( getHexString( binPub.pVal, binPub.nLen ));
+        berApplet->log( QString( "A PublicKey  : %1").arg( getHexString( binPub.pVal, binPub.nLen) ));
     }
 
     JS_BIN_reset( &binP );
@@ -341,31 +338,24 @@ void KeyAgreeDlg::genBDHKey()
     JS_BIN_decodeHex( mBPrivateKeyText->text().toStdString().c_str(), &binPri );
 
     if( binPri.nLen > 0 )
+    {
         ret = JS_PKI_genDHPub( &binP, &binG, &binPri, &binPub );
+    }
     else
+    {
         ret = JS_PKI_genDHKey( &binP, &binG, &binPri, &binPub );
+
+        if( ret == 0 )
+        {
+            mBPrivateKeyText->setText( getHexString( binPri.pVal, binPri.nLen ));
+            berApplet->log( QString( "B PrivateKey : %1").arg( getHexString( binPub.pVal, binPub.nLen) ));
+        }
+    }
 
     if( ret == 0 )
     {
-        char *pHex = NULL;
-
-        JS_BIN_encodeHex( &binPri, &pHex );
-
-        if( pHex )
-        {
-            mBPrivateKeyText->setText( pHex );
-            JS_free( pHex );
-            pHex = NULL;
-        }
-
-        JS_BIN_encodeHex( &binPub, &pHex );
-        if( pHex )
-        {
-            mBPublicKeyText->setText( pHex );
-            JS_free( pHex );
-            pHex = NULL;
-        }
-
+        mBPublicKeyText->setText( getHexString( binPub.pVal, binPub.nLen ));
+        berApplet->log( QString( "B PublicKey  : %1").arg( getHexString( binPub.pVal, binPub.nLen) ));
     }
 
     JS_BIN_reset( &binP );
