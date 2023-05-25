@@ -8,7 +8,7 @@
 #include "ber_applet.h"
 
 
-const QStringList sGList = { "2", "5" };
+const QStringList sGList = { "02", "05" };
 
 
 
@@ -75,7 +75,7 @@ void KeyAgreeDlg::calcualteA()
 
 
         JS_BIN_decodeHex( mPText->toPlainText().toStdString().c_str(), &binP );
-        JS_BIN_decodeHex( mGText->text().toStdString().c_str(), &binG );
+        JS_BIN_decodeHex( mGCombo->currentText().toStdString().c_str(), &binG );
         JS_BIN_decodeHex( mAPrivateKeyText->text().toStdString().c_str(), &binPri );
         JS_BIN_decodeHex( mBPublicKeyText->text().toStdString().c_str(), &binPub );
 
@@ -142,7 +142,7 @@ void KeyAgreeDlg::calcualteB()
 
 
         JS_BIN_decodeHex( mPText->toPlainText().toStdString().c_str(), &binP );
-        JS_BIN_decodeHex( mGText->text().toStdString().c_str(), &binG );
+        JS_BIN_decodeHex( mGCombo->currentText().toStdString().c_str(), &binG );
         JS_BIN_decodeHex( mBPrivateKeyText->text().toStdString().c_str(), &binPri );
         JS_BIN_decodeHex( mAPublicKeyText->text().toStdString().c_str(), &binPub );
 
@@ -222,23 +222,7 @@ void KeyAgreeDlg::genDHParam()
     ret = JS_PKI_genDHParam( nLen, nG, &binP, &binG );
     if( ret == 0 )
     {
-        char *pHex = NULL;
-
-        JS_BIN_encodeHex( &binG, &pHex );
-        if( pHex )
-        {
-            mGText->setText( pHex );
-            JS_free( pHex );
-            pHex = NULL;
-        }
-
-        JS_BIN_encodeHex( &binP, &pHex );
-        if( pHex )
-        {
-            mPText->setPlainText(pHex);
-            JS_free( pHex );
-            pHex = NULL;
-        }
+        mPText->setPlainText( getHexString( binP.pVal, binP.nLen));
 
         berApplet->log( QString( "P : %1").arg(getHexString( &binP)));
         berApplet->log( QString( "G : %1").arg(getHexString( &binG)));
@@ -292,7 +276,7 @@ void KeyAgreeDlg::genADHKey()
     BIN binPub = {0,0};
 
     JS_BIN_decodeHex( mPText->toPlainText().toStdString().c_str(), &binP );
-    JS_BIN_decodeHex( mGText->text().toStdString().c_str(), &binG );
+    JS_BIN_decodeHex( mGCombo->currentText().toStdString().c_str(), &binG );
 
     JS_BIN_decodeHex( mAPrivateKeyText->text().toStdString().c_str(), &binPri );
 
@@ -333,7 +317,7 @@ void KeyAgreeDlg::genBDHKey()
     BIN binPub = {0,0};
 
     JS_BIN_decodeHex( mPText->toPlainText().toStdString().c_str(), &binP );
-    JS_BIN_decodeHex( mGText->text().toStdString().c_str(), &binG );
+    JS_BIN_decodeHex( mGCombo->currentText().toStdString().c_str(), &binG );
 
     JS_BIN_decodeHex( mBPrivateKeyText->text().toStdString().c_str(), &binPri );
 
