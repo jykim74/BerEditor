@@ -183,7 +183,7 @@
      <item row="0" column="4">
       <widget class="QPushButton" name="mRunBtn">
        <property name="text">
-        <string>Run</string>
+        <string>Sign</string>
        </property>
       </widget>
      </item>

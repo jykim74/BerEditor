@@ -35,6 +35,7 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     connect( mPriKeyBtn, SIGNAL(clicked()), this, SLOT(findPrivateKey()));
     connect( mCertBtn, SIGNAL(clicked()), this, SLOT(findCert()));
     connect( mAlgTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(algChanged(int)));
+    connect( mMethodCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeMethod(int)));
 
     connect( mInitBtn, SIGNAL(clicked()), this, SLOT(signVerifyInit()));
     connect( mUpdateBtn, SIGNAL(clicked()), this, SLOT(signVerifyUpdate()));
@@ -116,8 +117,8 @@ void SignVerifyDlg::clickCheckKeyPair()
         return;
     }
 
-    JS_BIN_fileRead( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
-    JS_BIN_fileRead( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
 
     if( mAutoCertPubKeyCheck->isChecked() )
     {
@@ -129,7 +130,7 @@ void SignVerifyDlg::clickCheckKeyPair()
 
     if( mPubKeyVerifyCheck->isChecked() )
     {
-        JS_BIN_fileRead( strCertPath.toLocal8Bit().toStdString().c_str(), &binPub );
+        JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binPub );
     }
     else
     {
@@ -146,13 +147,14 @@ void SignVerifyDlg::clickCheckKeyPair()
     }
     else
     {
-        ret = JS_PKI_IsValidECCKeyPair( &binPri, &binPubVal );
+//        ret = JS_PKI_IsValidECCKeyPair( &binPri, &binPubVal );
+        ret = JS_PKI_IsValidECCKeyPair( &binPri, &binPub );
     }
 
     if( ret == 1 )
-        berApplet->messageBox( "KeyPair is good", this );
+        berApplet->messageBox( tr("KeyPair is good"), this );
     else
-        berApplet->warningBox( QString( "Invalid key pair: %1").arg(ret));
+        berApplet->warningBox( QString( tr("Invalid key pair: %1").arg(ret)), this );
 
 end :
     JS_BIN_reset( &binPri );
@@ -165,10 +167,14 @@ void SignVerifyDlg::findPrivateKey()
 {
     QString strPath = berApplet->getSetPath();
 
+    if( last_path_.length() > 0 )
+        strPath = last_path_;
+
     QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( fileName.isEmpty() ) return;
 
     mPriKeyPath->setText(fileName);
+    last_path_ = fileName;
 
     repaint();
 }
@@ -177,10 +183,14 @@ void SignVerifyDlg::findCert()
 {
     QString strPath = berApplet->getSetPath();
 
+    if( last_path_.length() > 0 )
+        strPath = last_path_;
+
     QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( fileName.isEmpty() ) return;
 
     mCertPath->setText( fileName );
+    last_path_ = fileName;
 
     repaint();
 }
@@ -223,7 +233,7 @@ void SignVerifyDlg::signVerifyInit()
             goto end;
         }
 
-        JS_BIN_fileRead( mPriKeyPath->text().toLocal8Bit().toStdString().c_str(), &binPri );
+        JS_BIN_fileReadBER( mPriKeyPath->text().toLocal8Bit().toStdString().c_str(), &binPri );
 
         ret = JS_PKI_signInit( &sctx_, strHash.toStdString().c_str(), nType, &binPri );
 
@@ -237,7 +247,7 @@ void SignVerifyDlg::signVerifyInit()
             goto end;
         }
 
-        JS_BIN_fileRead( mCertPath->text().toLocal8Bit().toStdString().c_str(), &binCert );
+        JS_BIN_fileReadBER( mCertPath->text().toLocal8Bit().toStdString().c_str(), &binCert );
 
         if( mPubKeyVerifyCheck->isChecked() )
             ret = JS_PKI_verifyInit( &sctx_, strHash.toStdString().c_str(), &binCert );
@@ -402,7 +412,7 @@ void SignVerifyDlg::Run()
             goto end;
         }
 
-        JS_BIN_fileRead( mPriKeyPath->text().toLocal8Bit().toStdString().c_str(), &binPri );
+        JS_BIN_fileReadBER( mPriKeyPath->text().toLocal8Bit().toStdString().c_str(), &binPri );
 
         if( mAlgTypeCombo->currentIndex() == 0 )
             ret = JS_PKI_RSAMakeSign( strHash.toStdString().c_str(), nVersion, &binSrc, &binPri, &binOut );
@@ -430,7 +440,7 @@ void SignVerifyDlg::Run()
             goto end;
         }
 
-        JS_BIN_fileRead( mCertPath->text().toLocal8Bit().toStdString().c_str(), &binCert );
+        JS_BIN_fileReadBER( mCertPath->text().toLocal8Bit().toStdString().c_str(), &binCert );
         JS_BIN_decodeHex( mOutputText->toPlainText().toStdString().c_str(), &binOut );
 
         if( mAutoCertPubKeyCheck->isChecked() )
@@ -498,4 +508,12 @@ void SignVerifyDlg::outputChanged()
 {
     int nLen = getDataLen( DATA_HEX, mOutputText->toPlainText() );
     mOutputLenText->setText( QString("%1").arg(nLen));
+}
+
+void SignVerifyDlg::changeMethod( int index )
+{
+    if( index == 0 )
+        mRunBtn->setText( tr( "Sign" ));
+    else
+        mRunBtn->setText( tr( "Verify"));
 }

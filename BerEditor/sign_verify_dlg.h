@@ -30,10 +30,12 @@ private slots:
 
     void inputChanged();
     void outputChanged();
+    void changeMethod( int index );
 
 private:
     void initialize();
     void *sctx_;
+    QString last_path_;
 };
 
 #endif // SIGN_VERIFY_DLG_H
