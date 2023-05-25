@@ -25,11 +25,6 @@ static QStringList gmacList = {
     "ARIA"
 };
 
-static QStringList modeList = {
-  "ECB", "CBC", "CTR", "CFB", "OFB"
-};
-
-
 static QStringList keyTypes = {
     "String",
     "Hex",
@@ -79,7 +74,6 @@ GenMacDlg::~GenMacDlg()
 void GenMacDlg::initialize()
 {
     mKeyTypeCombo->addItems( keyTypes );
-    mModeTypeCombo->addItems( modeList );
 
     group_->addButton( mHMACRadio );
     group_->addButton( mCMACRadio );
@@ -123,11 +117,10 @@ void GenMacDlg::macInit()
 
 
    QString strAlg = mAlgTypeCombo->currentText();
-   QString strMode = mModeTypeCombo->currentText();
 
    if( mCMACRadio->isChecked() )
    {
-        QString strSymAlg = getSymAlg( strAlg, strMode, binKey.nLen );
+        QString strSymAlg = getSymAlg( strAlg, "CBC", binKey.nLen );
 
         ret = JS_PKI_cmacInit( &hctx_, strSymAlg.toStdString().c_str(), &binKey );
         if( ret == 0 ) type_ = JS_TYPE_CMAC;
@@ -329,11 +322,10 @@ void GenMacDlg::mac()
 
 
    QString strAlg = mAlgTypeCombo->currentText();
-   QString strMode = mModeTypeCombo->currentText();
 
    if( mCMACRadio->isChecked() )
    {
-       QString strSymAlg = getSymAlg( strAlg, strMode, binKey.nLen );
+       QString strSymAlg = getSymAlg( strAlg, "CBC", binKey.nLen );
        ret = JS_PKI_genCMAC( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binMAC );
 
        berApplet->log( QString( "Algorithm : %1" ).arg( strSymAlg ));
@@ -413,7 +405,6 @@ void GenMacDlg::keyChanged()
 void GenMacDlg::checkHMAC()
 {
     mHMACRadio->setChecked(true);
-    mModeTypeCombo->setDisabled(true);
 
     mAlgTypeCombo->clear();
 
@@ -424,7 +415,6 @@ void GenMacDlg::checkHMAC()
 void GenMacDlg::checkCMAC()
 {
     mCMACRadio->setChecked(true);
-    mModeTypeCombo->setDisabled(false);
 
     mAlgTypeCombo->clear();
     mAlgTypeCombo->addItems( cryptList );
@@ -433,7 +423,6 @@ void GenMacDlg::checkCMAC()
 void GenMacDlg::checkGMAC()
 {
     mGMACRadio->setChecked(true);
-    mModeTypeCombo->setDisabled( true );
     mAlgTypeCombo->clear();
     mAlgTypeCombo->addItems( gmacList );
 }
