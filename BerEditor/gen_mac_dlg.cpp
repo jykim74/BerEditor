@@ -11,12 +11,18 @@
 
 #define JS_TYPE_HMAC    0
 #define JS_TYPE_CMAC    1
+#define JS_TYPE_GMAC    2
 
 static QStringList cryptList = {
     "AES",
     "ARIA",
     "DES3",
     "SM4"
+};
+
+static QStringList gmacList = {
+    "AES",
+    "ARIA"
 };
 
 static QStringList modeList = {
@@ -57,6 +63,7 @@ GenMacDlg::GenMacDlg(QWidget *parent) :
     connect( mKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(keyChanged()));
     connect( mHMACRadio, SIGNAL(clicked()), this, SLOT(checkHMAC()));
     connect( mCMACRadio, SIGNAL(clicked()), this, SLOT(checkCMAC()));
+    connect( mGMACRadio, SIGNAL(clicked()), this, SLOT(checkGMAC()));
 
     initialize();
 
@@ -76,6 +83,7 @@ void GenMacDlg::initialize()
 
     group_->addButton( mHMACRadio );
     group_->addButton( mCMACRadio );
+    group_->addButton( mGMACRadio );
 
     checkHMAC();
 }
@@ -86,8 +94,10 @@ void GenMacDlg::freeCTX()
     {
         if( type_ == JS_TYPE_CMAC )
             JS_PKI_cmacFree( &hctx_ );
-        else
+        else if( type_ == JS_TYPE_HMAC)
             JS_PKI_hmacFree( &hctx_ );
+        else if( type_ == JS_TYPE_GMAC )
+            JS_PKI_encryptGCMFree( &hctx_ );
 
         hctx_ = NULL;
     }
@@ -121,18 +131,24 @@ void GenMacDlg::macInit()
 
         ret = JS_PKI_cmacInit( &hctx_, strSymAlg.toStdString().c_str(), &binKey );
         if( ret == 0 ) type_ = JS_TYPE_CMAC;
-
-        berApplet->log( QString( "Algorithm : %1" ).arg( strSymAlg ));
-        berApplet->log( QString( "Key       : %1" ).arg( getHexString( &binKey )));
    }
-   else
+   else if( mHMACRadio->isChecked() )
    {
         ret = JS_PKI_hmacInit( &hctx_, strAlg.toStdString().c_str(), &binKey );
         if( ret == 0 ) type_ = JS_TYPE_HMAC;
-
-        berApplet->log( QString( "Algorithm : %1" ).arg( strAlg ));
-        berApplet->log( QString( "Key       : %1" ).arg( getHexString( &binKey )));
    }
+   else if( mGMACRadio->isChecked() )
+   {
+       BIN binIV = {0,0};
+       QString strSymAlg = getSymAlg( strAlg, "gcm", binKey.nLen );
+       JS_BIN_setChar( &binIV, 0x00, 16 );
+       ret = JS_PKI_encryptGCMInit( &hctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, NULL );
+       if( ret == 0 ) type_ = JS_TYPE_GMAC;
+       JS_BIN_reset( &binIV );
+   }
+
+   berApplet->log( QString( "Algorithm : %1" ).arg( strAlg ));
+   berApplet->log( QString( "Key       : %1" ).arg( getHexString( &binKey )));
 
    if( ret == 0 )
    {
@@ -170,7 +186,7 @@ void GenMacDlg::macUpdate()
 
     if( mCMACRadio->isChecked() )
     {
-        if( type_ == JS_TYPE_HMAC )
+        if( type_ != JS_TYPE_CMAC )
         {
             berApplet->elog( "Invalid context type" );
             return;
@@ -178,15 +194,25 @@ void GenMacDlg::macUpdate()
 
         ret = JS_PKI_cmacUpdate( hctx_, &binSrc );
     }
-    else
+    else if( mHMACRadio->isChecked() )
     {
-        if( type_ == JS_TYPE_CMAC )
+        if( type_ != JS_TYPE_HMAC )
         {
             berApplet->elog( "Invalid context type" );
             return;
         }
 
         ret = JS_PKI_hmacUpdate( hctx_, &binSrc );
+    }
+    else if( mGMACRadio->isChecked() )
+    {
+        if( type_ != JS_TYPE_GMAC )
+        {
+            berApplet->elog( "Invalid context type" );
+            return;
+        }
+
+        ret = JS_PKI_encryptGCMUpdateAAD( hctx_, &binSrc );
     }
 
     berApplet->log( QString( "Update Src : %1" ).arg( getHexString(&binSrc)));
@@ -209,7 +235,7 @@ void GenMacDlg::macFinal()
 
     if( mCMACRadio->isChecked() )
     {
-        if( type_ == JS_TYPE_HMAC )
+        if( type_ != JS_TYPE_CMAC )
         {
             berApplet->elog( "Invalid context type" );
             return;
@@ -217,15 +243,27 @@ void GenMacDlg::macFinal()
 
         ret = JS_PKI_cmacFinal( hctx_, &binMAC );
     }
-    else
+    else if( mHMACRadio->isChecked() )
     {
-        if( type_ == JS_TYPE_CMAC )
+        if( type_ != JS_TYPE_HMAC )
         {
             berApplet->elog( "Invalid context type" );
             return;
         }
 
         ret = JS_PKI_hmacFinal( hctx_, &binMAC );
+    }
+    else if( mGMACRadio->isChecked() )
+    {
+        BIN binEnc = {0,0};
+        if( type_ != JS_TYPE_GMAC )
+        {
+            berApplet->elog( "Invalid context type" );
+            return;
+        }
+
+        ret = JS_PKI_encryptGCMFinal( hctx_, &binEnc, 16, &binMAC );
+        JS_BIN_reset( &binEnc );
     }
 
     if( ret == 0 )
@@ -300,10 +338,15 @@ void GenMacDlg::mac()
 
        berApplet->log( QString( "Algorithm : %1" ).arg( strSymAlg ));
    }
-   else
+   else if( mHMACRadio->isChecked() )
    {
        berApplet->log( QString( "Algorithm : %1" ).arg( strAlg ));
        ret = JS_PKI_genHMAC( strAlg.toStdString().c_str(), &binSrc, &binKey, &binMAC );
+   }
+   else if( mGMACRadio->isChecked() )
+   {
+        berApplet->log( QString( "Algorithm : %1" ).arg( strAlg ));
+        ret = JS_PKI_genGMAC( strAlg.toStdString().c_str(), &binSrc, &binKey, &binMAC );
    }
 
    if( ret == 0 )
@@ -385,4 +428,12 @@ void GenMacDlg::checkCMAC()
 
     mAlgTypeCombo->clear();
     mAlgTypeCombo->addItems( cryptList );
+}
+
+void GenMacDlg::checkGMAC()
+{
+    mGMACRadio->setChecked(true);
+    mModeTypeCombo->setDisabled( true );
+    mAlgTypeCombo->clear();
+    mAlgTypeCombo->addItems( gmacList );
 }

@@ -32,6 +32,7 @@ private slots:
 
         void checkHMAC();
         void checkCMAC();
+        void checkGMAC();
 
 private:
         void freeCTX();
