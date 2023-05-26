@@ -305,6 +305,7 @@
   <tabstop>mKeyLenText</tabstop>
   <tabstop>mTValueText</tabstop>
   <tabstop>mOTPValueText</tabstop>
+  <tabstop>mClearDataAllBtn</tabstop>
   <tabstop>mRunBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>

@@ -333,10 +333,13 @@
   <tabstop>mInputClearBtn</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
+  <tabstop>mOutputClearBtn</tabstop>
   <tabstop>mInitBtn</tabstop>
   <tabstop>mUpdateBtn</tabstop>
   <tabstop>mFinalBtn</tabstop>
   <tabstop>mDigestBtn</tabstop>
+  <tabstop>mClearDataAllBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>
  <connections/>

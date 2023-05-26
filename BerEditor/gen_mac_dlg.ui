@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>543</width>
-    <height>408</height>
+    <height>410</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -386,6 +386,9 @@
   <tabstop>mInputBase64Radio</tabstop>
   <tabstop>mInputLenText</tabstop>
   <tabstop>mInputText</tabstop>
+  <tabstop>mHMACRadio</tabstop>
+  <tabstop>mCMACRadio</tabstop>
+  <tabstop>mGMACRadio</tabstop>
   <tabstop>mAlgTypeCombo</tabstop>
   <tabstop>mInputClearBtn</tabstop>
   <tabstop>mKeyTypeCombo</tabstop>
@@ -393,10 +396,13 @@
   <tabstop>mKeyLenText</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
+  <tabstop>mOutputClearBtn</tabstop>
   <tabstop>mInitBtn</tabstop>
   <tabstop>mUpdateBtn</tabstop>
   <tabstop>mFinalBtn</tabstop>
   <tabstop>mMACBtn</tabstop>
+  <tabstop>mClearDataAllBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>
  <connections/>

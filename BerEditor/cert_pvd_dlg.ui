@@ -659,14 +659,17 @@
   <tabstop>mTrustFindBtn</tabstop>
   <tabstop>mTrustAddBtn</tabstop>
   <tabstop>mTrustInfoBtn</tabstop>
+  <tabstop>mTrustDecodeBtn</tabstop>
   <tabstop>mUntrustPathText</tabstop>
   <tabstop>mUntrustFindBtn</tabstop>
   <tabstop>mUntrustAddBtn</tabstop>
   <tabstop>mUntrustInfoBtn</tabstop>
+  <tabstop>mUntrustDecodeBtn</tabstop>
   <tabstop>mCRLPathText</tabstop>
   <tabstop>mCRLFindBtn</tabstop>
   <tabstop>mCRLAddBtn</tabstop>
   <tabstop>mCRLInfoBtn</tabstop>
+  <tabstop>mCRLDecodeBtn</tabstop>
   <tabstop>mVerifyCRLBtn</tabstop>
   <tabstop>mVerifyCertBtn</tabstop>
   <tabstop>mATTimeCheck</tabstop>
@@ -702,6 +705,8 @@
   <tabstop>mTargetPathText</tabstop>
   <tabstop>mTargetFindBtn</tabstop>
   <tabstop>mTargetInfoBtn</tabstop>
+  <tabstop>mClearDataAllBtn</tabstop>
+  <tabstop>mPolicyCheckBtn</tabstop>
   <tabstop>mPathValidationBtn</tabstop>
   <tabstop>mPathClearBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>

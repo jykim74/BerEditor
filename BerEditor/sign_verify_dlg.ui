@@ -462,17 +462,29 @@
   <tabstop>mInputBase64Radio</tabstop>
   <tabstop>mInputLenText</tabstop>
   <tabstop>mInputText</tabstop>
+  <tabstop>mAutoCertPubKeyCheck</tabstop>
   <tabstop>mPubKeyVerifyCheck</tabstop>
+  <tabstop>mPriKeyPath</tabstop>
+  <tabstop>mPriKeyBtn</tabstop>
+  <tabstop>mPriKeyDecodeBtn</tabstop>
+  <tabstop>mCertPath</tabstop>
+  <tabstop>mCertBtn</tabstop>
+  <tabstop>mCertViewBtn</tabstop>
+  <tabstop>mCertDecodeBtn</tabstop>
+  <tabstop>mUseKeyAlgCheck</tabstop>
   <tabstop>mAlgTypeCombo</tabstop>
   <tabstop>mHashTypeCombo</tabstop>
   <tabstop>mVersionCombo</tabstop>
   <tabstop>mMethodCombo</tabstop>
+  <tabstop>mCheckKeyPairBtn</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
   <tabstop>mInitBtn</tabstop>
   <tabstop>mUpdateBtn</tabstop>
   <tabstop>mFinalBtn</tabstop>
   <tabstop>mRunBtn</tabstop>
+  <tabstop>mClearDataAllBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>
  <connections/>

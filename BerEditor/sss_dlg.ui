@@ -290,12 +290,19 @@
  <tabstops>
   <tabstop>mSrcTypeCombo</tabstop>
   <tabstop>mSrcLenText</tabstop>
+  <tabstop>mSrcText</tabstop>
+  <tabstop>mSharesText</tabstop>
+  <tabstop>mThresholdText</tabstop>
+  <tabstop>mSplitBtn</tabstop>
   <tabstop>mShareText</tabstop>
   <tabstop>mAddBtn</tabstop>
   <tabstop>mShareTable</tabstop>
+  <tabstop>mClearResultBtn</tabstop>
+  <tabstop>mJoinBtn</tabstop>
   <tabstop>mJoinedTypeCombo</tabstop>
   <tabstop>mJoinedLenText</tabstop>
   <tabstop>mJoinedText</tabstop>
+  <tabstop>mClearDataAllBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>

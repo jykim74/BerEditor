@@ -593,6 +593,7 @@
   <tabstop>mKeyLenText</tabstop>
   <tabstop>mUseAECheck</tabstop>
   <tabstop>mCCMDataLength</tabstop>
+  <tabstop>mReqTagLenText</tabstop>
   <tabstop>mAADTypeCombo</tabstop>
   <tabstop>mAADText</tabstop>
   <tabstop>mAADLenText</tabstop>
@@ -611,6 +612,8 @@
   <tabstop>mUpdateBtn</tabstop>
   <tabstop>mFinalBtn</tabstop>
   <tabstop>mRunBtn</tabstop>
+  <tabstop>mClearDataAllBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>
  <connections/>
