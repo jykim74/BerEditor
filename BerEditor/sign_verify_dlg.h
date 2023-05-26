@@ -32,6 +32,10 @@ private slots:
     void outputChanged();
     void changeMethod( int index );
 
+    void clickPriKeyDecode();
+    void clickCertView();
+    void clickCertDecode();
+
 private:
     void initialize();
     void *sctx_;

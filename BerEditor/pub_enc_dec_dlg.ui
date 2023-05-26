@@ -14,28 +14,7 @@
    <string>PubKey Encrypt/Decrypt</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="3" column="3">
-    <widget class="QCheckBox" name="mPubKeyEncryptCheck">
-     <property name="text">
-      <string>Encrypt with public key</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="0" colspan="4">
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <widget class="QLineEdit" name="mCertPath"/>
-     </item>
-     <item>
-      <widget class="QPushButton" name="mCertBtn">
-       <property name="text">
-        <string>Certificate</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="7" column="0" colspan="4">
+   <item row="6" column="0" colspan="4">
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
       <widget class="QComboBox" name="mAlgCombo"/>
@@ -78,86 +57,101 @@
      </item>
     </layout>
    </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="mPriKeyAndCertLabel">
+   <item row="3" column="3">
+    <widget class="QCheckBox" name="mPubKeyEncryptCheck">
      <property name="text">
-      <string>Private key and Certificate</string>
+      <string>Encrypt with public key</string>
      </property>
     </widget>
    </item>
-   <item row="8" column="0" colspan="4">
-    <widget class="Line" name="line">
+   <item row="3" column="1">
+    <spacer name="horizontalSpacer_3">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-    </widget>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="2" column="0" colspan="4">
+    <widget class="QPlainTextEdit" name="mInputText"/>
    </item>
    <item row="4" column="0" colspan="4">
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
+    <layout class="QGridLayout" name="gridLayout_4">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="0">
       <widget class="QLineEdit" name="mPriKeyPath"/>
      </item>
-     <item>
+     <item row="1" column="0">
+      <widget class="QLineEdit" name="mCertPath"/>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mPriKeyDecodeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>D</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QPushButton" name="mCertDecodeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>D</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QPushButton" name="mCertBtn">
+       <property name="text">
+        <string>Certificate</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
       <widget class="QPushButton" name="mPriKeyBtn">
        <property name="text">
         <string>Private Key</string>
        </property>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item row="9" column="0" colspan="4">
-    <layout class="QGridLayout" name="gridLayout_3">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <item row="0" column="1">
-      <spacer name="horizontalSpacer_5">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Output Data</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QLineEdit" name="mOutputLenText">
-       <property name="minimumSize">
-        <size>
-         <width>40</width>
-         <height>0</height>
-        </size>
-       </property>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="mCertViewBtn">
        <property name="maximumSize">
         <size>
-         <width>40</width>
+         <width>20</width>
          <height>16777215</height>
         </size>
        </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>Len</string>
+        <string>C</string>
        </property>
       </widget>
      </item>
     </layout>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="mPriKeyAndCertLabel">
+     <property name="text">
+      <string>Private key and Certificate</string>
+     </property>
+    </widget>
    </item>
    <item row="1" column="0" colspan="4">
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -233,14 +227,7 @@
      </item>
     </layout>
    </item>
-   <item row="6" column="0" colspan="2">
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>Property and Method</string>
-     </property>
-    </widget>
-   </item>
-   <item row="12" column="0" colspan="4">
+   <item row="11" column="0" colspan="4">
     <layout class="QGridLayout" name="gridLayout_2">
      <property name="topMargin">
       <number>0</number>
@@ -274,26 +261,63 @@
      </item>
     </layout>
    </item>
-   <item row="3" column="1">
-    <spacer name="horizontalSpacer_3">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+   <item row="8" column="0" colspan="4">
+    <layout class="QGridLayout" name="gridLayout_3">
+     <property name="topMargin">
+      <number>0</number>
      </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer_5">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Output Data</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLineEdit" name="mOutputLenText">
+       <property name="minimumSize">
+        <size>
+         <width>40</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Len</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
-   <item row="2" column="0" colspan="4">
-    <widget class="QPlainTextEdit" name="mInputText"/>
-   </item>
-   <item row="10" column="0" colspan="4">
+   <item row="9" column="0" colspan="4">
     <widget class="QPlainTextEdit" name="mOutputText"/>
    </item>
-   <item row="11" column="0" colspan="4">
+   <item row="10" column="0" colspan="4">
     <widget class="Line" name="line_2">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -307,6 +331,20 @@
      </property>
     </widget>
    </item>
+   <item row="5" column="0" colspan="2">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Property and Method</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0" colspan="4">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <tabstops>
@@ -316,10 +354,6 @@
   <tabstop>mInputLenText</tabstop>
   <tabstop>mInputText</tabstop>
   <tabstop>mPubKeyEncryptCheck</tabstop>
-  <tabstop>mPriKeyPath</tabstop>
-  <tabstop>mPriKeyBtn</tabstop>
-  <tabstop>mCertPath</tabstop>
-  <tabstop>mCertBtn</tabstop>
   <tabstop>mAlgCombo</tabstop>
   <tabstop>mVersionTypeCombo</tabstop>
   <tabstop>mOutputTypeCombo</tabstop>

@@ -104,6 +104,11 @@ void BerApplet::start()
     log( "======================================================");
 }
 
+void BerApplet::decodeData( const BIN *pData, const QString strPath )
+{
+    main_win_->decodeData( pData, strPath );
+}
+
 int BerApplet::checkLicense()
 {
     QFile resFile( ":/bereditor_license.lcn" );

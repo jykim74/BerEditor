@@ -15,6 +15,7 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
+    last_path_ = berApplet->getSetPath();
 
     connect( mTrustFindBtn, SIGNAL(clicked()), this, SLOT(clickTrustFind()));
     connect( mUntrustFindBtn, SIGNAL(clicked()), this, SLOT(clickUntrustFind()));
@@ -39,6 +40,10 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
     connect( mATTimeCheck, SIGNAL(clicked()), this, SLOT(checkATTime()));
     connect( mParamAddBtn, SIGNAL(clicked()), this, SLOT(clickParamAdd()));
     connect( mParamListClearBtn, SIGNAL(clicked()), this, SLOT(clickParamListClear()));
+
+    connect( mTrustDecodeBtn, SIGNAL(clicked()), this, SLOT(clickTrustDecode()));
+    connect( mUntrustDecodeBtn, SIGNAL(clicked()), this, SLOT(clickUntrustDecode()));
+    connect( mCRLDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCRLDecode()));
 
     initialize();
 }
@@ -734,4 +739,58 @@ void CertPVDDlg::clickParamListClear()
     {
         mParamTable->removeRow(0);
     }
+}
+
+void CertPVDDlg::clickTrustDecode()
+{
+    BIN binData = {0,0};
+    QString strPath = mTrustPathText->text();
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
+
+    if( binData.nLen < 1 )
+    {
+        berApplet->warningBox( tr("fail to read data"), this );
+        return;
+    }
+
+    berApplet->decodeData( &binData, strPath );
+
+    JS_BIN_reset( &binData );
+}
+
+void CertPVDDlg::clickUntrustDecode()
+{
+    BIN binData = {0,0};
+    QString strPath = mUntrustPathText->text();
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
+
+    if( binData.nLen < 1 )
+    {
+        berApplet->warningBox( tr("fail to read data"), this );
+        return;
+    }
+
+    berApplet->decodeData( &binData, strPath );
+
+    JS_BIN_reset( &binData );
+}
+
+void CertPVDDlg::clickCRLDecode()
+{
+    BIN binData = {0,0};
+    QString strPath = mCRLPathText->text();
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
+
+    if( binData.nLen < 1 )
+    {
+        berApplet->warningBox( tr("fail to read data"), this );
+        return;
+    }
+
+    berApplet->decodeData( &binData, strPath );
+
+    JS_BIN_reset( &binData );
 }

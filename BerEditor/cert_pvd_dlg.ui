@@ -30,35 +30,6 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="mTrustPathText"/>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="minimumSize">
-        <size>
-         <width>80</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>80</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Trust Path</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mTrustInfoBtn">
-       <property name="text">
-        <string>TrustInfo</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="2">
       <widget class="QPushButton" name="mTrustFindBtn">
        <property name="maximumSize">
@@ -85,6 +56,54 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mTrustInfoBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>C</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>80</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Trust Path</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="mTrustPathText"/>
+     </item>
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mTrustDecodeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>D</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
@@ -92,15 +111,34 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="mUntrustPathText"/>
-     </item>
      <item row="0" column="4">
       <widget class="QPushButton" name="mUntrustInfoBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="text">
-        <string>UntrustInfo</string>
+        <string>C</string>
        </property>
       </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mUntrustAddBtn">
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="mUntrustPathText"/>
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_3">
@@ -134,16 +172,16 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mUntrustAddBtn">
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mUntrustDecodeBtn">
        <property name="maximumSize">
         <size>
-         <width>40</width>
+         <width>20</width>
          <height>16777215</height>
         </size>
        </property>
        <property name="text">
-        <string>Add</string>
+        <string>D</string>
        </property>
       </widget>
      </item>
@@ -154,8 +192,8 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mCRLFindBtn">
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mCRLAddBtn">
        <property name="maximumSize">
         <size>
          <width>40</width>
@@ -163,17 +201,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Find</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="mCRLPathText"/>
-     </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mCRLInfoBtn">
-       <property name="text">
-        <string>CRLInfo</string>
+        <string>Add</string>
        </property>
       </widget>
      </item>
@@ -190,8 +218,8 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mCRLAddBtn">
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mCRLFindBtn">
        <property name="maximumSize">
         <size>
          <width>40</width>
@@ -199,7 +227,36 @@
         </size>
        </property>
        <property name="text">
-        <string>Add</string>
+        <string>Find</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mCRLInfoBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>C</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="mCRLPathText"/>
+     </item>
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mCRLDecodeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>D</string>
        </property>
       </widget>
      </item>

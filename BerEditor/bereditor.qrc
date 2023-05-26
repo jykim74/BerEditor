@@ -46,5 +46,6 @@
         <file>images/uri.png</file>
         <file>images/ber.png</file>
         <file>bereditor_license.lcn</file>
+        <file>images/cert.png</file>
     </qresource>
 </RCC>

@@ -6,12 +6,14 @@
 
 #include "mainwindow.h"
 #include "ber_applet.h"
+#include "cert_info_dlg.h"
 #include "common.h"
 
 CMSDlg::CMSDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
+    last_path_ = berApplet->getSetPath();
 
     connect( mViewBtn, SIGNAL(clicked()), this, SLOT(clickView()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(clickClose()));
@@ -35,6 +37,13 @@ CMSDlg::CMSDlg(QWidget *parent) :
     connect( mOutputStringRadio, SIGNAL(clicked()), this, SLOT(outputChanged()));
     connect( mOutputHexRadio, SIGNAL(clicked()), this, SLOT(outputChanged()));
     connect( mOutputBase64Radio, SIGNAL(clicked()), this, SLOT(outputChanged()));
+
+    connect( mSignPriKeyDecodeBtn, SIGNAL(clicked()), this, SLOT(clickSignPriKeyDecode()));
+    connect( mSignCertViewBtn, SIGNAL(clicked()), this, SLOT(clickSignCertView()));
+    connect( mSignCertDecodeBtn, SIGNAL(clicked()), this, SLOT(clickSignCertDecode()));
+    connect( mKMPriKeyDecodeBtn, SIGNAL(clicked()), this, SLOT(clickKMPriKeyDecode()));
+    connect( mKMCertViewBtn, SIGNAL(clicked()), this, SLOT(clickKMCertView()));
+    connect( mKMCertDecodeBtn, SIGNAL(clicked()), this, SLOT(clickKMCertDecode()));
 
     mCloseBtn->setFocus();
 }
@@ -88,41 +97,57 @@ void CMSDlg::clickChange()
 
 void CMSDlg::clickSignPriFind()
 {
-    QString strPath = berApplet->getSetPath();
+    QString strPath = mSignPriKeyPathText->text();
+
+    if( strPath.length() < 1 )
+        strPath = last_path_;
 
     QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( fileName.isEmpty() ) return;
     mSignPriKeyPathText->setText( fileName );
+
+    last_path_ = fileName;
 }
 
 void CMSDlg::clickSignCertFind()
 {
-    QString strPath = berApplet->getSetPath();
+    QString strPath = mSignCertPathText->text();
+    if( strPath.length() < 1 )
+        strPath = last_path_;
 
     QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( fileName.isEmpty() ) return;
 
     mSignCertPathText->setText( fileName );
+    last_path_ = fileName;
 }
 
 void CMSDlg::clickKMPriFind()
 {
-    QString strPath = berApplet->getSetPath();
+    QString strPath = mKMPriKeyPathText->text();
+
+    if( strPath.length() < 1 )
+        strPath = last_path_;
 
     QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( fileName.isEmpty() ) return;
 
     mKMPriKeyPathText->setText( fileName );
+    last_path_ = fileName;
 }
 
 void CMSDlg::clickKMCertFind()
 {
-    QString strPath = berApplet->getSetPath();
+    QString strPath = mKMCertPathText->text();
+
+    if( strPath.length() < 1 )
+        strPath = last_path_;
 
     QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( fileName.isEmpty() ) return;
 
     mKMCertPathText->setText( fileName );
+    last_path_ = fileName;
 }
 
 void CMSDlg::clickSignedData()
@@ -158,8 +183,8 @@ void CMSDlg::clickSignedData()
         return;
     }
 
-    JS_BIN_fileRead( strSignPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
-    JS_BIN_fileRead( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    JS_BIN_fileReadBER( strSignPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    JS_BIN_fileReadBER( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
 
     if( mSrcStringRadio->isChecked() )
         JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
@@ -225,7 +250,7 @@ void CMSDlg::clickEnvelopedData()
         return;
     }
 
-    JS_BIN_fileRead( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    JS_BIN_fileReadBER( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
 
     if( mSrcStringRadio->isChecked() )
         JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
@@ -297,9 +322,9 @@ void CMSDlg::clickSignAndEnvloped()
         return;
     }
 
-    JS_BIN_fileRead( strSignPriPath.toLocal8Bit().toStdString().c_str(), &binSignPri );
-    JS_BIN_fileRead( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binSignCert );
-    JS_BIN_fileRead( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binKMCert );
+    JS_BIN_fileReadBER( strSignPriPath.toLocal8Bit().toStdString().c_str(), &binSignPri );
+    JS_BIN_fileReadBER( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binSignCert );
+    JS_BIN_fileReadBER( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binKMCert );
 
     if( mSrcStringRadio->isChecked() )
         JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
@@ -366,7 +391,7 @@ void CMSDlg::clickVerifyData()
         return;
     }
 
-    JS_BIN_fileRead( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    JS_BIN_fileReadBER( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
 
     if( mSrcStringRadio->isChecked() )
         JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
@@ -431,8 +456,8 @@ void CMSDlg::clickDevelopedData()
         return;
     }
 
-    JS_BIN_fileRead( strKMPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
-    JS_BIN_fileRead( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    JS_BIN_fileReadBER( strKMPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    JS_BIN_fileReadBER( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
 
     if( mSrcStringRadio->isChecked() )
         JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
@@ -513,9 +538,9 @@ void CMSDlg::clickDevelopedAndVerify()
         return;
     }
 
-    JS_BIN_fileRead( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binSignCert );
-    JS_BIN_fileRead( strKMPriPath.toLocal8Bit().toStdString().c_str(), &binKMPri );
-    JS_BIN_fileRead( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binKMCert );
+    JS_BIN_fileReadBER( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binSignCert );
+    JS_BIN_fileReadBER( strKMPriPath.toLocal8Bit().toStdString().c_str(), &binKMPri );
+    JS_BIN_fileReadBER( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binKMCert );
 
     if( mSrcStringRadio->isChecked() )
         JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
@@ -581,4 +606,104 @@ void CMSDlg::outputChanged()
 
     int nLen = getDataLen( nType, mOutputText->toPlainText() );
     mOutputLenText->setText( QString("%1").arg(nLen));
+}
+
+void CMSDlg::clickSignPriKeyDecode()
+{
+    BIN binData = {0,0};
+    QString strPath = mSignPriKeyPathText->text();
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
+
+    if( binData.nLen < 1 )
+    {
+        berApplet->warningBox( tr("fail to read data"), this );
+        return;
+    }
+
+    berApplet->decodeData( &binData, strPath );
+
+    JS_BIN_reset( &binData );
+}
+
+void CMSDlg::clickSignCertView()
+{
+    QString strPath = mSignCertPathText->text();
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( "You have to find certificate", this );
+        return;
+    }
+
+    CertInfoDlg certInfoDlg;
+    certInfoDlg.setCertPath( strPath );
+    certInfoDlg.exec();
+}
+
+void CMSDlg::clickSignCertDecode()
+{
+    BIN binData = {0,0};
+    QString strPath = mSignCertPathText->text();
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
+
+    if( binData.nLen < 1 )
+    {
+        berApplet->warningBox( tr("fail to read data"), this );
+        return;
+    }
+
+    berApplet->decodeData( &binData, strPath );
+
+    JS_BIN_reset( &binData );
+}
+
+void CMSDlg::clickKMPriKeyDecode()
+{
+    BIN binData = {0,0};
+    QString strPath = mKMPriKeyPathText->text();
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
+
+    if( binData.nLen < 1 )
+    {
+        berApplet->warningBox( tr("fail to read data"), this );
+        return;
+    }
+
+    berApplet->decodeData( &binData, strPath );
+
+    JS_BIN_reset( &binData );
+}
+
+void CMSDlg::clickKMCertView()
+{
+    QString strPath = mKMCertPathText->text();
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( "You have to find certificate", this );
+        return;
+    }
+
+    CertInfoDlg certInfoDlg;
+    certInfoDlg.setCertPath( strPath );
+    certInfoDlg.exec();
+}
+
+void CMSDlg::clickKMCertDecode()
+{
+    BIN binData = {0,0};
+    QString strPath = mKMCertPathText->text();
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
+
+    if( binData.nLen < 1 )
+    {
+        berApplet->warningBox( tr("fail to read data"), this );
+        return;
+    }
+
+    berApplet->decodeData( &binData, strPath );
+
+    JS_BIN_reset( &binData );
 }

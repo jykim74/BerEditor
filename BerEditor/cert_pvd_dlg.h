@@ -43,6 +43,11 @@ private slots:
     void clickVerifyCRL();
     void clickPolicyCheck();
     void clickPathValidation();
+
+    void clickTrustDecode();
+    void clickUntrustDecode();
+    void clickCRLDecode();
+
 private:
     void initialize();
     QString last_path_;

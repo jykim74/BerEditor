@@ -1,6 +1,7 @@
 #include <QFileDialog>
 
 #include "pub_enc_dec_dlg.h"
+#include "cert_info_dlg.h"
 #include "js_bin.h"
 #include "js_pki.h"
 #include "js_ber.h"
@@ -35,6 +36,7 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
 {
     setupUi(this);
     initialize();
+    last_path_ = berApplet->getSetPath();
 
     connect( mPriKeyBtn, SIGNAL(clicked()), this, SLOT(findPrivateKey()));
     connect( mCertBtn, SIGNAL(clicked()), this, SLOT(findCert()));
@@ -54,6 +56,10 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
 
     connect( mOutputTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(outputChanged()));
     connect( mAlgCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(algChanged()));
+
+    connect( mPriKeyDecodeBtn, SIGNAL(clicked()), this, SLOT(clickPriKeyDecode()));
+    connect( mCertViewBtn, SIGNAL(clicked()), this, SLOT(clickCertView()));
+    connect( mCertDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCertDecode()));
 
     mCloseBtn->setFocus();
 }
@@ -122,8 +128,8 @@ void PubEncDecDlg::clickCheckKeyPair()
         return;
     }
 
-    JS_BIN_fileRead( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
-    JS_BIN_fileRead( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
 
     if( mAutoCertPubKeyCheck->isChecked() )
     {
@@ -135,7 +141,7 @@ void PubEncDecDlg::clickCheckKeyPair()
 
     if( mPubKeyEncryptCheck->isChecked() )
     {
-        JS_BIN_fileRead( strCertPath.toLocal8Bit().toStdString().c_str(), &binPub );
+        JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binPub );
     }
     else
     {
@@ -152,9 +158,9 @@ void PubEncDecDlg::clickCheckKeyPair()
         ret = JS_PKI_IsValidECCKeyPair( &binPri, &binPub );
 
     if( ret == 1 )
-        berApplet->messageBox( "KeyPair is good", this );
+        berApplet->messageBox( tr("KeyPair is good"), this );
     else
-        berApplet->warningBox( QString( "Invalid key pair: %1").arg(ret), this );
+        berApplet->warningBox( QString( tr("Invalid key pair: %1")).arg(ret), this );
 
 end :
     JS_BIN_reset( &binPri );
@@ -210,7 +216,7 @@ void PubEncDecDlg::Run()
             goto end;
         }
 
-        JS_BIN_fileRead( mCertPath->text().toLocal8Bit().toStdString().c_str(), &binCert );
+        JS_BIN_fileReadBER( mCertPath->text().toLocal8Bit().toStdString().c_str(), &binCert );
 
         if( mAutoCertPubKeyCheck->isChecked() )
         {
@@ -246,7 +252,7 @@ void PubEncDecDlg::Run()
             goto end;
         }
 
-        JS_BIN_fileRead( mPriKeyPath->text().toLocal8Bit().toStdString().c_str(), &binPri );
+        JS_BIN_fileReadBER( mPriKeyPath->text().toLocal8Bit().toStdString().c_str(), &binPri );
 
         if( strAlg == "RSA" )
             JS_PKI_RSADecryptWithPri( nVersion, &binSrc, &binPri, &binOut );
@@ -279,24 +285,32 @@ end :
 
 void PubEncDecDlg::findCert()
 {
-    QString strPath = berApplet->getSetPath();
+    QString strPath = mCertPath->text();
+
+    if( strPath.length() < 1 )
+        strPath = last_path_;
 
     QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( fileName.isEmpty() ) return;
 
     mCertPath->setText(fileName);
+    last_path_ = fileName;
 
     repaint();
 }
 
 void PubEncDecDlg::findPrivateKey()
 {
-    QString strPath = berApplet->getSetPath();
+    QString strPath = mPriKeyPath->text();
+
+    if( strPath.length() < 1 )
+        strPath = last_path_;
 
     QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( fileName.isEmpty() ) return;
 
     mPriKeyPath->setText(fileName);
+    last_path_ = fileName;
 
     repaint();
 }
@@ -348,3 +362,54 @@ void PubEncDecDlg::algChanged()
     else
         mVersionTypeCombo->setEnabled( false );
 }
+
+void PubEncDecDlg::clickPriKeyDecode()
+{
+    BIN binData = {0,0};
+    QString strPath = mPriKeyPath->text();
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
+
+    if( binData.nLen < 1 )
+    {
+        berApplet->warningBox( tr("fail to read data"), this );
+        return;
+    }
+
+    berApplet->decodeData( &binData, strPath );
+
+    JS_BIN_reset( &binData );
+}
+
+void PubEncDecDlg::clickCertView()
+{
+    QString strPath = mCertPath->text();
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( "You have to find certificate", this );
+        return;
+    }
+
+    CertInfoDlg certInfoDlg;
+    certInfoDlg.setCertPath( strPath );
+    certInfoDlg.exec();
+}
+
+void PubEncDecDlg::clickCertDecode()
+{
+    BIN binData = {0,0};
+    QString strPath = mCertPath->text();
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
+
+    if( binData.nLen < 1 )
+    {
+        berApplet->warningBox( tr("fail to read data"), this );
+        return;
+    }
+
+    berApplet->decodeData( &binData, strPath );
+
+    JS_BIN_reset( &binData );
+}
+

@@ -31,10 +31,18 @@ private slots:
     void clickDevelopedData();
     void clickDevelopedAndVerify();
 
+    void clickSignPriKeyDecode();
+    void clickSignCertView();
+    void clickSignCertDecode();
+    void clickKMPriKeyDecode();
+    void clickKMCertView();
+    void clickKMCertDecode();
+
     void srcChanged();
     void outputChanged();
 
 private:
+    QString last_path_;
 
 };
 

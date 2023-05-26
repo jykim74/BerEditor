@@ -59,6 +59,8 @@ public:
     QString getLog();
     void logView( bool bShow = true );
 
+    void decodeData( const BIN *pData, const QString strPath = "" );
+
 private slots:
     void newFile();
     void open();

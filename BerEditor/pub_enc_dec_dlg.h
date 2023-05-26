@@ -29,8 +29,13 @@ private slots:
     void outputChanged();
     void algChanged();
 
+    void clickPriKeyDecode();
+    void clickCertView();
+    void clickCertDecode();
+
 private:
     void initialize();
+    QString last_path_;
 
 };
 

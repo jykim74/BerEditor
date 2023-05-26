@@ -4,6 +4,7 @@
 #include "js_ber.h"
 #include "ber_applet.h"
 #include "settings_mgr.h"
+#include "cert_info_dlg.h"
 #include "js_bin.h"
 #include "js_pki.h"
 #include "js_pki_tools.h"
@@ -32,6 +33,8 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     setupUi(this);
     initialize();
 
+    last_path_ = berApplet->getSetPath();
+
     connect( mPriKeyBtn, SIGNAL(clicked()), this, SLOT(findPrivateKey()));
     connect( mCertBtn, SIGNAL(clicked()), this, SLOT(findCert()));
     connect( mAlgTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(algChanged(int)));
@@ -52,6 +55,10 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     connect( mInputStringRadio, SIGNAL(clicked()), this, SLOT(inputChanged()));
     connect( mInputHexRadio, SIGNAL(clicked()), this, SLOT(inputChanged()));
     connect( mInputBase64Radio, SIGNAL(clicked()), this, SLOT(inputChanged()));
+
+    connect( mPriKeyDecodeBtn, SIGNAL(clicked()), this, SLOT(clickPriKeyDecode()));
+    connect( mCertViewBtn, SIGNAL(clicked()), this, SLOT(clickCertView()));
+    connect( mCertDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCertDecode()));
 
     mCloseBtn->setFocus();
 }
@@ -165,9 +172,9 @@ end :
 
 void SignVerifyDlg::findPrivateKey()
 {
-    QString strPath = berApplet->getSetPath();
+    QString strPath = mPriKeyPath->text();
 
-    if( last_path_.length() > 0 )
+    if( strPath.length() < 1 )
         strPath = last_path_;
 
     QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
@@ -181,9 +188,9 @@ void SignVerifyDlg::findPrivateKey()
 
 void SignVerifyDlg::findCert()
 {
-    QString strPath = berApplet->getSetPath();
+    QString strPath = mCertPath->text();
 
-    if( last_path_.length() > 0 )
+    if( strPath.length() < 1 )
         strPath = last_path_;
 
     QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
@@ -516,4 +523,54 @@ void SignVerifyDlg::changeMethod( int index )
         mRunBtn->setText( tr( "Sign" ));
     else
         mRunBtn->setText( tr( "Verify"));
+}
+
+void SignVerifyDlg::clickPriKeyDecode()
+{
+    BIN binData = {0,0};
+    QString strPath = mPriKeyPath->text();
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
+
+    if( binData.nLen < 1 )
+    {
+        berApplet->warningBox( tr("fail to read data"), this );
+        return;
+    }
+
+    berApplet->decodeData( &binData, strPath );
+
+    JS_BIN_reset( &binData );
+}
+
+void SignVerifyDlg::clickCertView()
+{
+    QString strPath = mCertPath->text();
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( "You have to find certificate", this );
+        return;
+    }
+
+    CertInfoDlg certInfoDlg;
+    certInfoDlg.setCertPath( strPath );
+    certInfoDlg.exec();
+}
+
+void SignVerifyDlg::clickCertDecode()
+{
+    BIN binData = {0,0};
+    QString strPath = mCertPath->text();
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
+
+    if( binData.nLen < 1 )
+    {
+        berApplet->warningBox( tr("fail to read data"), this );
+        return;
+    }
+
+    berApplet->decodeData( &binData, strPath );
+
+    JS_BIN_reset( &binData );
 }

@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QMessageBox>
+#include "js_bin.h"
 #include "js_license.h"
 
 class MainWindow;
@@ -22,6 +23,7 @@ public:
 
     MainWindow* mainWindow() { return main_win_; };
     SettingsMgr *settingsMgr() { return settings_mgr_; };
+    void decodeData( const BIN *pData, const QString strPath );
 
 
     QString cmd() { return cmd_; };
