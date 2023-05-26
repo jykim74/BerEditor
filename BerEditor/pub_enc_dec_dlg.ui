@@ -13,147 +13,8 @@
   <property name="windowTitle">
    <string>PubKey Encrypt/Decrypt</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="6" column="0" colspan="4">
-    <layout class="QHBoxLayout" name="horizontalLayout_4">
-     <item>
-      <widget class="QComboBox" name="mAlgCombo"/>
-     </item>
-     <item>
-      <widget class="QComboBox" name="mVersionTypeCombo"/>
-     </item>
-     <item>
-      <widget class="QComboBox" name="mOutputTypeCombo"/>
-     </item>
-     <item>
-      <widget class="QComboBox" name="mMethodTypeCombo"/>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="mCheckKeyPairBtn">
-       <property name="text">
-        <string>Check KeyPair</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="mChangeBtn">
-       <property name="text">
-        <string>Change</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="3" column="3">
-    <widget class="QCheckBox" name="mPubKeyEncryptCheck">
-     <property name="text">
-      <string>Encrypt with public key</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
-    <spacer name="horizontalSpacer_3">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="2" column="0" colspan="4">
-    <widget class="QPlainTextEdit" name="mInputText"/>
-   </item>
-   <item row="4" column="0" colspan="4">
-    <layout class="QGridLayout" name="gridLayout_4">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <item row="0" column="0">
-      <widget class="QLineEdit" name="mPriKeyPath"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLineEdit" name="mCertPath"/>
-     </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mPriKeyDecodeBtn">
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>D</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="3">
-      <widget class="QPushButton" name="mCertDecodeBtn">
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>D</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="mCertBtn">
-       <property name="text">
-        <string>Certificate</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mPriKeyBtn">
-       <property name="text">
-        <string>Private Key</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QPushButton" name="mCertViewBtn">
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>C</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="mPriKeyAndCertLabel">
-     <property name="text">
-      <string>Private key and Certificate</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0" colspan="4">
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QLabel" name="label">
@@ -227,27 +88,37 @@
      </item>
     </layout>
    </item>
-   <item row="11" column="0" colspan="4">
-    <layout class="QGridLayout" name="gridLayout_2">
+   <item>
+    <widget class="QPlainTextEdit" name="mInputText"/>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_5">
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mRunBtn">
+     <item row="0" column="3">
+      <widget class="QCheckBox" name="mPubKeyEncryptCheck">
        <property name="text">
-        <string>Run</string>
+        <string>Encrypt with public key</string>
        </property>
       </widget>
      </item>
      <item row="0" column="2">
-      <widget class="QPushButton" name="mCloseBtn">
+      <widget class="QCheckBox" name="mAutoCertPubKeyCheck">
        <property name="text">
-        <string>Close</string>
+        <string>Cert or PubKey Auto</string>
        </property>
       </widget>
      </item>
      <item row="0" column="0">
-      <spacer name="horizontalSpacer_4">
+      <widget class="QLabel" name="mPriKeyAndCertLabel">
+       <property name="text">
+        <string>Private key and Certificate</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer_3">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -261,7 +132,164 @@
      </item>
     </layout>
    </item>
-   <item row="8" column="0" colspan="4">
+   <item>
+    <layout class="QGridLayout" name="gridLayout_4">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLineEdit" name="mPriKeyPath"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLineEdit" name="mCertPath"/>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mPriKeyDecodeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>D</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QPushButton" name="mCertDecodeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>D</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QPushButton" name="mCertBtn">
+       <property name="text">
+        <string>Certificate</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mPriKeyBtn">
+       <property name="text">
+        <string>Private Key</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="mCertViewBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>C</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="2">
+      <widget class="QCheckBox" name="mUseKeyAlgCheck">
+       <property name="text">
+        <string>Use Key Algorithm</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Property and Method</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer_6">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QComboBox" name="mAlgCombo"/>
+     </item>
+     <item>
+      <widget class="QComboBox" name="mVersionTypeCombo"/>
+     </item>
+     <item>
+      <widget class="QComboBox" name="mOutputTypeCombo"/>
+     </item>
+     <item>
+      <widget class="QComboBox" name="mMethodTypeCombo"/>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="mCheckKeyPairBtn">
+       <property name="text">
+        <string>Check KeyPair</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="mChangeBtn">
+       <property name="text">
+        <string>Change</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QGridLayout" name="gridLayout_3">
      <property name="topMargin">
       <number>0</number>
@@ -314,36 +342,49 @@
      </item>
     </layout>
    </item>
-   <item row="9" column="0" colspan="4">
+   <item>
     <widget class="QPlainTextEdit" name="mOutputText"/>
    </item>
-   <item row="10" column="0" colspan="4">
+   <item>
     <widget class="Line" name="line_2">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </item>
-   <item row="3" column="2">
-    <widget class="QCheckBox" name="mAutoCertPubKeyCheck">
-     <property name="text">
-      <string>Cert or PubKey Auto</string>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_2">
+     <property name="topMargin">
+      <number>0</number>
      </property>
-    </widget>
-   </item>
-   <item row="5" column="0" colspan="2">
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>Property and Method</string>
-     </property>
-    </widget>
-   </item>
-   <item row="7" column="0" colspan="4">
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mRunBtn">
+       <property name="text">
+        <string>Run</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mCloseBtn">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
@@ -353,7 +394,6 @@
   <tabstop>mInputBase64Radio</tabstop>
   <tabstop>mInputLenText</tabstop>
   <tabstop>mInputText</tabstop>
-  <tabstop>mPubKeyEncryptCheck</tabstop>
   <tabstop>mAlgCombo</tabstop>
   <tabstop>mVersionTypeCombo</tabstop>
   <tabstop>mOutputTypeCombo</tabstop>

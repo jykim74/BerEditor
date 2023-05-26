@@ -60,6 +60,8 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     connect( mCertViewBtn, SIGNAL(clicked()), this, SLOT(clickCertView()));
     connect( mCertDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCertDecode()));
 
+    connect( mUseKeyAlgCheck, SIGNAL(clicked()), this, SLOT(checkUseKeyAlg()));
+
     mCloseBtn->setFocus();
 }
 
@@ -76,6 +78,8 @@ void SignVerifyDlg::initialize()
 
     mVersionCombo->addItems(versionTypes);
     mMethodCombo->addItems(methodTypes);
+
+    checkUseKeyAlg();
 }
 
 void SignVerifyDlg::checkPubKeyVerify()
@@ -86,11 +90,13 @@ void SignVerifyDlg::checkPubKeyVerify()
     {
         mCertBtn->setText( tr("Public Key" ) );
         mPriKeyAndCertLabel->setText( tr("Private key and Public key" ));
+        mCertViewBtn->setEnabled(false);
     }
     else
     {
         mCertBtn->setText( tr("Certificate") );
         mPriKeyAndCertLabel->setText( tr( "Private key and Certificate" ));
+        mCertViewBtn->setEnabled(true);
     }
 }
 
@@ -127,6 +133,18 @@ void SignVerifyDlg::clickCheckKeyPair()
     JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
     JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
 
+    if( mUseKeyAlgCheck->isChecked() )
+    {
+        int nAlgType = JS_PKI_getPriKeyType( &binPri );
+
+        if( nAlgType == JS_PKI_KEY_TYPE_RSA )
+            mAlgTypeCombo->setCurrentText( "RSA" );
+        else if( nAlgType == JS_PKI_KEY_TYPE_ECC )
+            mAlgTypeCombo->setCurrentText( "ECDSA" );
+        else if( nAlgType == JS_PKI_KEY_TYPE_SM2 )
+            mAlgTypeCombo->setCurrentText( "SM2" );
+    }
+
     if( mAutoCertPubKeyCheck->isChecked() )
     {
         if( JS_PKI_isCert( &binCert ) == 0 )
@@ -154,7 +172,6 @@ void SignVerifyDlg::clickCheckKeyPair()
     }
     else
     {
-//        ret = JS_PKI_IsValidECCKeyPair( &binPri, &binPubVal );
         ret = JS_PKI_IsValidECCKeyPair( &binPri, &binPub );
     }
 
@@ -216,6 +233,7 @@ void SignVerifyDlg::signVerifyInit()
     int nType = 0;
     BIN binPri = {0,0};
     BIN binCert = {0,0};
+    BIN binPubKey = {0,0};
 
     if( sctx_ )
     {
@@ -225,8 +243,10 @@ void SignVerifyDlg::signVerifyInit()
 
     QString strHash = mHashTypeCombo->currentText();
 
-    if( mAlgTypeCombo->currentIndex() == 0 )
+    if( mAlgTypeCombo->currentText() == "RSA" )
         nType = JS_PKI_KEY_TYPE_RSA;
+    else if( mAlgTypeCombo->currentText() == "SM2" )
+        nType = JS_PKI_KEY_TYPE_SM2;
     else
         nType = JS_PKI_KEY_TYPE_ECC;
 
@@ -242,9 +262,22 @@ void SignVerifyDlg::signVerifyInit()
 
         JS_BIN_fileReadBER( mPriKeyPath->text().toLocal8Bit().toStdString().c_str(), &binPri );
 
+        if( mUseKeyAlgCheck->isChecked() )
+        {
+            nType = JS_PKI_getPriKeyType( &binPri );
+
+            if( nType == JS_PKI_KEY_TYPE_RSA )
+                mAlgTypeCombo->setCurrentText( "RSA" );
+            else if( nType == JS_PKI_KEY_TYPE_ECC )
+                mAlgTypeCombo->setCurrentText( "ECDSA" );
+            else if( nType == JS_PKI_KEY_TYPE_SM2 )
+                mAlgTypeCombo->setCurrentText( "SM2" );
+        }
+
         ret = JS_PKI_signInit( &sctx_, strHash.toStdString().c_str(), nType, &binPri );
 
-        berApplet->log( QString ( "Init Private Key : %1" ).arg( getHexString( &binPri )));
+        berApplet->log( QString( "Algorithm        : %1" ).arg( mAlgTypeCombo->currentText() ));
+        berApplet->log( QString( "Init Private Key : %1" ).arg( getHexString( &binPri )));
     }
     else
     {
@@ -256,12 +289,42 @@ void SignVerifyDlg::signVerifyInit()
 
         JS_BIN_fileReadBER( mCertPath->text().toLocal8Bit().toStdString().c_str(), &binCert );
 
-        if( mPubKeyVerifyCheck->isChecked() )
-            ret = JS_PKI_verifyInit( &sctx_, strHash.toStdString().c_str(), &binCert );
+        if( mAutoCertPubKeyCheck->isChecked() )
+        {
+            if( JS_PKI_isCert( &binCert ) == 0 )
+            {
+                mPubKeyVerifyCheck->setChecked(true);
+                JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
+            }
+            else
+            {
+                mPubKeyVerifyCheck->setChecked(false);
+                JS_BIN_copy( &binPubKey, &binCert );
+            }
+        }
         else
-            ret = JS_PKI_verifyInitWithCert( &sctx_, strHash.toStdString().c_str(), &binCert );
+        {
+            if( mPubKeyVerifyCheck->isChecked() == false )
+                JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
+            else
+                JS_BIN_copy( &binPubKey, &binCert );
+        }
 
-        berApplet->log( QString( "Init Public Key or Cert : %1" ).arg(getHexString(&binCert)));
+        if( mUseKeyAlgCheck->isChecked() )
+        {
+            nType = JS_PKI_getPubKeyType( &binPubKey );
+            if( nType == JS_PKI_KEY_TYPE_RSA )
+                mAlgTypeCombo->setCurrentText( "RSA" );
+            else if( nType == JS_PKI_KEY_TYPE_SM2 )
+                mAlgTypeCombo->setCurrentText( "SM2" );
+            else if( nType == JS_PKI_KEY_TYPE_ECC )
+                mAlgTypeCombo->setCurrentText( "ECDSA" );
+        }
+
+        ret = JS_PKI_verifyInit( &sctx_, strHash.toStdString().c_str(), &binPubKey );
+
+        berApplet->log( QString( "Algorithm       : %1" ).arg( mAlgTypeCombo->currentText() ));
+        berApplet->log( QString( "Init Public Key : %1" ).arg(getHexString(&binPubKey)));
     }
 
     if( ret == 0 )
@@ -276,6 +339,7 @@ void SignVerifyDlg::signVerifyInit()
 end :
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binPubKey );
 }
 
 void SignVerifyDlg::signVerifyUpdate()
@@ -376,6 +440,7 @@ void SignVerifyDlg::Run()
     BIN binSrc = {0,0};
     BIN binPri = {0,0};
     BIN binCert = {0,0};
+    BIN binPubKey = {0,0};
     BIN binOut = {0,0};
     int nVersion = 0;
     char *pOut = NULL;
@@ -421,6 +486,18 @@ void SignVerifyDlg::Run()
 
         JS_BIN_fileReadBER( mPriKeyPath->text().toLocal8Bit().toStdString().c_str(), &binPri );
 
+        if( mUseKeyAlgCheck->isChecked() )
+        {
+            int nAlgType = JS_PKI_getPriKeyType( &binPri );
+
+            if( nAlgType == JS_PKI_KEY_TYPE_RSA )
+                mAlgTypeCombo->setCurrentText( "RSA" );
+            else if( nAlgType == JS_PKI_KEY_TYPE_ECC )
+                mAlgTypeCombo->setCurrentText( "ECDSA" );
+            else if( nAlgType == JS_PKI_KEY_TYPE_SM2 )
+                mAlgTypeCombo->setCurrentText( "SM2" );
+        }
+
         if( mAlgTypeCombo->currentIndex() == 0 )
             ret = JS_PKI_RSAMakeSign( strHash.toStdString().c_str(), nVersion, &binSrc, &binPri, &binOut );
         else {
@@ -430,6 +507,7 @@ void SignVerifyDlg::Run()
         JS_BIN_encodeHex( &binOut, &pOut );
         mOutputText->setPlainText(pOut);
 
+        berApplet->log( QString( "Algorithm        : %1" ).arg( mAlgTypeCombo->currentText() ));
         berApplet->log( QString( "Sign Src         : %1" ).arg(getHexString(&binSrc)));
         berApplet->log( QString( "Sign Private Key : %1" ).arg(getHexString( &binPri )));
         berApplet->log( QString( "Signature        : %1" ).arg( getHexString( &binOut )));
@@ -453,27 +531,46 @@ void SignVerifyDlg::Run()
         if( mAutoCertPubKeyCheck->isChecked() )
         {
             if( JS_PKI_isCert( &binCert ) == 0 )
+            {
                 mPubKeyVerifyCheck->setChecked(true);
+                JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
+            }
             else
+            {
                 mPubKeyVerifyCheck->setChecked(false);
+                JS_BIN_copy( &binPubKey, &binCert );
+            }
+        }
+        else
+        {
+            if( mPubKeyVerifyCheck->isChecked() == false )
+                JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
+            else
+                JS_BIN_copy( &binPubKey, &binCert );
         }
 
-        if( mAlgTypeCombo->currentIndex() == 0 )
+        if( mUseKeyAlgCheck->isChecked() )
         {
-            if( mPubKeyVerifyCheck->isChecked() )
-                ret = JS_PKI_RSAVerifySign( strHash.toStdString().c_str(), nVersion, &binSrc, &binOut, &binCert );
-            else
-                ret = JS_PKI_RSAVerifySignWithCert( strHash.toStdString().c_str(), nVersion, &binSrc, &binOut, &binCert );
+            int id = JS_PKI_getPubKeyType( &binPubKey );
+            if( id == JS_PKI_KEY_TYPE_RSA )
+                mAlgTypeCombo->setCurrentText( "RSA" );
+            else if( id == JS_PKI_KEY_TYPE_SM2 )
+                mAlgTypeCombo->setCurrentText( "SM2" );
+            else if( id == JS_PKI_KEY_TYPE_ECC )
+                mAlgTypeCombo->setCurrentText( "ECDSA" );
+        }
+
+        if( mAlgTypeCombo->currentText() == "RSA" )
+        {
+            ret = JS_PKI_RSAVerifySign( strHash.toStdString().c_str(), nVersion, &binSrc, &binOut, &binPubKey );
         }
         else {
-            if( mPubKeyVerifyCheck->isChecked() )
-                ret = JS_PKI_ECCVerifySign( strHash.toStdString().c_str(), &binSrc, &binOut, &binCert );
-            else
-                ret = JS_PKI_ECCVerifySignWithCert( strHash.toStdString().c_str(), &binSrc, &binOut, &binCert );
+            ret = JS_PKI_ECCVerifySign( strHash.toStdString().c_str(), &binSrc, &binOut, &binPubKey );
         }
 
-        berApplet->log( QString( "Verify Src                : %1" ).arg(getHexString(&binSrc)));
-        berApplet->log( QString( "Verify Public Key or Cert : %1" ).arg(getHexString( &binCert )));
+        berApplet->log( QString( "Algorithm         : %1" ).arg( mAlgTypeCombo->currentText() ));
+        berApplet->log( QString( "Verify Src        : %1" ).arg(getHexString(&binSrc)));
+        berApplet->log( QString( "Verify Public Key : %1" ).arg(getHexString( &binPubKey )));
 
         if( ret == JS_VERIFY )
         {
@@ -496,6 +593,8 @@ end :
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binCert );
     JS_BIN_reset( &binOut );
+    JS_BIN_reset( &binPubKey );
+
     if( pOut ) JS_free( pOut );
 }
 
@@ -573,4 +672,11 @@ void SignVerifyDlg::clickCertDecode()
     berApplet->decodeData( &binData, strPath );
 
     JS_BIN_reset( &binData );
+}
+
+void SignVerifyDlg::checkUseKeyAlg()
+{
+    bool bVal = mUseKeyAlgCheck->isChecked();
+
+    mAlgTypeCombo->setEnabled( !bVal );
 }

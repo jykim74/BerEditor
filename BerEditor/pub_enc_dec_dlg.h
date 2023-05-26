@@ -33,6 +33,8 @@ private slots:
     void clickCertView();
     void clickCertDecode();
 
+    void checkUseKeyAlg();
+
 private:
     void initialize();
     QString last_path_;

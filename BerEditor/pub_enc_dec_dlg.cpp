@@ -61,6 +61,8 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
     connect( mCertViewBtn, SIGNAL(clicked()), this, SLOT(clickCertView()));
     connect( mCertDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCertDecode()));
 
+    connect( mUseKeyAlgCheck, SIGNAL(clicked()), this, SLOT(checkUseKeyAlg()));
+
     mCloseBtn->setFocus();
 }
 
@@ -78,11 +80,14 @@ void PubEncDecDlg::initialize()
 
     mVersionTypeCombo->addItems(versionTypes);
     mMethodTypeCombo->addItems(methodTypes);
+
+    checkUseKeyAlg();
 }
 
 void PubEncDecDlg::checkPubKeyEncrypt()
 {
     bool bVal = mPubKeyEncryptCheck->isChecked();
+    mCertViewBtn->setEnabled( !bVal );
 
     if( bVal )
     {
@@ -177,6 +182,7 @@ void PubEncDecDlg::Run()
     BIN binPri = {0,0};
     BIN binCert = {0,0};
     BIN binOut = {0,0};
+    BIN binPubKey = {0,0};
     char *pOut = NULL;
 
     QString strAlg = mAlgCombo->currentText();
@@ -221,29 +227,37 @@ void PubEncDecDlg::Run()
         if( mAutoCertPubKeyCheck->isChecked() )
         {
             if( JS_PKI_isCert( &binCert ) == 0 )
+            {
                 mPubKeyEncryptCheck->setChecked(true);
+                JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
+            }
             else
+            {
                 mPubKeyEncryptCheck->setChecked(false);
-        }
-
-        if( strAlg == "RSA" )
-        {
-            if( mPubKeyEncryptCheck->isChecked() )
-                JS_PKI_RSAEncryptWithPub( nVersion, &binSrc, &binCert, &binOut );
-            else
-                JS_PKI_RSAEncryptWithCert( nVersion, &binSrc, &binCert, &binOut );
+                JS_BIN_copy( &binPubKey, &binCert );
+            }
         }
         else
         {
-            if( mPubKeyEncryptCheck->isChecked() )
-                JS_PKI_SM2EncryptWithPub( &binSrc, &binCert, &binOut );
+            if( mPubKeyEncryptCheck->isChecked() == false )
+                JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
             else
-                JS_PKI_SM2EncryptWithCert( &binSrc, &binCert, &binOut );
+                JS_BIN_copy( &binPubKey, &binCert );
         }
 
-        berApplet->log( QString( "Enc Src               : %1").arg( getHexString(&binSrc)));
-        berApplet->log( QString( "Enc PublicKey or Cert : %1").arg(getHexString(&binCert)));
-        berApplet->log( QString( "Enc Output            : %1" ).arg( getHexString( &binOut )));
+        if( mAlgCombo->currentText() == "RSA" )
+        {
+            JS_PKI_RSAEncryptWithPub( nVersion, &binSrc, &binPubKey, &binOut );
+        }
+        else
+        {
+            JS_PKI_SM2EncryptWithPub( &binSrc, &binPubKey, &binOut );
+        }
+
+        berApplet->log( QString( "Algorithm     : %1").arg( mAlgCombo->currentText() ));
+        berApplet->log( QString( "Enc Src       : %1").arg( getHexString(&binSrc)));
+        berApplet->log( QString( "Enc PublicKey : %1").arg(getHexString(&binPubKey)));
+        berApplet->log( QString( "Enc Output    : %1" ).arg( getHexString( &binOut )));
     }
     else {
         if( mPriKeyPath->text().isEmpty() )
@@ -254,11 +268,27 @@ void PubEncDecDlg::Run()
 
         JS_BIN_fileReadBER( mPriKeyPath->text().toLocal8Bit().toStdString().c_str(), &binPri );
 
-        if( strAlg == "RSA" )
+        if( mUseKeyAlgCheck->isChecked() )
+        {
+            int nAlgType = JS_PKI_getPriKeyType( &binPri );
+
+            if( nAlgType == JS_PKI_KEY_TYPE_RSA )
+                mAlgCombo->setCurrentText( "RSA" );
+            else if( nAlgType == JS_PKI_KEY_TYPE_SM2 )
+                mAlgCombo->setCurrentText( "SM2" );
+            else
+            {
+                berApplet->warningBox( tr( "Invalid private key algorithm"), this );
+                goto end;
+            }
+        }
+
+        if( mAlgCombo->currentText() == "RSA" )
             JS_PKI_RSADecryptWithPri( nVersion, &binSrc, &binPri, &binOut );
         else
             JS_PKI_SM2DecryptWithPri( &binSrc, &binPri, &binOut );
 
+        berApplet->log( QString( "Algorithm      : %1").arg( mAlgCombo->currentText() ));
         berApplet->log( QString( "Dec Src        : %1").arg( getHexString(&binSrc)));
         berApplet->log( QString( "Dec PrivateKey : %1").arg(getHexString(&binPri)));
         berApplet->log( QString( "Dec Output     : %1" ).arg( getHexString( &binOut )));
@@ -280,6 +310,8 @@ end :
     JS_BIN_reset(&binPri);
     JS_BIN_reset(&binCert);
     JS_BIN_reset(&binOut);
+    JS_BIN_reset( &binPubKey );
+
     if( pOut ) JS_free(pOut);
 }
 
@@ -413,3 +445,9 @@ void PubEncDecDlg::clickCertDecode()
     JS_BIN_reset( &binData );
 }
 
+void PubEncDecDlg::checkUseKeyAlg()
+{
+    bool bVal = mUseKeyAlgCheck->isChecked();
+
+    mAlgCombo->setEnabled( !bVal );
+}
