@@ -82,10 +82,10 @@ void PubEncDecDlg::initialize()
     mVersionTypeCombo->addItems(versionTypes);
     mMethodTypeCombo->addItems(methodTypes);
 
-    mPubKeyEncryptCheck->setChecked(true);
+    mAutoCertPubKeyCheck->setChecked(true);
     mUseKeyAlgCheck->setChecked(true);
 
-    checkPubKeyEncrypt();
+    checkAutoCertOrPubKey();
     checkUseKeyAlg();
 }
 
