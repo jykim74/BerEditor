@@ -175,7 +175,7 @@ void OIDInfoDlg::createOID()
         return;
     }
 
-    berApplet->messageBox( tr("OID : %1 is added successfully").arg( strOID ));
+    berApplet->messageBox( tr("OID : %1 is added successfully").arg( strOID ), this);
 
     writeOIDConfig( QString( "\n# oid[%1] is added by config" ).arg(strOID) );
     writeOIDConfig( QString( "\nOID = %1").arg( strOID ) );

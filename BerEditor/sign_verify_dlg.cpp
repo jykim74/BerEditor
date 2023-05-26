@@ -420,9 +420,9 @@ void SignVerifyDlg::signVerifyFinal()
 
         ret = JS_PKI_verifyFinal( sctx_, &binSign );
         if( ret == 1 )
-            berApplet->messageBox( tr("Verify Success") );
+            berApplet->messageBox( tr("Verify Success"), this );
         else {
-            berApplet->warningBox( tr("Verify Fail") );
+            berApplet->warningBox( tr("Verify Fail"), this );
         }
     }
 

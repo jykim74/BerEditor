@@ -361,7 +361,7 @@ void CAVPDlg::clickSymRun()
 
                 if( ret != 0 )
                 {
-                    berApplet->warningBox( QString( "fail to run Sym:%1").arg(ret));
+                    berApplet->warningBox( QString( "fail to run Sym:%1").arg(ret), this);
                     return;
                 }
             }
@@ -614,7 +614,7 @@ void CAVPDlg::clickHMACRun()
 
                 if( ret != 0 )
                 {
-                    berApplet->warningBox( QString( "fail to run HMAC: %1").arg(ret));
+                    berApplet->warningBox( QString( "fail to run HMAC: %1").arg(ret), this);
                     return;
                 }
             }
@@ -724,7 +724,7 @@ void CAVPDlg::clickHashRun()
 
             if( ret != 0 )
             {
-                berApplet->warningBox( QString( "fail to run Hash : %1" ).arg(ret));
+                berApplet->warningBox( QString( "fail to run Hash : %1" ).arg(ret), this);
                 return;
             }
         }
@@ -843,7 +843,7 @@ void CAVPDlg::clickECCRun()
                 ret = makeECDSA_KPG( 10 );
                 if( ret != 0 )
                 {
-                    berApplet->warningBox( QString( "fail to run ECC: %1").arg(ret));
+                    berApplet->warningBox( QString( "fail to run ECC: %1").arg(ret), this );
                     return;
                 }
             }
@@ -861,7 +861,7 @@ void CAVPDlg::clickECCRun()
                     ret = makeECDSA_PKV( strYX, strYY );
                     if( ret != 0 )
                     {
-                        berApplet->warningBox( QString( "fail to run ECC: %1").arg(ret));
+                        berApplet->warningBox( QString( "fail to run ECC: %1").arg(ret), this);
                         return;
                     }
                 }
@@ -879,7 +879,7 @@ void CAVPDlg::clickECCRun()
                     ret = makeECDSA_SGT( strM );
                     if( ret != 0 )
                     {
-                        berApplet->warningBox( QString( "fail to run ECC: %1").arg(ret));
+                        berApplet->warningBox( QString( "fail to run ECC: %1").arg(ret), this);
                         return;
                     }
                 }
@@ -899,7 +899,7 @@ void CAVPDlg::clickECCRun()
                     ret = makeECDSA_SVT( strM, strYX, strYY, strR, strS );
                     if( ret != 0 )
                     {
-                        berApplet->warningBox( QString( "fail to run ECC: %1").arg(ret));
+                        berApplet->warningBox( QString( "fail to run ECC: %1").arg(ret), this );
                         return;
                     }
                 }
@@ -916,7 +916,7 @@ void CAVPDlg::clickECCRun()
                 ret = makeECDH_KPG( 15 );
                 if( ret != 0 )
                 {
-                    berApplet->warningBox( QString( "fail to run ECC: %1").arg(ret));
+                    berApplet->warningBox( QString( "fail to run ECC: %1").arg(ret), this );
                     return;
                 }
             }
@@ -934,7 +934,7 @@ void CAVPDlg::clickECCRun()
 
                     if( ret != 0 )
                     {
-                        berApplet->warningBox( QString( "fail to run ECC: %1").arg(ret));
+                        berApplet->warningBox( QString( "fail to run ECC: %1").arg(ret), this );
                         return;
                     }
                 }
@@ -953,7 +953,7 @@ void CAVPDlg::clickECCRun()
 
                     if( ret != 0 )
                     {
-                        berApplet->warningBox( QString( "fail to run ECC: %1").arg(ret));
+                        berApplet->warningBox( QString( "fail to run ECC: %1").arg(ret), this );
                         return;
                     }
                 }
@@ -1073,7 +1073,7 @@ void CAVPDlg::clickRSARun()
                     nKeyLen = -1;
                     if( ret != 0 )
                     {
-                        berApplet->warningBox( QString( "fail to run RSA : %1").arg(ret));
+                        berApplet->warningBox( QString( "fail to run RSA : %1").arg(ret), this );
                         return;
                     }
                 }
@@ -1085,7 +1085,7 @@ void CAVPDlg::clickRSARun()
                     ret = makeRSA_PSS_SGT( strE.toInt(), strHash, strM );
                     if( ret != 0 )
                     {
-                        berApplet->warningBox( QString( "fail to run RSA : %1").arg(ret));
+                        berApplet->warningBox( QString( "fail to run RSA : %1").arg(ret), this );
                         return;
                     }
                 }
@@ -1097,7 +1097,7 @@ void CAVPDlg::clickRSARun()
                     ret = makeRSA_PSS_SVT( strE, strN, strHash, strM, strS );
                     if( ret != 0 )
                     {
-                        berApplet->warningBox( QString( "fail to run RSA : %1").arg(ret));
+                        berApplet->warningBox( QString( "fail to run RSA : %1").arg(ret), this );
                         return;
                     }
                 }
