@@ -37,9 +37,9 @@
       </widget>
      </item>
      <item row="0" column="0">
-      <widget class="QPushButton" name="mViewBtn">
+      <widget class="QPushButton" name="mDecodeBtn">
        <property name="text">
-        <string>View</string>
+        <string>Decode</string>
        </property>
       </widget>
      </item>
@@ -450,7 +450,7 @@
   <tabstop>mVerifyDataBtn</tabstop>
   <tabstop>mDevelopedDataBtn</tabstop>
   <tabstop>mDevelopedAndVerifyBtn</tabstop>
-  <tabstop>mViewBtn</tabstop>
+  <tabstop>mDecodeBtn</tabstop>
   <tabstop>mChangeBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>

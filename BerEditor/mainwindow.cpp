@@ -1024,19 +1024,7 @@ void MainWindow::logView( bool bShow )
 
 void MainWindow::decodeData( const BIN *pData, const QString strPath )
 {
-    ber_model_->setBer( pData );
-
-    ber_model_->parseTree();
-
-    left_tree_->header()->setVisible(false);
-    left_tree_->viewRoot();
-
-    if( berApplet->isLicense() )
-    {
-        left_tree_->showTextView();
-        left_tree_->showXMLView();
-    }
-
+    openBer( pData );
     setTitle( QString( strPath ));
 }
 

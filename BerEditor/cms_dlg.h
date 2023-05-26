@@ -18,7 +18,7 @@ public:
 
 private slots:
     void clickClose();
-    void clickView();
+    void clickDecode();
     void clickChange();
     void clickSignPriFind();
     void clickSignCertFind();
@@ -42,7 +42,9 @@ private slots:
     void outputChanged();
 
 private:
+    void initialize();
     QString last_path_;
+    QButtonGroup* group_;
 
 };
 

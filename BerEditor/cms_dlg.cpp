@@ -1,4 +1,5 @@
 #include <QFileDialog>
+#include <QButtonGroup>
 
 #include "cms_dlg.h"
 #include "js_pki.h"
@@ -13,9 +14,10 @@ CMSDlg::CMSDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
+    group_ = new QButtonGroup;
     last_path_ = berApplet->getSetPath();
 
-    connect( mViewBtn, SIGNAL(clicked()), this, SLOT(clickView()));
+    connect( mDecodeBtn, SIGNAL(clicked()), this, SLOT(clickDecode()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(clickClose()));
     connect( mChangeBtn, SIGNAL(clicked()), this, SLOT(clickChange()));
     connect( mSignPriKeyFindBtn, SIGNAL(clicked()), this, SLOT(clickSignPriFind()));
@@ -45,6 +47,8 @@ CMSDlg::CMSDlg(QWidget *parent) :
     connect( mKMCertViewBtn, SIGNAL(clicked()), this, SLOT(clickKMCertView()));
     connect( mKMCertDecodeBtn, SIGNAL(clicked()), this, SLOT(clickKMCertDecode()));
 
+    initialize();
+
     mCloseBtn->setFocus();
 }
 
@@ -55,12 +59,21 @@ CMSDlg::~CMSDlg()
 
 }
 
+void CMSDlg::initialize()
+{
+    group_->addButton( mOutputStringRadio );
+    group_->addButton( mOutputHexRadio );
+    group_->addButton( mOutputBase64Radio );
+
+    mSrcStringRadio->setChecked(true);
+}
+
 void CMSDlg::clickClose()
 {
     close();
 }
 
-void CMSDlg::clickView()
+void CMSDlg::clickDecode()
 {
     BIN binOutput = {0,0};
 
@@ -76,7 +89,6 @@ void CMSDlg::clickView()
     berApplet->mainWindow()->openBer( &binOutput );
 
     JS_BIN_reset( &binOutput );
-    close();
 }
 
 void CMSDlg::clickChange()
