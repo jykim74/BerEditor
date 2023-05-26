@@ -246,6 +246,7 @@ void CMSDlg::clickEnvelopedData()
     char *pOutput = NULL;
 
     BIN binCert = {0,0};
+    BIN binPubKey = {0,0};
     BIN binSrc = {0,0};
     BIN binOutput = {0,0};
 
@@ -266,6 +267,15 @@ void CMSDlg::clickEnvelopedData()
 
     JS_BIN_fileReadBER( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
 
+    JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
+
+    nType = JS_PKI_getPubKeyType( &binPubKey );
+    if( nType != JS_PKI_KEY_TYPE_RSA )
+    {
+        berApplet->warningBox(tr( "The certificate is not RSA certificate"), this );
+        goto end;
+    }
+
     if( mSrcStringRadio->isChecked() )
         JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
     else if( mSrcHexRadio->isChecked() )
@@ -274,6 +284,11 @@ void CMSDlg::clickEnvelopedData()
         JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
 
     ret = JS_PKCS7_makeEnvelopedData( &binSrc, &binCert, &binOutput );
+    if( ret != 0 )
+    {
+        berApplet->warningBox(tr( "fail to make enveloped data"), this );
+        goto end;
+    }
 
     berApplet->log( QString( "Src         : %1" ).arg( getHexString( &binSrc )));
     berApplet->log( QString( "Certificate : %1" ).arg( getHexString( &binCert )));
@@ -293,6 +308,7 @@ end :
     JS_BIN_reset( &binSrc );
     JS_BIN_reset( &binOutput );
     JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binPubKey );
 }
 
 void CMSDlg::clickSignAndEnvloped()
@@ -304,6 +320,7 @@ void CMSDlg::clickSignAndEnvloped()
     BIN binSignPri = {0,0};
     BIN binSignCert = {0,0};
     BIN binKMCert = {0,0};
+    BIN binKMPubKey = {0,0};
     BIN binSrc = {0,0};
     BIN binOutput = {0,0};
 
@@ -340,6 +357,14 @@ void CMSDlg::clickSignAndEnvloped()
     JS_BIN_fileReadBER( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binSignCert );
     JS_BIN_fileReadBER( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binKMCert );
 
+    JS_PKI_getPubKeyFromCert( &binKMCert, &binKMPubKey );
+    nType = JS_PKI_getPubKeyType( &binKMPubKey );
+    if( nType != JS_PKI_KEY_TYPE_RSA )
+    {
+        berApplet->warningBox( tr("The KM Certificate is not RSA certificate"), this );
+        goto end;
+    }
+
     if( mSrcStringRadio->isChecked() )
         JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
     else if( mSrcHexRadio->isChecked() )
@@ -348,13 +373,18 @@ void CMSDlg::clickSignAndEnvloped()
         JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
 
     nType = JS_PKI_getPriKeyType( &binSignPri );
-    if( nType < 0 )
+    if( nType != JS_PKI_KEY_TYPE_RSA )
     {
         berApplet->warningBox( tr( "Invalid private key" ), this );
         goto end;
     }
 
     ret = JS_PKCS7_makeSignedAndEnveloped( &binSrc, &binSignCert, &binSignPri, &binKMCert, &binOutput );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "fail to make signed and enveloped data"), this );
+        goto end;
+    }
 
     berApplet->log( QString( "Src             : %1" ).arg( getHexString( &binSrc )));
     berApplet->log( QString( "Sign Cert       : %1" ).arg( getHexString( &binSignCert )));
@@ -378,6 +408,7 @@ end :
     JS_BIN_reset( &binSignPri );
     JS_BIN_reset( &binSignCert );
     JS_BIN_reset( &binKMCert );
+    JS_BIN_reset( &binKMPubKey );
 }
 
 void CMSDlg::clickVerifyData()
