@@ -31,6 +31,13 @@ AboutDlg::AboutDlg(QWidget *parent) :
             "you can use it freely "
             "If you have any opinions on this tool, please send me a mail." );
 
+    strAbout += "<br><br>OpenSSL Version 3.0.8";
+#ifdef Q_OS_WIN
+    strAbout += "<br>QT Version 5.13.0";
+#else
+    strAbout += "<br>QT Version 5.15.0";
+#endif
+
     QString strLibVersion = JS_GEN_getBuildInfo();
 
     strAbout += "<br><br>Library: ";
