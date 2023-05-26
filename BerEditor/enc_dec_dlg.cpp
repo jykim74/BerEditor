@@ -187,7 +187,7 @@ void EncDecDlg::Run()
             if( isCCM(strSymAlg) )
                 ret = JS_PKI_encryptCCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, nReqTagLen, &binTag, &binOut );
             else
-                ret = JS_PKI_encrytGCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, nReqTagLen, &binTag, &binOut );
+                ret = JS_PKI_encryptGCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, nReqTagLen, &binTag, &binOut );
 
             mTagTypeCombo->setCurrentIndex( DATA_HEX );
             JS_BIN_encodeHex( &binTag, &pTag );

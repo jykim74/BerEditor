@@ -2618,7 +2618,7 @@ int CAVPDlg::makeAEData( const QString strKey, const QString strIV, const QStrin
 
     if( strMode == "GCM" )
     {
-        ret = JS_PKI_encrytGCM( strEncAlg.toStdString().c_str(), &binPT, &binKey, &binIV, &binAAD, 16, &binTag, &binEnc );
+        ret = JS_PKI_encryptGCM( strEncAlg.toStdString().c_str(), &binPT, &binKey, &binIV, &binAAD, 16, &binTag, &binEnc );
     }
     else
     {
