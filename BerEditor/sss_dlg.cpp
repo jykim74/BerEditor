@@ -20,7 +20,7 @@ SSSDlg::SSSDlg(QWidget *parent) :
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mAddBtn, SIGNAL(clicked()), this, SLOT(clickAdd()));
-    connect( mClearBtn, SIGNAL(clicked()), this, SLOT(clickClear()));
+    connect( mClearResultBtn, SIGNAL(clicked()), this, SLOT(clickClearResult()));
     connect( mSplitBtn, SIGNAL(clicked()), this, SLOT(clickSplit()));
     connect( mJoinBtn, SIGNAL(clicked()), this, SLOT(clickJoin()));
 
@@ -29,6 +29,7 @@ SSSDlg::SSSDlg(QWidget *parent) :
     connect( mJoinedText, SIGNAL(textChanged(const QString&)), this, SLOT(joinedChanged()));
 
     connect( mShareTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotShareList(QPoint)));
+    connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
 
     initialize();
 }
@@ -94,7 +95,7 @@ void SSSDlg::joinedChanged()
     mJoinedLenText->setText( QString("%1").arg(nLen));
 }
 
-void SSSDlg::clickClear()
+void SSSDlg::clickClearResult()
 {
     int nRow = mShareTable->rowCount();
 
@@ -137,7 +138,7 @@ void SSSDlg::clickSplit()
 
     if( strSrc.isEmpty() ) return;
 
-    clickClear();
+    clickClearResult();
 
     if( mSrcTypeCombo->currentText() == "String" )
         JS_BIN_set( &binSrc, (unsigned char *)strSrc.toStdString().c_str(), strSrc.length() );
@@ -243,4 +244,12 @@ void SSSDlg::delShare()
 {
     QModelIndex idx = mShareTable->currentIndex();
     mShareTable->removeRow( idx.row() );
+}
+
+void SSSDlg::clickClearDataAll()
+{
+    clickClearResult();
+    mSrcText->clear();
+    mShareText->clear();
+    mThresholdText->clear();
 }

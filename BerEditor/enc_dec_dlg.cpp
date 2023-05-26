@@ -34,55 +34,6 @@ static QStringList modeAEList = {
     "GCM", "CCM"
 };
 
-/*
-static QStringList algTypes = {
-    "aes-128-cbc",
-    "aes-128-ecb",
-    "aes-128-ctr",
-    "aes-128-cfb",
-    "aes-128-ofb",
-    "aes-192-cbc",
-    "aes-192-ecb",
-    "aes-192-ctr",
-    "aes-192-cfb",
-    "aes-192-ofb",
-    "aes-256-cbc",
-    "aes-256-ecb",
-    "aes-256-ctr",
-    "aes-256-cfb",
-    "aes-256-ofb",
-    "des-cbc",
-    "des-ebc",
-    "des-ctr",
-    "aria-128-cbc",
-    "aria-128-ecb",
-    "aria-128-ctr",
-    "aria-128-cfb",
-    "aria-128-ofb",
-    "aria-192-cbc",
-    "aria-192-ecb",
-    "aria-192-ctr",
-    "aria-192-cfb",
-    "aria-192-ofb",
-    "aria-256-cbc",
-    "aria-256-ecb",
-    "aria-256-ctr",
-    "aria-256-cfb",
-    "aria-256-ofb",
-};
-
-static QStringList algAETypes = {
-    "aes-128-ccm",
-    "aes-256-ccm",
-    "aes-128-gcm",
-    "aes-256-gcm",
-    "aria-128-ccm",
-    "aria-256-ccm",
-    "aria-128-gcm",
-    "aria-256-gcm"
-};
-*/
-
 EncDecDlg::EncDecDlg(QWidget *parent) :
     QDialog(parent)
 {
@@ -114,6 +65,9 @@ EncDecDlg::EncDecDlg(QWidget *parent) :
     connect( mAADTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(aadChanged()));
     connect( mTagTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(tagChanged()));
     connect( mModeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(modeChanged()));
+
+    connect( mMethodCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeMethod(int)));
+    connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
 
     clickUseAE();
     mCloseBtn->setFocus();
@@ -836,4 +790,23 @@ void EncDecDlg::modeChanged()
         mCCMDataLength->setEnabled( true );
     else
         mCCMDataLength->setEnabled( false );
+}
+
+void EncDecDlg::changeMethod( int index )
+{
+    if( index == 0 )
+        mRunBtn->setText( tr( "Encrypt" ));
+    else
+        mRunBtn->setText( tr( "Decrypt"));
+}
+
+void EncDecDlg::clickClearDataAll()
+{
+    mInputText->clear();
+    mOutputText->clear();
+    mAADText->clear();
+    mIVText->clear();
+    mKeyText->clear();
+    mTagText->clear();
+    mStatusLabel->clear();
 }

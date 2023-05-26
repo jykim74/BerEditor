@@ -26,6 +26,8 @@ private slots:
     void inputChanged();
     void outputChanged();
 
+    void clickClearDataAll();
+
 private:
     void initialize();
 

@@ -28,6 +28,8 @@ GenOTPDlg::GenOTPDlg(QWidget *parent) :
     connect( mKeyText, SIGNAL(textChanged(const QString&)), this, SLOT(keyChanged()));
     connect( mKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(keyChanged()));
 
+    connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
+
     mCloseBtn->setFocus();
 }
 
@@ -115,4 +117,11 @@ void GenOTPDlg::keyChanged()
 {
     int nLen = getDataLen( mKeyTypeCombo->currentText(), mKeyText->text() );
     mKeyLenText->setText( QString("%1").arg(nLen));
+}
+
+void GenOTPDlg::clickClearDataAll()
+{
+    mKeyText->clear();
+    mTValueText->clear();
+    mOTPValueText->clear();
 }

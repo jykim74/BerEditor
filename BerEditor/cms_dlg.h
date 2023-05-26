@@ -41,6 +41,8 @@ private slots:
     void srcChanged();
     void outputChanged();
 
+    void clickClearDataAll();
+
 private:
     void initialize();
     QString last_path_;

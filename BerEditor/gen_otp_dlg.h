@@ -21,6 +21,8 @@ private slots:
     void Run();
     void keyChanged();
 
+    void clickClearDataAll();
+
 private:
     void initialize();
 

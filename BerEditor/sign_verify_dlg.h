@@ -37,6 +37,7 @@ private slots:
     void clickCertDecode();
 
     void checkUseKeyAlg();
+    void clickClearDataAll();
 
 private:
     void initialize();

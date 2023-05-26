@@ -62,6 +62,7 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
     connect( mCertDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCertDecode()));
 
     connect( mUseKeyAlgCheck, SIGNAL(clicked()), this, SLOT(checkUseKeyAlg()));
+    connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
 
     mCloseBtn->setFocus();
 }
@@ -454,4 +455,12 @@ void PubEncDecDlg::checkUseKeyAlg()
     bool bVal = mUseKeyAlgCheck->isChecked();
 
     mAlgCombo->setEnabled( !bVal );
+}
+
+void PubEncDecDlg::clickClearDataAll()
+{
+    mInputText->clear();
+    mOutputText->clear();
+    mPriKeyPath->clear();
+    mCertPath->clear();
 }

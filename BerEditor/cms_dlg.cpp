@@ -47,6 +47,8 @@ CMSDlg::CMSDlg(QWidget *parent) :
     connect( mKMCertViewBtn, SIGNAL(clicked()), this, SLOT(clickKMCertView()));
     connect( mKMCertDecodeBtn, SIGNAL(clicked()), this, SLOT(clickKMCertDecode()));
 
+    connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
+
     initialize();
 
     mCloseBtn->setFocus();
@@ -718,4 +720,15 @@ void CMSDlg::clickKMCertDecode()
     berApplet->decodeData( &binData, strPath );
 
     JS_BIN_reset( &binData );
+}
+
+void CMSDlg::clickClearDataAll()
+{
+    mSrcText->clear();
+    mOutputText->clear();
+
+    mSignPriKeyPathText->clear();
+    mSignCertPathText->clear();
+    mKMPriKeyPathText->clear();
+    mKMCertPathText->clear();
 }

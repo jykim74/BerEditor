@@ -45,6 +45,8 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
     connect( mUntrustDecodeBtn, SIGNAL(clicked()), this, SLOT(clickUntrustDecode()));
     connect( mCRLDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCRLDecode()));
 
+    connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
+
     initialize();
 }
 
@@ -793,4 +795,38 @@ void CertPVDDlg::clickCRLDecode()
     berApplet->decodeData( &binData, strPath );
 
     JS_BIN_reset( &binData );
+}
+
+void CertPVDDlg::clickClearDataAll()
+{
+    clickListClear();
+    clickPathClear();
+
+    mTrustPathText->clear();
+    mUntrustPathText->clear();
+    mCRLPathText->clear();
+    mTargetPathText->clear();
+    mParamValueText->clear();
+
+    mUseCheckTimeCheck->setChecked(false);
+    mCRLCheckCheck->setChecked(false);
+    mCRLCheckAllCheck->setChecked(false);
+    mIgnoreCriticalCheck->setChecked(false);
+    mX509StrictCheck->setChecked(false);
+    mAllowProxyCertsCheck->setChecked(false);
+    mPolicyCheckCheck->setChecked(false);
+    mExplicitPolicyCheck->setChecked(false);
+    mInhibitAnyCheck->setChecked(false);
+    mInhibitMapCheck->setChecked(false);
+    mNotifyPolicyCheck->setChecked(false);
+    mExtendedCRLSupportCheck->setChecked(false);
+    mUseDeltasCheck->setChecked(false);
+    mCheckSSSignatureCheck->setChecked(false);
+    mTrustedFirstCheck->setChecked(false);
+    mSuiteB128LogCheck->setChecked(false);
+    mSuiteB192LosCheck->setChecked(false);
+    mSuiteB128LosOnlyCheck->setChecked(false);
+    mPartialChainCheck->setChecked(false);
+    mNoALTChainsCheck->setChecked(false);
+    mNoCheckTimeCheck->setChecked(false);
 }

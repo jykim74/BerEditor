@@ -48,6 +48,7 @@ private slots:
     void clickUntrustDecode();
     void clickCRLDecode();
 
+    void clickClearDataAll();
 private:
     void initialize();
     QString last_path_;

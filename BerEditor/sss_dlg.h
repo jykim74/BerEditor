@@ -19,13 +19,15 @@ public:
 private slots:
     void srcChanged();
     void joinedChanged();
-    void clickClear();
+    void clickClearResult();
     void clickAdd();
     void clickSplit();
     void clickJoin();
 
     void slotShareList(QPoint pos);
     void delShare();
+
+    void clickClearDataAll();
 
 private:
     void initialize();

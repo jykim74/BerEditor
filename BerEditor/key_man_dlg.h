@@ -30,6 +30,7 @@ private slots:
     void srcChanged();
     void dstChanged();
     void kekChanged( const QString& text );
+    void clickClearDataAll();
 
 private:
     void initialize();

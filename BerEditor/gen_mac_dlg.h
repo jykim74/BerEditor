@@ -34,6 +34,7 @@ private slots:
         void checkCMAC();
         void checkGMAC();
 
+        void clickClearDataAll();
 private:
         void freeCTX();
 

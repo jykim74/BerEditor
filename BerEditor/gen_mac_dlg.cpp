@@ -60,6 +60,8 @@ GenMacDlg::GenMacDlg(QWidget *parent) :
     connect( mCMACRadio, SIGNAL(clicked()), this, SLOT(checkCMAC()));
     connect( mGMACRadio, SIGNAL(clicked()), this, SLOT(checkGMAC()));
 
+    connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
+
     initialize();
 
     mCloseBtn->setFocus();
@@ -425,4 +427,12 @@ void GenMacDlg::checkGMAC()
     mGMACRadio->setChecked(true);
     mAlgTypeCombo->clear();
     mAlgTypeCombo->addItems( gmacList );
+}
+
+void GenMacDlg::clickClearDataAll()
+{
+    mInputText->clear();
+    mKeyText->clear();
+    mOutputText->clear();
+    mStatusLabel->clear();
 }

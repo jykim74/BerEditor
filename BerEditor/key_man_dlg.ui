@@ -223,9 +223,9 @@
           <number>0</number>
          </property>
          <item row="0" column="1">
-          <widget class="QPushButton" name="mOKBtn">
+          <widget class="QPushButton" name="mMakeKeyBtn">
            <property name="text">
-            <string>OK</string>
+            <string>Make Key</string>
            </property>
           </widget>
          </item>
@@ -418,14 +418,14 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="1">
+     <item row="0" column="2">
       <widget class="QPushButton" name="mCloseBtn">
        <property name="text">
         <string>Close</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
+     <item row="0" column="1">
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -437,6 +437,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mClearDataAllBtn">
+       <property name="text">
+        <string>Clear Data All</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -454,7 +461,7 @@
   <tabstop>mKeyLenText</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
-  <tabstop>mOKBtn</tabstop>
+  <tabstop>mMakeKeyBtn</tabstop>
   <tabstop>mKWRadio</tabstop>
   <tabstop>mKWPRadio</tabstop>
   <tabstop>mSrcLenText</tabstop>

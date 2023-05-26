@@ -20,7 +20,7 @@ KeyManDlg::KeyManDlg(QWidget *parent) :
     setupUi(this);
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
-    connect( mOKBtn, SIGNAL(clicked()), this, SLOT(PBKDF()));
+    connect( mMakeKeyBtn, SIGNAL(clicked()), this, SLOT(PBKDF()));
     connect( mOutputText, SIGNAL(textChanged()), this, SLOT(keyValueChanged()));
 
     connect( mPasswordText, SIGNAL(textChanged(const QString&)), this, SLOT(passwordChanged()));
@@ -36,6 +36,7 @@ KeyManDlg::KeyManDlg(QWidget *parent) :
     connect( mDstText, SIGNAL(textChanged()), this, SLOT(dstChanged()));
     connect( mKEKText, SIGNAL(textChanged(const QString&)), this, SLOT(kekChanged(const QString&)));
 
+    connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT( clickClearDataAll()));
 
     initialize();
 }
@@ -165,7 +166,7 @@ void KeyManDlg::clickWrap()
     ret = JS_KW_WrapKey( nMode, &binInput, &binWrappingKey, &binOutput );
     if( ret != 0 )
     {
-        berApplet->warningBox( QString( "fail to wrap key: %1").arg(ret));
+        berApplet->warningBox( QString( "fail to wrap key: %1").arg(ret), this );
         goto end;
     }
 
@@ -261,4 +262,17 @@ void KeyManDlg::kekChanged( const QString& text )
 {
     int nLen = text.length() / 2;
     mKEKLenText->setText( QString("%1").arg(nLen));
+}
+
+void KeyManDlg::clickClearDataAll()
+{
+    mPasswordText->clear();
+    mSaltText->clear();
+    mIterCntText->clear();
+    mKeyLenText->clear();
+    mOutputText->clear();
+
+    mSrcText->clear();
+    mKEKText->clear();
+    mDstText->clear();
 }

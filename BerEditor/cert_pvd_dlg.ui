@@ -602,7 +602,35 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mPathValidationBtn">
+       <property name="text">
+        <string>Path Validation</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="6">
+      <widget class="QPushButton" name="mCloseBtn">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mPolicyCheckBtn">
+       <property name="text">
+        <string>Policy Check</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="3">
+      <widget class="QPushButton" name="mPathClearBtn">
+       <property name="text">
+        <string>PathClear</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -615,31 +643,10 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mPathValidationBtn">
-       <property name="text">
-        <string>Path Validation</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mPathClearBtn">
-       <property name="text">
-        <string>PathClear</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="5">
-      <widget class="QPushButton" name="mCloseBtn">
-       <property name="text">
-        <string>Close</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
-      <widget class="QPushButton" name="mPolicyCheckBtn">
+      <widget class="QPushButton" name="mClearDataAllBtn">
        <property name="text">
-        <string>Policy Check</string>
+        <string>Clear Data All</string>
        </property>
       </widget>
      </item>

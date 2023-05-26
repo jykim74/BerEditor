@@ -61,6 +61,7 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     connect( mCertDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCertDecode()));
 
     connect( mUseKeyAlgCheck, SIGNAL(clicked()), this, SLOT(checkUseKeyAlg()));
+    connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
 
     mCloseBtn->setFocus();
 }
@@ -683,4 +684,13 @@ void SignVerifyDlg::checkUseKeyAlg()
     bool bVal = mUseKeyAlgCheck->isChecked();
 
     mAlgTypeCombo->setEnabled( !bVal );
+}
+
+void SignVerifyDlg::clickClearDataAll()
+{
+    mInputText->clear();
+    mPriKeyPath->clear();
+    mCertPath->clear();
+    mOutputText->clear();
+    mStatusLabel->clear();
 }

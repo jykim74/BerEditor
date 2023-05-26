@@ -33,6 +33,9 @@ private slots:
     void tagChanged();
     void modeChanged();
 
+    void changeMethod( int index );
+    void clickClearDataAll();
+
 private:
     void initialize();
     bool isCCM( const QString strAlg );

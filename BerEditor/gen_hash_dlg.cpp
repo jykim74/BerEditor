@@ -32,6 +32,8 @@ GenHashDlg::GenHashDlg(QWidget *parent) :
     connect( mInputHexRadio, SIGNAL(clicked()), this, SLOT(inputChanged()));
     connect( mInputBase64Radio, SIGNAL(clicked()), this, SLOT(inputChanged()));
 
+    connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
+
     initialize();
 
     mCloseBtn->setFocus();
@@ -229,4 +231,11 @@ void GenHashDlg::outputChanged()
 {
     int nLen = getDataLen( DATA_HEX, mOutputText->toPlainText() );
     mOutputLenText->setText( QString("%1").arg(nLen));
+}
+
+void GenHashDlg::clickClearDataAll()
+{
+    mInputText->clear();
+    mOutputText->clear();
+    mStatusLabel->clear();
 }
