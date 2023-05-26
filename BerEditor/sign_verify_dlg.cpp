@@ -79,6 +79,10 @@ void SignVerifyDlg::initialize()
     mVersionCombo->addItems(versionTypes);
     mMethodCombo->addItems(methodTypes);
 
+    mPubKeyVerifyCheck->setChecked(true);
+    mUseKeyAlgCheck->setChecked(true);
+
+    checkPubKeyVerify();
     checkUseKeyAlg();
 }
 
