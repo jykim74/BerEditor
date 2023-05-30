@@ -52,6 +52,7 @@ private slots:
     void BECDHPubKeyChanged();
 
     void secretKeyChanged();
+    void clickClearDataAll();
 
 private:
     void initialize();

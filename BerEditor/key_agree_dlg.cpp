@@ -51,6 +51,8 @@ KeyAgreeDlg::KeyAgreeDlg(QWidget *parent) :
     connect( mBECDHPriKeyText, SIGNAL(textChanged(const QString&)), this, SLOT(BECDHPriKeyChanged()));
     connect( mBECDHPubKeyText, SIGNAL(textChanged(const QString&)), this, SLOT(BECDHPubKeyChanged()));
 
+    connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
+
     initialize();
     mCloseBtn->setFocus();
 }
@@ -427,9 +429,9 @@ void KeyAgreeDlg::checkAPubKey()
 
     ret = JS_PKI_IsValidECCPubKey( strParam.toStdString().c_str(), &binX, &binY );
     if( ret == 1 )
-        berApplet->messageBox( "PubKey is valid", this );
+        berApplet->messageBox( tr("PubKey is valid"), this );
     else
-        berApplet->warningBox( "PubKey is invalid", this );
+        berApplet->warningBox( tr("PubKey is invalid"), this );
 
     JS_BIN_reset( &binPub );
     JS_BIN_reset( &binX );
@@ -452,9 +454,9 @@ void KeyAgreeDlg::checkBPubKey()
 
     ret = JS_PKI_IsValidECCPubKey( strParam.toStdString().c_str(), &binX, &binY );
     if( ret == 1 )
-        berApplet->messageBox( "PubKey is valid", this );
+        berApplet->messageBox( tr("PubKey is valid"), this );
     else
-        berApplet->warningBox( "PubKey is invalid", this );
+        berApplet->warningBox( tr("PubKey is invalid"), this );
 
     JS_BIN_reset( &binPub );
     JS_BIN_reset( &binX );
@@ -480,9 +482,9 @@ void KeyAgreeDlg::checkAKeyPair()
 
     ret = JS_PKI_IsValidECCKeyPairValue( strParam.toStdString().c_str(), &binPri, &binX, &binY );
     if( ret == 1 )
-        berApplet->messageBox( "ECC KeyPair is valid", this );
+        berApplet->messageBox( tr("ECC KeyPair is valid"), this );
     else
-        berApplet->warningBox( "ECC KeyPair is invalid", this );
+        berApplet->warningBox( tr("ECC KeyPair is invalid"), this );
 
     JS_BIN_reset( &binPub );
     JS_BIN_reset( &binX );
@@ -509,9 +511,9 @@ void KeyAgreeDlg::checkBKeyPair()
 
     ret = JS_PKI_IsValidECCKeyPairValue( strParam.toStdString().c_str(), &binPri, &binX, &binY );
     if( ret == 1 )
-        berApplet->messageBox( "ECC KeyPair is valid", this );
+        berApplet->messageBox( tr("ECC KeyPair is valid"), this );
     else
-        berApplet->warningBox( "ECC KeyPair is invalid", this );
+        berApplet->warningBox( tr("ECC KeyPair is invalid"), this );
 
     JS_BIN_reset( &binPub );
     JS_BIN_reset( &binX );
@@ -720,4 +722,20 @@ void KeyAgreeDlg::secretKeyChanged()
 {
     int nLen = getDataLen( DATA_HEX, mSecretKeyText->toPlainText() );
     mSecretKeyLenText->setText( QString("%1").arg(nLen));
+}
+
+void KeyAgreeDlg::clickClearDataAll()
+{
+    mPText->clear();
+    mAPrivateKeyText->clear();
+    mAPublicKeyText->clear();
+    mBPrivateKeyText->clear();
+    mBPublicKeyText->clear();
+
+    mAECDHPriKeyText->clear();
+    mAECDHPubKeyText->clear();
+    mBECDHPriKeyText->clear();
+    mBECDHPubKeyText->clear();
+
+    mSecretKeyText->clear();
 }

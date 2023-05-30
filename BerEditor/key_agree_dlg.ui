@@ -93,6 +93,13 @@
    <item row="5" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
+      <widget class="QPushButton" name="mClearDataAllBtn">
+       <property name="text">
+        <string>Clear Data All</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="mSecretClearBtn">
        <property name="text">
         <string>Secret Clear</string>
@@ -783,6 +790,7 @@
   <tabstop>mBFindPriKeyBtn</tabstop>
   <tabstop>mSecretKeyLenText</tabstop>
   <tabstop>mSecretKeyText</tabstop>
+  <tabstop>mClearDataAllBtn</tabstop>
   <tabstop>mSecretClearBtn</tabstop>
   <tabstop>mACalcBtn</tabstop>
   <tabstop>mBCalcBtn</tabstop>

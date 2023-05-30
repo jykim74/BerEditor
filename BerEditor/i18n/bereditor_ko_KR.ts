@@ -2292,7 +2292,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">계산</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="132"/>
+        <location filename="../key_agree_dlg.ui" line="139"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -2301,92 +2301,97 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">알고리즘</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="249"/>
-        <location filename="../key_agree_dlg.ui" line="724"/>
+        <location filename="../key_agree_dlg.ui" line="256"/>
+        <location filename="../key_agree_dlg.ui" line="731"/>
         <source>A PublicKey</source>
         <translation>A 공개키</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="276"/>
-        <location filename="../key_agree_dlg.ui" line="451"/>
+        <location filename="../key_agree_dlg.ui" line="283"/>
+        <location filename="../key_agree_dlg.ui" line="458"/>
         <source>B PublicKey</source>
         <translation>B 공개키</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="411"/>
-        <location filename="../key_agree_dlg.ui" line="676"/>
+        <location filename="../key_agree_dlg.ui" line="418"/>
+        <location filename="../key_agree_dlg.ui" line="683"/>
         <source>A PrivateKey</source>
         <translation>A 개인키</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="186"/>
-        <location filename="../key_agree_dlg.ui" line="621"/>
+        <location filename="../key_agree_dlg.ui" line="193"/>
+        <location filename="../key_agree_dlg.ui" line="628"/>
         <source>B PrivateKey</source>
         <translation>B 개인키</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="269"/>
+        <location filename="../key_agree_dlg.ui" line="276"/>
         <source>B GenDHKey</source>
         <translation>B DH 키생성</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="262"/>
+        <location filename="../key_agree_dlg.ui" line="269"/>
         <source>A GenDHKey</source>
         <translation>A DH 키생성</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.ui" line="87"/>
-        <location filename="../key_agree_dlg.ui" line="211"/>
+        <location filename="../key_agree_dlg.ui" line="218"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="302"/>
+        <location filename="../key_agree_dlg.ui" line="98"/>
+        <source>Clear Data All</source>
+        <translation>전체 데이타 지우기</translation>
+    </message>
+    <message>
+        <location filename="../key_agree_dlg.ui" line="309"/>
         <source>A GenDHPri</source>
         <translation>A DH 개인키</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="360"/>
+        <location filename="../key_agree_dlg.ui" line="367"/>
         <source>Parameter Length</source>
         <translation>파라미터 길이</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="404"/>
+        <location filename="../key_agree_dlg.ui" line="411"/>
         <source>B GenDHPri</source>
         <translation>B DH 개인키</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="463"/>
-        <location filename="../key_agree_dlg.ui" line="579"/>
+        <location filename="../key_agree_dlg.ui" line="470"/>
+        <location filename="../key_agree_dlg.ui" line="586"/>
         <source>GenKeyPair</source>
         <translation>키 쌍 생성</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="477"/>
-        <location filename="../key_agree_dlg.ui" line="559"/>
+        <location filename="../key_agree_dlg.ui" line="484"/>
+        <location filename="../key_agree_dlg.ui" line="566"/>
         <source>GenPriKey</source>
         <translation>개인키 생성</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="484"/>
-        <location filename="../key_agree_dlg.ui" line="552"/>
+        <location filename="../key_agree_dlg.ui" line="491"/>
+        <location filename="../key_agree_dlg.ui" line="559"/>
         <source>CheckPubKey</source>
         <translation>공개키 체크</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="491"/>
-        <location filename="../key_agree_dlg.ui" line="545"/>
+        <location filename="../key_agree_dlg.ui" line="498"/>
+        <location filename="../key_agree_dlg.ui" line="552"/>
         <source>GenPubKey</source>
         <translation>공개키 생성</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="511"/>
-        <location filename="../key_agree_dlg.ui" line="586"/>
+        <location filename="../key_agree_dlg.ui" line="518"/>
+        <location filename="../key_agree_dlg.ui" line="593"/>
         <source>CheckKeyPair</source>
         <translation>키 쌍 체크</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="642"/>
+        <location filename="../key_agree_dlg.ui" line="649"/>
         <source>Parameter</source>
         <translation>파라미터</translation>
     </message>
@@ -2415,17 +2420,17 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">A 개인키 생성</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="98"/>
+        <location filename="../key_agree_dlg.ui" line="105"/>
         <source>Secret Clear</source>
         <translation>비밀값 지우기</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="105"/>
+        <location filename="../key_agree_dlg.ui" line="112"/>
         <source>A Calculate</source>
         <translation>A 비밀값 계산</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="112"/>
+        <location filename="../key_agree_dlg.ui" line="119"/>
         <source>B Calculate</source>
         <translation>B 비밀값 계산</translation>
     </message>
@@ -2435,7 +2440,7 @@ mailto : jykim74@gmail.com</translation>
         <translation>비밀키</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="426"/>
+        <location filename="../key_agree_dlg.ui" line="433"/>
         <source>ECDH</source>
         <translation>ECDH</translation>
     </message>
@@ -2452,18 +2457,18 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">인증서 찾기</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="470"/>
-        <location filename="../key_agree_dlg.ui" line="538"/>
+        <location filename="../key_agree_dlg.ui" line="477"/>
+        <location filename="../key_agree_dlg.ui" line="545"/>
         <source>FindPriKey</source>
         <translation>개인키 찾기</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="145"/>
+        <location filename="../key_agree_dlg.ui" line="152"/>
         <source>DH</source>
         <translation>DH</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="336"/>
+        <location filename="../key_agree_dlg.ui" line="343"/>
         <source>g value</source>
         <translation>g 값</translation>
     </message>
@@ -2472,12 +2477,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">길이</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="353"/>
+        <location filename="../key_agree_dlg.ui" line="360"/>
         <source>GenParam</source>
         <translation>파라미터 생성</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="237"/>
+        <location filename="../key_agree_dlg.ui" line="244"/>
         <source>p value</source>
         <translation>p 값</translation>
     </message>
@@ -2500,6 +2505,30 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <source>ECC Certificate file</source>
         <translation type="vanished">ECC 인증서 파일</translation>
+    </message>
+    <message>
+        <location filename="../key_agree_dlg.cpp" line="432"/>
+        <location filename="../key_agree_dlg.cpp" line="457"/>
+        <source>PubKey is valid</source>
+        <translation>유효한 공개키 입니다.</translation>
+    </message>
+    <message>
+        <location filename="../key_agree_dlg.cpp" line="434"/>
+        <location filename="../key_agree_dlg.cpp" line="459"/>
+        <source>PubKey is invalid</source>
+        <translation>공개키가 잘못 되었습니다.</translation>
+    </message>
+    <message>
+        <location filename="../key_agree_dlg.cpp" line="485"/>
+        <location filename="../key_agree_dlg.cpp" line="514"/>
+        <source>ECC KeyPair is valid</source>
+        <translation>유요한 ECC 키 쌍입니다</translation>
+    </message>
+    <message>
+        <location filename="../key_agree_dlg.cpp" line="487"/>
+        <location filename="../key_agree_dlg.cpp" line="516"/>
+        <source>ECC KeyPair is invalid</source>
+        <translation>잘못된 ECC 키 쌍입니다.</translation>
     </message>
 </context>
 <context>
