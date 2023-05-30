@@ -215,6 +215,12 @@ void CMSDlg::clickSignedData()
     }
 
     ret = JS_PKCS7_makeSignedData( nType, "SHA256", &binSrc, &binPri, &binCert, &binOutput );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "fail to make signed data:%1").arg( ret ), this );
+        goto end;
+    }
+
 
     berApplet->log( QString( "Hash        : SHA256" ));
     berApplet->log( QString( "Src         : %1" ).arg( getHexString( &binSrc )));
@@ -286,7 +292,7 @@ void CMSDlg::clickEnvelopedData()
     ret = JS_PKCS7_makeEnvelopedData( &binSrc, &binCert, &binOutput );
     if( ret != 0 )
     {
-        berApplet->warningBox(tr( "fail to make enveloped data"), this );
+        berApplet->warningBox(tr( "fail to make enveloped data: %1").arg(ret), this );
         goto end;
     }
 
@@ -382,7 +388,7 @@ void CMSDlg::clickSignAndEnvloped()
     ret = JS_PKCS7_makeSignedAndEnveloped( &binSrc, &binSignCert, &binSignPri, &binKMCert, &binOutput );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to make signed and enveloped data"), this );
+        berApplet->warningBox( tr( "fail to make signed and enveloped data: %1").arg(ret), this );
         goto end;
     }
 
@@ -446,6 +452,7 @@ void CMSDlg::clickVerifyData()
         JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
 
     ret = JS_PKCS7_verifySignedData( &binSrc, &binCert, &binOutput );
+    berApplet->log( QString("verifySigneData Ret: %1").arg( ret ));
 
     berApplet->log( QString( "Src    : %1" ).arg( getHexString( &binSrc )));
     berApplet->log( QString( "Cert   : %1" ).arg( getHexString( &binCert )));
@@ -519,6 +526,7 @@ void CMSDlg::clickDevelopedData()
     }
 
     ret = JS_PKCS7_makeDevelopedData( &binSrc, &binPri, &binCert, &binOutput );
+    berApplet->log( QString( "makeDevelopedData Ret: %1").arg(ret));
 
     berApplet->log( QString( "Src        : %1" ).arg( getHexString( &binSrc )));
     berApplet->log( QString( "Cert       : %1" ).arg( getHexString( &binCert )));
@@ -601,7 +609,8 @@ void CMSDlg::clickDevelopedAndVerify()
         goto end;
     }
 
-    ret = JS_PKCS7_makeVerifyAndDeveloped( &binSrc, &binSignCert, &binKMPri, &binKMCert, &binOutput );
+    ret = JS_PKCS7_makeDevelopedAndVerify( &binSrc, &binSignCert, &binKMPri, &binKMCert, &binOutput );
+    berApplet->log( QString("makeDevelopedAndVerify Ret: %1").arg(ret));
 
     berApplet->log( QString( "Src           : %1" ).arg( getHexString( &binSrc )));
     berApplet->log( QString( "Sign Cert     : %1" ).arg( getHexString( &binSignCert )));

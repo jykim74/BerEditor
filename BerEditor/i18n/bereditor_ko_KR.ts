@@ -630,75 +630,88 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../cms_dlg.cpp" line="182"/>
-        <location filename="../cms_dlg.cpp" line="257"/>
-        <location filename="../cms_dlg.cpp" line="331"/>
-        <location filename="../cms_dlg.cpp" line="428"/>
-        <location filename="../cms_dlg.cpp" line="486"/>
-        <location filename="../cms_dlg.cpp" line="561"/>
+        <location filename="../cms_dlg.cpp" line="263"/>
+        <location filename="../cms_dlg.cpp" line="337"/>
+        <location filename="../cms_dlg.cpp" line="434"/>
+        <location filename="../cms_dlg.cpp" line="493"/>
+        <location filename="../cms_dlg.cpp" line="569"/>
         <source>insert src value</source>
         <translation>소스 값을 입겨하세요</translation>
     </message>
     <message>
         <location filename="../cms_dlg.cpp" line="189"/>
-        <location filename="../cms_dlg.cpp" line="338"/>
+        <location filename="../cms_dlg.cpp" line="344"/>
         <source>find sign private key</source>
         <translation>서명용 개인키를 찾으세요</translation>
     </message>
     <message>
         <location filename="../cms_dlg.cpp" line="196"/>
-        <location filename="../cms_dlg.cpp" line="345"/>
-        <location filename="../cms_dlg.cpp" line="435"/>
-        <location filename="../cms_dlg.cpp" line="568"/>
+        <location filename="../cms_dlg.cpp" line="351"/>
+        <location filename="../cms_dlg.cpp" line="441"/>
+        <location filename="../cms_dlg.cpp" line="576"/>
         <source>find sign certificate</source>
         <translation>서명용 인증서를 찾으세요</translation>
     </message>
     <message>
         <location filename="../cms_dlg.cpp" line="213"/>
-        <location filename="../cms_dlg.cpp" line="378"/>
-        <location filename="../cms_dlg.cpp" line="517"/>
-        <location filename="../cms_dlg.cpp" line="600"/>
+        <location filename="../cms_dlg.cpp" line="384"/>
+        <location filename="../cms_dlg.cpp" line="524"/>
+        <location filename="../cms_dlg.cpp" line="608"/>
         <source>Invalid private key</source>
         <translation>잘못 된 개인키 입니다</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="264"/>
-        <location filename="../cms_dlg.cpp" line="352"/>
-        <location filename="../cms_dlg.cpp" line="500"/>
-        <location filename="../cms_dlg.cpp" line="582"/>
+        <location filename="../cms_dlg.cpp" line="220"/>
+        <source>fail to make signed data:%1</source>
+        <translation>서명된 데이타 만들기 실패:%1</translation>
+    </message>
+    <message>
+        <location filename="../cms_dlg.cpp" line="270"/>
+        <location filename="../cms_dlg.cpp" line="358"/>
+        <location filename="../cms_dlg.cpp" line="507"/>
+        <location filename="../cms_dlg.cpp" line="590"/>
         <source>find km certificate</source>
         <translation>KM 인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="275"/>
+        <location filename="../cms_dlg.cpp" line="281"/>
         <source>The certificate is not RSA certificate</source>
         <translation>RSA 인증서가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="289"/>
-        <source>fail to make enveloped data</source>
-        <translation>암호화된 데이타 만들기 실패</translation>
+        <location filename="../cms_dlg.cpp" line="295"/>
+        <source>fail to make enveloped data: %1</source>
+        <translation>암호화 데이타 만들기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="364"/>
+        <location filename="../cms_dlg.cpp" line="391"/>
+        <source>fail to make signed and enveloped data: %1</source>
+        <translation>서명 및 암호화 데이타 만들기 실패: %1</translation>
+    </message>
+    <message>
+        <source>fail to make enveloped data</source>
+        <translation type="vanished">암호화된 데이타 만들기 실패</translation>
+    </message>
+    <message>
+        <location filename="../cms_dlg.cpp" line="370"/>
         <source>The KM Certificate is not RSA certificate</source>
         <translation>KM 인증서가 RSA 인증서가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="385"/>
         <source>fail to make signed and enveloped data</source>
-        <translation>서명 및 암호화 데이타 만들기 실패</translation>
+        <translation type="vanished">서명 및 암호화 데이타 만들기 실패</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="493"/>
-        <location filename="../cms_dlg.cpp" line="575"/>
+        <location filename="../cms_dlg.cpp" line="500"/>
+        <location filename="../cms_dlg.cpp" line="583"/>
         <source>find km private key</source>
         <translation>KM 개인키를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="665"/>
-        <location filename="../cms_dlg.cpp" line="697"/>
-        <location filename="../cms_dlg.cpp" line="715"/>
-        <location filename="../cms_dlg.cpp" line="747"/>
+        <location filename="../cms_dlg.cpp" line="674"/>
+        <location filename="../cms_dlg.cpp" line="706"/>
+        <location filename="../cms_dlg.cpp" line="724"/>
+        <location filename="../cms_dlg.cpp" line="756"/>
         <source>fail to read data</source>
         <translation>데이타 읽기 실패</translation>
     </message>
