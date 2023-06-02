@@ -353,7 +353,7 @@ void GenMacDlg::mac()
 
        berApplet->log( QString( "Input : %1" ).arg(getHexString(&binSrc)));
        berApplet->log( QString( "Key   : %1" ).arg( getHexString(&binKey)));
-       berApplet->log( QString( "MAC   : %1" ).arg( getHexString(&binKey)));
+       berApplet->log( QString( "MAC   : %1" ).arg( getHexString(&binMAC)));
    }
    else
    {
