@@ -5,6 +5,8 @@
 #include <QCommandLineOption>
 #include "ber_applet.h"
 #include "i18n_helper.h"
+#include "cert_info_dlg.h"
+#include "crl_info_dlg.h"
 
 
 int main(int argc, char *argv[])
@@ -31,6 +33,8 @@ int main(int argc, char *argv[])
 
     qDebug( "command : %s\n", argv[0] );
 
+
+
     I18NHelper::getInstance()->init();
 
     BerApplet mApplet;
@@ -39,18 +43,20 @@ int main(int argc, char *argv[])
 
     berApplet->start();
 
-/*
-    MainWindow mw;
-    if( !parser.positionalArguments().isEmpty() )
-        mw.loadFile( parser.positionalArguments().first() );
 
-    mw.show();
-*/
 #ifdef Q_OS_WIN32
     QFont font;
     font.setFamily(QString("굴림체"));
     app.setFont(font);
 #endif
+
+    MainWindow *mw = berApplet->mainWindow();
+    if( !parser.positionalArguments().isEmpty() )
+    {
+        mw->loadFile( parser.positionalArguments().first() );
+        mw->show();
+    }
+
 
     return app.exec();
 }

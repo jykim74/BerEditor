@@ -193,7 +193,12 @@ void MainWindow::showWindow()
 
 void MainWindow::loadFile(const QString &filename)
 {
+    BIN binData = {0,0};
 
+    JS_BIN_fileReadBER( filename.toLocal8Bit().toStdString().c_str(), &binData );
+
+    decodeData( &binData, filename );
+    JS_BIN_reset( &binData );
 }
 
 void MainWindow::createActions()
