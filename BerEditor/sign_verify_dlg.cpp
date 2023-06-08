@@ -299,12 +299,12 @@ void SignVerifyDlg::signVerifyInit()
             if( JS_PKI_isCert( &binCert ) == 0 )
             {
                 mPubKeyVerifyCheck->setChecked(true);
-                JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
+                JS_BIN_copy( &binPubKey, &binCert );
             }
             else
             {
                 mPubKeyVerifyCheck->setChecked(false);
-                JS_BIN_copy( &binPubKey, &binCert );
+                JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
             }
         }
         else
@@ -538,12 +538,12 @@ void SignVerifyDlg::Run()
             if( JS_PKI_isCert( &binCert ) == 0 )
             {
                 mPubKeyVerifyCheck->setChecked(true);
-                JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
+                JS_BIN_copy( &binPubKey, &binCert );
             }
             else
             {
                 mPubKeyVerifyCheck->setChecked(false);
-                JS_BIN_copy( &binPubKey, &binCert );
+                JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
             }
         }
         else

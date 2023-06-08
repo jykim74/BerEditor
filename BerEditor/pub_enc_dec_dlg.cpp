@@ -234,12 +234,12 @@ void PubEncDecDlg::Run()
             if( JS_PKI_isCert( &binCert ) == 0 )
             {
                 mPubKeyEncryptCheck->setChecked(true);
-                JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
+                JS_BIN_copy( &binPubKey, &binCert );
             }
             else
             {
                 mPubKeyEncryptCheck->setChecked(false);
-                JS_BIN_copy( &binPubKey, &binCert );
+                JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
             }
         }
         else
