@@ -250,6 +250,22 @@ void PubEncDecDlg::Run()
                 JS_BIN_copy( &binPubKey, &binCert );
         }
 
+        if( mUseKeyAlgCheck->isChecked() )
+        {
+            int nAlgType = JS_PKI_getPubKeyType( &binPubKey );
+            berApplet->log( QString( "PubKey Type : %1").arg( getKeyTypeName( nAlgType )));
+
+            if( nAlgType == JS_PKI_KEY_TYPE_RSA )
+                mAlgCombo->setCurrentText( "RSA" );
+            else if( nAlgType == JS_PKI_KEY_TYPE_SM2 )
+                mAlgCombo->setCurrentText( "SM2" );
+            else
+            {
+                berApplet->warningBox( tr( "Invalid private key algorithm"), this );
+                goto end;
+            }
+        }
+
         if( mAlgCombo->currentText() == "RSA" )
         {
             JS_PKI_RSAEncryptWithPub( nVersion, &binSrc, &binPubKey, &binOut );
@@ -276,6 +292,7 @@ void PubEncDecDlg::Run()
         if( mUseKeyAlgCheck->isChecked() )
         {
             int nAlgType = JS_PKI_getPriKeyType( &binPri );
+            berApplet->log( QString( "PriKey Type : %1").arg( getKeyTypeName( nAlgType )));
 
             if( nAlgType == JS_PKI_KEY_TYPE_RSA )
                 mAlgCombo->setCurrentText( "RSA" );

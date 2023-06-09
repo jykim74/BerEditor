@@ -1064,3 +1064,21 @@ QString getStringFromBIN( const BIN *pBin, int nType, bool bSeenOnly )
     if( pOut ) JS_free( pOut );
     return strOut;
 }
+
+QString getKeyTypeName( int nKeyType )
+{
+    if( nKeyType == JS_PKI_KEY_TYPE_RSA )
+        return "RSA";
+    else if( nKeyType == JS_PKI_KEY_TYPE_ECC )
+        return "ECC";
+    else if( nKeyType == JS_PKI_KEY_TYPE_SM2 )
+        return "SM2";
+    else if( nKeyType == JS_PKI_KEY_TYPE_DSA )
+        return "DSA";
+    else if( nKeyType == JS_PKI_KEY_TYPE_AES )
+        return "AES";
+    else if( nKeyType == JS_PKI_KEY_TYPE_ARIA )
+        return "ARIA";
+
+    return QString( "Unknown[%1]").arg( nKeyType );
+}

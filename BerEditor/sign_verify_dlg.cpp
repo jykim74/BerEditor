@@ -270,6 +270,7 @@ void SignVerifyDlg::signVerifyInit()
         if( mUseKeyAlgCheck->isChecked() )
         {
             nType = JS_PKI_getPriKeyType( &binPri );
+            berApplet->log( QString( "PriKey Type : %1").arg( getKeyTypeName( nType )));
 
             if( nType == JS_PKI_KEY_TYPE_RSA )
                 mAlgTypeCombo->setCurrentText( "RSA" );
@@ -318,6 +319,8 @@ void SignVerifyDlg::signVerifyInit()
         if( mUseKeyAlgCheck->isChecked() )
         {
             nType = JS_PKI_getPubKeyType( &binPubKey );
+            berApplet->log( QString( "PubKey Type : %1").arg( getKeyTypeName( nType )));
+
             if( nType == JS_PKI_KEY_TYPE_RSA )
                 mAlgTypeCombo->setCurrentText( "RSA" );
             else if( nType == JS_PKI_KEY_TYPE_SM2 )
@@ -494,6 +497,7 @@ void SignVerifyDlg::Run()
         if( mUseKeyAlgCheck->isChecked() )
         {
             int nAlgType = JS_PKI_getPriKeyType( &binPri );
+            berApplet->log( QString( "PriKey Type : %1").arg( getKeyTypeName( nAlgType )));
 
             if( nAlgType == JS_PKI_KEY_TYPE_RSA )
                 mAlgTypeCombo->setCurrentText( "RSA" );
@@ -557,6 +561,8 @@ void SignVerifyDlg::Run()
         if( mUseKeyAlgCheck->isChecked() )
         {
             int id = JS_PKI_getPubKeyType( &binPubKey );
+            berApplet->log( QString( "PubKey Type : %1").arg( getKeyTypeName( id )));
+
             if( id == JS_PKI_KEY_TYPE_RSA )
                 mAlgTypeCombo->setCurrentText( "RSA" );
             else if( id == JS_PKI_KEY_TYPE_SM2 )
