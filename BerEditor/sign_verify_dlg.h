@@ -36,6 +36,9 @@ private slots:
     void clickCertView();
     void clickCertDecode();
 
+    void clickPriKeyType();
+    void clickCertType();
+
     void checkUseKeyAlg();
     void clickClearDataAll();
 

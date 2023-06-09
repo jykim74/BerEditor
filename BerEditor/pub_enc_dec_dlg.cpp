@@ -64,6 +64,9 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
     connect( mUseKeyAlgCheck, SIGNAL(clicked()), this, SLOT(checkUseKeyAlg()));
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
 
+    connect( mPriKeyTypeBtn, SIGNAL(clicked()), this, SLOT(clickPriKeyType()));
+    connect( mCertTypeBtn, SIGNAL(clicked()), this, SLOT(clickCertType()));
+
     mCloseBtn->setFocus();
 }
 
@@ -440,7 +443,7 @@ void PubEncDecDlg::clickCertView()
     QString strPath = mCertPath->text();
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( "You have to find certificate", this );
+        berApplet->warningBox( tr("You have to find certificate"), this );
         return;
     }
 
@@ -466,6 +469,66 @@ void PubEncDecDlg::clickCertDecode()
 
     JS_BIN_reset( &binData );
 }
+
+void PubEncDecDlg::clickPriKeyType()
+{
+    BIN binPri = {0,0};
+    QString strPath = mPriKeyPath->text();
+    int nType = -1;
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "You have to find private key" ), this );
+        return;
+    }
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binPri );
+
+    nType = JS_PKI_getPriKeyType( &binPri );
+
+    berApplet->messageBox( tr( "Private Key Type is %1").arg( getKeyTypeName( nType )), this);
+
+end :
+    JS_BIN_reset( &binPri );
+}
+
+void PubEncDecDlg::clickCertType()
+{
+    BIN binCert = {0,0};
+    BIN binPubKey = {0,0};
+    QString strKind;
+    int nType = -1;
+
+    QString strPath = mCertPath->text();
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "You have to find certificate or public key"), this );
+        return;
+    }
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
+
+    if( JS_PKI_isCert( &binCert ) )
+    {
+        JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
+        strKind = tr("Certificate");
+    }
+    else
+    {
+        JS_BIN_copy( &binPubKey, &binCert );
+        strKind = tr( "Public Key" );
+    }
+
+    nType = JS_PKI_getPubKeyType( &binPubKey );
+
+    berApplet->messageBox( tr( "%1 Type is %2").arg( strKind).arg( getKeyTypeName(nType)), this);
+
+end :
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binPubKey );
+}
+
 
 void PubEncDecDlg::checkUseKeyAlg()
 {
