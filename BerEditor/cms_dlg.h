@@ -38,6 +38,11 @@ private slots:
     void clickKMCertView();
     void clickKMCertDecode();
 
+    void clickSignPriKeyType();
+    void clickSignCertType();
+    void clickKMPriKeyType();
+    void clickKMCertType();
+
     void srcChanged();
     void outputChanged();
 

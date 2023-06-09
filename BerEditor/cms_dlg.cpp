@@ -47,6 +47,11 @@ CMSDlg::CMSDlg(QWidget *parent) :
     connect( mKMCertViewBtn, SIGNAL(clicked()), this, SLOT(clickKMCertView()));
     connect( mKMCertDecodeBtn, SIGNAL(clicked()), this, SLOT(clickKMCertDecode()));
 
+    connect( mSignPriKeyTypeBtn, SIGNAL(clicked()), this, SLOT(clickSignPriKeyType()));
+    connect( mSignCertTypeBtn, SIGNAL(clicked()), this, SLOT(clickSignCertType()));
+    connect( mKMPriKeyTypeBtn, SIGNAL(clicked()), this, SLOT(clickKMPriKeyType()));
+    connect( mKMCertTypeBtn, SIGNAL(clicked()), this, SLOT(clickKMCertType()));
+
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
 
     initialize();
@@ -760,6 +765,102 @@ void CMSDlg::clickKMCertDecode()
     berApplet->decodeData( &binData, strPath );
 
     JS_BIN_reset( &binData );
+}
+
+void CMSDlg::clickSignPriKeyType()
+{
+    BIN binPri = {0,0};
+    QString strPath = mSignPriKeyPathText->text();
+    int nType = -1;
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "You have to find sign private key" ), this );
+        return;
+    }
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binPri );
+
+    nType = JS_PKI_getPriKeyType( &binPri );
+
+    berApplet->messageBox( tr( "Sign Private Key Type is %1").arg( getKeyTypeName( nType )), this);
+
+end :
+    JS_BIN_reset( &binPri );
+}
+
+void CMSDlg::clickSignCertType()
+{
+    BIN binCert = {0,0};
+    BIN binPubKey = {0,0};
+    int nType = -1;
+
+    QString strPath = mSignCertPathText->text();
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "You have to find sign certificate"), this );
+        return;
+    }
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
+
+    nType = JS_PKI_getPubKeyType( &binPubKey );
+
+    berApplet->messageBox( tr( "Sign Certificate Type is %1" ).arg( getKeyTypeName(nType)), this);
+
+end :
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binPubKey );
+}
+
+void CMSDlg::clickKMPriKeyType()
+{
+    BIN binPri = {0,0};
+    QString strPath = mKMPriKeyPathText->text();
+    int nType = -1;
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "You have to find KM private key" ), this );
+        return;
+    }
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binPri );
+
+    nType = JS_PKI_getPriKeyType( &binPri );
+
+    berApplet->messageBox( tr( "KM Private Key Type is %1").arg( getKeyTypeName( nType )), this);
+
+end :
+    JS_BIN_reset( &binPri );
+}
+
+void CMSDlg::clickKMCertType()
+{
+    BIN binCert = {0,0};
+    BIN binPubKey = {0,0};
+    int nType = -1;
+
+    QString strPath = mKMCertPathText->text();
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "You have to find KM certificate"), this );
+        return;
+    }
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
+
+    nType = JS_PKI_getPubKeyType( &binPubKey );
+
+    berApplet->messageBox( tr( "KM Certificate Type is %1" ).arg( getKeyTypeName(nType)), this);
+
+end :
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binPubKey );
 }
 
 void CMSDlg::clickClearDataAll()
