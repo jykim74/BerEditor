@@ -542,21 +542,8 @@ void MainWindow::insertBER()
         QString strData = insertBerDlg.getData();
 
         JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
-        ber_model_->setBer( &binData );
+        decodeData( &binData, "Unknown" );
         JS_BIN_reset( &binData );
-
-        ber_model_->parseTree();
-
-        left_tree_->header()->setVisible(false);
-        left_tree_->viewRoot();
-
-        if( berApplet->isLicense() )
-        {
-            left_tree_->showTextView();
-            left_tree_->showXMLView();
-        }
-
-        setTitle( QString("Unknown" ));
     }
 }
 

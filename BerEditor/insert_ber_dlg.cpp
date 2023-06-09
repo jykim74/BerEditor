@@ -18,6 +18,7 @@ InsertBerDlg::InsertBerDlg(QWidget *parent) :
     connect( mValueText, SIGNAL(textChanged()), this, SLOT(valueChanged()));
     connect( mClassCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(classChanged(int)));
     connect( mPrimitiveCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(primitiveChanged(int)));
+    connect( mValueTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeValueType(int)));
 
     initialize();
     mCloseBtn->setFocus();
@@ -31,9 +32,15 @@ InsertBerDlg::~InsertBerDlg()
 QString InsertBerDlg::getData()
 {
     QString strData;
+    QString strValue = mValueText->toPlainText();
+    BIN binData = {0,0};
+
+    getBINFromString( &binData, mValueTypeCombo->currentText(), strValue );
 
     strData = mHeaderText->text();
-    strData += mValueText->toPlainText();
+    strData += getHexString( &binData );
+
+    JS_BIN_reset( &binData );
 
     return strData;
 }
@@ -53,6 +60,8 @@ void InsertBerDlg::initialize()
     }
 
     mPrimitiveCombo->setEditable( true );
+    mValueTypeCombo->addItems( kValueTypeList );
+    mValueTypeCombo->setCurrentIndex(1);
 }
 
 void InsertBerDlg::makeHeader()
@@ -66,6 +75,7 @@ void InsertBerDlg::makeHeader()
     char *pBitString = NULL;
 
     QString strClass = mClassCombo->currentText();
+    QString strValue = mValueText->toPlainText();
 
     if( strClass == "Universal" )
         cTag |= JS_UNIVERSAL;
@@ -87,7 +97,7 @@ void InsertBerDlg::makeHeader()
     JS_BIN_set( &binHeader, &cTag, 1 );
     JS_BIN_bitString( &binHeader, &pBitString );
 
-    JS_BIN_decodeHex( mValueText->toPlainText().toStdString().c_str(), &binValue );
+    getBINFromString( &binValue, mValueTypeCombo->currentText(), strValue );
     JS_BER_getHeaderLength( binValue.nLen, &binLen );
 
     JS_BIN_appendBin( &binHeader, &binLen );
@@ -125,7 +135,9 @@ void InsertBerDlg::headerChanged( const QString& text )
 
 void InsertBerDlg::valueChanged()
 {
-    int nLen = mValueText->toPlainText().length() / 2;
+    QString strValue = mValueText->toPlainText();
+
+    int nLen = getDataLen( mValueTypeCombo->currentText(), strValue );
     mValueLenText->setText( QString("%1").arg(nLen));
 
     makeHeader();
@@ -145,4 +157,9 @@ void InsertBerDlg::primitiveChanged(int index )
         mConstructedCheck->setChecked( true );
 
     makeHeader();
+}
+
+void InsertBerDlg::changeValueType( int index )
+{
+    valueChanged();
 }

@@ -380,7 +380,10 @@ void BerTreeView::ShowContextMenu(QPoint point)
         menu.addAction( tr("Expand value"), this, SLOT(ExpandValue()));
 
     if( item->isConstructed() )
-        menu.addAction( tr( "Insert BER" ), this, SLOT(InsertBER()));
+    {
+        if( berApplet->isLicense() )
+            menu.addAction( tr( "Insert BER" ), this, SLOT(InsertBER()));
+    }
 
     menu.exec(QCursor::pos());
 }

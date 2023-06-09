@@ -25,8 +25,10 @@ private slots:
     void runDelete();
     void runAdd();
     void changeValueText();
+    void changeValueType(int index);
 
 private:
+    void initialize();
     BerItem *ber_item_;
 };
 

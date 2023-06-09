@@ -24,6 +24,7 @@ private slots:
     void valueChanged();
     void classChanged(int index);
     void primitiveChanged(int index );
+    void changeValueType( int index );
 
 private:
     void initialize();

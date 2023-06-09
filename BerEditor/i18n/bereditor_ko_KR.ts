@@ -134,8 +134,8 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <location filename="../ber_tree_view.cpp" line="156"/>
         <location filename="../ber_tree_view.cpp" line="329"/>
-        <location filename="../ber_tree_view.cpp" line="394"/>
-        <location filename="../ber_tree_view.cpp" line="416"/>
+        <location filename="../ber_tree_view.cpp" line="397"/>
+        <location filename="../ber_tree_view.cpp" line="419"/>
         <source>There is no selected item</source>
         <translation>선택한 노드가 없습니다.</translation>
     </message>
@@ -170,13 +170,13 @@ mailto : jykim74@gmail.com</translation>
         <translation>확장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="383"/>
+        <location filename="../ber_tree_view.cpp" line="385"/>
         <source>Insert BER</source>
         <translation>BER 추가</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="471"/>
-        <location filename="../ber_tree_view.cpp" line="492"/>
+        <location filename="../ber_tree_view.cpp" line="474"/>
+        <location filename="../ber_tree_view.cpp" line="495"/>
         <source>Save as...</source>
         <translation>다른 이름으로 저장</translation>
     </message>
@@ -1503,37 +1503,52 @@ mailto : jykim74@gmail.com</translation>
         <translation>클래스</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="62"/>
+        <location filename="../edit_value_dlg.ui" line="101"/>
+        <source>Constructed</source>
+        <translation>Constructed</translation>
+    </message>
+    <message>
+        <location filename="../edit_value_dlg.ui" line="121"/>
         <source>Tag</source>
         <translation>태그</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="165"/>
+        <location filename="../edit_value_dlg.ui" line="194"/>
+        <source>[T]</source>
+        <translation>[T]</translation>
+    </message>
+    <message>
+        <location filename="../edit_value_dlg.ui" line="461"/>
         <source>Offset</source>
         <translation>오프셋</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="193"/>
+        <location filename="../edit_value_dlg.ui" line="490"/>
+        <source>Value</source>
+        <translation>값</translation>
+    </message>
+    <message>
+        <location filename="../edit_value_dlg.ui" line="565"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="243"/>
+        <location filename="../edit_value_dlg.ui" line="650"/>
         <source>Add</source>
         <translation>추가</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="250"/>
+        <location filename="../edit_value_dlg.ui" line="657"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="257"/>
+        <location filename="../edit_value_dlg.ui" line="664"/>
         <source>Delete</source>
         <translation>삭제</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="277"/>
+        <location filename="../edit_value_dlg.ui" line="684"/>
         <source>Modify</source>
         <translation>변경</translation>
     </message>
@@ -1546,27 +1561,26 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">TLV 정보</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="119"/>
+        <location filename="../edit_value_dlg.ui" line="324"/>
         <source>Length</source>
         <translation>길이</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="139"/>
+        <location filename="../edit_value_dlg.ui" line="503"/>
         <source>Level</source>
         <translation>레벨</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="99"/>
+        <location filename="../edit_value_dlg.ui" line="187"/>
         <source>Header</source>
         <translation>헤더</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.cpp" line="83"/>
         <source>The changed lengh have to be the same of the original value</source>
-        <translation>변경 된 값은 원래 값과 길이가 같아야 합니다</translation>
+        <translation type="vanished">변경 된 값은 원래 값과 길이가 같아야 합니다</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.cpp" line="149"/>
+        <location filename="../edit_value_dlg.cpp" line="141"/>
         <source>Root Item can not be deleted</source>
         <translation>최상위 노드는 삭제 할 수 없습니다.</translation>
     </message>
@@ -2251,32 +2265,32 @@ mailto : jykim74@gmail.com</translation>
         <translation>클래스</translation>
     </message>
     <message>
-        <location filename="../insert_ber_dlg.ui" line="112"/>
+        <location filename="../insert_ber_dlg.ui" line="196"/>
         <source>Header</source>
         <translation>헤더</translation>
     </message>
     <message>
-        <location filename="../insert_ber_dlg.ui" line="132"/>
+        <location filename="../insert_ber_dlg.ui" line="258"/>
         <source>[T]</source>
         <translation>[T]</translation>
     </message>
     <message>
-        <location filename="../insert_ber_dlg.ui" line="163"/>
+        <location filename="../insert_ber_dlg.ui" line="344"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
     <message>
-        <location filename="../insert_ber_dlg.ui" line="176"/>
+        <location filename="../insert_ber_dlg.ui" line="282"/>
         <source>Value</source>
         <translation>값</translation>
     </message>
     <message>
-        <location filename="../insert_ber_dlg.ui" line="206"/>
+        <location filename="../insert_ber_dlg.ui" line="377"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../insert_ber_dlg.ui" line="213"/>
+        <location filename="../insert_ber_dlg.ui" line="384"/>
         <source>Insert</source>
         <translation>추가</translation>
     </message>
@@ -3026,7 +3040,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">변경 데이타를 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="977"/>
+        <location filename="../mainwindow.cpp" line="964"/>
         <source>Do you want to overwrite %1 as BER file?</source>
         <translation>파일(%1)을 BER로 덮어 쓰겠습니까?</translation>
     </message>
@@ -3035,7 +3049,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">다른 이름으로 저장...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1043"/>
+        <location filename="../mainwindow.cpp" line="1030"/>
         <source>Print Document</source>
         <translation>문서 인쇄</translation>
     </message>
@@ -3272,22 +3286,22 @@ mailto : jykim74@gmail.com</translation>
         <translation>BerEditor 보여 줌</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="965"/>
+        <location filename="../mainwindow.cpp" line="952"/>
         <source>Do you want to write changed date?</source>
         <translation>변경 된 데이타를 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="993"/>
+        <location filename="../mainwindow.cpp" line="980"/>
         <source>BIN Files (*.ber *.der);;All Files (*.*)</source>
         <translation>BIN 파일 (*.ber *.der);;모든 파일들(*.*)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="997"/>
+        <location filename="../mainwindow.cpp" line="984"/>
         <source>Save As...</source>
         <translation>다른 이름으로 저장 하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1021"/>
+        <location filename="../mainwindow.cpp" line="1008"/>
         <source>log</source>
         <translation>로그</translation>
     </message>
