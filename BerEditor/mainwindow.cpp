@@ -148,16 +148,14 @@ void MainWindow::initialize()
 
     QList<int> sizes;
 
-    sizes << 400 << 1200;
-    hsplitter_->setSizes(sizes);
-
 #ifdef Q_OS_MAC
-    resize( 960, 768 );
-//    setFixedSize( 960, 768 );
+    sizes << 540 << 1200;
 #else
-    resize( 1024, 768 );
-//    setFixedSize( 1024, 768 );
+    sizes << 400 << 1200;
 #endif
+
+    hsplitter_->setSizes(sizes);
+    resize( 1040, 780 );
 
     setCentralWidget(hsplitter_);
     createTableMenu();
@@ -174,7 +172,6 @@ void MainWindow::createTableMenu()
 
     right_table_->horizontalHeader()->setStyleSheet( style );
     right_table_->setColumnWidth(0, 80);
-
 
     for( int i=1; i <= 16; i++ )
         right_table_->setColumnWidth(i, 30);
@@ -205,6 +202,10 @@ void MainWindow::createActions()
 {
     QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
     QToolBar *fileToolBar = addToolBar(tr("File"));
+
+#ifdef Q_OS_MAC
+        fileToolBar->setIconSize( QSize(24,24));
+#endif
 
     const QIcon newIcon = QIcon::fromTheme("document-new", QIcon(":/images/new.png"));
     QAction *newAct = new QAction( newIcon, tr("&New"), this );
@@ -278,6 +279,9 @@ void MainWindow::createActions()
     QMenu *editMenu = menuBar()->addMenu(tr("&Edit"));
     QToolBar *editToolBar = addToolBar(tr("Edit"));
 
+#ifdef Q_OS_MAC
+        editToolBar->setIconSize( QSize(24,24));
+#endif
 
     const QIcon copyIcon = QIcon::fromTheme("edit-copy", QIcon(":/images/copy.png"));
     QAction *copyAct = new QAction(copyIcon, tr("&Copy"), this);
@@ -327,6 +331,10 @@ void MainWindow::createActions()
 
     QMenu *toolMenu = menuBar()->addMenu(tr("&Tool"));
     QToolBar *toolToolBar = addToolBar(tr("Tool"));
+
+#ifdef Q_OS_MAC
+        toolToolBar->setIconSize( QSize(24,24));
+#endif
 
     const QIcon dataTransIcon = QIcon::fromTheme("data-trans", QIcon(":/images/data_trans.png"));
     QAction *dataEncodeAct = new QAction( dataTransIcon, tr("Data&Encoder"), this );
@@ -379,6 +387,10 @@ void MainWindow::createActions()
     {
         QMenu *cryptMenu = menuBar()->addMenu(tr("&Cryptogram"));
         QToolBar *cryptToolBar = addToolBar( "Cryptogram" );
+
+#ifdef Q_OS_MAC
+        cryptToolBar->setIconSize( QSize(24,24));
+#endif
 
         const QIcon keyIcon = QIcon::fromTheme("key-man", QIcon(":/images/key.png"));
         QAction *keyManAct = new QAction( keyIcon, tr("&KeyManage"), this );
@@ -464,13 +476,14 @@ void MainWindow::createActions()
         cavpAct->setStatusTip(tr("CAVP Test"));
         cryptMenu->addAction( cavpAct );
     //    cryptToolBar->addAction( cavpAct );
-#ifdef Q_OS_MAC
-        cryptToolBar->hide();
-#endif
     }
 
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
     QToolBar *helpToolBar = addToolBar(tr("Help"));
+
+#ifdef Q_OS_MAC
+        helpToolBar->setIconSize( QSize(24,24));
+#endif
 
     const QIcon settingIcon = QIcon::fromTheme("berview-help", QIcon(":/images/setting.png"));
     QAction *settingAct = new QAction( settingIcon, tr("&Settings"), this );
