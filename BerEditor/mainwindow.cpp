@@ -357,8 +357,6 @@ void MainWindow::createActions()
         insertBerAct->setStatusTip(tr("Insert BER record"));
         toolMenu->addAction( insertBerAct );
         toolToolBar->addAction( insertBerAct );
-
-
     }
 
     const QIcon insertIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/insert.png"));
@@ -466,9 +464,10 @@ void MainWindow::createActions()
         cavpAct->setStatusTip(tr("CAVP Test"));
         cryptMenu->addAction( cavpAct );
     //    cryptToolBar->addAction( cavpAct );
+#ifdef Q_OS_MAC
+        cryptToolBar->hide();
+#endif
     }
-
-
 
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
     QToolBar *helpToolBar = addToolBar(tr("Help"));
