@@ -28,6 +28,10 @@ private slots:
 
     void clickClearDataAll();
 
+    void clickFindSrcFile();
+    void clickDigest();
+    void clickDigestSrcFile();
+
 private:
     void initialize();
 

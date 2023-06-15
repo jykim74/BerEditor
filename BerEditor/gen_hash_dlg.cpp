@@ -8,7 +8,8 @@
 #include "common.h"
 
 #include <QDialogButtonBox>
-
+#include <QFileInfo>
+#include <QDateTime>
 
 
 GenHashDlg::GenHashDlg(QWidget *parent) :
@@ -32,6 +33,8 @@ GenHashDlg::GenHashDlg(QWidget *parent) :
     connect( mInputHexRadio, SIGNAL(clicked()), this, SLOT(inputChanged()));
     connect( mInputBase64Radio, SIGNAL(clicked()), this, SLOT(inputChanged()));
 
+    connect( mFindSrcFileBtn, SIGNAL(clicked()), this, SLOT(clickFindSrcFile()));
+
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
 
     initialize();
@@ -51,6 +54,8 @@ void GenHashDlg::initialize()
 
     mOutputHashCombo->addItems( kHashList );
     mOutputHashCombo->setCurrentText( setMgr->defaultHash() );
+
+    mInputTab->setCurrentIndex(0);
 }
 
 void GenHashDlg::hashInit()
@@ -149,6 +154,16 @@ void GenHashDlg::hashFinal()
 
 void GenHashDlg::digest()
 {
+    int index = mInputTab->currentIndex();
+
+    if( index == 0 )
+        clickDigest();
+    else
+        clickDigestSrcFile();
+}
+
+void GenHashDlg::clickDigest()
+{
     int ret = 0;
 
     BIN binSrc = {0,0};
@@ -238,4 +253,129 @@ void GenHashDlg::clickClearDataAll()
     mInputText->clear();
     mOutputText->clear();
     mStatusLabel->clear();
+
+    mSrcFileText->clear();
+    mSrcFileInfoText->clear();
+    mSrcFileSizeText->clear();
+
+    mHashProgBar->setValue(0);
+    mFileSizeText->clear();
+    mFileReadSizeText->clear();
+}
+
+void GenHashDlg::clickFindSrcFile()
+{
+    QString strPath;
+    QString strSrcFile = findFile( this, JS_FILE_TYPE_BER, strPath );
+
+    if( strSrcFile.length() > 0 )
+    {
+        QFileInfo fileInfo;
+        fileInfo.setFile( strSrcFile );
+
+        qint64 fileSize = fileInfo.size();
+        QDateTime cTime = fileInfo.lastModified();
+
+        QString strInfo = QString("LastModified Time: %1").arg( cTime.toString( "yyyy-MM-dd HH:mm:ss" ));
+
+        mSrcFileText->setText( strSrcFile );
+        mSrcFileSizeText->setText( QString("%1").arg( fileSize ));
+        mSrcFileInfoText->setText( strInfo );
+        mHashProgBar->setValue(0);
+    }
+}
+
+void GenHashDlg::clickDigestSrcFile()
+{
+    int ret = 0;
+    int nRead = 0;
+    int nPartSize = berApplet->settingsMgr()->fileReadSize();
+    int nReadSize = 0;
+    int nLeft = 0;
+    int nOffset = 0;
+    int nPercent = 0;
+    QString strSrcFile = mSrcFileText->text();
+    BIN binPart = {0,0};
+    BIN binMD = {0,0};
+
+
+    if( strSrcFile.length() < 1 )
+    {
+        berApplet->warningBox( tr("You have to find src file"), this );
+        return;
+    }
+
+    QFileInfo fileInfo;
+    fileInfo.setFile( strSrcFile );
+
+    qint64 fileSize = fileInfo.size();
+
+    mHashProgBar->setValue( 0 );
+    mFileSizeText->setText( QString("%1").arg( fileSize ));
+    mFileReadSizeText->setText( "0" );
+
+    nLeft = fileSize;
+
+    hashInit();
+    FILE *fp = fopen( strSrcFile.toLocal8Bit().toStdString().c_str(), "rb" );
+
+    while( nLeft > 0 )
+    {
+        if( nLeft < nPartSize )
+            nPartSize = nLeft;
+
+//        nRead = JS_BIN_fileReadPart( strSrcFile.toLocal8Bit().toStdString().c_str(), nOffset, nPartSize, &binPart );
+        nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
+        if( nRead <= 0 ) break;
+
+        ret = JS_PKI_hashUpdate( pctx_, &binPart );
+        if( ret != 0 )
+        {
+            berApplet->elog( QString( "fail to update hash : %1").arg(ret));
+            break;
+        }
+
+        nReadSize += nRead;
+        nPercent = ( nReadSize * 100 ) / fileSize;
+
+//        berApplet->log( QString( "ReadData: %1" ).arg( getHexString(binPart.pVal, binPart.nLen )));
+        mFileReadSizeText->setText( QString("%1").arg( nReadSize ));
+        mHashProgBar->setValue( nPercent );
+
+        nLeft -= nPartSize;
+        nOffset += nRead;
+
+        JS_BIN_reset( &binPart );
+        repaint();
+    }
+
+    fclose( fp );
+    berApplet->log( QString("FileRead done[Total:%1 Read:%2]").arg( fileSize ).arg( nReadSize) );
+
+    if( nReadSize == fileSize )
+    {
+        mHashProgBar->setValue( 100 );
+
+        if( ret == 0 )
+        {
+            ret = JS_PKI_hashFinal( pctx_, &binMD );
+            if( ret != 0 )
+            {
+                berApplet->elog( QString( "fail to finalize hash : %1").arg(ret));
+                goto end;
+            }
+
+            QString strMsg = tr( "File Hash OK" );
+            berApplet->log( QString( "file Hash: %1").arg( getHexString(binMD.pVal, binMD.nLen)));
+            mOutputText->setPlainText( getHexString( binMD.pVal, binMD.nLen ));
+            mStatusLabel->setText( strMsg );
+            berApplet->messageBox( strMsg, this );
+        }
+    }
+
+end :
+    JS_PKI_hashFree( &pctx_ );
+    pctx_ = NULL;
+    JS_BIN_reset( &binPart );
+    JS_BIN_reset( &binMD );
 }
