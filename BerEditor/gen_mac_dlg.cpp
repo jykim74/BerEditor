@@ -81,6 +81,8 @@ void GenMacDlg::initialize()
     group_->addButton( mCMACRadio );
     group_->addButton( mGMACRadio );
 
+    mInputTab->setCurrentIndex(0);
+
     checkHMAC();
 }
 
