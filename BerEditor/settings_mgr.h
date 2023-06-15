@@ -23,6 +23,10 @@ public:
     void setDefaultHash( const QString& strHash );
     QString getDefaultHash();
     QString defaultHash() { return default_hash_; };
+
+    void setFileReadSize( int size );
+    int getFileReadSize();
+    int fileReadSize() { return file_read_size_; };
 signals:
 
 private:
@@ -30,6 +34,7 @@ private:
 
 private:
     QString default_hash_;
+    int file_read_size_;
 
 private:
     Q_DISABLE_COPY(SettingsMgr)

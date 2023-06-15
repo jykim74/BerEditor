@@ -49,6 +49,7 @@ void SettingsDlg::updateSettings()
 #endif
 
     mgr->setDefaultHash( mDefaultHashCombo->currentText() );
+    mgr->setFileReadSize( mFileReadSizeText->text().toInt() );
 
     bool language_changed = false;
 
@@ -110,6 +111,8 @@ void SettingsDlg::showEvent(QShowEvent *event)
     }
     else
         mShowLogTabCheck->hide();
+
+    mFileReadSizeText->setText( QString("%1").arg(mgr->getFileReadSize()));
 
 #ifdef _AUTO_UPDATE
     if( AutoUpdateService::instance()->shouldSupportAutoUpdate()) {

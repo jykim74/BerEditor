@@ -4,10 +4,10 @@
 namespace  {
 const char *kBehaviorGroup = "Behavior";
 const char *kShowPartOnly = "showPartOnly";
-const char *kSaveOpenFolder = "saveOpenFolder";
 const char *kOIDConfigPath = "OIDConfigPath";
 const char *kShowLogTab = "showLogTab";
 const char *kDefaultHash = "defaultHash";
+const char *kFileReadSize = "fileReadSize";
 }
 
 SettingsMgr::SettingsMgr(QObject *parent) : QObject(parent)
@@ -18,6 +18,7 @@ SettingsMgr::SettingsMgr(QObject *parent) : QObject(parent)
 void SettingsMgr::initialize()
 {
     getDefaultHash();
+    getFileReadSize();
 }
 
 void SettingsMgr::setShowPartOnly(bool val)
@@ -105,4 +106,25 @@ QString SettingsMgr::getDefaultHash()
     sets.endGroup();
 
     return default_hash_;
+}
+
+void SettingsMgr::setFileReadSize( int size )
+{
+    QSettings sets;
+    sets.beginGroup( kBehaviorGroup );
+    sets.setValue( kFileReadSize, size );
+    sets.endGroup();
+
+    file_read_size_ = size;
+}
+
+int SettingsMgr::getFileReadSize()
+{
+    QSettings sets;
+
+    sets.beginGroup( kBehaviorGroup );
+    file_read_size_ = sets.value( kFileReadSize, 1024 ).toInt();
+    sets.endGroup();
+
+    return file_read_size_;
 }
