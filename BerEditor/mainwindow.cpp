@@ -716,7 +716,7 @@ void MainWindow::berFileOpen(const QString berPath)
 
     int ret = JS_BIN_fileRead( berPath.toLocal8Bit().toStdString().c_str(), &binRead );
 
-    if( ret == 0 )
+    if( ret > 0 )
     {
         if( strstr((const char *)binRead.pVal, "-----BEGIN ") != NULL )
         {

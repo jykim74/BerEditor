@@ -146,6 +146,7 @@ int BerApplet::checkLicense()
         nowDate = QDate::currentDate();
     }
 
+
     if( expireDate < nowDate )
     {
         is_license_ = false;
