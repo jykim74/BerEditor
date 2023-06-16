@@ -116,7 +116,7 @@ int BerApplet::checkLicense()
     resFile.open(QIODevice::ReadOnly);
     QByteArray data = resFile.readAll();
     resFile.close();
-    time_t ntp_t = NULL;
+    time_t ntp_t = 0;
 
     char sKey[128];
 
