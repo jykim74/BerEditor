@@ -1,9 +1,14 @@
+#include <QFileInfo>
+#include <QDateTime>
+#include <QFileDialog>
+
 #include "enc_dec_dlg.h"
 #include "ui_enc_dec_dlg.h"
 #include "js_ber.h"
 #include "js_bin.h"
 #include "js_pki.h"
 #include "ber_applet.h"
+#include "settings_mgr.h"
 #include "common.h"
 
 static QStringList dataTypes = {
@@ -69,6 +74,11 @@ EncDecDlg::EncDecDlg(QWidget *parent) :
     connect( mMethodCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeMethod(int)));
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
 
+    connect( mInputClearBtn, SIGNAL(clicked()), this, SLOT(clickInputClear()));
+    connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickOutputClear()));
+    connect( mFindSrcFileBtn, SIGNAL(clicked()), this, SLOT(clickFindSrcFile()));
+    connect( mFindDstFileBtn, SIGNAL(clicked()), this, SLOT(clickFindDstFile()));
+
     clickUseAE();
     mCloseBtn->setFocus();
 }
@@ -91,6 +101,7 @@ void EncDecDlg::initialize()
     mAlgCombo->addItems( algList );
 
     mReqTagLenText->setText( "16" );
+    mInputTab->setCurrentIndex(0);
 }
 
 void EncDecDlg::showEvent( QShowEvent *event )
@@ -99,6 +110,16 @@ void EncDecDlg::showEvent( QShowEvent *event )
 }
 
 void EncDecDlg::Run()
+{
+    int index = mInputTab->currentIndex();
+
+    if( index == 0 )
+        dataRun();
+    else
+        fileRun();
+}
+
+void EncDecDlg::dataRun()
 {
     int ret = 0;
     BIN binSrc = {0,0};
@@ -298,6 +319,113 @@ end :
     JS_BIN_reset( &binTag );
 
     repaint();
+}
+
+void EncDecDlg::fileRun()
+{
+    int ret = 0;
+    int nRead = 0;
+    int nPartSize = berApplet->settingsMgr()->fileReadSize();
+    int nReadSize = 0;
+    int nLeft = 0;
+    int nOffset = 0;
+    int nPercent = 0;
+    QString strSrcFile = mSrcFileText->text();
+    BIN binPart = {0,0};
+    BIN binDst = {0,0};
+
+    if( strSrcFile.length() < 1 )
+    {
+        berApplet->warningBox( tr("You have to find src file"), this );
+        return;
+    }
+
+    QFileInfo fileInfo;
+    fileInfo.setFile( strSrcFile );
+
+    qint64 fileSize = fileInfo.size();
+
+    mEncProgBar->setValue( 0 );
+    mFileTotalSizeText->setText( QString("%1").arg( fileSize ));
+    mFileReadSizeText->setText( "0" );
+
+    nLeft = fileSize;
+    QString strAlg = mAlgCombo->currentText();
+    QString strDstFile = mDstFileText->text();
+
+    encDecInit();
+    FILE *fp = fopen( strSrcFile.toLocal8Bit().toStdString().c_str(), "rb" );
+
+    while( nLeft > 0 )
+    {
+        if( nLeft < nPartSize )
+            nPartSize = nLeft;
+
+//        nRead = JS_BIN_fileReadPart( strSrcFile.toLocal8Bit().toStdString().c_str(), nOffset, nPartSize, &binPart );
+        nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
+        if( nRead <= 0 ) break;
+
+        if( mUseAECheck->isChecked() )
+        {
+            if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
+            {
+                if( isCCM(strAlg) )
+                    ret = JS_PKI_encryptCCMUpdate( ctx_, &binPart, &binDst );
+                else
+                    ret = JS_PKI_encryptGCMUpdate( ctx_, &binPart, &binDst );
+            }
+            else
+            {
+                if( isCCM(strAlg))
+                    ret = JS_PKI_decryptCCMUpdate( ctx_, &binPart, &binDst );
+                else
+                    ret = JS_PKI_decryptGCMUpdate( ctx_, &binPart, &binDst );
+            }
+        }
+        else {
+            if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
+            {
+                ret = JS_PKI_encryptUpdate( ctx_, &binPart, &binDst );
+            }
+            else
+            {
+                ret = JS_PKI_decryptUpdate( ctx_, &binPart, &binDst );
+            }
+        }
+
+        if( binDst.nLen > 0 )
+            JS_BIN_fileAppend( &binDst, strDstFile.toLocal8Bit().toStdString().c_str() );
+
+        nReadSize += nRead;
+        nPercent = ( nReadSize * 100 ) / fileSize;
+
+        mFileReadSizeText->setText( QString("%1").arg( nReadSize ));
+        mEncProgBar->setValue( nPercent );
+
+        nLeft -= nPartSize;
+        nOffset += nRead;
+
+        JS_BIN_reset( &binPart );
+        JS_BIN_reset( &binPart );
+        repaint();
+    }
+
+    fclose( fp );
+    berApplet->log( QString("FileRead done[Total:%1 Read:%2]").arg( fileSize ).arg( nReadSize) );
+
+    if( nReadSize == fileSize )
+    {
+        mEncProgBar->setValue( 100 );
+
+        if( ret == 0 )
+        {
+            encDecFinal();
+        }
+    }
+
+end :
+    JS_BIN_reset( &binPart );
+    JS_BIN_reset( &binDst );
 }
 
 void EncDecDlg::clickUseAE()
@@ -675,25 +803,33 @@ void EncDecDlg::encDecFinal()
 
     if( binDst.nLen > 0 )
     {
-        JS_BIN_appendBin( &binOut, &binDst );
-        char *pOut = NULL;
-
-        if( mOutputTypeCombo->currentIndex() == DATA_STRING )
+        if( mInputTab->currentIndex() == 0 )
         {
-            JS_BIN_string( &binOut, &pOut );
-        }
-        else if( mOutputTypeCombo->currentIndex() == DATA_HEX )
-        {
-            JS_BIN_encodeHex( &binOut, &pOut );
-        }
-        else if( mOutputTypeCombo->currentIndex() == DATA_BASE64 )
-        {
-            JS_BIN_encodeBase64( &binOut, &pOut );
-        }
+            JS_BIN_appendBin( &binOut, &binDst );
+            char *pOut = NULL;
 
-        mOutputText->setPlainText( pOut );
+            if( mOutputTypeCombo->currentIndex() == DATA_STRING )
+            {
+                JS_BIN_string( &binOut, &pOut );
+            }
+            else if( mOutputTypeCombo->currentIndex() == DATA_HEX )
+            {
+                JS_BIN_encodeHex( &binOut, &pOut );
+            }
+            else if( mOutputTypeCombo->currentIndex() == DATA_BASE64 )
+            {
+                JS_BIN_encodeBase64( &binOut, &pOut );
+            }
 
-        if( pOut ) JS_free(pOut);
+            mOutputText->setPlainText( pOut );
+
+            if( pOut ) JS_free(pOut);
+        }
+        else
+        {
+            QString strDstPath = mDstFileText->text();
+            JS_BIN_fileAppend( &binOut, strDstPath.toLocal8Bit().toStdString().c_str() );
+        }
     }
 
     if( ret == 0 )
@@ -809,4 +945,67 @@ void EncDecDlg::clickClearDataAll()
     mKeyText->clear();
     mTagText->clear();
     mStatusLabel->clear();
+
+    mSrcFileText->clear();
+    mSrcFileInfoText->clear();
+    mSrcFileSizeText->clear();
+    mFileReadSizeText->clear();
+    mFileTotalSizeText->clear();
+    mDstFileText->clear();
+    mEncProgBar->setValue(0);
+}
+
+void EncDecDlg::clickInputClear()
+{
+    mInputText->clear();
+}
+
+void EncDecDlg::clickOutputClear()
+{
+    mOutputText->clear();
+}
+
+void EncDecDlg::clickFindSrcFile()
+{
+    QString strPath = mSrcFileText->text();
+    QString strSrcFile = findFile( this, JS_FILE_TYPE_BER, strPath );
+
+    if( strSrcFile.length() > 0 )
+    {
+        QFileInfo fileInfo;
+        fileInfo.setFile( strSrcFile );
+
+        qint64 fileSize = fileInfo.size();
+        QDateTime cTime = fileInfo.lastModified();
+
+        QString strInfo = QString("LastModified Time: %1").arg( cTime.toString( "yyyy-MM-dd HH:mm:ss" ));
+
+        mSrcFileText->setText( strSrcFile );
+        mSrcFileSizeText->setText( QString("%1").arg( fileSize ));
+        mSrcFileInfoText->setText( strInfo );
+        mEncProgBar->setValue(0);
+
+        QStringList nameExt = strSrcFile.split(".");
+        QString strDstName = QString( "%1.dst" ).arg( nameExt.at(0) );
+        mDstFileText->setText( strDstName );
+    }
+}
+
+void EncDecDlg::clickFindDstFile()
+{
+    QFileDialog::Options options;
+    options |= QFileDialog::DontUseNativeDialog;
+
+    QString strFilter;
+    QString strPath = mDstFileText->text();
+
+    QString selectedFilter;
+    QString fileName = QFileDialog::getSaveFileName( this,
+                                                     tr("Enc or Dec Files"),
+                                                     strPath,
+                                                     strFilter,
+                                                     &selectedFilter,
+                                                     options );
+
+    if( fileName.length() > 0 ) mDstFileText->setText( fileName );
 }

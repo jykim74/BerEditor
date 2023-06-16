@@ -880,6 +880,13 @@ void SignVerifyDlg::clickClearDataAll()
     mCertPath->clear();
     mOutputText->clear();
     mStatusLabel->clear();
+
+    mSrcFileText->clear();
+    mSrcFileInfoText->clear();
+    mSrcFileSizeText->clear();
+    mFileTotalSizeText->clear();
+    mFileReadSizeText->clear();
+    mSignProgBar->setValue(0);
 }
 
 void SignVerifyDlg::clickFindSrcFile()

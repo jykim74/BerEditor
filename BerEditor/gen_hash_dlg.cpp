@@ -336,7 +336,6 @@ void GenHashDlg::clickDigestSrcFile()
         nReadSize += nRead;
         nPercent = ( nReadSize * 100 ) / fileSize;
 
-//        berApplet->log( QString( "ReadData: %1" ).arg( getHexString(binPart.pVal, binPart.nLen )));
         mFileReadSizeText->setText( QString("%1").arg( nReadSize ));
         mHashProgBar->setValue( nPercent );
 

@@ -19,6 +19,8 @@ public:
 private slots:
     void showEvent(QShowEvent *event );
     void Run();
+    void dataRun();
+    void fileRun();
     void clickUseAE();
     void encDecInit();
     void encDecUpdate();
@@ -35,6 +37,12 @@ private slots:
 
     void changeMethod( int index );
     void clickClearDataAll();
+
+    void clickInputClear();
+    void clickOutputClear();
+
+    void clickFindSrcFile();
+    void clickFindDstFile();
 
 private:
     void initialize();
