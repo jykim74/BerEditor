@@ -1,5 +1,7 @@
 #include <QStringList>
 #include <QButtonGroup>
+#include <QFileInfo>
+#include <QDateTime>
 
 #include "js_ber.h"
 #include "gen_mac_dlg.h"
@@ -59,6 +61,8 @@ GenMacDlg::GenMacDlg(QWidget *parent) :
     connect( mHMACRadio, SIGNAL(clicked()), this, SLOT(checkHMAC()));
     connect( mCMACRadio, SIGNAL(clicked()), this, SLOT(checkCMAC()));
     connect( mGMACRadio, SIGNAL(clicked()), this, SLOT(checkGMAC()));
+
+    connect( mFindSrcFileBtn, SIGNAL(clicked()), this, SLOT(clickFindSrcFile()));
 
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
 
@@ -285,6 +289,16 @@ void GenMacDlg::macFinal()
 
 void GenMacDlg::mac()
 {
+    int index = mInputTab->currentIndex();
+
+    if( index == 0 )
+        clickMAC();
+    else
+        clickMACSrcFile();
+}
+
+void GenMacDlg::clickMAC()
+{
     int ret = 0;
     BIN binSrc = {0,0};
     BIN binKey = {0,0};
@@ -367,6 +381,135 @@ void GenMacDlg::mac()
    JS_BIN_reset(&binMAC);
 
    repaint();
+}
+
+void GenMacDlg::clickFindSrcFile()
+{
+    QString strPath;
+    QString strSrcFile = findFile( this, JS_FILE_TYPE_BER, strPath );
+
+    if( strSrcFile.length() > 0 )
+    {
+        QFileInfo fileInfo;
+        fileInfo.setFile( strSrcFile );
+
+        qint64 fileSize = fileInfo.size();
+        QDateTime cTime = fileInfo.lastModified();
+
+        QString strInfo = QString("LastModified Time: %1").arg( cTime.toString( "yyyy-MM-dd HH:mm:ss" ));
+
+        mSrcFileText->setText( strSrcFile );
+        mSrcFileSizeText->setText( QString("%1").arg( fileSize ));
+        mSrcFileInfoText->setText( strInfo );
+        mMACProgBar->setValue(0);
+    }
+}
+
+void GenMacDlg::clickMACSrcFile()
+{
+    int ret = 0;
+    int nRead = 0;
+    int nPartSize = berApplet->settingsMgr()->fileReadSize();
+    int nReadSize = 0;
+    int nLeft = 0;
+    int nOffset = 0;
+    int nPercent = 0;
+    QString strSrcFile = mSrcFileText->text();
+    BIN binPart = {0,0};
+    BIN binMAC = {0,0};
+
+
+    if( strSrcFile.length() < 1 )
+    {
+        berApplet->warningBox( tr("You have to find src file"), this );
+        return;
+    }
+
+    QFileInfo fileInfo;
+    fileInfo.setFile( strSrcFile );
+
+    qint64 fileSize = fileInfo.size();
+
+    mMACProgBar->setValue( 0 );
+    mFileTotalSizeText->setText( QString("%1").arg( fileSize ));
+    mFileReadSizeText->setText( "0" );
+
+    nLeft = fileSize;
+
+    macInit();
+    FILE *fp = fopen( strSrcFile.toLocal8Bit().toStdString().c_str(), "rb" );
+
+    while( nLeft > 0 )
+    {
+        if( nLeft < nPartSize )
+            nPartSize = nLeft;
+
+        nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
+        if( nRead <= 0 ) break;
+
+        if( mCMACRadio->isChecked() )
+        {
+            ret = JS_PKI_cmacUpdate( hctx_, &binPart );
+        }
+        else if( mHMACRadio->isChecked() )
+        {
+            ret = JS_PKI_hmacUpdate( hctx_, &binPart );
+        }
+        else if( mGMACRadio->isChecked() )
+        {
+            ret = JS_PKI_encryptGCMUpdateAAD( hctx_, &binPart );
+        }
+
+        nReadSize += nRead;
+        nPercent = ( nReadSize * 100 ) / fileSize;
+
+//        berApplet->log( QString( "ReadData: %1" ).arg( getHexString(binPart.pVal, binPart.nLen )));
+        mFileReadSizeText->setText( QString("%1").arg( nReadSize ));
+        mMACProgBar->setValue( nPercent );
+
+        nLeft -= nPartSize;
+        nOffset += nRead;
+
+        JS_BIN_reset( &binPart );
+        repaint();
+    }
+
+    fclose( fp );
+    berApplet->log( QString("FileRead done[Total:%1 Read:%2]").arg( fileSize ).arg( nReadSize) );
+
+    if( nReadSize == fileSize )
+    {
+        mMACProgBar->setValue( 100 );
+
+        if( ret == 0 )
+        {
+            if( mCMACRadio->isChecked() )
+            {
+                ret = JS_PKI_cmacFinal( hctx_, &binMAC );
+            }
+            else if( mHMACRadio->isChecked() )
+            {
+                ret = JS_PKI_hmacFinal( hctx_, &binMAC );
+            }
+            else if( mGMACRadio->isChecked() )
+            {
+                BIN binEnc = {0,0};
+                ret = JS_PKI_encryptGCMFinal( hctx_, &binEnc, 16, &binMAC );
+                JS_BIN_reset( &binEnc );
+            }
+
+            QString strMsg = tr( "File MAC OK" );
+            berApplet->log( QString( "file MAC: %1").arg( getHexString(binMAC.pVal, binMAC.nLen)));
+            mOutputText->setPlainText( getHexString( binMAC.pVal, binMAC.nLen ));
+            mStatusLabel->setText( strMsg );
+            berApplet->messageBox( strMsg, this );
+        }
+    }
+
+end :
+    freeCTX();
+    JS_BIN_reset( &binPart );
+    JS_BIN_reset( &binMAC );
 }
 
 void GenMacDlg::inputClear()

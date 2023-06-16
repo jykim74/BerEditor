@@ -35,6 +35,9 @@ private slots:
         void checkGMAC();
 
         void clickClearDataAll();
+        void clickMAC();
+        void clickFindSrcFile();
+        void clickMACSrcFile();
 private:
         void freeCTX();
 
