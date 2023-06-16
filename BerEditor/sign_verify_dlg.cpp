@@ -1,4 +1,6 @@
 #include <QFileDialog>
+#include <QFileInfo>
+#include <QDateTime>
 
 #include "sign_verify_dlg.h"
 #include "js_ber.h"
@@ -68,6 +70,8 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
 
     connect( mInputClearBtn, SIGNAL(clicked()), this, SLOT(clickInputClear()));
     connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickOutputClear()));
+
+    connect( mFindSrcFileBtn, SIGNAL(clicked()), this, SLOT(clickFindSrcFile()));
 
     mCloseBtn->setFocus();
 }
@@ -423,6 +427,13 @@ void SignVerifyDlg::signVerifyFinal()
         }
 
         berApplet->log( QString( "Final Signature : %1" ).arg( getHexString(&binSign)));
+
+        if( ret == 0 )
+        {
+            mStatusLabel->setText( "Final OK" );
+        }
+        else
+            mStatusLabel->setText( QString("Final Fail:%1").arg(ret) );
     }
     else
     {
@@ -430,19 +441,21 @@ void SignVerifyDlg::signVerifyFinal()
         JS_BIN_decodeHex( strOut.toStdString().c_str(), &binSign );
 
         ret = JS_PKI_verifyFinal( sctx_, &binSign );
-        if( ret == 1 )
+        if( ret == JS_VERIFY )
             berApplet->messageBox( tr("Verify Success"), this );
         else {
             berApplet->warningBox( tr("Verify Fail"), this );
         }
+
+        if( ret == JS_VERIFY )
+        {
+            mStatusLabel->setText( "Final OK" );
+        }
+        else
+            mStatusLabel->setText( QString("Final Fail:%1").arg(ret) );
     }
 
-    if( ret == JS_VERIFY )
-    {
-        mStatusLabel->setText( "Final OK" );
-    }
-    else
-        mStatusLabel->setText( QString("Final Fail:%1").arg(ret) );
+
 
     JS_BIN_reset( &binSign );
     JS_PKI_signFree( &sctx_ );
@@ -451,6 +464,16 @@ void SignVerifyDlg::signVerifyFinal()
 }
 
 void SignVerifyDlg::Run()
+{
+    int index = mInputTab->currentIndex();
+
+    if( index == 0 )
+        dataRun();
+    else
+        fileRun();
+}
+
+void SignVerifyDlg::dataRun()
 {
     int ret = 0;
     BIN binSrc = {0,0};
@@ -617,6 +640,87 @@ end :
     if( pOut ) JS_free( pOut );
 }
 
+void SignVerifyDlg::fileRun()
+{
+    int ret = 0;
+    int nRead = 0;
+    int nPartSize = berApplet->settingsMgr()->fileReadSize();
+    int nReadSize = 0;
+    int nLeft = 0;
+    int nOffset = 0;
+    int nPercent = 0;
+    QString strSrcFile = mSrcFileText->text();
+    BIN binPart = {0,0};
+
+
+    if( strSrcFile.length() < 1 )
+    {
+        berApplet->warningBox( tr("You have to find src file"), this );
+        return;
+    }
+
+    QFileInfo fileInfo;
+    fileInfo.setFile( strSrcFile );
+
+    qint64 fileSize = fileInfo.size();
+
+    mSignProgBar->setValue( 0 );
+    mFileTotalSizeText->setText( QString("%1").arg( fileSize ));
+    mFileReadSizeText->setText( "0" );
+
+    nLeft = fileSize;
+
+    signVerifyInit();
+
+    FILE *fp = fopen( strSrcFile.toLocal8Bit().toStdString().c_str(), "rb" );
+
+    while( nLeft > 0 )
+    {
+        if( nLeft < nPartSize )
+            nPartSize = nLeft;
+
+        nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
+        if( nRead <= 0 ) break;
+
+        if( mMethodCombo->currentIndex() == SIGN_SIGNATURE )
+        {
+            ret = JS_PKI_signUpdate( sctx_, &binPart );
+        }
+        else
+        {
+            ret = JS_PKI_verifyUpdate( sctx_, &binPart );
+        }
+
+        nReadSize += nRead;
+        nPercent = ( nReadSize * 100 ) / fileSize;
+
+        mFileReadSizeText->setText( QString("%1").arg( nReadSize ));
+        mSignProgBar->setValue( nPercent );
+
+        nLeft -= nPartSize;
+        nOffset += nRead;
+
+        JS_BIN_reset( &binPart );
+        repaint();
+    }
+
+    fclose( fp );
+    berApplet->log( QString("FileRead done[Total:%1 Read:%2]").arg( fileSize ).arg( nReadSize) );
+
+    if( nReadSize == fileSize )
+    {
+        mSignProgBar->setValue( 100 );
+
+        if( ret == 0 )
+        {
+            signVerifyFinal();
+        }
+    }
+
+end :
+    JS_BIN_reset( &binPart );
+}
+
 void SignVerifyDlg::inputChanged()
 {
     int nType = DATA_STRING;
@@ -777,3 +881,26 @@ void SignVerifyDlg::clickClearDataAll()
     mOutputText->clear();
     mStatusLabel->clear();
 }
+
+void SignVerifyDlg::clickFindSrcFile()
+{
+    QString strPath;
+    QString strSrcFile = findFile( this, JS_FILE_TYPE_BER, strPath );
+
+    if( strSrcFile.length() > 0 )
+    {
+        QFileInfo fileInfo;
+        fileInfo.setFile( strSrcFile );
+
+        qint64 fileSize = fileInfo.size();
+        QDateTime cTime = fileInfo.lastModified();
+
+        QString strInfo = QString("LastModified Time: %1").arg( cTime.toString( "yyyy-MM-dd HH:mm:ss" ));
+
+        mSrcFileText->setText( strSrcFile );
+        mSrcFileSizeText->setText( QString("%1").arg( fileSize ));
+        mSrcFileInfoText->setText( strInfo );
+        mSignProgBar->setValue(0);
+    }
+}
+

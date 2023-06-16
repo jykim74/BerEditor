@@ -416,7 +416,6 @@ void GenMacDlg::clickMACSrcFile()
     int nPercent = 0;
     QString strSrcFile = mSrcFileText->text();
     BIN binPart = {0,0};
-    BIN binMAC = {0,0};
 
 
     if( strSrcFile.length() < 1 )
@@ -463,7 +462,6 @@ void GenMacDlg::clickMACSrcFile()
         nReadSize += nRead;
         nPercent = ( nReadSize * 100 ) / fileSize;
 
-//        berApplet->log( QString( "ReadData: %1" ).arg( getHexString(binPart.pVal, binPart.nLen )));
         mFileReadSizeText->setText( QString("%1").arg( nReadSize ));
         mMACProgBar->setValue( nPercent );
 
@@ -483,33 +481,13 @@ void GenMacDlg::clickMACSrcFile()
 
         if( ret == 0 )
         {
-            if( mCMACRadio->isChecked() )
-            {
-                ret = JS_PKI_cmacFinal( hctx_, &binMAC );
-            }
-            else if( mHMACRadio->isChecked() )
-            {
-                ret = JS_PKI_hmacFinal( hctx_, &binMAC );
-            }
-            else if( mGMACRadio->isChecked() )
-            {
-                BIN binEnc = {0,0};
-                ret = JS_PKI_encryptGCMFinal( hctx_, &binEnc, 16, &binMAC );
-                JS_BIN_reset( &binEnc );
-            }
-
-            QString strMsg = tr( "File MAC OK" );
-            berApplet->log( QString( "file MAC: %1").arg( getHexString(binMAC.pVal, binMAC.nLen)));
-            mOutputText->setPlainText( getHexString( binMAC.pVal, binMAC.nLen ));
-            mStatusLabel->setText( strMsg );
-            berApplet->messageBox( strMsg, this );
+            macFinal();
         }
     }
 
 end :
     freeCTX();
     JS_BIN_reset( &binPart );
-    JS_BIN_reset( &binMAC );
 }
 
 void GenMacDlg::inputClear()

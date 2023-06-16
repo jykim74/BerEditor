@@ -24,6 +24,8 @@ private slots:
     void findCert();
     void algChanged(int index);
     void Run();
+    void dataRun();
+    void fileRun();
     void signVerifyInit();
     void signVerifyUpdate();
     void signVerifyFinal();
@@ -44,6 +46,7 @@ private slots:
 
     void checkUseKeyAlg();
     void clickClearDataAll();
+    void clickFindSrcFile();
 
 private:
     void initialize();

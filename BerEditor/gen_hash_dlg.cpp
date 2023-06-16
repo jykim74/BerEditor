@@ -296,8 +296,6 @@ void GenHashDlg::clickDigestSrcFile()
     int nPercent = 0;
     QString strSrcFile = mSrcFileText->text();
     BIN binPart = {0,0};
-    BIN binMD = {0,0};
-
 
     if( strSrcFile.length() < 1 )
     {
@@ -358,24 +356,10 @@ void GenHashDlg::clickDigestSrcFile()
 
         if( ret == 0 )
         {
-            ret = JS_PKI_hashFinal( pctx_, &binMD );
-            if( ret != 0 )
-            {
-                berApplet->elog( QString( "fail to finalize hash : %1").arg(ret));
-                goto end;
-            }
-
-            QString strMsg = tr( "File Hash OK" );
-            berApplet->log( QString( "file Hash: %1").arg( getHexString(binMD.pVal, binMD.nLen)));
-            mOutputText->setPlainText( getHexString( binMD.pVal, binMD.nLen ));
-            mStatusLabel->setText( strMsg );
-            berApplet->messageBox( strMsg, this );
+            hashFinal();
         }
     }
 
 end :
-    JS_PKI_hashFree( &pctx_ );
-    pctx_ = NULL;
     JS_BIN_reset( &binPart );
-    JS_BIN_reset( &binMD );
 }
