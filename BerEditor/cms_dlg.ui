@@ -13,81 +13,16 @@
   <property name="windowTitle">
    <string>PKCS#7 Cryptographic Message Syntax</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="8" column="0" colspan="3">
-    <widget class="Line" name="line_2">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="10" column="0" colspan="3">
-    <widget class="QPlainTextEdit" name="mOutputText"/>
-   </item>
-   <item row="13" column="0" colspan="3">
-    <layout class="QGridLayout" name="gridLayout_2">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mDecodeBtn">
-       <property name="text">
-        <string>Decode</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mCloseBtn">
-       <property name="text">
-        <string>Close</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <spacer name="horizontalSpacer_3">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mChangeBtn">
-       <property name="text">
-        <string>Change</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="mClearDataAllBtn">
-       <property name="text">
-        <string>Clear Data All</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="1" column="0" colspan="3">
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
     <layout class="QGridLayout" name="gridLayout_5">
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="5">
+     <item row="0" column="6">
       <widget class="QLabel" name="label_6">
        <property name="text">
         <string>Len</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Source Data</string>
        </property>
       </widget>
      </item>
@@ -104,20 +39,22 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="1">
-      <widget class="QRadioButton" name="mSrcStringRadio">
-       <property name="text">
-        <string>String</string>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>0</height>
+        </size>
        </property>
-       <property name="checked">
-        <bool>true</bool>
+       <property name="maximumSize">
+        <size>
+         <width>100</width>
+         <height>16777215</height>
+        </size>
        </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QRadioButton" name="mSrcBase64Radio">
        <property name="text">
-        <string>Base64</string>
+        <string>Source Data</string>
        </property>
       </widget>
      </item>
@@ -128,7 +65,17 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="6">
+     <item row="0" column="1">
+      <widget class="QRadioButton" name="mSrcStringRadio">
+       <property name="text">
+        <string>String</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="7">
       <widget class="QLineEdit" name="mSrcLenText">
        <property name="minimumSize">
         <size>
@@ -147,145 +94,33 @@
        </property>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item row="11" column="0" colspan="3">
-    <layout class="QGridLayout" name="gridLayout_4">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <item row="1" column="2">
-      <widget class="QPushButton" name="mDevelopedAndVerifyBtn">
-       <property name="text">
-        <string>DevelopedAndVerify</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="mSignedDataBtn">
-       <property name="text">
-        <string>SignedData</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="mVerifyDataBtn">
-       <property name="text">
-        <string>VerifyData</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mEnvelopedDataBtn">
-       <property name="text">
-        <string>EnvelopedData</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="mDevelopedDataBtn">
-       <property name="text">
-        <string>DevelopedData</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mSignAndEnvelopedBtn">
-       <property name="text">
-        <string>SignAndEnveloped</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="2" column="0" colspan="3">
-    <widget class="QPlainTextEdit" name="mSrcText"/>
-   </item>
-   <item row="12" column="0" colspan="3">
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="9" column="0" colspan="3">
-    <layout class="QGridLayout" name="gridLayout_6">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_7">
-       <property name="text">
-        <string>Output Data</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="3">
-      <widget class="QRadioButton" name="mOutputBase64Radio">
+      <widget class="QRadioButton" name="mSrcBase64Radio">
        <property name="text">
         <string>Base64</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="6">
-      <widget class="QLineEdit" name="mOutputLenText">
-       <property name="minimumSize">
-        <size>
-         <width>40</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <spacer name="horizontalSpacer_4">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="2">
-      <widget class="QRadioButton" name="mOutputHexRadio">
-       <property name="text">
-        <string>Hex</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QRadioButton" name="mOutputStringRadio">
-       <property name="text">
-        <string>String</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="5">
-      <widget class="QLabel" name="label_8">
+      <widget class="QPushButton" name="mReadFileBtn">
        <property name="text">
-        <string>Len</string>
+        <string>Read File</string>
        </property>
       </widget>
      </item>
     </layout>
    </item>
-   <item row="3" column="0" colspan="3">
+   <item>
+    <widget class="QPlainTextEdit" name="mSrcText"/>
+   </item>
+   <item>
+    <widget class="Line" name="line_3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QGridLayout" name="gridLayout_3">
      <property name="topMargin">
       <number>0</number>
@@ -385,6 +220,18 @@
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>100</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="text">
         <string>Sign PrivateKey</string>
        </property>
@@ -490,6 +337,197 @@
      </item>
     </layout>
    </item>
+   <item>
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_6">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>Output Data</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QRadioButton" name="mOutputStringRadio">
+       <property name="text">
+        <string>String</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QRadioButton" name="mOutputBase64Radio">
+       <property name="text">
+        <string>Base64</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="8">
+      <widget class="QLineEdit" name="mOutputLenText">
+       <property name="minimumSize">
+        <size>
+         <width>40</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="7">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>Len</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mDecodeBtn">
+       <property name="text">
+        <string>Decode</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="2">
+      <widget class="QRadioButton" name="mOutputHexRadio">
+       <property name="text">
+        <string>Hex</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="6">
+      <widget class="QPushButton" name="mChangeBtn">
+       <property name="text">
+        <string>Change</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QPlainTextEdit" name="mOutputText"/>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_4">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="mDevelopedAndVerifyBtn">
+       <property name="text">
+        <string>DevelopedAndVerify</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mSignedDataBtn">
+       <property name="text">
+        <string>SignedData</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="mVerifyDataBtn">
+       <property name="text">
+        <string>VerifyData</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mEnvelopedDataBtn">
+       <property name="text">
+        <string>EnvelopedData</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QPushButton" name="mDevelopedDataBtn">
+       <property name="text">
+        <string>DevelopedData</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mSignAndEnvelopedBtn">
+       <property name="text">
+        <string>SignAndEnveloped</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_2">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mCloseBtn">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mClearDataAllBtn">
+       <property name="text">
+        <string>Clear Data All</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
   </layout>
  </widget>
  <tabstops>
@@ -524,8 +562,6 @@
   <tabstop>mDevelopedDataBtn</tabstop>
   <tabstop>mDevelopedAndVerifyBtn</tabstop>
   <tabstop>mClearDataAllBtn</tabstop>
-  <tabstop>mDecodeBtn</tabstop>
-  <tabstop>mChangeBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>

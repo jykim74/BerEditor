@@ -32,6 +32,9 @@ private slots:
     void outputChanged();
     void changeMethod( int index );
 
+    void clickInputClear();
+    void clickOutputClear();
+
     void clickPriKeyDecode();
     void clickCertView();
     void clickCertDecode();

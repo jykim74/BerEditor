@@ -47,6 +47,7 @@ private slots:
     void outputChanged();
 
     void clickClearDataAll();
+    void clickReadFile();
 
 private:
     void initialize();

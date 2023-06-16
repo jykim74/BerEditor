@@ -66,6 +66,9 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     connect( mPriKeyTypeBtn, SIGNAL(clicked()), this, SLOT(clickPriKeyType()));
     connect( mCertTypeBtn, SIGNAL(clicked()), this, SLOT(clickCertType()));
 
+    connect( mInputClearBtn, SIGNAL(clicked()), this, SLOT(clickInputClear()));
+    connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickOutputClear()));
+
     mCloseBtn->setFocus();
 }
 
@@ -85,6 +88,8 @@ void SignVerifyDlg::initialize()
 
     mAutoCertPubKeyCheck->setChecked(true);
     mUseKeyAlgCheck->setChecked(true);
+
+    mInputTab->setCurrentIndex(0);
 
     checkAutoCertOrPubKey();
     checkUseKeyAlg();
@@ -636,6 +641,16 @@ void SignVerifyDlg::changeMethod( int index )
         mRunBtn->setText( tr( "Sign" ));
     else
         mRunBtn->setText( tr( "Verify"));
+}
+
+void SignVerifyDlg::clickInputClear()
+{
+    mInputText->clear();
+}
+
+void SignVerifyDlg::clickOutputClear()
+{
+    mOutputText->clear();
 }
 
 void SignVerifyDlg::clickPriKeyDecode()

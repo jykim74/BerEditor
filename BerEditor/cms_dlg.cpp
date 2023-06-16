@@ -53,6 +53,7 @@ CMSDlg::CMSDlg(QWidget *parent) :
     connect( mKMCertTypeBtn, SIGNAL(clicked()), this, SLOT(clickKMCertType()));
 
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
+    connect( mReadFileBtn, SIGNAL(clicked()), this, SLOT(clickReadFile()));
 
     initialize();
 
@@ -872,4 +873,22 @@ void CMSDlg::clickClearDataAll()
     mSignCertPathText->clear();
     mKMPriKeyPathText->clear();
     mKMCertPathText->clear();
+}
+
+void CMSDlg::clickReadFile()
+{
+    QString strPath;
+
+    QString strFile = findFile( this, JS_FILE_TYPE_BER, strPath);
+
+    if( strFile.length() > 0 )
+    {
+        BIN binData = {0,0};
+
+        JS_BIN_fileRead( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+
+        mSrcHexRadio->setChecked(true);
+        mSrcText->setPlainText( getHexString( &binData ));
+        JS_BIN_reset( &binData );
+    }
 }

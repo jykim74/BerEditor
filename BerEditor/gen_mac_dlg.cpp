@@ -580,4 +580,12 @@ void GenMacDlg::clickClearDataAll()
     mKeyText->clear();
     mOutputText->clear();
     mStatusLabel->clear();
+
+    mSrcFileText->clear();
+    mSrcFileInfoText->clear();
+    mSrcFileSizeText->clear();
+
+    mFileTotalSizeText->clear();
+    mFileReadSizeText->clear();
+    mMACProgBar->setValue(0);
 }
