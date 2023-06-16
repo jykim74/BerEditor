@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>557</width>
-    <height>662</height>
+    <height>672</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -566,6 +566,12 @@
      </item>
      <item row="0" column="2">
       <widget class="QPushButton" name="mTargetFindBtn">
+       <property name="minimumSize">
+        <size>
+         <width>90</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="text">
         <string>Find</string>
        </property>
@@ -586,10 +592,88 @@
      </item>
      <item row="0" column="3">
       <widget class="QPushButton" name="mTargetInfoBtn">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="text">
         <string>TargetInfo</string>
        </property>
       </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_5">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_10">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mPathClearBtn">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>80</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>PathClear</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mPathValidationBtn">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Path Validation</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mPolicyCheckBtn">
+       <property name="minimumSize">
+        <size>
+         <width>90</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Policy Check</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
      </item>
     </layout>
    </item>
@@ -602,31 +686,10 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mPathValidationBtn">
-       <property name="text">
-        <string>Path Validation</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="6">
       <widget class="QPushButton" name="mCloseBtn">
        <property name="text">
         <string>Close</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mPolicyCheckBtn">
-       <property name="text">
-        <string>Policy Check</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mPathClearBtn">
-       <property name="text">
-        <string>PathClear</string>
        </property>
       </widget>
      </item>
@@ -706,9 +769,6 @@
   <tabstop>mTargetFindBtn</tabstop>
   <tabstop>mTargetInfoBtn</tabstop>
   <tabstop>mClearDataAllBtn</tabstop>
-  <tabstop>mPolicyCheckBtn</tabstop>
-  <tabstop>mPathValidationBtn</tabstop>
-  <tabstop>mPathClearBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>
