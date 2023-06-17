@@ -21,12 +21,20 @@ SettingsDlg::SettingsDlg(QWidget *parent) :
     connect( mCancelBtn, SIGNAL(clicked()), this, SLOT(onCancelBtnClicked()));
     connect( mFindOIDConfig, SIGNAL(clicked()), this, SLOT(findOIDConfig()));
 
+    initialize();
+
     mTabWidget->setCurrentIndex(0);
 }
 
 SettingsDlg::~SettingsDlg()
 {
 
+}
+
+void SettingsDlg::initialize()
+{
+    QIntValidator *intVal = new QIntValidator( 0, 999999 );
+    mFileReadSizeText->setValidator( intVal );
 }
 
 void SettingsDlg::updateSettings()

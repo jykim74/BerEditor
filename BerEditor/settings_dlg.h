@@ -27,6 +27,7 @@ private slots:
     void showEvent(QShowEvent *event);
 
 private:
+    void initialize();
 //    Ui::SettingsDlg *ui;
     Q_DISABLE_COPY(SettingsDlg);
 };
