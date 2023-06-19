@@ -4493,7 +4493,7 @@ Do you want to delete the file and continue?</source>
     <message>
         <location filename="../sign_verify_dlg.cpp" line="917"/>
         <source>Private Key Type is %1</source>
-        <translation>공개키 타입은 %1 이다</translation>
+        <translation>개인키 타입은 %1 이다</translation>
     </message>
     <message>
         <location filename="../sign_verify_dlg.cpp" line="934"/>
