@@ -379,9 +379,11 @@ void EncDecDlg::fileRun()
         if( nLeft < nPartSize )
             nPartSize = nLeft;
 
-//        nRead = JS_BIN_fileReadPart( strSrcFile.toLocal8Bit().toStdString().c_str(), nOffset, nPartSize, &binPart );
         nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
         if( nRead <= 0 ) break;
+
+//        berApplet->log( QString( "read len : %1").arg( nRead ) );
+//        berApplet->log( QString( "read : %1").arg( getHexString( binPart.pVal, binPart.nLen )));
 
         if( mUseAECheck->isChecked() )
         {
@@ -415,6 +417,9 @@ void EncDecDlg::fileRun()
             }
         }
 
+//        berApplet->log( QString("enc or dec len: %1").arg( binDst.nLen ));
+//        berApplet->log( QString("enc or dec : %1").arg( getHexString(binDst.pVal, binDst.nLen)));
+
         if( binDst.nLen > 0 )
             JS_BIN_fileAppend( &binDst, strDstFile.toLocal8Bit().toStdString().c_str() );
 
@@ -428,7 +433,7 @@ void EncDecDlg::fileRun()
         nOffset += nRead;
 
         JS_BIN_reset( &binPart );
-        JS_BIN_reset( &binPart );
+        JS_BIN_reset( &binDst );
         repaint();
     }
 
@@ -750,7 +755,7 @@ void EncDecDlg::encDecFinal()
 
     QString strOut = mOutputText->toPlainText();
 
-    if( strOut.length() > 0 )
+    if( mInputTab->currentIndex() == 0 && strOut.length() > 0 )
     {
         if( mOutputTypeCombo->currentIndex() == DATA_STRING )
             JS_BIN_set( &binOut, (unsigned char *)strOut.toStdString().c_str(), strOut.length() );
@@ -804,7 +809,7 @@ void EncDecDlg::encDecFinal()
                 ret = JS_PKI_decryptGCMFinal( ctx_, &binTag, &binDst );
 
             berApplet->log( QString( "Dec Tag    : %1" ).arg( getHexString( &binTag )));
-            berApplet->log( QString( "Dec Output : %1" ).arg(getHexString( &binDst )));
+            berApplet->log( QString( "Final Output : %1" ).arg(getHexString( &binDst )));
         }
     }
     else {
@@ -813,16 +818,18 @@ void EncDecDlg::encDecFinal()
             ret = JS_PKI_encryptFinal( ctx_, &binDst );
             JS_PKI_encryptFree( &ctx_ );
 
-            berApplet->log( QString( "Enc Output : %1" ).arg(getHexString( &binDst )));
+            berApplet->log( QString( "Final Enc Output : %1" ).arg(getHexString( &binDst )));
         }
         else
         {
             ret = JS_PKI_decryptFinal( ctx_, &binDst );
             JS_PKI_decryptFree( &ctx_ );
 
-            berApplet->log( QString( "Dec Output : %1" ).arg(getHexString( &binDst )));
+            berApplet->log( QString( "Final Dec Output : %1" ).arg(getHexString( &binDst )));
         }
     }
+
+    berApplet->log( QString( "final dst len : %1").arg( binDst.nLen ));
 
     if( binDst.nLen > 0 )
     {
@@ -851,7 +858,7 @@ void EncDecDlg::encDecFinal()
         else
         {
             QString strDstPath = mDstFileText->text();
-            JS_BIN_fileAppend( &binOut, strDstPath.toLocal8Bit().toStdString().c_str() );
+            JS_BIN_fileAppend( &binDst, strDstPath.toLocal8Bit().toStdString().c_str() );
         }
     }
 

@@ -48,7 +48,7 @@ public:
     QString getSetPath();
     bool isPRO() { return is_pro_; };
     bool isLicense() { return is_license_; };
-
+    QString curFile() { return cur_file_; };
 
 signals:
 
@@ -60,7 +60,6 @@ private:
     MainWindow* main_win_;
     SettingsMgr* settings_mgr_;
 
-
     bool is_pro_;
     bool started_;
     bool in_exit_;
@@ -69,6 +68,7 @@ private:
     JS_LICENSE_INFO license_info_;
 
     QString cmd_;
+    QString cur_file_;
 };
 
 extern BerApplet *berApplet;
