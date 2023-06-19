@@ -280,19 +280,6 @@ int SignVerifyDlg::signVerifyInit()
 
     QString strHash = mHashTypeCombo->currentText();
 
-    if( mAlgTypeCombo->currentText() == "RSA" )
-        nType = JS_PKI_KEY_TYPE_RSA;
-    else if( mAlgTypeCombo->currentText() == "SM2" )
-        nType = JS_PKI_KEY_TYPE_SM2;
-    else if( mAlgTypeCombo->currentText() == "DSA" )
-        nType = JS_PKI_KEY_TYPE_DSA;
-    else if( mAlgTypeCombo->currentText() == "Ed25519" )
-        nType = JS_PKI_KEY_TYPE_ED25519;
-    else if( mAlgTypeCombo->currentText() == "Ed448" )
-        nType = JS_PKI_KEY_TYPE_ED448;
-    else
-        nType = JS_PKI_KEY_TYPE_ECC;
-
     berApplet->log( QString( "Algorithm : %1 Hash : %2" ).arg( mAlgTypeCombo->currentText() ).arg( strHash ));
 
     if( mMethodCombo->currentIndex() == SIGN_SIGNATURE )
@@ -326,6 +313,19 @@ int SignVerifyDlg::signVerifyInit()
             else if( nType == JS_PKI_KEY_TYPE_ED448 )
                 mAlgTypeCombo->setCurrentText( "Ed448" );
         }
+
+        if( mAlgTypeCombo->currentText() == "RSA" )
+            nType = JS_PKI_KEY_TYPE_RSA;
+        else if( mAlgTypeCombo->currentText() == "SM2" )
+            nType = JS_PKI_KEY_TYPE_SM2;
+        else if( mAlgTypeCombo->currentText() == "DSA" )
+            nType = JS_PKI_KEY_TYPE_DSA;
+        else if( mAlgTypeCombo->currentText() == "Ed25519" )
+            nType = JS_PKI_KEY_TYPE_ED25519;
+        else if( mAlgTypeCombo->currentText() == "Ed448" )
+            nType = JS_PKI_KEY_TYPE_ED448;
+        else
+            nType = JS_PKI_KEY_TYPE_ECC;
 
         ret = JS_PKI_signInit( &sctx_, strHash.toStdString().c_str(), nType, &binPri );
 
@@ -382,6 +382,19 @@ int SignVerifyDlg::signVerifyInit()
             else if( nType == JS_PKI_KEY_TYPE_ED448 )
                 mAlgTypeCombo->setCurrentText( "Ed448" );
         }
+
+        if( mAlgTypeCombo->currentText() == "RSA" )
+            nType = JS_PKI_KEY_TYPE_RSA;
+        else if( mAlgTypeCombo->currentText() == "SM2" )
+            nType = JS_PKI_KEY_TYPE_SM2;
+        else if( mAlgTypeCombo->currentText() == "DSA" )
+            nType = JS_PKI_KEY_TYPE_DSA;
+        else if( mAlgTypeCombo->currentText() == "Ed25519" )
+            nType = JS_PKI_KEY_TYPE_ED25519;
+        else if( mAlgTypeCombo->currentText() == "Ed448" )
+            nType = JS_PKI_KEY_TYPE_ED448;
+        else
+            nType = JS_PKI_KEY_TYPE_ECC;
 
         ret = JS_PKI_verifyInit( &sctx_, strHash.toStdString().c_str(), nType, &binPubKey );
 
