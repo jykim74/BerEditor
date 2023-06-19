@@ -284,6 +284,9 @@ void GenHashDlg::clickFindSrcFile()
         mSrcFileSizeText->setText( QString("%1").arg( fileSize ));
         mSrcFileInfoText->setText( strInfo );
         mHashProgBar->setValue(0);
+
+        mFileReadSizeText->clear();
+        mFileSizeText->clear();
     }
 }
 

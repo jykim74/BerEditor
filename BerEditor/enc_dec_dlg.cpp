@@ -447,6 +447,15 @@ void EncDecDlg::fileRun()
         if( ret == 0 )
         {
             encDecFinal();
+
+            QFileInfo fileInfo;
+            fileInfo.setFile( strDstFile );
+            qint64 fileSize = fileInfo.size();
+            QDateTime cTime = fileInfo.lastModified();
+
+            QString strInfo = QString("LastModified Time: %1").arg( cTime.toString( "yyyy-MM-dd HH:mm:ss" ));
+            mDstFileSizeText->setText( QString("%1").arg( fileSize ));
+            mDstFileInfoText->setText( strInfo );
         }
     }
 
@@ -1017,7 +1026,17 @@ void EncDecDlg::clickFindSrcFile()
 
         QStringList nameExt = strSrcFile.split(".");
         QString strDstName = QString( "%1.dst" ).arg( nameExt.at(0) );
+        if( strSrcFile == strDstName )
+        {
+            strDstName += "_dst";
+        }
+
         mDstFileText->setText( strDstName );
+
+        mFileReadSizeText->clear();
+        mFileTotalSizeText->clear();
+        mDstFileInfoText->clear();
+        mDstFileSizeText->clear();
     }
 }
 

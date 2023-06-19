@@ -999,6 +999,9 @@ void SignVerifyDlg::clickFindSrcFile()
         mSrcFileSizeText->setText( QString("%1").arg( fileSize ));
         mSrcFileInfoText->setText( strInfo );
         mSignProgBar->setValue(0);
+
+        mFileReadSizeText->clear();
+        mFileTotalSizeText->clear();
     }
 }
 
