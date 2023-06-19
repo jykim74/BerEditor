@@ -36,6 +36,8 @@ QString findFile( QWidget *parent, int nType, const QString strPath )
         strType = QObject::tr("Config Files (*.cfg *.ini);;All Files(*.*)" );
     else if( nType == JS_FILE_TYPE_REQ )
         strType = QObject::tr("Req Files (*.req *.txt);;All Files(*.*)" );
+    else if( nType == JS_FILE_TYPE_ALL )
+        strType = QObject::tr("All Files(*.*)" );
 
     QString fileName = QFileDialog::getOpenFileName( parent,
                                                      QObject::tr( "Open File" ),

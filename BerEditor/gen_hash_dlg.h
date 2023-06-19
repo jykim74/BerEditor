@@ -18,7 +18,7 @@ public:
 
 private slots:
     void digest();
-    void hashInit();
+    int hashInit();
     void hashUpdate();
     void hashFinal();
     void clearInput();

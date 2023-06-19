@@ -58,7 +58,7 @@ void GenHashDlg::initialize()
     mInputTab->setCurrentIndex(0);
 }
 
-void GenHashDlg::hashInit()
+int GenHashDlg::hashInit()
 {
     int ret = 0;
 
@@ -69,6 +69,7 @@ void GenHashDlg::hashInit()
     }
 
     QString strAlg = mOutputHashCombo->currentText();
+    mOutputText->clear();
 
     ret = JS_PKI_hashInit( &pctx_, strAlg.toStdString().c_str() );
     if( ret == 0 )
@@ -81,6 +82,7 @@ void GenHashDlg::hashInit()
         mStatusLabel->setText( QString("Init Fail:%1").arg(ret) );
 
     repaint();
+    return 0;
 }
 
 void GenHashDlg::hashUpdate()
@@ -266,7 +268,7 @@ void GenHashDlg::clickClearDataAll()
 void GenHashDlg::clickFindSrcFile()
 {
     QString strPath;
-    QString strSrcFile = findFile( this, JS_FILE_TYPE_BER, strPath );
+    QString strSrcFile = findFile( this, JS_FILE_TYPE_ALL, strPath );
 
     if( strSrcFile.length() > 0 )
     {
@@ -311,6 +313,7 @@ void GenHashDlg::clickDigestSrcFile()
     mHashProgBar->setValue( 0 );
     mFileSizeText->setText( QString("%1").arg( fileSize ));
     mFileReadSizeText->setText( "0" );
+
 
     nLeft = fileSize;
 

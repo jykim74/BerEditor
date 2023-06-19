@@ -19,7 +19,7 @@ public:
 
 private slots:
         void mac();
-        void macInit();
+        int macInit();
         void macUpdate();
         void macFinal();
 

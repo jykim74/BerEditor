@@ -961,7 +961,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
 {
     if( isChanged() )
     {
-        bool bVal = berApplet->yesOrNoBox( tr("Do you want to write changed date?"), this, false );
+        QString strMsg = tr("Do you want to save the file in DER format?\n[The Source is PEM or The Source DER changed]");
+        bool bVal = berApplet->yesOrNoBox( strMsg, this, false );
         if( bVal ) saveAs();
     }
 

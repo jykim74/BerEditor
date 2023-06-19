@@ -22,7 +22,7 @@ private slots:
     void dataRun();
     void fileRun();
     void clickUseAE();
-    void encDecInit();
+    int encDecInit();
     void encDecUpdate();
     void encDecFinal();
     void dataChange();

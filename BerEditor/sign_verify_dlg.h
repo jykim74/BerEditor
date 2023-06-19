@@ -26,7 +26,7 @@ private slots:
     void Run();
     void dataRun();
     void fileRun();
-    void signVerifyInit();
+    int signVerifyInit();
     void signVerifyUpdate();
     void signVerifyFinal();
 

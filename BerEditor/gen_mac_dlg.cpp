@@ -107,7 +107,7 @@ void GenMacDlg::freeCTX()
     type_ = 0;
 }
 
-void GenMacDlg::macInit()
+int GenMacDlg::macInit()
 {
     int ret = 0;
 
@@ -115,6 +115,11 @@ void GenMacDlg::macInit()
     BIN binKey = {0,0};
 
     QString strKey = mKeyText->text();
+    if( strKey.length() < 1 )
+    {
+        berApplet->warningBox( tr("You have to insert key"), this );
+        return -1;
+    }
 
     if( mKeyTypeCombo->currentIndex() == 0 )
         JS_BIN_set( &binKey, (unsigned char *)strKey.toStdString().c_str(), strKey.length() );
@@ -125,6 +130,7 @@ void GenMacDlg::macInit()
 
 
    QString strAlg = mAlgTypeCombo->currentText();
+   mOutputText->clear();
 
    if( mCMACRadio->isChecked() )
    {
@@ -160,6 +166,7 @@ void GenMacDlg::macInit()
 
    JS_BIN_reset( &binKey );
    repaint();
+   return ret;
 }
 
 void GenMacDlg::macUpdate()
@@ -386,7 +393,7 @@ void GenMacDlg::clickMAC()
 void GenMacDlg::clickFindSrcFile()
 {
     QString strPath;
-    QString strSrcFile = findFile( this, JS_FILE_TYPE_BER, strPath );
+    QString strSrcFile = findFile( this, JS_FILE_TYPE_ALL, strPath );
 
     if( strSrcFile.length() > 0 )
     {
@@ -435,7 +442,12 @@ void GenMacDlg::clickMACSrcFile()
 
     nLeft = fileSize;
 
-    macInit();
+    if( macInit() != 0 )
+    {
+        berApplet->elog( "fail to init MAC" );
+        return;
+    }
+
     FILE *fp = fopen( strSrcFile.toLocal8Bit().toStdString().c_str(), "rb" );
 
     while( nLeft > 0 )

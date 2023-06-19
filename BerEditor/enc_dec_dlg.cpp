@@ -353,7 +353,25 @@ void EncDecDlg::fileRun()
     QString strAlg = mAlgCombo->currentText();
     QString strDstFile = mDstFileText->text();
 
-    encDecInit();
+    if( QFile::exists( strDstFile ) )
+    {
+        QString strMsg = tr( "Dst file[%1] is already exist.\nDo you want to delete the file and continue?" ).arg( strDstFile );
+        bool bVal = berApplet->yesOrNoBox( strMsg, this, false );
+
+        if( bVal == true )
+        {
+            QFile::remove( strDstFile );
+        }
+        else
+            return;
+    }
+
+    if( encDecInit() != 0 )
+    {
+        berApplet->elog( "fail to init" );
+        return;
+    }
+
     FILE *fp = fopen( strSrcFile.toLocal8Bit().toStdString().c_str(), "rb" );
 
     while( nLeft > 0 )
@@ -369,6 +387,8 @@ void EncDecDlg::fileRun()
         {
             if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
             {
+                mOutputText->clear();
+
                 if( isCCM(strAlg) )
                     ret = JS_PKI_encryptCCMUpdate( ctx_, &binPart, &binDst );
                 else
@@ -385,6 +405,8 @@ void EncDecDlg::fileRun()
         else {
             if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
             {
+                mOutputText->clear();
+
                 ret = JS_PKI_encryptUpdate( ctx_, &binPart, &binDst );
             }
             else
@@ -455,7 +477,7 @@ void EncDecDlg::clickUseAE()
     modeChanged();
 }
 
-void EncDecDlg::encDecInit()
+int EncDecDlg::encDecInit()
 {
     int ret = -1;
     BIN binSrc = {0,0};
@@ -474,7 +496,7 @@ void EncDecDlg::encDecInit()
     if( strKey.isEmpty() )
     {
         berApplet->warningBox( tr( "You have to insert key" ), this );
-        return;
+        return -1;
     }
 
     mOutputText->clear();
@@ -606,6 +628,7 @@ end :
     JS_BIN_reset( &binSrc );
 
     repaint();
+    return ret;
 }
 
 void EncDecDlg::encDecUpdate()
@@ -968,7 +991,7 @@ void EncDecDlg::clickOutputClear()
 void EncDecDlg::clickFindSrcFile()
 {
     QString strPath = mSrcFileText->text();
-    QString strSrcFile = findFile( this, JS_FILE_TYPE_BER, strPath );
+    QString strSrcFile = findFile( this, JS_FILE_TYPE_ALL, strPath );
 
     if( strSrcFile.length() > 0 )
     {

@@ -29,7 +29,8 @@ enum {
     JS_FILE_TYPE_TXT,
     JS_FILE_TYPE_BER,
     JS_FILE_TYPE_CFG,
-    JS_FILE_TYPE_REQ };
+    JS_FILE_TYPE_REQ,
+    JS_FILE_TYPE_ALL };
 
 const QStringList kECCParamList = {
     "secp112r1", "secp112r2", "secp128r1", "secp128r2", "secp160k1",

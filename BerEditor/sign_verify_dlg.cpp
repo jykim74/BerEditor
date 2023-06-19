@@ -264,7 +264,7 @@ void SignVerifyDlg::algChanged(int index)
     }
 }
 
-void SignVerifyDlg::signVerifyInit()
+int SignVerifyDlg::signVerifyInit()
 {
     int ret = 0;
     int nType = 0;
@@ -297,9 +297,12 @@ void SignVerifyDlg::signVerifyInit()
 
     if( mMethodCombo->currentIndex() == SIGN_SIGNATURE )
     {
+        mOutputText->clear();
+
         if( mPriKeyPath->text().isEmpty() )
         {
             berApplet->warningBox( tr( "You have to find private key" ), this );
+            ret = -1;
             goto end;
         }
 
@@ -334,6 +337,7 @@ void SignVerifyDlg::signVerifyInit()
         if( mCertPath->text().isEmpty() )
         {
             berApplet->warningBox( tr( "You have to find certificate"), this );
+            ret = -1;
             goto end;
         }
 
@@ -398,6 +402,7 @@ end :
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binCert );
     JS_BIN_reset( &binPubKey );
+    return ret;
 }
 
 void SignVerifyDlg::signVerifyUpdate()
@@ -752,7 +757,11 @@ void SignVerifyDlg::fileRun()
 
     nLeft = fileSize;
 
-    signVerifyInit();
+    if( signVerifyInit() != 0 )
+    {
+        berApplet->elog( "fail to init" );
+        return;
+    }
 
     FILE *fp = fopen( strSrcFile.toLocal8Bit().toStdString().c_str(), "rb" );
 
@@ -974,7 +983,7 @@ void SignVerifyDlg::clickClearDataAll()
 void SignVerifyDlg::clickFindSrcFile()
 {
     QString strPath;
-    QString strSrcFile = findFile( this, JS_FILE_TYPE_BER, strPath );
+    QString strSrcFile = findFile( this, JS_FILE_TYPE_ALL, strPath );
 
     if( strSrcFile.length() > 0 )
     {
