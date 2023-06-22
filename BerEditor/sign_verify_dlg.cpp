@@ -141,7 +141,6 @@ void SignVerifyDlg::clickCheckKeyPair()
     BIN binPri = {0,0};
     BIN binPub = {0,0};
     BIN binCert = {0,0};
-    BIN binPubVal = {0,0};
 
     QString strPriPath = mPriKeyPath->text();
     QString strCertPath = mCertPath->text();
@@ -161,18 +160,6 @@ void SignVerifyDlg::clickCheckKeyPair()
     JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
     JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
 
-    if( mUseKeyAlgCheck->isChecked() )
-    {
-        int nAlgType = JS_PKI_getPriKeyType( &binPri );
-
-        if( nAlgType == JS_PKI_KEY_TYPE_RSA )
-            mAlgTypeCombo->setCurrentText( "RSA" );
-        else if( nAlgType == JS_PKI_KEY_TYPE_ECC )
-            mAlgTypeCombo->setCurrentText( "ECDSA" );
-        else if( nAlgType == JS_PKI_KEY_TYPE_SM2 )
-            mAlgTypeCombo->setCurrentText( "SM2" );
-    }
-
     if( mAutoCertPubKeyCheck->isChecked() )
     {
         if( JS_PKI_isCert( &binCert ) == 0 )
@@ -191,19 +178,9 @@ void SignVerifyDlg::clickCheckKeyPair()
         if( ret != 0 ) goto end;
     }
 
-    ret = JS_PKI_getPublicKeyValue( &binPub, &binPubVal );
-    if( ret != 0 ) goto end;
+    ret = JS_PKI_IsValidKeyPair( &binPri, &binPub );
 
-    if( mAlgTypeCombo->currentText() == "RSA" )
-    {
-        ret = JS_PKI_IsValidRSAKeyPair( &binPri, &binPubVal );
-    }
-    else
-    {
-        ret = JS_PKI_IsValidECCKeyPair( &binPri, &binPub );
-    }
-
-    if( ret == 1 )
+    if( ret == JS_VALID )
         berApplet->messageBox( tr("KeyPair is good"), this );
     else
         berApplet->warningBox( QString( tr("Invalid key pair: %1").arg(ret)), this );
@@ -212,7 +189,6 @@ end :
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binPub );
     JS_BIN_reset( &binCert );
-    JS_BIN_reset( &binPubVal );
 }
 
 void SignVerifyDlg::findPrivateKey()
@@ -252,14 +228,22 @@ void SignVerifyDlg::algChanged(int index)
     QString strAlg = mAlgTypeCombo->currentText();
 
     if( strAlg == "RSA" )
+    {
         mVersionCombo->setEnabled(true);
+    }
     else
+    {
         mVersionCombo->setEnabled( false );
+    }
 
     if( strAlg == "Ed25519" || strAlg == "Ed448" )
+    {
         mHashTypeCombo->setEnabled( false );
+    }
     else
+    {
         mHashTypeCombo->setEnabled( true );
+    }
 
     if( strAlg == "SM2" )
     {

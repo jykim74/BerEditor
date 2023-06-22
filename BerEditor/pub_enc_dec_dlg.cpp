@@ -123,11 +123,9 @@ void PubEncDecDlg::clickCheckKeyPair()
     BIN binPri = {0,0};
     BIN binPub = {0,0};
     BIN binCert = {0,0};
-    BIN binPubVal = {0,0};
 
     QString strPriPath = mPriKeyPath->text();
     QString strCertPath = mCertPath->text();
-    QString strAlg = mAlgCombo->currentText();
 
     if( strPriPath.length() < 1 )
     {
@@ -162,15 +160,9 @@ void PubEncDecDlg::clickCheckKeyPair()
         if( ret != 0 ) goto end;
     }
 
-    ret = JS_PKI_getPublicKeyValue( &binPub, &binPubVal );
-    if( ret != 0 ) goto end;
+    ret = JS_PKI_IsValidKeyPair( &binPri, &binPub );
 
-    if( strAlg == "RSA" )
-        ret = JS_PKI_IsValidRSAKeyPair( &binPri, &binPubVal );
-    else
-        ret = JS_PKI_IsValidECCKeyPair( &binPri, &binPub );
-
-    if( ret == 1 )
+    if( ret == JS_VALID )
         berApplet->messageBox( tr("KeyPair is good"), this );
     else
         berApplet->warningBox( QString( tr("Invalid key pair: %1")).arg(ret), this );
@@ -178,7 +170,6 @@ void PubEncDecDlg::clickCheckKeyPair()
 end :
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binPub );
-    JS_BIN_reset( &binPubVal );
     JS_BIN_reset( &binCert );
 }
 
