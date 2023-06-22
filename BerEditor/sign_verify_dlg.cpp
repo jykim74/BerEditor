@@ -770,6 +770,14 @@ void SignVerifyDlg::fileRun()
     }
 
     FILE *fp = fopen( strSrcFile.toLocal8Bit().toStdString().c_str(), "rb" );
+    if( fp == NULL )
+    {
+        berApplet->elog( QString( "fail to read file:%1").arg( strSrcFile ));
+        goto end;
+    }
+
+    berApplet->log( QString( "TotalSize: %1 BlockSize: %2").arg( fileSize).arg( nPartSize ));
+
 
     while( nLeft > 0 )
     {
@@ -778,6 +786,11 @@ void SignVerifyDlg::fileRun()
 
         nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
         if( nRead <= 0 ) break;
+
+        if( mWriteLogCheck->isChecked() )
+        {
+            berApplet->log( QString( "Read[%1:%2] %3").arg( nOffset ).arg( nRead ).arg( getHexString(&binPart)));
+        }
 
         if( mMethodCombo->currentIndex() == SIGN_SIGNATURE )
         {

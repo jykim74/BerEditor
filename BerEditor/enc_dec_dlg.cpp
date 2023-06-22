@@ -381,6 +381,13 @@ void EncDecDlg::fileRun()
     }
 
     FILE *fp = fopen( strSrcFile.toLocal8Bit().toStdString().c_str(), "rb" );
+    if( fp == NULL )
+    {
+        berApplet->elog( QString( "fail to read file:%1").arg( strSrcFile ));
+        goto end;
+    }
+
+    berApplet->log( QString( "TotalSize: %1 BlockSize: %2").arg( fileSize).arg( nPartSize ));
 
     while( nLeft > 0 )
     {
@@ -390,8 +397,10 @@ void EncDecDlg::fileRun()
         nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
         if( nRead <= 0 ) break;
 
-//        berApplet->log( QString( "read len : %1").arg( nRead ) );
-//        berApplet->log( QString( "read : %1").arg( getHexString( binPart.pVal, binPart.nLen )));
+        if( mWriteLogCheck->isChecked() )
+        {
+            berApplet->log( QString( "Read[%1:%2] %3").arg( nOffset ).arg( nRead ).arg( getHexString(&binPart)));
+        }
 
         if( mUseAECheck->isChecked() )
         {
@@ -425,8 +434,10 @@ void EncDecDlg::fileRun()
             }
         }
 
-//        berApplet->log( QString("enc or dec len: %1").arg( binDst.nLen ));
-//        berApplet->log( QString("enc or dec : %1").arg( getHexString(binDst.pVal, binDst.nLen)));
+        if( mWriteLogCheck->isChecked() )
+        {
+            berApplet->log( QString( "Out[%1:%2] %3").arg( nOffset ).arg( binDst.nLen ).arg( getHexString(&binDst)));
+        }
 
         if( ret != 0 )
         {
