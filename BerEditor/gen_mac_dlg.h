@@ -42,6 +42,7 @@ private:
         void freeCTX();
 
         void initialize();
+        void appendStatusLabel( const QString strLabel );
         void *hctx_;
         int type_;
         QButtonGroup* group_;

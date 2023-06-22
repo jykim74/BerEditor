@@ -50,6 +50,7 @@ private slots:
 
 private:
     void initialize();
+    void appendStatusLabel( const QString& strLabel );
     void *sctx_;
     QString last_path_;
 };

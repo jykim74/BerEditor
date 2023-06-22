@@ -104,6 +104,13 @@ void EncDecDlg::initialize()
     mInputTab->setCurrentIndex(0);
 }
 
+void EncDecDlg::appendStatusLabel( const QString& strLabel )
+{
+    QString strStatus = mStatusLabel->text();
+    strStatus += strLabel;
+    mStatusLabel->setText( strStatus );
+}
+
 void EncDecDlg::showEvent( QShowEvent *event )
 {
 
@@ -330,6 +337,7 @@ void EncDecDlg::fileRun()
     int nLeft = 0;
     int nOffset = 0;
     int nPercent = 0;
+    int nUpdateCnt = 0;
     QString strSrcFile = mSrcFileText->text();
     BIN binPart = {0,0};
     BIN binDst = {0,0};
@@ -420,6 +428,14 @@ void EncDecDlg::fileRun()
 //        berApplet->log( QString("enc or dec len: %1").arg( binDst.nLen ));
 //        berApplet->log( QString("enc or dec : %1").arg( getHexString(binDst.pVal, binDst.nLen)));
 
+        if( ret != 0 )
+        {
+            berApplet->elog( QString( "fail to update encrypt or decrypt : %1").arg(ret));
+            break;
+        }
+
+        nUpdateCnt++;
+
         if( binDst.nLen > 0 )
             JS_BIN_fileAppend( &binDst, strDstFile.toLocal8Bit().toStdString().c_str() );
 
@@ -446,6 +462,9 @@ void EncDecDlg::fileRun()
 
         if( ret == 0 )
         {
+            QString strStatus = QString( "|Update X %1").arg( nUpdateCnt );
+            appendStatusLabel( strStatus );
+
             encDecFinal();
 
             QFileInfo fileInfo;
@@ -724,26 +743,11 @@ void EncDecDlg::encDecUpdate()
     if( ret == 0 )
     {
         JS_BIN_appendBin( &binOut, &binDst );
-        char *pOut = NULL;
 
-        if( mOutputTypeCombo->currentIndex() == DATA_STRING )
-        {
-            JS_BIN_string( &binOut, &pOut );
-        }
-        else if( mOutputTypeCombo->currentIndex() == DATA_HEX )
-        {
-            JS_BIN_encodeHex( &binOut, &pOut );
-        }
-        else if( mOutputTypeCombo->currentIndex() == DATA_BASE64 )
-        {
-            JS_BIN_encodeBase64( &binOut, &pOut );
-        }
+        QString strOut = getStringFromBIN( &binOut, mOutputTypeCombo->currentText() );
+        mOutputText->setPlainText( strOut );
 
-        mOutputText->setPlainText( pOut );
-
-        if( pOut ) JS_free(pOut);
-
-        mStatusLabel->setText( "Update OK" );
+        appendStatusLabel( "|Update OK" );
     }
     else
         mStatusLabel->setText( QString("Update Fail:%1").arg(ret) );
@@ -872,7 +876,7 @@ void EncDecDlg::encDecFinal()
     }
 
     if( ret == 0 )
-        mStatusLabel->setText( "Final OK" );
+        appendStatusLabel( "|Final OK" );
     else
         mStatusLabel->setText( QString("Final Fail:%1").arg(ret) );
 

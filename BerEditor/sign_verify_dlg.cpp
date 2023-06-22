@@ -103,6 +103,13 @@ void SignVerifyDlg::initialize()
     checkUseKeyAlg();
 }
 
+void SignVerifyDlg::appendStatusLabel( const QString& strLabel )
+{
+    QString strStatus = mStatusLabel->text();
+    strStatus += strLabel;
+    mStatusLabel->setText( strStatus );
+}
+
 void SignVerifyDlg::checkPubKeyVerify()
 {
     bool bVal = mPubKeyVerifyCheck->isChecked();
@@ -457,7 +464,7 @@ void SignVerifyDlg::signVerifyUpdate()
 
     if( ret == 0 )
     {
-        mStatusLabel->setText( "Update OK" );
+        appendStatusLabel( "|Update OK" );
     }
     else
         mStatusLabel->setText( QString("Update Fail:%1").arg( ret) );
@@ -505,7 +512,7 @@ void SignVerifyDlg::signVerifyFinal()
 
         if( ret == JS_VERIFY )
         {
-            mStatusLabel->setText( "Final OK" );
+            appendStatusLabel( "|Final OK" );
         }
         else
             mStatusLabel->setText( QString("Final Fail:%1").arg(ret) );
@@ -749,6 +756,8 @@ void SignVerifyDlg::fileRun()
     int nLeft = 0;
     int nOffset = 0;
     int nPercent = 0;
+    int nUpdateCnt = 0;
+
     QString strSrcFile = mSrcFileText->text();
     BIN binPart = {0,0};
 
@@ -795,6 +804,13 @@ void SignVerifyDlg::fileRun()
             ret = JS_PKI_verifyUpdate( sctx_, &binPart );
         }
 
+        if( ret != 0 )
+        {
+            berApplet->elog( QString( "fail to update sign or verify : %1").arg(ret));
+            break;
+        }
+
+        nUpdateCnt++;
         nReadSize += nRead;
         nPercent = ( nReadSize * 100 ) / fileSize;
 
@@ -817,6 +833,9 @@ void SignVerifyDlg::fileRun()
 
         if( ret == 0 )
         {
+            QString strStatus = QString( "|Update X %1").arg( nUpdateCnt );
+            appendStatusLabel( strStatus );
+
             signVerifyFinal();
         }
     }

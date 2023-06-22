@@ -90,6 +90,13 @@ void GenMacDlg::initialize()
     checkHMAC();
 }
 
+void GenMacDlg::appendStatusLabel( const QString strLabel )
+{
+    QString strStatus = mStatusLabel->text();
+    strStatus += strLabel;
+    mStatusLabel->setText( strStatus );
+}
+
 void GenMacDlg::freeCTX()
 {
     if( hctx_ )
@@ -227,7 +234,7 @@ void GenMacDlg::macUpdate()
 
     if( ret == 0 )
     {
-        mStatusLabel->setText( "Update OK" );
+        appendStatusLabel( "|Update OK" );
     }
     else
         mStatusLabel->setText( QString("Updata fail:%1").arg(ret) );
@@ -275,12 +282,9 @@ void GenMacDlg::macFinal()
     }
 
     if( ret == 0 )
-    {
-        char *pHex = NULL;
-        JS_BIN_encodeHex( &binMAC, &pHex );
-        mOutputText->setPlainText( pHex );
-        mStatusLabel->setText( "Final OK" );
-        JS_free( pHex );
+    {   
+        mOutputText->setPlainText( getHexString( &binMAC) );
+        appendStatusLabel( "|Final OK" );
 
         berApplet->log( QString( "Final Digest : %1" ).arg( getHexString( &binMAC )) );
     }
@@ -424,6 +428,7 @@ void GenMacDlg::clickMACSrcFile()
     int nLeft = 0;
     int nOffset = 0;
     int nPercent = 0;
+    int nUpdateCnt = 0;
     QString strSrcFile = mSrcFileText->text();
     BIN binPart = {0,0};
 
@@ -474,6 +479,13 @@ void GenMacDlg::clickMACSrcFile()
             ret = JS_PKI_encryptGCMUpdateAAD( hctx_, &binPart );
         }
 
+        if( ret != 0 )
+        {
+            berApplet->elog( QString( "fail to update mac : %1").arg(ret));
+            break;
+        }
+
+        nUpdateCnt++;
         nReadSize += nRead;
         nPercent = ( nReadSize * 100 ) / fileSize;
 
@@ -496,6 +508,9 @@ void GenMacDlg::clickMACSrcFile()
 
         if( ret == 0 )
         {
+            QString strStatus = QString( "|Update X %1").arg( nUpdateCnt );
+            appendStatusLabel( strStatus );
+
             macFinal();
         }
     }

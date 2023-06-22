@@ -58,6 +58,13 @@ void GenHashDlg::initialize()
     mInputTab->setCurrentIndex(0);
 }
 
+void GenHashDlg::appendStatusLabel( const QString& strLabel )
+{
+    QString strStatus = mStatusLabel->text();
+    strStatus += strLabel;
+    mStatusLabel->setText( strStatus );
+}
+
 int GenHashDlg::hashInit()
 {
     int ret = 0;
@@ -117,7 +124,7 @@ void GenHashDlg::hashUpdate()
     if( ret == 0 )
     {
         berApplet->log( QString( "Update Src : %1" ).arg( getHexString(&binSrc)));
-        mStatusLabel->setText( "Update OK" );
+        appendStatusLabel( "|Update OK" );
     }
     else
         mStatusLabel->setText( QString("Update fail:%1").arg(ret) );
@@ -134,11 +141,8 @@ void GenHashDlg::hashFinal()
     ret = JS_PKI_hashFinal( pctx_, &binMD );
     if( ret == 0 )
     {
-        char *pHex = NULL;
-        JS_BIN_encodeHex( &binMD, &pHex );
-        mOutputText->setPlainText( pHex );
-        mStatusLabel->setText( "Final OK" );
-        JS_free( pHex );
+        mOutputText->setPlainText( getHexString( &binMD) );
+        appendStatusLabel( "|Final OK" );
 
         berApplet->log( QString("Final Digest : %1").arg( getHexString(&binMD)));
     }
@@ -299,6 +303,8 @@ void GenHashDlg::clickDigestSrcFile()
     int nLeft = 0;
     int nOffset = 0;
     int nPercent = 0;
+    int nUpdateCnt = 0;
+
     QString strSrcFile = mSrcFileText->text();
     BIN binPart = {0,0};
 
@@ -339,6 +345,7 @@ void GenHashDlg::clickDigestSrcFile()
             break;
         }
 
+        nUpdateCnt++;
         nReadSize += nRead;
         nPercent = ( nReadSize * 100 ) / fileSize;
 
@@ -361,6 +368,8 @@ void GenHashDlg::clickDigestSrcFile()
 
         if( ret == 0 )
         {
+            QString strStatus = QString( "|Update X %1").arg( nUpdateCnt );
+            appendStatusLabel( strStatus );
             hashFinal();
         }
     }
