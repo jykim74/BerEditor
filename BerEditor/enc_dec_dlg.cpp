@@ -434,15 +434,15 @@ void EncDecDlg::fileRun()
             }
         }
 
-        if( mWriteLogCheck->isChecked() )
-        {
-            berApplet->log( QString( "Out[%1:%2] %3").arg( nOffset ).arg( binDst.nLen ).arg( getHexString(&binDst)));
-        }
-
         if( ret != 0 )
         {
             berApplet->elog( QString( "fail to update encrypt or decrypt : %1").arg(ret));
             break;
+        }
+
+        if( mWriteLogCheck->isChecked() )
+        {
+            berApplet->log( QString( "Out[%1:%2] %3").arg( nOffset ).arg( binDst.nLen ).arg( getHexString(&binDst)));
         }
 
         nUpdateCnt++;
