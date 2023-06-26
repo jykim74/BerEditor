@@ -105,6 +105,11 @@ void BerApplet::start()
     log( "======================================================");
 }
 
+void BerApplet::setCurFile( const QString& strFile )
+{
+    cur_file_ = strFile;
+}
+
 void BerApplet::decodeData( const BIN *pData, const QString strPath )
 {
     main_win_->decodeData( pData, strPath );
