@@ -24,8 +24,12 @@ private slots:
     void findCert();
     void algChanged(int index);
     void Run();
+
     void dataRun();
     void fileRun();
+
+    void digestRun();
+
     int signVerifyInit();
     void signVerifyUpdate();
     void signVerifyFinal();
@@ -48,6 +52,7 @@ private slots:
     void clickClearDataAll();
     void clickFindSrcFile();
 
+    void changeInputTab( int index );
 private:
     void initialize();
     void appendStatusLabel( const QString& strLabel );

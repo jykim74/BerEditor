@@ -76,6 +76,8 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickOutputClear()));
 
     connect( mFindSrcFileBtn, SIGNAL(clicked()), this, SLOT(clickFindSrcFile()));
+    connect( mDigestBtn, SIGNAL(clicked()), this, SLOT(digestRun()));
+    connect( mInputTab, SIGNAL(currentChanged(int)), this, SLOT(changeInputTab(int)));
 
     mCloseBtn->setFocus();
 }
@@ -841,6 +843,209 @@ end :
     JS_BIN_reset( &binPart );
 }
 
+void SignVerifyDlg::digestRun()
+{
+    int ret = 0;
+    BIN binSrc = {0,0};
+    BIN binPri = {0,0};
+    BIN binCert = {0,0};
+    BIN binPubKey = {0,0};
+    BIN binOut = {0,0};
+    int nVersion = 0;
+    char *pOut = NULL;
+    int nAlgType = 0;
+
+    QString strInput = mInputText->toPlainText();
+
+    if( strInput.isEmpty() )
+    {
+        berApplet->warningBox( tr( "You have to insert data"), this );
+        return;
+    }
+
+    if( mInputStringRadio->isChecked() )
+        JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
+    else if( mInputHexRadio->isChecked() )
+    {
+        strInput.remove(QRegExp("[\t\r\n\\s]"));
+        JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
+    }
+    else if( mInputBase64Radio->isChecked() )
+    {
+        strInput.remove(QRegExp("[\t\r\n\\s]"));
+        JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
+    }
+
+    if( mVersionCombo->currentIndex() == 0 )
+        nVersion = JS_PKI_RSA_PADDING_V15;
+    else {
+        nVersion = JS_PKI_RSA_PADDING_V21;
+    }
+
+    QString strHash = mHashTypeCombo->currentText();
+
+    berApplet->log( QString( "Algorithm : %1 Hash %2").arg( mAlgTypeCombo->currentText()).arg( strHash ));
+
+    if( mMethodCombo->currentIndex() == SIGN_SIGNATURE )
+    {
+        if( mPriKeyPath->text().isEmpty() )
+        {
+            berApplet->warningBox( tr( "You have to find private key" ), this );
+            goto end;
+        }
+
+        JS_BIN_fileReadBER( mPriKeyPath->text().toLocal8Bit().toStdString().c_str(), &binPri );
+
+        if( mUseKeyAlgCheck->isChecked() )
+        {
+            nAlgType = JS_PKI_getPriKeyType( &binPri );
+            berApplet->log( QString( "PriKey Type : %1").arg( getKeyTypeName( nAlgType )));
+
+            if( nAlgType == JS_PKI_KEY_TYPE_RSA )
+                mAlgTypeCombo->setCurrentText( "RSA" );
+            else if( nAlgType == JS_PKI_KEY_TYPE_ECC )
+                mAlgTypeCombo->setCurrentText( "ECDSA" );
+            else if( nAlgType == JS_PKI_KEY_TYPE_SM2 )
+                mAlgTypeCombo->setCurrentText( "SM2" );
+            else if( nAlgType == JS_PKI_KEY_TYPE_DSA )
+                mAlgTypeCombo->setCurrentText( "DSA" );
+            else if( nAlgType == JS_PKI_KEY_TYPE_ED25519 )
+                mAlgTypeCombo->setCurrentText( "Ed25519" );
+            else if( nAlgType == JS_PKI_KEY_TYPE_ED448 )
+                mAlgTypeCombo->setCurrentText( "Ed448" );
+        }
+
+        QString strAlg = mAlgTypeCombo->currentText();
+
+        if( strAlg == "RSA" )
+            nAlgType = JS_PKI_KEY_TYPE_RSA;
+        else if( strAlg == "ECDSA" )
+            nAlgType = JS_PKI_KEY_TYPE_ECC;
+        else if( strAlg == "SM2" )
+            nAlgType = JS_PKI_KEY_TYPE_SM2;
+        else if( strAlg == "DSA" )
+            nAlgType = JS_PKI_KEY_TYPE_DSA;
+        else if( strAlg == "Ed25519" || strAlg == "Ed448" )
+        {
+            nAlgType = JS_PKI_KEY_TYPE_ED25519;
+
+            if( strAlg == "Ed448" ) nAlgType = JS_PKI_KEY_TYPE_ED448;
+        }
+
+        ret = JS_PKI_SignDigest( nAlgType, strHash.toStdString().c_str(), &binSrc, &binPri, &binOut );
+        mOutputText->setPlainText(pOut);
+
+        berApplet->log( QString( "Algorithm        : %1" ).arg( mAlgTypeCombo->currentText() ));
+        berApplet->log( QString( "Sign Digest Src  : %1" ).arg(getHexString(&binSrc)));
+        berApplet->log( QString( "Sign Private Key : %1" ).arg(getHexString( &binPri )));
+        berApplet->log( QString( "Signature        : %1" ).arg( getHexString( &binOut )));
+
+        if( ret == 0 )
+            mStatusLabel->setText( "SignDigest OK" );
+        else
+            mStatusLabel->setText( QString("SignDigest Fail:%1").arg(ret));
+    }
+    else
+    {
+        if( mCertPath->text().isEmpty() )
+        {
+            berApplet->warningBox( tr( "You have to find certificate"), this );
+            goto end;
+        }
+
+        JS_BIN_fileReadBER( mCertPath->text().toLocal8Bit().toStdString().c_str(), &binCert );
+        JS_BIN_decodeHex( mOutputText->toPlainText().toStdString().c_str(), &binOut );
+
+        if( mAutoCertPubKeyCheck->isChecked() )
+        {
+            if( JS_PKI_isCert( &binCert ) == 0 )
+            {
+                mPubKeyVerifyCheck->setChecked(true);
+                JS_BIN_copy( &binPubKey, &binCert );
+            }
+            else
+            {
+                mPubKeyVerifyCheck->setChecked(false);
+                JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
+            }
+        }
+        else
+        {
+            if( mPubKeyVerifyCheck->isChecked() == false )
+                JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
+            else
+                JS_BIN_copy( &binPubKey, &binCert );
+        }
+
+        if( mUseKeyAlgCheck->isChecked() )
+        {
+            int id = JS_PKI_getPubKeyType( &binPubKey );
+            berApplet->log( QString( "PubKey Type : %1").arg( getKeyTypeName( id )));
+
+            if( id == JS_PKI_KEY_TYPE_RSA )
+                mAlgTypeCombo->setCurrentText( "RSA" );
+            else if( id == JS_PKI_KEY_TYPE_SM2 )
+                mAlgTypeCombo->setCurrentText( "SM2" );
+            else if( id == JS_PKI_KEY_TYPE_ECC )
+                mAlgTypeCombo->setCurrentText( "ECDSA" );
+            else if( id == JS_PKI_KEY_TYPE_DSA )
+                mAlgTypeCombo->setCurrentText( "DSA" );
+            else if( id == JS_PKI_KEY_TYPE_ED25519 )
+                mAlgTypeCombo->setCurrentText( "Ed25519" );
+            else if( id == JS_PKI_KEY_TYPE_ED448 )
+                mAlgTypeCombo->setCurrentText( "Ed448" );
+        }
+
+
+        QString strAlg = mAlgTypeCombo->currentText();
+
+        if( strAlg == "RSA" )
+            nAlgType = JS_PKI_KEY_TYPE_RSA;
+        else if( strAlg == "ECDSA" )
+            nAlgType = JS_PKI_KEY_TYPE_ECC;
+        else if( strAlg == "SM2" )
+            nAlgType = JS_PKI_KEY_TYPE_SM2;
+        else if( strAlg == "DSA" )
+            nAlgType = JS_PKI_KEY_TYPE_DSA;
+        else if( strAlg == "Ed25519" || strAlg == "Ed448" )
+        {
+            nAlgType = JS_PKI_KEY_TYPE_ED25519;
+
+            if( strAlg == "Ed448" ) nAlgType = JS_PKI_KEY_TYPE_ED448;
+        }
+
+        ret = JS_PKI_VerifyDigest( nAlgType, strHash.toStdString().c_str(), &binSrc, &binPubKey, &binOut );
+
+        berApplet->log( QString( "Algorithm         : %1" ).arg( mAlgTypeCombo->currentText() ));
+        berApplet->log( QString( "Verify Digest Src : %1" ).arg(getHexString(&binSrc)));
+        berApplet->log( QString( "Verify Public Key : %1" ).arg(getHexString( &binPubKey )));
+
+        if( ret == JS_VERIFY )
+        {
+            mStatusLabel->setText( "VerifyDigest OK" );
+        }
+        else
+            mStatusLabel->setText( QString("VerifyDigest Fail:%1").arg(ret) );
+
+        if( ret == JS_VERIFY )
+            berApplet->messageBox( tr("Verify Success"), this );
+        else {
+            berApplet->warningBox( tr("Verify Fail"), this );
+        }
+    }
+
+    repaint();
+end :
+
+    JS_BIN_reset( &binSrc );
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binOut );
+    JS_BIN_reset( &binPubKey );
+
+    if( pOut ) JS_free( pOut );
+}
+
 void SignVerifyDlg::inputChanged()
 {
     int nType = DATA_STRING;
@@ -862,9 +1067,15 @@ void SignVerifyDlg::outputChanged()
 void SignVerifyDlg::changeMethod( int index )
 {
     if( index == 0 )
+    {
         mRunBtn->setText( tr( "Sign" ));
+        mDigestBtn->setText( tr( "SignDigest" ));
+    }
     else
+    {
         mRunBtn->setText( tr( "Verify"));
+        mDigestBtn->setText( tr( "VerifyDigest" ));
+    }
 }
 
 void SignVerifyDlg::clickInputClear()
@@ -1034,3 +1245,10 @@ void SignVerifyDlg::clickFindSrcFile()
     }
 }
 
+void SignVerifyDlg::changeInputTab( int index )
+{
+    if( index == 0 )
+        mDigestBtn->setEnabled(true);
+    else
+        mDigestBtn->setEnabled(false);
+}

@@ -95,29 +95,29 @@ mailto : jykim74@gmail.com</translation>
 <context>
     <name>BerApplet</name>
     <message>
-        <location filename="../ber_applet.cpp" line="175"/>
-        <location filename="../ber_applet.cpp" line="205"/>
+        <location filename="../ber_applet.cpp" line="180"/>
+        <location filename="../ber_applet.cpp" line="210"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="216"/>
-        <location filename="../ber_applet.cpp" line="230"/>
-        <location filename="../ber_applet.cpp" line="246"/>
-        <location filename="../ber_applet.cpp" line="270"/>
+        <location filename="../ber_applet.cpp" line="221"/>
+        <location filename="../ber_applet.cpp" line="235"/>
+        <location filename="../ber_applet.cpp" line="251"/>
+        <location filename="../ber_applet.cpp" line="275"/>
         <source>Yes</source>
         <translation>예</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="217"/>
-        <location filename="../ber_applet.cpp" line="247"/>
-        <location filename="../ber_applet.cpp" line="271"/>
+        <location filename="../ber_applet.cpp" line="222"/>
+        <location filename="../ber_applet.cpp" line="252"/>
+        <location filename="../ber_applet.cpp" line="276"/>
         <source>No</source>
         <translation>아니오</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="231"/>
-        <location filename="../ber_applet.cpp" line="248"/>
+        <location filename="../ber_applet.cpp" line="236"/>
+        <location filename="../ber_applet.cpp" line="253"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
@@ -220,8 +220,8 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../cavp_dlg.ui" line="762"/>
         <location filename="../cavp_dlg.ui" line="840"/>
         <location filename="../cavp_dlg.ui" line="954"/>
-        <location filename="../cavp_dlg.ui" line="1230"/>
-        <location filename="../cavp_dlg.ui" line="1382"/>
+        <location filename="../cavp_dlg.ui" line="1838"/>
+        <location filename="../cavp_dlg.ui" line="2208"/>
         <source>Algorithm</source>
         <translation>알고리즘</translation>
     </message>
@@ -255,9 +255,9 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../cavp_dlg.ui" line="620"/>
         <location filename="../cavp_dlg.ui" line="706"/>
         <location filename="../cavp_dlg.ui" line="853"/>
-        <location filename="../cavp_dlg.ui" line="1131"/>
-        <location filename="../cavp_dlg.ui" line="1290"/>
-        <location filename="../cavp_dlg.ui" line="1649"/>
+        <location filename="../cavp_dlg.ui" line="1699"/>
+        <location filename="../cavp_dlg.ui" line="2116"/>
+        <location filename="../cavp_dlg.ui" line="2855"/>
         <source>Run</source>
         <translation>실행</translation>
     </message>
@@ -321,14 +321,14 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../cavp_dlg.ui" line="755"/>
-        <location filename="../cavp_dlg.ui" line="1333"/>
-        <location filename="../cavp_dlg.ui" line="1339"/>
+        <location filename="../cavp_dlg.ui" line="2159"/>
+        <location filename="../cavp_dlg.ui" line="2165"/>
         <source>DRBG</source>
         <translation>DRBG</translation>
     </message>
     <message>
         <location filename="../cavp_dlg.ui" line="693"/>
-        <location filename="../cavp_dlg.ui" line="1368"/>
+        <location filename="../cavp_dlg.ui" line="2194"/>
         <source>Use DF</source>
         <translation>DF 사용</translation>
     </message>
@@ -344,7 +344,7 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../cavp_dlg.ui" line="748"/>
-        <location filename="../cavp_dlg.ui" line="1375"/>
+        <location filename="../cavp_dlg.ui" line="2201"/>
         <source>Use PR</source>
         <translation>PR 사용</translation>
     </message>
@@ -394,86 +394,86 @@ mailto : jykim74@gmail.com</translation>
         <translation>IV</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.ui" line="1002"/>
+        <location filename="../cavp_dlg.ui" line="1042"/>
         <source>Last IV</source>
         <translation>마지막 IV</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.ui" line="1009"/>
-        <location filename="../cavp_dlg.ui" line="1203"/>
+        <location filename="../cavp_dlg.ui" line="1049"/>
+        <location filename="../cavp_dlg.ui" line="1811"/>
         <source>Count</source>
         <translation>카운트</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.ui" line="1016"/>
+        <location filename="../cavp_dlg.ui" line="1056"/>
         <source>Last CT</source>
         <translation>마지막 CT</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.ui" line="1138"/>
-        <location filename="../cavp_dlg.ui" line="1283"/>
-        <location filename="../cavp_dlg.ui" line="1656"/>
+        <location filename="../cavp_dlg.ui" line="1706"/>
+        <location filename="../cavp_dlg.ui" line="2109"/>
+        <location filename="../cavp_dlg.ui" line="2862"/>
         <source>Clear</source>
         <translation>지우기</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.ui" line="1167"/>
+        <location filename="../cavp_dlg.ui" line="1735"/>
         <source>Hash MCT</source>
         <translation>해쉬 MCT</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.ui" line="1189"/>
+        <location filename="../cavp_dlg.ui" line="1797"/>
         <source>Seed</source>
         <translation>Seed</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.ui" line="1196"/>
+        <location filename="../cavp_dlg.ui" line="1804"/>
         <source>First MD</source>
         <translation>첫번째 MD</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.ui" line="1223"/>
+        <location filename="../cavp_dlg.ui" line="1831"/>
         <source>Last MD</source>
         <translation>마지막 MD</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.ui" line="1389"/>
+        <location filename="../cavp_dlg.ui" line="2215"/>
         <source>Rand Len</source>
         <translation>랜덤 길이</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.ui" line="1420"/>
-        <location filename="../cavp_dlg.ui" line="1434"/>
+        <location filename="../cavp_dlg.ui" line="2246"/>
+        <location filename="../cavp_dlg.ui" line="2260"/>
         <source>AdditionalInput</source>
         <translation>AdditionalInput</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.ui" line="1427"/>
+        <location filename="../cavp_dlg.ui" line="2253"/>
         <source>EntropyInputReseed</source>
         <translation>EntropyInputReseed</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.ui" line="1441"/>
+        <location filename="../cavp_dlg.ui" line="2267"/>
         <source>EntropyInput</source>
         <translation>EntropyInput</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.ui" line="1448"/>
+        <location filename="../cavp_dlg.ui" line="2274"/>
         <source>Nonce</source>
         <translation>Nonce</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.ui" line="1455"/>
+        <location filename="../cavp_dlg.ui" line="2281"/>
         <source>PersonalString</source>
         <translation>PersonalString</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.ui" line="1471"/>
+        <location filename="../cavp_dlg.ui" line="2315"/>
         <source>AdditionalInputReseed</source>
         <translation>AdditionalInputReseed</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.ui" line="1592"/>
+        <location filename="../cavp_dlg.ui" line="2719"/>
         <source>ReturnedBits</source>
         <translation>ReturnedBits</translation>
     </message>
@@ -4075,7 +4075,7 @@ Do you want to delete the file and continue?</source>
         <translation>결합 데이타</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="359"/>
+        <location filename="../sss_dlg.ui" line="401"/>
         <source>Clear Data All</source>
         <translation>전체 데이타 지우기</translation>
     </message>
@@ -4102,7 +4102,7 @@ Do you want to delete the file and continue?</source>
         <translation>나누기</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="352"/>
+        <location filename="../sss_dlg.ui" line="394"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -4320,12 +4320,17 @@ Do you want to delete the file and continue?</source>
         <translation>상태</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.ui" line="951"/>
+        <location filename="../sign_verify_dlg.ui" line="938"/>
         <source>Output Clear</source>
         <translation>결과 지우기</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.ui" line="972"/>
+        <location filename="../sign_verify_dlg.ui" line="970"/>
+        <source>Sign Digest</source>
+        <translation>Sign Digest</translation>
+    </message>
+    <message>
+        <location filename="../sign_verify_dlg.ui" line="991"/>
         <source>Clear Data All</source>
         <translation>전체 데이타 지우기</translation>
     </message>
@@ -4351,7 +4356,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">실행</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.ui" line="979"/>
+        <location filename="../sign_verify_dlg.ui" line="998"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -4372,7 +4377,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../sign_verify_dlg.ui" line="931"/>
-        <location filename="../sign_verify_dlg.cpp" line="865"/>
+        <location filename="../sign_verify_dlg.cpp" line="1071"/>
         <source>Sign</source>
         <translation>서명</translation>
     </message>
@@ -4398,14 +4403,14 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../sign_verify_dlg.ui" line="614"/>
-        <location filename="../sign_verify_dlg.cpp" line="126"/>
+        <location filename="../sign_verify_dlg.cpp" line="128"/>
         <source>Private key and Certificate</source>
         <translation>개인키 및 인증서</translation>
     </message>
     <message>
         <location filename="../sign_verify_dlg.ui" line="707"/>
-        <location filename="../sign_verify_dlg.cpp" line="125"/>
-        <location filename="../sign_verify_dlg.cpp" line="972"/>
+        <location filename="../sign_verify_dlg.cpp" line="127"/>
+        <location filename="../sign_verify_dlg.cpp" line="1183"/>
         <source>Certificate</source>
         <translation>인증서</translation>
     </message>
@@ -4428,8 +4433,8 @@ Do you want to delete the file and continue?</source>
         <translation>개인 키</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="119"/>
-        <location filename="../sign_verify_dlg.cpp" line="977"/>
+        <location filename="../sign_verify_dlg.cpp" line="121"/>
+        <location filename="../sign_verify_dlg.cpp" line="1188"/>
         <source>Public Key</source>
         <translation>공개 키</translation>
     </message>
@@ -4438,7 +4443,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">속성 및 방식</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="120"/>
+        <location filename="../sign_verify_dlg.cpp" line="122"/>
         <source>Private key and Public key</source>
         <translation>개인키 및 공개키</translation>
     </message>
@@ -4451,8 +4456,9 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">모든 파일(*);;DER 파일(*.der)</translation>
     </message>
     <message>
+        <location filename="../sign_verify_dlg.cpp" line="862"/>
         <source>You have to insert data</source>
-        <translation type="vanished">데이타를 입력 하세요</translation>
+        <translation>데이타를 입력 하세요</translation>
     </message>
     <message>
         <source>Private Key File</source>
@@ -4471,57 +4477,69 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">인증서 파일 (*.crt);; DER 파일 (*.der);;모든 파일 (*.*)</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="184"/>
+        <location filename="../sign_verify_dlg.cpp" line="186"/>
         <source>KeyPair is good</source>
         <translation>키쌍이 유효합니다</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="186"/>
+        <location filename="../sign_verify_dlg.cpp" line="188"/>
         <source>Invalid key pair: %1</source>
         <translation>키쌍이 맞지 않습니다:%1</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="282"/>
-        <location filename="../sign_verify_dlg.cpp" line="569"/>
-        <location filename="../sign_verify_dlg.cpp" line="938"/>
+        <location filename="../sign_verify_dlg.cpp" line="284"/>
+        <location filename="../sign_verify_dlg.cpp" line="571"/>
+        <location filename="../sign_verify_dlg.cpp" line="893"/>
+        <location filename="../sign_verify_dlg.cpp" line="1149"/>
         <source>You have to find private key</source>
         <translation>개인키를 선택하세요.</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="330"/>
-        <location filename="../sign_verify_dlg.cpp" line="634"/>
-        <location filename="../sign_verify_dlg.cpp" line="903"/>
+        <location filename="../sign_verify_dlg.cpp" line="332"/>
+        <location filename="../sign_verify_dlg.cpp" line="636"/>
+        <location filename="../sign_verify_dlg.cpp" line="952"/>
+        <location filename="../sign_verify_dlg.cpp" line="1114"/>
         <source>You have to find certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="751"/>
+        <location filename="../sign_verify_dlg.cpp" line="753"/>
         <source>You have to find src file</source>
         <translation>소스 파일을 선택 하세요</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="867"/>
+        <location filename="../sign_verify_dlg.cpp" line="1072"/>
+        <source>SignDigest</source>
+        <translation>SignDigest</translation>
+    </message>
+    <message>
+        <location filename="../sign_verify_dlg.cpp" line="1076"/>
         <source>Verify</source>
         <translation>검증</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="889"/>
-        <location filename="../sign_verify_dlg.cpp" line="921"/>
+        <location filename="../sign_verify_dlg.cpp" line="1077"/>
+        <source>VerifyDigest</source>
+        <translation>VerifyDigest</translation>
+    </message>
+    <message>
+        <location filename="../sign_verify_dlg.cpp" line="1100"/>
+        <location filename="../sign_verify_dlg.cpp" line="1132"/>
         <source>fail to read data</source>
         <translation>데이타 읽기 실패</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="946"/>
+        <location filename="../sign_verify_dlg.cpp" line="1157"/>
         <source>Private Key Type is %1</source>
         <translation>개인키 타입은 %1 이다</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="963"/>
+        <location filename="../sign_verify_dlg.cpp" line="1174"/>
         <source>You have to find certificate or public key</source>
         <translation>인증서 또는 공개키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="982"/>
+        <location filename="../sign_verify_dlg.cpp" line="1193"/>
         <source>%1 Type is %2</source>
         <translation>%1 타입은 %2 이다</translation>
     </message>
@@ -4530,14 +4548,16 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">공개키를 선택하세요.</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="492"/>
-        <location filename="../sign_verify_dlg.cpp" line="716"/>
+        <location filename="../sign_verify_dlg.cpp" line="494"/>
+        <location filename="../sign_verify_dlg.cpp" line="718"/>
+        <location filename="../sign_verify_dlg.cpp" line="1031"/>
         <source>Verify Success</source>
         <translation>검증 성공</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="494"/>
-        <location filename="../sign_verify_dlg.cpp" line="718"/>
+        <location filename="../sign_verify_dlg.cpp" line="496"/>
+        <location filename="../sign_verify_dlg.cpp" line="720"/>
+        <location filename="../sign_verify_dlg.cpp" line="1033"/>
         <source>Verify Fail</source>
         <translation>검증 실패</translation>
     </message>
