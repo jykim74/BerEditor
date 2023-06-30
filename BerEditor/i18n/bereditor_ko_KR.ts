@@ -95,29 +95,29 @@ mailto : jykim74@gmail.com</translation>
 <context>
     <name>BerApplet</name>
     <message>
-        <location filename="../ber_applet.cpp" line="180"/>
-        <location filename="../ber_applet.cpp" line="210"/>
+        <location filename="../ber_applet.cpp" line="152"/>
+        <location filename="../ber_applet.cpp" line="182"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="221"/>
-        <location filename="../ber_applet.cpp" line="235"/>
-        <location filename="../ber_applet.cpp" line="251"/>
-        <location filename="../ber_applet.cpp" line="275"/>
+        <location filename="../ber_applet.cpp" line="193"/>
+        <location filename="../ber_applet.cpp" line="207"/>
+        <location filename="../ber_applet.cpp" line="223"/>
+        <location filename="../ber_applet.cpp" line="247"/>
         <source>Yes</source>
         <translation>예</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="222"/>
-        <location filename="../ber_applet.cpp" line="252"/>
-        <location filename="../ber_applet.cpp" line="276"/>
+        <location filename="../ber_applet.cpp" line="194"/>
+        <location filename="../ber_applet.cpp" line="224"/>
+        <location filename="../ber_applet.cpp" line="248"/>
         <source>No</source>
         <translation>아니오</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="236"/>
-        <location filename="../ber_applet.cpp" line="253"/>
+        <location filename="../ber_applet.cpp" line="208"/>
+        <location filename="../ber_applet.cpp" line="225"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
