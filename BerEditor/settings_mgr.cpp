@@ -8,6 +8,7 @@ const char *kOIDConfigPath = "OIDConfigPath";
 const char *kShowLogTab = "showLogTab";
 const char *kDefaultHash = "defaultHash";
 const char *kFileReadSize = "fileReadSize";
+const char *kFontFamily = "fontFamily";
 }
 
 SettingsMgr::SettingsMgr(QObject *parent) : QObject(parent)
@@ -127,4 +128,23 @@ int SettingsMgr::getFileReadSize()
     sets.endGroup();
 
     return file_read_size_;
+}
+
+void SettingsMgr::setFontFamily( const QString& strFamily )
+{
+    QSettings sets;
+    sets.beginGroup( kBehaviorGroup );
+    sets.setValue( kFontFamily, strFamily );
+    sets.endGroup();
+}
+
+QString SettingsMgr::getFontFamily()
+{
+    QSettings sets;
+
+    sets.beginGroup( kBehaviorGroup );
+    QString strFamily = sets.value( kFontFamily, "굴림체" ).toString();
+    sets.endGroup();
+
+    return strFamily;
 }

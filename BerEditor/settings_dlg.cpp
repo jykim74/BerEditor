@@ -35,6 +35,8 @@ void SettingsDlg::initialize()
 {
     QIntValidator *intVal = new QIntValidator( 0, 999999 );
     mFileReadSizeText->setValidator( intVal );
+
+    initFontFamily();
 }
 
 void SettingsDlg::updateSettings()
@@ -74,6 +76,8 @@ void SettingsDlg::updateSettings()
 
     mgr->setShowLogTab( mShowLogTabCheck->checkState() == Qt::Checked );
     berApplet->mainWindow()->logView( mShowLogTabCheck->checkState() == Qt::Checked );
+
+    mgr->setFontFamily( mFontFamilyCombo->currentText());
 }
 
 void SettingsDlg::onOkBtnClicked()
@@ -135,6 +139,17 @@ void SettingsDlg::showEvent(QShowEvent *event)
     mDefaultHashCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
 
     mLangComboBox->setCurrentIndex(I18NHelper::getInstance()->preferredLanguage());
+    mFontFamilyCombo->setCurrentText( mgr->getFontFamily() );
+
 
     QDialog::showEvent(event);
+}
+
+void SettingsDlg::initFontFamily()
+{
+    SettingsMgr *mgr = berApplet->settingsMgr();
+
+    QFontDatabase fontDB;
+    QStringList fontList = fontDB.families();
+    mFontFamilyCombo->addItems( fontList );
 }

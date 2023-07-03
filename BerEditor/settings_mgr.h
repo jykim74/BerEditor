@@ -27,6 +27,9 @@ public:
     void setFileReadSize( int size );
     int getFileReadSize();
     int fileReadSize() { return file_read_size_; };
+
+    void setFontFamily( const QString& strFamily );
+    QString getFontFamily();
 signals:
 
 private:

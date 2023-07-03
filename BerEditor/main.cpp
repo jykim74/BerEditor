@@ -7,6 +7,7 @@
 #include "i18n_helper.h"
 #include "cert_info_dlg.h"
 #include "crl_info_dlg.h"
+#include "settings_mgr.h"
 
 
 int main(int argc, char *argv[])
@@ -23,11 +24,7 @@ int main(int argc, char *argv[])
     qss.open( QFile::ReadOnly );
     app.setStyleSheet(qss.readAll());
 
-#ifdef Q_OS_WIN32
-    QFont font;
-    font.setFamily(QString("굴림체"));
-    app.setFont(font);
-#endif
+
 
     QCommandLineParser parser;
     parser.setApplicationDescription( QCoreApplication::applicationName());
@@ -40,15 +37,18 @@ int main(int argc, char *argv[])
     qDebug( "command : %s\n", argv[0] );
 
 
-
     I18NHelper::getInstance()->init();
 
     BerApplet mApplet;
     mApplet.setCmd( argv[0] );
     berApplet = &mApplet;
-
     berApplet->start();
 
+    QFont font;
+    QString strFont = berApplet->settingsMgr()->getFontFamily();
+
+    font.setFamily( strFont );
+    app.setFont(font);
 
     MainWindow *mw = berApplet->mainWindow();
     if( !parser.positionalArguments().isEmpty() )

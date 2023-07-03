@@ -26,8 +26,11 @@ private slots:
     void closeEvent(QCloseEvent *event );
     void showEvent(QShowEvent *event);
 
+
+
 private:
     void initialize();
+    void initFontFamily();
 //    Ui::SettingsDlg *ui;
     Q_DISABLE_COPY(SettingsDlg);
 };
