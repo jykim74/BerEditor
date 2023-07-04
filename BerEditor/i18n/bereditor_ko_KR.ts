@@ -4144,7 +4144,7 @@ Do you want to delete the file and continue?</source>
         <translation>기본</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="47"/>
+        <location filename="../settings_dlg.ui" line="102"/>
         <source>Check for updates automatically</source>
         <translation>자동 업데이트 확인</translation>
     </message>
@@ -4157,62 +4157,72 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">열기 폴더 저장하기</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="54"/>
+        <location filename="../settings_dlg.ui" line="109"/>
         <source>Show selected data only in body</source>
         <translation>선택 한 데이타 부분 만 보여주기</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="61"/>
+        <location filename="../settings_dlg.ui" line="116"/>
         <source>Show log view tab at startup</source>
         <translation>시작 시 로그 탭 보여주기</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="88"/>
+        <location filename="../settings_dlg.ui" line="69"/>
         <source>Default Hash</source>
         <translation>초기 해쉬</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="114"/>
+        <location filename="../settings_dlg.ui" line="142"/>
+        <source>Font Family</source>
+        <translation>폰트 패밀리</translation>
+    </message>
+    <message>
+        <location filename="../settings_dlg.ui" line="159"/>
+        <source>Need to restart</source>
+        <translation>재 실행 필요함</translation>
+    </message>
+    <message>
+        <location filename="../settings_dlg.ui" line="169"/>
         <source>Advanced</source>
         <translation>고급</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="131"/>
+        <location filename="../settings_dlg.ui" line="186"/>
         <source>OID Config File</source>
         <translation>OID 설정 파일</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="141"/>
+        <location filename="../settings_dlg.ui" line="196"/>
         <source>Find</source>
         <translation>찾기</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="152"/>
+        <location filename="../settings_dlg.ui" line="207"/>
         <source>Language (need restart)</source>
         <translation>언어(재시동 필요함)</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="195"/>
+        <location filename="../settings_dlg.ui" line="250"/>
         <source>The size of the file to be read at one time</source>
         <translation>한 번에 읽을 수 있는 파일의 크기</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="214"/>
+        <location filename="../settings_dlg.ui" line="269"/>
         <source>File Read Size</source>
         <translation>파일 읽기 크기</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="252"/>
+        <location filename="../settings_dlg.ui" line="307"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="245"/>
+        <location filename="../settings_dlg.ui" line="300"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.cpp" line="70"/>
+        <location filename="../settings_dlg.cpp" line="72"/>
         <source>You have changed language. Restart to apply it?</source>
         <translation>언어를 변경 하였습니다. 적용을 위해 다시 시작 할까요?</translation>
     </message>
