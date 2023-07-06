@@ -12,6 +12,7 @@
 #include "ber_applet.h"
 #include "mainwindow.h"
 #include "common.h"
+#include "settings_mgr.h"
 
 const QStringList kSymAlgList = { "AES", "ARIA", "SEED", "SM4" };
 const QStringList kSymModeList = { "ECB", "CBC", "CTR", "CFB", "OFB" };
@@ -109,6 +110,8 @@ CAVPDlg::~CAVPDlg()
 
 void CAVPDlg::initialize()
 {
+    SettingsMgr* setMgr = berApplet->settingsMgr();
+
     tabWidget->setCurrentIndex(0);
 
     mSymAlgCombo->addItems( kSymAlgList );
@@ -121,8 +124,10 @@ void CAVPDlg::initialize()
 
     mHashAlgCombo->addItems( kHashAlgList );
     mHashTypeCombo->addItems( kHashTypeList );
+    mHashAlgCombo->setCurrentText( setMgr->defaultHash() );
 
     mHMACHashCombo->addItems( kHashAlgList );
+    mHMACHashCombo->setCurrentText( setMgr->defaultHash() );
 
     mSymMCTAlgCombo->addItems( kSymAlgList );
     mSymMCTModeCombo->addItems( kSymModeList );
