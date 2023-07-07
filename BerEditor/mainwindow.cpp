@@ -157,7 +157,12 @@ void MainWindow::initialize()
 #endif
 
     hsplitter_->setSizes(sizes);
+
+#ifdef Q_OS_MAC
+    resize( 1040, 780 );
+#else
     resize( 1010, 760 );
+#endif
 
     setCentralWidget(hsplitter_);
     createTableMenu();
