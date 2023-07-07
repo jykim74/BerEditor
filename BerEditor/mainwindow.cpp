@@ -573,32 +573,23 @@ void MainWindow::insertData()
 
     if( ret == QDialog::Accepted )
     {
+        int nType = DATA_HEX;
         QString strInput = insData.getTextData();
-        strInput.remove(QRegExp("[\t\r\n\\s]"));
-
 
         if( insData.GetType() == 0 )
-            JS_BIN_decodeHex( strInput.toStdString().c_str(), &binData );
-        else if( insData.GetType() == 1 )
-            JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binData );
-
-        ber_model_->setBer(&binData);
-        JS_BIN_reset(&binData);
-
-        ber_model_->parseTree();
-
-        left_tree_->header()->setVisible(false);
-        left_tree_->viewRoot();
-
-        if( berApplet->isLicense() )
         {
-            left_tree_->showTextView();
-            left_tree_->showXMLView();
+            nType = DATA_HEX;
+        }
+        else if( insData.GetType() == 1 )
+        {
+            nType = DATA_BASE64;
         }
 
-        setTitle( QString("Unknown" ));
+        getBINFromString( &binData, nType, strInput );
+        decodeData( &binData, "Unknown" );
     }
 
+    JS_BIN_reset( &binData );
 }
 
 void MainWindow::numTrans()
