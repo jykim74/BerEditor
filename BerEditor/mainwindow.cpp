@@ -102,15 +102,17 @@ void MainWindow::initialize()
 
     log_text_ = new QTextEdit();
     log_text_->setReadOnly(true);
-    log_text_->setFont( QFont("굴림체") );
 
     info_text_ = new QTextEdit;
     info_text_->setReadOnly(true);
-    info_text_->setFont( QFont("굴림체" ));
 
 
     right_table_ = new QTableWidget;
     right_table_->setEditTriggers(QAbstractItemView::NoEditTriggers);
+ //   right_table_->setSelectionMode( QAbstractItemView::ExtendedSelection );
+    right_table_->setSelectionMode(QAbstractItemView::MultiSelection);
+    right_table_->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect( right_table_, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(rightTableCustomMenu(const QPoint&)));
 
     ber_model_ = new BerModel(this);
 
@@ -127,11 +129,11 @@ void MainWindow::initialize()
     {
         right_xml_ = new QTextEdit;
         right_xml_->setReadOnly(true);
-        right_xml_->setFont( QFont("굴림체") );
+
         table_tab_->addTab( right_xml_, tr( "XML" ));
         right_text_ = new QTextEdit;
         right_text_->setReadOnly(true);
-        right_text_->setFont( QFont("굴림체") );
+
         table_tab_->addTab( right_text_, tr( "Text" ));
     }
 
@@ -155,7 +157,7 @@ void MainWindow::initialize()
 #endif
 
     hsplitter_->setSizes(sizes);
-    resize( 1040, 780 );
+    resize( 1010, 760 );
 
     setCentralWidget(hsplitter_);
     createTableMenu();
@@ -175,6 +177,8 @@ void MainWindow::createTableMenu()
 
     for( int i=1; i <= 16; i++ )
         right_table_->setColumnWidth(i, 30);
+
+    right_table_->setColumnWidth( 17, 100 );
 
     right_table_->setHorizontalHeaderLabels( labels );
     right_table_->verticalHeader()->setVisible(false);
@@ -967,6 +971,76 @@ void MainWindow::closeEvent(QCloseEvent *event)
     }
 
     exit(0);
+}
+
+void MainWindow::rightTableCustomMenu( const QPoint& pos )
+{
+    QMenu *menu = new QMenu(this);
+
+    QAction *copyAct = new QAction( tr("Copy" ), this );
+    connect( copyAct, SIGNAL(triggered()), this, SLOT(rightTableCopy()));
+
+    QAction *selAllAct = new QAction( tr("Select All"), this );
+    connect( selAllAct, SIGNAL(triggered()), this, SLOT(rightTableSelectAll()));
+
+    QAction *unSelAllAct = new QAction( tr( "Unselect All" ), this );
+    connect( unSelAllAct, SIGNAL(triggered()), this, SLOT(rightTableUnselectAll()));
+
+    menu->addAction( copyAct );
+    menu->addAction( selAllAct );
+    menu->addAction( unSelAllAct );
+
+    menu->popup(right_table_->viewport()->mapToGlobal(pos));
+}
+
+bool rowColSort( const QTableWidgetItem* item1, const QTableWidgetItem* item2 )
+{
+    int row1 = 0;
+    int row2 = 0;
+
+    row1 = item1->row();
+    row2 = item2->row();
+
+    if( row1 != row2 )
+        return ( row1 < row2 );
+    else
+    {
+        int col1 = item1->column();
+        int col2 = item2->column();
+
+        return ( col1 < col2 );
+    }
+}
+
+void MainWindow::rightTableCopy()
+{
+    QString strText;
+    QList<QTableWidgetItem *> items = right_table_->selectedItems();
+
+    qSort( items.begin(), items.end(), rowColSort );
+
+    for( int i = 0; i < items.size(); i++ )
+    {
+        QString strHex = items.at(i)->text();
+        strText += strHex;
+    }
+
+    QClipboard *clipboard = QGuiApplication::clipboard();
+    clipboard->setText( strText );
+
+    berApplet->log( QString("Copy Data:%1").arg( strText ));
+}
+
+void MainWindow::rightTableSelectAll()
+{
+//    right_table_->selectAll();
+    for( int i = 1; i <= 16; i++ )
+        right_table_->selectColumn(i);
+}
+
+void MainWindow::rightTableUnselectAll()
+{
+    right_table_->clearSelection();
 }
 
 void MainWindow::save()

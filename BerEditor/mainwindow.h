@@ -100,6 +100,11 @@ private slots:
     virtual void dropEvent(QDropEvent *event );
     void closeEvent(QCloseEvent *event);
 
+    void rightTableCustomMenu( const QPoint& pos );
+    void rightTableCopy();
+    void rightTableSelectAll();
+    void rightTableUnselectAll();
+
 private:
  //   Ui::MainWindow *ui;
     void createActions();
