@@ -562,9 +562,8 @@ void KeyAgreeDlg::genAECDHPubKey()
 void KeyAgreeDlg::findAECDHPriKey()
 {
     BIN binECKey = {0,0};
-    BIN binOID = {0,0};
     JECKeyVal sECKeyVal;
-    char        sTextOID[1024];
+
     const char  *pSN = NULL;
 
     memset( &sECKeyVal, 0x00, sizeof(sECKeyVal));
@@ -577,9 +576,7 @@ void KeyAgreeDlg::findAECDHPriKey()
 
     JS_BIN_fileRead( fileName.toLocal8Bit().toStdString().c_str(), &binECKey );
     JS_PKI_getECKeyVal( &binECKey, &sECKeyVal );
-    JS_BIN_decodeHex( sECKeyVal.pGroup, &binOID );
-    JS_PKI_getStringFromOID( &binOID, sTextOID );
-    pSN = JS_PKI_getSNFromOID( sTextOID );
+    pSN = JS_PKI_getSNFromOID( sECKeyVal.pCurveOID );
 
     strPub += sECKeyVal.pPubX;
     strPub += sECKeyVal.pPubY;
@@ -633,9 +630,8 @@ void KeyAgreeDlg::genBECDHPubKey()
 void KeyAgreeDlg::findBECDHPriKey()
 {
     BIN binECKey = {0,0};
-    BIN binOID = {0,0};
     JECKeyVal sECKeyVal;
-    char        sTextOID[1024];
+
     const char  *pSN = NULL;
 
     memset( &sECKeyVal, 0x00, sizeof(sECKeyVal));
@@ -648,9 +644,7 @@ void KeyAgreeDlg::findBECDHPriKey()
 
     JS_BIN_fileRead( fileName.toLocal8Bit().toStdString().c_str(), &binECKey );
     JS_PKI_getECKeyVal( &binECKey, &sECKeyVal );
-    JS_BIN_decodeHex( sECKeyVal.pGroup, &binOID );
-    JS_PKI_getStringFromOID( &binOID, sTextOID );
-    pSN = JS_PKI_getSNFromOID( sTextOID );
+    pSN = JS_PKI_getSNFromOID( sECKeyVal.pCurveOID );
 
     strPub += sECKeyVal.pPubX;
     strPub += sECKeyVal.pPubY;
