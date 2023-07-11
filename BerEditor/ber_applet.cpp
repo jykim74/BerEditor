@@ -105,6 +105,17 @@ void BerApplet::start()
     log( "======================================================");
 }
 
+QString BerApplet::curFolder()
+{
+    if( cur_file_.length() < 1 ) return ".";
+
+    QFileInfo file;
+    file.setFile( cur_file_ );
+    QDir folder = file.dir();
+
+    return folder.path();
+}
+
 void BerApplet::setCurFile( const QString& strFile )
 {
     cur_file_ = strFile;
