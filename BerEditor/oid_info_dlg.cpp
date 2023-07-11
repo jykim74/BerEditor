@@ -108,7 +108,7 @@ void OIDInfoDlg::findOID()
    }
 
    mOIDText->setText( sOID );
-   JS_PKI_getOIDFromString( sOID, &binOID );
+   JS_PKI_getOIDValueFromString( sOID, &binOID );
    JS_BIN_encodeHex( &binOID, &pHex );
    mOIDHexText->setText( pHex );
    mSNText->setText( JS_PKI_getSNFromOID(sOID));
