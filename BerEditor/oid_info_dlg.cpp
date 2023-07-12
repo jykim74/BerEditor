@@ -29,6 +29,7 @@ OIDInfoDlg::OIDInfoDlg(QWidget *parent) :
     connect( mCreateBtn, SIGNAL(clicked()), this, SLOT(createOID()));
 
     mCloseBtn->setFocus();
+    mCreateBtn->hide();
 }
 
 OIDInfoDlg::~OIDInfoDlg()
