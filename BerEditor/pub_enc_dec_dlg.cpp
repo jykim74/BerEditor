@@ -66,6 +66,7 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
 
     connect( mPriKeyTypeBtn, SIGNAL(clicked()), this, SLOT(clickPriKeyType()));
     connect( mCertTypeBtn, SIGNAL(clicked()), this, SLOT(clickCertType()));
+    connect( mEncPrikeyCheck, SIGNAL(clicked()), this, SLOT(checkEncPriKey()));
 
     mCloseBtn->setFocus();
 }
@@ -90,6 +91,59 @@ void PubEncDecDlg::initialize()
 
     checkAutoCertOrPubKey();
     checkUseKeyAlg();
+    checkEncPriKey();
+}
+
+int PubEncDecDlg::readPrivateKey( BIN *pPriKey )
+{
+    int ret = 0;
+    BIN binData = {0,0};
+    BIN binDec = {0,0};
+    BIN binInfo = {0,0};
+
+    QString strPriPath = mPriKeyPath->text();
+
+    ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binData );
+    if( ret <= 0 )
+    {
+        berApplet->warningBox( tr( "fail to read private key: %1").arg( ret ), this );
+        return  -1;
+    }
+
+    if( mEncPrikeyCheck->isChecked() )
+    {
+        QString strPasswd = mPasswdText->text();
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "You have to insert password"), this );
+            ret = -1;
+            goto end;
+        }
+
+        ret = JS_PKI_decryptPrivateKey( strPasswd.toStdString().c_str(), &binData, &binInfo, &binDec );
+        if( ret != 0 )
+        {
+            berApplet->warningBox( tr( "fail to decrypt private key:%1").arg( ret ));
+            mPasswdText->setFocus();
+            ret = -1;
+            goto end;
+        }
+
+        JS_BIN_copy( pPriKey, &binDec );
+        ret = 0;
+    }
+    else
+    {
+        JS_BIN_copy( pPriKey, &binData );
+        ret = 0;
+    }
+
+end :
+    JS_BIN_reset( &binData );
+    JS_BIN_reset( &binDec );
+    JS_BIN_reset( &binInfo );
+
+    return ret;
 }
 
 void PubEncDecDlg::checkPubKeyEncrypt()
@@ -123,15 +177,10 @@ void PubEncDecDlg::clickCheckKeyPair()
     BIN binPri = {0,0};
     BIN binPub = {0,0};
     BIN binCert = {0,0};
-
-    QString strPriPath = mPriKeyPath->text();
     QString strCertPath = mCertPath->text();
 
-    if( strPriPath.length() < 1 )
-    {
-        berApplet->elog( "You have to find private key" );
-        return;
-    }
+    ret = readPrivateKey( &binPri );
+    if( ret != 0 ) return;
 
     if( strCertPath.length() < 1 )
     {
@@ -139,7 +188,6 @@ void PubEncDecDlg::clickCheckKeyPair()
         return;
     }
 
-    JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
     JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
 
     if( mAutoCertPubKeyCheck->isChecked() )
@@ -275,13 +323,8 @@ void PubEncDecDlg::Run()
         berApplet->log( QString( "Enc Output    : %1" ).arg( getHexString( &binOut )));
     }
     else {
-        if( mPriKeyPath->text().isEmpty() )
-        {
-            berApplet->warningBox( tr( "You have to find private key" ), this );
-            goto end;
-        }
-
-        JS_BIN_fileReadBER( mPriKeyPath->text().toLocal8Bit().toStdString().c_str(), &binPri );
+        ret = readPrivateKey( &binPri );
+        if( ret != 0 ) goto end;
 
         if( mUseKeyAlgCheck->isChecked() )
         {
@@ -463,17 +506,12 @@ void PubEncDecDlg::clickCertDecode()
 
 void PubEncDecDlg::clickPriKeyType()
 {
+    int ret = 0;
     BIN binPri = {0,0};
-    QString strPath = mPriKeyPath->text();
     int nType = -1;
 
-    if( strPath.length() < 1 )
-    {
-        berApplet->warningBox( tr( "You have to find private key" ), this );
-        return;
-    }
-
-    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    ret = readPrivateKey( &binPri );
+    if( ret != 0 ) goto end;
 
     nType = JS_PKI_getPriKeyType( &binPri );
 
@@ -534,4 +572,13 @@ void PubEncDecDlg::clickClearDataAll()
     mOutputText->clear();
     mPriKeyPath->clear();
     mCertPath->clear();
+    mPasswdText->clear();
+}
+
+void PubEncDecDlg::checkEncPriKey()
+{
+    bool bVal = mEncPrikeyCheck->isChecked();
+
+    mPasswdLabel->setEnabled(bVal);
+    mPasswdText->setEnabled(bVal);
 }

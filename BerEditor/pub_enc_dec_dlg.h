@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "ui_pub_enc_dec_dlg.h"
+#include "js_bin.h"
 
 namespace Ui {
 class PubEncDecDlg;
@@ -38,9 +39,11 @@ private slots:
 
     void checkUseKeyAlg();
     void clickClearDataAll();
+    void checkEncPriKey();
 
 private:
     void initialize();
+    int readPrivateKey( BIN *pPriKey );
     QString last_path_;
 
 };
