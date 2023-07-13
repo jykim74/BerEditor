@@ -735,10 +735,15 @@ static int _getAltName( const BIN *pBinExt, int nNid, bool bShow, QString& strVa
             strType = "URI";
         else if( pCurList->sNumVal.nNum == JS_PKI_NAME_TYPE_EMAIL )
             strType = "Email";
+        else if( pCurList->sNumVal.nNum == JS_PKI_NAME_TYPE_OTHERNAME )
+            strType = "Other Name";
 
         if( bShow )
         {
-            strVal += QString( "%1=%2\n" ).arg( strType ).arg( pCurList->sNumVal.pValue );
+            if( pCurList->sNumVal.nNum == JS_PKI_NAME_TYPE_OTHERNAME )
+                strVal += QString( "%1:\n %2").arg( strType ).arg( pCurList->sNumVal.pValue );
+            else
+                strVal += QString( "%1=%2\n" ).arg( strType ).arg( pCurList->sNumVal.pValue );
         }
         else
         {
