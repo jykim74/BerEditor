@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>551</width>
-    <height>530</height>
+    <height>531</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -158,74 +158,14 @@
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout_3">
+    <layout class="QGridLayout" name="gridLayout">
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="3" column="2">
-      <widget class="QPushButton" name="mKMCertFindBtn">
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mSignPriKeyFindBtn">
        <property name="text">
         <string>Find</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Sign Certificate</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="2">
-      <widget class="QPushButton" name="mKMPriKeyFindBtn">
-       <property name="text">
-        <string>Find</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QPushButton" name="mSignCertFindBtn">
-       <property name="text">
-        <string>Find</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>KM Certificate</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="mSignPriKeyPathText"/>
-     </item>
-     <item row="3" column="1">
-      <widget class="QLineEdit" name="mKMCertPathText"/>
-     </item>
-     <item row="1" column="3">
-      <widget class="QPushButton" name="mSignCertViewBtn">
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>C</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="4">
-      <widget class="QPushButton" name="mKMCertDecodeBtn">
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>D</string>
        </property>
       </widget>
      </item>
@@ -242,16 +182,10 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mSignPriKeyDecodeBtn">
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="mSignCertFindBtn">
        <property name="text">
-        <string>D</string>
+        <string>Find</string>
        </property>
       </widget>
      </item>
@@ -274,8 +208,14 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="3">
-      <widget class="QPushButton" name="mKMCertViewBtn">
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="mSignPriKeyPathText"/>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="mSignCertPathText"/>
+     </item>
+     <item row="1" column="3">
+      <widget class="QPushButton" name="mSignCertViewBtn">
        <property name="maximumSize">
         <size>
          <width>20</width>
@@ -287,28 +227,28 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mSignPriKeyFindBtn">
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Find</string>
+        <string>Sign Certificate</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="mSignCertPathText"/>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_3">
+     <item row="1" column="5">
+      <widget class="QPushButton" name="mSignCertTypeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="text">
-        <string>KM PrivateKey</string>
+        <string>T</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
-      <widget class="QLineEdit" name="mKMPriKeyPathText"/>
-     </item>
-     <item row="2" column="4">
-      <widget class="QPushButton" name="mKMPriKeyDecodeBtn">
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mSignPriKeyDecodeBtn">
        <property name="maximumSize">
         <size>
          <width>20</width>
@@ -333,8 +273,134 @@
        </property>
       </widget>
      </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_3">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QCheckBox" name="mSignEncPriKeyCheck">
+       <property name="minimumSize">
+        <size>
+         <width>180</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>180</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Encrypted Sign PrivateKey</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLineEdit" name="mSignPasswdText">
+       <property name="echoMode">
+        <enum>QLineEdit::Password</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="mSignPasswdLabel">
+       <property name="text">
+        <string>Password</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="Line" name="line_5">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_4">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_7">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="mKMPriKeyPathText"/>
+     </item>
+     <item row="1" column="4">
+      <widget class="QPushButton" name="mKMCertDecodeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>D</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>100</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>KM PrivateKey</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QPushButton" name="mKMCertViewBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>C</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="mKMCertPathText"/>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="mKMCertFindBtn">
+       <property name="text">
+        <string>Find</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>KM Certificate</string>
+       </property>
+      </widget>
+     </item>
      <item row="1" column="5">
-      <widget class="QPushButton" name="mSignCertTypeBtn">
+      <widget class="QPushButton" name="mKMCertTypeBtn">
        <property name="maximumSize">
         <size>
          <width>20</width>
@@ -346,7 +412,27 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="5">
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mKMPriKeyFindBtn">
+       <property name="text">
+        <string>Find</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mKMPriKeyDecodeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>D</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
       <widget class="QPushButton" name="mKMPriKeyTypeBtn">
        <property name="maximumSize">
         <size>
@@ -359,16 +445,50 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="5">
-      <widget class="QPushButton" name="mKMCertTypeBtn">
+    </layout>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_8">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="3">
+      <widget class="QLineEdit" name="mKMPasswdText">
+       <property name="echoMode">
+        <enum>QLineEdit::Password</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QCheckBox" name="mKMEncPriKeyCheck">
+       <property name="minimumSize">
+        <size>
+         <width>180</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="maximumSize">
         <size>
-         <width>20</width>
+         <width>180</width>
          <height>16777215</height>
         </size>
        </property>
        <property name="text">
-        <string>T</string>
+        <string>Encrypted KM PrivateKey</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="mKMPasswdLabel">
+       <property name="text">
+        <string>Password</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="Line" name="line_6">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
        </property>
       </widget>
      </item>
@@ -610,20 +730,6 @@
   <tabstop>mSrcBase64Radio</tabstop>
   <tabstop>mSrcLenText</tabstop>
   <tabstop>mSrcText</tabstop>
-  <tabstop>mSignPriKeyPathText</tabstop>
-  <tabstop>mSignPriKeyFindBtn</tabstop>
-  <tabstop>mSignPriKeyDecodeBtn</tabstop>
-  <tabstop>mSignCertPathText</tabstop>
-  <tabstop>mSignCertFindBtn</tabstop>
-  <tabstop>mSignCertViewBtn</tabstop>
-  <tabstop>mSignCertDecodeBtn</tabstop>
-  <tabstop>mKMPriKeyPathText</tabstop>
-  <tabstop>mKMPriKeyFindBtn</tabstop>
-  <tabstop>mKMPriKeyDecodeBtn</tabstop>
-  <tabstop>mKMCertPathText</tabstop>
-  <tabstop>mKMCertFindBtn</tabstop>
-  <tabstop>mKMCertViewBtn</tabstop>
-  <tabstop>mKMCertDecodeBtn</tabstop>
   <tabstop>mOutputStringRadio</tabstop>
   <tabstop>mOutputHexRadio</tabstop>
   <tabstop>mOutputBase64Radio</tabstop>

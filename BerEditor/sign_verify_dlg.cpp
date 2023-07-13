@@ -79,6 +79,8 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     connect( mDigestBtn, SIGNAL(clicked()), this, SLOT(digestRun()));
     connect( mInputTab, SIGNAL(currentChanged(int)), this, SLOT(changeInputTab(int)));
 
+    connect( mEncPrikeyCheck, SIGNAL(clicked()), this, SLOT(checkEncPriKey()));
+
     mCloseBtn->setFocus();
 }
 
@@ -103,6 +105,59 @@ void SignVerifyDlg::initialize()
 
     checkAutoCertOrPubKey();
     checkUseKeyAlg();
+    checkEncPriKey();
+}
+
+int SignVerifyDlg::readPrivateKey( BIN *pPriKey )
+{
+    int ret = 0;
+    BIN binData = {0,0};
+    BIN binDec = {0,0};
+    BIN binInfo = {0,0};
+
+    QString strPriPath = mPriKeyPath->text();
+
+    ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binData );
+    if( ret <= 0 )
+    {
+        berApplet->warningBox( tr( "fail to read private key: %1").arg( ret ), this );
+        return  -1;
+    }
+
+    if( mEncPrikeyCheck->isChecked() )
+    {
+        QString strPasswd = mPasswdText->text();
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "You have to insert password"), this );
+            ret = -1;
+            goto end;
+        }
+
+        ret = JS_PKI_decryptPrivateKey( strPasswd.toStdString().c_str(), &binData, &binInfo, &binDec );
+        if( ret != 0 )
+        {
+            berApplet->warningBox( tr( "fail to decrypt private key:%1").arg( ret ));
+            mPasswdText->setFocus();
+            ret = -1;
+            goto end;
+        }
+
+        JS_BIN_copy( pPriKey, &binDec );
+        ret = 0;
+    }
+    else
+    {
+        JS_BIN_copy( pPriKey, &binData );
+        ret = 0;
+    }
+
+end :
+    JS_BIN_reset( &binData );
+    JS_BIN_reset( &binDec );
+    JS_BIN_reset( &binInfo );
+
+    return ret;
 }
 
 void SignVerifyDlg::appendStatusLabel( const QString& strLabel )
@@ -144,14 +199,10 @@ void SignVerifyDlg::clickCheckKeyPair()
     BIN binPub = {0,0};
     BIN binCert = {0,0};
 
-    QString strPriPath = mPriKeyPath->text();
     QString strCertPath = mCertPath->text();
 
-    if( strPriPath.length() < 1 )
-    {
-        berApplet->elog( "You have to find private key" );
-        return;
-    }
+    ret = readPrivateKey( &binPri );
+    if( ret != 0 ) return;
 
     if( strCertPath.length() < 1 )
     {
@@ -159,7 +210,6 @@ void SignVerifyDlg::clickCheckKeyPair()
         return;
     }
 
-    JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
     JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
 
     if( mAutoCertPubKeyCheck->isChecked() )
@@ -277,16 +327,10 @@ int SignVerifyDlg::signVerifyInit()
 
     if( mMethodCombo->currentIndex() == SIGN_SIGNATURE )
     {
+        ret = readPrivateKey( &binPri );
+        if( ret != 0 ) goto end;
+
         mOutputText->clear();
-
-        if( mPriKeyPath->text().isEmpty() )
-        {
-            berApplet->warningBox( tr( "You have to find private key" ), this );
-            ret = -1;
-            goto end;
-        }
-
-        JS_BIN_fileReadBER( mPriKeyPath->text().toLocal8Bit().toStdString().c_str(), &binPri );
 
         if( mUseKeyAlgCheck->isChecked() )
         {
@@ -565,14 +609,9 @@ void SignVerifyDlg::dataRun()
     berApplet->log( QString( "Algorithm : %1 Hash %2").arg( mAlgTypeCombo->currentText()).arg( strHash ));
 
     if( mMethodCombo->currentIndex() == SIGN_SIGNATURE )
-    {
-        if( mPriKeyPath->text().isEmpty() )
-        {
-            berApplet->warningBox( tr( "You have to find private key" ), this );
-            goto end;
-        }
-
-        JS_BIN_fileReadBER( mPriKeyPath->text().toLocal8Bit().toStdString().c_str(), &binPri );
+    {   
+        ret = readPrivateKey( &binPri );
+        if( ret != 0 ) goto end;
 
         if( mUseKeyAlgCheck->isChecked() )
         {
@@ -887,14 +926,9 @@ void SignVerifyDlg::digestRun()
     berApplet->log( QString( "Algorithm : %1 Hash %2").arg( mAlgTypeCombo->currentText()).arg( strHash ));
 
     if( mMethodCombo->currentIndex() == SIGN_SIGNATURE )
-    {
-        if( mPriKeyPath->text().isEmpty() )
-        {
-            berApplet->warningBox( tr( "You have to find private key" ), this );
-            goto end;
-        }
-
-        JS_BIN_fileReadBER( mPriKeyPath->text().toLocal8Bit().toStdString().c_str(), &binPri );
+    {        
+        ret = readPrivateKey( &binPri );
+        if( ret != 0 ) goto end;
 
         if( mUseKeyAlgCheck->isChecked() )
         {
@@ -1141,16 +1175,9 @@ void SignVerifyDlg::clickCertDecode()
 void SignVerifyDlg::clickPriKeyType()
 {
     BIN binPri = {0,0};
-    QString strPath = mPriKeyPath->text();
     int nType = -1;
-
-    if( strPath.length() < 1 )
-    {
-        berApplet->warningBox( tr( "You have to find private key" ), this );
-        return;
-    }
-
-    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    int ret = readPrivateKey( &binPri );
+    if( ret != 0 ) goto end;
 
     nType = JS_PKI_getPriKeyType( &binPri );
 
@@ -1211,6 +1238,7 @@ void SignVerifyDlg::clickClearDataAll()
     mCertPath->clear();
     mOutputText->clear();
     mStatusLabel->clear();
+    mPasswdText->clear();
 
     mSrcFileText->clear();
     mSrcFileInfoText->clear();
@@ -1251,4 +1279,12 @@ void SignVerifyDlg::changeInputTab( int index )
         mDigestBtn->setEnabled(true);
     else
         mDigestBtn->setEnabled(false);
+}
+
+void SignVerifyDlg::checkEncPriKey()
+{
+    bool bVal = mEncPrikeyCheck->isChecked();
+
+    mPasswdLabel->setEnabled(bVal);
+    mPasswdText->setEnabled(bVal);
 }

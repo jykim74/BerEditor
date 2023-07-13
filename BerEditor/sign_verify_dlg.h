@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "ui_sign_verify_dlg.h"
+#include "js_bin.h"
 
 namespace Ui {
 class SignVerifyDlg;
@@ -53,9 +54,11 @@ private slots:
     void clickFindSrcFile();
 
     void changeInputTab( int index );
+    void checkEncPriKey();
 private:
     void initialize();
     void appendStatusLabel( const QString& strLabel );
+    int readPrivateKey( BIN *pPriKey );
     void *sctx_;
     QString last_path_;
 };
