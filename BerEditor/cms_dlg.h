@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "ui_cms_dlg.h"
+#include "js_bin.h"
 
 namespace Ui {
 class CMSDlg;
@@ -49,8 +50,14 @@ private slots:
     void clickClearDataAll();
     void clickReadFile();
 
+    void checkSignEncPriKey();
+    void checkKMEncPriKey();
+
 private:
     void initialize();
+    int readSignPrivateKey( BIN *pPriKey );
+    int readKMPrivateKey( BIN *pPriKey );
+
     QString last_path_;
     QButtonGroup* group_;
 

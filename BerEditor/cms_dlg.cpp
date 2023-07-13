@@ -55,6 +55,9 @@ CMSDlg::CMSDlg(QWidget *parent) :
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
     connect( mReadFileBtn, SIGNAL(clicked()), this, SLOT(clickReadFile()));
 
+    connect( mSignEncPriKeyCheck, SIGNAL(clicked()), this, SLOT(checkSignEncPriKey()));
+    connect( mKMEncPriKeyCheck, SIGNAL(clicked()), this, SLOT(checkKMEncPriKey()));
+
     initialize();
 
     mCloseBtn->setFocus();
@@ -74,6 +77,113 @@ void CMSDlg::initialize()
     group_->addButton( mOutputBase64Radio );
 
     mSrcStringRadio->setChecked(true);
+
+    checkSignEncPriKey();
+    checkKMEncPriKey();
+}
+
+int CMSDlg::readSignPrivateKey( BIN *pPriKey )
+{
+    int ret = 0;
+    BIN binData = {0,0};
+    BIN binDec = {0,0};
+    BIN binInfo = {0,0};
+
+    QString strPriPath = mSignPriKeyPathText->text();
+
+    ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binData );
+    if( ret <= 0 )
+    {
+        berApplet->warningBox( tr( "fail to read private key: %1").arg( ret ), this );
+        return  -1;
+    }
+
+    if( mSignEncPriKeyCheck->isChecked() )
+    {
+        QString strPasswd = mSignPasswdText->text();
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "You have to insert password"), this );
+            ret = -1;
+            goto end;
+        }
+
+        ret = JS_PKI_decryptPrivateKey( strPasswd.toStdString().c_str(), &binData, &binInfo, &binDec );
+        if( ret != 0 )
+        {
+            berApplet->warningBox( tr( "fail to decrypt private key:%1").arg( ret ));
+            mSignPasswdText->setFocus();
+            ret = -1;
+            goto end;
+        }
+
+        JS_BIN_copy( pPriKey, &binDec );
+        ret = 0;
+    }
+    else
+    {
+        JS_BIN_copy( pPriKey, &binData );
+        ret = 0;
+    }
+
+end :
+    JS_BIN_reset( &binData );
+    JS_BIN_reset( &binDec );
+    JS_BIN_reset( &binInfo );
+
+    return ret;
+}
+
+int CMSDlg::readKMPrivateKey( BIN *pPriKey )
+{
+    int ret = 0;
+    BIN binData = {0,0};
+    BIN binDec = {0,0};
+    BIN binInfo = {0,0};
+
+    QString strPriPath = mKMPriKeyPathText->text();
+
+    ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binData );
+    if( ret <= 0 )
+    {
+        berApplet->warningBox( tr( "fail to read private key: %1").arg( ret ), this );
+        return  -1;
+    }
+
+    if( mKMEncPriKeyCheck->isChecked() )
+    {
+        QString strPasswd = mKMPasswdText->text();
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "You have to insert password"), this );
+            ret = -1;
+            goto end;
+        }
+
+        ret = JS_PKI_decryptPrivateKey( strPasswd.toStdString().c_str(), &binData, &binInfo, &binDec );
+        if( ret != 0 )
+        {
+            berApplet->warningBox( tr( "fail to decrypt private key:%1").arg( ret ));
+            mKMPasswdText->setFocus();
+            ret = -1;
+            goto end;
+        }
+
+        JS_BIN_copy( pPriKey, &binDec );
+        ret = 0;
+    }
+    else
+    {
+        JS_BIN_copy( pPriKey, &binData );
+        ret = 0;
+    }
+
+end :
+    JS_BIN_reset( &binData );
+    JS_BIN_reset( &binDec );
+    JS_BIN_reset( &binInfo );
+
+    return ret;
 }
 
 void CMSDlg::clickClose()
@@ -189,12 +299,8 @@ void CMSDlg::clickSignedData()
         return;
     }
 
-    QString strSignPriPath = mSignPriKeyPathText->text();
-    if( strSignPriPath.isEmpty() )
-    {
-        berApplet->warningBox(tr("find sign private key" ), this );
-        return;
-    }
+    ret = readSignPrivateKey( &binPri );
+    if( ret != 0 ) return;
 
     QString strSignCertPath = mSignCertPathText->text();
     if( strSignCertPath.isEmpty() )
@@ -203,7 +309,6 @@ void CMSDlg::clickSignedData()
         return;
     }
 
-    JS_BIN_fileReadBER( strSignPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
     JS_BIN_fileReadBER( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
 
     if( mSrcStringRadio->isChecked() )
@@ -344,12 +449,8 @@ void CMSDlg::clickSignAndEnvloped()
         return;
     }
 
-    QString strSignPriPath = mSignPriKeyPathText->text();
-    if( strSignPriPath.isEmpty() )
-    {
-        berApplet->warningBox(tr("find sign private key" ), this );
-        return;
-    }
+    ret = readSignPrivateKey( &binSignPri );
+    if( ret != 0 ) return;
 
     QString strSignCertPath = mSignCertPathText->text();
     if( strSignCertPath.isEmpty() )
@@ -365,7 +466,6 @@ void CMSDlg::clickSignAndEnvloped()
         return;
     }
 
-    JS_BIN_fileReadBER( strSignPriPath.toLocal8Bit().toStdString().c_str(), &binSignPri );
     JS_BIN_fileReadBER( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binSignCert );
     JS_BIN_fileReadBER( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binKMCert );
 
@@ -500,12 +600,8 @@ void CMSDlg::clickDevelopedData()
         return;
     }
 
-    QString strKMPriPath = mKMPriKeyPathText->text();
-    if( strKMPriPath.isEmpty() )
-    {
-        berApplet->warningBox(tr("find km private key" ), this );
-        return;
-    }
+    ret = readKMPrivateKey( &binPri );
+    if( ret != 0 ) return;
 
     QString strKMCertPath = mKMCertPathText->text();
     if( strKMCertPath.isEmpty() )
@@ -514,7 +610,6 @@ void CMSDlg::clickDevelopedData()
         return;
     }
 
-    JS_BIN_fileReadBER( strKMPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
     JS_BIN_fileReadBER( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
 
     if( mSrcStringRadio->isChecked() )
@@ -583,13 +678,6 @@ void CMSDlg::clickDevelopedAndVerify()
         return;
     }
 
-    QString strKMPriPath = mKMPriKeyPathText->text();
-    if( strKMPriPath.isEmpty() )
-    {
-        berApplet->warningBox(tr("find km private key" ), this );
-        return;
-    }
-
     QString strKMCertPath = mSignCertPathText->text();
     if( strKMCertPath.isEmpty() )
     {
@@ -597,8 +685,10 @@ void CMSDlg::clickDevelopedAndVerify()
         return;
     }
 
+    ret = readKMPrivateKey( &binKMPri );
+    if( ret != 0 ) return;
+
     JS_BIN_fileReadBER( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binSignCert );
-    JS_BIN_fileReadBER( strKMPriPath.toLocal8Bit().toStdString().c_str(), &binKMPri );
     JS_BIN_fileReadBER( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binKMCert );
 
     if( mSrcStringRadio->isChecked() )
@@ -770,18 +860,12 @@ void CMSDlg::clickKMCertDecode()
 
 void CMSDlg::clickSignPriKeyType()
 {
+    int ret = 0;
     BIN binPri = {0,0};
-    QString strPath = mSignPriKeyPathText->text();
     int nType = -1;
 
-    if( strPath.length() < 1 )
-    {
-        berApplet->warningBox( tr( "You have to find sign private key" ), this );
-        return;
-    }
-
-    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binPri );
-
+    ret = readSignPrivateKey( &binPri );
+    if( ret != 0) return;
     nType = JS_PKI_getPriKeyType( &binPri );
 
     berApplet->messageBox( tr( "Sign Private Key Type is %1").arg( getKeyTypeName( nType )), this);
@@ -818,18 +902,12 @@ end :
 
 void CMSDlg::clickKMPriKeyType()
 {
+    int ret = 0;
     BIN binPri = {0,0};
-    QString strPath = mKMPriKeyPathText->text();
     int nType = -1;
 
-    if( strPath.length() < 1 )
-    {
-        berApplet->warningBox( tr( "You have to find KM private key" ), this );
-        return;
-    }
-
-    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binPri );
-
+    ret = readKMPrivateKey( &binPri );
+    if( ret != 0 ) return;
     nType = JS_PKI_getPriKeyType( &binPri );
 
     berApplet->messageBox( tr( "KM Private Key Type is %1").arg( getKeyTypeName( nType )), this);
@@ -871,8 +949,11 @@ void CMSDlg::clickClearDataAll()
 
     mSignPriKeyPathText->clear();
     mSignCertPathText->clear();
+    mSignPasswdText->clear();
+
     mKMPriKeyPathText->clear();
     mKMCertPathText->clear();
+    mKMPasswdText->clear();
 }
 
 void CMSDlg::clickReadFile()
@@ -891,4 +972,20 @@ void CMSDlg::clickReadFile()
         mSrcText->setPlainText( getHexString( &binData ));
         JS_BIN_reset( &binData );
     }
+}
+
+void CMSDlg::checkSignEncPriKey()
+{
+    bool bVal = mSignEncPriKeyCheck->isChecked();
+
+    mSignPasswdLabel->setEnabled(bVal);
+    mSignPasswdText->setEnabled(bVal);
+}
+
+void CMSDlg::checkKMEncPriKey()
+{
+    bool bVal = mKMEncPriKeyCheck->isChecked();
+
+    mKMPasswdLabel->setEnabled(bVal);
+    mKMPasswdText->setEnabled(bVal);
 }
