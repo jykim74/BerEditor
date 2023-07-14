@@ -1082,10 +1082,15 @@ QString getKeyTypeName( int nKeyType )
         return "SM2";
     else if( nKeyType == JS_PKI_KEY_TYPE_DSA )
         return "DSA";
+    else if( nKeyType == JS_PKI_KEY_TYPE_ED25519 )
+        return "Ed25519";
+    else if( nKeyType == JS_PKI_KEY_TYPE_ED448 )
+        return "Ed448";
     else if( nKeyType == JS_PKI_KEY_TYPE_AES )
         return "AES";
     else if( nKeyType == JS_PKI_KEY_TYPE_ARIA )
         return "ARIA";
+
 
     return QString( "Unknown[%1]").arg( nKeyType );
 }

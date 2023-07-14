@@ -60,6 +60,8 @@ private:
     void appendStatusLabel( const QString& strLabel );
     int readPrivateKey( BIN *pPriKey );
     void *sctx_;
+    void *hctx_;
+    bool is_eddsa_;
     QString last_path_;
 };
 
