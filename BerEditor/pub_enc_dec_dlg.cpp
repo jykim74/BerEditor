@@ -259,14 +259,16 @@ void PubEncDecDlg::Run()
     berApplet->log( QString( "Algorithm : %1" ).arg( strAlg ));
 
     if( mMethodTypeCombo->currentIndex() == ENC_ENCRYPT )
-    {     
-        if( mCertBtn->text().isEmpty() )
+    {
+        QString strCertPath = mCertPath->text();
+
+        if( strCertPath.length() < 1 )
         {
             berApplet->warningBox( tr( "You have to find certificate"), this );
             goto end;
         }
 
-        JS_BIN_fileReadBER( mCertPath->text().toLocal8Bit().toStdString().c_str(), &binCert );
+        JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
 
         if( mAutoCertPubKeyCheck->isChecked() )
         {
@@ -302,7 +304,7 @@ void PubEncDecDlg::Run()
                 mAlgCombo->setCurrentText( "SM2" );
             else
             {
-                berApplet->warningBox( tr( "Invalid private key algorithm:%1").arg( strKeyType ), this );
+                berApplet->warningBox( tr( "Invalid public key algorithm:%1").arg( strKeyType ), this );
                 goto end;
             }
         }
@@ -311,7 +313,7 @@ void PubEncDecDlg::Run()
         {
             if( nAlgType != JS_PKI_KEY_TYPE_RSA )
             {
-                berApplet->warningBox( tr( "Invalid private key algorithm:%1").arg( strKeyType ), this );
+                berApplet->warningBox( tr( "Invalid public key algorithm:%1").arg( strKeyType ), this );
                 goto end;
             }
 
@@ -321,7 +323,7 @@ void PubEncDecDlg::Run()
         {
             if( nAlgType != JS_PKI_KEY_TYPE_SM2 )
             {
-                berApplet->warningBox( tr( "Invalid private key algorithm:%1").arg( strKeyType ), this );
+                berApplet->warningBox( tr( "Invalid public key algorithm:%1").arg( strKeyType ), this );
                 goto end;
             }
 
