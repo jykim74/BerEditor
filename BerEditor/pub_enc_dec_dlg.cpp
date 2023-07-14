@@ -225,6 +225,7 @@ void PubEncDecDlg::Run()
 {
     int ret = 0;
     int nVersion = 0;
+    int nDataType = DATA_HEX;
     BIN binSrc = {0,0};
     BIN binPri = {0,0};
     BIN binCert = {0,0};
@@ -241,17 +242,13 @@ void PubEncDecDlg::Run()
     }
 
     if( mInputStringRadio->isChecked() )
-        JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
-    else if( mInputHexRadio->isChecked() )
-    {
-        strInput.remove(QRegExp("[\t\r\n\\s]"));
-        JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
-    }
+        nDataType = DATA_STRING;
     else if( mInputBase64Radio->isChecked() )
-    {
-        strInput.remove(QRegExp("[\t\r\n\\s]"));
-        JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
-    }
+        nDataType = DATA_BASE64;
+    else
+        nDataType = DATA_HEX;
+
+    getBINFromString( &binSrc, nDataType, strInput );
 
     if( mVersionTypeCombo->currentIndex() == 0 )
         nVersion = JS_PKI_RSA_PADDING_V15;
@@ -292,10 +289,11 @@ void PubEncDecDlg::Run()
                 JS_BIN_copy( &binPubKey, &binCert );
         }
 
+        int nAlgType = JS_PKI_getPubKeyType( &binPubKey );
+        QString strKeyType = getKeyTypeName( nAlgType );
+
         if( mUseKeyAlgCheck->isChecked() )
         {
-            int nAlgType = JS_PKI_getPubKeyType( &binPubKey );
-            QString strKeyType = getKeyTypeName( nAlgType );
             berApplet->log( QString( "PubKey Type : %1").arg( strKeyType));
 
             if( nAlgType == JS_PKI_KEY_TYPE_RSA )
@@ -311,11 +309,23 @@ void PubEncDecDlg::Run()
 
         if( mAlgCombo->currentText() == "RSA" )
         {
-            JS_PKI_RSAEncryptWithPub( nVersion, &binSrc, &binPubKey, &binOut );
+            if( nAlgType != JS_PKI_KEY_TYPE_RSA )
+            {
+                berApplet->warningBox( tr( "Invalid private key algorithm:%1").arg( strKeyType ), this );
+                goto end;
+            }
+
+            ret = JS_PKI_RSAEncryptWithPub( nVersion, &binSrc, &binPubKey, &binOut );
         }
         else
         {
-            JS_PKI_SM2EncryptWithPub( &binSrc, &binPubKey, &binOut );
+            if( nAlgType != JS_PKI_KEY_TYPE_SM2 )
+            {
+                berApplet->warningBox( tr( "Invalid private key algorithm:%1").arg( strKeyType ), this );
+                goto end;
+            }
+
+            ret = JS_PKI_SM2EncryptWithPub( &binSrc, &binPubKey, &binOut );
         }
 
         berApplet->log( QString( "Algorithm     : %1").arg( mAlgCombo->currentText() ));
@@ -327,10 +337,11 @@ void PubEncDecDlg::Run()
         ret = readPrivateKey( &binPri );
         if( ret != 0 ) goto end;
 
+        int nAlgType = JS_PKI_getPriKeyType( &binPri );
+        QString strKeyType = getKeyTypeName( nAlgType );
+
         if( mUseKeyAlgCheck->isChecked() )
         {
-            int nAlgType = JS_PKI_getPriKeyType( &binPri );
-            QString strKeyType = getKeyTypeName( nAlgType );
             berApplet->log( QString( "PriKey Type : %1").arg( strKeyType ));
 
             if( nAlgType == JS_PKI_KEY_TYPE_RSA )
@@ -345,9 +356,25 @@ void PubEncDecDlg::Run()
         }
 
         if( mAlgCombo->currentText() == "RSA" )
-            JS_PKI_RSADecryptWithPri( nVersion, &binSrc, &binPri, &binOut );
+        {
+            if( nAlgType != JS_PKI_KEY_TYPE_RSA )
+            {
+                berApplet->warningBox( tr( "Invalid private key algorithm:%1").arg( strKeyType ), this );
+                goto end;
+            }
+
+            ret = JS_PKI_RSADecryptWithPri( nVersion, &binSrc, &binPri, &binOut );
+        }
         else
-            JS_PKI_SM2DecryptWithPri( &binSrc, &binPri, &binOut );
+        {
+            if( nAlgType != JS_PKI_KEY_TYPE_SM2 )
+            {
+                berApplet->warningBox( tr( "Invalid private key algorithm:%1").arg( strKeyType ), this );
+                goto end;
+            }
+
+            ret = JS_PKI_SM2DecryptWithPri( &binSrc, &binPri, &binOut );
+        }
 
         berApplet->log( QString( "Algorithm      : %1").arg( mAlgCombo->currentText() ));
         berApplet->log( QString( "Dec Src        : %1").arg( getHexString(&binSrc)));
