@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>527</width>
-    <height>464</height>
+    <width>509</width>
+    <height>467</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -315,6 +315,19 @@
      <property name="topMargin">
       <number>0</number>
      </property>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer_6">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
      <item row="0" column="2">
       <widget class="QCheckBox" name="mUseKeyAlgCheck">
        <property name="text">
@@ -329,31 +342,83 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <spacer name="horizontalSpacer_6">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mCheckKeyPairBtn">
+       <property name="minimumSize">
         <size>
-         <width>40</width>
-         <height>20</height>
+         <width>100</width>
+         <height>0</height>
         </size>
        </property>
-      </spacer>
+       <property name="maximumSize">
+        <size>
+         <width>100</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Check KeyPair</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
-      <widget class="QComboBox" name="mAlgCombo"/>
+      <widget class="QComboBox" name="mAlgCombo">
+       <property name="minimumSize">
+        <size>
+         <width>50</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>50</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="mVersionTypeCombo"/>
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>For RSA Version</string>
+       </property>
+      </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="mOutputTypeCombo"/>
+      <widget class="QComboBox" name="mVersionTypeCombo">
+       <property name="minimumSize">
+        <size>
+         <width>50</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>50</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="mOutputTypeCombo">
+       <property name="minimumSize">
+        <size>
+         <width>60</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>60</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QComboBox" name="mMethodTypeCombo"/>
@@ -372,14 +437,19 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="mCheckKeyPairBtn">
-       <property name="text">
-        <string>Check KeyPair</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QPushButton" name="mChangeBtn">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>100</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="text">
         <string>Change</string>
        </property>
@@ -557,7 +627,6 @@
   <tabstop>mVersionTypeCombo</tabstop>
   <tabstop>mOutputTypeCombo</tabstop>
   <tabstop>mMethodTypeCombo</tabstop>
-  <tabstop>mCheckKeyPairBtn</tabstop>
   <tabstop>mChangeBtn</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>

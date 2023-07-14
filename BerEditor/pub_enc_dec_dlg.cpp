@@ -295,7 +295,8 @@ void PubEncDecDlg::Run()
         if( mUseKeyAlgCheck->isChecked() )
         {
             int nAlgType = JS_PKI_getPubKeyType( &binPubKey );
-            berApplet->log( QString( "PubKey Type : %1").arg( getKeyTypeName( nAlgType )));
+            QString strKeyType = getKeyTypeName( nAlgType );
+            berApplet->log( QString( "PubKey Type : %1").arg( strKeyType));
 
             if( nAlgType == JS_PKI_KEY_TYPE_RSA )
                 mAlgCombo->setCurrentText( "RSA" );
@@ -303,7 +304,7 @@ void PubEncDecDlg::Run()
                 mAlgCombo->setCurrentText( "SM2" );
             else
             {
-                berApplet->warningBox( tr( "Invalid private key algorithm"), this );
+                berApplet->warningBox( tr( "Invalid private key algorithm:%1").arg( strKeyType ), this );
                 goto end;
             }
         }
@@ -329,7 +330,8 @@ void PubEncDecDlg::Run()
         if( mUseKeyAlgCheck->isChecked() )
         {
             int nAlgType = JS_PKI_getPriKeyType( &binPri );
-            berApplet->log( QString( "PriKey Type : %1").arg( getKeyTypeName( nAlgType )));
+            QString strKeyType = getKeyTypeName( nAlgType );
+            berApplet->log( QString( "PriKey Type : %1").arg( strKeyType ));
 
             if( nAlgType == JS_PKI_KEY_TYPE_RSA )
                 mAlgCombo->setCurrentText( "RSA" );
@@ -337,7 +339,7 @@ void PubEncDecDlg::Run()
                 mAlgCombo->setCurrentText( "SM2" );
             else
             {
-                berApplet->warningBox( tr( "Invalid private key algorithm"), this );
+                berApplet->warningBox( tr( "Invalid private key algorithm: %1").arg( strKeyType ), this );
                 goto end;
             }
         }
@@ -448,10 +450,17 @@ void PubEncDecDlg::algChanged()
 {
     QString strAlg = mAlgCombo->currentText();
 
-    if( strAlg == "RSA" )
-        mVersionTypeCombo->setEnabled( true );
+    if( mUseKeyAlgCheck->isChecked() == false )
+    {
+        if( strAlg == "RSA" )
+            mVersionTypeCombo->setEnabled( true );
+        else
+            mVersionTypeCombo->setEnabled( false );
+    }
     else
-        mVersionTypeCombo->setEnabled( false );
+    {
+        mVersionTypeCombo->setEnabled( true );
+    }
 }
 
 void PubEncDecDlg::clickPriKeyDecode()

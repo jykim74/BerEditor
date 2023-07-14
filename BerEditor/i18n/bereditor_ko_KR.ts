@@ -3720,12 +3720,12 @@ Do you want to delete the file and continue?</source>
         <translation>공개키 암/복호화(&amp;R)</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="525"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="595"/>
         <source>Run</source>
         <translation>실행</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="518"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="588"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -3754,7 +3754,7 @@ Do you want to delete the file and continue?</source>
     <message>
         <location filename="../pub_enc_dec_dlg.ui" line="212"/>
         <location filename="../pub_enc_dec_dlg.cpp" line="161"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="544"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="553"/>
         <source>Certificate</source>
         <translation>인증서</translation>
     </message>
@@ -3780,22 +3780,27 @@ Do you want to delete the file and continue?</source>
         <translation>암호화된 개인키</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="321"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="334"/>
         <source>Use Key Algorithm</source>
         <translation>키의 알고리즘 사용</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="377"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="360"/>
         <source>Check KeyPair</source>
         <translation>키 쌍 체크</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="384"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="387"/>
+        <source>For RSA Version</source>
+        <translation>RSA용 버전</translation>
+    </message>
+    <message>
+        <location filename="../pub_enc_dec_dlg.ui" line="454"/>
         <source>Change</source>
         <translation>교환</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="532"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="602"/>
         <source>Clear Data All</source>
         <translation>전체 데이타 지우기</translation>
     </message>
@@ -3826,23 +3831,23 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../pub_enc_dec_dlg.ui" line="66"/>
-        <location filename="../pub_enc_dec_dlg.ui" line="481"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="551"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="328"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="341"/>
         <source>Property and Method</source>
         <translation>특성 및 방식</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="418"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="488"/>
         <source>Output Data</source>
         <translation>결과 데이타</translation>
     </message>
     <message>
         <location filename="../pub_enc_dec_dlg.cpp" line="156"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="549"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="558"/>
         <source>Public Key</source>
         <translation>공개 키</translation>
     </message>
@@ -3868,7 +3873,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../pub_enc_dec_dlg.cpp" line="268"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="480"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="489"/>
         <source>You have to find certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
@@ -3877,25 +3882,23 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">개인키를 선택하세요.</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="518"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="527"/>
         <source>Private Key Type is %1</source>
         <translation>개인키 타입은 %1 이다</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="535"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="544"/>
         <source>You have to find certificate or public key</source>
         <translation>인증서 또는 공개키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="554"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="563"/>
         <source>%1 Type is %2</source>
         <translation>%1 타입은 %2 이다</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="306"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="340"/>
         <source>Invalid private key algorithm</source>
-        <translation>유효하지 않은 개인키 알고리즘입니다.</translation>
+        <translation type="vanished">유효하지 않은 개인키 알고리즘입니다.</translation>
     </message>
     <message>
         <location filename="../pub_enc_dec_dlg.cpp" line="109"/>
@@ -3913,8 +3916,18 @@ Do you want to delete the file and continue?</source>
         <translation>개인키 복호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="466"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="498"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="307"/>
+        <source>Invalid private key algorithm:%1</source>
+        <translation>유효하지 않은 개인키 알고리즘입니다:%1</translation>
+    </message>
+    <message>
+        <location filename="../pub_enc_dec_dlg.cpp" line="342"/>
+        <source>Invalid private key algorithm: %1</source>
+        <translation>유효하지 않은 개인키 알고리즘입니다:%1</translation>
+    </message>
+    <message>
+        <location filename="../pub_enc_dec_dlg.cpp" line="475"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="507"/>
         <source>fail to read data</source>
         <translation>데이타 읽기 실패</translation>
     </message>
@@ -4401,22 +4414,27 @@ Do you want to delete the file and continue?</source>
         <translation>키의 알고리즘 사용</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.ui" line="954"/>
+        <location filename="../sign_verify_dlg.ui" line="826"/>
+        <source>For RSA Version</source>
+        <translation>RSA용 버전</translation>
+    </message>
+    <message>
+        <location filename="../sign_verify_dlg.ui" line="961"/>
         <source>Status</source>
         <translation>상태</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.ui" line="980"/>
+        <location filename="../sign_verify_dlg.ui" line="987"/>
         <source>Output Clear</source>
         <translation>결과 지우기</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.ui" line="1012"/>
+        <location filename="../sign_verify_dlg.ui" line="1019"/>
         <source>Sign Digest</source>
         <translation>Sign Digest</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.ui" line="1033"/>
+        <location filename="../sign_verify_dlg.ui" line="1040"/>
         <source>Clear Data All</source>
         <translation>전체 데이타 지우기</translation>
     </message>
@@ -4428,12 +4446,12 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../sign_verify_dlg.ui" line="98"/>
-        <location filename="../sign_verify_dlg.ui" line="942"/>
+        <location filename="../sign_verify_dlg.ui" line="949"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.ui" line="845"/>
+        <location filename="../sign_verify_dlg.ui" line="852"/>
         <source>Check KeyPair</source>
         <translation>키 쌍 체크</translation>
     </message>
@@ -4442,7 +4460,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">실행</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.ui" line="1040"/>
+        <location filename="../sign_verify_dlg.ui" line="1047"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -4457,13 +4475,13 @@ Do you want to delete the file and continue?</source>
         <translation>인증서 또는 공개키 자동체크</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.ui" line="935"/>
+        <location filename="../sign_verify_dlg.ui" line="942"/>
         <source>Output Data</source>
         <translation>결과 데이타</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.ui" line="973"/>
-        <location filename="../sign_verify_dlg.cpp" line="1164"/>
+        <location filename="../sign_verify_dlg.ui" line="980"/>
+        <location filename="../sign_verify_dlg.cpp" line="1241"/>
         <source>Sign</source>
         <translation>서명</translation>
     </message>
@@ -4496,7 +4514,7 @@ Do you want to delete the file and continue?</source>
     <message>
         <location filename="../sign_verify_dlg.ui" line="687"/>
         <location filename="../sign_verify_dlg.cpp" line="187"/>
-        <location filename="../sign_verify_dlg.cpp" line="1269"/>
+        <location filename="../sign_verify_dlg.cpp" line="1346"/>
         <source>Certificate</source>
         <translation>인증서</translation>
     </message>
@@ -4520,7 +4538,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../sign_verify_dlg.cpp" line="181"/>
-        <location filename="../sign_verify_dlg.cpp" line="1274"/>
+        <location filename="../sign_verify_dlg.cpp" line="1351"/>
         <source>Public Key</source>
         <translation>공개 키</translation>
     </message>
@@ -4542,7 +4560,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">모든 파일(*);;DER 파일(*.der)</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="960"/>
+        <location filename="../sign_verify_dlg.cpp" line="1037"/>
         <source>You have to insert data</source>
         <translation>데이타를 입력 하세요</translation>
     </message>
@@ -4592,51 +4610,63 @@ Do you want to delete the file and continue?</source>
         <translation>개인키 복호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="395"/>
-        <location filename="../sign_verify_dlg.cpp" line="733"/>
-        <location filename="../sign_verify_dlg.cpp" line="1045"/>
-        <location filename="../sign_verify_dlg.cpp" line="1207"/>
+        <location filename="../sign_verify_dlg.cpp" line="393"/>
+        <location filename="../sign_verify_dlg.cpp" line="745"/>
+        <source>SM2 Key have to use SM3 hash for signature. do you change hash as SM3?</source>
+        <translation>SM2 키는 서명용 SM3 해시를 사용해야 합니다. SM3로 해시로 변경 하시겠습니까?</translation>
+    </message>
+    <message>
+        <location filename="../sign_verify_dlg.cpp" line="413"/>
+        <location filename="../sign_verify_dlg.cpp" line="793"/>
+        <location filename="../sign_verify_dlg.cpp" line="1122"/>
+        <location filename="../sign_verify_dlg.cpp" line="1284"/>
         <source>You have to find certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="851"/>
+        <location filename="../sign_verify_dlg.cpp" line="483"/>
+        <location filename="../sign_verify_dlg.cpp" line="852"/>
+        <source>SM2 Key have to use SM3 hash for verifing. do you change hash as SM3?</source>
+        <translation>SM2 키는 검증용 SM3 해시를 사용해야 합니다. SM3로 해시로 변경 하시겠습니까?</translation>
+    </message>
+    <message>
+        <location filename="../sign_verify_dlg.cpp" line="926"/>
         <source>You have to find src file</source>
         <translation>소스 파일을 선택 하세요</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1165"/>
+        <location filename="../sign_verify_dlg.cpp" line="1242"/>
         <source>SignDigest</source>
         <translation>SignDigest</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1169"/>
+        <location filename="../sign_verify_dlg.cpp" line="1246"/>
         <source>Verify</source>
         <translation>검증</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1170"/>
+        <location filename="../sign_verify_dlg.cpp" line="1247"/>
         <source>VerifyDigest</source>
         <translation>VerifyDigest</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1193"/>
-        <location filename="../sign_verify_dlg.cpp" line="1225"/>
+        <location filename="../sign_verify_dlg.cpp" line="1270"/>
+        <location filename="../sign_verify_dlg.cpp" line="1302"/>
         <source>fail to read data</source>
         <translation>데이타 읽기 실패</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1243"/>
+        <location filename="../sign_verify_dlg.cpp" line="1320"/>
         <source>Private Key Type is %1</source>
         <translation>개인키 타입은 %1 이다</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1260"/>
+        <location filename="../sign_verify_dlg.cpp" line="1337"/>
         <source>You have to find certificate or public key</source>
         <translation>인증서 또는 공개키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1279"/>
+        <location filename="../sign_verify_dlg.cpp" line="1356"/>
         <source>%1 Type is %2</source>
         <translation>%1 타입은 %2 이다</translation>
     </message>
@@ -4645,16 +4675,16 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">공개키를 선택하세요.</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="590"/>
-        <location filename="../sign_verify_dlg.cpp" line="816"/>
-        <location filename="../sign_verify_dlg.cpp" line="1124"/>
+        <location filename="../sign_verify_dlg.cpp" line="623"/>
+        <location filename="../sign_verify_dlg.cpp" line="891"/>
+        <location filename="../sign_verify_dlg.cpp" line="1201"/>
         <source>Verify Success</source>
         <translation>검증 성공</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="592"/>
-        <location filename="../sign_verify_dlg.cpp" line="818"/>
-        <location filename="../sign_verify_dlg.cpp" line="1126"/>
+        <location filename="../sign_verify_dlg.cpp" line="625"/>
+        <location filename="../sign_verify_dlg.cpp" line="893"/>
+        <location filename="../sign_verify_dlg.cpp" line="1203"/>
         <source>Verify Fail</source>
         <translation>검증 실패</translation>
     </message>
