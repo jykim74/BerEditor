@@ -284,13 +284,16 @@ void SignVerifyDlg::algChanged(int index)
 {
     QString strAlg = mAlgTypeCombo->currentText();
 
-    if( strAlg == "RSA" )
+    if( mUseKeyAlgCheck->isChecked() == false )
     {
-        mVersionCombo->setEnabled(true);
+        if( strAlg == "RSA" )
+            mVersionCombo->setEnabled(true);
+        else
+            mVersionCombo->setEnabled( false );
     }
     else
     {
-        mVersionCombo->setEnabled( false );
+        mVersionCombo->setEnabled(true);
     }
 
     if( strAlg == "SM2" )
@@ -383,6 +386,21 @@ int SignVerifyDlg::signVerifyInit()
         else
             nType = JS_PKI_KEY_TYPE_ECC;
 
+        if( nType == JS_PKI_KEY_TYPE_SM2 )
+        {
+            if( strHash != "SM3" )
+            {
+                QString strMsg = tr("SM2 Key have to use SM3 hash for signature. do you change hash as SM3?");
+                bool bVal = berApplet->yesOrNoBox( strMsg, this, true );
+
+                if( bVal == true )
+                {
+                    strHash = "SM3";
+                    mHashTypeCombo->setCurrentText( strHash );
+                }
+            }
+        }
+
         ret = JS_PKI_signInit( &sctx_, strHash.toStdString().c_str(), nType, &binPri );
 
         berApplet->log( QString( "Algorithm        : %1" ).arg( mAlgTypeCombo->currentText() ));
@@ -457,6 +475,21 @@ int SignVerifyDlg::signVerifyInit()
         }
         else
             nType = JS_PKI_KEY_TYPE_ECC;
+
+        if( nType == JS_PKI_KEY_TYPE_SM2 )
+        {
+            if( strHash != "SM3" )
+            {
+                QString strMsg = tr("SM2 Key have to use SM3 hash for verifing. do you change hash as SM3?");
+                bool bVal = berApplet->yesOrNoBox( strMsg, this, true );
+
+                if( bVal == true )
+                {
+                    strHash = "SM3";
+                    mHashTypeCombo->setCurrentText( strHash );
+                }
+            }
+        }
 
         ret = JS_PKI_verifyInit( &sctx_, strHash.toStdString().c_str(), nType, &binPubKey );
 
@@ -642,6 +675,18 @@ void SignVerifyDlg::dataRun()
 //        return;
     }
 
+    if( sctx_ )
+    {
+        JS_PKI_signFree( &sctx_ );
+        sctx_ = NULL;
+    }
+
+    if( hctx_ )
+    {
+        JS_PKI_hashFree( &hctx_ );
+        hctx_ = NULL;
+    }
+
     if( mInputStringRadio->isChecked() )
         nDataType = DATA_STRING;
     else if( mInputHexRadio->isChecked() )
@@ -693,6 +738,21 @@ void SignVerifyDlg::dataRun()
         }
         else if( strAlg == "SM2" || strAlg == "ECDSA" )
         {
+            if( strAlg == "SM2" )
+            {
+                if( strHash != "SM3" )
+                {
+                    QString strMsg = tr("SM2 Key have to use SM3 hash for signature. do you change hash as SM3?");
+                    bool bVal = berApplet->yesOrNoBox( strMsg, this, true );
+
+                    if( bVal == true )
+                    {
+                        strHash = "SM3";
+                        mHashTypeCombo->setCurrentText( strHash );
+                    }
+                }
+            }
+
             ret = JS_PKI_ECCMakeSign( strHash.toStdString().c_str(), &binSrc, &binPri, &binOut );
         }
         else if( strAlg == "DSA" )
@@ -785,6 +845,21 @@ void SignVerifyDlg::dataRun()
         }
         else if( strAlg == "ECDSA" || strAlg == "SM2" )
         {
+            if( strAlg == "SM2" )
+            {
+                if( strHash != "SM3" )
+                {
+                    QString strMsg = tr("SM2 Key have to use SM3 hash for verifing. do you change hash as SM3?");
+                    bool bVal = berApplet->yesOrNoBox( strMsg, this, true );
+
+                    if( bVal == true )
+                    {
+                        strHash = "SM3";
+                        mHashTypeCombo->setCurrentText( strHash );
+                    }
+                }
+            }
+
             ret = JS_PKI_ECCVerifySign( strHash.toStdString().c_str(), &binSrc, &binOut, &binPubKey );
         }
         else if( strAlg == "DSA" )
@@ -954,6 +1029,8 @@ void SignVerifyDlg::digestRun()
     int nAlgType = 0;
 
     QString strInput = mInputText->toPlainText();
+
+
 
     if( strInput.isEmpty() )
     {

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>505</width>
+    <width>545</width>
     <height>610</height>
    </rect>
   </property>
@@ -819,6 +819,13 @@
      </item>
      <item>
       <widget class="QComboBox" name="mHashTypeCombo"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_12">
+       <property name="text">
+        <string>For RSA Version</string>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QComboBox" name="mVersionCombo"/>
