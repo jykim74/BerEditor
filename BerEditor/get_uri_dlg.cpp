@@ -191,6 +191,8 @@ void GetURIDlg::initUI()
     mPortText->setText( "389" );
 
     clickUseLDAPHost();
+    mURICombo->addItems( getUsedURI() );
+
     mCloseBtn->setFocus();
 }
 
@@ -203,22 +205,10 @@ void GetURIDlg::clickUseLDAPHost()
 
     if( !bVal )
     {
-        mURICombo->addItems( getUsedURI() );
         mURICombo->clearEditText();
     }
 
     mHostInfoGroup->setEnabled( bVal );
-
-
-    /*
-    mURIText->setEnabled( bVal );
-    mHostText->setEnabled( !bVal );
-    mPortText->setEnabled( !bVal );
-    mFilterText->setEnabled( !bVal );
-    mScopeCombo->setEnabled( !bVal );
-    mDNText->setEnabled( !bVal );
-    mTypeCombo->setEnabled( !bVal );
-    */
 }
 
 void GetURIDlg::clickClearUsedURI()
