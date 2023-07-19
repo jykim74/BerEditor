@@ -27,6 +27,7 @@ GetURIDlg::GetURIDlg(QWidget *parent) :
     connect( mUseLDAPHostCheck, SIGNAL(clicked()), this, SLOT(clickUseLDAPHost()));
     connect( mGetBtn, SIGNAL(clicked()), this, SLOT(runGet()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mClearUsedURIBtn, SIGNAL(clicked()), this, SLOT(clickClearUsedURI()));
 
     initUI();
 }
@@ -218,4 +219,14 @@ void GetURIDlg::clickUseLDAPHost()
     mDNText->setEnabled( !bVal );
     mTypeCombo->setEnabled( !bVal );
     */
+}
+
+void GetURIDlg::clickClearUsedURI()
+{
+    QSettings settings;
+    settings.beginGroup( kUsedURI );
+    settings.setValue( kLDAP, "" );
+    settings.endGroup();
+
+    berApplet->log( "clear used URIs" );
 }
