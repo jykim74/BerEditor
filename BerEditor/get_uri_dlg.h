@@ -31,6 +31,8 @@ private:
     int getLDAP();
     int getHTTP();
 
+    const QString getValidURL();
+
     BIN data_;
 };
 

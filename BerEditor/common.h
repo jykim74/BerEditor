@@ -93,4 +93,5 @@ void getBINFromString( BIN *pBin, int nType, const QString& strString );
 QString getStringFromBIN( const BIN *pBin, const QString& strType, bool bSeenOnly = false );
 QString getStringFromBIN( const BIN *pBin, int nType, bool bSeenOnly = false );
 QString getKeyTypeName( int nKeyType );
+
 #endif // COMMON_H

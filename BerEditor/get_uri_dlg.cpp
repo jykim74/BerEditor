@@ -70,7 +70,9 @@ void GetURIDlg::runGet()
     }
     else
     {
-        QString strURI = mURICombo->currentText();
+        QString strURI = getValidURL();
+        berApplet->log( QString( "Get Address: %1").arg( strURI ));
+
         QStringList strList = strURI.split( ":" );
         if( strList.size() < 2 )
         {
@@ -78,11 +80,11 @@ void GetURIDlg::runGet()
             goto end;
         }
 
-        QString strProto = strList.at(0).toUpper();
+        QString strProto = strList.at(0);
 
-        if( strProto == "LDAP" )
+        if( strProto == "ldap" )
             ret = getLDAP();
-        else if( strProto == "HTTP" || strProto == "HTTPS" )
+        else if( strProto == "http" || strProto == "https" )
             ret = getHTTP();
         else
         {
@@ -127,7 +129,7 @@ int GetURIDlg::getLDAP()
         memset( sFilter, 0x00, sizeof(sFilter));
         memset( sAttribute, 0x00, sizeof(sAttribute));
 
-        QString strURI = mURICombo->currentText();
+        QString strURI = getValidURL();
 
         ret = JS_LDAP_parseURI( strURI.toStdString().c_str(), sHost, &nPort, sDN, &nScope, sFilter, sAttribute );
         nType = JS_LDAP_getType( sAttribute );
@@ -175,7 +177,7 @@ int GetURIDlg::getHTTP()
     int ret = 0;
     int nStatus = 0;
 
-    QString strURI = mURICombo->currentText();
+    QString strURI = getValidURL();
 
     ret = JS_HTTP_requestGetBin2( strURI.toStdString().c_str(), NULL, NULL, &nStatus, &data_ );
 
@@ -203,11 +205,6 @@ void GetURIDlg::clickUseLDAPHost()
     mURIGroup->setEnabled( !bVal );
     mURICombo->setEditable( !bVal );
 
-    if( !bVal )
-    {
-        mURICombo->clearEditText();
-    }
-
     mHostInfoGroup->setEnabled( bVal );
 }
 
@@ -218,5 +215,19 @@ void GetURIDlg::clickClearUsedURI()
     settings.setValue( kLDAP, "" );
     settings.endGroup();
 
+    mURICombo->clearEditText();
+    mURICombo->clear();
+
     berApplet->log( "clear used URIs" );
+}
+
+const QString GetURIDlg::getValidURL()
+{
+    QString strURL = mURICombo->currentText();
+    QString strLURL = strURL.toLower();
+
+    strLURL.remove( "url=" );
+    strLURL.remove( "uri=" );
+
+    return strLURL;
 }
