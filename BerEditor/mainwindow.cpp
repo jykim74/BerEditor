@@ -917,20 +917,9 @@ void MainWindow::getURI()
 
     if( ret == QDialog::Accepted )
     {
-        ber_model_->setBer(&getURIDlg.getData());
+        BIN binData = getURIDlg.getData();
 
-        ber_model_->parseTree();
-
-        left_tree_->header()->setVisible(false);
-        left_tree_->viewRoot();
-
-        if( berApplet->isLicense() )
-        {
-            left_tree_->showTextView();
-            left_tree_->showXMLView();
-        }
-
-        setTitle( QString("Unknown" ));
+        decodeData( &binData, "Unknown" );
     }
 }
 

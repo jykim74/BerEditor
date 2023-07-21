@@ -51,6 +51,7 @@ QStringList GetURIDlg::getUsedURI()
 
 void GetURIDlg::saveUsedURI( const QString &strURL )
 {
+    if( strURL.length() <= 4 ) return;
 
     QSettings settings;
     settings.beginGroup( kUsedURI );
@@ -224,10 +225,11 @@ void GetURIDlg::clickClearUsedURI()
 const QString GetURIDlg::getValidURL()
 {
     QString strURL = mURICombo->currentText();
-    QString strLURL = strURL.toLower();
 
-    strLURL.remove( "url=" );
-    strLURL.remove( "uri=" );
+    strURL.remove( "url=" );
+    strURL.remove( "uri=" );
+    strURL.remove( "URL=" );
+    strURL.remove( "URI=" );
 
-    return strLURL;
+    return strURL.simplified();
 }
