@@ -112,7 +112,7 @@ private:
     void createCryptoDlg();
 
     void createTableMenu();
-    void berFileOpen( const QString berPath );
+    int berFileOpen( const QString berPath );
     void setTitle( const QString strName );
 
     void adjustForCurrentFile( const QString& filePath );

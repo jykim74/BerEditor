@@ -710,36 +710,33 @@ QString MainWindow::getLog()
     return log_text_->toPlainText();
 }
 
-void MainWindow::berFileOpen(const QString berPath)
+int MainWindow::berFileOpen(const QString berPath)
 {
     BIN binRead = {0,0};
 
-    int ret = JS_BIN_fileRead( berPath.toLocal8Bit().toStdString().c_str(), &binRead );
+    int ret = JS_BIN_fileReadBER( berPath.toLocal8Bit().toStdString().c_str(), &binRead );
 
     if( ret > 0 )
     {
-        if( strstr((const char *)binRead.pVal, "-----BEGIN ") != NULL )
+        if( berApplet->isLicense() == false )
         {
-            int type = 0;
-            BIN binData = {0,0};
-            char *pPEM = NULL;
-            pPEM = (char *)JS_calloc( 1, binRead.nLen + 1 );
-            memcpy( pPEM, binRead.pVal, binRead.nLen );
-            JS_BIN_decodePEM( pPEM, &type, &binData );
+            if( binRead.nLen > kNoLicenseLimitMaxSize )
+            {
+                QString strMsg = tr( "A BER size greater than 10000 bytes requires a license." );
+                berApplet->warningBox( strMsg, this );
+                return -1;
+            }
+        }
 
-            openBer( &binData );
-            JS_BIN_reset(&binRead);
-            JS_BIN_reset(&binData);
-        }
-        else {
-            openBer( &binRead );
-            JS_BIN_reset(&binRead);
-        }
+        openBer( &binRead );
+        JS_BIN_reset( &binRead );
 
         file_path_ = berPath;
         adjustForCurrentFile( berPath );
         setTitle( berPath );
     }
+
+    return 0;
 }
 
 void MainWindow::setTitle( const QString strName )
@@ -1099,6 +1096,16 @@ void MainWindow::logView( bool bShow )
 
 void MainWindow::decodeData( const BIN *pData, const QString strPath )
 {
+    if( berApplet->isLicense() == false )
+    {
+        if( pData && pData->nLen > kNoLicenseLimitMaxSize )
+        {
+            QString strMsg = tr( "A BER size greater than 10000 bytes requires a license." );
+            berApplet->warningBox( strMsg, this );
+            return;
+        }
+    }
+
     openBer( pData );
     setTitle( QString( strPath ));
 }

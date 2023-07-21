@@ -1629,7 +1629,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">입력 데이타 타입</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1224"/>
+        <location filename="../enc_dec_dlg.ui" line="1221"/>
         <source>Change</source>
         <translation>교환</translation>
     </message>
@@ -1668,7 +1668,7 @@ mailto : jykim74@gmail.com</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1204"/>
+        <location filename="../enc_dec_dlg.ui" line="1201"/>
         <source>Pad</source>
         <translation>패딩</translation>
     </message>
@@ -1703,7 +1703,7 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../enc_dec_dlg.ui" line="59"/>
-        <location filename="../enc_dec_dlg.ui" line="1321"/>
+        <location filename="../enc_dec_dlg.ui" line="1255"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
@@ -1774,7 +1774,7 @@ mailto : jykim74@gmail.com</translation>
         <translation>키 와 IV</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1314"/>
+        <location filename="../enc_dec_dlg.ui" line="1262"/>
         <source>Output Data</source>
         <translation>결과 데이타</translation>
     </message>
@@ -3066,23 +3066,29 @@ Do you want to delete the file and continue?</source>
         <translation>끝내기(&amp;Q)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="964"/>
+        <location filename="../mainwindow.cpp" line="725"/>
+        <location filename="../mainwindow.cpp" line="1103"/>
+        <source>A BER size greater than 10000 bytes requires a license.</source>
+        <translation>BER 크기가 10000 바이트 보다 크면 라이센스가 필요합니다.</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="961"/>
         <source>Do you want to save the file in DER format?
 [The Source is PEM or The Source DER changed]</source>
         <translation>[소스가 PEM 형식인 경우 또는 소스 DER 파일이 변경 됨] DER 형식으로 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="976"/>
+        <location filename="../mainwindow.cpp" line="973"/>
         <source>Copy</source>
         <translation>복사</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="979"/>
+        <location filename="../mainwindow.cpp" line="976"/>
         <source>Select All</source>
         <translation>전체 선택</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="982"/>
+        <location filename="../mainwindow.cpp" line="979"/>
         <source>Unselect All</source>
         <translation>선택 해제</translation>
     </message>
@@ -3294,7 +3300,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">변경 데이타를 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1047"/>
+        <location filename="../mainwindow.cpp" line="1044"/>
         <source>Do you want to overwrite %1 as BER file?</source>
         <translation>파일(%1)을 BER로 덮어 쓰겠습니까?</translation>
     </message>
@@ -3303,7 +3309,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">다른 이름으로 저장...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1113"/>
+        <location filename="../mainwindow.cpp" line="1120"/>
         <source>Print Document</source>
         <translation>문서 인쇄</translation>
     </message>
@@ -3544,17 +3550,17 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">변경 된 데이타를 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1063"/>
+        <location filename="../mainwindow.cpp" line="1060"/>
         <source>BIN Files (*.ber *.der);;All Files (*.*)</source>
         <translation>BIN 파일 (*.ber *.der);;모든 파일들(*.*)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1067"/>
+        <location filename="../mainwindow.cpp" line="1064"/>
         <source>Save As...</source>
         <translation>다른 이름으로 저장 하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1091"/>
+        <location filename="../mainwindow.cpp" line="1088"/>
         <source>log</source>
         <translation>로그</translation>
     </message>
@@ -3800,27 +3806,27 @@ Do you want to delete the file and continue?</source>
         <translation>RSA용 버전</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="454"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="438"/>
         <source>Change</source>
         <translation>교환</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="469"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="453"/>
         <source>ECIES Information</source>
         <translation>ECIES 정보</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="477"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="461"/>
         <source>Tag</source>
         <translation>태그</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="484"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="468"/>
         <source>IV</source>
         <translation>IV</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="616"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="600"/>
         <source>Other Public Key</source>
         <translation>다른 공개키</translation>
     </message>
@@ -3856,7 +3862,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../pub_enc_dec_dlg.ui" line="66"/>
-        <location filename="../pub_enc_dec_dlg.ui" line="788"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="716"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
@@ -3866,7 +3872,7 @@ Do you want to delete the file and continue?</source>
         <translation>특성 및 방식</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="725"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="696"/>
         <source>Output Data</source>
         <translation>결과 데이타</translation>
     </message>

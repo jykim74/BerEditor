@@ -70,6 +70,7 @@ const QString kExtNameSAN = "subjectAltName";
 const QString kExtNameCRLNum = "crlNumber";
 const QString kExtNameIDP = "issuingDistributionPoint";
 const QString kExtNameCRLReason = "CRLReason";
+const int kNoLicenseLimitMaxSize = 10000;
 
 const QString kTableStyle = "QHeaderView::section {background-color:#404040;color:#FFFFFF;}";
 
