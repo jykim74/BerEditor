@@ -610,7 +610,7 @@ void MainWindow::open()
 
     if( !fileName.isEmpty() )
     {
-        berFileOpen(fileName);
+        if( berFileOpen(fileName) != 0 ) return;
 
         QFileInfo fileInfo(fileName);
         QString strDir = fileInfo.dir().path();
