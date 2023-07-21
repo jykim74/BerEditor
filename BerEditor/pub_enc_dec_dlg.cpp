@@ -8,10 +8,12 @@
 #include "ber_applet.h"
 #include "common.h"
 #include "js_pki_tools.h"
+#include "js_ecies.h"
 
 static QStringList algTypes = {
     "RSA",
-    "SM2"
+    "SM2",
+    "ECIES"
 };
 
 static QStringList dataTypes = {
@@ -67,6 +69,10 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
     connect( mPriKeyTypeBtn, SIGNAL(clicked()), this, SLOT(clickPriKeyType()));
     connect( mCertTypeBtn, SIGNAL(clicked()), this, SLOT(clickCertType()));
     connect( mEncPrikeyCheck, SIGNAL(clicked()), this, SLOT(checkEncPriKey()));
+
+    connect( mOtherPubText, SIGNAL(textChanged()), this, SLOT(changeOtherPub()));
+    connect( mIVText, SIGNAL(textChanged(const QString&)), this, SLOT(changeIV(const QString&)));
+    connect( mTagText, SIGNAL(textChanged(const QString&)), this, SLOT(changeTag(const QString&)));
 
     mCloseBtn->setFocus();
 }
@@ -302,6 +308,8 @@ void PubEncDecDlg::Run()
                 mAlgCombo->setCurrentText( "RSA" );
             else if( nAlgType == JS_PKI_KEY_TYPE_SM2 )
                 mAlgCombo->setCurrentText( "SM2" );
+            else if( nAlgType == JS_PKI_KEY_TYPE_ECC )
+                mAlgCombo->setCurrentText( "ECIES" );
             else
             {
                 berApplet->warningBox( tr( "Invalid public key algorithm:%1").arg( strKeyType ), this );
@@ -319,7 +327,7 @@ void PubEncDecDlg::Run()
 
             ret = JS_PKI_RSAEncryptWithPub( nVersion, &binSrc, &binPubKey, &binOut );
         }
-        else
+        else if( mAlgCombo->currentText() == "SM2" )
         {
             if( nAlgType != JS_PKI_KEY_TYPE_SM2 )
             {
@@ -328,6 +336,34 @@ void PubEncDecDlg::Run()
             }
 
             ret = JS_PKI_SM2EncryptWithPub( &binSrc, &binPubKey, &binOut );
+        }
+        else if( mAlgCombo->currentText() == "ECIES" )
+        {
+            BIN binOtherPub = {0,0};
+            BIN binIV = {0,0};
+            BIN binTag = {0,0};
+
+            if( nAlgType != JS_PKI_KEY_TYPE_ECC )
+            {
+                berApplet->warningBox( tr( "Invalid public key algorithm:%1").arg( strKeyType ), this );
+                goto end;
+            }
+
+            ret = JS_ECIES_Encrypt( &binSrc, &binPubKey, &binOtherPub, &binIV, &binTag, &binOut );
+            if( ret == 0 )
+            {
+                mOtherPubText->setPlainText( getHexString( &binOtherPub ));
+                mIVText->setText( getHexString( &binIV ));
+                mTagText->setText( getHexString( &binTag ));
+
+                berApplet->log( QString( "ECIES OtherPub : %1").arg( getHexString(&binOtherPub)));
+                berApplet->log( QString( "ECIES IV       : %1").arg( getHexString(&binIV)));
+                berApplet->log( QString( "ECIES Tag      : %1" ).arg( getHexString( &binTag )));
+            }
+
+            JS_BIN_reset( &binOtherPub );
+            JS_BIN_reset( &binIV );
+            JS_BIN_reset( &binTag );
         }
 
         berApplet->log( QString( "Algorithm     : %1").arg( mAlgCombo->currentText() ));
@@ -350,6 +386,8 @@ void PubEncDecDlg::Run()
                 mAlgCombo->setCurrentText( "RSA" );
             else if( nAlgType == JS_PKI_KEY_TYPE_SM2 )
                 mAlgCombo->setCurrentText( "SM2" );
+            else if( nAlgType == JS_PKI_KEY_TYPE_ECC )
+                mAlgCombo->setCurrentText( "ECIES" );
             else
             {
                 berApplet->warningBox( tr( "Invalid private key algorithm: %1").arg( strKeyType ), this );
@@ -367,7 +405,7 @@ void PubEncDecDlg::Run()
 
             ret = JS_PKI_RSADecryptWithPri( nVersion, &binSrc, &binPri, &binOut );
         }
-        else
+        else if( mAlgCombo->currentText() == "SM2" )
         {
             if( nAlgType != JS_PKI_KEY_TYPE_SM2 )
             {
@@ -376,6 +414,30 @@ void PubEncDecDlg::Run()
             }
 
             ret = JS_PKI_SM2DecryptWithPri( &binSrc, &binPri, &binOut );
+        }
+        else if( mAlgCombo->currentText() == "ECIES" )
+        {
+            BIN binOtherPub = {0,0};
+            BIN binIV = {0,0};
+            BIN binTag = {0,0};
+
+            QString strOtherPub = mOtherPubText->toPlainText();
+            QString strIV = mIVText->text();
+            QString strTag = mTagText->text();
+
+            JS_BIN_decodeHex( strOtherPub.toStdString().c_str(), &binOtherPub );
+            JS_BIN_decodeHex( strIV.toStdString().c_str(), &binIV );
+            JS_BIN_decodeHex( strTag.toStdString().c_str(), &binTag );
+
+            ret = JS_ECIES_Decrypt( &binSrc, &binPri, &binOtherPub, &binIV, &binTag, &binOut );
+
+            berApplet->log( QString( "ECIES OtherPub : %1").arg( getHexString(&binOtherPub)));
+            berApplet->log( QString( "ECIES IV       : %1").arg( getHexString(&binIV)));
+            berApplet->log( QString( "ECIES Tag      : %1" ).arg( getHexString( &binTag )));
+
+            JS_BIN_reset( &binOtherPub );
+            JS_BIN_reset( &binIV );
+            JS_BIN_reset( &binTag );
         }
 
         berApplet->log( QString( "Algorithm      : %1").arg( mAlgCombo->currentText() ));
@@ -485,6 +547,11 @@ void PubEncDecDlg::algChanged()
             mVersionTypeCombo->setEnabled( true );
         else
             mVersionTypeCombo->setEnabled( false );
+
+        if( strAlg == "ECIES" )
+            mECIESGroup->setEnabled( true );
+        else
+            mECIESGroup->setEnabled( false );
     }
     else
     {
@@ -602,6 +669,7 @@ void PubEncDecDlg::checkUseKeyAlg()
     bool bVal = mUseKeyAlgCheck->isChecked();
 
     mAlgCombo->setEnabled( !bVal );
+    algChanged();
 }
 
 void PubEncDecDlg::clickClearDataAll()
@@ -619,4 +687,22 @@ void PubEncDecDlg::checkEncPriKey()
 
     mPasswdLabel->setEnabled(bVal);
     mPasswdText->setEnabled(bVal);
+}
+
+void PubEncDecDlg::changeOtherPub()
+{
+    int nLen = mOtherPubText->toPlainText().length() / 2;
+    mOtherPubLenText->setText( QString( "%1" ).arg(nLen) );
+}
+
+void PubEncDecDlg::changeIV( const QString& text )
+{
+    int nLen = text.length() / 2;
+    mIVLenText->setText( QString( "%1" ).arg(nLen) );
+}
+
+void PubEncDecDlg::changeTag( const QString& text )
+{
+    int nLen = text.length() / 2;
+    mTagLenText->setText( QString( "%1" ).arg(nLen) );
 }

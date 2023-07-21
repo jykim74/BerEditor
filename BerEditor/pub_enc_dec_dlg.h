@@ -41,6 +41,10 @@ private slots:
     void clickClearDataAll();
     void checkEncPriKey();
 
+    void changeOtherPub();
+    void changeIV( const QString& text );
+    void changeTag( const QString& text );
+
 private:
     void initialize();
     int readPrivateKey( BIN *pPriKey );

@@ -2445,22 +2445,27 @@ Do you want to delete the file and continue?</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../get_uri_dlg.ui" line="176"/>
+        <location filename="../get_uri_dlg.ui" line="189"/>
         <source>Use LDAP Host Information</source>
         <translation>LDAP 호스트 정보 사용</translation>
     </message>
     <message>
-        <location filename="../get_uri_dlg.cpp" line="149"/>
+        <location filename="../get_uri_dlg.ui" line="196"/>
+        <source>Clear Used URI</source>
+        <translation>사용된 URI 지우기</translation>
+    </message>
+    <message>
+        <location filename="../get_uri_dlg.cpp" line="152"/>
         <source>fail to connnect LDAP server</source>
         <translation>LDAP 서버 연결 실패</translation>
     </message>
     <message>
-        <location filename="../get_uri_dlg.cpp" line="156"/>
+        <location filename="../get_uri_dlg.cpp" line="159"/>
         <source>fail to bind LDAP server</source>
         <translation>LDAP 서버 바인드 실패</translation>
     </message>
     <message>
-        <location filename="../get_uri_dlg.cpp" line="163"/>
+        <location filename="../get_uri_dlg.cpp" line="166"/>
         <source>fail to get data from LDAP server</source>
         <translation>LDAP 서버로 부터 데이타 가져오기 실패</translation>
     </message>
@@ -3720,12 +3725,12 @@ Do you want to delete the file and continue?</source>
         <translation>공개키 암/복호화(&amp;R)</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="595"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="832"/>
         <source>Run</source>
         <translation>실행</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="588"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="825"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -3741,7 +3746,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../pub_enc_dec_dlg.ui" line="153"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="162"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="168"/>
         <source>Private key and Certificate</source>
         <translation>개인키 및 인증서</translation>
     </message>
@@ -3753,8 +3758,8 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../pub_enc_dec_dlg.ui" line="212"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="161"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="582"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="167"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="649"/>
         <source>Certificate</source>
         <translation>인증서</translation>
     </message>
@@ -3800,7 +3805,27 @@ Do you want to delete the file and continue?</source>
         <translation>교환</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="602"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="469"/>
+        <source>ECIES Information</source>
+        <translation>ECIES 정보</translation>
+    </message>
+    <message>
+        <location filename="../pub_enc_dec_dlg.ui" line="477"/>
+        <source>Tag</source>
+        <translation>태그</translation>
+    </message>
+    <message>
+        <location filename="../pub_enc_dec_dlg.ui" line="484"/>
+        <source>IV</source>
+        <translation>IV</translation>
+    </message>
+    <message>
+        <location filename="../pub_enc_dec_dlg.ui" line="616"/>
+        <source>Other Public Key</source>
+        <translation>다른 공개키</translation>
+    </message>
+    <message>
+        <location filename="../pub_enc_dec_dlg.ui" line="839"/>
         <source>Clear Data All</source>
         <translation>전체 데이타 지우기</translation>
     </message>
@@ -3831,7 +3856,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../pub_enc_dec_dlg.ui" line="66"/>
-        <location filename="../pub_enc_dec_dlg.ui" line="551"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="788"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
@@ -3841,39 +3866,39 @@ Do you want to delete the file and continue?</source>
         <translation>특성 및 방식</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="488"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="725"/>
         <source>Output Data</source>
         <translation>결과 데이타</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="156"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="587"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="162"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="654"/>
         <source>Public Key</source>
         <translation>공개 키</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="157"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="163"/>
         <source>Private key and Public key</source>
         <translation>개인키 및 공개키</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="214"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="220"/>
         <source>KeyPair is good</source>
         <translation>키쌍이 유효합니다</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="216"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="222"/>
         <source>Invalid key pair: %1</source>
         <translation>키쌍이 맞지 않습니다:%1</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="240"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="246"/>
         <source>You have to insert data</source>
         <translation>데이타를 입력 하세요</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="267"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="518"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="273"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="585"/>
         <source>You have to find certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
@@ -3882,17 +3907,17 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">개인키를 선택하세요.</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="556"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="623"/>
         <source>Private Key Type is %1</source>
         <translation>개인키 타입은 %1 이다</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="573"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="640"/>
         <source>You have to find certificate or public key</source>
         <translation>인증서 또는 공개키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="592"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="659"/>
         <source>%1 Type is %2</source>
         <translation>%1 타입은 %2 이다</translation>
     </message>
@@ -3901,41 +3926,42 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">유효하지 않은 개인키 알고리즘입니다.</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="109"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="115"/>
         <source>fail to read private key: %1</source>
         <translation>개인키 읽기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="118"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="124"/>
         <source>You have to insert password</source>
         <translation>암호를 입력해야 합니다</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="126"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="132"/>
         <source>fail to decrypt private key:%1</source>
         <translation>개인키 복호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="307"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="316"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="326"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="315"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="324"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="334"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="348"/>
         <source>Invalid public key algorithm:%1</source>
         <translation>유효하지 않은 공개키 알고리즘입니다:%1</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="364"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="374"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="402"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="412"/>
         <source>Invalid private key algorithm:%1</source>
         <translation>유효하지 않은 개인키 알고리즘입니다:%1</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="355"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="393"/>
         <source>Invalid private key algorithm: %1</source>
         <translation>유효하지 않은 개인키 알고리즘입니다:%1</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="504"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="536"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="571"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="603"/>
         <source>fail to read data</source>
         <translation>데이타 읽기 실패</translation>
     </message>
