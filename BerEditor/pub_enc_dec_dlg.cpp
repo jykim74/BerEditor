@@ -679,6 +679,9 @@ void PubEncDecDlg::clickClearDataAll()
     mPriKeyPath->clear();
     mCertPath->clear();
     mPasswdText->clear();
+    mOtherPubText->clear();
+    mIVText->clear();
+    mTagText->clear();
 }
 
 void PubEncDecDlg::checkEncPriKey()
