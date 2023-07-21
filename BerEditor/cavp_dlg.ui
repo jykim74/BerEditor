@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>659</width>
-    <height>760</height>
+    <height>652</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,13 +19,6 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mCloseBtn">
-       <property name="text">
-        <string>Close</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
       <spacer name="horizontalSpacer_7">
        <property name="orientation">
@@ -39,12 +32,19 @@
        </property>
       </spacer>
      </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mCloseBtn">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -89,13 +89,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Symmetric</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <layout class="QGridLayout" name="gridLayout_3">
          <item row="0" column="5">
           <widget class="QLabel" name="label_4">
@@ -107,19 +100,6 @@
            </property>
            <property name="text">
             <string>Type</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_2">
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Algorithm</string>
            </property>
           </widget>
          </item>
@@ -183,19 +163,25 @@
            </property>
           </spacer>
          </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Symmetric</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
         <widget class="Line" name="line">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_44">
-         <property name="text">
-          <string>Authenticated Encryption</string>
          </property>
         </widget>
        </item>
@@ -261,8 +247,14 @@
            </property>
           </widget>
          </item>
+         <item row="0" column="4">
+          <widget class="QComboBox" name="mAEModeCombo"/>
+         </item>
+         <item row="1" column="1" colspan="4">
+          <widget class="QLineEdit" name="mAEReqFileText"/>
+         </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_45">
+          <widget class="QLabel" name="label_44">
            <property name="minimumSize">
             <size>
              <width>80</width>
@@ -270,15 +262,9 @@
             </size>
            </property>
            <property name="text">
-            <string>Algorithm</string>
+            <string>AE</string>
            </property>
           </widget>
-         </item>
-         <item row="0" column="4">
-          <widget class="QComboBox" name="mAEModeCombo"/>
-         </item>
-         <item row="1" column="1" colspan="4">
-          <widget class="QLineEdit" name="mAEReqFileText"/>
          </item>
         </layout>
        </item>
@@ -290,45 +276,36 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_6">
-         <property name="text">
-          <string>Hash</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <layout class="QGridLayout" name="gridLayout_4">
-         <item row="0" column="4">
-          <widget class="QComboBox" name="mHashTypeCombo"/>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_7">
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>0</height>
-            </size>
-           </property>
+         <item row="1" column="3">
+          <widget class="QPushButton" name="mHashFindBtn">
            <property name="text">
-            <string>Algorithm</string>
+            <string>Find</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="3">
-          <widget class="QLabel" name="label_8">
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>0</height>
-            </size>
-           </property>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_9">
            <property name="text">
-            <string>Type</string>
+            <string>Req File</string>
            </property>
           </widget>
          </item>
          <item row="0" column="1">
           <widget class="QComboBox" name="mHashAlgCombo"/>
+         </item>
+         <item row="1" column="4">
+          <widget class="QPushButton" name="mHashRunBtn">
+           <property name="text">
+            <string>Run</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QComboBox" name="mHashTypeCombo"/>
+         </item>
+         <item row="1" column="1" colspan="2">
+          <widget class="QLineEdit" name="mHashReqFileText"/>
          </item>
          <item row="0" column="2">
           <spacer name="horizontalSpacer_2">
@@ -343,29 +320,31 @@
            </property>
           </spacer>
          </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_9">
+         <item row="0" column="3">
+          <widget class="QLabel" name="label_8">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
-            <string>Req File</string>
+            <string>Type</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="3">
-          <widget class="QPushButton" name="mHashFindBtn">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_6">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
-            <string>Find</string>
+            <string>Hash</string>
            </property>
           </widget>
-         </item>
-         <item row="1" column="4">
-          <widget class="QPushButton" name="mHashRunBtn">
-           <property name="text">
-            <string>Run</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1" colspan="2">
-          <widget class="QLineEdit" name="mHashReqFileText"/>
          </item>
         </layout>
        </item>
@@ -377,27 +356,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_10">
-         <property name="text">
-          <string>HMAC</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <layout class="QGridLayout" name="gridLayout_5">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_11">
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Algorithm</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="3">
           <widget class="QComboBox" name="mHMACHashCombo"/>
          </item>
@@ -451,6 +410,19 @@
            </property>
           </widget>
          </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_10">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>HMAC</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
@@ -461,27 +433,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_14">
-         <property name="text">
-          <string>ECC</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <layout class="QGridLayout" name="gridLayout_6">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_15">
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Algorithm</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="2">
           <widget class="QRadioButton" name="mECC_ECDHRadio">
            <property name="text">
@@ -559,6 +511,19 @@
          <item row="1" column="1" colspan="5">
           <widget class="QLineEdit" name="mECCReqFileText"/>
          </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_14">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>ECC</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
@@ -569,29 +534,9 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_18">
-         <property name="text">
-          <string>RSA</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <layout class="QGridLayout" name="gridLayout_7">
          <item row="0" column="6">
           <widget class="QComboBox" name="mRSATypeCombo"/>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_19">
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Mode</string>
-           </property>
-          </widget>
          </item>
          <item row="0" column="2">
           <widget class="QRadioButton" name="mRSA_PSSRadio">
@@ -654,6 +599,19 @@
            </property>
            <property name="text">
             <string>Type</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_18">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>RSA</string>
            </property>
           </widget>
          </item>
@@ -751,6 +709,12 @@
          </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label_50">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
             <string>DRBG</string>
            </property>
