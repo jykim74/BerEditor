@@ -96,7 +96,13 @@ void GetURIDlg::runGet()
 
 end :
 
-    if( ret == 0 ) QDialog::accept();
+    if( ret == 0 )
+    {
+        berApplet->decodeData( &data_, "Unknown" );
+        QDialog::accept();
+    }
+    else
+        QDialog::reject();
 }
 
 int GetURIDlg::getLDAP()

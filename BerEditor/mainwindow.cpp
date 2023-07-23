@@ -911,16 +911,8 @@ void MainWindow::genOTP()
 
 void MainWindow::getURI()
 {
-    int ret = -1;
     GetURIDlg getURIDlg;
-    ret = getURIDlg.exec();
-
-    if( ret == QDialog::Accepted )
-    {
-        BIN binData = getURIDlg.getData();
-
-        decodeData( &binData, "Unknown" );
-    }
+    getURIDlg.exec();
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
