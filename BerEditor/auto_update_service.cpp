@@ -55,8 +55,8 @@ public:
         win_sparkle_set_appcast_url(getAppcastURI().toUtf8().data());
         win_sparkle_set_app_details(
                     L"BerEditor",
-                    L"ASN Decoder",
-                    QString(STRINGIZE(BER_VIEWER_VERSION)).toStdWString().c_str() );
+                    L"BER DER ASN.1 Editor",
+                    QString(STRINGIZE(BER_EDITOR_VERSION)).toStdWString().c_str() );
     }
 
     void start() {
