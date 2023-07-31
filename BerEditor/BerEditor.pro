@@ -157,10 +157,10 @@ win32 {
         INCLUDEPATH += "C:\msys64\mingw32\include"
 
         Debug {
-            LIBS += -L"../../build-PKILib-Desktop_Qt_5_13_2_MinGW_32_bit-Debug/debug" -lPKILib
+            LIBS += -L"../../build-PKILib-Desktop_Qt_5_15_2_MinGW_32_bit-Debug/debug" -lPKILib
             LIBS += -L"../../PKILib/lib/win32/debug/openssl3/lib" -lcrypto -lssl
         } else {
-            LIBS += -L"../../build-PKILib-Desktop_Qt_5_13_2_MinGW_32_bit-Release/release" -lPKILib
+            LIBS += -L"../../build-PKILib-Desktop_Qt_5_15_2_MinGW_32_bit-Release/release" -lPKILib
             LIBS += -L"../../PKILib/lib/win32/openssl3/lib" -lcrypto -lssl
         }
 
@@ -172,10 +172,10 @@ win32 {
         INCLUDEPATH += "C:\msys64\mingw64\include"
 
         Debug {
-            LIBS += -L"../../build-PKILib-Desktop_Qt_5_13_2_MinGW_64_bit-Debug/debug" -lPKILib
+            LIBS += -L"../../build-PKILib-Desktop_Qt_5_15_2_MinGW_64_bit-Debug/debug" -lPKILib
             LIBS += -L"../../PKILib/lib/win64/debug/openssl3/lib64" -lcrypto -lssl
         } else {
-            LIBS += -L"../../build-PKILib-Desktop_Qt_5_13_2_MinGW_64_bit-Release/release" -lPKILib
+            LIBS += -L"../../build-PKILib-Desktop_Qt_5_15_2_MinGW_64_bit-Release/release" -lPKILib
             LIBS += -L"../../PKILib/lib/win64/openssl3/lib64" -lcrypto -lssl
         }
 
