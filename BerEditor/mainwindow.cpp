@@ -512,6 +512,17 @@ void MainWindow::createActions()
     }
 
     const QIcon aboutIcon = QIcon::fromTheme("berview-icon", QIcon(":/images/bereditor.png"));
+
+    QAction *bugIssueAct = new QAction( aboutIcon, tr("Bug or Issue Report"), this);
+    connect( bugIssueAct, &QAction::triggered, this, &MainWindow::bugIssueReport);
+    helpMenu->addAction( bugIssueAct );
+    bugIssueAct->setStatusTip(tr("Bug or Issue Report"));
+
+    QAction *qnaAct = new QAction( aboutIcon, tr("Q and A"), this);
+    connect( qnaAct, &QAction::triggered, this, &MainWindow::qnaDiscussion);
+    helpMenu->addAction( qnaAct );
+    qnaAct->setStatusTip(tr("Question and Answer"));
+
     QAction *aboutAct = new QAction( aboutIcon, tr("&About BerEditor"), this );
     connect( aboutAct, &QAction::triggered, this, &MainWindow::about );
     aboutAct->setStatusTip(tr("Show the BerEditor"));
@@ -1059,6 +1070,18 @@ void MainWindow::clearLog()
 {
     log_text_->clear();
 //    info_text_->clear();
+}
+
+void MainWindow::bugIssueReport()
+{
+    QString link = "https://github.com/jykim74/BerEditor/issues/new";
+    QDesktopServices::openUrl(QUrl(link));
+}
+
+void MainWindow::qnaDiscussion()
+{
+    QString link = "https://github.com/jykim74/BerEditor/discussions/new?category=q-a";
+    QDesktopServices::openUrl(QUrl(link));
 }
 
 void MainWindow::logView( bool bShow )

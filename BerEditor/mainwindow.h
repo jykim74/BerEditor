@@ -90,6 +90,8 @@ private slots:
     void saveAs();
     void clearLog();
 
+    void bugIssueReport();
+    void qnaDiscussion();
 
     void print();
     void printPreview(QPrinter *printer);
