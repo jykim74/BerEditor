@@ -122,8 +122,8 @@ mac {
     LIBS += -framework Carbon
     LIBS += -framework Foundation
     LIBS += -framework ApplicationServices
-#    LIBS += -framework Sparkle
-#    INCLUDEPATH += "/usr/local/Sparkle.framework/Headers"
+    LIBS += -framework Sparkle
+    INCLUDEPATH += "/usr/local/Sparkle.framework/Headers"
 
     INCLUDEPATH += "/usr/local/include"
     CONFIG( debug, debug | release ) {
