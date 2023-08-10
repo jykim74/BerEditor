@@ -30,6 +30,12 @@ public:
 
     void setFontFamily( const QString& strFamily );
     QString getFontFamily();
+
+    void setEmail( const QString strEmail );
+    QString getEmail();
+
+    void setLicense( const QString strLicense );
+    QString getLicense();
 signals:
 
 private:

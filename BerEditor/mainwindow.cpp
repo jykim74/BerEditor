@@ -26,6 +26,7 @@
 #include "cavp_dlg.h"
 #include "insert_ber_dlg.h"
 #include "cert_pvd_dlg.h"
+#include "lcn_info_dlg.h"
 #include "common.h"
 
 #include <QtWidgets>
@@ -510,6 +511,12 @@ void MainWindow::createActions()
         helpMenu->addAction( clearAct );
         helpToolBar->addAction( clearAct );
     }
+
+    const QIcon lcnIcon = QIcon::fromTheme("berview-license", QIcon(":/images/license.png"));
+    QAction *lcnAct = new QAction( lcnIcon, tr("License Information"), this);
+    connect( lcnAct, &QAction::triggered, this, &MainWindow::licenseInfo);
+    helpMenu->addAction( lcnAct );
+    lcnAct->setStatusTip(tr("License Information"));
 
     const QIcon aboutIcon = QIcon::fromTheme("berview-icon", QIcon(":/images/bereditor.png"));
 
@@ -1070,6 +1077,16 @@ void MainWindow::clearLog()
 {
     log_text_->clear();
 //    info_text_->clear();
+}
+
+void MainWindow::licenseInfo()
+{
+    LCNInfoDlg lcnInfoDlg;
+    if( lcnInfoDlg.exec() == QDialog::Accepted )
+    {
+        if( berApplet->yesOrNoBox(tr("You have changed license. Restart to apply it?"), this, true))
+            berApplet->restartApp();
+    }
 }
 
 void MainWindow::bugIssueReport()

@@ -13,7 +13,7 @@ qtHaveModule(printsupport): QT += printsupport
 
 TARGET = BerEditor
 TEMPLATE = app
-PROJECT_VERSION = "1.4.4"
+PROJECT_VERSION = "1.4.5"
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -60,6 +60,7 @@ SOURCES += \
     insert_data_dlg.cpp \
     key_agree_dlg.cpp \
     key_man_dlg.cpp \
+    lcn_info_dlg.cpp \
     main.cpp \
     mainwindow.cpp \
     num_trans_dlg.cpp \
@@ -97,6 +98,7 @@ HEADERS += \
     insert_data_dlg.h \
     key_agree_dlg.h \
     key_man_dlg.h \
+    lcn_info_dlg.h \
     mainwindow.h \
     num_trans_dlg.h \
     oid_info_dlg.h \
@@ -202,6 +204,7 @@ FORMS += \
         insert_data_dlg.ui \
         key_agree_dlg.ui \
         key_man_dlg.ui \
+        lcn_info_dlg.ui \
         mainwindow.ui \
         num_trans_dlg.ui \
         oid_info_dlg.ui \

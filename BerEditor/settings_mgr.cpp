@@ -9,6 +9,8 @@ const char *kShowLogTab = "showLogTab";
 const char *kDefaultHash = "defaultHash";
 const char *kFileReadSize = "fileReadSize";
 const char *kFontFamily = "fontFamily";
+const char *kEmail = "email";
+const char *kLicense = "license";
 }
 
 SettingsMgr::SettingsMgr(QObject *parent) : QObject(parent)
@@ -147,4 +149,42 @@ QString SettingsMgr::getFontFamily()
     sets.endGroup();
 
     return strFamily;
+}
+
+void SettingsMgr::setEmail( const QString strEmail )
+{
+    QSettings sets;
+    sets.beginGroup( kBehaviorGroup );
+    sets.setValue( kEmail, strEmail );
+    sets.endGroup();
+}
+
+QString SettingsMgr::getEmail()
+{
+    QSettings sets;
+
+    sets.beginGroup( kBehaviorGroup );
+    QString strEmail = sets.value( kEmail, "" ).toString();
+    sets.endGroup();
+
+    return strEmail;
+}
+
+void SettingsMgr::setLicense( const QString strLicense )
+{
+    QSettings sets;
+    sets.beginGroup( kBehaviorGroup );
+    sets.setValue( kLicense, strLicense );
+    sets.endGroup();
+}
+
+QString SettingsMgr::getLicense()
+{
+    QSettings sets;
+
+    sets.beginGroup( kBehaviorGroup );
+    QString strLicense = sets.value( kLicense, "" ).toString();
+    sets.endGroup();
+
+    return strLicense;
 }

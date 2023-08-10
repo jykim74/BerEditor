@@ -95,4 +95,6 @@ QString getStringFromBIN( const BIN *pBin, const QString& strType, bool bSeenOnl
 QString getStringFromBIN( const BIN *pBin, int nType, bool bSeenOnly = false );
 QString getKeyTypeName( int nKeyType );
 
+bool isEmail( const QString strEmail );
+
 #endif // COMMON_H

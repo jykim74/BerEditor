@@ -1094,3 +1094,12 @@ QString getKeyTypeName( int nKeyType )
 
     return QString( "Unknown[%1]").arg( nKeyType );
 }
+
+bool isEmail( const QString strEmail )
+{
+    QRegExp mailREX("\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b");
+    mailREX.setCaseSensitivity(Qt::CaseInsensitive);
+    mailREX.setPatternSyntax(QRegExp::Wildcard);
+
+    return mailREX.exactMatch( strEmail );
+}

@@ -89,6 +89,7 @@ private slots:
     void save();
     void saveAs();
     void clearLog();
+    void licenseInfo();
 
     void bugIssueReport();
     void qnaDiscussion();

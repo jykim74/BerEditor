@@ -129,18 +129,27 @@ void BerApplet::decodeData( const BIN *pData, const QString strPath )
 int BerApplet::checkLicense()
 {
     int ret = 0;
+    time_t ntp_t = 0;
+#if 0
     QFile resFile( ":/bereditor_license.lcn" );
     resFile.open(QIODevice::ReadOnly);
     QByteArray data = resFile.readAll();
     resFile.close();
-    time_t ntp_t = 0;
 
     memcpy( &license_info_, data.data(), data.size() );
+#else
+    BIN binLCN = {0,0};
+    QString strLicense = settings_mgr_->getLicense();
+    JS_BIN_decodeHex( strLicense.toStdString().c_str(), &binLCN );
+
+    JS_LCN_ParseBIN( &binLCN, &license_info_ );
+    JS_BIN_reset( &binLCN );
+#endif
 
     ntp_t = JS_NET_clientNTP( JS_NTP_SERVER, JS_NTP_PORT, 2 );
     if( ntp_t <= 0 ) ntp_t = time(NULL);
 
-    ret = JS_License_IsValid( &license_info_, LICENSE_PRODUCT_BEREDITOR_NAME, NULL, ntp_t );
+    ret = JS_LCN_IsValid( &license_info_, LICENSE_PRODUCT_BEREDITOR_NAME, NULL, ntp_t );
     if( ret == LICENSE_VALID )
         is_license_ = true;
     else
