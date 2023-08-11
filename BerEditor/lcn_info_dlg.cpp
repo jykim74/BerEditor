@@ -38,8 +38,8 @@ void LCNInfoDlg::initialize()
         QString strExt;
         JS_LICENSE_INFO sLicenseInfo = berApplet->LicenseInfo();
 
-        QDateTime issueTime = QDateTime::fromString( sLicenseInfo.sIssued, LICENSE_TIME_FORMAT);
-        QDateTime expireTime = QDateTime::fromString( sLicenseInfo.sExpire, LICENSE_TIME_FORMAT );
+        QDateTime issueTime = QDateTime::fromString( sLicenseInfo.sIssued, JS_LCN_TIME_FORMAT);
+        QDateTime expireTime = QDateTime::fromString( sLicenseInfo.sExpire, JS_LCN_TIME_FORMAT );
 
         strExt = sLicenseInfo.sExt;
 
@@ -51,8 +51,8 @@ void LCNInfoDlg::initialize()
         mCurIssueDateText->setText( issueTime.toString( "yyyy-MM-dd HH:mm:ss") );
         mCurExpireDateText->setText( expireTime.toString( "yyyy-MM-dd HH:mm:ss") );
 
-        ret = JS_LCN_IsValid( &sLicenseInfo, LICENSE_PRODUCT_BEREDITOR_NAME, sLicenseInfo.sSID, time(NULL) );
-        if( ret == LICENSE_VALID )
+        ret = JS_LCN_IsValid( &sLicenseInfo, JS_LCN_PRODUCT_BEREDITOR_NAME, sLicenseInfo.sSID, time(NULL) );
+        if( ret == JS_LCN_VALID )
             mCurGroup->setEnabled( true );
         else
             mCurGroup->setEnabled( false );
@@ -76,8 +76,8 @@ bool LCNInfoDlg::isValidLCN( const BIN *pLCN, const char *pSID )
     ret = JS_LCN_ParseBIN( pLCN, &sInfo );
     if( ret != 0 ) return false;
 
-    ret = JS_LCN_IsValid( &sInfo, LICENSE_PRODUCT_BEREDITOR_NAME, pSID, time(NULL) );
-    if( ret == LICENSE_VALID ) return true;
+    ret = JS_LCN_IsValid( &sInfo, JS_LCN_PRODUCT_BEREDITOR_NAME, pSID, time(NULL) );
+    if( ret == JS_LCN_VALID ) return true;
 
     return false;
 }
@@ -215,8 +215,8 @@ void LCNInfoDlg::clickGet()
         goto end;
     }
 
-    ret = JS_LCN_IsValid( &sInfo, LICENSE_PRODUCT_BEREDITOR_NAME, sInfo.sSID, time(NULL) );
-    if( ret != LICENSE_VALID )
+    ret = JS_LCN_IsValid( &sInfo, JS_LCN_PRODUCT_BEREDITOR_NAME, sInfo.sSID, time(NULL) );
+    if( ret != JS_LCN_VALID )
     {
         strErr = tr("license is not valid:%1").arg(ret);
 
