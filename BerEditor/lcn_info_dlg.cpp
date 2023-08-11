@@ -96,7 +96,7 @@ int LCNInfoDlg::getLCN( BIN *pLCN )
 
     memset( &sNameVal, 0x00, sizeof(sNameVal));
 
-    strURL = "http://127.0.0.1";
+    strURL = JS_LCN_HOST;
     strURL += JS_CC_PATH_LICENSE;
 
     JS_UTIL_createNameValList2( "email", strEmail.toStdString().c_str(), &pParamList );
@@ -140,7 +140,7 @@ int LCNInfoDlg::updateLCN( const QString strEmail, const QString strKey, BIN *pL
 
     memset( &sNameVal, 0x00, sizeof(sNameVal));
 
-    strURL = "http://127.0.0.1";
+    strURL = JS_LCN_HOST;
     strURL += JS_CC_PATH_LICENSE;
     strURL += "/update";
 
