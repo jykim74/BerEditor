@@ -32,31 +32,26 @@ LCNInfoDlg::~LCNInfoDlg()
 void LCNInfoDlg::initialize()
 {
     int ret = 0;
-    BIN binLCN = {0,0};
-    JS_LICENSE_INFO sInfo;
 
-    QString strEmail = berApplet->settingsMgr()->getEmail();
-    QString strLicense = berApplet->settingsMgr()->getLicense();
-
-    mEmailText->setText( strEmail );
-
-    memset( &sInfo, 0x00, sizeof(sInfo));
-
-    if( strLicense.length() <= 0 )
-        mCurGroup->setEnabled( false );
-
-    JS_BIN_decodeHex( strLicense.toStdString().c_str(), &binLCN );
-
-    if( JS_LCN_ParseBIN( &binLCN, &sInfo ) == 0 )
+    if( berApplet->isLicense() )
     {
-        QDateTime issueTime = QDateTime::fromString( sInfo.sIssued, LICENSE_TIME_FORMAT);
-        QDateTime expireTime = QDateTime::fromString( sInfo.sExpire, LICENSE_TIME_FORMAT );
+        QString strExt;
+        JS_LICENSE_INFO sLicenseInfo = berApplet->LicenseInfo();
 
-        mCurEmailText->setText( sInfo.sUser );
+        QDateTime issueTime = QDateTime::fromString( sLicenseInfo.sIssued, LICENSE_TIME_FORMAT);
+        QDateTime expireTime = QDateTime::fromString( sLicenseInfo.sExpire, LICENSE_TIME_FORMAT );
+
+        strExt = sLicenseInfo.sExt;
+
+        if( strExt.toUpper() == "DEMO" )
+            mCurEmailText->setText( "For Demo");
+        else
+            mCurEmailText->setText( sLicenseInfo.sUser );
+
         mCurIssueDateText->setText( issueTime.toString( "yyyy-MM-dd HH:mm:ss") );
         mCurExpireDateText->setText( expireTime.toString( "yyyy-MM-dd HH:mm:ss") );
 
-        ret = JS_LCN_IsValid( &sInfo, LICENSE_PRODUCT_BEREDITOR_NAME, sInfo.sSID, time(NULL) );
+        ret = JS_LCN_IsValid( &sLicenseInfo, LICENSE_PRODUCT_BEREDITOR_NAME, sLicenseInfo.sSID, time(NULL) );
         if( ret == LICENSE_VALID )
             mCurGroup->setEnabled( true );
         else
@@ -69,8 +64,6 @@ void LCNInfoDlg::initialize()
 
 //    mReqGroup->setEnabled( !mCurGroup->isEnabled() );
     mUpdateBtn->setEnabled( mCurGroup->isEnabled() );
-
-    JS_BIN_reset( &binLCN );
 }
 
 bool LCNInfoDlg::isValidLCN( const BIN *pLCN, const char *pSID )
