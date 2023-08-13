@@ -164,7 +164,10 @@ end :
 
 QString BerApplet::getBrand()
 {
-    return QString::fromUtf8( "BerEditor" );
+    if( is_license_ )
+        return QString::fromUtf8( "BerEditor" );
+    else
+        return QString::fromUtf8( "BerEditorLite" );
 }
 
 void BerApplet::warningBox(const QString& msg, QWidget *parent)
