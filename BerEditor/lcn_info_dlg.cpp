@@ -32,6 +32,7 @@ LCNInfoDlg::~LCNInfoDlg()
 void LCNInfoDlg::initialize()
 {
     int ret = 0;
+    mUpdateBtn->setEnabled( false );
 
     if( berApplet->isLicense() )
     {
@@ -42,6 +43,7 @@ void LCNInfoDlg::initialize()
         QDateTime expireTime = QDateTime::fromString( sLicenseInfo.sExpire, JS_LCN_TIME_FORMAT );
 
         strExt = sLicenseInfo.sExt;
+        if( sLicenseInfo.nType == 1 )  mUpdateBtn->setEnabled(true);
 
         if( strExt.toUpper() == "DEMO" )
             mCurEmailText->setText( "For Demo");
