@@ -262,6 +262,7 @@ void LCNInfoDlg::clickUpdate()
     BIN binLCN = {0,0};
     BIN binNewLCN = {0,0};
     JS_LICENSE_INFO sInfo;
+    QString strErr;
 
     QString strEmail = berApplet->settingsMgr()->getEmail();
     QString strLicense = berApplet->settingsMgr()->getLicense();
@@ -281,6 +282,9 @@ void LCNInfoDlg::clickUpdate()
         ret = updateLCN( sInfo.sSID, sInfo.sKey, &binNewLCN );
         if( ret != 0 )
         {
+            strErr = tr( "fail to renew license:%1").arg( ret );
+            berApplet->elog( strErr );
+            berApplet->warningBox( strErr, this );
             goto end;
         }
 

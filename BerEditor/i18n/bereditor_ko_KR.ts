@@ -95,29 +95,29 @@ mailto : jykim74@gmail.com</translation>
 <context>
     <name>BerApplet</name>
     <message>
-        <location filename="../ber_applet.cpp" line="176"/>
-        <location filename="../ber_applet.cpp" line="206"/>
+        <location filename="../ber_applet.cpp" line="179"/>
+        <location filename="../ber_applet.cpp" line="209"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="217"/>
-        <location filename="../ber_applet.cpp" line="231"/>
-        <location filename="../ber_applet.cpp" line="247"/>
-        <location filename="../ber_applet.cpp" line="271"/>
+        <location filename="../ber_applet.cpp" line="220"/>
+        <location filename="../ber_applet.cpp" line="234"/>
+        <location filename="../ber_applet.cpp" line="250"/>
+        <location filename="../ber_applet.cpp" line="274"/>
         <source>Yes</source>
         <translation>예</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="218"/>
-        <location filename="../ber_applet.cpp" line="248"/>
-        <location filename="../ber_applet.cpp" line="272"/>
+        <location filename="../ber_applet.cpp" line="221"/>
+        <location filename="../ber_applet.cpp" line="251"/>
+        <location filename="../ber_applet.cpp" line="275"/>
         <source>No</source>
         <translation>아니오</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="232"/>
-        <location filename="../ber_applet.cpp" line="249"/>
+        <location filename="../ber_applet.cpp" line="235"/>
+        <location filename="../ber_applet.cpp" line="252"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
@@ -2999,8 +2999,12 @@ Do you want to delete the file and continue?</source>
         <translation>현재 라이선스</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.ui" line="46"/>
         <source>Issue Date</source>
+        <translation type="vanished">발급 일자</translation>
+    </message>
+    <message>
+        <location filename="../lcn_info_dlg.ui" line="46"/>
+        <source>Issued Date</source>
         <translation>발급 일자</translation>
     </message>
     <message>
@@ -3045,24 +3049,29 @@ Do you want to delete the file and continue?</source>
         <translation>갱신</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="200"/>
+        <location filename="../lcn_info_dlg.cpp" line="213"/>
         <source>fail to get license:%1</source>
         <translation>라이선스 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="212"/>
+        <location filename="../lcn_info_dlg.cpp" line="225"/>
         <source>fail to parse license:%1</source>
         <translation>라이선스 파싱 실패: %1</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="221"/>
+        <location filename="../lcn_info_dlg.cpp" line="234"/>
         <source>license is not valid:%1</source>
         <translation>라이선스가 유효하지 않습니다: %1</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="260"/>
+        <location filename="../lcn_info_dlg.cpp" line="274"/>
         <source>There is no current license</source>
         <translation>현재 라이선스가 없습니다</translation>
+    </message>
+    <message>
+        <location filename="../lcn_info_dlg.cpp" line="285"/>
+        <source>fail to renew license:%1</source>
+        <translation>라이선스 갱신 실패: %1</translation>
     </message>
 </context>
 <context>
