@@ -23,8 +23,8 @@ private slots:
     void checkUseFile();
 
 private:
+    QString getLicenseURI();
     void initialize();
-    bool isValidLCN( const BIN *pLCN, const char *pSID );
     int getLCN( BIN *pLCN );
     int updateLCN( const QString strEmail, const QString strKey, BIN *pLCN );
 };

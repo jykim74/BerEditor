@@ -10,6 +10,7 @@
 #include "js_http.h"
 #include "js_cc.h"
 
+const QString kLicenseURI = "http://127.0.0.1";
 
 LCNInfoDlg::LCNInfoDlg(QWidget *parent) :
     QDialog(parent)
@@ -27,6 +28,21 @@ LCNInfoDlg::LCNInfoDlg(QWidget *parent) :
 LCNInfoDlg::~LCNInfoDlg()
 {
 
+}
+
+QString LCNInfoDlg::getLicenseURI()
+{
+    QString url_from_env = qgetenv("JS_INC_LICENSE_URI");
+
+    if( !url_from_env.isEmpty() )
+    {
+        qWarning( "winsparkle: using app cast url from JS_INC_LICENSE_URI: "
+                  "%s", url_from_env.toUtf8().data() );
+
+        return url_from_env;
+    }
+
+    return kLicenseURI;
 }
 
 void LCNInfoDlg::initialize()
@@ -73,21 +89,6 @@ void LCNInfoDlg::initialize()
     mUpdateBtn->setEnabled( mCurGroup->isEnabled() );
 }
 
-bool LCNInfoDlg::isValidLCN( const BIN *pLCN, const char *pSID )
-{
-    int ret = 0;
-    JS_LICENSE_INFO sInfo;
-
-    memset( &sInfo, 0x00, sizeof(sInfo));
-
-    ret = JS_LCN_ParseBIN( pLCN, &sInfo );
-    if( ret != 0 ) return false;
-
-    ret = JS_LCN_IsValid( &sInfo, JS_LCN_PRODUCT_BEREDITOR_NAME, pSID, time(NULL) );
-    if( ret == JS_LCN_VALID ) return true;
-
-    return false;
-}
 
 int LCNInfoDlg::getLCN( BIN *pLCN )
 {
@@ -100,14 +101,17 @@ int LCNInfoDlg::getLCN( BIN *pLCN )
 
     QString strEmail = mEmailText->text();
     QString strKey = mKeyText->text();
+    QString strProduct = berApplet->getBrand();
 
     memset( &sNameVal, 0x00, sizeof(sNameVal));
+    strProduct.remove( "Lite" );
 
-    strURL = JS_LCN_HOST;
+    strURL = getLicenseURI();
     strURL += JS_CC_PATH_LICENSE;
 
     JS_UTIL_createNameValList2( "email", strEmail.toStdString().c_str(), &pParamList );
     JS_UTIL_appendNameValList2( pParamList, "key", strKey.toStdString().c_str() );
+    JS_UTIL_appendNameValList2( pParamList, "product", strProduct.toStdString().c_str() );
 
     ret = JS_HTTP_requestResponse(
                 strURL.toStdString().c_str(),
@@ -144,14 +148,17 @@ int LCNInfoDlg::updateLCN( const QString strEmail, const QString strKey, BIN *pL
     JNameValList *pParamList = NULL;
     char *pRsp = NULL;
     JCC_NameVal sNameVal;
+    QString strProduct = berApplet->getBrand();
 
     memset( &sNameVal, 0x00, sizeof(sNameVal));
+    strProduct.remove( "Lite" );
 
-    strURL = JS_LCN_HOST;
+    strURL = getLicenseURI();
     strURL += JS_CC_PATH_LCN_RENEW;
 
     JS_UTIL_createNameValList2( "email", strEmail.toStdString().c_str(), &pParamList );
     JS_UTIL_appendNameValList2( pParamList, "key", strKey.toStdString().c_str() );
+    JS_UTIL_appendNameValList2( pParamList, "product", strProduct.toStdString().c_str() );
 
     ret = JS_HTTP_requestResponse(
                 strURL.toStdString().c_str(),
