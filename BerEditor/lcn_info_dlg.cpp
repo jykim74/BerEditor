@@ -32,6 +32,7 @@ LCNInfoDlg::~LCNInfoDlg()
 void LCNInfoDlg::initialize()
 {
     int ret = 0;
+    mUpdateBtn->setEnabled( false );
 
     if( berApplet->isLicense() )
     {
@@ -53,9 +54,14 @@ void LCNInfoDlg::initialize()
 
         ret = JS_LCN_IsValid( &sLicenseInfo, JS_LCN_PRODUCT_BEREDITOR_NAME, sLicenseInfo.sSID, time(NULL) );
         if( ret == JS_LCN_VALID )
+        {
             mCurGroup->setEnabled( true );
+            mUpdateBtn->setEnabled( true );
+        }
         else
+        {
             mCurGroup->setEnabled( false );
+        }
     }
     else
     {
@@ -142,8 +148,7 @@ int LCNInfoDlg::updateLCN( const QString strEmail, const QString strKey, BIN *pL
     memset( &sNameVal, 0x00, sizeof(sNameVal));
 
     strURL = JS_LCN_HOST;
-    strURL += JS_CC_PATH_LICENSE;
-    strURL += "/update";
+    strURL += JS_CC_PATH_LCN_RENEW;
 
     JS_UTIL_createNameValList2( "email", strEmail.toStdString().c_str(), &pParamList );
     JS_UTIL_appendNameValList2( pParamList, "key", strKey.toStdString().c_str() );
