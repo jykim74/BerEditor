@@ -10,7 +10,7 @@
 #include "js_http.h"
 #include "js_cc.h"
 
-const QString kLicenseURI = "http://127.0.0.1";
+const QString kLicenseURI = "http://34.64.56.160";
 
 LCNInfoDlg::LCNInfoDlg(QWidget *parent) :
     QDialog(parent)
