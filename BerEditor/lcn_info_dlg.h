@@ -27,6 +27,7 @@ private:
     void initialize();
     int getLCN( BIN *pLCN );
     int updateLCN( const QString strEmail, const QString strKey, BIN *pLCN );
+    void settingsLCN( const QString strSID, const BIN *pLCN );
 };
 
 #endif // LCN_INFO_DLG_H
