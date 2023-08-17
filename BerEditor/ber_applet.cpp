@@ -140,7 +140,7 @@ int BerApplet::checkLicense()
     QString strLicense = settings_mgr_->getLicense();
     JS_BIN_decodeHex( strLicense.toStdString().c_str(), &binEncLCN );
 
-    JS_LCN_dec( strEmail.toStdString().c_str(), &binEncLCN, &binLCN );
+    if( binEncLCN.nLen > 0 ) JS_LCN_dec( strEmail.toStdString().c_str(), &binEncLCN, &binLCN );
 
     ret = JS_LCN_ParseBIN( &binLCN, &license_info_ );
     if( ret != 0 )
