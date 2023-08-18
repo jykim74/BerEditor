@@ -54,8 +54,8 @@ public:
         win_sparkle_set_registry_path(kWinSparkleRegPath);
         win_sparkle_set_appcast_url(getAppcastURI().toUtf8().data());
         win_sparkle_set_app_details(
+                    L"JS Inc",
                     L"BerEditor",
-                    L"BER DER ASN.1 Editor",
                     QString(STRINGIZE(BER_EDITOR_VERSION)).toStdWString().c_str() );
     }
 
@@ -155,7 +155,7 @@ void AutoUpdateService::checkUpdate()
 }
 
 bool AutoUpdateService::shouldSupportAutoUpdate() const {
-    return QString("BerEditor") == "BerEditor";
+    return QString("BerEditor") == berApplet->getBrand();
 }
 
 bool AutoUpdateService::autoUpdateEnabled() const {

@@ -40,7 +40,7 @@ public:
                                                QMessageBox::StandardButton default_btn);
     bool yesOrCancelBox(const QString& msg, QWidget *parent, bool default_ok);
 
-    QString getBrand();
+    static QString getBrand();
     bool closingDown() { return in_exit_ || about_to_quit_; };
 
     void restartApp();

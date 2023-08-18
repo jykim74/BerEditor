@@ -13,7 +13,7 @@ qtHaveModule(printsupport): QT += printsupport
 
 TARGET = BerEditor
 TEMPLATE = app
-PROJECT_VERSION = "1.4.5"
+PROJECT_VERSION = "1.4.6"
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -114,6 +114,8 @@ HEADERS += \
 # Sparkle.framework 를 Qt/5.11.3/clang_64/lib/ 에 복사 해 주었음
 
 mac {
+    QMAKE_INFO_PLIST = info.plist
+
     ICON = bereditor.icns
     QMAKE_LFLAGS += -Wl,-rpath,@loader_path/../Frameworks
     HEADERS += mac_sparkle_support.h

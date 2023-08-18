@@ -48,5 +48,6 @@
         <file>bereditor_license.lcn</file>
         <file>images/cert.png</file>
         <file>images/license.png</file>
+        <file>Info.plist</file>
     </qresource>
 </RCC>

@@ -13,17 +13,17 @@
         <translation>BerViewer 에 대해서</translation>
     </message>
     <message>
-        <location filename="../about_dlg.ui" line="51"/>
+        <location filename="../about_dlg.ui" line="53"/>
         <source>Current Version</source>
         <translation>현재 버전</translation>
     </message>
     <message>
-        <location filename="../about_dlg.ui" line="82"/>
+        <location filename="../about_dlg.ui" line="84"/>
         <source>Check For Update</source>
         <translation>업데이트 확인</translation>
     </message>
     <message>
-        <location filename="../about_dlg.ui" line="102"/>
+        <location filename="../about_dlg.ui" line="104"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
@@ -95,29 +95,29 @@ mailto : jykim74@gmail.com</translation>
 <context>
     <name>BerApplet</name>
     <message>
-        <location filename="../ber_applet.cpp" line="179"/>
-        <location filename="../ber_applet.cpp" line="209"/>
+        <location filename="../ber_applet.cpp" line="183"/>
+        <location filename="../ber_applet.cpp" line="213"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="220"/>
-        <location filename="../ber_applet.cpp" line="234"/>
-        <location filename="../ber_applet.cpp" line="250"/>
-        <location filename="../ber_applet.cpp" line="274"/>
+        <location filename="../ber_applet.cpp" line="224"/>
+        <location filename="../ber_applet.cpp" line="238"/>
+        <location filename="../ber_applet.cpp" line="254"/>
+        <location filename="../ber_applet.cpp" line="278"/>
         <source>Yes</source>
         <translation>예</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="221"/>
-        <location filename="../ber_applet.cpp" line="251"/>
-        <location filename="../ber_applet.cpp" line="275"/>
+        <location filename="../ber_applet.cpp" line="225"/>
+        <location filename="../ber_applet.cpp" line="255"/>
+        <location filename="../ber_applet.cpp" line="279"/>
         <source>No</source>
         <translation>아니오</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="235"/>
-        <location filename="../ber_applet.cpp" line="252"/>
+        <location filename="../ber_applet.cpp" line="239"/>
+        <location filename="../ber_applet.cpp" line="256"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
@@ -3049,27 +3049,27 @@ Do you want to delete the file and continue?</source>
         <translation>갱신</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="213"/>
+        <location filename="../lcn_info_dlg.cpp" line="224"/>
         <source>fail to get license:%1</source>
         <translation>라이선스 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="225"/>
+        <location filename="../lcn_info_dlg.cpp" line="236"/>
         <source>fail to parse license:%1</source>
         <translation>라이선스 파싱 실패: %1</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="234"/>
+        <location filename="../lcn_info_dlg.cpp" line="245"/>
         <source>license is not valid:%1</source>
         <translation>라이선스가 유효하지 않습니다: %1</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="274"/>
+        <location filename="../lcn_info_dlg.cpp" line="285"/>
         <source>There is no current license</source>
         <translation>현재 라이선스가 없습니다</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="285"/>
+        <location filename="../lcn_info_dlg.cpp" line="296"/>
         <source>fail to renew license:%1</source>
         <translation>라이선스 갱신 실패: %1</translation>
     </message>
