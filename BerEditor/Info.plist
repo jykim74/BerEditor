@@ -15,9 +15,9 @@
 	<key>CFBundleName</key>
 	<string>BerEditor</string>
 	<key>CFBundleShortVersionString</key>
-        <string>2.4.6</string>
+        <string>1.4.6</string>
 	<key>CFBundleVersion</key>
-        <string>2.4.6</string>
+        <string>1.4.6</string>
 	<key>CFBundleSignature</key>
 	<string></string>
     <key>NSRequiresAquaSystemAppearance</key>
@@ -51,6 +51,8 @@
 	<key>NSSupportsAutomaticGraphicsSwitching</key>
 	<string>True</string>
     <!-- For Sparkle Framework -->
+        <key>SUPublicEDKey</key>
+        <string>TLJn+zNF8t6SpCGDfDjjKEJGnv40yVGKJrK1XBhyVKo=</string>
 	<key>SUFeedURL</key>
 	<string>https://jykim74.github.io/appcast/bereditor_appcast_mac.xml</string>
 	<key>CFBundleLocalizations</key>
