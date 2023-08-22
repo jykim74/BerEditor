@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>557</width>
-    <height>672</height>
+    <width>612</width>
+    <height>790</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -301,6 +301,25 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mPathClearBtn">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>100</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Path Clear</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
@@ -369,13 +388,6 @@
       <string>Flags Option</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_7">
-      <item row="1" column="0">
-       <widget class="QCheckBox" name="mX509StrictCheck">
-        <property name="text">
-         <string>X509Strict</string>
-        </property>
-       </widget>
-      </item>
       <item row="4" column="1">
        <widget class="QCheckBox" name="mSuiteB128LogCheck">
         <property name="text">
@@ -383,52 +395,10 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QCheckBox" name="mAllowProxyCertsCheck">
+      <item row="4" column="0">
+       <widget class="QCheckBox" name="mSuiteB192LosCheck">
         <property name="text">
-         <string>AllowProxyCerts</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <widget class="QCheckBox" name="mPolicyCheckCheck">
-        <property name="text">
-         <string>PolicyCheck</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="3">
-       <widget class="QCheckBox" name="mSuiteB128LosOnlyCheck">
-        <property name="text">
-         <string>SuiteB128LosOnly</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="3">
-       <widget class="QCheckBox" name="mExplicitPolicyCheck">
-        <property name="text">
-         <string>ExplicitPolicy</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="3">
-       <widget class="QCheckBox" name="mIgnoreCriticalCheck">
-        <property name="text">
-         <string>IgnoreCritical</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QCheckBox" name="mInhibitMapCheck">
-        <property name="text">
-         <string>InhibitMap</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="2">
-       <widget class="QCheckBox" name="mNotifyPolicyCheck">
-        <property name="text">
-         <string>NotifyPolicy</string>
+         <string>SuiteB192Los</string>
         </property>
        </widget>
       </item>
@@ -439,17 +409,45 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QCheckBox" name="mInhibitAnyCheck">
+      <item row="5" column="0">
+       <widget class="QCheckBox" name="mNoCheckTimeCheck">
         <property name="text">
-         <string>InhibitAny</string>
+         <string>NoCheckTime</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="2">
-       <widget class="QCheckBox" name="mCRLCheckAllCheck">
+      <item row="3" column="1">
+       <widget class="QCheckBox" name="mCheckSSSignatureCheck">
         <property name="text">
-         <string>CRLCheckAll</string>
+         <string>CheckSSSignature</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="mUseDeltasCheck">
+        <property name="text">
+         <string>UseDeltas</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="3">
+       <widget class="QCheckBox" name="mSuiteB128LosOnlyCheck">
+        <property name="text">
+         <string>SuiteB128LosOnly</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QCheckBox" name="mIgnoreCriticalCheck">
+        <property name="text">
+         <string>IgnoreCritical</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QCheckBox" name="mNotifyPolicyCheck">
+        <property name="text">
+         <string>NotifyPolicy</string>
         </property>
        </widget>
       </item>
@@ -460,10 +458,24 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="2">
-       <widget class="QCheckBox" name="mTrustedFirstCheck">
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="mX509StrictCheck">
         <property name="text">
-         <string>TrustedFirst</string>
+         <string>X509Strict</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QCheckBox" name="mInhibitMapCheck">
+        <property name="text">
+         <string>InhibitMap</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QCheckBox" name="mAllowProxyCertsCheck">
+        <property name="text">
+         <string>AllowProxyCerts</string>
         </property>
        </widget>
       </item>
@@ -481,10 +493,38 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
-       <widget class="QCheckBox" name="mCheckSSSignatureCheck">
+      <item row="1" column="2">
+       <widget class="QCheckBox" name="mPolicyCheckCheck">
         <property name="text">
-         <string>CheckSSSignature</string>
+         <string>PolicyCheck</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QCheckBox" name="mTrustedFirstCheck">
+        <property name="text">
+         <string>TrustedFirst</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QCheckBox" name="mExplicitPolicyCheck">
+        <property name="text">
+         <string>ExplicitPolicy</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="mInhibitAnyCheck">
+        <property name="text">
+         <string>InhibitAny</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QCheckBox" name="mCRLCheckAllCheck">
+        <property name="text">
+         <string>CRLCheckAll</string>
         </property>
        </widget>
       </item>
@@ -492,27 +532,6 @@
        <widget class="QCheckBox" name="mUseCheckTimeCheck">
         <property name="text">
          <string>UseCheckTime</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QCheckBox" name="mUseDeltasCheck">
-        <property name="text">
-         <string>UseDeltas</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QCheckBox" name="mSuiteB192LosCheck">
-        <property name="text">
-         <string>SuiteB192Los</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <widget class="QCheckBox" name="mNoCheckTimeCheck">
-        <property name="text">
-         <string>NoCheckTime</string>
         </property>
        </widget>
       </item>
@@ -617,39 +636,7 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="mPathClearBtn">
-       <property name="minimumSize">
-        <size>
-         <width>80</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>80</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>PathClear</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="3">
-      <widget class="QPushButton" name="mPathValidationBtn">
-       <property name="minimumSize">
-        <size>
-         <width>100</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Path Validation</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
       <widget class="QPushButton" name="mPolicyCheckBtn">
        <property name="minimumSize">
         <size>
@@ -662,7 +649,27 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mPathValidationBtn">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Path Validation</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mCloseBtn">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
       <spacer name="horizontalSpacer_4">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -675,38 +682,7 @@
        </property>
       </spacer>
      </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="6">
-      <widget class="QPushButton" name="mCloseBtn">
-       <property name="text">
-        <string>Close</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="0">
+     <item row="0" column="1">
       <widget class="QPushButton" name="mClearDataAllBtn">
        <property name="text">
         <string>Clear Data All</string>
@@ -768,8 +744,6 @@
   <tabstop>mTargetPathText</tabstop>
   <tabstop>mTargetFindBtn</tabstop>
   <tabstop>mTargetInfoBtn</tabstop>
-  <tabstop>mClearDataAllBtn</tabstop>
-  <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>
  <connections/>

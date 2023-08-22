@@ -6,41 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>555</width>
-    <height>652</height>
+    <width>663</width>
+    <height>919</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>CAVP Dialog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="0">
-    <layout class="QGridLayout" name="gridLayout_10">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <item row="0" column="0">
-      <spacer name="horizontalSpacer_7">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mCloseBtn">
-       <property name="text">
-        <string>Close</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
@@ -69,15 +42,15 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QLineEdit" name="mRspPathText"/>
-         </item>
          <item row="0" column="2">
           <widget class="QPushButton" name="mRspPathFindBtn">
            <property name="text">
             <string>Find</string>
            </property>
           </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="mRspPathText"/>
          </item>
         </layout>
        </item>
@@ -754,8 +727,8 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_9">
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_49">
+         <item row="1" column="4">
+          <widget class="QPushButton" name="mPBKDFRunBtn">
            <property name="maximumSize">
             <size>
              <width>80</width>
@@ -763,28 +736,9 @@
             </size>
            </property>
            <property name="text">
-            <string>Req File</string>
+            <string>Run</string>
            </property>
           </widget>
-         </item>
-         <item row="1" column="1" colspan="2">
-          <widget class="QLineEdit" name="mPBKDFReqFileText"/>
-         </item>
-         <item row="1" column="3">
-          <widget class="QPushButton" name="mPBKDFFindBtn">
-           <property name="maximumSize">
-            <size>
-             <width>80</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Find</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="4">
-          <widget class="QComboBox" name="mPBKDFAlgCombo"/>
          </item>
          <item row="0" column="3">
           <widget class="QLabel" name="label_25">
@@ -805,8 +759,14 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="4">
-          <widget class="QPushButton" name="mPBKDFRunBtn">
+         <item row="1" column="1" colspan="2">
+          <widget class="QLineEdit" name="mPBKDFReqFileText"/>
+         </item>
+         <item row="0" column="4">
+          <widget class="QComboBox" name="mPBKDFAlgCombo"/>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_49">
            <property name="maximumSize">
             <size>
              <width>80</width>
@@ -814,7 +774,20 @@
             </size>
            </property>
            <property name="text">
-            <string>Run</string>
+            <string>Req File</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3">
+          <widget class="QPushButton" name="mPBKDFFindBtn">
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Find</string>
            </property>
           </widget>
          </item>
@@ -845,19 +818,6 @@
           </spacer>
          </item>
         </layout>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
        </item>
       </layout>
      </widget>
@@ -1424,27 +1384,21 @@
          <item row="1" column="1" colspan="5">
           <widget class="QLineEdit" name="mSymMCTKeyText">
            <property name="font">
-            <font>
-             <family>굴림체</family>
-            </font>
+            <font/>
            </property>
           </widget>
          </item>
          <item row="2" column="1" colspan="5">
           <widget class="QLineEdit" name="mSymMCTIVText">
            <property name="font">
-            <font>
-             <family>굴림체</family>
-            </font>
+            <font/>
            </property>
           </widget>
          </item>
          <item row="3" column="1" colspan="5">
           <widget class="QLineEdit" name="mSymMCTPTText">
            <property name="font">
-            <font>
-             <family>굴림체</family>
-            </font>
+            <font/>
            </property>
           </widget>
          </item>
@@ -1488,9 +1442,7 @@
             </palette>
            </property>
            <property name="font">
-            <font>
-             <family>굴림체</family>
-            </font>
+            <font/>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -1537,9 +1489,7 @@
             </palette>
            </property>
            <property name="font">
-            <font>
-             <family>굴림체</family>
-            </font>
+            <font/>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -1586,9 +1536,7 @@
             </palette>
            </property>
            <property name="font">
-            <font>
-             <family>굴림체</family>
-            </font>
+            <font/>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -1635,9 +1583,7 @@
             </palette>
            </property>
            <property name="font">
-            <font>
-             <family>굴림체</family>
-            </font>
+            <font/>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -1684,9 +1630,7 @@
             </palette>
            </property>
            <property name="font">
-            <font>
-             <family>굴림체</family>
-            </font>
+            <font/>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -1996,9 +1940,7 @@
          <item row="1" column="1" colspan="3">
           <widget class="QLineEdit" name="mHashMCTSeedText">
            <property name="font">
-            <font>
-             <family>굴림체</family>
-            </font>
+            <font/>
            </property>
           </widget>
          </item>
@@ -2042,9 +1984,7 @@
             </palette>
            </property>
            <property name="font">
-            <font>
-             <family>굴림체</family>
-            </font>
+            <font/>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -2091,9 +2031,7 @@
             </palette>
            </property>
            <property name="font">
-            <font>
-             <family>굴림체</family>
-            </font>
+            <font/>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -2289,27 +2227,21 @@
          <item row="0" column="1">
           <widget class="QLineEdit" name="mDRBG2EntropyInputText">
            <property name="font">
-            <font>
-             <family>굴림체</family>
-            </font>
+            <font/>
            </property>
           </widget>
          </item>
          <item row="1" column="1">
           <widget class="QLineEdit" name="mDRBG2NonceText">
            <property name="font">
-            <font>
-             <family>굴림체</family>
-            </font>
+            <font/>
            </property>
           </widget>
          </item>
          <item row="2" column="1">
           <widget class="QLineEdit" name="mDRBG2PersonalStringText">
            <property name="font">
-            <font>
-             <family>굴림체</family>
-            </font>
+            <font/>
            </property>
           </widget>
          </item>
@@ -2373,36 +2305,28 @@
          <item row="3" column="1">
           <widget class="QLineEdit" name="mDRBG2EntropyInputReseedText">
            <property name="font">
-            <font>
-             <family>굴림체</family>
-            </font>
+            <font/>
            </property>
           </widget>
          </item>
          <item row="4" column="1">
           <widget class="QLineEdit" name="mDRBG2AdditionalInputReseedText">
            <property name="font">
-            <font>
-             <family>굴림체</family>
-            </font>
+            <font/>
            </property>
           </widget>
          </item>
          <item row="5" column="1">
           <widget class="QLineEdit" name="mDRBG2AdditionalInputText">
            <property name="font">
-            <font>
-             <family>굴림체</family>
-            </font>
+            <font/>
            </property>
           </widget>
          </item>
          <item row="6" column="1">
           <widget class="QLineEdit" name="mDRBG2AdditionalInput2Text">
            <property name="font">
-            <font>
-             <family>굴림체</family>
-            </font>
+            <font/>
            </property>
           </widget>
          </item>
@@ -2835,9 +2759,7 @@
           </palette>
          </property>
          <property name="font">
-          <font>
-           <family>굴림체</family>
-          </font>
+          <font/>
          </property>
          <property name="readOnly">
           <bool>true</bool>
@@ -2898,6 +2820,33 @@
       </layout>
      </widget>
     </widget>
+   </item>
+   <item row="1" column="0">
+    <layout class="QGridLayout" name="gridLayout_10">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mCloseBtn">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <spacer name="horizontalSpacer_7">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
@@ -3002,7 +2951,6 @@
   <tabstop>mDRBG2ReturnedBitsText</tabstop>
   <tabstop>mDRBG2ClearBtn</tabstop>
   <tabstop>mDRBG2RunBtn</tabstop>
-  <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>
  <connections/>

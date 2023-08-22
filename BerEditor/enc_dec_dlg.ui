@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>587</width>
-    <height>704</height>
+    <width>641</width>
+    <height>833</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -220,9 +220,7 @@
          <item row="0" column="1">
           <widget class="QLineEdit" name="mSrcFileText">
            <property name="font">
-            <font>
-             <family>굴림체</family>
-            </font>
+            <font/>
            </property>
           </widget>
          </item>
@@ -289,9 +287,7 @@
             </palette>
            </property>
            <property name="font">
-            <font>
-             <family>굴림체</family>
-            </font>
+            <font/>
            </property>
           </widget>
          </item>
@@ -366,9 +362,7 @@
             </palette>
            </property>
            <property name="font">
-            <font>
-             <family>굴림체</family>
-            </font>
+            <font/>
            </property>
           </widget>
          </item>
@@ -447,9 +441,7 @@
             </palette>
            </property>
            <property name="font">
-            <font>
-             <family>굴림체</family>
-            </font>
+            <font/>
            </property>
           </widget>
          </item>
@@ -519,9 +511,7 @@
             </palette>
            </property>
            <property name="font">
-            <font>
-             <family>굴림체</family>
-            </font>
+            <font/>
            </property>
           </widget>
          </item>
@@ -565,9 +555,7 @@
          <item row="0" column="1">
           <widget class="QLineEdit" name="mDstFileText">
            <property name="font">
-            <font>
-             <family>굴림체</family>
-            </font>
+            <font/>
            </property>
           </widget>
          </item>
@@ -663,9 +651,7 @@
             </palette>
            </property>
            <property name="font">
-            <font>
-             <family>굴림체</family>
-            </font>
+            <font/>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -724,9 +710,7 @@
             </palette>
            </property>
            <property name="font">
-            <font>
-             <family>굴림체</family>
-            </font>
+            <font/>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -757,20 +741,6 @@
        </item>
       </layout>
      </widget>
-    </widget>
-   </item>
-   <item>
-    <widget class="Line" name="line_2">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="label_5">
-     <property name="text">
-      <string>Key and IV</string>
-     </property>
     </widget>
    </item>
    <item>
@@ -1171,13 +1141,6 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label_4">
-     <property name="text">
-      <string>Method</string>
-     </property>
-    </widget>
-   </item>
-   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QComboBox" name="mAlgCombo">
@@ -1354,6 +1317,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="mClearDataAllBtn">
+       <property name="text">
+        <string>Clear Data All</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer_3">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -1373,46 +1343,12 @@
        </property>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="Line" name="line_6">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QGridLayout" name="gridLayout">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="mClearDataAllBtn">
-       <property name="text">
-        <string>Clear Data All</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
+     <item>
       <widget class="QPushButton" name="mCloseBtn">
        <property name="text">
         <string>Close</string>
        </property>
       </widget>
-     </item>
-     <item row="0" column="1">
-      <spacer name="horizontalSpacer_6">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
      </item>
     </layout>
    </item>
@@ -1442,8 +1378,6 @@
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
   <tabstop>mRunBtn</tabstop>
-  <tabstop>mClearDataAllBtn</tabstop>
-  <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>
  <connections/>
