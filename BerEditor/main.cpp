@@ -24,8 +24,6 @@ int main(int argc, char *argv[])
     qss.open( QFile::ReadOnly );
     app.setStyleSheet(qss.readAll());
 
-
-
     QCommandLineParser parser;
     parser.setApplicationDescription( QCoreApplication::applicationName());
     parser.addHelpOption();
@@ -35,8 +33,6 @@ int main(int argc, char *argv[])
 //    app.setFont( QFont( "Courier New" ));
 
     qDebug( "command : %s\n", argv[0] );
-
-
     I18NHelper::getInstance()->init();
 
     BerApplet mApplet;

@@ -294,7 +294,6 @@ void BerApplet::restartApp()
 
     in_exit_ = true;
 
-
     QStringList args = QApplication::arguments();
     args.removeFirst();
 
