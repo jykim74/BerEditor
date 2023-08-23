@@ -113,6 +113,18 @@ int LCNInfoDlg::getLCN( BIN *pLCN )
     QString strKey = mKeyText->text();
     QString strProduct = berApplet->getBrand();
 
+    if( strEmail.length() < 1 )
+    {
+        berApplet->elog( "You have to input email" );
+        return -1;
+    }
+
+    if( strKey.length() < 1 )
+    {
+        berApplet->elog( "You have to input license key" );
+        return -2;
+    }
+
     memset( &sNameVal, 0x00, sizeof(sNameVal));
     strProduct.remove( "Lite" );
 
