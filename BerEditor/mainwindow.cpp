@@ -69,12 +69,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    recent_file_list_.clear();
+
     delete ber_model_;
-    delete hsplitter_;
-    delete vsplitter_;
     delete left_tree_;
-    delete table_tab_;
-    delete text_tab_;
     delete log_text_;
     delete info_text_;
     delete right_table_;
@@ -92,6 +90,11 @@ MainWindow::~MainWindow()
     delete cert_pvd_dlg_;
     delete gen_otp_dlg_;
     delete cavp_dlg_;
+
+    delete table_tab_;
+    delete text_tab_;
+    delete vsplitter_;
+    delete hsplitter_;
 }
 
 void MainWindow::initialize()
