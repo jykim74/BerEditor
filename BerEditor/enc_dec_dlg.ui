@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>641</width>
-    <height>833</height>
+    <width>523</width>
+    <height>594</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -548,6 +548,19 @@
            </property>
           </widget>
          </item>
+         <item row="0" column="2">
+          <widget class="QCheckBox" name="mWriteLogCheck">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Write log</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
@@ -718,13 +731,6 @@
           </widget>
          </item>
         </layout>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="mWriteLogCheck">
-         <property name="text">
-          <string>Write log block data</string>
-         </property>
-        </widget>
        </item>
        <item>
         <spacer name="verticalSpacer">
@@ -1135,6 +1141,12 @@
    </item>
    <item>
     <widget class="Line" name="line_4">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>2</height>
+      </size>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -1189,6 +1201,12 @@
    </item>
    <item>
     <widget class="Line" name="line">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>2</height>
+      </size>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -1299,6 +1317,12 @@
    </item>
    <item>
     <widget class="Line" name="line_5">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>2</height>
+      </size>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>

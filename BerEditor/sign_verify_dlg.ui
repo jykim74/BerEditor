@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>545</width>
-    <height>610</height>
+    <height>603</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <item>
     <widget class="QTabWidget" name="mInputTab">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -544,6 +544,13 @@
          <property name="topMargin">
           <number>0</number>
          </property>
+         <item row="0" column="1">
+          <widget class="QProgressBar" name="mSignProgBar">
+           <property name="value">
+            <number>0</number>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label_11">
            <property name="minimumSize">
@@ -563,21 +570,20 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QProgressBar" name="mSignProgBar">
-           <property name="value">
-            <number>0</number>
+         <item row="0" column="2">
+          <widget class="QCheckBox" name="mWriteLogCheck">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Write log</string>
            </property>
           </widget>
          </item>
         </layout>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="mWriteLogCheck">
-         <property name="text">
-          <string>Write log block data</string>
-         </property>
-        </widget>
        </item>
        <item>
         <spacer name="verticalSpacer_2">
