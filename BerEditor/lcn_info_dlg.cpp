@@ -213,7 +213,7 @@ void LCNInfoDlg::clickGet()
 
         if( strFile.length() > 0 )
         {
-            JS_BIN_fileRead( strFile.toLocal8Bit().toStdString().c_str(), &binLCN );
+            JS_LCN_fileRead( strFile.toLocal8Bit().toStdString().c_str(), &binLCN );
         }
     }
     else
@@ -248,6 +248,20 @@ void LCNInfoDlg::clickGet()
         berApplet->warningBox( strErr, this );
         ret = -1;
         goto end;
+    }
+
+    if( berApplet->isLicense() )
+    {
+        JS_LICENSE_INFO sLicenseInfo = berApplet->LicenseInfo();
+
+        if( memcmp( sLicenseInfo.sExpire, sInfo.sExpire, sizeof(sLicenseInfo.sExpire) ) > 0 )
+        {
+            strErr = tr( "The current license is longer period" );
+            berApplet->elog( strErr );
+            berApplet->warningBox( strErr, this );
+            ret = -1;
+            goto end;
+        }
     }
 
     settingsLCN( QString( sInfo.sSID), &binLCN );
@@ -297,6 +311,20 @@ void LCNInfoDlg::clickUpdate()
             berApplet->elog( strErr );
             berApplet->warningBox( strErr, this );
             goto end;
+        }
+
+        if( berApplet->isLicense() )
+        {
+            JS_LICENSE_INFO sLicenseInfo = berApplet->LicenseInfo();
+
+            if( memcmp( sLicenseInfo.sExpire, sInfo.sExpire, sizeof(sLicenseInfo.sExpire) ) > 0 )
+            {
+                strErr = tr( "The current license is longer period" );
+                berApplet->elog( strErr );
+                berApplet->warningBox( strErr, this );
+                ret = -1;
+                goto end;
+            }
         }
 
         settingsLCN( QString(sInfo.sSID), &binNewLCN );

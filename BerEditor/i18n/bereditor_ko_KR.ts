@@ -3078,12 +3078,18 @@ Do you want to delete the file and continue?</source>
         <translation>라이선스가 유효하지 않습니다: %1</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="285"/>
+        <location filename="../lcn_info_dlg.cpp" line="259"/>
+        <location filename="../lcn_info_dlg.cpp" line="322"/>
+        <source>The current license is longer period</source>
+        <translation>현재 라이선스가 더 긴 기간입니다.</translation>
+    </message>
+    <message>
+        <location filename="../lcn_info_dlg.cpp" line="299"/>
         <source>There is no current license</source>
         <translation>현재 라이선스가 없습니다</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="296"/>
+        <location filename="../lcn_info_dlg.cpp" line="310"/>
         <source>fail to renew license:%1</source>
         <translation>라이선스 갱신 실패: %1</translation>
     </message>
