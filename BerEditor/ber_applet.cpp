@@ -30,6 +30,7 @@ BerApplet *berApplet;
 
 BerApplet::BerApplet(QObject *parent) : QObject(parent)
 {
+    main_win_ = nullptr;
     settings_mgr_ = new SettingsMgr;
 
 #ifdef JS_PRO
@@ -54,10 +55,12 @@ BerApplet::BerApplet(QObject *parent) : QObject(parent)
 
 BerApplet::~BerApplet()
 {
-    delete main_win_;
 #ifdef _AUTO_UPDATE
     AutoUpdateService::instance()->stop();
 #endif
+
+    if( main_win_ != nullptr ) delete main_win_;
+    if( settings_mgr_ != nullptr ) delete settings_mgr_;
 }
 
 void BerApplet::setCmd(const QString cmd)
