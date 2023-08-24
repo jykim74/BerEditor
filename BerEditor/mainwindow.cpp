@@ -633,10 +633,7 @@ void MainWindow::open()
     {
         if( berFileOpen(fileName) != 0 ) return;
 
-        QFileInfo fileInfo(fileName);
-        QString strDir = fileInfo.dir().path();
-
-        berApplet->setBERPath( strDir );
+        berApplet->setBERPath( fileName );
     }
 }
 
