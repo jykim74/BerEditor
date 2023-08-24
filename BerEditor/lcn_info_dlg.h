@@ -25,7 +25,7 @@ private slots:
 private:
     QString getLicenseURI();
     void initialize();
-    int getLCN( BIN *pLCN );
+    int getLCN( const QString& strEmail, const QString& strKey, BIN *pLCN );
     int updateLCN( const QString strEmail, const QString strKey, BIN *pLCN );
     void settingsLCN( const QString strSID, const BIN *pLCN );
 };
