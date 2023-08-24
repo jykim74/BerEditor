@@ -15,7 +15,7 @@ CMSDlg::CMSDlg(QWidget *parent) :
 {
     setupUi(this);
     group_ = new QButtonGroup;
-    last_path_ = berApplet->getSetPath();
+    last_path_ = berApplet->curFolder();
 
     connect( mDecodeBtn, SIGNAL(clicked()), this, SLOT(clickDecode()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(clickClose()));

@@ -67,16 +67,24 @@ void BerApplet::setCmd(const QString cmd)
     cmd_ = cmd;
 }
 
-QString BerApplet::getSetPath()
+QString BerApplet::getBERPath()
 {
     QString strPath = QDir::currentPath();
 
     QSettings settings;
-    settings.beginGroup( "bereditor" );
-    strPath = settings.value( "openPath", "" ).toString();
+    settings.beginGroup( "mainwindow" );
+    strPath = settings.value( "berPath", "" ).toString();
     settings.endGroup();
 
     return strPath;
+}
+
+void BerApplet::setBERPath( const QString strPath )
+{
+    QSettings settings;
+    settings.beginGroup( "mainwindow" );
+    settings.setValue( "berPath", strPath );
+    settings.endGroup();
 }
 
 void BerApplet::start()

@@ -15,7 +15,7 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
-    last_path_ = berApplet->getSetPath();
+    last_path_ = berApplet->curFolder();
 
     connect( mTrustFindBtn, SIGNAL(clicked()), this, SLOT(clickTrustFind()));
     connect( mUntrustFindBtn, SIGNAL(clicked()), this, SLOT(clickUntrustFind()));

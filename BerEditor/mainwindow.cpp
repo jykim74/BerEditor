@@ -626,7 +626,7 @@ void MainWindow::numTrans()
 
 void MainWindow::open()
 {
-    QString strPath = berApplet->getSetPath();
+    QString strPath = berApplet->getBERPath();
     QString fileName = findFile( this, JS_FILE_TYPE_BER, strPath );
 
     if( !fileName.isEmpty() )
@@ -636,10 +636,7 @@ void MainWindow::open()
         QFileInfo fileInfo(fileName);
         QString strDir = fileInfo.dir().path();
 
-        QSettings settings;
-        settings.beginGroup("bereditor");
-        settings.setValue( "openPath", strDir );
-        settings.endGroup();
+        berApplet->setBERPath( strDir );
     }
 }
 

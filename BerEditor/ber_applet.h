@@ -45,7 +45,10 @@ public:
     void restartApp();
     void exitApp( int nNum = 0 );
     void setCmd( const QString cmd );
-    QString getSetPath();
+
+    QString getBERPath();
+    void setBERPath( const QString strPath );
+
     bool isPRO() { return is_pro_; };
     bool isLicense() { return is_license_; };
     QString curFile() { return cur_file_; };

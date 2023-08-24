@@ -117,7 +117,9 @@
 			<ComponentGroupRef Id='group_bin' />
 		</Feature>
 
+		<!--
 		<Property Id="CHECKBOX_DEL_BERVIEWER_DATA" Secure="yes" />
+		-->
 		<WixVariable Id="WixUIBannerBmp" Value="bereditor-top-banner.bmp" />
 		<WixVariable Id="WixUIDialogBmp" Value="bereditor-background.bmp" />
 

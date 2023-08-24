@@ -43,7 +43,7 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     setupUi(this);
     initialize();
 
-    last_path_ = berApplet->getSetPath();
+    last_path_ = berApplet->curFolder();
 
     connect( mPriKeyBtn, SIGNAL(clicked()), this, SLOT(findPrivateKey()));
     connect( mCertBtn, SIGNAL(clicked()), this, SLOT(findCert()));
