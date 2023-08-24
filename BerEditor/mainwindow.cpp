@@ -1181,5 +1181,6 @@ void MainWindow::printPreview(QPrinter *printer)
 void MainWindow::quit()
 {
 //    exit(0);
-    close();
+//    close();
+    berApplet->exitApp();
 }

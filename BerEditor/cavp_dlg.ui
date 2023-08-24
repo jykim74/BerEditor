@@ -7,53 +7,92 @@
     <x>0</x>
     <y>0</y>
     <width>663</width>
-    <height>923</height>
+    <height>614</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>CAVP Dialog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="2" column="0">
+    <layout class="QGridLayout" name="gridLayout_10">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mCloseBtn">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <spacer name="horizontalSpacer_7">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
    <item row="0" column="0">
+    <widget class="QGroupBox" name="mRspGroup">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Response Information</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <item>
+       <layout class="QGridLayout" name="gridLayout_20">
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="mRspPathText"/>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_62">
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Rsp Path</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QPushButton" name="mRspPathFindBtn">
+          <property name="text">
+           <string>Find</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
       <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
-       <string>CAVP</string>
+       <string>Symmetric Hash</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <layout class="QGridLayout" name="gridLayout_20">
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_62">
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Rsp Path</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QPushButton" name="mRspPathFindBtn">
-           <property name="text">
-            <string>Find</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLineEdit" name="mRspPathText"/>
-         </item>
-        </layout>
-       </item>
        <item>
         <widget class="Line" name="line_14">
          <property name="maximumSize">
@@ -423,18 +462,32 @@
         </layout>
        </item>
        <item>
-        <widget class="Line" name="line_3">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>2</height>
-          </size>
-         </property>
+        <widget class="Line" name="line_15">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </item>
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_4">
+      <attribute name="title">
+       <string>Asymmetric DRBG PBKDF</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
         <layout class="QGridLayout" name="gridLayout_6">
          <item row="0" column="2">
@@ -530,13 +583,7 @@
         </layout>
        </item>
        <item>
-        <widget class="Line" name="line_4">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>2</height>
-          </size>
-         </property>
+        <widget class="Line" name="line_3">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
@@ -627,13 +674,7 @@
         </layout>
        </item>
        <item>
-        <widget class="Line" name="line_5">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>2</height>
-          </size>
-         </property>
+        <widget class="Line" name="line_4">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
@@ -761,13 +802,7 @@
         </layout>
        </item>
        <item>
-        <widget class="Line" name="line_6">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>2</height>
-          </size>
-         </property>
+        <widget class="Line" name="line_5">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
@@ -866,6 +901,26 @@
           </spacer>
          </item>
         </layout>
+       </item>
+       <item>
+        <widget class="Line" name="line_6">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -2869,39 +2924,10 @@
      </widget>
     </widget>
    </item>
-   <item row="1" column="0">
-    <layout class="QGridLayout" name="gridLayout_10">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mCloseBtn">
-       <property name="text">
-        <string>Close</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <spacer name="horizontalSpacer_7">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
-   </item>
   </layout>
  </widget>
  <tabstops>
   <tabstop>tabWidget</tabstop>
-  <tabstop>mRspPathText</tabstop>
-  <tabstop>mRspPathFindBtn</tabstop>
   <tabstop>mSymAlgCombo</tabstop>
   <tabstop>mSymModeCombo</tabstop>
   <tabstop>mSymTypeCombo</tabstop>
@@ -2923,29 +2949,6 @@
   <tabstop>mHMACReqFileText</tabstop>
   <tabstop>mHMACFindBtn</tabstop>
   <tabstop>mHMACRunBtn</tabstop>
-  <tabstop>mECC_ECDSARadio</tabstop>
-  <tabstop>mECC_ECDHRadio</tabstop>
-  <tabstop>mECCParamCombo</tabstop>
-  <tabstop>mECCTypeCombo</tabstop>
-  <tabstop>mECCReqFileText</tabstop>
-  <tabstop>mECCFindBtn</tabstop>
-  <tabstop>mECCRunBtn</tabstop>
-  <tabstop>mRSA_ESRadio</tabstop>
-  <tabstop>mRSA_PSSRadio</tabstop>
-  <tabstop>mRSATypeCombo</tabstop>
-  <tabstop>mRSAReqFileText</tabstop>
-  <tabstop>mRSAFindBtn</tabstop>
-  <tabstop>mRSARunBtn</tabstop>
-  <tabstop>mDRBGAlgCombo</tabstop>
-  <tabstop>mDRBGUseDFCheck</tabstop>
-  <tabstop>mDRBGUsePRCheck</tabstop>
-  <tabstop>mDRBGReqFileText</tabstop>
-  <tabstop>mDRBGFindBtn</tabstop>
-  <tabstop>mDRBGRunBtn</tabstop>
-  <tabstop>mPBKDFAlgCombo</tabstop>
-  <tabstop>mPBKDFReqFileText</tabstop>
-  <tabstop>mPBKDFFindBtn</tabstop>
-  <tabstop>mPBKDFRunBtn</tabstop>
   <tabstop>mSymMCTAlgCombo</tabstop>
   <tabstop>mSymMCTModeCombo</tabstop>
   <tabstop>mSymMCTCountText</tabstop>

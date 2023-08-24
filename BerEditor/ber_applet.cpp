@@ -40,7 +40,6 @@ BerApplet::BerApplet(QObject *parent) : QObject(parent)
 #endif
 
     started_ = false;
-    in_exit_ = false;
     about_to_quit_ = false;
 
 #ifdef _AUTO_UPDATE
@@ -292,14 +291,21 @@ bool BerApplet::detailedYesOrNoBox(const QString& msg, const QString& detailed_t
 
 void BerApplet::restartApp()
 {
-    if( in_exit_ || QCoreApplication::closingDown() )
+    if( QCoreApplication::closingDown() )
         return;
-
-    in_exit_ = true;
 
     QStringList args = QApplication::arguments();
     args.removeFirst();
 
     QProcess::startDetached(QApplication::applicationFilePath(), args);
     QCoreApplication::quit();
+}
+
+void BerApplet::exitApp( int nNum )
+{
+    if ( QCoreApplication::closingDown()) {
+        return;
+    }
+
+    QCoreApplication::exit(nNum);
 }

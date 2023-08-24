@@ -41,9 +41,9 @@ public:
     bool yesOrCancelBox(const QString& msg, QWidget *parent, bool default_ok);
 
     static QString getBrand();
-    bool closingDown() { return in_exit_ || about_to_quit_; };
 
     void restartApp();
+    void exitApp( int nNum = 0 );
     void setCmd( const QString cmd );
     QString getSetPath();
     bool isPRO() { return is_pro_; };
@@ -64,7 +64,6 @@ private:
 
     bool is_pro_;
     bool started_;
-    bool in_exit_;
     bool about_to_quit_;
     bool is_license_;
     JS_LICENSE_INFO license_info_;
