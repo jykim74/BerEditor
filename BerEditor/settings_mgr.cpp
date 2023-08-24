@@ -149,7 +149,7 @@ QString SettingsMgr::getFontFamily()
 #ifdef Q_OS_MAC
     QString strDefault = "Monaco";
 #else
-    QString strDefault = "굴림체";
+    QString strDefault = "Consolas";
 #endif
 
     sets.beginGroup( kBehaviorGroup );

@@ -227,7 +227,7 @@ void LCNInfoDlg::clickGet()
 
         if( strKey.length() < 1 )
         {
-            berApplet->warningBox( "You have to input license key", this );
+            berApplet->warningBox( tr("You have to input license key"), this );
             return;
         }
 
