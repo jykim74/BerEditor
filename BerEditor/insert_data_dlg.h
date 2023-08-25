@@ -16,7 +16,6 @@ public:
     explicit InsertDataDlg(QWidget *parent = nullptr);
     ~InsertDataDlg();
 
-    int GetType() { return type_; };
     QString getTextData();
 
 private slots :
@@ -24,9 +23,6 @@ private slots :
     void dataChanged();
 
 private:
-//    Ui::InsertDataDlg *ui;
-
-    int type_;
 };
 
 #endif // INSERT_DATA_DLG_H

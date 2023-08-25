@@ -592,30 +592,9 @@ void MainWindow::insertBER()
 void MainWindow::insertData()
 {
     int ret = -1;
-    BIN binData = {0,0};
 
     InsertDataDlg insData(this);
     ret = insData.exec();
-
-    if( ret == QDialog::Accepted )
-    {
-        int nType = DATA_HEX;
-        QString strInput = insData.getTextData();
-
-        if( insData.GetType() == 0 )
-        {
-            nType = DATA_HEX;
-        }
-        else if( insData.GetType() == 1 )
-        {
-            nType = DATA_BASE64;
-        }
-
-        getBINFromString( &binData, nType, strInput );
-        decodeData( &binData, "Unknown" );
-    }
-
-    JS_BIN_reset( &binData );
 }
 
 void MainWindow::numTrans()

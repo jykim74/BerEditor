@@ -4,6 +4,7 @@
 #include "js_pki.h"
 #include "js_pki_tools.h"
 #include "js_util.h"
+#include "ber_applet.h"
 
 const QStringList sTypeList = { "Bit", "Decimal", "Hex" };
 
@@ -18,7 +19,7 @@ NumTransDlg::NumTransDlg(QWidget *parent) :
      connect( mChangeBtn, SIGNAL(clicked()), this, SLOT(dataChange()));
      connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
-     mCloseBtn->setFocus();
+     mTransBtn->setDefault(true);
 }
 
 NumTransDlg::~NumTransDlg()
@@ -30,10 +31,15 @@ NumTransDlg::~NumTransDlg()
 void NumTransDlg::dataTrans()
 {
     BIN binSrc = {0,0};
-    BIN binDst = {0,0};
     char *pOutput = NULL;
 
     QString strInput = mInputText->toPlainText();
+    if( strInput.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Insert data" ), this );
+        mInputText->setFocus();
+        return;
+    }
 
     if( mBitBtn->isChecked() )
         JS_PKI_bitToBin( strInput.toStdString().c_str(), &binSrc );

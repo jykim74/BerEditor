@@ -95,29 +95,29 @@ mailto : jykim74@gmail.com</translation>
 <context>
     <name>BerApplet</name>
     <message>
-        <location filename="../ber_applet.cpp" line="185"/>
-        <location filename="../ber_applet.cpp" line="215"/>
+        <location filename="../ber_applet.cpp" line="190"/>
+        <location filename="../ber_applet.cpp" line="220"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="226"/>
-        <location filename="../ber_applet.cpp" line="240"/>
-        <location filename="../ber_applet.cpp" line="256"/>
-        <location filename="../ber_applet.cpp" line="280"/>
+        <location filename="../ber_applet.cpp" line="231"/>
+        <location filename="../ber_applet.cpp" line="245"/>
+        <location filename="../ber_applet.cpp" line="261"/>
+        <location filename="../ber_applet.cpp" line="285"/>
         <source>Yes</source>
         <translation>예</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="227"/>
-        <location filename="../ber_applet.cpp" line="257"/>
-        <location filename="../ber_applet.cpp" line="281"/>
+        <location filename="../ber_applet.cpp" line="232"/>
+        <location filename="../ber_applet.cpp" line="262"/>
+        <location filename="../ber_applet.cpp" line="286"/>
         <source>No</source>
         <translation>아니오</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="241"/>
-        <location filename="../ber_applet.cpp" line="258"/>
+        <location filename="../ber_applet.cpp" line="246"/>
+        <location filename="../ber_applet.cpp" line="263"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
@@ -2591,7 +2591,7 @@ Do you want to delete the file and continue?</source>
         <translation>베이스64</translation>
     </message>
     <message>
-        <location filename="../insert_data_dlg.cpp" line="34"/>
+        <location filename="../insert_data_dlg.cpp" line="39"/>
         <source>You have to insert data</source>
         <translation>데이타를 입력 하세요</translation>
     </message>
@@ -3223,29 +3223,29 @@ Do you want to delete the file and continue?</source>
         <translation>질문과 답변하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="746"/>
-        <location filename="../mainwindow.cpp" line="1127"/>
+        <location filename="../mainwindow.cpp" line="719"/>
+        <location filename="../mainwindow.cpp" line="1100"/>
         <source>A BER size greater than 10000 bytes requires a license.</source>
         <translation>BER 크기가 10000 바이트 보다 크면 라이센스가 필요합니다.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="963"/>
+        <location filename="../mainwindow.cpp" line="936"/>
         <source>Do you want to save the file in DER format?
 [The Source is PEM or The Source DER changed]</source>
         <translation>[소스가 PEM 형식인 경우 또는 소스 DER 파일이 변경 됨] DER 형식으로 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="975"/>
+        <location filename="../mainwindow.cpp" line="948"/>
         <source>Copy</source>
         <translation>복사</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="978"/>
+        <location filename="../mainwindow.cpp" line="951"/>
         <source>Select All</source>
         <translation>전체 선택</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="981"/>
+        <location filename="../mainwindow.cpp" line="954"/>
         <source>Unselect All</source>
         <translation>선택 해제</translation>
     </message>
@@ -3457,7 +3457,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">변경 데이타를 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1046"/>
+        <location filename="../mainwindow.cpp" line="1019"/>
         <source>Do you want to overwrite %1 as BER file?</source>
         <translation>파일(%1)을 BER로 덮어 쓰겠습니까?</translation>
     </message>
@@ -3466,7 +3466,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">다른 이름으로 저장...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1144"/>
+        <location filename="../mainwindow.cpp" line="1117"/>
         <source>Print Document</source>
         <translation>문서 인쇄</translation>
     </message>
@@ -3707,22 +3707,22 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">변경 된 데이타를 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1062"/>
+        <location filename="../mainwindow.cpp" line="1035"/>
         <source>BIN Files (*.ber *.der);;All Files (*.*)</source>
         <translation>BIN 파일 (*.ber *.der);;모든 파일들(*.*)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1066"/>
+        <location filename="../mainwindow.cpp" line="1039"/>
         <source>Save As...</source>
         <translation>다른 이름으로 저장 하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1090"/>
+        <location filename="../mainwindow.cpp" line="1063"/>
         <source>You have changed license. Restart to apply it?</source>
         <translation>라이선스가 변경 되었습니다.적용을 위해 다시 시작 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1112"/>
+        <location filename="../mainwindow.cpp" line="1085"/>
         <source>log</source>
         <translation>로그</translation>
     </message>
@@ -3781,6 +3781,11 @@ Do you want to delete the file and continue?</source>
         <location filename="../num_trans_dlg.ui" line="43"/>
         <source>Hex</source>
         <translation>16진수</translation>
+    </message>
+    <message>
+        <location filename="../num_trans_dlg.cpp" line="39"/>
+        <source>Insert data</source>
+        <translation>데이타 입력하세요</translation>
     </message>
 </context>
 <context>

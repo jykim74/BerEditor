@@ -14,7 +14,7 @@ InsertDataDlg::InsertDataDlg(QWidget *parent) :
     connect( mTypeBase64, SIGNAL(clicked()), this, SLOT(dataChanged()));
 
     mTypeHex->setChecked(true);
-    mCloseBtn->setFocus();
+    mViewBtn->setDefault(true);
 }
 
 InsertDataDlg::~InsertDataDlg()
@@ -24,17 +24,25 @@ InsertDataDlg::~InsertDataDlg()
 
 void InsertDataDlg::viewData()
 {
-    if( mTypeHex->isChecked() )
-        type_ = 0;
-    else if( mTypeBase64->isChecked() )
-        type_ = 1;
+    int nType = 0;
+    BIN binData = {0,0};
 
-    if( mDataText->toPlainText().isEmpty() )
+    if( mTypeHex->isChecked() )
+        nType = DATA_HEX;
+    else if( mTypeBase64->isChecked() )
+        nType = DATA_BASE64;
+
+    QString strData = mDataText->toPlainText();
+
+    if( strData.length() < 0 )
     {
         berApplet->warningBox( tr( "You have to insert data"), this );
         return;
     }
 
+    getBINFromString( &binData, nType, strData );
+    berApplet->decodeData( &binData, "Unknown" );
+    JS_BIN_reset( &binData );
     QDialog::accept();
 }
 
