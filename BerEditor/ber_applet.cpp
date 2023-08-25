@@ -39,9 +39,6 @@ BerApplet::BerApplet(QObject *parent) : QObject(parent)
     is_pro_ = false;
 #endif
 
-    started_ = false;
-    about_to_quit_ = false;
-
 #ifdef _AUTO_UPDATE
     if( AutoUpdateService::instance()->shouldSupportAutoUpdate() ) {
         AutoUpdateService::instance()->start();

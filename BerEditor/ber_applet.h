@@ -66,8 +66,6 @@ private:
     SettingsMgr* settings_mgr_;
 
     bool is_pro_;
-    bool started_;
-    bool about_to_quit_;
     bool is_license_;
     JS_LICENSE_INFO license_info_;
 
