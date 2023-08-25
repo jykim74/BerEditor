@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>652</width>
-    <height>593</height>
+    <width>676</width>
+    <height>740</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,7 +34,7 @@
       <widget class="QPushButton" name="mTrustFindBtn">
        <property name="maximumSize">
         <size>
-         <width>40</width>
+         <width>50</width>
          <height>16777215</height>
         </size>
        </property>
@@ -47,7 +47,7 @@
       <widget class="QPushButton" name="mTrustAddBtn">
        <property name="maximumSize">
         <size>
-         <width>40</width>
+         <width>50</width>
          <height>16777215</height>
         </size>
        </property>
@@ -128,7 +128,7 @@
       <widget class="QPushButton" name="mUntrustAddBtn">
        <property name="maximumSize">
         <size>
-         <width>40</width>
+         <width>50</width>
          <height>16777215</height>
         </size>
        </property>
@@ -163,7 +163,7 @@
       <widget class="QPushButton" name="mUntrustFindBtn">
        <property name="maximumSize">
         <size>
-         <width>40</width>
+         <width>50</width>
          <height>16777215</height>
         </size>
        </property>
@@ -196,7 +196,7 @@
       <widget class="QPushButton" name="mCRLAddBtn">
        <property name="maximumSize">
         <size>
-         <width>40</width>
+         <width>50</width>
          <height>16777215</height>
         </size>
        </property>
@@ -222,7 +222,7 @@
       <widget class="QPushButton" name="mCRLFindBtn">
        <property name="maximumSize">
         <size>
-         <width>40</width>
+         <width>50</width>
          <height>16777215</height>
         </size>
        </property>

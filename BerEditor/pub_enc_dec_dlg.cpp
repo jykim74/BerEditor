@@ -75,6 +75,9 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
     connect( mTagText, SIGNAL(textChanged(const QString&)), this, SLOT(changeTag(const QString&)));
 
     mCloseBtn->setFocus();
+#if defined(Q_OS_MAC)
+    layout()->setSpacing(5);
+#endif
 }
 
 PubEncDecDlg::~PubEncDecDlg()

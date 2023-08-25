@@ -86,6 +86,9 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     connect( mEncPrikeyCheck, SIGNAL(clicked()), this, SLOT(checkEncPriKey()));
 
     mCloseBtn->setFocus();
+#if defined(Q_OS_MAC)
+    layout()->setSpacing(5);
+#endif
 }
 
 SignVerifyDlg::~SignVerifyDlg()

@@ -101,6 +101,9 @@ CAVPDlg::CAVPDlg(QWidget *parent) :
     connect( mDRBG2RunBtn, SIGNAL(clicked()), this, SLOT(clickDRBG2Run()));
 
     initialize();
+#if defined(Q_OS_MAC)
+    layout()->setSpacing(5);
+#endif
 }
 
 CAVPDlg::~CAVPDlg()

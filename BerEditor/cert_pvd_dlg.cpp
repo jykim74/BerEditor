@@ -48,6 +48,9 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
 
     initialize();
+#if defined(Q_OS_MAC)
+    layout()->setSpacing(5);
+#endif
 }
 
 CertPVDDlg::~CertPVDDlg()
