@@ -49,5 +49,7 @@
         <file>images/cert.png</file>
         <file>images/license.png</file>
         <file>Info.plist</file>
+        <file>qt-mac.css</file>
+        <file>qt-win.css</file>
     </qresource>
 </RCC>

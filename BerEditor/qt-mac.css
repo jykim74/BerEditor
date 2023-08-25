@@ -1,0 +1,16 @@
+QFrame#mFrame
+{
+    border: 0;
+}
+
+QLabel {
+    font-family: Monaco;
+}
+
+QFrame#mFrame {
+    background-color: white;
+}
+
+BerTreeView {
+    font-family: Monaco;
+}

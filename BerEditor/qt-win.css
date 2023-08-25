@@ -1,0 +1,11 @@
+QLabel {
+    font-family: Consolas;
+}
+
+QFrame#mFrame {
+    background-color: white;
+}
+
+BerTreeView {
+    font-family: Consolas;
+}
