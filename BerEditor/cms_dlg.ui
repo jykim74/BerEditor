@@ -728,11 +728,36 @@
   <tabstop>mSrcStringRadio</tabstop>
   <tabstop>mSrcHexRadio</tabstop>
   <tabstop>mSrcBase64Radio</tabstop>
+  <tabstop>mReadFileBtn</tabstop>
   <tabstop>mSrcLenText</tabstop>
   <tabstop>mSrcText</tabstop>
+  <tabstop>mSignPriKeyPathText</tabstop>
+  <tabstop>mSignPriKeyFindBtn</tabstop>
+  <tabstop>mSignPriKeyDecodeBtn</tabstop>
+  <tabstop>mSignPriKeyTypeBtn</tabstop>
+  <tabstop>mSignCertPathText</tabstop>
+  <tabstop>mSignCertFindBtn</tabstop>
+  <tabstop>mSignCertViewBtn</tabstop>
+  <tabstop>mSignCertDecodeBtn</tabstop>
+  <tabstop>mSignCertTypeBtn</tabstop>
+  <tabstop>mSignEncPriKeyCheck</tabstop>
+  <tabstop>mSignPasswdText</tabstop>
+  <tabstop>mKMPriKeyPathText</tabstop>
+  <tabstop>mKMPriKeyFindBtn</tabstop>
+  <tabstop>mKMPriKeyDecodeBtn</tabstop>
+  <tabstop>mKMPriKeyTypeBtn</tabstop>
+  <tabstop>mKMCertPathText</tabstop>
+  <tabstop>mKMCertFindBtn</tabstop>
+  <tabstop>mKMCertViewBtn</tabstop>
+  <tabstop>mKMCertDecodeBtn</tabstop>
+  <tabstop>mKMCertTypeBtn</tabstop>
+  <tabstop>mKMEncPriKeyCheck</tabstop>
+  <tabstop>mKMPasswdText</tabstop>
   <tabstop>mOutputStringRadio</tabstop>
   <tabstop>mOutputHexRadio</tabstop>
   <tabstop>mOutputBase64Radio</tabstop>
+  <tabstop>mDecodeBtn</tabstop>
+  <tabstop>mChangeBtn</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
   <tabstop>mSignedDataBtn</tabstop>

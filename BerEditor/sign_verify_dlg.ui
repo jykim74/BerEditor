@@ -1085,15 +1085,36 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>mInputTab</tabstop>
+  <tabstop>mInputStringRadio</tabstop>
+  <tabstop>mInputHexRadio</tabstop>
+  <tabstop>mInputBase64Radio</tabstop>
+  <tabstop>mInputLenText</tabstop>
+  <tabstop>mInputText</tabstop>
+  <tabstop>mInitBtn</tabstop>
+  <tabstop>mUpdateBtn</tabstop>
+  <tabstop>mFinalBtn</tabstop>
+  <tabstop>mInputClearBtn</tabstop>
+  <tabstop>mSrcFileText</tabstop>
+  <tabstop>mFindSrcFileBtn</tabstop>
+  <tabstop>mSrcFileInfoText</tabstop>
+  <tabstop>mSrcFileSizeText</tabstop>
+  <tabstop>mFileTotalSizeText</tabstop>
+  <tabstop>mFileReadSizeText</tabstop>
+  <tabstop>mWriteLogCheck</tabstop>
   <tabstop>mAutoCertPubKeyCheck</tabstop>
   <tabstop>mPubKeyVerifyCheck</tabstop>
   <tabstop>mPriKeyPath</tabstop>
   <tabstop>mPriKeyBtn</tabstop>
   <tabstop>mPriKeyDecodeBtn</tabstop>
+  <tabstop>mPriKeyTypeBtn</tabstop>
   <tabstop>mCertPath</tabstop>
   <tabstop>mCertBtn</tabstop>
   <tabstop>mCertViewBtn</tabstop>
   <tabstop>mCertDecodeBtn</tabstop>
+  <tabstop>mCertTypeBtn</tabstop>
+  <tabstop>mEncPrikeyCheck</tabstop>
+  <tabstop>mPasswdText</tabstop>
   <tabstop>mUseKeyAlgCheck</tabstop>
   <tabstop>mAlgTypeCombo</tabstop>
   <tabstop>mHashTypeCombo</tabstop>
@@ -1102,6 +1123,8 @@
   <tabstop>mCheckKeyPairBtn</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
+  <tabstop>mOutputClearBtn</tabstop>
+  <tabstop>mDigestBtn</tabstop>
   <tabstop>mRunBtn</tabstop>
   <tabstop>mClearDataAllBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>

@@ -203,6 +203,7 @@
  </widget>
  <tabstops>
   <tabstop>mURICombo</tabstop>
+  <tabstop>mClearUsedURIBtn</tabstop>
   <tabstop>mUseLDAPHostCheck</tabstop>
   <tabstop>mHostText</tabstop>
   <tabstop>mPortText</tabstop>

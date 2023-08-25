@@ -1180,6 +1180,9 @@
   <tabstop>mBFindPriKeyBtn</tabstop>
   <tabstop>mSecretKeyLenText</tabstop>
   <tabstop>mSecretKeyText</tabstop>
+  <tabstop>mSecretClearBtn</tabstop>
+  <tabstop>mACalcBtn</tabstop>
+  <tabstop>mBCalcBtn</tabstop>
   <tabstop>mClearDataAllBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>

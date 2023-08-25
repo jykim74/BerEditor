@@ -855,15 +855,27 @@
   <tabstop>mPriKeyPath</tabstop>
   <tabstop>mPriKeyBtn</tabstop>
   <tabstop>mPriKeyDecodeBtn</tabstop>
+  <tabstop>mPriKeyTypeBtn</tabstop>
   <tabstop>mCertPath</tabstop>
   <tabstop>mCertBtn</tabstop>
   <tabstop>mCertViewBtn</tabstop>
   <tabstop>mCertDecodeBtn</tabstop>
+  <tabstop>mCertTypeBtn</tabstop>
+  <tabstop>mEncPrikeyCheck</tabstop>
+  <tabstop>mPasswdText</tabstop>
   <tabstop>mUseKeyAlgCheck</tabstop>
+  <tabstop>mCheckKeyPairBtn</tabstop>
   <tabstop>mAlgCombo</tabstop>
   <tabstop>mVersionTypeCombo</tabstop>
   <tabstop>mMethodTypeCombo</tabstop>
   <tabstop>mChangeBtn</tabstop>
+  <tabstop>mIVText</tabstop>
+  <tabstop>mIVLenText</tabstop>
+  <tabstop>mTagText</tabstop>
+  <tabstop>mTagLenText</tabstop>
+  <tabstop>mOtherPubLenText</tabstop>
+  <tabstop>mOtherPubText</tabstop>
+  <tabstop>mOutputTypeCombo</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
   <tabstop>mClearDataAllBtn</tabstop>

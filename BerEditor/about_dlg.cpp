@@ -63,7 +63,7 @@ AboutDlg::AboutDlg(QWidget *parent) :
 
 //    mAboutText->setText( strAbout );
     mAboutText->setHtml( strAbout );
-    mOKBtn->setFocus();
+    mOKBtn->setDefault(true);
 }
 
 AboutDlg::~AboutDlg()

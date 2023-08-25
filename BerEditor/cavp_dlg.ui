@@ -86,7 +86,7 @@
    <item row="1" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -2927,6 +2927,8 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>mRspPathText</tabstop>
+  <tabstop>mRspPathFindBtn</tabstop>
   <tabstop>tabWidget</tabstop>
   <tabstop>mSymAlgCombo</tabstop>
   <tabstop>mSymModeCombo</tabstop>
@@ -2949,6 +2951,29 @@
   <tabstop>mHMACReqFileText</tabstop>
   <tabstop>mHMACFindBtn</tabstop>
   <tabstop>mHMACRunBtn</tabstop>
+  <tabstop>mECC_ECDSARadio</tabstop>
+  <tabstop>mECC_ECDHRadio</tabstop>
+  <tabstop>mECCParamCombo</tabstop>
+  <tabstop>mECCTypeCombo</tabstop>
+  <tabstop>mECCReqFileText</tabstop>
+  <tabstop>mECCFindBtn</tabstop>
+  <tabstop>mECCRunBtn</tabstop>
+  <tabstop>mRSA_ESRadio</tabstop>
+  <tabstop>mRSA_PSSRadio</tabstop>
+  <tabstop>mRSATypeCombo</tabstop>
+  <tabstop>mRSAReqFileText</tabstop>
+  <tabstop>mRSAFindBtn</tabstop>
+  <tabstop>mRSARunBtn</tabstop>
+  <tabstop>mDRBGAlgCombo</tabstop>
+  <tabstop>mDRBGUseDFCheck</tabstop>
+  <tabstop>mDRBGUsePRCheck</tabstop>
+  <tabstop>mDRBGReqFileText</tabstop>
+  <tabstop>mDRBGFindBtn</tabstop>
+  <tabstop>mDRBGRunBtn</tabstop>
+  <tabstop>mPBKDFAlgCombo</tabstop>
+  <tabstop>mPBKDFReqFileText</tabstop>
+  <tabstop>mPBKDFFindBtn</tabstop>
+  <tabstop>mPBKDFRunBtn</tabstop>
   <tabstop>mSymMCTAlgCombo</tabstop>
   <tabstop>mSymMCTModeCombo</tabstop>
   <tabstop>mSymMCTCountText</tabstop>
@@ -3002,6 +3027,7 @@
   <tabstop>mDRBG2ReturnedBitsText</tabstop>
   <tabstop>mDRBG2ClearBtn</tabstop>
   <tabstop>mDRBG2RunBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>
  <connections/>

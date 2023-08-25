@@ -324,6 +324,17 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mCurEmailText</tabstop>
+  <tabstop>mCurIssueDateText</tabstop>
+  <tabstop>mCurExpireDateText</tabstop>
+  <tabstop>mEmailText</tabstop>
+  <tabstop>mKeyText</tabstop>
+  <tabstop>mUseFileCheck</tabstop>
+  <tabstop>mGetBtn</tabstop>
+  <tabstop>mUpdateBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

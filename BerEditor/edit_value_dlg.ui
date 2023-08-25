@@ -692,8 +692,12 @@
  <tabstops>
   <tabstop>mClassText</tabstop>
   <tabstop>mTagText</tabstop>
+  <tabstop>mTagBitText</tabstop>
   <tabstop>mHeaderText</tabstop>
   <tabstop>mLengthText</tabstop>
+  <tabstop>mValueTypeCombo</tabstop>
+  <tabstop>mOffsetText</tabstop>
+  <tabstop>mLevelText</tabstop>
   <tabstop>mValueLenText</tabstop>
   <tabstop>mValueText</tabstop>
   <tabstop>mAddBtn</tabstop>

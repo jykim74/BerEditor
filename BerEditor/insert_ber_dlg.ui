@@ -409,6 +409,7 @@
   <tabstop>mTagText</tabstop>
   <tabstop>mHeaderText</tabstop>
   <tabstop>mHeaderLenText</tabstop>
+  <tabstop>mValueTypeCombo</tabstop>
   <tabstop>mValueLenText</tabstop>
   <tabstop>mValueText</tabstop>
   <tabstop>mInsertBtn</tabstop>
