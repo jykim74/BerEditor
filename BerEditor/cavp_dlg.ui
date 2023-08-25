@@ -86,26 +86,13 @@
    <item row="1" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>3</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
        <string>Symmetric Hash</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <widget class="Line" name="line_14">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>2</height>
-          </size>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_3">
          <item row="0" column="5">
@@ -510,59 +497,15 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
-        <layout class="QGridLayout" name="gridLayout_6">
-         <item row="0" column="2">
-          <widget class="QRadioButton" name="mECC_ECDHRadio">
-           <property name="text">
-            <string>ECDH</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
-          <spacer name="horizontalSpacer_4">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_17">
-           <property name="text">
-            <string>Req File</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="4">
-          <widget class="QLabel" name="label_63">
-           <property name="text">
-            <string>Param</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="6">
-          <widget class="QPushButton" name="mECCFindBtn">
-           <property name="maximumSize">
-            <size>
-             <width>80</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Find</string>
-           </property>
-          </widget>
-         </item>
+        <layout class="QGridLayout" name="gridLayout_14">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
          <item row="0" column="6">
           <widget class="QLabel" name="label_16">
            <property name="minimumSize">
             <size>
-             <width>80</width>
+             <width>0</width>
              <height>0</height>
             </size>
            </property>
@@ -574,6 +517,56 @@
            </property>
            <property name="text">
             <string>Type</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QLabel" name="label_63">
+           <property name="text">
+            <string>Param</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_14">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>ECC</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QRadioButton" name="mECC_ECDSARadio">
+           <property name="text">
+            <string>ECDSA</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="5">
+          <widget class="QComboBox" name="mECCParamCombo"/>
+         </item>
+         <item row="0" column="3">
+          <spacer name="horizontalSpacer_10">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="2">
+          <widget class="QRadioButton" name="mECC_ECDHRadio">
+           <property name="text">
+            <string>ECDH</string>
            </property>
           </widget>
          </item>
@@ -593,10 +586,29 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QRadioButton" name="mECC_ECDSARadio">
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_17">
            <property name="text">
-            <string>ECDSA</string>
+            <string>Req File</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="6">
+          <widget class="QPushButton" name="mECCFindBtn">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Find</string>
            </property>
           </widget>
          </item>
@@ -613,24 +625,8 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="5">
-          <widget class="QComboBox" name="mECCParamCombo"/>
-         </item>
          <item row="1" column="1" colspan="5">
           <widget class="QLineEdit" name="mECCReqFileText"/>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_14">
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>ECC</string>
-           </property>
-          </widget>
          </item>
         </layout>
        </item>
@@ -643,50 +639,14 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_7">
-         <item row="0" column="4">
-          <widget class="QLabel" name="label_20">
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>80</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Type</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QRadioButton" name="mRSA_PSSRadio">
-           <property name="text">
-            <string>RSA PSS</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="5">
-          <widget class="QComboBox" name="mRSATypeCombo">
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>80</width>
-             <height>16777215</height>
-            </size>
-           </property>
-          </widget>
-         </item>
          <item row="1" column="4">
           <widget class="QPushButton" name="mRSAFindBtn">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
             <string>Find</string>
            </property>
@@ -694,6 +654,12 @@
          </item>
          <item row="1" column="5">
           <widget class="QPushButton" name="mRSARunBtn">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="maximumSize">
             <size>
              <width>80</width>
@@ -709,26 +675,6 @@
           <widget class="QLabel" name="label_21">
            <property name="text">
             <string>Req File</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_18">
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>RSA</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QRadioButton" name="mRSA_ESRadio">
-           <property name="text">
-            <string>RSAES</string>
            </property>
           </widget>
          </item>
@@ -748,6 +694,68 @@
            </property>
           </spacer>
          </item>
+         <item row="0" column="2">
+          <widget class="QRadioButton" name="mRSA_PSSRadio">
+           <property name="text">
+            <string>RSA PSS</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QRadioButton" name="mRSA_ESRadio">
+           <property name="text">
+            <string>RSAES</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_18">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>RSA</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QLabel" name="label_20">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Type</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="5">
+          <widget class="QComboBox" name="mRSATypeCombo">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
@@ -761,19 +769,6 @@
         <layout class="QGridLayout" name="gridLayout_8">
          <item row="1" column="4">
           <widget class="QPushButton" name="mDRBGFindBtn">
-           <property name="maximumSize">
-            <size>
-             <width>80</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Find</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="4">
-          <widget class="QCheckBox" name="mDRBGUseDFCheck">
            <property name="minimumSize">
             <size>
              <width>80</width>
@@ -787,12 +782,46 @@
             </size>
            </property>
            <property name="text">
+            <string>Find</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QCheckBox" name="mDRBGUseDFCheck">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="text">
             <string>Use DF</string>
            </property>
           </widget>
          </item>
          <item row="1" column="5">
           <widget class="QPushButton" name="mDRBGRunBtn">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="maximumSize">
             <size>
              <width>80</width>
@@ -837,7 +866,7 @@
           <widget class="QCheckBox" name="mDRBGUsePRCheck">
            <property name="minimumSize">
             <size>
-             <width>80</width>
+             <width>0</width>
              <height>0</height>
             </size>
            </property>
@@ -901,6 +930,12 @@
         <layout class="QGridLayout" name="gridLayout_9">
          <item row="1" column="4">
           <widget class="QPushButton" name="mPBKDFRunBtn">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="maximumSize">
             <size>
              <width>80</width>
@@ -916,7 +951,7 @@
           <widget class="QLabel" name="label_25">
            <property name="minimumSize">
             <size>
-             <width>80</width>
+             <width>0</width>
              <height>0</height>
             </size>
            </property>
@@ -965,6 +1000,12 @@
          </item>
          <item row="1" column="3">
           <widget class="QPushButton" name="mPBKDFFindBtn">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="maximumSize">
             <size>
              <width>80</width>
@@ -989,7 +1030,7 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
+         <item row="0" column="1" colspan="2">
           <spacer name="horizontalSpacer_13">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -3056,13 +3097,6 @@
   <tabstop>mHMACReqFileText</tabstop>
   <tabstop>mHMACFindBtn</tabstop>
   <tabstop>mHMACRunBtn</tabstop>
-  <tabstop>mECC_ECDSARadio</tabstop>
-  <tabstop>mECC_ECDHRadio</tabstop>
-  <tabstop>mECCParamCombo</tabstop>
-  <tabstop>mECCTypeCombo</tabstop>
-  <tabstop>mECCReqFileText</tabstop>
-  <tabstop>mECCFindBtn</tabstop>
-  <tabstop>mECCRunBtn</tabstop>
   <tabstop>mRSA_ESRadio</tabstop>
   <tabstop>mRSA_PSSRadio</tabstop>
   <tabstop>mRSATypeCombo</tabstop>
