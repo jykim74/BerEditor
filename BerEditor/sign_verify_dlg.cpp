@@ -88,6 +88,11 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     mCloseBtn->setFocus();
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+    mPriKeyTypeBtn->setFixedWidth(34);
+    mPriKeyDecodeBtn->setFixedWidth(34);
+    mCertDecodeBtn->setFixedWidth(34);
+    mCertTypeBtn->setFixedWidth(34);
+    mCertViewBtn->setFixedWidth(34);
 #endif
 }
 

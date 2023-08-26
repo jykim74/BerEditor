@@ -50,6 +50,12 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
     initialize();
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+    mTrustInfoBtn->setFixedWidth(34);
+    mTrustDecodeBtn->setFixedWidth(34);
+    mUntrustInfoBtn->setFixedWidth(34);
+    mUntrustDecodeBtn->setFixedWidth(34);
+    mCRLInfoBtn->setFixedWidth(34);
+    mCRLDecodeBtn->setFixedWidth(34);
 #endif
 }
 

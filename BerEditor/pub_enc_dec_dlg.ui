@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>509</width>
-    <height>658</height>
+    <width>543</width>
+    <height>752</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -262,13 +262,6 @@
     </layout>
    </item>
    <item>
-    <widget class="Line" name="line_5">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
     <layout class="QGridLayout" name="gridLayout_6">
      <property name="topMargin">
       <number>0</number>
@@ -369,13 +362,13 @@
       <widget class="QComboBox" name="mAlgCombo">
        <property name="minimumSize">
         <size>
-         <width>60</width>
+         <width>80</width>
          <height>0</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>50</width>
+         <width>80</width>
          <height>16777215</height>
         </size>
        </property>
@@ -392,13 +385,13 @@
       <widget class="QComboBox" name="mVersionTypeCombo">
        <property name="minimumSize">
         <size>
-         <width>50</width>
+         <width>60</width>
          <height>0</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>50</width>
+         <width>80</width>
          <height>16777215</height>
         </size>
        </property>
@@ -453,6 +446,21 @@
       <string>ECIES Information</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="spacing">
+       <number>5</number>
+      </property>
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
+       <number>9</number>
+      </property>
       <item>
        <layout class="QGridLayout" name="gridLayout_7">
         <item row="1" column="0">
@@ -673,16 +681,16 @@
        </layout>
       </item>
       <item>
-       <widget class="QPlainTextEdit" name="mOtherPubText"/>
+       <widget class="QPlainTextEdit" name="mOtherPubText">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>40</height>
+         </size>
+        </property>
+       </widget>
       </item>
      </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
     </widget>
    </item>
    <item>
@@ -783,7 +791,7 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>60</width>
+         <width>16777215</width>
          <height>16777215</height>
         </size>
        </property>

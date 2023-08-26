@@ -182,7 +182,12 @@ void MainWindow::createTableMenu()
     QString style = "QHeaderView::section {background-color:#404040;color:#FFFFFF;}";
 
     right_table_->horizontalHeader()->setStyleSheet( style );
+
+#ifdef Q_OS_MAC
+    right_table_->setColumnWidth(0, 90);
+#else
     right_table_->setColumnWidth(0, 80);
+#endif
 
     for( int i=1; i <= 16; i++ )
         right_table_->setColumnWidth(i, 30);
@@ -217,7 +222,7 @@ void MainWindow::createActions()
     QToolBar *fileToolBar = addToolBar(tr("File"));
 
 #ifdef Q_OS_MAC
-        fileToolBar->setIconSize( QSize(24,24));
+    fileToolBar->setIconSize( QSize(24,24));
 #endif
 
     const QIcon newIcon = QIcon::fromTheme("document-new", QIcon(":/images/new.png"));
