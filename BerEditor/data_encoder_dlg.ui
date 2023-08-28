@@ -43,6 +43,13 @@
       </spacer>
      </item>
      <item>
+      <widget class="QPushButton" name="mChangeBtn">
+       <property name="text">
+        <string>Change</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="mEncodeBtn">
        <property name="text">
         <string>Encode</string>
@@ -186,7 +193,48 @@
     </widget>
    </item>
    <item row="6" column="0">
-    <widget class="QPlainTextEdit" name="mOutputText"/>
+    <widget class="QPlainTextEdit" name="mOutputText">
+     <property name="palette">
+      <palette>
+       <active>
+        <colorrole role="Base">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>221</red>
+           <green>221</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </active>
+       <inactive>
+        <colorrole role="Base">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>221</red>
+           <green>221</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </inactive>
+       <disabled>
+        <colorrole role="Base">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>240</red>
+           <green>240</green>
+           <blue>240</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </disabled>
+      </palette>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
    <item row="1" column="0">
     <layout class="QGridLayout" name="gridLayout_4">
@@ -320,6 +368,7 @@
   <tabstop>mInputText</tabstop>
   <tabstop>mOutputTypeCombo</tabstop>
   <tabstop>mShowPrintTextCheck</tabstop>
+  <tabstop>mChangeBtn</tabstop>
   <tabstop>mEncodeBtn</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>

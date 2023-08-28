@@ -28,6 +28,7 @@ DataEncoderDlg::DataEncoderDlg(QWidget *parent) :
     connect( mInputTypeBase64Btn, SIGNAL(clicked()), this, SLOT(inputChanged()));
     connect( mInputTypeStringBtn, SIGNAL(clicked()), this, SLOT(inputChanged()));
     connect( mOutputText, SIGNAL(textChanged()), this, SLOT(outputChanged()));
+    connect( mChangeBtn, SIGNAL(clicked()), this, SLOT(clickChange()));
 
     mCloseBtn->setFocus();
 }
@@ -49,13 +50,12 @@ static char getch( unsigned char c )
 void DataEncoderDlg::onClickEncodeBtn()
 {
     int input_type = 0;
-    int output_type = 0;
     BIN binSrc = {0,0};
 
     QString inputStr = mInputText->toPlainText();
     QString outputStr = "";
 
-    if( inputStr.isEmpty() )
+    if( inputStr.length() < 1 )
     {
         berApplet->warningBox( tr( "You have to insert data" ), this );
         return;
@@ -111,4 +111,20 @@ void DataEncoderDlg::outputChanged()
 {
     int nLen = getDataLen( mOutputTypeCombo->currentText(), mOutputText->toPlainText() );
     mOutputLenText->setText( QString("%1").arg(nLen));
+}
+
+void DataEncoderDlg::clickChange()
+{
+    if( mOutputTypeCombo->currentText() == "String" )
+        mInputTypeStringBtn->setChecked(true);
+    else if( mOutputTypeCombo->currentText() == "Hex" )
+        mInputTypeHexBtn->setChecked(true);
+    else if( mOutputTypeCombo->currentText() == "Base64" )
+        mInputTypeBase64Btn->setChecked(true);
+    else if( mOutputTypeCombo->currentText() == "URL" )
+        mInputTypeURL->setChecked(true);
+
+    QString strOut = mOutputText->toPlainText();
+    mInputText->setPlainText( strOut );
+    mOutputText->clear();
 }

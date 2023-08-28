@@ -1103,3 +1103,23 @@ bool isEmail( const QString strEmail )
 
     return mailREX.exactMatch( strEmail );
 }
+
+bool isValidNumFormat( const QString strInput, int nNumber )
+{
+    QRegExp strExp;
+
+    if( nNumber == 2 )
+    {
+        strExp.setPattern( "[0-1]+");
+    }
+    else if( nNumber == 16 )
+    {
+        strExp.setPattern( "[0-9a-fA-F]+" );
+    }
+    else
+    {
+        strExp.setPattern( "[0-9]+" );
+    }
+
+    return strExp.exactMatch( strInput );
+}

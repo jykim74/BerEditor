@@ -5,6 +5,7 @@
 #include "js_pki_tools.h"
 #include "js_util.h"
 #include "ber_applet.h"
+#include "common.h"
 
 const QStringList sTypeList = { "Bit", "Decimal", "Hex" };
 
@@ -32,12 +33,28 @@ void NumTransDlg::dataTrans()
 {
     BIN binSrc = {0,0};
     char *pOutput = NULL;
+    int nNum = 0;
 
     QString strInput = mInputText->toPlainText();
+    strInput.remove( QRegExp("[\t\r\n\\s]") );
+
     if( strInput.length() < 1 )
     {
         berApplet->warningBox( tr( "Insert data" ), this );
         mInputText->setFocus();
+        return;
+    }
+
+    if( mBitBtn->isChecked() )
+        nNum = 2;
+    else if( mDecimalBtn->isChecked() )
+        nNum = 10;
+    else if( mHexBtn->isChecked() )
+        nNum = 16;
+
+    if( isValidNumFormat( strInput, nNum ) == false )
+    {
+        berApplet->warningBox( tr( "The input value have wrong format" ), this );
         return;
     }
 
@@ -47,6 +64,8 @@ void NumTransDlg::dataTrans()
         JS_PKI_decimalToBin( strInput.toStdString().c_str(), &binSrc );
     else if( mHexBtn->isChecked() )
         JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
+
+    if( binSrc.nLen <= 0 ) goto end;
 
     if( mOutputTypeCombo->currentIndex() == 0 )
         JS_PKI_binToBit( &binSrc, &pOutput );
@@ -65,7 +84,9 @@ void NumTransDlg::dataTrans()
         mOutputText->setPlainText( pOutput );
     }
 
+end :
     if( pOutput ) JS_free( pOutput );
+    JS_BIN_reset( &binSrc );
     repaint();
 }
 

@@ -32,6 +32,13 @@ enum {
     JS_FILE_TYPE_REQ,
     JS_FILE_TYPE_ALL };
 
+const QColor kAddrColor( 220, 220, 250 );
+const QColor kTextColor( 225, 225, 225 );
+const QColor kValueColor( 245, 245, 203 );
+const QColor kTagColor( 102, 255, 102 );
+const QColor kLenColor( 240, 214, 255 );
+const QColor kLenTypeColor( Qt::cyan );
+
 const QStringList kECCParamList = {
     "secp112r1", "secp112r2", "secp128r1", "secp128r2", "secp160k1",
     "secp160r1", "secp160r2", "secp192r1", "secp192k1", "secp224k1",
@@ -94,6 +101,8 @@ void getBINFromString( BIN *pBin, int nType, const QString& strString );
 QString getStringFromBIN( const BIN *pBin, const QString& strType, bool bSeenOnly = false );
 QString getStringFromBIN( const BIN *pBin, int nType, bool bSeenOnly = false );
 QString getKeyTypeName( int nKeyType );
+
+bool isValidNumFormat( const QString strInput, int nNumber );
 
 bool isEmail( const QString strEmail );
 

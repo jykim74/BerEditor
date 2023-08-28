@@ -165,7 +165,7 @@ void MainWindow::initialize()
 #ifdef Q_OS_MAC
     resize( 1040, 780 );
 #else
-    resize( 1010, 760 );
+    resize( 1020, 760 );
 #endif
 
     setCentralWidget(hsplitter_);
@@ -1098,6 +1098,12 @@ void MainWindow::logView( bool bShow )
 
 void MainWindow::decodeData( const BIN *pData, const QString strPath )
 {
+    if( pData == NULL || pData->nLen <= 0 )
+    {
+        berApplet->warningBox( tr( "There is no data"), this );
+        return;
+    }
+
     if( berApplet->isLicense() == false )
     {
         if( pData && pData->nLen > kNoLicenseLimitMaxSize )

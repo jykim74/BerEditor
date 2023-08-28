@@ -34,9 +34,10 @@ void InsertDataDlg::viewData()
 
     QString strData = mDataText->toPlainText();
 
-    if( strData.length() < 0 )
+    if( strData.length() < 1 )
     {
         berApplet->warningBox( tr( "You have to insert data"), this );
+        mDataText->setFocus();
         return;
     }
 

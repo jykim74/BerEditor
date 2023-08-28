@@ -70,11 +70,6 @@ void BerTreeView::infoItem( BerItem *pItem )
     BIN bin = {0,0};
     BIN header = {0,0};
 
-    int row = pItem->row();
-    int rowCount = pItem->rowCount();
-    int col = pItem->column();
-    int colCount = pItem->columnCount();
-
     char *pBitString = NULL;
     JS_BIN_set( &bin, binBer.pVal + pItem->GetOffset(), 1 );
     JS_BIN_bitString( &bin, &pBitString );
@@ -200,26 +195,32 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
             QString address;
             address.sprintf( "0x%08X", i + pItem->GetOffset() );
             rightTable->setItem( line, 0, new QTableWidgetItem( address ));
-            rightTable->item( line, 0 )->setBackground( QColor(220,220,250) );
+            rightTable->item( line, 0 )->setBackground( kAddrColor );
         }
 
         hex.sprintf( "%02X", binPart.pVal[i] );
         rightTable->setItem( line, (i%16)+1, new QTableWidgetItem(hex));
-        rightTable->item( line, (i%16) +1 )->setBackground(lightGray);
+        rightTable->item( line, (i%16) +1 )->setBackground(kValueColor);
 
         if( i== 0 )
         {
-            rightTable->item( line, 1)->setBackground(green);
+            rightTable->item( line, 1)->setBackground(kTagColor);
         }
         else if( i== 1 )
         {
-            rightTable->item( line, 2)->setBackground(yellow);
-
-            if( binPart.pVal[i] & JS_LEN_XTND ) len_len = binPart.pVal[i] & JS_LEN_MASK;
+            if( binPart.pVal[i] & JS_LEN_XTND )
+            {
+                len_len = binPart.pVal[i] & JS_LEN_MASK;
+                rightTable->item( line, 2)->setBackground(kLenTypeColor);
+            }
+            else
+            {
+                rightTable->item( line, i + 1 )->setBackground(kLenColor);
+            }
         }
         else if( i <= (1 + len_len))
         {
-            rightTable->item( line, i + 1 )->setBackground(cyan);
+            rightTable->item( line, i + 1 )->setBackground(kLenColor);
         }
 
 
@@ -228,7 +229,7 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
         if( i % 16 - 15 == 0 )
         {
             rightTable->setItem( line, 17, new QTableWidgetItem(text));
-            rightTable->item( line, 17 )->setBackground(QColor(210,240,210));
+            rightTable->item( line, 17 )->setBackground(kTextColor);
             text.clear();
             line++;
         }
@@ -237,7 +238,7 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
     if( !text.isEmpty() )
     {
         rightTable->setItem(line, 17, new QTableWidgetItem(text));
-        rightTable->item( line, 17 )->setBackground(QColor(210,240,210));
+        rightTable->item( line, 17 )->setBackground(kTextColor);
     }
 
     JS_BIN_reset(&binPart);
@@ -273,7 +274,7 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
             QString address;
             address.sprintf( "0x%08X", i );
             rightTable->setItem( line, 0, new QTableWidgetItem( address ));
-            rightTable->item( line, 0 )->setBackground( QColor(220,220,250) );
+            rightTable->item( line, 0 )->setBackground( kAddrColor );
         }
 
         hex.sprintf( "%02X", pBer->pVal[i] );
@@ -281,23 +282,29 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
         rightTable->setItem( line, pos, new QTableWidgetItem(hex));
         if( i== pItem->GetOffset() )
         {
-            rightTable->item( line, pos)->setBackground(green);
+            rightTable->item( line, pos)->setBackground(kTagColor);
             start_row = line;
             start_col = pos;
         }
         else if( i== pItem->GetOffset()+1 )
         {
-            rightTable->item( line, pos)->setBackground(yellow);
-
-            if( pBer->pVal[i] & JS_LEN_XTND ) len_len = pBer->pVal[i] & JS_LEN_MASK;
+            if( pBer->pVal[i] & JS_LEN_XTND )
+            {
+                rightTable->item( line, pos)->setBackground(kLenTypeColor);
+                len_len = pBer->pVal[i] & JS_LEN_MASK;
+            }
+            else
+            {
+                rightTable->item( line, pos)->setBackground(kLenColor);
+            }
         }
         else if( (i > pItem->GetOffset() + 1 ) && (i <= (pItem->GetOffset() + 1 + len_len)))
         {
-            rightTable->item( line, pos )->setBackground(cyan);
+            rightTable->item( line, pos )->setBackground(kLenColor);
         }
         else if( (i > pItem->GetOffset() + 1 ) && ( i < pItem->GetOffset() + pItem->GetHeaderSize() + pItem->GetLength() ))
         {
-            rightTable->item(line, pos )->setBackground(lightGray);
+            rightTable->item(line, pos )->setBackground(kValueColor);
         }
 
         text += getch( pBer->pVal[i]);
@@ -305,7 +312,7 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
         if( i % 16 - 15 == 0 )
         {
             rightTable->setItem( line, 17, new QTableWidgetItem(text));
-            rightTable->item( line, 17 )->setBackground(QColor(210,240,210));
+            rightTable->item( line, 17 )->setBackground( kTextColor );
             text.clear();
             line++;
         }
@@ -314,7 +321,7 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
     if( !text.isEmpty() )
     {
         rightTable->setItem(line, 17, new QTableWidgetItem(text));
-        rightTable->item( line, 17 )->setBackground(QColor(210,240,210));
+        rightTable->item( line, 17 )->setBackground( kTextColor );
     }
 
     QTableWidgetItem *item = rightTable->item( start_row, start_col );

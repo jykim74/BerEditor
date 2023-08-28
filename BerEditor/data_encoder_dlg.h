@@ -23,6 +23,7 @@ private slots:
     void outTypeChanged( int index );
     void inputChanged();
     void outputChanged();
+    void clickChange();
 
 private:
 //    Ui::DataEncoderDlg *ui;
