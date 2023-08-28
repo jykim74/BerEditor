@@ -96,7 +96,7 @@ void OIDInfoDlg::findOID()
    else if(mInputTypeCombo->currentIndex() == 1 )
    {
        JS_BIN_decodeHex( strInput.toStdString().c_str(), &binOID );
-       JS_PKI_getStringFromOID( &binOID, sOID );
+       JS_PKI_getStringFromOIDValue( &binOID, sOID );
        JS_BIN_reset(&binOID);
    }
    else if(mInputTypeCombo->currentIndex() == 2 )

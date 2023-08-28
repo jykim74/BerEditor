@@ -203,7 +203,7 @@ QString BerItem::GetValueString( const BIN *pBer )
         char sOID[1024];
         memset( sOID, 0x00, sizeof(sOID));
         //strcpy( sOID, "OID" );
-        JS_PKI_getStringFromOID( &binVal, sOID );
+        JS_PKI_getStringFromOIDValue( &binVal, sOID );
         strVal = sOID;
     }
     else if( tag_ == JS_NULLTAG )
