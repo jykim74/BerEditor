@@ -332,7 +332,7 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <location filename="../cavp_dlg.ui" line="70"/>
         <source>Rsp Path</source>
-        <translation>일결과 파</translation>
+        <translation>결과 파일</translation>
     </message>
     <message>
         <location filename="../cavp_dlg.ui" line="93"/>
