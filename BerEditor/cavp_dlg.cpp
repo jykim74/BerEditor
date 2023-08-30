@@ -332,6 +332,11 @@ void CAVPDlg::clickSymRun()
     QString strType = mSymTypeCombo->currentText();
     QString strMode = mSymModeCombo->currentText();
 
+    logRsp( QString( "# SYM-%1-%2-%3 Response")
+            .arg( mSymAlgCombo->currentText())
+            .arg( mSymModeCombo->currentText())
+            .arg( mSymTypeCombo->currentText()) );
+
     while( strLine.isNull() == false )
     {
         QString strName;
@@ -454,6 +459,11 @@ void CAVPDlg::clickAERun()
 
     QTextStream in( &reqFile );
     QString strLine = in.readLine();
+
+    logRsp( QString( "# AE-%1-%2-%3 Response")
+            .arg( mAEAlgCombo->currentText())
+            .arg( mAEModeCombo->currentText())
+            .arg( mAETypeCombo->currentText()) );
 
     while( strLine.isNull() == false )
     {
@@ -596,6 +606,8 @@ void CAVPDlg::clickHMACRun()
     int nPos = 0;
     int nLen = 0;
 
+    logRsp( QString( "# HMAC-%1 Response")
+            .arg( mHMACHashCombo->currentText()) );
 
     while( strLine.isNull() == false )
     {
@@ -702,6 +714,9 @@ void CAVPDlg::clickHashRun()
     int nPos = 0;
     int nLen = 0;
 
+    logRsp( QString( "# HASH-%1-%2 Response")
+            .arg( mHashAlgCombo->currentText())
+            .arg( mHashTypeCombo->currentText()) );
 
     while( strLine.isNull() == false )
     {
@@ -742,7 +757,7 @@ void CAVPDlg::clickHashRun()
             }
             else if( strSeed.length() > 0 )
             {
-                ret = makeHashMCT( strSeed );
+                ret = makeHashMCT( mHashAlgCombo->currentText(), strSeed );
             }
 
             strMsg.clear();
@@ -815,6 +830,11 @@ void CAVPDlg::clickECCRun()
     QString strLine = in.readLine();
     QString strParam = mECCParamCombo->currentText();
     QString strHash = mECCHashCombo->currentText();
+
+    logRsp( QString( "# ECC-%1-%2-%3 Response")
+            .arg( mECC_ECDSARadio->isChecked() ? "ECDSA" : "ECDH" )
+            .arg( mECCParamCombo->currentText() )
+            .arg( mECCTypeCombo->currentText()));
 
     while( strLine.isNull() == false )
     {
@@ -1057,6 +1077,10 @@ void CAVPDlg::clickRSARun()
 
     BIN binPri = {0,0};
     BIN binPub = {0,0};
+
+    logRsp( QString( "# RSA-%1-%2 Response")
+            .arg( mRSA_ESRadio->isChecked() ? "RSA_ES" : "RSA_PSS" )
+            .arg( mRSATypeCombo->currentText() ));
 
     while( strLine.isNull() == false )
     {
@@ -1323,6 +1347,11 @@ void CAVPDlg::clickDRBGRun()
     QTextStream in( &reqFile );
     QString strLine = in.readLine();
 
+    logRsp( QString( "# DRBG-%1-%2-%3 Response")
+            .arg( mDRBGAlgCombo->currentText() )
+            .arg( mDRBGUseDFCheck->isChecked() ? "UseDF" : "NoDF" )
+            .arg( mDRBGUsePRCheck->isChecked() ? "UsePF" : "NoPF" ));
+
     while( strLine.isNull() == false )
     {
         QString strName;
@@ -1478,6 +1507,9 @@ void CAVPDlg::clickPBKDFRun()
 
     QTextStream in( &reqFile );
     QString strLine = in.readLine();
+
+    logRsp( QString( "# PBKDF-%1 Response")
+            .arg( mPBKDFAlgCombo->currentText() ) );
 
     while( strLine.isNull() == false )
     {
@@ -1835,6 +1867,9 @@ void CAVPDlg::clickSymMCTRun()
             .arg( mSymMCTModeCombo->currentText() )
             .arg( strKey.length() / 2 );
 
+    logRsp( QString( "# SYM MCT-%1-%2 Response")
+            .arg( mSymMCTAlgCombo->currentText() )
+            .arg( mSymMCTModeCombo->currentText() ));
 
     mSymMCTCTText->clear();
     mSymMCTLastKeyText->clear();
@@ -1886,7 +1921,10 @@ void CAVPDlg::clickHashMCTRun()
 
     rsp_name_ = QString( "%1/SHA256_MCT.rsp" ).arg(strRspPath);
 
-    ret = makeHashMCT( strSeed, true );
+    logRsp( QString( "# HASH MCT-%1 Response")
+            .arg( mHashMCTAlgCombo->currentText() ));
+
+    ret = makeHashMCT( mHashMCTAlgCombo->currentText(), strSeed, true );
 
     if( ret == 0 )
         berApplet->messageBox( QString("Monte Carlo Test Done[Rsp: %1]").arg(rsp_name_), this );
@@ -2879,7 +2917,7 @@ end :
     return ret;
 }
 
-int CAVPDlg::makeHashMCT( const QString strSeed, bool bInfo )
+int CAVPDlg::makeHashMCT( const QString strAlg, const QString strSeed, bool bInfo )
 {
     int ret = 0;
     BIN binMD[1003 + 1];
@@ -2888,8 +2926,6 @@ int CAVPDlg::makeHashMCT( const QString strSeed, bool bInfo )
 
     logRsp( QString("Seed = %1").arg(strSeed));
     logRsp( "" );
-
-    QString strAlg = mHashAlgCombo->currentText();
 
     memset( &binMD, 0x00, sizeof(BIN) * 1004 );
     memset( &binM, 0x00, sizeof(BIN) * 1004 );

@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>664</width>
-    <height>578</height>
+    <width>749</width>
+    <height>747</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>CAVP Dialog</string>
+   <string>Cryptographic Algorithm Validation Program</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="2" column="0">
@@ -86,7 +86,7 @@
    <item row="1" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -925,7 +925,7 @@
           <widget class="QComboBox" name="mDRBGAlgCombo">
            <property name="maximumSize">
             <size>
-             <width>100</width>
+             <width>16777215</width>
              <height>16777215</height>
             </size>
            </property>

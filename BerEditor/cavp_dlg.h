@@ -94,7 +94,7 @@ private:
     int makeAEData( const QString strKey, const QString strIV, const QString strPT, const QString strAAD, int nTagLen );
     int makeADData( const QString strKey, const QString strIV, const QString strCT, const QString strAAD, const QString strTag );
     int makeHashData( int nLen, const QString strVal );
-    int makeHashMCT( const QString strSeed, bool bInfo = false );
+    int makeHashMCT( const QString strAlg, const QString strSeed, bool bInfo = false );
     int makeHMACData( const QString strCount, const QString strKLen, const QString strTLen, const QString strKey, const QString strMsg );
     int makePBKDF( int nIteration, const QString strPass, QString strSalt, int nKLen );
     int makeDRBG( int nReturnedBitsLen,
