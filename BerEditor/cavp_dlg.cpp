@@ -232,10 +232,15 @@ void CAVPDlg::logRsp( const QString& strLog )
 void CAVPDlg::clickRspPathFind()
 {
     QString strPath = mRspPathText->text();
+    if( strPath.length() < 1 ) strPath = berApplet->curFolder();
 
     QString folderName = findFolder( this, strPath );
 
-    if( folderName.length() > 0 ) mRspPathText->setText( folderName );
+    if( folderName.length() > 0 )
+    {
+        mRspPathText->setText( folderName );
+        berApplet->setCurFile( folderName );
+    }
 }
 
 void CAVPDlg::clickECC_ECDSARadio()
@@ -383,7 +388,7 @@ void CAVPDlg::clickSymRun()
         nPos++;
     }
 
-    berApplet->messageBox( "SymRun Done", this );
+    berApplet->messageBox( QString("CAVP Run Done[Rsp: %1]").arg(rsp_name_), this );
 }
 
 void CAVPDlg::clickAERun()
@@ -531,7 +536,7 @@ void CAVPDlg::clickAERun()
         nPos++;
     }
 
-    berApplet->messageBox( "AERun Done", this );
+    berApplet->messageBox( QString("CAVP Run Done[Rsp: %1]").arg(rsp_name_), this );
 }
 
 void CAVPDlg::clickHMACRun()
@@ -638,7 +643,7 @@ void CAVPDlg::clickHMACRun()
         nPos++;
     }
 
-    berApplet->messageBox( "HMAC Run Done", this );
+    berApplet->messageBox( QString("CAVP Run Done[Rsp: %1]").arg(rsp_name_), this );
 }
 
 void CAVPDlg::clickHashRun()
@@ -741,7 +746,7 @@ void CAVPDlg::clickHashRun()
         nPos++;
     }
 
-    berApplet->messageBox( "Hash Run Done", this );
+    berApplet->messageBox( QString("CAVP Run Done[Rsp: %1]").arg(rsp_name_), this );
 }
 
 void CAVPDlg::clickECCRun()
@@ -985,7 +990,7 @@ void CAVPDlg::clickECCRun()
         nPos++;
     }
 
-    berApplet->messageBox( "ECC Run Done", this );
+    berApplet->messageBox( QString("CAVP Run Done[Rsp: %1]").arg(rsp_name_), this );
 }
 
 void CAVPDlg::clickRSARun()
@@ -1185,7 +1190,7 @@ void CAVPDlg::clickRSARun()
         nPos++;
     }
 
-    berApplet->messageBox( "RSA Run Done", this );
+    berApplet->messageBox( QString("CAVP Run Done[Rsp: %1]").arg(rsp_name_), this );
 }
 
 void CAVPDlg::clickDRBGTest()
@@ -1364,7 +1369,7 @@ void CAVPDlg::clickDRBGRun()
         nPos++;
     }
 
-    berApplet->messageBox( "DRBG Run Done", this );
+    berApplet->messageBox( QString("CAVP Run Done[Rsp: %1]").arg(rsp_name_), this );
 }
 
 void CAVPDlg::clickPBKDFRun()
@@ -1474,79 +1479,111 @@ void CAVPDlg::clickPBKDFRun()
         nPos++;
     }
 
-    berApplet->messageBox( "PBKDF Run Done", this );
+    berApplet->messageBox( QString("CAVP Run Done[Rsp: %1]").arg(rsp_name_), this );
 }
 
 void CAVPDlg::clickSymFind()
 {
     QString strPath = mSymReqFileText->text();
+    if( strPath.length() < 1 ) strPath = berApplet->curFile();
 
     QString strFile = findFile( this, JS_FILE_TYPE_REQ, strPath );
     if( strFile.length() > 0 )
+    {
         mSymReqFileText->setText( strFile );
+        berApplet->setCurFile( strFile );
+    }
 }
 
 void CAVPDlg::clickAEFind()
 {
     QString strPath = mAEReqFileText->text();
+    if( strPath.length() < 1 ) strPath = berApplet->curFile();
 
     QString strFile = findFile( this, JS_FILE_TYPE_REQ, strPath );
     if( strFile.length() > 0 )
+    {
         mAEReqFileText->setText( strFile );
+        berApplet->setCurFile( strFile );
+    }
 }
 
 void CAVPDlg::clickHashFind()
 {
     QString strPath = mHashReqFileText->text();
+    if( strPath.length() < 1 ) strPath = berApplet->curFile();
 
     QString strFile = findFile( this, JS_FILE_TYPE_REQ, strPath );
     if( strFile.length() > 0 )
+    {
         mHashReqFileText->setText( strFile );
+        berApplet->setCurFile( strFile );
+    }
 }
 
 void CAVPDlg::clickHMACFind()
 {
     QString strPath = mHMACReqFileText->text();
+    if( strPath.length() < 1 ) strPath = berApplet->curFile();
 
     QString strFile = findFile( this, JS_FILE_TYPE_REQ, strPath );
     if( strFile.length() > 0 )
+    {
         mHMACReqFileText->setText( strFile );
+        berApplet->setCurFile( strFile );
+    }
 }
 
 void CAVPDlg::clickECCFind()
 {
     QString strPath = mECCReqFileText->text();
+    if( strPath.length() < 1 ) strPath = berApplet->curFile();
 
     QString strFile = findFile( this, JS_FILE_TYPE_REQ, strPath );
     if( strFile.length() > 0 )
+    {
         mECCReqFileText->setText( strFile );
+        berApplet->setCurFile( strFile );
+    }
 }
 
 void CAVPDlg::clickRSAFind()
 {
     QString strPath = mRSAReqFileText->text();
+    if( strPath.length() < 1 ) strPath = berApplet->curFile();
 
     QString strFile = findFile( this, JS_FILE_TYPE_REQ, strPath );
     if( strFile.length() > 0 )
+    {
         mRSAReqFileText->setText( strFile );
+        berApplet->setCurFile( strFile );
+    }
 }
 
 void CAVPDlg::clickDRBGFind()
 {
     QString strPath = mDRBGReqFileText->text();
+    if( strPath.length() < 1 ) strPath = berApplet->curFile();
 
     QString strFile = findFile( this, JS_FILE_TYPE_REQ, strPath );
     if( strFile.length() > 0 )
+    {
         mDRBGReqFileText->setText( strFile );
+        berApplet->setCurFile( strFile );
+    }
 }
 
 void CAVPDlg::clickPBKDFFind()
 {
     QString strPath = mPBKDFReqFileText->text();
+    if( strPath.length() < 1 ) strPath = berApplet->curFile();
 
     QString strFile = findFile( this, JS_FILE_TYPE_REQ, strPath );
     if( strFile.length() > 0 )
+    {
         mPBKDFReqFileText->setText( strFile );
+        berApplet->setCurFile( strFile );
+    }
 }
 
 void CAVPDlg::MCTKeyChanged( const QString& text )
@@ -1709,7 +1746,7 @@ void CAVPDlg::clickSymMCTRun()
         nRet = makeSymOFB_MCT( strKey, strIV, strPT, true );
 
     if( nRet == 0 )
-        berApplet->messageBox( "Sym MCT Done", this );
+        berApplet->messageBox( QString("Monte Carlo Test Done[Rsp: %1]").arg(rsp_name_), this );
     else
         berApplet->warningBox( QString( "fail to run Sym MCT: %1").arg(nRet), this);
 }
@@ -1744,7 +1781,7 @@ void CAVPDlg::clickHashMCTRun()
     ret = makeHashMCT( strSeed, true );
 
     if( ret == 0 )
-        berApplet->messageBox( "Hash MCT Done", this );
+        berApplet->messageBox( QString("Monte Carlo Test Done[Rsp: %1]").arg(rsp_name_), this );
     else
         berApplet->warningBox( QString( "fail to run hash MCT: %1").arg(ret), this);
 }
