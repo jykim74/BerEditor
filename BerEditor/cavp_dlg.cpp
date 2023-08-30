@@ -163,7 +163,7 @@ void CAVPDlg::initialize()
     QButtonGroup *pRSAGroup = new QButtonGroup();
     pRSAGroup->addButton( mRSA_ESRadio );
     pRSAGroup->addButton( mRSA_PSSRadio );
-    mRSA_PSSRadio->setChecked(true);
+    mRSA_ESRadio->setChecked(true);
     clickRSA_ESRadio();
 
     mDRBGAlgCombo->addItems( kDRBGAlgList );
@@ -1096,6 +1096,15 @@ void CAVPDlg::clickRSARun()
             }
             else if( mRSA_PSSRadio->isChecked() && mRSATypeCombo->currentText() == "SGT" )
             {
+                if( strN.length() > 0 && nE > 0 && bInit == true)
+                {
+                    logRsp( QString( "n = %1").arg( strN));
+                    logRsp( QString( "e = %1").arg(nE));
+                    logRsp( "" );
+
+                    bInit = false;
+                }
+
                 if( strM.length() > 0 && nE > 0 && strHash.length() > 0 )
                 {
                     ret = makeRSA_PSS_SGT( nE, strHash, strM );
@@ -1108,6 +1117,15 @@ void CAVPDlg::clickRSARun()
             }
             else if( mRSA_PSSRadio->isChecked() && mRSATypeCombo->currentText() == "SVT" )
             {
+                if( strN.length() > 0 && nE > 0 && bInit == true)
+                {
+                    logRsp( QString( "n = %1").arg( strN));
+                    logRsp( QString( "e = %1").arg(nE));
+                    logRsp( "" );
+
+                    bInit = false;
+                }
+
                 if( strS.length() > 0 && strM.length() > 0 )
                 {
                     ret = makeRSA_PSS_SVT( nE, strN, strHash, strM, strS );
@@ -1144,14 +1162,14 @@ void CAVPDlg::clickRSARun()
             {
                 const QString strPub = "";
 
-                if( strN.length() > 0 && nE > 0 )
+                if( strN.length() > 0 && nE > 0 && bInit == true)
                 {
                     logRsp( QString("|n| = %1").arg( strN.length()/2 ));
                     logRsp( QString( "n = %1").arg( strN));
                     logRsp( QString( "e = %1").arg(nE));
                     logRsp( "" );
-                    logRsp( QString("hash = %1").arg( strHash ) );
-                    logRsp( "" );
+
+                    bInit = false;
                 }
 
                 if( strM.length() > 0 )
@@ -1181,7 +1199,7 @@ void CAVPDlg::clickRSARun()
 
             strS.clear();
             strM.clear();
-            strN.clear();
+//            strN.clear();
             strC.clear();
 
             if( mRSA_ESRadio->isChecked() ) strHash.clear();
@@ -3175,6 +3193,7 @@ int CAVPDlg::makeRSA_PSS_SVT( int nE, const QString strN, const QString strHash,
     memset( &sKeyVal, 0x00, sizeof(sKeyVal));
 
     JS_BIN_intToBin( nE, &binE );
+    JS_BIN_trimLeft( 0x00, &binE );
     strE = getHexString( &binE );
 
     JS_PKI_setRSAKeyVal( &sKeyVal, strN.toStdString().c_str(), strE.toStdString().c_str(), NULL, NULL, NULL, NULL, NULL, NULL );
