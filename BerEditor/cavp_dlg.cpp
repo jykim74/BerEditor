@@ -1175,7 +1175,7 @@ void CAVPDlg::clickRSARun()
                     QString strPriPath = mRSA_DETPriPathText->text();
                     if( strPriPath.length() < 1 )
                     {
-                        berApplet->warningBox( QString( "You have to find RSA private key for DEC" ), this );
+                        berApplet->warningBox( QString( "You have to find RSA private key for DET" ), this );
                         return;
                     }
 
@@ -1188,7 +1188,7 @@ void CAVPDlg::clickRSARun()
                     bInit = false;
                 }
 
-                if( strC.length() > 0 && strHash.length() > 0 )
+                if( strC.length() > 0 && binPri.nLen > 0 )
                 {
                     logRsp( QString( "SHAAlg = %1").arg(strHash));
 
