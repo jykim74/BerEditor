@@ -54,6 +54,9 @@ CAVPDlg::CAVPDlg(QWidget *parent) :
     connect( mSymMCTLastPTText, SIGNAL(textChanged(const QString&)), this, SLOT(MCTLastPTChanged(const QString&)));
     connect( mSymMCTLastCTText, SIGNAL(textChanged(const QString&)), this, SLOT(MCTLastCTChanged(const QString&)));
 
+    connect( mECCTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeECCType(int)));
+    connect( mRSATypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeRSAType(int)));
+
     connect( mHashMCTSeedText, SIGNAL(textChanged(const QString&)), this, SLOT(MCTSHA256SeedChanged(const QString&)));
     connect( mHashMCTFirstMDText, SIGNAL(textChanged(const QString&)), this, SLOT(MCTSHA256FirstMDChanged(const QString&)));
     connect( mHashMCTLastMDText, SIGNAL(textChanged(const QString&)), this, SLOT(MCTSHA256LastMDChanged(const QString&)));
@@ -140,12 +143,22 @@ void CAVPDlg::initialize()
 
     mECCParamCombo->addItems( kECCParamList );
     mECCParamCombo->setCurrentText( "prime256v1" );
+    mECCHashCombo->addItems( kHashAlgList );
+    mECCHashCombo->setCurrentText( setMgr->defaultHash() );
 
     QButtonGroup *pECCGroup = new QButtonGroup();
     pECCGroup->addButton( mECC_ECDSARadio );
     pECCGroup->addButton(mECC_ECDHRadio );
     mECC_ECDSARadio->setChecked(true);
     clickECC_ECDSARadio();
+
+    mRSAHashCombo->addItems( kHashAlgList );
+    mRSAHashCombo->setCurrentText( setMgr->defaultHash() );
+    mRSA_EText->setText( "65537" );
+
+    QValidator *vdr = new QIntValidator( 0, 99999999 );
+    mRSA_EText->setValidator( vdr );
+
 
     QButtonGroup *pRSAGroup = new QButtonGroup();
     pRSAGroup->addButton( mRSA_ESRadio );
@@ -796,10 +809,11 @@ void CAVPDlg::clickECCRun()
     QString strRB;
     QString strKTA1X;
     QString strKTA1Y;
-    QString strP;
 
     QTextStream in( &reqFile );
     QString strLine = in.readLine();
+    QString strParam = mECCParamCombo->currentText();
+    QString strHash = mECCHashCombo->currentText();
 
     while( strLine.isNull() == false )
     {
@@ -839,8 +853,6 @@ void CAVPDlg::clickECCRun()
                 strKTA1X = strValue;
             else if( strName == "KTA1y" )
                 strKTA1Y = strValue;
-            else if( strName == "P-256" )
-                strP = "prime256v1";
         }
 
         if( nLen == 0 || strNext.isNull() )
@@ -849,11 +861,11 @@ void CAVPDlg::clickECCRun()
             {
                 if( bInit == true )
                 {
-                    logRsp( "[P-256]" );
+                    logRsp( QString("[%1]").arg( strParam) );
                     bInit = false;
                 }
 
-                ret = makeECDSA_KPG( 10 );
+                ret = makeECDSA_KPG( strParam, 10 );
                 if( ret != 0 )
                 {
                     berApplet->warningBox( QString( "fail to run ECC: %1").arg(ret), this );
@@ -864,14 +876,13 @@ void CAVPDlg::clickECCRun()
             {
                 if( bInit == true )
                 {
-                    logRsp( "# ECDSA" );
-                    logRsp( "" );
+                    logRsp( QString("[%1]").arg( strParam) );
                     bInit = false;
                 }
 
                 if( strYX.length() > 0 && strYY.length() > 0 )
                 {
-                    ret = makeECDSA_PKV( strYX, strYY );
+                    ret = makeECDSA_PKV( strParam, strYX, strYY );
                     if( ret != 0 )
                     {
                         berApplet->warningBox( QString( "fail to run ECC: %1").arg(ret), this);
@@ -883,13 +894,13 @@ void CAVPDlg::clickECCRun()
             {
                 if( bInit == true )
                 {
-                    logRsp( "[P-256, SHA-256]" );
+                    logRsp( QString("[%1, %2]").arg( strParam ).arg( strHash ) );
                     bInit = false;
                 }
 
                 if( strM.length() > 0 )
                 {
-                    ret = makeECDSA_SGT( strM );
+                    ret = makeECDSA_SGT( strParam, strHash, strM );
                     if( ret != 0 )
                     {
                         berApplet->warningBox( QString( "fail to run ECC: %1").arg(ret), this);
@@ -901,15 +912,13 @@ void CAVPDlg::clickECCRun()
             {
                 if( bInit == true )
                 {
-                    logRsp( "# ECDSA" );
-                    logRsp( "" );
-                    logRsp( "[P-256, SHA-256]" );
+                    logRsp( QString("[%1, %2]").arg( strParam ).arg( strHash ) );
                     bInit = false;
                 }
 
                 if( strM.length() > 0 && strYX.length() > 0 && strYY.length() > 0 && strR.length() > 0 && strS.length() > 0 )
                 {
-                    ret = makeECDSA_SVT( strM, strYX, strYY, strR, strS );
+                    ret = makeECDSA_SVT( strParam, strHash, strM, strYX, strYY, strR, strS );
                     if( ret != 0 )
                     {
                         berApplet->warningBox( QString( "fail to run ECC: %1").arg(ret), this );
@@ -921,12 +930,11 @@ void CAVPDlg::clickECCRun()
             {
                 if( bInit )
                 {
-                    logRsp( "[P-256]" );
-                    logRsp( "" );
+                    logRsp( QString("[%1]").arg( strParam) );
                     bInit = false;
                 }
 
-                ret = makeECDH_KPG( 15 );
+                ret = makeECDH_KPG( strParam, 15 );
                 if( ret != 0 )
                 {
                     berApplet->warningBox( QString( "fail to run ECC: %1").arg(ret), this );
@@ -937,13 +945,13 @@ void CAVPDlg::clickECCRun()
             {
                 if( bInit )
                 {
-                    logRsp( "[P-256]" );
+                    logRsp( QString("[%1]").arg( strParam) );
                     bInit = false;
                 }
 
                 if( strQX.length() > 0 && strQY.length() > 0 )
                 {
-                    ret = makeECDH_PKV( strQX, strQY );
+                    ret = makeECDH_PKV( strParam, strQX, strQY );
 
                     if( ret != 0 )
                     {
@@ -956,13 +964,13 @@ void CAVPDlg::clickECCRun()
             {
                 if( bInit )
                 {
-                    logRsp( "[P-256]" );
+                    logRsp( QString("[%1]").arg( strParam) );
                     bInit = false;
                 }
 
                 if( strRA.length() > 0 && strRB.length() > 0 && strKTA1X.length() > 0 && strKTA1Y.length() > 0 )
                 {
-                    ret = makeECDH_KAKAT( strRA, strRB, strKTA1X, strKTA1Y );
+                    ret = makeECDH_KAKAT( strParam, strRA, strRB, strKTA1X, strKTA1Y );
 
                     if( ret != 0 )
                     {
@@ -1028,17 +1036,16 @@ void CAVPDlg::clickRSARun()
     int nLen = 0;
 
     int nKeyLen = -1;
-    int nE = 65537;
 
     QString strM;
     QString strS;
     QString strN;
-    QString strE;
-    QString strHash;
     QString strC;
 
     QTextStream in( &reqFile );
     QString strLine = in.readLine();
+    QString strHash = mRSAHashCombo->currentText();
+    int nE = mRSA_EText->text().toInt();
 
     while( strLine.isNull() == false )
     {
@@ -1061,12 +1068,8 @@ void CAVPDlg::clickRSARun()
                 strM = strValue;
             else if( strName == "S" )
                 strS = strValue;
-            else if( strName == "e" || strName == "v" )
-                strE = strValue;
             else if( strName == "C" )
                 strC = strValue;
-            else if( strName == "HashAlg" || strName == "SHAAlg" )
-                strHash = strValue;
         }
 
         if( nLen == 0 || strNext.isNull() )
@@ -1093,9 +1096,9 @@ void CAVPDlg::clickRSARun()
             }
             else if( mRSA_PSSRadio->isChecked() && mRSATypeCombo->currentText() == "SGT" )
             {
-                if( strM.length() > 0 && strE.length() > 0 && strHash.length() > 0 )
+                if( strM.length() > 0 && nE > 0 && strHash.length() > 0 )
                 {
-                    ret = makeRSA_PSS_SGT( strE.toInt(), strHash, strM );
+                    ret = makeRSA_PSS_SGT( nE, strHash, strM );
                     if( ret != 0 )
                     {
                         berApplet->warningBox( QString( "fail to run RSA : %1").arg(ret), this );
@@ -1107,7 +1110,7 @@ void CAVPDlg::clickRSARun()
             {
                 if( strS.length() > 0 && strM.length() > 0 )
                 {
-                    ret = makeRSA_PSS_SVT( strE, strN, strHash, strM, strS );
+                    ret = makeRSA_PSS_SVT( nE, strN, strHash, strM, strS );
                     if( ret != 0 )
                     {
                         berApplet->warningBox( QString( "fail to run RSA : %1").arg(ret), this );
@@ -1117,14 +1120,13 @@ void CAVPDlg::clickRSARun()
             }
             else if( mRSA_ESRadio->isChecked() && mRSATypeCombo->currentText() == "DET" )
             {
-                int nKeyIndex = 0;
                 const QString strPri = "";
 
                 if( bInit == true )
                 {
                     logRsp( QString( "|n| = %1").arg(nKeyLen));
                     logRsp( QString( "n = %1").arg( strN ));
-                    logRsp( "e = 10001" );
+                    logRsp( QString( "e = %1").arg( nE ) );
                     logRsp( "" );
                     bInit = false;
                 }
@@ -1148,7 +1150,7 @@ void CAVPDlg::clickRSARun()
                     logRsp( QString( "n = %1").arg( strN));
                     logRsp( QString( "e = %1").arg(nE));
                     logRsp( "" );
-                    logRsp( "hash = SHA256" );
+                    logRsp( QString("hash = %1").arg( strHash ) );
                     logRsp( "" );
                 }
 
@@ -1584,6 +1586,26 @@ void CAVPDlg::clickPBKDFFind()
         mPBKDFReqFileText->setText( strFile );
         berApplet->setCurFile( strFile );
     }
+}
+
+void CAVPDlg::changeECCType(int index)
+{
+    QString strType = mECCTypeCombo->currentText();
+
+    if( strType == "SGT" || strType == "SVT" )
+        mECCHashCombo->setEnabled(true);
+    else
+        mECCHashCombo->setEnabled(false);
+}
+
+void CAVPDlg::changeRSAType(int index)
+{
+    QString strType = mRSATypeCombo->currentText();
+
+    if( strType == "SGT" || strType == "SVT" )
+        mRSAHashCombo->setEnabled(true);
+    else
+        mRSAHashCombo->setEnabled(false);
 }
 
 void CAVPDlg::MCTKeyChanged( const QString& text )
@@ -3139,16 +3161,21 @@ end :
     return ret;
 }
 
-int CAVPDlg::makeRSA_PSS_SVT( const QString strE, const QString strN, const QString strHash, const QString strM, const QString strS )
+int CAVPDlg::makeRSA_PSS_SVT( int nE, const QString strN, const QString strHash, const QString strM, const QString strS )
 {
     int ret = 0;
     BIN binM = {0,0};
     BIN binS = {0,0};
     BIN binPub = {0,0};
+    BIN binE = {0,0};
+    QString strE;
 
     JRSAKeyVal sKeyVal;
 
     memset( &sKeyVal, 0x00, sizeof(sKeyVal));
+
+    JS_BIN_intToBin( nE, &binE );
+    strE = getHexString( &binE );
 
     JS_PKI_setRSAKeyVal( &sKeyVal, strN.toStdString().c_str(), strE.toStdString().c_str(), NULL, NULL, NULL, NULL, NULL, NULL );
 
@@ -3175,15 +3202,15 @@ end :
     JS_BIN_reset( &binM );
     JS_BIN_reset( &binS );
     JS_BIN_reset( &binPub );
+    JS_BIN_reset( &binE );
     JS_PKI_resetRSAKeyVal( &sKeyVal );
 
     return ret;
 }
 
-int CAVPDlg::makeECDH_KPG( int nCount )
+int CAVPDlg::makeECDH_KPG( const QString strParam, int nCount )
 {
     int ret = 0;
-    QString strParam = mECCParamCombo->currentText();
     int nGroupID = JS_PKI_getNidFromSN( strParam.toStdString().c_str() );
 
     JECKeyVal sKeyVal;
@@ -3221,13 +3248,12 @@ end :
     return ret;
 }
 
-int CAVPDlg::makeECDH_PKV( const QString strPubX, const QString strPubY )
+int CAVPDlg::makeECDH_PKV( const QString strParam, const QString strPubX, const QString strPubY )
 {
     int ret = 0;
 
     BIN binPubX = {0,0};
     BIN binPubY = {0,0};
-    QString strParam = mECCParamCombo->currentText();
 
     JS_BIN_decodeHex( strPubX.toStdString().c_str(), &binPubX );
     JS_BIN_decodeHex( strPubY.toStdString().c_str(), &binPubY );
@@ -3252,7 +3278,7 @@ end :
     return ret;
 }
 
-int CAVPDlg::makeECDH_KAKAT( const QString strRA, const QString strRB, const QString strKTA1X, const QString strKTA1Y )
+int CAVPDlg::makeECDH_KAKAT( const QString strParam, const QString strRA, const QString strRB, const QString strKTA1X, const QString strKTA1Y )
 {
     int ret = 0;
 
@@ -3265,8 +3291,6 @@ int CAVPDlg::makeECDH_KAKAT( const QString strRA, const QString strRB, const QSt
     BIN binPubY = {0,0};
     BIN binSecX = {0,0};
     BIN binSecY = {0,0};
-
-    QString strParam = mECCParamCombo->currentText();
 
     JS_BIN_decodeHex( strRA.toStdString().c_str(), &binRA );
     JS_BIN_decodeHex( strRB.toStdString().c_str(), &binRB );
@@ -3302,10 +3326,9 @@ end :
     return ret;
 }
 
-int CAVPDlg::makeECDSA_KPG( int nNum )
+int CAVPDlg::makeECDSA_KPG( const QString strParam, int nNum )
 {
     int ret = 0;
-    QString strParam = mECCParamCombo->currentText();
     int nGroupID = JS_PKI_getNidFromSN( strParam.toStdString().c_str() );
 
     BIN binPri = {0,0};
@@ -3339,13 +3362,12 @@ end :
     return ret;
 }
 
-int CAVPDlg::makeECDSA_PKV( const QString strYX, const QString strYY )
+int CAVPDlg::makeECDSA_PKV( const QString strParam, const QString strYX, const QString strYY )
 {
     int ret = 0;
 
     BIN binPubX = {0,0};
     BIN binPubY = {0,0};
-    QString strParam = mECCParamCombo->currentText();
 
     JS_BIN_decodeHex( strYX.toStdString().c_str(), &binPubX );
     JS_BIN_decodeHex( strYY.toStdString().c_str(), &binPubY );
@@ -3368,10 +3390,9 @@ end:
     return 0;
 }
 
-int CAVPDlg::makeECDSA_SGT( const QString strM )
+int CAVPDlg::makeECDSA_SGT( const QString strParam, const QString strHash, const QString strM )
 {
     int ret = 0;
-    QString strParam = mECCParamCombo->currentText();
     int nGroupID = JS_PKI_getNidFromSN( strParam.toStdString().c_str() );
 
     BIN binPub = {0,0};
@@ -3393,7 +3414,7 @@ int CAVPDlg::makeECDSA_SGT( const QString strM )
     ret = JS_PKI_getECKeyVal( &binPri, &sKeyVal );
     if( ret != 0 ) goto end;
 
-    ret = JS_PKI_ECCMakeSign( "SHA256", &binM, &binPri, &binSign );
+    ret = JS_PKI_ECCMakeSign( strHash.toStdString().c_str(), &binM, &binPri, &binSign );
     if( ret != 0 ) goto end;
 
     ret = JS_PKI_ECCSignValue( &binSign, &binSignR, &binSignS );
@@ -3419,7 +3440,7 @@ end :
     return ret;
 }
 
-int CAVPDlg::makeECDSA_SVT( const QString strM, const QString strYX, const QString strYY, const QString strR, const QString strS )
+int CAVPDlg::makeECDSA_SVT( const QString strParam, const QString strHash, const QString strM, const QString strYX, const QString strYY, const QString strR, const QString strS )
 {
     int ret = 0;
 
@@ -3430,8 +3451,6 @@ int CAVPDlg::makeECDSA_SVT( const QString strM, const QString strYX, const QStri
     BIN binSignR = {0,0};
     BIN binSignS = {0,0};
     BIN binM = {0,0};
-
-    QString strParam = mECCParamCombo->currentText();
 
     JS_BIN_decodeHex( strM.toStdString().c_str(), &binM );
     JS_BIN_decodeHex( strYX.toStdString().c_str(), &binPubX );
@@ -3445,7 +3464,7 @@ int CAVPDlg::makeECDSA_SVT( const QString strM, const QString strYX, const QStri
     ret = JS_PKI_ECCEncodeSignValue( &binSignR, &binSignS, &binSign );
     if( ret != 0 ) goto end;
 
-    ret = JS_PKI_ECCVerifySign( "SHA256", &binM, &binSign, &binPub );
+    ret = JS_PKI_ECCVerifySign( strHash.toStdString().c_str(), &binM, &binSign, &binPub );
 
     logRsp( QString( "M = %1").arg( strM ));
     logRsp( QString( "Yx = %1").arg( strYX));

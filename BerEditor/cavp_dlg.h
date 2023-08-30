@@ -43,6 +43,9 @@ private slots:
     void clickDRBGFind();
     void clickPBKDFFind();
 
+    void changeECCType(int index);
+    void changeRSAType(int index);
+
     void MCTKeyChanged( const QString& text );
     void MCTIVChanged( const QString& text );
     void MCTPTChanged( const QString& text );
@@ -111,16 +114,16 @@ private:
 
     int makeRSA_PSS_KPG( int nLen, int nCount );
     int makeRSA_PSS_SGT( int nE, const QString strHash, const QString strM );
-    int makeRSA_PSS_SVT( const QString strE, const QString strN, const QString strHash, const QString strM, const QString strS );
+    int makeRSA_PSS_SVT( int nE, const QString strN, const QString strHash, const QString strM, const QString strS );
 
-    int makeECDH_KPG( int nCount );
-    int makeECDH_PKV( const QString strPubX, const QString strPubY );
-    int makeECDH_KAKAT( const QString strRA, const QString strRB, const QString strKTA1X, const QString strKTA1Y );
+    int makeECDH_KPG( const QString strParam, int nCount );
+    int makeECDH_PKV( const QString strParam, const QString strPubX, const QString strPubY );
+    int makeECDH_KAKAT( const QString strParam, const QString strRA, const QString strRB, const QString strKTA1X, const QString strKTA1Y );
 
-    int makeECDSA_KPG( int nNum );
-    int makeECDSA_PKV( const QString strYX, const QString strYY );
-    int makeECDSA_SGT( const QString strM );
-    int makeECDSA_SVT( const QString strM, const QString strYX, const QString strYY, const QString strR, const QString strS );
+    int makeECDSA_KPG( const QString strParam, int nNum );
+    int makeECDSA_PKV( const QString strParam, const QString strYX, const QString strYY );
+    int makeECDSA_SGT( const QString strParam, const QString strHash, const QString strM );
+    int makeECDSA_SVT( const QString strParam, const QString strHash, const QString strM, const QString strYX, const QString strYY, const QString strR, const QString strS );
 
 private:
     QString rsp_name_;
