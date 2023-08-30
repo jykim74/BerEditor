@@ -85,6 +85,7 @@ CAVPDlg::CAVPDlg(QWidget *parent) :
     connect( mECCFindBtn, SIGNAL(clicked()), this, SLOT(clickECCFind() ));
     connect( mECCRunBtn, SIGNAL(clicked()), this, SLOT(clickECCRun() ));
 
+    connect( mRSAFindDETPriBtn, SIGNAL(clicked()), this, SLOT(clickRSADETPriFind()));
     connect( mRSAFindBtn, SIGNAL(clicked()), this, SLOT(clickRSAFind() ));
     connect( mRSARunBtn, SIGNAL(clicked()), this, SLOT(clickRSARun() ));
 
@@ -296,7 +297,7 @@ void CAVPDlg::clickSymRun()
 
     if( mSymReqFileText->text().length() < 1 )
     {
-        berApplet->elog( "You have to select request file\n" );
+        berApplet->warningBox( "You have to select request file", this );
         return;
     }
 
@@ -411,7 +412,7 @@ void CAVPDlg::clickAERun()
 
     if( mAEReqFileText->text().length() < 1 )
     {
-        berApplet->elog( "You have to select request file\n" );
+        berApplet->warningBox( "You have to select request file", this );
         return;
     }
 
@@ -559,7 +560,7 @@ void CAVPDlg::clickHMACRun()
 
     if( mHMACReqFileText->text().length() < 1 )
     {
-        berApplet->elog( "You have to select request file\n" );
+        berApplet->warningBox( "You have to select request file", this );
         return;
     }
 
@@ -666,7 +667,7 @@ void CAVPDlg::clickHashRun()
 
     if( mHashReqFileText->text().length() < 1 )
     {
-        berApplet->elog( "You have to select request file\n" );
+        berApplet->warningBox( "You have to select request file", this );
         return;
     }
 
@@ -770,7 +771,7 @@ void CAVPDlg::clickECCRun()
 
     if( mECCReqFileText->text().length() < 1 )
     {
-        berApplet->elog( "You have to find ECDSA request file" );
+        berApplet->warningBox( "You have to find ECDSA request file", this );
         return;
     }
 
@@ -862,6 +863,7 @@ void CAVPDlg::clickECCRun()
                 if( bInit == true )
                 {
                     logRsp( QString("[%1]").arg( strParam) );
+                    logRsp( "" );
                     bInit = false;
                 }
 
@@ -877,6 +879,7 @@ void CAVPDlg::clickECCRun()
                 if( bInit == true )
                 {
                     logRsp( QString("[%1]").arg( strParam) );
+                    logRsp( "" );
                     bInit = false;
                 }
 
@@ -895,6 +898,7 @@ void CAVPDlg::clickECCRun()
                 if( bInit == true )
                 {
                     logRsp( QString("[%1, %2]").arg( strParam ).arg( strHash ) );
+                    logRsp( "" );
                     bInit = false;
                 }
 
@@ -913,6 +917,7 @@ void CAVPDlg::clickECCRun()
                 if( bInit == true )
                 {
                     logRsp( QString("[%1, %2]").arg( strParam ).arg( strHash ) );
+                    logRsp( "" );
                     bInit = false;
                 }
 
@@ -931,6 +936,7 @@ void CAVPDlg::clickECCRun()
                 if( bInit )
                 {
                     logRsp( QString("[%1]").arg( strParam) );
+                    logRsp( "" );
                     bInit = false;
                 }
 
@@ -946,6 +952,7 @@ void CAVPDlg::clickECCRun()
                 if( bInit )
                 {
                     logRsp( QString("[%1]").arg( strParam) );
+                    logRsp( "" );
                     bInit = false;
                 }
 
@@ -965,6 +972,7 @@ void CAVPDlg::clickECCRun()
                 if( bInit )
                 {
                     logRsp( QString("[%1]").arg( strParam) );
+                    logRsp( "" );
                     bInit = false;
                 }
 
@@ -1009,7 +1017,7 @@ void CAVPDlg::clickRSARun()
 
     if( mRSAReqFileText->text().length() < 1 )
     {
-        berApplet->elog( "You have to find RSA PSS request file" );
+        berApplet->warningBox( "You have to find RSA PSS request file", this );
         return;
     }
 
@@ -1046,6 +1054,9 @@ void CAVPDlg::clickRSARun()
     QString strLine = in.readLine();
     QString strHash = mRSAHashCombo->currentText();
     int nE = mRSA_EText->text().toInt();
+
+    BIN binPri = {0,0};
+    BIN binPub = {0,0};
 
     while( strLine.isNull() == false )
     {
@@ -1085,7 +1096,7 @@ void CAVPDlg::clickRSARun()
                         bInit = false;
                     }
 
-                    ret = makeRSA_PSS_KPG( nKeyLen, 10 );
+                    ret = makeRSA_PSS_KPG( nKeyLen, nE, 10 );
                     nKeyLen = -1;
                     if( ret != 0 )
                     {
@@ -1096,21 +1107,39 @@ void CAVPDlg::clickRSARun()
             }
             else if( mRSA_PSSRadio->isChecked() && mRSATypeCombo->currentText() == "SGT" )
             {
-                if( strN.length() > 0 && nE > 0 && bInit == true)
+                if( nKeyLen > 0 && nE > 0 && bInit == true)
                 {
-                    logRsp( QString( "n = %1").arg( strN));
+                    JRSAKeyVal sRSAKeyVal;
+
+                    memset( &sRSAKeyVal, 0x00, sizeof(sRSAKeyVal ));
+
+
+                    ret = JS_PKI_RSAGenKeyPair( nKeyLen, nE, &binPub, &binPri );
+                    if( ret != 0 ) return;
+
+                    JS_PKI_getRSAKeyVal( &binPri, &sRSAKeyVal );
+                    strN = sRSAKeyVal.pN;
+
+                    logRsp( QString( "mod = %1").arg( nKeyLen ));
+                    logRsp( QString( "HashAlg = %1").arg( strHash ));
+                    logRsp( "" );
+                    logRsp( QString( "n = %1" ).arg( strN ));
                     logRsp( QString( "e = %1").arg(nE));
+
                     logRsp( "" );
 
                     bInit = false;
+                    JS_PKI_resetRSAKeyVal( &sRSAKeyVal );
                 }
 
-                if( strM.length() > 0 && nE > 0 && strHash.length() > 0 )
+                if( strM.length() > 0 && nE > 0 && binPri.nLen > 0 )
                 {
-                    ret = makeRSA_PSS_SGT( nE, strHash, strM );
+                    ret = makeRSA_PSS_SGT( nE, getHexString(&binPri), strHash, strM );
                     if( ret != 0 )
                     {
                         berApplet->warningBox( QString( "fail to run RSA : %1").arg(ret), this );
+                        JS_BIN_reset( &binPri );
+                        JS_BIN_reset( &binPub );
                         return;
                     }
                 }
@@ -1119,6 +1148,9 @@ void CAVPDlg::clickRSARun()
             {
                 if( strN.length() > 0 && nE > 0 && bInit == true)
                 {
+                    logRsp( QString( "mod = %1").arg( nKeyLen ));
+                    logRsp( QString( "HashAlg = %1").arg( strHash ));
+                    logRsp( "" );
                     logRsp( QString( "n = %1").arg( strN));
                     logRsp( QString( "e = %1").arg(nE));
                     logRsp( "" );
@@ -1138,10 +1170,17 @@ void CAVPDlg::clickRSARun()
             }
             else if( mRSA_ESRadio->isChecked() && mRSATypeCombo->currentText() == "DET" )
             {
-                const QString strPri = "";
-
                 if( bInit == true )
                 {
+                    QString strPriPath = mRSA_DETPriPathText->text();
+                    if( strPriPath.length() < 1 )
+                    {
+                        berApplet->warningBox( QString( "You have to find RSA private key for DEC" ), this );
+                        return;
+                    }
+
+                    JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+
                     logRsp( QString( "|n| = %1").arg(nKeyLen));
                     logRsp( QString( "n = %1").arg( strN ));
                     logRsp( QString( "e = %1").arg( nE ) );
@@ -1153,15 +1192,17 @@ void CAVPDlg::clickRSARun()
                 {
                     logRsp( QString( "SHAAlg = %1").arg(strHash));
 
-                    ret = makeRSA_ES_DET( strPri, strC );
+                    ret = makeRSA_ES_DET( getHexString( &binPri ), strC );
 
-                    if( ret != 0 ) return;
+                    if( ret != 0 )
+                    {
+                        JS_BIN_reset( &binPri );
+                        return;
+                    }
                 }
             }
             else if( mRSA_ESRadio->isChecked() && mRSATypeCombo->currentText() == "ENT" )
             {
-                const QString strPub = "";
-
                 if( strN.length() > 0 && nE > 0 && bInit == true)
                 {
                     logRsp( QString("|n| = %1").arg( strN.length()/2 ));
@@ -1172,9 +1213,9 @@ void CAVPDlg::clickRSARun()
                     bInit = false;
                 }
 
-                if( strM.length() > 0 )
+                if( strM.length() > 0 && strN.length() > 0 )
                 {
-                    ret = makeRSA_ES_ENT( strPub, strM );
+                    ret = makeRSA_ES_ENT( nE, strN, strM );
 
                     if( ret != 0 ) return;
                 }
@@ -1210,6 +1251,9 @@ void CAVPDlg::clickRSARun()
         nPos++;
     }
 
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binPub );
+
     berApplet->messageBox( QString("CAVP Run Done[Rsp: %1]").arg(rsp_name_), this );
 }
 
@@ -1234,7 +1278,7 @@ void CAVPDlg::clickDRBGRun()
 
     if( mDRBGReqFileText->text().length() < 1 )
     {
-        berApplet->elog( "You have to find DRBG request file" );
+        berApplet->warningBox( "You have to find DRBG request file", this );
         return;
     }
 
@@ -1399,7 +1443,7 @@ void CAVPDlg::clickPBKDFRun()
 
     if( mPBKDFReqFileText->text().length() < 1 )
     {
-        berApplet->elog( "You have to find PBKDF request file" );
+        berApplet->warningBox( "You have to find PBKDF request file", this );
         return;
     }
 
@@ -1606,6 +1650,19 @@ void CAVPDlg::clickPBKDFFind()
     }
 }
 
+void CAVPDlg::clickRSADETPriFind()
+{
+    QString strPath = mRSA_DETPriPathText->text();
+    if( strPath.length() < 1 ) strPath = berApplet->curFile();
+
+    QString strFile = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
+    if( strFile.length() > 0 )
+    {
+        mRSA_DETPriPathText->setText( strFile );
+        berApplet->setCurFile( strFile );
+    }
+}
+
 void CAVPDlg::changeECCType(int index)
 {
     QString strType = mECCTypeCombo->currentText();
@@ -1624,6 +1681,17 @@ void CAVPDlg::changeRSAType(int index)
         mRSAHashCombo->setEnabled(true);
     else
         mRSAHashCombo->setEnabled(false);
+
+    if( strType == "DET" )
+    {
+        mRSA_DETPriPathText->setEnabled(true);
+        mRSAFindDETPriBtn->setEnabled(true);
+    }
+    else
+    {
+        mRSA_DETPriPathText->setEnabled(false);
+        mRSAFindDETPriBtn->setEnabled(false);
+    }
 }
 
 void CAVPDlg::MCTKeyChanged( const QString& text )
@@ -3047,17 +3115,22 @@ end :
     return ret;
 }
 
-int CAVPDlg::makeRSA_ES_ENT( const QString strPub, const QString strM )
+int CAVPDlg::makeRSA_ES_ENT( int nE, const QString strN, const QString strM )
 {
     int ret = 0;
     BIN binM = {0,0};
     BIN binC = {0,0};
     BIN binPub = {0,0};
+    BIN binN = {0,0};
+    BIN binE = {0,0};
 
-    JS_BIN_decodeHex( strPub.toStdString().c_str(), &binPub );
+    JS_BIN_decodeHex( strN.toStdString().c_str(), &binN );
     JS_BIN_decodeHex( strM.toStdString().c_str(), &binM );
 
     /* need to set public key */
+    JS_BIN_intToBin( nE, &binE );
+    JS_BIN_trimLeft( 0x00, &binE );
+    JS_PKI_encodeRSAPublicKey2( &binN, &binE, &binPub );
 
     ret = JS_PKI_RSAEncryptWithPub( JS_PKI_RSA_PADDING_V21, &binM, &binPub, &binC );
     if( ret != 0 ) goto end;
@@ -3070,6 +3143,8 @@ end :
     JS_BIN_reset( &binM );
     JS_BIN_reset( &binC );
     JS_BIN_reset( &binPub );
+    JS_BIN_reset( &binE );
+    JS_BIN_reset( &binN );
 
     return ret;
 }
@@ -3086,6 +3161,7 @@ int CAVPDlg::makeRSA_ES_KGT( int nKeyLen, int nE, int nCount )
     {
         JS_BIN_reset( &binPub );
         JS_BIN_reset( &binPri );
+
         memset( &sKeyVal, 0x00, sizeof(sKeyVal));
 
         ret = JS_PKI_RSAGenKeyPair( nKeyLen, nE, &binPub, &binPri );
@@ -3095,7 +3171,7 @@ int CAVPDlg::makeRSA_ES_KGT( int nKeyLen, int nE, int nCount )
         if( ret != 0 ) goto end;
 
         logRsp( QString( "n = %1").arg( sKeyVal.pN));
-        logRsp( QString( "e = %1").arg( sKeyVal.pE ));
+        logRsp( QString( "e = %1").arg( nE ));
         logRsp( QString( "q = %1").arg( sKeyVal.pQ ));
         logRsp( QString( "p = %1").arg( sKeyVal.pP ));
         logRsp( QString( "d = %1").arg( sKeyVal.pD ));
@@ -3107,12 +3183,13 @@ int CAVPDlg::makeRSA_ES_KGT( int nKeyLen, int nE, int nCount )
 end :
     JS_BIN_reset( &binPub );
     JS_BIN_reset( &binPri );
+
     JS_PKI_resetRSAKeyVal( &sKeyVal );
 
     return ret;
 }
 
-int CAVPDlg::makeRSA_PSS_KPG( int nLen, int nCount )
+int CAVPDlg::makeRSA_PSS_KPG( int nLen, int nE, int nCount )
 {
     int ret = 0;
 
@@ -3127,13 +3204,13 @@ int CAVPDlg::makeRSA_PSS_KPG( int nLen, int nCount )
         JS_BIN_reset( &binPri );
         memset( &sKeyVal, 0x00, sizeof(sKeyVal));
 
-        ret = JS_PKI_RSAGenKeyPair( nLen, 65537, &binPub, &binPri );
+        ret = JS_PKI_RSAGenKeyPair( nLen, nE, &binPub, &binPri );
         if( ret != 0 ) goto end;
 
         ret = JS_PKI_getRSAKeyVal( &binPri, &sKeyVal );
         if( ret != 0 ) goto end;
 
-        logRsp( QString( "v = %1").arg( sKeyVal.pE ));
+        logRsp( QString( "e = %1").arg( nE ));
         logRsp( QString( "p1 = %1").arg( sKeyVal.pP));
         logRsp( QString( "p2 = %1").arg( sKeyVal.pQ));
         logRsp( QString( "n = %1").arg( sKeyVal.pN ));
@@ -3149,19 +3226,20 @@ end :
     return ret;
 }
 
-int CAVPDlg::makeRSA_PSS_SGT( int nE, const QString strHash, const QString strM )
+int CAVPDlg::makeRSA_PSS_SGT( int nE, const QString strPri, const QString strHash, const QString strM )
 {
     int ret = 0;
     BIN binM = {0,0};
     BIN binS = {0,0};
     BIN binPri = {0,0};
-    BIN binPub = {0,0};
+//    BIN binPub = {0,0};
 
 
     JS_BIN_decodeHex( strM.toStdString().c_str(), &binM );
+    JS_BIN_decodeHex( strPri.toStdString().c_str(), &binPri );
 
-    ret = JS_PKI_RSAGenKeyPair( 2048, nE, &binPub, &binPri );
-    if( ret != 0 ) goto end;
+//    ret = JS_PKI_RSAGenKeyPair( 2048, nE, &binPub, &binPri );
+//    if( ret != 0 ) goto end;
 
     ret = JS_PKI_RSAMakeSign( strHash.toStdString().c_str(), JS_PKI_RSA_PADDING_V21, &binM, &binPri, &binS );
     if( ret != 0 ) goto end;
@@ -3174,7 +3252,7 @@ end :
     JS_BIN_reset( &binM );
     JS_BIN_reset( &binS );
     JS_BIN_reset( &binPri );
-    JS_BIN_reset( &binPub );
+//    JS_BIN_reset( &binPub );
 
     return ret;
 }
@@ -3282,7 +3360,7 @@ int CAVPDlg::makeECDH_PKV( const QString strParam, const QString strPubX, const 
 
     ret = JS_PKI_IsValidECCPubKey( strParam.toStdString().c_str(), &binPubX, &binPubY );
 
-    if( ret == 0 )
+    if( ret == 1 )
         logRsp( "Result = P" );
     else
         logRsp( "Result = F" );

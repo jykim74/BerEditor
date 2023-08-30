@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>663</width>
+    <width>664</width>
     <height>578</height>
    </rect>
   </property>
@@ -528,13 +528,13 @@
           <widget class="QComboBox" name="mECCHashCombo">
            <property name="minimumSize">
             <size>
-             <width>60</width>
+             <width>70</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>60</width>
+             <width>70</width>
              <height>16777215</height>
             </size>
            </property>
@@ -649,39 +649,6 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_7">
-         <item row="1" column="8">
-          <widget class="QPushButton" name="mRSAFindBtn">
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Find</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_21">
-           <property name="text">
-            <string>Req File</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
-          <spacer name="horizontalSpacer_5">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label_18">
            <property name="minimumSize">
@@ -695,42 +662,7 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="1" colspan="7">
-          <widget class="QLineEdit" name="mRSAReqFileText"/>
-         </item>
-         <item row="0" column="7">
-          <widget class="QComboBox" name="mRSAHashCombo">
-           <property name="minimumSize">
-            <size>
-             <width>60</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>60</width>
-             <height>16777215</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="9">
-          <widget class="QComboBox" name="mRSATypeCombo">
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>80</width>
-             <height>16777215</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="9">
+         <item row="2" column="9">
           <widget class="QPushButton" name="mRSARunBtn">
            <property name="minimumSize">
             <size>
@@ -749,12 +681,49 @@
            </property>
           </widget>
          </item>
+         <item row="2" column="8">
+          <widget class="QPushButton" name="mRSAFindBtn">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Find</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QRadioButton" name="mRSA_ESRadio">
+           <property name="text">
+            <string>RSAES</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_21">
+           <property name="text">
+            <string>Req File</string>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="2">
           <widget class="QRadioButton" name="mRSA_PSSRadio">
            <property name="text">
             <string>RSA PSS</string>
            </property>
           </widget>
+         </item>
+         <item row="0" column="6">
+          <widget class="QLabel" name="label_7">
+           <property name="text">
+            <string>Hash</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1" colspan="7">
+          <widget class="QLineEdit" name="mRSA_DETPriPathText"/>
          </item>
          <item row="0" column="5">
           <widget class="QLineEdit" name="mRSA_EText">
@@ -775,6 +744,45 @@
            </property>
           </widget>
          </item>
+         <item row="0" column="4">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>E</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <spacer name="horizontalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="9">
+          <widget class="QComboBox" name="mRSATypeCombo">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1" colspan="7">
+          <widget class="QLineEdit" name="mRSAReqFileText"/>
+         </item>
          <item row="0" column="8">
           <widget class="QLabel" name="label_20">
            <property name="minimumSize">
@@ -794,24 +802,26 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="4">
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string>E</string>
+         <item row="0" column="7">
+          <widget class="QComboBox" name="mRSAHashCombo">
+           <property name="minimumSize">
+            <size>
+             <width>70</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>70</width>
+             <height>16777215</height>
+            </size>
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QRadioButton" name="mRSA_ESRadio">
+         <item row="1" column="8" colspan="2">
+          <widget class="QPushButton" name="mRSAFindDETPriBtn">
            <property name="text">
-            <string>RSAES</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="6">
-          <widget class="QLabel" name="label_7">
-           <property name="text">
-            <string>Hash</string>
+            <string>Find DET PrivateKey</string>
            </property>
           </widget>
          </item>

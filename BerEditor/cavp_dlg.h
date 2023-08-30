@@ -43,6 +43,8 @@ private slots:
     void clickDRBGFind();
     void clickPBKDFFind();
 
+    void clickRSADETPriFind();
+
     void changeECCType(int index);
     void changeRSAType(int index);
 
@@ -109,11 +111,11 @@ private:
                   bool bInfo = false );
 
     int makeRSA_ES_DET( const QString strPri, const QString strC );
-    int makeRSA_ES_ENT( const QString strPub, const QString strM );
+    int makeRSA_ES_ENT( int nE, const QString strN, const QString strM );
     int makeRSA_ES_KGT( int nKeyLen, int nE, int nCount );
 
-    int makeRSA_PSS_KPG( int nLen, int nCount );
-    int makeRSA_PSS_SGT( int nE, const QString strHash, const QString strM );
+    int makeRSA_PSS_KPG( int nLen, int nE, int nCount );
+    int makeRSA_PSS_SGT( int nE, const QString strPri, const QString strHash, const QString strM );
     int makeRSA_PSS_SVT( int nE, const QString strN, const QString strHash, const QString strM, const QString strS );
 
     int makeECDH_KPG( const QString strParam, int nCount );
