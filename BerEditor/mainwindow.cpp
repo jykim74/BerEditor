@@ -223,6 +223,7 @@ void MainWindow::createActions()
 
 #ifdef Q_OS_MAC
     fileToolBar->setIconSize( QSize(24,24));
+    fileToolBar->layout()->setSpacing(0);
 #endif
 
     const QIcon newIcon = QIcon::fromTheme("document-new", QIcon(":/images/new.png"));
@@ -298,7 +299,8 @@ void MainWindow::createActions()
     QToolBar *editToolBar = addToolBar(tr("Edit"));
 
 #ifdef Q_OS_MAC
-        editToolBar->setIconSize( QSize(24,24));
+    editToolBar->setIconSize( QSize(24,24));
+    editToolBar->layout()->setSpacing(0);
 #endif
 
     const QIcon copyIcon = QIcon::fromTheme("edit-copy", QIcon(":/images/copy.png"));
@@ -351,7 +353,8 @@ void MainWindow::createActions()
     QToolBar *toolToolBar = addToolBar(tr("Tool"));
 
 #ifdef Q_OS_MAC
-        toolToolBar->setIconSize( QSize(24,24));
+    toolToolBar->setIconSize( QSize(24,24));
+    toolToolBar->layout()->setSpacing(0);
 #endif
 
     const QIcon dataTransIcon = QIcon::fromTheme("data-trans", QIcon(":/images/data_trans.png"));
@@ -408,6 +411,7 @@ void MainWindow::createActions()
 
 #ifdef Q_OS_MAC
         cryptToolBar->setIconSize( QSize(24,24));
+        cryptToolBar->layout()->setSpacing(0);
 #endif
 
         const QIcon keyIcon = QIcon::fromTheme("key-man", QIcon(":/images/key.png"));
@@ -500,7 +504,8 @@ void MainWindow::createActions()
     QToolBar *helpToolBar = addToolBar(tr("Help"));
 
 #ifdef Q_OS_MAC
-        helpToolBar->setIconSize( QSize(24,24));
+    helpToolBar->setIconSize( QSize(24,24));
+    helpToolBar->layout()->setSpacing(0);
 #endif
 
     const QIcon settingIcon = QIcon::fromTheme("berview-help", QIcon(":/images/setting.png"));
