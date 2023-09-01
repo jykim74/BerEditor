@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>749</width>
-    <height>747</height>
+    <width>664</width>
+    <height>578</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -86,7 +86,7 @@
    <item row="1" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -3166,9 +3166,21 @@
   <tabstop>mHMACReqFileText</tabstop>
   <tabstop>mHMACFindBtn</tabstop>
   <tabstop>mHMACRunBtn</tabstop>
+  <tabstop>mECC_ECDSARadio</tabstop>
+  <tabstop>mECC_ECDHRadio</tabstop>
+  <tabstop>mECCParamCombo</tabstop>
+  <tabstop>mECCHashCombo</tabstop>
+  <tabstop>mECCTypeCombo</tabstop>
+  <tabstop>mECCReqFileText</tabstop>
+  <tabstop>mECCFindBtn</tabstop>
+  <tabstop>mECCRunBtn</tabstop>
   <tabstop>mRSA_ESRadio</tabstop>
   <tabstop>mRSA_PSSRadio</tabstop>
+  <tabstop>mRSA_EText</tabstop>
+  <tabstop>mRSAHashCombo</tabstop>
   <tabstop>mRSATypeCombo</tabstop>
+  <tabstop>mRSA_DETPriPathText</tabstop>
+  <tabstop>mRSAFindDETPriBtn</tabstop>
   <tabstop>mRSAReqFileText</tabstop>
   <tabstop>mRSAFindBtn</tabstop>
   <tabstop>mRSARunBtn</tabstop>
