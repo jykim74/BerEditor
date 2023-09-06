@@ -3166,7 +3166,7 @@ int CAVPDlg::makeRSA_ES_ENT( int nE, const QString strN, const QString strM )
     /* need to set public key */
     JS_BIN_intToBin( nE, &binE );
     JS_BIN_trimLeft( 0x00, &binE );
-    JS_PKI_encodeRSAPublicKey2( &binN, &binE, &binPub );
+    JS_PKI_encodeRSAPublicKeyValue( &binN, &binE, &binPub );
 
     ret = JS_PKI_RSAEncryptWithPub( JS_PKI_RSA_PADDING_V21, &binM, &binPub, &binC );
     if( ret != 0 ) goto end;
