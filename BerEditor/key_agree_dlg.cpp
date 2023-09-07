@@ -362,9 +362,8 @@ void KeyAgreeDlg::genAKeyPair()
     memset( &sKeyVal, 0x00, sizeof(sKeyVal));
 
     QString strParam = mECDHParamCombo->currentText();
-    int nNid = JS_PKI_getNidFromSN( strParam.toStdString().c_str() );
 
-    ret = JS_PKI_ECCGenKeyPair( nNid, &binPub, &binPri );
+    ret = JS_PKI_ECCGenKeyPair( strParam.toStdString().c_str(), &binPub, &binPri );
     if( ret != 0 ) goto end;
 
     ret = JS_PKI_getECKeyVal( &binPri, &sKeyVal );
@@ -393,9 +392,8 @@ void KeyAgreeDlg::genBKeyPair()
     memset( &sKeyVal, 0x00, sizeof(sKeyVal));
 
     QString strParam = mECDHParamCombo->currentText();
-    int nNid = JS_PKI_getNidFromSN( strParam.toStdString().c_str() );
 
-    ret = JS_PKI_ECCGenKeyPair( nNid, &binPub, &binPri );
+    ret = JS_PKI_ECCGenKeyPair( strParam.toStdString().c_str(), &binPub, &binPri );
     if( ret != 0 ) goto end;
 
     ret = JS_PKI_getECKeyVal( &binPri, &sKeyVal );

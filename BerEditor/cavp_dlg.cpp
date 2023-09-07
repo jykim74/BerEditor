@@ -3344,7 +3344,6 @@ end :
 int CAVPDlg::makeECDH_KPG( const QString strParam, int nCount )
 {
     int ret = 0;
-    int nGroupID = JS_PKI_getNidFromSN( strParam.toStdString().c_str() );
 
     JECKeyVal sKeyVal;
 
@@ -3359,7 +3358,7 @@ int CAVPDlg::makeECDH_KPG( const QString strParam, int nCount )
         JS_BIN_reset( &binPub );
         JS_PKI_resetECKeyVal( &sKeyVal );
 
-        ret = JS_PKI_ECCGenKeyPair( nGroupID, &binPub, &binPri );
+        ret = JS_PKI_ECCGenKeyPair( strParam.toStdString().c_str(), &binPub, &binPri );
         if( ret != 0 ) goto end;
 
         ret = JS_PKI_getECKeyVal( &binPri, &sKeyVal );
@@ -3462,7 +3461,6 @@ end :
 int CAVPDlg::makeECDSA_KPG( const QString strParam, int nNum )
 {
     int ret = 0;
-    int nGroupID = JS_PKI_getNidFromSN( strParam.toStdString().c_str() );
 
     BIN binPri = {0,0};
     BIN binPub = {0,0};
@@ -3475,7 +3473,7 @@ int CAVPDlg::makeECDSA_KPG( const QString strParam, int nNum )
         JS_BIN_reset( &binPri );
         JS_BIN_reset( &binPub );
 
-        ret = JS_PKI_ECCGenKeyPair( nGroupID, &binPub, &binPri );
+        ret = JS_PKI_ECCGenKeyPair( strParam.toStdString().c_str(), &binPub, &binPri );
         if( ret != 0 ) goto end;
 
         ret = JS_PKI_getECKeyVal( &binPri, &sKeyVal );
@@ -3526,7 +3524,6 @@ end:
 int CAVPDlg::makeECDSA_SGT( const QString strParam, const QString strHash, const QString strM )
 {
     int ret = 0;
-    int nGroupID = JS_PKI_getNidFromSN( strParam.toStdString().c_str() );
 
     BIN binPub = {0,0};
     BIN binPri = {0,0};
@@ -3541,7 +3538,7 @@ int CAVPDlg::makeECDSA_SGT( const QString strParam, const QString strHash, const
 
     JS_BIN_decodeHex( strM.toStdString().c_str(), &binM );
 
-    ret = JS_PKI_ECCGenKeyPair( nGroupID, &binPub, &binPri );
+    ret = JS_PKI_ECCGenKeyPair( strParam.toStdString().c_str(), &binPub, &binPri );
     if( ret != 0 ) goto end;
 
     ret = JS_PKI_getECKeyVal( &binPri, &sKeyVal );
