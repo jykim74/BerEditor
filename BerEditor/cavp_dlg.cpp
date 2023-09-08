@@ -1441,7 +1441,6 @@ void CAVPDlg::clickDRBGRun()
                     nAdditionalInputLen >= 0 &&
                     nReturnedBitsLen >= 0 )
             {
-                logRsp( "[ARIA-128 use DF]" );
                 logRsp( QString( "[PredictionResistance = %1]" ).arg( strPredictionResistance ));
                 logRsp( QString( "[EntropyInputLen = %1]" ).arg( nEntropyInputLen * 8 ));
                 logRsp( QString( "[NonceLen = %1]" ).arg( nNonceLen * 8));
