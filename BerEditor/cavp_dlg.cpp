@@ -1368,10 +1368,20 @@ void CAVPDlg::clickDRBGRun()
     QTextStream in( &reqFile );
     QString strLine = in.readLine();
 
-    logRsp( QString( "# DRBG-%1-%2-%3 Response")
-            .arg( mDRBGAlgCombo->currentText() )
-            .arg( mDRBGUseDFCheck->isChecked() ? "UseDF" : "NoDF" )
-            .arg( mDRBGUsePRCheck->isChecked() ? "UsePF" : "NoPF" ));
+    if( strMethod == "CIPHER" )
+    {
+        logRsp( QString( "# CIPHER-DRBG-%1-%2-%3 Response")
+                .arg( mDRBGAlgCombo->currentText() )
+                .arg( mDRBGUseDFCheck->isChecked() ? "UseDF" : "NoDF" )
+                .arg( mDRBGUsePRCheck->isChecked() ? "UsePF" : "NoPF" ));
+    }
+    else
+    {
+        logRsp( QString( "# %1-DRBG-%1-%2 Response")
+                .arg( strMethod )
+                .arg( mDRBGAlgCombo->currentText() )
+                .arg( mDRBGUsePRCheck->isChecked() ? "UsePF" : "NoPF" ));
+    }
 
     while( strLine.isNull() == false )
     {
