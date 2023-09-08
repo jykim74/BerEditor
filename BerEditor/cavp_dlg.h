@@ -48,6 +48,9 @@ private slots:
     void changeECCType(int index);
     void changeRSAType(int index);
 
+    void changeDRBGMethod( int index );
+    void changeDRBG2Method( int index );
+
     void MCTKeyChanged( const QString& text );
     void MCTIVChanged( const QString& text );
     void MCTPTChanged( const QString& text );
@@ -97,7 +100,8 @@ private:
     int makeHashMCT( const QString strAlg, const QString strSeed, bool bInfo = false );
     int makeHMACData( const QString strCount, const QString strKLen, const QString strTLen, const QString strKey, const QString strMsg );
     int makePBKDF( int nIteration, const QString strPass, QString strSalt, int nKLen );
-    int makeDRBG( int nReturnedBitsLen,
+    int makeDRBG( const QString strMethod,
+                  int nReturnedBitsLen,
                   const QString strAlg,
                   int nDF,
                   int nPR,

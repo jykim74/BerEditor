@@ -28,6 +28,7 @@ const QStringList kECDSAType = { "KPG", "PKV", "SGT", "SVT" };
 const QStringList kRSAESType = { "DET", "ENT", "KGT" };
 const QStringList kRSA_PSSType = { "KPG", "SGT", "SVT" };
 
+const QStringList kDRBGMethodList = { "CIPHER", "Hash", "HMAC" };
 const QStringList kDRBGAlgList = { "ARIA-128-CTR", "ARIA-192-CTR", "ARIA-256-CTR", "AES-128-CTR", "AES-192-CTR", "AES-256-CTR" };
 
 
@@ -104,6 +105,9 @@ CAVPDlg::CAVPDlg(QWidget *parent) :
     connect( mDRBG2ClearBtn, SIGNAL(clicked()), this, SLOT(clickDRBG2Clear()));
     connect( mDRBG2RunBtn, SIGNAL(clicked()), this, SLOT(clickDRBG2Run()));
 
+    connect( mDRBGMethodCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeDRBGMethod(int)));
+    connect( mDRBG2MethodCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeDRBG2Method(int)));
+
     initialize();
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -167,9 +171,11 @@ void CAVPDlg::initialize()
     mRSA_ESRadio->setChecked(true);
     clickRSA_ESRadio();
 
+    mDRBGMethodCombo->addItems( kDRBGMethodList );
     mDRBGAlgCombo->addItems( kDRBGAlgList );
     mDRBGUseDFCheck->setChecked(true);
 
+    mDRBG2MethodCombo->addItems( kDRBGMethodList );
     mDRBG2AlgCombo->addItems( kDRBGAlgList );
     mDRBG2UseDFCheck->setChecked( true );
     mDRBG2RandLenText->setText( "512" );
@@ -1307,9 +1313,24 @@ void CAVPDlg::clickDRBGRun()
     }
 
     QString strPath = mDRBGReqFileText->text();
+    QString strMethod = mDRBGMethodCombo->currentText();
     QFile reqFile( strPath );
+    bool bNameValid = false;
 
-    if( isNameValid( strPath, "CTR_DRBG", "DF", "PR" ) == false )
+    if( strMethod == "CIPHER" )
+    {
+        bNameValid = isNameValid( strPath, "CTR_DRBG", "DF", "PR" );
+    }
+    else if( strMethod == "Hash" )
+    {
+        bNameValid = isNameValid( strPath, "Hash", "DRBG", "PR" );
+    }
+    else if( strMethod == "HMAC" )
+    {
+        bNameValid = isNameValid( strPath, "HMAC", "DRBG", "PR" );
+    }
+
+    if( bNameValid == false )
     {
         QString strMsg = QString( "Are you sure that test file is %1" ).arg( strPath );
         bool bVal = berApplet->yesOrCancelBox( strMsg, this, true );
@@ -1432,7 +1453,8 @@ void CAVPDlg::clickDRBGRun()
             {
                 logRsp( QString( "COUNT = %1").arg( nCount ));
 
-                ret = makeDRBG( nReturnedBitsLen,
+                ret = makeDRBG( strMethod,
+                                nReturnedBitsLen,
                                 mDRBGAlgCombo->currentText(),
                                 mDRBGUseDFCheck->isChecked(),
                                 mDRBGUsePRCheck->isChecked(),
@@ -1726,6 +1748,44 @@ void CAVPDlg::changeRSAType(int index)
     }
 }
 
+void CAVPDlg::changeDRBGMethod( int index )
+{
+    QString strMethod = mDRBGMethodCombo->currentText();
+
+    mDRBGAlgCombo->clear();
+
+    if( strMethod == "CIPHER" )
+    {
+        mDRBGAlgCombo->addItems( kDRBGAlgList );
+        mDRBGUseDFCheck->setEnabled(true);
+    }
+    else
+    {
+        mDRBGAlgCombo->addItems( kHashAlgList );
+        mDRBGAlgCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
+        mDRBGUseDFCheck->setEnabled(false);
+    }
+}
+
+void CAVPDlg::changeDRBG2Method( int index )
+{
+    QString strMethod = mDRBG2MethodCombo->currentText();
+
+    mDRBG2AlgCombo->clear();
+
+    if( strMethod == "CIPHER" )
+    {
+        mDRBG2AlgCombo->addItems( kDRBGAlgList );
+        mDRBG2UseDFCheck->setEnabled(true);
+    }
+    else
+    {
+        mDRBG2AlgCombo->addItems( kHashAlgList );
+        mDRBG2AlgCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
+        mDRBG2UseDFCheck->setEnabled(false);
+    }
+}
+
 void CAVPDlg::MCTKeyChanged( const QString& text )
 {
     int nLen = text.length() / 2;
@@ -1956,6 +2016,7 @@ void CAVPDlg::clickDRBG2Run()
 {
     int ret = 0;
     int nRandLen = mDRBG2RandLenText->text().toInt() / 8;
+    QString strMethod = mDRBG2MethodCombo->currentText();
 
     QString strEntroypInput = mDRBG2EntropyInputText->text();
     QString strNonce = mDRBG2NonceText->text();
@@ -1965,7 +2026,8 @@ void CAVPDlg::clickDRBG2Run()
     QString strAdditionalInput = mDRBG2AdditionalInputText->text();
     QString strAdditionalInput2 = mDRBG2AdditionalInput2Text->text();
 
-    ret = makeDRBG( nRandLen,
+    ret = makeDRBG( strMethod,
+                    nRandLen,
                     mDRBG2AlgCombo->currentText(),
                     mDRBG2UseDFCheck->isChecked(),
                     mDRBG2UsePRCheck->isChecked(),
@@ -3049,7 +3111,8 @@ end:
 }
 
 
-int CAVPDlg::makeDRBG( int nReturnedBitsLen,
+int CAVPDlg::makeDRBG( const QString strMethod,
+              int nReturnedBitsLen,
               const QString strAlg,
               int nDF,
               int nPR,
@@ -3082,7 +3145,9 @@ int CAVPDlg::makeDRBG( int nReturnedBitsLen,
     JS_BIN_decodeHex( strAdditionalInput1.toStdString().c_str(), &binAdditionalInput1 );
     JS_BIN_decodeHex( strAdditionalInput2.toStdString().c_str(), &binAdditionalInput2 );
 
-    ret = JS_PKI_genCTR_DRBG(
+    if( strMethod == "CIPHER" )
+    {
+        ret = JS_PKI_genCTR_DRBG(
                 nReturnedBitsLen,
                 nDF,
                 nPR,
@@ -3095,6 +3160,42 @@ int CAVPDlg::makeDRBG( int nReturnedBitsLen,
                 &binAdditionalInput1,
                 &binAdditionalInput2,
                 &binDRBG );
+    }
+    else if( strMethod == "Hash" )
+    {
+        ret = JS_PKI_genHash_DRBG(
+                nReturnedBitsLen,
+                nPR,
+                strAlg.toStdString().c_str(),
+                &binEntropyInput,
+                &binNonce,
+                &binPersionalizationString,
+                &binEntropyInputReseed,
+                &binAdditionalInputReseed,
+                &binAdditionalInput1,
+                &binAdditionalInput2,
+                &binDRBG );
+    }
+    else if( strMethod == "HMAC" )
+    {
+        ret = JS_PKI_genHMAC_DRBG(
+                nReturnedBitsLen,
+                nPR,
+                strAlg.toStdString().c_str(),
+                &binEntropyInput,
+                &binNonce,
+                &binPersionalizationString,
+                &binEntropyInputReseed,
+                &binAdditionalInputReseed,
+                &binAdditionalInput1,
+                &binAdditionalInput2,
+                &binDRBG );
+    }
+    else
+    {
+        berApplet->warningBox( tr("Invalid DRBG method: %1").arg( strMethod ), this );
+        ret = -1;
+    }
 
     if( ret != 0 ) goto end;
 
