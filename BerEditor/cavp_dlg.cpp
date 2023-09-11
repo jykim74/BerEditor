@@ -240,11 +240,14 @@ QString CAVPDlg::getRspFile(const QString &reqFileName )
 
 void CAVPDlg::logRsp( const QString& strLog )
 {
-    QFile file( rsp_name_.toLocal8Bit().toStdString().c_str() );
-    file.open(QFile::WriteOnly | QFile::Append| QFile::Text );
-    QTextStream SaveFile( &file );
-    SaveFile << strLog << "\n";
-    file.close();
+    if( rsp_name_.length() > 0 )
+    {
+        QFile file( rsp_name_.toLocal8Bit().toStdString().c_str() );
+        file.open(QFile::WriteOnly | QFile::Append| QFile::Text );
+        QTextStream SaveFile( &file );
+        SaveFile << strLog << "\n";
+        file.close();
+    }
 
     berApplet->log( strLog );
 }
