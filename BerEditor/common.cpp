@@ -817,6 +817,8 @@ static int _getNC( const BIN *pBinExt, bool bShow, QString& strVal )
             strType = "DNS";
         else if( pCurList->sNameConsts.nType == JS_PKI_NAME_TYPE_EMAIL )
             strType = "email";
+        else if( pCurList->sNameConsts.nType == JS_PKI_NAME_TYPE_DIRNAME )
+            strType = "dirName";
 
 
         if( bShow )
@@ -825,7 +827,7 @@ static int _getNC( const BIN *pBinExt, bool bShow, QString& strVal )
             {
                 if( pi == 1 ) strVal += QString( "Permitted\n" );
                 strVal += QString( " [%1]Subtrees(%2..%3)\n" ).arg( pi ).arg( pCurList->sNameConsts.nMax ).arg( pCurList->sNameConsts.nMin );
-                strVal += QString( "  %1=%2\n" ).arg( strType ).arg( pCurList->sNameConsts.pValue );
+                strVal += QString( "  %1 : %2\n" ).arg( strType ).arg( pCurList->sNameConsts.pValue );
 
                 pi++;
             }
@@ -833,7 +835,7 @@ static int _getNC( const BIN *pBinExt, bool bShow, QString& strVal )
             {
                 if( ei == 1 ) strVal += QString( "Excluded\n" );
                 strVal += QString( " [%1]Subtrees(%2..%3)\n" ).arg( ei ).arg( pCurList->sNameConsts.nMax ).arg( pCurList->sNameConsts.nMin );
-                strVal += QString( "  %1=%2\n" ).arg( strType ).arg( pCurList->sNameConsts.pValue );
+                strVal += QString( "  %1 : %2\n" ).arg( strType ).arg( pCurList->sNameConsts.pValue );
 
                 ei++;
             }
