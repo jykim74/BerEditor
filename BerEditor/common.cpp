@@ -690,14 +690,7 @@ static int _getIDP( const BIN *pBinExt, bool bShow, QString& strVal )
 
     while( pCurList )
     {
-        QString strType;
-
-        if( pCurList->sNumVal.nNum == JS_PKI_NAME_TYPE_DNS )
-            strType = "DNS";
-        else if( pCurList->sNumVal.nNum == JS_PKI_NAME_TYPE_URI )
-            strType = "URI";
-        else if( pCurList->sNumVal.nNum == JS_PKI_NAME_TYPE_EMAIL )
-            strType = "Email";
+        QString strType = JS_PKI_getGenNameString( pCurList->sNumVal.nNum );
 
         if( bShow )
         {
@@ -728,15 +721,7 @@ static int _getAltName( const BIN *pBinExt, int nNid, bool bShow, QString& strVa
 
     while( pCurList )
     {
-        QString strType;
-        if( pCurList->sNumVal.nNum == JS_PKI_NAME_TYPE_DNS )
-            strType = "DNS";
-        else if( pCurList->sNumVal.nNum == JS_PKI_NAME_TYPE_URI )
-            strType = "URI";
-        else if( pCurList->sNumVal.nNum == JS_PKI_NAME_TYPE_EMAIL )
-            strType = "Email";
-        else if( pCurList->sNumVal.nNum == JS_PKI_NAME_TYPE_OTHERNAME )
-            strType = "Other Name";
+        QString strType = JS_PKI_getGenNameString( pCurList->sNumVal.nNum );
 
         if( bShow )
         {
@@ -810,16 +795,7 @@ static int _getNC( const BIN *pBinExt, bool bShow, QString& strVal )
 
     while( pCurList )
     {
-        QString strType;
-        if( pCurList->sNameConsts.nType == JS_PKI_NAME_TYPE_URI )
-            strType = "URI";
-        else if( pCurList->sNameConsts.nType == JS_PKI_NAME_TYPE_DNS )
-            strType = "DNS";
-        else if( pCurList->sNameConsts.nType == JS_PKI_NAME_TYPE_EMAIL )
-            strType = "email";
-        else if( pCurList->sNameConsts.nType == JS_PKI_NAME_TYPE_DIRNAME )
-            strType = "dirName";
-
+        QString strType = JS_PKI_getGenNameString( pCurList->sNameConsts.nType );
 
         if( bShow )
         {
@@ -954,7 +930,7 @@ void getBINFromString( BIN *pBin, const QString& strType, const QString& strStri
         nType = DATA_HEX;
     else if( strType.toUpper() == "BASE64" )
         nType = DATA_BASE64;
-    else if( strType.toUpper() == "UR" )
+    else if( strType.toUpper() == "URL" )
         nType = DATA_URL;
     else
         nType = DATA_STRING;
@@ -1004,7 +980,7 @@ QString getStringFromBIN( const BIN *pBin, const QString& strType, bool bSeenOnl
         nType = DATA_HEX;
     else if( strType.toUpper() == "BASE64" )
         nType = DATA_BASE64;
-    else if( strType.toUpper() == "UR" )
+    else if( strType.toUpper() == "URL" )
         nType = DATA_URL;
     else
         nType = DATA_STRING;
