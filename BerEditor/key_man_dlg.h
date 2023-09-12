@@ -27,6 +27,8 @@ private slots:
     void clickClear();
     void clickChange();
 
+    void clickKeyWrapGenKEK();
+
     void srcChanged();
     void dstChanged();
     void kekChanged( const QString& text );

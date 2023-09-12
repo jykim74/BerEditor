@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>495</width>
-    <height>394</height>
+    <width>513</width>
+    <height>575</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -363,8 +363,11 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <layout class="QGridLayout" name="gridLayout_7">
-         <item row="0" column="1">
+        <layout class="QGridLayout" name="gridLayout_11">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <item row="0" column="3">
           <widget class="QRadioButton" name="mKWPRadio">
            <property name="text">
             <string>KWP</string>
@@ -372,6 +375,13 @@
           </widget>
          </item>
          <item row="0" column="0">
+          <widget class="QLabel" name="label_9">
+           <property name="text">
+            <string>Wrap Method</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
           <widget class="QRadioButton" name="mKWRadio">
            <property name="text">
             <string>KW</string>
@@ -380,6 +390,43 @@
             <bool>true</bool>
            </property>
           </widget>
+         </item>
+         <item row="0" column="1">
+          <spacer name="horizontalSpacer_7">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="Line" name="line_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QGridLayout" name="gridLayout_7">
+         <item row="0" column="2">
+          <spacer name="horizontalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
          </item>
          <item row="0" column="3">
           <widget class="QLineEdit" name="mSrcLenText">
@@ -431,8 +478,61 @@
            </property>
           </widget>
          </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_10">
+           <property name="minimumSize">
+            <size>
+             <width>60</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Source</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="mSrcTypeCombo"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QPlainTextEdit" name="mSrcText"/>
+       </item>
+       <item>
+        <widget class="Line" name="line_5">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QGridLayout" name="gridLayout_12">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_7">
+           <property name="minimumSize">
+            <size>
+             <width>60</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>KEK</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QPushButton" name="mGenKEKBtn">
+           <property name="text">
+            <string>Gen KEK</string>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="2">
-          <spacer name="horizontalSpacer_4">
+          <spacer name="horizontalSpacer_8">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -444,10 +544,10 @@
            </property>
           </spacer>
          </item>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="mKEKTypeCombo"/>
+         </item>
         </layout>
-       </item>
-       <item>
-        <widget class="QPlainTextEdit" name="mSrcText"/>
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_8">
@@ -456,13 +556,6 @@
          </property>
          <item row="0" column="1">
           <widget class="QLineEdit" name="mKEKText"/>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_7">
-           <property name="text">
-            <string>KEK</string>
-           </property>
-          </widget>
          </item>
          <item row="0" column="2">
           <widget class="QLineEdit" name="mKEKLenText">
@@ -529,6 +622,22 @@
           <number>0</number>
          </property>
          <item row="0" column="1">
+          <widget class="QComboBox" name="mDstTypeCombo"/>
+         </item>
+         <item row="0" column="2">
+          <spacer name="horizontalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="3">
           <widget class="QLineEdit" name="mDstLenText">
            <property name="maximumSize">
             <size>
@@ -579,17 +688,17 @@
           </widget>
          </item>
          <item row="0" column="0">
-          <spacer name="horizontalSpacer_5">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
+          <widget class="QLabel" name="label_8">
+           <property name="minimumSize">
             <size>
-             <width>40</width>
-             <height>20</height>
+             <width>60</width>
+             <height>0</height>
             </size>
            </property>
-          </spacer>
+           <property name="text">
+            <string>Output </string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -684,8 +793,6 @@
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
   <tabstop>mMakeKeyBtn</tabstop>
-  <tabstop>mKWRadio</tabstop>
-  <tabstop>mKWPRadio</tabstop>
   <tabstop>mSrcLenText</tabstop>
   <tabstop>mSrcText</tabstop>
   <tabstop>mKEKText</tabstop>

@@ -36,9 +36,15 @@ KeyManDlg::KeyManDlg(QWidget *parent) :
     connect( mDstText, SIGNAL(textChanged()), this, SLOT(dstChanged()));
     connect( mKEKText, SIGNAL(textChanged(const QString&)), this, SLOT(kekChanged(const QString&)));
 
+    connect( mGenKEKBtn, SIGNAL(clicked()), this, SLOT(clickKeyWrapGenKEK()));
+
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT( clickClearDataAll()));
 
     initialize();
+
+#if defined(Q_OS_MAC)
+    layout()->setSpacing(5);
+#endif
 }
 
 KeyManDlg::~KeyManDlg()
@@ -57,8 +63,17 @@ void KeyManDlg::initialize()
 
     mKeyLenText->setText( "32" );
     mIterCntText->setText( "1024" );
-    mCloseBtn->setFocus();
 
+    mSrcTypeCombo->addItems( kValueTypeList );
+    mSrcTypeCombo->setCurrentIndex(1);
+
+    mKEKTypeCombo->addItems( kValueTypeList );
+    mKEKTypeCombo->setCurrentIndex(1);
+
+    mDstTypeCombo->addItems( kValueTypeList );
+    mDstTypeCombo->setCurrentIndex(1);
+
+    mCloseBtn->setFocus();
     tabWidget->setCurrentIndex(0);
 }
 
@@ -142,6 +157,7 @@ void KeyManDlg::clickWrap()
 
     QString strInput = mSrcText->toPlainText();
     QString strWrappingKey = mKEKText->text();
+    QString strOutput;
 
     if( strInput.length() < 1 )
     {
@@ -160,8 +176,8 @@ void KeyManDlg::clickWrap()
     else
         nMode = JS_KW_MODE_KWP;
 
-    JS_BIN_decodeHex( strInput.toStdString().c_str(), &binInput );
-    JS_BIN_decodeHex( strWrappingKey.toStdString().c_str(), &binWrappingKey );
+    getBINFromString( &binInput, mSrcTypeCombo->currentText(), strInput );
+    getBINFromString( &binWrappingKey, mKEKTypeCombo->currentText(), strWrappingKey );
 
     ret = JS_KW_WrapKey( nMode, &binInput, &binWrappingKey, &binOutput );
     if( ret != 0 )
@@ -170,7 +186,8 @@ void KeyManDlg::clickWrap()
         goto end;
     }
 
-    mDstText->setPlainText( getHexString(binOutput.pVal, binOutput.nLen));
+    strOutput = getStringFromBIN( &binOutput, mDstTypeCombo->currentText() );
+    mDstText->setPlainText( strOutput );
 
     berApplet->log( QString( "Input Key   : %1" ).arg(getHexString(&binInput)));
     berApplet->log( QString( "Wrapping Key: %1" ).arg( getHexString( &binWrappingKey)));
@@ -192,6 +209,7 @@ void KeyManDlg::clickUnwrap()
 
     QString strInput = mSrcText->toPlainText();
     QString strWrappingKey = mKEKText->text();
+    QString strOutput;
 
     if( strInput.length() < 1 )
     {
@@ -210,8 +228,8 @@ void KeyManDlg::clickUnwrap()
     else
         nMode = JS_KW_MODE_KWP;
 
-    JS_BIN_decodeHex( strInput.toStdString().c_str(), &binInput );
-    JS_BIN_decodeHex( strWrappingKey.toStdString().c_str(), &binWrappingKey );
+    getBINFromString( &binInput, mSrcTypeCombo->currentText(), strInput );
+    getBINFromString( &binWrappingKey, mKEKTypeCombo->currentText(), strWrappingKey );
 
     ret = JS_KW_UnwrapKey( nMode, &binInput, &binWrappingKey, &binOutput );
     if( ret != 0 )
@@ -220,7 +238,8 @@ void KeyManDlg::clickUnwrap()
         goto end;
     }
 
-    mDstText->setPlainText( getHexString(binOutput.pVal, binOutput.nLen));
+    strOutput = getStringFromBIN( &binOutput, mDstTypeCombo->currentText() );
+    mDstText->setPlainText( strOutput );
 
     berApplet->log( QString( "Input Key      : %1" ).arg(getHexString(&binInput)));
     berApplet->log( QString( "Unwrapping Key : %1" ).arg( getHexString( &binWrappingKey)));
@@ -239,28 +258,42 @@ void KeyManDlg::clickClear()
     mKEKText->clear();
 }
 
+ void KeyManDlg::clickKeyWrapGenKEK()
+ {
+     BIN binKEK = {0,0};
+     mKEKTypeCombo->setCurrentIndex(1);
+     JS_PKI_genRandom( 16, &binKEK );
+     mKEKText->setText( getHexString( &binKEK ) );
+     JS_BIN_reset( &binKEK );
+ }
+
 void KeyManDlg::clickChange()
 {
     QString strDst = mDstText->toPlainText();
+    mSrcTypeCombo->setCurrentText( mDstTypeCombo->currentText() );
+
     mSrcText->setPlainText( strDst );
     mDstText->clear();
 }
 
 void KeyManDlg::srcChanged()
 {
-    int nLen = mSrcText->toPlainText().length() / 2;
+    QString strSrc = mSrcText->toPlainText();
+    int nLen = getDataLen( mSrcTypeCombo->currentText(), strSrc );
     mSrcLenText->setText( QString("%1").arg(nLen));
 }
 
 void KeyManDlg::dstChanged()
 {
-    int nLen = mDstText->toPlainText().length() / 2;
+    QString strDst = mDstText->toPlainText();
+    int nLen = getDataLen( mDstTypeCombo->currentText(), strDst );
     mDstLenText->setText( QString("%1").arg(nLen));
 }
 
 void KeyManDlg::kekChanged( const QString& text )
 {
-    int nLen = text.length() / 2;
+    QString strKEK = mKEKText->text();
+    int nLen = getDataLen( mKEKTypeCombo->currentText(), strKEK );
     mKEKLenText->setText( QString("%1").arg(nLen));
 }
 
