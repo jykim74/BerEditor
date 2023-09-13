@@ -7,23 +7,30 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>304</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Number Transmission</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0" colspan="4">
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>Number Type</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2">
+     <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
        <widget class="QRadioButton" name="mBitBtn">
         <property name="text">
          <string>Bit</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QRadioButton" name="mHexBtn">
+        <property name="text">
+         <string>Hex</string>
         </property>
        </widget>
       </item>
@@ -37,15 +44,8 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="2">
-       <widget class="QRadioButton" name="mHexBtn">
-        <property name="text">
-         <string>Hex</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="3">
-       <spacer name="horizontalSpacer_2">
+       <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -57,10 +57,71 @@
         </property>
        </spacer>
       </item>
+      <item row="0" column="4">
+       <widget class="QPushButton" name="mInputClearBtn">
+        <property name="text">
+         <string>Input Clear</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
-   <item row="3" column="0" colspan="4">
+   <item>
+    <widget class="QPlainTextEdit" name="mInputText"/>
+   </item>
+   <item>
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_2">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="2">
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Output</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mChangeBtn">
+       <property name="text">
+        <string>Change</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mTransBtn">
+       <property name="text">
+        <string>Transmission</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="mOutputTypeCombo"/>
+     </item>
+    </layout>
+   </item>
+   <item>
     <widget class="QPlainTextEdit" name="mOutputText">
      <property name="palette">
       <palette>
@@ -104,31 +165,19 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
-    <spacer name="horizontalSpacer">
+   <item>
+    <widget class="Line" name="line">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
+    </widget>
    </item>
-   <item row="1" column="0" colspan="4">
-    <widget class="QPlainTextEdit" name="mInputText"/>
-   </item>
-   <item row="2" column="0">
-    <widget class="QComboBox" name="mOutputTypeCombo"/>
-   </item>
-   <item row="5" column="0" colspan="4">
+   <item>
     <layout class="QGridLayout" name="gridLayout_3">
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="2">
+     <item row="0" column="3">
       <widget class="QPushButton" name="mCloseBtn">
        <property name="text">
         <string>Close</string>
@@ -136,13 +185,6 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QPushButton" name="mTransBtn">
-       <property name="text">
-        <string>Transmission</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
       <spacer name="horizontalSpacer_3">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -155,21 +197,14 @@
        </property>
       </spacer>
      </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mOutputClearBtn">
+       <property name="text">
+        <string>Output Clear</string>
+       </property>
+      </widget>
+     </item>
     </layout>
-   </item>
-   <item row="2" column="3">
-    <widget class="QPushButton" name="mChangeBtn">
-     <property name="text">
-      <string>Change</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0" colspan="4">
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
    </item>
   </layout>
  </widget>
@@ -178,10 +213,7 @@
   <tabstop>mDecimalBtn</tabstop>
   <tabstop>mHexBtn</tabstop>
   <tabstop>mInputText</tabstop>
-  <tabstop>mOutputTypeCombo</tabstop>
-  <tabstop>mChangeBtn</tabstop>
   <tabstop>mOutputText</tabstop>
-  <tabstop>mTransBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>

@@ -25,6 +25,9 @@ private slots:
     void outputChanged();
     void clickChange();
 
+    void clickInputClear();
+    void clickOutputClear();
+
 private:
 //    Ui::DataEncoderDlg *ui;
 };

@@ -1632,7 +1632,7 @@ mailto : jykim74@gmail.com</translation>
         <translation>데이타 인코더</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="79"/>
+        <location filename="../data_encoder_dlg.ui" line="76"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -1641,48 +1641,58 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">입력 데이타 타입</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="337"/>
+        <location filename="../data_encoder_dlg.ui" line="351"/>
         <source>String</source>
         <translation>문자열</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="254"/>
+        <location filename="../data_encoder_dlg.ui" line="268"/>
         <source>Hex</source>
         <translation>16진수</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="48"/>
+        <location filename="../data_encoder_dlg.ui" line="45"/>
         <source>Change</source>
         <translation>교환</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="119"/>
+        <location filename="../data_encoder_dlg.ui" line="173"/>
         <source>Output Data</source>
         <translation>결과 데이타</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="182"/>
-        <location filename="../data_encoder_dlg.ui" line="347"/>
+        <location filename="../data_encoder_dlg.ui" line="110"/>
+        <location filename="../data_encoder_dlg.ui" line="361"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="191"/>
+        <location filename="../data_encoder_dlg.ui" line="25"/>
+        <source>Input Clear</source>
+        <translation>입력 지움</translation>
+    </message>
+    <message>
+        <location filename="../data_encoder_dlg.ui" line="96"/>
+        <source>Output Clear</source>
+        <translation>결과 지우기</translation>
+    </message>
+    <message>
+        <location filename="../data_encoder_dlg.ui" line="205"/>
         <source>Input Data</source>
         <translation>입력 데이타</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="247"/>
+        <location filename="../data_encoder_dlg.ui" line="261"/>
         <source>Base64</source>
         <translation>베이스64</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="330"/>
+        <location filename="../data_encoder_dlg.ui" line="344"/>
         <source>URL</source>
         <translation>URL</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="28"/>
+        <location filename="../data_encoder_dlg.ui" line="196"/>
         <source>Show printable text</source>
         <translation>인쇄 가능 문자 표시</translation>
     </message>
@@ -1691,12 +1701,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">문자 형태로 보여줌</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="55"/>
+        <location filename="../data_encoder_dlg.ui" line="52"/>
         <source>Encode</source>
         <translation>인코딩</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.cpp" line="60"/>
+        <location filename="../data_encoder_dlg.cpp" line="63"/>
         <source>You have to insert data</source>
         <translation>데이타를 입력 하세요</translation>
     </message>
@@ -3944,17 +3954,32 @@ Do you want to delete the file and continue?</source>
         <translation>숫자 변환창</translation>
     </message>
     <message>
-        <location filename="../num_trans_dlg.ui" line="134"/>
+        <location filename="../num_trans_dlg.ui" line="63"/>
+        <source>Input Clear</source>
+        <translation>입력 지움</translation>
+    </message>
+    <message>
+        <location filename="../num_trans_dlg.ui" line="101"/>
+        <source>Output</source>
+        <translation>결과</translation>
+    </message>
+    <message>
+        <location filename="../num_trans_dlg.ui" line="183"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../num_trans_dlg.ui" line="141"/>
+        <location filename="../num_trans_dlg.ui" line="203"/>
+        <source>Output Clear</source>
+        <translation>결과 지우기</translation>
+    </message>
+    <message>
+        <location filename="../num_trans_dlg.ui" line="115"/>
         <source>Transmission</source>
         <translation>변환</translation>
     </message>
     <message>
-        <location filename="../num_trans_dlg.ui" line="163"/>
+        <location filename="../num_trans_dlg.ui" line="108"/>
         <source>Change</source>
         <translation>교환</translation>
     </message>
@@ -3969,22 +3994,22 @@ Do you want to delete the file and continue?</source>
         <translation>2진수</translation>
     </message>
     <message>
-        <location filename="../num_trans_dlg.ui" line="33"/>
+        <location filename="../num_trans_dlg.ui" line="40"/>
         <source>Decimal</source>
         <translation>10진수</translation>
     </message>
     <message>
-        <location filename="../num_trans_dlg.ui" line="43"/>
+        <location filename="../num_trans_dlg.ui" line="33"/>
         <source>Hex</source>
         <translation>16진수</translation>
     </message>
     <message>
-        <location filename="../num_trans_dlg.cpp" line="43"/>
+        <location filename="../num_trans_dlg.cpp" line="46"/>
         <source>Insert data</source>
         <translation>데이타 입력하세요</translation>
     </message>
     <message>
-        <location filename="../num_trans_dlg.cpp" line="57"/>
+        <location filename="../num_trans_dlg.cpp" line="60"/>
         <source>The input value have wrong format</source>
         <translation>입력 데이타에 잘못 된 형식의 값이 있습니다</translation>
     </message>

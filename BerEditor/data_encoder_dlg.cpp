@@ -30,6 +30,9 @@ DataEncoderDlg::DataEncoderDlg(QWidget *parent) :
     connect( mOutputText, SIGNAL(textChanged()), this, SLOT(outputChanged()));
     connect( mChangeBtn, SIGNAL(clicked()), this, SLOT(clickChange()));
 
+    connect( mInputClearBtn, SIGNAL(clicked()), this, SLOT(clickInputClear()));
+    connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickOutputClear()));
+
     mCloseBtn->setFocus();
 }
 
@@ -126,5 +129,15 @@ void DataEncoderDlg::clickChange()
 
     QString strOut = mOutputText->toPlainText();
     mInputText->setPlainText( strOut );
+    mOutputText->clear();
+}
+
+void DataEncoderDlg::clickInputClear()
+{
+    mInputText->clear();
+}
+
+void DataEncoderDlg::clickOutputClear()
+{
     mOutputText->clear();
 }

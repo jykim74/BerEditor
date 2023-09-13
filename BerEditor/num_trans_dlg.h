@@ -20,6 +20,9 @@ private slots:
     void dataTrans();
     void dataChange();
 
+    void clickInputClear();
+    void clickOutputClear();
+
 private:
 
 };

@@ -20,6 +20,9 @@ NumTransDlg::NumTransDlg(QWidget *parent) :
      connect( mChangeBtn, SIGNAL(clicked()), this, SLOT(dataChange()));
      connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
+     connect( mInputClearBtn, SIGNAL(clicked()), this, SLOT(clickInputClear()));
+     connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickOutputClear()));
+
      mTransBtn->setDefault(true);
 }
 
@@ -105,4 +108,14 @@ void NumTransDlg::dataChange()
         mHexBtn->setChecked(true);
 
     repaint();
+}
+
+void NumTransDlg::clickInputClear()
+{
+    mInputText->clear();
+}
+
+void NumTransDlg::clickOutputClear()
+{
+    mOutputText->clear();
 }
