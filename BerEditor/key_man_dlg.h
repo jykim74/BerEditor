@@ -27,6 +27,8 @@ private slots:
     void clickClear();
     void clickChange();
 
+    void clickOutputClear();
+
     void clickKeyWrapGenKEK();
 
     void srcChanged();

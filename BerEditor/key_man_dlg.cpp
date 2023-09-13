@@ -27,6 +27,8 @@ KeyManDlg::KeyManDlg(QWidget *parent) :
     connect( mSaltText, SIGNAL(textChanged(const QString&)), this, SLOT(saltChanged()));
     connect( mSaltTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(saltChanged()));
 
+    connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickOutputClear()));
+
     connect( mWrapBtn, SIGNAL(clicked()), this, SLOT(clickWrap()));
     connect( mUnwrapBtn, SIGNAL(clicked()), this, SLOT(clickUnwrap()));
     connect( mClearBtn, SIGNAL(clicked()), this, SLOT(clickClear()));
@@ -274,6 +276,11 @@ void KeyManDlg::clickChange()
 
     mSrcText->setPlainText( strDst );
     mDstText->clear();
+}
+
+void KeyManDlg::clickOutputClear()
+{
+    mOutputText->clear();
 }
 
 void KeyManDlg::srcChanged()

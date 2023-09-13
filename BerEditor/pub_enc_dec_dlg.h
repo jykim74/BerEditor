@@ -45,6 +45,9 @@ private slots:
     void changeIV( const QString& text );
     void changeTag( const QString& text );
 
+    void clickInputClear();
+    void clickOutputClear();
+
 private:
     void initialize();
     int readPrivateKey( BIN *pPriKey );

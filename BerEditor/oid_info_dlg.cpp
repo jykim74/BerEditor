@@ -27,6 +27,7 @@ OIDInfoDlg::OIDInfoDlg(QWidget *parent) :
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(closeDlg()));
     connect( mInputText, SIGNAL(textChanged(const QString&)), this, SLOT(findOID()));
     connect( mCreateBtn, SIGNAL(clicked()), this, SLOT(createOID()));
+    connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickOutputClear()));
 
     mCloseBtn->setFocus();
     mCreateBtn->hide();
@@ -182,4 +183,12 @@ void OIDInfoDlg::createOID()
     writeOIDConfig( QString( "\nOID = %1").arg( strOID ) );
     writeOIDConfig( QString( "\nSN = %1").arg(strSN));
     writeOIDConfig( QString( "\nLN = %1").arg(strLN));
+}
+
+void OIDInfoDlg::clickOutputClear()
+{
+    mOIDText->clear();
+    mOIDHexText->clear();
+    mSNText->clear();
+    mLNText->clear();
 }

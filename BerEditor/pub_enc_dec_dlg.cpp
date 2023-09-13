@@ -74,6 +74,9 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
     connect( mIVText, SIGNAL(textChanged(const QString&)), this, SLOT(changeIV(const QString&)));
     connect( mTagText, SIGNAL(textChanged(const QString&)), this, SLOT(changeTag(const QString&)));
 
+    connect( mInputClearBtn, SIGNAL(clicked()), this, SLOT(clickInputClear()));
+    connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickOutputClear()));
+
     mCloseBtn->setFocus();
 
 #if defined(Q_OS_MAC)
@@ -717,4 +720,14 @@ void PubEncDecDlg::changeTag( const QString& text )
 {
     int nLen = text.length() / 2;
     mTagLenText->setText( QString( "%1" ).arg(nLen) );
+}
+
+void PubEncDecDlg::clickInputClear()
+{
+    mInputText->clear();
+}
+
+void PubEncDecDlg::clickOutputClear()
+{
+    mOutputText->clear();
 }

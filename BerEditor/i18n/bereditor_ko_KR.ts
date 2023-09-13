@@ -2092,7 +2092,7 @@ Do you want to delete the file and continue?</source>
         <translation>로그 기록</translation>
     </message>
     <message>
-        <location filename="../gen_hash_dlg.ui" line="715"/>
+        <location filename="../gen_hash_dlg.ui" line="756"/>
         <source>Digest</source>
         <translation>해쉬</translation>
     </message>
@@ -2101,7 +2101,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">입력 속성</translation>
     </message>
     <message>
-        <location filename="../gen_hash_dlg.ui" line="759"/>
+        <location filename="../gen_hash_dlg.ui" line="800"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -2111,7 +2111,7 @@ Do you want to delete the file and continue?</source>
         <translation>입력 지움</translation>
     </message>
     <message>
-        <location filename="../gen_hash_dlg.ui" line="681"/>
+        <location filename="../gen_hash_dlg.ui" line="722"/>
         <source>OutputClear</source>
         <translation>출력 지움</translation>
     </message>
@@ -2191,7 +2191,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">블록 데이타 로그 기록</translation>
     </message>
     <message>
-        <location filename="../gen_hash_dlg.ui" line="674"/>
+        <location filename="../gen_hash_dlg.ui" line="715"/>
         <source>Status</source>
         <translation>상태</translation>
     </message>
@@ -2201,7 +2201,7 @@ Do you want to delete the file and continue?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../gen_hash_dlg.ui" line="766"/>
+        <location filename="../gen_hash_dlg.ui" line="807"/>
         <source>Clear Data All</source>
         <translation>전체 데이타 지우기</translation>
     </message>
@@ -2225,7 +2225,7 @@ Do you want to delete the file and continue?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../gen_hash_dlg.ui" line="735"/>
+        <location filename="../gen_hash_dlg.ui" line="776"/>
         <source>hash algorithm</source>
         <translation>해쉬 알고리즘</translation>
     </message>
@@ -2259,7 +2259,7 @@ Do you want to delete the file and continue?</source>
         <translation>문자열</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.ui" line="844"/>
+        <location filename="../gen_mac_dlg.ui" line="885"/>
         <source>GMAC</source>
         <translation>GMAC</translation>
     </message>
@@ -2284,12 +2284,12 @@ Do you want to delete the file and continue?</source>
         <translation>로그 기록</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.ui" line="865"/>
+        <location filename="../gen_mac_dlg.ui" line="906"/>
         <source>HMAC</source>
         <translation>HMAC</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.ui" line="902"/>
+        <location filename="../gen_mac_dlg.ui" line="943"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -2299,7 +2299,7 @@ Do you want to delete the file and continue?</source>
         <translation>MAC 값 생성</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.ui" line="858"/>
+        <location filename="../gen_mac_dlg.ui" line="899"/>
         <source>MAC</source>
         <translation>MAC</translation>
     </message>
@@ -2375,12 +2375,12 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">블록 데이타 로그 기록</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.ui" line="909"/>
+        <location filename="../gen_mac_dlg.ui" line="950"/>
         <source>Clear Data All</source>
         <translation>전체 데이타 지우기</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.ui" line="851"/>
+        <location filename="../gen_mac_dlg.ui" line="892"/>
         <source>CMAC</source>
         <translation>CMAC</translation>
     </message>
@@ -2394,7 +2394,7 @@ Do you want to delete the file and continue?</source>
         <translation>결과 데이타</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.ui" line="810"/>
+        <location filename="../gen_mac_dlg.ui" line="851"/>
         <source>OutputClear</source>
         <translation>출력 지움</translation>
     </message>
@@ -2404,7 +2404,7 @@ Do you want to delete the file and continue?</source>
         <translation>키 값</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.ui" line="803"/>
+        <location filename="../gen_mac_dlg.ui" line="844"/>
         <source>Status</source>
         <translation>상태</translation>
     </message>
@@ -2789,7 +2789,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">계산</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="52"/>
+        <location filename="../key_agree_dlg.ui" line="93"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -2798,97 +2798,97 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">알고리즘</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="243"/>
-        <location filename="../key_agree_dlg.ui" line="977"/>
+        <location filename="../key_agree_dlg.ui" line="284"/>
+        <location filename="../key_agree_dlg.ui" line="1018"/>
         <source>A PublicKey</source>
         <translation>A 공개키</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="270"/>
-        <location filename="../key_agree_dlg.ui" line="593"/>
+        <location filename="../key_agree_dlg.ui" line="311"/>
+        <location filename="../key_agree_dlg.ui" line="634"/>
         <source>B PublicKey</source>
         <translation>B 공개키</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="516"/>
-        <location filename="../key_agree_dlg.ui" line="855"/>
+        <location filename="../key_agree_dlg.ui" line="557"/>
+        <location filename="../key_agree_dlg.ui" line="896"/>
         <source>A PrivateKey</source>
         <translation>A 개인키</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="143"/>
-        <location filename="../key_agree_dlg.ui" line="800"/>
+        <location filename="../key_agree_dlg.ui" line="184"/>
+        <location filename="../key_agree_dlg.ui" line="841"/>
         <source>B PrivateKey</source>
         <translation>B 개인키</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="263"/>
+        <location filename="../key_agree_dlg.ui" line="304"/>
         <source>B GenDHKey</source>
         <translation>B DH 키생성</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="256"/>
+        <location filename="../key_agree_dlg.ui" line="297"/>
         <source>A GenDHKey</source>
         <translation>A DH 키생성</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="168"/>
-        <location filename="../key_agree_dlg.ui" line="1092"/>
+        <location filename="../key_agree_dlg.ui" line="209"/>
+        <location filename="../key_agree_dlg.ui" line="1133"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="32"/>
+        <location filename="../key_agree_dlg.ui" line="73"/>
         <source>Clear Data All</source>
         <translation>전체 데이타 지우기</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="333"/>
+        <location filename="../key_agree_dlg.ui" line="374"/>
         <source>A GenDHPri</source>
         <translation>A DH 개인키</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="428"/>
+        <location filename="../key_agree_dlg.ui" line="469"/>
         <source>Parameter Length</source>
         <translation>파라미터 길이</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="509"/>
+        <location filename="../key_agree_dlg.ui" line="550"/>
         <source>B GenDHPri</source>
         <translation>B DH 개인키</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="605"/>
-        <location filename="../key_agree_dlg.ui" line="721"/>
+        <location filename="../key_agree_dlg.ui" line="646"/>
+        <location filename="../key_agree_dlg.ui" line="762"/>
         <source>GenKeyPair</source>
         <translation>키 쌍 생성</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="619"/>
-        <location filename="../key_agree_dlg.ui" line="701"/>
+        <location filename="../key_agree_dlg.ui" line="660"/>
+        <location filename="../key_agree_dlg.ui" line="742"/>
         <source>GenPriKey</source>
         <translation>개인키 생성</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="626"/>
-        <location filename="../key_agree_dlg.ui" line="694"/>
+        <location filename="../key_agree_dlg.ui" line="667"/>
+        <location filename="../key_agree_dlg.ui" line="735"/>
         <source>CheckPubKey</source>
         <translation>공개키 체크</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="633"/>
-        <location filename="../key_agree_dlg.ui" line="687"/>
+        <location filename="../key_agree_dlg.ui" line="674"/>
+        <location filename="../key_agree_dlg.ui" line="728"/>
         <source>GenPubKey</source>
         <translation>공개키 생성</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="653"/>
-        <location filename="../key_agree_dlg.ui" line="728"/>
+        <location filename="../key_agree_dlg.ui" line="694"/>
+        <location filename="../key_agree_dlg.ui" line="769"/>
         <source>CheckKeyPair</source>
         <translation>키 쌍 체크</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="821"/>
+        <location filename="../key_agree_dlg.ui" line="862"/>
         <source>Parameter</source>
         <translation>파라미터</translation>
     </message>
@@ -2917,27 +2917,27 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">A 개인키 생성</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="1113"/>
+        <location filename="../key_agree_dlg.ui" line="1154"/>
         <source>Secret Clear</source>
         <translation>비밀값 지우기</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="1120"/>
+        <location filename="../key_agree_dlg.ui" line="1161"/>
         <source>A Calculate</source>
         <translation>A 비밀값 계산</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="1106"/>
+        <location filename="../key_agree_dlg.ui" line="1147"/>
         <source>B Calculate</source>
         <translation>B 비밀값 계산</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="1085"/>
+        <location filename="../key_agree_dlg.ui" line="1126"/>
         <source>Secret Key</source>
         <translation>비밀키</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="531"/>
+        <location filename="../key_agree_dlg.ui" line="572"/>
         <source>ECDH</source>
         <translation>ECDH</translation>
     </message>
@@ -2954,18 +2954,18 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">인증서 찾기</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="612"/>
-        <location filename="../key_agree_dlg.ui" line="680"/>
+        <location filename="../key_agree_dlg.ui" line="653"/>
+        <location filename="../key_agree_dlg.ui" line="721"/>
         <source>FindPriKey</source>
         <translation>개인키 찾기</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="65"/>
+        <location filename="../key_agree_dlg.ui" line="106"/>
         <source>DH</source>
         <translation>DH</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="404"/>
+        <location filename="../key_agree_dlg.ui" line="445"/>
         <source>g value</source>
         <translation>g 값</translation>
     </message>
@@ -2974,12 +2974,12 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">길이</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="421"/>
+        <location filename="../key_agree_dlg.ui" line="462"/>
         <source>GenParam</source>
         <translation>파라미터 생성</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="231"/>
+        <location filename="../key_agree_dlg.ui" line="272"/>
         <source>p value</source>
         <translation>p 값</translation>
     </message>
@@ -3130,82 +3130,87 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">확인</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="339"/>
+        <location filename="../key_man_dlg.ui" line="393"/>
         <source>Make Key</source>
         <translation>키 만들기</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="362"/>
+        <location filename="../key_man_dlg.ui" line="400"/>
+        <source>Output Clear</source>
+        <translation>결과 지우기</translation>
+    </message>
+    <message>
+        <location filename="../key_man_dlg.ui" line="410"/>
         <source>KeyWrap</source>
         <translation>키 암호화</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="373"/>
+        <location filename="../key_man_dlg.ui" line="421"/>
         <source>KWP</source>
         <translation>KWP</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="380"/>
+        <location filename="../key_man_dlg.ui" line="428"/>
         <source>Wrap Method</source>
         <translation>암호화 방식</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="387"/>
+        <location filename="../key_man_dlg.ui" line="435"/>
         <source>KW</source>
         <translation>KW</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="490"/>
+        <location filename="../key_man_dlg.ui" line="538"/>
         <source>Source</source>
         <translation>소스</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="523"/>
+        <location filename="../key_man_dlg.ui" line="571"/>
         <source>KEK</source>
         <translation>KEK</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="530"/>
+        <location filename="../key_man_dlg.ui" line="578"/>
         <source>Gen KEK</source>
         <translation>KEK 생성</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="699"/>
+        <location filename="../key_man_dlg.ui" line="747"/>
         <source>Output </source>
         <translation>결과</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="716"/>
+        <location filename="../key_man_dlg.ui" line="805"/>
         <source>Wrap</source>
         <translation>암호화</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="723"/>
+        <location filename="../key_man_dlg.ui" line="812"/>
         <source>Unwrap</source>
         <translation>복호화</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="730"/>
+        <location filename="../key_man_dlg.ui" line="819"/>
         <source>Change</source>
         <translation>교환</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="737"/>
+        <location filename="../key_man_dlg.ui" line="826"/>
         <source>Clear</source>
         <translation>지우기</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="755"/>
+        <location filename="../key_man_dlg.ui" line="844"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="775"/>
+        <location filename="../key_man_dlg.ui" line="864"/>
         <source>Clear Data All</source>
         <translation>전체 데이타 지우기</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.cpp" line="92"/>
+        <location filename="../key_man_dlg.cpp" line="94"/>
         <source>You have to insert password value</source>
         <translation>암호를 입력하세요.</translation>
     </message>
@@ -4033,27 +4038,32 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">OID 정보</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.ui" line="99"/>
+        <location filename="../oid_info_dlg.ui" line="222"/>
         <source>OID</source>
         <translation>OID</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.ui" line="160"/>
+        <location filename="../oid_info_dlg.ui" line="304"/>
+        <source>Output Clear</source>
+        <translation>결과 지우기</translation>
+    </message>
+    <message>
+        <location filename="../oid_info_dlg.ui" line="331"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.ui" line="140"/>
+        <location filename="../oid_info_dlg.ui" line="311"/>
         <source>Create</source>
         <translation>생성</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.ui" line="106"/>
+        <location filename="../oid_info_dlg.ui" line="229"/>
         <source>Long Name</source>
         <translation>긴 이름</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.ui" line="80"/>
+        <location filename="../oid_info_dlg.ui" line="121"/>
         <source>Short Name</source>
         <translation>짧은 이름</translation>
     </message>
@@ -4077,37 +4087,37 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">OID 값을 입력하세요.</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.cpp" line="140"/>
+        <location filename="../oid_info_dlg.cpp" line="141"/>
         <source>OID config file is not set</source>
         <translation>OID 설정 파일이 설정 되지 않았습니다</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.cpp" line="146"/>
+        <location filename="../oid_info_dlg.cpp" line="147"/>
         <source>You have to insert OID value</source>
         <translation>OID 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.cpp" line="153"/>
+        <location filename="../oid_info_dlg.cpp" line="154"/>
         <source>You have to insert short name</source>
         <translation>짧은 이름을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.cpp" line="162"/>
+        <location filename="../oid_info_dlg.cpp" line="163"/>
         <source>OID %1 is already created</source>
         <translation>OID %1 이 이미 생성 되었습니다</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.cpp" line="168"/>
+        <location filename="../oid_info_dlg.cpp" line="169"/>
         <source>SN %1 is already used</source>
         <translation>짧은 이름 %1 이 이미 사용 되었습니다</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.cpp" line="175"/>
+        <location filename="../oid_info_dlg.cpp" line="176"/>
         <source>fail to create OID</source>
         <translation>OID 생성에 실패 하였습니다</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.cpp" line="179"/>
+        <location filename="../oid_info_dlg.cpp" line="180"/>
         <source>OID : %1 is added successfully</source>
         <translation>OID %1 생성에 성공 하였습니다</translation>
     </message>
@@ -4124,107 +4134,117 @@ Do you want to delete the file and continue?</source>
         <translation>공개키 암/복호화(&amp;R)</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="840"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="895"/>
         <source>Run</source>
         <translation>실행</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="833"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="888"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="219"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="226"/>
         <source>Private Key</source>
         <translation>개인 키</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="139"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="146"/>
         <source>Encrypt with public key</source>
         <translation>공개키로 암호화</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="153"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="177"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="160"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="180"/>
         <source>Private key and Certificate</source>
         <translation>개인키 및 인증서</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="199"/>
-        <location filename="../pub_enc_dec_dlg.ui" line="232"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="206"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="239"/>
         <source>D</source>
         <translation>D</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="212"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="176"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="658"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="219"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="179"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="661"/>
         <source>Certificate</source>
         <translation>인증서</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="186"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="193"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="245"/>
-        <location filename="../pub_enc_dec_dlg.ui" line="258"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="66"/>
+        <source>Input Clear</source>
+        <translation>입력 지움</translation>
+    </message>
+    <message>
+        <location filename="../pub_enc_dec_dlg.ui" line="252"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="265"/>
         <source>T</source>
         <translation>T</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="279"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="286"/>
         <source>Password</source>
         <translation>암호</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="286"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="293"/>
         <source>Encrypted PrivateKey</source>
         <translation>암호화된 개인키</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="327"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="334"/>
         <source>Use Key Algorithm</source>
         <translation>키의 알고리즘 사용</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="353"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="360"/>
         <source>Check KeyPair</source>
         <translation>키 쌍 체크</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="380"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="387"/>
         <source>For RSA Version</source>
         <translation>RSA용 버전</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="431"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="438"/>
         <source>Change</source>
         <translation>교환</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="446"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="453"/>
         <source>ECIES Information</source>
         <translation>ECIES 정보</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="469"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="476"/>
         <source>Tag</source>
         <translation>태그</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="476"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="483"/>
         <source>IV</source>
         <translation>IV</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="608"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="615"/>
         <source>Other Public Key</source>
         <translation>다른 공개키</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="847"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="810"/>
+        <source>Output Clear</source>
+        <translation>결과 지우기</translation>
+    </message>
+    <message>
+        <location filename="../pub_enc_dec_dlg.ui" line="902"/>
         <source>Clear Data All</source>
         <translation>전체 데이타 지우기</translation>
     </message>
@@ -4249,55 +4269,55 @@ Do you want to delete the file and continue?</source>
         <translation>베이스64</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="146"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="153"/>
         <source>Cert or PubKey Auto</source>
         <translation>인증서 또는 공개키 자동체크</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="66"/>
-        <location filename="../pub_enc_dec_dlg.ui" line="724"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="73"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="711"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="334"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="341"/>
         <source>Property and Method</source>
         <translation>특성 및 방식</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.ui" line="704"/>
+        <location filename="../pub_enc_dec_dlg.ui" line="803"/>
         <source>Output Data</source>
         <translation>결과 데이타</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="171"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="663"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="174"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="666"/>
         <source>Public Key</source>
         <translation>공개 키</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="172"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="175"/>
         <source>Private key and Public key</source>
         <translation>개인키 및 공개키</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="229"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="232"/>
         <source>KeyPair is good</source>
         <translation>키쌍이 유효합니다</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="231"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="234"/>
         <source>Invalid key pair: %1</source>
         <translation>키쌍이 맞지 않습니다:%1</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="255"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="258"/>
         <source>You have to insert data</source>
         <translation>데이타를 입력 하세요</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="282"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="594"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="285"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="597"/>
         <source>You have to find certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
@@ -4306,17 +4326,17 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">개인키를 선택하세요.</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="632"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="635"/>
         <source>Private Key Type is %1</source>
         <translation>개인키 타입은 %1 이다</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="649"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="652"/>
         <source>You have to find certificate or public key</source>
         <translation>인증서 또는 공개키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="668"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="671"/>
         <source>%1 Type is %2</source>
         <translation>%1 타입은 %2 이다</translation>
     </message>
@@ -4325,42 +4345,42 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">유효하지 않은 개인키 알고리즘입니다.</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="124"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="127"/>
         <source>fail to read private key: %1</source>
         <translation>개인키 읽기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="133"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="136"/>
         <source>You have to insert password</source>
         <translation>암호를 입력해야 합니다</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="141"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="144"/>
         <source>fail to decrypt private key:%1</source>
         <translation>개인키 복호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="324"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="333"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="343"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="357"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="327"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="336"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="346"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="360"/>
         <source>Invalid public key algorithm:%1</source>
         <translation>유효하지 않은 공개키 알고리즘입니다:%1</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="411"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="421"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="414"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="424"/>
         <source>Invalid private key algorithm:%1</source>
         <translation>유효하지 않은 개인키 알고리즘입니다:%1</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="402"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="405"/>
         <source>Invalid private key algorithm: %1</source>
         <translation>유효하지 않은 개인키 알고리즘입니다:%1</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="580"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="612"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="583"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="615"/>
         <source>fail to read data</source>
         <translation>데이타 읽기 실패</translation>
     </message>

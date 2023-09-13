@@ -22,6 +22,8 @@ private slots:
     void closeDlg();
     void createOID();
 
+    void clickOutputClear();
+
 private:
     void initialize();
     int writeOIDConfig( const QString& strMsg );
