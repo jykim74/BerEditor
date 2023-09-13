@@ -517,121 +517,121 @@ mailto : jykim74@gmail.com</translation>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="306"/>
-        <location filename="../cavp_dlg.cpp" line="426"/>
-        <location filename="../cavp_dlg.cpp" line="579"/>
-        <location filename="../cavp_dlg.cpp" line="688"/>
+        <location filename="../cavp_dlg.cpp" line="309"/>
+        <location filename="../cavp_dlg.cpp" line="429"/>
+        <location filename="../cavp_dlg.cpp" line="582"/>
+        <location filename="../cavp_dlg.cpp" line="691"/>
         <source>You have to select request file</source>
         <translation>요청 파일일 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="317"/>
+        <location filename="../cavp_dlg.cpp" line="320"/>
         <source>Are you sure that test file is %1</source>
         <translation>테스트 파일이 %1 이 입니까?</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="402"/>
+        <location filename="../cavp_dlg.cpp" line="405"/>
         <source>fail to run Sym:%1</source>
         <translation>SYM 실행 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="416"/>
-        <location filename="../cavp_dlg.cpp" line="569"/>
-        <location filename="../cavp_dlg.cpp" line="678"/>
-        <location filename="../cavp_dlg.cpp" line="784"/>
-        <location filename="../cavp_dlg.cpp" line="1035"/>
-        <location filename="../cavp_dlg.cpp" line="1287"/>
-        <location filename="../cavp_dlg.cpp" line="1487"/>
-        <location filename="../cavp_dlg.cpp" line="1600"/>
+        <location filename="../cavp_dlg.cpp" line="419"/>
+        <location filename="../cavp_dlg.cpp" line="572"/>
+        <location filename="../cavp_dlg.cpp" line="681"/>
+        <location filename="../cavp_dlg.cpp" line="787"/>
+        <location filename="../cavp_dlg.cpp" line="1038"/>
+        <location filename="../cavp_dlg.cpp" line="1290"/>
+        <location filename="../cavp_dlg.cpp" line="1499"/>
+        <location filename="../cavp_dlg.cpp" line="1612"/>
         <source>CAVP Run Done[Rsp: %1]</source>
         <translation>CAVP 실행 완료[응답: %1]</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="662"/>
+        <location filename="../cavp_dlg.cpp" line="665"/>
         <source>fail to run HMAC: %1</source>
         <translation>HMAC 실행 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="775"/>
+        <location filename="../cavp_dlg.cpp" line="778"/>
         <source>fail to run Hash : %1</source>
         <translation>Hash 실행 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="795"/>
+        <location filename="../cavp_dlg.cpp" line="798"/>
         <source>You have to find ECDSA request file</source>
         <translation>ECDSA 요청 파일을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="899"/>
-        <location filename="../cavp_dlg.cpp" line="917"/>
-        <location filename="../cavp_dlg.cpp" line="936"/>
-        <location filename="../cavp_dlg.cpp" line="955"/>
-        <location filename="../cavp_dlg.cpp" line="972"/>
-        <location filename="../cavp_dlg.cpp" line="991"/>
-        <location filename="../cavp_dlg.cpp" line="1011"/>
+        <location filename="../cavp_dlg.cpp" line="902"/>
+        <location filename="../cavp_dlg.cpp" line="920"/>
+        <location filename="../cavp_dlg.cpp" line="939"/>
+        <location filename="../cavp_dlg.cpp" line="958"/>
+        <location filename="../cavp_dlg.cpp" line="975"/>
+        <location filename="../cavp_dlg.cpp" line="994"/>
+        <location filename="../cavp_dlg.cpp" line="1014"/>
         <source>fail to run ECC: %1</source>
         <translation>ECC 실행 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="1046"/>
+        <location filename="../cavp_dlg.cpp" line="1049"/>
         <source>You have to find RSA PSS request file</source>
         <translation>RSA PSS 요청 파일을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="1133"/>
-        <location filename="../cavp_dlg.cpp" line="1170"/>
-        <location filename="../cavp_dlg.cpp" line="1196"/>
+        <location filename="../cavp_dlg.cpp" line="1136"/>
+        <location filename="../cavp_dlg.cpp" line="1173"/>
+        <location filename="../cavp_dlg.cpp" line="1199"/>
         <source>fail to run RSA : %1</source>
         <translation>RSA 실행 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="1208"/>
+        <location filename="../cavp_dlg.cpp" line="1211"/>
         <source>You have to find RSA private key for DET</source>
         <translation>DET용 RSA 개인키를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="1311"/>
+        <location filename="../cavp_dlg.cpp" line="1314"/>
         <source>You have to find DRBG request file</source>
         <translation>DRBG 요청 파일을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="1497"/>
+        <location filename="../cavp_dlg.cpp" line="1509"/>
         <source>You have to find PBKDF request file</source>
         <translation>PBKDF 요청 파일을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="1587"/>
+        <location filename="../cavp_dlg.cpp" line="1599"/>
         <source>fail to run PBKDF: %1</source>
         <translation>PBKDF 실행 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="1952"/>
-        <location filename="../cavp_dlg.cpp" line="1990"/>
+        <location filename="../cavp_dlg.cpp" line="1964"/>
+        <location filename="../cavp_dlg.cpp" line="2002"/>
         <source>Monte Carlo Test Done[Rsp: %1]</source>
         <translation>몬테카를로 테스트 완료 [응답: %1]</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="1954"/>
+        <location filename="../cavp_dlg.cpp" line="1966"/>
         <source>fail to run Sym MCT: %1</source>
         <translation>SYM MCT 실행 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="1992"/>
+        <location filename="../cavp_dlg.cpp" line="2004"/>
         <source>fail to run hash MCT: %1</source>
         <translation>Hash MCT 실행 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="2044"/>
+        <location filename="../cavp_dlg.cpp" line="2056"/>
         <source>DRBG2 Run Success</source>
         <translation>DRBG2 실행에 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="2046"/>
+        <location filename="../cavp_dlg.cpp" line="2058"/>
         <source>DRBG2 Run fail: %1</source>
         <translation>DRBG2 실행 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="3196"/>
+        <location filename="../cavp_dlg.cpp" line="3208"/>
         <source>Invalid DRBG method: %1</source>
         <translation>유효하지 않은 DRBG 방식: %1</translation>
     </message>
@@ -3130,52 +3130,72 @@ Do you want to delete the file and continue?</source>
         <translation>키 암호화</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="370"/>
+        <location filename="../key_man_dlg.ui" line="373"/>
         <source>KWP</source>
         <translation>KWP</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="377"/>
+        <location filename="../key_man_dlg.ui" line="380"/>
+        <source>Wrap Method</source>
+        <translation>암호화 방식</translation>
+    </message>
+    <message>
+        <location filename="../key_man_dlg.ui" line="387"/>
         <source>KW</source>
         <translation>KW</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="463"/>
+        <location filename="../key_man_dlg.ui" line="490"/>
+        <source>Source</source>
+        <translation>소스</translation>
+    </message>
+    <message>
+        <location filename="../key_man_dlg.ui" line="523"/>
         <source>KEK</source>
         <translation>KEK</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="607"/>
+        <location filename="../key_man_dlg.ui" line="530"/>
+        <source>Gen KEK</source>
+        <translation>KEK 생성</translation>
+    </message>
+    <message>
+        <location filename="../key_man_dlg.ui" line="699"/>
+        <source>Output </source>
+        <translation>결과</translation>
+    </message>
+    <message>
+        <location filename="../key_man_dlg.ui" line="716"/>
         <source>Wrap</source>
         <translation>암호화</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="614"/>
+        <location filename="../key_man_dlg.ui" line="723"/>
         <source>Unwrap</source>
         <translation>복호화</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="621"/>
+        <location filename="../key_man_dlg.ui" line="730"/>
         <source>Change</source>
         <translation>교환</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="628"/>
+        <location filename="../key_man_dlg.ui" line="737"/>
         <source>Clear</source>
         <translation>지우기</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="646"/>
+        <location filename="../key_man_dlg.ui" line="755"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="666"/>
+        <location filename="../key_man_dlg.ui" line="775"/>
         <source>Clear Data All</source>
         <translation>전체 데이타 지우기</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.cpp" line="77"/>
+        <location filename="../key_man_dlg.cpp" line="92"/>
         <source>You have to insert password value</source>
         <translation>암호를 입력하세요.</translation>
     </message>
