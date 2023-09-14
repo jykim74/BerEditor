@@ -1074,13 +1074,17 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../crl_info_dlg.cpp" line="139"/>
+        <source>ThisUpdate</source>
+        <translation>이번 업데이트</translation>
+    </message>
+    <message>
         <source>LastUpdate</source>
-        <translation>마지막 갱신</translation>
+        <translation type="vanished">마지막 갱신</translation>
     </message>
     <message>
         <location filename="../crl_info_dlg.cpp" line="146"/>
         <source>NextUpdate</source>
-        <translation>다음 갱신</translation>
+        <translation>다음 업데이트</translation>
     </message>
     <message>
         <location filename="../crl_info_dlg.cpp" line="154"/>

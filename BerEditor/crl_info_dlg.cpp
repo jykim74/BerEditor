@@ -87,7 +87,7 @@ void CRLInfoDlg::initialize()
     BIN binCRL = {0,0};
     BIN binFinger = {0,0};
 
-    char    sLastUpdate[64];
+    char    sThisUpdate[64];
     char    sNextUpdate[64];
 
     tabWidget->setCurrentIndex(0);
@@ -133,11 +133,11 @@ void CRLInfoDlg::initialize()
     }
 
 
-    JS_UTIL_getDateTime( crl_info_.uLastUpdate, sLastUpdate );
+    JS_UTIL_getDateTime( crl_info_.uThisUpdate, sThisUpdate );
     mCRLListTable->insertRow(i);
     mCRLListTable->setRowHeight(i,10);
-    mCRLListTable->setItem( i, 0, new QTableWidgetItem( tr("LastUpdate")));
-    mCRLListTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(sLastUpdate)));
+    mCRLListTable->setItem( i, 0, new QTableWidgetItem( tr("ThisUpdate")));
+    mCRLListTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(sThisUpdate)));
     i++;
 
     JS_UTIL_getDateTime( crl_info_.uNextUpdate, sNextUpdate );
