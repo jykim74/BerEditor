@@ -109,7 +109,6 @@ private slots:
     void rightTableUnselectAll();
 
 private:
- //   Ui::MainWindow *ui;
     void createActions();
     void createStatusBar();
     void createCryptoDlg();
