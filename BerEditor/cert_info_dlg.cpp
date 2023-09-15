@@ -4,6 +4,7 @@
 #include "js_pki.h"
 #include "js_pki_x509.h"
 #include "js_pki_ext.h"
+#include "js_pki_tools.h"
 #include "js_util.h"
 #include "common.h"
 
@@ -92,6 +93,7 @@ void CertInfoDlg::getFields()
 
     BIN binCert = {0,0};
     BIN binFinger = {0,0};
+    BIN binPub = {0,0};
 
     JCertInfo  sCertInfo;
     JExtensionInfoList *pExtInfoList = NULL;
@@ -167,10 +169,39 @@ void CertInfoDlg::getFields()
 
         if( sCertInfo.pPublicKey )
         {
+            int nKeyType = -1;
+            int nOption = -1;
+
+            QString strAlg;
+            QString strParam;
+
+            JS_BIN_decodeHex( sCertInfo.pPublicKey, &binPub );
+            JS_PKI_getPubKeyInfo( &binPub, &nKeyType, &nOption );
+
+            strAlg = JS_PKI_getKeyAlgName( nKeyType );
+
+            if( nKeyType == JS_PKI_KEY_TYPE_ECC )
+            {
+                strParam = JS_PKI_getSNFromNid( nOption );
+            }
+            else if( nKeyType == JS_PKI_KEY_TYPE_RSA || nKeyType == JS_PKI_KEY_TYPE_DSA )
+            {
+                strParam = QString( "%1" ).arg( nOption );
+            }
+
+            QTableWidgetItem *item = NULL;
+
             mFieldTable->insertRow(i);
             mFieldTable->setRowHeight(i,10);
             mFieldTable->setItem(i, 0, new QTableWidgetItem(tr("PublicKey")));
-            mFieldTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(sCertInfo.pPublicKey)));
+
+            if( strParam.length() > 0 )
+                item = new QTableWidgetItem(QString("%1 (%2)").arg( strAlg ).arg( strParam ));
+            else
+                item = new QTableWidgetItem(QString("%1").arg(strAlg));
+
+            item->setData( Qt::UserRole, QString( sCertInfo.pPublicKey ) );
+            mFieldTable->setItem( i, 1, item );
             i++;
         }
 
@@ -246,6 +277,7 @@ void CertInfoDlg::getFields()
 
     JS_BIN_reset( &binCert );
     JS_BIN_reset( &binFinger );
+    JS_BIN_reset( &binPub );
 
     JS_PKI_resetCertInfo( &sCertInfo );
     if( pExtInfoList ) JS_PKI_resetExtensionInfoList( &pExtInfoList );
@@ -277,12 +309,20 @@ void CertInfoDlg::initUI()
 void CertInfoDlg::clickField(QModelIndex index)
 {
     int row = index.row();
-    int col = index.column();
+    QTableWidgetItem *item0 = mFieldTable->item( row, 0 );
+    QTableWidgetItem* item1 = mFieldTable->item( row, 1 );
 
-    QTableWidgetItem* item = mFieldTable->item( row, 1 );
-    if( item == NULL ) return;
+    if( item0 == NULL || item1 == NULL ) return;
 
-    mDetailText->setPlainText( item->text() );
+    if( item0->text() == tr( "PublicKey" ) )
+    {
+        QString strPub = item1->data(Qt::UserRole).toString();
+        mDetailText->setPlainText( strPub );
+    }
+    else
+    {
+        mDetailText->setPlainText( item1->text() );
+    }
 }
 
 
