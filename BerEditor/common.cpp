@@ -726,7 +726,7 @@ static int _getAltName( const BIN *pBinExt, int nNid, bool bShow, QString& strVa
         if( bShow )
         {
             if( pCurList->sNumVal.nNum == JS_PKI_NAME_TYPE_OTHERNAME )
-                strVal += QString( "%1:\n %2").arg( strType ).arg( pCurList->sNumVal.pValue );
+                strVal += QString( "%1: %2\n").arg( strType ).arg( pCurList->sNumVal.pValue );
             else
                 strVal += QString( "%1=%2\n" ).arg( strType ).arg( pCurList->sNumVal.pValue );
         }
