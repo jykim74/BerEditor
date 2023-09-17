@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>254</height>
+    <width>416</width>
+    <height>358</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -281,9 +281,7 @@
         </palette>
        </property>
        <property name="font">
-        <font>
-         <family>굴림체</family>
-        </font>
+        <font/>
        </property>
       </widget>
      </item>
@@ -349,9 +347,7 @@
         </palette>
        </property>
        <property name="font">
-        <font>
-         <family>굴림체</family>
-        </font>
+        <font/>
        </property>
       </widget>
      </item>
@@ -400,9 +396,9 @@
       </widget>
      </item>
      <item row="0" column="2">
-      <widget class="QPushButton" name="mRunBtn">
+      <widget class="QPushButton" name="mGenOTPBtn">
        <property name="text">
-        <string>Run</string>
+        <string>Gen OTP</string>
        </property>
       </widget>
      </item>
@@ -429,7 +425,7 @@
   <tabstop>mTValueText</tabstop>
   <tabstop>mOTPValueText</tabstop>
   <tabstop>mClearDataAllBtn</tabstop>
-  <tabstop>mRunBtn</tabstop>
+  <tabstop>mGenOTPBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>

@@ -18,7 +18,7 @@ public:
 
 private slots:
     void setNow();
-    void Run();
+    void clickGenOTP();
     void keyChanged();
 
     void clickClearDataAll();

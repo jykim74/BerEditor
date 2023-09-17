@@ -65,12 +65,27 @@ void GetURIDlg::saveUsedURI( const QString &strURL )
 void GetURIDlg::runGet()
 {
     int ret = -1;
+
     if( mUseLDAPHostCheck->isChecked() )
     {
+        QString strDN = mDNText->text();
+        if( strDN.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Insert DN value" ), this );
+            return;
+        }
+
         ret = getLDAP();
     }
     else
     {
+        QString strURL = mURICombo->currentText();
+        if( strURL.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Insert URI value" ), this );
+            return;
+        }
+
         QString strURI = getValidURL();
         berApplet->log( QString( "Get Address: %1").arg( strURI ));
 
@@ -197,6 +212,7 @@ void GetURIDlg::initUI()
 {
     mScopeCombo->addItems(sScopeList);
     mTypeCombo->addItems(sTypeList);
+    mHostText->setText( "127.0.0.1" );
     mPortText->setText( "389" );
 
     clickUseLDAPHost();

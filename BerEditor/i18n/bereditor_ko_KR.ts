@@ -1341,7 +1341,7 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <location filename="../cert_pvd_dlg.ui" line="68"/>
         <location filename="../cert_pvd_dlg.ui" line="123"/>
-        <location filename="../cert_pvd_dlg.ui" line="243"/>
+        <location filename="../cert_pvd_dlg.ui" line="249"/>
         <source>C</source>
         <translation>C</translation>
     </message>
@@ -1357,8 +1357,8 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <location filename="../cert_pvd_dlg.ui" line="42"/>
         <location filename="../cert_pvd_dlg.ui" line="171"/>
-        <location filename="../cert_pvd_dlg.ui" line="230"/>
-        <location filename="../cert_pvd_dlg.ui" line="606"/>
+        <location filename="../cert_pvd_dlg.ui" line="236"/>
+        <location filename="../cert_pvd_dlg.ui" line="612"/>
         <source>Find</source>
         <translation>찾기</translation>
     </message>
@@ -1366,7 +1366,7 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../cert_pvd_dlg.ui" line="55"/>
         <location filename="../cert_pvd_dlg.ui" line="136"/>
         <location filename="../cert_pvd_dlg.ui" line="204"/>
-        <location filename="../cert_pvd_dlg.ui" line="567"/>
+        <location filename="../cert_pvd_dlg.ui" line="573"/>
         <source>Add</source>
         <translation>추가</translation>
     </message>
@@ -1384,7 +1384,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">CRL 정보</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="217"/>
+        <location filename="../cert_pvd_dlg.ui" line="223"/>
         <source>CRL Path</source>
         <translation>CRL 경로</translation>
     </message>
@@ -1395,174 +1395,174 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <location filename="../cert_pvd_dlg.ui" line="103"/>
         <location filename="../cert_pvd_dlg.ui" line="184"/>
-        <location filename="../cert_pvd_dlg.ui" line="259"/>
+        <location filename="../cert_pvd_dlg.ui" line="265"/>
         <source>D</source>
         <translation>D</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="273"/>
+        <location filename="../cert_pvd_dlg.ui" line="279"/>
         <source>VerifyCert</source>
         <translation>인증서 검증</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="293"/>
+        <location filename="../cert_pvd_dlg.ui" line="299"/>
         <source>VerifyCRL</source>
         <translation>CRL 검증</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="312"/>
+        <location filename="../cert_pvd_dlg.ui" line="318"/>
         <source>Path Clear</source>
         <translation>경로 지우기</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="339"/>
-        <location filename="../cert_pvd_dlg.ui" line="580"/>
+        <location filename="../cert_pvd_dlg.ui" line="345"/>
+        <location filename="../cert_pvd_dlg.ui" line="586"/>
         <source>List Clear</source>
         <translation>목록 지우기</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="349"/>
+        <location filename="../cert_pvd_dlg.ui" line="355"/>
         <source>Path List</source>
         <translation>경로 목록</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="369"/>
+        <location filename="../cert_pvd_dlg.ui" line="375"/>
         <source>At Time</source>
         <translation>시간 설정</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="387"/>
+        <location filename="../cert_pvd_dlg.ui" line="393"/>
         <source>Flags Option</source>
         <translation>플래그 옵션</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="440"/>
+        <location filename="../cert_pvd_dlg.ui" line="446"/>
         <source>X509Strict</source>
         <translation>X509Strict</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="531"/>
+        <location filename="../cert_pvd_dlg.ui" line="537"/>
         <source>SuiteB128Los</source>
         <translation>SuiteB128Los</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="447"/>
+        <location filename="../cert_pvd_dlg.ui" line="453"/>
         <source>AllowProxyCerts</source>
         <translation>AllowProxyCerts</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="454"/>
+        <location filename="../cert_pvd_dlg.ui" line="460"/>
         <source>PolicyCheck</source>
         <translation>PolicyCheck</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="517"/>
+        <location filename="../cert_pvd_dlg.ui" line="523"/>
         <source>SuiteB128LosOnly</source>
         <translation>SuiteB128LosOnly</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="461"/>
+        <location filename="../cert_pvd_dlg.ui" line="467"/>
         <source>ExplicitPolicy</source>
         <translation>ExplicitPolicy</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="433"/>
+        <location filename="../cert_pvd_dlg.ui" line="418"/>
         <source>IgnoreCritical</source>
         <translation>IgnoreCritical</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="475"/>
+        <location filename="../cert_pvd_dlg.ui" line="481"/>
         <source>InhibitMap</source>
         <translation>InhibitMap</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="482"/>
+        <location filename="../cert_pvd_dlg.ui" line="488"/>
         <source>NotifyPolicy</source>
         <translation>NotifyPolicy</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="489"/>
+        <location filename="../cert_pvd_dlg.ui" line="495"/>
         <source>ExtendedCRLSupport</source>
         <translation>ExtendedCRLSupport</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="468"/>
+        <location filename="../cert_pvd_dlg.ui" line="474"/>
         <source>InhibitAny</source>
         <translation>InhibitAny</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="405"/>
+        <location filename="../cert_pvd_dlg.ui" line="411"/>
         <source>CRLCheckAll</source>
         <translation>CRLCheckAll</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="545"/>
+        <location filename="../cert_pvd_dlg.ui" line="551"/>
         <source>NoALTChains</source>
         <translation>NoALTChains</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="510"/>
+        <location filename="../cert_pvd_dlg.ui" line="516"/>
         <source>TrustedFirst</source>
         <translation>TrustedFirst</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="412"/>
+        <location filename="../cert_pvd_dlg.ui" line="432"/>
         <source>CRLCheck</source>
         <translation>CRLCheck</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="538"/>
+        <location filename="../cert_pvd_dlg.ui" line="544"/>
         <source>PartialChain</source>
         <translation>PartialChain</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="503"/>
+        <location filename="../cert_pvd_dlg.ui" line="509"/>
         <source>CheckSSSignature</source>
         <translation>CheckSSSignature</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="419"/>
+        <location filename="../cert_pvd_dlg.ui" line="439"/>
         <source>UseCheckTime</source>
         <translation>UseCheckTime</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="496"/>
+        <location filename="../cert_pvd_dlg.ui" line="502"/>
         <source>UseDeltas</source>
         <translation>UseDeltas</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="524"/>
+        <location filename="../cert_pvd_dlg.ui" line="530"/>
         <source>SuiteB192Los</source>
         <translation>SuiteB192Los</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="426"/>
+        <location filename="../cert_pvd_dlg.ui" line="425"/>
         <source>NoCheckTime</source>
         <translation>NoCheckTime</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="560"/>
+        <location filename="../cert_pvd_dlg.ui" line="566"/>
         <location filename="../cert_pvd_dlg.cpp" line="80"/>
         <source>Param</source>
         <translation>파라미터</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="619"/>
+        <location filename="../cert_pvd_dlg.ui" line="625"/>
         <source>Target Path</source>
         <translation>타겟 경로</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="632"/>
+        <location filename="../cert_pvd_dlg.ui" line="638"/>
         <source>TargetInfo</source>
         <translation>타겟 정보</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="665"/>
+        <location filename="../cert_pvd_dlg.ui" line="671"/>
         <source>Policy Check</source>
         <translation>정책 체크</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="705"/>
+        <location filename="../cert_pvd_dlg.ui" line="711"/>
         <source>Clear Data All</source>
         <translation>전체 데이타 지우기</translation>
     </message>
@@ -1571,12 +1571,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">타겟</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="678"/>
+        <location filename="../cert_pvd_dlg.ui" line="684"/>
         <source>Path Validation</source>
         <translation>경로 검증</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="685"/>
+        <location filename="../cert_pvd_dlg.ui" line="691"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -2667,17 +2667,27 @@ Do you want to delete the file and continue?</source>
         <translation>사용된 URI 지우기</translation>
     </message>
     <message>
-        <location filename="../get_uri_dlg.cpp" line="159"/>
+        <location filename="../get_uri_dlg.cpp" line="74"/>
+        <source>Insert DN value</source>
+        <translation>DN 을 입력하세요</translation>
+    </message>
+    <message>
+        <location filename="../get_uri_dlg.cpp" line="85"/>
+        <source>Insert URI value</source>
+        <translation>URI 을 입력하세요</translation>
+    </message>
+    <message>
+        <location filename="../get_uri_dlg.cpp" line="174"/>
         <source>fail to connnect LDAP server</source>
         <translation>LDAP 서버 연결 실패</translation>
     </message>
     <message>
-        <location filename="../get_uri_dlg.cpp" line="166"/>
+        <location filename="../get_uri_dlg.cpp" line="181"/>
         <source>fail to bind LDAP server</source>
         <translation>LDAP 서버 바인드 실패</translation>
     </message>
     <message>
-        <location filename="../get_uri_dlg.cpp" line="173"/>
+        <location filename="../get_uri_dlg.cpp" line="188"/>
         <source>fail to get data from LDAP server</source>
         <translation>LDAP 서버로 부터 데이타 가져오기 실패</translation>
     </message>

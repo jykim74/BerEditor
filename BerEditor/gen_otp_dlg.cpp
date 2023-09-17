@@ -22,7 +22,7 @@ GenOTPDlg::GenOTPDlg(QWidget *parent) :
     initialize();
 
     connect( mSetNowBtn, SIGNAL(clicked()), this, SLOT(setNow()));
-    connect( mRunBtn, SIGNAL(clicked()), this, SLOT(Run()));
+    connect( mGenOTPBtn, SIGNAL(clicked()), this, SLOT(clickGenOTP()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
     connect( mKeyText, SIGNAL(textChanged(const QString&)), this, SLOT(keyChanged()));
@@ -60,7 +60,7 @@ void GenOTPDlg::setNow()
     mDateTime->setDateTime( dateTime );
 }
 
-void GenOTPDlg::Run()
+void GenOTPDlg::clickGenOTP()
 {
     int ret = 0;
     BIN binKey = {0,0};
