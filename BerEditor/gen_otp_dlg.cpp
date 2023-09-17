@@ -80,15 +80,11 @@ void GenOTPDlg::clickGenOTP()
     if( strKey.isEmpty() )
     {
         berApplet->warningBox( tr( "You have to insert key"), this );
+        mKeyText->setFocus();
         return;
     }
 
-    if( mKeyTypeCombo->currentIndex() == DATA_STRING )
-        JS_BIN_set( &binKey, (unsigned char *)strKey.toStdString().c_str(), strKey.length() );
-    else if( mKeyTypeCombo->currentIndex() == DATA_HEX )
-        JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey );
-    else if( mKeyTypeCombo->currentIndex() == DATA_BASE64 )
-        JS_BIN_decodeBase64( strKey.toStdString().c_str(), &binKey );
+    getBINFromString( &binKey, mKeyTypeCombo->currentIndex(), strKey );
 
     ret = JS_PKI_genOTP( strHash.toStdString().c_str(), tTime, nInterval, nLen, &binKey, &binT, sOTP );
     if( ret == 0 )

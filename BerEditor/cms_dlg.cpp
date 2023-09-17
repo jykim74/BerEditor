@@ -104,6 +104,12 @@ int CMSDlg::readSignPrivateKey( BIN *pPriKey )
 
     QString strPriPath = mSignPriKeyPathText->text();
 
+    if( strPriPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "select sign private key"), this );
+        return -1;
+    }
+
     ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binData );
     if( ret <= 0 )
     {

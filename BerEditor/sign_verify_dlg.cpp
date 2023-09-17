@@ -45,8 +45,8 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
 
     last_path_ = berApplet->curFolder();
 
-    connect( mPriKeyBtn, SIGNAL(clicked()), this, SLOT(findPrivateKey()));
-    connect( mCertBtn, SIGNAL(clicked()), this, SLOT(findCert()));
+    connect( mFindPriKeyBtn, SIGNAL(clicked()), this, SLOT(findPrivateKey()));
+    connect( mFindCertBtn, SIGNAL(clicked()), this, SLOT(findCert()));
     connect( mAlgTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(algChanged(int)));
     connect( mMethodCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeMethod(int)));
 
@@ -129,6 +129,11 @@ int SignVerifyDlg::readPrivateKey( BIN *pPriKey )
     BIN binInfo = {0,0};
 
     QString strPriPath = mPriKeyPath->text();
+    if( strPriPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "select private key"), this );
+        return -1;
+    }
 
     ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binData );
     if( ret <= 0 )
@@ -186,13 +191,13 @@ void SignVerifyDlg::checkPubKeyVerify()
 
     if( bVal )
     {
-        mCertBtn->setText( tr("Public Key" ) );
+        mCertLabel->setText( tr("PublicKey" ) );
         mPriKeyAndCertLabel->setText( tr("Private key and Public key" ));
         mCertViewBtn->setEnabled(false);
     }
     else
     {
-        mCertBtn->setText( tr("Certificate") );
+        mCertLabel->setText( tr("Certificate") );
         mPriKeyAndCertLabel->setText( tr( "Private key and Certificate" ));
         mCertViewBtn->setEnabled(true);
     }

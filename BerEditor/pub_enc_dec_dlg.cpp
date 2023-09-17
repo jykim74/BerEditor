@@ -40,8 +40,8 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
     initialize();
     last_path_ = berApplet->curFolder();
 
-    connect( mPriKeyBtn, SIGNAL(clicked()), this, SLOT(findPrivateKey()));
-    connect( mCertBtn, SIGNAL(clicked()), this, SLOT(findCert()));
+    connect( mFindPriKeyBtn, SIGNAL(clicked()), this, SLOT(findPrivateKey()));
+    connect( mFindCertBtn, SIGNAL(clicked()), this, SLOT(findCert()));
     connect( mChangeBtn, SIGNAL(clicked()), this, SLOT(changeValue()));
     connect( mAutoCertPubKeyCheck, SIGNAL(clicked()), this, SLOT(checkAutoCertOrPubKey()));
     connect( mPubKeyEncryptCheck, SIGNAL(clicked()), this, SLOT(checkPubKeyEncrypt()));
@@ -120,6 +120,11 @@ int PubEncDecDlg::readPrivateKey( BIN *pPriKey )
     BIN binInfo = {0,0};
 
     QString strPriPath = mPriKeyPath->text();
+    if( strPriPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "select private key"), this );
+        return -1;
+    }
 
     ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binData );
     if( ret <= 0 )
@@ -171,12 +176,12 @@ void PubEncDecDlg::checkPubKeyEncrypt()
 
     if( bVal )
     {
-        mCertBtn->setText(tr("Public Key"));
+        mCertLabel->setText(tr("PublicKey"));
         mPriKeyAndCertLabel->setText( tr("Private key and Public key" ));
     }
     else
     {
-        mCertBtn->setText(tr("Certificate"));
+        mCertLabel->setText(tr("Certificate"));
         mPriKeyAndCertLabel->setText( tr("Private key and Certificate"));
     }
 }

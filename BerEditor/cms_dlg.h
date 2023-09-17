@@ -25,6 +25,7 @@ private slots:
     void clickSignCertFind();
     void clickKMPriFind();
     void clickKMCertFind();
+
     void clickSignedData();
     void clickEnvelopedData();
     void clickSignAndEnvloped();

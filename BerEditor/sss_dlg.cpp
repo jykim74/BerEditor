@@ -110,17 +110,32 @@ void SSSDlg::clickClearResult()
 void SSSDlg::clickAdd()
 {
     QString strValue = mShareText->text();
+
+    if( strValue.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Insert shared value" ), this );
+        mShareText->setFocus();
+        return;
+    }
+
     int row = mShareTable->rowCount();
 
-    if( strValue.length() > 0 )
+    for( int i = 0; i < row; i++ )
     {
-       mShareTable->insertRow(row);
-       mShareTable->setRowHeight( row, 10 );
-       mShareTable->setItem( row, 0, new QTableWidgetItem( QString( "%1").arg(row)));
-       mShareTable->setItem( row, 1, new QTableWidgetItem( strValue ));
-
-       mShareText->clear();
+        QTableWidgetItem *item = mShareTable->item( i, 1 );
+        if( item->text() == strValue )
+        {
+            berApplet->warningBox( tr( "%1 is already added").arg( strValue ), this );
+            return;
+        }
     }
+
+    mShareTable->insertRow(row);
+    mShareTable->setRowHeight( row, 10 );
+    mShareTable->setItem( row, 0, new QTableWidgetItem( QString( "%1").arg(row)));
+    mShareTable->setItem( row, 1, new QTableWidgetItem( strValue ));
+
+    mShareText->clear();
 }
 
 void SSSDlg::clickSplit()
@@ -136,16 +151,15 @@ void SSSDlg::clickSplit()
     BINList *pShareList = NULL;
     BINList *pCurList = NULL;
 
-    if( strSrc.isEmpty() ) return;
+    if( strSrc.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Insert source value" ), this );
+        mSrcText->setFocus();
+        return;
+    }
 
     clickClearResult();
-
-    if( mSrcTypeCombo->currentText() == "String" )
-        JS_BIN_set( &binSrc, (unsigned char *)strSrc.toStdString().c_str(), strSrc.length() );
-    else if( mSrcTypeCombo->currentText() == "Hex" )
-        JS_BIN_decodeHex( strSrc.toStdString().c_str(), &binSrc );
-    else if( mSrcTypeCombo->currentText() == "Base64" )
-        JS_BIN_decodeBase64( strSrc.toStdString().c_str(), &binSrc );
+    getBINFromString( &binSrc, mSrcTypeCombo->currentText(), strSrc );
 
     if( binSrc.nLen < 8 )
     {
