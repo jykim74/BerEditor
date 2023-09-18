@@ -14,9 +14,10 @@
 
 static QStringList oidTypes = {
     "OID",
-    "OID Hex",
-    "Short Name",
-    "Long Name"
+    "OIDValueHex",
+    "OIDHex",
+    "ShortName",
+    "LongName"
 };
 
 OIDInfoDlg::OIDInfoDlg(QWidget *parent) :
@@ -78,6 +79,7 @@ void OIDInfoDlg::findOID()
 {
      int nNid = -1;
      char sOID[1024];
+     BIN binInput = {0,0};
      BIN binOIDVal = {0,0};
      BIN binOID = {0,0};
 
@@ -95,19 +97,25 @@ void OIDInfoDlg::findOID()
          return;
      }
 
-    if( mInputTypeCombo->currentIndex() == 0 )
-        sprintf( sOID, "%s", strInput.toStdString().c_str() );
-    else if(mInputTypeCombo->currentIndex() == 1 )
+    if( mInputTypeCombo->currentText() == "OID" )
     {
-        JS_BIN_decodeHex( strInput.toStdString().c_str(), &binOID );
-        JS_PKI_getStringFromOIDValue( &binOID, sOID );
-        JS_BIN_reset(&binOID);
+        sprintf( sOID, "%s", strInput.toStdString().c_str() );
     }
-    else if(mInputTypeCombo->currentIndex() == 2 )
+    else if(mInputTypeCombo->currentText() == "OIDValueHex" )
+    {
+        JS_BIN_decodeHex( strInput.toStdString().c_str(), &binInput );
+        JS_PKI_getStringFromOIDValue( &binInput, sOID );
+    }
+    else if( mInputTypeCombo->currentText() == "OIDHex" )
+    {
+        JS_BIN_decodeHex( strInput.toStdString().c_str(), &binInput );
+        JS_PKI_getStringFromOID( &binInput, sOID );
+    }
+    else if(mInputTypeCombo->currentText() == "ShortName" )
     {
         JS_PKI_getOIDFromSN( strInput.toStdString().c_str(), sOID );
     }
-    else if(mInputTypeCombo->currentIndex() == 3 )
+    else if(mInputTypeCombo->currentText() == "LongName" )
     {
        JS_PKI_getOIDFromLN( strInput.toStdString().c_str(), sOID );
     }
@@ -116,7 +124,8 @@ void OIDInfoDlg::findOID()
     JS_PKI_getOIDValueFromString( sOID, &binOIDVal );
     JS_PKI_getOIDFromString( sOID, &binOID );
     nNid = JS_PKI_getNidFromOID( &binOID );
-    mOIDHexText->setText( getHexString( &binOIDVal ) );
+    mOIDValHexText->setText( getHexString( &binOIDVal ) );
+    mOIDHexText->setText( getHexString( &binOID ));
     mSNText->setText( JS_PKI_getSNFromOID(sOID));
     mLNText->setText(JS_PKI_getLNFromOID(sOID));
     mNidText->setText( QString( "%1" ).arg( nNid ));
@@ -124,6 +133,7 @@ void OIDInfoDlg::findOID()
 
     JS_BIN_reset( &binOIDVal );
     JS_BIN_reset(&binOID);
+    JS_BIN_reset( &binInput );
 
     repaint();
 }
@@ -194,7 +204,9 @@ void OIDInfoDlg::createOID()
 void OIDInfoDlg::clickOutputClear()
 {
     mOIDText->clear();
+    mOIDValHexText->clear();
     mOIDHexText->clear();
     mSNText->clear();
     mLNText->clear();
+    mNidText->clear();
 }

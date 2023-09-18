@@ -4062,27 +4062,32 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">OID 정보</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.ui" line="185"/>
+        <location filename="../oid_info_dlg.ui" line="236"/>
         <source>OID</source>
         <translation>OID</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.ui" line="280"/>
+        <location filename="../oid_info_dlg.ui" line="128"/>
         <source>Nid</source>
         <translation>Nid</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.ui" line="355"/>
+        <location filename="../oid_info_dlg.ui" line="70"/>
+        <source>OID Value Hex</source>
+        <translation>OID 값 16진수</translation>
+    </message>
+    <message>
+        <location filename="../oid_info_dlg.ui" line="406"/>
         <source>Output Clear</source>
         <translation>결과 지우기</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.ui" line="382"/>
+        <location filename="../oid_info_dlg.ui" line="433"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.ui" line="362"/>
+        <location filename="../oid_info_dlg.ui" line="413"/>
         <source>Create</source>
         <translation>생성</translation>
     </message>
@@ -4092,7 +4097,7 @@ Do you want to delete the file and continue?</source>
         <translation>긴 이름</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.ui" line="172"/>
+        <location filename="../oid_info_dlg.ui" line="223"/>
         <source>Short Name</source>
         <translation>짧은 이름</translation>
     </message>
@@ -4107,46 +4112,46 @@ Do you want to delete the file and continue?</source>
         <translation>OID 정보</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.ui" line="70"/>
+        <location filename="../oid_info_dlg.ui" line="331"/>
         <source>OID Hex</source>
-        <translation>OID 16진수 값</translation>
+        <translation>OID 16진수</translation>
     </message>
     <message>
         <source>You have to insert OID data</source>
         <translation type="vanished">OID 값을 입력하세요.</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.cpp" line="147"/>
+        <location filename="../oid_info_dlg.cpp" line="157"/>
         <source>OID config file is not set</source>
         <translation>OID 설정 파일이 설정 되지 않았습니다</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.cpp" line="153"/>
+        <location filename="../oid_info_dlg.cpp" line="163"/>
         <source>You have to insert OID value</source>
         <translation>OID 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.cpp" line="160"/>
+        <location filename="../oid_info_dlg.cpp" line="170"/>
         <source>You have to insert short name</source>
         <translation>짧은 이름을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.cpp" line="169"/>
+        <location filename="../oid_info_dlg.cpp" line="179"/>
         <source>OID %1 is already created</source>
         <translation>OID %1 이 이미 생성 되었습니다</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.cpp" line="175"/>
+        <location filename="../oid_info_dlg.cpp" line="185"/>
         <source>SN %1 is already used</source>
         <translation>짧은 이름 %1 이 이미 사용 되었습니다</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.cpp" line="182"/>
+        <location filename="../oid_info_dlg.cpp" line="192"/>
         <source>fail to create OID</source>
         <translation>OID 생성에 실패 하였습니다</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.cpp" line="186"/>
+        <location filename="../oid_info_dlg.cpp" line="196"/>
         <source>OID : %1 is added successfully</source>
         <translation>OID %1 생성에 성공 하였습니다</translation>
     </message>
