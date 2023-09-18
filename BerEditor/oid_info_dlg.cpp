@@ -10,6 +10,7 @@
 #include "js_pki_tools.h"
 #include "ber_applet.h"
 #include "settings_mgr.h"
+#include "common.h"
 
 static QStringList oidTypes = {
     "OID",
@@ -75,51 +76,56 @@ void OIDInfoDlg::closeDlg()
 
 void OIDInfoDlg::findOID()
 {
-    char sOID[1024];
-    BIN binOID = {0,0};
-    char *pHex = NULL;
-    memset( sOID, 0x00, sizeof(sOID) );
-    QString strInput = mInputText->text();
+     int nNid = -1;
+     char sOID[1024];
+     BIN binOIDVal = {0,0};
+     BIN binOID = {0,0};
 
-    if( strInput.isEmpty() )
-    {
+     memset( sOID, 0x00, sizeof(sOID) );
+     QString strInput = mInputText->text();
+
+     if( strInput.isEmpty() )
+     {
 //        berApplet->warningBox(tr( "You have to insert OID data" ), this );
-        mOIDText->clear();
-        mOIDHexText->clear();
-        mSNText->clear();
-        mLNText->clear();
+         mOIDText->clear();
+         mOIDHexText->clear();
+         mSNText->clear();
+         mLNText->clear();
 
-        return;
+         return;
+     }
+
+    if( mInputTypeCombo->currentIndex() == 0 )
+        sprintf( sOID, "%s", strInput.toStdString().c_str() );
+    else if(mInputTypeCombo->currentIndex() == 1 )
+    {
+        JS_BIN_decodeHex( strInput.toStdString().c_str(), &binOID );
+        JS_PKI_getStringFromOIDValue( &binOID, sOID );
+        JS_BIN_reset(&binOID);
+    }
+    else if(mInputTypeCombo->currentIndex() == 2 )
+    {
+        JS_PKI_getOIDFromSN( strInput.toStdString().c_str(), sOID );
+    }
+    else if(mInputTypeCombo->currentIndex() == 3 )
+    {
+       JS_PKI_getOIDFromLN( strInput.toStdString().c_str(), sOID );
     }
 
-   if( mInputTypeCombo->currentIndex() == 0 )
-       sprintf( sOID, "%s", strInput.toStdString().c_str() );
-   else if(mInputTypeCombo->currentIndex() == 1 )
-   {
-       JS_BIN_decodeHex( strInput.toStdString().c_str(), &binOID );
-       JS_PKI_getStringFromOIDValue( &binOID, sOID );
-       JS_BIN_reset(&binOID);
-   }
-   else if(mInputTypeCombo->currentIndex() == 2 )
-   {
-       JS_PKI_getOIDFromSN( strInput.toStdString().c_str(), sOID );
-   }
-   else if(mInputTypeCombo->currentIndex() == 3 )
-   {
-       JS_PKI_getOIDFromLN( strInput.toStdString().c_str(), sOID );
-   }
+    mOIDText->setText( sOID );
+    JS_PKI_getOIDValueFromString( sOID, &binOIDVal );
+    JS_PKI_getOIDFromString( sOID, &binOID );
+    nNid = JS_PKI_getNidFromOID( &binOID );
+    mOIDHexText->setText( getHexString( &binOIDVal ) );
+    mSNText->setText( JS_PKI_getSNFromOID(sOID));
+    mLNText->setText(JS_PKI_getLNFromOID(sOID));
+    mNidText->setText( QString( "%1" ).arg( nNid ));
 
-   mOIDText->setText( sOID );
-   JS_PKI_getOIDValueFromString( sOID, &binOID );
-   JS_BIN_encodeHex( &binOID, &pHex );
-   mOIDHexText->setText( pHex );
-   mSNText->setText( JS_PKI_getSNFromOID(sOID));
-   mLNText->setText(JS_PKI_getLNFromOID(sOID));
 
-   JS_BIN_reset(&binOID);
-   if( pHex ) JS_free(pHex);
+    JS_BIN_reset( &binOIDVal );
+    JS_BIN_reset(&binOID);
 
-   repaint();
+    repaint();
 }
 
 void OIDInfoDlg::accept()

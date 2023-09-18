@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>506</width>
-    <height>315</height>
+    <height>318</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,7 +28,20 @@
        </widget>
       </item>
       <item row="0" column="3">
-       <widget class="QLineEdit" name="mPortText"/>
+       <widget class="QLineEdit" name="mPortText">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>60</width>
+          <height>16777215</height>
+         </size>
+        </property>
+       </widget>
       </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label_3">
@@ -78,13 +91,10 @@
       <string>LDAP Search Condition</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_5">
-      <item row="0" column="3">
-       <widget class="QComboBox" name="mTypeCombo"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_7">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_8">
         <property name="text">
-         <string>Filter</string>
+         <string>Scope</string>
         </property>
        </widget>
       </item>
@@ -98,10 +108,20 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_8">
+      <item row="0" column="3">
+       <widget class="QComboBox" name="mTypeCombo">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_7">
         <property name="text">
-         <string>Scope</string>
+         <string>Filter</string>
         </property>
        </widget>
       </item>
@@ -210,7 +230,6 @@
   <tabstop>mDNText</tabstop>
   <tabstop>mScopeCombo</tabstop>
   <tabstop>mTypeCombo</tabstop>
-  <tabstop>mFilterText</tabstop>
   <tabstop>mGetBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>

@@ -2621,57 +2621,57 @@ Do you want to delete the file and continue?</source>
         <translation>DN</translation>
     </message>
     <message>
-        <location filename="../get_uri_dlg.ui" line="36"/>
+        <location filename="../get_uri_dlg.ui" line="49"/>
         <source>Host</source>
         <translation>호스트</translation>
     </message>
     <message>
-        <location filename="../get_uri_dlg.ui" line="43"/>
+        <location filename="../get_uri_dlg.ui" line="56"/>
         <source>Port</source>
         <translation>포트</translation>
     </message>
     <message>
-        <location filename="../get_uri_dlg.ui" line="66"/>
+        <location filename="../get_uri_dlg.ui" line="79"/>
         <source>URI address</source>
         <translation>URI 주소</translation>
     </message>
     <message>
-        <location filename="../get_uri_dlg.ui" line="78"/>
+        <location filename="../get_uri_dlg.ui" line="91"/>
         <source>LDAP Search Condition</source>
         <translation>LDAP 검색 조건</translation>
     </message>
     <message>
-        <location filename="../get_uri_dlg.ui" line="87"/>
+        <location filename="../get_uri_dlg.ui" line="124"/>
         <source>Filter</source>
         <translation>필터</translation>
     </message>
     <message>
-        <location filename="../get_uri_dlg.ui" line="97"/>
+        <location filename="../get_uri_dlg.ui" line="107"/>
         <source>Type</source>
         <translation>타입</translation>
     </message>
     <message>
-        <location filename="../get_uri_dlg.ui" line="104"/>
+        <location filename="../get_uri_dlg.ui" line="97"/>
         <source>Scope</source>
         <translation>범위</translation>
     </message>
     <message>
-        <location filename="../get_uri_dlg.ui" line="135"/>
+        <location filename="../get_uri_dlg.ui" line="155"/>
         <source>Get</source>
         <translation>가겨오기</translation>
     </message>
     <message>
-        <location filename="../get_uri_dlg.ui" line="142"/>
+        <location filename="../get_uri_dlg.ui" line="162"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../get_uri_dlg.ui" line="189"/>
+        <location filename="../get_uri_dlg.ui" line="209"/>
         <source>Use LDAP Host Information</source>
         <translation>LDAP 호스트 정보 사용</translation>
     </message>
     <message>
-        <location filename="../get_uri_dlg.ui" line="196"/>
+        <location filename="../get_uri_dlg.ui" line="216"/>
         <source>Clear Used URI</source>
         <translation>사용된 URI 지우기</translation>
     </message>
@@ -4062,32 +4062,37 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">OID 정보</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.ui" line="222"/>
+        <location filename="../oid_info_dlg.ui" line="185"/>
         <source>OID</source>
         <translation>OID</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.ui" line="304"/>
+        <location filename="../oid_info_dlg.ui" line="280"/>
+        <source>Nid</source>
+        <translation>Nid</translation>
+    </message>
+    <message>
+        <location filename="../oid_info_dlg.ui" line="355"/>
         <source>Output Clear</source>
         <translation>결과 지우기</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.ui" line="331"/>
+        <location filename="../oid_info_dlg.ui" line="382"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.ui" line="311"/>
+        <location filename="../oid_info_dlg.ui" line="362"/>
         <source>Create</source>
         <translation>생성</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.ui" line="229"/>
+        <location filename="../oid_info_dlg.ui" line="121"/>
         <source>Long Name</source>
         <translation>긴 이름</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.ui" line="121"/>
+        <location filename="../oid_info_dlg.ui" line="172"/>
         <source>Short Name</source>
         <translation>짧은 이름</translation>
     </message>
@@ -4111,37 +4116,37 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">OID 값을 입력하세요.</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.cpp" line="141"/>
+        <location filename="../oid_info_dlg.cpp" line="147"/>
         <source>OID config file is not set</source>
         <translation>OID 설정 파일이 설정 되지 않았습니다</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.cpp" line="147"/>
+        <location filename="../oid_info_dlg.cpp" line="153"/>
         <source>You have to insert OID value</source>
         <translation>OID 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.cpp" line="154"/>
+        <location filename="../oid_info_dlg.cpp" line="160"/>
         <source>You have to insert short name</source>
         <translation>짧은 이름을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.cpp" line="163"/>
+        <location filename="../oid_info_dlg.cpp" line="169"/>
         <source>OID %1 is already created</source>
         <translation>OID %1 이 이미 생성 되었습니다</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.cpp" line="169"/>
+        <location filename="../oid_info_dlg.cpp" line="175"/>
         <source>SN %1 is already used</source>
         <translation>짧은 이름 %1 이 이미 사용 되었습니다</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.cpp" line="176"/>
+        <location filename="../oid_info_dlg.cpp" line="182"/>
         <source>fail to create OID</source>
         <translation>OID 생성에 실패 하였습니다</translation>
     </message>
     <message>
-        <location filename="../oid_info_dlg.cpp" line="180"/>
+        <location filename="../oid_info_dlg.cpp" line="186"/>
         <source>OID : %1 is added successfully</source>
         <translation>OID %1 생성에 성공 하였습니다</translation>
     </message>
