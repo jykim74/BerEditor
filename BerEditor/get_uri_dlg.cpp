@@ -9,7 +9,7 @@
 #include "js_http.h"
 
 const char *kUsedURI = "UsedURI";
-const char *kLDAP = "LDAP";
+const char *kURL = "URL";
 
 static QStringList sScopeList = { "BASE" };
 static QStringList sTypeList = { "caCertificate", "signCertificate", "userCertificate",
@@ -43,7 +43,7 @@ QStringList GetURIDlg::getUsedURI()
     QStringList retList;
 
     settings.beginGroup( kUsedURI );
-    retList = settings.value( kLDAP ).toStringList();
+    retList = settings.value( kURL ).toStringList();
     settings.endGroup();
 
     return retList;
@@ -55,10 +55,10 @@ void GetURIDlg::saveUsedURI( const QString &strURL )
 
     QSettings settings;
     settings.beginGroup( kUsedURI );
-    QStringList list = settings.value( kLDAP ).toStringList();
+    QStringList list = settings.value( kURL ).toStringList();
     list.removeAll( strURL );
     list.insert( 0, strURL );
-    settings.setValue( kLDAP, list );
+    settings.setValue( kURL, list );
     settings.endGroup();
 }
 
@@ -237,7 +237,7 @@ void GetURIDlg::clickClearUsedURI()
 {
     QSettings settings;
     settings.beginGroup( kUsedURI );
-    settings.setValue( kLDAP, "" );
+    settings.setValue( kURL, "" );
     settings.endGroup();
 
     mURICombo->clearEditText();
