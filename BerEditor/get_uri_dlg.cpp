@@ -126,11 +126,12 @@ int GetURIDlg::getLDAP()
     LDAP *pLD = NULL;
 
     int nPort = -1;
-    QString strFilter = "(objectClass=*)";
+    QString strFilter;
     int nScope = LDAP_SCOPE_BASE;
     int nType = -1;
     QString strDN = "";
     QString strHost = "";
+    QString strURI;
 
 
     if( mUseLDAPHostCheck->isChecked() )
@@ -151,7 +152,7 @@ int GetURIDlg::getLDAP()
         memset( sFilter, 0x00, sizeof(sFilter));
         memset( sAttribute, 0x00, sizeof(sAttribute));
 
-        QString strURI = getValidURL();
+        strURI = getValidURL();
 
         ret = JS_LDAP_parseURI( strURI.toStdString().c_str(), sHost, &nPort, sDN, &nScope, sFilter, sAttribute );
         nType = JS_LDAP_getType( sAttribute );
@@ -159,14 +160,12 @@ int GetURIDlg::getLDAP()
         if( sHost[0] != 0x00 ) strHost = sHost;
         if( sDN[0] != 0x00 ) strDN = sDN;
         if( sFilter[0] != 0 ) strFilter = sFilter;
-
-
-        saveUsedURI( strURI );
+        if( strFilter.length() < 1 ) strFilter = mFilterText->text();
     }
 
     if( nType < 0 ) nType = JS_LDAP_getType( mTypeCombo->currentText().toStdString().c_str() );
     if( nScope < 0 ) nScope = LDAP_SCOPE_BASE;
-    if( strFilter.length() < 1 ) strFilter = "(objectClass=*)";
+
 
     pLD = JS_LDAP_init( strHost.toStdString().c_str(), nPort );
     if( pLD == NULL )
@@ -188,6 +187,8 @@ int GetURIDlg::getLDAP()
         berApplet->warningBox( tr( "fail to get data from LDAP server"), this );
         goto end;
     }
+
+    if( mUseLDAPHostCheck->isChecked() == false ) saveUsedURI( strURI );
 
 end :
     if( pLD ) JS_LDAP_close(pLD);
@@ -214,6 +215,7 @@ void GetURIDlg::initUI()
     mTypeCombo->addItems(sTypeList);
     mHostText->setText( "127.0.0.1" );
     mPortText->setText( "389" );
+    mFilterText->setText( "(objectClass=*)" );
 
     clickUseLDAPHost();
     mURICombo->addItems( getUsedURI() );
