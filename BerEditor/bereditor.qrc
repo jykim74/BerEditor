@@ -51,5 +51,6 @@
         <file>Info.plist</file>
         <file>qt-mac.css</file>
         <file>qt-win.css</file>
+        <file>images/log_halt.png</file>
     </qresource>
 </RCC>

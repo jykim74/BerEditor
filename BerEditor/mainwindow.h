@@ -89,6 +89,7 @@ private slots:
     void save();
     void saveAs();
     void clearLog();
+    void toggleLog();
     void licenseInfo();
 
     void bugIssueReport();
@@ -150,6 +151,8 @@ private:
     CertPVDDlg      *cert_pvd_dlg_;
     GenOTPDlg       *gen_otp_dlg_;
     CAVPDlg         *cavp_dlg_;
+
+    bool log_halt_;
 };
 
 #endif // MAINWINDOW_H

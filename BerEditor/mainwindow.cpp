@@ -56,6 +56,8 @@ const int kMaxRecentFiles = 10;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
+    log_halt_ = false;
+
     initialize();
 
     createCryptoDlg();
@@ -523,6 +525,14 @@ void MainWindow::createActions()
         clearAct->setStatusTip(tr("clear information and log"));
         helpMenu->addAction( clearAct );
         helpToolBar->addAction( clearAct );
+
+        QIcon logIcon = QIcon::fromTheme( "log-halt", QIcon(":/images/log_halt.png" ));
+        QAction *logAct = new QAction( logIcon, tr( "&Log Halt" ), this );
+        connect( logAct, &QAction::triggered, this, &MainWindow::toggleLog );
+        logAct->setCheckable(true);
+        logAct->setStatusTip( tr( "Log Halt" ));
+        helpMenu->addAction( logAct );
+        helpToolBar->addAction( logAct );
     }
 
     const QIcon lcnIcon = QIcon::fromTheme("berview-license", QIcon(":/images/license.png"));
@@ -674,6 +684,8 @@ bool MainWindow::isChanged()
 
 void MainWindow::log( const QString strLog, QColor cr )
 {
+    if( log_halt_ == true ) return;
+
     if( text_tab_->count() <= 1 ) return;
 
     QTextCursor cursor = log_text_->textCursor();
@@ -1063,6 +1075,20 @@ void MainWindow::clearLog()
 {
     log_text_->clear();
 //    info_text_->clear();
+}
+
+void MainWindow::toggleLog()
+{
+    if( log_halt_ == true )
+    {
+        log_halt_ = false;
+        log( "Log is enable" );
+    }
+    else
+    {
+        log( "Log is halt" );
+        log_halt_ = true;
+    }
 }
 
 void MainWindow::licenseInfo()
