@@ -52,5 +52,6 @@
         <file>qt-mac.css</file>
         <file>qt-win.css</file>
         <file>images/log_halt.png</file>
+        <file>be.rc</file>
     </qresource>
 </RCC>
