@@ -19,6 +19,14 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Gui)
 find_package(Qt${QT_VERSION_MAJOR} OPTIONAL_COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} OPTIONAL_COMPONENTS PrintSupport Widgets)
 
+if(APPLE)
+    SET(platform_specific_sources ${platform_specific_sources} mac_sparkle_support.mm)
+    SET(platform_specific_headers ${platform_specific_headers} mac_sparkle_support.h)
+    SET_SOURCE_FILES_PROPERTIES(mac_sparkle_support.mm PROPERTIES COMPILE_FLAGS -fobjc-arc)
+    SET(SPARKLE_FRAMEWORK /usr/local/Sparkle.framework)
+    INCLUDE_DIRECTORIES(${SPARKLE_FRAMEWORK}/Headers)
+endif()
+
 set(PROJECT_SRC
     about_dlg.cpp
     auto_update_service.cpp
@@ -183,22 +191,13 @@ elseif(APPLE)
     # without the path.
 
     # And the following tells CMake where to find and install the file itself.
-    set(app_icon_macos "${CMAKE_CURRENT_SOURCE_DIR}/images/bereditor.icns")
-    set_source_files_properties(${app_icon_macos} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
 
-    set_target_properties( ${PROJECT_NAME},
+    set_source_files_properties(bereditor.icns PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+
+    set_target_properties( ${PROJECT_NAME}, PROPERTIES
+        MACOSX_BUNDLE true
         MACOSX_BUNDLE_ICON_FILE, bereditor.icns
-        MACOSX_BUNDLE_INFO_PLIST Info.plist )
-
-    SET(platform_specific_sources ${platform_specific_sources} mac_sparkle_support.mm)
-    SET(platform_specific_headers ${platform_specific_headers} mac_sparkle_support.h)
-    SET_SOURCE_FILES_PROPERTIES(mac_sparkle_support.mm PROPERTIES COMPILE_FLAGS -fobjc-arc)
-    SET(SPARKLE_FRAMEWORK /usr/local/Sparkle.framework)
-    INCLUDE_DIRECTORIES(${SPARKLE_FRAMEWORK}/Headers)
-
-
-    FIND_LIBRARY(COCOA_LIBRARY Cocoa)
-    MARK_AS_ADVANCED (COCOA_LIBRARY)
+        MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/Info.plist )
 
     include_directories( ../../PKILib
         /usr/local/include )
@@ -220,7 +219,12 @@ elseif(APPLE)
     target_link_libraries(${PROJECT_NAME} PRIVATE
         Qt${QT_VERSION_MAJOR}::Widgets
 	Qt${QT_VERSION_MAJOR}::PrintSupport
-        PKILib crypto ssl ltdl ldap lber gmp "-framework Sparkle" )
+        PKILib crypto ssl ltdl ldap lber gmp
+        "-framework AppKit"
+        "-framework Carbon"
+        "-framework Foundation"
+        "-framework ApplicationServices"
+        "-framework Sparkle" )
 
     target_compile_definitions( ${PROJECT_NAME} PRIVATE _AUTO_UPDATE )
 

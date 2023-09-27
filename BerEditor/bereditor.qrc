@@ -10,7 +10,6 @@
         <file>i18n/bereditor_ko_KR.qm</file>
         <file>images/bad.png</file>
         <file>images/trash.png</file>
-        <file>images/bereditor.icns</file>
         <file>images/fileprint.png</file>
         <file>images/insert.png</file>
         <file>images/branch-closed.png</file>
@@ -53,5 +52,7 @@
         <file>qt-win.css</file>
         <file>images/log_halt.png</file>
         <file>be.rc</file>
+        <file>bereditor.ico</file>
+        <file>bereditor.icns</file>
     </qresource>
 </RCC>
