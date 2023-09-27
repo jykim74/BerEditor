@@ -148,6 +148,7 @@ add_executable(${PROJECT_NAME}
     ${PROJECT_SOURCES}
     ${RESOURCE_ADDED}
     be.rc
+    bereditor.icns
 )
 
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )
