@@ -194,9 +194,9 @@ elseif(APPLE)
 
     set_source_files_properties(bereditor.icns PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
 
-    set_target_properties( ${PROJECT_NAME}, PROPERTIES
+    set_target_properties( ${PROJECT_NAME} PROPERTIES
         MACOSX_BUNDLE true
-        MACOSX_BUNDLE_ICON_FILE, bereditor.icns
+        MACOSX_BUNDLE_ICON_FILE bereditor.icns
         MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/Info.plist )
 
     include_directories( ../../PKILib
