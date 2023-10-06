@@ -140,27 +140,28 @@ void EncDecDlg::dataRun()
     BIN binAAD = {0,0};
     BIN binTag = {0,0};
 
+    int nDataType = DATA_STRING;
+
     QString strInput = mInputText->toPlainText();
     mOutputText->clear();
 
     if( strInput.isEmpty() )
     {
-//        berApplet->warningBox( tr( "You have to insert data"), this );
-//        return;
+
     }
 
     if( mInputStringRadio->isChecked() )
-        JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
+        nDataType = DATA_STRING;
     else if( mInputHexRadio->isChecked() )
     {
-        strInput.remove(QRegExp("[\t\r\n\\s]"));
-        JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
+        nDataType = DATA_HEX;
     }
     else if( mInputBase64Radio->isChecked() )
     {
-        strInput.remove(QRegExp("[\t\r\n\\s]"));
-        JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
+        nDataType = DATA_BASE64;
     }
+
+    getBINFromString( &binSrc, nDataType, strInput );
 
     QString strKey = mKeyText->text();
 
@@ -171,21 +172,11 @@ void EncDecDlg::dataRun()
         return;
     }
 
-    if( mKeyTypeCombo->currentIndex() == DATA_STRING )
-        JS_BIN_set( &binKey, (unsigned char *)strKey.toStdString().c_str(), strKey.length() );
-    else if( mKeyTypeCombo->currentIndex() == DATA_HEX )
-        JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey );
-    else if( mKeyTypeCombo->currentIndex() == DATA_BASE64 )
-        JS_BIN_decodeBase64( strKey.toStdString().c_str(), &binKey );
+    getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
 
     QString strIV = mIVText->text();
 
-    if( mIVTypeCombo->currentIndex() == DATA_STRING )
-        JS_BIN_set( &binIV, (unsigned char *)strIV.toStdString().c_str(), strIV.length() );
-    else if( mIVTypeCombo->currentIndex() == DATA_HEX )
-        JS_BIN_decodeHex( strIV.toStdString().c_str(), &binIV );
-    else if( mIVTypeCombo->currentIndex() == DATA_BASE64 )
-        JS_BIN_decodeBase64( strIV.toStdString().c_str(), &binIV );
+    getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
 
     bool bPad = mPadCheck->isChecked();
 
@@ -205,12 +196,7 @@ void EncDecDlg::dataRun()
         int nReqTagLen = mReqTagLenText->text().toInt();
         QString strAAD = mAADText->text();
 
-        if( mAADTypeCombo->currentIndex() == DATA_STRING )
-            JS_BIN_set( &binAAD, (unsigned char *)strAAD.toStdString().c_str(), strAAD.length() );
-        else if( mAADTypeCombo->currentIndex() == DATA_HEX )
-            JS_BIN_decodeHex( strAAD.toStdString().c_str(), &binAAD );
-        else if( mAADTypeCombo->currentIndex() == DATA_BASE64 )
-            JS_BIN_decodeBase64( strAAD.toStdString().c_str(), &binAAD );
+        getBINFromString( &binAAD, mAADTypeCombo->currentText(), strAAD );
 
         if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
         {
@@ -241,12 +227,7 @@ void EncDecDlg::dataRun()
         {
             QString strTag = mTagText->text();
 
-            if( mTagTypeCombo->currentIndex() == DATA_STRING )
-                JS_BIN_set( &binTag, (unsigned char *)strTag.toStdString().c_str(), strTag.length() );
-            else if( mTagTypeCombo->currentIndex() == DATA_HEX )
-                JS_BIN_decodeHex( strTag.toStdString().c_str(), &binTag );
-            else if( mTagTypeCombo->currentIndex() == DATA_BASE64 )
-                JS_BIN_decodeBase64( strTag.toStdString().c_str(), &binTag );
+            getBINFromString( &binTag, mTagTypeCombo->currentText(), strTag );
 
             if( isCCM( strSymAlg ) )
                 ret = JS_PKI_decryptCCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
@@ -532,6 +513,7 @@ int EncDecDlg::encDecInit()
     BIN binKey = {0,0};
     BIN binIV = {0,0};
     BIN binAAD = {0,0};
+    int nDataType = DATA_STRING;
 
     if( ctx_ )
     {
@@ -552,33 +534,23 @@ int EncDecDlg::encDecInit()
     QString strInput = mInputText->toPlainText();
 
     if( mInputStringRadio->isChecked() )
-        JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
+        nDataType = DATA_STRING;
     else if( mInputHexRadio->isChecked() )
     {
-        strInput.remove(QRegExp("[\t\r\n\\s]"));
-        JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
+        nDataType = DATA_HEX;
     }
     else if( mInputBase64Radio->isChecked() )
     {
-        strInput.remove(QRegExp("[\t\r\n\\s]"));
-        JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
+        nDataType = DATA_BASE64;
     }
 
-    if( mKeyTypeCombo->currentIndex() == DATA_STRING )
-        JS_BIN_set( &binKey, (unsigned char *)strKey.toStdString().c_str(), strKey.length() );
-    else if( mKeyTypeCombo->currentIndex() == DATA_HEX )
-        JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey );
-    else if( mKeyTypeCombo->currentIndex() == DATA_BASE64 )
-        JS_BIN_decodeBase64( strKey.toStdString().c_str(), &binKey );
+    getBINFromString( &binSrc, nDataType, strInput );
+
+    getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
 
     QString strIV = mIVText->text();
 
-    if( mIVTypeCombo->currentIndex() == DATA_STRING )
-        JS_BIN_set( &binIV, (unsigned char *)strIV.toStdString().c_str(), strIV.length() );
-    else if( mIVTypeCombo->currentIndex() == DATA_HEX )
-        JS_BIN_decodeHex( strIV.toStdString().c_str(), &binIV );
-    else if( mIVTypeCombo->currentIndex() == DATA_BASE64 )
-        JS_BIN_decodeBase64( strIV.toStdString().c_str(), &binIV );
+    getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
 
     bool bPad = mPadCheck->isChecked();
 
@@ -592,12 +564,7 @@ int EncDecDlg::encDecInit()
     {
         QString strAAD = mAADText->text();
 
-        if( mAADTypeCombo->currentIndex() == DATA_STRING )
-            JS_BIN_set( &binAAD, (unsigned char *)strAAD.toStdString().c_str(), strAAD.length() );
-        else if( mAADTypeCombo->currentIndex() == DATA_HEX )
-            JS_BIN_decodeHex( strAAD.toStdString().c_str(), &binAAD );
-        else if( mAADTypeCombo->currentIndex() == DATA_BASE64 )
-            JS_BIN_decodeBase64( strAAD.toStdString().c_str(), &binAAD );
+        getBINFromString( &binAAD, mAADTypeCombo->currentText(), strAAD );
 
         int nDataLen = mCCMDataLength->text().toInt();
         if( nDataLen <= 0 )
@@ -685,27 +652,27 @@ void EncDecDlg::encDecUpdate()
     BIN binSrc = {0,0};
     BIN binDst = {0,0};
     BIN binOut = {0,0};
+    int nDataType = DATA_STRING;
 
     QString strInput = mInputText->toPlainText();
 
     if( strInput.isEmpty() )
     {
-//        berApplet->warningBox( tr( "You have to insert data"), this );
-//        return;
+
     }
 
     if( mInputStringRadio->isChecked() )
-        JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
+        nDataType = DATA_STRING;
     else if( mInputHexRadio->isChecked() )
     {
-        strInput.remove(QRegExp("[\t\r\n\\s]"));
-        JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
+        nDataType = DATA_HEX;
     }
     else if( mInputBase64Radio->isChecked() )
     {
-        strInput.remove(QRegExp("[\t\r\n\\s]"));
-        JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
+        nDataType = DATA_BASE64;
     }
+
+    getBINFromString( &binSrc, nDataType, strInput );
 
     QString strOut = mOutputText->toPlainText();
 

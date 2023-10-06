@@ -45,7 +45,6 @@
         <font>
          <family>Consolas</family>
          <pointsize>15</pointsize>
-         <weight>75</weight>
          <bold>true</bold>
         </font>
        </property>

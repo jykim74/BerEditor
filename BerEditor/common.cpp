@@ -2,6 +2,7 @@
 #include <QFileDialog>
 #include <QFile>
 #include <QTextStream>
+#include <QRegularExpression>
 
 #include "common.h"
 #include "js_pki_tools.h"
@@ -206,12 +207,12 @@ QString getHexView( const char *pName, const BIN *pBin )
     {
         if (n % 16 == 0)
         {
-            strTmp.sprintf( "%08X ",n);
+            strTmp.asprintf( "%08X ",n);
             strOut += strTmp;
         }
 
         sText[n%16] = _getPrint( *packet );
-        strTmp.sprintf( "%02X ", *packet++);
+        strTmp.asprintf( "%02X ", *packet++);
         strOut += strTmp;
 
         n++;
@@ -219,13 +220,13 @@ QString getHexView( const char *pName, const BIN *pBin )
         {
             if (n % 16 == 0)
             {
-                strTmp.sprintf( "  %s\n", sText);
+                strTmp.asprintf( "  %s\n", sText);
                 strOut += strTmp;
                 memset( sText, 0x00, sizeof(sText));
             }
             else
             {
-                strTmp.sprintf(" ");
+                strTmp.asprintf(" ");
                 strOut += strTmp;
             }
         }
@@ -236,17 +237,17 @@ QString getHexView( const char *pName, const BIN *pBin )
     {
         for( int i = left; i < 16; i++ )
         {
-            strTmp.sprintf( "   " );
+            strTmp.asprintf( "   " );
             strOut += strTmp;
         }
 
         if( left < 8 )
         {
-            strTmp.sprintf( " " );
+            strTmp.asprintf( " " );
             strOut += strTmp;
         }
 
-        strTmp.sprintf( "  %s\n", sText );
+        strTmp.asprintf( "  %s\n", sText );
         strOut += strTmp;
     }
 
@@ -260,9 +261,10 @@ int getDataLen( int nType, const QString strData )
 
     QString strMsg = strData;
 
+
     if( nType != DATA_STRING )
     {
-        strMsg.remove( QRegExp("[\t\r\n\\s]") );
+        strMsg.remove( QRegularExpression("[\t\r\n\\s]") );
     }
 
     if( nType == DATA_HEX )
@@ -946,12 +948,12 @@ void getBINFromString( BIN *pBin, int nType, const QString& strString )
 
     if( nType == DATA_HEX )
     {
-        srcString.remove( QRegExp("[\t\r\n\\s]") );
+        srcString.remove( QRegularExpression("[\t\r\n\\s]") );
         JS_BIN_decodeHex( srcString.toStdString().c_str(), pBin );
     }
     else if( nType == DATA_BASE64 )
     {
-        srcString.remove( QRegExp("[\t\r\n\\s]") );
+        srcString.remove( QRegularExpression("[\t\r\n\\s]") );
         JS_BIN_decodeBase64( srcString.toStdString().c_str(), pBin );
     }
     else if( nType == DATA_URL )
@@ -1075,16 +1077,21 @@ QString getKeyTypeName( int nKeyType )
 
 bool isEmail( const QString strEmail )
 {
-    QRegExp mailREX("\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b");
-    mailREX.setCaseSensitivity(Qt::CaseInsensitive);
-    mailREX.setPatternSyntax(QRegExp::Wildcard);
+    QRegularExpression mailREX("\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b");
+    mailREX.setPatternOptions( QRegularExpression::CaseInsensitiveOption );
 
-    return mailREX.exactMatch( strEmail );
+    QRegularExpressionMatch match = mailREX.match( strEmail );
+    return match.hasMatch();
+
+//    mailREX.setCaseSensitivity(Qt::CaseInsensitive);
+//    mailREX.setPatternSyntax(QRegularExpressionMatch::Wildcard);
+
+//    return mailREX.exactMatch( strEmail );
 }
 
 bool isValidNumFormat( const QString strInput, int nNumber )
 {
-    QRegExp strExp;
+    QRegularExpression strExp;
 
     if( nNumber == 2 )
     {
@@ -1099,5 +1106,8 @@ bool isValidNumFormat( const QString strInput, int nNumber )
         strExp.setPattern( "[0-9]+" );
     }
 
-    return strExp.exactMatch( strInput );
+    QRegularExpressionMatch match = strExp.match( strInput );
+    return match.hasMatch();
+
+//    return strExp.exactMatch( strInput );
 }

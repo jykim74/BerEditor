@@ -1007,7 +1007,8 @@ void MainWindow::rightTableCopy()
     QString strText;
     QList<QTableWidgetItem *> items = right_table_->selectedItems();
 
-    qSort( items.begin(), items.end(), rowColSort );
+//    qSort( items.begin(), items.end(), rowColSort );
+    std::sort( items.begin(), items.end(), rowColSort );
 
     for( int i = 0; i < items.size(); i++ )
     {
@@ -1155,7 +1156,7 @@ void MainWindow::print()
     QPrinter printer(QPrinter::HighResolution);
     QPrintDialog *dlg = new QPrintDialog(&printer, this);
     if (log_text_->textCursor().hasSelection())
-        dlg->addEnabledOption(QAbstractPrintDialog::PrintSelection);
+        dlg->setOptions(QAbstractPrintDialog::PrintSelection);
     dlg->setWindowTitle(tr("Print Document"));
     if (dlg->exec() == QDialog::Accepted)
     {

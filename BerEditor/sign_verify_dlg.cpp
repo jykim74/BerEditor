@@ -1041,6 +1041,8 @@ void SignVerifyDlg::digestRun()
     char *pOut = NULL;
     int nAlgType = 0;
 
+    int nDataType = DATA_STRING;
+
     QString strInput = mInputText->toPlainText();
 
 
@@ -1052,17 +1054,17 @@ void SignVerifyDlg::digestRun()
     }
 
     if( mInputStringRadio->isChecked() )
-        JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
+        nDataType = DATA_STRING;
     else if( mInputHexRadio->isChecked() )
     {
-        strInput.remove(QRegExp("[\t\r\n\\s]"));
-        JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
+        nDataType = DATA_HEX;
     }
     else if( mInputBase64Radio->isChecked() )
     {
-        strInput.remove(QRegExp("[\t\r\n\\s]"));
-        JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
+        nDataType = DATA_BASE64;
     }
+
+    getBINFromString( &binSrc, nDataType, strInput );
 
     if( mVersionCombo->currentIndex() == 0 )
         nVersion = JS_PKI_RSA_PADDING_V15;

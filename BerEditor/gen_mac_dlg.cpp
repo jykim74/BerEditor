@@ -180,23 +180,24 @@ void GenMacDlg::macUpdate()
 {
     int ret = 0;
     BIN binSrc = {0,0};
+    int nDataType = DATA_STRING;
 
     QString strInput = mInputText->toPlainText();
 
     if( strInput.length() > 0 )
     {
         if( mInputStringRadio->isChecked() )
-            JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
+            nDataType = DATA_STRING;
         else if( mInputHexRadio->isChecked() )
         {
-            strInput.remove(QRegExp("[\t\r\n\\s]"));
-            JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
+            nDataType = DATA_HEX;
         }
         else if( mInputBase64Radio->isChecked() )
         {
-            strInput.remove(QRegExp("[\t\r\n\\s]"));
-            JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
+            nDataType = DATA_BASE64;
         }
+
+        getBINFromString( &binSrc, nDataType, strInput );
     }
 
     if( mCMACRadio->isChecked() )
@@ -314,23 +315,24 @@ void GenMacDlg::clickMAC()
     BIN binSrc = {0,0};
     BIN binKey = {0,0};
     BIN binMAC = {0,0};
+    int nDataType = DATA_STRING;
 
     QString strInput = mInputText->toPlainText();
 
     if( strInput.length() > 0 )
     {
         if( mInputStringRadio->isChecked() )
-            JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
+            nDataType = DATA_STRING;
         else if( mInputHexRadio->isChecked() )
         {
-            strInput.remove(QRegExp("[\t\r\n\\s]"));
-            JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
+            nDataType = DATA_HEX;
         }
         else if( mInputBase64Radio->isChecked() )
         {
-            strInput.remove(QRegExp("[\t\r\n\\s]"));
-            JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
+            nDataType = DATA_BASE64;
         }
+
+        getBINFromString( &binSrc, nDataType, strInput );
     }
 
     QString strKey = mKeyText->text();

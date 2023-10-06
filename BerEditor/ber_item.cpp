@@ -81,9 +81,9 @@ QString BerItem::GetTagString()
     {
         QString strOut = "";
 
-        if( id_ & JS_CONTEXT ) strOut.sprintf( "Context-specific[%d]", tag_);
-        else if( id_ & JS_APPLICATION ) strOut.sprintf( "Application[%d]", tag_ );
-        else if( id_ & JS_PRIVATE ) strOut.sprintf( "Private[%d]", tag_ );
+        if( id_ & JS_CONTEXT ) strOut.asprintf( "Context-specific[%d]", tag_);
+        else if( id_ & JS_APPLICATION ) strOut.asprintf( "Application[%d]", tag_ );
+        else if( id_ & JS_PRIVATE ) strOut.asprintf( "Private[%d]", tag_ );
 
         return strOut;
     }
@@ -118,7 +118,7 @@ QString BerItem::GetTagString()
         else
         {
             QString strTag;
-            strTag.sprintf ( "%0x", tag_ );
+            strTag.asprintf ( "%0x", tag_ );
             return strTag;
         }
     }
@@ -168,7 +168,7 @@ QString BerItem::GetTagXMLString()
         else
         {
             QString strTag;
-            strTag.sprintf ( "%0x", tag_ );
+            strTag.asprintf ( "%0x", tag_ );
             return strTag.toUpper();
         }
     }

@@ -107,7 +107,7 @@ void BerTreeView::infoItem( BerItem *pItem )
         strPC = "Primitive";
 
     QString strOffset;
-    strOffset.sprintf( "0x%08X", pItem->GetOffset() );
+    strOffset.asprintf( "0x%08X", pItem->GetOffset() );
 
     berApplet->mainWindow()->infoText()->clear();
     berApplet->info( "====================================================================================\n" );
@@ -193,12 +193,12 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
         {
             rightTable->insertRow(line);
             QString address;
-            address.sprintf( "0x%08X", i + pItem->GetOffset() );
+            address.asprintf( "0x%08X", i + pItem->GetOffset() );
             rightTable->setItem( line, 0, new QTableWidgetItem( address ));
             rightTable->item( line, 0 )->setBackground( kAddrColor );
         }
 
-        hex.sprintf( "%02X", binPart.pVal[i] );
+        hex.asprintf( "%02X", binPart.pVal[i] );
         rightTable->setItem( line, (i%16)+1, new QTableWidgetItem(hex));
         rightTable->item( line, (i%16) +1 )->setBackground(kValueColor);
 
@@ -272,12 +272,12 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
         {
             rightTable->insertRow(line);
             QString address;
-            address.sprintf( "0x%08X", i );
+            address.asprintf( "0x%08X", i );
             rightTable->setItem( line, 0, new QTableWidgetItem( address ));
             rightTable->item( line, 0 )->setBackground( kAddrColor );
         }
 
-        hex.sprintf( "%02X", pBer->pVal[i] );
+        hex.asprintf( "%02X", pBer->pVal[i] );
         pos = (i%16) + 1;
         rightTable->setItem( line, pos, new QTableWidgetItem(hex));
         if( i== pItem->GetOffset() )

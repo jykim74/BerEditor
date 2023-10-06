@@ -95,6 +95,7 @@ int GenHashDlg::hashInit()
 void GenHashDlg::hashUpdate()
 {
     int ret = 0;
+    int nDataType = DATA_STRING;
 
     BIN binSrc = {0,0};
 
@@ -107,17 +108,17 @@ void GenHashDlg::hashUpdate()
     else
     {
         if( mInputStringRadio->isChecked() )
-            JS_BIN_set( &binSrc, (unsigned char *)inputStr.toStdString().c_str(), inputStr.length() );
+            nDataType = DATA_STRING;
         else if( mInputHexRadio->isChecked() )
         {
-            inputStr.remove(QRegExp("[\t\r\n\\s]"));
-            JS_BIN_decodeHex( inputStr.toStdString().c_str(), &binSrc );
+            nDataType = DATA_HEX;
         }
         else if( mInputBase64Radio->isChecked() )
         {
-            inputStr.remove(QRegExp("[\t\r\n\\s]"));
-            JS_BIN_decodeBase64( inputStr.toStdString().c_str(), &binSrc );
+            nDataType = DATA_BASE64;
         }
+
+        getBINFromString( &binSrc, nDataType, inputStr );
     }
 
     ret = JS_PKI_hashUpdate( pctx_, &binSrc );
@@ -182,18 +183,19 @@ void GenHashDlg::clickDigest()
     }
     else
     {
+        int nDataType = DATA_STRING;
         if( mInputStringRadio->isChecked() )
-            JS_BIN_set( &binSrc, (unsigned char *)inputStr.toStdString().c_str(), inputStr.length() );
+            nDataType = DATA_STRING;
         else if( mInputHexRadio->isChecked() )
         {
-            inputStr.remove(QRegExp("[\t\r\n\\s]"));
-            JS_BIN_decodeHex( inputStr.toStdString().c_str(), &binSrc );
+            nDataType = DATA_HEX;
         }
         else if( mInputBase64Radio->isChecked() )
         {
-            inputStr.remove(QRegExp("[\t\r\n\\s]"));
-            JS_BIN_decodeBase64( inputStr.toStdString().c_str(), &binSrc );
+            nDataType = DATA_BASE64;
         }
+
+        getBINFromString( &binSrc, nDataType, inputStr );
     }
 
     QString strHash = mOutputHashCombo->currentText();

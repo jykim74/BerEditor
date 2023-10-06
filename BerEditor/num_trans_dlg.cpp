@@ -39,7 +39,7 @@ void NumTransDlg::dataTrans()
     int nNum = 0;
 
     QString strInput = mInputText->toPlainText();
-    strInput.remove( QRegExp("[\t\r\n\\s]") );
+    strInput.remove( QRegularExpression("[\t\r\n\\s]") );
 
     if( strInput.length() < 1 )
     {

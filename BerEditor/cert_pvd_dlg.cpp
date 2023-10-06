@@ -359,7 +359,7 @@ void CertPVDDlg::clickPolicyCheck()
 
     if( mATTimeCheck->isChecked() )
     {
-        QString strValue = QString( "%1" ).arg( mVerifyDateTime->dateTime().toTime_t() );
+        QString strValue = QString( "%1" ).arg( mVerifyDateTime->dateTime().toSecsSinceEpoch() );
         berApplet->log( QString( "CheckTime: %1").arg( strValue ));
         _addParamValue( &pParamList, JS_PVD_VERIFY_ATTIME, strValue.toStdString().c_str() );
     }
@@ -405,7 +405,7 @@ void CertPVDDlg::clickPolicyCheck()
         _addParamValue( &pParamList, nID, strValue.toStdString().c_str() );
     }
 
-    tCheckTime = mVerifyDateTime->dateTime().toTime_t();
+    tCheckTime = mVerifyDateTime->dateTime().toSecsSinceEpoch();
     ret = JS_PKI_CheckPolicy( pCertList, pParamList, &nExpPolicy );
 
     berApplet->log( QString( "CheckPolicy : Ret: %1 ExpPolicy: %2").arg(ret).arg( nExpPolicy));
@@ -508,7 +508,7 @@ void CertPVDDlg::clickPathValidation()
 
     if( mATTimeCheck->isChecked() )
     {
-        QString strValue = QString( "%1" ).arg( mVerifyDateTime->dateTime().toTime_t() );
+        QString strValue = QString( "%1" ).arg( mVerifyDateTime->dateTime().toSecsSinceEpoch() );
         berApplet->log( QString( "CheckTime: %1").arg( strValue ));
         _addParamValue( &pParamList, JS_PVD_VERIFY_ATTIME, strValue.toStdString().c_str() );
     }
@@ -554,7 +554,7 @@ void CertPVDDlg::clickPathValidation()
         _addParamValue( &pParamList, nID, strValue.toStdString().c_str() );
     }
 
-    tCheckTime = mVerifyDateTime->dateTime().toTime_t();
+    tCheckTime = mVerifyDateTime->dateTime().toSecsSinceEpoch();
     ret = JS_PKI_CertPVD( pTrustList, pUntrustList, pCRLList, pParamList, &binTarget, sMsg );
 
     berApplet->log( QString( "PVDCertValid : %1").arg(ret));

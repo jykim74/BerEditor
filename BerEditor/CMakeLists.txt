@@ -142,7 +142,7 @@ set(PROJECT_SOURCES
 )
 
 set(RESOURCE ${CMAKE_SOURCE_DIR}/bereditor.qrc)
-qt5_add_resources(RESOURCE_ADDED ${RESOURCE})
+qt_add_resources(RESOURCE_ADDED ${RESOURCE})
 
 add_executable(${PROJECT_NAME}
     ${PROJECT_SOURCES}
@@ -262,9 +262,9 @@ target_compile_definitions( ${PROJECT_NAME} PRIVATE
 )
 
 
-find_package(Qt5 COMPONENTS Widgets LinguistTools REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets LinguistTools REQUIRED)
 set(TS_FILES bereditor_ko_KR.ts)
-qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 
 if(WIN32)
     install( TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin )

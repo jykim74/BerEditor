@@ -13,17 +13,17 @@
         <translation>BerViewer 에 대해서</translation>
     </message>
     <message>
-        <location filename="../about_dlg.ui" line="53"/>
+        <location filename="../about_dlg.ui" line="52"/>
         <source>Current Version</source>
         <translation>현재 버전</translation>
     </message>
     <message>
-        <location filename="../about_dlg.ui" line="84"/>
+        <location filename="../about_dlg.ui" line="83"/>
         <source>Check For Update</source>
         <translation>업데이트 확인</translation>
     </message>
     <message>
-        <location filename="../about_dlg.ui" line="104"/>
+        <location filename="../about_dlg.ui" line="103"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
@@ -4455,47 +4455,47 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">인증서 파일들(*.crt *.der *.pem);;모든 파일들(*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="28"/>
+        <location filename="../common.cpp" line="29"/>
         <source>Cert CRL Files (*.crt *.der *.crl *.pem);;All Files(*.*)</source>
         <translation>인증서 CRL 파일 (*.crt *.der *.crl *.pem);;모든 파일들(*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="30"/>
+        <location filename="../common.cpp" line="31"/>
         <source>Key Files (*.key *.der *.pem);;All Files(*.*)</source>
         <translation>키 파일 (*.key *.der *.pem);;모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="32"/>
+        <location filename="../common.cpp" line="33"/>
         <source>TXT Files (*.txt *.log);;All Files(*.*)</source>
         <translation>텍스트 파일들 (*.txt *.log);;모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="34"/>
+        <location filename="../common.cpp" line="35"/>
         <source>BER Files (*.ber *.der *.pem);;All Files(*.*)</source>
         <translation>BER 파일들 (*.ber *.der *.pem);;모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="36"/>
+        <location filename="../common.cpp" line="37"/>
         <source>Config Files (*.cfg *.ini);;All Files(*.*)</source>
         <translation>설정 파일들 (*.cfg *.ini);;모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="38"/>
+        <location filename="../common.cpp" line="39"/>
         <source>Req Files (*.req *.txt);;All Files(*.*)</source>
         <translation>요청 파일들(*.req *.txt);;모든 파일들(*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="40"/>
+        <location filename="../common.cpp" line="41"/>
         <source>All Files(*.*)</source>
         <translation>모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="43"/>
+        <location filename="../common.cpp" line="44"/>
         <source>Open File</source>
         <translation>파일 열기</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="60"/>
+        <location filename="../common.cpp" line="61"/>
         <source>Open Directory</source>
         <translation>디렉토리 열기</translation>
     </message>

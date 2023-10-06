@@ -69,7 +69,7 @@ void GenOTPDlg::clickGenOTP()
 
     update();
 
-    time_t tTime = mDateTime->dateTime().toTime_t();
+    time_t tTime = mDateTime->dateTime().toSecsSinceEpoch();
     int nInterval = mIntervalSpin->value();
     int nLen = mLengthSpin->value();
 
