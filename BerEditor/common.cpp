@@ -207,12 +207,12 @@ QString getHexView( const char *pName, const BIN *pBin )
     {
         if (n % 16 == 0)
         {
-            strTmp.asprintf( "%08X ",n);
+            strTmp = QString( "%1 ").arg( n, 8, 16, QLatin1Char('0')).toUpper();
             strOut += strTmp;
         }
 
         sText[n%16] = _getPrint( *packet );
-        strTmp.asprintf( "%02X ", *packet++);
+        strTmp = QString( "%1 " ).arg( *packet++, 2, 16, QLatin1Char('0')).toUpper();
         strOut += strTmp;
 
         n++;
@@ -220,13 +220,13 @@ QString getHexView( const char *pName, const BIN *pBin )
         {
             if (n % 16 == 0)
             {
-                strTmp.asprintf( "  %s\n", sText);
+                strTmp = QString( " %1\n" ).arg( sText );
                 strOut += strTmp;
                 memset( sText, 0x00, sizeof(sText));
             }
             else
             {
-                strTmp.asprintf(" ");
+                strTmp = QString(" ");
                 strOut += strTmp;
             }
         }
@@ -237,17 +237,17 @@ QString getHexView( const char *pName, const BIN *pBin )
     {
         for( int i = left; i < 16; i++ )
         {
-            strTmp.asprintf( "   " );
+            strTmp = QString( "   " );
             strOut += strTmp;
         }
 
         if( left < 8 )
         {
-            strTmp.asprintf( " " );
+            strTmp = QString( " " );
             strOut += strTmp;
         }
 
-        strTmp.asprintf( "  %s\n", sText );
+        strTmp = QString( "  %1\n").arg( sText );
         strOut += strTmp;
     }
 

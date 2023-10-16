@@ -67,6 +67,8 @@ MainWindow::MainWindow(QWidget *parent) :
     setUnifiedTitleAndToolBarOnMac(true);
 
     setAcceptDrops(true);
+
+
 }
 
 MainWindow::~MainWindow()
@@ -111,6 +113,8 @@ void MainWindow::initialize()
 
     info_text_ = new QTextEdit;
     info_text_->setReadOnly(true);
+
+
 
 
     right_table_ = new QTableWidget;

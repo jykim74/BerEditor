@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>249</height>
+    <height>258</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -125,11 +125,6 @@
          </disabled>
         </palette>
        </property>
-       <property name="font">
-        <font>
-         <family>굴림체</family>
-        </font>
-       </property>
        <property name="readOnly">
         <bool>true</bool>
        </property>
@@ -173,11 +168,6 @@
           </colorrole>
          </disabled>
         </palette>
-       </property>
-       <property name="font">
-        <font>
-         <family>굴림체</family>
-        </font>
        </property>
        <property name="readOnly">
         <bool>true</bool>
@@ -241,11 +231,6 @@
           </colorrole>
          </disabled>
         </palette>
-       </property>
-       <property name="font">
-        <font>
-         <family>굴림체</family>
-        </font>
        </property>
        <property name="readOnly">
         <bool>true</bool>
@@ -327,11 +312,6 @@
           </colorrole>
          </disabled>
         </palette>
-       </property>
-       <property name="font">
-        <font>
-         <family>굴림체</family>
-        </font>
        </property>
        <property name="readOnly">
         <bool>true</bool>

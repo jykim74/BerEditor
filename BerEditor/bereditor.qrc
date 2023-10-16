@@ -48,8 +48,6 @@
         <file>images/cert.png</file>
         <file>images/license.png</file>
         <file>Info.plist</file>
-        <file>qt-mac.css</file>
-        <file>qt-win.css</file>
         <file>images/log_halt.png</file>
         <file>be.rc</file>
         <file>bereditor.ico</file>
