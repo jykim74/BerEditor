@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>457</width>
-    <height>249</height>
+    <height>256</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -81,11 +81,6 @@
           </colorrole>
          </disabled>
         </palette>
-       </property>
-       <property name="font">
-        <font>
-         <family>굴림체</family>
-        </font>
        </property>
        <property name="readOnly">
         <bool>true</bool>
@@ -161,11 +156,6 @@
          </disabled>
         </palette>
        </property>
-       <property name="font">
-        <font>
-         <family>굴림체</family>
-        </font>
-       </property>
        <property name="readOnly">
         <bool>true</bool>
        </property>
@@ -240,11 +230,6 @@
          </disabled>
         </palette>
        </property>
-       <property name="font">
-        <font>
-         <family>굴림체</family>
-        </font>
-       </property>
        <property name="readOnly">
         <bool>true</bool>
        </property>
@@ -288,11 +273,6 @@
           </colorrole>
          </disabled>
         </palette>
-       </property>
-       <property name="font">
-        <font>
-         <family>굴림체</family>
-        </font>
        </property>
        <property name="readOnly">
         <bool>true</bool>
@@ -370,11 +350,6 @@
          </disabled>
         </palette>
        </property>
-       <property name="font">
-        <font>
-         <family>굴림체</family>
-        </font>
-       </property>
        <property name="readOnly">
         <bool>true</bool>
        </property>
@@ -438,11 +413,6 @@
           </colorrole>
          </disabled>
         </palette>
-       </property>
-       <property name="font">
-        <font>
-         <family>굴림체</family>
-        </font>
        </property>
        <property name="readOnly">
         <bool>true</bool>
@@ -549,11 +519,6 @@
          </disabled>
         </palette>
        </property>
-       <property name="font">
-        <font>
-         <family>굴림체</family>
-        </font>
-       </property>
        <property name="readOnly">
         <bool>true</bool>
        </property>
@@ -616,11 +581,6 @@
           </colorrole>
          </disabled>
         </palette>
-       </property>
-       <property name="font">
-        <font>
-         <family>굴림체</family>
-        </font>
        </property>
        <property name="readOnly">
         <bool>true</bool>

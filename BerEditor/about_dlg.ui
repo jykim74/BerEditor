@@ -41,13 +41,6 @@
      </item>
      <item>
       <widget class="QLabel" name="mVersionLabel">
-       <property name="font">
-        <font>
-         <family>Consolas</family>
-         <pointsize>15</pointsize>
-         <bold>true</bold>
-        </font>
-       </property>
        <property name="text">
         <string>Current Version</string>
        </property>

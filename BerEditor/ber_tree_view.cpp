@@ -28,6 +28,16 @@ BerTreeView::BerTreeView( QWidget *parent )
     setItemDelegate( new BerItemDelegate(this));
 
     connect( this, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(ShowContextMenu(QPoint)));
+
+    QFile qss(":/bereditor.qss");
+    qss.open( QFile::ReadOnly );
+    setStyleSheet(qss.readAll());
+    qss.close();
+
+    static QFont font;
+    QString strFont = berApplet->settingsMgr()->getFontFamily();
+    font.setFamily( strFont );
+    setFont(font);
 }
 
 
@@ -107,7 +117,7 @@ void BerTreeView::infoItem( BerItem *pItem )
         strPC = "Primitive";
 
     QString strOffset;
-    strOffset.asprintf( "0x%08X", pItem->GetOffset() );
+    strOffset = QString( "%1" ).arg( pItem->GetOffset(), 8, 16, QLatin1Char('0')).toUpper();
 
     berApplet->mainWindow()->infoText()->clear();
     berApplet->info( "====================================================================================\n" );
@@ -193,12 +203,14 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
         {
             rightTable->insertRow(line);
             QString address;
-            address.asprintf( "0x%08X", i + pItem->GetOffset() );
+
+            address = QString( "0x%1" ).arg( i + pItem->GetOffset(), 8, 16, QLatin1Char( '0') );
             rightTable->setItem( line, 0, new QTableWidgetItem( address ));
             rightTable->item( line, 0 )->setBackground( kAddrColor );
         }
 
-        hex.asprintf( "%02X", binPart.pVal[i] );
+
+        hex = QString( "%1").arg( binPart.pVal[i], 2, 16, QLatin1Char('0') ).toUpper();
         rightTable->setItem( line, (i%16)+1, new QTableWidgetItem(hex));
         rightTable->item( line, (i%16) +1 )->setBackground(kValueColor);
 
@@ -272,12 +284,13 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
         {
             rightTable->insertRow(line);
             QString address;
-            address.asprintf( "0x%08X", i );
+
+            address = QString( "0x%1" ).arg( i, 8, 16, QLatin1Char( '0') );
             rightTable->setItem( line, 0, new QTableWidgetItem( address ));
             rightTable->item( line, 0 )->setBackground( kAddrColor );
         }
 
-        hex.asprintf( "%02X", pBer->pVal[i] );
+        hex = QString( "%1").arg( pBer->pVal[i], 2, 16, QLatin1Char('0') ).toUpper();
         pos = (i%16) + 1;
         rightTable->setItem( line, pos, new QTableWidgetItem(hex));
         if( i== pItem->GetOffset() )

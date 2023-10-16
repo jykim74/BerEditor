@@ -60,15 +60,15 @@ void EditValueDlg::setItem(BerItem *pItem)
         mConstructedLabel->setText( "" );
 
     QString strOffset;
-    strOffset.asprintf( "%d", ber_item_->GetOffset() );
+    strOffset = QString( "%1" ).arg( ber_item_->GetOffset() );
     mOffsetText->setText(strOffset);
 
     QString strLength;
-    strLength.asprintf( "%d", ber_item_->GetLength() );
+    strLength = QString( "%1" ).arg( ber_item_->GetLength() );
     mLengthText->setText( strLength );
 
     QString strLevel;
-    strLevel.asprintf( "%d", ber_item_->GetLevel() );
+    strLevel = QString( "%1" ).arg( ber_item_->GetLevel() );
     mLevelText->setText(strLevel);
 
     JS_BIN_set( &binHeader, ber_item_->header_, ber_item_->header_size_);

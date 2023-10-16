@@ -10,39 +10,6 @@
 #include "crl_info_dlg.h"
 #include "settings_mgr.h"
 
-void setQss( QApplication* app )
-{
-    QString strStyle;
-    QFile qss(":/bereditor.qss");
-    qss.open( QFile::ReadOnly );
-
-    strStyle = qss.readAll();
-
-#if defined( Q_OS_WIN32 )
-    QFile css( "qt-win.css" );
-
-    if( QFileInfo(css).exists() == false )
-        css.setFileName( ":/qt-win.css" );
-
-#elif defined( Q_OS_MAC)
-    QFile css( "qt-mac.css" );
-
-    if( QFileInfo(css).exists() == false )
-        css.setFileName( ":/qt-mac.css" );
-#endif
-
-    css.open( QFile::ReadOnly | QIODevice::Text );
-
-    if( css.size() > 0 )
-    {
-        strStyle += "\n";
-        strStyle += css.readAll();
-    }
-
-    app->setStyleSheet( strStyle );
-}
-
-
 int main(int argc, char *argv[])
 {
     Q_INIT_RESOURCE(bereditor);
@@ -53,21 +20,11 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain( "jssoft.com" );
     QCoreApplication::setApplicationName( "BerEditor" );
 
-#if 0
-    QFile qss(":/bereditor.qss");
-    qss.open( QFile::ReadOnly );
-    app.setStyleSheet(qss.readAll());
-#else
-    setQss( &app );
-#endif
-
     QCommandLineParser parser;
     parser.setApplicationDescription( QCoreApplication::applicationName());
     parser.addHelpOption();
     parser.addPositionalArgument( "file", "The file to open" );
     parser.process(app);
-
-//    app.setFont( QFont( "Courier New" ));
 
     qDebug( "command : %s\n", argv[0] );
     I18NHelper::getInstance()->init();
@@ -77,11 +34,11 @@ int main(int argc, char *argv[])
     berApplet = &mApplet;
     berApplet->start();
 
-    QFont font;
+    static QFont font;
     QString strFont = berApplet->settingsMgr()->getFontFamily();
-
     font.setFamily( strFont );
     app.setFont(font);
+
 
     MainWindow *mw = berApplet->mainWindow();
     if( !parser.positionalArguments().isEmpty() )
@@ -89,7 +46,6 @@ int main(int argc, char *argv[])
         mw->loadFile( parser.positionalArguments().first() );
         mw->show();
     }
-
 
     return app.exec();
 }

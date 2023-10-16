@@ -353,11 +353,6 @@
        </disabled>
       </palette>
      </property>
-     <property name="font">
-      <font>
-       <family>굴림체</family>
-      </font>
-     </property>
      <property name="readOnly">
       <bool>true</bool>
      </property>
