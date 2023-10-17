@@ -206,14 +206,14 @@ elseif(APPLE)
 
     if(Debug)
         target_link_directories( ${PROJECT_NAME} PRIVATE
-        ../../build-PKILib-Qt_6_5_3_for_macOS-Debug
+        ../../build-PKILib-Desktop_Qt_5_15_2_clang_64bit-Debug
         ../../PKILib/lib/mac/debug/openssl3/lib
         /usr/local/lib )
     endif()
 
     if(NOT Debug)
         target_link_directories( ${PROJECT_NAME} PRIVATE
-        ../../build-PKILib-Qt_6_5_3_for_macOS-Release
+        ../../build-PKILib-Desktop_Qt_5_15_2_clang_64bit-Release
         ../../PKILib/lib/mac/openssl3/lib
         /usr/local/lib )
     endif()
