@@ -10,6 +10,12 @@
     <height>390</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <pointsize>15</pointsize>
+    <bold>true</bold>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>About BerViewer</string>
   </property>

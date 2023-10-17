@@ -1159,8 +1159,14 @@ void MainWindow::print()
 #if QT_CONFIG(printdialog)
     QPrinter printer(QPrinter::HighResolution);
     QPrintDialog *dlg = new QPrintDialog(&printer, this);
+
     if (log_text_->textCursor().hasSelection())
+#if QT_VERSION >= 0x060000
         dlg->setOptions(QAbstractPrintDialog::PrintSelection);
+#else
+        dlg->addEnabledOption(QAbstractPrintDialog::PrintSelection);
+#endif
+
     dlg->setWindowTitle(tr("Print Document"));
     if (dlg->exec() == QDialog::Accepted)
     {
