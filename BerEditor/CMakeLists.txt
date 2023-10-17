@@ -142,7 +142,7 @@ set(PROJECT_SOURCES
 )
 
 set(RESOURCE ${CMAKE_SOURCE_DIR}/bereditor.qrc)
-qt_add_resources(RESOURCE_ADDED ${RESOURCE})
+qt5_add_resources(RESOURCE_ADDED ${RESOURCE})
 
 add_executable(${PROJECT_NAME}
     ${PROJECT_SOURCES}
@@ -162,7 +162,7 @@ include_directories( ../../PKILib
 
 if(Debug)
     target_link_directories( ${PROJECT_NAME} PRIVATE
-    ../../build-PKILib-Desktop_Qt_6_5_3_MinGW_64_bit-Debug
+    ../../build-PKILib-Desktop_Qt_5_13_2_MinGW_64_bit-Debug
     ../../PKILib/lib/win64/debug/openssl3/lib64
     ../../PKILib/lib/win64/winsparkle/x64/Release
     "C:/msys64/mingw64/lib" )
@@ -170,7 +170,7 @@ endif()
 
 if(NOT Debug)
     target_link_directories( ${PROJECT_NAME} PRIVATE
-    ../../build-PKILib-Desktop_Qt_6_5_3_MinGW_64_bit-Release
+    ../../build-PKILib-Desktop_Qt_5_13_2_MinGW_64_bit-Release
     ../../PKILib/lib/win64/openssl3/lib64
     ../../PKILib/lib/win64/winsparkle/x64/Release
     "C:/msys64/mingw64/lib" )
@@ -267,7 +267,7 @@ target_compile_definitions( ${PROJECT_NAME} PRIVATE
 
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets LinguistTools REQUIRED)
 set(TS_FILES bereditor_ko_KR.ts)
-qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+#qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 
 if(WIN32)
     install( TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin )
