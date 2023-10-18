@@ -47,6 +47,12 @@
      </item>
      <item>
       <widget class="QLabel" name="mVersionLabel">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="text">
         <string>Current Version</string>
        </property>
@@ -78,6 +84,12 @@
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QPushButton" name="mCheckUpdatBtn">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+         <bold>false</bold>
+        </font>
+       </property>
        <property name="text">
         <string>Check For Update</string>
        </property>
@@ -98,6 +110,12 @@
      </item>
      <item>
       <widget class="QPushButton" name="mOKBtn">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+         <bold>false</bold>
+        </font>
+       </property>
        <property name="text">
         <string>OK</string>
        </property>

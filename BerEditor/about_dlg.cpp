@@ -3,6 +3,7 @@
 #include "auto_update_service.h"
 #include "js_gen.h"
 #include "js_license.h"
+#include "settings_mgr.h"
 
 AboutDlg::AboutDlg(QWidget *parent) :
     QDialog(parent)
@@ -10,6 +11,8 @@ AboutDlg::AboutDlg(QWidget *parent) :
     setupUi(this);
     setWindowTitle(tr("About %1").arg(berApplet->getBrand()));
     setWindowFlags( (windowFlags() & ~Qt::WindowContextHelpButtonHint) | Qt::WindowStaysOnTopHint );
+
+    initialize();
 
     version_label_ = tr( "About %1 [Ver %2]").arg(berApplet->getBrand()).arg(STRINGIZE(BER_EDITOR_VERSION));
     mVersionLabel->setText( version_label_ );
@@ -74,6 +77,16 @@ QString AboutDlg::getBuild()
 {
     QString strBuild = QString( "Build Date: %1 %2").arg( __DATE__ ).arg( __TIME__ );
     return strBuild;
+}
+
+void AboutDlg::initialize()
+{
+    static QFont font;
+    QString strFont = berApplet->settingsMgr()->getFontFamily();
+    font.setFamily( strFont );
+    font.setBold(true);
+    font.setPointSize(15);
+    mVersionLabel->setFont(font);
 }
 
 #ifdef _AUTO_UPDATE

@@ -25,6 +25,7 @@ private:
     Q_DISABLE_COPY(AboutDlg)
     QString version_label_;
     QString getBuild();
+    void initialize();
 };
 
 #endif // ABOUT_DLG_H

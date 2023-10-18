@@ -268,6 +268,7 @@ target_compile_definitions( ${PROJECT_NAME} PRIVATE
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets LinguistTools REQUIRED)
 set(TS_FILES bereditor_ko_KR.ts)
 #qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+qt5_add_translation( ${PROJECT_NAME} TS_FILES bereditor_ko_KR.ts )
 
 if(WIN32)
     install( TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin )
