@@ -35,6 +35,70 @@ void EditValueDlg::initialize()
     mValueTypeCombo->setCurrentIndex(1);
 }
 
+void EditValueDlg::makeHeader()
+{
+    unsigned char cTag = 0x00;
+    unsigned char cPrimitive = 0x00;
+    BIN binLen = {0,0};
+    BIN binValue = {0,0};
+    BIN binHeader = {0,0};
+    char *pHex = NULL;
+    char *pBitString = NULL;
+
+    QString strClass = mClassText->text();
+    QString strValue = mValueText->toPlainText();
+
+    if( strClass == "Universal" )
+        cTag |= JS_UNIVERSAL;
+    else if( strClass == "Application" )
+        cTag |= JS_APPLICATION;
+    else if( strClass == "Content-Specific" )
+        cTag |= JS_CONTEXT;
+    else if( strClass == "Private" )
+        cTag |= JS_PRIVATE;
+
+    if( mConstructedLabel->text() == "Constructed"  )
+    {
+        cTag |= JS_CONSTRUCTED;
+    }
+
+    if( cTag & JS_CONTEXT )
+    {
+        unsigned char cNum = mNumText->text().toInt( nullptr, 16 );
+        if( cNum > 0x1F )
+        {
+            berApplet->warningBox( tr( "Invalid Number: %1").arg(cNum), this );
+            return;
+        }
+
+        cTag |= cNum;
+    }
+    else
+    {
+        cPrimitive = JS_BER_getPrimitiveTag( mTagText->text().toStdString().c_str() );
+        cTag |= cPrimitive;
+    }
+
+    JS_BIN_set( &binHeader, &cTag, 1 );
+    JS_BIN_bitString( &binHeader, &pBitString );
+
+    getBINFromString( &binValue, mValueTypeCombo->currentText(), strValue );
+    JS_BER_getHeaderLength( binValue.nLen, &binLen );
+
+    JS_BIN_appendBin( &binHeader, &binLen );
+
+    JS_BIN_encodeHex( &binHeader, &pHex );
+    mHeaderText->setText( pHex );
+
+
+end :
+    JS_BIN_reset( &binLen );
+    JS_BIN_reset( &binValue );
+    JS_BIN_reset( &binValue );
+    if( pBitString ) JS_free( pBitString );
+    if( pHex ) JS_free( pHex );
+}
+
 void EditValueDlg::setItem(BerItem *pItem)
 {
     BIN binHeader = {0,0};
@@ -51,21 +115,28 @@ void EditValueDlg::setItem(BerItem *pItem)
 
     ber_item_ = pItem;
     mClassText->setText( ber_item_->GetClassString() );
-    mTagText->setText( ber_item_->GetTagString() );
+
+    if( mClassText->text() == "Context-specific" )
+    {
+        mTagLabel->setText(tr("Number"));
+        mTagText->hide();
+    }
+    else
+    {
+        mTagText->setText( ber_item_->GetTagString() );
+    }
+
+    mNumText->setText( QString("%1").arg( ber_item_->GetTag(), 2, 16, QLatin1Char('0'))  );
 
     bConstructed = ber_item_->isConstructed();
     if( bConstructed )
         mConstructedLabel->setText( "Constructed" );
     else
-        mConstructedLabel->setText( "" );
+        mConstructedLabel->setText( "Primitive" );
 
     QString strOffset;
     strOffset = QString( "%1" ).arg( ber_item_->GetOffset() );
     mOffsetText->setText(strOffset);
-
-    QString strLength;
-    strLength = QString( "%1" ).arg( ber_item_->GetLength() );
-    mLengthText->setText( strLength );
 
     QString strLevel;
     strLevel = QString( "%1" ).arg( ber_item_->GetLevel() );
@@ -193,6 +264,8 @@ void EditValueDlg::changeValueText()
     QString strValue = mValueText->toPlainText();
     int nLen = getDataLen( mValueTypeCombo->currentText(), strValue );
     mValueLenText->setText( QString("%1").arg(nLen));
+
+    makeHeader();
 }
 
 void EditValueDlg::changeValueType(int index)

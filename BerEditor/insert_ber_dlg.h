@@ -20,8 +20,8 @@ public:
 private slots:
     void runInsert();
     void checkConstructed();
-    void headerChanged( const QString& text );
     void valueChanged();
+    void numChanged();
     void classChanged(int index);
     void primitiveChanged(int index );
     void changeValueType( int index );

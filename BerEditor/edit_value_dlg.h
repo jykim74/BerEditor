@@ -30,6 +30,7 @@ private slots:
 private:
     void initialize();
     BerItem *ber_item_;
+    void makeHeader();
 };
 
 #endif // EDIT_VALUE_DLG_H

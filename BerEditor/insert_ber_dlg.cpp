@@ -14,8 +14,9 @@ InsertBerDlg::InsertBerDlg(QWidget *parent) :
     connect( mInsertBtn, SIGNAL(clicked()), this, SLOT(runInsert()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mConstructedCheck, SIGNAL(clicked()), this, SLOT(checkConstructed()));
-    connect( mHeaderText, SIGNAL(textChanged(const QString&)), this, SLOT(headerChanged(const QString&)));
+
     connect( mValueText, SIGNAL(textChanged()), this, SLOT(valueChanged()));
+    connect( mNumText, SIGNAL(textChanged(QString)), this, SLOT(numChanged()));
     connect( mClassCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(classChanged(int)));
     connect( mPrimitiveCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(primitiveChanged(int)));
     connect( mValueTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeValueType(int)));
@@ -91,8 +92,22 @@ void InsertBerDlg::makeHeader()
         cTag |= JS_CONSTRUCTED;
     }
 
-    cPrimitive = JS_BER_getPrimitiveTag( mPrimitiveCombo->currentText().toStdString().c_str() );
-    cTag |= cPrimitive;
+    if( cTag & JS_CONTEXT )
+    {
+        unsigned char cNum = mNumText->text().toInt( nullptr, 16 );
+        if( cNum > 0x1F )
+        {
+            berApplet->warningBox( tr( "Invalid Number: %1").arg(cNum), this );
+            return;
+        }
+
+        cTag |= cNum;
+    }
+    else
+    {
+        cPrimitive = JS_BER_getPrimitiveTag( mPrimitiveCombo->currentText().toStdString().c_str() );
+        cTag |= cPrimitive;
+    }
 
     JS_BIN_set( &binHeader, &cTag, 1 );
     JS_BIN_bitString( &binHeader, &pBitString );
@@ -127,12 +142,6 @@ void InsertBerDlg::checkConstructed()
     makeHeader();
 }
 
-void InsertBerDlg::headerChanged( const QString& text )
-{
-    int nLen = text.length() / 2;
-    mHeaderLenText->setText( QString("%1").arg(nLen));
-}
-
 void InsertBerDlg::valueChanged()
 {
     QString strValue = mValueText->toPlainText();
@@ -143,8 +152,29 @@ void InsertBerDlg::valueChanged()
     makeHeader();
 }
 
+void InsertBerDlg::numChanged()
+{
+    makeHeader();
+}
+
 void InsertBerDlg::classChanged(int index)
 {
+    if( index == 2 )
+    {
+//        mPrimitiveCombo->setEnabled( false );
+        mPrimitiveCombo->hide();
+        mNumText->setReadOnly( false );
+        mNumText->clear();
+        mTagLabel->setText(tr("Number"));
+    }
+    else
+    {
+//        mPrimitiveCombo->setEnabled( true );
+        mPrimitiveCombo->show();
+        mNumText->setReadOnly( true );
+        mTagLabel->setText(tr("Tag"));
+    }
+
     makeHeader();
 }
 
@@ -156,7 +186,9 @@ void InsertBerDlg::primitiveChanged(int index )
     if( cPrimitive == JS_SET || cPrimitive == JS_SEQUENCE )
         mConstructedCheck->setChecked( true );
 
-    makeHeader();
+    mNumText->setText( QString( "%1" ).arg( cPrimitive, 2, 16, QLatin1Char('0')));
+
+//    makeHeader();
 }
 
 void InsertBerDlg::changeValueType( int index )

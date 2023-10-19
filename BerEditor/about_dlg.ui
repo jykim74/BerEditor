@@ -75,6 +75,12 @@
    </item>
    <item>
     <widget class="QTextBrowser" name="mAboutText">
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+       <bold>false</bold>
+      </font>
+     </property>
      <property name="openExternalLinks">
       <bool>false</bool>
      </property>

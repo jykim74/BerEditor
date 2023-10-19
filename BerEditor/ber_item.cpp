@@ -76,7 +76,7 @@ QString BerItem::GetTagString()
     QString strRes;
 
     if( id_ < 0 ) return "Error";
-
+/*
     if( id_ & JS_CLASS_MASK )
     {
         QString strOut = "";
@@ -89,6 +89,11 @@ QString BerItem::GetTagString()
             strOut = QString( "Private[%1]").arg( tag_ );
 
         return strOut;
+    }
+*/
+    if( id_ & JS_CONTEXT )
+    {
+        strRes = QString( "Context-specific[%1]" ).arg( tag_ );
     }
     else
     {
@@ -267,7 +272,8 @@ QString BerItem::GetInfoString(const BIN *pBer)
 
     strMsg = strTag;
 
-    if( id_ & JS_CLASS_MASK ) return strMsg;
+//    if( id_ & JS_CLASS_MASK ) return strMsg;
+    if( id_ & JS_CONTEXT ) return strMsg;
 
     if( tag_ == JS_OID )
     {
