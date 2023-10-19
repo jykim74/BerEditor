@@ -49,8 +49,8 @@
       <widget class="QLabel" name="mVersionLabel">
        <property name="font">
         <font>
-         <pointsize>9</pointsize>
-         <bold>true</bold>
+         <pointsize>15</pointsize>
+         <bold>false</bold>
         </font>
        </property>
        <property name="text">
@@ -77,7 +77,7 @@
     <widget class="QTextBrowser" name="mAboutText">
      <property name="font">
       <font>
-       <pointsize>9</pointsize>
+       <pointsize>15</pointsize>
        <bold>false</bold>
       </font>
      </property>
@@ -92,7 +92,7 @@
       <widget class="QPushButton" name="mCheckUpdatBtn">
        <property name="font">
         <font>
-         <pointsize>9</pointsize>
+         <pointsize>15</pointsize>
          <bold>false</bold>
         </font>
        </property>
@@ -118,7 +118,7 @@
       <widget class="QPushButton" name="mOKBtn">
        <property name="font">
         <font>
-         <pointsize>9</pointsize>
+         <pointsize>15</pointsize>
          <bold>false</bold>
         </font>
        </property>
