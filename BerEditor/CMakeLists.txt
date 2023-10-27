@@ -158,7 +158,7 @@ target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )
 if(WIN32)
     include_directories( ../../PKILib
         "c:/msys64/mingw64/include"
-    .   ./../PKILib/lib/win64/winsparkle/include )
+        ../../PKILib/lib/win64/winsparkle/include )
 
 
    if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
