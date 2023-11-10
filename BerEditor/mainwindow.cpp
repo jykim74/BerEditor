@@ -1114,7 +1114,8 @@ void MainWindow::bugIssueReport()
 
 void MainWindow::qnaDiscussion()
 {
-    QString link = "https://github.com/jykim74/BerEditor/discussions/new?category=q-a";
+//    QString link = "https://github.com/jykim74/BerEditor/discussions/new?category=q-a";
+    QString link = "https://groups.google.com/g/bereditor";
     QDesktopServices::openUrl(QUrl(link));
 }
 
