@@ -167,7 +167,7 @@ QString BerTreeView::GetTextView()
     BIN binData = {0,0};
 
     JS_BIN_set( &binData, &binBer.pVal[item->GetOffset()], item->GetHeaderSize() + item->GetLength() );
-    QString strText = berApplet->mainWindow()->getLog();
+    QString strText = berApplet->mainWindow()->getInfo();
     strText += "\n====================================================================================\n";
     strText += getHexView( "All Data", &binData );
     JS_BIN_reset( &binData );
@@ -352,7 +352,7 @@ void BerTreeView::copy()
 
     QClipboard *clipboard = QGuiApplication::clipboard();
 
-    QString strLog = berApplet->mainWindow()->getLog();
+    QString strLog = berApplet->mainWindow()->getInfo();
     clipboard->setText(strLog);
 }
 

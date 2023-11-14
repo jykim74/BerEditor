@@ -310,7 +310,7 @@ void MainWindow::createActions()
 #endif
 
     const QIcon copyIcon = QIcon::fromTheme("edit-copy", QIcon(":/images/copy.png"));
-    QAction *copyAct = new QAction(copyIcon, tr("&Copy"), this);
+    QAction *copyAct = new QAction(copyIcon, tr("&Copy Information"), this);
     copyAct->setShortcuts(QKeySequence::Copy);
     copyAct->setStatusTip(tr("Copy the current selection's contents to the clipboard"));
     connect( copyAct, &QAction::triggered, left_tree_, &BerTreeView::copy );
@@ -725,9 +725,9 @@ void MainWindow::info( const QString strLog, QColor cr )
     info_text_->repaint();
 }
 
-QString MainWindow::getLog()
+QString MainWindow::getInfo()
 {
-    return log_text_->toPlainText();
+    return info_text_->toPlainText();
 }
 
 int MainWindow::berFileOpen(const QString berPath)

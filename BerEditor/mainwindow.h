@@ -56,7 +56,7 @@ public:
     void elog( const QString strLog );
     void info( const QString strLog, QColor cr = QColor(0x00, 0x00, 0x00) );
 
-    QString getLog();
+    QString getInfo();
     void logView( bool bShow = true );
 
     void decodeData( const BIN *pData, const QString strPath = "" );
