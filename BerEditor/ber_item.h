@@ -32,14 +32,17 @@ public:
     int GetOffset() { return offset_; };
     int GetLevel() { return level_; };
 
+
     QString GetTagString();
     QString GetTagXMLString();
     QString GetClassString();
     QString GetValueString( const BIN *pBer );
     QString GetInfoString( const BIN *pBer );
+    BYTE GetDataPos( const BIN *pBer, int nPos );
 
     int changeLength( int nNewLen, int *pnDiffLen );
     int getHeaderBin( BIN *pHeader );
+    int getValueBin( const BIN *pBer, BIN *pValue );
     bool isConstructed();
 
 public:

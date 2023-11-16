@@ -79,6 +79,7 @@ void BerTreeView::infoItem( BerItem *pItem )
 
     BIN bin = {0,0};
     BIN header = {0,0};
+    BIN binVal = {0,0};
 
     char *pBitString = NULL;
     JS_BIN_set( &bin, binBer.pVal + pItem->GetOffset(), 1 );
@@ -131,15 +132,34 @@ void BerTreeView::infoItem( BerItem *pItem )
     berApplet->info( QString( "Tag         : 0x%1 - %2\n").arg( pItem->GetTag(), 2, 16, QChar('0')).arg(pItem->GetTagString()));
     berApplet->info( QString( "Offset      : %1 - %2\n" ).arg( strOffset ).arg(pItem->GetOffset()));
     berApplet->info( QString( "Length      : 0x%1 - %2 Bytes\n" ).arg( getHexString(sLen, nLenSize) ).arg(pItem->GetLength()));
-    berApplet->info( "====================================================================================\n" );
 
     QString strVal = pItem->GetValueString( &binBer );
+
+    if( pItem->GetTag() == JS_BITSTRING )
+    {
+        pItem->getValueBin( &binBer, &binVal );
+        berApplet->info( QString( "Bit Length  : %1 Bits\n" ).arg(strVal.length()));
+        berApplet->info( QString( "Unused Bits : 0x%1 - %2 Bits\n" ).arg(getHexString( &binVal.pVal[0], 1)).arg(binVal.pVal[0]));
+    }
+
+    berApplet->info( "====================================================================================\n" );
     berApplet->info( strVal );
+
+    if( pItem->GetTag() == JS_BITSTRING )
+    {
+        berApplet->info( "\n" );
+        berApplet->info( "====================================================================================\n" );
+        berApplet->info( "== Hex Value\n" );
+        berApplet->info( "====================================================================================\n" );
+        berApplet->info( getHexString(&binVal.pVal[1], binVal.nLen - 1));
+        JS_BIN_reset( &binVal );
+    }
 
     berApplet->mainWindow()->infoText()->moveCursor(QTextCursor::Start);
     if( pBitString ) JS_free( pBitString );
     JS_BIN_reset( &bin );
     JS_BIN_reset( &header );
+    JS_BIN_reset( &binVal );
 }
 
 static char getch( unsigned char c )

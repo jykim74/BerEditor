@@ -36,6 +36,7 @@ public:
 
     void setLicense( const QString strLicense );
     QString getLicense();
+
 signals:
 
 private:
@@ -44,6 +45,7 @@ private:
 private:
     QString default_hash_;
     int file_read_size_;
+
 
 private:
     Q_DISABLE_COPY(SettingsMgr)

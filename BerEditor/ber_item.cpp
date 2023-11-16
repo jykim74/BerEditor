@@ -263,6 +263,13 @@ QString BerItem::GetValueString( const BIN *pBer )
     JS_BIN_reset( &binVal );
     return strVal;
 }
+BYTE BerItem::GetDataPos( const BIN *pBer, int nPos )
+{
+    if( nPos > (offset_ + header_size_ + length_) ) return -1;
+
+    BYTE ch = pBer->pVal[offset_ + header_size_ + nPos];
+    return ch;
+}
 
 QString BerItem::GetInfoString(const BIN *pBer)
 {
@@ -305,11 +312,12 @@ QString BerItem::GetInfoString(const BIN *pBer)
         QString tmpStr = pTextBit;
         if( tmpStr.length() > 16 )
         {
-            tmpStr.mid(0,15);
+            tmpStr = tmpStr.mid(0,15);
             tmpStr += "...";
         }
 
-        strMsg = QString( "%1 %2(unused %3)").arg( strTag ).arg(tmpStr).arg(iUnused);
+//        strMsg = QString( "%1 %2(unused %3)").arg( strTag ).arg(tmpStr).arg(iUnused);
+        strMsg = QString( "%1(%2 bits) %3(unused %4)").arg( strTag ).arg( strlen(pTextBit )).arg( tmpStr ).arg(iUnused);
         JS_BIN_reset(&binVal);
         if( pTextBit ) JS_free( pTextBit );
     }
@@ -397,6 +405,14 @@ int BerItem::getHeaderBin( BIN *pHeader )
     if( pHeader == NULL ) return -1;
 
     JS_BIN_set( pHeader, header_, header_size_ );
+    return 0;
+}
+
+int BerItem::getValueBin( const BIN *pBer, BIN *pValue )
+{
+    if( pBer == NULL || pValue == NULL ) return -1;
+
+    JS_BIN_set( pValue, pBer->pVal + offset_ + header_size_, length_ );
     return 0;
 }
 
