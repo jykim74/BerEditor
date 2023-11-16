@@ -152,7 +152,6 @@ void BerTreeView::infoItem( BerItem *pItem )
         berApplet->info( "== Hex Value\n" );
         berApplet->info( "====================================================================================\n" );
         berApplet->info( getHexString(&binVal.pVal[1], binVal.nLen - 1));
-        JS_BIN_reset( &binVal );
     }
 
     berApplet->mainWindow()->infoText()->moveCursor(QTextCursor::Start);
