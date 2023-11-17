@@ -36,10 +36,10 @@ AboutDlg::AboutDlg(QWidget *parent) :
 
     strAbout += "<br><br>OpenSSL Version 3.0.8";
 
-#ifdef Q_OS_WIN
-    strAbout += "<br>QT Version 5.13.2";
-#else
+#ifdef Q_OS_MACOS
     strAbout += "<br>QT Version 5.15.2";
+#else
+    strAbout += "<br>QT Version 5.13.2";
 #endif
 
     QString strLibVersion = JS_GEN_getBuildInfo();
