@@ -13,7 +13,7 @@ qtHaveModule(printsupport): QT += printsupport
 
 TARGET = BerEditor
 TEMPLATE = app
-PROJECT_VERSION = "1.5.3"
+PROJECT_VERSION = "1.5.5"
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -21,8 +21,8 @@ PROJECT_VERSION = "1.5.3"
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
 DEFINES += BER_EDITOR_VERSION=$$PROJECT_VERSION
-DEFINES += JS_PRO
-DEFINES += _AUTO_UPDATE
+#DEFINES += JS_PRO
+#DEFINES += _AUTO_UPDATE
 
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -146,8 +146,8 @@ mac {
 
 linux {
     LIBS += -L"../../build-PKILib-Desktop_Qt_5_13_2_GCC_64bit-Debug" -lPKILib
-    LIBS += -L"../../PKILib/lib/linux/debug/openssl3/lib" -lcrypto
-    LIBS += -lltdl
+    LIBS += -lltdl -lldap -llber -lgmp
+    LIBS += -L"../../PKILib/lib/linux/debug/openssl3/lib64" -lcrypto -lssl
 }
 
 win32 {
