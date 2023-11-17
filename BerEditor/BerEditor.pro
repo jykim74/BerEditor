@@ -21,7 +21,6 @@ PROJECT_VERSION = "1.5.5"
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
 DEFINES += BER_EDITOR_VERSION=$$PROJECT_VERSION
-#DEFINES += JS_PRO
 #DEFINES += _AUTO_UPDATE
 
 # You can also make your code fail to compile if you use deprecated APIs.
@@ -114,6 +113,8 @@ HEADERS += \
 # Sparkle.framework 를 Qt/5.11.3/clang_64/lib/ 에 복사 해 주었음
 
 mac {
+    DEFINES += _AUTO_UPDATE
+
     QMAKE_INFO_PLIST = info.plist
 
     ICON = bereditor.icns
@@ -151,6 +152,7 @@ linux {
 }
 
 win32 {
+    DEFINES += _AUTO_UPDATE
     RC_ICONS = bereditor.ico
     INCLUDEPATH += "../../PKILib/lib/win32/winsparkle/include"
     INCLUDEPATH += "C:\msys64\mingw32\include"

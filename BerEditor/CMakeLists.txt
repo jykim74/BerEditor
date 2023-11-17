@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 project(BerEditor
-    VERSION 1.5.4
+    VERSION 1.5.5
     DESCRIPTION "BerEditor Application"
     LANGUAGES CXX )
 
@@ -230,22 +230,19 @@ elseif(APPLE)
 
 elseif(LINUX)
     include_directories( ../../PKILib
-        "/usr/local/include"
-        ../../PKILib/lib/win64/winsparkle/include )
+        "/usr/local/include" )
 
     if(Debug)
         target_link_directories( ${PROJECT_NAME} PRIVATE
-        ../../build-PKILib-Desktop_Qt_5_13_2_MinGW_64_bit-Debug
+        ../../build-PKILib-Desktop_Qt_5_13_2_GCC_64bit-Debug
         ../../PKILib/lib/win64/debug/openssl3/lib64
-        ../../PKILib/lib/win64/winsparkle/x64/Release
         "/usr/local/lib" )
     endif()
 
     if(NOT Debug)
         target_link_directories( ${PROJECT_NAME} PRIVATE
-        ../../build-PKILib-Desktop_Qt_5_13_2_MinGW_64_bit-Release
+        ../../build-PKILib-Desktop_Qt_5_13_2_GCC_64bit-Release
         ../../PKILib/lib/win64/openssl3/lib64
-        ../../PKILib/lib/win64/winsparkle/x64/Release
         "/usr/local/lib" )
     endif()
 
