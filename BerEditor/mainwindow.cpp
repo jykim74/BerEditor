@@ -183,11 +183,13 @@ void MainWindow::createTableMenu()
     QStringList     labels = { tr("Field"), "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
                                "A", "B", "C", "D", "E", "F", tr("Text") };
 
+    right_table_->horizontalHeader()->setMinimumSectionSize(10);  // 최소 column width 지정
     right_table_->horizontalHeader()->setStretchLastSection(true);
     right_table_->setColumnCount(18);
     QString style = "QHeaderView::section {background-color:#404040;color:#FFFFFF;}";
 
     right_table_->horizontalHeader()->setStyleSheet( style );
+
 
 #ifdef Q_OS_MAC
     right_table_->setColumnWidth(0, 90);
