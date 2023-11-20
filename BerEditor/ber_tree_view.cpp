@@ -121,9 +121,9 @@ void BerTreeView::infoItem( BerItem *pItem )
     strOffset = QString( "%1" ).arg( pItem->GetOffset(), 8, 16, QLatin1Char('0')).toUpper();
 
     berApplet->mainWindow()->infoText()->clear();
-    berApplet->info( "====================================================================================\n" );
+    berApplet->info( "=================================================================================\n" );
     berApplet->info( QString( "== BER Information [Depth:%1]\n" ).arg(pItem->GetLevel()) );
-    berApplet->info( "====================================================================================\n" );
+    berApplet->info( "=================================================================================\n" );
     berApplet->info( QString( "Header      : %1\n").arg( getHexString(header.pVal, header.nLen)));
     berApplet->info( QString( "[T]         : 0x%1 - %2\n" ).arg(getHexString(bin.pVal,1)).arg(pBitString) );
     berApplet->info( QString( "Class       : %1\n").arg( pItem->GetClassString()));
@@ -142,15 +142,15 @@ void BerTreeView::infoItem( BerItem *pItem )
         berApplet->info( QString( "Unused Bits : 0x%1 - %2 Bits\n" ).arg(getHexString( &binVal.pVal[0], 1)).arg(binVal.pVal[0]));
     }
 
-    berApplet->info( "====================================================================================\n" );
+    berApplet->info( "=================================================================================\n" );
     berApplet->info( strVal );
 
     if( pItem->GetTag() == JS_BITSTRING )
     {
         berApplet->info( "\n" );
-        berApplet->info( "====================================================================================\n" );
+        berApplet->info( "=================================================================================\n" );
         berApplet->info( "== Hex Value\n" );
-        berApplet->info( "====================================================================================\n" );
+        berApplet->info( "=================================================================================\n" );
         berApplet->info( getHexString(&binVal.pVal[1], binVal.nLen - 1));
     }
 
@@ -187,7 +187,7 @@ QString BerTreeView::GetTextView()
 
     JS_BIN_set( &binData, &binBer.pVal[item->GetOffset()], item->GetHeaderSize() + item->GetLength() );
     QString strText = berApplet->mainWindow()->getInfo();
-    strText += "\n====================================================================================\n";
+    strText += "\n=================================================================================\n";
     strText += getHexView( "All Data", &binData );
     JS_BIN_reset( &binData );
 
