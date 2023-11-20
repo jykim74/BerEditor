@@ -159,20 +159,19 @@ void MainWindow::initialize()
     vsplitter_->setSizes(vsizes);
 
     QList<int> sizes;
-
-#ifdef Q_OS_MAC
-    sizes << 540 << 1200;
-#else
     sizes << 400 << 1200;
-#endif
-
-    hsplitter_->setSizes(sizes);
 
 #ifdef Q_OS_MAC
     resize( 1040, 780 );
 #else
+#ifdef Q_OS_WIN
+    resize( 940, 760 );
+#else
     resize( 1020, 760 );
 #endif
+#endif
+
+    hsplitter_->setSizes(sizes);
 
     setCentralWidget(hsplitter_);
     createTableMenu();
