@@ -20,6 +20,8 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain( "jssoft.com" );
     QCoreApplication::setApplicationName( "BerEditor" );
 
+    QGuiApplication::setWindowIcon(QIcon(":/images/bereditor.png"));
+
     QCommandLineParser parser;
     parser.setApplicationDescription( QCoreApplication::applicationName());
     parser.addHelpOption();
