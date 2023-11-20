@@ -191,10 +191,14 @@ void MainWindow::createTableMenu()
     right_table_->horizontalHeader()->setStyleSheet( style );
 
 
-#ifdef Q_OS_MAC
-    right_table_->setColumnWidth(0, 90);
-#else
+#ifdef Q_OS_WIN32
     right_table_->setColumnWidth(0, 80);
+#else
+#ifdef Q_OS_LINUX
+    right_table_->setColumnWidth(0, 100);
+#else
+    right_table_->setColumnWidth(0, 90);
+#endif
 #endif
 
     for( int i=1; i <= 16; i++ )
