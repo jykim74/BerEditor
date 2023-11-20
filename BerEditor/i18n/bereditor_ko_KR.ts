@@ -3463,7 +3463,7 @@ Do you want to delete the file and continue?</source>
     <message>
         <location filename="../mainwindow.cpp" line="319"/>
         <source>&amp;Copy Information</source>
-        <translation type="unfinished"></translation>
+        <translation>복사 정보(&amp;C)</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="540"/>
