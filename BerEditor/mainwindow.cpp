@@ -647,9 +647,15 @@ void MainWindow::open()
 
 void MainWindow::openRecent()
 {
+    int ret = 0;
     QAction *action = qobject_cast<QAction *>(sender());
     if( action )
-        berFileOpen( action->data().toString() );
+    {
+        ret = berFileOpen( action->data().toString() );
+        if( ret != 0 ) return;
+
+        berApplet->setBERPath( action->data().toString() );
+    }
 }
 
 void MainWindow::openBer( const BIN *pBer )
