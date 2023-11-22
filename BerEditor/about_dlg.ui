@@ -64,10 +64,6 @@
    <item>
     <widget class="QTextBrowser" name="mAboutText">
      <property name="font">
-      <font>
-       <pointsize>9</pointsize>
-       <bold>false</bold>
-      </font>
      </property>
      <property name="openExternalLinks">
       <bool>false</bool>
@@ -79,10 +75,6 @@
      <item>
       <widget class="QPushButton" name="mCheckUpdatBtn">
        <property name="font">
-        <font>
-         <pointsize>9</pointsize>
-         <bold>false</bold>
-        </font>
        </property>
        <property name="text">
         <string>Check For Update</string>
