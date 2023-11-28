@@ -14,7 +14,11 @@ AboutDlg::AboutDlg(QWidget *parent) :
 
     initialize();
 
-    version_label_ = tr( "About %1 [Ver %2]").arg(berApplet->getBrand()).arg(STRINGIZE(BER_EDITOR_VERSION));
+    if( berApplet->isLicense() )
+        version_label_ = tr( "%1 [Ver %2]").arg(berApplet->getBrand()).arg(STRINGIZE(BER_EDITOR_VERSION));
+    else
+        version_label_ = tr( "%1 (Unlicensed Version) [Ver %2]").arg(berApplet->getBrand()).arg(STRINGIZE(BER_EDITOR_VERSION));
+
     mVersionLabel->setText( version_label_ );
 
     connect(mOKBtn, SIGNAL(clicked()), this, SLOT(close()));

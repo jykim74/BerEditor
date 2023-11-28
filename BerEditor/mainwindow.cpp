@@ -772,9 +772,14 @@ int MainWindow::berFileOpen(const QString berPath)
 
 void MainWindow::setTitle( const QString strName )
 {
-   QString strWinTitle = QString( "%1 - %2" ).arg( berApplet->getBrand() ).arg( strName );
+    QString strTitle;
 
-   setWindowTitle( strWinTitle );
+    if( berApplet->isLicense() )
+        strTitle = QString( "%1 - %2" ).arg( berApplet->getBrand() ).arg( strName );
+    else
+        strTitle = QString( "%1 (Unlicensed Version) - %2" ).arg( berApplet->getBrand() ).arg( strName );
+
+   setWindowTitle( strTitle );
 }
 
 void MainWindow::showTextMsg(const QString &msg)
