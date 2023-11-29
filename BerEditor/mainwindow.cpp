@@ -173,8 +173,10 @@ void MainWindow::initialize()
 
     hsplitter_->setSizes(sizes);
 
+
     setCentralWidget(hsplitter_);
     createTableMenu();
+    setTitle( "" );
 }
 
 void MainWindow::createTableMenu()
@@ -772,12 +774,13 @@ int MainWindow::berFileOpen(const QString berPath)
 
 void MainWindow::setTitle( const QString strName )
 {
-    QString strTitle;
+    QString strTitle = berApplet->getBrand();
 
-    if( berApplet->isLicense() )
-        strTitle = QString( "%1 - %2" ).arg( berApplet->getBrand() ).arg( strName );
-    else
-        strTitle = QString( "%1 (Unlicensed Version) - %2" ).arg( berApplet->getBrand() ).arg( strName );
+    if( berApplet->isLicense() == false )
+        strTitle += " (Unlicensed version)";
+
+    if( strName.length() >= 1 )
+        strTitle += QString( " - %1" ).arg( strName );
 
    setWindowTitle( strTitle );
 }
