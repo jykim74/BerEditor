@@ -98,8 +98,7 @@ void BerApplet::start()
 
     if( isLicense() )
     {
-        if( settings_mgr_->showLogTab() )
-            main_win_->logView();
+        main_win_->useLog( settings_mgr_->getUseLogTab() );
     }
     else
     {

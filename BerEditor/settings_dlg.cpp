@@ -38,8 +38,9 @@ void SettingsDlg::initialize()
 
     if( berApplet->isLicense() == false )
     {
-        mDefaultHashGroup->hide();
-        mFileReadSizeGroup->hide();
+        mDefaultHashGroup->setEnabled( false );
+        mFileReadSizeGroup->setEnabled( false );
+        mUseLogTabCheck->setEnabled( false );
     }
 
     initFontFamily();
@@ -53,8 +54,8 @@ void SettingsDlg::updateSettings()
 
     if( berApplet->isLicense() )
     {
-        mgr->setShowLogTab( mShowLogTabCheck->checkState() == Qt::Checked );
-        berApplet->mainWindow()->logView( mShowLogTabCheck->checkState() == Qt::Checked );
+        mgr->setUseLogTab( mUseLogTabCheck->checkState() == Qt::Checked );
+        berApplet->mainWindow()->useLog( mUseLogTabCheck->checkState() == Qt::Checked );
     }
 
 #ifdef _AUTO_UPDATE
@@ -83,8 +84,8 @@ void SettingsDlg::updateSettings()
 
     mgr->setOIDConfigPath( mOIDConfigPathText->text() );
 
-    mgr->setShowLogTab( mShowLogTabCheck->checkState() == Qt::Checked );
-    berApplet->mainWindow()->logView( mShowLogTabCheck->checkState() == Qt::Checked );
+    mgr->setUseLogTab( mUseLogTabCheck->checkState() == Qt::Checked );
+    berApplet->mainWindow()->useLog( mUseLogTabCheck->checkState() == Qt::Checked );
 
     mgr->setFontFamily( mFontFamilyCombo->currentText());
 }
@@ -127,11 +128,9 @@ void SettingsDlg::showEvent(QShowEvent *event)
 
     if( berApplet->isLicense() )
     {
-        state = mgr->showLogTab() ? Qt::Checked : Qt::Unchecked;
-        mShowLogTabCheck->setCheckState(state);
+        state = mgr->getUseLogTab() ? Qt::Checked : Qt::Unchecked;
+        mUseLogTabCheck->setCheckState(state);
     }
-    else
-        mShowLogTabCheck->hide();
 
     mFileReadSizeText->setText( QString("%1").arg(mgr->getFileReadSize()));
 

@@ -17,8 +17,8 @@ public:
     void setOIDConfigPath( const QString& strPath );
     QString OIDConfigPath();
 
-    void setShowLogTab( bool bVal );
-    bool showLogTab();
+    void setUseLogTab( bool bVal );
+    bool getUseLogTab();
 
     void setDefaultHash( const QString& strHash );
     QString getDefaultHash();

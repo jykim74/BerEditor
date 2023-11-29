@@ -410,8 +410,16 @@ void BerTreeView::ShowContextMenu(QPoint point)
     menu.addAction(tr("Save node"), this, SLOT(SaveNode()));
     menu.addAction(tr("Save node value"), this, SLOT(SaveNodeValue()));
 
+    QAction* pEditAct = menu.addAction(tr("Edit value"), this, SLOT(EditValue()));
+    if( berApplet->isLicense() == false )
+    {
+        pEditAct->setEnabled( false );
+    }
+
+    /*
     if( berApplet->isLicense() )
         menu.addAction(tr("Edit value"), this, SLOT(EditValue()));
+    */
 
     BerItem* item = currentItem();
 

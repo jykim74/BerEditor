@@ -5,7 +5,7 @@ namespace  {
 const char *kBehaviorGroup = "Behavior";
 const char *kShowPartOnly = "showPartOnly";
 const char *kOIDConfigPath = "OIDConfigPath";
-const char *kShowLogTab = "showLogTab";
+const char *kUseLogTab = "useLogTab";
 const char *kDefaultHash = "defaultHash";
 const char *kFileReadSize = "fileReadSize";
 const char *kFontFamily = "fontFamily";
@@ -69,23 +69,23 @@ QString SettingsMgr::OIDConfigPath()
     return strPath;
 }
 
-void SettingsMgr::setShowLogTab( bool bVal )
+void SettingsMgr::setUseLogTab( bool bVal )
 {
     QSettings settings;
 
     settings.beginGroup( kBehaviorGroup );
-    settings.setValue( kShowLogTab, bVal );
+    settings.setValue( kUseLogTab, bVal );
     settings.endGroup();
 }
 
-bool SettingsMgr::showLogTab()
+bool SettingsMgr::getUseLogTab()
 {
     QSettings settings;
 
     bool val;
 
     settings.beginGroup(kBehaviorGroup);
-    val = settings.value( kShowLogTab, false).toBool();
+    val = settings.value( kUseLogTab, false).toBool();
     settings.endGroup();
 
     return val;

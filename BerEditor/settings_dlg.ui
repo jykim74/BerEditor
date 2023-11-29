@@ -143,9 +143,9 @@
           </widget>
          </item>
          <item>
-          <widget class="QCheckBox" name="mShowLogTabCheck">
+          <widget class="QCheckBox" name="mUseLogTabCheck">
            <property name="text">
-            <string>Show log view tab at startup</string>
+            <string>Use log tab at startup</string>
            </property>
           </widget>
          </item>
@@ -330,7 +330,7 @@
   <tabstop>mTabWidget</tabstop>
   <tabstop>mCheckBoxLatestVersion</tabstop>
   <tabstop>mCheckShowPartOnly</tabstop>
-  <tabstop>mShowLogTabCheck</tabstop>
+  <tabstop>mUseLogTabCheck</tabstop>
   <tabstop>mFontFamilyCombo</tabstop>
   <tabstop>mLangComboBox</tabstop>
   <tabstop>mOIDConfigPathText</tabstop>

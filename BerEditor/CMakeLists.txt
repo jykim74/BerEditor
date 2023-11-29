@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 project(BerEditor
-    VERSION 1.5.6
+    VERSION 1.5.7
     DESCRIPTION "BerEditor Application"
     LANGUAGES CXX )
 
@@ -149,6 +149,7 @@ add_executable(${PROJECT_NAME}
     ${RESOURCE_ADDED}
     be.rc
     bereditor.icns
+    BerEditor.pro
 )
 
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )
