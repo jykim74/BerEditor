@@ -36,6 +36,12 @@ void SettingsDlg::initialize()
     QIntValidator *intVal = new QIntValidator( 0, 999999 );
     mFileReadSizeText->setValidator( intVal );
 
+    if( berApplet->isLicense() == false )
+    {
+        mDefaultHashGroup->hide();
+        mFileReadSizeGroup->hide();
+    }
+
     initFontFamily();
 }
 
@@ -58,8 +64,11 @@ void SettingsDlg::updateSettings()
     }
 #endif
 
-    mgr->setDefaultHash( mDefaultHashCombo->currentText() );
-    mgr->setFileReadSize( mFileReadSizeText->text().toInt() );
+    if( berApplet->isLicense() == true )
+    {
+        mgr->setDefaultHash( mDefaultHashCombo->currentText() );
+        mgr->setFileReadSize( mFileReadSizeText->text().toInt() );
+    }
 
     bool language_changed = false;
 
