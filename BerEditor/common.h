@@ -30,6 +30,7 @@ enum {
     JS_FILE_TYPE_BER,
     JS_FILE_TYPE_CFG,
     JS_FILE_TYPE_REQ,
+    JS_FILE_TYPE_LCN,
     JS_FILE_TYPE_ALL };
 
 const QColor kAddrColor( 220, 220, 250 );
