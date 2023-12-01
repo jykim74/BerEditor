@@ -707,7 +707,7 @@ bool MainWindow::isChanged()
         if( file_path_.length() < 1 )
             return true;
 
-        JS_BIN_fileRead( file_path_.toLocal8Bit().toStdString().c_str(), &binFile );
+        JS_BIN_fileReadBER( file_path_.toLocal8Bit().toStdString().c_str(), &binFile );
         if( JS_BIN_cmp( &binBer, &binFile ) != 0 )
         {
             JS_BIN_reset( &binFile );
