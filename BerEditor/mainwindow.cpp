@@ -769,6 +769,7 @@ int MainWindow::berFileOpen(const QString berPath)
 
     if( ret > 0 )
     {
+        /*
         if( berApplet->isLicense() == false )
         {
             if( binRead.nLen > kNoLicenseLimitMaxSize )
@@ -778,6 +779,7 @@ int MainWindow::berFileOpen(const QString berPath)
                 return -1;
             }
         }
+        */
 
         openBer( &binRead );
         JS_BIN_reset( &binRead );
