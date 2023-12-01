@@ -713,6 +713,8 @@ bool MainWindow::isChanged()
             JS_BIN_reset( &binFile );
             return true;
         }
+
+        JS_BIN_reset( &binFile );
     }
 
     return false;
