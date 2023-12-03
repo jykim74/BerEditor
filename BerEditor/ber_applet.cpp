@@ -25,6 +25,7 @@
 #include "about_dlg.h"
 #include "common.h"
 #include "js_net.h"
+#include "lcn_info_dlg.h"
 
 BerApplet *berApplet;
 
@@ -103,6 +104,9 @@ void BerApplet::start()
     else
     {
         info( "The BerEditor is not licensed" );
+        LCNInfoDlg lcnInfo;
+        lcnInfo.setCurTab(1);
+        lcnInfo.exec();
     }
 
     QString strVersion = STRINGIZE(BER_EDITOR_VERSION);

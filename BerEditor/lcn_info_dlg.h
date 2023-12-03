@@ -16,6 +16,7 @@ class LCNInfoDlg : public QDialog, public Ui::LCNInfoDlg
 public:
     explicit LCNInfoDlg(QWidget *parent = nullptr);
     ~LCNInfoDlg();
+    void setCurTab( int index );
 
 private slots:
     void clickGet();

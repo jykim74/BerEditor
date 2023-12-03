@@ -30,6 +30,11 @@ LCNInfoDlg::~LCNInfoDlg()
 
 }
 
+void LCNInfoDlg::setCurTab(int index)
+{
+    tabWidget->setCurrentIndex(index);
+}
+
 QString LCNInfoDlg::getLicenseURI()
 {
     QString url_from_env = qgetenv("JS_INC_LICENSE_URI");
@@ -49,11 +54,11 @@ void LCNInfoDlg::initialize()
 {
     int ret = 0;
     mUpdateBtn->setEnabled( false );
+    JS_LICENSE_INFO sLicenseInfo = berApplet->LicenseInfo();
 
     if( berApplet->isLicense() )
     {
         QString strExt;
-        JS_LICENSE_INFO sLicenseInfo = berApplet->LicenseInfo();
 
         QDateTime issueTime = QDateTime::fromString( sLicenseInfo.sIssued, JS_LCN_TIME_FORMAT);
         QDateTime expireTime = QDateTime::fromString( sLicenseInfo.sExpire, JS_LCN_TIME_FORMAT );
@@ -78,16 +83,32 @@ void LCNInfoDlg::initialize()
         {
             mCurGroup->setEnabled( false );
         }
+
+        mMessageLabel->setText( tr("This BerEditor is licensed version") );
     }
     else
     {
-        mUpdateBtn->setEnabled( false );
+        QString strMsg = tr( "This BerEditor is unlicensed version.\r\n" );
+        QString strAppend;
+
+        if( sLicenseInfo.nVersion > 0 )
+        {
+            strAppend = tr( "Expired Date: %1").arg( sLicenseInfo.sExpire );
+        }
+        else
+        {
+            strAppend = tr( "The license is not issued." );
+        }
+
+        strMsg += strAppend;
+        mMessageLabel->setText( strMsg );
+
         mCurGroup->setEnabled( false );
     }
 
-//    mReqGroup->setEnabled( !mCurGroup->isEnabled() );
     mUpdateBtn->setEnabled( mCurGroup->isEnabled() );
     mUseFileCheck->click();
+    tabWidget->setCurrentIndex(0);
 }
 
 void LCNInfoDlg::settingsLCN( const QString strSID, const BIN *pLCN )
