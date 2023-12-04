@@ -205,8 +205,10 @@ QString SettingsMgr::getLicense()
 void SettingsMgr::setStopMessage( time_t tLastTime )
 {
     QSettings sets;
+    qint64 uLastTime = tLastTime;
+
     sets.beginGroup( kMisc );
-    sets.setValue( kStopMessage, tLastTime );
+    sets.setValue( kStopMessage, uLastTime );
     sets.endGroup();
 }
 
