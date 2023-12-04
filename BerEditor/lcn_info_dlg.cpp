@@ -84,7 +84,7 @@ void LCNInfoDlg::initialize()
         {
             mCurGroup->setEnabled( false );
         }
-
+        
         mMessageLabel->setText( tr("This BerEditor is licensed version") );
         mStopMessageCheck->hide();
     }
