@@ -21,6 +21,7 @@ LCNInfoDlg::LCNInfoDlg(QWidget *parent) :
     connect( mUpdateBtn, SIGNAL(clicked()), this, SLOT(clickUpdate()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mUseFileCheck, SIGNAL(clicked()), this, SLOT(checkUseFile()));
+    connect( mStopMessageCheck, SIGNAL(clicked()), this, SLOT(checkStopMessage()));
 
     initialize();
 }
@@ -85,6 +86,7 @@ void LCNInfoDlg::initialize()
         }
 
         mMessageLabel->setText( tr("This BerEditor is licensed version") );
+        mStopMessageCheck->hide();
     }
     else
     {
@@ -104,6 +106,8 @@ void LCNInfoDlg::initialize()
         mMessageLabel->setText( strMsg );
 
         mCurGroup->setEnabled( false );
+        time_t tLastTime = berApplet->settingsMgr()->getStopMessage();
+        if( tLastTime > 0 ) mStopMessageCheck->setChecked(true);
     }
 
     mUpdateBtn->setEnabled( mCurGroup->isEnabled() );
@@ -398,4 +402,20 @@ void LCNInfoDlg::checkUseFile()
 
     mEmailText->setEnabled( !bVal );
     mKeyText->setEnabled( !bVal );
+}
+
+void LCNInfoDlg::checkStopMessage()
+{
+    bool bVal = mStopMessageCheck->isChecked();
+
+    if( bVal )
+    {
+        time_t now_t = time(NULL);
+        QString strMessage = QString( "LastCheck:%1").arg( now_t );
+        berApplet->settingsMgr()->setStopMessage( now_t );
+    }
+    else
+    {
+        berApplet->settingsMgr()->setStopMessage( 0 );
+    }
 }

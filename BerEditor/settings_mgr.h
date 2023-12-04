@@ -37,6 +37,9 @@ public:
     void setLicense( const QString strLicense );
     QString getLicense();
 
+    void setStopMessage( time_t tLastTime );
+    time_t getStopMessage();
+
 signals:
 
 private:

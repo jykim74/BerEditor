@@ -22,6 +22,7 @@ private slots:
     void clickGet();
     void clickUpdate();
     void checkUseFile();
+    void checkStopMessage();
 
 private:
     QString getLicenseURI();

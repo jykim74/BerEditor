@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>454</width>
-    <height>451</height>
+    <height>366</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -36,7 +36,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -222,6 +222,13 @@
         <widget class="QLabel" name="mMessageLabel">
          <property name="text">
           <string>BerEditor</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="mStopMessageCheck">
+         <property name="text">
+          <string>Do stop showing this message for the time being</string>
          </property>
         </widget>
        </item>
