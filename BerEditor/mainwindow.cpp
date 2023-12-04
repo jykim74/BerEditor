@@ -118,6 +118,7 @@ void MainWindow::initialize()
     right_table_->setEditTriggers(QAbstractItemView::NoEditTriggers);
  //   right_table_->setSelectionMode( QAbstractItemView::ExtendedSelection );
     right_table_->setSelectionMode(QAbstractItemView::MultiSelection);
+ //   right_table_->setSelectionMode(QAbstractItemView::ContiguousSelection);
     right_table_->setContextMenuPolicy(Qt::CustomContextMenu);
     connect( right_table_, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(rightTableCustomMenu(const QPoint&)));
 
