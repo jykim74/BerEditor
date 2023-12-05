@@ -25,7 +25,6 @@ static QStringList methodTypes = {
 static QStringList algList = {
     "AES",
     "ARIA",
-    "DES",
     "DES3",
     "SEED",
     "SM4"
@@ -245,11 +244,13 @@ void EncDecDlg::dataRun()
     }
     else
     {
+        /*
         if( binIV.nLen != 0 && binIV.nLen != 16 )
         {
             berApplet->warningBox( tr("Invalid IV length" ), this );
             goto end;
         }
+        */
 
         if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
         {
@@ -604,11 +605,13 @@ int EncDecDlg::encDecInit()
         }
     }
     else {
+        /*
         if( binIV.nLen != 0 && binIV.nLen != 16 )
         {
             berApplet->warningBox( tr("Invalid IV length" ), this );
             goto end;
         }
+        */
 
         if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
         {
