@@ -190,6 +190,13 @@ void EncDecDlg::dataRun()
         goto end;
     }
 
+    if( binKey.nLen < 16 )
+    {
+        berApplet->warningBox( tr( "Invalid Key Length: %1" ).arg( binKey.nLen), this );
+        ret = -1;
+        goto end;
+    }
+
     if( mUseAECheck->isChecked() )
     {
         int nReqTagLen = mReqTagLenText->text().toInt();
@@ -546,7 +553,6 @@ int EncDecDlg::encDecInit()
     }
 
     getBINFromString( &binSrc, nDataType, strInput );
-
     getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
 
     QString strIV = mIVText->text();
@@ -560,6 +566,13 @@ int EncDecDlg::encDecInit()
     QString strSymAlg = getSymAlg( strAlg, strMode, binKey.nLen );
 
     berApplet->log( QString( "SymAlg  : %1").arg( strSymAlg ));
+
+    if( binKey.nLen < 16 )
+    {
+        berApplet->warningBox( tr( "Invalid Key Length: %1" ).arg( binKey.nLen), this );
+        ret = -1;
+        goto end;
+    }
 
     if( mUseAECheck->isChecked() )
     {
