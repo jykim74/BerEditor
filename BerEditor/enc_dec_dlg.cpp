@@ -173,6 +173,14 @@ void EncDecDlg::dataRun()
 
     getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
 
+    if( binKey.nLen < 16 )
+    {
+        berApplet->warningBox( tr( "Invalid Key Length: %1" ).arg( binKey.nLen), this );
+        JS_BIN_reset( &binSrc );
+        JS_BIN_reset( &binKey );
+        return;
+    }
+
     QString strIV = mIVText->text();
 
     getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
@@ -190,12 +198,7 @@ void EncDecDlg::dataRun()
         goto end;
     }
 
-    if( binKey.nLen < 16 )
-    {
-        berApplet->warningBox( tr( "Invalid Key Length: %1" ).arg( binKey.nLen), this );
-        ret = -1;
-        goto end;
-    }
+
 
     if( mUseAECheck->isChecked() )
     {
