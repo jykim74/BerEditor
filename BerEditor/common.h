@@ -60,6 +60,8 @@ static QStringList kHashList = {
     "SM3"
 };
 
+static const QString kSettingBer = "SettingBer";
+
 static QStringList kValueTypeList = { "String", "Hex", "Base64" };
 
 const QString kExtNameAIA = "authorityInfoAccess";

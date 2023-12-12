@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "ui_cert_info_dlg.h"
+#include "js_bin.h"
 
 
 namespace Ui {
@@ -21,6 +22,8 @@ public:
     void setCertPath( const QString strPath );
     QTableWidgetItem* getExtNameItem( const QString strSN );
 
+    void setCertBIN( const BIN *pCert );
+
 private slots:
     void showEvent(QShowEvent *event);
     void clickField( QModelIndex index );
@@ -28,6 +31,7 @@ private slots:
 
 private:
     QString cert_path_;
+    BIN cert_bin_;
 
     void getFields();
     void initUI();

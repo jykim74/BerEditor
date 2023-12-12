@@ -520,6 +520,7 @@ void MainWindow::createActions()
     connect( tlsAct, &QAction::triggered, this, &MainWindow::tlsVerify );
     cavpAct->setStatusTip(tr("TLS Verify"));
     cryptMenu->addAction( tlsAct );
+    cryptToolBar->addAction( tlsAct );
 
     if( berApplet->isLicense() == false )
     {

@@ -68,17 +68,25 @@ CertInfoDlg::CertInfoDlg(QWidget *parent) :
 
     initUI();
     cert_path_ = "";
+    memset( &cert_bin_, 0x00, sizeof(BIN));
     tabWidget->setCurrentIndex(0);
 }
 
 CertInfoDlg::~CertInfoDlg()
 {
-
+    JS_BIN_reset( &cert_bin_);
 }
 
 void CertInfoDlg::setCertPath(const QString strPath)
 {
     cert_path_ = strPath;
+}
+
+void CertInfoDlg::setCertBIN( const BIN *pCert )
+{
+    cert_path_.clear();
+    JS_BIN_reset( &cert_bin_ );
+    JS_BIN_copy( &cert_bin_, pCert );
 }
 
 void CertInfoDlg::showEvent(QShowEvent *event)
@@ -102,7 +110,7 @@ void CertInfoDlg::getFields()
 
     int nType = mFieldTypeCombo->currentIndex();
 
-    if( cert_path_.length() < 1 )
+    if( cert_path_.length() < 1 && cert_bin_.nLen <= 0 )
     {
         berApplet->warningBox( tr( "Select certificate"), this );
         this->hide();
@@ -112,7 +120,10 @@ void CertInfoDlg::getFields()
     memset( &sCertInfo, 0x00, sizeof(sCertInfo));
     clearTable();
 
-    JS_BIN_fileReadBER( cert_path_.toLocal8Bit().toStdString().c_str(), &binCert );
+    if( cert_bin_.nLen > 0 )
+        JS_BIN_copy( &binCert, &cert_bin_ );
+    else
+        JS_BIN_fileReadBER( cert_path_.toLocal8Bit().toStdString().c_str(), &binCert );
 
     ret = JS_PKI_getCertInfo( &binCert, &sCertInfo, &pExtInfoList );
     if( ret != 0 )

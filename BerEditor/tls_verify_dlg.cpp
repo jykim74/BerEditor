@@ -1,5 +1,7 @@
 #include <QUrl>
 #include <QDateTime>
+#include <QSettings>
+#include <QMenu>
 
 #include "common.h"
 #include "tls_verify_dlg.h"
@@ -7,6 +9,9 @@
 #include "mainwindow.h"
 #include "js_ssl.h"
 #include "js_util.h"
+#include "cert_info_dlg.h"
+
+const QString kTLSUsedURL = "TLSUsedURL";
 
 TLSVerifyDlg::TLSVerifyDlg(QWidget *parent) :
     QDialog(parent)
@@ -17,7 +22,15 @@ TLSVerifyDlg::TLSVerifyDlg(QWidget *parent) :
     connect( mRefreshBtn, SIGNAL(clicked()), this, SLOT(clickRefresh()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
+    connect( mURLTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotTableMenuRequested(QPoint)));
+    connect( mURLTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(viewCertTableMenu()));
+    connect( mURLTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotTreeMenuRequested(QPoint)));
+
     initialize();
+
+#if defined(Q_OS_MAC)
+    layout()->setSpacing(5);
+#endif
 }
 
 TLSVerifyDlg::~TLSVerifyDlg()
@@ -27,7 +40,7 @@ TLSVerifyDlg::~TLSVerifyDlg()
 
 void TLSVerifyDlg::initialize()
 {
-    QStringList sURLLabels = { tr( "URL" ), tr( "From" ), tr( "To" ), tr( "Days Left") };
+    QStringList sURLLabels = { tr( "URL" ), tr( "Port" ), tr( "From" ), tr( "To" ), tr( "Days Left") };
 
     mURLTable->clear();
     mURLTable->horizontalHeader()->setStretchLastSection(true);
@@ -39,10 +52,13 @@ void TLSVerifyDlg::initialize()
     mURLTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     mURLTable->setColumnWidth( 0, 240 );
-    mURLTable->setColumnWidth( 1, 80 );
+    mURLTable->setColumnWidth( 1, 60 );
     mURLTable->setColumnWidth( 2, 80 );
+    mURLTable->setColumnWidth( 3, 80 );
 
     mURLCombo->setEditable( true );
+    QStringList usedList = getUsedURL();
+    mURLCombo->addItems( usedList );
 
     /*
     QFile qss(":/bereditor.qss");
@@ -54,6 +70,31 @@ void TLSVerifyDlg::initialize()
     mURLTree->clear();
     mURLTree->header()->setVisible(false);
     mURLTree->setColumnCount(1);
+}
+
+QStringList TLSVerifyDlg::getUsedURL()
+{
+    QSettings settings;
+    QStringList retList;
+
+    settings.beginGroup( kSettingBer );
+    retList = settings.value( kTLSUsedURL ).toStringList();
+    settings.endGroup();
+
+    return retList;
+}
+
+void TLSVerifyDlg::setUsedURL( const QString strURL )
+{
+    if( strURL.length() <= 4 ) return;
+
+    QSettings settings;
+    settings.beginGroup( kSettingBer );
+    QStringList list = settings.value( kTLSUsedURL ).toStringList();
+    list.removeAll( strURL );
+    list.insert( 0, strURL );
+    settings.setValue( kTLSUsedURL, list );
+    settings.endGroup();
 }
 
 int TLSVerifyDlg::verifyURL( const QString strHost, int nPort )
@@ -112,12 +153,15 @@ int TLSVerifyDlg::verifyURL( const QString strHost, int nPort )
         item->setIcon(QIcon(":/image/cert_revoked.png"));
     }
 
+    item->setData( Qt::UserRole, getHexString( &pAtList->Bin ));
+
     mURLTable->insertRow( row );
     mURLTable->setRowHeight( row, 10 );
     mURLTable->setItem( row, 0, item );
-    mURLTable->setItem( row, 1, new QTableWidgetItem( sNotBefore ));
-    mURLTable->setItem( row, 2, new QTableWidgetItem( sNotAfter ));
-    mURLTable->setItem( row, 3, new QTableWidgetItem( strLeft ));
+    mURLTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( nPort )));
+    mURLTable->setItem( row, 2, new QTableWidgetItem( sNotBefore ));
+    mURLTable->setItem( row, 3, new QTableWidgetItem( sNotAfter ));
+    mURLTable->setItem( row, 4, new QTableWidgetItem( strLeft ));
 
     createTree( pCertList );
 
@@ -154,6 +198,8 @@ void TLSVerifyDlg::createTree( const BINList *pCertList )
 
         QTreeWidgetItem *item = new QTreeWidgetItem;
         item->setText( 0, sCertInfo.pSubjectName );
+        item->setData( 0, Qt::UserRole, getHexString( &pAtList->Bin ));
+        item->setIcon( 0, QIcon(":/images/cert.png"));
 
         if( i == 0 )
         {
@@ -194,6 +240,7 @@ void TLSVerifyDlg::clickConnect()
     berApplet->log( QString( "Host:Port => %1:%2" ).arg( strHost ).arg( nPort ) );
 
     verifyURL( strHost, nPort );
+    setUsedURL( strURL );
 }
 
 void TLSVerifyDlg::clickRefresh()
@@ -208,5 +255,117 @@ void TLSVerifyDlg::clickClearURL()
 
 void TLSVerifyDlg::clickClearSaveURL()
 {
+    QSettings settings;
+    settings.beginGroup( kSettingBer );
+    settings.setValue( kTLSUsedURL, "" );
+    settings.endGroup();
 
+    mURLCombo->clearEditText();
+    mURLCombo->clear();
+
+    berApplet->log( "clear used URLs" );
+}
+
+void TLSVerifyDlg::slotTableMenuRequested( QPoint pos )
+{
+    QMenu *menu = new QMenu(this);
+    QAction *delAct = new QAction( tr( "Delete" ), this );
+    QAction *viewAct = new QAction( tr("View Cert"), this );
+    QAction *decodeAct = new QAction( tr( "Decode Cert"), this);
+
+    connect( delAct, SIGNAL(triggered()), this, SLOT(deleteTableMenu()));
+    connect( viewAct, SIGNAL(triggered()), this, SLOT(viewCertTableMenu()));
+    connect( decodeAct, SIGNAL(triggered()), this, SLOT(decodeCertTableMenu()));
+
+    menu->addAction( delAct );
+    menu->addAction( viewAct );
+    menu->addAction( decodeAct );
+
+    menu->popup( mURLTable->viewport()->mapToGlobal(pos));
+}
+
+void TLSVerifyDlg::deleteTableMenu()
+{
+    QModelIndex idx = mURLTable->currentIndex();
+    QTableWidgetItem *item = mURLTable->item(idx.row(), 0);
+    mURLTable->removeRow(idx.row());
+}
+
+void TLSVerifyDlg::viewCertTableMenu()
+{
+    BIN binCert = {0,0};
+
+    QModelIndex idx = mURLTable->currentIndex();
+    QTableWidgetItem *item = mURLTable->item(idx.row(), 0);
+
+    if( item == NULL ) return;
+
+    QString strData = item->data(Qt::UserRole).toString();
+    JS_BIN_decodeHex( strData.toStdString().c_str(), &binCert );
+
+    CertInfoDlg certInfo;
+    certInfo.setCertBIN( &binCert );
+    JS_BIN_reset( &binCert );
+    certInfo.exec();
+}
+
+void TLSVerifyDlg::decodeCertTableMenu()
+{
+    BIN binCert = {0,0};
+    QModelIndex idx = mURLTable->currentIndex();
+    QTableWidgetItem *item = mURLTable->item(idx.row(), 0);
+
+    if( item == NULL ) return;
+
+    QString strData = item->data(Qt::UserRole).toString();
+    JS_BIN_decodeHex( strData.toStdString().c_str(), &binCert );
+
+    berApplet->decodeData( &binCert, "" );
+    JS_BIN_reset( &binCert );
+}
+
+void TLSVerifyDlg::slotTreeMenuRequested( QPoint pos )
+{
+    QMenu *menu = new QMenu(this);
+    QAction *viewAct = new QAction( tr("View Cert"), this );
+    QAction *decodeAct = new QAction( tr( "Decode Cert"), this);
+
+    connect( viewAct, SIGNAL(triggered()), this, SLOT(viewCertTreeMenu()));
+    connect( decodeAct, SIGNAL(triggered()), this, SLOT(decodeCertTreeMenu()));
+
+    menu->addAction( viewAct );
+    menu->addAction( decodeAct );
+
+    menu->popup( mURLTree->viewport()->mapToGlobal(pos));
+}
+
+void TLSVerifyDlg::viewCertTreeMenu()
+{
+    QTreeWidgetItem *item = mURLTree->currentItem();
+    if( item == NULL ) return;
+
+    QString strData = item->data(0, Qt::UserRole).toString();
+
+    BIN binCert = {0,0};
+    JS_BIN_decodeHex( strData.toStdString().c_str(), &binCert );
+
+    CertInfoDlg certInfo;
+    certInfo.setCertBIN( &binCert );
+    JS_BIN_reset( &binCert );
+    certInfo.exec();
+}
+
+void TLSVerifyDlg::decodeCertTreeMenu()
+{
+    QTreeWidgetItem *item = mURLTree->currentItem();
+
+    if( item == NULL ) return;
+
+    QString strData = item->data(0, Qt::UserRole).toString();
+    BIN binCert = {0,0};
+
+    JS_BIN_decodeHex( strData.toStdString().c_str(), &binCert );
+
+    berApplet->decodeData( &binCert, "" );
+    JS_BIN_reset( &binCert );
 }

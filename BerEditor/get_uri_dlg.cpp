@@ -3,13 +3,12 @@
 #include "get_uri_dlg.h"
 #include "mainwindow.h"
 #include "ber_applet.h"
-
+#include "common.h"
 #include "js_ldap.h"
 #include "js_bin.h"
 #include "js_http.h"
 
-const char *kUsedURI = "UsedURI";
-const char *kURL = "URL";
+const QString kGetUsedURL = "GetUsedURL";
 
 static QStringList sScopeList = { "BASE" };
 static QStringList sTypeList = { "caCertificate", "signCertificate", "userCertificate",
@@ -42,8 +41,8 @@ QStringList GetURIDlg::getUsedURI()
     QSettings settings;
     QStringList retList;
 
-    settings.beginGroup( kUsedURI );
-    retList = settings.value( kURL ).toStringList();
+    settings.beginGroup( kSettingBer );
+    retList = settings.value( kGetUsedURL ).toStringList();
     settings.endGroup();
 
     return retList;
@@ -54,11 +53,11 @@ void GetURIDlg::saveUsedURI( const QString &strURL )
     if( strURL.length() <= 4 ) return;
 
     QSettings settings;
-    settings.beginGroup( kUsedURI );
-    QStringList list = settings.value( kURL ).toStringList();
+    settings.beginGroup( kSettingBer );
+    QStringList list = settings.value( kGetUsedURL ).toStringList();
     list.removeAll( strURL );
     list.insert( 0, strURL );
-    settings.setValue( kURL, list );
+    settings.setValue( kGetUsedURL, list );
     settings.endGroup();
 }
 
@@ -236,8 +235,8 @@ void GetURIDlg::clickUseLDAPHost()
 void GetURIDlg::clickClearUsedURI()
 {
     QSettings settings;
-    settings.beginGroup( kUsedURI );
-    settings.setValue( kURL, "" );
+    settings.beginGroup( kSettingBer );
+    settings.setValue( kGetUsedURL, "" );
     settings.endGroup();
 
     mURICombo->clearEditText();
