@@ -27,6 +27,7 @@
 #include "insert_ber_dlg.h"
 #include "cert_pvd_dlg.h"
 #include "lcn_info_dlg.h"
+#include "tls_verify_dlg.h"
 #include "common.h"
 
 #include <QtWidgets>
@@ -67,8 +68,6 @@ MainWindow::MainWindow(QWidget *parent) :
     setUnifiedTitleAndToolBarOnMac(true);
 
     setAcceptDrops(true);
-
-
 }
 
 MainWindow::~MainWindow()
@@ -94,6 +93,7 @@ MainWindow::~MainWindow()
     delete cert_pvd_dlg_;
     delete gen_otp_dlg_;
     delete cavp_dlg_;
+    delete tls_verify_dlg_;
 
     delete table_tab_;
     delete text_tab_;
@@ -515,6 +515,12 @@ void MainWindow::createActions()
     cavpAct->setStatusTip(tr("CAVP Test"));
     cryptMenu->addAction( cavpAct );
 
+    const QIcon tlsIcon = QIcon::fromTheme( "tool-tls", QIcon(":/images/tls.png"));
+    QAction *tlsAct = new QAction(tlsIcon, tr("&TLS Verify"), this);
+    connect( tlsAct, &QAction::triggered, this, &MainWindow::tlsVerify );
+    cavpAct->setStatusTip(tr("TLS Verify"));
+    cryptMenu->addAction( tlsAct );
+
     if( berApplet->isLicense() == false )
     {
         keyManAct->setEnabled( false );
@@ -529,6 +535,7 @@ void MainWindow::createActions()
         certPVDAct->setEnabled( false );
         genOTPAct->setEnabled( false );
         cavpAct->setEnabled( false );
+        tlsAct->setEnabled( false );
     }
 
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
@@ -613,6 +620,7 @@ void MainWindow::createCryptoDlg()
     cert_pvd_dlg_ = new CertPVDDlg;
     gen_otp_dlg_ = new GenOTPDlg;
     cavp_dlg_ = new CAVPDlg;
+    tls_verify_dlg_ = new TLSVerifyDlg;
 }
 
 void MainWindow::newFile()
@@ -963,6 +971,13 @@ void MainWindow::CAVP()
     cavp_dlg_->show();
     cavp_dlg_->raise();
     cavp_dlg_->activateWindow();
+}
+
+void MainWindow::tlsVerify()
+{
+    tls_verify_dlg_->show();
+    tls_verify_dlg_->raise();
+    tls_verify_dlg_->activateWindow();
 }
 
 void MainWindow::genOTP()

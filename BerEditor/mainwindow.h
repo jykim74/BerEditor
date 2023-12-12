@@ -26,6 +26,7 @@ class SSSDlg;
 class CertPVDDlg;
 class GenOTPDlg;
 class CAVPDlg;
+class TLSVerifyDlg;
 
 namespace Ui {
 class MainWindow;
@@ -81,6 +82,7 @@ private slots:
     void sss();
     void certPVD();
     void CAVP();
+    void tlsVerify();
     void genOTP();
     void insertBER();
     void insertData();
@@ -151,6 +153,7 @@ private:
     CertPVDDlg      *cert_pvd_dlg_;
     GenOTPDlg       *gen_otp_dlg_;
     CAVPDlg         *cavp_dlg_;
+    TLSVerifyDlg    *tls_verify_dlg_;
 
     bool log_halt_;
 };

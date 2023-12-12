@@ -65,6 +65,7 @@ set(PROJECT_SRC
     settings_mgr.cpp
     sign_verify_dlg.cpp
     sss_dlg.cpp
+    tls_verify_dlg.cpp
     ${platform_specific_sources}
 )
 
@@ -105,6 +106,7 @@ set( PROJECT_HEADER
     sign_verify_dlg.h
     singleton.h
     sss_dlg.h
+    tls_verify_dlg.h
     ${platform_specific_headers}
 )
 
@@ -134,6 +136,7 @@ set( PROJECT_FORM
     settings_dlg.ui
     sign_verify_dlg.ui
     sss_dlg.ui
+    tls_verify_dlg.ui
 )
 
 
@@ -160,6 +163,8 @@ if(WIN32)
     include_directories( ../../PKILib
         "c:/msys64/mingw64/include"
         ../../PKILib/lib/win64/winsparkle/include )
+
+    message( STATUS ${CMAKE_BUILD_TYPE} )
 
 
    if( CMAKE_BUILD_TYPE STREQUAL "Debug" )

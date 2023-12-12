@@ -68,7 +68,8 @@ SOURCES += \
     settings_dlg.cpp \
     settings_mgr.cpp \
     sign_verify_dlg.cpp \
-    sss_dlg.cpp
+    sss_dlg.cpp \
+    tls_verify_dlg.cpp
 
 HEADERS += \
     about_dlg.h \
@@ -106,7 +107,8 @@ HEADERS += \
     settings_mgr.h \
     sign_verify_dlg.h \
     singleton.h \
-    sss_dlg.h
+    sss_dlg.h \
+    tls_verify_dlg.h
 
 
 
@@ -221,7 +223,8 @@ FORMS += \
         pub_enc_dec_dlg.ui \
         settings_dlg.ui \
         sign_verify_dlg.ui \
-        sss_dlg.ui
+        sss_dlg.ui \
+        tls_verify_dlg.ui
 
 RESOURCES += \
     bereditor.qrc
