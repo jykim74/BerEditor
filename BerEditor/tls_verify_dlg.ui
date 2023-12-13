@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>544</width>
-    <height>517</height>
+    <width>619</width>
+    <height>552</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,8 +29,146 @@
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout">
+    <layout class="QGridLayout" name="gridLayout_4">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="1" column="2">
+      <widget class="QCheckBox" name="mNoTLS12Check">
+       <property name="text">
+        <string>SSL_OP_NO_TLSv1_2</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="0">
+      <widget class="QCheckBox" name="mNoSSL2Check">
+       <property name="text">
+        <string>SSL_OP_NO_SSLv2</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QCheckBox" name="mNoSSL3Check">
+       <property name="text">
+        <string>SSL_OP_NO_SSLv3</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QCheckBox" name="mNoTLS11Check">
+       <property name="text">
+        <string>SSL_OP_NO_TLSv1_1</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QCheckBox" name="mNoTLS1Check">
+       <property name="text">
+        <string>SSL_OP_NO_TLSv1</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QCheckBox" name="mNoTLS13Check">
+       <property name="text">
+        <string>SSL_OP_NO_TLSv1_3</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QCheckBox" name="mNoCompCheck">
+       <property name="text">
+        <string>SSL_OP_NO_COMPRESSION</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QCheckBox" name="mNoTicketCheck">
+       <property name="text">
+        <string>SSL_OP_NO_TICKET</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_4">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_5">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QCheckBox" name="mFixCipherNameCheck">
+       <property name="text">
+        <string>Fix Cipher Name</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QCheckBox" name="mHostNameCheck">
+       <property name="text">
+        <string>Check Host Name</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="mCipherListCombo"/>
+     </item>
+     <item row="0" column="2">
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="2" column="1">
+      <widget class="QComboBox" name="mURLCombo">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="QPushButton" name="mConnectBtn">
+       <property name="text">
+        <string>Connect</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Trust CA Cert</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
       <widget class="QLabel" name="label_2">
        <property name="minimumSize">
         <size>
@@ -43,20 +181,30 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="mURLCombo">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Trust Folder</string>
        </property>
       </widget>
      </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="mTrustFolderText"/>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="mTrustCACertText"/>
+     </item>
      <item row="0" column="2">
-      <widget class="QPushButton" name="mConnectBtn">
+      <widget class="QPushButton" name="mTrustFolderFindBtn">
        <property name="text">
-        <string>Connect</string>
+        <string>Find</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="mTrustCACertFindBtn">
+       <property name="text">
+        <string>Find</string>
        </property>
       </widget>
      </item>
@@ -81,7 +229,14 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mClearSaveURLBtn">
+       <property name="text">
+        <string>Clear Save URLs</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -94,19 +249,26 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mClearSaveURLBtn">
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mLoadTrustBtn">
        <property name="text">
-        <string>Clear Save URLs</string>
+        <string>Load Trust</string>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
+    <widget class="Line" name="line_5">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -129,11 +291,42 @@
      </widget>
      <widget class="QWidget" name="tab_2">
       <attribute name="title">
-       <string>URL Information</string>
+       <string>URL Log</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="QPlainTextEdit" name="mURLInfoText"/>
+        <widget class="QPlainTextEdit" name="mLogText">
+         <property name="palette">
+          <palette>
+           <active>
+            <colorrole role="Base">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>221</red>
+               <green>221</green>
+               <blue>255</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </active>
+           <inactive>
+            <colorrole role="Base">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>221</red>
+               <green>221</green>
+               <blue>255</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </inactive>
+           <disabled/>
+          </palette>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -148,21 +341,14 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="1">
+     <item row="0" column="2">
       <widget class="QPushButton" name="mRefreshBtn">
        <property name="text">
         <string>Refresh</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mCloseBtn">
-       <property name="text">
-        <string>Close</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
+     <item row="0" column="1">
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -174,6 +360,20 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mCloseBtn">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mClearResultBtn">
+       <property name="text">
+        <string>Clear Result</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

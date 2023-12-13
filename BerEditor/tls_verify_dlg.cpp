@@ -7,6 +7,7 @@
 #include "tls_verify_dlg.h"
 #include "ber_applet.h"
 #include "mainwindow.h"
+#include "js_net.h"
 #include "js_ssl.h"
 #include "js_util.h"
 #include "cert_info_dlg.h"
@@ -17,14 +18,24 @@ TLSVerifyDlg::TLSVerifyDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
+    ssl_pctx_ = NULL;
 
     connect( mConnectBtn, SIGNAL(clicked()), this, SLOT(clickConnect()));
     connect( mRefreshBtn, SIGNAL(clicked()), this, SLOT(clickRefresh()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
+    connect( mClearSaveURLBtn, SIGNAL(clicked()), this, SLOT(clickClearSaveURL()));
+    connect( mClearURLBtn, SIGNAL(clicked()), this, SLOT(clickClearURL()));
+    connect( mLoadTrustBtn, SIGNAL(clicked()), this, SLOT(clickLoadTrust()));
+    connect( mClearResultBtn, SIGNAL(clicked()), this, SLOT(clickClearResult()));
+
     connect( mURLTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotTableMenuRequested(QPoint)));
     connect( mURLTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(viewCertTableMenu()));
+    connect( mURLTable, SIGNAL(clicked(QModelIndex)), this, SLOT(selectTable(QModelIndex)));
     connect( mURLTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotTreeMenuRequested(QPoint)));
+
+    connect( mTrustFolderFindBtn, SIGNAL(clicked()), this, SLOT(findTrustFolder()));
+    connect( mTrustCACertFindBtn, SIGNAL(clicked()), this, SLOT(findTrustCACert()));
 
     initialize();
 
@@ -35,12 +46,33 @@ TLSVerifyDlg::TLSVerifyDlg(QWidget *parent) :
 
 TLSVerifyDlg::~TLSVerifyDlg()
 {
+    if( ssl_pctx_ ) JS_SSL_finish( (SSL_CTX **)&ssl_pctx_ );
+}
 
+void TLSVerifyDlg::log( const QString strLog, QColor cr )
+{
+    QTextCursor cursor = mLogText->textCursor();
+    //    cursor.movePosition( QTextCursor::End );
+
+    QTextCharFormat format;
+    format.setForeground( cr );
+    cursor.mergeCharFormat(format);
+
+    cursor.insertText( strLog );
+    cursor.insertText( "\n" );
+
+    mLogText->setTextCursor( cursor );
+    mLogText->repaint();
+}
+
+void TLSVerifyDlg::elog( const QString strLog )
+{
+    log( strLog, QColor(0xFF,0x00,0x00));
 }
 
 void TLSVerifyDlg::initialize()
 {
-    QStringList sURLLabels = { tr( "URL" ), tr( "Port" ), tr( "From" ), tr( "To" ), tr( "Days Left") };
+    QStringList sURLLabels = { tr( "URL" ), tr( "Port" ), tr( "From" ), tr( "To" ), tr( "Left") };
 
     mURLTable->clear();
     mURLTable->horizontalHeader()->setStretchLastSection(true);
@@ -60,16 +92,24 @@ void TLSVerifyDlg::initialize()
     QStringList usedList = getUsedURL();
     mURLCombo->addItems( usedList );
 
-    /*
-    QFile qss(":/bereditor.qss");
-    qss.open( QFile::ReadOnly );
-    mURLTree->setStyleSheet(qss.readAll());
-    qss.close();
-    */
-
     mURLTree->clear();
     mURLTree->header()->setVisible(false);
     mURLTree->setColumnCount(1);
+
+    JS_SSL_initClient( (SSL_CTX **)&ssl_pctx_ );
+    JStrList *pCipherList = NULL;
+    JS_SSL_getCiphersList( (SSL_CTX *)ssl_pctx_, &pCipherList );
+    JStrList *pCurList = pCipherList;
+
+    while( pCurList )
+    {
+        mCipherListCombo->addItem( pCurList->pStr );
+        pCurList = pCurList->pNext;
+    }
+
+    if( pCipherList ) JS_UTIL_resetStrList( &pCipherList );
+
+    tabWidget->setCurrentIndex(0);
 }
 
 QStringList TLSVerifyDlg::getUsedURL()
@@ -101,7 +141,7 @@ int TLSVerifyDlg::verifyURL( const QString strHost, int nPort )
 {
     int ret = 0;
     int count = 0;
-    SSL_CTX *pCTX = NULL;
+
     SSL *pSSL = NULL;
     BINList *pCertList = NULL;
     const BINList *pAtList = NULL;
@@ -114,17 +154,46 @@ int TLSVerifyDlg::verifyURL( const QString strHost, int nPort )
     time_t left_t = 0;
     QString strLeft;
     QTableWidgetItem *item = new QTableWidgetItem( strHost );
+    long uFlags = getFlags();
 
     memset( &sCertInfo, 0x00, sizeof(sCertInfo));
-    JS_SSL_initClient( &pCTX );
 
-    ret = JS_SSL_connect( pCTX, strHost.toStdString().c_str(), nPort, &pSSL );
+    if( mFixCipherNameCheck->isChecked() )
+    {
+        QString strCipher = mCipherListCombo->currentText();
 
-    if( ret != 0 )
+        JS_SSL_setCiphersList( (SSL_CTX *)ssl_pctx_, strCipher.toStdString().c_str() );
+    }
+
+    JS_SSL_setFlags( (SSL_CTX *)ssl_pctx_, uFlags );
+
+    log( QString( "SSL Host:Port       : %1:%2" ).arg( strHost ).arg( nPort ));
+
+    int nSockFd = JS_NET_connect( strHost.toStdString().c_str(), nPort );
+    if( nSockFd < 0 )
     {
         berApplet->elog( QString("fail to connect Server(%1:%2)").arg( strHost ).arg( nPort ));
         goto end;
     }
+
+    ret = JS_SSL_initSSL( (SSL_CTX *)ssl_pctx_, nSockFd, &pSSL );
+    if( ret != 0 )
+    {
+        berApplet->elog( QString("fail to init SSL(%1:%2)").arg( strHost ).arg( nPort ));
+        goto end;
+    }
+
+    if( mHostNameCheck->isChecked() ) JS_SSL_setHostName( pSSL, strHost.toStdString().c_str() );
+
+    ret = JS_SSL_connect( pSSL );
+    if( ret != 0 )
+    {
+        berApplet->elog( QString( "fail to connect SSL:%1").arg( ret ));
+        goto end;
+    }
+
+    log( QString( "Current TLS Version : %1").arg( JS_SSL_getCurrentVersionName( pSSL )));
+    log( QString( "Current Cipher Name : %1").arg( JS_SSL_getCurrentCipherName( pSSL ) ));
 
     ret = JS_SSL_getChains( pSSL, &pCertList );
     count = JS_BIN_countList( pCertList );
@@ -137,6 +206,12 @@ int TLSVerifyDlg::verifyURL( const QString strHost, int nPort )
         berApplet->elog( QString( "Invalid certificate data: %1").arg( ret ));
         goto end;
     }
+
+//    pAtList = JS_BIN_getListAt( count - 1, pCertList );
+//    JS_SSL_addCACert( pSSL, &pAtList->Bin );
+
+    ret = JS_SSL_verifyCert( pSSL );
+    log( QString( "Verify Certificate  : %1(%2)").arg( X509_verify_cert_error_string(ret)).arg( ret ));
 
     JS_UTIL_getDate( sCertInfo.uNotBefore, sNotBefore );
     JS_UTIL_getDate( sCertInfo.uNotAfter, sNotAfter );
@@ -167,7 +242,7 @@ int TLSVerifyDlg::verifyURL( const QString strHost, int nPort )
 
 end :
     if( pSSL ) JS_SSL_clear( pSSL );
-    if( pCTX ) JS_SSL_finish( &pCTX );
+
     if( pCertList ) JS_BIN_resetList( &pCertList );
     JS_PKI_resetCertInfo( &sCertInfo );
 
@@ -218,6 +293,37 @@ void TLSVerifyDlg::createTree( const BINList *pCertList )
     mURLTree->expandAll();
 }
 
+long TLSVerifyDlg::getFlags()
+{
+    long uFlags = 0;
+
+    if( mNoSSL2Check->isChecked() )
+        uFlags |= SSL_OP_NO_SSLv2;
+
+    if( mNoSSL3Check->isCheckable() )
+        uFlags |= SSL_OP_NO_SSLv3;
+
+    if( mNoCompCheck->isChecked() )
+        uFlags |= SSL_OP_NO_COMPRESSION;
+
+    if( mNoTicketCheck->isChecked() )
+        uFlags |= SSL_OP_NO_TICKET;
+
+    if( mNoTLS1Check->isChecked() )
+        uFlags |= SSL_OP_NO_TLSv1;
+
+    if( mNoTLS11Check->isChecked() )
+        uFlags |= SSL_OP_NO_TLSv1_1;
+
+    if( mNoTLS12Check->isChecked() )
+        uFlags |= SSL_OP_NO_TLSv1_2;
+
+    if( mNoTLS13Check->isChecked() )
+        uFlags |= SSL_OP_NO_TLSv1_3;
+
+    return uFlags;
+}
+
 void TLSVerifyDlg::clickConnect()
 {
     QString strHost;
@@ -250,7 +356,11 @@ void TLSVerifyDlg::clickRefresh()
 
 void TLSVerifyDlg::clickClearURL()
 {
-
+    int nCount = mURLTable->rowCount();
+    for( int i = 0; i < nCount; i++ )
+    {
+        mURLTable->removeRow(0);
+    }
 }
 
 void TLSVerifyDlg::clickClearSaveURL()
@@ -264,6 +374,60 @@ void TLSVerifyDlg::clickClearSaveURL()
     mURLCombo->clear();
 
     berApplet->log( "clear used URLs" );
+}
+
+void TLSVerifyDlg::clickClearResult()
+{
+    mURLTree->clear();
+    mLogText->clear();
+}
+
+void TLSVerifyDlg::findTrustFolder()
+{
+    QString strPath = mTrustFolderText->text();
+    if( strPath.length() < 1 )
+        strPath = berApplet->curFolder();
+
+    QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    if( fileName.length() > 1 ) mTrustFolderText->setText( fileName );
+}
+
+void TLSVerifyDlg::findTrustCACert()
+{
+    QString strPath = mTrustCACertText->text();
+    if( strPath.length() < 1 )
+        strPath = berApplet->curFolder();
+
+    QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    if( fileName.length() > 1 ) mTrustCACertText->setText( fileName );
+}
+
+void TLSVerifyDlg::clickLoadTrust()
+{
+    int ret = 0;
+    QString strTrustFolder = mTrustFolderText->text();
+    QString strTrustCACert = mTrustCACertText->text();
+
+    if( strTrustFolder.length() < 1 && strTrustCACert.length() < 1 )
+    {
+        berApplet->warningBox( tr( "You have to find Trust Folder or Trust CA Cert" ), this );
+        return;
+    }
+
+    ret = JS_SSL_setVerifyLoaction( (SSL_CTX *)ssl_pctx_, strTrustCACert.toStdString().c_str(), strTrustFolder.toStdString().c_str() );
+    if( ret == 0 )
+    {
+        berApplet->log( "Trust list loaded successfully" );
+    }
+    else
+    {
+        berApplet->elog( "fail to load trust list" );
+    }
+}
+
+void TLSVerifyDlg::selectTable(QModelIndex index)
+{
+
 }
 
 void TLSVerifyDlg::slotTableMenuRequested( QPoint pos )

@@ -18,8 +18,7 @@ public:
     explicit CertInfoDlg(QWidget *parent = nullptr);
     ~CertInfoDlg();
 
-    QString getCertPath() { return cert_path_; };
-    void setCertPath( const QString strPath );
+    int setCertPath( const QString strPath );
     QTableWidgetItem* getExtNameItem( const QString strSN );
 
     void setCertBIN( const BIN *pCert );
@@ -28,9 +27,9 @@ private slots:
     void showEvent(QShowEvent *event);
     void clickField( QModelIndex index );
     void changeFieldType( int index );
+    void clickSave();
 
 private:
-    QString cert_path_;
     BIN cert_bin_;
 
     void getFields();

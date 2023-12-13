@@ -1,3 +1,5 @@
+#include <QFileDialog>
+
 #include "mainwindow.h"
 #include "ber_applet.h"
 #include "cert_info_dlg.h"
@@ -66,8 +68,9 @@ CertInfoDlg::CertInfoDlg(QWidget *parent) :
 {
     setupUi(this);
 
+    connect( mSaveBtn, SIGNAL(clicked()), this, SLOT(clickSave()));
+
     initUI();
-    cert_path_ = "";
     memset( &cert_bin_, 0x00, sizeof(BIN));
     tabWidget->setCurrentIndex(0);
 }
@@ -77,14 +80,18 @@ CertInfoDlg::~CertInfoDlg()
     JS_BIN_reset( &cert_bin_);
 }
 
-void CertInfoDlg::setCertPath(const QString strPath)
+int CertInfoDlg::setCertPath(const QString strPath)
 {
-    cert_path_ = strPath;
+    int ret = 0;
+    JS_BIN_reset( &cert_bin_ );
+
+    ret = JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &cert_bin_ );
+
+    return ret;
 }
 
 void CertInfoDlg::setCertBIN( const BIN *pCert )
 {
-    cert_path_.clear();
     JS_BIN_reset( &cert_bin_ );
     JS_BIN_copy( &cert_bin_, pCert );
 }
@@ -99,7 +106,6 @@ void CertInfoDlg::getFields()
     int ret = 0;
     int i = 0;
 
-    BIN binCert = {0,0};
     BIN binFinger = {0,0};
     BIN binPub = {0,0};
 
@@ -110,7 +116,7 @@ void CertInfoDlg::getFields()
 
     int nType = mFieldTypeCombo->currentIndex();
 
-    if( cert_path_.length() < 1 && cert_bin_.nLen <= 0 )
+    if( cert_bin_.nLen <= 0 )
     {
         berApplet->warningBox( tr( "Select certificate"), this );
         this->hide();
@@ -120,21 +126,15 @@ void CertInfoDlg::getFields()
     memset( &sCertInfo, 0x00, sizeof(sCertInfo));
     clearTable();
 
-    if( cert_bin_.nLen > 0 )
-        JS_BIN_copy( &binCert, &cert_bin_ );
-    else
-        JS_BIN_fileReadBER( cert_path_.toLocal8Bit().toStdString().c_str(), &binCert );
-
-    ret = JS_PKI_getCertInfo( &binCert, &sCertInfo, &pExtInfoList );
+    ret = JS_PKI_getCertInfo( &cert_bin_, &sCertInfo, &pExtInfoList );
     if( ret != 0 )
     {
         berApplet->warningBox( tr("fail to get certificate information"), this );
-        JS_BIN_reset( &binCert );
         this->hide();
         return;
     }
 
-    JS_PKI_genHash( "SHA1", &binCert, &binFinger );
+    JS_PKI_genHash( "SHA1", &cert_bin_, &binFinger );
 
     if( nType == FIELD_ALL || nType == FIELD_VERSION1_ONLY )
     {
@@ -286,7 +286,6 @@ void CertInfoDlg::getFields()
         i++;
     }
 
-    JS_BIN_reset( &binCert );
     JS_BIN_reset( &binFinger );
     JS_BIN_reset( &binPub );
 
@@ -348,4 +347,31 @@ void CertInfoDlg::clearTable()
 void CertInfoDlg::changeFieldType( int index )
 {
     getFields();
+}
+
+void CertInfoDlg::clickSave()
+{
+    QFileDialog::Options options;
+    options |= QFileDialog::DontUseNativeDialog;
+
+    QString strPath = berApplet->curFolder();
+
+    QString strFilter = tr("Cert Files (*.crt);;PEM Files (*.pem);;All Files (*.*)");
+    QString selectedFilter;
+
+    QString fileName = QFileDialog::getSaveFileName( this,
+                                                    tr("Export Files"),
+                                                    strPath,
+                                                    strFilter,
+                                                    &selectedFilter,
+                                                    options );
+
+    if( fileName.length() > 0 )
+    {
+        int ret = JS_BIN_writePEM( &cert_bin_, JS_PEM_TYPE_CERTIFICATE, fileName.toLocal8Bit().toStdString().c_str() );
+        if( ret > 0 )
+        {
+            berApplet->messageBox( tr( "Certificate is saved as PEM" ), this );
+        }
+    }
 }

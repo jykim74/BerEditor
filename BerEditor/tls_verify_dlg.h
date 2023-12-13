@@ -18,11 +18,21 @@ public:
     explicit TLSVerifyDlg(QWidget *parent = nullptr);
     ~TLSVerifyDlg();
 
+    void log( const QString strLog, QColor cr = QColor(0x00, 0x00, 0x00) );
+    void elog( const QString strLog );
+
 private slots:
     void clickConnect();
     void clickRefresh();
     void clickClearURL();
     void clickClearSaveURL();
+    void clickClearResult();
+
+    void findTrustFolder();
+    void findTrustCACert();
+    void clickLoadTrust();
+
+    void selectTable(QModelIndex index);
 
     void slotTableMenuRequested( QPoint pos );
     void deleteTableMenu();
@@ -37,9 +47,11 @@ private:
     void initialize();
     int verifyURL( const QString strHost, int nPort );
     void createTree( const BINList *pCertList );
+    long getFlags();
 
     QStringList getUsedURL();
     void setUsedURL( const QString strURL );
+    void* ssl_pctx_;
 };
 
 #endif // TLS_VERIFY_DLG_H
