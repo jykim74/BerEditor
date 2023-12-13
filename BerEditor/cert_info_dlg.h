@@ -29,6 +29,8 @@ private slots:
     void changeFieldType( int index );
     void clickSave();
 
+    void clickOCSPCheck();
+    void clickCRLCheck();
 private:
     BIN cert_bin_;
 

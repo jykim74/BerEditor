@@ -849,7 +849,7 @@ static int _getCRLReason( const BIN *pBinExt, bool bShow, QString& strVal )
 }
 
 
-void getInfoValue( const JExtensionInfo *pExtInfo, QString& strVal )
+void getInfoValue( const JExtensionInfo *pExtInfo, QString& strVal, bool bShow )
 {
     int ret = 0;
     QString strSN = pExtInfo->pOID;
@@ -859,64 +859,64 @@ void getInfoValue( const JExtensionInfo *pExtInfo, QString& strVal )
 
     if( strSN == kExtNameKeyUsage )
     {
-        ret = _getKeyUsage( &binExt, true, strVal );
+        ret = _getKeyUsage( &binExt, bShow, strVal );
     }
     else if( strSN == kExtNameCRLNum )
     {
-        ret = _getCRLNum( &binExt, true, strVal );
+        ret = _getCRLNum( &binExt, bShow, strVal );
     }
     else if( strSN == kExtNamePolicy )
     {
-        ret = _getCertPolicy( &binExt, true, strVal );
+        ret = _getCertPolicy( &binExt, bShow, strVal );
     }
     else if( strSN == kExtNameSKI )
     {
-        ret = _getSKI( &binExt, true, strVal );
+        ret = _getSKI( &binExt, bShow, strVal );
     }
     else if( strSN == kExtNameAKI )
     {
-        ret = _getAKI( &binExt, true, strVal );
+        ret = _getAKI( &binExt, bShow, strVal );
     }
     else if( strSN == kExtNameEKU )
     {
-        ret = _getEKU( &binExt, true, strVal );
+        ret = _getEKU( &binExt, bShow, strVal );
     }
     else if( strSN == kExtNameCRLDP )
     {
-        ret = _getCRLDP( &binExt, true, strVal );
+        ret = _getCRLDP( &binExt, bShow, strVal );
     }
     else if( strSN == kExtNameBC )
     {
-        ret = _getBC( &binExt, true, strVal );
+        ret = _getBC( &binExt, bShow, strVal );
     }
     else if( strSN == kExtNamePC )
     {
-        ret = _getPC( &binExt, true, strVal );
+        ret = _getPC( &binExt, bShow, strVal );
     }
     else if( strSN == kExtNameAIA )
     {
-        ret = _getAIA( &binExt, true, strVal );
+        ret = _getAIA( &binExt, bShow, strVal );
     }
     else if( strSN == kExtNameIDP )
     {
-        ret = _getIDP( &binExt, true, strVal );
+        ret = _getIDP( &binExt, bShow, strVal );
     }
     else if( strSN == kExtNameSAN || strSN == kExtNameIAN )
     {
         int nNid = JS_PKI_getNidFromSN( strSN.toStdString().c_str() );
-        ret = _getAltName( &binExt, nNid, true, strVal );
+        ret = _getAltName( &binExt, nNid, bShow, strVal );
     }
     else if( strSN == kExtNamePM )
     {
-        ret = _getPM( &binExt, true, strVal );
+        ret = _getPM( &binExt, bShow, strVal );
     }
     else if( strSN == kExtNameNC )
     {
-        ret = _getNC( &binExt, true, strVal );
+        ret = _getNC( &binExt, bShow, strVal );
     }
     else if( strSN == kExtNameCRLReason )
     {
-        ret = _getCRLReason( &binExt, true, strVal );
+        ret = _getCRLReason( &binExt, bShow, strVal );
     }
     else
     {
@@ -1112,4 +1112,14 @@ bool isValidNumFormat( const QString strInput, int nNumber )
     return match.hasMatch();
 
 //    return strExp.exactMatch( strInput );
+}
+
+int getCLRFromURI( const QString strURI, BIN *pCRL )
+{
+    return 0;
+}
+
+int checkOCSP( const QString strURL, const BIN *pCert )
+{
+    return 0;
 }

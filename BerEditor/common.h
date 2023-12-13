@@ -97,7 +97,7 @@ int getDataLen( const QString strType, const QString strData );
 QString getSymAlg( const QString strAlg, const QString strMode, int nKeyLen );
 int getNameValue( const QString strLine, QString& name, QString& value );
 
-void getInfoValue( const JExtensionInfo *pExtInfo, QString& strVal );
+void getInfoValue( const JExtensionInfo *pExtInfo, QString& strVal, bool bShow = true );
 
 void getBINFromString( BIN *pBin, const QString& strType, const QString& strString );
 void getBINFromString( BIN *pBin, int nType, const QString& strString );
@@ -108,5 +108,8 @@ QString getKeyTypeName( int nKeyType );
 bool isValidNumFormat( const QString strInput, int nNumber );
 
 bool isEmail( const QString strEmail );
+
+int getCLRFromURI( const QString strURI, BIN *pCRL );
+int checkOCSP( const QString strURL, const BIN *pCert );
 
 #endif // COMMON_H

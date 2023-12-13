@@ -69,10 +69,16 @@ CertInfoDlg::CertInfoDlg(QWidget *parent) :
     setupUi(this);
 
     connect( mSaveBtn, SIGNAL(clicked()), this, SLOT(clickSave()));
+    connect( mOCSPCheckBtn, SIGNAL(clicked()), this, SLOT(clickOCSPCheck()));
+    connect( mCRLCheckBtn, SIGNAL(clicked()), this, SLOT(clickCRLCheck()));
 
     initUI();
     memset( &cert_bin_, 0x00, sizeof(BIN));
     tabWidget->setCurrentIndex(0);
+
+#if defined(Q_OS_MAC)
+    layout()->setSpacing(5);
+#endif
 }
 
 CertInfoDlg::~CertInfoDlg()
@@ -374,4 +380,133 @@ void CertInfoDlg::clickSave()
             berApplet->messageBox( tr( "Certificate is saved as PEM" ), this );
         }
     }
+}
+
+void CertInfoDlg::clickOCSPCheck()
+{
+    int ret = 0;
+    QString strAIA;
+    QString strURI;
+
+    if( cert_bin_.nLen <= 0 ) return;
+
+    JCertInfo sCertInfo;
+    JExtensionInfoList *pExtInfoList = NULL;
+    JExtensionInfoList *pCurList = NULL;
+
+    ret = JS_PKI_getCertInfo( &cert_bin_, &sCertInfo, &pExtInfoList );
+    if( ret != 0 )
+    {
+        berApplet->elog( "Invalid certificate data" );
+        return;
+    }
+
+    pCurList = pExtInfoList;
+
+    while( pCurList )
+    {
+        QString strSN;
+        QString strValue;
+
+        strSN = pCurList->sExtensionInfo.pOID;
+
+        if( strSN == kExtNameAIA )
+        {
+            getInfoValue( &pCurList->sExtensionInfo, strValue, false );
+            strAIA = strValue;
+            break;
+        }
+
+        pCurList = pCurList->pNext;
+    }
+
+    berApplet->log( QString( "AIA : %1" ).arg( strAIA ));
+
+    QStringList infoList = strAIA.split( "%%" );
+    for( int i = 0; i < infoList.size(); i++ )
+    {
+        QString strPart = infoList.at(i);
+        QStringList partList = strPart.split("#");
+
+        if( partList.size() < 3 ) continue;
+
+        QString strMethod = partList.at(0);
+        QString strType = partList.at(1);
+        QString strName = partList.at(2);
+
+        QStringList methodVal = strMethod.split( "$" );
+        QStringList typeVal = strType.split( "$" );
+        QStringList nameVal = strName.split( "$" );
+
+        if( methodVal.size() < 2 || typeVal.size() < 2 || nameVal.size() < 2 ) continue;
+
+        if( methodVal.at(1) == "OCSP" )
+        {
+            if( typeVal.at(1) == "URI")
+            {
+                strURI = nameVal.at(1);
+                break;
+            }
+        }
+    }
+
+    berApplet->log( QString( "URI: %1").arg( strURI));
+}
+
+void CertInfoDlg::clickCRLCheck()
+{
+    int ret = 0;
+    QString strCRLDP;
+    QString strURI;
+
+    if( cert_bin_.nLen <= 0 ) return;
+
+    JCertInfo sCertInfo;
+    JExtensionInfoList *pExtInfoList = NULL;
+    JExtensionInfoList *pCurList = NULL;
+
+    ret = JS_PKI_getCertInfo( &cert_bin_, &sCertInfo, &pExtInfoList );
+    if( ret != 0 )
+    {
+        berApplet->elog( "Invalid certificate data" );
+        return;
+    }
+
+    pCurList = pExtInfoList;
+
+    while( pCurList )
+    {
+        QString strSN;
+        QString strValue;
+
+        strSN = pCurList->sExtensionInfo.pOID;
+
+        if( strSN == kExtNameCRLDP )
+        {
+            getInfoValue( &pCurList->sExtensionInfo, strValue, false );
+            strCRLDP = strValue;
+            break;
+        }
+
+        pCurList = pCurList->pNext;
+    }
+
+    berApplet->log( QString( "CRLDP : %1" ).arg( strCRLDP ));
+
+    QStringList infoList = strCRLDP.split( "#" );
+
+    for( int i = 0; i < infoList.size(); i++ )
+    {
+        QString strPart = infoList.at(i);
+        QStringList partList = strPart.split( "$" );
+        if( partList.size() < 2 ) continue;
+
+        if( partList.at(0) == "URI" )
+        {
+            strURI = partList.at(1);
+            break;
+        }
+    }
+
+    berApplet->log( QString( "URI: %1").arg( strURI));
 }
