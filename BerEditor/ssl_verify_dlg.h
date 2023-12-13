@@ -1,22 +1,22 @@
-#ifndef TLS_VERIFY_DLG_H
-#define TLS_VERIFY_DLG_H
+#ifndef SSL_VERIFY_DLG_H
+#define SSL_VERIFY_DLG_H
 
 #include <QDialog>
-#include "ui_tls_verify_dlg.h"
+#include "ui_ssl_verify_dlg.h"
 #include "js_bin.h"
 
 
 namespace Ui {
-class TLSVerifyDlg;
+class SSLVerifyDlg;
 }
 
-class TLSVerifyDlg : public QDialog, public Ui::TLSVerifyDlg
+class SSLVerifyDlg : public QDialog, public Ui::SSLVerifyDlg
 {
     Q_OBJECT
 
 public:
-    explicit TLSVerifyDlg(QWidget *parent = nullptr);
-    ~TLSVerifyDlg();
+    explicit SSLVerifyDlg(QWidget *parent = nullptr);
+    ~SSLVerifyDlg();
 
     void log( const QString strLog, QColor cr = QColor(0x00, 0x00, 0x00) );
     void elog( const QString strLog );
@@ -30,7 +30,10 @@ private slots:
 
     void findTrustFolder();
     void findTrustCACert();
-    void clickLoadTrust();
+    void clickClearTrust();
+    void clickAddCipher();
+    void checkFixCipherName();
+    void clickClearCipher();
 
     void selectTable(QModelIndex index);
 
@@ -51,7 +54,6 @@ private:
 
     QStringList getUsedURL();
     void setUsedURL( const QString strURL );
-    void* ssl_pctx_;
 };
 
-#endif // TLS_VERIFY_DLG_H
+#endif // SSL_VERIFY_DLG_H

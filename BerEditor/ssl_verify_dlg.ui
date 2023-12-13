@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>TLSVerifyDlg</class>
- <widget class="QDialog" name="TLSVerifyDlg">
+ <class>SSLVerifyDlg</class>
+ <widget class="QDialog" name="SSLVerifyDlg">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>619</width>
-    <height>552</height>
+    <height>565</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>TLS Verify</string>
+   <string>SSL Verify</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>TLS Server URL</string>
+      <string>SSL Server URL</string>
      </property>
     </widget>
    </item>
@@ -103,24 +103,28 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="0">
-      <widget class="QCheckBox" name="mFixCipherNameCheck">
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mCipherAddBtn">
        <property name="text">
-        <string>Fix Cipher Name</string>
+        <string>Add</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
+     <item row="0" column="0">
+      <widget class="QCheckBox" name="mFixCipherNameCheck">
+       <property name="text">
+        <string>Fix Cipher</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
       <widget class="QCheckBox" name="mHostNameCheck">
        <property name="text">
         <string>Check Host Name</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="mCipherListCombo"/>
-     </item>
-     <item row="0" column="2">
+     <item row="0" column="4">
       <spacer name="horizontalSpacer_3">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -133,7 +137,20 @@
        </property>
       </spacer>
      </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="mCipherListCombo"/>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mCipherClearBtn">
+       <property name="text">
+        <string>Clear</string>
+       </property>
+      </widget>
+     </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="mCipherListText"/>
    </item>
    <item>
     <widget class="Line" name="line_3">
@@ -229,6 +246,13 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mClearTrustBtn">
+       <property name="text">
+        <string>Clear Trust</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="1">
       <widget class="QPushButton" name="mClearSaveURLBtn">
        <property name="text">
@@ -249,10 +273,10 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mLoadTrustBtn">
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mRefreshBtn">
        <property name="text">
-        <string>Load Trust</string>
+        <string>Refresh</string>
        </property>
       </widget>
      </item>
@@ -341,13 +365,6 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mRefreshBtn">
-       <property name="text">
-        <string>Refresh</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
       <spacer name="horizontalSpacer">
        <property name="orientation">

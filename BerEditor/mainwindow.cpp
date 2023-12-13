@@ -27,7 +27,7 @@
 #include "insert_ber_dlg.h"
 #include "cert_pvd_dlg.h"
 #include "lcn_info_dlg.h"
-#include "tls_verify_dlg.h"
+#include "ssl_verify_dlg.h"
 #include "common.h"
 
 #include <QtWidgets>
@@ -93,7 +93,7 @@ MainWindow::~MainWindow()
     delete cert_pvd_dlg_;
     delete gen_otp_dlg_;
     delete cavp_dlg_;
-    delete tls_verify_dlg_;
+    delete ssl_verify_dlg_;
 
     delete table_tab_;
     delete text_tab_;
@@ -515,12 +515,12 @@ void MainWindow::createActions()
     cavpAct->setStatusTip(tr("CAVP Test"));
     cryptMenu->addAction( cavpAct );
 
-    const QIcon tlsIcon = QIcon::fromTheme( "tool-tls", QIcon(":/images/tls.png"));
-    QAction *tlsAct = new QAction(tlsIcon, tr("&TLS Verify"), this);
-    connect( tlsAct, &QAction::triggered, this, &MainWindow::tlsVerify );
-    cavpAct->setStatusTip(tr("TLS Verify"));
-    cryptMenu->addAction( tlsAct );
-    cryptToolBar->addAction( tlsAct );
+    const QIcon sslIcon = QIcon::fromTheme( "tool-ssl", QIcon(":/images/ssl.png"));
+    QAction *sslAct = new QAction(sslIcon, tr("&SSL Verify"), this);
+    connect( sslAct, &QAction::triggered, this, &MainWindow::sslVerify );
+    cavpAct->setStatusTip(tr("SSL Verify"));
+    cryptMenu->addAction( sslAct );
+    cryptToolBar->addAction( sslAct );
 
     if( berApplet->isLicense() == false )
     {
@@ -536,7 +536,7 @@ void MainWindow::createActions()
         certPVDAct->setEnabled( false );
         genOTPAct->setEnabled( false );
         cavpAct->setEnabled( false );
-        tlsAct->setEnabled( false );
+        sslAct->setEnabled( false );
     }
 
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
@@ -621,7 +621,7 @@ void MainWindow::createCryptoDlg()
     cert_pvd_dlg_ = new CertPVDDlg;
     gen_otp_dlg_ = new GenOTPDlg;
     cavp_dlg_ = new CAVPDlg;
-    tls_verify_dlg_ = new TLSVerifyDlg;
+    ssl_verify_dlg_ = new SSLVerifyDlg;
 }
 
 void MainWindow::newFile()
@@ -974,11 +974,11 @@ void MainWindow::CAVP()
     cavp_dlg_->activateWindow();
 }
 
-void MainWindow::tlsVerify()
+void MainWindow::sslVerify()
 {
-    tls_verify_dlg_->show();
-    tls_verify_dlg_->raise();
-    tls_verify_dlg_->activateWindow();
+    ssl_verify_dlg_->show();
+    ssl_verify_dlg_->raise();
+    ssl_verify_dlg_->activateWindow();
 }
 
 void MainWindow::genOTP()

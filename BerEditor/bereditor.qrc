@@ -52,6 +52,6 @@
         <file>be.rc</file>
         <file>bereditor.ico</file>
         <file>bereditor.icns</file>
-        <file>images/tls.png</file>
+        <file>images/ssl.png</file>
     </qresource>
 </RCC>
