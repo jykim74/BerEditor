@@ -23,16 +23,30 @@ public:
 
     void setCertBIN( const BIN *pCert );
 
+    static const QString getCRL_URIFromExt( const QString strExtCRLDP );
+    static const QString getOCSP_URIFromExt( const QString strExtAIA );
+    static const QString getCA_URIFromExt( const QString strExtAIA );
+
 private slots:
     void showEvent(QShowEvent *event);
     void clickField( QModelIndex index );
     void changeFieldType( int index );
     void clickSave();
 
+    void clickMakeTree();
+    void clickGetCA();
+    void clickGetCRL();
+    void clickDecodeCert();
+    void clickPathValidation();
+    void clickVerifyCert();
     void clickOCSPCheck();
     void clickCRLCheck();
+
 private:
     BIN cert_bin_;
+    int saveAsPEM( const BIN *pData );
+    int getCA( BIN *pCA );
+    int getCRL( BIN *pCRL );
 
     void getFields();
     void initUI();

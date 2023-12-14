@@ -55,10 +55,11 @@ CRLInfoDlg::CRLInfoDlg(QWidget *parent) :
 {
     setupUi(this);
     initUI();
-    crl_path_ = "";
+
     ext_info_list_ = NULL;
     revoke_info_list_ = NULL;
 
+    memset( &crl_bin_, 0x00, sizeof(crl_bin_));
     memset( &crl_info_, 0x00, sizeof(crl_info_));
     tabWidget->setCurrentIndex(0);
 
@@ -69,6 +70,8 @@ CRLInfoDlg::CRLInfoDlg(QWidget *parent) :
 
 CRLInfoDlg::~CRLInfoDlg()
 {
+    JS_BIN_reset( &crl_bin_ );
+    JS_PKI_resetCRLInfo( &crl_info_ );
     if( ext_info_list_ ) JS_PKI_resetExtensionInfoList( &ext_info_list_ );
     if( revoke_info_list_ ) JS_PKI_resetRevokeInfoList( &revoke_info_list_ );
 }
@@ -78,9 +81,20 @@ void CRLInfoDlg::showEvent(QShowEvent *event)
     initialize();
 }
 
-void CRLInfoDlg::setCRLPath(const QString strPath )
+int CRLInfoDlg::setCRLPath(const QString strPath )
 {
-    crl_path_ = strPath;
+    int ret = 0;
+    JS_BIN_reset( &crl_bin_ );
+
+    ret = JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &crl_bin_ );
+
+    return ret;
+}
+
+void CRLInfoDlg::setCRL_BIN( const BIN *pCRL )
+{
+    JS_BIN_reset( &crl_bin_ );
+    JS_BIN_copy( &crl_bin_, pCRL );
 }
 
 void CRLInfoDlg::initialize()
@@ -88,7 +102,6 @@ void CRLInfoDlg::initialize()
     int ret = 0;
     int i = 0;
 
-    BIN binCRL = {0,0};
     BIN binFinger = {0,0};
 
     char    sThisUpdate[64];
@@ -98,7 +111,7 @@ void CRLInfoDlg::initialize()
 
     JS_PKI_resetCRLInfo( &crl_info_ );
 
-    if( crl_path_.length() < 1 )
+    if( crl_bin_.nLen < 1 )
     {
         berApplet->warningBox( tr("Select CRL"), this );
         return;
@@ -108,18 +121,15 @@ void CRLInfoDlg::initialize()
     if( ext_info_list_ ) JS_PKI_resetExtensionInfoList( &ext_info_list_ );
     if( revoke_info_list_ ) JS_PKI_resetRevokeInfoList( &revoke_info_list_ );
 
-    JS_BIN_fileReadBER( crl_path_.toLocal8Bit().toStdString().c_str(), &binCRL );
-
-    ret = JS_PKI_getCRLInfo( &binCRL, &crl_info_, &ext_info_list_, &revoke_info_list_ );
+    ret = JS_PKI_getCRLInfo( &crl_bin_, &crl_info_, &ext_info_list_, &revoke_info_list_ );
     if( ret != 0 )
     {
         berApplet->warningBox( tr("fail to get CRL information"), this );
-        JS_BIN_reset( &binCRL );
         close();
         return;
     }
 
-    JS_PKI_genHash( "SHA1", &binCRL, &binFinger );
+    JS_PKI_genHash( "SHA1", &crl_bin_, &binFinger );
 
     mCRLListTable->insertRow(i);
     mCRLListTable->setRowHeight(i,10);
@@ -219,7 +229,6 @@ void CRLInfoDlg::initialize()
         }
     }
 
-    JS_BIN_reset( &binCRL );
     JS_BIN_reset( &binFinger );
 }
 

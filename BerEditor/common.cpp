@@ -5,8 +5,11 @@
 #include <QRegularExpression>
 
 #include "common.h"
+#include "js_ocsp.h"
 #include "js_pki_tools.h"
 #include "js_pki_ext.h"
+#include "js_http.h"
+#include "js_ldap.h"
 
 QString findFile( QWidget *parent, int nType, const QString strPath )
 {
@@ -646,14 +649,7 @@ static int _getAIA( const BIN *pBinExt, bool bShow, QString& strVal )
 
     while( pCurList )
     {
-        QString strType;
-
-        if( pCurList->sAuthorityInfoAccess.nType == JS_PKI_NAME_TYPE_DNS )
-            strType = "DNS";
-        else if( pCurList->sAuthorityInfoAccess.nType == JS_PKI_NAME_TYPE_URI )
-            strType = "URI";
-        else if( pCurList->sAuthorityInfoAccess.nType == JS_PKI_NAME_TYPE_EMAIL )
-            strType = "Email";
+        QString strType = JS_PKI_getGenNameString( pCurList->sAuthorityInfoAccess.nType );
 
         if( bShow )
         {
@@ -848,6 +844,84 @@ static int _getCRLReason( const BIN *pBinExt, bool bShow, QString& strVal )
     return 0;
 }
 
+const QString getExtValue( const QString strName, const QString strHexValue, bool bShow )
+{
+    int ret = 0;
+    QString strVal;
+
+    BIN     binExt = {0,0};
+
+    JS_BIN_decodeHex( strHexValue.toStdString().c_str(), &binExt );
+
+    if( strName == kExtNameKeyUsage )
+    {
+        ret = _getKeyUsage( &binExt, bShow, strVal );
+    }
+    else if( strName == kExtNameCRLNum )
+    {
+        ret = _getCRLNum( &binExt, bShow, strVal );
+    }
+    else if( strName == kExtNamePolicy )
+    {
+        ret = _getCertPolicy( &binExt, bShow, strVal );
+    }
+    else if( strName == kExtNameSKI )
+    {
+        ret = _getSKI( &binExt, bShow, strVal );
+    }
+    else if( strName == kExtNameAKI )
+    {
+        ret = _getAKI( &binExt, bShow, strVal );
+    }
+    else if( strName == kExtNameEKU )
+    {
+        ret = _getEKU( &binExt, bShow, strVal );
+    }
+    else if( strName == kExtNameCRLDP )
+    {
+        ret = _getCRLDP( &binExt, bShow, strVal );
+    }
+    else if( strName == kExtNameBC )
+    {
+        ret = _getBC( &binExt, bShow, strVal );
+    }
+    else if( strName == kExtNamePC )
+    {
+        ret = _getPC( &binExt, bShow, strVal );
+    }
+    else if( strName == kExtNameAIA )
+    {
+        ret = _getAIA( &binExt, bShow, strVal );
+    }
+    else if( strName == kExtNameIDP )
+    {
+        ret = _getIDP( &binExt, bShow, strVal );
+    }
+    else if( strName == kExtNameSAN || strName == kExtNameIAN )
+    {
+        int nNid = JS_PKI_getNidFromSN( strName.toStdString().c_str() );
+        ret = _getAltName( &binExt, nNid, bShow, strVal );
+    }
+    else if( strName == kExtNamePM )
+    {
+        ret = _getPM( &binExt, bShow, strVal );
+    }
+    else if( strName == kExtNameNC )
+    {
+        ret = _getNC( &binExt, bShow, strVal );
+    }
+    else if( strName == kExtNameCRLReason )
+    {
+        ret = _getCRLReason( &binExt, bShow, strVal );
+    }
+    else
+    {
+        strVal = strHexValue;
+    }
+
+    JS_BIN_reset( &binExt );
+    return strVal;
+}
 
 void getInfoValue( const JExtensionInfo *pExtInfo, QString& strVal, bool bShow )
 {
@@ -1114,12 +1188,76 @@ bool isValidNumFormat( const QString strInput, int nNumber )
 //    return strExp.exactMatch( strInput );
 }
 
-int getCLRFromURI( const QString strURI, BIN *pCRL )
+int getDataFromURI( const QString strURI, BIN *pData )
 {
-    return 0;
+    int ret = 0;
+    int nStatus = 0;
+
+    QUrl url;
+    QString strHost;
+    int nPort = -1;
+    url.setUrl( strURI );
+
+    QString strScheme = url.scheme().toLower();
+
+    if( strScheme == "http" || strScheme == "https" )
+    {
+        strHost = url.host();
+        nPort = url.port(80);
+
+        ret = JS_HTTP_requestGetBin2( strURI.toStdString().c_str(), NULL, NULL, &nStatus, pData );
+    }
+    else if( strScheme == "ldap" )
+    {
+        strHost = url.host();
+        nPort = url.port( 389 );
+
+        ret = JS_LDAP_getDataFromURI( strURI.toStdString().c_str(), pData );
+    }
+
+    return ret;
 }
 
-int checkOCSP( const QString strURL, const BIN *pCert )
+int checkOCSP( const QString strURL, const BIN *pCA, const BIN *pCert )
 {
-    return 0;
+    int ret = 0;
+    int nStatus = 0;
+    BIN binReq = {0,0};
+    BIN binRsp = {0,0};
+
+    JCertIDInfo sIDInfo;
+    JCertStatusInfo sStatusInfo;
+
+    memset( &sIDInfo, 0x00, sizeof(sIDInfo));
+    memset( &sStatusInfo, 0x00, sizeof(sStatusInfo));
+
+    ret = JS_OCSP_encodeRequest( (BIN *)pCert, (BIN *)pCA, "SHA256", NULL, NULL, &binReq );
+    if( ret != 0 )
+    {
+        fprintf( stderr, "fail to encode OCSP request: %d\n", ret );
+        goto end;
+    }
+
+    ret = JS_HTTP_requestPostBin( strURL.toStdString().c_str(), "application/ocsp-request", &binReq, &nStatus, &binRsp );
+    if( ret != 0 )
+    {
+        fprintf( stderr, "fail to request : %d\n", ret );
+        goto end;
+    }
+
+    ret = JS_OCSP_decodeResponse( &binRsp, NULL, &sIDInfo, &sStatusInfo );
+    if( ret != 0 )
+    {
+        fprintf( stderr, "fail to decode respose:%d\n", ret);
+        goto end;
+    }
+
+end :
+    JS_BIN_reset( &binReq );
+    JS_BIN_reset( &binRsp );
+
+    JS_OCSP_resetCertIDInfo( &sIDInfo );
+    JS_OCSP_resetCertStatusInfo( &sStatusInfo );
+
+    return ret;
 }

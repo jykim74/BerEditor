@@ -187,7 +187,7 @@ if(WIN32)
         Qt${QT_VERSION_MAJOR}::Gui
         PKILib crypto ssl ltdl ldap lber gmp ws2_32 WinSparkle )
 
-    target_compile_definitions( ${PROJECT_NAME} PRIVATE _AUTO_UPDATE )
+    target_compile_definitions( ${PROJECT_NAME} PRIVATE _AUTO_UPDATE USE_OCSP )
 
 elseif(APPLE)
     set(CMAKE_MACOSX_BUNDLE ON)

@@ -18,9 +18,10 @@ public:
     explicit CRLInfoDlg(QWidget *parent = nullptr);
     ~CRLInfoDlg();
 
-    void setCRLPath( const QString strPath );
-    QString getCRLPath() { return crl_path_; };
+    int setCRLPath( const QString strPath );
     QTableWidgetItem* getExtNameItem( const QString strSN );
+
+    void setCRL_BIN( const BIN *pCRL );
 
 private slots:
     void clickCRLField( QModelIndex index );
@@ -28,7 +29,7 @@ private slots:
     void showEvent(QShowEvent *event);
 
 private:
-    QString crl_path_;
+    BIN     crl_bin_;
     void initialize();
     void initUI();
     void clearTable();
