@@ -27,6 +27,9 @@ public:
     static const QString getCRL_URIFromExt( const QString strExtCRLDP );
     static const QString getOCSP_URIFromExt( const QString strExtAIA );
     static const QString getCA_URIFromExt( const QString strExtAIA );
+    static int getCA( const QString strExtAIA, BIN *pCA );
+    static int getCRL( const QString strExtCRLDP, BIN *pCRL );
+    static const QString getValueFromExtList( const QString strExtName, JExtensionInfoList *pExtList );
 
 private slots:
     void showEvent(QShowEvent *event);
@@ -46,8 +49,7 @@ private slots:
 private:
 
     int saveAsPEM( const BIN *pData );
-    int getCA( BIN *pCA );
-    int getCRL( BIN *pCRL );
+    const QString getValueFromExtList( const QString strExtName );
 
     void getFields();
     void initUI();

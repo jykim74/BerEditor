@@ -116,6 +116,13 @@ void CertInfoDlg::setCertBIN( const BIN *pCert )
 void CertInfoDlg::showEvent(QShowEvent *event)
 {
     getFields();
+
+    mCertTree->clear();
+    QTreeWidgetItem *item = new QTreeWidgetItem;
+
+    item->setText( 0, cert_info_.pSubjectName );
+    item->setIcon(0, QIcon(":/images/cert.png"));
+    mCertTree->insertTopLevelItem(0, item);
 }
 
 void CertInfoDlg::getFields()
@@ -325,6 +332,10 @@ void CertInfoDlg::initUI()
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mFieldTable, SIGNAL(clicked(QModelIndex)), this, SLOT(clickField(QModelIndex)));
+
+    mCertTree->clear();
+    mCertTree->header()->setVisible( false );
+    mCertTree->setColumnCount(1);
 }
 
 void CertInfoDlg::clickField(QModelIndex index)
@@ -394,108 +405,6 @@ int CertInfoDlg::saveAsPEM( const BIN *pData )
     return 0;
 }
 
-int CertInfoDlg::getCA( BIN *pCA )
-{
-    int ret = 0;
-    QString strAIA;
-    QString strURI;
-
-    if( cert_bin_.nLen <= 0 ) return -1;
-
-    JCertInfo sCertInfo;
-    JExtensionInfoList *pExtInfoList = NULL;
-    JExtensionInfoList *pCurList = NULL;
-
-    ret = JS_PKI_getCertInfo( &cert_bin_, &sCertInfo, &pExtInfoList );
-    if( ret != 0 )
-    {
-        berApplet->elog( "Invalid certificate data" );
-        return -1;
-    }
-
-    pCurList = pExtInfoList;
-
-    while( pCurList )
-    {
-        QString strSN;
-
-        strSN = pCurList->sExtensionInfo.pOID;
-
-        if( strSN == kExtNameAIA )
-        {
-            strAIA = pCurList->sExtensionInfo.pValue;
-            break;
-        }
-
-        pCurList = pCurList->pNext;
-    }
-
-    berApplet->log( QString( "AIA : %1" ).arg( strAIA ));
-    strURI = getCA_URIFromExt( strAIA );
-
-    if( strURI.length() < 1 )
-    {
-        berApplet->warningBox( tr( "fail to get CA URI" ), this );
-        return -1;
-    }
-
-    berApplet->log( QString( "CA URI: %1").arg( strURI));
-    ret = getDataFromURI( strURI, pCA );
-
-    return ret;
-}
-
-int CertInfoDlg::getCRL( BIN *pCRL )
-{
-    int ret = 0;
-    QString strCRLDP;
-    QString strURI;
-
-    if( cert_bin_.nLen <= 0 ) return -1;
-
-    JCertInfo sCertInfo;
-    JExtensionInfoList *pExtInfoList = NULL;
-    JExtensionInfoList *pCurList = NULL;
-
-    ret = JS_PKI_getCertInfo( &cert_bin_, &sCertInfo, &pExtInfoList );
-    if( ret != 0 )
-    {
-        berApplet->elog( "Invalid certificate data" );
-        return -1;
-    }
-
-    pCurList = pExtInfoList;
-
-    while( pCurList )
-    {
-        QString strSN;
-
-        strSN = pCurList->sExtensionInfo.pOID;
-
-        if( strSN == kExtNameCRLDP )
-        {
-            strCRLDP = pCurList->sExtensionInfo.pValue;
-            break;
-        }
-
-        pCurList = pCurList->pNext;
-    }
-
-    berApplet->log( QString( "CRLDP : %1" ).arg( strCRLDP ));
-    strURI = getCRL_URIFromExt( strCRLDP );
-
-    if( strURI.length() < 1 )
-    {
-        berApplet->warningBox( tr( "fail to get CRL URI" ), this );
-        return -1;
-    }
-
-    berApplet->log( QString( "CRL URI: %1").arg( strURI));
-    ret = getDataFromURI( strURI, pCRL );
-
-    return ret;
-}
-
 void CertInfoDlg::changeFieldType( int index )
 {
     getFields();
@@ -508,15 +417,62 @@ void CertInfoDlg::clickSave()
 
 void CertInfoDlg::clickMakeTree()
 {
+    int ret = 0;
+    BIN binCert = {0,0};
+    BIN binCA = {0,0};
 
+    JCertInfo sCertInfo;
+    JExtensionInfoList *pExtInfoList = NULL;
+    QTreeWidgetItem* child = NULL;
+    QString strExtValue;
+
+    memset( &sCertInfo, 0x00, sizeof(sCertInfo));
+
+    JS_BIN_copy( &binCert, &cert_bin_ );
+
+    while( 1 )
+    {
+        JS_PKI_resetCertInfo( &sCertInfo );
+        ret = JS_PKI_getCertInfo( &binCert, &sCertInfo, &pExtInfoList );
+        if( ret != 0 ) break;
+
+        QTreeWidgetItem* item = new QTreeWidgetItem;
+        item->setText( 0, sCertInfo.pSubjectName );
+        item->setIcon( 0, QIcon( ":/images/cert.png" ));
+        item->setData( 0, Qt::UserRole, getHexString( &binCert ));
+        item->addChild( child );
+        child = item;
+
+        if( JS_PKI_isSelfSignedCert( &binCert ) == 1 ) break;
+
+        strExtValue = getValueFromExtList( kExtNameAIA, pExtInfoList );
+        if( strExtValue.length() > 0 )
+        {
+            ret = getCA( strExtValue, &binCA );
+            if( ret != 0 ) break;
+        }
+
+        JS_BIN_reset( &binCert );
+        JS_BIN_copy( &binCert, &binCA );
+        JS_BIN_reset( &binCA );
+
+        JS_PKI_resetCertInfo( &sCertInfo );
+        if( pExtInfoList ) JS_PKI_resetExtensionInfoList( &pExtInfoList );
+    }
+
+    mCertTree->insertTopLevelItem( 0, child );
+
+    JS_PKI_resetCertInfo( &sCertInfo );
+    if( pExtInfoList ) JS_PKI_resetExtensionInfoList( &pExtInfoList );
 }
 
 void CertInfoDlg::clickGetCA()
 {
     int ret = 0;
     BIN binCA = {0,0};
+    QString strExtValue = getValueFromExtList( kExtNameAIA );
 
-    ret = getCA( &binCA );
+    ret = getCA( strExtValue, &binCA );
 
     if( ret == 0 )
         saveAsPEM( &binCA );
@@ -530,8 +486,9 @@ void CertInfoDlg::clickGetCRL()
 {
     int ret = 0;
     BIN binCRL = {0,0};
+    QString strExtValue = getValueFromExtList( kExtNameCRLDP );
 
-    ret = getCRL( &binCRL );
+    ret = getCRL( strExtValue, &binCRL );
 
     if( ret == 0 )
         saveAsPEM( &binCRL );
@@ -559,35 +516,21 @@ void CertInfoDlg::clickVerifyCert()
 void CertInfoDlg::clickOCSPCheck()
 {
     int ret = 0;
-    QString strAIA;
+
     QString strURI;
     BIN binCA = {0,0};
 
-    if( cert_bin_.nLen <= 0 ) return;
+    QString strExtValue = getValueFromExtList( kExtNameAIA );
+    berApplet->log( QString( "AIA : %1" ).arg( strExtValue ));
 
-    JExtensionInfoList *pCurList = NULL;
-
-    pCurList = ext_info_list_;
-
-    while( pCurList )
+    ret = getCA( strExtValue, &binCA );
+    if( ret != 0 )
     {
-        QString strSN;
-
-        strSN = pCurList->sExtensionInfo.pOID;
-
-        if( strSN == kExtNameAIA )
-        {
-            strAIA = pCurList->sExtensionInfo.pValue;
-            break;
-        }
-
-        pCurList = pCurList->pNext;
+        berApplet->warningBox( tr( "fail to get CA: %1").arg( ret ));
+        return;
     }
 
-    ret = getCA( &binCA );
-
-    berApplet->log( QString( "AIA : %1" ).arg( strAIA ));
-    strURI = getOCSP_URIFromExt( strAIA );
+    strURI = getOCSP_URIFromExt( strExtValue );
 
     if( strURI.length() < 1 )
     {
@@ -632,6 +575,32 @@ void CertInfoDlg::clickCRLCheck()
     strURI = getCRL_URIFromExt( strCRLDP );
 
     berApplet->log( QString( "URI: %1").arg( strURI));
+}
+
+const QString CertInfoDlg::getValueFromExtList( const QString strExtName )
+{
+    QString strValue;
+
+    JExtensionInfoList *pCurList = NULL;
+
+    pCurList = ext_info_list_;
+
+    while( pCurList )
+    {
+        QString strSN;
+
+        strSN = pCurList->sExtensionInfo.pOID;
+
+        if( strSN == strExtName )
+        {
+            strValue = pCurList->sExtensionInfo.pValue;
+            break;
+        }
+
+        pCurList = pCurList->pNext;
+    }
+
+    return strValue;
 }
 
 const QString CertInfoDlg::getCRL_URIFromExt( const QString strExtCRLDP )
@@ -733,4 +702,70 @@ const QString CertInfoDlg::getCA_URIFromExt( const QString strExtAIA )
     }
 
     return strURI;
+}
+
+int CertInfoDlg::getCA( const QString strExtAIA, BIN *pCA )
+{
+    int ret = 0;
+    QString strURI;
+
+    berApplet->log( QString( "AIA : %1" ).arg( strExtAIA ));
+    strURI = getCA_URIFromExt( strExtAIA );
+
+    if( strURI.length() < 1 )
+    {
+        berApplet->elog( "fail to get CA URI" );
+        return -1;
+    }
+
+    berApplet->log( QString( "CA URI: %1").arg( strURI));
+    ret = getDataFromURI( strURI, pCA );
+
+    return ret;
+}
+
+int CertInfoDlg::getCRL( const QString strExtCRLDP, BIN *pCRL )
+{
+    int ret = 0;
+    QString strURI;
+
+    berApplet->log( QString( "CRLDP : %1" ).arg( strExtCRLDP ));
+    strURI = getCRL_URIFromExt( strExtCRLDP );
+
+    if( strURI.length() < 1 )
+    {
+        berApplet->elog( "fail to get CRL URI" );
+        return -1;
+    }
+
+    berApplet->log( QString( "CRL URI: %1").arg( strURI));
+    ret = getDataFromURI( strURI, pCRL );
+
+    return ret;
+}
+
+const QString CertInfoDlg::getValueFromExtList( const QString strExtName, JExtensionInfoList *pExtList )
+{
+    QString strValue;
+
+    JExtensionInfoList *pCurList = NULL;
+
+    pCurList = pExtList;
+
+    while( pCurList )
+    {
+        QString strSN;
+
+        strSN = pCurList->sExtensionInfo.pOID;
+
+        if( strSN == strExtName )
+        {
+            strValue = pCurList->sExtensionInfo.pValue;
+            break;
+        }
+
+        pCurList = pCurList->pNext;
+    }
+
+    return strValue;
 }
