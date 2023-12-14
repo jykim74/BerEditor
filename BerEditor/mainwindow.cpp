@@ -28,6 +28,9 @@
 #include "cert_pvd_dlg.h"
 #include "lcn_info_dlg.h"
 #include "ssl_verify_dlg.h"
+#include "cert_info_dlg.h"
+#include "crl_info_dlg.h"
+#include "csr_info_dlg.h"
 #include "common.h"
 
 #include <QtWidgets>
@@ -259,6 +262,27 @@ void MainWindow::createActions()
     connect( openAct, &QAction::triggered, this, &MainWindow::open);
     fileMenu->addAction(openAct);
     fileToolBar->addAction(openAct);
+
+    const QIcon openCertIcon = QIcon::fromTheme("document-cert", QIcon(":/images/cert.png"));
+    QAction *openCertAct = new QAction( openCertIcon, tr("&Open Certificate"), this );
+    openCertAct->setShortcut(QKeySequence(Qt::Key_F2));
+    openCertAct->setStatusTip(tr("Open a certificate"));
+    connect( openCertAct, &QAction::triggered, this, &MainWindow::openCert);
+    fileMenu->addAction(openCertAct);
+
+    const QIcon openCRLIcon = QIcon::fromTheme("document-crl", QIcon(":/images/crl.png"));
+    QAction *openCRLAct = new QAction( openCRLIcon, tr("&Open CRL"), this );
+    openCRLAct->setShortcut(QKeySequence(Qt::Key_F3));
+    openCRLAct->setStatusTip(tr("Open a CRL"));
+    connect( openCRLAct, &QAction::triggered, this, &MainWindow::openCRL);
+    fileMenu->addAction(openCRLAct);
+
+    const QIcon openCSRIcon = QIcon::fromTheme("document-csr", QIcon(":/images/csr.png"));
+    QAction *openCSRAct = new QAction( openCSRIcon, tr("&Open CSR"), this );
+    openCSRAct->setShortcut(QKeySequence(Qt::Key_F4));
+    openCSRAct->setStatusTip(tr("Open a CSR"));
+    connect( openCSRAct, &QAction::triggered, this, &MainWindow::openCSR);
+    fileMenu->addAction(openCSRAct);
 
     const QIcon saveIcon = QIcon::fromTheme("document-save", QIcon(":/images/save.png"));
     QAction *saveAct = new QAction(saveIcon, tr("&Save"), this);
@@ -687,6 +711,51 @@ void MainWindow::openRecent()
         if( ret != 0 ) return;
 
         berApplet->setBERPath( action->data().toString() );
+    }
+}
+
+void MainWindow::openCert()
+{
+    QString strPath = berApplet->curFile();
+
+    QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    if( fileName.length() > 1 )
+    {
+        CertInfoDlg certInfo;
+        certInfo.setCertPath( fileName );
+        certInfo.exec();
+
+        berApplet->setCurFile( fileName );
+    }
+}
+
+void MainWindow::openCRL()
+{
+    QString strPath = berApplet->curFile();
+
+    QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    if( fileName.length() > 1 )
+    {
+        CRLInfoDlg crlInfo;
+        crlInfo.setCRLPath( fileName );
+        crlInfo.exec();
+
+        berApplet->setCurFile( fileName );
+    }
+}
+
+void MainWindow::openCSR()
+{
+    QString strPath = berApplet->curFile();
+
+    QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    if( fileName.length() > 1 )
+    {
+        CSRInfoDlg csrInfo;
+        csrInfo.setReqPath( fileName );
+        csrInfo.exec();
+
+        berApplet->setCurFile( fileName );
     }
 }
 

@@ -66,6 +66,7 @@ set(PROJECT_SRC
     sign_verify_dlg.cpp
     sss_dlg.cpp
     ssl_verify_dlg.cpp
+    csr_info_dlg.cpp
     ${platform_specific_sources}
 )
 
@@ -107,6 +108,7 @@ set( PROJECT_HEADER
     singleton.h
     sss_dlg.h
     ssl_verify_dlg.h
+    csr_info_dlg.h
     ${platform_specific_headers}
 )
 
@@ -137,6 +139,7 @@ set( PROJECT_FORM
     sign_verify_dlg.ui
     sss_dlg.ui
     ssl_verify_dlg.ui
+    csr_info_dlg.ui
 )
 
 

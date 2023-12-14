@@ -80,7 +80,11 @@ CertInfoDlg::CertInfoDlg(QWidget *parent) :
     connect( mCRLCheckBtn, SIGNAL(clicked()), this, SLOT(clickCRLCheck()));
 
     initUI();
+
     memset( &cert_bin_, 0x00, sizeof(BIN));
+    memset( &cert_info_, 0x00, sizeof(cert_info_));
+    ext_info_list_ = NULL;
+
     tabWidget->setCurrentIndex(0);
 
 #if defined(Q_OS_MAC)
@@ -90,13 +94,13 @@ CertInfoDlg::CertInfoDlg(QWidget *parent) :
 
 CertInfoDlg::~CertInfoDlg()
 {
-    JS_BIN_reset( &cert_bin_);
+    resetData();
 }
 
 int CertInfoDlg::setCertPath(const QString strPath)
 {
     int ret = 0;
-    JS_BIN_reset( &cert_bin_ );
+    resetData();
 
     ret = JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &cert_bin_ );
 
@@ -105,7 +109,7 @@ int CertInfoDlg::setCertPath(const QString strPath)
 
 void CertInfoDlg::setCertBIN( const BIN *pCert )
 {
-    JS_BIN_reset( &cert_bin_ );
+    resetData();
     JS_BIN_copy( &cert_bin_, pCert );
 }
 
@@ -122,8 +126,6 @@ void CertInfoDlg::getFields()
     BIN binFinger = {0,0};
     BIN binPub = {0,0};
 
-    JCertInfo  sCertInfo;
-    JExtensionInfoList *pExtInfoList = NULL;
     char    sNotBefore[64];
     char    sNotAfter[64];
 
@@ -136,10 +138,9 @@ void CertInfoDlg::getFields()
         return;
     }
 
-    memset( &sCertInfo, 0x00, sizeof(sCertInfo));
     clearTable();
 
-    ret = JS_PKI_getCertInfo( &cert_bin_, &sCertInfo, &pExtInfoList );
+    ret = JS_PKI_getCertInfo( &cert_bin_, &cert_info_, &ext_info_list_ );
     if( ret != 0 )
     {
         berApplet->warningBox( tr("fail to get certificate information"), this );
@@ -154,35 +155,35 @@ void CertInfoDlg::getFields()
         mFieldTable->insertRow(i);
         mFieldTable->setRowHeight(i,10);
         mFieldTable->setItem( i, 0, new QTableWidgetItem( tr("Version")));
-        mFieldTable->setItem(i, 1, new QTableWidgetItem(QString("V%1").arg(sCertInfo.nVersion + 1)));
+        mFieldTable->setItem(i, 1, new QTableWidgetItem(QString("V%1").arg(cert_info_.nVersion + 1)));
         i++;
 
-        if( sCertInfo.pSerial )
+        if( cert_info_.pSerial )
         {
             mFieldTable->insertRow(i);
             mFieldTable->setRowHeight(i,10);
             mFieldTable->setItem(i, 0, new QTableWidgetItem(tr("Serial")));
-            mFieldTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(sCertInfo.pSerial)));
+            mFieldTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(cert_info_.pSerial)));
             i++;
         }
 
-        JS_UTIL_getDateTime( sCertInfo.uNotBefore, sNotBefore );
+        JS_UTIL_getDateTime( cert_info_.uNotBefore, sNotBefore );
         mFieldTable->insertRow(i);
         mFieldTable->setRowHeight(i,10);
         mFieldTable->setItem( i, 0, new QTableWidgetItem( tr("NotBefore")));
         mFieldTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(sNotBefore)));
         i++;
 
-        JS_UTIL_getDateTime( sCertInfo.uNotAfter, sNotAfter );
+        JS_UTIL_getDateTime( cert_info_.uNotAfter, sNotAfter );
         mFieldTable->insertRow(i);
         mFieldTable->setRowHeight(i,10);
         mFieldTable->setItem( i, 0, new QTableWidgetItem( tr("NotAfter")));
         mFieldTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(sNotAfter)));
         i++;
 
-        if( sCertInfo.pSubjectName )
+        if( cert_info_.pSubjectName )
         {
-            QString name = QString::fromUtf8( sCertInfo.pSubjectName );
+            QString name = QString::fromUtf8( cert_info_.pSubjectName );
 
             mFieldTable->insertRow(i);
             mFieldTable->setRowHeight(i,10);
@@ -191,7 +192,7 @@ void CertInfoDlg::getFields()
             i++;
         }
 
-        if( sCertInfo.pPublicKey )
+        if( cert_info_.pPublicKey )
         {
             int nKeyType = -1;
             int nOption = -1;
@@ -199,7 +200,7 @@ void CertInfoDlg::getFields()
             QString strAlg;
             QString strParam;
 
-            JS_BIN_decodeHex( sCertInfo.pPublicKey, &binPub );
+            JS_BIN_decodeHex( cert_info_.pPublicKey, &binPub );
             JS_PKI_getPubKeyInfo( &binPub, &nKeyType, &nOption );
 
             strAlg = JS_PKI_getKeyAlgName( nKeyType );
@@ -224,44 +225,44 @@ void CertInfoDlg::getFields()
             else
                 item = new QTableWidgetItem(QString("%1").arg(strAlg));
 
-            item->setData( Qt::UserRole, QString( sCertInfo.pPublicKey ) );
+            item->setData( Qt::UserRole, QString( cert_info_.pPublicKey ) );
             mFieldTable->setItem( i, 1, item );
             i++;
         }
 
-        if( sCertInfo.pIssuerName )
+        if( cert_info_.pIssuerName )
         {
             mFieldTable->insertRow(i);
             mFieldTable->setRowHeight(i,10);
             mFieldTable->setItem(i, 0, new QTableWidgetItem(tr("IssuerName")));
-            mFieldTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(sCertInfo.pIssuerName)));
+            mFieldTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(cert_info_.pIssuerName)));
             i++;
         }
 
-        if( sCertInfo.pSignAlgorithm )
+        if( cert_info_.pSignAlgorithm )
         {
             mFieldTable->insertRow(i);
             mFieldTable->setRowHeight(i,10);
             mFieldTable->setItem(i, 0, new QTableWidgetItem(tr("SigAlgorithm")));
-            mFieldTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(sCertInfo.pSignAlgorithm)));
+            mFieldTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(cert_info_.pSignAlgorithm)));
             i++;
         }
 
-        if( sCertInfo.pSignature )
+        if( cert_info_.pSignature )
         {
             mFieldTable->insertRow(i);
             mFieldTable->setRowHeight(i,10);
             mFieldTable->setItem(i, 0, new QTableWidgetItem(tr("Signature")));
-            mFieldTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(sCertInfo.pSignature)));
+            mFieldTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(cert_info_.pSignature)));
             i++;
         }
     }
 
     if( nType == FIELD_ALL || nType == FIELD_EXTENSION_ONLY || nType == FIELD_CRITICAL_ONLY )
     {
-        if( pExtInfoList )
+        if( ext_info_list_ )
         {
-            JExtensionInfoList *pCurList = pExtInfoList;
+            JExtensionInfoList *pCurList = ext_info_list_;
 
             while( pCurList )
             {
@@ -301,9 +302,6 @@ void CertInfoDlg::getFields()
 
     JS_BIN_reset( &binFinger );
     JS_BIN_reset( &binPub );
-
-    JS_PKI_resetCertInfo( &sCertInfo );
-    if( pExtInfoList ) JS_PKI_resetExtensionInfoList( &pExtInfoList );
 }
 
 
@@ -355,6 +353,13 @@ void CertInfoDlg::clearTable()
 
     for( int i=0; i < rowCnt; i++ )
         mFieldTable->removeRow(0);
+}
+
+void CertInfoDlg::resetData()
+{
+    JS_BIN_reset( &cert_bin_);
+    JS_PKI_resetCertInfo( &cert_info_ );
+    if( ext_info_list_ ) JS_PKI_resetExtensionInfoList( &ext_info_list_ );
 }
 
 int CertInfoDlg::saveAsPEM( const BIN *pData )
@@ -428,6 +433,12 @@ int CertInfoDlg::getCA( BIN *pCA )
     berApplet->log( QString( "AIA : %1" ).arg( strAIA ));
     strURI = getCA_URIFromExt( strAIA );
 
+    if( strURI.length() < 1 )
+    {
+        berApplet->warningBox( tr( "fail to get CA URI" ), this );
+        return -1;
+    }
+
     berApplet->log( QString( "CA URI: %1").arg( strURI));
     ret = getDataFromURI( strURI, pCA );
 
@@ -472,6 +483,12 @@ int CertInfoDlg::getCRL( BIN *pCRL )
 
     berApplet->log( QString( "CRLDP : %1" ).arg( strCRLDP ));
     strURI = getCRL_URIFromExt( strCRLDP );
+
+    if( strURI.length() < 1 )
+    {
+        berApplet->warningBox( tr( "fail to get CRL URI" ), this );
+        return -1;
+    }
 
     berApplet->log( QString( "CRL URI: %1").arg( strURI));
     ret = getDataFromURI( strURI, pCRL );
@@ -548,18 +565,9 @@ void CertInfoDlg::clickOCSPCheck()
 
     if( cert_bin_.nLen <= 0 ) return;
 
-    JCertInfo sCertInfo;
-    JExtensionInfoList *pExtInfoList = NULL;
     JExtensionInfoList *pCurList = NULL;
 
-    ret = JS_PKI_getCertInfo( &cert_bin_, &sCertInfo, &pExtInfoList );
-    if( ret != 0 )
-    {
-        berApplet->elog( "Invalid certificate data" );
-        return;
-    }
-
-    pCurList = pExtInfoList;
+    pCurList = ext_info_list_;
 
     while( pCurList )
     {
@@ -581,6 +589,12 @@ void CertInfoDlg::clickOCSPCheck()
     berApplet->log( QString( "AIA : %1" ).arg( strAIA ));
     strURI = getOCSP_URIFromExt( strAIA );
 
+    if( strURI.length() < 1 )
+    {
+        berApplet->warningBox( tr( "fail to get OCSP URI" ), this );
+        return;
+    }
+
     berApplet->log( QString( "OCSP URI: %1").arg( strURI));
     ret = checkOCSP( strURI, &binCA, &cert_bin_ );
 
@@ -595,18 +609,9 @@ void CertInfoDlg::clickCRLCheck()
 
     if( cert_bin_.nLen <= 0 ) return;
 
-    JCertInfo sCertInfo;
-    JExtensionInfoList *pExtInfoList = NULL;
     JExtensionInfoList *pCurList = NULL;
 
-    ret = JS_PKI_getCertInfo( &cert_bin_, &sCertInfo, &pExtInfoList );
-    if( ret != 0 )
-    {
-        berApplet->elog( "Invalid certificate data" );
-        return;
-    }
-
-    pCurList = pExtInfoList;
+    pCurList = ext_info_list_;
 
     while( pCurList )
     {

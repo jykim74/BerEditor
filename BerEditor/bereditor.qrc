@@ -53,5 +53,7 @@
         <file>bereditor.ico</file>
         <file>bereditor.icns</file>
         <file>images/ssl.png</file>
+        <file>images/crl.png</file>
+        <file>images/csr.png</file>
     </qresource>
 </RCC>

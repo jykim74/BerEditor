@@ -28,12 +28,19 @@ private slots:
     void clickRevokeField( QModelIndex index );
     void showEvent(QShowEvent *event);
 
+    void clickSave();
+    void clickDecodeCRL();
+    void clickVerifyCRL();
+
 private:
-    BIN     crl_bin_;
+
     void initialize();
     void initUI();
     void clearTable();
+    int saveAsPEM( const BIN *pData );
+    void resetData();
 
+    BIN     crl_bin_;
     JCRLInfo crl_info_;
     JExtensionInfoList* ext_info_list_;
     JRevokeInfoList* revoke_info_list_;

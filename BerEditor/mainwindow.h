@@ -66,6 +66,9 @@ private slots:
     void newFile();
     void open();
     void openRecent();
+    void openCert();
+    void openCRL();
+    void openCSR();
     void about();
     void setting();
     void test();

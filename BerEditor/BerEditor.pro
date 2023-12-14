@@ -22,6 +22,7 @@ PROJECT_VERSION = "1.5.7"
 DEFINES += QT_DEPRECATED_WARNINGS
 DEFINES += BER_EDITOR_VERSION=$$PROJECT_VERSION
 #DEFINES += _AUTO_UPDATE
+DEFINES += USE_OCSP
 
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -69,7 +70,8 @@ SOURCES += \
     settings_mgr.cpp \
     sign_verify_dlg.cpp \
     sss_dlg.cpp \
-    ssl_verify_dlg.cpp
+    ssl_verify_dlg.cpp \
+    csr_info_dlg.cpp
 
 HEADERS += \
     about_dlg.h \
@@ -108,7 +110,8 @@ HEADERS += \
     sign_verify_dlg.h \
     singleton.h \
     sss_dlg.h \
-    ssl_verify_dlg.h
+    ssl_verify_dlg.h \
+    csr_info_dlg.h
 
 
 
@@ -224,7 +227,8 @@ FORMS += \
         settings_dlg.ui \
         sign_verify_dlg.ui \
         sss_dlg.ui \
-        ssl_verify_dlg.ui
+        ssl_verify_dlg.ui \
+        csr_info_dlg.ui
 
 RESOURCES += \
     bereditor.qrc

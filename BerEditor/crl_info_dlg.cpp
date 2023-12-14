@@ -1,3 +1,5 @@
+#include <QFileDialog>
+
 #include "mainwindow.h"
 #include "ber_applet.h"
 #include "crl_info_dlg.h"
@@ -61,6 +63,11 @@ CRLInfoDlg::CRLInfoDlg(QWidget *parent) :
 
     memset( &crl_bin_, 0x00, sizeof(crl_bin_));
     memset( &crl_info_, 0x00, sizeof(crl_info_));
+
+    connect( mSaveBtn, SIGNAL(clicked()), this, SLOT(clickSave()));
+    connect( mDecodeCRLBtn, SIGNAL(clicked()), this, SLOT(clickDecodeCRL()));
+    connect( mVerifyCRLBtn, SIGNAL(clicked()), this, SLOT(clickVerifyCRL()));
+
     tabWidget->setCurrentIndex(0);
 
 #if defined(Q_OS_MAC)
@@ -69,6 +76,11 @@ CRLInfoDlg::CRLInfoDlg(QWidget *parent) :
 }
 
 CRLInfoDlg::~CRLInfoDlg()
+{
+    resetData();
+}
+
+void CRLInfoDlg::resetData()
 {
     JS_BIN_reset( &crl_bin_ );
     JS_PKI_resetCRLInfo( &crl_info_ );
@@ -81,10 +93,25 @@ void CRLInfoDlg::showEvent(QShowEvent *event)
     initialize();
 }
 
+void CRLInfoDlg::clickSave()
+{
+    saveAsPEM( &crl_bin_ );
+}
+
+void CRLInfoDlg::clickDecodeCRL()
+{
+    berApplet->decodeData( &crl_bin_, "" );
+}
+
+void CRLInfoDlg::clickVerifyCRL()
+{
+
+}
+
 int CRLInfoDlg::setCRLPath(const QString strPath )
 {
     int ret = 0;
-    JS_BIN_reset( &crl_bin_ );
+    resetData();
 
     ret = JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &crl_bin_ );
 
@@ -93,7 +120,7 @@ int CRLInfoDlg::setCRLPath(const QString strPath )
 
 void CRLInfoDlg::setCRL_BIN( const BIN *pCRL )
 {
-    JS_BIN_reset( &crl_bin_ );
+    resetData();
     JS_BIN_copy( &crl_bin_, pCRL );
 }
 
@@ -108,6 +135,8 @@ void CRLInfoDlg::initialize()
     char    sNextUpdate[64];
 
     tabWidget->setCurrentIndex(0);
+
+    if( berApplet->isLicense() == false ) mValidGroup->hide();
 
     JS_PKI_resetCRLInfo( &crl_info_ );
 
@@ -286,6 +315,39 @@ void CRLInfoDlg::clearTable()
     for( int i=0; i < rowCnt; i++ )
         mRevokeDetailTable->removeRow(0);
 }
+
+int CRLInfoDlg::saveAsPEM( const BIN *pData )
+{
+    if( pData == NULL || pData->nLen <= 0 ) return -1;
+
+
+    QFileDialog::Options options;
+    options |= QFileDialog::DontUseNativeDialog;
+
+    QString strPath = berApplet->curFolder();
+
+    QString strFilter = tr("Cert Files (*.crt);;CRL Files (*.crl);;PEM Files (*.pem);;All Files (*.*)");
+    QString selectedFilter;
+
+    QString fileName = QFileDialog::getSaveFileName( this,
+                                                    tr("Export Files"),
+                                                    strPath,
+                                                    strFilter,
+                                                    &selectedFilter,
+                                                    options );
+
+    if( fileName.length() > 0 )
+    {
+        int ret = JS_BIN_writePEM( pData, JS_PEM_TYPE_CRL, fileName.toLocal8Bit().toStdString().c_str() );
+        if( ret > 0 )
+        {
+            berApplet->messageBox( tr( "Certificate or CRL is saved as PEM" ), this );
+        }
+    }
+
+    return 0;
+}
+
 
 void CRLInfoDlg::clickCRLField(QModelIndex index)
 {
