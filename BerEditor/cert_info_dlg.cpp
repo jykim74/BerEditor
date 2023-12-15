@@ -531,7 +531,30 @@ void CertInfoDlg::clickPathValidation()
 
 void CertInfoDlg::clickVerifyCert()
 {
+    int ret = 0;
+    BIN binCA = {0,0};
+    BIN binCRL = {0,0};
 
+    char sMsg[1024];
+
+    QString strExtAIA = getValueFromExtList( kExtNameAIA );
+    QString strExtCRLDP = getValueFromExtList( kExtNameCRLDP );
+
+    memset( sMsg, 0x00, sizeof(sMsg));
+
+    ret = getCA( strExtAIA, &binCA );
+    if( ret != 0 ) berApplet->elog( tr( "fail to get CA: %1").arg( ret ));
+
+    ret = getCRL( strExtCRLDP, &binCRL );
+    if( ret != 0 ) berApplet->elog( tr( "fail to get CRL: %1").arg( ret ));
+
+    ret = JS_PKI_verifyCert( &binCA, &binCRL, &cert_bin_, sMsg );
+
+    berApplet->messageBox( tr( "Verify Res: %1(%2)").arg( sMsg ).arg( ret ), this );
+
+end :
+    JS_BIN_reset( &binCA );
+    JS_BIN_reset( &binCRL );
 }
 
 void CertInfoDlg::clickOCSPCheck()
