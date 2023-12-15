@@ -9,6 +9,7 @@
 #include "js_util.h"
 #include "common.h"
 
+
 QTableWidgetItem* CRLInfoDlg::getExtNameItem( const QString strSN )
 {
     QTableWidgetItem* item = NULL;
@@ -105,7 +106,53 @@ void CRLInfoDlg::clickDecodeCRL()
 
 void CRLInfoDlg::clickVerifyCRL()
 {
+    int ret = 0;
+    BIN binCA = {0,0};
+    QString strPath = berApplet->curFile();
 
+    QString strFileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
+
+    if( strFileName.length() > 0 )
+    {
+        JCertInfo sCertInfo;
+        QString strCertName;
+        QString strCRLName;
+
+        memset( &sCertInfo, 0x00, sizeof(sCertInfo));
+
+        JS_BIN_fileReadBER( strFileName.toLocal8Bit().toStdString().c_str(), &binCA );
+
+        ret = JS_PKI_getCertInfo( &binCA, &sCertInfo, NULL );
+        if( ret != 0)
+        {
+            berApplet->warningBox( tr( "invalid certificate"), this );
+            JS_BIN_reset( &binCA );
+            return;
+        }
+
+        strCertName = sCertInfo.pSubjectName;
+        strCRLName = crl_info_.pIssuerName;
+
+        if( strCertName != strCRLName )
+        {
+            berApplet->warningBox( tr( "The certificate is not issuer of the CRL" ), this );
+            berApplet->elog( QString( "CertName: %1" ).arg( strCertName ) );
+            berApplet->elog( QString( "CRLName: %1").arg( strCRLName) );
+
+            JS_BIN_reset( &binCA );
+            JS_PKI_resetCertInfo( &sCertInfo );
+            return;
+        }
+
+        ret = JS_PKI_verifyCRL( &crl_bin_, &binCA );
+        if( ret == 1 )
+            berApplet->messageBox( tr( "CRL verify OK" ), this );
+        else
+            berApplet->warningBox( tr( "CRL verify fail: %1").arg( ret ), this );
+
+        JS_BIN_reset( &binCA );
+        JS_PKI_resetCertInfo( &sCertInfo );
+    }
 }
 
 int CRLInfoDlg::setCRLPath(const QString strPath )

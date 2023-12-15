@@ -185,7 +185,7 @@ void CertPVDDlg::clickVerifyCert()
         JS_BIN_fileReadBER( strCLRPath.toLocal8Bit().toStdString().c_str(), &binCRL );
     }
 
-    ret = JS_PKI_CertVerify( &binTrust, &binCRL, &binUntrust, sMsg );
+    ret = JS_PKI_CertVerifyByCA( &binTrust, &binCRL, &binUntrust, sMsg );
 
     berApplet->log( QString( "PVDCertValid : %1").arg(ret));
     if( ret == 1 )

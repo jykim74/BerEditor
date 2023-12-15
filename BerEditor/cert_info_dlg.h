@@ -61,6 +61,7 @@ private:
     JCertInfo cert_info_;
     JExtensionInfoList* ext_info_list_;
     int self_sign_;
+    BINList* path_list_;
 };
 
 #endif // CERT_INFO_DLG_H

@@ -6,6 +6,7 @@
 #include "js_pki.h"
 #include "js_pki_x509.h"
 #include "js_pki_ext.h"
+#include "js_pki_pvd.h"
 #include "js_pki_tools.h"
 #include "js_util.h"
 #include "crl_info_dlg.h"
@@ -86,6 +87,7 @@ CertInfoDlg::CertInfoDlg(QWidget *parent) :
     memset( &cert_info_, 0x00, sizeof(cert_info_));
     ext_info_list_ = NULL;
     self_sign_ = 0;
+    path_list_ = NULL;
 
     tabWidget->setCurrentIndex(0);
 
@@ -382,6 +384,7 @@ void CertInfoDlg::resetData()
     JS_BIN_reset( &cert_bin_);
     JS_PKI_resetCertInfo( &cert_info_ );
     if( ext_info_list_ ) JS_PKI_resetExtensionInfoList( &ext_info_list_ );
+    if( path_list_ ) JS_BIN_resetList( &path_list_ );
 }
 
 int CertInfoDlg::saveAsPEM( const BIN *pData )
@@ -438,6 +441,8 @@ void CertInfoDlg::clickMakeTree()
     QString strExtValue;
 
     memset( &sCertInfo, 0x00, sizeof(sCertInfo));
+    mCertTree->clear();
+    if( path_list_ ) JS_BIN_resetList( &path_list_ );
 
     JS_BIN_copy( &binCert, &cert_bin_ );
 
@@ -450,7 +455,8 @@ void CertInfoDlg::clickMakeTree()
         QTreeWidgetItem* item = new QTreeWidgetItem;
         item->setText( 0, sCertInfo.pSubjectName );
         item->setIcon( 0, QIcon( ":/images/cert.png" ));
-        item->setData( 0, Qt::UserRole, getHexString( &binCert ));
+
+        JS_BIN_addList( &path_list_, &binCert );
         item->addChild( child );
         child = item;
 
@@ -475,6 +481,8 @@ void CertInfoDlg::clickMakeTree()
 
     JS_PKI_resetCertInfo( &sCertInfo );
     if( pExtInfoList ) JS_PKI_resetExtensionInfoList( &pExtInfoList );
+
+    mCertTree->expandAll();
 }
 
 void CertInfoDlg::clickGetCA()
@@ -526,7 +534,38 @@ void CertInfoDlg::clickDecodeCert()
 
 void CertInfoDlg::clickPathValidation()
 {
+    int ret = 0;
+    BINList *pTrustList = NULL;
+    BINList *pUntrustList = NULL;
+    BINList *pCRLList = NULL;
+    const BINList *pAtList = NULL;
 
+    char sResMsg[128];
+    int nPathCount = 0;
+
+    if( path_list_ == NULL ) clickMakeTree();
+
+    nPathCount = JS_BIN_countList( path_list_ );
+
+    for( int i = 0; i < nPathCount; i++ )
+    {
+        pAtList = JS_BIN_getListAt( i, path_list_ );
+
+        if( i == (nPathCount - 1) )
+            JS_BIN_addList( &pTrustList, &pAtList->Bin );
+        else
+            JS_BIN_addList( &pUntrustList, &pAtList->Bin );
+    }
+
+    ret = JS_PKI_CertPVD( pTrustList, pUntrustList, pCRLList, NULL, &cert_bin_, sResMsg );
+
+    berApplet->messageBox( tr( "Path Validate : %1 (%2)").arg( sResMsg ).arg( ret ), this );
+
+    if( pTrustList ) JS_BIN_resetList( &pTrustList );
+    if( pUntrustList ) JS_BIN_resetList( &pUntrustList );
+    if( pCRLList ) JS_BIN_resetList( &pCRLList );
+
+    mCertTree->expandAll();
 }
 
 void CertInfoDlg::clickVerifyCert()
@@ -548,7 +587,7 @@ void CertInfoDlg::clickVerifyCert()
     ret = getCRL( strExtCRLDP, &binCRL );
     if( ret != 0 ) berApplet->elog( tr( "fail to get CRL: %1").arg( ret ));
 
-    ret = JS_PKI_verifyCert( &binCA, &binCRL, &cert_bin_, sMsg );
+    ret = JS_PKI_CertVerifyByCA( &binCA, &binCRL, &cert_bin_, sMsg );
 
     berApplet->messageBox( tr( "Verify Res: %1(%2)").arg( sMsg ).arg( ret ), this );
 
@@ -617,11 +656,29 @@ void CertInfoDlg::clickCRLCheck()
     }
     else
     {
-        ret = JS_PKI_isCertRevoked( &binCRL, &cert_bin_ );
-        if( ret == 0 )
-            berApplet->messageBox( tr( "The certificate is not revoked" ), this );
+        int nStatus = -1;
+        time_t tRevokedTime = 0;
+        char sSerial[32];
+        char sRevokedTime[64];
+
+        memset( sSerial, 0x00, sizeof(sSerial));
+        memset( sRevokedTime, 0x00, sizeof(sRevokedTime));
+
+        ret = JS_PKI_getStatusFromCRL( &binCRL, &cert_bin_, &nStatus, &tRevokedTime, sSerial );
+        if( ret != 0 )
+        {
+            berApplet->elog( QString("fail to get Status from CRL: %1" ).arg( ret ) );
+        }
         else
-            berApplet->warningBox( tr( "The certificate is revoked:%" ), this );
+        {
+            JS_UTIL_getDateTime( tRevokedTime, sRevokedTime );
+
+            if( nStatus == 0 )
+                berApplet->messageBox( tr( "The certificate is not revoked (STATUS:Good)" ), this );
+            else
+                berApplet->warningBox( tr( "The certificate is revoked: (STATUS:Revoked %2:%3)" )
+                                          .arg(nStatus).arg( sSerial ).arg( sRevokedTime ), this );
+        }
     }
 
     JS_BIN_reset( &binCRL );

@@ -330,7 +330,12 @@ void CSRInfoDlg::clickSave()
 
 void CSRInfoDlg::clickVerifyCSR()
 {
+    int ret = JS_PKI_verifyCSR( &req_bin_ );
 
+    if( ret == 1 )
+        berApplet->messageBox( tr( "CSR verify OK" ), this );
+    else
+        berApplet->messageBox( tr( "CSR verify fail(%1)" ).arg(ret), this );
 }
 
 void CSRInfoDlg::clickDecodeCSR()
