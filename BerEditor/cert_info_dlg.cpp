@@ -8,6 +8,7 @@
 #include "js_pki_ext.h"
 #include "js_pki_tools.h"
 #include "js_util.h"
+#include "crl_info_dlg.h"
 #include "common.h"
 
 enum {
@@ -333,9 +334,16 @@ void CertInfoDlg::initUI()
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mFieldTable, SIGNAL(clicked(QModelIndex)), this, SLOT(clickField(QModelIndex)));
 
-    mCertTree->clear();
-    mCertTree->header()->setVisible( false );
-    mCertTree->setColumnCount(1);
+    if( berApplet->isLicense() == false )
+    {
+        tabWidget->setTabEnabled( 1, false );
+    }
+    else
+    {
+        mCertTree->clear();
+        mCertTree->header()->setVisible( false );
+        mCertTree->setColumnCount(1);
+    }
 }
 
 void CertInfoDlg::clickField(QModelIndex index)
@@ -432,8 +440,8 @@ void CertInfoDlg::clickMakeTree()
 
     while( 1 )
     {
-        JS_PKI_resetCertInfo( &sCertInfo );
-        ret = JS_PKI_getCertInfo( &binCert, &sCertInfo, &pExtInfoList );
+        int bSelfSign = 0;
+        ret = JS_PKI_getCertInfo2( &binCert, &sCertInfo, &pExtInfoList, &bSelfSign );
         if( ret != 0 ) break;
 
         QTreeWidgetItem* item = new QTreeWidgetItem;
@@ -443,7 +451,7 @@ void CertInfoDlg::clickMakeTree()
         item->addChild( child );
         child = item;
 
-        if( JS_PKI_isSelfSignedCert( &binCert ) == 1 ) break;
+        if( bSelfSign == 1 ) break;
 
         strExtValue = getValueFromExtList( kExtNameAIA, pExtInfoList );
         if( strExtValue.length() > 0 )
@@ -475,7 +483,12 @@ void CertInfoDlg::clickGetCA()
     ret = getCA( strExtValue, &binCA );
 
     if( ret == 0 )
-        saveAsPEM( &binCA );
+    {
+    //    saveAsPEM( &binCA );
+        CertInfoDlg certInfo;
+        certInfo.setCertBIN( &binCA );
+        certInfo.exec();
+    }
     else
         berApplet->elog( QString("fail to get CA certificate: %1").arg(ret));
 
@@ -491,7 +504,12 @@ void CertInfoDlg::clickGetCRL()
     ret = getCRL( strExtValue, &binCRL );
 
     if( ret == 0 )
-        saveAsPEM( &binCRL );
+    {
+    //    saveAsPEM( &binCRL );
+        CRLInfoDlg crlInfo;
+        crlInfo.setCRL_BIN( &binCRL );
+        crlInfo.exec();
+    }
     else
         berApplet->elog( QString("fail to get CRL: %1").arg(ret));
 
@@ -519,6 +537,9 @@ void CertInfoDlg::clickOCSPCheck()
 
     QString strURI;
     BIN binCA = {0,0};
+    JCertStatusInfo sStatusInfo;
+
+    memset( &sStatusInfo, 0x00, sizeof(sStatusInfo));
 
     QString strExtValue = getValueFromExtList( kExtNameAIA );
     berApplet->log( QString( "AIA : %1" ).arg( strExtValue ));
@@ -526,7 +547,7 @@ void CertInfoDlg::clickOCSPCheck()
     ret = getCA( strExtValue, &binCA );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to get CA: %1").arg( ret ));
+        berApplet->warningBox( tr( "fail to get CA: %1").arg( ret ), this);
         return;
     }
 
@@ -539,9 +560,22 @@ void CertInfoDlg::clickOCSPCheck()
     }
 
     berApplet->log( QString( "OCSP URI: %1").arg( strURI));
-    ret = checkOCSP( strURI, &binCA, &cert_bin_ );
+    ret = checkOCSP( strURI, &binCA, &cert_bin_, &sStatusInfo );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "fail to get OCSP check: %1(%2)")
+                                  .arg( JS_OCSP_getResponseStatusName(ret) )
+                                  .arg( ret ), this );
+    }
+    else
+    {
+        berApplet->messageBox( tr( "OCSP Status is %1(%2)" )
+                                  .arg( JS_OCSP_getCertStatusName( sStatusInfo.nStatus ) )
+                                  .arg( sStatusInfo.nStatus ), this);
+    }
 
     JS_BIN_reset( &binCA );
+    JS_OCSP_resetCertStatusInfo( &sStatusInfo );
 }
 
 void CertInfoDlg::clickCRLCheck()
@@ -691,7 +725,7 @@ const QString CertInfoDlg::getCA_URIFromExt( const QString strExtAIA )
 
         if( methodVal.size() < 2 || typeVal.size() < 2 || nameVal.size() < 2 ) continue;
 
-        if( methodVal.at(1).toUpper() == "CAISSUER" )
+        if( methodVal.at(1).toUpper() == "CA ISSUERS" )
         {
             if( typeVal.at(1) == "URI")
             {

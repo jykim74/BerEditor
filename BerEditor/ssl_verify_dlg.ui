@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>619</width>
-    <height>565</height>
+    <height>590</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -103,7 +103,17 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="2">
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mCipherClearBtn">
+       <property name="text">
+        <string>Clear</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="mCipherListCombo"/>
+     </item>
+     <item row="0" column="3">
       <widget class="QPushButton" name="mCipherAddBtn">
        <property name="text">
         <string>Add</string>
@@ -117,14 +127,7 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="5">
-      <widget class="QCheckBox" name="mHostNameCheck">
-       <property name="text">
-        <string>Check Host Name</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
+     <item row="0" column="2">
       <spacer name="horizontalSpacer_3">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -137,20 +140,34 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="mCipherListCombo"/>
-     </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mCipherClearBtn">
-       <property name="text">
-        <string>Clear</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
    <item>
     <widget class="QLineEdit" name="mCipherListText"/>
+   </item>
+   <item>
+    <widget class="Line" name="line_6">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_6">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QCheckBox" name="mHostNameCheck">
+       <property name="text">
+        <string>Check Host Name</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="mHostNameText"/>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="Line" name="line_3">

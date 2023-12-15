@@ -5,6 +5,7 @@
 #include <QWidget>
 #include "js_bin.h"
 #include "js_pki_x509.h"
+#include "js_ocsp.h"
 
 enum {
     DATA_STRING,
@@ -111,6 +112,6 @@ bool isValidNumFormat( const QString strInput, int nNumber );
 bool isEmail( const QString strEmail );
 
 int getDataFromURI( const QString strURI, BIN *pData );
-int checkOCSP( const QString strURL, const BIN *pCA, const BIN *pCert );
+int checkOCSP( const QString strURL, const BIN *pCA, const BIN *pCert, JCertStatusInfo* pStatusInfo);
 
 #endif // COMMON_H

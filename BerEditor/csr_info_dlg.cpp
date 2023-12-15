@@ -113,7 +113,7 @@ void CSRInfoDlg::initialize()
 
     BIN binPub = {0,0};
 
-    if( berApplet->isLicense() == false ) mValidGroup->hide();
+    if( berApplet->isLicense() == false ) mValidGroup->setEnabled( false );
 
     if( req_bin_.nLen < 0 )
     {

@@ -180,6 +180,7 @@ SSLVerifyDlg::SSLVerifyDlg(QWidget *parent) :
     connect( mCipherAddBtn, SIGNAL(clicked()), this, SLOT(clickAddCipher()));
     connect( mFixCipherNameCheck, SIGNAL(clicked()), this, SLOT(checkFixCipherName()));
     connect( mCipherClearBtn, SIGNAL(clicked()), this, SLOT(clickClearCipher()));
+    connect( mHostNameCheck, SIGNAL(clicked()), this, SLOT(checkHostName()));
 
     connect( mURLTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotTableMenuRequested(QPoint)));
     connect( mURLTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(viewCertTableMenu()));
@@ -265,6 +266,7 @@ void SSLVerifyDlg::initialize()
     if( pCipherList ) JS_UTIL_resetStrList( &pCipherList );
     checkFixCipherName();
 
+    mHostNameCheck->click();
     tabWidget->setCurrentIndex(0);
 }
 
@@ -361,7 +363,8 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
 
     if( mHostNameCheck->isChecked() )
     {
-        JS_SSL_setHostName( pSSL, strHost.toStdString().c_str() );
+        QString strHostName = mHostNameText->text();
+        if( strHostName.length() > 0 ) JS_SSL_setHostName( pSSL, strHostName.toStdString().c_str() );
     }
 
     ret = JS_SSL_connect( pSSL );
@@ -525,6 +528,7 @@ void SSLVerifyDlg::clickConnect()
     strHost = url.host();
 
     berApplet->log( QString( "Host:Port => %1:%2" ).arg( strHost ).arg( nPort ) );
+    mHostNameText->setText( strHost );
 
     verifyURL( strHost, nPort );
     setUsedURL( strURL );
@@ -610,6 +614,12 @@ void SSLVerifyDlg::checkFixCipherName()
     mCipherAddBtn->setEnabled( bVal );
     mCipherListText->setEnabled( bVal );
     mCipherClearBtn->setEnabled( bVal );
+}
+
+void SSLVerifyDlg::checkHostName()
+{
+    bool bVal = mHostNameCheck->isChecked();
+    mHostNameText->setEnabled( bVal );
 }
 
 void SSLVerifyDlg::clickClearCipher()

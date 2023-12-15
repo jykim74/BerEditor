@@ -136,7 +136,7 @@ void CRLInfoDlg::initialize()
 
     tabWidget->setCurrentIndex(0);
 
-    if( berApplet->isLicense() == false ) mValidGroup->hide();
+    if( berApplet->isLicense() == false ) mValidGroup->setEnabled( false );
 
     JS_PKI_resetCRLInfo( &crl_info_ );
 

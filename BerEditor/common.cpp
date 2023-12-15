@@ -1218,7 +1218,7 @@ int getDataFromURI( const QString strURI, BIN *pData )
     return ret;
 }
 
-int checkOCSP( const QString strURL, const BIN *pCA, const BIN *pCert )
+int checkOCSP( const QString strURL, const BIN *pCA, const BIN *pCert, JCertStatusInfo* pStatusInfo )
 {
     int ret = 0;
     int nStatus = 0;
@@ -1226,10 +1226,7 @@ int checkOCSP( const QString strURL, const BIN *pCA, const BIN *pCert )
     BIN binRsp = {0,0};
 
     JCertIDInfo sIDInfo;
-    JCertStatusInfo sStatusInfo;
-
     memset( &sIDInfo, 0x00, sizeof(sIDInfo));
-    memset( &sStatusInfo, 0x00, sizeof(sStatusInfo));
 
     ret = JS_OCSP_encodeRequest( (BIN *)pCert, (BIN *)pCA, "SHA256", NULL, NULL, &binReq );
     if( ret != 0 )
@@ -1245,7 +1242,7 @@ int checkOCSP( const QString strURL, const BIN *pCA, const BIN *pCert )
         goto end;
     }
 
-    ret = JS_OCSP_decodeResponse( &binRsp, NULL, &sIDInfo, &sStatusInfo );
+    ret = JS_OCSP_decodeResponse( &binRsp, NULL, &sIDInfo, pStatusInfo );
     if( ret != 0 )
     {
         fprintf( stderr, "fail to decode respose:%d\n", ret);
@@ -1257,7 +1254,7 @@ end :
     JS_BIN_reset( &binRsp );
 
     JS_OCSP_resetCertIDInfo( &sIDInfo );
-    JS_OCSP_resetCertStatusInfo( &sStatusInfo );
+//    JS_OCSP_resetCertStatusInfo( &sStatusInfo );
 
     return ret;
 }

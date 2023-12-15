@@ -33,6 +33,7 @@ private slots:
     void clickClearTrust();
     void clickAddCipher();
     void checkFixCipherName();
+    void checkHostName();
     void clickClearCipher();
 
     void selectTable(QModelIndex index);
