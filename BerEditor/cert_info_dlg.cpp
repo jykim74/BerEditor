@@ -85,6 +85,7 @@ CertInfoDlg::CertInfoDlg(QWidget *parent) :
     memset( &cert_bin_, 0x00, sizeof(BIN));
     memset( &cert_info_, 0x00, sizeof(cert_info_));
     ext_info_list_ = NULL;
+    self_sign_ = 0;
 
     tabWidget->setCurrentIndex(0);
 
@@ -148,13 +149,15 @@ void CertInfoDlg::getFields()
 
     clearTable();
 
-    ret = JS_PKI_getCertInfo( &cert_bin_, &cert_info_, &ext_info_list_ );
+    ret = JS_PKI_getCertInfo2( &cert_bin_, &cert_info_, &ext_info_list_, &self_sign_ );
     if( ret != 0 )
     {
         berApplet->warningBox( tr("fail to get certificate information"), this );
         this->hide();
         return;
     }
+
+    if( self_sign_ == true ) mGetCABtn->setEnabled( false );
 
     JS_PKI_genHash( "SHA1", &cert_bin_, &binFinger );
 
@@ -581,34 +584,24 @@ void CertInfoDlg::clickOCSPCheck()
 void CertInfoDlg::clickCRLCheck()
 {
     int ret = 0;
-    QString strCRLDP;
-    QString strURI;
+    BIN binCRL = {0,0};
+    QString strExtValue = getValueFromExtList( kExtNameCRLDP );
 
-    if( cert_bin_.nLen <= 0 ) return;
-
-    JExtensionInfoList *pCurList = NULL;
-
-    pCurList = ext_info_list_;
-
-    while( pCurList )
+    ret = getCRL( strExtValue, &binCRL );
+    if( ret != 0 )
     {
-        QString strSN;
-
-        strSN = pCurList->sExtensionInfo.pOID;
-
-        if( strSN == kExtNameCRLDP )
-        {
-            strCRLDP = pCurList->sExtensionInfo.pValue;
-            break;
-        }
-
-        pCurList = pCurList->pNext;
+        berApplet->warningBox( tr( "fail to get CRL : %1").arg( ret ), this );
+    }
+    else
+    {
+        ret = JS_PKI_isCertRevoked( &binCRL, &cert_bin_ );
+        if( ret == 0 )
+            berApplet->messageBox( tr( "The certificate is not revoked" ), this );
+        else
+            berApplet->warningBox( tr( "The certificate is revoked:%" ), this );
     }
 
-    berApplet->log( QString( "CRLDP : %1" ).arg( strCRLDP ));
-    strURI = getCRL_URIFromExt( strCRLDP );
-
-    berApplet->log( QString( "URI: %1").arg( strURI));
+    JS_BIN_reset( &binCRL );
 }
 
 const QString CertInfoDlg::getValueFromExtList( const QString strExtName )
