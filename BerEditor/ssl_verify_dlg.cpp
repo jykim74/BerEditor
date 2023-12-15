@@ -327,6 +327,7 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
         JS_SSL_setCiphersList( pCTX, strCipher.toStdString().c_str() );
     }
 
+//    uFlags |= X509_V_FLAG_PARTIAL_CHAIN ;
     JS_SSL_setFlags( pCTX, uFlags );
 
     QString strTrustFolder = mTrustFolderText->text();
