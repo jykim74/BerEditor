@@ -46,6 +46,8 @@ private slots:
     void clickOCSPCheck();
     void clickCRLCheck();
 
+    void clickTreeItem(QTreeWidgetItem* item, int index);
+
 private:
 
     int saveAsPEM( const BIN *pData );

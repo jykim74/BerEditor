@@ -225,7 +225,7 @@ void SSLVerifyDlg::elog( const QString strLog )
 
 void SSLVerifyDlg::initialize()
 {
-    QStringList sURLLabels = { tr( "URL" ), tr( "Port" ), tr( "DN" ), tr( "From" ), tr( "To" ), tr( "Left") };
+    QStringList sURLLabels = { tr( "URL" ), tr( "Port" ), tr( "DN" ), tr( "To" ), tr( "Left") };
 
     mURLTable->clear();
     mURLTable->horizontalHeader()->setStretchLastSection(true);
@@ -238,8 +238,8 @@ void SSLVerifyDlg::initialize()
 
     mURLTable->setColumnWidth( 0, 200 );
     mURLTable->setColumnWidth( 1, 60 );
+    mURLTable->setColumnWidth( 2, 140 );
     mURLTable->setColumnWidth( 3, 80 );
-    mURLTable->setColumnWidth( 4, 80 );
 
     mURLCombo->setEditable( true );
     QStringList usedList = getUsedURL();
@@ -401,7 +401,7 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
 
     if( left_t > 0 )
     {
-        strLeft = QString( "%1 Days" ).arg( left_t / 86400 );
+        strLeft = QString( "%1" ).arg( left_t / 86400 );
         item->setIcon(QIcon(":/images/cert.png"));
     }
     else
@@ -417,9 +417,9 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
     mURLTable->setItem( row, 0, item );
     mURLTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( nPort )));
     mURLTable->setItem( row, 2, new QTableWidgetItem( sCertInfo.pSubjectName ));
-    mURLTable->setItem( row, 3, new QTableWidgetItem( sNotBefore ));
-    mURLTable->setItem( row, 4, new QTableWidgetItem( sNotAfter ));
-    mURLTable->setItem( row, 5, new QTableWidgetItem( strLeft ));
+//    mURLTable->setItem( row, 3, new QTableWidgetItem( sNotBefore ));
+    mURLTable->setItem( row, 3, new QTableWidgetItem( sNotAfter ));
+    mURLTable->setItem( row, 4, new QTableWidgetItem( strLeft ));
 
     createTree( pCertList );
 

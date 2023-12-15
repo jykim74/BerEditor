@@ -81,6 +81,8 @@ CertInfoDlg::CertInfoDlg(QWidget *parent) :
     connect( mOCSPCheckBtn, SIGNAL(clicked()), this, SLOT(clickOCSPCheck()));
     connect( mCRLCheckBtn, SIGNAL(clicked()), this, SLOT(clickCRLCheck()));
 
+    connect( mCertTree, SIGNAL(itemClicked(QTreeWidgetItem*,int)), this, SLOT(clickTreeItem(QTreeWidgetItem*,int)));
+
     initUI();
 
     memset( &cert_bin_, 0x00, sizeof(BIN));
@@ -682,6 +684,14 @@ void CertInfoDlg::clickCRLCheck()
     }
 
     JS_BIN_reset( &binCRL );
+}
+
+void CertInfoDlg::clickTreeItem(QTreeWidgetItem* item, int index)
+{
+    QString strText = QString( "DN: %2\n").arg( item->text(0));
+    strText += QString( "index: %1" ).arg(index);
+
+    mCertLogText->setPlaceholderText( strText );
 }
 
 const QString CertInfoDlg::getValueFromExtList( const QString strExtName )
