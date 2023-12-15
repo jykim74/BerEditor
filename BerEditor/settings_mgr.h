@@ -40,6 +40,11 @@ public:
     void setStopMessage( time_t tLastTime );
     time_t getStopMessage();
 
+    void setTrustedCAPath( const QString strPath );
+    QString getTrustedCAPath();
+    QString trustedCAPath() { return trusted_ca_path_; };
+
+
 signals:
 
 private:
@@ -48,6 +53,7 @@ private:
 private:
     QString default_hash_;
     int file_read_size_;
+    QString trusted_ca_path_;
 
 
 private:

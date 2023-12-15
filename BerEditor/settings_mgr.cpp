@@ -13,6 +13,7 @@ const char *kMisc = "Misc";
 const char *kEmail = "email";
 const char *kLicense = "license";
 const char *kStopMessage = "stopMessage";
+const char *kTrustedCAPath = "trustedCAPath";
 }
 
 SettingsMgr::SettingsMgr(QObject *parent) : QObject(parent)
@@ -24,6 +25,7 @@ void SettingsMgr::initialize()
 {
     getDefaultHash();
     getFileReadSize();
+    getTrustedCAPath();
 }
 
 void SettingsMgr::setShowPartOnly(bool val)
@@ -221,4 +223,25 @@ time_t SettingsMgr::getStopMessage()
     sets.endGroup();
 
     return tLastTime;
+}
+
+void SettingsMgr::setTrustedCAPath( const QString strPath )
+{
+    QSettings sets;
+    sets.beginGroup( kBehaviorGroup );
+    sets.setValue( kTrustedCAPath, strPath );
+    sets.endGroup();
+
+    trusted_ca_path_ = strPath;
+}
+
+QString SettingsMgr::getTrustedCAPath()
+{
+    QSettings sets;
+
+    sets.beginGroup( kBehaviorGroup );
+    trusted_ca_path_ = sets.value( kTrustedCAPath, "trustedCA" ).toString();
+    sets.endGroup();
+
+    return trusted_ca_path_;
 }

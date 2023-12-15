@@ -2,6 +2,8 @@
 #include <QDateTime>
 #include <QSettings>
 #include <QMenu>
+#include <QDir>
+#include <QFile>
 
 #include "common.h"
 #include "ssl_verify_dlg.h"
@@ -11,11 +13,14 @@
 #include "js_ssl.h"
 #include "js_util.h"
 #include "cert_info_dlg.h"
+#include "settings_mgr.h"
 
 #include "openssl/ssl.h"
 #include "openssl/err.h"
 #include "openssl/x509.h"
 #include "openssl/x509v3.h"
+
+#include "js_pki.h"
 
 const QString kTLSUsedURL = "TLSUsedURL";
 
@@ -187,7 +192,6 @@ SSLVerifyDlg::SSLVerifyDlg(QWidget *parent) :
     connect( mURLTable, SIGNAL(clicked(QModelIndex)), this, SLOT(selectTable(QModelIndex)));
     connect( mURLTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotTreeMenuRequested(QPoint)));
 
-    connect( mTrustFolderFindBtn, SIGNAL(clicked()), this, SLOT(findTrustFolder()));
     connect( mTrustCACertFindBtn, SIGNAL(clicked()), this, SLOT(findTrustCACert()));
 
     initialize();
@@ -330,19 +334,25 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
 //    uFlags |= X509_V_FLAG_PARTIAL_CHAIN ;
     JS_SSL_setFlags( pCTX, uFlags );
 
-    QString strTrustFolder = mTrustFolderText->text();
+    QString strTrustFolder = berApplet->settingsMgr()->trustedCAPath();
     QString strTrustCACert = mTrustCACertText->text();
+
+    berApplet->log( QString( "TrustedPath : %1").arg( strTrustFolder ) );
+    berApplet->log( QString( "TrustCACert : %1").arg( strTrustCACert ));
 
     if( strTrustFolder.length() >= 1 || strTrustCACert.length() >= 1 )
     {
-        ret = JS_SSL_setVerifyLoaction( pCTX, strTrustCACert.toStdString().c_str(), strTrustFolder.toStdString().c_str() );
+        ret = JS_SSL_setVerifyLoaction( pCTX,
+                                       strTrustCACert.length() > 0 ? strTrustCACert.toLocal8Bit().toStdString().c_str() : NULL,
+                                       strTrustFolder.length() > 0 ? strTrustFolder.toLocal8Bit().toStdString().c_str() : NULL );
+
         if( ret == 0 )
         {
             berApplet->log( "Trust list loaded successfully" );
         }
         else
         {
-            berApplet->elog( "fail to load trust list" );
+            berApplet->elog( QString("fail to load trust list:%1").arg( ret ) );
         }
     }
 
@@ -581,16 +591,6 @@ void SSLVerifyDlg::clickClearResult()
     mLogText->clear();
 }
 
-void SSLVerifyDlg::findTrustFolder()
-{
-    QString strPath = mTrustFolderText->text();
-    if( strPath.length() < 1 )
-        strPath = berApplet->curFolder();
-
-    QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
-    if( fileName.length() > 1 ) mTrustFolderText->setText( fileName );
-}
-
 void SSLVerifyDlg::findTrustCACert()
 {
     QString strPath = mTrustCACertText->text();
@@ -603,7 +603,6 @@ void SSLVerifyDlg::findTrustCACert()
 
 void SSLVerifyDlg::clickClearTrust()
 {
-    mTrustFolderText->clear();
     mTrustCACertText->clear();
 }
 
@@ -719,15 +718,24 @@ void SSLVerifyDlg::decodeCertTableMenu()
 
 void SSLVerifyDlg::slotTreeMenuRequested( QPoint pos )
 {
+    QTreeWidgetItem* item = mURLTree->currentItem();
+
     QMenu *menu = new QMenu(this);
     QAction *viewAct = new QAction( tr("View Cert"), this );
     QAction *decodeAct = new QAction( tr( "Decode Cert"), this);
+    QAction *saveTrustedCAAct = new QAction( tr( "Save to trustedCA" ), this );
 
     connect( viewAct, SIGNAL(triggered()), this, SLOT(viewCertTreeMenu()));
     connect( decodeAct, SIGNAL(triggered()), this, SLOT(decodeCertTreeMenu()));
+    connect( saveTrustedCAAct, SIGNAL(triggered()), this, SLOT(saveTrustedCA()));
 
     menu->addAction( viewAct );
     menu->addAction( decodeAct );
+
+    if( item->parent() == NULL )
+    {
+        menu->addAction( saveTrustedCAAct );
+    }
 
     menu->popup( mURLTree->viewport()->mapToGlobal(pos));
 }
@@ -746,6 +754,44 @@ void SSLVerifyDlg::viewCertTreeMenu()
     certInfo.setCertBIN( &binCert );
     JS_BIN_reset( &binCert );
     certInfo.exec();
+}
+
+void SSLVerifyDlg::saveTrustedCA()
+{
+    int ret = 0;
+
+    BIN binDigest = {0,0};
+    QString strTrustedCAPath = berApplet->settingsMgr()->trustedCAPath();
+
+    QTreeWidgetItem *item = mURLTree->currentItem();
+    if( item == NULL ) return;
+
+    QString strData = item->data(0, Qt::UserRole).toString();
+
+    BIN binCert = {0,0};
+    JS_BIN_decodeHex( strData.toStdString().c_str(), &binCert );
+
+    if( QDir( strTrustedCAPath ).exists() == false )
+        QDir().mkdir( strTrustedCAPath );
+
+    JS_PKI_genHash( "SHA1", &binCert, &binDigest );
+    QString strFileName = QString( "%1/%2.pem" ).arg( strTrustedCAPath ).arg( getHexString( &binDigest ));
+
+    if( QFileInfo::exists( strFileName ) == true )
+    {
+        berApplet->warningBox( tr( "The file(%1) is already existed").arg( strFileName ), this );
+        goto end;
+    }
+
+    ret = JS_BIN_writePEM( &binCert, JS_PEM_TYPE_CERTIFICATE, strFileName.toLocal8Bit().toStdString().c_str() );
+    if( ret > 0 )
+        berApplet->messageBox( tr( "The Certificate saved to trustedCA folder"), this );
+    else
+        berApplet->warningBox( tr( "The Certificate fail to save to trustedCA folder:%1" ).arg(ret), this );
+
+end :
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binDigest );
 }
 
 void SSLVerifyDlg::decodeCertTreeMenu()

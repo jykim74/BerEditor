@@ -28,7 +28,6 @@ private slots:
     void clickClearSaveURL();
     void clickClearResult();
 
-    void findTrustFolder();
     void findTrustCACert();
     void clickClearTrust();
     void clickAddCipher();
@@ -46,6 +45,7 @@ private slots:
     void slotTreeMenuRequested( QPoint pos );
     void viewCertTreeMenu();
     void decodeCertTreeMenu();
+    void saveTrustedCA();
 
 private:
     void initialize();

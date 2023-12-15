@@ -20,6 +20,7 @@ SettingsDlg::SettingsDlg(QWidget *parent) :
     connect( mOkBtn, SIGNAL(clicked()), this, SLOT(onOkBtnClicked()));
     connect( mCancelBtn, SIGNAL(clicked()), this, SLOT(onCancelBtnClicked()));
     connect( mFindOIDConfig, SIGNAL(clicked()), this, SLOT(findOIDConfig()));
+    connect( mFindTrustedCAPathBtn, SIGNAL(clicked()), this, SLOT(findTrustedCAPath()));
 
     initialize();
 
@@ -41,6 +42,7 @@ void SettingsDlg::initialize()
         mDefaultHashGroup->setEnabled( false );
         mFileReadSizeGroup->setEnabled( false );
         mUseLogTabCheck->setEnabled( false );
+        mTrustedCAGroup->setEnabled( false );
     }
 
     initFontFamily();
@@ -69,6 +71,7 @@ void SettingsDlg::updateSettings()
     {
         mgr->setDefaultHash( mDefaultHashCombo->currentText() );
         mgr->setFileReadSize( mFileReadSizeText->text().toInt() );
+        mgr->setTrustedCAPath( mTrustedCAPathText->text() );
     }
 
     bool language_changed = false;
@@ -109,6 +112,15 @@ void SettingsDlg::findOIDConfig()
     if( fileName.length() > 0 ) mOIDConfigPathText->setText( fileName );
 }
 
+void SettingsDlg::findTrustedCAPath()
+{
+    QString strPath = mTrustedCAPathText->text();
+
+    QString folderName = findFolder( this, strPath );
+
+    if( folderName.length() > 0 ) mTrustedCAPathText->setText( folderName );
+}
+
 void SettingsDlg::closeEvent(QCloseEvent *event)
 {
     event->ignore();
@@ -145,6 +157,8 @@ void SettingsDlg::showEvent(QShowEvent *event)
 
     mDefaultHashCombo->addItems( kHashList );
     mDefaultHashCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
+
+    mTrustedCAPathText->setText( berApplet->settingsMgr()->getTrustedCAPath() );
 
     mLangComboBox->setCurrentIndex(I18NHelper::getInstance()->preferredLanguage());
     mFontFamilyCombo->setCurrentText( mgr->getFontFamily() );

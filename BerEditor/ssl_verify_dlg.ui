@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>619</width>
-    <height>590</height>
+    <width>682</width>
+    <height>733</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -178,31 +178,7 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="2" column="1">
-      <widget class="QComboBox" name="mURLCombo">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="2">
-      <widget class="QPushButton" name="mConnectBtn">
-       <property name="text">
-        <string>Connect</string>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Trust CA Cert</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
       <widget class="QLabel" name="label_2">
        <property name="minimumSize">
         <size>
@@ -215,30 +191,44 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>Trust Folder</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
-      <widget class="QLineEdit" name="mTrustFolderText"/>
-     </item>
-     <item row="1" column="1">
       <widget class="QLineEdit" name="mTrustCACertText"/>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mTrustFolderFindBtn">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Find</string>
+        <string>Trust CA Cert</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="2">
+     <item row="0" column="2">
       <widget class="QPushButton" name="mTrustCACertFindBtn">
        <property name="text">
         <string>Find</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mClearTrustBtn">
+       <property name="text">
+        <string>Clear</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="mURLCombo">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2" colspan="2">
+      <widget class="QPushButton" name="mConnectBtn">
+       <property name="text">
+        <string>Connect</string>
        </property>
       </widget>
      </item>
@@ -260,13 +250,6 @@
       <widget class="QPushButton" name="mClearURLBtn">
        <property name="text">
         <string>Clear URLs</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mClearTrustBtn">
-       <property name="text">
-        <string>Clear Trust</string>
        </property>
       </widget>
      </item>
