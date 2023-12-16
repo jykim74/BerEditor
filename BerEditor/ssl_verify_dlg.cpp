@@ -321,19 +321,7 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
 
     memset( &sCertInfo, 0x00, sizeof(sCertInfo));
 
-    JS_SSL_initClient( &pCTX );
-    JS_SSL_setVerifyCallback( pCTX, SSL_VERIFY_NONE, verify_callback );
-
-    if( mFixCipherNameCheck->isChecked() )
-    {
-        QString strCipher = mCipherListText->text();
-
-        JS_SSL_setCiphersList( pCTX, strCipher.toStdString().c_str() );
-    }
-
-//    uFlags |= X509_V_FLAG_PARTIAL_CHAIN ;
-    JS_SSL_setFlags( pCTX, uFlags );
-
+    JS_SSL_initClient2( &pCTX, SSL_VERIFY_NONE,verify_callback );
     QString strTrustFolder = berApplet->settingsMgr()->trustedCAPath();
     QString strTrustCACert = mTrustCACertText->text();
 
@@ -342,6 +330,7 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
 
     if( strTrustFolder.length() >= 1 || strTrustCACert.length() >= 1 )
     {
+
         ret = JS_SSL_setVerifyLoaction( pCTX,
                                        strTrustCACert.length() > 0 ? strTrustCACert.toLocal8Bit().toStdString().c_str() : NULL,
                                        strTrustFolder.length() > 0 ? strTrustFolder.toLocal8Bit().toStdString().c_str() : NULL );
@@ -355,6 +344,20 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
             berApplet->elog( QString("fail to load trust list:%1").arg( ret ) );
         }
     }
+
+    // JS_SSL_setVerifyCallback( pCTX, SSL_VERIFY_PEER, verify_callback );
+
+    if( mFixCipherNameCheck->isChecked() )
+    {
+        QString strCipher = mCipherListText->text();
+
+        JS_SSL_setCiphersList( pCTX, strCipher.toStdString().c_str() );
+    }
+
+//    uFlags |= X509_V_FLAG_PARTIAL_CHAIN ;
+    JS_SSL_setFlags( pCTX, uFlags );
+
+
 
     log( QString( "SSL Host:Port       : %1:%2" ).arg( strHost ).arg( nPort ));
 
@@ -388,6 +391,9 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
     log( QString( "Current TLS Version : %1").arg( JS_SSL_getCurrentVersionName( pSSL )));
     log( QString( "Current Cipher Name : %1").arg( JS_SSL_getCurrentCipherName( pSSL ) ));
 
+    ret = JS_SSL_verifyCert( pSSL );
+    log( QString( "Verify Certificate  : %1(%2)").arg( X509_verify_cert_error_string(ret)).arg( ret ));
+
     ret = JS_SSL_getChains( pSSL, &pCertList );
     count = JS_BIN_countList( pCertList );
     berApplet->log( QString( "Chain Count: %1").arg( count ) );
@@ -399,12 +405,6 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
         berApplet->elog( QString( "Invalid certificate data: %1").arg( ret ));
         goto end;
     }
-
-//    pAtList = JS_BIN_getListAt( count - 1, pCertList );
-//    JS_SSL_addCACert( pSSL, &pAtList->Bin );
-
-    ret = JS_SSL_verifyCert( pSSL );
-    log( QString( "Verify Certificate  : %1(%2)").arg( X509_verify_cert_error_string(ret)).arg( ret ));
 
     JS_UTIL_getDate( sCertInfo.uNotBefore, sNotBefore );
     JS_UTIL_getDate( sCertInfo.uNotAfter, sNotAfter );
