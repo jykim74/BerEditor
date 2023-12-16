@@ -28,8 +28,6 @@ private slots:
     void clickClearSaveURL();
     void clickClearResult();
 
-    void findTrustCACert();
-    void clickClearTrust();
     void clickAddCipher();
     void checkFixCipherName();
     void checkHostName();
@@ -47,6 +45,27 @@ private slots:
     void decodeCertTreeMenu();
     void saveTrustedCA();
 
+    void checkUseMutual();
+
+    void findTrustCACert();
+    void clickTrustCAView();
+    void clickTrustCADecode();
+    void clickTrustCAType();
+
+    void findClientCA();
+    void clickClientCAView();
+    void clickClientCADeocde();
+    void clickClientCAType();
+
+    void findClientCert();
+    void clickClientCertView();
+    void clickClientCertDecode();
+    void clickClientCertType();
+
+    void findClientPriKey();
+    void clickClientPriKeyDecode();
+    void clickClientPriKeyType();
+
 private:
     void initialize();
     int verifyURL( const QString strHost, int nPort );
@@ -55,6 +74,7 @@ private:
 
     QStringList getUsedURL();
     void setUsedURL( const QString strURL );
+    int readPrivateKey( BIN *pPriKey );
 };
 
 #endif // SSL_VERIFY_DLG_H

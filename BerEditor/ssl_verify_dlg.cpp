@@ -23,6 +23,7 @@
 #include "js_pki.h"
 
 const QString kTLSUsedURL = "TLSUsedURL";
+const QStringList kModeLists = { "SSL_VERIFY_NONE", "SSL_VERIFY_PEER" };
 
 void print_cn_name(const char* label, X509_NAME* const name)
 {
@@ -126,6 +127,7 @@ void print_san_name(const char* label, X509* const cert)
 int verify_callback(int preverify, X509_STORE_CTX* x509_ctx)
 {
     /* For error codes, see http://www.openssl.org/docs/apps/verify.html  */
+    berApplet->log( "VerifyCallback" );
 
     int depth = X509_STORE_CTX_get_error_depth(x509_ctx);
     int err = X509_STORE_CTX_get_error(x509_ctx);
@@ -166,7 +168,6 @@ int verify_callback(int preverify, X509_STORE_CTX* x509_ctx)
     }
 
     return preverify;
-    //    return 1;
 }
 
 SSLVerifyDlg::SSLVerifyDlg(QWidget *parent) :
@@ -180,7 +181,6 @@ SSLVerifyDlg::SSLVerifyDlg(QWidget *parent) :
 
     connect( mClearSaveURLBtn, SIGNAL(clicked()), this, SLOT(clickClearSaveURL()));
     connect( mClearURLBtn, SIGNAL(clicked()), this, SLOT(clickClearURL()));
-    connect( mClearTrustBtn, SIGNAL(clicked()), this, SLOT(clickClearTrust()));
     connect( mClearResultBtn, SIGNAL(clicked()), this, SLOT(clickClearResult()));
     connect( mCipherAddBtn, SIGNAL(clicked()), this, SLOT(clickAddCipher()));
     connect( mFixCipherNameCheck, SIGNAL(clicked()), this, SLOT(checkFixCipherName()));
@@ -192,12 +192,47 @@ SSLVerifyDlg::SSLVerifyDlg(QWidget *parent) :
     connect( mURLTable, SIGNAL(clicked(QModelIndex)), this, SLOT(selectTable(QModelIndex)));
     connect( mURLTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotTreeMenuRequested(QPoint)));
 
-    connect( mTrustCACertFindBtn, SIGNAL(clicked()), this, SLOT(findTrustCACert()));
+
+    connect( mUseMutualCheck, SIGNAL(clicked()), this, SLOT(checkUseMutual()));
+
+    connect( mFindTrustCABtn, SIGNAL(clicked()), this, SLOT(findTrustCACert()));
+    connect( mTrustCAViewBtn, SIGNAL(clicked()), this, SLOT(clickTrustCAView()));
+    connect( mTrustCADecodeBtn, SIGNAL(clicked()), this, SLOT(clickTrustCADecode()));
+    connect( mTrustCATypeBtn, SIGNAL(clicked()), this, SLOT(clickTrustCAType()));
+
+    connect( mFindClientCABtn, SIGNAL(clicked()), this, SLOT(findClientCA()));
+    connect( mClientCAViewBtn, SIGNAL(clicked()), this, SLOT(clickClientCAView()));
+    connect( mClientCADecodeBtn, SIGNAL(clicked()), this, SLOT(clickClientCADecode()));
+    connect( mClientCATypeBtn, SIGNAL(clicked()), this, SLOT(clickClientCAType()));
+
+    connect( mFindClientCertBtn, SIGNAL(clicked()), this, SLOT(findClientCert()));
+    connect( mClientCertViewBtn, SIGNAL(clicked()), this, SLOT(clickClientCertView()));
+    connect( mClientCertDecodeBtn, SIGNAL(clicked()), this, SLOT(clickClientCertDecode()));
+    connect( mClientCertTypeBtn, SIGNAL(clicked()), this, SLOT(clickClientCertType()));
+
+    connect( mFindClientPriKeyBtn, SIGNAL(clicked()), this, SLOT(findClientPriKey()));
+    connect( mClientPriKeyDecodeBtn, SIGNAL(clicked()), this, SLOT(clickaClientPriKeyDecode()));
+    connect( mClientPriKeyTypeBtn, SIGNAL(clicked()), this, SLOT(clickClientPriKeyType()));
 
     initialize();
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+
+    mTrustCAViewBtn->setFixedWidth(34);
+    mTrustCADecodeBtn->setFixedWidth(34);
+    mTrustCATypeBtn->setFixedWidth(34);
+
+    mClientCAViewBtn->setFixedWidth(34);
+    mClientCAViewBtn->setFixedWidth(34);
+    mClientCAViewBtn->setFixedWidth(34);
+
+    mClientCertViewBtn->setFixedWidth(34);
+    mClientCertViewBtn->setFixedWidth(34);
+    mClientCertViewBtn->setFixedWidth(34);
+
+    mClientPriKeyDecodeBtn->setFixedWidth(34);
+    mClientPriKeyDecodeBtn->setFixedWidth(34);
 #endif
 }
 
@@ -229,6 +264,9 @@ void SSLVerifyDlg::elog( const QString strLog )
 
 void SSLVerifyDlg::initialize()
 {
+    mModeCombo->addItems( kModeLists );
+    mVerifyDepthText->setText( QString("%1").arg( 4 ));
+
     QStringList sURLLabels = { tr( "URL" ), tr( "Port" ), tr( "DN" ), tr( "To" ), tr( "Left") };
 
     mURLTable->clear();
@@ -271,7 +309,9 @@ void SSLVerifyDlg::initialize()
     checkFixCipherName();
 
     mHostNameCheck->click();
-    tabWidget->setCurrentIndex(0);
+    checkUseMutual();
+    mAuthTab->setCurrentIndex(0);
+    mURLTab->setCurrentIndex(0);
 }
 
 QStringList SSLVerifyDlg::getUsedURL()
@@ -318,12 +358,21 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
     QString strLeft;
     QTableWidgetItem *item = new QTableWidgetItem( strHost );
     long uFlags = getFlags();
+    int nVerifyDepth = mVerifyDepthText->text().toInt();
 
     memset( &sCertInfo, 0x00, sizeof(sCertInfo));
 
-    JS_SSL_initClient2( &pCTX, SSL_VERIFY_NONE,verify_callback );
+    if( mModeCombo->currentIndex() == 0 )
+    {
+        JS_SSL_initClient( &pCTX );
+    }
+    else
+    {
+        JS_SSL_initClient2( &pCTX, SSL_VERIFY_PEER,verify_callback );
+    }
+
     QString strTrustFolder = berApplet->settingsMgr()->trustedCAPath();
-    QString strTrustCACert = mTrustCACertText->text();
+    QString strTrustCACert = mTrustCAPathText->text();
 
     berApplet->log( QString( "TrustedPath : %1").arg( strTrustFolder ) );
     berApplet->log( QString( "TrustCACert : %1").arg( strTrustCACert ));
@@ -357,7 +406,34 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
 //    uFlags |= X509_V_FLAG_PARTIAL_CHAIN ;
     JS_SSL_setFlags( pCTX, uFlags );
 
+    if( mUseMutualCheck->isChecked() )
+    {
+        BIN binCA = {0,0};
+        BIN binCert = {0,0};
+        BIN binPriKey = {0,0};
 
+        QString strClientCAPath = mClientCAPathText->text();
+        if( strClientCAPath.length() > 0 )
+        {
+            JS_BIN_fileReadBER( strClientCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
+            JS_SSL_setClientCACert( pCTX, &binCA );
+            log( "Client CA is set" );
+            JS_BIN_reset( &binCA );
+        }
+
+        QString strClientCertPath = mClientCAPathText->text();
+        JS_BIN_fileReadBER( strClientCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+        ret = readPrivateKey( &binPriKey );
+
+        if( binCert.nLen > 0 && binPriKey.nLen > 0 )
+        {
+            JS_SSL_setCertAndPriKey( pCTX, &binPriKey, &binCert );
+            log( "Client certificate and private key is set" );
+        }
+
+        JS_BIN_reset( &binCert );
+        JS_BIN_reset( &binPriKey );
+    }
 
     log( QString( "SSL Host:Port       : %1:%2" ).arg( strHost ).arg( nPort ));
 
@@ -374,6 +450,9 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
         berApplet->elog( QString("fail to init SSL(%1:%2)").arg( strHost ).arg( nPort ));
         goto end;
     }
+
+
+    if( nVerifyDepth > 0 ) SSL_set_verify_depth( pSSL, nVerifyDepth );
 
     if( mHostNameCheck->isChecked() )
     {
@@ -593,17 +672,12 @@ void SSLVerifyDlg::clickClearResult()
 
 void SSLVerifyDlg::findTrustCACert()
 {
-    QString strPath = mTrustCACertText->text();
+    QString strPath = mTrustCAPathText->text();
     if( strPath.length() < 1 )
         strPath = berApplet->curFolder();
 
     QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
-    if( fileName.length() > 1 ) mTrustCACertText->setText( fileName );
-}
-
-void SSLVerifyDlg::clickClearTrust()
-{
-    mTrustCACertText->clear();
+    if( fileName.length() > 1 ) mTrustCAPathText->setText( fileName );
 }
 
 void SSLVerifyDlg::checkFixCipherName()
@@ -794,6 +868,13 @@ end :
     JS_BIN_reset( &binDigest );
 }
 
+void SSLVerifyDlg::checkUseMutual()
+{
+    bool bVal = mUseMutualCheck->isChecked();
+
+    mAuthTab->setTabEnabled( 1, bVal );
+}
+
 void SSLVerifyDlg::decodeCertTreeMenu()
 {
     QTreeWidgetItem *item = mURLTree->currentItem();
@@ -807,4 +888,299 @@ void SSLVerifyDlg::decodeCertTreeMenu()
 
     berApplet->decodeData( &binCert, "" );
     JS_BIN_reset( &binCert );
+}
+
+int SSLVerifyDlg::readPrivateKey( BIN *pPriKey )
+{
+    int ret = 0;
+    BIN binData = {0,0};
+    BIN binDec = {0,0};
+    BIN binInfo = {0,0};
+
+    QString strPriPath = mClientPriKeyPathText->text();
+    if( strPriPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "select private key"), this );
+        return -1;
+    }
+
+    ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binData );
+    if( ret <= 0 )
+    {
+        berApplet->warningBox( tr( "fail to read private key: %1").arg( ret ), this );
+        return  -1;
+    }
+
+    if( mEncPriKeyCheck->isChecked() )
+    {
+        QString strPasswd = mPasswordText->text();
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "You have to insert password"), this );
+            ret = -1;
+            goto end;
+        }
+
+        ret = JS_PKI_decryptPrivateKey( strPasswd.toStdString().c_str(), &binData, &binInfo, &binDec );
+        if( ret != 0 )
+        {
+            berApplet->warningBox( tr( "fail to decrypt private key:%1").arg( ret ), this );
+            mPasswordText->setFocus();
+            ret = -1;
+            goto end;
+        }
+
+        JS_BIN_copy( pPriKey, &binDec );
+        ret = 0;
+    }
+    else
+    {
+        JS_BIN_copy( pPriKey, &binData );
+        ret = 0;
+    }
+
+end :
+    JS_BIN_reset( &binData );
+    JS_BIN_reset( &binDec );
+    JS_BIN_reset( &binInfo );
+
+    return ret;
+}
+
+void SSLVerifyDlg::clickTrustCAView()
+{
+    QString strPath = mTrustCAPathText->text();
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( "You have to find certificate", this );
+        return;
+    }
+
+    CertInfoDlg certInfoDlg;
+    certInfoDlg.setCertPath( strPath );
+    certInfoDlg.exec();
+}
+
+void SSLVerifyDlg::clickTrustCADecode()
+{
+    BIN binData = {0,0};
+    QString strPath = mTrustCAPathText->text();
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
+
+    if( binData.nLen < 1 )
+    {
+        berApplet->warningBox( tr("fail to read data"), this );
+        return;
+    }
+
+    berApplet->decodeData( &binData, strPath );
+
+    JS_BIN_reset( &binData );
+}
+
+void SSLVerifyDlg::clickTrustCAType()
+{
+    BIN binCert = {0,0};
+    BIN binPubKey = {0,0};
+    int nType = -1;
+
+    QString strPath = mTrustCAPathText->text();
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "You have to find sign certificate"), this );
+        return;
+    }
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
+
+    nType = JS_PKI_getPubKeyType( &binPubKey );
+
+    berApplet->messageBox( tr( "Sign Certificate Type is %1" ).arg( getKeyTypeName(nType)), this);
+
+end :
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binPubKey );
+}
+
+void SSLVerifyDlg::findClientCA()
+{
+    QString strPath = mClientCAPathText->text();
+    if( strPath.length() < 1 )
+        strPath = berApplet->curFolder();
+
+    QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    if( fileName.length() > 1 ) mClientCAPathText->setText( fileName );
+}
+
+void SSLVerifyDlg::clickClientCAView()
+{
+    QString strPath = mClientCAPathText->text();
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( "You have to find certificate", this );
+        return;
+    }
+
+    CertInfoDlg certInfoDlg;
+    certInfoDlg.setCertPath( strPath );
+    certInfoDlg.exec();
+}
+
+void SSLVerifyDlg::clickClientCADeocde()
+{
+    BIN binData = {0,0};
+    QString strPath = mClientCAPathText->text();
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
+
+    if( binData.nLen < 1 )
+    {
+        berApplet->warningBox( tr("fail to read data"), this );
+        return;
+    }
+
+    berApplet->decodeData( &binData, strPath );
+
+    JS_BIN_reset( &binData );
+}
+
+void SSLVerifyDlg::clickClientCAType()
+{
+    BIN binCert = {0,0};
+    BIN binPubKey = {0,0};
+    int nType = -1;
+
+    QString strPath = mClientCAPathText->text();
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "You have to find sign certificate"), this );
+        return;
+    }
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
+
+    nType = JS_PKI_getPubKeyType( &binPubKey );
+
+    berApplet->messageBox( tr( "Sign Certificate Type is %1" ).arg( getKeyTypeName(nType)), this);
+
+end :
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binPubKey );
+}
+
+void SSLVerifyDlg::findClientCert()
+{
+    QString strPath = mClientCertPathText->text();
+    if( strPath.length() < 1 )
+        strPath = berApplet->curFolder();
+
+    QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    if( fileName.length() > 1 ) mClientCertPathText->setText( fileName );
+}
+
+void SSLVerifyDlg::clickClientCertView()
+{
+    QString strPath = mClientCertPathText->text();
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( "You have to find certificate", this );
+        return;
+    }
+
+    CertInfoDlg certInfoDlg;
+    certInfoDlg.setCertPath( strPath );
+    certInfoDlg.exec();
+}
+
+void SSLVerifyDlg::clickClientCertDecode()
+{
+    BIN binData = {0,0};
+    QString strPath = mClientCertPathText->text();
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
+
+    if( binData.nLen < 1 )
+    {
+        berApplet->warningBox( tr("fail to read data"), this );
+        return;
+    }
+
+    berApplet->decodeData( &binData, strPath );
+
+    JS_BIN_reset( &binData );
+}
+
+void SSLVerifyDlg::clickClientCertType()
+{
+    BIN binCert = {0,0};
+    BIN binPubKey = {0,0};
+    int nType = -1;
+
+    QString strPath = mClientCertPathText->text();
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "You have to find sign certificate"), this );
+        return;
+    }
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
+
+    nType = JS_PKI_getPubKeyType( &binPubKey );
+
+    berApplet->messageBox( tr( "Sign Certificate Type is %1" ).arg( getKeyTypeName(nType)), this);
+
+end :
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binPubKey );
+}
+
+void SSLVerifyDlg::findClientPriKey()
+{
+    QString strPath = mClientPriKeyPathText->text();
+    if( strPath.length() < 1 )
+        strPath = berApplet->curFolder();
+
+    QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
+    if( fileName.length() > 1 ) mClientPriKeyPathText->setText( fileName );
+}
+
+void SSLVerifyDlg::clickClientPriKeyDecode()
+{
+    BIN binData = {0,0};
+    QString strPath = mClientPriKeyPathText->text();
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
+
+    if( binData.nLen < 1 )
+    {
+        berApplet->warningBox( tr("fail to read data"), this );
+        return;
+    }
+
+    berApplet->decodeData( &binData, strPath );
+
+    JS_BIN_reset( &binData );
+}
+
+void SSLVerifyDlg::clickClientPriKeyType()
+{
+    int ret = 0;
+    BIN binPri = {0,0};
+    int nType = -1;
+
+    ret = readPrivateKey( &binPri );
+    if( ret != 0 ) return;
+    nType = JS_PKI_getPriKeyType( &binPri );
+
+    berApplet->messageBox( tr( "KM Private Key Type is %1").arg( getKeyTypeName( nType )), this);
+
+end :
+    JS_BIN_reset( &binPri );
 }
