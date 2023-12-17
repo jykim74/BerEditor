@@ -186,6 +186,7 @@ SSLVerifyDlg::SSLVerifyDlg(QWidget *parent) :
     connect( mFixCipherNameCheck, SIGNAL(clicked()), this, SLOT(checkFixCipherName()));
     connect( mCipherClearBtn, SIGNAL(clicked()), this, SLOT(clickClearCipher()));
     connect( mHostNameCheck, SIGNAL(clicked()), this, SLOT(checkHostName()));
+    connect( mViewTrustListBtn, SIGNAL(clicked()), this, SLOT(clickViewTrustList()));
 
     connect( mURLTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotTableMenuRequested(QPoint)));
     connect( mURLTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(viewCertTableMenu()));
@@ -211,7 +212,7 @@ SSLVerifyDlg::SSLVerifyDlg(QWidget *parent) :
     connect( mClientCertTypeBtn, SIGNAL(clicked()), this, SLOT(clickClientCertType()));
 
     connect( mFindClientPriKeyBtn, SIGNAL(clicked()), this, SLOT(findClientPriKey()));
-    connect( mClientPriKeyDecodeBtn, SIGNAL(clicked()), this, SLOT(clickaClientPriKeyDecode()));
+    connect( mClientPriKeyDecodeBtn, SIGNAL(clicked()), this, SLOT(clickClientPriKeyDecode()));
     connect( mClientPriKeyTypeBtn, SIGNAL(clicked()), this, SLOT(clickClientPriKeyType()));
 
     initialize();
@@ -266,6 +267,7 @@ void SSLVerifyDlg::initialize()
 {
     mModeCombo->addItems( kModeLists );
     mVerifyDepthText->setText( QString("%1").arg( 4 ));
+    mTrustListPathText->setText( berApplet->settingsMgr()->getTrustedCAPath() );
 
     QStringList sURLLabels = { tr( "URL" ), tr( "Port" ), tr( "DN" ), tr( "To" ), tr( "Left") };
 
@@ -371,18 +373,16 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
         JS_SSL_initClient2( &pCTX, SSL_VERIFY_PEER,verify_callback );
     }
 
-    QString strTrustFolder = berApplet->settingsMgr()->trustedCAPath();
+    QString strTrustList = mTrustListPathText->text();
     QString strTrustCACert = mTrustCAPathText->text();
 
-    berApplet->log( QString( "TrustedPath : %1").arg( strTrustFolder ) );
-    berApplet->log( QString( "TrustCACert : %1").arg( strTrustCACert ));
 
-    if( strTrustFolder.length() >= 1 || strTrustCACert.length() >= 1 )
+    if( strTrustList.length() >= 1 || strTrustCACert.length() >= 1 )
     {
 
         ret = JS_SSL_setVerifyLoaction( pCTX,
                                        strTrustCACert.length() > 0 ? strTrustCACert.toLocal8Bit().toStdString().c_str() : NULL,
-                                       strTrustFolder.length() > 0 ? strTrustFolder.toLocal8Bit().toStdString().c_str() : NULL );
+                                       strTrustList.length() > 0 ? strTrustList.toLocal8Bit().toStdString().c_str() : NULL );
 
         if( ret == 0 )
         {
@@ -701,6 +701,11 @@ void SSLVerifyDlg::clickClearCipher()
     mCipherListText->clear();
 }
 
+void SSLVerifyDlg::clickViewTrustList()
+{
+
+}
+
 void SSLVerifyDlg::clickAddCipher()
 {
     QString strCipher = mCipherListCombo->currentText();
@@ -833,8 +838,8 @@ void SSLVerifyDlg::viewCertTreeMenu()
 void SSLVerifyDlg::saveTrustedCA()
 {
     int ret = 0;
+    long uHash = 0;
 
-    BIN binDigest = {0,0};
     QString strTrustedCAPath = berApplet->settingsMgr()->trustedCAPath();
 
     QTreeWidgetItem *item = mURLTree->currentItem();
@@ -848,8 +853,9 @@ void SSLVerifyDlg::saveTrustedCA()
     if( QDir( strTrustedCAPath ).exists() == false )
         QDir().mkdir( strTrustedCAPath );
 
-    JS_PKI_genHash( "SHA1", &binCert, &binDigest );
-    QString strFileName = QString( "%1/%2.pem" ).arg( strTrustedCAPath ).arg( getHexString( &binDigest ));
+    JS_PKI_getSubjectNameHash( &binCert, &uHash );
+    berApplet->log( QString( "Subject Hash: %1").arg( uHash, 8, 16, QLatin1Char( '0') ));
+    QString strFileName = QString( "%1/%2.0" ).arg( strTrustedCAPath ).arg( uHash, 8, 16, QLatin1Char('0'));
 
     if( QFileInfo::exists( strFileName ) == true )
     {
@@ -865,7 +871,6 @@ void SSLVerifyDlg::saveTrustedCA()
 
 end :
     JS_BIN_reset( &binCert );
-    JS_BIN_reset( &binDigest );
 }
 
 void SSLVerifyDlg::checkUseMutual()
@@ -1029,7 +1034,7 @@ void SSLVerifyDlg::clickClientCAView()
     certInfoDlg.exec();
 }
 
-void SSLVerifyDlg::clickClientCADeocde()
+void SSLVerifyDlg::clickClientCADecode()
 {
     BIN binData = {0,0};
     QString strPath = mClientCAPathText->text();

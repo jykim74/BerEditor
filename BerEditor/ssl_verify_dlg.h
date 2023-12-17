@@ -32,6 +32,7 @@ private slots:
     void checkFixCipherName();
     void checkHostName();
     void clickClearCipher();
+    void clickViewTrustList();
 
     void selectTable(QModelIndex index);
 
@@ -54,7 +55,7 @@ private slots:
 
     void findClientCA();
     void clickClientCAView();
-    void clickClientCADeocde();
+    void clickClientCADecode();
     void clickClientCAType();
 
     void findClientCert();

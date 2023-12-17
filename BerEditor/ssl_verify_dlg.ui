@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>682</width>
-    <height>838</height>
+    <height>843</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -174,7 +174,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_5">
       <attribute name="title">
@@ -263,13 +263,10 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_13">
-         <item row="0" column="1">
-          <widget class="QLineEdit" name="mTrustCAPathText"/>
-         </item>
-         <item row="0" column="2">
-          <widget class="QPushButton" name="mFindTrustCABtn">
+         <item row="0" column="3">
+          <widget class="QPushButton" name="mTrustCAViewBtn">
            <property name="text">
-            <string>Find</string>
+            <string>C</string>
            </property>
           </widget>
          </item>
@@ -287,10 +284,13 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="3">
-          <widget class="QPushButton" name="mTrustCAViewBtn">
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="mTrustCAPathText"/>
+         </item>
+         <item row="0" column="2">
+          <widget class="QPushButton" name="mFindTrustCABtn">
            <property name="text">
-            <string>C</string>
+            <string>Find</string>
            </property>
           </widget>
          </item>
@@ -304,17 +304,56 @@
         </layout>
        </item>
        <item>
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
+        <layout class="QGridLayout" name="gridLayout_8">
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="mTrustListPathText">
+           <property name="palette">
+            <palette>
+             <active>
+              <colorrole role="Base">
+               <brush brushstyle="SolidPattern">
+                <color alpha="255">
+                 <red>221</red>
+                 <green>221</green>
+                 <blue>255</blue>
+                </color>
+               </brush>
+              </colorrole>
+             </active>
+             <inactive>
+              <colorrole role="Base">
+               <brush brushstyle="SolidPattern">
+                <color alpha="255">
+                 <red>221</red>
+                 <green>221</green>
+                 <blue>255</blue>
+                </color>
+               </brush>
+              </colorrole>
+             </inactive>
+             <disabled/>
+            </palette>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_10">
+           <property name="text">
+            <string>Trust List</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QPushButton" name="mViewTrustListBtn">
+           <property name="text">
+            <string>View List</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>
