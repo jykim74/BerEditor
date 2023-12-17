@@ -29,7 +29,11 @@
     </widget>
    </item>
    <item>
-    <widget class="QTableWidget" name="mTrustTable"/>
+    <widget class="QTableWidget" name="mTrustTable">
+     <property name="contextMenuPolicy">
+      <enum>Qt::CustomContextMenu</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="Line" name="line">

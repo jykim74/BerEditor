@@ -19,6 +19,9 @@ public:
 private slots:
     void clickAdd();
     void clickDelete();
+    void viewCert();
+    void slotTableListMenuRequested( QPoint pos );
+
 
 private:
     void initialize();

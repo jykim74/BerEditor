@@ -1,5 +1,7 @@
 #include <QDir>
 #include <QFileInfo>
+#include <QFileDialog>
+#include <QMenu>
 
 #include "common.h"
 #include "trust_list_dlg.h"
@@ -7,6 +9,7 @@
 #include "ber_applet.h"
 #include "settings_mgr.h"
 #include "js_util.h"
+#include "cert_info_dlg.h"
 
 TrustListDlg::TrustListDlg(QWidget *parent)
     : QDialog(parent)
@@ -16,6 +19,7 @@ TrustListDlg::TrustListDlg(QWidget *parent)
     connect( mAddBtn, SIGNAL(clicked()), this, SLOT(clickAdd()));
     connect( mDeleteBtn, SIGNAL(clicked()), this, SLOT(clickDelete()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mTrustTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotTableListMenuRequested(QPoint)));
 
     initialize();
 
@@ -174,9 +178,46 @@ void TrustListDlg::clickDelete()
     QTableWidgetItem* item = mTrustTable->currentItem();
     if( item == NULL ) return;
 
+    bool bVal = berApplet->yesOrCancelBox( tr( "Are you delete?"), this, false );
+    if( bVal == false ) return;
+
     const QString strPath = item->data( Qt::UserRole ).toString();
     QFile delFile( strPath );
     delFile.remove();
 
     loadList();
+}
+
+void TrustListDlg::viewCert()
+{
+    BIN binCert = {0,0};
+
+    QModelIndex idx = mTrustTable->currentIndex();
+
+    QTableWidgetItem* item = mTrustTable->item( idx.row(), 0 );
+    if( item == NULL ) return;
+
+    const QString strPath = item->data( Qt::UserRole ).toString();
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
+
+    CertInfoDlg certInfo;
+    certInfo.setCertBIN( &binCert );
+    certInfo.exec();
+
+    JS_BIN_reset( &binCert );
+}
+
+void TrustListDlg::slotTableListMenuRequested( QPoint pos )
+{
+    QMenu *menu = new QMenu(this);
+    QAction *delAct = new QAction( tr( "Delete" ), this );
+    QAction *viewAct = new QAction( tr( "View Cert" ), this );
+
+    connect( delAct, SIGNAL(triggered()), this, SLOT(clickDelete()));
+    connect( viewAct, SIGNAL(triggered()), this, SLOT(viewCert()));
+
+    menu->addAction( delAct );
+    menu->addAction( viewAct );
+
+    menu->popup( mTrustTable->viewport()->mapToGlobal(pos));
 }

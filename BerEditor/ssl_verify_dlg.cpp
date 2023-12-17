@@ -226,15 +226,15 @@ SSLVerifyDlg::SSLVerifyDlg(QWidget *parent) :
     mTrustCATypeBtn->setFixedWidth(34);
 
     mClientCAViewBtn->setFixedWidth(34);
-    mClientCAViewBtn->setFixedWidth(34);
-    mClientCAViewBtn->setFixedWidth(34);
+    mClientCADecodeBtn->setFixedWidth(34);
+    mClientCATypeBtn->setFixedWidth(34);
 
     mClientCertViewBtn->setFixedWidth(34);
-    mClientCertViewBtn->setFixedWidth(34);
-    mClientCertViewBtn->setFixedWidth(34);
+    mClientCertDecodeBtn->setFixedWidth(34);
+    mClientCertTypeBtn->setFixedWidth(34);
 
     mClientPriKeyDecodeBtn->setFixedWidth(34);
-    mClientPriKeyDecodeBtn->setFixedWidth(34);
+    mClientPriKeyTypeBtn->setFixedWidth(34);
 #endif
 }
 
