@@ -14,6 +14,7 @@
 #include "js_util.h"
 #include "cert_info_dlg.h"
 #include "settings_mgr.h"
+#include "trust_list_dlg.h"
 
 #include "openssl/ssl.h"
 #include "openssl/err.h"
@@ -28,7 +29,7 @@ const QStringList kModeLists = { "SSL_VERIFY_NONE", "SSL_VERIFY_PEER" };
 void print_cn_name(const char* label, X509_NAME* const name)
 {
     int idx = -1, success = 0;
-    unsigned char *utf8 = NULL;
+    char *utf8 = NULL;
 
     do
     {
@@ -43,10 +44,10 @@ void print_cn_name(const char* label, X509_NAME* const name)
         ASN1_STRING* data = X509_NAME_ENTRY_get_data(entry);
         if (!data) break; /* failed */
 
-        int length = ASN1_STRING_to_UTF8(&utf8, data);
+        int length = ASN1_STRING_to_UTF8((unsigned char **)&utf8, data);
         if (!utf8 || !(length > 0))  break; /* failed */
 
-        fprintf(stdout, "  %s: %s\n", label, utf8);
+        berApplet->log( QString( "  %1: %2").arg( label ).arg( utf8 ));
         success = 1;
 
     } while (0);
@@ -55,14 +56,14 @@ void print_cn_name(const char* label, X509_NAME* const name)
         OPENSSL_free(utf8);
 
     if (!success)
-        fprintf(stdout, "  %s: <not available>\n", label);
+        berApplet->log( QString("  %1: <not available>" ).arg(label));
 }
 
 void print_san_name(const char* label, X509* const cert)
 {
     int success = 0;
     GENERAL_NAMES* names = NULL;
-    unsigned char* utf8 = NULL;
+    char* utf8 = NULL;
 
     do
     {
@@ -83,13 +84,13 @@ void print_san_name(const char* label, X509* const cert)
             {
                 int len1 = 0, len2 = -1;
 
-                len1 = ASN1_STRING_to_UTF8(&utf8, entry->d.dNSName);
+                len1 = ASN1_STRING_to_UTF8((unsigned char **)&utf8, entry->d.dNSName);
                 if (utf8) {
                     len2 = (int)strlen((const char*)utf8);
                 }
 
                 if (len1 != len2) {
-                    fprintf(stderr, "  Strlen and ASN1_STRING size do not match (embedded null?): %d vs %d\n", len2, len1);
+                    berApplet->log( QString( "  Strlen and ASN1_STRING size do not match (embedded null?): %d vs %d" ).arg( len2 ).arg( len1) );
                 }
 
                 /* If there's a problem with string lengths, then     */
@@ -97,7 +98,7 @@ void print_san_name(const char* label, X509* const cert)
                 /* Another policy would be to fails since it probably */
                 /* indicates the client is under attack.              */
                 if (utf8 && len1 && len2 && (len1 == len2)) {
-                    fprintf(stdout, "  %s: %s\n", label, utf8);
+                    berApplet->log( QString("  %s: %s").arg( label ).arg( utf8) );
                     success = 1;
                 }
 
@@ -107,7 +108,7 @@ void print_san_name(const char* label, X509* const cert)
             }
             else
             {
-                fprintf(stderr, "  Unknown GENERAL_NAME type: %d\n", entry->type);
+                berApplet->elog( QString("  Unknown GENERAL_NAME type: %1").arg( entry->type) );
             }
         }
 
@@ -152,19 +153,19 @@ int verify_callback(int preverify, X509_STORE_CTX* x509_ctx)
     if (preverify == 0)
     {
         if (err == X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT_LOCALLY)
-            fprintf(stdout, "  SSL Error = X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT_LOCALLY\n");
+            berApplet->elog( QString("  SSL Error = X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT_LOCALLY") );
         else if (err == X509_V_ERR_CERT_UNTRUSTED)
-            fprintf(stdout, "  SSL Error = X509_V_ERR_CERT_UNTRUSTED\n");
+            berApplet->elog( QString("  SSL Error = X509_V_ERR_CERT_UNTRUSTED"));
         else if (err == X509_V_ERR_SELF_SIGNED_CERT_IN_CHAIN)
-            fprintf(stdout, "  SSL Error = X509_V_ERR_SELF_SIGNED_CERT_IN_CHAIN\n");
+            berApplet->elog( QString("  SSL Error = X509_V_ERR_SELF_SIGNED_CERT_IN_CHAIN"));
         else if (err == X509_V_ERR_CERT_NOT_YET_VALID)
-            fprintf(stdout, "  SSL Error = X509_V_ERR_CERT_NOT_YET_VALID\n");
+            berApplet->elog( QString("  SSL Error = X509_V_ERR_CERT_NOT_YET_VALID"));
         else if (err == X509_V_ERR_CERT_HAS_EXPIRED)
-            fprintf(stdout, "  SSL Error = X509_V_ERR_CERT_HAS_EXPIRED\n");
+            berApplet->elog( QString( "  SSL Error = X509_V_ERR_CERT_HAS_EXPIRED"));
         else if (err == X509_V_OK)
-            fprintf(stdout, "  SSL Error = X509_V_OK\n");
+            berApplet->elog( QString( "  SSL Error = X509_V_OK"));
         else
-            fprintf(stdout, "  SSL Error = %d\n", err);
+            berApplet->elog( QString("  SSL Error = %1" ).arg( err ));
     }
 
     return preverify;
@@ -502,14 +503,21 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
 
     item->setData( Qt::UserRole, getHexString( &pAtList->Bin ));
 
-    mURLTable->insertRow( row );
-    mURLTable->setRowHeight( row, 10 );
-    mURLTable->setItem( row, 0, item );
-    mURLTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( nPort )));
-    mURLTable->setItem( row, 2, new QTableWidgetItem( sCertInfo.pSubjectName ));
-//    mURLTable->setItem( row, 3, new QTableWidgetItem( sNotBefore ));
-    mURLTable->setItem( row, 3, new QTableWidgetItem( sNotAfter ));
-    mURLTable->setItem( row, 4, new QTableWidgetItem( strLeft ));
+    if( isExistURL( strHost, nPort ) == false )
+    {
+        mURLTable->insertRow( row );
+        mURLTable->setRowHeight( row, 10 );
+        mURLTable->setItem( row, 0, item );
+        mURLTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( nPort )));
+        mURLTable->setItem( row, 2, new QTableWidgetItem( sCertInfo.pSubjectName ));
+//      mURLTable->setItem( row, 3, new QTableWidgetItem( sNotBefore ));
+        mURLTable->setItem( row, 3, new QTableWidgetItem( sNotAfter ));
+        mURLTable->setItem( row, 4, new QTableWidgetItem( strLeft ));
+    }
+    else
+    {
+        log( "This URL is already exist in URL List" );
+    }
 
     createTree( pCertList );
 
@@ -605,6 +613,13 @@ void SSLVerifyDlg::clickConnect()
     QUrl url;
 
     QString strURL = mURLCombo->currentText();
+    QStringList list = strURL.split( "://" );
+
+    if( list.size() < 2 )
+    {
+        QString strScheme = "HTTPS://";
+        strURL = QString( "%1%2").arg( strScheme ).arg( strURL );
+    }
 
     url.setUrl( strURL );
 
@@ -703,7 +718,8 @@ void SSLVerifyDlg::clickClearCipher()
 
 void SSLVerifyDlg::clickViewTrustList()
 {
-
+    TrustListDlg trustList;
+    trustList.exec();
 }
 
 void SSLVerifyDlg::clickAddCipher()
@@ -1188,4 +1204,20 @@ void SSLVerifyDlg::clickClientPriKeyType()
 
 end :
     JS_BIN_reset( &binPri );
+}
+
+bool SSLVerifyDlg::isExistURL( const QString strHost, int nPort )
+{
+    int count = mURLTable->rowCount();
+
+    for( int i = 0; i < count; i++ )
+    {
+        QTableWidgetItem* item0 = mURLTable->item( i, 0 );
+        QTableWidgetItem* item1 = mURLTable->item(i, 1);
+
+        if( item0->text() == strHost && item1->text().toInt() == nPort )
+            return true;
+    }
+
+    return false;
 }

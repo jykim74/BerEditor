@@ -71,7 +71,8 @@ SOURCES += \
     sign_verify_dlg.cpp \
     sss_dlg.cpp \
     ssl_verify_dlg.cpp \
-    csr_info_dlg.cpp
+    csr_info_dlg.cpp \
+    trust_list_dlg.cpp
 
 HEADERS += \
     about_dlg.h \
@@ -111,7 +112,8 @@ HEADERS += \
     singleton.h \
     sss_dlg.h \
     ssl_verify_dlg.h \
-    csr_info_dlg.h
+    csr_info_dlg.h \
+    trust_list_dlg.h
 
 
 
@@ -228,7 +230,8 @@ FORMS += \
         sign_verify_dlg.ui \
         sss_dlg.ui \
         ssl_verify_dlg.ui \
-        csr_info_dlg.ui
+        csr_info_dlg.ui \
+        trust_list_dlg.ui
 
 RESOURCES += \
     bereditor.qrc

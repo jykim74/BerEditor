@@ -67,6 +67,7 @@ set(PROJECT_SRC
     sss_dlg.cpp
     ssl_verify_dlg.cpp
     csr_info_dlg.cpp
+    trust_list_dlg.cpp
     ${platform_specific_sources}
 )
 
@@ -109,6 +110,7 @@ set( PROJECT_HEADER
     sss_dlg.h
     ssl_verify_dlg.h
     csr_info_dlg.h
+    trust_list_dlg.h
     ${platform_specific_headers}
 )
 
@@ -140,6 +142,7 @@ set( PROJECT_FORM
     sss_dlg.ui
     ssl_verify_dlg.ui
     csr_info_dlg.ui
+    trust_list_dlg.ui
 )
 
 

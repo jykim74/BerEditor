@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>682</width>
-    <height>843</height>
+    <height>859</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -223,7 +223,7 @@
           <widget class="QLabel" name="label_5">
            <property name="minimumSize">
             <size>
-             <width>100</width>
+             <width>80</width>
              <height>0</height>
             </size>
            </property>
@@ -272,6 +272,12 @@
          </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label_3">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
             <string>Trust CA</string>
            </property>
@@ -341,6 +347,12 @@
          </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label_10">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
             <string>Trust List</string>
            </property>

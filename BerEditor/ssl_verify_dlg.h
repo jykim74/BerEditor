@@ -76,6 +76,8 @@ private:
     QStringList getUsedURL();
     void setUsedURL( const QString strURL );
     int readPrivateKey( BIN *pPriKey );
+
+    bool isExistURL( const QString strHost, int nPort );
 };
 
 #endif // SSL_VERIFY_DLG_H
