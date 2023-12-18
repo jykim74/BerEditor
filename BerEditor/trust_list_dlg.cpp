@@ -78,8 +78,9 @@ void TrustListDlg::loadList()
         QString strName = file.baseName();
         QString strSuffix = file.suffix();
 
+
         QTableWidgetItem *item = new QTableWidgetItem( strName );
-        item->setData(Qt::UserRole, file.fileName() );
+        item->setData(Qt::UserRole, file.filePath() );
         // if you need absolute path of the file
 
         if( strName.length() != 8 && strSuffix != 1 ) continue;
@@ -122,6 +123,7 @@ void TrustListDlg::clickAdd()
     QString strPath = berApplet->curFile();
 
     QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    QString strTrustPath = berApplet->settingsMgr()->trustedCAPath();
 
     memset( &sCertInfo, 0x00, sizeof(sCertInfo));
 
@@ -134,14 +136,15 @@ void TrustListDlg::clickAdd()
         ret = JS_PKI_getSubjectNameHash( &binCA, &uHash );
         if( ret != 0 ) goto end;
 
-        QString strFileName = QString( "%1/%2.0" ).arg( strPath ).arg( uHash, 8, 16, QLatin1Char('0'));
+        QString strFileName = QString( "%1.0" ).arg( uHash, 8, 16, QLatin1Char('0'));
+        QString strSaveName = QString( "%1/%2" ).arg( strTrustPath ).arg( strFileName );
         if( QFileInfo::exists( strFileName ) == true )
         {
-            berApplet->warningBox( tr( "The file(%1) is already existed").arg( strFileName ), this );
+            berApplet->warningBox( tr( "The file(%1) is already existed").arg( strSaveName ), this );
             goto end;
         }
 
-        ret = JS_BIN_writePEM( &binCA, JS_PEM_TYPE_CERTIFICATE, strFileName.toLocal8Bit().toStdString().c_str() );
+        ret = JS_BIN_writePEM( &binCA, JS_PEM_TYPE_CERTIFICATE, strSaveName.toLocal8Bit().toStdString().c_str() );
         if( ret > 0 )
         {
             int row = mTrustTable->rowCount();
@@ -175,7 +178,9 @@ end :
 
 void TrustListDlg::clickDelete()
 {
-    QTableWidgetItem* item = mTrustTable->currentItem();
+    QModelIndex idx = mTrustTable->currentIndex();
+
+    QTableWidgetItem* item = mTrustTable->item( idx.row(), 0 );
     if( item == NULL ) return;
 
     bool bVal = berApplet->yesOrCancelBox( tr( "Are you delete?"), this, false );
@@ -183,13 +188,22 @@ void TrustListDlg::clickDelete()
 
     const QString strPath = item->data( Qt::UserRole ).toString();
     QFile delFile( strPath );
-    delFile.remove();
+    bVal = delFile.remove();
+
+    if( bVal == true )
+        berApplet->messageBox( tr( "Trust CA is deleted successfully"), this );
+    else
+    {
+        berApplet->warningBox( tr( "fail to delete Trust CA" ), this );
+        return;
+    }
 
     loadList();
 }
 
 void TrustListDlg::viewCert()
 {
+    int ret = 0;
     BIN binCert = {0,0};
 
     QModelIndex idx = mTrustTable->currentIndex();
@@ -198,7 +212,12 @@ void TrustListDlg::viewCert()
     if( item == NULL ) return;
 
     const QString strPath = item->data( Qt::UserRole ).toString();
-    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    ret = JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    if( binCert.nLen <= 0 )
+    {
+        berApplet->warningBox( tr( "There is no certificate"), this );
+        return;
+    }
 
     CertInfoDlg certInfo;
     certInfo.setCertBIN( &binCert );

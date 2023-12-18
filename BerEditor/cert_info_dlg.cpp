@@ -147,7 +147,7 @@ void CertInfoDlg::getFields()
     if( cert_bin_.nLen <= 0 )
     {
         berApplet->warningBox( tr( "Select certificate"), this );
-        this->hide();
+        close();
         return;
     }
 

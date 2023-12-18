@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>682</width>
-    <height>859</height>
+    <width>610</width>
+    <height>674</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -174,7 +174,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab_5">
       <attribute name="title">
@@ -265,6 +265,12 @@
         <layout class="QGridLayout" name="gridLayout_13">
          <item row="0" column="3">
           <widget class="QPushButton" name="mTrustCAViewBtn">
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>C</string>
            </property>
@@ -285,6 +291,12 @@
          </item>
          <item row="0" column="4">
           <widget class="QPushButton" name="mTrustCADecodeBtn">
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>D</string>
            </property>
@@ -302,6 +314,12 @@
          </item>
          <item row="0" column="5">
           <widget class="QPushButton" name="mTrustCATypeBtn">
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>T</string>
            </property>
@@ -395,6 +413,12 @@
          </item>
          <item row="0" column="4">
           <widget class="QPushButton" name="mClientCADecodeBtn">
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>D</string>
            </property>
@@ -412,6 +436,12 @@
          </item>
          <item row="0" column="3">
           <widget class="QPushButton" name="mClientCAViewBtn">
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>C</string>
            </property>
@@ -446,6 +476,12 @@
          </item>
          <item row="0" column="5">
           <widget class="QPushButton" name="mClientCATypeBtn">
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>T</string>
            </property>
@@ -453,6 +489,12 @@
          </item>
          <item row="1" column="3">
           <widget class="QPushButton" name="mClientCertViewBtn">
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>C</string>
            </property>
@@ -460,6 +502,12 @@
          </item>
          <item row="1" column="4">
           <widget class="QPushButton" name="mClientCertDecodeBtn">
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>D</string>
            </property>
@@ -467,6 +515,12 @@
          </item>
          <item row="1" column="5">
           <widget class="QPushButton" name="mClientCertTypeBtn">
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>T</string>
            </property>
@@ -474,6 +528,12 @@
          </item>
          <item row="2" column="4">
           <widget class="QPushButton" name="mClientPriKeyDecodeBtn">
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>D</string>
            </property>
@@ -481,6 +541,12 @@
          </item>
          <item row="2" column="5">
           <widget class="QPushButton" name="mClientPriKeyTypeBtn">
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>T</string>
            </property>

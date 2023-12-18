@@ -471,12 +471,13 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
     log( QString( "Current TLS Version : %1").arg( JS_SSL_getCurrentVersionName( pSSL )));
     log( QString( "Current Cipher Name : %1").arg( JS_SSL_getCurrentCipherName( pSSL ) ));
 
-    ret = JS_SSL_verifyCert( pSSL );
-    log( QString( "Verify Certificate  : %1(%2)").arg( X509_verify_cert_error_string(ret)).arg( ret ));
 
     ret = JS_SSL_getChains( pSSL, &pCertList );
     count = JS_BIN_countList( pCertList );
     berApplet->log( QString( "Chain Count: %1").arg( count ) );
+
+    ret = JS_SSL_verifyCert( pSSL );
+    log( QString( "Verify Certificate  : %1(%2)").arg( X509_verify_cert_error_string(ret)).arg( ret ));
 
     pAtList = JS_BIN_getListAt( 0, pCertList );
     ret = JS_PKI_getCertInfo( &pAtList->Bin, &sCertInfo, NULL );
@@ -540,38 +541,57 @@ void SSLVerifyDlg::createTree( const BINList *pCertList )
     QTreeWidgetItem *last = NULL;
 
     mURLTree->clear();
+    BIN binCert = {0,0};
 
     if( pCertList == NULL ) return;
 
+    memset( &sCertInfo, 0x00, sizeof(sCertInfo));
     nCount = JS_BIN_countList( pCertList );
 
-    for( int i = 0; i < nCount; i++ )
+    if( nCount < 1 ) return;
+    pAtList = JS_BIN_getListAt( 0, pCertList );
+    JS_BIN_copy( &binCert, &pAtList->Bin );
+
+    JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
+
+    QTreeWidgetItem *item = new QTreeWidgetItem;
+    item->setText( 0, sCertInfo.pSubjectName );
+    item->setData( 0, Qt::UserRole, getHexString( &binCert ));
+    item->setIcon( 0, QIcon(":/images/cert.png"));
+
+    JS_PKI_resetCertInfo( &sCertInfo );
+
+    last = item;
+
+    if( nCount > 1 )
     {
-        memset( &sCertInfo, 0x00, sizeof(sCertInfo));
-
-        pAtList = JS_BIN_getListAt( (nCount - i - 1), pCertList );
-
-        ret = JS_PKI_getCertInfo( &pAtList->Bin, &sCertInfo, NULL );
-
-        QTreeWidgetItem *item = new QTreeWidgetItem;
-        item->setText( 0, sCertInfo.pSubjectName );
-        item->setData( 0, Qt::UserRole, getHexString( &pAtList->Bin ));
-        item->setIcon( 0, QIcon(":/images/cert.png"));
-
-        if( i == 0 )
+        for( int i = 1; i < nCount; i++ )
         {
-            mURLTree->insertTopLevelItem( 0, item );
-            last = item;
-        }
-        else
-        {
-            last->addChild( item );
-            last = item;
-        }
+            for( int k = 1; k < nCount; k++ )
+            {
+                pAtList = JS_BIN_getListAt( k, pCertList );
+                if( JS_PKI_isIssuerDNCert( &pAtList->Bin, &binCert ) == 1 )
+                {
+                    ret = JS_PKI_getCertInfo( &pAtList->Bin, &sCertInfo, NULL );
 
-        JS_PKI_resetCertInfo( &sCertInfo );
+                    item = new QTreeWidgetItem;
+                    item->setText( 0, sCertInfo.pSubjectName );
+                    item->setData( 0, Qt::UserRole, getHexString( &pAtList->Bin ));
+                    item->setIcon( 0, QIcon(":/images/cert.png"));
+
+                    item->addChild( last );
+                    JS_PKI_resetCertInfo( &sCertInfo );
+                    JS_BIN_reset( &binCert );
+                    JS_BIN_copy( &binCert, &pAtList->Bin );
+                    last = item;
+
+                    break;
+                }
+            }
+        }
     }
 
+    mURLTree->insertTopLevelItem( 0, item );
     mURLTree->expandAll();
 }
 
@@ -636,7 +656,7 @@ void SSLVerifyDlg::clickConnect()
     mHostNameText->setText( strHost );
 
     verifyURL( strHost, nPort );
-    setUsedURL( strURL );
+    if( strURL.length() > 1 ) setUsedURL( strURL );
 }
 
 void SSLVerifyDlg::clickRefresh()
