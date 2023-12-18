@@ -456,7 +456,11 @@ void CertInfoDlg::clickMakeTree()
 
         QTreeWidgetItem* item = new QTreeWidgetItem;
         item->setText( 0, sCertInfo.pSubjectName );
-        item->setIcon( 0, QIcon( ":/images/cert.png" ));
+
+        if( bSelfSign == true )
+            item->setIcon( 0, QIcon( ":/images/root_cert.png" ));
+        else
+            item->setIcon( 0, QIcon( ":/images/cert.png" ));
 
         JS_BIN_addList( &path_list_, &binCert );
         item->addChild( child );

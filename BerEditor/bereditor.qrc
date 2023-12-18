@@ -55,5 +55,7 @@
         <file>images/ssl.png</file>
         <file>images/crl.png</file>
         <file>images/csr.png</file>
+        <file>images/root_cert.png</file>
+        <file>images/cert_revoked.png</file>
     </qresource>
 </RCC>

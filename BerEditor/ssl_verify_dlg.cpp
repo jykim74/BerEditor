@@ -572,12 +572,18 @@ void SSLVerifyDlg::createTree( const BINList *pCertList )
                 pAtList = JS_BIN_getListAt( k, pCertList );
                 if( JS_PKI_isIssuerDNCert( &pAtList->Bin, &binCert ) == 1 )
                 {
-                    ret = JS_PKI_getCertInfo( &pAtList->Bin, &sCertInfo, NULL );
+                    int bSelfSign = 0;
+
+                    ret = JS_PKI_getCertInfo2( &pAtList->Bin, &sCertInfo, NULL, &bSelfSign );
 
                     item = new QTreeWidgetItem;
                     item->setText( 0, sCertInfo.pSubjectName );
                     item->setData( 0, Qt::UserRole, getHexString( &pAtList->Bin ));
-                    item->setIcon( 0, QIcon(":/images/cert.png"));
+
+                    if( bSelfSign == 1 )
+                        item->setIcon( 0, QIcon(":/images/root_cert.png"));
+                    else
+                        item->setIcon( 0, QIcon(":/images/cert.png"));
 
                     item->addChild( last );
                     JS_PKI_resetCertInfo( &sCertInfo );
