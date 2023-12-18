@@ -9,6 +9,7 @@
 #include "cert_info_dlg.h"
 #include "crl_info_dlg.h"
 #include "trust_list_dlg.h"
+#include "settings_mgr.h"
 
 const QStringList kParamList = { "Policy", "Purpose", "Name", "Depth", "AuthLevel", "HostName", "Email", "IP" };
 
@@ -573,7 +574,16 @@ void CertPVDDlg::clickPathValidation()
     }
 
     tCheckTime = mVerifyDateTime->dateTime().toSecsSinceEpoch();
-    ret = JS_PKI_CertPVD( pTrustList, pUntrustList, pCRLList, pParamList, &binTarget, sMsg );
+
+    if( mUseTrustListCheck->isChecked() )
+    {
+        QString strTrustPath = berApplet->settingsMgr()->getTrustedCAPath();
+        ret = JS_PKI_CertPVD2( pTrustList, pUntrustList, pCRLList, pParamList, &binTarget, strTrustPath.toLocal8Bit().toStdString().c_str(), sMsg );
+    }
+    else
+    {
+        ret = JS_PKI_CertPVD( pTrustList, pUntrustList, pCRLList, pParamList, &binTarget, sMsg );
+    }
 
     berApplet->log( QString( "PVDCertValid : %1").arg(ret));
     if( ret == 1 )
