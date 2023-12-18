@@ -30,7 +30,6 @@ private slots:
 
     void clickAddCipher();
     void checkFixCipherName();
-    void checkHostName();
     void clickClearCipher();
     void clickViewTrustList();
 

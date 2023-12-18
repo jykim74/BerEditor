@@ -83,7 +83,7 @@ void TrustListDlg::loadList()
         item->setData(Qt::UserRole, file.filePath() );
         // if you need absolute path of the file
 
-        if( strName.length() != 8 && strSuffix != 1 ) continue;
+        if( strName.length() != 8 && strSuffix.length() != 1 ) continue;
 
         JS_BIN_fileReadBER( file.absoluteFilePath().toLocal8Bit().toStdString().c_str(), &binCert );
         if( binCert.nLen < 1 ) continue;

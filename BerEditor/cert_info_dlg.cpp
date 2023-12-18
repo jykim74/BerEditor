@@ -682,7 +682,7 @@ void CertInfoDlg::clickCRLCheck()
             if( nStatus == 0 )
                 berApplet->messageBox( tr( "The certificate is not revoked (STATUS:Good)" ), this );
             else
-                berApplet->warningBox( tr( "The certificate is revoked: (STATUS:Revoked %2:%3)" )
+                berApplet->warningBox( tr( "The certificate is revoked: (STATUS:Revoked %1:%2)" )
                                           .arg(nStatus).arg( sSerial ).arg( sRevokedTime ), this );
         }
     }
