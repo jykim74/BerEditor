@@ -98,7 +98,7 @@ void print_san_name(const char* label, X509* const cert)
                 /* Another policy would be to fails since it probably */
                 /* indicates the client is under attack.              */
                 if (utf8 && len1 && len2 && (len1 == len2)) {
-                    berApplet->log( QString("  %s: %s").arg( label ).arg( utf8) );
+                    berApplet->log( QString("  %1: %2").arg( label ).arg( utf8) );
                     success = 1;
                 }
 
@@ -121,7 +121,7 @@ void print_san_name(const char* label, X509* const cert)
         OPENSSL_free(utf8);
 
     if (!success)
-        fprintf(stdout, "  %s: <not available>\n", label);
+        berApplet->elog( QString("  %1: <not available>" ).arg(label) );
 
 }
 
@@ -175,6 +175,7 @@ SSLVerifyDlg::SSLVerifyDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
+    url_tree_root_ = NULL;
 
     connect( mConnectBtn, SIGNAL(clicked()), this, SLOT(clickConnect()));
     connect( mRefreshBtn, SIGNAL(clicked()), this, SLOT(clickRefresh()));
@@ -239,7 +240,7 @@ SSLVerifyDlg::SSLVerifyDlg(QWidget *parent) :
 
 SSLVerifyDlg::~SSLVerifyDlg()
 {
-
+    if( url_tree_root_ ) delete url_tree_root_;
 }
 
 void SSLVerifyDlg::log( const QString strLog, QColor cr )
@@ -314,6 +315,12 @@ void SSLVerifyDlg::initialize()
     checkUseMutual();
     mAuthTab->setCurrentIndex(0);
     mURLTab->setCurrentIndex(0);
+
+    url_tree_root_ = new QTreeWidgetItem;
+    url_tree_root_->setText( 0, "Certificate Authority" );
+    url_tree_root_->setIcon( 0, QIcon(":/images/ca.png"));
+
+    mURLTree->insertTopLevelItem( 0, url_tree_root_ );
 }
 
 QStringList SSLVerifyDlg::getUsedURL()
@@ -394,8 +401,6 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
         }
     }
 
-    // JS_SSL_setVerifyCallback( pCTX, SSL_VERIFY_PEER, verify_callback );
-
     if( mFixCipherNameCheck->isChecked() )
     {
         QString strCipher = mCipherListText->text();
@@ -403,7 +408,6 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
         JS_SSL_setCiphersList( pCTX, strCipher.toStdString().c_str() );
     }
 
-//    uFlags |= X509_V_FLAG_PARTIAL_CHAIN ;
     JS_SSL_setFlags( pCTX, uFlags );
 
     if( mUseMutualCheck->isChecked() )
@@ -435,7 +439,9 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
         JS_BIN_reset( &binPriKey );
     }
 
+    log( "========================================================================");
     log( QString( "SSL Host:Port       : %1:%2" ).arg( strHost ).arg( nPort ));
+    log( "========================================================================");
 
     int nSockFd = JS_NET_connect( strHost.toStdString().c_str(), nPort );
     if( nSockFd < 0 )
@@ -444,6 +450,8 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
         goto end;
     }
 
+    log( "Server connected successfully" );
+
     ret = JS_SSL_initSSL( pCTX, nSockFd, &pSSL );
     if( ret != 0 )
     {
@@ -451,10 +459,17 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
         goto end;
     }
 
+    if( nVerifyDepth > 0 )
+    {
+        SSL_set_verify_depth( pSSL, nVerifyDepth );
+        log( QString( "Verify Depth: %1" ).arg( nVerifyDepth ));
+    }
 
-    if( nVerifyDepth > 0 ) SSL_set_verify_depth( pSSL, nVerifyDepth );
-
-    if( mHostNameCheck->isChecked() ) JS_SSL_setHostName( pSSL, strHost.toStdString().c_str() );
+    if( mHostNameCheck->isChecked() )
+    {
+        JS_SSL_setHostName( pSSL, strHost.toStdString().c_str() );
+        log( QString( "TLS SetHostName: %1").arg( strHost ));
+    }
 
     ret = JS_SSL_connect( pSSL );
     if( ret != 0 )
@@ -463,6 +478,7 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
         goto end;
     }
 
+    log( QString( "SSL connected successfully" ) );
     log( QString( "Current TLS Version : %1").arg( JS_SSL_getCurrentVersionName( pSSL )));
     log( QString( "Current Cipher Name : %1").arg( JS_SSL_getCurrentCipherName( pSSL ) ));
 
@@ -481,6 +497,8 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
         berApplet->elog( QString( "Invalid certificate data: %1").arg( ret ));
         goto end;
     }
+
+    log( QString( "The Subject is %1" ).arg( sCertInfo.pSubjectName ));
 
     JS_UTIL_getDate( sCertInfo.uNotBefore, sNotBefore );
     JS_UTIL_getDate( sCertInfo.uNotAfter, sNotAfter );
@@ -509,13 +527,15 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
 //      mURLTable->setItem( row, 3, new QTableWidgetItem( sNotBefore ));
         mURLTable->setItem( row, 3, new QTableWidgetItem( sNotAfter ));
         mURLTable->setItem( row, 4, new QTableWidgetItem( strLeft ));
+
+        createTree( pCertList );
     }
     else
     {
         log( "This URL is already exist in URL List" );
     }
 
-    createTree( pCertList );
+    log( "========================================================================");
 
 end :
     if( pSSL ) JS_SSL_clear( pSSL );
@@ -535,7 +555,6 @@ void SSLVerifyDlg::createTree( const BINList *pCertList )
     JCertInfo sCertInfo;
     QTreeWidgetItem *last = NULL;
 
-    mURLTree->clear();
     BIN binCert = {0,0};
 
     if( pCertList == NULL ) return;
@@ -592,7 +611,8 @@ void SSLVerifyDlg::createTree( const BINList *pCertList )
         }
     }
 
-    mURLTree->insertTopLevelItem( 0, item );
+//    mURLTree->insertTopLevelItem( 0, item );
+    url_tree_root_->insertChild( 0, item );
     mURLTree->expandAll();
 }
 
@@ -661,6 +681,8 @@ void SSLVerifyDlg::clickConnect()
 
 void SSLVerifyDlg::clickRefresh()
 {
+    clickClearResult();
+
     int nCount = mURLTable->rowCount();
 
     for( int i = 0; i < nCount; i++ )
@@ -671,9 +693,9 @@ void SSLVerifyDlg::clickRefresh()
         QString strHost = item0->text();
         int nPort = item1->text().toInt();
 
-        verifyURL( strHost, nPort );
-
         mURLTable->removeRow(0);
+
+        verifyURL( strHost, nPort );
     }
 }
 
@@ -701,8 +723,14 @@ void SSLVerifyDlg::clickClearSaveURL()
 
 void SSLVerifyDlg::clickClearResult()
 {
-    mURLTree->clear();
     mLogText->clear();
+
+    int count = url_tree_root_->childCount();
+    for( int i=0; i < count; i++ )
+    {
+        QTreeWidgetItem* child = url_tree_root_->child(0);
+        url_tree_root_->removeChild(child);
+    }
 }
 
 void SSLVerifyDlg::findTrustCACert()
@@ -842,7 +870,7 @@ void SSLVerifyDlg::slotTreeMenuRequested( QPoint pos )
     menu->addAction( viewAct );
     menu->addAction( decodeAct );
 
-    if( item->parent() == NULL )
+    if( item->parent() == url_tree_root_ )
     {
         menu->addAction( saveTrustedCAAct );
     }
@@ -880,6 +908,13 @@ void SSLVerifyDlg::saveTrustedCA()
 
     BIN binCert = {0,0};
     JS_BIN_decodeHex( strData.toStdString().c_str(), &binCert );
+
+    if( JS_PKI_isSelfSignedCert( &binCert ) != 1 )
+    {
+        JS_BIN_reset( &binCert );
+        berApplet->warningBox( tr( "This certificate is not self-signed" ), this );
+        return;
+    }
 
     if( QDir( strTrustedCAPath ).exists() == false )
         QDir().mkdir( strTrustedCAPath );
@@ -1230,7 +1265,7 @@ bool SSLVerifyDlg::isExistURL( const QString strHost, int nPort )
         QTableWidgetItem* item0 = mURLTable->item( i, 0 );
         QTableWidgetItem* item1 = mURLTable->item(i, 1);
 
-        if( item0->text() == strHost && item1->text().toInt() == nPort )
+        if( item0->text().toLower() == strHost.toLower() && item1->text().toInt() == nPort )
             return true;
     }
 

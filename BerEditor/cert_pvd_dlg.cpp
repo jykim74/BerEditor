@@ -8,6 +8,7 @@
 #include "mainwindow.h"
 #include "cert_info_dlg.h"
 #include "crl_info_dlg.h"
+#include "trust_list_dlg.h"
 
 const QStringList kParamList = { "Policy", "Purpose", "Name", "Depth", "AuthLevel", "HostName", "Email", "IP" };
 
@@ -20,6 +21,10 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
     connect( mTrustFindBtn, SIGNAL(clicked()), this, SLOT(clickTrustFind()));
     connect( mUntrustFindBtn, SIGNAL(clicked()), this, SLOT(clickUntrustFind()));
     connect( mCRLFindBtn, SIGNAL(clicked()), this, SLOT(clickCRLFind()));
+
+    connect( mUseTrustListCheck, SIGNAL(clicked()), this, SLOT(checkUseTrustList()));
+    connect( mTrustListBtn, SIGNAL(clicked()), this, SLOT(clickTrustList()));
+
     connect( mTargetFindBtn, SIGNAL(clicked()), this, SLOT(clickTargetFind()));
     connect( mPolicyCheckBtn, SIGNAL(clicked()), this, SLOT(clickPolicyCheck()));
     connect( mPathValidationBtn, SIGNAL(clicked()), this, SLOT(clickPathValidation()));
@@ -94,6 +99,7 @@ void CertPVDDlg::initialize()
     mParamCombo->addItems( kParamList );
 
     checkATTime();
+    checkUseTrustList();
 }
 
 void CertPVDDlg::clickTrustFind()
@@ -150,6 +156,18 @@ void CertPVDDlg::clickTargetFind()
         mTargetPathText->setText( strFile );
         last_path_ = strFile;
     }
+}
+
+void CertPVDDlg::checkUseTrustList()
+{
+    bool bVal = mUseTrustListCheck->isChecked();
+    mTrustListBtn->setEnabled( bVal );
+}
+
+void CertPVDDlg::clickTrustList()
+{
+    TrustListDlg trustList;
+    trustList.exec();
 }
 
 void CertPVDDlg::clickVerifyCert()

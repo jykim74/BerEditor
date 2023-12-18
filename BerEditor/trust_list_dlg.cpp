@@ -133,6 +133,12 @@ void TrustListDlg::clickAdd()
         ret = JS_PKI_getCertInfo2( &binCA, &sCertInfo,NULL, &bSelfSign );
         if( ret != 0 ) goto end;
 
+        if( bSelfSign == 0 )
+        {
+            berApplet->warningBox( tr( "This certificate is not self-signed"), this );
+            goto end;
+        }
+
         ret = JS_PKI_getSubjectNameHash( &binCA, &uHash );
         if( ret != 0 ) goto end;
 

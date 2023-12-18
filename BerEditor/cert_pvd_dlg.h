@@ -22,6 +22,9 @@ private slots:
     void clickCRLFind();
     void clickTargetFind();
 
+    void checkUseTrustList();
+    void clickTrustList();
+
     void clickTrustInfo();
     void clickUntrustInfo();
     void clickCRLInfo();

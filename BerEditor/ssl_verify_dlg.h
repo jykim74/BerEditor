@@ -77,6 +77,7 @@ private:
     int readPrivateKey( BIN *pPriKey );
 
     bool isExistURL( const QString strHost, int nPort );
+    QTreeWidgetItem* url_tree_root_;
 };
 
 #endif // SSL_VERIFY_DLG_H

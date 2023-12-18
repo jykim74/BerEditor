@@ -336,6 +336,8 @@ void CertInfoDlg::initUI()
     mFieldTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mFieldTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
+    mFieldTable->setColumnWidth( 0, 160 );
+
     connect( mFieldTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeFieldType(int)));
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
