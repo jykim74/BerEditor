@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>SSL Server URL</string>
+      <string>SSL Verify Information</string>
      </property>
     </widget>
    </item>

@@ -5170,9 +5170,13 @@ Do you want to delete the file and continue?</source>
         <translation>SSL 검증</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.ui" line="20"/>
         <source>SSL Server URL</source>
-        <translation>SSL 서버 URL</translation>
+        <translation type="vanished">SSL 서버 URL</translation>
+    </message>
+    <message>
+        <location filename="../ssl_verify_dlg.ui" line="20"/>
+        <source>SSL Verify Information</source>
+        <translation>SSL 검증 정보</translation>
     </message>
     <message>
         <location filename="../ssl_verify_dlg.ui" line="39"/>
