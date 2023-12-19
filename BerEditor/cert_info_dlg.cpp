@@ -129,6 +129,33 @@ void CertInfoDlg::showEvent(QShowEvent *event)
     item->setText( 0, cert_info_.pSubjectName );
     item->setIcon(0, QIcon(":/images/cert.png"));
     mCertTree->insertTopLevelItem(0, item);
+
+    QString strAIA = getValueFromExtList( kExtNameAIA );
+    QString strCRLDP = getValueFromExtList( kExtNameCRLDP );
+
+    QString strOCSP = getOCSP_URIFromExt( strAIA );
+    QString strCA = getCA_URIFromExt( strAIA );
+    QString strCRL = getCRL_URIFromExt( strCRLDP );
+
+    if( strCA.length() < 4 )
+    {
+        mGetCABtn->setEnabled( false );
+        mOCSPCheckBtn->setEnabled( false );
+        mPathValidBtn->setEnabled( false );
+        mMakeTreeBtn->setEnabled( false );
+        mVerifyCertBtn->setEnabled( false );
+    }
+
+    if( strCRL.length() < 4 )
+    {
+        mGetCRLBtn->setEnabled( false );
+        mCRLCheckBtn->setEnabled( false );
+    }
+
+    if( strOCSP.length() < 4 )
+    {
+        mOCSPCheckBtn->setEnabled( false );
+    }
 }
 
 void CertInfoDlg::getFields()
