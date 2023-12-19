@@ -695,9 +695,8 @@ void CertInfoDlg::clickCRLCheck()
 void CertInfoDlg::clickTreeItem(QTreeWidgetItem* item, int index)
 {
     QString strText = QString( "DN: %2\n").arg( item->text(0));
-    strText += QString( "index: %1" ).arg(index);
 
-    mCertLogText->setPlaceholderText( strText );
+    mCertLogText->setPlainText( strText );
 }
 
 const QString CertInfoDlg::getValueFromExtList( const QString strExtName )

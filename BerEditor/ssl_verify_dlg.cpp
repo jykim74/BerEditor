@@ -474,11 +474,11 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
     ret = JS_SSL_connect( pSSL );
     if( ret != 0 )
     {
-        berApplet->elog( QString( "fail to connect SSL:%1").arg( ret ));
+        berApplet->elog( QString( "fail to run SSL handshake:%1").arg( ret ));
         goto end;
     }
 
-    log( QString( "SSL connected successfully" ) );
+    log( QString( "SSL handshake is done successfully" ) );
     log( QString( "Current TLS Version : %1").arg( JS_SSL_getCurrentVersionName( pSSL )));
     log( QString( "Current Cipher Name : %1").arg( JS_SSL_getCurrentCipherName( pSSL ) ));
 
@@ -658,7 +658,7 @@ void SSLVerifyDlg::clickConnect()
 
     if( list.size() < 2 )
     {
-        QString strScheme = "HTTPS://";
+        QString strScheme = "https://";
         strURL = QString( "%1%2").arg( strScheme ).arg( strURL );
     }
 
@@ -1037,6 +1037,12 @@ void SSLVerifyDlg::clickTrustCADecode()
     BIN binData = {0,0};
     QString strPath = mTrustCAPathText->text();
 
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( "You have to find certificate", this );
+        return;
+    }
+
     JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
 
     if( binData.nLen < 1 )
@@ -1060,7 +1066,7 @@ void SSLVerifyDlg::clickTrustCAType()
 
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "You have to find sign certificate"), this );
+        berApplet->warningBox( tr( "You have to find certificate"), this );
         return;
     }
 
@@ -1105,6 +1111,12 @@ void SSLVerifyDlg::clickClientCADecode()
     BIN binData = {0,0};
     QString strPath = mClientCAPathText->text();
 
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( "You have to find certificate", this );
+        return;
+    }
+
     JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
 
     if( binData.nLen < 1 )
@@ -1128,7 +1140,7 @@ void SSLVerifyDlg::clickClientCAType()
 
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "You have to find sign certificate"), this );
+        berApplet->warningBox( tr( "You have to find certificate"), this );
         return;
     }
 
@@ -1173,6 +1185,12 @@ void SSLVerifyDlg::clickClientCertDecode()
     BIN binData = {0,0};
     QString strPath = mClientCertPathText->text();
 
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( "You have to find certificate", this );
+        return;
+    }
+
     JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
 
     if( binData.nLen < 1 )
@@ -1196,7 +1214,7 @@ void SSLVerifyDlg::clickClientCertType()
 
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "You have to find sign certificate"), this );
+        berApplet->warningBox( tr( "You have to find certificate"), this );
         return;
     }
 
@@ -1226,6 +1244,12 @@ void SSLVerifyDlg::clickClientPriKeyDecode()
 {
     BIN binData = {0,0};
     QString strPath = mClientPriKeyPathText->text();
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( "You have to find private key", this );
+        return;
+    }
 
     JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
 

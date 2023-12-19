@@ -13,7 +13,7 @@ qtHaveModule(printsupport): QT += printsupport
 
 TARGET = BerEditor
 TEMPLATE = app
-PROJECT_VERSION = "1.5.7"
+PROJECT_VERSION = "1.6.0"
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -23,6 +23,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 DEFINES += BER_EDITOR_VERSION=$$PROJECT_VERSION
 #DEFINES += _AUTO_UPDATE
 DEFINES += USE_OCSP
+DEFINES += _USE_RC_LCN
 
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.

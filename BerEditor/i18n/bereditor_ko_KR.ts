@@ -1950,7 +1950,7 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../cert_pvd_dlg.ui" line="587"/>
-        <location filename="../cert_pvd_dlg.cpp" line="85"/>
+        <location filename="../cert_pvd_dlg.cpp" line="86"/>
         <source>Param</source>
         <translation>파라미터</translation>
     </message>
@@ -1993,30 +1993,30 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">경로 지우기</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="74"/>
+        <location filename="../cert_pvd_dlg.cpp" line="75"/>
         <source>Type</source>
         <translation>타입</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="74"/>
+        <location filename="../cert_pvd_dlg.cpp" line="75"/>
         <source>Path</source>
         <translation>경로</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="85"/>
+        <location filename="../cert_pvd_dlg.cpp" line="86"/>
         <source>Value</source>
         <translation>값</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="355"/>
-        <location filename="../cert_pvd_dlg.cpp" line="496"/>
+        <location filename="../cert_pvd_dlg.cpp" line="356"/>
+        <location filename="../cert_pvd_dlg.cpp" line="497"/>
         <source>You have to find target certificate</source>
         <translation>타겟 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="782"/>
-        <location filename="../cert_pvd_dlg.cpp" line="800"/>
-        <location filename="../cert_pvd_dlg.cpp" line="818"/>
+        <location filename="../cert_pvd_dlg.cpp" line="792"/>
+        <location filename="../cert_pvd_dlg.cpp" line="810"/>
+        <location filename="../cert_pvd_dlg.cpp" line="828"/>
         <source>fail to read data</source>
         <translation>데이타 읽기 실패</translation>
     </message>
@@ -3784,43 +3784,49 @@ Do you want to delete the file and continue?</source>
         <translation>라이선스가 발급 되지 않았습니다</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="247"/>
+        <location filename="../lcn_info_dlg.cpp" line="188"/>
+        <location filename="../lcn_info_dlg.cpp" line="248"/>
+        <source>This service is not yet supported.</source>
+        <translation>아직 지원하지 않는 서비스 입니다</translation>
+    </message>
+    <message>
+        <location filename="../lcn_info_dlg.cpp" line="257"/>
         <source>You have to input email</source>
         <translation>이메일 주소를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="253"/>
+        <location filename="../lcn_info_dlg.cpp" line="263"/>
         <source>You have to input license key</source>
         <translation>라이선스 키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="259"/>
+        <location filename="../lcn_info_dlg.cpp" line="269"/>
         <source>fail to get license:%1</source>
         <translation>라이선스 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="271"/>
+        <location filename="../lcn_info_dlg.cpp" line="281"/>
         <source>fail to parse license:%1</source>
         <translation>라이선스 파싱 실패: %1</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="280"/>
+        <location filename="../lcn_info_dlg.cpp" line="290"/>
         <source>license is not valid:%1</source>
         <translation>라이선스가 유효하지 않습니다: %1</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="294"/>
-        <location filename="../lcn_info_dlg.cpp" line="357"/>
+        <location filename="../lcn_info_dlg.cpp" line="304"/>
+        <location filename="../lcn_info_dlg.cpp" line="367"/>
         <source>The current license is longer period</source>
         <translation>현재 라이선스가 더 긴 기간입니다.</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="334"/>
+        <location filename="../lcn_info_dlg.cpp" line="344"/>
         <source>There is no current license</source>
         <translation>현재 라이선스가 없습니다</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="345"/>
+        <location filename="../lcn_info_dlg.cpp" line="355"/>
         <source>fail to renew license:%1</source>
         <translation>라이선스 갱신 실패: %1</translation>
     </message>
@@ -5458,29 +5464,33 @@ Do you want to delete the file and continue?</source>
         <translation>개인키 복호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="1044"/>
-        <location filename="../ssl_verify_dlg.cpp" line="1112"/>
-        <location filename="../ssl_verify_dlg.cpp" line="1180"/>
-        <location filename="../ssl_verify_dlg.cpp" line="1234"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1050"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1124"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1198"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1258"/>
         <source>fail to read data</source>
         <translation>데이타 읽기 실패</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="1063"/>
-        <location filename="../ssl_verify_dlg.cpp" line="1131"/>
-        <location filename="../ssl_verify_dlg.cpp" line="1199"/>
-        <source>You have to find sign certificate</source>
-        <translation>서명용 인증서를 선택하세요</translation>
+        <location filename="../ssl_verify_dlg.cpp" line="1069"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1143"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1217"/>
+        <source>You have to find certificate</source>
+        <translation>인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="1072"/>
-        <location filename="../ssl_verify_dlg.cpp" line="1140"/>
-        <location filename="../ssl_verify_dlg.cpp" line="1208"/>
+        <source>You have to find sign certificate</source>
+        <translation type="vanished">서명용 인증서를 선택하세요</translation>
+    </message>
+    <message>
+        <location filename="../ssl_verify_dlg.cpp" line="1078"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1152"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1226"/>
         <source>Sign Certificate Type is %1</source>
         <translation>서명용 인증서 타입은 %1 이다</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="1253"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1277"/>
         <source>KM Private Key Type is %1</source>
         <translation>KM용 개인키 타입은 %1 이다</translation>
     </message>

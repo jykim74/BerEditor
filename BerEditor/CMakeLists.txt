@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 project(BerEditor
-    VERSION 1.5.7
+    VERSION 1.6.0
     DESCRIPTION "BerEditor Application"
     LANGUAGES CXX )
 
@@ -164,7 +164,7 @@ add_executable(${PROJECT_NAME}
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )
 
 # target_compile_definitions( ${PROJECT_NAME} PRIVATE JS_PRO )
-add_definitions( -DUSE_OCSP )
+add_definitions( -DUSE_OCSP -D_USE_RC_LCN )
 
 if(WIN32)
     include_directories( ../../PKILib
