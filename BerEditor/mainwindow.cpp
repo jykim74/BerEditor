@@ -33,6 +33,8 @@
 #include "csr_info_dlg.h"
 #include "common.h"
 
+#include "js_pki_tools.h"
+
 #include <QtWidgets>
 #include <QFileDialog>
 #include <QAction>
@@ -719,14 +721,48 @@ void MainWindow::openCert()
     QString strPath = berApplet->curFile();
 
     QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
-    if( fileName.length() > 1 )
+    BIN binCert = {0,0};
+
+    JS_BIN_fileReadBER( fileName.toLocal8Bit().toStdString().c_str(), &binCert );
+
+    if( JS_PKI_isCert( &binCert ) == 1 )
     {
         CertInfoDlg certInfo;
-        certInfo.setCertPath( fileName );
+        certInfo.setCertBIN( &binCert );
         certInfo.exec();
-
         berApplet->setCurFile( fileName );
     }
+    else
+    {
+        bool bVal = true;
+        if( JS_PKI_isCRL( &binCert ) == 1 )
+        {
+            bVal = berApplet->yesOrCancelBox( tr( "This file is CRL. Open it as CRL informatiin?"), this, true );
+            if( bVal == true )
+            {
+                CRLInfoDlg crlInfo;
+                crlInfo.setCRL_BIN( &binCert );
+                crlInfo.exec();
+            }
+        }
+        else if( JS_PKI_isCSR( &binCert ) == 1 )
+        {
+            bVal = berApplet->yesOrCancelBox( tr( "This file is CSR. Open it as CSR information?"), this, true );
+            if( bVal == true )
+            {
+                CSRInfoDlg csrInfo;
+                csrInfo.setReqBIN( &binCert );
+                csrInfo.exec();
+            }
+        }
+        else
+        {
+            berApplet->warningBox( tr( "Invalid certificate file"), this );
+        }
+    }
+
+end :
+    JS_BIN_reset( &binCert );
 }
 
 void MainWindow::openCRL()
@@ -734,14 +770,48 @@ void MainWindow::openCRL()
     QString strPath = berApplet->curFile();
 
     QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
-    if( fileName.length() > 1 )
+    BIN binCRL = {0,0};
+
+    JS_BIN_fileReadBER( fileName.toLocal8Bit().toStdString().c_str(), &binCRL );
+
+    if( JS_PKI_isCRL( &binCRL ) == 1 )
     {
         CRLInfoDlg crlInfo;
-        crlInfo.setCRLPath( fileName );
+        crlInfo.setCRL_BIN( &binCRL );
         crlInfo.exec();
 
         berApplet->setCurFile( fileName );
     }
+    else
+    {
+        bool bVal = true;
+        if( JS_PKI_isCert( &binCRL ) == 1 )
+        {
+            bVal = berApplet->yesOrCancelBox( tr( "This file is certificate. Open it as certificate informatiin?"), this, true );
+            if( bVal == true )
+            {
+                CertInfoDlg certInfo;
+                certInfo.setCertBIN( &binCRL );
+                certInfo.exec();
+            }
+        }
+        else if( JS_PKI_isCSR( &binCRL) == 1 )
+        {
+            bVal = berApplet->yesOrCancelBox( tr( "This file is CSR. Open it as CSR information?"), this, true );
+            if( bVal == true )
+            {
+                CSRInfoDlg csrInfo;
+                csrInfo.setReqBIN( &binCRL );
+                csrInfo.exec();
+            }
+        }
+        else
+        {
+            berApplet->warningBox( tr( "Invalid CRL file"), this );
+        }
+    }
+
+    JS_BIN_reset( &binCRL );
 }
 
 void MainWindow::openCSR()
@@ -749,14 +819,48 @@ void MainWindow::openCSR()
     QString strPath = berApplet->curFile();
 
     QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
-    if( fileName.length() > 1 )
+    BIN binCSR = {0,0};
+
+    JS_BIN_fileReadBER( fileName.toLocal8Bit().toStdString().c_str(), &binCSR );
+
+    if( JS_PKI_isCSR( &binCSR ) == 1 )
     {
         CSRInfoDlg csrInfo;
-        csrInfo.setReqPath( fileName );
+        csrInfo.setReqBIN( &binCSR );
         csrInfo.exec();
 
         berApplet->setCurFile( fileName );
     }
+    else
+    {
+        bool bVal = true;
+        if( JS_PKI_isCert( &binCSR ) == 1 )
+        {
+            bVal = berApplet->yesOrCancelBox( tr( "This file is certificate. Open it as certificate informatiin?"), this, true );
+            if( bVal == true )
+            {
+                CertInfoDlg certInfo;
+                certInfo.setCertBIN( &binCSR );
+                certInfo.exec();
+            }
+        }
+        else if( JS_PKI_isCRL( &binCSR) == 1 )
+        {
+            bVal = berApplet->yesOrCancelBox( tr( "This file is CRL. Open it as CRL information?"), this, true );
+            if( bVal == true )
+            {
+                CRLInfoDlg crlInfo;
+                crlInfo.setCRL_BIN( &binCSR );
+                crlInfo.exec();
+            }
+        }
+        else
+        {
+            berApplet->warningBox( tr( "Invalid CSR file"), this );
+        }
+    }
+
+    JS_BIN_reset( &binCSR );
 }
 
 void MainWindow::openBer( const BIN *pBer )
