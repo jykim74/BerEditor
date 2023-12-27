@@ -467,8 +467,8 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
 
     if( mHostNameCheck->isChecked() )
     {
-        JS_SSL_setHostName( pSSL, strHost.toStdString().c_str() );
-        log( QString( "TLS SetHostName: %1").arg( strHost ));
+        ret = JS_SSL_setHostName( pSSL, strHost.toStdString().c_str() );
+        log( QString( "TLS SetHostName: %1 (%2)").arg( strHost ).arg( ret ));
     }
 
     ret = JS_SSL_connect( pSSL );
