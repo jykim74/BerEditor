@@ -23,7 +23,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 DEFINES += BER_EDITOR_VERSION=$$PROJECT_VERSION
 #DEFINES += _AUTO_UPDATE
 DEFINES += USE_OCSP
-DEFINES += _USE_RC_LCN
+#DEFINES += _USE_RC_LCN
 
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.

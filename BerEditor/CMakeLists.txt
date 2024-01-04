@@ -164,7 +164,8 @@ add_executable(${PROJECT_NAME}
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )
 
 # target_compile_definitions( ${PROJECT_NAME} PRIVATE JS_PRO )
-add_definitions( -DUSE_OCSP -D_USE_RC_LCN )
+# add_definitions( -D_USE_RC_LCN )
+add_definitions( -DUSE_OCSP )
 
 if(WIN32)
     include_directories( ../../PKILib
