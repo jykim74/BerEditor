@@ -857,6 +857,7 @@ void SSLVerifyDlg::decodeCertTableMenu()
 void SSLVerifyDlg::slotTreeMenuRequested( QPoint pos )
 {
     QTreeWidgetItem* item = mURLTree->currentItem();
+    if( item == NULL || item == url_tree_root_ ) return;
 
     QMenu *menu = new QMenu(this);
     QAction *viewAct = new QAction( tr("View Cert"), this );
