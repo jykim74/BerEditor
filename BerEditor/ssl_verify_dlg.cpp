@@ -465,11 +465,7 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
         log( QString( "Verify Depth: %1" ).arg( nVerifyDepth ));
     }
 
-    if( mHostNameCheck->isChecked() )
-    {
-        ret = JS_SSL_setHostName( pSSL, strHost.toStdString().c_str() );
-        log( QString( "TLS SetHostName: %1 (%2)").arg( strHost ).arg( ret ));
-    }
+
 
     ret = JS_SSL_connect( pSSL );
     if( ret != 0 )
@@ -487,15 +483,26 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
     count = JS_BIN_countList( pCertList );
     berApplet->log( QString( "Chain Count: %1").arg( count ) );
 
+
+
     ret = JS_SSL_verifyCert( pSSL );
     log( QString( "Verify Certificate  : %1(%2)").arg( X509_verify_cert_error_string(ret)).arg( ret ));
 
     pAtList = JS_BIN_getListAt( 0, pCertList );
+
     ret = JS_PKI_getCertInfo( &pAtList->Bin, &sCertInfo, NULL );
     if( ret != 0 )
     {
         berApplet->elog( QString( "Invalid certificate data: %1").arg( ret ));
         goto end;
+    }
+
+    if( mHostNameCheck->isChecked() )
+    {
+        //        ret = JS_SSL_setHostName( pSSL, strHost.toStdString().c_str() );
+
+        ret = JS_SSL_checkHostName( &pAtList->Bin, strHost.toStdString().c_str() );
+        log( QString( "TLS checkHostName: %1 (%2)").arg( strHost ).arg( ret ));
     }
 
     log( QString( "The Subject is %1" ).arg( sCertInfo.pSubjectName ));
