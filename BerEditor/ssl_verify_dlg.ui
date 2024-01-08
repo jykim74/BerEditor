@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>682</width>
-    <height>858</height>
+    <width>608</width>
+    <height>570</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,126 +15,33 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>SSL Verify Information</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="Line" name="line_2">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
     <layout class="QGridLayout" name="gridLayout_4">
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="1" column="2">
-      <widget class="QCheckBox" name="mNoTLS12Check">
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mViewTrustListBtn">
        <property name="text">
-        <string>SSL_OP_NO_TLSv1_2</string>
+        <string>View Trust List</string>
        </property>
       </widget>
      </item>
      <item row="0" column="0">
-      <widget class="QCheckBox" name="mNoSSL2Check">
+      <widget class="QLabel" name="label">
        <property name="text">
-        <string>SSL_OP_NO_SSLv2</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QCheckBox" name="mNoSSL3Check">
-       <property name="text">
-        <string>SSL_OP_NO_SSLv3</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QCheckBox" name="mNoTLS11Check">
-       <property name="text">
-        <string>SSL_OP_NO_TLSv1_1</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QCheckBox" name="mNoTLS1Check">
-       <property name="text">
-        <string>SSL_OP_NO_TLSv1</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="3">
-      <widget class="QCheckBox" name="mNoTLS13Check">
-       <property name="text">
-        <string>SSL_OP_NO_TLSv1_3</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QCheckBox" name="mNoCompCheck">
-       <property name="text">
-        <string>SSL_OP_NO_COMPRESSION</string>
+        <string>SSL Verify Information</string>
        </property>
       </widget>
      </item>
      <item row="0" column="3">
-      <widget class="QCheckBox" name="mNoTicketCheck">
+      <widget class="QCheckBox" name="mUseMutualCheck">
        <property name="text">
-        <string>SSL_OP_NO_TICKET</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="Line" name="line_4">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QGridLayout" name="gridLayout_5">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <item row="0" column="0">
-      <widget class="QCheckBox" name="mFixCipherNameCheck">
-       <property name="minimumSize">
-        <size>
-         <width>100</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Fix Cipher</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mCipherClearBtn">
-       <property name="text">
-        <string>Clear</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mCipherAddBtn">
-       <property name="text">
-        <string>Add</string>
+        <string>Use Mutual</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QComboBox" name="mCipherListCombo"/>
-     </item>
-     <item row="0" column="2">
-      <spacer name="horizontalSpacer_3">
+      <spacer name="horizontalSpacer_4">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -145,16 +52,6 @@
         </size>
        </property>
       </spacer>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QGridLayout" name="gridLayout_7">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <item row="0" column="0">
-      <widget class="QLineEdit" name="mCipherListText"/>
      </item>
     </layout>
    </item>
@@ -173,37 +70,83 @@
        <height>0</height>
       </size>
      </property>
+     <property name="tabPosition">
+      <enum>QTabWidget::East</enum>
+     </property>
      <property name="currentIndex">
       <number>0</number>
      </property>
      <widget class="QWidget" name="tab_5">
       <attribute name="title">
-       <string>Server Authorization</string>
+       <string>Server</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <layout class="QGridLayout" name="gridLayout_9">
-         <item row="0" column="5">
-          <widget class="QCheckBox" name="mUseMutualCheck">
+        <layout class="QGridLayout" name="gridLayout_8">
+         <item row="0" column="1">
+          <widget class="QCheckBox" name="mNoSSL3Check">
            <property name="text">
-            <string>Use Mutual</string>
+            <string>NO_SSLv3</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="4">
-          <spacer name="horizontalSpacer_4">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="mNoSSL2Check">
+           <property name="text">
+            <string>NO_SSLv2</string>
            </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QCheckBox" name="mNoTicketCheck">
+           <property name="text">
+            <string>NO_TICKET</string>
            </property>
-          </spacer>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QCheckBox" name="mNoCompCheck">
+           <property name="text">
+            <string>NO_COMPRESSION</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QCheckBox" name="mNoTLS1Check">
+           <property name="text">
+            <string>NO_TLSv1</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QCheckBox" name="mNoTLS11Check">
+           <property name="text">
+            <string>NO_TLSv1_1</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QCheckBox" name="mNoTLS12Check">
+           <property name="text">
+            <string>NO_TLSv1_2</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3">
+          <widget class="QCheckBox" name="mNoTLS13Check">
+           <property name="text">
+            <string>NO_TLSv1_3</string>
+           </property>
+          </widget>
          </item>
         </layout>
+       </item>
+       <item>
+        <widget class="Line" name="line_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_12">
@@ -338,68 +281,83 @@
         </layout>
        </item>
        <item>
-        <layout class="QGridLayout" name="gridLayout_8">
-         <item row="0" column="1">
-          <widget class="QLineEdit" name="mTrustListPathText">
-           <property name="palette">
-            <palette>
-             <active>
-              <colorrole role="Base">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>221</red>
-                 <green>221</green>
-                 <blue>255</blue>
-                </color>
-               </brush>
-              </colorrole>
-             </active>
-             <inactive>
-              <colorrole role="Base">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>221</red>
-                 <green>221</green>
-                 <blue>255</blue>
-                </color>
-               </brush>
-              </colorrole>
-             </inactive>
-             <disabled/>
-            </palette>
-           </property>
-           <property name="readOnly">
-            <bool>true</bool>
+        <widget class="Line" name="line_7">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QGridLayout" name="gridLayout_3">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <item row="0" column="4">
+          <widget class="QPushButton" name="mCipherClearBtn">
+           <property name="text">
+            <string>Clear</string>
            </property>
           </widget>
          </item>
+         <item row="0" column="3">
+          <widget class="QPushButton" name="mCipherAddBtn">
+           <property name="text">
+            <string>Add</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="mCipherListCombo"/>
+         </item>
+         <item row="0" column="2">
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_10">
+          <widget class="QCheckBox" name="mFixCipherNameCheck">
            <property name="minimumSize">
             <size>
-             <width>80</width>
+             <width>100</width>
              <height>0</height>
             </size>
            </property>
            <property name="text">
-            <string>Trust List</string>
+            <string>Fix Cipher</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
-          <widget class="QPushButton" name="mViewTrustListBtn">
-           <property name="text">
-            <string>View List</string>
-           </property>
-          </widget>
+         <item row="1" column="0" colspan="5">
+          <widget class="QLineEdit" name="mCipherListText"/>
          </item>
         </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
      <widget class="QWidget" name="tab_6">
       <attribute name="title">
-       <string>Mutual Authorization</string>
+       <string>Mutual</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
@@ -592,6 +550,19 @@
          </item>
         </layout>
        </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
       </layout>
      </widget>
     </widget>
@@ -655,40 +626,6 @@
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout_3">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <item row="0" column="3">
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mClearURLBtn">
-       <property name="text">
-        <string>Clear URLs</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="9">
-      <widget class="QPushButton" name="mRefreshBtn">
-       <property name="text">
-        <string>Refresh</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
     <widget class="Line" name="line_5">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -697,12 +634,18 @@
    </item>
    <item>
     <widget class="QTabWidget" name="mURLTab">
+     <property name="tabPosition">
+      <enum>QTabWidget::East</enum>
+     </property>
      <property name="currentIndex">
       <number>1</number>
      </property>
+     <property name="elideMode">
+      <enum>Qt::ElideNone</enum>
+     </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
-       <string>URL Tree</string>
+       <string>Tree</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
@@ -721,7 +664,7 @@
      </widget>
      <widget class="QWidget" name="tab_2">
       <attribute name="title">
-       <string>URL Log</string>
+       <string>Log</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
@@ -771,7 +714,7 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="1">
+     <item row="0" column="3">
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -784,10 +727,10 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mCloseBtn">
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mClearURLBtn">
        <property name="text">
-        <string>Close</string>
+        <string>Clear URLs</string>
        </property>
       </widget>
      </item>
@@ -795,6 +738,20 @@
       <widget class="QPushButton" name="mClearResultBtn">
        <property name="text">
         <string>Clear Result</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mCloseBtn">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mRefreshBtn">
+       <property name="text">
+        <string>Refresh</string>
        </property>
       </widget>
      </item>

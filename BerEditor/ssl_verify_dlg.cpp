@@ -268,7 +268,6 @@ void SSLVerifyDlg::initialize()
 {
     mModeCombo->addItems( kModeLists );
     mVerifyDepthText->setText( QString("%1").arg( 4 ));
-    mTrustListPathText->setText( berApplet->settingsMgr()->getTrustedCAPath() );
 
     QStringList sURLLabels = { tr( "URL" ), tr( "Port" ), tr( "DN" ), tr( "To" ), tr( "Left") };
 
@@ -352,6 +351,7 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
 {
     int ret = 0;
     int count = 0;
+    bool bGood = true;
 
     SSL_CTX *pCTX = NULL;
     SSL *pSSL = NULL;
@@ -380,7 +380,7 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
         JS_SSL_initClient2( &pCTX, SSL_VERIFY_PEER,verify_callback );
     }
 
-    QString strTrustList = mTrustListPathText->text();
+    QString strTrustList = berApplet->settingsMgr()->getTrustedCAPath();
     QString strTrustCACert = mTrustCAPathText->text();
 
 
@@ -483,10 +483,16 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
     count = JS_BIN_countList( pCertList );
     berApplet->log( QString( "Chain Count: %1").arg( count ) );
 
-
-
     ret = JS_SSL_verifyCert( pSSL );
-    log( QString( "Verify Certificate  : %1(%2)").arg( X509_verify_cert_error_string(ret)).arg( ret ));
+    if( ret != 0)
+    {
+        bGood = false;
+        elog( QString( "SSL Verify Certificate  : %1(%2)").arg( X509_verify_cert_error_string(ret)).arg( ret ));
+    }
+    else
+    {
+        log( QString( "SSL Verify Certificate OK" ));
+    }
 
     pAtList = JS_BIN_getListAt( 0, pCertList );
 
@@ -499,10 +505,28 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
 
     if( mHostNameCheck->isChecked() )
     {
-        //        ret = JS_SSL_setHostName( pSSL, strHost.toStdString().c_str() );
-
+        QString strRes;
         ret = JS_SSL_checkHostName( &pAtList->Bin, strHost.toStdString().c_str() );
-        log( QString( "TLS checkHostName: %1 (%2)").arg( strHost ).arg( ret ));
+
+        if( ret == 1 )
+        {
+            strRes = "Valid";
+            log( QString( "TLS checkHostName: %1 (%2 : %3)").arg( strHost ).arg( strRes ).arg( ret ));
+        }
+        else if( ret == 0)
+        {
+            bGood = false;
+            strRes = "NameMismatch";
+            elog( QString( "TLS checkHostName: %1 (%2 : %3)").arg( strHost ).arg( strRes ).arg( ret ));
+        }
+        else
+        {
+            bGood = false;
+            strRes = "Error";
+            elog( QString( "TLS checkHostName: %1 (%2 : %3)").arg( strHost ).arg( strRes ).arg( ret ));
+        }
+
+
     }
 
     log( QString( "The Subject is %1" ).arg( sCertInfo.pSubjectName ));
@@ -514,7 +538,10 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
     if( left_t > 0 )
     {
         strLeft = QString( "%1" ).arg( left_t / 86400 );
-        item->setIcon(QIcon(":/images/cert.png"));
+        if( bGood == true )
+            item->setIcon(QIcon(":/images/valid.png"));
+        else
+            item->setIcon(QIcon(":/images/invalid.png"));
     }
     else
     {

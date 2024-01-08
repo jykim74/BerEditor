@@ -58,5 +58,7 @@
         <file>images/root_cert.png</file>
         <file>images/cert_revoked.png</file>
         <file>images/ca.png</file>
+        <file>images/invalid.png</file>
+        <file>images/valid.png</file>
     </qresource>
 </RCC>
