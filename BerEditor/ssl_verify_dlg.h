@@ -69,7 +69,7 @@ private slots:
 private:
     void initialize();
     int verifyURL( const QString strHost, int nPort );
-    void createTree( const BINList *pCertList );
+    void createTree( const QString strHost, const BINList *pCertList, bool bGood );
     long getFlags();
 
     QStringList getUsedURL();

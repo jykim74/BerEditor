@@ -529,7 +529,7 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
             elog( QString( "TLS checkHostName: %1 (%2 : %3)").arg( strHost ).arg( strRes ).arg( ret ));
         }
 
-
+        ret = 0;
     }
 
     log( QString( "The Subject is %1" ).arg( sCertInfo.pSubjectName ));
@@ -565,7 +565,7 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
         mURLTable->setItem( row, 3, new QTableWidgetItem( sNotAfter ));
         mURLTable->setItem( row, 4, new QTableWidgetItem( strLeft ));
 
-        createTree( pCertList );
+        createTree( strHost, pCertList, bGood );
     }
     else
     {
@@ -584,7 +584,7 @@ end :
     return ret;
 }
 
-void SSLVerifyDlg::createTree( const BINList *pCertList )
+void SSLVerifyDlg::createTree( const QString strHost, const BINList *pCertList, bool bGood )
 {
     int ret = 0;
     int nCount = 0;
@@ -605,10 +605,23 @@ void SSLVerifyDlg::createTree( const BINList *pCertList )
 
     JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
 
+    QTreeWidgetItem *itemHost = new QTreeWidgetItem;
+    itemHost->setText( 0, strHost );
+    if( bGood == true )
+        itemHost->setIcon( 0, QIcon(":/images/valid.png"));
+    else
+        itemHost->setIcon( 0, QIcon(":/images/invalid.png"));
+
+    url_tree_root_->insertChild( 0, itemHost );
+
     QTreeWidgetItem *item = new QTreeWidgetItem;
     item->setText( 0, sCertInfo.pSubjectName );
     item->setData( 0, Qt::UserRole, getHexString( &binCert ));
-    item->setIcon( 0, QIcon(":/images/cert.png"));
+
+    if( bGood == true )
+        item->setIcon( 0, QIcon(":/images/cert.png"));
+    else
+        item->setIcon( 0, QIcon(":/images/cert_revoked.png"));
 
     JS_PKI_resetCertInfo( &sCertInfo );
 
@@ -649,7 +662,8 @@ void SSLVerifyDlg::createTree( const BINList *pCertList )
     }
 
 //    mURLTree->insertTopLevelItem( 0, item );
-    url_tree_root_->insertChild( 0, item );
+//    url_tree_root_->insertChild( 0, item );
+    itemHost->insertChild(0, item);
     mURLTree->expandAll();
 }
 
@@ -686,6 +700,7 @@ long SSLVerifyDlg::getFlags()
 
 void SSLVerifyDlg::clickConnect()
 {
+    int ret = 0;
     QString strHost;
     int nPort = 443;
     QUrl url;
@@ -712,8 +727,12 @@ void SSLVerifyDlg::clickConnect()
 
     berApplet->log( QString( "Host:Port => %1:%2" ).arg( strHost ).arg( nPort ) );
 
-    verifyURL( strHost, nPort );
-    if( strURL.length() > 1 ) setUsedURL( strURL );
+    ret = verifyURL( strHost, nPort );
+    if( strHost.length() > 1 && ret == 0 )
+    {
+        setUsedURL( strURL );
+        mURLCombo->addItem( strURL );
+    }
 }
 
 void SSLVerifyDlg::clickRefresh()
