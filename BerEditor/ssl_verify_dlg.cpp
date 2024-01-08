@@ -369,6 +369,9 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
     long uFlags = getFlags();
     int nVerifyDepth = mVerifyDepthText->text().toInt();
 
+    QDateTime dateTime;
+    dateTime.setSecsSinceEpoch(time(NULL));
+
     memset( &sCertInfo, 0x00, sizeof(sCertInfo));
 
     if( mModeCombo->currentIndex() == 0 )
@@ -440,7 +443,7 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
     }
 
     log( "========================================================================");
-    log( QString( "SSL Host:Port       : %1:%2" ).arg( strHost ).arg( nPort ));
+    log( QString( "SSL Host:Port       : %1:%2 (CheckTime:%3)" ).arg( strHost ).arg( nPort ).arg( dateTime.toString("yyyy-MM-dd HH:mm:ss")));
     log( "========================================================================");
 
     int nSockFd = JS_NET_connect( strHost.toStdString().c_str(), nPort );
@@ -481,7 +484,7 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
 
     ret = JS_SSL_getChains( pSSL, &pCertList );
     count = JS_BIN_countList( pCertList );
-    berApplet->log( QString( "Chain Count: %1").arg( count ) );
+    log( QString( "Server returned %1 certificates").arg( count ) );
 
     ret = JS_SSL_verifyCert( pSSL );
     if( ret != 0)
