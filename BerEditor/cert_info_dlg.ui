@@ -17,7 +17,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="InfoTab">
       <attribute name="title">
@@ -201,6 +201,9 @@
             </property>
             <item row="1" column="1">
              <widget class="QPushButton" name="mGetCRLBtn">
+              <property name="toolTip">
+               <string>Get CRL and View CRL Information</string>
+              </property>
               <property name="text">
                <string>Get CRL</string>
               </property>
@@ -208,6 +211,9 @@
             </item>
             <item row="0" column="1">
              <widget class="QPushButton" name="mVerifyCertBtn">
+              <property name="toolTip">
+               <string>Verify certificate signature</string>
+              </property>
               <property name="text">
                <string>Verify Cert</string>
               </property>
@@ -215,6 +221,9 @@
             </item>
             <item row="1" column="2">
              <widget class="QPushButton" name="mOCSPCheckBtn">
+              <property name="toolTip">
+               <string>Ceritificattion valid check with OCSP Server</string>
+              </property>
               <property name="text">
                <string>OCSP Check</string>
               </property>
@@ -222,6 +231,9 @@
             </item>
             <item row="1" column="3">
              <widget class="QPushButton" name="mCRLCheckBtn">
+              <property name="toolTip">
+               <string>Check revoked certificate with CRL</string>
+              </property>
               <property name="text">
                <string>CRL Check</string>
               </property>
@@ -229,6 +241,9 @@
             </item>
             <item row="1" column="0">
              <widget class="QPushButton" name="mGetCABtn">
+              <property name="toolTip">
+               <string>Get CA certificate and View certificate information</string>
+              </property>
               <property name="text">
                <string>Get CA</string>
               </property>
@@ -236,6 +251,9 @@
             </item>
             <item row="0" column="0">
              <widget class="QPushButton" name="mMakeTreeBtn">
+              <property name="toolTip">
+               <string>Make certificate path tree</string>
+              </property>
               <property name="text">
                <string>Make Tree</string>
               </property>
@@ -243,6 +261,9 @@
             </item>
             <item row="0" column="3">
              <widget class="QPushButton" name="mPathValidBtn">
+              <property name="toolTip">
+               <string comment="Certificate path tree validation"/>
+              </property>
               <property name="text">
                <string>Path Validation</string>
               </property>
@@ -250,6 +271,9 @@
             </item>
             <item row="0" column="2">
              <widget class="QPushButton" name="mDecodeCertBtn">
+              <property name="toolTip">
+               <string>Decode certificate in editor</string>
+              </property>
               <property name="text">
                <string>Decode Certificate</string>
               </property>
@@ -271,6 +295,9 @@
      </property>
      <item row="0" column="0">
       <widget class="QPushButton" name="mSaveBtn">
+       <property name="toolTip">
+        <string>Save certificate as pem</string>
+       </property>
        <property name="text">
         <string>Save</string>
        </property>
