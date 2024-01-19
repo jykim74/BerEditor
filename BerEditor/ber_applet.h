@@ -40,6 +40,10 @@ public:
                                                QMessageBox::StandardButton default_btn);
     bool yesOrCancelBox(const QString& msg, QWidget *parent, bool default_ok);
 
+    void messageLog( const QString strLog, QWidget *parent=0 );
+    void warnLog( const QString strLog, QWidget *parent=0 );
+
+
     static QString getBrand();
 
     void restartApp();

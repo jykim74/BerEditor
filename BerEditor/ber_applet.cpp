@@ -273,6 +273,18 @@ bool BerApplet::yesOrCancelBox(const QString& msg, QWidget *parent, bool default
     return box.clickedButton() == yes_btn;
 }
 
+void BerApplet::messageLog( const QString strLog, QWidget *parent )
+{
+    messageBox( strLog, parent );
+    log( strLog );
+}
+
+void BerApplet::warnLog( const QString strLog, QWidget *parent )
+{
+    warningBox( strLog, parent );
+    elog( strLog );
+}
+
 
 QMessageBox::StandardButton
 BerApplet::yesNoCancelBox(const QString& msg, QWidget *parent, QMessageBox::StandardButton default_btn)
