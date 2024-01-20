@@ -302,7 +302,7 @@ void CMSDlg::clickKMCertFind()
 void CMSDlg::clickSignedData()
 {
     int ret = 0;
-    int nType = -1;
+    int nType = DATA_HEX;
     char *pOutput = NULL;
 
     BIN binPri = {0,0};
@@ -331,20 +331,16 @@ void CMSDlg::clickSignedData()
     JS_BIN_fileReadBER( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
 
     if( mSrcStringRadio->isChecked() )
-        JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
+        nType = DATA_STRING;
     else if( mSrcHexRadio->isChecked() )
-        JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
+        nType = DATA_HEX;
     else if( mSrcBase64Radio->isChecked() )
-        JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
+        nType = DATA_STRING;
 
-    nType = JS_PKI_getPriKeyType( &binPri );
-    if( nType < 0 )
-    {
-        berApplet->warningBox( tr( "Invalid private key" ), this );
-        goto end;
-    }
+    getBINFromString( &binSrc, nType, strInput.toStdString().c_str() );
 
-    ret = JS_PKCS7_makeSignedData( nType, "SHA256", &binSrc, &binPri, &binCert, &binOutput );
+
+    ret = JS_PKCS7_makeSignedData( "SHA256", &binSrc, &binPri, &binCert, &binOutput );
     if( ret != 0 )
     {
         berApplet->warningBox( tr( "fail to make signed data:%1").arg( ret ), this );
