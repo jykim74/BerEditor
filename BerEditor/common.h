@@ -26,6 +26,8 @@ enum {
 
 enum {
     JS_FILE_TYPE_CERT,
+    JS_FILE_TYPE_CRL,
+    JS_FILE_TYPE_CSR,
     JS_FILE_TYPE_PRIKEY,
     JS_FILE_TYPE_TXT,
     JS_FILE_TYPE_BER,

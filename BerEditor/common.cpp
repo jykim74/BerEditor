@@ -29,7 +29,11 @@ QString findFile( QWidget *parent, int nType, const QString strPath )
     QString selectedFilter;
 
     if( nType == JS_FILE_TYPE_CERT )
-        strType = QObject::tr("Cert CRL Files (*.crt *.der *.crl *.pem);;All Files(*.*)");
+        strType = QObject::tr("Cert Files (*.crt *.der *.cer *.pem);;All Files(*.*)");
+    else if( nType == JS_FILE_TYPE_CRL )
+        strType = QObject::tr("CRL Files (*.crl *.der *.cer *.pem);;All Files(*.*)");
+    else if( nType == JS_FILE_TYPE_CSR )
+        strType = QObject::tr("CSR Files (*.csr *.der *.cer *.pem);;All Files(*.*)");
     else if( nType == JS_FILE_TYPE_PRIKEY )
         strType = QObject::tr("Key Files (*.key *.der *.pem);;All Files(*.*)");
     else if( nType == JS_FILE_TYPE_TXT )

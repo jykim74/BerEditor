@@ -723,6 +723,8 @@ void MainWindow::openCert()
     QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
     BIN binCert = {0,0};
 
+    if( fileName.length() < 1 ) return;
+
     JS_BIN_fileReadBER( fileName.toLocal8Bit().toStdString().c_str(), &binCert );
 
     if( JS_PKI_isCert( &binCert ) == 1 )
@@ -769,8 +771,10 @@ void MainWindow::openCRL()
 {
     QString strPath = berApplet->curFile();
 
-    QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    QString fileName = findFile( this, JS_FILE_TYPE_CRL, strPath );
     BIN binCRL = {0,0};
+
+    if( fileName.length() < 1 ) return;
 
     JS_BIN_fileReadBER( fileName.toLocal8Bit().toStdString().c_str(), &binCRL );
 
@@ -818,8 +822,10 @@ void MainWindow::openCSR()
 {
     QString strPath = berApplet->curFile();
 
-    QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    QString fileName = findFile( this, JS_FILE_TYPE_CSR, strPath );
     BIN binCSR = {0,0};
+
+    if( fileName.length() < 1 ) return;
 
     JS_BIN_fileReadBER( fileName.toLocal8Bit().toStdString().c_str(), &binCSR );
 
