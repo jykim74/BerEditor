@@ -39,7 +39,7 @@ QString findFile( QWidget *parent, int nType, const QString strPath )
     else if( nType == JS_FILE_TYPE_TXT )
         strType = QObject::tr("TXT Files (*.txt *.log);;All Files(*.*)");
     else if( nType == JS_FILE_TYPE_BER )
-        strType = QObject::tr("BER Files (*.ber *.der *.pem);;All Files(*.*)");
+        strType = QObject::tr("BER Files (*.der *.pem *.cer *.crt *.crl *.csr);;All Files(*.*)");
     else if( nType == JS_FILE_TYPE_CFG )
         strType = QObject::tr("Config Files (*.cfg *.ini);;All Files(*.*)" );
     else if( nType == JS_FILE_TYPE_REQ )
