@@ -40,6 +40,7 @@ private:
     int saveAsPEM( const BIN *pData );
     void resetData();
 
+    QString crl_path_;
     BIN     crl_bin_;
     JCRLInfo crl_info_;
     JExtensionInfoList* ext_info_list_;

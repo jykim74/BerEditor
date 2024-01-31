@@ -85,6 +85,7 @@ CertInfoDlg::CertInfoDlg(QWidget *parent) :
 
     initUI();
 
+    cert_path_.clear();
     memset( &cert_bin_, 0x00, sizeof(BIN));
     memset( &cert_info_, 0x00, sizeof(cert_info_));
     ext_info_list_ = NULL;
@@ -107,6 +108,8 @@ int CertInfoDlg::setCertPath(const QString strPath)
 {
     int ret = 0;
     resetData();
+
+    cert_path_ = strPath;
 
     ret = JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &cert_bin_ );
 
@@ -564,7 +567,7 @@ void CertInfoDlg::clickGetCRL()
 
 void CertInfoDlg::clickDecodeCert()
 {
-    berApplet->decodeData( &cert_bin_, "" );
+    berApplet->decodeData( &cert_bin_, cert_path_ );
 }
 
 void CertInfoDlg::clickPathValidation()

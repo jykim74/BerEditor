@@ -730,7 +730,8 @@ void MainWindow::openCert()
     if( JS_PKI_isCert( &binCert ) == 1 )
     {
         CertInfoDlg certInfo;
-        certInfo.setCertBIN( &binCert );
+//        certInfo.setCertBIN( &binCert );
+        certInfo.setCertPath( fileName );
         certInfo.exec();
         berApplet->setCurFile( fileName );
     }
@@ -743,7 +744,8 @@ void MainWindow::openCert()
             if( bVal == true )
             {
                 CRLInfoDlg crlInfo;
-                crlInfo.setCRL_BIN( &binCert );
+ //               crlInfo.setCRL_BIN( &binCert );
+                crlInfo.setCRLPath( fileName );
                 crlInfo.exec();
             }
         }
@@ -753,7 +755,8 @@ void MainWindow::openCert()
             if( bVal == true )
             {
                 CSRInfoDlg csrInfo;
-                csrInfo.setReqBIN( &binCert );
+//                csrInfo.setReqBIN( &binCert );
+                csrInfo.setReqPath( fileName );
                 csrInfo.exec();
             }
         }
@@ -1370,6 +1373,7 @@ void MainWindow::decodeData( const BIN *pData, const QString strPath )
         return;
     }
 
+/*
     if( berApplet->isLicense() == false )
     {
         if( pData && pData->nLen > kNoLicenseLimitMaxSize )
@@ -1379,8 +1383,9 @@ void MainWindow::decodeData( const BIN *pData, const QString strPath )
             return;
         }
     }
-
+*/
     openBer( pData );
+    file_path_ = strPath;
     setTitle( QString( strPath ));
 }
 

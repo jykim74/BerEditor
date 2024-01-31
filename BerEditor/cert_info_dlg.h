@@ -59,6 +59,7 @@ private:
 
     void resetData();
 
+    QString cert_path_;
     BIN cert_bin_;
     JCertInfo cert_info_;
     JExtensionInfoList* ext_info_list_;

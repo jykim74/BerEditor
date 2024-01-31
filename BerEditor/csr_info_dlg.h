@@ -38,6 +38,7 @@ private:
 
     void resetData();
 
+    QString req_path_;
     BIN req_bin_;
     JReqInfo req_info_;
     JExtensionInfoList* ext_info_list_;

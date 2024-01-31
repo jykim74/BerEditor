@@ -14,6 +14,7 @@ CSRInfoDlg::CSRInfoDlg(QWidget *parent) :
 {
     setupUi(this);
 
+    req_path_.clear();
     memset( &req_bin_, 0x00, sizeof(BIN));
     memset( &req_info_, 0x00, sizeof(req_info_));
     ext_info_list_ = NULL;
@@ -340,5 +341,5 @@ void CSRInfoDlg::clickVerifyCSR()
 
 void CSRInfoDlg::clickDecodeCSR()
 {
-    berApplet->decodeData( &req_bin_, "" );
+    berApplet->decodeData( &req_bin_, req_path_ );
 }

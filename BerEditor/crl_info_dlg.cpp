@@ -62,6 +62,7 @@ CRLInfoDlg::CRLInfoDlg(QWidget *parent) :
     ext_info_list_ = NULL;
     revoke_info_list_ = NULL;
 
+    crl_path_.clear();
     memset( &crl_bin_, 0x00, sizeof(crl_bin_));
     memset( &crl_info_, 0x00, sizeof(crl_info_));
 
@@ -101,7 +102,7 @@ void CRLInfoDlg::clickSave()
 
 void CRLInfoDlg::clickDecodeCRL()
 {
-    berApplet->decodeData( &crl_bin_, "" );
+    berApplet->decodeData( &crl_bin_, crl_path_ );
 }
 
 void CRLInfoDlg::clickVerifyCRL()
@@ -160,6 +161,7 @@ int CRLInfoDlg::setCRLPath(const QString strPath )
     int ret = 0;
     resetData();
 
+    crl_path_ = strPath;
     ret = JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &crl_bin_ );
 
     return ret;
