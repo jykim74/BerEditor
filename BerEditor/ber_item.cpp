@@ -76,21 +76,7 @@ QString BerItem::GetTagString()
     QString strRes;
 
     if( id_ < 0 ) return "Error";
-/*
-    if( id_ & JS_CLASS_MASK )
-    {
-        QString strOut = "";
 
-        if( id_ & JS_CONTEXT )
-            strOut = QString( "Context-specific[%1]" ).arg( tag_ );
-        else if( id_ & JS_APPLICATION )
-            strOut = QString( "Application[%1]" ).arg( tag_ );
-        else if( id_ & JS_PRIVATE )
-            strOut = QString( "Private[%1]").arg( tag_ );
-
-        return strOut;
-    }
-*/
     if( id_ & JS_CONTEXT )
     {
         strRes = QString( "Context-specific[%1]" ).arg( tag_ );

@@ -192,7 +192,7 @@ bool CAVPDlg::isNameValid( const QString strPathName, const QString strVal1, con
     {
         if( fileName.contains( strVal1 ) == false )
         {
-            berApplet->elog( QString( "%1 is not included in filename").arg(strVal1));
+            berApplet->elog( QString( "There is no %1 in the file name.").arg(strVal1));
             return false;
         }
     }
@@ -201,7 +201,7 @@ bool CAVPDlg::isNameValid( const QString strPathName, const QString strVal1, con
     {
         if( fileName.contains( strVal2 ) == false )
         {
-            berApplet->elog( QString( "%1 is not included in filename").arg(strVal2));
+            berApplet->elog( QString( "There is no %1 in the file name.").arg(strVal2));
             return false;
         }
     }
@@ -210,7 +210,7 @@ bool CAVPDlg::isNameValid( const QString strPathName, const QString strVal1, con
     {
         if( fileName.contains( strVal3 ) == false )
         {
-            berApplet->elog( QString( "%1 is not included in filename").arg(strVal3));
+            berApplet->elog( QString( "There is no %1 in the file name.").arg(strVal3));
             return false;
         }
     }
@@ -306,7 +306,7 @@ void CAVPDlg::clickSymRun()
 
     if( mSymReqFileText->text().length() < 1 )
     {
-        berApplet->warningBox( tr("You have to select request file"), this );
+        berApplet->warningBox( tr("Select requested file"), this );
         return;
     }
 
@@ -317,7 +317,7 @@ void CAVPDlg::clickSymRun()
 
     if( isNameValid( strPath, strAlg, mSymTypeCombo->currentText(), mSymModeCombo->currentText() ) == false )
     {
-        QString strMsg = QString( tr("Are you sure that test file is %1") ).arg( strPath );
+        QString strMsg = QString( tr("Is %1 the test file?") ).arg( strPath );
         bool bVal = berApplet->yesOrCancelBox( strMsg, this, true );
 
         if( bVal == false ) return;
@@ -327,7 +327,7 @@ void CAVPDlg::clickSymRun()
 
     if( !reqFile.open( QIODevice::ReadOnly | QIODevice::Text ))
     {
-        berApplet->elog( QString( "fail to open file(%1)\n").arg( strPath ));
+        berApplet->elog( QString( "failed to open file(%1)\n").arg( strPath ));
         return;
     }
 
@@ -402,7 +402,7 @@ void CAVPDlg::clickSymRun()
 
                 if( ret != 0 )
                 {
-                    berApplet->warningBox( tr( "fail to run Sym:%1").arg(ret), this);
+                    berApplet->warningBox( tr( "SYM execution failed [%1]").arg(ret), this);
                     return;
                 }
             }
@@ -416,17 +416,17 @@ void CAVPDlg::clickSymRun()
         nPos++;
     }
 
-    berApplet->messageBox( tr("CAVP Run Done[Rsp: %1]").arg(rsp_name_), this );
+    berApplet->messageBox( tr("CAVP completed[Rsp: %1]").arg(rsp_name_), this );
 }
 
 void CAVPDlg::clickAERun()
 {
     int ret = 0;
-    berApplet->log( "AERun\n" );
+    berApplet->log( "AE execution" );
 
     if( mAEReqFileText->text().length() < 1 )
     {
-        berApplet->warningBox( tr("You have to select request file"), this );
+        berApplet->warningBox( tr("Select requested file"), this );
         return;
     }
 
@@ -436,7 +436,7 @@ void CAVPDlg::clickAERun()
 
     if( isNameValid( strPath, strAlg, mAEModeCombo->currentText(), mAETypeCombo->currentText() ) == false )
     {
-        QString strMsg = QString( "Are you sure that test file is %1" ).arg( strPath );
+        QString strMsg = QString( "Is %1 the test file?" ).arg( strPath );
         bool bVal = berApplet->yesOrCancelBox( strMsg, this, true );
 
         if( bVal == false ) return;
@@ -446,7 +446,7 @@ void CAVPDlg::clickAERun()
 
     if( !reqFile.open( QIODevice::ReadOnly | QIODevice::Text ))
     {
-        berApplet->elog( QString( "fail to open file(%1)\n").arg( strPath ));
+        berApplet->elog( QString( "failed to open file(%1)\n").arg( strPath ));
         return;
     }
 
@@ -569,17 +569,17 @@ void CAVPDlg::clickAERun()
         nPos++;
     }
 
-    berApplet->messageBox( tr("CAVP Run Done[Rsp: %1]").arg(rsp_name_), this );
+    berApplet->messageBox( tr("CAVP completed[Rsp: %1]").arg(rsp_name_), this );
 }
 
 void CAVPDlg::clickHMACRun()
 {
     int ret = 0;
-    berApplet->log( "HashRun\n" );
+    berApplet->log( "Hash execution" );
 
     if( mHMACReqFileText->text().length() < 1 )
     {
-        berApplet->warningBox( tr("You have to select request file"), this );
+        berApplet->warningBox( tr("Select requested file"), this );
         return;
     }
 
@@ -588,7 +588,7 @@ void CAVPDlg::clickHMACRun()
 
     if( isNameValid( strPath, "HMAC", mHMACHashCombo->currentText(), "" ) == false )
     {
-        QString strMsg = QString( "Are you sure that test file is %1" ).arg( strPath );
+        QString strMsg = QString( "Is %1 the test file?" ).arg( strPath );
         bool bVal = berApplet->yesOrCancelBox( strMsg, this, true );
 
         if( bVal == false ) return;
@@ -598,7 +598,7 @@ void CAVPDlg::clickHMACRun()
 
     if( !reqFile.open( QIODevice::ReadOnly | QIODevice::Text ))
     {
-        berApplet->elog( QString( "fail to open file(%1)\n").arg( strPath ));
+        berApplet->elog( QString( "failed to open file(%1)\n").arg( strPath ));
         return;
     }
 
@@ -662,7 +662,7 @@ void CAVPDlg::clickHMACRun()
 
                 if( ret != 0 )
                 {
-                    berApplet->warningBox( tr( "fail to run HMAC: %1").arg(ret), this);
+                    berApplet->warningBox( tr( "HMAC execution failed [%1]").arg(ret), this);
                     return;
                 }
             }
@@ -678,17 +678,17 @@ void CAVPDlg::clickHMACRun()
         nPos++;
     }
 
-    berApplet->messageBox( tr("CAVP Run Done[Rsp: %1]").arg(rsp_name_), this );
+    berApplet->messageBox( tr("CAVP completed[Rsp: %1]").arg(rsp_name_), this );
 }
 
 void CAVPDlg::clickHashRun()
 {
     int ret = 0;
-    berApplet->log( "HhashRun\n" );
+    berApplet->log( "Hash execution" );
 
     if( mHashReqFileText->text().length() < 1 )
     {
-        berApplet->warningBox( tr("You have to select request file"), this );
+        berApplet->warningBox( tr("Select requested file"), this );
         return;
     }
 
@@ -698,7 +698,7 @@ void CAVPDlg::clickHashRun()
 
     if( isNameValid( strPath, strAlg.toStdString().c_str(), mHashTypeCombo->currentText(), "" ) == false )
     {
-        QString strMsg = QString( "Are you sure that test file is %1" ).arg( strPath );
+        QString strMsg = QString( "Is %1 the test file?" ).arg( strPath );
         bool bVal = berApplet->yesOrCancelBox( strMsg, this, true );
 
         if( bVal == false ) return;
@@ -775,7 +775,7 @@ void CAVPDlg::clickHashRun()
 
             if( ret != 0 )
             {
-                berApplet->warningBox( tr( "fail to run Hash : %1" ).arg(ret), this);
+                berApplet->warningBox( tr( "Hash execution failed [%1]" ).arg(ret), this);
                 return;
             }
         }
@@ -784,18 +784,18 @@ void CAVPDlg::clickHashRun()
         nPos++;
     }
 
-    berApplet->messageBox( tr("CAVP Run Done[Rsp: %1]").arg(rsp_name_), this );
+    berApplet->messageBox( tr("CAVP completed[Rsp: %1]").arg(rsp_name_), this );
 }
 
 void CAVPDlg::clickECCRun()
 {
-    berApplet->log( "ECCRun\n" );
+    berApplet->log( "ECC execution" );
     int ret = 0;
     bool bInit = true;
 
     if( mECCReqFileText->text().length() < 1 )
     {
-        berApplet->warningBox( tr("You have to find ECDSA request file"), this );
+        berApplet->warningBox( tr("Select requested file"), this );
         return;
     }
 
@@ -805,7 +805,7 @@ void CAVPDlg::clickECCRun()
 
     if( isNameValid( strPath, mECC_ECDSARadio->isChecked() ? "ECDSA":"ECDH", mECCTypeCombo->currentText(), "" ) == false )
     {
-        QString strMsg = QString( "Are you sure that test file is %1" ).arg( strPath );
+        QString strMsg = QString( "Is %1 the test file?" ).arg( strPath );
         bool bVal = berApplet->yesOrCancelBox( strMsg, this, true );
 
         if( bVal == false ) return;
@@ -815,7 +815,7 @@ void CAVPDlg::clickECCRun()
 
     if( !reqFile.open( QIODevice::ReadOnly | QIODevice::Text ))
     {
-        berApplet->elog( QString( "fail to open file(%1)").arg(strPath));
+        berApplet->elog( QString( "failed to open file(%1)").arg(strPath));
         return;
     }
 
@@ -899,7 +899,7 @@ void CAVPDlg::clickECCRun()
                 ret = makeECDSA_KPG( strParam, 10 );
                 if( ret != 0 )
                 {
-                    berApplet->warningBox( tr( "fail to run ECC: %1").arg(ret), this );
+                    berApplet->warningBox( tr( "ECC execution fail [%1]").arg(ret), this );
                     return;
                 }
             }
@@ -917,7 +917,7 @@ void CAVPDlg::clickECCRun()
                     ret = makeECDSA_PKV( strParam, strYX, strYY );
                     if( ret != 0 )
                     {
-                        berApplet->warningBox( tr( "fail to run ECC: %1").arg(ret), this);
+                        berApplet->warningBox( tr( "ECC execution fail [%1]").arg(ret), this);
                         return;
                     }
                 }
@@ -936,7 +936,7 @@ void CAVPDlg::clickECCRun()
                     ret = makeECDSA_SGT( strParam, strHash, strM );
                     if( ret != 0 )
                     {
-                        berApplet->warningBox( tr( "fail to run ECC: %1").arg(ret), this);
+                        berApplet->warningBox( tr( "ECC execution fail [%1]").arg(ret), this);
                         return;
                     }
                 }
@@ -955,7 +955,7 @@ void CAVPDlg::clickECCRun()
                     ret = makeECDSA_SVT( strParam, strHash, strM, strYX, strYY, strR, strS );
                     if( ret != 0 )
                     {
-                        berApplet->warningBox( tr( "fail to run ECC: %1").arg(ret), this );
+                        berApplet->warningBox( tr( "ECC execution fail [%1]").arg(ret), this );
                         return;
                     }
                 }
@@ -972,7 +972,7 @@ void CAVPDlg::clickECCRun()
                 ret = makeECDH_KPG( strParam, 15 );
                 if( ret != 0 )
                 {
-                    berApplet->warningBox( tr( "fail to run ECC: %1").arg(ret), this );
+                    berApplet->warningBox( tr( "ECC execution fail [%1]").arg(ret), this );
                     return;
                 }
             }
@@ -991,7 +991,7 @@ void CAVPDlg::clickECCRun()
 
                     if( ret != 0 )
                     {
-                        berApplet->warningBox( tr( "fail to run ECC: %1").arg(ret), this );
+                        berApplet->warningBox( tr( "ECC execution fail [%1]").arg(ret), this );
                         return;
                     }
                 }
@@ -1011,7 +1011,7 @@ void CAVPDlg::clickECCRun()
 
                     if( ret != 0 )
                     {
-                        berApplet->warningBox( tr( "fail to run ECC: %1").arg(ret), this );
+                        berApplet->warningBox( tr( "ECC execution fail [%1]").arg(ret), this );
                         return;
                     }
                 }
@@ -1035,18 +1035,18 @@ void CAVPDlg::clickECCRun()
         nPos++;
     }
 
-    berApplet->messageBox( tr("CAVP Run Done[Rsp: %1]").arg(rsp_name_), this );
+    berApplet->messageBox( tr("CAVP completed[Rsp: %1]").arg(rsp_name_), this );
 }
 
 void CAVPDlg::clickRSARun()
 {
     int ret = 0;
     bool bInit = true;
-    berApplet->log( "Run RSA" );
+    berApplet->log( "RSA execution" );
 
     if( mRSAReqFileText->text().length() < 1 )
     {
-        berApplet->warningBox( tr( "You have to find RSA PSS request file" ), this );
+        berApplet->warningBox( tr( "Select requested file" ), this );
         return;
     }
 
@@ -1055,7 +1055,7 @@ void CAVPDlg::clickRSARun()
 
     if( isNameValid( strPath, "RSA", mRSATypeCombo->currentText(), "" ) == false )
     {
-        QString strMsg = QString( "Are you sure that test file is %1" ).arg( strPath );
+        QString strMsg = QString( "Is %1 the test file?" ).arg( strPath );
         bool bVal = berApplet->yesOrCancelBox( strMsg, this, true );
 
         if( bVal == false ) return;
@@ -1063,7 +1063,7 @@ void CAVPDlg::clickRSARun()
 
     if( !reqFile.open( QIODevice::ReadOnly | QIODevice::Text ))
     {
-        berApplet->elog( QString( "fail to open file(%1)").arg(strPath));
+        berApplet->elog( QString( "failed to open file(%1)").arg(strPath));
         return;
     }
 
@@ -1133,7 +1133,7 @@ void CAVPDlg::clickRSARun()
                     nKeyLen = -1;
                     if( ret != 0 )
                     {
-                        berApplet->warningBox( tr( "fail to run RSA : %1").arg(ret), this );
+                        berApplet->warningBox( tr( "RSA execution failed [%1]").arg(ret), this );
                         return;
                     }
                 }
@@ -1170,7 +1170,7 @@ void CAVPDlg::clickRSARun()
                     ret = makeRSA_PSS_SGT( nE, getHexString(&binPri), strHash, strM );
                     if( ret != 0 )
                     {
-                        berApplet->warningBox( tr( "fail to run RSA : %1").arg(ret), this );
+                        berApplet->warningBox( tr( "RSA execution failed [%1]").arg(ret), this );
                         JS_BIN_reset( &binPri );
                         JS_BIN_reset( &binPub );
                         return;
@@ -1196,7 +1196,7 @@ void CAVPDlg::clickRSARun()
                     ret = makeRSA_PSS_SVT( nE, strN, strHash, strM, strS );
                     if( ret != 0 )
                     {
-                        berApplet->warningBox( tr( "fail to run RSA : %1").arg(ret), this );
+                        berApplet->warningBox( tr( "RSA execution failed [%1]").arg(ret), this );
                         return;
                     }
                 }
@@ -1208,7 +1208,7 @@ void CAVPDlg::clickRSARun()
                     QString strPriPath = mRSA_DETPriPathText->text();
                     if( strPriPath.length() < 1 )
                     {
-                        berApplet->warningBox( tr( "You have to find RSA private key for DET" ), this );
+                        berApplet->warningBox( tr( "Select RSA private key for DET" ), this );
                         return;
                     }
 
@@ -1287,7 +1287,7 @@ void CAVPDlg::clickRSARun()
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binPub );
 
-    berApplet->messageBox( tr("CAVP Run Done[Rsp: %1]").arg(rsp_name_), this );
+    berApplet->messageBox( tr("CAVP completed[Rsp: %1]").arg(rsp_name_), this );
 }
 
 void CAVPDlg::clickDRBGTest()
@@ -1311,7 +1311,7 @@ void CAVPDlg::clickDRBGRun()
 
     if( mDRBGReqFileText->text().length() < 1 )
     {
-        berApplet->warningBox( tr("You have to find DRBG request file"), this );
+        berApplet->warningBox( tr("Select requested file"), this );
         return;
     }
 
@@ -1335,7 +1335,7 @@ void CAVPDlg::clickDRBGRun()
 
     if( bNameValid == false )
     {
-        QString strMsg = QString( "Are you sure that test file is %1" ).arg( strPath );
+        QString strMsg = QString( "Is %1 the test file?" ).arg( strPath );
         bool bVal = berApplet->yesOrCancelBox( strMsg, this, true );
 
         if( bVal == false ) return;
@@ -1343,7 +1343,7 @@ void CAVPDlg::clickDRBGRun()
 
     if( !reqFile.open( QIODevice::ReadOnly | QIODevice::Text ))
     {
-        berApplet->elog( QString( "fail to open file(%1)").arg(strPath));
+        berApplet->elog( QString( "failed to open file(%1)").arg(strPath));
         return;
     }
 
@@ -1496,17 +1496,17 @@ void CAVPDlg::clickDRBGRun()
         nPos++;
     }
 
-    berApplet->messageBox( tr("CAVP Run Done[Rsp: %1]").arg(rsp_name_), this );
+    berApplet->messageBox( tr("CAVP completed[Rsp: %1]").arg(rsp_name_), this );
 }
 
 void CAVPDlg::clickPBKDFRun()
 {
-    berApplet->log( "PBKDFRun\n" );
+    berApplet->log( "PBKDF execution" );
     int ret = 0;
 
     if( mPBKDFReqFileText->text().length() < 1 )
     {
-        berApplet->warningBox( tr("You have to find PBKDF request file"), this );
+        berApplet->warningBox( tr("Select requested file"), this );
         return;
     }
 
@@ -1515,7 +1515,7 @@ void CAVPDlg::clickPBKDFRun()
 
     if( isNameValid( strPath, "PBKDF", "HMAC", mPBKDFAlgCombo->currentText() ) == false )
     {
-        QString strMsg = QString( "Are you sure that test file is %1" ).arg( strPath );
+        QString strMsg = QString( "Is %1 the test file?" ).arg( strPath );
         bool bVal = berApplet->yesOrCancelBox( strMsg, this, true );
 
         if( bVal == false ) return;
@@ -1523,7 +1523,7 @@ void CAVPDlg::clickPBKDFRun()
 
     if( !reqFile.open( QIODevice::ReadOnly | QIODevice::Text ))
     {
-        berApplet->elog( QString( "fail to open file(%1)").arg(strPath));
+        berApplet->elog( QString( "failed to open file(%1)").arg(strPath));
         return;
     }
 
@@ -1596,7 +1596,7 @@ void CAVPDlg::clickPBKDFRun()
                 nCount = -1;
                 if( ret != 0 )
                 {
-                    berApplet->warningBox( tr( "fail to run PBKDF: %1").arg(ret), this );
+                    berApplet->warningBox( tr( "PBKDF execution failed [%1]").arg(ret), this );
                     return;
                 }
             }
@@ -1609,7 +1609,7 @@ void CAVPDlg::clickPBKDFRun()
         nPos++;
     }
 
-    berApplet->messageBox( tr("CAVP Run Done[Rsp: %1]").arg(rsp_name_), this );
+    berApplet->messageBox( tr("CAVP completed[Rsp: %1]").arg(rsp_name_), this );
 }
 
 void CAVPDlg::clickSymFind()
@@ -1923,13 +1923,13 @@ void CAVPDlg::clickSymMCTRun()
 
     if( strKey.length() < 1 )
     {
-        berApplet->elog( "You have to insert KEY" );
+        berApplet->elog( "Please enter a key" );
         return;
     }
 
     if( strPT.length() < 1 )
     {
-        berApplet->elog( "You have to insert PT" );
+        berApplet->elog( "Please enter a PT" );
         return;
     }
 
@@ -1963,7 +1963,7 @@ void CAVPDlg::clickSymMCTRun()
     if( nRet == 0 )
         berApplet->messageBox( tr("Monte Carlo Test Done[Rsp: %1]").arg(rsp_name_), this );
     else
-        berApplet->warningBox( tr( "fail to run Sym MCT: %1").arg(nRet), this);
+        berApplet->warningBox( tr( "Sym MCT execution failed [%1]").arg(nRet), this);
 }
 
 void CAVPDlg::clickSymMCTClear()
@@ -1987,7 +1987,7 @@ void CAVPDlg::clickHashMCTRun()
 
     if( strSeed.length() < 1 )
     {
-        berApplet->elog( "You have to insert Seed" );
+        berApplet->elog( "Please enter a Seed value" );
         return;
     }
 
@@ -2001,7 +2001,7 @@ void CAVPDlg::clickHashMCTRun()
     if( ret == 0 )
         berApplet->messageBox( tr("Monte Carlo Test Done[Rsp: %1]").arg(rsp_name_), this );
     else
-        berApplet->warningBox( tr( "fail to run hash MCT: %1").arg(ret), this);
+        berApplet->warningBox( tr( "Hash MCT execution failed [%1]").arg(ret), this);
 }
 
 void CAVPDlg::clickHashMCTClear()
@@ -2053,9 +2053,9 @@ void CAVPDlg::clickDRBG2Run()
                     true );
 
     if( ret == 0 )
-        berApplet->messageBox( tr( "DRBG2 Run Success" ), this );
+        berApplet->messageBox( tr( "DRBG2 execution success" ), this );
     else
-        berApplet->warningBox( tr( "DRBG2 Run fail: %1").arg(ret), this );
+        berApplet->warningBox( tr( "DRBG2 execution failed [%1]").arg(ret), this );
 
 }
 
@@ -2083,7 +2083,7 @@ int CAVPDlg::makeSymData( const QString strKey, const QString strIV, const QStri
 
     if( ret != 0 )
     {
-        berApplet->elog( QString( "fail to encrypt:%1").arg(ret));
+        berApplet->elog( QString( "failed to encrypt [%1]").arg(ret));
         goto end;
     }
 
@@ -3205,7 +3205,7 @@ int CAVPDlg::makeDRBG( const QString strMethod,
     }
     else
     {
-        berApplet->warningBox( tr("Invalid DRBG method: %1").arg( strMethod ), this );
+        berApplet->warningBox( tr("Invalid DRBG method [%1]").arg( strMethod ), this );
         ret = -1;
     }
 

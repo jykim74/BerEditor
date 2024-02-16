@@ -177,7 +177,7 @@ QString BerTreeView::GetTextView()
 
     if( item == NULL )
     {
-        berApplet->warningBox( tr( "There is no selected item"), this );
+        berApplet->warningBox( tr( "There are no items selected."), this );
         return "";
     }
 
@@ -365,7 +365,7 @@ void BerTreeView::copy()
     BerItem* item = currentItem();
     if( item == NULL )
     {
-        berApplet->warningBox( tr( "There is no selected item"), this );
+        berApplet->warningBox( tr( "There are no items selected."), this );
         return;
     }
 
@@ -441,7 +441,7 @@ void BerTreeView::CopyAsHex()
     BerItem* item = currentItem();
     if( item == NULL )
     {
-        berApplet->warningBox( tr( "There is no selected item"), this );
+        berApplet->warningBox( tr( "There are no items selected."), this );
         return;
     }
 
@@ -463,7 +463,7 @@ void BerTreeView::CopyAsBase64()
     BerItem* item = currentItem();
     if( item == NULL )
     {
-        berApplet->warningBox( tr( "There is no selected item"), this );
+        berApplet->warningBox( tr( "There are no items selected."), this );
         return;
     }
 
