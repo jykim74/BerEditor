@@ -60,7 +60,7 @@ void DataEncoderDlg::onClickEncodeBtn()
 
     if( inputStr.length() < 1 )
     {
-        berApplet->warningBox( tr( "You have to insert data" ), this );
+        berApplet->warningBox( tr( "Please enter input value" ), this );
         return;
     }
 

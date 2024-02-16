@@ -106,14 +106,14 @@ int CMSDlg::readSignPrivateKey( BIN *pPriKey )
 
     if( strPriPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "select sign private key"), this );
+        berApplet->warningBox( tr( "Select a private key for signing"), this );
         return -1;
     }
 
     ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binData );
     if( ret <= 0 )
     {
-        berApplet->warningBox( tr( "fail to read private key: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to read private key: %1").arg( ret ), this );
         return  -1;
     }
 
@@ -122,7 +122,7 @@ int CMSDlg::readSignPrivateKey( BIN *pPriKey )
         QString strPasswd = mSignPasswdText->text();
         if( strPasswd.length() < 1 )
         {
-            berApplet->warningBox( tr( "You have to insert password"), this );
+            berApplet->warningBox( tr( "Please enter a password"), this );
             ret = -1;
             goto end;
         }
@@ -130,7 +130,7 @@ int CMSDlg::readSignPrivateKey( BIN *pPriKey )
         ret = JS_PKI_decryptPrivateKey( strPasswd.toStdString().c_str(), &binData, &binInfo, &binDec );
         if( ret != 0 )
         {
-            berApplet->warningBox( tr( "fail to decrypt private key:%1").arg( ret ), this );
+            berApplet->warningBox( tr( "Private key decryption failed [%1]").arg( ret ), this );
             mSignPasswdText->setFocus();
             ret = -1;
             goto end;
@@ -165,7 +165,7 @@ int CMSDlg::readKMPrivateKey( BIN *pPriKey )
     ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binData );
     if( ret <= 0 )
     {
-        berApplet->warningBox( tr( "fail to read private key: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "Private key decryption failed [%1]").arg( ret ), this );
         return  -1;
     }
 
@@ -174,7 +174,7 @@ int CMSDlg::readKMPrivateKey( BIN *pPriKey )
         QString strPasswd = mKMPasswdText->text();
         if( strPasswd.length() < 1 )
         {
-            berApplet->warningBox( tr( "You have to insert password"), this );
+            berApplet->warningBox( tr( "Please enter a password"), this );
             ret = -1;
             goto end;
         }
@@ -182,7 +182,7 @@ int CMSDlg::readKMPrivateKey( BIN *pPriKey )
         ret = JS_PKI_decryptPrivateKey( strPasswd.toStdString().c_str(), &binData, &binInfo, &binDec );
         if( ret != 0 )
         {
-            berApplet->warningBox( tr( "fail to decrypt private key:%1").arg( ret ), this );
+            berApplet->warningBox( tr( "Private key decryption failed [%1]").arg( ret ), this );
             mKMPasswdText->setFocus();
             ret = -1;
             goto end;
@@ -314,7 +314,7 @@ void CMSDlg::clickSignedData()
 
     if( strInput.isEmpty() )
     {
-        berApplet->warningBox( tr( "insert src value" ), this );
+        berApplet->warningBox( tr( "Please enter input value" ), this );
         return;
     }
 
@@ -324,7 +324,7 @@ void CMSDlg::clickSignedData()
     QString strSignCertPath = mSignCertPathText->text();
     if( strSignCertPath.isEmpty() )
     {
-        berApplet->warningBox(tr("find sign certificate" ), this );
+        berApplet->warningBox(tr("Select a certificate for signing" ), this );
         return;
     }
 
@@ -343,7 +343,7 @@ void CMSDlg::clickSignedData()
     ret = JS_PKCS7_makeSignedData( "SHA256", &binSrc, &binPri, &binCert, &binOutput );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to make signed data:%1").arg( ret ), this );
+        berApplet->warningBox( tr( "Failed to create SignedData [%1]").arg( ret ), this );
         goto end;
     }
 
@@ -386,14 +386,14 @@ void CMSDlg::clickEnvelopedData()
 
     if( strInput.isEmpty() )
     {
-        berApplet->warningBox( tr( "insert src value" ), this );
+        berApplet->warningBox( tr( "Please enter input value" ), this );
         return;
     }
 
     QString strKMCertPath = mKMCertPathText->text();
     if( strKMCertPath.isEmpty() )
     {
-        berApplet->warningBox(tr("find km certificate" ), this );
+        berApplet->warningBox(tr("Select a certificate for KM" ), this );
         return;
     }
 
@@ -404,7 +404,7 @@ void CMSDlg::clickEnvelopedData()
     nType = JS_PKI_getPubKeyType( &binPubKey );
     if( nType != JS_PKI_KEY_TYPE_RSA )
     {
-        berApplet->warningBox(tr( "The certificate is not RSA certificate"), this );
+        berApplet->warningBox(tr( "It is not an RSA certificate"), this );
         goto end;
     }
 
@@ -418,7 +418,7 @@ void CMSDlg::clickEnvelopedData()
     ret = JS_PKCS7_makeEnvelopedData( &binSrc, &binCert, &binOutput );
     if( ret != 0 )
     {
-        berApplet->warningBox(tr( "fail to make enveloped data: %1").arg(ret), this );
+        berApplet->warningBox(tr( "Failed to create EnvelopedData [%1]").arg(ret), this );
         goto end;
     }
 
@@ -460,7 +460,7 @@ void CMSDlg::clickSignAndEnvloped()
 
     if( strInput.isEmpty() )
     {
-        berApplet->warningBox( tr( "insert src value" ), this );
+        berApplet->warningBox( tr( "Please enter input value" ), this );
         return;
     }
 
@@ -470,14 +470,14 @@ void CMSDlg::clickSignAndEnvloped()
     QString strSignCertPath = mSignCertPathText->text();
     if( strSignCertPath.isEmpty() )
     {
-        berApplet->warningBox(tr("find sign certificate" ), this );
+        berApplet->warningBox(tr("Select a certificate for signing" ), this );
         return;
     }
 
     QString strKMCertPath = mKMCertPathText->text();
     if( strKMCertPath.isEmpty() )
     {
-        berApplet->warningBox(tr("find km certificate" ), this );
+        berApplet->warningBox(tr("Select a certificate for KM" ), this );
         return;
     }
 
@@ -488,7 +488,7 @@ void CMSDlg::clickSignAndEnvloped()
     nType = JS_PKI_getPubKeyType( &binKMPubKey );
     if( nType != JS_PKI_KEY_TYPE_RSA )
     {
-        berApplet->warningBox( tr("The KM Certificate is not RSA certificate"), this );
+        berApplet->warningBox( tr("It is not an RSA certificate"), this );
         goto end;
     }
 
@@ -502,14 +502,14 @@ void CMSDlg::clickSignAndEnvloped()
     nType = JS_PKI_getPriKeyType( &binSignPri );
     if( nType != JS_PKI_KEY_TYPE_RSA )
     {
-        berApplet->warningBox( tr( "Invalid private key" ), this );
+        berApplet->warningBox( tr( "It is not a private key for RSA." ), this );
         goto end;
     }
 
     ret = JS_PKCS7_makeSignedAndEnveloped( &binSrc, &binSignCert, &binSignPri, &binKMCert, &binOutput );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to make signed and enveloped data: %1").arg(ret), this );
+        berApplet->warningBox( tr( "Signed And Enveloped data creation failed [%1]").arg(ret), this );
         goto end;
     }
 
@@ -552,14 +552,14 @@ void CMSDlg::clickVerifyData()
 
     if( strInput.isEmpty() )
     {
-        berApplet->warningBox( tr( "insert src value" ), this );
+        berApplet->warningBox( tr( "Please enter input value" ), this );
         return;
     }
 
     QString strSignCertPath = mSignCertPathText->text();
     if( strSignCertPath.isEmpty() )
     {
-        berApplet->warningBox(tr("find sign certificate" ), this );
+        berApplet->warningBox(tr("Select a certificate for signing" ), this );
         return;
     }
 
@@ -573,7 +573,7 @@ void CMSDlg::clickVerifyData()
         JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
 
     ret = JS_PKCS7_verifySignedData( &binSrc, &binCert, &binOutput );
-    berApplet->log( QString("verifySigneData Ret: %1").arg( ret ));
+    berApplet->log( QString("SignedData verification result: %1").arg( ret ));
 
     berApplet->log( QString( "Src    : %1" ).arg( getHexString( &binSrc )));
     berApplet->log( QString( "Cert   : %1" ).arg( getHexString( &binCert )));
@@ -611,7 +611,7 @@ void CMSDlg::clickDevelopedData()
 
     if( strInput.isEmpty() )
     {
-        berApplet->warningBox( tr( "insert src value" ), this );
+        berApplet->warningBox( tr( "Please enter input value" ), this );
         return;
     }
 
@@ -621,7 +621,7 @@ void CMSDlg::clickDevelopedData()
     QString strKMCertPath = mKMCertPathText->text();
     if( strKMCertPath.isEmpty() )
     {
-        berApplet->warningBox(tr("find km certificate" ), this );
+        berApplet->warningBox(tr("Select a certificate for KM" ), this );
         return;
     }
 
@@ -642,7 +642,7 @@ void CMSDlg::clickDevelopedData()
     }
 
     ret = JS_PKCS7_makeDevelopedData( &binSrc, &binPri, &binCert, &binOutput );
-    berApplet->log( QString( "makeDevelopedData Ret: %1").arg(ret));
+    berApplet->log( QString( "developedData results: %1").arg(ret));
 
     berApplet->log( QString( "Src        : %1" ).arg( getHexString( &binSrc )));
     berApplet->log( QString( "Cert       : %1" ).arg( getHexString( &binCert )));
@@ -682,21 +682,21 @@ void CMSDlg::clickDevelopedAndVerify()
 
     if( strInput.isEmpty() )
     {
-        berApplet->warningBox( tr( "insert src value" ), this );
+        berApplet->warningBox( tr( "Please enter input value" ), this );
         return;
     }
 
     QString strSignCertPath = mSignCertPathText->text();
     if( strSignCertPath.isEmpty() )
     {
-        berApplet->warningBox(tr("find sign certificate" ), this );
+        berApplet->warningBox(tr("Select a certificate for signing" ), this );
         return;
     }
 
     QString strKMCertPath = mSignCertPathText->text();
     if( strKMCertPath.isEmpty() )
     {
-        berApplet->warningBox(tr("find km certificate" ), this );
+        berApplet->warningBox(tr("Select a certificate for KM" ), this );
         return;
     }
 
@@ -721,7 +721,7 @@ void CMSDlg::clickDevelopedAndVerify()
     }
 
     ret = JS_PKCS7_makeDevelopedAndVerify( &binSrc, &binSignCert, &binKMPri, &binKMCert, &binOutput );
-    berApplet->log( QString("makeDevelopedAndVerify Ret: %1").arg(ret));
+    berApplet->log( QString("developedAndVerify Results: %1").arg(ret));
 
     berApplet->log( QString( "Src           : %1" ).arg( getHexString( &binSrc )));
     berApplet->log( QString( "Sign Cert     : %1" ).arg( getHexString( &binSignCert )));
@@ -782,7 +782,7 @@ void CMSDlg::clickSignPriKeyDecode()
 
     if( binData.nLen < 1 )
     {
-        berApplet->warningBox( tr("fail to read data"), this );
+        berApplet->warningBox( tr("failed to read data"), this );
         return;
     }
 
@@ -796,7 +796,7 @@ void CMSDlg::clickSignCertView()
     QString strPath = mSignCertPathText->text();
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( "You have to find certificate", this );
+        berApplet->warningBox( "Select a certificate", this );
         return;
     }
 
@@ -814,7 +814,7 @@ void CMSDlg::clickSignCertDecode()
 
     if( binData.nLen < 1 )
     {
-        berApplet->warningBox( tr("fail to read data"), this );
+        berApplet->warningBox( tr("failed to read data"), this );
         return;
     }
 
@@ -832,7 +832,7 @@ void CMSDlg::clickKMPriKeyDecode()
 
     if( binData.nLen < 1 )
     {
-        berApplet->warningBox( tr("fail to read data"), this );
+        berApplet->warningBox( tr("failed to read data"), this );
         return;
     }
 
@@ -846,7 +846,7 @@ void CMSDlg::clickKMCertView()
     QString strPath = mKMCertPathText->text();
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( "You have to find certificate", this );
+        berApplet->warningBox( "Select a certificate", this );
         return;
     }
 
@@ -864,7 +864,7 @@ void CMSDlg::clickKMCertDecode()
 
     if( binData.nLen < 1 )
     {
-        berApplet->warningBox( tr("fail to read data"), this );
+        berApplet->warningBox( tr("failed to read data"), this );
         return;
     }
 
@@ -883,7 +883,7 @@ void CMSDlg::clickSignPriKeyType()
     if( ret != 0) return;
     nType = JS_PKI_getPriKeyType( &binPri );
 
-    berApplet->messageBox( tr( "Sign Private Key Type is %1").arg( getKeyTypeName( nType )), this);
+    berApplet->messageBox( tr( "Private key type for signing is %1").arg( getKeyTypeName( nType )), this);
 
 end :
     JS_BIN_reset( &binPri );
@@ -899,7 +899,7 @@ void CMSDlg::clickSignCertType()
 
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "You have to find sign certificate"), this );
+        berApplet->warningBox( tr( "Select a certificate for signing"), this );
         return;
     }
 
@@ -908,7 +908,7 @@ void CMSDlg::clickSignCertType()
 
     nType = JS_PKI_getPubKeyType( &binPubKey );
 
-    berApplet->messageBox( tr( "Sign Certificate Type is %1" ).arg( getKeyTypeName(nType)), this);
+    berApplet->messageBox( tr( "Certificate type for signing is %1" ).arg( getKeyTypeName(nType)), this);
 
 end :
     JS_BIN_reset( &binCert );
@@ -925,7 +925,7 @@ void CMSDlg::clickKMPriKeyType()
     if( ret != 0 ) return;
     nType = JS_PKI_getPriKeyType( &binPri );
 
-    berApplet->messageBox( tr( "KM Private Key Type is %1").arg( getKeyTypeName( nType )), this);
+    berApplet->messageBox( tr( "Private key type for KM is %1").arg( getKeyTypeName( nType )), this);
 
 end :
     JS_BIN_reset( &binPri );
@@ -941,7 +941,7 @@ void CMSDlg::clickKMCertType()
 
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "You have to find KM certificate"), this );
+        berApplet->warningBox( tr( "Select a certificate for KM"), this );
         return;
     }
 
@@ -950,7 +950,7 @@ void CMSDlg::clickKMCertType()
 
     nType = JS_PKI_getPubKeyType( &binPubKey );
 
-    berApplet->messageBox( tr( "KM Certificate Type is %1" ).arg( getKeyTypeName(nType)), this);
+    berApplet->messageBox( tr( "Certificate type for KM is %1" ).arg( getKeyTypeName(nType)), this);
 
 end :
     JS_BIN_reset( &binCert );

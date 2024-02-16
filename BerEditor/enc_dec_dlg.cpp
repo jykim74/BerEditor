@@ -166,7 +166,7 @@ void EncDecDlg::dataRun()
 
     if( strKey.isEmpty() )
     {
-        berApplet->warningBox( tr( "You have to insert key" ), this );
+        berApplet->warningBox( tr( "Please enter key value" ), this );
         JS_BIN_reset(&binSrc);
         return;
     }
@@ -175,7 +175,7 @@ void EncDecDlg::dataRun()
 
     if( binKey.nLen < 16 )
     {
-        berApplet->warningBox( tr( "Invalid Key Length: %1" ).arg( binKey.nLen), this );
+        berApplet->warningBox( tr( "Key length(%1) is incorrect" ).arg( binKey.nLen), this );
         JS_BIN_reset( &binSrc );
         JS_BIN_reset( &binKey );
         return;
@@ -194,7 +194,7 @@ void EncDecDlg::dataRun()
 
     if( strSymAlg.isEmpty() || strSymAlg.isNull() )
     {
-        berApplet->elog( QString("Sym Alg is invalid\n" ));
+        berApplet->elog( QString("There is no symmetric key algorithm" ));
         goto end;
     }
 
@@ -254,14 +254,6 @@ void EncDecDlg::dataRun()
     }
     else
     {
-        /*
-        if( binIV.nLen != 0 && binIV.nLen != 16 )
-        {
-            berApplet->warningBox( tr("Invalid IV length" ), this );
-            goto end;
-        }
-        */
-
         if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
         {
             if( strAlg == "SEED" )
@@ -340,7 +332,7 @@ void EncDecDlg::fileRun()
 
     if( strSrcFile.length() < 1 )
     {
-        berApplet->warningBox( tr("You have to find src file"), this );
+        berApplet->warningBox( tr("Select a input file"), this );
         return;
     }
 
@@ -359,7 +351,7 @@ void EncDecDlg::fileRun()
 
     if( QFile::exists( strDstFile ) )
     {
-        QString strMsg = tr( "Dst file[%1] is already exist.\nDo you want to delete the file and continue?" ).arg( strDstFile );
+        QString strMsg = tr( "The target file[%1] is already exist.\nDo you want to delete the file and continue?" ).arg( strDstFile );
         bool bVal = berApplet->yesOrNoBox( strMsg, this, false );
 
         if( bVal == true )
@@ -372,14 +364,14 @@ void EncDecDlg::fileRun()
 
     if( encDecInit() != 0 )
     {
-        berApplet->elog( "fail to init" );
+        berApplet->elog( "Encryption/decryption initialization failure" );
         return;
     }
 
     FILE *fp = fopen( strSrcFile.toLocal8Bit().toStdString().c_str(), "rb" );
     if( fp == NULL )
     {
-        berApplet->elog( QString( "fail to read file:%1").arg( strSrcFile ));
+        berApplet->elog( QString( "failed to read file:%1").arg( strSrcFile ));
         goto end;
     }
 
@@ -432,7 +424,7 @@ void EncDecDlg::fileRun()
 
         if( ret != 0 )
         {
-            berApplet->elog( QString( "fail to update encrypt or decrypt : %1").arg(ret));
+            berApplet->elog( QString( "Encryption/decryption update failed [%1]").arg(ret));
             break;
         }
 
@@ -536,7 +528,7 @@ int EncDecDlg::encDecInit()
 
     if( strKey.isEmpty() )
     {
-        berApplet->warningBox( tr( "You have to insert key" ), this );
+        berApplet->warningBox( tr( "Please enter a key value" ), this );
         return -1;
     }
 
@@ -572,7 +564,7 @@ int EncDecDlg::encDecInit()
 
     if( binKey.nLen < 16 )
     {
-        berApplet->warningBox( tr( "Invalid Key Length: %1" ).arg( binKey.nLen), this );
+        berApplet->warningBox( tr( "Key length(%1) is incorrect" ).arg( binKey.nLen), this );
         ret = -1;
         goto end;
     }
@@ -595,7 +587,7 @@ int EncDecDlg::encDecInit()
             if( isCCM( strAlg) )
             {
                 ret = JS_PKI_encryptCCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD, nDataLen );
-                berApplet->log( QString( "Init Data Len : %1" ).arg( nDataLen ));
+                berApplet->log( QString( "Initial data length : %1" ).arg( nDataLen ));
             }
             else
             {
@@ -621,14 +613,6 @@ int EncDecDlg::encDecInit()
         }
     }
     else {
-        /*
-        if( binIV.nLen != 0 && binIV.nLen != 16 )
-        {
-            berApplet->warningBox( tr("Invalid IV length" ), this );
-            goto end;
-        }
-        */
-
         if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
         {
             ret = JS_PKI_encryptInit( &ctx_, strSymAlg.toStdString().c_str(), bPad, &binIV, &binKey );
@@ -649,11 +633,11 @@ int EncDecDlg::encDecInit()
 
     if( ret == 0 )
     {
-        mStatusLabel->setText( "Init OK" );
+        mStatusLabel->setText( "Initialization successful" );
         mOutputText->clear();
     }
     else
-        mStatusLabel->setText( QString("Init Fail:%1").arg(ret) );
+        mStatusLabel->setText( QString("Initialization failed [%1]").arg(ret) );
 
 end :
     JS_BIN_reset( &binKey );
@@ -751,7 +735,7 @@ void EncDecDlg::encDecUpdate()
         appendStatusLabel( "|Update OK" );
     }
     else
-        mStatusLabel->setText( QString("Update Fail:%1").arg(ret) );
+        mStatusLabel->setText( QString("Update failed [%1]").arg(ret) );
 
     JS_BIN_reset( &binSrc );
     JS_BIN_reset( &binDst );
@@ -832,18 +816,18 @@ void EncDecDlg::encDecFinal()
             ret = JS_PKI_encryptFinal( ctx_, &binDst );
             JS_PKI_encryptFree( &ctx_ );
 
-            berApplet->log( QString( "Final Enc Output : %1" ).arg(getHexString( &binDst )));
+            berApplet->log( QString( "Final encryption result : %1" ).arg(getHexString( &binDst )));
         }
         else
         {
             ret = JS_PKI_decryptFinal( ctx_, &binDst );
             JS_PKI_decryptFree( &ctx_ );
 
-            berApplet->log( QString( "Final Dec Output : %1" ).arg(getHexString( &binDst )));
+            berApplet->log( QString( "Final decryption result : %1" ).arg(getHexString( &binDst )));
         }
     }
 
-    berApplet->log( QString( "final dst len : %1").arg( binDst.nLen ));
+    berApplet->log( QString( "final length : %1").arg( binDst.nLen ));
 
     if( binDst.nLen > 0 )
     {
@@ -879,7 +863,7 @@ void EncDecDlg::encDecFinal()
     if( ret == 0 )
         appendStatusLabel( "|Final OK" );
     else
-        mStatusLabel->setText( QString("Final Fail:%1").arg(ret) );
+        mStatusLabel->setText( QString("final failure [%1]").arg(ret) );
 
     JS_BIN_reset( &binOut );
     JS_BIN_reset( &binDst );

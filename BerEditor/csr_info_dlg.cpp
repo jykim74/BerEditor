@@ -85,7 +85,7 @@ int CSRInfoDlg::saveAsPEM( const BIN *pData )
 
     QString strPath = berApplet->curFolder();
 
-    QString strFilter = tr("Cert Files (*.crt);;CRL Files (*.crl);;PEM Files (*.pem);;All Files (*.*)");
+    QString strFilter = tr("CSR Files (*.csr);;PEM Files (*.pem);;All Files (*.*)");
     QString selectedFilter;
 
     QString fileName = QFileDialog::getSaveFileName( this,
@@ -100,7 +100,7 @@ int CSRInfoDlg::saveAsPEM( const BIN *pData )
         int ret = JS_BIN_writePEM( pData, JS_PEM_TYPE_CSR, fileName.toLocal8Bit().toStdString().c_str() );
         if( ret > 0 )
         {
-            berApplet->messageBox( tr( "Certificate or CRL is saved as PEM" ), this );
+            berApplet->messageBox( tr( "The CSR was saved in PEM format." ), this );
         }
     }
 
@@ -118,7 +118,7 @@ void CSRInfoDlg::initialize()
 
     if( req_bin_.nLen < 0 )
     {
-        berApplet->warningBox( tr( "Select CSR"), this );
+        berApplet->warningBox( tr( "Select a CSR"), this );
         this->hide();
         return;
     }
@@ -127,7 +127,7 @@ void CSRInfoDlg::initialize()
 
     if( ret != 0 )
     {
-        berApplet->warningBox( tr("fail to get CSR information"), this );
+        berApplet->warningBox( tr("failed to get CSR information"), this );
         goto end;
     }
 
@@ -334,9 +334,9 @@ void CSRInfoDlg::clickVerifyCSR()
     int ret = JS_PKI_verifyCSR( &req_bin_ );
 
     if( ret == 1 )
-        berApplet->messageBox( tr( "CSR verify OK" ), this );
+        berApplet->messageBox( tr( "CSR verification successful" ), this );
     else
-        berApplet->messageBox( tr( "CSR verify fail(%1)" ).arg(ret), this );
+        berApplet->messageBox( tr( "CSR verification failed [%1]" ).arg(ret), this );
 }
 
 void CSRInfoDlg::clickDecodeCSR()

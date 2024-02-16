@@ -147,9 +147,9 @@ void CRLInfoDlg::clickVerifyCRL()
 
         ret = JS_PKI_verifyCRL( &crl_bin_, &binCA );
         if( ret == 1 )
-            berApplet->messageBox( tr( "CRL verify OK" ), this );
+            berApplet->messageBox( tr( "CRL verification successful" ), this );
         else
-            berApplet->warningBox( tr( "CRL verify fail: %1").arg( ret ), this );
+            berApplet->warningBox( tr( "CRL verification failed [%1]").arg( ret ), this );
 
         JS_BIN_reset( &binCA );
         JS_PKI_resetCertInfo( &sCertInfo );
@@ -191,7 +191,7 @@ void CRLInfoDlg::initialize()
 
     if( crl_bin_.nLen < 1 )
     {
-        berApplet->warningBox( tr("Select CRL"), this );
+        berApplet->warningBox( tr("Select a CRL"), this );
         return;
     }
 
@@ -202,7 +202,7 @@ void CRLInfoDlg::initialize()
     ret = JS_PKI_getCRLInfo( &crl_bin_, &crl_info_, &ext_info_list_, &revoke_info_list_ );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr("fail to get CRL information"), this );
+        berApplet->warningBox( tr("failed to get CRL information"), this );
         close();
         return;
     }
@@ -375,7 +375,7 @@ int CRLInfoDlg::saveAsPEM( const BIN *pData )
 
     QString strPath = berApplet->curFolder();
 
-    QString strFilter = tr("Cert Files (*.crt);;CRL Files (*.crl);;PEM Files (*.pem);;All Files (*.*)");
+    QString strFilter = tr("CRL Files (*.crl);;PEM Files (*.pem);;All Files (*.*)");
     QString selectedFilter;
 
     QString fileName = QFileDialog::getSaveFileName( this,
@@ -390,7 +390,7 @@ int CRLInfoDlg::saveAsPEM( const BIN *pData )
         int ret = JS_BIN_writePEM( pData, JS_PEM_TYPE_CRL, fileName.toLocal8Bit().toStdString().c_str() );
         if( ret > 0 )
         {
-            berApplet->messageBox( tr( "Certificate or CRL is saved as PEM" ), this );
+            berApplet->messageBox( tr( "The CRL was saved in PEM format." ), this );
         }
     }
 

@@ -209,7 +209,7 @@ void EditValueDlg::runDelete()
     BerItem *parentItem = (BerItem *)ber_item_->parent();
     if( parentItem == NULL )
     {
-        berApplet->warningBox( tr("Root Item can not be deleted"), this );
+        berApplet->warningBox( tr("Top-level items cannot be deleted"), this );
         QDialog::reject();
         return;
     }
@@ -237,7 +237,7 @@ void EditValueDlg::runAdd()
 
     if( parentItem == NULL )
     {
-        berApplet->warningBox( QString( "Root Item can not be added."), this );
+        berApplet->warningBox( QString( "Top-level items cannot be added."), this );
         QDialog::reject();
         return;
     }
