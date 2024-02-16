@@ -131,14 +131,14 @@ int SignVerifyDlg::readPrivateKey( BIN *pPriKey )
     QString strPriPath = mPriKeyPath->text();
     if( strPriPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "select private key"), this );
+        berApplet->warningBox( tr( "select a private key"), this );
         return -1;
     }
 
     ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binData );
     if( ret <= 0 )
     {
-        berApplet->warningBox( tr( "fail to read private key: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to read private key: %1").arg( ret ), this );
         return  -1;
     }
 
@@ -147,7 +147,7 @@ int SignVerifyDlg::readPrivateKey( BIN *pPriKey )
         QString strPasswd = mPasswdText->text();
         if( strPasswd.length() < 1 )
         {
-            berApplet->warningBox( tr( "You have to insert password"), this );
+            berApplet->warningBox( tr( "Enter a password"), this );
             ret = -1;
             goto end;
         }
@@ -155,7 +155,7 @@ int SignVerifyDlg::readPrivateKey( BIN *pPriKey )
         ret = JS_PKI_decryptPrivateKey( strPasswd.toStdString().c_str(), &binData, &binInfo, &binDec );
         if( ret != 0 )
         {
-            berApplet->warningBox( tr( "fail to decrypt private key:%1").arg( ret ), this );
+            berApplet->warningBox( tr( "failed to decrypt private key:%1").arg( ret ), this );
             mPasswdText->setFocus();
             ret = -1;
             goto end;
@@ -224,7 +224,7 @@ void SignVerifyDlg::clickCheckKeyPair()
 
     if( strCertPath.length() < 1 )
     {
-        berApplet->elog( "You have to find cert" );
+        berApplet->elog( "Select a certificate" );
         return;
     }
 
@@ -251,9 +251,9 @@ void SignVerifyDlg::clickCheckKeyPair()
     ret = JS_PKI_IsValidKeyPair( &binPri, &binPub );
 
     if( ret == JS_VALID )
-        berApplet->messageBox( tr("KeyPair is good"), this );
+        berApplet->messageBox( tr("The keypair is correct"), this );
     else
-        berApplet->warningBox( QString( tr("Invalid key pair: %1").arg(ret)), this );
+        berApplet->warningBox( QString( tr("The keypair is incorrect [%1]").arg(ret)), this );
 
 end :
     JS_BIN_reset( &binPri );
@@ -423,7 +423,7 @@ int SignVerifyDlg::signVerifyInit()
     {
         if( mCertPath->text().isEmpty() )
         {
-            berApplet->warningBox( tr( "You have to find certificate"), this );
+            berApplet->warningBox( tr( "Select a certificate"), this );
             ret = -1;
             goto end;
         }
@@ -517,10 +517,10 @@ int SignVerifyDlg::signVerifyInit()
 
     if( ret == 0 )
     {
-        mStatusLabel->setText( "Init OK" );
+        mStatusLabel->setText( "Initialization successful" );
     }
     else
-        mStatusLabel->setText( QString("Init fail:%1").arg(ret) );
+        mStatusLabel->setText( QString("Initialization failed [%1]").arg(ret) );
 
     repaint();
 
@@ -559,7 +559,7 @@ void SignVerifyDlg::signVerifyUpdate()
         else
             ret = JS_PKI_signUpdate( sctx_, &binSrc );
 
-        berApplet->log( QString("Update Src : %1").arg( getHexString(&binSrc)));
+        berApplet->log( QString("Update input : %1").arg( getHexString(&binSrc)));
     }
     else
     {
@@ -568,7 +568,7 @@ void SignVerifyDlg::signVerifyUpdate()
         else
             ret = JS_PKI_verifyUpdate( sctx_, &binSrc );
 
-        berApplet->log( QString("Update Src : %1").arg( getHexString(&binSrc)));
+        berApplet->log( QString("Update input : %1").arg( getHexString(&binSrc)));
     }
 
     if( ret == 0 )
@@ -576,7 +576,7 @@ void SignVerifyDlg::signVerifyUpdate()
         appendStatusLabel( "|Update OK" );
     }
     else
-        mStatusLabel->setText( QString("Update Fail:%1").arg( ret) );
+        mStatusLabel->setText( QString("Update failure [%1]").arg( ret) );
 
     repaint();
     JS_BIN_reset( &binSrc );
@@ -620,7 +620,7 @@ void SignVerifyDlg::signVerifyFinal()
             mStatusLabel->setText( "Final OK" );
         }
         else
-            mStatusLabel->setText( QString("Final Fail:%1").arg(ret) );
+            mStatusLabel->setText( QString("Final failure [%1]").arg(ret) );
     }
     else
     {
@@ -633,9 +633,9 @@ void SignVerifyDlg::signVerifyFinal()
             ret = JS_PKI_verifyFinal( sctx_, &binSign );
 
         if( ret == JS_VERIFY )
-            berApplet->messageBox( tr("Verify Success"), this );
+            berApplet->messageBox( tr("Verification successful"), this );
         else {
-            berApplet->warningBox( tr("Verify Fail"), this );
+            berApplet->warningBox( tr("Verification failed [%1]").arg(ret), this );
         }
 
         if( ret == JS_VERIFY )
@@ -643,7 +643,7 @@ void SignVerifyDlg::signVerifyFinal()
             appendStatusLabel( "|Final OK" );
         }
         else
-            mStatusLabel->setText( QString("Final Fail:%1").arg(ret) );
+            mStatusLabel->setText( QString("Final failure [%1]").arg(ret) );
     }
 
 
@@ -795,15 +795,15 @@ void SignVerifyDlg::dataRun()
         berApplet->log( QString( "Signature        : %1" ).arg( getHexString( &binOut )));
 
         if( ret == 0 )
-            mStatusLabel->setText( "Sign OK" );
+            mStatusLabel->setText( "Signature Success" );
         else
-            mStatusLabel->setText( QString("Sign Fail:%1").arg(ret));
+            mStatusLabel->setText( QString("Signature failure [%1]").arg(ret));
     }
     else
     {
         if( mCertPath->text().isEmpty() )
         {
-            berApplet->warningBox( tr( "You have to find certificate"), this );
+            berApplet->warningBox( tr( "Select a certificate"), this );
             goto end;
         }
 
@@ -895,15 +895,15 @@ void SignVerifyDlg::dataRun()
 
         if( ret == JS_VERIFY )
         {
-            mStatusLabel->setText( "Verify OK" );
+            mStatusLabel->setText( "Verification successful" );
         }
         else
-            mStatusLabel->setText( QString("Verify Fail:%1").arg(ret) );
+            mStatusLabel->setText( QString("Verification failure [%1]").arg(ret) );
 
         if( ret == JS_VERIFY )
-            berApplet->messageBox( tr("Verify Success"), this );
+            berApplet->messageBox( tr("Verification successful"), this );
         else {
-            berApplet->warningBox( tr("Verify Fail"), this );
+            berApplet->warningBox( tr("Verification failure"), this );
         }
     }
 
@@ -960,7 +960,7 @@ void SignVerifyDlg::fileRun()
     FILE *fp = fopen( strSrcFile.toLocal8Bit().toStdString().c_str(), "rb" );
     if( fp == NULL )
     {
-        berApplet->elog( QString( "fail to read file:%1").arg( strSrcFile ));
+        berApplet->elog( QString( "failed to read file:%1").arg( strSrcFile ));
         goto end;
     }
 
@@ -991,7 +991,7 @@ void SignVerifyDlg::fileRun()
 
         if( ret != 0 )
         {
-            berApplet->elog( QString( "fail to update sign or verify : %1").arg(ret));
+            berApplet->elog( QString( "failed to update [%1]").arg(ret));
             break;
         }
 
@@ -1049,7 +1049,7 @@ void SignVerifyDlg::digestRun()
 
     if( strInput.isEmpty() )
     {
-        berApplet->warningBox( tr( "You have to insert data"), this );
+        berApplet->warningBox( tr( "Enter your data"), this );
         return;
     }
 
@@ -1126,15 +1126,15 @@ void SignVerifyDlg::digestRun()
         berApplet->log( QString( "Signature        : %1" ).arg( getHexString( &binOut )));
 
         if( ret == 0 )
-            mStatusLabel->setText( "SignDigest OK" );
+            mStatusLabel->setText( "SignDigest successful" );
         else
-            mStatusLabel->setText( QString("SignDigest Fail:%1").arg(ret));
+            mStatusLabel->setText( QString("SignDigest failure [%1]").arg(ret));
     }
     else
     {
         if( mCertPath->text().isEmpty() )
         {
-            berApplet->warningBox( tr( "You have to find certificate"), this );
+            berApplet->warningBox( tr( "Select a certificate"), this );
             goto end;
         }
 
@@ -1207,15 +1207,15 @@ void SignVerifyDlg::digestRun()
 
         if( ret == JS_VERIFY )
         {
-            mStatusLabel->setText( "VerifyDigest OK" );
+            mStatusLabel->setText( "VerifyDigest successful" );
         }
         else
-            mStatusLabel->setText( QString("VerifyDigest Fail:%1").arg(ret) );
+            mStatusLabel->setText( QString("VerifyDigest failure [%1]").arg(ret) );
 
         if( ret == JS_VERIFY )
-            berApplet->messageBox( tr("Verify Success"), this );
+            berApplet->messageBox( tr("VerifyDigest successful"), this );
         else {
-            berApplet->warningBox( tr("Verify Fail"), this );
+            berApplet->warningBox( tr("VerifyDigest failure"), this );
         }
     }
 
@@ -1282,7 +1282,7 @@ void SignVerifyDlg::clickPriKeyDecode()
 
     if( binData.nLen < 1 )
     {
-        berApplet->warningBox( tr("fail to read data"), this );
+        berApplet->warningBox( tr("failed to read data"), this );
         return;
     }
 
@@ -1296,7 +1296,7 @@ void SignVerifyDlg::clickCertView()
     QString strPath = mCertPath->text();
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( tr("You have to find certificate"), this );
+        berApplet->warningBox( tr("Select a certificate"), this );
         return;
     }
 
@@ -1314,7 +1314,7 @@ void SignVerifyDlg::clickCertDecode()
 
     if( binData.nLen < 1 )
     {
-        berApplet->warningBox( tr("fail to read data"), this );
+        berApplet->warningBox( tr("failed to read data"), this );
         return;
     }
 
@@ -1349,7 +1349,7 @@ void SignVerifyDlg::clickCertType()
 
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "You have to find certificate or public key"), this );
+        berApplet->warningBox( tr( "Select certificate or public key"), this );
         return;
     }
 

@@ -124,7 +124,7 @@ int GenMacDlg::macInit()
     QString strKey = mKeyText->text();
     if( strKey.length() < 1 )
     {
-        berApplet->warningBox( tr("You have to insert key"), this );
+        berApplet->warningBox( tr("Enter a key value"), this );
         return -1;
     }
 
@@ -166,10 +166,10 @@ int GenMacDlg::macInit()
 
    if( ret == 0 )
    {
-       mStatusLabel->setText( "Init OK" );
+       mStatusLabel->setText( "Initialization successful" );
    }
    else
-       mStatusLabel->setText( QString("Init fail:%1").arg( ret ) );
+       mStatusLabel->setText( QString("Initialization failed [%1]").arg( ret ) );
 
    JS_BIN_reset( &binKey );
    repaint();
@@ -204,7 +204,7 @@ void GenMacDlg::macUpdate()
     {
         if( type_ != JS_TYPE_CMAC )
         {
-            berApplet->elog( "Invalid context type" );
+            berApplet->elog( "Invalid type" );
             return;
         }
 
@@ -214,7 +214,7 @@ void GenMacDlg::macUpdate()
     {
         if( type_ != JS_TYPE_HMAC )
         {
-            berApplet->elog( "Invalid context type" );
+            berApplet->elog( "Invalid type" );
             return;
         }
 
@@ -224,21 +224,21 @@ void GenMacDlg::macUpdate()
     {
         if( type_ != JS_TYPE_GMAC )
         {
-            berApplet->elog( "Invalid context type" );
+            berApplet->elog( "Invalid type" );
             return;
         }
 
         ret = JS_PKI_encryptGCMUpdateAAD( hctx_, &binSrc );
     }
 
-    berApplet->log( QString( "Update Src : %1" ).arg( getHexString(&binSrc)));
+    berApplet->log( QString( "Update input : %1" ).arg( getHexString(&binSrc)));
 
     if( ret == 0 )
     {
         appendStatusLabel( "|Update OK" );
     }
     else
-        mStatusLabel->setText( QString("Updata fail:%1").arg(ret) );
+        mStatusLabel->setText( QString("Update failure [%1]").arg(ret) );
 
     JS_BIN_reset( &binSrc );
     repaint();
@@ -253,7 +253,7 @@ void GenMacDlg::macFinal()
     {
         if( type_ != JS_TYPE_CMAC )
         {
-            berApplet->elog( "Invalid context type" );
+            berApplet->elog( "Invalid type" );
             return;
         }
 
@@ -263,7 +263,7 @@ void GenMacDlg::macFinal()
     {
         if( type_ != JS_TYPE_HMAC )
         {
-            berApplet->elog( "Invalid context type" );
+            berApplet->elog( "Invalid type" );
             return;
         }
 
@@ -274,7 +274,7 @@ void GenMacDlg::macFinal()
         BIN binEnc = {0,0};
         if( type_ != JS_TYPE_GMAC )
         {
-            berApplet->elog( "Invalid context type" );
+            berApplet->elog( "Invalid type" );
             return;
         }
 
@@ -290,7 +290,7 @@ void GenMacDlg::macFinal()
         berApplet->log( QString( "Final Digest : %1" ).arg( getHexString( &binMAC )) );
     }
     else
-        mStatusLabel->setText( QString("Final fail:%1").arg(ret) );
+        mStatusLabel->setText( QString("Final failure [%1]").arg(ret) );
 
     freeCTX();
 
@@ -339,7 +339,7 @@ void GenMacDlg::clickMAC()
 
     if( strKey.isEmpty() )
     {
-        berApplet->warningBox( tr( "You have to insert key"), this );
+        berApplet->warningBox( tr( "Please Enter a key value"), this );
         JS_BIN_reset(&binSrc);
         return;
     }
@@ -377,7 +377,7 @@ void GenMacDlg::clickMAC()
        char *pHex = NULL;
        JS_BIN_encodeHex( &binMAC, &pHex );
        mOutputText->setPlainText( pHex );
-       mStatusLabel->setText( "MAC OK" );
+       mStatusLabel->setText( "MAC success" );
        if( pHex ) JS_free(pHex);
 
        berApplet->log( QString( "Input : %1" ).arg(getHexString(&binSrc)));
@@ -386,7 +386,7 @@ void GenMacDlg::clickMAC()
    }
    else
    {
-       mStatusLabel->setText( QString("MAC fail:%1").arg(ret) );
+       mStatusLabel->setText( QString("MAC failure [%1]").arg(ret) );
    }
 
    JS_BIN_reset(&binSrc);
@@ -437,7 +437,7 @@ void GenMacDlg::clickMACSrcFile()
 
     if( strSrcFile.length() < 1 )
     {
-        berApplet->warningBox( tr("You have to find src file"), this );
+        berApplet->warningBox( tr("Select a input file"), this );
         return;
     }
 
@@ -454,7 +454,7 @@ void GenMacDlg::clickMACSrcFile()
 
     if( macInit() != 0 )
     {
-        berApplet->elog( "fail to init MAC" );
+        berApplet->elog( "MAC initialization failed" );
         return;
     }
 
@@ -462,7 +462,7 @@ void GenMacDlg::clickMACSrcFile()
 
     if( fp == NULL )
     {
-        berApplet->elog( QString( "fail to read file:%1").arg( strSrcFile ));
+        berApplet->elog( QString( "failed to read file:%1").arg( strSrcFile ));
         goto end;
     }
 
@@ -496,7 +496,7 @@ void GenMacDlg::clickMACSrcFile()
 
         if( ret != 0 )
         {
-            berApplet->elog( QString( "fail to update mac : %1").arg(ret));
+            berApplet->elog( QString( "failed to update : %1").arg(ret));
             break;
         }
 

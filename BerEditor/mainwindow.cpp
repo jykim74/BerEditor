@@ -740,7 +740,7 @@ void MainWindow::openCert()
         bool bVal = true;
         if( JS_PKI_isCRL( &binCert ) == 1 )
         {
-            bVal = berApplet->yesOrCancelBox( tr( "This file is CRL. Open it as CRL informatiin?"), this, true );
+            bVal = berApplet->yesOrCancelBox( tr( "This file is CRL. Open it as CRL information?"), this, true );
             if( bVal == true )
             {
                 CRLInfoDlg crlInfo;
@@ -794,7 +794,7 @@ void MainWindow::openCRL()
         bool bVal = true;
         if( JS_PKI_isCert( &binCRL ) == 1 )
         {
-            bVal = berApplet->yesOrCancelBox( tr( "This file is certificate. Open it as certificate informatiin?"), this, true );
+            bVal = berApplet->yesOrCancelBox( tr( "This file is certificate. Open it as certificate information?"), this, true );
             if( bVal == true )
             {
                 CertInfoDlg certInfo;
@@ -845,7 +845,7 @@ void MainWindow::openCSR()
         bool bVal = true;
         if( JS_PKI_isCert( &binCSR ) == 1 )
         {
-            bVal = berApplet->yesOrCancelBox( tr( "This file is certificate. Open it as certificate informatiin?"), this, true );
+            bVal = berApplet->yesOrCancelBox( tr( "This file is certificate. Open it as certificate information?"), this, true );
             if( bVal == true )
             {
                 CertInfoDlg certInfo;
@@ -964,18 +964,6 @@ int MainWindow::berFileOpen(const QString berPath)
 
     if( ret > 0 )
     {
-        /*
-        if( berApplet->isLicense() == false )
-        {
-            if( binRead.nLen > kNoLicenseLimitMaxSize )
-            {
-                QString strMsg = tr( "A BER size greater than 10000 bytes requires a license." );
-                berApplet->warningBox( strMsg, this );
-                return -1;
-            }
-        }
-        */
-
         openBer( &binRead );
         JS_BIN_reset( &binRead );
 
@@ -1342,7 +1330,7 @@ void MainWindow::licenseInfo()
     LCNInfoDlg lcnInfoDlg;
     if( lcnInfoDlg.exec() == QDialog::Accepted )
     {
-        if( berApplet->yesOrNoBox(tr("You have changed license. Restart to apply it?"), this, true))
+        if( berApplet->yesOrNoBox(tr("The license has been changed. Restart to apply it?"), this, true))
             berApplet->restartApp();
     }
 }
@@ -1373,17 +1361,6 @@ void MainWindow::decodeData( const BIN *pData, const QString strPath )
         return;
     }
 
-/*
-    if( berApplet->isLicense() == false )
-    {
-        if( pData && pData->nLen > kNoLicenseLimitMaxSize )
-        {
-            QString strMsg = tr( "A BER size greater than 10000 bytes requires a license." );
-            berApplet->warningBox( strMsg, this );
-            return;
-        }
-    }
-*/
     openBer( pData );
     file_path_ = strPath;
     setTitle( QString( strPath ));

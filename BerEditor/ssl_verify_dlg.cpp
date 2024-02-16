@@ -400,7 +400,7 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
         }
         else
         {
-            berApplet->elog( QString("fail to load trust list:%1").arg( ret ) );
+            berApplet->elog( QString("failed to load trust list:%1").arg( ret ) );
         }
     }
 
@@ -458,7 +458,7 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
     ret = JS_SSL_initSSL( pCTX, nSockFd, &pSSL );
     if( ret != 0 )
     {
-        berApplet->elog( QString("fail to init SSL(%1:%2)").arg( strHost ).arg( nPort ));
+        berApplet->elog( QString("failed to initialize SSL(%1:%2)").arg( strHost ).arg( nPort ));
         goto end;
     }
 
@@ -473,7 +473,7 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
     ret = JS_SSL_connect( pSSL );
     if( ret != 0 )
     {
-        berApplet->elog( QString( "fail to run SSL handshake:%1").arg( ret ));
+        berApplet->elog( QString( "failed to handshake SSL [%1]").arg( ret ));
         goto end;
     }
 
@@ -490,11 +490,11 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
     if( ret != 0)
     {
         bGood = false;
-        elog( QString( "SSL Verify Certificate  : %1(%2)").arg( X509_verify_cert_error_string(ret)).arg( ret ));
+        elog( QString( "SSL certificate verification failed : %1(%2)").arg( X509_verify_cert_error_string(ret)).arg( ret ));
     }
     else
     {
-        log( QString( "SSL Verify Certificate OK" ));
+        log( QString( "SSL certificate verification successful" ));
     }
 
     pAtList = JS_BIN_getListAt( 0, pCertList );
@@ -502,7 +502,7 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
     ret = JS_PKI_getCertInfo( &pAtList->Bin, &sCertInfo, NULL );
     if( ret != 0 )
     {
-        berApplet->elog( QString( "Invalid certificate data: %1").arg( ret ));
+        berApplet->elog( QString( "Invalid certificate [%1]").arg( ret ));
         goto end;
     }
 
@@ -514,25 +514,25 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
         if( ret == 1 )
         {
             strRes = "Valid";
-            log( QString( "TLS checkHostName: %1 (%2 : %3)").arg( strHost ).arg( strRes ).arg( ret ));
+            log( QString( "TLS hostname check : %1 (%2 : %3)").arg( strHost ).arg( strRes ).arg( ret ));
         }
         else if( ret == 0)
         {
             bGood = false;
             strRes = "NameMismatch";
-            elog( QString( "TLS checkHostName: %1 (%2 : %3)").arg( strHost ).arg( strRes ).arg( ret ));
+            elog( QString( "TLS hostname check : %1 (%2 : %3)").arg( strHost ).arg( strRes ).arg( ret ));
         }
         else
         {
             bGood = false;
             strRes = "Error";
-            elog( QString( "TLS checkHostName: %1 (%2 : %3)").arg( strHost ).arg( strRes ).arg( ret ));
+            elog( QString( "TLS hostname check : %1 (%2 : %3)").arg( strHost ).arg( strRes ).arg( ret ));
         }
 
         ret = 0;
     }
 
-    log( QString( "The Subject is %1" ).arg( sCertInfo.pSubjectName ));
+    log( QString( "The Subject Name is '%1'" ).arg( sCertInfo.pSubjectName ));
 
     JS_UTIL_getDate( sCertInfo.uNotBefore, sNotBefore );
     JS_UTIL_getDate( sCertInfo.uNotAfter, sNotAfter );
@@ -569,7 +569,7 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
     }
     else
     {
-        log( "This URL is already exist in URL List" );
+        log( "This URL is already in URL List" );
     }
 
     log( "========================================================================");
@@ -991,9 +991,9 @@ void SSLVerifyDlg::saveTrustedCA()
 
     ret = JS_BIN_writePEM( &binCert, JS_PEM_TYPE_CERTIFICATE, strFileName.toLocal8Bit().toStdString().c_str() );
     if( ret > 0 )
-        berApplet->messageBox( tr( "The Certificate saved to trustedCA folder"), this );
+        berApplet->messageBox( tr( "The Certificate saved to trusted CA directory"), this );
     else
-        berApplet->warningBox( tr( "The Certificate fail to save to trustedCA folder:%1" ).arg(ret), this );
+        berApplet->warningBox( tr( "The Certificate failed to save to trusted CA directory [%1]" ).arg(ret), this );
 
 end :
     JS_BIN_reset( &binCert );
@@ -1031,14 +1031,14 @@ int SSLVerifyDlg::readPrivateKey( BIN *pPriKey )
     QString strPriPath = mClientPriKeyPathText->text();
     if( strPriPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "select private key"), this );
+        berApplet->warningBox( tr( "select a private key"), this );
         return -1;
     }
 
     ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binData );
     if( ret <= 0 )
     {
-        berApplet->warningBox( tr( "fail to read private key: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to read private key: %1").arg( ret ), this );
         return  -1;
     }
 
@@ -1047,7 +1047,7 @@ int SSLVerifyDlg::readPrivateKey( BIN *pPriKey )
         QString strPasswd = mPasswordText->text();
         if( strPasswd.length() < 1 )
         {
-            berApplet->warningBox( tr( "You have to insert password"), this );
+            berApplet->warningBox( tr( "Enter a password"), this );
             ret = -1;
             goto end;
         }
@@ -1055,7 +1055,7 @@ int SSLVerifyDlg::readPrivateKey( BIN *pPriKey )
         ret = JS_PKI_decryptPrivateKey( strPasswd.toStdString().c_str(), &binData, &binInfo, &binDec );
         if( ret != 0 )
         {
-            berApplet->warningBox( tr( "fail to decrypt private key:%1").arg( ret ), this );
+            berApplet->warningBox( tr( "failed to decrypt private key:%1").arg( ret ), this );
             mPasswordText->setFocus();
             ret = -1;
             goto end;
@@ -1083,7 +1083,7 @@ void SSLVerifyDlg::clickTrustCAView()
     QString strPath = mTrustCAPathText->text();
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( "You have to find certificate", this );
+        berApplet->warningBox( "Select a certificate", this );
         return;
     }
 
@@ -1099,7 +1099,7 @@ void SSLVerifyDlg::clickTrustCADecode()
 
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( "You have to find certificate", this );
+        berApplet->warningBox( "Select a certificate", this );
         return;
     }
 
@@ -1107,7 +1107,7 @@ void SSLVerifyDlg::clickTrustCADecode()
 
     if( binData.nLen < 1 )
     {
-        berApplet->warningBox( tr("fail to read data"), this );
+        berApplet->warningBox( tr("failed to read data"), this );
         return;
     }
 
@@ -1126,7 +1126,7 @@ void SSLVerifyDlg::clickTrustCAType()
 
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "You have to find certificate"), this );
+        berApplet->warningBox( tr( "Select a certificate"), this );
         return;
     }
 
@@ -1135,7 +1135,7 @@ void SSLVerifyDlg::clickTrustCAType()
 
     nType = JS_PKI_getPubKeyType( &binPubKey );
 
-    berApplet->messageBox( tr( "Sign Certificate Type is %1" ).arg( getKeyTypeName(nType)), this);
+    berApplet->messageBox( tr( "Certificate Type is %1" ).arg( getKeyTypeName(nType)), this);
 
 end :
     JS_BIN_reset( &binCert );
@@ -1157,7 +1157,7 @@ void SSLVerifyDlg::clickClientCAView()
     QString strPath = mClientCAPathText->text();
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( "You have to find certificate", this );
+        berApplet->warningBox( "Select a certificate", this );
         return;
     }
 
@@ -1173,7 +1173,7 @@ void SSLVerifyDlg::clickClientCADecode()
 
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( "You have to find certificate", this );
+        berApplet->warningBox( "Select a certificate", this );
         return;
     }
 
@@ -1181,7 +1181,7 @@ void SSLVerifyDlg::clickClientCADecode()
 
     if( binData.nLen < 1 )
     {
-        berApplet->warningBox( tr("fail to read data"), this );
+        berApplet->warningBox( tr("failed to read data"), this );
         return;
     }
 
@@ -1200,7 +1200,7 @@ void SSLVerifyDlg::clickClientCAType()
 
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "You have to find certificate"), this );
+        berApplet->warningBox( tr( "Select a certificate"), this );
         return;
     }
 
@@ -1209,7 +1209,7 @@ void SSLVerifyDlg::clickClientCAType()
 
     nType = JS_PKI_getPubKeyType( &binPubKey );
 
-    berApplet->messageBox( tr( "Sign Certificate Type is %1" ).arg( getKeyTypeName(nType)), this);
+    berApplet->messageBox( tr( "Certificate Type is %1" ).arg( getKeyTypeName(nType)), this);
 
 end :
     JS_BIN_reset( &binCert );
@@ -1231,7 +1231,7 @@ void SSLVerifyDlg::clickClientCertView()
     QString strPath = mClientCertPathText->text();
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( "You have to find certificate", this );
+        berApplet->warningBox( "Select a certificate", this );
         return;
     }
 
@@ -1247,7 +1247,7 @@ void SSLVerifyDlg::clickClientCertDecode()
 
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( "You have to find certificate", this );
+        berApplet->warningBox( "Select a certificate", this );
         return;
     }
 
@@ -1255,7 +1255,7 @@ void SSLVerifyDlg::clickClientCertDecode()
 
     if( binData.nLen < 1 )
     {
-        berApplet->warningBox( tr("fail to read data"), this );
+        berApplet->warningBox( tr("failed to read data"), this );
         return;
     }
 
@@ -1274,7 +1274,7 @@ void SSLVerifyDlg::clickClientCertType()
 
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "You have to find certificate"), this );
+        berApplet->warningBox( tr( "Select a certificate"), this );
         return;
     }
 
@@ -1283,7 +1283,7 @@ void SSLVerifyDlg::clickClientCertType()
 
     nType = JS_PKI_getPubKeyType( &binPubKey );
 
-    berApplet->messageBox( tr( "Sign Certificate Type is %1" ).arg( getKeyTypeName(nType)), this);
+    berApplet->messageBox( tr( "Certificate Type is %1" ).arg( getKeyTypeName(nType)), this);
 
 end :
     JS_BIN_reset( &binCert );
@@ -1307,7 +1307,7 @@ void SSLVerifyDlg::clickClientPriKeyDecode()
 
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( "You have to find private key", this );
+        berApplet->warningBox( "Select a private key", this );
         return;
     }
 
@@ -1315,7 +1315,7 @@ void SSLVerifyDlg::clickClientPriKeyDecode()
 
     if( binData.nLen < 1 )
     {
-        berApplet->warningBox( tr("fail to read data"), this );
+        berApplet->warningBox( tr("failed to read data"), this );
         return;
     }
 

@@ -91,7 +91,7 @@ void KeyManDlg::PBKDF()
 
     if( strPasswd.length() <= 0 )
     {
-        berApplet->warningBox( tr( "You have to insert password value"), this );
+        berApplet->warningBox( tr( "Enter a passphrase"), this );
         return;
     }
 
@@ -163,13 +163,13 @@ void KeyManDlg::clickWrap()
 
     if( strInput.length() < 1 )
     {
-        berApplet->warningBox( "You have to write input data", this );
+        berApplet->warningBox( "Enter input data", this );
         goto end;
     }
 
     if( strWrappingKey.length() < 1 )
     {
-        berApplet->warningBox( "You have to write wrapping key data", this );
+        berApplet->warningBox( "Enter wrapping key data", this );
         goto end;
     }
 
@@ -184,7 +184,7 @@ void KeyManDlg::clickWrap()
     ret = JS_KW_WrapKey( nMode, &binInput, &binWrappingKey, &binOutput );
     if( ret != 0 )
     {
-        berApplet->warningBox( QString( "fail to wrap key: %1").arg(ret), this );
+        berApplet->warningBox( QString( "failed to wrap key: %1").arg(ret), this );
         goto end;
     }
 
@@ -215,13 +215,13 @@ void KeyManDlg::clickUnwrap()
 
     if( strInput.length() < 1 )
     {
-        berApplet->warningBox( "You have to write input data", this );
+        berApplet->warningBox( "Enter input data", this );
         goto end;
     }
 
     if( strWrappingKey.length() < 1 )
     {
-        berApplet->warningBox( "You have to write wrapping key data", this );
+        berApplet->warningBox( "Enter wrapping key data", this );
         goto end;
     }
 
@@ -236,7 +236,7 @@ void KeyManDlg::clickUnwrap()
     ret = JS_KW_UnwrapKey( nMode, &binInput, &binWrappingKey, &binOutput );
     if( ret != 0 )
     {
-        berApplet->warningBox( QString( "fail to unwrap key: %1").arg(ret), this );
+        berApplet->warningBox( QString( "failed to unwrap key: %1").arg(ret), this );
         goto end;
     }
 

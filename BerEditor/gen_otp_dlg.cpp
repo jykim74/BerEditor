@@ -79,7 +79,7 @@ void GenOTPDlg::clickGenOTP()
 
     if( strKey.isEmpty() )
     {
-        berApplet->warningBox( tr( "You have to insert key"), this );
+        berApplet->warningBox( tr( "Please enter a key value"), this );
         mKeyText->setFocus();
         return;
     }

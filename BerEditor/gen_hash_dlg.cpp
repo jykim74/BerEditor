@@ -81,12 +81,12 @@ int GenHashDlg::hashInit()
     ret = JS_PKI_hashInit( &pctx_, strAlg.toStdString().c_str() );
     if( ret == 0 )
     {
-        mStatusLabel->setText( "Init OK" );
+        mStatusLabel->setText( "Initialization successful" );
 
-        berApplet->log( QString( "Init Algorithm : %1" ).arg( strAlg ));
+        berApplet->log( QString( "initialization algorithm : %1" ).arg( strAlg ));
     }
     else
-        mStatusLabel->setText( QString("Init Fail:%1").arg(ret) );
+        mStatusLabel->setText( QString("Initialization failed [%1]").arg(ret) );
 
     repaint();
     return 0;
@@ -124,11 +124,11 @@ void GenHashDlg::hashUpdate()
     ret = JS_PKI_hashUpdate( pctx_, &binSrc );
     if( ret == 0 )
     {
-        berApplet->log( QString( "Update Src : %1" ).arg( getHexString(&binSrc)));
+        berApplet->log( QString( "Update input : %1" ).arg( getHexString(&binSrc)));
         appendStatusLabel( "|Update OK" );
     }
     else
-        mStatusLabel->setText( QString("Update fail:%1").arg(ret) );
+        mStatusLabel->setText( QString("Update failed [%1]").arg(ret) );
 
     JS_BIN_reset( &binSrc );
     repaint();
@@ -149,7 +149,7 @@ void GenHashDlg::hashFinal()
     }
     else
     {
-        mStatusLabel->setText( QString("Final Fail:%1").arg(ret) );
+        mStatusLabel->setText( QString("Final failed [%1]").arg(ret) );
     }
 
     JS_PKI_hashFree( &pctx_ );
@@ -216,7 +216,7 @@ void GenHashDlg::clickDigest()
     }
     else
     {
-        mStatusLabel->setText( QString("Digest Fail:%1").arg(ret) );
+        mStatusLabel->setText( QString("Digest failed [%1]").arg(ret) );
     }
 
     JS_BIN_reset(&binSrc);
@@ -312,7 +312,7 @@ void GenHashDlg::clickDigestSrcFile()
 
     if( strSrcFile.length() < 1 )
     {
-        berApplet->warningBox( tr("You have to find src file"), this );
+        berApplet->warningBox( tr("Select input file"), this );
         return;
     }
 
@@ -333,7 +333,7 @@ void GenHashDlg::clickDigestSrcFile()
 
     if( fp == NULL )
     {
-        berApplet->elog( QString( "fail to read file:%1").arg( strSrcFile ));
+        berApplet->elog( QString( "failed to read file:%1").arg( strSrcFile ));
         goto end;
     }
 
@@ -355,7 +355,7 @@ void GenHashDlg::clickDigestSrcFile()
         ret = JS_PKI_hashUpdate( pctx_, &binPart );
         if( ret != 0 )
         {
-            berApplet->elog( QString( "fail to update hash : %1").arg(ret));
+            berApplet->elog( QString( "failed to update : %1").arg(ret));
             break;
         }
 

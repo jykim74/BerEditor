@@ -427,9 +427,9 @@ void KeyAgreeDlg::checkAPubKey()
 
     ret = JS_PKI_IsValidECCPubKey( strParam.toStdString().c_str(), &binX, &binY );
     if( ret == 1 )
-        berApplet->messageBox( tr("PubKey is valid"), this );
+        berApplet->messageBox( tr("The public key is correct"), this );
     else
-        berApplet->warningBox( tr("PubKey is invalid"), this );
+        berApplet->warningBox( tr("The public key is incorrect"), this );
 
     JS_BIN_reset( &binPub );
     JS_BIN_reset( &binX );
@@ -452,9 +452,9 @@ void KeyAgreeDlg::checkBPubKey()
 
     ret = JS_PKI_IsValidECCPubKey( strParam.toStdString().c_str(), &binX, &binY );
     if( ret == 1 )
-        berApplet->messageBox( tr("PubKey is valid"), this );
+        berApplet->messageBox( tr("The public key is correct"), this );
     else
-        berApplet->warningBox( tr("PubKey is invalid"), this );
+        berApplet->warningBox( tr("The public key is incorrect"), this );
 
     JS_BIN_reset( &binPub );
     JS_BIN_reset( &binX );
@@ -480,9 +480,9 @@ void KeyAgreeDlg::checkAKeyPair()
 
     ret = JS_PKI_IsValidECCKeyPairValue( strParam.toStdString().c_str(), &binPri, &binX, &binY );
     if( ret == 1 )
-        berApplet->messageBox( tr("ECC KeyPair is valid"), this );
+        berApplet->messageBox( tr("The key pair is correct"), this );
     else
-        berApplet->warningBox( tr("ECC KeyPair is invalid"), this );
+        berApplet->warningBox( tr("The key pair is incorrect"), this );
 
     JS_BIN_reset( &binPub );
     JS_BIN_reset( &binX );
@@ -509,9 +509,9 @@ void KeyAgreeDlg::checkBKeyPair()
 
     ret = JS_PKI_IsValidECCKeyPairValue( strParam.toStdString().c_str(), &binPri, &binX, &binY );
     if( ret == 1 )
-        berApplet->messageBox( tr("ECC KeyPair is valid"), this );
+        berApplet->messageBox( tr("The key pair is correct"), this );
     else
-        berApplet->warningBox( tr("ECC KeyPair is invalid"), this );
+        berApplet->warningBox( tr("The key pair is incorrect"), this );
 
     JS_BIN_reset( &binPub );
     JS_BIN_reset( &binX );

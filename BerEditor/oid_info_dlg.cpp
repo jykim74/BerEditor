@@ -154,20 +154,20 @@ void OIDInfoDlg::createOID()
     QString strOIDPath = berApplet->settingsMgr()->OIDConfigPath();
     if( strOIDPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "OID config file is not set" ), this );
+        berApplet->warningBox( tr( "OID config file not set" ), this );
         return;
     }
 
     if( strOID.isEmpty() )
     {
-        berApplet->warningBox( tr("You have to insert OID value"), this );
+        berApplet->warningBox( tr("Enter a OID value"), this );
         mOIDText->setFocus();
         return;
     }
 
     if( strSN.isEmpty() )
     {
-        berApplet->warningBox( tr("You have to insert short name"), this );
+        berApplet->warningBox( tr("Enter a short name"), this );
         mSNText->setFocus();
         return;
     }
@@ -176,24 +176,24 @@ void OIDInfoDlg::createOID()
 
     if( JS_PKI_getSNFromOID( strOID.toStdString().c_str() ) != NULL )
     {
-        berApplet->warningBox( tr( "OID %1 is already created").arg(strOID), this );
+        berApplet->warningBox( tr( "OID %1 has already been created").arg(strOID), this );
         return;
     }
 
     if( JS_PKI_getNidFromSN( strSN.toStdString().c_str() ) > 0 )
     {
-        berApplet->warningBox( tr( "SN %1 is already used").arg( strSN ), this );
+        berApplet->warningBox( tr( "SN %1 has already been used").arg( strSN ), this );
         return;
     }
 
     ret = JS_PKI_createOID( strOID.toStdString().c_str(), strSN.toStdString().c_str(), strLN.toStdString().c_str() );
     if( ret <= 0 )
     {
-        berApplet->warningBox( tr( "fail to create OID"), this );
+        berApplet->warningBox( tr( "failed to create OID"), this );
         return;
     }
 
-    berApplet->messageBox( tr("OID : %1 is added successfully").arg( strOID ), this);
+    berApplet->messageBox( tr("OID(%1) has beed added successfully").arg( strOID ), this);
 
     writeOIDConfig( QString( "\n# oid[%1] is added by config" ).arg(strOID) );
     writeOIDConfig( QString( "\nOID = %1").arg( strOID ) );

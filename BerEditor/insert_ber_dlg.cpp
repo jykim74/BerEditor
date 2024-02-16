@@ -161,7 +161,6 @@ void InsertBerDlg::classChanged(int index)
 {
     if( index == 2 )
     {
-//        mPrimitiveCombo->setEnabled( false );
         mPrimitiveCombo->hide();
         mNumText->setReadOnly( false );
         mNumText->clear();
@@ -169,7 +168,6 @@ void InsertBerDlg::classChanged(int index)
     }
     else
     {
-//        mPrimitiveCombo->setEnabled( true );
         mPrimitiveCombo->show();
         mNumText->setReadOnly( true );
         mTagLabel->setText(tr("Tag"));
@@ -187,8 +185,6 @@ void InsertBerDlg::primitiveChanged(int index )
         mConstructedCheck->setChecked( true );
 
     mNumText->setText( QString( "%1" ).arg( cPrimitive, 2, 16, QLatin1Char('0')));
-
-//    makeHeader();
 }
 
 void InsertBerDlg::changeValueType( int index )

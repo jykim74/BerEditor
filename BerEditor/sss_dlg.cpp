@@ -113,7 +113,7 @@ void SSSDlg::clickAdd()
 
     if( strValue.length() < 1 )
     {
-        berApplet->warningBox( tr( "Insert shared value" ), this );
+        berApplet->warningBox( tr( "Enter shared value" ), this );
         mShareText->setFocus();
         return;
     }
@@ -153,7 +153,7 @@ void SSSDlg::clickSplit()
 
     if( strSrc.length() < 1 )
     {
-        berApplet->warningBox( tr( "Insert source value" ), this );
+        berApplet->warningBox( tr( "Enter source value" ), this );
         mSrcText->setFocus();
         return;
     }
@@ -163,7 +163,7 @@ void SSSDlg::clickSplit()
 
     if( binSrc.nLen < 8 )
     {
-        berApplet->warningBox( tr( "Source Value have to be more 8bytes"), this );
+        berApplet->warningBox( tr( "Input value must be at least 8 bytes"), this );
         goto end;
     }
 

@@ -70,7 +70,7 @@ void GetURIDlg::runGet()
         QString strDN = mDNText->text();
         if( strDN.length() < 1 )
         {
-            berApplet->warningBox( tr( "Insert DN value" ), this );
+            berApplet->warningBox( tr( "Enter a DN value" ), this );
             return;
         }
 
@@ -81,7 +81,7 @@ void GetURIDlg::runGet()
         QString strURL = mURICombo->currentText();
         if( strURL.length() < 1 )
         {
-            berApplet->warningBox( tr( "Insert URI value" ), this );
+            berApplet->warningBox( tr( "Enter a URI value" ), this );
             return;
         }
 
@@ -169,21 +169,21 @@ int GetURIDlg::getLDAP()
     pLD = JS_LDAP_init( strHost.toStdString().c_str(), nPort );
     if( pLD == NULL )
     {
-        berApplet->warningBox( tr("fail to connnect LDAP server" ), this );
+        berApplet->warningBox( tr("failed to connnect LDAP server" ), this );
         return -1;
     }
 
     ret = JS_LDAP_bind( pLD, NULL, NULL );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr("fail to bind LDAP server"), this );
+        berApplet->warningBox( tr("failed to bind LDAP server"), this );
         goto end;
     }
 
     ret = JS_LDAP_getData( pLD, strDN.toStdString().c_str(), strFilter.toStdString().c_str(), nType, nScope, &data_ );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to get data from LDAP server"), this );
+        berApplet->warningBox( tr( "failed to get data from LDAP server"), this );
         goto end;
     }
 
@@ -242,7 +242,7 @@ void GetURIDlg::clickClearUsedURI()
     mURICombo->clearEditText();
     mURICombo->clear();
 
-    berApplet->log( "clear used URIs" );
+    berApplet->log( "clear used URLs" );
 }
 
 const QString GetURIDlg::getValidURL()

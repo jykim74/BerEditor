@@ -43,7 +43,7 @@ void NumTransDlg::dataTrans()
 
     if( strInput.length() < 1 )
     {
-        berApplet->warningBox( tr( "Insert data" ), this );
+        berApplet->warningBox( tr( "Enter input data" ), this );
         mInputText->setFocus();
         return;
     }
@@ -57,7 +57,7 @@ void NumTransDlg::dataTrans()
 
     if( isValidNumFormat( strInput, nNum ) == false )
     {
-        berApplet->warningBox( tr( "The input value have wrong format" ), this );
+        berApplet->warningBox( tr( "Input contains non-numeric values" ), this );
         return;
     }
 

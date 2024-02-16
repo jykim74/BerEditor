@@ -36,7 +36,7 @@ void InsertDataDlg::viewData()
 
     if( strData.length() < 1 )
     {
-        berApplet->warningBox( tr( "You have to insert data"), this );
+        berApplet->warningBox( tr( "Please enter your data"), this );
         mDataText->setFocus();
         return;
     }

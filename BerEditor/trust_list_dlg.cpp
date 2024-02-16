@@ -173,7 +173,7 @@ void TrustListDlg::clickAdd()
         }
         else
         {
-            berApplet->warningBox( tr( "The Certificate fail to save to trustedCA folder:%1" ).arg(ret), this );
+            berApplet->warningBox( tr( "The Certificate failed to save to trustedCA folder:%1" ).arg(ret), this );
         }
     }
 
@@ -197,10 +197,10 @@ void TrustListDlg::clickDelete()
     bVal = delFile.remove();
 
     if( bVal == true )
-        berApplet->messageBox( tr( "Trust CA is deleted successfully"), this );
+        berApplet->messageBox( tr( "Trust CA has been deleted"), this );
     else
     {
-        berApplet->warningBox( tr( "fail to delete Trust CA" ), this );
+        berApplet->warningBox( tr( "failed to delete Trust CA" ), this );
         return;
     }
 

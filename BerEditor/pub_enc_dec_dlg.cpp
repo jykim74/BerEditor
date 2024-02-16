@@ -122,14 +122,14 @@ int PubEncDecDlg::readPrivateKey( BIN *pPriKey )
     QString strPriPath = mPriKeyPath->text();
     if( strPriPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "select private key"), this );
+        berApplet->warningBox( tr( "select a private key"), this );
         return -1;
     }
 
     ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binData );
     if( ret <= 0 )
     {
-        berApplet->warningBox( tr( "fail to read private key: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to read a private key: %1").arg( ret ), this );
         return  -1;
     }
 
@@ -138,7 +138,7 @@ int PubEncDecDlg::readPrivateKey( BIN *pPriKey )
         QString strPasswd = mPasswdText->text();
         if( strPasswd.length() < 1 )
         {
-            berApplet->warningBox( tr( "You have to insert password"), this );
+            berApplet->warningBox( tr( "Enter a password"), this );
             ret = -1;
             goto end;
         }
@@ -146,7 +146,7 @@ int PubEncDecDlg::readPrivateKey( BIN *pPriKey )
         ret = JS_PKI_decryptPrivateKey( strPasswd.toStdString().c_str(), &binData, &binInfo, &binDec );
         if( ret != 0 )
         {
-            berApplet->warningBox( tr( "fail to decrypt private key:%1").arg( ret ), this );
+            berApplet->warningBox( tr( "failed to decrypt private key:%1").arg( ret ), this );
             mPasswdText->setFocus();
             ret = -1;
             goto end;
@@ -207,7 +207,7 @@ void PubEncDecDlg::clickCheckKeyPair()
 
     if( strCertPath.length() < 1 )
     {
-        berApplet->elog( "You have to find publick key" );
+        berApplet->elog( "Select a publick key" );
         return;
     }
 
@@ -234,9 +234,9 @@ void PubEncDecDlg::clickCheckKeyPair()
     ret = JS_PKI_IsValidKeyPair( &binPri, &binPub );
 
     if( ret == JS_VALID )
-        berApplet->messageBox( tr("KeyPair is good"), this );
+        berApplet->messageBox( tr("The keypair is correct"), this );
     else
-        berApplet->warningBox( QString( tr("Invalid key pair: %1")).arg(ret), this );
+        berApplet->warningBox( QString( tr("The keypair is incorrect [%1]")).arg(ret), this );
 
 end :
     JS_BIN_reset( &binPri );
@@ -260,7 +260,7 @@ void PubEncDecDlg::Run()
     QString strInput = mInputText->toPlainText();
     if( strInput.isEmpty() )
     {
-        berApplet->warningBox( tr( "You have to insert data"), this );
+        berApplet->warningBox( tr( "Enter your data"), this );
         return;
     }
 
@@ -287,7 +287,7 @@ void PubEncDecDlg::Run()
 
         if( strCertPath.length() < 1 )
         {
-            berApplet->warningBox( tr( "You have to find certificate"), this );
+            berApplet->warningBox( tr( "Select a certificate"), this );
             goto end;
         }
 
@@ -585,7 +585,7 @@ void PubEncDecDlg::clickPriKeyDecode()
 
     if( binData.nLen < 1 )
     {
-        berApplet->warningBox( tr("fail to read data"), this );
+        berApplet->warningBox( tr("failed to read data"), this );
         return;
     }
 
@@ -599,7 +599,7 @@ void PubEncDecDlg::clickCertView()
     QString strPath = mCertPath->text();
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( tr("You have to find certificate"), this );
+        berApplet->warningBox( tr("Select a certificate"), this );
         return;
     }
 
@@ -617,7 +617,7 @@ void PubEncDecDlg::clickCertDecode()
 
     if( binData.nLen < 1 )
     {
-        berApplet->warningBox( tr("fail to read data"), this );
+        berApplet->warningBox( tr("failed to read data"), this );
         return;
     }
 
@@ -654,7 +654,7 @@ void PubEncDecDlg::clickCertType()
 
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "You have to find certificate or public key"), this );
+        berApplet->warningBox( tr( "Select certificate or public key"), this );
         return;
     }
 
