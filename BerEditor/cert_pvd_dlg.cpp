@@ -195,7 +195,7 @@ void CertPVDDlg::clickVerifyCert()
     }
     else
     {
-        berApplet->warningBox( "You have to find untrust certificate", this );
+        berApplet->warningBox( "Select untrust certificate", this );
         goto end;
     }
 
@@ -205,24 +205,22 @@ void CertPVDDlg::clickVerifyCert()
     }
 
     ret = JS_PKI_CertVerifyByCA( &binTrust, &binCRL, &binUntrust, sMsg );
+    berApplet->log( QString( "Certificate verification result by CA : %1").arg(ret));
 
-    berApplet->log( QString( "PVDCertValid : %1").arg(ret));
     if( ret == 1 )
     {
-        QString strOK = "The untrust certificate is OK";
-        berApplet->log( strOK );
-        berApplet->messageBox( strOK, this );
+        QString strOK = "The certificate verification (byCA) successful";
+        berApplet->messageLog( strOK, this );
     }
     else
     {
-        QString strErr = QString( "The untrust certificate verify fail: %1" ).arg(sMsg);
-        berApplet->elog( strErr );
-        berApplet->warningBox( strErr, this );
+        QString strErr = QString( "The certificate verification (byCA) failed: %1" ).arg(sMsg);
+        berApplet->warnLog( strErr, this );
     }
 
     ret = JS_PKI_verifyCert( &binTrust, &binCRL, &binUntrust, sMsg );
-    berApplet->log( QString( "verifyCert : %1").arg(ret));
-    if( ret != 1 ) berApplet->elog( QString("verify error msg: %1").arg(sMsg));
+    berApplet->log( QString( "Certificate verification result : %1").arg(ret));
+    if( ret != 1 ) berApplet->elog( QString("Certificate verification failed: %1").arg(sMsg));
 
 end :
     JS_BIN_reset( &binTrust );
@@ -250,13 +248,13 @@ void CertPVDDlg::clickVerifyCRL()
 
     if( strCAPath.length() < 1 )
     {
-        berApplet->warningBox( "You have to find trust certificate or untrust certificate", this );
+        berApplet->warningBox( "Select trust certificate or untrust certificate", this );
         goto end;
     }
 
     if( strCRLPath.length() < 1 )
     {
-        berApplet->warningBox( "You have to find CRL", this );
+        berApplet->warningBox( "Select CRL", this );
         goto end;
     }
 
@@ -268,13 +266,13 @@ void CertPVDDlg::clickVerifyCRL()
 
     if( ret == 1 )
     {
-        strMsg = QString( "Verify CRL OK with %1").arg( bTrust ? "Trust Cert" : "Untrust Cert");
+        strMsg = QString( "CRL verification successful with %1").arg( bTrust ? "Trust Cert" : "Untrust Cert");
         berApplet->messageBox( strMsg, this );
         berApplet->log( strMsg );
     }
     else
     {
-        strMsg = QString( "Verify fail with %1").arg( bTrust ? "Trust Cert" : "Untrust Cert" );
+        strMsg = QString( "CRL verification failed with %1").arg( bTrust ? "Trust Cert" : "Untrust Cert" );
         berApplet->warningBox( strMsg, this );
         berApplet->elog( strMsg );
     }
@@ -353,7 +351,7 @@ void CertPVDDlg::clickPolicyCheck()
 
     if( strTargetPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "You have to find target certificate" ), this );
+        berApplet->warningBox( tr( "Select a target certificate" ), this );
         goto end;
     }
 
@@ -427,18 +425,16 @@ void CertPVDDlg::clickPolicyCheck()
     tCheckTime = mVerifyDateTime->dateTime().toSecsSinceEpoch();
     ret = JS_PKI_CheckPolicy( pCertList, pParamList, &nExpPolicy );
 
-    berApplet->log( QString( "CheckPolicy : Ret: %1 ExpPolicy: %2").arg(ret).arg( nExpPolicy));
+    berApplet->log( QString( "Check policy results: Ret %1 ExpPolicy: %2").arg(ret).arg( nExpPolicy));
     if( ret == 1 )
     {
-        QString strOK = "It is OK to check policy";
-        berApplet->log( strOK );
-        berApplet->messageBox( strOK, this );
+        QString strOK = "Policy check successful";
+        berApplet->messageLog( strOK, this );
     }
     else
     {
-        QString strErr = QString( "It is fail to check policy: %1" ).arg(ret);
-        berApplet->elog( strErr );
-        berApplet->warningBox( strErr, this );
+        QString strErr = QString( "Policy check failed [%1]" ).arg(ret);
+        berApplet->warnLog( strErr, this );
     }
 
 end :
@@ -494,7 +490,7 @@ void CertPVDDlg::clickPathValidation()
 
     if( strTargetPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "You have to find target certificate" ), this );
+        berApplet->warningBox( tr( "Select target certificate" ), this );
         goto end;
     }
 
@@ -585,18 +581,16 @@ void CertPVDDlg::clickPathValidation()
         ret = JS_PKI_CertPVD( pTrustList, pUntrustList, pCRLList, pParamList, &binTarget, sMsg );
     }
 
-    berApplet->log( QString( "PVDCertValid : %1").arg(ret));
+    berApplet->log( QString( "Path verification result : %1").arg(ret));
     if( ret == 1 )
     {
-        QString strOK = "The PathValidation of the target certificate is OK";
-        berApplet->log( strOK );
-        berApplet->messageBox( strOK, this );
+        QString strOK = "The certificate path verification was successful.";
+        berApplet->messageLog( strOK, this );
     }
     else
     {
-        QString strErr = QString( "Verify fail: %1" ).arg(sMsg);
-        berApplet->elog( strErr );
-        berApplet->warningBox( strErr, this );
+        QString strErr = QString( "The certificate path verification failed [%1]" ).arg(sMsg);
+        berApplet->warnLog( strErr, this );
     }
 
 end :
@@ -616,7 +610,7 @@ void CertPVDDlg::clickTrustInfo()
     QString strPath = mTrustPathText->text();
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( "You have to find trust certificate", this );
+        berApplet->warningBox( "Select trust certificate", this );
         return;
     }
 
@@ -630,7 +624,7 @@ void CertPVDDlg::clickUntrustInfo()
     QString strPath = mUntrustPathText->text();
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( "You have to find untrust certificate", this );
+        berApplet->warningBox( "Select untrust certificate", this );
         return;
     }
 
@@ -644,7 +638,7 @@ void CertPVDDlg::clickCRLInfo()
     QString strPath = mCRLPathText->text();
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( "You have to find CRL", this );
+        berApplet->warningBox( "Select CRL", this );
         return;
     }
 
@@ -658,7 +652,7 @@ void CertPVDDlg::clickTargetInfo()
     QString strPath = mTargetPathText->text();
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( "You have to find target ceritifcate", this );
+        berApplet->warningBox( "Select target ceritifcate", this );
         return;
     }
 
@@ -673,7 +667,7 @@ void CertPVDDlg::clickTrustAdd()
 
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( "You have to find trust certificate", this );
+        berApplet->warningBox( "Select trust certificate", this );
         return;
     }
 
@@ -692,7 +686,7 @@ void CertPVDDlg::clickUntrustAdd()
 
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( "You have to find untrust certificate", this );
+        berApplet->warningBox( "Select untrust certificate", this );
         return;
     }
 
@@ -711,7 +705,7 @@ void CertPVDDlg::clickCRLAdd()
 
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( "You have to find CRL", this );
+        berApplet->warningBox( "Select CRL", this );
         return;
     }
 
@@ -757,7 +751,7 @@ void CertPVDDlg::clickParamAdd()
 
     if( strValue.length() < 1 )
     {
-        berApplet->warningBox( "You have to insert param value", this );
+        berApplet->warningBox( "Please enter parameter value", this );
         return;
     }
 
@@ -789,7 +783,7 @@ void CertPVDDlg::clickTrustDecode()
 
     if( binData.nLen < 1 )
     {
-        berApplet->warningBox( tr("fail to read data"), this );
+        berApplet->warningBox( tr("failed to read data"), this );
         return;
     }
 
@@ -807,7 +801,7 @@ void CertPVDDlg::clickUntrustDecode()
 
     if( binData.nLen < 1 )
     {
-        berApplet->warningBox( tr("fail to read data"), this );
+        berApplet->warningBox( tr("failed to read data"), this );
         return;
     }
 
@@ -825,7 +819,7 @@ void CertPVDDlg::clickCRLDecode()
 
     if( binData.nLen < 1 )
     {
-        berApplet->warningBox( tr("fail to read data"), this );
+        berApplet->warningBox( tr("failed to read data"), this );
         return;
     }
 

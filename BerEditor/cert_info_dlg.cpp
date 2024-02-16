@@ -176,7 +176,7 @@ void CertInfoDlg::getFields()
 
     if( cert_bin_.nLen <= 0 )
     {
-        berApplet->warningBox( tr( "Select certificate"), this );
+        berApplet->warningBox( tr( "Select a certificate"), this );
         close();
         return;
     }
@@ -186,7 +186,7 @@ void CertInfoDlg::getFields()
     ret = JS_PKI_getCertInfo2( &cert_bin_, &cert_info_, &ext_info_list_, &self_sign_ );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr("fail to get certificate information"), this );
+        berApplet->warningBox( tr("failed to get certificate information"), this );
         this->hide();
         return;
     }
@@ -446,7 +446,7 @@ int CertInfoDlg::saveAsPEM( const BIN *pData )
         int ret = JS_BIN_writePEM( pData, JS_PEM_TYPE_CERTIFICATE, fileName.toLocal8Bit().toStdString().c_str() );
         if( ret > 0 )
         {
-            berApplet->messageBox( tr( "Certificate or CRL is saved as PEM" ), this );
+            berApplet->messageBox( tr( "Save a certificate or CRL as a PEM file" ), this );
         }
     }
 
@@ -539,7 +539,7 @@ void CertInfoDlg::clickGetCA()
         certInfo.exec();
     }
     else
-        berApplet->elog( QString("fail to get CA certificate: %1").arg(ret));
+        berApplet->elog( QString("failed to get CA certificate [%1]").arg(ret));
 
     JS_BIN_reset( &binCA );
 }
@@ -560,7 +560,7 @@ void CertInfoDlg::clickGetCRL()
         crlInfo.exec();
     }
     else
-        berApplet->elog( QString("fail to get CRL: %1").arg(ret));
+        berApplet->elog( QString("failed to get CRL [%1]").arg(ret));
 
     JS_BIN_reset( &binCRL );
 }
@@ -597,7 +597,7 @@ void CertInfoDlg::clickPathValidation()
 
     ret = JS_PKI_CertPVD( pTrustList, pUntrustList, pCRLList, NULL, &cert_bin_, sResMsg );
 
-    berApplet->messageBox( tr( "Path Validate : %1 (%2)").arg( sResMsg ).arg( ret ), this );
+    berApplet->messageBox( tr( "Path verification result : %1 (%2)").arg( sResMsg ).arg( ret ), this );
 
     if( pTrustList ) JS_BIN_resetList( &pTrustList );
     if( pUntrustList ) JS_BIN_resetList( &pUntrustList );
@@ -620,14 +620,14 @@ void CertInfoDlg::clickVerifyCert()
     memset( sMsg, 0x00, sizeof(sMsg));
 
     ret = getCA( strExtAIA, &binCA );
-    if( ret != 0 ) berApplet->elog( tr( "fail to get CA: %1").arg( ret ));
+    if( ret != 0 ) berApplet->elog( tr( "failed to get CA certificate [%1]").arg( ret ));
 
     ret = getCRL( strExtCRLDP, &binCRL );
-    if( ret != 0 ) berApplet->elog( tr( "fail to get CRL: %1").arg( ret ));
+    if( ret != 0 ) berApplet->elog( tr( "failed to get CRL [%1]").arg( ret ));
 
     ret = JS_PKI_CertVerifyByCA( &binCA, &binCRL, &cert_bin_, sMsg );
 
-    berApplet->messageBox( tr( "Verify Res: %1(%2)").arg( sMsg ).arg( ret ), this );
+    berApplet->messageBox( tr( "Verification results: %1(%2)").arg( sMsg ).arg( ret ), this );
 
 end :
     JS_BIN_reset( &binCA );
@@ -650,7 +650,7 @@ void CertInfoDlg::clickOCSPCheck()
     ret = getCA( strExtValue, &binCA );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to get CA: %1").arg( ret ), this);
+        berApplet->warningBox( tr( "failed to get CA certificate: %1").arg( ret ), this);
         return;
     }
 
@@ -658,7 +658,7 @@ void CertInfoDlg::clickOCSPCheck()
 
     if( strURI.length() < 1 )
     {
-        berApplet->warningBox( tr( "fail to get OCSP URI" ), this );
+        berApplet->warningBox( tr( "failed to get OCSP URI address" ), this );
         return;
     }
 
@@ -666,13 +666,13 @@ void CertInfoDlg::clickOCSPCheck()
     ret = checkOCSP( strURI, &binCA, &cert_bin_, &sStatusInfo );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to get OCSP check: %1(%2)")
+        berApplet->warningBox( tr( "Certificate status verification failed with OCSP: %1(%2)")
                                   .arg( JS_OCSP_getResponseStatusName(ret) )
                                   .arg( ret ), this );
     }
     else
     {
-        berApplet->messageBox( tr( "OCSP Status is %1(%2)" )
+        berApplet->messageBox( tr( "Verification results with OCSP: %1(%2)" )
                                   .arg( JS_OCSP_getCertStatusName( sStatusInfo.nStatus ) )
                                   .arg( sStatusInfo.nStatus ), this);
     }
@@ -690,7 +690,7 @@ void CertInfoDlg::clickCRLCheck()
     ret = getCRL( strExtValue, &binCRL );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to get CRL : %1").arg( ret ), this );
+        berApplet->warningBox( tr( "failed to get CRL : %1").arg( ret ), this );
     }
     else
     {
@@ -705,7 +705,7 @@ void CertInfoDlg::clickCRLCheck()
         ret = JS_PKI_getStatusFromCRL( &binCRL, &cert_bin_, &nStatus, &tRevokedTime, sSerial );
         if( ret != 0 )
         {
-            berApplet->elog( QString("fail to get Status from CRL: %1" ).arg( ret ) );
+            berApplet->elog( QString("failed to get certificate status from CRL: %1" ).arg( ret ) );
         }
         else
         {
@@ -866,7 +866,7 @@ int CertInfoDlg::getCA( const QString strExtAIA, BIN *pCA )
 
     if( strURI.length() < 1 )
     {
-        berApplet->elog( "fail to get CA URI" );
+        berApplet->elog( "failed to get CA certificate URI address" );
         return -1;
     }
 
@@ -886,7 +886,7 @@ int CertInfoDlg::getCRL( const QString strExtCRLDP, BIN *pCRL )
 
     if( strURI.length() < 1 )
     {
-        berApplet->elog( "fail to get CRL URI" );
+        berApplet->elog( "failed to get CRL URI address" );
         return -1;
     }
 
