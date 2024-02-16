@@ -1039,7 +1039,7 @@ void EncDecDlg::clickFindDstFile()
 
     QString selectedFilter;
     QString fileName = QFileDialog::getSaveFileName( this,
-                                                     tr("Enc or Dec Files"),
+                                                     tr("encryption or decryption files"),
                                                      strPath,
                                                      strFilter,
                                                      &selectedFilter,
