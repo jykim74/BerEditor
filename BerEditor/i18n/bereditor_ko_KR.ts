@@ -46,13 +46,31 @@
     </message>
     <message>
         <location filename="../about_dlg.cpp" line="18"/>
-        <source>%1 [Ver %2]</source>
+        <source>%1 [Version %2]</source>
         <translation>%1 [버전 %2]</translation>
     </message>
     <message>
         <location filename="../about_dlg.cpp" line="20"/>
+        <source>%1 [Unlicensed Version %2]</source>
+        <translation>%1 [Unlicensed 버전 %2]</translation>
+    </message>
+    <message>
+        <location filename="../about_dlg.cpp" line="35"/>
+        <source>This program is a freeware tool created using open source.If you do not use this for commercial purposes, you can use it freely </source>
+        <translation>본 프로그램은 오픈소스를 이용하여 제작된 프리웨어 도구입니다. 상업적인 목적으로 사용하지 않으시면 자유롭게 사용하셔도 됩니다.</translation>
+    </message>
+    <message>
+        <location filename="../about_dlg.cpp" line="40"/>
+        <source>Third party software that may be contained in this application.</source>
+        <translation>이 애플리케이션에 포함될 수 있는 타사 소프트웨어.</translation>
+    </message>
+    <message>
+        <source>%1 [Ver %2]</source>
+        <translation type="vanished">%1 [버전 %2]</translation>
+    </message>
+    <message>
         <source>%1 (Unlicensed Version) [Ver %2]</source>
-        <translation>%1 (Unlicensed 버전) [버전 %2]</translation>
+        <translation type="vanished">%1 (Unlicensed 버전) [버전 %2]</translation>
     </message>
     <message>
         <source>About %1 [Ver %2]</source>
@@ -63,9 +81,8 @@
         <translation type="vanished">%1 (%2) 에 대해서</translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="35"/>
         <source>This is freeware tool to decode and to encode ASN.1 and BER. and to test cryptographic funtionsIf you do not use this for commercial purposes, you can use it freely If you have any opinions on this tool, please send me a mail.</source>
-        <translation>이 프로그램은 ASN.1 과 BER 인코딩 및 디코딩을 하고 암호화 기능 테스트를 위한  프리웨어 소프트웨어 이다. 상업적 목적이 아니면 자유롭게 사용 할 수 있습니다. 의견이나 요청이 있으면 메일로 연락주세요</translation>
+        <translation type="vanished">이 프로그램은 ASN.1 과 BER 인코딩 및 디코딩을 하고 암호화 기능 테스트를 위한  프리웨어 소프트웨어 이다. 상업적 목적이 아니면 자유롭게 사용 할 수 있습니다. 의견이나 요청이 있으면 메일로 연락주세요</translation>
     </message>
     <message>
         <source>This is freeware tool to decode ASN.1 and BER If you do not use this for commercial purposes, you can use it freely If you have any opinions on this tool, please send me a mail.</source>
