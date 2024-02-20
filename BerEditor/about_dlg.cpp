@@ -15,9 +15,9 @@ AboutDlg::AboutDlg(QWidget *parent) :
     initialize();
 
     if( berApplet->isLicense() )
-        version_label_ = tr( "%1 [Ver %2]").arg(berApplet->getBrand()).arg(STRINGIZE(BER_EDITOR_VERSION));
+        version_label_ = tr( "%1 [Version %2]").arg(berApplet->getBrand()).arg(STRINGIZE(BER_EDITOR_VERSION));
     else
-        version_label_ = tr( "%1 (Unlicensed Version) [Ver %2]").arg(berApplet->getBrand()).arg(STRINGIZE(BER_EDITOR_VERSION));
+        version_label_ = tr( "%1 [Unlicensed Version %2]").arg(berApplet->getBrand()).arg(STRINGIZE(BER_EDITOR_VERSION));
 
     mVersionLabel->setText( version_label_ );
 
@@ -32,23 +32,36 @@ AboutDlg::AboutDlg(QWidget *parent) :
 
     mAboutText->setOpenExternalLinks(true);
 
-    QString strAbout = tr("This is freeware tool to decode and to encode ASN.1 and BER. "
-                          "and to test cryptographic funtions"
-            "If you do not use this for commercial purposes, "
-            "you can use it freely "
-            "If you have any opinions on this tool, please send me a mail." );
+    QString strAbout = tr("This program is a freeware tool created using open source."
+                          "If you do not use this for commercial purposes, you can use it freely " );
+    strAbout += "<br>Copyright (C) 2022 ~ 2024 JayKim<br><br>";
 
-    strAbout += "<br><br>OpenSSL Version 3.0.8";
-    strAbout += "<br>https://www.openssl.org";
-    strAbout += "<br>Apache 2.0 License";
+
+    strAbout += tr("Third party software that may be contained in this application.");
+
+    strAbout += "<br><b>OpenSSL 3.0.8</b>";
+    strAbout += "<br>- https://www.openssl.org";
+    strAbout += "<br>- <a href=https://github.com/openssl/openssl/blob/master/LICENSE.txt>Apache 2.0 License</a>";
 
 #ifdef Q_OS_MACOS
-    strAbout += "<br><br>QT Version 5.15.2";
+    strAbout += "<br><br><b>QT 5.15.2</b>";
 #else
-    strAbout += "<br><br>QT Version 5.13.2";
+    strAbout += "<br><br><b>QT 5.13.2</b>";
 #endif
-    strAbout += "<br>https://www.qt.io";
-    strAbout += "<br>LGPL 3.0 License";
+    strAbout += "<br>- https://www.qt.io";
+    strAbout += "<br>- <a href=https://www.qt.io/licensing/open-source-lgpl-obligations>LGPL 3.0 License</a>";
+
+#ifdef Q_OS_WIN
+    strAbout += "<br><br><b>WinSparkle</b>";
+    strAbout += "<br>- https://winsparkle.org";
+    strAbout += "<br>- <a href=https://github.com/vslavik/winsparkle/blob/master/COPYING>MIT license</a>";
+#endif
+
+#ifdef Q_OS_MACOS
+    strAbout += "<br><br><b>Sparkle</b>";
+    strAbout += "<br>https://sparkle-project.org";
+    strAbout += "<br><a href=https://github.com/sparkle-project/Sparkle/blob/2.x/LICENSE>MIT license</a>";
+#endif
 
     QString strLibVersion = JS_GEN_getBuildInfo();
 
@@ -57,14 +70,15 @@ AboutDlg::AboutDlg(QWidget *parent) :
 
     strAbout += "<br>";
     strAbout += getBuild();
-    strAbout += "<br>";
+    strAbout += "<br><br>";
 
-    strAbout += "Copyright (C) 2020 ~ 2023 JongYeob Kim";
+
+    /*
     strAbout += "<br><br>blog: ";
     strAbout += "<a href=https://jykim74.tistory.com>https://jykim74.tistory.com</a>";
     strAbout += "<br>mail: ";
     strAbout += "<a href=mailto:jykim74@gmail.com>jykim74@gmail.com</a>";
-
+    */
 #ifdef _AUTO_UPDATE
     mCheckUpdatBtn->show();
 #else
