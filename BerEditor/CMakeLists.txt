@@ -165,7 +165,7 @@ target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )
 
 # target_compile_definitions( ${PROJECT_NAME} PRIVATE JS_PRO )
 # add_definitions( -D_USE_RC_LCN )
-add_definitions( -DUSE_OCSP )
+add_definitions( -DUSE_OCSP -DUSE_GMP )
 
 if(WIN32)
     include_directories( ../../PKILib

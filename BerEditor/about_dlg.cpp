@@ -59,8 +59,8 @@ AboutDlg::AboutDlg(QWidget *parent) :
 
 #ifdef Q_OS_MACOS
     strAbout += "<br><br><b>Sparkle</b>";
-    strAbout += "<br>https://sparkle-project.org";
-    strAbout += "<br><a href=https://github.com/sparkle-project/Sparkle/blob/2.x/LICENSE>MIT license</a>";
+    strAbout += "- <br>https://sparkle-project.org";
+    strAbout += "- <br><a href=https://github.com/sparkle-project/Sparkle/blob/2.x/LICENSE>MIT license</a>";
 #endif
 
     QString strLibVersion = JS_GEN_getBuildInfo();

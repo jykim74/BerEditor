@@ -1,6 +1,6 @@
 #include "js_ber.h"
 #include "js_pki.h"
-#include "js_kw.h"
+
 
 #include "key_man_dlg.h"
 #include "ber_applet.h"
@@ -155,7 +155,7 @@ void KeyManDlg::clickWrap()
     BIN binInput = {0,0};
     BIN binWrappingKey = {0,0};
     BIN binOutput = {0,0};
-    int nMode = 0;
+    int nPad = 0;
 
     QString strInput = mSrcText->toPlainText();
     QString strWrappingKey = mKEKText->text();
@@ -173,15 +173,16 @@ void KeyManDlg::clickWrap()
         goto end;
     }
 
-    if( mKWRadio->isChecked() )
-        nMode = JS_KW_MODE_KW;
+    if( mKWPRadio->isChecked() )
+        nPad = 1;
     else
-        nMode = JS_KW_MODE_KWP;
+        nPad = 0;
 
     getBINFromString( &binInput, mSrcTypeCombo->currentText(), strInput );
     getBINFromString( &binWrappingKey, mKEKTypeCombo->currentText(), strWrappingKey );
 
-    ret = JS_KW_WrapKey( nMode, &binInput, &binWrappingKey, &binOutput );
+    ret = JS_PKI_WrapKey( nPad, &binWrappingKey, &binInput, &binOutput );
+
     if( ret != 0 )
     {
         berApplet->warningBox( QString( "failed to wrap key: %1").arg(ret), this );
@@ -207,7 +208,7 @@ void KeyManDlg::clickUnwrap()
     BIN binInput = {0,0};
     BIN binWrappingKey = {0,0};
     BIN binOutput = {0,0};
-    int nMode = 0;
+    int nPad = 0;
 
     QString strInput = mSrcText->toPlainText();
     QString strWrappingKey = mKEKText->text();
@@ -225,15 +226,15 @@ void KeyManDlg::clickUnwrap()
         goto end;
     }
 
-    if( mKWRadio->isChecked() )
-        nMode = JS_KW_MODE_KW;
+    if( mKWPRadio->isChecked() )
+        nPad = 1;
     else
-        nMode = JS_KW_MODE_KWP;
+        nPad = 0;
 
     getBINFromString( &binInput, mSrcTypeCombo->currentText(), strInput );
     getBINFromString( &binWrappingKey, mKEKTypeCombo->currentText(), strWrappingKey );
 
-    ret = JS_KW_UnwrapKey( nMode, &binInput, &binWrappingKey, &binOutput );
+    ret = JS_PKI_UnwrapKey( nPad, &binWrappingKey, &binInput, &binOutput );
     if( ret != 0 )
     {
         berApplet->warningBox( QString( "failed to unwrap key: %1").arg(ret), this );
