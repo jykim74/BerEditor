@@ -34,34 +34,8 @@ AboutDlg::AboutDlg(QWidget *parent) :
 
     QString strAbout = tr("This program is a freeware tool created using open source."
                           "If you do not use this for commercial purposes, you can use it freely " );
-    strAbout += "<br>Copyright (C) 2022 ~ 2024 JayKim<br><br>";
 
-
-    strAbout += tr("Third party software that may be contained in this application.");
-
-    strAbout += "<br><b>OpenSSL 3.0.8</b>";
-    strAbout += "<br>- https://www.openssl.org";
-    strAbout += "<br>- <a href=https://github.com/openssl/openssl/blob/master/LICENSE.txt>Apache 2.0 License</a>";
-
-#ifdef Q_OS_MACOS
-    strAbout += "<br><br><b>QT 5.15.2</b>";
-#else
-    strAbout += "<br><br><b>QT 5.13.2</b>";
-#endif
-    strAbout += "<br>- https://www.qt.io";
-    strAbout += "<br>- <a href=https://www.qt.io/licensing/open-source-lgpl-obligations>LGPL 3.0 License</a>";
-
-#ifdef Q_OS_WIN
-    strAbout += "<br><br><b>WinSparkle</b>";
-    strAbout += "<br>- https://winsparkle.org";
-    strAbout += "<br>- <a href=https://github.com/vslavik/winsparkle/blob/master/COPYING>MIT license</a>";
-#endif
-
-#ifdef Q_OS_MACOS
-    strAbout += "<br><br><b>Sparkle</b>";
-    strAbout += "- <br>https://sparkle-project.org";
-    strAbout += "- <br><a href=https://github.com/sparkle-project/Sparkle/blob/2.x/LICENSE>MIT license</a>";
-#endif
+    strAbout += "<br><br>Copyright (C) 2022 ~ 2024 JayKim <jykim74@gmail.com><br><br>";
 
     QString strLibVersion = JS_GEN_getBuildInfo();
 
@@ -70,22 +44,55 @@ AboutDlg::AboutDlg(QWidget *parent) :
 
     strAbout += "<br>";
     strAbout += getBuild();
-    strAbout += "<br><br>";
 
+    QString strCopyRight;
 
-    /*
-    strAbout += "<br><br>blog: ";
-    strAbout += "<a href=https://jykim74.tistory.com>https://jykim74.tistory.com</a>";
-    strAbout += "<br>mail: ";
-    strAbout += "<a href=mailto:jykim74@gmail.com>jykim74@gmail.com</a>";
-    */
+    strCopyRight = tr("Third party software that may be contained in this application.");
+
+    strCopyRight += "<br><br><b>OpenSSL 3.0.8</b>";
+    strCopyRight += "<br>- https://www.openssl.org";
+    strCopyRight += "<br>- <a href=https://github.com/openssl/openssl/blob/master/LICENSE.txt>Apache 2.0 License</a>";
+
+#ifdef Q_OS_MACOS
+    strCopyRight += "<br><br><b>QT 5.15.2</b>";
+#else
+    strCopyRight += "<br><br><b>QT 5.13.2</b>";
+#endif
+    strCopyRight += "<br>- https://www.qt.io";
+    strCopyRight += "<br>- <a href=https://www.qt.io/licensing/open-source-lgpl-obligations>LGPL 3.0 License</a>";
+
+#ifdef Q_OS_WIN
+    strAbout += "<br><br><b>WinSparkle</b>";
+    strAbout += "<br>- https://winsparkle.org";
+    strAbout += "<br>- <a href=https://github.com/vslavik/winsparkle/blob/master/COPYING>MIT license</a>";
+#endif
+
+#ifdef Q_OS_MACOS
+    strCopyRight += "<br><br><b>Sparkle</b>";
+    strCopyRight += "<br>- https://sparkle-project.org";
+    strCopyRight += "<br>- <a href=https://github.com/sparkle-project/Sparkle/blob/2.x/LICENSE>MIT license</a>";
+#endif
+
+    strCopyRight += "<br><br><b>jsmn</b>";
+    strCopyRight += "<br>- https://github.com/zserge/jsmn";
+    strCopyRight += "<br>- <a href=https://github.com/zserge/jsmn?tab=MIT-1-ov-file>MIT License</a>";
+
+    strCopyRight += "<br><br><b>shamir-secret</b>";
+    strCopyRight += "<br>- https://github.com/KPN-CISO/shamir-secret";
+    strCopyRight += "<br>- <a href=https://github.com/KPN-CISO/shamir-secret?tab=MIT-1-ov-file>MIT License</a>";
+
+    strCopyRight += "<br><br><b>OpenKMIP</b>";
+    strCopyRight += "<br>- https://github.com/OpenKMIP/libkmip";
+    strCopyRight += "<br>- <a href=https://github.com/OpenKMIP/libkmip?tab=Apache-2.0-2-ov-file>Apache 2.0 License</a>";
+
+    mCopyRightText->setText( strCopyRight );
+
 #ifdef _AUTO_UPDATE
     mCheckUpdatBtn->show();
 #else
     mCheckUpdatBtn->hide();
 #endif
 
-//    mAboutText->setText( strAbout );
     mAboutText->setHtml( strAbout );
     mOKBtn->setDefault(true);
 }
@@ -109,6 +116,8 @@ void AboutDlg::initialize()
     font.setBold(true);
     font.setPointSize(15);
     mVersionLabel->setFont(font);
+
+    tabWidget->setCurrentIndex(0);
 }
 
 #ifdef _AUTO_UPDATE

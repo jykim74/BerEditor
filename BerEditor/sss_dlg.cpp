@@ -169,11 +169,9 @@ void SSSDlg::clickSplit()
 
     berApplet->log( QString( "Src : %1").arg( getHexString( &binSrc )));
 
-#ifdef USE_GMP
-    ret = JS_SSS_splitKey( nShares, nThreshold, &binSrc, &pShareList );
-#else
+
     ret = JS_PKI_splitKey( nShares, nThreshold, &binSrc, &pShareList );
-#endif
+
     if( ret != 0 ) goto end;
 
     pCurList = pShareList;
@@ -226,11 +224,8 @@ void SSSDlg::clickJoin()
         JS_BIN_reset( &binVal );
     }
 
-#ifdef USE_GMP
-    ret = JS_SSS_joinKey( nRow, pShareList, &binKey );
-#else
+
     ret = JS_PKI_joinKey( nRow, pShareList, &binKey );
-#endif
 
     if( ret != 0 ) goto end;
 

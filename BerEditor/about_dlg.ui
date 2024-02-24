@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>448</width>
+    <width>543</width>
     <height>390</height>
    </rect>
   </property>
@@ -62,12 +62,37 @@
     </layout>
    </item>
    <item>
-    <widget class="QTextBrowser" name="mAboutText">
-     <property name="font">
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>1</number>
      </property>
-     <property name="openExternalLinks">
-      <bool>false</bool>
-     </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Information</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QTextBrowser" name="mAboutText">
+         <property name="font">
+          <font/>
+         </property>
+         <property name="openExternalLinks">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>Copyright</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QTextBrowser" name="mCopyRightText"/>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
    <item>
@@ -75,6 +100,7 @@
      <item>
       <widget class="QPushButton" name="mCheckUpdatBtn">
        <property name="font">
+        <font/>
        </property>
        <property name="text">
         <string>Check For Update</string>
@@ -106,7 +132,6 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>mAboutText</tabstop>
   <tabstop>mCheckUpdatBtn</tabstop>
   <tabstop>mOKBtn</tabstop>
  </tabstops>

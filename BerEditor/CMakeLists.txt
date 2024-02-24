@@ -15,7 +15,6 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 #add_definitions( -D_USE_RC_LCN )
-#add_definitions( -DUSE_GMP )
 add_definitions( -DUSE_OCSP )
 
 find_package(QT NAMES Qt5 Qt6 REQUIRED COMPONENTS Core)
@@ -196,7 +195,7 @@ if(WIN32)
         Qt${QT_VERSION_MAJOR}::Widgets
 	Qt${QT_VERSION_MAJOR}::PrintSupport
         Qt${QT_VERSION_MAJOR}::Gui
-        PKILib crypto ssl ltdl ldap lber gmp ws2_32 WinSparkle )
+        PKILib crypto ssl ltdl ldap lber ws2_32 WinSparkle )
 
     target_compile_definitions( ${PROJECT_NAME} PRIVATE _AUTO_UPDATE )
 
@@ -236,7 +235,7 @@ elseif(APPLE)
         Qt${QT_VERSION_MAJOR}::Gui
         Qt${QT_VERSION_MAJOR}::Widgets
 	Qt${QT_VERSION_MAJOR}::PrintSupport
-        PKILib crypto ssl ltdl ldap lber gmp
+        PKILib crypto ssl ltdl ldap lber
         "-framework AppKit"
         "-framework Carbon"
         "-framework Foundation"
@@ -267,7 +266,7 @@ elseif(LINUX)
         Qt${QT_VERSION_MAJOR}::Gui
         Qt${QT_VERSION_MAJOR}::Widgets
 	Qt${QT_VERSION_MAJOR}::PrintSupport
-        PKILib crypto ssl ltdl ldap lber gmp )
+        PKILib crypto ssl ltdl ldap lber )
 endif()
 
 target_compile_definitions( ${PROJECT_NAME} PRIVATE
