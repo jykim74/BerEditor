@@ -14,6 +14,10 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
+#add_definitions( -D_USE_RC_LCN )
+#add_definitions( -DUSE_GMP )
+add_definitions( -DUSE_OCSP )
+
 find_package(QT NAMES Qt5 Qt6 REQUIRED COMPONENTS Core)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Gui)
 find_package(Qt${QT_VERSION_MAJOR} OPTIONAL_COMPONENTS Widgets)
@@ -164,9 +168,7 @@ add_executable(${PROJECT_NAME}
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )
 
 # target_compile_definitions( ${PROJECT_NAME} PRIVATE JS_PRO )
-# add_definitions( -D_USE_RC_LCN )
-# add_definitions( -DUSE_CMP )
-add_definitions( -DUSE_OCSP )
+
 
 if(WIN32)
     include_directories( ../../PKILib
