@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2024 JayKim <jykim74@gmail.com>
+ *
+ * All rights reserved.
+ */
 #ifndef BER_TRAY_ICON_H
 #define BER_TRAY_ICON_H
 

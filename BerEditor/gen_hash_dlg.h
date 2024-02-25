@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2024 JayKim <jykim74@gmail.com>
+ *
+ * All rights reserved.
+ */
 #ifndef GEN_HASH_DLG_H
 #define GEN_HASH_DLG_H
 

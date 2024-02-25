@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2024 JayKim <jykim74@gmail.com>
+ *
+ * All rights reserved.
+ */
 #ifndef KEY_AGREE_DLG_H
 #define KEY_AGREE_DLG_H
 

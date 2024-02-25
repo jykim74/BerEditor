@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2024 JayKim <jykim74@gmail.com>
+ *
+ * All rights reserved.
+ */
 #ifndef DATA_ENCODER_DLG_H
 #define DATA_ENCODER_DLG_H
 

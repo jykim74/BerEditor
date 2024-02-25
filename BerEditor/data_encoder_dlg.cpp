@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2024 JayKim <jykim74@gmail.com>
+ *
+ * All rights reserved.
+ */
 #include "data_encoder_dlg.h"
 #include "js_bin.h"
 #include "js_util.h"

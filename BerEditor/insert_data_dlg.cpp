@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2024 JayKim <jykim74@gmail.com>
+ *
+ * All rights reserved.
+ */
 #include "insert_data_dlg.h"
 #include "ber_applet.h"
 #include "common.h"

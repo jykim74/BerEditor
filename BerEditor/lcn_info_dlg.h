@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2024 JayKim <jykim74@gmail.com>
+ *
+ * All rights reserved.
+ */
 #ifndef LCN_INFO_DLG_H
 #define LCN_INFO_DLG_H
 

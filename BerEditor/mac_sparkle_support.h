@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2024 JayKim <jykim74@gmail.com>
+ *
+ * All rights reserved.
+ */
 #ifndef MAC_SPARKLE_SUPPORT_H
 #define MAC_SPARKLE_SUPPORT_H
 

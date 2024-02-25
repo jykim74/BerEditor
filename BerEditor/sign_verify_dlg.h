@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2024 JayKim <jykim74@gmail.com>
+ *
+ * All rights reserved.
+ */
 #ifndef SIGN_VERIFY_DLG_H
 #define SIGN_VERIFY_DLG_H
 

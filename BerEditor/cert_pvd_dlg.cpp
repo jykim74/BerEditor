@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2024 JayKim <jykim74@gmail.com>
+ *
+ * All rights reserved.
+ */
 #include "cert_pvd_dlg.h"
 #include "js_pki.h"
 #include "js_pki_pvd.h"

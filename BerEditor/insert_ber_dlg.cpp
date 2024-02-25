@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2024 JayKim <jykim74@gmail.com>
+ *
+ * All rights reserved.
+ */
 #include "insert_ber_dlg.h"
 #include "mainwindow.h"
 #include "js_ber.h"

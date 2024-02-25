@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2024 JayKim <jykim74@gmail.com>
+ *
+ * All rights reserved.
+ */
 #ifndef AUTO_UPDATE_SERVICE_H
 #define AUTO_UPDATE_SERVICE_H
 

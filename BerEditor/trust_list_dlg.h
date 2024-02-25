@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2024 JayKim <jykim74@gmail.com>
+ *
+ * All rights reserved.
+ */
 #ifndef TRUST_LIST_DLG_H
 #define TRUST_LIST_DLG_H
 

@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2024 JayKim <jykim74@gmail.com>
+ *
+ * All rights reserved.
+ */
 #ifndef CERT_PVD_DLG_H
 #define CERT_PVD_DLG_H
 

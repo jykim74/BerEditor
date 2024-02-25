@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2024 JayKim <jykim74@gmail.com>
+ *
+ * All rights reserved.
+ */
 #ifndef NUM_TRANS_DLG_H
 #define NUM_TRANS_DLG_H
 

@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2024 JayKim <jykim74@gmail.com>
+ *
+ * All rights reserved.
+ */
 #include "ber_item.h"
 #include "js_bin.h"
 #include "js_pki_tools.h"

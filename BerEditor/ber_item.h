@@ -1,4 +1,9 @@
-﻿#ifndef BER_ITEM_H
+﻿/*
+ * Copyright (C) 2024 JayKim <jykim74@gmail.com>
+ *
+ * All rights reserved.
+ */
+#ifndef BER_ITEM_H
 #define BER_ITEM_H
 
 #include <QStandardItem>

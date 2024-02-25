@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2024 JayKim <jykim74@gmail.com>
+ *
+ * All rights reserved.
+ */
 #ifndef INSERT_BER_DLG_H
 #define INSERT_BER_DLG_H
 

@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2024 JayKim <jykim74@gmail.com>
+ *
+ * All rights reserved.
+ */
 #include "about_dlg.h"
 #include "ber_applet.h"
 #include "auto_update_service.h"
@@ -32,19 +37,63 @@ AboutDlg::AboutDlg(QWidget *parent) :
 
     mAboutText->setOpenExternalLinks(true);
 
+    showInfo();
+    showCopyright();
+
+#ifdef _AUTO_UPDATE
+    mCheckUpdatBtn->show();
+#else
+    mCheckUpdatBtn->hide();
+#endif
+
+
+    mOKBtn->setDefault(true);
+}
+
+AboutDlg::~AboutDlg()
+{
+//    delete ui;
+}
+
+QString AboutDlg::getBuild()
+{
+    QString strBuild = QString( "Build Date: %1 %2").arg( __DATE__ ).arg( __TIME__ );
+    return strBuild;
+}
+
+void AboutDlg::initialize()
+{
+    static QFont font;
+    QString strFont = berApplet->settingsMgr()->getFontFamily();
+    font.setFamily( strFont );
+    font.setBold(true);
+    font.setPointSize(15);
+    mVersionLabel->setFont(font);
+
+    tabWidget->setCurrentIndex(0);
+}
+
+void AboutDlg::showInfo()
+{
     QString strAbout = tr("This program is a freeware tool created using open source."
                           "If you do not use this for commercial purposes, you can use it freely " );
 
-    strAbout += "<br><br>Copyright (C) 2022 ~ 2024 JayKim <jykim74@gmail.com><br><br>";
+    strAbout += "<br><br>Copyright (C) 2024 JayKim &lt;jykim74@gmail.com&gt;";
 
     QString strLibVersion = JS_GEN_getBuildInfo();
 
     strAbout += "<br><br>Library: ";
     strAbout += strLibVersion;
-
     strAbout += "<br>";
+    strAbout += berApplet->getBrand();
+    strAbout += " : ";
     strAbout += getBuild();
 
+    mAboutText->setHtml( strAbout );
+}
+
+void AboutDlg::showCopyright()
+{
     QString strCopyRight;
 
     strCopyRight = tr("Third party software that may be contained in this application.");
@@ -74,7 +123,7 @@ AboutDlg::AboutDlg(QWidget *parent) :
 #endif
 
     strCopyRight += "<br><br><b>jsmn</b>";
-    strCopyRight += "<br>- https://github.com/zserge/jsmn";
+    strCopyRight += "<br>- https://zserge.com/jsmn";
     strCopyRight += "<br>- <a href=https://github.com/zserge/jsmn?tab=MIT-1-ov-file>MIT License</a>";
 
     strCopyRight += "<br><br><b>shamir-secret</b>";
@@ -86,38 +135,6 @@ AboutDlg::AboutDlg(QWidget *parent) :
     strCopyRight += "<br>- <a href=https://github.com/OpenKMIP/libkmip?tab=Apache-2.0-2-ov-file>Apache 2.0 License</a>";
 
     mCopyRightText->setText( strCopyRight );
-
-#ifdef _AUTO_UPDATE
-    mCheckUpdatBtn->show();
-#else
-    mCheckUpdatBtn->hide();
-#endif
-
-    mAboutText->setHtml( strAbout );
-    mOKBtn->setDefault(true);
-}
-
-AboutDlg::~AboutDlg()
-{
-//    delete ui;
-}
-
-QString AboutDlg::getBuild()
-{
-    QString strBuild = QString( "Build Date: %1 %2").arg( __DATE__ ).arg( __TIME__ );
-    return strBuild;
-}
-
-void AboutDlg::initialize()
-{
-    static QFont font;
-    QString strFont = berApplet->settingsMgr()->getFontFamily();
-    font.setFamily( strFont );
-    font.setBold(true);
-    font.setPointSize(15);
-    mVersionLabel->setFont(font);
-
-    tabWidget->setCurrentIndex(0);
 }
 
 #ifdef _AUTO_UPDATE

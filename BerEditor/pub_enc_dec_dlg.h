@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2024 JayKim <jykim74@gmail.com>
+ *
+ * All rights reserved.
+ */
 #ifndef RSA_ENC_DEC_DLG_H
 #define RSA_ENC_DEC_DLG_H
 

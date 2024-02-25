@@ -1,3 +1,8 @@
+/*
+ * Copyright (C) 2024 JayKim <jykim74@gmail.com>
+ *
+ * All rights reserved.
+ */
 #ifndef ABOUT_DLG_H
 #define ABOUT_DLG_H
 
@@ -25,6 +30,9 @@ private:
     QString version_label_;
     QString getBuild();
     void initialize();
+
+    void showInfo();
+    void showCopyright();
 };
 
 #endif // ABOUT_DLG_H
