@@ -33,5 +33,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 This program links to software with different licenses from:
 
 - https://www.openssl.org ( Apache-2.0 License )
-
 - https://www.qt.io ( LGPLv3 License )
+- https://www.openldap.org ( The OpenLDAP Public License )
+- https://www.gnu.org/software/libtool ( LGPLv3 License )

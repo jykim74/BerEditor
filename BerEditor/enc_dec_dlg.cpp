@@ -521,6 +521,7 @@ int EncDecDlg::encDecInit()
     BIN binKey = {0,0};
     BIN binIV = {0,0};
     BIN binAAD = {0,0};
+    BIN binTag = {0,0};
     int nDataType = DATA_STRING;
 
     if( ctx_ )
@@ -564,6 +565,8 @@ int EncDecDlg::encDecInit()
     QString strAlg = mAlgCombo->currentText();
     QString strMode = mModeCombo->currentText();
     QString strSymAlg = getSymAlg( strAlg, strMode, binKey.nLen );
+    QString strReqTagLen = mReqTagLenText->text();
+    QString strTag = mTagText->text();
 
     berApplet->log( QString( "SymAlg  : %1").arg( strSymAlg ));
 
@@ -591,7 +594,17 @@ int EncDecDlg::encDecInit()
         {
             if( isCCM( strAlg) )
             {
-                ret = JS_PKI_encryptCCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD, nDataLen );
+                int nReqTagLen = 0;
+
+                if( strReqTagLen.length() < 1 )
+                {
+                    berApplet->warnLog( tr("Please enter request tag length" ), this );
+                    goto end;
+                }
+
+                nReqTagLen = strReqTagLen.toInt();
+
+                ret = JS_PKI_encryptCCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD, nReqTagLen, nDataLen );
                 berApplet->log( QString( "Initial data length : %1" ).arg( nDataLen ));
             }
             else
@@ -607,7 +620,17 @@ int EncDecDlg::encDecInit()
         else
         {
             if( isCCM( strAlg ) )
-                ret = JS_PKI_decryptCCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD, nDataLen );
+            {
+                if( strTag.length() < 1 )
+                {
+                    berApplet->warnLog( tr( "Please enter tag"), this );
+                    ret = -1;
+                    goto end;
+                }
+
+                JS_BIN_decodeHex( strTag.toStdString().c_str(), &binTag );
+                ret = JS_PKI_decryptCCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD, &binTag, nDataLen );
+            }
             else
                 ret = JS_PKI_decryptGCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD );
 
@@ -649,6 +672,7 @@ end :
     JS_BIN_reset( &binIV );
     JS_BIN_reset( &binAAD );
     JS_BIN_reset( &binSrc );
+    JS_BIN_reset( &binTag );
 
     repaint();
     return ret;
@@ -807,7 +831,7 @@ void EncDecDlg::encDecFinal()
                 JS_BIN_decodeBase64( strTag.toStdString().c_str(), &binTag );
 
             if( isCCM(strAlg) )
-                ret = JS_PKI_decryptCCMFinal( ctx_, &binTag, &binDst );
+                ret = JS_PKI_decryptCCMFinal( ctx_, &binDst );
             else
                 ret = JS_PKI_decryptGCMFinal( ctx_, &binTag, &binDst );
 

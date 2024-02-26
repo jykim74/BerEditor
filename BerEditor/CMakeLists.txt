@@ -161,6 +161,7 @@ add_executable(${PROJECT_NAME}
     be.rc
     bereditor.icns
     BerEditor.pro
+    ../LICENSE
 )
 
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )
