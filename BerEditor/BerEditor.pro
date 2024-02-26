@@ -140,13 +140,13 @@ mac {
     CONFIG( debug, debug | release ) {
         message( "BerEditor Debug" );
         LIBS += -L"../../build-PKILib-Desktop_Qt_5_15_2_clang_64bit-Debug" -lPKILib
-        LIBS += -L"../../PKILib/lib/mac/debug/openssl3/lib" -lcrypto -lssl
-        INCLUDEPATH += "../../PKILib/lib/mac/debug/openssl3/include"
+        LIBS += -L"../../lib/mac/debug/openssl3/lib" -lcrypto -lssl
+        INCLUDEPATH += "../../lib/mac/debug/openssl3/include"
     } else {
         message( "BerEditor Release" );
         LIBS += -L"../../build-PKILib-Desktop_Qt_5_15_2_clang_64bit-Release" -lPKILib
-        LIBS += -L"../../PKILib/lib/mac/openssl3/lib" -lcrypto -lssl
-        INCLUDEPATH += "../../PKILib/lib/mac/openssl3/include"
+        LIBS += -L"../../lib/mac/openssl3/lib" -lcrypto -lssl
+        INCLUDEPATH += "../../lib/mac/openssl3/include"
     }
 
     LIBS += -lldap -llber -lgmp
@@ -156,10 +156,10 @@ mac {
 linux {
     CONFIG( debug, debug | release ) {
         LIBS += -L"../../build-PKILib-Desktop_Qt_5_13_2_GCC_64bit-Debug" -lPKILib
-        LIBS += -L"../../PKILib/lib/linux/debug/openssl3/lib64" -lcrypto -lssl
+        LIBS += -L"../../lib/linux/debug/openssl3/lib64" -lcrypto -lssl
     } else {
         LIBS += -L"../../build-PKILib-Desktop_Qt_5_13_2_GCC_64bit-Release" -lPKILib
-        LIBS += -L"../../PKILib/lib/linux/openssl3/lib64" -lcrypto -lssl
+        LIBS += -L"../../lib/linux/openssl3/lib64" -lcrypto -lssl
     }
 
     LIBS += -lltdl -lldap -llber -lgmp
@@ -178,14 +178,14 @@ win32 {
 
         Debug {
             LIBS += -L"../../build-PKILib-Desktop_Qt_5_13_2_MinGW_32_bit-Debug/debug" -lPKILib
-            LIBS += -L"../../PKILib/lib/win32/debug/openssl3/lib" -lcrypto -lssl
+            LIBS += -L"../../lib/win32/debug/openssl3/lib" -lcrypto -lssl
         } else {
             LIBS += -L"../../build-PKILib-Desktop_Qt_5_13_2_MinGW_32_bit-Release/release" -lPKILib
-            LIBS += -L"../../PKILib/lib/win32/openssl3/lib" -lcrypto -lssl
+            LIBS += -L"../../lib/win32/openssl3/lib" -lcrypto -lssl
         }
 
         LIBS += -L"C:\msys64\mingw32\lib" -lltdl -lldap -llber
-        LIBS += -L"../../PKILib/lib/win32/winsparkle/Release" -lWinSparkle -lws2_32
+        LIBS += -L"../../lib/win32/winsparkle/Release" -lWinSparkle -lws2_32
     } else {
         message( "64bit" );
         INCLUDEPATH += "../../PKILib/lib/win64/winsparkle/include"
@@ -193,10 +193,10 @@ win32 {
 
         Debug {
             LIBS += -L"../../build-PKILib-Desktop_Qt_5_13_2_MinGW_64_bit-Debug" -lPKILib
-            LIBS += -L"../../PKILib/lib/win64/debug/openssl3/lib64" -lcrypto -lssl
+            LIBS += -L"../../lib/win64/debug/openssl3/lib64" -lcrypto -lssl
         } else {
             LIBS += -L"../../build-PKILib-Desktop_Qt_5_13_2_MinGW_64_bit-Release" -lPKILib
-            LIBS += -L"../../PKILib/lib/win64/openssl3/lib64" -lcrypto -lssl
+            LIBS += -L"../../lib/win64/openssl3/lib64" -lcrypto -lssl
         }
 
         LIBS += -L"C:\msys64\mingw64\lib" -lltdl -lldap -llber -lgmp

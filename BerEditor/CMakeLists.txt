@@ -180,13 +180,13 @@ if(WIN32)
    if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
         target_link_directories( ${PROJECT_NAME} PRIVATE
         ../../build-PKILib-Desktop_Qt_5_13_2_MinGW_64_bit-Debug
-        ../../PKILib/lib/win64/debug/openssl3/lib64
+        ../../lib/win64/debug/openssl3/lib64
         ../../PKILib/lib/win64/winsparkle/x64/Release
         "C:/msys64/mingw64/lib" )
     elseif( CMAKE_BUILD_TYPE STREQUAL "Release" )
         target_link_directories( ${PROJECT_NAME} PRIVATE
         ../../build-PKILib-Desktop_Qt_5_13_2_MinGW_64_bit-Release
-        ../../PKILib/lib/win64/openssl3/lib64
+        ../../lib/win64/openssl3/lib64
         ../../PKILib/lib/win64/winsparkle/x64/Release
         "C:/msys64/mingw64/lib" )
     endif()
@@ -222,12 +222,12 @@ elseif(APPLE)
     if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
         target_link_directories( ${PROJECT_NAME} PRIVATE
         ../../build-PKILib-Desktop_Qt_5_15_2_clang_64bit-Debug
-        ../../PKILib/lib/mac/debug/openssl3/lib
+        ../../lib/mac/debug/openssl3/lib
         /usr/local/lib )
     elseif( CMAKE_BUILD_TYPE STREQUAL "Release" )
         target_link_directories( ${PROJECT_NAME} PRIVATE
         ../../build-PKILib-Desktop_Qt_5_15_2_clang_64bit-Release
-        ../../PKILib/lib/mac/openssl3/lib
+        ../../lib/mac/openssl3/lib
         /usr/local/lib )
     endif()
 
@@ -251,7 +251,7 @@ elseif(LINUX)
     if(Debug)
         target_link_directories( ${PROJECT_NAME} PRIVATE
         ../../build-PKILib-Desktop_Qt_5_13_2_GCC_64bit-Debug
-        ../../PKILib/lib/win64/debug/openssl3/lib64
+        ../../lib/win64/debug/openssl3/lib64
         "/usr/local/lib" )
     endif()
 
