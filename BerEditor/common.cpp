@@ -15,6 +15,7 @@
 #include "js_pki_ext.h"
 #include "js_http.h"
 #include "js_ldap.h"
+#include "js_scep.h"
 
 QString findFile( QWidget *parent, int nType, const QString strPath )
 {
@@ -145,7 +146,7 @@ int setOIDList( const QString& strOIDPath )
     }
 
     file.close();
-
+    JS_SCEP_init();
     return nCount;
 }
 
