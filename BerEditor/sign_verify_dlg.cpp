@@ -16,6 +16,7 @@
 #include "js_pki.h"
 #include "js_pki_tools.h"
 #include "js_pki_eddsa.h"
+#include "js_error.h"
 #include "common.h"
 
 static QStringList algTypes = {
@@ -255,7 +256,7 @@ void SignVerifyDlg::clickCheckKeyPair()
 
     ret = JS_PKI_IsValidKeyPair( &binPri, &binPub );
 
-    if( ret == JS_VALID )
+    if( ret == JSR_VALID )
         berApplet->messageBox( tr("The keypair is correct"), this );
     else
         berApplet->warningBox( QString( tr("The keypair is incorrect [%1]").arg(ret)), this );
@@ -637,13 +638,13 @@ void SignVerifyDlg::signVerifyFinal()
         else
             ret = JS_PKI_verifyFinal( sctx_, &binSign );
 
-        if( ret == JS_VERIFY )
+        if( ret == JSR_VERIFY )
             berApplet->messageBox( tr("Verification successful"), this );
         else {
             berApplet->warningBox( tr("Verification failed [%1]").arg(ret), this );
         }
 
-        if( ret == JS_VERIFY )
+        if( ret == JSR_VERIFY )
         {
             appendStatusLabel( "|Final OK" );
         }
@@ -898,14 +899,14 @@ void SignVerifyDlg::dataRun()
         berApplet->log( QString( "Verify Src        : %1" ).arg(getHexString(&binSrc)));
         berApplet->log( QString( "Verify Public Key : %1" ).arg(getHexString( &binPubKey )));
 
-        if( ret == JS_VERIFY )
+        if( ret == JSR_VERIFY )
         {
             mStatusLabel->setText( "Verification successful" );
         }
         else
             mStatusLabel->setText( QString("Verification failure [%1]").arg(ret) );
 
-        if( ret == JS_VERIFY )
+        if( ret == JSR_VERIFY )
             berApplet->messageBox( tr("Verification successful"), this );
         else {
             berApplet->warningBox( tr("Verification failure"), this );
@@ -1210,14 +1211,14 @@ void SignVerifyDlg::digestRun()
         berApplet->log( QString( "Verify Digest Src : %1" ).arg(getHexString(&binSrc)));
         berApplet->log( QString( "Verify Public Key : %1" ).arg(getHexString( &binPubKey )));
 
-        if( ret == JS_VERIFY )
+        if( ret == JSR_VERIFY )
         {
             mStatusLabel->setText( "VerifyDigest successful" );
         }
         else
             mStatusLabel->setText( QString("VerifyDigest failure [%1]").arg(ret) );
 
-        if( ret == JS_VERIFY )
+        if( ret == JSR_VERIFY )
             berApplet->messageBox( tr("VerifyDigest successful"), this );
         else {
             berApplet->warningBox( tr("VerifyDigest failure"), this );

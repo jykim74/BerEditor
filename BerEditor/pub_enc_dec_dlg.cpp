@@ -14,6 +14,7 @@
 #include "common.h"
 #include "js_pki_tools.h"
 #include "js_ecies.h"
+#include "js_error.h"
 
 static QStringList algTypes = {
     "RSA",
@@ -238,7 +239,7 @@ void PubEncDecDlg::clickCheckKeyPair()
 
     ret = JS_PKI_IsValidKeyPair( &binPri, &binPub );
 
-    if( ret == JS_VALID )
+    if( ret == JSR_VALID )
         berApplet->messageBox( tr("The keypair is correct"), this );
     else
         berApplet->warningBox( QString( tr("The keypair is incorrect [%1]")).arg(ret), this );

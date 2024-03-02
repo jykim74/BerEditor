@@ -30,6 +30,7 @@
 #include "about_dlg.h"
 #include "common.h"
 #include "js_net.h"
+#include "js_error.h"
 #include "lcn_info_dlg.h"
 
 BerApplet *berApplet;
@@ -195,7 +196,7 @@ int BerApplet::checkLicense()
 
     ret = JS_LCN_IsValid( &license_info_, JS_LCN_PRODUCT_BEREDITOR_NAME, NULL, ntp_t );
 
-    if( ret == JS_LCN_VALID )
+    if( ret == JSR_VALID )
         is_license_ = true;
 
 end :
