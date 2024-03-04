@@ -25,7 +25,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="bereditor.qrc">
          <normaloff>:/images/bereditor.png</normaloff>:/images/bereditor.png</iconset>
        </property>
        <property name="iconSize">
@@ -64,7 +64,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -135,6 +135,8 @@
   <tabstop>mCheckUpdatBtn</tabstop>
   <tabstop>mOKBtn</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="bereditor.qrc"/>
+ </resources>
  <connections/>
 </ui>

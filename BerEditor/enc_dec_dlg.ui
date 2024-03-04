@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>523</width>
-    <height>594</height>
+    <width>562</width>
+    <height>810</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -948,6 +948,12 @@
      </item>
      <item row="0" column="3">
       <widget class="QLineEdit" name="mCCMDataLength">
+       <property name="minimumSize">
+        <size>
+         <width>40</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="maximumSize">
         <size>
          <width>40</width>

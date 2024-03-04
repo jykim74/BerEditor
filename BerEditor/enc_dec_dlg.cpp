@@ -216,7 +216,7 @@ void EncDecDlg::dataRun()
         {
             char *pTag = NULL;
 
-            if( isCCM(strSymAlg) )
+            if( isCCM(strMode) )
                 ret = JS_PKI_encryptCCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, nReqTagLen, &binTag, &binOut );
             else
                 ret = JS_PKI_encryptGCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, nReqTagLen, &binTag, &binOut );
@@ -243,7 +243,7 @@ void EncDecDlg::dataRun()
 
             getBINFromString( &binTag, mTagTypeCombo->currentText(), strTag );
 
-            if( isCCM( strSymAlg ) )
+            if( isCCM( strMode ) )
                 ret = JS_PKI_decryptCCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
             else
                 ret = JS_PKI_decryptGCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
@@ -352,6 +352,7 @@ void EncDecDlg::fileRun()
 
     nLeft = fileSize;
     QString strAlg = mAlgCombo->currentText();
+    QString strMode = mModeCombo->currentText();
     QString strDstFile = mDstFileText->text();
 
     if( QFile::exists( strDstFile ) )
@@ -401,14 +402,14 @@ void EncDecDlg::fileRun()
             {
                 mOutputText->clear();
 
-                if( isCCM(strAlg) )
+                if( isCCM(strMode) )
                     ret = JS_PKI_encryptCCMUpdate( ctx_, &binPart, &binDst );
                 else
                     ret = JS_PKI_encryptGCMUpdate( ctx_, &binPart, &binDst );
             }
             else
             {
-                if( isCCM(strAlg))
+                if( isCCM(strMode))
                     ret = JS_PKI_decryptCCMUpdate( ctx_, &binPart, &binDst );
                 else
                     ret = JS_PKI_decryptGCMUpdate( ctx_, &binPart, &binDst );
@@ -592,7 +593,7 @@ int EncDecDlg::encDecInit()
 
         if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
         {
-            if( isCCM( strAlg) )
+            if( isCCM( strMode) )
             {
                 int nReqTagLen = 0;
 
@@ -619,7 +620,7 @@ int EncDecDlg::encDecInit()
         }
         else
         {
-            if( isCCM( strAlg ) )
+            if( isCCM( strMode ) )
             {
                 if( strTag.length() < 1 )
                 {
@@ -719,19 +720,20 @@ void EncDecDlg::encDecUpdate()
     }
 
     QString strAlg = mAlgCombo->currentText();
+    QString strMode = mModeCombo->currentText();
 
     if( mUseAECheck->isChecked() )
     {
         if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
         {
-            if( isCCM(strAlg) )
+            if( isCCM(strMode) )
                 ret = JS_PKI_encryptCCMUpdate( ctx_, &binSrc, &binDst );
             else
                 ret = JS_PKI_encryptGCMUpdate( ctx_, &binSrc, &binDst );
         }
         else
         {
-            if( isCCM(strAlg))
+            if( isCCM(strMode))
                 ret = JS_PKI_decryptCCMUpdate( ctx_, &binSrc, &binDst );
             else
                 ret = JS_PKI_decryptGCMUpdate( ctx_, &binSrc, &binDst );
@@ -793,6 +795,7 @@ void EncDecDlg::encDecFinal()
     }
 
     QString strAlg = mAlgCombo->currentText();
+    QString strMode = mModeCombo->currentText();
 
     if( mUseAECheck->isChecked() )
     {
@@ -800,7 +803,7 @@ void EncDecDlg::encDecFinal()
 
         if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
         {
-            if( isCCM(strAlg) )
+            if( isCCM(strMode) )
                 ret = JS_PKI_encryptCCMFinal( ctx_, &binDst, nReqTagLen, &binTag );
             else
                 ret = JS_PKI_encryptGCMFinal( ctx_, &binDst, nReqTagLen, &binTag );
@@ -830,7 +833,7 @@ void EncDecDlg::encDecFinal()
             else if( mTagTypeCombo->currentIndex() == DATA_BASE64 )
                 JS_BIN_decodeBase64( strTag.toStdString().c_str(), &binTag );
 
-            if( isCCM(strAlg) )
+            if( isCCM(strMode) )
                 ret = JS_PKI_decryptCCMFinal( ctx_, &binDst );
             else
                 ret = JS_PKI_decryptGCMFinal( ctx_, &binTag, &binDst );
@@ -918,14 +921,8 @@ void EncDecDlg::dataChange()
     repaint();
 }
 
-bool EncDecDlg::isCCM( const QString strAlg )
+bool EncDecDlg::isCCM( const QString strMode )
 {
-    QStringList strList = strAlg.split( "-" );
-
-    if( strList.size() < 3 ) return false;
-
-    QString strMode = strList.at(2);
-
     if( strMode == "ccm" || strMode == "CCM" )
         return true;
 
