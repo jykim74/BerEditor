@@ -163,9 +163,9 @@ void AboutDlg::showCopyright()
     strCopyRight += "<br>- <a href=https://www.gnu.org/licenses/lgpl-3.0.en.html>LGPL 3.0 Licese</a>";
 
 #ifdef Q_OS_WIN
-    strAbout += "<br><br><b>WinSparkle</b>";
-    strAbout += "<br>- https://winsparkle.org";
-    strAbout += "<br>- <a href=https://github.com/vslavik/winsparkle/blob/master/COPYING>MIT license</a>";
+    strCopyRight += "<br><br><b>WinSparkle</b>";
+    strCopyRight += "<br>- https://winsparkle.org";
+    strCopyRight += "<br>- <a href=https://github.com/vslavik/winsparkle/blob/master/COPYING>MIT license</a>";
 #endif
 
 #ifdef Q_OS_MACOS
