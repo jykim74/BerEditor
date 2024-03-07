@@ -13,7 +13,7 @@ qtHaveModule(printsupport): QT += printsupport
 
 TARGET = BerEditor
 TEMPLATE = app
-PROJECT_VERSION = "1.6.2"
+PROJECT_VERSION = "1.7.0"
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -149,7 +149,7 @@ mac {
         INCLUDEPATH += "../../lib/mac/openssl3/include"
     }
 
-    LIBS += -lldap -llber -lgmp
+    LIBS += -lldap -llber
     LIBS += -L"/usr/local/lib" -lltdl
 }
 
@@ -162,7 +162,7 @@ linux {
         LIBS += -L"../../lib/linux/openssl3/lib64" -lcrypto -lssl
     }
 
-    LIBS += -lltdl -lldap -llber -lgmp
+    LIBS += -lltdl -lldap -llber
 }
 
 win32 {
@@ -199,7 +199,7 @@ win32 {
             LIBS += -L"../../lib/win64/openssl3/lib64" -lcrypto -lssl
         }
 
-        LIBS += -L"C:\msys64\mingw64\lib" -lltdl -lldap -llber -lgmp
+        LIBS += -L"C:\msys64\mingw64\lib" -lltdl -lldap -llber
         LIBS += -L"../../PKILib/lib/win64/winsparkle/x64/Release" -lWinSparkle -lws2_32
     }
 }
