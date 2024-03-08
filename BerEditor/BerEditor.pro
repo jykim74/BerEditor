@@ -168,7 +168,7 @@ linux {
 win32 {
     DEFINES += _AUTO_UPDATE
     RC_ICONS = bereditor.ico
-    INCLUDEPATH += "../../PKILib/lib/win32/winsparkle/include"
+    INCLUDEPATH += "../../lib/win32/winsparkle/include"
     INCLUDEPATH += "C:\msys64\mingw32\include"
 
     contains(QT_ARCH, i386) {
@@ -185,7 +185,7 @@ win32 {
         }
 
         LIBS += -L"C:\msys64\mingw32\lib" -lltdl -lldap -llber
-        LIBS += -L"../../lib/win32/winsparkle/Release" -lWinSparkle -lws2_32
+        LIBS += -L"../../lib/win32/winsparkle/lib" -lWinSparkle -lws2_32
     } else {
         message( "64bit" );
         INCLUDEPATH += "../../PKILib/lib/win64/winsparkle/include"
@@ -200,7 +200,7 @@ win32 {
         }
 
         LIBS += -L"C:\msys64\mingw64\lib" -lltdl -lldap -llber
-        LIBS += -L"../../PKILib/lib/win64/winsparkle/x64/Release" -lWinSparkle -lws2_32
+        LIBS += -L"../../lib/win64/winsparkle/lib" -lWinSparkle -lws2_32
     }
 }
 
