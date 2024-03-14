@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 project(BerEditor
-    VERSION 1.7.0
+    VERSION 1.7.1
     DESCRIPTION "BerEditor Application"
     LANGUAGES CXX )
 
@@ -70,6 +70,7 @@ set(PROJECT_SRC
     ssl_verify_dlg.cpp
     csr_info_dlg.cpp
     trust_list_dlg.cpp
+    vid_dlg.cpp
     ${platform_specific_sources}
 )
 
@@ -113,6 +114,7 @@ set( PROJECT_HEADER
     ssl_verify_dlg.h
     csr_info_dlg.h
     trust_list_dlg.h
+    vid_dlg.h
     ${platform_specific_headers}
 )
 
@@ -145,6 +147,7 @@ set( PROJECT_FORM
     ssl_verify_dlg.ui
     csr_info_dlg.ui
     trust_list_dlg.ui
+    vid_dlg.ui
 )
 
 

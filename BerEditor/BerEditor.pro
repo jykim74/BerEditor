@@ -13,7 +13,7 @@ qtHaveModule(printsupport): QT += printsupport
 
 TARGET = BerEditor
 TEMPLATE = app
-PROJECT_VERSION = "1.7.0"
+PROJECT_VERSION = "1.7.1"
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -73,7 +73,8 @@ SOURCES += \
     sss_dlg.cpp \
     ssl_verify_dlg.cpp \
     csr_info_dlg.cpp \
-    trust_list_dlg.cpp
+    trust_list_dlg.cpp \
+    vid_dlg.cpp
 
 HEADERS += \
     about_dlg.h \
@@ -114,7 +115,8 @@ HEADERS += \
     sss_dlg.h \
     ssl_verify_dlg.h \
     csr_info_dlg.h \
-    trust_list_dlg.h
+    trust_list_dlg.h \
+    vid_dlg.h
 
 
 
@@ -232,7 +234,8 @@ FORMS += \
         sss_dlg.ui \
         ssl_verify_dlg.ui \
         csr_info_dlg.ui \
-        trust_list_dlg.ui
+        trust_list_dlg.ui \
+        vid_dlg.ui
 
 RESOURCES += \
     bereditor.qrc

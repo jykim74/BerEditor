@@ -36,6 +36,7 @@
 #include "cert_info_dlg.h"
 #include "crl_info_dlg.h"
 #include "csr_info_dlg.h"
+#include "vid_dlg.h"
 #include "common.h"
 
 #include "js_pki_tools.h"
@@ -104,6 +105,7 @@ MainWindow::~MainWindow()
     delete gen_otp_dlg_;
     delete cavp_dlg_;
     delete ssl_verify_dlg_;
+    delete vid_dlg_;
 
     delete table_tab_;
     delete text_tab_;
@@ -540,6 +542,13 @@ void MainWindow::createActions()
     genOTPAct->setStatusTip(tr("Generate OTP value" ));
     cryptMenu->addAction( genOTPAct );
 
+    const QIcon vidIcon = QIcon::fromTheme("VID", QIcon(":/images/vid.png"));
+    QAction *vidAct = new QAction( vidIcon, tr("&VID"), this );
+    connect( vidAct, &QAction::triggered, this, &MainWindow::VID );
+    genOTPAct->setStatusTip(tr("Generate OTP value" ));
+    cryptMenu->addAction( vidAct );
+
+
     const QIcon cavpIcon = QIcon::fromTheme( "tool-cavp", QIcon(":/images/cavp.png"));
     QAction *cavpAct = new QAction(cavpIcon, tr("&CAVP"), this);
     connect( cavpAct, &QAction::triggered, this, &MainWindow::CAVP );
@@ -566,6 +575,7 @@ void MainWindow::createActions()
         sssAct->setEnabled( false );
         certPVDAct->setEnabled( false );
         genOTPAct->setEnabled( false );
+        vidAct->setEnabled( false );
         cavpAct->setEnabled( false );
         sslAct->setEnabled( false );
     }
@@ -653,6 +663,7 @@ void MainWindow::createCryptoDlg()
     gen_otp_dlg_ = new GenOTPDlg;
     cavp_dlg_ = new CAVPDlg;
     ssl_verify_dlg_ = new SSLVerifyDlg;
+    vid_dlg_ = new VIDDlg;
 }
 
 void MainWindow::newFile()
@@ -1161,6 +1172,13 @@ void MainWindow::genOTP()
     gen_otp_dlg_->show();
     gen_otp_dlg_->raise();
     gen_otp_dlg_->activateWindow();
+}
+
+void MainWindow::VID()
+{
+    vid_dlg_->show();
+    vid_dlg_->raise();
+    vid_dlg_->activateWindow();
 }
 
 void MainWindow::getURI()

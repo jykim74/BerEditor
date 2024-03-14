@@ -61,5 +61,6 @@
         <file>images/invalid.png</file>
         <file>images/valid.png</file>
         <file>../LICENSE</file>
+        <file>images/vid.png</file>
     </qresource>
 </RCC>
