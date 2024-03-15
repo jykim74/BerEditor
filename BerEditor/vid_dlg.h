@@ -25,6 +25,8 @@ private slots:
     void clickMakeVID();
     void clickVerifyVID();
     void clickClearAll();
+    void clickDecodeVID();
+    void clickDecodeHashContent();
 
 private:
     void initialize();

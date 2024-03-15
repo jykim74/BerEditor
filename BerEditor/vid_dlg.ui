@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>534</width>
-    <height>495</height>
+    <height>408</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,6 +42,12 @@
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_2">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="text">
         <string>SSN</string>
        </property>
@@ -158,6 +164,12 @@
     <layout class="QGridLayout" name="gridLayout_2">
      <item row="0" column="0">
       <widget class="QLabel" name="label_4">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="text">
         <string>VID</string>
        </property>
@@ -236,23 +248,9 @@
       <widget class="QComboBox" name="mHashCombo"/>
      </item>
      <item row="0" column="4">
-      <widget class="QPushButton" name="mVerifyVIDBtn">
-       <property name="text">
-        <string>Verify VID</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
       <widget class="QPushButton" name="mMakeVIDBtn">
        <property name="text">
         <string>Make VID</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_6">
-       <property name="text">
-        <string>Hash</string>
        </property>
       </widget>
      </item>
@@ -269,6 +267,33 @@
        </property>
       </spacer>
      </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_6">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Hash</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mVerifyVIDBtn">
+       <property name="text">
+        <string>Verify VID</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mDecodeVIDBtn">
+       <property name="text">
+        <string>Decode VID</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
@@ -283,14 +308,7 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Hash Content</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
+     <item row="0" column="4">
       <widget class="QLineEdit" name="mHashContentLenText">
        <property name="minimumSize">
         <size>
@@ -336,7 +354,20 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Hash Content</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -348,6 +379,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mDecodeHashContentBtn">
+       <property name="text">
+        <string>Decode Hash Content</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

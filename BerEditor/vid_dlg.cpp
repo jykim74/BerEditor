@@ -23,6 +23,8 @@ VIDDlg::VIDDlg(QWidget *parent)
     connect( mMakeVIDBtn, SIGNAL(clicked()), this, SLOT(clickMakeVID()));
     connect( mVerifyVIDBtn, SIGNAL(clicked()), this, SLOT(clickVerifyVID()));
     connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clickClearAll()));
+    connect( mDecodeVIDBtn, SIGNAL(clicked()), this, SLOT(clickDecodeVID()));
+    connect( mDecodeHashContentBtn, SIGNAL(clicked()), this, SLOT(clickDecodeHashContent()));
 
     connect( mSSNText, SIGNAL(textChanged(QString)), this, SLOT(changeSSN(QString)));
     connect( mRandText, SIGNAL(textChanged(QString)), this, SLOT(changeRand(QString)));
@@ -80,7 +82,7 @@ void VIDDlg::clickVerifyVID()
     BIN binHashContent = {0,0};
 
     QString strSSN = mSSNText->text();
-    QString strRand = mRandLenText->text();
+    QString strRand = mRandText->text();
     QString strVID = mVIDText->toPlainText();
 
     if( strSSN.length() < 1 )
@@ -130,7 +132,7 @@ void VIDDlg::clickMakeVID()
     BIN binHashContent = {0,0};
 
     QString strSSN = mSSNText->text();
-    QString strRand = mRandLenText->text();
+    QString strRand = mRandText->text();
 
     if( strSSN.length() < 1 )
     {
@@ -175,4 +177,35 @@ void VIDDlg::clickClearAll()
     mRandText->clear();
     mVIDText->clear();
     mHashContentText->clear();
+}
+
+void VIDDlg::clickDecodeVID()
+{
+    BIN binData = {0,0};
+    QString strVID = mVIDText->toPlainText();
+
+    if( strVID.length() < 1 )
+    {
+        berApplet->warningBox( tr( "There is no VID value" ), this );
+        return;
+    }
+
+    JS_BIN_decodeHex( strVID.toStdString().c_str(), &binData );
+    berApplet->decodeData( &binData, "" );
+    JS_BIN_reset( &binData );
+}
+
+void VIDDlg::clickDecodeHashContent()
+{
+    BIN binData = {0,0};
+    QString strHashContent = mHashContentText->toPlainText();
+    if( strHashContent.length() < 1 )
+    {
+        berApplet->warningBox( tr( "There is no HashContent value" ), this );
+        return;
+    }
+
+    JS_BIN_decodeHex( strHashContent.toStdString().c_str(), &binData );
+    berApplet->decodeData( &binData, "" );
+    JS_BIN_reset( &binData );
 }
