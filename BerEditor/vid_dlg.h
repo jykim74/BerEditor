@@ -27,6 +27,7 @@ private slots:
     void clickClearAll();
     void clickDecodeVID();
     void clickDecodeHashContent();
+    void clickClearHashContent();
 
 private:
     void initialize();

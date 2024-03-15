@@ -244,9 +244,6 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="mHashCombo"/>
-     </item>
      <item row="0" column="4">
       <widget class="QPushButton" name="mMakeVIDBtn">
        <property name="text">
@@ -254,7 +251,17 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
+     <item row="0" column="1">
+      <widget class="QComboBox" name="mHashCombo"/>
+     </item>
+     <item row="0" column="7">
+      <widget class="QPushButton" name="mVerifyVIDBtn">
+       <property name="text">
+        <string>Verify VID</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
       <spacer name="horizontalSpacer_4">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -280,17 +287,22 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="5">
-      <widget class="QPushButton" name="mVerifyVIDBtn">
-       <property name="text">
-        <string>Verify VID</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
+     <item row="0" column="8">
       <widget class="QPushButton" name="mDecodeVIDBtn">
+       <property name="minimumSize">
+        <size>
+         <width>20</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="text">
-        <string>Decode VID</string>
+        <string>D</string>
        </property>
       </widget>
      </item>
@@ -309,6 +321,38 @@
       <number>0</number>
      </property>
      <item row="0" column="4">
+      <widget class="QPushButton" name="mDecodeHashContentBtn">
+       <property name="minimumSize">
+        <size>
+         <width>20</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>D</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Hash Content</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
       <widget class="QLineEdit" name="mHashContentLenText">
        <property name="minimumSize">
         <size>
@@ -354,19 +398,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="minimumSize">
-        <size>
-         <width>80</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Hash Content</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="2">
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
@@ -381,9 +412,9 @@
       </spacer>
      </item>
      <item row="0" column="3">
-      <widget class="QPushButton" name="mDecodeHashContentBtn">
+      <widget class="QPushButton" name="mClearHashContentBtn">
        <property name="text">
-        <string>Decode Hash Content</string>
+        <string>Clear</string>
        </property>
       </widget>
      </item>

@@ -25,6 +25,7 @@ VIDDlg::VIDDlg(QWidget *parent)
     connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clickClearAll()));
     connect( mDecodeVIDBtn, SIGNAL(clicked()), this, SLOT(clickDecodeVID()));
     connect( mDecodeHashContentBtn, SIGNAL(clicked()), this, SLOT(clickDecodeHashContent()));
+    connect( mClearHashContentBtn, SIGNAL(clicked()), this, SLOT(clickClearHashContent()));
 
     connect( mSSNText, SIGNAL(textChanged(QString)), this, SLOT(changeSSN(QString)));
     connect( mRandText, SIGNAL(textChanged(QString)), this, SLOT(changeRand(QString)));
@@ -208,4 +209,9 @@ void VIDDlg::clickDecodeHashContent()
     JS_BIN_decodeHex( strHashContent.toStdString().c_str(), &binData );
     berApplet->decodeData( &binData, "" );
     JS_BIN_reset( &binData );
+}
+
+void VIDDlg::clickClearHashContent()
+{
+    mHashContentText->clear();
 }
