@@ -497,6 +497,25 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mSSNText</tabstop>
+  <tabstop>mSSNLenText</tabstop>
+  <tabstop>mRandCombo</tabstop>
+  <tabstop>mRandText</tabstop>
+  <tabstop>mRandLenText</tabstop>
+  <tabstop>mVIDLenText</tabstop>
+  <tabstop>mVIDText</tabstop>
+  <tabstop>mHashCombo</tabstop>
+  <tabstop>mMakeVIDBtn</tabstop>
+  <tabstop>mVerifyVIDBtn</tabstop>
+  <tabstop>mDecodeVIDBtn</tabstop>
+  <tabstop>mClearHashContentBtn</tabstop>
+  <tabstop>mDecodeHashContentBtn</tabstop>
+  <tabstop>mHashContentLenText</tabstop>
+  <tabstop>mHashContentText</tabstop>
+  <tabstop>mClearAllBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
