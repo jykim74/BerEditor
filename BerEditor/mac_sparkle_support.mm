@@ -7,7 +7,7 @@
 
 #ifdef _AUTO_UPDATE
 
-#import "SUUpdater.h"
+#import "Sparkle/SUUpdater.h"
 
 void SparkleHelper::checkForUpdate()
 {

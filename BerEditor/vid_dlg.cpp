@@ -111,8 +111,14 @@ void VIDDlg::clickVerifyVID()
         return;
     }
 
+    berApplet->log( "Verify VID Information" );
+    berApplet->log( QString( "SSN : %1" ).arg( strSSN ));
+
     getBINFromString( &binRand, mRandCombo->currentText(), strRand );
     getBINFromString( &binVID, DATA_HEX, strVID );
+
+    berApplet->log( QString( "Random : %1" ).arg( getHexString( &binRand )));
+    berApplet->log( QString( "VID : %1" ).arg( getHexString( &binVID )));
 
     ret = JS_PKI_verifyVID( strSSN.toStdString().c_str(), &binRand, &binVID, &binHashContent );
 
@@ -120,6 +126,7 @@ void VIDDlg::clickVerifyVID()
     {
         berApplet->messageLog( tr( "VID verification successful"), this );
         mHashContentText->setPlainText( getHexString( &binHashContent ));
+        berApplet->log( QString( "HashContent: %1").arg( getHexString( &binHashContent )));
     }
     else
     {
@@ -154,7 +161,13 @@ void VIDDlg::clickMakeVID()
         return;
     }
 
+    berApplet->log( "Make VID Information" );
+    berApplet->log( QString( "SSN : %1" ).arg( strSSN ));
+
     getBINFromString( &binRand, mRandCombo->currentText(), strRand );
+
+    berApplet->log( QString( "Random : %1" ).arg( getHexString( &binRand )));
+    berApplet->log( QString( "Hash : %1" ).arg( mHashCombo->currentText() ));
 
     ret = JS_PKI_makeVID( mHashCombo->currentText().toStdString().c_str(),
                          strSSN.toStdString().c_str(),
@@ -166,6 +179,9 @@ void VIDDlg::clickMakeVID()
     {
         mVIDText->setPlainText( getHexString( &binVID ));
         mHashContentText->setPlainText( getHexString( &binHashContent ));
+
+        berApplet->log( QString( "HashContent: %1").arg( getHexString( &binHashContent )));
+        berApplet->log( QString( "VID : %1" ).arg( getHexString( &binVID )));
 
         berApplet->messageLog( tr( "VID creation successful" ), this );
     }
