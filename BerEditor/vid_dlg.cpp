@@ -111,7 +111,7 @@ void VIDDlg::clickVerifyVID()
         return;
     }
 
-    berApplet->log( "Verify VID Information" );
+    berApplet->log( "== Verify VID Information" );
     berApplet->log( QString( "SSN : %1" ).arg( strSSN ));
 
     getBINFromString( &binRand, mRandCombo->currentText(), strRand );
@@ -124,9 +124,9 @@ void VIDDlg::clickVerifyVID()
 
     if( ret == JSR_VERIFY )
     {
-        berApplet->messageLog( tr( "VID verification successful"), this );
         mHashContentText->setPlainText( getHexString( &binHashContent ));
         berApplet->log( QString( "HashContent: %1").arg( getHexString( &binHashContent )));
+        berApplet->messageLog( tr( "VID verification successful"), this );
     }
     else
     {
@@ -161,7 +161,7 @@ void VIDDlg::clickMakeVID()
         return;
     }
 
-    berApplet->log( "Make VID Information" );
+    berApplet->log( "== Make VID Information" );
     berApplet->log( QString( "SSN : %1" ).arg( strSSN ));
 
     getBINFromString( &binRand, mRandCombo->currentText(), strRand );
