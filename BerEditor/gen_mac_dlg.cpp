@@ -363,17 +363,13 @@ void GenMacDlg::clickMAC()
    {
        QString strSymAlg = getSymAlg( strAlg, "CBC", binKey.nLen );
        ret = JS_PKI_genCMAC( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binMAC );
-
-       berApplet->log( QString( "Algorithm : %1" ).arg( strSymAlg ));
    }
    else if( mHMACRadio->isChecked() )
    {
-       berApplet->log( QString( "Algorithm : %1" ).arg( strAlg ));
        ret = JS_PKI_genHMAC( strAlg.toStdString().c_str(), &binSrc, &binKey, &binMAC );
    }
    else if( mGMACRadio->isChecked() )
    {
-        berApplet->log( QString( "Algorithm : %1" ).arg( strAlg ));
         ret = JS_PKI_genGMAC( strAlg.toStdString().c_str(), &binSrc, &binKey, &binMAC );
    }
 
@@ -385,9 +381,14 @@ void GenMacDlg::clickMAC()
        mStatusLabel->setText( "MAC success" );
        if( pHex ) JS_free(pHex);
 
+       berApplet->logLine();
+       berApplet->log( "-- MAC" );
+       berApplet->logLine();
+       berApplet->log( QString( "Algorithm : %1" ).arg( strAlg ));
        berApplet->log( QString( "Input : %1" ).arg(getHexString(&binSrc)));
        berApplet->log( QString( "Key   : %1" ).arg( getHexString(&binKey)));
        berApplet->log( QString( "MAC   : %1" ).arg( getHexString(&binMAC)));
+       berApplet->logLine();
    }
    else
    {

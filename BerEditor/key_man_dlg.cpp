@@ -122,10 +122,14 @@ void KeyManDlg::PBKDF()
         mOutputText->setPlainText( pHex );
         if( pHex ) JS_free( pHex );
 
-        berApplet->log( QString( "Passwd : %1").arg( strPasswd ));
-        berApplet->log( QString( "Hash   : %1 Iteration Count: %2").arg( strHash ).arg( nIter ));
-        berApplet->log( QString( "Salt   : %1" ).arg(getHexString(&binSalt)));
-        berApplet->log( QString( "Key    : %1" ).arg(getHexString(&binKey)));
+        berApplet->logLine();
+        berApplet->log( QString( "-- PBKDF2" ));
+        berApplet->logLine();
+        berApplet->log( QString( "Password : %1").arg( strPasswd ));
+        berApplet->log( QString( "Hash     : %1 | Iteration Count: %2").arg( strHash ).arg( nIter ));
+        berApplet->log( QString( "Salt     : %1" ).arg(getHexString(&binSalt)));
+        berApplet->log( QString( "Key      : %1" ).arg(getHexString(&binKey)));
+        berApplet->logLine();
     }
 
     JS_BIN_reset( &binSalt );

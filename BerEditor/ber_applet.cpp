@@ -230,6 +230,11 @@ void BerApplet::log( const QString strLog, QColor cr )
     main_win_->log( strLog, cr );
 }
 
+void BerApplet::logLine()
+{
+    log( QString( "====================================================================" ));
+}
+
 void BerApplet::info( const QString strLog, QColor cr )
 {
     main_win_->info( strLog, cr );

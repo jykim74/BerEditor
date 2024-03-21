@@ -33,6 +33,7 @@ public:
 
     QString cmd() { return cmd_; };
     void log( const QString strLog, QColor cr = QColor(00,00,00) );
+    void logLine();
     void elog( const QString strLog );
     void info( const QString strLog, QColor cr = QColor(00,00,00) );
 
