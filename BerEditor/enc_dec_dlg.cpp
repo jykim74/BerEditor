@@ -187,6 +187,7 @@ void EncDecDlg::dataRun()
     }
 
     QString strIV = mIVText->text();
+    QString strMethod;
 
     getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
 
@@ -203,8 +204,6 @@ void EncDecDlg::dataRun()
         goto end;
     }
 
-
-
     if( mUseAECheck->isChecked() )
     {
         int nReqTagLen = mReqTagLenText->text().toInt();
@@ -215,6 +214,7 @@ void EncDecDlg::dataRun()
         if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
         {
             char *pTag = NULL;
+            strMethod = "AE Encrypt";
 
             if( isCCM(strMode) )
                 ret = JS_PKI_encryptCCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, nReqTagLen, &binTag, &binOut );
@@ -229,17 +229,25 @@ void EncDecDlg::dataRun()
                 JS_free( pTag );
             }
 
-            berApplet->log( QString( "SymAlg     : %1").arg( strSymAlg ));
-            berApplet->log( QString( "Enc Src    : %1" ).arg( getHexString( &binSrc )));
-            berApplet->log( QString( "Enc Key    : %1" ).arg( getHexString( &binKey )));
-            berApplet->log( QString( "Enc IV     : %1" ).arg( getHexString( &binIV )));
-            berApplet->log( QString( "Enc AAD    : %1" ).arg( getHexString( &binAAD )));
-            berApplet->log( QString( "Enc Tag    : %1" ).arg( getHexString( &binTag )));
-            berApplet->log( QString( "Enc Output : %1" ).arg(getHexString( &binOut )));
+            if( ret == 0 )
+            {
+                berApplet->logLine();
+                berApplet->log( "-- AE Encrypt" );
+                berApplet->logLine();
+                berApplet->log( QString( "SymAlg     : %1").arg( strSymAlg ));
+                berApplet->log( QString( "Enc Src    : %1" ).arg( getHexString( &binSrc )));
+                berApplet->log( QString( "Enc Key    : %1" ).arg( getHexString( &binKey )));
+                berApplet->log( QString( "Enc IV     : %1" ).arg( getHexString( &binIV )));
+                berApplet->log( QString( "Enc AAD    : %1" ).arg( getHexString( &binAAD )));
+                berApplet->log( QString( "Enc Tag    : %1" ).arg( getHexString( &binTag )));
+                berApplet->log( QString( "Enc Output : %1" ).arg(getHexString( &binOut )));
+                berApplet->logLine();
+            }
         }
         else if( mMethodCombo->currentIndex() == ENC_DECRYPT )
         {
             QString strTag = mTagText->text();
+            strMethod = "AE Decrypt";
 
             getBINFromString( &binTag, mTagTypeCombo->currentText(), strTag );
 
@@ -248,42 +256,67 @@ void EncDecDlg::dataRun()
             else
                 ret = JS_PKI_decryptGCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
 
-            berApplet->log( QString( "SymAlg     : %1").arg( strSymAlg ));
-            berApplet->log( QString( "Dec Src    : %1" ).arg( getHexString( &binSrc )));
-            berApplet->log( QString( "Dec Key    : %1" ).arg( getHexString( &binKey )));
-            berApplet->log( QString( "Dec IV     : %1" ).arg( getHexString( &binIV )));
-            berApplet->log( QString( "Dec AAD    : %1" ).arg( getHexString( &binAAD )));
-            berApplet->log( QString( "Dec Tag    : %1" ).arg( getHexString( &binTag )));
-            berApplet->log( QString( "Dec Output : %1" ).arg(getHexString( &binOut )));
+            if( ret == 0 )
+            {
+                berApplet->logLine();
+                berApplet->log("-- AE Decrypt" );
+                berApplet->logLine();
+                berApplet->log( QString( "SymAlg     : %1").arg( strSymAlg ));
+                berApplet->log( QString( "Dec Src    : %1" ).arg( getHexString( &binSrc )));
+                berApplet->log( QString( "Dec Key    : %1" ).arg( getHexString( &binKey )));
+                berApplet->log( QString( "Dec IV     : %1" ).arg( getHexString( &binIV )));
+                berApplet->log( QString( "Dec AAD    : %1" ).arg( getHexString( &binAAD )));
+                berApplet->log( QString( "Dec Tag    : %1" ).arg( getHexString( &binTag )));
+                berApplet->log( QString( "Dec Output : %1" ).arg(getHexString( &binOut )));
+                berApplet->logLine();
+            }
         }
     }
     else
     {
         if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
         {
+            strMethod = "Encrypt";
+
             if( strAlg == "SEED" )
                 ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
             else
                 ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
 
-            berApplet->log( QString( "SymAlg     : %1").arg( strSymAlg ));
-            berApplet->log( QString( "Enc Src    : %1" ).arg( getHexString( &binSrc )));
-            berApplet->log( QString( "Enc Key    : %1" ).arg( getHexString( &binKey )));
-            berApplet->log( QString( "Enc IV     : %1" ).arg( getHexString( &binIV )));
-            berApplet->log( QString( "Enc Output : %1" ).arg(getHexString( &binOut )));
+            if( ret == 0 )
+            {
+                berApplet->logLine();
+                berApplet->log( "-- Encrypt" );
+                berApplet->logLine();
+                berApplet->log( QString( "SymAlg     : %1").arg( strSymAlg ));
+                berApplet->log( QString( "Enc Src    : %1" ).arg( getHexString( &binSrc )));
+                berApplet->log( QString( "Enc Key    : %1" ).arg( getHexString( &binKey )));
+                berApplet->log( QString( "Enc IV     : %1" ).arg( getHexString( &binIV )));
+                berApplet->log( QString( "Enc Output : %1" ).arg(getHexString( &binOut )));
+                berApplet->logLine();
+            }
         }
         else if( mMethodCombo->currentIndex() == ENC_DECRYPT )
         {
+            strMethod = "Decrypt";
+
             if( strAlg == "SEED" )
                 ret = JS_PKI_decryptSEED( strMode.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
             else
                 ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
 
-            berApplet->log( QString( "SymAlg     : %1").arg( strSymAlg ));
-            berApplet->log( QString( "Dec Src    : %1" ).arg( getHexString( &binSrc )));
-            berApplet->log( QString( "Dec Key    : %1" ).arg( getHexString( &binKey )));
-            berApplet->log( QString( "Dec IV     : %1" ).arg( getHexString( &binIV )));
-            berApplet->log( QString( "Dec Output : %1" ).arg(getHexString( &binOut )));
+            if( ret == 0 )
+            {
+                berApplet->logLine();
+                berApplet->log( "-- Decrypt" );
+                berApplet->logLine();
+                berApplet->log( QString( "SymAlg     : %1").arg( strSymAlg ));
+                berApplet->log( QString( "Dec Src    : %1" ).arg( getHexString( &binSrc )));
+                berApplet->log( QString( "Dec Key    : %1" ).arg( getHexString( &binKey )));
+                berApplet->log( QString( "Dec IV     : %1" ).arg( getHexString( &binIV )));
+                berApplet->log( QString( "Dec Output : %1" ).arg(getHexString( &binOut )));
+                berApplet->logLine();
+            }
         }
     }
 
@@ -304,10 +337,15 @@ void EncDecDlg::dataRun()
 
     if( ret == 0 )
     {
-        mStatusLabel->setText( "OK" );
+        QString strMsg = QString( "%1 OK" ).arg( strMethod );
+        mStatusLabel->setText( strMsg );
     }
     else
-        mStatusLabel->setText( QString("Fail:%1").arg( ret ) );
+    {
+        QString strMsg = QString("%1 failed:%2").arg( strMethod ).arg( ret );
+        mStatusLabel->setText( strMsg );
+        berApplet->elog( strMsg );
+    }
 
 end :
     if( pOut ) JS_free(pOut);
@@ -569,7 +607,7 @@ int EncDecDlg::encDecInit()
     QString strReqTagLen = mReqTagLenText->text();
     QString strTag = mTagText->text();
 
-    berApplet->log( QString( "SymAlg  : %1").arg( strSymAlg ));
+
 
     if( binKey.nLen < 16 )
     {
@@ -606,17 +644,20 @@ int EncDecDlg::encDecInit()
                 nReqTagLen = strReqTagLen.toInt();
 
                 ret = JS_PKI_encryptCCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD, nReqTagLen, nDataLen );
-                berApplet->log( QString( "Initial data length : %1" ).arg( nDataLen ));
             }
             else
             {
                 ret = JS_PKI_encryptGCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD );
             }
 
-            berApplet->log( QString( "Enc Src : %1" ).arg( getHexString( &binSrc )));
-            berApplet->log( QString( "Enc Key : %1" ).arg( getHexString( &binKey )));
-            berApplet->log( QString( "Enc IV  : %1" ).arg( getHexString( &binIV )));
-            berApplet->log( QString( "Enc AAD : %1" ).arg( getHexString( &binAAD )));
+            if( ret == 0 )
+            {
+                berApplet->log( "-- AE Encrypt Init" );
+                berApplet->log( QString( "SymAlg  : %1").arg( strSymAlg ));
+                berApplet->log( QString( "Enc Key : %1" ).arg( getHexString( &binKey )));
+                berApplet->log( QString( "Enc IV  : %1" ).arg( getHexString( &binIV )));
+                berApplet->log( QString( "Enc AAD : %1" ).arg( getHexString( &binAAD )));
+            }
         }
         else
         {
@@ -635,10 +676,14 @@ int EncDecDlg::encDecInit()
             else
                 ret = JS_PKI_decryptGCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD );
 
-            berApplet->log( QString( "Dec Src : %1" ).arg( getHexString( &binSrc )));
-            berApplet->log( QString( "Dec Key : %1" ).arg( getHexString( &binKey )));
-            berApplet->log( QString( "Dec IV  : %1" ).arg( getHexString( &binIV )));
-            berApplet->log( QString( "Dec AAD : %1" ).arg( getHexString( &binAAD )));
+            if( ret == 0 )
+            {
+                berApplet->log( "-- AE Decrypt Init" );
+                berApplet->log( QString( "SymAlg  : %1").arg( strSymAlg ));
+                berApplet->log( QString( "Dec Key : %1" ).arg( getHexString( &binKey )));
+                berApplet->log( QString( "Dec IV  : %1" ).arg( getHexString( &binIV )));
+                berApplet->log( QString( "Dec AAD : %1" ).arg( getHexString( &binAAD )));
+            }
         }
     }
     else {
@@ -646,17 +691,25 @@ int EncDecDlg::encDecInit()
         {
             ret = JS_PKI_encryptInit( &ctx_, strSymAlg.toStdString().c_str(), bPad, &binIV, &binKey );
 
-            berApplet->log( QString( "Enc Src : %1" ).arg( getHexString( &binSrc )));
-            berApplet->log( QString( "Enc Key : %1" ).arg( getHexString( &binKey )));
-            berApplet->log( QString( "Enc IV  : %1" ).arg( getHexString( &binIV )));
+            if( ret == 0 )
+            {
+                berApplet->log( "-- Encrypt Init" );
+                berApplet->log( QString( "SymAlg  : %1").arg( strSymAlg ));
+                berApplet->log( QString( "Enc Key : %1" ).arg( getHexString( &binKey )));
+                berApplet->log( QString( "Enc IV  : %1" ).arg( getHexString( &binIV )));
+            }
         }
         else
         {
             ret = JS_PKI_decryptInit( &ctx_, strSymAlg.toStdString().c_str(), bPad, &binIV, &binKey );
 
-            berApplet->log( QString( "Dec Src : %1" ).arg( getHexString( &binSrc )));
-            berApplet->log( QString( "Dec Key : %1" ).arg( getHexString( &binKey )));
-            berApplet->log( QString( "Dec IV  : %1" ).arg( getHexString( &binIV )));
+            if( ret == 0 )
+            {
+                berApplet->log( "-- Decrypt Init" );
+                berApplet->log( QString( "SymAlg  : %1").arg( strSymAlg ));
+                berApplet->log( QString( "Dec Key : %1" ).arg( getHexString( &binKey )));
+                berApplet->log( QString( "Dec IV  : %1" ).arg( getHexString( &binIV )));
+            }
         }
     }
 
@@ -666,7 +719,11 @@ int EncDecDlg::encDecInit()
         mOutputText->clear();
     }
     else
-        mStatusLabel->setText( QString("Initialization failed [%1]").arg(ret) );
+    {
+        QString strFail = QString("Initialization failed [%1]").arg(ret);
+        mStatusLabel->setText( strFail );
+        berApplet->elog( strFail );
+    }
 
 end :
     JS_BIN_reset( &binKey );
@@ -730,6 +787,13 @@ void EncDecDlg::encDecUpdate()
                 ret = JS_PKI_encryptCCMUpdate( ctx_, &binSrc, &binDst );
             else
                 ret = JS_PKI_encryptGCMUpdate( ctx_, &binSrc, &binDst );
+
+            if( ret == 0 )
+            {
+                berApplet->log( "-- AE Encrypt Update" );
+                berApplet->log( QString( "Enc Src    : %1" ).arg( getHexString( &binSrc )));
+                berApplet->log( QString( "Enc Output : %1" ).arg( getHexString( &binDst )));
+            }
         }
         else
         {
@@ -737,23 +801,42 @@ void EncDecDlg::encDecUpdate()
                 ret = JS_PKI_decryptCCMUpdate( ctx_, &binSrc, &binDst );
             else
                 ret = JS_PKI_decryptGCMUpdate( ctx_, &binSrc, &binDst );
+
+            if( ret == 0 )
+            {
+                berApplet->log( "-- AE Decrypt Update" );
+                berApplet->log( QString( "Dec Src    : %1" ).arg( getHexString( &binSrc )));
+                berApplet->log( QString( "Dec Output : %1" ).arg( getHexString( &binDst )));
+            }
         }
 
-        berApplet->log( QString( "Enc Src    : %1" ).arg( getHexString( &binSrc )));
-        berApplet->log( QString( "Enc Output : %1" ).arg( getHexString( &binDst )));
+
     }
     else {
         if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
         {
             ret = JS_PKI_encryptUpdate( ctx_, &binSrc, &binDst );
+
+            if( ret == 0 )
+            {
+                berApplet->log( "-- Encrypt Update");
+                berApplet->log( QString( "Enc Src    : %1" ).arg( getHexString( &binSrc )));
+                berApplet->log( QString( "Enc Output : %1" ).arg( getHexString( &binDst )));
+            }
         }
         else
         {
             ret = JS_PKI_decryptUpdate( ctx_, &binSrc, &binDst );
+
+            if( ret == 0 )
+            {
+                berApplet->log( "-- Decrypt Update");
+                berApplet->log( QString( "Dec Src    : %1" ).arg( getHexString( &binSrc )));
+                berApplet->log( QString( "Dec Output : %1" ).arg( getHexString( &binDst )));
+            }
         }
 
-        berApplet->log( QString( "Dec Src    : %1" ).arg( getHexString( &binSrc )));
-        berApplet->log( QString( "Dec Output : %1" ).arg( getHexString( &binDst )));
+
     }
 
     if( ret == 0 )
@@ -766,7 +849,11 @@ void EncDecDlg::encDecUpdate()
         appendStatusLabel( "|Update OK" );
     }
     else
-        mStatusLabel->setText( QString("Update failed [%1]").arg(ret) );
+    {
+        QString strFail = QString("Update failed [%1]").arg(ret);
+        mStatusLabel->setText( strFail );
+        berApplet->elog( strFail );
+    }
 
     JS_BIN_reset( &binSrc );
     JS_BIN_reset( &binDst );
@@ -819,8 +906,13 @@ void EncDecDlg::encDecFinal()
                 }
             }
 
-            berApplet->log( QString( "Enc Tag    : %1" ).arg( getHexString( &binTag )));
-            berApplet->log( QString( "Enc Output : %1" ).arg(getHexString( &binDst )));
+            if( ret == 0 )
+            {
+                berApplet->log( "-- AE Encrypt Final" );
+                berApplet->log( QString( "ReqTagLen  : %1").arg( nReqTagLen ));
+                berApplet->log( QString( "Enc Tag    : %1" ).arg( getHexString( &binTag )));
+                berApplet->log( QString( "Enc Output : %1" ).arg(getHexString( &binDst )));
+            }
         }
         else
         {
@@ -838,8 +930,12 @@ void EncDecDlg::encDecFinal()
             else
                 ret = JS_PKI_decryptGCMFinal( ctx_, &binTag, &binDst );
 
-            berApplet->log( QString( "Dec Tag    : %1" ).arg( getHexString( &binTag )));
-            berApplet->log( QString( "Final Output : %1" ).arg(getHexString( &binDst )));
+            if( ret == 0 )
+            {
+                berApplet->log( "-- AE Decrypt Final" );
+                berApplet->log( QString( "Dec Tag    : %1" ).arg( getHexString( &binTag )));
+                berApplet->log( QString( "Final Output : %1" ).arg(getHexString( &binDst )));
+            }
         }
     }
     else {
@@ -847,6 +943,13 @@ void EncDecDlg::encDecFinal()
         {
             ret = JS_PKI_encryptFinal( ctx_, &binDst );
             JS_PKI_encryptFree( &ctx_ );
+
+            if( ret == 0 )
+            {
+                berApplet->log( "-- Encrypt Final" );
+                berApplet->log( QString( "Enc Tag    : %1" ).arg( getHexString( &binTag )));
+                berApplet->log( QString( "Enc Output : %1" ).arg(getHexString( &binDst )));
+            }
 
             berApplet->log( QString( "Final encryption result : %1" ).arg(getHexString( &binDst )));
         }
@@ -856,6 +959,12 @@ void EncDecDlg::encDecFinal()
             JS_PKI_decryptFree( &ctx_ );
 
             berApplet->log( QString( "Final decryption result : %1" ).arg(getHexString( &binDst )));
+
+            if( ret == 0 )
+            {
+                berApplet->log( "-- Decrypt Final" );
+                berApplet->log( QString( "Final Output : %1" ).arg(getHexString( &binDst )));
+            }
         }
     }
 
@@ -895,7 +1004,11 @@ void EncDecDlg::encDecFinal()
     if( ret == 0 )
         appendStatusLabel( "|Final OK" );
     else
-        mStatusLabel->setText( QString("final failure [%1]").arg(ret) );
+    {
+        QString strFail = QString("final failure [%1]").arg(ret);
+        mStatusLabel->setText( strFail );
+        berApplet->elog( strFail );
+    }
 
     JS_BIN_reset( &binOut );
     JS_BIN_reset( &binDst );
