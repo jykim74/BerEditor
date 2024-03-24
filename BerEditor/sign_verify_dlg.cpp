@@ -358,7 +358,6 @@ int SignVerifyDlg::signVerifyInit()
 
     QString strHash = mHashTypeCombo->currentText();
 
-    berApplet->log( QString( "Algorithm : %1 Hash : %2" ).arg( mAlgTypeCombo->currentText() ).arg( strHash ));
 
     if( mMethodCombo->currentIndex() == SIGN_SIGNATURE )
     {
@@ -422,8 +421,14 @@ int SignVerifyDlg::signVerifyInit()
 
         ret = JS_PKI_signInit( &sctx_, strHash.toStdString().c_str(), nType, &binPri );
 
-        berApplet->log( QString( "Algorithm        : %1" ).arg( mAlgTypeCombo->currentText() ));
-        berApplet->log( QString( "Init Private Key : %1" ).arg( getHexString( &binPri )));
+        if( ret == 0 )
+        {
+            berApplet->log( "-- Make signature init" );
+            berApplet->log( QString( "Algorithm        : %1" ).arg( mAlgTypeCombo->currentText() ));
+            berApplet->log( QString( "Hash             : %1" ).arg( mAlgTypeCombo->currentText() ).arg( strHash ));
+            berApplet->log( QString( "Algorithm        : %1" ).arg( mAlgTypeCombo->currentText() ));
+            berApplet->log( QString( "Init Private Key : %1" ).arg( getHexString( &binPri )));
+        }
     }
     else
     {
@@ -512,8 +517,14 @@ int SignVerifyDlg::signVerifyInit()
 
         ret = JS_PKI_verifyInit( &sctx_, strHash.toStdString().c_str(), nType, &binPubKey );
 
-        berApplet->log( QString( "Algorithm       : %1" ).arg( mAlgTypeCombo->currentText() ));
-        berApplet->log( QString( "Init Public Key : %1" ).arg(getHexString(&binPubKey)));
+        if( ret == 0 )
+        {
+            berApplet->log( "-- Verify signature init" );
+            berApplet->log( QString( "Algorithm       : %1" ).arg( mAlgTypeCombo->currentText() ));
+            berApplet->log( QString( "Hash            : %1" ).arg( mAlgTypeCombo->currentText() ).arg( strHash ));
+            berApplet->log( QString( "Algorithm       : %1" ).arg( mAlgTypeCombo->currentText() ));
+            berApplet->log( QString( "Init Public Key : %1" ).arg(getHexString(&binPubKey)));
+        }
     }
 
     if( is_eddsa_ == true )
@@ -526,7 +537,11 @@ int SignVerifyDlg::signVerifyInit()
         mStatusLabel->setText( "Initialization successful" );
     }
     else
-        mStatusLabel->setText( QString("Initialization failed [%1]").arg(ret) );
+    {
+        QString strFail = QString("Initialization failed [%1]").arg(ret);
+        mStatusLabel->setText( strFail );
+        berApplet->elog( strFail );
+    }
 
     repaint();
 
@@ -565,7 +580,11 @@ void SignVerifyDlg::signVerifyUpdate()
         else
             ret = JS_PKI_signUpdate( sctx_, &binSrc );
 
-        berApplet->log( QString("Update input : %1").arg( getHexString(&binSrc)));
+        if( ret == 0 )
+        {
+            berApplet->log( "-- sign update" );
+            berApplet->log( QString("input : %1").arg( getHexString(&binSrc)));
+        }
     }
     else
     {
@@ -574,15 +593,24 @@ void SignVerifyDlg::signVerifyUpdate()
         else
             ret = JS_PKI_verifyUpdate( sctx_, &binSrc );
 
-        berApplet->log( QString("Update input : %1").arg( getHexString(&binSrc)));
+        if( ret == 0 )
+        {
+            berApplet->log( "-- verify update" );
+            berApplet->log( QString("input : %1").arg( getHexString(&binSrc)));
+        }
     }
+
 
     if( ret == 0 )
     {
         appendStatusLabel( "|Update OK" );
     }
     else
-        mStatusLabel->setText( QString("Update failure [%1]").arg( ret) );
+    {
+        QString strFail = QString("Update failure [%1]").arg( ret);
+        mStatusLabel->setText( strFail );
+        berApplet->elog( strFail );
+    }
 
     repaint();
     JS_BIN_reset( &binSrc );
@@ -619,14 +647,22 @@ void SignVerifyDlg::signVerifyFinal()
             JS_free( pHex );
         }
 
-        berApplet->log( QString( "Final Signature : %1" ).arg( getHexString(&binSign)));
+        if( ret == 0 )
+        {
+            berApplet->log( "-- sign final" );
+            berApplet->log( QString( "Signature : %1" ).arg( getHexString(&binSign)));
+        }
 
         if( ret == 0 )
         {
             mStatusLabel->setText( "Final OK" );
         }
         else
-            mStatusLabel->setText( QString("Final failure [%1]").arg(ret) );
+        {
+            QString strFail = QString("Final failure [%1]").arg(ret);
+            mStatusLabel->setText( strFail );
+            berApplet->elog( strFail );
+        }
     }
     else
     {
@@ -649,7 +685,11 @@ void SignVerifyDlg::signVerifyFinal()
             appendStatusLabel( "|Final OK" );
         }
         else
-            mStatusLabel->setText( QString("Final failure [%1]").arg(ret) );
+        {
+            QString strFail = QString("Final failure [%1]").arg(ret);
+            mStatusLabel->setText( strFail );
+            berApplet->elog( strFail );
+        }
     }
 
 
@@ -723,7 +763,6 @@ void SignVerifyDlg::dataRun()
 
     QString strHash = mHashTypeCombo->currentText();
 
-    berApplet->log( QString( "Algorithm : %1 Hash %2").arg( mAlgTypeCombo->currentText()).arg( strHash ));
 
     if( mMethodCombo->currentIndex() == SIGN_SIGNATURE )
     {   
@@ -795,15 +834,27 @@ void SignVerifyDlg::dataRun()
         JS_BIN_encodeHex( &binOut, &pOut );
         mOutputText->setPlainText(pOut);
 
-        berApplet->log( QString( "Algorithm        : %1" ).arg( mAlgTypeCombo->currentText() ));
-        berApplet->log( QString( "Sign Src         : %1" ).arg(getHexString(&binSrc)));
-        berApplet->log( QString( "Sign Private Key : %1" ).arg(getHexString( &binPri )));
-        berApplet->log( QString( "Signature        : %1" ).arg( getHexString( &binOut )));
+        if( ret == 0 )
+        {
+            berApplet->logLine();
+            berApplet->log("-- Make Signature" );
+            berApplet->logLine();
+            berApplet->log( QString( "Algorithm        : %1" ).arg( mAlgTypeCombo->currentText() ));
+            berApplet->log( QString( "Hash             : %1").arg( strHash ));
+            berApplet->log( QString( "Sign Src         : %1" ).arg(getHexString(&binSrc)));
+            berApplet->log( QString( "Sign Private Key : %1" ).arg(getHexString( &binPri )));
+            berApplet->log( QString( "Signature        : %1" ).arg( getHexString( &binOut )));
+            berApplet->logLine();
+        }
 
         if( ret == 0 )
             mStatusLabel->setText( "Signature Success" );
         else
-            mStatusLabel->setText( QString("Signature failure [%1]").arg(ret));
+        {
+            QString strFail = QString("Signature failure [%1]").arg(ret);
+            mStatusLabel->setText( strFail );
+            berApplet->elog( strFail );
+        }
     }
     else
     {
@@ -895,16 +946,27 @@ void SignVerifyDlg::dataRun()
             JS_BIN_reset( &binDigest );
         }
 
-        berApplet->log( QString( "Algorithm         : %1" ).arg( mAlgTypeCombo->currentText() ));
-        berApplet->log( QString( "Verify Src        : %1" ).arg(getHexString(&binSrc)));
-        berApplet->log( QString( "Verify Public Key : %1" ).arg(getHexString( &binPubKey )));
+        if( ret == 0 )
+        {
+            berApplet->logLine();
+            berApplet->log( "-- Verify Signature" );
+            berApplet->logLine();
+            berApplet->log( QString( "Algorithm         : %1" ).arg( mAlgTypeCombo->currentText() ));
+            berApplet->log( QString( "Verify Src        : %1" ).arg(getHexString(&binSrc)));
+            berApplet->log( QString( "Verify Public Key : %1" ).arg(getHexString( &binPubKey )));
+            berApplet->logLine();
+        }
 
         if( ret == JSR_VERIFY )
         {
             mStatusLabel->setText( "Verification successful" );
         }
         else
-            mStatusLabel->setText( QString("Verification failure [%1]").arg(ret) );
+        {
+            QString strFail = QString("Verification failure [%1]").arg(ret);
+            mStatusLabel->setText( strFail );
+            berApplet->elog( strFail );
+        }
 
         if( ret == JSR_VERIFY )
             berApplet->messageBox( tr("Verification successful"), this );
