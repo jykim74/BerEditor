@@ -285,8 +285,6 @@ void PubEncDecDlg::Run()
         nVersion = JS_PKI_RSA_PADDING_V21;
     }
 
-    berApplet->log( QString( "Algorithm : %1" ).arg( strAlg ));
-
     if( mMethodTypeCombo->currentIndex() == ENC_ENCRYPT )
     {
         QString strCertPath = mCertPath->text();
@@ -379,9 +377,11 @@ void PubEncDecDlg::Run()
                 mIVText->setText( getHexString( &binIV ));
                 mTagText->setText( getHexString( &binTag ));
 
+                berApplet->log( "-- ECIES Encrypt" );
                 berApplet->log( QString( "ECIES OtherPub : %1").arg( getHexString(&binOtherPub)));
                 berApplet->log( QString( "ECIES IV       : %1").arg( getHexString(&binIV)));
                 berApplet->log( QString( "ECIES Tag      : %1" ).arg( getHexString( &binTag )));
+                berApplet->logLine();
             }
 
             JS_BIN_reset( &binOtherPub );
@@ -389,10 +389,17 @@ void PubEncDecDlg::Run()
             JS_BIN_reset( &binTag );
         }
 
-        berApplet->log( QString( "Algorithm     : %1").arg( mAlgCombo->currentText() ));
-        berApplet->log( QString( "Enc Src       : %1").arg( getHexString(&binSrc)));
-        berApplet->log( QString( "Enc PublicKey : %1").arg(getHexString(&binPubKey)));
-        berApplet->log( QString( "Enc Output    : %1" ).arg( getHexString( &binOut )));
+        if( ret == 0 )
+        {
+            berApplet->logLine();
+            berApplet->log( "-- Public Encrypt" );
+            berApplet->logLine();
+            berApplet->log( QString( "Algorithm     : %1").arg( mAlgCombo->currentText() ));
+            berApplet->log( QString( "Enc Src       : %1").arg( getHexString(&binSrc)));
+            berApplet->log( QString( "Enc PublicKey : %1").arg(getHexString(&binPubKey)));
+            berApplet->log( QString( "Enc Output    : %1" ).arg( getHexString( &binOut )));
+            berApplet->logLine();
+        }
     }
     else {
         ret = readPrivateKey( &binPri );
@@ -454,19 +461,30 @@ void PubEncDecDlg::Run()
 
             ret = JS_ECIES_Decrypt( &binSrc, &binPri, &binOtherPub, &binIV, &binTag, &binOut );
 
-            berApplet->log( QString( "ECIES OtherPub : %1").arg( getHexString(&binOtherPub)));
-            berApplet->log( QString( "ECIES IV       : %1").arg( getHexString(&binIV)));
-            berApplet->log( QString( "ECIES Tag      : %1" ).arg( getHexString( &binTag )));
+            if( ret == 0 )
+            {
+                berApplet->log( "-- ECIES Decrypt" );
+                berApplet->log( QString( "ECIES OtherPub : %1").arg( getHexString(&binOtherPub)));
+                berApplet->log( QString( "ECIES IV       : %1").arg( getHexString(&binIV)));
+                berApplet->log( QString( "ECIES Tag      : %1" ).arg( getHexString( &binTag )));
+            }
 
             JS_BIN_reset( &binOtherPub );
             JS_BIN_reset( &binIV );
             JS_BIN_reset( &binTag );
         }
 
-        berApplet->log( QString( "Algorithm      : %1").arg( mAlgCombo->currentText() ));
-        berApplet->log( QString( "Dec Src        : %1").arg( getHexString(&binSrc)));
-        berApplet->log( QString( "Dec PrivateKey : %1").arg(getHexString(&binPri)));
-        berApplet->log( QString( "Dec Output     : %1" ).arg( getHexString( &binOut )));
+        if( ret == 0 )
+        {
+            berApplet->logLine();
+            berApplet->log( "-- Public Decrypt" );
+            berApplet->logLine();
+            berApplet->log( QString( "Algorithm      : %1").arg( mAlgCombo->currentText() ));
+            berApplet->log( QString( "Dec Src        : %1").arg( getHexString(&binSrc)));
+            berApplet->log( QString( "Dec PrivateKey : %1").arg(getHexString(&binPri)));
+            berApplet->log( QString( "Dec Output     : %1" ).arg( getHexString( &binOut )));
+            berApplet->logLine();
+        }
     }
 
     if( mOutputTypeCombo->currentIndex() == DATA_STRING )
