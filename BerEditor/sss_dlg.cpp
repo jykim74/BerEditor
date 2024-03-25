@@ -183,6 +183,9 @@ void SSSDlg::clickSplit()
 
     nCount = JS_BIN_countList( pCurList );
 
+    berApplet->logLine();
+    berApplet->log( "-- Split Key" );
+    berApplet->logLine();
     while( pCurList )
     {
         QString strVal = getHexString( pCurList->Bin.pVal, pCurList->Bin.nLen );
@@ -197,6 +200,8 @@ void SSSDlg::clickSplit()
         pCurList = pCurList->pNext;
         i++;
     }
+
+    berApplet->logLine();
 
 end :
     JS_BIN_reset( &binSrc );
@@ -214,6 +219,10 @@ void SSSDlg::clickJoin()
 
     if( nRow < 1 ) return;
 
+    berApplet->logLine();
+    berApplet->log( "-- Join Key" );
+    berApplet->logLine();
+
     for( int i = 0; i < nRow; i++ )
     {
         BIN binVal = {0,0};
@@ -229,6 +238,7 @@ void SSSDlg::clickJoin()
         JS_BIN_reset( &binVal );
     }
 
+    berApplet->logLine();
 
     ret = JS_PKI_joinKey( nRow, pShareList, &binKey );
 
@@ -244,6 +254,8 @@ void SSSDlg::clickJoin()
         JS_BIN_encodeBase64( &binKey, &pKeyVal );
 
     berApplet->log( QString( "Combined Key : %1").arg( getHexString( &binKey )));
+
+    berApplet->logLine();
 
     mJoinedText->setText( pKeyVal );
 

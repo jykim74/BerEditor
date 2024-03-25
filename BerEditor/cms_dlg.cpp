@@ -352,12 +352,18 @@ void CMSDlg::clickSignedData()
         goto end;
     }
 
-
-    berApplet->log( QString( "Hash        : SHA256" ));
-    berApplet->log( QString( "Src         : %1" ).arg( getHexString( &binSrc )));
-    berApplet->log( QString( "Private Key : %1" ).arg( getHexString( &binPri )));
-    berApplet->log( QString( "Certificate : %1" ).arg( getHexString( &binCert )));
-    berApplet->log( QString( "Output      : %1" ).arg( getHexString( &binOutput )));
+    if( ret == 0 )
+    {
+        berApplet->logLine();
+        berApplet->log( "-- Signed Data" );
+        berApplet->logLine();
+        berApplet->log( QString( "Hash        : SHA256" ));
+        berApplet->log( QString( "Src         : %1" ).arg( getHexString( &binSrc )));
+        berApplet->log( QString( "Private Key : %1" ).arg( getHexString( &binPri )));
+        berApplet->log( QString( "Certificate : %1" ).arg( getHexString( &binCert )));
+        berApplet->log( QString( "Output      : %1" ).arg( getHexString( &binOutput )));
+        berApplet->logLine();
+    }
 
     if( mOutputStringRadio->isChecked() )
         JS_BIN_string( &binOutput, &pOutput );
@@ -427,9 +433,16 @@ void CMSDlg::clickEnvelopedData()
         goto end;
     }
 
-    berApplet->log( QString( "Src         : %1" ).arg( getHexString( &binSrc )));
-    berApplet->log( QString( "Certificate : %1" ).arg( getHexString( &binCert )));
-    berApplet->log( QString( "Output      : %1" ).arg( getHexString( &binOutput )));
+    if( ret == 0 )
+    {
+        berApplet->logLine();
+        berApplet->log( "-- Enveloped Data" );
+        berApplet->logLine();
+        berApplet->log( QString( "Src         : %1" ).arg( getHexString( &binSrc )));
+        berApplet->log( QString( "Certificate : %1" ).arg( getHexString( &binCert )));
+        berApplet->log( QString( "Output      : %1" ).arg( getHexString( &binOutput )));
+        berApplet->logLine();
+    }
 
     if( mOutputStringRadio->isChecked() )
         JS_BIN_string( &binOutput, &pOutput );
@@ -518,11 +531,18 @@ void CMSDlg::clickSignAndEnvloped()
         goto end;
     }
 
-    berApplet->log( QString( "Src             : %1" ).arg( getHexString( &binSrc )));
-    berApplet->log( QString( "Sign Cert       : %1" ).arg( getHexString( &binSignCert )));
-    berApplet->log( QString( "Sign PrivateKey : %1" ).arg( getHexString( &binSignPri )));
-    berApplet->log( QString( "KM Cert         : %1" ).arg( getHexString( &binKMCert )));
-    berApplet->log( QString( "Output          : %1" ).arg( getHexString( &binOutput )));
+    if( ret == 0 )
+    {
+        berApplet->logLine();
+        berApplet->log( "-- SignedAndEnveloped Data" );
+        berApplet->logLine();
+        berApplet->log( QString( "Src             : %1" ).arg( getHexString( &binSrc )));
+        berApplet->log( QString( "Sign Cert       : %1" ).arg( getHexString( &binSignCert )));
+        berApplet->log( QString( "Sign PrivateKey : %1" ).arg( getHexString( &binSignPri )));
+        berApplet->log( QString( "KM Cert         : %1" ).arg( getHexString( &binKMCert )));
+        berApplet->log( QString( "Output          : %1" ).arg( getHexString( &binOutput )));
+        berApplet->logLine();
+    }
 
     if( mOutputStringRadio->isChecked() )
         JS_BIN_string( &binOutput, &pOutput );
@@ -579,10 +599,13 @@ void CMSDlg::clickVerifyData()
 
     ret = JS_PKCS7_verifySignedData( &binSrc, &binCert, &binOutput );
     berApplet->log( QString("SignedData verification result: %1").arg( ret ));
-
+    berApplet->logLine();
+    berApplet->log( "-- Verify Data" );
+    berApplet->logLine();
     berApplet->log( QString( "Src    : %1" ).arg( getHexString( &binSrc )));
     berApplet->log( QString( "Cert   : %1" ).arg( getHexString( &binCert )));
     berApplet->log( QString( "Output : %1" ).arg( getHexString( &binOutput )));
+    berApplet->logLine();
 
 
     if( mOutputStringRadio->isChecked() )
@@ -649,10 +672,14 @@ void CMSDlg::clickDevelopedData()
     ret = JS_PKCS7_makeDevelopedData( &binSrc, &binPri, &binCert, &binOutput );
     berApplet->log( QString( "developedData results: %1").arg(ret));
 
+    berApplet->logLine();
+    berApplet->log( "-- Verify Data" );
+    berApplet->logLine();
     berApplet->log( QString( "Src        : %1" ).arg( getHexString( &binSrc )));
     berApplet->log( QString( "Cert       : %1" ).arg( getHexString( &binCert )));
     berApplet->log( QString( "PrivateKey : %1" ).arg( getHexString( &binPri )));
     berApplet->log( QString( "Output     : %1" ).arg( getHexString( &binOutput )));
+    berApplet->logLine();
 
     if( mOutputStringRadio->isChecked() )
         JS_BIN_string( &binOutput, &pOutput );
@@ -728,11 +755,15 @@ void CMSDlg::clickDevelopedAndVerify()
     ret = JS_PKCS7_makeDevelopedAndVerify( &binSrc, &binSignCert, &binKMPri, &binKMCert, &binOutput );
     berApplet->log( QString("developedAndVerify Results: %1").arg(ret));
 
+    berApplet->logLine();
+    berApplet->log( "-- Developed And Verify" );
+    berApplet->logLine();
     berApplet->log( QString( "Src           : %1" ).arg( getHexString( &binSrc )));
     berApplet->log( QString( "Sign Cert     : %1" ).arg( getHexString( &binSignCert )));
     berApplet->log( QString( "KM PrivateKey : %1" ).arg( getHexString( &binKMPri )));
     berApplet->log( QString( "KM Cert       : %1" ).arg( getHexString( &binKMCert )));
     berApplet->log( QString( "Output        : %1" ).arg( getHexString( &binOutput )));
+    berApplet->logLine();
 
     if( mOutputStringRadio->isChecked() )
         JS_BIN_string( &binOutput, &pOutput );
