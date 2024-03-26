@@ -172,7 +172,7 @@ void SSSDlg::clickSplit()
         goto end;
     }
 
-    berApplet->log( QString( "Src : %1").arg( getHexString( &binSrc )));
+
 
 
     ret = JS_PKI_splitKey( nShares, nThreshold, &binSrc, &pShareList );
@@ -186,6 +186,7 @@ void SSSDlg::clickSplit()
     berApplet->logLine();
     berApplet->log( "-- Split Key" );
     berApplet->logLine();
+    berApplet->log( QString( "Src Key Value   : %1").arg( getHexString( &binSrc )));
     while( pCurList )
     {
         QString strVal = getHexString( pCurList->Bin.pVal, pCurList->Bin.nLen );
