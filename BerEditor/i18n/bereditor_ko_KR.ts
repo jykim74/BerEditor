@@ -166,29 +166,29 @@ mailto : jykim74@gmail.com</translation>
 <context>
     <name>BerApplet</name>
     <message>
-        <location filename="../ber_applet.cpp" line="219"/>
-        <location filename="../ber_applet.cpp" line="254"/>
+        <location filename="../ber_applet.cpp" line="222"/>
+        <location filename="../ber_applet.cpp" line="257"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="265"/>
-        <location filename="../ber_applet.cpp" line="279"/>
-        <location filename="../ber_applet.cpp" line="307"/>
-        <location filename="../ber_applet.cpp" line="331"/>
+        <location filename="../ber_applet.cpp" line="268"/>
+        <location filename="../ber_applet.cpp" line="282"/>
+        <location filename="../ber_applet.cpp" line="310"/>
+        <location filename="../ber_applet.cpp" line="334"/>
         <source>Yes</source>
         <translation>예</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="266"/>
-        <location filename="../ber_applet.cpp" line="308"/>
-        <location filename="../ber_applet.cpp" line="332"/>
+        <location filename="../ber_applet.cpp" line="269"/>
+        <location filename="../ber_applet.cpp" line="311"/>
+        <location filename="../ber_applet.cpp" line="335"/>
         <source>No</source>
         <translation>아니오</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="280"/>
-        <location filename="../ber_applet.cpp" line="309"/>
+        <location filename="../ber_applet.cpp" line="283"/>
+        <location filename="../ber_applet.cpp" line="312"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
@@ -998,20 +998,20 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../cms_dlg.cpp" line="322"/>
-        <location filename="../cms_dlg.cpp" line="394"/>
-        <location filename="../cms_dlg.cpp" line="468"/>
-        <location filename="../cms_dlg.cpp" line="560"/>
-        <location filename="../cms_dlg.cpp" line="619"/>
-        <location filename="../cms_dlg.cpp" line="690"/>
+        <location filename="../cms_dlg.cpp" line="400"/>
+        <location filename="../cms_dlg.cpp" line="481"/>
+        <location filename="../cms_dlg.cpp" line="580"/>
+        <location filename="../cms_dlg.cpp" line="642"/>
+        <location filename="../cms_dlg.cpp" line="717"/>
         <source>Please enter input value</source>
         <translation>입력값을 입력하세요</translation>
     </message>
     <message>
         <location filename="../cms_dlg.cpp" line="332"/>
-        <location filename="../cms_dlg.cpp" line="478"/>
-        <location filename="../cms_dlg.cpp" line="567"/>
-        <location filename="../cms_dlg.cpp" line="697"/>
-        <location filename="../cms_dlg.cpp" line="907"/>
+        <location filename="../cms_dlg.cpp" line="491"/>
+        <location filename="../cms_dlg.cpp" line="587"/>
+        <location filename="../cms_dlg.cpp" line="724"/>
+        <location filename="../cms_dlg.cpp" line="938"/>
         <source>Select a certificate for signing</source>
         <translation>서명용 인증서를 선택하세요</translation>
     </message>
@@ -1021,66 +1021,66 @@ mailto : jykim74@gmail.com</translation>
         <translation>SignedData 생성 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="401"/>
-        <location filename="../cms_dlg.cpp" line="485"/>
-        <location filename="../cms_dlg.cpp" line="629"/>
-        <location filename="../cms_dlg.cpp" line="704"/>
-        <location filename="../cms_dlg.cpp" line="949"/>
+        <location filename="../cms_dlg.cpp" line="407"/>
+        <location filename="../cms_dlg.cpp" line="498"/>
+        <location filename="../cms_dlg.cpp" line="652"/>
+        <location filename="../cms_dlg.cpp" line="731"/>
+        <location filename="../cms_dlg.cpp" line="980"/>
         <source>Select a certificate for KM</source>
         <translation>암호용 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="412"/>
-        <location filename="../cms_dlg.cpp" line="496"/>
+        <location filename="../cms_dlg.cpp" line="418"/>
+        <location filename="../cms_dlg.cpp" line="509"/>
         <source>It is not an RSA certificate</source>
         <translation>RSA 인증서가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="426"/>
+        <location filename="../cms_dlg.cpp" line="432"/>
         <source>Failed to create EnvelopedData [%1]</source>
         <translation>EnvelopedData 생성 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="510"/>
+        <location filename="../cms_dlg.cpp" line="523"/>
         <source>It is not a private key for RSA.</source>
         <translation>RSA용 개인키가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="517"/>
+        <location filename="../cms_dlg.cpp" line="530"/>
         <source>Signed And Enveloped data creation failed [%1]</source>
         <translation>서명 및 암호화 데이타(Signed And Enveloped Data) 만들기 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="645"/>
-        <location filename="../cms_dlg.cpp" line="724"/>
+        <location filename="../cms_dlg.cpp" line="668"/>
+        <location filename="../cms_dlg.cpp" line="751"/>
         <source>Invalid private key</source>
         <translation>잘못 된 개인키 입니다</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="790"/>
-        <location filename="../cms_dlg.cpp" line="822"/>
-        <location filename="../cms_dlg.cpp" line="840"/>
-        <location filename="../cms_dlg.cpp" line="872"/>
+        <location filename="../cms_dlg.cpp" line="821"/>
+        <location filename="../cms_dlg.cpp" line="853"/>
+        <location filename="../cms_dlg.cpp" line="871"/>
+        <location filename="../cms_dlg.cpp" line="903"/>
         <source>failed to read data</source>
         <translation>데이타 읽기 실패</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="891"/>
+        <location filename="../cms_dlg.cpp" line="922"/>
         <source>Private key type for signing is %1</source>
         <translation>서명용 개인키 타입은 %1 이다</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="916"/>
+        <location filename="../cms_dlg.cpp" line="947"/>
         <source>Certificate type for signing is %1</source>
         <translation>서명용 인증서 타입은 %1 이다</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="933"/>
+        <location filename="../cms_dlg.cpp" line="964"/>
         <source>Private key type for KM is %1</source>
         <translation>암호용 개인키 타입은 %1 이다</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="958"/>
+        <location filename="../cms_dlg.cpp" line="989"/>
         <source>Certificate type for KM is %1</source>
         <translation>암호용 인증서 타입은 %1 이다</translation>
     </message>
@@ -3909,26 +3909,26 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">잘못된 ECC 키 쌍입니다.</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="435"/>
-        <location filename="../key_agree_dlg.cpp" line="460"/>
+        <location filename="../key_agree_dlg.cpp" line="484"/>
+        <location filename="../key_agree_dlg.cpp" line="509"/>
         <source>The public key is correct</source>
         <translation>공개키가 맞습니다</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="437"/>
-        <location filename="../key_agree_dlg.cpp" line="462"/>
+        <location filename="../key_agree_dlg.cpp" line="486"/>
+        <location filename="../key_agree_dlg.cpp" line="511"/>
         <source>The public key is incorrect</source>
         <translation>공개키가 틀립니다</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="488"/>
-        <location filename="../key_agree_dlg.cpp" line="517"/>
+        <location filename="../key_agree_dlg.cpp" line="537"/>
+        <location filename="../key_agree_dlg.cpp" line="566"/>
         <source>The key pair is correct</source>
         <translation>키 쌍이 맞습니다</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="490"/>
-        <location filename="../key_agree_dlg.cpp" line="519"/>
+        <location filename="../key_agree_dlg.cpp" line="539"/>
+        <location filename="../key_agree_dlg.cpp" line="568"/>
         <source>The key pair is incorrect</source>
         <translation>키 쌍이 틀립니다</translation>
     </message>
@@ -4258,17 +4258,22 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../lcn_info_dlg.cpp" line="310"/>
-        <location filename="../lcn_info_dlg.cpp" line="373"/>
+        <location filename="../lcn_info_dlg.cpp" line="376"/>
         <source>Your current license has a longer usage period.</source>
         <translation>현재 라이선스가 더 긴 기간입니다.</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="350"/>
+        <location filename="../lcn_info_dlg.cpp" line="326"/>
+        <source>You have changed license. Restart to apply it?</source>
+        <translation>라이선스가 변경 되었습니다.적용을 위해 다시 시작 하시겠습니까?</translation>
+    </message>
+    <message>
+        <location filename="../lcn_info_dlg.cpp" line="353"/>
         <source>There is currently no license.</source>
         <translation>현재 라이선스가 없습니다</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="361"/>
+        <location filename="../lcn_info_dlg.cpp" line="364"/>
         <source>failed to renew license:%1</source>
         <translation>라이선스 갱신 실패: %1</translation>
     </message>
@@ -5315,7 +5320,7 @@ Do you want to delete the file and continue?</source>
     <message>
         <location filename="../pub_enc_dec_dlg.ui" line="285"/>
         <location filename="../pub_enc_dec_dlg.cpp" line="190"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="672"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="690"/>
         <source>Certificate</source>
         <translation>인증서</translation>
     </message>
@@ -5448,7 +5453,7 @@ Do you want to delete the file and continue?</source>
         <translation>결과 데이타</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="677"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="695"/>
         <source>Public Key</source>
         <translation>공개 키</translation>
     </message>
@@ -5498,19 +5503,19 @@ Do you want to delete the file and continue?</source>
         <translation>데이타를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="296"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="608"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="294"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="626"/>
         <source>Select a certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="594"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="626"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="612"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="644"/>
         <source>failed to read data</source>
         <translation>데이타 읽기 실패</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="663"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="681"/>
         <source>Select certificate or public key</source>
         <translation>인증서 또는 공개키를 선택하세요</translation>
     </message>
@@ -5535,7 +5540,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">개인키를 선택하세요.</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="646"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="664"/>
         <source>Private Key Type is %1</source>
         <translation>개인키 타입은 %1 이다</translation>
     </message>
@@ -5544,7 +5549,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">인증서 또는 공개키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="682"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="700"/>
         <source>%1 Type is %2</source>
         <translation>%1 타입은 %2 이다</translation>
     </message>
@@ -5565,21 +5570,21 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">개인키 복호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="338"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="347"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="357"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="371"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="336"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="345"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="355"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="369"/>
         <source>Invalid public key algorithm:%1</source>
         <translation>유효하지 않은 공개키 알고리즘입니다:%1</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="425"/>
-        <location filename="../pub_enc_dec_dlg.cpp" line="435"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="432"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="442"/>
         <source>Invalid private key algorithm:%1</source>
         <translation>유효하지 않은 개인키 알고리즘입니다:%1</translation>
     </message>
     <message>
-        <location filename="../pub_enc_dec_dlg.cpp" line="416"/>
+        <location filename="../pub_enc_dec_dlg.cpp" line="423"/>
         <source>Invalid private key algorithm: %1</source>
         <translation>유효하지 않은 개인키 알고리즘입니다:%1</translation>
     </message>
@@ -6335,7 +6340,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">소스 값은 8바이트 이상이어야 합니다.</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="259"/>
+        <location filename="../sss_dlg.cpp" line="272"/>
         <source>Delete</source>
         <translation>삭제</translation>
     </message>
@@ -7088,13 +7093,13 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../vid_dlg.cpp" line="98"/>
-        <location filename="../vid_dlg.cpp" line="154"/>
+        <location filename="../vid_dlg.cpp" line="161"/>
         <source>Please enter SSN</source>
         <translation>SSN을 입력하세요</translation>
     </message>
     <message>
         <location filename="../vid_dlg.cpp" line="104"/>
-        <location filename="../vid_dlg.cpp" line="160"/>
+        <location filename="../vid_dlg.cpp" line="167"/>
         <source>Please enter random value</source>
         <translation>랜덤 값을 입력하세요</translation>
     </message>
@@ -7104,32 +7109,32 @@ Do you want to delete the file and continue?</source>
         <translation>VID 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../vid_dlg.cpp" line="129"/>
+        <location filename="../vid_dlg.cpp" line="127"/>
         <source>VID verification successful</source>
         <translation>VID 검증 성공</translation>
     </message>
     <message>
-        <location filename="../vid_dlg.cpp" line="133"/>
+        <location filename="../vid_dlg.cpp" line="140"/>
         <source>VID verification failed: %1</source>
         <translation>VID 검증 실패: %1</translation>
     </message>
     <message>
-        <location filename="../vid_dlg.cpp" line="186"/>
+        <location filename="../vid_dlg.cpp" line="188"/>
         <source>VID creation successful</source>
         <translation>VID 생성 성공</translation>
     </message>
     <message>
-        <location filename="../vid_dlg.cpp" line="190"/>
+        <location filename="../vid_dlg.cpp" line="202"/>
         <source>failed to make VID: %1</source>
         <translation>VID 만들기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../vid_dlg.cpp" line="213"/>
+        <location filename="../vid_dlg.cpp" line="225"/>
         <source>There is no VID value</source>
         <translation>VID 값이 없습니다</translation>
     </message>
     <message>
-        <location filename="../vid_dlg.cpp" line="228"/>
+        <location filename="../vid_dlg.cpp" line="240"/>
         <source>There is no HashContent value</source>
         <translation>해시 내용 값이 없습니다</translation>
     </message>

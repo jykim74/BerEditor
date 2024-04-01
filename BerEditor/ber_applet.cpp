@@ -191,7 +191,10 @@ int BerApplet::checkLicense()
     if( ret != 0 ) goto end;
 #endif
 
+#ifdef USE_TIME_SRV
     ntp_t = JS_NET_clientNTP( JS_NTP_SERVER, JS_NTP_PORT, 2 );
+#endif
+
     if( ntp_t <= 0 ) ntp_t = time(NULL);
 
     ret = JS_LCN_IsValid( &license_info_, JS_LCN_PRODUCT_BEREDITOR_NAME, NULL, ntp_t );

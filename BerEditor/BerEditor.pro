@@ -186,7 +186,7 @@ win32 {
             LIBS += -L"../../lib/win32/openssl3/lib" -lcrypto -lssl
         }
 
-        LIBS += -L"C:\msys64\mingw32\lib" -lltdl -lldap -llber
+        LIBS += -L"../../lib/win32" -lltdl -lldap -llber
         LIBS += -L"../../lib/win32/winsparkle/lib" -lWinSparkle -lws2_32
     } else {
         message( "64bit" );
@@ -201,7 +201,7 @@ win32 {
             LIBS += -L"../../lib/win64/openssl3/lib64" -lcrypto -lssl
         }
 
-        LIBS += -L"C:\msys64\mingw64\lib" -lltdl -lldap -llber
+        LIBS += -L"../../lib/win64" -lltdl -lldap -llber
         LIBS += -L"../../lib/win64/winsparkle/lib" -lWinSparkle -lws2_32
     }
 }
