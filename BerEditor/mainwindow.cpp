@@ -248,13 +248,15 @@ void MainWindow::loadFile(const QString &filename)
 
 void MainWindow::createActions()
 {
+    int nWidth = 24;
+    int nHeight = 24;
+    int nSpacing = 0;
+
     QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
     QToolBar *fileToolBar = addToolBar(tr("File"));
 
-#ifdef Q_OS_MAC
-    fileToolBar->setIconSize( QSize(24,24));
-    fileToolBar->layout()->setSpacing(0);
-#endif
+    fileToolBar->setIconSize( QSize(nWidth,nHeight) );
+    fileToolBar->layout()->setSpacing(nSpacing);
 
     const QIcon newIcon = QIcon::fromTheme("document-new", QIcon(":/images/new.png"));
     QAction *newAct = new QAction( newIcon, tr("&New"), this );
@@ -350,10 +352,8 @@ void MainWindow::createActions()
     QMenu *editMenu = menuBar()->addMenu(tr("&Edit"));
     QToolBar *editToolBar = addToolBar(tr("Edit"));
 
-#ifdef Q_OS_MAC
-    editToolBar->setIconSize( QSize(24,24));
-    editToolBar->layout()->setSpacing(0);
-#endif
+    editToolBar->setIconSize( QSize(nWidth,nHeight));
+    editToolBar->layout()->setSpacing(nSpacing);
 
     const QIcon copyIcon = QIcon::fromTheme("edit-copy", QIcon(":/images/copy.png"));
     QAction *copyAct = new QAction(copyIcon, tr("&Copy Information"), this);
@@ -404,10 +404,10 @@ void MainWindow::createActions()
     QMenu *toolMenu = menuBar()->addMenu(tr("&Tool"));
     QToolBar *toolToolBar = addToolBar(tr("Tool"));
 
-#ifdef Q_OS_MAC
-    toolToolBar->setIconSize( QSize(24,24));
-    toolToolBar->layout()->setSpacing(0);
-#endif
+
+    toolToolBar->setIconSize( QSize(nWidth,nHeight));
+    toolToolBar->layout()->setSpacing(nSpacing);
+
 
     const QIcon dataTransIcon = QIcon::fromTheme("data-trans", QIcon(":/images/data_trans.png"));
     QAction *dataEncodeAct = new QAction( dataTransIcon, tr("Data&Encoder"), this );
@@ -467,10 +467,8 @@ void MainWindow::createActions()
     QMenu *cryptMenu = menuBar()->addMenu(tr("&Cryptogram"));
     QToolBar *cryptToolBar = addToolBar( "Cryptogram" );
 
-#ifdef Q_OS_MAC
-    cryptToolBar->setIconSize( QSize(24,24));
-    cryptToolBar->layout()->setSpacing(0);
-#endif
+    cryptToolBar->setIconSize( QSize(nWidth,nHeight));
+    cryptToolBar->layout()->setSpacing(nSpacing);
 
     const QIcon keyIcon = QIcon::fromTheme("key-man", QIcon(":/images/key.png"));
     QAction *keyManAct = new QAction( keyIcon, tr("&KeyManage"), this );
@@ -604,10 +602,8 @@ void MainWindow::createActions()
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
     QToolBar *helpToolBar = addToolBar(tr("Help"));
 
-#ifdef Q_OS_MAC
-    helpToolBar->setIconSize( QSize(24,24));
-    helpToolBar->layout()->setSpacing(0);
-#endif
+    helpToolBar->setIconSize( QSize(nWidth,nHeight));
+    helpToolBar->layout()->setSpacing(nSpacing);
 
     const QIcon settingIcon = QIcon::fromTheme("berview-help", QIcon(":/images/setting.png"));
     QAction *settingAct = new QAction( settingIcon, tr("&Settings"), this );
