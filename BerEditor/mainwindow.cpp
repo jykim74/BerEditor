@@ -180,13 +180,11 @@ void MainWindow::initialize()
     sizes << 400 << 1200;
 
 #ifdef Q_OS_MAC
-    resize( 1040, 780 );
-#else
-#ifdef Q_OS_WIN
+    resize( 960, 760 );
+#elif Q_OS_WIN
     resize( 940, 760 );
 #else
     resize( 1020, 760 );
-#endif
 #endif
 
     hsplitter_->setSizes(sizes);
@@ -210,12 +208,12 @@ void MainWindow::createTableMenu()
 
 
 #ifdef Q_OS_WIN32
-    right_table_->setColumnWidth(0, 80);
+    right_table_->setColumnWidth(0, 70);
 #else
 #ifdef Q_OS_LINUX
-    right_table_->setColumnWidth(0, 100);
-#else
     right_table_->setColumnWidth(0, 90);
+#else
+    right_table_->setColumnWidth(0, 80);
 #endif
 #endif
 
@@ -364,7 +362,7 @@ void MainWindow::createActions()
 //    editToolBar->addAction(copyAct);
 
     QAction *copyAsHexAct = new QAction(copyIcon, tr("Copy As &Hex"), this);
-    copyAsHexAct->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_H));
+    copyAsHexAct->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_X));
     copyAsHexAct->setStatusTip(tr("Copy ber data as hex"));
     connect( copyAsHexAct, &QAction::triggered, left_tree_, &BerTreeView::CopyAsHex );
     editMenu->addAction( copyAsHexAct );
@@ -486,7 +484,7 @@ void MainWindow::createActions()
 
     const QIcon hashIcon = QIcon::fromTheme("Hash", QIcon(":/images/hash.png"));
     QAction *hashAct = new QAction( hashIcon, tr("&Hash"), this );
-    hashAct->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_H));
+    hashAct->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_D));
     connect( hashAct, &QAction::triggered, this, &MainWindow::hash );
     hashAct->setStatusTip(tr("Generate hash value" ));
     cryptMenu->addAction( hashAct );
@@ -539,7 +537,7 @@ void MainWindow::createActions()
     connect( cmsAct, &QAction::triggered, this, &MainWindow::cms );
     cmsAct->setStatusTip(tr("PKCS#7 Cryptographic Message Syntax" ));
     cryptMenu->addAction( cmsAct );
-    cryptToolBar->addAction( cmsAct );
+//    cryptToolBar->addAction( cmsAct );
 
     const QIcon sssIcon = QIcon::fromTheme("SSS", QIcon(":/images/sss.png"));
     QAction *sssAct = new QAction( sssIcon, tr("&SSS"), this );
@@ -547,7 +545,7 @@ void MainWindow::createActions()
     connect( sssAct, &QAction::triggered, this, &MainWindow::sss );
     sssAct->setStatusTip(tr("Shamir Secret Sharing Scheme" ));
     cryptMenu->addAction( sssAct );
-    cryptToolBar->addAction( sssAct );
+//    cryptToolBar->addAction( sssAct );
 
     const QIcon certPVDIcon = QIcon::fromTheme("Cert PathValidation", QIcon(":/images/cert_pvd.png"));
     QAction *certPVDAct = new QAction( certPVDIcon, tr( "Cert &PathValidation"), this );

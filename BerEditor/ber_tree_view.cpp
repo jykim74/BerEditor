@@ -228,7 +228,7 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
             rightTable->insertRow(line);
             QString address;
 
-            address = QString( "0x%1" ).arg( i + pItem->GetOffset(), 8, 16, QLatin1Char( '0') );
+            address = QString( "%1" ).arg( i + pItem->GetOffset(), 8, 16, QLatin1Char( '0') ).toUpper();
             rightTable->setItem( line, 0, new QTableWidgetItem( address ));
             rightTable->item( line, 0 )->setBackground( kAddrColor );
         }
@@ -309,7 +309,7 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
             rightTable->insertRow(line);
             QString address;
 
-            address = QString( "0x%1" ).arg( i, 8, 16, QLatin1Char( '0') );
+            address = QString( "%1" ).arg( i, 8, 16, QLatin1Char( '0') ).toUpper();
             rightTable->setItem( line, 0, new QTableWidgetItem( address ));
             rightTable->item( line, 0 )->setBackground( kAddrColor );
         }
