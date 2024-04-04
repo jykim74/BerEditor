@@ -363,11 +363,17 @@ void MainWindow::createActions()
     editMenu->addAction(copyAct);
 //    editToolBar->addAction(copyAct);
 
-    QAction *copyAsHexAct = editMenu->addAction(tr("Copy As &Hex"), left_tree_, &BerTreeView::CopyAsHex);
+    QAction *copyAsHexAct = new QAction(copyIcon, tr("Copy As &Hex"), this);
+    copyAsHexAct->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_H));
     copyAsHexAct->setStatusTip(tr("Copy ber data as hex"));
+    connect( copyAsHexAct, &QAction::triggered, left_tree_, &BerTreeView::CopyAsHex );
+    editMenu->addAction( copyAsHexAct );
 
-    QAction *copyAsBase64Act = editMenu->addAction(tr("Copy As &Base64"), left_tree_, &BerTreeView::CopyAsBase64);
+    QAction *copyAsBase64Act = new QAction(copyIcon, tr("Copy As &Base64"), this);
+    copyAsBase64Act->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_B));
     copyAsBase64Act->setStatusTip(tr("Copy ber data as base64"));
+    connect( copyAsBase64Act, &QAction::triggered, left_tree_, &BerTreeView::CopyAsBase64 );
+    editMenu->addAction( copyAsBase64Act );
 
     const QIcon expandAllIcon = QIcon::fromTheme("expand-all", QIcon(":/images/expand_all.png"));
     QAction *expandAllAct = new QAction(expandAllIcon, tr("&Expand All"), this );

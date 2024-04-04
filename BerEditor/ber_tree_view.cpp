@@ -410,6 +410,7 @@ void BerTreeView::treeExpandItem( int nRow, int nCol )
 void BerTreeView::ShowContextMenu(QPoint point)
 {
     QMenu menu(this);
+    menu.addAction(tr("Copy Information"), this, SLOT(copy()));
     menu.addAction(tr("Copy as hex"), this, SLOT(CopyAsHex()));
     menu.addAction(tr("Copy as base64"), this, SLOT(CopyAsBase64()));
     menu.addAction(tr("Save node"), this, SLOT(SaveNode()));
