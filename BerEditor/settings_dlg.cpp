@@ -39,8 +39,11 @@ SettingsDlg::~SettingsDlg()
 
 void SettingsDlg::initialize()
 {
+    const QStringList sHexWidthList = { "-1", "4", "8", "16", "32", "64" };
+
     QIntValidator *intVal = new QIntValidator( 0, 999999 );
     mFileReadSizeText->setValidator( intVal );
+    mHexAreaWidthCombo->addItems( sHexWidthList );
 
     if( berApplet->isLicense() == false )
     {
@@ -96,6 +99,7 @@ void SettingsDlg::updateSettings()
     berApplet->mainWindow()->useLog( mUseLogTabCheck->checkState() == Qt::Checked );
 
     mgr->setFontFamily( mFontFamilyCombo->currentText());
+    mgr->setHexAreaWidth( mHexAreaWidthCombo->currentText().toInt());
 }
 
 void SettingsDlg::onOkBtnClicked()
@@ -167,7 +171,7 @@ void SettingsDlg::showEvent(QShowEvent *event)
 
     mLangComboBox->setCurrentIndex(I18NHelper::getInstance()->preferredLanguage());
     mFontFamilyCombo->setCurrentText( mgr->getFontFamily() );
-
+    mHexAreaWidthCombo->setCurrentText( QString( "%1" ).arg( berApplet->settingsMgr()->getHexAreaWidth()));
 
     QDialog::showEvent(event);
 }

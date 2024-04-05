@@ -49,7 +49,9 @@ public:
     QString getTrustedCAPath();
     QString trustedCAPath() { return trusted_ca_path_; };
 
-
+    void setHexAreaWidth( int width );
+    int getHexAreaWidth();
+    int hexAreaWidth() { return hex_area_width_; };
 signals:
 
 private:
@@ -59,7 +61,7 @@ private:
     QString default_hash_;
     int file_read_size_;
     QString trusted_ca_path_;
-
+    int hex_area_width_;
 
 private:
     Q_DISABLE_COPY(SettingsMgr)

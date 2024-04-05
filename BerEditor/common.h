@@ -100,6 +100,9 @@ QString getHexString( const QString& strVal );
 QString getHexString( unsigned char *pData, int nDataLen );
 QString getHexString( const BIN *pData );
 QString getHexView( const char *pName, const BIN *pBin );
+
+const QString getHexStringArea( const BIN *pData, int nWidth );
+
 int getDataLen( int nType, const QString strData );
 int getDataLen( const QString strType, const QString strData );
 QString getSymAlg( const QString strAlg, const QString strMode, int nKeyLen );

@@ -19,6 +19,7 @@ const char *kEmail = "email";
 const char *kLicense = "license";
 const char *kStopMessage = "stopMessage";
 const char *kTrustedCAPath = "trustedCAPath";
+const char *kHexAreaWidth = "hexAreaWidth";
 }
 
 SettingsMgr::SettingsMgr(QObject *parent) : QObject(parent)
@@ -31,6 +32,7 @@ void SettingsMgr::initialize()
     getDefaultHash();
     getFileReadSize();
     getTrustedCAPath();
+    getHexAreaWidth();
 }
 
 void SettingsMgr::setShowPartOnly(bool val)
@@ -249,4 +251,25 @@ QString SettingsMgr::getTrustedCAPath()
     sets.endGroup();
 
     return trusted_ca_path_;
+}
+
+void SettingsMgr::setHexAreaWidth( int width )
+{
+    QSettings sets;
+    sets.beginGroup( kBehaviorGroup );
+    sets.setValue( kHexAreaWidth, width );
+    sets.endGroup();
+
+    hex_area_width_ = width;
+}
+
+int SettingsMgr::getHexAreaWidth()
+{
+    QSettings sets;
+
+    sets.beginGroup( kBehaviorGroup );
+    hex_area_width_ = sets.value( kHexAreaWidth, -1 ).toInt();
+    sets.endGroup();
+
+    return hex_area_width_;
 }

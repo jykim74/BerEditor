@@ -269,6 +269,37 @@ QString getHexView( const char *pName, const BIN *pBin )
     return strOut;
 }
 
+const QString getHexStringArea( const BIN *pData, int nWidth )
+{
+    int nLen = 0;
+    int nPos = 0;
+    int nBlock = 0;
+
+    QString strMsg;
+
+    if( pData == NULL || pData->nLen <= 0 ) return nullptr;
+
+    if( nWidth <= 0 ) return getHexString( pData );
+
+    nLen = pData->nLen;
+
+    while( nLen > 0)
+    {
+        if( nLen >= nWidth )
+            nBlock = nWidth;
+        else
+            nBlock = nLen;
+
+        strMsg = getHexString( &pData->pVal[nPos], nBlock );
+        strMsg += "\n";
+
+        nLen -= nBlock;
+        nPos += nBlock;
+    }
+
+    return strMsg;
+}
+
 int getDataLen( int nType, const QString strData )
 {
     int nLen = 0;
