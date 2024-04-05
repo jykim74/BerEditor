@@ -181,10 +181,12 @@ void MainWindow::initialize()
 
 #ifdef Q_OS_MAC
     resize( 960, 760 );
-#elif Q_OS_WIN
+#else
+#ifdef Q_OS_WIN
     resize( 940, 760 );
 #else
     resize( 1020, 760 );
+#endif
 #endif
 
     hsplitter_->setSizes(sizes);
