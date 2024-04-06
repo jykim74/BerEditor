@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>487</width>
-    <height>346</height>
+    <height>390</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -375,7 +375,7 @@
          <item row="0" column="0">
           <widget class="QLabel" name="label_9">
            <property name="text">
-            <string>Use fixed hex value area width</string>
+            <string>Use fixed hex  and bit value area</string>
            </property>
           </widget>
          </item>

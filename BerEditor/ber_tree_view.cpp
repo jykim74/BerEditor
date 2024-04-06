@@ -56,6 +56,7 @@ void BerTreeView::onItemClicked(const QModelIndex& index )
     BIN& binBer = tree_model->getBer();
 
     SettingsMgr *set_mgr = berApplet->settingsMgr();
+    int nWidth = set_mgr->getHexAreaWidth();
 
     if( set_mgr->showPartOnly() )
     {
@@ -66,7 +67,7 @@ void BerTreeView::onItemClicked(const QModelIndex& index )
         GetTableFullView(&binBer, item);
     }
 
-    infoItem( item );
+    infoItem( item, nWidth );
 }
 
 void BerTreeView::viewRoot()
@@ -77,7 +78,7 @@ void BerTreeView::viewRoot()
     setExpanded( rootIndex(), true );
 }
 
-void BerTreeView::infoItem( BerItem *pItem )
+void BerTreeView::infoItem( BerItem *pItem, int nWidth )
 {
     BerModel *tree_model = (BerModel *)model();
     BIN& binBer = tree_model->getBer();
@@ -138,7 +139,7 @@ void BerTreeView::infoItem( BerItem *pItem )
     berApplet->info( QString( "Offset      : %1 - %2\n" ).arg( strOffset ).arg(pItem->GetOffset()));
     berApplet->info( QString( "Length      : 0x%1 - %2 Bytes\n" ).arg( getHexString(sLen, nLenSize) ).arg(pItem->GetLength()));
 
-    QString strVal = pItem->GetValueString( &binBer );
+    QString strVal = pItem->GetValueString( &binBer, nWidth );
 
     if( pItem->GetTag() == JS_BITSTRING )
     {
@@ -156,7 +157,7 @@ void BerTreeView::infoItem( BerItem *pItem )
         berApplet->info( "=================================================================================\n" );
         berApplet->info( "== Hex Value\n" );
         berApplet->info( "=================================================================================\n" );
-        berApplet->info( getHexString(&binVal.pVal[1], binVal.nLen - 1));
+        berApplet->info( getHexStringArea(&binVal.pVal[1], binVal.nLen - 1, nWidth ));
     }
 
     berApplet->mainWindow()->infoText()->moveCursor(QTextCursor::Start);

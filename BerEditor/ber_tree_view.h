@@ -50,7 +50,7 @@ private:
     void GetTableView( const BIN *pBer, BerItem *pItem );
     void GetTableFullView( const BIN *pBer, BerItem *pItem );
 
-    void infoItem( BerItem *pItem );
+    void infoItem( BerItem *pItem, int nWidth );
     BerItem* currentItem();
 
     void showItemText( BerItem* item );

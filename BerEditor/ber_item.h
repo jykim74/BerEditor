@@ -41,7 +41,7 @@ public:
     QString GetTagString();
     QString GetTagXMLString();
     QString GetClassString();
-    QString GetValueString( const BIN *pBer );
+    QString GetValueString( const BIN *pBer, int nWidth = -1 );
     QString GetInfoString( const BIN *pBer );
     BYTE GetDataPos( const BIN *pBer, int nPos );
 

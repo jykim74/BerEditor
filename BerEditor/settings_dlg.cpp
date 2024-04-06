@@ -39,7 +39,7 @@ SettingsDlg::~SettingsDlg()
 
 void SettingsDlg::initialize()
 {
-    const QStringList sHexWidthList = { "-1", "4", "8", "16", "32", "64" };
+    const QStringList sHexWidthList = { "", "8", "16", "32", "64", "80" };
 
     QIntValidator *intVal = new QIntValidator( 0, 999999 );
     mFileReadSizeText->setValidator( intVal );

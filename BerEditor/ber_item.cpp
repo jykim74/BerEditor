@@ -4,6 +4,7 @@
  * All rights reserved.
  */
 #include "ber_item.h"
+#include "common.h"
 #include "js_bin.h"
 #include "js_pki_tools.h"
 
@@ -190,7 +191,7 @@ QString BerItem::GetClassString()
     return "Application";
 }
 
-QString BerItem::GetValueString( const BIN *pBer )
+QString BerItem::GetValueString( const BIN *pBer, int nWidth )
 {
     QString strVal;
     BIN     binVal = {0,0};
@@ -201,7 +202,6 @@ QString BerItem::GetValueString( const BIN *pBer )
     {
         char sOID[1024];
         memset( sOID, 0x00, sizeof(sOID));
-        //strcpy( sOID, "OID" );
         JS_PKI_getStringFromOIDValue( &binVal, sOID );
         strVal = sOID;
     }
@@ -234,8 +234,8 @@ QString BerItem::GetValueString( const BIN *pBer )
         char *pBitStr = (char *)JS_malloc( binVal.nLen * 8 + 8 );
         JS_PKI_getBitString( &binVal, &iUnused, pBitStr );
         strVal = pBitStr;
-//        strVal.sprintf( "%s(%d bits unused)", pBitStr, iUnused );
         JS_free(pBitStr);
+        strVal = getHexStringArea( strVal, nWidth );
     }
     else if( tag_ == JS_BOOLEAN )
     {
@@ -245,10 +245,7 @@ QString BerItem::GetValueString( const BIN *pBer )
             strVal = "True";
     }
     else {
-        char *pHex = NULL;
-        JS_BIN_encodeHex( &binVal, &pHex );
-        strVal = pHex;
-        if( pHex ) JS_free(pHex);
+        strVal = getHexStringArea( &binVal, nWidth );
     }
 
     JS_BIN_reset( &binVal );

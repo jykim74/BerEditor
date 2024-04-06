@@ -269,35 +269,44 @@ QString getHexView( const char *pName, const BIN *pBin )
     return strOut;
 }
 
+const QString getHexStringArea( unsigned char *pData, int nDataLen, int nWidth  )
+{
+    QString strMsg = getHexString( pData, nDataLen );
+
+    return getHexStringArea( strMsg, nWidth );
+}
+
 const QString getHexStringArea( const BIN *pData, int nWidth )
 {
-    int nLen = 0;
-    int nPos = 0;
+    QString strMsg = getHexString( pData );
+
+    return getHexStringArea( strMsg, nWidth );
+}
+
+const QString getHexStringArea( const QString strMsg, int nWidth )
+{
     int nBlock = 0;
+    int nPos = 0;
+    QString strAreaMsg = nullptr;
 
-    QString strMsg;
+    int nLen = strMsg.length();
+    if( nWidth <= 0 ) return strMsg;
 
-    if( pData == NULL || pData->nLen <= 0 ) return nullptr;
-
-    if( nWidth <= 0 ) return getHexString( pData );
-
-    nLen = pData->nLen;
-
-    while( nLen > 0)
+    while( nLen > 0 )
     {
         if( nLen >= nWidth )
             nBlock = nWidth;
         else
             nBlock = nLen;
 
-        strMsg = getHexString( &pData->pVal[nPos], nBlock );
-        strMsg += "\n";
+        strAreaMsg += strMsg.mid( nPos, nBlock );
+        strAreaMsg += "\n";
 
         nLen -= nBlock;
         nPos += nBlock;
     }
 
-    return strMsg;
+    return strAreaMsg;
 }
 
 int getDataLen( int nType, const QString strData )
