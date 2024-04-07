@@ -382,7 +382,7 @@
          <item row="0" column="3">
           <widget class="QLabel" name="label_10">
            <property name="text">
-            <string>Bytes</string>
+            <string>Characters</string>
            </property>
           </widget>
          </item>
