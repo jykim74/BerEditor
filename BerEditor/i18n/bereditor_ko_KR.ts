@@ -207,56 +207,56 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">선택한 노드가 없습니다.</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="185"/>
-        <location filename="../ber_tree_view.cpp" line="373"/>
-        <location filename="../ber_tree_view.cpp" line="450"/>
-        <location filename="../ber_tree_view.cpp" line="472"/>
+        <location filename="../ber_tree_view.cpp" line="186"/>
+        <location filename="../ber_tree_view.cpp" line="374"/>
+        <location filename="../ber_tree_view.cpp" line="451"/>
+        <location filename="../ber_tree_view.cpp" line="473"/>
         <source>There are no items selected.</source>
         <translation>선택한 아이템이 없습니다</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="413"/>
+        <location filename="../ber_tree_view.cpp" line="414"/>
         <source>Copy Information</source>
         <translation>정보 복사</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="414"/>
+        <location filename="../ber_tree_view.cpp" line="415"/>
         <source>Copy as hex</source>
         <translation>Hex로 복사</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="415"/>
+        <location filename="../ber_tree_view.cpp" line="416"/>
         <source>Copy as base64</source>
         <translation>Base64로 복사</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="416"/>
+        <location filename="../ber_tree_view.cpp" line="417"/>
         <source>Save node</source>
         <translation>노드 저장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="417"/>
+        <location filename="../ber_tree_view.cpp" line="418"/>
         <source>Save node value</source>
         <translation>노드 값 저장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="419"/>
+        <location filename="../ber_tree_view.cpp" line="420"/>
         <source>Edit value</source>
         <translation>값 수정</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="433"/>
+        <location filename="../ber_tree_view.cpp" line="434"/>
         <source>Expand value</source>
         <translation>확장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="438"/>
+        <location filename="../ber_tree_view.cpp" line="439"/>
         <source>Insert BER</source>
         <translation>BER 추가</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="527"/>
-        <location filename="../ber_tree_view.cpp" line="548"/>
+        <location filename="../ber_tree_view.cpp" line="528"/>
+        <location filename="../ber_tree_view.cpp" line="549"/>
         <source>Save as...</source>
         <translation>다른 이름으로 저장</translation>
     </message>
@@ -6414,48 +6414,58 @@ Do you want to delete the file and continue?</source>
         <translation>고급</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="200"/>
+        <location filename="../settings_dlg.ui" line="213"/>
         <source>OID Config File</source>
         <translation>OID 설정 파일</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="210"/>
-        <location filename="../settings_dlg.ui" line="331"/>
+        <location filename="../settings_dlg.ui" line="223"/>
+        <location filename="../settings_dlg.ui" line="358"/>
         <source>Find</source>
         <translation>찾기</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="290"/>
+        <location filename="../settings_dlg.ui" line="317"/>
         <source>TrustedCA Path</source>
         <translation>신뢰 CA 경로</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="345"/>
+        <location filename="../settings_dlg.ui" line="282"/>
         <source>Language (need restart)</source>
         <translation>언어(재시동 필요함)</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="257"/>
+        <location filename="../settings_dlg.ui" line="270"/>
         <source>The size of the file to be read at one time</source>
         <translation>한 번에 읽을 수 있는 파일의 크기</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="250"/>
+        <location filename="../settings_dlg.ui" line="263"/>
         <source>File Read Size</source>
         <translation>파일 읽기 크기</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="399"/>
+        <location filename="../settings_dlg.ui" line="378"/>
+        <source>Use fixed hex  and bit value area</source>
+        <translation>헥사 및 비트 스트링 정보 넓이 고정</translation>
+    </message>
+    <message>
+        <location filename="../settings_dlg.ui" line="385"/>
+        <source>Characters</source>
+        <translation>문자</translation>
+    </message>
+    <message>
+        <location filename="../settings_dlg.ui" line="436"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="392"/>
+        <location filename="../settings_dlg.ui" line="429"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.cpp" line="90"/>
+        <location filename="../settings_dlg.cpp" line="93"/>
         <source>You have changed language. Restart to apply it?</source>
         <translation>언어를 변경 하였습니다. 적용을 위해 다시 시작 할까요?</translation>
     </message>
