@@ -55,6 +55,7 @@ private slots:
     void clickTrustDecode();
     void clickUntrustDecode();
     void clickCRLDecode();
+    void clickTargetDecode();
 
     void clickClearDataAll();
 private:

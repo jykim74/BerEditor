@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>573</width>
-    <height>664</height>
+    <height>760</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,20 +29,10 @@
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mTrustFindBtn">
-       <property name="maximumSize">
-        <size>
-         <width>60</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Find</string>
-       </property>
-      </widget>
-     </item>
+    <layout class="QGridLayout" name="gridLayout_2">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
      <item row="0" column="3">
       <widget class="QPushButton" name="mTrustAddBtn">
        <property name="maximumSize">
@@ -56,8 +46,27 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mTrustInfoBtn">
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>100</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Untrust Path</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="5">
+      <widget class="QPushButton" name="mUntrustDecodeBtn">
        <property name="maximumSize">
         <size>
          <width>20</width>
@@ -65,7 +74,20 @@
         </size>
        </property>
        <property name="text">
-        <string>C</string>
+        <string>D</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QPushButton" name="mUntrustAddBtn">
+       <property name="maximumSize">
+        <size>
+         <width>50</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Add</string>
        </property>
       </widget>
      </item>
@@ -88,8 +110,60 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="mTrustPathText"/>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mTrustInfoBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>C</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="mUntrustPathText"/>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mTrustFindBtn">
+       <property name="maximumSize">
+        <size>
+         <width>60</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Find</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="mUntrustFindBtn">
+       <property name="maximumSize">
+        <size>
+         <width>60</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Find</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="4">
+      <widget class="QPushButton" name="mUntrustInfoBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>C</string>
+       </property>
+      </widget>
      </item>
      <item row="0" column="5">
       <widget class="QPushButton" name="mTrustDecodeBtn">
@@ -104,108 +178,10 @@
        </property>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QGridLayout" name="gridLayout_3">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mUntrustInfoBtn">
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>C</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mUntrustAddBtn">
-       <property name="maximumSize">
-        <size>
-         <width>50</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Add</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
-      <widget class="QLineEdit" name="mUntrustPathText"/>
+      <widget class="QLineEdit" name="mTrustPathText"/>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="minimumSize">
-        <size>
-         <width>100</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>100</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Untrust Path</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mUntrustFindBtn">
-       <property name="maximumSize">
-        <size>
-         <width>60</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Find</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="5">
-      <widget class="QPushButton" name="mUntrustDecodeBtn">
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>D</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QGridLayout" name="gridLayout_4">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mCRLAddBtn">
-       <property name="maximumSize">
-        <size>
-         <width>50</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Add</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
+     <item row="2" column="0">
       <widget class="QLabel" name="label_4">
        <property name="minimumSize">
         <size>
@@ -224,7 +200,10 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="mCRLPathText"/>
+     </item>
+     <item row="2" column="2">
       <widget class="QPushButton" name="mCRLFindBtn">
        <property name="maximumSize">
         <size>
@@ -237,7 +216,20 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="4">
+     <item row="2" column="3">
+      <widget class="QPushButton" name="mCRLAddBtn">
+       <property name="maximumSize">
+        <size>
+         <width>50</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="4">
       <widget class="QPushButton" name="mCRLInfoBtn">
        <property name="maximumSize">
         <size>
@@ -250,10 +242,7 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="mCRLPathText"/>
-     </item>
-     <item row="0" column="5">
+     <item row="2" column="5">
       <widget class="QPushButton" name="mCRLDecodeBtn">
        <property name="maximumSize">
         <size>
@@ -618,8 +607,24 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="mTargetPathText"/>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mTargetInfoBtn">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>C</string>
+       </property>
+      </widget>
      </item>
      <item row="0" column="2">
       <widget class="QPushButton" name="mTargetFindBtn">
@@ -634,6 +639,9 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="mTargetPathText"/>
+     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_6">
        <property name="minimumSize">
@@ -647,16 +655,16 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mTargetInfoBtn">
-       <property name="minimumSize">
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mTargetDecodeBtn">
+       <property name="maximumSize">
         <size>
-         <width>100</width>
-         <height>0</height>
+         <width>20</width>
+         <height>16777215</height>
         </size>
        </property>
        <property name="text">
-        <string>TargetInfo</string>
+        <string>D</string>
        </property>
       </widget>
      </item>
@@ -738,21 +746,6 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>mTrustPathText</tabstop>
-  <tabstop>mTrustFindBtn</tabstop>
-  <tabstop>mTrustAddBtn</tabstop>
-  <tabstop>mTrustInfoBtn</tabstop>
-  <tabstop>mTrustDecodeBtn</tabstop>
-  <tabstop>mUntrustPathText</tabstop>
-  <tabstop>mUntrustFindBtn</tabstop>
-  <tabstop>mUntrustAddBtn</tabstop>
-  <tabstop>mUntrustInfoBtn</tabstop>
-  <tabstop>mUntrustDecodeBtn</tabstop>
-  <tabstop>mCRLPathText</tabstop>
-  <tabstop>mCRLFindBtn</tabstop>
-  <tabstop>mCRLAddBtn</tabstop>
-  <tabstop>mCRLInfoBtn</tabstop>
-  <tabstop>mCRLDecodeBtn</tabstop>
   <tabstop>mVerifyCRLBtn</tabstop>
   <tabstop>mVerifyCertBtn</tabstop>
   <tabstop>mATTimeCheck</tabstop>

@@ -7,6 +7,7 @@
 #include "js_pki.h"
 #include "js_pki_pvd.h"
 #include "js_util.h"
+#include "js_error.h"
 #include "common.h"
 
 #include "ber_applet.h"
@@ -15,6 +16,7 @@
 #include "crl_info_dlg.h"
 #include "trust_list_dlg.h"
 #include "settings_mgr.h"
+
 
 const QStringList kParamList = { "Policy", "Purpose", "Name", "Depth", "AuthLevel", "HostName", "Email", "IP" };
 
@@ -55,6 +57,7 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
     connect( mTrustDecodeBtn, SIGNAL(clicked()), this, SLOT(clickTrustDecode()));
     connect( mUntrustDecodeBtn, SIGNAL(clicked()), this, SLOT(clickUntrustDecode()));
     connect( mCRLDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCRLDecode()));
+    connect( mTargetDecodeBtn, SIGNAL(clicked()), this, SLOT(clickTargetDecode()));
 
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
 
@@ -67,6 +70,8 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
     mUntrustDecodeBtn->setFixedWidth(34);
     mCRLInfoBtn->setFixedWidth(34);
     mCRLDecodeBtn->setFixedWidth(34);
+    mTargetInfoBtn->setFixedWidth(34);
+    mTargetDecodeBtn->setFixedWidth(34);
 #endif
 }
 
@@ -214,12 +219,12 @@ void CertPVDDlg::clickVerifyCert()
 
     if( ret == 1 )
     {
-        QString strOK = "The certificate verification (byCA) successful";
+        QString strOK = tr( "The certificate verification (byCA) successful" );
         berApplet->messageLog( strOK, this );
     }
     else
     {
-        QString strErr = QString( "The certificate verification (byCA) failed: %1" ).arg(sMsg);
+        QString strErr = tr( "The certificate verification (byCA) failed: %1" ).arg(sMsg);
         berApplet->warnLog( strErr, this );
     }
 
@@ -267,7 +272,6 @@ void CertPVDDlg::clickVerifyCRL()
     JS_BIN_fileReadBER( strCRLPath.toLocal8Bit().toStdString().c_str(), &binCRL );
 
     ret = JS_PKI_verifyCRL( &binCRL, &binCA );
-
 
     if( ret == 1 )
     {
@@ -471,6 +475,7 @@ void CertPVDDlg::clickPathValidation()
 
     char sMsg[1024];
     int nCount = 0;
+    int nSelfVerify = 0;
 
     if( strTrustPath.length() > 1 )
     {
@@ -500,6 +505,15 @@ void CertPVDDlg::clickPathValidation()
     }
 
     JS_BIN_fileReadBER( strTargetPath.toLocal8Bit().toStdString().c_str(), &binTarget );
+    if( JS_PKI_isSelfSignedCert2( &binTarget, &nSelfVerify ) == JSR_YES )
+    {
+        berApplet->log( "The target ceritificate is self-signed" );
+
+        if( nSelfVerify == JSR_VALID )
+            berApplet->log( "The self signature is good" );
+        else
+            berApplet->elog( "The self signature is bad" );
+    }
 
     nCount = mPathTable->rowCount();
     for( int i = 0; i < nCount; i++ )
@@ -587,14 +601,14 @@ void CertPVDDlg::clickPathValidation()
     }
 
     berApplet->log( QString( "Path verification result : %1").arg(ret));
-    if( ret == 1 )
+    if( ret == JSR_VALID )
     {
-        QString strOK = "The certificate path verification was successful.";
+        QString strOK = tr("The certificate path verification is successful.");
         berApplet->messageLog( strOK, this );
     }
     else
     {
-        QString strErr = QString( "The certificate path verification failed [%1]" ).arg(sMsg);
+        QString strErr = tr( "The certificate path verification failed [%1]" ).arg(sMsg);
         berApplet->warnLog( strErr, this );
     }
 
@@ -819,6 +833,24 @@ void CertPVDDlg::clickCRLDecode()
 {
     BIN binData = {0,0};
     QString strPath = mCRLPathText->text();
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
+
+    if( binData.nLen < 1 )
+    {
+        berApplet->warningBox( tr("failed to read data"), this );
+        return;
+    }
+
+    berApplet->decodeData( &binData, strPath );
+
+    JS_BIN_reset( &binData );
+}
+
+void CertPVDDlg::clickTargetDecode()
+{
+    BIN binData = {0,0};
+    QString strPath = mTargetPathText->text();
 
     JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
 
