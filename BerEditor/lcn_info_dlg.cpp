@@ -16,7 +16,7 @@
 #include "js_cc.h"
 #include "js_error.h"
 
-const QString kLicenseURI = "http://34.64.56.160";
+const QString kLicenseURI = "http://localhost:80";
 
 LCNInfoDlg::LCNInfoDlg(QWidget *parent) :
     QDialog(parent)
@@ -137,39 +137,41 @@ int LCNInfoDlg::getLCN( const QString& strEmail, const QString& strKey, BIN *pLC
     int ret = 0;
     int status = 0;
     QString strURL;
-    JNameValList *pParamList = NULL;
+
     char *pRsp = NULL;
     JCC_NameVal sNameVal;
 
     QString strProduct = berApplet->getBrand();
+    QString strSID = GetSystemID();
 
     memset( &sNameVal, 0x00, sizeof(sNameVal));
     strProduct.remove( "Lite" );
 
     strURL = getLicenseURI();
-//    strURL += JS_CC_PATH_LICENSE;
     strURL += "/jsinc/lcn.php";
 
-    JS_UTIL_createNameValList2( "email", strEmail.toStdString().c_str(), &pParamList );
-    JS_UTIL_appendNameValList2( pParamList, "key", strKey.toStdString().c_str() );
-    JS_UTIL_appendNameValList2( pParamList, "product", strProduct.toStdString().c_str() );
+    QString strBody = QString( "email=%1&key=%2&product=%3&sid=%4")
+                          .arg( strEmail )
+                          .arg( strKey )
+                          .arg(strProduct).arg( strSID );
 
-    ret = JS_HTTP_requestResponse(
-                strURL.toStdString().c_str(),
-                NULL,
-                NULL,
-                JS_HTTP_METHOD_POST,
-                pParamList,
-                NULL,
-                NULL,
-                &status,
-                &pRsp );
+    ret = JS_HTTP_requestPost2(
+        strURL.toStdString().c_str(),
+        NULL,
+        NULL,
+        "application/x-www-form-urlencoded",
+        strBody.toStdString().c_str(),
+        &status,
+        &pRsp );
 
     if( status != JS_HTTP_STATUS_OK)
     {
         berApplet->elog( QString("HTTP get ret:%1 status: %2").arg( ret ).arg( status ));
-        return -1;
+        ret = -1;
+        goto end;
     }
+
+    berApplet->log( QString( "Rsp : %1").arg( pRsp ));
 
     JS_CC_decodeNameVal( pRsp, &sNameVal );
 
@@ -178,7 +180,11 @@ int LCNInfoDlg::getLCN( const QString& strEmail, const QString& strKey, BIN *pLC
         JS_BIN_decodeHex( sNameVal.pValue, pLCN );
     }
 
-    return 0;
+end :
+    if( pRsp ) JS_free( pRsp );
+    JS_UTIL_resetNameVal( &sNameVal );
+
+    return ret;
 }
 
 int LCNInfoDlg::updateLCN( const QString strEmail, const QString strKey, BIN *pLCN )
@@ -186,10 +192,10 @@ int LCNInfoDlg::updateLCN( const QString strEmail, const QString strKey, BIN *pL
     int ret = 0;
     int status = 0;
     QString strURL;
-    JNameValList *pParamList = NULL;
     char *pRsp = NULL;
     JCC_NameVal sNameVal;
     QString strProduct = berApplet->getBrand();
+    QString strSID = GetSystemID();
 
 #ifndef _USE_LCN_SRV
     berApplet->warningBox( tr( "This service is not yet supported." ), this );
@@ -200,28 +206,34 @@ int LCNInfoDlg::updateLCN( const QString strEmail, const QString strKey, BIN *pL
     strProduct.remove( "Lite" );
 
     strURL = getLicenseURI();
-//    strURL += JS_CC_PATH_LCN_RENEW;
     strURL += "/jsinc/lcn_update.php";
 
-    JS_UTIL_createNameValList2( "email", strEmail.toStdString().c_str(), &pParamList );
-    JS_UTIL_appendNameValList2( pParamList, "key", strKey.toStdString().c_str() );
-    JS_UTIL_appendNameValList2( pParamList, "product", strProduct.toStdString().c_str() );
+    QString strBody = QString( "email=%1&key=%2&product=%3&sid=%4")
+                          .arg( strEmail )
+                          .arg( strKey )
+                          .arg(strProduct).arg( strSID );
 
-    ret = JS_HTTP_requestResponse(
-                strURL.toStdString().c_str(),
-                NULL,
-                NULL,
-                JS_HTTP_METHOD_POST,
-                pParamList,
-                NULL,
-                NULL,
-                &status,
-                &pRsp );
+    ret = JS_HTTP_requestPost2(
+        strURL.toStdString().c_str(),
+        NULL,
+        NULL,
+        "application/x-www-form-urlencoded",
+        strBody.toStdString().c_str(),
+        &status,
+        &pRsp );
 
     if( status != JS_HTTP_STATUS_OK)
     {
         berApplet->elog( QString("HTTP get ret:%1 status: %2").arg( ret ).arg( status ));
-        return -1;
+        ret = -1;
+        goto end;
+    }
+
+    if( status != JS_HTTP_STATUS_OK)
+    {
+        berApplet->elog( QString("HTTP get ret:%1 status: %2").arg( ret ).arg( status ));
+        ret = -2;
+        goto end;
     }
 
     JS_CC_decodeNameVal( pRsp, &sNameVal );
@@ -230,8 +242,11 @@ int LCNInfoDlg::updateLCN( const QString strEmail, const QString strKey, BIN *pL
     {
         JS_BIN_decodeHex( sNameVal.pValue, pLCN );
     }
+end :
+    if( pRsp ) JS_free( pRsp );
+    JS_UTIL_resetNameVal( &sNameVal );
 
-    return 0;
+    return ret;
 }
 
 void LCNInfoDlg::clickGet()
@@ -349,6 +364,11 @@ void LCNInfoDlg::clickUpdate()
 
     QString strEmail = berApplet->settingsMgr()->getEmail();
     QString strLicense = berApplet->settingsMgr()->getLicense();
+
+#ifndef _USE_LCN_SRV
+    berApplet->warningBox( tr( "This service is not yet supported." ), this );
+    return;
+#endif
 
     memset( &sInfo, 0x00, sizeof(sInfo));
 

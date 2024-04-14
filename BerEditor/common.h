@@ -92,6 +92,8 @@ const int kNoLicenseLimitMaxSize = 10000;
 
 const QString kTableStyle = "QHeaderView::section {background-color:#404040;color:#FFFFFF;}";
 
+const QString GetSystemID();
+
 QString findFile( QWidget *parent, int nType, const QString strPath );
 QString findFolder( QWidget *parent, const QString strPath );
 

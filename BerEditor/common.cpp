@@ -8,6 +8,8 @@
 #include <QFile>
 #include <QTextStream>
 #include <QRegularExpression>
+#include <QProcess>
+#include <QNetworkInterface>
 
 #include "common.h"
 #include "js_ocsp.h"
@@ -16,6 +18,44 @@
 #include "js_http.h"
 #include "js_ldap.h"
 #include "js_scep.h"
+
+const QString GetSystemID()
+{
+    QString strID;
+
+#ifdef Q_OS_MACOS
+    QProcess proc;
+    QStringList args;
+    args << "-c" << "ioreg -rd1 -c IOPlatformExpertDevice |  awk '/IOPlatformSerialNumber/ { print $3; }'";
+    proc.start( "/bin/bash", args );
+    proc.waitForFinished();
+    QString uID = proc.readAll();
+
+    strID = uID;
+#else
+
+    foreach( QNetworkInterface netIFT, QNetworkInterface::allInterfaces() )
+    {
+        if( !(netIFT.flags() & QNetworkInterface::IsLoopBack) )
+        {
+            if( netIFT.flags() & QNetworkInterface::IsUp )
+            {
+                if( netIFT.flags() & QNetworkInterface::Ethernet || netIFT.flags() & QNetworkInterface::Wifi )
+                {
+                    if( strID.isEmpty() )
+                        strID = netIFT.hardwareAddress();
+                    else
+                    {
+                        strID += QString( ":%1" ).arg( netIFT.hardwareAddress() );
+                    }
+                }
+            }
+        }
+    }
+#endif
+
+    return strID;
+}
 
 QString findFile( QWidget *parent, int nType, const QString strPath )
 {
