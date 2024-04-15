@@ -117,7 +117,7 @@ void LCNInfoDlg::initialize()
     }
 
     mUpdateBtn->setEnabled( mCurGroup->isEnabled() );
-    mUseFileCheck->click();
+//    mUseFileCheck->click();
     tabWidget->setCurrentIndex(0);
 }
 
@@ -155,6 +155,8 @@ int LCNInfoDlg::getLCN( const QString& strEmail, const QString& strKey, BIN *pLC
                           .arg( strKey )
                           .arg(strProduct).arg( strSID );
 
+    berApplet->log( QString( "Body: %1" ).arg( strBody ));
+
     ret = JS_HTTP_requestPost2(
         strURL.toStdString().c_str(),
         NULL,
@@ -177,7 +179,8 @@ int LCNInfoDlg::getLCN( const QString& strEmail, const QString& strKey, BIN *pLC
 
     if( sNameVal.pValue )
     {
-        JS_BIN_decodeHex( sNameVal.pValue, pLCN );
+        int nType = -1;
+        JS_BIN_decodePEM( sNameVal.pValue, &nType, pLCN );
     }
 
 end :

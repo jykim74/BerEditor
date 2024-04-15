@@ -30,8 +30,9 @@ const QString GetSystemID()
     proc.start( "/bin/bash", args );
     proc.waitForFinished();
     QString uID = proc.readAll();
+    uID.replace( "\"", "" );
 
-    strID = uID;
+    strID = uID.trimmed();
 #else
 
     foreach( QNetworkInterface netIFT, QNetworkInterface::allInterfaces() )
