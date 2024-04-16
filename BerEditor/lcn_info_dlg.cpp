@@ -171,7 +171,7 @@ int LCNInfoDlg::getLCN( const QString& strEmail, const QString& strKey, BIN *pLC
     if( status != JS_HTTP_STATUS_OK)
     {
         berApplet->elog( QString("HTTP get ret:%1 status: %2").arg( ret ).arg( status ));
-        ret = -1;
+        ret = JSR_HTTP_STATUS_FAIL;
         goto end;
     }
 
@@ -179,10 +179,16 @@ int LCNInfoDlg::getLCN( const QString& strEmail, const QString& strKey, BIN *pLC
 
     JS_CC_decodeNameVal( pRsp, &sNameVal );
 
-    if( sNameVal.pValue )
+    if( sNameVal.pValue && strcasecmp( sNameVal.pName, "LICENSE") == 0 )
     {
         int nType = -1;
         JS_BIN_decodePEM( sNameVal.pValue, &nType, pLCN );
+    }
+    else
+    {
+        berApplet->elog( QString("HTTP Rsp Name: %1 Value: %2").arg( sNameVal.pName ).arg( sNameVal.pValue ));
+        ret = JSR_HTTP_BODY_ERROR;
+        goto end;
     }
 
 end :
@@ -230,23 +236,24 @@ int LCNInfoDlg::updateLCN( const QString strEmail, const QString strKey, BIN *pL
     if( status != JS_HTTP_STATUS_OK)
     {
         berApplet->elog( QString("HTTP get ret:%1 status: %2").arg( ret ).arg( status ));
-        ret = -1;
-        goto end;
-    }
-
-    if( status != JS_HTTP_STATUS_OK)
-    {
-        berApplet->elog( QString("HTTP get ret:%1 status: %2").arg( ret ).arg( status ));
-        ret = -2;
+        ret = JSR_HTTP_STATUS_FAIL;
         goto end;
     }
 
     JS_CC_decodeNameVal( pRsp, &sNameVal );
 
-    if( sNameVal.pValue )
+    if( sNameVal.pValue && strcasecmp( sNameVal.pName, "LICENSE") == 0 )
     {
-        JS_BIN_decodeHex( sNameVal.pValue, pLCN );
+        int nType = -1;
+        JS_BIN_decodePEM( sNameVal.pValue, &nType, pLCN );
     }
+    else
+    {
+        berApplet->elog( QString("HTTP Rsp Name: %1 Value: %2").arg( sNameVal.pName ).arg( sNameVal.pValue ));
+        ret = JSR_HTTP_BODY_ERROR;
+        goto end;
+    }
+
 end :
     if( pRsp ) JS_free( pRsp );
     JS_UTIL_resetNameVal( &sNameVal );
