@@ -63,7 +63,7 @@ void LCNInfoDlg::initialize()
     mUpdateBtn->setEnabled( false );
     JS_LICENSE_INFO sLicenseInfo = berApplet->LicenseInfo();
     QString strEmail = berApplet->settingsMgr()->getEmail();
-    QString strSID = GetSystemID();
+    SID_ = GetSystemID();
 
     if( berApplet->isLicense() )
     {
@@ -82,7 +82,7 @@ void LCNInfoDlg::initialize()
         mCurIssueDateText->setText( issueTime.toString( "yyyy-MM-dd HH:mm:ss") );
         mCurExpireDateText->setText( expireTime.toString( "yyyy-MM-dd HH:mm:ss") );
 
-        ret = JS_LCN_IsValid( &sLicenseInfo, strEmail.toStdString().c_str(), JS_LCN_PRODUCT_BEREDITOR_NAME, strSID.toStdString().c_str(), time(NULL) );
+        ret = JS_LCN_IsValid( &sLicenseInfo, strEmail.toStdString().c_str(), JS_LCN_PRODUCT_BEREDITOR_NAME, SID_.toStdString().c_str(), time(NULL) );
         if( ret == JSR_VALID )
         {
             mCurGroup->setEnabled( true );
@@ -123,12 +123,12 @@ void LCNInfoDlg::initialize()
     tabWidget->setCurrentIndex(0);
 }
 
-void LCNInfoDlg::settingsLCN( const QString strSID, const BIN *pLCN )
+void LCNInfoDlg::settingsLCN( const QString strUser, const BIN *pLCN )
 {
     BIN binEncLCN = {0,0};
 
-    JS_LCN_enc( strSID.toStdString().c_str(), pLCN, &binEncLCN );
-    berApplet->settingsMgr()->setEmail( strSID );
+    JS_LCN_enc( strUser.toStdString().c_str(), pLCN, &binEncLCN );
+    berApplet->settingsMgr()->setEmail( strUser );
     berApplet->settingsMgr()->setLicense( getHexString( &binEncLCN ));
 
     JS_BIN_reset( &binEncLCN );
@@ -144,7 +144,6 @@ int LCNInfoDlg::getLCN( const QString& strEmail, const QString& strKey, BIN *pLC
     JCC_NameVal sNameVal;
 
     QString strProduct = berApplet->getBrand();
-    QString strSID = GetSystemID();
 
     memset( &sNameVal, 0x00, sizeof(sNameVal));
     strProduct.remove( "Lite" );
@@ -155,7 +154,7 @@ int LCNInfoDlg::getLCN( const QString& strEmail, const QString& strKey, BIN *pLC
     QString strBody = QString( "email=%1&key=%2&product=%3&sid=%4")
                           .arg( strEmail )
                           .arg( strKey )
-                          .arg(strProduct).arg( strSID );
+                          .arg(strProduct).arg( SID_ );
 
     berApplet->log( QString( "Body: %1" ).arg( strBody ));
 
@@ -206,7 +205,6 @@ int LCNInfoDlg::updateLCN( const QString strEmail, const QString strKey, BIN *pL
     char *pRsp = NULL;
     JCC_NameVal sNameVal;
     QString strProduct = berApplet->getBrand();
-    QString strSID = GetSystemID();
 
 #ifndef _USE_LCN_SRV
     berApplet->warningBox( tr( "This service is not yet supported." ), this );
@@ -222,7 +220,7 @@ int LCNInfoDlg::updateLCN( const QString strEmail, const QString strKey, BIN *pL
     QString strBody = QString( "email=%1&key=%2&product=%3&sid=%4")
                           .arg( strEmail )
                           .arg( strKey )
-                          .arg(strProduct).arg( strSID );
+                          .arg(strProduct).arg( SID_ );
 
     ret = JS_HTTP_requestPost2(
         strURL.toStdString().c_str(),
@@ -321,7 +319,7 @@ void LCNInfoDlg::clickGet()
         goto end;
     }
 
-    ret = JS_LCN_IsValid( &sInfo, sInfo.sUser, JS_LCN_PRODUCT_BEREDITOR_NAME, sInfo.sSID, time(NULL) );
+    ret = JS_LCN_IsValid( &sInfo, sInfo.sUser, JS_LCN_PRODUCT_BEREDITOR_NAME, SID_.toStdString().c_str(), time(NULL) );
     if( ret != JSR_VALID )
     {
         strErr = tr("The license is not valid:%1").arg(ret);
@@ -346,7 +344,7 @@ void LCNInfoDlg::clickGet()
         }
     }
 
-    settingsLCN( QString( sInfo.sSID), &binLCN );
+    settingsLCN( QString( sInfo.sUser ), &binLCN );
     ret = 0;
 
 end :
@@ -417,7 +415,7 @@ void LCNInfoDlg::clickUpdate()
             }
         }
 
-        settingsLCN( QString(sInfo.sSID), &binNewLCN );
+        settingsLCN( QString(sInfo.sUser), &binNewLCN );
         ret = 0;
     }
     else
