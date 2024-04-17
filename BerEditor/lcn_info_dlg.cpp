@@ -4,6 +4,7 @@
  * All rights reserved.
  */
 #include <QDateTime>
+#include <QSysInfo>
 
 #include "lcn_info_dlg.h"
 #include "common.h"
@@ -146,6 +147,11 @@ int LCNInfoDlg::getLCN( const QString& strEmail, const QString& strKey, BIN *pLC
     JCC_NameVal sNameVal;
 
     QString strProduct = berApplet->getBrand();
+    QSysInfo sysInfo;
+    QString strInfo = QString( "%1_%2_%3_%4")
+                          .arg( sysInfo.prettyProductName())
+                          .arg( sysInfo.currentCpuArchitecture())
+                          .arg( sysInfo.productType().arg( sysInfo.productVersion()) );
 
     memset( &sNameVal, 0x00, sizeof(sNameVal));
     strProduct.remove( "Lite" );
@@ -153,10 +159,11 @@ int LCNInfoDlg::getLCN( const QString& strEmail, const QString& strKey, BIN *pLC
     strURL = getLicenseURI();
     strURL += "/jsinc/lcn.php";
 
-    QString strBody = QString( "email=%1&key=%2&product=%3&sid=%4")
+    QString strBody = QString( "email=%1&key=%2&product=%3&sid=%4&sysinfo=%5")
                           .arg( strEmail )
                           .arg( strKey )
-                          .arg(strProduct).arg( SID_ );
+                          .arg(strProduct).arg( SID_ )
+                          .arg( strInfo );
 
     berApplet->log( QString( "Body: %1" ).arg( strBody ));
 
@@ -207,6 +214,12 @@ int LCNInfoDlg::updateLCN( const QString strEmail, const QString strKey, BIN *pL
     char *pRsp = NULL;
     JCC_NameVal sNameVal;
     QString strProduct = berApplet->getBrand();
+    QSysInfo sysInfo;
+    QString strInfo = QString( "%1_%2_%3_%4")
+                          .arg( sysInfo.prettyProductName())
+                          .arg( sysInfo.currentCpuArchitecture())
+                          .arg( sysInfo.productType().arg( sysInfo.productVersion()) );
+
 
 #ifndef _USE_LCN_SRV
     berApplet->warningBox( tr( "This service is not yet supported." ), this );
@@ -219,10 +232,11 @@ int LCNInfoDlg::updateLCN( const QString strEmail, const QString strKey, BIN *pL
     strURL = getLicenseURI();
     strURL += "/jsinc/lcn_update.php";
 
-    QString strBody = QString( "email=%1&key=%2&product=%3&sid=%4")
+    QString strBody = QString( "email=%1&key=%2&product=%3&sid=%4&sysinfo=%5")
                           .arg( strEmail )
                           .arg( strKey )
-                          .arg(strProduct).arg( SID_ );
+                          .arg(strProduct).arg( SID_ )
+                          .arg( strInfo );
 
     ret = JS_HTTP_requestPost2(
         strURL.toStdString().c_str(),
