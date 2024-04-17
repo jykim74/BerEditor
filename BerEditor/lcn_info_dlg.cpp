@@ -240,6 +240,8 @@ int LCNInfoDlg::updateLCN( const QString strEmail, const QString strKey, BIN *pL
         goto end;
     }
 
+    berApplet->log( QString( "Rsp : %1").arg( pRsp ));
+
     JS_CC_decodeNameVal( pRsp, &sNameVal );
 
     if( sNameVal.pValue && strcasecmp( sNameVal.pName, "LICENSE") == 0 )
@@ -369,6 +371,7 @@ void LCNInfoDlg::clickUpdate()
 {
     int ret = 0;
     BIN binLCN = {0,0};
+    BIN binEncLCN = {0,0};
     BIN binNewLCN = {0,0};
 
     JS_LICENSE_INFO sInfo;
@@ -390,7 +393,8 @@ void LCNInfoDlg::clickUpdate()
         return;
     }
 
-    JS_BIN_decodeHex( strLicense.toStdString().c_str(), &binLCN );
+    JS_BIN_decodeHex( strLicense.toStdString().c_str(), &binEncLCN );
+    if( binEncLCN.nLen > 0 ) JS_LCN_dec( strEmail.toStdString().c_str(), &binEncLCN, &binLCN );
 
     if( JS_LCN_ParseBIN( &binLCN, &sInfo ) == 0 )
     {
@@ -398,8 +402,7 @@ void LCNInfoDlg::clickUpdate()
         if( ret != 0 )
         {
             strErr = tr( "failed to renew license:%1").arg( ret );
-            berApplet->elog( strErr );
-            berApplet->warningBox( strErr, this );
+            berApplet->warnLog( strErr, this );
             goto end;
         }
 
@@ -410,8 +413,7 @@ void LCNInfoDlg::clickUpdate()
             if( memcmp( sLicenseInfo.sExpire, sInfo.sExpire, sizeof(sLicenseInfo.sExpire) ) > 0 )
             {
                 strErr = tr( "Your current license has a longer usage period." );
-                berApplet->elog( strErr );
-                berApplet->warningBox( strErr, this );
+                berApplet->warnLog( strErr, this );
                 ret = -1;
                 goto end;
             }
@@ -422,12 +424,14 @@ void LCNInfoDlg::clickUpdate()
     }
     else
     {
-        ret = -1;
+        ret = JSR_LCN_ERR_INVALID_INPUT;
+        berApplet->warnLog( tr( "License is invalid : %1" ).arg(ret), this );
         goto end;
     }
 
 end :
     JS_BIN_reset( &binLCN );
+    JS_BIN_reset( &binEncLCN );
     JS_BIN_reset( &binNewLCN );
 
 
