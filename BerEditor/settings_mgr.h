@@ -15,6 +15,7 @@ private:
 
 public:
     SettingsMgr(QObject *parent = nullptr);
+    void removeSet( const QString& group, const QString& name );
 
     void setShowPartOnly( bool val );
     bool showPartOnly();
@@ -52,6 +53,8 @@ public:
     void setHexAreaWidth( int width );
     int getHexAreaWidth();
     int hexAreaWidth() { return hex_area_width_; };
+
+
 signals:
 
 private:

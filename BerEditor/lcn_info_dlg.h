@@ -27,6 +27,7 @@ public:
 private slots:
     void clickGet();
     void clickUpdate();
+    void clickRemove();
     void checkUseFile();
     void checkStopMessage();
 

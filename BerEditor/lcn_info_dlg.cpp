@@ -25,6 +25,7 @@ LCNInfoDlg::LCNInfoDlg(QWidget *parent) :
 
     connect( mGetBtn, SIGNAL(clicked()), this, SLOT(clickGet()));
     connect( mUpdateBtn, SIGNAL(clicked()), this, SLOT(clickUpdate()));
+    connect( mRemoveBtn, SIGNAL(clicked()), this, SLOT(clickRemove()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mUseFileCheck, SIGNAL(clicked()), this, SLOT(checkUseFile()));
     connect( mStopMessageCheck, SIGNAL(clicked()), this, SLOT(checkStopMessage()));
@@ -72,8 +73,6 @@ void LCNInfoDlg::initialize()
         QDateTime issueTime = QDateTime::fromString( sLicenseInfo.sIssued, JS_LCN_TIME_FORMAT);
         QDateTime expireTime = QDateTime::fromString( sLicenseInfo.sExpire, JS_LCN_TIME_FORMAT );
 
-        mUpdateBtn->setEnabled(true);
-
         if( strExt.toUpper() == "DEMO" )
             mCurEmailText->setText( "For Demo");
         else
@@ -87,10 +86,13 @@ void LCNInfoDlg::initialize()
         {
             mCurGroup->setEnabled( true );
             mUpdateBtn->setEnabled( true );
+
+            mRemoveBtn->setEnabled( false );
         }
         else
         {
             mCurGroup->setEnabled( false );
+
         }
         
         mMessageLabel->setText( tr("This BerEditor is licensed version") );
@@ -437,6 +439,18 @@ end :
     {
         QDialog::reject();
     }
+}
+
+void LCNInfoDlg::clickRemove()
+{
+    QString strMsg = tr( "Are you sure you want to remove invalid license information?");
+
+    bool bVal = berApplet->yesOrNoBox( strMsg, this );
+    if( bVal == false ) return;
+
+    berApplet->settingsMgr()->removeSet( "Misc", "email" );
+    berApplet->settingsMgr()->removeSet( "Misc", "license" );
+    berApplet->messageBox( tr( "Remove invalid license settings" ), this );
 }
 
 void LCNInfoDlg::checkUseFile()

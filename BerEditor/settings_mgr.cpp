@@ -35,6 +35,15 @@ void SettingsMgr::initialize()
     getHexAreaWidth();
 }
 
+void SettingsMgr::removeSet( const QString& group, const QString& name )
+{
+    QSettings settings;
+
+    settings.beginGroup(group);
+    settings.remove( name );
+    settings.endGroup();
+}
+
 void SettingsMgr::setShowPartOnly(bool val)
 {
 //    QSettings settings( "myapp.plist", QSettings::NativeFormat );
