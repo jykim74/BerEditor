@@ -416,7 +416,7 @@ void LCNInfoDlg::clickUpdate()
 
     if( JS_LCN_ParseBIN( &binLCN, &sInfo ) == 0 )
     {
-        ret = updateLCN( sInfo.sSID, sInfo.sAuthKey, &binNewLCN );
+        ret = updateLCN( sInfo.sUser, sInfo.sAuthKey, &binNewLCN );
         if( ret != 0 )
         {
             strErr = tr( "failed to renew license:%1").arg( ret );
