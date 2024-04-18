@@ -67,6 +67,8 @@ void LCNInfoDlg::initialize()
     QString strEmail = berApplet->settingsMgr()->getEmail();
     SID_ = GetSystemID();
 
+    mEmailText->setText( strEmail );
+
     if( berApplet->isLicense() )
     {
         QString strExt;
@@ -151,7 +153,8 @@ int LCNInfoDlg::getLCN( const QString& strEmail, const QString& strKey, BIN *pLC
     QString strInfo = QString( "%1_%2_%3_%4")
                           .arg( sysInfo.prettyProductName())
                           .arg( sysInfo.currentCpuArchitecture())
-                          .arg( sysInfo.productType().arg( sysInfo.productVersion()) );
+                          .arg( sysInfo.productType() )
+                          .arg( sysInfo.productVersion());
 
     memset( &sNameVal, 0x00, sizeof(sNameVal));
     strProduct.remove( "Lite" );
@@ -218,7 +221,8 @@ int LCNInfoDlg::updateLCN( const QString strEmail, const QString strKey, BIN *pL
     QString strInfo = QString( "%1_%2_%3_%4")
                           .arg( sysInfo.prettyProductName())
                           .arg( sysInfo.currentCpuArchitecture())
-                          .arg( sysInfo.productType().arg( sysInfo.productVersion()) );
+                          .arg( sysInfo.productType() )
+                          .arg( sysInfo.productVersion());
 
 
 #ifndef _USE_LCN_SRV
