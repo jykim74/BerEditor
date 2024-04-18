@@ -163,10 +163,10 @@ int LCNInfoDlg::getLCN( const QString& strEmail, const QString& strKey, BIN *pLC
     strURL += "/jsinc/lcn.php";
 
     QString strBody = QString( "email=%1&key=%2&product=%3&sid=%4&sysinfo=%5")
-                          .arg( strEmail )
-                          .arg( strKey )
-                          .arg(strProduct).arg( SID_ )
-                          .arg( strInfo );
+                          .arg( strEmail.simplified() )
+                          .arg( strKey.simplified() )
+                          .arg(strProduct).arg( SID_.simplified() )
+                          .arg( strInfo.simplified() );
 
     berApplet->log( QString( "Body: %1" ).arg( strBody ));
 
@@ -237,10 +237,10 @@ int LCNInfoDlg::updateLCN( const QString strEmail, const QString strKey, BIN *pL
     strURL += "/jsinc/lcn_update.php";
 
     QString strBody = QString( "email=%1&key=%2&product=%3&sid=%4&sysinfo=%5")
-                          .arg( strEmail )
-                          .arg( strKey )
-                          .arg(strProduct).arg( SID_ )
-                          .arg( strInfo );
+                          .arg( strEmail.simplified() )
+                          .arg( strKey.simplified() )
+                          .arg(strProduct).arg( SID_.simplified() )
+                          .arg( strInfo.simplified() );
 
     ret = JS_HTTP_requestPost2(
         strURL.toStdString().c_str(),
@@ -324,8 +324,7 @@ void LCNInfoDlg::clickGet()
         if( ret != 0 )
         {
             strErr = tr( "failed to get license:%1").arg( ret );
-            berApplet->elog( strErr );
-            berApplet->warningBox( strErr, this );
+            berApplet->warnLog( strErr, this );
             goto end;
         }
     }
@@ -336,8 +335,7 @@ void LCNInfoDlg::clickGet()
     if( ret != 0 )
     {
         strErr = tr( "failed to parse license [%1]").arg( ret );
-        berApplet->elog( strErr );
-        berApplet->warningBox( strErr, this );
+        berApplet->warnLog( strErr, this );
         goto end;
     }
 
@@ -345,9 +343,7 @@ void LCNInfoDlg::clickGet()
     if( ret != JSR_VALID )
     {
         strErr = tr("The license is not valid:%1").arg(ret);
-
-        berApplet->elog( strErr );
-        berApplet->warningBox( strErr, this );
+        berApplet->warnLog( strErr, this );
         ret = -1;
         goto end;
     }
@@ -455,6 +451,9 @@ end :
 
     if( ret == 0 )
     {
+        if( berApplet->yesOrNoBox(tr("You have changed license. Restart to apply it?"), this, true))
+            berApplet->restartApp();
+
         QDialog::accept();
     }
     else

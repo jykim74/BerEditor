@@ -24,6 +24,7 @@ DataEncoderDlg::DataEncoderDlg(QWidget *parent) :
 
     mOutputTypeCombo->addItems( enTypes );
 
+    connect( mFindFileBtn, SIGNAL(clicked()), this, SLOT(clickFindFile()));
     connect( mEncodeBtn, SIGNAL(clicked()), this, SLOT(onClickEncodeBtn()));
     connect( mOutputTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(outTypeChanged(int)));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
@@ -52,6 +53,23 @@ static char getch( unsigned char c )
         return c;
     else {
         return '.';
+    }
+}
+
+void DataEncoderDlg::clickFindFile()
+{
+    QString strPath = berApplet->curFolder();
+
+    QString strFile = findFile( this, JS_FILE_TYPE_ALL, strPath );
+
+    if( strFile.length() > 0 )
+    {
+        mInputTypeHexBtn->setChecked(true);
+        BIN binFile = {0,0};
+        JS_BIN_fileRead( strFile.toLocal8Bit().toStdString().c_str(), &binFile );
+
+        mInputText->setPlainText( getHexString( &binFile ));
+        JS_BIN_reset( &binFile );
     }
 }
 

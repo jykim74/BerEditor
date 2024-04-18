@@ -24,6 +24,7 @@ public:
     ~DataEncoderDlg();
 
 private slots:
+    void clickFindFile();
     void onClickEncodeBtn();
     void outTypeChanged( int index );
     void inputChanged();
