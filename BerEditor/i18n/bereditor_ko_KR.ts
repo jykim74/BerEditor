@@ -166,29 +166,34 @@ mailto : jykim74@gmail.com</translation>
 <context>
     <name>BerApplet</name>
     <message>
-        <location filename="../ber_applet.cpp" line="222"/>
-        <location filename="../ber_applet.cpp" line="257"/>
+        <location filename="../ber_applet.cpp" line="210"/>
+        <source>License is invalid: %1</source>
+        <translation>라이선스가 유효하지 않습니다: %1</translation>
+    </message>
+    <message>
+        <location filename="../ber_applet.cpp" line="231"/>
+        <location filename="../ber_applet.cpp" line="266"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="268"/>
-        <location filename="../ber_applet.cpp" line="282"/>
-        <location filename="../ber_applet.cpp" line="310"/>
-        <location filename="../ber_applet.cpp" line="334"/>
+        <location filename="../ber_applet.cpp" line="277"/>
+        <location filename="../ber_applet.cpp" line="291"/>
+        <location filename="../ber_applet.cpp" line="319"/>
+        <location filename="../ber_applet.cpp" line="343"/>
         <source>Yes</source>
         <translation>예</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="269"/>
-        <location filename="../ber_applet.cpp" line="311"/>
-        <location filename="../ber_applet.cpp" line="335"/>
+        <location filename="../ber_applet.cpp" line="278"/>
+        <location filename="../ber_applet.cpp" line="320"/>
+        <location filename="../ber_applet.cpp" line="344"/>
         <source>No</source>
         <translation>아니오</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="283"/>
-        <location filename="../ber_applet.cpp" line="312"/>
+        <location filename="../ber_applet.cpp" line="292"/>
+        <location filename="../ber_applet.cpp" line="321"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
@@ -2413,7 +2418,7 @@ mailto : jykim74@gmail.com</translation>
         <translation>데이타 인코더</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="76"/>
+        <location filename="../data_encoder_dlg.ui" line="241"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -2422,12 +2427,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">입력 데이타 타입</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="351"/>
+        <location filename="../data_encoder_dlg.ui" line="149"/>
         <source>String</source>
         <translation>문자열</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="268"/>
+        <location filename="../data_encoder_dlg.ui" line="86"/>
         <source>Hex</source>
         <translation>16진수</translation>
     </message>
@@ -2437,13 +2442,13 @@ mailto : jykim74@gmail.com</translation>
         <translation>교환</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="173"/>
+        <location filename="../data_encoder_dlg.ui" line="338"/>
         <source>Output Data</source>
         <translation>결과 데이타</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="110"/>
-        <location filename="../data_encoder_dlg.ui" line="361"/>
+        <location filename="../data_encoder_dlg.ui" line="166"/>
+        <location filename="../data_encoder_dlg.ui" line="275"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
@@ -2453,27 +2458,32 @@ mailto : jykim74@gmail.com</translation>
         <translation>입력 지움</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="96"/>
+        <location filename="../data_encoder_dlg.ui" line="173"/>
+        <source>Find File</source>
+        <translation>파일 찾기</translation>
+    </message>
+    <message>
+        <location filename="../data_encoder_dlg.ui" line="261"/>
         <source>Output Clear</source>
         <translation>결과 지우기</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="205"/>
+        <location filename="../data_encoder_dlg.ui" line="377"/>
         <source>Input Data</source>
         <translation>입력 데이타</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="261"/>
+        <location filename="../data_encoder_dlg.ui" line="79"/>
         <source>Base64</source>
         <translation>베이스64</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="344"/>
+        <location filename="../data_encoder_dlg.ui" line="159"/>
         <source>URL</source>
         <translation>URL</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.ui" line="196"/>
+        <location filename="../data_encoder_dlg.ui" line="361"/>
         <source>Show printable text</source>
         <translation>인쇄 가능 문자 표시</translation>
     </message>
@@ -2491,7 +2501,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">데이타를 입력 하세요</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.cpp" line="68"/>
+        <location filename="../data_encoder_dlg.cpp" line="86"/>
         <source>Please enter input value</source>
         <translation>입력값을 입력하세요</translation>
     </message>
@@ -4218,6 +4228,11 @@ Do you want to delete the file and continue?</source>
         <translation>가겨오기</translation>
     </message>
     <message>
+        <location filename="../lcn_info_dlg.ui" line="393"/>
+        <source>Remove</source>
+        <translation>제거 하기</translation>
+    </message>
+    <message>
         <location filename="../lcn_info_dlg.ui" line="315"/>
         <source>Use License File</source>
         <translation>파일 라이선스 사용</translation>
@@ -4238,71 +4253,87 @@ Do you want to delete the file and continue?</source>
         <translation>갱신</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="94"/>
+        <location filename="../lcn_info_dlg.cpp" line="101"/>
         <source>This BerEditor is licensed version</source>
         <translation>BerEditor은 라이선스 버전 입니다.</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="99"/>
+        <location filename="../lcn_info_dlg.cpp" line="106"/>
         <source>This BerEditor is unlicensed version.<byte value="xd"/>
 </source>
         <translation>BerEditor 은 라이선스가 없는 버전입니다</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="104"/>
+        <location filename="../lcn_info_dlg.cpp" line="111"/>
         <source>Expiration date: %1</source>
         <translation>만료 일자: %1</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="108"/>
+        <location filename="../lcn_info_dlg.cpp" line="115"/>
         <source>The license is not a valid license.</source>
         <translation>라이선스가 유효하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="263"/>
+        <location filename="../lcn_info_dlg.cpp" line="321"/>
         <source>Please enter a email</source>
         <translation>이메일을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="269"/>
+        <location filename="../lcn_info_dlg.cpp" line="327"/>
         <source>Please enter a license key</source>
         <translation>라이센스 키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="275"/>
+        <location filename="../lcn_info_dlg.cpp" line="335"/>
         <source>failed to get license:%1</source>
         <translation>라이선스 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="287"/>
+        <location filename="../lcn_info_dlg.cpp" line="346"/>
         <source>failed to parse license [%1]</source>
         <translation>라이선스 파싱 실패: %1</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="296"/>
+        <location filename="../lcn_info_dlg.cpp" line="354"/>
         <source>The license is not valid:%1</source>
         <translation>라이선스가 유효하지 않습니다: %1</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="310"/>
-        <location filename="../lcn_info_dlg.cpp" line="376"/>
+        <location filename="../lcn_info_dlg.cpp" line="366"/>
+        <location filename="../lcn_info_dlg.cpp" line="438"/>
         <source>Your current license has a longer usage period.</source>
         <translation>현재 라이선스가 더 긴 기간입니다.</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="326"/>
+        <location filename="../lcn_info_dlg.cpp" line="382"/>
+        <location filename="../lcn_info_dlg.cpp" line="463"/>
         <source>You have changed license. Restart to apply it?</source>
         <translation>라이선스가 변경 되었습니다.적용을 위해 다시 시작 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="353"/>
+        <location filename="../lcn_info_dlg.cpp" line="415"/>
         <source>There is currently no license.</source>
         <translation>현재 라이선스가 없습니다</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="364"/>
+        <location filename="../lcn_info_dlg.cpp" line="427"/>
         <source>failed to renew license:%1</source>
         <translation>라이선스 갱신 실패: %1</translation>
+    </message>
+    <message>
+        <location filename="../lcn_info_dlg.cpp" line="451"/>
+        <source>License is invalid : %1</source>
+        <translation>라이선스가 유효하지 않습니다: %1</translation>
+    </message>
+    <message>
+        <location filename="../lcn_info_dlg.cpp" line="476"/>
+        <source>Are you sure you want to remove invalid license information?</source>
+        <translation>유효하지 않는 라이선스를 제거 하겠습니까?</translation>
+    </message>
+    <message>
+        <location filename="../lcn_info_dlg.cpp" line="483"/>
+        <source>Remove invalid license settings</source>
+        <translation>유효하지 않는 라이선스 설정 제거하기</translation>
     </message>
     <message>
         <source>Expired Date: %1</source>
@@ -4313,8 +4344,9 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">라이선스가 발급 되지 않았습니다</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="194"/>
-        <location filename="../lcn_info_dlg.cpp" line="254"/>
+        <location filename="../lcn_info_dlg.cpp" line="232"/>
+        <location filename="../lcn_info_dlg.cpp" line="312"/>
+        <location filename="../lcn_info_dlg.cpp" line="407"/>
         <source>This service is not yet supported.</source>
         <translation>아직 지원하지 않는 서비스 입니다</translation>
     </message>
@@ -5635,12 +5667,12 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">인증서 CRL 파일 (*.crt *.der *.crl *.pem);;모든 파일들(*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="44"/>
+        <location filename="../common.cpp" line="85"/>
         <source>Key Files (*.key *.der *.pem);;All Files(*.*)</source>
         <translation>키 파일 (*.key *.der *.pem);;모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="46"/>
+        <location filename="../common.cpp" line="87"/>
         <source>TXT Files (*.txt *.log);;All Files(*.*)</source>
         <translation>텍스트 파일들 (*.txt *.log);;모든 파일들 (*.*)</translation>
     </message>
@@ -5649,52 +5681,52 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">BER 파일들 (*.ber *.der *.pem);;모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="38"/>
+        <location filename="../common.cpp" line="79"/>
         <source>Cert Files (*.crt *.der *.cer *.pem);;All Files(*.*)</source>
         <translation>인증서 파일들 (*.crt *.der *.cer *.pem);;모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="40"/>
+        <location filename="../common.cpp" line="81"/>
         <source>CRL Files (*.crl *.der *.cer *.pem);;All Files(*.*)</source>
         <translation>CRL 파일들 (*.crl *.der *.cer *.pem);;모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="42"/>
+        <location filename="../common.cpp" line="83"/>
         <source>CSR Files (*.csr *.der *.cer *.pem);;All Files(*.*)</source>
         <translation>CSR 파일들 (*.csr *.der *.cer *.pem);;모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="48"/>
+        <location filename="../common.cpp" line="89"/>
         <source>BER Files (*.der *.pem *.cer *.crt *.crl *.csr);;All Files(*.*)</source>
         <translation>BER 파일들 (*.der *.pem *.cer *.crt *.crl *.csr);;모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="50"/>
+        <location filename="../common.cpp" line="91"/>
         <source>Config Files (*.cfg *.ini);;All Files(*.*)</source>
         <translation>설정 파일들 (*.cfg *.ini);;모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="52"/>
+        <location filename="../common.cpp" line="93"/>
         <source>Req Files (*.req *.txt);;All Files(*.*)</source>
         <translation>요청 파일들(*.req *.txt);;모든 파일들(*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="54"/>
+        <location filename="../common.cpp" line="95"/>
         <source>License Files (*.lcn *.txt);;All Files (*.*)</source>
         <translation>라이선스 파일들 (*.lcn *.txt);;모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="56"/>
+        <location filename="../common.cpp" line="97"/>
         <source>All Files(*.*)</source>
         <translation>모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="59"/>
+        <location filename="../common.cpp" line="100"/>
         <source>Open File</source>
         <translation>파일 열기</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="76"/>
+        <location filename="../common.cpp" line="117"/>
         <source>Open Directory</source>
         <translation>디렉토리 열기</translation>
     </message>

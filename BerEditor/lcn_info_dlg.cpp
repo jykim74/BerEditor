@@ -167,8 +167,9 @@ int LCNInfoDlg::getLCN( const QString& strEmail, const QString& strKey, BIN *pLC
                           .arg( strKey.simplified() )
                           .arg(strProduct).arg( SID_.simplified() )
                           .arg( strInfo.simplified() );
-
+#ifdef QT_DEBUG
     berApplet->log( QString( "Body: %1" ).arg( strBody ));
+#endif
 
     ret = JS_HTTP_requestPost2(
         strURL.toStdString().c_str(),
@@ -186,7 +187,9 @@ int LCNInfoDlg::getLCN( const QString& strEmail, const QString& strKey, BIN *pLC
         goto end;
     }
 
+#ifdef QT_DEBUG
     berApplet->log( QString( "Rsp : %1").arg( pRsp ));
+#endif
 
     JS_CC_decodeNameVal( pRsp, &sNameVal );
 
@@ -242,6 +245,10 @@ int LCNInfoDlg::updateLCN( const QString strEmail, const QString strKey, BIN *pL
                           .arg(strProduct).arg( SID_.simplified() )
                           .arg( strInfo.simplified() );
 
+#ifdef QT_DEBUG
+    berApplet->log( QString( "Body: %1" ).arg( strBody ));
+#endif
+
     ret = JS_HTTP_requestPost2(
         strURL.toStdString().c_str(),
         NULL,
@@ -258,7 +265,9 @@ int LCNInfoDlg::updateLCN( const QString strEmail, const QString strKey, BIN *pL
         goto end;
     }
 
+#ifdef QT_DEBUG
     berApplet->log( QString( "Rsp : %1").arg( pRsp ));
+#endif
 
     JS_CC_decodeNameVal( pRsp, &sNameVal );
 
