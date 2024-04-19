@@ -17,7 +17,8 @@
 #include "js_cc.h"
 #include "js_error.h"
 
-const QString kLicenseURI = "http://localhost:80";
+//const QString kLicenseURI = "http://localhost:80";
+const QString kLicenseURI = "http://jykim74.mycafe24.com";
 
 LCNInfoDlg::LCNInfoDlg(QWidget *parent) :
     QDialog(parent)
@@ -139,7 +140,7 @@ void LCNInfoDlg::settingsLCN( const QString strUser, const BIN *pLCN )
     JS_BIN_reset( &binEncLCN );
 }
 
-int LCNInfoDlg::getLCN( const QString& strEmail, const QString& strKey, BIN *pLCN )
+int LCNInfoDlg::getLCN( const QString& strEmail, const QString& strKey, BIN *pLCN, QString& strError )
 {
     int ret = 0;
     int status = 0;
@@ -183,6 +184,7 @@ int LCNInfoDlg::getLCN( const QString& strEmail, const QString& strKey, BIN *pLC
     if( status != JS_HTTP_STATUS_OK)
     {
         berApplet->elog( QString("HTTP get ret:%1 status: %2").arg( ret ).arg( status ));
+        strError = QString( "[STATUS Error:%1]" ).arg( status );
         ret = JSR_HTTP_STATUS_FAIL;
         goto end;
     }
@@ -201,6 +203,7 @@ int LCNInfoDlg::getLCN( const QString& strEmail, const QString& strKey, BIN *pLC
     else
     {
         berApplet->elog( QString("HTTP Rsp Name: %1 Value: %2").arg( sNameVal.pName ).arg( sNameVal.pValue ));
+        strError = QString( "[%1:%2]" ).arg( sNameVal.pName ).arg( sNameVal.pValue );
         ret = JSR_HTTP_BODY_ERROR;
         goto end;
     }
@@ -212,7 +215,7 @@ end :
     return ret;
 }
 
-int LCNInfoDlg::updateLCN( const QString strEmail, const QString strKey, BIN *pLCN )
+int LCNInfoDlg::updateLCN( const QString strEmail, const QString strKey, BIN *pLCN, QString& strError )
 {
     int ret = 0;
     int status = 0;
@@ -261,6 +264,7 @@ int LCNInfoDlg::updateLCN( const QString strEmail, const QString strKey, BIN *pL
     if( status != JS_HTTP_STATUS_OK)
     {
         berApplet->elog( QString("HTTP get ret:%1 status: %2").arg( ret ).arg( status ));
+        strError = QString( "[STATUS Error:%1]" ).arg( status );
         ret = JSR_HTTP_STATUS_FAIL;
         goto end;
     }
@@ -279,6 +283,7 @@ int LCNInfoDlg::updateLCN( const QString strEmail, const QString strKey, BIN *pL
     else
     {
         berApplet->elog( QString("HTTP Rsp Name: %1 Value: %2").arg( sNameVal.pName ).arg( sNameVal.pValue ));
+        strError = QString( "[%1:%2]" ).arg( sNameVal.pName ).arg( sNameVal.pValue );
         ret = JSR_HTTP_BODY_ERROR;
         goto end;
     }
@@ -328,11 +333,11 @@ void LCNInfoDlg::clickGet()
             return;
         }
 
-        ret = getLCN( strEmail, strKey, &binLCN );
+        ret = getLCN( strEmail, strKey, &binLCN, strErr );
 
         if( ret != 0 )
         {
-            strErr = tr( "failed to get license:%1").arg( ret );
+            strErr = tr( "failed to get license %1 : %2").arg( ret ).arg( strErr );
             berApplet->warnLog( strErr, this );
             goto end;
         }
@@ -384,10 +389,6 @@ end :
 
         QDialog::accept();
     }
-    else
-    {
-        QDialog::reject();
-    }
 }
 
 void LCNInfoDlg::clickUpdate()
@@ -421,10 +422,10 @@ void LCNInfoDlg::clickUpdate()
 
     if( JS_LCN_ParseBIN( &binLCN, &sInfo ) == 0 )
     {
-        ret = updateLCN( sInfo.sUser, sInfo.sAuthKey, &binNewLCN );
+        ret = updateLCN( sInfo.sUser, sInfo.sAuthKey, &binNewLCN, strErr );
         if( ret != 0 )
         {
-            strErr = tr( "failed to renew license:%1").arg( ret );
+            strErr = tr( "failed to renew license %1 : %2").arg( ret ).arg( strErr );
             berApplet->warnLog( strErr, this );
             goto end;
         }
@@ -464,10 +465,6 @@ end :
             berApplet->restartApp();
 
         QDialog::accept();
-    }
-    else
-    {
-        QDialog::reject();
     }
 }
 
