@@ -104,16 +104,16 @@ void LCNInfoDlg::initialize()
     }
     else
     {
-        QString strMsg = tr( "This BerEditor is unlicensed version.\r\n" );
+        QString strMsg = tr( "This BerEditor is unlicensed version" );
         QString strAppend;
 
         if( sLicenseInfo.nVersion > 0 )
         {
-            strAppend = tr( "Expiration date: %1").arg( sLicenseInfo.sExpire );
+            strAppend = tr( "[Expired:%1]").arg( sLicenseInfo.sExpire );
         }
         else
         {
-            strAppend = tr( "The license is not a valid license." );
+            strAppend = tr( "[No license]" );
         }
 
         strMsg += strAppend;

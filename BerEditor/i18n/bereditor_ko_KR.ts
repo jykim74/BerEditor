@@ -4225,7 +4225,7 @@ Do you want to delete the file and continue?</source>
     <message>
         <location filename="../lcn_info_dlg.ui" line="322"/>
         <source>Get</source>
-        <translation>가겨오기</translation>
+        <translation>가져오기</translation>
     </message>
     <message>
         <location filename="../lcn_info_dlg.ui" line="393"/>
@@ -4258,20 +4258,17 @@ Do you want to delete the file and continue?</source>
         <translation>BerEditor은 라이선스 버전 입니다.</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="107"/>
         <source>This BerEditor is unlicensed version.<byte value="xd"/>
 </source>
-        <translation>BerEditor 은 라이선스가 없는 버전입니다</translation>
+        <translation type="vanished">BerEditor 은 라이선스가 없는 버전입니다</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="112"/>
         <source>Expiration date: %1</source>
-        <translation>만료 일자: %1</translation>
+        <translation type="vanished">만료 일자: %1</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="116"/>
         <source>The license is not a valid license.</source>
-        <translation>라이선스가 유효하지 않습니다</translation>
+        <translation type="vanished">라이선스가 유효하지 않습니다</translation>
     </message>
     <message>
         <location filename="../lcn_info_dlg.cpp" line="326"/>
@@ -4296,6 +4293,21 @@ Do you want to delete the file and continue?</source>
     <message>
         <source>failed to get license:%1</source>
         <translation type="vanished">라이선스 가져오기 실패: %1</translation>
+    </message>
+    <message>
+        <location filename="../lcn_info_dlg.cpp" line="107"/>
+        <source>This BerEditor is unlicensed version</source>
+        <translation>BerEditor 은 라이선스가 없는 버전입니다</translation>
+    </message>
+    <message>
+        <location filename="../lcn_info_dlg.cpp" line="112"/>
+        <source>[Expired:%1]</source>
+        <translation>[만료 일자: %1]</translation>
+    </message>
+    <message>
+        <location filename="../lcn_info_dlg.cpp" line="116"/>
+        <source>[No license]</source>
+        <translation>[라이선스 없음]</translation>
     </message>
     <message>
         <location filename="../lcn_info_dlg.cpp" line="351"/>
@@ -4622,9 +4634,8 @@ Do you want to delete the file and continue?</source>
         <translation>선택 해제</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1382"/>
         <source>The license has been changed. Restart to apply it?</source>
-        <translation>라이선스가 변경 되었습니다.적용을 위해 다시 시작 하시겠습니까?</translation>
+        <translation type="vanished">라이선스가 변경 되었습니다.적용을 위해 다시 시작 하시겠습니까?</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1409"/>
