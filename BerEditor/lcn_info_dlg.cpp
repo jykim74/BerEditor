@@ -17,9 +17,6 @@
 #include "js_cc.h"
 #include "js_error.h"
 
-//const QString kLicenseURI = "http://localhost:80";
-const QString kLicenseURI = "http://jykim74.mycafe24.com";
-
 LCNInfoDlg::LCNInfoDlg(QWidget *parent) :
     QDialog(parent)
 {
@@ -57,7 +54,7 @@ QString LCNInfoDlg::getLicenseURI()
         return url_from_env;
     }
 
-    return kLicenseURI;
+    return JS_LCN_HOST_URL;
 }
 
 void LCNInfoDlg::initialize()
@@ -109,13 +106,18 @@ void LCNInfoDlg::initialize()
 
         if( sLicenseInfo.nVersion > 0 )
         {
-            strAppend = tr( "[Expired:%1]").arg( sLicenseInfo.sExpire );
+            time_t exp_t = JS_LCN_getUnixTime( sLicenseInfo.sExpire );
+            QDateTime expDate;
+            expDate.setTime_t( exp_t );
+            expDate.toString( "yyyy-MM-dd");
+            strAppend = tr( "[Expired:%1]").arg( expDate.toString( "yyyy-MM-dd") );
         }
         else
         {
             strAppend = tr( "[No license]" );
         }
 
+        strMsg += "\n";
         strMsg += strAppend;
         mMessageLabel->setText( strMsg );
 
@@ -161,7 +163,7 @@ int LCNInfoDlg::getLCN( const QString& strEmail, const QString& strKey, BIN *pLC
     strProduct.remove( "Lite" );
 
     strURL = getLicenseURI();
-    strURL += "/jsinc/lcn.php";
+    strURL += JS_LCN_PATH;
 
     QString strBody = QString( "email=%1&key=%2&product=%3&sid=%4&sysinfo=%5")
                           .arg( strEmail.simplified() )
@@ -240,7 +242,7 @@ int LCNInfoDlg::updateLCN( const QString strEmail, const QString strKey, BIN *pL
     strProduct.remove( "Lite" );
 
     strURL = getLicenseURI();
-    strURL += "/jsinc/lcn_update.php";
+    strURL += JS_LCN_UPDATE_PATH;
 
     QString strBody = QString( "email=%1&key=%2&product=%3&sid=%4&sysinfo=%5")
                           .arg( strEmail.simplified() )
