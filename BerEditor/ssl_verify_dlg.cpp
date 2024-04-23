@@ -17,6 +17,7 @@
 #include "js_net.h"
 #include "js_ssl.h"
 #include "js_util.h"
+#include "js_error.h"
 #include "cert_info_dlg.h"
 #include "settings_mgr.h"
 #include "trust_list_dlg.h"
@@ -455,6 +456,7 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
     if( nSockFd < 0 )
     {
         berApplet->elog( QString("fail to connect Server(%1:%2)").arg( strHost ).arg( nPort ));
+        ret = ret = JSR_SERVER_CONNECT_FAIL;
         goto end;
     }
 
@@ -464,6 +466,7 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
     if( ret != 0 )
     {
         berApplet->elog( QString("failed to initialize SSL(%1:%2)").arg( strHost ).arg( nPort ));
+        ret = JSR_SSL_INIT_FAIL;
         goto end;
     }
 
@@ -473,12 +476,11 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
         log( QString( "Verify Depth: %1" ).arg( nVerifyDepth ));
     }
 
-
-
     ret = JS_SSL_connect( pSSL );
     if( ret != 0 )
     {
         berApplet->elog( QString( "failed to handshake SSL [%1]").arg( ret ));
+        ret = JSR_SSL_CONNECT_FAIL;
         goto end;
     }
 
@@ -500,6 +502,7 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
     else
     {
         log( QString( "SSL certificate verification successful" ));
+        ret = JSR_VERIFY;
     }
 
     pAtList = JS_BIN_getListAt( 0, pCertList );
@@ -508,6 +511,7 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
     if( ret != 0 )
     {
         berApplet->elog( QString( "Invalid certificate [%1]").arg( ret ));
+        ret = JSR_PKI_GET_CERT_FAIL;
         goto end;
     }
 
@@ -520,12 +524,14 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
         {
             strRes = "Valid";
             log( QString( "TLS hostname check : %1 (%2 : %3)").arg( strHost ).arg( strRes ).arg( ret ));
+            ret = JSR_VERIFY;
         }
         else if( ret == 0)
         {
             bGood = false;
             strRes = "NameMismatch";
             elog( QString( "TLS hostname check : %1 (%2 : %3)").arg( strHost ).arg( strRes ).arg( ret ));
+            ret = JSR_SSL_HOST_NAME_MISMATCH;
         }
         else
         {
@@ -533,8 +539,6 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
             strRes = "Error";
             elog( QString( "TLS hostname check : %1 (%2 : %3)").arg( strHost ).arg( strRes ).arg( ret ));
         }
-
-        ret = 0;
     }
 
     log( QString( "The Subject Name is '%1'" ).arg( sCertInfo.pSubjectName ));
@@ -679,7 +683,7 @@ long SSLVerifyDlg::getFlags()
     if( mNoSSL2Check->isChecked() )
         uFlags |= SSL_OP_NO_SSLv2;
 
-    if( mNoSSL3Check->isCheckable() )
+    if( mNoSSL3Check->isChecked() )
         uFlags |= SSL_OP_NO_SSLv3;
 
     if( mNoCompCheck->isChecked() )
@@ -733,15 +737,21 @@ void SSLVerifyDlg::clickConnect()
     berApplet->log( QString( "Host:Port => %1:%2" ).arg( strHost ).arg( nPort ) );
 
     ret = verifyURL( strHost, nPort );
-    if( strHost.length() > 1 && ret == 0 )
+    if( strHost.length() > 3 && ret == 0 )
     {
         setUsedURL( strURL );
         mURLCombo->addItem( strURL );
     }
+
+    if( ret == JSR_VERIFY)
+        berApplet->messageLog( tr( "Verify successful : %1").arg( ret ), this );
+    else
+        berApplet->warnLog( tr( "Verify failed : %1").arg( ret ), this );
 }
 
 void SSLVerifyDlg::clickRefresh()
 {
+    int ret = 0;
     clickClearResult();
 
     int nCount = mURLTable->rowCount();
@@ -756,7 +766,12 @@ void SSLVerifyDlg::clickRefresh()
 
         mURLTable->removeRow(0);
 
-        verifyURL( strHost, nPort );
+        ret = verifyURL( strHost, nPort );
+
+        if( ret == JSR_VERIFY)
+            berApplet->log( tr( "Verify successful : %1").arg( ret ) );
+        else
+            berApplet->elog( tr( "Verify failed : %1").arg( ret ) );
     }
 }
 
