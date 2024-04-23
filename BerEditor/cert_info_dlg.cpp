@@ -15,6 +15,7 @@
 #include "js_pki_tools.h"
 #include "js_util.h"
 #include "crl_info_dlg.h"
+#include "settings_mgr.h"
 #include "common.h"
 
 enum {
@@ -76,6 +77,7 @@ CertInfoDlg::CertInfoDlg(QWidget *parent) :
     setupUi(this);
 
     connect( mSaveBtn, SIGNAL(clicked()), this, SLOT(clickSave()));
+    connect( mSaveTrustedCABtn, SIGNAL(clicked()), SLOT(clickSaveTrustedCA()));
 
     connect( mMakeTreeBtn, SIGNAL(clicked()), this, SLOT(clickMakeTree()));
     connect( mGetCABtn, SIGNAL(clicked()), this, SLOT(clickGetCA()));
@@ -164,6 +166,11 @@ void CertInfoDlg::showEvent(QShowEvent *event)
     {
         mOCSPCheckBtn->setEnabled( false );
     }
+
+    if( self_sign_ == false )
+        mSaveTrustedCABtn->hide();
+    else
+        mSaveTrustedCABtn->show();
 }
 
 void CertInfoDlg::getFields()
@@ -466,6 +473,33 @@ void CertInfoDlg::changeFieldType( int index )
 void CertInfoDlg::clickSave()
 {   
     saveAsPEM( &cert_bin_ );
+}
+
+void CertInfoDlg::clickSaveTrustedCA()
+{
+    int ret = 0;
+    long uHash = 0;
+
+    QString strTrustedCAPath = berApplet->settingsMgr()->trustedCAPath();
+
+    if( QDir( strTrustedCAPath ).exists() == false )
+        QDir().mkdir( strTrustedCAPath );
+
+    JS_PKI_getSubjectNameHash( &cert_bin_, &uHash );
+    berApplet->log( QString( "Subject Hash: %1").arg( uHash, 8, 16, QLatin1Char( '0') ));
+    QString strFileName = QString( "%1/%2.0" ).arg( strTrustedCAPath ).arg( uHash, 8, 16, QLatin1Char('0'));
+
+    if( QFileInfo::exists( strFileName ) == true )
+    {
+        berApplet->warningBox( tr( "The file(%1) is already existed").arg( strFileName ), this );
+        return;
+    }
+
+    ret = JS_BIN_writePEM( &cert_bin_, JS_PEM_TYPE_CERTIFICATE, strFileName.toLocal8Bit().toStdString().c_str() );
+    if( ret > 0 )
+        berApplet->messageBox( tr( "The Certificate saved to trusted CA directory"), this );
+    else
+        berApplet->warningBox( tr( "The Certificate failed to save to trusted CA directory [%1]" ).arg(ret), this );
 }
 
 void CertInfoDlg::clickMakeTree()

@@ -482,20 +482,21 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
     if( ret != 0 )
     {
         berApplet->elog( QString( "failed to handshake SSL [%1]").arg( ret ));
+        elog( QString( "SSL handshake fail(%1)" ).arg( ret ) );
         ret = JSR_SSL_CONNECT_FAIL;
-        goto end;
+    }
+    else
+    {
+        log( QString( "SSL handshake is done successfully" ) );
+        log( QString( "Current TLS Version : %1").arg( JS_SSL_getCurrentVersionName( pSSL )));
+        log( QString( "Current Cipher Name : %1").arg( JS_SSL_getCurrentCipherName( pSSL ) ));
     }
 
-    log( QString( "SSL handshake is done successfully" ) );
-    log( QString( "Current TLS Version : %1").arg( JS_SSL_getCurrentVersionName( pSSL )));
-    log( QString( "Current Cipher Name : %1").arg( JS_SSL_getCurrentCipherName( pSSL ) ));
-
-
-    ret = JS_SSL_getChains( pSSL, &pCertList );
+    JS_SSL_getChains( pSSL, &pCertList );
     count = JS_BIN_countList( pCertList );
     log( QString( "Server returned %1 certificates").arg( count ) );
 
-    if( mModeCombo->currentIndex() == 1 )
+    if( ret == 0 )
     {
         ret = JS_SSL_verifyCert( pSSL );
         if( ret != 0)
@@ -503,7 +504,6 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
             bGood = false;
             elog( QString( "SSL certificate verification failed : %1(%2)").arg( X509_verify_cert_error_string(ret)).arg( ret ));
             ret = JSR_INVALID;
-            goto end;
         }
         else
         {
@@ -513,16 +513,16 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
     }
 
     pAtList = JS_BIN_getListAt( 0, pCertList );
+    if( pAtList == NULL ) goto end;
 
-    ret = JS_PKI_getCertInfo( &pAtList->Bin, &sCertInfo, NULL );
-    if( ret != 0 )
+    if( JS_PKI_getCertInfo( &pAtList->Bin, &sCertInfo, NULL ) != 0 )
     {
         berApplet->elog( QString( "Invalid certificate [%1]").arg( ret ));
         ret = JSR_PKI_GET_CERT_FAIL;
         goto end;
     }
 
-    if( mHostNameCheck->isChecked() )
+    if( mHostNameCheck->isChecked() && ret == JSR_VERIFY )
     {
         QString strRes;
         ret = JS_SSL_checkHostName( &pAtList->Bin, strHost.toStdString().c_str() );
@@ -727,7 +727,15 @@ void SSLVerifyDlg::clickConnect()
     QUrl url;
 
     QString strURL = mURLCombo->currentText();
+
+    if( strURL.length() < 2 )
+    {
+        berApplet->warningBox( tr( "Insert URL" ), this );
+        return;
+    }
+
     QStringList list = strURL.split( "://" );
+
 
     if( list.size() < 2 )
     {
