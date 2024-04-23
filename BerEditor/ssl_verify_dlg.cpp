@@ -476,6 +476,8 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
         log( QString( "Verify Depth: %1" ).arg( nVerifyDepth ));
     }
 
+    JS_SSL_setTLSExtHostName( pSSL, strHost.toStdString().c_str() );
+
     ret = JS_SSL_connect( pSSL );
     if( ret != 0 )
     {
@@ -493,16 +495,21 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
     count = JS_BIN_countList( pCertList );
     log( QString( "Server returned %1 certificates").arg( count ) );
 
-    ret = JS_SSL_verifyCert( pSSL );
-    if( ret != 0)
+    if( mModeCombo->currentIndex() == 1 )
     {
-        bGood = false;
-        elog( QString( "SSL certificate verification failed : %1(%2)").arg( X509_verify_cert_error_string(ret)).arg( ret ));
-    }
-    else
-    {
-        log( QString( "SSL certificate verification successful" ));
-        ret = JSR_VERIFY;
+        ret = JS_SSL_verifyCert( pSSL );
+        if( ret != 0)
+        {
+            bGood = false;
+            elog( QString( "SSL certificate verification failed : %1(%2)").arg( X509_verify_cert_error_string(ret)).arg( ret ));
+            ret = JSR_INVALID;
+            goto end;
+        }
+        else
+        {
+            log( QString( "SSL certificate verification successful" ));
+            ret = JSR_VERIFY;
+        }
     }
 
     pAtList = JS_BIN_getListAt( 0, pCertList );
@@ -652,11 +659,16 @@ void SSLVerifyDlg::createTree( const QString strHost, const BINList *pCertList, 
                     item = new QTreeWidgetItem;
                     item->setText( 0, sCertInfo.pSubjectName );
                     item->setData( 0, Qt::UserRole, getHexString( &pAtList->Bin ));
+                    item->setData( 0, 99, bSelfSign );
 
                     if( bSelfSign == 1 )
+                    {
                         item->setIcon( 0, QIcon(":/images/root_cert.png"));
+                    }
                     else
+                    {
                         item->setIcon( 0, QIcon(":/images/cert.png"));
+                    }
 
                     item->addChild( last );
                     JS_PKI_resetCertInfo( &sCertInfo );
@@ -949,8 +961,9 @@ void SSLVerifyDlg::slotTreeMenuRequested( QPoint pos )
 
     menu->addAction( viewAct );
     menu->addAction( decodeAct );
+    int bSelfSign = item->data( 0, 99 ).toInt();
 
-    if( item->parent() == url_tree_root_ )
+    if( bSelfSign == 1 )
     {
         menu->addAction( saveTrustedCAAct );
     }
