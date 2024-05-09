@@ -478,7 +478,7 @@ void CertInfoDlg::clickSave()
 void CertInfoDlg::clickSaveTrustedCA()
 {
     int ret = 0;
-    long uHash = 0;
+    unsigned long uHash = 0;
 
     QString strTrustedCAPath = berApplet->settingsMgr()->trustedCAPath();
 

@@ -293,7 +293,11 @@ void SSLVerifyDlg::initialize()
 
     mURLCombo->setEditable( true );
     QStringList usedList = getUsedURL();
-    mURLCombo->addItems( usedList );
+    for( int i = 0; i < usedList.size(); i++ )
+    {
+        QString url = usedList.at(i);
+        if( url.length() > 4 ) mURLCombo->addItem( url );
+    }
 
     mURLTree->clear();
     mURLTree->header()->setVisible(false);
@@ -998,7 +1002,7 @@ void SSLVerifyDlg::viewCertTreeMenu()
 void SSLVerifyDlg::saveTrustedCA()
 {
     int ret = 0;
-    long uHash = 0;
+    unsigned long uHash = 0;
 
     QString strTrustedCAPath = berApplet->settingsMgr()->trustedCAPath();
 

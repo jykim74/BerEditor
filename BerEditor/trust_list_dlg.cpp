@@ -121,7 +121,7 @@ void TrustListDlg::clickAdd()
 {
     int ret = 0;
     int bSelfSign = 0;
-    long uHash = 0;
+    unsigned long uHash = 0;
 
     BIN binCA = {0,0};
     JCertInfo sCertInfo;
