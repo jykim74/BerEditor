@@ -361,7 +361,7 @@ void SSLVerifyDlg::setUsedURL( const QString strURL )
     settings.endGroup();
 }
 
-int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
+int SSLVerifyDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
 {
     int ret = 0;
     int count = 0;
@@ -523,6 +523,11 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
     pAtList = JS_BIN_getListAt( 0, pCertList );
     if( pAtList == NULL ) goto end;
 
+    if( pCA != NULL && count > 1 )
+    {
+        JS_BIN_copy( pCA, &(JS_BIN_getListAt( count - 1, pCertList )->Bin) );
+    }
+
     if( JS_PKI_getCertInfo( &pAtList->Bin, &sCertInfo, NULL ) != 0 )
     {
         berApplet->elog( QString( "Invalid certificate [%1]").arg( ret ));
@@ -591,7 +596,6 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
 
     createTree( strHost, nPort, pCertList, bGood );
 
-
     log( "========================================================================");
 
 end :
@@ -604,7 +608,7 @@ end :
     return ret;
 }
 
-void SSLVerifyDlg::createTree( const QString strHost, int nPort, const BINList *pCertList, bool bGood )
+const QTreeWidgetItem* SSLVerifyDlg::createTree( const QString strHost, int nPort, const BINList *pCertList, bool bGood )
 {
     int ret = 0;
     int nCount = 0;
@@ -614,12 +618,12 @@ void SSLVerifyDlg::createTree( const QString strHost, int nPort, const BINList *
 
     BIN binCert = {0,0};
 
-    if( pCertList == NULL ) return;
+    if( pCertList == NULL ) return NULL;
 
     memset( &sCertInfo, 0x00, sizeof(sCertInfo));
     nCount = JS_BIN_countList( pCertList );
 
-    if( nCount < 1 ) return;
+    if( nCount < 1 ) return NULL;
     pAtList = JS_BIN_getListAt( 0, pCertList );
     JS_BIN_copy( &binCert, &pAtList->Bin );
 
@@ -691,6 +695,7 @@ void SSLVerifyDlg::createTree( const QString strHost, int nPort, const BINList *
 //    url_tree_root_->insertChild( 0, item );
     itemHost->insertChild(0, item);
     mURLTree->expandAll();
+    return itemHost;
 }
 
 long SSLVerifyDlg::getFlags()
@@ -732,6 +737,7 @@ void SSLVerifyDlg::clickVerify()
     QUrl url;
 
     QString strURL = mURLCombo->currentText();
+    BIN binCA = {0,0};
 
     if( strURL.length() < 2 )
     {
@@ -761,7 +767,7 @@ void SSLVerifyDlg::clickVerify()
 
     berApplet->log( QString( "Host:Port => %1:%2" ).arg( strHost ).arg( nPort ) );
 
-    ret = verifyURL( strHost, nPort );
+    ret = verifyURL( strHost, nPort, &binCA );
     if( strHost.length() > 3 && ret == 0 )
     {
         setUsedURL( strURL );
@@ -776,11 +782,126 @@ void SSLVerifyDlg::clickVerify()
     }
 
     if( ret == JSR_VERIFY)
+    {
         berApplet->messageLog( tr( "Verify successful : %1").arg( ret ), this );
+    }
     else
+    {
         berApplet->warnLog( tr( "Verify failed : %1").arg( ret ), this );
+        if( binCA.nLen > 0 )
+        {
+            checkRootAndTrust( &binCA, strHost, nPort );
+        }
+    }
 
     mURLCombo->setCurrentText("");
+    JS_BIN_reset( &binCA );
+}
+
+void SSLVerifyDlg::checkRootAndTrust( const BIN *pCA, const QString strHost, int nPort )
+{
+    int ret = 0;
+    int bSelfSign = 0;
+    JCertInfo sCertInfo;
+    JExtensionInfoList *pExtList = NULL;
+    bool bAsk = false;
+    QString strMsg;
+    BIN binRoot = {0,0};
+    QString strTrustPath = berApplet->settingsMgr()->trustedCAPath();
+    unsigned long uHash = 0;
+    QString strFileName;
+    QString strSaveName;
+
+    memset( &sCertInfo, 0x00, sizeof(sCertInfo));
+
+    ret = JS_PKI_getCertInfo2( pCA, &sCertInfo, &pExtList, &bSelfSign );
+    if( ret != 0 )
+    {
+        berApplet->warnLog( tr( "Invalid certificate : %1" ).arg(ret), this );
+        goto end;
+    }
+
+    if( bSelfSign != 1 )
+    {
+        QString strExtAIA;
+        strMsg = tr( "There is no root certificate in SSL. Would you like to retrieve the root certificate from certificate information?" );
+        bAsk = berApplet->yesOrNoBox( strMsg, this );
+
+        if( bAsk == false ) goto end;
+
+        while( 1 )
+        {
+            strExtAIA = CertInfoDlg::getValueFromExtList( kExtNameAIA, pExtList );
+            ret = CertInfoDlg::getCA( strExtAIA, &binRoot );
+            if( ret != 0 )
+            {
+                berApplet->warnLog( tr( "fail to get RootCA : %1").arg( ret ), this );
+                goto end;
+            }
+
+            JS_PKI_resetCertInfo( &sCertInfo );
+            if( pExtList ) JS_PKI_resetExtensionInfoList( &pExtList );
+
+            ret = JS_PKI_getCertInfo2( &binRoot, &sCertInfo, &pExtList, &bSelfSign );
+            if( ret != 0 )
+            {
+                berApplet->warnLog( tr( "Invalid certificate : %1" ).arg(ret), this );
+                goto end;
+            }
+
+            if( bSelfSign == true )
+            {
+                break;
+            }
+            else
+            {
+                JS_BIN_reset( &binRoot );
+                berApplet->log( tr("This ceriticate is not root( DN: %1)" ).arg( sCertInfo.pSubjectName ) );
+            }
+        }
+    }
+    else
+    {
+        JS_BIN_copy( &binRoot, pCA );
+    }
+
+    strMsg = tr( "Would you like to add that root certificate to the trust list and verify it again?" );
+    bAsk = berApplet->yesOrNoBox( strMsg, this );
+
+    if( bAsk == false ) goto end;
+
+    ret = JS_PKI_getSubjectNameHash( &binRoot, &uHash );
+    if( ret != 0 ) goto end;
+
+    strFileName = QString( "%1.0" ).arg( uHash, 8, 16, QLatin1Char('0'));
+    strSaveName = QString( "%1/%2" ).arg( strTrustPath ).arg( strFileName );
+    if( QFileInfo::exists( strFileName ) == true )
+    {
+        berApplet->warningBox( tr( "The file(%1) is already existed").arg( strSaveName ), this );
+        goto end;
+    }
+
+    ret = JS_BIN_writePEM( &binRoot, JS_PEM_TYPE_CERTIFICATE, strSaveName.toLocal8Bit().toStdString().c_str() );
+    if( ret <= 0 )
+    {
+        berApplet->warningBox( tr( "The Certificate failed to save to trustedCA folder:%1" ).arg(ret), this );
+        goto end;
+    }
+
+    ret = verifyURL( strHost, nPort );
+    if( ret == JSR_VERIFY)
+    {
+        berApplet->messageLog( tr( "Verify successful : %1").arg( ret ), this );
+    }
+    else
+    {
+        berApplet->warnLog( tr( "Verify failed : %1").arg( ret ), this );
+    }
+
+end :
+    JS_PKI_resetCertInfo( &sCertInfo );
+    JS_BIN_reset( &binRoot );
+    if( pExtList ) JS_PKI_resetExtensionInfoList( &pExtList );
 }
 
 void SSLVerifyDlg::clickRefresh()

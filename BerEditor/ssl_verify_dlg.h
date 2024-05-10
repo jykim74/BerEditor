@@ -75,13 +75,14 @@ private slots:
 
 private:
     void initialize();
-    int verifyURL( const QString strHost, int nPort );
-    void createTree( const QString strHost, int nPort, const BINList *pCertList, bool bGood );
+    int verifyURL( const QString strHost, int nPort, BIN *pCA = NULL );
+    const QTreeWidgetItem* createTree( const QString strHost, int nPort, const BINList *pCertList, bool bGood );
     long getFlags();
 
     QStringList getUsedURL();
     void setUsedURL( const QString strURL );
     int readPrivateKey( BIN *pPriKey );
+    void checkRootAndTrust( const BIN *pCA, const QString strHost, int nPort );
 
     int removeExistURL( const QString strHost, int nPort );
     QTreeWidgetItem* url_tree_root_;
