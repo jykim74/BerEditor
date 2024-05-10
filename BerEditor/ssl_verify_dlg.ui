@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>608</width>
-    <height>570</height>
+    <height>576</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -579,6 +579,13 @@
      <property name="topMargin">
       <number>0</number>
      </property>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mClearURLBtn">
+       <property name="text">
+        <string>Clear URLs</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_2">
        <property name="minimumSize">
@@ -592,6 +599,13 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mVerifyBtn">
+       <property name="text">
+        <string>Verify</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="1">
       <widget class="QComboBox" name="mURLCombo">
        <property name="sizePolicy">
@@ -599,13 +613,6 @@
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mConnectBtn">
-       <property name="text">
-        <string>Connect</string>
        </property>
       </widget>
      </item>
@@ -714,7 +721,21 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
+     <item row="0" column="6">
+      <widget class="QPushButton" name="mCloseBtn">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="3">
+      <widget class="QPushButton" name="mRefreshBtn">
+       <property name="text">
+        <string>Refresh</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -727,13 +748,6 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mClearURLBtn">
-       <property name="text">
-        <string>Clear URLs</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
       <widget class="QPushButton" name="mClearResultBtn">
        <property name="text">
@@ -741,17 +755,10 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="5">
-      <widget class="QPushButton" name="mCloseBtn">
-       <property name="text">
-        <string>Close</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="2">
-      <widget class="QPushButton" name="mRefreshBtn">
+      <widget class="QPushButton" name="mClearLogBtn">
        <property name="text">
-        <string>Refresh</string>
+        <string>Clear Log</string>
        </property>
       </widget>
      </item>

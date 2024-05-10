@@ -27,11 +27,12 @@ public:
     void elog( const QString strLog );
 
 private slots:
-    void clickConnect();
+    void clickVerify();
     void clickRefresh();
     void clickClearURL();
     void clickClearSaveURL();
     void clickClearResult();
+    void clickClearLog();
 
     void clickAddCipher();
     void checkFixCipherName();
@@ -41,6 +42,7 @@ private slots:
     void selectTable(QModelIndex index);
 
     void slotTableMenuRequested( QPoint pos );
+    void verifyTableMenu();
     void deleteTableMenu();
     void viewCertTableMenu();
     void decodeCertTableMenu();
@@ -74,14 +76,14 @@ private slots:
 private:
     void initialize();
     int verifyURL( const QString strHost, int nPort );
-    void createTree( const QString strHost, const BINList *pCertList, bool bGood );
+    void createTree( const QString strHost, int nPort, const BINList *pCertList, bool bGood );
     long getFlags();
 
     QStringList getUsedURL();
     void setUsedURL( const QString strURL );
     int readPrivateKey( BIN *pPriKey );
 
-    bool isExistURL( const QString strHost, int nPort );
+    int removeExistURL( const QString strHost, int nPort );
     QTreeWidgetItem* url_tree_root_;
 };
 

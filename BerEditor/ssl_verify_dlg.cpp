@@ -183,9 +183,10 @@ SSLVerifyDlg::SSLVerifyDlg(QWidget *parent) :
     setupUi(this);
     url_tree_root_ = NULL;
 
-    connect( mConnectBtn, SIGNAL(clicked()), this, SLOT(clickConnect()));
+    connect( mVerifyBtn, SIGNAL(clicked()), this, SLOT(clickVerify()));
     connect( mRefreshBtn, SIGNAL(clicked()), this, SLOT(clickRefresh()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mClearLogBtn, SIGNAL(clicked()), this, SLOT(clickClearLog()));
 
     connect( mClearSaveURLBtn, SIGNAL(clicked()), this, SLOT(clickClearSaveURL()));
     connect( mClearURLBtn, SIGNAL(clicked()), this, SLOT(clickClearURL()));
@@ -299,6 +300,8 @@ void SSLVerifyDlg::initialize()
         if( url.length() > 4 ) mURLCombo->addItem( url );
     }
 
+    mURLCombo->setCurrentText("");
+
     mURLTree->clear();
     mURLTree->header()->setVisible(false);
     mURLTree->setColumnCount(1);
@@ -330,6 +333,7 @@ void SSLVerifyDlg::initialize()
     url_tree_root_->setIcon( 0, QIcon(":/images/ca.png"));
 
     mURLTree->insertTopLevelItem( 0, url_tree_root_ );
+    mVerifyBtn->setDefault(true);
 }
 
 QStringList SSLVerifyDlg::getUsedURL()
@@ -573,24 +577,20 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort )
     }
 
     item->setData( Qt::UserRole, getHexString( &pAtList->Bin ));
+    removeExistURL( strHost, nPort );
 
-    if( isExistURL( strHost, nPort ) == false )
-    {
-        mURLTable->insertRow( row );
-        mURLTable->setRowHeight( row, 10 );
-        mURLTable->setItem( row, 0, item );
-        mURLTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( nPort )));
-        mURLTable->setItem( row, 2, new QTableWidgetItem( sCertInfo.pSubjectName ));
+    row = 0;
+    mURLTable->insertRow( row );
+    mURLTable->setRowHeight( row, 10 );
+    mURLTable->setItem( row, 0, item );
+    mURLTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( nPort )));
+    mURLTable->setItem( row, 2, new QTableWidgetItem( sCertInfo.pSubjectName ));
 //      mURLTable->setItem( row, 3, new QTableWidgetItem( sNotBefore ));
-        mURLTable->setItem( row, 3, new QTableWidgetItem( sNotAfter ));
-        mURLTable->setItem( row, 4, new QTableWidgetItem( strLeft ));
+    mURLTable->setItem( row, 3, new QTableWidgetItem( sNotAfter ));
+    mURLTable->setItem( row, 4, new QTableWidgetItem( strLeft ));
 
-        createTree( strHost, pCertList, bGood );
-    }
-    else
-    {
-        log( "This URL is already in URL List" );
-    }
+    createTree( strHost, nPort, pCertList, bGood );
+
 
     log( "========================================================================");
 
@@ -604,7 +604,7 @@ end :
     return ret;
 }
 
-void SSLVerifyDlg::createTree( const QString strHost, const BINList *pCertList, bool bGood )
+void SSLVerifyDlg::createTree( const QString strHost, int nPort, const BINList *pCertList, bool bGood )
 {
     int ret = 0;
     int nCount = 0;
@@ -626,7 +626,8 @@ void SSLVerifyDlg::createTree( const QString strHost, const BINList *pCertList, 
     JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
 
     QTreeWidgetItem *itemHost = new QTreeWidgetItem;
-    itemHost->setText( 0, strHost );
+    itemHost->setText( 0, QString( "%1:%2" ).arg( strHost ).arg( nPort ));
+
     if( bGood == true )
         itemHost->setIcon( 0, QIcon(":/images/valid.png"));
     else
@@ -723,7 +724,7 @@ long SSLVerifyDlg::getFlags()
     return uFlags;
 }
 
-void SSLVerifyDlg::clickConnect()
+void SSLVerifyDlg::clickVerify()
 {
     int ret = 0;
     QString strHost;
@@ -764,19 +765,28 @@ void SSLVerifyDlg::clickConnect()
     if( strHost.length() > 3 && ret == 0 )
     {
         setUsedURL( strURL );
-        mURLCombo->addItem( strURL );
+        mURLCombo->clear();
+        QStringList urlList = getUsedURL();
+
+        for( int i = 0; i < urlList.size(); i++ )
+        {
+            QString url = urlList.at(i);
+            if( url.length() > 4 ) mURLCombo->addItem( url );
+        }
     }
 
     if( ret == JSR_VERIFY)
         berApplet->messageLog( tr( "Verify successful : %1").arg( ret ), this );
     else
         berApplet->warnLog( tr( "Verify failed : %1").arg( ret ), this );
+
+    mURLCombo->setCurrentText("");
 }
 
 void SSLVerifyDlg::clickRefresh()
 {
     int ret = 0;
-    clickClearResult();
+//    clickClearResult();
 
     int nCount = mURLTable->rowCount();
 
@@ -788,7 +798,7 @@ void SSLVerifyDlg::clickRefresh()
         QString strHost = item0->text();
         int nPort = item1->text().toInt();
 
-        mURLTable->removeRow(0);
+//        mURLTable->removeRow(0);
 
         ret = verifyURL( strHost, nPort );
 
@@ -831,6 +841,11 @@ void SSLVerifyDlg::clickClearResult()
         QTreeWidgetItem* child = url_tree_root_->child(0);
         url_tree_root_->removeChild(child);
     }
+}
+
+void SSLVerifyDlg::clickClearLog()
+{
+    mLogText->clear();
 }
 
 void SSLVerifyDlg::findTrustCACert()
@@ -899,19 +914,34 @@ void SSLVerifyDlg::selectTable(QModelIndex index)
 void SSLVerifyDlg::slotTableMenuRequested( QPoint pos )
 {
     QMenu *menu = new QMenu(this);
+    QAction *verifyAct = new QAction( tr("Verify" ), this );
     QAction *delAct = new QAction( tr( "Delete" ), this );
     QAction *viewAct = new QAction( tr("View Cert"), this );
     QAction *decodeAct = new QAction( tr( "Decode Cert"), this);
 
+    connect( verifyAct, SIGNAL(triggered()), this, SLOT(verifyTableMenu()));
     connect( delAct, SIGNAL(triggered()), this, SLOT(deleteTableMenu()));
     connect( viewAct, SIGNAL(triggered()), this, SLOT(viewCertTableMenu()));
     connect( decodeAct, SIGNAL(triggered()), this, SLOT(decodeCertTableMenu()));
 
+    menu->addAction( verifyAct );
     menu->addAction( delAct );
     menu->addAction( viewAct );
     menu->addAction( decodeAct );
 
     menu->popup( mURLTable->viewport()->mapToGlobal(pos));
+}
+
+void SSLVerifyDlg::verifyTableMenu()
+{
+    QModelIndex idx = mURLTable->currentIndex();
+    QTableWidgetItem *item0 = mURLTable->item(idx.row(), 0);
+    QTableWidgetItem *item1 = mURLTable->item(idx.row(), 1);
+
+    QString strHost = item0->text();
+    int nPort = item1->text().toInt();
+
+    verifyURL( strHost, nPort );
 }
 
 void SSLVerifyDlg::deleteTableMenu()
@@ -1385,7 +1415,7 @@ end :
     JS_BIN_reset( &binPri );
 }
 
-bool SSLVerifyDlg::isExistURL( const QString strHost, int nPort )
+int SSLVerifyDlg::removeExistURL( const QString strHost, int nPort )
 {
     int count = mURLTable->rowCount();
 
@@ -1395,8 +1425,24 @@ bool SSLVerifyDlg::isExistURL( const QString strHost, int nPort )
         QTableWidgetItem* item1 = mURLTable->item(i, 1);
 
         if( item0->text().toLower() == strHost.toLower() && item1->text().toInt() == nPort )
-            return true;
+        {
+            mURLTable->removeRow(i);
+            break;
+        }
     }
 
-    return false;
+    count = url_tree_root_->childCount();
+    for( int i = 0; i < count; i++ )
+    {
+        QTreeWidgetItem *item = url_tree_root_->child(i);
+        QString strName = QString( "%1:%2" ).arg( strHost ).arg( nPort );
+
+        if( item->text(0).toLower() == strName.toLower() )
+        {
+            url_tree_root_->removeChild( item );
+            break;
+        }
+    }
+
+    return 0;
 }
