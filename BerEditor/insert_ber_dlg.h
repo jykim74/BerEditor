@@ -30,6 +30,7 @@ private slots:
     void classChanged(int index);
     void primitiveChanged(int index );
     void changeValueType( int index );
+    void clickMakeValue();
 
 private:
     void initialize();

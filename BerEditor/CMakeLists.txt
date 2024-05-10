@@ -167,6 +167,7 @@ add_executable(${PROJECT_NAME}
     bereditor.icns
     BerEditor.pro
     ../LICENSE
+    make_value_dlg.h make_value_dlg.cpp make_value_dlg.ui
 )
 
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )

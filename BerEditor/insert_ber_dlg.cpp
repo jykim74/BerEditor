@@ -8,6 +8,7 @@
 #include "js_ber.h"
 #include "ber_applet.h"
 #include "common.h"
+#include "make_value_dlg.h"
 
 const QStringList kClassList = { "Universal", "Application", "Content-Specific", "Private" };
 
@@ -25,6 +26,7 @@ InsertBerDlg::InsertBerDlg(QWidget *parent) :
     connect( mClassCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(classChanged(int)));
     connect( mPrimitiveCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(primitiveChanged(int)));
     connect( mValueTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeValueType(int)));
+    connect( mMakeValueBtn, SIGNAL(clicked()), this, SLOT(clickMakeValue()));
 
     initialize();
     mCloseBtn->setFocus();
@@ -194,5 +196,17 @@ void InsertBerDlg::primitiveChanged(int index )
 
 void InsertBerDlg::changeValueType( int index )
 {
+    QString strType = mValueTypeCombo->currentText();
+    if( strType == "Hex" )
+        mMakeValueBtn->setEnabled( true );
+    else
+        mMakeValueBtn->setEnabled( false );
+
     valueChanged();
+}
+
+void InsertBerDlg::clickMakeValue()
+{
+    MakeValueDlg makeValue;
+    makeValue.exec();
 }
