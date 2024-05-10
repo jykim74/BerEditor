@@ -140,6 +140,7 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
     berApplet->info( QString( "Length      : 0x%1 - %2 Bytes\n" ).arg( getHexString(sLen, nLenSize) ).arg(pItem->GetLength()));
 
     QString strVal = pItem->GetValueString( &binBer, nWidth );
+    strVal = strVal.simplified();
 
     if( pItem->GetTag() == JS_BITSTRING )
     {

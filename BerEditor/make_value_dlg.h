@@ -15,6 +15,7 @@ class MakeValueDlg : public QDialog, public Ui::MakeValueDlg
 public:
     explicit MakeValueDlg(QWidget *parent = nullptr);
     ~MakeValueDlg();
+    const QString getValue() { return value_; };
 
 private slots:
     void clickOK();
@@ -24,6 +25,7 @@ private slots:
 
 private:
     void initialize();
+    QString value_;
 };
 
 #endif // MAKE_VALUE_DLG_H

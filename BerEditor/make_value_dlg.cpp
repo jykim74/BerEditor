@@ -31,7 +31,8 @@ void MakeValueDlg::initialize()
 
 void MakeValueDlg::clickOK()
 {
-
+    value_ = mHexText->toPlainText();
+    QDialog::accept();
 }
 
 void MakeValueDlg::makeValue()
@@ -46,7 +47,19 @@ void MakeValueDlg::makeValue()
     }
     else if( strType == "Bit" )
     {
-        JS_PKI_bitToBin( strInput.toStdString().c_str(), &binOut );
+        int nLeft = 0;
+        int nMod = strInput.length() % 8;
+        if( nMod > 0 ) nLeft = 8 - nMod;
+
+        BIN binVal = {0,0};
+
+        if( nLeft > 0 ) strInput += QString( "%1" ).arg( '0', nLeft, QLatin1Char('0'));
+        unsigned char cCh = nLeft;
+        JS_BIN_setChar( &binOut, cCh, 1 );
+
+        JS_PKI_bitToBin( strInput.toStdString().c_str(), &binVal );
+        JS_BIN_appendBin( &binOut, &binVal );
+        JS_BIN_reset( &binVal );
     }
     else if( strType == "OID" )
     {

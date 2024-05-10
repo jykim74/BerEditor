@@ -19,8 +19,6 @@ NumTransDlg::NumTransDlg(QWidget *parent) :
 {
     setupUi(this);
 
-     mOutputTypeCombo->addItems( sTypeList );
-
      connect( mTransBtn, SIGNAL(clicked()), this, SLOT(dataTrans()));
      connect( mChangeBtn, SIGNAL(clicked()), this, SLOT(dataChange()));
      connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
@@ -29,6 +27,8 @@ NumTransDlg::NumTransDlg(QWidget *parent) :
      connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickOutputClear()));
 
      mTransBtn->setDefault(true);
+
+     initialize();
 }
 
 NumTransDlg::~NumTransDlg()
@@ -36,6 +36,11 @@ NumTransDlg::~NumTransDlg()
 
 }
 
+void NumTransDlg::initialize()
+{
+    mOutputTypeCombo->addItems( sTypeList );
+    mOutputTypeCombo->setCurrentIndex(2);
+}
 
 void NumTransDlg::dataTrans()
 {

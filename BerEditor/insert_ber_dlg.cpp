@@ -208,5 +208,10 @@ void InsertBerDlg::changeValueType( int index )
 void InsertBerDlg::clickMakeValue()
 {
     MakeValueDlg makeValue;
-    makeValue.exec();
+    mValueTypeCombo->setCurrentText( "Hex" );
+
+    if( makeValue.exec() == QDialog::Accepted )
+    {
+        mValueText->setPlainText( makeValue.getValue() );
+    }
 }

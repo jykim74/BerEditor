@@ -29,7 +29,7 @@ private slots:
     void clickOutputClear();
 
 private:
-
+    void initialize();
 };
 
 #endif // NUM_TRANS_DLG_H
