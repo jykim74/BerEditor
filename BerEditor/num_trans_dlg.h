@@ -28,6 +28,10 @@ private slots:
     void clickInputClear();
     void clickOutputClear();
 
+    void clickInputHex();
+    void clickInputBit();
+    void clickInputDec();
+
 private:
     void initialize();
 };

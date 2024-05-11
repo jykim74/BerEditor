@@ -19,16 +19,22 @@ NumTransDlg::NumTransDlg(QWidget *parent) :
 {
     setupUi(this);
 
-     connect( mTransBtn, SIGNAL(clicked()), this, SLOT(dataTrans()));
-     connect( mChangeBtn, SIGNAL(clicked()), this, SLOT(dataChange()));
-     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mTransBtn, SIGNAL(clicked()), this, SLOT(dataTrans()));
+    connect( mChangeBtn, SIGNAL(clicked()), this, SLOT(dataChange()));
+    connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
-     connect( mInputClearBtn, SIGNAL(clicked()), this, SLOT(clickInputClear()));
-     connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickOutputClear()));
+    connect( mInputClearBtn, SIGNAL(clicked()), this, SLOT(clickInputClear()));
+    connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickOutputClear()));
 
-     mTransBtn->setDefault(true);
+    connect( mBitBtn, SIGNAL(clicked()), this, SLOT(clickInputBit()));
+    connect( mDecimalBtn, SIGNAL(clicked()), this, SLOT(clickInputDec()));
+    connect( mHexBtn, SIGNAL(clicked()), this, SLOT(clickInputHex()));
 
-     initialize();
+    mTransBtn->setDefault(true);
+
+    mDecimalBtn->click();
+
+    initialize();
 }
 
 NumTransDlg::~NumTransDlg()
@@ -48,7 +54,7 @@ void NumTransDlg::dataTrans()
     char *pOutput = NULL;
     int nNum = 0;
 
-    QString strInput = mInputText->toPlainText();
+    QString strInput = mInputText->text();
     strInput.remove( QRegularExpression("[\t\r\n\\s]") );
 
     if( strInput.length() < 1 )
@@ -108,7 +114,7 @@ void NumTransDlg::dataChange()
     QString strOutput = mOutputText->toPlainText();
     mOutputText->clear();
 
-    mInputText->setPlainText( strOutput );
+    mInputText->setText( strOutput );
 
     if( mOutputTypeCombo->currentIndex() == 0 )
         mBitBtn->setChecked(true);
@@ -128,4 +134,28 @@ void NumTransDlg::clickInputClear()
 void NumTransDlg::clickOutputClear()
 {
     mOutputText->clear();
+}
+
+void NumTransDlg::clickInputHex()
+{
+    mInputText->clear();
+    QRegExp regExp("^[0-9a-zA-Z]*$");
+    QRegExpValidator* regVal = new QRegExpValidator( regExp );
+    mInputText->setValidator( regVal );
+}
+
+void NumTransDlg::clickInputBit()
+{
+    mInputText->clear();
+    QRegExp regExp("^[0-1]*$");
+    QRegExpValidator* regVal = new QRegExpValidator( regExp );
+    mInputText->setValidator( regVal );
+}
+
+void NumTransDlg::clickInputDec()
+{
+    mInputText->clear();
+    QRegExp regExp("^[0-9-]*$");
+    QRegExpValidator* regVal = new QRegExpValidator( regExp );
+    mInputText->setValidator( regVal );
 }

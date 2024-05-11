@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>304</height>
+    <height>321</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -68,7 +68,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPlainTextEdit" name="mInputText"/>
+    <widget class="QLineEdit" name="mInputText"/>
    </item>
    <item>
     <widget class="Line" name="line_2">
@@ -212,7 +212,6 @@
   <tabstop>mBitBtn</tabstop>
   <tabstop>mDecimalBtn</tabstop>
   <tabstop>mHexBtn</tabstop>
-  <tabstop>mInputText</tabstop>
   <tabstop>mOutputText</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>

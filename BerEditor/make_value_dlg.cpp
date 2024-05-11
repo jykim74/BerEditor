@@ -78,10 +78,8 @@ void MakeValueDlg::hexChanged()
 
 void MakeValueDlg::typeChanged()
 {
-    QRegExp regExp("^[0-1]*$");
-    QRegExpValidator* regVal = new QRegExpValidator( regExp );
-
     QString strType = mTypeCombo->currentText();
+    mInputText->clear();
 
     if( strType == "Integer" )
     {
