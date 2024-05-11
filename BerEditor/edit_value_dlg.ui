@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>457</width>
-    <height>260</height>
+    <height>319</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -393,7 +393,7 @@
       <widget class="QLineEdit" name="mTagBitText">
        <property name="minimumSize">
         <size>
-         <width>60</width>
+         <width>70</width>
          <height>0</height>
         </size>
        </property>
@@ -468,7 +468,7 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>100</width>
+         <width>40</width>
          <height>16777215</height>
         </size>
        </property>
