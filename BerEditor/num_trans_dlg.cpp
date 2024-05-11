@@ -114,14 +114,16 @@ void NumTransDlg::dataChange()
     QString strOutput = mOutputText->toPlainText();
     mOutputText->clear();
 
-    mInputText->setText( strOutput );
+
 
     if( mOutputTypeCombo->currentIndex() == 0 )
-        mBitBtn->setChecked(true);
+        mBitBtn->click();
     else if( mOutputTypeCombo->currentIndex() == 1 )
-        mDecimalBtn->setChecked(true);
+        mDecimalBtn->click();
     else if( mOutputTypeCombo->currentIndex() == 2 )
-        mHexBtn->setChecked(true);
+        mHexBtn->click();
+
+    mInputText->setText( strOutput );
 
     repaint();
 }
