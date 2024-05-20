@@ -203,6 +203,7 @@ void SSSDlg::clickSplit()
     }
 
     berApplet->logLine();
+//    OpenSSL_SSS_Test();
 
 end :
     JS_BIN_reset( &binSrc );
