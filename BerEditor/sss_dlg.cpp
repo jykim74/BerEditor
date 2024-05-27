@@ -64,6 +64,9 @@ void SSSDlg::initialize()
 //    mShareTable->setSelectionBehavior(QAbstractItemView::SelectRows);
 //    mShareTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     mShareTable->setColumnWidth(0, 40);
+    mPrimeText->setText( QString( "128" ));
+    QIntValidator* intVal = new QIntValidator( 1, 99999999 );
+    mPrimeText->setValidator( intVal );
 }
 
 void SSSDlg::srcChanged()
@@ -150,6 +153,7 @@ void SSSDlg::clickSplit()
     int nShares = mSharesText->text().toInt();
     int nThreshold = mThresholdText->text().toInt();
     int nCount = 0;
+    int nPrime = mPrimeText->text().toInt();
     QString strSrc = mSrcText->text();
 
     BIN binSrc = {0,0};
@@ -172,10 +176,8 @@ void SSSDlg::clickSplit()
         goto end;
     }
 
-
-
-
-    ret = JS_PKI_splitKey( nShares, nThreshold, &binSrc, &pShareList );
+//    ret = JS_PKI_splitKey( nShares, nThreshold, &binSrc, &pShareList );
+    ret = JS_PKI_splitKey2( nShares, nThreshold, nPrime, &binSrc, &pShareList );
 
     if( ret != 0 ) goto end;
 
@@ -214,6 +216,7 @@ void SSSDlg::clickJoin()
 {
     int ret = 0;
     int nRow = mShareTable->rowCount();
+    int nPrime = mPrimeText->text().toInt();
 
     BINList *pShareList = NULL;
     BIN binKey = {0,0};
@@ -242,7 +245,8 @@ void SSSDlg::clickJoin()
 
     berApplet->logLine();
 
-    ret = JS_PKI_joinKey( nRow, pShareList, &binKey );
+//    ret = JS_PKI_joinKey( nRow, pShareList, &binKey );
+    ret = JS_PKI_joinKey2( nRow, nPrime, pShareList, &binKey );
 
     if( ret != 0 ) goto end;
 

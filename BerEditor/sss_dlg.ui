@@ -16,7 +16,14 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="2">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Source Data</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -29,7 +36,14 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="3">
+     <item row="0" column="2">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>SSS Prime</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
       <widget class="QLineEdit" name="mSrcLenText">
        <property name="maximumSize">
         <size>
@@ -79,15 +93,27 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Source Data</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
       <widget class="QComboBox" name="mSrcTypeCombo"/>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLineEdit" name="mPrimeText">
+       <property name="minimumSize">
+        <size>
+         <width>60</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>60</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="maxLength">
+        <number>10</number>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
