@@ -28,6 +28,9 @@ private slots:
     void clickAdd();
     void clickSplit();
     void clickJoin();
+    void clickMakePrime();
+
+    void changePrime( const QString& text );
 
     void slotShareList(QPoint pos);
     void delShare();

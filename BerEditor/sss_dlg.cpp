@@ -18,6 +18,10 @@ static QStringList dataTypes = {
     "Base64"
 };
 
+static QStringList primeBits = {
+    "8", "16", "32", "64", "128", "256"
+};
+
 SSSDlg::SSSDlg(QWidget *parent) :
     QDialog(parent)
 {
@@ -35,6 +39,9 @@ SSSDlg::SSSDlg(QWidget *parent) :
 
     connect( mShareTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotShareList(QPoint)));
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
+
+    connect( mMakePrimeBtn, SIGNAL(clicked()), this, SLOT(clickMakePrime()));
+    connect( mPrimeText, SIGNAL(textChanged(QString)), this, SLOT(changePrime(QString)));
 
     initialize();
 }
@@ -64,9 +71,13 @@ void SSSDlg::initialize()
 //    mShareTable->setSelectionBehavior(QAbstractItemView::SelectRows);
 //    mShareTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     mShareTable->setColumnWidth(0, 40);
-    mPrimeText->setText( QString( "128" ));
-    QIntValidator* intVal = new QIntValidator( 1, 99999999 );
-    mPrimeText->setValidator( intVal );
+
+    QRegExp regExp("^[0-9a-zA-Z]*$");
+    QRegExpValidator* regVal = new QRegExpValidator( regExp );
+    mPrimeText->setValidator( regVal );
+
+    mPrimeBitsCombo->addItems( primeBits );
+    mPrimeBitsCombo->setEditable( true );
 }
 
 void SSSDlg::srcChanged()
@@ -153,12 +164,13 @@ void SSSDlg::clickSplit()
     int nShares = mSharesText->text().toInt();
     int nThreshold = mThresholdText->text().toInt();
     int nCount = 0;
-    int nPrime = mPrimeText->text().toInt();
+
     QString strSrc = mSrcText->text();
 
     BIN binSrc = {0,0};
     BINList *pShareList = NULL;
     BINList *pCurList = NULL;
+    BIN binPrime = {0,0};
 
     if( strSrc.length() < 1 )
     {
@@ -169,6 +181,7 @@ void SSSDlg::clickSplit()
 
     clickClearResult();
     getBINFromString( &binSrc, mSrcTypeCombo->currentText(), strSrc );
+    JS_BIN_decodeHex( mPrimeText->text().toStdString().c_str(), &binPrime );
 
     if( binSrc.nLen < 8 )
     {
@@ -177,9 +190,12 @@ void SSSDlg::clickSplit()
     }
 
 //    ret = JS_PKI_splitKey( nShares, nThreshold, &binSrc, &pShareList );
-    ret = JS_PKI_splitKey2( nShares, nThreshold, nPrime, &binSrc, &pShareList );
-
-    if( ret != 0 ) goto end;
+    ret = JS_PKI_splitKey2( nShares, nThreshold, &binPrime, &binSrc, &pShareList );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "fail to split key: %1").arg(ret), this );
+        goto end;
+    }
 
     pCurList = pShareList;
 
@@ -205,10 +221,11 @@ void SSSDlg::clickSplit()
     }
 
     berApplet->logLine();
-//    OpenSSL_SSS_Test();
+ //   OpenSSL_SSS_Test();
 
 end :
     JS_BIN_reset( &binSrc );
+    JS_BIN_reset( &binPrime );
     if( pShareList ) JS_BIN_resetList( &pShareList );
 }
 
@@ -216,10 +233,11 @@ void SSSDlg::clickJoin()
 {
     int ret = 0;
     int nRow = mShareTable->rowCount();
-    int nPrime = mPrimeText->text().toInt();
+
 
     BINList *pShareList = NULL;
     BIN binKey = {0,0};
+    BIN binPrime = {0,0};
     char *pKeyVal = NULL;
 
     if( nRow < 1 ) return;
@@ -227,6 +245,8 @@ void SSSDlg::clickJoin()
     berApplet->logLine();
     berApplet->log( "-- Join Key" );
     berApplet->logLine();
+
+    JS_BIN_decodeHex( mPrimeText->text().toStdString().c_str(), &binPrime );
 
     for( int i = 0; i < nRow; i++ )
     {
@@ -246,9 +266,14 @@ void SSSDlg::clickJoin()
     berApplet->logLine();
 
 //    ret = JS_PKI_joinKey( nRow, pShareList, &binKey );
-    ret = JS_PKI_joinKey2( nRow, nPrime, pShareList, &binKey );
+    ret = JS_PKI_joinKey2( nRow, &binPrime, pShareList, &binKey );
 
-    if( ret != 0 ) goto end;
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "fail to join key: %1").arg(ret), this );
+        goto end;
+    }
+
 
     if( mJoinedTypeCombo->currentText() == "String" )
     {
@@ -267,8 +292,28 @@ void SSSDlg::clickJoin()
 
 end :
     JS_BIN_reset( &binKey );
+    JS_BIN_reset( &binPrime );
     if( pShareList ) JS_BIN_resetList( &pShareList );
     if( pKeyVal ) JS_free( pKeyVal );
+}
+
+void SSSDlg::clickMakePrime()
+{
+    int nBits = mPrimeBitsCombo->currentText().toInt();
+
+    BIN binPrime = {0,0};
+    JS_PKI_makePrime( nBits, &binPrime );
+
+    mPrimeText->setText( getHexString( &binPrime ));
+
+    JS_BIN_reset( &binPrime );
+}
+
+void SSSDlg::changePrime( const QString& text )
+{
+    int nLen = text.length() / 2;
+
+    mPrimeLenText->setText( QString("%1").arg( nLen ));
 }
 
 void SSSDlg::slotShareList(QPoint pos)
