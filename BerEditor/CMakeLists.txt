@@ -73,6 +73,8 @@ set(PROJECT_SRC
     csr_info_dlg.cpp
     trust_list_dlg.cpp
     vid_dlg.cpp
+    make_value_dlg.cpp
+    bn_calc_dlg.cpp
     ${platform_specific_sources}
 )
 
@@ -117,6 +119,8 @@ set( PROJECT_HEADER
     csr_info_dlg.h
     trust_list_dlg.h
     vid_dlg.h
+    make_value_dlg.h
+    bn_calc_dlg.h
     ${platform_specific_headers}
 )
 
@@ -150,6 +154,8 @@ set( PROJECT_FORM
     csr_info_dlg.ui
     trust_list_dlg.ui
     vid_dlg.ui
+    make_value_dlg.ui
+    bn_calc_dlg.ui
 )
 
 
@@ -167,7 +173,6 @@ add_executable(${PROJECT_NAME}
     bereditor.icns
     BerEditor.pro
     ../LICENSE
-    make_value_dlg.h make_value_dlg.cpp make_value_dlg.ui
 )
 
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )

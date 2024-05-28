@@ -37,6 +37,7 @@
 #include "crl_info_dlg.h"
 #include "csr_info_dlg.h"
 #include "vid_dlg.h"
+#include "bn_calc_dlg.h"
 #include "common.h"
 
 #include "js_pki_tools.h"
@@ -106,6 +107,7 @@ MainWindow::~MainWindow()
     delete cavp_dlg_;
     delete ssl_verify_dlg_;
     delete vid_dlg_;
+    delete bn_calc_dlg_;
 
     delete table_tab_;
     delete text_tab_;
@@ -568,9 +570,16 @@ void MainWindow::createActions()
     QAction *vidAct = new QAction( vidIcon, tr("&VID"), this );
     vidAct->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_I));
     connect( vidAct, &QAction::triggered, this, &MainWindow::VID );
-    genOTPAct->setStatusTip(tr("Generate OTP value" ));
+    vidAct->setStatusTip(tr("Make and Verify VID" ));
     cryptMenu->addAction( vidAct );
 
+    const QIcon calcIcon = QIcon::fromTheme("BN Calc", QIcon(":/images/bn_calc.png"));
+    QAction *calcAct = new QAction( calcIcon, tr("&BN Calculator"), this );
+    calcAct->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_B));
+    connect( calcAct, &QAction::triggered, this, &MainWindow::BNCalc );
+    calcAct->setStatusTip(tr("Big Num Calculator" ));
+    cryptMenu->addAction( calcAct );
+    cryptToolBar->addAction( calcAct );
 
     const QIcon cavpIcon = QIcon::fromTheme( "tool-cavp", QIcon(":/images/cavp.png"));
     QAction *cavpAct = new QAction(cavpIcon, tr("&CAVP"), this);
@@ -601,6 +610,7 @@ void MainWindow::createActions()
         certPVDAct->setEnabled( false );
         genOTPAct->setEnabled( false );
         vidAct->setEnabled( false );
+        calcAct->setEnabled( false );
         cavpAct->setEnabled( false );
         sslAct->setEnabled( false );
     }
@@ -690,6 +700,7 @@ void MainWindow::createCryptoDlg()
     cavp_dlg_ = new CAVPDlg;
     ssl_verify_dlg_ = new SSLVerifyDlg;
     vid_dlg_ = new VIDDlg;
+    bn_calc_dlg_ = new BNCalcDlg;
 }
 
 void MainWindow::newFile()
@@ -1205,6 +1216,13 @@ void MainWindow::VID()
     vid_dlg_->show();
     vid_dlg_->raise();
     vid_dlg_->activateWindow();
+}
+
+void MainWindow::BNCalc()
+{
+    bn_calc_dlg_->show();
+    bn_calc_dlg_->raise();
+    bn_calc_dlg_->activateWindow();
 }
 
 void MainWindow::getURI()
