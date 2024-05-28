@@ -16,6 +16,16 @@ public:
     explicit BNCalcDlg(QWidget *parent = nullptr);
     ~BNCalcDlg();
 
+private slots:
+    void clickBinary();
+    void clickDecimal();
+    void clickHex();
+
+    void clickAdd();
+    void clickSub();
+    void clickMultiple();
+    void clickDiv();
+
 private:
     void intialize();
 };
