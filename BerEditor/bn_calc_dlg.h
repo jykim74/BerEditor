@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "ui_bn_calc_dlg.h"
+#include "js_bin.h"
 
 namespace Ui {
 class BNCalcDlg;
@@ -49,6 +50,8 @@ private slots:
 
 private:
     void intialize();
+    int getInput( BIN *pA, BIN *pB, BIN *pMod );
+    const QString getOutput( const BIN *pBin );
 };
 
 #endif // BN_CALC_DLG_H

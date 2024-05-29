@@ -74,6 +74,74 @@ void BNCalcDlg::intialize()
     mBPrimeBitsCombo->setEditable(true);
 }
 
+int BNCalcDlg::getInput( BIN *pA, BIN *pB, BIN *pMod )
+{
+    int nNum = 0;
+
+    QString strA = mAText->toPlainText();
+    QString strB = mBText->toPlainText();
+    QString strMod = mModText->toPlainText();
+
+    if( mBinCheck->isChecked() )
+    {
+        nNum = 2;
+        JS_PKI_bitToBin( strA.toStdString().c_str(), pA );
+        JS_PKI_bitToBin( strB.toStdString().c_str(), pB );
+        JS_PKI_bitToBin( strMod.toStdString().c_str(), pMod );
+    }
+    else if( mDecCheck->isCheckable() )
+    {
+        nNum = 10;
+        JS_PKI_decimalToBin( strA.toStdString().c_str(), pA );
+        JS_PKI_decimalToBin( strB.toStdString().c_str(), pB );
+        JS_PKI_decimalToBin( strMod.toStdString().c_str(), pMod );
+    }
+    else
+    {
+        nNum = 16;
+        JS_BIN_decodeHex( strA.toStdString().c_str(), pA );
+        JS_BIN_decodeHex( strB.toStdString().c_str(), pB );
+        JS_BIN_decodeHex( strMod.toStdString().c_str(), pMod );
+    }
+
+    if( isValidNumFormat( strA, nNum ) != 1 )
+        return -1;
+
+    if( isValidNumFormat( strB, nNum ) != 1 )
+        return -2;
+
+    if( isValidNumFormat( strMod, nNum ) != 1 )
+        return -3;
+
+    return 0;
+}
+
+const QString BNCalcDlg::getOutput( const BIN *pBin )
+{
+    QString strValue;
+
+    if( mBinCheck->isChecked() )
+    {
+        char *pBitString = NULL;
+        JS_PKI_binToBit( pBin, &pBitString );
+        strValue = pBitString;
+        if( pBitString ) JS_free( pBitString );
+    }
+    else if( mDecCheck->isChecked() )
+    {
+        char *pString = NULL;
+        JS_PKI_binToDecimal( pBin, &pString );
+        strValue = pString;
+        if( pString ) JS_free( pString );
+    }
+    else
+    {
+        strValue = getHexString( pBin );
+    }
+
+    return strValue;
+}
+
 void BNCalcDlg::clickBinary()
 {
     QRegExp regExp("^[0-1]*$");
