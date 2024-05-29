@@ -41,6 +41,12 @@ private slots:
     void clickShl();
     void clickInv();
 
+    void clearA();
+    void clearB();
+    void clearMod();
+    void clearRes();
+    void clearAll();
+
 private:
     void intialize();
 };
