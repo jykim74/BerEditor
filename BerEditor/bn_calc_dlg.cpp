@@ -167,18 +167,29 @@ void BNCalcDlg::clickSub()
     QString strB = mBText->toPlainText();
     QString strMod = mModText->toPlainText();
 
+    QString strOut;
+
     JS_BIN_decodeHex( strA.toStdString().c_str(), &binA );
     JS_BIN_decodeHex( strB.toStdString().c_str(), &binB );
     JS_BIN_decodeHex( strMod.toStdString().c_str(), &binMod );
 
     if( mBaseGroupCombo->currentText() == "Number" )
+    {
+        if( JS_BN_cmp( &binA, &binB ) < 0 )
+            strOut = "-";
+
         JS_BN_sub( &binR, &binA, &binB );
+    }
     else if( mBaseGroupCombo->currentText() == "Modular" )
         JS_BN_subMod( &binR, &binA, &binB, &binMod );
     else
         JS_BN_GF2m_sub( &binR, &binA, &binB );
 
-    mResText->setPlainText( getHexString( &binR ) );
+    JS_BIN_rmFrontZero( &binR );
+
+    strOut += QString( "%1" ).arg( getHexString(&binR));
+
+    mResText->setPlainText( strOut );
 
     JS_BIN_reset( &binA );
     JS_BIN_reset( &binB );
