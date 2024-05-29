@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>669</height>
+    <height>687</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,27 +30,6 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Number Type</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QRadioButton" name="mHexCheck">
-       <property name="text">
-        <string>Hex</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QRadioButton" name="mDecCheck">
-       <property name="text">
-        <string>Decimal</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="2">
       <widget class="QRadioButton" name="mBinCheck">
        <property name="text">
@@ -58,7 +37,14 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Number Type</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
       <spacer name="horizontalSpacer_5">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -71,6 +57,30 @@
        </property>
       </spacer>
      </item>
+     <item row="0" column="3">
+      <widget class="QRadioButton" name="mDecCheck">
+       <property name="text">
+        <string>Decimal</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QRadioButton" name="mHexCheck">
+       <property name="text">
+        <string>Hex</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="7">
+      <widget class="QComboBox" name="mBaseGroupCombo"/>
+     </item>
+     <item row="0" column="6">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>Base Group</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
@@ -82,6 +92,13 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>A</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="1">
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -95,15 +112,18 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_3">
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mAClearBtn">
        <property name="text">
-        <string>X</string>
+        <string>Clear</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
-      <widget class="QLineEdit" name="mXLenText">
+     <item row="0" column="2">
+      <widget class="QComboBox" name="mAPrimeBitsCombo"/>
+     </item>
+     <item row="0" column="5">
+      <widget class="QLineEdit" name="mALenText">
        <property name="minimumSize">
         <size>
          <width>40</width>
@@ -148,66 +168,27 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mXClearBtn">
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mAGenPrimeBtn">
        <property name="text">
-        <string>Clear</string>
+        <string>Gen Prime</string>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QPlainTextEdit" name="mXText"/>
+    <widget class="QPlainTextEdit" name="mAText"/>
+   </item>
+   <item>
+    <widget class="Line" name="line_7">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_3">
-     <item row="0" column="3">
-      <widget class="QLineEdit" name="mYLenText">
-       <property name="minimumSize">
-        <size>
-         <width>40</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="palette">
-        <palette>
-         <active>
-          <colorrole role="Base">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>221</red>
-             <green>221</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </active>
-         <inactive>
-          <colorrole role="Base">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>221</red>
-             <green>221</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </inactive>
-         <disabled/>
-        </palette>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
@@ -221,24 +202,187 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>Y</string>
+     <item row="0" column="5">
+      <widget class="QLineEdit" name="mBLenText">
+       <property name="minimumSize">
+        <size>
+         <width>40</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled/>
+        </palette>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
      <item row="0" column="2">
-      <widget class="QPushButton" name="mYClearBtn">
+      <widget class="QComboBox" name="mBPrimeBitsCombo"/>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mBClearBtn">
        <property name="text">
         <string>Clear</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>B</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mBGenPrimeBtn">
+       <property name="text">
+        <string>Gen Prime</string>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QPlainTextEdit" name="mYText"/>
+    <widget class="QPlainTextEdit" name="mBText"/>
+   </item>
+   <item>
+    <widget class="Line" name="line_6">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_7">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mModGenPrimeBtn">
+       <property name="text">
+        <string>Gen Prime</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>Mod</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QComboBox" name="mModPrimeBitsCombo"/>
+     </item>
+     <item row="0" column="5">
+      <widget class="QLineEdit" name="mModLenText">
+       <property name="minimumSize">
+        <size>
+         <width>40</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled/>
+        </palette>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mModClearBtn">
+       <property name="text">
+        <string>Clear</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer_6">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QPlainTextEdit" name="mModText"/>
+   </item>
+   <item>
+    <widget class="Line" name="line_5">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_5">
@@ -363,24 +507,10 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="1" column="3">
-      <widget class="QPushButton" name="mRootBtn">
-       <property name="text">
-        <string>√ X</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="2">
       <widget class="QPushButton" name="mMultipleBtn">
        <property name="text">
-        <string>X * Y</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="5">
-      <widget class="QPushButton" name="mANDBtn">
-       <property name="text">
-        <string>AND</string>
+        <string>A * B</string>
        </property>
       </widget>
      </item>
@@ -394,35 +524,14 @@
      <item row="0" column="3">
       <widget class="QPushButton" name="mExpBtn">
        <property name="text">
-        <string>X ^ Y</string>
+        <string>A ^ B</string>
        </property>
       </widget>
      </item>
      <item row="0" column="0">
       <widget class="QPushButton" name="mAddBtn">
        <property name="text">
-        <string>X + Y</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QPushButton" name="mLCMBtn">
-       <property name="text">
-        <string>LCM</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="5">
-      <widget class="QPushButton" name="mFactorBtn">
-       <property name="text">
-        <string>X!</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="4">
-      <widget class="QPushButton" name="mORBtn">
-       <property name="text">
-        <string>OR</string>
+        <string>A + B</string>
        </property>
       </widget>
      </item>
@@ -436,35 +545,77 @@
      <item row="0" column="1">
       <widget class="QPushButton" name="mSubBtn">
        <property name="text">
-        <string>X - Y</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QPushButton" name="mXORBtn">
-       <property name="text">
-        <string>XOR</string>
+        <string>A - B</string>
        </property>
       </widget>
      </item>
      <item row="0" column="4">
       <widget class="QPushButton" name="mDivBtn">
        <property name="text">
-        <string>X / Y</string>
+        <string>A / B</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mSqrBtn">
+       <property name="text">
+        <string>A ^ 2</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="mORBtn">
+       <property name="text">
+        <string>OR</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QPushButton" name="mANDBtn">
+       <property name="text">
+        <string>AND</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="4">
+      <widget class="QPushButton" name="mXORBtn">
+       <property name="text">
+        <string>XOR</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QPushButton" name="mSHRBtn">
+       <property name="text">
+        <string>A SHR</string>
        </property>
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QPushButton" name="mSHRBtn">
+      <widget class="QPushButton" name="mSHLBtn">
        <property name="text">
-        <string>SHR</string>
+        <string>A SHL</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="5">
+      <widget class="QPushButton" name="mCOMPBtn">
+       <property name="text">
+        <string>A COMP</string>
        </property>
       </widget>
      </item>
      <item row="2" column="2">
-      <widget class="QPushButton" name="mSHLBtn">
+      <widget class="QPushButton" name="mINVBtn">
        <property name="text">
-        <string>SHL</string>
+        <string>INV</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="3">
+      <widget class="QPushButton" name="mSQRTBtn">
+       <property name="text">
+        <string>√ A</string>
        </property>
       </widget>
      </item>

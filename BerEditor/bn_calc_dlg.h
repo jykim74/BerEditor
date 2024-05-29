@@ -20,11 +20,26 @@ private slots:
     void clickBinary();
     void clickDecimal();
     void clickHex();
+    void clickAGenPrime();
+    void clickBGenPrime();
+    void clickModGenPrime();
 
     void clickAdd();
     void clickSub();
     void clickMultiple();
     void clickDiv();
+    void clickExp();
+    void clickSqr();
+
+    void clickMod();
+    void clickGcd();
+    void clickOr();
+    void clickAnd();
+    void clickXor();
+    void clickComp();
+    void clickShr();
+    void clickShl();
+    void clickInv();
 
 private:
     void intialize();
