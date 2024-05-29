@@ -75,7 +75,8 @@ SOURCES += \
     csr_info_dlg.cpp \
     trust_list_dlg.cpp \
     vid_dlg.cpp \
-    make_value_dlg.cpp
+    make_value_dlg.cpp \
+    bn_calc_dlg.cpp
 
 HEADERS += \
     about_dlg.h \
@@ -118,7 +119,8 @@ HEADERS += \
     csr_info_dlg.h \
     trust_list_dlg.h \
     vid_dlg.h \
-    make_value_dlg.h
+    make_value_dlg.h \
+    bn_calc_dlg.h
 
 
 
@@ -238,7 +240,8 @@ FORMS += \
         csr_info_dlg.ui \
         trust_list_dlg.ui \
         vid_dlg.ui \
-        make_value_dlg.ui
+        make_value_dlg.ui \
+        bn_calc_dlg.ui
 
 RESOURCES += \
     bereditor.qrc
