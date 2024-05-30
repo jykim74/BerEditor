@@ -16,6 +16,7 @@ BNCalcDlg::BNCalcDlg(QWidget *parent) :
     setupUi(this);
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mBaseGroupCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeBaseGroup(int)));
 
     connect( mBinCheck, SIGNAL(clicked()), this, SLOT(clickBinary()));
     connect( mDecCheck, SIGNAL(clicked()), this, SLOT(clickDecimal()));
@@ -24,6 +25,10 @@ BNCalcDlg::BNCalcDlg(QWidget *parent) :
     connect( mAGenPrimeBtn, SIGNAL(clicked()), this, SLOT(clickAGenPrime()));
     connect( mBGenPrimeBtn, SIGNAL(clicked()), this, SLOT(clickBGenPrime()));
     connect( mModGenPrimeBtn, SIGNAL(clicked()), this, SLOT(clickModGenPrime()));
+
+    connect( mACheckPrimeBtn, SIGNAL(clicked()), this, SLOT(clickACheckPrime()));
+    connect( mBCheckPrimeBtn, SIGNAL(clicked()), this, SLOT(clickBCheckPrime()));
+    connect( mModCheckPrimeBtn, SIGNAL(clicked()), this, SLOT(clickModCheckPrime()));
 
     connect( mAddBtn, SIGNAL(clicked()), this, SLOT(clickAdd()));
     connect( mSubBtn, SIGNAL(clicked()), this, SLOT(clickSub()));
@@ -47,6 +52,11 @@ BNCalcDlg::BNCalcDlg(QWidget *parent) :
     connect( mModClearBtn, SIGNAL(clicked()), this, SLOT(clearMod()));
     connect( mResClearBtn, SIGNAL(clicked()), this, SLOT(clearRes()));
     connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clearAll()));
+
+    connect( mAText, SIGNAL(textChanged()), this, SLOT(changeA()));
+    connect( mBText, SIGNAL(textChanged()), this, SLOT(changeB()));
+    connect( mModText, SIGNAL(textChanged()), this, SLOT(changeMod()));
+    connect( mResText, SIGNAL(textChanged()), this, SLOT(changeRes()));
 
     intialize();
 
@@ -74,6 +84,7 @@ void BNCalcDlg::intialize()
     mBPrimeBitsCombo->setEditable(true);
 }
 
+
 int BNCalcDlg::getInput( BIN *pA, BIN *pB, BIN *pMod )
 {
     int nNum = 0;
@@ -82,99 +93,48 @@ int BNCalcDlg::getInput( BIN *pA, BIN *pB, BIN *pMod )
     QString strB = mBText->toPlainText();
     QString strMod = mModText->toPlainText();
 
-    if( mBinCheck->isChecked() )
-    {
-        nNum = 2;
-        JS_PKI_bitToBin( strA.toStdString().c_str(), pA );
-        JS_PKI_bitToBin( strB.toStdString().c_str(), pB );
-        JS_PKI_bitToBin( strMod.toStdString().c_str(), pMod );
-    }
-    else if( mDecCheck->isCheckable() )
-    {
-        nNum = 10;
-        JS_PKI_decimalToBin( strA.toStdString().c_str(), pA );
-        JS_PKI_decimalToBin( strB.toStdString().c_str(), pB );
-        JS_PKI_decimalToBin( strMod.toStdString().c_str(), pMod );
-    }
-    else
-    {
-        nNum = 16;
-        JS_BIN_decodeHex( strA.toStdString().c_str(), pA );
-        JS_BIN_decodeHex( strB.toStdString().c_str(), pB );
-        JS_BIN_decodeHex( strMod.toStdString().c_str(), pMod );
-    }
-
-    if( isValidNumFormat( strA, nNum ) != 1 )
-        return -1;
-
-    if( isValidNumFormat( strB, nNum ) != 1 )
-        return -2;
-
-    if( isValidNumFormat( strMod, nNum ) != 1 )
-        return -3;
-
-    return 0;
-}
-
-int BNCalcDlg::getInput( BIN *pA, BIN *pB )
-{
-    int nNum = 0;
-
-    QString strA = mAText->toPlainText();
-    QString strB = mBText->toPlainText();
+    if( mBaseGroupCombo->currentText() == "Number" )
+        strMod.clear();
 
     if( mBinCheck->isChecked() )
-    {
         nNum = 2;
-        JS_PKI_bitToBin( strA.toStdString().c_str(), pA );
-        JS_PKI_bitToBin( strB.toStdString().c_str(), pB );
-    }
-    else if( mDecCheck->isCheckable() )
-    {
+    else if( mDecCheck->isChecked() )
         nNum = 10;
-        JS_PKI_decimalToBin( strA.toStdString().c_str(), pA );
-        JS_PKI_decimalToBin( strB.toStdString().c_str(), pB );
-    }
     else
-    {
         nNum = 16;
-        JS_BIN_decodeHex( strA.toStdString().c_str(), pA );
-        JS_BIN_decodeHex( strB.toStdString().c_str(), pB );
-    }
 
-    if( isValidNumFormat( strA, nNum ) != 1 )
-        return -1;
-
-    if( isValidNumFormat( strB, nNum ) != 1 )
-        return -2;
-
-    return 0;
-}
-
-int BNCalcDlg::getInput( BIN *pA )
-{
-    int nNum = 0;
-
-    QString strA = mAText->toPlainText();
-
-    if( mBinCheck->isChecked() )
+    if( pA != NULL && strA.length() > 0 )
     {
-        nNum = 2;
-        JS_PKI_bitToBin( strA.toStdString().c_str(), pA );
-    }
-    else if( mDecCheck->isCheckable() )
-    {
-        nNum = 10;
-        JS_PKI_decimalToBin( strA.toStdString().c_str(), pA );
-    }
-    else
-    {
-        nNum = 16;
-        JS_BIN_decodeHex( strA.toStdString().c_str(), pA );
+        if( isValidNumFormat( strA, nNum ) != 1 )
+        {
+            berApplet->warningBox( tr( "The A value have wrong character" ), this );
+            return -1;
+        }
+
+        getBIN( strA, pA );
     }
 
-    if( isValidNumFormat( strA, nNum ) != 1 )
-        return -1;
+    if( pB != NULL && strB.length() > 0 )
+    {
+        if( isValidNumFormat( strB, nNum ) != 1 )
+        {
+            berApplet->warningBox( tr( "The B value have wrong character" ), this );
+            return -2;
+        }
+
+        getBIN( strB, pB );
+    }
+
+    if( pMod != NULL && strMod.length() > 0 )
+    {
+        if( isValidNumFormat( strMod, nNum ) != 1 )
+        {
+            berApplet->warningBox( tr( "The Mod value have wrong character" ), this );
+            return -3;
+        }
+
+        getBIN( strMod, pMod );
+    }
 
     return 0;
 }
@@ -193,7 +153,7 @@ const QString BNCalcDlg::getOutput( const BIN *pBin )
     else if( mDecCheck->isChecked() )
     {
         char *pString = NULL;
-        JS_PKI_binToDecimal( pBin, &pString );
+        JS_PKI_binToDecimalUnsign( pBin, &pString );
         strValue = pString;
         if( pString ) JS_free( pString );
     }
@@ -203,6 +163,22 @@ const QString BNCalcDlg::getOutput( const BIN *pBin )
     }
 
     return strValue;
+}
+
+void BNCalcDlg::getBIN( const QString strValue, BIN *pBin )
+{
+    if( mBinCheck->isChecked() )
+    {
+        JS_PKI_bitToBin( strValue.toStdString().c_str(), pBin );
+    }
+    else if( mDecCheck->isChecked() )
+    {
+        JS_PKI_decimalToBinUnsign( strValue.toStdString().c_str(), pBin );
+    }
+    else
+    {
+        JS_BIN_decodeHex( strValue.toStdString().c_str(), pBin );
+    }
 }
 
 void BNCalcDlg::clickBinary()
@@ -224,13 +200,23 @@ void BNCalcDlg::clickHex()
     QRegExpValidator* regVal = new QRegExpValidator( regExp );
 }
 
+void BNCalcDlg::changeBaseGroup( int index )
+{
+    QString strName = mBaseGroupCombo->currentText();
+
+    if( strName == "Number" )
+        mModGroup->setEnabled( false );
+    else
+        mModGroup->setEnabled( true );
+}
+
 void BNCalcDlg::clickAGenPrime()
 {
     BIN binPrime = {0,0};
     int nBits = mAPrimeBitsCombo->currentText().toInt();
 
     JS_BN_genPrime( nBits, &binPrime );
-    mAText->setPlainText( getHexString( &binPrime ));
+    mAText->setPlainText( getOutput( &binPrime ));
 
     JS_BIN_reset( &binPrime );
 }
@@ -241,7 +227,7 @@ void BNCalcDlg::clickBGenPrime()
     int nBits = mBPrimeBitsCombo->currentText().toInt();
 
     JS_BN_genPrime( nBits, &binPrime );
-    mBText->setPlainText( getHexString( &binPrime ));
+    mBText->setPlainText( getOutput( &binPrime ));
 
     JS_BIN_reset( &binPrime );
 }
@@ -252,9 +238,81 @@ void BNCalcDlg::clickModGenPrime()
     int nBits = mModPrimeBitsCombo->currentText().toInt();
 
     JS_BN_genPrime( nBits, &binPrime );
-    mModText->setPlainText( getHexString( &binPrime ));
+    mModText->setPlainText( getOutput( &binPrime ));
 
     JS_BIN_reset( &binPrime );
+}
+
+void BNCalcDlg::clickACheckPrime()
+{
+    int ret = 0;
+    BIN binVal = {0,0};
+    QString strVal = mAText->toPlainText();
+
+    if( strVal.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Insert A value" ), this );
+        return;
+    }
+
+    getBIN( strVal, &binVal );
+
+    ret = JS_BN_isPrime( &binVal );
+
+    if( ret == 1 )
+        berApplet->messageLog( tr( "The A value is prime"), this );
+    else
+        berApplet->warnLog( tr( "The A value is not prime" ), this );
+
+    JS_BIN_reset( &binVal );
+}
+
+void BNCalcDlg::clickBCheckPrime()
+{
+    int ret = 0;
+    BIN binVal = {0,0};
+    QString strVal = mBText->toPlainText();
+
+    if( strVal.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Insert B value" ), this );
+        return;
+    }
+
+    getBIN( strVal, &binVal );
+
+    ret = JS_BN_isPrime( &binVal );
+
+    if( ret == 1 )
+        berApplet->messageLog( tr( "The B value is prime"), this );
+    else
+        berApplet->warnLog( tr( "The B value is not prime" ), this );
+
+    JS_BIN_reset( &binVal );
+}
+
+void BNCalcDlg::clickModCheckPrime()
+{
+    int ret = 0;
+    BIN binVal = {0,0};
+    QString strVal = mModText->toPlainText();
+
+    if( strVal.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Insert Mod value" ), this );
+        return;
+    }
+
+    getBIN( strVal, &binVal );
+
+    ret = JS_BN_isPrime( &binVal );
+
+    if( ret == 1 )
+        berApplet->messageLog( tr( "The Mod value is prime"), this );
+    else
+        berApplet->warnLog( tr( "The Mod value is not prime" ), this );
+
+    JS_BIN_reset( &binVal );
 }
 
 void BNCalcDlg::clickAdd()
@@ -368,7 +426,7 @@ void BNCalcDlg::clickDiv()
     mResText->setPlainText( getOutput( &binR ) );
 
     if( mBaseGroupCombo->currentText() == "Number" )
-        mResText->appendPlainText( QString( "\n\nREM : %1").arg( getHexString( &binREM )));
+        mResText->appendPlainText( QString( "REM : %1").arg( getHexString( &binREM )));
 
 end :
     JS_BIN_reset( &binA );
@@ -465,7 +523,7 @@ void BNCalcDlg::clickGcd()
     BIN binB = {0,0};
     BIN binR = {0,0};
 
-    if( getInput( &binA, &binB ) != 0 )
+    if( getInput( &binA, &binB, NULL ) != 0 )
         goto end;
 
     if( mBaseGroupCombo->currentText() != "Number" )
@@ -489,7 +547,7 @@ void BNCalcDlg::clickOr()
     BIN binB = {0,0};
     BIN binR = {0,0};
 
-    if( getInput( &binA, &binB ) != 0 )
+    if( getInput( &binA, &binB, NULL ) != 0 )
         goto end;
 
     JS_BN_or( &binR, &binA, &binB );
@@ -507,7 +565,7 @@ void BNCalcDlg::clickAnd()
     BIN binB = {0,0};
     BIN binR = {0,0};
 
-    if( getInput( &binA, &binB ) != 0 )
+    if( getInput( &binA, &binB, NULL ) != 0 )
         goto end;
 
     JS_BN_and( &binR, &binA, &binB );
@@ -525,7 +583,7 @@ void BNCalcDlg::clickXor()
     BIN binB = {0,0};
     BIN binR = {0,0};
 
-    if( getInput( &binA, &binB ) != 0 )
+    if( getInput( &binA, &binB, NULL ) != 0 )
         goto end;
 
     JS_BN_xor( &binR, &binA, &binB );
@@ -542,7 +600,7 @@ void BNCalcDlg::clickComp()
     BIN binA = {0,0};
     BIN binR = {0,0};
 
-    if( getInput( &binA ) != 0 )
+    if( getInput( &binA, NULL, NULL ) != 0 )
         goto end;
 
     JS_BN_comp( &binR, &binA );
@@ -558,7 +616,7 @@ void BNCalcDlg::clickShr()
     BIN binA = {0,0};
     BIN binR = {0,0};
 
-    if( getInput( &binA ) != 0 )
+    if( getInput( &binA, NULL, NULL ) != 0 )
         goto end;
 /*
     if( mBaseGroupCombo->currentText() != "Number" )
@@ -611,11 +669,16 @@ void BNCalcDlg::clickInv()
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
+
+
     if( getInput( &binA, &binB, &binMod ) != 0 )
         goto end;
 
     if( mBaseGroupCombo->currentText() == "Number" )
-        JS_BN_inv( &binR, &binA );
+    {
+        mResText->setPlainText( QString( "-%1" ).arg( mAText->toPlainText() ));
+        goto end;
+    }
     else if( mBaseGroupCombo->currentText() == "Modular" )
         JS_BN_invMod( &binR, &binA, &binMod );
     else
@@ -654,4 +717,28 @@ void BNCalcDlg::clearAll()
     clearB();
     clearMod();
     clearRes();
+}
+
+void BNCalcDlg::changeA()
+{
+    int nLen = mAText->toPlainText().length();
+    mALenText->setText( QString("%1").arg( nLen ));
+}
+
+void BNCalcDlg::changeB()
+{
+    int nLen = mBText->toPlainText().length();
+    mBLenText->setText( QString("%1").arg( nLen ));
+}
+
+void BNCalcDlg::changeMod()
+{
+    int nLen = mModText->toPlainText().length();
+    mModLenText->setText( QString("%1").arg( nLen ));
+}
+
+void BNCalcDlg::changeRes()
+{
+    int nLen = mResText->toPlainText().length();
+    mResLenText->setText( QString("%1").arg( nLen ));
 }

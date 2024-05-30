@@ -25,6 +25,12 @@ private slots:
     void clickBGenPrime();
     void clickModGenPrime();
 
+    void clickACheckPrime();
+    void clickBCheckPrime();
+    void clickModCheckPrime();
+
+    void changeBaseGroup( int index );
+
     void clickAdd();
     void clickSub();
     void clickMultiple();
@@ -48,12 +54,17 @@ private slots:
     void clearRes();
     void clearAll();
 
+    void changeA();
+    void changeB();
+    void changeMod();
+    void changeRes();
+
 private:
     void intialize();
     int getInput( BIN *pA, BIN *pB, BIN *pMod );
-    int getInput( BIN *pA, BIN *pB  );
-    int getInput( BIN *pA );
+
     const QString getOutput( const BIN *pBin );
+    void getBIN( const QString strValue, BIN *pBin );
 };
 
 #endif // BN_CALC_DLG_H
