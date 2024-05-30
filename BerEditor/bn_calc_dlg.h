@@ -51,6 +51,8 @@ private slots:
 private:
     void intialize();
     int getInput( BIN *pA, BIN *pB, BIN *pMod );
+    int getInput( BIN *pA, BIN *pB  );
+    int getInput( BIN *pA );
     const QString getOutput( const BIN *pBin );
 };
 

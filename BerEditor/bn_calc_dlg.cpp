@@ -116,6 +116,69 @@ int BNCalcDlg::getInput( BIN *pA, BIN *pB, BIN *pMod )
     return 0;
 }
 
+int BNCalcDlg::getInput( BIN *pA, BIN *pB )
+{
+    int nNum = 0;
+
+    QString strA = mAText->toPlainText();
+    QString strB = mBText->toPlainText();
+
+    if( mBinCheck->isChecked() )
+    {
+        nNum = 2;
+        JS_PKI_bitToBin( strA.toStdString().c_str(), pA );
+        JS_PKI_bitToBin( strB.toStdString().c_str(), pB );
+    }
+    else if( mDecCheck->isCheckable() )
+    {
+        nNum = 10;
+        JS_PKI_decimalToBin( strA.toStdString().c_str(), pA );
+        JS_PKI_decimalToBin( strB.toStdString().c_str(), pB );
+    }
+    else
+    {
+        nNum = 16;
+        JS_BIN_decodeHex( strA.toStdString().c_str(), pA );
+        JS_BIN_decodeHex( strB.toStdString().c_str(), pB );
+    }
+
+    if( isValidNumFormat( strA, nNum ) != 1 )
+        return -1;
+
+    if( isValidNumFormat( strB, nNum ) != 1 )
+        return -2;
+
+    return 0;
+}
+
+int BNCalcDlg::getInput( BIN *pA )
+{
+    int nNum = 0;
+
+    QString strA = mAText->toPlainText();
+
+    if( mBinCheck->isChecked() )
+    {
+        nNum = 2;
+        JS_PKI_bitToBin( strA.toStdString().c_str(), pA );
+    }
+    else if( mDecCheck->isCheckable() )
+    {
+        nNum = 10;
+        JS_PKI_decimalToBin( strA.toStdString().c_str(), pA );
+    }
+    else
+    {
+        nNum = 16;
+        JS_BIN_decodeHex( strA.toStdString().c_str(), pA );
+    }
+
+    if( isValidNumFormat( strA, nNum ) != 1 )
+        return -1;
+
+    return 0;
+}
+
 const QString BNCalcDlg::getOutput( const BIN *pBin )
 {
     QString strValue;
@@ -201,13 +264,8 @@ void BNCalcDlg::clickAdd()
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
-    QString strA = mAText->toPlainText();
-    QString strB = mBText->toPlainText();
-    QString strMod = mModText->toPlainText();
-
-    JS_BIN_decodeHex( strA.toStdString().c_str(), &binA );
-    JS_BIN_decodeHex( strB.toStdString().c_str(), &binB );
-    JS_BIN_decodeHex( strMod.toStdString().c_str(), &binMod );
+    if( getInput( &binA, &binB, &binMod ) != 0 )
+        goto end;
 
     if( mBaseGroupCombo->currentText() == "Number" )
         JS_BN_add( &binR, &binA, &binB );
@@ -216,8 +274,9 @@ void BNCalcDlg::clickAdd()
     else
         JS_BN_GF2m_add( &binR, &binA, &binB );
 
-    mResText->setPlainText( getHexString( &binR ) );
+    mResText->setPlainText( getOutput( &binR ) );
 
+end :
     JS_BIN_reset( &binA );
     JS_BIN_reset( &binB );
     JS_BIN_reset( &binR );
@@ -231,15 +290,10 @@ void BNCalcDlg::clickSub()
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
-    QString strA = mAText->toPlainText();
-    QString strB = mBText->toPlainText();
-    QString strMod = mModText->toPlainText();
-
     QString strOut;
 
-    JS_BIN_decodeHex( strA.toStdString().c_str(), &binA );
-    JS_BIN_decodeHex( strB.toStdString().c_str(), &binB );
-    JS_BIN_decodeHex( strMod.toStdString().c_str(), &binMod );
+    if( getInput( &binA, &binB, &binMod ) != 0 )
+        goto end;
 
     if( mBaseGroupCombo->currentText() == "Number" )
     {
@@ -255,10 +309,10 @@ void BNCalcDlg::clickSub()
 
     JS_BIN_rmFrontZero( &binR );
 
-    strOut += QString( "%1" ).arg( getHexString(&binR));
+    strOut += QString( "%1" ).arg( getOutput(&binR));
 
     mResText->setPlainText( strOut );
-
+end :
     JS_BIN_reset( &binA );
     JS_BIN_reset( &binB );
     JS_BIN_reset( &binR );
@@ -272,13 +326,8 @@ void BNCalcDlg::clickMultiple()
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
-    QString strA = mAText->toPlainText();
-    QString strB = mBText->toPlainText();
-    QString strMod = mModText->toPlainText();
-
-    JS_BIN_decodeHex( strA.toStdString().c_str(), &binA );
-    JS_BIN_decodeHex( strB.toStdString().c_str(), &binB );
-    JS_BIN_decodeHex( strMod.toStdString().c_str(), &binMod );
+    if( getInput( &binA, &binB, &binMod ) != 0 )
+        goto end;
 
     if( mBaseGroupCombo->currentText() == "Number" )
         JS_BN_mul( &binR, &binA, &binB );
@@ -287,8 +336,8 @@ void BNCalcDlg::clickMultiple()
     else
         JS_BN_GF2m_mulMod( &binR, &binA, &binB, &binMod );
 
-    mResText->setPlainText( getHexString( &binR ) );
-
+    mResText->setPlainText( getOutput( &binR ) );
+end :
     JS_BIN_reset( &binA );
     JS_BIN_reset( &binB );
     JS_BIN_reset( &binR );
@@ -303,13 +352,8 @@ void BNCalcDlg::clickDiv()
     BIN binREM = {0,0};
     BIN binMod = {0,0};
 
-    QString strA = mAText->toPlainText();
-    QString strB = mBText->toPlainText();
-    QString strMod = mModText->toPlainText();
-
-    JS_BIN_decodeHex( strA.toStdString().c_str(), &binA );
-    JS_BIN_decodeHex( strB.toStdString().c_str(), &binB );
-    JS_BIN_decodeHex( strMod.toStdString().c_str(), &binMod );
+    if( getInput( &binA, &binB, &binMod ) != 0 )
+        goto end;
 
     if( mBaseGroupCombo->currentText() == "Number" )
         JS_BN_div( &binR, &binREM, &binA, &binB );
@@ -321,7 +365,7 @@ void BNCalcDlg::clickDiv()
     else
         JS_BN_GF2m_mulMod( &binR, &binA, &binB, &binMod );
 
-    mResText->setPlainText( getHexString( &binR ) );
+    mResText->setPlainText( getOutput( &binR ) );
 
     if( mBaseGroupCombo->currentText() == "Number" )
         mResText->appendPlainText( QString( "\n\nREM : %1").arg( getHexString( &binREM )));
@@ -341,13 +385,8 @@ void BNCalcDlg::clickExp()
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
-    QString strA = mAText->toPlainText();
-    QString strB = mBText->toPlainText();
-    QString strMod = mModText->toPlainText();
-
-    JS_BIN_decodeHex( strA.toStdString().c_str(), &binA );
-    JS_BIN_decodeHex( strB.toStdString().c_str(), &binB );
-    JS_BIN_decodeHex( strMod.toStdString().c_str(), &binMod );
+    if( getInput( &binA, &binB, &binMod ) != 0 )
+        goto end;
 
     if( mBaseGroupCombo->currentText() == "Number" )
         JS_BN_exp( &binR, &binA, &binB );
@@ -356,8 +395,8 @@ void BNCalcDlg::clickExp()
     else
         JS_BN_GF2m_expMod( &binR, &binA, &binB, &binMod );
 
-    mResText->setPlainText( getHexString( &binR ) );
-
+    mResText->setPlainText( getOutput( &binR ) );
+end :
     JS_BIN_reset( &binA );
     JS_BIN_reset( &binB );
     JS_BIN_reset( &binR );
@@ -367,14 +406,12 @@ void BNCalcDlg::clickExp()
 void BNCalcDlg::clickSqr()
 {
     BIN binA = {0,0};
+    BIN binB = {0,0};
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
-    QString strA = mAText->toPlainText();
-    QString strMod = mModText->toPlainText();
-
-    JS_BIN_decodeHex( strA.toStdString().c_str(), &binA );
-    JS_BIN_decodeHex( strMod.toStdString().c_str(), &binMod );
+    if( getInput( &binA, &binB, &binMod ) != 0 )
+        goto end;
 
     if( mBaseGroupCombo->currentText() == "Number" )
         JS_BN_sqr( &binR, &binA );
@@ -383,9 +420,10 @@ void BNCalcDlg::clickSqr()
     else
         JS_BN_GF2m_sqrMod( &binR, &binA, &binMod );
 
-    mResText->setPlainText( getHexString( &binR ) );
-
+    mResText->setPlainText( getOutput( &binR ) );
+end :
     JS_BIN_reset( &binA );
+    JS_BIN_reset( &binB );
     JS_BIN_reset( &binR );
     JS_BIN_reset( &binMod );
 }
@@ -397,13 +435,8 @@ void BNCalcDlg::clickMod()
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
-    QString strA = mAText->toPlainText();
-    QString strB = mBText->toPlainText();
-    QString strMod = mModText->toPlainText();
-
-    JS_BIN_decodeHex( strA.toStdString().c_str(), &binA );
-    JS_BIN_decodeHex( strB.toStdString().c_str(), &binB );
-    JS_BIN_decodeHex( strMod.toStdString().c_str(), &binMod );
+    if( getInput( &binA, &binB, &binMod ) != 0 )
+        goto end;
 
     JS_BN_mod( &binR, &binA, &binB );
 
@@ -417,7 +450,7 @@ void BNCalcDlg::clickMod()
     else
         JS_BN_GF2m_mod( &binR, &binA, &binMod );
 
-    mResText->setPlainText( getHexString( &binR ) );
+    mResText->setPlainText( getOutput( &binR ) );
 end :
     JS_BIN_reset( &binA );
     JS_BIN_reset( &binB );
@@ -432,11 +465,8 @@ void BNCalcDlg::clickGcd()
     BIN binB = {0,0};
     BIN binR = {0,0};
 
-    QString strA = mAText->toPlainText();
-    QString strB = mBText->toPlainText();
-
-    JS_BIN_decodeHex( strA.toStdString().c_str(), &binA );
-    JS_BIN_decodeHex( strB.toStdString().c_str(), &binB );
+    if( getInput( &binA, &binB ) != 0 )
+        goto end;
 
     if( mBaseGroupCombo->currentText() != "Number" )
     {
@@ -446,7 +476,7 @@ void BNCalcDlg::clickGcd()
 
     JS_BN_gcd( &binR, &binA, &binB );
 
-    mResText->setPlainText( getHexString( &binR ) );
+    mResText->setPlainText( getOutput( &binR ) );
 end :
     JS_BIN_reset( &binA );
     JS_BIN_reset( &binB );
@@ -459,16 +489,13 @@ void BNCalcDlg::clickOr()
     BIN binB = {0,0};
     BIN binR = {0,0};
 
-    QString strA = mAText->toPlainText();
-    QString strB = mBText->toPlainText();
-
-    JS_BIN_decodeHex( strA.toStdString().c_str(), &binA );
-    JS_BIN_decodeHex( strB.toStdString().c_str(), &binB );
+    if( getInput( &binA, &binB ) != 0 )
+        goto end;
 
     JS_BN_or( &binR, &binA, &binB );
 
-    mResText->setPlainText( getHexString( &binR ) );
-
+    mResText->setPlainText( getOutput( &binR ) );
+end :
     JS_BIN_reset( &binA );
     JS_BIN_reset( &binB );
     JS_BIN_reset( &binR );
@@ -480,16 +507,13 @@ void BNCalcDlg::clickAnd()
     BIN binB = {0,0};
     BIN binR = {0,0};
 
-    QString strA = mAText->toPlainText();
-    QString strB = mBText->toPlainText();
-
-    JS_BIN_decodeHex( strA.toStdString().c_str(), &binA );
-    JS_BIN_decodeHex( strB.toStdString().c_str(), &binB );
+    if( getInput( &binA, &binB ) != 0 )
+        goto end;
 
     JS_BN_and( &binR, &binA, &binB );
 
-    mResText->setPlainText( getHexString( &binR ) );
-
+    mResText->setPlainText( getOutput( &binR ) );
+end :
     JS_BIN_reset( &binA );
     JS_BIN_reset( &binB );
     JS_BIN_reset( &binR );
@@ -501,16 +525,13 @@ void BNCalcDlg::clickXor()
     BIN binB = {0,0};
     BIN binR = {0,0};
 
-    QString strA = mAText->toPlainText();
-    QString strB = mBText->toPlainText();
-
-    JS_BIN_decodeHex( strA.toStdString().c_str(), &binA );
-    JS_BIN_decodeHex( strB.toStdString().c_str(), &binB );
+    if( getInput( &binA, &binB ) != 0 )
+        goto end;
 
     JS_BN_xor( &binR, &binA, &binB );
 
-    mResText->setPlainText( getHexString( &binR ) );
-
+    mResText->setPlainText( getOutput( &binR ) );
+end :
     JS_BIN_reset( &binA );
     JS_BIN_reset( &binB );
     JS_BIN_reset( &binR );
@@ -521,14 +542,13 @@ void BNCalcDlg::clickComp()
     BIN binA = {0,0};
     BIN binR = {0,0};
 
-    QString strA = mAText->toPlainText();
-
-    JS_BIN_decodeHex( strA.toStdString().c_str(), &binA );
+    if( getInput( &binA ) != 0 )
+        goto end;
 
     JS_BN_comp( &binR, &binA );
 
-    mResText->setPlainText( getHexString( &binR ) );
-
+    mResText->setPlainText( getOutput( &binR ) );
+end :
     JS_BIN_reset( &binA );
     JS_BIN_reset( &binR );
 }
@@ -538,9 +558,8 @@ void BNCalcDlg::clickShr()
     BIN binA = {0,0};
     BIN binR = {0,0};
 
-    QString strA = mAText->toPlainText();
-
-    JS_BIN_decodeHex( strA.toStdString().c_str(), &binA );
+    if( getInput( &binA ) != 0 )
+        goto end;
 /*
     if( mBaseGroupCombo->currentText() != "Number" )
     {
@@ -549,7 +568,7 @@ void BNCalcDlg::clickShr()
     }
 */
     JS_BN_rshift( &binR, &binA );
-    mResText->setPlainText( getHexString( &binR ) );
+    mResText->setPlainText( getOutput( &binR ) );
 
 end :
     JS_BIN_reset( &binA );
@@ -559,14 +578,12 @@ end :
 void BNCalcDlg::clickShl()
 {
     BIN binA = {0,0};
+    BIN binB = {0,0};
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
-    QString strA = mAText->toPlainText();
-    QString strMod = mModText->toPlainText();
-
-    JS_BIN_decodeHex( strA.toStdString().c_str(), &binA );
-    JS_BIN_decodeHex( strMod.toStdString().c_str(), &binMod );
+    if( getInput( &binA, &binB, &binMod ) != 0 )
+        goto end;
 
     if( mBaseGroupCombo->currentText() == "Number" )
         JS_BN_lshift( &binR, &binA );
@@ -578,10 +595,11 @@ void BNCalcDlg::clickShl()
         goto end;
     }
 
-    mResText->setPlainText( getHexString( &binR ) );
+    mResText->setPlainText( getOutput( &binR ) );
 
 end :
     JS_BIN_reset( &binA );
+    JS_BIN_reset( &binB );
     JS_BIN_reset( &binR );
     JS_BIN_reset( &binMod );
 }
@@ -589,14 +607,12 @@ end :
 void BNCalcDlg::clickInv()
 {
     BIN binA = {0,0};
+    BIN binB = {0,0};
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
-    QString strA = mAText->toPlainText();
-    QString strMod = mModText->toPlainText();
-
-    JS_BIN_decodeHex( strA.toStdString().c_str(), &binA );
-    JS_BIN_decodeHex( strMod.toStdString().c_str(), &binMod );
+    if( getInput( &binA, &binB, &binMod ) != 0 )
+        goto end;
 
     if( mBaseGroupCombo->currentText() == "Number" )
         JS_BN_inv( &binR, &binA );
@@ -605,9 +621,10 @@ void BNCalcDlg::clickInv()
     else
         Js_BN_GF2m_invMod( &binR, &binA, &binMod );
 
-    mResText->setPlainText( getHexString( &binR ) );
-
+    mResText->setPlainText( getOutput( &binR ) );
+end :
     JS_BIN_reset( &binA );
+    JS_BIN_reset( &binB );
     JS_BIN_reset( &binR );
 }
 
