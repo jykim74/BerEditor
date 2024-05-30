@@ -630,7 +630,7 @@
       </widget>
      </item>
      <item row="0" column="4">
-      <widget class="QPushButton" name="mDivBtn">
+      <widget class="QPushButton" name="mDIVBtn">
        <property name="text">
         <string>A / B</string>
        </property>

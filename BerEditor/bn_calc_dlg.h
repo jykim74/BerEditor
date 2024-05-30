@@ -47,6 +47,7 @@ private slots:
     void clickShr();
     void clickShl();
     void clickInv();
+    void clickSqrt();
 
     void clearA();
     void clearB();

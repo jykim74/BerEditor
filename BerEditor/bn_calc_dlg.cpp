@@ -33,7 +33,7 @@ BNCalcDlg::BNCalcDlg(QWidget *parent) :
     connect( mAddBtn, SIGNAL(clicked()), this, SLOT(clickAdd()));
     connect( mSubBtn, SIGNAL(clicked()), this, SLOT(clickSub()));
     connect( mMultipleBtn, SIGNAL(clicked()), this, SLOT(clickMultiple()));
-    connect( mDivBtn, SIGNAL(clicked()), this, SLOT(clickDiv()));
+    connect( mDIVBtn, SIGNAL(clicked()), this, SLOT(clickDiv()));
     connect( mSqrBtn, SIGNAL(clicked()), this, SLOT(clickSqr()));
     connect( mExpBtn, SIGNAL(clicked()), this, SLOT(clickExp()));
 
@@ -46,6 +46,7 @@ BNCalcDlg::BNCalcDlg(QWidget *parent) :
     connect( mSHRBtn, SIGNAL(clicked()), this, SLOT(clickShr()));
     connect( mSHLBtn, SIGNAL(clicked()), this, SLOT(clickShl()));
     connect( mINVBtn, SIGNAL(clicked()), this, SLOT(clickInv()));
+    connect( mSQRTBtn, SIGNAL(clicked()), this, SLOT(clickSqrt()));
 
     connect( mAClearBtn, SIGNAL(clicked()), this, SLOT(clearA()));
     connect( mBClearBtn, SIGNAL(clicked()), this, SLOT(clearB()));
@@ -93,7 +94,7 @@ int BNCalcDlg::getInput( BIN *pA, BIN *pB, BIN *pMod )
     QString strB = mBText->toPlainText();
     QString strMod = mModText->toPlainText();
 
-    if( mBaseGroupCombo->currentText() == "Number" )
+    if( mModGroup->isCheckable() == false )
         strMod.clear();
 
     if( mBinCheck->isChecked() )
@@ -203,11 +204,47 @@ void BNCalcDlg::clickHex()
 void BNCalcDlg::changeBaseGroup( int index )
 {
     QString strName = mBaseGroupCombo->currentText();
+    bool bModGroup = false;
+    bool bSQRT = false;
+    bool bSHL = false;
+    bool bGCD = false;
+    bool bMOD = false;
+    bool bDIV = false;
 
     if( strName == "Number" )
-        mModGroup->setEnabled( false );
+    {
+        bModGroup = false;
+        bSQRT = false;
+        bSHL = true;
+        bGCD = true;
+        bMOD = true;
+        bDIV = true;
+    }
+    else if( strName == "Modular" )
+    {
+        bModGroup = true;
+        bSQRT = true;
+        bSHL = true;
+        bGCD = false;
+        bMOD = false;
+        bDIV = false;
+    }
     else
-        mModGroup->setEnabled( true );
+    {
+        bModGroup = true;
+        bSQRT = true;
+        bSHL = false;
+        bGCD = false;
+        bMOD = true;
+        bDIV = true;
+    }
+
+    mModGroup->setEnabled( bModGroup );
+    mSQRTBtn->setEnabled( bSQRT );
+    mSHLBtn->setEnabled( bSHL );
+    mGCDBtn->setEnabled( bGCD );
+    mMODBtn->setEnabled( bMOD );
+    mDIVBtn->setEnabled( bDIV );
 }
 
 void BNCalcDlg::clickAGenPrime()
@@ -421,7 +458,7 @@ void BNCalcDlg::clickDiv()
         goto end;
     }
     else
-        JS_BN_GF2m_mulMod( &binR, &binA, &binB, &binMod );
+        JS_BN_GF2m_divMod( &binR, &binA, &binB, &binMod );
 
     mResText->setPlainText( getOutput( &binR ) );
 
@@ -528,7 +565,7 @@ void BNCalcDlg::clickGcd()
 
     if( mBaseGroupCombo->currentText() != "Number" )
     {
-        berApplet->elog( "GCM support Number only" );
+        berApplet->elog( "GCD support Number only" );
         goto end;
     }
 
@@ -636,11 +673,10 @@ end :
 void BNCalcDlg::clickShl()
 {
     BIN binA = {0,0};
-    BIN binB = {0,0};
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
-    if( getInput( &binA, &binB, &binMod ) != 0 )
+    if( getInput( &binA, NULL, &binMod ) != 0 )
         goto end;
 
     if( mBaseGroupCombo->currentText() == "Number" )
@@ -657,7 +693,6 @@ void BNCalcDlg::clickShl()
 
 end :
     JS_BIN_reset( &binA );
-    JS_BIN_reset( &binB );
     JS_BIN_reset( &binR );
     JS_BIN_reset( &binMod );
 }
@@ -665,13 +700,10 @@ end :
 void BNCalcDlg::clickInv()
 {
     BIN binA = {0,0};
-    BIN binB = {0,0};
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
-
-
-    if( getInput( &binA, &binB, &binMod ) != 0 )
+    if( getInput( &binA, NULL, &binMod ) != 0 )
         goto end;
 
     if( mBaseGroupCombo->currentText() == "Number" )
@@ -682,13 +714,39 @@ void BNCalcDlg::clickInv()
     else if( mBaseGroupCombo->currentText() == "Modular" )
         JS_BN_invMod( &binR, &binA, &binMod );
     else
-        Js_BN_GF2m_invMod( &binR, &binA, &binMod );
+        JS_BN_GF2m_invMod( &binR, &binA, &binMod );
 
     mResText->setPlainText( getOutput( &binR ) );
 end :
     JS_BIN_reset( &binA );
-    JS_BIN_reset( &binB );
     JS_BIN_reset( &binR );
+    JS_BIN_reset( &binMod );
+}
+
+void BNCalcDlg::clickSqrt()
+{
+    BIN binA = {0,0};
+    BIN binR = {0,0};
+    BIN binMod = {0,0};
+
+    if( getInput( &binA, NULL, &binMod ) != 0 )
+        goto end;
+
+    if( mBaseGroupCombo->currentText() == "Number" )
+    {
+        berApplet->elog( "Number does not support SQRT" );
+        goto end;
+    }
+    else if( mBaseGroupCombo->currentText() == "Modular" )
+        JS_BN_sqrtMod( &binR, &binA, &binMod );
+    else
+        JS_BN_GF2m_sqrtMod( &binR, &binA, &binMod );
+
+    mResText->setPlainText( getOutput( &binR ) );
+end :
+    JS_BIN_reset( &binA );
+    JS_BIN_reset( &binR );
+    JS_BIN_reset( &binMod );
 }
 
 void BNCalcDlg::clearA()
