@@ -144,6 +144,12 @@ const QString BNCalcDlg::getOutput( const BIN *pBin )
 {
     QString strValue;
 
+    if( pBin == NULL || pBin->nLen <= 0 )
+    {
+        strValue.clear();
+        return strValue;
+    }
+
     if( mBinCheck->isChecked() )
     {
         char *pBitString = NULL;
