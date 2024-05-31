@@ -11,6 +11,23 @@
 #include <QRegExpValidator>
 #include <QClipboard>
 
+const QString kAdd = "A + B";
+const QString kSub = "A - B";
+const QString kMul = "A * B";
+const QString kDiv = "A - B";
+const QString kExp = "A ^ B";
+const QString kSqr = "A ^ 2";
+const QString kMod = "A % B";
+const QString kGcd = "GCD";
+const QString kOr = "OR";
+const QString kAnd = "AND";
+const QString kXor = "XOR";
+const QString kComp = "COMP";
+const QString kShr = "SHR";
+const QString kShl = "SHL";
+const QString kInv = "INV";
+const QString kSqrt = "Sqrt A";
+
 const QStringList kBitType = { "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "3072", "4096" };
 const QStringList kGroupList = { "Number", "Modular", "GF2m" };
 

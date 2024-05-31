@@ -484,7 +484,7 @@ void MainWindow::createActions()
     connect( keyManAct, &QAction::triggered, this, &MainWindow::keyManage );
     keyManAct->setStatusTip(tr("Key Manage function" ));
     cryptMenu->addAction( keyManAct );
-    cryptToolBar->addAction( keyManAct );
+//    cryptToolBar->addAction( keyManAct );
 
     const QIcon hashIcon = QIcon::fromTheme("Hash", QIcon(":/images/hash.png"));
     QAction *hashAct = new QAction( hashIcon, tr("&Hash"), this );
