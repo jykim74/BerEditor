@@ -946,19 +946,24 @@ void BNCalcDlg::clickTest()
 
     BN_CTX *ctx = BN_CTX_new();
     BIGNUM* a = BN_new();
+    BIGNUM* b = BN_new();
     BIGNUM* m = BN_new();
     BIGNUM* r = BN_new();
 
-    if( getInput( &binA, NULL, &binMod ) != 0 )
+    if( getInput( &binA, &binB, &binMod ) != 0 )
         goto end;
 
     BN_bin2bn( binA.pVal, binA.nLen, a );
+    BN_bin2bn( binB.pVal, binB.nLen, b );
     BN_bin2bn( binMod.pVal, binMod.nLen, m );
 
     berApplet->log( QString( "A: %1" ).arg( BN_bn2hex(a)));
+    berApplet->log( QString( "B: %1" ).arg( BN_bn2hex(b)));
     berApplet->log( QString( "Mod: %1").arg( BN_bn2hex(m)));
 
-    if( BN_mod_inverse( r, a, m, ctx ) != NULL )
+    ret = BN_GF2m_mod_div( r, a, b, m, ctx );
+
+    if( ret == 1 )
     {
         pHex = BN_bn2hex( r );
         JS_BIN_decodeHex( pHex, &binR );
