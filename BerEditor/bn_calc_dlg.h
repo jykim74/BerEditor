@@ -60,6 +60,14 @@ private slots:
     void changeMod();
     void changeRes();
 
+    void clickACopy();
+    void clickAPaste();
+    void clickBCopy();
+    void clickBPaste();
+    void clickModCopy();
+    void clickModPaste();
+    void clickResCopy();
+
     void clickTest();
 private:
     void intialize();

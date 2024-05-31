@@ -9,6 +9,7 @@
 #include "openssl/err.h"
 
 #include <QRegExpValidator>
+#include <QClipboard>
 
 const QStringList kBitType = { "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "3072", "4096" };
 const QStringList kGroupList = { "Number", "Modular", "GF2m" };
@@ -62,6 +63,15 @@ BNCalcDlg::BNCalcDlg(QWidget *parent) :
     connect( mModText, SIGNAL(textChanged()), this, SLOT(changeMod()));
     connect( mResText, SIGNAL(textChanged()), this, SLOT(changeRes()));
 
+    connect( mACopyBtn, SIGNAL(clicked()), this, SLOT(clickACopy()));
+    connect( mAPasteBtn, SIGNAL(clicked()), this, SLOT(clickAPaste()));
+    connect( mBCopyBtn, SIGNAL(clicked()), this, SLOT(clickBCopy()));
+    connect( mBPasteBtn, SIGNAL(clicked()), this, SLOT(clickBPaste()));
+    connect( mModCopyBtn, SIGNAL(clicked()), this, SLOT(clickModCopy()));
+    connect( mModPasteBtn, SIGNAL(clicked()), this, SLOT(clickModPaste()));
+    connect( mResCopyBtn, SIGNAL(clicked()), this, SLOT(clickResCopy()));
+
+
     connect( mTestBtn, SIGNAL(clicked()), this, SLOT(clickTest()));
 
     intialize();
@@ -102,9 +112,9 @@ int BNCalcDlg::getInput( BIN *pA, BIN *pB, BIN *pMod )
 {
     int nNum = 0;
 
-    QString strA = mAText->toPlainText();
-    QString strB = mBText->toPlainText();
-    QString strMod = mModText->toPlainText();
+    QString strA = mAText->toPlainText().simplified();
+    QString strB = mBText->toPlainText().simplified();
+    QString strMod = mModText->toPlainText().simplified();
 
     if( mBaseGroupCombo->currentText() == "Number" )
         strMod.clear();
@@ -932,6 +942,55 @@ void BNCalcDlg::changeRes()
 {
     int nLen = mResText->toPlainText().length();
     mResLenText->setText( QString("%1").arg( nLen ));
+}
+
+void BNCalcDlg::clickACopy()
+{
+    QString strMsg = mAText->toPlainText().simplified();
+    QClipboard *clipboard = QGuiApplication::clipboard();
+    clipboard->setText( strMsg );
+}
+
+void BNCalcDlg::clickAPaste()
+{
+    QClipboard *clipboard = QGuiApplication::clipboard();
+    QString strMsg = clipboard->text();
+    mAText->setPlainText( strMsg );
+}
+
+void BNCalcDlg::clickBCopy()
+{
+    QString strMsg = mBText->toPlainText().simplified();
+    QClipboard *clipboard = QGuiApplication::clipboard();
+    clipboard->setText( strMsg );
+}
+
+void BNCalcDlg::clickBPaste()
+{
+    QClipboard *clipboard = QGuiApplication::clipboard();
+    QString strMsg = clipboard->text();
+    mBText->setPlainText( strMsg );
+}
+
+void BNCalcDlg::clickModCopy()
+{
+    QString strMsg = mModText->toPlainText().simplified();
+    QClipboard *clipboard = QGuiApplication::clipboard();
+    clipboard->setText( strMsg );
+}
+
+void BNCalcDlg::clickModPaste()
+{
+    QClipboard *clipboard = QGuiApplication::clipboard();
+    QString strMsg = clipboard->text();
+    mModText->setPlainText( strMsg );
+}
+
+void BNCalcDlg::clickResCopy()
+{
+    QString strMsg = mResText->toPlainText().simplified();
+    QClipboard *clipboard = QGuiApplication::clipboard();
+    clipboard->setText( strMsg );
 }
 
 void BNCalcDlg::clickTest()
