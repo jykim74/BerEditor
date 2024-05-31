@@ -5,6 +5,9 @@
 #include "js_bn.h"
 #include "ber_applet.h"
 
+#include "openssl/bn.h"
+#include "openssl/err.h"
+
 #include <QRegExpValidator>
 
 const QStringList kBitType = { "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "3072", "4096" };
@@ -59,6 +62,8 @@ BNCalcDlg::BNCalcDlg(QWidget *parent) :
     connect( mModText, SIGNAL(textChanged()), this, SLOT(changeMod()));
     connect( mResText, SIGNAL(textChanged()), this, SLOT(changeRes()));
 
+    connect( mTestBtn, SIGNAL(clicked()), this, SLOT(clickTest()));
+
     intialize();
 
 #if defined(Q_OS_MAC)
@@ -76,6 +81,7 @@ void BNCalcDlg::intialize()
     mHexCheck->click();
 
     mBaseGroupCombo->addItems( kGroupList );
+    mBaseGroupCombo->setCurrentIndex(1);
 
     mAPrimeBitsCombo->addItems(kBitType);
     mBPrimeBitsCombo->addItems(kBitType);
@@ -83,6 +89,12 @@ void BNCalcDlg::intialize()
 
     mAPrimeBitsCombo->setEditable(true);
     mBPrimeBitsCombo->setEditable(true);
+
+#if defined(QT_DEBUG)
+    mTestBtn->show();
+#else
+    mTestBtn->hide();
+#endif
 }
 
 
@@ -94,7 +106,7 @@ int BNCalcDlg::getInput( BIN *pA, BIN *pB, BIN *pMod )
     QString strB = mBText->toPlainText();
     QString strMod = mModText->toPlainText();
 
-    if( mModGroup->isCheckable() == false )
+    if( mBaseGroupCombo->currentText() == "Number" )
         strMod.clear();
 
     if( mBinCheck->isChecked() )
@@ -216,6 +228,7 @@ void BNCalcDlg::changeBaseGroup( int index )
     bool bGCD = false;
     bool bMOD = false;
     bool bDIV = false;
+    bool bINV = false;
 
     if( strName == "Number" )
     {
@@ -225,6 +238,7 @@ void BNCalcDlg::changeBaseGroup( int index )
         bGCD = true;
         bMOD = true;
         bDIV = true;
+        bINV = false;
     }
     else if( strName == "Modular" )
     {
@@ -234,6 +248,7 @@ void BNCalcDlg::changeBaseGroup( int index )
         bGCD = false;
         bMOD = false;
         bDIV = false;
+        bINV = true;
     }
     else
     {
@@ -243,6 +258,7 @@ void BNCalcDlg::changeBaseGroup( int index )
         bGCD = false;
         bMOD = true;
         bDIV = true;
+        bINV = true;
     }
 
     mModGroup->setEnabled( bModGroup );
@@ -251,6 +267,7 @@ void BNCalcDlg::changeBaseGroup( int index )
     mGCDBtn->setEnabled( bGCD );
     mMODBtn->setEnabled( bMOD );
     mDIVBtn->setEnabled( bDIV );
+    mINVBtn->setEnabled( bINV );
 }
 
 void BNCalcDlg::clickAGenPrime()
@@ -539,8 +556,6 @@ void BNCalcDlg::clickMod()
     if( getInput( &binA, &binB, &binMod ) != 0 )
         goto end;
 
-    JS_BN_mod( &binR, &binA, &binB );
-
     if( mBaseGroupCombo->currentText() == "Number" )
         JS_BN_mod( &binR, &binA, &binB );
     else if( mBaseGroupCombo->currentText() == "Modular" )
@@ -549,7 +564,7 @@ void BNCalcDlg::clickMod()
         goto end;
     }
     else
-        JS_BN_GF2m_mod( &binR, &binA, &binMod );
+        JS_BN_GF2m_mod( &binR, &binA, &binB );
 
     mResText->setPlainText( getOutput( &binR ) );
 end :
@@ -714,7 +729,7 @@ void BNCalcDlg::clickInv()
 
     if( mBaseGroupCombo->currentText() == "Number" )
     {
-        mResText->setPlainText( QString( "-%1" ).arg( mAText->toPlainText() ));
+        berApplet->elog( "Number does not support INV" );
         goto end;
     }
     else if( mBaseGroupCombo->currentText() == "Modular" )
@@ -805,4 +820,49 @@ void BNCalcDlg::changeRes()
 {
     int nLen = mResText->toPlainText().length();
     mResLenText->setText( QString("%1").arg( nLen ));
+}
+
+void BNCalcDlg::clickTest()
+{
+    int ret = -1;
+    char *pHex = NULL;
+
+    BIN binA = {0,0};
+    BIN binB = {0,0};
+    BIN binMod = {0,0};
+    BIN binR = {0,0};
+
+    BN_CTX *ctx = BN_CTX_new();
+    BIGNUM* a = BN_new();
+    BIGNUM* m = BN_new();
+    BIGNUM* r = BN_new();
+
+    if( getInput( &binA, NULL, &binMod ) != 0 )
+        goto end;
+
+    BN_bin2bn( binA.pVal, binA.nLen, a );
+    BN_bin2bn( binMod.pVal, binMod.nLen, m );
+
+    berApplet->log( QString( "A: %1" ).arg( BN_bn2hex(a)));
+    berApplet->log( QString( "Mod: %1").arg( BN_bn2hex(m)));
+
+    if( BN_mod_inverse( r, a, m, ctx ) != NULL )
+    {
+        pHex = BN_bn2hex( r );
+        JS_BIN_decodeHex( pHex, &binR );
+        ret = 0;
+    }
+    else
+    {
+        unsigned long uerr = ERR_get_error();
+        berApplet->log( QString("BN Error(%1:%2)").arg( uerr ).arg( ERR_error_string( uerr, NULL )) );
+        ret = -1;
+    }
+
+    mResText->setPlainText( getHexString( &binR ));
+
+end :
+    JS_BIN_reset( &binA );
+    JS_BIN_reset( &binB );
+    JS_BIN_reset( &binMod );
 }

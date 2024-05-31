@@ -60,6 +60,7 @@ private slots:
     void changeMod();
     void changeRes();
 
+    void clickTest();
 private:
     void intialize();
     int getInput( BIN *pA, BIN *pB, BIN *pMod );
