@@ -183,6 +183,10 @@ void SSSDlg::clickSplit()
     getBINFromString( &binSrc, mSrcTypeCombo->currentText(), strSrc );
     JS_BIN_decodeHex( mPrimeText->text().toStdString().c_str(), &binPrime );
 
+    berApplet->logLine();
+    berApplet->log( "-- Split Key" );
+    berApplet->log( QString( "Prime Value : %1").arg( getHexString( &binPrime )));
+
     if( binSrc.nLen < 8 )
     {
         berApplet->warningBox( tr( "Input value must be at least 8 bytes"), this );
@@ -201,8 +205,7 @@ void SSSDlg::clickSplit()
 
     nCount = JS_BIN_countList( pCurList );
 
-    berApplet->logLine();
-    berApplet->log( "-- Split Key" );
+
     berApplet->logLine();
     berApplet->log( QString( "Src Key Value   : %1").arg( getHexString( &binSrc )));
     while( pCurList )
@@ -247,6 +250,7 @@ void SSSDlg::clickJoin()
     berApplet->logLine();
 
     JS_BIN_decodeHex( mPrimeText->text().toStdString().c_str(), &binPrime );
+    berApplet->log( QString( "Prime Value : %1").arg( getHexString( &binPrime )));
 
     for( int i = 0; i < nRow; i++ )
     {
@@ -285,7 +289,6 @@ void SSSDlg::clickJoin()
         JS_BIN_encodeBase64( &binKey, &pKeyVal );
 
     berApplet->log( QString( "Combined Key : %1").arg( getHexString( &binKey )));
-
     berApplet->logLine();
 
     mJoinedText->setText( pKeyVal );

@@ -479,6 +479,15 @@ void BNCalcDlg::clickAdd()
 
     mResText->setPlainText( getOutput( &binR ) );
 
+    berApplet->logLine();
+    berApplet->log( QString( mADDBtn->text() ));
+    berApplet->logLine();
+    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
+    berApplet->log( QString( "B : %1").arg( getHexString(&binB)));
+    if( mBaseGroupCombo->currentText() != "Number" )
+        berApplet->log( QString( "M : %1").arg( getHexString(&binMod)));
+    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+
 end :
     JS_BIN_reset( &binA );
     JS_BIN_reset( &binB );
@@ -518,10 +527,19 @@ void BNCalcDlg::clickSub()
     }
 
     JS_BIN_rmFrontZero( &binR );
-
     strOut += QString( "%1" ).arg( getOutput(&binR));
 
     mResText->setPlainText( strOut );
+
+    berApplet->logLine();
+    berApplet->log( QString( mSUBBtn->text() ));
+    berApplet->logLine();
+    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
+    berApplet->log( QString( "B : %1").arg( getHexString(&binB)));
+    if( mBaseGroupCombo->currentText() != "Number" )
+        berApplet->log( QString( "M : %1").arg( getHexString(&binMod)));
+    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+
 end :
     JS_BIN_reset( &binA );
     JS_BIN_reset( &binB );
@@ -554,6 +572,16 @@ void BNCalcDlg::clickMultiple()
     }
 
     mResText->setPlainText( getOutput( &binR ) );
+
+    berApplet->logLine();
+    berApplet->log( QString( mMULBtn->text() ));
+    berApplet->logLine();
+    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
+    berApplet->log( QString( "B : %1").arg( getHexString(&binB)));
+    if( mBaseGroupCombo->currentText() != "Number" )
+        berApplet->log( QString( "M : %1").arg( getHexString(&binMod)));
+    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+
 end :
     JS_BIN_reset( &binA );
     JS_BIN_reset( &binB );
@@ -591,8 +619,20 @@ void BNCalcDlg::clickDiv()
 
     mResText->setPlainText( getOutput( &binR ) );
 
+    berApplet->logLine();
+    berApplet->log( QString( mDIVBtn->text() ));
+    berApplet->logLine();
+    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
+    berApplet->log( QString( "B : %1").arg( getHexString(&binB)));
+    if( mBaseGroupCombo->currentText() != "Number" )
+        berApplet->log( QString( "M : %1").arg( getHexString(&binMod)));
+    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+
     if( mBaseGroupCombo->currentText() == "Number" )
+    {
         mResText->appendPlainText( QString( "REM : %1").arg( getHexString( &binREM )));
+        berApplet->log( QString( "REM : %1").arg( getHexString(&binREM)));
+    }
 
 end :
     JS_BIN_reset( &binA );
@@ -627,6 +667,16 @@ void BNCalcDlg::clickExp()
     }
 
     mResText->setPlainText( getOutput( &binR ) );
+
+    berApplet->logLine();
+    berApplet->log( QString( mEXPBtn->text() ));
+    berApplet->logLine();
+    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
+    berApplet->log( QString( "B : %1").arg( getHexString(&binB)));
+    if( mBaseGroupCombo->currentText() != "Number" )
+        berApplet->log( QString( "M : %1").arg( getHexString(&binMod)));
+    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+
 end :
     JS_BIN_reset( &binA );
     JS_BIN_reset( &binB );
@@ -638,11 +688,10 @@ void BNCalcDlg::clickSqr()
 {
     int ret = 0;
     BIN binA = {0,0};
-    BIN binB = {0,0};
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
-    if( getInput( &binA, &binB, &binMod ) != 0 )
+    if( getInput( &binA, NULL, &binMod ) != 0 )
         goto end;
 
     if( mBaseGroupCombo->currentText() == "Number" )
@@ -659,9 +708,17 @@ void BNCalcDlg::clickSqr()
     }
 
     mResText->setPlainText( getOutput( &binR ) );
+
+    berApplet->logLine();
+    berApplet->log( QString( mSQRBtn->text() ));
+    berApplet->logLine();
+    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
+    if( mBaseGroupCombo->currentText() != "Number" )
+        berApplet->log( QString( "M : %1").arg( getHexString(&binMod)));
+    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+
 end :
     JS_BIN_reset( &binA );
-    JS_BIN_reset( &binB );
     JS_BIN_reset( &binR );
     JS_BIN_reset( &binMod );
 }
@@ -672,9 +729,8 @@ void BNCalcDlg::clickMod()
     BIN binA = {0,0};
     BIN binB = {0,0};
     BIN binR = {0,0};
-    BIN binMod = {0,0};
 
-    if( getInput( &binA, &binB, &binMod ) != 0 )
+    if( getInput( &binA, &binB, NULL ) != 0 )
         goto end;
 
     if( mBaseGroupCombo->currentText() == "Number" )
@@ -694,11 +750,19 @@ void BNCalcDlg::clickMod()
     }
 
     mResText->setPlainText( getOutput( &binR ) );
+
+    berApplet->logLine();
+    berApplet->log( QString( mMODBtn->text() ));
+    berApplet->logLine();
+    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
+    berApplet->log( QString( "B : %1").arg( getHexString(&binB)));
+
+    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+
 end :
     JS_BIN_reset( &binA );
     JS_BIN_reset( &binB );
     JS_BIN_reset( &binR );
-    JS_BIN_reset( &binMod );
 }
 
 
@@ -727,6 +791,14 @@ void BNCalcDlg::clickGcd()
     }
 
     mResText->setPlainText( getOutput( &binR ) );
+
+    berApplet->logLine();
+    berApplet->log( QString( mGCDBtn->text() ));
+    berApplet->logLine();
+    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
+    berApplet->log( QString( "B : %1").arg( getHexString(&binB)));
+    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+
 end :
     JS_BIN_reset( &binA );
     JS_BIN_reset( &binB );
@@ -752,6 +824,14 @@ void BNCalcDlg::clickOr()
     }
 
     mResText->setPlainText( getOutput( &binR ) );
+
+    berApplet->logLine();
+    berApplet->log( QString( mORBtn->text() ));
+    berApplet->logLine();
+    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
+    berApplet->log( QString( "B : %1").arg( getHexString(&binB)));
+    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+
 end :
     JS_BIN_reset( &binA );
     JS_BIN_reset( &binB );
@@ -777,6 +857,14 @@ void BNCalcDlg::clickAnd()
     }
 
     mResText->setPlainText( getOutput( &binR ) );
+
+    berApplet->logLine();
+    berApplet->log( QString( mANDBtn->text() ));
+    berApplet->logLine();
+    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
+    berApplet->log( QString( "B : %1").arg( getHexString(&binB)));
+    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+
 end :
     JS_BIN_reset( &binA );
     JS_BIN_reset( &binB );
@@ -802,6 +890,13 @@ void BNCalcDlg::clickXor()
     }
 
     mResText->setPlainText( getOutput( &binR ) );
+    berApplet->logLine();
+    berApplet->log( QString( mXORBtn->text() ));
+    berApplet->logLine();
+    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
+    berApplet->log( QString( "B : %1").arg( getHexString(&binB)));
+    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+
 end :
     JS_BIN_reset( &binA );
     JS_BIN_reset( &binB );
@@ -826,6 +921,13 @@ void BNCalcDlg::clickComp()
     }
 
     mResText->setPlainText( getOutput( &binR ) );
+
+    berApplet->logLine();
+    berApplet->log( QString( mCOMPBtn->text() ));
+    berApplet->logLine();
+    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));;
+    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+
 end :
     JS_BIN_reset( &binA );
     JS_BIN_reset( &binR );
@@ -854,6 +956,11 @@ void BNCalcDlg::clickShr()
     }
 
     mResText->setPlainText( getOutput( &binR ) );
+    berApplet->logLine();
+    berApplet->log( QString( mSHRBtn->text() ));
+    berApplet->logLine();
+    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
+    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
 
 end :
     JS_BIN_reset( &binA );
@@ -888,6 +995,14 @@ void BNCalcDlg::clickShl()
 
     mResText->setPlainText( getOutput( &binR ) );
 
+    berApplet->logLine();
+    berApplet->log( QString( mSHLBtn->text() ));
+    berApplet->logLine();
+    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
+    if( mBaseGroupCombo->currentText() != "Number" )
+        berApplet->log( QString( "M : %1").arg( getHexString(&binMod)));
+    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+
 end :
     JS_BIN_reset( &binA );
     JS_BIN_reset( &binR );
@@ -921,6 +1036,15 @@ void BNCalcDlg::clickInv()
     }
 
     mResText->setPlainText( getOutput( &binR ) );
+
+    berApplet->logLine();
+    berApplet->log( QString( mINVBtn->text() ));
+    berApplet->logLine();
+    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
+    if( mBaseGroupCombo->currentText() != "Number" )
+        berApplet->log( QString( "M : %1").arg( getHexString(&binMod)));
+    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+
 end :
     JS_BIN_reset( &binA );
     JS_BIN_reset( &binR );
@@ -954,6 +1078,15 @@ void BNCalcDlg::clickSqrt()
     }
 
     mResText->setPlainText( getOutput( &binR ) );
+
+    berApplet->logLine();
+    berApplet->log( QString( mSQRTBtn->text() ));
+    berApplet->logLine();
+    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
+    if( mBaseGroupCombo->currentText() != "Number" )
+        berApplet->log( QString( "M : %1").arg( getHexString(&binMod)));
+    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+
 end :
     JS_BIN_reset( &binA );
     JS_BIN_reset( &binR );
