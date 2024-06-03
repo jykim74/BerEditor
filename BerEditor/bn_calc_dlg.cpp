@@ -14,7 +14,7 @@
 const QString kAdd = "A + B";
 const QString kSub = "A - B";
 const QString kMul = "A * B";
-const QString kDiv = "A - B";
+const QString kDiv = "A / B";
 const QString kExp = "A ^ B";
 const QString kSqr = "A ^ 2";
 const QString kMod = "A % B";
@@ -26,7 +26,17 @@ const QString kComp = "COMP";
 const QString kShr = "SHR";
 const QString kShl = "SHL";
 const QString kInv = "INV";
-const QString kSqrt = "Sqrt A";
+const QString kSqrt = "√ A";
+
+const QString kAddMod = "(A+B) Mod M";
+const QString kSubMod = "(A-B) Mod M";
+const QString kMulMod = "(A*B) Mod M";
+const QString kDivMod = "(A/B) Mod M";
+const QString kExpMod = "(A^B) Mod M";
+const QString kSqrMod = "(A^2) Mod M";
+const QString kShlMod = "SHL Mod M";
+const QString kInvMod = "A^-1 Mod M";
+const QString kSqrtMod = "√ A Mod M";
 
 const QStringList kBitType = { "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "3072", "4096" };
 const QStringList kGroupList = { "Number", "Modular", "GF2m" };
@@ -51,12 +61,12 @@ BNCalcDlg::BNCalcDlg(QWidget *parent) :
     connect( mBCheckPrimeBtn, SIGNAL(clicked()), this, SLOT(clickBCheckPrime()));
     connect( mModCheckPrimeBtn, SIGNAL(clicked()), this, SLOT(clickModCheckPrime()));
 
-    connect( mAddBtn, SIGNAL(clicked()), this, SLOT(clickAdd()));
-    connect( mSubBtn, SIGNAL(clicked()), this, SLOT(clickSub()));
-    connect( mMultipleBtn, SIGNAL(clicked()), this, SLOT(clickMultiple()));
+    connect( mADDBtn, SIGNAL(clicked()), this, SLOT(clickAdd()));
+    connect( mSUBBtn, SIGNAL(clicked()), this, SLOT(clickSub()));
+    connect( mMULBtn, SIGNAL(clicked()), this, SLOT(clickMultiple()));
     connect( mDIVBtn, SIGNAL(clicked()), this, SLOT(clickDiv()));
-    connect( mSqrBtn, SIGNAL(clicked()), this, SLOT(clickSqr()));
-    connect( mExpBtn, SIGNAL(clicked()), this, SLOT(clickExp()));
+    connect( mSQRBtn, SIGNAL(clicked()), this, SLOT(clickSqr()));
+    connect( mEXPBtn, SIGNAL(clicked()), this, SLOT(clickExp()));
 
     connect( mMODBtn, SIGNAL(clicked()), this, SLOT(clickMod()));
     connect( mGCDBtn, SIGNAL(clicked()), this, SLOT(clickGcd()));
@@ -87,6 +97,10 @@ BNCalcDlg::BNCalcDlg(QWidget *parent) :
     connect( mModCopyBtn, SIGNAL(clicked()), this, SLOT(clickModCopy()));
     connect( mModPasteBtn, SIGNAL(clicked()), this, SLOT(clickModPaste()));
     connect( mResCopyBtn, SIGNAL(clicked()), this, SLOT(clickResCopy()));
+
+    connect( mResSendABtn, SIGNAL(clicked()), this, SLOT(clickResSendA()));
+    connect( mResSendBBtn, SIGNAL(clicked()), this, SLOT(clickResSendB()));
+    connect( mResSendModBtn, SIGNAL(clicked()), this, SLOT(clickResSendMod()));
 
 
     connect( mTestBtn, SIGNAL(clicked()), this, SLOT(clickTest()));
@@ -169,7 +183,7 @@ int BNCalcDlg::getInput( BIN *pA, BIN *pB, BIN *pMod )
     {
         if( isValidNumFormat( strMod, nNum ) != 1 )
         {
-            berApplet->warningBox( tr( "The Mod value have wrong character" ), this );
+            berApplet->warningBox( tr( "The M value have wrong character" ), this );
             return -3;
         }
 
@@ -266,6 +280,23 @@ void BNCalcDlg::changeBaseGroup( int index )
         bMOD = true;
         bDIV = true;
         bINV = false;
+
+        mADDBtn->setText( kAdd );
+        mSUBBtn->setText( kSub );
+        mMULBtn->setText( kMod );
+        mDIVBtn->setText( kDiv );
+        mEXPBtn->setText( kExp );
+        mSQRBtn->setText( kSqr );
+        mMODBtn->setText( kMod );
+        mGCDBtn->setText( kGcd );
+        mORBtn->setText( kOr );
+        mANDBtn->setText( kAnd );
+        mXORBtn->setText( kXor );
+        mCOMPBtn->setText( kComp );
+        mSHLBtn->setText( kShl );
+        mSHRBtn->setText( kShr );
+        mINVBtn->setText( kInv );
+        mSQRTBtn->setText( kSqrt );
     }
     else if( strName == "Modular" )
     {
@@ -276,6 +307,16 @@ void BNCalcDlg::changeBaseGroup( int index )
         bMOD = false;
         bDIV = false;
         bINV = true;
+
+        mADDBtn->setText( kAddMod );
+        mSUBBtn->setText( kSubMod );
+        mMULBtn->setText( kMulMod );
+        mDIVBtn->setText( kDivMod );
+        mEXPBtn->setText( kExpMod );
+        mSQRBtn->setText( kSqrMod );
+        mSHLBtn->setText( kShlMod );
+        mINVBtn->setText( kInvMod );
+        mSQRTBtn->setText( kSqrtMod );
     }
     else
     {
@@ -286,6 +327,16 @@ void BNCalcDlg::changeBaseGroup( int index )
         bMOD = true;
         bDIV = true;
         bINV = true;
+
+        mADDBtn->setText( kAddMod );
+        mSUBBtn->setText( kSubMod );
+        mMULBtn->setText( kMulMod );
+        mDIVBtn->setText( kDivMod );
+        mEXPBtn->setText( kExpMod );
+        mSQRBtn->setText( kSqrMod );
+        mSHLBtn->setText( kShlMod );
+        mINVBtn->setText( kInvMod );
+        mSQRTBtn->setText( kSqrtMod );
     }
 
     mModGroup->setEnabled( bModGroup );
@@ -386,7 +437,7 @@ void BNCalcDlg::clickModCheckPrime()
 
     if( strVal.length() < 1 )
     {
-        berApplet->warningBox( tr( "Insert Mod value" ), this );
+        berApplet->warningBox( tr( "Insert M value" ), this );
         return;
     }
 
@@ -395,9 +446,9 @@ void BNCalcDlg::clickModCheckPrime()
     ret = JS_BN_isPrime( &binVal );
 
     if( ret == 1 )
-        berApplet->messageLog( tr( "The Mod value is prime"), this );
+        berApplet->messageLog( tr( "The M value is prime"), this );
     else
-        berApplet->warnLog( tr( "The Mod value is not prime" ), this );
+        berApplet->warnLog( tr( "The M value is not prime" ), this );
 
     JS_BIN_reset( &binVal );
 }
@@ -1008,6 +1059,27 @@ void BNCalcDlg::clickResCopy()
     QString strMsg = mResText->toPlainText().simplified();
     QClipboard *clipboard = QGuiApplication::clipboard();
     clipboard->setText( strMsg );
+}
+
+void BNCalcDlg::clickResSendA()
+{
+    QString strRes = mResText->toPlainText().simplified();
+
+    mAText->setPlainText( strRes );
+}
+
+void BNCalcDlg::clickResSendB()
+{
+    QString strRes = mResText->toPlainText().simplified();
+
+    mBText->setPlainText( strRes );
+}
+
+void BNCalcDlg::clickResSendMod()
+{
+    QString strRes = mResText->toPlainText().simplified();
+
+    mModText->setPlainText( strRes );
 }
 
 void BNCalcDlg::clickTest()

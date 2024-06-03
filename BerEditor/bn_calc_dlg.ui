@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>728</width>
-    <height>841</height>
+    <width>622</width>
+    <height>682</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -446,7 +446,7 @@
       </size>
      </property>
      <property name="title">
-      <string>Mod</string>
+      <string>M</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <property name="spacing">
@@ -616,7 +616,7 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_5">
-     <item row="0" column="4">
+     <item row="0" column="7">
       <widget class="QLineEdit" name="mResLenText">
        <property name="minimumSize">
         <size>
@@ -662,27 +662,7 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <spacer name="horizontalSpacer_4">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Result</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
+     <item row="0" column="6">
       <widget class="QPushButton" name="mResClearBtn">
        <property name="minimumSize">
         <size>
@@ -701,7 +681,7 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
+     <item row="0" column="5">
       <widget class="QPushButton" name="mResCopyBtn">
        <property name="minimumSize">
         <size>
@@ -717,6 +697,47 @@
        </property>
        <property name="text">
         <string>Copy</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mResSendBBtn">
+       <property name="text">
+        <string>Send B</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Result</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mResSendABtn">
+       <property name="text">
+        <string>Send A</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mResSendModBtn">
+       <property name="text">
+        <string>Send M</string>
        </property>
       </widget>
      </item>
@@ -769,7 +790,7 @@
       <number>0</number>
      </property>
      <item row="0" column="2">
-      <widget class="QPushButton" name="mMultipleBtn">
+      <widget class="QPushButton" name="mMULBtn">
        <property name="text">
         <string>A * B</string>
        </property>
@@ -783,14 +804,14 @@
       </widget>
      </item>
      <item row="0" column="3">
-      <widget class="QPushButton" name="mExpBtn">
+      <widget class="QPushButton" name="mEXPBtn">
        <property name="text">
         <string>A ^ B</string>
        </property>
       </widget>
      </item>
      <item row="0" column="0">
-      <widget class="QPushButton" name="mAddBtn">
+      <widget class="QPushButton" name="mADDBtn">
        <property name="text">
         <string>A + B</string>
        </property>
@@ -804,7 +825,7 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QPushButton" name="mSubBtn">
+      <widget class="QPushButton" name="mSUBBtn">
        <property name="text">
         <string>A - B</string>
        </property>
@@ -818,7 +839,7 @@
       </widget>
      </item>
      <item row="0" column="5">
-      <widget class="QPushButton" name="mSqrBtn">
+      <widget class="QPushButton" name="mSQRBtn">
        <property name="text">
         <string>A ^ 2</string>
        </property>

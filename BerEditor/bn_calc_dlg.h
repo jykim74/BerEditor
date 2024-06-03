@@ -68,6 +68,10 @@ private slots:
     void clickModPaste();
     void clickResCopy();
 
+    void clickResSendA();
+    void clickResSendB();
+    void clickResSendMod();
+
     void clickTest();
 private:
     void intialize();
