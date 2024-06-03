@@ -46,6 +46,11 @@ BNCalcDlg::BNCalcDlg(QWidget *parent) :
 {
     setupUi(this);
 
+#if defined(Q_OS_MAC)
+    layout()->setSpacing(5);
+    layout()->setMargin(10);
+#endif
+
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mBaseGroupCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeBaseGroup(int)));
 
@@ -107,9 +112,7 @@ BNCalcDlg::BNCalcDlg(QWidget *parent) :
 
     intialize();
 
-#if defined(Q_OS_MAC)
-    layout()->setSpacing(5);
-#endif
+
 }
 
 BNCalcDlg::~BNCalcDlg()
