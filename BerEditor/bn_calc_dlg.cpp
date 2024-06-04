@@ -286,7 +286,7 @@ void BNCalcDlg::changeBaseGroup( int index )
 
         mADDBtn->setText( kAdd );
         mSUBBtn->setText( kSub );
-        mMULBtn->setText( kMod );
+        mMULBtn->setText( kMul );
         mDIVBtn->setText( kDiv );
         mEXPBtn->setText( kExp );
         mSQRBtn->setText( kSqr );
