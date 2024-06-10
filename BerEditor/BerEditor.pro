@@ -76,7 +76,8 @@ SOURCES += \
     trust_list_dlg.cpp \
     vid_dlg.cpp \
     make_value_dlg.cpp \
-    bn_calc_dlg.cpp
+    bn_calc_dlg.cpp \
+    key_pair_man_dlg.cpp
 
 HEADERS += \
     about_dlg.h \
@@ -120,7 +121,8 @@ HEADERS += \
     trust_list_dlg.h \
     vid_dlg.h \
     make_value_dlg.h \
-    bn_calc_dlg.h
+    bn_calc_dlg.h \
+    key_pair_man_dlg.h
 
 
 
@@ -241,7 +243,8 @@ FORMS += \
         trust_list_dlg.ui \
         vid_dlg.ui \
         make_value_dlg.ui \
-        bn_calc_dlg.ui
+        bn_calc_dlg.ui \
+        key_pair_man_dlg.ui
 
 RESOURCES += \
     bereditor.qrc
