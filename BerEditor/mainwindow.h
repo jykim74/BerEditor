@@ -34,6 +34,7 @@ class CAVPDlg;
 class SSLVerifyDlg;
 class VIDDlg;
 class BNCalcDlg;
+class KeyPairManDlg;
 
 namespace Ui {
 class MainWindow;
@@ -96,6 +97,7 @@ private slots:
     void genOTP();
     void VID();
     void BNCalc();
+    void keyPairMan();
     void insertBER();
     void insertData();
     void numTrans();
@@ -168,6 +170,7 @@ private:
     SSLVerifyDlg    *ssl_verify_dlg_;
     VIDDlg          *vid_dlg_;
     BNCalcDlg       *bn_calc_dlg_;
+    KeyPairManDlg   *key_pair_man_dlg_;
 
     bool log_halt_;
 };

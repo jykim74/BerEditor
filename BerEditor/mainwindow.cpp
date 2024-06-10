@@ -38,6 +38,7 @@
 #include "csr_info_dlg.h"
 #include "vid_dlg.h"
 #include "bn_calc_dlg.h"
+#include "key_pair_man_dlg.h"
 #include "common.h"
 
 #include "js_pki_tools.h"
@@ -108,6 +109,7 @@ MainWindow::~MainWindow()
     delete ssl_verify_dlg_;
     delete vid_dlg_;
     delete bn_calc_dlg_;
+    delete key_pair_man_dlg_;
 
     delete table_tab_;
     delete text_tab_;
@@ -581,6 +583,14 @@ void MainWindow::createActions()
     cryptMenu->addAction( calcAct );
     cryptToolBar->addAction( calcAct );
 
+    const QIcon keyPairIcon = QIcon::fromTheme("KeyPair Manage", QIcon(":/images/keypair.png"));
+    QAction *keyPairManAct = new QAction( keyPairIcon, tr( "KeyPairManage" ), this );
+    keyPairManAct->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_Y ));
+    connect( keyPairManAct, &QAction::triggered, this, &MainWindow::keyPairMan );
+    keyPairManAct->setStatusTip( tr( "Key Pair Manage" ));
+    cryptMenu->addAction( keyPairManAct );
+    cryptToolBar->addAction( keyPairManAct );
+
     const QIcon cavpIcon = QIcon::fromTheme( "tool-cavp", QIcon(":/images/cavp.png"));
     QAction *cavpAct = new QAction(cavpIcon, tr("&CAVP"), this);
     cavpAct->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_F));
@@ -611,6 +621,7 @@ void MainWindow::createActions()
         genOTPAct->setEnabled( false );
         vidAct->setEnabled( false );
         calcAct->setEnabled( false );
+        keyPairManAct->setEnabled( false );
         cavpAct->setEnabled( false );
         sslAct->setEnabled( false );
     }
@@ -626,7 +637,7 @@ void MainWindow::createActions()
     connect( settingAct, &QAction::triggered, this, &MainWindow::setting );
     settingAct->setStatusTip(tr("Set the variable"));
     helpMenu->addAction( settingAct );
-    helpToolBar->addAction( settingAct );
+ //   helpToolBar->addAction( settingAct );
 
     const QIcon clearIcon = QIcon::fromTheme( "clear-log", QIcon(":/images/clear.png"));
     QAction *clearAct = new QAction( clearIcon, tr("&Clear Log"), this );
@@ -701,6 +712,7 @@ void MainWindow::createCryptoDlg()
     ssl_verify_dlg_ = new SSLVerifyDlg;
     vid_dlg_ = new VIDDlg;
     bn_calc_dlg_ = new BNCalcDlg;
+    key_pair_man_dlg_ = new KeyPairManDlg;
 }
 
 void MainWindow::newFile()
@@ -1223,6 +1235,13 @@ void MainWindow::BNCalc()
     bn_calc_dlg_->show();
     bn_calc_dlg_->raise();
     bn_calc_dlg_->activateWindow();
+}
+
+void MainWindow::keyPairMan()
+{
+    key_pair_man_dlg_->show();
+    key_pair_man_dlg_->raise();
+    key_pair_man_dlg_->activateWindow();
 }
 
 void MainWindow::getURI()

@@ -63,5 +63,6 @@
         <file>../LICENSE</file>
         <file>images/vid.png</file>
         <file>images/bn_calc.png</file>
+        <file>images/keypair.png</file>
     </qresource>
 </RCC>

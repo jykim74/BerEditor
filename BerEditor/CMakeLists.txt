@@ -173,6 +173,7 @@ add_executable(${PROJECT_NAME}
     bereditor.icns
     BerEditor.pro
     ../LICENSE
+    key_pair_man_dlg.h key_pair_man_dlg.cpp key_pair_man_dlg.ui
 )
 
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )
