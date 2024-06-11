@@ -174,6 +174,8 @@ add_executable(${PROJECT_NAME}
     BerEditor.pro
     ../LICENSE
     key_pair_man_dlg.h key_pair_man_dlg.cpp key_pair_man_dlg.ui
+    gen_key_pair_dlg.h gen_key_pair_dlg.cpp gen_key_pair_dlg.ui
+    make_csr_dlg.h make_csr_dlg.cpp make_csr_dlg.ui
 )
 
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )

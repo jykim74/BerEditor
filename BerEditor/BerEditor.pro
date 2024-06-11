@@ -77,7 +77,9 @@ SOURCES += \
     vid_dlg.cpp \
     make_value_dlg.cpp \
     bn_calc_dlg.cpp \
-    key_pair_man_dlg.cpp
+    key_pair_man_dlg.cpp \
+    gen_key_pair_dlg.cpp \
+    make_csr_dlg.cpp
 
 HEADERS += \
     about_dlg.h \
@@ -122,7 +124,9 @@ HEADERS += \
     vid_dlg.h \
     make_value_dlg.h \
     bn_calc_dlg.h \
-    key_pair_man_dlg.h
+    key_pair_man_dlg.h \
+    gen_key_pair_dlg.h \
+    make_csr_dlg.h
 
 
 
@@ -244,7 +248,9 @@ FORMS += \
         vid_dlg.ui \
         make_value_dlg.ui \
         bn_calc_dlg.ui \
-        key_pair_man_dlg.ui
+        key_pair_man_dlg.ui \
+        gen_key_pair_dlg.ui \
+        make_csr_dlg.ui
 
 RESOURCES += \
     bereditor.qrc

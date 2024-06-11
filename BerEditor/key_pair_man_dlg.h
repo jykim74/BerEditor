@@ -16,6 +16,10 @@ public:
     explicit KeyPairManDlg(QWidget *parent = nullptr);
     ~KeyPairManDlg();
 
+private slots:
+    void clickGenKeyPair();
+    void clickMakeCSR();
+
 private:
 
 };
