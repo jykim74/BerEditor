@@ -17,6 +17,8 @@ public:
     ~KeyPairManDlg();
 
 private slots:
+    void changeVerison( int index );
+
     void clickGenKeyPair();
     void clickMakeCSR();
 
@@ -55,6 +57,7 @@ private slots:
     void typeCert();
 private:
 
+    void initialize();
 };
 
 #endif // KEY_PAIR_MAN_DLG_H

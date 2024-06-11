@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>538</width>
-    <height>422</height>
+    <width>719</width>
+    <height>558</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -630,7 +630,7 @@
       </widget>
      </item>
      <item row="0" column="4">
-      <widget class="QPushButton" name="mEncPriKeyDecodeBtn">
+      <widget class="QPushButton" name="mEncPriDecodeBtn">
        <property name="minimumSize">
         <size>
          <width>20</width>
@@ -732,7 +732,13 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="0">
+     <item row="0" column="1">
+      <widget class="QComboBox" name="mVersionCombo"/>
+     </item>
+     <item row="0" column="2">
+      <widget class="QComboBox" name="mModeCombo"/>
+     </item>
+     <item row="0" column="3">
       <widget class="QLabel" name="label_7">
        <property name="minimumSize">
         <size>
@@ -745,10 +751,17 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
+     <item row="0" column="4">
       <widget class="QLineEdit" name="mPasswdText">
        <property name="echoMode">
         <enum>QLineEdit::Password</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_10">
+       <property name="text">
+        <string>Method</string>
        </property>
       </widget>
      </item>
