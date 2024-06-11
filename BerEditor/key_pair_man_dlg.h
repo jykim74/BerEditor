@@ -20,6 +20,39 @@ private slots:
     void clickGenKeyPair();
     void clickMakeCSR();
 
+    void clickCheckKeyPair();
+    void clickEncrypt();
+    void clickEncodePFX();
+    void clickViewCert();
+    void clickViewCSR();
+    void clickDecrypt();
+    void clickDecodePFX();
+    void clickClearAll();
+
+    void findSavePath();
+    void findPriKey();
+    void findPubKey();
+    void findCert();
+    void findEncPriKey();
+    void findPFX();
+
+    void clearPriKey();
+    void clearPubKey();
+    void clearCert();
+    void clearEncPriKey();
+    void clearPFX();
+    void clearCSR();
+
+    void decodePriKey();
+    void decodePubKey();
+    void decodeCert();
+    void decodeEncPriKey();
+    void decodePFX();
+    void decodeCSR();
+
+    void typePriKey();
+    void typePubKey();
+    void typeCert();
 private:
 
 };

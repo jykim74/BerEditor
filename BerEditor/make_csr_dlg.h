@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "ui_make_csr_dlg.h"
+#include "js_bin.h"
 
 namespace Ui {
 class MakeCSRDlg;
@@ -16,8 +17,16 @@ public:
     explicit MakeCSRDlg(QWidget *parent = nullptr);
     ~MakeCSRDlg();
 
-private:
+    const QString getDN();
+    void setPriKey( const BIN *pPri );
+    const QString getCSRHex();
 
+private slots:
+    void clickOK();
+
+private:
+    BIN csr_;
+    BIN pri_key_;
 };
 
 #endif // MAKE_CSR_DLG_H
