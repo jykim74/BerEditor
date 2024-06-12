@@ -84,6 +84,13 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="3">
+      <widget class="QCheckBox" name="mSavePEMCheck">
+       <property name="text">
+        <string>Save as PEM</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>

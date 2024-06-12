@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "ui_key_pair_man_dlg.h"
+#include "js_bin.h"
 
 namespace Ui {
 class KeyPairManDlg;
@@ -71,6 +72,8 @@ private:
 
     void initialize();
     const QString getTypePathName( qint64 now_t, DerType nType );
+    int Save( qint64 tTime, DerType nType, const QString strHex );
+    int Save( qint64 tTime, DerType nType, const BIN *pBin );
 };
 
 #endif // KEY_PAIR_MAN_DLG_H

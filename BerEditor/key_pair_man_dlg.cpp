@@ -113,6 +113,7 @@ const QString KeyPairManDlg::getTypePathName( qint64 now_t, DerType nType )
 
     QString strDateTime = dateTime.toString( "yyyyMMddHHmmss" );
     QString strName;
+    QString strExt;
 
     if( nType == TypePriKey )
         strName = "private_key";
@@ -129,8 +130,13 @@ const QString KeyPairManDlg::getTypePathName( qint64 now_t, DerType nType )
     else if( nType == TypeCSR )
         strName = "csr";
 
+    if( mSavePEMCheck->isChecked() )
+        strExt = "pem";
+    else
+        strExt = "der";
+
     strFullName = mSavePathText->text();
-    strFullName += QString( "/%1_%2.pem" ).arg( strName ).arg( strDateTime );
+    strFullName += QString( "/%1_%2.%3" ).arg( strName ).arg( strDateTime ).arg(strExt);
 
     return strFullName;
 }
@@ -145,6 +151,71 @@ void KeyPairManDlg::changeVerison( int index )
         mModeCombo->addItems( kPBEv2List );
 }
 
+int KeyPairManDlg::Save( qint64 tTime, DerType nType, const QString strHex )
+{
+    int ret = 0;
+    BIN binData = {0,0};
+    JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
+
+    ret = Save( tTime, nType, &binData );
+    JS_BIN_reset( &binData );
+    return ret;
+}
+
+int KeyPairManDlg::Save( qint64 tTime, DerType nType, const BIN *pBin )
+{
+    QString strPath = getTypePathName( tTime, nType );
+
+    if( mSavePEMCheck->isChecked() )
+    {
+        int nPEMType = 0;
+
+        if( nType == TypePriKey )
+        {
+            nPEMType = JS_PEM_TYPE_PRIVATE_KEY;
+            mPriPathText->setText( strPath );
+        }
+        else if( nType == TypePubKey )
+        {
+            nPEMType = JS_PEM_TYPE_PUBLIC_KEY;
+            mPubPathText->setText( strPath );
+        }
+        else if( nType == TypeCert )
+        {
+            nPEMType = JS_PEM_TYPE_CERTIFICATE;
+            mCertPathText->setText( strPath );
+        }
+        else if( nType == TypeEncPri )
+        {
+            nPEMType = JS_PEM_TYPE_ENCRYPTED_PRIVATE_KEY;
+            mEncPriPathText->setText( strPath );
+        }
+        else if( nType == TypePriInfo )
+        {
+            nPEMType = JS_PEM_TYPE_PRIVATE_KEY;
+            mPriInfoPathText->setText( strPath );
+        }
+        else if( nType == TypePFX )
+        {
+            nPEMType = -1;
+            mPFXPathText->setText( strPath );
+        }
+        else if( nType == TypeCSR )
+        {
+            nPEMType = JS_PEM_TYPE_CSR;
+            mCSRPathText->setText( strPath );
+        }
+
+        JS_BIN_writePEM( pBin, nPEMType, strPath.toLocal8Bit().toStdString().c_str() );
+    }
+    else
+    {
+        JS_BIN_fileWrite( pBin, strPath.toLocal8Bit().toStdString().c_str() );
+    }
+
+    return 0;
+}
+
 void KeyPairManDlg::clickGenKeyPair()
 {
     GenKeyPairDlg genKeyPair;
@@ -152,26 +223,11 @@ void KeyPairManDlg::clickGenKeyPair()
     {
         time_t now_t = time(NULL);
 
-        BIN binPub = {0,0};
-        BIN binPri = {0,0};
-
         QString strPriHex = genKeyPair.getPriKeyHex();
         QString strPubHex = genKeyPair.getPubKeyHex();
 
-        QString strPriPath = getTypePathName( now_t, TypePriKey);
-        QString strPubPath = getTypePathName( now_t, TypePubKey );
-
-        JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binPri );
-        JS_BIN_decodeHex( strPubHex.toStdString().c_str(), &binPub );
-
-        JS_BIN_fileWrite( &binPub, strPubPath.toLocal8Bit().toStdString().c_str() );
-        JS_BIN_fileWrite( &binPri, strPriPath.toLocal8Bit().toStdString().c_str() );
-
-        JS_BIN_reset( &binPri );
-        JS_BIN_reset( &binPub );
-
-        mPriPathText->setText( strPriPath );
-        mPubPathText->setText( strPubPath );
+        Save( now_t, TypePriKey, strPriHex );
+        Save( now_t, TypePubKey, strPubHex );
     }
 }
 
@@ -182,15 +238,8 @@ void KeyPairManDlg::clickMakeCSR()
     {
         time_t now_t = time(NULL);
 
-        BIN binCSR = {0,0};
         QString strCSRHex = makeCSR.getCSRHex();
-        QString strCSRPath = getTypePathName( now_t, TypeCSR );
-
-        JS_BIN_decodeHex( strCSRHex.toStdString().c_str(), &binCSR );
-        JS_BIN_fileWrite( &binCSR, strCSRPath.toLocal8Bit().toStdString().c_str() );
-        JS_BIN_reset( &binCSR );
-
-        mCSRPathText->setText( strCSRPath );
+        Save( now_t, TypeCSR, strCSRHex );
     }
 }
 
@@ -241,9 +290,6 @@ void KeyPairManDlg::clickEncrypt()
     QString strSN = mModeCombo->currentText();
     QString strPasswd = mPasswdText->text();
 
-    QString strPriInfoPath;
-    QString strEncPriPath;
-
     time_t now_t = time(NULL);
 
     if( strFile.length() < 1 )
@@ -264,14 +310,8 @@ void KeyPairManDlg::clickEncrypt()
         goto end;
     }
 
-    strPriInfoPath = getTypePathName( now_t, TypePriInfo );
-    strEncPriPath = getTypePathName( now_t, TypeEncPri );
-
-    JS_BIN_fileWrite( &binInfo, strPriInfoPath.toLocal8Bit().toStdString().c_str() );
-    JS_BIN_fileWrite( &binEnc, strEncPriPath.toLocal8Bit().toStdString().c_str() );
-
-    mPriInfoPathText->setText( strPriInfoPath );
-    mEncPriPathText->setText( strEncPriPath );
+    Save( now_t, TypePriInfo, &binInfo );
+    Save( now_t, TypeEncPri, &binEnc );
 
 end :
     JS_BIN_reset( &binData );
@@ -295,8 +335,6 @@ void KeyPairManDlg::clickEncryptPFX()
 
     QString strSN = mModeCombo->currentText();
     QString strPasswd = mPasswdText->text();
-
-    QString strPFXPath;
 
     time_t now_t = time(NULL);
 
@@ -325,9 +363,7 @@ void KeyPairManDlg::clickEncryptPFX()
         goto end;
     }
 
-    strPFXPath = getTypePathName( now_t, TypePFX );
-    JS_BIN_fileWrite( &binPFX, strPFXPath.toLocal8Bit().toStdString().c_str() );
-    mPFXPathText->setText( strPFXPath );
+    Save( now_t, TypePFX, &binPFX );
 
 end :
     JS_BIN_reset( &binPri );
@@ -385,7 +421,6 @@ void KeyPairManDlg::clickDecrypt()
     BIN binDec = {0,0};
     QString strFile = mEncPriPathText->text();
     QString strPasswd = mPasswdText->text();
-    QString strPriPath;
 
     time_t now_t = time(NULL);
 
@@ -404,9 +439,7 @@ void KeyPairManDlg::clickDecrypt()
         goto end;
     }
 
-    strPriPath = getTypePathName( now_t, TypeEncPri );
-    JS_BIN_fileWrite( &binDec, strPriPath.toLocal8Bit().toStdString().c_str() );
-    mPriPathText->setText( strPriPath );
+    Save( now_t, TypePriKey, &binDec );
 
 end :
     JS_BIN_reset( &binData );
@@ -423,9 +456,6 @@ void KeyPairManDlg::clickDecryptPFX()
 
     QString strFile = mPFXPathText->text();
     QString strPasswd = mPasswdText->text();
-
-    QString strPriPath;
-    QString strCertPath;
 
     time_t now_t = time(NULL);
 
@@ -444,12 +474,8 @@ void KeyPairManDlg::clickDecryptPFX()
         goto end;
     }
 
-    strPriPath = getTypePathName( now_t, TypePriKey );
-    strCertPath = getTypePathName( now_t, TypeCert );
-    JS_BIN_fileWrite( &binPri, strPriPath.toLocal8Bit().toStdString().c_str() );
-    JS_BIN_fileWrite( &binCert, strCertPath.toLocal8Bit().toStdString().c_str() );
-    mPriPathText->setText( strPriPath );
-    mCertPathText->setText( strCertPath );
+    Save( now_t, TypePriKey, &binPri );
+    Save( now_t, TypeCert, &binCert );
 
 end :
     JS_BIN_reset( &binData );
