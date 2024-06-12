@@ -115,6 +115,11 @@ const QString KeyPairManDlg::getTypePathName( qint64 now_t, DerType nType )
     QString strName;
     QString strExt;
 
+    if( mSavePEMCheck->isChecked() )
+        strExt = "pem";
+    else
+        strExt = "der";
+
     if( nType == TypePriKey )
         strName = "private_key";
     else if( nType == TypePubKey )
@@ -126,14 +131,14 @@ const QString KeyPairManDlg::getTypePathName( qint64 now_t, DerType nType )
     else if( nType == TypePriInfo )
         strName = "private_key_info";
     else if( nType == TypePFX )
+    {
         strName = "pfx";
+        strExt = "p12";
+    }
     else if( nType == TypeCSR )
         strName = "csr";
 
-    if( mSavePEMCheck->isChecked() )
-        strExt = "pem";
-    else
-        strExt = "der";
+
 
     strFullName = mSavePathText->text();
     strFullName += QString( "/%1_%2.%3" ).arg( strName ).arg( strDateTime ).arg(strExt);
@@ -166,7 +171,7 @@ int KeyPairManDlg::Save( qint64 tTime, DerType nType, const BIN *pBin )
 {
     QString strPath = getTypePathName( tTime, nType );
 
-    if( mSavePEMCheck->isChecked() )
+    if( mSavePEMCheck->isChecked() && nType != TypePFX )
     {
         int nPEMType = 0;
 
@@ -194,11 +199,6 @@ int KeyPairManDlg::Save( qint64 tTime, DerType nType, const BIN *pBin )
         {
             nPEMType = JS_PEM_TYPE_PRIVATE_KEY;
             mPriInfoPathText->setText( strPath );
-        }
-        else if( nType == TypePFX )
-        {
-            nPEMType = -1;
-            mPFXPathText->setText( strPath );
         }
         else if( nType == TypeCSR )
         {
