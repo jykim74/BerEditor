@@ -35,6 +35,8 @@ class SSLVerifyDlg;
 class VIDDlg;
 class BNCalcDlg;
 class KeyPairManDlg;
+class OCSPClientDlg;
+class TSPClientDlg;
 
 namespace Ui {
 class MainWindow;
@@ -98,6 +100,8 @@ private slots:
     void VID();
     void BNCalc();
     void keyPairMan();
+    void ocspClient();
+    void tspClient();
     void insertBER();
     void insertData();
     void numTrans();
@@ -171,6 +175,8 @@ private:
     VIDDlg          *vid_dlg_;
     BNCalcDlg       *bn_calc_dlg_;
     KeyPairManDlg   *key_pair_man_dlg_;
+    OCSPClientDlg   *ocsp_client_dlg_;
+    TSPClientDlg    *tsp_client_dlg_;
 
     bool log_halt_;
 };

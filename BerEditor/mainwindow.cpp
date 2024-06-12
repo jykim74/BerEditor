@@ -39,6 +39,8 @@
 #include "vid_dlg.h"
 #include "bn_calc_dlg.h"
 #include "key_pair_man_dlg.h"
+#include "ocsp_client_dlg.h"
+#include "tsp_client_dlg.h"
 #include "common.h"
 
 #include "js_pki_tools.h"
@@ -110,6 +112,8 @@ MainWindow::~MainWindow()
     delete vid_dlg_;
     delete bn_calc_dlg_;
     delete key_pair_man_dlg_;
+    delete ocsp_client_dlg_;
+    delete tsp_client_dlg_;
 
     delete table_tab_;
     delete text_tab_;
@@ -626,6 +630,30 @@ void MainWindow::createActions()
         sslAct->setEnabled( false );
     }
 
+
+    QMenu *protoMenu = menuBar()->addMenu( tr("&Protocol" ));
+//    QToolBar *protoToolBar = addToolBar( tr( "Protocol" ));
+//    protoToolBar->setIconSize( QSize(nWidth,nHeight));
+//    protoToolBar->layout()->setSpacing(nSpacing);
+
+    const QIcon ocspIcon = QIcon::fromTheme( "ocsp_client", QIcon(":/images/ocsp.png"));
+    QAction *ocspAct = new QAction( ocspIcon, tr( "&OCSP client"), this );
+    ocspAct->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_S));
+    connect( ocspAct, &QAction::triggered, this, &MainWindow::ocspClient );
+    protoMenu->addAction( ocspAct );
+
+    const QIcon tspIcon = QIcon::fromTheme( "tsp_client", QIcon(":/images/tsp.png"));
+    QAction *tspAct = new QAction( tspIcon, tr( "&TSP client"), this );
+    tspAct->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_T));
+    connect( tspAct, &QAction::triggered, this, &MainWindow::tspClient );
+    protoMenu->addAction( tspAct );
+
+    if( berApplet->isLicense() == false )
+    {
+        ocspAct->setEnabled( false );
+        tspAct->setEnabled( false );
+    }
+
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
     QToolBar *helpToolBar = addToolBar(tr("Help"));
 
@@ -713,6 +741,8 @@ void MainWindow::createCryptoDlg()
     vid_dlg_ = new VIDDlg;
     bn_calc_dlg_ = new BNCalcDlg;
     key_pair_man_dlg_ = new KeyPairManDlg;
+    ocsp_client_dlg_ = new OCSPClientDlg;
+    tsp_client_dlg_ = new TSPClientDlg;
 }
 
 void MainWindow::newFile()
@@ -1242,6 +1272,20 @@ void MainWindow::keyPairMan()
     key_pair_man_dlg_->show();
     key_pair_man_dlg_->raise();
     key_pair_man_dlg_->activateWindow();
+}
+
+void MainWindow::ocspClient()
+{
+    ocsp_client_dlg_->show();
+    ocsp_client_dlg_->raise();
+    ocsp_client_dlg_->activateWindow();
+}
+
+void MainWindow::tspClient()
+{
+    tsp_client_dlg_->show();
+    tsp_client_dlg_->raise();
+    tsp_client_dlg_->activateWindow();
 }
 
 void MainWindow::getURI()
