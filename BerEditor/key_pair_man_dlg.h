@@ -42,6 +42,7 @@ private slots:
     void clearPubKey();
     void clearCert();
     void clearEncPriKey();
+    void clearPriInfo();
     void clearPFX();
     void clearCSR();
 
@@ -49,6 +50,7 @@ private slots:
     void decodePubKey();
     void decodeCert();
     void decodeEncPriKey();
+    void decodePriInfo();
     void decodePFX();
     void decodeCSR();
 
