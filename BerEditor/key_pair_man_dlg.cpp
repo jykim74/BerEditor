@@ -1,4 +1,5 @@
 #include <QDir>
+#include <QDateTime>
 
 #include "key_pair_man_dlg.h"
 #include "gen_key_pair_dlg.h"
@@ -61,10 +62,10 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
 
     connect( mCheckKeyPairBtn, SIGNAL(clicked()), this, SLOT(clickCheckKeyPair()));
     connect( mEncryptBtn, SIGNAL(clicked()), this, SLOT(clickEncrypt()));
-    connect( mEncodePFXBtn, SIGNAL(clicked()), this, SLOT(clickEncodePFX()));
+    connect( mEncryptPFXBtn, SIGNAL(clicked()), this, SLOT(clickEncryptPFX()));
     connect( mViewCertBtn, SIGNAL(clicked()), this, SLOT(clickViewCert()));
     connect( mDecryptBtn, SIGNAL(clicked()), this, SLOT(clickDecrypt()));
-    connect( mDecodePFXBtn, SIGNAL(clicked()), this, SLOT(clickDecodePFX()));
+    connect( mDecryptPFXBtn, SIGNAL(clicked()), this, SLOT(clickDecryptPFX()));
     connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clickClearAll()));
 
 #if defined(Q_OS_MAC)
@@ -103,6 +104,37 @@ void KeyPairManDlg::initialize()
     mVersionCombo->addItems(kVersionList);
 }
 
+const QString KeyPairManDlg::getTypePathName( qint64 now_t, DerType nType )
+{
+    QString strFullName;
+
+    QDateTime dateTime;
+    dateTime.setSecsSinceEpoch( now_t );
+
+    QString strDateTime = dateTime.toString( "yyyyMMddHHmmss" );
+    QString strName;
+
+    if( nType == TypePriKey )
+        strName = "private_key";
+    else if( nType == TypePubKey )
+        strName = "public_key";
+    else if( nType == TypeCert )
+        strName = "cert";
+    else if( nType == TypeEncPri )
+        strName = "enc_private_key";
+    else if( nType == TypePriInfo )
+        strName = "private_key_info";
+    else if( nType == TypePFX )
+        strName = "pfx";
+    else if( nType == TypeCSR )
+        strName = "csr";
+
+    strFullName = mSavePathText->text();
+    strFullName += QString( "/%1_%2.pem" ).arg( strName ).arg( strDateTime );
+
+    return strFullName;
+}
+
 void KeyPairManDlg::changeVerison( int index )
 {
     mModeCombo->clear();
@@ -116,13 +148,50 @@ void KeyPairManDlg::changeVerison( int index )
 void KeyPairManDlg::clickGenKeyPair()
 {
     GenKeyPairDlg genKeyPair;
-    genKeyPair.exec();
+    if( genKeyPair.exec() == QDialog::Accepted )
+    {
+        time_t now_t = time(NULL);
+
+        BIN binPub = {0,0};
+        BIN binPri = {0,0};
+
+        QString strPriHex = genKeyPair.getPriKeyHex();
+        QString strPubHex = genKeyPair.getPubKeyHex();
+
+        QString strPriPath = getTypePathName( now_t, TypePriKey);
+        QString strPubPath = getTypePathName( now_t, TypePubKey );
+
+        JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binPri );
+        JS_BIN_decodeHex( strPubHex.toStdString().c_str(), &binPub );
+
+        JS_BIN_fileWrite( &binPub, strPubPath.toLocal8Bit().toStdString().c_str() );
+        JS_BIN_fileWrite( &binPri, strPriPath.toLocal8Bit().toStdString().c_str() );
+
+        JS_BIN_reset( &binPri );
+        JS_BIN_reset( &binPub );
+
+        mPriPathText->setText( strPriPath );
+        mPubPathText->setText( strPubPath );
+    }
 }
 
 void KeyPairManDlg::clickMakeCSR()
 {
     MakeCSRDlg makeCSR;
-    makeCSR.exec();
+    if( makeCSR.exec() == QDialog::Accepted )
+    {
+        time_t now_t = time(NULL);
+
+        BIN binCSR = {0,0};
+        QString strCSRHex = makeCSR.getCSRHex();
+        QString strCSRPath = getTypePathName( now_t, TypeCSR );
+
+        JS_BIN_decodeHex( strCSRHex.toStdString().c_str(), &binCSR );
+        JS_BIN_fileWrite( &binCSR, strCSRPath.toLocal8Bit().toStdString().c_str() );
+        JS_BIN_reset( &binCSR );
+
+        mCSRPathText->setText( strCSRPath );
+    }
 }
 
 void KeyPairManDlg::clickCheckKeyPair()
@@ -172,6 +241,11 @@ void KeyPairManDlg::clickEncrypt()
     QString strSN = mModeCombo->currentText();
     QString strPasswd = mPasswdText->text();
 
+    QString strPriInfoPath;
+    QString strEncPriPath;
+
+    time_t now_t = time(NULL);
+
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find private key" ), this );
@@ -184,13 +258,28 @@ void KeyPairManDlg::clickEncrypt()
     nKeyType = JS_PKI_getPriKeyType( &binData );
 
     ret = JS_PKI_encryptPrivateKey( nKeyType, nPBE, strPasswd.toStdString().c_str(), &binData, &binInfo, &binEnc );
+    if( ret != 0 )
+    {
+        berApplet->warnLog( tr( "fail to encrypt private key: %1").arg(ret), this);
+        goto end;
+    }
 
+    strPriInfoPath = getTypePathName( now_t, TypePriInfo );
+    strEncPriPath = getTypePathName( now_t, TypeEncPri );
+
+    JS_BIN_fileWrite( &binInfo, strPriInfoPath.toLocal8Bit().toStdString().c_str() );
+    JS_BIN_fileWrite( &binEnc, strEncPriPath.toLocal8Bit().toStdString().c_str() );
+
+    mPriInfoPathText->setText( strPriInfoPath );
+    mEncPriPathText->setText( strEncPriPath );
+
+end :
     JS_BIN_reset( &binData );
     JS_BIN_reset( &binInfo );
     JS_BIN_reset( &binEnc );
 }
 
-void KeyPairManDlg::clickEncodePFX()
+void KeyPairManDlg::clickEncryptPFX()
 {
     int ret = 0;
 
@@ -206,6 +295,10 @@ void KeyPairManDlg::clickEncodePFX()
 
     QString strSN = mModeCombo->currentText();
     QString strPasswd = mPasswdText->text();
+
+    QString strPFXPath;
+
+    time_t now_t = time(NULL);
 
     if( strPriPath.length() < 1 )
     {
@@ -226,7 +319,17 @@ void KeyPairManDlg::clickEncodePFX()
     nKeyType = JS_PKI_getPriKeyType( &binPri );
 
     ret = JS_PKI_encodePFX( &binPFX, nKeyType, strPasswd.toStdString().c_str(), nPBE, &binPri, &binCert );
+    if( ret != 0 )
+    {
+        berApplet->warnLog( tr( "fail to make PFX: %1").arg(ret), this);
+        goto end;
+    }
 
+    strPFXPath = getTypePathName( now_t, TypePFX );
+    JS_BIN_fileWrite( &binPFX, strPFXPath.toLocal8Bit().toStdString().c_str() );
+    mPFXPathText->setText( strPFXPath );
+
+end :
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binCert );
     JS_BIN_reset( &binPFX );
@@ -282,6 +385,9 @@ void KeyPairManDlg::clickDecrypt()
     BIN binDec = {0,0};
     QString strFile = mEncPriPathText->text();
     QString strPasswd = mPasswdText->text();
+    QString strPriPath;
+
+    time_t now_t = time(NULL);
 
     if( strFile.length() < 1 )
     {
@@ -292,14 +398,23 @@ void KeyPairManDlg::clickDecrypt()
     JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
 
     ret = JS_PKI_decryptPrivateKey( strPasswd.toStdString().c_str(), &binData, &binInfo, &binDec );
+    if( ret != 0 )
+    {
+        berApplet->warnLog( tr( "fail to decrypt private key: %1").arg(ret), this);
+        goto end;
+    }
 
+    strPriPath = getTypePathName( now_t, TypeEncPri );
+    JS_BIN_fileWrite( &binDec, strPriPath.toLocal8Bit().toStdString().c_str() );
+    mPriPathText->setText( strPriPath );
 
+end :
     JS_BIN_reset( &binData );
     JS_BIN_reset( &binDec );
     JS_BIN_reset( &binInfo );
 }
 
-void KeyPairManDlg::clickDecodePFX()
+void KeyPairManDlg::clickDecryptPFX()
 {
     int ret = 0;
     BIN binData = {0,0};
@@ -308,6 +423,11 @@ void KeyPairManDlg::clickDecodePFX()
 
     QString strFile = mPFXPathText->text();
     QString strPasswd = mPasswdText->text();
+
+    QString strPriPath;
+    QString strCertPath;
+
+    time_t now_t = time(NULL);
 
     if( strFile.length() < 1 )
     {
@@ -318,7 +438,20 @@ void KeyPairManDlg::clickDecodePFX()
     JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
 
     ret = JS_PKI_decodePFX( &binData, strPasswd.toStdString().c_str(), &binPri, &binCert );
+    if( ret != 0 )
+    {
+        berApplet->warnLog( tr( "fail to decrypt PFX: %1").arg(ret), this);
+        goto end;
+    }
 
+    strPriPath = getTypePathName( now_t, TypePriKey );
+    strCertPath = getTypePathName( now_t, TypeCert );
+    JS_BIN_fileWrite( &binPri, strPriPath.toLocal8Bit().toStdString().c_str() );
+    JS_BIN_fileWrite( &binCert, strCertPath.toLocal8Bit().toStdString().c_str() );
+    mPriPathText->setText( strPriPath );
+    mCertPathText->setText( strCertPath );
+
+end :
     JS_BIN_reset( &binData );
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binCert );
@@ -330,6 +463,7 @@ void KeyPairManDlg::clickClearAll()
     clearPubKey();
     clearCert();
     clearEncPriKey();
+    clearPriInfo();
     clearPFX();
     clearCSR();
 }

@@ -8,6 +8,16 @@ namespace Ui {
 class KeyPairManDlg;
 }
 
+enum DerType {
+    TypePriKey = 0,
+    TypePubKey,
+    TypeCert,
+    TypeEncPri,
+    TypePriInfo,
+    TypePFX,
+    TypeCSR
+};
+
 class KeyPairManDlg : public QDialog, public Ui::KeyPairManDlg
 {
     Q_OBJECT
@@ -24,11 +34,11 @@ private slots:
 
     void clickCheckKeyPair();
     void clickEncrypt();
-    void clickEncodePFX();
+    void clickEncryptPFX();
     void clickViewCert();
     void clickViewCSR();
     void clickDecrypt();
-    void clickDecodePFX();
+    void clickDecryptPFX();
     void clickClearAll();
 
     void findSavePath();
@@ -60,6 +70,7 @@ private slots:
 private:
 
     void initialize();
+    const QString getTypePathName( qint64 now_t, DerType nType );
 };
 
 #endif // KEY_PAIR_MAN_DLG_H

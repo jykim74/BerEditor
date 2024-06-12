@@ -843,9 +843,9 @@
       </spacer>
      </item>
      <item row="0" column="7">
-      <widget class="QPushButton" name="mDecodePFXBtn">
+      <widget class="QPushButton" name="mDecryptPFXBtn">
        <property name="text">
-        <string>Decode PFX</string>
+        <string>Decrypt PFX</string>
        </property>
       </widget>
      </item>
@@ -864,9 +864,9 @@
       </widget>
      </item>
      <item row="0" column="3">
-      <widget class="QPushButton" name="mEncodePFXBtn">
+      <widget class="QPushButton" name="mEncryptPFXBtn">
        <property name="text">
-        <string>Encode PFX</string>
+        <string>Encrypt PFX</string>
        </property>
       </widget>
      </item>
