@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "ui_tst_info_dlg.h"
+#include "js_bin.h"
 
 namespace Ui {
 class TSTInfoDlg;
@@ -16,8 +17,17 @@ public:
     explicit TSTInfoDlg(QWidget *parent = nullptr);
     ~TSTInfoDlg();
 
-private:
+    void setTST( const BIN *pTST );
 
+private slots:
+    void showEvent(QShowEvent *event);
+
+private:
+    BIN tst_;
+
+    void initUI();
+    void initialize();
+    void clearTable();
 };
 
 #endif // TST_INFO_DLG_H

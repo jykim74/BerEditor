@@ -4,10 +4,12 @@
 #include "common.h"
 #include "ber_applet.h"
 #include "cert_info_dlg.h"
+#include "settings_mgr.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
 #include "js_ocsp.h"
+#include "js_http.h"
 
 const QString kOCSPUsedURL = "OCSPUsedURL";
 
@@ -17,21 +19,26 @@ OCSPClientDlg::OCSPClientDlg(QWidget *parent) :
     setupUi(this);
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mUseSignCheck, SIGNAL(clicked()), this, SLOT(checkUseSign()));
 
+    connect( mFindCACertBtn, SIGNAL(clicked()), this, SLOT(findCACert()));
     connect( mFindCertBtn, SIGNAL(clicked()), this, SLOT(findCert()));
     connect( mFindSignCertBtn, SIGNAL(clicked()), this, SLOT(findSignCert()));
     connect( mFindSignPriKeyBtn, SIGNAL(clicked()), this, SLOT(findSignPriKey()));
     connect( mFindSrvCertBtn, SIGNAL(clicked()), this, SLOT(findSrvCert()));
 
+    connect( mCACertTypeBtn, SIGNAL(clicked()), this, SLOT(typeCACert()));
     connect( mCertTypeBtn, SIGNAL(clicked()), this, SLOT(typeCert()));
     connect( mSignCertTypeBtn, SIGNAL(clicked()), this, SLOT(typeSignCert()));
     connect( mSignPriKeyTypeBtn, SIGNAL(clicked()), this, SLOT(typeSignPriKey()));
     connect( mSrvCertTypeBtn, SIGNAL(clicked()), this, SLOT(typeSrvCert()));
 
+    connect( mCACertViewBtn, SIGNAL(clicked()), this, SLOT(viewCACert()));
     connect( mCertViewBtn, SIGNAL(clicked()), this, SLOT(viewCert()));
     connect( mSignCertViewBtn, SIGNAL(clicked()), this, SLOT(viewSignCert()));
     connect( mSrvCertViewBtn, SIGNAL(clicked()), this, SLOT(viewSrvCert()));
 
+    connect( mCACertDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeCACert()));
     connect( mCertDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeCert()));
     connect( mSignCertDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeSignCert()));
     connect( mSignPriKeyDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeSignPriKey()));
@@ -48,6 +55,34 @@ OCSPClientDlg::OCSPClientDlg(QWidget *parent) :
 
     connect( mRequestText, SIGNAL(textChanged()), this, SLOT(requestChanged()));
     connect( mResponseText, SIGNAL(textChanged()), this, SLOT(responseChanged()));
+
+#if defined(Q_OS_MAC)
+    layout()->setSpacing(5);
+
+    mCACertViewBtn->setFixedWidth(34);
+    mCACertDecodeBtn->setFixedWidth(34);
+    mCACertTypeBtn->setFixedWidth(34);
+
+    mCertViewBtn->setFixedWidth(34);
+    mCertDecodeBtn->setFixedWidth(34);
+    mCertTypeBtn->setFixedWidth(34);
+    mSignCertViewBtn->setFixedWidth(34);
+    mSignCertDecodeBtn->setFixedWidth(34);
+    mSignCertTypeBtn->setFixedWidth(34);
+    mSignPriKeyDecodeBtn->setFixedWidth(34);
+    mSignPriKeyTypeBtn->setFixedWidth(34);
+    mSrvCertViewBtn->setFixedWidth(34);
+    mSrvCertDecodeBtn->setFixedWidth(34);
+    mSrvCertTypeBtn->setFixedWidth(34);
+
+    mRequestClearBtn->setFixedWidth(34);
+    mRequestDecodeBtn->setFixedWidth(34);
+    mResponseClearBtn->setFixedWidth(34);
+    mResponseDecodeBtn->setFixedWidth(34);
+
+    mSignGroup->layout()->setSpacing(5);
+#endif
+    initialize();
 }
 
 OCSPClientDlg::~OCSPClientDlg()
@@ -57,6 +92,8 @@ OCSPClientDlg::~OCSPClientDlg()
 
 void OCSPClientDlg::initialize()
 {
+    SettingsMgr *setMgr = berApplet->settingsMgr();
+
     mURLCombo->setEditable( true );
     QStringList usedList = getUsedURL();
     for( int i = 0; i < usedList.size(); i++ )
@@ -64,6 +101,11 @@ void OCSPClientDlg::initialize()
         QString url = usedList.at(i);
         if( url.length() > 4 ) mURLCombo->addItem( url );
     }
+
+    mHashCombo->addItems( kHashList );
+    mHashCombo->setCurrentText( setMgr->defaultHash() );
+
+    checkUseSign();
 }
 
 QStringList OCSPClientDlg::getUsedURL()
@@ -91,6 +133,83 @@ void OCSPClientDlg::setUsedURL( const QString strURL )
     settings.endGroup();
 }
 
+void OCSPClientDlg::checkUseSign()
+{
+    if( mUseSignCheck->isChecked() )
+        mSignGroup->setEnabled( true );
+    else
+        mSignGroup->setEnabled( false );
+}
+
+int OCSPClientDlg::readPrivateKey( BIN *pPriKey )
+{
+    int ret = 0;
+    BIN binData = {0,0};
+    BIN binDec = {0,0};
+    BIN binInfo = {0,0};
+
+    QString strPriPath = mSignPriKeyPathText->text();
+    if( strPriPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "select a private key"), this );
+        return -1;
+    }
+
+    ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binData );
+    if( ret <= 0 )
+    {
+        berApplet->warningBox( tr( "failed to read a private key: %1").arg( ret ), this );
+        return  -1;
+    }
+
+    if( mEncSignPriKeyCheck->isChecked() )
+    {
+        QString strPasswd = mPasswdText->text();
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password"), this );
+            ret = -1;
+            goto end;
+        }
+
+        ret = JS_PKI_decryptPrivateKey( strPasswd.toStdString().c_str(), &binData, &binInfo, &binDec );
+        if( ret != 0 )
+        {
+            berApplet->warningBox( tr( "failed to decrypt private key:%1").arg( ret ), this );
+            mPasswdText->setFocus();
+            ret = -1;
+            goto end;
+        }
+
+        JS_BIN_copy( pPriKey, &binDec );
+        ret = 0;
+    }
+    else
+    {
+        JS_BIN_copy( pPriKey, &binData );
+        ret = 0;
+    }
+
+end :
+    JS_BIN_reset( &binData );
+    JS_BIN_reset( &binDec );
+    JS_BIN_reset( &binInfo );
+
+    return ret;
+}
+
+void OCSPClientDlg::findCACert()
+{
+    QString strPath = mCACertPathText->text();
+
+    if( strPath.length() < 1 )
+    {
+        strPath = berApplet->curFolder();
+    }
+
+    QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    if( filePath.length() > 0 ) mCACertPathText->setText( filePath );
+}
 
 void OCSPClientDlg::findCert()
 {
@@ -142,6 +261,26 @@ void OCSPClientDlg::findSrvCert()
 
     QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( filePath.length() > 0 ) mSrvCertPathText->setText( filePath );
+}
+
+void OCSPClientDlg::typeCACert()
+{
+    int nType = -1;
+    BIN binData = {0,0};
+    QString strFile = mCACertPathText->text();
+
+    if( strFile.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Find a CA certificate" ), this );
+        return;
+    }
+
+    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    nType = JS_PKI_getPriKeyType( &binData );
+    berApplet->messageBox( tr( "The certificate type is %1").arg( getKeyTypeName( nType )), this);
+
+
+    JS_BIN_reset( &binData );
 }
 
 void OCSPClientDlg::typeCert()
@@ -224,6 +363,26 @@ void OCSPClientDlg::typeSrvCert()
     JS_BIN_reset( &binData );
 }
 
+void OCSPClientDlg::viewCACert()
+{
+    CertInfoDlg certInfo;
+
+    BIN binData = {0,0};
+    QString strFile = mCACertPathText->text();
+
+    if( strFile.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Find a CA certificate" ), this );
+        return;
+    }
+
+    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+
+    certInfo.setCertBIN( &binData );
+    certInfo.exec();
+
+    JS_BIN_reset( &binData );
+}
 
 void OCSPClientDlg::viewCert()
 {
@@ -284,6 +443,24 @@ void OCSPClientDlg::viewSrvCert()
 
     certInfo.setCertBIN( &binData );
     certInfo.exec();
+
+    JS_BIN_reset( &binData );
+}
+
+void OCSPClientDlg::decodeCACert()
+{
+    BIN binData = {0,0};
+    QString strFile = mCACertPathText->text();
+
+    if( strFile.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Find a CA certificate" ), this );
+        return;
+    }
+
+    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+
+    berApplet->decodeData( &binData, strFile );
 
     JS_BIN_reset( &binData );
 }
@@ -397,12 +574,116 @@ void OCSPClientDlg::clearResponse()
 
 void OCSPClientDlg::clickEncode()
 {
+    int ret = 0;
 
+    BIN binCA = {0,0};
+    BIN binCert = {0,0};
+    BIN binSignCert = {0,0};
+    BIN binSignPriKey = {0,0};
+
+    BIN binReq = {0,0};
+
+    QString strHash = mHashCombo->currentText();
+    QString strCAPath = mCACertPathText->text();
+
+    if( strCAPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Find a CA certificate" ), this );
+        return;
+    }
+
+    QString strCertPath = mCertPathText->text();
+
+    if( strCertPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Find a certificate" ), this );
+        return;
+    }
+
+    if( mUseSignCheck->isChecked() )
+    {
+        QString strSignCertPath = mSignCertPathText->text();
+
+        if( strSignCertPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Find a sign certificate" ), this );
+            return;
+        }
+
+        JS_BIN_fileReadBER( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binSignCert );
+
+        ret = readPrivateKey( &binSignPriKey );
+        if( ret != 0 ) goto end;
+    }
+
+    JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
+    JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+
+    if( mUseSignCheck->isChecked() )
+        ret = JS_OCSP_encodeRequest( &binCert, &binCA, strHash.toStdString().c_str(), &binSignPriKey, &binSignCert, &binReq );
+    else
+        ret = JS_OCSP_encodeRequest( &binCert, &binCA, strHash.toStdString().c_str(), NULL, NULL, &binReq );
+
+    if( ret == 0 )
+    {
+        mRequestText->setPlainText( getHexString( &binReq ));
+    }
+    else
+    {
+        berApplet->warnLog( tr( "fail to encode request: %1").arg(ret), this );
+    }
+
+end :
+    JS_BIN_reset( &binCA );
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binSignCert );
+    JS_BIN_reset( &binSignPriKey );
+    JS_BIN_reset( &binReq );
 }
 
 void OCSPClientDlg::clickSend()
 {
+    int ret = 0;
+    int nStatus = 0;
 
+    BIN binReq = {0,0};
+    BIN binRsp = {0,0};
+
+    QString strReq = mRequestText->toPlainText();
+    QString strURL = mURLCombo->currentText();
+
+    if( strURL.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Insert OCSP URL"), this );
+        goto end;
+    }
+
+    if( strReq.length() < 1 )
+    {
+        berApplet->warningBox( tr("There is no request" ), this );
+        goto end;
+    }
+
+    getBINFromString( &binReq, DATA_HEX, strReq );
+
+    ret = JS_HTTP_requestPostBin( strURL.toStdString().c_str(), "application/ocsp-request", &binReq, &nStatus, &binRsp );
+    if( ret != 0 )
+    {
+        fprintf( stderr, "fail to request : %d\n", ret );
+        goto end;
+    }
+
+    if( ret == 0 )
+        mResponseText->setPlainText( getHexString( &binRsp ));
+    else
+    {
+        berApplet->warnLog( tr( "fail to send a request to OCSP server: %1").arg( ret), this );
+        goto end;
+    }
+
+end :
+    JS_BIN_reset( &binReq );
+    JS_BIN_reset( &binRsp );
 }
 
 void OCSPClientDlg::clickVerify()

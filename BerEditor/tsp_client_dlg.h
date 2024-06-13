@@ -36,6 +36,7 @@ private slots:
     void clickSend();
     void clickVerify();
 
+    void clickTSTInfo();
 private:
     void initialize();
 

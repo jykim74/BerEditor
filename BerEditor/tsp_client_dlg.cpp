@@ -4,6 +4,8 @@
 #include "common.h"
 #include "ber_applet.h"
 #include "cert_info_dlg.h"
+#include "settings_mgr.h"
+#include "tst_info_dlg.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -17,6 +19,7 @@ TSPClientDlg::TSPClientDlg(QWidget *parent) :
     setupUi(this);
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mTSTInfoBtn, SIGNAL(clicked()), this, SLOT(clickTSTInfo()));
 
     connect( mInputText, SIGNAL(textChanged()), this, SLOT(inputChanged()));
     connect( mRequestText, SIGNAL(textChanged()), this, SLOT(requestChanged()));
@@ -36,6 +39,23 @@ TSPClientDlg::TSPClientDlg(QWidget *parent) :
     connect( mEncodeBtn, SIGNAL(clicked()), this, SLOT(clickEncode()));
     connect( mSendBtn, SIGNAL(clicked()), this, SLOT(clickSend()));
     connect( mVerifyBtn, SIGNAL(clicked()), this, SLOT(clickVerify()));
+
+#if defined(Q_OS_MAC)
+    layout()->setSpacing(5);
+
+    mSrvCertDeocodeBtn->setFixedWidth(34);
+    mSrvCertViewBtn->setFixedWidth(34);
+    mSrvCertTypeBtn->setFixedWidth(34);
+
+    mRequestClearBtn->setFixedWidth(34);
+    mRequestDecodeBtn->setFixedWidth(34);
+
+    mResponseDecodeBtn->setFixedWidth(34);
+    mResponseClearBtn->setFixedWidth(34);
+
+#endif
+
+    initialize();
 }
 
 TSPClientDlg::~TSPClientDlg()
@@ -45,6 +65,8 @@ TSPClientDlg::~TSPClientDlg()
 
 void TSPClientDlg::initialize()
 {
+    SettingsMgr *setMgr = berApplet->settingsMgr();
+
     mInputTypeCombo->addItems( kValueTypeList );
 
     mURLCombo->setEditable( true );
@@ -54,6 +76,9 @@ void TSPClientDlg::initialize()
         QString url = usedList.at(i);
         if( url.length() > 4 ) mURLCombo->addItem( url );
     }
+
+    mHashCombo->addItems( kHashList );
+    mHashCombo->setCurrentText( setMgr->defaultHash() );
 }
 
 QStringList TSPClientDlg::getUsedURL()
@@ -219,4 +244,10 @@ void TSPClientDlg::clickSend()
 void TSPClientDlg::clickVerify()
 {
 
+}
+
+void TSPClientDlg::clickTSTInfo()
+{
+    TSTInfoDlg tstInfo;
+    tstInfo.exec();
 }

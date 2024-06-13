@@ -22,22 +22,28 @@
     </widget>
    </item>
    <item>
-    <widget class="QTableView" name="tableView"/>
+    <widget class="QTableWidget" name="mInfoTable"/>
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Hex Data</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="2">
-      <widget class="QLineEdit" name="lineEdit">
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLineEdit" name="mDataLenText">
        <property name="minimumSize">
         <size>
          <width>40</width>
@@ -82,23 +88,30 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Data</string>
        </property>
-       <property name="sizeHint" stdset="0">
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mDataDecodeBtn">
+       <property name="maximumSize">
         <size>
-         <width>40</width>
-         <height>20</height>
+         <width>20</width>
+         <height>16777215</height>
         </size>
        </property>
-      </spacer>
+       <property name="text">
+        <string>D</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QPlainTextEdit" name="plainTextEdit">
+    <widget class="QPlainTextEdit" name="mDataText">
      <property name="palette">
       <palette>
        <active>

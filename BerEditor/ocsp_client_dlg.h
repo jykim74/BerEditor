@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "ui_ocsp_client_dlg.h"
+#include "js_bin.h"
 
 namespace Ui {
 class OCSPClientDlg;
@@ -17,20 +18,26 @@ public:
     ~OCSPClientDlg();
 
 private slots:
+    void checkUseSign();
+
+    void findCACert();
     void findCert();
     void findSignCert();
     void findSignPriKey();
     void findSrvCert();
 
+    void typeCACert();
     void typeCert();
     void typeSignCert();
     void typeSignPriKey();
     void typeSrvCert();
 
+    void viewCACert();
     void viewCert();
     void viewSignCert();
     void viewSrvCert();
 
+    void decodeCACert();
     void decodeCert();
     void decodeSignCert();
     void decodeSignPriKey();
@@ -53,6 +60,7 @@ private:
 
     QStringList getUsedURL();
     void setUsedURL( const QString strURL );
+    int readPrivateKey( BIN *pPriKey );
 };
 
 #endif // OCSP_CLIENT_DLG_H
