@@ -7,6 +7,7 @@
 
 #include "js_bin.h"
 #include "js_pki.h"
+#include "js_tsp.h"
 
 const QString kTSPUsedURL = "TSPUsedURL";
 

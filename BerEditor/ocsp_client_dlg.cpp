@@ -7,6 +7,7 @@
 
 #include "js_bin.h"
 #include "js_pki.h"
+#include "js_ocsp.h"
 
 const QString kOCSPUsedURL = "OCSPUsedURL";
 
