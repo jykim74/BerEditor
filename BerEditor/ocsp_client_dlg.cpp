@@ -1,3 +1,5 @@
+#include <QSettings>
+
 #include "ocsp_client_dlg.h"
 #include "common.h"
 #include "ber_applet.h"
@@ -5,6 +7,8 @@
 
 #include "js_bin.h"
 #include "js_pki.h"
+
+const QString kOCSPUsedURL = "OCSPUsedURL";
 
 OCSPClientDlg::OCSPClientDlg(QWidget *parent) :
     QDialog(parent)
@@ -52,8 +56,40 @@ OCSPClientDlg::~OCSPClientDlg()
 
 void OCSPClientDlg::initialize()
 {
-
+    mURLCombo->setEditable( true );
+    QStringList usedList = getUsedURL();
+    for( int i = 0; i < usedList.size(); i++ )
+    {
+        QString url = usedList.at(i);
+        if( url.length() > 4 ) mURLCombo->addItem( url );
+    }
 }
+
+QStringList OCSPClientDlg::getUsedURL()
+{
+    QSettings settings;
+    QStringList retList;
+
+    settings.beginGroup( kSettingBer );
+    retList = settings.value( kOCSPUsedURL ).toStringList();
+    settings.endGroup();
+
+    return retList;
+}
+
+void OCSPClientDlg::setUsedURL( const QString strURL )
+{
+    if( strURL.length() <= 4 ) return;
+
+    QSettings settings;
+    settings.beginGroup( kSettingBer );
+    QStringList list = settings.value( kOCSPUsedURL ).toStringList();
+    list.removeAll( strURL );
+    list.insert( 0, strURL );
+    settings.setValue( kOCSPUsedURL, list );
+    settings.endGroup();
+}
+
 
 void OCSPClientDlg::findCert()
 {

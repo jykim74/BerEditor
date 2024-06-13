@@ -1,3 +1,5 @@
+#include <QSettings>
+
 #include "tsp_client_dlg.h"
 #include "common.h"
 #include "ber_applet.h"
@@ -5,6 +7,8 @@
 
 #include "js_bin.h"
 #include "js_pki.h"
+
+const QString kTSPUsedURL = "TSPUsedURL";
 
 TSPClientDlg::TSPClientDlg(QWidget *parent) :
     QDialog(parent)
@@ -39,7 +43,38 @@ TSPClientDlg::~TSPClientDlg()
 
 void TSPClientDlg::initialize()
 {
+    mURLCombo->setEditable( true );
+    QStringList usedList = getUsedURL();
+    for( int i = 0; i < usedList.size(); i++ )
+    {
+        QString url = usedList.at(i);
+        if( url.length() > 4 ) mURLCombo->addItem( url );
+    }
+}
 
+QStringList TSPClientDlg::getUsedURL()
+{
+    QSettings settings;
+    QStringList retList;
+
+    settings.beginGroup( kSettingBer );
+    retList = settings.value( kTSPUsedURL ).toStringList();
+    settings.endGroup();
+
+    return retList;
+}
+
+void TSPClientDlg::setUsedURL( const QString strURL )
+{
+    if( strURL.length() <= 4 ) return;
+
+    QSettings settings;
+    settings.beginGroup( kSettingBer );
+    QStringList list = settings.value( kTSPUsedURL ).toStringList();
+    list.removeAll( strURL );
+    list.insert( 0, strURL );
+    settings.setValue( kTSPUsedURL, list );
+    settings.endGroup();
 }
 
 void TSPClientDlg::requestChanged()

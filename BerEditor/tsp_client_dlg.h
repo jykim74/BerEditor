@@ -37,6 +37,9 @@ private slots:
 
 private:
     void initialize();
+
+    QStringList getUsedURL();
+    void setUsedURL( const QString strURL );
 };
 
 #endif // TSP_CLIENT_DLG_H

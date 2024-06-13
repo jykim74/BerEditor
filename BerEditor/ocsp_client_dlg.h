@@ -50,6 +50,9 @@ private slots:
 
 private:
     void initialize();
+
+    QStringList getUsedURL();
+    void setUsedURL( const QString strURL );
 };
 
 #endif // OCSP_CLIENT_DLG_H

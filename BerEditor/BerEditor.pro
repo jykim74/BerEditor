@@ -79,7 +79,10 @@ SOURCES += \
     bn_calc_dlg.cpp \
     key_pair_man_dlg.cpp \
     gen_key_pair_dlg.cpp \
-    make_csr_dlg.cpp
+    make_csr_dlg.cpp \
+    ocsp_client_dlg.cpp \
+    tsp_client_dlg.cpp \
+    tst_info_dlg.cpp
 
 HEADERS += \
     about_dlg.h \
@@ -126,7 +129,10 @@ HEADERS += \
     bn_calc_dlg.h \
     key_pair_man_dlg.h \
     gen_key_pair_dlg.h \
-    make_csr_dlg.h
+    make_csr_dlg.h \
+    ocsp_client_dlg.h \
+    tsp_client_dlg.h \
+    tst_info_dlg.h
 
 
 
@@ -250,7 +256,10 @@ FORMS += \
         bn_calc_dlg.ui \
         key_pair_man_dlg.ui \
         gen_key_pair_dlg.ui \
-        make_csr_dlg.ui
+        make_csr_dlg.ui \
+        ocsp_client_dlg.ui \
+        tsp_client_dlg.ui \
+        tst_info_dlg.ui
 
 RESOURCES += \
     bereditor.qrc
