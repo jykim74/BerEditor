@@ -1,71 +1,621 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <author/>
- <comment/>
- <exportmacro/>
  <class>OCSPClientDlg</class>
- <widget name="OCSPClientDlg" class="QDialog">
+ <widget class="QDialog" name="OCSPClientDlg">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>491</width>
+    <height>580</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>OCSP Client Window</string>
   </property>
-  <widget name="buttonBox" class="QDialogButtonBox">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>240</y>
-     <width>341</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
-   </property>
-   <property name="standardButtons">
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-   </property>
-  </widget>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>OCSP Client</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>OCSP URL</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="mURLCombo">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_3">
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mCertViewBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>V</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mFindCertBtn">
+       <property name="text">
+        <string>Find</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="mCertPathText"/>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mCertDecodeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>D</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Certificate</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mCertTypeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>T</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>OCSP Request Signer</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="1" column="4">
+         <widget class="QPushButton" name="mSignPriKeyDecodeBtn">
+          <property name="maximumSize">
+           <size>
+            <width>20</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>D</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QPushButton" name="mFindSignCertBtn">
+          <property name="text">
+           <string>Find</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Sign PrivateKey</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Sign Certificate</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QPushButton" name="mFindSignPriKeyBtn">
+          <property name="text">
+           <string>Find</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="mSignCertPathText"/>
+        </item>
+        <item row="0" column="3">
+         <widget class="QPushButton" name="mSignCertViewBtn">
+          <property name="maximumSize">
+           <size>
+            <width>20</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>V</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="mSignPriKeyPathText"/>
+        </item>
+        <item row="0" column="4">
+         <widget class="QPushButton" name="mSignCertDecodeBtn">
+          <property name="maximumSize">
+           <size>
+            <width>20</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>D</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="5">
+         <widget class="QPushButton" name="mSignCertTypeBtn">
+          <property name="maximumSize">
+           <size>
+            <width>20</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>T</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="5">
+         <widget class="QPushButton" name="mSignPriKeyTypeBtn">
+          <property name="maximumSize">
+           <size>
+            <width>20</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>T</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QGridLayout" name="gridLayout_9">
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="mPasswdText">
+          <property name="echoMode">
+           <enum>QLineEdit::Password</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QCheckBox" name="mEncSignPriKeyCheck">
+          <property name="text">
+           <string>Encrypte PrivateKey</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_5">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>Request</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QLineEdit" name="mRequestLenText">
+       <property name="minimumSize">
+        <size>
+         <width>40</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled/>
+        </palette>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mRequestClearBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>C</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mRequestDecodeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>D</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QPlainTextEdit" name="mRequestText"/>
+   </item>
+   <item>
+    <widget class="Line" name="line_3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_7">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="0">
+      <widget class="QCheckBox" name="mUseSignCheck">
+       <property name="text">
+        <string>Use Sign</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mSendBtn">
+       <property name="text">
+        <string>Send</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mEncodeBtn">
+       <property name="text">
+        <string>Encode</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mVerifyBtn">
+       <property name="text">
+        <string>Verify</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_4">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_6">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>Response</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mResponseClearBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>C</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QLineEdit" name="mResponseLenText">
+       <property name="minimumSize">
+        <size>
+         <width>40</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled/>
+        </palette>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mResponseDecodeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>D</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QPlainTextEdit" name="mResponseText"/>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_8">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mSrvCertViewBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>V</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="mSrvCertPathText"/>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>OCSP Server Certificate</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mFindSrvCertBtn">
+       <property name="text">
+        <string>Find</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mSrvCertDecodeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>D</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mSrvCertTypeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>T</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_2">
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mCloseBtn">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
- <pixmapfunction/>
  <resources/>
- <connections>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>OCSPClientDlg</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>157</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>rejected()</signal>
-   <receiver>OCSPClientDlg</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>286</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

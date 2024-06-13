@@ -1,71 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <author/>
- <comment/>
- <exportmacro/>
  <class>TSPClientDlg</class>
- <widget name="TSPClientDlg" class="QDialog">
+ <widget class="QDialog" name="TSPClientDlg">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>495</width>
+    <height>471</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>TSP Client Window</string>
   </property>
-  <widget name="buttonBox" class="QDialogButtonBox">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>240</y>
-     <width>341</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
-   </property>
-   <property name="standardButtons">
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-   </property>
-  </widget>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>TSP Client</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_7">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_6">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>TSP URL</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="mURLCombo">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_7">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Input</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="mInputText"/>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLineEdit" name="mInputLenText">
+       <property name="minimumSize">
+        <size>
+         <width>40</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled/>
+        </palette>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_4">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="4">
+      <widget class="QLineEdit" name="mRequestLenText">
+       <property name="minimumSize">
+        <size>
+         <width>40</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled/>
+        </palette>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mRequestClearBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>C</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Request</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mRequestDecodeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>D</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QPlainTextEdit" name="mRequestText"/>
+   </item>
+   <item>
+    <widget class="Line" name="line_4">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_6">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mEncodeBtn">
+       <property name="text">
+        <string>Encode</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mSendBtn">
+       <property name="text">
+        <string>Send</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mVerifyBtn">
+       <property name="text">
+        <string>Verify</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_5">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_5">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mSrvCertViewBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>V</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mSrvCertDeocodeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>D</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>TSP Server Certificate</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mFindSrvCertBtn">
+       <property name="text">
+        <string>Find</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="mSrvCertPathText"/>
+     </item>
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mSrvCertTypeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>T</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_6">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_3">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mResponseClearBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>C</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
+      <widget class="QLineEdit" name="mResponseLenText">
+       <property name="minimumSize">
+        <size>
+         <width>40</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled/>
+        </palette>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mResponseDecodeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>D</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Response</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mTSTInfoBtn">
+       <property name="text">
+        <string>TST Information</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QPlainTextEdit" name="mResponseText">
+     <property name="readOnly">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_2">
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mCloseBtn">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
- <pixmapfunction/>
  <resources/>
- <connections>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>TSPClientDlg</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>157</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>rejected()</signal>
-   <receiver>TSPClientDlg</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>286</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
