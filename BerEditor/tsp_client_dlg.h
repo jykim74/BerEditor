@@ -17,6 +17,7 @@ public:
     ~TSPClientDlg();
 
 private slots:
+    void inputChanged();
     void requestChanged();
     void responseChanged();
 

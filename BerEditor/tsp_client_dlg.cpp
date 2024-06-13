@@ -18,6 +18,7 @@ TSPClientDlg::TSPClientDlg(QWidget *parent) :
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
+    connect( mInputText, SIGNAL(textChanged()), this, SLOT(inputChanged()));
     connect( mRequestText, SIGNAL(textChanged()), this, SLOT(requestChanged()));
     connect( mResponseText, SIGNAL(textChanged()), this, SLOT(responseChanged()));
 
@@ -44,6 +45,8 @@ TSPClientDlg::~TSPClientDlg()
 
 void TSPClientDlg::initialize()
 {
+    mInputTypeCombo->addItems( kValueTypeList );
+
     mURLCombo->setEditable( true );
     QStringList usedList = getUsedURL();
     for( int i = 0; i < usedList.size(); i++ )
@@ -76,6 +79,13 @@ void TSPClientDlg::setUsedURL( const QString strURL )
     list.insert( 0, strURL );
     settings.setValue( kTSPUsedURL, list );
     settings.endGroup();
+}
+
+void TSPClientDlg::inputChanged()
+{
+    QString strInput = mInputText->toPlainText();
+    int nLen = getDataLen( mInputTypeCombo->currentText(), strInput );
+    mInputLenText->setText( QString("%1").arg(nLen));
 }
 
 void TSPClientDlg::requestChanged()
