@@ -6,6 +6,8 @@
 #include "js_pki_ext.h"
 #include "ber_applet.h"
 
+#include "settings_mgr.h"
+
 MakeCSRDlg::MakeCSRDlg(QWidget *parent) :
     QDialog(parent)
 {
@@ -16,12 +18,22 @@ MakeCSRDlg::MakeCSRDlg(QWidget *parent) :
 
     connect( mCancelBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mOKBtn, SIGNAL(clicked()), this, SLOT(clickOK()));
+
+    initialize();
 }
 
 MakeCSRDlg::~MakeCSRDlg()
 {
     JS_BIN_reset( &csr_ );
     JS_BIN_reset( &pri_key_ );
+}
+
+void MakeCSRDlg::initialize()
+{
+    SettingsMgr *setMgr = berApplet->settingsMgr();
+
+    mSignHashCombo->addItems( kHashList );
+    mSignHashCombo->setCurrentText( setMgr->defaultHash() );
 }
 
 void MakeCSRDlg::setPriKey( const BIN *pPri )

@@ -25,6 +25,8 @@ private slots:
     void clickOK();
 
 private:
+    void initialize();
+
     BIN csr_;
     BIN pri_key_;
 };

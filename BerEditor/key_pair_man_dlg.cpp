@@ -64,6 +64,8 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
     connect( mEncryptBtn, SIGNAL(clicked()), this, SLOT(clickEncrypt()));
     connect( mEncryptPFXBtn, SIGNAL(clicked()), this, SLOT(clickEncryptPFX()));
     connect( mViewCertBtn, SIGNAL(clicked()), this, SLOT(clickViewCert()));
+    connect( mCSRViewBtn, SIGNAL(clicked()), this, SLOT(clickViewCSR()));
+
     connect( mDecryptBtn, SIGNAL(clicked()), this, SLOT(clickDecrypt()));
     connect( mDecryptPFXBtn, SIGNAL(clicked()), this, SLOT(clickDecryptPFX()));
     connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clickClearAll()));
@@ -140,7 +142,11 @@ const QString KeyPairManDlg::getTypePathName( qint64 now_t, DerType nType )
 
 
 
-    strFullName = mSavePathText->text();
+    if( mSavePathText->text().length() > 0 )
+        strFullName = mSavePathText->text();
+    else
+        strFullName = ".";
+
     strFullName += QString( "/%1_%2.%3" ).arg( strName ).arg( strDateTime ).arg(strExt);
 
     return strFullName;
@@ -178,32 +184,26 @@ int KeyPairManDlg::Save( qint64 tTime, DerType nType, const BIN *pBin )
         if( nType == TypePriKey )
         {
             nPEMType = JS_PEM_TYPE_PRIVATE_KEY;
-            mPriPathText->setText( strPath );
         }
         else if( nType == TypePubKey )
         {
             nPEMType = JS_PEM_TYPE_PUBLIC_KEY;
-            mPubPathText->setText( strPath );
         }
         else if( nType == TypeCert )
         {
             nPEMType = JS_PEM_TYPE_CERTIFICATE;
-            mCertPathText->setText( strPath );
         }
         else if( nType == TypeEncPri )
         {
             nPEMType = JS_PEM_TYPE_ENCRYPTED_PRIVATE_KEY;
-            mEncPriPathText->setText( strPath );
         }
         else if( nType == TypePriInfo )
         {
             nPEMType = JS_PEM_TYPE_PRIVATE_KEY;
-            mPriInfoPathText->setText( strPath );
         }
         else if( nType == TypeCSR )
         {
             nPEMType = JS_PEM_TYPE_CSR;
-            mCSRPathText->setText( strPath );
         }
 
         JS_BIN_writePEM( pBin, nPEMType, strPath.toLocal8Bit().toStdString().c_str() );
@@ -211,6 +211,35 @@ int KeyPairManDlg::Save( qint64 tTime, DerType nType, const BIN *pBin )
     else
     {
         JS_BIN_fileWrite( pBin, strPath.toLocal8Bit().toStdString().c_str() );
+    }
+
+    if( nType == TypePriKey )
+    {
+        mPriPathText->setText( strPath );
+    }
+    else if( nType == TypePubKey )
+    {
+        mPubPathText->setText( strPath );
+    }
+    else if( nType == TypeCert )
+    {
+        mCertPathText->setText( strPath );
+    }
+    else if( nType == TypeEncPri )
+    {
+        mEncPriPathText->setText( strPath );
+    }
+    else if( nType == TypePriInfo )
+    {
+        mPriInfoPathText->setText( strPath );
+    }
+    else if( nType == TypePFX )
+    {
+        mPFXPathText->setText( strPath );
+    }
+    else if( nType == TypeCSR )
+    {
+        mCSRPathText->setText( strPath );
     }
 
     return 0;
@@ -233,7 +262,20 @@ void KeyPairManDlg::clickGenKeyPair()
 
 void KeyPairManDlg::clickMakeCSR()
 {
+    BIN binData = {0,0};
+    QString strFile = mPriPathText->text();
+
+    if( strFile.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Find Private Key" ), this );
+        return;
+    }
+
+    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+
     MakeCSRDlg makeCSR;
+    makeCSR.setPriKey( &binData );
+
     if( makeCSR.exec() == QDialog::Accepted )
     {
         time_t now_t = time(NULL);
@@ -241,6 +283,8 @@ void KeyPairManDlg::clickMakeCSR()
         QString strCSRHex = makeCSR.getCSRHex();
         Save( now_t, TypeCSR, strCSRHex );
     }
+
+    JS_BIN_reset( &binData );
 }
 
 void KeyPairManDlg::clickCheckKeyPair()
@@ -397,7 +441,7 @@ void KeyPairManDlg::clickViewCSR()
     CSRInfoDlg csrInfo;
 
     BIN binData = {0,0};
-    QString strFile = mCertPathText->text();
+    QString strFile = mCSRPathText->text();
 
     if( strFile.length() < 1 )
     {
@@ -500,7 +544,7 @@ void KeyPairManDlg::findSavePath()
 
     if( strPath.length() < 1 )
     {
-        strPath = QDir::homePath();
+        strPath = QDir::currentPath();
     }
 
     QString folderPath = findFolder( this, strPath );
@@ -768,7 +812,7 @@ void KeyPairManDlg::typePubKey()
 
     JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
 
-    nType = JS_PKI_getPriKeyType( &binData );
+    nType = JS_PKI_getPubKeyType( &binData );
     berApplet->messageBox( tr( "The public key type is %1").arg( getKeyTypeName( nType )), this);
 
     JS_BIN_reset( &binData );
@@ -778,6 +822,7 @@ void KeyPairManDlg::typeCert()
 {
     int nType = -1;
     BIN binData = {0,0};
+    BIN binPubInfo = {0,0};
     QString strFile = mCertPathText->text();
 
     if( strFile.length() < 1 )
@@ -787,9 +832,12 @@ void KeyPairManDlg::typeCert()
     }
 
     JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
-    nType = JS_PKI_getPriKeyType( &binData );
+    JS_PKI_getPubKeyFromCert( &binData, &binPubInfo );
+
+    nType = JS_PKI_getPubKeyType( &binPubInfo );
     berApplet->messageBox( tr( "The certificate type is %1").arg( getKeyTypeName( nType )), this);
 
 
     JS_BIN_reset( &binData );
+    JS_BIN_reset( &binPubInfo );
 }
