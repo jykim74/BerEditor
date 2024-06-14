@@ -5285,7 +5285,7 @@ Do you want to delete the file and continue?</source>
     <message>
         <location filename="../mainwindow.cpp" line="634"/>
         <source>&amp;Protocol</source>
-        <translation>프로토콘(&amp;P)</translation>
+        <translation>프로토콜(&amp;P)</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="640"/>

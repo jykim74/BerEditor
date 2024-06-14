@@ -37,6 +37,8 @@ class BNCalcDlg;
 class KeyPairManDlg;
 class OCSPClientDlg;
 class TSPClientDlg;
+class CMPClientDlg;
+class SECPClientDlg;
 
 namespace Ui {
 class MainWindow;
@@ -102,6 +104,8 @@ private slots:
     void keyPairMan();
     void ocspClient();
     void tspClient();
+    void cmpClient();
+    void secpClient();
     void insertBER();
     void insertData();
     void numTrans();
@@ -177,6 +181,8 @@ private:
     KeyPairManDlg   *key_pair_man_dlg_;
     OCSPClientDlg   *ocsp_client_dlg_;
     TSPClientDlg    *tsp_client_dlg_;
+    CMPClientDlg    *cmp_client_dlg_;
+    SECPClientDlg   *secp_client_dlg_;
 
     bool log_halt_;
 };

@@ -179,6 +179,8 @@ add_executable(${PROJECT_NAME}
     ocsp_client_dlg.h ocsp_client_dlg.cpp ocsp_client_dlg.ui
     tsp_client_dlg.h tsp_client_dlg.cpp tsp_client_dlg.ui
     tst_info_dlg.h tst_info_dlg.cpp tst_info_dlg.ui
+    cmp_client_dlg.h cmp_client_dlg.cpp cmp_client_dlg.ui
+    secp_client_dlg.h secp_client_dlg.cpp secp_client_dlg.ui
 )
 
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )

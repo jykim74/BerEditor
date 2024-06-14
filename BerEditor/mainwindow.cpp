@@ -41,6 +41,8 @@
 #include "key_pair_man_dlg.h"
 #include "ocsp_client_dlg.h"
 #include "tsp_client_dlg.h"
+#include "cmp_client_dlg.h"
+#include "secp_client_dlg.h"
 #include "common.h"
 
 #include "js_pki_tools.h"
@@ -114,6 +116,8 @@ MainWindow::~MainWindow()
     delete key_pair_man_dlg_;
     delete ocsp_client_dlg_;
     delete tsp_client_dlg_;
+    delete cmp_client_dlg_;
+    delete secp_client_dlg_;
 
     delete table_tab_;
     delete text_tab_;
@@ -648,10 +652,24 @@ void MainWindow::createActions()
     connect( tspAct, &QAction::triggered, this, &MainWindow::tspClient );
     protoMenu->addAction( tspAct );
 
+    const QIcon cmpIcon = QIcon::fromTheme( "cmp_client", QIcon(":/images/cmp.png"));
+    QAction *cmpAct = new QAction( cmpIcon, tr( "&CMP client"), this );
+    cmpAct->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_C));
+    connect( cmpAct, &QAction::triggered, this, &MainWindow::cmpClient );
+    protoMenu->addAction( cmpAct );
+
+    const QIcon secpIcon = QIcon::fromTheme( "secp_client", QIcon(":/images/secp.png"));
+    QAction *secpAct = new QAction( secpIcon, tr( "&SECP client"), this );
+    secpAct->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_S));
+    connect( secpAct, &QAction::triggered, this, &MainWindow::secpClient );
+    protoMenu->addAction( secpAct );
+
     if( berApplet->isLicense() == false )
     {
         ocspAct->setEnabled( false );
         tspAct->setEnabled( false );
+        cmpAct->setEnabled( false );
+        secpAct->setEnabled( false );
     }
 
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
@@ -743,6 +761,8 @@ void MainWindow::createCryptoDlg()
     key_pair_man_dlg_ = new KeyPairManDlg;
     ocsp_client_dlg_ = new OCSPClientDlg;
     tsp_client_dlg_ = new TSPClientDlg;
+    cmp_client_dlg_ = new CMPClientDlg;
+    secp_client_dlg_ = new SECPClientDlg;
 }
 
 void MainWindow::newFile()
@@ -1286,6 +1306,20 @@ void MainWindow::tspClient()
     tsp_client_dlg_->show();
     tsp_client_dlg_->raise();
     tsp_client_dlg_->activateWindow();
+}
+
+void MainWindow::cmpClient()
+{
+    cmp_client_dlg_->show();
+    cmp_client_dlg_->raise();
+    cmp_client_dlg_->activateWindow();
+}
+
+void MainWindow::secpClient()
+{
+    secp_client_dlg_->show();
+    secp_client_dlg_->raise();
+    secp_client_dlg_->activateWindow();
 }
 
 void MainWindow::getURI()
