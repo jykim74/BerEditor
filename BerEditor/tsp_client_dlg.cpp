@@ -20,6 +20,7 @@ TSPClientDlg::TSPClientDlg(QWidget *parent) :
     setupUi(this);
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mURLClearBtn, SIGNAL(clicked()), this, SLOT(clickClearURL()));
     connect( mTSTInfoBtn, SIGNAL(clicked()), this, SLOT(clickTSTInfo()));
 
     connect( mInputText, SIGNAL(textChanged()), this, SLOT(inputChanged()));
@@ -105,6 +106,19 @@ void TSPClientDlg::setUsedURL( const QString strURL )
     list.insert( 0, strURL );
     settings.setValue( kTSPUsedURL, list );
     settings.endGroup();
+}
+
+void TSPClientDlg::clickClearURL()
+{
+    QSettings settings;
+    settings.beginGroup( kSettingBer );
+    settings.setValue( kTSPUsedURL, "" );
+    settings.endGroup();
+
+    mURLCombo->clearEditText();
+    mURLCombo->clear();
+
+    berApplet->log( "clear used URLs" );
 }
 
 void TSPClientDlg::inputChanged()
@@ -215,6 +229,7 @@ void TSPClientDlg::typeSrvCert()
 {
     int nType = -1;
     BIN binData = {0,0};
+    BIN binPubInfo = {0,0};
     QString strFile = mSrvCertPathText->text();
 
     if( strFile.length() < 1 )
@@ -224,11 +239,14 @@ void TSPClientDlg::typeSrvCert()
     }
 
     JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
-    nType = JS_PKI_getPriKeyType( &binData );
+    JS_PKI_getPubKeyFromCert( &binData, &binPubInfo );
+
+    nType = JS_PKI_getPubKeyType( &binPubInfo );
     berApplet->messageBox( tr( "The certificate type is %1").arg( getKeyTypeName( nType )), this);
 
 
     JS_BIN_reset( &binData );
+    JS_BIN_reset( &binPubInfo );
 }
 
 
@@ -290,7 +308,10 @@ void TSPClientDlg::clickSend()
 
     ret = JS_HTTP_requestPostBin( strURL.toStdString().c_str(), "application/tsp-request", &binReq, &nStatus, &binRsp );
     if( ret == 0 )
+    {
         mResponseText->setPlainText( getHexString( &binRsp ));
+        setUsedURL( strURL );
+    }
     else
     {
         berApplet->warnLog( tr( "fail to send a request to TSP server: %1").arg( ret), this );

@@ -17,6 +17,8 @@ public:
     ~TSPClientDlg();
 
 private slots:
+    void clickClearURL();
+
     void inputChanged();
     void requestChanged();
     void responseChanged();

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>520</width>
-    <height>596</height>
+    <height>637</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,6 +30,16 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="1">
+      <widget class="QComboBox" name="mURLCombo">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_2">
        <property name="minimumSize">
@@ -43,13 +53,10 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="mURLCombo">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mURLClearBtn">
+       <property name="text">
+        <string>Clear</string>
        </property>
       </widget>
      </item>
@@ -174,6 +181,54 @@
         <string>T</string>
        </property>
       </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_5">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_10">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mSetURLBtn">
+       <property name="text">
+        <string>Set OCSP URL from AIA</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mOCSPClearBtn">
+       <property name="text">
+        <string>Clear</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mSetCACertBtn">
+       <property name="text">
+        <string>Set CA from AIA</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer_5">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
      </item>
     </layout>
    </item>
@@ -622,7 +677,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_8">
        <property name="text">
-        <string>OCSP Server Certificate</string>
+        <string>OCSP Certificate</string>
        </property>
       </widget>
      </item>

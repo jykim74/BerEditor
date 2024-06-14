@@ -1305,6 +1305,14 @@ int getDataFromURI( const QString strURI, BIN *pData )
 
         ret = JS_LDAP_getDataFromURI( strURI.toStdString().c_str(), pData );
     }
+    else
+    {
+        ret = JS_BIN_fileReadBER( url.path().toLocal8Bit().toStdString().c_str(), pData );
+        if( ret > 0 )
+            ret = 0;
+        else
+            ret  -1;
+    }
 
     return ret;
 }

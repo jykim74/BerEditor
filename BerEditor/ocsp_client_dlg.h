@@ -19,6 +19,11 @@ public:
 
 private slots:
     void checkUseSign();
+    void clickClearURL();
+
+    void clickClearOCSP();
+    void clickSetURL();
+    void clickSetCACert();
 
     void findCACert();
     void findCert();
