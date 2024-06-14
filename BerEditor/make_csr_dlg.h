@@ -23,6 +23,7 @@ public:
 
 private slots:
     void clickOK();
+    void clickClear();
 
 private:
     void initialize();

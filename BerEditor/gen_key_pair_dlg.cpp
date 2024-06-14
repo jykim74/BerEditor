@@ -68,6 +68,7 @@ void GenKeyPairDlg::clickRSA()
 {
     mOptionCombo->clear();
     mOptionCombo->addItems( kRSAOptionList );
+    mOptionCombo->setCurrentText( "2048" );
     mExponentLabel->setEnabled( true );
     mExponentText->setEnabled( true );
     mOptionLabel->setText( tr("Key Length" ));
@@ -86,6 +87,7 @@ void GenKeyPairDlg::clickDSA()
 {
     mOptionCombo->clear();
     mOptionCombo->addItems( kDSAOptionList );
+    mOptionCombo->setCurrentText( "2048" );
     mExponentLabel->setEnabled( false );
     mExponentText->setEnabled( false );
     mOptionLabel->setText( tr("Key Length" ));

@@ -18,6 +18,7 @@ MakeCSRDlg::MakeCSRDlg(QWidget *parent) :
 
     connect( mCancelBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mOKBtn, SIGNAL(clicked()), this, SLOT(clickOK()));
+    connect( mClearBtn, SIGNAL(clicked()), this, SLOT(clickClear()));
 
     initialize();
 }
@@ -102,6 +103,17 @@ const QString MakeCSRDlg::getDN()
     }
 
     return strDN;
+}
+
+void MakeCSRDlg::clickClear()
+{
+    mEMAILADDRESSText->clear();
+    mCNText->clear();
+    mOText->clear();
+    mOUText->clear();
+    mLText->clear();
+    mSTText->clear();
+    mCText->clear();
 }
 
 void MakeCSRDlg::clickOK()
