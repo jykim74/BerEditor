@@ -297,6 +297,8 @@ void KeyPairManDlg::clickCheckKeyPair()
     QString strPriPath = mPriPathText->text();
     QString strPubPath = mPubPathText->text();
 
+    QString strTarget = tr( "public key" );
+
     if( strPriPath.length() < 1 )
     {
         berApplet->warningBox( tr( "find private key"), this );
@@ -305,18 +307,35 @@ void KeyPairManDlg::clickCheckKeyPair()
 
     if( strPubPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "find public key" ), this );
-        return;
+        QString strCertPath = mCertPathText->text();
+
+        if( strCertPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find public key or certificate" ), this );
+            return;
+        }
+        else
+        {
+            BIN binCert = {0,0};
+            JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+            JS_PKI_getPubKeyFromCert( &binPub, &binCert );
+            JS_BIN_reset( &binCert );
+
+            strTarget = tr( "certificate" );
+        }
+    }
+    else
+    {
+        JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPub );
     }
 
     JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
-    JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPub );
 
     ret = JS_PKI_IsValidKeyPair( &binPri, &binPub );
     if( ret == JSR_VALID )
-        berApplet->messageBox( tr("The keypair is correct"), this );
+        berApplet->messageBox( tr("The private key and the %1 are correct").arg(strTarget), this );
     else
-        berApplet->warningBox( QString( tr("The keypair is incorrect [%1]")).arg(ret), this );
+        berApplet->warningBox( QString( tr("The private key and the %1 are incorrect [%2]")).arg( strTarget ).arg(ret), this );
 
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binPub );

@@ -4749,114 +4749,136 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../key_pair_man_dlg.cpp" line="270"/>
-        <location filename="../key_pair_man_dlg.cpp" line="662"/>
-        <location filename="../key_pair_man_dlg.cpp" line="789"/>
+        <location filename="../key_pair_man_dlg.cpp" line="681"/>
+        <location filename="../key_pair_man_dlg.cpp" line="808"/>
         <source>Find Private Key</source>
         <translation>개인키를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="302"/>
-        <location filename="../key_pair_man_dlg.cpp" line="387"/>
+        <location filename="../key_pair_man_dlg.cpp" line="300"/>
+        <source>public key</source>
+        <translation>공개 키</translation>
+    </message>
+    <message>
+        <location filename="../key_pair_man_dlg.cpp" line="304"/>
+        <location filename="../key_pair_man_dlg.cpp" line="406"/>
         <source>find private key</source>
         <translation>개인키를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="308"/>
         <source>find public key</source>
-        <translation>공개키를 찾으세요</translation>
+        <translation type="vanished">공개키를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="317"/>
         <source>The keypair is correct</source>
-        <translation>키 쌍이 맞습니다</translation>
+        <translation type="vanished">키 쌍이 맞습니다</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="319"/>
         <source>The keypair is incorrect [%1]</source>
-        <translation>키 쌍이 틀립니다 [%1]</translation>
+        <translation type="vanished">키 쌍이 틀립니다 [%1]</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="341"/>
+        <location filename="../key_pair_man_dlg.cpp" line="314"/>
+        <source>find public key or certificate</source>
+        <translation>공개키 또는 인증서를 찾으세요</translation>
+    </message>
+    <message>
+        <location filename="../key_pair_man_dlg.cpp" line="324"/>
+        <source>certificate</source>
+        <translation>인증서</translation>
+    </message>
+    <message>
+        <location filename="../key_pair_man_dlg.cpp" line="336"/>
+        <source>The private key and the %1 are correct</source>
+        <translation>개인키와 %1 은 쌍이 맞습니다</translation>
+    </message>
+    <message>
+        <location filename="../key_pair_man_dlg.cpp" line="338"/>
+        <source>The private key and the %1 are incorrect [%2]</source>
+        <translation>개인키와 %1 은 쌍이 맞지 않습니다</translation>
+    </message>
+    <message>
+        <location filename="../key_pair_man_dlg.cpp" line="360"/>
         <source>Find private key</source>
         <translation>개인키를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="353"/>
+        <location filename="../key_pair_man_dlg.cpp" line="372"/>
         <source>fail to encrypt private key: %1</source>
         <translation>개인키 암호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="393"/>
+        <location filename="../key_pair_man_dlg.cpp" line="412"/>
         <source>find certificate</source>
         <translation>인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="406"/>
+        <location filename="../key_pair_man_dlg.cpp" line="425"/>
         <source>fail to make PFX: %1</source>
         <translation>PFX 만들기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="427"/>
-        <location filename="../key_pair_man_dlg.cpp" line="698"/>
-        <location filename="../key_pair_man_dlg.cpp" line="830"/>
+        <location filename="../key_pair_man_dlg.cpp" line="446"/>
+        <location filename="../key_pair_man_dlg.cpp" line="717"/>
+        <location filename="../key_pair_man_dlg.cpp" line="849"/>
         <source>Find Certificate</source>
         <translation>인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="448"/>
-        <location filename="../key_pair_man_dlg.cpp" line="770"/>
+        <location filename="../key_pair_man_dlg.cpp" line="467"/>
+        <location filename="../key_pair_man_dlg.cpp" line="789"/>
         <source>Find CSR</source>
         <translation>CSR 을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="473"/>
+        <location filename="../key_pair_man_dlg.cpp" line="492"/>
         <source>Find encrypted private key</source>
         <translation>암호화된 개인키를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="482"/>
+        <location filename="../key_pair_man_dlg.cpp" line="501"/>
         <source>fail to decrypt private key: %1</source>
         <translation>개인키 복호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="508"/>
-        <location filename="../key_pair_man_dlg.cpp" line="752"/>
+        <location filename="../key_pair_man_dlg.cpp" line="527"/>
+        <location filename="../key_pair_man_dlg.cpp" line="771"/>
         <source>Find PFX</source>
         <translation>PFX 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="517"/>
+        <location filename="../key_pair_man_dlg.cpp" line="536"/>
         <source>fail to decrypt PFX: %1</source>
         <translation>PFX 복호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="680"/>
-        <location filename="../key_pair_man_dlg.cpp" line="809"/>
+        <location filename="../key_pair_man_dlg.cpp" line="699"/>
+        <location filename="../key_pair_man_dlg.cpp" line="828"/>
         <source>Find Public Key</source>
         <translation>공개키를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="716"/>
+        <location filename="../key_pair_man_dlg.cpp" line="735"/>
         <source>Find Encrypted Private Key</source>
         <translation>암호화된 개인키를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="734"/>
+        <location filename="../key_pair_man_dlg.cpp" line="753"/>
         <source>There is no private key information</source>
         <translation>개인키 정보가 없습니다</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="796"/>
+        <location filename="../key_pair_man_dlg.cpp" line="815"/>
         <source>The private key type is %1</source>
         <translation>개인키 타입은 %1 입니다</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="816"/>
+        <location filename="../key_pair_man_dlg.cpp" line="835"/>
         <source>The public key type is %1</source>
         <translation>공개키 타입은 %1 입니다</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="838"/>
+        <location filename="../key_pair_man_dlg.cpp" line="857"/>
         <source>The certificate type is %1</source>
         <translation>인증서 타입은 %1 입니다.</translation>
     </message>
