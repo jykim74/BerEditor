@@ -10,6 +10,7 @@
 #include "js_bin.h"
 #include "js_pki.h"
 #include "js_tsp.h"
+#include "js_http.h"
 
 const QString kTSPUsedURL = "TSPUsedURL";
 
@@ -233,21 +234,148 @@ void TSPClientDlg::typeSrvCert()
 
 void TSPClientDlg::clickEncode()
 {
+    int ret = 0;
+    BIN binReq = {0,0};
+    BIN binInput = {0,0};
+    QString strHash = mHashCombo->currentText();
+    QString strInput = mInputText->toPlainText();
+    QString strPolicy = mPolicyText->text();
 
+    if( strPolicy.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Insert policy OID" ), this );
+        return;
+    }
+
+    getBINFromString( &binInput, mInputTypeCombo->currentText(), strInput );
+
+    ret = JS_TSP_encodeRequest( &binInput, strHash.toStdString().c_str(), strPolicy.toStdString().c_str(), &binReq );
+    if( ret != 0 )
+    {
+        berApplet->elog( QString("failed to encode TSP request [%1]").arg( ret ));
+        goto end;
+    }
+
+    mRequestText->setPlainText( getHexString( &binReq ));
+
+end :
+    JS_BIN_reset( &binReq );
+    JS_BIN_reset( &binInput );
 }
 
 void TSPClientDlg::clickSend()
 {
+    int ret = 0;
+    int nStatus = 0;
 
+    BIN binReq = {0,0};
+    BIN binRsp = {0,0};
+
+    QString strReq = mRequestText->toPlainText();
+    QString strURL = mURLCombo->currentText();
+
+    if( strURL.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Insert TSP URL"), this );
+        goto end;
+    }
+
+    if( strReq.length() < 1 )
+    {
+        berApplet->warningBox( tr("There is no request" ), this );
+        goto end;
+    }
+
+    getBINFromString( &binReq, DATA_HEX, strReq );
+
+    ret = JS_HTTP_requestPostBin( strURL.toStdString().c_str(), "application/tsp-request", &binReq, &nStatus, &binRsp );
+    if( ret == 0 )
+        mResponseText->setPlainText( getHexString( &binRsp ));
+    else
+    {
+        berApplet->warnLog( tr( "fail to send a request to TSP server: %1").arg( ret), this );
+        goto end;
+    }
+
+end :
+    JS_BIN_reset( &binReq );
+    JS_BIN_reset( &binRsp );
 }
 
 void TSPClientDlg::clickVerify()
 {
+    int ret = 0;
+    BIN binSrvCert = {0,0};
+    BIN binRsp = {0,0};
+    BIN binData = {0,0};
 
+    QString strSrvCertPath = mSrvCertPathText->text();
+    QString strRspHex = mResponseText->toPlainText();
+
+    JTSTInfo    sTSTInfo;
+
+    memset( &sTSTInfo, 0x00, sizeof(sTSTInfo));
+
+    if( strSrvCertPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a TSP server certificate"), this );
+        goto end;
+    }
+
+    if( strRspHex.length() < 1 )
+    {
+        berApplet->warningBox( tr("There is no response" ), this );
+        goto end;
+    }
+
+    JS_BIN_fileReadBER( strSrvCertPath.toLocal8Bit().toStdString().c_str(), &binSrvCert );
+    JS_BIN_decodeHex( strRspHex.toStdString().c_str(), &binRsp );
+
+    ret = JS_TSP_verifyResponse( &binRsp, &binSrvCert, &binData, &sTSTInfo );
+    if( ret != 0 )
+    {
+        berApplet->elog( QString( "failed to verify response message [%1]").arg(ret));
+        goto end;
+    }
+
+    berApplet->messageLog( tr( "verify reponse successfully"), this );
+
+end :
+    JS_BIN_reset( &binRsp );
+    JS_BIN_reset( &binSrvCert );
+    JS_BIN_reset( &binData );
+    JS_TSP_resetTSTInfo( &sTSTInfo );
 }
 
 void TSPClientDlg::clickTSTInfo()
 {
+    int ret = 0;
+    BIN binData = {0,0};
+    BIN binTST = {0,0};
+    BIN binRsp = {0,0};
+
     TSTInfoDlg tstInfo;
+
+    QString strOut = mResponseText->toPlainText();
+    if( strOut.length() < 1 )
+    {
+        berApplet->warningBox( tr( "There is no TSP response" ), this );
+        return;
+    }
+
+    JS_BIN_decodeHex( strOut.toStdString().c_str(), &binRsp );
+    ret = JS_TSP_decodeResponse( &binRsp, &binData, &binTST );
+    if( ret != 0 )
+    {
+        berApplet->warningBox(tr( "failed to decode TSP response"), this );
+        goto end;
+    }
+
+    tstInfo.setTST( &binTST );
     tstInfo.exec();
+
+end :
+    JS_BIN_reset( &binRsp );
+    JS_BIN_reset( &binData );
+    JS_BIN_reset( &binTST );
 }

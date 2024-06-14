@@ -688,7 +688,60 @@ end :
 
 void OCSPClientDlg::clickVerify()
 {
+    int ret = 0;
+    BIN binSrvCert = {0,0};
+    BIN binRsp = {0,0};
 
+    QString strSrvCertPath = mSrvCertPathText->text();
+    QString strRspHex = mResponseText->toPlainText();
+
+
+    JCertIDInfo sIDInfo;
+    JCertStatusInfo sStatusInfo;
+
+    memset( &sIDInfo, 0x00, sizeof(sIDInfo));
+    memset( &sStatusInfo, 0x00, sizeof(sStatusInfo));
+
+    if( strSrvCertPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a OCSP server certificate"), this );
+        goto end;
+    }
+
+    if( strRspHex.length() < 1 )
+    {
+        berApplet->warningBox( tr("There is no response" ), this );
+        goto end;
+    }
+
+    JS_BIN_fileReadBER( strSrvCertPath.toLocal8Bit().toStdString().c_str(), &binSrvCert );
+    JS_BIN_decodeHex( strRspHex.toStdString().c_str(), &binRsp );
+
+    ret = JS_OCSP_decodeResponse( &binRsp, &binSrvCert, &sIDInfo, &sStatusInfo );
+    if( ret != 0 )
+    {
+        fprintf( stderr, "fail to decode respose:%d\n", ret);
+        goto end;
+    }
+
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "Certificate status verification failed with OCSP: %1(%2)")
+                                  .arg( JS_OCSP_getResponseStatusName(ret) )
+                                  .arg( ret ), this );
+    }
+    else
+    {
+        berApplet->messageBox( tr( "Verification results with OCSP: %1(%2)" )
+                                  .arg( JS_OCSP_getCertStatusName( sStatusInfo.nStatus ) )
+                                  .arg( sStatusInfo.nStatus ), this);
+    }
+
+end :
+    JS_BIN_reset( &binSrvCert );
+    JS_BIN_reset( &binRsp );
+    JS_OCSP_resetCertIDInfo( &sIDInfo );
+    JS_OCSP_resetCertStatusInfo( &sStatusInfo );
 }
 
 void OCSPClientDlg::requestChanged()
