@@ -17,7 +17,7 @@ public:
     ~SECPClientDlg();
 
 private:
-
+    void initialize();
 };
 
 #endif // SECP_CLIENT_DLG_H

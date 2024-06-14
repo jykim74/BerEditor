@@ -17,7 +17,7 @@ public:
     ~CMPClientDlg();
 
 private:
-
+    void initialize();
 };
 
 #endif // CMP_CLIENT_DLG_H
