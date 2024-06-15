@@ -181,6 +181,7 @@ add_executable(${PROJECT_NAME}
     tst_info_dlg.h tst_info_dlg.cpp tst_info_dlg.ui
     cmp_client_dlg.h cmp_client_dlg.cpp cmp_client_dlg.ui
     secp_client_dlg.h secp_client_dlg.cpp secp_client_dlg.ui
+    auth_ref_dlg.h auth_ref_dlg.cpp auth_ref_dlg.ui
 )
 
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )
