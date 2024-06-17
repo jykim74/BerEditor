@@ -17,6 +17,7 @@ TSTInfoDlg::TSTInfoDlg(QWidget *parent) :
     setupUi(this);
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mInfoTable, SIGNAL(clicked(QModelIndex)), this, SLOT(clickField(QModelIndex)));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -137,6 +138,17 @@ end :
 void TSTInfoDlg::showEvent(QShowEvent *event)
 {
     initialize();
+}
+
+void TSTInfoDlg::clickField( QModelIndex index )
+{
+    int row = index.row();
+    QTableWidgetItem *item0 = mInfoTable->item( row, 0 );
+    QTableWidgetItem* item1 = mInfoTable->item( row, 1 );
+
+    if( item0 == NULL || item1 == NULL ) return;
+
+    mDataText->setPlainText( item1->text() );
 }
 
 void TSTInfoDlg::setTST( const BIN *pTST )
