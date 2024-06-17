@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "ui_cmp_client_dlg.h"
+#include "js_bin.h"
 
 namespace Ui {
 class CMPClientDlg;
@@ -21,6 +22,7 @@ private slots:
     void clickIR();
     void clickKUR();
     void clickRR();
+    void clickClearAll();
 
     void findCACert();
     void viewCACert();
@@ -44,6 +46,10 @@ private slots:
 
 private:
     void initialize();
+
+    QStringList getUsedURL();
+    void setUsedURL( const QString strURL );
+    int readPrivateKey( BIN *pPriKey );
 };
 
 #endif // CMP_CLIENT_DLG_H
