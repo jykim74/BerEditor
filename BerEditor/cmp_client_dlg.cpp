@@ -370,6 +370,8 @@ void CMPClientDlg::clickGENM()
 
     QString strURL = mURLCombo->currentText();
     QString strCACert = mCACertPathText->text();
+    JNameValList *pNameValList = NULL;
+    JNameValList *pCurList = NULL;
 
     if( strURL.length() < 1 )
     {
@@ -406,7 +408,7 @@ void CMPClientDlg::clickGENM()
         goto end;
     }
 
-    ret = JS_CMP_execGENM( pCTX, &binRef, &binAuth );
+    ret = JS_CMP_execGENMWithSecret( pCTX, &binRef, &binAuth, &pNameValList );
     JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
 
     mRequestText->setPlainText( getHexString( &binReq ) );
@@ -423,6 +425,14 @@ void CMPClientDlg::clickGENM()
     if( ret == 0 )
     {
         berApplet->messageLog( tr( "GENM success" ), this );
+
+        pCurList = pNameValList;
+
+        while( pCurList )
+        {
+            berApplet->log( QString( "Name: %1 Value: %2").arg( pCurList->sNameVal.pName ).arg( pCurList->sNameVal.pValue ));
+            pCurList = pCurList->pNext;
+        }
     }
 
 end :
@@ -437,6 +447,8 @@ end :
     JS_BIN_reset( &binAuth );
     JS_BIN_reset( &binReq );
     JS_BIN_reset( &binRsp );
+
+    if( pNameValList ) JS_UTIL_resetNameValList( &pNameValList );
 
     if( pCTX ) JS_CMP_final( pCTX );
 }
