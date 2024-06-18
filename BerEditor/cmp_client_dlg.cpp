@@ -362,6 +362,11 @@ void CMPClientDlg::clickGENM()
     void *pCTX = NULL;
 
     BIN binCA = {0,0};
+    BIN binRef = {0,0};
+    BIN binSec = {0,0};
+
+    BIN binReq = {0,0};
+    BIN binRsp = {0,0};
 
     QString strURL = mURLCombo->currentText();
     QString strCACert = mCACertPathText->text();
@@ -387,26 +392,41 @@ void CMPClientDlg::clickGENM()
         goto end;
     }
 
-    ret = Js_CMP_execGENM( pCTX );
+    JS_PKI_genRandom( 8, &binRef );
+    JS_PKI_genRandom( 8, &binSec );
+
+    ret = JS_CMP_execGENM( pCTX, &binRef, &binSec );
+    JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
+
+    mRequestText->setPlainText( getHexString( &binReq ) );
+    mResponseText->setPlainText( getHexString( &binRsp ));
+
     if( ret != 0 )
     {
         berApplet->elog( QString( "CMP exec GENM fail: %1").arg(ret ));
         goto end;
     }
 
-    setUsedURL( strURL );
+    JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
 
     if( ret == 0 )
     {
         berApplet->messageLog( tr( "GENM success" ), this );
     }
-    else
+
+end :
+    setUsedURL( strURL );
+    if( ret != 0 )
     {
         berApplet->warnLog( tr( "GENM fail: %1").arg(ret), this );
     }
 
-end :
     JS_BIN_reset(&binCA);
+    JS_BIN_reset( &binRef );
+    JS_BIN_reset( &binSec );
+    JS_BIN_reset( &binReq );
+    JS_BIN_reset( &binRsp );
+
     if( pCTX ) JS_CMP_final( pCTX );
 }
 
