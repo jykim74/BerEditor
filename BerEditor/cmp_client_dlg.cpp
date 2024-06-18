@@ -363,7 +363,7 @@ void CMPClientDlg::clickGENM()
 
     BIN binCA = {0,0};
     BIN binRef = {0,0};
-    BIN binSec = {0,0};
+    BIN binAuth = {0,0};
 
     BIN binReq = {0,0};
     BIN binRsp = {0,0};
@@ -383,6 +383,20 @@ void CMPClientDlg::clickGENM()
         return;
     }
 
+    AuthRefDlg authRef;
+    if( authRef.exec() == QDialog::Accepted )
+    {
+        QString strAuth = authRef.mAuthNumText->text();
+        QString strRef = authRef.mRefCodeText->text();
+
+        JS_BIN_decodeHex( strAuth.toStdString().c_str(), &binAuth );
+        JS_BIN_decodeHex( strRef.toStdString().c_str(), &binRef );
+    }
+    else
+    {
+        return;
+    }
+
     JS_BIN_fileReadBER( strCACert.toLocal8Bit().toStdString().c_str(), &binCA );
 
     ret = JS_CMP_init( strURL.toStdString().c_str(), &binCA, &pCTX );
@@ -392,10 +406,7 @@ void CMPClientDlg::clickGENM()
         goto end;
     }
 
-    JS_PKI_genRandom( 8, &binRef );
-    JS_PKI_genRandom( 8, &binSec );
-
-    ret = JS_CMP_execGENM( pCTX, &binRef, &binSec );
+    ret = JS_CMP_execGENM( pCTX, &binRef, &binAuth );
     JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
 
     mRequestText->setPlainText( getHexString( &binReq ) );
@@ -423,7 +434,7 @@ end :
 
     JS_BIN_reset(&binCA);
     JS_BIN_reset( &binRef );
-    JS_BIN_reset( &binSec );
+    JS_BIN_reset( &binAuth );
     JS_BIN_reset( &binReq );
     JS_BIN_reset( &binRsp );
 
