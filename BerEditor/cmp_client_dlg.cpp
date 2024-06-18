@@ -7,6 +7,8 @@
 #include "settings_mgr.h"
 #include "common.h"
 #include "cert_info_dlg.h"
+#include "gen_key_pair_dlg.h"
+#include "make_csr_dlg.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -23,6 +25,9 @@ CMPClientDlg::CMPClientDlg(QWidget *parent)
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mGENMBtn, SIGNAL(clicked()), this, SLOT(clickGENM()));
     connect( mIRBtn, SIGNAL(clicked()), this, SLOT(clickIR()));
+    connect( mCRBtn, SIGNAL(clicked()), this, SLOT(clickCR()));
+    connect( mP10CSRBtn, SIGNAL(clicked()), this, SLOT(clickP10CSR()));
+    connect( mSignGENMBtn, SIGNAL(clicked()), this, SLOT(clickSignGENM()));
     connect( mKURBtn, SIGNAL(clicked()), this, SLOT(clickKUR()));
     connect( mRRBtn, SIGNAL(clicked()), this, SLOT(clickRR()));
     connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clickClearAll()));
@@ -455,18 +460,569 @@ end :
 
 void CMPClientDlg::clickIR()
 {
+    int ret = 0;
+    void *pCTX = NULL;
+
+    QString strAuth;
+    QString strRef;
+    QString strPriHex;
+    QString strDN = "CN=TestIR,C=kr";
+
+    BIN binAuth = {0,0};
+    BIN binRef = {0,0};
+    BIN binNewPri = {0,0};
+    BIN binNewCert = {0,0};
+    BIN binCA = {0,0};
+
+    BIN binReq = {0,0};
+    BIN binRsp = {0,0};
+
     AuthRefDlg authRef;
-    authRef.exec();
+    GenKeyPairDlg genKeyPair;
+
+    QString strURL = mURLCombo->currentText();
+    QString strCACert = mCACertPathText->text();
+
+
+    if( strURL.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter CMP URL"), this );
+        return;
+    }
+
+    if( strCACert.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a CA certificate" ), this );
+        return;
+    }
+
+    JS_BIN_fileReadBER( strCACert.toLocal8Bit().toStdString().c_str(), &binCA );
+    if( authRef.exec() != QDialog::Accepted ) goto end;
+
+    strAuth = authRef.mAuthNumText->text();
+    strRef = authRef.mRefCodeText->text();
+
+    JS_BIN_decodeHex( strAuth.toStdString().c_str(), &binAuth );
+    JS_BIN_decodeHex( strRef.toStdString().c_str(), &binRef );
+
+    if( genKeyPair.exec() != QDialog::Accepted ) goto end;
+
+    strPriHex = genKeyPair.getPriKeyHex();
+    JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binNewPri );
+
+    ret = JS_CMP_init( strURL.toStdString().c_str(), &binCA, &pCTX );
+    if( ret != 0 )
+    {
+        berApplet->elog( QString( "CMP init fail: %1").arg(ret ));
+        goto end;
+    }
+
+    ret = JS_CMP_execIR( pCTX, &binRef, &binAuth, strDN.toStdString().c_str(), &binNewPri, &binNewCert );
+
+    mRequestText->setPlainText( getHexString( &binReq ) );
+    mResponseText->setPlainText( getHexString( &binRsp ));
+
+    if( ret != 0 )
+    {
+        berApplet->elog( QString( "CMP exec IR fail: %1").arg(ret ));
+        goto end;
+    }
+
+    JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
+
+    if( ret == 0 )
+    {
+        berApplet->messageLog( tr( "IR success" ), this );
+    }
+
+end :
+    setUsedURL( strURL );
+    if( ret != 0 )
+    {
+        berApplet->warnLog( tr( "IR fail: %1").arg(ret), this );
+    }
+
+    JS_BIN_reset( &binAuth );
+    JS_BIN_reset( &binRef );
+    JS_BIN_reset( &binNewPri );
+    JS_BIN_reset( &binNewCert );
+    JS_BIN_reset( &binCA );
+    JS_BIN_reset( &binReq );
+    JS_BIN_reset( &binRsp );
+
+    if( pCTX ) JS_CMP_final( pCTX );
+}
+
+void CMPClientDlg::clickCR()
+{
+    int ret = 0;
+    void *pCTX = NULL;
+
+    QString strAuth;
+    QString strRef;
+    QString strPriHex;
+    QString strDN = "CN=TestCR,C=kr";
+
+    BIN binAuth = {0,0};
+    BIN binRef = {0,0};
+    BIN binNewPri = {0,0};
+    BIN binNewCert = {0,0};
+    BIN binCA = {0,0};
+
+    BIN binReq = {0,0};
+    BIN binRsp = {0,0};
+
+    AuthRefDlg authRef;
+    GenKeyPairDlg genKeyPair;
+
+    QString strURL = mURLCombo->currentText();
+    QString strCACert = mCACertPathText->text();
+
+
+    if( strURL.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter CMP URL"), this );
+        return;
+    }
+
+    if( strCACert.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a CA certificate" ), this );
+        return;
+    }
+
+    JS_BIN_fileReadBER( strCACert.toLocal8Bit().toStdString().c_str(), &binCA );
+    if( authRef.exec() != QDialog::Accepted ) goto end;
+
+    strAuth = authRef.mAuthNumText->text();
+    strRef = authRef.mRefCodeText->text();
+
+    JS_BIN_decodeHex( strAuth.toStdString().c_str(), &binAuth );
+    JS_BIN_decodeHex( strRef.toStdString().c_str(), &binRef );
+
+    if( genKeyPair.exec() != QDialog::Accepted ) goto end;
+
+    strPriHex = genKeyPair.getPriKeyHex();
+    JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binNewPri );
+
+    ret = JS_CMP_init( strURL.toStdString().c_str(), &binCA, &pCTX );
+    if( ret != 0 )
+    {
+        berApplet->elog( QString( "CMP init fail: %1").arg(ret ));
+        goto end;
+    }
+
+    ret = JS_CMP_execCR( pCTX, &binRef, &binAuth, strDN.toStdString().c_str(), &binNewPri, &binNewCert );
+
+    mRequestText->setPlainText( getHexString( &binReq ) );
+    mResponseText->setPlainText( getHexString( &binRsp ));
+
+    if( ret != 0 )
+    {
+        berApplet->elog( QString( "CMP exec CR fail: %1").arg(ret ));
+        goto end;
+    }
+
+    JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
+
+    if( ret == 0 )
+    {
+        berApplet->messageLog( tr( "CR success" ), this );
+    }
+
+end :
+    setUsedURL( strURL );
+    if( ret != 0 )
+    {
+        berApplet->warnLog( tr( "CR fail: %1").arg(ret), this );
+    }
+
+    JS_BIN_reset( &binAuth );
+    JS_BIN_reset( &binRef );
+    JS_BIN_reset( &binNewPri );
+    JS_BIN_reset( &binNewCert );
+    JS_BIN_reset( &binCA );
+    JS_BIN_reset( &binReq );
+    JS_BIN_reset( &binRsp );
+
+    if( pCTX ) JS_CMP_final( pCTX );
+}
+
+void CMPClientDlg::clickP10CSR()
+{
+    int ret = 0;
+    void *pCTX = NULL;
+
+    QString strAuth;
+    QString strRef;
+    QString strPriHex;
+    QString strCSRHex;
+
+    BIN binAuth = {0,0};
+    BIN binRef = {0,0};
+    BIN binNewPri = {0,0};
+    BIN binNewCert = {0,0};
+    BIN binCSR = {0,0};
+    BIN binCA = {0,0};
+
+    BIN binReq = {0,0};
+    BIN binRsp = {0,0};
+
+    AuthRefDlg authRef;
+    GenKeyPairDlg genKeyPair;
+    MakeCSRDlg makeCSR;
+
+    QString strURL = mURLCombo->currentText();
+    QString strCACert = mCACertPathText->text();
+
+
+    if( strURL.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter CMP URL"), this );
+        return;
+    }
+
+    if( strCACert.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a CA certificate" ), this );
+        return;
+    }
+
+    JS_BIN_fileReadBER( strCACert.toLocal8Bit().toStdString().c_str(), &binCA );
+    if( authRef.exec() != QDialog::Accepted ) goto end;
+
+    strAuth = authRef.mAuthNumText->text();
+    strRef = authRef.mRefCodeText->text();
+
+    JS_BIN_decodeHex( strAuth.toStdString().c_str(), &binAuth );
+    JS_BIN_decodeHex( strRef.toStdString().c_str(), &binRef );
+
+    if( genKeyPair.exec() != QDialog::Accepted ) goto end;
+
+    strPriHex = genKeyPair.getPriKeyHex();
+    JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binNewPri );
+
+    if( makeCSR.exec() != QDialog::Accepted ) goto end;
+
+    strCSRHex = makeCSR.getCSRHex();
+    JS_BIN_decodeHex( strCSRHex.toStdString().c_str(), &binCSR );
+
+    ret = JS_CMP_init( strURL.toStdString().c_str(), &binCA, &pCTX );
+    if( ret != 0 )
+    {
+        berApplet->elog( QString( "CMP init fail: %1").arg(ret ));
+        goto end;
+    }
+
+    ret = JS_CMP_execP10CSR( pCTX, &binRef, &binAuth, &binCSR, &binNewCert );
+
+    mRequestText->setPlainText( getHexString( &binReq ) );
+    mResponseText->setPlainText( getHexString( &binRsp ));
+
+    if( ret != 0 )
+    {
+        berApplet->elog( QString( "CMP exec P10CSR fail: %1").arg(ret ));
+        goto end;
+    }
+
+    JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
+
+    if( ret == 0 )
+    {
+        berApplet->messageLog( tr( "P10CSR success" ), this );
+    }
+
+end :
+    setUsedURL( strURL );
+    if( ret != 0 )
+    {
+        berApplet->warnLog( tr( "CR fail: %1").arg(ret), this );
+    }
+
+    JS_BIN_reset( &binAuth );
+    JS_BIN_reset( &binRef );
+    JS_BIN_reset( &binNewPri );
+    JS_BIN_reset( &binCSR );
+    JS_BIN_reset( &binNewCert );
+    JS_BIN_reset( &binCA );
+    JS_BIN_reset( &binReq );
+    JS_BIN_reset( &binRsp );
+
+    if( pCTX ) JS_CMP_final( pCTX );
+}
+
+void CMPClientDlg::clickSignGENM()
+{
+    int ret = 0;
+    void *pCTX = NULL;
+
+    BIN binCA = {0,0};
+
+    BIN binReq = {0,0};
+    BIN binRsp = {0,0};
+
+    BIN binPri = {0,0};
+    BIN binCert = {0,0};
+
+    QString strURL = mURLCombo->currentText();
+    QString strCACert = mCACertPathText->text();
+    QString strCert = mCertPathText->text();
+
+    JNameValList *pNameValList = NULL;
+    JNameValList *pCurList = NULL;
+
+    if( strURL.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter CMP URL"), this );
+        return;
+    }
+
+    if( strCACert.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a CA certificate" ), this );
+        return;
+    }
+
+    if( strCert.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a certificate" ), this );
+        return;
+    }
+
+    JS_BIN_fileReadBER( strCACert.toLocal8Bit().toStdString().c_str(), &binCA );
+    JS_BIN_fileReadBER( strCert.toLocal8Bit().toStdString().c_str(), &binCert );
+
+    ret = readPrivateKey( &binPri );
+    if( ret != 0 ) goto end;
+
+    ret = JS_CMP_init( strURL.toStdString().c_str(), &binCA, &pCTX );
+    if( ret != 0 )
+    {
+        berApplet->elog( QString( "CMP init fail: %1").arg(ret ));
+        goto end;
+    }
+
+    ret = JS_CMP_execGENMWithSign( pCTX, &binPri, &binCert, &pNameValList );
+    JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
+
+    mRequestText->setPlainText( getHexString( &binReq ) );
+    mResponseText->setPlainText( getHexString( &binRsp ));
+
+    if( ret != 0 )
+    {
+        berApplet->elog( QString( "CMP exec GENM fail: %1").arg(ret ));
+        goto end;
+    }
+
+    JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
+
+    if( ret == 0 )
+    {
+        berApplet->messageLog( tr( "GENM success" ), this );
+
+        pCurList = pNameValList;
+
+        while( pCurList )
+        {
+            berApplet->log( QString( "Name: %1 Value: %2").arg( pCurList->sNameVal.pName ).arg( pCurList->sNameVal.pValue ));
+            pCurList = pCurList->pNext;
+        }
+    }
+
+end :
+    setUsedURL( strURL );
+    if( ret != 0 )
+    {
+        berApplet->warnLog( tr( "GENM fail: %1").arg(ret), this );
+    }
+
+    JS_BIN_reset(&binCA);
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binReq );
+    JS_BIN_reset( &binRsp );
+
+    if( pNameValList ) JS_UTIL_resetNameValList( &pNameValList );
+
+    if( pCTX ) JS_CMP_final( pCTX );
 }
 
 void CMPClientDlg::clickKUR()
 {
+    int ret = 0;
+    void *pCTX = NULL;
 
+    BIN binCA = {0,0};
+
+    BIN binReq = {0,0};
+    BIN binRsp = {0,0};
+
+    BIN binPri = {0,0};
+    BIN binCert = {0,0};
+    BIN binNewPri = {0,0};
+    BIN binNewCert = {0,0};
+
+    QString strURL = mURLCombo->currentText();
+    QString strCACert = mCACertPathText->text();
+    QString strCert = mCertPathText->text();
+
+    QString strPriHex;
+
+    GenKeyPairDlg genKeyPair;
+
+    if( strURL.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter CMP URL"), this );
+        return;
+    }
+
+    if( strCACert.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a CA certificate" ), this );
+        return;
+    }
+
+    if( strCert.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a certificate" ), this );
+        return;
+    }
+
+    JS_BIN_fileReadBER( strCACert.toLocal8Bit().toStdString().c_str(), &binCA );
+    JS_BIN_fileReadBER( strCert.toLocal8Bit().toStdString().c_str(), &binCert );
+
+    if( genKeyPair.exec() != QDialog::Accepted ) goto end;
+
+    strPriHex = genKeyPair.getPriKeyHex();
+    JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binNewPri );
+
+    ret = readPrivateKey( &binPri );
+    if( ret != 0 ) goto end;
+
+    ret = JS_CMP_init( strURL.toStdString().c_str(), &binCA, &pCTX );
+    if( ret != 0 )
+    {
+        berApplet->elog( QString( "CMP init fail: %1").arg(ret ));
+        goto end;
+    }
+
+    ret = JS_CMP_execKUR( pCTX, &binPri, &binCert, &binNewPri, &binNewCert );
+    JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
+
+    mRequestText->setPlainText( getHexString( &binReq ) );
+    mResponseText->setPlainText( getHexString( &binRsp ));
+
+    if( ret != 0 )
+    {
+        berApplet->elog( QString( "CMP exec KUR fail: %1").arg(ret ));
+        goto end;
+    }
+
+    JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
+
+    if( ret == 0 )
+    {
+        berApplet->messageLog( tr( "KUR success" ), this );
+    }
+
+end :
+    setUsedURL( strURL );
+    if( ret != 0 )
+    {
+        berApplet->warnLog( tr( "KUR fail: %1").arg(ret), this );
+    }
+
+    JS_BIN_reset(&binCA);
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binReq );
+    JS_BIN_reset( &binRsp );
+
+    if( pCTX ) JS_CMP_final( pCTX );
 }
 
 void CMPClientDlg::clickRR()
 {
+    int ret = 0;
+    void *pCTX = NULL;
+    int nReason = 0;
 
+    BIN binCA = {0,0};
+
+    BIN binReq = {0,0};
+    BIN binRsp = {0,0};
+
+    BIN binPri = {0,0};
+    BIN binCert = {0,0};
+
+    QString strURL = mURLCombo->currentText();
+    QString strCACert = mCACertPathText->text();
+    QString strCert = mCertPathText->text();
+
+    if( strURL.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter CMP URL"), this );
+        return;
+    }
+
+    if( strCACert.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a CA certificate" ), this );
+        return;
+    }
+
+    if( strCert.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a certificate" ), this );
+        return;
+    }
+
+    JS_BIN_fileReadBER( strCACert.toLocal8Bit().toStdString().c_str(), &binCA );
+    JS_BIN_fileReadBER( strCert.toLocal8Bit().toStdString().c_str(), &binCert );
+
+    ret = readPrivateKey( &binPri );
+    if( ret != 0 ) goto end;
+
+    ret = JS_CMP_init( strURL.toStdString().c_str(), &binCA, &pCTX );
+    if( ret != 0 )
+    {
+        berApplet->elog( QString( "CMP init fail: %1").arg(ret ));
+        goto end;
+    }
+
+    ret = JS_CMP_execRR( pCTX, &binPri, &binCert, nReason );
+    JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
+
+    mRequestText->setPlainText( getHexString( &binReq ) );
+    mResponseText->setPlainText( getHexString( &binRsp ));
+
+    if( ret != 0 )
+    {
+        berApplet->elog( QString( "CMP exec RR fail: %1").arg(ret ));
+        goto end;
+    }
+
+    JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
+
+    if( ret == 0 )
+    {
+        berApplet->messageLog( tr( "RR success" ), this );
+    }
+
+end :
+    setUsedURL( strURL );
+    if( ret != 0 )
+    {
+        berApplet->warnLog( tr( "RR fail: %1").arg(ret), this );
+    }
+
+    JS_BIN_reset(&binCA);
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binReq );
+    JS_BIN_reset( &binRsp );
+
+    if( pCTX ) JS_CMP_final( pCTX );
 }
 
 void CMPClientDlg::clickClearAll()

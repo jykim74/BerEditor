@@ -20,6 +20,9 @@ public:
 private slots:
     void clickGENM();
     void clickIR();
+    void clickCR();
+    void clickP10CSR();
+    void clickSignGENM();
     void clickKUR();
     void clickRR();
     void clickClearAll();
