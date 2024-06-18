@@ -47,6 +47,9 @@ private slots:
     void clearResponse();
     void decodeResponse();
 
+    void requestChanged();
+    void responseChanged();
+
 private:
     void initialize();
 

@@ -52,6 +52,10 @@ CMPClientDlg::CMPClientDlg(QWidget *parent)
     connect( mResponseClearBtn, SIGNAL(clicked()), this, SLOT(clearResponse()));
     connect( mResponseDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeResponse()));
 
+    connect( mRequestText, SIGNAL(textChanged()), this, SLOT(requestChanged()));
+    connect( mResponseText, SIGNAL(textChanged()), this, SLOT(responseChanged()));
+
+
 #if defined( Q_OS_MAC )
     mCACertViewBtn->setFixedWidth(34);
     mCACertDecodeBtn->setFixedWidth(34);
@@ -360,6 +364,17 @@ void CMPClientDlg::decodeResponse()
     JS_BIN_reset( &binData );
 }
 
+void CMPClientDlg::requestChanged()
+{
+    int nLen = mRequestText->toPlainText().length() / 2;
+    mRequestLenText->setText( QString("%1").arg( nLen ) );
+}
+
+void CMPClientDlg::responseChanged()
+{
+    int nLen = mResponseText->toPlainText().length() / 2;
+    mResponseLenText->setText( QString("%1").arg( nLen ) );
+}
 
 void CMPClientDlg::clickGENM()
 {
