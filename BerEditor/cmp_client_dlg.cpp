@@ -717,6 +717,7 @@ void CMPClientDlg::clickP10CSR()
     strPriHex = genKeyPair.getPriKeyHex();
     JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binNewPri );
 
+    makeCSR.setPriKey( &binNewPri );
     if( makeCSR.exec() != QDialog::Accepted ) goto end;
 
     strCSRHex = makeCSR.getCSRHex();

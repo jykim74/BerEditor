@@ -5,6 +5,8 @@
 #include "ber_applet.h"
 #include "cert_info_dlg.h"
 #include "settings_mgr.h"
+#include "gen_key_pair_dlg.h"
+#include "make_csr_dlg.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -126,22 +128,11 @@ void SECPClientDlg::setUsedURL( const QString strURL )
 int SECPClientDlg::getCA( BIN *pCA )
 {
     int ret = 0;
-    int nStatus = 0;
 
-    QString strURL = mURLCombo->currentText();
+    QString strCAPath = mCACertPathText->text();
+    if( strCAPath.length() < 1 ) return -1;
 
-    CertInfoDlg certInfo;
-
-    if( strURL.length() < 1 ) return -1;
-
-    strURL += "/pkiclient.exe?operation=GetCACert";
-
-    ret = JS_HTTP_requestGetBin2(
-        strURL.toStdString().c_str(),
-        NULL,
-        NULL,
-        &nStatus,
-        pCA );
+    ret = getDataFromURI( strCAPath, pCA );
 
     return ret;
 }
@@ -505,17 +496,212 @@ end :
 
 void SECPClientDlg::clickMakeIssue()
 {
+    int ret = 0;
+    BIN binNonce = {0,0};
+    BIN binCA = {0,0};
+    BIN binNewPri = {0,0};
+    BIN binCSR = {0,0};
+    char *pTransID = NULL;
+    BIN binReq = {0,0};
 
+    QString strPriHex;
+    QString strCSRHex;
+
+    GenKeyPairDlg genKeyPair;
+    MakeCSRDlg makeCSR;
+
+    ret = getCA( &binCA );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "fail to get CA certificate" ), this );
+        goto end;
+    }
+
+    if( genKeyPair.exec() != QDialog::Accepted ) goto end;
+
+    strPriHex = genKeyPair.getPriKeyHex();
+    JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binNewPri );
+
+    makeCSR.setPriKey( &binNewPri );
+    if( makeCSR.exec() != QDialog::Accepted ) goto end;
+
+    strCSRHex = makeCSR.getCSRHex();
+    JS_BIN_decodeHex( strCSRHex.toStdString().c_str(), &binCSR );
+
+    JS_PKI_genRandom( 16, &binNonce );
+    JS_SCEP_makeTransID( &binCSR, &pTransID );
+
+    mNonceText->setText( getHexString( &binNonce ));
+    mTransIDText->setText( pTransID );
+
+    ret = JS_SCEP_makePKIReq( &binCSR, &binNewPri, NULL, &binCA, &binNonce, pTransID, &binReq );
+    if( ret == 0 )
+    {
+        mRequestText->setPlainText(getHexString(&binReq));
+    }
+    else
+    {
+        berApplet->warnLog( tr( "fail to make request: %1").arg(ret), this );
+    }
+
+end :
+    JS_BIN_reset( &binNonce );
+    JS_BIN_reset( &binCA );
+    JS_BIN_reset( &binNewPri );
+    JS_BIN_reset( &binCSR );
+    JS_BIN_reset( &binReq );
+
+    if( pTransID ) JS_free( pTransID );
 }
 
 void SECPClientDlg::clickMakeUpdate()
 {
+    int ret = 0;
+    BIN binNonce = {0,0};
+    BIN binCA = {0,0};
+    BIN binPri = {0,0};
+    BIN binCert = {0,0};
+    BIN binCSR = {0,0};
+    char *pTransID = NULL;
+    BIN binReq = {0,0};
 
+    QString strCSRHex;
+
+    MakeCSRDlg makeCSR;
+    QString strCAPath = mCACertPathText->text();
+    QString strCertPath = mCertPathText->text();
+    QString strPriKeyPath = mPriKeyPathText->text();
+
+    if( strCAPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Find a CA certificate" ), this );
+        return;
+    }
+
+    if( strCertPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Find a certificate" ), this );
+        return;
+    }
+
+    if( strPriKeyPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Find a private key" ), this );
+        return;
+    }
+
+    ret = getCA( &binCA );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "fail to get CA certificate" ), this );
+        goto end;
+    }
+
+    JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+
+    ret = readPrivateKey( &binPri );
+    if( ret != 0 ) goto end;
+
+    makeCSR.setPriKey( &binPri );
+    if( makeCSR.exec() != QDialog::Accepted ) goto end;
+
+    strCSRHex = makeCSR.getCSRHex();
+    JS_BIN_decodeHex( strCSRHex.toStdString().c_str(), &binCSR );
+
+    JS_PKI_genRandom( 16, &binNonce );
+    JS_SCEP_makeTransID( &binCSR, &pTransID );
+
+    mNonceText->setText( getHexString( &binNonce ));
+    mTransIDText->setText( pTransID );
+
+    ret = JS_SCEP_makePKIReq( &binCSR, &binPri, &binCert, &binCA, &binNonce, pTransID, &binReq );
+    if( ret == 0 )
+    {
+        mRequestText->setPlainText(getHexString(&binReq));
+    }
+    else
+    {
+        berApplet->warnLog( tr( "fail to make request: %1").arg(ret), this );
+    }
+
+end :
+    JS_BIN_reset( &binNonce );
+    JS_BIN_reset( &binCA );
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binCSR );
+    JS_BIN_reset( &binReq );
+
+    if( pTransID ) JS_free( pTransID );
 }
 
 void SECPClientDlg::clickMakeGetCRL()
 {
+    int ret = 0;
+    BIN binNonce = {0,0};
+    BIN binCA = {0,0};
+    BIN binPri = {0,0};
+    BIN binCert = {0,0};
+    BIN binReq = {0,0};
 
+    QString strCAPath = mCACertPathText->text();
+    QString strCertPath = mCertPathText->text();
+    QString strPriKeyPath = mPriKeyPathText->text();
+
+    const char *pTransID = "1111";
+
+    if( strCAPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Find a CA certificate" ), this );
+        return;
+    }
+
+    if( strCertPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Find a certificate" ), this );
+        return;
+    }
+
+    if( strPriKeyPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Find a private key" ), this );
+        return;
+    }
+
+    ret = getCA( &binCA );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "fail to get CA certificate" ), this );
+        goto end;
+    }
+
+    JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+
+    ret = readPrivateKey( &binPri );
+    if( ret != 0 ) goto end;
+
+
+    JS_PKI_genRandom( 16, &binNonce );
+    mTransIDText->setText( pTransID );
+    mNonceText->setText( getHexString( &binNonce ));
+
+
+    ret = JS_SCEP_makeGetCRL( &binCert, &binPri, &binCert, &binCA, &binNonce, pTransID, &binReq );
+    if( ret == 0 )
+    {
+        mRequestText->setPlainText(getHexString(&binReq));
+    }
+    else
+    {
+        berApplet->warnLog( tr( "fail to make to get crl: %1").arg(ret), this );
+    }
+
+end :
+    JS_BIN_reset( &binNonce );
+    JS_BIN_reset( &binCA );
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binReq );
 }
 
 void SECPClientDlg::clickSend()
