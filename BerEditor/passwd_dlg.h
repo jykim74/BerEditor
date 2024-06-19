@@ -16,6 +16,9 @@ public:
     explicit PasswdDlg(QWidget *parent = nullptr);
     ~PasswdDlg();
 
+private slots:
+    void clickOK();
+
 private:
 
 };

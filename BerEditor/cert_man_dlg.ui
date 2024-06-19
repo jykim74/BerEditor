@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>443</width>
-    <height>432</height>
+    <width>532</width>
+    <height>483</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,7 +24,7 @@
    <item>
     <widget class="QTabWidget" name="mTabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mEETab">
       <attribute name="title">
@@ -109,42 +109,42 @@
           <item>
            <layout class="QGridLayout" name="gridLayout_4">
             <item row="0" column="0">
-             <widget class="QPushButton" name="mEE_ViewCertBtn">
+             <widget class="QPushButton" name="mViewCertBtn">
               <property name="text">
                <string>View Certificate</string>
               </property>
              </widget>
             </item>
             <item row="0" column="2">
-             <widget class="QPushButton" name="mEE_CopyCertBtn">
+             <widget class="QPushButton" name="mCopyCertBtn">
               <property name="text">
                <string>Copy Certificate</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QPushButton" name="mEE_ExportBtn">
+             <widget class="QPushButton" name="mExportBtn">
               <property name="text">
                <string>Export to PFX</string>
               </property>
              </widget>
             </item>
             <item row="1" column="2">
-             <widget class="QPushButton" name="mEE_ChangePasswdBtn">
+             <widget class="QPushButton" name="mChangePasswdBtn">
               <property name="text">
                <string>Change Password</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QPushButton" name="mEE_DelCertBtn">
+             <widget class="QPushButton" name="mDelCertBtn">
               <property name="text">
                <string>Delete Certificate</string>
               </property>
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QPushButton" name="mEE_ImportBtn">
+             <widget class="QPushButton" name="mImportBtn">
               <property name="text">
                <string>Import from PFX</string>
               </property>
@@ -187,14 +187,14 @@
           <item>
            <layout class="QGridLayout" name="gridLayout_5">
             <item row="0" column="0">
-             <widget class="QPushButton" name="mCA_AddTrustBtn">
+             <widget class="QPushButton" name="mAddTrustBtn">
               <property name="text">
                <string>Add Trust</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QPushButton" name="mCA_RemoveTrustBtn">
+             <widget class="QPushButton" name="mRemoveTrustBtn">
               <property name="text">
                <string>Remove Trust</string>
               </property>

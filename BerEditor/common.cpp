@@ -91,6 +91,8 @@ QString findFile( QWidget *parent, int nType, const QString strPath )
         strType = QObject::tr("Config Files (*.cfg *.ini);;All Files(*.*)" );
     else if( nType == JS_FILE_TYPE_REQ )
         strType = QObject::tr("Req Files (*.req *.txt);;All Files(*.*)" );
+    else if( nType == JS_FILE_TYPE_PFX )
+        strType = QObject::tr("PFX Files (*.pfx *.p12);;All Files(*.*)" );
     else if( nType == JS_FILE_TYPE_LCN )
         strType = QObject::tr( "License Files (*.lcn *.txt);;All Files (*.*)" );
     else if( nType == JS_FILE_TYPE_ALL )

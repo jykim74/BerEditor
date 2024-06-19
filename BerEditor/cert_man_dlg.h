@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "ui_cert_man_dlg.h"
+#include "js_bin.h"
 
 namespace Ui {
 class CertManDlg;
@@ -21,6 +22,15 @@ public:
 private slots:
     void showEvent(QShowEvent *event);
 
+    void clickViewCert();
+    void clickDeleteCert();
+    void clickCopyCert();
+    void clickImport();
+    void clickExport();
+    void clickChangePasswd();
+    void clickAddTrust();
+    void clickRemoveTrust();
+
 private:
     void initUI();
     void initialize();
@@ -30,6 +40,9 @@ private:
     void loadTrustCAList();
     void clearCAList();
     void clearEEList();
+
+    int saveStorage( const BIN *pEncPriKey, const BIN *pCert );
+    int readStorage( BIN *pEncPriKey, BIN *pCert );
 };
 
 #endif // CERT_MAN_DLG_H
