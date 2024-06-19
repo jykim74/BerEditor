@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>602</width>
-    <height>607</height>
+    <width>531</width>
+    <height>637</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -61,6 +61,13 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_6">
@@ -243,7 +250,11 @@
       </widget>
      </item>
      <item row="0" column="2">
-      <widget class="QLineEdit" name="mPasswdText"/>
+      <widget class="QLineEdit" name="mPasswdText">
+       <property name="echoMode">
+        <enum>QLineEdit::Password</enum>
+       </property>
+      </widget>
      </item>
      <item row="0" column="1">
       <widget class="QLabel" name="label_7">
@@ -253,6 +264,13 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_4">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_3">
@@ -272,6 +290,36 @@
          <width>40</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled/>
+        </palette>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -333,35 +381,48 @@
     <widget class="QPlainTextEdit" name="mRequestText"/>
    </item>
    <item>
+    <widget class="Line" name="line_5">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_8">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_10">
+       <property name="text">
+        <string>Sender Nonce</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>Transation ID</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="mNonceText"/>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="mTransIDText"/>
+     </item>
+    </layout>
+   </item>
+   <item>
     <layout class="QGridLayout" name="gridLayout_5">
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mMakeGetCRLBtn">
-       <property name="text">
-        <string>MakeGetCRL</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
       <widget class="QPushButton" name="mGetCABtn">
        <property name="text">
         <string>GetCA</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mMakeUpdateBtn">
-       <property name="text">
-        <string>MakeUpdate</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mMakeIssueBtn">
-       <property name="text">
-        <string>MakeIssue</string>
        </property>
       </widget>
      </item>
@@ -378,6 +439,20 @@
        </property>
       </spacer>
      </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mMakeUpdateBtn">
+       <property name="text">
+        <string>MakeUpdate</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mMakeIssueBtn">
+       <property name="text">
+        <string>MakeIssue</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="5">
       <widget class="QPushButton" name="mSendBtn">
        <property name="text">
@@ -385,7 +460,28 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mMakeGetCRLBtn">
+       <property name="text">
+        <string>MakeGetCRL</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="6">
+      <widget class="QPushButton" name="mVerifyBtn">
+       <property name="text">
+        <string>Verify</string>
+       </property>
+      </widget>
+     </item>
     </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_6">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_4">
@@ -405,6 +501,36 @@
          <width>40</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled/>
+        </palette>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
        </property>
       </widget>
      </item>

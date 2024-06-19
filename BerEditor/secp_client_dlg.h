@@ -50,6 +50,7 @@ private slots:
     void clickMakeUpdate();
     void clickMakeGetCRL();
     void clickSend();
+    void clickVerify();
 
 private:
     void initialize();
@@ -57,6 +58,8 @@ private:
     QStringList getUsedURL();
     void setUsedURL( const QString strURL );
     int readPrivateKey( BIN *pPriKey );
+
+    int getCA( BIN *pCA );
 };
 
 #endif // SECP_CLIENT_DLG_H

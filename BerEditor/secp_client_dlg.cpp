@@ -48,6 +48,7 @@ SECPClientDlg::SECPClientDlg(QWidget *parent)
     connect( mMakeUpdateBtn, SIGNAL(clicked()), this, SLOT(clickMakeUpdate()));
     connect( mMakeGetCRLBtn, SIGNAL(clicked()), this, SLOT(clickMakeGetCRL()));
     connect( mSendBtn, SIGNAL(clicked()), this, SLOT(clickSend()));
+    connect( mVerifyBtn, SIGNAL(clicked()), this, SLOT(clickVerify()));
 
     connect( mURLClearBtn, SIGNAL(clicked()), this, SLOT(clickClearURL()));
 
@@ -120,6 +121,29 @@ void SECPClientDlg::setUsedURL( const QString strURL )
     list.insert( 0, strURL );
     settings.setValue( kSECPUsedURL, list );
     settings.endGroup();
+}
+
+int SECPClientDlg::getCA( BIN *pCA )
+{
+    int ret = 0;
+    int nStatus = 0;
+
+    QString strURL = mURLCombo->currentText();
+
+    CertInfoDlg certInfo;
+
+    if( strURL.length() < 1 ) return -1;
+
+    strURL += "/pkiclient.exe?operation=GetCACert";
+
+    ret = JS_HTTP_requestGetBin2(
+        strURL.toStdString().c_str(),
+        NULL,
+        NULL,
+        &nStatus,
+        pCA );
+
+    return ret;
 }
 
 int SECPClientDlg::readPrivateKey( BIN *pPriKey )
@@ -434,12 +458,49 @@ void SECPClientDlg::responseChanged()
 
 void SECPClientDlg::clickClearAll()
 {
-
+    clearRequest();
+    clearResponse();
 }
 
 void SECPClientDlg::clickGetCA()
 {
+    int ret = 0;
+    int nStatus = 0;
 
+    BIN binCA = {0,0};
+    QString strURL = mURLCombo->currentText();
+
+    CertInfoDlg certInfo;
+
+    if( strURL.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter SECP URL"), this );
+        return;
+    }
+
+    strURL += "/pkiclient.exe?operation=GetCACert";
+
+    ret = JS_HTTP_requestGetBin2(
+        strURL.toStdString().c_str(),
+        NULL,
+        NULL,
+        &nStatus,
+        &binCA );
+
+    if( ret != 0 || nStatus != JS_HTTP_STATUS_OK )
+    {
+        berApplet->warnLog( QString( "failed to request HTTP get [%1:%2]").arg(ret).arg(nStatus));
+        goto end;
+    }
+
+    if( mCACertPathText->text().length() < 1 )
+        mCACertPathText->setText( strURL );
+
+    certInfo.setCertBIN( &binCA );
+    certInfo.exec();
+
+end :
+    JS_BIN_reset( &binCA );
 }
 
 void SECPClientDlg::clickMakeIssue()
@@ -459,5 +520,114 @@ void SECPClientDlg::clickMakeGetCRL()
 
 void SECPClientDlg::clickSend()
 {
+    int ret = 0;
+    int nStatus = 0;
+    BIN binReq = {0,0};
+    BIN binRsp = {0,0};
 
+    QString strURL = mURLCombo->currentText();
+    QString strReq = mRequestText->toPlainText();
+
+    CertInfoDlg certInfo;
+
+    if( strURL.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter SECP URL"), this );
+        return;
+    }
+
+    if( strReq.length() < 1 )
+    {
+        berApplet->warningBox( tr("There is no request" ), this );
+        goto end;
+    }
+
+    getBINFromString( &binReq, DATA_HEX, strReq );
+
+    strURL += "/pkiclient.exe?operation=PKIOperation";
+
+    ret = JS_HTTP_requestPostBin2(
+        strURL.toStdString().c_str(),
+        NULL,
+        NULL,
+        "application/x-pki-message",
+        &binReq,
+        &nStatus,
+        &binRsp );
+
+    if( ret != 0 || nStatus != JS_HTTP_STATUS_OK )
+    {
+        berApplet->warnLog( QString( "failed to request HTTP post [%1:%2]" ).arg( ret ).arg( nStatus ), this );
+        goto end;
+    }
+
+    mResponseText->setPlainText( getHexString( &binRsp ));
+    setUsedURL( strURL );
+
+end :
+    JS_BIN_reset( &binReq );
+    JS_BIN_reset( &binRsp );
+}
+
+void SECPClientDlg::clickVerify()
+{
+    int ret = 0;
+
+    BIN binRsp = {0,0};
+    BIN binCA = {0,0};
+    BIN binPriKey = {0,0};
+    BIN binNonce = {0,0};
+
+    BIN binData = {0,0};
+
+    QString strRsp = mResponseText->toPlainText();
+    QString strPriPath = mPriKeyPathText->text();
+    QString strNonce = mNonceText->text();
+    QString strTransID = mTransIDText->text();
+
+    if( strRsp.length() < 1 )
+    {
+        berApplet->warningBox( tr("There is no request" ), this );
+        goto end;
+    }
+
+    if( strPriPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Find a private key" ), this );
+        return;
+    }
+
+    JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPriKey );
+
+    getBINFromString( &binRsp, DATA_HEX, strRsp );
+    getBINFromString( &binNonce, DATA_HEX, strNonce );
+
+
+    ret = getCA( &binCA );
+    if( ret != 0 ) goto end;
+
+    ret = JS_SCEP_parseCertRsp(
+        &binRsp,
+        &binCA,
+        &binPriKey,
+        &binNonce,
+        strTransID.toStdString().c_str(),
+        &binData );
+
+    if( ret != 0 )
+    {
+        berApplet->warnLog( QString( "failed to verify Rsp" ), this );
+        goto end;
+    }
+    else
+    {
+        berApplet->messageLog( tr("Verify OK" ), this );
+    }
+
+end :
+    JS_BIN_reset( &binRsp );
+    JS_BIN_reset( &binCA );
+    JS_BIN_reset( &binPriKey );
+    JS_BIN_reset( &binNonce );
+    JS_BIN_reset( &binData );
 }
