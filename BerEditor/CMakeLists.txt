@@ -183,6 +183,8 @@ add_executable(${PROJECT_NAME}
     secp_client_dlg.h secp_client_dlg.cpp secp_client_dlg.ui
     auth_ref_dlg.h auth_ref_dlg.cpp auth_ref_dlg.ui
     cert_man_dlg.h cert_man_dlg.cpp cert_man_dlg.ui
+    passwd_dlg.h passwd_dlg.cpp passwd_dlg.ui
+    new_passwd_dlg.h new_passwd_dlg.cpp new_passwd_dlg.ui
 )
 
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )

@@ -37,7 +37,7 @@ void CertManDlg::showEvent(QShowEvent *event)
 
 void CertManDlg::initUI()
 {
-    QStringList sTableLabels = { tr( "Subject DN" ), tr( "Expire" ), tr( "Issuer DN" ) };
+    QStringList sTableLabels = { tr( "Subject DN" ), tr( "Algorithm"), tr( "Expire" ), tr( "Issuer DN" ) };
 
     mEE_CertTable->clear();
     mEE_CertTable->horizontalHeader()->setStretchLastSection(true);
@@ -178,6 +178,7 @@ void CertManDlg::loadTrustCAList()
 {
     int ret = 0;
     int row = 0;
+    time_t now = time(NULL);
 
     clearCAList();
 
@@ -190,14 +191,14 @@ void CertManDlg::loadTrustCAList()
         JCertInfo sCertInfo;
         char    sNotBefore[64];
         char    sNotAfter[64];
+        int nKeyType = 0;
 
         memset( &sCertInfo, 0x00, sizeof(sCertInfo));
 
         QString strName = file.baseName();
         QString strSuffix = file.suffix();
 
-        QTableWidgetItem *item = new QTableWidgetItem( strName );
-        item->setData(Qt::UserRole, file.filePath() );
+
         // if you need absolute path of the file
 
         if( strName.length() != 8 && strSuffix.length() != 1 ) continue;
@@ -212,14 +213,25 @@ void CertManDlg::loadTrustCAList()
             continue;
         }
 
+        nKeyType = JS_PKI_getCertKeyType( &binCert );
         JS_UTIL_getDate( sCertInfo.uNotBefore, sNotBefore );
         JS_UTIL_getDate( sCertInfo.uNotAfter, sNotAfter );
 
         mCA_CertTable->insertRow( row );
         mCA_CertTable->setRowHeight( row, 10 );
-        mCA_CertTable->setItem( row, 0, new QTableWidgetItem( sCertInfo.pSubjectName ));
-        mCA_CertTable->setItem( row, 1, new QTableWidgetItem( sNotBefore ));
-        mCA_CertTable->setItem( row, 2, new QTableWidgetItem( sCertInfo.pIssuerName ));
+        QTableWidgetItem *item = new QTableWidgetItem( sCertInfo.pSubjectName );
+
+        if( now > sCertInfo.uNotAfter )
+            item->setIcon(QIcon(":/images/cert_revoked.png" ));
+        else
+            item->setIcon(QIcon(":/images/cert.png" ));
+
+        item->setData(Qt::UserRole, file.filePath() );
+
+        mCA_CertTable->setItem( row, 0, item );
+        mCA_CertTable->setItem( row, 1, new QTableWidgetItem( getKeyTypeName( nKeyType )));
+        mCA_CertTable->setItem( row, 2, new QTableWidgetItem( sNotBefore ));
+        mCA_CertTable->setItem( row, 3, new QTableWidgetItem( sCertInfo.pIssuerName ));
 
         JS_BIN_reset( &binCert );
         JS_PKI_resetCertInfo( &sCertInfo );
