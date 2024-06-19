@@ -95,7 +95,7 @@
         </layout>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox">
+        <widget class="QGroupBox" name="mEE_ManGroup">
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -173,7 +173,7 @@
         <widget class="QTableWidget" name="mCA_CertTable"/>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox_2">
+        <widget class="QGroupBox" name="mCA_ManGroup">
          <property name="minimumSize">
           <size>
            <width>0</width>

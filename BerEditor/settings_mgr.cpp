@@ -19,6 +19,7 @@ const char *kEmail = "email";
 const char *kLicense = "license";
 const char *kStopMessage = "stopMessage";
 const char *kTrustedCAPath = "trustedCAPath";
+const char *kCertPath = "certPath";
 const char *kHexAreaWidth = "hexAreaWidth";
 }
 
@@ -32,6 +33,7 @@ void SettingsMgr::initialize()
     getDefaultHash();
     getFileReadSize();
     getTrustedCAPath();
+    getCertPath();
     getHexAreaWidth();
 }
 
@@ -260,6 +262,27 @@ QString SettingsMgr::getTrustedCAPath()
     sets.endGroup();
 
     return trusted_ca_path_;
+}
+
+void SettingsMgr::setCertPath( const QString strPath )
+{
+    QSettings sets;
+    sets.beginGroup( kBehaviorGroup );
+    sets.setValue( kCertPath, strPath );
+    sets.endGroup();
+
+    cert_path_ = strPath;
+}
+
+QString SettingsMgr::getCertPath()
+{
+    QSettings sets;
+
+    sets.beginGroup( kBehaviorGroup );
+    cert_path_ = sets.value( kCertPath, "JSPKI" ).toString();
+    sets.endGroup();
+
+    return cert_path_;
 }
 
 void SettingsMgr::setHexAreaWidth( int width )

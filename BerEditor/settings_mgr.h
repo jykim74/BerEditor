@@ -50,6 +50,10 @@ public:
     QString getTrustedCAPath();
     QString trustedCAPath() { return trusted_ca_path_; };
 
+    void setCertPath( const QString strPath );
+    QString getCertPath();
+    QString certPath() { return cert_path_; };
+
     void setHexAreaWidth( int width );
     int getHexAreaWidth();
     int hexAreaWidth() { return hex_area_width_; };
@@ -64,6 +68,7 @@ private:
     QString default_hash_;
     int file_read_size_;
     QString trusted_ca_path_;
+    QString cert_path_;
     int hex_area_width_;
 
 private:

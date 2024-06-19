@@ -28,6 +28,7 @@ private slots:
     void onCancelBtnClicked();
     void findOIDConfig();
     void findTrustedCAPath();
+    void findCertPath();
 
     void closeEvent(QCloseEvent *event );
     void showEvent(QShowEvent *event);
