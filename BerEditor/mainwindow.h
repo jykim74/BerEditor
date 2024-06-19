@@ -39,6 +39,7 @@ class OCSPClientDlg;
 class TSPClientDlg;
 class CMPClientDlg;
 class SECPClientDlg;
+class CertManDlg;
 
 namespace Ui {
 class MainWindow;
@@ -106,6 +107,7 @@ private slots:
     void tspClient();
     void cmpClient();
     void secpClient();
+    void certMan();
     void insertBER();
     void insertData();
     void numTrans();
@@ -183,6 +185,7 @@ private:
     TSPClientDlg    *tsp_client_dlg_;
     CMPClientDlg    *cmp_client_dlg_;
     SECPClientDlg   *secp_client_dlg_;
+    CertManDlg      *cert_man_dlg_;
 
     bool log_halt_;
 };

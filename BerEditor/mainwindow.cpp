@@ -43,6 +43,7 @@
 #include "tsp_client_dlg.h"
 #include "cmp_client_dlg.h"
 #include "secp_client_dlg.h"
+#include "cert_man_dlg.h"
 #include "common.h"
 
 #include "js_pki_tools.h"
@@ -118,6 +119,7 @@ MainWindow::~MainWindow()
     delete tsp_client_dlg_;
     delete cmp_client_dlg_;
     delete secp_client_dlg_;
+    delete cert_man_dlg_;
 
     delete table_tab_;
     delete text_tab_;
@@ -441,7 +443,7 @@ void MainWindow::createActions()
     connect( numTransAct, &QAction::triggered, this, &MainWindow::numTrans );
     numTransAct->setStatusTip(tr("Number transmission" ));
     toolMenu->addAction( numTransAct );
-    toolToolBar->addAction( numTransAct );
+//    toolToolBar->addAction( numTransAct );
 
     const QIcon oidIcon = QIcon::fromTheme("tool-oid", QIcon(":/images/oid.png"));
     QAction *oidAct = new QAction(oidIcon, tr("&OID Information"), this);
@@ -547,7 +549,7 @@ void MainWindow::createActions()
 
     const QIcon cmsIcon = QIcon::fromTheme("CMS", QIcon(":/images/cms.png"));
     QAction *cmsAct = new QAction( cmsIcon, tr("&CMS"), this );
-    cmsAct->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_C));
+    cmsAct->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_G));
     connect( cmsAct, &QAction::triggered, this, &MainWindow::cms );
     cmsAct->setStatusTip(tr("PKCS#7 Cryptographic Message Syntax" ));
     cryptMenu->addAction( cmsAct );
@@ -598,6 +600,14 @@ void MainWindow::createActions()
     keyPairManAct->setStatusTip( tr( "Key Pair Manage" ));
     cryptMenu->addAction( keyPairManAct );
     cryptToolBar->addAction( keyPairManAct );
+
+    const QIcon certManIcon = QIcon::fromTheme("Certificate Manage", QIcon(":/images/cert.png"));
+    QAction *certManAct = new QAction( certManIcon, tr( "Certificate Manage" ), this );
+    certManAct->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_M ));
+    connect( certManAct, &QAction::triggered, this, &MainWindow::certMan );
+    certManAct->setStatusTip( tr( "Certificate Manage" ));
+    cryptMenu->addAction( certManAct );
+    cryptToolBar->addAction( certManAct );
 
     const QIcon cavpIcon = QIcon::fromTheme( "tool-cavp", QIcon(":/images/cavp.png"));
     QAction *cavpAct = new QAction(cavpIcon, tr("&CAVP"), this);
@@ -763,6 +773,7 @@ void MainWindow::createCryptoDlg()
     tsp_client_dlg_ = new TSPClientDlg;
     cmp_client_dlg_ = new CMPClientDlg;
     secp_client_dlg_ = new SECPClientDlg;
+    cert_man_dlg_ = new CertManDlg;
 }
 
 void MainWindow::newFile()
@@ -1320,6 +1331,13 @@ void MainWindow::secpClient()
     secp_client_dlg_->show();
     secp_client_dlg_->raise();
     secp_client_dlg_->activateWindow();
+}
+
+void MainWindow::certMan()
+{
+    cert_man_dlg_->show();
+    cert_man_dlg_->raise();
+    cert_man_dlg_->activateWindow();
 }
 
 void MainWindow::getURI()
