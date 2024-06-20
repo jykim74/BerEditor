@@ -5,6 +5,12 @@
 #include "ui_cert_man_dlg.h"
 #include "js_bin.h"
 
+enum {
+    ManModeBase = 0,
+    ManModeSelect = 1,
+    ManModeTrust = 2
+};
+
 namespace Ui {
 class CertManDlg;
 }
@@ -17,8 +23,8 @@ public:
     explicit CertManDlg(QWidget *parent = nullptr);
     ~CertManDlg();
 
-    void setGroupHide( bool bHide = true );
-    void setOKHide( bool bHide = true );
+    void setMode( int nMode );
+    void setTitle( const QString strTitle );
 
     const QString getPriKeyHex();
     const QString getCertHex();
@@ -48,6 +54,10 @@ private:
     void initialize();
     const QString getSeletedPath();
 
+    void setGroupHide( bool bHide = true );
+    void setOKHide( bool bHide = true );
+    void setTrustOnly();
+
     void loadList( const QString strDir );
     void loadEEList();
     void loadTrustCAList();
@@ -60,6 +70,7 @@ private:
 
     BIN pri_key_;
     BIN cert_;
+    int mode_;
 };
 
 #endif // CERT_MAN_DLG_H

@@ -183,12 +183,12 @@ void PubEncDecDlg::checkPubKeyEncrypt()
     if( bVal )
     {
         mCertLabel->setText(tr("PublicKey"));
-        mPriKeyAndCertLabel->setText( tr("Private key and Public key" ));
+        mCertGroup->setTitle( tr("Private key and Public key" ));
     }
     else
     {
         mCertLabel->setText(tr("Certificate"));
-        mPriKeyAndCertLabel->setText( tr("Private key and Certificate"));
+        mCertGroup->setTitle( tr("Private key and Certificate"));
     }
 }
 

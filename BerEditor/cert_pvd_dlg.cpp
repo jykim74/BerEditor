@@ -16,6 +16,7 @@
 #include "crl_info_dlg.h"
 #include "trust_list_dlg.h"
 #include "settings_mgr.h"
+#include "cert_man_dlg.h"
 
 
 const QStringList kParamList = { "Policy", "Purpose", "Name", "Depth", "AuthLevel", "HostName", "Email", "IP" };
@@ -177,8 +178,11 @@ void CertPVDDlg::checkUseTrustList()
 
 void CertPVDDlg::clickTrustList()
 {
-    TrustListDlg trustList;
-    trustList.exec();
+//    TrustListDlg trustList;
+//    trustList.exec();
+    CertManDlg certMan;
+    certMan.setMode( ManModeTrust );
+    certMan.exec();
 }
 
 void CertPVDDlg::clickVerifyCert()

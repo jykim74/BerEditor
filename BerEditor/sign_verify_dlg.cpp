@@ -198,13 +198,13 @@ void SignVerifyDlg::checkPubKeyVerify()
     if( bVal )
     {
         mCertLabel->setText( tr("PublicKey" ) );
-        mPriKeyAndCertLabel->setText( tr("Private key and Public key" ));
+        mCertGroup->setTitle( tr("Private key and Public key" ));
         mCertViewBtn->setEnabled(false);
     }
     else
     {
         mCertLabel->setText( tr("Certificate") );
-        mPriKeyAndCertLabel->setText( tr( "Private key and Certificate" ));
+        mCertGroup->setTitle( tr( "Private key and Certificate" ));
         mCertViewBtn->setEnabled(true);
     }
 }

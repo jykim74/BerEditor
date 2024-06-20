@@ -21,6 +21,7 @@
 #include "cert_info_dlg.h"
 #include "settings_mgr.h"
 #include "trust_list_dlg.h"
+#include "cert_man_dlg.h"
 
 #include "openssl/ssl.h"
 #include "openssl/err.h"
@@ -997,8 +998,11 @@ void SSLVerifyDlg::clickClearCipher()
 
 void SSLVerifyDlg::clickViewTrustList()
 {
-    TrustListDlg trustList;
-    trustList.exec();
+//    TrustListDlg trustList;
+//    trustList.exec();
+    CertManDlg certMan;
+    certMan.setMode( ManModeTrust );
+    certMan.exec();
 }
 
 void SSLVerifyDlg::clickAddCipher()

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>581</width>
-    <height>667</height>
+    <width>491</width>
+    <height>554</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -385,10 +385,17 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="5">
-      <widget class="QPushButton" name="mKURBtn">
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mCRBtn">
        <property name="text">
-        <string>KUR</string>
+        <string>CR</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mP10CSRBtn">
+       <property name="text">
+        <string>P10CSR</string>
        </property>
       </widget>
      </item>
@@ -406,31 +413,24 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mCRBtn">
-       <property name="text">
-        <string>CR</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="6">
-      <widget class="QPushButton" name="mRRBtn">
-       <property name="text">
-        <string>RR</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mP10CSRBtn">
-       <property name="text">
-        <string>P10CSR</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
+     <item row="1" column="0">
       <widget class="QPushButton" name="mSignGENMBtn">
        <property name="text">
         <string>Sign GENM</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QPushButton" name="mKURBtn">
+       <property name="text">
+        <string>KUR</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="mRRBtn">
+       <property name="text">
+        <string>RR</string>
        </property>
       </widget>
      </item>

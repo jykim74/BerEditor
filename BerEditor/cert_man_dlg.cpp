@@ -22,6 +22,7 @@ static const QString kPriKeyFile = "js_private.key";
 CertManDlg::CertManDlg(QWidget *parent) :
     QDialog(parent)
 {
+    mode_ = ManModeBase;
     memset( &pri_key_, 0x00, sizeof(BIN));
     memset( &cert_, 0x00, sizeof(BIN));
 
@@ -53,6 +54,16 @@ CertManDlg::~CertManDlg()
 {
     JS_BIN_reset( &pri_key_ );
     JS_BIN_reset( &cert_ );
+}
+
+void CertManDlg::setMode( int nMode )
+{
+    mode_ = nMode;
+}
+
+void CertManDlg::setTitle( const QString strTitle )
+{
+    mTitleLabel->setText( strTitle );
 }
 
 void CertManDlg::showEvent(QShowEvent *event)
@@ -87,18 +98,30 @@ void CertManDlg::initUI()
     mCA_CertTable->horizontalHeader()->setStyleSheet( kTableStyle );
     mCA_CertTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mCA_CertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
-    setGroupHide(true);
 }
 
 void CertManDlg::initialize()
 {
-    mTabWidget->setCurrentIndex(0);
-
-    loadEEList();
     loadTrustCAList();
 
+    mTabWidget->setCurrentIndex(0);
     mCertPathText->setText( berApplet->settingsMgr()->certPath() );
+
+    if( mode_ == ManModeTrust )
+    {
+        setTrustOnly();
+        setGroupHide( false );
+    }
+    else if( mode_ == ManModeSelect )
+    {
+        loadEEList();
+        setGroupHide(true);
+    }
+    else
+    {
+        loadEEList();
+        setGroupHide( false );
+    }
 }
 
 void CertManDlg::setGroupHide( bool bHide )
@@ -121,6 +144,15 @@ void CertManDlg::setOKHide( bool bHide )
         mOKBtn->hide();
     else
         mOKBtn->show();
+}
+
+void CertManDlg::setTrustOnly()
+{
+    setOKHide(true);
+    setGroupHide( false );
+    mCancelBtn->setText(tr("Close"));
+    mTabWidget->setTabEnabled(0,false);
+    mTabWidget->setCurrentIndex(1);
 }
 
 const QString CertManDlg::getPriKeyHex()
@@ -731,6 +763,12 @@ end :
 void CertManDlg::clickOK()
 {
     int ret = 0;
+
+    if( mode_ != ManModeSelect )
+    {
+        QDialog::accept();
+        return;
+    }
 
     BIN binEncPriKey = {0,0};
     BIN binCert = {0,0};

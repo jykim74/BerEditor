@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>545</width>
-    <height>623</height>
+    <width>529</width>
+    <height>641</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -534,10 +534,16 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="1">
-          <widget class="QProgressBar" name="mSignProgBar">
-           <property name="value">
-            <number>0</number>
+         <item row="0" column="2">
+          <widget class="QCheckBox" name="mWriteLogCheck">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Write log</string>
            </property>
           </widget>
          </item>
@@ -560,16 +566,10 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
-          <widget class="QCheckBox" name="mWriteLogCheck">
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Write log</string>
+         <item row="0" column="1">
+          <widget class="QProgressBar" name="mSignProgBar">
+           <property name="value">
+            <number>0</number>
            </property>
           </widget>
          </item>
@@ -593,205 +593,192 @@
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout_2">
-     <property name="topMargin">
-      <number>0</number>
+    <widget class="QGroupBox" name="mCertGroup">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
      </property>
-     <item row="0" column="0">
-      <widget class="QLabel" name="mPriKeyAndCertLabel">
-       <property name="text">
-        <string>Private key and Certificate</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="3">
-      <widget class="QCheckBox" name="mPubKeyVerifyCheck">
-       <property name="text">
-        <string>Verify with public key</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QCheckBox" name="mAutoCertPubKeyCheck">
-       <property name="text">
-        <string>Cert or PubKey Auto</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QGridLayout" name="gridLayout_5">
-     <property name="topMargin">
-      <number>0</number>
+     <property name="title">
+      <string>PrivateKey and Certificate File</string>
      </property>
-     <item row="1" column="2">
-      <widget class="QPushButton" name="mFindCertBtn">
-       <property name="text">
-        <string>Find</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="mCertPath"/>
-     </item>
-     <item row="0" column="5">
-      <widget class="QPushButton" name="mPriKeyTypeBtn">
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>T</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="3">
-      <widget class="QPushButton" name="mCertViewBtn">
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>V</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="5">
-      <widget class="QPushButton" name="mCertTypeBtn">
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>T</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="4">
-      <widget class="QPushButton" name="mCertDecodeBtn">
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>D</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="mPriKeyPath"/>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mFindPriKeyBtn">
-       <property name="text">
-        <string>Find</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mPriKeyDecodeBtn">
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>D</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="mPriKeyLabel">
-       <property name="minimumSize">
-        <size>
-         <width>100</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>PrivateKey</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="mCertLabel">
-       <property name="text">
-        <string>Certificate</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="Line" name="line_5">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+     <property name="checkable">
+      <bool>true</bool>
      </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QGridLayout" name="gridLayout_16">
-     <property name="topMargin">
-      <number>0</number>
+     <property name="checked">
+      <bool>false</bool>
      </property>
-     <item row="0" column="2">
-      <widget class="QLabel" name="mPasswdLabel">
-       <property name="text">
-        <string>Password</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QCheckBox" name="mEncPrikeyCheck">
-       <property name="text">
-        <string>Encrypted PrivateKey</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QLineEdit" name="mPasswdText">
-       <property name="echoMode">
-        <enum>QLineEdit::Password</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="Line" name="line_6">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="Line" name="line_3">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <item>
+       <layout class="QGridLayout" name="gridLayout_13">
+        <item row="0" column="2">
+         <widget class="QCheckBox" name="mPubKeyVerifyCheck">
+          <property name="text">
+           <string>Verify with public key</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QCheckBox" name="mAutoCertPubKeyCheck">
+          <property name="text">
+           <string>Cert or PubKey Auto</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="mCertPath"/>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="mPriKeyPath"/>
+        </item>
+        <item row="1" column="2">
+         <widget class="QPushButton" name="mFindCertBtn">
+          <property name="text">
+           <string>Find</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QPushButton" name="mFindPriKeyBtn">
+          <property name="text">
+           <string>Find</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="4">
+         <widget class="QPushButton" name="mCertDecodeBtn">
+          <property name="maximumSize">
+           <size>
+            <width>20</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>D</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="mCertLabel">
+          <property name="text">
+           <string>Certificate</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="3">
+         <widget class="QPushButton" name="mCertViewBtn">
+          <property name="maximumSize">
+           <size>
+            <width>20</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>V</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="mPriKeyLabel">
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>PrivateKey</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="5">
+         <widget class="QPushButton" name="mCertTypeBtn">
+          <property name="maximumSize">
+           <size>
+            <width>20</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>T</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="4">
+         <widget class="QPushButton" name="mPriKeyDecodeBtn">
+          <property name="maximumSize">
+           <size>
+            <width>20</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>D</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="5">
+         <widget class="QPushButton" name="mPriKeyTypeBtn">
+          <property name="maximumSize">
+           <size>
+            <width>20</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>T</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QGridLayout" name="gridLayout_5">
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <item row="0" column="1">
+         <widget class="QLabel" name="mPasswdLabel">
+          <property name="text">
+           <string>Password</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QCheckBox" name="mEncPrikeyCheck">
+          <property name="text">
+           <string>Encrypted PrivateKey</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QLineEdit" name="mPasswdText">
+          <property name="echoMode">
+           <enum>QLineEdit::Password</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
@@ -1112,19 +1099,6 @@
   <tabstop>mFileTotalSizeText</tabstop>
   <tabstop>mFileReadSizeText</tabstop>
   <tabstop>mWriteLogCheck</tabstop>
-  <tabstop>mAutoCertPubKeyCheck</tabstop>
-  <tabstop>mPubKeyVerifyCheck</tabstop>
-  <tabstop>mPriKeyPath</tabstop>
-  <tabstop>mFindPriKeyBtn</tabstop>
-  <tabstop>mPriKeyDecodeBtn</tabstop>
-  <tabstop>mPriKeyTypeBtn</tabstop>
-  <tabstop>mCertPath</tabstop>
-  <tabstop>mFindCertBtn</tabstop>
-  <tabstop>mCertViewBtn</tabstop>
-  <tabstop>mCertDecodeBtn</tabstop>
-  <tabstop>mCertTypeBtn</tabstop>
-  <tabstop>mEncPrikeyCheck</tabstop>
-  <tabstop>mPasswdText</tabstop>
   <tabstop>mUseKeyAlgCheck</tabstop>
   <tabstop>mAlgTypeCombo</tabstop>
   <tabstop>mHashTypeCombo</tabstop>

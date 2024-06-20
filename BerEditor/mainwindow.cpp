@@ -1335,7 +1335,7 @@ void MainWindow::secpClient()
 
 void MainWindow::certMan()
 {
-    cert_man_dlg_->setGroupHide(false);
+    cert_man_dlg_->setMode( ManModeBase );
     cert_man_dlg_->show();
     cert_man_dlg_->raise();
     cert_man_dlg_->activateWindow();
