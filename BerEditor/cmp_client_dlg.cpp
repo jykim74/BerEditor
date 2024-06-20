@@ -408,8 +408,8 @@ void CMPClientDlg::clickGENM()
     AuthRefDlg authRef;
     if( authRef.exec() == QDialog::Accepted )
     {
-        QString strAuth = authRef.mAuthNumText->text();
-        QString strRef = authRef.mRefCodeText->text();
+        QString strAuth = authRef.mAuthCodeText->text();
+        QString strRef = authRef.mRefNumText->text();
 
         JS_BIN_decodeHex( strAuth.toStdString().c_str(), &binAuth );
         JS_BIN_decodeHex( strRef.toStdString().c_str(), &binRef );
@@ -514,8 +514,8 @@ void CMPClientDlg::clickIR()
     JS_BIN_fileReadBER( strCACert.toLocal8Bit().toStdString().c_str(), &binCA );
     if( authRef.exec() != QDialog::Accepted ) goto end;
 
-    strAuth = authRef.mAuthNumText->text();
-    strRef = authRef.mRefCodeText->text();
+    strAuth = authRef.mAuthCodeText->text();
+    strRef = authRef.mRefNumText->text();
 
     JS_BIN_decodeHex( strAuth.toStdString().c_str(), &binAuth );
     JS_BIN_decodeHex( strRef.toStdString().c_str(), &binRef );
@@ -609,8 +609,8 @@ void CMPClientDlg::clickCR()
     JS_BIN_fileReadBER( strCACert.toLocal8Bit().toStdString().c_str(), &binCA );
     if( authRef.exec() != QDialog::Accepted ) goto end;
 
-    strAuth = authRef.mAuthNumText->text();
-    strRef = authRef.mRefCodeText->text();
+    strAuth = authRef.mAuthCodeText->text();
+    strRef = authRef.mRefNumText->text();
 
     JS_BIN_decodeHex( strAuth.toStdString().c_str(), &binAuth );
     JS_BIN_decodeHex( strRef.toStdString().c_str(), &binRef );
@@ -706,8 +706,8 @@ void CMPClientDlg::clickP10CSR()
     JS_BIN_fileReadBER( strCACert.toLocal8Bit().toStdString().c_str(), &binCA );
     if( authRef.exec() != QDialog::Accepted ) goto end;
 
-    strAuth = authRef.mAuthNumText->text();
-    strRef = authRef.mRefCodeText->text();
+    strAuth = authRef.mAuthCodeText->text();
+    strRef = authRef.mRefNumText->text();
 
     JS_BIN_decodeHex( strAuth.toStdString().c_str(), &binAuth );
     JS_BIN_decodeHex( strRef.toStdString().c_str(), &binRef );
