@@ -85,7 +85,10 @@ SOURCES += \
     tst_info_dlg.cpp \
     cmp_client_dlg.cpp \
     secp_client_dlg.cpp \
-    cert_man_dlg.cpp
+    cert_man_dlg.cpp \
+    auth_ref_dlg.cpp \
+    passwd_dlg.cpp \
+    new_passwd_dlg.cpp
 
 HEADERS += \
     about_dlg.h \
@@ -138,7 +141,10 @@ HEADERS += \
     tst_info_dlg.h \
     cmp_client_dlg.h \
     secp_client_dlg.h \
-    cert_man_dlg.cpp
+    cert_man_dlg.h \
+    auth_ref_dlg.h \
+    passwd_dlg.h \
+    new_passwd_dlg.h
 
 
 
@@ -268,7 +274,10 @@ FORMS += \
         tst_info_dlg.ui \
         cmp_client_dlg.ui \
         secp_client_dlg.ui \
-        cert_man_dlg.ui
+        cert_man_dlg.ui \
+        auth_ref_dlg.ui \
+        passwd_dlg.ui \
+        new_passwd_dlg.ui
 
 RESOURCES += \
     bereditor.qrc
