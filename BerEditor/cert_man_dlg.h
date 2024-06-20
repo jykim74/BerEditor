@@ -24,12 +24,17 @@ private slots:
 
     void clickViewCert();
     void clickDeleteCert();
-    void clickCopyCert();
+    void clickDecodeCert();
+    void clickDecodePriKey();
+    void clickCheckKeyPair();
     void clickImport();
     void clickExport();
     void clickChangePasswd();
+
     void clickAddTrust();
     void clickRemoveTrust();
+    void clickViewTrust();
+    void clickDecodeTrust();
 
 private:
     void initUI();

@@ -23,12 +23,16 @@ CertManDlg::CertManDlg(QWidget *parent) :
 
     connect( mViewCertBtn, SIGNAL(clicked()), this, SLOT(clickViewCert()));
     connect( mDelCertBtn, SIGNAL(clicked()), this, SLOT(clickDeleteCert()));
-    connect( mCopyCertBtn, SIGNAL(clicked()), this, SLOT(clickCopyCert()));
+    connect( mDecodeCertBtn, SIGNAL(clicked()), this, SLOT(clickDecodeCert()));
+    connect( mDecodePriKeyBtn, SIGNAL(clicked()), this, SLOT(clickDecodePriKey()));
+    connect( mCheckKeyPairBtn, SIGNAL(clicked()), this, SLOT(clickCheckKeyPair()));
     connect( mImportBtn, SIGNAL(clicked()), this, SLOT(clickImport()));
     connect( mExportBtn, SIGNAL(clicked()), this, SLOT(clickExport()));
     connect( mChangePasswdBtn, SIGNAL(clicked()), this, SLOT(clickChangePasswd()));
     connect( mAddTrustBtn, SIGNAL(clicked()), this, SLOT(clickAddTrust()));
     connect( mRemoveTrustBtn, SIGNAL(clicked()), this, SLOT(clickRemoveTrust()));
+    connect( mViewTrustBtn, SIGNAL(clicked()), this, SLOT(clickViewTrust()));
+    connect( mDecodeTrustBtn, SIGNAL(clicked()), this, SLOT(clickDecodeTrust()));
 
     initUI();
 #if defined(Q_OS_MAC)
@@ -77,6 +81,8 @@ void CertManDlg::initialize()
 
     loadEEList();
     loadTrustCAList();
+
+    mCertPathText->setText( berApplet->settingsMgr()->certPath() );
 }
 
 void CertManDlg::setGroupHide( bool bHide )
@@ -174,7 +180,7 @@ void CertManDlg::loadEEList()
 
     clearEEList();
 
-    QString strPath = berApplet->settingsMgr()->getCertPath();
+    QString strPath = berApplet->settingsMgr()->certPath();
     QDir dir( strPath );
 
     for (const QFileInfo &file : dir.entryInfoList(QDir::Files))
@@ -321,10 +327,21 @@ void CertManDlg::clickDeleteCert()
 
 }
 
-void CertManDlg::clickCopyCert()
+void CertManDlg::clickDecodeCert()
 {
 
 }
+
+void CertManDlg::clickDecodePriKey()
+{
+
+}
+
+void CertManDlg::clickCheckKeyPair()
+{
+
+}
+
 
 void CertManDlg::clickImport()
 {
@@ -397,7 +414,7 @@ void CertManDlg::clickExport()
     ret = JS_PKI_encodePFX( &binPFX, nKeyType, strPass.toStdString().c_str(), -1, &binPri, &binCert );
     if( ret != 0 ) goto end;
 
-//    strPFXPath = saveFile( this, QDir::currentPath() );
+    strPFXPath = findSaveFile( this, JS_FILE_TYPE_PFX, berApplet->curFolder() );
     JS_BIN_fileWrite( &binPFX, strPFXPath.toStdString().c_str() );
 
     berApplet->messageLog( tr( "PFX saved successfully:%1").arg( strPFXPath ), this );
@@ -496,5 +513,15 @@ void CertManDlg::clickRemoveTrust()
         berApplet->warningBox( tr( "failed to delete Trust CA" ), this );
         return;
     }
+
+}
+
+void CertManDlg::clickViewTrust()
+{
+
+}
+
+void CertManDlg::clickDecodeTrust()
+{
 
 }
