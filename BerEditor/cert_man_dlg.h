@@ -18,9 +18,14 @@ public:
     ~CertManDlg();
 
     void setGroupHide( bool bHide = true );
+    void setOKHide( bool bHide = true );
+
+    const QString getPriKeyHex();
+    const QString getCertHex();
 
 private slots:
     void showEvent(QShowEvent *event);
+    void closeEvent(QCloseEvent *event );
 
     void clickViewCert();
     void clickDeleteCert();
@@ -31,6 +36,8 @@ private slots:
     void clickExport();
     void clickChangePasswd();
 
+    void clickOK();
+
     void clickAddTrust();
     void clickRemoveTrust();
     void clickViewTrust();
@@ -39,6 +46,7 @@ private slots:
 private:
     void initUI();
     void initialize();
+    const QString getSeletedPath();
 
     void loadList( const QString strDir );
     void loadEEList();
@@ -46,8 +54,12 @@ private:
     void clearCAList();
     void clearEEList();
 
-    int saveStorage( const BIN *pEncPriKey, const BIN *pCert );
-    int readStorage( BIN *pEncPriKey, BIN *pCert );
+    int writePriKeyCert( const BIN *pEncPriKey, const BIN *pCert );
+    int changePriKey( const BIN *pNewEncPriKey );
+    int readPriKeyCert( BIN *pEncPriKey, BIN *pCert );
+
+    BIN pri_key_;
+    BIN cert_;
 };
 
 #endif // CERT_MAN_DLG_H

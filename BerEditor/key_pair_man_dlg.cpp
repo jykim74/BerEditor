@@ -361,6 +361,12 @@ void KeyPairManDlg::clickEncrypt()
         return;
     }
 
+    if( strPasswd.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a password" ), this );
+        return;
+    }
+
     JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
 
     nPBE = JS_PKI_getNidFromSN( strSN.toStdString().c_str() );
@@ -410,6 +416,12 @@ void KeyPairManDlg::clickEncryptPFX()
     if( strCertPath.length() < 1 )
     {
         berApplet->warningBox( tr( "find certificate" ), this );
+        return;
+    }
+
+    if( strPasswd.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a password" ), this );
         return;
     }
 
@@ -493,6 +505,12 @@ void KeyPairManDlg::clickDecrypt()
         return;
     }
 
+    if( strPasswd.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a password" ), this );
+        return;
+    }
+
     JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
 
     ret = JS_PKI_decryptPrivateKey( strPasswd.toStdString().c_str(), &binData, &binInfo, &binDec );
@@ -525,6 +543,12 @@ void KeyPairManDlg::clickDecryptPFX()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find PFX" ), this );
+        return;
+    }
+
+    if( strPasswd.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a password" ), this );
         return;
     }
 
@@ -568,7 +592,9 @@ void KeyPairManDlg::findSavePath()
 
     QString folderPath = findFolder( this, strPath );
     if( folderPath.length() > 0 )
+    {
         mSavePathText->setText( folderPath );
+    }
 }
 
 void KeyPairManDlg::findPriKey()

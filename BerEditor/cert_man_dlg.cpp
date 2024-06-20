@@ -8,18 +8,27 @@
 #include "settings_mgr.h"
 #include "passwd_dlg.h"
 #include "new_passwd_dlg.h"
+#include "cert_info_dlg.h"
 
 #include "js_pki.h"
 #include "js_pki_x509.h"
 #include "js_error.h"
 #include "js_util.h"
+#include "js_pki_tools.h"
+
+static const QString kCertFile = "js_cert.crt";
+static const QString kPriKeyFile = "js_private.key";
 
 CertManDlg::CertManDlg(QWidget *parent) :
     QDialog(parent)
 {
+    memset( &pri_key_, 0x00, sizeof(BIN));
+    memset( &cert_, 0x00, sizeof(BIN));
+
     setupUi(this);
 
     connect( mCancelBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mOKBtn, SIGNAL(clicked()), this, SLOT(clickOK()));
 
     connect( mViewCertBtn, SIGNAL(clicked()), this, SLOT(clickViewCert()));
     connect( mDelCertBtn, SIGNAL(clicked()), this, SLOT(clickDeleteCert()));
@@ -42,12 +51,19 @@ CertManDlg::CertManDlg(QWidget *parent) :
 
 CertManDlg::~CertManDlg()
 {
-
+    JS_BIN_reset( &pri_key_ );
+    JS_BIN_reset( &cert_ );
 }
 
 void CertManDlg::showEvent(QShowEvent *event)
 {
     initialize();
+}
+
+void CertManDlg::closeEvent(QCloseEvent *event )
+{
+    setGroupHide( false );
+    setOKHide( false );
 }
 
 void CertManDlg::initUI()
@@ -97,6 +113,24 @@ void CertManDlg::setGroupHide( bool bHide )
         mEE_ManGroup->show();
         mCA_ManGroup->show();
     }
+}
+
+void CertManDlg::setOKHide( bool bHide )
+{
+    if( bHide == true )
+        mOKBtn->hide();
+    else
+        mOKBtn->show();
+}
+
+const QString CertManDlg::getPriKeyHex()
+{
+    return getHexString( &pri_key_ );
+}
+
+const QString CertManDlg::getCertHex()
+{
+    return getHexString( &cert_ );
 }
 
 void CertManDlg::clearCAList()
@@ -177,17 +211,71 @@ void CertManDlg::loadEEList()
 {
     int ret = 0;
     int row = 0;
+    time_t now = time(NULL);
 
     clearEEList();
 
     QString strPath = berApplet->settingsMgr()->certPath();
     QDir dir( strPath );
 
-    for (const QFileInfo &file : dir.entryInfoList(QDir::Files))
+    for (const QFileInfo &folder : dir.entryInfoList(QDir::Dirs))
     {
-        if( file.isFile() ) continue;
+        if( folder.isFile() ) continue;
 
-        loadList( file.absoluteFilePath() );
+        QString strCertPath = QString( "%1/%2" ).arg( folder.filePath() ).arg( kCertFile );
+        QFileInfo certFile( strCertPath );
+        QString strPriKeyPath = QString( "%1/%2" ).arg( folder.filePath() ).arg( kPriKeyFile );
+        QFileInfo priKeyFile( strPriKeyPath );
+
+        if( certFile.exists() == false || priKeyFile.exists() == false ) continue;
+
+        //loadList( folder.absoluteFilePath() );
+
+        BIN binCert = {0,0};
+        JCertInfo sCertInfo;
+        char    sNotBefore[64];
+        char    sNotAfter[64];
+        int nKeyType = 0;
+
+        memset( &sCertInfo, 0x00, sizeof(sCertInfo));
+
+        QString strName = certFile.baseName();
+        QString strSuffix = certFile.suffix();
+
+        JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+        if( binCert.nLen < 1 ) continue;
+
+        ret = JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
+        if( ret != 0 )
+        {
+            JS_BIN_reset( &binCert );
+            continue;
+        }
+
+        nKeyType = JS_PKI_getCertKeyType( &binCert );
+        JS_UTIL_getDate( sCertInfo.uNotBefore, sNotBefore );
+        JS_UTIL_getDate( sCertInfo.uNotAfter, sNotAfter );
+
+        mEE_CertTable->insertRow( row );
+        mEE_CertTable->setRowHeight( row, 10 );
+        QTableWidgetItem *item = new QTableWidgetItem( sCertInfo.pSubjectName );
+
+        if( now > sCertInfo.uNotAfter )
+            item->setIcon(QIcon(":/images/cert_revoked.png" ));
+        else
+            item->setIcon(QIcon(":/images/cert.png" ));
+
+        item->setData(Qt::UserRole, folder.filePath() );
+
+        mEE_CertTable->setItem( row, 0, item );
+        mEE_CertTable->setItem( row, 1, new QTableWidgetItem( getKeyTypeName( nKeyType )));
+        mEE_CertTable->setItem( row, 2, new QTableWidgetItem( sNotBefore ));
+        mEE_CertTable->setItem( row, 3, new QTableWidgetItem( sCertInfo.pIssuerName ));
+
+        JS_BIN_reset( &binCert );
+        JS_PKI_resetCertInfo( &sCertInfo );
+
+        row++;
     }
 }
 
@@ -257,7 +345,7 @@ void CertManDlg::loadTrustCAList()
     }
 }
 
-int CertManDlg::saveStorage( const BIN *pEncPriKey, const BIN *pCert )
+int CertManDlg::writePriKeyCert( const BIN *pEncPriKey, const BIN *pCert )
 {
     int ret = 0;
     JCertInfo sCertInfo;
@@ -272,19 +360,24 @@ int CertManDlg::saveStorage( const BIN *pEncPriKey, const BIN *pCert )
     ret = JS_PKI_getCertInfo( pCert, &sCertInfo, NULL );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to decode certificate: %1" ).arg( ret ), this );
+        berApplet->elog( QString( "fail to decode certificate: %1" ).arg( ret ) );
         goto end;
     }
 
     strPath += "/";
     strPath += sCertInfo.pSubjectName;
-    dir.mkdir( strPath );
 
-    strPriPath = QString("%1/%2").arg( strPath ).arg( "private.key" );
-    strCertPath = QString("%1/%2").arg( strPath ).arg( "certificate.crt" );
+    if( dir.mkpath( strPath ) == false )
+    {
+        berApplet->elog( QString( "fail to make path: %1").arg( strPath ) );
+        goto end;
+    }
+
+    strPriPath = QString("%1/%2").arg( strPath ).arg( kPriKeyFile );
+    strCertPath = QString("%1/%2").arg( strPath ).arg( kCertFile );
 
     JS_BIN_writePEM( pCert, JS_PEM_TYPE_CERTIFICATE, strCertPath.toLocal8Bit().toStdString().c_str() );
-    JS_BIN_writePEM( pEncPriKey, JS_PEM_TYPE_ENCRYPTED_PRIVATE_KEY, strCertPath.toLocal8Bit().toStdString().c_str() );
+    JS_BIN_writePEM( pEncPriKey, JS_PEM_TYPE_ENCRYPTED_PRIVATE_KEY, strPriPath.toLocal8Bit().toStdString().c_str() );
 
     loadEEList();
 
@@ -293,23 +386,47 @@ end :
     return 0;
 }
 
-int CertManDlg::readStorage( BIN *pEncPriKey, BIN *pCert )
+int CertManDlg::changePriKey( const BIN *pNewEncPriKey )
 {
-    QTableWidgetItem* item = mEE_CertTable->currentItem();
+    QDir dir;
+    QString strPath = getSeletedPath();
 
-    if( item == NULL )
-    {
-        berApplet->warningBox( tr( "There is no selected item" ), this );
+    if( strPath.length() < 1 )
         return -1;
-    }
 
+    strPath += "/";
+    strPath += kPriKeyFile;
+
+    dir.remove( strPath );
+    JS_BIN_fileWrite( pNewEncPriKey, strPath.toLocal8Bit().toStdString().c_str() );
+
+    return 0;
+}
+
+const QString CertManDlg::getSeletedPath()
+{
+    QString strPath;
+
+    QTableWidgetItem* item = mEE_CertTable->currentItem();
+    if( item ) strPath = item->data(Qt::UserRole).toString();
+
+    return strPath;
+}
+
+int CertManDlg::readPriKeyCert( BIN *pEncPriKey, BIN *pCert )
+{
     QString strPriPath;
     QString strCertPath;
 
-    QString strPath = item->data(Qt::UserRole).toString();
+    QString strPath = getSeletedPath();
+    if( strPath.length() < 1 )
+    {
+        berApplet->elog( QString( "There is no selected item" ) );
+        return -1;
+    }
 
-    strPriPath = QString("%1/%2").arg( strPath ).arg( "private.key" );
-    strCertPath = QString("%1/%2").arg( strPath ).arg( "certificate.crt" );
+    strPriPath = QString("%1/%2").arg( strPath ).arg( kPriKeyFile );
+    strCertPath = QString("%1/%2").arg( strPath ).arg( kCertFile );
 
     JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), pEncPriKey );
     JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), pCert );
@@ -319,27 +436,145 @@ int CertManDlg::readStorage( BIN *pEncPriKey, BIN *pCert )
 
 void CertManDlg::clickViewCert()
 {
+    int ret = 0;
+    BIN binEncPri = {0,0};
+    BIN binCert = {0,0};
 
+    CertInfoDlg certInfo;
+
+    ret = readPriKeyCert( &binEncPri, &binCert );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "fail to read certificate: %1" ).arg(ret ), this);
+        goto end;
+    }
+
+    certInfo.setCertBIN( &binCert );
+    certInfo.exec();
+
+end :
+    JS_BIN_reset( &binEncPri );
+    JS_BIN_reset( &binCert );
 }
 
 void CertManDlg::clickDeleteCert()
 {
+    int ret = 0;
 
+    bool bVal = false;
+    QDir dir;
+    QString strCertPath;
+    QString strPriKeyPath;
+
+    bVal = berApplet->yesOrCancelBox( tr( "Are you sure to delete the certificate" ), this, false );
+    if( bVal == false ) return;
+
+    QString strPath = getSeletedPath();
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "The certificate is not selected" ), this );
+        return;
+    }
+
+    strCertPath = QString( "%1/%2" ).arg( strPath ).arg( kCertFile );
+    strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPriKeyFile );
+
+    dir.remove( strCertPath );
+    dir.remove( strPriKeyPath );
+    dir.remove( strPath );
 }
 
 void CertManDlg::clickDecodeCert()
 {
+    int ret = 0;
+    BIN binEncPri = {0,0};
+    BIN binCert = {0,0};
+    QString strPath = getSeletedPath();
 
+    ret = readPriKeyCert( &binEncPri, &binCert );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "fail to read certificate: %1" ).arg(ret ), this);
+        goto end;
+    }
+
+    strPath += "/";
+    strPath += kCertFile;
+
+    berApplet->decodeData( &binCert, strPath );
+
+end :
+    JS_BIN_reset( &binEncPri );
+    JS_BIN_reset( &binCert );
 }
 
 void CertManDlg::clickDecodePriKey()
 {
+    int ret = 0;
+    BIN binEncPri = {0,0};
+    BIN binCert = {0,0};
+    QString strPath = getSeletedPath();
 
+    ret = readPriKeyCert( &binEncPri, &binCert );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "fail to read private key: %1" ).arg(ret ), this);
+        goto end;
+    }
+
+    strPath += "/";
+    strPath += kPriKeyFile;
+    berApplet->decodeData( &binEncPri, strPath );
+
+end :
+    JS_BIN_reset( &binEncPri );
+    JS_BIN_reset( &binCert );
 }
 
 void CertManDlg::clickCheckKeyPair()
 {
+    int ret = 0;
 
+    BIN binPriKey = {0,0};
+    BIN binEncPriKey = {0,0};
+    BIN binCert = {0,0};
+
+    QString strPass = mEE_PasswdText->text();
+
+    if( strPass.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a password" ), this );
+        return;
+    }
+
+    ret = readPriKeyCert( &binEncPriKey, &binCert );
+    if( ret != 0 )
+    {
+        berApplet->warnLog( tr( "fail to read private key and certificate: %1").arg(ret), this );
+        goto end;
+    }
+
+    ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEncPriKey, NULL, &binPriKey );
+    if( ret != 0 )
+    {
+        berApplet->warnLog( tr( "fail to decrypt private key: %1").arg( ret ), this );
+        goto end;
+    }
+
+    ret = JS_PKI_IsValidPriKeyCert( &binPriKey, &binCert );
+    if( ret == 1 )
+    {
+        berApplet->messageLog( tr( "The private key and ceritificate are good"), this );
+    }
+    else
+    {
+        berApplet->warnLog( tr( "The private key and certificate are bad" ), this );
+    }
+
+end :
+    JS_BIN_reset( &binPriKey );
+    JS_BIN_reset( &binEncPriKey );
+    JS_BIN_reset( &binCert );
 }
 
 
@@ -354,24 +589,24 @@ void CertManDlg::clickImport()
     BIN binPri = {0,0};
     BIN binCert = {0,0};
 
-    if( passwdDlg.exec() != QDialog::Accepted )
-        return;
-
-    strPass = passwdDlg.mPasswdText->text();
-
     strPFXFile = findFile( this, JS_FILE_TYPE_PFX, strPFXFile );
     if( strPFXFile.length() < 1 ) return;
 
     JS_BIN_fileReadBER( strPFXFile.toLocal8Bit().toStdString().c_str(), &binPFX );
 
+    if( passwdDlg.exec() != QDialog::Accepted )
+        return;
+
+    strPass = passwdDlg.mPasswdText->text();
+
     ret = JS_PKI_decodePFX( &binPFX, strPass.toStdString().c_str(), &binPri, &binCert );
     if( ret != 0 )
     {
-        berApplet->warnLog( tr( "fail to decrypt PFX: %1").arg( ret ));
+        berApplet->warnLog( tr( "fail to decrypt PFX: %1").arg( ret ), this);
         goto end;
     }
 
-    ret = saveStorage( &binPri, &binCert );
+    ret = writePriKeyCert( &binPri, &binCert );
     if( ret == 0 )
     {
         berApplet->messageLog( tr( "The private key and certificate are saved successfully"), this );
@@ -403,7 +638,7 @@ void CertManDlg::clickExport()
         return;
     }
 
-    ret = readStorage( &binEncPri, &binCert );
+    ret = readPriKeyCert( &binEncPri, &binCert );
     if( ret != 0 ) goto end;
 
     ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEncPri, NULL, &binPri );
@@ -431,7 +666,113 @@ end :
 
 void CertManDlg::clickChangePasswd()
 {
+    int ret = 0;
+    int nKeyType = -1;
 
+    BIN binPriKey = {0,0};
+    BIN binEncPriKey = {0,0};
+    BIN binNewEncPriKey = {0,0};
+    BIN binCert = {0,0};
+
+    NewPasswdDlg newPasswd;
+    QString strPass = mEE_PasswdText->text();
+
+    if( strPass.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a password" ), this );
+        return;
+    }
+
+    ret = readPriKeyCert( &binEncPriKey, &binCert );
+    if( ret != 0 )
+    {
+        berApplet->warnLog( tr( "fail to read private key and certificate: %1").arg(ret), this );
+        goto end;
+    }
+
+    ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEncPriKey, NULL, &binPriKey );
+    if( ret != 0 )
+    {
+        berApplet->warnLog( tr( "fail to decrypt private key: %1").arg( ret ), this );
+        goto end;
+    }
+
+    nKeyType = JS_PKI_getPriKeyType( &binPriKey );
+
+    if( newPasswd.exec() == QDialog::Accepted )
+    {
+        QString strNewPass = newPasswd.mPasswdText->text();
+
+        ret = JS_PKI_encryptPrivateKey( nKeyType, -1, strNewPass.toStdString().c_str(), &binPriKey, NULL, &binNewEncPriKey );
+        if( ret != 0 )
+        {
+            berApplet->warnLog( tr( "fail to encrypt private key: %1").arg( ret ), this );
+            goto end;
+        }
+
+        ret = changePriKey( &binNewEncPriKey );
+        if( ret != 0 )
+        {
+            berApplet->warnLog( tr( "fail to change private key: %1").arg(ret ), this );
+            goto end;
+        }
+
+        berApplet->messageLog( tr( "The private key password is changed successfully" ), this );
+    }
+
+
+end :
+    JS_BIN_reset( &binPriKey );
+    JS_BIN_reset( &binEncPriKey );
+    JS_BIN_reset( &binNewEncPriKey );
+    JS_BIN_reset( &binCert );
+}
+
+void CertManDlg::clickOK()
+{
+    int ret = 0;
+
+    BIN binEncPriKey = {0,0};
+    BIN binCert = {0,0};
+    BIN binPriKey = {0,0};
+
+    QString strPass = mEE_PasswdText->text();
+
+    JS_BIN_reset( &pri_key_ );
+    JS_BIN_reset( &cert_ );
+
+    if( strPass.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a password" ), this );
+        return;
+    }
+
+    ret = readPriKeyCert( &binEncPriKey, &binCert );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "fail to read the private key and certificate" ), this );
+        goto end;
+    }
+
+    ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEncPriKey, NULL, &binPriKey );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "fail to decrypt the private key: %1" ).arg( ret ), this );
+        goto end;
+    }
+
+    JS_BIN_copy( &pri_key_, &binPriKey );
+    JS_BIN_copy( &cert_, &binCert );
+
+end :
+    JS_BIN_reset( &binEncPriKey );
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binPriKey );
+
+    if( ret == 0 )
+        QDialog::accept();
+    else
+        QDialog::reject();
 }
 
 void CertManDlg::clickAddTrust()
@@ -446,6 +787,17 @@ void CertManDlg::clickAddTrust()
 
     QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
     QString strTrustPath = berApplet->settingsMgr()->trustedCAPath();
+
+    QDir dir;
+
+    if( dir.exists( strPath ) == false )
+    {
+        if( dir.mkpath( strPath ) == false )
+        {
+            berApplet->warningBox( tr( "fail to make TrustCA folder: %1").arg( strPath ), this );
+            return;
+        }
+    }
 
     memset( &sCertInfo, 0x00, sizeof(sCertInfo));
 
@@ -518,10 +870,29 @@ void CertManDlg::clickRemoveTrust()
 
 void CertManDlg::clickViewTrust()
 {
+    QModelIndex idx = mCA_CertTable->currentIndex();
 
+    QTableWidgetItem* item = mCA_CertTable->item( idx.row(), 0 );
+    if( item == NULL ) return;
+
+    const QString strPath = item->data( Qt::UserRole ).toString();
+
+    CertInfoDlg certInfo;
+    certInfo.setCertPath( strPath );
+    certInfo.exec();
 }
 
 void CertManDlg::clickDecodeTrust()
 {
+    BIN binCert = {0,0};
+    QModelIndex idx = mCA_CertTable->currentIndex();
 
+    QTableWidgetItem* item = mCA_CertTable->item( idx.row(), 0 );
+    if( item == NULL ) return;
+
+    const QString strPath = item->data( Qt::UserRole ).toString();
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    berApplet->decodeData( &binCert, strPath );
+    JS_BIN_reset( &binCert );
 }
