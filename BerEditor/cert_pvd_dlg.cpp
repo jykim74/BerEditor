@@ -73,6 +73,9 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
     mCRLDecodeBtn->setFixedWidth(34);
     mTargetInfoBtn->setFixedWidth(34);
     mTargetDecodeBtn->setFixedWidth(34);
+
+    mCertGroup->layout()->setMargin(5);
+    mCertGroup->layout()->setSpacing(5);
 #endif
 }
 
@@ -473,7 +476,7 @@ void CertPVDDlg::clickPathValidation()
     QString strTrustPath = mTrustPathText->text();
     QString strUntrustPath = mUntrustPathText->text();
     QString strCLRPath = mCRLPathText->text();
-    QString strTargetPath = mTargetPathText->text();
+
 
     JNumValList *pParamList = NULL;
 
@@ -502,13 +505,31 @@ void CertPVDDlg::clickPathValidation()
         JS_BIN_reset( &binCRL );
     }
 
-    if( strTargetPath.length() < 1 )
+    if( mCertGroup->isChecked() == true )
     {
-        berApplet->warningBox( tr( "Select target certificate" ), this );
-        goto end;
+        QString strTargetPath = mTargetPathText->text();
+        if( strTargetPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Select target certificate" ), this );
+            goto end;
+        }
+
+        JS_BIN_fileReadBER( strTargetPath.toLocal8Bit().toStdString().c_str(), &binTarget );
+    }
+    else
+    {
+        CertManDlg certMan;
+        QString strCertHex;
+
+        certMan.setMode(ManModeSelCert);
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
+
+        strCertHex = certMan.getCertHex();
+        JS_BIN_decodeHex( strCertHex.toStdString().c_str(), &binTarget );
     }
 
-    JS_BIN_fileReadBER( strTargetPath.toLocal8Bit().toStdString().c_str(), &binTarget );
+
     if( JS_PKI_isSelfSignedCert2( &binTarget, &nSelfVerify ) == JSR_YES )
     {
         berApplet->log( "The target ceritificate is self-signed" );

@@ -7,6 +7,7 @@
 #include "settings_mgr.h"
 #include "gen_key_pair_dlg.h"
 #include "make_csr_dlg.h"
+#include "cert_man_dlg.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -578,18 +579,6 @@ void SECPClientDlg::clickMakeUpdate()
         return;
     }
 
-    if( strCertPath.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Find a certificate" ), this );
-        return;
-    }
-
-    if( strPriKeyPath.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Find a private key" ), this );
-        return;
-    }
-
     ret = getCA( &binCA );
     if( ret != 0 )
     {
@@ -597,10 +586,36 @@ void SECPClientDlg::clickMakeUpdate()
         goto end;
     }
 
-    JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    if( mCertGroup->isChecked() == true )
+    {
+        if( strCertPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Find a certificate" ), this );
+            return;
+        }
 
-    ret = readPrivateKey( &binPri );
-    if( ret != 0 ) goto end;
+        if( strPriKeyPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Find a private key" ), this );
+            return;
+        }
+
+        JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+
+        ret = readPrivateKey( &binPri );
+        if( ret != 0 ) goto end;
+    }
+    else
+    {
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelBoth);
+
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
+
+        certMan.getPriKey( &binPri );
+        certMan.getCert( &binCert );
+    }
 
     makeCSR.setPriKey( &binPri );
     if( makeCSR.exec() != QDialog::Accepted ) goto end;

@@ -5,6 +5,7 @@
 #include "ber_applet.h"
 #include "cert_info_dlg.h"
 #include "settings_mgr.h"
+#include "cert_man_dlg.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -87,7 +88,7 @@ OCSPClientDlg::OCSPClientDlg(QWidget *parent) :
     mResponseClearBtn->setFixedWidth(34);
     mResponseDecodeBtn->setFixedWidth(34);
 
-    mSignGroup->layout()->setSpacing(5);
+    mCertGroup->layout()->setSpacing(5);
 #endif
     initialize();
 }
@@ -143,9 +144,9 @@ void OCSPClientDlg::setUsedURL( const QString strURL )
 void OCSPClientDlg::checkUseSign()
 {
     if( mUseSignCheck->isChecked() )
-        mSignGroup->setEnabled( true );
+        mCertGroup->setEnabled( true );
     else
-        mSignGroup->setEnabled( false );
+        mCertGroup->setEnabled( false );
 }
 
 void OCSPClientDlg::clickClearURL()
@@ -766,18 +767,36 @@ void OCSPClientDlg::clickEncode()
 
     if( mUseSignCheck->isChecked() )
     {
-        QString strSignCertPath = mSignCertPathText->text();
-
-        if( strSignCertPath.length() < 1 )
+        if( mCertGroup->isChecked() )
         {
-            berApplet->warningBox( tr( "Find a sign certificate" ), this );
-            return;
+            QString strSignCertPath = mSignCertPathText->text();
+
+            if( strSignCertPath.length() < 1 )
+            {
+                berApplet->warningBox( tr( "Find a sign certificate" ), this );
+                return;
+            }
+
+            JS_BIN_fileReadBER( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binSignCert );
+            ret = readPrivateKey( &binSignPriKey );
+            if( ret != 0 ) goto end;
         }
+        else
+        {
+            CertManDlg certMan;
+            QString strPriHex;
+            QString strCertHex;
 
-        JS_BIN_fileReadBER( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binSignCert );
+            certMan.setMode( ManModeSelBoth );
+            if( certMan.exec() != QDialog::Accepted )
+                goto end;
 
-        ret = readPrivateKey( &binSignPriKey );
-        if( ret != 0 ) goto end;
+            strPriHex = certMan.getPriKeyHex();
+            strCertHex = certMan.getCertHex();
+
+            JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binSignPriKey );
+            JS_BIN_decodeHex( strCertHex.toStdString().c_str(), &binSignCert );
+        }
     }
 
 //    JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );

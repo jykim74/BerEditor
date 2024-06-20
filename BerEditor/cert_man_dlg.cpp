@@ -107,12 +107,17 @@ void CertManDlg::initialize()
     mTabWidget->setCurrentIndex(0);
     mCertPathText->setText( berApplet->settingsMgr()->certPath() );
 
+    if( mode_ == ManModeSelCert )
+        mEE_PasswdText->setEnabled(false);
+    else
+        mEE_PasswdText->setEnabled(true);
+
     if( mode_ == ManModeTrust )
     {
         setTrustOnly();
         setGroupHide( false );
     }
-    else if( mode_ == ManModeSelect )
+    else if( mode_ == ManModeSelBoth || mode_ == ManModeSelCert )
     {
         loadEEList();
         setGroupHide(true);
@@ -163,6 +168,20 @@ const QString CertManDlg::getPriKeyHex()
 const QString CertManDlg::getCertHex()
 {
     return getHexString( &cert_ );
+}
+
+int CertManDlg::getPriKey( BIN *pPriKey )
+{
+    if( pri_key_.nLen < 1 ) return -1;
+
+    JS_BIN_copy( pPriKey, &pri_key_ );
+}
+
+int CertManDlg::getCert( BIN *pCert )
+{
+    if( cert_.nLen < 1 ) return -1;
+
+    JS_BIN_copy( pCert, &cert_ );
 }
 
 void CertManDlg::clearCAList()
@@ -466,6 +485,24 @@ int CertManDlg::readPriKeyCert( BIN *pEncPriKey, BIN *pCert )
     return 0;
 }
 
+int CertManDlg::readCert( BIN *pCert )
+{
+    QString strCertPath;
+
+    QString strPath = getSeletedPath();
+    if( strPath.length() < 1 )
+    {
+        berApplet->elog( QString( "There is no selected item" ) );
+        return -1;
+    }
+
+    strCertPath = QString("%1/%2").arg( strPath ).arg( kCertFile );
+
+    JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), pCert );
+
+    return 0;
+}
+
 void CertManDlg::clickViewCert()
 {
     int ret = 0;
@@ -764,7 +801,7 @@ void CertManDlg::clickOK()
 {
     int ret = 0;
 
-    if( mode_ != ManModeSelect )
+    if( mode_ != ManModeSelCert && mode_ == ManModeSelBoth )
     {
         QDialog::accept();
         return;
@@ -774,33 +811,47 @@ void CertManDlg::clickOK()
     BIN binCert = {0,0};
     BIN binPriKey = {0,0};
 
-    QString strPass = mEE_PasswdText->text();
-
-    JS_BIN_reset( &pri_key_ );
-    JS_BIN_reset( &cert_ );
-
-    if( strPass.length() < 1 )
+    if( mode_ == ManModeSelCert )
     {
-        berApplet->warningBox( tr( "Enter a password" ), this );
-        return;
-    }
+        ret = readCert( &binCert );
+        if( ret != 0 )
+        {
+            berApplet->warningBox( tr( "fail to read the certificate" ), this );
+            goto end;
+        }
 
-    ret = readPriKeyCert( &binEncPriKey, &binCert );
-    if( ret != 0 )
+        JS_BIN_copy( &cert_, &binCert );
+    }
+    else
     {
-        berApplet->warningBox( tr( "fail to read the private key and certificate" ), this );
-        goto end;
-    }
+        QString strPass = mEE_PasswdText->text();
 
-    ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEncPriKey, NULL, &binPriKey );
-    if( ret != 0 )
-    {
-        berApplet->warningBox( tr( "fail to decrypt the private key: %1" ).arg( ret ), this );
-        goto end;
-    }
+        JS_BIN_reset( &pri_key_ );
+        JS_BIN_reset( &cert_ );
 
-    JS_BIN_copy( &pri_key_, &binPriKey );
-    JS_BIN_copy( &cert_, &binCert );
+        if( strPass.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password" ), this );
+            return;
+        }
+
+        ret = readPriKeyCert( &binEncPriKey, &binCert );
+        if( ret != 0 )
+        {
+            berApplet->warningBox( tr( "fail to read the private key and certificate" ), this );
+            goto end;
+        }
+
+        ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEncPriKey, NULL, &binPriKey );
+        if( ret != 0 )
+        {
+            berApplet->warningBox( tr( "fail to decrypt the private key: %1" ).arg( ret ), this );
+            goto end;
+        }
+
+        JS_BIN_copy( &pri_key_, &binPriKey );
+        JS_BIN_copy( &cert_, &binCert );
+    }
 
 end :
     JS_BIN_reset( &binEncPriKey );

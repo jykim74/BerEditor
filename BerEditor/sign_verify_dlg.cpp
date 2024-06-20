@@ -12,6 +12,7 @@
 #include "ber_applet.h"
 #include "settings_mgr.h"
 #include "cert_info_dlg.h"
+#include "cert_man_dlg.h"
 #include "js_bin.h"
 #include "js_pki.h"
 #include "js_pki_tools.h"
@@ -361,8 +362,23 @@ int SignVerifyDlg::signVerifyInit()
 
     if( mMethodCombo->currentIndex() == SIGN_SIGNATURE )
     {
-        ret = readPrivateKey( &binPri );
-        if( ret != 0 ) goto end;
+        if( mCertGroup->isChecked() == true )
+        {
+            ret = readPrivateKey( &binPri );
+            if( ret != 0 ) goto end;
+        }
+        else
+        {
+            CertManDlg certMan;
+            QString strPriHex;
+            certMan.setMode(ManModeSelBoth );
+
+            if( certMan.exec() != QDialog::Accepted )
+                goto end;
+
+            strPriHex = certMan.getPriKeyHex();
+            JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binPri );
+        }
 
         mOutputText->clear();
 
@@ -432,15 +448,28 @@ int SignVerifyDlg::signVerifyInit()
     }
     else
     {
-        if( mCertPath->text().isEmpty() )
+        if( mCertGroup->isChecked() == true )
         {
-            berApplet->warningBox( tr( "Select a certificate"), this );
-            ret = -1;
-            goto end;
+            if( mCertPath->text().isEmpty() )
+            {
+                berApplet->warningBox( tr( "Select a certificate"), this );
+                goto end;
+            }
+
+            JS_BIN_fileReadBER( mCertPath->text().toLocal8Bit().toStdString().c_str(), &binCert );
         }
+        else
+        {
+            CertManDlg certMan;
+            QString strCertHex;
 
-        JS_BIN_fileReadBER( mCertPath->text().toLocal8Bit().toStdString().c_str(), &binCert );
+            certMan.setMode(ManModeSelCert);
+            if( certMan.exec() != QDialog::Accepted )
+                goto end;
 
+            strCertHex = certMan.getCertHex();
+            JS_BIN_decodeHex( strCertHex.toStdString().c_str(), &binCert );
+        }
         if( mAutoCertPubKeyCheck->isChecked() )
         {
             if( JS_PKI_isCert( &binCert ) == 0 )
@@ -765,9 +794,24 @@ void SignVerifyDlg::dataRun()
 
 
     if( mMethodCombo->currentIndex() == SIGN_SIGNATURE )
-    {   
-        ret = readPrivateKey( &binPri );
-        if( ret != 0 ) goto end;
+    {
+        if( mCertGroup->isChecked() == true )
+        {
+            ret = readPrivateKey( &binPri );
+            if( ret != 0 ) goto end;
+        }
+        else
+        {
+            CertManDlg certMan;
+            QString strPriHex;
+            certMan.setMode(ManModeSelBoth );
+
+            if( certMan.exec() != QDialog::Accepted )
+                goto end;
+
+            strPriHex = certMan.getPriKeyHex();
+            JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binPri );
+        }
 
         if( mUseKeyAlgCheck->isChecked() )
         {
@@ -858,13 +902,29 @@ void SignVerifyDlg::dataRun()
     }
     else
     {
-        if( mCertPath->text().isEmpty() )
+        if( mCertGroup->isChecked() == true )
         {
-            berApplet->warningBox( tr( "Select a certificate"), this );
-            goto end;
+            if( mCertPath->text().isEmpty() )
+            {
+                berApplet->warningBox( tr( "Select a certificate"), this );
+                goto end;
+            }
+
+            JS_BIN_fileReadBER( mCertPath->text().toLocal8Bit().toStdString().c_str(), &binCert );
+        }
+        else
+        {
+            CertManDlg certMan;
+            QString strCertHex;
+
+            certMan.setMode(ManModeSelCert);
+            if( certMan.exec() != QDialog::Accepted )
+                goto end;
+
+            strCertHex = certMan.getCertHex();
+            JS_BIN_decodeHex( strCertHex.toStdString().c_str(), &binCert );
         }
 
-        JS_BIN_fileReadBER( mCertPath->text().toLocal8Bit().toStdString().c_str(), &binCert );
         JS_BIN_decodeHex( mOutputText->toPlainText().toStdString().c_str(), &binOut );
 
         if( mAutoCertPubKeyCheck->isChecked() )

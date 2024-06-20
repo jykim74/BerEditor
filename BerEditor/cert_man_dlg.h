@@ -7,8 +7,9 @@
 
 enum {
     ManModeBase = 0,
-    ManModeSelect = 1,
-    ManModeTrust = 2
+    ManModeSelBoth = 1,
+    ManModeSelCert = 2,
+    ManModeTrust = 3
 };
 
 namespace Ui {
@@ -28,6 +29,9 @@ public:
 
     const QString getPriKeyHex();
     const QString getCertHex();
+
+    int getPriKey( BIN *pPriKey );
+    int getCert( BIN *pCert );
 
 private slots:
     void showEvent(QShowEvent *event);
@@ -67,6 +71,7 @@ private:
     int writePriKeyCert( const BIN *pEncPriKey, const BIN *pCert );
     int changePriKey( const BIN *pNewEncPriKey );
     int readPriKeyCert( BIN *pEncPriKey, BIN *pCert );
+    int readCert( BIN *pCert );
 
     BIN pri_key_;
     BIN cert_;

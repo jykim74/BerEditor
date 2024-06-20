@@ -7,6 +7,7 @@
 
 #include "pub_enc_dec_dlg.h"
 #include "cert_info_dlg.h"
+#include "cert_man_dlg.h"
 #include "js_bin.h"
 #include "js_pki.h"
 #include "js_ber.h"
@@ -287,15 +288,30 @@ void PubEncDecDlg::Run()
 
     if( mMethodTypeCombo->currentIndex() == ENC_ENCRYPT )
     {
-        QString strCertPath = mCertPath->text();
-
-        if( strCertPath.length() < 1 )
+        if( mCertGroup->isChecked() == true )
         {
-            berApplet->warningBox( tr( "Select a certificate"), this );
-            goto end;
-        }
+            QString strCertPath = mCertPath->text();
 
-        JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+            if( strCertPath.length() < 1 )
+            {
+                berApplet->warningBox( tr( "Select a certificate"), this );
+                goto end;
+            }
+
+            JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+        }
+        else
+        {
+            CertManDlg certMan;
+            QString strCertHex;
+
+            certMan.setMode(ManModeSelCert);
+            if( certMan.exec() != QDialog::Accepted )
+                goto end;
+
+            strCertHex = certMan.getCertHex();
+            JS_BIN_decodeHex( strCertHex.toStdString().c_str(), &binCert );
+        }
 
         if( mAutoCertPubKeyCheck->isChecked() )
         {
@@ -402,8 +418,24 @@ void PubEncDecDlg::Run()
         }
     }
     else {
-        ret = readPrivateKey( &binPri );
-        if( ret != 0 ) goto end;
+
+        if( mCertGroup->isChecked() == true )
+        {
+            ret = readPrivateKey( &binPri );
+            if( ret != 0 ) goto end;
+        }
+        else
+        {
+            CertManDlg certMan;
+            QString strPriHex;
+
+            certMan.setMode(ManModeSelBoth);
+            if( certMan.exec() != QDialog::Accepted )
+                goto end;
+
+            strPriHex = certMan.getPriKeyHex();
+            JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binPri );
+        }
 
         int nAlgType = JS_PKI_getPriKeyType( &binPri );
         QString strKeyType = getKeyTypeName( nAlgType );

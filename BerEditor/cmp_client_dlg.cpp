@@ -7,6 +7,7 @@
 #include "settings_mgr.h"
 #include "common.h"
 #include "cert_info_dlg.h"
+#include "cert_man_dlg.h"
 #include "gen_key_pair_dlg.h"
 #include "make_csr_dlg.h"
 
@@ -782,7 +783,7 @@ void CMPClientDlg::clickSignGENM()
 
     QString strURL = mURLCombo->currentText();
     QString strCACert = mCACertPathText->text();
-    QString strCert = mCertPathText->text();
+
 
     JNameValList *pNameValList = NULL;
     JNameValList *pCurList = NULL;
@@ -799,17 +800,32 @@ void CMPClientDlg::clickSignGENM()
         return;
     }
 
-    if( strCert.length() < 1 )
-    {
-        berApplet->warningBox( tr( "find a certificate" ), this );
-        return;
-    }
-
     JS_BIN_fileReadBER( strCACert.toLocal8Bit().toStdString().c_str(), &binCA );
-    JS_BIN_fileReadBER( strCert.toLocal8Bit().toStdString().c_str(), &binCert );
 
-    ret = readPrivateKey( &binPri );
-    if( ret != 0 ) goto end;
+    if( mCertGroup->isChecked() == true )
+    {
+        QString strCert = mCertPathText->text();
+
+        if( strCert.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find a certificate" ), this );
+            return;
+        }
+
+        JS_BIN_fileReadBER( strCert.toLocal8Bit().toStdString().c_str(), &binCert );
+        ret = readPrivateKey( &binPri );
+        if( ret != 0 ) goto end;
+    }
+    else
+    {
+        CertManDlg certMan;
+        certMan.setMode( ManModeSelBoth );
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
+
+        certMan.getPriKey( &binPri );
+        certMan.getCert( &binCert );
+    }
 
     ret = JS_CMP_init( strURL.toStdString().c_str(), &binCA, &pCTX );
     if( ret != 0 )
@@ -880,7 +896,7 @@ void CMPClientDlg::clickKUR()
 
     QString strURL = mURLCombo->currentText();
     QString strCACert = mCACertPathText->text();
-    QString strCert = mCertPathText->text();
+
 
     QString strPriHex;
 
@@ -898,22 +914,38 @@ void CMPClientDlg::clickKUR()
         return;
     }
 
-    if( strCert.length() < 1 )
-    {
-        berApplet->warningBox( tr( "find a certificate" ), this );
-        return;
-    }
-
     JS_BIN_fileReadBER( strCACert.toLocal8Bit().toStdString().c_str(), &binCA );
-    JS_BIN_fileReadBER( strCert.toLocal8Bit().toStdString().c_str(), &binCert );
 
     if( genKeyPair.exec() != QDialog::Accepted ) goto end;
 
     strPriHex = genKeyPair.getPriKeyHex();
     JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binNewPri );
 
-    ret = readPrivateKey( &binPri );
-    if( ret != 0 ) goto end;
+    if( mCertGroup->isChecked() )
+    {
+        QString strCert = mCertPathText->text();
+        if( strCert.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find a certificate" ), this );
+            return;
+        }
+
+        JS_BIN_fileReadBER( strCert.toLocal8Bit().toStdString().c_str(), &binCert );
+
+        ret = readPrivateKey( &binPri );
+        if( ret != 0 ) goto end;
+    }
+    else
+    {
+        CertManDlg certMan;
+        certMan.setMode( ManModeSelBoth );
+
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
+
+        certMan.getPriKey( &binPri );
+        certMan.getCert( &binCert );
+    }
 
     ret = JS_CMP_init( strURL.toStdString().c_str(), &binCA, &pCTX );
     if( ret != 0 )
@@ -973,7 +1005,7 @@ void CMPClientDlg::clickRR()
 
     QString strURL = mURLCombo->currentText();
     QString strCACert = mCACertPathText->text();
-    QString strCert = mCertPathText->text();
+
 
     if( strURL.length() < 1 )
     {
@@ -987,17 +1019,32 @@ void CMPClientDlg::clickRR()
         return;
     }
 
-    if( strCert.length() < 1 )
-    {
-        berApplet->warningBox( tr( "find a certificate" ), this );
-        return;
-    }
-
     JS_BIN_fileReadBER( strCACert.toLocal8Bit().toStdString().c_str(), &binCA );
-    JS_BIN_fileReadBER( strCert.toLocal8Bit().toStdString().c_str(), &binCert );
 
-    ret = readPrivateKey( &binPri );
-    if( ret != 0 ) goto end;
+    if( mCertGroup->isChecked() == true )
+    {
+        QString strCert = mCertPathText->text();
+        if( strCert.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find a certificate" ), this );
+            return;
+        }
+
+        JS_BIN_fileReadBER( strCert.toLocal8Bit().toStdString().c_str(), &binCert );
+
+        ret = readPrivateKey( &binPri );
+        if( ret != 0 ) goto end;
+    }
+    else
+    {
+        CertManDlg certMan;
+        certMan.setMode( ManModeSelBoth );
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
+
+        certMan.getPriKey( &binPri );
+        certMan.getCert( &binCert );
+    }
 
     ret = JS_CMP_init( strURL.toStdString().c_str(), &binCA, &pCTX );
     if( ret != 0 )

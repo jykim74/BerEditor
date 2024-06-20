@@ -13,6 +13,7 @@
 #include "mainwindow.h"
 #include "ber_applet.h"
 #include "cert_info_dlg.h"
+#include "cert_man_dlg.h"
 #include "common.h"
 
 CMSDlg::CMSDlg(QWidget *parent) :
@@ -323,17 +324,31 @@ void CMSDlg::clickSignedData()
         return;
     }
 
-    ret = readSignPrivateKey( &binPri );
-    if( ret != 0 ) return;
-
-    QString strSignCertPath = mSignCertPathText->text();
-    if( strSignCertPath.isEmpty() )
+    if( mSignCertGroup->isChecked() == true )
     {
-        berApplet->warningBox(tr("Select a certificate for signing" ), this );
-        return;
-    }
+        ret = readSignPrivateKey( &binPri );
+        if( ret != 0 ) return;
 
-    JS_BIN_fileReadBER( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+        QString strSignCertPath = mSignCertPathText->text();
+        if( strSignCertPath.isEmpty() )
+        {
+            berApplet->warningBox(tr("Select a certificate for signing" ), this );
+            return;
+        }
+
+        JS_BIN_fileReadBER( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    }
+    else
+    {
+        CertManDlg certMan;
+        certMan.setMode( ManModeSelBoth );
+
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
+
+        certMan.getCert( &binCert );
+        certMan.getPriKey( &binPri );
+    }
 
     if( mSrcStringRadio->isChecked() )
         nType = DATA_STRING;
@@ -401,14 +416,27 @@ void CMSDlg::clickEnvelopedData()
         return;
     }
 
-    QString strKMCertPath = mKMCertPathText->text();
-    if( strKMCertPath.isEmpty() )
+    if( mKMCertGroup->isChecked() == true )
     {
-        berApplet->warningBox(tr("Select a certificate for KM" ), this );
-        return;
-    }
+        QString strKMCertPath = mKMCertPathText->text();
+        if( strKMCertPath.isEmpty() )
+        {
+            berApplet->warningBox(tr("Select a certificate for KM" ), this );
+            return;
+        }
 
-    JS_BIN_fileReadBER( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+        JS_BIN_fileReadBER( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    }
+    else
+    {
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelCert);
+
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
+
+        certMan.getCert( &binCert );
+    }
 
     JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
 
@@ -482,25 +510,52 @@ void CMSDlg::clickSignAndEnvloped()
         return;
     }
 
-    ret = readSignPrivateKey( &binSignPri );
-    if( ret != 0 ) return;
-
-    QString strSignCertPath = mSignCertPathText->text();
-    if( strSignCertPath.isEmpty() )
+    if( mSignCertGroup->isChecked() == true )
     {
-        berApplet->warningBox(tr("Select a certificate for signing" ), this );
-        return;
+        ret = readSignPrivateKey( &binSignPri );
+        if( ret != 0 ) return;
+
+        QString strSignCertPath = mSignCertPathText->text();
+        if( strSignCertPath.isEmpty() )
+        {
+            berApplet->warningBox(tr("Select a certificate for signing" ), this );
+            return;
+        }
+
+        JS_BIN_fileReadBER( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binSignCert );
+    }
+    else
+    {
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelBoth);
+
+        if(certMan.exec() != QDialog::Accepted )
+            return;
+
+        certMan.getCert( &binSignCert );
+        certMan.getPriKey( &binSignPri );
     }
 
-    QString strKMCertPath = mKMCertPathText->text();
-    if( strKMCertPath.isEmpty() )
+    if( mKMCertGroup->isChecked() == true )
     {
-        berApplet->warningBox(tr("Select a certificate for KM" ), this );
-        return;
-    }
+        QString strKMCertPath = mKMCertPathText->text();
+        if( strKMCertPath.isEmpty() )
+        {
+            berApplet->warningBox(tr("Select a certificate for KM" ), this );
+            return;
+        }
 
-    JS_BIN_fileReadBER( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binSignCert );
-    JS_BIN_fileReadBER( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binKMCert );
+        JS_BIN_fileReadBER( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binKMCert );
+    }
+    else
+    {
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelCert);
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
+
+        certMan.getCert( &binKMCert );
+    }
 
     JS_PKI_getPubKeyFromCert( &binKMCert, &binKMPubKey );
     nType = JS_PKI_getPubKeyType( &binKMPubKey );
@@ -581,14 +636,27 @@ void CMSDlg::clickVerifyData()
         return;
     }
 
-    QString strSignCertPath = mSignCertPathText->text();
-    if( strSignCertPath.isEmpty() )
+    if( mSignCertGroup->isChecked() == true )
     {
-        berApplet->warningBox(tr("Select a certificate for signing" ), this );
-        return;
-    }
+        QString strSignCertPath = mSignCertPathText->text();
+        if( strSignCertPath.isEmpty() )
+        {
+            berApplet->warningBox(tr("Select a certificate for signing" ), this );
+            return;
+        }
 
-    JS_BIN_fileReadBER( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+        JS_BIN_fileReadBER( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    }
+    else
+    {
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelCert);
+
+        if( certMan.exec() != QDialog::Accepted )
+            return;
+
+        certMan.getCert( &binCert );
+    }
 
     if( mSrcStringRadio->isChecked() )
         JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
@@ -643,17 +711,30 @@ void CMSDlg::clickDevelopedData()
         return;
     }
 
-    ret = readKMPrivateKey( &binPri );
-    if( ret != 0 ) return;
-
-    QString strKMCertPath = mKMCertPathText->text();
-    if( strKMCertPath.isEmpty() )
+    if( mKMCertGroup->isChecked() == true )
     {
-        berApplet->warningBox(tr("Select a certificate for KM" ), this );
-        return;
-    }
+        ret = readKMPrivateKey( &binPri );
+        if( ret != 0 ) return;
 
-    JS_BIN_fileReadBER( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+        QString strKMCertPath = mKMCertPathText->text();
+        if( strKMCertPath.isEmpty() )
+        {
+            berApplet->warningBox(tr("Select a certificate for KM" ), this );
+            return;
+        }
+
+        JS_BIN_fileReadBER( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    }
+    else
+    {
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelBoth);
+        if( certMan.exec() != QDialog::Accepted )
+            return;
+
+        certMan.getCert( &binCert );
+        certMan.getPriKey( &binPri );
+    }
 
     if( mSrcStringRadio->isChecked() )
         JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
@@ -718,25 +799,52 @@ void CMSDlg::clickDevelopedAndVerify()
         return;
     }
 
-    QString strSignCertPath = mSignCertPathText->text();
-    if( strSignCertPath.isEmpty() )
+    if( mSignCertGroup->isChecked() == true )
     {
-        berApplet->warningBox(tr("Select a certificate for signing" ), this );
-        return;
+        QString strSignCertPath = mSignCertPathText->text();
+        if( strSignCertPath.isEmpty() )
+        {
+            berApplet->warningBox(tr("Select a certificate for signing" ), this );
+            return;
+        }
+
+        JS_BIN_fileReadBER( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binSignCert );
+    }
+    else
+    {
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelCert);
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
+
+        certMan.getCert(&binSignCert);
     }
 
-    QString strKMCertPath = mSignCertPathText->text();
-    if( strKMCertPath.isEmpty() )
+    if( mKMCertGroup->isChecked() == true )
     {
-        berApplet->warningBox(tr("Select a certificate for KM" ), this );
-        return;
+        QString strKMCertPath = mSignCertPathText->text();
+        if( strKMCertPath.isEmpty() )
+        {
+            berApplet->warningBox(tr("Select a certificate for KM" ), this );
+            goto end;
+        }
+
+        ret = readKMPrivateKey( &binKMPri );
+        if( ret != 0 ) return;
+
+        JS_BIN_fileReadBER( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binKMCert );
     }
+    else
+    {
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelBoth);
 
-    ret = readKMPrivateKey( &binKMPri );
-    if( ret != 0 ) return;
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
 
-    JS_BIN_fileReadBER( strSignCertPath.toLocal8Bit().toStdString().c_str(), &binSignCert );
-    JS_BIN_fileReadBER( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binKMCert );
+        certMan.getCert( &binKMCert );
+        certMan.getPriKey( &binKMPri );
+    }
 
     if( mSrcStringRadio->isChecked() )
         JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
