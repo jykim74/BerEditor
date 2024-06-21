@@ -284,7 +284,7 @@ void KeyPairManDlg::clickCheckKeyPair()
     if( ret == JSR_VALID )
         berApplet->messageBox( tr("The private key and the public key are correct"), this );
     else
-        berApplet->warningBox( QString( tr("The private key and the public key are incorrect [%2]")).arg(ret), this );
+        berApplet->warningBox( QString( tr("The private key and the public key are incorrect [%1]")).arg(ret), this );
 
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binPub );
