@@ -185,7 +185,11 @@ void TSPClientDlg::findSrvCert()
     }
 
     QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
-    if( filePath.length() > 0 ) mSrvCertPathText->setText( filePath );
+    if( filePath.length() > 0 )
+    {
+        mSrvCertPathText->setText( filePath );
+        berApplet->setCurFile(filePath);
+    }
 }
 
 void TSPClientDlg::viewSrvCert()

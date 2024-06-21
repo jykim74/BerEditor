@@ -95,6 +95,9 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     mCloseBtn->setFocus();
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+    mCertGroup->layout()->setSpacing(5);
+    mCertGroup->layout()->setMargin(10);
+
     mPriKeyTypeBtn->setFixedWidth(34);
     mPriKeyDecodeBtn->setFixedWidth(34);
     mCertDecodeBtn->setFixedWidth(34);
@@ -1211,9 +1214,25 @@ void SignVerifyDlg::digestRun()
     berApplet->log( QString( "Algorithm : %1 Hash %2").arg( mAlgTypeCombo->currentText()).arg( strHash ));
 
     if( mMethodCombo->currentIndex() == SIGN_SIGNATURE )
-    {        
-        ret = readPrivateKey( &binPri );
-        if( ret != 0 ) goto end;
+    {
+        if( mCertGroup->isChecked() == true )
+        {
+            ret = readPrivateKey( &binPri );
+            if( ret != 0 ) goto end;
+        }
+        else
+        {
+            CertManDlg certMan;
+            QString strPriHex;
+            certMan.setMode(ManModeSelBoth );
+            certMan.setTitle( tr( "Select a sign certificate") );
+
+            if( certMan.exec() != QDialog::Accepted )
+                goto end;
+
+            strPriHex = certMan.getPriKeyHex();
+            JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binPri );
+        }
 
         if( mUseKeyAlgCheck->isChecked() )
         {
@@ -1266,13 +1285,31 @@ void SignVerifyDlg::digestRun()
     }
     else
     {
-        if( mCertPath->text().isEmpty() )
+        if( mCertGroup->isChecked() == true )
         {
-            berApplet->warningBox( tr( "Select a certificate"), this );
-            goto end;
+            if( mCertPath->text().isEmpty() )
+            {
+                berApplet->warningBox( tr( "Select a certificate"), this );
+                goto end;
+            }
+
+            JS_BIN_fileReadBER( mCertPath->text().toLocal8Bit().toStdString().c_str(), &binCert );
+        }
+        else
+        {
+            CertManDlg certMan;
+            QString strCertHex;
+
+            certMan.setMode(ManModeSelCert);
+            certMan.setTitle( tr( "Select a sign certificate") );
+
+            if( certMan.exec() != QDialog::Accepted )
+                goto end;
+
+            strCertHex = certMan.getCertHex();
+            JS_BIN_decodeHex( strCertHex.toStdString().c_str(), &binCert );
         }
 
-        JS_BIN_fileReadBER( mCertPath->text().toLocal8Bit().toStdString().c_str(), &binCert );
         JS_BIN_decodeHex( mOutputText->toPlainText().toStdString().c_str(), &binOut );
 
         if( mAutoCertPubKeyCheck->isChecked() )

@@ -177,7 +177,7 @@ add_executable(${PROJECT_NAME}
     tsp_client_dlg.h tsp_client_dlg.cpp tsp_client_dlg.ui
     tst_info_dlg.h tst_info_dlg.cpp tst_info_dlg.ui
     cmp_client_dlg.h cmp_client_dlg.cpp cmp_client_dlg.ui
-    secp_client_dlg.h secp_client_dlg.cpp secp_client_dlg.ui
+    scep_client_dlg.h scep_client_dlg.cpp scep_client_dlg.ui
     auth_ref_dlg.h auth_ref_dlg.cpp auth_ref_dlg.ui
     cert_man_dlg.h cert_man_dlg.cpp cert_man_dlg.ui
     passwd_dlg.h passwd_dlg.cpp passwd_dlg.ui

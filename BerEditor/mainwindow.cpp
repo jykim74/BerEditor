@@ -42,7 +42,7 @@
 #include "ocsp_client_dlg.h"
 #include "tsp_client_dlg.h"
 #include "cmp_client_dlg.h"
-#include "secp_client_dlg.h"
+#include "scep_client_dlg.h"
 #include "cert_man_dlg.h"
 #include "common.h"
 
@@ -118,7 +118,7 @@ MainWindow::~MainWindow()
     delete ocsp_client_dlg_;
     delete tsp_client_dlg_;
     delete cmp_client_dlg_;
-    delete secp_client_dlg_;
+    delete scep_client_dlg_;
     delete cert_man_dlg_;
 
     delete table_tab_;
@@ -668,18 +668,18 @@ void MainWindow::createActions()
     connect( cmpAct, &QAction::triggered, this, &MainWindow::cmpClient );
     protoMenu->addAction( cmpAct );
 
-    const QIcon secpIcon = QIcon::fromTheme( "secp_client", QIcon(":/images/secp.png"));
-    QAction *secpAct = new QAction( secpIcon, tr( "&SECP client"), this );
-    secpAct->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_S));
-    connect( secpAct, &QAction::triggered, this, &MainWindow::secpClient );
-    protoMenu->addAction( secpAct );
+    const QIcon scepIcon = QIcon::fromTheme( "scep_client", QIcon(":/images/scep.png"));
+    QAction *scepAct = new QAction( scepIcon, tr( "&SCEP client"), this );
+    scepAct->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_S));
+    connect( scepAct, &QAction::triggered, this, &MainWindow::scepClient );
+    protoMenu->addAction( scepAct );
 
     if( berApplet->isLicense() == false )
     {
         ocspAct->setEnabled( false );
         tspAct->setEnabled( false );
         cmpAct->setEnabled( false );
-        secpAct->setEnabled( false );
+        scepAct->setEnabled( false );
     }
 
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
@@ -772,7 +772,7 @@ void MainWindow::createCryptoDlg()
     ocsp_client_dlg_ = new OCSPClientDlg;
     tsp_client_dlg_ = new TSPClientDlg;
     cmp_client_dlg_ = new CMPClientDlg;
-    secp_client_dlg_ = new SECPClientDlg;
+    scep_client_dlg_ = new SCEPClientDlg;
     cert_man_dlg_ = new CertManDlg;
 }
 
@@ -1326,11 +1326,11 @@ void MainWindow::cmpClient()
     cmp_client_dlg_->activateWindow();
 }
 
-void MainWindow::secpClient()
+void MainWindow::scepClient()
 {
-    secp_client_dlg_->show();
-    secp_client_dlg_->raise();
-    secp_client_dlg_->activateWindow();
+    scep_client_dlg_->show();
+    scep_client_dlg_->raise();
+    scep_client_dlg_->activateWindow();
 }
 
 void MainWindow::certMan()

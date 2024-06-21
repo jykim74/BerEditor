@@ -1,6 +1,6 @@
 #include <QSettings>
 
-#include "secp_client_dlg.h"
+#include "scep_client_dlg.h"
 #include "common.h"
 #include "ber_applet.h"
 #include "cert_info_dlg.h"
@@ -15,9 +15,9 @@
 #include "js_http.h"
 #include "js_pki_x509.h"
 
-const QString kSECPUsedURL = "SECPUsedURL";
+const QString kSCEPUsedURL = "SCEPUsedURL";
 
-SECPClientDlg::SECPClientDlg(QWidget *parent)
+SCEPClientDlg::SCEPClientDlg(QWidget *parent)
     : QDialog(parent)
 {
     setupUi(this);
@@ -60,6 +60,7 @@ SECPClientDlg::SECPClientDlg(QWidget *parent)
 
 #if defined( Q_OS_MAC )
     layout()->setSpacing(5);
+    mCertGroup->layout()->setSpacing(5);
 
     mCACertViewBtn->setFixedWidth(34);
     mCACertDecodeBtn->setFixedWidth(34);
@@ -83,12 +84,12 @@ SECPClientDlg::SECPClientDlg(QWidget *parent)
     initialize();
 }
 
-SECPClientDlg::~SECPClientDlg()
+SCEPClientDlg::~SCEPClientDlg()
 {
 
 }
 
-void SECPClientDlg::initialize()
+void SCEPClientDlg::initialize()
 {
     SettingsMgr *setMgr = berApplet->settingsMgr();
 
@@ -99,34 +100,36 @@ void SECPClientDlg::initialize()
         QString url = usedList.at(i);
         if( url.length() > 4 ) mURLCombo->addItem( url );
     }
+
+    JS_SCEP_init();
 }
 
-QStringList SECPClientDlg::getUsedURL()
+QStringList SCEPClientDlg::getUsedURL()
 {
     QSettings settings;
     QStringList retList;
 
     settings.beginGroup( kSettingBer );
-    retList = settings.value( kSECPUsedURL ).toStringList();
+    retList = settings.value( kSCEPUsedURL ).toStringList();
     settings.endGroup();
 
     return retList;
 }
 
-void SECPClientDlg::setUsedURL( const QString strURL )
+void SCEPClientDlg::setUsedURL( const QString strURL )
 {
     if( strURL.length() <= 4 ) return;
 
     QSettings settings;
     settings.beginGroup( kSettingBer );
-    QStringList list = settings.value( kSECPUsedURL ).toStringList();
+    QStringList list = settings.value( kSCEPUsedURL ).toStringList();
     list.removeAll( strURL );
     list.insert( 0, strURL );
-    settings.setValue( kSECPUsedURL, list );
+    settings.setValue( kSCEPUsedURL, list );
     settings.endGroup();
 }
 
-int SECPClientDlg::getCA( BIN *pCA )
+int SCEPClientDlg::getCA( BIN *pCA )
 {
     int ret = 0;
 
@@ -138,7 +141,7 @@ int SECPClientDlg::getCA( BIN *pCA )
     return ret;
 }
 
-int SECPClientDlg::readPrivateKey( BIN *pPriKey )
+int SCEPClientDlg::readPrivateKey( BIN *pPriKey )
 {
     int ret = 0;
     BIN binData = {0,0};
@@ -195,12 +198,12 @@ end :
     return ret;
 }
 
-void SECPClientDlg::clickClearURL()
+void SCEPClientDlg::clickClearURL()
 {
 
 }
 
-void SECPClientDlg::findCACert()
+void SCEPClientDlg::findCACert()
 {
     QString strPath = mCACertPathText->text();
 
@@ -210,10 +213,14 @@ void SECPClientDlg::findCACert()
     }
 
     QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
-    if( filePath.length() > 0 ) mCACertPathText->setText( filePath );
+    if( filePath.length() > 0 )
+    {
+        mCACertPathText->setText( filePath );
+        berApplet->setCurFile(filePath);
+    }
 }
 
-void SECPClientDlg::findCert()
+void SCEPClientDlg::findCert()
 {
     QString strPath = mCertPathText->text();
 
@@ -223,10 +230,14 @@ void SECPClientDlg::findCert()
     }
 
     QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
-    if( filePath.length() > 0 ) mCertPathText->setText( filePath );
+    if( filePath.length() > 0 )
+    {
+        mCertPathText->setText( filePath );
+        berApplet->setCurFile(filePath);
+    }
 }
 
-void SECPClientDlg::findPriKey()
+void SCEPClientDlg::findPriKey()
 {
     QString strPath = mPriKeyPathText->text();
 
@@ -236,10 +247,14 @@ void SECPClientDlg::findPriKey()
     }
 
     QString filePath = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
-    if( filePath.length() > 0 ) mPriKeyPathText->setText( filePath );
+    if( filePath.length() > 0 )
+    {
+        mPriKeyPathText->setText( filePath );
+        berApplet->setCurFile(filePath);
+    }
 }
 
-void SECPClientDlg::typeCACert()
+void SCEPClientDlg::typeCACert()
 {
     int nType = -1;
     BIN binData = {0,0};
@@ -263,7 +278,7 @@ void SECPClientDlg::typeCACert()
     JS_BIN_reset( &binPubInfo );
 }
 
-void SECPClientDlg::typeCert()
+void SCEPClientDlg::typeCert()
 {
     int nType = -1;
     BIN binData = {0,0};
@@ -287,7 +302,7 @@ void SECPClientDlg::typeCert()
     JS_BIN_reset( &binPubInfo );
 }
 
-void SECPClientDlg::typePriKey()
+void SCEPClientDlg::typePriKey()
 {
     int nType = -1;
     BIN binData = {0,0};
@@ -307,7 +322,7 @@ void SECPClientDlg::typePriKey()
     JS_BIN_reset( &binData );
 }
 
-void SECPClientDlg::viewCACert()
+void SCEPClientDlg::viewCACert()
 {
     CertInfoDlg certInfo;
 
@@ -328,7 +343,7 @@ void SECPClientDlg::viewCACert()
     JS_BIN_reset( &binData );
 }
 
-void SECPClientDlg::viewCert()
+void SCEPClientDlg::viewCert()
 {
     CertInfoDlg certInfo;
 
@@ -350,7 +365,7 @@ void SECPClientDlg::viewCert()
 }
 
 
-void SECPClientDlg::decodeCACert()
+void SCEPClientDlg::decodeCACert()
 {
     BIN binData = {0,0};
     QString strFile = mCACertPathText->text();
@@ -368,7 +383,7 @@ void SECPClientDlg::decodeCACert()
     JS_BIN_reset( &binData );
 }
 
-void SECPClientDlg::decodeCert()
+void SCEPClientDlg::decodeCert()
 {
     BIN binData = {0,0};
     QString strFile = mCertPathText->text();
@@ -386,7 +401,7 @@ void SECPClientDlg::decodeCert()
     JS_BIN_reset( &binData );
 }
 
-void SECPClientDlg::decodePriKey()
+void SCEPClientDlg::decodePriKey()
 {
     BIN binData = {0,0};
     QString strFile = mPriKeyPathText->text();
@@ -404,7 +419,7 @@ void SECPClientDlg::decodePriKey()
     JS_BIN_reset( &binData );
 }
 
-void SECPClientDlg::decodeRequest()
+void SCEPClientDlg::decodeRequest()
 {
     BIN binData = {0,0};
     QString strHex = mRequestText->toPlainText();
@@ -415,7 +430,7 @@ void SECPClientDlg::decodeRequest()
     JS_BIN_reset( &binData );
 }
 
-void SECPClientDlg::decodeResponse()
+void SCEPClientDlg::decodeResponse()
 {
     BIN binData = {0,0};
     QString strHex = mResponseText->toPlainText();
@@ -426,35 +441,35 @@ void SECPClientDlg::decodeResponse()
     JS_BIN_reset( &binData );
 }
 
-void SECPClientDlg::clearRequest()
+void SCEPClientDlg::clearRequest()
 {
     mRequestText->clear();
 }
 
-void SECPClientDlg::clearResponse()
+void SCEPClientDlg::clearResponse()
 {
     mResponseText->clear();
 }
 
-void SECPClientDlg::requestChanged()
+void SCEPClientDlg::requestChanged()
 {
     int nLen = mRequestText->toPlainText().length() / 2;
     mRequestLenText->setText( QString("%1").arg( nLen ) );
 }
 
-void SECPClientDlg::responseChanged()
+void SCEPClientDlg::responseChanged()
 {
     int nLen = mResponseText->toPlainText().length() / 2;
     mResponseLenText->setText( QString("%1").arg( nLen ) );
 }
 
-void SECPClientDlg::clickClearAll()
+void SCEPClientDlg::clickClearAll()
 {
     clearRequest();
     clearResponse();
 }
 
-void SECPClientDlg::clickGetCA()
+void SCEPClientDlg::clickGetCA()
 {
     int ret = 0;
     int nStatus = 0;
@@ -495,7 +510,7 @@ end :
     JS_BIN_reset( &binCA );
 }
 
-void SECPClientDlg::clickMakeIssue()
+void SCEPClientDlg::clickMakeIssue()
 {
     int ret = 0;
     BIN binNonce = {0,0};
@@ -555,7 +570,7 @@ end :
     if( pTransID ) JS_free( pTransID );
 }
 
-void SECPClientDlg::clickMakeUpdate()
+void SCEPClientDlg::clickMakeUpdate()
 {
     int ret = 0;
     BIN binNonce = {0,0};
@@ -651,7 +666,7 @@ end :
     if( pTransID ) JS_free( pTransID );
 }
 
-void SECPClientDlg::clickMakeGetCRL()
+void SCEPClientDlg::clickMakeGetCRL()
 {
     int ret = 0;
     BIN binNonce = {0,0};
@@ -672,17 +687,6 @@ void SECPClientDlg::clickMakeGetCRL()
         return;
     }
 
-    if( strCertPath.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Find a certificate" ), this );
-        return;
-    }
-
-    if( strPriKeyPath.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Find a private key" ), this );
-        return;
-    }
 
     ret = getCA( &binCA );
     if( ret != 0 )
@@ -691,10 +695,36 @@ void SECPClientDlg::clickMakeGetCRL()
         goto end;
     }
 
-    JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    if( mCertGroup->isChecked() == true )
+    {
+        if( strCertPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Find a certificate" ), this );
+            return;
+        }
 
-    ret = readPrivateKey( &binPri );
-    if( ret != 0 ) goto end;
+        if( strPriKeyPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Find a private key" ), this );
+            return;
+        }
+
+        JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+
+        ret = readPrivateKey( &binPri );
+        if( ret != 0 ) goto end;
+    }
+    else
+    {
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelBoth);
+
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
+
+        certMan.getCert( &binCert );
+        certMan.getPriKey( &binPri );
+    }
 
 
     JS_PKI_genRandom( 16, &binNonce );
@@ -720,7 +750,7 @@ end :
     JS_BIN_reset( &binReq );
 }
 
-void SECPClientDlg::clickSend()
+void SCEPClientDlg::clickSend()
 {
     int ret = 0;
     int nStatus = 0;
@@ -771,7 +801,7 @@ end :
     JS_BIN_reset( &binRsp );
 }
 
-void SECPClientDlg::clickVerify()
+void SCEPClientDlg::clickVerify()
 {
     int ret = 0;
 
@@ -789,7 +819,7 @@ void SECPClientDlg::clickVerify()
 
     if( strRsp.length() < 1 )
     {
-        berApplet->warningBox( tr("There is no request" ), this );
+        berApplet->warningBox( tr("There is no response" ), this );
         goto end;
     }
 

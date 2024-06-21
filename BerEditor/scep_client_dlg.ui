@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SECPClientDlg</class>
- <widget class="QDialog" name="SECPClientDlg">
+ <class>SCEPClientDlg</class>
+ <widget class="QDialog" name="SCEPClientDlg">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>614</width>
-    <height>782</height>
+    <height>789</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>SECP Client</string>
+      <string>SCEP Client</string>
      </property>
     </widget>
    </item>
@@ -39,7 +39,7 @@
         </size>
        </property>
        <property name="text">
-        <string>SECP URL</string>
+        <string>SCEP URL</string>
        </property>
       </widget>
      </item>

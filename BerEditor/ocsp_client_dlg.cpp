@@ -334,7 +334,11 @@ void OCSPClientDlg::findCACert()
     }
 
     QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
-    if( filePath.length() > 0 ) mCACertPathText->setText( filePath );
+    if( filePath.length() > 0 )
+    {
+        mCACertPathText->setText( filePath );
+        berApplet->setCurFile(filePath);
+    }
 }
 
 void OCSPClientDlg::findCert()
@@ -347,7 +351,11 @@ void OCSPClientDlg::findCert()
     }
 
     QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
-    if( filePath.length() > 0 ) mCertPathText->setText( filePath );
+    if( filePath.length() > 0 )
+    {
+        mCertPathText->setText( filePath );
+        berApplet->setCurFile(filePath);
+    }
 }
 
 void OCSPClientDlg::findSignCert()
@@ -360,7 +368,11 @@ void OCSPClientDlg::findSignCert()
     }
 
     QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
-    if( filePath.length() > 0 ) mSignCertPathText->setText( filePath );
+    if( filePath.length() > 0 )
+    {
+        mSignCertPathText->setText( filePath );
+        berApplet->setCurFile(filePath);
+    }
 }
 
 void OCSPClientDlg::findSignPriKey()
@@ -373,7 +385,11 @@ void OCSPClientDlg::findSignPriKey()
     }
 
     QString filePath = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
-    if( filePath.length() > 0 ) mSignPriKeyPathText->setText( filePath );
+    if( filePath.length() > 0 )
+    {
+        mSignPriKeyPathText->setText( filePath );
+        berApplet->setCurFile(filePath);
+    }
 }
 
 void OCSPClientDlg::findSrvCert()
@@ -386,7 +402,11 @@ void OCSPClientDlg::findSrvCert()
     }
 
     QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
-    if( filePath.length() > 0 ) mSrvCertPathText->setText( filePath );
+    if( filePath.length() > 0 )
+    {
+        mSrvCertPathText->setText( filePath );
+        berApplet->setCurFile(filePath);
+    }
 }
 
 void OCSPClientDlg::typeCACert()

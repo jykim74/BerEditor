@@ -1,21 +1,21 @@
-#ifndef SECP_CLIENT_DLG_H
-#define SECP_CLIENT_DLG_H
+#ifndef SCEP_CLIENT_DLG_H
+#define SCEP_CLIENT_DLG_H
 
 #include <QDialog>
-#include "ui_secp_client_dlg.h"
+#include "ui_scep_client_dlg.h"
 #include "js_bin.h"
 
 namespace Ui {
-class SECPClientDlg;
+class SCEPClientDlg;
 }
 
-class SECPClientDlg : public QDialog, public Ui::SECPClientDlg
+class SCEPClientDlg : public QDialog, public Ui::SCEPClientDlg
 {
     Q_OBJECT
 
 public:
-    explicit SECPClientDlg(QWidget *parent = nullptr);
-    ~SECPClientDlg();
+    explicit SCEPClientDlg(QWidget *parent = nullptr);
+    ~SCEPClientDlg();
 
 private slots:
     void clickClearURL();
@@ -62,4 +62,4 @@ private:
     int getCA( BIN *pCA );
 };
 
-#endif // SECP_CLIENT_DLG_H
+#endif // SCEP_CLIENT_DLG_H

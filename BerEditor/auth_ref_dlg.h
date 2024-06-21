@@ -16,8 +16,11 @@ public:
     explicit AuthRefDlg(QWidget *parent = nullptr);
     ~AuthRefDlg();
 
-private:
+private slots:
+    void clickOK();
 
+private:
+    void initialize();
 };
 
 #endif // AUTH_REF_DLG_H

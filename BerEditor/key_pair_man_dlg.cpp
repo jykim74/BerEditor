@@ -423,6 +423,7 @@ void KeyPairManDlg::findSavePath()
     if( folderPath.length() > 0 )
     {
         mSavePathText->setText( folderPath );
+        berApplet->setCurFile(folderPath);
     }
 }
 

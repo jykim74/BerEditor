@@ -224,6 +224,7 @@ int CertManDlg::getPriKey( BIN *pPriKey )
     if( pri_key_.nLen < 1 ) return -1;
 
     JS_BIN_copy( pPriKey, &pri_key_ );
+    return 0;
 }
 
 int CertManDlg::getCert( BIN *pCert )
@@ -231,6 +232,7 @@ int CertManDlg::getCert( BIN *pCert )
     if( cert_.nLen < 1 ) return -1;
 
     JS_BIN_copy( pCert, &cert_ );
+    return 0;
 }
 
 void CertManDlg::clearCAList()
@@ -875,7 +877,10 @@ void CertManDlg::clickOK()
 {
     int ret = 0;
 
-    if( mode_ != ManModeSelCert && mode_ == ManModeSelBoth )
+    JS_BIN_reset( &pri_key_ );
+    JS_BIN_reset( &cert_ );
+
+    if( mode_ != ManModeSelCert && mode_ != ManModeSelBoth )
     {
         QDialog::accept();
         return;
@@ -900,8 +905,7 @@ void CertManDlg::clickOK()
     {
         QString strPass = mEE_PasswdText->text();
 
-        JS_BIN_reset( &pri_key_ );
-        JS_BIN_reset( &cert_ );
+
 
         if( strPass.length() < 1 )
         {

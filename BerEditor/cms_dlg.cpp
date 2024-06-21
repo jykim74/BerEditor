@@ -69,6 +69,9 @@ CMSDlg::CMSDlg(QWidget *parent) :
     mCloseBtn->setFocus();
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+    mSignCertGroup->layout()->setSpacing(5);
+    mKMCertGroup->layout()->setSpacing(5);
+
     mSignPriKeyTypeBtn->setFixedWidth(34);
     mSignPriKeyDecodeBtn->setFixedWidth(34);
     mSignCertDecodeBtn->setFixedWidth(34);

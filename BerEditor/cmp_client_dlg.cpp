@@ -76,6 +76,7 @@ CMPClientDlg::CMPClientDlg(QWidget *parent)
     mResponseDecodeBtn->setFixedWidth(34);
 
     layout()->setSpacing(5);
+    mCertGroup->layout()->setSpacing(5);
 #endif
 
     initialize();
@@ -136,7 +137,11 @@ void CMPClientDlg::findCACert()
     }
 
     QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
-    if( filePath.length() > 0 ) mCACertPathText->setText( filePath );
+    if( filePath.length() > 0 )
+    {
+        mCACertPathText->setText( filePath );
+        berApplet->setCurFile(filePath);
+    }
 }
 
 void CMPClientDlg::viewCACert()
@@ -213,7 +218,11 @@ void CMPClientDlg::findCert()
     }
 
     QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
-    if( filePath.length() > 0 ) mCertPathText->setText( filePath );
+    if( filePath.length() > 0 )
+    {
+        mCertPathText->setText( filePath );
+        berApplet->setCurFile(filePath);
+    }
 }
 
 void CMPClientDlg::viewCert()
@@ -290,7 +299,11 @@ void CMPClientDlg::findPriKey()
     }
 
     QString filePath = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
-    if( filePath.length() > 0 ) mPriKeyPathText->setText( filePath );
+    if( filePath.length() > 0 )
+    {
+        mPriKeyPathText->setText( filePath );
+        berApplet->setCurFile(filePath);
+    }
 }
 
 void CMPClientDlg::decodePriKey()
@@ -435,14 +448,6 @@ void CMPClientDlg::clickGENM()
     mRequestText->setPlainText( getHexString( &binReq ) );
     mResponseText->setPlainText( getHexString( &binRsp ));
 
-    if( ret != 0 )
-    {
-        berApplet->elog( QString( "CMP exec GENM fail: %1").arg(ret ));
-        goto end;
-    }
-
-    JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
-
     if( ret == 0 )
     {
         berApplet->messageLog( tr( "GENM success" ), this );
@@ -454,6 +459,11 @@ void CMPClientDlg::clickGENM()
             berApplet->log( QString( "Name: %1 Value: %2").arg( pCurList->sNameVal.pName ).arg( pCurList->sNameVal.pValue ));
             pCurList = pCurList->pNext;
         }
+    }
+    else
+    {
+        berApplet->elog( QString( "CMP exec GENM fail: %1").arg(ret ));
+        goto end;
     }
 
 end :
@@ -534,21 +544,19 @@ void CMPClientDlg::clickIR()
     }
 
     ret = JS_CMP_execIR( pCTX, &binRef, &binAuth, strDN.toStdString().c_str(), &binNewPri, &binNewCert );
+    JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
 
     mRequestText->setPlainText( getHexString( &binReq ) );
     mResponseText->setPlainText( getHexString( &binRsp ));
 
-    if( ret != 0 )
-    {
-        berApplet->elog( QString( "CMP exec IR fail: %1").arg(ret ));
-        goto end;
-    }
-
-    JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
-
     if( ret == 0 )
     {
         berApplet->messageLog( tr( "IR success" ), this );
+    }
+    else
+    {
+        berApplet->elog( QString( "CMP exec IR fail: %1").arg(ret ));
+        goto end;
     }
 
 end :
@@ -629,21 +637,19 @@ void CMPClientDlg::clickCR()
     }
 
     ret = JS_CMP_execCR( pCTX, &binRef, &binAuth, strDN.toStdString().c_str(), &binNewPri, &binNewCert );
+    JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
 
     mRequestText->setPlainText( getHexString( &binReq ) );
     mResponseText->setPlainText( getHexString( &binRsp ));
 
-    if( ret != 0 )
-    {
-        berApplet->elog( QString( "CMP exec CR fail: %1").arg(ret ));
-        goto end;
-    }
-
-    JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
-
     if( ret == 0 )
     {
         berApplet->messageLog( tr( "CR success" ), this );
+    }
+    else
+    {
+        berApplet->elog( QString( "CMP exec CR fail: %1").arg(ret ));
+        goto end;
     }
 
 end :
@@ -732,21 +738,19 @@ void CMPClientDlg::clickP10CSR()
     }
 
     ret = JS_CMP_execP10CSR( pCTX, &binRef, &binAuth, &binCSR, &binNewCert );
+    JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
 
     mRequestText->setPlainText( getHexString( &binReq ) );
     mResponseText->setPlainText( getHexString( &binRsp ));
 
-    if( ret != 0 )
-    {
-        berApplet->elog( QString( "CMP exec P10CSR fail: %1").arg(ret ));
-        goto end;
-    }
-
-    JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
-
     if( ret == 0 )
     {
         berApplet->messageLog( tr( "P10CSR success" ), this );
+    }
+    else
+    {
+        berApplet->elog( QString( "CMP exec P10CSR fail: %1").arg(ret ));
+        goto end;
     }
 
 end :
@@ -847,10 +851,7 @@ void CMPClientDlg::clickSignGENM()
         berApplet->elog( QString( "CMP exec GENM fail: %1").arg(ret ));
         goto end;
     }
-
-    JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
-
-    if( ret == 0 )
+    else
     {
         berApplet->messageLog( tr( "GENM success" ), this );
 
@@ -968,10 +969,7 @@ void CMPClientDlg::clickKUR()
         berApplet->elog( QString( "CMP exec KUR fail: %1").arg(ret ));
         goto end;
     }
-
-    JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
-
-    if( ret == 0 )
+    else
     {
         berApplet->messageLog( tr( "KUR success" ), this );
     }
@@ -1069,10 +1067,7 @@ void CMPClientDlg::clickRR()
         berApplet->elog( QString( "CMP exec RR fail: %1").arg(ret ));
         goto end;
     }
-
-    JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
-
-    if( ret == 0 )
+    else
     {
         berApplet->messageLog( tr( "RR success" ), this );
     }
