@@ -105,6 +105,8 @@ const QString KeyPairManDlg::getTypePathName( qint64 now_t, DerType nType )
     QString strName;
     QString strExt;
 
+    QFileInfo priKeyInfo( mPriPathText->text() );
+
     if( mSavePEMCheck->isChecked() )
         strExt = "pem";
     else
@@ -115,11 +117,11 @@ const QString KeyPairManDlg::getTypePathName( qint64 now_t, DerType nType )
     else if( nType == TypePubKey )
         strName = "public_key";
     else if( nType == TypeEncPri )
-        strName = "enc_private_key";
+        strName = QString( "enc_%1" ).arg( priKeyInfo.baseName() );
     else if( nType == TypePriInfo )
-        strName = "private_key_info";
+        strName = QString( "info_%1" ).arg( priKeyInfo.baseName() );
     else if( nType == TypeCSR )
-        strName = "csr";
+        strName = QString( "csr_%1" ).arg( priKeyInfo.baseName() );
 
 
     if( mSavePathText->text().length() > 0 )
