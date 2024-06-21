@@ -1002,6 +1002,7 @@ void SSLVerifyDlg::clickViewTrustList()
 //    trustList.exec();
     CertManDlg certMan;
     certMan.setMode( ManModeTrust );
+    certMan.setTitle( tr( "Trust RootCA List" ) );
     certMan.exec();
 }
 

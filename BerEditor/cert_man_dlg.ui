@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="mTitleLabel">
      <property name="text">
-      <string>Certificate Management</string>
+      <string>Select a certificate</string>
      </property>
     </widget>
    </item>

@@ -90,10 +90,12 @@ void CertManDlg::initUI()
     mEE_CertTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mEE_CertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
+    QStringList sCATableLabels = { tr( "Name" ), tr( "Subject DN" ), tr( "Algorithm"), tr( "Expire" ), tr( "Issuer DN" ) };
+
     mCA_CertTable->clear();
     mCA_CertTable->horizontalHeader()->setStretchLastSection(true);
-    mCA_CertTable->setColumnCount( sTableLabels.size() );
-    mCA_CertTable->setHorizontalHeaderLabels( sTableLabels );
+    mCA_CertTable->setColumnCount( sCATableLabels.size() );
+    mCA_CertTable->setHorizontalHeaderLabels( sCATableLabels );
     mCA_CertTable->verticalHeader()->setVisible(false);
     mCA_CertTable->horizontalHeader()->setStyleSheet( kTableStyle );
     mCA_CertTable->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -375,7 +377,7 @@ void CertManDlg::loadTrustCAList()
 
         mCA_CertTable->insertRow( row );
         mCA_CertTable->setRowHeight( row, 10 );
-        QTableWidgetItem *item = new QTableWidgetItem( sCertInfo.pSubjectName );
+        QTableWidgetItem *item = new QTableWidgetItem( strName );
 
         if( now > sCertInfo.uNotAfter )
             item->setIcon(QIcon(":/images/cert_revoked.png" ));
@@ -385,9 +387,10 @@ void CertManDlg::loadTrustCAList()
         item->setData(Qt::UserRole, file.filePath() );
 
         mCA_CertTable->setItem( row, 0, item );
-        mCA_CertTable->setItem( row, 1, new QTableWidgetItem( getKeyTypeName( nKeyType )));
-        mCA_CertTable->setItem( row, 2, new QTableWidgetItem( sNotBefore ));
-        mCA_CertTable->setItem( row, 3, new QTableWidgetItem( sCertInfo.pIssuerName ));
+        mCA_CertTable->setItem( row, 1, new QTableWidgetItem( sCertInfo.pSubjectName ));
+        mCA_CertTable->setItem( row, 2, new QTableWidgetItem( getKeyTypeName( nKeyType )));
+        mCA_CertTable->setItem( row, 3, new QTableWidgetItem( sNotBefore ));
+        mCA_CertTable->setItem( row, 4, new QTableWidgetItem( sCertInfo.pIssuerName ));
 
         JS_BIN_reset( &binCert );
         JS_PKI_resetCertInfo( &sCertInfo );

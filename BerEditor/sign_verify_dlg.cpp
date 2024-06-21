@@ -372,6 +372,7 @@ int SignVerifyDlg::signVerifyInit()
             CertManDlg certMan;
             QString strPriHex;
             certMan.setMode(ManModeSelBoth );
+            certMan.setTitle( tr( "Select a sign certificate") );
 
             if( certMan.exec() != QDialog::Accepted )
                 goto end;
@@ -464,6 +465,8 @@ int SignVerifyDlg::signVerifyInit()
             QString strCertHex;
 
             certMan.setMode(ManModeSelCert);
+            certMan.setTitle( tr( "Select a sign certificate") );
+
             if( certMan.exec() != QDialog::Accepted )
                 goto end;
 
@@ -805,6 +808,7 @@ void SignVerifyDlg::dataRun()
             CertManDlg certMan;
             QString strPriHex;
             certMan.setMode(ManModeSelBoth );
+            certMan.setTitle( tr( "Select a sign certificate") );
 
             if( certMan.exec() != QDialog::Accepted )
                 goto end;
@@ -918,6 +922,8 @@ void SignVerifyDlg::dataRun()
             QString strCertHex;
 
             certMan.setMode(ManModeSelCert);
+            certMan.setTitle( tr( "Select a sign certificate") );
+
             if( certMan.exec() != QDialog::Accepted )
                 goto end;
 

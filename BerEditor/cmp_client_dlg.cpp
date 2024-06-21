@@ -820,6 +820,8 @@ void CMPClientDlg::clickSignGENM()
     {
         CertManDlg certMan;
         certMan.setMode( ManModeSelBoth );
+        certMan.setTitle( tr( "Select a certificate") );
+
         if( certMan.exec() != QDialog::Accepted )
             goto end;
 
@@ -939,6 +941,7 @@ void CMPClientDlg::clickKUR()
     {
         CertManDlg certMan;
         certMan.setMode( ManModeSelBoth );
+        certMan.setTitle( tr( "Select a certificate") );
 
         if( certMan.exec() != QDialog::Accepted )
             goto end;
@@ -1039,6 +1042,8 @@ void CMPClientDlg::clickRR()
     {
         CertManDlg certMan;
         certMan.setMode( ManModeSelBoth );
+        certMan.setTitle( tr( "Select a certificate") );
+
         if( certMan.exec() != QDialog::Accepted )
             goto end;
 

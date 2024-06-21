@@ -306,6 +306,8 @@ void PubEncDecDlg::Run()
             QString strCertHex;
 
             certMan.setMode(ManModeSelCert);
+            certMan.setTitle( tr( "Select a certificate") );
+
             if( certMan.exec() != QDialog::Accepted )
                 goto end;
 

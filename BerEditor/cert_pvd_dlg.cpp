@@ -185,6 +185,7 @@ void CertPVDDlg::clickTrustList()
 //    trustList.exec();
     CertManDlg certMan;
     certMan.setMode( ManModeTrust );
+    certMan.setTitle( tr( "Trust RootCA List" ));
     certMan.exec();
 }
 
@@ -522,6 +523,8 @@ void CertPVDDlg::clickPathValidation()
         QString strCertHex;
 
         certMan.setMode(ManModeSelCert);
+        certMan.setTitle( tr( "Select a certificate") );
+
         if( certMan.exec() != QDialog::Accepted )
             goto end;
 

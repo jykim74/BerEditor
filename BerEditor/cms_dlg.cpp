@@ -342,6 +342,7 @@ void CMSDlg::clickSignedData()
     {
         CertManDlg certMan;
         certMan.setMode( ManModeSelBoth );
+        certMan.setTitle( tr( "Select a sign certificate") );
 
         if( certMan.exec() != QDialog::Accepted )
             goto end;
@@ -431,6 +432,7 @@ void CMSDlg::clickEnvelopedData()
     {
         CertManDlg certMan;
         certMan.setMode(ManModeSelCert);
+        certMan.setTitle( tr( "Select a KM certificate") );
 
         if( certMan.exec() != QDialog::Accepted )
             goto end;
@@ -528,6 +530,7 @@ void CMSDlg::clickSignAndEnvloped()
     {
         CertManDlg certMan;
         certMan.setMode(ManModeSelBoth);
+        certMan.setTitle( tr( "Select a sign certificate") );
 
         if(certMan.exec() != QDialog::Accepted )
             return;
@@ -551,6 +554,8 @@ void CMSDlg::clickSignAndEnvloped()
     {
         CertManDlg certMan;
         certMan.setMode(ManModeSelCert);
+        certMan.setTitle( tr( "Select a KM certificate") );
+
         if( certMan.exec() != QDialog::Accepted )
             goto end;
 
@@ -651,6 +656,7 @@ void CMSDlg::clickVerifyData()
     {
         CertManDlg certMan;
         certMan.setMode(ManModeSelCert);
+        certMan.setTitle( tr( "Select a sign certificate") );
 
         if( certMan.exec() != QDialog::Accepted )
             return;
@@ -729,6 +735,8 @@ void CMSDlg::clickDevelopedData()
     {
         CertManDlg certMan;
         certMan.setMode(ManModeSelBoth);
+        certMan.setTitle( tr( "Select a KM certificate") );
+
         if( certMan.exec() != QDialog::Accepted )
             return;
 
@@ -814,6 +822,8 @@ void CMSDlg::clickDevelopedAndVerify()
     {
         CertManDlg certMan;
         certMan.setMode(ManModeSelCert);
+        certMan.setTitle( tr( "Select a sign certificate") );
+
         if( certMan.exec() != QDialog::Accepted )
             goto end;
 
@@ -838,6 +848,7 @@ void CMSDlg::clickDevelopedAndVerify()
     {
         CertManDlg certMan;
         certMan.setMode(ManModeSelBoth);
+        certMan.setTitle( tr( "Select a KM certificate") );
 
         if( certMan.exec() != QDialog::Accepted )
             goto end;
