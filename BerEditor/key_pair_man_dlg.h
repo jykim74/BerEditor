@@ -12,10 +12,8 @@ class KeyPairManDlg;
 enum DerType {
     TypePriKey = 0,
     TypePubKey,
-    TypeCert,
     TypeEncPri,
     TypePriInfo,
-    TypePFX,
     TypeCSR
 };
 
@@ -35,39 +33,30 @@ private slots:
 
     void clickCheckKeyPair();
     void clickEncrypt();
-    void clickEncryptPFX();
-    void clickViewCert();
+
     void clickViewCSR();
     void clickDecrypt();
-    void clickDecryptPFX();
     void clickClearAll();
 
     void findSavePath();
     void findPriKey();
     void findPubKey();
-    void findCert();
     void findEncPriKey();
-    void findPFX();
 
     void clearPriKey();
     void clearPubKey();
-    void clearCert();
     void clearEncPriKey();
     void clearPriInfo();
-    void clearPFX();
     void clearCSR();
 
     void decodePriKey();
     void decodePubKey();
-    void decodeCert();
     void decodeEncPriKey();
     void decodePriInfo();
-    void decodePFX();
     void decodeCSR();
 
     void typePriKey();
     void typePubKey();
-    void typeCert();
 private:
 
     void initialize();

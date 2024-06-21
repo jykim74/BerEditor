@@ -37,6 +37,8 @@ private slots:
     void showEvent(QShowEvent *event);
     void closeEvent(QCloseEvent *event );
 
+    void changeTLVerison( int index );
+
     void clickViewCert();
     void clickDeleteCert();
     void clickDecodeCert();

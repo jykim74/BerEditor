@@ -19,6 +19,10 @@
 static const QString kCertFile = "js_cert.crt";
 static const QString kPriKeyFile = "js_private.key";
 
+static QStringList kVersionList = { "V1", "V2" };
+static QStringList kPBEv1List = { "PBE-SHA1-3DES", "PBE-SHA1-2DES" };
+static QStringList kPBEv2List = { "AES-128-CBC", "AES-256-CBC", "ARIA-128-CBC", "ARIA-256-CBC" };
+
 CertManDlg::CertManDlg(QWidget *parent) :
     QDialog(parent)
 {
@@ -30,6 +34,8 @@ CertManDlg::CertManDlg(QWidget *parent) :
 
     connect( mCancelBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mOKBtn, SIGNAL(clicked()), this, SLOT(clickOK()));
+
+    connect( mTLVersionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeTLVerison(int)));
 
     connect( mViewCertBtn, SIGNAL(clicked()), this, SLOT(clickViewCert()));
     connect( mDelCertBtn, SIGNAL(clicked()), this, SLOT(clickDeleteCert()));
@@ -91,8 +97,20 @@ void CertManDlg::closeEvent(QCloseEvent *event )
     setOKHide( false );
 }
 
+void CertManDlg::changeTLVerison( int index )
+{
+    mTLModeCombo->clear();
+
+    if( index == 0 )
+        mTLModeCombo->addItems( kPBEv1List );
+    else
+        mTLModeCombo->addItems( kPBEv2List );
+}
+
 void CertManDlg::initUI()
 {
+    mTLVersionCombo->addItems( kVersionList );
+
     QStringList sTableLabels = { tr( "Subject DN" ), tr( "Algorithm"), tr( "Expire" ), tr( "Issuer DN" ) };
 
     mEE_CertTable->clear();

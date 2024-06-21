@@ -36,38 +36,30 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
     connect( mFindSavePathBtn, SIGNAL(clicked()), this, SLOT(findSavePath()));
     connect( mFindPriKeyBtn, SIGNAL(clicked()), this, SLOT(findPriKey()));
     connect( mFindPubKeyBtn, SIGNAL(clicked()), this, SLOT(findPubKey()));
-    connect( mFindCertBtn, SIGNAL(clicked()), this, SLOT(findCert()));
     connect( mFindEncPriKeyBtn, SIGNAL(clicked()), this, SLOT(findEncPriKey()));
-    connect( mFindPFXBtn, SIGNAL(clicked()), this, SLOT(findPFX()));
+
 
     connect( mPriClearBtn, SIGNAL(clicked()), this, SLOT(clearPriKey()));
     connect( mPubClearBtn, SIGNAL(clicked()), this, SLOT(clearPubKey()));
-    connect( mCertClearBtn, SIGNAL(clicked()), this, SLOT(clearCert()));
     connect( mEncPriClearBtn, SIGNAL(clicked()), this, SLOT(clearEncPriKey()));
     connect( mPriInfoClearBtn, SIGNAL(clicked()), this, SLOT(clearPriInfo()));
-    connect( mPFXClearBtn, SIGNAL(clicked()), this, SLOT(clearPFX()));
     connect( mCSRClearBtn, SIGNAL(clicked()), this, SLOT(clearCSR()));
 
     connect( mPriDecodeBtn, SIGNAL(clicked()), this, SLOT(decodePriKey()));
     connect( mPubDecodeBtn, SIGNAL(clicked()), this, SLOT(decodePubKey()));
-    connect( mCertDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeCert()));
     connect( mEncPriDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeEncPriKey()));
     connect( mPriInfoDecodeBtn, SIGNAL(clicked()), this, SLOT(decodePriInfo()));
-    connect( mPFXDecodeBtn, SIGNAL(clicked()), this, SLOT(decodePFX()));
     connect( mCSRDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeCSR()));
 
     connect( mPriTypeBtn, SIGNAL(clicked()), this, SLOT(typePriKey()));
     connect( mPubTypeBtn, SIGNAL(clicked()), this, SLOT(typePubKey()));
-    connect( mCertTypeBtn, SIGNAL(clicked()), this, SLOT(typeCert()));
+
 
     connect( mCheckKeyPairBtn, SIGNAL(clicked()), this, SLOT(clickCheckKeyPair()));
     connect( mEncryptBtn, SIGNAL(clicked()), this, SLOT(clickEncrypt()));
-    connect( mEncryptPFXBtn, SIGNAL(clicked()), this, SLOT(clickEncryptPFX()));
-    connect( mViewCertBtn, SIGNAL(clicked()), this, SLOT(clickViewCert()));
     connect( mCSRViewBtn, SIGNAL(clicked()), this, SLOT(clickViewCSR()));
 
     connect( mDecryptBtn, SIGNAL(clicked()), this, SLOT(clickDecrypt()));
-    connect( mDecryptPFXBtn, SIGNAL(clicked()), this, SLOT(clickDecryptPFX()));
     connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clickClearAll()));
 
 #if defined(Q_OS_MAC)
@@ -79,16 +71,12 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
     mPubClearBtn->setFixedWidth(34);
     mPubDecodeBtn->setFixedWidth(34);
     mPubTypeBtn->setFixedWidth(34);
-    mCertClearBtn->setFixedWidth(34);
-    mCertDecodeBtn->setFixedWidth(34);
-    mCertTypeBtn->setFixedWidth(34);
 
     mEncPriClearBtn->setFixedWidth(34);
     mEncPriDecodeBtn->setFixedWidth(34);
     mPriInfoClearBtn->setFixedWidth(34);
     mPriInfoDecodeBtn->setFixedWidth(34);
-    mPFXClearBtn->setFixedWidth(34);
-    mPFXDecodeBtn->setFixedWidth(34);
+
     mCSRClearBtn->setFixedWidth(34);
     mCSRDecodeBtn->setFixedWidth(34);
 #endif
@@ -126,20 +114,12 @@ const QString KeyPairManDlg::getTypePathName( qint64 now_t, DerType nType )
         strName = "private_key";
     else if( nType == TypePubKey )
         strName = "public_key";
-    else if( nType == TypeCert )
-        strName = "cert";
     else if( nType == TypeEncPri )
         strName = "enc_private_key";
     else if( nType == TypePriInfo )
         strName = "private_key_info";
-    else if( nType == TypePFX )
-    {
-        strName = "pfx";
-        strExt = "p12";
-    }
     else if( nType == TypeCSR )
         strName = "csr";
-
 
 
     if( mSavePathText->text().length() > 0 )
@@ -177,7 +157,7 @@ int KeyPairManDlg::Save( qint64 tTime, DerType nType, const BIN *pBin )
 {
     QString strPath = getTypePathName( tTime, nType );
 
-    if( mSavePEMCheck->isChecked() && nType != TypePFX )
+    if( mSavePEMCheck->isChecked() == true )
     {
         int nPEMType = 0;
 
@@ -188,10 +168,6 @@ int KeyPairManDlg::Save( qint64 tTime, DerType nType, const BIN *pBin )
         else if( nType == TypePubKey )
         {
             nPEMType = JS_PEM_TYPE_PUBLIC_KEY;
-        }
-        else if( nType == TypeCert )
-        {
-            nPEMType = JS_PEM_TYPE_CERTIFICATE;
         }
         else if( nType == TypeEncPri )
         {
@@ -221,10 +197,6 @@ int KeyPairManDlg::Save( qint64 tTime, DerType nType, const BIN *pBin )
     {
         mPubPathText->setText( strPath );
     }
-    else if( nType == TypeCert )
-    {
-        mCertPathText->setText( strPath );
-    }
     else if( nType == TypeEncPri )
     {
         mEncPriPathText->setText( strPath );
@@ -232,10 +204,6 @@ int KeyPairManDlg::Save( qint64 tTime, DerType nType, const BIN *pBin )
     else if( nType == TypePriInfo )
     {
         mPriInfoPathText->setText( strPath );
-    }
-    else if( nType == TypePFX )
-    {
-        mPFXPathText->setText( strPath );
     }
     else if( nType == TypeCSR )
     {
@@ -297,8 +265,6 @@ void KeyPairManDlg::clickCheckKeyPair()
     QString strPriPath = mPriPathText->text();
     QString strPubPath = mPubPathText->text();
 
-    QString strTarget = tr( "public key" );
-
     if( strPriPath.length() < 1 )
     {
         berApplet->warningBox( tr( "find private key"), this );
@@ -307,35 +273,18 @@ void KeyPairManDlg::clickCheckKeyPair()
 
     if( strPubPath.length() < 1 )
     {
-        QString strCertPath = mCertPathText->text();
-
-        if( strCertPath.length() < 1 )
-        {
-            berApplet->warningBox( tr( "find public key or certificate" ), this );
-            return;
-        }
-        else
-        {
-            BIN binCert = {0,0};
-            JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
-            JS_PKI_getPubKeyFromCert( &binPub, &binCert );
-            JS_BIN_reset( &binCert );
-
-            strTarget = tr( "certificate" );
-        }
-    }
-    else
-    {
-        JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPub );
+        berApplet->warningBox( tr( "find public key or certificate" ), this );
+        return;
     }
 
+    JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPub );
     JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
 
     ret = JS_PKI_IsValidKeyPair( &binPri, &binPub );
     if( ret == JSR_VALID )
-        berApplet->messageBox( tr("The private key and the %1 are correct").arg(strTarget), this );
+        berApplet->messageBox( tr("The private key and the public key are correct"), this );
     else
-        berApplet->warningBox( QString( tr("The private key and the %1 are incorrect [%2]")).arg( strTarget ).arg(ret), this );
+        berApplet->warningBox( QString( tr("The private key and the public key are incorrect [%2]")).arg(ret), this );
 
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binPub );
@@ -388,84 +337,6 @@ end :
     JS_BIN_reset( &binEnc );
 }
 
-void KeyPairManDlg::clickEncryptPFX()
-{
-    int ret = 0;
-
-    int nPBE = 0;
-    int nKeyType = -1;
-
-    BIN binPri = {0,0};
-    BIN binCert = {0,0};
-    BIN binPFX = {0,0};
-
-    QString strPriPath = mPriPathText->text();
-    QString strCertPath = mCertPathText->text();
-
-    QString strSN = mModeCombo->currentText();
-    QString strPasswd = mPasswdText->text();
-
-    time_t now_t = time(NULL);
-
-    if( strPriPath.length() < 1 )
-    {
-        berApplet->warningBox( tr( "find private key"), this );
-        return;
-    }
-
-    if( strCertPath.length() < 1 )
-    {
-        berApplet->warningBox( tr( "find certificate" ), this );
-        return;
-    }
-
-    if( strPasswd.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Enter a password" ), this );
-        return;
-    }
-
-    JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
-    JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
-
-    nPBE = JS_PKI_getNidFromSN( strSN.toStdString().c_str() );
-    nKeyType = JS_PKI_getPriKeyType( &binPri );
-
-    ret = JS_PKI_encodePFX( &binPFX, nKeyType, strPasswd.toStdString().c_str(), nPBE, &binPri, &binCert );
-    if( ret != 0 )
-    {
-        berApplet->warnLog( tr( "fail to make PFX: %1").arg(ret), this);
-        goto end;
-    }
-
-    Save( now_t, TypePFX, &binPFX );
-
-end :
-    JS_BIN_reset( &binPri );
-    JS_BIN_reset( &binCert );
-    JS_BIN_reset( &binPFX );
-}
-
-void KeyPairManDlg::clickViewCert()
-{
-    CertInfoDlg certInfo;
-
-    BIN binData = {0,0};
-    QString strFile = mCertPathText->text();
-
-    if( strFile.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Find Certificate" ), this );
-        return;
-    }
-
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
-
-    certInfo.setCertBIN( &binData );
-    certInfo.exec();
-
-    JS_BIN_reset( &binData );
-}
 
 void KeyPairManDlg::clickViewCSR()
 {
@@ -528,56 +399,12 @@ end :
     JS_BIN_reset( &binInfo );
 }
 
-void KeyPairManDlg::clickDecryptPFX()
-{
-    int ret = 0;
-    BIN binData = {0,0};
-    BIN binPri = {0,0};
-    BIN binCert = {0,0};
-
-    QString strFile = mPFXPathText->text();
-    QString strPasswd = mPasswdText->text();
-
-    time_t now_t = time(NULL);
-
-    if( strFile.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Find PFX" ), this );
-        return;
-    }
-
-    if( strPasswd.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Enter a password" ), this );
-        return;
-    }
-
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
-
-    ret = JS_PKI_decodePFX( &binData, strPasswd.toStdString().c_str(), &binPri, &binCert );
-    if( ret != 0 )
-    {
-        berApplet->warnLog( tr( "fail to decrypt PFX: %1").arg(ret), this);
-        goto end;
-    }
-
-    Save( now_t, TypePriKey, &binPri );
-    Save( now_t, TypeCert, &binCert );
-
-end :
-    JS_BIN_reset( &binData );
-    JS_BIN_reset( &binPri );
-    JS_BIN_reset( &binCert );
-}
-
 void KeyPairManDlg::clickClearAll()
 {
     clearPriKey();
     clearPubKey();
-    clearCert();
     clearEncPriKey();
     clearPriInfo();
-    clearPFX();
     clearCSR();
 }
 
@@ -623,19 +450,6 @@ void KeyPairManDlg::findPubKey()
     if( filePath.length() > 0 ) mPubPathText->setText( filePath );
 }
 
-void KeyPairManDlg::findCert()
-{
-    QString strPath = mCertPathText->text();
-
-    if( strPath.length() < 1 )
-    {
-        strPath = mSavePathText->text();
-    }
-
-    QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
-    if( filePath.length() > 0 ) mCertPathText->setText( filePath );
-}
-
 void KeyPairManDlg::findEncPriKey()
 {
     QString strPath = mEncPriPathText->text();
@@ -649,19 +463,6 @@ void KeyPairManDlg::findEncPriKey()
     if( filePath.length() > 0 ) mEncPriPathText->setText( filePath );
 }
 
-void KeyPairManDlg::findPFX()
-{
-    QString strPath = mPFXPathText->text();
-
-    if( strPath.length() < 1 )
-    {
-        strPath = mSavePathText->text();
-    }
-
-    QString filePath = findFile( this, JS_FILE_TYPE_BER, strPath );
-    if( filePath.length() > 0 ) mPFXPathText->setText( filePath );
-}
-
 void KeyPairManDlg::clearPriKey()
 {
     mPriPathText->clear();
@@ -672,11 +473,6 @@ void KeyPairManDlg::clearPubKey()
     mPubPathText->clear();
 }
 
-void KeyPairManDlg::clearCert()
-{
-    mCertPathText->clear();
-}
-
 void KeyPairManDlg::clearEncPriKey()
 {
     mEncPriPathText->clear();
@@ -685,11 +481,6 @@ void KeyPairManDlg::clearEncPriKey()
 void KeyPairManDlg::clearPriInfo()
 {
     mPriInfoPathText->clear();
-}
-
-void KeyPairManDlg::clearPFX()
-{
-    mPFXPathText->clear();
 }
 
 void KeyPairManDlg::clearCSR()
@@ -733,24 +524,6 @@ void KeyPairManDlg::decodePubKey()
     JS_BIN_reset( &binData );
 }
 
-void KeyPairManDlg::decodeCert()
-{
-    BIN binData = {0,0};
-    QString strFile = mCertPathText->text();
-
-    if( strFile.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Find Certificate" ), this );
-        return;
-    }
-
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
-
-    berApplet->decodeData( &binData, strFile );
-
-    JS_BIN_reset( &binData );
-}
-
 void KeyPairManDlg::decodeEncPriKey()
 {
     BIN binData = {0,0};
@@ -777,24 +550,6 @@ void KeyPairManDlg::decodePriInfo()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "There is no private key information" ), this );
-        return;
-    }
-
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
-
-    berApplet->decodeData( &binData, strFile );
-
-    JS_BIN_reset( &binData );
-}
-
-void KeyPairManDlg::decodePFX()
-{
-    BIN binData = {0,0};
-    QString strFile = mPFXPathText->text();
-
-    if( strFile.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Find PFX" ), this );
         return;
     }
 
@@ -863,26 +618,3 @@ void KeyPairManDlg::typePubKey()
     JS_BIN_reset( &binData );
 }
 
-void KeyPairManDlg::typeCert()
-{
-    int nType = -1;
-    BIN binData = {0,0};
-    BIN binPubInfo = {0,0};
-    QString strFile = mCertPathText->text();
-
-    if( strFile.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Find Certificate" ), this );
-        return;
-    }
-
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
-    JS_PKI_getPubKeyFromCert( &binData, &binPubInfo );
-
-    nType = JS_PKI_getPubKeyType( &binPubInfo );
-    berApplet->messageBox( tr( "The certificate type is %1").arg( getKeyTypeName( nType )), this);
-
-
-    JS_BIN_reset( &binData );
-    JS_BIN_reset( &binPubInfo );
-}
