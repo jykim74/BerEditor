@@ -53,6 +53,19 @@ private slots:
     void clickViewTrust();
     void clickDecodeTrust();
 
+    void decodeTLPriKey();
+    void decodeTLCert();
+    void decodeTLPFX();
+    void findTLPriKey();
+    void findTLCert();
+    void findTLPFX();
+
+    void clickTLCheckKeyPair();
+    void clickTLViewCert();
+    void clickTLEncryptPFX();
+    void clickTLDecryptPFX();
+    void clickTLSavePFX();
+
 private:
     void initUI();
     void initialize();

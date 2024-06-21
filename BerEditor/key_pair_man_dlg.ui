@@ -836,7 +836,35 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_3">
-     <item row="0" column="0">
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mEncryptBtn">
+       <property name="text">
+        <string>Encrypt PrivateKey</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mDecryptBtn">
+       <property name="text">
+        <string>Decrypt PrivateKey</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="8">
+      <widget class="QPushButton" name="mDecryptPFXBtn">
+       <property name="text">
+        <string>Decrypt PFX</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mEncryptPFXBtn">
+       <property name="text">
+        <string>Encrypt PFX</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
       <spacer name="horizontalSpacer_3">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -848,34 +876,6 @@
         </size>
        </property>
       </spacer>
-     </item>
-     <item row="0" column="7">
-      <widget class="QPushButton" name="mDecryptPFXBtn">
-       <property name="text">
-        <string>Decrypt PFX</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mDecryptBtn">
-       <property name="text">
-        <string>Decrypt</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mEncryptBtn">
-       <property name="text">
-        <string>Encrypt</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mEncryptPFXBtn">
-       <property name="text">
-        <string>Encrypt PFX</string>
-       </property>
-      </widget>
      </item>
     </layout>
    </item>

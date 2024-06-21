@@ -20,7 +20,6 @@
 #include "js_error.h"
 #include "cert_info_dlg.h"
 #include "settings_mgr.h"
-#include "trust_list_dlg.h"
 #include "cert_man_dlg.h"
 
 #include "openssl/ssl.h"

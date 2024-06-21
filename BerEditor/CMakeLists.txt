@@ -71,7 +71,6 @@ set(PROJECT_SRC
     sss_dlg.cpp
     ssl_verify_dlg.cpp
     csr_info_dlg.cpp
-    trust_list_dlg.cpp
     vid_dlg.cpp
     make_value_dlg.cpp
     bn_calc_dlg.cpp
@@ -117,7 +116,6 @@ set( PROJECT_HEADER
     sss_dlg.h
     ssl_verify_dlg.h
     csr_info_dlg.h
-    trust_list_dlg.h
     vid_dlg.h
     make_value_dlg.h
     bn_calc_dlg.h
@@ -152,7 +150,6 @@ set( PROJECT_FORM
     sss_dlg.ui
     ssl_verify_dlg.ui
     csr_info_dlg.ui
-    trust_list_dlg.ui
     vid_dlg.ui
     make_value_dlg.ui
     bn_calc_dlg.ui

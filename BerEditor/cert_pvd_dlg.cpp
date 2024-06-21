@@ -14,7 +14,6 @@
 #include "mainwindow.h"
 #include "cert_info_dlg.h"
 #include "crl_info_dlg.h"
-#include "trust_list_dlg.h"
 #include "settings_mgr.h"
 #include "cert_man_dlg.h"
 
