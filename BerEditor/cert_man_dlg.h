@@ -58,6 +58,9 @@ private slots:
     void decodeTLPriKey();
     void decodeTLCert();
     void decodeTLPFX();
+    void clearTLPriKey();
+    void clearTLCert();
+    void clearTLPFX();
     void findTLPriKey();
     void findTLCert();
     void findTLPFX();

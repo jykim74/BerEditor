@@ -24,7 +24,7 @@
    <item>
     <widget class="QTabWidget" name="mTabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="mEETab">
       <attribute name="title">
@@ -356,10 +356,23 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_8">
-         <item row="1" column="2">
-          <widget class="QPushButton" name="mFindTLCertBtn">
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_9">
            <property name="text">
-            <string>Find</string>
+            <string>PFX</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="4">
+          <widget class="QPushButton" name="mTLPFXDecodeBtn">
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>D</string>
            </property>
           </widget>
          </item>
@@ -370,44 +383,24 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
-          <widget class="QLineEdit" name="mTLCertPathText">
-           <property name="palette">
-            <palette>
-             <active>
-              <colorrole role="Base">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>221</red>
-                 <green>221</green>
-                 <blue>255</blue>
-                </color>
-               </brush>
-              </colorrole>
-             </active>
-             <inactive>
-              <colorrole role="Base">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>221</red>
-                 <green>221</green>
-                 <blue>255</blue>
-                </color>
-               </brush>
-              </colorrole>
-             </inactive>
-             <disabled/>
-            </palette>
-           </property>
-           <property name="readOnly">
-            <bool>true</bool>
+         <item row="2" column="2">
+          <widget class="QPushButton" name="mFindTLPFXBtn">
+           <property name="text">
+            <string>Find</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_9">
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_8">
            <property name="text">
-            <string>PFX</string>
+            <string>Certificate</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QPushButton" name="mFindTLCertBtn">
+           <property name="text">
+            <string>Find</string>
            </property>
           </widget>
          </item>
@@ -445,6 +438,79 @@
            </property>
           </widget>
          </item>
+         <item row="0" column="4">
+          <widget class="QPushButton" name="mTLPriKeyDecodeBtn">
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>D</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="mTLCertPathText">
+           <property name="palette">
+            <palette>
+             <active>
+              <colorrole role="Base">
+               <brush brushstyle="SolidPattern">
+                <color alpha="255">
+                 <red>221</red>
+                 <green>221</green>
+                 <blue>255</blue>
+                </color>
+               </brush>
+              </colorrole>
+             </active>
+             <inactive>
+              <colorrole role="Base">
+               <brush brushstyle="SolidPattern">
+                <color alpha="255">
+                 <red>221</red>
+                 <green>221</green>
+                 <blue>255</blue>
+                </color>
+               </brush>
+              </colorrole>
+             </inactive>
+             <disabled/>
+            </palette>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="4">
+          <widget class="QPushButton" name="mTLCertDecodeBtn">
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>D</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_7">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Private Key</string>
+           </property>
+          </widget>
+         </item>
          <item row="2" column="1">
           <widget class="QLineEdit" name="mTLPFXPathText">
            <property name="palette">
@@ -479,35 +545,8 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_7">
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Private Key</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="2">
-          <widget class="QPushButton" name="mFindTLPFXBtn">
-           <property name="text">
-            <string>Find</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_8">
-           <property name="text">
-            <string>Certificate</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="3">
-          <widget class="QPushButton" name="mTLPriKeyDecodeBtn">
+          <widget class="QPushButton" name="mTLPriKeyClearBtn">
            <property name="maximumSize">
             <size>
              <width>20</width>
@@ -515,12 +554,12 @@
             </size>
            </property>
            <property name="text">
-            <string>D</string>
+            <string>C</string>
            </property>
           </widget>
          </item>
          <item row="1" column="3">
-          <widget class="QPushButton" name="mTLCertDecodeBtn">
+          <widget class="QPushButton" name="mTLCertClearBtn">
            <property name="maximumSize">
             <size>
              <width>20</width>
@@ -528,12 +567,12 @@
             </size>
            </property>
            <property name="text">
-            <string>D</string>
+            <string>C</string>
            </property>
           </widget>
          </item>
          <item row="2" column="3">
-          <widget class="QPushButton" name="mTLPFXDecodeBtn">
+          <widget class="QPushButton" name="mTLPFXClearBtn">
            <property name="maximumSize">
             <size>
              <width>20</width>
@@ -541,7 +580,7 @@
             </size>
            </property>
            <property name="text">
-            <string>D</string>
+            <string>C</string>
            </property>
           </widget>
          </item>

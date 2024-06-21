@@ -58,6 +58,10 @@ CertManDlg::CertManDlg(QWidget *parent) :
     connect( mTLCertDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeTLCert()));
     connect( mTLPFXDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeTLPFX()));
 
+    connect( mTLPriKeyClearBtn, SIGNAL(clicked()), this, SLOT(clearTLPriKey()));
+    connect( mTLCertClearBtn, SIGNAL(clicked()), this, SLOT(clearTLCert()));
+    connect( mTLPFXClearBtn, SIGNAL(clicked()), this, SLOT(clearTLPFX()));
+
     connect( mTLCheckKeyPairBtn, SIGNAL(clicked()), this, SLOT(clickTLCheckKeyPair()));
     connect( mTLViewCertBtn, SIGNAL(clicked()), this, SLOT(clickTLViewCert()));
     connect( mTLEncryptPFXBtn, SIGNAL(clicked()), this, SLOT(clickTLEncryptPFX()));
@@ -65,8 +69,15 @@ CertManDlg::CertManDlg(QWidget *parent) :
     connect( mTLSavePFXBtn, SIGNAL(clicked()), this, SLOT(clickTLSavePFX()));
 
     initUI();
+
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+    mTLPriKeyClearBtn->setFixedWidth(34);
+    mTLCertClearBtn->setFixedWidth(34);
+    mTLPFXClearBtn->setFixedWidth(34);
+    mTLPriKeyDecodeBtn->setFixedWidth(34);
+    mTLCertDecodeBtn->setFixedWidth(34);
+    mTLPFXDecodeBtn->setFixedWidth(34);
 #endif
 }
 
@@ -497,7 +508,9 @@ const QString CertManDlg::getSeletedPath()
 {
     QString strPath;
 
-    QTableWidgetItem* item = mEE_CertTable->currentItem();
+    QModelIndex idx = mEE_CertTable->currentIndex();
+    QTableWidgetItem* item = mEE_CertTable->item( idx.row(), 0 );
+
     if( item ) strPath = item->data(Qt::UserRole).toString();
 
     return strPath;
@@ -589,7 +602,9 @@ void CertManDlg::clickDeleteCert()
 
     dir.remove( strCertPath );
     dir.remove( strPriKeyPath );
-    dir.remove( strPath );
+    dir.rmdir( strPath );
+
+    loadEEList();
 }
 
 void CertManDlg::clickDecodeCert()
@@ -598,6 +613,12 @@ void CertManDlg::clickDecodeCert()
     BIN binEncPri = {0,0};
     BIN binCert = {0,0};
     QString strPath = getSeletedPath();
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "The certificate is not selected" ), this );
+        return;
+    }
 
     ret = readPriKeyCert( &binEncPri, &binCert );
     if( ret != 0 )
@@ -729,6 +750,7 @@ void CertManDlg::clickImport()
     if( ret == 0 )
     {
         berApplet->messageLog( tr( "The private key and certificate are saved successfully"), this );
+        berApplet->setCurFile(strPFXFile);
     }
 
 end :
@@ -773,6 +795,7 @@ void CertManDlg::clickExport()
     JS_BIN_fileWrite( &binPFX, strPFXPath.toStdString().c_str() );
 
     berApplet->messageLog( tr( "PFX saved successfully:%1").arg( strPFXPath ), this );
+    berApplet->setCurFile(strPFXPath);
 
 end :
     if( ret != 0 )
@@ -930,11 +953,11 @@ void CertManDlg::clickAddTrust()
 
     QDir dir;
 
-    if( dir.exists( strPath ) == false )
+    if( dir.exists( strTrustPath ) == false )
     {
-        if( dir.mkpath( strPath ) == false )
+        if( dir.mkpath( strTrustPath ) == false )
         {
-            berApplet->warningBox( tr( "fail to make TrustCA folder: %1").arg( strPath ), this );
+            berApplet->warningBox( tr( "fail to make TrustCA folder: %1").arg( strTrustPath ), this );
             return;
         }
     }
@@ -1091,6 +1114,21 @@ void CertManDlg::decodeTLPFX()
     JS_BIN_reset( &binData );
 }
 
+void CertManDlg::clearTLPriKey()
+{
+    mTLPriKeyPathText->clear();
+}
+
+void CertManDlg::clearTLCert()
+{
+    mTLCertPathText->clear();
+}
+
+void CertManDlg::clearTLPFX()
+{
+    mTLPFXPathText->clear();
+}
+
 void CertManDlg::findTLPriKey()
 {
     QString strPath = mTLPriKeyPathText->text();
@@ -1101,7 +1139,11 @@ void CertManDlg::findTLPriKey()
     }
 
     QString filePath = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
-    if( filePath.length() > 0 ) mTLPriKeyPathText->setText( filePath );
+    if( filePath.length() > 0 )
+    {
+        mTLPriKeyPathText->setText( filePath );
+        berApplet->setCurFile( filePath );
+    }
 }
 
 void CertManDlg::findTLCert()
@@ -1114,7 +1156,11 @@ void CertManDlg::findTLCert()
     }
 
     QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
-    if( filePath.length() > 0 ) mTLCertPathText->setText( filePath );
+    if( filePath.length() > 0 )
+    {
+        mTLCertPathText->setText( filePath );
+        berApplet->setCurFile( filePath );
+    }
 }
 
 void CertManDlg::findTLPFX()
@@ -1126,8 +1172,12 @@ void CertManDlg::findTLPFX()
         strPath = berApplet->curFolder();
     }
 
-    QString filePath = findFile( this, JS_FILE_TYPE_BER, strPath );
-    if( filePath.length() > 0 ) mTLPFXPathText->setText( filePath );
+    QString filePath = findFile( this, JS_FILE_TYPE_PFX, strPath );
+    if( filePath.length() > 0 )
+    {
+        mTLPFXPathText->setText( filePath );
+        berApplet->setCurFile( filePath );
+    }
 }
 
 void CertManDlg::clickTLCheckKeyPair()
@@ -1135,11 +1185,10 @@ void CertManDlg::clickTLCheckKeyPair()
     int ret = 0;
 
     BIN binPri = {0,0};
-    BIN binPub = {0,0};
     BIN binCert = {0,0};
 
     QString strPriPath = mTLPriKeyPathText->text();
-    QString strCertPath = mCertPathText->text();
+    QString strCertPath = mTLCertPathText->text();
 
 
     if( strPriPath.length() < 1 )
@@ -1157,9 +1206,7 @@ void CertManDlg::clickTLCheckKeyPair()
     JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
     JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
 
-    JS_PKI_getPubKeyFromCert( &binCert, &binPub );
-
-    ret = JS_PKI_IsValidKeyPair( &binPri, &binPub );
+    ret = JS_PKI_IsValidPriKeyCert( &binPri, &binCert );
 
     if( ret == JSR_VALID )
         berApplet->messageBox( tr("The private key and the certificate are correct"), this );
@@ -1168,7 +1215,6 @@ void CertManDlg::clickTLCheckKeyPair()
 
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binCert );
-    JS_BIN_reset( &binPub );
 }
 
 void CertManDlg::clickTLViewCert()
@@ -1243,10 +1289,11 @@ void CertManDlg::clickTLEncryptPFX()
         goto end;
     }
 
-    strPFXPath = QString( "%1/%2.pfx" ).arg( certInfo.path() ).arg( certInfo.fileName() );
+    strPFXPath = QString( "%1/%2_p12.pfx" ).arg( certInfo.path() ).arg( certInfo.baseName() );
 
     JS_BIN_fileWrite( &binPFX, strPFXPath.toLocal8Bit().toStdString().c_str() );
     berApplet->messageLog( tr( "PFX encrypt successfully(%1)" ).arg( strPFXPath ), this );
+    mTLPFXPathText->setText( strPFXPath );
 
 end :
     JS_BIN_reset( &binPri );
@@ -1290,8 +1337,8 @@ void CertManDlg::clickTLDecryptPFX()
         goto end;
     }
 
-    strPriKeyPath = QString( "%1/%2_prikey.der" ).arg( pfxInfo.path() ).arg( pfxInfo.fileName() );
-    strCertPath = QString( "%1/%2_cert.der" ).arg( pfxInfo.path() ).arg( pfxInfo.fileName() );
+    strPriKeyPath = QString( "%1/%2_prikey.der" ).arg( pfxInfo.path() ).arg( pfxInfo.baseName() );
+    strCertPath = QString( "%1/%2_cert.der" ).arg( pfxInfo.path() ).arg( pfxInfo.baseName() );
 
     JS_BIN_fileWrite( &binCert, strCertPath.toLocal8Bit().toStdString().c_str() );
     JS_BIN_fileWrite( &binPri, strPriKeyPath.toLocal8Bit().toStdString().c_str() );
@@ -1350,6 +1397,12 @@ void CertManDlg::clickTLSavePFX()
     {
         berApplet->warnLog( tr( "fail to encrypt private key: %1").arg( ret ), this );
         goto end;
+    }
+
+    ret = writePriKeyCert( &binEncPri, &binCert );
+    if( ret == 0 )
+    {
+        berApplet->messageLog( tr( "The private key and certificate are saved successfully"), this );
     }
 
 end :
