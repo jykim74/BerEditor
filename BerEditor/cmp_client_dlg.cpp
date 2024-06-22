@@ -10,6 +10,7 @@
 #include "cert_man_dlg.h"
 #include "gen_key_pair_dlg.h"
 #include "make_csr_dlg.h"
+#include "new_passwd_dlg.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -24,6 +25,8 @@ CMPClientDlg::CMPClientDlg(QWidget *parent)
     setupUi(this);
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mURLClearBtn, SIGNAL(clicked()), this, SLOT(clickClearURL()));
+
     connect( mGENMBtn, SIGNAL(clicked()), this, SLOT(clickGENM()));
     connect( mIRBtn, SIGNAL(clicked()), this, SLOT(clickIR()));
     connect( mCRBtn, SIGNAL(clicked()), this, SLOT(clickCR()));
@@ -125,6 +128,48 @@ void CMPClientDlg::setUsedURL( const QString strURL )
     list.insert( 0, strURL );
     settings.setValue( kCMPUsedURL, list );
     settings.endGroup();
+}
+
+void CMPClientDlg::clickClearURL()
+{
+    QSettings settings;
+    settings.beginGroup( kSettingBer );
+    settings.setValue( kCMPUsedURL, "" );
+    settings.endGroup();
+
+    mURLCombo->clearEditText();
+    mURLCombo->clear();
+
+    berApplet->log( "clear used URLs" );
+}
+
+void CMPClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
+{
+    int ret = 0;
+
+    bool bVal = false;
+    bVal = berApplet->yesOrNoBox( tr( "Are you save the private key and certificate"), this, true );
+    if( bVal == true )
+    {
+        int nKeyType = -1;
+        BIN binEncPri = {0,0};
+        CertManDlg certMan;
+        NewPasswdDlg newPass;
+
+        if( newPass.exec() == QDialog::Accepted )
+        {
+            QString strPass = newPass.mPasswdText->text();
+            nKeyType = JS_PKI_getPriKeyType( pPriKey );
+
+            ret = JS_PKI_encryptPrivateKey( nKeyType, -1, strPass.toStdString().c_str(), pPriKey, NULL, &binEncPri );
+            if( ret == 0 )
+            {
+                certMan.writePriKeyCert( &binEncPri, pCert );
+            }
+        }
+
+        JS_BIN_reset( &binEncPri );
+    }
 }
 
 void CMPClientDlg::findCACert()
@@ -551,6 +596,7 @@ void CMPClientDlg::clickIR()
 
     if( ret == 0 )
     {
+        savePriKeyCert( &binNewPri, &binNewCert );
         berApplet->messageLog( tr( "IR success" ), this );
     }
     else
@@ -644,6 +690,7 @@ void CMPClientDlg::clickCR()
 
     if( ret == 0 )
     {
+        savePriKeyCert( &binNewPri, &binNewCert );
         berApplet->messageLog( tr( "CR success" ), this );
     }
     else
@@ -745,6 +792,7 @@ void CMPClientDlg::clickP10CSR()
 
     if( ret == 0 )
     {
+        savePriKeyCert( &binNewPri, &binNewCert );
         berApplet->messageLog( tr( "P10CSR success" ), this );
     }
     else
@@ -971,6 +1019,7 @@ void CMPClientDlg::clickKUR()
     }
     else
     {
+        savePriKeyCert( &binNewPri, &binNewCert );
         berApplet->messageLog( tr( "KUR success" ), this );
     }
 

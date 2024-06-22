@@ -108,6 +108,24 @@ void CertManDlg::closeEvent(QCloseEvent *event )
     setOKHide( false );
 }
 
+const QString CertManDlg::getModeName( int nMode )
+{
+    QString strMode;
+
+    if( nMode == ManModeSelCert )
+        strMode = tr("Certificate Only");
+    else if( nMode == ManModeSelBoth )
+        strMode = tr("Ceritifcate and PrivateKey");
+    else if( nMode == ManModeSelCA )
+        strMode = tr( "CA certificate" );
+    else if( nMode == ManModeTrust )
+        strMode = tr( "TrustRootCA" );
+    else
+        strMode = "Management";
+
+    return strMode;
+}
+
 void CertManDlg::changeTLVerison( int index )
 {
     mTLModeCombo->clear();
@@ -143,15 +161,27 @@ void CertManDlg::initUI()
     mCA_CertTable->horizontalHeader()->setStyleSheet( kTableStyle );
     mCA_CertTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mCA_CertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    QStringList sRCATableLabels = { tr( "Name" ), tr( "Subject DN" ), tr( "Algorithm"), tr( "Expire" ), tr( "Issuer DN" ) };
+
+    mRCA_CertTable->clear();
+    mRCA_CertTable->horizontalHeader()->setStretchLastSection(true);
+    mRCA_CertTable->setColumnCount( sRCATableLabels.size() );
+    mRCA_CertTable->setHorizontalHeaderLabels( sRCATableLabels );
+    mRCA_CertTable->verticalHeader()->setVisible(false);
+    mRCA_CertTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mRCA_CertTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mRCA_CertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
 void CertManDlg::initialize()
 {
-    loadTrustCAList();
+    loadCAList();
+    loadTrustList();
 
     mTabWidget->setCurrentIndex(0);
     mCertPathText->setText( berApplet->settingsMgr()->certPath() );
-    mTrustCAPathText->setText( berApplet->settingsMgr()->trustedCAPath() );
+    mTrustRCAPathText->setText( berApplet->settingsMgr()->trustedCAPath() );
 
     if( mode_ == ManModeSelCert )
         mEE_PasswdText->setEnabled(false);
@@ -162,20 +192,22 @@ void CertManDlg::initialize()
     {
         setTrustOnly();
         setGroupHide( false );
-        mTabWidget->setTabEnabled( 2, false );
+        mTabWidget->setTabEnabled( 3, false );
     }
     else if( mode_ == ManModeSelBoth || mode_ == ManModeSelCert )
     {
         loadEEList();
         setGroupHide(true);
-        mTabWidget->setTabEnabled( 2, false );
+        mTabWidget->setTabEnabled( 3, false );
     }
     else
     {
         loadEEList();
         setGroupHide( false );
-        mTabWidget->setTabEnabled( 2, true );
+        mTabWidget->setTabEnabled( 3, true );
     }
+
+    mModeLabel->setText( getModeName(mode_));
 }
 
 void CertManDlg::setGroupHide( bool bHide )
@@ -184,11 +216,13 @@ void CertManDlg::setGroupHide( bool bHide )
     {
         mEE_ManGroup->hide();
         mCA_ManGroup->hide();
+        mRCA_ManGroup->hide();
     }
     else
     {
         mEE_ManGroup->show();
         mCA_ManGroup->show();
+        mRCA_ManGroup->show();
     }
 }
 
@@ -206,7 +240,8 @@ void CertManDlg::setTrustOnly()
     setGroupHide( false );
     mCancelBtn->setText(tr("Close"));
     mTabWidget->setTabEnabled(0,false);
-    mTabWidget->setCurrentIndex(1);
+    mTabWidget->setTabEnabled(1,false);
+    mTabWidget->setCurrentIndex(2);
 }
 
 const QString CertManDlg::getPriKeyHex()
@@ -245,6 +280,16 @@ void CertManDlg::clearCAList()
     }
 }
 
+void CertManDlg::clearTrustList()
+{
+    int count = mRCA_CertTable->rowCount();
+
+    for( int i = 0; i < count; i++ )
+    {
+        mRCA_CertTable->removeRow(0);
+    }
+}
+
 void CertManDlg::clearEEList()
 {
     int count = mEE_CertTable->rowCount();
@@ -252,60 +297,6 @@ void CertManDlg::clearEEList()
     for( int i = 0; i < count; i++ )
     {
         mEE_CertTable->removeRow(0);
-    }
-}
-
-void CertManDlg::loadList( const QString strDir )
-{
-    int ret = 0;
-    int row = 0;
-
-    QDir dir( strDir );
-    for (const QFileInfo &file : dir.entryInfoList(QDir::Files))
-    {
-        BIN binCert = {0,0};
-        JCertInfo sCertInfo;
-        char    sNotBefore[64];
-        char    sNotAfter[64];
-
-        if( file.isFile() == false ) continue;
-
-        memset( &sCertInfo, 0x00, sizeof(sCertInfo));
-
-        QString strName = file.baseName();
-        QString strSuffix = file.suffix();
-
-        if( strSuffix != "crt" && strSuffix != "key" ) continue;
-
-        QTableWidgetItem *item = new QTableWidgetItem( strName );
-        item->setData(Qt::UserRole, file.filePath() );
-        // if you need absolute path of the file
-
-        if( strName.length() != 8 && strSuffix.length() != 1 ) continue;
-
-        JS_BIN_fileReadBER( file.absoluteFilePath().toLocal8Bit().toStdString().c_str(), &binCert );
-        if( binCert.nLen < 1 ) continue;
-
-        ret = JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
-        if( ret != 0 )
-        {
-            JS_BIN_reset( &binCert );
-            continue;
-        }
-
-        JS_UTIL_getDate( sCertInfo.uNotBefore, sNotBefore );
-        JS_UTIL_getDate( sCertInfo.uNotAfter, sNotAfter );
-
-        mCA_CertTable->insertRow( row );
-        mCA_CertTable->setRowHeight( row, 10 );
-        mCA_CertTable->setItem( row, 0, new QTableWidgetItem( sCertInfo.pSubjectName ));
-        mCA_CertTable->setItem( row, 1, new QTableWidgetItem( sNotBefore ));
-        mCA_CertTable->setItem( row, 2, new QTableWidgetItem( sCertInfo.pIssuerName ));
-
-        JS_BIN_reset( &binCert );
-        JS_PKI_resetCertInfo( &sCertInfo );
-
-        row++;
     }
 }
 
@@ -381,7 +372,7 @@ void CertManDlg::loadEEList()
     }
 }
 
-void CertManDlg::loadTrustCAList()
+void CertManDlg::loadCAList()
 {
     int ret = 0;
     int row = 0;
@@ -389,7 +380,7 @@ void CertManDlg::loadTrustCAList()
 
     clearCAList();
 
-    QString strPath = berApplet->settingsMgr()->getTrustedCAPath();
+    QString strPath = berApplet->settingsMgr()->certPath();
 
     QDir dir( strPath );
     for (const QFileInfo &file : dir.entryInfoList(QDir::Files))
@@ -440,6 +431,73 @@ void CertManDlg::loadTrustCAList()
         mCA_CertTable->setItem( row, 2, new QTableWidgetItem( getKeyTypeName( nKeyType )));
         mCA_CertTable->setItem( row, 3, new QTableWidgetItem( sNotBefore ));
         mCA_CertTable->setItem( row, 4, new QTableWidgetItem( sCertInfo.pIssuerName ));
+
+        JS_BIN_reset( &binCert );
+        JS_PKI_resetCertInfo( &sCertInfo );
+
+        row++;
+    }
+}
+
+void CertManDlg::loadTrustList()
+{
+    int ret = 0;
+    int row = 0;
+    time_t now = time(NULL);
+
+    clearTrustList();
+
+    QString strPath = berApplet->settingsMgr()->trustedCAPath();
+
+    QDir dir( strPath );
+    for (const QFileInfo &file : dir.entryInfoList(QDir::Files))
+    {
+        BIN binCert = {0,0};
+        JCertInfo sCertInfo;
+        char    sNotBefore[64];
+        char    sNotAfter[64];
+        int nKeyType = 0;
+
+        memset( &sCertInfo, 0x00, sizeof(sCertInfo));
+
+        QString strName = file.baseName();
+        QString strSuffix = file.suffix();
+
+
+        // if you need absolute path of the file
+
+        if( strName.length() != 8 && strSuffix.length() != 1 ) continue;
+
+        JS_BIN_fileReadBER( file.absoluteFilePath().toLocal8Bit().toStdString().c_str(), &binCert );
+        if( binCert.nLen < 1 ) continue;
+
+        ret = JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
+        if( ret != 0 )
+        {
+            JS_BIN_reset( &binCert );
+            continue;
+        }
+
+        nKeyType = JS_PKI_getCertKeyType( &binCert );
+        JS_UTIL_getDate( sCertInfo.uNotBefore, sNotBefore );
+        JS_UTIL_getDate( sCertInfo.uNotAfter, sNotAfter );
+
+        mRCA_CertTable->insertRow( row );
+        mRCA_CertTable->setRowHeight( row, 10 );
+        QTableWidgetItem *item = new QTableWidgetItem( strName );
+
+        if( now > sCertInfo.uNotAfter )
+            item->setIcon(QIcon(":/images/cert_revoked.png" ));
+        else
+            item->setIcon(QIcon(":/images/cert.png" ));
+
+        item->setData(Qt::UserRole, file.filePath() );
+
+        mRCA_CertTable->setItem( row, 0, item );
+        mRCA_CertTable->setItem( row, 1, new QTableWidgetItem( sCertInfo.pSubjectName ));
+        mRCA_CertTable->setItem( row, 2, new QTableWidgetItem( getKeyTypeName( nKeyType )));
+        mRCA_CertTable->setItem( row, 3, new QTableWidgetItem( sNotBefore ));
+        mRCA_CertTable->setItem( row, 4, new QTableWidgetItem( sCertInfo.pIssuerName ));
 
         JS_BIN_reset( &binCert );
         JS_PKI_resetCertInfo( &sCertInfo );
@@ -994,7 +1052,7 @@ void CertManDlg::clickAddTrust()
         ret = JS_BIN_writePEM( &binCA, JS_PEM_TYPE_CERTIFICATE, strSaveName.toLocal8Bit().toStdString().c_str() );
         if( ret > 0 )
         {
-            loadTrustCAList();
+            loadTrustList();
             berApplet->messageBox( tr( "The Certificate saved to trustedCA folder"), this );
         }
         else
@@ -1010,9 +1068,9 @@ end :
 
 void CertManDlg::clickRemoveTrust()
 {
-    QModelIndex idx = mCA_CertTable->currentIndex();
+    QModelIndex idx = mRCA_CertTable->currentIndex();
 
-    QTableWidgetItem* item = mCA_CertTable->item( idx.row(), 0 );
+    QTableWidgetItem* item = mRCA_CertTable->item( idx.row(), 0 );
     if( item == NULL ) return;
 
     bool bVal = berApplet->yesOrCancelBox( tr( "Do you delete?"), this, false );
@@ -1024,7 +1082,7 @@ void CertManDlg::clickRemoveTrust()
 
     if( bVal == true )
     {
-        loadTrustCAList();
+        loadTrustList();
         berApplet->messageBox( tr( "Trust CA has been deleted"), this );
     }
     else
@@ -1037,9 +1095,9 @@ void CertManDlg::clickRemoveTrust()
 
 void CertManDlg::clickViewTrust()
 {
-    QModelIndex idx = mCA_CertTable->currentIndex();
+    QModelIndex idx = mRCA_CertTable->currentIndex();
 
-    QTableWidgetItem* item = mCA_CertTable->item( idx.row(), 0 );
+    QTableWidgetItem* item = mRCA_CertTable->item( idx.row(), 0 );
     if( item == NULL ) return;
 
     const QString strPath = item->data( Qt::UserRole ).toString();
@@ -1052,9 +1110,9 @@ void CertManDlg::clickViewTrust()
 void CertManDlg::clickDecodeTrust()
 {
     BIN binCert = {0,0};
-    QModelIndex idx = mCA_CertTable->currentIndex();
+    QModelIndex idx = mRCA_CertTable->currentIndex();
 
-    QTableWidgetItem* item = mCA_CertTable->item( idx.row(), 0 );
+    QTableWidgetItem* item = mRCA_CertTable->item( idx.row(), 0 );
     if( item == NULL ) return;
 
     const QString strPath = item->data( Qt::UserRole ).toString();

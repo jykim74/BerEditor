@@ -60,6 +60,8 @@ private:
     int readPrivateKey( BIN *pPriKey );
 
     int getCA( BIN *pCA );
+    void savePriKeyCert( const BIN *pPriKey, const BIN *pCert );
+
 };
 
 #endif // SCEP_CLIENT_DLG_H

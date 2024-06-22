@@ -8,6 +8,7 @@
 #include "gen_key_pair_dlg.h"
 #include "make_csr_dlg.h"
 #include "cert_man_dlg.h"
+#include "new_passwd_dlg.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -200,7 +201,44 @@ end :
 
 void SCEPClientDlg::clickClearURL()
 {
+    QSettings settings;
+    settings.beginGroup( kSettingBer );
+    settings.setValue( kSCEPUsedURL, "" );
+    settings.endGroup();
 
+    mURLCombo->clearEditText();
+    mURLCombo->clear();
+
+    berApplet->log( "clear used URLs" );
+}
+
+void SCEPClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
+{
+    int ret = 0;
+
+    bool bVal = false;
+    bVal = berApplet->yesOrNoBox( tr( "Are you save the private key and certificate"), this, true );
+    if( bVal == true )
+    {
+        int nKeyType = -1;
+        BIN binEncPri = {0,0};
+        CertManDlg certMan;
+        NewPasswdDlg newPass;
+
+        if( newPass.exec() == QDialog::Accepted )
+        {
+            QString strPass = newPass.mPasswdText->text();
+            nKeyType = JS_PKI_getPriKeyType( pPriKey );
+
+            ret = JS_PKI_encryptPrivateKey( nKeyType, -1, strPass.toStdString().c_str(), pPriKey, NULL, &binEncPri );
+            if( ret == 0 )
+            {
+                certMan.writePriKeyCert( &binEncPri, pCert );
+            }
+        }
+
+        JS_BIN_reset( &binEncPri );
+    }
 }
 
 void SCEPClientDlg::findCACert()
@@ -811,6 +849,7 @@ void SCEPClientDlg::clickVerify()
     BIN binNonce = {0,0};
 
     BIN binData = {0,0};
+    BIN binCSR = {0,0}; /* Need to load */
 
     QString strRsp = mResponseText->toPlainText();
     QString strPriPath = mPriKeyPathText->text();
@@ -849,6 +888,13 @@ void SCEPClientDlg::clickVerify()
     if( ret != 0 )
     {
         berApplet->warnLog( QString( "failed to verify Rsp" ), this );
+        goto end;
+    }
+
+    ret = JS_SCEP_getSignCert( &binData, &binCSR, &binPriKey );
+    if( ret != 0 )
+    {
+        berApplet->warnLog( QString("failed to get sign certificate in reply: %1").arg(ret), this );
         goto end;
     }
     else

@@ -18,6 +18,8 @@ public:
     ~CMPClientDlg();
 
 private slots:
+    void clickClearURL();
+
     void clickGENM();
     void clickIR();
     void clickCR();
@@ -56,6 +58,7 @@ private:
     QStringList getUsedURL();
     void setUsedURL( const QString strURL );
     int readPrivateKey( BIN *pPriKey );
+    void savePriKeyCert( const BIN *pPriKey, const BIN *pCert );
 };
 
 #endif // CMP_CLIENT_DLG_H

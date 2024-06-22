@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>532</width>
-    <height>483</height>
+    <width>696</width>
+    <height>484</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,16 +15,43 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="mTitleLabel">
-     <property name="text">
-      <string>Select a certificate</string>
+    <layout class="QGridLayout" name="gridLayout_11">
+     <property name="topMargin">
+      <number>0</number>
      </property>
-    </widget>
+     <item row="0" column="0">
+      <widget class="QLabel" name="mTitleLabel">
+       <property name="text">
+        <string>Select a certificate</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="mModeLabel">
+       <property name="text">
+        <string>Base</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QTabWidget" name="mTabWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mEETab">
       <attribute name="title">
@@ -208,7 +235,96 @@
      </widget>
      <widget class="QWidget" name="mCATab">
       <attribute name="title">
-       <string>Trust CA</string>
+       <string>CA</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_8">
+       <item>
+        <layout class="QGridLayout" name="gridLayout_12">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_11">
+           <property name="text">
+            <string>CA Certificate Path</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="mCAPathText">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="Line" name="line_7">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>CA Certificate List</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="mCA_CertTable"/>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="mCA_ManGroup">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="title">
+          <string/>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_9">
+          <item>
+           <layout class="QGridLayout" name="gridLayout_13">
+            <item row="0" column="1">
+             <widget class="QPushButton" name="mRemoveCABtn">
+              <property name="text">
+               <string>Remove CA</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QPushButton" name="mViewCABtn">
+              <property name="text">
+               <string>View CA</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
+             <widget class="QPushButton" name="mDecodeCABtn">
+              <property name="text">
+               <string>Decode CA</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QPushButton" name="mAddCABtn">
+              <property name="text">
+               <string>Add CA</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="mRCATab">
+      <attribute name="title">
+       <string>Trust RootCA</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
@@ -219,12 +335,12 @@
          <item row="0" column="0">
           <widget class="QLabel" name="label">
            <property name="text">
-            <string>TrustCA Path</string>
+            <string>TrustRootCA Path</string>
            </property>
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QLineEdit" name="mTrustCAPathText">
+          <widget class="QLineEdit" name="mTrustRCAPathText">
            <property name="palette">
             <palette>
              <active>
@@ -274,10 +390,10 @@
         </widget>
        </item>
        <item>
-        <widget class="QTableWidget" name="mCA_CertTable"/>
+        <widget class="QTableWidget" name="mRCA_CertTable"/>
        </item>
        <item>
-        <widget class="QGroupBox" name="mCA_ManGroup">
+        <widget class="QGroupBox" name="mRCA_ManGroup">
          <property name="minimumSize">
           <size>
            <width>0</width>
