@@ -46,13 +46,14 @@ public:
     void setStopMessage( time_t tLastTime );
     time_t getStopMessage();
 
-    void setTrustedCAPath( const QString strPath );
-    QString getTrustedCAPath();
-    QString trustedCAPath() { return trusted_ca_path_; };
-
     void setCertPath( const QString strPath );
     QString getCertPath();
     QString certPath() { return cert_path_; };
+
+    QString trustCertPath();
+    QString EECertPath();
+    QString CACertPath();
+    QString tempCertPath();
 
     void setHexAreaWidth( int width );
     int getHexAreaWidth();
@@ -67,7 +68,6 @@ private:
 private:
     QString default_hash_;
     int file_read_size_;
-    QString trusted_ca_path_;
     QString cert_path_;
     int hex_area_width_;
 

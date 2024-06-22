@@ -397,7 +397,7 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
         JS_SSL_initClient2( &pCTX, SSL_VERIFY_PEER,verify_callback );
     }
 
-    QString strTrustList = berApplet->settingsMgr()->getTrustedCAPath();
+    QString strTrustList = berApplet->settingsMgr()->trustCertPath();
     QString strTrustCACert = mTrustCAPathText->text();
 
 
@@ -807,10 +807,15 @@ void SSLVerifyDlg::checkRootAndTrust( const BIN *pCA, const QString strHost, int
     bool bAsk = false;
     QString strMsg;
     BIN binRoot = {0,0};
-    QString strTrustPath = berApplet->settingsMgr()->trustedCAPath();
+    QString strTrustPath = berApplet->settingsMgr()->trustCertPath();
     unsigned long uHash = 0;
     QString strFileName;
     QString strSaveName;
+
+    QDir dir;
+
+    if( dir.exists(strTrustPath) == false )
+        dir.mkpath( strTrustPath );
 
     memset( &sCertInfo, 0x00, sizeof(sCertInfo));
 
@@ -1158,8 +1163,9 @@ void SSLVerifyDlg::saveTrustedCA()
 {
     int ret = 0;
     unsigned long uHash = 0;
+    QDir dir;
 
-    QString strTrustedCAPath = berApplet->settingsMgr()->trustedCAPath();
+    QString strTrustedCAPath = berApplet->settingsMgr()->trustCertPath();
 
     QTreeWidgetItem *item = mURLTree->currentItem();
     if( item == NULL ) return;
@@ -1176,8 +1182,14 @@ void SSLVerifyDlg::saveTrustedCA()
         return;
     }
 
-    if( QDir( strTrustedCAPath ).exists() == false )
-        QDir().mkdir( strTrustedCAPath );
+    if( dir.exists( strTrustedCAPath ) == false )
+    {
+        if( dir.mkpath( strTrustedCAPath ) == false )
+        {
+            berApplet->warningBox( tr( "fail to mkpath:%1").arg( strTrustedCAPath));
+            return;
+        }
+    }
 
     JS_PKI_getSubjectNameHash( &binCert, &uHash );
     berApplet->log( QString( "Subject Hash: %1").arg( uHash, 8, 16, QLatin1Char( '0') ));

@@ -18,7 +18,6 @@ const char *kMisc = "Misc";
 const char *kEmail = "email";
 const char *kLicense = "license";
 const char *kStopMessage = "stopMessage";
-const char *kTrustedCAPath = "trustedCAPath";
 const char *kCertPath = "certPath";
 const char *kHexAreaWidth = "hexAreaWidth";
 }
@@ -32,7 +31,6 @@ void SettingsMgr::initialize()
 {
     getDefaultHash();
     getFileReadSize();
-    getTrustedCAPath();
     getCertPath();
     getHexAreaWidth();
 }
@@ -243,27 +241,6 @@ time_t SettingsMgr::getStopMessage()
     return tLastTime;
 }
 
-void SettingsMgr::setTrustedCAPath( const QString strPath )
-{
-    QSettings sets;
-    sets.beginGroup( kBehaviorGroup );
-    sets.setValue( kTrustedCAPath, strPath );
-    sets.endGroup();
-
-    trusted_ca_path_ = strPath;
-}
-
-QString SettingsMgr::getTrustedCAPath()
-{
-    QSettings sets;
-
-    sets.beginGroup( kBehaviorGroup );
-    trusted_ca_path_ = sets.value( kTrustedCAPath, "trustedCA" ).toString();
-    sets.endGroup();
-
-    return trusted_ca_path_;
-}
-
 void SettingsMgr::setCertPath( const QString strPath )
 {
     QSettings sets;
@@ -283,6 +260,38 @@ QString SettingsMgr::getCertPath()
     sets.endGroup();
 
     return cert_path_;
+}
+
+QString SettingsMgr::trustCertPath()
+{
+    QString strPath;
+
+    strPath = QString( "%1/Trust" ).arg( cert_path_ );
+    return strPath;
+}
+
+QString SettingsMgr::EECertPath()
+{
+    QString strPath;
+
+    strPath = QString( "%1/EE" ).arg( cert_path_ );
+    return strPath;
+}
+
+QString SettingsMgr::CACertPath()
+{
+    QString strPath;
+
+    strPath = QString( "%1/CA" ).arg( cert_path_ );
+    return strPath;
+}
+
+QString SettingsMgr::tempCertPath()
+{
+    QString strPath;
+
+    strPath = QString( "%1/Temp" ).arg( cert_path_ );
+    return strPath;
 }
 
 void SettingsMgr::setHexAreaWidth( int width )

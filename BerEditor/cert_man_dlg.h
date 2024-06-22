@@ -13,6 +13,13 @@ enum {
     ManModeTrust = 4
 };
 
+enum {
+    TAB_EE_IDX = 0,
+    TAB_CA_IDX = 1,
+    TAB_TRUST_IDX = 2,
+    TAB_TOOL_IEX = 3
+};
+
 namespace Ui {
 class CertManDlg;
 }
@@ -30,11 +37,15 @@ public:
 
     const QString getPriKeyHex();
     const QString getCertHex();
+    const QString getCACertHex();
 
     int getPriKey( BIN *pPriKey );
     int getCert( BIN *pCert );
+    int getCACert( BIN *pCA );
+
 
     int writePriKeyCert( const BIN *pEncPriKey, const BIN *pCert );
+    const QString getSeletedCAPath();
 
 private slots:
     void showEvent(QShowEvent *event);
@@ -52,6 +63,11 @@ private slots:
     void clickChangePasswd();
 
     void clickOK();
+
+    void clickAddCA();
+    void clickRemoveCA();
+    void clickViewCA();
+    void clickDecodeCA();
 
     void clickAddTrust();
     void clickRemoveTrust();
@@ -94,10 +110,12 @@ private:
     int changePriKey( const BIN *pNewEncPriKey );
     int readPriKeyCert( BIN *pEncPriKey, BIN *pCert );
     int readCert( BIN *pCert );
+    int readCACert( BIN *pCert );
     const QString getModeName( int nMode );
 
     BIN pri_key_;
     BIN cert_;
+    BIN ca_cert_;
     int mode_;
 };
 

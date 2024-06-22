@@ -8,6 +8,7 @@
 #include "common.h"
 #include "cert_info_dlg.h"
 #include "csr_info_dlg.h"
+#include "settings_mgr.h"
 
 #include "js_pki.h"
 #include "js_pki_eddsa.h"
@@ -416,7 +417,11 @@ void KeyPairManDlg::findSavePath()
 
     if( strPath.length() < 1 )
     {
-        strPath = QDir::currentPath();
+        QDir dir;
+        strPath = berApplet->settingsMgr()->tempCertPath();
+
+        if( dir.exists(strPath) == false )
+            dir.mkpath( strPath );
     }
 
     QString folderPath = findFolder( this, strPath );

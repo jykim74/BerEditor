@@ -32,6 +32,8 @@ public:
     static const QString getCRL_URIFromExt( const QString strExtCRLDP );
     static const QString getOCSP_URIFromExt( const QString strExtAIA );
     static const QString getCA_URIFromExt( const QString strExtAIA );
+    static bool isCA( const QString strExtBC );
+
     static int getCA( const QString strExtAIA, BIN *pCA );
     static int getCRL( const QString strExtCRLDP, BIN *pCRL );
     static const QString getValueFromExtList( const QString strExtName, JExtensionInfoList *pExtList );

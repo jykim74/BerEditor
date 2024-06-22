@@ -480,7 +480,7 @@ void CertInfoDlg::clickSaveTrustedCA()
     int ret = 0;
     unsigned long uHash = 0;
 
-    QString strTrustedCAPath = berApplet->settingsMgr()->trustedCAPath();
+    QString strTrustedCAPath = berApplet->settingsMgr()->trustCertPath();
 
     if( QDir( strTrustedCAPath ).exists() == false )
         QDir().mkdir( strTrustedCAPath );
@@ -893,6 +893,21 @@ const QString CertInfoDlg::getCA_URIFromExt( const QString strExtAIA )
     }
 
     return strURI;
+}
+
+bool CertInfoDlg::isCA( const QString strExtBC )
+{
+    QString strBC;
+
+    if( strExtBC.length() < 1 )
+        return false;
+
+    strBC = getExtValue( kExtNameBC, strExtBC, false );
+
+    if( strBC.contains( "CA" ) == true )
+        return true;
+
+    return false;
 }
 
 int CertInfoDlg::getCA( const QString strExtAIA, BIN *pCA )

@@ -25,7 +25,6 @@ SettingsDlg::SettingsDlg(QWidget *parent) :
     connect( mOkBtn, SIGNAL(clicked()), this, SLOT(onOkBtnClicked()));
     connect( mCancelBtn, SIGNAL(clicked()), this, SLOT(onCancelBtnClicked()));
     connect( mFindOIDConfig, SIGNAL(clicked()), this, SLOT(findOIDConfig()));
-    connect( mFindTrustedCAPathBtn, SIGNAL(clicked()), this, SLOT(findTrustedCAPath()));
     connect( mFindCertPathBtn, SIGNAL(clicked()), this, SLOT(findCertPath()));
 
     initialize();
@@ -80,7 +79,6 @@ void SettingsDlg::updateSettings()
     {
         mgr->setDefaultHash( mDefaultHashCombo->currentText() );
         mgr->setFileReadSize( mFileReadSizeText->text().toInt() );
-        mgr->setTrustedCAPath( mTrustedCAPathText->text() );
         mgr->setCertPath( mCertPathText->text() );
     }
 
@@ -121,15 +119,6 @@ void SettingsDlg::findOIDConfig()
     QString fileName = findFile( this, JS_FILE_TYPE_CFG, strPath );
 
     if( fileName.length() > 0 ) mOIDConfigPathText->setText( fileName );
-}
-
-void SettingsDlg::findTrustedCAPath()
-{
-    QString strPath = mTrustedCAPathText->text();
-
-    QString folderName = findFolder( this, strPath );
-
-    if( folderName.length() > 0 ) mTrustedCAPathText->setText( folderName );
 }
 
 void SettingsDlg::findCertPath()
@@ -178,7 +167,6 @@ void SettingsDlg::showEvent(QShowEvent *event)
     mDefaultHashCombo->addItems( kHashList );
     mDefaultHashCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
 
-    mTrustedCAPathText->setText( berApplet->settingsMgr()->getTrustedCAPath() );
     mCertPathText->setText( berApplet->settingsMgr()->getCertPath() );
 
     mLangComboBox->setCurrentIndex(I18NHelper::getInstance()->preferredLanguage());

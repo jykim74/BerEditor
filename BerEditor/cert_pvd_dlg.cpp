@@ -619,7 +619,7 @@ void CertPVDDlg::clickPathValidation()
 
     if( mUseTrustListCheck->isChecked() )
     {
-        QString strTrustPath = berApplet->settingsMgr()->getTrustedCAPath();
+        QString strTrustPath = berApplet->settingsMgr()->trustCertPath();
         ret = JS_PKI_CertPVD2( pTrustList, pUntrustList, pCRLList, pParamList, &binTarget, strTrustPath.toLocal8Bit().toStdString().c_str(), sMsg );
     }
     else
