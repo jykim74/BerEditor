@@ -448,7 +448,7 @@ void CMPClientDlg::clickGENM()
     BIN binRsp = {0,0};
 
     QString strURL = mURLCombo->currentText();
-    QString strCACert = mCACertPathText->text();
+    QString strCAPath = mCACertPathText->text();
     JNameValList *pNameValList = NULL;
     JNameValList *pCurList = NULL;
 
@@ -458,10 +458,23 @@ void CMPClientDlg::clickGENM()
         return;
     }
 
-    if( strCACert.length() < 1 )
+    if( strCAPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "find a CA certificate" ), this );
-        return;
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelCA);
+        certMan.setTitle( tr( "Select CA certificate" ));
+        certMan.exec();
+
+        strCAPath = certMan.getSeletedCAPath();
+        if( strCAPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Find a CA certificate" ), this );
+            return;
+        }
+        else
+        {
+            mCACertPathText->setText( strCAPath );
+        }
     }
 
     AuthRefDlg authRef;
@@ -478,7 +491,7 @@ void CMPClientDlg::clickGENM()
         return;
     }
 
-    JS_BIN_fileReadBER( strCACert.toLocal8Bit().toStdString().c_str(), &binCA );
+    JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
 
     ret = JS_CMP_init( strURL.toStdString().c_str(), &binCA, &pCTX );
     if( ret != 0 )
@@ -552,7 +565,7 @@ void CMPClientDlg::clickIR()
     GenKeyPairDlg genKeyPair;
 
     QString strURL = mURLCombo->currentText();
-    QString strCACert = mCACertPathText->text();
+    QString strCAPath = mCACertPathText->text();
 
 
     if( strURL.length() < 1 )
@@ -561,13 +574,26 @@ void CMPClientDlg::clickIR()
         return;
     }
 
-    if( strCACert.length() < 1 )
+    if( strCAPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "find a CA certificate" ), this );
-        return;
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelCA);
+        certMan.setTitle( tr( "Select CA certificate" ));
+        certMan.exec();
+
+        strCAPath = certMan.getSeletedCAPath();
+        if( strCAPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Find a CA certificate" ), this );
+            return;
+        }
+        else
+        {
+            mCACertPathText->setText( strCAPath );
+        }
     }
 
-    JS_BIN_fileReadBER( strCACert.toLocal8Bit().toStdString().c_str(), &binCA );
+    JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
     if( authRef.exec() != QDialog::Accepted ) goto end;
 
     strAuth = authRef.mAuthCodeText->text();
@@ -646,7 +672,7 @@ void CMPClientDlg::clickCR()
     GenKeyPairDlg genKeyPair;
 
     QString strURL = mURLCombo->currentText();
-    QString strCACert = mCACertPathText->text();
+    QString strCAPath = mCACertPathText->text();
 
 
     if( strURL.length() < 1 )
@@ -655,13 +681,26 @@ void CMPClientDlg::clickCR()
         return;
     }
 
-    if( strCACert.length() < 1 )
+    if( strCAPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "find a CA certificate" ), this );
-        return;
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelCA);
+        certMan.setTitle( tr( "Select CA certificate" ));
+        certMan.exec();
+
+        strCAPath = certMan.getSeletedCAPath();
+        if( strCAPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Find a CA certificate" ), this );
+            return;
+        }
+        else
+        {
+            mCACertPathText->setText( strCAPath );
+        }
     }
 
-    JS_BIN_fileReadBER( strCACert.toLocal8Bit().toStdString().c_str(), &binCA );
+    JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
     if( authRef.exec() != QDialog::Accepted ) goto end;
 
     strAuth = authRef.mAuthCodeText->text();
@@ -742,7 +781,7 @@ void CMPClientDlg::clickP10CSR()
     MakeCSRDlg makeCSR;
 
     QString strURL = mURLCombo->currentText();
-    QString strCACert = mCACertPathText->text();
+    QString strCAPath = mCACertPathText->text();
 
 
     if( strURL.length() < 1 )
@@ -751,13 +790,26 @@ void CMPClientDlg::clickP10CSR()
         return;
     }
 
-    if( strCACert.length() < 1 )
+    if( strCAPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "find a CA certificate" ), this );
-        return;
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelCA);
+        certMan.setTitle( tr( "Select CA certificate" ));
+        certMan.exec();
+
+        strCAPath = certMan.getSeletedCAPath();
+        if( strCAPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Find a CA certificate" ), this );
+            return;
+        }
+        else
+        {
+            mCACertPathText->setText( strCAPath );
+        }
     }
 
-    JS_BIN_fileReadBER( strCACert.toLocal8Bit().toStdString().c_str(), &binCA );
+    JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
     if( authRef.exec() != QDialog::Accepted ) goto end;
 
     strAuth = authRef.mAuthCodeText->text();
@@ -834,7 +886,7 @@ void CMPClientDlg::clickSignGENM()
     BIN binCert = {0,0};
 
     QString strURL = mURLCombo->currentText();
-    QString strCACert = mCACertPathText->text();
+    QString strCAPath = mCACertPathText->text();
 
 
     JNameValList *pNameValList = NULL;
@@ -846,13 +898,26 @@ void CMPClientDlg::clickSignGENM()
         return;
     }
 
-    if( strCACert.length() < 1 )
+    if( strCAPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "find a CA certificate" ), this );
-        return;
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelCA);
+        certMan.setTitle( tr( "Select CA certificate" ));
+        certMan.exec();
+
+        strCAPath = certMan.getSeletedCAPath();
+        if( strCAPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Find a CA certificate" ), this );
+            return;
+        }
+        else
+        {
+            mCACertPathText->setText( strCAPath );
+        }
     }
 
-    JS_BIN_fileReadBER( strCACert.toLocal8Bit().toStdString().c_str(), &binCA );
+    JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
 
     if( mCertGroup->isChecked() == true )
     {
@@ -946,7 +1011,7 @@ void CMPClientDlg::clickKUR()
     BIN binNewCert = {0,0};
 
     QString strURL = mURLCombo->currentText();
-    QString strCACert = mCACertPathText->text();
+    QString strCAPath = mCACertPathText->text();
 
 
     QString strPriHex;
@@ -959,13 +1024,26 @@ void CMPClientDlg::clickKUR()
         return;
     }
 
-    if( strCACert.length() < 1 )
+    if( strCAPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "find a CA certificate" ), this );
-        return;
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelCA);
+        certMan.setTitle( tr( "Select CA certificate" ));
+        certMan.exec();
+
+        strCAPath = certMan.getSeletedCAPath();
+        if( strCAPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Find a CA certificate" ), this );
+            return;
+        }
+        else
+        {
+            mCACertPathText->setText( strCAPath );
+        }
     }
 
-    JS_BIN_fileReadBER( strCACert.toLocal8Bit().toStdString().c_str(), &binCA );
+    JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
 
     if( genKeyPair.exec() != QDialog::Accepted ) goto end;
 
@@ -1054,7 +1132,7 @@ void CMPClientDlg::clickRR()
     BIN binCert = {0,0};
 
     QString strURL = mURLCombo->currentText();
-    QString strCACert = mCACertPathText->text();
+    QString strCAPath = mCACertPathText->text();
 
 
     if( strURL.length() < 1 )
@@ -1063,13 +1141,26 @@ void CMPClientDlg::clickRR()
         return;
     }
 
-    if( strCACert.length() < 1 )
+    if( strCAPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "find a CA certificate" ), this );
-        return;
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelCA);
+        certMan.setTitle( tr( "Select CA certificate" ));
+        certMan.exec();
+
+        strCAPath = certMan.getSeletedCAPath();
+        if( strCAPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Find a CA certificate" ), this );
+            return;
+        }
+        else
+        {
+            mCACertPathText->setText( strCAPath );
+        }
     }
 
-    JS_BIN_fileReadBER( strCACert.toLocal8Bit().toStdString().c_str(), &binCA );
+    JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
 
     if( mCertGroup->isChecked() == true )
     {

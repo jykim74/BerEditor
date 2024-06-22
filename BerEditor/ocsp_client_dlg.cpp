@@ -773,8 +773,21 @@ void OCSPClientDlg::clickEncode()
 
     if( strCAPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "Find a CA certificate" ), this );
-        return;
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelCA);
+        certMan.setTitle( tr( "Select CA certificate" ));
+        certMan.exec();
+
+        strCAPath = certMan.getSeletedCAPath();
+        if( strCAPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Find a CA certificate" ), this );
+            return;
+        }
+        else
+        {
+            mCACertPathText->setText( strCAPath );
+        }
     }
 
     QString strCertPath = mCertPathText->text();

@@ -135,6 +135,7 @@ int SCEPClientDlg::getCA( BIN *pCA )
     int ret = 0;
 
     QString strCAPath = mCACertPathText->text();
+
     if( strCAPath.length() < 1 ) return -1;
 
     ret = getDataFromURI( strCAPath, pCA );
@@ -569,11 +570,31 @@ void SCEPClientDlg::clickMakeIssue()
     MakeCSRDlg makeCSR;
 
     QString strURL = mURLCombo->currentText();
+    QString strCAPath = mCACertPathText->text();
 
     if( strURL.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter SECP URL"), this );
         return;
+    }
+
+    if( strCAPath.length() < 1 )
+    {
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelCA);
+        certMan.setTitle( tr( "Select CA certificate" ));
+        certMan.exec();
+
+        strCAPath = certMan.getSeletedCAPath();
+        if( strCAPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Find a CA certificate" ), this );
+            return;
+        }
+        else
+        {
+            mCACertPathText->setText( strCAPath );
+        }
     }
 
     ret = getCA( &binCA );
@@ -698,8 +719,21 @@ void SCEPClientDlg::clickMakeUpdate()
 
     if( strCAPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "Find a CA certificate" ), this );
-        return;
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelCA);
+        certMan.setTitle( tr( "Select CA certificate" ));
+        certMan.exec();
+
+        strCAPath = certMan.getSeletedCAPath();
+        if( strCAPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Find a CA certificate" ), this );
+            return;
+        }
+        else
+        {
+            mCACertPathText->setText( strCAPath );
+        }
     }
 
     ret = getCA( &binCA );
@@ -849,10 +883,22 @@ void SCEPClientDlg::clickMakeGetCRL()
 
     if( strCAPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "Find a CA certificate" ), this );
-        return;
-    }
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelCA);
+        certMan.setTitle( tr( "Select CA certificate" ));
+        certMan.exec();
 
+        strCAPath = certMan.getSeletedCAPath();
+        if( strCAPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Find a CA certificate" ), this );
+            return;
+        }
+        else
+        {
+            mCACertPathText->setText( strCAPath );
+        }
+    }
 
     ret = getCA( &binCA );
     if( ret != 0 )

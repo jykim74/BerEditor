@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>573</width>
-    <height>696</height>
+    <height>810</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -56,12 +56,12 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>100</width>
+         <width>16777215</width>
          <height>16777215</height>
         </size>
        </property>
        <property name="text">
-        <string>Untrust Path</string>
+        <string>Untrusted Certificate</string>
        </property>
       </widget>
      </item>
@@ -101,12 +101,12 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>100</width>
+         <width>400</width>
          <height>16777215</height>
         </size>
        </property>
        <property name="text">
-        <string>Trust Path</string>
+        <string>Trusted Certificate</string>
        </property>
       </widget>
      </item>
@@ -191,12 +191,12 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>100</width>
+         <width>16777215</width>
          <height>16777215</height>
         </size>
        </property>
        <property name="text">
-        <string>CRL Path</string>
+        <string>CRL</string>
        </property>
       </widget>
      </item>
@@ -392,7 +392,7 @@
     <widget class="QTableWidget" name="mPathTable"/>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="mFlagGroup">
      <property name="minimumSize">
       <size>
        <width>0</width>

@@ -64,6 +64,8 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
     initialize();
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+    mFlagGroup->layout()->setSpacing(5);
+
     mTrustInfoBtn->setFixedWidth(34);
     mTrustDecodeBtn->setFixedWidth(34);
     mUntrustInfoBtn->setFixedWidth(34);
@@ -713,8 +715,21 @@ void CertPVDDlg::clickTrustAdd()
 
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( "Select trust certificate", this );
-        return;
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelCA);
+        certMan.setTitle( tr( "Select CA certificate" ));
+        certMan.exec();
+
+        strPath = certMan.getSeletedCAPath();
+        if( strPath.length() < 1 )
+        {
+            berApplet->warningBox( "Select trust certificate", this );
+            return;
+        }
+        else
+        {
+            mTrustPathText->setText( strPath );
+        }
     }
 
     int row = mPathTable->rowCount();
@@ -732,8 +747,21 @@ void CertPVDDlg::clickUntrustAdd()
 
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( "Select untrust certificate", this );
-        return;
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelCA);
+        certMan.setTitle( tr( "Select CA certificate" ));
+        certMan.exec();
+
+        strPath = certMan.getSeletedCAPath();
+        if( strPath.length() < 1 )
+        {
+            berApplet->warningBox( "Select untrust certificate", this );
+            return;
+        }
+        else
+        {
+            mUntrustPathText->setText( strPath );
+        }
     }
 
     int row = mPathTable->rowCount();
