@@ -551,18 +551,30 @@ end :
 void SCEPClientDlg::clickMakeIssue()
 {
     int ret = 0;
+    int nStatus = -1;
     BIN binNonce = {0,0};
     BIN binCA = {0,0};
     BIN binNewPri = {0,0};
+    BIN binNewCert = {0,0};
     BIN binCSR = {0,0};
     char *pTransID = NULL;
     BIN binReq = {0,0};
+    BIN binRsp = {0,0};
+    BIN binSignedData = {0,0};
 
     QString strPriHex;
     QString strCSRHex;
 
     GenKeyPairDlg genKeyPair;
     MakeCSRDlg makeCSR;
+
+    QString strURL = mURLCombo->currentText();
+
+    if( strURL.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter SECP URL"), this );
+        return;
+    }
 
     ret = getCA( &binCA );
     if( ret != 0 )
@@ -598,12 +610,58 @@ void SCEPClientDlg::clickMakeIssue()
         berApplet->warnLog( tr( "fail to make request: %1").arg(ret), this );
     }
 
+    strURL += "/pkiclient.exe?operation=PKIOperation";
+
+    ret = JS_HTTP_requestPostBin2(
+        strURL.toStdString().c_str(),
+        NULL,
+        NULL,
+        "application/x-pki-message",
+        &binReq,
+        &nStatus,
+        &binRsp );
+
+    if( ret != 0 || nStatus != JS_HTTP_STATUS_OK )
+    {
+        berApplet->warnLog( QString( "failed to request HTTP post [%1:%2]" ).arg( ret ).arg( nStatus ), this );
+        goto end;
+    }
+
+    mResponseText->setPlainText( getHexString( &binRsp ));
+    setUsedURL( strURL );
+
+    ret = JS_SCEP_parseCertRsp(
+        &binRsp,
+        &binCA,
+        &binNewPri,
+        &binNonce,
+        pTransID,
+        &binSignedData );
+
+    if( ret != 0 )
+    {
+        berApplet->warnLog( QString( "failed to parse CertRsp" ), this );
+        goto end;
+    }
+
+    ret = JS_SCEP_getSignCert( &binSignedData, &binCSR, &binNewCert );
+    if( ret != 0 )
+    {
+        berApplet->warnLog( QString("failed to get sign certificate with SCEP [%1]").arg( ret ), this );
+        goto end;
+    }
+
+    savePriKeyCert( &binNewPri, &binNewCert );
+
 end :
     JS_BIN_reset( &binNonce );
     JS_BIN_reset( &binCA );
     JS_BIN_reset( &binNewPri );
+    JS_BIN_reset( &binNewCert );
     JS_BIN_reset( &binCSR );
     JS_BIN_reset( &binReq );
+    JS_BIN_reset( &binRsp );
+    JS_BIN_reset( &binSignedData );
 
     if( pTransID ) JS_free( pTransID );
 }
@@ -611,13 +669,17 @@ end :
 void SCEPClientDlg::clickMakeUpdate()
 {
     int ret = 0;
+    int nStatus = -1;
     BIN binNonce = {0,0};
     BIN binCA = {0,0};
     BIN binPri = {0,0};
     BIN binCert = {0,0};
+    BIN binNewCert = {0,0};
     BIN binCSR = {0,0};
     char *pTransID = NULL;
     BIN binReq = {0,0};
+    BIN binRsp = {0,0};
+    BIN binSignedData = {0,0};
 
     QString strCSRHex;
 
@@ -625,6 +687,14 @@ void SCEPClientDlg::clickMakeUpdate()
     QString strCAPath = mCACertPathText->text();
     QString strCertPath = mCertPathText->text();
     QString strPriKeyPath = mPriKeyPathText->text();
+
+    QString strURL = mURLCombo->currentText();
+
+    if( strURL.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter SECP URL"), this );
+        return;
+    }
 
     if( strCAPath.length() < 1 )
     {
@@ -693,13 +763,59 @@ void SCEPClientDlg::clickMakeUpdate()
         berApplet->warnLog( tr( "fail to make request: %1").arg(ret), this );
     }
 
+    strURL += "/pkiclient.exe?operation=PKIOperation";
+
+    ret = JS_HTTP_requestPostBin2(
+        strURL.toStdString().c_str(),
+        NULL,
+        NULL,
+        "application/x-pki-message",
+        &binReq,
+        &nStatus,
+        &binRsp );
+
+    if( ret != 0 || nStatus != JS_HTTP_STATUS_OK )
+    {
+        berApplet->warnLog( QString( "failed to request HTTP post [%1:%2]" ).arg( ret ).arg( nStatus ), this );
+        goto end;
+    }
+
+    mResponseText->setPlainText( getHexString( &binRsp ));
+    setUsedURL( strURL );
+
+    ret = JS_SCEP_parseCertRsp(
+        &binRsp,
+        &binCA,
+        &binPri,
+        &binNonce,
+        pTransID,
+        &binSignedData );
+
+    if( ret != 0 )
+    {
+        berApplet->warnLog( QString("failed to parse CertRsp : %1").arg(ret), this );
+        goto end;
+    }
+
+    ret = JS_SCEP_getSignCert( &binSignedData, &binCSR, &binNewCert );
+    if( ret != 0 )
+    {
+        berApplet->warnLog( QString("failed to get sign certificate in reply: %1").arg(ret), this );
+        goto end;
+    }
+
+    savePriKeyCert( &binPri, &binNewCert );
+
 end :
     JS_BIN_reset( &binNonce );
     JS_BIN_reset( &binCA );
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binNewCert );
     JS_BIN_reset( &binCSR );
     JS_BIN_reset( &binReq );
+    JS_BIN_reset( &binRsp );
+    JS_BIN_reset( &binSignedData );
 
     if( pTransID ) JS_free( pTransID );
 }
@@ -707,17 +823,29 @@ end :
 void SCEPClientDlg::clickMakeGetCRL()
 {
     int ret = 0;
+    int nStatus = -1;
     BIN binNonce = {0,0};
     BIN binCA = {0,0};
     BIN binPri = {0,0};
     BIN binCert = {0,0};
     BIN binReq = {0,0};
+    BIN binRsp = {0,0};
+    BIN binCRL = {0,0};
+    BIN binSignedData = {0,0};
 
     QString strCAPath = mCACertPathText->text();
     QString strCertPath = mCertPathText->text();
     QString strPriKeyPath = mPriKeyPathText->text();
 
     const char *pTransID = "1111";
+
+    QString strURL = mURLCombo->currentText();
+
+    if( strURL.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter SECP URL"), this );
+        return;
+    }
 
     if( strCAPath.length() < 1 )
     {
@@ -780,12 +908,58 @@ void SCEPClientDlg::clickMakeGetCRL()
         berApplet->warnLog( tr( "fail to make to get crl: %1").arg(ret), this );
     }
 
+    strURL += "/pkiclient.exe?operation=PKIOperation";
+
+    ret = JS_HTTP_requestPostBin2(
+        strURL.toStdString().c_str(),
+        NULL,
+        NULL,
+        "application/x-pki-message",
+        &binReq,
+        &nStatus,
+        &binRsp );
+
+    if( ret != 0 || nStatus != JS_HTTP_STATUS_OK )
+    {
+        berApplet->warnLog( QString( "failed to request HTTP post [%1:%2]" ).arg( ret ).arg( nStatus ), this );
+        goto end;
+    }
+
+    mResponseText->setPlainText( getHexString( &binRsp ));
+    setUsedURL( strURL );
+
+    ret = JS_SCEP_parseCertRsp(
+        &binRsp,
+        &binCA,
+        &binPri,
+        &binNonce,
+        pTransID,
+        &binSignedData );
+
+    if( ret != 0 )
+    {
+        berApplet->warnLog( QString("failed to parse CertRsp : %1").arg(ret), this );
+        goto end;
+    }
+
+    ret = JS_SCEP_getCRL( &binSignedData, &binCRL );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( QString("failed to get CRL with SCEP: %1").arg(ret), this );
+        goto end;
+    }
+
+    berApplet->log( QString( "CRL: %1").arg( getHexString( &binCRL )));
+
 end :
     JS_BIN_reset( &binNonce );
     JS_BIN_reset( &binCA );
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binCert );
     JS_BIN_reset( &binReq );
+    JS_BIN_reset( &binRsp );
+    JS_BIN_reset( &binCRL );
+    JS_BIN_reset( &binSignedData );
 }
 
 void SCEPClientDlg::clickSend()
@@ -849,7 +1023,6 @@ void SCEPClientDlg::clickVerify()
     BIN binNonce = {0,0};
 
     BIN binData = {0,0};
-    BIN binCSR = {0,0}; /* Need to load */
 
     QString strRsp = mResponseText->toPlainText();
     QString strPriPath = mPriKeyPathText->text();
@@ -890,17 +1063,11 @@ void SCEPClientDlg::clickVerify()
         berApplet->warnLog( QString( "failed to verify Rsp" ), this );
         goto end;
     }
-
-    ret = JS_SCEP_getSignCert( &binData, &binCSR, &binPriKey );
-    if( ret != 0 )
-    {
-        berApplet->warnLog( QString("failed to get sign certificate in reply: %1").arg(ret), this );
-        goto end;
-    }
     else
     {
-        berApplet->messageLog( tr("Verify OK" ), this );
+        berApplet->log( QString("SignedData: %1").arg(getHexString(&binData)));
     }
+
 
 end :
     JS_BIN_reset( &binRsp );
