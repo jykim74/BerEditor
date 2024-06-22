@@ -520,7 +520,7 @@ void SCEPClientDlg::clickGetCA()
 
     if( strURL.length() < 1 )
     {
-        berApplet->warningBox( tr( "Enter SECP URL"), this );
+        berApplet->warningBox( tr( "Enter SCEP URL"), this );
         return;
     }
 
@@ -574,7 +574,7 @@ void SCEPClientDlg::clickMakeIssue()
 
     if( strURL.length() < 1 )
     {
-        berApplet->warningBox( tr( "Enter SECP URL"), this );
+        berApplet->warningBox( tr( "Enter SCEP URL"), this );
         return;
     }
 
@@ -713,7 +713,7 @@ void SCEPClientDlg::clickMakeUpdate()
 
     if( strURL.length() < 1 )
     {
-        berApplet->warningBox( tr( "Enter SECP URL"), this );
+        berApplet->warningBox( tr( "Enter SCEP URL"), this );
         return;
     }
 
@@ -877,7 +877,7 @@ void SCEPClientDlg::clickMakeGetCRL()
 
     if( strURL.length() < 1 )
     {
-        berApplet->warningBox( tr( "Enter SECP URL"), this );
+        berApplet->warningBox( tr( "Enter SCEP URL"), this );
         return;
     }
 
@@ -1022,7 +1022,7 @@ void SCEPClientDlg::clickSend()
 
     if( strURL.length() < 1 )
     {
-        berApplet->warningBox( tr( "Enter SECP URL"), this );
+        berApplet->warningBox( tr( "Enter SCEP URL"), this );
         return;
     }
 
