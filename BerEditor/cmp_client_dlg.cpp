@@ -1,7 +1,6 @@
 #include <QSettings>
 
 #include "cmp_client_dlg.h"
-#include "auth_ref_dlg.h"
 #include "mainwindow.h"
 #include "ber_applet.h"
 #include "settings_mgr.h"
@@ -164,7 +163,11 @@ void CMPClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
             ret = JS_PKI_encryptPrivateKey( nKeyType, -1, strPass.toStdString().c_str(), pPriKey, NULL, &binEncPri );
             if( ret == 0 )
             {
-                certMan.writePriKeyCert( &binEncPri, pCert );
+                ret = certMan.writePriKeyCert( &binEncPri, pCert );
+                if( ret == 0 )
+                    berApplet->messageLog( tr( "The private key and certificate are saved successfully" ), this );
+                else
+                    berApplet->warnLog( tr( "faied to save private key and certificate" ), this );
             }
         }
 
@@ -477,19 +480,24 @@ void CMPClientDlg::clickGENM()
         }
     }
 
-    AuthRefDlg authRef;
-    if( authRef.exec() == QDialog::Accepted )
-    {
-        QString strAuth = authRef.mAuthCodeText->text();
-        QString strRef = authRef.mRefNumText->text();
+    QString strAuth = mAuthCodeText->text();
+    QString strRef = mRefNumText->text();
 
-        JS_BIN_decodeHex( strAuth.toStdString().c_str(), &binAuth );
-        JS_BIN_decodeHex( strRef.toStdString().c_str(), &binRef );
-    }
-    else
+    if( strAuth.length() < 1 )
     {
+        berApplet->warningBox(tr("Enter Authorization Code"), this );
         return;
     }
+
+    if( strRef.length() < 1 )
+    {
+        berApplet->warningBox(tr("Enter Referrence Number"), this );
+        return;
+    }
+
+    JS_BIN_decodeHex( strAuth.toStdString().c_str(), &binAuth );
+    JS_BIN_decodeHex( strRef.toStdString().c_str(), &binRef );
+
 
     JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
 
@@ -547,8 +555,6 @@ void CMPClientDlg::clickIR()
     int ret = 0;
     void *pCTX = NULL;
 
-    QString strAuth;
-    QString strRef;
     QString strPriHex;
     QString strDN = "CN=TestIR,C=kr";
 
@@ -561,7 +567,6 @@ void CMPClientDlg::clickIR()
     BIN binReq = {0,0};
     BIN binRsp = {0,0};
 
-    AuthRefDlg authRef;
     GenKeyPairDlg genKeyPair;
 
     QString strURL = mURLCombo->currentText();
@@ -593,14 +598,25 @@ void CMPClientDlg::clickIR()
         }
     }
 
-    JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
-    if( authRef.exec() != QDialog::Accepted ) goto end;
+    QString strAuth = mAuthCodeText->text();
+    QString strRef = mRefNumText->text();
 
-    strAuth = authRef.mAuthCodeText->text();
-    strRef = authRef.mRefNumText->text();
+    if( strAuth.length() < 1 )
+    {
+        berApplet->warningBox(tr("Enter Authorization Code"), this );
+        return;
+    }
+
+    if( strRef.length() < 1 )
+    {
+        berApplet->warningBox(tr("Enter Referrence Number"), this );
+        return;
+    }
 
     JS_BIN_decodeHex( strAuth.toStdString().c_str(), &binAuth );
     JS_BIN_decodeHex( strRef.toStdString().c_str(), &binRef );
+
+    JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
 
     if( genKeyPair.exec() != QDialog::Accepted ) goto end;
 
@@ -654,21 +670,18 @@ void CMPClientDlg::clickCR()
     int ret = 0;
     void *pCTX = NULL;
 
-    QString strAuth;
-    QString strRef;
     QString strPriHex;
     QString strDN = "CN=TestCR,C=kr";
 
-    BIN binAuth = {0,0};
-    BIN binRef = {0,0};
     BIN binNewPri = {0,0};
     BIN binNewCert = {0,0};
     BIN binCA = {0,0};
+    BIN binAuth = {0,0};
+    BIN binRef = {0,0};
 
     BIN binReq = {0,0};
     BIN binRsp = {0,0};
 
-    AuthRefDlg authRef;
     GenKeyPairDlg genKeyPair;
 
     QString strURL = mURLCombo->currentText();
@@ -700,11 +713,22 @@ void CMPClientDlg::clickCR()
         }
     }
 
-    JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
-    if( authRef.exec() != QDialog::Accepted ) goto end;
+    QString strAuth = mAuthCodeText->text();
+    QString strRef = mRefNumText->text();
 
-    strAuth = authRef.mAuthCodeText->text();
-    strRef = authRef.mRefNumText->text();
+    if( strAuth.length() < 1 )
+    {
+        berApplet->warningBox(tr("Enter Authorization Code"), this );
+        return;
+    }
+
+    if( strRef.length() < 1 )
+    {
+        berApplet->warningBox(tr("Enter Referrence Number"), this );
+        return;
+    }
+
+    JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
 
     JS_BIN_decodeHex( strAuth.toStdString().c_str(), &binAuth );
     JS_BIN_decodeHex( strRef.toStdString().c_str(), &binRef );
@@ -752,6 +776,8 @@ end :
     JS_BIN_reset( &binCA );
     JS_BIN_reset( &binReq );
     JS_BIN_reset( &binRsp );
+    JS_BIN_reset( &binAuth );
+    JS_BIN_reset( &binRef );
 
     if( pCTX ) JS_CMP_final( pCTX );
 }
@@ -761,8 +787,6 @@ void CMPClientDlg::clickP10CSR()
     int ret = 0;
     void *pCTX = NULL;
 
-    QString strAuth;
-    QString strRef;
     QString strPriHex;
     QString strCSRHex;
 
@@ -776,7 +800,6 @@ void CMPClientDlg::clickP10CSR()
     BIN binReq = {0,0};
     BIN binRsp = {0,0};
 
-    AuthRefDlg authRef;
     GenKeyPairDlg genKeyPair;
     MakeCSRDlg makeCSR;
 
@@ -809,11 +832,22 @@ void CMPClientDlg::clickP10CSR()
         }
     }
 
-    JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
-    if( authRef.exec() != QDialog::Accepted ) goto end;
+    QString strAuth = mAuthCodeText->text();
+    QString strRef = mRefNumText->text();
 
-    strAuth = authRef.mAuthCodeText->text();
-    strRef = authRef.mRefNumText->text();
+    if( strAuth.length() < 1 )
+    {
+        berApplet->warningBox(tr("Enter Authorization Code"), this );
+        return;
+    }
+
+    if( strRef.length() < 1 )
+    {
+        berApplet->warningBox(tr("Enter Referrence Number"), this );
+        return;
+    }
+
+    JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
 
     JS_BIN_decodeHex( strAuth.toStdString().c_str(), &binAuth );
     JS_BIN_decodeHex( strRef.toStdString().c_str(), &binRef );
@@ -1230,6 +1264,9 @@ end :
 
 void CMPClientDlg::clickClearAll()
 {
+    mAuthCodeText->clear();
+    mRefNumText->clear();
+
     clearRequest();
     clearResponse();
 }

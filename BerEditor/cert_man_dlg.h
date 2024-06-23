@@ -47,6 +47,9 @@ public:
     int writePriKeyCert( const BIN *pEncPriKey, const BIN *pCert );
     const QString getSeletedCAPath();
 
+    static int readCA( const QString strCertPath, const BIN* pCert, BIN *pCA );
+    static int writeCA( const QString strCAPath, const BIN *pCACert );
+
 private slots:
     void showEvent(QShowEvent *event);
     void closeEvent(QCloseEvent *event );

@@ -630,6 +630,47 @@ const QString CertManDlg::getSeletedCAPath()
     return strPath;
 }
 
+int CertManDlg::readCA( const QString strCertPath, const BIN* pCert, BIN *pCA )
+{
+    int ret = 0;
+    unsigned long uHash = 0;
+    if( pCert == NULL ) return JSR_ERR;
+
+    QString strCAPath;
+
+    ret = JS_PKI_getIssuerNameHash( pCert, &uHash );
+    if( ret != 0 ) return ret;
+
+    strCAPath = QString( "%1/%2.0").arg( strCertPath ).arg( uHash );
+    ret = JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), pCA );
+
+    if( ret > 0 && pCA->nLen > 0 )
+        ret = JSR_OK;
+    else
+        ret = JSR_ERR2;
+
+    return ret;
+}
+
+int CertManDlg::writeCA( const QString strCAPath, const BIN *pCACert )
+{
+    int ret = 0;
+    unsigned long uHash = 0;
+    if( pCACert == NULL ) return JSR_ERR;
+
+    QString strFilePath;
+
+    ret = JS_PKI_getSubjectNameHash( pCACert, &uHash );
+    if( ret != 0 ) return ret;
+
+    strFilePath = QString( "%1/%2.0").arg( strCAPath ).arg( uHash );
+
+    ret = JS_BIN_writePEM( pCACert, JS_FILE_TYPE_CERT, strFilePath.toLocal8Bit().toStdString().c_str() );
+
+    return ret;
+}
+
+
 int CertManDlg::readPriKeyCert( BIN *pEncPriKey, BIN *pCert )
 {
     QString strPriPath;

@@ -234,7 +234,11 @@ void SCEPClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
             ret = JS_PKI_encryptPrivateKey( nKeyType, -1, strPass.toStdString().c_str(), pPriKey, NULL, &binEncPri );
             if( ret == 0 )
             {
-                certMan.writePriKeyCert( &binEncPri, pCert );
+                ret = certMan.writePriKeyCert( &binEncPri, pCert );
+                if( ret == 0 )
+                    berApplet->messageLog( tr( "The private key and certificate are saved successfully" ), this );
+                else
+                    berApplet->warnLog( tr( "faied to save private key and certificate" ), this );
             }
         }
 
@@ -504,6 +508,9 @@ void SCEPClientDlg::responseChanged()
 
 void SCEPClientDlg::clickClearAll()
 {
+    mNonceText->clear();
+    mTransIDText->clear();
+
     clearRequest();
     clearResponse();
 }
@@ -578,6 +585,8 @@ void SCEPClientDlg::clickMakeIssue()
         return;
     }
 
+    setUsedURL( strURL );
+
     if( strCAPath.length() < 1 )
     {
         CertManDlg certMan;
@@ -649,7 +658,7 @@ void SCEPClientDlg::clickMakeIssue()
     }
 
     mResponseText->setPlainText( getHexString( &binRsp ));
-    setUsedURL( strURL );
+
 
     ret = JS_SCEP_parseCertRsp(
         &binRsp,
@@ -716,6 +725,8 @@ void SCEPClientDlg::clickMakeUpdate()
         berApplet->warningBox( tr( "Enter SCEP URL"), this );
         return;
     }
+
+    setUsedURL( strURL );
 
     if( strCAPath.length() < 1 )
     {
@@ -815,7 +826,6 @@ void SCEPClientDlg::clickMakeUpdate()
     }
 
     mResponseText->setPlainText( getHexString( &binRsp ));
-    setUsedURL( strURL );
 
     ret = JS_SCEP_parseCertRsp(
         &binRsp,
@@ -880,6 +890,8 @@ void SCEPClientDlg::clickMakeGetCRL()
         berApplet->warningBox( tr( "Enter SCEP URL"), this );
         return;
     }
+
+    setUsedURL( strURL );
 
     if( strCAPath.length() < 1 )
     {
@@ -972,7 +984,6 @@ void SCEPClientDlg::clickMakeGetCRL()
     }
 
     mResponseText->setPlainText( getHexString( &binRsp ));
-    setUsedURL( strURL );
 
     ret = JS_SCEP_parseCertRsp(
         &binRsp,

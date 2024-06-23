@@ -85,7 +85,6 @@ SOURCES += \
     cmp_client_dlg.cpp \
     scep_client_dlg.cpp \
     cert_man_dlg.cpp \
-    auth_ref_dlg.cpp \
     passwd_dlg.cpp \
     new_passwd_dlg.cpp
 
@@ -140,7 +139,6 @@ HEADERS += \
     cmp_client_dlg.h \
     scep_client_dlg.h \
     cert_man_dlg.h \
-    auth_ref_dlg.h \
     passwd_dlg.h \
     new_passwd_dlg.h
 
@@ -272,7 +270,6 @@ FORMS += \
         cmp_client_dlg.ui \
         scep_client_dlg.ui \
         cert_man_dlg.ui \
-        auth_ref_dlg.ui \
         passwd_dlg.ui \
         new_passwd_dlg.ui
 

@@ -16,6 +16,7 @@
 #include "js_util.h"
 #include "crl_info_dlg.h"
 #include "settings_mgr.h"
+#include "cert_man_dlg.h"
 #include "common.h"
 
 enum {
@@ -77,6 +78,7 @@ CertInfoDlg::CertInfoDlg(QWidget *parent) :
     setupUi(this);
 
     connect( mSaveBtn, SIGNAL(clicked()), this, SLOT(clickSave()));
+    connect( mSaveCABtn, SIGNAL(clicked()), this, SLOT(clickSaveCA()));
     connect( mSaveTrustedCABtn, SIGNAL(clicked()), SLOT(clickSaveTrustedCA()));
 
     connect( mMakeTreeBtn, SIGNAL(clicked()), this, SLOT(clickMakeTree()));
@@ -132,6 +134,7 @@ void CertInfoDlg::setCertBIN( const BIN *pCert )
 void CertInfoDlg::showEvent(QShowEvent *event)
 {
     getFields();
+    bool bCA = false;
 
     mCertTree->clear();
     QTreeWidgetItem *item = new QTreeWidgetItem;
@@ -142,10 +145,13 @@ void CertInfoDlg::showEvent(QShowEvent *event)
 
     QString strAIA = getValueFromExtList( kExtNameAIA );
     QString strCRLDP = getValueFromExtList( kExtNameCRLDP );
+    QString strBC = getValueFromExtList( kExtNameBC );
 
     QString strOCSP = getOCSP_URIFromExt( strAIA );
     QString strCA = getCA_URIFromExt( strAIA );
     QString strCRL = getCRL_URIFromExt( strCRLDP );
+
+    bCA = isCA( strBC );
 
     if( strCA.length() < 4 )
     {
@@ -167,10 +173,18 @@ void CertInfoDlg::showEvent(QShowEvent *event)
         mOCSPCheckBtn->setEnabled( false );
     }
 
-    if( self_sign_ == false )
-        mSaveTrustedCABtn->hide();
-    else
-        mSaveTrustedCABtn->show();
+    if( berApplet->isLicense() == true )
+    {
+        if( bCA == false )
+            mSaveCABtn->hide();
+        else
+            mSaveCABtn->show();
+
+        if( self_sign_ == false )
+            mSaveTrustedCABtn->hide();
+        else
+            mSaveTrustedCABtn->show();
+    }
 }
 
 void CertInfoDlg::getFields()
@@ -388,6 +402,8 @@ void CertInfoDlg::initUI()
     if( berApplet->isLicense() == false )
     {
         tabWidget->setTabEnabled( 1, false );
+        mSaveCABtn->hide();
+        mSaveTrustedCABtn->hide();
     }
     else
     {
@@ -475,6 +491,13 @@ void CertInfoDlg::clickSave()
     saveAsPEM( &cert_bin_ );
 }
 
+void CertInfoDlg::clickSaveCA()
+{
+    QString strCAPath = berApplet->settingsMgr()->CACertPath();
+
+    CertManDlg::writeCA( strCAPath, &cert_bin_ );
+}
+
 void CertInfoDlg::clickSaveTrustedCA()
 {
     int ret = 0;
@@ -512,12 +535,14 @@ void CertInfoDlg::clickMakeTree()
     JExtensionInfoList *pExtInfoList = NULL;
     QTreeWidgetItem* child = NULL;
     QString strExtValue;
+    QString strCAPath = berApplet->settingsMgr()->CACertPath();
 
     memset( &sCertInfo, 0x00, sizeof(sCertInfo));
     mCertTree->clear();
     if( path_list_ ) JS_BIN_resetList( &path_list_ );
 
     JS_BIN_copy( &binCert, &cert_bin_ );
+
 
     while( 1 )
     {
@@ -539,11 +564,15 @@ void CertInfoDlg::clickMakeTree()
 
         if( bSelfSign == 1 ) break;
 
-        strExtValue = getValueFromExtList( kExtNameAIA, pExtInfoList );
-        if( strExtValue.length() > 0 )
+        ret = CertManDlg::readCA(  strCAPath, &cert_bin_, &binCA );
+        if( ret != CKR_OK )
         {
-            ret = getCA( strExtValue, &binCA );
-            if( ret != 0 ) break;
+            strExtValue = getValueFromExtList( kExtNameAIA, pExtInfoList );
+            if( strExtValue.length() > 0 )
+            {
+                ret = getCA( strExtValue, &binCA );
+                if( ret != 0 ) break;
+            }
         }
 
         JS_BIN_reset( &binCert );
