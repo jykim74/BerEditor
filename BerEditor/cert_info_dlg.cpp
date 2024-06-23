@@ -14,6 +14,7 @@
 #include "js_pki_pvd.h"
 #include "js_pki_tools.h"
 #include "js_util.h"
+#include "js_error.h"
 #include "crl_info_dlg.h"
 #include "settings_mgr.h"
 #include "cert_man_dlg.h"
@@ -530,6 +531,7 @@ void CertInfoDlg::clickMakeTree()
     int ret = 0;
     BIN binCert = {0,0};
     BIN binCA = {0,0};
+    char sMsg[1024];
 
     JCertInfo sCertInfo;
     JExtensionInfoList *pExtInfoList = NULL;
@@ -564,7 +566,7 @@ void CertInfoDlg::clickMakeTree()
 
         if( bSelfSign == 1 ) break;
 
-        ret = CertManDlg::readCA(  strCAPath, &cert_bin_, &binCA );
+        ret = CertManDlg::readCA(  strCAPath, &binCert, &binCA );
         if( ret != CKR_OK )
         {
             strExtValue = getValueFromExtList( kExtNameAIA, pExtInfoList );
@@ -572,6 +574,27 @@ void CertInfoDlg::clickMakeTree()
             {
                 ret = getCA( strExtValue, &binCA );
                 if( ret != 0 ) break;
+
+                ret = JS_PKI_CertVerifyByCA( &binCA, NULL, &binCert, sMsg );
+                if( ret != JSR_VERIFY ) break;
+            }
+        }
+        else
+        {
+            ret = JS_PKI_CertVerifyByCA( &binCA, NULL, &binCert, sMsg );
+            if( ret != JSR_VERIFY )
+            {
+                JS_BIN_reset( &binCA );
+
+                strExtValue = getValueFromExtList( kExtNameAIA, pExtInfoList );
+                if( strExtValue.length() > 0 )
+                {
+                    ret = getCA( strExtValue, &binCA );
+                    if( ret != 0 ) break;
+                }
+
+                ret = JS_PKI_CertVerifyByCA( &binCA, NULL, &binCert, sMsg );
+                if( ret != JSR_VERIFY ) break;
             }
         }
 
@@ -584,6 +607,9 @@ void CertInfoDlg::clickMakeTree()
     }
 
     mCertTree->insertTopLevelItem( 0, child );
+
+    JS_BIN_reset( &binCA );
+    JS_BIN_reset( &binCert );
 
     JS_PKI_resetCertInfo( &sCertInfo );
     if( pExtInfoList ) JS_PKI_resetExtensionInfoList( &pExtInfoList );
