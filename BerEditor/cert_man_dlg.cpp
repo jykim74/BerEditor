@@ -92,7 +92,13 @@ CertManDlg::CertManDlg(QWidget *parent) :
     mTLPriKeyDecodeBtn->setFixedWidth(34);
     mTLCertDecodeBtn->setFixedWidth(34);
     mTLPFXDecodeBtn->setFixedWidth(34);
+    mEE_ManGroup->layout()->setSpacing(5);
+    mCA_ManGroup->layout()->setSpacing(5);
+    mCRL_ManGroup->layout()->setSpacing(5);
+    mRCA_ManGroup->layout()->setSpacing(5);
+    mTL_ManGroup->layout()->setSpacing(5);
 #endif
+
 }
 
 CertManDlg::~CertManDlg()
