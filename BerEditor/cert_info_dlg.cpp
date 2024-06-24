@@ -524,7 +524,7 @@ void CertInfoDlg::clickSaveTrustedCA()
         return;
     }
 
-    ret = JS_BIN_writePEM( &cert_bin_, JS_PEM_TYPE_CERTIFICATE, strFileName.toLocal8Bit().toStdString().c_str() );
+    ret = CertManDlg::writeCA( strTrustedCAPath, &cert_bin_ );
     if( ret > 0 )
         berApplet->messageBox( tr( "The Certificate saved to trusted CA directory"), this );
     else

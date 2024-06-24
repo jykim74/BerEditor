@@ -1201,7 +1201,7 @@ void SSLVerifyDlg::saveTrustedCA()
         goto end;
     }
 
-    ret = JS_BIN_writePEM( &binCert, JS_PEM_TYPE_CERTIFICATE, strFileName.toLocal8Bit().toStdString().c_str() );
+    ret = CertManDlg::writeCA( strTrustedCAPath, &binCert );
     if( ret > 0 )
         berApplet->messageBox( tr( "The Certificate saved to trusted CA directory"), this );
     else
