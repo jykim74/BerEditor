@@ -23,7 +23,7 @@ private slots:
     void clickGENM();
     void clickIR();
     void clickCR();
-    void clickP10CSR();
+    void clickP10CR();
     void clickSignGENM();
     void clickKUR();
     void clickRR();

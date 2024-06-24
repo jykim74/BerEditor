@@ -29,7 +29,7 @@ CMPClientDlg::CMPClientDlg(QWidget *parent)
     connect( mGENMBtn, SIGNAL(clicked()), this, SLOT(clickGENM()));
     connect( mIRBtn, SIGNAL(clicked()), this, SLOT(clickIR()));
     connect( mCRBtn, SIGNAL(clicked()), this, SLOT(clickCR()));
-    connect( mP10CSRBtn, SIGNAL(clicked()), this, SLOT(clickP10CSR()));
+    connect( mP10CRBtn, SIGNAL(clicked()), this, SLOT(clickP10CR()));
     connect( mSignGENMBtn, SIGNAL(clicked()), this, SLOT(clickSignGENM()));
     connect( mKURBtn, SIGNAL(clicked()), this, SLOT(clickKUR()));
     connect( mRRBtn, SIGNAL(clicked()), this, SLOT(clickRR()));
@@ -495,8 +495,8 @@ void CMPClientDlg::clickGENM()
         return;
     }
 
-    JS_BIN_decodeHex( strAuth.toStdString().c_str(), &binAuth );
-    JS_BIN_decodeHex( strRef.toStdString().c_str(), &binRef );
+    JS_BIN_set( &binAuth, (unsigned char *)strAuth.toStdString().c_str(), strAuth.length() );
+    JS_BIN_set( &binRef, (unsigned char *)strRef.toStdString().c_str(), strRef.length() );
 
 
     JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
@@ -613,8 +613,8 @@ void CMPClientDlg::clickIR()
         return;
     }
 
-    JS_BIN_decodeHex( strAuth.toStdString().c_str(), &binAuth );
-    JS_BIN_decodeHex( strRef.toStdString().c_str(), &binRef );
+    JS_BIN_set( &binAuth, (unsigned char *)strAuth.toStdString().c_str(), strAuth.length() );
+    JS_BIN_set( &binRef, (unsigned char *)strRef.toStdString().c_str(), strRef.length() );
 
     JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
 
@@ -730,8 +730,8 @@ void CMPClientDlg::clickCR()
 
     JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
 
-    JS_BIN_decodeHex( strAuth.toStdString().c_str(), &binAuth );
-    JS_BIN_decodeHex( strRef.toStdString().c_str(), &binRef );
+    JS_BIN_set( &binAuth, (unsigned char *)strAuth.toStdString().c_str(), strAuth.length() );
+    JS_BIN_set( &binRef, (unsigned char *)strRef.toStdString().c_str(), strRef.length() );
 
     if( genKeyPair.exec() != QDialog::Accepted ) goto end;
 
@@ -782,7 +782,7 @@ end :
     if( pCTX ) JS_CMP_final( pCTX );
 }
 
-void CMPClientDlg::clickP10CSR()
+void CMPClientDlg::clickP10CR()
 {
     int ret = 0;
     void *pCTX = NULL;
@@ -849,8 +849,8 @@ void CMPClientDlg::clickP10CSR()
 
     JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
 
-    JS_BIN_decodeHex( strAuth.toStdString().c_str(), &binAuth );
-    JS_BIN_decodeHex( strRef.toStdString().c_str(), &binRef );
+    JS_BIN_set( &binAuth, (unsigned char *)strAuth.toStdString().c_str(), strAuth.length() );
+    JS_BIN_set( &binRef, (unsigned char *)strRef.toStdString().c_str(), strRef.length() );
 
     if( genKeyPair.exec() != QDialog::Accepted ) goto end;
 

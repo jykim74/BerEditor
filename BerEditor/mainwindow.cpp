@@ -640,6 +640,7 @@ void MainWindow::createActions()
         vidAct->setEnabled( false );
         calcAct->setEnabled( false );
         keyPairManAct->setEnabled( false );
+        certManAct->setEnabled( false );
         cavpAct->setEnabled( false );
         sslAct->setEnabled( false );
     }
