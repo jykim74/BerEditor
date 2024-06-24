@@ -49,6 +49,7 @@ CMPClientDlg::CMPClientDlg(QWidget *parent)
     connect( mPriKeyDecodeBtn, SIGNAL(clicked()), this, SLOT(decodePriKey()));
     connect( mPriKeyTypeBtn, SIGNAL(clicked()), this, SLOT(typePriKey()));
 
+    connect( mRegInfoClearBtn, SIGNAL(clicked()), this, SLOT(clearRegInfo()));
     connect( mRequestClearBtn, SIGNAL(clicked()), this, SLOT(clearRequest()));
     connect( mRequestDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeRequest()));
 
@@ -70,6 +71,8 @@ CMPClientDlg::CMPClientDlg(QWidget *parent)
 
     mPriKeyDecodeBtn->setFixedWidth(34);
     mPriKeyTypeBtn->setFixedWidth(34);
+
+    mRegInfoClearBtn->setFixedWidth(34);
 
     mRequestClearBtn->setFixedWidth(34);
     mRequestDecodeBtn->setFixedWidth(34);
@@ -392,6 +395,10 @@ void CMPClientDlg::typePriKey()
     JS_BIN_reset( &binData );
 }
 
+void CMPClientDlg::clearRegInfo()
+{
+    mRegInfoText->clear();
+}
 
 void CMPClientDlg::clearRequest()
 {
@@ -516,15 +523,19 @@ void CMPClientDlg::clickGENM()
 
     if( ret == 0 )
     {
+        QString strRegInfo;
         berApplet->messageLog( tr( "GENM success" ), this );
-
         pCurList = pNameValList;
 
         while( pCurList )
         {
             berApplet->log( QString( "Name: %1 Value: %2").arg( pCurList->sNameVal.pName ).arg( pCurList->sNameVal.pValue ));
+            if( strRegInfo.length() > 1 ) strRegInfo += "|";
+            strRegInfo += QString( "%1:%2").arg( pCurList->sNameVal.pName ).arg( pCurList->sNameVal.pValue );
             pCurList = pCurList->pNext;
         }
+
+        mRegInfoText->setText( strRegInfo );
     }
     else
     {
@@ -1000,6 +1011,7 @@ void CMPClientDlg::clickSignGENM()
     }
     else
     {
+        QString strRegInfo;
         berApplet->messageLog( tr( "GENM success" ), this );
 
         pCurList = pNameValList;
@@ -1007,8 +1019,12 @@ void CMPClientDlg::clickSignGENM()
         while( pCurList )
         {
             berApplet->log( QString( "Name: %1 Value: %2").arg( pCurList->sNameVal.pName ).arg( pCurList->sNameVal.pValue ));
+            if( strRegInfo.length() > 1 ) strRegInfo += "|";
+            strRegInfo += QString( "%1:%2").arg( pCurList->sNameVal.pName ).arg( pCurList->sNameVal.pValue );
             pCurList = pCurList->pNext;
         }
+
+        mRegInfoText->setText( strRegInfo );
     }
 
 end :
@@ -1267,6 +1283,7 @@ void CMPClientDlg::clickClearAll()
     mAuthCodeText->clear();
     mRefNumText->clear();
 
+    clearRegInfo();
     clearRequest();
     clearResponse();
 }

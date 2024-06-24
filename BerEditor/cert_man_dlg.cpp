@@ -219,6 +219,7 @@ void CertManDlg::initialize()
         mTabWidget->setTabEnabled( TAB_CA_IDX, false );
         mTabWidget->setTabEnabled( TAB_TRUST_IDX, false );
         mTabWidget->setTabEnabled( TAB_TOOL_IEX, false );
+        mOKBtn->setDefault(true);
     }
     else if( mode_ == ManModeSelCA )
     {
@@ -228,6 +229,7 @@ void CertManDlg::initialize()
         mTabWidget->setTabEnabled( TAB_CA_IDX, true );
         mTabWidget->setTabEnabled( TAB_TRUST_IDX, false );
         mTabWidget->setTabEnabled( TAB_TOOL_IEX, false );
+        mOKBtn->setDefault(true);
     }
     else
     {
@@ -1082,8 +1084,6 @@ void CertManDlg::clickOK()
     else
     {
         QString strPass = mEE_PasswdText->text();
-
-
 
         if( strPass.length() < 1 )
         {

@@ -43,6 +43,8 @@ private slots:
     void decodePriKey();
     void typePriKey();
 
+    void clearRegInfo();
+
     void clearRequest();
     void decodeRequest();
 
