@@ -82,6 +82,11 @@ CertManDlg::CertManDlg(QWidget *parent) :
     connect( mTLDecryptPFXBtn, SIGNAL(clicked()), this, SLOT(clickTLDecryptPFX()));
     connect( mTLSavePFXBtn, SIGNAL(clicked()), this, SLOT(clickTLSavePFX()));
 
+    connect( mEE_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewCert()));
+    connect( mCA_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewCA()));
+    connect( mRCA_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewTrust()));
+    connect( mCRL_Table, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewCRL()));
+
     initUI();
 
 #if defined(Q_OS_MAC)
