@@ -115,7 +115,7 @@ void CRLInfoDlg::clickSaveToMan()
 
     ret = CertManDlg::writeCRL( strCRLPath, &crl_bin_ );
     if( ret > 0 )
-        berApplet->warnLog( tr( "The CRL is saved to manager folder" ), this );
+        berApplet->messageLog( tr( "The CRL is saved to manager folder" ), this );
     else
         berApplet->warnLog( tr( "failed to save to manager folder: %1" ).arg( ret ), this );
 }

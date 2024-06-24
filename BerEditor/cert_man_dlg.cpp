@@ -145,7 +145,7 @@ const QString CertManDlg::getModeName( int nMode )
     else if( nMode == ManModeTrust )
         strMode = tr( "TrustRootCA" );
     else
-        strMode = "Management";
+        strMode = tr( "Certificate Management" );
 
     return strMode;
 }
@@ -174,7 +174,7 @@ void CertManDlg::initUI()
     mEE_CertTable->horizontalHeader()->setStyleSheet( kTableStyle );
     mEE_CertTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mEE_CertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    mEE_CertTable->setColumnWidth( 0, 300 );
+    mEE_CertTable->setColumnWidth( 0, 200 );
 
     QStringList sCATableLabels = { tr( "Name" ), tr( "Subject DN" ), tr( "Algorithm"), tr( "Expire" ), tr( "Issuer DN" ) };
 
@@ -186,7 +186,7 @@ void CertManDlg::initUI()
     mCA_CertTable->horizontalHeader()->setStyleSheet( kTableStyle );
     mCA_CertTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mCA_CertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    mCA_CertTable->setColumnWidth( 1, 200 );
+    mCA_CertTable->setColumnWidth( 1, 140 );
 
     QStringList sCRLTableLabels = { tr( "Name" ), tr( "Issuer DN" ), tr( "This Update"), tr( "Next Update" ) };
 
@@ -198,7 +198,7 @@ void CertManDlg::initUI()
     mCRL_Table->horizontalHeader()->setStyleSheet( kTableStyle );
     mCRL_Table->setSelectionBehavior(QAbstractItemView::SelectRows);
     mCRL_Table->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    mCRL_Table->setColumnWidth( 1, 200 );
+    mCRL_Table->setColumnWidth( 1, 160 );
 
     QStringList sRCATableLabels = { tr( "Name" ), tr( "Subject DN" ), tr( "Algorithm"), tr( "Expire" ) };
 
@@ -211,7 +211,7 @@ void CertManDlg::initUI()
     mRCA_CertTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mRCA_CertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    mRCA_CertTable->setColumnWidth( 1, 300 );
+    mRCA_CertTable->setColumnWidth( 1, 200 );
 }
 
 void CertManDlg::initialize()
@@ -574,12 +574,13 @@ void CertManDlg::loadCRLList()
         memset( &sCRLInfo, 0x00, sizeof(sCRLInfo));
 
         QString strName = file.baseName();
+        QString strFileName = file.fileName();
         QString strSuffix = file.suffix();
 
 
         // if you need absolute path of the file
 
-        if( strName.length() != 8 && strSuffix.length() != 1 ) continue;
+        if( strName.length() != 8 && strSuffix.length() > 3 ) continue;
 
         JS_BIN_fileReadBER( file.absoluteFilePath().toLocal8Bit().toStdString().c_str(), &binCRL );
         if( binCRL.nLen < 1 ) continue;
@@ -596,7 +597,7 @@ void CertManDlg::loadCRLList()
 
         mCRL_Table->insertRow( row );
         mCRL_Table->setRowHeight( row, 10 );
-        QTableWidgetItem *item = new QTableWidgetItem( strName );
+        QTableWidgetItem *item = new QTableWidgetItem( strFileName );
 
         if( now > sCRLInfo.uNextUpdate )
             item->setIcon(QIcon(":/images/crl_expired.png" ));
@@ -824,6 +825,7 @@ int CertManDlg::writeCA( const QString strCAPath, const BIN *pCACert )
 int CertManDlg::writeCRL( const QString strCRLPath, const BIN *pCRL )
 {
     int ret = 0;
+    int i = 0;
     unsigned long uHash = 0;
     if( pCRL == NULL ) return JSR_ERR;
 
@@ -836,7 +838,15 @@ int CertManDlg::writeCRL( const QString strCRLPath, const BIN *pCRL )
     ret = JS_PKI_getCRLIssuerNameHash( pCRL, &uHash );
     if( ret != 0 ) return ret;
 
-    strFilePath = QString( "%1/%2.0").arg( strCRLPath ).arg( uHash );
+    while( i < 100 )
+    {
+        strFilePath = QString( "%1/%2.%3").arg( strCRLPath ).arg( uHash ).arg(i);
+        if( QFileInfo::exists( strFilePath ) == false )
+            break;
+        i++;
+    }
+
+    if( i == 100 ) return JSR_ERR2;
 
     ret = JS_BIN_writePEM( pCRL, JS_FILE_TYPE_CRL, strFilePath.toLocal8Bit().toStdString().c_str() );
 
@@ -1371,7 +1381,7 @@ void CertManDlg::clickAddCA()
             goto end;
         }
 
-        ret = JS_BIN_writePEM( &binCA, JS_PEM_TYPE_CERTIFICATE, strSaveName.toLocal8Bit().toStdString().c_str() );
+        ret = writeCA( strCAPath, &binCA );
         if( ret > 0 )
         {
             loadCAList();
@@ -1477,19 +1487,7 @@ void CertManDlg::clickAddCRL()
         ret = JS_PKI_getCRLInfo( &binCRL, &sCRLInfo, NULL, NULL );
         if( ret != 0 ) goto end;
 
-        ret = JS_PKI_getCRLIssuerNameHash( &binCRL, &uHash );
-        if( ret != 0 ) goto end;
-
-        QString strFileName = QString( "%1.0" ).arg( uHash, 8, 16, QLatin1Char('0'));
-        QString strSaveName = QString( "%1/%2" ).arg( strCRLPath ).arg( strFileName );
-
-        if( QFileInfo::exists( strFileName ) == true )
-        {
-            berApplet->warningBox( tr( "The file(%1) is already existed").arg( strSaveName ), this );
-            goto end;
-        }
-
-        ret = JS_BIN_writePEM( &binCRL, JS_PEM_TYPE_CRL, strSaveName.toLocal8Bit().toStdString().c_str() );
+        ret = writeCRL( strCRLPath, &binCRL );
         if( ret > 0 )
         {
             loadCRLList();

@@ -499,7 +499,7 @@ void CertInfoDlg::clickSaveToMan()
 
     ret = CertManDlg::writeCA( strCAPath, &cert_bin_ );
     if( ret > 0 )
-        berApplet->warnLog( tr( "The certificate is saved to manager folder" ), this );
+        berApplet->messageLog( tr( "The certificate is saved to manager folder" ), this );
     else
         berApplet->warnLog( tr( "failed to save to manager foler: %1" ).arg( ret ), this );
 }

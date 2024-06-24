@@ -439,7 +439,7 @@ void MainWindow::createActions()
 
     const QIcon numTransIcon = QIcon::fromTheme("number-trans", QIcon(":/images/two.png"));
     QAction *numTransAct = new QAction( numTransIcon, tr("&NumTrans"), this);
-    numTransAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_T));
+    numTransAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_N));
     connect( numTransAct, &QAction::triggered, this, &MainWindow::numTrans );
     numTransAct->setStatusTip(tr("Number transmission" ));
     toolMenu->addAction( numTransAct );
@@ -447,7 +447,7 @@ void MainWindow::createActions()
 
     const QIcon oidIcon = QIcon::fromTheme("tool-oid", QIcon(":/images/oid.png"));
     QAction *oidAct = new QAction(oidIcon, tr("&OID Information"), this);
-    oidAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_O));
+    oidAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_I));
     connect( oidAct, &QAction::triggered, this, &MainWindow::oidInfo );
     oidAct->setStatusTip(tr("Show OID information"));
     toolMenu->addAction( oidAct );
@@ -653,25 +653,25 @@ void MainWindow::createActions()
 
     const QIcon ocspIcon = QIcon::fromTheme( "ocsp_client", QIcon(":/images/ocsp.png"));
     QAction *ocspAct = new QAction( ocspIcon, tr( "&OCSP client"), this );
-    ocspAct->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_S));
+    ocspAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_O));
     connect( ocspAct, &QAction::triggered, this, &MainWindow::ocspClient );
     protoMenu->addAction( ocspAct );
 
     const QIcon tspIcon = QIcon::fromTheme( "tsp_client", QIcon(":/images/tsp.png"));
     QAction *tspAct = new QAction( tspIcon, tr( "&TSP client"), this );
-    tspAct->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_T));
+    tspAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_T));
     connect( tspAct, &QAction::triggered, this, &MainWindow::tspClient );
     protoMenu->addAction( tspAct );
 
     const QIcon cmpIcon = QIcon::fromTheme( "cmp_client", QIcon(":/images/cmp.png"));
     QAction *cmpAct = new QAction( cmpIcon, tr( "&CMP client"), this );
-    cmpAct->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_C));
+    cmpAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_C));
     connect( cmpAct, &QAction::triggered, this, &MainWindow::cmpClient );
     protoMenu->addAction( cmpAct );
 
     const QIcon scepIcon = QIcon::fromTheme( "scep_client", QIcon(":/images/scep.png"));
     QAction *scepAct = new QAction( scepIcon, tr( "&SCEP client"), this );
-    scepAct->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_S));
+    scepAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_S));
     connect( scepAct, &QAction::triggered, this, &MainWindow::scepClient );
     protoMenu->addAction( scepAct );
 
