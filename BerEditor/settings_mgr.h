@@ -53,6 +53,7 @@ public:
     QString trustCertPath();
     QString EECertPath();
     QString CACertPath();
+    QString CRLPath();
     QString tempCertPath();
 
     void setHexAreaWidth( int width );

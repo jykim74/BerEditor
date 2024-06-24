@@ -68,5 +68,6 @@
         <file>images/tsp.png</file>
         <file>images/scep.png</file>
         <file>images/cmp.png</file>
+        <file>images/crl_expired.png</file>
     </qresource>
 </RCC>

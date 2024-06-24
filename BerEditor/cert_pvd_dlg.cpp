@@ -779,8 +779,21 @@ void CertPVDDlg::clickCRLAdd()
 
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( "Select CRL", this );
-        return;
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelCRL);
+        certMan.setTitle( tr( "Select CRL" ));
+        certMan.exec();
+
+        strPath = certMan.getSeletedCRLPath();
+        if( strPath.length() < 1 )
+        {
+            berApplet->warningBox( "Select CRL", this );
+            return;
+        }
+        else
+        {
+            mCRLPathText->setText( strPath );
+        }
     }
 
     int row = mPathTable->rowCount();

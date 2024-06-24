@@ -79,7 +79,7 @@ CertInfoDlg::CertInfoDlg(QWidget *parent) :
     setupUi(this);
 
     connect( mSaveBtn, SIGNAL(clicked()), this, SLOT(clickSave()));
-    connect( mSaveCABtn, SIGNAL(clicked()), this, SLOT(clickSaveCA()));
+    connect( mSaveToManBtn, SIGNAL(clicked()), this, SLOT(clickSaveToMan()));
     connect( mSaveTrustedCABtn, SIGNAL(clicked()), SLOT(clickSaveTrustedCA()));
 
     connect( mMakeTreeBtn, SIGNAL(clicked()), this, SLOT(clickMakeTree()));
@@ -177,9 +177,9 @@ void CertInfoDlg::showEvent(QShowEvent *event)
     if( berApplet->isLicense() == true )
     {
         if( bCA == false )
-            mSaveCABtn->hide();
+            mSaveToManBtn->hide();
         else
-            mSaveCABtn->show();
+            mSaveToManBtn->show();
 
         if( self_sign_ == false )
             mSaveTrustedCABtn->hide();
@@ -403,7 +403,7 @@ void CertInfoDlg::initUI()
     if( berApplet->isLicense() == false )
     {
         tabWidget->setTabEnabled( 1, false );
-        mSaveCABtn->hide();
+        mSaveToManBtn->hide();
         mSaveTrustedCABtn->hide();
     }
     else
@@ -492,11 +492,16 @@ void CertInfoDlg::clickSave()
     saveAsPEM( &cert_bin_ );
 }
 
-void CertInfoDlg::clickSaveCA()
+void CertInfoDlg::clickSaveToMan()
 {
+    int ret = 0;
     QString strCAPath = berApplet->settingsMgr()->CACertPath();
 
-    CertManDlg::writeCA( strCAPath, &cert_bin_ );
+    ret = CertManDlg::writeCA( strCAPath, &cert_bin_ );
+    if( ret > 0 )
+        berApplet->warnLog( tr( "The certificate is saved to manager folder" ), this );
+    else
+        berApplet->warnLog( tr( "failed to save to manager foler: %1" ).arg( ret ), this );
 }
 
 void CertInfoDlg::clickSaveTrustedCA()

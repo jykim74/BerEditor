@@ -286,6 +286,14 @@ QString SettingsMgr::CACertPath()
     return strPath;
 }
 
+QString SettingsMgr::CRLPath()
+{
+    QString strPath;
+
+    strPath = QString( "%1/CRL" ).arg( cert_path_ );
+    return strPath;
+}
+
 QString SettingsMgr::tempCertPath()
 {
     QString strPath;

@@ -13,6 +13,8 @@
 #include "js_pki_ext.h"
 #include "js_util.h"
 #include "common.h"
+#include "cert_man_dlg.h"
+#include "settings_mgr.h"
 
 
 QTableWidgetItem* CRLInfoDlg::getExtNameItem( const QString strSN )
@@ -72,6 +74,7 @@ CRLInfoDlg::CRLInfoDlg(QWidget *parent) :
     memset( &crl_info_, 0x00, sizeof(crl_info_));
 
     connect( mSaveBtn, SIGNAL(clicked()), this, SLOT(clickSave()));
+    connect( mSaveToManBtn, SIGNAL(clicked()), this, SLOT(clickSaveCRL()));
     connect( mDecodeCRLBtn, SIGNAL(clicked()), this, SLOT(clickDecodeCRL()));
     connect( mVerifyCRLBtn, SIGNAL(clicked()), this, SLOT(clickVerifyCRL()));
 
@@ -103,6 +106,18 @@ void CRLInfoDlg::showEvent(QShowEvent *event)
 void CRLInfoDlg::clickSave()
 {
     saveAsPEM( &crl_bin_ );
+}
+
+void CRLInfoDlg::clickSaveToMan()
+{
+    int ret = 0;
+    QString strCAPath = berApplet->settingsMgr()->CRLPath();
+
+    ret = CertManDlg::writeCRL( strCAPath, &crl_bin_ );
+    if( ret > 0 )
+        berApplet->warnLog( tr( "The CRL is saved to manager folder" ), this );
+    else
+        berApplet->warnLog( tr( "failed to save to manager folder: %1" ).arg( ret ), this );
 }
 
 void CRLInfoDlg::clickDecodeCRL()
@@ -313,6 +328,10 @@ void CRLInfoDlg::initialize()
     }
 
     JS_BIN_reset( &binFinger );
+    if( berApplet->isLicense() == true )
+        mSaveToManBtn->show();
+    else
+        mSaveToManBtn->hide();
 }
 
 void CRLInfoDlg::initUI()

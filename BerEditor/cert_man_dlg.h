@@ -10,14 +10,16 @@ enum {
     ManModeSelBoth = 1,
     ManModeSelCert = 2,
     ManModeSelCA = 3,
-    ManModeTrust = 4
+    ManModeSelCRL = 4,
+    ManModeTrust = 5
 };
 
 enum {
     TAB_EE_IDX = 0,
     TAB_CA_IDX = 1,
-    TAB_TRUST_IDX = 2,
-    TAB_TOOL_IEX = 3
+    TAB_CRL_IDX = 2,
+    TAB_TRUST_IDX = 3,
+    TAB_TOOL_IEX = 4
 };
 
 namespace Ui {
@@ -38,17 +40,21 @@ public:
     const QString getPriKeyHex();
     const QString getCertHex();
     const QString getCACertHex();
+    const QString getCRLHex();
 
     int getPriKey( BIN *pPriKey );
     int getCert( BIN *pCert );
     int getCACert( BIN *pCA );
+    int getCRL( BIN *pCRL );
 
 
     int writePriKeyCert( const BIN *pEncPriKey, const BIN *pCert );
     const QString getSeletedCAPath();
+    const QString getSeletedCRLPath();
 
     static int readCA( const QString strCertPath, const BIN* pCert, BIN *pCA );
     static int writeCA( const QString strCAPath, const BIN *pCACert );
+    static int writeCRL( const QString strCRLPath, const BIN *pCRL );
 
 private slots:
     void showEvent(QShowEvent *event);
@@ -71,6 +77,11 @@ private slots:
     void clickRemoveCA();
     void clickViewCA();
     void clickDecodeCA();
+
+    void clickAddCRL();
+    void clickRemoveCRL();
+    void clickViewCRL();
+    void clickDecodeCRL();
 
     void clickAddTrust();
     void clickRemoveTrust();
@@ -104,8 +115,10 @@ private:
 
     void loadEEList();
     void loadCAList();
+    void loadCRLList();
     void loadTrustList();
     void clearCAList();
+    void clearCRLList();
     void clearTrustList();
     void clearEEList();
 
@@ -114,11 +127,13 @@ private:
     int readPriKeyCert( BIN *pEncPriKey, BIN *pCert );
     int readCert( BIN *pCert );
     int readCACert( BIN *pCert );
+    int readCRL( BIN *pCRL );
     const QString getModeName( int nMode );
 
     BIN pri_key_;
     BIN cert_;
     BIN ca_cert_;
+    BIN crl_;
     int mode_;
 };
 

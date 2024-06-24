@@ -9,6 +9,7 @@
 #include "passwd_dlg.h"
 #include "new_passwd_dlg.h"
 #include "cert_info_dlg.h"
+#include "crl_info_dlg.h"
 
 #include "js_pki.h"
 #include "js_pki_x509.h"
@@ -30,6 +31,7 @@ CertManDlg::CertManDlg(QWidget *parent) :
     memset( &pri_key_, 0x00, sizeof(BIN));
     memset( &cert_, 0x00, sizeof(BIN));
     memset( &ca_cert_, 0x00, sizeof(BIN));
+    memset( &crl_, 0x00, sizeof(BIN));
 
     setupUi(this);
 
@@ -51,6 +53,11 @@ CertManDlg::CertManDlg(QWidget *parent) :
     connect( mRemoveCABtn, SIGNAL(clicked()), this, SLOT(clickRemoveCA()));
     connect( mViewCABtn, SIGNAL(clicked()), this, SLOT(clickViewCA()));
     connect( mDecodeCABtn, SIGNAL(clicked()), this, SLOT(clickDecodeCA()));
+
+    connect( mAddCRLBtn, SIGNAL(clicked()), this, SLOT(clickAddCRL()));
+    connect( mRemoveCRLBtn, SIGNAL(clicked()), this, SLOT(clickRemoveCRL()));
+    connect( mViewCRLBtn, SIGNAL(clicked()), this, SLOT(clickViewCRL()));
+    connect( mDecodeCRLBtn, SIGNAL(clicked()), this, SLOT(clickDecodeCRL()));
 
     connect( mAddTrustBtn, SIGNAL(clicked()), this, SLOT(clickAddTrust()));
     connect( mRemoveTrustBtn, SIGNAL(clicked()), this, SLOT(clickRemoveTrust()));
@@ -93,6 +100,7 @@ CertManDlg::~CertManDlg()
     JS_BIN_reset( &pri_key_ );
     JS_BIN_reset( &cert_ );
     JS_BIN_reset( &ca_cert_ );
+    JS_BIN_reset( &crl_ );
 }
 
 void CertManDlg::setMode( int nMode )
@@ -126,6 +134,8 @@ const QString CertManDlg::getModeName( int nMode )
         strMode = tr("Ceritifcate and PrivateKey");
     else if( nMode == ManModeSelCA )
         strMode = tr( "CA certificate" );
+    else if( nMode == ManModeSelCRL )
+        strMode = tr( "CRL" );
     else if( nMode == ManModeTrust )
         strMode = tr( "TrustRootCA" );
     else
@@ -172,6 +182,18 @@ void CertManDlg::initUI()
     mCA_CertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     mCA_CertTable->setColumnWidth( 1, 200 );
 
+    QStringList sCRLTableLabels = { tr( "Name" ), tr( "Issuer DN" ), tr( "This Update"), tr( "Next Update" ) };
+
+    mCRL_Table->clear();
+    mCRL_Table->horizontalHeader()->setStretchLastSection(true);
+    mCRL_Table->setColumnCount( sCRLTableLabels.size() );
+    mCRL_Table->setHorizontalHeaderLabels( sCRLTableLabels );
+    mCRL_Table->verticalHeader()->setVisible(false);
+    mCRL_Table->horizontalHeader()->setStyleSheet( kTableStyle );
+    mCRL_Table->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mCRL_Table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    mCRL_Table->setColumnWidth( 1, 200 );
+
     QStringList sRCATableLabels = { tr( "Name" ), tr( "Subject DN" ), tr( "Algorithm"), tr( "Expire" ) };
 
     mRCA_CertTable->clear();
@@ -189,6 +211,7 @@ void CertManDlg::initUI()
 void CertManDlg::initialize()
 {
     loadCAList();
+    loadCRLList();
     loadTrustList();
 
     mCertPathText->setText( berApplet->settingsMgr()->EECertPath() );
@@ -207,6 +230,7 @@ void CertManDlg::initialize()
         mTabWidget->setCurrentIndex(TAB_TRUST_IDX);
         mTabWidget->setTabEnabled( TAB_EE_IDX, false );
         mTabWidget->setTabEnabled( TAB_CA_IDX, false );
+        mTabWidget->setTabEnabled( TAB_CRL_IDX, false );
         mTabWidget->setTabEnabled( TAB_TRUST_IDX, true );
         mTabWidget->setTabEnabled( TAB_TOOL_IEX, false );
     }
@@ -217,6 +241,7 @@ void CertManDlg::initialize()
         mTabWidget->setCurrentIndex(TAB_EE_IDX);
         mTabWidget->setTabEnabled( TAB_EE_IDX, true );
         mTabWidget->setTabEnabled( TAB_CA_IDX, false );
+        mTabWidget->setTabEnabled( TAB_CRL_IDX, false );
         mTabWidget->setTabEnabled( TAB_TRUST_IDX, false );
         mTabWidget->setTabEnabled( TAB_TOOL_IEX, false );
         mOKBtn->setDefault(true);
@@ -227,6 +252,18 @@ void CertManDlg::initialize()
         mTabWidget->setCurrentIndex(TAB_CA_IDX);
         mTabWidget->setTabEnabled( TAB_EE_IDX, false );
         mTabWidget->setTabEnabled( TAB_CA_IDX, true );
+        mTabWidget->setTabEnabled( TAB_CRL_IDX, false );
+        mTabWidget->setTabEnabled( TAB_TRUST_IDX, false );
+        mTabWidget->setTabEnabled( TAB_TOOL_IEX, false );
+        mOKBtn->setDefault(true);
+    }
+    else if( mode_ == ManModeSelCA )
+    {
+        setGroupHide(true);
+        mTabWidget->setCurrentIndex(TAB_CA_IDX);
+        mTabWidget->setTabEnabled( TAB_EE_IDX, false );
+        mTabWidget->setTabEnabled( TAB_CA_IDX, false );
+        mTabWidget->setTabEnabled( TAB_CRL_IDX, true );
         mTabWidget->setTabEnabled( TAB_TRUST_IDX, false );
         mTabWidget->setTabEnabled( TAB_TOOL_IEX, false );
         mOKBtn->setDefault(true);
@@ -248,12 +285,14 @@ void CertManDlg::setGroupHide( bool bHide )
     {
         mEE_ManGroup->hide();
         mCA_ManGroup->hide();
+        mCRL_ManGroup->hide();
         mRCA_ManGroup->hide();
     }
     else
     {
         mEE_ManGroup->show();
         mCA_ManGroup->show();
+        mCRL_ManGroup->show();
         mRCA_ManGroup->show();
     }
 }
@@ -291,6 +330,11 @@ const QString CertManDlg::getCACertHex()
     return getHexString( &ca_cert_ );
 }
 
+const QString CertManDlg::getCRLHex()
+{
+    return getHexString( &crl_ );
+}
+
 int CertManDlg::getPriKey( BIN *pPriKey )
 {
     if( pri_key_.nLen < 1 ) return -1;
@@ -315,6 +359,14 @@ int CertManDlg::getCACert( BIN *pCA )
     return 0;
 }
 
+int CertManDlg::getCRL( BIN *pCRL )
+{
+    if( crl_.nLen < 1 ) return -1;
+
+    JS_BIN_copy( pCRL, &crl_ );
+    return 0;
+}
+
 void CertManDlg::clearCAList()
 {
     int count = mCA_CertTable->rowCount();
@@ -322,6 +374,16 @@ void CertManDlg::clearCAList()
     for( int i = 0; i < count; i++ )
     {
         mCA_CertTable->removeRow(0);
+    }
+}
+
+void CertManDlg::clearCRLList()
+{
+    int count = mCRL_Table->rowCount();
+
+    for( int i = 0; i < count; i++ )
+    {
+        mCRL_Table->removeRow(0);
     }
 }
 
@@ -484,6 +546,70 @@ void CertManDlg::loadCAList()
     }
 }
 
+void CertManDlg::loadCRLList()
+{
+    int ret = 0;
+    int row = 0;
+    time_t now = time(NULL);
+
+    clearCAList();
+
+    QString strPath = berApplet->settingsMgr()->CRLPath();
+
+    QDir dir( strPath );
+    for (const QFileInfo &file : dir.entryInfoList(QDir::Files))
+    {
+        BIN binCRL = {0,0};
+        JCRLInfo sCRLInfo;
+        char    sThisUpdate[64];
+        char    sNextUpdate[64];
+
+        memset( &sCRLInfo, 0x00, sizeof(sCRLInfo));
+
+        QString strName = file.baseName();
+        QString strSuffix = file.suffix();
+
+
+        // if you need absolute path of the file
+
+        if( strName.length() != 8 && strSuffix.length() != 1 ) continue;
+
+        JS_BIN_fileReadBER( file.absoluteFilePath().toLocal8Bit().toStdString().c_str(), &binCRL );
+        if( binCRL.nLen < 1 ) continue;
+
+        ret = JS_PKI_getCRLInfo( &binCRL, &sCRLInfo, NULL, NULL );
+        if( ret != 0 )
+        {
+            JS_BIN_reset( &binCRL );
+            continue;
+        }
+
+        JS_UTIL_getDate( sCRLInfo.uThisUpdate, sThisUpdate );
+        JS_UTIL_getDate( sCRLInfo.uNextUpdate, sNextUpdate );
+
+        mCA_CertTable->insertRow( row );
+        mCA_CertTable->setRowHeight( row, 10 );
+        QTableWidgetItem *item = new QTableWidgetItem( strName );
+
+        if( now > sCRLInfo.uNextUpdate )
+            item->setIcon(QIcon(":/images/crl_expired.png" ));
+        else
+            item->setIcon(QIcon(":/images/crl.png" ));
+
+        item->setData(Qt::UserRole, file.filePath() );
+
+        mCA_CertTable->setItem( row, 0, item );
+        mCA_CertTable->setItem( row, 1, new QTableWidgetItem( sCRLInfo.pIssuerName ));
+        mCA_CertTable->setItem( row, 2, new QTableWidgetItem( sThisUpdate ));
+        mCA_CertTable->setItem( row, 3, new QTableWidgetItem( sNextUpdate ));
+
+        JS_BIN_reset( &binCRL );
+        JS_PKI_resetCRLInfo( &sCRLInfo );
+
+        row++;
+    }
+}
+
 void CertManDlg::loadTrustList()
 {
     int ret = 0;
@@ -632,6 +758,18 @@ const QString CertManDlg::getSeletedCAPath()
     return strPath;
 }
 
+const QString CertManDlg::getSeletedCRLPath()
+{
+    QString strPath;
+
+    QModelIndex idx = mCRL_Table->currentIndex();
+    QTableWidgetItem* item = mCRL_Table->item( idx.row(), 0 );
+
+    if( item ) strPath = item->data(Qt::UserRole).toString();
+
+    return strPath;
+}
+
 int CertManDlg::readCA( const QString strCertPath, const BIN* pCert, BIN *pCA )
 {
     int ret = 0;
@@ -672,6 +810,23 @@ int CertManDlg::writeCA( const QString strCAPath, const BIN *pCACert )
     return ret;
 }
 
+int CertManDlg::writeCRL( const QString strCRLPath, const BIN *pCRL )
+{
+    int ret = 0;
+    unsigned long uHash = 0;
+    if( pCRL == NULL ) return JSR_ERR;
+
+    QString strFilePath;
+
+    ret = JS_PKI_getCRLIssuerNameHash( pCRL, &uHash );
+    if( ret != 0 ) return ret;
+
+    strFilePath = QString( "%1/%2.0").arg( strCRLPath ).arg( uHash );
+
+    ret = JS_BIN_writePEM( pCRL, JS_FILE_TYPE_CRL, strFilePath.toLocal8Bit().toStdString().c_str() );
+
+    return ret;
+}
 
 int CertManDlg::readPriKeyCert( BIN *pEncPriKey, BIN *pCert )
 {
@@ -722,6 +877,20 @@ int CertManDlg::readCACert( BIN *pCert )
     }
 
     JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), pCert );
+
+    return 0;
+}
+
+int CertManDlg::readCRL( BIN *pCRL )
+{
+    QString strPath = getSeletedCRLPath();
+    if( strPath.length() < 1 )
+    {
+        berApplet->elog( QString( "There is no selected item" ) );
+        return -1;
+    }
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), pCRL );
 
     return 0;
 }
@@ -1048,6 +1217,8 @@ void CertManDlg::clickOK()
 
     JS_BIN_reset( &pri_key_ );
     JS_BIN_reset( &cert_ );
+    JS_BIN_reset( &ca_cert_ );
+    JS_BIN_reset( &crl_ );
 
     if( mode_ != ManModeSelCert && mode_ != ManModeSelBoth && mode_ != ManModeSelCA )
     {
@@ -1057,6 +1228,7 @@ void CertManDlg::clickOK()
 
     BIN binEncPriKey = {0,0};
     BIN binCert = {0,0};
+    BIN binCRL = {0,0};
     BIN binPriKey = {0,0};
 
     if( mode_ == ManModeSelCert )
@@ -1080,6 +1252,17 @@ void CertManDlg::clickOK()
         }
 
         JS_BIN_copy( &ca_cert_, &binCert );
+    }
+    if( mode_ == ManModeSelCRL )
+    {
+        ret = readCRL( &binCRL );
+        if( ret != 0 )
+        {
+            berApplet->warningBox( tr( "fail to read the CRL" ), this );
+            goto end;
+        }
+
+        JS_BIN_copy( &crl_, &binCRL );
     }
     else
     {
@@ -1112,6 +1295,7 @@ void CertManDlg::clickOK()
 end :
     JS_BIN_reset( &binEncPriKey );
     JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binCRL );
     JS_BIN_reset( &binPriKey );
 
     if( ret == 0 )
@@ -1176,11 +1360,11 @@ void CertManDlg::clickAddCA()
         if( ret > 0 )
         {
             loadCAList();
-            berApplet->messageBox( tr( "The Certificate saved to trustedCA folder"), this );
+            berApplet->messageBox( tr( "The Certificate saved to CA folder"), this );
         }
         else
         {
-            berApplet->warningBox( tr( "The Certificate failed to save to trustedCA folder:%1" ).arg(ret), this );
+            berApplet->warningBox( tr( "The Certificate failed to save to CA folder:%1" ).arg(ret), this );
         }
     }
 
@@ -1207,11 +1391,11 @@ void CertManDlg::clickRemoveCA()
     if( bVal == true )
     {
         loadCAList();
-        berApplet->messageBox( tr( "Trust CA has been deleted"), this );
+        berApplet->messageBox( tr( "The CA has been deleted"), this );
     }
     else
     {
-        berApplet->warningBox( tr( "failed to delete Trust CA" ), this );
+        berApplet->warningBox( tr( "failed to delete the CA" ), this );
         return;
     }
 
@@ -1237,6 +1421,122 @@ void CertManDlg::clickDecodeCA()
     QModelIndex idx = mCA_CertTable->currentIndex();
 
     QTableWidgetItem* item = mCA_CertTable->item( idx.row(), 0 );
+    if( item == NULL ) return;
+
+    const QString strPath = item->data( Qt::UserRole ).toString();
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    berApplet->decodeData( &binCert, strPath );
+    JS_BIN_reset( &binCert );
+}
+
+void CertManDlg::clickAddCRL()
+{
+    int ret = 0;
+    int bSelfSign = 0;
+    unsigned long uHash = 0;
+
+    BIN binCRL = {0,0};
+    JCRLInfo sCRLInfo;
+    QString strPath = berApplet->curFile();
+
+    QString fileName = findFile( this, JS_FILE_TYPE_CRL, strPath );
+    QString strCRLPath = berApplet->settingsMgr()->CRLPath();
+
+    QDir dir;
+
+    if( dir.exists( strCRLPath ) == false )
+    {
+        if( dir.mkpath( strCRLPath ) == false )
+        {
+            berApplet->warningBox( tr( "fail to make CRL folder: %1").arg( strCRLPath ), this );
+            return;
+        }
+    }
+
+    memset( &sCRLInfo, 0x00, sizeof(sCRLInfo));
+
+    if( fileName.length() > 0 )
+    {
+        JS_BIN_fileReadBER( fileName.toLocal8Bit().toStdString().c_str(), &binCRL );
+        ret = JS_PKI_getCRLInfo( &binCRL, &sCRLInfo, NULL, NULL );
+        if( ret != 0 ) goto end;
+
+        ret = JS_PKI_getCRLIssuerNameHash( &binCRL, &uHash );
+        if( ret != 0 ) goto end;
+
+        QString strFileName = QString( "%1.0" ).arg( uHash, 8, 16, QLatin1Char('0'));
+        QString strSaveName = QString( "%1/%2" ).arg( strCRLPath ).arg( strFileName );
+
+        if( QFileInfo::exists( strFileName ) == true )
+        {
+            berApplet->warningBox( tr( "The file(%1) is already existed").arg( strSaveName ), this );
+            goto end;
+        }
+
+        ret = JS_BIN_writePEM( &binCRL, JS_PEM_TYPE_CRL, strSaveName.toLocal8Bit().toStdString().c_str() );
+        if( ret > 0 )
+        {
+            loadCRLList();
+            berApplet->messageBox( tr( "The CRL saved to CRL folder"), this );
+        }
+        else
+        {
+            berApplet->warningBox( tr( "The CRL failed to save to CRL folder:%1" ).arg(ret), this );
+        }
+    }
+
+end :
+    JS_BIN_reset( &binCRL );
+    JS_PKI_resetCRLInfo( &sCRLInfo );
+}
+
+void CertManDlg::clickRemoveCRL()
+{
+    QModelIndex idx = mCRL_Table->currentIndex();
+
+    QTableWidgetItem* item = mCRL_Table->item( idx.row(), 0 );
+    if( item == NULL ) return;
+
+    bool bVal = berApplet->yesOrCancelBox( tr( "Do you delete?"), this, false );
+    if( bVal == false ) return;
+
+    const QString strPath = item->data( Qt::UserRole ).toString();
+    QFile delFile( strPath );
+    bVal = delFile.remove();
+
+    if( bVal == true )
+    {
+        loadCAList();
+        berApplet->messageBox( tr( "The CRL has been deleted"), this );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "failed to delete the CRL" ), this );
+        return;
+    }
+}
+
+void CertManDlg::clickViewCRL()
+{
+    QModelIndex idx = mCRL_Table->currentIndex();
+
+    QTableWidgetItem* item = mCRL_Table->item( idx.row(), 0 );
+    if( item == NULL ) return;
+
+    const QString strPath = item->data( Qt::UserRole ).toString();
+
+    CRLInfoDlg crlInfo;
+    crlInfo.setCRLPath( strPath );
+    crlInfo.exec();
+}
+
+void CertManDlg::clickDecodeCRL()
+{
+    BIN binCert = {0,0};
+    QModelIndex idx = mCRL_Table->currentIndex();
+
+    QTableWidgetItem* item = mCRL_Table->item( idx.row(), 0 );
     if( item == NULL ) return;
 
     const QString strPath = item->data( Qt::UserRole ).toString();

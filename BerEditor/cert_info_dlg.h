@@ -42,7 +42,7 @@ private slots:
     void clickField( QModelIndex index );
     void changeFieldType( int index );
     void clickSave();
-    void clickSaveCA();
+    void clickSaveToMan();
     void clickSaveTrustedCA();
 
     void clickMakeTree();

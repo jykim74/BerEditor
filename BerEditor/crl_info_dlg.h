@@ -34,6 +34,7 @@ private slots:
     void showEvent(QShowEvent *event);
 
     void clickSave();
+    void clickSaveToMan();
     void clickDecodeCRL();
     void clickVerifyCRL();
 
