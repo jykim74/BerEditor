@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>608</width>
-    <height>576</height>
+    <height>725</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -36,7 +36,7 @@
      <item row="0" column="3">
       <widget class="QCheckBox" name="mUseMutualCheck">
        <property name="text">
-        <string>Use Mutual</string>
+        <string>Use Mutual Auth</string>
        </property>
       </widget>
      </item>

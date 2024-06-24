@@ -8844,9 +8844,8 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">서버 인증</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.ui" line="39"/>
         <source>Use Mutual</source>
-        <translation>상호 사용</translation>
+        <translation type="vanished">상호 사용</translation>
     </message>
     <message>
         <location filename="../ssl_verify_dlg.ui" line="81"/>
@@ -8923,6 +8922,11 @@ Do you want to delete the file and continue?</source>
         <location filename="../ssl_verify_dlg.ui" line="241"/>
         <source>Trust CA</source>
         <translation>신뢰 CA</translation>
+    </message>
+    <message>
+        <location filename="../ssl_verify_dlg.ui" line="39"/>
+        <source>Use Mutual Auth</source>
+        <translation>상호인증 사용</translation>
     </message>
     <message>
         <location filename="../ssl_verify_dlg.ui" line="254"/>
