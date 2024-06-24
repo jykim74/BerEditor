@@ -216,6 +216,7 @@ void CertManDlg::initialize()
 
     mCertPathText->setText( berApplet->settingsMgr()->EECertPath() );
     mCAPathText->setText( berApplet->settingsMgr()->CACertPath() );
+    mCRLPathText->setText( berApplet->settingsMgr()->CRLPath() );
     mTrustRCAPathText->setText( berApplet->settingsMgr()->trustCertPath() );
 
     if( mode_ == ManModeSelCert )
@@ -257,7 +258,7 @@ void CertManDlg::initialize()
         mTabWidget->setTabEnabled( TAB_TOOL_IEX, false );
         mOKBtn->setDefault(true);
     }
-    else if( mode_ == ManModeSelCA )
+    else if( mode_ == ManModeSelCRL )
     {
         setGroupHide(true);
         mTabWidget->setCurrentIndex(TAB_CA_IDX);
@@ -552,7 +553,7 @@ void CertManDlg::loadCRLList()
     int row = 0;
     time_t now = time(NULL);
 
-    clearCAList();
+    clearCRLList();
 
     QString strPath = berApplet->settingsMgr()->CRLPath();
 
@@ -587,8 +588,8 @@ void CertManDlg::loadCRLList()
         JS_UTIL_getDate( sCRLInfo.uThisUpdate, sThisUpdate );
         JS_UTIL_getDate( sCRLInfo.uNextUpdate, sNextUpdate );
 
-        mCA_CertTable->insertRow( row );
-        mCA_CertTable->setRowHeight( row, 10 );
+        mCRL_Table->insertRow( row );
+        mCRL_Table->setRowHeight( row, 10 );
         QTableWidgetItem *item = new QTableWidgetItem( strName );
 
         if( now > sCRLInfo.uNextUpdate )
@@ -598,10 +599,10 @@ void CertManDlg::loadCRLList()
 
         item->setData(Qt::UserRole, file.filePath() );
 
-        mCA_CertTable->setItem( row, 0, item );
-        mCA_CertTable->setItem( row, 1, new QTableWidgetItem( sCRLInfo.pIssuerName ));
-        mCA_CertTable->setItem( row, 2, new QTableWidgetItem( sThisUpdate ));
-        mCA_CertTable->setItem( row, 3, new QTableWidgetItem( sNextUpdate ));
+        mCRL_Table->setItem( row, 0, item );
+        mCRL_Table->setItem( row, 1, new QTableWidgetItem( sCRLInfo.pIssuerName ));
+        mCRL_Table->setItem( row, 2, new QTableWidgetItem( sThisUpdate ));
+        mCRL_Table->setItem( row, 3, new QTableWidgetItem( sNextUpdate ));
 
         JS_BIN_reset( &binCRL );
         JS_PKI_resetCRLInfo( &sCRLInfo );
@@ -799,6 +800,10 @@ int CertManDlg::writeCA( const QString strCAPath, const BIN *pCACert )
     if( pCACert == NULL ) return JSR_ERR;
 
     QString strFilePath;
+    QDir dir;
+
+    if( dir.exists( strCAPath ) == false )
+        dir.mkpath( strCAPath );
 
     ret = JS_PKI_getSubjectNameHash( pCACert, &uHash );
     if( ret != 0 ) return ret;
@@ -817,6 +822,10 @@ int CertManDlg::writeCRL( const QString strCRLPath, const BIN *pCRL )
     if( pCRL == NULL ) return JSR_ERR;
 
     QString strFilePath;
+    QDir dir;
+
+    if( dir.exists( strCRLPath ) == false )
+        dir.mkpath( strCRLPath );
 
     ret = JS_PKI_getCRLIssuerNameHash( pCRL, &uHash );
     if( ret != 0 ) return ret;

@@ -74,7 +74,7 @@ CRLInfoDlg::CRLInfoDlg(QWidget *parent) :
     memset( &crl_info_, 0x00, sizeof(crl_info_));
 
     connect( mSaveBtn, SIGNAL(clicked()), this, SLOT(clickSave()));
-    connect( mSaveToManBtn, SIGNAL(clicked()), this, SLOT(clickSaveCRL()));
+    connect( mSaveToManBtn, SIGNAL(clicked()), this, SLOT(clickSaveToMan()));
     connect( mDecodeCRLBtn, SIGNAL(clicked()), this, SLOT(clickDecodeCRL()));
     connect( mVerifyCRLBtn, SIGNAL(clicked()), this, SLOT(clickVerifyCRL()));
 
@@ -111,9 +111,9 @@ void CRLInfoDlg::clickSave()
 void CRLInfoDlg::clickSaveToMan()
 {
     int ret = 0;
-    QString strCAPath = berApplet->settingsMgr()->CRLPath();
+    QString strCRLPath = berApplet->settingsMgr()->CRLPath();
 
-    ret = CertManDlg::writeCRL( strCAPath, &crl_bin_ );
+    ret = CertManDlg::writeCRL( strCRLPath, &crl_bin_ );
     if( ret > 0 )
         berApplet->warnLog( tr( "The CRL is saved to manager folder" ), this );
     else
