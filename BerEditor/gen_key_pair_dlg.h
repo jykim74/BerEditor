@@ -20,6 +20,8 @@ public:
     const QString getPriKeyHex();
     const QString getPubKeyHex();
 
+    void setRegInfo( const QString strRegInfo );
+
 private slots:
     void clickRSA();
     void clickECDSA();

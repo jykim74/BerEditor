@@ -629,6 +629,7 @@ void CMPClientDlg::clickIR()
 
     JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
 
+    genKeyPair.setRegInfo( getRegInfo() );
     if( genKeyPair.exec() != QDialog::Accepted ) goto end;
 
     strPriHex = genKeyPair.getPriKeyHex();
@@ -744,6 +745,7 @@ void CMPClientDlg::clickCR()
     JS_BIN_set( &binAuth, (unsigned char *)strAuth.toStdString().c_str(), strAuth.length() );
     JS_BIN_set( &binRef, (unsigned char *)strRef.toStdString().c_str(), strRef.length() );
 
+    genKeyPair.setRegInfo( getRegInfo() );
     if( genKeyPair.exec() != QDialog::Accepted ) goto end;
 
     strPriHex = genKeyPair.getPriKeyHex();
@@ -863,6 +865,7 @@ void CMPClientDlg::clickP10CR()
     JS_BIN_set( &binAuth, (unsigned char *)strAuth.toStdString().c_str(), strAuth.length() );
     JS_BIN_set( &binRef, (unsigned char *)strRef.toStdString().c_str(), strRef.length() );
 
+    genKeyPair.setRegInfo( getRegInfo() );
     if( genKeyPair.exec() != QDialog::Accepted ) goto end;
 
     strPriHex = genKeyPair.getPriKeyHex();
@@ -1095,6 +1098,7 @@ void CMPClientDlg::clickKUR()
 
     JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
 
+    genKeyPair.setRegInfo( getRegInfo() );
     if( genKeyPair.exec() != QDialog::Accepted ) goto end;
 
     strPriHex = genKeyPair.getPriKeyHex();
@@ -1286,6 +1290,33 @@ void CMPClientDlg::clickClearAll()
     clearRegInfo();
     clearRequest();
     clearResponse();
+}
+
+const QString CMPClientDlg::getRegInfo()
+{
+    QString strRegInfo;
+    QString strInfo = mRegInfoText->text();
+
+    QStringList infoList = strInfo.split("|");
+
+    for( int i = 0; i < infoList.size(); i++ )
+    {
+        QString strPart = infoList.at(i);
+        QStringList nameVal = strPart.split(":");
+        if( nameVal.size() < 2 ) continue;
+
+        QString strName = nameVal.at(0);
+        QString strVal = nameVal.at(1);
+
+        if( strName.toLower() == "id-reginfo" )
+        {
+            strRegInfo = strVal;
+            break;
+        }
+
+    }
+
+    return strRegInfo;
 }
 
 int CMPClientDlg::readPrivateKey( BIN *pPriKey )

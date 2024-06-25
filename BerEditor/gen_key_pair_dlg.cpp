@@ -54,6 +54,41 @@ void GenKeyPairDlg::initialize()
     mExponentText->setText( "65537" );
 }
 
+void GenKeyPairDlg::setRegInfo( const QString strRegInfo )
+{
+    QStringList infoList = strRegInfo.split( "&" );
+    QString strAlg;
+    QString strOption;
+
+    for( int i = 0; i < infoList.size(); i++ )
+    {
+        QString strPart = infoList.at(i);
+        QStringList nameVal = strPart.split("=");
+
+        if( nameVal.size() < 2 ) continue;
+
+        QString strName = nameVal.at(0);
+        QString strVal = nameVal.at(1);
+
+        if( strName.toUpper() == "ALG" )
+            strAlg = strVal;
+
+        if( strName.toUpper() == "PARAM" )
+            strOption = strVal;
+    }
+
+    if( strAlg.toUpper() == "RSA" )
+            mRSACheck->click();
+    else if( strAlg.toUpper() == "ECDSA" || strAlg.toUpper() == "EC" )
+            mECDSACheck->click();
+    else if( strAlg.toUpper() == "DSA" )
+            mDSACheck->click();
+    else if( strAlg.toUpper() == "EDDSA" )
+            mEdDSACheck->click();
+
+    if( strOption.length() > 0 ) mOptionCombo->setCurrentText( strOption );
+}
+
 const QString GenKeyPairDlg::getPriKeyHex()
 {
     return getHexString( &pri_key_ );

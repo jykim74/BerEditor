@@ -61,6 +61,7 @@ private:
     void setUsedURL( const QString strURL );
     int readPrivateKey( BIN *pPriKey );
     void savePriKeyCert( const BIN *pPriKey, const BIN *pCert );
+    const QString getRegInfo();
 };
 
 #endif // CMP_CLIENT_DLG_H

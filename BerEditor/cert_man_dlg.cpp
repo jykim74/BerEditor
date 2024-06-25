@@ -1272,7 +1272,7 @@ void CertManDlg::clickOK()
 
         JS_BIN_copy( &cert_, &binCert );
     }
-    if( mode_ == ManModeSelCA )
+    else if( mode_ == ManModeSelCA )
     {
         ret = readCACert( &binCert );
         if( ret != 0 )
@@ -1283,7 +1283,7 @@ void CertManDlg::clickOK()
 
         JS_BIN_copy( &ca_cert_, &binCert );
     }
-    if( mode_ == ManModeSelCRL )
+    else if( mode_ == ManModeSelCRL )
     {
         ret = readCRL( &binCRL );
         if( ret != 0 )
