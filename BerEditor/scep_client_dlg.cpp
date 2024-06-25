@@ -81,7 +81,7 @@ SCEPClientDlg::SCEPClientDlg(QWidget *parent)
     mResponseClearBtn->setFixedWidth(34);
     mResponseDecodeBtn->setFixedWidth(34);
 #endif
-
+    resize(width(), minimumSizeHint().height());
     initialize();
 }
 

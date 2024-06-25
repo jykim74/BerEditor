@@ -21,6 +21,7 @@ OCSPClientDlg::OCSPClientDlg(QWidget *parent) :
 {
     setupUi(this);
 
+
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mUseSignCheck, SIGNAL(clicked()), this, SLOT(checkUseSign()));
     connect( mURLClearBtn, SIGNAL(clicked()), this, SLOT(clickClearURL()));
@@ -67,6 +68,7 @@ OCSPClientDlg::OCSPClientDlg(QWidget *parent) :
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
 
+
     mCACertViewBtn->setFixedWidth(34);
     mCACertDecodeBtn->setFixedWidth(34);
     mCACertTypeBtn->setFixedWidth(34);
@@ -90,6 +92,7 @@ OCSPClientDlg::OCSPClientDlg(QWidget *parent) :
 
     mCertGroup->layout()->setSpacing(5);
 #endif
+    resize(width(), minimumSizeHint().height());
     initialize();
 }
 

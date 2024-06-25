@@ -27,6 +27,7 @@ private slots:
     void clickSignGENM();
     void clickKUR();
     void clickRR();
+    void clickSend();
     void clickClearAll();
 
     void findCACert();

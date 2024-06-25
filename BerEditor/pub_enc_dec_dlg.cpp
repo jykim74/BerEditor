@@ -96,6 +96,7 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
     mCertTypeBtn->setFixedWidth(34);
     mCertViewBtn->setFixedWidth(34);
 #endif
+    resize(width(), minimumSizeHint().height());
 }
 
 PubEncDecDlg::~PubEncDecDlg()

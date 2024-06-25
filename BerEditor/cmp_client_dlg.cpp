@@ -14,7 +14,7 @@
 #include "js_bin.h"
 #include "js_pki.h"
 #include "js_cmp.h"
-#include "js_error.h"
+#include "js_http.h"
 
 const QString kCMPUsedURL = "CMPUsedURL";
 
@@ -83,7 +83,7 @@ CMPClientDlg::CMPClientDlg(QWidget *parent)
     layout()->setSpacing(5);
     mCertGroup->layout()->setSpacing(5);
 #endif
-
+    resize(width(), minimumSizeHint().height());
     initialize();
 }
 
@@ -1294,6 +1294,57 @@ end :
     JS_BIN_reset( &binRsp );
 
     if( pCTX ) JS_CMP_final( pCTX );
+}
+
+void CMPClientDlg::clickSend()
+{
+    int ret = 0;
+    int nStatus = 0;
+    BIN binReq = {0,0};
+    BIN binRsp = {0,0};
+
+    QString strURL = mURLCombo->currentText();
+    QString strReq = mRequestText->toPlainText();
+
+    CertInfoDlg certInfo;
+
+    if( strURL.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter CMP URL"), this );
+        return;
+    }
+
+    if( strReq.length() < 1 )
+    {
+        berApplet->warningBox( tr("There is no request" ), this );
+        goto end;
+    }
+
+    getBINFromString( &binReq, DATA_HEX, strReq );
+
+    strURL += "/pkiclient.exe?operation=PKIOperation";
+
+    ret = JS_HTTP_requestPostBin2(
+        strURL.toStdString().c_str(),
+        NULL,
+        NULL,
+        "application/cmp-request",
+        &binReq,
+        &nStatus,
+        &binRsp );
+
+    if( ret != 0 || nStatus != JS_HTTP_STATUS_OK )
+    {
+        berApplet->warnLog( QString( "failed to request HTTP post [%1:%2]" ).arg( ret ).arg( nStatus ), this );
+        goto end;
+    }
+
+    mResponseText->setPlainText( getHexString( &binRsp ));
+    setUsedURL( strURL );
+
+end :
+    JS_BIN_reset( &binReq );
+    JS_BIN_reset( &binRsp );
 }
 
 void CMPClientDlg::clickClearAll()
