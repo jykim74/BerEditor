@@ -48,7 +48,7 @@ BNCalcDlg::BNCalcDlg(QWidget *parent) :
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
-    layout()->setMargin(10);
+//    layout()->setMargin(10);
 #endif
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
