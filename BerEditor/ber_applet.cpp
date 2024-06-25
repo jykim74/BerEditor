@@ -106,6 +106,7 @@ void BerApplet::start()
     if( isLicense() )
     {
         main_win_->useLog( settings_mgr_->getUseLogTab() );
+        settings_mgr_->makeCertPath();
     }
     else
     {

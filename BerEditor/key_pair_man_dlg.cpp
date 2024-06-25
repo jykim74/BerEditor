@@ -421,7 +421,7 @@ void KeyPairManDlg::findSavePath()
         strPath = berApplet->settingsMgr()->tempCertPath();
 
         if( dir.exists(strPath) == false )
-            dir.mkpath( strPath );
+            dir.mkdir( strPath );
     }
 
     QString folderPath = findFolder( this, strPath );
@@ -438,7 +438,7 @@ void KeyPairManDlg::findPriKey()
 
     if( strPath.length() < 1 )
     {
-        strPath = mSavePathText->text();
+        strPath = berApplet->settingsMgr()->tempCertPath();
     }
 
     QString filePath = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
@@ -451,7 +451,7 @@ void KeyPairManDlg::findPubKey()
 
     if( strPath.length() < 1 )
     {
-        strPath = mSavePathText->text();
+        strPath = berApplet->settingsMgr()->tempCertPath();
     }
 
     QString filePath = findFile( this, JS_FILE_TYPE_BER, strPath );
@@ -464,7 +464,7 @@ void KeyPairManDlg::findEncPriKey()
 
     if( strPath.length() < 1 )
     {
-        strPath = mSavePathText->text();
+        strPath = berApplet->settingsMgr()->tempCertPath();
     }
 
     QString filePath = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );

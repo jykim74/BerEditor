@@ -4,6 +4,7 @@
  * All rights reserved.
  */
 #include <QSettings>
+#include <QDir>
 #include "settings_mgr.h"
 
 namespace  {
@@ -31,8 +32,8 @@ void SettingsMgr::initialize()
 {
     getDefaultHash();
     getFileReadSize();
-    getCertPath();
     getHexAreaWidth();
+    getCertPath();
 }
 
 void SettingsMgr::removeSet( const QString& group, const QString& name )
@@ -300,6 +301,29 @@ QString SettingsMgr::tempCertPath()
 
     strPath = QString( "%1/Temp" ).arg( cert_path_ );
     return strPath;
+}
+
+void SettingsMgr::makeCertPath()
+{
+    QDir dir;
+
+    if( dir.exists( certPath() ) == false )
+        dir.mkdir( certPath() );
+
+    if( dir.exists( EECertPath() ) == false )
+        dir.mkdir( EECertPath() );
+
+    if( dir.exists( CACertPath() ) == false )
+        dir.mkdir( CACertPath() );
+
+    if( dir.exists( CRLPath() ) == false )
+        dir.mkdir( CRLPath() );
+
+    if( dir.exists( trustCertPath() ) == false )
+        dir.mkdir( trustCertPath() );
+
+    if( dir.exists( tempCertPath() ) == false )
+        dir.mkdir( tempCertPath() );
 }
 
 void SettingsMgr::setHexAreaWidth( int width )

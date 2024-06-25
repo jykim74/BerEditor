@@ -80,6 +80,7 @@ void SettingsDlg::updateSettings()
         mgr->setDefaultHash( mDefaultHashCombo->currentText() );
         mgr->setFileReadSize( mFileReadSizeText->text().toInt() );
         mgr->setCertPath( mCertPathText->text() );
+        mgr->makeCertPath();
     }
 
     bool language_changed = false;
@@ -115,7 +116,7 @@ void SettingsDlg::onCancelBtnClicked()
 
 void SettingsDlg::findOIDConfig()
 {
-    QString strPath = QDir::currentPath();
+    QString strPath = mOIDConfigPathText->text();
     QString fileName = findFile( this, JS_FILE_TYPE_CFG, strPath );
 
     if( fileName.length() > 0 ) mOIDConfigPathText->setText( fileName );
@@ -124,10 +125,15 @@ void SettingsDlg::findOIDConfig()
 void SettingsDlg::findCertPath()
 {
     QString strPath = mCertPathText->text();
-
     QString folderName = findFolder( this, strPath );
 
-    if( folderName.length() > 0 ) mCertPathText->setText( folderName );
+    if( folderName.length() > 0 )
+    {
+        folderName += "/";
+        folderName += "JSPKI";
+
+        mCertPathText->setText( folderName );
+    }
 }
 
 void SettingsDlg::closeEvent(QCloseEvent *event)

@@ -567,7 +567,6 @@ void CMPClientDlg::clickIR()
     void *pCTX = NULL;
 
     QString strPriHex;
-    QString strDN = "CN=TestIR,C=kr";
 
     BIN binAuth = {0,0};
     BIN binRef = {0,0};
@@ -582,11 +581,18 @@ void CMPClientDlg::clickIR()
 
     QString strURL = mURLCombo->currentText();
     QString strCAPath = mCACertPathText->text();
+    QString strDN = mSubjectDNText->text();
 
 
     if( strURL.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter CMP URL"), this );
+        return;
+    }
+
+    if( strDN.length() )
+    {
+        berApplet->warningBox( tr("Enter subject DN" ), this );
         return;
     }
 
@@ -683,7 +689,6 @@ void CMPClientDlg::clickCR()
     void *pCTX = NULL;
 
     QString strPriHex;
-    QString strDN = "CN=TestCR,C=kr";
 
     BIN binNewPri = {0,0};
     BIN binNewCert = {0,0};
@@ -698,11 +703,18 @@ void CMPClientDlg::clickCR()
 
     QString strURL = mURLCombo->currentText();
     QString strCAPath = mCACertPathText->text();
+    QString strDN = mSubjectDNText->text();
 
 
     if( strURL.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter CMP URL"), this );
+        return;
+    }
+
+    if( strDN.length() )
+    {
+        berApplet->warningBox( tr("Enter subject DN" ), this );
         return;
     }
 
@@ -873,6 +885,8 @@ void CMPClientDlg::clickP10CR()
 
     makeCSR.setPriKey( &binNewPri );
     if( makeCSR.exec() != QDialog::Accepted ) goto end;
+
+    mSubjectDNText->setText( makeCSR.getDN() );
 
     strCSRHex = makeCSR.getCSRHex();
     JS_BIN_decodeHex( strCSRHex.toStdString().c_str(), &binCSR );
@@ -1286,6 +1300,7 @@ void CMPClientDlg::clickClearAll()
 {
     mAuthCodeText->clear();
     mRefNumText->clear();
+    mSubjectDNText->clear();
 
     clearRegInfo();
     clearRequest();

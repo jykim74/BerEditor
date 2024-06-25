@@ -711,7 +711,7 @@ int CertManDlg::writePriKeyCert( const BIN *pEncPriKey, const BIN *pCert )
     strPath += "/";
     strPath += sCertInfo.pSubjectName;
 
-    if( dir.mkpath( strPath ) == false )
+    if( dir.mkdir( strPath ) == false )
     {
         berApplet->elog( QString( "fail to make path: %1").arg( strPath ) );
         goto end;
@@ -815,7 +815,7 @@ int CertManDlg::writeCA( const QString strCAPath, const BIN *pCACert )
     QDir dir;
 
     if( dir.exists( strCAPath ) == false )
-        dir.mkpath( strCAPath );
+        dir.mkdir( strCAPath );
 
     ret = JS_PKI_getSubjectNameHash( pCACert, &uHash );
     if( ret != 0 ) return ret;
@@ -838,7 +838,7 @@ int CertManDlg::writeCRL( const QString strCRLPath, const BIN *pCRL )
     QDir dir;
 
     if( dir.exists( strCRLPath ) == false )
-        dir.mkpath( strCRLPath );
+        dir.mkdir( strCRLPath );
 
     ret = JS_PKI_getCRLIssuerNameHash( pCRL, &uHash );
     if( ret != 0 ) return ret;
@@ -1352,7 +1352,7 @@ void CertManDlg::clickAddCA()
 
     if( dir.exists( strCAPath ) == false )
     {
-        if( dir.mkpath( strCAPath ) == false )
+        if( dir.mkdir( strCAPath ) == false )
         {
             berApplet->warningBox( tr( "fail to make CA folder: %1").arg( strCAPath ), this );
             return;
@@ -1477,7 +1477,7 @@ void CertManDlg::clickAddCRL()
 
     if( dir.exists( strCRLPath ) == false )
     {
-        if( dir.mkpath( strCRLPath ) == false )
+        if( dir.mkdir( strCRLPath ) == false )
         {
             berApplet->warningBox( tr( "fail to make CRL folder: %1").arg( strCRLPath ), this );
             return;
@@ -1582,7 +1582,7 @@ void CertManDlg::clickAddTrust()
 
     if( dir.exists( strTrustPath ) == false )
     {
-        if( dir.mkpath( strTrustPath ) == false )
+        if( dir.mkdir( strTrustPath ) == false )
         {
             berApplet->warningBox( tr( "fail to make TrustCA folder: %1").arg( strTrustPath ), this );
             return;
@@ -1762,7 +1762,7 @@ void CertManDlg::findTLPriKey()
 
     if( strPath.length() < 1 )
     {
-        strPath = berApplet->curFolder();
+        strPath = berApplet->settingsMgr()->tempCertPath();
     }
 
     QString filePath = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
@@ -1779,7 +1779,7 @@ void CertManDlg::findTLCert()
 
     if( strPath.length() < 1 )
     {
-        strPath = berApplet->curFolder();
+        strPath = berApplet->settingsMgr()->tempCertPath();
     }
 
     QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
@@ -1796,7 +1796,7 @@ void CertManDlg::findTLPFX()
 
     if( strPath.length() < 1 )
     {
-        strPath = berApplet->curFolder();
+        strPath = berApplet->settingsMgr()->tempCertPath();
     }
 
     QString filePath = findFile( this, JS_FILE_TYPE_PFX, strPath );

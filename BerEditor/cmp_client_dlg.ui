@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>597</width>
-    <height>661</height>
+    <height>691</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -285,6 +285,9 @@
      <property name="topMargin">
       <number>0</number>
      </property>
+     <item row="0" column="3">
+      <widget class="QLineEdit" name="mRefNumText"/>
+     </item>
      <item row="0" column="2">
       <widget class="QLabel" name="mRefNumLabel">
        <property name="text">
@@ -302,8 +305,15 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
-      <widget class="QLineEdit" name="mRefNumText"/>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_10">
+       <property name="text">
+        <string>Subject DN</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1" colspan="3">
+      <widget class="QLineEdit" name="mSubjectDNText"/>
      </item>
     </layout>
    </item>

@@ -56,6 +56,8 @@ public:
     QString CRLPath();
     QString tempCertPath();
 
+    void makeCertPath();
+
     void setHexAreaWidth( int width );
     int getHexAreaWidth();
     int hexAreaWidth() { return hex_area_width_; };

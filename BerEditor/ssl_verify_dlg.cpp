@@ -815,7 +815,7 @@ void SSLVerifyDlg::checkRootAndTrust( const BIN *pCA, const QString strHost, int
     QDir dir;
 
     if( dir.exists(strTrustPath) == false )
-        dir.mkpath( strTrustPath );
+        dir.mkdir( strTrustPath );
 
     memset( &sCertInfo, 0x00, sizeof(sCertInfo));
 
@@ -1184,9 +1184,9 @@ void SSLVerifyDlg::saveTrustedCA()
 
     if( dir.exists( strTrustedCAPath ) == false )
     {
-        if( dir.mkpath( strTrustedCAPath ) == false )
+        if( dir.mkdir( strTrustedCAPath ) == false )
         {
-            berApplet->warningBox( tr( "fail to mkpath:%1").arg( strTrustedCAPath));
+            berApplet->warningBox( tr( "fail to mkdir:%1").arg( strTrustedCAPath));
             return;
         }
     }
