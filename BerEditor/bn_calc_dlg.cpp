@@ -331,8 +331,8 @@ void BNCalcDlg::changeBaseGroup( int index )
         bDIV = true;
         bINV = true;
 
-        mADDBtn->setText( kAddMod );
-        mSUBBtn->setText( kSubMod );
+        mADDBtn->setText( kAdd );
+        mSUBBtn->setText( kSub );
         mMULBtn->setText( kMulMod );
         mDIVBtn->setText( kDivMod );
         mEXPBtn->setText( kExpMod );
