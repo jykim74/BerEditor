@@ -15,6 +15,7 @@ class PasswdDlg : public QDialog, public Ui::PasswdDlg
 public:
     explicit PasswdDlg(QWidget *parent = nullptr);
     ~PasswdDlg();
+    void setTitle( const QString strTitle );
 
 private slots:
     void clickOK();

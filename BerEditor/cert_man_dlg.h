@@ -98,6 +98,7 @@ private slots:
     void findTLCert();
     void findTLPFX();
 
+    void checkTLEncPriKey();
     void clickTLCheckKeyPair();
     void clickTLViewCert();
     void clickTLEncryptPFX();

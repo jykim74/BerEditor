@@ -604,6 +604,26 @@
            </property>
           </widget>
          </item>
+         <item row="0" column="2">
+          <widget class="QCheckBox" name="mTLEncPriKeyCheck">
+           <property name="text">
+            <string>Encrypted PrivateKey</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
         </layout>
        </item>
        <item>
@@ -758,15 +778,15 @@
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_7">
+          <widget class="QLabel" name="mTLPriKeyLabel">
            <property name="minimumSize">
             <size>
-             <width>80</width>
+             <width>94</width>
              <height>0</height>
             </size>
            </property>
            <property name="text">
-            <string>Private Key</string>
+            <string>PrivateKey</string>
            </property>
           </widget>
          </item>
@@ -866,7 +886,7 @@
             </size>
            </property>
            <property name="text">
-            <string>Password</string>
+            <string>PFX Password</string>
            </property>
           </widget>
          </item>
