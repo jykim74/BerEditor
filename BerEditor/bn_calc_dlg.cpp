@@ -361,7 +361,7 @@ void BNCalcDlg::changeBaseGroup( int index )
         mDIVBtn->setText( kDivMod );
         mEXPBtn->setText( kExpMod );
         mSQRBtn->setText( kSqrMod );
-        mSHLBtn->setText( kShlMod );
+        mSHLBtn->setText( kShl );
         mINVBtn->setText( kInvMod );
         mSQRTBtn->setText( kSqrtMod );
     }
