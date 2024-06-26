@@ -274,6 +274,12 @@ void BNCalcDlg::changeBaseGroup( int index )
     bool bDIV = false;
     bool bINV = false;
 
+    bool bAND = false;
+    bool bOR = false;
+    bool bXOR = false;
+    bool bCOMP = false;
+    bool bSHR = false;
+
     if( strName == "Number" )
     {
         bModGroup = false;
@@ -283,6 +289,12 @@ void BNCalcDlg::changeBaseGroup( int index )
         bMOD = true;
         bDIV = true;
         bINV = false;
+
+        bAND = true;
+        bOR = true;
+        bXOR = true;
+        bCOMP = true;
+        bSHR = true;
 
         mADDBtn->setText( kAdd );
         mSUBBtn->setText( kSub );
@@ -311,6 +323,12 @@ void BNCalcDlg::changeBaseGroup( int index )
         bDIV = false;
         bINV = true;
 
+        bAND = false;
+        bOR = false;
+        bXOR = false;
+        bCOMP = false;
+        bSHR = false;
+
         mADDBtn->setText( kAddMod );
         mSUBBtn->setText( kSubMod );
         mMULBtn->setText( kMulMod );
@@ -331,6 +349,12 @@ void BNCalcDlg::changeBaseGroup( int index )
         bDIV = true;
         bINV = true;
 
+        bAND = false;
+        bOR = false;
+        bXOR = false;
+        bCOMP = false;
+        bSHR = false;
+
         mADDBtn->setText( kAdd );
         mSUBBtn->setText( kSub );
         mMULBtn->setText( kMulMod );
@@ -349,6 +373,12 @@ void BNCalcDlg::changeBaseGroup( int index )
     mMODBtn->setEnabled( bMOD );
     mDIVBtn->setEnabled( bDIV );
     mINVBtn->setEnabled( bINV );
+
+    mANDBtn->setEnabled( bAND );
+    mORBtn->setEnabled( bOR );
+    mXORBtn->setEnabled( bXOR );
+    mCOMPBtn->setEnabled( bCOMP );
+    mSHRBtn->setEnabled( bSHR );
 }
 
 void BNCalcDlg::clickAGenPrime()
