@@ -18,14 +18,14 @@ const QString kDiv = "A / B";
 const QString kExp = "A ^ B";
 const QString kSqr = "A ^ 2";
 const QString kMod = "A % B";
-const QString kGcd = "GCD";
-const QString kOr = "OR";
-const QString kAnd = "AND";
-const QString kXor = "XOR";
-const QString kComp = "COMP";
-const QString kShr = "SHR";
-const QString kShl = "SHL";
-const QString kInv = "INV";
+const QString kGcd = "GCD(A,B)";
+const QString kOr = "A or B";
+const QString kAnd = "A and B";
+const QString kXor = "A xor B";
+const QString kComp = "A comp";
+const QString kShr = "A >>";
+const QString kShl = "A <<";
+const QString kInv = "A^-1";
 const QString kSqrt = "√ A";
 
 const QString kAddMod = "(A+B) Mod M";
@@ -34,7 +34,7 @@ const QString kMulMod = "(A*B) Mod M";
 const QString kDivMod = "(A/B) Mod M";
 const QString kExpMod = "(A^B) Mod M";
 const QString kSqrMod = "(A^2) Mod M";
-const QString kShlMod = "SHL Mod M";
+const QString kShlMod = "A<< Mod M";
 const QString kInvMod = "A^-1 Mod M";
 const QString kSqrtMod = "√ A Mod M";
 
@@ -45,11 +45,6 @@ BNCalcDlg::BNCalcDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
-
-#if defined(Q_OS_MAC)
-    layout()->setSpacing(5);
-//    layout()->setMargin(10);
-#endif
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mBaseGroupCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeBaseGroup(int)));
@@ -62,9 +57,9 @@ BNCalcDlg::BNCalcDlg(QWidget *parent) :
     connect( mBGenPrimeBtn, SIGNAL(clicked()), this, SLOT(clickBGenPrime()));
     connect( mModGenPrimeBtn, SIGNAL(clicked()), this, SLOT(clickModGenPrime()));
 
-    connect( mACheckPrimeBtn, SIGNAL(clicked()), this, SLOT(clickACheckPrime()));
-    connect( mBCheckPrimeBtn, SIGNAL(clicked()), this, SLOT(clickBCheckPrime()));
-    connect( mModCheckPrimeBtn, SIGNAL(clicked()), this, SLOT(clickModCheckPrime()));
+    connect( mAIsPrimeBtn, SIGNAL(clicked()), this, SLOT(clickAIsPrime()));
+    connect( mBIsPrimeBtn, SIGNAL(clicked()), this, SLOT(clickBIsPrime()));
+    connect( mModChecPrimeBtn, SIGNAL(clicked()), this, SLOT(clickModIsPrime()));
 
     connect( mADDBtn, SIGNAL(clicked()), this, SLOT(clickAdd()));
     connect( mSUBBtn, SIGNAL(clicked()), this, SLOT(clickSub()));
@@ -107,9 +102,33 @@ BNCalcDlg::BNCalcDlg(QWidget *parent) :
     connect( mResSendBBtn, SIGNAL(clicked()), this, SLOT(clickResSendB()));
     connect( mResSendModBtn, SIGNAL(clicked()), this, SLOT(clickResSendMod()));
 
+    connect( mAAddOneBtn, SIGNAL(clicked()), this, SLOT(addOneA()));
+    connect( mBAddOneBtn, SIGNAL(clicked()), this, SLOT(addOneB()));
+    connect( mModAddOneBtn, SIGNAL(clicked()), this, SLOT(addOneMod()));
+
+    connect( mASubOneBtn, SIGNAL(clicked()), this, SLOT(subOneA()));
+    connect( mBSubOneBtn, SIGNAL(clicked()), this, SLOT(subOneB()));
+    connect( mModSubOneBtn, SIGNAL(clicked()), this, SLOT(subOneMod()));
 
     connect( mTestBtn, SIGNAL(clicked()), this, SLOT(clickTest()));
 
+    resize(width(), minimumSizeHint().height());
+#if defined(Q_OS_MAC)
+    layout()->setSpacing(5);
+
+    mAClearBtn->setFixedWidth(34);
+    mBClearBtn->setFixedWidth(34);
+    mModClearBtn->setFixedWidth(34);
+    mResClearBtn->setFixedWidth(34);
+
+    mAAddOneBtn->setFixedWidth(34);
+    mBAddOneBtn->setFixedWidth(34);
+    mModAddOneBtn->setFixedWidth(34);
+
+    mASubOneBtn->setFixedWidth(34);
+    mBSubOneBtn->setFixedWidth(34);
+    mModSubOneBtn->setFixedWidth(34);
+#endif
     intialize();
 
 
@@ -125,7 +144,6 @@ void BNCalcDlg::intialize()
     mHexCheck->click();
 
     mBaseGroupCombo->addItems( kGroupList );
-    mBaseGroupCombo->setCurrentIndex(1);
 
     mAPrimeBitsCombo->addItems(kBitType);
     mBPrimeBitsCombo->addItems(kBitType);
@@ -414,7 +432,7 @@ void BNCalcDlg::clickModGenPrime()
     JS_BIN_reset( &binPrime );
 }
 
-void BNCalcDlg::clickACheckPrime()
+void BNCalcDlg::clickAIsPrime()
 {
     int ret = 0;
     BIN binVal = {0,0};
@@ -438,7 +456,7 @@ void BNCalcDlg::clickACheckPrime()
     JS_BIN_reset( &binVal );
 }
 
-void BNCalcDlg::clickBCheckPrime()
+void BNCalcDlg::clickBIsPrime()
 {
     int ret = 0;
     BIN binVal = {0,0};
@@ -462,7 +480,7 @@ void BNCalcDlg::clickBCheckPrime()
     JS_BIN_reset( &binVal );
 }
 
-void BNCalcDlg::clickModCheckPrime()
+void BNCalcDlg::clickModIsPrime()
 {
     int ret = 0;
     BIN binVal = {0,0};
@@ -1152,6 +1170,186 @@ void BNCalcDlg::clearAll()
     clearB();
     clearMod();
     clearRes();
+}
+
+void BNCalcDlg::addOneA()
+{
+    int ret = 0;
+    BIN binA = {0,0};
+    BIN binR = {0,0};
+
+    if( getInput( &binA, NULL, NULL ) != 0 )
+        goto end;
+
+    ret = JS_BN_add1( &binR, &binA );
+
+    if( ret != 0 )
+    {
+        berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
+        goto end;
+    }
+
+    mAText->setPlainText( getOutput( &binR ) );
+
+    berApplet->logLine();
+    berApplet->log( QString( "A+1 : %1").arg( getHexString(&binR)));
+
+end :
+    JS_BIN_reset( &binA );
+    JS_BIN_reset( &binR );
+}
+
+void BNCalcDlg::addOneB()
+{
+    int ret = 0;
+    BIN binB = {0,0};
+    BIN binR = {0,0};
+
+    if( getInput( NULL, &binB, NULL ) != 0 )
+        goto end;
+
+    ret = JS_BN_add1( &binR, &binB );
+
+    if( ret != 0 )
+    {
+        berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
+        goto end;
+    }
+
+    mBText->setPlainText( getOutput( &binR ) );
+
+    berApplet->logLine();
+    berApplet->log( QString( "B+1 : %1").arg( getHexString(&binR)));
+
+end :
+    JS_BIN_reset( &binB );
+    JS_BIN_reset( &binR );
+}
+
+void BNCalcDlg::addOneMod()
+{
+    int ret = 0;
+    BIN binMod = {0,0};
+    BIN binR = {0,0};
+
+    if( getInput( NULL, NULL, &binMod ) != 0 )
+        goto end;
+
+    ret = JS_BN_add1( &binR, &binMod );
+
+    if( ret != 0 )
+    {
+        berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
+        goto end;
+    }
+
+    mModText->setPlainText( getOutput( &binR ) );
+
+    berApplet->logLine();
+    berApplet->log( QString( "M+1 : %1").arg( getHexString(&binR)));
+
+end :
+    JS_BIN_reset( &binMod );
+    JS_BIN_reset( &binR );
+}
+
+void BNCalcDlg::subOneA()
+{
+    int ret = 0;
+    BIN binA = {0,0};
+    BIN binR = {0,0};
+
+    if( getInput( &binA, NULL, NULL ) != 0 )
+        goto end;
+
+    if( binA.nLen == 0 || (binA.nLen == 1 && binA.pVal[0] == 0x00) )
+    {
+        berApplet->warnLog( QString( tr( "Number must be greater than 0") ), this);
+        goto end;
+    }
+
+    ret = JS_BN_sub1( &binR, &binA );
+
+    if( ret != 0 )
+    {
+        berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
+        goto end;
+    }
+
+    mAText->setPlainText( getOutput( &binR ) );
+
+    berApplet->logLine();
+    berApplet->log( QString( "A-1 : %1").arg( getHexString(&binR)));
+
+end :
+    JS_BIN_reset( &binA );
+    JS_BIN_reset( &binR );
+}
+
+void BNCalcDlg::subOneB()
+{
+    int ret = 0;
+    BIN binB = {0,0};
+    BIN binR = {0,0};
+
+    if( getInput( NULL, &binB, NULL ) != 0 )
+        goto end;
+
+    if( binB.nLen == 0 || (binB.nLen == 1 && binB.pVal[0] == 0x00) )
+    {
+        berApplet->warnLog( QString( tr( "Number must be greater than 0") ), this);
+        goto end;
+    }
+
+    ret = JS_BN_sub1( &binR, &binB );
+
+    if( ret != 0 )
+    {
+        berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
+        goto end;
+    }
+
+    mBText->setPlainText( getOutput( &binR ) );
+
+    berApplet->logLine();
+    berApplet->log( QString( "B-1 : %1").arg( getHexString(&binR)));
+
+end :
+    JS_BIN_reset( &binB );
+    JS_BIN_reset( &binR );
+}
+
+void BNCalcDlg::subOneMod()
+{
+    int ret = 0;
+    BIN binMod = {0,0};
+    BIN binR = {0,0};
+
+    if( getInput( NULL, NULL, &binMod ) != 0 )
+        goto end;
+
+    if( binMod.nLen == 0 || (binMod.nLen == 1 && binMod.pVal[0] == 0x00) )
+    {
+        berApplet->warnLog( QString( tr( "Number must be greater than 0") ), this);
+        goto end;
+    }
+
+    ret = JS_BN_sub1( &binR, &binMod );
+
+    if( ret != 0 )
+    {
+        berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
+        goto end;
+    }
+
+    mModText->setPlainText( getOutput( &binR ) );
+
+    berApplet->logLine();
+    berApplet->log( QString( "M-1 : %1").arg( getHexString(&binR)));
+
+end :
+    JS_BIN_reset( &binMod );
+    JS_BIN_reset( &binR );
 }
 
 void BNCalcDlg::changeA()

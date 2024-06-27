@@ -8,6 +8,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QRegularExpression>
+#include <QRegExp>
 #include <QProcess>
 #include <QNetworkInterface>
 
@@ -1281,39 +1282,30 @@ QString getKeyTypeName( int nKeyType )
 
 bool isEmail( const QString strEmail )
 {
-    QRegularExpression mailREX("\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b");
-    mailREX.setPatternOptions( QRegularExpression::CaseInsensitiveOption );
+    QRegExp mailREX("\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b");
+    mailREX.setCaseSensitivity(Qt::CaseInsensitive );
 
-    QRegularExpressionMatch match = mailREX.match( strEmail );
-    return match.hasMatch();
-
-//    mailREX.setCaseSensitivity(Qt::CaseInsensitive);
-//    mailREX.setPatternSyntax(QRegularExpressionMatch::Wildcard);
-
-//    return mailREX.exactMatch( strEmail );
+    return mailREX.exactMatch( strEmail );
 }
 
 bool isValidNumFormat( const QString strInput, int nNumber )
 {
-    QRegularExpression strExp;
+    QRegExp strReg;
 
     if( nNumber == 2 )
     {
-        strExp.setPattern( "[0-1]+");
+        strReg.setPattern( "[0-1]+");
     }
     else if( nNumber == 16 )
     {
-        strExp.setPattern( "[0-9a-fA-F]+" );
+        strReg.setPattern( "[0-9a-fA-F]+" );
     }
     else
     {
-        strExp.setPattern( "[0-9]+" );
+        strReg.setPattern( "[0-9]+" );
     }
 
-    QRegularExpressionMatch match = strExp.match( strInput );
-    return match.hasMatch();
-
-//    return strExp.exactMatch( strInput );
+    return strReg.exactMatch( strInput );
 }
 
 int getDataFromURI( const QString strURI, BIN *pData )

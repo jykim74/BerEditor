@@ -25,9 +25,9 @@ private slots:
     void clickBGenPrime();
     void clickModGenPrime();
 
-    void clickACheckPrime();
-    void clickBCheckPrime();
-    void clickModCheckPrime();
+    void clickAIsPrime();
+    void clickBIsPrime();
+    void clickModIsPrime();
 
     void changeBaseGroup( int index );
 
@@ -54,6 +54,13 @@ private slots:
     void clearMod();
     void clearRes();
     void clearAll();
+
+    void addOneA();
+    void addOneB();
+    void addOneMod();
+    void subOneA();
+    void subOneB();
+    void subOneMod();
 
     void changeA();
     void changeB();

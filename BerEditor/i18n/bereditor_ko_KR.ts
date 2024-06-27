@@ -236,7 +236,7 @@ mailto : jykim74@gmail.com</translation>
         <translation>기본 그룹</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="264"/>
+        <location filename="../bn_calc_dlg.ui" line="170"/>
         <source>A</source>
         <translation>A</translation>
     </message>
@@ -245,181 +245,251 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">비트 수</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="232"/>
-        <location filename="../bn_calc_dlg.ui" line="454"/>
-        <location filename="../bn_calc_dlg.ui" line="577"/>
         <source>Gen Prime</source>
-        <translation>소수 생성</translation>
+        <translation type="vanished">소수 생성</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="174"/>
-        <location filename="../bn_calc_dlg.ui" line="321"/>
-        <location filename="../bn_calc_dlg.ui" line="570"/>
         <source>Check Prime</source>
-        <translation>소수 체크</translation>
+        <translation type="vanished">소수 체크</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="225"/>
-        <location filename="../bn_calc_dlg.ui" line="389"/>
-        <location filename="../bn_calc_dlg.ui" line="657"/>
-        <location filename="../bn_calc_dlg.ui" line="758"/>
         <source>Clear</source>
-        <translation>지우기</translation>
+        <translation type="vanished">지우기</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="251"/>
-        <location filename="../bn_calc_dlg.ui" line="415"/>
-        <location filename="../bn_calc_dlg.ui" line="615"/>
-        <location filename="../bn_calc_dlg.ui" line="777"/>
+        <location filename="../bn_calc_dlg.ui" line="218"/>
+        <location filename="../bn_calc_dlg.ui" line="505"/>
+        <location filename="../bn_calc_dlg.ui" line="622"/>
+        <location filename="../bn_calc_dlg.ui" line="826"/>
         <source>Copy</source>
         <translation>복사</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="206"/>
-        <location filename="../bn_calc_dlg.ui" line="447"/>
-        <location filename="../bn_calc_dlg.ui" line="596"/>
+        <location filename="../bn_calc_dlg.ui" line="237"/>
+        <location filename="../bn_calc_dlg.ui" line="427"/>
+        <location filename="../bn_calc_dlg.ui" line="732"/>
         <source>Paste</source>
         <translation>붙이기</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="167"/>
-        <location filename="../bn_calc_dlg.ui" line="396"/>
-        <location filename="../bn_calc_dlg.ui" line="622"/>
+        <location filename="../bn_calc_dlg.ui" line="244"/>
+        <location filename="../bn_calc_dlg.ui" line="362"/>
+        <location filename="../bn_calc_dlg.ui" line="600"/>
+        <source>GenPrime</source>
+        <translation>소수 생성</translation>
+    </message>
+    <message>
+        <location filename="../bn_calc_dlg.ui" line="263"/>
+        <location filename="../bn_calc_dlg.ui" line="446"/>
+        <location filename="../bn_calc_dlg.ui" line="687"/>
+        <location filename="../bn_calc_dlg.ui" line="932"/>
+        <source>C</source>
+        <translation>C</translation>
+    </message>
+    <message>
+        <location filename="../bn_calc_dlg.ui" line="283"/>
+        <location filename="../bn_calc_dlg.ui" line="486"/>
+        <location filename="../bn_calc_dlg.ui" line="694"/>
         <source>Bits</source>
         <translation>비트</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="467"/>
+        <location filename="../bn_calc_dlg.ui" line="302"/>
+        <location filename="../bn_calc_dlg.ui" line="543"/>
+        <location filename="../bn_calc_dlg.ui" line="784"/>
+        <source>-1</source>
+        <translation>-1</translation>
+    </message>
+    <message>
+        <location filename="../bn_calc_dlg.ui" line="479"/>
         <source>B</source>
         <translation>B</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="670"/>
+        <location filename="../bn_calc_dlg.ui" line="752"/>
         <source>M</source>
         <translation>M</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="784"/>
         <source>Send B</source>
-        <translation>B보내기</translation>
+        <translation type="vanished">B보내기</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="791"/>
+        <location filename="../bn_calc_dlg.ui" line="900"/>
         <source>Result</source>
         <translation>결과</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="811"/>
         <source>Send A</source>
-        <translation>A보내기</translation>
+        <translation type="vanished">A보내기</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="818"/>
         <source>Send M</source>
-        <translation>M보내기</translation>
+        <translation type="vanished">M보내기</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="885"/>
+        <location filename="../bn_calc_dlg.ui" line="1013"/>
         <source>A * B</source>
         <translation>A * B</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="892"/>
+        <location filename="../bn_calc_dlg.ui" line="1097"/>
         <source>A % B</source>
         <translation>A % B</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="899"/>
+        <location filename="../bn_calc_dlg.ui" line="1090"/>
         <source>A ^ B</source>
         <translation>A ^ B</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="906"/>
+        <location filename="../bn_calc_dlg.ui" line="180"/>
+        <location filename="../bn_calc_dlg.ui" line="453"/>
+        <location filename="../bn_calc_dlg.ui" line="739"/>
+        <source>IsPrime</source>
+        <translation>소수유무</translation>
+    </message>
+    <message>
+        <location filename="../bn_calc_dlg.ui" line="199"/>
+        <location filename="../bn_calc_dlg.ui" line="524"/>
+        <location filename="../bn_calc_dlg.ui" line="713"/>
+        <source>+1</source>
+        <translation>+1</translation>
+    </message>
+    <message>
+        <location filename="../bn_calc_dlg.ui" line="833"/>
+        <source>SendB</source>
+        <translation>B보내기</translation>
+    </message>
+    <message>
+        <location filename="../bn_calc_dlg.ui" line="840"/>
+        <source>SendM</source>
+        <translation>M보내기</translation>
+    </message>
+    <message>
+        <location filename="../bn_calc_dlg.ui" line="847"/>
+        <source>SendA</source>
+        <translation>A보내기</translation>
+    </message>
+    <message>
+        <location filename="../bn_calc_dlg.ui" line="1006"/>
+        <source>A comp</source>
+        <translation>A comp</translation>
+    </message>
+    <message>
+        <location filename="../bn_calc_dlg.ui" line="1020"/>
+        <source>A &gt;&gt;</source>
+        <translation>A &gt;&gt;</translation>
+    </message>
+    <message>
+        <location filename="../bn_calc_dlg.ui" line="1027"/>
+        <source>A &lt;&lt;</source>
+        <translation>A &lt;&lt;</translation>
+    </message>
+    <message>
+        <location filename="../bn_calc_dlg.ui" line="1041"/>
+        <source>A^-1</source>
+        <translation>A^-1</translation>
+    </message>
+    <message>
+        <location filename="../bn_calc_dlg.ui" line="1048"/>
+        <source>A or B</source>
+        <translation>A or B</translation>
+    </message>
+    <message>
+        <location filename="../bn_calc_dlg.ui" line="1055"/>
+        <source>A and B</source>
+        <translation>A and B</translation>
+    </message>
+    <message>
+        <location filename="../bn_calc_dlg.ui" line="1062"/>
+        <source>A xor B</source>
+        <translation>A xor B</translation>
+    </message>
+    <message>
+        <location filename="../bn_calc_dlg.ui" line="1069"/>
         <source>A + B</source>
         <translation>A + B</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="913"/>
         <source>GCD</source>
-        <translation>GCD</translation>
+        <translation type="vanished">GCD</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="920"/>
+        <location filename="../bn_calc_dlg.ui" line="1076"/>
         <source>A - B</source>
         <translation>A - B</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="927"/>
+        <location filename="../bn_calc_dlg.ui" line="1083"/>
         <source>A / B</source>
         <translation>A / B</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="934"/>
+        <location filename="../bn_calc_dlg.ui" line="999"/>
         <source>A ^ 2</source>
         <translation>A ^ 2</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="941"/>
         <source>OR</source>
-        <translation>OR</translation>
+        <translation type="vanished">OR</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="948"/>
         <source>AND</source>
-        <translation>AND</translation>
+        <translation type="vanished">AND</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="955"/>
         <source>XOR</source>
-        <translation>XOR</translation>
+        <translation type="vanished">XOR</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="962"/>
         <source>A SHR</source>
-        <translation>A SHR</translation>
+        <translation type="vanished">A SHR</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="969"/>
         <source>A SHL</source>
-        <translation>A SHL</translation>
+        <translation type="vanished">A SHL</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="976"/>
         <source>A COMP</source>
-        <translation>A COMP</translation>
+        <translation type="vanished">A COMP</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="983"/>
         <source>INV</source>
-        <translation>INV</translation>
+        <translation type="vanished">INV</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="990"/>
+        <location filename="../bn_calc_dlg.ui" line="1034"/>
         <source>√ A</source>
         <translation>√ A</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="1008"/>
+        <location filename="../bn_calc_dlg.ui" line="1104"/>
+        <source>GCD(A,B)</source>
+        <translation>GCD(A,B)</translation>
+    </message>
+    <message>
+        <location filename="../bn_calc_dlg.ui" line="1122"/>
         <source>Clear All</source>
         <translation>전체 지우기</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="1015"/>
+        <location filename="../bn_calc_dlg.ui" line="1129"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="1035"/>
+        <location filename="../bn_calc_dlg.ui" line="1149"/>
         <source>Test</source>
         <translation>Test</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="167"/>
+        <location filename="../bn_calc_dlg.cpp" line="185"/>
         <source>The A value have wrong character</source>
         <translation>A 값에 잘못된 무자가 있습니다.</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="178"/>
+        <location filename="../bn_calc_dlg.cpp" line="196"/>
         <source>The B value have wrong character</source>
         <translation>B 값에 잘못된 무자가 있습니다.</translation>
     </message>
@@ -428,54 +498,61 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">M 값에 잘못된 무자가 있습니다.</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="189"/>
+        <location filename="../bn_calc_dlg.cpp" line="207"/>
         <source>The M value have wrong character</source>
         <translation>M 값에 잘못된 문자가 있습니다.</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="395"/>
+        <location filename="../bn_calc_dlg.cpp" line="443"/>
         <source>Insert A value</source>
         <translation>A 을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="404"/>
+        <location filename="../bn_calc_dlg.cpp" line="452"/>
         <source>The A value is prime</source>
         <translation>A는 소수 입니다.</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="406"/>
+        <location filename="../bn_calc_dlg.cpp" line="454"/>
         <source>The A value is not prime</source>
         <translation>A 는 소수가 아닙니다.</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="419"/>
+        <location filename="../bn_calc_dlg.cpp" line="467"/>
         <source>Insert B value</source>
         <translation>B 을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="428"/>
+        <location filename="../bn_calc_dlg.cpp" line="476"/>
         <source>The B value is prime</source>
         <translation>B는 소수 입니다.</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="430"/>
+        <location filename="../bn_calc_dlg.cpp" line="478"/>
         <source>The B value is not prime</source>
         <translation>B 는 소수가 아닙니다.</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="443"/>
+        <location filename="../bn_calc_dlg.cpp" line="491"/>
         <source>Insert M value</source>
         <translation>M 을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="452"/>
+        <location filename="../bn_calc_dlg.cpp" line="500"/>
         <source>The M value is prime</source>
         <translation>M 은 소수 입니다</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="454"/>
+        <location filename="../bn_calc_dlg.cpp" line="502"/>
         <source>The M value is not prime</source>
         <translation>M 은 소수가 아닙니다</translation>
+    </message>
+    <message>
+        <location filename="../bn_calc_dlg.cpp" line="1267"/>
+        <location filename="../bn_calc_dlg.cpp" line="1300"/>
+        <location filename="../bn_calc_dlg.cpp" line="1333"/>
+        <source>Number must be greater than 0</source>
+        <translation>숫자가 0보다 커야 합니다</translation>
     </message>
     <message>
         <source>Insert Mod value</source>
@@ -490,22 +567,28 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">M 은 소수가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="479"/>
-        <location filename="../bn_calc_dlg.cpp" line="528"/>
-        <location filename="../bn_calc_dlg.cpp" line="573"/>
-        <location filename="../bn_calc_dlg.cpp" line="619"/>
-        <location filename="../bn_calc_dlg.cpp" line="668"/>
-        <location filename="../bn_calc_dlg.cpp" line="709"/>
-        <location filename="../bn_calc_dlg.cpp" line="751"/>
-        <location filename="../bn_calc_dlg.cpp" line="792"/>
-        <location filename="../bn_calc_dlg.cpp" line="825"/>
-        <location filename="../bn_calc_dlg.cpp" line="858"/>
-        <location filename="../bn_calc_dlg.cpp" line="891"/>
-        <location filename="../bn_calc_dlg.cpp" line="922"/>
-        <location filename="../bn_calc_dlg.cpp" line="957"/>
-        <location filename="../bn_calc_dlg.cpp" line="995"/>
-        <location filename="../bn_calc_dlg.cpp" line="1037"/>
-        <location filename="../bn_calc_dlg.cpp" line="1079"/>
+        <location filename="../bn_calc_dlg.cpp" line="527"/>
+        <location filename="../bn_calc_dlg.cpp" line="576"/>
+        <location filename="../bn_calc_dlg.cpp" line="621"/>
+        <location filename="../bn_calc_dlg.cpp" line="667"/>
+        <location filename="../bn_calc_dlg.cpp" line="716"/>
+        <location filename="../bn_calc_dlg.cpp" line="757"/>
+        <location filename="../bn_calc_dlg.cpp" line="799"/>
+        <location filename="../bn_calc_dlg.cpp" line="840"/>
+        <location filename="../bn_calc_dlg.cpp" line="873"/>
+        <location filename="../bn_calc_dlg.cpp" line="906"/>
+        <location filename="../bn_calc_dlg.cpp" line="939"/>
+        <location filename="../bn_calc_dlg.cpp" line="970"/>
+        <location filename="../bn_calc_dlg.cpp" line="1005"/>
+        <location filename="../bn_calc_dlg.cpp" line="1043"/>
+        <location filename="../bn_calc_dlg.cpp" line="1085"/>
+        <location filename="../bn_calc_dlg.cpp" line="1127"/>
+        <location filename="../bn_calc_dlg.cpp" line="1188"/>
+        <location filename="../bn_calc_dlg.cpp" line="1215"/>
+        <location filename="../bn_calc_dlg.cpp" line="1242"/>
+        <location filename="../bn_calc_dlg.cpp" line="1275"/>
+        <location filename="../bn_calc_dlg.cpp" line="1308"/>
+        <location filename="../bn_calc_dlg.cpp" line="1341"/>
         <source>Calc fail: %1</source>
         <translation>계산 실패 : %1</translation>
     </message>
@@ -8166,12 +8249,12 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">인증서 CRL 파일 (*.crt *.der *.crl *.pem);;모든 파일들(*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="72"/>
+        <location filename="../common.cpp" line="73"/>
         <source>Key Files (*.key *.der *.pem);;All Files(*.*)</source>
         <translation>키 파일 (*.key *.der *.pem);;모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="74"/>
+        <location filename="../common.cpp" line="75"/>
         <source>TXT Files (*.txt *.log);;All Files(*.*)</source>
         <translation>텍스트 파일들 (*.txt *.log);;모든 파일들 (*.*)</translation>
     </message>
@@ -8180,62 +8263,62 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">BER 파일들 (*.ber *.der *.pem);;모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="66"/>
+        <location filename="../common.cpp" line="67"/>
         <source>Cert Files (*.crt *.der *.cer *.pem);;All Files(*.*)</source>
         <translation>인증서 파일들 (*.crt *.der *.cer *.pem);;모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="68"/>
+        <location filename="../common.cpp" line="69"/>
         <source>CRL Files (*.crl *.der *.cer *.pem);;All Files(*.*)</source>
         <translation>CRL 파일들 (*.crl *.der *.cer *.pem);;모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="70"/>
+        <location filename="../common.cpp" line="71"/>
         <source>CSR Files (*.csr *.der *.cer *.pem);;All Files(*.*)</source>
         <translation>CSR 파일들 (*.csr *.der *.cer *.pem);;모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="76"/>
+        <location filename="../common.cpp" line="77"/>
         <source>BER Files (*.der *.pem *.cer *.crt *.crl *.csr);;All Files(*.*)</source>
         <translation>BER 파일들 (*.der *.pem *.cer *.crt *.crl *.csr);;모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="78"/>
+        <location filename="../common.cpp" line="79"/>
         <source>Config Files (*.cfg *.ini);;All Files(*.*)</source>
         <translation>설정 파일들 (*.cfg *.ini);;모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="80"/>
+        <location filename="../common.cpp" line="81"/>
         <source>Req Files (*.req *.txt);;All Files(*.*)</source>
         <translation>요청 파일들(*.req *.txt);;모든 파일들(*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="82"/>
+        <location filename="../common.cpp" line="83"/>
         <source>PFX Files (*.pfx *.p12);;All Files(*.*)</source>
         <translation>PFX 파일들(*.pfx *.p12);;모든 파일들(*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="84"/>
+        <location filename="../common.cpp" line="85"/>
         <source>License Files (*.lcn *.txt);;All Files (*.*)</source>
         <translation>라이선스 파일들 (*.lcn *.txt);;모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="86"/>
+        <location filename="../common.cpp" line="87"/>
         <source>All Files(*.*)</source>
         <translation>모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="108"/>
+        <location filename="../common.cpp" line="109"/>
         <source>Open File</source>
         <translation>파일 열기</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="137"/>
+        <location filename="../common.cpp" line="138"/>
         <source>Save File</source>
         <translation>파일 저장</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="154"/>
+        <location filename="../common.cpp" line="155"/>
         <source>Open Directory</source>
         <translation>디렉토리 열기</translation>
     </message>
