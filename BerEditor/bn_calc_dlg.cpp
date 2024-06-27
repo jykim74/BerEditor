@@ -116,22 +116,32 @@ BNCalcDlg::BNCalcDlg(QWidget *parent) :
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
 
-    mAClearBtn->setFixedWidth(34);
-    mBClearBtn->setFixedWidth(34);
-    mModClearBtn->setFixedWidth(34);
-    mResClearBtn->setFixedWidth(34);
+    int margin = 1;
+    int space = 1;
 
-    mAAddOneBtn->setFixedWidth(34);
-    mBAddOneBtn->setFixedWidth(34);
-    mModAddOneBtn->setFixedWidth(34);
+    mAGroup->layout()->setSpacing(space);
+    mBGroup->layout()->setSpacing(space);
+    mModGroup->layout()->setSpacing(space);
+    mAGroup->layout()->setMargin(margin);
+    mBGroup->layout()->setMargin(margin);
+    mModGroup->layout()->setMargin(margin);
 
-    mASubOneBtn->setFixedWidth(34);
-    mBSubOneBtn->setFixedWidth(34);
-    mModSubOneBtn->setFixedWidth(34);
+    mAClearBtn->setFixedWidth(38);
+    mBClearBtn->setFixedWidth(38);
+    mModClearBtn->setFixedWidth(38);
+    mResClearBtn->setFixedWidth(38);
+
+    mAAddOneBtn->setFixedWidth(38);
+    mBAddOneBtn->setFixedWidth(38);
+    mModAddOneBtn->setFixedWidth(38);
+
+    mASubOneBtn->setFixedWidth(38);
+    mBSubOneBtn->setFixedWidth(38);
+    mModSubOneBtn->setFixedWidth(38);
+
+    resize(width(), minimumSizeHint().height() - 70);
 #endif
     intialize();
-
-
 }
 
 BNCalcDlg::~BNCalcDlg()
