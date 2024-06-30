@@ -9,8 +9,10 @@
 #include "js_pki.h"
 #include "js_ber.h"
 #include "ber_applet.h"
+#include "mainwindow.h"
 #include "settings_mgr.h"
 #include "common.h"
+#include "hash_thread_run.h"
 
 #include <QDialogButtonBox>
 #include <QFileInfo>
@@ -42,6 +44,8 @@ GenHashDlg::GenHashDlg(QWidget *parent) :
 
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
 
+    connect( mTestBtn, SIGNAL(clicked()), this, SLOT(clickDigestSrcFileThread()));
+
     initialize();
 
     mCloseBtn->setFocus();
@@ -61,6 +65,12 @@ void GenHashDlg::initialize()
     mOutputHashCombo->setCurrentText( setMgr->defaultHash() );
 
     mInputTab->setCurrentIndex(0);
+
+#if defined(QT_DEBUG)
+    mTestBtn->show();
+#else
+    mTestBtn->hide();
+#endif
 }
 
 void GenHashDlg::appendStatusLabel( const QString& strLabel )
@@ -282,7 +292,8 @@ void GenHashDlg::clickClearDataAll()
 
 void GenHashDlg::clickFindSrcFile()
 {
-    QString strPath;
+    QString strPath = mSrcFileText->text();
+
     QString strSrcFile = findFile( this, JS_FILE_TYPE_ALL, strPath );
 
     if( strSrcFile.length() > 0 )
@@ -399,4 +410,59 @@ void GenHashDlg::clickDigestSrcFile()
 
 end :
     JS_BIN_reset( &binPart );
+}
+
+void GenHashDlg::clickDigestSrcFileThread()
+{
+    hashInit();
+    startTask();
+}
+
+void GenHashDlg::startTask()
+{
+    QString strSrcFile = mSrcFileText->text();
+
+    if( strSrcFile.length() < 1)
+    {
+        berApplet->warningBox( tr( "Find source file"), this );
+        return;
+    }
+
+    QFileInfo fileInfo;
+    fileInfo.setFile( strSrcFile );
+
+    qint64 fileSize = fileInfo.size();
+
+    mFileSizeText->setText( QString("%1").arg( fileSize ));
+    mFileReadSizeText->setText( "0" );
+
+    thread_ = new HashThreadRun;
+
+    connect(thread_, &HashThreadRun::taskFinished, this, &GenHashDlg::onTaskFinished);
+    connect( thread_, &HashThreadRun::taskUpdate, this, &GenHashDlg::onTaskUpdate);
+
+    thread_->setCTX( pctx_ );
+    thread_->setSrcFile( strSrcFile );
+
+    thread_->start();
+    berApplet->log("Task is running...");
+}
+
+void GenHashDlg::onTaskFinished() {
+    berApplet->log("Task finished");
+    hashFinal();
+
+    thread_->quit();
+    thread_->wait();
+    thread_->deleteLater();
+}
+
+void GenHashDlg::onTaskUpdate( int nUpdate )
+{
+    berApplet->log( QString("Update: %1").arg( nUpdate ));
+    int nFileSize = mFileSizeText->text().toInt();
+    int nPercent = (nUpdate * 100) / nFileSize;
+
+    mFileReadSizeText->setText( QString("%1").arg( nUpdate ));
+    mHashProgBar->setValue( nPercent );
 }
