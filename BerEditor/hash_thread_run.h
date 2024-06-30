@@ -13,6 +13,7 @@ public:
 
     void setCTX( void *pCTX );
     void setSrcFile( const QString strSrcFile );
+    void setLog( bool bLog );
 
 signals:
     void taskFinished();
@@ -24,6 +25,7 @@ protected:
 private:
     void *pctx_;
     QString src_file_;
+    bool b_log_;
 };
 
 #endif // HASHTHREADRUN_H

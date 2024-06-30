@@ -443,6 +443,7 @@ void GenHashDlg::startTask()
 
     thread_->setCTX( pctx_ );
     thread_->setSrcFile( strSrcFile );
+    thread_->setLog(mWriteLogCheck->isChecked());
 
     thread_->start();
     berApplet->log("Task is running...");

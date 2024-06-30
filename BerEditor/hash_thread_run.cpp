@@ -9,6 +9,7 @@
 HashThreadRun::HashThreadRun()
 {
     pctx_ = NULL;
+    b_log_ = false;
 }
 
 HashThreadRun::~HashThreadRun()
@@ -19,6 +20,11 @@ HashThreadRun::~HashThreadRun()
 void HashThreadRun::setCTX( void *pCTX )
 {
     pctx_ = pCTX;
+}
+
+void HashThreadRun::setLog( bool bLog )
+{
+    b_log_ = bLog;
 }
 
 void HashThreadRun::setSrcFile( const QString strSrcFile )
@@ -67,6 +73,11 @@ void HashThreadRun::run()
 
         nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
         if( nRead <= 0 ) break;
+
+        if( b_log_ == true )
+        {
+            berApplet->log( QString( "Read[%1:%2] %3").arg( nOffset ).arg( nRead ).arg( getHexString(&binPart)));
+        }
 
         ret = JS_PKI_hashUpdate( pctx_, &binPart );
         if( ret != 0 )
