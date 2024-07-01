@@ -17,7 +17,7 @@
    <item>
     <widget class="QTabWidget" name="mInputTab">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tabData">
       <attribute name="title">
@@ -554,19 +554,6 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
-          <widget class="QCheckBox" name="mWriteLogCheck">
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Write log</string>
-           </property>
-          </widget>
-         </item>
         </layout>
        </item>
        <item>
@@ -911,13 +898,6 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mCloseBtn">
-       <property name="text">
-        <string>Close</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
       <widget class="QPushButton" name="mClearDataAllBtn">
        <property name="text">
@@ -925,7 +905,7 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
+     <item row="0" column="2">
       <spacer name="horizontalSpacer_6">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -937,6 +917,20 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mCloseBtn">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mTestBtn">
+       <property name="text">
+        <string>Test</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -959,7 +953,6 @@
   <tabstop>mSrcFileSizeText</tabstop>
   <tabstop>mFileTotalSizeText</tabstop>
   <tabstop>mFileReadSizeText</tabstop>
-  <tabstop>mWriteLogCheck</tabstop>
   <tabstop>mKeyTypeCombo</tabstop>
   <tabstop>mKeyText</tabstop>
   <tabstop>mKeyLenText</tabstop>

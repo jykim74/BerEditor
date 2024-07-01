@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>542</width>
-    <height>532</height>
+    <height>429</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -499,19 +499,6 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
-          <widget class="QCheckBox" name="mWriteLogCheck">
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Write log</string>
-           </property>
-          </widget>
-         </item>
         </layout>
        </item>
        <item>
@@ -823,7 +810,6 @@
   <tabstop>mSrcFileSizeText</tabstop>
   <tabstop>mFileSizeText</tabstop>
   <tabstop>mFileReadSizeText</tabstop>
-  <tabstop>mWriteLogCheck</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
   <tabstop>mOutputClearBtn</tabstop>

@@ -15,6 +15,7 @@
 #include "ber_applet.h"
 #include "settings_mgr.h"
 #include "common.h"
+#include "enc_dec_thread.h"
 
 static QStringList dataTypes = {
     "String",
@@ -47,6 +48,9 @@ EncDecDlg::EncDecDlg(QWidget *parent) :
     QDialog(parent)
 {
     ctx_ = NULL;
+    thread_ = NULL;
+    update_cnt_ = 0;
+
     setupUi(this);
     initialize();
 
@@ -83,17 +87,21 @@ EncDecDlg::EncDecDlg(QWidget *parent) :
     connect( mFindSrcFileBtn, SIGNAL(clicked()), this, SLOT(clickFindSrcFile()));
     connect( mFindDstFileBtn, SIGNAL(clicked()), this, SLOT(clickFindDstFile()));
 
+    connect( mTestBtn, SIGNAL(clicked()), this, SLOT(fileRun()));
+
     clickUseAE();
     mCloseBtn->setFocus();
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
 #endif
+    resize(width(), minimumSizeHint().height());
 }
 
 EncDecDlg::~EncDecDlg()
 {
     if( ctx_ ) JS_PKI_encryptFree( &ctx_ );
+    if( thread_ ) delete thread_;
 }
 
 void EncDecDlg::initialize()
@@ -110,6 +118,12 @@ void EncDecDlg::initialize()
 
     mReqTagLenText->setText( "16" );
     mInputTab->setCurrentIndex(0);
+
+#if defined(QT_DEBUG)
+    mTestBtn->show();
+#else
+    mTestBtn->hide();
+#endif
 }
 
 void EncDecDlg::appendStatusLabel( const QString& strLabel )
@@ -131,7 +145,7 @@ void EncDecDlg::Run()
     if( index == 0 )
         dataRun();
     else
-        fileRun();
+        fileRunThread();
 }
 
 void EncDecDlg::dataRun()
@@ -337,6 +351,7 @@ void EncDecDlg::dataRun()
 
     if( ret == 0 )
     {
+        update_cnt_++;
         QString strMsg = QString( "%1 OK" ).arg( strMethod );
         mStatusLabel->setText( strMsg );
     }
@@ -429,11 +444,6 @@ void EncDecDlg::fileRun()
         nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
         if( nRead <= 0 ) break;
 
-        if( mWriteLogCheck->isChecked() )
-        {
-            berApplet->log( QString( "Read[%1:%2] %3").arg( nOffset ).arg( nRead ).arg( getHexString(&binPart)));
-        }
-
         if( mUseAECheck->isChecked() )
         {
             if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
@@ -470,11 +480,6 @@ void EncDecDlg::fileRun()
         {
             berApplet->elog( QString( "Encryption/decryption update failed [%1]").arg(ret));
             break;
-        }
-
-        if( mWriteLogCheck->isChecked() )
-        {
-            berApplet->log( QString( "Out[%1:%2] %3").arg( nOffset ).arg( binDst.nLen ).arg( getHexString(&binDst)));
         }
 
         nUpdateCnt++;
@@ -568,6 +573,8 @@ int EncDecDlg::encDecInit()
         JS_PKI_encryptFree( &ctx_ );
         ctx_ = NULL;
     }
+
+    update_cnt_ = 0;
 
     QString strKey = mKeyText->text();
 
@@ -1185,4 +1192,91 @@ void EncDecDlg::clickFindDstFile()
                                                      options );
 
     if( fileName.length() > 0 ) mDstFileText->setText( fileName );
+}
+
+void EncDecDlg::fileRunThread()
+{
+    if( encDecInit() != 0 )
+    {
+        berApplet->elog( "Encryption/decryption initialization failure" );
+        return;
+    }
+
+    startTask();
+}
+
+void EncDecDlg::startTask()
+{
+    if( thread_ != nullptr ) delete thread_;
+
+    thread_ = new EncDecThread;
+    QString strSrcFile = mSrcFileText->text();
+
+    if( strSrcFile.length() < 1)
+    {
+        berApplet->warningBox( tr( "Find source file"), this );
+        return;
+    }
+
+    QString strDstFile = mDstFileText->text();
+
+    if( QFile::exists( strDstFile ) )
+    {
+        QString strMsg = tr( "The target file[%1] is already exist.\nDo you want to delete the file and continue?" ).arg( strDstFile );
+        bool bVal = berApplet->yesOrNoBox( strMsg, this, false );
+
+        if( bVal == true )
+        {
+            QFile::remove( strDstFile );
+        }
+        else
+            return;
+    }
+
+    QFileInfo fileInfo;
+    fileInfo.setFile( strSrcFile );
+
+    qint64 fileSize = fileInfo.size();
+
+    mFileTotalSizeText->setText( QString("%1").arg( fileSize ));
+    mFileReadSizeText->setText( "0" );
+
+    connect( thread_, &EncDecThread::taskFinished, this, &EncDecDlg::onTaskFinished);
+    connect( thread_, &EncDecThread::taskUpdate, this, &EncDecDlg::onTaskUpdate);
+
+    thread_->setCTX( ctx_ );
+
+    thread_->setMethod( mMethodCombo->currentIndex() == 0 ? false : true );
+    thread_->setMode( mModeCombo->currentText() );
+    thread_->setSrcFile( strSrcFile );
+    thread_->setDstFile( strDstFile );
+    thread_->start();
+
+    berApplet->log("Task is running...");
+}
+
+void EncDecDlg::onTaskFinished()
+{
+    berApplet->log("Task finished");
+
+    QString strStatus = QString( "|Update X %1").arg( update_cnt_ );
+    appendStatusLabel( strStatus );
+
+    encDecFinal();
+
+    thread_->quit();
+    thread_->wait();
+    thread_->deleteLater();
+    thread_ = nullptr;
+}
+
+void EncDecDlg::onTaskUpdate( int nUpdate )
+{
+    berApplet->log( QString("Update: %1").arg( nUpdate ));
+    int nFileSize = mFileTotalSizeText->text().toInt();
+    int nPercent = (nUpdate * 100) / nFileSize;
+    update_cnt_++;
+
+    mFileReadSizeText->setText( QString("%1").arg( nUpdate ));
+    mEncProgBar->setValue( nPercent );
 }

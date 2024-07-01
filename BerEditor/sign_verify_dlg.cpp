@@ -19,6 +19,7 @@
 #include "js_pki_eddsa.h"
 #include "js_error.h"
 #include "common.h"
+#include "sign_verify_thread.h"
 
 static QStringList algTypes = {
     "RSA",
@@ -45,7 +46,8 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     sctx_ = NULL;
     hctx_ = NULL;
     is_eddsa_ = false;
-
+    thread_ = NULL;
+    update_cnt_ = 0;
 
     setupUi(this);
     initialize();
@@ -92,6 +94,8 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
 
     connect( mEncPrikeyCheck, SIGNAL(clicked()), this, SLOT(checkEncPriKey()));
 
+    connect( mTestBtn, SIGNAL(clicked()), this, SLOT(fileRun()));
+
     mCloseBtn->setFocus();
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -111,6 +115,7 @@ SignVerifyDlg::~SignVerifyDlg()
 {
     if( sctx_ ) JS_PKI_signFree( &sctx_ );
     if( hctx_ ) JS_PKI_hashFree( &hctx_ );
+    if( thread_ ) delete thread_;
 }
 
 void SignVerifyDlg::initialize()
@@ -130,6 +135,12 @@ void SignVerifyDlg::initialize()
     checkAutoCertOrPubKey();
     checkUseKeyAlg();
     checkEncPriKey();
+
+#if defined(QT_DEBUG)
+    mTestBtn->show();
+#else
+    mTestBtn->hide();
+#endif
 }
 
 int SignVerifyDlg::readPrivateKey( BIN *pPriKey )
@@ -348,6 +359,7 @@ int SignVerifyDlg::signVerifyInit()
     BIN binPubKey = {0,0};
 
     is_eddsa_ = false;
+    update_cnt_ = 0;
 
     if( sctx_ )
     {
@@ -446,8 +458,7 @@ int SignVerifyDlg::signVerifyInit()
         {
             berApplet->log( "-- Make signature init" );
             berApplet->log( QString( "Algorithm        : %1" ).arg( mAlgTypeCombo->currentText() ));
-            berApplet->log( QString( "Hash             : %1" ).arg( mAlgTypeCombo->currentText() ).arg( strHash ));
-            berApplet->log( QString( "Algorithm        : %1" ).arg( mAlgTypeCombo->currentText() ));
+            berApplet->log( QString( "Hash             : %1" ).arg( strHash ));
             berApplet->log( QString( "Init Private Key : %1" ).arg( getHexString( &binPri )));
         }
     }
@@ -557,8 +568,7 @@ int SignVerifyDlg::signVerifyInit()
         {
             berApplet->log( "-- Verify signature init" );
             berApplet->log( QString( "Algorithm       : %1" ).arg( mAlgTypeCombo->currentText() ));
-            berApplet->log( QString( "Hash            : %1" ).arg( mAlgTypeCombo->currentText() ).arg( strHash ));
-            berApplet->log( QString( "Algorithm       : %1" ).arg( mAlgTypeCombo->currentText() ));
+            berApplet->log( QString( "Hash            : %1" ).arg( strHash ));
             berApplet->log( QString( "Init Public Key : %1" ).arg(getHexString(&binPubKey)));
         }
     }
@@ -747,7 +757,7 @@ void SignVerifyDlg::Run()
     if( index == 0 )
         dataRun();
     else
-        fileRun();
+        fileRunThread();
 }
 
 void SignVerifyDlg::dataRun()
@@ -1066,7 +1076,6 @@ void SignVerifyDlg::fileRun()
     int nLeft = 0;
     int nOffset = 0;
     int nPercent = 0;
-    int nUpdateCnt = 0;
 
     QString strSrcFile = mSrcFileText->text();
     BIN binPart = {0,0};
@@ -1113,11 +1122,6 @@ void SignVerifyDlg::fileRun()
         nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
         if( nRead <= 0 ) break;
 
-        if( mWriteLogCheck->isChecked() )
-        {
-            berApplet->log( QString( "Read[%1:%2] %3").arg( nOffset ).arg( nRead ).arg( getHexString(&binPart)));
-        }
-
         if( mMethodCombo->currentIndex() == SIGN_SIGNATURE )
         {
             ret = JS_PKI_signUpdate( sctx_, &binPart );
@@ -1133,7 +1137,7 @@ void SignVerifyDlg::fileRun()
             break;
         }
 
-        nUpdateCnt++;
+        update_cnt_++;
         nReadSize += nRead;
         nPercent = ( nReadSize * 100 ) / fileSize;
 
@@ -1156,7 +1160,7 @@ void SignVerifyDlg::fileRun()
 
         if( ret == 0 )
         {
-            QString strStatus = QString( "|Update X %1").arg( nUpdateCnt );
+            QString strStatus = QString( "|Update X %1").arg( update_cnt_ );
             appendStatusLabel( strStatus );
 
             signVerifyFinal();
@@ -1573,7 +1577,7 @@ void SignVerifyDlg::clickClearDataAll()
 
 void SignVerifyDlg::clickFindSrcFile()
 {
-    QString strPath;
+    QString strPath = mSrcFileText->text();
     QString strSrcFile = findFile( this, JS_FILE_TYPE_ALL, strPath );
 
     if( strSrcFile.length() > 0 )
@@ -1610,4 +1614,75 @@ void SignVerifyDlg::checkEncPriKey()
 
     mPasswdLabel->setEnabled(bVal);
     mPasswdText->setEnabled(bVal);
+}
+
+void SignVerifyDlg::fileRunThread()
+{
+    if( signVerifyInit() != 0 )
+    {
+        berApplet->elog( "fail to init" );
+        return;
+    }
+
+    startTask();
+}
+
+void SignVerifyDlg::startTask()
+{
+    if( thread_ != nullptr ) delete thread_;
+
+    thread_ = new SignVerifyThread;
+    QString strSrcFile = mSrcFileText->text();
+
+    if( strSrcFile.length() < 1)
+    {
+        berApplet->warningBox( tr( "Find source file"), this );
+        return;
+    }
+
+    QFileInfo fileInfo;
+    fileInfo.setFile( strSrcFile );
+
+    qint64 fileSize = fileInfo.size();
+
+    mFileTotalSizeText->setText( QString("%1").arg( fileSize ));
+    mFileReadSizeText->setText( "0" );
+
+    connect( thread_, &SignVerifyThread::taskFinished, this, &SignVerifyDlg::onTaskFinished);
+    connect( thread_, &SignVerifyThread::taskUpdate, this, &SignVerifyDlg::onTaskUpdate);
+
+    thread_->setSignCTX( sctx_ );
+    thread_->setHashCTX( hctx_ );
+    thread_->setEdDSA( is_eddsa_ );
+    thread_->setVeify( mMethodCombo->currentIndex() == 0 ? false : true );
+    thread_->setSrcFile( strSrcFile );
+    thread_->start();
+
+    berApplet->log("Task is running...");
+}
+
+void SignVerifyDlg::onTaskFinished()
+{
+    berApplet->log("Task finished");
+
+    QString strStatus = QString( "|Update X %1").arg( update_cnt_ );
+    appendStatusLabel( strStatus );
+
+    signVerifyFinal();
+
+    thread_->quit();
+    thread_->wait();
+    thread_->deleteLater();
+    thread_ = nullptr;
+}
+
+void SignVerifyDlg::onTaskUpdate( int nUpdate )
+{
+    berApplet->log( QString("Update: %1").arg( nUpdate ));
+    int nFileSize = mFileTotalSizeText->text().toInt();
+    int nPercent = (nUpdate * 100) / nFileSize;
+    update_cnt_++;
+
+    mFileReadSizeText->setText( QString("%1").arg( nUpdate ));
+    mSignProgBar->setValue( nPercent );
 }

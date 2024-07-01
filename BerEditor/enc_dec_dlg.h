@@ -9,6 +9,8 @@
 #include <QDialog>
 #include "ui_enc_dec_dlg.h"
 
+class EncDecThread;
+
 namespace Ui {
 class EncDecDlg;
 }
@@ -49,11 +51,18 @@ private slots:
     void clickFindSrcFile();
     void clickFindDstFile();
 
+    void fileRunThread();
+    void startTask();
+    void onTaskFinished();
+    void onTaskUpdate( int nUpdate );
+
 private:
     void initialize();
     void appendStatusLabel( const QString& strLabel );
     bool isCCM( const QString strAlg );
     void *ctx_;
+    int update_cnt_;
+    EncDecThread *thread_;
 };
 
 #endif // ENC_DEC_DLG_H

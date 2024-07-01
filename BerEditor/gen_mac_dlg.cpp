@@ -15,10 +15,9 @@
 #include "ber_applet.h"
 #include "settings_mgr.h"
 #include "common.h"
+#include "mac_thread.h"
 
-#define JS_TYPE_HMAC    0
-#define JS_TYPE_CMAC    1
-#define JS_TYPE_GMAC    2
+
 
 static QStringList cryptList = {
     "AES",
@@ -44,6 +43,9 @@ GenMacDlg::GenMacDlg(QWidget *parent) :
     hctx_ = NULL;
     type_ = 0;
     group_ = new QButtonGroup;
+    thread_ = NULL;
+    update_cnt_ = 0;
+
     setupUi(this);
 
     connect( mInitBtn, SIGNAL(clicked()), this, SLOT(macInit()));
@@ -70,8 +72,10 @@ GenMacDlg::GenMacDlg(QWidget *parent) :
     connect( mFindSrcFileBtn, SIGNAL(clicked()), this, SLOT(clickFindSrcFile()));
 
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
+    connect( mTestBtn, SIGNAL(clicked()), this, SLOT(clickMACSrcFile()));
 
     initialize();
+    resize(width(), minimumSizeHint().height());
 
     mCloseBtn->setFocus();
 }
@@ -79,6 +83,8 @@ GenMacDlg::GenMacDlg(QWidget *parent) :
 GenMacDlg::~GenMacDlg()
 {
     if( group_ ) delete group_;
+    if( thread_ ) delete thread_;
+
     freeCTX();
 }
 
@@ -93,6 +99,11 @@ void GenMacDlg::initialize()
     mInputTab->setCurrentIndex(0);
 
     checkHMAC();
+#if defined(QT_DEBUG)
+    mTestBtn->show();
+#else
+    mTestBtn->hide();
+#endif
 }
 
 void GenMacDlg::appendStatusLabel( const QString strLabel )
@@ -122,7 +133,13 @@ void GenMacDlg::freeCTX()
 int GenMacDlg::macInit()
 {
     int ret = 0;
+    update_cnt_ = 0;
 
+    if( hctx_ )
+    {
+        freeCTX();
+        hctx_ = NULL;
+    }
 
     BIN binKey = {0,0};
 
@@ -311,7 +328,7 @@ void GenMacDlg::mac()
     if( index == 0 )
         clickMAC();
     else
-        clickMACSrcFile();
+        clickMacSrcFileThread();
 }
 
 void GenMacDlg::clickMAC()
@@ -404,7 +421,7 @@ void GenMacDlg::clickMAC()
 
 void GenMacDlg::clickFindSrcFile()
 {
-    QString strPath;
+    QString strPath = mSrcFileText->text();
     QString strSrcFile = findFile( this, JS_FILE_TYPE_ALL, strPath );
 
     if( strSrcFile.length() > 0 )
@@ -436,7 +453,7 @@ void GenMacDlg::clickMACSrcFile()
     int nLeft = 0;
     int nOffset = 0;
     int nPercent = 0;
-    int nUpdateCnt = 0;
+
     QString strSrcFile = mSrcFileText->text();
     BIN binPart = {0,0};
 
@@ -482,11 +499,6 @@ void GenMacDlg::clickMACSrcFile()
         nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
         if( nRead <= 0 ) break;
 
-        if( mWriteLogCheck->isChecked() )
-        {
-            berApplet->log( QString( "Read[%1:%2] %3").arg( nOffset ).arg( nRead ).arg( getHexString(&binPart)));
-        }
-
         if( mCMACRadio->isChecked() )
         {
             ret = JS_PKI_cmacUpdate( hctx_, &binPart );
@@ -506,7 +518,7 @@ void GenMacDlg::clickMACSrcFile()
             break;
         }
 
-        nUpdateCnt++;
+        update_cnt_++;
         nReadSize += nRead;
         nPercent = ( nReadSize * 100 ) / fileSize;
 
@@ -529,7 +541,7 @@ void GenMacDlg::clickMACSrcFile()
 
         if( ret == 0 )
         {
-            QString strStatus = QString( "|Update X %1").arg( nUpdateCnt );
+            QString strStatus = QString( "|Update X %1").arg( update_cnt_ );
             appendStatusLabel( strStatus );
 
             macFinal();
@@ -617,4 +629,74 @@ void GenMacDlg::clickClearDataAll()
     mFileTotalSizeText->clear();
     mFileReadSizeText->clear();
     mMACProgBar->setValue(0);
+}
+
+void GenMacDlg::clickMacSrcFileThread()
+{
+    if( macInit() != 0 )
+    {
+        berApplet->elog( "MAC initialization failed" );
+        return;
+    }
+
+    startTask();
+}
+
+void GenMacDlg::startTask()
+{
+    if( thread_ != nullptr ) delete thread_;
+
+    thread_ = new MacThread;
+    QString strSrcFile = mSrcFileText->text();
+
+    if( strSrcFile.length() < 1)
+    {
+        berApplet->warningBox( tr( "Find source file"), this );
+        return;
+    }
+
+    QFileInfo fileInfo;
+    fileInfo.setFile( strSrcFile );
+
+    qint64 fileSize = fileInfo.size();
+
+    mFileTotalSizeText->setText( QString("%1").arg( fileSize ));
+    mFileReadSizeText->setText( "0" );
+
+    connect( thread_, &MacThread::taskFinished, this, &GenMacDlg::onTaskFinished);
+    connect( thread_, &MacThread::taskUpdate, this, &GenMacDlg::onTaskUpdate);
+
+    thread_->setType( type_ );
+    thread_->setCTX( hctx_ );
+    thread_->setSrcFile( strSrcFile );
+    thread_->start();
+
+    berApplet->log("Task is running...");
+}
+
+void GenMacDlg::onTaskFinished()
+{
+    berApplet->log("Task finished");
+
+    QString strStatus = QString( "|Update X %1").arg( update_cnt_ );
+    appendStatusLabel( strStatus );
+
+    macFinal();
+    freeCTX();
+
+    thread_->quit();
+    thread_->wait();
+    thread_->deleteLater();
+    thread_ = nullptr;
+}
+
+void GenMacDlg::onTaskUpdate( int nUpdate )
+{
+    berApplet->log( QString("Update: %1").arg( nUpdate ));
+    int nFileSize = mFileTotalSizeText->text().toInt();
+    int nPercent = (nUpdate * 100) / nFileSize;
+    update_cnt_++;
+
+    mFileReadSizeText->setText( QString("%1").arg( nUpdate ));
+    mMACProgBar->setValue( nPercent );
 }

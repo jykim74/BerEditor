@@ -10,6 +10,8 @@
 #include "ui_sign_verify_dlg.h"
 #include "js_bin.h"
 
+class SignVerifyThread;
+
 namespace Ui {
 class SignVerifyDlg;
 }
@@ -60,6 +62,11 @@ private slots:
 
     void changeInputTab( int index );
     void checkEncPriKey();
+
+    void fileRunThread();
+    void startTask();
+    void onTaskFinished();
+    void onTaskUpdate( int nUpdate );
 private:
     void initialize();
     void appendStatusLabel( const QString& strLabel );
@@ -68,6 +75,9 @@ private:
     void *hctx_;
     bool is_eddsa_;
     QString last_path_;
+
+    int update_cnt_;
+    SignVerifyThread *thread_;
 };
 
 #endif // SIGN_VERIFY_DLG_H

@@ -12,7 +12,7 @@
 #include "mainwindow.h"
 #include "settings_mgr.h"
 #include "common.h"
-#include "hash_thread_run.h"
+#include "hash_thread.h"
 
 #include <QDialogButtonBox>
 #include <QFileInfo>
@@ -24,6 +24,9 @@ GenHashDlg::GenHashDlg(QWidget *parent) :
 {
     setupUi(this);
     pctx_ = NULL;
+    update_cnt_ = 0;
+    thread_ = NULL;
+
 
     connect( mInitBtn, SIGNAL(clicked()), this, SLOT(hashInit()));
     connect( mUpdateBtn, SIGNAL(clicked()), this, SLOT(hashUpdate()));
@@ -44,9 +47,10 @@ GenHashDlg::GenHashDlg(QWidget *parent) :
 
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
 
-    connect( mTestBtn, SIGNAL(clicked()), this, SLOT(clickDigestSrcFileThread()));
+    connect( mTestBtn, SIGNAL(clicked()), this, SLOT(clickDigestSrcFile()));
 
     initialize();
+    resize(width(), minimumSizeHint().height());
 
     mCloseBtn->setFocus();
 }
@@ -55,6 +59,7 @@ GenHashDlg::~GenHashDlg()
 {
 //    delete ui;
     if( pctx_ ) JS_PKI_hashFree( &pctx_ );
+    if( thread_ ) delete thread_;
 }
 
 void GenHashDlg::initialize()
@@ -89,6 +94,7 @@ int GenHashDlg::hashInit()
         JS_PKI_hashFree( &pctx_ );
         pctx_ = NULL;
     }
+    update_cnt_ = 0;
 
     QString strAlg = mOutputHashCombo->currentText();
     mOutputText->clear();
@@ -139,6 +145,7 @@ void GenHashDlg::hashUpdate()
     ret = JS_PKI_hashUpdate( pctx_, &binSrc );
     if( ret == 0 )
     {
+        update_cnt_++;
         berApplet->log( QString( "Update input : %1" ).arg( getHexString(&binSrc)));
         appendStatusLabel( "|Update OK" );
     }
@@ -181,7 +188,7 @@ void GenHashDlg::digest()
     if( index == 0 )
         clickDigest();
     else
-        clickDigestSrcFile();
+        clickDigestSrcFileThread();
 }
 
 void GenHashDlg::clickDigest()
@@ -325,7 +332,6 @@ void GenHashDlg::clickDigestSrcFile()
     int nLeft = 0;
     int nOffset = 0;
     int nPercent = 0;
-    int nUpdateCnt = 0;
 
     QString strSrcFile = mSrcFileText->text();
     BIN binPart = {0,0};
@@ -367,11 +373,6 @@ void GenHashDlg::clickDigestSrcFile()
         nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
         if( nRead <= 0 ) break;
 
-        if( mWriteLogCheck->isChecked() )
-        {
-            berApplet->log( QString( "Read[%1:%2] %3").arg( nOffset ).arg( nRead ).arg( getHexString(&binPart)));
-        }
-
         ret = JS_PKI_hashUpdate( pctx_, &binPart );
         if( ret != 0 )
         {
@@ -379,7 +380,7 @@ void GenHashDlg::clickDigestSrcFile()
             break;
         }
 
-        nUpdateCnt++;
+        update_cnt_++;
         nReadSize += nRead;
         nPercent = ( nReadSize * 100 ) / fileSize;
 
@@ -402,7 +403,7 @@ void GenHashDlg::clickDigestSrcFile()
 
         if( ret == 0 )
         {
-            QString strStatus = QString( "|Update X %1").arg( nUpdateCnt );
+            QString strStatus = QString( "|Update X %1").arg( update_cnt_ );
             appendStatusLabel( strStatus );
             hashFinal();
         }
@@ -420,6 +421,9 @@ void GenHashDlg::clickDigestSrcFileThread()
 
 void GenHashDlg::startTask()
 {
+    if( thread_ != nullptr ) delete thread_;
+
+    thread_ = new HashThread;
     QString strSrcFile = mSrcFileText->text();
 
     if( strSrcFile.length() < 1)
@@ -436,14 +440,11 @@ void GenHashDlg::startTask()
     mFileSizeText->setText( QString("%1").arg( fileSize ));
     mFileReadSizeText->setText( "0" );
 
-    thread_ = new HashThreadRun;
-
-    connect(thread_, &HashThreadRun::taskFinished, this, &GenHashDlg::onTaskFinished);
-    connect( thread_, &HashThreadRun::taskUpdate, this, &GenHashDlg::onTaskUpdate);
+    connect(thread_, &HashThread::taskFinished, this, &GenHashDlg::onTaskFinished);
+    connect( thread_, &HashThread::taskUpdate, this, &GenHashDlg::onTaskUpdate);
 
     thread_->setCTX( pctx_ );
     thread_->setSrcFile( strSrcFile );
-    thread_->setLog(mWriteLogCheck->isChecked());
 
     thread_->start();
     berApplet->log("Task is running...");
@@ -451,11 +452,16 @@ void GenHashDlg::startTask()
 
 void GenHashDlg::onTaskFinished() {
     berApplet->log("Task finished");
+
+    QString strStatus = QString( "|Update X %1").arg( update_cnt_ );
+    appendStatusLabel( strStatus );
+
     hashFinal();
 
     thread_->quit();
     thread_->wait();
     thread_->deleteLater();
+    thread_ = nullptr;
 }
 
 void GenHashDlg::onTaskUpdate( int nUpdate )
@@ -463,6 +469,7 @@ void GenHashDlg::onTaskUpdate( int nUpdate )
     berApplet->log( QString("Update: %1").arg( nUpdate ));
     int nFileSize = mFileSizeText->text().toInt();
     int nPercent = (nUpdate * 100) / nFileSize;
+    update_cnt_++;
 
     mFileReadSizeText->setText( QString("%1").arg( nUpdate ));
     mHashProgBar->setValue( nPercent );

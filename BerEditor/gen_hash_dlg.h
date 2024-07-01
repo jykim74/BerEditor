@@ -9,7 +9,7 @@
 #include <QDialog>
 #include "ui_gen_hash_dlg.h"
 
-class HashThreadRun;
+class HashThread;
 
 namespace Ui {
 class GenHashDlg;
@@ -49,9 +49,9 @@ private:
     void initialize();
     void appendStatusLabel( const QString& strLabel );
 
+    int update_cnt_;
     void *pctx_;
-//    Ui::GenHashDlg *ui;
-    HashThreadRun *thread_;
+    HashThread *thread_;
 };
 
 #endif // GEN_HASH_DLG_H

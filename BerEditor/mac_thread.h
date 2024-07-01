@@ -1,19 +1,18 @@
-#ifndef HASHTHREADRUN_H
-#define HASHTHREADRUN_H
+#ifndef MACTHREAD_H
+#define MACTHREAD_H
 
 #include <QThread>
 
-class HashThreadRun : public QThread
+class MacThread : public QThread
 {
     Q_OBJECT
-
 public:
-    HashThreadRun();
-    ~HashThreadRun();
+    MacThread();
+    ~MacThread();
 
     void setCTX( void *pCTX );
     void setSrcFile( const QString strSrcFile );
-    void setLog( bool bLog );
+    int setType( int nType );
 
 signals:
     void taskFinished();
@@ -23,9 +22,9 @@ protected:
     void run() override;
 
 private:
-    void *pctx_;
+    void *hctx_;
+    int type_;
     QString src_file_;
-    bool b_log_;
 };
 
-#endif // HASHTHREADRUN_H
+#endif // MACTHREAD_H

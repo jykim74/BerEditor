@@ -594,7 +594,7 @@ void MainWindow::createActions()
     cryptToolBar->addAction( calcAct );
 
     const QIcon keyPairIcon = QIcon::fromTheme("KeyPair Manage", QIcon(":/images/keypair.png"));
-    QAction *keyPairManAct = new QAction( keyPairIcon, tr( "KeyPairManage" ), this );
+    QAction *keyPairManAct = new QAction( keyPairIcon, tr( "KeyPair Manage" ), this );
     keyPairManAct->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_Y ));
     connect( keyPairManAct, &QAction::triggered, this, &MainWindow::keyPairMan );
     keyPairManAct->setStatusTip( tr( "Key Pair Manage" ));
