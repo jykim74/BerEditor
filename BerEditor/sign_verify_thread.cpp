@@ -13,14 +13,16 @@ SignVerifyThread::SignVerifyThread()
 {
     sctx_ = NULL;
     hctx_ = NULL;
-    is_eddsa = false;
+    is_eddsa_ = false;
+    is_verify_ = false;
 }
 
 SignVerifyThread::~SignVerifyThread()
 {
     sctx_ = NULL;
     hctx_ = NULL;
-    is_eddsa = false;
+    is_eddsa_ = false;
+    is_verify_ = false;
 }
 
 void SignVerifyThread::setSignCTX( void *pCTX )
@@ -35,12 +37,12 @@ void SignVerifyThread::setHashCTX( void *pCTX )
 
 void SignVerifyThread::setEdDSA( bool bEdDSA )
 {
-    is_eddsa = bEdDSA;
+    is_eddsa_ = bEdDSA;
 }
 
 void SignVerifyThread::setVeify( bool bVerify )
 {
-    is_verify = bVerify;
+    is_verify_ = bVerify;
 }
 
 void SignVerifyThread::setSrcFile( const QString strSrcFile )
@@ -81,13 +83,20 @@ void SignVerifyThread::run()
         nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
         if( nRead <= 0 ) break;
 
-        if( is_verify == false )
+        if( is_eddsa_ == true )
         {
-            ret = JS_PKI_signUpdate( sctx_, &binPart );
+            ret = JS_PKI_hashUpdate( hctx_, &binPart );
         }
         else
         {
-            ret = JS_PKI_verifyUpdate( sctx_, &binPart );
+            if( is_verify_ == false )
+            {
+                ret = JS_PKI_signUpdate( sctx_, &binPart );
+            }
+            else
+            {
+                ret = JS_PKI_verifyUpdate( sctx_, &binPart );
+            }
         }
 
         if( ret != 0 )

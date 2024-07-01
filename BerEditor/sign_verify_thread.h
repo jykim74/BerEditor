@@ -27,8 +27,8 @@ protected:
 private:
     void *sctx_;
     void *hctx_;
-    bool is_eddsa;
-    bool is_verify;
+    bool is_eddsa_;
+    bool is_verify_;
 
     QString src_file_;
 };

@@ -1122,13 +1122,20 @@ void SignVerifyDlg::fileRun()
         nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
         if( nRead <= 0 ) break;
 
-        if( mMethodCombo->currentIndex() == SIGN_SIGNATURE )
+        if( is_eddsa_ == true )
         {
-            ret = JS_PKI_signUpdate( sctx_, &binPart );
+            ret = JS_PKI_hashUpdate( hctx_, &binPart );
         }
         else
         {
-            ret = JS_PKI_verifyUpdate( sctx_, &binPart );
+            if( mMethodCombo->currentIndex() == SIGN_SIGNATURE )
+            {
+                ret = JS_PKI_signUpdate( sctx_, &binPart );
+            }
+            else
+            {
+                ret = JS_PKI_verifyUpdate( sctx_, &binPart );
+            }
         }
 
         if( ret != 0 )
