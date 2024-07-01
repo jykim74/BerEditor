@@ -86,7 +86,11 @@ SOURCES += \
     scep_client_dlg.cpp \
     cert_man_dlg.cpp \
     passwd_dlg.cpp \
-    new_passwd_dlg.cpp
+    new_passwd_dlg.cpp \
+    hash_thread.cpp \
+    mac_thread.cpp \
+    enc_dec_thread.cpp \
+    sign_verify_thread.cpp
 
 HEADERS += \
     about_dlg.h \
@@ -140,7 +144,11 @@ HEADERS += \
     scep_client_dlg.h \
     cert_man_dlg.h \
     passwd_dlg.h \
-    new_passwd_dlg.h
+    new_passwd_dlg.h \
+    hash_thread.h \
+    mac_thread.h \
+    enc_dec_thread.h \
+    sign_verify_thread.h
 
 
 
