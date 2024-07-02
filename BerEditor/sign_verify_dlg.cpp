@@ -94,7 +94,7 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
 
     connect( mEncPrikeyCheck, SIGNAL(clicked()), this, SLOT(checkEncPriKey()));
 
-    connect( mTestBtn, SIGNAL(clicked()), this, SLOT(fileRun()));
+    connect( mRunThreadBtn, SIGNAL(clicked()), this, SLOT(fileRunThread()));
 
     mCloseBtn->setFocus();
 #if defined(Q_OS_MAC)
@@ -135,12 +135,6 @@ void SignVerifyDlg::initialize()
     checkAutoCertOrPubKey();
     checkUseKeyAlg();
     checkEncPriKey();
-
-#if defined(QT_DEBUG)
-    mTestBtn->show();
-#else
-    mTestBtn->hide();
-#endif
 }
 
 int SignVerifyDlg::readPrivateKey( BIN *pPriKey )
@@ -757,7 +751,7 @@ void SignVerifyDlg::Run()
     if( index == 0 )
         dataRun();
     else
-        fileRunThread();
+        fileRun();
 }
 
 void SignVerifyDlg::dataRun()

@@ -560,6 +560,13 @@
            </property>
           </widget>
          </item>
+         <item row="0" column="2">
+          <widget class="QPushButton" name="mRunThreadBtn">
+           <property name="text">
+            <string>RunThread</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
@@ -1048,13 +1055,6 @@
       <widget class="QPushButton" name="mCloseBtn">
        <property name="text">
         <string>Close</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mTestBtn">
-       <property name="text">
-        <string>Test</string>
        </property>
       </widget>
      </item>

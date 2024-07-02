@@ -87,7 +87,7 @@ EncDecDlg::EncDecDlg(QWidget *parent) :
     connect( mFindSrcFileBtn, SIGNAL(clicked()), this, SLOT(clickFindSrcFile()));
     connect( mFindDstFileBtn, SIGNAL(clicked()), this, SLOT(clickFindDstFile()));
 
-    connect( mTestBtn, SIGNAL(clicked()), this, SLOT(fileRun()));
+    connect( mRunThreadBtn, SIGNAL(clicked()), this, SLOT(fileRunThread()));
 
     clickUseAE();
     mCloseBtn->setFocus();
@@ -118,12 +118,6 @@ void EncDecDlg::initialize()
 
     mReqTagLenText->setText( "16" );
     mInputTab->setCurrentIndex(0);
-
-#if defined(QT_DEBUG)
-    mTestBtn->show();
-#else
-    mTestBtn->hide();
-#endif
 }
 
 void EncDecDlg::appendStatusLabel( const QString& strLabel )
@@ -145,7 +139,7 @@ void EncDecDlg::Run()
     if( index == 0 )
         dataRun();
     else
-        fileRunThread();
+        fileRun();
 }
 
 void EncDecDlg::dataRun()

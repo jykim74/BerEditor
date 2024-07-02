@@ -72,7 +72,7 @@ GenMacDlg::GenMacDlg(QWidget *parent) :
     connect( mFindSrcFileBtn, SIGNAL(clicked()), this, SLOT(clickFindSrcFile()));
 
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
-    connect( mTestBtn, SIGNAL(clicked()), this, SLOT(clickMACSrcFile()));
+    connect( mRunThreadBtn, SIGNAL(clicked()), this, SLOT(clickMacSrcFileThread()));
 
     initialize();
     resize(width(), minimumSizeHint().height());
@@ -99,11 +99,6 @@ void GenMacDlg::initialize()
     mInputTab->setCurrentIndex(0);
 
     checkHMAC();
-#if defined(QT_DEBUG)
-    mTestBtn->show();
-#else
-    mTestBtn->hide();
-#endif
 }
 
 void GenMacDlg::appendStatusLabel( const QString strLabel )
@@ -328,7 +323,7 @@ void GenMacDlg::mac()
     if( index == 0 )
         clickMAC();
     else
-        clickMacSrcFileThread();
+        clickMACSrcFile();
 }
 
 void GenMacDlg::clickMAC()

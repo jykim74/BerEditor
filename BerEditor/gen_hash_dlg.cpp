@@ -47,7 +47,7 @@ GenHashDlg::GenHashDlg(QWidget *parent) :
 
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
 
-    connect( mTestBtn, SIGNAL(clicked()), this, SLOT(clickDigestSrcFile()));
+    connect( mRunThreadBtn, SIGNAL(clicked()), this, SLOT(clickDigestSrcFileThread()));
 
     initialize();
     resize(width(), minimumSizeHint().height());
@@ -70,12 +70,6 @@ void GenHashDlg::initialize()
     mOutputHashCombo->setCurrentText( setMgr->defaultHash() );
 
     mInputTab->setCurrentIndex(0);
-
-#if defined(QT_DEBUG)
-    mTestBtn->show();
-#else
-    mTestBtn->hide();
-#endif
 }
 
 void GenHashDlg::appendStatusLabel( const QString& strLabel )
@@ -188,7 +182,7 @@ void GenHashDlg::digest()
     if( index == 0 )
         clickDigest();
     else
-        clickDigestSrcFileThread();
+        clickDigestSrcFile();
 }
 
 void GenHashDlg::clickDigest()
