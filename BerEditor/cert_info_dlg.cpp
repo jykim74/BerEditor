@@ -80,6 +80,7 @@ CertInfoDlg::CertInfoDlg(QWidget *parent) :
 
     connect( mSaveBtn, SIGNAL(clicked()), this, SLOT(clickSave()));
     connect( mSaveToManBtn, SIGNAL(clicked()), this, SLOT(clickSaveToMan()));
+    connect( mSaveToCABtn, SIGNAL(clicked()), this, SLOT(clickSaveToCA()));
     connect( mSaveTrustedCABtn, SIGNAL(clicked()), SLOT(clickSaveTrustedCA()));
 
     connect( mMakeTreeBtn, SIGNAL(clicked()), this, SLOT(clickMakeTree()));
@@ -177,9 +178,9 @@ void CertInfoDlg::showEvent(QShowEvent *event)
     if( berApplet->isLicense() == true )
     {
         if( bCA == false )
-            mSaveToManBtn->hide();
+            mSaveToCABtn->hide();
         else
-            mSaveToManBtn->show();
+            mSaveToCABtn->show();
 
         if( self_sign_ == false )
             mSaveTrustedCABtn->hide();
@@ -404,6 +405,7 @@ void CertInfoDlg::initUI()
     {
         tabWidget->setTabEnabled( 1, false );
         mSaveToManBtn->hide();
+        mSaveToCABtn->hide();
         mSaveTrustedCABtn->hide();
     }
     else
@@ -495,9 +497,21 @@ void CertInfoDlg::clickSave()
 void CertInfoDlg::clickSaveToMan()
 {
     int ret = 0;
+    QString strCAPath = berApplet->settingsMgr()->otherCertPath();
+
+    ret = CertManDlg::writeNameHash( strCAPath, &cert_bin_ );
+    if( ret > 0 )
+        berApplet->messageLog( tr( "The certificate is saved to manager folder" ), this );
+    else
+        berApplet->warnLog( tr( "failed to save to manager foler: %1" ).arg( ret ), this );
+}
+
+void CertInfoDlg::clickSaveToCA()
+{
+    int ret = 0;
     QString strCAPath = berApplet->settingsMgr()->CACertPath();
 
-    ret = CertManDlg::writeCA( strCAPath, &cert_bin_ );
+    ret = CertManDlg::writeNameHash( strCAPath, &cert_bin_ );
     if( ret > 0 )
         berApplet->messageLog( tr( "The certificate is saved to manager folder" ), this );
     else
@@ -524,7 +538,7 @@ void CertInfoDlg::clickSaveTrustedCA()
         return;
     }
 
-    ret = CertManDlg::writeCA( strTrustedCAPath, &cert_bin_ );
+    ret = CertManDlg::writeNameHash( strTrustedCAPath, &cert_bin_ );
     if( ret > 0 )
         berApplet->messageBox( tr( "The Certificate saved to trusted CA directory"), this );
     else

@@ -52,6 +52,7 @@ public:
 
     QString trustCertPath();
     QString EECertPath();
+    QString otherCertPath();
     QString CACertPath();
     QString CRLPath();
     QString tempCertPath();

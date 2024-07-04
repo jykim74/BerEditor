@@ -43,6 +43,7 @@ private slots:
     void changeFieldType( int index );
     void clickSave();
     void clickSaveToMan();
+    void clickSaveToCA();
     void clickSaveTrustedCA();
 
     void clickMakeTree();

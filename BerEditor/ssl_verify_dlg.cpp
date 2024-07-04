@@ -1201,7 +1201,7 @@ void SSLVerifyDlg::saveTrustedCA()
         goto end;
     }
 
-    ret = CertManDlg::writeCA( strTrustedCAPath, &binCert );
+    ret = CertManDlg::writeNameHash( strTrustedCAPath, &binCert );
     if( ret > 0 )
         berApplet->messageBox( tr( "The Certificate saved to trusted CA directory"), this );
     else

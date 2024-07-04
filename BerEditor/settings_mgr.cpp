@@ -279,6 +279,14 @@ QString SettingsMgr::EECertPath()
     return strPath;
 }
 
+QString SettingsMgr::otherCertPath()
+{
+    QString strPath;
+
+    strPath = QString( "%1/Other" ).arg( cert_path_ );
+    return strPath;
+}
+
 QString SettingsMgr::CACertPath()
 {
     QString strPath;
@@ -312,6 +320,9 @@ void SettingsMgr::makeCertPath()
 
     if( dir.exists( EECertPath() ) == false )
         dir.mkdir( EECertPath() );
+
+    if( dir.exists( otherCertPath() ) == false )
+        dir.mkdir( otherCertPath() );
 
     if( dir.exists( CACertPath() ) == false )
         dir.mkdir( CACertPath() );

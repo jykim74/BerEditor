@@ -16,10 +16,11 @@ enum {
 
 enum {
     TAB_EE_IDX = 0,
-    TAB_CA_IDX = 1,
-    TAB_CRL_IDX = 2,
-    TAB_TRUST_IDX = 3,
-    TAB_TOOL_IEX = 4
+    TAB_OTHER_IDX = 1,
+    TAB_CA_IDX = 2,
+    TAB_CRL_IDX = 3,
+    TAB_TRUST_IDX = 4,
+    TAB_TOOL_IDX = 5
 };
 
 namespace Ui {
@@ -49,11 +50,13 @@ public:
 
 
     int writePriKeyCert( const BIN *pEncPriKey, const BIN *pCert );
+    const QString getSeletedPath();
+    const QString getSeletedCertPath();
     const QString getSeletedCAPath();
     const QString getSeletedCRLPath();
 
     static int readCA( const QString strCertPath, const BIN* pCert, BIN *pCA );
-    static int writeCA( const QString strCAPath, const BIN *pCACert );
+    static int writeNameHash( const QString strPath, const BIN *pCert );
     static int writeCRL( const QString strCRLPath, const BIN *pCRL );
 
 private slots:
@@ -77,6 +80,11 @@ private slots:
     void clickRemoveCA();
     void clickViewCA();
     void clickDecodeCA();
+
+    void clickAddOther();
+    void clickRemoveOther();
+    void clickViewOther();
+    void clickDecodeOther();
 
     void clickAddCRL();
     void clickRemoveCRL();
@@ -108,13 +116,14 @@ private slots:
 private:
     void initUI();
     void initialize();
-    const QString getSeletedPath();
+
 
     void setGroupHide( bool bHide = true );
     void setOKHide( bool bHide = true );
     void setTrustOnly();
 
     void loadEEList();
+    void loadOtherList();
     void loadCAList();
     void loadCRLList();
     void loadTrustList();
@@ -122,6 +131,7 @@ private:
     void clearCRLList();
     void clearTrustList();
     void clearEEList();
+    void clearOtherList();
 
 
     int changePriKey( const BIN *pNewEncPriKey );
