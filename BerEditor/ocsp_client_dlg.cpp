@@ -773,13 +773,15 @@ void OCSPClientDlg::clickEncode()
 
     QString strHash = mHashCombo->currentText();
     QString strCAPath = mCACertPathText->text();
+    QString strCertPath = mCertPathText->text();
 
     if( strCAPath.length() < 1 )
     {
         CertManDlg certMan;
         certMan.setMode(ManModeSelCA);
         certMan.setTitle( tr( "Select CA certificate" ));
-        certMan.exec();
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
 
         strCAPath = certMan.getSeletedCAPath();
         if( strCAPath.length() < 1 )
@@ -793,12 +795,25 @@ void OCSPClientDlg::clickEncode()
         }
     }
 
-    QString strCertPath = mCertPathText->text();
-
     if( strCertPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "Find a certificate" ), this );
-        return;
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelCert);
+        certMan.setTitle( tr( "Select target certificate" ));
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
+
+        strCertPath = certMan.getSeletedCertPath();
+
+        if( strCertPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Find a certificate" ), this );
+            return;
+        }
+        else
+        {
+            mCertPathText->setText( strCertPath );
+        }
     }
 
     if( mUseSignCheck->isChecked() )
@@ -935,8 +950,22 @@ void OCSPClientDlg::clickVerify()
 
     if( strSrvCertPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "find a OCSP server certificate"), this );
-        goto end;
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelCert);
+        certMan.setTitle( tr( "Select OCSP server certificate" ));
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
+
+        strSrvCertPath = certMan.getSeletedCertPath();
+        if( strSrvCertPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find a OCSP server certificate"), this );
+            goto end;
+        }
+        else
+        {
+            mSrvCertPathText->setText( strSrvCertPath );
+        }
     }
 
     if( strRspHex.length() < 1 )

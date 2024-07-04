@@ -147,7 +147,7 @@
       </size>
      </property>
      <property name="title">
-      <string>Signer PrivateKey and Certificate</string>
+      <string>Select each certificate and private key</string>
      </property>
      <property name="checkable">
       <bool>true</bool>

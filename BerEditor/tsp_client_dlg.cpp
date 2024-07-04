@@ -6,6 +6,7 @@
 #include "cert_info_dlg.h"
 #include "settings_mgr.h"
 #include "tst_info_dlg.h"
+#include "cert_man_dlg.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -345,8 +346,23 @@ void TSPClientDlg::clickVerify()
 
     if( strSrvCertPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "find a TSP server certificate"), this );
-        goto end;
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelCert);
+        certMan.setTitle( tr( "Select TSP server certificate" ));
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
+
+        strSrvCertPath = certMan.getSeletedCertPath();
+
+        if( strSrvCertPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find a TSP server certificate"), this );
+            goto end;
+        }
+        else
+        {
+            mSrvCertPathText->setText( strSrvCertPath );
+        }
     }
 
     if( strRspHex.length() < 1 )

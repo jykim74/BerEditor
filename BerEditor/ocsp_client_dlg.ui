@@ -241,7 +241,7 @@
    <item>
     <widget class="QGroupBox" name="mCertGroup">
      <property name="title">
-      <string>OCSP Request Signer File</string>
+      <string>Select each certificate and private key</string>
      </property>
      <property name="checkable">
       <bool>true</bool>

@@ -497,9 +497,10 @@ void CertInfoDlg::clickSave()
 void CertInfoDlg::clickSaveToMan()
 {
     int ret = 0;
-    QString strCAPath = berApplet->settingsMgr()->otherCertPath();
+    QString strPath = berApplet->settingsMgr()->otherCertPath();
 
-    ret = CertManDlg::writeNameHash( strCAPath, &cert_bin_ );
+    ret = CertManDlg::writeNameHash( strPath, &cert_bin_ );
+
     if( ret > 0 )
         berApplet->messageLog( tr( "The certificate is saved to manager folder" ), this );
     else
@@ -512,6 +513,7 @@ void CertInfoDlg::clickSaveToCA()
     QString strCAPath = berApplet->settingsMgr()->CACertPath();
 
     ret = CertManDlg::writeNameHash( strCAPath, &cert_bin_ );
+
     if( ret > 0 )
         berApplet->messageLog( tr( "The certificate is saved to manager folder" ), this );
     else

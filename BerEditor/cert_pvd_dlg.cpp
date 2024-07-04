@@ -507,32 +507,29 @@ void CertPVDDlg::clickPathValidation()
         JS_BIN_reset( &binCRL );
     }
 
-    if( mCertGroup->isChecked() == true )
-    {
-        QString strTargetPath = mTargetPathText->text();
-        if( strTargetPath.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Select target certificate" ), this );
-            goto end;
-        }
-
-        JS_BIN_fileReadBER( strTargetPath.toLocal8Bit().toStdString().c_str(), &binTarget );
-    }
-    else
+    QString strTargetPath = mTargetPathText->text();
+    if( strTargetPath.length() < 1 )
     {
         CertManDlg certMan;
-        QString strCertHex;
-
         certMan.setMode(ManModeSelCert);
         certMan.setTitle( tr( "Select a certificate") );
 
         if( certMan.exec() != QDialog::Accepted )
             goto end;
 
-        strCertHex = certMan.getCertHex();
-        JS_BIN_decodeHex( strCertHex.toStdString().c_str(), &binTarget );
+        strTargetPath = certMan.getSeletedCertPath();
+        if( strTargetPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Select target certificate" ), this );
+            goto end;
+        }
+        else
+        {
+            mTargetPathText->setText( strTargetPath );
+        }
     }
 
+    JS_BIN_fileReadBER( strTargetPath.toLocal8Bit().toStdString().c_str(), &binTarget );
 
     if( JS_PKI_isSelfSignedCert2( &binTarget, &nSelfVerify ) == JSR_YES )
     {

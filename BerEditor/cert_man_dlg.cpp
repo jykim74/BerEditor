@@ -89,6 +89,7 @@ CertManDlg::CertManDlg(QWidget *parent) :
     connect( mTLSavePFXBtn, SIGNAL(clicked()), this, SLOT(clickTLSavePFX()));
 
     connect( mEE_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewCert()));
+    connect( mOther_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewOther()));
     connect( mCA_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewCA()));
     connect( mRCA_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewTrust()));
     connect( mCRL_Table, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewCRL()));
@@ -324,6 +325,7 @@ void CertManDlg::initialize()
     }
 
     mModeLabel->setText( getModeName(mode_));
+    mOKBtn->setDefault(true);
 }
 
 void CertManDlg::setGroupHide( bool bHide )
@@ -883,7 +885,11 @@ const QString CertManDlg::getSeletedCertPath()
         QModelIndex idx = mEE_CertTable->currentIndex();
         QTableWidgetItem* item = mEE_CertTable->item( idx.row(), 0 );
 
-        if( item ) strPath = item->data(Qt::UserRole).toString();
+        if( item )
+        {
+            QString strDir = item->data(Qt::UserRole).toString();
+            strPath = QString( "%1/%2").arg( strDir ).arg( kCertFile );
+        }
     }
     else if( nTabIdx == TAB_OTHER_IDX )
     {
@@ -959,6 +965,12 @@ int CertManDlg::writeNameHash( const QString strPath, const BIN *pCert )
 
     strFilePath = QString( "%1/%2.0").arg( strPath ).arg( uHash );
 
+    if( QFileInfo::exists( strFilePath ) == true )
+    {
+        berApplet->elog( tr( "The file(%1) is already existed").arg( strFilePath ) );
+        return -1;
+    }
+
     ret = JS_BIN_writePEM( pCert, JS_FILE_TYPE_CERT, strFilePath.toLocal8Bit().toStdString().c_str() );
 
     return ret;
@@ -1018,8 +1030,6 @@ int CertManDlg::readPriKeyCert( BIN *pEncPriKey, BIN *pCert )
 
 int CertManDlg::readCert( BIN *pCert )
 {
-    QString strCertPath;
-
     QString strPath = getSeletedCertPath();
     if( strPath.length() < 1 )
     {
@@ -1027,9 +1037,7 @@ int CertManDlg::readCert( BIN *pCert )
         return -1;
     }
 
-    strCertPath = QString("%1/%2").arg( strPath ).arg( kCertFile );
-
-    JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), pCert );
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), pCert );
 
     return 0;
 }
