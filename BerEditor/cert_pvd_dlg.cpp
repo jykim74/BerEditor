@@ -74,9 +74,6 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
     mCRLDecodeBtn->setFixedWidth(34);
     mTargetInfoBtn->setFixedWidth(34);
     mTargetDecodeBtn->setFixedWidth(34);
-
-    mCertGroup->layout()->setMargin(5);
-    mCertGroup->layout()->setSpacing(5);
 #endif
 }
 
