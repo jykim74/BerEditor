@@ -52,6 +52,9 @@ private slots:
     void clickSend();
     void clickVerify();
 
+    void changeNonce( const QString text );
+    void changeTransID( const QString text );
+
 private:
     void initialize();
 

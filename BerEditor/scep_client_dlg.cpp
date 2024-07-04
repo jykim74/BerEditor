@@ -59,6 +59,9 @@ SCEPClientDlg::SCEPClientDlg(QWidget *parent)
     connect( mRequestText, SIGNAL(textChanged()), this, SLOT(requestChanged()));
     connect( mResponseText, SIGNAL(textChanged()), this, SLOT(responseChanged()));
 
+    connect( mNonceText, SIGNAL(textChanged(QString)), this, SLOT(changeNonce(QString)));
+    connect( mTransIDText, SIGNAL(textChanged(QString)), this, SLOT(changeTransID(QString)));
+
 #if defined( Q_OS_MAC )
     layout()->setSpacing(5);
     mCertGroup->layout()->setSpacing(5);
@@ -1132,4 +1135,16 @@ end :
     JS_BIN_reset( &binPriKey );
     JS_BIN_reset( &binNonce );
     JS_BIN_reset( &binData );
+}
+
+void SCEPClientDlg::changeNonce( const QString text )
+{
+    int len = text.length() / 2;
+    mNonceLenText->setText( QString("%1").arg( len ));
+}
+
+void SCEPClientDlg::changeTransID( const QString text )
+{
+    int len = text.length() / 2;
+    mTransIDLenText->setText( QString("%1").arg( len ));
 }
