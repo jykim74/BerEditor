@@ -26,9 +26,9 @@ SSSDlg::SSSDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
+
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
-    layout()->setMargin(10);
 #endif
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
@@ -196,6 +196,12 @@ void SSSDlg::clickSplit()
     if( binSrc.nLen < 8 )
     {
         berApplet->warningBox( tr( "Input value must be at least 8 bytes"), this );
+        goto end;
+    }
+
+    if( binSrc.nLen > binPrime.nLen )
+    {
+        berApplet->warningBox( tr( "Prime value ​​must be longer than or equal to the source value" ), this );
         goto end;
     }
 
