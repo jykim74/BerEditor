@@ -84,6 +84,7 @@ void TSPClientDlg::initialize()
     mHashCombo->setCurrentText( setMgr->defaultHash() );
 
     mPolicyText->setText( "1.2.3.4" );
+    mCloseBtn->setDefault(true);
 }
 
 QStringList TSPClientDlg::getUsedURL()

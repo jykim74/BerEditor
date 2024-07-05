@@ -106,6 +106,7 @@ void SCEPClientDlg::initialize()
     }
 
     JS_SCEP_init();
+    mCloseBtn->setDefault(true);
 }
 
 QStringList SCEPClientDlg::getUsedURL()
@@ -581,6 +582,8 @@ void SCEPClientDlg::clickMakeIssue()
 
     QString strURL = mURLCombo->currentText();
     QString strCAPath = mCACertPathText->text();
+    QString strNonce = mNonceText->text();
+    QString strTransID = mTransIDText->text();
 
     if( strURL.length() < 1 )
     {
@@ -627,11 +630,25 @@ void SCEPClientDlg::clickMakeIssue()
     strCSRHex = makeCSR.getCSRHex();
     JS_BIN_decodeHex( strCSRHex.toStdString().c_str(), &binCSR );
 
-    JS_PKI_genRandom( 16, &binNonce );
-    JS_SCEP_makeTransID( &binCSR, &pTransID );
+    if( strNonce.length() < 1 )
+    {
+        JS_PKI_genRandom( 16, &binNonce );
+        mNonceText->setText( getHexString( &binNonce ));
+    }
+    else
+    {
+        JS_BIN_decodeHex( strNonce.toStdString().c_str(), &binNonce );
+    }
 
-    mNonceText->setText( getHexString( &binNonce ));
-    mTransIDText->setText( pTransID );
+    if( strTransID.length() < 1 )
+    {
+        JS_SCEP_makeTransID( &binCSR, &pTransID );
+        mTransIDText->setText( pTransID );
+    }
+    else
+    {
+        pTransID = JS_strdup( strTransID.toStdString().c_str() );
+    }
 
     ret = JS_SCEP_makePKIReq( &binCSR, &binNewPri, NULL, &binCA, &binNonce, pTransID, &binReq );
     if( ret == 0 )
@@ -720,6 +737,8 @@ void SCEPClientDlg::clickMakeUpdate()
     QString strCAPath = mCACertPathText->text();
     QString strCertPath = mCertPathText->text();
     QString strPriKeyPath = mPriKeyPathText->text();
+    QString strNonce = mNonceText->text();
+    QString strTransID = mTransIDText->text();
 
     QString strURL = mURLCombo->currentText();
 
@@ -795,11 +814,25 @@ void SCEPClientDlg::clickMakeUpdate()
     strCSRHex = makeCSR.getCSRHex();
     JS_BIN_decodeHex( strCSRHex.toStdString().c_str(), &binCSR );
 
-    JS_PKI_genRandom( 16, &binNonce );
-    JS_SCEP_makeTransID( &binCSR, &pTransID );
+    if( strNonce.length() < 1 )
+    {
+        JS_PKI_genRandom( 16, &binNonce );
+        mNonceText->setText( getHexString( &binNonce ));
+    }
+    else
+    {
+        JS_BIN_decodeHex( strNonce.toStdString().c_str(), &binNonce );
+    }
 
-    mNonceText->setText( getHexString( &binNonce ));
-    mTransIDText->setText( pTransID );
+    if( strTransID.length() < 1 )
+    {
+        JS_SCEP_makeTransID( &binCSR, &pTransID );
+        mTransIDText->setText( pTransID );
+    }
+    else
+    {
+        pTransID = JS_strdup( strTransID.toStdString().c_str() );
+    }
 
     ret = JS_SCEP_makePKIReq( &binCSR, &binPri, &binCert, &binCA, &binNonce, pTransID, &binReq );
     if( ret == 0 )
@@ -883,8 +916,10 @@ void SCEPClientDlg::clickMakeGetCRL()
     QString strCAPath = mCACertPathText->text();
     QString strCertPath = mCertPathText->text();
     QString strPriKeyPath = mPriKeyPathText->text();
+    QString strNonce = mNonceText->text();
+    QString strTransID = mTransIDText->text();
 
-    const char *pTransID = "1111";
+    char *pTransID = NULL;
 
     QString strURL = mURLCombo->currentText();
 
@@ -954,9 +989,25 @@ void SCEPClientDlg::clickMakeGetCRL()
     }
 
 
-    JS_PKI_genRandom( 16, &binNonce );
-    mTransIDText->setText( pTransID );
-    mNonceText->setText( getHexString( &binNonce ));
+    if( strNonce.length() < 1 )
+    {
+        JS_PKI_genRandom( 16, &binNonce );
+        mNonceText->setText( getHexString( &binNonce ));
+    }
+    else
+    {
+        JS_BIN_decodeHex( strNonce.toStdString().c_str(), &binNonce );
+    }
+
+    if( strTransID.length() < 1 )
+    {
+        pTransID = JS_strdup( "12345678" );
+        mTransIDText->setText( pTransID );
+    }
+    else
+    {
+        pTransID = JS_strdup( strTransID.toStdString().c_str() );
+    }
 
 
     ret = JS_SCEP_makeGetCRL( &binCert, &binPri, &binCert, &binCA, &binNonce, pTransID, &binReq );
@@ -1020,6 +1071,8 @@ end :
     JS_BIN_reset( &binRsp );
     JS_BIN_reset( &binCRL );
     JS_BIN_reset( &binSignedData );
+
+    if( pTransID ) JS_free( pTransID );
 }
 
 void SCEPClientDlg::clickSend()
@@ -1145,6 +1198,6 @@ void SCEPClientDlg::changeNonce( const QString text )
 
 void SCEPClientDlg::changeTransID( const QString text )
 {
-    int len = text.length() / 2;
+    int len = text.length();
     mTransIDLenText->setText( QString("%1").arg( len ));
 }

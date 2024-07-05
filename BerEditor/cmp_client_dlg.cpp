@@ -105,6 +105,7 @@ void CMPClientDlg::initialize()
     }
 
     mURLCombo->setEditable(true);
+    mCloseBtn->setDefault(true);
 }
 
 QStringList CMPClientDlg::getUsedURL()

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>495</width>
+    <width>557</width>
     <height>484</height>
    </rect>
   </property>
@@ -51,7 +51,7 @@
    <item>
     <widget class="QTabWidget" name="mTabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="mEETab">
       <attribute name="title">
@@ -414,7 +414,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QTableWidget" name="mCA_CertTable"/>
+        <widget class="QTableWidget" name="mCA_CertTable">
+         <property name="horizontalScrollBarPolicy">
+          <enum>Qt::ScrollBarAsNeeded</enum>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QGroupBox" name="mCA_ManGroup">

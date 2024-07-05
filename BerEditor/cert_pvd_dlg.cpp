@@ -113,6 +113,7 @@ void CertPVDDlg::initialize()
 
     checkATTime();
     checkUseTrustList();
+    mCloseBtn->setDefault(true);
 }
 
 void CertPVDDlg::clickTrustFind()
@@ -712,7 +713,9 @@ void CertPVDDlg::clickTrustAdd()
         CertManDlg certMan;
         certMan.setMode(ManModeSelCA);
         certMan.setTitle( tr( "Select CA certificate" ));
-        certMan.exec();
+
+        if( certMan.exec() != QDialog::Accepted )
+            return;
 
         strPath = certMan.getSeletedCAPath();
         if( strPath.length() < 1 )
@@ -744,7 +747,8 @@ void CertPVDDlg::clickUntrustAdd()
         CertManDlg certMan;
         certMan.setMode(ManModeSelCA);
         certMan.setTitle( tr( "Select CA certificate" ));
-        certMan.exec();
+        if( certMan.exec() != QDialog::Accepted )
+            return;
 
         strPath = certMan.getSeletedCAPath();
         if( strPath.length() < 1 )
@@ -776,7 +780,8 @@ void CertPVDDlg::clickCRLAdd()
         CertManDlg certMan;
         certMan.setMode(ManModeSelCRL);
         certMan.setTitle( tr( "Select CRL" ));
-        certMan.exec();
+        if( certMan.exec() != QDialog::Accepted )
+            return;
 
         strPath = certMan.getSeletedCRLPath();
         if( strPath.length() < 1 )

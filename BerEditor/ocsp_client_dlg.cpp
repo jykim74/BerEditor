@@ -117,6 +117,7 @@ void OCSPClientDlg::initialize()
     mHashCombo->setCurrentText( setMgr->defaultHash() );
 
     checkUseSign();
+    mCloseBtn->setDefault(true);
 }
 
 QStringList OCSPClientDlg::getUsedURL()

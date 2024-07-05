@@ -167,6 +167,8 @@ void BNCalcDlg::intialize()
 #else
     mTestBtn->hide();
 #endif
+
+    mCloseBtn->setDefault(true);
 }
 
 

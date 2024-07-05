@@ -30,6 +30,11 @@ LCNInfoDlg::LCNInfoDlg(QWidget *parent) :
     connect( mStopMessageCheck, SIGNAL(clicked()), this, SLOT(checkStopMessage()));
 
     initialize();
+
+#if defined(Q_OS_MAC)
+    layout()->setSpacing(5);
+#endif
+    resize(width(), minimumSizeHint().height());
 }
 
 LCNInfoDlg::~LCNInfoDlg()
@@ -129,6 +134,7 @@ void LCNInfoDlg::initialize()
     mUpdateBtn->setEnabled( mCurGroup->isEnabled() );
 //    mUseFileCheck->click();
     tabWidget->setCurrentIndex(0);
+    mCloseBtn->setDefault(true);
 }
 
 void LCNInfoDlg::settingsLCN( const QString strUser, const BIN *pLCN )

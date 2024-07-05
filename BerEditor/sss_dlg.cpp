@@ -82,6 +82,8 @@ void SSSDlg::initialize()
 
     mPrimeBitsCombo->addItems( primeBits );
     mPrimeBitsCombo->setEditable( true );
+
+    mCloseBtn->setDefault(true);
 }
 
 void SSSDlg::srcChanged()
