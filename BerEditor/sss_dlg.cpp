@@ -47,6 +47,8 @@ SSSDlg::SSSDlg(QWidget *parent) :
     connect( mMakePrimeBtn, SIGNAL(clicked()), this, SLOT(clickMakePrime()));
     connect( mPrimeText, SIGNAL(textChanged(QString)), this, SLOT(changePrime(QString)));
 
+    resize(width(), minimumSizeHint().height());
+
     initialize();
 }
 
@@ -314,10 +316,10 @@ end :
 
 void SSSDlg::clickMakePrime()
 {
-    int nBits = mPrimeBitsCombo->currentText().toInt();
+    int nBytes = mPrimeBitsCombo->currentText().toInt();
 
     BIN binPrime = {0,0};
-    JS_PKI_makePrime( nBits, &binPrime );
+    JS_PKI_makePrime( nBytes * 8, &binPrime );
 
     mPrimeText->setText( getHexString( &binPrime ));
 
