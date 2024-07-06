@@ -112,7 +112,6 @@ BNCalcDlg::BNCalcDlg(QWidget *parent) :
 
     connect( mTestBtn, SIGNAL(clicked()), this, SLOT(clickTest()));
 
-    resize(width(), minimumSizeHint().height());
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
 
@@ -139,7 +138,9 @@ BNCalcDlg::BNCalcDlg(QWidget *parent) :
     mBSubOneBtn->setFixedWidth(38);
     mModSubOneBtn->setFixedWidth(38);
 
-    resize(width(), minimumSizeHint().height() - 70);
+    resize(minimumSizeHint().width(), minimumSizeHint().height() - 70);
+#else
+    resize(width(), minimumSizeHint().height());
 #endif
     intialize();
 }

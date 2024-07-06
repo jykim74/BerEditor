@@ -6,28 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>604</width>
-    <height>711</height>
+    <width>748</width>
+    <height>879</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Big Number Calculator Window</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Big Number Calculator</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
    <item>
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="2">
@@ -40,7 +26,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Number Type</string>
+        <string>Big Number Calculator</string>
        </property>
       </widget>
      </item>
@@ -993,52 +979,10 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="mSQRBtn">
+     <item row="2" column="0">
+      <widget class="QPushButton" name="mDIVBtn">
        <property name="text">
-        <string>A ^ 2</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mCOMPBtn">
-       <property name="text">
-        <string>A comp</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="5">
-      <widget class="QPushButton" name="mMULBtn">
-       <property name="text">
-        <string>A * B</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mSHRBtn">
-       <property name="text">
-        <string>A &gt;&gt;</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mSHLBtn">
-       <property name="text">
-        <string>A &lt;&lt;</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mSQRTBtn">
-       <property name="text">
-        <string>√ A</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="5">
-      <widget class="QPushButton" name="mINVBtn">
-       <property name="text">
-        <string>A^-1</string>
+        <string>A / B</string>
        </property>
       </widget>
      </item>
@@ -1049,17 +993,10 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="mANDBtn">
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mSQRBtn">
        <property name="text">
-        <string>A and B</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QPushButton" name="mXORBtn">
-       <property name="text">
-        <string>A xor B</string>
+        <string>A ^ 2</string>
        </property>
       </widget>
      </item>
@@ -1070,17 +1007,31 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="4">
-      <widget class="QPushButton" name="mSUBBtn">
+     <item row="2" column="2">
+      <widget class="QPushButton" name="mMODBtn">
        <property name="text">
-        <string>A - B</string>
+        <string>A % B</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
-      <widget class="QPushButton" name="mDIVBtn">
+     <item row="1" column="1">
+      <widget class="QPushButton" name="mANDBtn">
        <property name="text">
-        <string>A / B</string>
+        <string>A and B</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mCOMPBtn">
+       <property name="text">
+        <string>A comp</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="mXORBtn">
+       <property name="text">
+        <string>A xor B</string>
        </property>
       </widget>
      </item>
@@ -1091,17 +1042,52 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="2">
-      <widget class="QPushButton" name="mMODBtn">
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mSHLBtn">
        <property name="text">
-        <string>A % B</string>
+        <string>A &lt;&lt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mSHRBtn">
+       <property name="text">
+        <string>A &gt;&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QPushButton" name="mSQRTBtn">
+       <property name="text">
+        <string>√ A</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="3">
+      <widget class="QPushButton" name="mGCDBtn">
+       <property name="text">
+        <string>GCD(A,B)</string>
        </property>
       </widget>
      </item>
      <item row="2" column="3">
-      <widget class="QPushButton" name="mGCDBtn">
+      <widget class="QPushButton" name="mMULBtn">
        <property name="text">
-        <string>GCD(A,B)</string>
+        <string>A * B</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="2">
+      <widget class="QPushButton" name="mSUBBtn">
+       <property name="text">
+        <string>A - B</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QPushButton" name="mINVBtn">
+       <property name="text">
+        <string>A^-1</string>
        </property>
       </widget>
      </item>
