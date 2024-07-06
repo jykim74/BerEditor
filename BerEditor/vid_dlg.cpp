@@ -40,6 +40,7 @@ VIDDlg::VIDDlg(QWidget *parent)
 
     initialize();
     mCloseBtn->setFocus();
+    resize(width(), minimumSizeHint().height());
 }
 
 VIDDlg::~VIDDlg()

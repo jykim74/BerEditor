@@ -40,6 +40,10 @@ DataEncoderDlg::DataEncoderDlg(QWidget *parent) :
     connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickOutputClear()));
 
     mCloseBtn->setFocus();
+#if defined(Q_OS_MAC)
+    layout()->setSpacing(5);
+#endif
+    resize(width(), minimumSizeHint().height());
 }
 
 DataEncoderDlg::~DataEncoderDlg()

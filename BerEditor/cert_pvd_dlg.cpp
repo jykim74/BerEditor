@@ -114,6 +114,7 @@ void CertPVDDlg::initialize()
     checkATTime();
     checkUseTrustList();
     mCloseBtn->setDefault(true);
+    mTargetPathText->setFocus();
 }
 
 void CertPVDDlg::clickTrustFind()

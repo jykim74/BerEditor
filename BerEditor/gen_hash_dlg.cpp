@@ -50,9 +50,12 @@ GenHashDlg::GenHashDlg(QWidget *parent) :
     connect( mRunThreadBtn, SIGNAL(clicked()), this, SLOT(clickDigestSrcFileThread()));
 
     initialize();
-    resize(width(), minimumSizeHint().height());
-
     mCloseBtn->setFocus();
+
+#if defined(Q_OS_MAC)
+    layout()->setSpacing(5);
+#endif
+    resize(width(), minimumSizeHint().height());
 }
 
 GenHashDlg::~GenHashDlg()

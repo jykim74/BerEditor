@@ -21,6 +21,11 @@ MakeCSRDlg::MakeCSRDlg(QWidget *parent) :
     connect( mClearBtn, SIGNAL(clicked()), this, SLOT(clickClear()));
 
     initialize();
+
+#if defined(Q_OS_MAC)
+    layout()->setSpacing(5);
+#endif
+    resize(width(), minimumSizeHint().height());
 }
 
 MakeCSRDlg::~MakeCSRDlg()

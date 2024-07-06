@@ -30,6 +30,11 @@ CSRInfoDlg::CSRInfoDlg(QWidget *parent) :
     connect( mSaveBtn, SIGNAL(clicked()), this, SLOT(clickSave()));
     connect( mVerifyCSRBtn, SIGNAL(clicked()), this, SLOT(clickVerifyCSR()));
     connect( mDecodeCSRBtn, SIGNAL(clicked()), this, SLOT(clickDecodeCSR()));
+
+#if defined(Q_OS_MAC)
+    layout()->setSpacing(5);
+#endif
+    resize(width(), minimumSizeHint().height());
 }
 
 CSRInfoDlg::~CSRInfoDlg()

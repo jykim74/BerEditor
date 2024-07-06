@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>582</width>
-    <height>643</height>
+    <height>764</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -166,7 +166,7 @@
       </size>
      </property>
      <property name="title">
-      <string>Sign PrivateKey and Certificate</string>
+      <string>Select each certificate and private key for signature</string>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -349,7 +349,7 @@
       </size>
      </property>
      <property name="title">
-      <string>KM PrivateKey and Certificate</string>
+      <string>Select each certificate and private key for KM</string>
      </property>
      <property name="checkable">
       <bool>true</bool>

@@ -75,9 +75,12 @@ GenMacDlg::GenMacDlg(QWidget *parent) :
     connect( mRunThreadBtn, SIGNAL(clicked()), this, SLOT(clickMacSrcFileThread()));
 
     initialize();
-    resize(width(), minimumSizeHint().height());
-
     mCloseBtn->setFocus();
+
+#if defined(Q_OS_MAC)
+    layout()->setSpacing(5);
+#endif
+    resize(width(), minimumSizeHint().height());
 }
 
 GenMacDlg::~GenMacDlg()

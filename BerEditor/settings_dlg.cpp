@@ -33,6 +33,8 @@ SettingsDlg::SettingsDlg(QWidget *parent) :
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+    mBasicTab->layout()->setSpacing(5);
+    mAdvancedTab->layout()->setSpacing(5);
 #endif
     resize(width(), minimumSizeHint().height());
 }
