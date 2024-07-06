@@ -3245,7 +3245,7 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../cert_man_dlg.ui" line="909"/>
-        <location filename="../cert_man_dlg.cpp" line="2082"/>
+        <location filename="../cert_man_dlg.cpp" line="2085"/>
         <source>PrivateKey</source>
         <translation>개인키</translation>
     </message>
@@ -3288,274 +3288,274 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../cert_man_dlg.cpp" line="179"/>
-        <location filename="../cert_man_dlg.cpp" line="191"/>
-        <location filename="../cert_man_dlg.cpp" line="203"/>
-        <location filename="../cert_man_dlg.cpp" line="227"/>
+        <location filename="../cert_man_dlg.cpp" line="192"/>
+        <location filename="../cert_man_dlg.cpp" line="205"/>
+        <location filename="../cert_man_dlg.cpp" line="230"/>
         <source>Subject DN</source>
         <translation>주체자 이름</translation>
     </message>
     <message>
         <location filename="../cert_man_dlg.cpp" line="179"/>
-        <location filename="../cert_man_dlg.cpp" line="191"/>
-        <location filename="../cert_man_dlg.cpp" line="203"/>
-        <location filename="../cert_man_dlg.cpp" line="227"/>
+        <location filename="../cert_man_dlg.cpp" line="192"/>
+        <location filename="../cert_man_dlg.cpp" line="205"/>
+        <location filename="../cert_man_dlg.cpp" line="230"/>
         <source>Algorithm</source>
         <translation>알고리즘</translation>
     </message>
     <message>
         <location filename="../cert_man_dlg.cpp" line="179"/>
-        <location filename="../cert_man_dlg.cpp" line="191"/>
-        <location filename="../cert_man_dlg.cpp" line="203"/>
-        <location filename="../cert_man_dlg.cpp" line="227"/>
+        <location filename="../cert_man_dlg.cpp" line="192"/>
+        <location filename="../cert_man_dlg.cpp" line="205"/>
+        <location filename="../cert_man_dlg.cpp" line="230"/>
         <source>Expire</source>
         <translation>만료 일자</translation>
     </message>
     <message>
         <location filename="../cert_man_dlg.cpp" line="179"/>
-        <location filename="../cert_man_dlg.cpp" line="191"/>
-        <location filename="../cert_man_dlg.cpp" line="203"/>
-        <location filename="../cert_man_dlg.cpp" line="215"/>
+        <location filename="../cert_man_dlg.cpp" line="192"/>
+        <location filename="../cert_man_dlg.cpp" line="205"/>
+        <location filename="../cert_man_dlg.cpp" line="218"/>
         <source>Issuer DN</source>
         <translation>발급자 이름</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="191"/>
-        <location filename="../cert_man_dlg.cpp" line="203"/>
-        <location filename="../cert_man_dlg.cpp" line="215"/>
-        <location filename="../cert_man_dlg.cpp" line="227"/>
+        <location filename="../cert_man_dlg.cpp" line="192"/>
+        <location filename="../cert_man_dlg.cpp" line="205"/>
+        <location filename="../cert_man_dlg.cpp" line="218"/>
+        <location filename="../cert_man_dlg.cpp" line="230"/>
         <source>Name</source>
         <translation>이름</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="215"/>
+        <location filename="../cert_man_dlg.cpp" line="218"/>
         <source>This Update</source>
         <translation>이번 업데이트</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="215"/>
+        <location filename="../cert_man_dlg.cpp" line="218"/>
         <source>Next Update</source>
         <translation>다음 업데이트</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="363"/>
+        <location filename="../cert_man_dlg.cpp" line="366"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1084"/>
-        <location filename="../cert_man_dlg.cpp" line="1141"/>
+        <location filename="../cert_man_dlg.cpp" line="1087"/>
+        <location filename="../cert_man_dlg.cpp" line="1144"/>
         <source>fail to read certificate: %1</source>
         <translation>인증서 읽기 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1105"/>
+        <location filename="../cert_man_dlg.cpp" line="1108"/>
         <source>Are you sure to delete the certificate</source>
         <translation>정말로 해당 인증서를 삭제 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1111"/>
-        <location filename="../cert_man_dlg.cpp" line="1134"/>
+        <location filename="../cert_man_dlg.cpp" line="1114"/>
+        <location filename="../cert_man_dlg.cpp" line="1137"/>
         <source>The certificate is not selected</source>
         <translation>인증서가 선택 되지 않았습니다</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1165"/>
+        <location filename="../cert_man_dlg.cpp" line="1168"/>
         <source>fail to read private key: %1</source>
         <translation>개인키 읽기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1190"/>
-        <location filename="../cert_man_dlg.cpp" line="1294"/>
-        <location filename="../cert_man_dlg.cpp" line="1340"/>
-        <location filename="../cert_man_dlg.cpp" line="1448"/>
-        <location filename="../cert_man_dlg.cpp" line="2205"/>
-        <location filename="../cert_man_dlg.cpp" line="2284"/>
-        <location filename="../cert_man_dlg.cpp" line="2364"/>
+        <location filename="../cert_man_dlg.cpp" line="1193"/>
+        <location filename="../cert_man_dlg.cpp" line="1297"/>
+        <location filename="../cert_man_dlg.cpp" line="1343"/>
+        <location filename="../cert_man_dlg.cpp" line="1451"/>
+        <location filename="../cert_man_dlg.cpp" line="2208"/>
+        <location filename="../cert_man_dlg.cpp" line="2287"/>
+        <location filename="../cert_man_dlg.cpp" line="2367"/>
         <source>Enter a password</source>
         <translation>암호를 입력해야 합니다</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1197"/>
-        <location filename="../cert_man_dlg.cpp" line="1347"/>
+        <location filename="../cert_man_dlg.cpp" line="1200"/>
+        <location filename="../cert_man_dlg.cpp" line="1350"/>
         <source>fail to read private key and certificate: %1</source>
         <translation>개인키와 인증서 읽기 실패 하였습니다: %1</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1204"/>
-        <location filename="../cert_man_dlg.cpp" line="1354"/>
+        <location filename="../cert_man_dlg.cpp" line="1207"/>
+        <location filename="../cert_man_dlg.cpp" line="1357"/>
         <source>fail to decrypt private key: %1</source>
         <translation>개인키 복호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1211"/>
+        <location filename="../cert_man_dlg.cpp" line="1214"/>
         <source>The private key and ceritificate are good</source>
         <translation>개인키와 인증서가 맞습니다.</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1215"/>
+        <location filename="../cert_man_dlg.cpp" line="1218"/>
         <source>The private key and certificate are bad</source>
         <translation>개인키와 인증서가 틀립니다</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1251"/>
-        <location filename="../cert_man_dlg.cpp" line="2293"/>
-        <location filename="../cert_man_dlg.cpp" line="2373"/>
+        <location filename="../cert_man_dlg.cpp" line="1254"/>
+        <location filename="../cert_man_dlg.cpp" line="2296"/>
+        <location filename="../cert_man_dlg.cpp" line="2376"/>
         <source>fail to decrypt PFX: %1</source>
         <translation>PFX 복호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1267"/>
-        <location filename="../cert_man_dlg.cpp" line="2389"/>
+        <location filename="../cert_man_dlg.cpp" line="1270"/>
+        <location filename="../cert_man_dlg.cpp" line="2392"/>
         <source>The private key and certificate are saved successfully</source>
         <translation>개인키와 인증서가 성공적으로 저장하였습니다</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1312"/>
+        <location filename="../cert_man_dlg.cpp" line="1315"/>
         <source>PFX saved successfully:%1</source>
         <translation>PFX 저장 성공 : %1</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1317"/>
+        <location filename="../cert_man_dlg.cpp" line="1320"/>
         <source>fail to export PFX: %1</source>
         <translation>PFX 내보내기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1425"/>
+        <location filename="../cert_man_dlg.cpp" line="1428"/>
         <source>fail to read the CA certificate</source>
         <translation>CA 인증서 읽기 실패</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1436"/>
+        <location filename="../cert_man_dlg.cpp" line="1439"/>
         <source>fail to read the CRL</source>
         <translation>CRL 읽기 실패</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1502"/>
+        <location filename="../cert_man_dlg.cpp" line="1505"/>
         <source>fail to make CA folder: %1</source>
         <translation>CA 폴더 만들기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1524"/>
+        <location filename="../cert_man_dlg.cpp" line="1527"/>
         <source>This certificate is not CA certificate</source>
         <translation>이 인증서는 CA용 인증서가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1538"/>
+        <location filename="../cert_man_dlg.cpp" line="1541"/>
         <source>The Certificate saved to CA folder</source>
         <translation>인증서를 CA관리 폴더 저장 하였습니다.</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1542"/>
+        <location filename="../cert_man_dlg.cpp" line="1545"/>
         <source>The Certificate failed to save to CA folder:%1</source>
         <translation>인증서를 CA관리 폴더 저장 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1569"/>
+        <location filename="../cert_man_dlg.cpp" line="1572"/>
         <source>The CA has been deleted</source>
         <translation>CA인증서가 삭제 되었습니다</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1573"/>
+        <location filename="../cert_man_dlg.cpp" line="1576"/>
         <source>failed to delete the CA</source>
         <translation>CA 인증서 삭제 실패</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1628"/>
+        <location filename="../cert_man_dlg.cpp" line="1631"/>
         <source>fail to make other folder: %1</source>
         <translation>다른 폴더 만들기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1657"/>
+        <location filename="../cert_man_dlg.cpp" line="1660"/>
         <source>The Certificate saved to other folder</source>
         <translation>인증서를 다른 관리 폴더 저장 하였습니다.</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1661"/>
+        <location filename="../cert_man_dlg.cpp" line="1664"/>
         <source>The Certificate failed to save to other folder:%1</source>
         <translation>인증서를 다른 관리 폴더 저장 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1688"/>
+        <location filename="../cert_man_dlg.cpp" line="1691"/>
         <source>The certificate has been deleted</source>
         <translation>인증서가 삭제 되었습니다</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1692"/>
+        <location filename="../cert_man_dlg.cpp" line="1695"/>
         <source>failed to delete the certificate</source>
         <translation>인증서 삭제 실패하였습니다</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1747"/>
+        <location filename="../cert_man_dlg.cpp" line="1750"/>
         <source>fail to make CRL folder: %1</source>
         <translation>CRL 폴더 만들기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1764"/>
+        <location filename="../cert_man_dlg.cpp" line="1767"/>
         <source>The CRL saved to CRL folder</source>
         <translation>CRL을 CRL 관리 폴더에 저장 하였습니다</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1768"/>
+        <location filename="../cert_man_dlg.cpp" line="1771"/>
         <source>The CRL failed to save to CRL folder:%1</source>
         <translation>CRL을 CRL 관리 폴더에 저장 실패 : %1</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1794"/>
+        <location filename="../cert_man_dlg.cpp" line="1797"/>
         <source>The CRL has been deleted</source>
         <translation>CRL 가 삭제 되었습니다</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1798"/>
+        <location filename="../cert_man_dlg.cpp" line="1801"/>
         <source>failed to delete the CRL</source>
         <translation>CRL 삭제 실패</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1962"/>
+        <location filename="../cert_man_dlg.cpp" line="1965"/>
         <source>Find Private Key</source>
         <translation>개인키를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1980"/>
-        <location filename="../cert_man_dlg.cpp" line="2158"/>
+        <location filename="../cert_man_dlg.cpp" line="1983"/>
+        <location filename="../cert_man_dlg.cpp" line="2161"/>
         <source>Find Certificate</source>
         <translation>인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1998"/>
-        <location filename="../cert_man_dlg.cpp" line="2276"/>
-        <location filename="../cert_man_dlg.cpp" line="2356"/>
+        <location filename="../cert_man_dlg.cpp" line="2001"/>
+        <location filename="../cert_man_dlg.cpp" line="2279"/>
+        <location filename="../cert_man_dlg.cpp" line="2359"/>
         <source>Find PFX</source>
         <translation>PFX 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="2080"/>
+        <location filename="../cert_man_dlg.cpp" line="2083"/>
         <source>EncPrivateKey</source>
         <translation>암호화 개인키</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="2099"/>
-        <location filename="../cert_man_dlg.cpp" line="2191"/>
+        <location filename="../cert_man_dlg.cpp" line="2102"/>
+        <location filename="../cert_man_dlg.cpp" line="2194"/>
         <source>find private key</source>
         <translation>개인키를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="2105"/>
+        <location filename="../cert_man_dlg.cpp" line="2108"/>
         <source>find public key or certificate</source>
         <translation>공개키 또는 인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="2114"/>
-        <location filename="../cert_man_dlg.cpp" line="2214"/>
+        <location filename="../cert_man_dlg.cpp" line="2117"/>
+        <location filename="../cert_man_dlg.cpp" line="2217"/>
         <source>Enter private key password</source>
         <translation>개인키 암호를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="2139"/>
+        <location filename="../cert_man_dlg.cpp" line="2142"/>
         <source>The private key and the certificate are correct</source>
         <translation>개인키와 인증서가 맞습니다.</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="2141"/>
+        <location filename="../cert_man_dlg.cpp" line="2144"/>
         <source>The private key and the certificate are incorrect [%1]</source>
         <translation>개인키와 인증서가 틀립니다[%1]</translation>
     </message>
@@ -3564,35 +3564,35 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">개인키와 인증서가 틀립니다</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="2197"/>
+        <location filename="../cert_man_dlg.cpp" line="2200"/>
         <source>find certificate</source>
         <translation>인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="2242"/>
+        <location filename="../cert_man_dlg.cpp" line="2245"/>
         <source>fail to make PFX: %1</source>
         <translation>PFX 만들기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="2249"/>
+        <location filename="../cert_man_dlg.cpp" line="2252"/>
         <source>PFX encrypt successfully(%1)</source>
         <translation>PFX 암호화에 성공하였습니다 (%1)</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="2301"/>
+        <location filename="../cert_man_dlg.cpp" line="2304"/>
         <source>Enter a new private key password</source>
         <translation>새로운 개인키 암호를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="2332"/>
+        <location filename="../cert_man_dlg.cpp" line="2335"/>
         <source>PFX decrypt successfully</source>
         <translation>PFX 복호화에 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1260"/>
-        <location filename="../cert_man_dlg.cpp" line="1367"/>
-        <location filename="../cert_man_dlg.cpp" line="2312"/>
-        <location filename="../cert_man_dlg.cpp" line="2382"/>
+        <location filename="../cert_man_dlg.cpp" line="1263"/>
+        <location filename="../cert_man_dlg.cpp" line="1370"/>
+        <location filename="../cert_man_dlg.cpp" line="2315"/>
+        <location filename="../cert_man_dlg.cpp" line="2385"/>
         <source>fail to encrypt private key: %1</source>
         <translation>개인키 암호화 실패: %1</translation>
     </message>
@@ -3617,75 +3617,75 @@ mailto : jykim74@gmail.com</translation>
         <translation>신뢰 최상위CA</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1374"/>
+        <location filename="../cert_man_dlg.cpp" line="1377"/>
         <source>fail to change private key: %1</source>
         <translation>개인키 변경 실패 : %1</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1378"/>
+        <location filename="../cert_man_dlg.cpp" line="1381"/>
         <source>The private key password is changed successfully</source>
         <translation>개인키 암호 변경에 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1414"/>
+        <location filename="../cert_man_dlg.cpp" line="1417"/>
         <source>fail to read the certificate</source>
         <translation>인증서 읽기 실패</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1455"/>
+        <location filename="../cert_man_dlg.cpp" line="1458"/>
         <source>fail to read the private key and certificate</source>
         <translation>개인키와 인증서 읽기에 실패하였습니다</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1462"/>
-        <location filename="../cert_man_dlg.cpp" line="2125"/>
-        <location filename="../cert_man_dlg.cpp" line="2225"/>
+        <location filename="../cert_man_dlg.cpp" line="1465"/>
+        <location filename="../cert_man_dlg.cpp" line="2128"/>
+        <location filename="../cert_man_dlg.cpp" line="2228"/>
         <source>fail to decrypt the private key: %1</source>
         <translation>개인키 복호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1852"/>
+        <location filename="../cert_man_dlg.cpp" line="1855"/>
         <source>fail to make TrustCA folder: %1</source>
         <translation>신뢰 CA 폴더 만들기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1867"/>
+        <location filename="../cert_man_dlg.cpp" line="1870"/>
         <source>This certificate is not self-signed</source>
         <translation>인증서가 자체 서명이 아닙니다</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="970"/>
-        <location filename="../cert_man_dlg.cpp" line="1530"/>
-        <location filename="../cert_man_dlg.cpp" line="1649"/>
-        <location filename="../cert_man_dlg.cpp" line="1878"/>
+        <location filename="../cert_man_dlg.cpp" line="973"/>
+        <location filename="../cert_man_dlg.cpp" line="1533"/>
+        <location filename="../cert_man_dlg.cpp" line="1652"/>
+        <location filename="../cert_man_dlg.cpp" line="1881"/>
         <source>The file(%1) is already existed</source>
         <translation>해당파일(%1)은 이미 존재합니다</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1886"/>
+        <location filename="../cert_man_dlg.cpp" line="1889"/>
         <source>The Certificate saved to trustedCA folder</source>
         <translation>신뢰 CA목록에 저장 되었습니다.</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1890"/>
+        <location filename="../cert_man_dlg.cpp" line="1893"/>
         <source>The Certificate failed to save to trustedCA folder:%1</source>
         <translation>인증서가 신뢰 CA목록 저장에 실패함 : %1</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1559"/>
-        <location filename="../cert_man_dlg.cpp" line="1678"/>
-        <location filename="../cert_man_dlg.cpp" line="1784"/>
-        <location filename="../cert_man_dlg.cpp" line="1906"/>
+        <location filename="../cert_man_dlg.cpp" line="1562"/>
+        <location filename="../cert_man_dlg.cpp" line="1681"/>
+        <location filename="../cert_man_dlg.cpp" line="1787"/>
+        <location filename="../cert_man_dlg.cpp" line="1909"/>
         <source>Do you delete?</source>
         <translation>정말로 지우시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1916"/>
+        <location filename="../cert_man_dlg.cpp" line="1919"/>
         <source>Trust CA has been deleted</source>
         <translation>해당 신뢰 CA 삭제 했습니다</translation>
     </message>
     <message>
-        <location filename="../cert_man_dlg.cpp" line="1920"/>
+        <location filename="../cert_man_dlg.cpp" line="1923"/>
         <source>failed to delete Trust CA</source>
         <translation>신뢰 CA 삭제 실패하였습니다</translation>
     </message>
@@ -9107,7 +9107,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../ssl_verify_dlg.ui" line="308"/>
-        <location filename="../ssl_verify_dlg.ui" line="616"/>
+        <location filename="../ssl_verify_dlg.ui" line="632"/>
         <source>Clear</source>
         <translation>지우기</translation>
     </message>
@@ -9195,8 +9195,8 @@ Do you want to delete the file and continue?</source>
         <translation>V</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.ui" line="408"/>
-        <location filename="../ssl_verify_dlg.ui" line="461"/>
+        <location filename="../ssl_verify_dlg.ui" line="371"/>
+        <location filename="../ssl_verify_dlg.ui" line="440"/>
         <source>C</source>
         <translation>C</translation>
     </message>
@@ -9212,25 +9212,25 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../ssl_verify_dlg.ui" line="254"/>
-        <location filename="../ssl_verify_dlg.ui" line="385"/>
-        <location filename="../ssl_verify_dlg.ui" line="474"/>
-        <location filename="../ssl_verify_dlg.ui" line="500"/>
+        <location filename="../ssl_verify_dlg.ui" line="398"/>
+        <location filename="../ssl_verify_dlg.ui" line="460"/>
+        <location filename="../ssl_verify_dlg.ui" line="513"/>
         <source>D</source>
         <translation>D</translation>
     </message>
     <message>
         <location filename="../ssl_verify_dlg.ui" line="264"/>
-        <location filename="../ssl_verify_dlg.ui" line="365"/>
-        <location filename="../ssl_verify_dlg.ui" line="372"/>
-        <location filename="../ssl_verify_dlg.ui" line="428"/>
+        <location filename="../ssl_verify_dlg.ui" line="385"/>
+        <location filename="../ssl_verify_dlg.ui" line="447"/>
+        <location filename="../ssl_verify_dlg.ui" line="500"/>
         <source>Find</source>
         <translation>찾기</translation>
     </message>
     <message>
         <location filename="../ssl_verify_dlg.ui" line="277"/>
-        <location filename="../ssl_verify_dlg.ui" line="448"/>
-        <location filename="../ssl_verify_dlg.ui" line="487"/>
-        <location filename="../ssl_verify_dlg.ui" line="513"/>
+        <location filename="../ssl_verify_dlg.ui" line="411"/>
+        <location filename="../ssl_verify_dlg.ui" line="490"/>
+        <location filename="../ssl_verify_dlg.ui" line="526"/>
         <source>T</source>
         <translation>T</translation>
     </message>
@@ -9240,13 +9240,18 @@ Do you want to delete the file and continue?</source>
         <translation>상호인증</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.ui" line="599"/>
-        <location filename="../ssl_verify_dlg.cpp" line="1047"/>
+        <location filename="../ssl_verify_dlg.ui" line="420"/>
+        <source>Select each certificate and private key</source>
+        <translation>인증서와 개인키 각각 선택</translation>
+    </message>
+    <message>
+        <location filename="../ssl_verify_dlg.ui" line="615"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1081"/>
         <source>Verify</source>
         <translation>검증</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.ui" line="755"/>
+        <location filename="../ssl_verify_dlg.ui" line="771"/>
         <source>Clear Log</source>
         <translation>로그 지우기</translation>
     </message>
@@ -9263,32 +9268,32 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">상호 인증</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.ui" line="392"/>
+        <location filename="../ssl_verify_dlg.ui" line="467"/>
         <source>Client Cert</source>
         <translation>클라이언트 인증서</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.ui" line="415"/>
+        <location filename="../ssl_verify_dlg.ui" line="474"/>
         <source>Client PriKey</source>
         <translation>클리이언트 개인키</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.ui" line="435"/>
+        <location filename="../ssl_verify_dlg.ui" line="378"/>
         <source>Client CA</source>
         <translation>클라이언트 CA</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.ui" line="527"/>
+        <location filename="../ssl_verify_dlg.ui" line="540"/>
         <source>Password</source>
         <translation>암호</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.ui" line="534"/>
+        <location filename="../ssl_verify_dlg.ui" line="547"/>
         <source>Encrypted PrivateKey</source>
         <translation>암호화된 개인키</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.ui" line="592"/>
+        <location filename="../ssl_verify_dlg.ui" line="608"/>
         <location filename="../ssl_verify_dlg.cpp" line="279"/>
         <source>URL</source>
         <translation>URL</translation>
@@ -9298,17 +9303,17 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">연결</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.ui" line="649"/>
+        <location filename="../ssl_verify_dlg.ui" line="665"/>
         <source>Tree</source>
         <translation>트리</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.ui" line="668"/>
+        <location filename="../ssl_verify_dlg.ui" line="684"/>
         <source>Log</source>
         <translation>로그</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.ui" line="579"/>
+        <location filename="../ssl_verify_dlg.ui" line="595"/>
         <source>Clear URLs</source>
         <translation>URL 지우기</translation>
     </message>
@@ -9317,7 +9322,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">저장 URL 지우기</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.ui" line="728"/>
+        <location filename="../ssl_verify_dlg.ui" line="744"/>
         <source>Refresh</source>
         <translation>다시 읽기</translation>
     </message>
@@ -9330,12 +9335,12 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">URL 로그</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.ui" line="721"/>
+        <location filename="../ssl_verify_dlg.ui" line="737"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.ui" line="748"/>
+        <location filename="../ssl_verify_dlg.ui" line="764"/>
         <source>Clear Result</source>
         <translation>결과 지우기</translation>
     </message>
@@ -9360,100 +9365,105 @@ Do you want to delete the file and continue?</source>
         <translation>남은기간</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="744"/>
+        <location filename="../ssl_verify_dlg.cpp" line="442"/>
+        <source>Select CA certificate</source>
+        <translation>CA 인증서를 선택하세요</translation>
+    </message>
+    <message>
+        <location filename="../ssl_verify_dlg.cpp" line="778"/>
         <source>Insert URL</source>
         <translation>URL 을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="761"/>
+        <location filename="../ssl_verify_dlg.cpp" line="795"/>
         <source>Invalid URL: %1</source>
         <translation>유효하지 않은 URL: %1</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="786"/>
-        <location filename="../ssl_verify_dlg.cpp" line="899"/>
-        <location filename="../ssl_verify_dlg.cpp" line="932"/>
+        <location filename="../ssl_verify_dlg.cpp" line="820"/>
+        <location filename="../ssl_verify_dlg.cpp" line="933"/>
+        <location filename="../ssl_verify_dlg.cpp" line="966"/>
         <source>Verify successful : %1</source>
         <translation>검증 성공 : %1</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="790"/>
-        <location filename="../ssl_verify_dlg.cpp" line="903"/>
-        <location filename="../ssl_verify_dlg.cpp" line="934"/>
+        <location filename="../ssl_verify_dlg.cpp" line="824"/>
+        <location filename="../ssl_verify_dlg.cpp" line="937"/>
+        <location filename="../ssl_verify_dlg.cpp" line="968"/>
         <source>Verify failed : %1</source>
         <translation>검증 실패 : %1</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="825"/>
-        <location filename="../ssl_verify_dlg.cpp" line="853"/>
+        <location filename="../ssl_verify_dlg.cpp" line="859"/>
+        <location filename="../ssl_verify_dlg.cpp" line="887"/>
         <source>Invalid certificate : %1</source>
         <translation>잘못된 인증서 파일 : %1</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="832"/>
+        <location filename="../ssl_verify_dlg.cpp" line="866"/>
         <source>There is no root certificate in SSL. Would you like to retrieve the root certificate from certificate information?</source>
         <translation>SSL 메세지에 루트 인증서가 없습니다. 인증서 정보로 부터 루트 인증서를 가져오겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="843"/>
+        <location filename="../ssl_verify_dlg.cpp" line="877"/>
         <source>fail to get RootCA : %1</source>
         <translation>루트CA 가져오기 실패 : %1</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="864"/>
+        <location filename="../ssl_verify_dlg.cpp" line="898"/>
         <source>This ceriticate is not root( DN: %1)</source>
         <translation>이 인증서는 루트가 아닙니다(DN: %1)</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="873"/>
+        <location filename="../ssl_verify_dlg.cpp" line="907"/>
         <source>Would you like to add that root certificate to the trust list and verify it again?</source>
         <translation>루트 인증서를 신뢰 목록에 추가 후 다시 검증 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="892"/>
+        <location filename="../ssl_verify_dlg.cpp" line="926"/>
         <source>The Certificate failed to save to trustedCA folder:%1</source>
         <translation>인증서가 신뢰 CA목록 저장에 실패함 : %1</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="1009"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1043"/>
         <source>Trust RootCA List</source>
         <translation>신뢰 최상위 CA 목록</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="1048"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1082"/>
         <source>Delete</source>
         <translation>삭제</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="1049"/>
-        <location filename="../ssl_verify_dlg.cpp" line="1126"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1083"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1160"/>
         <source>View Cert</source>
         <translation>인증서 보기</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="1050"/>
-        <location filename="../ssl_verify_dlg.cpp" line="1127"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1084"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1161"/>
         <source>Decode Cert</source>
         <translation>인증서 디코딩</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="1128"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1162"/>
         <source>Save to trustedCA</source>
         <translation>신뢰CA에 저장</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="1181"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1215"/>
         <source>This certificate is not self-signed</source>
         <translation>인증서가 자체 서명이 아닙니다</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="1189"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1223"/>
         <source>fail to mkdir:%1</source>
         <translation>경로 만들기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="885"/>
-        <location filename="../ssl_verify_dlg.cpp" line="1200"/>
+        <location filename="../ssl_verify_dlg.cpp" line="919"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1234"/>
         <source>The file(%1) is already existed</source>
         <translation>해당파일(%1)은 이미 존재합니다</translation>
     </message>
@@ -9462,54 +9472,55 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">경로 만들기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="1206"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1240"/>
         <source>The Certificate saved to trusted CA directory</source>
         <translation>인증서가 신뢰CA목록에 저장 되었습니다</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="1208"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1242"/>
         <source>The Certificate failed to save to trusted CA directory [%1]</source>
         <translation>인증서가 신뢰 CA목록 저장에 실패함 [%1]</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="1246"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1280"/>
         <source>select a private key</source>
         <translation>개인키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="1253"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1287"/>
         <source>failed to read private key: %1</source>
         <translation>개인키 읽기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="1262"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1296"/>
         <source>Enter a password</source>
         <translation>암호를 입력해야 합니다</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="1270"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1304"/>
         <source>failed to decrypt private key:%1</source>
         <translation>개인키 복호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="1322"/>
-        <location filename="../ssl_verify_dlg.cpp" line="1396"/>
-        <location filename="../ssl_verify_dlg.cpp" line="1470"/>
-        <location filename="../ssl_verify_dlg.cpp" line="1530"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1356"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1430"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1504"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1564"/>
         <source>failed to read data</source>
         <translation>데이타 읽기 실패</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="1341"/>
-        <location filename="../ssl_verify_dlg.cpp" line="1415"/>
-        <location filename="../ssl_verify_dlg.cpp" line="1489"/>
+        <location filename="../ssl_verify_dlg.cpp" line="480"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1375"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1449"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1523"/>
         <source>Select a certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="1350"/>
-        <location filename="../ssl_verify_dlg.cpp" line="1424"/>
-        <location filename="../ssl_verify_dlg.cpp" line="1498"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1384"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1458"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1532"/>
         <source>Certificate Type is %1</source>
         <translation>인증서 타입은 %1 이다</translation>
     </message>
@@ -9554,7 +9565,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">서명용 인증서 타입은 %1 이다</translation>
     </message>
     <message>
-        <location filename="../ssl_verify_dlg.cpp" line="1549"/>
+        <location filename="../ssl_verify_dlg.cpp" line="1583"/>
         <source>KM Private Key Type is %1</source>
         <translation>KM용 개인키 타입은 %1 이다</translation>
     </message>
@@ -9653,42 +9664,42 @@ Do you want to delete the file and continue?</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="63"/>
+        <location filename="../sss_dlg.cpp" line="65"/>
         <source>Seq</source>
         <translation>시퀀스</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="63"/>
+        <location filename="../sss_dlg.cpp" line="65"/>
         <source>Value</source>
         <translation>값</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="141"/>
+        <location filename="../sss_dlg.cpp" line="143"/>
         <source>Enter shared value</source>
         <translation>공유키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="183"/>
+        <location filename="../sss_dlg.cpp" line="185"/>
         <source>Enter source value</source>
         <translation>소스 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="198"/>
+        <location filename="../sss_dlg.cpp" line="200"/>
         <source>Input value must be at least 8 bytes</source>
         <translation>소스 값은 8바이트 이상이어야 합니다.</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="204"/>
+        <location filename="../sss_dlg.cpp" line="206"/>
         <source>Prime value ​​must be longer than or equal to the source value</source>
         <translation>소수는 입력 소스 길이보다 같거나 커야 합니다</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="212"/>
+        <location filename="../sss_dlg.cpp" line="214"/>
         <source>fail to split key: %1</source>
         <translation>키 나누기 실패 : %1</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="289"/>
+        <location filename="../sss_dlg.cpp" line="291"/>
         <source>fail to join key: %1</source>
         <translation>키 합치기 실패 : %1</translation>
     </message>
@@ -9697,7 +9708,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">공유키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="153"/>
+        <location filename="../sss_dlg.cpp" line="155"/>
         <source>%1 is already added</source>
         <translation>%1 은 이미 추가 되었습니다</translation>
     </message>
@@ -9710,7 +9721,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">소스 값은 8바이트 이상이어야 합니다.</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="337"/>
+        <location filename="../sss_dlg.cpp" line="339"/>
         <source>Delete</source>
         <translation>삭제</translation>
     </message>

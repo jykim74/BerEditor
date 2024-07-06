@@ -375,6 +375,10 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
     char    sNotBefore[64];
     char    sNotAfter[64];
 
+    BIN binCA = {0,0};
+    BIN binCert = {0,0};
+    BIN binPriKey = {0,0};
+
     int row = mURLTable->rowCount();
     time_t now_t = time( NULL );
     time_t left_t = 0;
@@ -429,11 +433,21 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
 
     if( mUseMutualCheck->isChecked() )
     {
-        BIN binCA = {0,0};
-        BIN binCert = {0,0};
-        BIN binPriKey = {0,0};
 
         QString strClientCAPath = mClientCAPathText->text();
+
+        if( strClientCAPath.length() < 1 )
+        {
+            CertManDlg certMan;
+            certMan.setMode(ManModeSelCA);
+            certMan.setTitle( tr( "Select CA certificate" ));
+            if( certMan.exec() == QDialog::Accepted )
+            {
+                strClientCAPath = certMan.getSeletedCAPath();
+                mClientCAPathText->setText( strClientCAPath );
+            }
+        }
+
         if( strClientCAPath.length() > 0 )
         {
             JS_BIN_fileReadBER( strClientCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
@@ -442,18 +456,39 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
             JS_BIN_reset( &binCA );
         }
 
-        QString strClientCertPath = mClientCAPathText->text();
-        JS_BIN_fileReadBER( strClientCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
-        ret = readPrivateKey( &binPriKey );
-
-        if( binCert.nLen > 0 && binPriKey.nLen > 0 )
+        if( mCertGroup->isChecked() )
         {
-            JS_SSL_setCertAndPriKey( pCTX, &binPriKey, &binCert );
-            log( "Client certificate and private key is set" );
-        }
+            QString strClientCertPath = mClientCAPathText->text();
+            JS_BIN_fileReadBER( strClientCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+            ret = readPrivateKey( &binPriKey );
 
-        JS_BIN_reset( &binCert );
-        JS_BIN_reset( &binPriKey );
+            if( binCert.nLen > 0 && binPriKey.nLen > 0 )
+            {
+                JS_SSL_setCertAndPriKey( pCTX, &binPriKey, &binCert );
+                log( "Client certificate and private key is set" );
+            }
+
+            JS_BIN_reset( &binCert );
+            JS_BIN_reset( &binPriKey );
+        }
+        else
+        {
+            CertManDlg certMan;
+            QString strPriHex;
+            QString strCertHex;
+
+            certMan.setMode( ManModeSelBoth );
+            certMan.setTitle( tr( "Select a certificate") );
+
+            if( certMan.exec() == QDialog::Accepted )
+            {
+                strPriHex = certMan.getPriKeyHex();
+                strCertHex = certMan.getCertHex();
+
+                JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binPriKey );
+                JS_BIN_decodeHex( strCertHex.toStdString().c_str(), &binCert );
+            }
+        }
     }
 
     log( "========================================================================");
@@ -477,6 +512,12 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
         ret = JSR_SSL_INIT_FAIL;
         goto end;
     }
+
+    if( binCA.nLen > 0 )
+        JS_SSL_setClientCACert( pCTX, &binCA );
+
+    if( binPriKey.nLen > 0 && binCert.nLen > 0 )
+        JS_SSL_setCertAndPriKey( pCTX, &binPriKey, &binCert );
 
     if( nVerifyDepth > 0 )
     {
@@ -604,6 +645,10 @@ end :
 
     if( pCertList ) JS_BIN_resetList( &pCertList );
     JS_PKI_resetCertInfo( &sCertInfo );
+
+    JS_BIN_reset( &binCA );
+    JS_BIN_reset( &binPriKey );
+    JS_BIN_reset( &binCert );
 
     return ret;
 }

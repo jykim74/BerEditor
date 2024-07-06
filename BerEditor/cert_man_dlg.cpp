@@ -187,6 +187,7 @@ void CertManDlg::initUI()
     mEE_CertTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mEE_CertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     mEE_CertTable->setColumnWidth( 0, 200 );
+    mEE_CertTable->setColumnWidth(1, 80);
 
     QStringList sOtherTableLabels = { tr( "Name" ), tr( "Subject DN" ), tr( "Algorithm"), tr( "Expire" ), tr( "Issuer DN" ) };
 
@@ -199,6 +200,7 @@ void CertManDlg::initUI()
     mOther_CertTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mOther_CertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     mOther_CertTable->setColumnWidth( 1, 140 );
+    mOther_CertTable->setColumnWidth( 2, 80 );
 
     QStringList sCATableLabels = { tr( "Name" ), tr( "Subject DN" ), tr( "Algorithm"), tr( "Expire" ), tr( "Issuer DN" ) };
 
@@ -211,6 +213,7 @@ void CertManDlg::initUI()
     mCA_CertTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mCA_CertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     mCA_CertTable->setColumnWidth( 1, 140 );
+    mCA_CertTable->setColumnWidth( 2, 80 );
 
     QStringList sCRLTableLabels = { tr( "Name" ), tr( "Issuer DN" ), tr( "This Update"), tr( "Next Update" ) };
 
