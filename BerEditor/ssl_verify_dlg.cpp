@@ -375,9 +375,9 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
     char    sNotBefore[64];
     char    sNotAfter[64];
 
-    BIN binCA = {0,0};
-    BIN binCert = {0,0};
-    BIN binPriKey = {0,0};
+    BIN binClientCA = {0,0};
+    BIN binClientCert = {0,0};
+    BIN binClientPriKey = {0,0};
 
     int row = mURLTable->rowCount();
     time_t now_t = time( NULL );
@@ -450,26 +450,14 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
 
         if( strClientCAPath.length() > 0 )
         {
-            JS_BIN_fileReadBER( strClientCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
-            JS_SSL_setClientCACert( pCTX, &binCA );
-            log( "Client CA is set" );
-            JS_BIN_reset( &binCA );
+            JS_BIN_fileReadBER( strClientCAPath.toLocal8Bit().toStdString().c_str(), &binClientCA );
         }
 
         if( mCertGroup->isChecked() )
         {
             QString strClientCertPath = mClientCAPathText->text();
-            JS_BIN_fileReadBER( strClientCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
-            ret = readPrivateKey( &binPriKey );
-
-            if( binCert.nLen > 0 && binPriKey.nLen > 0 )
-            {
-                JS_SSL_setCertAndPriKey( pCTX, &binPriKey, &binCert );
-                log( "Client certificate and private key is set" );
-            }
-
-            JS_BIN_reset( &binCert );
-            JS_BIN_reset( &binPriKey );
+            JS_BIN_fileReadBER( strClientCertPath.toLocal8Bit().toStdString().c_str(), &binClientCert );
+            ret = readPrivateKey( &binClientPriKey );
         }
         else
         {
@@ -485,8 +473,8 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
                 strPriHex = certMan.getPriKeyHex();
                 strCertHex = certMan.getCertHex();
 
-                JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binPriKey );
-                JS_BIN_decodeHex( strCertHex.toStdString().c_str(), &binCert );
+                JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binClientPriKey );
+                JS_BIN_decodeHex( strCertHex.toStdString().c_str(), &binClientCert );
             }
         }
     }
@@ -513,11 +501,11 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
         goto end;
     }
 
-    if( binCA.nLen > 0 )
-        JS_SSL_setClientCACert( pCTX, &binCA );
+    if( binClientCA.nLen > 0 )
+        JS_SSL_setClientCACert( pCTX, &binClientCA );
 
-    if( binPriKey.nLen > 0 && binCert.nLen > 0 )
-        JS_SSL_setCertAndPriKey( pCTX, &binPriKey, &binCert );
+    if( binClientPriKey.nLen > 0 && binClientCert.nLen > 0 )
+        JS_SSL_setCertAndPriKey( pCTX, &binClientPriKey, &binClientCert );
 
     if( nVerifyDepth > 0 )
     {
@@ -646,9 +634,9 @@ end :
     if( pCertList ) JS_BIN_resetList( &pCertList );
     JS_PKI_resetCertInfo( &sCertInfo );
 
-    JS_BIN_reset( &binCA );
-    JS_BIN_reset( &binPriKey );
-    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binClientCA );
+    JS_BIN_reset( &binClientPriKey );
+    JS_BIN_reset( &binClientCert );
 
     return ret;
 }
