@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>529</width>
-    <height>641</height>
+    <width>690</width>
+    <height>806</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -534,6 +534,13 @@
          <property name="topMargin">
           <number>0</number>
          </property>
+         <item row="0" column="1">
+          <widget class="QProgressBar" name="mSignProgBar">
+           <property name="value">
+            <number>0</number>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label_11">
            <property name="minimumSize">
@@ -553,15 +560,8 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QProgressBar" name="mSignProgBar">
-           <property name="value">
-            <number>0</number>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="2">
-          <widget class="QPushButton" name="mRunThreadBtn">
+          <widget class="QCheckBox" name="mRunThreadCheck">
            <property name="text">
             <string>RunThread</string>
            </property>

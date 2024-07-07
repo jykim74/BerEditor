@@ -87,8 +87,6 @@ EncDecDlg::EncDecDlg(QWidget *parent) :
     connect( mFindSrcFileBtn, SIGNAL(clicked()), this, SLOT(clickFindSrcFile()));
     connect( mFindDstFileBtn, SIGNAL(clicked()), this, SLOT(clickFindDstFile()));
 
-    connect( mRunThreadBtn, SIGNAL(clicked()), this, SLOT(fileRunThread()));
-
     clickUseAE();
     mCloseBtn->setFocus();
 
@@ -140,7 +138,12 @@ void EncDecDlg::Run()
     if( index == 0 )
         dataRun();
     else
-        fileRun();
+    {
+        if( mRunThreadCheck->isChecked() )
+            fileRunThread();
+        else
+            fileRun();
+    }
 }
 
 void EncDecDlg::dataRun()

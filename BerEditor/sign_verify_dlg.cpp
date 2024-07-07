@@ -94,8 +94,6 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
 
     connect( mEncPrikeyCheck, SIGNAL(clicked()), this, SLOT(checkEncPriKey()));
 
-    connect( mRunThreadBtn, SIGNAL(clicked()), this, SLOT(fileRunThread()));
-
     mCloseBtn->setFocus();
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -751,7 +749,12 @@ void SignVerifyDlg::Run()
     if( index == 0 )
         dataRun();
     else
-        fileRun();
+    {
+        if( mRunThreadCheck->isChecked() )
+            fileRunThread();
+        else
+            fileRun();
+    }
 }
 
 void SignVerifyDlg::dataRun()

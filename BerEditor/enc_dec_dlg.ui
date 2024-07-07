@@ -522,6 +522,13 @@
          <property name="topMargin">
           <number>0</number>
          </property>
+         <item row="0" column="1">
+          <widget class="QProgressBar" name="mEncProgBar">
+           <property name="value">
+            <number>0</number>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label_19">
            <property name="minimumSize">
@@ -541,15 +548,8 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QProgressBar" name="mEncProgBar">
-           <property name="value">
-            <number>0</number>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="2">
-          <widget class="QPushButton" name="mRunThreadBtn">
+          <widget class="QCheckBox" name="mRunThreadCheck">
            <property name="text">
             <string>RunThread</string>
            </property>

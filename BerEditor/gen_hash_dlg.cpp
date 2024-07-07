@@ -47,8 +47,6 @@ GenHashDlg::GenHashDlg(QWidget *parent) :
 
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
 
-    connect( mRunThreadBtn, SIGNAL(clicked()), this, SLOT(clickDigestSrcFileThread()));
-
     initialize();
     mCloseBtn->setFocus();
 
@@ -185,7 +183,12 @@ void GenHashDlg::digest()
     if( index == 0 )
         clickDigest();
     else
-        clickDigestSrcFile();
+    {
+        if( mRunThreadCheck->isChecked() )
+            clickDigestSrcFileThread();
+        else
+            clickDigestSrcFile();
+    }
 }
 
 void GenHashDlg::clickDigest()

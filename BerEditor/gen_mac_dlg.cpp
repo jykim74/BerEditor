@@ -72,7 +72,6 @@ GenMacDlg::GenMacDlg(QWidget *parent) :
     connect( mFindSrcFileBtn, SIGNAL(clicked()), this, SLOT(clickFindSrcFile()));
 
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
-    connect( mRunThreadBtn, SIGNAL(clicked()), this, SLOT(clickMacSrcFileThread()));
 
     initialize();
     mCloseBtn->setFocus();
@@ -326,7 +325,12 @@ void GenMacDlg::mac()
     if( index == 0 )
         clickMAC();
     else
-        clickMACSrcFile();
+    {
+        if( mRunThreadCheck->isChecked() )
+            clickMacSrcFileThread();
+        else
+            clickMACSrcFile();
+    }
 }
 
 void GenMacDlg::clickMAC()

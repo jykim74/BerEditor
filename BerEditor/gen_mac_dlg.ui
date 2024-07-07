@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>543</width>
-    <height>468</height>
+    <height>589</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -528,13 +528,6 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_10">
-         <item row="0" column="1">
-          <widget class="QProgressBar" name="mMACProgBar">
-           <property name="value">
-            <number>0</number>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label_11">
            <property name="minimumSize">
@@ -554,8 +547,15 @@
            </property>
           </widget>
          </item>
+         <item row="0" column="1">
+          <widget class="QProgressBar" name="mMACProgBar">
+           <property name="value">
+            <number>0</number>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="2">
-          <widget class="QPushButton" name="mRunThreadBtn">
+          <widget class="QCheckBox" name="mRunThreadCheck">
            <property name="text">
             <string>RunThread</string>
            </property>
