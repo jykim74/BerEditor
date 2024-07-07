@@ -209,7 +209,8 @@ int BerApplet::checkLicense()
     else
     {
         QString strMsg = tr( "License is invalid: %1" ).arg(ret);
-        berApplet->warningBox( strMsg, nullptr );
+//        berApplet->warningBox( strMsg, nullptr );
+        berApplet->log( strMsg, QColorConstants::DarkRed );
     }
 
 end :
