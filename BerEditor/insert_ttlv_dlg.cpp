@@ -14,6 +14,10 @@ InsertTTLVDlg::InsertTTLVDlg(QWidget *parent) :
     connect( mDataText, SIGNAL(textChanged()), this, SLOT(changeData()));
 
     initialize();
+
+#if defined(Q_OS_MAC)
+    layout()->setSpacing(5);
+#endif
 }
 
 InsertTTLVDlg::~InsertTTLVDlg()

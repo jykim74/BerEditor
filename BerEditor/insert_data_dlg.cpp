@@ -20,6 +20,10 @@ InsertDataDlg::InsertDataDlg(QWidget *parent) :
 
     mTypeHex->setChecked(true);
     mViewBtn->setDefault(true);
+
+#if defined(Q_OS_MAC)
+    layout()->setSpacing(5);
+#endif
 }
 
 InsertDataDlg::~InsertDataDlg()
