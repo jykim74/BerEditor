@@ -86,6 +86,15 @@ private slots:
     void openCert();
     void openCRL();
     void openCSR();
+
+    void copy();
+    void copyAsHex();
+    void copyAsBase64();
+    void treeExpandAll();
+    void treeExpandNode();
+    void treeCollapseAll();
+    void treeCollapseNode();
+
     void about();
     void setting();
     void test();

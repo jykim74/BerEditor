@@ -380,27 +380,27 @@ void MainWindow::createActions()
     QAction *copyAct = new QAction(copyIcon, tr("&Copy Information"), this);
     copyAct->setShortcuts(QKeySequence::Copy);
     copyAct->setStatusTip(tr("Copy the current selection's contents to the clipboard"));
-    connect( copyAct, &QAction::triggered, left_tree_, &BerTreeView::copy );
+    connect( copyAct, &QAction::triggered, this, &MainWindow::copy );
     editMenu->addAction(copyAct);
 //    editToolBar->addAction(copyAct);
 
     QAction *copyAsHexAct = new QAction(copyIcon, tr("Copy As &Hex"), this);
     copyAsHexAct->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_X));
     copyAsHexAct->setStatusTip(tr("Copy ber data as hex"));
-    connect( copyAsHexAct, &QAction::triggered, left_tree_, &BerTreeView::CopyAsHex );
+    connect( copyAsHexAct, &QAction::triggered, this, &MainWindow::copyAsHex );
     editMenu->addAction( copyAsHexAct );
 
     QAction *copyAsBase64Act = new QAction(copyIcon, tr("Copy As &Base64"), this);
     copyAsBase64Act->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_B));
     copyAsBase64Act->setStatusTip(tr("Copy ber data as base64"));
-    connect( copyAsBase64Act, &QAction::triggered, left_tree_, &BerTreeView::CopyAsBase64 );
+    connect( copyAsBase64Act, &QAction::triggered, this, &MainWindow::copyAsBase64 );
     editMenu->addAction( copyAsBase64Act );
 
     const QIcon expandAllIcon = QIcon::fromTheme("expand-all", QIcon(":/images/expand_all.png"));
     QAction *expandAllAct = new QAction(expandAllIcon, tr("&Expand All"), this );
     expandAllAct->setShortcut( QKeySequence(Qt::Key_F5) );
     expandAllAct->setStatusTip(tr("Show all nodes"));
-    connect( expandAllAct, &QAction::triggered, left_tree_, &BerTreeView::treeExpandAll );
+    connect( expandAllAct, &QAction::triggered, this, &MainWindow::treeExpandAll );
     editMenu->addAction(expandAllAct);
     editToolBar->addAction(expandAllAct);
 
@@ -408,7 +408,7 @@ void MainWindow::createActions()
     QAction *expandNodeAct = new QAction(expandNodeIcon, tr("&Expand Node"), this );
     expandNodeAct->setStatusTip(tr("Show node"));
     expandNodeAct->setShortcut( QKeySequence(Qt::Key_F6));
-    connect( expandNodeAct, &QAction::triggered, left_tree_, &BerTreeView::treeExpandNode );
+    connect( expandNodeAct, &QAction::triggered, this, &MainWindow::treeExpandNode );
     editMenu->addAction(expandNodeAct);
     editToolBar->addAction(expandNodeAct);
 
@@ -416,7 +416,7 @@ void MainWindow::createActions()
     QAction *collapseAllAct = new QAction(collapseAllIcon, tr("&Collapse All"), this );
     collapseAllAct->setStatusTip(tr("Collapse all nodes"));
     collapseAllAct->setShortcut( QKeySequence(Qt::Key_F7));
-    connect( collapseAllAct, &QAction::triggered, left_tree_, &BerTreeView::treeCollapseAll );
+    connect( collapseAllAct, &QAction::triggered, this, &MainWindow::treeCollapseAll );
     editMenu->addAction(collapseAllAct);
     editToolBar->addAction(collapseAllAct);
 
@@ -424,7 +424,7 @@ void MainWindow::createActions()
     QAction *collapseNodeAct = new QAction(collapseNodeIcon, tr("&Collapse Node"), this );
     collapseNodeAct->setStatusTip(tr("Show node"));
     collapseNodeAct->setShortcut( QKeySequence(Qt::Key_F8));
-    connect( collapseNodeAct, &QAction::triggered, left_tree_, &BerTreeView::treeCollapseNode );
+    connect( collapseNodeAct, &QAction::triggered, this, &MainWindow::treeCollapseNode );
     editMenu->addAction(collapseNodeAct);
     editToolBar->addAction(collapseNodeAct);
 
@@ -1021,6 +1021,90 @@ void MainWindow::openCSR()
     JS_BIN_reset( &binCSR );
 }
 
+void MainWindow::copy()
+{
+    if( hsplitter_->widget(0) == ttlv_tree_)
+    {
+        ttlv_tree_->copy();
+    }
+    else
+    {
+        left_tree_->copy();
+    }
+}
+
+void MainWindow::copyAsHex()
+{
+    if( hsplitter_->widget(0) == ttlv_tree_)
+    {
+        ttlv_tree_->CopyAsHex();
+    }
+    else
+    {
+        left_tree_->CopyAsHex();
+    }
+}
+
+void MainWindow::copyAsBase64()
+{
+    if( hsplitter_->widget(0) == ttlv_tree_)
+    {
+        ttlv_tree_->CopyAsBase64();
+    }
+    else
+    {
+        left_tree_->CopyAsBase64();
+    }
+}
+
+void MainWindow::treeExpandAll()
+{
+    if( hsplitter_->widget(0) == ttlv_tree_)
+    {
+        ttlv_tree_->treeExpandAll();
+    }
+    else
+    {
+        left_tree_->treeExpandAll();
+    }
+}
+
+void MainWindow::treeExpandNode()
+{
+    if( hsplitter_->widget(0) == ttlv_tree_)
+    {
+        ttlv_tree_->treeExpandNode();
+    }
+    else
+    {
+        left_tree_->treeExpandNode();
+    }
+}
+
+void MainWindow::treeCollapseAll()
+{
+    if( hsplitter_->widget(0) == ttlv_tree_)
+    {
+        ttlv_tree_->treeCollapseAll();
+    }
+    else
+    {
+        left_tree_->treeCollapseAll();
+    }
+}
+
+void MainWindow::treeCollapseNode()
+{
+    if( hsplitter_->widget(0) == ttlv_tree_)
+    {
+        ttlv_tree_->treeCollapseNode();
+    }
+    else
+    {
+        left_tree_->treeCollapseNode();
+    }
+}
+
 void MainWindow::openBer( const BIN *pBer )
 {
     ber_model_->setBer( pBer );
@@ -1599,8 +1683,8 @@ void MainWindow::decodeTTLV( const BIN *pData )
 
     if( berApplet->isLicense() )
     {
- //       left_tree_->showTextView();
- //       left_tree_->showXMLView();
+        ttlv_tree_->showTextView();
+        ttlv_tree_->showXMLView();
     }
 
     if( hsplitter_->widget(0) != ttlv_tree_ )

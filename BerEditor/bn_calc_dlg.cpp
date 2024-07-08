@@ -140,7 +140,7 @@ BNCalcDlg::BNCalcDlg(QWidget *parent) :
 
     resize(minimumSizeHint().width(), minimumSizeHint().height() - 70);
 #else
-    resize(width(), minimumSizeHint().height());
+    resize(minimumSizeHint().width(), minimumSizeHint().height());
 #endif
     intialize();
 }

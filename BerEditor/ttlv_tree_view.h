@@ -19,6 +19,8 @@ public:
     void getInfoView( TTLVTreeItem *pItem );
     QString GetTextView();
 
+    void showTextView();
+    void showXMLView();
 public slots:
     void CopyAsHex();
     void CopyAsBase64();
@@ -36,6 +38,12 @@ private slots:
     void editItem();
     void saveItem();
     void saveItemValue();
+
+    void showItemText( TTLVTreeItem* item );
+    void showItemXML( TTLVTreeItem* item );
+
+    void showText( int level, const QString& strMsg, QColor cr = QColor(0x00, 0x00, 0x00), bool bBold = false );
+    void showXML( int level, const QString& strMsg, QColor cr = QColor(0x00, 0x00, 0x00), bool bBold = false );
 
 private:
     TTLVTreeItem* currentItem();
