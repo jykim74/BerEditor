@@ -62,6 +62,9 @@ public:
     QTableWidget* rightTable() { return right_table_; };
     QTextEdit* rightText() { return right_text_; };
     QTextEdit* rightXML() { return right_xml_; };
+    TTLVTreeView* ttlvTree() { return ttlv_tree_; };
+    TTLVTreeModel*ttlvModel() { return ttlv_model_; };
+
     void showTextMsg( const QString& msg );
 
     void showWindow();

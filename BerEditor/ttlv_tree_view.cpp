@@ -3,6 +3,7 @@
 #include <QClipboard>
 
 #include "ttlv_tree_view.h"
+#include "edit_ttlv_dlg.h"
 #include "ttlv_tree_item.h"
 #include "ttlv_tree_model.h"
 
@@ -397,8 +398,8 @@ void TTLVTreeView::treeCollapseNode()
 
 void TTLVTreeView::editItem()
 {
-    //    EditDlg editDlg;
-    //    editDlg.exec();
+    EditTTLVDlg editTTLV;
+    editTTLV.exec();
 }
 
 void TTLVTreeView::saveItem()

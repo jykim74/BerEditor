@@ -45,7 +45,7 @@ private slots:
     void showText( int level, const QString& strMsg, QColor cr = QColor(0x00, 0x00, 0x00), bool bBold = false );
     void showXML( int level, const QString& strMsg, QColor cr = QColor(0x00, 0x00, 0x00), bool bBold = false );
 
-private:
+public:
     TTLVTreeItem* currentItem();
 };
 
