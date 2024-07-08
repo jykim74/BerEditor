@@ -10,6 +10,7 @@
 #include <QMessageBox>
 #include <QMainWindow>
 
+
 #include "mainwindow.h"
 #include "ber_applet.h"
 #include "settings_dlg.h"
@@ -210,7 +211,7 @@ int BerApplet::checkLicense()
     {
         QString strMsg = tr( "License is invalid: %1" ).arg(ret);
 //        berApplet->warningBox( strMsg, nullptr );
-        berApplet->info( strMsg, QColorConstants::DarkRed );
+        berApplet->info( strMsg, Qt::darkRed );
     }
 
 end :
