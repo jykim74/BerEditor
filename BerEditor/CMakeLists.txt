@@ -186,6 +186,8 @@ add_executable(${PROJECT_NAME}
     mac_thread.h mac_thread.cpp
     enc_dec_thread.h enc_dec_thread.cpp
     sign_verify_thread.h sign_verify_thread.cpp
+    ttlv_tree_item.h ttlv_tree_model.h ttlv_tree_view.h
+    ttlv_tree_item.cpp ttlv_tree_model.cpp ttlv_tree_view.cpp
 )
 
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )

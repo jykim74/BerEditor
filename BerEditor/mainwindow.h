@@ -69,6 +69,7 @@ public:
     void log( const QString strLog, QColor cr = QColor(0x00, 0x00, 0x00) );
     void elog( const QString strLog );
     void info( const QString strLog, QColor cr = QColor(0x00, 0x00, 0x00) );
+    void infoClear();
 
     QString getInfo();
     void useLog( bool bEnable = true );

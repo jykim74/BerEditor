@@ -1078,6 +1078,11 @@ void MainWindow::info( const QString strLog, QColor cr )
     info_text_->repaint();
 }
 
+void MainWindow::infoClear()
+{
+    info_text_->clear();
+}
+
 QString MainWindow::getInfo()
 {
     return info_text_->toPlainText();
