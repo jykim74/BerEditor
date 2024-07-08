@@ -17,6 +17,7 @@ public:
     void showRightFull( TTLVTreeItem *pItem );
     void showRightPart( TTLVTreeItem *pItem );
     void getInfoView( TTLVTreeItem *pItem );
+    QString GetTextView();
 
 public slots:
     void CopyAsHex();

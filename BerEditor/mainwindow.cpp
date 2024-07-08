@@ -1624,7 +1624,13 @@ void MainWindow::print()
     if (dlg->exec() == QDialog::Accepted)
     {
         QTextEdit txtEdit;
-        QString strText = left_tree_->GetTextView();
+        QString strText;
+
+        if( hsplitter_->widget(0) == ttlv_tree_)
+            strText = ttlv_tree_->GetTextView();
+        else
+            strText = left_tree_->GetTextView();
+
         txtEdit.setText(strText);
         txtEdit.print(&printer);
 //        rightText_->print(&printer);
@@ -1650,7 +1656,13 @@ void MainWindow::printPreview(QPrinter *printer)
     Q_UNUSED(printer);
 #else
     QTextEdit txtEdit;
-    QString strText = left_tree_->GetTextView();
+    QString strText;
+
+    if( hsplitter_->widget(0) == ttlv_tree_)
+        strText = ttlv_tree_->GetTextView();
+    else
+        strText = left_tree_->GetTextView();
+
     txtEdit.setText(strText);
     txtEdit.print(printer);
 //    rightText_->print(printer);

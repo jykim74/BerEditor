@@ -302,6 +302,30 @@ void TTLVTreeView::getInfoView(TTLVTreeItem *pItem)
     berApplet->info( QString( "Value  : %1").arg( pItem->getPrintValue() ) );
 }
 
+QString TTLVTreeView::GetTextView()
+{
+    TTLVTreeModel *tree_model = (TTLVTreeModel *)model();
+    TTLVTreeItem *item = currentItem();
+
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "There are no items selected."), this );
+        return "";
+    }
+
+
+    BIN binBer = tree_model->getTTLV();
+    BIN binData = {0,0};
+
+    JS_BIN_set( &binData, &binBer.pVal[item->getOffset()], item->getLengthInt() + 8 );
+    QString strText = berApplet->mainWindow()->getInfo();
+    strText += "\n=================================================================================\n";
+    strText += getHexView( "All Data", &binData );
+    JS_BIN_reset( &binData );
+
+    return strText;
+}
+
 void TTLVTreeView::CopyAsHex()
 {
     char *pHex = NULL;
