@@ -15,6 +15,8 @@
 
 #include "ber_model.h"
 #include "ber_tree_view.h"
+#include "ttlv_tree_model.h"
+#include "ttlv_tree_view.h"
 #include "js_bin.h"
 
 class QPrinter;
@@ -75,6 +77,7 @@ public:
     void useLog( bool bEnable = true );
 
     void decodeData( const BIN *pData, const QString strPath = "" );
+    void decodeTTLV( const BIN *pData );
 
 private slots:
     void newFile();
@@ -111,6 +114,7 @@ private slots:
     void certMan();
     void insertBER();
     void insertData();
+    void insertTTLV();
     void numTrans();
     void getURI();
     void save();
@@ -153,13 +157,18 @@ private:
 
     QSplitter       *hsplitter_;
     QSplitter       *vsplitter_;
+
     BerTreeView     *left_tree_;
+    BerModel        *ber_model_;
+
+    TTLVTreeView    *ttlv_tree_;
+    TTLVTreeModel   *ttlv_model_;
 
     QTabWidget      *table_tab_;
     QTabWidget      *text_tab_;
     QTextEdit       *log_text_;
     QTextEdit       *info_text_;
-    BerModel        *ber_model_;
+
     QTableWidget    *right_table_;
     QTextEdit       *right_text_;
     QTextEdit       *right_xml_;

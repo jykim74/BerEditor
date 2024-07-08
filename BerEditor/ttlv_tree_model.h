@@ -18,6 +18,9 @@ public:
     int parseTree();
     int parseConstruct( int offset, TTLVTreeItem *pParentItem );
 
+public slots:
+
+
 private:
     int getItem( int offset, TTLVTreeItem *pItem );
 

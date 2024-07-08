@@ -188,6 +188,7 @@ add_executable(${PROJECT_NAME}
     sign_verify_thread.h sign_verify_thread.cpp
     ttlv_tree_item.h ttlv_tree_model.h ttlv_tree_view.h
     ttlv_tree_item.cpp ttlv_tree_model.cpp ttlv_tree_view.cpp
+    insert_ttlv_dlg.h insert_ttlv_dlg.cpp insert_ttlv_dlg.ui
 )
 
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )

@@ -11,6 +11,7 @@ class TTLVTreeView : public QTreeView
 
 public:
     TTLVTreeView( QWidget* parent = 0 );
+    void viewRoot();
 
     void showRight();
     void showRightFull( TTLVTreeItem *pItem );
@@ -30,6 +31,10 @@ public slots:
 private slots:
     void onItemClicked( const QModelIndex& index );
     void leftContextMenu( QPoint point );
+
+    void editItem();
+    void saveItem();
+    void saveItemValue();
 
 private:
     TTLVTreeItem* currentItem();

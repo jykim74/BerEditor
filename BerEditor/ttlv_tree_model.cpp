@@ -1,3 +1,5 @@
+#include <QFileDialog>
+
 #include "kmip.h"
 #include "js_kms.h"
 
@@ -11,7 +13,7 @@
 TTLVTreeModel::TTLVTreeModel( QObject *parent )
     : QStandardItemModel( parent )
 {
-
+    memset( &binTTLV_, 0x00, sizeof(BIN));
 }
 
 int TTLVTreeModel::parseTree()

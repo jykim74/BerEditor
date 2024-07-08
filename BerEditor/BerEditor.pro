@@ -90,7 +90,10 @@ SOURCES += \
     hash_thread.cpp \
     mac_thread.cpp \
     enc_dec_thread.cpp \
-    sign_verify_thread.cpp
+    sign_verify_thread.cpp \
+    ttlv_tree_item.cpp \
+    ttlv_tree_model.cpp \
+    ttlv_tree_view.cpp
 
 HEADERS += \
     about_dlg.h \
@@ -148,7 +151,10 @@ HEADERS += \
     hash_thread.h \
     mac_thread.h \
     enc_dec_thread.h \
-    sign_verify_thread.h
+    sign_verify_thread.h \
+    ttlv_tree_item.h \
+    ttlv_tree_model.h \
+    ttlv_tree_view.h
 
 
 

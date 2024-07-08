@@ -159,6 +159,11 @@ void BerApplet::decodeData( const BIN *pData, const QString strPath )
     main_win_->decodeData( pData, strPath );
 }
 
+void BerApplet::decodeTTLV( const BIN *pData )
+{
+    main_win_->decodeTTLV( pData );
+}
+
 int BerApplet::checkLicense()
 {
     int ret = 0;

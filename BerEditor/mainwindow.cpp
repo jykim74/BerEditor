@@ -45,6 +45,7 @@
 #include "scep_client_dlg.h"
 #include "cert_man_dlg.h"
 #include "common.h"
+#include "insert_ttlv_dlg.h"
 
 #include "js_pki_tools.h"
 
@@ -94,6 +95,10 @@ MainWindow::~MainWindow()
 
     delete ber_model_;
     delete left_tree_;
+
+    delete ttlv_model_;
+    delete ttlv_tree_;
+
     delete log_text_;
     delete info_text_;
     delete right_table_;
@@ -133,6 +138,12 @@ void MainWindow::initialize()
     vsplitter_ = new QSplitter(Qt::Vertical);
 
     left_tree_ = new BerTreeView(this);
+    ber_model_ = new BerModel(this);
+    left_tree_->setModel(ber_model_);
+
+    ttlv_tree_ = new TTLVTreeView;
+    ttlv_model_ = new TTLVTreeModel;
+    ttlv_tree_->setModel( ttlv_model_ );
 
     log_text_ = new QTextEdit();
     log_text_->setReadOnly(true);
@@ -148,10 +159,6 @@ void MainWindow::initialize()
 
     right_table_->setContextMenuPolicy(Qt::CustomContextMenu);
     connect( right_table_, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(rightTableCustomMenu(const QPoint&)));
-
-    ber_model_ = new BerModel(this);
-
-    left_tree_->setModel(ber_model_);
 
     hsplitter_->addWidget(left_tree_);
     hsplitter_->addWidget(vsplitter_);
@@ -683,6 +690,15 @@ void MainWindow::createActions()
         scepAct->setEnabled( false );
     }
 
+    QMenu *kmipMenu = menuBar()->addMenu( tr("&KMIP" ));
+
+    const QIcon insertKMIPIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/insert.png"));
+    QAction *insertTTLVAct = new QAction(insertKMIPIcon, tr("&Insert TTLV"), this);
+    insertTTLVAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_D));
+    connect( insertTTLVAct, &QAction::triggered, this, &MainWindow::insertTTLV );
+    insertDataAct->setStatusTip(tr("Insert ber data"));
+    kmipMenu->addAction( insertTTLVAct );
+
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
     QToolBar *helpToolBar = addToolBar(tr("Help"));
 
@@ -809,6 +825,12 @@ void MainWindow::insertData()
 
     InsertDataDlg insData(this);
     ret = insData.exec();
+}
+
+void MainWindow::insertTTLV()
+{
+    InsertTTLVDlg insertTTLV;
+    insertTTLV.exec();
 }
 
 void MainWindow::numTrans()
@@ -1014,6 +1036,9 @@ void MainWindow::openBer( const BIN *pBer )
         left_tree_->showTextView();
         left_tree_->showXMLView();
     }
+
+    if( hsplitter_->widget(0) != left_tree_ )
+        hsplitter_->replaceWidget(0, left_tree_ );
 }
 
 bool MainWindow::isChanged()
@@ -1554,6 +1579,32 @@ void MainWindow::decodeData( const BIN *pData, const QString strPath )
     openBer( pData );
     file_path_ = strPath;
     setTitle( QString( strPath ));
+}
+
+void MainWindow::decodeTTLV( const BIN *pData )
+{
+    if( pData == NULL || pData->nLen <= 0 )
+    {
+        berApplet->warningBox( tr( "There is no data"), this );
+        return;
+    }
+
+    ttlv_model_->setTTLV( pData );
+    ttlv_model_->parseTree();
+
+    ttlv_tree_->header()->setVisible(false);
+    ttlv_tree_->viewRoot();
+    QModelIndex ri = ttlv_model_->index(0,0);
+    ttlv_tree_->expand(ri);
+
+    if( berApplet->isLicense() )
+    {
+ //       left_tree_->showTextView();
+ //       left_tree_->showXMLView();
+    }
+
+    if( hsplitter_->widget(0) != ttlv_tree_ )
+        hsplitter_->replaceWidget(0, ttlv_tree_ );
 }
 
 void MainWindow::print()

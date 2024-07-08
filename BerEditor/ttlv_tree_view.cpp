@@ -29,6 +29,11 @@ TTLVTreeView::TTLVTreeView( QWidget *parent )
     qss.open( QFile::ReadOnly );
     setStyleSheet(qss.readAll());
     qss.close();
+
+    static QFont font;
+    QString strFont = berApplet->settingsMgr()->getFontFamily();
+    font.setFamily( strFont );
+    setFont(font);
 }
 
 TTLVTreeItem* TTLVTreeView::currentItem()
@@ -41,6 +46,13 @@ TTLVTreeItem* TTLVTreeView::currentItem()
     return item;
 }
 
+void TTLVTreeView::viewRoot()
+{
+    TTLVTreeModel *tree_model = (TTLVTreeModel *)model();
+    QModelIndex ri = tree_model->index(0,0);
+    onItemClicked( ri );
+    setExpanded( rootIndex(), true );
+}
 
 void TTLVTreeView::showRight()
 {
@@ -74,9 +86,9 @@ void TTLVTreeView::leftContextMenu( QPoint point )
 {
     QMenu menu(this);
 
-//    menu.addAction( tr("Edit"), berApplet->mainWindow(), &MainWindow::editItem );
-//    menu.addAction( tr("SaveItem"), berApplet->mainWindow(), &MainWindow::saveItem );
-//    menu.addAction( tr("SaveItemValue"), berApplet->mainWindow(), &MainWindow::saveItemValue );
+    menu.addAction( tr("Edit"), this, &TTLVTreeView::editItem );
+    menu.addAction( tr("SaveItem"), this, &TTLVTreeView::saveItem );
+    menu.addAction( tr("SaveItemValue"), this, &TTLVTreeView::saveItemValue );
 
     menu.exec(QCursor::pos());
 }
@@ -360,4 +372,50 @@ void TTLVTreeView::treeCollapseNode()
 {
     QModelIndex index = currentIndex();
     collapse(index);
+}
+
+void TTLVTreeView::editItem()
+{
+    //    EditDlg editDlg;
+    //    editDlg.exec();
+}
+
+void TTLVTreeView::saveItem()
+{
+    QFileDialog fileDlg(this, tr("Save as..."));
+    fileDlg.setAcceptMode(QFileDialog::AcceptSave);
+    fileDlg.setDefaultSuffix("ber");
+    if( fileDlg.exec() != QDialog::Accepted )
+        return;
+
+    QString fileName = fileDlg.selectedFiles().first();
+
+    TTLVTreeItem *pItem = currentItem();
+    if( pItem == NULL ) return;
+
+    BIN binData = {0,0};
+
+    JS_BIN_appendBin( &binData, pItem->getTag() );
+    JS_BIN_appendBin( &binData, pItem->getType() );
+    JS_BIN_appendBin( &binData, pItem->getLength() );
+    JS_BIN_appendBin( &binData, pItem->getValue() );
+
+    JS_BIN_fileWrite( &binData, fileName.toStdString().c_str() );
+    JS_BIN_reset( &binData );
+}
+
+void TTLVTreeView::saveItemValue()
+{
+    QFileDialog fileDlg(this, tr("Save as..."));
+    fileDlg.setAcceptMode(QFileDialog::AcceptSave);
+    fileDlg.setDefaultSuffix("ber");
+    if( fileDlg.exec() != QDialog::Accepted )
+        return;
+
+    QString fileName = fileDlg.selectedFiles().first();
+
+    TTLVTreeItem *pItem = currentItem();
+    if( pItem == NULL ) return;
+
+    JS_BIN_fileWrite( pItem->getValue(), fileName.toStdString().c_str() );
 }

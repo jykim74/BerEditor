@@ -69,5 +69,6 @@
         <file>images/scep.png</file>
         <file>images/cmp.png</file>
         <file>images/crl_expired.png</file>
+        <file>ttlvreader.qss</file>
     </qresource>
 </RCC>
