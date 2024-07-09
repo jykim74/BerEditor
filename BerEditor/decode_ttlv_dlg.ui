@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>InsertTTLVDlg</class>
- <widget class="QDialog" name="InsertTTLVDlg">
+ <class>DecodeTTLVDlg</class>
+ <widget class="QDialog" name="DecodeTTLVDlg">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>463</width>
+    <height>387</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Insert TTLV window</string>
+   <string>Decode TTLV window</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

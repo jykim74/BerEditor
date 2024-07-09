@@ -45,7 +45,7 @@
 #include "scep_client_dlg.h"
 #include "cert_man_dlg.h"
 #include "common.h"
-#include "insert_ttlv_dlg.h"
+#include "decode_ttlv_dlg.h"
 #include "ttlv_client_dlg.h"
 #include "ttlv_encoder_dlg.h"
 
@@ -694,30 +694,31 @@ void MainWindow::createActions()
 
     QMenu *kmipMenu = menuBar()->addMenu( tr("&KMIP" ));
 
-    const QIcon insertKMIPIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/kms.png"));
-    QAction *insertTTLVAct = new QAction(insertKMIPIcon, tr("&Insert TTLV"), this);
-    insertTTLVAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_D));
-    connect( insertTTLVAct, &QAction::triggered, this, &MainWindow::insertTTLV );
-    insertTTLVAct->setStatusTip(tr("Insert ber data"));
-    kmipMenu->addAction( insertTTLVAct );
+    const QIcon decodeKMIPIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/kms.png"));
+    QAction *decodeTTLVAct = new QAction(decodeKMIPIcon, tr("&Decode TTLV"), this);
+    decodeTTLVAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_K));
+    connect( decodeTTLVAct, &QAction::triggered, this, &MainWindow::runDecodeTTLV );
+
+    decodeTTLVAct->setStatusTip(tr("Decode TTLV data"));
+    kmipMenu->addAction( decodeTTLVAct );
 
     const QIcon ttlvEncoderIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/kms_encoder.png"));
     QAction *ttlvEncoderAct = new QAction(ttlvEncoderIcon, tr("&TTLV Encoder"), this);
-    ttlvEncoderAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_D));
+    ttlvEncoderAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_M));
     connect( ttlvEncoderAct, &QAction::triggered, this, &MainWindow::ttlvEncoder );
     ttlvEncoderAct->setStatusTip(tr("TTLV Encoder"));
     kmipMenu->addAction( ttlvEncoderAct );
 
     const QIcon ttlvClientIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/kms_client.png"));
     QAction *ttlvClientAct = new QAction(ttlvClientIcon, tr("&TTLV Client"), this);
-    ttlvClientAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_D));
+    ttlvClientAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_P));
     connect( ttlvClientAct, &QAction::triggered, this, &MainWindow::ttlvClient );
     ttlvClientAct->setStatusTip(tr("TTLV Client"));
     kmipMenu->addAction( ttlvClientAct );
 
     if( berApplet->isLicense() == false )
     {
-        insertTTLVAct->setEnabled( false );
+        decodeTTLVAct->setEnabled( false );
         ttlvEncoderAct->setEnabled( false );
         ttlvClientAct->setEnabled( false );
     }
@@ -850,10 +851,10 @@ void MainWindow::insertData()
     ret = insData.exec();
 }
 
-void MainWindow::insertTTLV()
+void MainWindow::runDecodeTTLV()
 {
-    InsertTTLVDlg insertTTLV;
-    insertTTLV.exec();
+    DecodeTTLVDlg decodeTTLV;
+    decodeTTLV.exec();
 }
 
 void MainWindow::ttlvClient()

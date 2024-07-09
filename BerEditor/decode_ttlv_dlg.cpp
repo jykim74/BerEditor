@@ -1,10 +1,10 @@
-#include "insert_ttlv_dlg.h"
+#include "decode_ttlv_dlg.h"
 #include "common.h"
 #include "ber_applet.h"
 #include "mainwindow.h"
 
 
-InsertTTLVDlg::InsertTTLVDlg(QWidget *parent) :
+DecodeTTLVDlg::DecodeTTLVDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
@@ -21,17 +21,17 @@ InsertTTLVDlg::InsertTTLVDlg(QWidget *parent) :
 #endif
 }
 
-InsertTTLVDlg::~InsertTTLVDlg()
+DecodeTTLVDlg::~DecodeTTLVDlg()
 {
 
 }
 
-void InsertTTLVDlg::initialize()
+void DecodeTTLVDlg::initialize()
 {
     mHexRadio->setChecked(true);
 }
 
-void InsertTTLVDlg::clickView()
+void DecodeTTLVDlg::clickView()
 {
     int nType = 0;
     BIN binData = {0,0};
@@ -57,7 +57,7 @@ void InsertTTLVDlg::clickView()
     QDialog::accept();
 }
 
-void InsertTTLVDlg::changeData()
+void DecodeTTLVDlg::changeData()
 {
     int nType = 0;
 

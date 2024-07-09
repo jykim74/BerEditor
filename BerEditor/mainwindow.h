@@ -127,7 +127,7 @@ private slots:
     void certMan();
     void insertBER();
     void insertData();
-    void insertTTLV();
+    void runDecodeTTLV();
     void ttlvClient();
     void ttlvEncoder();
     void numTrans();

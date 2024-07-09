@@ -57,6 +57,22 @@ TTLVClientDlg::TTLVClientDlg(QWidget *parent) :
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+
+    mCACertViewBtn->setFixedWidth(34);
+    mCACertDecodeBtn->setFixedWidth(34);
+    mCACertTypeBtn->setFixedWidth(34);
+
+    mCertViewBtn->setFixedWidth(34);
+    mCertDecodeBtn->setFixedWidth(34);
+    mCertTypeBtn->setFixedWidth(34);
+
+    mPriKeyDecodeBtn->setFixedWidth(34);
+    mPriKeyTypeBtn->setFixedWidth(34);
+
+    mRequestClearBtn->setFixedWidth(34);
+    mRequestDecodeBtn->setFixedWidth(34);
+    mResponseClearBtn->setFixedWidth(34);
+    mResponseDecodeBtn->setFixedWidth(34);
 #endif
     resize(width(), minimumSizeHint().height());
 }
