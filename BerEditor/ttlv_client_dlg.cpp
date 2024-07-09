@@ -5,10 +5,12 @@
 #include "ber_applet.h"
 #include "settings_mgr.h"
 #include "common.h"
+#include "cert_man_dlg.h"
 
 #include "js_kms.h"
 #include "js_net.h"
 #include "js_ssl.h"
+#include "js_pki.h"
 
 TTLVClientDlg::TTLVClientDlg(QWidget *parent) :
     QDialog(parent)
@@ -24,7 +26,9 @@ TTLVClientDlg::TTLVClientDlg(QWidget *parent) :
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mResponseText, SIGNAL(textChanged()), this, SLOT(changeResponse()));
 
-    setDefaults();
+    connect( mEncPriKeyCheck, SIGNAL(clicked()), this, SLOT(checkEncPriKey()));
+
+    initialize();
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -37,27 +41,19 @@ TTLVClientDlg::~TTLVClientDlg()
 
 }
 
-void TTLVClientDlg::setDefaults()
+void TTLVClientDlg::checkEncPriKey()
 {
-    QString strHost;
-    QString strPort;
+    bool bVal = mEncPriKeyCheck->isChecked();
 
-
-    QString strCACert = "D:/jsca/ssl_root_cert.der";
-    QString strClientCert = "D:/jsca/ssl_cert.der";
-    QString strClientPriKey = "D:/jsca/ssl_pri.der";
-
-//    QString strCACert = "/Users/jykim/work/certs/root_cert.der";
-//    QString strClientCert = "/Users/jykim/work/certs/client_certificate_john_smith.der";
-//    QString strClientPriKey = "/Users/jykim/work/certs/client_key_john_smith.der";
-
-    mHostText->setText( strHost );
-    mPortText->setText( strPort );
-    mCACertPathText->setText( strCACert );
-    mClientCertPathText->setText( strClientCert );
-    mClientPriKeyPathText->setText( strClientPriKey );
+    mPasswdLabel->setEnabled(bVal);
+    mPasswdText->setEnabled(bVal);
 }
 
+
+void TTLVClientDlg::initialize()
+{
+    checkEncPriKey();
+}
 
 void TTLVClientDlg::findCA()
 {
@@ -86,6 +82,63 @@ void TTLVClientDlg::findPriKey()
     mClientPriKeyPathText->setText( filePath );
 }
 
+int TTLVClientDlg::readPrivateKey( BIN *pPriKey )
+{
+    int ret = 0;
+    BIN binData = {0,0};
+    BIN binDec = {0,0};
+    BIN binInfo = {0,0};
+
+    QString strPriPath = mClientPriKeyPathText->text();
+    if( strPriPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "select a private key"), this );
+        return -1;
+    }
+
+    ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binData );
+    if( ret <= 0 )
+    {
+        berApplet->warningBox( tr( "failed to read a private key: %1").arg( ret ), this );
+        return  -1;
+    }
+
+    if( mEncPriKeyCheck->isChecked() )
+    {
+        QString strPasswd = mPasswdText->text();
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password"), this );
+            ret = -1;
+            goto end;
+        }
+
+        ret = JS_PKI_decryptPrivateKey( strPasswd.toStdString().c_str(), &binData, &binInfo, &binDec );
+        if( ret != 0 )
+        {
+            berApplet->warningBox( tr( "failed to decrypt private key:%1").arg( ret ), this );
+            mPasswdText->setFocus();
+            ret = -1;
+            goto end;
+        }
+
+        JS_BIN_copy( pPriKey, &binDec );
+        ret = 0;
+    }
+    else
+    {
+        JS_BIN_copy( pPriKey, &binData );
+        ret = 0;
+    }
+
+end :
+    JS_BIN_reset( &binData );
+    JS_BIN_reset( &binDec );
+    JS_BIN_reset( &binInfo );
+
+    return ret;
+}
+
 void TTLVClientDlg::send()
 {
     int ret = 0;
@@ -99,6 +152,8 @@ void TTLVClientDlg::send()
     BIN binResponse = {0,0};
     char *pHex = NULL;
 
+    int nSockFd = -1;
+
     BIN TTLV = berApplet->mainWindow()->ttlvModel()->getTTLV();
     if( TTLV.nLen <= 0 ) return;
 
@@ -108,11 +163,60 @@ void TTLVClientDlg::send()
     QString strCertPath = mClientCertPathText->text();
     QString strPriKeyPath = mClientPriKeyPathText->text();
 
-    JS_BIN_fileRead( strCACertPath.toStdString().c_str(), &binCA );
-    JS_BIN_fileRead( strCertPath.toStdString().c_str(), &binCert );
-    JS_BIN_fileRead( strPriKeyPath.toStdString().c_str(), &binPriKey );
+    if( strCACertPath.length() < 1 )
+    {
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelCA);
+        certMan.setTitle( tr( "Select CA certificate" ));
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
 
-    int nSockFd = JS_NET_connect( strHost.toStdString().c_str(), strPort.toInt() );
+        strCACertPath = certMan.getSeletedCAPath();
+        if( strCACertPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Find a CA certificate" ), this );
+            return;
+        }
+        else
+        {
+            mCACertPathText->setText( strCACertPath );
+        }
+    }
+
+    JS_BIN_fileRead( strCACertPath.toStdString().c_str(), &binCA );
+
+    if( mCertGroup->isChecked() )
+    {
+        if( strCertPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Find a certificate" ), this );
+            return;
+        }
+
+        JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+        ret = readPrivateKey( &binPriKey );
+        if( ret != 0 ) goto end;
+    }
+    else
+    {
+        CertManDlg certMan;
+        QString strPriHex;
+        QString strCertHex;
+
+        certMan.setMode( ManModeSelBoth );
+        certMan.setTitle( tr( "Select a certificate") );
+
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
+
+        strPriHex = certMan.getPriKeyHex();
+        strCertHex = certMan.getCertHex();
+
+        JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binPriKey );
+        JS_BIN_decodeHex( strCertHex.toStdString().c_str(), &binCert );
+    }
+
+    nSockFd = JS_NET_connect( strHost.toStdString().c_str(), strPort.toInt() );
     if( nSockFd < 0 )
     {
         goto end;

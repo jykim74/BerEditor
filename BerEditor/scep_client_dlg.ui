@@ -262,7 +262,7 @@
       <item>
        <layout class="QGridLayout" name="gridLayout_10">
         <item row="0" column="1">
-         <widget class="QLabel" name="label_7">
+         <widget class="QLabel" name="mPasswdLabel">
           <property name="text">
            <string>Password</string>
           </property>

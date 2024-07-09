@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "ui_ttlv_client_dlg.h"
+#include "js_bin.h"
 
 namespace Ui {
 class TTLVClientDlg;
@@ -25,8 +26,11 @@ private slots:
     void close();
     void changeResponse();
 
+    void checkEncPriKey();
+
 private:
-    void setDefaults();
+    void initialize();
+    int readPrivateKey( BIN *pPriKey );
 };
 
 #endif // TTLV_CLIENT_DLG_H

@@ -5,6 +5,7 @@
 #include "common.h"
 #include "ber_applet.h"
 
+
 #include <QFileDialog>
 
 const QStringList kObjetType = { "SecretKey", "PrivateKey", "PublicKey", "Certificate" };
@@ -121,6 +122,7 @@ TTLVEncoderDlg::TTLVEncoderDlg(QWidget *parent) :
     connect( mHashBtn, SIGNAL(clicked()), this, SLOT(clickHash()));
 
     connect( mAlgCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(algChanged(int)));
+    connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
     initialize();
 

@@ -62,6 +62,8 @@ SCEPClientDlg::SCEPClientDlg(QWidget *parent)
     connect( mNonceText, SIGNAL(textChanged(QString)), this, SLOT(changeNonce(QString)));
     connect( mTransIDText, SIGNAL(textChanged(QString)), this, SLOT(changeTransID(QString)));
 
+    connect( mEncPriKeyCheck, SIGNAL(clicked()), this, SLOT(checkEncPriKey()));
+
 #if defined( Q_OS_MAC )
     layout()->setSpacing(5);
     mCertGroup->layout()->setSpacing(5);
@@ -93,6 +95,14 @@ SCEPClientDlg::~SCEPClientDlg()
 
 }
 
+void SCEPClientDlg::checkEncPriKey()
+{
+    bool bVal = mEncPriKeyCheck->isChecked();
+
+    mPasswdLabel->setEnabled(bVal);
+    mPasswdText->setEnabled(bVal);
+}
+
 void SCEPClientDlg::initialize()
 {
     SettingsMgr *setMgr = berApplet->settingsMgr();
@@ -106,6 +116,7 @@ void SCEPClientDlg::initialize()
     }
 
     JS_SCEP_init();
+    checkEncPriKey();
     mCloseBtn->setDefault(true);
 }
 

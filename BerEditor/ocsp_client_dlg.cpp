@@ -65,6 +65,8 @@ OCSPClientDlg::OCSPClientDlg(QWidget *parent) :
     connect( mRequestText, SIGNAL(textChanged()), this, SLOT(requestChanged()));
     connect( mResponseText, SIGNAL(textChanged()), this, SLOT(responseChanged()));
 
+    connect( mEncSignPriKeyCheck, SIGNAL(clicked()), this, SLOT(checkEncPriKey()));
+
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
 
@@ -101,6 +103,14 @@ OCSPClientDlg::~OCSPClientDlg()
 
 }
 
+void OCSPClientDlg::checkEncPriKey()
+{
+    bool bVal = mEncSignPriKeyCheck->isChecked();
+
+    mPasswdLabel->setEnabled(bVal);
+    mPasswdText->setEnabled(bVal);
+}
+
 void OCSPClientDlg::initialize()
 {
     SettingsMgr *setMgr = berApplet->settingsMgr();
@@ -117,6 +127,7 @@ void OCSPClientDlg::initialize()
     mHashCombo->setCurrentText( setMgr->defaultHash() );
 
     checkUseSign();
+    checkEncPriKey();
     mCloseBtn->setDefault(true);
 }
 

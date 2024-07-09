@@ -59,6 +59,7 @@ CMPClientDlg::CMPClientDlg(QWidget *parent)
     connect( mRequestText, SIGNAL(textChanged()), this, SLOT(requestChanged()));
     connect( mResponseText, SIGNAL(textChanged()), this, SLOT(responseChanged()));
 
+    connect( mEncPriKeyCheck, SIGNAL(clicked()), this, SLOT(checkEncPriKey()));
 
 #if defined( Q_OS_MAC )
     mCACertViewBtn->setFixedWidth(34);
@@ -92,6 +93,14 @@ CMPClientDlg::~CMPClientDlg()
 
 }
 
+void CMPClientDlg::checkEncPriKey()
+{
+    bool bVal = mEncPriKeyCheck->isChecked();
+
+    mPasswdLabel->setEnabled(bVal);
+    mPasswdText->setEnabled(bVal);
+}
+
 void CMPClientDlg::initialize()
 {
     SettingsMgr *setMgr = berApplet->settingsMgr();
@@ -106,6 +115,7 @@ void CMPClientDlg::initialize()
 
     mURLCombo->setEditable(true);
     mCloseBtn->setDefault(true);
+    checkEncPriKey();
 }
 
 QStringList CMPClientDlg::getUsedURL()
