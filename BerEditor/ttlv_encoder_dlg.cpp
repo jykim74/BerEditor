@@ -3,6 +3,7 @@
 #include "js_pki.h"
 #include "js_pkcs11.h"
 #include "common.h"
+#include "ber_applet.h"
 
 #include <QFileDialog>
 
@@ -95,8 +96,6 @@ TTLVEncoderDlg::TTLVEncoderDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
-    data_.nLen = 0;
-    data_.pVal = 0;
 
     connect( mFindInputBtn, SIGNAL(clicked()), this, SLOT(findInput()));
 
@@ -116,12 +115,7 @@ TTLVEncoderDlg::TTLVEncoderDlg(QWidget *parent) :
     connect( mGetAttributes, SIGNAL(clicked()), this, SLOT(clickGetAttributes()));
     connect( mModifyAttributeBtn, SIGNAL(clicked()), this, SLOT(clickModifyAttribute()));
     connect( mDeleteAttributeBtn, SIGNAL(clicked()), this, SLOT(clickDeleteAttribute()));
-    connect( mRevokeBtn, SIGNAL(clicked()), this, SLOT(clickRevoke()));
-    connect( mMACBtn, SIGNAL(clicked()), this, SLOT(clickMAC()));
     connect( mLocateBtn, SIGNAL(clicked()), this, SLOT(clickLocate()));
-    connect( mDeriveKeyBtn, SIGNAL(clicked()), this, SLOT(clickDeriveKey()));
-    connect( mCreateSplitKeyBtn, SIGNAL(clicked()), this, SLOT(clickCreateSplitKey()));
-    connect( mJoinSplitKeyBtn, SIGNAL(clicked()), this, SLOT(clickJoinSplitKey()));
     connect( mRNGRetrieveBtn, SIGNAL(clicked()), this, SLOT(clickRNGRetrieve()));
     connect( mRNGSeedBtn, SIGNAL(clicked()), this, SLOT(clickRNGSeed()));
     connect( mHashBtn, SIGNAL(clicked()), this, SLOT(clickHash()));
@@ -129,11 +123,16 @@ TTLVEncoderDlg::TTLVEncoderDlg(QWidget *parent) :
     connect( mAlgCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(algChanged(int)));
 
     initialize();
+
+#if defined(Q_OS_MAC)
+    layout()->setSpacing(5);
+#endif
+    resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 
 TTLVEncoderDlg::~TTLVEncoderDlg()
 {
-    JS_BIN_reset( &data_ );
+
 }
 
 void TTLVEncoderDlg::initialize()
@@ -185,64 +184,75 @@ void TTLVEncoderDlg::findInput()
 void TTLVEncoderDlg::clickGet()
 {
     int ret = 0;
-    JS_BIN_reset( &data_ );
+    BIN binData = {0,0};
 
     Authentication sAuth = {0};
     JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
 
     QString strUUID = mUUIDText->text();
 
-    ret = JS_KMS_encodeGetReq( &sAuth, strUUID.toStdString().c_str(), &data_ );
-    if( ret == 0 )
-    {
-        QDialog::accept();
-    }
+    ret = JS_KMS_encodeGetReq( &sAuth, strUUID.toStdString().c_str(), &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
+
+    if( ret == 0 )
+    {
+        berApplet->decodeTTLV( &binData );
+
+    }
+
+    JS_BIN_reset( &binData );
+    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickActivate()
 {
     int ret = 0;
-    JS_BIN_reset( &data_ );
+    BIN binData = {0,0};
 
     QString strUUID = mUUIDText->text();
     Authentication sAuth = {0};
     JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
 
 
-    ret = JS_KMS_encodeActivateReq( &sAuth, strUUID.toStdString().c_str(), &data_ );
+    ret = JS_KMS_encodeActivateReq( &sAuth, strUUID.toStdString().c_str(), &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
     if( ret == 0 )
     {
-        QDialog::accept();
+        berApplet->decodeTTLV(&binData);
     }
+
+    JS_BIN_reset( &binData );
+    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickCreate()
 {
     int ret = 0;
-    JS_BIN_reset( &data_ );
+    BIN binData = {0,0};
 
     Authentication sAuth = {0};
     JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
 
-    ret = JS_KMS_encodeCreateReq( &sAuth, &data_ );
+    ret = JS_KMS_encodeCreateReq( &sAuth, &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
     if( ret == 0 )
     {
-        QDialog::accept();
+        berApplet->decodeTTLV(&binData);
     }
+
+    JS_BIN_reset( &binData );
+    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickDestroy()
 {
     int ret = 0;
-    JS_BIN_reset( &data_ );
+    BIN binData = {0,0};
 
     QString strUUID = mUUIDText->text();
 
@@ -250,20 +260,23 @@ void TTLVEncoderDlg::clickDestroy()
     JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
 
 
-    ret = JS_KMS_encodeDestroyReq( &sAuth, strUUID.toStdString().c_str(), &data_ );
+    ret = JS_KMS_encodeDestroyReq( &sAuth, strUUID.toStdString().c_str(), &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
     if( ret == 0 )
     {
-        QDialog::accept();
+        berApplet->decodeTTLV(&binData);
     }
+
+    JS_BIN_reset( &binData );
+    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickEncrypt()
 {
     int ret = 0;
-    JS_BIN_reset( &data_ );
+    BIN binData = {0,0};
 
     BIN binIV = {0};
     BIN binPlain = {0};
@@ -278,7 +291,7 @@ void TTLVEncoderDlg::clickEncrypt()
     JS_BIN_set( &binIV, (unsigned char *)"1234567890123456", 16);
     JS_BIN_set( &binPlain, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
 
-    ret = JS_KMS_encodeEncryptReq( &sAuth, strUUID.toStdString().c_str(), &binIV, &binPlain, &data_ );
+    ret = JS_KMS_encodeEncryptReq( &sAuth, strUUID.toStdString().c_str(), &binIV, &binPlain, &binData );
 
     JS_BIN_reset( &binIV );
     JS_BIN_reset( &binPlain );
@@ -287,14 +300,17 @@ void TTLVEncoderDlg::clickEncrypt()
 
     if( ret == 0 )
     {
-        QDialog::accept();
+        berApplet->decodeTTLV(&binData);
     }
+
+    JS_BIN_reset( &binData );
+    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickDecrypt()
 {
     int ret = 0;
-    JS_BIN_reset( &data_ );
+    BIN binData = {0,0};
     BIN binIV = {0};
     BIN binEncrypt = {0};
 
@@ -308,7 +324,7 @@ void TTLVEncoderDlg::clickDecrypt()
     JS_BIN_set( &binIV, (unsigned char *)"1234567890123456", 16);
     JS_BIN_decodeHex( strInput.toStdString().c_str(), &binEncrypt );
 
-    ret = JS_KMS_encodeDecryptReq( &sAuth, strUUID.toStdString().c_str(), &binIV, &binEncrypt, &data_ );
+    ret = JS_KMS_encodeDecryptReq( &sAuth, strUUID.toStdString().c_str(), &binIV, &binEncrypt, &binData );
 
     JS_BIN_reset( &binIV );
     JS_BIN_reset( &binEncrypt );
@@ -317,14 +333,17 @@ void TTLVEncoderDlg::clickDecrypt()
 
     if( ret == 0 )
     {
-        QDialog::accept();
+        berApplet->decodeTTLV(&binData);
     }
+
+    JS_BIN_reset( &binData );
+    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickSign()
 {
     int ret = 0;
-    JS_BIN_reset( &data_ );
+    BIN binData = {0,0};
     BIN binPlain = {0};
     int nMech = 0;
     int nAlg = 0;
@@ -348,7 +367,7 @@ void TTLVEncoderDlg::clickSign()
 
     JS_BIN_set( &binPlain, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
 
-    ret = JS_KMS_encodeSignReq( &sAuth, strUUID.toStdString().c_str(), nMech, &binPlain, &data_ );
+    ret = JS_KMS_encodeSignReq( &sAuth, strUUID.toStdString().c_str(), nMech, &binPlain, &binData );
 
     JS_BIN_reset( &binPlain );
 
@@ -356,8 +375,11 @@ void TTLVEncoderDlg::clickSign()
 
     if( ret == 0 )
     {
-        QDialog::accept();
+        berApplet->decodeTTLV(&binData);
     }
+
+    JS_BIN_reset( &binData );
+    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickVerify()
@@ -367,7 +389,7 @@ void TTLVEncoderDlg::clickVerify()
     int nMech = 0;
     QString strHash;
 
-    JS_BIN_reset( &data_ );
+    BIN binData = {0,0};
 
     BIN binPlain = {0};
     BIN binSign = {0};
@@ -392,7 +414,7 @@ void TTLVEncoderDlg::clickVerify()
     JS_BIN_set( &binPlain, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
     JS_BIN_decodeHex( strOutput.toStdString().c_str(), &binSign );
 
-    ret = JS_KMS_encodeVerifyReq( &sAuth, strUUID.toStdString().c_str(), nMech, &binPlain, &binSign, &data_ );
+    ret = JS_KMS_encodeVerifyReq( &sAuth, strUUID.toStdString().c_str(), nMech, &binPlain, &binSign, &binData );
 
     JS_BIN_reset( &binPlain );
     JS_BIN_reset( &binSign );
@@ -401,8 +423,11 @@ void TTLVEncoderDlg::clickVerify()
 
     if( ret == 0 )
     {
-        QDialog::accept();
+        berApplet->decodeTTLV(&binData);
     }
+
+    JS_BIN_reset( &binData );
+    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickRegister()
@@ -410,7 +435,7 @@ void TTLVEncoderDlg::clickRegister()
     int ret = 0;
     int nAlg = 0;
     int nParam = 0;
-    JS_BIN_reset( &data_ );
+    BIN binData = {0,0};
 
     int nType = 0;
     BIN binInput = {0};
@@ -443,15 +468,18 @@ void TTLVEncoderDlg::clickRegister()
         nParam = KMIP_CURVE_P_256;
     }
 
-    ret = JS_KMS_encodeRegisterReq( &sAuth, nAlg, nParam, nType, &binInput, &data_ );
+    ret = JS_KMS_encodeRegisterReq( &sAuth, nAlg, nParam, nType, &binInput, &binData );
 
     JS_BIN_reset( &binInput );
     JS_KMS_resetAuthentication( &sAuth );
 
     if( ret == 0 )
     {
-        QDialog::accept();
+        berApplet->decodeTTLV(&binData);
     }
+
+    JS_BIN_reset( &binData );
+    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickCreateKeyPair()
@@ -460,7 +488,7 @@ void TTLVEncoderDlg::clickCreateKeyPair()
     int nAlg = -1;
     int nParam = 2048;
 
-    JS_BIN_reset( &data_ );
+    BIN binData = {0,0};
 
     Authentication sAuth = {0};
     JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
@@ -477,20 +505,23 @@ void TTLVEncoderDlg::clickCreateKeyPair()
         nParam = KMIP_CURVE_P_256;
     }
 
-    ret = JS_KMS_encodeCreateKeyPairReq( &sAuth, nAlg, nParam, &data_ );
+    ret = JS_KMS_encodeCreateKeyPairReq( &sAuth, nAlg, nParam, &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
     if( ret == 0 )
     {
-        QDialog::accept();
+        berApplet->decodeTTLV(&binData);
     }
+
+    JS_BIN_reset( &binData );
+    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickGetAttributeList()
 {
     int ret = 0;
-    JS_BIN_reset( &data_ );
+    BIN binData = {0,0};
 
     QString strUUID = mUUIDText->text();
 
@@ -498,20 +529,23 @@ void TTLVEncoderDlg::clickGetAttributeList()
     JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
 
 
-    ret = JS_KMS_encodeGetAttributeListReq( &sAuth, strUUID.toStdString().c_str(), &data_ );
+    ret = JS_KMS_encodeGetAttributeListReq( &sAuth, strUUID.toStdString().c_str(), &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
     if( ret == 0 )
     {
-        QDialog::accept();
+        berApplet->decodeTTLV(&binData);
     }
+
+    JS_BIN_reset( &binData );
+    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickAddAttribute()
 {
     int ret = 0;
-    JS_BIN_reset( &data_ );
+    BIN binData = {0,0};
 
     QString strUUID = mUUIDText->text();
     QString strAttrName = mAttributeCombo->currentText();
@@ -520,20 +554,23 @@ void TTLVEncoderDlg::clickAddAttribute()
     Authentication sAuth = {0};
     JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
 
-    ret = JS_KMS_encodeAddAttributeReq( &sAuth, strUUID.toStdString().c_str(), strAttrName.toStdString().c_str(), strAttrValue.toStdString().c_str(), &data_ );
+    ret = JS_KMS_encodeAddAttributeReq( &sAuth, strUUID.toStdString().c_str(), strAttrName.toStdString().c_str(), strAttrValue.toStdString().c_str(), &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
     if( ret == 0 )
     {
-        QDialog::accept();
+        berApplet->decodeTTLV(&binData);
     }
+
+    JS_BIN_reset( &binData );
+    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickGetAttributes()
 {
     int ret = 0;
-    JS_BIN_reset( &data_ );
+    BIN binData = {0,0};
 
     QString strUUID = mUUIDText->text();
 
@@ -541,20 +578,23 @@ void TTLVEncoderDlg::clickGetAttributes()
     JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
 
 
-    ret = JS_KMS_encodeGetAttributesReq( &sAuth, strUUID.toStdString().c_str(), NULL, &data_ );
+    ret = JS_KMS_encodeGetAttributesReq( &sAuth, strUUID.toStdString().c_str(), NULL, &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
     if( ret == 0 )
     {
-        QDialog::accept();
+        berApplet->decodeTTLV(&binData);
     }
+
+    JS_BIN_reset( &binData );
+    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickModifyAttribute()
 {
     int ret = 0;
-    JS_BIN_reset( &data_ );
+    BIN binData = {0,0};
 
     QString strUUID = mUUIDText->text();
     QString strAttrName = mAttributeCombo->currentText();
@@ -563,20 +603,23 @@ void TTLVEncoderDlg::clickModifyAttribute()
     Authentication sAuth = {0};
     JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
 
-    ret = JS_KMS_encodeModifyAttributeReq( &sAuth, strUUID.toStdString().c_str(), strAttrName.toStdString().c_str(), strAttrValue.toStdString().c_str(), &data_ );
+    ret = JS_KMS_encodeModifyAttributeReq( &sAuth, strUUID.toStdString().c_str(), strAttrName.toStdString().c_str(), strAttrValue.toStdString().c_str(), &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
     if( ret == 0 )
     {
-        QDialog::accept();
+        berApplet->decodeTTLV(&binData);
     }
+
+    JS_BIN_reset( &binData );
+    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickDeleteAttribute()
 {
     int ret = 0;
-    JS_BIN_reset( &data_ );
+    BIN binData = {0,0};
 
     QString strUUID = mUUIDText->text();
     QString strAttrName = mAttributeCombo->currentText();
@@ -584,24 +627,17 @@ void TTLVEncoderDlg::clickDeleteAttribute()
     Authentication sAuth = {0};
     JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
 
-    ret = JS_KMS_encodeDeleteAttributeReq( &sAuth, strUUID.toStdString().c_str(), strAttrName.toStdString().c_str(), 0, &data_ );
+    ret = JS_KMS_encodeDeleteAttributeReq( &sAuth, strUUID.toStdString().c_str(), strAttrName.toStdString().c_str(), 0, &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
     if( ret == 0 )
     {
-        QDialog::accept();
+        berApplet->decodeTTLV(&binData);
     }
-}
 
-void TTLVEncoderDlg::clickRevoke()
-{
-
-}
-
-void TTLVEncoderDlg::clickMAC()
-{
-
+    JS_BIN_reset( &binData );
+    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickLocate()
@@ -609,7 +645,7 @@ void TTLVEncoderDlg::clickLocate()
     int ret = 0;
     int nAlg = -1;
 
-    JS_BIN_reset( &data_ );
+    BIN binData = { 0, 0};
 
     Authentication sAuth = {0};
     JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
@@ -628,43 +664,38 @@ void TTLVEncoderDlg::clickLocate()
         nAlg = JS_PKI_KEY_TYPE_AES;
     }
 
-    ret = JS_KMS_encodeLocateReq( &sAuth, nAlg, &data_ );
+    ret = JS_KMS_encodeLocateReq( &sAuth, nAlg, &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
     if( ret == 0 )
     {
-        QDialog::accept();
+        berApplet->decodeTTLV(&binData);
     }
-}
 
-void TTLVEncoderDlg::clickDeriveKey()
-{
-
-}
-
-void TTLVEncoderDlg::clickCreateSplitKey()
-{
-
-}
-
-void TTLVEncoderDlg::clickJoinSplitKey()
-{
-
+    JS_BIN_reset( &binData );
+    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickRNGRetrieve()
 {
     int ret = 0;
     int nLen = mLenText->text().toInt();
+    BIN binData = {0,0};
 
     Authentication sAuth = {0};
     JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
 
-    ret = JS_KMS_encodeRNGRetrieveReq( &sAuth, nLen, &data_ );
+    ret = JS_KMS_encodeRNGRetrieveReq( &sAuth, nLen, &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
+    if( ret == 0 )
+    {
+        berApplet->decodeTTLV(&binData);
+    }
+
+    JS_BIN_reset( &binData );
     if( ret == 0 ) QDialog::accept();
 }
 
@@ -672,6 +703,7 @@ void TTLVEncoderDlg::clickRNGSeed()
 {
     int ret = 0;
     BIN binSrc = {0};
+    BIN binData = {0,0};
 
     QString strInput = mInputText->toPlainText();
     JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
@@ -679,10 +711,16 @@ void TTLVEncoderDlg::clickRNGSeed()
     Authentication sAuth = {0};
     JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
 
-    ret = JS_KMS_encodeRNGSeedReq( &sAuth, &binSrc, &data_ );
+    ret = JS_KMS_encodeRNGSeedReq( &sAuth, &binSrc, &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
+    if( ret == 0 )
+    {
+        berApplet->decodeTTLV(&binData);
+    }
+
+    JS_BIN_reset( &binData );
     if( ret == 0 ) QDialog::accept();
 }
 
@@ -690,6 +728,7 @@ void TTLVEncoderDlg::clickHash()
 {
     int ret = 0;
     BIN binSrc = {0};
+    BIN binData = {0,0};
 
     QString strHash = mHashCombo->currentText();
     QString strInput = mInputText->toPlainText();
@@ -702,12 +741,15 @@ void TTLVEncoderDlg::clickHash()
 
     JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
 
-    ret = JS_KMS_encodeHashReq( &sAuth, nMech, &binSrc, &data_ );
+    ret = JS_KMS_encodeHashReq( &sAuth, nMech, &binSrc, &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
     if( ret == 0 )
     {
-        QDialog::accept();
+        berApplet->decodeTTLV(&binData);
     }
+
+    JS_BIN_reset( &binData );
+    if( ret == 0 ) QDialog::accept();
 }

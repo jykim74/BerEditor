@@ -10,6 +10,10 @@ EditTTLVDlg::EditTTLVDlg(QWidget *parent) :
 {
     setupUi(this);
 
+    connect( mOKBtn, SIGNAL(clicked()), this, SLOT(clickOK()));
+    connect( mCancelBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mValueText, SIGNAL(textChanged()), this, SLOT(changeValue()));
+
     initialize();
 }
 
@@ -30,7 +34,13 @@ void EditTTLVDlg::initialize()
     mValueText->setPlainText( pItem->getValueHex() );
 }
 
-void EditTTLVDlg::accept()
+void EditTTLVDlg::changeValue()
+{
+    int nLen = mValueText->toPlainText().length() / 2;
+    mValueLenText->setText(QString("%1").arg( nLen ));
+}
+
+void EditTTLVDlg::clickOK()
 {
     int     ret = 0;
     BIN     *pDstTag = NULL;

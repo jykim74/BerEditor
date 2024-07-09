@@ -106,7 +106,7 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     mCertTypeBtn->setFixedWidth(34);
     mCertViewBtn->setFixedWidth(34);
 #endif
-    resize(width(), minimumSizeHint().height());
+    resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 
 SignVerifyDlg::~SignVerifyDlg()

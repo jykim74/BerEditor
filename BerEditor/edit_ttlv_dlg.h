@@ -17,7 +17,8 @@ public:
     ~EditTTLVDlg();
 
 private slots:
-    virtual void accept();
+    void clickOK();
+    void changeValue();
 
 private:
     void initialize();

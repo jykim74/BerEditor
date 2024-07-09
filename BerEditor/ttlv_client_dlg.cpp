@@ -22,8 +22,14 @@ TTLVClientDlg::TTLVClientDlg(QWidget *parent) :
     connect( mSendBtn, SIGNAL(clicked()), this, SLOT(send()));
     connect( mViewResponseBtn, SIGNAL(clicked()), this, SLOT(viewResponse()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mResponseText, SIGNAL(textChanged()), this, SLOT(changeResponse()));
 
     setDefaults();
+
+#if defined(Q_OS_MAC)
+    layout()->setSpacing(5);
+#endif
+    resize(width(), minimumSizeHint().height());
 }
 
 TTLVClientDlg::~TTLVClientDlg()
@@ -159,4 +165,10 @@ void TTLVClientDlg::viewResponse()
 void TTLVClientDlg::close()
 {
     QDialog::reject();
+}
+
+void TTLVClientDlg::changeResponse()
+{
+    int nLen = mResponseText->toPlainText().length() / 2;
+    mResponseLenText->setText( QString("%1").arg( nLen ));
 }

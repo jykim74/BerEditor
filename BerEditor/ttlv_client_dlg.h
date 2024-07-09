@@ -23,6 +23,7 @@ private slots:
     void send();
     void viewResponse();
     void close();
+    void changeResponse();
 
 private:
     void setDefaults();

@@ -16,7 +16,6 @@ class TTLVEncoderDlg : public QDialog, public Ui::TTLVEncoderDlg
 public:
     explicit TTLVEncoderDlg(QWidget *parent = nullptr);
     ~TTLVEncoderDlg();
-    BIN& getData() { return data_; };
 
 private slots:
     void clickGet();
@@ -35,12 +34,7 @@ private slots:
     void clickGetAttributes();
     void clickModifyAttribute();
     void clickDeleteAttribute();
-    void clickRevoke();
-    void clickMAC();
     void clickLocate();
-    void clickDeriveKey();
-    void clickCreateSplitKey();
-    void clickJoinSplitKey();
     void clickRNGRetrieve();
     void clickRNGSeed();
     void clickHash();
@@ -51,7 +45,6 @@ private slots:
 
 private:
     void initialize();
-    BIN data_;
 };
 
 #endif // REQ_ENCODER_DLG_H
