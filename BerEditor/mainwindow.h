@@ -81,6 +81,7 @@ public:
 
     void decodeData( const BIN *pData, const QString strPath = "" );
     void decodeTTLV( const BIN *pData );
+    bool isTTLV();
 
 private slots:
     void newFile();
@@ -153,6 +154,8 @@ private slots:
     void rightTableCopy();
     void rightTableSelectAll();
     void rightTableUnselectAll();
+
+
 
 private:
     void createActions();

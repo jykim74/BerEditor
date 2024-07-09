@@ -21,16 +21,38 @@ private slots:
     void findCA();
     void findCert();
     void findPriKey();
-    void send();
-    void viewResponse();
+    void clickSend();
     void close();
     void changeResponse();
+    void changeRequest();
 
     void checkEncPriKey();
+    void clickClearURL();
+
+    void typeCACert();
+    void typeCert();
+    void typePriKey();
+
+    void viewCACert();
+    void viewCert();
+
+    void decodeCACert();
+    void decodeCert();
+    void decodePriKey();
+
+
+    void decodeRequest();
+    void decodeResponse();
+
+    void clearRequest();
+    void clearResponse();
 
 private:
     void initialize();
     int readPrivateKey( BIN *pPriKey );
+
+    QStringList getUsedURL();
+    void setUsedURL( const QString strURL );
 };
 
 #endif // TTLV_CLIENT_DLG_H

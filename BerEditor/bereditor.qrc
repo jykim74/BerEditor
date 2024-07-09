@@ -70,5 +70,8 @@
         <file>images/cmp.png</file>
         <file>images/crl_expired.png</file>
         <file>ttlvreader.qss</file>
+        <file>images/kms.png</file>
+        <file>images/kms_client.png</file>
+        <file>images/kms_encoder.png</file>
     </qresource>
 </RCC>

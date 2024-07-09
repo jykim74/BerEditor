@@ -694,21 +694,21 @@ void MainWindow::createActions()
 
     QMenu *kmipMenu = menuBar()->addMenu( tr("&KMIP" ));
 
-    const QIcon insertKMIPIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/insert.png"));
+    const QIcon insertKMIPIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/kms.png"));
     QAction *insertTTLVAct = new QAction(insertKMIPIcon, tr("&Insert TTLV"), this);
     insertTTLVAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_D));
     connect( insertTTLVAct, &QAction::triggered, this, &MainWindow::insertTTLV );
     insertTTLVAct->setStatusTip(tr("Insert ber data"));
     kmipMenu->addAction( insertTTLVAct );
 
-    const QIcon ttlvEncoderIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/insert.png"));
+    const QIcon ttlvEncoderIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/kms_encoder.png"));
     QAction *ttlvEncoderAct = new QAction(ttlvEncoderIcon, tr("&TTLV Encoder"), this);
     ttlvEncoderAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_D));
     connect( ttlvEncoderAct, &QAction::triggered, this, &MainWindow::ttlvEncoder );
     ttlvEncoderAct->setStatusTip(tr("TTLV Encoder"));
     kmipMenu->addAction( ttlvEncoderAct );
 
-    const QIcon ttlvClientIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/insert.png"));
+    const QIcon ttlvClientIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/kms_client.png"));
     QAction *ttlvClientAct = new QAction(ttlvClientIcon, tr("&TTLV Client"), this);
     ttlvClientAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_D));
     connect( ttlvClientAct, &QAction::triggered, this, &MainWindow::ttlvClient );
@@ -1599,6 +1599,14 @@ void MainWindow::rightTableSelectAll()
 void MainWindow::rightTableUnselectAll()
 {
     right_table_->clearSelection();
+}
+
+bool MainWindow::isTTLV()
+{
+    if( hsplitter_->widget(0) == ttlv_tree_ )
+        return true;
+    else
+        return false;
 }
 
 void MainWindow::save()
