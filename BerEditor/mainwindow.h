@@ -127,6 +127,8 @@ private slots:
     void insertBER();
     void insertData();
     void insertTTLV();
+    void ttlvClient();
+    void ttlvEncoder();
     void numTrans();
     void getURI();
     void save();

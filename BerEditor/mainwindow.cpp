@@ -46,6 +46,8 @@
 #include "cert_man_dlg.h"
 #include "common.h"
 #include "insert_ttlv_dlg.h"
+#include "ttlv_client_dlg.h"
+#include "ttlv_encoder_dlg.h"
 
 #include "js_pki_tools.h"
 
@@ -696,8 +698,29 @@ void MainWindow::createActions()
     QAction *insertTTLVAct = new QAction(insertKMIPIcon, tr("&Insert TTLV"), this);
     insertTTLVAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_D));
     connect( insertTTLVAct, &QAction::triggered, this, &MainWindow::insertTTLV );
-    insertDataAct->setStatusTip(tr("Insert ber data"));
+    insertTTLVAct->setStatusTip(tr("Insert ber data"));
     kmipMenu->addAction( insertTTLVAct );
+
+    const QIcon ttlvEncoderIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/insert.png"));
+    QAction *ttlvEncoderAct = new QAction(ttlvEncoderIcon, tr("&TTLV Encoder"), this);
+    ttlvEncoderAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_D));
+    connect( ttlvEncoderAct, &QAction::triggered, this, &MainWindow::ttlvEncoder );
+    ttlvEncoderAct->setStatusTip(tr("TTLV Encoder"));
+    kmipMenu->addAction( ttlvEncoderAct );
+
+    const QIcon ttlvClientIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/insert.png"));
+    QAction *ttlvClientAct = new QAction(ttlvClientIcon, tr("&TTLV Client"), this);
+    ttlvClientAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_D));
+    connect( ttlvClientAct, &QAction::triggered, this, &MainWindow::ttlvClient );
+    ttlvClientAct->setStatusTip(tr("TTLV Client"));
+    kmipMenu->addAction( ttlvClientAct );
+
+    if( berApplet->isLicense() == false )
+    {
+        insertTTLVAct->setEnabled( false );
+        ttlvEncoderAct->setEnabled( false );
+        ttlvClientAct->setEnabled( false );
+    }
 
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
     QToolBar *helpToolBar = addToolBar(tr("Help"));
@@ -831,6 +854,18 @@ void MainWindow::insertTTLV()
 {
     InsertTTLVDlg insertTTLV;
     insertTTLV.exec();
+}
+
+void MainWindow::ttlvClient()
+{
+    TTLVClientDlg ttlvClient;
+    ttlvClient.exec();
+}
+
+void MainWindow::ttlvEncoder()
+{
+    TTLVEncoderDlg ttlvEncoder;
+    ttlvEncoder.exec();
 }
 
 void MainWindow::numTrans()
