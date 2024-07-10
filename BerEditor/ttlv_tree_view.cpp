@@ -17,6 +17,7 @@
 #include "ber_applet.h"
 #include "settings_mgr.h"
 #include "common.h"
+#include "make_ttlv_dlg.h"
 
 TTLVTreeView::TTLVTreeView( QWidget *parent )
     : QTreeView(parent)
@@ -93,6 +94,13 @@ void TTLVTreeView::leftContextMenu( QPoint point )
     menu.addAction( tr("Edit"), this, &TTLVTreeView::editItem );
     menu.addAction( tr("SaveItem"), this, &TTLVTreeView::saveItem );
     menu.addAction( tr("SaveItemValue"), this, &TTLVTreeView::saveItemValue );
+
+    TTLVTreeItem* item = currentItem();
+
+    if( item->isStructure() == true )
+    {
+        menu.addAction( tr( "AddTTLV" ), this, &TTLVTreeView::AddTTLV );
+    }
 
     menu.exec(QCursor::pos());
 }
@@ -406,6 +414,38 @@ void TTLVTreeView::treeCollapseNode()
 {
     QModelIndex index = currentIndex();
     collapse(index);
+}
+
+void TTLVTreeView::AddTTLV()
+{
+    int ret = 0;
+    BIN binData = {0,0};
+    MakeTTLVDlg makeTTLV;
+
+    TTLVTreeModel *ttlv_model = (TTLVTreeModel *)model();
+    TTLVTreeItem* item = currentItem();
+    BIN binTTLV = berApplet->getTTLV();
+
+    ret = makeTTLV.exec();
+
+    if( ret == QDialog::Accepted )
+    {
+        int nStart = 0;
+        QModelIndexList indexList;
+        QString strData = makeTTLV.getData();
+
+        JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
+
+        nStart = item->getOffset();
+        nStart += item->getLengthTTLV();
+
+        JS_BIN_insertBin( nStart, &binData, &binTTLV );
+        ttlv_model->resizeParentHeader( binData.nLen, item, indexList );
+
+        ttlv_model->parseTree();
+        QModelIndex ri = ttlv_model->index(0,0);
+        expand(ri);
+    }
 }
 
 void TTLVTreeView::editItem()

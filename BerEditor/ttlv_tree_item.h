@@ -32,6 +32,7 @@ public:
     int getTag( BIN *pTag );
     int getType( BIN *pType );
     int getLength( BIN *pLength );
+    int setLength( int32 nLength );
     int getValue( const BIN *pTTLV, BIN *pValue );
 
     QString getTagHex();
@@ -40,12 +41,15 @@ public:
     QString getLengthHex();
     QString getValueHex( const BIN *pTTLV );
     int32 getLengthInt();
+    int32 getLengthWithPad();
+    int32 getLengthTTLV();
     QString getTagName();
     QString getTypeName();
     QString getTitle( const BIN *pTTLV );
     QString getPrintValue( const BIN *pTTLV, int nWidth = -1 );
 
     void dataReset();
+    bool isStructure();
 
 private:
     BIN     header_;

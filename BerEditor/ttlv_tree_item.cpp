@@ -19,6 +19,14 @@ TTLVTreeItem::~TTLVTreeItem()
     JS_BIN_reset( &header_ );
 }
 
+bool TTLVTreeItem::isStructure()
+{
+    if( getType() == 0x01 )
+        return true;
+    else
+        return false;
+}
+
 void TTLVTreeItem::setHeader( const unsigned char *pValue, int nLength )
 {
     JS_BIN_reset( &header_ );
@@ -66,6 +74,18 @@ int TTLVTreeItem::getLength( BIN *pLength )
     if( header_.nLen != JS_TTLV_HEADER_SIZE ) return -1;
 
     JS_BIN_set( pLength, &header_.pVal[JS_TTLV_LENGTH_OFFSET], JS_TTLV_LENGTH_SIZE );
+
+    return 0;
+}
+
+int TTLVTreeItem::setLength( int32 nLength )
+{
+    if( header_.nLen != JS_TTLV_HEADER_SIZE ) return -1;
+
+    header_.pVal[JS_TTLV_LENGTH_OFFSET] = ( nLength >> 24 ) & 0xFF;
+    header_.pVal[JS_TTLV_LENGTH_OFFSET + 1] = (nLength >> 16 ) & 0xFF;
+    header_.pVal[JS_TTLV_LENGTH_OFFSET + 2] = (nLength >> 8 ) & 0xFF;
+    header_.pVal[JS_TTLV_LENGTH_OFFSET + 3] = ( nLength & 0xFF );
 
     return 0;
 }
@@ -171,6 +191,29 @@ int32 TTLVTreeItem::getLengthInt()
     len = JS_BIN_int( &binLen );
 
     return len;
+}
+
+int32 TTLVTreeItem::getLengthWithPad()
+{
+    int32 nLen = getLengthInt();
+
+    int nLeft = ( nLen % 8 );
+
+    if( nLeft > 0 )
+    {
+        nLen = nLen + 8 - nLeft;
+    }
+
+    return nLen;
+}
+
+int32 TTLVTreeItem::getLengthTTLV()
+{
+    int32 nLen = JS_TTLV_HEADER_SIZE;
+
+    nLen += getLengthWithPad();
+
+    return nLen;
 }
 
 QString TTLVTreeItem::getTagName()

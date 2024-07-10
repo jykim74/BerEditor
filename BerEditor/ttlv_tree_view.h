@@ -21,6 +21,8 @@ public:
 
     void showTextView();
     void showXMLView();
+
+
 public slots:
     void CopyAsHex();
     void CopyAsBase64();
@@ -30,6 +32,8 @@ public slots:
     void treeExpandNode();
     void treeCollapseAll();
     void treeCollapseNode();
+
+    void AddTTLV();
 
 private slots:
     void onItemClicked( const QModelIndex& index );

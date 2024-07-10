@@ -110,3 +110,33 @@ int TTLVTreeModel::getItem( int offset, TTLVTreeItem *pItem )
     next_offset = offset + 8 + length + pad;
     return next_offset;
 }
+
+int TTLVTreeModel::resizeParentHeader( int nDiffLen, const TTLVTreeItem *pItem, QModelIndexList &indexList )
+{
+    if( pItem == NULL ) return -1;
+
+    if( nDiffLen == 0 ) return 0;
+
+    TTLVTreeItem *pParent = (TTLVTreeItem *)pItem->parent();
+
+    while( pParent )
+    {
+        int nOldLen = 0;
+        int nOldHeaderLen = 0;
+        BIN binHeader = {0,0};
+
+        int nReLen = pParent->getLengthInt();
+        nReLen = nReLen + nDiffLen;
+        pParent->setLength( nReLen );
+
+        indexList.append( pParent->index() );
+        pParent->getHeader( &binHeader );
+
+        JS_BIN_modifyBin( pParent->getOffset(), &binHeader, &binTTLV_ );
+        JS_BIN_reset( &binHeader );
+
+        pParent = (TTLVTreeItem *)pParent->parent();
+    }
+
+    return 0;
+}

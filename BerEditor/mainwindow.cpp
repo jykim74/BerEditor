@@ -51,6 +51,7 @@
 #include "make_ttlv_dlg.h"
 
 #include "js_pki_tools.h"
+#include "js_kms.h"
 
 #include <QtWidgets>
 #include <QFileDialog>
@@ -1157,6 +1158,18 @@ void MainWindow::treeCollapseNode()
 
 void MainWindow::openBer( const BIN *pBer )
 {
+    if( berApplet->isLicense() )
+    {
+        if( JS_KMS_isTTLV( pBer ) == 1 )
+        {
+            bool bVal = berApplet->yesOrNoBox( tr("The BER is TTLV format. Do you open as TTLV format?" ), this );
+            if( bVal == true )
+            {
+                decodeTTLV( pBer );
+                return;
+            }
+        }
+    }
     ber_model_->setBer( pBer );
     ber_model_->parseTree();
 

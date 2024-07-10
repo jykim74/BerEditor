@@ -18,6 +18,8 @@ public:
     int parseTree();
     int parseConstruct( int offset, TTLVTreeItem *pParentItem );
 
+    int resizeParentHeader( int nDiffLen, const TTLVTreeItem *pItem, QModelIndexList &indexList );
+
 public slots:
 
 
