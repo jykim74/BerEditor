@@ -632,6 +632,7 @@ void BerTreeView::InsertBER()
         JS_BIN_changeBin( item->GetOffset(), nOrgHeaderLen, &binHeader, &binBer );
         tree_model->resizeParentHeader( nDiffLen, item, indexList );
 
+
         tree_model->parseTree();       
         QModelIndex ri = tree_model->index(0,0);
         expand(ri);

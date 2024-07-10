@@ -1170,7 +1170,7 @@ void MainWindow::openBer( const BIN *pBer )
             }
         }
     }
-    ber_model_->setBer( pBer );
+    ber_model_->setBER( pBer );
     ber_model_->parseTree();
 
     left_tree_->header()->setVisible(false);

@@ -16,7 +16,7 @@ class BerModel : public QStandardItemModel
 public:
     BerModel( QObject *parent = 0 );
 
-    void setBer( const BIN *pBer );
+    void setBER( const BIN *pBer );
 
     int parseTree();
     int parseConstruct( int offset, BerItem *pParentItem );

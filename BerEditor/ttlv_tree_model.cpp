@@ -84,11 +84,9 @@ int TTLVTreeModel::parseConstruct( int offset, TTLVTreeItem *pParentItem )
 
 void TTLVTreeModel::setTTLV( const BIN *pTTLV )
 {
-    if( pTTLV == NULL )
-        JS_BIN_reset( &binTTLV_ );
-    else {
-        JS_BIN_copy( &binTTLV_, pTTLV );
-    }
+    JS_BIN_reset( &binTTLV_ );
+
+    if( pTTLV != NULL ) JS_BIN_copy( &binTTLV_, pTTLV );
 }
 
 int TTLVTreeModel::getItem( int offset, TTLVTreeItem *pItem )

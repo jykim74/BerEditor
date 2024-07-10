@@ -27,13 +27,10 @@ void BerModel::initialize()
 }
 
 
-void BerModel::setBer(const BIN *pBer )
+void BerModel::setBER(const BIN *pBer )
 {
-    if( pBer == NULL )
-        JS_BIN_reset( &binBer_ );
-    else {
-        JS_BIN_copy( &binBer_, pBer );
-    }
+    JS_BIN_reset( &binBer_ );
+    if( pBer != NULL ) JS_BIN_copy( &binBer_, pBer );
 }
 
 int BerModel::parseTree()

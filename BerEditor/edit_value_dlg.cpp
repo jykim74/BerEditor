@@ -215,6 +215,7 @@ void EditValueDlg::runChange()
     JS_BIN_appendBin( &binNewItem, &binNewVal );
 
     ret = JS_BIN_changeBin( ber_item_->GetOffset(), nOrgHeaderLen + nOrgLen, &binNewItem, &binBer );
+
     ber_model->resizeParentHeader( nDiffLen, ber_item_, indexList );
 
     JS_BIN_reset( &binNewVal );
