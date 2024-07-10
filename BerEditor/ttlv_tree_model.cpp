@@ -99,14 +99,10 @@ void TTLVTreeModel::setTTLV( const BIN *pTTLV )
 int TTLVTreeModel::getItem( int offset, TTLVTreeItem *pItem )
 {
     int     next_offset = 0;
-    int     position = 0;
     int     length = 0;
     int     pad = 0;
 
-    BIN     TTLV = {0,0};
-    JS_BIN_copy( &TTLV, &binTTLV_ );
-
-    if( TTLV.nLen <= 0 ) return -1;
+    if( binTTLV_.nLen <= 0 ) return -1;
 
     pItem->dataReset();
 
@@ -115,10 +111,10 @@ int TTLVTreeModel::getItem( int offset, TTLVTreeItem *pItem )
     BIN *pLength = pItem->getLength();
     BIN *pValue = pItem->getValue();
 
-    JS_BIN_set( pTag, TTLV.pVal + offset, 3 );
-    JS_BIN_set( pType, TTLV.pVal + offset + 3, 1 );
-    JS_BIN_set( pLength, TTLV.pVal + offset + 4, 4 );
-    JS_BIN_set( pValue, TTLV.pVal + offset + 8, pItem->getLengthInt() );
+    JS_BIN_set( pTag, binTTLV_.pVal + offset, 3 );
+    JS_BIN_set( pType, binTTLV_.pVal + offset + 3, 1 );
+    JS_BIN_set( pLength, binTTLV_.pVal + offset + 4, 4 );
+    JS_BIN_set( pValue, binTTLV_.pVal + offset + 8, pItem->getLengthInt() );
 
     length = pItem->getLengthInt();
 

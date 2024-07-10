@@ -192,6 +192,7 @@ add_executable(${PROJECT_NAME}
     edit_ttlv_dlg.h edit_ttlv_dlg.cpp edit_ttlv_dlg.ui
     ttlv_encoder_dlg.h ttlv_encoder_dlg.cpp ttlv_encoder_dlg.ui
     ttlv_client_dlg.h ttlv_client_dlg.cpp ttlv_client_dlg.ui
+    make_ttlv_dlg.h make_ttlv_dlg.cpp make_ttlv_dlg.ui
 )
 
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )

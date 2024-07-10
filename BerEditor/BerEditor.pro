@@ -91,9 +91,12 @@ SOURCES += \
     mac_thread.cpp \
     enc_dec_thread.cpp \
     sign_verify_thread.cpp \
+    decode_ttlv_dlg.cpp \
+    edit_ttlv_dlg.cpp \
     ttlv_tree_item.cpp \
     ttlv_tree_model.cpp \
-    ttlv_tree_view.cpp
+    ttlv_tree_view.cpp \
+    make_ttlv_dlg.cpp
 
 HEADERS += \
     about_dlg.h \
@@ -152,9 +155,12 @@ HEADERS += \
     mac_thread.h \
     enc_dec_thread.h \
     sign_verify_thread.h \
+    decode_ttlv_dlg.h \
+    edit_ttlv_dlg.h \
     ttlv_tree_item.h \
     ttlv_tree_model.h \
-    ttlv_tree_view.h
+    ttlv_tree_view.h \
+    make_ttlv_dlg.h
 
 
 
@@ -285,7 +291,10 @@ FORMS += \
         scep_client_dlg.ui \
         cert_man_dlg.ui \
         passwd_dlg.ui \
-        new_passwd_dlg.ui
+        new_passwd_dlg.ui \
+        decode_ttlv_dlg.ui \
+        edit_ttlv_dlg.ui \
+        make_ttlv_dlg.ui
 
 RESOURCES += \
     bereditor.qrc

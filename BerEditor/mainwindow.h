@@ -128,6 +128,7 @@ private slots:
     void insertBER();
     void insertData();
     void runDecodeTTLV();
+    void runMakeTTLV();
     void ttlvClient();
     void ttlvEncoder();
     void numTrans();

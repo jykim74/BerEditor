@@ -22,6 +22,7 @@ InsertBerDlg::InsertBerDlg(QWidget *parent) :
     connect( mConstructedCheck, SIGNAL(clicked()), this, SLOT(checkConstructed()));
 
     connect( mValueText, SIGNAL(textChanged()), this, SLOT(valueChanged()));
+    connect( mBERText, SIGNAL(textChanged()), this, SLOT(berChanged()));
     connect( mNumText, SIGNAL(textChanged(QString)), this, SLOT(numChanged()));
     connect( mClassCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(classChanged(int)));
     connect( mPrimitiveCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(primitiveChanged(int)));
@@ -132,7 +133,7 @@ void InsertBerDlg::makeHeader()
     JS_BIN_encodeHex( &binHeader, &pHex );
     mTagText->setText( pBitString );
     mHeaderText->setText( pHex );
-
+    mBERText->setPlainText( getData() );
 
 end :
     JS_BIN_reset( &binLen );
@@ -162,6 +163,13 @@ void InsertBerDlg::valueChanged()
     mValueLenText->setText( QString("%1").arg(nLen));
 
     makeHeader();
+}
+
+void InsertBerDlg::berChanged()
+{
+    QString strBER = mBERText->toPlainText();
+    int nLen = getDataLen( DATA_HEX, strBER );
+    mBERLenText->setText( QString("%1").arg( nLen ));
 }
 
 void InsertBerDlg::numChanged()

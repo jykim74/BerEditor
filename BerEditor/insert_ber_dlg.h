@@ -26,6 +26,7 @@ private slots:
     void runInsert();
     void checkConstructed();
     void valueChanged();
+    void berChanged();
     void numChanged();
     void classChanged(int index);
     void primitiveChanged(int index );

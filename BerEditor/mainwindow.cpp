@@ -48,6 +48,7 @@
 #include "decode_ttlv_dlg.h"
 #include "ttlv_client_dlg.h"
 #include "ttlv_encoder_dlg.h"
+#include "make_ttlv_dlg.h"
 
 #include "js_pki_tools.h"
 
@@ -698,9 +699,15 @@ void MainWindow::createActions()
     QAction *decodeTTLVAct = new QAction(decodeKMIPIcon, tr("&Decode TTLV"), this);
     decodeTTLVAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_K));
     connect( decodeTTLVAct, &QAction::triggered, this, &MainWindow::runDecodeTTLV );
-
     decodeTTLVAct->setStatusTip(tr("Decode TTLV data"));
     kmipMenu->addAction( decodeTTLVAct );
+
+    const QIcon makeTTLVIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/kms.png"));
+    QAction *makeTTLVAct = new QAction(makeTTLVIcon, tr("&Make TTLV"), this);
+    makeTTLVAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_Y));
+    connect( makeTTLVAct, &QAction::triggered, this, &MainWindow::runMakeTTLV );
+    makeTTLVAct->setStatusTip(tr("Make TTLV data"));
+    kmipMenu->addAction( makeTTLVAct );
 
     const QIcon ttlvEncoderIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/kms_encoder.png"));
     QAction *ttlvEncoderAct = new QAction(ttlvEncoderIcon, tr("&TTLV Encoder"), this);
@@ -719,6 +726,7 @@ void MainWindow::createActions()
     if( berApplet->isLicense() == false )
     {
         decodeTTLVAct->setEnabled( false );
+        makeTTLVAct->setEnabled( false );
         ttlvEncoderAct->setEnabled( false );
         ttlvClientAct->setEnabled( false );
     }
@@ -855,6 +863,12 @@ void MainWindow::runDecodeTTLV()
 {
     DecodeTTLVDlg decodeTTLV;
     decodeTTLV.exec();
+}
+
+void MainWindow::runMakeTTLV()
+{
+    MakeTTLVDlg makeTTLV;
+    makeTTLV.exec();
 }
 
 void MainWindow::ttlvClient()

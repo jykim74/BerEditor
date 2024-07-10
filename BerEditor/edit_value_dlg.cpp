@@ -22,11 +22,12 @@ EditValueDlg::EditValueDlg(QWidget *parent) :
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
     connect( mValueText, SIGNAL(textChanged()), this, SLOT(changeValueText()));
+    connect( mBERText, SIGNAL(textChanged()), this, SLOT(changeBER()));
     connect( mValueTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeValueType(int)));
 
     initialize();
 
-    mCloseBtn->setFocus();
+    mCloseBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -99,7 +100,7 @@ void EditValueDlg::makeHeader()
 
     JS_BIN_encodeHex( &binHeader, &pHex );
     mHeaderText->setText( pHex );
-
+    mBERText->setPlainText( getData() );
 
 end :
     JS_BIN_reset( &binLen );
@@ -169,6 +170,22 @@ void EditValueDlg::setItem(BerItem *pItem)
     JS_BIN_reset( &binTag );
     if( pHeader ) JS_free( pHeader );
     if( pBitString ) JS_free( pBitString );
+}
+
+QString EditValueDlg::getData()
+{
+    QString strData;
+    QString strValue = mValueText->toPlainText();
+    BIN binData = {0,0};
+
+    getBINFromString( &binData, mValueTypeCombo->currentText(), strValue );
+
+    strData = mHeaderText->text();
+    strData += getHexString( &binData );
+
+    JS_BIN_reset( &binData );
+
+    return strData;
 }
 
 void EditValueDlg::runChange()
@@ -276,6 +293,13 @@ void EditValueDlg::changeValueText()
     mValueLenText->setText( QString("%1").arg(nLen));
 
     makeHeader();
+}
+
+void EditValueDlg::changeBER()
+{
+    QString strBER = mBERText->toPlainText();
+    int nLen = getDataLen( DATA_HEX, strBER );
+    mBERLenText->setText( QString("%1").arg( nLen ));
 }
 
 void EditValueDlg::changeValueType(int index)
