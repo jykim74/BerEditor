@@ -287,6 +287,7 @@ void TTLVTreeView::showRightPart( TTLVTreeItem *pItem )
 
 void TTLVTreeView::getInfoView(TTLVTreeItem *pItem)
 {
+    BIN binTTLV = berApplet->getTTLV();
     berApplet->mainWindow()->infoClear();
 
     berApplet->info( "========================================================================\n" );
@@ -297,7 +298,7 @@ void TTLVTreeView::getInfoView(TTLVTreeItem *pItem)
     berApplet->info( QString( "Type   : %1(%2)\n").arg( pItem->getTypeName() ).arg( pItem->getTypeHex() ));
     berApplet->info( QString( "Length : %1(%2)\n" ).arg( pItem->getLengthInt() ).arg( pItem->getLengthHex() ));
     berApplet->info( QString( "Offset : %1(%2)\n").arg( pItem->getOffset() ).arg( pItem->getOffset(), 0, 16) );
-    berApplet->info( QString( "Value  : %1").arg( pItem->getPrintValue() ) );
+    berApplet->info( QString( "Value  : %1").arg( pItem->getPrintValue( &binTTLV ) ) );
 }
 
 QString TTLVTreeView::GetTextView()
@@ -327,6 +328,8 @@ QString TTLVTreeView::GetTextView()
 void TTLVTreeView::CopyAsHex()
 {
     char *pHex = NULL;
+    BIN binVal = {0,0};
+
     TTLVTreeItem* item = currentItem();
     if( item == NULL )
     {
@@ -335,16 +338,19 @@ void TTLVTreeView::CopyAsHex()
     }
 
     QClipboard *clipboard = QGuiApplication::clipboard();
+    BIN binTTLV = berApplet->getTTLV();
 
-    BIN *pVal = item->getValue();
-    JS_BIN_encodeHex( pVal, &pHex );
+    item->getValue( &binTTLV, &binVal );
+    JS_BIN_encodeHex( &binVal, &pHex );
     clipboard->setText(pHex);
     if( pHex ) JS_free(pHex);
+    JS_BIN_reset( &binVal );
 }
 
 void TTLVTreeView::CopyAsBase64()
 {
     char *pBase64 = NULL;
+    BIN binVal = {0,0};
     TTLVTreeItem* item = currentItem();
     if( item == NULL )
     {
@@ -352,11 +358,13 @@ void TTLVTreeView::CopyAsBase64()
         return;
     }
 
+    BIN binTTLV = berApplet->getTTLV();
     QClipboard *clipboard = QGuiApplication::clipboard();
-    BIN *pVal = item->getValue();
-    JS_BIN_encodeBase64( pVal, &pBase64 );
+    item->getValue( &binTTLV, &binVal );
+    JS_BIN_encodeBase64( &binVal, &pBase64 );
     clipboard->setText(pBase64);
     if( pBase64 ) JS_free(pBase64);
+    JS_BIN_reset( &binVal );
 }
 
 void TTLVTreeView::copy()
@@ -416,14 +424,20 @@ void TTLVTreeView::saveItem()
     if( pItem == NULL ) return;
 
     BIN binData = {0,0};
+    BIN binTTLV = berApplet->getTTLV();
+    BIN binHeader = {0,0};
+    BIN binValue = {0,0};
 
-    JS_BIN_appendBin( &binData, pItem->getTag() );
-    JS_BIN_appendBin( &binData, pItem->getType() );
-    JS_BIN_appendBin( &binData, pItem->getLength() );
-    JS_BIN_appendBin( &binData, pItem->getValue() );
+    pItem->getHeader( &binHeader );
+    pItem->getValue( &binTTLV, &binValue );
+
+    JS_BIN_appendBin( &binData, &binHeader );
+    JS_BIN_appendBin( &binData, &binValue );
 
     JS_BIN_fileWrite( &binData, fileName.toStdString().c_str() );
     JS_BIN_reset( &binData );
+    JS_BIN_reset( &binHeader );
+    JS_BIN_reset( &binValue );
 }
 
 void TTLVTreeView::saveItemValue()
@@ -435,11 +449,16 @@ void TTLVTreeView::saveItemValue()
         return;
 
     QString fileName = fileDlg.selectedFiles().first();
+    BIN binTTLV = berApplet->getTTLV();
+    BIN binValue = {0,0};
 
     TTLVTreeItem *pItem = currentItem();
     if( pItem == NULL ) return;
 
-    JS_BIN_fileWrite( pItem->getValue(), fileName.toStdString().c_str() );
+    pItem->getValue( &binTTLV, &binValue );
+
+    JS_BIN_fileWrite( &binValue, fileName.toStdString().c_str() );
+    JS_BIN_reset( &binValue );
 }
 
 void TTLVTreeView::showItemText( TTLVTreeItem* item )
@@ -476,7 +495,7 @@ void TTLVTreeView::showItemText( TTLVTreeItem* item )
     else
     {
         QString strName = item->getTagName();
-        QString strValue = item->getPrintValue();
+        QString strValue = item->getPrintValue( &binTTLV );
 
         showText( level, QString( "%1" ).arg( strName ), QColor(Qt::darkMagenta) );
         showText( 0, QString( " = %1\n" ).arg( strValue ) );
@@ -517,7 +536,7 @@ void TTLVTreeView::showItemXML( TTLVTreeItem* item )
     }
     else
     {
-        QString strValue = item->getPrintValue();
+        QString strValue = item->getPrintValue( &binTTLV );
 
         showXML( level, QString( "<%1>" ).arg( strName ), QColor(Qt::darkMagenta) );
         showXML( 0, QString( "%1" ).arg( strValue ) );

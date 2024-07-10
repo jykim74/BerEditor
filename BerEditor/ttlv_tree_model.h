@@ -13,7 +13,7 @@ class TTLVTreeModel : public QStandardItemModel
 public:
     TTLVTreeModel( QObject *parent = 0 );
     void setTTLV( const BIN *pTTLV );
-    const BIN& getTTLV() { return binTTLV_; };
+    BIN& getTTLV() { return binTTLV_; };
 
     int parseTree();
     int parseConstruct( int offset, TTLVTreeItem *pParentItem );

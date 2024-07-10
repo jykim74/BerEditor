@@ -31,6 +31,9 @@ public:
     void decodeData( const BIN *pData, const QString strPath );
     void decodeTTLV( const BIN *pData );
 
+    BIN& getBER();
+    BIN& getTTLV();
+
 
     QString cmd() { return cmd_; };
     void log( const QString strLog, QColor cr = QColor(00,00,00) );

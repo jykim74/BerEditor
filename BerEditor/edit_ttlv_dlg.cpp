@@ -25,13 +25,14 @@ EditTTLVDlg::~EditTTLVDlg()
 void EditTTLVDlg::initialize()
 {
     TTLVTreeItem *pItem = berApplet->mainWindow()->ttlvTree()->currentItem();
+    BIN binTTLV = berApplet->getTTLV();
 
     if( pItem == NULL ) return;
 
     mTagText->setText( pItem->getTagHex() );
     mTypeText->setText( pItem->getTypeHex() );
     mLengthText->setText( pItem->getLengthHex() );
-    mValueText->setPlainText( pItem->getValueHex() );
+    mValueText->setPlainText( pItem->getValueHex( &binTTLV ) );
 }
 
 void EditTTLVDlg::changeValue()
@@ -43,32 +44,21 @@ void EditTTLVDlg::changeValue()
 void EditTTLVDlg::clickOK()
 {
     int     ret = 0;
-    BIN     *pDstTag = NULL;
-    BIN     *pDstType = NULL;
-    BIN     *pDstLength = NULL;
-    BIN     *pDstValue = NULL;
 
     BIN     srcTag = {0,0};
     BIN     srcType = {0,0};
     BIN     srcLength = {0,0};
     BIN     srcValue = {0,0};
-    BIN TTLV = berApplet->mainWindow()->ttlvModel()->getTTLV();
+    BIN TTLV = berApplet->getTTLV();
 
     TTLVTreeItem *pItem = berApplet->mainWindow()->ttlvTree()->currentItem();
-    pDstTag = pItem->getTag();
-    pDstType = pItem->getType();
-    pDstLength = pItem->getLength();
-    pDstValue = pItem->getValue();
 
     JS_BIN_decodeHex( mTagText->text().toStdString().c_str(), &srcTag );
     JS_BIN_decodeHex( mTypeText->text().toStdString().c_str(), &srcType );
     JS_BIN_decodeHex( mLengthText->text().toStdString().c_str(), &srcLength );
     JS_BIN_decodeHex( mValueText->toPlainText().toStdString().c_str(), &srcValue );
 
-    if( pDstTag->nLen != srcTag.nLen
-            || pDstType->nLen != srcType.nLen
-            || pDstLength->nLen != srcLength.nLen
-            || pDstValue->nLen != srcValue.nLen )
+    if( pItem->getLengthInt() != JS_BIN_int( &srcLength ))
     {
         berApplet->warningBox( "All length of value have to be the same with orginal length value." );
         ret = -1;

@@ -122,7 +122,7 @@ void EditValueDlg::setItem(BerItem *pItem)
 
     ber_item_ = pItem;
     BerModel *ber_model = (BerModel *)ber_item_->model();
-    BIN& binBer = ber_model->getBer();
+    const BIN& binBer = ber_model->getBER();
 
     ber_item_ = pItem;
     mClassText->setText( ber_item_->GetClassString() );
@@ -202,7 +202,7 @@ void EditValueDlg::runChange()
     QString strValue = mValueText->toPlainText();
 
     BerModel *ber_model = (BerModel *)ber_item_->model();
-    BIN& binBer = ber_model->getBer();
+    BIN& binBer = ber_model->getBER();
 
     getBINFromString( &binNewVal, mValueTypeCombo->currentText(), strValue );
 
@@ -230,7 +230,7 @@ void EditValueDlg::runDelete()
     int ret = 0;
     int nDiffLen = 0;
     BerModel *ber_model = (BerModel *)ber_item_->model();
-    BIN& binBer = ber_model->getBer();
+    BIN& binBer = ber_model->getBER();
     QModelIndexList indexList;
 
     BerItem *parentItem = (BerItem *)ber_item_->parent();
@@ -258,7 +258,7 @@ void EditValueDlg::runAdd()
     BIN binItem = {0,0};
     BerModel *ber_model = (BerModel *)ber_item_->model();
     BerItem *parentItem = (BerItem *)ber_item_->parent();
-    BIN& binBer = ber_model->getBer();
+    BIN& binBer = ber_model->getBER();
     QModelIndexList indexList;
     QString strValue = mValueText->toPlainText();
 

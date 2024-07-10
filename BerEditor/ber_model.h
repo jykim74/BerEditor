@@ -22,7 +22,7 @@ public:
     int parseConstruct( int offset, BerItem *pParentItem );
     int parseIndefiniteConstruct( int offset, BerItem *pParentItem );
 
-    BIN& getBer() { return binBer_; };
+    BIN& getBER() { return binBer_; };
     int getItem( int offset, BerItem *pItem );
     int getItem( const BIN *pBer, BerItem *pItem );
     int resizeParentHeader( int nDiffLen, const BerItem *pItem, QModelIndexList &indexList );

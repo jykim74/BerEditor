@@ -31,12 +31,11 @@ int TTLVTreeModel::parseTree()
     offset = getItem( offset, pRootItem );
     insertRow( 0, pRootItem );
 
-//    pRootItem->setText( pRootItem->getTagHex() );
-    pRootItem->setText( pRootItem->getTitle());
+    pRootItem->setText( pRootItem->getTitle( &binTTLV_ ));
 
-    BIN *pType = pRootItem->getType();
+    int nType = pRootItem->getType();
 
-    if( pType && pType->pVal[0] == 0x01 ) // In case of structure
+    if( nType == 0x01 ) // In case of structure
     {
         ret = parseConstruct( 8, pRootItem );
     }
@@ -52,10 +51,7 @@ int TTLVTreeModel::parseConstruct( int offset, TTLVTreeItem *pParentItem )
     int         start_offset = offset;
     int         level = pParentItem->getLevel() + 1;
 
-    BIN     TTLV = {0,0};
-    JS_BIN_copy( &TTLV, &binTTLV_ );
-
-    if( TTLV.nLen <= offset ) return -1;
+    if( binTTLV_.nLen <= offset ) return -1;
 
     do {
         TTLVTreeItem *pItem = new TTLVTreeItem();
@@ -64,11 +60,10 @@ int TTLVTreeModel::parseConstruct( int offset, TTLVTreeItem *pParentItem )
 
         next_offset = getItem( offset, pItem );
 
-//        pItem->setText( pItem->getTagHex() );
-        pItem->setText( pItem->getTitle() );
+        pItem->setText( pItem->getTitle( &binTTLV_ ) );
         pParentItem->appendRow( pItem );
 
-        if( pItem->getTypeHex() == "01" )
+        if( pItem->getType() == 0x01 )
             bStructed = 1;
         else
             bStructed = 0;
@@ -82,7 +77,7 @@ int TTLVTreeModel::parseConstruct( int offset, TTLVTreeItem *pParentItem )
 
         if( offset >= (pParentItem->getOffset() + 8 + pParentItem->getLengthInt()) )
             break;
-    } while ( next_offset > 0 && next_offset < TTLV.nLen );
+    } while ( next_offset > 0 && next_offset < binTTLV_.nLen );
 
     return 0;
 }
@@ -105,16 +100,7 @@ int TTLVTreeModel::getItem( int offset, TTLVTreeItem *pItem )
     if( binTTLV_.nLen <= 0 ) return -1;
 
     pItem->dataReset();
-
-    BIN *pTag = pItem->getTag();
-    BIN *pType = pItem->getType();
-    BIN *pLength = pItem->getLength();
-    BIN *pValue = pItem->getValue();
-
-    JS_BIN_set( pTag, binTTLV_.pVal + offset, 3 );
-    JS_BIN_set( pType, binTTLV_.pVal + offset + 3, 1 );
-    JS_BIN_set( pLength, binTTLV_.pVal + offset + 4, 4 );
-    JS_BIN_set( pValue, binTTLV_.pVal + offset + 8, pItem->getLengthInt() );
+    pItem->setHeader( &binTTLV_.pVal[offset], JS_TTLV_HEADER_SIZE );
 
     length = pItem->getLengthInt();
 

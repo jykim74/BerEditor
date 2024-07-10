@@ -164,6 +164,16 @@ void BerApplet::decodeTTLV( const BIN *pData )
     main_win_->decodeTTLV( pData );
 }
 
+BIN& BerApplet::getBER()
+{
+    return main_win_->berModel()->getBER();
+}
+
+BIN& BerApplet::getTTLV()
+{
+    return main_win_->ttlvModel()->getTTLV();
+}
+
 int BerApplet::checkLicense()
 {
     int ret = 0;

@@ -1177,7 +1177,7 @@ void MainWindow::openBer( const BIN *pBer )
 
 bool MainWindow::isChanged()
 {
-    BIN& binBer = ber_model_->getBer();
+    const BIN& binBer = ber_model_->getBER();
 
     if( binBer.nLen > 0 )
     {
@@ -1634,7 +1634,7 @@ void MainWindow::save()
             return;
         }
 
-        BIN& binBer = ber_model_->getBer();
+        const BIN& binBer = ber_model_->getBER();
         JS_BIN_fileWrite( &binBer, file_path_.toLocal8Bit().toStdString().c_str() );
     }
 }
@@ -1657,7 +1657,7 @@ void MainWindow::saveAs()
 
     if( fileName.length() > 0 )
     {
-        BIN& binBer = ber_model_->getBer();
+        const BIN& binBer = ber_model_->getBER();
         JS_BIN_fileWrite( &binBer, fileName.toLocal8Bit().toStdString().c_str() );
     }
 }

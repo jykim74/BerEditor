@@ -63,7 +63,8 @@ public:
     QTextEdit* rightText() { return right_text_; };
     QTextEdit* rightXML() { return right_xml_; };
     TTLVTreeView* ttlvTree() { return ttlv_tree_; };
-    TTLVTreeModel*ttlvModel() { return ttlv_model_; };
+    TTLVTreeModel* ttlvModel() { return ttlv_model_; };
+    BerModel* berModel() { return ber_model_; };
 
     void showTextMsg( const QString& msg );
 

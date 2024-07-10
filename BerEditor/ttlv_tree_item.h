@@ -6,43 +6,49 @@
 
 #include <QStandardItem>
 
+#define JS_TTLV_HEADER_SIZE     8
+#define JS_TTLV_TAG_SIZE        3
+#define JS_TTLV_TYPE_SIZE       1
+#define JS_TTLV_LENGTH_SIZE     4
+
+#define JS_TTLV_TAG_OFFSET      0
+#define JS_TTLV_TYPE_OFFSET     3
+#define JS_TTLV_LENGTH_OFFSET   4
+
 class TTLVTreeItem : public QStandardItem
 {
 public:
     TTLVTreeItem();
-
-    BIN* getTag() { return tag_; };
-    BIN* getType() { return type_; };
-    BIN* getLength() { return length_; };
-    BIN* getValue() { return value_; };
+    ~TTLVTreeItem();
 
     int getOffset() { return offset_; };
     int getLevel() { return level_; };
 
-    void setTag( const BIN *pTag );
-    void setType( const BIN *pType );
-    void setLength( const BIN *pLength );
-    void setValue( const BIN *pValue );
+    void setHeader( const unsigned char *pValue, int nLength );
     void setOffset( int offset );
     void setLevel( int level );
 
+    int getHeader( BIN *pHeader );
+    int getTag( BIN *pTag );
+    int getType( BIN *pType );
+    int getLength( BIN *pLength );
+    int getValue( const BIN *pTTLV, BIN *pValue );
+
     QString getTagHex();
     QString getTypeHex();
+    int getType();
     QString getLengthHex();
-    QString getValueHex();
+    QString getValueHex( const BIN *pTTLV );
     int32 getLengthInt();
     QString getTagName();
     QString getTypeName();
-    QString getTitle();
-    QString getPrintValue();
+    QString getTitle( const BIN *pTTLV );
+    QString getPrintValue( const BIN *pTTLV );
 
     void dataReset();
 
 private:
-    BIN     *tag_;
-    BIN     *type_;
-    BIN     *length_;
-    BIN     *value_;
+    BIN     header_;
     int     offset_;
     int     level_;
 };
