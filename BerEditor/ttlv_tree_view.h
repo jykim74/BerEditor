@@ -16,7 +16,7 @@ public:
     void showRight();
     void showRightFull( TTLVTreeItem *pItem );
     void showRightPart( TTLVTreeItem *pItem );
-    void getInfoView( TTLVTreeItem *pItem );
+    void getInfoView( TTLVTreeItem *pItem, int nWidth );
     QString GetTextView();
 
     void showTextView();

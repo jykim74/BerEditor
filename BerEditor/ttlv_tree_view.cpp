@@ -76,11 +76,14 @@ void TTLVTreeView::onItemClicked( const QModelIndex& index )
     TTLVTreeItem *item = (TTLVTreeItem *)left_model->itemFromIndex(index);
 
     SettingsMgr *setMgr = berApplet->settingsMgr();
+    int nWidth = setMgr->getHexAreaWidth();
 
     if( setMgr->showPartOnly() == false )
         showRightFull( item );
     else
         showRightPart( item );
+
+    getInfoView( item, nWidth );
 }
 
 void TTLVTreeView::leftContextMenu( QPoint point )
@@ -191,7 +194,7 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
         rightTable->item( line, 17 )->setBackgroundColor(QColor(210,240,210));
     }
 
-    getInfoView( pItem );
+//    getInfoView( pItem );
 }
 
 void TTLVTreeView::showRightPart( TTLVTreeItem *pItem )
@@ -280,12 +283,12 @@ void TTLVTreeView::showRightPart( TTLVTreeItem *pItem )
         rightTable->item( line, 17 )->setBackgroundColor(QColor(210,240,210));
     }
 
-    getInfoView( pItem );
+//    getInfoView( pItem );
 
     JS_BIN_reset( &binPart );
 }
 
-void TTLVTreeView::getInfoView(TTLVTreeItem *pItem)
+void TTLVTreeView::getInfoView(TTLVTreeItem *pItem, int nWidth )
 {
     BIN binTTLV = berApplet->getTTLV();
     berApplet->mainWindow()->infoClear();
@@ -298,7 +301,8 @@ void TTLVTreeView::getInfoView(TTLVTreeItem *pItem)
     berApplet->info( QString( "Type   : %1(%2)\n").arg( pItem->getTypeName() ).arg( pItem->getTypeHex() ));
     berApplet->info( QString( "Length : %1(%2)\n" ).arg( pItem->getLengthInt() ).arg( pItem->getLengthHex() ));
     berApplet->info( QString( "Offset : %1(%2)\n").arg( pItem->getOffset() ).arg( pItem->getOffset(), 0, 16) );
-    berApplet->info( QString( "Value  : %1").arg( pItem->getPrintValue( &binTTLV ) ) );
+    berApplet->info( QString( "Value  :\n") );
+    berApplet->info( QString( "%1").arg( pItem->getPrintValue( &binTTLV, nWidth ) ) );
 }
 
 QString TTLVTreeView::GetTextView()

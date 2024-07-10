@@ -15,9 +15,20 @@ class MakeTTLVDlg : public QDialog, public Ui::MakeTTLVDlg
 public:
     explicit MakeTTLVDlg(QWidget *parent = nullptr);
     ~MakeTTLVDlg();
+    QString getData();
+    void setTitle( const QString strTitle );
+
+private slots:
+    void changeType( int index );
+    void changeTag( const QString text );
+    void changeValue();
+    void changeTTLV();
+
+    void clickOK();
 
 private:
-
+    void initialize();
+    void makeHeader();
 };
 
 #endif // MAKE_TTLV_DLG_H

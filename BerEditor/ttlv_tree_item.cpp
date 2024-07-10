@@ -2,7 +2,7 @@
 #include "kmip.h"
 #include "js_kms.h"
 #include "ttlv_tree_item.h"
-
+#include "common.h"
 
 
 TTLVTreeItem::TTLVTreeItem()
@@ -236,7 +236,7 @@ QString TTLVTreeItem::getTitle( const BIN *pTTLV )
     return strTitle;
 }
 
-QString TTLVTreeItem::getPrintValue( const BIN *pTTLV )
+QString TTLVTreeItem::getPrintValue( const BIN *pTTLV, int nWidth )
 {
     BIN binType = {0,0};
     BIN binVal = {0,0};
@@ -274,6 +274,7 @@ QString TTLVTreeItem::getPrintValue( const BIN *pTTLV )
     else
     {
         strPrint = getValueHex( pTTLV );
+        if( nWidth > 0 ) strPrint = getHexStringArea( strPrint, nWidth );
     }
 
     return strPrint;

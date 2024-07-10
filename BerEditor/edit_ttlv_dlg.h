@@ -15,13 +15,18 @@ class EditTTLVDlg : public QDialog, public Ui::EditTTLVDlg
 public:
     explicit EditTTLVDlg(QWidget *parent = nullptr);
     ~EditTTLVDlg();
+    QString getData();
 
 private slots:
-    void clickOK();
+    void clickModify();
+    void clickAdd();
+    void clickDelete();
     void changeValue();
+    void changeTTLV();
 
 private:
     void initialize();
+    void makeHeader();
 };
 
 #endif // EDIT_TTLV_DLG_H
