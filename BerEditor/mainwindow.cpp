@@ -9,7 +9,7 @@
 #include "ber_model.h"
 #include "ber_tree_view.h"
 
-#include "insert_data_dlg.h"
+#include "decode_data_dlg.h"
 #include "ber_applet.h"
 #include "settings_dlg.h"
 #include "settings_mgr.h"
@@ -29,7 +29,7 @@
 #include "cms_dlg.h"
 #include "sss_dlg.h"
 #include "cavp_dlg.h"
-#include "insert_ber_dlg.h"
+#include "make_ber_dlg.h"
 #include "cert_pvd_dlg.h"
 #include "lcn_info_dlg.h"
 #include "ssl_verify_dlg.h"
@@ -45,8 +45,13 @@
 #include "scep_client_dlg.h"
 #include "cert_man_dlg.h"
 #include "common.h"
+#include "decode_ttlv_dlg.h"
+#include "ttlv_client_dlg.h"
+#include "ttlv_encoder_dlg.h"
+#include "make_ttlv_dlg.h"
 
 #include "js_pki_tools.h"
+#include "js_kms.h"
 
 #include <QtWidgets>
 #include <QFileDialog>
@@ -94,6 +99,10 @@ MainWindow::~MainWindow()
 
     delete ber_model_;
     delete left_tree_;
+
+    delete ttlv_model_;
+    delete ttlv_tree_;
+
     delete log_text_;
     delete info_text_;
     delete right_table_;
@@ -133,6 +142,12 @@ void MainWindow::initialize()
     vsplitter_ = new QSplitter(Qt::Vertical);
 
     left_tree_ = new BerTreeView(this);
+    ber_model_ = new BerModel(this);
+    left_tree_->setModel(ber_model_);
+
+    ttlv_tree_ = new TTLVTreeView;
+    ttlv_model_ = new TTLVTreeModel;
+    ttlv_tree_->setModel( ttlv_model_ );
 
     log_text_ = new QTextEdit();
     log_text_->setReadOnly(true);
@@ -148,10 +163,6 @@ void MainWindow::initialize()
 
     right_table_->setContextMenuPolicy(Qt::CustomContextMenu);
     connect( right_table_, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(rightTableCustomMenu(const QPoint&)));
-
-    ber_model_ = new BerModel(this);
-
-    left_tree_->setModel(ber_model_);
 
     hsplitter_->addWidget(left_tree_);
     hsplitter_->addWidget(vsplitter_);
@@ -373,27 +384,27 @@ void MainWindow::createActions()
     QAction *copyAct = new QAction(copyIcon, tr("&Copy Information"), this);
     copyAct->setShortcuts(QKeySequence::Copy);
     copyAct->setStatusTip(tr("Copy the current selection's contents to the clipboard"));
-    connect( copyAct, &QAction::triggered, left_tree_, &BerTreeView::copy );
+    connect( copyAct, &QAction::triggered, this, &MainWindow::copy );
     editMenu->addAction(copyAct);
 //    editToolBar->addAction(copyAct);
 
     QAction *copyAsHexAct = new QAction(copyIcon, tr("Copy As &Hex"), this);
     copyAsHexAct->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_X));
     copyAsHexAct->setStatusTip(tr("Copy ber data as hex"));
-    connect( copyAsHexAct, &QAction::triggered, left_tree_, &BerTreeView::CopyAsHex );
+    connect( copyAsHexAct, &QAction::triggered, this, &MainWindow::copyAsHex );
     editMenu->addAction( copyAsHexAct );
 
     QAction *copyAsBase64Act = new QAction(copyIcon, tr("Copy As &Base64"), this);
     copyAsBase64Act->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_B));
     copyAsBase64Act->setStatusTip(tr("Copy ber data as base64"));
-    connect( copyAsBase64Act, &QAction::triggered, left_tree_, &BerTreeView::CopyAsBase64 );
+    connect( copyAsBase64Act, &QAction::triggered, this, &MainWindow::copyAsBase64 );
     editMenu->addAction( copyAsBase64Act );
 
     const QIcon expandAllIcon = QIcon::fromTheme("expand-all", QIcon(":/images/expand_all.png"));
     QAction *expandAllAct = new QAction(expandAllIcon, tr("&Expand All"), this );
     expandAllAct->setShortcut( QKeySequence(Qt::Key_F5) );
     expandAllAct->setStatusTip(tr("Show all nodes"));
-    connect( expandAllAct, &QAction::triggered, left_tree_, &BerTreeView::treeExpandAll );
+    connect( expandAllAct, &QAction::triggered, this, &MainWindow::treeExpandAll );
     editMenu->addAction(expandAllAct);
     editToolBar->addAction(expandAllAct);
 
@@ -401,7 +412,7 @@ void MainWindow::createActions()
     QAction *expandNodeAct = new QAction(expandNodeIcon, tr("&Expand Node"), this );
     expandNodeAct->setStatusTip(tr("Show node"));
     expandNodeAct->setShortcut( QKeySequence(Qt::Key_F6));
-    connect( expandNodeAct, &QAction::triggered, left_tree_, &BerTreeView::treeExpandNode );
+    connect( expandNodeAct, &QAction::triggered, this, &MainWindow::treeExpandNode );
     editMenu->addAction(expandNodeAct);
     editToolBar->addAction(expandNodeAct);
 
@@ -409,7 +420,7 @@ void MainWindow::createActions()
     QAction *collapseAllAct = new QAction(collapseAllIcon, tr("&Collapse All"), this );
     collapseAllAct->setStatusTip(tr("Collapse all nodes"));
     collapseAllAct->setShortcut( QKeySequence(Qt::Key_F7));
-    connect( collapseAllAct, &QAction::triggered, left_tree_, &BerTreeView::treeCollapseAll );
+    connect( collapseAllAct, &QAction::triggered, this, &MainWindow::treeCollapseAll );
     editMenu->addAction(collapseAllAct);
     editToolBar->addAction(collapseAllAct);
 
@@ -417,7 +428,7 @@ void MainWindow::createActions()
     QAction *collapseNodeAct = new QAction(collapseNodeIcon, tr("&Collapse Node"), this );
     collapseNodeAct->setStatusTip(tr("Show node"));
     collapseNodeAct->setShortcut( QKeySequence(Qt::Key_F8));
-    connect( collapseNodeAct, &QAction::triggered, left_tree_, &BerTreeView::treeCollapseNode );
+    connect( collapseNodeAct, &QAction::triggered, this, &MainWindow::treeCollapseNode );
     editMenu->addAction(collapseNodeAct);
     editToolBar->addAction(collapseNodeAct);
 
@@ -454,25 +465,25 @@ void MainWindow::createActions()
     toolToolBar->addAction( oidAct );
 
     const QIcon berIcon = QIcon::fromTheme("ber-insert", QIcon(":/images/ber.png"));
-    QAction *insertBerAct = new QAction(berIcon, tr("Insert &BER"), this);
-    insertBerAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_B));
-    connect( insertBerAct, &QAction::triggered, this, &MainWindow::insertBER );
-    insertBerAct->setStatusTip(tr("Insert BER record"));
-    toolMenu->addAction( insertBerAct );
-    toolToolBar->addAction( insertBerAct );
+    QAction *makeBerAct = new QAction(berIcon, tr("Make &BER"), this);
+    makeBerAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_B));
+    connect( makeBerAct, &QAction::triggered, this, &MainWindow::runMakeBER );
+    makeBerAct->setStatusTip(tr("Make BER record"));
+    toolMenu->addAction( makeBerAct );
+    toolToolBar->addAction( makeBerAct );
 
     if( berApplet->isLicense() == false )
     {
-        insertBerAct->setEnabled( false );
+        makeBerAct->setEnabled( false );
     }
 
-    const QIcon insertIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/insert.png"));
-    QAction *insertDataAct = new QAction(insertIcon, tr("&Insert Data"), this);
-    insertDataAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_D));
-    connect( insertDataAct, &QAction::triggered, this, &MainWindow::insertData );
-    insertDataAct->setStatusTip(tr("Insert ber data"));
-    toolMenu->addAction( insertDataAct );
-    toolToolBar->addAction( insertDataAct );
+    const QIcon decodeIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/decode.png"));
+    QAction *decodeDataAct = new QAction(decodeIcon, tr("&Decode Data"), this);
+    decodeDataAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_D));
+    connect( decodeDataAct, &QAction::triggered, this, &MainWindow::runDecodeData );
+    decodeDataAct->setStatusTip(tr("Decode BER data"));
+    toolMenu->addAction( decodeDataAct );
+    toolToolBar->addAction( decodeDataAct );
 
     const QIcon uriIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/uri.png"));
     QAction *getURIAct = new QAction(uriIcon, tr("&Get URI data"), this);
@@ -683,6 +694,44 @@ void MainWindow::createActions()
         scepAct->setEnabled( false );
     }
 
+    QMenu *kmipMenu = menuBar()->addMenu( tr("&KMIP" ));
+
+    const QIcon decodeKMIPIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/kms.png"));
+    QAction *decodeTTLVAct = new QAction(decodeKMIPIcon, tr("&Decode TTLV"), this);
+    decodeTTLVAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_K));
+    connect( decodeTTLVAct, &QAction::triggered, this, &MainWindow::runDecodeTTLV );
+    decodeTTLVAct->setStatusTip(tr("Decode TTLV data"));
+    kmipMenu->addAction( decodeTTLVAct );
+
+    const QIcon makeTTLVIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/kms.png"));
+    QAction *makeTTLVAct = new QAction(makeTTLVIcon, tr("&Make TTLV"), this);
+    makeTTLVAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_Y));
+    connect( makeTTLVAct, &QAction::triggered, this, &MainWindow::runMakeTTLV );
+    makeTTLVAct->setStatusTip(tr("Make TTLV data"));
+    kmipMenu->addAction( makeTTLVAct );
+
+    const QIcon ttlvEncoderIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/kms_encoder.png"));
+    QAction *ttlvEncoderAct = new QAction(ttlvEncoderIcon, tr("&TTLV Encoder"), this);
+    ttlvEncoderAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_M));
+    connect( ttlvEncoderAct, &QAction::triggered, this, &MainWindow::ttlvEncoder );
+    ttlvEncoderAct->setStatusTip(tr("TTLV Encoder"));
+    kmipMenu->addAction( ttlvEncoderAct );
+
+    const QIcon ttlvClientIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/kms_client.png"));
+    QAction *ttlvClientAct = new QAction(ttlvClientIcon, tr("&TTLV Client"), this);
+    ttlvClientAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_P));
+    connect( ttlvClientAct, &QAction::triggered, this, &MainWindow::ttlvClient );
+    ttlvClientAct->setStatusTip(tr("TTLV Client"));
+    kmipMenu->addAction( ttlvClientAct );
+
+    if( berApplet->isLicense() == false )
+    {
+        decodeTTLVAct->setEnabled( false );
+        makeTTLVAct->setEnabled( false );
+        ttlvEncoderAct->setEnabled( false );
+        ttlvClientAct->setEnabled( false );
+    }
+
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
     QToolBar *helpToolBar = addToolBar(tr("Help"));
 
@@ -785,17 +834,17 @@ void MainWindow::newFile()
     process->start();
 }
 
-void MainWindow::insertBER()
+void MainWindow::runMakeBER()
 {
     int ret = 0;
 
-    InsertBerDlg insertBerDlg;
-    ret = insertBerDlg.exec();
+    MakeBerDlg makeBer;
+    ret = makeBer.exec();
 
     if( ret == QDialog::Accepted )
     {
         BIN binData = {0,0};
-        QString strData = insertBerDlg.getData();
+        QString strData = makeBer.getData();
 
         JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
         decodeData( &binData, "Unknown" );
@@ -803,12 +852,36 @@ void MainWindow::insertBER()
     }
 }
 
-void MainWindow::insertData()
+void MainWindow::runDecodeData()
 {
     int ret = -1;
 
-    InsertDataDlg insData(this);
-    ret = insData.exec();
+    DecodeDataDlg deData(this);
+    ret = deData.exec();
+}
+
+void MainWindow::runDecodeTTLV()
+{
+    DecodeTTLVDlg decodeTTLV;
+    decodeTTLV.exec();
+}
+
+void MainWindow::runMakeTTLV()
+{
+    MakeTTLVDlg makeTTLV;
+    makeTTLV.exec();
+}
+
+void MainWindow::ttlvClient()
+{
+    TTLVClientDlg ttlvClient;
+    ttlvClient.exec();
+}
+
+void MainWindow::ttlvEncoder()
+{
+    TTLVEncoderDlg ttlvEncoder;
+    ttlvEncoder.exec();
 }
 
 void MainWindow::numTrans()
@@ -999,9 +1072,117 @@ void MainWindow::openCSR()
     JS_BIN_reset( &binCSR );
 }
 
+void MainWindow::copy()
+{
+    if( hsplitter_->widget(0) == ttlv_tree_)
+    {
+        ttlv_tree_->copy();
+    }
+    else
+    {
+        left_tree_->copy();
+    }
+}
+
+void MainWindow::copyAsHex()
+{
+    if( hsplitter_->widget(0) == ttlv_tree_)
+    {
+        ttlv_tree_->CopyAsHex();
+    }
+    else
+    {
+        left_tree_->CopyAsHex();
+    }
+}
+
+void MainWindow::copyAsBase64()
+{
+    if( hsplitter_->widget(0) == ttlv_tree_)
+    {
+        ttlv_tree_->CopyAsBase64();
+    }
+    else
+    {
+        left_tree_->CopyAsBase64();
+    }
+}
+
+void MainWindow::treeExpandAll()
+{
+    if( hsplitter_->widget(0) == ttlv_tree_)
+    {
+        ttlv_tree_->treeExpandAll();
+    }
+    else
+    {
+        left_tree_->treeExpandAll();
+    }
+}
+
+void MainWindow::treeExpandNode()
+{
+    if( hsplitter_->widget(0) == ttlv_tree_)
+    {
+        ttlv_tree_->treeExpandNode();
+    }
+    else
+    {
+        left_tree_->treeExpandNode();
+    }
+}
+
+void MainWindow::treeCollapseAll()
+{
+    if( hsplitter_->widget(0) == ttlv_tree_)
+    {
+        ttlv_tree_->treeCollapseAll();
+    }
+    else
+    {
+        left_tree_->treeCollapseAll();
+    }
+}
+
+void MainWindow::treeCollapseNode()
+{
+    if( hsplitter_->widget(0) == ttlv_tree_)
+    {
+        ttlv_tree_->treeCollapseNode();
+    }
+    else
+    {
+        left_tree_->treeCollapseNode();
+    }
+}
+
 void MainWindow::openBer( const BIN *pBer )
 {
-    ber_model_->setBer( pBer );
+    if( JS_KMS_isTTLV( pBer ) == 1 )
+    {
+        if( berApplet->isLicense() == true )
+        {
+            bool bVal = berApplet->yesOrNoBox( tr("The BER is TTLV format. Do you open as TTLV format?" ), this );
+            if( bVal == true )
+            {
+                decodeTTLV( pBer );
+                return;
+            }
+        }
+        else
+        {
+            berApplet->warningBox( tr( "TTLV decoding requires a license."), this );
+            return;
+        }
+    }
+
+    if( JS_PKI_isBER( pBer ) == 0 )
+    {
+        berApplet->warningBox( tr( "The data is not BER format"), this );
+        return;
+    }
+
+    ber_model_->setBER( pBer );
     ber_model_->parseTree();
 
     left_tree_->header()->setVisible(false);
@@ -1014,11 +1195,14 @@ void MainWindow::openBer( const BIN *pBer )
         left_tree_->showTextView();
         left_tree_->showXMLView();
     }
+
+    if( hsplitter_->widget(0) != left_tree_ )
+        hsplitter_->replaceWidget(0, left_tree_ );
 }
 
 bool MainWindow::isChanged()
 {
-    BIN& binBer = ber_model_->getBer();
+    const BIN& binBer = ber_model_->getBER();
 
     if( binBer.nLen > 0 )
     {
@@ -1076,6 +1260,11 @@ void MainWindow::info( const QString strLog, QColor cr )
 
     info_text_->setTextCursor( cursor );
     info_text_->repaint();
+}
+
+void MainWindow::infoClear()
+{
+    info_text_->clear();
 }
 
 QString MainWindow::getInfo()
@@ -1452,6 +1641,14 @@ void MainWindow::rightTableUnselectAll()
     right_table_->clearSelection();
 }
 
+bool MainWindow::isTTLV()
+{
+    if( hsplitter_->widget(0) == ttlv_tree_ )
+        return true;
+    else
+        return false;
+}
+
 void MainWindow::save()
 {
     if( file_path_.isEmpty() )
@@ -1462,7 +1659,7 @@ void MainWindow::save()
             return;
         }
 
-        BIN& binBer = ber_model_->getBer();
+        const BIN& binBer = ber_model_->getBER();
         JS_BIN_fileWrite( &binBer, file_path_.toLocal8Bit().toStdString().c_str() );
     }
 }
@@ -1485,7 +1682,7 @@ void MainWindow::saveAs()
 
     if( fileName.length() > 0 )
     {
-        BIN& binBer = ber_model_->getBer();
+        const BIN& binBer = ber_model_->getBER();
         JS_BIN_fileWrite( &binBer, fileName.toLocal8Bit().toStdString().c_str() );
     }
 }
@@ -1551,6 +1748,40 @@ void MainWindow::decodeData( const BIN *pData, const QString strPath )
     setTitle( QString( strPath ));
 }
 
+void MainWindow::decodeTTLV( const BIN *pData )
+{
+    if( pData == NULL || pData->nLen <= 0 )
+    {
+        berApplet->warningBox( tr( "There is no data"), this );
+        return;
+    }
+
+    if( JS_KMS_isTTLV( pData ) == 0 )
+    {
+        berApplet->warningBox( tr( "The data is not TTLV format" ), this );
+        return;
+    }
+
+    ttlv_model_->setTTLV( pData );
+    ttlv_model_->parseTree();
+
+    ttlv_tree_->header()->setVisible(false);
+    ttlv_tree_->viewRoot();
+    QModelIndex ri = ttlv_model_->index(0,0);
+    ttlv_tree_->expand(ri);
+
+    if( berApplet->isLicense() )
+    {
+        ttlv_tree_->showTextView();
+        ttlv_tree_->showXMLView();
+    }
+
+    if( hsplitter_->widget(0) != ttlv_tree_ )
+        hsplitter_->replaceWidget(0, ttlv_tree_ );
+
+    setTitle( "TTLV" );
+}
+
 void MainWindow::print()
 {
 #if QT_CONFIG(printdialog)
@@ -1568,7 +1799,13 @@ void MainWindow::print()
     if (dlg->exec() == QDialog::Accepted)
     {
         QTextEdit txtEdit;
-        QString strText = left_tree_->GetTextView();
+        QString strText;
+
+        if( hsplitter_->widget(0) == ttlv_tree_)
+            strText = ttlv_tree_->GetTextView();
+        else
+            strText = left_tree_->GetTextView();
+
         txtEdit.setText(strText);
         txtEdit.print(&printer);
 //        rightText_->print(&printer);
@@ -1594,7 +1831,13 @@ void MainWindow::printPreview(QPrinter *printer)
     Q_UNUSED(printer);
 #else
     QTextEdit txtEdit;
-    QString strText = left_tree_->GetTextView();
+    QString strText;
+
+    if( hsplitter_->widget(0) == ttlv_tree_)
+        strText = ttlv_tree_->GetTextView();
+    else
+        strText = left_tree_->GetTextView();
+
     txtEdit.setText(strText);
     txtEdit.print(printer);
 //    rightText_->print(printer);

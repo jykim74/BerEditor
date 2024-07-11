@@ -60,6 +60,7 @@ private slots:
     void requestChanged();
     void responseChanged();
 
+    void checkEncPriKey();
 private:
     void initialize();
 

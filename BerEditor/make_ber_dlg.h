@@ -3,29 +3,30 @@
  *
  * All rights reserved.
  */
-#ifndef INSERT_BER_DLG_H
-#define INSERT_BER_DLG_H
+#ifndef MAKE_BER_DLG_H
+#define MAKE_BER_DLG_H
 
 #include <QDialog>
-#include "ui_insert_ber_dlg.h"
+#include "ui_make_ber_dlg.h"
 
 namespace Ui {
-class InsertBerDlg;
+class MakeBerDlg;
 }
 
-class InsertBerDlg : public QDialog, public Ui::InsertBerDlg
+class MakeBerDlg : public QDialog, public Ui::MakeBerDlg
 {
     Q_OBJECT
 
 public:
-    explicit InsertBerDlg(QWidget *parent = nullptr);
-    ~InsertBerDlg();
+    explicit MakeBerDlg(QWidget *parent = nullptr);
+    ~MakeBerDlg();
     QString getData();
 
 private slots:
     void runInsert();
     void checkConstructed();
     void valueChanged();
+    void berChanged();
     void numChanged();
     void classChanged(int index);
     void primitiveChanged(int index );
@@ -37,4 +38,4 @@ private:
     void makeHeader();
 };
 
-#endif // INSERT_BER_DLG_H
+#endif // MAKE_BER_DLG_H

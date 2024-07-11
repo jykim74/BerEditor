@@ -11,7 +11,7 @@
         <file>images/bad.png</file>
         <file>images/trash.png</file>
         <file>images/fileprint.png</file>
-        <file>images/insert.png</file>
+        <file>images/decode.png</file>
         <file>images/branch-closed.png</file>
         <file>images/branch-end.png</file>
         <file>images/branch-more.png</file>
@@ -69,5 +69,9 @@
         <file>images/scep.png</file>
         <file>images/cmp.png</file>
         <file>images/crl_expired.png</file>
+        <file>ttlvreader.qss</file>
+        <file>images/kms.png</file>
+        <file>images/kms_client.png</file>
+        <file>images/kms_encoder.png</file>
     </qresource>
 </RCC>

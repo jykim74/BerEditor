@@ -29,6 +29,10 @@ public:
     MainWindow* mainWindow() { return main_win_; };
     SettingsMgr *settingsMgr() { return settings_mgr_; };
     void decodeData( const BIN *pData, const QString strPath );
+    void decodeTTLV( const BIN *pData );
+
+    const BIN& getBER();
+    const BIN& getTTLV();
 
 
     QString cmd() { return cmd_; };

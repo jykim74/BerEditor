@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 project(BerEditor
-    VERSION 1.9.2
+    VERSION 1.9.3
     DESCRIPTION "BerEditor Application"
     LANGUAGES CXX )
 
@@ -55,8 +55,8 @@ set(PROJECT_SRC
     gen_otp_dlg.cpp
     get_uri_dlg.cpp
     i18n_helper.cpp
-    insert_ber_dlg.cpp
-    insert_data_dlg.cpp
+    make_ber_dlg.cpp
+    decode_data_dlg.cpp
     key_agree_dlg.cpp
     key_man_dlg.cpp
     lcn_info_dlg.cpp
@@ -100,8 +100,8 @@ set( PROJECT_HEADER
     gen_otp_dlg.h
     get_uri_dlg.h
     i18n_helper.h
-    insert_ber_dlg.h
-    insert_data_dlg.h
+    make_ber_dlg.h
+    decode_data_dlg.h
     key_agree_dlg.h
     key_man_dlg.h
     lcn_info_dlg.h
@@ -136,8 +136,8 @@ set( PROJECT_FORM
     gen_mac_dlg.ui
     gen_otp_dlg.ui
     get_uri_dlg.ui
-    insert_ber_dlg.ui
-    insert_data_dlg.ui
+    make_ber_dlg.ui
+    decode_data_dlg.ui
     key_agree_dlg.ui
     key_man_dlg.ui
     lcn_info_dlg.ui
@@ -186,6 +186,13 @@ add_executable(${PROJECT_NAME}
     mac_thread.h mac_thread.cpp
     enc_dec_thread.h enc_dec_thread.cpp
     sign_verify_thread.h sign_verify_thread.cpp
+    ttlv_tree_item.h ttlv_tree_model.h ttlv_tree_view.h
+    ttlv_tree_item.cpp ttlv_tree_model.cpp ttlv_tree_view.cpp
+    decode_ttlv_dlg.h decode_ttlv_dlg.cpp decode_ttlv_dlg.ui
+    edit_ttlv_dlg.h edit_ttlv_dlg.cpp edit_ttlv_dlg.ui
+    ttlv_encoder_dlg.h ttlv_encoder_dlg.cpp ttlv_encoder_dlg.ui
+    ttlv_client_dlg.h ttlv_client_dlg.cpp ttlv_client_dlg.ui
+    make_ttlv_dlg.h make_ttlv_dlg.cpp make_ttlv_dlg.ui
 )
 
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )

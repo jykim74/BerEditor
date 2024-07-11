@@ -6,6 +6,7 @@
 #include "ber_item.h"
 #include "ber_model.h"
 #include "js_bin.h"
+#include "js_error.h"
 
 #include <QStandardItemModel>
 
@@ -27,13 +28,10 @@ void BerModel::initialize()
 }
 
 
-void BerModel::setBer(const BIN *pBer )
+void BerModel::setBER(const BIN *pBer )
 {
-    if( pBer == NULL )
-        JS_BIN_reset( &binBer_ );
-    else {
-        JS_BIN_copy( &binBer_, pBer );
-    }
+    JS_BIN_reset( &binBer_ );
+    if( pBer != NULL ) JS_BIN_copy( &binBer_, pBer );
 }
 
 int BerModel::parseTree()
@@ -52,6 +50,8 @@ int BerModel::parseTree()
     pRootItem->SetLevel(0);
 
     offset = getItem( 0, pRootItem );
+    if( offset < 0 ) return -1;
+
     insertRow( 0, pRootItem );
 
     pRootItem->setText( pRootItem->GetInfoString( &binBer_) );
@@ -63,7 +63,6 @@ int BerModel::parseTree()
         else
             ret = parseConstruct( pRootItem->GetHeaderSize(), pRootItem );
     }
-
 
     return 0;
 }
@@ -321,7 +320,7 @@ int getItemA( const BIN *pBer, BerItem *pItem )
 }
 #endif
 
-int BerModel::resizeParentHeader( int nDiffLen, const BerItem *pItem, QModelIndexList &indexList )
+int BerModel::resizeParentHeader( int nDiffLen, const BerItem *pItem, BIN *pBER )
 {
     int nResizeLen = 0;
     if( pItem == NULL ) return -1;
@@ -339,8 +338,6 @@ int BerModel::resizeParentHeader( int nDiffLen, const BerItem *pItem, QModelInde
 
         BIN binHeader = {0,0};
 
-        indexList.append( pParent->index() );
-
         nOldLen = pParent->GetLength();
         nOldHeaderLen = pParent->GetHeaderSize();
 
@@ -348,11 +345,125 @@ int BerModel::resizeParentHeader( int nDiffLen, const BerItem *pItem, QModelInde
         if( nResizeLen == 0 ) break;
 
         pParent->getHeaderBin( &binHeader );
-        JS_BIN_changeBin( pParent->GetOffset(), nOldHeaderLen, &binHeader, &binBer_ );
+        JS_BIN_changeBin( pParent->GetOffset(), nOldHeaderLen, &binHeader, pBER );
         JS_BIN_reset( &binHeader );
 
         pParent = (BerItem *)pParent->parent();
     }
 
     return 0;
+}
+
+int BerModel::addItem( BerItem* pParentItem, const BIN *pData )
+{
+    int ret = 0;
+    BIN binMod = {0,0};
+    BIN binHeader = {0,0};
+    int nOrgLen = 0;
+    int nOrgHeaderLen = 0;
+    int nDiffLen = 0;
+
+    if( pParentItem == NULL ) return -1;
+
+    JS_BIN_copy( &binMod, &binBer_ );
+
+    nOrgLen = pParentItem->GetLength();
+    nOrgHeaderLen = pParentItem->GetHeaderSize();
+
+    JS_BIN_insertBin( pParentItem->GetOffset() + nOrgHeaderLen + nOrgLen, pData, &binMod );
+
+    ret = pParentItem->changeLength( nOrgLen + pData->nLen, &nDiffLen );
+
+    if( nDiffLen <= 0 || ret != 0 )
+    {
+        ret = JSR_ERR;
+        goto end;
+    }
+
+    pParentItem->getHeaderBin( &binHeader );
+    JS_BIN_changeBin( pParentItem->GetOffset(), nOrgHeaderLen, &binHeader, &binMod );
+    ret = resizeParentHeader( nDiffLen, pParentItem, &binMod );
+    if( ret != 0 ) goto end;
+
+    setBER( &binMod );
+
+end :
+    if( ret != 0 ) pParentItem->changeLength( nOrgLen, &nDiffLen );
+
+    JS_BIN_reset( &binMod );
+    JS_BIN_reset( &binHeader );
+
+    return ret;
+}
+
+int BerModel::removeItem( BerItem *pItem )
+{
+    int ret = 0;
+    int nDiffLen = 0;
+    BIN binMod = {0,0};
+
+    if( pItem == NULL ) return -1;
+
+    JS_BIN_copy( &binMod, &binBer_ );
+
+    nDiffLen = pItem->GetHeaderSize();
+    nDiffLen += pItem->GetLength();
+
+    ret = JS_BIN_removeBin( pItem->GetOffset(), nDiffLen, &binMod );
+    if( ret != 0 ) goto end;
+
+    ret = resizeParentHeader( -nDiffLen, pItem, &binMod );
+    if( ret != 0 ) goto end;
+
+    setBER( &binMod );
+
+end :
+    JS_BIN_reset( &binMod );
+    return ret;
+}
+
+int BerModel::modifyItem( BerItem *pItem, const BIN *pValue )
+{
+    int ret = 0;
+    BIN binMod = {0,0};
+    BIN binHeader = {0,0};
+    BIN binChange = {0,0};
+
+    int nDiffLen = 0;
+    int nOrgLen = 0;
+    int nOrgHeaderLen = 0;
+
+    if( pItem == NULL ) return -1;
+    JS_BIN_copy( &binMod, &binBer_ );
+
+    nOrgLen = pItem->GetLength();
+    nOrgHeaderLen = pItem->GetHeaderSize();
+
+    ret = pItem->changeLength( pValue->nLen, &nDiffLen );
+    if( nDiffLen <= 0 || ret != 0 )
+    {
+        ret = JSR_ERR;
+        goto end;
+    }
+
+    pItem->getHeaderBin( &binHeader );
+    JS_BIN_copy( &binChange, &binHeader );
+    JS_BIN_appendBin( &binChange, pValue );
+
+    ret = JS_BIN_changeBin( pItem->GetOffset(), nOrgHeaderLen + nOrgLen, &binChange, &binMod );
+    if( ret != 0 ) goto end;
+
+    ret = resizeParentHeader( nDiffLen, pItem, &binMod );
+    if( ret != 0 ) goto end;
+
+    setBER( &binMod );
+
+end :
+    if( ret != 0 ) pItem->changeLength( nOrgLen, &nDiffLen );
+
+    JS_BIN_reset( &binMod );
+    JS_BIN_reset( &binHeader );
+    JS_BIN_reset( &binChange );
+
+    return ret;
 }

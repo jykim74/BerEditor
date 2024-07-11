@@ -24,12 +24,14 @@ public:
     ~EditValueDlg();
 
     void setItem( BerItem *pItem );
+    QString getData();
 
 private slots:
     void runChange();
     void runDelete();
     void runAdd();
     void changeValueText();
+    void changeBER();
     void changeValueType(int index);
 
 private:

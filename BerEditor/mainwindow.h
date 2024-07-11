@@ -15,6 +15,8 @@
 
 #include "ber_model.h"
 #include "ber_tree_view.h"
+#include "ttlv_tree_model.h"
+#include "ttlv_tree_view.h"
 #include "js_bin.h"
 
 class QPrinter;
@@ -60,6 +62,10 @@ public:
     QTableWidget* rightTable() { return right_table_; };
     QTextEdit* rightText() { return right_text_; };
     QTextEdit* rightXML() { return right_xml_; };
+    TTLVTreeView* ttlvTree() { return ttlv_tree_; };
+    TTLVTreeModel* ttlvModel() { return ttlv_model_; };
+    BerModel* berModel() { return ber_model_; };
+
     void showTextMsg( const QString& msg );
 
     void showWindow();
@@ -69,11 +75,14 @@ public:
     void log( const QString strLog, QColor cr = QColor(0x00, 0x00, 0x00) );
     void elog( const QString strLog );
     void info( const QString strLog, QColor cr = QColor(0x00, 0x00, 0x00) );
+    void infoClear();
 
     QString getInfo();
     void useLog( bool bEnable = true );
 
     void decodeData( const BIN *pData, const QString strPath = "" );
+    void decodeTTLV( const BIN *pData );
+    bool isTTLV();
 
 private slots:
     void newFile();
@@ -82,6 +91,15 @@ private slots:
     void openCert();
     void openCRL();
     void openCSR();
+
+    void copy();
+    void copyAsHex();
+    void copyAsBase64();
+    void treeExpandAll();
+    void treeExpandNode();
+    void treeCollapseAll();
+    void treeCollapseNode();
+
     void about();
     void setting();
     void test();
@@ -108,8 +126,12 @@ private slots:
     void cmpClient();
     void scepClient();
     void certMan();
-    void insertBER();
-    void insertData();
+    void runMakeBER();
+    void runDecodeData();
+    void runDecodeTTLV();
+    void runMakeTTLV();
+    void ttlvClient();
+    void ttlvEncoder();
     void numTrans();
     void getURI();
     void save();
@@ -135,6 +157,8 @@ private slots:
     void rightTableSelectAll();
     void rightTableUnselectAll();
 
+
+
 private:
     void createActions();
     void createStatusBar();
@@ -152,13 +176,18 @@ private:
 
     QSplitter       *hsplitter_;
     QSplitter       *vsplitter_;
+
     BerTreeView     *left_tree_;
+    BerModel        *ber_model_;
+
+    TTLVTreeView    *ttlv_tree_;
+    TTLVTreeModel   *ttlv_model_;
 
     QTabWidget      *table_tab_;
     QTabWidget      *text_tab_;
     QTextEdit       *log_text_;
     QTextEdit       *info_text_;
-    BerModel        *ber_model_;
+
     QTableWidget    *right_table_;
     QTextEdit       *right_text_;
     QTextEdit       *right_xml_;

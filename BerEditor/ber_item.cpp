@@ -89,33 +89,9 @@ QString BerItem::GetTagString()
     }
     else
     {
-        if( tag_ == JS_BOOLEAN ) return "Boolean";
-        else if( tag_ == JS_INTEGER ) return "Integer";
-        else if( tag_ == JS_BITSTRING ) return "BitString";
-        else if( tag_ == JS_OCTETSTRING ) return "OctetString";
-        else if( tag_ == JS_NULLTAG ) return "NullTag";
-        else if( tag_ == JS_OID ) return "OID";
-        else if( tag_ == JS_OBJDESCRIPTOR ) return "OBJDescriptor";
-        else if( tag_ == JS_EXTERNAL ) return "External";
-        else if( tag_ == JS_REAL ) return "Real";
-        else if( tag_ == JS_ENUMERATED ) return "Enumerated";
-        else if( tag_ == JS_EMBEDDED_PDV ) return "Embedded_PDV";
-        else if( tag_ == JS_UTF8STRING ) return "UTF8String";
-        else if( tag_ == JS_SEQUENCE) return "Sequence(Of)";
-        else if( tag_ == JS_SET) return "Set(Of)";
-        else if( tag_ == JS_NUMERICSTRING ) return "NumericString";
-        else if( tag_ == JS_PRINTABLESTRING ) return "PrintableString";
-        else if( tag_ == JS_T61STRING ) return "T61String";
-        else if( tag_ == JS_VIDEOTEXSTRING ) return "VideoTexString";
-        else if( tag_ == JS_IA5STRING ) return "IA5String";
-        else if( tag_ == JS_UTCTIME ) return "UTCTime";
-        else if( tag_ == JS_GENERALIZEDTIME ) return "GeneralizedTime";
-        else if( tag_ == JS_GRAPHICSTRING) return "GraphicString";
-        else if( tag_ == JS_VISIBLESTRING) return "VisibleString";
-        else if( tag_ == JS_GENERALSTRING) return "GeneralString";
-        else if( tag_ == JS_UNIVERSALSTRING ) return "UniversalString";
-        else if( tag_ == JS_BMPSTRING ) return "BMPString";
-        else
+        strRes = JS_BER_getPrimitiveName( tag_ );
+
+        if( strRes.length() < 1 )
         {
             QString strTag;
             strTag = QString( "%1" ).arg( tag_, 2, 16, QLatin1Char( '0' ));

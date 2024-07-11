@@ -11,7 +11,7 @@
 #include "ber_applet.h"
 #include "ber_item_delegate.h"
 #include "edit_value_dlg.h"
-#include "insert_ber_dlg.h"
+#include "make_ber_dlg.h"
 #include "common.h"
 #include "js_pki_tools.h"
 
@@ -53,7 +53,7 @@ void BerTreeView::onItemClicked(const QModelIndex& index )
     BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
     if( item == NULL ) return;
 
-    BIN& binBer = tree_model->getBer();
+    const BIN& binBer = tree_model->getBER();
 
     SettingsMgr *set_mgr = berApplet->settingsMgr();
     int nWidth = set_mgr->getHexAreaWidth();
@@ -81,7 +81,7 @@ void BerTreeView::viewRoot()
 void BerTreeView::infoItem( BerItem *pItem, int nWidth )
 {
     BerModel *tree_model = (BerModel *)model();
-    BIN& binBer = tree_model->getBer();
+    const BIN& binBer = tree_model->getBER();
 
     BIN bin = {0,0};
     BIN header = {0,0};
@@ -140,7 +140,6 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
     berApplet->info( QString( "Length      : 0x%1 - %2 Bytes\n" ).arg( getHexString(sLen, nLenSize) ).arg(pItem->GetLength()));
 
     QString strVal = pItem->GetValueString( &binBer, nWidth );
-    strVal = strVal.simplified();
 
     if( pItem->GetTag() == JS_BITSTRING )
     {
@@ -189,7 +188,7 @@ QString BerTreeView::GetTextView()
     }
 
 
-    BIN& binBer = tree_model->getBer();
+    const BIN& binBer = tree_model->getBER();
     BIN binData = {0,0};
 
     JS_BIN_set( &binData, &binBer.pVal[item->GetOffset()], item->GetHeaderSize() + item->GetLength() );
@@ -457,7 +456,7 @@ void BerTreeView::CopyAsHex()
     BIN binData = {0,0};
     BerModel *tree_model = (BerModel *)model();
 
-    BIN& binBer = tree_model->getBer();
+    const BIN& binBer = tree_model->getBER();
     JS_BIN_set( &binData, binBer.pVal + item->GetOffset(), item->GetHeaderSize() + item->GetLength() );
     JS_BIN_encodeHex( &binData, &pHex );
     clipboard->setText(pHex);
@@ -479,7 +478,7 @@ void BerTreeView::CopyAsBase64()
     BIN binData = {0,0};
     BerModel *tree_model = (BerModel *)model();
 
-    BIN& binBer = tree_model->getBer();
+    const BIN& binBer = tree_model->getBER();
     JS_BIN_set( &binData, binBer.pVal + item->GetOffset(), item->GetHeaderSize() + item->GetLength() );
     JS_BIN_encodeBase64( &binData, &pBase64 );
     clipboard->setText(pBase64);
@@ -538,7 +537,7 @@ void BerTreeView::SaveNode()
     BerModel *tree_model = (BerModel *)model();
     BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
     BIN binData = {0,0};
-    BIN& binBer = tree_model->getBer();
+    const BIN& binBer = tree_model->getBER();
 
     JS_BIN_set( &binData, binBer.pVal + item->GetOffset(), item->GetHeaderSize() + item->GetLength() );
     JS_BIN_fileWrite( &binData, fileName.toLocal8Bit().toStdString().c_str());
@@ -560,7 +559,7 @@ void BerTreeView::SaveNodeValue()
     BerModel *tree_model = (BerModel *)model();
     BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
     BIN binData = {0,0};
-    BIN& binBer = tree_model->getBer();
+    const BIN& binBer = tree_model->getBER();
 
     JS_BIN_set( &binData, binBer.pVal + item->GetOffset() + item->GetHeaderSize(), item->GetLength() );
     JS_BIN_fileWrite( &binData, fileName.toLocal8Bit().toStdString().c_str());
@@ -594,7 +593,6 @@ void BerTreeView::InsertBER()
 {
     int ret = 0;
     BIN binData = {0,0};
-    BIN binHeader = {0,0};
 
     QModelIndex index = currentIndex();
 
@@ -603,34 +601,16 @@ void BerTreeView::InsertBER()
 
     if( item->isConstructed() == false ) return;
 
-    BIN& binBer = tree_model->getBer();
-
-    InsertBerDlg insertBerDlg;
-
-    ret = insertBerDlg.exec();
+    MakeBerDlg makeBer;
+    ret = makeBer.exec();
 
     if( ret == QDialog::Accepted )
     {
-        int nOrgLen = 0;
-        int nOrgHeaderLen = 0;
-        int nDiffLen = 0;
-
-        QModelIndexList indexList;
-        QString strData = insertBerDlg.getData();
-
+        QString strData = makeBer.getData();
         JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
 
-        nOrgLen = item->GetLength();
-        nOrgHeaderLen = item->GetHeaderSize();
-
-        JS_BIN_insertBin( item->GetOffset() + nOrgHeaderLen + nOrgLen, &binData, &binBer );
-
-        item->changeLength( nOrgLen + binData.nLen, &nDiffLen );
-        if( nDiffLen == 0 ) goto end;
-
-        item->getHeaderBin( &binHeader );
-        JS_BIN_changeBin( item->GetOffset(), nOrgHeaderLen, &binHeader, &binBer );
-        tree_model->resizeParentHeader( nDiffLen, item, indexList );
+        ret = tree_model->addItem( item, &binData );
+        if( ret != 0 ) goto end;
 
         tree_model->parseTree();       
         QModelIndex ri = tree_model->index(0,0);
@@ -639,7 +619,6 @@ void BerTreeView::InsertBER()
 
 end:
     JS_BIN_reset( &binData );
-    JS_BIN_reset( &binHeader );
 }
 
 void BerTreeView::showText( int level, const QString& strMsg, QColor cr, bool bBold )
@@ -698,7 +677,7 @@ void BerTreeView::showItemText( BerItem* item )
     if( item == NULL ) return;
 
     BerModel *tree_model = (BerModel *)model();
-    BIN& binBer = tree_model->getBer();
+    const BIN& binBer = tree_model->getBER();
 
     row = item->row();
     col = item->column();
@@ -740,7 +719,7 @@ void BerTreeView::showItemXML( BerItem* item )
     if( item == NULL ) return;
 
     BerModel *tree_model = (BerModel *)model();
-    BIN& binBer = tree_model->getBer();
+    const BIN& binBer = tree_model->getBER();
     QString strName = item->GetTagXMLString();
 
     row = item->row();

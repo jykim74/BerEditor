@@ -55,6 +55,7 @@ private slots:
     void changeNonce( const QString text );
     void changeTransID( const QString text );
 
+    void checkEncPriKey();
 private:
     void initialize();
 

@@ -1,0 +1,23 @@
+TTLVTreeView::branch:has-siblings:!adjoins-item {
+    border-image: url(:/images/vline.png) 0;
+}
+
+TTLVTreeView::branch:has-siblings:adjoins-item {
+    border-image: url(:/images/branch-more.png) 0;
+}
+
+TTLVTreeView::branch:!has-children:!has-siblings:adjoins-item {
+    border-image: url(:/images/branch-end.png) 0;
+}
+
+TTLVTreeView::branch:has-children:!has-siblings:closed,
+TTLVTreeView::branch:closed:has-children:has-siblings {
+        border-image: none;
+        image: url(:/images/branch-closed.png);
+}
+
+TTLVTreeView::branch:open:has-children:!has-siblings,
+TTLVTreeView::branch:open:has-children:has-siblings  {
+        border-image: none;
+        image: url(:/images/branch-open.png);
+}

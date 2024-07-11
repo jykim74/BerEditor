@@ -13,7 +13,7 @@ qtHaveModule(printsupport): QT += printsupport
 
 TARGET = BerEditor
 TEMPLATE = app
-PROJECT_VERSION = "1.9.2"
+PROJECT_VERSION = "1.9.3"
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -57,8 +57,8 @@ SOURCES += \
     gen_otp_dlg.cpp \
     get_uri_dlg.cpp \
     i18n_helper.cpp \
-    insert_ber_dlg.cpp \
-    insert_data_dlg.cpp \
+    make_ber_dlg.cpp \
+    decode_data_dlg.cpp \
     key_agree_dlg.cpp \
     key_man_dlg.cpp \
     lcn_info_dlg.cpp \
@@ -90,7 +90,15 @@ SOURCES += \
     hash_thread.cpp \
     mac_thread.cpp \
     enc_dec_thread.cpp \
-    sign_verify_thread.cpp
+    sign_verify_thread.cpp \
+    decode_ttlv_dlg.cpp \
+    edit_ttlv_dlg.cpp \
+    ttlv_client_dlg.cpp \
+    ttlv_encoder_dlg.cpp \
+    ttlv_tree_item.cpp \
+    ttlv_tree_model.cpp \
+    ttlv_tree_view.cpp \
+    make_ttlv_dlg.cpp
 
 HEADERS += \
     about_dlg.h \
@@ -115,8 +123,8 @@ HEADERS += \
     gen_otp_dlg.h \
     get_uri_dlg.h \
     i18n_helper.h \
-    insert_ber_dlg.h \
-    insert_data_dlg.h \
+    make_ber_dlg.h \
+    decode_data_dlg.h \
     key_agree_dlg.h \
     key_man_dlg.h \
     lcn_info_dlg.h \
@@ -148,7 +156,15 @@ HEADERS += \
     hash_thread.h \
     mac_thread.h \
     enc_dec_thread.h \
-    sign_verify_thread.h
+    sign_verify_thread.h \
+    decode_ttlv_dlg.h \
+    edit_ttlv_dlg.h \
+    ttlv_client_dlg.h \
+    ttlv_encoder_dlg.h \
+    ttlv_tree_item.h \
+    ttlv_tree_model.h \
+    ttlv_tree_view.h \
+    make_ttlv_dlg.h
 
 
 
@@ -252,8 +268,8 @@ FORMS += \
         gen_mac_dlg.ui \
         gen_otp_dlg.ui \
         get_uri_dlg.ui \
-        insert_ber_dlg.ui \
-        insert_data_dlg.ui \
+        make_ber_dlg.ui \
+        decode_data_dlg.ui \
         key_agree_dlg.ui \
         key_man_dlg.ui \
         lcn_info_dlg.ui \
@@ -279,7 +295,12 @@ FORMS += \
         scep_client_dlg.ui \
         cert_man_dlg.ui \
         passwd_dlg.ui \
-        new_passwd_dlg.ui
+        new_passwd_dlg.ui \
+        ttlv_client_dlg.ui \
+        ttlv_encoder_dlg.ui \
+        decode_ttlv_dlg.ui \
+        edit_ttlv_dlg.ui \
+        make_ttlv_dlg.ui
 
 RESOURCES += \
     bereditor.qrc

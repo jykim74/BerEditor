@@ -22,11 +22,12 @@ EditValueDlg::EditValueDlg(QWidget *parent) :
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
     connect( mValueText, SIGNAL(textChanged()), this, SLOT(changeValueText()));
+    connect( mBERText, SIGNAL(textChanged()), this, SLOT(changeBER()));
     connect( mValueTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeValueType(int)));
 
     initialize();
 
-    mCloseBtn->setFocus();
+    mCloseBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -99,7 +100,7 @@ void EditValueDlg::makeHeader()
 
     JS_BIN_encodeHex( &binHeader, &pHex );
     mHeaderText->setText( pHex );
-
+    mBERText->setPlainText( getData() );
 
 end :
     JS_BIN_reset( &binLen );
@@ -121,7 +122,7 @@ void EditValueDlg::setItem(BerItem *pItem)
 
     ber_item_ = pItem;
     BerModel *ber_model = (BerModel *)ber_item_->model();
-    BIN& binBer = ber_model->getBer();
+    const BIN& binBer = ber_model->getBER();
 
     ber_item_ = pItem;
     mClassText->setText( ber_item_->GetClassString() );
@@ -171,38 +172,34 @@ void EditValueDlg::setItem(BerItem *pItem)
     if( pBitString ) JS_free( pBitString );
 }
 
+QString EditValueDlg::getData()
+{
+    QString strData;
+    QString strValue = mValueText->toPlainText();
+    BIN binData = {0,0};
+
+    getBINFromString( &binData, mValueTypeCombo->currentText(), strValue );
+
+    strData = mHeaderText->text();
+    strData += getHexString( &binData );
+
+    JS_BIN_reset( &binData );
+
+    return strData;
+}
+
 void EditValueDlg::runChange()
 {
     int ret = 0;
-    int nDiffLen = 0;
-    int nOrgLen = 0;
-    int nOrgHeaderLen = 0;
 
     BIN binNewVal = {0,0};
-    BIN binHeader = {0,0};
-    BIN binNewItem = {0,0};
-    QModelIndexList indexList;
     QString strValue = mValueText->toPlainText();
-
     BerModel *ber_model = (BerModel *)ber_item_->model();
-    BIN& binBer = ber_model->getBer();
 
     getBINFromString( &binNewVal, mValueTypeCombo->currentText(), strValue );
-
-    nOrgLen = ber_item_->GetLength();
-    nOrgHeaderLen = ber_item_->GetHeaderSize();
-
-    ber_item_->changeLength( binNewVal.nLen, &nDiffLen );
-    ber_item_->getHeaderBin( &binHeader );
-    JS_BIN_copy( &binNewItem, &binHeader );
-    JS_BIN_appendBin( &binNewItem, &binNewVal );
-
-    ret = JS_BIN_changeBin( ber_item_->GetOffset(), nOrgHeaderLen + nOrgLen, &binNewItem, &binBer );
-    ber_model->resizeParentHeader( nDiffLen, ber_item_, indexList );
+    ret = ber_model->modifyItem( ber_item_, &binNewVal );
 
     JS_BIN_reset( &binNewVal );
-    JS_BIN_reset( &binHeader );
-    JS_BIN_reset( &binNewItem );
 
     if( ret == 0 ) QDialog::accept();
 }
@@ -211,24 +208,17 @@ void EditValueDlg::runChange()
 void EditValueDlg::runDelete()
 {
     int ret = 0;
-    int nDiffLen = 0;
-    BerModel *ber_model = (BerModel *)ber_item_->model();
-    BIN& binBer = ber_model->getBer();
-    QModelIndexList indexList;
 
+    BerModel *ber_model = (BerModel *)ber_item_->model();
     BerItem *parentItem = (BerItem *)ber_item_->parent();
     if( parentItem == NULL )
     {
-        berApplet->warningBox( tr("Top-level items cannot be deleted"), this );
+        berApplet->warningBox( tr("Top-level item cannot be deleted"), this );
         QDialog::reject();
         return;
     }
 
-    nDiffLen = ber_item_->GetHeaderSize();
-    nDiffLen += ber_item_->GetLength();
-
-    ret = JS_BIN_removeBin( ber_item_->GetOffset(), nDiffLen, &binBer );
-    ber_model->resizeParentHeader( -nDiffLen, ber_item_, indexList );
+    ret = ber_model->removeItem( ber_item_ );
 
     if( ret == 0 ) QDialog::accept();
 }
@@ -236,36 +226,33 @@ void EditValueDlg::runDelete()
 void EditValueDlg::runAdd()
 {
     int ret = 0;
-    int nDiffLen = 0;
-    BIN binVal = {0,0};
-    BIN binItem = {0,0};
+    BIN binData = {0,0};
+
     BerModel *ber_model = (BerModel *)ber_item_->model();
     BerItem *parentItem = (BerItem *)ber_item_->parent();
-    BIN& binBer = ber_model->getBer();
-    QModelIndexList indexList;
-    QString strValue = mValueText->toPlainText();
+
+    QString strData = getData();
 
     if( parentItem == NULL )
     {
-        berApplet->warningBox( QString( "Top-level items cannot be added."), this );
+        berApplet->warningBox( tr( "Top-level item cannot be added."), this );
         QDialog::reject();
         return;
     }
 
-    getBINFromString( &binVal, mValueTypeCombo->currentText(), strValue );
+    if( parentItem->isConstructed() == false )
+    {
+        berApplet->warningBox( tr( "Parent item is not constructed."), this );
+        QDialog::reject();
+        return;
+    }
 
-    ber_item_->changeLength( binVal.nLen, &nDiffLen );
-    nDiffLen = ber_item_->GetHeaderSize();
-    nDiffLen += ber_item_->GetLength();
+    JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
+    ret = ber_model->addItem( parentItem, &binData );
 
-    JS_BIN_set( &binItem, ber_item_->GetHeader(), ber_item_->GetHeaderSize() );
-    JS_BIN_appendBin( &binItem, &binVal );
+ end :
+    JS_BIN_reset( &binData );
 
-    JS_BIN_insertBin( parentItem->GetOffset() + parentItem->GetHeaderSize() + parentItem->GetLength(), &binItem, &binBer );
-    ber_model->resizeParentHeader( nDiffLen, ber_item_, indexList );
-
-    JS_BIN_reset( &binVal );
-    JS_BIN_reset( &binItem );
     if( ret == 0 ) QDialog::accept();
 }
 
@@ -276,6 +263,13 @@ void EditValueDlg::changeValueText()
     mValueLenText->setText( QString("%1").arg(nLen));
 
     makeHeader();
+}
+
+void EditValueDlg::changeBER()
+{
+    QString strBER = mBERText->toPlainText();
+    int nLen = getDataLen( DATA_HEX, strBER );
+    mBERLenText->setText( QString("%1").arg( nLen ));
 }
 
 void EditValueDlg::changeValueType(int index)

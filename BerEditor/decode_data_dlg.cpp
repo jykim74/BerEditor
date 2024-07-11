@@ -3,11 +3,11 @@
  *
  * All rights reserved.
  */
-#include "insert_data_dlg.h"
+#include "decode_data_dlg.h"
 #include "ber_applet.h"
 #include "common.h"
 
-InsertDataDlg::InsertDataDlg(QWidget *parent) :
+DecodeDataDlg::DecodeDataDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
@@ -26,12 +26,12 @@ InsertDataDlg::InsertDataDlg(QWidget *parent) :
 #endif
 }
 
-InsertDataDlg::~InsertDataDlg()
+DecodeDataDlg::~DecodeDataDlg()
 {
 
 }
 
-void InsertDataDlg::viewData()
+void DecodeDataDlg::viewData()
 {
     int nType = 0;
     BIN binData = {0,0};
@@ -57,12 +57,12 @@ void InsertDataDlg::viewData()
 }
 
 
-QString InsertDataDlg::getTextData()
+QString DecodeDataDlg::getTextData()
 {
     return mDataText->toPlainText();
 }
 
-void InsertDataDlg::dataChanged()
+void DecodeDataDlg::dataChanged()
 {
     int nType = 0;
 

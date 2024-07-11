@@ -3,7 +3,7 @@
  *
  * All rights reserved.
  */
-#include "insert_ber_dlg.h"
+#include "make_ber_dlg.h"
 #include "mainwindow.h"
 #include "js_ber.h"
 #include "ber_applet.h"
@@ -12,7 +12,7 @@
 
 const QStringList kClassList = { "Universal", "Application", "Content-Specific", "Private" };
 
-InsertBerDlg::InsertBerDlg(QWidget *parent) :
+MakeBerDlg::MakeBerDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
@@ -22,6 +22,7 @@ InsertBerDlg::InsertBerDlg(QWidget *parent) :
     connect( mConstructedCheck, SIGNAL(clicked()), this, SLOT(checkConstructed()));
 
     connect( mValueText, SIGNAL(textChanged()), this, SLOT(valueChanged()));
+    connect( mBERText, SIGNAL(textChanged()), this, SLOT(berChanged()));
     connect( mNumText, SIGNAL(textChanged(QString)), this, SLOT(numChanged()));
     connect( mClassCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(classChanged(int)));
     connect( mPrimitiveCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(primitiveChanged(int)));
@@ -37,12 +38,12 @@ InsertBerDlg::InsertBerDlg(QWidget *parent) :
     resize(width(), minimumSizeHint().height());
 }
 
-InsertBerDlg::~InsertBerDlg()
+MakeBerDlg::~MakeBerDlg()
 {
 
 }
 
-QString InsertBerDlg::getData()
+QString MakeBerDlg::getData()
 {
     QString strData;
     QString strValue = mValueText->toPlainText();
@@ -58,7 +59,7 @@ QString InsertBerDlg::getData()
     return strData;
 }
 
-void InsertBerDlg::initialize()
+void MakeBerDlg::initialize()
 {
     mClassCombo->addItems( kClassList );
 
@@ -77,7 +78,7 @@ void InsertBerDlg::initialize()
     mValueTypeCombo->setCurrentIndex(1);
 }
 
-void InsertBerDlg::makeHeader()
+void MakeBerDlg::makeHeader()
 {
     unsigned char cTag = 0x00;
     unsigned char cPrimitive = 0x00;
@@ -132,7 +133,7 @@ void InsertBerDlg::makeHeader()
     JS_BIN_encodeHex( &binHeader, &pHex );
     mTagText->setText( pBitString );
     mHeaderText->setText( pHex );
-
+    mBERText->setPlainText( getData() );
 
 end :
     JS_BIN_reset( &binLen );
@@ -142,19 +143,19 @@ end :
     if( pHex ) JS_free( pHex );
 }
 
-void InsertBerDlg::runInsert()
+void MakeBerDlg::runInsert()
 {
     QDialog::accept();
 }
 
-void InsertBerDlg::checkConstructed()
+void MakeBerDlg::checkConstructed()
 {
     bool bVal = mConstructedCheck->isChecked();
 
     makeHeader();
 }
 
-void InsertBerDlg::valueChanged()
+void MakeBerDlg::valueChanged()
 {
     QString strValue = mValueText->toPlainText();
 
@@ -164,12 +165,19 @@ void InsertBerDlg::valueChanged()
     makeHeader();
 }
 
-void InsertBerDlg::numChanged()
+void MakeBerDlg::berChanged()
+{
+    QString strBER = mBERText->toPlainText();
+    int nLen = getDataLen( DATA_HEX, strBER );
+    mBERLenText->setText( QString("%1").arg( nLen ));
+}
+
+void MakeBerDlg::numChanged()
 {
     makeHeader();
 }
 
-void InsertBerDlg::classChanged(int index)
+void MakeBerDlg::classChanged(int index)
 {
     if( index == 2 )
     {
@@ -188,7 +196,7 @@ void InsertBerDlg::classChanged(int index)
     makeHeader();
 }
 
-void InsertBerDlg::primitiveChanged(int index )
+void MakeBerDlg::primitiveChanged(int index )
 {
     unsigned char cPrimitive = 0x00;
     cPrimitive = JS_BER_getPrimitiveTag( mPrimitiveCombo->currentText().toStdString().c_str() );
@@ -199,7 +207,7 @@ void InsertBerDlg::primitiveChanged(int index )
     mNumText->setText( QString( "%1" ).arg( cPrimitive, 2, 16, QLatin1Char('0')));
 }
 
-void InsertBerDlg::changeValueType( int index )
+void MakeBerDlg::changeValueType( int index )
 {
     QString strType = mValueTypeCombo->currentText();
     if( strType == "Hex" )
@@ -210,7 +218,7 @@ void InsertBerDlg::changeValueType( int index )
     valueChanged();
 }
 
-void InsertBerDlg::clickMakeValue()
+void MakeBerDlg::clickMakeValue()
 {
     MakeValueDlg makeValue;
     mValueTypeCombo->setCurrentText( "Hex" );

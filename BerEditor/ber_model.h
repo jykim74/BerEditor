@@ -16,18 +16,22 @@ class BerModel : public QStandardItemModel
 public:
     BerModel( QObject *parent = 0 );
 
-    void setBer( const BIN *pBer );
+    void setBER( const BIN *pBer );
 
     int parseTree();
     int parseConstruct( int offset, BerItem *pParentItem );
     int parseIndefiniteConstruct( int offset, BerItem *pParentItem );
 
-    BIN& getBer() { return binBer_; };
+    const BIN& getBER() { return binBer_; };
     int getItem( int offset, BerItem *pItem );
     int getItem( const BIN *pBer, BerItem *pItem );
-    int resizeParentHeader( int nDiffLen, const BerItem *pItem, QModelIndexList &indexList );
+
+    int addItem( BerItem* pParentItem, const BIN *pData );
+    int removeItem( BerItem *pItem );
+    int modifyItem( BerItem *pItem, const BIN *pValue );
 
 private:
+    int resizeParentHeader( int nDiffLen, const BerItem *pItem, BIN *pBER );
     void initialize();
 
     BIN     binBer_;
