@@ -31,8 +31,8 @@ public:
     void decodeData( const BIN *pData, const QString strPath );
     void decodeTTLV( const BIN *pData );
 
-    BIN& getBER();
-    BIN& getTTLV();
+    const BIN& getBER();
+    const BIN& getTTLV();
 
 
     QString cmd() { return cmd_; };

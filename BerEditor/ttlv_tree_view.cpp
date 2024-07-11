@@ -91,6 +91,9 @@ void TTLVTreeView::leftContextMenu( QPoint point )
 {
     QMenu menu(this);
 
+    menu.addAction(tr("Copy Information"), this, SLOT(copy()));
+    menu.addAction(tr("Copy as hex"), this, SLOT(CopyAsHex()));
+    menu.addAction(tr("Copy as base64"), this, SLOT(CopyAsBase64()));
     menu.addAction( tr("Edit"), this, &TTLVTreeView::editItem );
     menu.addAction( tr("SaveItem"), this, &TTLVTreeView::saveItem );
     menu.addAction( tr("SaveItemValue"), this, &TTLVTreeView::saveItemValue );
@@ -352,7 +355,7 @@ void TTLVTreeView::CopyAsHex()
     QClipboard *clipboard = QGuiApplication::clipboard();
     BIN binTTLV = berApplet->getTTLV();
 
-    item->getValue( &binTTLV, &binVal );
+    JS_BIN_set( &binVal, binTTLV.pVal + item->getOffset(), item->getLengthTTLV() );
     JS_BIN_encodeHex( &binVal, &pHex );
     clipboard->setText(pHex);
     if( pHex ) JS_free(pHex);
@@ -372,7 +375,8 @@ void TTLVTreeView::CopyAsBase64()
 
     BIN binTTLV = berApplet->getTTLV();
     QClipboard *clipboard = QGuiApplication::clipboard();
-    item->getValue( &binTTLV, &binVal );
+
+    JS_BIN_set( &binVal, binTTLV.pVal + item->getOffset(), item->getLengthTTLV() );
     JS_BIN_encodeBase64( &binVal, &pBase64 );
     clipboard->setText(pBase64);
     if( pBase64 ) JS_free(pBase64);
@@ -424,34 +428,52 @@ void TTLVTreeView::AddTTLV()
 
     TTLVTreeModel *ttlv_model = (TTLVTreeModel *)model();
     TTLVTreeItem* item = currentItem();
-    BIN binTTLV = berApplet->getTTLV();
+
+    if( item->isStructure() == false )
+    {
+        berApplet->warningBox( tr( "The item is not structured" ), this );
+        return;
+    }
 
     ret = makeTTLV.exec();
 
     if( ret == QDialog::Accepted )
     {
-        int nStart = 0;
-        QModelIndexList indexList;
         QString strData = makeTTLV.getData();
-
         JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
 
-        nStart = item->getOffset();
-        nStart += item->getLengthTTLV();
+        ret = ttlv_model->addItem( item, &binData );
 
-        JS_BIN_insertBin( nStart, &binData, &binTTLV );
-        ttlv_model->resizeParentHeader( binData.nLen, item, indexList );
+        JS_BIN_reset( &binData );
 
-        ttlv_model->parseTree();
-        QModelIndex ri = ttlv_model->index(0,0);
-        expand(ri);
+        if( ret == 0 )
+        {
+            ttlv_model->parseTree();
+            QModelIndex ri = ttlv_model->index(0,0);
+            expand(ri);
+
+            showTextView();
+            showXMLView();
+        }
     }
 }
 
 void TTLVTreeView::editItem()
 {
+    int ret = 0;
     EditTTLVDlg editTTLV;
-    editTTLV.exec();
+    ret = editTTLV.exec();
+    if( ret == QDialog::Accepted )
+    {
+        TTLVTreeModel *ttlv_model = (TTLVTreeModel *)model();
+
+        ttlv_model->parseTree();
+        QModelIndex ri = ttlv_model->index(0,0);
+        expand(ri);
+
+        showTextView();
+        showXMLView();
+    }
 }
 
 void TTLVTreeView::saveItem()

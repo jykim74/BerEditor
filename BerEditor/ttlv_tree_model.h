@@ -12,19 +12,21 @@ class TTLVTreeModel : public QStandardItemModel
 
 public:
     TTLVTreeModel( QObject *parent = 0 );
+    ~TTLVTreeModel();
+
     void setTTLV( const BIN *pTTLV );
-    BIN& getTTLV() { return binTTLV_; };
+    const BIN& getTTLV() { return binTTLV_; };
 
     int parseTree();
     int parseConstruct( int offset, TTLVTreeItem *pParentItem );
 
-    int resizeParentHeader( int nDiffLen, const TTLVTreeItem *pItem, QModelIndexList &indexList );
-
-public slots:
-
+    int addItem( TTLVTreeItem* pParentItem, const BIN *pData );
+    int removeItem( TTLVTreeItem *pItem );
+    int modifyItem( TTLVTreeItem *pItem, const BIN *pValue );
 
 private:
     int getItem( int offset, TTLVTreeItem *pItem );
+    int resizeParentHeader( int nDiffLen, const TTLVTreeItem *pItem, BIN* pTTLV );
 
     BIN binTTLV_;
 };

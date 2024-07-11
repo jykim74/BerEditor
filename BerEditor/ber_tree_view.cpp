@@ -594,7 +594,6 @@ void BerTreeView::InsertBER()
 {
     int ret = 0;
     BIN binData = {0,0};
-    BIN binHeader = {0,0};
 
     QModelIndex index = currentIndex();
 
@@ -603,35 +602,16 @@ void BerTreeView::InsertBER()
 
     if( item->isConstructed() == false ) return;
 
-    BIN& binBer = tree_model->getBER();
-
     InsertBerDlg insertBerDlg;
-
     ret = insertBerDlg.exec();
 
     if( ret == QDialog::Accepted )
     {
-        int nOrgLen = 0;
-        int nOrgHeaderLen = 0;
-        int nDiffLen = 0;
-
-        QModelIndexList indexList;
         QString strData = insertBerDlg.getData();
-
         JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
 
-        nOrgLen = item->GetLength();
-        nOrgHeaderLen = item->GetHeaderSize();
-
-        JS_BIN_insertBin( item->GetOffset() + nOrgHeaderLen + nOrgLen, &binData, &binBer );
-
-        item->changeLength( nOrgLen + binData.nLen, &nDiffLen );
-        if( nDiffLen == 0 ) goto end;
-
-        item->getHeaderBin( &binHeader );
-        JS_BIN_changeBin( item->GetOffset(), nOrgHeaderLen, &binHeader, &binBer );
-        tree_model->resizeParentHeader( nDiffLen, item, indexList );
-
+        ret = tree_model->addItem( item, &binData );
+        if( ret != 0 ) goto end;
 
         tree_model->parseTree();       
         QModelIndex ri = tree_model->index(0,0);
@@ -640,7 +620,6 @@ void BerTreeView::InsertBER()
 
 end:
     JS_BIN_reset( &binData );
-    JS_BIN_reset( &binHeader );
 }
 
 void BerTreeView::showText( int level, const QString& strMsg, QColor cr, bool bBold )

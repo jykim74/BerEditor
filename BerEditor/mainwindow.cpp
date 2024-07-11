@@ -1158,9 +1158,9 @@ void MainWindow::treeCollapseNode()
 
 void MainWindow::openBer( const BIN *pBer )
 {
-    if( berApplet->isLicense() )
+    if( JS_KMS_isTTLV( pBer ) == 1 )
     {
-        if( JS_KMS_isTTLV( pBer ) == 1 )
+        if( berApplet->isLicense() == true )
         {
             bool bVal = berApplet->yesOrNoBox( tr("The BER is TTLV format. Do you open as TTLV format?" ), this );
             if( bVal == true )
@@ -1169,7 +1169,13 @@ void MainWindow::openBer( const BIN *pBer )
                 return;
             }
         }
+        else
+        {
+            berApplet->warningBox( tr( "TTLV decoding requires a license."), this );
+            return;
+        }
     }
+
     ber_model_->setBER( pBer );
     ber_model_->parseTree();
 

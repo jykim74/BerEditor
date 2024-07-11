@@ -113,58 +113,78 @@ void EditTTLVDlg::clickModify()
 {
     int     ret = 0;
 
-    BIN     srcTag = {0,0};
-    BIN     srcType = {0,0};
-    BIN     srcLength = {0,0};
-    BIN     srcValue = {0,0};
-    BIN TTLV = berApplet->getTTLV();
+    BIN     binValue = {0,0};
 
     TTLVTreeItem *pItem = berApplet->mainWindow()->ttlvTree()->currentItem();
-
-    JS_BIN_decodeHex( mTagText->text().toStdString().c_str(), &srcTag );
-    JS_BIN_decodeHex( mTypeText->text().toStdString().c_str(), &srcType );
-    JS_BIN_decodeHex( mLengthText->text().toStdString().c_str(), &srcLength );
-    JS_BIN_decodeHex( mValueText->toPlainText().toStdString().c_str(), &srcValue );
-
-    if( pItem->getLengthInt() != JS_BIN_int( &srcLength ))
+    if( pItem == NULL )
     {
-        berApplet->warningBox( "All length of value have to be the same with orginal length value." );
-        ret = -1;
+        berApplet->warningBox( tr( "There is no selected item"), this );
+        return;
     }
 
-    int nOffset = pItem->getOffset();
+    TTLVTreeModel *pModel = (TTLVTreeModel *)pItem->model();
 
-    memcpy( &TTLV.pVal[nOffset], srcTag.pVal, srcTag.nLen );
-    nOffset += srcTag.nLen;
-
-    memcpy( &TTLV.pVal[nOffset], srcType.pVal, srcType.nLen );
-    nOffset += srcType.nLen;
-
-    memcpy( &TTLV.pVal[nOffset], srcLength.pVal, srcLength.nLen );
-    nOffset += srcLength.nLen;
-
-    memcpy( &TTLV.pVal[nOffset], srcValue.pVal, srcValue.nLen );
-    nOffset += srcValue.nLen;
-
-    JS_BIN_reset( &srcTag );
-    JS_BIN_reset( &srcType );
-    JS_BIN_reset( &srcLength );
-    JS_BIN_reset( &srcValue );
+    JS_BIN_decodeHex( mValueText->toPlainText().toStdString().c_str(), &binValue );
+    ret = pModel->modifyItem( pItem, &binValue );
+    JS_BIN_reset( &binValue );
 
     if( ret == 0 )
     {
-        berApplet->mainWindow()->ttlvModel()->parseTree();
-
         QDialog::accept();
     }
 }
 
 void EditTTLVDlg::clickAdd()
 {
+    int ret = 0;
+    BIN binData = {0,0};
+    QString strData;
 
+    TTLVTreeItem *pItem = berApplet->mainWindow()->ttlvTree()->currentItem();
+    if( pItem == NULL )
+    {
+        berApplet->warningBox( tr( "There is no selected item"), this );
+        return;
+    }
+
+    TTLVTreeItem *pParentItem = (TTLVTreeItem *)pItem->parent();
+    if( pParentItem == NULL )
+    {
+        berApplet->warningBox( tr( "Top-level item cannot be added."), this );
+        return;
+    }
+
+    TTLVTreeModel *pModel = (TTLVTreeModel *)pItem->model();
+    strData = getData();
+
+    JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
+
+    ret = pModel->addItem( pParentItem, &binData );
+    JS_BIN_reset( &binData );
+
+    if( ret == 0 ) accept();
 }
 
 void EditTTLVDlg::clickDelete()
 {
+    int ret = 0;
 
+    TTLVTreeItem *pItem = berApplet->mainWindow()->ttlvTree()->currentItem();
+    if( pItem == NULL )
+    {
+        berApplet->warningBox( tr( "There is no selected item"), this );
+        return;
+    }
+
+    TTLVTreeItem *pParentItem = (TTLVTreeItem *)pItem->parent();
+    if( pParentItem == NULL )
+    {
+        berApplet->warningBox( tr( "Top-level item cannot be added."), this );
+        return;
+    }
+
+    TTLVTreeModel *pModel = (TTLVTreeModel *)pItem->model();
+
+    ret = pModel->removeItem( pItem );
+    if( ret == 0 ) accept();
 }
