@@ -1176,6 +1176,12 @@ void MainWindow::openBer( const BIN *pBer )
         }
     }
 
+    if( JS_PKI_isBER( pBer ) == 0 )
+    {
+        berApplet->warningBox( tr( "The data is not BER format"), this );
+        return;
+    }
+
     ber_model_->setBER( pBer );
     ber_model_->parseTree();
 
@@ -1747,6 +1753,12 @@ void MainWindow::decodeTTLV( const BIN *pData )
     if( pData == NULL || pData->nLen <= 0 )
     {
         berApplet->warningBox( tr( "There is no data"), this );
+        return;
+    }
+
+    if( JS_KMS_isTTLV( pData ) == 0 )
+    {
+        berApplet->warningBox( tr( "The data is not TTLV format" ), this );
         return;
     }
 
