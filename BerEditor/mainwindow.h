@@ -126,8 +126,8 @@ private slots:
     void cmpClient();
     void scepClient();
     void certMan();
-    void insertBER();
-    void insertData();
+    void runMakeBER();
+    void runDecodeData();
     void runDecodeTTLV();
     void runMakeTTLV();
     void ttlvClient();

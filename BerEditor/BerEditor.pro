@@ -57,8 +57,8 @@ SOURCES += \
     gen_otp_dlg.cpp \
     get_uri_dlg.cpp \
     i18n_helper.cpp \
-    insert_ber_dlg.cpp \
-    insert_data_dlg.cpp \
+    make_ber_dlg.cpp \
+    decode_data_dlg.cpp \
     key_agree_dlg.cpp \
     key_man_dlg.cpp \
     lcn_info_dlg.cpp \
@@ -121,8 +121,8 @@ HEADERS += \
     gen_otp_dlg.h \
     get_uri_dlg.h \
     i18n_helper.h \
-    insert_ber_dlg.h \
-    insert_data_dlg.h \
+    make_ber_dlg.h \
+    decode_data_dlg.h \
     key_agree_dlg.h \
     key_man_dlg.h \
     lcn_info_dlg.h \
@@ -264,8 +264,8 @@ FORMS += \
         gen_mac_dlg.ui \
         gen_otp_dlg.ui \
         get_uri_dlg.ui \
-        insert_ber_dlg.ui \
-        insert_data_dlg.ui \
+        make_ber_dlg.ui \
+        decode_data_dlg.ui \
         key_agree_dlg.ui \
         key_man_dlg.ui \
         lcn_info_dlg.ui \

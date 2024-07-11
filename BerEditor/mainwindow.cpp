@@ -9,7 +9,7 @@
 #include "ber_model.h"
 #include "ber_tree_view.h"
 
-#include "insert_data_dlg.h"
+#include "decode_data_dlg.h"
 #include "ber_applet.h"
 #include "settings_dlg.h"
 #include "settings_mgr.h"
@@ -29,7 +29,7 @@
 #include "cms_dlg.h"
 #include "sss_dlg.h"
 #include "cavp_dlg.h"
-#include "insert_ber_dlg.h"
+#include "make_ber_dlg.h"
 #include "cert_pvd_dlg.h"
 #include "lcn_info_dlg.h"
 #include "ssl_verify_dlg.h"
@@ -465,25 +465,25 @@ void MainWindow::createActions()
     toolToolBar->addAction( oidAct );
 
     const QIcon berIcon = QIcon::fromTheme("ber-insert", QIcon(":/images/ber.png"));
-    QAction *insertBerAct = new QAction(berIcon, tr("Insert &BER"), this);
-    insertBerAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_B));
-    connect( insertBerAct, &QAction::triggered, this, &MainWindow::insertBER );
-    insertBerAct->setStatusTip(tr("Insert BER record"));
-    toolMenu->addAction( insertBerAct );
-    toolToolBar->addAction( insertBerAct );
+    QAction *makeBerAct = new QAction(berIcon, tr("Make &BER"), this);
+    makeBerAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_B));
+    connect( makeBerAct, &QAction::triggered, this, &MainWindow::runMakeBER );
+    makeBerAct->setStatusTip(tr("Make BER record"));
+    toolMenu->addAction( makeBerAct );
+    toolToolBar->addAction( makeBerAct );
 
     if( berApplet->isLicense() == false )
     {
-        insertBerAct->setEnabled( false );
+        makeBerAct->setEnabled( false );
     }
 
-    const QIcon insertIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/insert.png"));
-    QAction *insertDataAct = new QAction(insertIcon, tr("&Insert Data"), this);
-    insertDataAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_D));
-    connect( insertDataAct, &QAction::triggered, this, &MainWindow::insertData );
-    insertDataAct->setStatusTip(tr("Insert ber data"));
-    toolMenu->addAction( insertDataAct );
-    toolToolBar->addAction( insertDataAct );
+    const QIcon decodeIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/decode.png"));
+    QAction *decodeDataAct = new QAction(decodeIcon, tr("&Decode Data"), this);
+    decodeDataAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_D));
+    connect( decodeDataAct, &QAction::triggered, this, &MainWindow::runDecodeData );
+    decodeDataAct->setStatusTip(tr("Decode BER data"));
+    toolMenu->addAction( decodeDataAct );
+    toolToolBar->addAction( decodeDataAct );
 
     const QIcon uriIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/uri.png"));
     QAction *getURIAct = new QAction(uriIcon, tr("&Get URI data"), this);
@@ -834,17 +834,17 @@ void MainWindow::newFile()
     process->start();
 }
 
-void MainWindow::insertBER()
+void MainWindow::runMakeBER()
 {
     int ret = 0;
 
-    InsertBerDlg insertBerDlg;
-    ret = insertBerDlg.exec();
+    MakeBerDlg makeBer;
+    ret = makeBer.exec();
 
     if( ret == QDialog::Accepted )
     {
         BIN binData = {0,0};
-        QString strData = insertBerDlg.getData();
+        QString strData = makeBer.getData();
 
         JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
         decodeData( &binData, "Unknown" );
@@ -852,12 +852,12 @@ void MainWindow::insertBER()
     }
 }
 
-void MainWindow::insertData()
+void MainWindow::runDecodeData()
 {
     int ret = -1;
 
-    InsertDataDlg insData(this);
-    ret = insData.exec();
+    DecodeDataDlg deData(this);
+    ret = deData.exec();
 }
 
 void MainWindow::runDecodeTTLV()

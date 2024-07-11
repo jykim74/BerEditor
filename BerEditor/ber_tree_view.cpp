@@ -11,7 +11,7 @@
 #include "ber_applet.h"
 #include "ber_item_delegate.h"
 #include "edit_value_dlg.h"
-#include "insert_ber_dlg.h"
+#include "make_ber_dlg.h"
 #include "common.h"
 #include "js_pki_tools.h"
 
@@ -140,7 +140,6 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
     berApplet->info( QString( "Length      : 0x%1 - %2 Bytes\n" ).arg( getHexString(sLen, nLenSize) ).arg(pItem->GetLength()));
 
     QString strVal = pItem->GetValueString( &binBer, nWidth );
-    strVal = strVal.simplified();
 
     if( pItem->GetTag() == JS_BITSTRING )
     {
@@ -602,12 +601,12 @@ void BerTreeView::InsertBER()
 
     if( item->isConstructed() == false ) return;
 
-    InsertBerDlg insertBerDlg;
-    ret = insertBerDlg.exec();
+    MakeBerDlg makeBer;
+    ret = makeBer.exec();
 
     if( ret == QDialog::Accepted )
     {
-        QString strData = insertBerDlg.getData();
+        QString strData = makeBer.getData();
         JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
 
         ret = tree_model->addItem( item, &binData );
