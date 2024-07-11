@@ -201,7 +201,13 @@ void EditValueDlg::runChange()
 
     JS_BIN_reset( &binNewVal );
 
-    if( ret == 0 ) QDialog::accept();
+    if( ret == 0 )
+        QDialog::accept();
+    else
+    {
+        berApplet->warnLog( tr( "fail to modify: %1").arg(ret), this );
+        reject();
+    }
 }
 
 

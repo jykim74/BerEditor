@@ -689,10 +689,8 @@ mailto : jykim74@gmail.com</translation>
         <translation>BER 추가</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="528"/>
-        <location filename="../ber_tree_view.cpp" line="549"/>
         <source>Save as...</source>
-        <translation>다른 이름으로 저장</translation>
+        <translation type="vanished">다른 이름으로 저장</translation>
     </message>
     <message>
         <source>File name</source>
@@ -4194,37 +4192,47 @@ mailto : jykim74@gmail.com</translation>
         <translation>데이타 디코딩</translation>
     </message>
     <message>
-        <location filename="../decode_data_dlg.ui" line="42"/>
+        <location filename="../decode_data_dlg.ui" line="55"/>
         <source>View</source>
         <translation>보기</translation>
     </message>
     <message>
-        <location filename="../decode_data_dlg.ui" line="49"/>
+        <location filename="../decode_data_dlg.ui" line="62"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../decode_data_dlg.ui" line="71"/>
+        <location filename="../decode_data_dlg.ui" line="69"/>
+        <source>Clear</source>
+        <translation>지우기</translation>
+    </message>
+    <message>
+        <location filename="../decode_data_dlg.ui" line="78"/>
         <source>Data Type</source>
         <translation>데이타 타입</translation>
     </message>
     <message>
-        <location filename="../decode_data_dlg.ui" line="83"/>
+        <location filename="../decode_data_dlg.ui" line="173"/>
         <source>Hex</source>
         <translation>16진수</translation>
     </message>
     <message>
-        <location filename="../decode_data_dlg.ui" line="159"/>
+        <location filename="../decode_data_dlg.ui" line="180"/>
+        <source>Find</source>
+        <translation>찾기</translation>
+    </message>
+    <message>
+        <location filename="../decode_data_dlg.ui" line="166"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
     <message>
-        <location filename="../decode_data_dlg.ui" line="166"/>
+        <location filename="../decode_data_dlg.ui" line="90"/>
         <source>Base64</source>
         <translation>베이스64</translation>
     </message>
     <message>
-        <location filename="../decode_data_dlg.cpp" line="48"/>
+        <location filename="../decode_data_dlg.cpp" line="51"/>
         <source>Please enter your data</source>
         <translation>데이타를 입력하세요</translation>
     </message>
@@ -4242,17 +4250,27 @@ mailto : jykim74@gmail.com</translation>
         <translation>TTLV 데이타를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../decode_ttlv_dlg.ui" line="82"/>
+        <location filename="../decode_ttlv_dlg.ui" line="102"/>
         <source>Hex</source>
         <translation>16진수</translation>
     </message>
     <message>
-        <location filename="../decode_ttlv_dlg.ui" line="89"/>
+        <location filename="../decode_ttlv_dlg.ui" line="157"/>
+        <source>Clear</source>
+        <translation>지우기</translation>
+    </message>
+    <message>
+        <location filename="../decode_ttlv_dlg.ui" line="95"/>
         <source>Base64</source>
         <translation>베이스64</translation>
     </message>
     <message>
-        <location filename="../decode_ttlv_dlg.ui" line="123"/>
+        <location filename="../decode_ttlv_dlg.ui" line="109"/>
+        <source>Find</source>
+        <translation>찾기</translation>
+    </message>
+    <message>
+        <location filename="../decode_ttlv_dlg.ui" line="150"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -4262,7 +4280,7 @@ mailto : jykim74@gmail.com</translation>
         <translation>보기</translation>
     </message>
     <message>
-        <location filename="../decode_ttlv_dlg.cpp" line="48"/>
+        <location filename="../decode_ttlv_dlg.cpp" line="51"/>
         <source>Please enter your data</source>
         <translation>데이타를 입력하세요</translation>
     </message>
@@ -4461,17 +4479,22 @@ mailto : jykim74@gmail.com</translation>
         <translation>번호</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.cpp" line="216"/>
+        <location filename="../edit_value_dlg.cpp" line="208"/>
+        <source>fail to modify: %1</source>
+        <translation>변경 실패 : %1</translation>
+    </message>
+    <message>
+        <location filename="../edit_value_dlg.cpp" line="222"/>
         <source>Top-level item cannot be deleted</source>
         <translation>최상위 아이템은 삭제 할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.cpp" line="238"/>
+        <location filename="../edit_value_dlg.cpp" line="244"/>
         <source>Top-level item cannot be added.</source>
         <translation>최상위 노드는 추가 될 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.cpp" line="245"/>
+        <location filename="../edit_value_dlg.cpp" line="251"/>
         <source>Parent item is not constructed.</source>
         <translation>상위 노드가 구조적이지 않습니다</translation>
     </message>
@@ -6830,7 +6853,7 @@ Do you want to delete the file and continue?</source>
         <translation>큰수 계산기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1761"/>
+        <location filename="../mainwindow.cpp" line="1765"/>
         <source>The data is not TTLV format</source>
         <translation>이 데이타는 TTLV 포맷이 아닙니다</translation>
     </message>
@@ -6916,22 +6939,22 @@ Do you want to delete the file and continue?</source>
         <translation>질문과 답변하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1165"/>
+        <location filename="../mainwindow.cpp" line="1172"/>
         <source>The BER is TTLV format. Do you open as TTLV format?</source>
         <translation>해당 BER은 TTLV 형식입니다. TTLV 형식으로 열겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1174"/>
+        <location filename="../mainwindow.cpp" line="1181"/>
         <source>TTLV decoding requires a license.</source>
         <translation>TTLV 디코딩은 라이선스가 필요합니다</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1181"/>
+        <location filename="../mainwindow.cpp" line="1188"/>
         <source>The data is not BER format</source>
         <translation>이 데이타는 잘못된 BER 포맷입니다</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1529"/>
+        <location filename="../mainwindow.cpp" line="1536"/>
         <source>Certificate Management</source>
         <translation>인증서 관리</translation>
     </message>
@@ -6940,13 +6963,13 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">이파일은 CRL 파일 입니다. CRL 정보를 여시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="954"/>
-        <location filename="../mainwindow.cpp" line="1007"/>
+        <location filename="../mainwindow.cpp" line="961"/>
+        <location filename="../mainwindow.cpp" line="1014"/>
         <source>This file is CSR. Open it as CSR information?</source>
         <translation>이파일은 CSR 파일입니다. CSR 정보를 여시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="965"/>
+        <location filename="../mainwindow.cpp" line="972"/>
         <source>Invalid certificate file</source>
         <translation>잘못된 인증서 파일</translation>
     </message>
@@ -6955,24 +6978,24 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">이 파일은 인증서 입니다. 인증서 정보로 열겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1017"/>
+        <location filename="../mainwindow.cpp" line="1024"/>
         <source>Invalid CRL file</source>
         <translation>잘못된 CRL 파일입니다</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="943"/>
-        <location filename="../mainwindow.cpp" line="1058"/>
+        <location filename="../mainwindow.cpp" line="950"/>
+        <location filename="../mainwindow.cpp" line="1065"/>
         <source>This file is CRL. Open it as CRL information?</source>
         <translation>이파일은 CRL 입니다. CRL 정보를 여시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="997"/>
-        <location filename="../mainwindow.cpp" line="1048"/>
+        <location filename="../mainwindow.cpp" line="1004"/>
+        <location filename="../mainwindow.cpp" line="1055"/>
         <source>This file is certificate. Open it as certificate information?</source>
         <translation>이 파일은 인증서 입니다. 인증서 정보로 열겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1068"/>
+        <location filename="../mainwindow.cpp" line="1075"/>
         <source>Invalid CSR file</source>
         <translation>잘못된 CSR 파일</translation>
     </message>
@@ -6981,23 +7004,23 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">BER 크기가 10000 바이트 보다 크면 라이센스가 필요합니다.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1565"/>
+        <location filename="../mainwindow.cpp" line="1572"/>
         <source>Do you want to save the file in DER format?
 [The Source is PEM or The Source DER changed]</source>
         <translation>[소스가 PEM 형식인 경우 또는 소스 DER 파일이 변경 됨] DER 형식으로 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1577"/>
+        <location filename="../mainwindow.cpp" line="1584"/>
         <source>Copy</source>
         <translation>복사</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1580"/>
+        <location filename="../mainwindow.cpp" line="1587"/>
         <source>Select All</source>
         <translation>전체 선택</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1583"/>
+        <location filename="../mainwindow.cpp" line="1590"/>
         <source>Unselect All</source>
         <translation>선택 해제</translation>
     </message>
@@ -7006,8 +7029,8 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">라이선스가 변경 되었습니다.적용을 위해 다시 시작 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1742"/>
-        <location filename="../mainwindow.cpp" line="1755"/>
+        <location filename="../mainwindow.cpp" line="1746"/>
+        <location filename="../mainwindow.cpp" line="1759"/>
         <source>There is no data</source>
         <translation>데이타가 없습니다</translation>
     </message>
@@ -7217,7 +7240,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">변경 데이타를 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1657"/>
+        <location filename="../mainwindow.cpp" line="1671"/>
         <source>Do you want to overwrite %1 as BER file?</source>
         <translation>파일(%1)을 BER로 덮어 쓰겠습니까?</translation>
     </message>
@@ -7226,7 +7249,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">다른 이름으로 저장...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1798"/>
+        <location filename="../mainwindow.cpp" line="1802"/>
         <source>Print Document</source>
         <translation>문서 인쇄</translation>
     </message>
@@ -7524,14 +7547,12 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">변경 된 데이타를 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1673"/>
         <source>BIN Files (*.ber *.der);;All Files (*.*)</source>
-        <translation>BIN 파일 (*.ber *.der);;모든 파일들(*.*)</translation>
+        <translation type="vanished">BIN 파일 (*.ber *.der);;모든 파일들(*.*)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1677"/>
         <source>Save As...</source>
-        <translation>다른 이름으로 저장 하기</translation>
+        <translation type="vanished">다른 이름으로 저장 하기</translation>
     </message>
     <message>
         <source>You have changed license. Restart to apply it?</source>
@@ -8801,9 +8822,13 @@ Do you want to delete the file and continue?</source>
         <translation>CSR 파일들 (*.csr *.der *.cer *.pem);;모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="77"/>
         <source>BER Files (*.der *.pem *.cer *.crt *.crl *.csr);;All Files(*.*)</source>
-        <translation>BER 파일들 (*.der *.pem *.cer *.crt *.crl *.csr);;모든 파일들 (*.*)</translation>
+        <translation type="vanished">BER 파일들 (*.der *.pem *.cer *.crt *.crl *.csr);;모든 파일들 (*.*)</translation>
+    </message>
+    <message>
+        <location filename="../common.cpp" line="77"/>
+        <source>BER Files (*.ber *.der *.cer *.crt *.crl *.pem);;All Files(*.*)</source>
+        <translation>BER 파일들 (*.der *.der *.cer *.crt *.crl *.pem);;모든 파일들 (*.*)</translation>
     </message>
     <message>
         <location filename="../common.cpp" line="79"/>
@@ -8822,26 +8847,31 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../common.cpp" line="85"/>
+        <source>Binary Files (*.bin *.ber);;All Files(*.*)</source>
+        <translation>BIN 파일 (*.ber *.der);;모든 파일들(*.*)</translation>
+    </message>
+    <message>
+        <location filename="../common.cpp" line="87"/>
         <source>License Files (*.lcn *.txt);;All Files (*.*)</source>
         <translation>라이선스 파일들 (*.lcn *.txt);;모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="87"/>
+        <location filename="../common.cpp" line="89"/>
         <source>All Files(*.*)</source>
         <translation>모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="109"/>
+        <location filename="../common.cpp" line="111"/>
         <source>Open File</source>
         <translation>파일 열기</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="138"/>
+        <location filename="../common.cpp" line="140"/>
         <source>Save File</source>
         <translation>파일 저장</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="155"/>
+        <location filename="../common.cpp" line="157"/>
         <source>Open Directory</source>
         <translation>디렉토리 열기</translation>
     </message>
@@ -11365,10 +11395,8 @@ Do you want to delete the file and continue?</source>
         <translation>해당 아이템이 구조적이지 않습니다</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="488"/>
-        <location filename="../ttlv_tree_view.cpp" line="518"/>
         <source>Save as...</source>
-        <translation>다른 이름으로 저장</translation>
+        <translation type="vanished">다른 이름으로 저장</translation>
     </message>
 </context>
 <context>

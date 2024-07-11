@@ -440,7 +440,7 @@ int BerModel::modifyItem( BerItem *pItem, const BIN *pValue )
     nOrgHeaderLen = pItem->GetHeaderSize();
 
     ret = pItem->changeLength( pValue->nLen, &nDiffLen );
-    if( nDiffLen <= 0 || ret != 0 )
+    if( ret != 0 )
     {
         ret = JSR_ERR;
         goto end;

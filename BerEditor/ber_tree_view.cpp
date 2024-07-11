@@ -578,6 +578,7 @@ void BerTreeView::EditValue()
     if( ret == QDialog::Accepted )
     {
         tree_model->parseTree();
+        viewRoot();
         QModelIndex ri = tree_model->index(0,0);
         expand(ri);
 
@@ -609,7 +610,8 @@ void BerTreeView::InsertBER()
         ret = tree_model->addItem( item, &binData );
         if( ret != 0 ) goto end;
 
-        tree_model->parseTree();       
+        tree_model->parseTree();
+        viewRoot();
         QModelIndex ri = tree_model->index(0,0);
         expand(ri);
     }
