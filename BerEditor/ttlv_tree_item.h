@@ -34,6 +34,8 @@ public:
     int getLength( BIN *pLength );
     int setLength( int32 nLength );
     int getValue( const BIN *pTTLV, BIN *pValue );
+    int getValueWithPad( const BIN *pTTLV, BIN *pValue );
+    int getDataAll( const BIN *pTTLV, BIN *pData );
 
     QString getTagHex();
     QString getTypeHex();

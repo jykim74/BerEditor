@@ -30,7 +30,7 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="3">
+     <item row="0" column="4">
       <widget class="QLineEdit" name="mDataLenText">
        <property name="minimumSize">
         <size>
@@ -76,20 +76,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QRadioButton" name="mHexRadio">
-       <property name="text">
-        <string>Hex</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QRadioButton" name="mBase64Radio">
-       <property name="text">
-        <string>Base64</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="2">
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
@@ -102,6 +88,27 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="1">
+      <widget class="QRadioButton" name="mBase64Radio">
+       <property name="text">
+        <string>Base64</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QRadioButton" name="mHexRadio">
+       <property name="text">
+        <string>Hex</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mFindBtn">
+       <property name="text">
+        <string>Find</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -118,20 +125,13 @@
    <item>
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="2">
-      <widget class="QPushButton" name="mCloseBtn">
-       <property name="text">
-        <string>Close</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
       <widget class="QPushButton" name="mViewBtn">
        <property name="text">
         <string>View</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
+     <item row="0" column="1">
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -143,6 +143,20 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mCloseBtn">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mClearBtn">
+       <property name="text">
+        <string>Clear</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

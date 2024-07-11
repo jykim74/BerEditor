@@ -26,6 +26,8 @@ public:
 private slots :
     void viewData();
     void dataChanged();
+    void clearData();
+    void findData();
 
 private:
 };

@@ -19,6 +19,9 @@ public:
 private slots:
     void clickView();
     void changeData();
+    void clearData();
+    void findData();
+
 
 private:
     void initialize();

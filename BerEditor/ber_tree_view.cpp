@@ -525,13 +525,10 @@ void BerTreeView::ExpandValue()
 
 void BerTreeView::SaveNode()
 {
-    QFileDialog fileDlg(this, tr("Save as..."));
-    fileDlg.setAcceptMode(QFileDialog::AcceptSave);
-    fileDlg.setDefaultSuffix("ber");
-    if( fileDlg.exec() != QDialog::Accepted )
-        return;
+    QString strPath = berApplet->curFolder();
+    QString fileName = findSaveFile( this, JS_FILE_TYPE_BER, strPath );
+    if( fileName.length() < 1 ) return;
 
-    QString fileName = fileDlg.selectedFiles().first();
     QModelIndex index = currentIndex();
 
     BerModel *tree_model = (BerModel *)model();
@@ -542,17 +539,15 @@ void BerTreeView::SaveNode()
     JS_BIN_set( &binData, binBer.pVal + item->GetOffset(), item->GetHeaderSize() + item->GetLength() );
     JS_BIN_fileWrite( &binData, fileName.toLocal8Bit().toStdString().c_str());
     JS_BIN_reset( &binData );
+
+    berApplet->setCurFile( fileName );
 }
 
 void BerTreeView::SaveNodeValue()
 {
-    QFileDialog fileDlg(this, tr("Save as..."));
-    fileDlg.setAcceptMode(QFileDialog::AcceptSave);
-    fileDlg.setDefaultSuffix("ber");
-    if( fileDlg.exec() != QDialog::Accepted )
-        return;
-
-    QString fileName = fileDlg.selectedFiles().first();
+    QString strPath = berApplet->curFolder();
+    QString fileName = findSaveFile( this, JS_FILE_TYPE_BER, strPath );
+    if( fileName.length() < 1 ) return;
 
     QModelIndex index = currentIndex();
 
@@ -564,6 +559,8 @@ void BerTreeView::SaveNodeValue()
     JS_BIN_set( &binData, binBer.pVal + item->GetOffset() + item->GetHeaderSize(), item->GetLength() );
     JS_BIN_fileWrite( &binData, fileName.toLocal8Bit().toStdString().c_str());
     JS_BIN_reset(&binData);
+
+    berApplet->setCurFile( fileName );
 }
 
 void BerTreeView::EditValue()

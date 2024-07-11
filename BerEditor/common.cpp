@@ -74,13 +74,15 @@ static const QString _getFileFilter( int nType )
     else if( nType == JS_FILE_TYPE_TXT )
         strFilter = QObject::tr("TXT Files (*.txt *.log);;All Files(*.*)");
     else if( nType == JS_FILE_TYPE_BER )
-        strFilter = QObject::tr("BER Files (*.der *.pem *.cer *.crt *.crl *.csr);;All Files(*.*)");
+        strFilter = QObject::tr("BER Files (*.ber *.der *.cer *.crt *.crl *.pem);;All Files(*.*)");
     else if( nType == JS_FILE_TYPE_CFG )
         strFilter = QObject::tr("Config Files (*.cfg *.ini);;All Files(*.*)" );
     else if( nType == JS_FILE_TYPE_REQ )
         strFilter = QObject::tr("Req Files (*.req *.txt);;All Files(*.*)" );
     else if( nType == JS_FILE_TYPE_PFX )
         strFilter = QObject::tr("PFX Files (*.pfx *.p12);;All Files(*.*)" );
+    else if( nType == JS_FILE_TYPE_BIN )
+        strFilter = QObject::tr("Binary Files (*.bin *.ber);;All Files(*.*)" );
     else if( nType == JS_FILE_TYPE_LCN )
         strFilter = QObject::tr( "License Files (*.lcn *.txt);;All Files (*.*)" );
     else

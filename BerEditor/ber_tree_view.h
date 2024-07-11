@@ -29,16 +29,16 @@ private slots:
     void onItemClicked( const QModelIndex& index );
     void ShowContextMenu( QPoint point );
     void ExpandValue();
-    void SaveNode();
-    void SaveNodeValue();
-    void EditValue();
-    void InsertBER();
-
 
 public slots:
     void CopyAsHex();
     void CopyAsBase64();
     void copy();
+
+    void SaveNode();
+    void SaveNodeValue();
+    void EditValue();
+    void InsertBER();
 
     void treeExpandAll();
     void treeExpandNode();

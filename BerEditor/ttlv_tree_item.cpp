@@ -99,6 +99,36 @@ int TTLVTreeItem::getValue( const BIN *pTTLV, BIN *pValue )
     return 0;
 }
 
+int TTLVTreeItem::getValueWithPad( const BIN *pTTLV, BIN *pValue )
+{
+    int nLen = 0;
+    int nLeft = 0;
+    if( header_.nLen != JS_TTLV_HEADER_SIZE || offset_ < 0) return -1;
+
+    nLen = getLengthInt();
+
+    JS_BIN_set( pValue, &pTTLV->pVal[offset_ + JS_TTLV_HEADER_SIZE], nLen );
+
+    nLeft = nLen % 8;
+    if( nLeft > 0 )
+    {
+        JS_BIN_appendCh( pValue, 0x00, 8 - nLeft );
+    }
+
+    return 0;
+}
+
+int TTLVTreeItem::getDataAll( const BIN *pTTLV, BIN *pData )
+{
+    int nLen = 0;
+    if( header_.nLen != JS_TTLV_HEADER_SIZE || offset_ < 0) return -1;
+
+    nLen = getLengthTTLV();
+    JS_BIN_set( pData, &pTTLV->pVal[offset_], nLen );
+
+    return 0;
+}
+
 QString TTLVTreeItem::getTagHex()
 {
     char *pHex = NULL;

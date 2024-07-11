@@ -1653,37 +1653,34 @@ void MainWindow::save()
 {
     if( file_path_.isEmpty() )
         saveAs();
-    else {
-        if( berApplet->yesOrNoBox( tr("Do you want to overwrite %1 as BER file?").arg(file_path_), this ) == 0)
+    else
+    {
+        if( hsplitter_->widget(0) == ttlv_tree_ )
         {
-            return;
+            ttlv_tree_->saveItem();
         }
+        else
+        {
+            if( berApplet->yesOrNoBox( tr("Do you want to overwrite %1 as BER file?").arg(file_path_), this ) == 0)
+            {
+                return;
+            }
 
-        const BIN& binBer = ber_model_->getBER();
-        JS_BIN_fileWrite( &binBer, file_path_.toLocal8Bit().toStdString().c_str() );
+            const BIN& binBer = ber_model_->getBER();
+            JS_BIN_fileWrite( &binBer, file_path_.toLocal8Bit().toStdString().c_str() );
+        }
     }
 }
 
 void MainWindow::saveAs()
 {
-    QFileDialog::Options options;
-    options |= QFileDialog::DontUseNativeDialog;
-
-    QString strFilter;
-    strFilter = tr("BIN Files (*.ber *.der);;All Files (*.*)");
-
-    QString selectedFilter;
-    QString fileName = QFileDialog::getSaveFileName( this,
-                                                     tr("Save As..."),
-                                                     file_path_,
-                                                     strFilter,
-                                                     &selectedFilter,
-                                                     options );
-
-    if( fileName.length() > 0 )
+    if( hsplitter_->widget(0) == ttlv_tree_ )
     {
-        const BIN& binBer = ber_model_->getBER();
-        JS_BIN_fileWrite( &binBer, fileName.toLocal8Bit().toStdString().c_str() );
+        ttlv_tree_->saveItem();
+    }
+    else
+    {
+        left_tree_->SaveNode();
     }
 }
 

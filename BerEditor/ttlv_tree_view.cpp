@@ -485,53 +485,40 @@ void TTLVTreeView::editItem()
 
 void TTLVTreeView::saveItem()
 {
-    QFileDialog fileDlg(this, tr("Save as..."));
-    fileDlg.setAcceptMode(QFileDialog::AcceptSave);
-    fileDlg.setDefaultSuffix("ber");
-    if( fileDlg.exec() != QDialog::Accepted )
-        return;
-
-    QString fileName = fileDlg.selectedFiles().first();
+    QString strPath = berApplet->curFolder();
+    QString fileName = findSaveFile( this, JS_FILE_TYPE_BIN, strPath );
+    if( fileName.length() < 1 ) return;
 
     TTLVTreeItem *pItem = currentItem();
     if( pItem == NULL ) return;
 
     BIN binData = {0,0};
     BIN binTTLV = berApplet->getTTLV();
-    BIN binHeader = {0,0};
-    BIN binValue = {0,0};
 
-    pItem->getHeader( &binHeader );
-    pItem->getValue( &binTTLV, &binValue );
-
-    JS_BIN_appendBin( &binData, &binHeader );
-    JS_BIN_appendBin( &binData, &binValue );
-
-    JS_BIN_fileWrite( &binData, fileName.toStdString().c_str() );
+    pItem->getDataAll( &binTTLV, &binData );
+    JS_BIN_fileWrite( &binData, fileName.toLocal8Bit().toStdString().c_str() );
     JS_BIN_reset( &binData );
-    JS_BIN_reset( &binHeader );
-    JS_BIN_reset( &binValue );
+
+    berApplet->setCurFile( fileName );
 }
 
 void TTLVTreeView::saveItemValue()
 {
-    QFileDialog fileDlg(this, tr("Save as..."));
-    fileDlg.setAcceptMode(QFileDialog::AcceptSave);
-    fileDlg.setDefaultSuffix("ber");
-    if( fileDlg.exec() != QDialog::Accepted )
-        return;
-
-    QString fileName = fileDlg.selectedFiles().first();
-    BIN binTTLV = berApplet->getTTLV();
-    BIN binValue = {0,0};
+    QString strPath = berApplet->curFolder();
+    QString fileName = findSaveFile( this, JS_FILE_TYPE_BIN, strPath );
+    if( fileName.length() < 1 ) return;
 
     TTLVTreeItem *pItem = currentItem();
     if( pItem == NULL ) return;
 
-    pItem->getValue( &binTTLV, &binValue );
+    BIN binData = {0,0};
+    BIN binTTLV = berApplet->getTTLV();
 
-    JS_BIN_fileWrite( &binValue, fileName.toStdString().c_str() );
-    JS_BIN_reset( &binValue );
+    pItem->getValueWithPad( &binTTLV, &binData );
+    JS_BIN_fileWrite( &binData, fileName.toLocal8Bit().toStdString().c_str() );
+    JS_BIN_reset( &binData );
+
+    berApplet->setCurFile( fileName );
 }
 
 void TTLVTreeView::showItemText( TTLVTreeItem* item )

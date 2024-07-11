@@ -18,6 +18,9 @@ DecodeDataDlg::DecodeDataDlg(QWidget *parent) :
     connect( mTypeHex, SIGNAL(clicked()), this, SLOT(dataChanged()));
     connect( mTypeBase64, SIGNAL(clicked()), this, SLOT(dataChanged()));
 
+    connect( mFindBtn, SIGNAL(clicked()), this, SLOT(findData()));
+    connect( mClearBtn, SIGNAL(clicked()), this, SLOT(clearData()));
+
     mTypeHex->setChecked(true);
     mViewBtn->setDefault(true);
 
@@ -73,4 +76,24 @@ void DecodeDataDlg::dataChanged()
 
     int nLen = getDataLen( nType, mDataText->toPlainText() );
     mDataLenText->setText( QString("%1").arg(nLen));
+}
+
+void DecodeDataDlg::clearData()
+{
+    mDataText->clear();
+}
+
+void DecodeDataDlg::findData()
+{
+    BIN binData = {0,0};
+    QString strPath = berApplet->curFolder();
+
+    QString strFileName = findFile( this, JS_FILE_TYPE_BER, strPath );
+    if( strFileName.length() < 1 ) return;
+
+    JS_BIN_fileReadBER( strFileName.toLocal8Bit().toStdString().c_str(), &binData );
+    mDataText->setPlainText( getHexString( &binData ));
+
+    JS_BIN_reset( &binData );
+    berApplet->setCurFile( strFileName );
 }

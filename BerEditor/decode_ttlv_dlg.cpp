@@ -13,8 +13,11 @@ DecodeTTLVDlg::DecodeTTLVDlg(QWidget *parent) :
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mDataText, SIGNAL(textChanged()), this, SLOT(changeData()));
 
+    connect( mFindBtn, SIGNAL(clicked()), this, SLOT(findData()));
+    connect( mClearBtn, SIGNAL(clicked()), this, SLOT(clearData()));
+
     initialize();
-    mCloseBtn->setDefault(true);
+    mViewBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -69,3 +72,24 @@ void DecodeTTLVDlg::changeData()
     int nLen = getDataLen( nType, mDataText->toPlainText() );
     mDataLenText->setText( QString("%1").arg(nLen));
 }
+
+void DecodeTTLVDlg::clearData()
+{
+    mDataText->clear();
+}
+
+void DecodeTTLVDlg::findData()
+{
+    BIN binData = {0,0};
+    QString strPath = berApplet->curFolder();
+
+    QString strFileName = findFile( this, JS_FILE_TYPE_BIN, strPath );
+    if( strFileName.length() < 1 ) return;
+
+    JS_BIN_fileReadBER( strFileName.toLocal8Bit().toStdString().c_str(), &binData );
+    mDataText->setPlainText( getHexString( &binData ));
+
+    JS_BIN_reset( &binData );
+    berApplet->setCurFile( strFileName );
+}
+

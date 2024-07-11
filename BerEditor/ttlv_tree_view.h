@@ -35,13 +35,13 @@ public slots:
 
     void AddTTLV();
 
-private slots:
-    void onItemClicked( const QModelIndex& index );
-    void leftContextMenu( QPoint point );
-
     void editItem();
     void saveItem();
     void saveItemValue();
+
+private slots:
+    void onItemClicked( const QModelIndex& index );
+    void leftContextMenu( QPoint point );
 
     void showItemText( TTLVTreeItem* item );
     void showItemXML( TTLVTreeItem* item );
