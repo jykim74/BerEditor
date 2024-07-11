@@ -100,7 +100,7 @@ void MakeTTLVDlg::makeHeader()
 
     if( strTag.length() < 6 ) return;
 
-    int nLen = getDataLen( mTypeCombo->currentText(), strValue );
+    int nLen = getDataLen( mValueCombo->currentText(), strValue );
 
 
     QString strHeader = QString( "%1%2%3" )
@@ -133,20 +133,15 @@ QString MakeTTLVDlg::getData()
 
 void MakeTTLVDlg::clickOK()
 {
-    BIN binTTLV = {0,0};
     QString strData = getData();
 
     if( strData.length() > 8 )
     {
-        JS_BIN_decodeHex( strData.toStdString().c_str(), &binTTLV );
+        accept();
     }
     else
     {
         reject();
         return;
     }
-
-    berApplet->decodeTTLV( &binTTLV );
-    JS_BIN_reset( &binTTLV );
-    accept();
 }

@@ -431,7 +431,7 @@ void TTLVTreeView::AddTTLV()
 {
     int ret = 0;
     BIN binData = {0,0};
-    MakeTTLVDlg makeTTLV;
+
 
     TTLVTreeModel *ttlv_model = (TTLVTreeModel *)model();
     TTLVTreeItem* item = currentItem();
@@ -442,6 +442,7 @@ void TTLVTreeView::AddTTLV()
         return;
     }
 
+    MakeTTLVDlg makeTTLV;
     ret = makeTTLV.exec();
 
     if( ret == QDialog::Accepted )
@@ -456,6 +457,8 @@ void TTLVTreeView::AddTTLV()
         if( ret == 0 )
         {
             ttlv_model->parseTree();
+            viewRoot();
+
             QModelIndex ri = ttlv_model->index(0,0);
             expand(ri);
 
@@ -475,6 +478,7 @@ void TTLVTreeView::editItem()
         TTLVTreeModel *ttlv_model = (TTLVTreeModel *)model();
 
         ttlv_model->parseTree();
+        viewRoot();
         QModelIndex ri = ttlv_model->index(0,0);
         expand(ri);
 

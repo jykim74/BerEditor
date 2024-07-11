@@ -213,7 +213,7 @@ int32 TTLVTreeItem::getLengthInt()
     int32   len = 0;
     BIN binLen = {0,0};
 
-    if( header_.nLen != JS_TTLV_HEADER_SIZE ) return -1;
+    if( header_.nLen != JS_TTLV_HEADER_SIZE ) return 0;
 
     binLen.pVal = &header_.pVal[JS_TTLV_LENGTH_OFFSET];
     binLen.nLen = JS_TTLV_LENGTH_SIZE;

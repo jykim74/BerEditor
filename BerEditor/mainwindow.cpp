@@ -869,7 +869,14 @@ void MainWindow::runDecodeTTLV()
 void MainWindow::runMakeTTLV()
 {
     MakeTTLVDlg makeTTLV;
-    makeTTLV.exec();
+    if( makeTTLV.exec() == QDialog::Accepted )
+    {
+        BIN binData = {0,0};
+        QString strData = makeTTLV.getData();
+        JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
+        berApplet->decodeTTLV(&binData);
+        JS_BIN_reset( &binData );
+    }
 }
 
 void MainWindow::ttlvClient()

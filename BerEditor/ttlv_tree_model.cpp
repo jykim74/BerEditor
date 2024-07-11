@@ -56,7 +56,9 @@ int TTLVTreeModel::parseConstruct( int offset, TTLVTreeItem *pParentItem )
     int         start_offset = offset;
     int         level = pParentItem->getLevel() + 1;
 
-    if( binTTLV_.nLen <= offset ) return -1;
+    if( binTTLV_.nLen == offset ) return 0;
+
+    if( binTTLV_.nLen < offset ) return -1;
 
     do {
         TTLVTreeItem *pItem = new TTLVTreeItem();
@@ -147,6 +149,7 @@ int TTLVTreeModel::addItem( TTLVTreeItem* pParentItem, const BIN *pData )
     BIN binMod = {0,0};
     BIN binHeader = {0,0};
     int nStart = 0;
+    int nOrgLen = 0;
 
     if( pParentItem == NULL ) return -1;
 
@@ -154,6 +157,12 @@ int TTLVTreeModel::addItem( TTLVTreeItem* pParentItem, const BIN *pData )
 
     nStart = pParentItem->getOffset();
     nStart += pParentItem->getLengthTTLV();
+
+    nOrgLen = pParentItem->getLengthInt();
+    pParentItem->setLength( nOrgLen + pData->nLen );
+
+    pParentItem->getHeader( &binHeader );
+    JS_BIN_modifyBin( pParentItem->getOffset(), &binHeader, &binMod );
 
     ret = JS_BIN_insertBin( nStart, pData, &binMod );
     if( ret != 0 ) goto end;
@@ -164,6 +173,8 @@ int TTLVTreeModel::addItem( TTLVTreeItem* pParentItem, const BIN *pData )
     setTTLV( &binMod );
 
 end :
+    if( ret != 0 ) pParentItem->setLength( nOrgLen );
+
     JS_BIN_reset( &binMod );
     JS_BIN_reset( &binHeader );
 
@@ -202,12 +213,12 @@ int TTLVTreeModel::modifyItem( TTLVTreeItem *pItem, const BIN *pValue )
     BIN binChange = {0,0};
     BIN binNewValue = {0,0};
 
-    int nDiffLen = 0;
     int nOrgLen = 0;
     int nOrgPadLen = 0;
     int nNewLen = 0;
     int nNewPadLen = 0;
     int nLeft = 0;
+    int nDiffLen = 0;
 
     if( pItem == NULL ) return -1;
     JS_BIN_copy( &binMod, &binTTLV_ );
@@ -235,6 +246,9 @@ int TTLVTreeModel::modifyItem( TTLVTreeItem *pItem, const BIN *pValue )
     JS_BIN_appendCh( &binNewValue, 0x00, nNewPadLen - nNewLen );
 
     ret = JS_BIN_changeBin( pItem->getOffset() + JS_TTLV_HEADER_SIZE, nOrgPadLen, &binNewValue, &binMod );
+    if( ret != 0 ) goto end;
+
+    ret = resizeParentHeader( nDiffLen, pItem, &binMod );
     if( ret != 0 ) goto end;
 
     setTTLV( &binMod );
