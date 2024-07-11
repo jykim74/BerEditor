@@ -131,6 +131,7 @@ void MakeBerDlg::makeHeader()
     JS_BIN_appendBin( &binHeader, &binLen );
 
     JS_BIN_encodeHex( &binHeader, &pHex );
+    mLenText->setText( getHexString(&binLen));
     mTagText->setText( pBitString );
     mHeaderText->setText( pHex );
     mBERText->setPlainText( getData() );

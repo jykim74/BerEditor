@@ -99,6 +99,7 @@ void EditValueDlg::makeHeader()
     JS_BIN_appendBin( &binHeader, &binLen );
 
     JS_BIN_encodeHex( &binHeader, &pHex );
+    mLenText->setText( getHexString( &binLen ));
     mHeaderText->setText( pHex );
     mBERText->setPlainText( getData() );
 
