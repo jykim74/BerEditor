@@ -302,18 +302,25 @@ void TTLVTreeView::showRightPart( TTLVTreeItem *pItem )
 void TTLVTreeView::getInfoView(TTLVTreeItem *pItem, int nWidth )
 {
     BIN binTTLV = berApplet->getTTLV();
+    BIN binHeader = {0,0};
+
+    pItem->getHeader( &binHeader );
+
     berApplet->mainWindow()->infoClear();
 
     berApplet->info( "========================================================================\n" );
     berApplet->info( "== TTLV Information\n" );
     berApplet->info( "========================================================================\n" );
 
-    berApplet->info( QString( "Tag    : %1(%2)\n" ).arg( pItem->getTagName() ).arg( pItem->getTagHex() ));
-    berApplet->info( QString( "Type   : %1(%2)\n").arg( pItem->getTypeName() ).arg( pItem->getTypeHex() ));
-    berApplet->info( QString( "Length : %1(%2)\n" ).arg( pItem->getLengthInt() ).arg( pItem->getLengthHex() ));
-    berApplet->info( QString( "Offset : %1(%2)\n").arg( pItem->getOffset() ).arg( pItem->getOffset(), 0, 16) );
-    berApplet->info( QString( "Value  :\n") );
+    berApplet->info( QString( "Header   : %1\n" ).arg( getHexString( &binHeader )));
+    berApplet->info( QString( "Tag      : 0x%1 - %2\n" ).arg( pItem->getTagHex() ).arg( pItem->getTagName() ));
+    berApplet->info( QString( "Type     : 0x%1 - %2\n").arg( pItem->getTypeHex() ).arg( pItem->getTypeName() ));
+    berApplet->info( QString( "Length   : 0x%1 - %2 Bytes\n" ).arg( pItem->getLengthHex() ).arg( pItem->getLengthInt() ));
+    berApplet->info( QString( "Offset   : 0x%1 - %2\n").arg( pItem->getOffset(), 0, 16).arg( pItem->getOffset()) );
+    berApplet->info( "========================================================================\n" );
     berApplet->info( QString( "%1").arg( pItem->getPrintValue( &binTTLV, nWidth ) ) );
+
+    JS_BIN_reset( &binHeader );
 }
 
 QString TTLVTreeView::GetTextView()

@@ -50,6 +50,8 @@ int BerModel::parseTree()
     pRootItem->SetLevel(0);
 
     offset = getItem( 0, pRootItem );
+    if( offset < 0 ) return -1;
+
     insertRow( 0, pRootItem );
 
     pRootItem->setText( pRootItem->GetInfoString( &binBer_) );
@@ -61,7 +63,6 @@ int BerModel::parseTree()
         else
             ret = parseConstruct( pRootItem->GetHeaderSize(), pRootItem );
     }
-
 
     return 0;
 }

@@ -1778,6 +1778,8 @@ void MainWindow::decodeTTLV( const BIN *pData )
 
     if( hsplitter_->widget(0) != ttlv_tree_ )
         hsplitter_->replaceWidget(0, ttlv_tree_ );
+
+    setTitle( "TTLV" );
 }
 
 void MainWindow::print()

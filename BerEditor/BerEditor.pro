@@ -13,7 +13,7 @@ qtHaveModule(printsupport): QT += printsupport
 
 TARGET = BerEditor
 TEMPLATE = app
-PROJECT_VERSION = "1.9.2"
+PROJECT_VERSION = "1.9.3"
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -93,6 +93,8 @@ SOURCES += \
     sign_verify_thread.cpp \
     decode_ttlv_dlg.cpp \
     edit_ttlv_dlg.cpp \
+    ttlv_client_dlg.cpp \
+    ttlv_encoder_dlg.cpp \
     ttlv_tree_item.cpp \
     ttlv_tree_model.cpp \
     ttlv_tree_view.cpp \
@@ -157,6 +159,8 @@ HEADERS += \
     sign_verify_thread.h \
     decode_ttlv_dlg.h \
     edit_ttlv_dlg.h \
+    ttlv_client_dlg.h \
+    ttlv_encoder_dlg.h \
     ttlv_tree_item.h \
     ttlv_tree_model.h \
     ttlv_tree_view.h \
@@ -292,6 +296,8 @@ FORMS += \
         cert_man_dlg.ui \
         passwd_dlg.ui \
         new_passwd_dlg.ui \
+        ttlv_client_dlg.ui \
+        ttlv_encoder_dlg.ui \
         decode_ttlv_dlg.ui \
         edit_ttlv_dlg.ui \
         make_ttlv_dlg.ui
