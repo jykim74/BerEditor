@@ -38,6 +38,9 @@ private slots:
     void clickDecrypt();
     void clickClearAll();
 
+    void viewPriKey();
+    void viewPubKey();
+
     void findSavePath();
     void findPriKey();
     void findPubKey();

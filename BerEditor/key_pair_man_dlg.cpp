@@ -9,6 +9,7 @@
 #include "cert_info_dlg.h"
 #include "csr_info_dlg.h"
 #include "settings_mgr.h"
+#include "pri_key_info_dlg.h"
 
 #include "js_pki.h"
 #include "js_pki_eddsa.h"
@@ -33,6 +34,9 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mGenKeyPairBtn, SIGNAL(clicked()), this, SLOT(clickGenKeyPair()));
     connect( mMakeCSRBtn, SIGNAL(clicked()), this, SLOT(clickMakeCSR()));
+
+    connect( mPriViewBtn, SIGNAL(clicked()), this, SLOT(viewPriKey()));
+    connect( mPubViewBtn, SIGNAL(clicked()), this, SLOT(viewPubKey()));
 
     connect( mFindSavePathBtn, SIGNAL(clicked()), this, SLOT(findSavePath()));
     connect( mFindPriKeyBtn, SIGNAL(clicked()), this, SLOT(findPriKey()));
@@ -65,6 +69,8 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+    mPriViewBtn->setFixedWidth(34);
+    mPubViewBtn->setFixedWidth(34);
 
     mPriClearBtn->setFixedWidth(34);
     mPriDecodeBtn->setFixedWidth(34);
@@ -410,6 +416,46 @@ void KeyPairManDlg::clickClearAll()
     clearEncPriKey();
     clearPriInfo();
     clearCSR();
+}
+
+void KeyPairManDlg::viewPriKey()
+{
+    BIN binPriKey = { 0,0 };
+    PriKeyInfoDlg priKeyInfo;
+    QString strPriPath = mPriPathText->text();
+
+    if( strPriPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a private key" ), this );
+        return;
+    }
+
+    JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPriKey );
+
+    priKeyInfo.setPrivateKey( &binPriKey );
+    priKeyInfo.exec();
+
+    JS_BIN_reset( &binPriKey );
+}
+
+void KeyPairManDlg::viewPubKey()
+{
+    BIN binPubKey = {0,0};
+    PriKeyInfoDlg priKeyInfo;
+    QString strPubPath = mPubPathText->text();
+
+    if( strPubPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a public key"), this );
+        return;
+    }
+
+    JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPubKey );
+
+    priKeyInfo.setPublicKey( &binPubKey );
+    priKeyInfo.exec();
+
+    JS_BIN_reset( &binPubKey );
 }
 
 void KeyPairManDlg::findSavePath()
