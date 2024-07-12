@@ -84,7 +84,8 @@ void MakeTTLVDlg::changeValue()
     mValueLenText->setText( QString("%1").arg( strLen ));
     mLengthText->setText( QString( "%1").arg( nLen, 8, 16, QLatin1Char('0') ).toUpper());
 
-    makeHeader();
+    if( (strValue.length() % 2) == 0 )
+        makeHeader();
 }
 
 void MakeTTLVDlg::changeTTLV()

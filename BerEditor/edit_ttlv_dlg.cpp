@@ -57,10 +57,13 @@ void EditTTLVDlg::initialize()
 
 void EditTTLVDlg::changeValue()
 {
-    QString strLen = getDataLenString( DATA_HEX, mValueText->toPlainText() );
+    QString strValue = mValueText->toPlainText();
+
+    QString strLen = getDataLenString( DATA_HEX, strValue );
     mValueLenText->setText(QString("%1").arg( strLen ));
 
-    makeHeader();
+    if( (strValue.length() % 2) == 0 )
+        makeHeader();
 }
 
 void EditTTLVDlg::changeTTLV()
