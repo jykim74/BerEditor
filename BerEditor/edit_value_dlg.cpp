@@ -269,7 +269,8 @@ void EditValueDlg::changeValueText()
     QString strLen = getDataLenString( mValueTypeCombo->currentText(), strValue );
     mValueLenText->setText( QString("%1").arg(strLen));
 
-    makeHeader();
+    if( (strValue.length() % 2) == 0 )
+        makeHeader();
 }
 
 void EditValueDlg::changeBER()

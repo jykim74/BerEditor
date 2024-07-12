@@ -72,8 +72,8 @@ void MakeValueDlg::makeValue()
 
 void MakeValueDlg::hexChanged()
 {
-    int nLen = getDataLen( DATA_HEX, mHexText->toPlainText() );
-    mHexLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( DATA_HEX, mHexText->toPlainText() );
+    mHexLenText->setText( QString("%1").arg(strLen));
 }
 
 void MakeValueDlg::typeChanged()

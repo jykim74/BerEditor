@@ -3,6 +3,10 @@
  *
  * All rights reserved.
  */
+
+#include <QTimer>
+#include <QThread>
+
 #include "make_ber_dlg.h"
 #include "mainwindow.h"
 #include "js_ber.h"
@@ -22,20 +26,52 @@ MakeBerDlg::MakeBerDlg(QWidget *parent) :
     connect( mConstructedCheck, SIGNAL(clicked()), this, SLOT(checkConstructed()));
 
     connect( mValueText, SIGNAL(textChanged()), this, SLOT(valueChanged()));
-//    connect( mBERText, SIGNAL(textChanged()), this, SLOT(berChanged()));
+    connect( mBERText, SIGNAL(textChanged()), this, SLOT(berChanged()));
     connect( mNumText, SIGNAL(textChanged(QString)), this, SLOT(numChanged()));
     connect( mClassCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(classChanged(int)));
     connect( mPrimitiveCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(primitiveChanged(int)));
     connect( mValueTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeValueType(int)));
     connect( mMakeValueBtn, SIGNAL(clicked()), this, SLOT(clickMakeValue()));
 
+//    connectSig();
+
     initialize();
-    mCloseBtn->setFocus();
+    mCloseBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
 #endif
     resize(width(), minimumSizeHint().height());
+}
+
+void MakeBerDlg::connectSig()
+{
+    connect( mInsertBtn, SIGNAL(clicked()), this, SLOT(runInsert()));
+    connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mConstructedCheck, SIGNAL(clicked()), this, SLOT(checkConstructed()));
+
+    connect( mValueText, SIGNAL(textChanged()), this, SLOT(valueChanged()));
+    connect( mBERText, SIGNAL(textChanged()), this, SLOT(berChanged()), Qt::UniqueConnection);
+    connect( mNumText, SIGNAL(textChanged(QString)), this, SLOT(numChanged()));
+    connect( mClassCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(classChanged(int)));
+    connect( mPrimitiveCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(primitiveChanged(int)));
+    connect( mValueTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeValueType(int)));
+    connect( mMakeValueBtn, SIGNAL(clicked()), this, SLOT(clickMakeValue()));
+}
+
+void MakeBerDlg::disconectSig()
+{
+    disconnect( mInsertBtn, SIGNAL(clicked()), this, SLOT(runInsert()));
+    disconnect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    disconnect( mConstructedCheck, SIGNAL(clicked()), this, SLOT(checkConstructed()));
+
+    disconnect( mValueText, SIGNAL(textChanged()), this, SLOT(valueChanged()));
+    //    disconnect( mBERText, SIGNAL(textChanged()), this, SLOT(berChanged()));
+    disconnect( mNumText, SIGNAL(textChanged(QString)), this, SLOT(numChanged()));
+    disconnect( mClassCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(classChanged(int)));
+    disconnect( mPrimitiveCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(primitiveChanged(int)));
+    disconnect( mValueTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeValueType(int)));
+    disconnect( mMakeValueBtn, SIGNAL(clicked()), this, SLOT(clickMakeValue()));
 }
 
 MakeBerDlg::~MakeBerDlg()
@@ -135,7 +171,6 @@ void MakeBerDlg::makeHeader()
     mTagText->setText( pBitString );
     mHeaderText->setText( pHex );
     mBERText->setPlainText( getData() );
-    berChanged();
 
 end :
     JS_BIN_reset( &binLen );
@@ -164,7 +199,8 @@ void MakeBerDlg::valueChanged()
     QString strLen = getDataLenString( mValueTypeCombo->currentText(), strValue );
     mValueLenText->setText( QString("%1").arg(strLen));
 
-    makeHeader();
+    if( (strValue.length() % 2) == 0 )
+        makeHeader();
 }
 
 void MakeBerDlg::berChanged()

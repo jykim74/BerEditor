@@ -32,10 +32,14 @@ private slots:
     void primitiveChanged(int index );
     void changeValueType( int index );
     void clickMakeValue();
+    void makeHeader();
 
 private:
     void initialize();
-    void makeHeader();
+
+
+    void connectSig();
+    void disconectSig();
 };
 
 #endif // MAKE_BER_DLG_H

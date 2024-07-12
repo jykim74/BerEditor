@@ -4318,32 +4318,32 @@ mailto : jykim74@gmail.com</translation>
         <translation>값</translation>
     </message>
     <message>
-        <location filename="../edit_ttlv_dlg.ui" line="394"/>
+        <location filename="../edit_ttlv_dlg.ui" line="401"/>
         <source>Header</source>
         <translation>헤더</translation>
     </message>
     <message>
-        <location filename="../edit_ttlv_dlg.ui" line="449"/>
+        <location filename="../edit_ttlv_dlg.ui" line="467"/>
         <source>TTLV</source>
         <translation>TTLV</translation>
     </message>
     <message>
-        <location filename="../edit_ttlv_dlg.ui" line="573"/>
+        <location filename="../edit_ttlv_dlg.ui" line="569"/>
         <source>Modify</source>
         <translation>변경</translation>
     </message>
     <message>
-        <location filename="../edit_ttlv_dlg.ui" line="580"/>
+        <location filename="../edit_ttlv_dlg.ui" line="576"/>
         <source>Add</source>
         <translation>추가</translation>
     </message>
     <message>
-        <location filename="../edit_ttlv_dlg.ui" line="587"/>
+        <location filename="../edit_ttlv_dlg.ui" line="583"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
     <message>
-        <location filename="../edit_ttlv_dlg.ui" line="594"/>
+        <location filename="../edit_ttlv_dlg.ui" line="590"/>
         <source>Delete</source>
         <translation>삭제</translation>
     </message>
@@ -4393,7 +4393,7 @@ mailto : jykim74@gmail.com</translation>
         <translation>태그</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="388"/>
+        <location filename="../edit_value_dlg.ui" line="375"/>
         <source>[T]</source>
         <translation>[T]</translation>
     </message>
@@ -4408,37 +4408,42 @@ mailto : jykim74@gmail.com</translation>
         <translation>P/C</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="540"/>
+        <location filename="../edit_value_dlg.ui" line="438"/>
+        <source>L</source>
+        <translation>L</translation>
+    </message>
+    <message>
+        <location filename="../edit_value_dlg.ui" line="511"/>
         <source>Value</source>
         <translation>값</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="547"/>
+        <location filename="../edit_value_dlg.ui" line="518"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="680"/>
+        <location filename="../edit_value_dlg.ui" line="664"/>
         <source>BER</source>
         <translation>BER</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="748"/>
+        <location filename="../edit_value_dlg.ui" line="791"/>
         <source>Add</source>
         <translation>추가</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="755"/>
+        <location filename="../edit_value_dlg.ui" line="798"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="762"/>
+        <location filename="../edit_value_dlg.ui" line="805"/>
         <source>Delete</source>
         <translation>삭제</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="782"/>
+        <location filename="../edit_value_dlg.ui" line="825"/>
         <source>Modify</source>
         <translation>변경</translation>
     </message>
@@ -4460,7 +4465,7 @@ mailto : jykim74@gmail.com</translation>
         <translation>레벨</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="457"/>
+        <location filename="../edit_value_dlg.ui" line="677"/>
         <source>Header</source>
         <translation>헤더</translation>
     </message>
@@ -4474,27 +4479,27 @@ mailto : jykim74@gmail.com</translation>
         <translation>유효하지 않는 번호: %1</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.cpp" line="132"/>
+        <location filename="../edit_value_dlg.cpp" line="133"/>
         <source>Number</source>
         <translation>번호</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.cpp" line="208"/>
+        <location filename="../edit_value_dlg.cpp" line="209"/>
         <source>fail to modify: %1</source>
         <translation>변경 실패 : %1</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.cpp" line="222"/>
+        <location filename="../edit_value_dlg.cpp" line="223"/>
         <source>Top-level item cannot be deleted</source>
         <translation>최상위 아이템은 삭제 할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.cpp" line="244"/>
+        <location filename="../edit_value_dlg.cpp" line="245"/>
         <source>Top-level item cannot be added.</source>
         <translation>최상위 노드는 추가 될 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.cpp" line="251"/>
+        <location filename="../edit_value_dlg.cpp" line="252"/>
         <source>Parent item is not constructed.</source>
         <translation>상위 노드가 구조적이지 않습니다</translation>
     </message>
@@ -7599,58 +7604,63 @@ Do you want to delete the file and continue?</source>
         <translation>클래스</translation>
     </message>
     <message>
-        <location filename="../make_ber_dlg.ui" line="83"/>
+        <location filename="../make_ber_dlg.ui" line="195"/>
         <source>[T]</source>
         <translation>[T]</translation>
     </message>
     <message>
-        <location filename="../make_ber_dlg.ui" line="112"/>
-        <location filename="../make_ber_dlg.cpp" line="193"/>
+        <location filename="../make_ber_dlg.ui" line="188"/>
+        <location filename="../make_ber_dlg.cpp" line="231"/>
         <source>Tag</source>
         <translation>태그</translation>
     </message>
     <message>
-        <location filename="../make_ber_dlg.ui" line="165"/>
+        <location filename="../make_ber_dlg.ui" line="431"/>
         <source>Header</source>
         <translation>헤더</translation>
     </message>
     <message>
-        <location filename="../make_ber_dlg.ui" line="314"/>
+        <location filename="../make_ber_dlg.ui" line="295"/>
         <source>Value</source>
         <translation>값</translation>
     </message>
     <message>
-        <location filename="../make_ber_dlg.ui" line="321"/>
+        <location filename="../make_ber_dlg.ui" line="202"/>
+        <source>L</source>
+        <translation>L</translation>
+    </message>
+    <message>
+        <location filename="../make_ber_dlg.ui" line="302"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
     <message>
-        <location filename="../make_ber_dlg.ui" line="344"/>
+        <location filename="../make_ber_dlg.ui" line="325"/>
         <source>Make Value</source>
         <translation>값 만들기</translation>
     </message>
     <message>
-        <location filename="../make_ber_dlg.ui" line="414"/>
+        <location filename="../make_ber_dlg.ui" line="349"/>
         <source>BER</source>
         <translation>BER</translation>
     </message>
     <message>
-        <location filename="../make_ber_dlg.ui" line="482"/>
+        <location filename="../make_ber_dlg.ui" line="535"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../make_ber_dlg.ui" line="489"/>
+        <location filename="../make_ber_dlg.ui" line="542"/>
         <source>Insert</source>
         <translation>추가</translation>
     </message>
     <message>
-        <location filename="../make_ber_dlg.cpp" line="113"/>
+        <location filename="../make_ber_dlg.cpp" line="149"/>
         <source>Invalid Number: %1</source>
         <translation>유효하지 않는 번호: %1</translation>
     </message>
     <message>
-        <location filename="../make_ber_dlg.cpp" line="187"/>
+        <location filename="../make_ber_dlg.cpp" line="225"/>
         <source>Number</source>
         <translation>번호</translation>
     </message>
@@ -7770,22 +7780,22 @@ Do you want to delete the file and continue?</source>
         <translation>값</translation>
     </message>
     <message>
-        <location filename="../make_ttlv_dlg.ui" line="368"/>
+        <location filename="../make_ttlv_dlg.ui" line="394"/>
         <source>Header</source>
         <translation>헤더</translation>
     </message>
     <message>
-        <location filename="../make_ttlv_dlg.ui" line="432"/>
+        <location filename="../make_ttlv_dlg.ui" line="368"/>
         <source>TTLV</source>
         <translation>TTLV</translation>
     </message>
     <message>
-        <location filename="../make_ttlv_dlg.ui" line="556"/>
+        <location filename="../make_ttlv_dlg.ui" line="545"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
     <message>
-        <location filename="../make_ttlv_dlg.ui" line="563"/>
+        <location filename="../make_ttlv_dlg.ui" line="552"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
@@ -10134,7 +10144,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">소스 값은 8바이트 이상이어야 합니다.</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="339"/>
+        <location filename="../sss_dlg.cpp" line="338"/>
         <source>Delete</source>
         <translation>삭제</translation>
     </message>
