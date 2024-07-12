@@ -605,14 +605,14 @@ void PubEncDecDlg::inputChanged()
     else if( mInputBase64Radio->isChecked() )
         nType = DATA_BASE64;
 
-    int nLen = getDataLen( nType, mInputText->toPlainText() );
-    mInputLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( nType, mInputText->toPlainText() );
+    mInputLenText->setText( QString("%1").arg(strLen));
 }
 
 void PubEncDecDlg::outputChanged()
 {
-    int nLen = getDataLen( mOutputTypeCombo->currentText(), mOutputText->toPlainText() );
-    mOutputLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( mOutputTypeCombo->currentText(), mOutputText->toPlainText() );
+    mOutputLenText->setText( QString("%1").arg(strLen));
 }
 
 void PubEncDecDlg::algChanged()
@@ -772,20 +772,20 @@ void PubEncDecDlg::checkEncPriKey()
 
 void PubEncDecDlg::changeOtherPub()
 {
-    int nLen = mOtherPubText->toPlainText().length() / 2;
-    mOtherPubLenText->setText( QString( "%1" ).arg(nLen) );
+    QString strLen = getDataLenString( DATA_HEX, mOtherPubText->toPlainText() );
+    mOtherPubLenText->setText( QString( "%1" ).arg(strLen) );
 }
 
 void PubEncDecDlg::changeIV( const QString& text )
 {
-    int nLen = text.length() / 2;
-    mIVLenText->setText( QString( "%1" ).arg(nLen) );
+    QString strLen = getDataLenString( DATA_HEX, text );
+    mIVLenText->setText( QString( "%1" ).arg(strLen) );
 }
 
 void PubEncDecDlg::changeTag( const QString& text )
 {
-    int nLen = text.length() / 2;
-    mTagLenText->setText( QString( "%1" ).arg(nLen) );
+    QString strLen = getDataLenString( DATA_HEX, text );
+    mTagLenText->setText( QString( "%1" ).arg(strLen) );
 }
 
 void PubEncDecDlg::clickInputClear()

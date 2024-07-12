@@ -57,8 +57,8 @@ void EditTTLVDlg::initialize()
 
 void EditTTLVDlg::changeValue()
 {
-    int nLen = mValueText->toPlainText().length() / 2;
-    mValueLenText->setText(QString("%1").arg( nLen ));
+    QString strLen = getDataLenString( DATA_HEX, mValueText->toPlainText() );
+    mValueLenText->setText(QString("%1").arg( strLen ));
 
     makeHeader();
 }
@@ -66,8 +66,8 @@ void EditTTLVDlg::changeValue()
 void EditTTLVDlg::changeTTLV()
 {
     QString strTTLV = mTTLVText->toPlainText();
-    int nLen = getDataLen( DATA_HEX, strTTLV );
-    mTTLVLenText->setText( QString("%1").arg( nLen ));
+    QString strLen = getDataLenString( DATA_HEX, strTTLV );
+    mTTLVLenText->setText( QString("%1").arg( strLen ));
 }
 
 QString EditTTLVDlg::getData()

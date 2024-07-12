@@ -919,8 +919,8 @@ void CMSDlg::srcChanged()
     else if( mSrcBase64Radio->isChecked() )
         nType = DATA_BASE64;
 
-    int nLen = getDataLen( nType, mSrcText->toPlainText() );
-    mSrcLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( nType, mSrcText->toPlainText() );
+    mSrcLenText->setText( QString("%1").arg(strLen));
 }
 
 void CMSDlg::outputChanged()
@@ -932,8 +932,8 @@ void CMSDlg::outputChanged()
     else if( mOutputBase64Radio->isChecked() )
         nType = DATA_BASE64;
 
-    int nLen = getDataLen( nType, mOutputText->toPlainText() );
-    mOutputLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( nType, mOutputText->toPlainText() );
+    mOutputLenText->setText( QString("%1").arg(strLen));
 }
 
 void CMSDlg::clickSignPriKeyDecode()

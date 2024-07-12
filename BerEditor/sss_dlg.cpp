@@ -101,8 +101,8 @@ void SSSDlg::srcChanged()
     else
         nInputType = DATA_HEX;
 
-    int nLen = getDataLen( nInputType, mSrcText->text() );
-    mSrcLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( nInputType, mSrcText->text() );
+    mSrcLenText->setText( QString("%1").arg(strLen));
 }
 
 void SSSDlg::joinedChanged()
@@ -118,8 +118,8 @@ void SSSDlg::joinedChanged()
     else
         nInputType = DATA_HEX;
 
-    int nLen = getDataLen( nInputType, mJoinedText->text() );
-    mJoinedLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( nInputType, mJoinedText->text() );
+    mJoinedLenText->setText( QString("%1").arg(strLen));
 }
 
 void SSSDlg::clickClearResult()
@@ -328,9 +328,8 @@ void SSSDlg::clickMakePrime()
 
 void SSSDlg::changePrime( const QString& text )
 {
-    int nLen = text.length() / 2;
-
-    mPrimeLenText->setText( QString("%1").arg( nLen ));
+    QString strLen = getDataLenString( DATA_HEX, text );
+    mPrimeLenText->setText( QString("%1").arg( strLen ));
 }
 
 void SSSDlg::slotShareList(QPoint pos)

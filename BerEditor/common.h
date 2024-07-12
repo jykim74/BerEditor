@@ -112,6 +112,9 @@ const QString getHexStringArea( const QString strMsg, int nWidth = -1);
 
 int getDataLen( int nType, const QString strData );
 int getDataLen( const QString strType, const QString strData );
+const QString getDataLenString( int nType, const QString strData );
+const QString getDataLenString( const QString strType, const QString strData );
+
 QString getSymAlg( const QString strAlg, const QString strMode, int nKeyLen );
 int getNameValue( const QString strLine, QString& name, QString& value );
 

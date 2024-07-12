@@ -147,15 +147,15 @@ void KeyManDlg::passwordChanged()
 
 void KeyManDlg::saltChanged()
 {
-    int nLen = getDataLen( mSaltTypeCombo->currentText(), mSaltText->text() );
-    mSaltLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( mSaltTypeCombo->currentText(), mSaltText->text() );
+    mSaltLenText->setText( QString("%1").arg(strLen));
 }
 
 
 void KeyManDlg::keyValueChanged()
 {
-    int nLen = getDataLen( DATA_HEX, mOutputText->toPlainText() );
-    mOutputLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( DATA_HEX, mOutputText->toPlainText() );
+    mOutputLenText->setText( QString("%1").arg(strLen));
 }
 
 
@@ -297,22 +297,22 @@ void KeyManDlg::clickOutputClear()
 void KeyManDlg::srcChanged()
 {
     QString strSrc = mSrcText->toPlainText();
-    int nLen = getDataLen( mSrcTypeCombo->currentText(), strSrc );
-    mSrcLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( mSrcTypeCombo->currentText(), strSrc );
+    mSrcLenText->setText( QString("%1").arg(strLen));
 }
 
 void KeyManDlg::dstChanged()
 {
     QString strDst = mDstText->toPlainText();
-    int nLen = getDataLen( mDstTypeCombo->currentText(), strDst );
-    mDstLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( mDstTypeCombo->currentText(), strDst );
+    mDstLenText->setText( QString("%1").arg(strLen));
 }
 
 void KeyManDlg::kekChanged( const QString& text )
 {
     QString strKEK = mKEKText->text();
-    int nLen = getDataLen( mKEKTypeCombo->currentText(), strKEK );
-    mKEKLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( mKEKTypeCombo->currentText(), strKEK );
+    mKEKLenText->setText( QString("%1").arg(strLen));
 }
 
 void KeyManDlg::clickClearDataAll()

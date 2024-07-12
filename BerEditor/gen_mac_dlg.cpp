@@ -576,20 +576,20 @@ void GenMacDlg::inputChanged()
     else if( mInputBase64Radio->isChecked() )
         nType = DATA_BASE64;
 
-    int nLen = getDataLen( nType, mInputText->toPlainText() );
-    mInputLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( nType, mInputText->toPlainText() );
+    mInputLenText->setText( QString("%1").arg(strLen));
 }
 
 void GenMacDlg::outputChanged()
 {
-    int nLen = getDataLen( DATA_HEX, mOutputText->toPlainText() );
-    mOutputLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( DATA_HEX, mOutputText->toPlainText() );
+    mOutputLenText->setText( QString("%1").arg(strLen));
 }
 
 void GenMacDlg::keyChanged()
 {
-    int nLen = getDataLen( mKeyTypeCombo->currentText(), mKeyText->text() );
-    mKeyLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( mKeyTypeCombo->currentText(), mKeyText->text() );
+    mKeyLenText->setText( QString("%1").arg(strLen));
 }
 
 void GenMacDlg::checkHMAC()

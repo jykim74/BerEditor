@@ -22,7 +22,7 @@ MakeBerDlg::MakeBerDlg(QWidget *parent) :
     connect( mConstructedCheck, SIGNAL(clicked()), this, SLOT(checkConstructed()));
 
     connect( mValueText, SIGNAL(textChanged()), this, SLOT(valueChanged()));
-    connect( mBERText, SIGNAL(textChanged()), this, SLOT(berChanged()));
+//    connect( mBERText, SIGNAL(textChanged()), this, SLOT(berChanged()));
     connect( mNumText, SIGNAL(textChanged(QString)), this, SLOT(numChanged()));
     connect( mClassCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(classChanged(int)));
     connect( mPrimitiveCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(primitiveChanged(int)));
@@ -135,6 +135,7 @@ void MakeBerDlg::makeHeader()
     mTagText->setText( pBitString );
     mHeaderText->setText( pHex );
     mBERText->setPlainText( getData() );
+    berChanged();
 
 end :
     JS_BIN_reset( &binLen );
@@ -160,8 +161,8 @@ void MakeBerDlg::valueChanged()
 {
     QString strValue = mValueText->toPlainText();
 
-    int nLen = getDataLen( mValueTypeCombo->currentText(), strValue );
-    mValueLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( mValueTypeCombo->currentText(), strValue );
+    mValueLenText->setText( QString("%1").arg(strLen));
 
     makeHeader();
 }
@@ -169,8 +170,8 @@ void MakeBerDlg::valueChanged()
 void MakeBerDlg::berChanged()
 {
     QString strBER = mBERText->toPlainText();
-    int nLen = getDataLen( DATA_HEX, strBER );
-    mBERLenText->setText( QString("%1").arg( nLen ));
+    QString strLen = getDataLenString( DATA_HEX, strBER );
+    mBERLenText->setText( QString("%1").arg( strLen ));
 }
 
 void MakeBerDlg::numChanged()

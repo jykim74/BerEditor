@@ -69,8 +69,8 @@ void DecodeTTLVDlg::changeData()
     else if( mBase64Radio->isChecked() )
         nType = DATA_BASE64;
 
-    int nLen = getDataLen( nType, mDataText->toPlainText() );
-    mDataLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( nType, mDataText->toPlainText() );
+    mDataLenText->setText( QString("%1").arg(strLen));
 }
 
 void DecodeTTLVDlg::clearData()

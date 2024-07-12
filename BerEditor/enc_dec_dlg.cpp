@@ -1056,38 +1056,38 @@ void EncDecDlg::inputChanged()
     else if( mInputBase64Radio->isChecked() )
         nType = DATA_BASE64;
 
-    int nLen = getDataLen( nType, mInputText->toPlainText() );
-    mInputLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( nType, mInputText->toPlainText() );
+    mInputLenText->setText( QString("%1").arg(strLen));
 }
 
 void EncDecDlg::outputChanged()
 {
-    int nLen = getDataLen( mOutputTypeCombo->currentText(), mOutputText->toPlainText() );
-    mOutputLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( mOutputTypeCombo->currentText(), mOutputText->toPlainText() );
+    mOutputLenText->setText( QString("%1").arg(strLen));
 }
 
 void EncDecDlg::keyChanged()
 {
-    int nLen = getDataLen( mKeyTypeCombo->currentText(), mKeyText->text() );
-    mKeyLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( mKeyTypeCombo->currentText(), mKeyText->text() );
+    mKeyLenText->setText( QString("%1").arg(strLen));
 }
 
 void EncDecDlg::ivChanged()
 {
-    int nLen = getDataLen( mIVTypeCombo->currentText(), mIVText->text() );
-    mIVLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( mIVTypeCombo->currentText(), mIVText->text() );
+    mIVLenText->setText( QString("%1").arg(strLen));
 }
 
 void EncDecDlg::aadChanged()
 {
-    int nLen = getDataLen( mAADTypeCombo->currentText(), mAADText->text() );
-    mAADLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( mAADTypeCombo->currentText(), mAADText->text() );
+    mAADLenText->setText( QString("%1").arg(strLen));
 }
 
 void EncDecDlg::tagChanged()
 {
-    int nLen = getDataLen( mTagTypeCombo->currentText(), mTagText->text() );
-    mTagLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( mTagTypeCombo->currentText(), mTagText->text() );
+    mTagLenText->setText( QString("%1").arg(strLen));
 }
 
 void EncDecDlg::modeChanged()

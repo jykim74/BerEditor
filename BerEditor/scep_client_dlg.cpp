@@ -511,14 +511,14 @@ void SCEPClientDlg::clearResponse()
 
 void SCEPClientDlg::requestChanged()
 {
-    int nLen = mRequestText->toPlainText().length() / 2;
-    mRequestLenText->setText( QString("%1").arg( nLen ) );
+    QString strLen = getDataLenString( DATA_HEX, mRequestText->toPlainText() );
+    mRequestLenText->setText( QString("%1").arg( strLen ) );
 }
 
 void SCEPClientDlg::responseChanged()
 {
-    int nLen = mResponseText->toPlainText().length() / 2;
-    mResponseLenText->setText( QString("%1").arg( nLen ) );
+    QString strLen = getDataLenString( DATA_HEX, mResponseText->toPlainText() );
+    mResponseLenText->setText( QString("%1").arg( strLen ) );
 }
 
 void SCEPClientDlg::clickClearAll()

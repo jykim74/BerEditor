@@ -79,8 +79,9 @@ void MakeTTLVDlg::changeValue()
     QString strValue = mValueText->toPlainText();
 
     int nLen = getDataLen( mValueCombo->currentText(), strValue );
+    QString strLen = getDataLenString( mValueCombo->currentText(), strValue );
 
-    mValueLenText->setText( QString("%1").arg( nLen ));
+    mValueLenText->setText( QString("%1").arg( strLen ));
     mLengthText->setText( QString( "%1").arg( nLen, 8, 16, QLatin1Char('0') ).toUpper());
 
     makeHeader();
@@ -89,8 +90,8 @@ void MakeTTLVDlg::changeValue()
 void MakeTTLVDlg::changeTTLV()
 {
     QString strTTLV = mTTLVText->toPlainText();
-    int nLen = getDataLen( DATA_HEX, strTTLV );
-    mTTLVLenText->setText( QString("%1").arg( nLen ));
+    QString strLen = getDataLenString( DATA_HEX, strTTLV );
+    mTTLVLenText->setText( QString("%1").arg( strLen ));
 }
 
 void MakeTTLVDlg::makeHeader()

@@ -58,29 +58,29 @@ void VIDDlg::initialize()
 
 void VIDDlg::changeSSN( const QString& text )
 {
-    QString strSSN = mSSNText->text();
-    mSSNLenText->setText( QString("%1").arg( strSSN.length() ));
+    QString strLen = getDataLenString( DATA_STRING, text );
+    mSSNLenText->setText( QString("%1").arg( strLen ));
 }
 
 void VIDDlg::changeRand( const QString& text )
 {
     QString strRand = mRandText->text();
-    int nLen = getDataLen( mRandCombo->currentText(), strRand );
-    mRandLenText->setText( QString("%1").arg( nLen ));
+    QString strLen = getDataLenString( mRandCombo->currentText(), strRand );
+    mRandLenText->setText( QString("%1").arg( strLen ));
 }
 
 void VIDDlg::changeVID()
 {
     QString strVID = mVIDText->toPlainText();
-    int nLen = getDataLen( DATA_HEX, strVID );
-    mVIDLenText->setText( QString("%1").arg( nLen ));
+    QString strLen = getDataLenString( DATA_HEX, strVID );
+    mVIDLenText->setText( QString("%1").arg( strLen ));
 }
 
 void VIDDlg::changeHashContent()
 {
     QString strHashContent = mHashContentText->toPlainText();
-    int nLen = getDataLen( DATA_HEX, strHashContent );
-    mHashContentLenText->setText( QString("%1").arg( nLen ));
+    QString strLen = getDataLenString( DATA_HEX, strHashContent );
+    mHashContentLenText->setText( QString("%1").arg( strLen ));
 }
 
 void VIDDlg::clickVerifyVID()

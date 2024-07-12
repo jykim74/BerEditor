@@ -133,14 +133,14 @@ void DataEncoderDlg::inputChanged()
     else if( mInputTypeURL->isChecked() )
         nInputType = DATA_URL;
 
-    int nLen = getDataLen( nInputType, mInputText->toPlainText() );
-    mInputLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( nInputType, mInputText->toPlainText() );
+    mInputLenText->setText( QString("%1").arg(strLen));
 }
 
 void DataEncoderDlg::outputChanged()
 {
-    int nLen = getDataLen( mOutputTypeCombo->currentText(), mOutputText->toPlainText() );
-    mOutputLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( mOutputTypeCombo->currentText(), mOutputText->toPlainText() );
+    mOutputLenText->setText( QString("%1").arg(strLen));
 }
 
 void DataEncoderDlg::clickChange()

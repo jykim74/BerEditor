@@ -74,8 +74,8 @@ void DecodeDataDlg::dataChanged()
     else if( mTypeBase64->isChecked() )
         nType = DATA_BASE64;
 
-    int nLen = getDataLen( nType, mDataText->toPlainText() );
-    mDataLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( nType, mDataText->toPlainText() );
+    mDataLenText->setText( QString("%1").arg(strLen));
 }
 
 void DecodeDataDlg::clearData()

@@ -129,8 +129,8 @@ void GenOTPDlg::clickGenOTP()
 
 void GenOTPDlg::keyChanged()
 {
-    int nLen = getDataLen( mKeyTypeCombo->currentText(), mKeyText->text() );
-    mKeyLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( mKeyTypeCombo->currentText(), mKeyText->text() );
+    mKeyLenText->setText( QString("%1").arg(strLen));
 }
 
 void GenOTPDlg::clickClearDataAll()

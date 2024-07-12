@@ -437,6 +437,64 @@ int getDataLen( const QString strType, const QString strData )
     return getDataLen( nType, strData );
 }
 
+const QString getDataLenString( int nType, const QString strData )
+{
+    int nLen = 0;
+    if( strData.isEmpty() ) return 0;
+
+    QString strMsg = strData;
+    QString strLen;
+
+    if( nType != DATA_STRING )
+    {
+        strMsg.remove( QRegularExpression("[\t\r\n\\s]") );
+    }
+
+    if( nType == DATA_HEX )
+    {
+        nLen = strMsg.length() / 2;
+
+        if( strMsg.length() % 2 )
+        {
+            nLen++;
+            strLen = QString( "_%1" ).arg( nLen );
+        }
+        else
+        {
+            strLen = QString( "%1" ).arg( nLen );
+        }
+    }
+    else if( nType == DATA_BASE64 )
+    {
+        BIN bin = {0,0};
+        JS_BIN_decodeBase64( strMsg.toStdString().c_str(), &bin );
+        nLen = bin.nLen;
+        JS_BIN_reset( &bin );
+
+        strLen = QString( "%1" ).arg( nLen );
+    }
+    else
+    {
+        strLen = QString( "%1" ).arg( strMsg.length() );
+    }
+
+    return strLen;
+}
+
+const QString getDataLenString( const QString strType, const QString strData )
+{
+    int nType = DATA_STRING;
+
+    QString strLower = strType.toLower();
+
+    if( strLower == "hex" )
+        nType = DATA_HEX;
+    else if( strLower == "base64" )
+        nType = DATA_BASE64;
+
+    return getDataLenString( nType, strData );
+}
+
 QString getSymAlg( const QString strAlg, const QString strMode, int nKeyLen )
 {
     QString strRes;

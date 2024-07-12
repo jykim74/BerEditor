@@ -1419,14 +1419,14 @@ void SignVerifyDlg::inputChanged()
     else if( mInputBase64Radio->isChecked() )
         nType = DATA_BASE64;
 
-    int nLen = getDataLen( nType, mInputText->toPlainText() );
-    mInputLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( nType, mInputText->toPlainText() );
+    mInputLenText->setText( QString("%1").arg(strLen));
 }
 
 void SignVerifyDlg::outputChanged()
 {
-    int nLen = getDataLen( DATA_HEX, mOutputText->toPlainText() );
-    mOutputLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( DATA_HEX, mOutputText->toPlainText() );
+    mOutputLenText->setText( QString("%1").arg(strLen));
 }
 
 void SignVerifyDlg::changeMethod( int index )

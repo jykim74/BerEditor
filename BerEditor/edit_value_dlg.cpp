@@ -266,8 +266,8 @@ void EditValueDlg::runAdd()
 void EditValueDlg::changeValueText()
 {
     QString strValue = mValueText->toPlainText();
-    int nLen = getDataLen( mValueTypeCombo->currentText(), strValue );
-    mValueLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( mValueTypeCombo->currentText(), strValue );
+    mValueLenText->setText( QString("%1").arg(strLen));
 
     makeHeader();
 }
@@ -275,8 +275,8 @@ void EditValueDlg::changeValueText()
 void EditValueDlg::changeBER()
 {
     QString strBER = mBERText->toPlainText();
-    int nLen = getDataLen( DATA_HEX, strBER );
-    mBERLenText->setText( QString("%1").arg( nLen ));
+    QString strLen = getDataLenString( DATA_HEX, strBER );
+    mBERLenText->setText( QString("%1").arg( strLen ));
 }
 
 void EditValueDlg::changeValueType(int index)
