@@ -9,6 +9,7 @@
 #include "make_csr_dlg.h"
 #include "cert_man_dlg.h"
 #include "new_passwd_dlg.h"
+#include "pri_key_info_dlg.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -40,6 +41,7 @@ SCEPClientDlg::SCEPClientDlg(QWidget *parent)
     connect( mFindPriKeyBtn, SIGNAL(clicked()), this, SLOT(findPriKey()));
     connect( mPriKeyDecodeBtn, SIGNAL(clicked()), this, SLOT(decodePriKey()));
     connect( mPriKeyTypeBtn, SIGNAL(clicked()), this, SLOT(typePriKey()));
+    connect( mPriKeyViewBtn, SIGNAL(clicked()), this, SLOT(viewPriKey()));
 
     connect( mRequestClearBtn, SIGNAL(clicked()), this, SLOT(clearRequest()));
     connect( mRequestDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeRequest()));
@@ -80,6 +82,7 @@ SCEPClientDlg::SCEPClientDlg(QWidget *parent)
     mCertTypeBtn->setFixedWidth(34);
     mPriKeyDecodeBtn->setFixedWidth(34);
     mPriKeyTypeBtn->setFixedWidth(34);
+    mPriKeyViewBtn->setFixedWidth(34);
 
     mRequestClearBtn->setFixedWidth(34);
     mRequestDecodeBtn->setFixedWidth(34);
@@ -363,21 +366,16 @@ void SCEPClientDlg::typeCert()
 void SCEPClientDlg::typePriKey()
 {
     int nType = -1;
-    BIN binData = {0,0};
-    QString strFile = mPriKeyPathText->text();
+    BIN binPri = {0,0};
 
-    if( strFile.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Find a sign private key" ), this );
-        return;
-    }
+    int ret = readPrivateKey( &binPri );
+    if( ret != 0 ) goto end;
 
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
-
-    nType = JS_PKI_getPriKeyType( &binData );
+    nType = JS_PKI_getPriKeyType( &binPri );
     berApplet->messageBox( tr( "The private key type is %1").arg( getKeyTypeName( nType )), this);
 
-    JS_BIN_reset( &binData );
+end :
+    JS_BIN_reset( &binPri );
 }
 
 void SCEPClientDlg::viewCACert()
@@ -422,6 +420,22 @@ void SCEPClientDlg::viewCert()
     JS_BIN_reset( &binData );
 }
 
+void SCEPClientDlg::viewPriKey()
+{
+    int ret = 0;
+    BIN binPri = {0,0};
+
+    PriKeyInfoDlg priKeyInfo;
+
+    ret = readPrivateKey( &binPri );
+    if( ret != 0 ) goto end;
+
+    priKeyInfo.setPrivateKey( &binPri );
+    priKeyInfo.exec();
+
+end :
+    JS_BIN_reset( &binPri );
+}
 
 void SCEPClientDlg::decodeCACert()
 {

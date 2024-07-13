@@ -42,6 +42,7 @@ private slots:
 
     void findPriKey();
     void decodePriKey();
+    void viewPriKey();
     void typePriKey();
 
     void clearRegInfo();

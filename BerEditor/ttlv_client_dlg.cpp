@@ -9,6 +9,7 @@
 #include "common.h"
 #include "cert_man_dlg.h"
 #include "cert_info_dlg.h"
+#include "pri_key_info_dlg.h"
 
 #include "js_kms.h"
 #include "js_net.h"
@@ -46,6 +47,7 @@ TTLVClientDlg::TTLVClientDlg(QWidget *parent) :
 
     connect( mPriKeyDecodeBtn, SIGNAL(clicked()), this, SLOT(decodePriKey()));
     connect( mPriKeyTypeBtn, SIGNAL(clicked()), this, SLOT(typePriKey()));
+    connect( mPriKeyViewBtn, SIGNAL(clicked()), this, SLOT(viewPriKey()));
 
     connect( mRequestClearBtn, SIGNAL(clicked()), this, SLOT(clearRequest()));
     connect( mRequestDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeRequest()));
@@ -67,6 +69,7 @@ TTLVClientDlg::TTLVClientDlg(QWidget *parent) :
     mCertTypeBtn->setFixedWidth(34);
 
     mPriKeyDecodeBtn->setFixedWidth(34);
+    mPriKeyTypeBtn->setFixedWidth(34);
     mPriKeyTypeBtn->setFixedWidth(34);
 
     mRequestClearBtn->setFixedWidth(34);
@@ -435,21 +438,16 @@ void TTLVClientDlg::typeCert()
 void TTLVClientDlg::typePriKey()
 {
     int nType = -1;
-    BIN binData = {0,0};
-    QString strFile = mClientPriKeyPathText->text();
+    BIN binPri = {0,0};
 
-    if( strFile.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Find a sign private key" ), this );
-        return;
-    }
+    int ret = readPrivateKey( &binPri );
+    if( ret != 0 ) goto end;
 
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
-
-    nType = JS_PKI_getPriKeyType( &binData );
+    nType = JS_PKI_getPriKeyType( &binPri );
     berApplet->messageBox( tr( "The private key type is %1").arg( getKeyTypeName( nType )), this);
 
-    JS_BIN_reset( &binData );
+end :
+    JS_BIN_reset( &binPri );
 }
 
 void TTLVClientDlg::viewCACert()
@@ -492,6 +490,22 @@ void TTLVClientDlg::viewCert()
     certInfo.exec();
 
     JS_BIN_reset( &binData );
+}
+
+void TTLVClientDlg::viewPriKey()
+{
+    int ret = 0;
+    BIN binPri = {0,0};
+    PriKeyInfoDlg priKeyInfo;
+
+    ret = readPrivateKey( &binPri );
+    if( ret != 0 ) goto end;
+
+    priKeyInfo.setPrivateKey( &binPri );
+    priKeyInfo.exec();
+
+end :
+    JS_BIN_reset( &binPri );
 }
 
 

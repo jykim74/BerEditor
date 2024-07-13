@@ -6,6 +6,7 @@
 #include "cert_info_dlg.h"
 #include "settings_mgr.h"
 #include "cert_man_dlg.h"
+#include "pri_key_info_dlg.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -40,6 +41,7 @@ OCSPClientDlg::OCSPClientDlg(QWidget *parent) :
     connect( mCertTypeBtn, SIGNAL(clicked()), this, SLOT(typeCert()));
     connect( mSignCertTypeBtn, SIGNAL(clicked()), this, SLOT(typeSignCert()));
     connect( mSignPriKeyTypeBtn, SIGNAL(clicked()), this, SLOT(typeSignPriKey()));
+    connect( mSignPriKeyViewBtn, SIGNAL(clicked()), this, SLOT(viewSignPriKey()));
     connect( mSrvCertTypeBtn, SIGNAL(clicked()), this, SLOT(typeSrvCert()));
 
     connect( mCACertViewBtn, SIGNAL(clicked()), this, SLOT(viewCACert()));
@@ -83,6 +85,7 @@ OCSPClientDlg::OCSPClientDlg(QWidget *parent) :
     mSignCertTypeBtn->setFixedWidth(34);
     mSignPriKeyDecodeBtn->setFixedWidth(34);
     mSignPriKeyTypeBtn->setFixedWidth(34);
+    mSignPriKeyViewBtn->setFixedWidth(34);
     mSrvCertViewBtn->setFixedWidth(34);
     mSrvCertDecodeBtn->setFixedWidth(34);
     mSrvCertTypeBtn->setFixedWidth(34);
@@ -507,21 +510,16 @@ void OCSPClientDlg::typeSignCert()
 void OCSPClientDlg::typeSignPriKey()
 {
     int nType = -1;
-    BIN binData = {0,0};
-    QString strFile = mSignPriKeyPathText->text();
+    BIN binPri = {0,0};
 
-    if( strFile.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Find a sign private key" ), this );
-        return;
-    }
+    int ret = readPrivateKey( &binPri );
+    if( ret != 0 ) goto end;
 
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
-
-    nType = JS_PKI_getPriKeyType( &binData );
+    nType = JS_PKI_getPriKeyType( &binPri );
     berApplet->messageBox( tr( "The private key type is %1").arg( getKeyTypeName( nType )), this);
 
-    JS_BIN_reset( &binData );
+end :
+    JS_BIN_reset( &binPri );
 }
 
 void OCSPClientDlg::typeSrvCert()
@@ -617,6 +615,21 @@ void OCSPClientDlg::viewSignCert()
     certInfo.exec();
 
     JS_BIN_reset( &binData );
+}
+
+void OCSPClientDlg::viewSignPriKey()
+{
+    BIN binPri = {0,0};
+    PriKeyInfoDlg priKeyInfo;
+
+    int ret = readPrivateKey( &binPri );
+    if( ret != 0 ) goto end;
+
+    priKeyInfo.setPrivateKey( &binPri );
+    priKeyInfo.exec();
+
+end :
+    JS_BIN_reset( &binPri );
 }
 
 void OCSPClientDlg::viewSrvCert()

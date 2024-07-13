@@ -10,6 +10,7 @@
 #include "gen_key_pair_dlg.h"
 #include "make_csr_dlg.h"
 #include "new_passwd_dlg.h"
+#include "pri_key_info_dlg.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -48,6 +49,7 @@ CMPClientDlg::CMPClientDlg(QWidget *parent)
     connect( mFindPriKeyBtn, SIGNAL(clicked()), this, SLOT(findPriKey()));
     connect( mPriKeyDecodeBtn, SIGNAL(clicked()), this, SLOT(decodePriKey()));
     connect( mPriKeyTypeBtn, SIGNAL(clicked()), this, SLOT(typePriKey()));
+    connect( mPriKeyViewBtn, SIGNAL(clicked()), this, SLOT(viewPriKey()));
 
     connect( mRegInfoClearBtn, SIGNAL(clicked()), this, SLOT(clearRegInfo()));
     connect( mRequestClearBtn, SIGNAL(clicked()), this, SLOT(clearRequest()));
@@ -72,6 +74,7 @@ CMPClientDlg::CMPClientDlg(QWidget *parent)
 
     mPriKeyDecodeBtn->setFixedWidth(34);
     mPriKeyTypeBtn->setFixedWidth(34);
+    mPriKeyViewBtn->setFixedWidth(34);
 
     mRegInfoClearBtn->setFixedWidth(34);
 
@@ -386,24 +389,35 @@ void CMPClientDlg::decodePriKey()
     JS_BIN_reset( &binData );
 }
 
+void CMPClientDlg::viewPriKey()
+{
+    int ret = 0;
+    BIN binPri = {0,0};
+    PriKeyInfoDlg priKeyInfo;
+
+    ret = readPrivateKey( &binPri );
+    if( ret != 0 ) goto end;
+
+    priKeyInfo.setPrivateKey( &binPri );
+    priKeyInfo.exec();
+
+end :
+    JS_BIN_reset( &binPri );
+}
+
 void CMPClientDlg::typePriKey()
 {
+    int ret = 0;
     int nType = -1;
-    BIN binData = {0,0};
-    QString strFile = mPriKeyPathText->text();
+    BIN binPri = {0,0};
 
-    if( strFile.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Find a sign private key" ), this );
-        return;
-    }
+    ret = readPrivateKey( &binPri );
+    if( ret != 0 ) goto end;
 
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
-
-    nType = JS_PKI_getPriKeyType( &binData );
+    nType = JS_PKI_getPriKeyType( &binPri );
     berApplet->messageBox( tr( "The private key type is %1").arg( getKeyTypeName( nType )), this);
-
-    JS_BIN_reset( &binData );
+end :
+    JS_BIN_reset( &binPri );
 }
 
 void CMPClientDlg::clearRegInfo()

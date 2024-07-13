@@ -40,6 +40,7 @@ private slots:
     void viewCACert();
     void viewCert();
     void viewSignCert();
+    void viewSignPriKey();
     void viewSrvCert();
 
     void decodeCACert();

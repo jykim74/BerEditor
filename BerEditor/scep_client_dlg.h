@@ -30,6 +30,7 @@ private slots:
 
     void viewCACert();
     void viewCert();
+    void viewPriKey();
 
     void decodeCACert();
     void decodeCert();
