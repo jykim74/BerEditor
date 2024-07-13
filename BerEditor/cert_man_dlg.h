@@ -73,6 +73,8 @@ private slots:
     void clickImport();
     void clickExport();
     void clickChangePasswd();
+    void clickViewPriKey();
+    void clickViewPubKey();
 
     void clickOK();
 
@@ -80,21 +82,25 @@ private slots:
     void clickRemoveCA();
     void clickViewCA();
     void clickDecodeCA();
+    void clickViewPubKeyCA();
 
     void clickAddOther();
     void clickRemoveOther();
     void clickViewOther();
     void clickDecodeOther();
+    void clickViewPubKeyOther();
 
     void clickAddCRL();
     void clickRemoveCRL();
     void clickViewCRL();
     void clickDecodeCRL();
 
+
     void clickAddTrust();
     void clickRemoveTrust();
     void clickViewTrust();
     void clickDecodeTrust();
+    void clickViewPubKeyTrust();
 
     void decodeTLPriKey();
     void decodeTLCert();
@@ -112,6 +118,8 @@ private slots:
     void clickTLEncryptPFX();
     void clickTLDecryptPFX();
     void clickTLSavePFX();
+    void clickTLViewPriKey();
+    void clickTLViewPubKey();
 
 private:
     void initUI();

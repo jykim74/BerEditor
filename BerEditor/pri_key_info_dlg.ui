@@ -2353,17 +2353,17 @@
        </property>
       </spacer>
      </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mDecodeBtn">
+       <property name="text">
+        <string>Decode</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="4">
       <widget class="QPushButton" name="mCloseBtn">
        <property name="text">
         <string>Close</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="mClearBtn">
-       <property name="text">
-        <string>Clear</string>
        </property>
       </widget>
      </item>

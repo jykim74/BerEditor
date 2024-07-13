@@ -23,6 +23,9 @@ PriKeyInfoDlg::PriKeyInfoDlg(QWidget *parent) :
 {
     setupUi(this);
 
+    memset( &pri_key_, 0x00, sizeof(BIN));
+    memset( &pub_key_, 0x00, sizeof(BIN));
+
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
     connect( mRSA_NText, SIGNAL(textChanged()), this, SLOT(changeRSA_N()));
@@ -46,8 +49,7 @@ PriKeyInfoDlg::PriKeyInfoDlg(QWidget *parent) :
 
     connect( mEdDSA_RawPublicText, SIGNAL(textChanged()), this, SLOT(changeEdDSA_RawPublic()));
     connect( mEdDSA_RawPrivateText, SIGNAL(textChanged()), this, SLOT(changeEdDSA_RawPrivate()));
-
-    connect( mClearBtn, SIGNAL(clicked()), this, SLOT(clickClear()));
+    connect( mDecodeBtn, SIGNAL(clicked()), this, SLOT(clickDecode()));
 
     initialize();
 
@@ -59,7 +61,8 @@ PriKeyInfoDlg::PriKeyInfoDlg(QWidget *parent) :
 
 PriKeyInfoDlg::~PriKeyInfoDlg()
 {
-
+    JS_BIN_reset( &pri_key_ );
+    JS_BIN_reset( &pub_key_ );
 }
 
 void PriKeyInfoDlg::initialize()
@@ -300,7 +303,7 @@ void PriKeyInfoDlg::changeEdDSA_RawPrivate()
     mEdDSA_RawPrivateLenText->setText( QString("%1").arg(strLen));
 }
 
-void PriKeyInfoDlg::clickClear()
+void PriKeyInfoDlg::clearAll()
 {
     mRSA_DText->clear();
     mRSA_EText->clear();
@@ -327,10 +330,22 @@ void PriKeyInfoDlg::clickClear()
     mEdDSA_RawPrivateText->clear();
 }
 
+void PriKeyInfoDlg::clickDecode()
+{
+    if( pri_key_.nLen > 0 )
+        berApplet->decodeData( &pri_key_, NULL );
+    else
+        berApplet->decodeData( &pub_key_, NULL );
+}
+
 void PriKeyInfoDlg::setPrivateKey( const BIN *pPriKey )
 {
     int nKeyType = -1;
-    clickClear();
+    clearAll();
+    JS_BIN_reset( &pri_key_ );
+    JS_BIN_reset( &pub_key_ );
+    JS_BIN_copy( &pri_key_, pPriKey );
+
     if( pPriKey == NULL || pPriKey->nLen <= 0 )
         return;
 
@@ -370,7 +385,11 @@ void PriKeyInfoDlg::setPrivateKey( const BIN *pPriKey )
 void PriKeyInfoDlg::setPublicKey( const BIN *pPubKey )
 {
     int nKeyType = -1;
-    clickClear();
+    clearAll();
+
+    JS_BIN_reset( &pri_key_ );
+    JS_BIN_reset( &pub_key_ );
+    JS_BIN_copy( &pub_key_, pPubKey );
 
     if( pPubKey == NULL || pPubKey->nLen <= 0 )
         return;

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>557</width>
-    <height>484</height>
+    <width>696</width>
+    <height>533</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -51,7 +51,7 @@
    <item>
     <widget class="QTabWidget" name="mTabWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="mEETab">
       <attribute name="title">
@@ -170,24 +170,10 @@
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
            <layout class="QGridLayout" name="gridLayout_4">
-            <item row="1" column="1">
-             <widget class="QPushButton" name="mExportBtn">
+            <item row="0" column="2">
+             <widget class="QPushButton" name="mDecodeCertBtn">
               <property name="text">
-               <string>Export to PFX</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="2">
-             <widget class="QPushButton" name="mChangePasswdBtn">
-              <property name="text">
-               <string>Change Password</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QPushButton" name="mDelCertBtn">
-              <property name="text">
-               <string>Delete Certificate</string>
+               <string>Decode Certificate</string>
               </property>
              </widget>
             </item>
@@ -198,10 +184,31 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="2">
-             <widget class="QPushButton" name="mDecodeCertBtn">
+            <item row="0" column="3">
+             <widget class="QPushButton" name="mDecodePriKeyBtn">
               <property name="text">
-               <string>Decode Certificate</string>
+               <string>Decode PrivateKey</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QPushButton" name="mDelCertBtn">
+              <property name="text">
+               <string>Delete Certificate</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="mExportBtn">
+              <property name="text">
+               <string>Export to PFX</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="3">
+             <widget class="QPushButton" name="mCheckKeyPairBtn">
+              <property name="text">
+               <string>Check KeyPair</string>
               </property>
              </widget>
             </item>
@@ -212,17 +219,24 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="3">
-             <widget class="QPushButton" name="mDecodePriKeyBtn">
+            <item row="1" column="2">
+             <widget class="QPushButton" name="mChangePasswdBtn">
               <property name="text">
-               <string>Decode PrivateKey</string>
+               <string>Change Password</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="3">
-             <widget class="QPushButton" name="mCheckKeyPairBtn">
+            <item row="2" column="0">
+             <widget class="QPushButton" name="mViewPriKeyBtn">
               <property name="text">
-               <string>Check KeyPair</string>
+               <string>View PrivateKey</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QPushButton" name="mViewPubKeyBtn">
+              <property name="text">
+               <string>View PublicKey</string>
               </property>
              </widget>
             </item>
@@ -314,6 +328,20 @@
          <layout class="QVBoxLayout" name="verticalLayout_13">
           <item>
            <layout class="QGridLayout" name="gridLayout_17">
+            <item row="0" column="1">
+             <widget class="QPushButton" name="mRemoveOtherBtn">
+              <property name="text">
+               <string>Remove Cert</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
+             <widget class="QPushButton" name="mDecodeOtherBtn">
+              <property name="text">
+               <string>Decode Cert</string>
+              </property>
+             </widget>
+            </item>
             <item row="0" column="2">
              <widget class="QPushButton" name="mViewOtherBtn">
               <property name="text">
@@ -328,17 +356,10 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="1">
-             <widget class="QPushButton" name="mRemoveOtherBtn">
+            <item row="1" column="0">
+             <widget class="QPushButton" name="mViewPubKeyOtherBtn">
               <property name="text">
-               <string>Remove Cert</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="3">
-             <widget class="QPushButton" name="mDecodeOtherBtn">
-              <property name="text">
-               <string>Decode Cert</string>
+               <string>View PublicKey</string>
               </property>
              </widget>
             </item>
@@ -434,6 +455,20 @@
          <layout class="QVBoxLayout" name="verticalLayout_9">
           <item>
            <layout class="QGridLayout" name="gridLayout_13">
+            <item row="0" column="0">
+             <widget class="QPushButton" name="mAddCABtn">
+              <property name="text">
+               <string>Add CA</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
+             <widget class="QPushButton" name="mDecodeCABtn">
+              <property name="text">
+               <string>Decode CA</string>
+              </property>
+             </widget>
+            </item>
             <item row="0" column="1">
              <widget class="QPushButton" name="mRemoveCABtn">
               <property name="text">
@@ -448,17 +483,10 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="3">
-             <widget class="QPushButton" name="mDecodeCABtn">
+            <item row="1" column="0">
+             <widget class="QPushButton" name="mViewPubKeyCABtn">
               <property name="text">
-               <string>Decode CA</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0">
-             <widget class="QPushButton" name="mAddCABtn">
-              <property name="text">
-               <string>Add CA</string>
+               <string>View PublicKey</string>
               </property>
              </widget>
             </item>
@@ -669,6 +697,13 @@
          <layout class="QVBoxLayout" name="verticalLayout_5">
           <item>
            <layout class="QGridLayout" name="gridLayout_5">
+            <item row="0" column="0">
+             <widget class="QPushButton" name="mAddTrustBtn">
+              <property name="text">
+               <string>Add Trust</string>
+              </property>
+             </widget>
+            </item>
             <item row="0" column="1">
              <widget class="QPushButton" name="mRemoveTrustBtn">
               <property name="text">
@@ -676,10 +711,10 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="0">
-             <widget class="QPushButton" name="mAddTrustBtn">
+            <item row="0" column="3">
+             <widget class="QPushButton" name="mDecodeTrustBtn">
               <property name="text">
-               <string>Add Trust</string>
+               <string>Decode Trust</string>
               </property>
              </widget>
             </item>
@@ -690,10 +725,10 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="3">
-             <widget class="QPushButton" name="mDecodeTrustBtn">
+            <item row="1" column="0">
+             <widget class="QPushButton" name="mViewPubKeyTrustBtn">
               <property name="text">
-               <string>Decode Trust</string>
+               <string>View PublicKey</string>
               </property>
              </widget>
             </item>
@@ -1037,10 +1072,10 @@
          <layout class="QVBoxLayout" name="verticalLayout_7">
           <item>
            <layout class="QGridLayout" name="gridLayout_10">
-            <item row="0" column="3">
-             <widget class="QPushButton" name="mTLDecryptPFXBtn">
+            <item row="0" column="4">
+             <widget class="QPushButton" name="mTLSavePFXBtn">
               <property name="text">
-               <string>Decrypt PFX</string>
+               <string>Save PFX</string>
               </property>
              </widget>
             </item>
@@ -1051,13 +1086,6 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="0">
-             <widget class="QPushButton" name="mTLCheckKeyPairBtn">
-              <property name="text">
-               <string>Check KeyPair</string>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="1">
              <widget class="QPushButton" name="mTLViewCertBtn">
               <property name="text">
@@ -1065,10 +1093,31 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="4">
-             <widget class="QPushButton" name="mTLSavePFXBtn">
+            <item row="0" column="3">
+             <widget class="QPushButton" name="mTLDecryptPFXBtn">
               <property name="text">
-               <string>Save PFX</string>
+               <string>Decrypt PFX</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="mTLCheckKeyPairBtn">
+              <property name="text">
+               <string>Check KeyPair</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QPushButton" name="mTLViewPriKeyBtn">
+              <property name="text">
+               <string>View PrivateKey</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="3">
+             <widget class="QPushButton" name="mTLViewPubKeyBtn">
+              <property name="text">
+               <string>View PublicKey</string>
               </property>
              </widget>
             </item>
@@ -1103,13 +1152,6 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mCancelBtn">
-       <property name="text">
-        <string>Cancel</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -1122,6 +1164,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mCancelBtn">
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
      </item>
      <item row="0" column="1">
       <widget class="QPushButton" name="mOKBtn">

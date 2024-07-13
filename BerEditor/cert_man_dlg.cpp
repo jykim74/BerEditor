@@ -10,6 +10,7 @@
 #include "new_passwd_dlg.h"
 #include "cert_info_dlg.h"
 #include "crl_info_dlg.h"
+#include "pri_key_info_dlg.h"
 
 #include "js_pki.h"
 #include "js_pki_x509.h"
@@ -48,16 +49,20 @@ CertManDlg::CertManDlg(QWidget *parent) :
     connect( mImportBtn, SIGNAL(clicked()), this, SLOT(clickImport()));
     connect( mExportBtn, SIGNAL(clicked()), this, SLOT(clickExport()));
     connect( mChangePasswdBtn, SIGNAL(clicked()), this, SLOT(clickChangePasswd()));
+    connect( mViewPriKeyBtn, SIGNAL(clicked()), this, SLOT(clickViewPriKey()));
+    connect( mViewPubKeyBtn, SIGNAL(clicked()), this, SLOT(clickViewPubKey()));
 
     connect( mAddCABtn, SIGNAL(clicked()), this, SLOT(clickAddCA()));
     connect( mRemoveCABtn, SIGNAL(clicked()), this, SLOT(clickRemoveCA()));
     connect( mViewCABtn, SIGNAL(clicked()), this, SLOT(clickViewCA()));
     connect( mDecodeCABtn, SIGNAL(clicked()), this, SLOT(clickDecodeCA()));
+    connect( mViewPubKeyCABtn, SIGNAL(clicked()), this, SLOT(clickViewPubKeyCA()));
 
     connect( mAddOtherBtn, SIGNAL(clicked()), this, SLOT(clickAddOther()));
     connect( mRemoveOtherBtn, SIGNAL(clicked()), this, SLOT(clickRemoveOther()));
     connect( mViewOtherBtn, SIGNAL(clicked()), this, SLOT(clickViewOther()));
     connect( mDecodeOtherBtn, SIGNAL(clicked()), this, SLOT(clickDecodeOther()));
+    connect( mViewPubKeyOtherBtn, SIGNAL(clicked()), this, SLOT(clickViewPubKeyOther()));
 
     connect( mAddCRLBtn, SIGNAL(clicked()), this, SLOT(clickAddCRL()));
     connect( mRemoveCRLBtn, SIGNAL(clicked()), this, SLOT(clickRemoveCRL()));
@@ -68,6 +73,7 @@ CertManDlg::CertManDlg(QWidget *parent) :
     connect( mRemoveTrustBtn, SIGNAL(clicked()), this, SLOT(clickRemoveTrust()));
     connect( mViewTrustBtn, SIGNAL(clicked()), this, SLOT(clickViewTrust()));
     connect( mDecodeTrustBtn, SIGNAL(clicked()), this, SLOT(clickDecodeTrust()));
+    connect( mViewPubKeyTrustBtn, SIGNAL(clicked()), this, SLOT(clickViewPubKeyTrust()));
 
     connect( mFindTLPriKeyBtn, SIGNAL(clicked()), this, SLOT(findTLPriKey()));
     connect( mFindTLCertBtn, SIGNAL(clicked()), this, SLOT(findTLCert()));
@@ -87,6 +93,8 @@ CertManDlg::CertManDlg(QWidget *parent) :
     connect( mTLEncryptPFXBtn, SIGNAL(clicked()), this, SLOT(clickTLEncryptPFX()));
     connect( mTLDecryptPFXBtn, SIGNAL(clicked()), this, SLOT(clickTLDecryptPFX()));
     connect( mTLSavePFXBtn, SIGNAL(clicked()), this, SLOT(clickTLSavePFX()));
+    connect( mTLViewPriKeyBtn, SIGNAL(clicked()), this, SLOT(clickTLViewPriKey()));
+    connect( mTLViewPubKeyBtn, SIGNAL(clicked()), this, SLOT(clickTLViewPubKey()));
 
     connect( mEE_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewCert()));
     connect( mOther_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewOther()));
@@ -1389,6 +1397,73 @@ end :
     JS_BIN_reset( &binCert );
 }
 
+void CertManDlg::clickViewPriKey()
+{
+    int ret = 0;
+
+    BIN binPriKey = {0,0};
+    BIN binEncPriKey = {0,0};
+    BIN binCert = {0,0};
+    PriKeyInfoDlg priKeyInfo;
+
+    QString strPass = mEE_PasswdText->text();
+
+    if( strPass.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a password" ), this );
+        return;
+    }
+
+    ret = readPriKeyCert( &binEncPriKey, &binCert );
+    if( ret != 0 )
+    {
+        berApplet->warnLog( tr( "fail to read private key and certificate: %1").arg(ret), this );
+        goto end;
+    }
+
+    ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEncPriKey, NULL, &binPriKey );
+    if( ret != 0 )
+    {
+        berApplet->warnLog( tr( "fail to decrypt private key: %1").arg( ret ), this );
+        goto end;
+    }
+
+    priKeyInfo.setPrivateKey( &binPriKey );
+    priKeyInfo.exec();
+
+end :
+    JS_BIN_reset( &binPriKey );
+    JS_BIN_reset( &binEncPriKey );
+    JS_BIN_reset( &binCert );
+}
+
+void CertManDlg::clickViewPubKey()
+{
+    int ret = 0;
+    BIN binEncPri = {0,0};
+    BIN binCert = {0,0};
+    BIN binPub = {0,0};
+    PriKeyInfoDlg priKeyInfo;
+
+    ret = readPriKeyCert( &binEncPri, &binCert );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "fail to read certificate: %1" ).arg(ret ), this);
+        goto end;
+    }
+
+    ret = JS_PKI_getPubKeyFromCert( &binCert, &binPub );
+    if( ret != 0 ) goto end;
+
+    priKeyInfo.setPublicKey( &binPub );
+    priKeyInfo.exec();
+
+end :
+    JS_BIN_reset( &binEncPri );
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binPub );
+}
+
 void CertManDlg::clickOK()
 {
     int ret = 0;
@@ -1608,6 +1683,31 @@ void CertManDlg::clickDecodeCA()
     JS_BIN_reset( &binCert );
 }
 
+void CertManDlg::clickViewPubKeyCA()
+{
+    BIN binCert = {0,0};
+    BIN binPub = {0,0};
+
+    QModelIndex idx = mCA_CertTable->currentIndex();
+
+    QTableWidgetItem* item = mCA_CertTable->item( idx.row(), 0 );
+    if( item == NULL ) return;
+
+    const QString strPath = item->data( Qt::UserRole ).toString();
+    PriKeyInfoDlg priKeyInfo;
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    int ret = JS_PKI_getPubKeyFromCert( &binPub, &binCert );
+    if( ret != 0 ) goto end;
+
+    priKeyInfo.setPublicKey( &binPub );
+    priKeyInfo.exec();
+
+end :
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binPub );
+}
+
 void CertManDlg::clickAddOther()
 {
     int ret = 0;
@@ -1727,6 +1827,30 @@ void CertManDlg::clickDecodeOther()
     JS_BIN_reset( &binCert );
 }
 
+void CertManDlg::clickViewPubKeyOther()
+{
+    BIN binCert = {0,0};
+    BIN binPub = {0,0};
+
+    QModelIndex idx = mOther_CertTable->currentIndex();
+
+    QTableWidgetItem* item = mOther_CertTable->item( idx.row(), 0 );
+    if( item == NULL ) return;
+
+    const QString strPath = item->data( Qt::UserRole ).toString();
+    PriKeyInfoDlg priKeyInfo;
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    int ret = JS_PKI_getPubKeyFromCert( &binCert, &binPub );
+    if( ret != 0 ) goto end;
+
+    priKeyInfo.setPublicKey( &binPub );
+    priKeyInfo.exec();
+
+end :
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binPub );
+}
 
 void CertManDlg::clickAddCRL()
 {
@@ -1953,6 +2077,31 @@ void CertManDlg::clickDecodeTrust()
     JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
     berApplet->decodeData( &binCert, strPath );
     JS_BIN_reset( &binCert );
+}
+
+void CertManDlg::clickViewPubKeyTrust()
+{
+    BIN binCert = {0,0};
+    BIN binPub = {0,0};
+
+    QModelIndex idx = mRCA_CertTable->currentIndex();
+
+    QTableWidgetItem* item = mRCA_CertTable->item( idx.row(), 0 );
+    if( item == NULL ) return;
+
+    const QString strPath = item->data( Qt::UserRole ).toString();
+    PriKeyInfoDlg priKeyInfo;
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    int ret = JS_PKI_getPubKeyFromCert( &binCert, &binPub );
+    if( ret != 0 ) goto end;
+
+    priKeyInfo.setPublicKey( &binPub );
+    priKeyInfo.exec();
+
+end :
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binPub );
 }
 
 void CertManDlg::decodeTLPriKey()
@@ -2397,4 +2546,75 @@ end :
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binEncPri );
     JS_BIN_reset( &binCert );
+}
+
+void CertManDlg::clickTLViewPriKey()
+{
+    int ret = 0;
+
+    BIN binPri = {0,0};
+    BIN binEncPri = {0,0};
+
+    QString strPriPath = mTLPriKeyPathText->text();
+    PriKeyInfoDlg priKeyInfo;
+
+    if( strPriPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find private key"), this );
+        return;
+    }
+
+
+    if( mTLEncPriKeyCheck->isChecked() )
+    {
+        PasswdDlg passDlg;
+        QString strPass;
+
+        passDlg.setTitle( tr("Enter private key password") );
+
+        if( passDlg.exec() != QDialog::Accepted )
+            goto end;
+
+        strPass = passDlg.mPasswdText->text();
+
+        JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binEncPri );
+        ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEncPri, NULL, &binPri );
+        if( ret != 0 )
+        {
+            berApplet->warningBox( tr( "fail to decrypt the private key: %1").arg( ret ), this );
+            goto end;
+        }
+    }
+    else
+    {
+        JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    }
+
+    priKeyInfo.setPrivateKey( &binPri );
+    priKeyInfo.exec();
+
+end :
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binEncPri );
+
+}
+
+void CertManDlg::clickTLViewPubKey()
+{
+    PriKeyInfoDlg priKeyInfo;
+    BIN binData = {0,0};
+    QString strFile = mTLCertPathText->text();
+
+    if( strFile.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Find Certificate" ), this );
+        return;
+    }
+
+    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+
+    priKeyInfo.setPublicKey( &binData );
+    priKeyInfo.exec();
+
+    JS_BIN_reset( &binData );
 }

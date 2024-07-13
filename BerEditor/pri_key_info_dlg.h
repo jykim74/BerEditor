@@ -50,7 +50,8 @@ private slots:
     void changeEdDSA_RawPublic();
     void changeEdDSA_RawPrivate();
 
-    void clickClear();
+    void clearAll();
+    void clickDecode();
 
 private:
     void initialize();
@@ -60,6 +61,8 @@ private:
     void setDSAKey( const BIN *pKey, bool bPri = true );
     void setEdDSAKey( int nKeyType, const BIN *pKey, bool bPri = true );
 
+    BIN pri_key_;
+    BIN pub_key_;
 };
 
 #endif // PRI_KEY_INFO_DLG_H
