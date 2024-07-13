@@ -8,6 +8,8 @@
 #include "pub_enc_dec_dlg.h"
 #include "cert_info_dlg.h"
 #include "cert_man_dlg.h"
+#include "pri_key_info_dlg.h"
+
 #include "js_bin.h"
 #include "js_pki.h"
 #include "js_ber.h"
@@ -66,6 +68,7 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
     connect( mOutputTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(outputChanged()));
     connect( mAlgCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(algChanged()));
 
+    connect( mPriKeyViewBtn, SIGNAL(clicked()), this, SLOT(clickPriKeyView()));
     connect( mPriKeyDecodeBtn, SIGNAL(clicked()), this, SLOT(clickPriKeyDecode()));
     connect( mCertViewBtn, SIGNAL(clicked()), this, SLOT(clickCertView()));
     connect( mCertDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCertDecode()));
@@ -90,6 +93,7 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
     layout()->setSpacing(5);
     mCertGroup->layout()->setSpacing(5);
 
+    mPriKeyViewBtn->setFixedWidth(34);
     mPriKeyTypeBtn->setFixedWidth(34);
     mPriKeyDecodeBtn->setFixedWidth(34);
     mCertDecodeBtn->setFixedWidth(34);
@@ -635,6 +639,23 @@ void PubEncDecDlg::algChanged()
     {
         mVersionTypeCombo->setEnabled( true );
     }
+}
+
+void PubEncDecDlg::clickPriKeyView()
+{
+    int ret = 0;
+    BIN binPri = {0,0};
+    int nType = -1;
+    PriKeyInfoDlg priKeyInfo;
+
+    ret = readPrivateKey( &binPri );
+    if( ret != 0 ) goto end;
+
+    priKeyInfo.setPrivateKey( &binPri );
+    priKeyInfo.exec();
+
+end :
+    JS_BIN_reset( &binPri );
 }
 
 void PubEncDecDlg::clickPriKeyDecode()

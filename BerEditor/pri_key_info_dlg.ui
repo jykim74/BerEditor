@@ -31,9 +31,9 @@
    <item>
     <widget class="QTabWidget" name="mKeyTab">
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="tabRSA">
       <attribute name="title">
        <string>RSA</string>
       </attribute>
@@ -934,7 +934,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_2">
+     <widget class="QWidget" name="tabECC">
       <attribute name="title">
        <string>ECC</string>
       </attribute>
@@ -1398,7 +1398,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_3">
+     <widget class="QWidget" name="tabDSA">
       <attribute name="title">
        <string>DSA</string>
       </attribute>
@@ -2001,7 +2001,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_4">
+     <widget class="QWidget" name="tabEdDSA">
       <attribute name="title">
        <string>EdDSA</string>
       </attribute>

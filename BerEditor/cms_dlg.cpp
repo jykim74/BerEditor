@@ -14,6 +14,7 @@
 #include "ber_applet.h"
 #include "cert_info_dlg.h"
 #include "cert_man_dlg.h"
+#include "pri_key_info_dlg.h"
 #include "common.h"
 
 CMSDlg::CMSDlg(QWidget *parent) :
@@ -46,9 +47,12 @@ CMSDlg::CMSDlg(QWidget *parent) :
     connect( mOutputHexRadio, SIGNAL(clicked()), this, SLOT(outputChanged()));
     connect( mOutputBase64Radio, SIGNAL(clicked()), this, SLOT(outputChanged()));
 
+    connect( mSignPriKeyViewBtn, SIGNAL(clicked()), this, SLOT(clickSignPriKeyView()));
     connect( mSignPriKeyDecodeBtn, SIGNAL(clicked()), this, SLOT(clickSignPriKeyDecode()));
     connect( mSignCertViewBtn, SIGNAL(clicked()), this, SLOT(clickSignCertView()));
     connect( mSignCertDecodeBtn, SIGNAL(clicked()), this, SLOT(clickSignCertDecode()));
+
+    connect( mKMPriKeyViewBtn, SIGNAL(clicked()), this, SLOT(clickKMPriKeyView()));
     connect( mKMPriKeyDecodeBtn, SIGNAL(clicked()), this, SLOT(clickKMPriKeyDecode()));
     connect( mKMCertViewBtn, SIGNAL(clicked()), this, SLOT(clickKMCertView()));
     connect( mKMCertDecodeBtn, SIGNAL(clicked()), this, SLOT(clickKMCertDecode()));
@@ -1036,6 +1040,23 @@ void CMSDlg::clickKMCertDecode()
     JS_BIN_reset( &binData );
 }
 
+void CMSDlg::clickSignPriKeyView()
+{
+    int ret = 0;
+    BIN binPri = {0,0};
+    int nType = -1;
+    PriKeyInfoDlg priKeyInfo;
+
+    ret = readSignPrivateKey( &binPri );
+    if( ret != 0) return;
+
+    priKeyInfo.setPrivateKey( &binPri );
+    priKeyInfo.exec();
+
+end :
+    JS_BIN_reset( &binPri );
+}
+
 void CMSDlg::clickSignPriKeyType()
 {
     int ret = 0;
@@ -1076,6 +1097,24 @@ void CMSDlg::clickSignCertType()
 end :
     JS_BIN_reset( &binCert );
     JS_BIN_reset( &binPubKey );
+}
+
+void CMSDlg::clickKMPriKeyView()
+{
+    int ret = 0;
+    BIN binPri = {0,0};
+    int nType = -1;
+
+    PriKeyInfoDlg priKeyInfo;
+
+    ret = readKMPrivateKey( &binPri );
+    if( ret != 0 ) return;
+
+    priKeyInfo.setPrivateKey( &binPri );
+    priKeyInfo.exec();
+
+end :
+    JS_BIN_reset( &binPri );
 }
 
 void CMSDlg::clickKMPriKeyType()

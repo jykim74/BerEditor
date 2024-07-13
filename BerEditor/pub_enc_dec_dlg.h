@@ -35,6 +35,7 @@ private slots:
     void outputChanged();
     void algChanged();
 
+    void clickPriKeyView();
     void clickPriKeyDecode();
     void clickCertView();
     void clickCertDecode();

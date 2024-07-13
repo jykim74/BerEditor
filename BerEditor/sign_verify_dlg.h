@@ -49,6 +49,7 @@ private slots:
     void clickInputClear();
     void clickOutputClear();
 
+    void clickPriKeyView();
     void clickPriKeyDecode();
     void clickCertView();
     void clickCertDecode();

@@ -20,6 +20,7 @@
 #include "js_error.h"
 #include "common.h"
 #include "sign_verify_thread.h"
+#include "pri_key_info_dlg.h"
 
 static QStringList algTypes = {
     "RSA",
@@ -75,6 +76,7 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     connect( mInputHexRadio, SIGNAL(clicked()), this, SLOT(inputChanged()));
     connect( mInputBase64Radio, SIGNAL(clicked()), this, SLOT(inputChanged()));
 
+    connect( mPriKeyViewBtn, SIGNAL(clicked()), this, SLOT(clickPriKeyView()));
     connect( mPriKeyDecodeBtn, SIGNAL(clicked()), this, SLOT(clickPriKeyDecode()));
     connect( mCertViewBtn, SIGNAL(clicked()), this, SLOT(clickCertView()));
     connect( mCertDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCertDecode()));
@@ -100,6 +102,7 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     mCertGroup->layout()->setSpacing(5);
     mCertGroup->layout()->setMargin(10);
 
+    mPriKeyViewBtn->setFixedWidth(34);
     mPriKeyTypeBtn->setFixedWidth(34);
     mPriKeyDecodeBtn->setFixedWidth(34);
     mCertDecodeBtn->setFixedWidth(34);
@@ -1451,6 +1454,23 @@ void SignVerifyDlg::clickInputClear()
 void SignVerifyDlg::clickOutputClear()
 {
     mOutputText->clear();
+}
+
+void SignVerifyDlg::clickPriKeyView()
+{
+    BIN binPri = {0,0};
+    int nType = -1;
+
+    PriKeyInfoDlg priKeyInfo;
+
+    int ret = readPrivateKey( &binPri );
+    if( ret != 0 ) goto end;
+
+    priKeyInfo.setPrivateKey( &binPri );
+    priKeyInfo.exec();
+
+end :
+    JS_BIN_reset( &binPri );
 }
 
 void SignVerifyDlg::clickPriKeyDecode()
