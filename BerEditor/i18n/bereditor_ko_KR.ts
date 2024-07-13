@@ -485,12 +485,12 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <location filename="../bn_calc_dlg.cpp" line="198"/>
         <source>The A value have wrong character</source>
-        <translation>A 값에 잘못된 무자가 있습니다.</translation>
+        <translation>A 값에 잘못된 문자가 있습니다.</translation>
     </message>
     <message>
         <location filename="../bn_calc_dlg.cpp" line="209"/>
         <source>The B value have wrong character</source>
-        <translation>B 값에 잘못된 무자가 있습니다.</translation>
+        <translation>B 값에 잘못된 문자가 있습니다.</translation>
     </message>
     <message>
         <source>The Mod value have wrong character</source>

@@ -21,6 +21,7 @@
 #include "cert_info_dlg.h"
 #include "settings_mgr.h"
 #include "cert_man_dlg.h"
+#include "pri_key_info_dlg.h"
 
 #include "openssl/ssl.h"
 #include "openssl/err.h"
@@ -220,6 +221,7 @@ SSLVerifyDlg::SSLVerifyDlg(QWidget *parent) :
     connect( mClientCertTypeBtn, SIGNAL(clicked()), this, SLOT(clickClientCertType()));
 
     connect( mFindClientPriKeyBtn, SIGNAL(clicked()), this, SLOT(findClientPriKey()));
+    connect( mClientPriKeyViewBtn, SIGNAL(clicked()), this, SLOT(clickClientPriKeyView()));
     connect( mClientPriKeyDecodeBtn, SIGNAL(clicked()), this, SLOT(clickClientPriKeyDecode()));
     connect( mClientPriKeyTypeBtn, SIGNAL(clicked()), this, SLOT(clickClientPriKeyType()));
 
@@ -240,6 +242,7 @@ SSLVerifyDlg::SSLVerifyDlg(QWidget *parent) :
     mClientCertDecodeBtn->setFixedWidth(34);
     mClientCertTypeBtn->setFixedWidth(34);
 
+    mClientPriKeyViewBtn->setFixedWidth(34);
     mClientPriKeyDecodeBtn->setFixedWidth(34);
     mClientPriKeyTypeBtn->setFixedWidth(34);
 #endif
@@ -1567,6 +1570,22 @@ void SSLVerifyDlg::clickClientPriKeyDecode()
     berApplet->decodeData( &binData, strPath );
 
     JS_BIN_reset( &binData );
+}
+
+void SSLVerifyDlg::clickClientPriKeyView()
+{
+    int ret = 0;
+    BIN binPri = {0,0};
+    PriKeyInfoDlg priKeyInfo;
+
+    ret = readPrivateKey( &binPri );
+    if( ret != 0 ) return;
+
+    priKeyInfo.setPrivateKey( &binPri );
+    priKeyInfo.exec();
+
+end :
+    JS_BIN_reset( &binPri );
 }
 
 void SSLVerifyDlg::clickClientPriKeyType()

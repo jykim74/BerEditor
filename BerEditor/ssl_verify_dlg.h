@@ -70,6 +70,7 @@ private slots:
     void clickClientCertType();
 
     void findClientPriKey();
+    void clickClientPriKeyView();
     void clickClientPriKeyDecode();
     void clickClientPriKeyType();
 
