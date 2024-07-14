@@ -417,11 +417,7 @@ void BerTreeView::ShowContextMenu(QPoint point)
     menu.addAction(tr("Save node"), this, SLOT(SaveNode()));
     menu.addAction(tr("Save node value"), this, SLOT(SaveNodeValue()));
 
-    QAction* pEditAct = menu.addAction(tr("Edit value"), this, SLOT(EditValue()));
-    if( berApplet->isLicense() == false )
-    {
-        pEditAct->setEnabled( false );
-    }
+
 
     /*
     if( berApplet->isLicense() )
@@ -429,14 +425,25 @@ void BerTreeView::ShowContextMenu(QPoint point)
     */
 
     BerItem* item = currentItem();
+    QAction *pInsertAct = NULL;
+    QAction *pEditAct = NULL;
 
     if( item->GetTag() == JS_OCTETSTRING || item->GetTag() == JS_BITSTRING )
         menu.addAction( tr("Expand value"), this, SLOT(ExpandValue()));
 
     if( item->isConstructed() )
     {
-        if( berApplet->isLicense() )
-            menu.addAction( tr( "Insert BER" ), this, SLOT(InsertBER()));
+        pInsertAct = menu.addAction( tr( "Insert BER" ), this, SLOT(InsertBER()));
+    }
+    else
+    {
+        pEditAct = menu.addAction(tr("Edit value"), this, SLOT(EditValue()));
+    }
+
+    if( berApplet->isLicense() == false )
+    {
+        pInsertAct->setEnabled( false );
+        pEditAct->setEnabled( false );
     }
 
     menu.exec(QCursor::pos());

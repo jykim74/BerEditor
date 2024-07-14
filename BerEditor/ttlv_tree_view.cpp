@@ -94,7 +94,6 @@ void TTLVTreeView::leftContextMenu( QPoint point )
     menu.addAction(tr("Copy Information"), this, SLOT(copy()));
     menu.addAction(tr("Copy as hex"), this, SLOT(CopyAsHex()));
     menu.addAction(tr("Copy as base64"), this, SLOT(CopyAsBase64()));
-    menu.addAction( tr("Edit"), this, &TTLVTreeView::editItem );
     menu.addAction( tr("SaveItem"), this, &TTLVTreeView::saveItem );
     menu.addAction( tr("SaveItemValue"), this, &TTLVTreeView::saveItemValue );
 
@@ -103,6 +102,10 @@ void TTLVTreeView::leftContextMenu( QPoint point )
     if( item->isStructure() == true )
     {
         menu.addAction( tr( "AddTTLV" ), this, &TTLVTreeView::AddTTLV );
+    }
+    else
+    {
+        menu.addAction( tr("Edit"), this, &TTLVTreeView::editItem );
     }
 
     menu.exec(QCursor::pos());
