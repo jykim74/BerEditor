@@ -31,11 +31,14 @@ VIDDlg::VIDDlg(QWidget *parent)
     connect( mRandText, SIGNAL(textChanged(QString)), this, SLOT(changeRand(QString)));
     connect( mHashContentText, SIGNAL(textChanged()), this, SLOT(changeHashContent()));
     connect( mVIDText, SIGNAL(textChanged()), this, SLOT(changeVID()));
+    connect( mClearVIDBtn, SIGNAL(clicked()), this, SLOT(clickClearVID()));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
     mDecodeVIDBtn->setFixedWidth(34);
     mDecodeHashContentBtn->setFixedWidth(34);
+    mClearVIDBtn->setFixedWidth(34);
+    mClearHashContentBtn->setFixedWidth(34);
 #endif
 
     initialize();
@@ -245,6 +248,11 @@ void VIDDlg::clickDecodeHashContent()
     JS_BIN_decodeHex( strHashContent.toStdString().c_str(), &binData );
     berApplet->decodeData( &binData, "" );
     JS_BIN_reset( &binData );
+}
+
+void VIDDlg::clickClearVID()
+{
+    mVIDText->clear();
 }
 
 void VIDDlg::clickClearHashContent()

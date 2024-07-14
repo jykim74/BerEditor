@@ -11568,95 +11568,100 @@ Do you want to delete the file and continue?</source>
         <translation>SSN</translation>
     </message>
     <message>
-        <location filename="../vid_dlg.ui" line="174"/>
+        <location filename="../vid_dlg.ui" line="233"/>
+        <location filename="../vid_dlg.ui" line="404"/>
+        <source>C</source>
+        <translation>C</translation>
+    </message>
+    <message>
+        <location filename="../vid_dlg.ui" line="246"/>
         <source>VID</source>
         <translation>VID</translation>
     </message>
     <message>
-        <location filename="../vid_dlg.ui" line="250"/>
+        <location filename="../vid_dlg.ui" line="282"/>
         <source>Make VID</source>
         <translation>VID 만들기</translation>
     </message>
     <message>
-        <location filename="../vid_dlg.ui" line="260"/>
+        <location filename="../vid_dlg.ui" line="292"/>
         <source>Verify VID</source>
         <translation>VID 검증</translation>
     </message>
     <message>
-        <location filename="../vid_dlg.ui" line="286"/>
+        <location filename="../vid_dlg.ui" line="318"/>
         <source>Hash</source>
         <translation>해시</translation>
     </message>
     <message>
-        <location filename="../vid_dlg.ui" line="305"/>
-        <location filename="../vid_dlg.ui" line="338"/>
+        <location filename="../vid_dlg.ui" line="265"/>
+        <location filename="../vid_dlg.ui" line="436"/>
         <source>D</source>
         <translation>D</translation>
     </message>
     <message>
-        <location filename="../vid_dlg.ui" line="351"/>
+        <location filename="../vid_dlg.ui" line="345"/>
         <source>Hash Content</source>
         <translation>해시 내용</translation>
     </message>
     <message>
-        <location filename="../vid_dlg.ui" line="417"/>
         <source>Clear</source>
-        <translation>지우기</translation>
+        <translation type="vanished">지우기</translation>
     </message>
     <message>
-        <location filename="../vid_dlg.ui" line="472"/>
+        <location filename="../vid_dlg.ui" line="491"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../vid_dlg.ui" line="492"/>
+        <location filename="../vid_dlg.ui" line="511"/>
         <source>Clear All</source>
         <translation>전체 지우기</translation>
     </message>
     <message>
-        <location filename="../vid_dlg.cpp" line="99"/>
-        <location filename="../vid_dlg.cpp" line="162"/>
+        <location filename="../vid_dlg.cpp" line="102"/>
+        <location filename="../vid_dlg.cpp" line="165"/>
         <source>Please enter SSN</source>
         <translation>SSN을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../vid_dlg.cpp" line="105"/>
-        <location filename="../vid_dlg.cpp" line="168"/>
+        <location filename="../vid_dlg.cpp" line="108"/>
+        <location filename="../vid_dlg.cpp" line="171"/>
         <source>Please enter random value</source>
         <translation>랜덤 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../vid_dlg.cpp" line="111"/>
+        <location filename="../vid_dlg.cpp" line="114"/>
         <source>Please enter VID value</source>
         <translation>VID 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../vid_dlg.cpp" line="128"/>
+        <location filename="../vid_dlg.cpp" line="131"/>
         <source>VID verification successful</source>
         <translation>VID 검증 성공</translation>
     </message>
     <message>
-        <location filename="../vid_dlg.cpp" line="141"/>
+        <location filename="../vid_dlg.cpp" line="144"/>
         <source>VID verification failed: %1</source>
         <translation>VID 검증 실패: %1</translation>
     </message>
     <message>
-        <location filename="../vid_dlg.cpp" line="189"/>
+        <location filename="../vid_dlg.cpp" line="192"/>
         <source>VID creation successful</source>
         <translation>VID 생성 성공</translation>
     </message>
     <message>
-        <location filename="../vid_dlg.cpp" line="203"/>
+        <location filename="../vid_dlg.cpp" line="206"/>
         <source>failed to make VID: %1</source>
         <translation>VID 만들기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../vid_dlg.cpp" line="226"/>
+        <location filename="../vid_dlg.cpp" line="229"/>
         <source>There is no VID value</source>
         <translation>VID 값이 없습니다</translation>
     </message>
     <message>
-        <location filename="../vid_dlg.cpp" line="241"/>
+        <location filename="../vid_dlg.cpp" line="244"/>
         <source>There is no HashContent value</source>
         <translation>해시 내용 값이 없습니다</translation>
     </message>
