@@ -1698,7 +1698,7 @@ void CertManDlg::clickViewPubKeyCA()
     PriKeyInfoDlg priKeyInfo;
 
     JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
-    int ret = JS_PKI_getPubKeyFromCert( &binPub, &binCert );
+    int ret = JS_PKI_getPubKeyFromCert( &binCert, &binPub );
     if( ret != 0 ) goto end;
 
     priKeyInfo.setPublicKey( &binPub );
