@@ -643,8 +643,8 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <location filename="../ber_tree_view.cpp" line="186"/>
         <location filename="../ber_tree_view.cpp" line="374"/>
-        <location filename="../ber_tree_view.cpp" line="451"/>
-        <location filename="../ber_tree_view.cpp" line="473"/>
+        <location filename="../ber_tree_view.cpp" line="458"/>
+        <location filename="../ber_tree_view.cpp" line="480"/>
         <source>There are no items selected.</source>
         <translation>선택한 아이템이 없습니다</translation>
     </message>
@@ -674,17 +674,17 @@ mailto : jykim74@gmail.com</translation>
         <translation>노드 값 저장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="420"/>
+        <location filename="../ber_tree_view.cpp" line="440"/>
         <source>Edit value</source>
         <translation>값 수정</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="434"/>
+        <location filename="../ber_tree_view.cpp" line="432"/>
         <source>Expand value</source>
         <translation>확장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="439"/>
+        <location filename="../ber_tree_view.cpp" line="436"/>
         <source>Insert BER</source>
         <translation>BER 추가</translation>
     </message>
@@ -4373,15 +4373,15 @@ mailto : jykim74@gmail.com</translation>
         <translation>삭제</translation>
     </message>
     <message>
-        <location filename="../edit_ttlv_dlg.cpp" line="124"/>
-        <location filename="../edit_ttlv_dlg.cpp" line="149"/>
-        <location filename="../edit_ttlv_dlg.cpp" line="178"/>
+        <location filename="../edit_ttlv_dlg.cpp" line="123"/>
+        <location filename="../edit_ttlv_dlg.cpp" line="148"/>
+        <location filename="../edit_ttlv_dlg.cpp" line="177"/>
         <source>There is no selected item</source>
         <translation>선택한 아이템이 없습니다.</translation>
     </message>
     <message>
-        <location filename="../edit_ttlv_dlg.cpp" line="156"/>
-        <location filename="../edit_ttlv_dlg.cpp" line="185"/>
+        <location filename="../edit_ttlv_dlg.cpp" line="155"/>
+        <location filename="../edit_ttlv_dlg.cpp" line="184"/>
         <source>Top-level item cannot be added.</source>
         <translation>최상위 노드는 추가 될 수 없습니다.</translation>
     </message>
@@ -7651,7 +7651,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../make_ber_dlg.ui" line="188"/>
-        <location filename="../make_ber_dlg.cpp" line="231"/>
+        <location filename="../make_ber_dlg.cpp" line="230"/>
         <source>Tag</source>
         <translation>태그</translation>
     </message>
@@ -7701,7 +7701,7 @@ Do you want to delete the file and continue?</source>
         <translation>유효하지 않는 번호: %1</translation>
     </message>
     <message>
-        <location filename="../make_ber_dlg.cpp" line="225"/>
+        <location filename="../make_ber_dlg.cpp" line="224"/>
         <source>Number</source>
         <translation>번호</translation>
     </message>
@@ -11417,39 +11417,39 @@ Do you want to delete the file and continue?</source>
         <translation>Base64로 복사</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="97"/>
+        <location filename="../ttlv_tree_view.cpp" line="108"/>
         <source>Edit</source>
         <translation>편집</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="98"/>
+        <location filename="../ttlv_tree_view.cpp" line="97"/>
         <source>SaveItem</source>
         <translation>아이템 저장</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="99"/>
+        <location filename="../ttlv_tree_view.cpp" line="98"/>
         <source>SaveItemValue</source>
         <translation>아이템 값 저장</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="105"/>
+        <location filename="../ttlv_tree_view.cpp" line="104"/>
         <source>AddTTLV</source>
         <translation>TTLV 추가</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="333"/>
+        <location filename="../ttlv_tree_view.cpp" line="336"/>
         <source>There are no items selected.</source>
         <translation>선택한 아이템이 없습니다</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="358"/>
-        <location filename="../ttlv_tree_view.cpp" line="379"/>
-        <location filename="../ttlv_tree_view.cpp" line="398"/>
+        <location filename="../ttlv_tree_view.cpp" line="361"/>
+        <location filename="../ttlv_tree_view.cpp" line="382"/>
+        <location filename="../ttlv_tree_view.cpp" line="401"/>
         <source>There is no selected item</source>
         <translation>선택한 아이템이 없습니다.</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="441"/>
+        <location filename="../ttlv_tree_view.cpp" line="444"/>
         <source>The item is not structured</source>
         <translation>해당 아이템이 구조적이지 않습니다</translation>
     </message>
