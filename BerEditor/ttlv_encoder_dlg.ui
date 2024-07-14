@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>498</width>
-    <height>585</height>
+    <width>548</width>
+    <height>706</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -220,10 +220,10 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mActivateBtn">
+     <item row="1" column="2">
+      <widget class="QPushButton" name="mSignBtn">
        <property name="text">
-        <string>Activate</string>
+        <string>Sign</string>
        </property>
       </widget>
      </item>
@@ -231,62 +231,6 @@
       <widget class="QPushButton" name="mGetAttributes">
        <property name="text">
         <string>GetAttributes</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QPushButton" name="mRegisterBtn">
-       <property name="text">
-        <string>Register</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="mCreateBtn">
-       <property name="text">
-        <string>Create</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QPushButton" name="mGetAttributeListBtn">
-       <property name="text">
-        <string>GetAttributeList</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="mEncryptBtn">
-       <property name="text">
-        <string>Encrypt</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="2">
-      <widget class="QPushButton" name="mDeleteAttributeBtn">
-       <property name="text">
-        <string>DeleteAttribute</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mDestroyBtn">
-       <property name="text">
-        <string>Destroy</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="3">
-      <widget class="QPushButton" name="mLocateBtn">
-       <property name="text">
-        <string>Locate</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="mDecryptBtn">
-       <property name="text">
-        <string>Decrypt</string>
        </property>
       </widget>
      </item>
@@ -304,17 +248,24 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mGetBtn">
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mActivateBtn">
        <property name="text">
-        <string>Get</string>
+        <string>Activate</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="2">
-      <widget class="QPushButton" name="mSignBtn">
+     <item row="2" column="0">
+      <widget class="QPushButton" name="mRegisterBtn">
        <property name="text">
-        <string>Sign</string>
+        <string>Register</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QPushButton" name="mGetAttributeListBtn">
+       <property name="text">
+        <string>GetAttributeList</string>
        </property>
       </widget>
      </item>
@@ -325,6 +276,13 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mGetBtn">
+       <property name="text">
+        <string>Get</string>
+       </property>
+      </widget>
+     </item>
      <item row="3" column="0">
       <widget class="QPushButton" name="mModifyAttributeBtn">
        <property name="text">
@@ -332,24 +290,66 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mRNGRetrieveBtn">
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mCreateBtn">
        <property name="text">
-        <string>RNGRetrieve</string>
+        <string>Create</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="4">
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mDestroyBtn">
+       <property name="text">
+        <string>Destroy</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QPushButton" name="mDecryptBtn">
+       <property name="text">
+        <string>Decrypt</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="2">
+      <widget class="QPushButton" name="mDeleteAttributeBtn">
+       <property name="text">
+        <string>DeleteAttribute</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="3">
+      <widget class="QPushButton" name="mLocateBtn">
+       <property name="text">
+        <string>Locate</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="mEncryptBtn">
+       <property name="text">
+        <string>Encrypt</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QPushButton" name="mHashBtn">
+       <property name="text">
+        <string>Hash</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
       <widget class="QPushButton" name="mRNGSeedBtn">
        <property name="text">
         <string>RNGSeed</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="4">
-      <widget class="QPushButton" name="mHashBtn">
+     <item row="4" column="2">
+      <widget class="QPushButton" name="mRNGRetrieveBtn">
        <property name="text">
-        <string>Hash</string>
+        <string>RNGRetrieve</string>
        </property>
       </widget>
      </item>

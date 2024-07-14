@@ -113,6 +113,7 @@ CertManDlg::CertManDlg(QWidget *parent) :
     mTLCertDecodeBtn->setFixedWidth(34);
     mTLPFXDecodeBtn->setFixedWidth(34);
     mEE_ManGroup->layout()->setSpacing(5);
+    mOther_ManGroup->layout()->setSpacing(5);
     mCA_ManGroup->layout()->setSpacing(5);
     mCRL_ManGroup->layout()->setSpacing(5);
     mRCA_ManGroup->layout()->setSpacing(5);

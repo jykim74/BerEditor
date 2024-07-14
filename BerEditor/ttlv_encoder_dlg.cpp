@@ -4,7 +4,7 @@
 #include "js_pkcs11.h"
 #include "common.h"
 #include "ber_applet.h"
-
+#include "settings_mgr.h"
 
 #include <QFileDialog>
 
@@ -144,6 +144,7 @@ void TTLVEncoderDlg::initialize()
     mAlgCombo->addItems( kAlgList );
     mOptionCombo->addItems( kRSAOptionList );
     mHashCombo->addItems( kHashList );
+    mHashCombo->setCurrentText(berApplet->settingsMgr()->defaultHash());
     mAttributeCombo->addItems( kAttrList );
 }
 
