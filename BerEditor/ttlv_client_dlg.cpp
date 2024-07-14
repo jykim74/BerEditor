@@ -54,6 +54,7 @@ TTLVClientDlg::TTLVClientDlg(QWidget *parent) :
 
     connect( mResponseClearBtn, SIGNAL(clicked()), this, SLOT(clearResponse()));
     connect( mResponseDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeResponse()));
+    connect( mReadMainBtn, SIGNAL(clicked()), this, SLOT(clickReadMain()));
 
     initialize();
 
@@ -593,4 +594,10 @@ void TTLVClientDlg::clearRequest()
 void TTLVClientDlg::clearResponse()
 {
     mResponseText->clear();
+}
+
+void TTLVClientDlg::clickReadMain()
+{
+    BIN binTTLV = berApplet->getTTLV();
+    mRequestText->setPlainText( getHexString( &binTTLV ));
 }

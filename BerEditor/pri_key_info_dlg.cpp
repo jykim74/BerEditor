@@ -342,9 +342,16 @@ void PriKeyInfoDlg::setPrivateKey( const BIN *pPriKey )
 {
     int nKeyType = -1;
     clearAll();
+
+    QString strTitle = tr( "Private Key Information" );
+
+    mTitleLabel->setText( strTitle );
+    setWindowTitle( strTitle );
+
     JS_BIN_reset( &pri_key_ );
     JS_BIN_reset( &pub_key_ );
     JS_BIN_copy( &pri_key_, pPriKey );
+
 
     if( pPriKey == NULL || pPriKey->nLen <= 0 )
         return;
@@ -386,6 +393,11 @@ void PriKeyInfoDlg::setPublicKey( const BIN *pPubKey )
 {
     int nKeyType = -1;
     clearAll();
+
+    QString strTitle = tr( "Public Key Information" );
+
+    mTitleLabel->setText( strTitle );
+    setWindowTitle( strTitle );
 
     JS_BIN_reset( &pri_key_ );
     JS_BIN_reset( &pub_key_ );

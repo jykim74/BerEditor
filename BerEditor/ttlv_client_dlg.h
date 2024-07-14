@@ -48,6 +48,7 @@ private slots:
     void clearRequest();
     void clearResponse();
 
+    void clickReadMain();
 private:
     void initialize();
     int readPrivateKey( BIN *pPriKey );
