@@ -199,8 +199,7 @@ void MakeBerDlg::valueChanged()
     QString strLen = getDataLenString( mValueTypeCombo->currentText(), strValue );
     mValueLenText->setText( QString("%1").arg(strLen));
 
-    if( (strValue.length() % 2) == 0 )
-        makeHeader();
+    makeHeader();
 }
 
 void MakeBerDlg::berChanged()
