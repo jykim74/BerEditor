@@ -98,7 +98,8 @@ SOURCES += \
     ttlv_tree_item.cpp \
     ttlv_tree_model.cpp \
     ttlv_tree_view.cpp \
-    make_ttlv_dlg.cpp
+    make_ttlv_dlg.cpp \
+    pri_key_info_dlg.cpp
 
 HEADERS += \
     about_dlg.h \
@@ -164,7 +165,8 @@ HEADERS += \
     ttlv_tree_item.h \
     ttlv_tree_model.h \
     ttlv_tree_view.h \
-    make_ttlv_dlg.h
+    make_ttlv_dlg.h \
+    pri_key_info_dlg.h
 
 
 
@@ -300,7 +302,8 @@ FORMS += \
         ttlv_encoder_dlg.ui \
         decode_ttlv_dlg.ui \
         edit_ttlv_dlg.ui \
-        make_ttlv_dlg.ui
+        make_ttlv_dlg.ui \
+        pri_key_info_dlg.ui
 
 RESOURCES += \
     bereditor.qrc
