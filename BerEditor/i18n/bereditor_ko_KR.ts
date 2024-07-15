@@ -8505,148 +8505,148 @@ Do you want to delete the file and continue?</source>
         <location filename="../pri_key_info_dlg.ui" line="20"/>
         <location filename="../pri_key_info_dlg.cpp" line="346"/>
         <source>Private Key Information</source>
-        <translation type="unfinished"></translation>
+        <translation>개인키 정보</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.ui" line="38"/>
         <source>RSA</source>
-        <translation type="unfinished">RSA</translation>
+        <translation>RSA</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.ui" line="46"/>
         <source>Exponent2(DMQ1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Exponent2(DMQ1)</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.ui" line="341"/>
         <source>Exponent1(DMP1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Exponent1(DMP1)</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.ui" line="348"/>
         <source>PublicExponent(E)</source>
-        <translation type="unfinished"></translation>
+        <translation>PublicExponent(E)</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.ui" line="611"/>
         <source>Prime1(P)</source>
-        <translation type="unfinished"></translation>
+        <translation>Prime1(P)</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.ui" line="618"/>
         <source>Prime2(Q)</source>
-        <translation type="unfinished"></translation>
+        <translation>Prime2(Q)</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.ui" line="681"/>
         <source>Coefficient(IQMP)</source>
-        <translation type="unfinished"></translation>
+        <translation>Coefficient(IQMP)</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.ui" line="692"/>
         <source>Modules(N)</source>
-        <translation type="unfinished"></translation>
+        <translation>Modules(N)</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.ui" line="872"/>
         <source>PrivateExponent(D)</source>
-        <translation type="unfinished"></translation>
+        <translation>PrivateExponent(D)</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.ui" line="939"/>
         <source>ECC</source>
-        <translation type="unfinished">ECC</translation>
+        <translation>ECC</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.ui" line="1003"/>
         <source>Curve OID</source>
-        <translation type="unfinished"></translation>
+        <translation>커브 OID</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.ui" line="1026"/>
         <location filename="../pri_key_info_dlg.ui" line="1467"/>
         <source>PrivateKey</source>
-        <translation type="unfinished">개인키</translation>
+        <translation>개인키</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.ui" line="1153"/>
         <source>PubX</source>
-        <translation type="unfinished"></translation>
+        <translation>PubX</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.ui" line="1280"/>
         <source>PubY</source>
-        <translation type="unfinished"></translation>
+        <translation>PubY</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.ui" line="1403"/>
         <source>DSA</source>
-        <translation type="unfinished"></translation>
+        <translation>DSA</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.ui" line="1618"/>
         <source>Subprime (Q)</source>
-        <translation type="unfinished"></translation>
+        <translation>Subprime (Q)</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.ui" line="1688"/>
         <source>Generator (G)</source>
-        <translation type="unfinished"></translation>
+        <translation>Generator (G)</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.ui" line="1759"/>
         <source>Prime (P)</source>
-        <translation type="unfinished"></translation>
+        <translation>Prime (P)</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.ui" line="1883"/>
         <source>PublicKey</source>
-        <translation type="unfinished">공개키</translation>
+        <translation>공개키</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.ui" line="2006"/>
         <source>EdDSA</source>
-        <translation type="unfinished">EdDSA</translation>
+        <translation>EdDSA</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.ui" line="2026"/>
         <source>Name</source>
-        <translation type="unfinished">이름</translation>
+        <translation>이름</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.ui" line="2137"/>
         <source>Raw PrivateKey</source>
-        <translation type="unfinished"></translation>
+        <translation>Raw 개인키</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.ui" line="2264"/>
         <source>Raw PublicKey</source>
-        <translation type="unfinished"></translation>
+        <translation>Raw 공개키</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.ui" line="2359"/>
         <source>Decode</source>
-        <translation type="unfinished">디코딩</translation>
+        <translation>디코딩</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.ui" line="2366"/>
         <source>Close</source>
-        <translation type="unfinished">닫기</translation>
+        <translation>닫기</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.cpp" line="388"/>
         <source>Private key algorithm(%1) not supported</source>
-        <translation type="unfinished"></translation>
+        <translation>지원하지 않는 개인키 알고리즘(%1) 입니다</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.cpp" line="397"/>
         <source>Public Key Information</source>
-        <translation type="unfinished"></translation>
+        <translation>공개키 정보</translation>
     </message>
     <message>
         <location filename="../pri_key_info_dlg.cpp" line="437"/>
         <source>Public key algorithm(%1) not supported</source>
-        <translation type="unfinished"></translation>
+        <translation>지원하지 않는 공개키 알고리즘(%1) 입니다</translation>
     </message>
 </context>
 <context>
