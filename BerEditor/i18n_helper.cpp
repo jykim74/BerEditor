@@ -132,3 +132,19 @@ const QList<QLocale> &I18NHelper::getInstalledLocales() {
 
     return locales;
 }
+
+bool I18NHelper::isKorea()
+{
+    int lang_index = preferredLanguage();
+    if (lang_index < 0 || lang_index >= (int)sizeof(langs))
+        return false;
+
+    if (lang_index == 0) {
+        // An index of 0 means seafile client is configured to use the system locale.
+        QLocale sys_locale = QLocale::system();
+        return sys_locale.country() == QLocale::SouthKorea;
+    } else {
+        QString lang = QString(langs[lang_index]);
+        return lang == "ko_KR";
+    }
+}

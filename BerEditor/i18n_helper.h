@@ -42,6 +42,7 @@ public:
 
     int preferredLanguage();
     void setPreferredLanguage(int langIndex);
+    bool isKorea();
 
 private:
     I18NHelper();

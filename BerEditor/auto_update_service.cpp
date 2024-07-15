@@ -4,6 +4,7 @@
  * All rights reserved.
  */
 #include <QSettings>
+#include "i18n_helper.h"
 
 #ifdef _AUTO_UPDATE
 
@@ -21,9 +22,11 @@ SINGLETON_IMPL(AutoUpdateService)
 namespace  {
 #ifdef Q_OS_WIN32
     const char *kSparkleAppcastURI = "https://jykim74.github.io/appcast/bereditor_appcast_win.xml";
+    const char *kSparkleAppcastURIForKR = "https://jykim74.github.io/appcast/bereditor_appcast_win_ko.xml";
     const char *kWinSparkleRegPath = "SOFTWARE\\JS Inc\\BerEditor\\WinSparkle";
 #else
     const char *kSparkleAppcastURI = "https://jykim74.github.io/appcast/bereditor_appcast_mac.xml";
+    const char *kSparkleAppcastURIForKR = "https://jykim74.github.io/appcast/bereditor_appcast_mac_ko.xml";
 #endif
     const char *kSparkleAlreadyEnableUpdateByDefault = "SparkleAlreadyEnableUpdateByDefault";
 }
@@ -39,7 +42,8 @@ QString getAppcastURI() {
         return url_from_env;
     }
 
-    return kSparkleAppcastURI;
+//    return kSparkleAppcastURI;
+    return I18NHelper::getInstance()->isKorea() ? kSparkleAppcastURIForKR : kSparkleAppcastURI;
 }
 
 class AutoUpdateAdapter {
