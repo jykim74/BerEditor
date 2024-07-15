@@ -599,5 +599,11 @@ void TTLVClientDlg::clearResponse()
 void TTLVClientDlg::clickReadMain()
 {
     BIN binTTLV = berApplet->getTTLV();
+    if( binTTLV.nLen <= 0 )
+    {
+        berApplet->warningBox( tr( "There is no TTLV data" ), this );
+        return;
+    }
+
     mRequestText->setPlainText( getHexString( &binTTLV ));
 }

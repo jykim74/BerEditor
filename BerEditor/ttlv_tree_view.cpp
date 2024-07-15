@@ -99,13 +99,11 @@ void TTLVTreeView::leftContextMenu( QPoint point )
 
     TTLVTreeItem* item = currentItem();
 
+    menu.addAction( tr("Edit"), this, &TTLVTreeView::editItem );
+
     if( item->isStructure() == true )
     {
         menu.addAction( tr( "AddTTLV" ), this, &TTLVTreeView::AddTTLV );
-    }
-    else
-    {
-        menu.addAction( tr("Edit"), this, &TTLVTreeView::editItem );
     }
 
     menu.exec(QCursor::pos());
@@ -545,7 +543,7 @@ void TTLVTreeView::showItemText( TTLVTreeItem* item )
     level = item->getLevel();
 
 
-    if( item->getTypeHex() == "01" )
+    if( item->isStructure() )
     {
         showText( level, QString("%1 {\n").arg( item->text()), QColor(Qt::darkCyan) );
 
@@ -587,7 +585,7 @@ void TTLVTreeView::showItemXML( TTLVTreeItem* item )
 
     QString strName = item->getTagName();
 
-    if( item->getTypeHex() == "01" )
+    if( item->isStructure() )
     {
         showXML( level, QString("<%1>\n").arg( strName), QColor(Qt::darkCyan) );
 

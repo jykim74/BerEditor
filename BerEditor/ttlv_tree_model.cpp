@@ -38,9 +38,7 @@ int TTLVTreeModel::parseTree()
 
     pRootItem->setText( pRootItem->getTitle( &binTTLV_ ));
 
-    int nType = pRootItem->getType();
-
-    if( nType == 0x01 ) // In case of structure
+    if( pRootItem->isStructure() ) // In case of structure
     {
         ret = parseConstruct( 8, pRootItem );
     }
@@ -52,7 +50,6 @@ int TTLVTreeModel::parseConstruct( int offset, TTLVTreeItem *pParentItem )
 {
     int         ret = 0;
     int         next_offset = 0;
-    int         bStructed = 0;
     int         start_offset = offset;
     int         level = pParentItem->getLevel() + 1;
 
@@ -70,12 +67,7 @@ int TTLVTreeModel::parseConstruct( int offset, TTLVTreeItem *pParentItem )
         pItem->setText( pItem->getTitle( &binTTLV_ ) );
         pParentItem->appendRow( pItem );
 
-        if( pItem->getType() == 0x01 )
-            bStructed = 1;
-        else
-            bStructed = 0;
-
-        if( bStructed )
+        if( pItem->isStructure() )
         {
             parseConstruct( offset + 8, pItem );
         }

@@ -142,9 +142,17 @@ void EditValueDlg::setItem(BerItem *pItem)
 
     bConstructed = ber_item_->isConstructed();
     if( bConstructed )
+    {
         mConstructedLabel->setText( "Constructed" );
+        mValueText->setReadOnly( true );
+        mModifyBtn->hide();
+    }
     else
+    {
         mConstructedLabel->setText( "Primitive" );
+        mValueText->setReadOnly( false );
+        mModifyBtn->show();
+    }
 
     QString strOffset;
     strOffset = QString( "%1" ).arg( ber_item_->GetOffset() );

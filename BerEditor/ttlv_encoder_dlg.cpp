@@ -124,6 +124,11 @@ TTLVEncoderDlg::TTLVEncoderDlg(QWidget *parent) :
     connect( mAlgCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(algChanged(int)));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
+    connect( mInputText, SIGNAL(textChanged()), this, SLOT(changeInput()));
+    connect( mOutputText, SIGNAL(textChanged()), this, SLOT(changeOutput()));
+    connect( mInputClearBtn, SIGNAL(clicked()), this, SLOT(clearInput()));
+    connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clearOutput()));
+
     initialize();
     mCloseBtn->setDefault(true);
 
@@ -756,4 +761,28 @@ void TTLVEncoderDlg::clickHash()
 
     JS_BIN_reset( &binData );
     if( ret == 0 ) QDialog::accept();
+}
+
+void TTLVEncoderDlg::changeInput()
+{
+    QString strInput = mInputText->toPlainText();
+    QString strLen = getDataLenString( DATA_HEX, strInput );
+    mInputLenText->setText( QString("%1").arg( strLen ));
+}
+
+void TTLVEncoderDlg::changeOutput()
+{
+    QString strOutput = mOutputText->toPlainText();
+    QString strLen = getDataLenString( DATA_HEX, strOutput );
+    mOutputLenText->setText( QString("%1").arg( strLen ));
+}
+
+void TTLVEncoderDlg::clearInput()
+{
+    mInputText->clear();
+}
+
+void TTLVEncoderDlg::clearOutput()
+{
+    mOutputText->clear();
 }

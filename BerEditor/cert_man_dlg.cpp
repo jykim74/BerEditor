@@ -119,7 +119,7 @@ CertManDlg::CertManDlg(QWidget *parent) :
     mRCA_ManGroup->layout()->setSpacing(5);
     mTL_ManGroup->layout()->setSpacing(5);
 #endif
-
+    resize(minimumSizeHint().width(), height());
 }
 
 CertManDlg::~CertManDlg()

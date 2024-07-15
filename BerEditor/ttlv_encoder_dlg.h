@@ -39,6 +39,10 @@ private slots:
     void clickRNGSeed();
     void clickHash();
 
+    void changeInput();
+    void changeOutput();
+    void clearInput();
+    void clearOutput();
 
     void findInput();
     void algChanged( int index );

@@ -674,17 +674,17 @@ mailto : jykim74@gmail.com</translation>
         <translation>노드 값 저장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="440"/>
+        <location filename="../ber_tree_view.cpp" line="433"/>
         <source>Edit value</source>
         <translation>값 수정</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="432"/>
+        <location filename="../ber_tree_view.cpp" line="447"/>
         <source>Expand value</source>
         <translation>확장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="436"/>
+        <location filename="../ber_tree_view.cpp" line="437"/>
         <source>Insert BER</source>
         <translation>BER 추가</translation>
     </message>
@@ -4373,15 +4373,15 @@ mailto : jykim74@gmail.com</translation>
         <translation>삭제</translation>
     </message>
     <message>
-        <location filename="../edit_ttlv_dlg.cpp" line="123"/>
-        <location filename="../edit_ttlv_dlg.cpp" line="148"/>
-        <location filename="../edit_ttlv_dlg.cpp" line="177"/>
+        <location filename="../edit_ttlv_dlg.cpp" line="134"/>
+        <location filename="../edit_ttlv_dlg.cpp" line="159"/>
+        <location filename="../edit_ttlv_dlg.cpp" line="188"/>
         <source>There is no selected item</source>
         <translation>선택한 아이템이 없습니다.</translation>
     </message>
     <message>
-        <location filename="../edit_ttlv_dlg.cpp" line="155"/>
-        <location filename="../edit_ttlv_dlg.cpp" line="184"/>
+        <location filename="../edit_ttlv_dlg.cpp" line="166"/>
+        <location filename="../edit_ttlv_dlg.cpp" line="195"/>
         <source>Top-level item cannot be added.</source>
         <translation>최상위 노드는 추가 될 수 없습니다.</translation>
     </message>
@@ -4509,22 +4509,22 @@ mailto : jykim74@gmail.com</translation>
         <translation>번호</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.cpp" line="209"/>
+        <location filename="../edit_value_dlg.cpp" line="217"/>
         <source>fail to modify: %1</source>
         <translation>변경 실패 : %1</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.cpp" line="223"/>
+        <location filename="../edit_value_dlg.cpp" line="231"/>
         <source>Top-level item cannot be deleted</source>
         <translation>최상위 아이템은 삭제 할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.cpp" line="245"/>
+        <location filename="../edit_value_dlg.cpp" line="253"/>
         <source>Top-level item cannot be added.</source>
         <translation>최상위 노드는 추가 될 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.cpp" line="252"/>
+        <location filename="../edit_value_dlg.cpp" line="260"/>
         <source>Parent item is not constructed.</source>
         <translation>상위 노드가 구조적이지 않습니다</translation>
     </message>
@@ -11361,6 +11361,11 @@ Do you want to delete the file and continue?</source>
         <translation>인증서 타입은 %1 입니다.</translation>
     </message>
     <message>
+        <location filename="../ttlv_client_dlg.cpp" line="604"/>
+        <source>There is no TTLV data</source>
+        <translation>TTLV 데이타가 없습니다</translation>
+    </message>
+    <message>
         <source>Find a sign private key</source>
         <translation type="vanished">서명용 개인키를 찾으세요</translation>
     </message>
@@ -11383,169 +11388,180 @@ Do you want to delete the file and continue?</source>
         <translation>요청 인코더</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="20"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="34"/>
         <source>Authentication</source>
         <translation>인증</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="26"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="55"/>
         <source>UserID</source>
         <translation>유저 ID</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="33"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="45"/>
         <source>Password</source>
         <translation>암호</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="54"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="85"/>
         <source>UUID</source>
         <translation>UUID</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="61"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="92"/>
         <source>Length</source>
         <translation>길이</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="108"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="159"/>
         <source>Attribute</source>
         <translation>속성</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="115"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="146"/>
         <source>FindInput</source>
         <translation>입력찾기</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="125"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="20"/>
+        <source>TTLV Information</source>
+        <translation>TTLV 정보</translation>
+    </message>
+    <message>
+        <location filename="../ttlv_encoder_dlg.ui" line="126"/>
         <source>ObjectType</source>
         <translation>객체 타입</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="144"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="186"/>
         <source>Input</source>
         <translation>입력값</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="159"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="157"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="258"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="416"/>
+        <source>C</source>
+        <translation>C</translation>
+    </message>
+    <message>
+        <location filename="../ttlv_encoder_dlg.ui" line="275"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="162"/>
         <source>KeyLength</source>
         <translation>키 길이</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="185"/>
-        <location filename="../ttlv_encoder_dlg.ui" line="338"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="301"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="545"/>
         <source>Hash</source>
         <translation>Hash</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="195"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="317"/>
         <source>Algorithm</source>
         <translation>알고리즘</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="211"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="357"/>
         <source>Output</source>
         <translation>결과</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="254"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="461"/>
         <source>Activate</source>
         <translation>Activate</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="233"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="440"/>
         <source>GetAttributes</source>
         <translation>GetAttribute</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="261"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="468"/>
         <source>Register</source>
         <translation>Register</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="296"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="503"/>
         <source>Create</source>
         <translation>Create</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="268"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="475"/>
         <source>GetAttributeList</source>
         <translation>GetAttributeList</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="331"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="538"/>
         <source>Encrypt</source>
         <translation>Encrypt</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="317"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="524"/>
         <source>DeleteAttribute</source>
         <translation>DeleteAttribute</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="303"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="510"/>
         <source>Destroy</source>
         <translation>Destroy</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="324"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="531"/>
         <source>Locate</source>
         <translation>Locate</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="310"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="517"/>
         <source>Decrypt</source>
         <translation>Decrypt</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="240"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="447"/>
         <source>CreateKeyPair</source>
         <translation>CreateKeyPair</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="247"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="454"/>
         <source>AddAttribute</source>
         <translation>AddAttribute</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="282"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="489"/>
         <source>Get</source>
         <translation>Get</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="226"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="433"/>
         <source>Sign</source>
         <translation>Sign</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="275"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="482"/>
         <source>Verify</source>
         <translation>Verify</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="289"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="496"/>
         <source>ModifyAttribute</source>
         <translation>ModifyAttribute</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="352"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="559"/>
         <source>RNGRetrieve</source>
         <translation>RNGRetrieve</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="345"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="552"/>
         <source>RNGSeed</source>
         <translation>RNGSeed</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="373"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="580"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.cpp" line="162"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="167"/>
         <source>NamedCurve</source>
         <translation>네임즈 커브</translation>
     </message>
@@ -11568,7 +11584,7 @@ Do you want to delete the file and continue?</source>
         <translation>Base64로 복사</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="108"/>
+        <location filename="../ttlv_tree_view.cpp" line="102"/>
         <source>Edit</source>
         <translation>편집</translation>
     </message>
@@ -11583,24 +11599,24 @@ Do you want to delete the file and continue?</source>
         <translation>아이템 값 저장</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="104"/>
+        <location filename="../ttlv_tree_view.cpp" line="106"/>
         <source>AddTTLV</source>
         <translation>TTLV 추가</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="336"/>
+        <location filename="../ttlv_tree_view.cpp" line="334"/>
         <source>There are no items selected.</source>
         <translation>선택한 아이템이 없습니다</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="361"/>
-        <location filename="../ttlv_tree_view.cpp" line="382"/>
-        <location filename="../ttlv_tree_view.cpp" line="401"/>
+        <location filename="../ttlv_tree_view.cpp" line="359"/>
+        <location filename="../ttlv_tree_view.cpp" line="380"/>
+        <location filename="../ttlv_tree_view.cpp" line="399"/>
         <source>There is no selected item</source>
         <translation>선택한 아이템이 없습니다.</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="444"/>
+        <location filename="../ttlv_tree_view.cpp" line="442"/>
         <source>The item is not structured</source>
         <translation>해당 아이템이 구조적이지 않습니다</translation>
     </message>

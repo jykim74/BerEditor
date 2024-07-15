@@ -53,6 +53,17 @@ void EditTTLVDlg::initialize()
 
     mLengthText->setText( pItem->getLengthHex() );
     mValueText->setPlainText( pItem->getValueHex( &binTTLV ) );
+
+    if( pItem->isStructure() == true )
+    {
+        mValueText->setReadOnly( true );
+        mModifyBtn->hide();
+    }
+    else
+    {
+        mValueText->setReadOnly( false );
+        mModifyBtn->show();
+    }
 }
 
 void EditTTLVDlg::changeValue()
