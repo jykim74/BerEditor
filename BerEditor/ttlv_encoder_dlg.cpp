@@ -134,6 +134,9 @@ TTLVEncoderDlg::TTLVEncoderDlg(QWidget *parent) :
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+
+    mInputClearBtn->setFixedWidth(34);
+    mOutputClearBtn->setFixedWidth(34);
 #endif
     resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
