@@ -85,7 +85,9 @@ void DataEncoderDlg::onClickEncodeBtn()
     QString inputStr = mInputText->toPlainText();
     QString outputStr = "";
 
-    if( inputStr.length() < 1 )
+    int nInputLen = inputStr.length();
+
+    if( nInputLen < 1 )
     {
         berApplet->warningBox( tr( "Please enter input value" ), this );
         return;
@@ -123,6 +125,7 @@ void DataEncoderDlg::outTypeChanged(int index)
 void DataEncoderDlg::inputChanged()
 {
     int nInputType = 0;
+    QString strInput = mInputText->toPlainText();
 
     if( mInputTypeStringBtn->isChecked() )
         nInputType = DATA_STRING;
@@ -133,7 +136,7 @@ void DataEncoderDlg::inputChanged()
     else if( mInputTypeURL->isChecked() )
         nInputType = DATA_URL;
 
-    QString strLen = getDataLenString( nInputType, mInputText->toPlainText() );
+    QString strLen = getDataLenString( nInputType, strInput );
     mInputLenText->setText( QString("%1").arg(strLen));
 }
 
