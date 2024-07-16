@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>711</width>
-    <height>501</height>
+    <width>517</width>
+    <height>415</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -355,6 +355,54 @@
     </layout>
    </item>
    <item>
+    <widget class="Line" name="line_4">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_8">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mCheckKeyPairBtn">
+       <property name="text">
+        <string>Check KeyPair</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mMakeCSRBtn">
+       <property name="text">
+        <string>Make CSR</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mGenKeyPairBtn">
+       <property name="text">
+        <string>Generate KeyPair</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
     <widget class="Line" name="line_6">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -651,38 +699,37 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_3">
-     <item row="0" column="0">
-      <widget class="QPushButton" name="mGenKeyPairBtn">
-       <property name="text">
-        <string>Generate KeyPair</string>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mMakeCSRBtn">
-       <property name="text">
-        <string>Make CSR</string>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
        </property>
-      </widget>
+      </spacer>
      </item>
-     <item row="0" column="3">
+     <item row="0" column="4">
       <widget class="QPushButton" name="mEncryptBtn">
        <property name="text">
         <string>Encrypt PrivateKey</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="4">
+     <item row="0" column="5">
       <widget class="QPushButton" name="mDecryptBtn">
        <property name="text">
         <string>Decrypt PrivateKey</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mCheckKeyPairBtn">
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mClearAllBtn">
        <property name="text">
-        <string>Check KeyPair</string>
+        <string>Clear All</string>
        </property>
       </widget>
      </item>
@@ -716,13 +763,6 @@
         </size>
        </property>
       </spacer>
-     </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="mClearAllBtn">
-       <property name="text">
-        <string>Clear All</string>
-       </property>
-      </widget>
      </item>
     </layout>
    </item>
