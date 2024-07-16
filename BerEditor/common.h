@@ -132,6 +132,7 @@ bool isValidNumFormat( const QString strInput, int nNumber );
 bool isEmail( const QString strEmail );
 bool isHex( const QString strHexString );
 bool isBase64( const QString strBase64String );
+bool isURLEncode( const QString strURLEncode );
 
 int getDataFromURI( const QString strURI, BIN *pData );
 int checkOCSP( const QString strURL, const BIN *pCA, const BIN *pCert, JCertStatusInfo* pStatusInfo);

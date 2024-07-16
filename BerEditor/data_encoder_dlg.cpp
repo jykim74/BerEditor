@@ -74,6 +74,8 @@ void DataEncoderDlg::clickFindFile()
 
         mInputText->setPlainText( getHexString( &binFile ));
         JS_BIN_reset( &binFile );
+
+        berApplet->setCurFile( strFile );
     }
 }
 

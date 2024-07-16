@@ -92,7 +92,22 @@ void DecodeDataDlg::findData()
     if( strFileName.length() < 1 ) return;
 
     JS_BIN_fileReadBER( strFileName.toLocal8Bit().toStdString().c_str(), &binData );
-    mDataText->setPlainText( getHexString( &binData ));
+
+    if( mTypeHex->isChecked() )
+    {
+        mDataText->setPlainText( getHexString( &binData ));
+    }
+    else
+    {
+        char *pBase64 = NULL;
+        JS_BIN_encodeBase64( &binData, &pBase64 );
+
+        if( pBase64 )
+        {
+            mDataText->setPlainText( pBase64 );
+            JS_free( pBase64 );
+        }
+    }
 
     JS_BIN_reset( &binData );
     berApplet->setCurFile( strFileName );

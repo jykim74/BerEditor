@@ -599,7 +599,7 @@ void TTLVClientDlg::clearResponse()
 void TTLVClientDlg::clickReadMain()
 {
     BIN binTTLV = berApplet->getTTLV();
-    if( binTTLV.nLen <= 0 )
+    if( binTTLV.nLen <= 0 || berApplet->mainWindow()->isTTLV() == false )
     {
         berApplet->warningBox( tr( "There is no TTLV data" ), this );
         return;
