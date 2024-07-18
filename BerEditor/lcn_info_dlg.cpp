@@ -5,6 +5,7 @@
  */
 #include <QDateTime>
 #include <QSysInfo>
+#include <QDesktopServices>
 
 #include "lcn_info_dlg.h"
 #include "common.h"
@@ -22,6 +23,7 @@ LCNInfoDlg::LCNInfoDlg(QWidget *parent) :
 {
     setupUi(this);
 
+    connect( mLCNRequestBtn, SIGNAL(clicked()), this, SLOT(clickLCNRequest()));
     connect( mGetBtn, SIGNAL(clicked()), this, SLOT(clickGet()));
     connect( mUpdateBtn, SIGNAL(clicked()), this, SLOT(clickUpdate()));
     connect( mRemoveBtn, SIGNAL(clicked()), this, SLOT(clickRemove()));
@@ -35,6 +37,7 @@ LCNInfoDlg::LCNInfoDlg(QWidget *parent) :
     layout()->setSpacing(5);
 #endif
     resize(width(), minimumSizeHint().height());
+    mCloseBtn->setDefault(true);
 }
 
 LCNInfoDlg::~LCNInfoDlg()
@@ -301,6 +304,14 @@ end :
     JS_UTIL_resetNameVal( &sNameVal );
 
     return ret;
+}
+
+void LCNInfoDlg::clickLCNRequest()
+{
+    QString strURL = getLicenseURI();
+    strURL += "/user_reg.php";
+
+    QDesktopServices::openUrl(QUrl(strURL));
 }
 
 void LCNInfoDlg::clickGet()

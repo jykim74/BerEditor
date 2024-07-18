@@ -30,6 +30,7 @@ private slots:
     void clickRemove();
     void checkUseFile();
     void checkStopMessage();
+    void clickLCNRequest();
 
 private:
     QString getLicenseURI();

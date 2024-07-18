@@ -4204,7 +4204,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">데이타를 입력 하세요</translation>
     </message>
     <message>
-        <location filename="../data_encoder_dlg.cpp" line="90"/>
+        <location filename="../data_encoder_dlg.cpp" line="94"/>
         <source>Please enter input value</source>
         <translation>입력값을 입력하세요</translation>
     </message>
@@ -5078,8 +5078,8 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../gen_key_pair_dlg.ui" line="106"/>
-        <location filename="../gen_key_pair_dlg.cpp" line="109"/>
-        <location filename="../gen_key_pair_dlg.cpp" line="128"/>
+        <location filename="../gen_key_pair_dlg.cpp" line="114"/>
+        <location filename="../gen_key_pair_dlg.cpp" line="133"/>
         <source>Key Length</source>
         <translation>키 길이</translation>
     </message>
@@ -5099,18 +5099,18 @@ Do you want to delete the file and continue?</source>
         <translation>취소</translation>
     </message>
     <message>
-        <location filename="../gen_key_pair_dlg.cpp" line="118"/>
-        <location filename="../gen_key_pair_dlg.cpp" line="137"/>
+        <location filename="../gen_key_pair_dlg.cpp" line="123"/>
+        <location filename="../gen_key_pair_dlg.cpp" line="142"/>
         <source>Named Curve</source>
         <translation>네임즈 커브</translation>
     </message>
     <message>
-        <location filename="../gen_key_pair_dlg.cpp" line="153"/>
+        <location filename="../gen_key_pair_dlg.cpp" line="158"/>
         <source>Enter exponent</source>
         <translation>Exponent 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../gen_key_pair_dlg.cpp" line="186"/>
+        <location filename="../gen_key_pair_dlg.cpp" line="191"/>
         <source>fail to generate keypair: %1</source>
         <translation>키 쌍 생성 실패: %1</translation>
     </message>
@@ -6197,7 +6197,7 @@ Do you want to delete the file and continue?</source>
         <location filename="../key_pair_man_dlg.ui" line="110"/>
         <location filename="../key_pair_man_dlg.ui" line="233"/>
         <location filename="../key_pair_man_dlg.ui" line="259"/>
-        <location filename="../key_pair_man_dlg.ui" line="369"/>
+        <location filename="../key_pair_man_dlg.ui" line="417"/>
         <source>Find</source>
         <translation>찾기</translation>
     </message>
@@ -6220,9 +6220,9 @@ Do you want to delete the file and continue?</source>
     <message>
         <location filename="../key_pair_man_dlg.ui" line="174"/>
         <location filename="../key_pair_man_dlg.ui" line="278"/>
-        <location filename="../key_pair_man_dlg.ui" line="402"/>
-        <location filename="../key_pair_man_dlg.ui" line="488"/>
-        <location filename="../key_pair_man_dlg.ui" line="520"/>
+        <location filename="../key_pair_man_dlg.ui" line="450"/>
+        <location filename="../key_pair_man_dlg.ui" line="536"/>
+        <location filename="../key_pair_man_dlg.ui" line="568"/>
         <source>D</source>
         <translation>D</translation>
     </message>
@@ -6238,9 +6238,9 @@ Do you want to delete the file and continue?</source>
     <message>
         <location filename="../key_pair_man_dlg.ui" line="187"/>
         <location filename="../key_pair_man_dlg.ui" line="226"/>
-        <location filename="../key_pair_man_dlg.ui" line="382"/>
-        <location filename="../key_pair_man_dlg.ui" line="415"/>
-        <location filename="../key_pair_man_dlg.ui" line="501"/>
+        <location filename="../key_pair_man_dlg.ui" line="430"/>
+        <location filename="../key_pair_man_dlg.ui" line="463"/>
+        <location filename="../key_pair_man_dlg.ui" line="549"/>
         <source>C</source>
         <translation>C</translation>
     </message>
@@ -6251,37 +6251,37 @@ Do you want to delete the file and continue?</source>
         <translation>V</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="389"/>
+        <location filename="../key_pair_man_dlg.ui" line="437"/>
         <source>PriKey Info</source>
         <translation>개인키 정보</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="469"/>
+        <location filename="../key_pair_man_dlg.ui" line="517"/>
         <source>Enc PriKey</source>
         <translation>암호화 개인키</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="657"/>
+        <location filename="../key_pair_man_dlg.ui" line="386"/>
         <source>Generate KeyPair</source>
         <translation>키 쌍 생성</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="671"/>
+        <location filename="../key_pair_man_dlg.ui" line="718"/>
         <source>Encrypt PrivateKey</source>
         <translation>개인키 암호화</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="678"/>
+        <location filename="../key_pair_man_dlg.ui" line="725"/>
         <source>Decrypt PrivateKey</source>
         <translation>개인키 복호화</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="685"/>
+        <location filename="../key_pair_man_dlg.ui" line="372"/>
         <source>Check KeyPair</source>
         <translation>키 쌍 체크</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="664"/>
+        <location filename="../key_pair_man_dlg.ui" line="379"/>
         <source>Make CSR</source>
         <translation>CSR 만들기</translation>
     </message>
@@ -6294,7 +6294,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">PFX</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="422"/>
+        <location filename="../key_pair_man_dlg.ui" line="470"/>
         <source>View</source>
         <translation>보기</translation>
     </message>
@@ -6303,7 +6303,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">암호화 개인키</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="595"/>
+        <location filename="../key_pair_man_dlg.ui" line="643"/>
         <source>CSR</source>
         <translation>CSR</translation>
     </message>
@@ -6312,12 +6312,12 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">PrivateKey Info</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="625"/>
+        <location filename="../key_pair_man_dlg.ui" line="673"/>
         <source>Password</source>
         <translation>암호</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="639"/>
+        <location filename="../key_pair_man_dlg.ui" line="687"/>
         <source>Method</source>
         <translation>방식</translation>
     </message>
@@ -6338,12 +6338,12 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">PFX 암호화</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="703"/>
+        <location filename="../key_pair_man_dlg.ui" line="750"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="723"/>
+        <location filename="../key_pair_man_dlg.ui" line="732"/>
         <source>Clear All</source>
         <translation>전체 지우기</translation>
     </message>
@@ -6566,9 +6566,14 @@ Do you want to delete the file and continue?</source>
         <translation>가져오기</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.ui" line="393"/>
+        <location filename="../lcn_info_dlg.ui" line="366"/>
         <source>Remove</source>
         <translation>제거 하기</translation>
+    </message>
+    <message>
+        <location filename="../lcn_info_dlg.ui" line="400"/>
+        <source>License Request</source>
+        <translation>라이선스 요청</translation>
     </message>
     <message>
         <location filename="../lcn_info_dlg.ui" line="315"/>
@@ -6581,17 +6586,17 @@ Do you want to delete the file and continue?</source>
         <translation>BerEditor 라이선스 정보</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.ui" line="379"/>
+        <location filename="../lcn_info_dlg.ui" line="393"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.ui" line="386"/>
+        <location filename="../lcn_info_dlg.ui" line="373"/>
         <source>Update</source>
         <translation>갱신</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="104"/>
+        <location filename="../lcn_info_dlg.cpp" line="107"/>
         <source>This BerEditor is licensed version</source>
         <translation>BerEditor은 라이선스 버전 입니다.</translation>
     </message>
@@ -6609,22 +6614,22 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">라이선스가 유효하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="334"/>
+        <location filename="../lcn_info_dlg.cpp" line="345"/>
         <source>Please enter a email</source>
         <translation>이메일을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="340"/>
+        <location filename="../lcn_info_dlg.cpp" line="351"/>
         <source>Please enter a license key</source>
         <translation>라이센스 키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="348"/>
+        <location filename="../lcn_info_dlg.cpp" line="359"/>
         <source>failed to get license %1 : %2</source>
         <translation>라이선스 가져오기 실패 %1 : %2</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="436"/>
+        <location filename="../lcn_info_dlg.cpp" line="447"/>
         <source>failed to renew license %1 : %2</source>
         <translation>라이선스 갱신 실패 %1 : %2</translation>
     </message>
@@ -6633,44 +6638,44 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">라이선스 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="109"/>
+        <location filename="../lcn_info_dlg.cpp" line="112"/>
         <source>This BerEditor is unlicensed version</source>
         <translation>BerEditor 은 라이선스가 없는 버전입니다</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="118"/>
+        <location filename="../lcn_info_dlg.cpp" line="121"/>
         <source>[Expired:%1]</source>
         <translation>[만료 일자: %1]</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="122"/>
+        <location filename="../lcn_info_dlg.cpp" line="125"/>
         <source>[No license]</source>
         <translation>[라이선스 없음]</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="359"/>
+        <location filename="../lcn_info_dlg.cpp" line="370"/>
         <source>failed to parse license [%1]</source>
         <translation>라이선스 파싱 실패: %1</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="367"/>
+        <location filename="../lcn_info_dlg.cpp" line="378"/>
         <source>The license is not valid:%1</source>
         <translation>라이선스가 유효하지 않습니다: %1</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="379"/>
-        <location filename="../lcn_info_dlg.cpp" line="447"/>
+        <location filename="../lcn_info_dlg.cpp" line="390"/>
+        <location filename="../lcn_info_dlg.cpp" line="458"/>
         <source>Your current license has a longer usage period.</source>
         <translation>현재 라이선스가 더 긴 기간입니다.</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="395"/>
-        <location filename="../lcn_info_dlg.cpp" line="472"/>
+        <location filename="../lcn_info_dlg.cpp" line="406"/>
+        <location filename="../lcn_info_dlg.cpp" line="483"/>
         <source>You have changed license. Restart to apply it?</source>
         <translation>라이선스가 변경 되었습니다.적용을 위해 다시 시작 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="424"/>
+        <location filename="../lcn_info_dlg.cpp" line="435"/>
         <source>There is currently no license.</source>
         <translation>현재 라이선스가 없습니다</translation>
     </message>
@@ -6679,17 +6684,17 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">라이선스 갱신 실패: %1</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="460"/>
+        <location filename="../lcn_info_dlg.cpp" line="471"/>
         <source>License is invalid : %1</source>
         <translation>라이선스가 유효하지 않습니다: %1</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="481"/>
+        <location filename="../lcn_info_dlg.cpp" line="492"/>
         <source>Are you sure you want to remove invalid license information?</source>
         <translation>유효하지 않는 라이선스를 제거 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="488"/>
+        <location filename="../lcn_info_dlg.cpp" line="499"/>
         <source>Remove invalid license settings</source>
         <translation>유효하지 않는 라이선스 설정 제거하기</translation>
     </message>
@@ -6702,9 +6707,9 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">라이선스가 발급 되지 않았습니다</translation>
     </message>
     <message>
-        <location filename="../lcn_info_dlg.cpp" line="243"/>
-        <location filename="../lcn_info_dlg.cpp" line="325"/>
-        <location filename="../lcn_info_dlg.cpp" line="416"/>
+        <location filename="../lcn_info_dlg.cpp" line="246"/>
+        <location filename="../lcn_info_dlg.cpp" line="336"/>
+        <location filename="../lcn_info_dlg.cpp" line="427"/>
         <source>This service is not yet supported.</source>
         <translation>아직 지원하지 않는 서비스 입니다</translation>
     </message>
@@ -11445,7 +11450,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../ttlv_encoder_dlg.ui" line="275"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="162"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="165"/>
         <source>KeyLength</source>
         <translation>키 길이</translation>
     </message>
@@ -11561,7 +11566,7 @@ Do you want to delete the file and continue?</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.cpp" line="167"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="170"/>
         <source>NamedCurve</source>
         <translation>네임즈 커브</translation>
     </message>
