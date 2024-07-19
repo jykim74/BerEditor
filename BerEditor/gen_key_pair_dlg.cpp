@@ -39,6 +39,7 @@ GenKeyPairDlg::GenKeyPairDlg(QWidget *parent) :
 
     initialize();
     mRSACheck->click();
+    mOKBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);

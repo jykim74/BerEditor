@@ -1093,7 +1093,7 @@ void CertManDlg::clickViewCert()
     ret = readPriKeyCert( &binEncPri, &binCert );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to read certificate: %1" ).arg(ret ), this);
+        berApplet->warningBox( tr( "Please select a certificate [%1]" ).arg(ret), this);
         goto end;
     }
 
@@ -1114,15 +1114,15 @@ void CertManDlg::clickDeleteCert()
     QString strCertPath;
     QString strPriKeyPath;
 
-    bVal = berApplet->yesOrCancelBox( tr( "Are you sure to delete the certificate" ), this, false );
-    if( bVal == false ) return;
-
     QString strPath = getSeletedPath();
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "The certificate is not selected" ), this );
+        berApplet->warningBox( tr( "Please select a certificate" ), this );
         return;
     }
+
+    bVal = berApplet->yesOrCancelBox( tr( "Are you sure to delete the certificate" ), this, false );
+    if( bVal == false ) return;
 
     strCertPath = QString( "%1/%2" ).arg( strPath ).arg( kCertFile );
     strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPriKeyFile );
@@ -1143,14 +1143,14 @@ void CertManDlg::clickDecodeCert()
 
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "The certificate is not selected" ), this );
+        berApplet->warningBox( tr( "Please select a certificate" ), this );
         return;
     }
 
     ret = readPriKeyCert( &binEncPri, &binCert );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to read certificate: %1" ).arg(ret ), this);
+        berApplet->warningBox( tr( "Please select a certificate [%1]" ).arg(ret ), this);
         goto end;
     }
 
@@ -1174,7 +1174,7 @@ void CertManDlg::clickDecodePriKey()
     ret = readPriKeyCert( &binEncPri, &binCert );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to read private key: %1" ).arg(ret ), this);
+        berApplet->warningBox( tr( "Please select a certificate [%1]" ).arg(ret ), this);
         goto end;
     }
 
@@ -1206,7 +1206,7 @@ void CertManDlg::clickCheckKeyPair()
     ret = readPriKeyCert( &binEncPriKey, &binCert );
     if( ret != 0 )
     {
-        berApplet->warnLog( tr( "fail to read private key and certificate: %1").arg(ret), this );
+        berApplet->warnLog( tr( "Please select a certificate [%1]").arg(ret), this );
         goto end;
     }
 
@@ -1308,26 +1308,37 @@ void CertManDlg::clickExport()
     }
 
     ret = readPriKeyCert( &binEncPri, &binCert );
-    if( ret != 0 ) goto end;
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr("Please select a certificate [%1]").arg(ret), this );
+        goto end;
+    }
 
     ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEncPri, NULL, &binPri );
-    if( ret != 0 ) goto end;
+    if( ret != 0 )
+    {
+        berApplet->warnLog( tr( "fail to decrypt private key: %1").arg( ret ), this );
+        goto end;
+    }
 
     nKeyType = JS_PKI_getPriKeyType( &binPri );
 
     ret = JS_PKI_encodePFX( &binPFX, nKeyType, strPass.toStdString().c_str(), -1, &binPri, &binCert );
-    if( ret != 0 ) goto end;
+    if( ret != 0 )
+    {
+        berApplet->warnLog( tr( "fail to encode PFX: %1" ).arg(ret ), this );
+        goto end;
+    }
 
     strPFXPath = findSaveFile( this, JS_FILE_TYPE_PFX, berApplet->curFolder() );
+    if( strPFXPath.length() < 1 ) goto end;
+
     JS_BIN_fileWrite( &binPFX, strPFXPath.toStdString().c_str() );
 
     berApplet->messageLog( tr( "PFX saved successfully:%1").arg( strPFXPath ), this );
     berApplet->setCurFile(strPFXPath);
 
 end :
-    if( ret != 0 )
-        berApplet->warnLog( tr( "fail to export PFX: %1" ).arg( ret ), this );
-
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binEncPri );
     JS_BIN_reset( &binCert );
@@ -1356,7 +1367,7 @@ void CertManDlg::clickChangePasswd()
     ret = readPriKeyCert( &binEncPriKey, &binCert );
     if( ret != 0 )
     {
-        berApplet->warnLog( tr( "fail to read private key and certificate: %1").arg(ret), this );
+        berApplet->warnLog( tr( "Please select a certificate [%1]").arg(ret), this );
         goto end;
     }
 
@@ -1418,7 +1429,7 @@ void CertManDlg::clickViewPriKey()
     ret = readPriKeyCert( &binEncPriKey, &binCert );
     if( ret != 0 )
     {
-        berApplet->warnLog( tr( "fail to read private key and certificate: %1").arg(ret), this );
+        berApplet->warnLog( tr( "Please select a certificate [%1]").arg(ret), this );
         goto end;
     }
 
@@ -1449,7 +1460,7 @@ void CertManDlg::clickViewPubKey()
     ret = readPriKeyCert( &binEncPri, &binCert );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to read certificate: %1" ).arg(ret ), this);
+        berApplet->warningBox( tr( "Please select a certificate [%1]" ).arg(ret ), this);
         goto end;
     }
 
@@ -1490,7 +1501,7 @@ void CertManDlg::clickOK()
         ret = readCert( &binCert );
         if( ret != 0 )
         {
-            berApplet->warningBox( tr( "fail to read the certificate" ), this );
+            berApplet->warningBox( tr( "Please select a certificate [%1]" ).arg(ret), this );
             goto end;
         }
 
@@ -1501,7 +1512,7 @@ void CertManDlg::clickOK()
         ret = readCACert( &binCert );
         if( ret != 0 )
         {
-            berApplet->warningBox( tr( "fail to read the CA certificate" ), this );
+            berApplet->warningBox( tr( "Please select a CA certificate [%1]" ).arg(ret), this );
             goto end;
         }
 
@@ -1512,7 +1523,7 @@ void CertManDlg::clickOK()
         ret = readCRL( &binCRL );
         if( ret != 0 )
         {
-            berApplet->warningBox( tr( "fail to read the CRL" ), this );
+            berApplet->warningBox( tr( "Please select a CRL [%1]" ).arg(ret), this );
             goto end;
         }
 
@@ -1531,7 +1542,7 @@ void CertManDlg::clickOK()
         ret = readPriKeyCert( &binEncPriKey, &binCert );
         if( ret != 0 )
         {
-            berApplet->warningBox( tr( "fail to read the private key and certificate" ), this );
+            berApplet->warningBox( tr( "Please select a certificate [%1]" ).arg(ret), this );
             goto end;
         }
 
