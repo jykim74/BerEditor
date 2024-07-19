@@ -1021,6 +1021,7 @@ int CertManDlg::writeCRL( const QString strCRLPath, const BIN *pCRL )
 
 int CertManDlg::readPriKeyCert( BIN *pEncPriKey, BIN *pCert )
 {
+    int ret = 0;
     QString strPriPath;
     QString strCertPath;
 
@@ -1028,56 +1029,65 @@ int CertManDlg::readPriKeyCert( BIN *pEncPriKey, BIN *pCert )
     if( strPath.length() < 1 )
     {
         berApplet->elog( QString( "There is no selected item" ) );
-        return -1;
+        return JSR_ERR;
     }
 
     strPriPath = QString("%1/%2").arg( strPath ).arg( kPriKeyFile );
     strCertPath = QString("%1/%2").arg( strPath ).arg( kCertFile );
 
-    JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), pEncPriKey );
-    JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), pCert );
+    ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), pEncPriKey );
+    if( ret <= 0 ) return JSR_ERR2;
+
+    ret = JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), pCert );
+    if( ret <= 0 ) return JSR_ERR3;
 
     return 0;
 }
 
 int CertManDlg::readCert( BIN *pCert )
 {
+    int ret = 0;
     QString strPath = getSeletedCertPath();
     if( strPath.length() < 1 )
     {
         berApplet->elog( QString( "There is no selected item" ) );
-        return -1;
+        return JSR_ERR;
     }
 
-    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), pCert );
+    ret = JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), pCert );
+    if( ret <= 0 ) return JSR_ERR2;
 
     return 0;
 }
 
 int CertManDlg::readCACert( BIN *pCert )
 {
+    int ret = 0;
     QString strPath = getSeletedCAPath();
     if( strPath.length() < 1 )
     {
         berApplet->elog( QString( "There is no selected item" ) );
-        return -1;
+        return JSR_ERR;
     }
 
-    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), pCert );
+    ret = JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), pCert );
+    if( ret <= 0 ) return JSR_ERR2;
 
     return 0;
 }
 
 int CertManDlg::readCRL( BIN *pCRL )
 {
+    int ret = 0;
     QString strPath = getSeletedCRLPath();
     if( strPath.length() < 1 )
     {
         berApplet->elog( QString( "There is no selected item" ) );
-        return -1;
+        return JSR_ERR;
     }
 
-    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), pCRL );
+    ret = JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), pCRL );
+    if( ret <= 0 ) return JSR_ERR2;
 
     return 0;
 }
@@ -1644,7 +1654,11 @@ void CertManDlg::clickRemoveCA()
     QModelIndex idx = mCA_CertTable->currentIndex();
 
     QTableWidgetItem* item = mCA_CertTable->item( idx.row(), 0 );
-    if( item == NULL ) return;
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "Please select a CA certificate" ), this );
+        return;
+    }
 
     bool bVal = berApplet->yesOrCancelBox( tr( "Do you delete?"), this, false );
     if( bVal == false ) return;
@@ -1671,7 +1685,11 @@ void CertManDlg::clickViewCA()
     QModelIndex idx = mCA_CertTable->currentIndex();
 
     QTableWidgetItem* item = mCA_CertTable->item( idx.row(), 0 );
-    if( item == NULL ) return;
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "Please select a CA certificate" ), this );
+        return;
+    }
 
     const QString strPath = item->data( Qt::UserRole ).toString();
 
@@ -1686,7 +1704,11 @@ void CertManDlg::clickDecodeCA()
     QModelIndex idx = mCA_CertTable->currentIndex();
 
     QTableWidgetItem* item = mCA_CertTable->item( idx.row(), 0 );
-    if( item == NULL ) return;
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "Please select a CA certificate" ), this );
+        return;
+    }
 
     const QString strPath = item->data( Qt::UserRole ).toString();
 
@@ -1703,7 +1725,11 @@ void CertManDlg::clickViewPubKeyCA()
     QModelIndex idx = mCA_CertTable->currentIndex();
 
     QTableWidgetItem* item = mCA_CertTable->item( idx.row(), 0 );
-    if( item == NULL ) return;
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "Please select a CA certificate" ), this );
+        return;
+    }
 
     const QString strPath = item->data( Qt::UserRole ).toString();
     PriKeyInfoDlg priKeyInfo;
@@ -1788,7 +1814,11 @@ void CertManDlg::clickRemoveOther()
     QModelIndex idx = mOther_CertTable->currentIndex();
 
     QTableWidgetItem* item = mOther_CertTable->item( idx.row(), 0 );
-    if( item == NULL ) return;
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "Please select a certificate" ), this );
+        return;
+    }
 
     bool bVal = berApplet->yesOrCancelBox( tr( "Do you delete?"), this, false );
     if( bVal == false ) return;
@@ -1815,7 +1845,11 @@ void CertManDlg::clickViewOther()
     QModelIndex idx = mOther_CertTable->currentIndex();
 
     QTableWidgetItem* item = mOther_CertTable->item( idx.row(), 0 );
-    if( item == NULL ) return;
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "Please select a certificate" ), this );
+        return;
+    }
 
     const QString strPath = item->data( Qt::UserRole ).toString();
 
@@ -1830,7 +1864,11 @@ void CertManDlg::clickDecodeOther()
     QModelIndex idx = mOther_CertTable->currentIndex();
 
     QTableWidgetItem* item = mOther_CertTable->item( idx.row(), 0 );
-    if( item == NULL ) return;
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "Please select a certificate" ), this );
+        return;
+    }
 
     const QString strPath = item->data( Qt::UserRole ).toString();
 
@@ -1847,7 +1885,11 @@ void CertManDlg::clickViewPubKeyOther()
     QModelIndex idx = mOther_CertTable->currentIndex();
 
     QTableWidgetItem* item = mOther_CertTable->item( idx.row(), 0 );
-    if( item == NULL ) return;
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "Please select a certificate" ), this );
+        return;
+    }
 
     const QString strPath = item->data( Qt::UserRole ).toString();
     PriKeyInfoDlg priKeyInfo;
@@ -1918,7 +1960,11 @@ void CertManDlg::clickRemoveCRL()
     QModelIndex idx = mCRL_Table->currentIndex();
 
     QTableWidgetItem* item = mCRL_Table->item( idx.row(), 0 );
-    if( item == NULL ) return;
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "Please select a CRL" ), this );
+        return;
+    }
 
     bool bVal = berApplet->yesOrCancelBox( tr( "Do you delete?"), this, false );
     if( bVal == false ) return;
@@ -1944,7 +1990,11 @@ void CertManDlg::clickViewCRL()
     QModelIndex idx = mCRL_Table->currentIndex();
 
     QTableWidgetItem* item = mCRL_Table->item( idx.row(), 0 );
-    if( item == NULL ) return;
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "Please select a CRL" ), this );
+        return;
+    }
 
     const QString strPath = item->data( Qt::UserRole ).toString();
 
@@ -1959,7 +2009,11 @@ void CertManDlg::clickDecodeCRL()
     QModelIndex idx = mCRL_Table->currentIndex();
 
     QTableWidgetItem* item = mCRL_Table->item( idx.row(), 0 );
-    if( item == NULL ) return;
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "Please select a CRL" ), this );
+        return;
+    }
 
     const QString strPath = item->data( Qt::UserRole ).toString();
 
@@ -2040,7 +2094,11 @@ void CertManDlg::clickRemoveTrust()
     QModelIndex idx = mRCA_CertTable->currentIndex();
 
     QTableWidgetItem* item = mRCA_CertTable->item( idx.row(), 0 );
-    if( item == NULL ) return;
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "Please select a Trust RootCA" ), this );
+        return;
+    }
 
     bool bVal = berApplet->yesOrCancelBox( tr( "Do you delete?"), this, false );
     if( bVal == false ) return;
@@ -2067,7 +2125,11 @@ void CertManDlg::clickViewTrust()
     QModelIndex idx = mRCA_CertTable->currentIndex();
 
     QTableWidgetItem* item = mRCA_CertTable->item( idx.row(), 0 );
-    if( item == NULL ) return;
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "Please select a Trust RootCA" ), this );
+        return;
+    }
 
     const QString strPath = item->data( Qt::UserRole ).toString();
 
@@ -2082,7 +2144,11 @@ void CertManDlg::clickDecodeTrust()
     QModelIndex idx = mRCA_CertTable->currentIndex();
 
     QTableWidgetItem* item = mRCA_CertTable->item( idx.row(), 0 );
-    if( item == NULL ) return;
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "Please select a Trust RootCA" ), this );
+        return;
+    }
 
     const QString strPath = item->data( Qt::UserRole ).toString();
 
@@ -2099,7 +2165,11 @@ void CertManDlg::clickViewPubKeyTrust()
     QModelIndex idx = mRCA_CertTable->currentIndex();
 
     QTableWidgetItem* item = mRCA_CertTable->item( idx.row(), 0 );
-    if( item == NULL ) return;
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "Please select a Trust RootCA" ), this );
+        return;
+    }
 
     const QString strPath = item->data( Qt::UserRole ).toString();
     PriKeyInfoDlg priKeyInfo;

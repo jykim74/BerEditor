@@ -11,6 +11,8 @@ PasswdDlg::PasswdDlg(QWidget *parent)
     connect( mOKBtn, SIGNAL(clicked()), this, SLOT(clickOK()));
     connect( mCancelBtn, SIGNAL(clicked()), this, SLOT(close()));
 
+    mOKBtn->setDefault(true);
+
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
 #endif
