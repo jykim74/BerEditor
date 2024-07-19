@@ -91,6 +91,7 @@ SCEPClientDlg::SCEPClientDlg(QWidget *parent)
 #endif
     resize(width(), minimumSizeHint().height());
     initialize();
+    mGetCABtn->setDefault(true);
 }
 
 SCEPClientDlg::~SCEPClientDlg()
@@ -120,7 +121,6 @@ void SCEPClientDlg::initialize()
 
     JS_SCEP_init();
     checkEncPriKey();
-    mCloseBtn->setDefault(true);
 }
 
 QStringList SCEPClientDlg::getUsedURL()

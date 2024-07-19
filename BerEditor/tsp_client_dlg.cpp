@@ -59,6 +59,7 @@ TSPClientDlg::TSPClientDlg(QWidget *parent) :
 #endif
     resize(width(), minimumSizeHint().height());
     initialize();
+    mEncodeBtn->setDefault(true);
 }
 
 TSPClientDlg::~TSPClientDlg()
@@ -84,7 +85,6 @@ void TSPClientDlg::initialize()
     mHashCombo->setCurrentText( setMgr->defaultHash() );
 
     mPolicyText->setText( "1.2.3.4" );
-    mCloseBtn->setDefault(true);
 }
 
 QStringList TSPClientDlg::getUsedURL()

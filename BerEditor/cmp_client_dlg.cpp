@@ -89,6 +89,7 @@ CMPClientDlg::CMPClientDlg(QWidget *parent)
 #endif
     resize(width(), minimumSizeHint().height());
     initialize();
+    mGENMBtn->setDefault(true);
 }
 
 CMPClientDlg::~CMPClientDlg()
@@ -117,7 +118,6 @@ void CMPClientDlg::initialize()
     }
 
     mURLCombo->setEditable(true);
-    mCloseBtn->setDefault(true);
     checkEncPriKey();
 }
 

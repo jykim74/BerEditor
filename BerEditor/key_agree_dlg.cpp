@@ -22,6 +22,8 @@ KeyAgreeDlg::KeyAgreeDlg(QWidget *parent) :
 {
     setupUi(this);
 
+    connect( mECDHParamCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeECDHParam(int)));
+
     connect( mGenParamBtn, SIGNAL(clicked()), this, SLOT(genDHParam()));
     connect( mADHPriBtn, SIGNAL(clicked()), this, SLOT(genADHPri()));
     connect( mBDHPriBtn, SIGNAL(clicked()), this, SLOT(genBDHPri()));
@@ -65,7 +67,7 @@ KeyAgreeDlg::KeyAgreeDlg(QWidget *parent) :
 #endif
     resize(minimumSizeHint().width(), minimumSizeHint().height());
 
-    mCloseBtn->setFocus();
+    mACalcBtn->setDefault(true);
 }
 
 KeyAgreeDlg::~KeyAgreeDlg()
@@ -86,6 +88,26 @@ void KeyAgreeDlg::calcualteA()
         BIN binP = {0,0};
         BIN binG = {0,0};
 
+        if( mPText->toPlainText().length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter P value" ), this );
+            mPText->setFocus();
+            return;
+        }
+
+        if( mAPrivateKeyText->text().length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter A Private Key" ), this );
+            mAPrivateKeyText->setFocus();
+            return;
+        }
+
+        if( mBPublicKeyText->text().length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter B Public Key" ), this );
+            mBPublicKeyText->setFocus();
+            return;
+        }
 
         JS_BIN_decodeHex( mPText->toPlainText().toStdString().c_str(), &binP );
         JS_BIN_decodeHex( mGCombo->currentText().toStdString().c_str(), &binG );
@@ -107,6 +129,10 @@ void KeyAgreeDlg::calcualteA()
             berApplet->log( QString ( "Secret     : %1" ).arg( getHexString(&binSecX)));
             berApplet->logLine();
         }
+        else
+        {
+            berApplet->warnLog( tr( "fail to calculate Secret: %1").arg( ret ), this );
+        }
 
         JS_BIN_reset( &binP );
         JS_BIN_reset( &binG );
@@ -116,12 +142,26 @@ void KeyAgreeDlg::calcualteA()
         BIN binX = {0,0};
         BIN binY = {0,0};
 
+        if( mAECDHPriKeyText->text().length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter ECDH A Private Key"), this );
+            mAECDHPriKeyText->setFocus();
+            return;
+        }
+
+        if( mBECDHPubKeyText->text().length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter ECDH B Public Key" ), this );
+            mBECDHPubKeyText->setFocus();
+            return;
+        }
+
         JS_BIN_decodeHex( mAECDHPriKeyText->text().toStdString().c_str(), &binPri );
         JS_BIN_decodeHex( mBECDHPubKeyText->text().toStdString().c_str(), &binPub );
 
         JS_BIN_set( &binX, binPub.pVal, binPub.nLen / 2 );
         JS_BIN_set( &binY, &binPub.pVal[binX.nLen], binPub.nLen / 2);
- //       ret = JS_PKI_getECDHSecretWithValue( mECDHParamCombo->currentText().toStdString().c_str(), &binPri, &binX, &binY, &binSecret );
+
         ret = JS_PKI_getECDHComputeKey( mECDHParamCombo->currentText().toStdString().c_str(), &binPri, &binX, &binY, &binSecX, &binSecY );
 
         if( ret == 0 )
@@ -135,6 +175,10 @@ void KeyAgreeDlg::calcualteA()
             berApplet->log( QString( "SecretX    : %1").arg( getHexString( &binSecX )));
             berApplet->log( QString( "SecretY    : %1").arg( getHexString( &binSecY )));
             berApplet->logLine();
+        }
+        else
+        {
+            berApplet->warnLog( tr( "fail to calculate Secret: %1").arg( ret ), this );
         }
 
         JS_BIN_reset( &binX );
@@ -173,6 +217,27 @@ void KeyAgreeDlg::calcualteB()
         JS_BIN_decodeHex( mBPrivateKeyText->text().toStdString().c_str(), &binPri );
         JS_BIN_decodeHex( mAPublicKeyText->text().toStdString().c_str(), &binPub );
 
+        if( mPText->toPlainText().length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter P value" ), this );
+            mPText->setFocus();
+            return;
+        }
+
+        if( mBPrivateKeyText->text().length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter B Private Key" ), this );
+            mBPrivateKeyText->setFocus();
+            return;
+        }
+
+        if( mAPublicKeyText->text().length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter A Public Key" ), this );
+            mAPublicKeyText->setFocus();
+            return;
+        }
+
 
         ret = JS_PKI_getDHSecret( &binP, &binG, &binPri, &binPub, &binSecX );
 
@@ -188,6 +253,10 @@ void KeyAgreeDlg::calcualteB()
             berApplet->log( QString ( "Secret     : %1" ).arg( getHexString(&binSecX)));
             berApplet->logLine();
         }
+        else
+        {
+            berApplet->warnLog( tr( "fail to calculate Secret: %1").arg( ret ), this );
+        }
 
         JS_BIN_reset( &binP );
         JS_BIN_reset( &binG );
@@ -196,6 +265,20 @@ void KeyAgreeDlg::calcualteB()
     {
         BIN binX = {0,0};
         BIN binY = {0,0};
+
+        if( mBECDHPriKeyText->text().length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter ECDH B Private Key"), this );
+            mBECDHPriKeyText->setFocus();
+            return;
+        }
+
+        if( mAECDHPubKeyText->text().length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter ECDH A Public Key" ), this );
+            mAECDHPubKeyText->setFocus();
+            return;
+        }
 
         JS_BIN_decodeHex( mBECDHPriKeyText->text().toStdString().c_str(), &binPri );
         JS_BIN_decodeHex( mAECDHPubKeyText->text().toStdString().c_str(), &binPub );
@@ -216,6 +299,10 @@ void KeyAgreeDlg::calcualteB()
             berApplet->log( QString( "SecretX    : %1").arg( getHexString( &binSecX )));
             berApplet->log( QString( "SecretY    : %1").arg( getHexString( &binSecY )));
             berApplet->logLine();
+        }
+        else
+        {
+            berApplet->warnLog( tr( "fail to calculate Secret: %1").arg( ret ), this );
         }
 
         JS_BIN_reset( &binX );
@@ -788,6 +875,18 @@ void KeyAgreeDlg::secretKeyChanged()
 {
     QString strLen = getDataLenString( DATA_HEX, mSecretKeyText->toPlainText() );
     mSecretKeyLenText->setText( QString("%1").arg(strLen));
+}
+
+void KeyAgreeDlg::changeECDHParam( int index )
+{
+    char sOID[1024];
+
+    memset(sOID, 0x00, sizeof(sOID));
+
+    QString strSN = mECDHParamCombo->currentText();
+    JS_PKI_getOIDFromSN( strSN.toStdString().c_str(), sOID );
+
+    mECDHParamText->setText( sOID );
 }
 
 void KeyAgreeDlg::clickClearDataAll()

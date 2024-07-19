@@ -88,7 +88,7 @@ EncDecDlg::EncDecDlg(QWidget *parent) :
     connect( mFindDstFileBtn, SIGNAL(clicked()), this, SLOT(clickFindDstFile()));
 
     clickUseAE();
-    mCloseBtn->setFocus();
+    mRunBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -184,6 +184,7 @@ void EncDecDlg::dataRun()
     if( strKey.isEmpty() )
     {
         berApplet->warningBox( tr( "Please enter key value" ), this );
+        mKeyText->setFocus();
         JS_BIN_reset(&binSrc);
         return;
     }
@@ -195,6 +196,7 @@ void EncDecDlg::dataRun()
         berApplet->warningBox( tr( "Key length(%1) is incorrect" ).arg( binKey.nLen), this );
         JS_BIN_reset( &binSrc );
         JS_BIN_reset( &binKey );
+        mKeyText->setFocus();
         return;
     }
 

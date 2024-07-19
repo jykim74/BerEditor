@@ -48,7 +48,7 @@ GenHashDlg::GenHashDlg(QWidget *parent) :
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
 
     initialize();
-    mCloseBtn->setFocus();
+    mDigestBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);

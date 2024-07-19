@@ -130,7 +130,7 @@ TTLVEncoderDlg::TTLVEncoderDlg(QWidget *parent) :
     connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clearOutput()));
 
     initialize();
-    mCloseBtn->setDefault(true);
+    mCreateBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);

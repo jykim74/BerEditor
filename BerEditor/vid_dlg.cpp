@@ -42,7 +42,8 @@ VIDDlg::VIDDlg(QWidget *parent)
 #endif
 
     initialize();
-    mCloseBtn->setFocus();
+    mMakeVIDBtn->setDefault(true);
+
     resize(width(), minimumSizeHint().height());
 }
 
@@ -100,22 +101,23 @@ void VIDDlg::clickVerifyVID()
     if( strSSN.length() < 1 )
     {
         berApplet->warningBox( tr( "Please enter SSN" ), this );
+        mSSNText->setFocus();
         return;
     }
 
     if( strRand.length() < 1 )
     {
         berApplet->warningBox( tr( "Please enter random value" ), this );
+        mRandText->setFocus();
         return;
     }
 
     if( strVID.length() < 1 )
     {
         berApplet->warningBox( tr( "Please enter VID value" ), this );
+        mVIDText->setFocus();
         return;
     }
-
-
 
     getBINFromString( &binRand, mRandCombo->currentText(), strRand );
     getBINFromString( &binVID, DATA_HEX, strVID );
@@ -163,20 +165,18 @@ void VIDDlg::clickMakeVID()
     if( strSSN.length() < 1 )
     {
         berApplet->warningBox( tr( "Please enter SSN" ), this );
+        mSSNText->setFocus();
         return;
     }
 
     if( strRand.length() < 1 )
     {
         berApplet->warningBox( tr( "Please enter random value" ), this );
+        mRandText->setFocus();
         return;
     }
 
-
-
     getBINFromString( &binRand, mRandCombo->currentText(), strRand );
-
-
 
     ret = JS_PKI_makeVID( mHashCombo->currentText().toStdString().c_str(),
                          strSSN.toStdString().c_str(),

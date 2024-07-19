@@ -59,6 +59,8 @@ private slots:
     void secretKeyChanged();
     void clickClearDataAll();
 
+    void changeECDHParam( int index );
+
 private:
     void initialize();
 };

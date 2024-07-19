@@ -50,6 +50,7 @@ SSSDlg::SSSDlg(QWidget *parent) :
     resize(width(), minimumSizeHint().height());
 
     initialize();
+    mSplitBtn->setDefault(true);
 }
 
 SSSDlg::~SSSDlg()
@@ -198,12 +199,14 @@ void SSSDlg::clickSplit()
     if( binSrc.nLen < 8 )
     {
         berApplet->warningBox( tr( "Input value must be at least 8 bytes"), this );
+        mSrcText->setFocus();
         goto end;
     }
 
     if( binSrc.nLen > binPrime.nLen )
     {
         berApplet->warningBox( tr( "Prime value ​​must be longer than or equal to the source value" ), this );
+        mPrimeText->setFocus();
         goto end;
     }
 

@@ -87,7 +87,7 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
     connect( mInputClearBtn, SIGNAL(clicked()), this, SLOT(clickInputClear()));
     connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickOutputClear()));
 
-    mCloseBtn->setFocus();
+    mRunBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -275,6 +275,7 @@ void PubEncDecDlg::Run()
     if( strInput.isEmpty() )
     {
         berApplet->warningBox( tr( "Enter your data"), this );
+        mInputText->setFocus();
         return;
     }
 
@@ -302,6 +303,7 @@ void PubEncDecDlg::Run()
             if( strCertPath.length() < 1 )
             {
                 berApplet->warningBox( tr( "Select a certificate"), this );
+                mFindCertBtn->setFocus();
                 goto end;
             }
 

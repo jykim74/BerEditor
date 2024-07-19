@@ -99,6 +99,7 @@ OCSPClientDlg::OCSPClientDlg(QWidget *parent) :
 #endif
     resize(width(), minimumSizeHint().height());
     initialize();
+    mEncodeBtn->setDefault(true);
 }
 
 OCSPClientDlg::~OCSPClientDlg()
@@ -131,7 +132,6 @@ void OCSPClientDlg::initialize()
 
     checkUseSign();
     checkEncPriKey();
-    mCloseBtn->setDefault(true);
 }
 
 QStringList OCSPClientDlg::getUsedURL()

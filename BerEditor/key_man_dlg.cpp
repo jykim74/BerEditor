@@ -48,6 +48,7 @@ KeyManDlg::KeyManDlg(QWidget *parent) :
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT( clickClearDataAll()));
 
     initialize();
+    mMakeKeyBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -81,7 +82,6 @@ void KeyManDlg::initialize()
     mDstTypeCombo->addItems( kValueTypeList );
     mDstTypeCombo->setCurrentIndex(1);
 
-    mCloseBtn->setFocus();
     tabWidget->setCurrentIndex(0);
 }
 

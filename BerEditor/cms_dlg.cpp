@@ -70,7 +70,8 @@ CMSDlg::CMSDlg(QWidget *parent) :
 
     initialize();
 
-    mCloseBtn->setFocus();
+    mSignedDataBtn->setDefault(true);
+
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
     mSignCertGroup->layout()->setSpacing(5);
@@ -333,6 +334,7 @@ void CMSDlg::clickSignedData()
     if( strInput.isEmpty() )
     {
         berApplet->warningBox( tr( "Please enter input value" ), this );
+        mSrcText->setFocus();
         return;
     }
 
@@ -426,6 +428,7 @@ void CMSDlg::clickEnvelopedData()
     if( strInput.isEmpty() )
     {
         berApplet->warningBox( tr( "Please enter input value" ), this );
+        mSrcText->setFocus();
         return;
     }
 
@@ -521,6 +524,7 @@ void CMSDlg::clickSignAndEnvloped()
     if( strInput.isEmpty() )
     {
         berApplet->warningBox( tr( "Please enter input value" ), this );
+        mSrcText->setFocus();
         return;
     }
 
@@ -650,6 +654,7 @@ void CMSDlg::clickVerifyData()
     if( strInput.isEmpty() )
     {
         berApplet->warningBox( tr( "Please enter input value" ), this );
+        mSrcText->setFocus();
         return;
     }
 
@@ -726,6 +731,7 @@ void CMSDlg::clickDevelopedData()
     if( strInput.isEmpty() )
     {
         berApplet->warningBox( tr( "Please enter input value" ), this );
+        mSrcText->setFocus();
         return;
     }
 
@@ -816,6 +822,7 @@ void CMSDlg::clickDevelopedAndVerify()
     if( strInput.isEmpty() )
     {
         berApplet->warningBox( tr( "Please enter input value" ), this );
+        mSrcText->setFocus();
         return;
     }
 

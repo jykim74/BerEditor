@@ -226,7 +226,7 @@ SSLVerifyDlg::SSLVerifyDlg(QWidget *parent) :
     connect( mClientPriKeyTypeBtn, SIGNAL(clicked()), this, SLOT(clickClientPriKeyType()));
 
     initialize();
-
+    mVerifyBtn->setDefault(true);
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
 
@@ -336,7 +336,7 @@ void SSLVerifyDlg::initialize()
     url_tree_root_->setIcon( 0, QIcon(":/images/ca.png"));
 
     mURLTree->insertTopLevelItem( 0, url_tree_root_ );
-    mVerifyBtn->setDefault(true);
+
 }
 
 QStringList SSLVerifyDlg::getUsedURL()
@@ -778,6 +778,7 @@ void SSLVerifyDlg::clickVerify()
     if( strURL.length() < 2 )
     {
         berApplet->warningBox( tr( "Insert URL" ), this );
+        mURLCombo->setFocus();
         return;
     }
 

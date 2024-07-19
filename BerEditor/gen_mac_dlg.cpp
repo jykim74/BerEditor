@@ -74,7 +74,7 @@ GenMacDlg::GenMacDlg(QWidget *parent) :
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
 
     initialize();
-    mCloseBtn->setFocus();
+    mMACBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -365,6 +365,7 @@ void GenMacDlg::clickMAC()
     {
         berApplet->warningBox( tr( "Please Enter a key value"), this );
         JS_BIN_reset(&binSrc);
+        mKeyText->setFocus();
         return;
     }
 
