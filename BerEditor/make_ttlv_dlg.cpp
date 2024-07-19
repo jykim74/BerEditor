@@ -23,7 +23,7 @@ MakeTTLVDlg::MakeTTLVDlg(QWidget *parent) :
 
     initialize();
 
-    mCancelBtn->setDefault(true);
+    mOKBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -134,15 +134,24 @@ QString MakeTTLVDlg::getData()
 
 void MakeTTLVDlg::clickOK()
 {
+    QString strTag = mTagText->text();
+    QString strType = mTypeText->text();
     QString strData = getData();
+
+    if( strTag.length() < 6 )
+    {
+        berApplet->warningBox( tr( "Tag value length is insufficient"), this );
+        return;
+    }
+
+    if( strType.toInt() <= 0 )
+    {
+        berApplet->warningBox( tr( "Select Type" ), this );
+        return;
+    }
 
     if( strData.length() > 8 )
     {
         accept();
-    }
-    else
-    {
-        reject();
-        return;
     }
 }

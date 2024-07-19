@@ -4,6 +4,7 @@
  * All rights reserved.
  */
 #include <QSettings>
+#include <QUrl>
 
 #include "get_uri_dlg.h"
 #include "mainwindow.h"
@@ -34,6 +35,8 @@ GetURIDlg::GetURIDlg(QWidget *parent) :
     connect( mClearUsedURIBtn, SIGNAL(clicked()), this, SLOT(clickClearUsedURI()));
 
     initUI();
+    mGetBtn->setDefault(true);
+
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
 #endif
@@ -95,25 +98,18 @@ void GetURIDlg::runGet()
         }
 
         QString strURI = getValidURL();
-        berApplet->log( QString( "Get Address: %1").arg( strURI ));
+        QUrl url;
+        url.setUrl( strURI );
+        QString strScheme = url.scheme();
 
-        QStringList strList = strURI.split( ":" );
-        if( strList.size() < 2 )
-        {
-            ret = -1;
-            goto end;
-        }
-
-        QString strProto = strList.at(0);
-
-        if( strProto == "ldap" )
+        if( strScheme.toLower() == "ldap" )
             ret = getLDAP();
-        else if( strProto == "http" || strProto == "https" )
+        else if( strScheme.toLower() == "http" || strScheme.toLower() == "https" )
             ret = getHTTP();
         else
         {
-            berApplet->elog( QString("Invalid Protocol : %1").arg( strProto));
-            ret = -1;
+            berApplet->warningBox( tr("Invalid Scheme : %1").arg( strScheme ), this );
+            return;
         }
     }
 
@@ -125,7 +121,9 @@ end :
         QDialog::accept();
     }
     else
-        QDialog::reject();
+    {
+        berApplet->warnLog( tr( "failed to get data : %1").arg(ret), this);
+    }
 }
 
 int GetURIDlg::getLDAP()
@@ -212,7 +210,7 @@ int GetURIDlg::getHTTP()
 
     ret = JS_HTTP_requestGetBin2( strURI.toStdString().c_str(), NULL, NULL, &nStatus, &data_ );
 
-     saveUsedURI( strURI );
+    saveUsedURI( strURI );
 
     return ret;
 }
@@ -227,8 +225,6 @@ void GetURIDlg::initUI()
 
     clickUseLDAPHost();
     mURICombo->addItems( getUsedURI() );
-
-    mCloseBtn->setFocus();
 }
 
 void GetURIDlg::clickUseLDAPHost()
@@ -256,12 +252,19 @@ void GetURIDlg::clickClearUsedURI()
 
 const QString GetURIDlg::getValidURL()
 {
+    QString strLink;
     QString strURL = mURICombo->currentText();
 
-    strURL.remove( "url=" );
-    strURL.remove( "uri=" );
-    strURL.remove( "URL=" );
-    strURL.remove( "URI=" );
+    QStringList strList = strURL.split( "=" );
+    if( strList.size() < 1 )
+        strLink.clear();
+    else if( strList.size() == 1 )
+        strLink = strList.at(0);
+    else
+    {
+        if( strList.at(0).toUpper() == "URL" || strList.at(0).toUpper() == "URI" )
+            strLink = strList.at(1);
+    }
 
-    return strURL.simplified();
+    return strLink.simplified();
 }

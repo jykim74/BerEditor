@@ -36,7 +36,7 @@ MakeBerDlg::MakeBerDlg(QWidget *parent) :
 //    connectSig();
 
     initialize();
-    mCloseBtn->setDefault(true);
+    mInsertBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -182,6 +182,12 @@ end :
 
 void MakeBerDlg::runInsert()
 {
+    if( mTagText->text().toInt() <= 0 )
+    {
+        berApplet->warningBox( tr( "Select Tag" ), this );
+        return;
+    }
+
     QDialog::accept();
 }
 

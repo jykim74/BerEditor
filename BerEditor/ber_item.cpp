@@ -172,6 +172,8 @@ QString BerItem::GetValueString( const BIN *pBer, int nWidth )
     QString strVal;
     BIN     binVal = {0,0};
 
+    if( length_ <= 0 ) return strVal;
+
     JS_BIN_set( &binVal, pBer->pVal + offset_ + header_size_, length_ );
 
     if( tag_ == JS_OID )
