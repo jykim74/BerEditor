@@ -40,9 +40,12 @@ private slots:
     void genAECDHPriKey();
     void genAECDHPubKey();
     void findAECDHPriKey();
+    void getAFromMan();
+
     void genBECDHPriKey();
     void genBECDHPubKey();
     void findBECDHPriKey();
+    void getBFromMan();
 
     void pChanged();
 

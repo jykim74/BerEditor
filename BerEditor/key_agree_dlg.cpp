@@ -11,7 +11,7 @@
 #include "js_pki_tools.h"
 #include "common.h"
 #include "ber_applet.h"
-
+#include "cert_man_dlg.h"
 
 const QStringList sGList = { "02", "05" };
 
@@ -32,9 +32,11 @@ KeyAgreeDlg::KeyAgreeDlg(QWidget *parent) :
     connect( mAGenPriKeyBtn, SIGNAL(clicked()), this, SLOT(genAECDHPriKey()));
     connect( mAGenPubKeyBtn, SIGNAL(clicked()), this, SLOT(genAECDHPubKey()));
     connect( mAFindPriKeyBtn, SIGNAL(clicked()), this, SLOT(findAECDHPriKey() ));
+    connect( mAGetFromManBtn, SIGNAL(clicked()), this, SLOT(getAFromMan()));
     connect( mBGenPriKeyBtn, SIGNAL(clicked()), this, SLOT(genBECDHPriKey()));
     connect( mBGenPubKeyBtn, SIGNAL(clicked()), this, SLOT(genBECDHPubKey()));
     connect( mBFindPriKeyBtn, SIGNAL(clicked()), this, SLOT(findBECDHPriKey()));
+    connect( mBGetFromManBtn, SIGNAL(clicked()), this, SLOT(getBFromMan()));
     connect( mAGenKeyPairBtn, SIGNAL(clicked()), this, SLOT(genAKeyPair()));
     connect( mBGenKeyPairBtn, SIGNAL(clicked()), this, SLOT(genBKeyPair()));
     connect( mACheckPubKeyBtn, SIGNAL(clicked()), this, SLOT(checkAPubKey()));
@@ -715,6 +717,7 @@ void KeyAgreeDlg::findAECDHPriKey()
 {
     BIN binECKey = {0,0};
     JECKeyVal sECKeyVal;
+    int nKeyType = -1;
 
     const char  *pSN = NULL;
 
@@ -727,6 +730,14 @@ void KeyAgreeDlg::findAECDHPriKey()
     if( fileName.isEmpty() ) return;
 
     JS_BIN_fileRead( fileName.toLocal8Bit().toStdString().c_str(), &binECKey );
+    nKeyType = JS_PKI_getPriKeyType( &binECKey );
+
+    if( nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+    {
+        berApplet->warningBox( tr("Invalid PrivateKey Type: %1").arg( nKeyType ));
+        goto end;
+    }
+
     JS_PKI_getECKeyVal( &binECKey, &sECKeyVal );
     pSN = JS_PKI_getSNFromOID( sECKeyVal.pCurveOID );
 
@@ -737,9 +748,52 @@ void KeyAgreeDlg::findAECDHPriKey()
     mAECDHPubKeyText->setText( strPub );
     mECDHParamCombo->setCurrentText( pSN );
 
-
+end :
+    JS_BIN_reset( &binECKey );
     JS_PKI_resetECKeyVal( &sECKeyVal );
     repaint();
+}
+
+void KeyAgreeDlg::getAFromMan()
+{
+    int nKeyType = -1;
+    BIN binPri = {0,0};
+    JECKeyVal sECKeyVal;
+    const char  *pSN = NULL;
+    QString strPub;
+
+    CertManDlg certMan;
+    certMan.setMode( ManModeSelBoth );
+    certMan.setTitle( tr( "Select a certificate") );
+
+    if( certMan.exec() != QDialog::Accepted )
+        return;
+
+    certMan.getPriKey( &binPri );
+
+    memset( &sECKeyVal, 0x00, sizeof(sECKeyVal));
+
+    nKeyType = JS_PKI_getPriKeyType( &binPri );
+
+    if( nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+    {
+        berApplet->warningBox( tr("Invalid PrivateKey Type: %1").arg( nKeyType ));
+        goto end;
+    }
+
+    JS_PKI_getECKeyVal( &binPri, &sECKeyVal );
+    pSN = JS_PKI_getSNFromOID( sECKeyVal.pCurveOID );
+
+    strPub += sECKeyVal.pPubX;
+    strPub += sECKeyVal.pPubY;
+
+    mAECDHPriKeyText->setText( sECKeyVal.pPrivate );
+    mAECDHPubKeyText->setText( strPub );
+    mECDHParamCombo->setCurrentText( pSN );
+
+end :
+    JS_BIN_reset( &binPri );
+    JS_PKI_resetECKeyVal( &sECKeyVal );
 }
 
 void KeyAgreeDlg::genBECDHPriKey()
@@ -790,6 +844,7 @@ void KeyAgreeDlg::findBECDHPriKey()
 {
     BIN binECKey = {0,0};
     JECKeyVal sECKeyVal;
+    int nKeyType = -1;
 
     const char  *pSN = NULL;
 
@@ -802,6 +857,14 @@ void KeyAgreeDlg::findBECDHPriKey()
     if( fileName.isEmpty() ) return;
 
     JS_BIN_fileRead( fileName.toLocal8Bit().toStdString().c_str(), &binECKey );
+    nKeyType = JS_PKI_getPriKeyType( &binECKey );
+
+    if( nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+    {
+        berApplet->warningBox( tr("Invalid PrivateKey Type: %1").arg( nKeyType ));
+        goto end;
+    }
+
     JS_PKI_getECKeyVal( &binECKey, &sECKeyVal );
     pSN = JS_PKI_getSNFromOID( sECKeyVal.pCurveOID );
 
@@ -812,9 +875,52 @@ void KeyAgreeDlg::findBECDHPriKey()
     mBECDHPubKeyText->setText( strPub );
     mECDHParamCombo->setCurrentText( pSN );
 
-
+end :
+    JS_BIN_reset( &binECKey );
     JS_PKI_resetECKeyVal( &sECKeyVal );
     repaint();
+}
+
+void KeyAgreeDlg::getBFromMan()
+{
+    int nKeyType = -1;
+    BIN binPri = {0,0};
+    JECKeyVal sECKeyVal;
+    const char  *pSN = NULL;
+    QString strPub;
+
+    CertManDlg certMan;
+    certMan.setMode( ManModeSelBoth );
+    certMan.setTitle( tr( "Select a certificate") );
+
+    if( certMan.exec() != QDialog::Accepted )
+        return;
+
+    certMan.getPriKey( &binPri );
+
+    memset( &sECKeyVal, 0x00, sizeof(sECKeyVal));
+
+    nKeyType = JS_PKI_getPriKeyType( &binPri );
+
+    if( nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+    {
+        berApplet->warningBox( tr("Invalid PrivateKey Type: %1").arg( nKeyType ));
+        goto end;
+    }
+
+    JS_PKI_getECKeyVal( &binPri, &sECKeyVal );
+    pSN = JS_PKI_getSNFromOID( sECKeyVal.pCurveOID );
+
+    strPub += sECKeyVal.pPubX;
+    strPub += sECKeyVal.pPubY;
+
+    mBECDHPriKeyText->setText( sECKeyVal.pPrivate );
+    mBECDHPubKeyText->setText( strPub );
+    mECDHParamCombo->setCurrentText( pSN );
+
+end :
+    JS_BIN_reset( &binPri );
+    JS_PKI_resetECKeyVal( &sECKeyVal );
 }
 
 void KeyAgreeDlg::pChanged()
