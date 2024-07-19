@@ -99,11 +99,14 @@ void TTLVTreeView::leftContextMenu( QPoint point )
 
     TTLVTreeItem* item = currentItem();
 
-    menu.addAction( tr("Edit"), this, &TTLVTreeView::editItem );
-
-    if( item->isStructure() == true )
+    if( item != NULL )
     {
-        menu.addAction( tr( "AddTTLV" ), this, &TTLVTreeView::AddTTLV );
+        menu.addAction( tr("Edit"), this, &TTLVTreeView::editItem );
+
+        if( item->isStructure() == true )
+        {
+            menu.addAction( tr( "AddTTLV" ), this, &TTLVTreeView::AddTTLV );
+        }
     }
 
     menu.exec(QCursor::pos());
