@@ -104,6 +104,7 @@ int setOIDList( const QString& strOIDPath );
 QString getHexString( const QString& strVal );
 QString getHexString( unsigned char *pData, int nDataLen );
 QString getHexString( const BIN *pData );
+QString getHexString2( const BIN *pData );
 QString getHexView( const char *pName, const BIN *pBin );
 
 const QString getHexStringArea( unsigned char *pData, int nDataLen, int nWidth = -1 );

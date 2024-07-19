@@ -8,6 +8,7 @@
 
 #include <QDialog>
 #include "ui_data_encoder_dlg.h"
+#include "js_bin.h"
 
 namespace Ui {
 class DataEncoderDlg;
@@ -35,6 +36,8 @@ private slots:
     void clickOutputClear();
 
 private:
+    void makeDump( const BIN *pData );
+    void initialize();
 //    Ui::DataEncoderDlg *ui;
 };
 

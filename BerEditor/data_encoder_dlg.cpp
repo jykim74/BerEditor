@@ -39,6 +39,8 @@ DataEncoderDlg::DataEncoderDlg(QWidget *parent) :
     connect( mInputClearBtn, SIGNAL(clicked()), this, SLOT(clickInputClear()));
     connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickOutputClear()));
 
+    initialize();
+
     mCloseBtn->setFocus();
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -49,6 +51,12 @@ DataEncoderDlg::DataEncoderDlg(QWidget *parent) :
 DataEncoderDlg::~DataEncoderDlg()
 {
 
+}
+
+void DataEncoderDlg::initialize()
+{
+    mOutputTab->setCurrentIndex(0);
+    mOutputTypeCombo->setCurrentIndex(1);
 }
 
 static char getch( unsigned char c )
@@ -107,6 +115,7 @@ void DataEncoderDlg::onClickEncodeBtn()
     getBINFromString( &binSrc, input_type, inputStr );
     outputStr = getStringFromBIN( &binSrc, mOutputTypeCombo->currentText(), mShowPrintTextCheck->isChecked() );
     mOutputText->setPlainText( outputStr );
+    makeDump( &binSrc );
 
     JS_BIN_reset(&binSrc);
     repaint();
@@ -162,6 +171,7 @@ void DataEncoderDlg::clickChange()
     QString strOut = mOutputText->toPlainText();
     mInputText->setPlainText( strOut );
     mOutputText->clear();
+    mDumpText->clear();
 }
 
 void DataEncoderDlg::clickInputClear()
@@ -172,4 +182,41 @@ void DataEncoderDlg::clickInputClear()
 void DataEncoderDlg::clickOutputClear()
 {
     mOutputText->clear();
+    mDumpText->clear();
+}
+
+void DataEncoderDlg::makeDump( const BIN *pData )
+{
+    mDumpText->clear();
+    if( pData == NULL || pData->nLen <= 0 ) return;
+
+    int nLeft = pData->nLen;
+    int nWidth = 16;
+    int nBlock = 0;
+    int nPos = 0;
+
+    BIN binPart = {0,0};
+
+    while( nLeft > 0 )
+    {
+        if( nLeft > nWidth )
+            nBlock = nWidth;
+        else
+            nBlock = nLeft;
+
+        char *pDump = NULL;
+        binPart.pVal = pData->pVal + nPos;
+        binPart.nLen = nBlock;
+
+        JS_BIN_dumpString( &binPart, &pDump );
+
+        mDumpText->appendPlainText( QString( "%1: %2|%3")
+                                       .arg( nPos, 6, 16, QLatin1Char('0') )
+                                       .arg( getHexString2( &binPart ), -48, QLatin1Char(' '))
+                                       .arg( pDump) );
+
+        nPos += nBlock;
+        nLeft -= nBlock;
+        if( pDump ) JS_free( pDump );
+    }
 }

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>690</width>
-    <height>806</height>
+    <width>561</width>
+    <height>641</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -833,7 +833,7 @@
      <item>
       <widget class="QLabel" name="label_12">
        <property name="text">
-        <string>For RSA Version</string>
+        <string>RSA Version</string>
        </property>
       </widget>
      </item>

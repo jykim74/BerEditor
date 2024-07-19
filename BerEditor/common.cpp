@@ -271,6 +271,33 @@ QString getHexString( const BIN *pData )
     return getHexString( pData->pVal, pData->nLen );
 }
 
+QString getHexString2( const BIN *pData )
+{
+    char *pHex = NULL;
+    JS_BIN_encodeHex( pData, &pHex );
+
+    QString strHex;
+
+    if( pHex )
+    {
+        int nLen = strlen( pHex );
+
+        for( int i = 0; i < nLen; i++ )
+        {
+            strHex += pHex[i];
+            strHex += pHex[i+1];
+            i++;
+
+            if( i != ( nLen - 1 ) )
+                strHex += ' ';
+        }
+    }
+
+    if(pHex) JS_free( pHex );
+
+    return strHex;
+}
+
 static char _getPrint( unsigned char c )
 {
     if( isprint(c))
