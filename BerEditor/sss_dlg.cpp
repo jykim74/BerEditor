@@ -253,20 +253,32 @@ void SSSDlg::clickJoin()
 {
     int ret = 0;
     int nRow = mShareTable->rowCount();
-
+    QString strPrime = mPrimeText->text();
 
     BINList *pShareList = NULL;
     BIN binKey = {0,0};
     BIN binPrime = {0,0};
     char *pKeyVal = NULL;
 
-    if( nRow < 1 ) return;
+    if( nRow < 2 )
+    {
+        berApplet->warningBox( tr( "Two or more shared values ​​are required" ), this );
+        mShareText->setFocus();
+        return;
+    }
+
+    if( strPrime.length() < 1 )
+    {
+        berApplet->warningBox(tr("Enter a prime number" ), this );
+        mPrimeText->setFocus();
+        return;
+    }
 
     berApplet->logLine();
     berApplet->log( "-- Join Key" );
     berApplet->logLine();
 
-    JS_BIN_decodeHex( mPrimeText->text().toStdString().c_str(), &binPrime );
+    JS_BIN_decodeHex( strPrime.toStdString().c_str(), &binPrime );
     berApplet->log( QString( "Prime Value : %1").arg( getHexString( &binPrime )));
 
     for( int i = 0; i < nRow; i++ )

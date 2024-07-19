@@ -101,6 +101,7 @@ void DataEncoderDlg::onClickEncodeBtn()
     if( nInputLen < 1 )
     {
         berApplet->warningBox( tr( "Please enter input value" ), this );
+        mInputText->setFocus();
         return;
     }
 

@@ -36,7 +36,7 @@ OIDInfoDlg::OIDInfoDlg(QWidget *parent) :
     connect( mCreateBtn, SIGNAL(clicked()), this, SLOT(createOID()));
     connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickOutputClear()));
 
-    mCloseBtn->setFocus();
+    mInputText->setFocus();
     mCreateBtn->hide();
 
 #if defined(Q_OS_MAC)
