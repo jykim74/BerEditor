@@ -27,6 +27,7 @@ private slots:
     void keyChanged();
 
     void clickClearDataAll();
+    void changeDateTime( QDateTime dateTime );
 
 private:
     void initialize();

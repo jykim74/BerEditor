@@ -29,13 +29,14 @@ GenOTPDlg::GenOTPDlg(QWidget *parent) :
     connect( mSetNowBtn, SIGNAL(clicked()), this, SLOT(setNow()));
     connect( mGenOTPBtn, SIGNAL(clicked()), this, SLOT(clickGenOTP()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mDateTime, SIGNAL(dateTimeChanged(QDateTime)), this, SLOT(changeDateTime(QDateTime)));
 
     connect( mKeyText, SIGNAL(textChanged(const QString&)), this, SLOT(keyChanged()));
     connect( mKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(keyChanged()));
 
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
 
-    mCloseBtn->setFocus();
+    mGenOTPBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -53,8 +54,8 @@ void GenOTPDlg::initialize()
 {
     SettingsMgr *setMgr = berApplet->settingsMgr();
 
-    QDateTime dateTime = QDateTime::currentDateTime();
-    mDateTime->setDateTime(dateTime);
+//    QDateTime dateTime = QDateTime::currentDateTime();
+//    mDateTime->setDateTime(dateTime);
     mDateTime->setTimeSpec( Qt::LocalTime );
 
     mHashTypeCombo->addItems(kHashList);
@@ -62,6 +63,8 @@ void GenOTPDlg::initialize()
     mKeyTypeCombo->addItems(dataTypes);
     mIntervalSpin->setValue(60);
     mLengthSpin->setValue(6);
+
+    setNow();
 }
 
 
@@ -69,6 +72,7 @@ void GenOTPDlg::setNow()
 {
     QDateTime dateTime = QDateTime::currentDateTime();
     mDateTime->setDateTime( dateTime );
+    changeDateTime( dateTime );
 }
 
 void GenOTPDlg::clickGenOTP()
@@ -131,6 +135,12 @@ void GenOTPDlg::keyChanged()
 {
     QString strLen = getDataLenString( mKeyTypeCombo->currentText(), mKeyText->text() );
     mKeyLenText->setText( QString("%1").arg(strLen));
+}
+
+void GenOTPDlg::changeDateTime( QDateTime dateTime )
+{
+    qint64 tEpoch = dateTime.toSecsSinceEpoch();
+    mEpochText->setText(QString("%1").arg(tEpoch));
 }
 
 void GenOTPDlg::clickClearDataAll()
