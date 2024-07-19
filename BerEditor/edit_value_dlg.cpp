@@ -145,6 +145,7 @@ void EditValueDlg::setItem(BerItem *pItem)
     {
         mConstructedLabel->setText( "Constructed" );
         mValueText->setReadOnly( true );
+        mValueText->setStyleSheet( "background-color:#ddddff" );
         mModifyBtn->hide();
     }
     else

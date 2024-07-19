@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>594</width>
-    <height>450</height>
+    <height>468</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -91,8 +91,14 @@
    </item>
    <item row="8" column="0">
     <widget class="QTabWidget" name="mOutputTab">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>180</height>
+      </size>
+     </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="tabBarAutoHide">
       <bool>false</bool>
@@ -150,7 +156,7 @@
      </widget>
      <widget class="QWidget" name="mDump">
       <attribute name="title">
-       <string>Dump</string>
+       <string>Hex Dump</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
@@ -206,7 +212,14 @@
     </widget>
    </item>
    <item row="3" column="0">
-    <widget class="QPlainTextEdit" name="mInputText"/>
+    <widget class="QPlainTextEdit" name="mInputText">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>80</height>
+      </size>
+     </property>
+    </widget>
    </item>
    <item row="6" column="0">
     <layout class="QGridLayout" name="gridLayout_3">
