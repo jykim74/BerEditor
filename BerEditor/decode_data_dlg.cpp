@@ -48,12 +48,19 @@ void DecodeDataDlg::viewData()
 
     if( strData.length() < 1 )
     {
-        berApplet->warningBox( tr( "Please enter your data"), this );
+        berApplet->warningBox( tr( "Please enter data"), this );
         mDataText->setFocus();
         return;
     }
 
     getBINFromString( &binData, nType, strData );
+    if( binData.nLen <= 0 )
+    {
+        berApplet->warningBox( tr( "There is an invalid character" ), this);
+        mDataText->setFocus();
+        return;
+    }
+
     berApplet->decodeData( &binData, "Unknown" );
     JS_BIN_reset( &binData );
     QDialog::accept();

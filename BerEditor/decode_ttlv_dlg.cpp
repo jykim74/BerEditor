@@ -54,6 +54,13 @@ void DecodeTTLVDlg::clickView()
     }
 
     getBINFromString( &binData, nType, strData );
+    if( binData.nLen <= 0 )
+    {
+        berApplet->warningBox( tr( "There is an invalid character" ), this);
+        mDataText->setFocus();
+        return;
+    }
+
     berApplet->decodeTTLV( &binData );
 
     JS_BIN_reset( &binData );

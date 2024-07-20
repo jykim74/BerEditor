@@ -174,12 +174,14 @@ void KeyManDlg::clickWrap()
     if( strInput.length() < 1 )
     {
         berApplet->warningBox( "Enter input data", this );
+        mSrcText->setFocus();
         goto end;
     }
 
     if( strWrappingKey.length() < 1 )
     {
-        berApplet->warningBox( "Enter wrapping key data", this );
+        berApplet->warningBox( "Enter KEK", this );
+        mKEKText->setFocus();
         goto end;
     }
 
@@ -227,12 +229,14 @@ void KeyManDlg::clickUnwrap()
     if( strInput.length() < 1 )
     {
         berApplet->warningBox( "Enter input data", this );
+        mSrcText->setFocus();
         goto end;
     }
 
     if( strWrappingKey.length() < 1 )
     {
-        berApplet->warningBox( "Enter wrapping key data", this );
+        berApplet->warningBox( "Enter KEK", this );
+        mKEKText->setFocus();
         goto end;
     }
 
