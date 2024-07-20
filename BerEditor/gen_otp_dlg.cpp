@@ -100,6 +100,13 @@ void GenOTPDlg::clickGenOTP()
     }
 
     getBINFromString( &binKey, mKeyTypeCombo->currentIndex(), strKey );
+    if( binKey.nLen <= 0 )
+    {
+        berApplet->warnLog( tr( "Invalid key value" ), this );
+        mKeyText->setFocus();
+        return;
+    }
+
 
     ret = JS_PKI_genOTP( strHash.toStdString().c_str(), tTime, nInterval, nLen, &binKey, &binT, sOTP );
     if( ret == 0 )
@@ -124,6 +131,10 @@ void GenOTPDlg::clickGenOTP()
         berApplet->log( QString( "T        : %1" ).arg( getHexString(&binT)));
         berApplet->log( QString( "OTP      : %1").arg( sOTP ));
         berApplet->logLine();
+    }
+    else
+    {
+        berApplet->warnLog( tr( "fail to generate OTP: %1").arg(ret), this );
     }
 
     JS_BIN_reset(&binKey);
