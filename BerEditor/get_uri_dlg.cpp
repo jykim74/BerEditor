@@ -83,6 +83,7 @@ void GetURIDlg::runGet()
         if( strDN.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a DN value" ), this );
+            mDNText->setFocus();
             return;
         }
 
@@ -94,6 +95,7 @@ void GetURIDlg::runGet()
         if( strURL.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a URI value" ), this );
+            mURICombo->setFocus();
             return;
         }
 

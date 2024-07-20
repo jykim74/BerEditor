@@ -216,6 +216,7 @@ void CertPVDDlg::clickVerifyCert()
     else
     {
         berApplet->warningBox( "Select untrust certificate", this );
+        mUntrustPathText->setFocus();
         goto end;
     }
 
@@ -275,6 +276,7 @@ void CertPVDDlg::clickVerifyCRL()
     if( strCRLPath.length() < 1 )
     {
         berApplet->warningBox( "Select CRL", this );
+        mCRLPathText->setFocus();
         goto end;
     }
 

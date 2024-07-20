@@ -77,11 +77,14 @@ CMSDlg::CMSDlg(QWidget *parent) :
     mSignCertGroup->layout()->setSpacing(5);
     mKMCertGroup->layout()->setSpacing(5);
 
+    mSignPriKeyViewBtn->setFixedWidth(34);
     mSignPriKeyTypeBtn->setFixedWidth(34);
     mSignPriKeyDecodeBtn->setFixedWidth(34);
     mSignCertDecodeBtn->setFixedWidth(34);
     mSignCertTypeBtn->setFixedWidth(34);
     mSignCertViewBtn->setFixedWidth(34);
+
+    mKMPriKeyViewBtn->setFixedWidth(34);
     mKMPriKeyTypeBtn->setFixedWidth(34);
     mKMPriKeyDecodeBtn->setFixedWidth(34);
     mKMCertDecodeBtn->setFixedWidth(34);

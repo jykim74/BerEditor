@@ -245,6 +245,8 @@ SSLVerifyDlg::SSLVerifyDlg(QWidget *parent) :
     mClientPriKeyViewBtn->setFixedWidth(34);
     mClientPriKeyDecodeBtn->setFixedWidth(34);
     mClientPriKeyTypeBtn->setFixedWidth(34);
+
+    mClearSaveURLBtn->setFixedWidth(34);
 #endif
 }
 
@@ -974,11 +976,7 @@ void SSLVerifyDlg::clickRefresh()
 
 void SSLVerifyDlg::clickClearURL()
 {
-    int nCount = mURLTable->rowCount();
-    for( int i = 0; i < nCount; i++ )
-    {
-        mURLTable->removeRow(0);
-    }
+    mURLTable->setRowCount(0);
 }
 
 void SSLVerifyDlg::clickClearSaveURL()

@@ -204,6 +204,7 @@ void TSPClientDlg::viewSrvCert()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find a server certificate" ), this );
+        mSrvCertPathText->setFocus();
         return;
     }
 
@@ -223,6 +224,7 @@ void TSPClientDlg::decodeSrvCert()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find a server certificate" ), this );
+        mSrvCertPathText->text();
         return;
     }
 
@@ -243,6 +245,7 @@ void TSPClientDlg::typeSrvCert()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find a server certificate" ), this );
+        mSrvCertPathText->setFocus();
         return;
     }
 
@@ -267,9 +270,17 @@ void TSPClientDlg::clickEncode()
     QString strInput = mInputText->toPlainText();
     QString strPolicy = mPolicyText->text();
 
+    if( strInput.length() < 1 )
+    {
+        berApplet->warningBox( tr( "There is no input" ), this );
+        mInputText->setFocus();
+        return;
+    }
+
     if( strPolicy.length() < 1 )
     {
         berApplet->warningBox( tr( "Insert policy OID" ), this );
+        mPolicyText->setFocus();
         return;
     }
 

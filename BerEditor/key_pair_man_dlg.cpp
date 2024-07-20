@@ -89,6 +89,7 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
 #endif
 
     initialize();
+    mGenKeyPairBtn->setDefault(true);
 }
 
 KeyPairManDlg::~KeyPairManDlg()
@@ -99,7 +100,6 @@ KeyPairManDlg::~KeyPairManDlg()
 void KeyPairManDlg::initialize()
 {
     mVersionCombo->addItems(kVersionList);
-    mCloseBtn->setDefault(true);
 }
 
 const QString KeyPairManDlg::getTypePathName( qint64 now_t, DerType nType )

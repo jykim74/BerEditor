@@ -923,12 +923,14 @@ void OCSPClientDlg::clickSend()
     if( strURL.length() < 1 )
     {
         berApplet->warningBox( tr( "Insert OCSP URL"), this );
+        mURLCombo->setFocus();
         goto end;
     }
 
     if( strReq.length() < 1 )
     {
         berApplet->warningBox( tr("There is no request" ), this );
+        mRequestText->setFocus();
         goto end;
     }
 

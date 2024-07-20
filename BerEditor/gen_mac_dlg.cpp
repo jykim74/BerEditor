@@ -16,7 +16,7 @@
 #include "settings_mgr.h"
 #include "common.h"
 #include "mac_thread.h"
-
+#include "js_error.h"
 
 
 static QStringList cryptList = {
@@ -144,15 +144,17 @@ int GenMacDlg::macInit()
     if( strKey.length() < 1 )
     {
         berApplet->warningBox( tr("Enter a key value"), this );
-        return -1;
+        mKeyText->setFocus();
+        return JSR_ERR;
     }
 
-    if( mKeyTypeCombo->currentIndex() == 0 )
-        JS_BIN_set( &binKey, (unsigned char *)strKey.toStdString().c_str(), strKey.length() );
-    else if( mKeyTypeCombo->currentIndex() == 1 )
-        JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey );
-    else if( mKeyTypeCombo->currentIndex() == 2 )
-        JS_BIN_decodeBase64( strKey.toStdString().c_str(), &binKey );
+    getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
+    if( binKey.nLen <= 0 )
+    {
+        berApplet->warningBox( tr( "There is an invalid character"), this );
+        mKeyText->setFocus();
+        return JSR_ERR2;
+    }
 
 
    QString strAlg = mAlgTypeCombo->currentText();
