@@ -445,7 +445,7 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
         {
             CertManDlg certMan;
             certMan.setMode(ManModeSelCA);
-            certMan.setTitle( tr( "Select CA certificate" ));
+            certMan.setTitle( tr( "Select client CA certificate" ));
             if( certMan.exec() == QDialog::Accepted )
             {
                 strClientCAPath = certMan.getSeletedCAPath();
@@ -471,7 +471,7 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
             QString strCertHex;
 
             certMan.setMode( ManModeSelBoth );
-            certMan.setTitle( tr( "Select a certificate") );
+            certMan.setTitle( tr( "Select a client certificate") );
 
             if( certMan.exec() == QDialog::Accepted )
             {

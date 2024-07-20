@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>695</width>
+    <width>630</width>
     <height>533</height>
    </rect>
   </property>
@@ -168,33 +168,38 @@
           <string/>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
           <item>
            <layout class="QGridLayout" name="gridLayout_4">
             <item row="0" column="2">
              <widget class="QPushButton" name="mDecodeCertBtn">
               <property name="text">
-               <string>Decode Certificate</string>
+               <string>Decode Cert</string>
               </property>
              </widget>
             </item>
             <item row="0" column="0">
              <widget class="QPushButton" name="mViewCertBtn">
               <property name="text">
-               <string>View Certificate</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="3">
-             <widget class="QPushButton" name="mDecodePriKeyBtn">
-              <property name="text">
-               <string>Decode PrivateKey</string>
+               <string>View Cert</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
              <widget class="QPushButton" name="mDelCertBtn">
               <property name="text">
-               <string>Delete Certificate</string>
+               <string>Delete Cert</string>
               </property>
              </widget>
             </item>
@@ -205,24 +210,10 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="3">
-             <widget class="QPushButton" name="mCheckKeyPairBtn">
-              <property name="text">
-               <string>Check KeyPair</string>
-              </property>
-             </widget>
-            </item>
             <item row="1" column="0">
              <widget class="QPushButton" name="mImportBtn">
               <property name="text">
                <string>Import from PFX</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="2">
-             <widget class="QPushButton" name="mChangePasswdBtn">
-              <property name="text">
-               <string>Change Password</string>
               </property>
              </widget>
             </item>
@@ -237,6 +228,27 @@
              <widget class="QPushButton" name="mViewPubKeyBtn">
               <property name="text">
                <string>View PublicKey</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
+             <widget class="QPushButton" name="mChangePasswdBtn">
+              <property name="text">
+               <string>Change Password</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QPushButton" name="mCheckKeyPairBtn">
+              <property name="text">
+               <string>Check KeyPair</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="3">
+             <widget class="QPushButton" name="mDecodePriKeyBtn">
+              <property name="text">
+               <string>Decode PrivateKey</string>
               </property>
              </widget>
             </item>
@@ -326,6 +338,18 @@
           <string/>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_13">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
           <item>
            <layout class="QGridLayout" name="gridLayout_17">
             <item row="0" column="1">
@@ -453,6 +477,18 @@
           <string/>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_9">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
           <item>
            <layout class="QGridLayout" name="gridLayout_13">
             <item row="0" column="0">
@@ -576,6 +612,18 @@
           <string/>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_11">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
           <item>
            <layout class="QGridLayout" name="gridLayout_14">
             <item row="0" column="2">
@@ -695,6 +743,18 @@
           <string/>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_5">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
           <item>
            <layout class="QGridLayout" name="gridLayout_5">
             <item row="0" column="0">
@@ -1070,6 +1130,18 @@
           <string/>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_7">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
           <item>
            <layout class="QGridLayout" name="gridLayout_10">
             <item row="0" column="4">
