@@ -31,6 +31,8 @@ CSRInfoDlg::CSRInfoDlg(QWidget *parent) :
     connect( mVerifyCSRBtn, SIGNAL(clicked()), this, SLOT(clickVerifyCSR()));
     connect( mDecodeCSRBtn, SIGNAL(clicked()), this, SLOT(clickDecodeCSR()));
 
+    mCloseBtn->setDefault(true);
+
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
 #endif

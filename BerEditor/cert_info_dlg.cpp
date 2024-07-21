@@ -104,6 +104,7 @@ CertInfoDlg::CertInfoDlg(QWidget *parent) :
     path_list_ = NULL;
 
     tabWidget->setCurrentIndex(0);
+    mCloseBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);

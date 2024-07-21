@@ -52,6 +52,7 @@ PriKeyInfoDlg::PriKeyInfoDlg(QWidget *parent) :
     connect( mDecodeBtn, SIGNAL(clicked()), this, SLOT(clickDecode()));
 
     initialize();
+    mCloseBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);

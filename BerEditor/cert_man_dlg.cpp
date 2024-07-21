@@ -201,8 +201,11 @@ void CertManDlg::initUI()
     mEE_CertTable->horizontalHeader()->setStyleSheet( kTableStyle );
     mEE_CertTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mEE_CertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    mEE_CertTable->setColumnWidth( 0, 200 );
-    mEE_CertTable->setColumnWidth(1, 80);
+    mEE_CertTable->setColumnWidth( 0, width() * 4/10 );
+    mEE_CertTable->setColumnWidth( 1, width() * 2/10 );
+    mEE_CertTable->setColumnWidth( 2, width() * 2/10 );
+    mEE_CertTable->setColumnWidth( 3, width() * 2/10 );
+
 
     QStringList sOtherTableLabels = { tr( "Name" ), tr( "Subject DN" ), tr( "Algorithm"), tr( "Expire" ), tr( "Issuer DN" ) };
 
@@ -214,8 +217,12 @@ void CertManDlg::initUI()
     mOther_CertTable->horizontalHeader()->setStyleSheet( kTableStyle );
     mOther_CertTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mOther_CertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    mOther_CertTable->setColumnWidth( 1, 140 );
-    mOther_CertTable->setColumnWidth( 2, 80 );
+
+    mOther_CertTable->setColumnWidth( 0, width() * 2/12 );
+    mOther_CertTable->setColumnWidth( 1, width() * 4/12 );
+    mOther_CertTable->setColumnWidth( 2, width() * 2/12 );
+    mOther_CertTable->setColumnWidth( 3, width() * 2/12 );
+    mOther_CertTable->setColumnWidth( 3, width() * 2/12 );
 
     QStringList sCATableLabels = { tr( "Name" ), tr( "Subject DN" ), tr( "Algorithm"), tr( "Expire" ), tr( "Issuer DN" ) };
 
@@ -227,8 +234,12 @@ void CertManDlg::initUI()
     mCA_CertTable->horizontalHeader()->setStyleSheet( kTableStyle );
     mCA_CertTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mCA_CertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    mCA_CertTable->setColumnWidth( 1, 140 );
-    mCA_CertTable->setColumnWidth( 2, 80 );
+
+    mCA_CertTable->setColumnWidth( 0, width() * 2/12 );
+    mCA_CertTable->setColumnWidth( 1, width() * 4/12 );
+    mCA_CertTable->setColumnWidth( 2, width() * 2/12 );
+    mCA_CertTable->setColumnWidth( 3, width() * 2/12 );
+    mCA_CertTable->setColumnWidth( 3, width() * 2/12 );
 
     QStringList sCRLTableLabels = { tr( "Name" ), tr( "Issuer DN" ), tr( "This Update"), tr( "Next Update" ) };
 
@@ -240,7 +251,11 @@ void CertManDlg::initUI()
     mCRL_Table->horizontalHeader()->setStyleSheet( kTableStyle );
     mCRL_Table->setSelectionBehavior(QAbstractItemView::SelectRows);
     mCRL_Table->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    mCRL_Table->setColumnWidth( 1, 160 );
+
+    mCRL_Table->setColumnWidth( 0, width() * 2/10 );
+    mCRL_Table->setColumnWidth( 1, width() * 4/10 );
+    mCRL_Table->setColumnWidth( 2, width() * 2/10 );
+    mCRL_Table->setColumnWidth( 3, width() * 2/10 );
 
     QStringList sRCATableLabels = { tr( "Name" ), tr( "Subject DN" ), tr( "Algorithm"), tr( "Expire" ) };
 
@@ -253,7 +268,10 @@ void CertManDlg::initUI()
     mRCA_CertTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mRCA_CertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    mRCA_CertTable->setColumnWidth( 1, 200 );
+    mRCA_CertTable->setColumnWidth( 0, width() * 2/10 );
+    mRCA_CertTable->setColumnWidth( 1, width() * 4/10 );
+    mRCA_CertTable->setColumnWidth( 2, width() * 2/10 );
+    mRCA_CertTable->setColumnWidth( 3, width() * 2/10 );
 }
 
 void CertManDlg::initialize()

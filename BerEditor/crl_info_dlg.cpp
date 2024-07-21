@@ -79,6 +79,7 @@ CRLInfoDlg::CRLInfoDlg(QWidget *parent) :
     connect( mVerifyCRLBtn, SIGNAL(clicked()), this, SLOT(clickVerifyCRL()));
 
     tabWidget->setCurrentIndex(0);
+    mCloseBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
