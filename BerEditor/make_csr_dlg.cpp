@@ -21,6 +21,7 @@ MakeCSRDlg::MakeCSRDlg(QWidget *parent) :
     connect( mClearBtn, SIGNAL(clicked()), this, SLOT(clickClear()));
 
     initialize();
+    mOKBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -130,6 +131,7 @@ void MakeCSRDlg::clickOK()
     if( strDN.length() < 1 )
     {
         berApplet->warningBox( tr( "Insert DN"), this );
+        mCNText->setFocus();
         return;
     }
 

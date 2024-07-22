@@ -190,8 +190,9 @@ void CertManDlg::changeTLVerison( int index )
 void CertManDlg::initUI()
 {
     mTLVersionCombo->addItems( kVersionList );
+    int nWidth = width() * 7/10;
 
-    QStringList sTableLabels = { tr( "Subject DN" ), tr( "Algorithm"), tr( "Expire" ), tr( "Issuer DN" ) };
+    QStringList sTableLabels = { tr( "Subject DN" ), tr( "Expire" ), tr( "Issuer DN" ) };
 
     mEE_CertTable->clear();
     mEE_CertTable->horizontalHeader()->setStretchLastSection(true);
@@ -201,13 +202,12 @@ void CertManDlg::initUI()
     mEE_CertTable->horizontalHeader()->setStyleSheet( kTableStyle );
     mEE_CertTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mEE_CertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    mEE_CertTable->setColumnWidth( 0, width() * 4/10 );
-    mEE_CertTable->setColumnWidth( 1, width() * 2/10 );
-    mEE_CertTable->setColumnWidth( 2, width() * 2/10 );
-    mEE_CertTable->setColumnWidth( 3, width() * 2/10 );
+    mEE_CertTable->setColumnWidth( 0, nWidth * 4/10 );
+    mEE_CertTable->setColumnWidth( 1, nWidth * 2/10 );
+    mEE_CertTable->setColumnWidth( 2, nWidth * 4/10 );
 
 
-    QStringList sOtherTableLabels = { tr( "Name" ), tr( "Subject DN" ), tr( "Algorithm"), tr( "Expire" ), tr( "Issuer DN" ) };
+    QStringList sOtherTableLabels = { tr( "Subject DN" ), tr( "Expire" ), tr( "Issuer DN" ) };
 
     mOther_CertTable->clear();
     mOther_CertTable->horizontalHeader()->setStretchLastSection(true);
@@ -218,13 +218,12 @@ void CertManDlg::initUI()
     mOther_CertTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mOther_CertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    mOther_CertTable->setColumnWidth( 0, width() * 2/12 );
-    mOther_CertTable->setColumnWidth( 1, width() * 4/12 );
-    mOther_CertTable->setColumnWidth( 2, width() * 2/12 );
-    mOther_CertTable->setColumnWidth( 3, width() * 2/12 );
-    mOther_CertTable->setColumnWidth( 3, width() * 2/12 );
 
-    QStringList sCATableLabels = { tr( "Name" ), tr( "Subject DN" ), tr( "Algorithm"), tr( "Expire" ), tr( "Issuer DN" ) };
+    mOther_CertTable->setColumnWidth( 0, nWidth * 4/10 );
+    mOther_CertTable->setColumnWidth( 1, nWidth * 2/10 );
+    mOther_CertTable->setColumnWidth( 2, nWidth * 4/10 );
+
+    QStringList sCATableLabels = { tr( "Subject DN" ), tr( "Expire" ), tr( "Issuer DN" ) };
 
     mCA_CertTable->clear();
     mCA_CertTable->horizontalHeader()->setStretchLastSection(true);
@@ -235,13 +234,11 @@ void CertManDlg::initUI()
     mCA_CertTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mCA_CertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    mCA_CertTable->setColumnWidth( 0, width() * 2/12 );
-    mCA_CertTable->setColumnWidth( 1, width() * 4/12 );
-    mCA_CertTable->setColumnWidth( 2, width() * 2/12 );
-    mCA_CertTable->setColumnWidth( 3, width() * 2/12 );
-    mCA_CertTable->setColumnWidth( 3, width() * 2/12 );
+    mCA_CertTable->setColumnWidth( 0, nWidth * 4/10 );
+    mCA_CertTable->setColumnWidth( 1, nWidth * 2/10 );
+    mCA_CertTable->setColumnWidth( 2, nWidth * 4/10 );
 
-    QStringList sCRLTableLabels = { tr( "Name" ), tr( "Issuer DN" ), tr( "This Update"), tr( "Next Update" ) };
+    QStringList sCRLTableLabels = { tr( "Issuer DN" ), tr( "This Update"), tr( "Next Update" ) };
 
     mCRL_Table->clear();
     mCRL_Table->horizontalHeader()->setStretchLastSection(true);
@@ -252,12 +249,11 @@ void CertManDlg::initUI()
     mCRL_Table->setSelectionBehavior(QAbstractItemView::SelectRows);
     mCRL_Table->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    mCRL_Table->setColumnWidth( 0, width() * 2/10 );
-    mCRL_Table->setColumnWidth( 1, width() * 4/10 );
-    mCRL_Table->setColumnWidth( 2, width() * 2/10 );
-    mCRL_Table->setColumnWidth( 3, width() * 2/10 );
+    mCRL_Table->setColumnWidth( 0, nWidth * 6/10 );
+    mCRL_Table->setColumnWidth( 1, nWidth * 2/10 );
+    mCRL_Table->setColumnWidth( 2, nWidth * 2/10 );
 
-    QStringList sRCATableLabels = { tr( "Name" ), tr( "Subject DN" ), tr( "Algorithm"), tr( "Expire" ) };
+    QStringList sRCATableLabels = { tr( "Name" ), tr( "Subject DN" ), tr( "Expire" ) };
 
     mRCA_CertTable->clear();
     mRCA_CertTable->horizontalHeader()->setStretchLastSection(true);
@@ -268,10 +264,9 @@ void CertManDlg::initUI()
     mRCA_CertTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mRCA_CertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    mRCA_CertTable->setColumnWidth( 0, width() * 2/10 );
-    mRCA_CertTable->setColumnWidth( 1, width() * 4/10 );
-    mRCA_CertTable->setColumnWidth( 2, width() * 2/10 );
-    mRCA_CertTable->setColumnWidth( 3, width() * 2/10 );
+    mRCA_CertTable->setColumnWidth( 0, nWidth * 2/10 );
+    mRCA_CertTable->setColumnWidth( 1, nWidth * 6/10 );
+    mRCA_CertTable->setColumnWidth( 2, nWidth * 2/10 );
 }
 
 void CertManDlg::initialize()
@@ -456,52 +451,27 @@ int CertManDlg::getCRL( BIN *pCRL )
 
 void CertManDlg::clearCAList()
 {
-    int count = mCA_CertTable->rowCount();
-
-    for( int i = 0; i < count; i++ )
-    {
-        mCA_CertTable->removeRow(0);
-    }
+    mCA_CertTable->setRowCount(0);
 }
 
 void CertManDlg::clearCRLList()
 {
-    int count = mCRL_Table->rowCount();
-
-    for( int i = 0; i < count; i++ )
-    {
-        mCRL_Table->removeRow(0);
-    }
+    mCRL_Table->setRowCount(0);
 }
 
 void CertManDlg::clearTrustList()
 {
-    int count = mRCA_CertTable->rowCount();
-
-    for( int i = 0; i < count; i++ )
-    {
-        mRCA_CertTable->removeRow(0);
-    }
+    mRCA_CertTable->setRowCount(0);
 }
 
 void CertManDlg::clearEEList()
 {
-    int count = mEE_CertTable->rowCount();
-
-    for( int i = 0; i < count; i++ )
-    {
-        mEE_CertTable->removeRow(0);
-    }
+    mEE_CertTable->setRowCount(0);
 }
 
 void CertManDlg::clearOtherList()
 {
-    int count = mOther_CertTable->rowCount();
-
-    for( int i = 0; i < count; i++ )
-    {
-        mOther_CertTable->removeRow(0);
-    }
+    mOther_CertTable->setRowCount(0);
 }
 
 void CertManDlg::loadEEList()
@@ -565,9 +535,8 @@ void CertManDlg::loadEEList()
         item->setData(Qt::UserRole, folder.filePath() );
 
         mEE_CertTable->setItem( row, 0, item );
-        mEE_CertTable->setItem( row, 1, new QTableWidgetItem( getKeyTypeName( nKeyType )));
-        mEE_CertTable->setItem( row, 2, new QTableWidgetItem( sNotBefore ));
-        mEE_CertTable->setItem( row, 3, new QTableWidgetItem( sCertInfo.pIssuerName ));
+        mEE_CertTable->setItem( row, 1, new QTableWidgetItem( sNotAfter ));
+        mEE_CertTable->setItem( row, 2, new QTableWidgetItem( sCertInfo.pIssuerName ));
 
         JS_BIN_reset( &binCert );
         JS_PKI_resetCertInfo( &sCertInfo );
@@ -621,7 +590,8 @@ void CertManDlg::loadOtherList()
 
         mOther_CertTable->insertRow( row );
         mOther_CertTable->setRowHeight( row, 10 );
-        QTableWidgetItem *item = new QTableWidgetItem( strName );
+
+        QTableWidgetItem *item = new QTableWidgetItem( sCertInfo.pSubjectName );
 
         if( now > sCertInfo.uNotAfter )
             item->setIcon(QIcon(":/images/cert_revoked.png" ));
@@ -631,10 +601,8 @@ void CertManDlg::loadOtherList()
         item->setData(Qt::UserRole, file.filePath() );
 
         mOther_CertTable->setItem( row, 0, item );
-        mOther_CertTable->setItem( row, 1, new QTableWidgetItem( sCertInfo.pSubjectName ));
-        mOther_CertTable->setItem( row, 2, new QTableWidgetItem( getKeyTypeName( nKeyType )));
-        mOther_CertTable->setItem( row, 3, new QTableWidgetItem( sNotBefore ));
-        mOther_CertTable->setItem( row, 4, new QTableWidgetItem( sCertInfo.pIssuerName ));
+        mOther_CertTable->setItem( row, 1, new QTableWidgetItem( sNotAfter ));
+        mOther_CertTable->setItem( row, 2, new QTableWidgetItem( sCertInfo.pIssuerName ));
 
         JS_BIN_reset( &binCert );
         JS_PKI_resetCertInfo( &sCertInfo );
@@ -688,7 +656,7 @@ void CertManDlg::loadCAList()
 
         mCA_CertTable->insertRow( row );
         mCA_CertTable->setRowHeight( row, 10 );
-        QTableWidgetItem *item = new QTableWidgetItem( strName );
+        QTableWidgetItem *item = new QTableWidgetItem( sCertInfo.pSubjectName );
 
         if( now > sCertInfo.uNotAfter )
             item->setIcon(QIcon(":/images/cert_revoked.png" ));
@@ -698,10 +666,8 @@ void CertManDlg::loadCAList()
         item->setData(Qt::UserRole, file.filePath() );
 
         mCA_CertTable->setItem( row, 0, item );
-        mCA_CertTable->setItem( row, 1, new QTableWidgetItem( sCertInfo.pSubjectName ));
-        mCA_CertTable->setItem( row, 2, new QTableWidgetItem( getKeyTypeName( nKeyType )));
-        mCA_CertTable->setItem( row, 3, new QTableWidgetItem( sNotBefore ));
-        mCA_CertTable->setItem( row, 4, new QTableWidgetItem( sCertInfo.pIssuerName ));
+        mCA_CertTable->setItem( row, 1, new QTableWidgetItem( sNotAfter ));
+        mCA_CertTable->setItem( row, 2, new QTableWidgetItem( sCertInfo.pIssuerName ));
 
         JS_BIN_reset( &binCert );
         JS_PKI_resetCertInfo( &sCertInfo );
@@ -754,7 +720,7 @@ void CertManDlg::loadCRLList()
 
         mCRL_Table->insertRow( row );
         mCRL_Table->setRowHeight( row, 10 );
-        QTableWidgetItem *item = new QTableWidgetItem( strFileName );
+        QTableWidgetItem *item = new QTableWidgetItem( sCRLInfo.pIssuerName );
 
         if( now > sCRLInfo.uNextUpdate )
             item->setIcon(QIcon(":/images/crl_expired.png" ));
@@ -764,9 +730,8 @@ void CertManDlg::loadCRLList()
         item->setData(Qt::UserRole, file.filePath() );
 
         mCRL_Table->setItem( row, 0, item );
-        mCRL_Table->setItem( row, 1, new QTableWidgetItem( sCRLInfo.pIssuerName ));
-        mCRL_Table->setItem( row, 2, new QTableWidgetItem( sThisUpdate ));
-        mCRL_Table->setItem( row, 3, new QTableWidgetItem( sNextUpdate ));
+        mCRL_Table->setItem( row, 1, new QTableWidgetItem( sThisUpdate ));
+        mCRL_Table->setItem( row, 2, new QTableWidgetItem( sNextUpdate ));
 
         JS_BIN_reset( &binCRL );
         JS_PKI_resetCRLInfo( &sCRLInfo );
@@ -831,8 +796,7 @@ void CertManDlg::loadTrustList()
 
         mRCA_CertTable->setItem( row, 0, item );
         mRCA_CertTable->setItem( row, 1, new QTableWidgetItem( sCertInfo.pSubjectName ));
-        mRCA_CertTable->setItem( row, 2, new QTableWidgetItem( getKeyTypeName( nKeyType )));
-        mRCA_CertTable->setItem( row, 3, new QTableWidgetItem( sNotBefore ));
+        mRCA_CertTable->setItem( row, 2, new QTableWidgetItem( sNotAfter ));
 
         JS_BIN_reset( &binCert );
         JS_PKI_resetCertInfo( &sCertInfo );
