@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>597</width>
-    <height>883</height>
+    <width>535</width>
+    <height>691</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -776,6 +776,51 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mURLCombo</tabstop>
+  <tabstop>mURLClearBtn</tabstop>
+  <tabstop>mCACertPathText</tabstop>
+  <tabstop>mFindCACertBtn</tabstop>
+  <tabstop>mCACertViewBtn</tabstop>
+  <tabstop>mCACertDecodeBtn</tabstop>
+  <tabstop>mCACertTypeBtn</tabstop>
+  <tabstop>mCertGroup</tabstop>
+  <tabstop>mPriKeyPathText</tabstop>
+  <tabstop>mFindPriKeyBtn</tabstop>
+  <tabstop>mPriKeyViewBtn</tabstop>
+  <tabstop>mPriKeyDecodeBtn</tabstop>
+  <tabstop>mPriKeyTypeBtn</tabstop>
+  <tabstop>mCertPathText</tabstop>
+  <tabstop>mFindCertBtn</tabstop>
+  <tabstop>mCertViewBtn</tabstop>
+  <tabstop>mCertDecodeBtn</tabstop>
+  <tabstop>mCertTypeBtn</tabstop>
+  <tabstop>mEncPriKeyCheck</tabstop>
+  <tabstop>mPasswdText</tabstop>
+  <tabstop>mAuthCodeText</tabstop>
+  <tabstop>mRefNumText</tabstop>
+  <tabstop>mSubjectDNText</tabstop>
+  <tabstop>mRegInfoText</tabstop>
+  <tabstop>mRegInfoClearBtn</tabstop>
+  <tabstop>mRequestClearBtn</tabstop>
+  <tabstop>mRequestDecodeBtn</tabstop>
+  <tabstop>mRequestLenText</tabstop>
+  <tabstop>mRequestText</tabstop>
+  <tabstop>mGENMBtn</tabstop>
+  <tabstop>mIRBtn</tabstop>
+  <tabstop>mCRBtn</tabstop>
+  <tabstop>mP10CRBtn</tabstop>
+  <tabstop>mSignGENMBtn</tabstop>
+  <tabstop>mKURBtn</tabstop>
+  <tabstop>mRRBtn</tabstop>
+  <tabstop>mSendBtn</tabstop>
+  <tabstop>mResponseClearBtn</tabstop>
+  <tabstop>mResponseDecodeBtn</tabstop>
+  <tabstop>mResponseLenText</tabstop>
+  <tabstop>mResponseText</tabstop>
+  <tabstop>mClearAllBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

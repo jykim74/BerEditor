@@ -51,7 +51,7 @@
    <item>
     <widget class="QTabWidget" name="mTabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="mEETab">
       <attribute name="title">
@@ -1255,6 +1255,74 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mTabWidget</tabstop>
+  <tabstop>mCertPathText</tabstop>
+  <tabstop>mEE_CertTable</tabstop>
+  <tabstop>mEE_PasswdText</tabstop>
+  <tabstop>mViewCertBtn</tabstop>
+  <tabstop>mDelCertBtn</tabstop>
+  <tabstop>mDecodeCertBtn</tabstop>
+  <tabstop>mChangePasswdBtn</tabstop>
+  <tabstop>mImportBtn</tabstop>
+  <tabstop>mExportBtn</tabstop>
+  <tabstop>mCheckKeyPairBtn</tabstop>
+  <tabstop>mDecodePriKeyBtn</tabstop>
+  <tabstop>mViewPriKeyBtn</tabstop>
+  <tabstop>mViewPubKeyBtn</tabstop>
+  <tabstop>mOtherCertPathText</tabstop>
+  <tabstop>mOther_CertTable</tabstop>
+  <tabstop>mAddOtherBtn</tabstop>
+  <tabstop>mRemoveOtherBtn</tabstop>
+  <tabstop>mViewOtherBtn</tabstop>
+  <tabstop>mDecodeOtherBtn</tabstop>
+  <tabstop>mViewPubKeyOtherBtn</tabstop>
+  <tabstop>mCAPathText</tabstop>
+  <tabstop>mCA_CertTable</tabstop>
+  <tabstop>mAddCABtn</tabstop>
+  <tabstop>mRemoveCABtn</tabstop>
+  <tabstop>mViewCABtn</tabstop>
+  <tabstop>mDecodeCABtn</tabstop>
+  <tabstop>mViewPubKeyCABtn</tabstop>
+  <tabstop>mCRLPathText</tabstop>
+  <tabstop>mCRL_Table</tabstop>
+  <tabstop>mAddCRLBtn</tabstop>
+  <tabstop>mRemoveCRLBtn</tabstop>
+  <tabstop>mViewCRLBtn</tabstop>
+  <tabstop>mDecodeCRLBtn</tabstop>
+  <tabstop>mTrustRCAPathText</tabstop>
+  <tabstop>mRCA_CertTable</tabstop>
+  <tabstop>mAddTrustBtn</tabstop>
+  <tabstop>mRemoveTrustBtn</tabstop>
+  <tabstop>mViewTrustBtn</tabstop>
+  <tabstop>mDecodeTrustBtn</tabstop>
+  <tabstop>mViewPubKeyTrustBtn</tabstop>
+  <tabstop>mTLEncPriKeyCheck</tabstop>
+  <tabstop>mTLPriKeyPathText</tabstop>
+  <tabstop>mFindTLPriKeyBtn</tabstop>
+  <tabstop>mTLPriKeyClearBtn</tabstop>
+  <tabstop>mTLPriKeyDecodeBtn</tabstop>
+  <tabstop>mTLCertPathText</tabstop>
+  <tabstop>mFindTLCertBtn</tabstop>
+  <tabstop>mTLCertClearBtn</tabstop>
+  <tabstop>mTLCertDecodeBtn</tabstop>
+  <tabstop>mTLPFXPathText</tabstop>
+  <tabstop>mFindTLPFXBtn</tabstop>
+  <tabstop>mTLPFXClearBtn</tabstop>
+  <tabstop>mTLPFXDecodeBtn</tabstop>
+  <tabstop>mTLVersionCombo</tabstop>
+  <tabstop>mTLModeCombo</tabstop>
+  <tabstop>mTLPasswdText</tabstop>
+  <tabstop>mTLViewCertBtn</tabstop>
+  <tabstop>mTLEncryptPFXBtn</tabstop>
+  <tabstop>mTLDecryptPFXBtn</tabstop>
+  <tabstop>mTLSavePFXBtn</tabstop>
+  <tabstop>mTLCheckKeyPairBtn</tabstop>
+  <tabstop>mTLViewPriKeyBtn</tabstop>
+  <tabstop>mTLViewPubKeyBtn</tabstop>
+  <tabstop>mOKBtn</tabstop>
+  <tabstop>mCancelBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

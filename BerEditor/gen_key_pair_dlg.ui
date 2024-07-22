@@ -191,6 +191,16 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mRSACheck</tabstop>
+  <tabstop>mECDSACheck</tabstop>
+  <tabstop>mDSACheck</tabstop>
+  <tabstop>mEdDSACheck</tabstop>
+  <tabstop>mExponentText</tabstop>
+  <tabstop>mOptionCombo</tabstop>
+  <tabstop>mOKBtn</tabstop>
+  <tabstop>mCancelBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

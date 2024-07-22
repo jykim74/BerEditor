@@ -162,6 +162,16 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mHexRadio</tabstop>
+  <tabstop>mBase64Radio</tabstop>
+  <tabstop>mFindBtn</tabstop>
+  <tabstop>mDataLenText</tabstop>
+  <tabstop>mDataText</tabstop>
+  <tabstop>mClearBtn</tabstop>
+  <tabstop>mViewBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

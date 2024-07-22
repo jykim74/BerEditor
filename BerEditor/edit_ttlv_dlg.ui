@@ -595,6 +595,22 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mTagText</tabstop>
+  <tabstop>mTagNameText</tabstop>
+  <tabstop>mTypeText</tabstop>
+  <tabstop>mTypeNameText</tabstop>
+  <tabstop>mLengthText</tabstop>
+  <tabstop>mValueLenText</tabstop>
+  <tabstop>mValueText</tabstop>
+  <tabstop>mHeaderText</tabstop>
+  <tabstop>mTTLVLenText</tabstop>
+  <tabstop>mTTLVText</tabstop>
+  <tabstop>mAddBtn</tabstop>
+  <tabstop>mDeleteBtn</tabstop>
+  <tabstop>mModifyBtn</tabstop>
+  <tabstop>mCancelBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

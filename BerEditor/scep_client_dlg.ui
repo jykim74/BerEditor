@@ -820,6 +820,48 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mURLCombo</tabstop>
+  <tabstop>mURLClearBtn</tabstop>
+  <tabstop>mCACertPathText</tabstop>
+  <tabstop>mFindCACertBtn</tabstop>
+  <tabstop>mCACertViewBtn</tabstop>
+  <tabstop>mCACertDecodeBtn</tabstop>
+  <tabstop>mCACertTypeBtn</tabstop>
+  <tabstop>mCertGroup</tabstop>
+  <tabstop>mCertPathText</tabstop>
+  <tabstop>mFindCertBtn</tabstop>
+  <tabstop>mCertViewBtn</tabstop>
+  <tabstop>mCertDecodeBtn</tabstop>
+  <tabstop>mCertTypeBtn</tabstop>
+  <tabstop>mPriKeyPathText</tabstop>
+  <tabstop>mFindPriKeyBtn</tabstop>
+  <tabstop>mPriKeyViewBtn</tabstop>
+  <tabstop>mPriKeyDecodeBtn</tabstop>
+  <tabstop>mPriKeyTypeBtn</tabstop>
+  <tabstop>mEncPriKeyCheck</tabstop>
+  <tabstop>mPasswdText</tabstop>
+  <tabstop>mNonceText</tabstop>
+  <tabstop>mNonceLenText</tabstop>
+  <tabstop>mTransIDText</tabstop>
+  <tabstop>mTransIDLenText</tabstop>
+  <tabstop>mRequestClearBtn</tabstop>
+  <tabstop>mRequestDecodeBtn</tabstop>
+  <tabstop>mRequestLenText</tabstop>
+  <tabstop>mRequestText</tabstop>
+  <tabstop>mGetCABtn</tabstop>
+  <tabstop>mMakeIssueBtn</tabstop>
+  <tabstop>mMakeUpdateBtn</tabstop>
+  <tabstop>mMakeGetCRLBtn</tabstop>
+  <tabstop>mSendBtn</tabstop>
+  <tabstop>mVerifyBtn</tabstop>
+  <tabstop>mResponseClearBtn</tabstop>
+  <tabstop>mResponseDecodeBtn</tabstop>
+  <tabstop>mResponseLenText</tabstop>
+  <tabstop>mResponseText</tabstop>
+  <tabstop>mClearAllBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

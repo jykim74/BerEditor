@@ -350,8 +350,23 @@
  </widget>
  <tabstops>
   <tabstop>tabWidget</tabstop>
+  <tabstop>mFieldTypeCombo</tabstop>
   <tabstop>mFieldTable</tabstop>
   <tabstop>mDetailText</tabstop>
+  <tabstop>mCertTree</tabstop>
+  <tabstop>mCertLogText</tabstop>
+  <tabstop>mMakeTreeBtn</tabstop>
+  <tabstop>mVerifyCertBtn</tabstop>
+  <tabstop>mDecodeCertBtn</tabstop>
+  <tabstop>mPathValidBtn</tabstop>
+  <tabstop>mGetCABtn</tabstop>
+  <tabstop>mGetCRLBtn</tabstop>
+  <tabstop>mOCSPCheckBtn</tabstop>
+  <tabstop>mCRLCheckBtn</tabstop>
+  <tabstop>mSaveBtn</tabstop>
+  <tabstop>mSaveToManBtn</tabstop>
+  <tabstop>mSaveToCABtn</tabstop>
+  <tabstop>mSaveTrustedCABtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>

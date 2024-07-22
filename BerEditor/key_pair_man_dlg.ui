@@ -768,6 +768,44 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mSavePEMCheck</tabstop>
+  <tabstop>mSavePathText</tabstop>
+  <tabstop>mFindSavePathBtn</tabstop>
+  <tabstop>mPriPathText</tabstop>
+  <tabstop>mFindPriKeyBtn</tabstop>
+  <tabstop>mPriClearBtn</tabstop>
+  <tabstop>mPriViewBtn</tabstop>
+  <tabstop>mPriDecodeBtn</tabstop>
+  <tabstop>mPriTypeBtn</tabstop>
+  <tabstop>mPubPathText</tabstop>
+  <tabstop>mFindPubKeyBtn</tabstop>
+  <tabstop>mPubClearBtn</tabstop>
+  <tabstop>mPubViewBtn</tabstop>
+  <tabstop>mPubDecodeBtn</tabstop>
+  <tabstop>mPubTypeBtn</tabstop>
+  <tabstop>mGenKeyPairBtn</tabstop>
+  <tabstop>mCheckKeyPairBtn</tabstop>
+  <tabstop>mMakeCSRBtn</tabstop>
+  <tabstop>mEncPriPathText</tabstop>
+  <tabstop>mFindEncPriKeyBtn</tabstop>
+  <tabstop>mEncPriClearBtn</tabstop>
+  <tabstop>mEncPriDecodeBtn</tabstop>
+  <tabstop>mPriInfoPathText</tabstop>
+  <tabstop>mPriInfoClearBtn</tabstop>
+  <tabstop>mPriInfoDecodeBtn</tabstop>
+  <tabstop>mCSRPathText</tabstop>
+  <tabstop>mCSRViewBtn</tabstop>
+  <tabstop>mCSRClearBtn</tabstop>
+  <tabstop>mCSRDecodeBtn</tabstop>
+  <tabstop>mVersionCombo</tabstop>
+  <tabstop>mModeCombo</tabstop>
+  <tabstop>mPasswdText</tabstop>
+  <tabstop>mClearAllBtn</tabstop>
+  <tabstop>mEncryptBtn</tabstop>
+  <tabstop>mDecryptBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

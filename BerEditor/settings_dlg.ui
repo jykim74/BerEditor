@@ -450,9 +450,14 @@
   <tabstop>mCheckShowPartOnly</tabstop>
   <tabstop>mUseLogTabCheck</tabstop>
   <tabstop>mFontFamilyCombo</tabstop>
+  <tabstop>mDefaultHashCombo</tabstop>
   <tabstop>mLangComboBox</tabstop>
   <tabstop>mOIDConfigPathText</tabstop>
   <tabstop>mFindOIDConfig</tabstop>
+  <tabstop>mCertPathText</tabstop>
+  <tabstop>mFindCertPathBtn</tabstop>
+  <tabstop>mHexAreaWidthCombo</tabstop>
+  <tabstop>mFileReadSizeText</tabstop>
   <tabstop>mOkBtn</tabstop>
   <tabstop>mCancelBtn</tabstop>
  </tabstops>

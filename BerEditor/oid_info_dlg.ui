@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>423</width>
-    <height>284</height>
+    <height>299</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -443,8 +443,11 @@
   <tabstop>mInputText</tabstop>
   <tabstop>mOIDText</tabstop>
   <tabstop>mOIDValHexText</tabstop>
+  <tabstop>mOIDHexText</tabstop>
   <tabstop>mSNText</tabstop>
   <tabstop>mLNText</tabstop>
+  <tabstop>mNidText</tabstop>
+  <tabstop>mOutputClearBtn</tabstop>
   <tabstop>mCreateBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>

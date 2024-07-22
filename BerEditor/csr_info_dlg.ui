@@ -167,6 +167,14 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mFieldTable</tabstop>
+  <tabstop>mDetailText</tabstop>
+  <tabstop>mVerifyCSRBtn</tabstop>
+  <tabstop>mDecodeCSRBtn</tabstop>
+  <tabstop>mSaveBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

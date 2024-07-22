@@ -192,6 +192,14 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mTypeCombo</tabstop>
+  <tabstop>mInputText</tabstop>
+  <tabstop>mHexLenText</tabstop>
+  <tabstop>mHexText</tabstop>
+  <tabstop>mOKBtn</tabstop>
+  <tabstop>mCancelBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

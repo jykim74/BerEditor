@@ -538,6 +538,10 @@
   <tabstop>mSharesText</tabstop>
   <tabstop>mThresholdText</tabstop>
   <tabstop>mSplitBtn</tabstop>
+  <tabstop>mPrimeBitsCombo</tabstop>
+  <tabstop>mMakePrimeBtn</tabstop>
+  <tabstop>mPrimeLenText</tabstop>
+  <tabstop>mPrimeText</tabstop>
   <tabstop>mShareText</tabstop>
   <tabstop>mAddBtn</tabstop>
   <tabstop>mShareTable</tabstop>

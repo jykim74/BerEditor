@@ -563,9 +563,17 @@
  <tabstops>
   <tabstop>mClassCombo</tabstop>
   <tabstop>mConstructedCheck</tabstop>
+  <tabstop>mNumText</tabstop>
+  <tabstop>mPrimitiveCombo</tabstop>
+  <tabstop>mTagText</tabstop>
+  <tabstop>mLenText</tabstop>
   <tabstop>mValueTypeCombo</tabstop>
+  <tabstop>mMakeValueBtn</tabstop>
   <tabstop>mValueLenText</tabstop>
   <tabstop>mValueText</tabstop>
+  <tabstop>mHeaderText</tabstop>
+  <tabstop>mBERLenText</tabstop>
+  <tabstop>mBERText</tabstop>
   <tabstop>mInsertBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>

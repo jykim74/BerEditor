@@ -473,11 +473,19 @@
   <tabstop>mInputTypeHexBtn</tabstop>
   <tabstop>mInputTypeBase64Btn</tabstop>
   <tabstop>mInputTypeURL</tabstop>
+  <tabstop>mFindFileBtn</tabstop>
   <tabstop>mInputLenText</tabstop>
   <tabstop>mInputText</tabstop>
+  <tabstop>mInputClearBtn</tabstop>
   <tabstop>mChangeBtn</tabstop>
   <tabstop>mEncodeBtn</tabstop>
+  <tabstop>mOutputTypeCombo</tabstop>
+  <tabstop>mShowPrintTextCheck</tabstop>
   <tabstop>mOutputLenText</tabstop>
+  <tabstop>mOutputTab</tabstop>
+  <tabstop>mOutputText</tabstop>
+  <tabstop>mDumpText</tabstop>
+  <tabstop>mOutputClearBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>

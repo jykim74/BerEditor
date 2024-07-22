@@ -935,8 +935,24 @@
   <tabstop>mInputStringRadio</tabstop>
   <tabstop>mInputHexRadio</tabstop>
   <tabstop>mInputBase64Radio</tabstop>
+  <tabstop>mInputClearBtn</tabstop>
   <tabstop>mInputLenText</tabstop>
   <tabstop>mInputText</tabstop>
+  <tabstop>mCertGroup</tabstop>
+  <tabstop>mAutoCertPubKeyCheck</tabstop>
+  <tabstop>mPubKeyEncryptCheck</tabstop>
+  <tabstop>mPriKeyPath</tabstop>
+  <tabstop>mFindPriKeyBtn</tabstop>
+  <tabstop>mPriKeyViewBtn</tabstop>
+  <tabstop>mPriKeyDecodeBtn</tabstop>
+  <tabstop>mPriKeyTypeBtn</tabstop>
+  <tabstop>mCertPath</tabstop>
+  <tabstop>mFindCertBtn</tabstop>
+  <tabstop>mCertViewBtn</tabstop>
+  <tabstop>mCertDecodeBtn</tabstop>
+  <tabstop>mCertTypeBtn</tabstop>
+  <tabstop>mEncPrikeyCheck</tabstop>
+  <tabstop>mPasswdText</tabstop>
   <tabstop>mUseKeyAlgCheck</tabstop>
   <tabstop>mCheckKeyPairBtn</tabstop>
   <tabstop>mAlgCombo</tabstop>
@@ -950,6 +966,7 @@
   <tabstop>mOtherPubLenText</tabstop>
   <tabstop>mOtherPubText</tabstop>
   <tabstop>mOutputTypeCombo</tabstop>
+  <tabstop>mOutputClearBtn</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
   <tabstop>mClearDataAllBtn</tabstop>

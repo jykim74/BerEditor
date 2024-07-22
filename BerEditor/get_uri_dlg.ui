@@ -237,6 +237,7 @@
   <tabstop>mDNText</tabstop>
   <tabstop>mScopeCombo</tabstop>
   <tabstop>mTypeCombo</tabstop>
+  <tabstop>mFilterText</tabstop>
   <tabstop>mGetBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>

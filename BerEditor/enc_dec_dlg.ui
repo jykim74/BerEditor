@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>562</width>
-    <height>825</height>
+    <height>630</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1395,6 +1395,7 @@
   <tabstop>mSrcFileSizeText</tabstop>
   <tabstop>mFileTotalSizeText</tabstop>
   <tabstop>mFileReadSizeText</tabstop>
+  <tabstop>mRunThreadCheck</tabstop>
   <tabstop>mDstFileText</tabstop>
   <tabstop>mFindDstFileBtn</tabstop>
   <tabstop>mDstFileInfoText</tabstop>
@@ -1420,6 +1421,7 @@
   <tabstop>mPadCheck</tabstop>
   <tabstop>mChangeBtn</tabstop>
   <tabstop>mOutputTypeCombo</tabstop>
+  <tabstop>mOutputClearBtn</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
   <tabstop>mClearDataAllBtn</tabstop>

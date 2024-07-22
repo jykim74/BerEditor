@@ -641,6 +641,34 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mURLCombo</tabstop>
+  <tabstop>mURLClearBtn</tabstop>
+  <tabstop>mPolicyText</tabstop>
+  <tabstop>mInputTypeCombo</tabstop>
+  <tabstop>mInputLenText</tabstop>
+  <tabstop>mInputText</tabstop>
+  <tabstop>mRequestClearBtn</tabstop>
+  <tabstop>mRequestDecodeBtn</tabstop>
+  <tabstop>mRequestLenText</tabstop>
+  <tabstop>mRequestText</tabstop>
+  <tabstop>mHashCombo</tabstop>
+  <tabstop>mEncodeBtn</tabstop>
+  <tabstop>mSendBtn</tabstop>
+  <tabstop>mVerifyBtn</tabstop>
+  <tabstop>mSrvCertPathText</tabstop>
+  <tabstop>mFindSrvCertBtn</tabstop>
+  <tabstop>mSrvCertViewBtn</tabstop>
+  <tabstop>mSrvCertDeocodeBtn</tabstop>
+  <tabstop>mSrvCertTypeBtn</tabstop>
+  <tabstop>mResponseClearBtn</tabstop>
+  <tabstop>mResponseDecodeBtn</tabstop>
+  <tabstop>mTSTInfoBtn</tabstop>
+  <tabstop>mResponseLenText</tabstop>
+  <tabstop>mResponseText</tabstop>
+  <tabstop>mClearAllBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

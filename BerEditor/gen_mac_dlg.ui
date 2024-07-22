@@ -953,6 +953,7 @@
   <tabstop>mSrcFileSizeText</tabstop>
   <tabstop>mFileTotalSizeText</tabstop>
   <tabstop>mFileReadSizeText</tabstop>
+  <tabstop>mRunThreadCheck</tabstop>
   <tabstop>mKeyTypeCombo</tabstop>
   <tabstop>mKeyText</tabstop>
   <tabstop>mKeyLenText</tabstop>

@@ -406,12 +406,18 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>tabWidget</tabstop>
   <tabstop>mCurEmailText</tabstop>
   <tabstop>mCurIssueDateText</tabstop>
   <tabstop>mCurExpireDateText</tabstop>
+  <tabstop>mStopMessageCheck</tabstop>
   <tabstop>mEmailText</tabstop>
   <tabstop>mKeyText</tabstop>
+  <tabstop>mUseFileCheck</tabstop>
+  <tabstop>mGetBtn</tabstop>
+  <tabstop>mLCNRequestBtn</tabstop>
   <tabstop>mUpdateBtn</tabstop>
+  <tabstop>mRemoveBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources>

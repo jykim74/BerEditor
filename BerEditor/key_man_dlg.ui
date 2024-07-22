@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>513</width>
-    <height>442</height>
+    <height>455</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -881,19 +881,26 @@
   <tabstop>mKeyLenText</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
+  <tabstop>mOutputClearBtn</tabstop>
   <tabstop>mMakeKeyBtn</tabstop>
+  <tabstop>mKWRadio</tabstop>
+  <tabstop>mKWPRadio</tabstop>
+  <tabstop>mSrcTypeCombo</tabstop>
   <tabstop>mSrcLenText</tabstop>
   <tabstop>mSrcText</tabstop>
+  <tabstop>mKEKTypeCombo</tabstop>
+  <tabstop>mGenKEKBtn</tabstop>
   <tabstop>mKEKText</tabstop>
   <tabstop>mKEKLenText</tabstop>
+  <tabstop>mDstTypeCombo</tabstop>
   <tabstop>mDstLenText</tabstop>
   <tabstop>mDstText</tabstop>
   <tabstop>mWrapBtn</tabstop>
-  <tabstop>mUnwrapBtn</tabstop>
   <tabstop>mChangeBtn</tabstop>
   <tabstop>mClearBtn</tabstop>
   <tabstop>mClearDataAllBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
+  <tabstop>mUnwrapBtn</tabstop>
  </tabstops>
  <resources/>
  <connections/>

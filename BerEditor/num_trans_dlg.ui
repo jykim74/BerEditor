@@ -212,7 +212,13 @@
   <tabstop>mBitBtn</tabstop>
   <tabstop>mDecimalBtn</tabstop>
   <tabstop>mHexBtn</tabstop>
+  <tabstop>mInputClearBtn</tabstop>
+  <tabstop>mInputText</tabstop>
+  <tabstop>mOutputTypeCombo</tabstop>
+  <tabstop>mChangeBtn</tabstop>
+  <tabstop>mTransBtn</tabstop>
   <tabstop>mOutputText</tabstop>
+  <tabstop>mOutputClearBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>

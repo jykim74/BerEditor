@@ -86,6 +86,11 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mPasswdText</tabstop>
+  <tabstop>mOKBtn</tabstop>
+  <tabstop>mCancelBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

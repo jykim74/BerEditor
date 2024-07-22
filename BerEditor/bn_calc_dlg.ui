@@ -1140,6 +1140,68 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mBinCheck</tabstop>
+  <tabstop>mDecCheck</tabstop>
+  <tabstop>mHexCheck</tabstop>
+  <tabstop>mBaseGroupCombo</tabstop>
+  <tabstop>mAClearBtn</tabstop>
+  <tabstop>mAAddOneBtn</tabstop>
+  <tabstop>mASubOneBtn</tabstop>
+  <tabstop>mAPrimeBitsCombo</tabstop>
+  <tabstop>mAGenPrimeBtn</tabstop>
+  <tabstop>mAIsPrimeBtn</tabstop>
+  <tabstop>mACopyBtn</tabstop>
+  <tabstop>mAPasteBtn</tabstop>
+  <tabstop>mALenText</tabstop>
+  <tabstop>mAText</tabstop>
+  <tabstop>mBClearBtn</tabstop>
+  <tabstop>mBAddOneBtn</tabstop>
+  <tabstop>mBSubOneBtn</tabstop>
+  <tabstop>mBPrimeBitsCombo</tabstop>
+  <tabstop>mBGenPrimeBtn</tabstop>
+  <tabstop>mBIsPrimeBtn</tabstop>
+  <tabstop>mBCopyBtn</tabstop>
+  <tabstop>mBPasteBtn</tabstop>
+  <tabstop>mBLenText</tabstop>
+  <tabstop>mBText</tabstop>
+  <tabstop>mModClearBtn</tabstop>
+  <tabstop>mModAddOneBtn</tabstop>
+  <tabstop>mModSubOneBtn</tabstop>
+  <tabstop>mModPrimeBitsCombo</tabstop>
+  <tabstop>mModGenPrimeBtn</tabstop>
+  <tabstop>mModChecPrimeBtn</tabstop>
+  <tabstop>mModCopyBtn</tabstop>
+  <tabstop>mModPasteBtn</tabstop>
+  <tabstop>mModLenText</tabstop>
+  <tabstop>mModText</tabstop>
+  <tabstop>mResClearBtn</tabstop>
+  <tabstop>mResSendABtn</tabstop>
+  <tabstop>mResSendBBtn</tabstop>
+  <tabstop>mResSendModBtn</tabstop>
+  <tabstop>mResCopyBtn</tabstop>
+  <tabstop>mResLenText</tabstop>
+  <tabstop>mResText</tabstop>
+  <tabstop>mSQRBtn</tabstop>
+  <tabstop>mCOMPBtn</tabstop>
+  <tabstop>mSHRBtn</tabstop>
+  <tabstop>mSHLBtn</tabstop>
+  <tabstop>mORBtn</tabstop>
+  <tabstop>mANDBtn</tabstop>
+  <tabstop>mXORBtn</tabstop>
+  <tabstop>mADDBtn</tabstop>
+  <tabstop>mDIVBtn</tabstop>
+  <tabstop>mEXPBtn</tabstop>
+  <tabstop>mMODBtn</tabstop>
+  <tabstop>mMULBtn</tabstop>
+  <tabstop>mSQRTBtn</tabstop>
+  <tabstop>mINVBtn</tabstop>
+  <tabstop>mSUBBtn</tabstop>
+  <tabstop>mGCDBtn</tabstop>
+  <tabstop>mClearAllBtn</tabstop>
+  <tabstop>mTestBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

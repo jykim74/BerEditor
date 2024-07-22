@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>664</width>
-    <height>578</height>
+    <height>616</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -86,7 +86,7 @@
    <item row="1" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -3204,6 +3204,7 @@
   <tabstop>mRSAReqFileText</tabstop>
   <tabstop>mRSAFindBtn</tabstop>
   <tabstop>mRSARunBtn</tabstop>
+  <tabstop>mDRBGMethodCombo</tabstop>
   <tabstop>mDRBGAlgCombo</tabstop>
   <tabstop>mDRBGUseDFCheck</tabstop>
   <tabstop>mDRBGUsePRCheck</tabstop>
@@ -3245,6 +3246,7 @@
   <tabstop>mHashMCTFirstMDLenText</tabstop>
   <tabstop>mHashMCTLastMDText</tabstop>
   <tabstop>mHashMCTLastMDLenText</tabstop>
+  <tabstop>mDRBG2MethodCombo</tabstop>
   <tabstop>mDRBG2AlgCombo</tabstop>
   <tabstop>mDRBG2RandLenText</tabstop>
   <tabstop>mDRBG2UseDFCheck</tabstop>

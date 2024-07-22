@@ -193,6 +193,11 @@
   <tabstop>mCRLDetailText</tabstop>
   <tabstop>mRevokeListTable</tabstop>
   <tabstop>mRevokeDetailTable</tabstop>
+  <tabstop>mVerifyCRLBtn</tabstop>
+  <tabstop>mDecodeCRLBtn</tabstop>
+  <tabstop>mSaveBtn</tabstop>
+  <tabstop>mSaveToManBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>
  <connections/>

@@ -179,6 +179,13 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mInfoTable</tabstop>
+  <tabstop>mDataDecodeBtn</tabstop>
+  <tabstop>mDataLenText</tabstop>
+  <tabstop>mDataText</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

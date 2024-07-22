@@ -810,6 +810,7 @@
   <tabstop>mSrcFileSizeText</tabstop>
   <tabstop>mFileSizeText</tabstop>
   <tabstop>mFileReadSizeText</tabstop>
+  <tabstop>mRunThreadCheck</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
   <tabstop>mOutputClearBtn</tabstop>

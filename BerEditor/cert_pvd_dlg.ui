@@ -746,6 +746,24 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>mTrustPathText</tabstop>
+  <tabstop>mTrustFindBtn</tabstop>
+  <tabstop>mTrustAddBtn</tabstop>
+  <tabstop>mTrustInfoBtn</tabstop>
+  <tabstop>mTrustDecodeBtn</tabstop>
+  <tabstop>mUntrustPathText</tabstop>
+  <tabstop>mUntrustFindBtn</tabstop>
+  <tabstop>mUntrustAddBtn</tabstop>
+  <tabstop>mUntrustInfoBtn</tabstop>
+  <tabstop>mUntrustDecodeBtn</tabstop>
+  <tabstop>mCRLPathText</tabstop>
+  <tabstop>mCRLFindBtn</tabstop>
+  <tabstop>mCRLAddBtn</tabstop>
+  <tabstop>mCRLInfoBtn</tabstop>
+  <tabstop>mCRLDecodeBtn</tabstop>
+  <tabstop>mUseTrustListCheck</tabstop>
+  <tabstop>mTrustListBtn</tabstop>
+  <tabstop>mPathClearBtn</tabstop>
   <tabstop>mVerifyCRLBtn</tabstop>
   <tabstop>mVerifyCertBtn</tabstop>
   <tabstop>mATTimeCheck</tabstop>
@@ -756,12 +774,32 @@
   <tabstop>mCRLCheckCheck</tabstop>
   <tabstop>mCRLCheckAllCheck</tabstop>
   <tabstop>mIgnoreCriticalCheck</tabstop>
+  <tabstop>mX509StrictCheck</tabstop>
+  <tabstop>mAllowProxyCertsCheck</tabstop>
+  <tabstop>mPolicyCheckCheck</tabstop>
+  <tabstop>mExplicitPolicyCheck</tabstop>
+  <tabstop>mInhibitAnyCheck</tabstop>
+  <tabstop>mInhibitMapCheck</tabstop>
+  <tabstop>mNotifyPolicyCheck</tabstop>
+  <tabstop>mExtendedCRLSupportCheck</tabstop>
+  <tabstop>mUseDeltasCheck</tabstop>
+  <tabstop>mCheckSSSignatureCheck</tabstop>
+  <tabstop>mTrustedFirstCheck</tabstop>
+  <tabstop>mSuiteB128LosOnlyCheck</tabstop>
+  <tabstop>mSuiteB192LosCheck</tabstop>
+  <tabstop>mSuiteB128LogCheck</tabstop>
+  <tabstop>mPartialChainCheck</tabstop>
+  <tabstop>mNoALTChainsCheck</tabstop>
   <tabstop>mNoCheckTimeCheck</tabstop>
   <tabstop>mParamCombo</tabstop>
   <tabstop>mParamValueText</tabstop>
   <tabstop>mParamAddBtn</tabstop>
   <tabstop>mParamListClearBtn</tabstop>
   <tabstop>mParamTable</tabstop>
+  <tabstop>mTargetPathText</tabstop>
+  <tabstop>mTargetFindBtn</tabstop>
+  <tabstop>mTargetInfoBtn</tabstop>
+  <tabstop>mTargetDecodeBtn</tabstop>
   <tabstop>mClearDataAllBtn</tabstop>
   <tabstop>mPolicyCheckBtn</tabstop>
   <tabstop>mPathValidationBtn</tabstop>

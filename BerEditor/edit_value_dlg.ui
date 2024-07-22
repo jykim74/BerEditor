@@ -832,10 +832,18 @@
  </widget>
  <tabstops>
   <tabstop>mClassText</tabstop>
+  <tabstop>mOffsetText</tabstop>
+  <tabstop>mLevelText</tabstop>
+  <tabstop>mNumText</tabstop>
+  <tabstop>mTagText</tabstop>
   <tabstop>mTagBitText</tabstop>
+  <tabstop>mLenText</tabstop>
   <tabstop>mValueTypeCombo</tabstop>
   <tabstop>mValueLenText</tabstop>
   <tabstop>mValueText</tabstop>
+  <tabstop>mHeaderText</tabstop>
+  <tabstop>mBERLenText</tabstop>
+  <tabstop>mBERText</tabstop>
   <tabstop>mAddBtn</tabstop>
   <tabstop>mDeleteBtn</tabstop>
   <tabstop>mModifyBtn</tabstop>

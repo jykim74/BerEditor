@@ -598,6 +598,44 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mUserIDText</tabstop>
+  <tabstop>mPasswdText</tabstop>
+  <tabstop>mUUIDText</tabstop>
+  <tabstop>mLenText</tabstop>
+  <tabstop>mAttributeCombo</tabstop>
+  <tabstop>mObjectTypeCombo</tabstop>
+  <tabstop>mFindInputBtn</tabstop>
+  <tabstop>mInputClearBtn</tabstop>
+  <tabstop>mInputLenText</tabstop>
+  <tabstop>mInputText</tabstop>
+  <tabstop>mAlgCombo</tabstop>
+  <tabstop>mOptionCombo</tabstop>
+  <tabstop>mHashCombo</tabstop>
+  <tabstop>mOutputClearBtn</tabstop>
+  <tabstop>mOutputLenText</tabstop>
+  <tabstop>mOutputText</tabstop>
+  <tabstop>mCreateBtn</tabstop>
+  <tabstop>mActivateBtn</tabstop>
+  <tabstop>mGetBtn</tabstop>
+  <tabstop>mDestroyBtn</tabstop>
+  <tabstop>mEncryptBtn</tabstop>
+  <tabstop>mDecryptBtn</tabstop>
+  <tabstop>mSignBtn</tabstop>
+  <tabstop>mVerifyBtn</tabstop>
+  <tabstop>mRegisterBtn</tabstop>
+  <tabstop>mCreateKeyPairBtn</tabstop>
+  <tabstop>mAddAttributeBtn</tabstop>
+  <tabstop>mGetAttributes</tabstop>
+  <tabstop>mModifyAttributeBtn</tabstop>
+  <tabstop>mGetAttributeListBtn</tabstop>
+  <tabstop>mDeleteAttributeBtn</tabstop>
+  <tabstop>mLocateBtn</tabstop>
+  <tabstop>mHashBtn</tabstop>
+  <tabstop>mRNGSeedBtn</tabstop>
+  <tabstop>mRNGRetrieveBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -812,6 +812,55 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mURLCombo</tabstop>
+  <tabstop>mURLClearBtn</tabstop>
+  <tabstop>mCACertPathText</tabstop>
+  <tabstop>mFindCACertBtn</tabstop>
+  <tabstop>mCACertViewBtn</tabstop>
+  <tabstop>mCACertDecodeBtn</tabstop>
+  <tabstop>mCACertTypeBtn</tabstop>
+  <tabstop>mCertPathText</tabstop>
+  <tabstop>mFindCertBtn</tabstop>
+  <tabstop>mCertViewBtn</tabstop>
+  <tabstop>mCertDecodeBtn</tabstop>
+  <tabstop>mCertTypeBtn</tabstop>
+  <tabstop>mOCSPClearBtn</tabstop>
+  <tabstop>mSetURLBtn</tabstop>
+  <tabstop>mSetCACertBtn</tabstop>
+  <tabstop>mCertGroup</tabstop>
+  <tabstop>mSignCertPathText</tabstop>
+  <tabstop>mFindSignCertBtn</tabstop>
+  <tabstop>mSignCertViewBtn</tabstop>
+  <tabstop>mSignCertDecodeBtn</tabstop>
+  <tabstop>mSignCertTypeBtn</tabstop>
+  <tabstop>mSignPriKeyPathText</tabstop>
+  <tabstop>mFindSignPriKeyBtn</tabstop>
+  <tabstop>mSignPriKeyViewBtn</tabstop>
+  <tabstop>mSignPriKeyDecodeBtn</tabstop>
+  <tabstop>mSignPriKeyTypeBtn</tabstop>
+  <tabstop>mEncSignPriKeyCheck</tabstop>
+  <tabstop>mPasswdText</tabstop>
+  <tabstop>mRequestClearBtn</tabstop>
+  <tabstop>mRequestDecodeBtn</tabstop>
+  <tabstop>mRequestLenText</tabstop>
+  <tabstop>mRequestText</tabstop>
+  <tabstop>mUseSignCheck</tabstop>
+  <tabstop>mHashCombo</tabstop>
+  <tabstop>mEncodeBtn</tabstop>
+  <tabstop>mSendBtn</tabstop>
+  <tabstop>mVerifyBtn</tabstop>
+  <tabstop>mResponseClearBtn</tabstop>
+  <tabstop>mResponseDecodeBtn</tabstop>
+  <tabstop>mResponseLenText</tabstop>
+  <tabstop>mResponseText</tabstop>
+  <tabstop>mSrvCertPathText</tabstop>
+  <tabstop>mFindSrvCertBtn</tabstop>
+  <tabstop>mSrvCertViewBtn</tabstop>
+  <tabstop>mSrvCertDecodeBtn</tabstop>
+  <tabstop>mSrvCertTypeBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

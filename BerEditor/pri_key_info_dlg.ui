@@ -2411,6 +2411,7 @@
   <tabstop>mEdDSA_RawPrivateText</tabstop>
   <tabstop>mEdDSA_RawPublicLenText</tabstop>
   <tabstop>mEdDSA_RawPublicText</tabstop>
+  <tabstop>mDecodeBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>

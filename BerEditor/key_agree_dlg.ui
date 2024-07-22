@@ -1208,6 +1208,7 @@
   <tabstop>mBPublicKeyLenText</tabstop>
   <tabstop>mBGenDHKeyBtn</tabstop>
   <tabstop>mECDHParamCombo</tabstop>
+  <tabstop>mECDHParamText</tabstop>
   <tabstop>mAECDHPriKeyText</tabstop>
   <tabstop>mAECDHPriKeyLenText</tabstop>
   <tabstop>mAECDHPubKeyText</tabstop>
@@ -1216,6 +1217,9 @@
   <tabstop>mAGenPriKeyBtn</tabstop>
   <tabstop>mAGenPubKeyBtn</tabstop>
   <tabstop>mAFindPriKeyBtn</tabstop>
+  <tabstop>mACheckKeyPairBtn</tabstop>
+  <tabstop>mACheckPubKeyBtn</tabstop>
+  <tabstop>mAGetFromManBtn</tabstop>
   <tabstop>mBECDHPriKeyText</tabstop>
   <tabstop>mBECDHPriKeyLenText</tabstop>
   <tabstop>mBECDHPubKeyText</tabstop>
@@ -1224,6 +1228,9 @@
   <tabstop>mBGenPriKeyBtn</tabstop>
   <tabstop>mBGenPubKeyBtn</tabstop>
   <tabstop>mBFindPriKeyBtn</tabstop>
+  <tabstop>mBCheckPubKeyBtn</tabstop>
+  <tabstop>mBCheckKeyPairBtn</tabstop>
+  <tabstop>mBGetFromManBtn</tabstop>
   <tabstop>mSecretKeyLenText</tabstop>
   <tabstop>mSecretKeyText</tabstop>
   <tabstop>mSecretClearBtn</tabstop>

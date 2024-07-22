@@ -195,8 +195,10 @@
  <tabstops>
   <tabstop>mTypeHex</tabstop>
   <tabstop>mTypeBase64</tabstop>
+  <tabstop>mFindBtn</tabstop>
   <tabstop>mDataLenText</tabstop>
   <tabstop>mDataText</tabstop>
+  <tabstop>mClearBtn</tabstop>
   <tabstop>mViewBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>

@@ -801,6 +801,62 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mViewTrustListBtn</tabstop>
+  <tabstop>mUseMutualCheck</tabstop>
+  <tabstop>mAuthTab</tabstop>
+  <tabstop>mNoSSL2Check</tabstop>
+  <tabstop>mNoSSL3Check</tabstop>
+  <tabstop>mNoCompCheck</tabstop>
+  <tabstop>mNoTicketCheck</tabstop>
+  <tabstop>mNoTLS1Check</tabstop>
+  <tabstop>mNoTLS11Check</tabstop>
+  <tabstop>mNoTLS12Check</tabstop>
+  <tabstop>mNoTLS13Check</tabstop>
+  <tabstop>mHostNameCheck</tabstop>
+  <tabstop>mModeCombo</tabstop>
+  <tabstop>mVerifyDepthText</tabstop>
+  <tabstop>mTrustCAPathText</tabstop>
+  <tabstop>mFindTrustCABtn</tabstop>
+  <tabstop>mTrustCAViewBtn</tabstop>
+  <tabstop>mTrustCADecodeBtn</tabstop>
+  <tabstop>mTrustCATypeBtn</tabstop>
+  <tabstop>mFixCipherNameCheck</tabstop>
+  <tabstop>mCipherListCombo</tabstop>
+  <tabstop>mCipherAddBtn</tabstop>
+  <tabstop>mCipherClearBtn</tabstop>
+  <tabstop>mCipherListText</tabstop>
+  <tabstop>mClientCAPathText</tabstop>
+  <tabstop>mFindClientCABtn</tabstop>
+  <tabstop>mClientCAViewBtn</tabstop>
+  <tabstop>mClientCADecodeBtn</tabstop>
+  <tabstop>mClientCATypeBtn</tabstop>
+  <tabstop>mCertGroup</tabstop>
+  <tabstop>mClientCertPathText</tabstop>
+  <tabstop>mFindClientCertBtn</tabstop>
+  <tabstop>mClientCertViewBtn</tabstop>
+  <tabstop>mClientCertDecodeBtn</tabstop>
+  <tabstop>mClientCertTypeBtn</tabstop>
+  <tabstop>mClientPriKeyPathText</tabstop>
+  <tabstop>mFindClientPriKeyBtn</tabstop>
+  <tabstop>mClientPriKeyViewBtn</tabstop>
+  <tabstop>mClientPriKeyDecodeBtn</tabstop>
+  <tabstop>mClientPriKeyTypeBtn</tabstop>
+  <tabstop>mEncPriKeyCheck</tabstop>
+  <tabstop>mPasswordText</tabstop>
+  <tabstop>mURLCombo</tabstop>
+  <tabstop>mVerifyBtn</tabstop>
+  <tabstop>mClearSaveURLBtn</tabstop>
+  <tabstop>mURLTable</tabstop>
+  <tabstop>mLogText</tabstop>
+  <tabstop>mURLTree</tabstop>
+  <tabstop>mURLTab</tabstop>
+  <tabstop>mClearResultBtn</tabstop>
+  <tabstop>mClearLogBtn</tabstop>
+  <tabstop>mRefreshBtn</tabstop>
+  <tabstop>mClearURLBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
