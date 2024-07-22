@@ -187,6 +187,9 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>mAboutText</tabstop>
+  <tabstop>mCopyRightText</tabstop>
   <tabstop>mCheckUpdatBtn</tabstop>
   <tabstop>mOKBtn</tabstop>
  </tabstops>
