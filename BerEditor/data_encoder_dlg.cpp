@@ -45,8 +45,11 @@ DataEncoderDlg::DataEncoderDlg(QWidget *parent) :
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
-#endif
+    resize(minimumSizeHint().width() + 40, minimumSizeHint().height());
+#else
     resize(minimumSizeHint().width(), minimumSizeHint().height());
+#endif
+
 }
 
 DataEncoderDlg::~DataEncoderDlg()

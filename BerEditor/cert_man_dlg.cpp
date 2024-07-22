@@ -106,6 +106,24 @@ CertManDlg::CertManDlg(QWidget *parent) :
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+    mEETab->layout()->setSpacing(5);
+    mEETab->layout()->setMargin(5);
+
+    mOtherTab->layout()->setSpacing(5);
+    mOtherTab->layout()->setMargin(5);
+
+    mCATab->layout()->setSpacing(5);
+    mCATab->layout()->setMargin(5);
+
+    mCRLTab->layout()->setSpacing(5);
+    mCRLTab->layout()->setMargin(5);
+
+    mRCATab->layout()->setSpacing(5);
+    mRCATab->layout()->setMargin(5);
+
+    mToolsTab->layout()->setSpacing(5);
+    mToolsTab->layout()->setMargin(5);
+
     mTLPriKeyClearBtn->setFixedWidth(34);
     mTLCertClearBtn->setFixedWidth(34);
     mTLPFXClearBtn->setFixedWidth(34);
@@ -125,7 +143,7 @@ CertManDlg::CertManDlg(QWidget *parent) :
     mRCA_ManGroup->layout()->setMargin(5);
     mTL_ManGroup->layout()->setMargin(5);
 #endif
-    resize(minimumSizeHint().width(), height());
+    resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 
 CertManDlg::~CertManDlg()
@@ -190,7 +208,12 @@ void CertManDlg::changeTLVerison( int index )
 void CertManDlg::initUI()
 {
     mTLVersionCombo->addItems( kVersionList );
+
+#if defined(Q_OS_MAC)
+    int nWidth = width() * 9/10;
+#else
     int nWidth = width() * 7/10;
+#endif
 
     QStringList sTableLabels = { tr( "Subject DN" ), tr( "Expire" ), tr( "Issuer DN" ) };
 

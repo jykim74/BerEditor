@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>630</width>
-    <height>533</height>
+    <width>570</width>
+    <height>567</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -51,7 +51,7 @@
    <item>
     <widget class="QTabWidget" name="mTabWidget">
      <property name="currentIndex">
-      <number>5</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="mEETab">
       <attribute name="title">
@@ -127,7 +127,14 @@
         </widget>
        </item>
        <item>
-        <widget class="QTableWidget" name="mEE_CertTable"/>
+        <widget class="QTableWidget" name="mEE_CertTable">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>160</height>
+          </size>
+         </property>
+        </widget>
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_6">
@@ -196,45 +203,24 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="1">
-             <widget class="QPushButton" name="mDelCertBtn">
+            <item row="1" column="0">
+             <widget class="QPushButton" name="mImportBtn">
               <property name="text">
-               <string>Delete Cert</string>
+               <string>Import PFX</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
              <widget class="QPushButton" name="mExportBtn">
               <property name="text">
-               <string>Export to PFX</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QPushButton" name="mImportBtn">
-              <property name="text">
-               <string>Import from PFX</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QPushButton" name="mViewPriKeyBtn">
-              <property name="text">
-               <string>View PrivateKey</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QPushButton" name="mViewPubKeyBtn">
-              <property name="text">
-               <string>View PublicKey</string>
+               <string>Export PFX</string>
               </property>
              </widget>
             </item>
             <item row="0" column="3">
              <widget class="QPushButton" name="mChangePasswdBtn">
               <property name="text">
-               <string>Change Password</string>
+               <string>Change Passwd</string>
               </property>
              </widget>
             </item>
@@ -248,7 +234,28 @@
             <item row="1" column="3">
              <widget class="QPushButton" name="mDecodePriKeyBtn">
               <property name="text">
-               <string>Decode PrivateKey</string>
+               <string>Decode PriKey</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QPushButton" name="mDelCertBtn">
+              <property name="text">
+               <string>Delete Cert</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QPushButton" name="mViewPriKeyBtn">
+              <property name="text">
+               <string>View PriKey</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QPushButton" name="mViewPubKeyBtn">
+              <property name="text">
+               <string>View PubKey</string>
               </property>
              </widget>
             </item>
@@ -383,7 +390,7 @@
             <item row="1" column="0">
              <widget class="QPushButton" name="mViewPubKeyOtherBtn">
               <property name="text">
-               <string>View PublicKey</string>
+               <string>View PubKey</string>
               </property>
              </widget>
             </item>
@@ -522,7 +529,7 @@
             <item row="1" column="0">
              <widget class="QPushButton" name="mViewPubKeyCABtn">
               <property name="text">
-               <string>View PublicKey</string>
+               <string>View PubKey</string>
               </property>
              </widget>
             </item>
@@ -788,7 +795,7 @@
             <item row="1" column="0">
              <widget class="QPushButton" name="mViewPubKeyTrustBtn">
               <property name="text">
-               <string>View PublicKey</string>
+               <string>View PubKey</string>
               </property>
              </widget>
             </item>
@@ -1161,7 +1168,7 @@
             <item row="0" column="1">
              <widget class="QPushButton" name="mTLViewCertBtn">
               <property name="text">
-               <string>View Certificate</string>
+               <string>View Cert</string>
               </property>
              </widget>
             </item>
@@ -1182,14 +1189,14 @@
             <item row="1" column="2">
              <widget class="QPushButton" name="mTLViewPriKeyBtn">
               <property name="text">
-               <string>View PrivateKey</string>
+               <string>View PriKey</string>
               </property>
              </widget>
             </item>
             <item row="1" column="3">
              <widget class="QPushButton" name="mTLViewPubKeyBtn">
               <property name="text">
-               <string>View PublicKey</string>
+               <string>View PubKey</string>
               </property>
              </widget>
             </item>
@@ -1224,6 +1231,13 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mOKBtn">
+       <property name="text">
+        <string>OK</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="0">
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -1244,13 +1258,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mOKBtn">
-       <property name="text">
-        <string>OK</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
   </layout>
@@ -1268,8 +1275,6 @@
   <tabstop>mExportBtn</tabstop>
   <tabstop>mCheckKeyPairBtn</tabstop>
   <tabstop>mDecodePriKeyBtn</tabstop>
-  <tabstop>mViewPriKeyBtn</tabstop>
-  <tabstop>mViewPubKeyBtn</tabstop>
   <tabstop>mOtherCertPathText</tabstop>
   <tabstop>mOther_CertTable</tabstop>
   <tabstop>mAddOtherBtn</tabstop>
