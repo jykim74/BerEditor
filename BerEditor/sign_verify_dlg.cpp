@@ -1085,6 +1085,7 @@ void SignVerifyDlg::fileRun()
     if( strSrcFile.length() < 1 )
     {
         berApplet->warningBox( tr("You have to find src file"), this );
+        mSrcFileText->setFocus();
         return;
     }
 
@@ -1662,6 +1663,7 @@ void SignVerifyDlg::startTask()
     if( strSrcFile.length() < 1)
     {
         berApplet->warningBox( tr( "Find source file"), this );
+        mSrcFileText->setFocus();
         return;
     }
 

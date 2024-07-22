@@ -97,7 +97,7 @@ OCSPClientDlg::OCSPClientDlg(QWidget *parent) :
 
     mCertGroup->layout()->setSpacing(5);
 #endif
-    resize(width(), minimumSizeHint().height());
+    resize(minimumSizeHint().width(), minimumSizeHint().height());
     initialize();
     mEncodeBtn->setDefault(true);
 }

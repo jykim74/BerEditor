@@ -466,6 +466,7 @@ void GenMacDlg::clickMACSrcFile()
     if( strSrcFile.length() < 1 )
     {
         berApplet->warningBox( tr("Select a input file"), this );
+        mSrcFileText->setFocus();
         return;
     }
 
@@ -657,6 +658,7 @@ void GenMacDlg::startTask()
     if( strSrcFile.length() < 1)
     {
         berApplet->warningBox( tr( "Find source file"), this );
+        mSrcFileText->setFocus();
         return;
     }
 

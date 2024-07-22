@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>543</width>
+    <width>491</width>
     <height>589</height>
    </rect>
   </property>
@@ -366,7 +366,7 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_9">
-         <item row="0" column="5">
+         <item row="0" column="4">
           <widget class="QLineEdit" name="mFileReadSizeText">
            <property name="minimumSize">
             <size>
@@ -441,10 +441,13 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="4">
-          <widget class="QLabel" name="label_10">
+         <item row="0" column="1">
+          <widget class="QLabel" name="label_9">
            <property name="text">
-            <string>Read File Size</string>
+            <string>Total Size</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
            </property>
           </widget>
          </item>
@@ -504,25 +507,15 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QLabel" name="label_9">
+         <item row="0" column="3">
+          <widget class="QLabel" name="label_10">
            <property name="text">
-            <string>Total File Size</string>
+            <string>Read Size</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
            </property>
           </widget>
-         </item>
-         <item row="0" column="3">
-          <spacer name="horizontalSpacer_3">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
          </item>
         </layout>
        </item>

@@ -451,6 +451,9 @@ void TTLVTreeView::AddTTLV()
 
     if( ret == QDialog::Accepted )
     {
+        bool bVal = berApplet->yesOrCancelBox( tr( "Are you sure you want to add it?" ), this, false );
+        if( bVal == false ) return;
+
         QString strData = makeTTLV.getData();
         JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
 

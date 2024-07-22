@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>666</width>
+    <width>582</width>
     <height>552</height>
    </rect>
   </property>
@@ -161,6 +161,12 @@
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="QPlainTextEdit" name="mDumpText">
+         <property name="minimumSize">
+          <size>
+           <width>540</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="palette">
           <palette>
            <active>

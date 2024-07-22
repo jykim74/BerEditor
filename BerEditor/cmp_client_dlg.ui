@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>535</width>
+    <width>518</width>
     <height>691</height>
    </rect>
   </property>
@@ -518,7 +518,14 @@
     </layout>
    </item>
    <item>
-    <widget class="QPlainTextEdit" name="mRequestText"/>
+    <widget class="QPlainTextEdit" name="mRequestText">
+     <property name="minimumSize">
+      <size>
+       <width>500</width>
+       <height>0</height>
+      </size>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="Line" name="line_4">

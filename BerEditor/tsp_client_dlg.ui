@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>519</width>
-    <height>739</height>
+    <width>418</width>
+    <height>580</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -184,7 +184,14 @@
     </layout>
    </item>
    <item>
-    <widget class="QPlainTextEdit" name="mInputText"/>
+    <widget class="QPlainTextEdit" name="mInputText">
+     <property name="minimumSize">
+      <size>
+       <width>400</width>
+       <height>0</height>
+      </size>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="Line" name="line_3">

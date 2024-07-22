@@ -339,6 +339,7 @@ void GenHashDlg::clickDigestSrcFile()
     if( strSrcFile.length() < 1 )
     {
         berApplet->warningBox( tr("Select input file"), this );
+        mSrcFileText->setFocus();
         return;
     }
 
@@ -429,6 +430,7 @@ void GenHashDlg::startTask()
     if( strSrcFile.length() < 1)
     {
         berApplet->warningBox( tr( "Find source file"), this );
+        mSrcFileText->setFocus();
         return;
     }
 

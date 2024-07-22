@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>591</width>
-    <height>661</height>
+    <width>442</width>
+    <height>536</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -99,7 +99,7 @@
    <item row="0" column="0" colspan="2">
     <widget class="QTabWidget" name="mTabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -486,7 +486,14 @@
         </layout>
        </item>
        <item row="3" column="0" colspan="4">
-        <widget class="QPlainTextEdit" name="mPText"/>
+        <widget class="QPlainTextEdit" name="mPText">
+         <property name="minimumSize">
+          <size>
+           <width>400</width>
+           <height>0</height>
+          </size>
+         </property>
+        </widget>
        </item>
        <item row="5" column="2">
         <widget class="QLineEdit" name="mAPublicKeyLenText">

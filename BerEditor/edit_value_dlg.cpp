@@ -27,7 +27,7 @@ EditValueDlg::EditValueDlg(QWidget *parent) :
 
     initialize();
 
-    mCloseBtn->setDefault(true);
+    mModifyBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -147,6 +147,7 @@ void EditValueDlg::setItem(BerItem *pItem)
         mValueText->setReadOnly( true );
         mValueText->setStyleSheet( "background-color:#ddddff" );
         mModifyBtn->hide();
+        mCloseBtn->setDefault(true);
     }
     else
     {
@@ -206,6 +207,9 @@ void EditValueDlg::runChange()
     QString strValue = mValueText->toPlainText();
     BerModel *ber_model = (BerModel *)ber_item_->model();
 
+    bool bVal = berApplet->yesOrCancelBox( tr( "Are you sure you want to modify it?" ), this, false );
+    if( bVal == false ) return;
+
     getBINFromString( &binNewVal, mValueTypeCombo->currentText(), strValue );
     ret = ber_model->modifyItem( ber_item_, &binNewVal );
 
@@ -233,6 +237,9 @@ void EditValueDlg::runDelete()
         QDialog::reject();
         return;
     }
+
+    bool bVal = berApplet->yesOrCancelBox( tr( "Are you sure you want to delete it?" ), this, false );
+    if( bVal == false ) return;
 
     ret = ber_model->removeItem( ber_item_ );
 
@@ -262,6 +269,9 @@ void EditValueDlg::runAdd()
         QDialog::reject();
         return;
     }
+
+    bool bVal = berApplet->yesOrCancelBox( tr( "Are you sure you want to add it?" ), this, false );
+    if( bVal == false ) return;
 
     JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
     ret = ber_model->addItem( parentItem, &binData );

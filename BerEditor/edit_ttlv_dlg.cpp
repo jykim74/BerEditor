@@ -21,7 +21,7 @@ EditTTLVDlg::EditTTLVDlg(QWidget *parent) :
     connect( mTTLVText, SIGNAL(textChanged()), this, SLOT(changeTTLV()));
 
     initialize();
-    mCancelBtn->setDefault(true);
+    mModifyBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -59,6 +59,7 @@ void EditTTLVDlg::initialize()
         mValueText->setReadOnly( true );
         mValueText->setStyleSheet( "background-color:#ddddff" );
         mModifyBtn->hide();
+        mCancelBtn->setDefault(true);
     }
     else
     {
@@ -136,6 +137,9 @@ void EditTTLVDlg::clickModify()
         return;
     }
 
+    bool bVal = berApplet->yesOrCancelBox( tr( "Are you sure you want to modify it?" ), this, false );
+    if( bVal == false ) return;
+
     TTLVTreeModel *pModel = (TTLVTreeModel *)pItem->model();
 
     JS_BIN_decodeHex( mValueText->toPlainText().toStdString().c_str(), &binValue );
@@ -160,6 +164,9 @@ void EditTTLVDlg::clickAdd()
         berApplet->warningBox( tr( "There is no selected item"), this );
         return;
     }
+
+    bool bVal = berApplet->yesOrCancelBox( tr( "Are you sure you want to add it?" ), this, false );
+    if( bVal == false ) return;
 
     TTLVTreeItem *pParentItem = (TTLVTreeItem *)pItem->parent();
     if( pParentItem == NULL )
@@ -189,6 +196,9 @@ void EditTTLVDlg::clickDelete()
         berApplet->warningBox( tr( "There is no selected item"), this );
         return;
     }
+
+    bool bVal = berApplet->yesOrCancelBox( tr( "Are you sure you want to delete it?" ), this, false );
+    if( bVal == false ) return;
 
     TTLVTreeItem *pParentItem = (TTLVTreeItem *)pItem->parent();
     if( pParentItem == NULL )
