@@ -130,6 +130,9 @@ MainWindow::~MainWindow()
     delete scep_client_dlg_;
     delete cert_man_dlg_;
 
+    delete ttlv_encoder_dlg_;
+    delete ttlv_client_dlg_;
+
     delete table_tab_;
     delete text_tab_;
     delete vsplitter_;
@@ -824,6 +827,8 @@ void MainWindow::createCryptoDlg()
     cmp_client_dlg_ = new CMPClientDlg;
     scep_client_dlg_ = new SCEPClientDlg;
     cert_man_dlg_ = new CertManDlg;
+    ttlv_encoder_dlg_ = new TTLVEncoderDlg;
+    ttlv_client_dlg_ = new TTLVClientDlg;
 }
 
 void MainWindow::newFile()
@@ -881,14 +886,16 @@ void MainWindow::runMakeTTLV()
 
 void MainWindow::ttlvClient()
 {
-    TTLVClientDlg ttlvClient;
-    ttlvClient.exec();
+    ttlv_client_dlg_->show();
+    ttlv_client_dlg_->raise();
+    ttlv_client_dlg_->activateWindow();
 }
 
 void MainWindow::ttlvEncoder()
 {
-    TTLVEncoderDlg ttlvEncoder;
-    ttlvEncoder.exec();
+    ttlv_encoder_dlg_->show();
+    ttlv_encoder_dlg_->raise();
+    ttlv_encoder_dlg_->activateWindow();
 }
 
 void MainWindow::numTrans()

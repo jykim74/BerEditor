@@ -6,6 +6,7 @@
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QDateTime>
+#include <QButtonGroup>
 
 #include "sign_verify_dlg.h"
 #include "js_ber.h"
@@ -36,11 +37,6 @@ static QStringList versionTypes = {
     "V21"
 };
 
-static QStringList methodTypes = {
-    "Signature",
-    "Verify"
-};
-
 SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     QDialog(parent)
 {
@@ -58,7 +54,9 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     connect( mFindPriKeyBtn, SIGNAL(clicked()), this, SLOT(findPrivateKey()));
     connect( mFindCertBtn, SIGNAL(clicked()), this, SLOT(findCert()));
     connect( mAlgTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(algChanged(int)));
-    connect( mMethodCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeMethod(int)));
+
+    connect( mSignRadio, SIGNAL(clicked()), this, SLOT(clickSign()));
+    connect( mVerifyRadio, SIGNAL(clicked()), this, SLOT(clickVerify()));
 
     connect( mInitBtn, SIGNAL(clicked()), this, SLOT(signVerifyInit()));
     connect( mUpdateBtn, SIGNAL(clicked()), this, SLOT(signVerifyUpdate()));
@@ -127,7 +125,10 @@ void SignVerifyDlg::initialize()
     mHashTypeCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
 
     mVersionCombo->addItems(versionTypes);
-    mMethodCombo->addItems(methodTypes);
+
+    QButtonGroup *runGroup = new QButtonGroup;
+    runGroup->addButton( mSignRadio );
+    runGroup->addButton( mVerifyRadio );
 
     mAutoCertPubKeyCheck->setChecked(true);
     mUseKeyAlgCheck->setChecked(true);
@@ -137,6 +138,7 @@ void SignVerifyDlg::initialize()
     checkAutoCertOrPubKey();
     checkUseKeyAlg();
     checkEncPriKey();
+    mSignRadio->click();
 }
 
 int SignVerifyDlg::readPrivateKey( BIN *pPriKey )
@@ -372,7 +374,7 @@ int SignVerifyDlg::signVerifyInit()
     QString strHash = mHashTypeCombo->currentText();
 
 
-    if( mMethodCombo->currentIndex() == SIGN_SIGNATURE )
+    if( mSignRadio->isChecked() )
     {
         if( mCertGroup->isChecked() == true )
         {
@@ -615,7 +617,7 @@ void SignVerifyDlg::signVerifyUpdate()
 
     getBINFromString( &binSrc, nDataType, strInput );
 
-    if( mMethodCombo->currentIndex() == SIGN_SIGNATURE )
+    if( mSignRadio->isChecked() )
     {
         if( is_eddsa_ )
             ret = JS_PKI_hashUpdate( hctx_, &binSrc );
@@ -670,7 +672,7 @@ void SignVerifyDlg::signVerifyFinal()
         if( ret != 0 ) goto end;
     }
 
-    if( mMethodCombo->currentIndex() == SIGN_SIGNATURE )
+    if( mSignRadio->isChecked() )
     {
         if( is_eddsa_ )
         {
@@ -811,7 +813,7 @@ void SignVerifyDlg::dataRun()
     QString strHash = mHashTypeCombo->currentText();
 
 
-    if( mMethodCombo->currentIndex() == SIGN_SIGNATURE )
+    if( mSignRadio->isChecked() )
     {
         if( mCertGroup->isChecked() == true )
         {
@@ -1130,7 +1132,7 @@ void SignVerifyDlg::fileRun()
         }
         else
         {
-            if( mMethodCombo->currentIndex() == SIGN_SIGNATURE )
+            if( mSignRadio->isChecked() )
             {
                 ret = JS_PKI_signUpdate( sctx_, &binPart );
             }
@@ -1227,7 +1229,7 @@ void SignVerifyDlg::digestRun()
 
     berApplet->log( QString( "Algorithm : %1 Hash %2").arg( mAlgTypeCombo->currentText()).arg( strHash ));
 
-    if( mMethodCombo->currentIndex() == SIGN_SIGNATURE )
+    if( mSignRadio->isChecked() )
     {
         if( mCertGroup->isChecked() == true )
         {
@@ -1434,18 +1436,16 @@ void SignVerifyDlg::outputChanged()
     mOutputLenText->setText( QString("%1").arg(strLen));
 }
 
-void SignVerifyDlg::changeMethod( int index )
+void SignVerifyDlg::clickSign()
 {
-    if( index == 0 )
-    {
-        mRunBtn->setText( tr( "Sign" ));
-        mDigestBtn->setText( tr( "SignDigest" ));
-    }
-    else
-    {
-        mRunBtn->setText( tr( "Verify"));
-        mDigestBtn->setText( tr( "VerifyDigest" ));
-    }
+    mRunBtn->setText( tr( "Sign" ));
+    mDigestBtn->setText( tr( "SignDigest" ));
+}
+
+void SignVerifyDlg::clickVerify()
+{
+    mRunBtn->setText( tr( "Verify"));
+    mDigestBtn->setText( tr( "VerifyDigest" ));
 }
 
 void SignVerifyDlg::clickInputClear()
@@ -1681,7 +1681,7 @@ void SignVerifyDlg::startTask()
     thread_->setSignCTX( sctx_ );
     thread_->setHashCTX( hctx_ );
     thread_->setEdDSA( is_eddsa_ );
-    thread_->setVeify( mMethodCombo->currentIndex() == 0 ? false : true );
+    thread_->setVeify( mSignRadio->isChecked() ? false : true );
     thread_->setSrcFile( strSrcFile );
     thread_->start();
 

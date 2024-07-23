@@ -210,11 +210,13 @@ void TTLVEncoderDlg::clickGet()
     if( ret == 0 )
     {
         berApplet->decodeTTLV( &binData );
-
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
     }
 
     JS_BIN_reset( &binData );
-    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickActivate()
@@ -233,11 +235,14 @@ void TTLVEncoderDlg::clickActivate()
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV(&binData);
+        berApplet->decodeTTLV( &binData );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
     }
 
     JS_BIN_reset( &binData );
-    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickCreate()
@@ -254,11 +259,14 @@ void TTLVEncoderDlg::clickCreate()
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV(&binData);
+        berApplet->decodeTTLV( &binData );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
     }
 
     JS_BIN_reset( &binData );
-    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickDestroy()
@@ -270,19 +278,20 @@ void TTLVEncoderDlg::clickDestroy()
 
     Authentication sAuth = {0};
     JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
-
-
     ret = JS_KMS_encodeDestroyReq( &sAuth, strUUID.toStdString().c_str(), &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV(&binData);
+        berApplet->decodeTTLV( &binData );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
     }
 
     JS_BIN_reset( &binData );
-    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickEncrypt()
@@ -312,11 +321,14 @@ void TTLVEncoderDlg::clickEncrypt()
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV(&binData);
+        berApplet->decodeTTLV( &binData );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
     }
 
     JS_BIN_reset( &binData );
-    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickDecrypt()
@@ -345,11 +357,14 @@ void TTLVEncoderDlg::clickDecrypt()
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV(&binData);
+        berApplet->decodeTTLV( &binData );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
     }
 
     JS_BIN_reset( &binData );
-    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickSign()
@@ -387,11 +402,14 @@ void TTLVEncoderDlg::clickSign()
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV(&binData);
+        berApplet->decodeTTLV( &binData );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
     }
 
     JS_BIN_reset( &binData );
-    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickVerify()
@@ -435,11 +453,14 @@ void TTLVEncoderDlg::clickVerify()
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV(&binData);
+        berApplet->decodeTTLV( &binData );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
     }
 
     JS_BIN_reset( &binData );
-    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickRegister()
@@ -487,11 +508,14 @@ void TTLVEncoderDlg::clickRegister()
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV(&binData);
+        berApplet->decodeTTLV( &binData );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
     }
 
     JS_BIN_reset( &binData );
-    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickCreateKeyPair()
@@ -523,11 +547,14 @@ void TTLVEncoderDlg::clickCreateKeyPair()
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV(&binData);
+        berApplet->decodeTTLV( &binData );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
     }
 
     JS_BIN_reset( &binData );
-    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickGetAttributeList()
@@ -547,11 +574,14 @@ void TTLVEncoderDlg::clickGetAttributeList()
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV(&binData);
+        berApplet->decodeTTLV( &binData );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
     }
 
     JS_BIN_reset( &binData );
-    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickAddAttribute()
@@ -572,11 +602,14 @@ void TTLVEncoderDlg::clickAddAttribute()
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV(&binData);
+        berApplet->decodeTTLV( &binData );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
     }
 
     JS_BIN_reset( &binData );
-    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickGetAttributes()
@@ -596,11 +629,14 @@ void TTLVEncoderDlg::clickGetAttributes()
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV(&binData);
+        berApplet->decodeTTLV( &binData );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
     }
 
     JS_BIN_reset( &binData );
-    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickModifyAttribute()
@@ -621,11 +657,14 @@ void TTLVEncoderDlg::clickModifyAttribute()
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV(&binData);
+        berApplet->decodeTTLV( &binData );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
     }
 
     JS_BIN_reset( &binData );
-    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickDeleteAttribute()
@@ -645,11 +684,14 @@ void TTLVEncoderDlg::clickDeleteAttribute()
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV(&binData);
+        berApplet->decodeTTLV( &binData );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
     }
 
     JS_BIN_reset( &binData );
-    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickLocate()
@@ -682,11 +724,14 @@ void TTLVEncoderDlg::clickLocate()
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV(&binData);
+        berApplet->decodeTTLV( &binData );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
     }
 
     JS_BIN_reset( &binData );
-    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickRNGRetrieve()
@@ -704,11 +749,14 @@ void TTLVEncoderDlg::clickRNGRetrieve()
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV(&binData);
+        berApplet->decodeTTLV( &binData );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
     }
 
     JS_BIN_reset( &binData );
-    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickRNGSeed()
@@ -729,11 +777,14 @@ void TTLVEncoderDlg::clickRNGSeed()
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV(&binData);
+        berApplet->decodeTTLV( &binData );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
     }
 
     JS_BIN_reset( &binData );
-    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::clickHash()
@@ -759,11 +810,14 @@ void TTLVEncoderDlg::clickHash()
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV(&binData);
+        berApplet->decodeTTLV( &binData );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
     }
 
     JS_BIN_reset( &binData );
-    if( ret == 0 ) QDialog::accept();
 }
 
 void TTLVEncoderDlg::changeInput()

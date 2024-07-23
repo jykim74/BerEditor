@@ -6,6 +6,7 @@
 #include <QFileInfo>
 #include <QDateTime>
 #include <QFileDialog>
+#include <QButtonGroup>
 
 #include "enc_dec_dlg.h"
 #include "ui_enc_dec_dlg.h"
@@ -21,11 +22,6 @@ static QStringList dataTypes = {
     "String",
     "Hex",
     "Base64"
-};
-
-static QStringList methodTypes = {
-    "Encrypt",
-    "Decrypt"
 };
 
 static QStringList algList = {
@@ -54,13 +50,16 @@ EncDecDlg::EncDecDlg(QWidget *parent) :
     setupUi(this);
     initialize();
 
-    connect( mUseAECheck, SIGNAL(clicked()), this, SLOT(clickUseAE()));
+    connect( mAEADGroup, SIGNAL(clicked()), this, SLOT(clickUseAEAD()));
     connect( mInitBtn, SIGNAL(clicked()), this, SLOT(encDecInit()));
     connect( mUpdateBtn, SIGNAL(clicked()), this, SLOT(encDecUpdate()));
     connect( mFinalBtn, SIGNAL(clicked()), this, SLOT(encDecFinal()));
     connect( mChangeBtn, SIGNAL(clicked()), this, SLOT(dataChange()));
     connect( mRunBtn, SIGNAL(clicked()), this, SLOT(Run()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+
+    connect( mEncryptRadio, SIGNAL(clicked()), this, SLOT(clickEncrypt()));
+    connect( mDecryptRadio, SIGNAL(clicked()), this, SLOT(clickDecrypt()));
 
     connect( mInputText, SIGNAL(textChanged()), this, SLOT(inputChanged()));
     connect( mOutputText, SIGNAL(textChanged()), this, SLOT(outputChanged()));
@@ -79,7 +78,6 @@ EncDecDlg::EncDecDlg(QWidget *parent) :
     connect( mTagTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(tagChanged()));
     connect( mModeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(modeChanged()));
 
-    connect( mMethodCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeMethod(int)));
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
 
     connect( mInputClearBtn, SIGNAL(clicked()), this, SLOT(clickInputClear()));
@@ -87,7 +85,8 @@ EncDecDlg::EncDecDlg(QWidget *parent) :
     connect( mFindSrcFileBtn, SIGNAL(clicked()), this, SLOT(clickFindSrcFile()));
     connect( mFindDstFileBtn, SIGNAL(clicked()), this, SLOT(clickFindDstFile()));
 
-    clickUseAE();
+    clickUseAEAD();
+    mEncryptRadio->click();
     mRunBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
@@ -112,8 +111,11 @@ void EncDecDlg::initialize()
     mOutputTypeCombo->addItems( dataTypes );
     mOutputTypeCombo->setCurrentIndex(1);
 
-    mMethodCombo->addItems( methodTypes );
     mAlgCombo->addItems( algList );
+
+    QButtonGroup *runGroup = new QButtonGroup;
+    runGroup->addButton( mEncryptRadio );
+    runGroup->addButton( mDecryptRadio );
 
     mReqTagLenText->setText( "16" );
     mInputTab->setCurrentIndex(0);
@@ -218,14 +220,14 @@ void EncDecDlg::dataRun()
         goto end;
     }
 
-    if( mUseAECheck->isChecked() )
+    if( mAEADGroup->isChecked() )
     {
         int nReqTagLen = mReqTagLenText->text().toInt();
         QString strAAD = mAADText->text();
 
         getBINFromString( &binAAD, mAADTypeCombo->currentText(), strAAD );
 
-        if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
+        if( mEncryptRadio->isChecked() )
         {
             char *pTag = NULL;
             strMethod = "AE Encrypt";
@@ -258,7 +260,7 @@ void EncDecDlg::dataRun()
                 berApplet->logLine();
             }
         }
-        else if( mMethodCombo->currentIndex() == ENC_DECRYPT )
+        else
         {
             QString strTag = mTagText->text();
             strMethod = "AE Decrypt";
@@ -288,7 +290,7 @@ void EncDecDlg::dataRun()
     }
     else
     {
-        if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
+        if( mEncryptRadio->isChecked() )
         {
             strMethod = "Encrypt";
 
@@ -310,7 +312,7 @@ void EncDecDlg::dataRun()
                 berApplet->logLine();
             }
         }
-        else if( mMethodCombo->currentIndex() == ENC_DECRYPT )
+        else
         {
             strMethod = "Decrypt";
 
@@ -451,9 +453,9 @@ void EncDecDlg::fileRun()
         nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
         if( nRead <= 0 ) break;
 
-        if( mUseAECheck->isChecked() )
+        if( mAEADGroup->isChecked() )
         {
-            if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
+            if( mEncryptRadio->isChecked() )
             {
                 mOutputText->clear();
 
@@ -471,7 +473,7 @@ void EncDecDlg::fileRun()
             }
         }
         else {
-            if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
+            if( mEncryptRadio->isChecked() )
             {
                 mOutputText->clear();
 
@@ -538,9 +540,9 @@ end :
     JS_BIN_reset( &binDst );
 }
 
-void EncDecDlg::clickUseAE()
+void EncDecDlg::clickUseAEAD()
 {
-    bool bStatus = mUseAECheck->isChecked();
+    bool bStatus = mAEADGroup->isChecked();
 
     mModeCombo->clear();
 
@@ -552,13 +554,6 @@ void EncDecDlg::clickUseAE()
     {
         mModeCombo->addItems( modeList );
     }
-
-    mAADText->setEnabled( bStatus );
-    mAADTypeCombo->setEnabled( bStatus );
-    mTagText->setEnabled( bStatus );
-    mTagTypeCombo->setEnabled( bStatus );
-    mCCMDataLength->setEnabled( bStatus );
-    mReqTagLenText->setEnabled( bStatus );
 
     mPadCheck->setEnabled( !bStatus );
 
@@ -630,7 +625,7 @@ int EncDecDlg::encDecInit()
         goto end;
     }
 
-    if( mUseAECheck->isChecked() )
+    if( mAEADGroup->isChecked() )
     {
         QString strAAD = mAADText->text();
 
@@ -643,7 +638,7 @@ int EncDecDlg::encDecInit()
             mCCMDataLength->setText( QString("%1").arg( nDataLen ));
         }
 
-        if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
+        if( mEncryptRadio->isChecked() )
         {
             if( isCCM( strMode) )
             {
@@ -701,7 +696,7 @@ int EncDecDlg::encDecInit()
         }
     }
     else {
-        if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
+        if( mEncryptRadio->isChecked() )
         {
             ret = JS_PKI_encryptInit( &ctx_, strSymAlg.toStdString().c_str(), bPad, &binIV, &binKey );
 
@@ -793,9 +788,9 @@ void EncDecDlg::encDecUpdate()
     QString strAlg = mAlgCombo->currentText();
     QString strMode = mModeCombo->currentText();
 
-    if( mUseAECheck->isChecked() )
+    if( mAEADGroup->isChecked() )
     {
-        if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
+        if( mEncryptRadio->isChecked() )
         {
             if( isCCM(strMode) )
                 ret = JS_PKI_encryptCCMUpdate( ctx_, &binSrc, &binDst );
@@ -827,7 +822,7 @@ void EncDecDlg::encDecUpdate()
 
     }
     else {
-        if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
+        if( mEncryptRadio->isChecked() )
         {
             ret = JS_PKI_encryptUpdate( ctx_, &binSrc, &binDst );
 
@@ -898,11 +893,11 @@ void EncDecDlg::encDecFinal()
     QString strAlg = mAlgCombo->currentText();
     QString strMode = mModeCombo->currentText();
 
-    if( mUseAECheck->isChecked() )
+    if( mAEADGroup->isChecked() )
     {
         int nReqTagLen = mReqTagLenText->text().toInt();
 
-        if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
+        if( mEncryptRadio->isChecked() )
         {
             if( isCCM(strMode) )
                 ret = JS_PKI_encryptCCMFinal( ctx_, &binDst, nReqTagLen, &binTag );
@@ -953,7 +948,7 @@ void EncDecDlg::encDecFinal()
         }
     }
     else {
-        if( mMethodCombo->currentIndex() == ENC_ENCRYPT )
+        if( mEncryptRadio->isChecked() )
         {
             ret = JS_PKI_encryptFinal( ctx_, &binDst );
             JS_PKI_encryptFree( &ctx_ );
@@ -1109,14 +1104,6 @@ void EncDecDlg::modeChanged()
         mCCMDataLength->setEnabled( false );
 }
 
-void EncDecDlg::changeMethod( int index )
-{
-    if( index == 0 )
-        mRunBtn->setText( tr( "Encrypt" ));
-    else
-        mRunBtn->setText( tr( "Decrypt"));
-}
-
 void EncDecDlg::clickClearDataAll()
 {
     mInputText->clear();
@@ -1201,6 +1188,18 @@ void EncDecDlg::clickFindDstFile()
     if( fileName.length() > 0 ) mDstFileText->setText( fileName );
 }
 
+void EncDecDlg::clickEncrypt()
+{
+    mRunBtn->setText( tr("Encrypt" ) );
+    mAEADLabel->setText( tr( "Authenticated Encryption" ));
+}
+
+void EncDecDlg::clickDecrypt()
+{
+    mRunBtn->setText( tr("Decrypt" ));
+    mAEADLabel->setText( tr( "Authenticated Decryption" ));
+}
+
 void EncDecDlg::fileRunThread()
 {
     if( encDecInit() != 0 )
@@ -1260,7 +1259,7 @@ void EncDecDlg::startTask()
 
     thread_->setCTX( ctx_ );
 
-    thread_->setMethod( mMethodCombo->currentIndex() == 0 ? false : true );
+    thread_->setMethod( mEncryptRadio->isChecked() ? false : true );
     thread_->setMode( mModeCombo->currentText() );
     thread_->setSrcFile( strSrcFile );
     thread_->setDstFile( strDstFile );

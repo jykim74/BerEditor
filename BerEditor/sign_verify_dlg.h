@@ -44,7 +44,9 @@ private slots:
 
     void inputChanged();
     void outputChanged();
-    void changeMethod( int index );
+
+    void clickSign();
+    void clickVerify();
 
     void clickInputClear();
     void clickOutputClear();

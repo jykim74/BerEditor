@@ -51,6 +51,9 @@ private slots:
     void changeIV( const QString& text );
     void changeTag( const QString& text );
 
+    void clickEncrypt();
+    void clickDecrypt();
+
     void clickInputClear();
     void clickOutputClear();
 

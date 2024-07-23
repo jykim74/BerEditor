@@ -42,6 +42,8 @@ class TSPClientDlg;
 class CMPClientDlg;
 class SCEPClientDlg;
 class CertManDlg;
+class TTLVEncoderDlg;
+class TTLVClientDlg;
 
 namespace Ui {
 class MainWindow;
@@ -215,6 +217,8 @@ private:
     CMPClientDlg    *cmp_client_dlg_;
     SCEPClientDlg   *scep_client_dlg_;
     CertManDlg      *cert_man_dlg_;
+    TTLVEncoderDlg  *ttlv_encoder_dlg_;
+    TTLVClientDlg   *ttlv_client_dlg_;
 
     bool log_halt_;
 };

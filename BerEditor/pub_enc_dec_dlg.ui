@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>543</width>
-    <height>801</height>
+    <height>657</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -169,7 +169,26 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="0">
+        <item row="0" column="4">
+         <widget class="QPushButton" name="mCheckKeyPairBtn">
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>100</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Check KeyPair</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
          <spacer name="horizontalSpacer_3">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -366,25 +385,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mCheckKeyPairBtn">
-       <property name="minimumSize">
-        <size>
-         <width>100</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>100</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Check KeyPair</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
    <item>
@@ -429,9 +429,6 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="mMethodTypeCombo"/>
-     </item>
-     <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -445,21 +442,16 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="mChangeBtn">
-       <property name="minimumSize">
-        <size>
-         <width>100</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>100</width>
-         <height>16777215</height>
-        </size>
-       </property>
+      <widget class="QRadioButton" name="mEncryptRadio">
        <property name="text">
-        <string>Change</string>
+        <string>Encrypt</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="mDecryptRadio">
+       <property name="text">
+        <string>Decrypt</string>
        </property>
       </widget>
      </item>
@@ -729,43 +721,21 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="4">
+     <item row="0" column="5">
       <widget class="QLabel" name="label_4">
        <property name="text">
         <string>Len</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="mOutputTypeCombo">
-       <property name="minimumSize">
-        <size>
-         <width>60</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>16777215</height>
-        </size>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mOutputClearBtn">
+       <property name="text">
+        <string>Output Clear</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <spacer name="horizontalSpacer_5">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="5">
+     <item row="0" column="6">
       <widget class="QLineEdit" name="mOutputLenText">
        <property name="minimumSize">
         <size>
@@ -828,10 +798,51 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mOutputClearBtn">
+     <item row="0" column="1">
+      <widget class="QComboBox" name="mOutputTypeCombo">
+       <property name="minimumSize">
+        <size>
+         <width>60</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <spacer name="horizontalSpacer_5">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mChangeBtn">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>100</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="text">
-        <string>Output Clear</string>
+        <string>Change</string>
        </property>
       </widget>
      </item>
@@ -916,7 +927,7 @@
      <item row="0" column="2">
       <widget class="QPushButton" name="mRunBtn">
        <property name="text">
-        <string>Run</string>
+        <string>Encrypt</string>
        </property>
       </widget>
      </item>
@@ -941,6 +952,7 @@
   <tabstop>mCertGroup</tabstop>
   <tabstop>mAutoCertPubKeyCheck</tabstop>
   <tabstop>mPubKeyEncryptCheck</tabstop>
+  <tabstop>mCheckKeyPairBtn</tabstop>
   <tabstop>mPriKeyPath</tabstop>
   <tabstop>mFindPriKeyBtn</tabstop>
   <tabstop>mPriKeyViewBtn</tabstop>
@@ -954,11 +966,10 @@
   <tabstop>mEncPrikeyCheck</tabstop>
   <tabstop>mPasswdText</tabstop>
   <tabstop>mUseKeyAlgCheck</tabstop>
-  <tabstop>mCheckKeyPairBtn</tabstop>
   <tabstop>mAlgCombo</tabstop>
   <tabstop>mVersionTypeCombo</tabstop>
-  <tabstop>mMethodTypeCombo</tabstop>
-  <tabstop>mChangeBtn</tabstop>
+  <tabstop>mEncryptRadio</tabstop>
+  <tabstop>mDecryptRadio</tabstop>
   <tabstop>mIVText</tabstop>
   <tabstop>mIVLenText</tabstop>
   <tabstop>mTagText</tabstop>
@@ -967,6 +978,7 @@
   <tabstop>mOtherPubText</tabstop>
   <tabstop>mOutputTypeCombo</tabstop>
   <tabstop>mOutputClearBtn</tabstop>
+  <tabstop>mChangeBtn</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
   <tabstop>mClearDataAllBtn</tabstop>

@@ -4,6 +4,7 @@
  * All rights reserved.
  */
 #include <QFileDialog>
+#include <QButtonGroup>
 
 #include "pub_enc_dec_dlg.h"
 #include "cert_info_dlg.h"
@@ -37,11 +38,6 @@ static QStringList versionTypes = {
     "V21"
 };
 
-static QStringList methodTypes = {
-    "Encrypt",
-    "Decrypt"
-};
-
 PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
     QDialog(parent)
 {
@@ -60,6 +56,9 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
 
     connect( mInputText, SIGNAL(textChanged()), this, SLOT(inputChanged()));
     connect( mOutputText, SIGNAL(textChanged()), this, SLOT(outputChanged()));
+
+    connect( mEncryptRadio, SIGNAL(clicked()), this, SLOT(clickEncrypt()));
+    connect( mDecryptRadio, SIGNAL(clicked()), this, SLOT(clickDecrypt()));
 
     connect( mInputStringRadio, SIGNAL(clicked()), this, SLOT(inputChanged()));
     connect( mInputHexRadio, SIGNAL(clicked()), this, SLOT(inputChanged()));
@@ -100,7 +99,7 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
     mCertTypeBtn->setFixedWidth(34);
     mCertViewBtn->setFixedWidth(34);
 #endif
-    resize(width(), minimumSizeHint().height());
+    resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 
 PubEncDecDlg::~PubEncDecDlg()
@@ -116,7 +115,9 @@ void PubEncDecDlg::initialize()
     mOutputTypeCombo->setCurrentIndex(1);
 
     mVersionTypeCombo->addItems(versionTypes);
-    mMethodTypeCombo->addItems(methodTypes);
+    QButtonGroup *runGroup = new QButtonGroup;
+    runGroup->addButton( mEncryptRadio );
+    runGroup->addButton( mDecryptRadio );
 
     mAutoCertPubKeyCheck->setChecked(true);
     mUseKeyAlgCheck->setChecked(true);
@@ -124,6 +125,8 @@ void PubEncDecDlg::initialize()
     checkAutoCertOrPubKey();
     checkUseKeyAlg();
     checkEncPriKey();
+
+    mEncryptRadio->click();
 }
 
 int PubEncDecDlg::readPrivateKey( BIN *pPriKey )
@@ -294,7 +297,7 @@ void PubEncDecDlg::Run()
         nVersion = JS_PKI_RSA_PADDING_V21;
     }
 
-    if( mMethodTypeCombo->currentIndex() == ENC_ENCRYPT )
+    if( mEncryptRadio->isChecked() )
     {
         if( mCertGroup->isChecked() == true )
         {
@@ -809,6 +812,16 @@ void PubEncDecDlg::changeTag( const QString& text )
 {
     QString strLen = getDataLenString( DATA_HEX, text );
     mTagLenText->setText( QString( "%1" ).arg(strLen) );
+}
+
+void PubEncDecDlg::clickEncrypt()
+{
+    mRunBtn->setText( tr("Encrypt" ));
+}
+
+void PubEncDecDlg::clickDecrypt()
+{
+    mRunBtn->setText( tr("Decrypt" ) );
 }
 
 void PubEncDecDlg::clickInputClear()

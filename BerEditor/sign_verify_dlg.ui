@@ -612,13 +612,6 @@
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <item>
        <layout class="QGridLayout" name="gridLayout_13">
-        <item row="0" column="2">
-         <widget class="QCheckBox" name="mPubKeyVerifyCheck">
-          <property name="text">
-           <string>Verify with public key</string>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="1">
          <widget class="QCheckBox" name="mAutoCertPubKeyCheck">
           <property name="text">
@@ -626,7 +619,21 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="0">
+        <item row="0" column="4">
+         <widget class="QPushButton" name="mCheckKeyPairBtn">
+          <property name="text">
+           <string>Check KeyPair</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QCheckBox" name="mPubKeyVerifyCheck">
+          <property name="text">
+           <string>Verify with public key</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
          <spacer name="horizontalSpacer_2">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -860,12 +867,16 @@
       </spacer>
      </item>
      <item>
-      <widget class="QComboBox" name="mMethodCombo"/>
+      <widget class="QRadioButton" name="mSignRadio">
+       <property name="text">
+        <string>Sign</string>
+       </property>
+      </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="mCheckKeyPairBtn">
+      <widget class="QRadioButton" name="mVerifyRadio">
        <property name="text">
-        <string>Check KeyPair</string>
+        <string>Verify</string>
        </property>
       </widget>
      </item>
@@ -1115,6 +1126,7 @@
   <tabstop>mCertGroup</tabstop>
   <tabstop>mAutoCertPubKeyCheck</tabstop>
   <tabstop>mPubKeyVerifyCheck</tabstop>
+  <tabstop>mCheckKeyPairBtn</tabstop>
   <tabstop>mPriKeyPath</tabstop>
   <tabstop>mFindPriKeyBtn</tabstop>
   <tabstop>mPriKeyViewBtn</tabstop>
@@ -1131,8 +1143,8 @@
   <tabstop>mAlgTypeCombo</tabstop>
   <tabstop>mHashTypeCombo</tabstop>
   <tabstop>mVersionCombo</tabstop>
-  <tabstop>mMethodCombo</tabstop>
-  <tabstop>mCheckKeyPairBtn</tabstop>
+  <tabstop>mSignRadio</tabstop>
+  <tabstop>mVerifyRadio</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
   <tabstop>mOutputClearBtn</tabstop>

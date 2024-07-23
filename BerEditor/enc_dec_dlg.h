@@ -28,7 +28,7 @@ private slots:
     void Run();
     void dataRun();
     void fileRun();
-    void clickUseAE();
+    void clickUseAEAD();
     int encDecInit();
     void encDecUpdate();
     void encDecFinal();
@@ -42,7 +42,6 @@ private slots:
     void tagChanged();
     void modeChanged();
 
-    void changeMethod( int index );
     void clickClearDataAll();
 
     void clickInputClear();
@@ -50,6 +49,9 @@ private slots:
 
     void clickFindSrcFile();
     void clickFindDstFile();
+
+    void clickEncrypt();
+    void clickDecrypt();
 
     void fileRunThread();
     void startTask();
