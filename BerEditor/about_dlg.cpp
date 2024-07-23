@@ -46,9 +46,9 @@ AboutDlg::AboutDlg(QWidget *parent) :
 #else
     mCheckUpdatBtn->hide();
 #endif
-
-
     mOKBtn->setDefault(true);
+
+    resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 
 AboutDlg::~AboutDlg()
