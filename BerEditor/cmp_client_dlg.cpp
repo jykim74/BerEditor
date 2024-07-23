@@ -490,6 +490,7 @@ void CMPClientDlg::clickGENM()
     if( strURL.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter CMP URL"), this );
+        mURLCombo->setFocus();
         return;
     }
 
@@ -518,12 +519,14 @@ void CMPClientDlg::clickGENM()
     if( strAuth.length() < 1 )
     {
         berApplet->warningBox(tr("Enter Authorization Code"), this );
+        mAuthCodeText->setFocus();
         return;
     }
 
     if( strRef.length() < 1 )
     {
         berApplet->warningBox(tr("Enter Referrence Number"), this );
+        mRefNumText->setFocus();
         return;
     }
 
@@ -612,12 +615,14 @@ void CMPClientDlg::clickIR()
     if( strURL.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter CMP URL"), this );
+        mURLCombo->setFocus();
         return;
     }
 
     if( strDN.length() )
     {
         berApplet->warningBox( tr("Enter subject DN" ), this );
+        mSubjectDNText->setFocus();
         return;
     }
 
@@ -646,12 +651,14 @@ void CMPClientDlg::clickIR()
     if( strAuth.length() < 1 )
     {
         berApplet->warningBox(tr("Enter Authorization Code"), this );
+        mAuthCodeText->setFocus();
         return;
     }
 
     if( strRef.length() < 1 )
     {
         berApplet->warningBox(tr("Enter Referrence Number"), this );
+        mRefNumText->setFocus();
         return;
     }
 
@@ -734,12 +741,14 @@ void CMPClientDlg::clickCR()
     if( strURL.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter CMP URL"), this );
+        mURLCombo->setFocus();
         return;
     }
 
     if( strDN.length() )
     {
         berApplet->warningBox( tr("Enter subject DN" ), this );
+        mSubjectDNText->setFocus();
         return;
     }
 
@@ -768,12 +777,14 @@ void CMPClientDlg::clickCR()
     if( strAuth.length() < 1 )
     {
         berApplet->warningBox(tr("Enter Authorization Code"), this );
+        mAuthCodeText->setFocus();
         return;
     }
 
     if( strRef.length() < 1 )
     {
         berApplet->warningBox(tr("Enter Referrence Number"), this );
+        mRefNumText->setFocus();
         return;
     }
 
@@ -860,6 +871,7 @@ void CMPClientDlg::clickP10CR()
     if( strURL.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter CMP URL"), this );
+        mURLCombo->setFocus();
         return;
     }
 
@@ -888,12 +900,14 @@ void CMPClientDlg::clickP10CR()
     if( strAuth.length() < 1 )
     {
         berApplet->warningBox(tr("Enter Authorization Code"), this );
+        mAuthCodeText->setFocus();
         return;
     }
 
     if( strRef.length() < 1 )
     {
         berApplet->warningBox(tr("Enter Referrence Number"), this );
+        mRefNumText->setFocus();
         return;
     }
 
@@ -982,6 +996,7 @@ void CMPClientDlg::clickSignGENM()
     if( strURL.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter CMP URL"), this );
+        mURLCombo->setFocus();
         return;
     }
 
@@ -1013,6 +1028,7 @@ void CMPClientDlg::clickSignGENM()
         if( strCert.length() < 1 )
         {
             berApplet->warningBox( tr( "find a certificate" ), this );
+            mCertPathText->setFocus();
             return;
         }
 
@@ -1113,6 +1129,7 @@ void CMPClientDlg::clickKUR()
     if( strURL.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter CMP URL"), this );
+        mURLCombo->setFocus();
         return;
     }
 
@@ -1149,6 +1166,7 @@ void CMPClientDlg::clickKUR()
         if( strCert.length() < 1 )
         {
             berApplet->warningBox( tr( "find a certificate" ), this );
+            mCertPathText->setFocus();
             return;
         }
 
@@ -1231,6 +1249,7 @@ void CMPClientDlg::clickRR()
     if( strURL.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter CMP URL"), this );
+        mURLCombo->setFocus();
         return;
     }
 
@@ -1261,6 +1280,7 @@ void CMPClientDlg::clickRR()
         if( strCert.length() < 1 )
         {
             berApplet->warningBox( tr( "find a certificate" ), this );
+            mCertPathText->setFocus();
             return;
         }
 
@@ -1421,6 +1441,7 @@ int CMPClientDlg::readPrivateKey( BIN *pPriKey )
     if( strPriPath.length() < 1 )
     {
         berApplet->warningBox( tr( "select a private key"), this );
+        mPriKeyPathText->setFocus();
         return -1;
     }
 
@@ -1428,6 +1449,7 @@ int CMPClientDlg::readPrivateKey( BIN *pPriKey )
     if( ret <= 0 )
     {
         berApplet->warningBox( tr( "failed to read a private key: %1").arg( ret ), this );
+        mPriKeyPathText->setFocus();
         return  -1;
     }
 
@@ -1437,6 +1459,7 @@ int CMPClientDlg::readPrivateKey( BIN *pPriKey )
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a password"), this );
+            mPasswdText->setFocus();
             ret = -1;
             goto end;
         }

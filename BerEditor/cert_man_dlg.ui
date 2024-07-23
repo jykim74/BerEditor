@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>502</width>
-    <height>480</height>
+    <width>570</width>
+    <height>567</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -130,7 +130,7 @@
         <widget class="QTableWidget" name="mEE_CertTable">
          <property name="minimumSize">
           <size>
-           <width>460</width>
+           <width>500</width>
            <height>160</height>
           </size>
          </property>

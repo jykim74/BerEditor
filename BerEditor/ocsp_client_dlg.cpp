@@ -296,6 +296,7 @@ int OCSPClientDlg::readPrivateKey( BIN *pPriKey )
     if( strPriPath.length() < 1 )
     {
         berApplet->warningBox( tr( "select a private key"), this );
+        mSignPriKeyPathText->setFocus();
         return -1;
     }
 
@@ -303,6 +304,7 @@ int OCSPClientDlg::readPrivateKey( BIN *pPriKey )
     if( ret <= 0 )
     {
         berApplet->warningBox( tr( "failed to read a private key: %1").arg( ret ), this );
+        mSignPriKeyPathText->setFocus();
         return  -1;
     }
 
@@ -312,6 +314,7 @@ int OCSPClientDlg::readPrivateKey( BIN *pPriKey )
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a password"), this );
+            mPasswdText->setFocus();
             ret = -1;
             goto end;
         }
@@ -850,6 +853,7 @@ void OCSPClientDlg::clickEncode()
             if( strSignCertPath.length() < 1 )
             {
                 berApplet->warningBox( tr( "Find a sign certificate" ), this );
+                mSignCertPathText->setFocus();
                 return;
             }
 

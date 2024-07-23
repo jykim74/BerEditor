@@ -412,7 +412,6 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
 
     if( strTrustList.length() >= 1 || strTrustCACert.length() >= 1 )
     {
-
         ret = JS_SSL_setVerifyLoaction( pCTX,
                                        strTrustCACert.length() > 0 ? strTrustCACert.toLocal8Bit().toStdString().c_str() : NULL,
                                        strTrustList.length() > 0 ? strTrustList.toLocal8Bit().toStdString().c_str() : NULL );
@@ -461,7 +460,10 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
         if( mCertGroup->isChecked() )
         {
             QString strClientCertPath = mClientCAPathText->text();
-            JS_BIN_fileReadBER( strClientCertPath.toLocal8Bit().toStdString().c_str(), &binClientCert );
+
+            if( strClientCertPath.length() > 0 )
+                JS_BIN_fileReadBER( strClientCertPath.toLocal8Bit().toStdString().c_str(), &binClientCert );
+
             ret = readPrivateKey( &binClientPriKey );
         }
         else
@@ -1279,6 +1281,7 @@ int SSLVerifyDlg::readPrivateKey( BIN *pPriKey )
     if( strPriPath.length() < 1 )
     {
         berApplet->warningBox( tr( "select a private key"), this );
+        mClientPriKeyPathText->setFocus();
         return -1;
     }
 
@@ -1286,6 +1289,7 @@ int SSLVerifyDlg::readPrivateKey( BIN *pPriKey )
     if( ret <= 0 )
     {
         berApplet->warningBox( tr( "failed to read private key: %1").arg( ret ), this );
+        mClientPriKeyPathText->setFocus();
         return  -1;
     }
 
@@ -1295,6 +1299,7 @@ int SSLVerifyDlg::readPrivateKey( BIN *pPriKey )
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a password"), this );
+            mPasswordText->setFocus();
             ret = -1;
             goto end;
         }

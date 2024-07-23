@@ -117,6 +117,17 @@ CAVPDlg::CAVPDlg(QWidget *parent) :
     initialize();
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+    mMCTTab->layout()->setSpacing(5);
+    mMCTTab->layout()->setMargin(5);
+
+    mDRBGTab->layout()->setSpacing(5);
+    mDRBGTab->layout()->setMargin(5);
+
+    mSymHashTab->layout()->setSpacing(5);
+    mSymHashTab->layout()->setMargin(5);
+
+    mAsymDRBGHashTab->layout()->setSpacing(5);
+    mAsymDRBGHashTab->layout()->setMargin(5);
 #endif
 
     resize(minimumSizeHint().width(), minimumSizeHint().height());

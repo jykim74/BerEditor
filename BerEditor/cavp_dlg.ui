@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>664</width>
-    <height>634</height>
+    <width>749</width>
+    <height>777</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -86,9 +86,9 @@
    <item row="1" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="mSymHashTab">
       <attribute name="title">
        <string>Symmetric Hash</string>
       </attribute>
@@ -491,7 +491,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_4">
+     <widget class="QWidget" name="mAsymDRBGHashTab">
       <attribute name="title">
        <string>Asymmetric DRBG PBKDF</string>
       </attribute>
@@ -1146,7 +1146,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_2">
+     <widget class="QWidget" name="mMCTTab">
       <attribute name="title">
        <string>Monte Carlo Test</string>
       </attribute>
@@ -2448,7 +2448,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_3">
+     <widget class="QWidget" name="mDRBGTab">
       <attribute name="title">
        <string>DRBG</string>
       </attribute>

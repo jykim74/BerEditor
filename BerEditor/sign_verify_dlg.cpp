@@ -152,6 +152,7 @@ int SignVerifyDlg::readPrivateKey( BIN *pPriKey )
     if( strPriPath.length() < 1 )
     {
         berApplet->warningBox( tr( "select a private key"), this );
+        mPriKeyPath->setFocus();
         return -1;
     }
 
@@ -159,6 +160,7 @@ int SignVerifyDlg::readPrivateKey( BIN *pPriKey )
     if( ret <= 0 )
     {
         berApplet->warningBox( tr( "failed to read private key: %1").arg( ret ), this );
+        mPriKeyPath->setFocus();
         return  -1;
     }
 
@@ -168,6 +170,7 @@ int SignVerifyDlg::readPrivateKey( BIN *pPriKey )
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a password"), this );
+            mPasswdText->setFocus();
             ret = -1;
             goto end;
         }
@@ -928,6 +931,7 @@ void SignVerifyDlg::dataRun()
             if( mCertPath->text().isEmpty() )
             {
                 berApplet->warningBox( tr( "Select a certificate"), this );
+                mCertPath->setFocus();
                 goto end;
             }
 

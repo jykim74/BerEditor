@@ -172,6 +172,7 @@ int SCEPClientDlg::readPrivateKey( BIN *pPriKey )
     if( strPriPath.length() < 1 )
     {
         berApplet->warningBox( tr( "select a private key"), this );
+        mPriKeyPathText->setFocus();
         return -1;
     }
 
@@ -179,6 +180,7 @@ int SCEPClientDlg::readPrivateKey( BIN *pPriKey )
     if( ret <= 0 )
     {
         berApplet->warningBox( tr( "failed to read a private key: %1").arg( ret ), this );
+        mPriKeyPathText->setFocus();
         return  -1;
     }
 
@@ -188,6 +190,7 @@ int SCEPClientDlg::readPrivateKey( BIN *pPriKey )
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a password"), this );
+            mPasswdText->setFocus();
             ret = -1;
             goto end;
         }
@@ -613,6 +616,7 @@ void SCEPClientDlg::clickMakeIssue()
     if( strURL.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter SCEP URL"), this );
+        mURLCombo->setFocus();
         return;
     }
 
@@ -770,6 +774,7 @@ void SCEPClientDlg::clickMakeUpdate()
     if( strURL.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter SCEP URL"), this );
+        mURLCombo->setFocus();
         return;
     }
 
@@ -806,12 +811,7 @@ void SCEPClientDlg::clickMakeUpdate()
         if( strCertPath.length() < 1 )
         {
             berApplet->warningBox( tr( "Find a certificate" ), this );
-            return;
-        }
-
-        if( strPriKeyPath.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Find a private key" ), this );
+            mCertPathText->setFocus();
             return;
         }
 
@@ -987,12 +987,7 @@ void SCEPClientDlg::clickMakeGetCRL()
         if( strCertPath.length() < 1 )
         {
             berApplet->warningBox( tr( "Find a certificate" ), this );
-            return;
-        }
-
-        if( strPriKeyPath.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Find a private key" ), this );
+            mCertPathText->setFocus();
             return;
         }
 
@@ -1170,16 +1165,12 @@ void SCEPClientDlg::clickVerify()
     if( strRsp.length() < 1 )
     {
         berApplet->warningBox( tr("There is no response" ), this );
+        mResponseText->setFocus();
         goto end;
     }
 
-    if( strPriPath.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Find a private key" ), this );
-        return;
-    }
-
-    JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPriKey );
+    ret = readPrivateKey( &binPriKey );
+    if( ret != 0 ) goto end;
 
     getBINFromString( &binRsp, DATA_HEX, strRsp );
     getBINFromString( &binNonce, DATA_HEX, strNonce );

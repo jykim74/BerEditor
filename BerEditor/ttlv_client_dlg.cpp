@@ -186,6 +186,7 @@ int TTLVClientDlg::readPrivateKey( BIN *pPriKey )
     if( strPriPath.length() < 1 )
     {
         berApplet->warningBox( tr( "select a private key"), this );
+        mClientPriKeyPathText->setFocus();
         return -1;
     }
 
@@ -193,6 +194,7 @@ int TTLVClientDlg::readPrivateKey( BIN *pPriKey )
     if( ret <= 0 )
     {
         berApplet->warningBox( tr( "failed to read a private key: %1").arg( ret ), this );
+        mClientPriKeyPathText->setFocus();
         return  -1;
     }
 
@@ -202,6 +204,7 @@ int TTLVClientDlg::readPrivateKey( BIN *pPriKey )
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a password"), this );
+            mPasswdText->setFocus();
             ret = -1;
             goto end;
         }
@@ -254,12 +257,14 @@ void TTLVClientDlg::clickSend()
     if( strURL.length() < 1 )
     {
         berApplet->warningBox( tr( "Insert KMIP URL"), this );
+        mURLCombo->setFocus();
         return;
     }
 
     if( strRequest.length() < 1 )
     {
         berApplet->warningBox( tr( "There is no request" ), this );
+        mRequestText->setFocus();
         return;
     }
 
@@ -304,6 +309,7 @@ void TTLVClientDlg::clickSend()
         if( strCertPath.length() < 1 )
         {
             berApplet->warningBox( tr( "Find a certificate" ), this );
+            mClientCertPathText->setFocus();
             return;
         }
 

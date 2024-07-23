@@ -129,6 +129,7 @@ int CMSDlg::readSignPrivateKey( BIN *pPriKey )
     if( strPriPath.length() < 1 )
     {
         berApplet->warningBox( tr( "Select a private key for signing"), this );
+        mSignPriKeyPathText->setFocus();
         return -1;
     }
 
@@ -136,6 +137,7 @@ int CMSDlg::readSignPrivateKey( BIN *pPriKey )
     if( ret <= 0 )
     {
         berApplet->warningBox( tr( "failed to read private key: %1").arg( ret ), this );
+        mSignPriKeyPathText->setFocus();
         return  -1;
     }
 
@@ -145,6 +147,7 @@ int CMSDlg::readSignPrivateKey( BIN *pPriKey )
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Please enter a password"), this );
+            mSignPasswdText->setFocus();
             ret = -1;
             goto end;
         }
@@ -188,6 +191,7 @@ int CMSDlg::readKMPrivateKey( BIN *pPriKey )
     if( ret <= 0 )
     {
         berApplet->warningBox( tr( "Private key decryption failed [%1]").arg( ret ), this );
+        mKMPriKeyPathText->setFocus();
         return  -1;
     }
 
@@ -197,6 +201,7 @@ int CMSDlg::readKMPrivateKey( BIN *pPriKey )
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Please enter a password"), this );
+            mKMPasswdText->setFocus();
             ret = -1;
             goto end;
         }
@@ -441,6 +446,7 @@ void CMSDlg::clickEnvelopedData()
         if( strKMCertPath.isEmpty() )
         {
             berApplet->warningBox(tr("Select a certificate for KM" ), this );
+            mKMCertPathText->setFocus();
             return;
         }
 
@@ -540,6 +546,7 @@ void CMSDlg::clickSignAndEnvloped()
         if( strSignCertPath.isEmpty() )
         {
             berApplet->warningBox(tr("Select a certificate for signing" ), this );
+            mSignCertPathText->setFocus();
             return;
         }
 
@@ -564,6 +571,7 @@ void CMSDlg::clickSignAndEnvloped()
         if( strKMCertPath.isEmpty() )
         {
             berApplet->warningBox(tr("Select a certificate for KM" ), this );
+            mKMCertPathText->setFocus();
             return;
         }
 
@@ -667,6 +675,7 @@ void CMSDlg::clickVerifyData()
         if( strSignCertPath.isEmpty() )
         {
             berApplet->warningBox(tr("Select a certificate for signing" ), this );
+            mSignCertPathText->setFocus();
             return;
         }
 
@@ -747,6 +756,7 @@ void CMSDlg::clickDevelopedData()
         if( strKMCertPath.isEmpty() )
         {
             berApplet->warningBox(tr("Select a certificate for KM" ), this );
+            mKMCertPathText->setFocus();
             return;
         }
 
@@ -835,6 +845,7 @@ void CMSDlg::clickDevelopedAndVerify()
         if( strSignCertPath.isEmpty() )
         {
             berApplet->warningBox(tr("Select a certificate for signing" ), this );
+            mSignCertPathText->setFocus();
             return;
         }
 
@@ -854,10 +865,11 @@ void CMSDlg::clickDevelopedAndVerify()
 
     if( mKMCertGroup->isChecked() == true )
     {
-        QString strKMCertPath = mSignCertPathText->text();
+        QString strKMCertPath = mKMCertPathText->text();
         if( strKMCertPath.isEmpty() )
         {
             berApplet->warningBox(tr("Select a certificate for KM" ), this );
+            mKMCertPathText->setFocus();
             goto end;
         }
 

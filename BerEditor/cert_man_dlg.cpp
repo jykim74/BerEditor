@@ -1515,6 +1515,12 @@ void CertManDlg::clickOK()
 
     if( mode_ == ManModeSelCert )
     {
+        if( mEE_CertTable->rowCount() < 1 && mOther_CertTable->rowCount() < 1 )
+        {
+            QDialog::reject();
+            return;
+        }
+
         ret = readCert( &binCert );
         if( ret != 0 )
         {
@@ -1526,6 +1532,12 @@ void CertManDlg::clickOK()
     }
     else if( mode_ == ManModeSelCA )
     {
+        if( mCA_CertTable->rowCount() < 1 )
+        {
+            QDialog::reject();
+            return;
+        }
+
         ret = readCACert( &binCert );
         if( ret != 0 )
         {
@@ -1537,6 +1549,12 @@ void CertManDlg::clickOK()
     }
     else if( mode_ == ManModeSelCRL )
     {
+        if( mCRL_Table->rowCount() < 1 )
+        {
+            QDialog::reject();
+            return;
+        }
+
         ret = readCRL( &binCRL );
         if( ret != 0 )
         {
@@ -1549,6 +1567,11 @@ void CertManDlg::clickOK()
     else
     {
         QString strPass = mEE_PasswdText->text();
+        if( mEE_CertTable->rowCount() < 1 )
+        {
+            QDialog::reject();
+            return;
+        }
 
         if( strPass.length() < 1 )
         {
@@ -1580,10 +1603,7 @@ end :
     JS_BIN_reset( &binCRL );
     JS_BIN_reset( &binPriKey );
 
-    if( ret == 0 )
-        QDialog::accept();
-    else
-        QDialog::reject();
+    if( ret == 0 )  QDialog::accept();
 }
 
 void CertManDlg::clickAddCA()
