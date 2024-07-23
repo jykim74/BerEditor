@@ -32,6 +32,7 @@ const QStringList kECDHType = { "KAKAT", "PKV", "KPG" };
 const QStringList kECDSAType = { "KPG", "PKV", "SGT", "SVT" };
 const QStringList kRSAESType = { "DET", "ENT", "KGT" };
 const QStringList kRSA_PSSType = { "KPG", "SGT", "SVT" };
+const QStringList kDirectionType = { "Encrypt", "Decrypt" };
 
 const QStringList kDRBGMethodList = { "CIPHER", "Hash", "HMAC" };
 const QStringList kDRBGAlgList = { "ARIA-128-CTR", "ARIA-192-CTR", "ARIA-256-CTR", "AES-128-CTR", "AES-192-CTR", "AES-256-CTR" };
@@ -117,6 +118,8 @@ CAVPDlg::CAVPDlg(QWidget *parent) :
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
 #endif
+
+    resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 
 CAVPDlg::~CAVPDlg()
@@ -147,6 +150,7 @@ void CAVPDlg::initialize()
 
     mSymMCTAlgCombo->addItems( kSymAlgList );
     mSymMCTModeCombo->addItems( kSymModeList );
+    mSymMCTDirectionCombo->addItems( kDirectionType );
     mHashMCTAlgCombo->addItems( kHashAlgList );
 
     mPBKDFAlgCombo->addItems( kHashAlgList );
@@ -312,6 +316,7 @@ void CAVPDlg::clickSymRun()
     if( mSymReqFileText->text().length() < 1 )
     {
         berApplet->warningBox( tr("Select requested file"), this );
+        mSymReqFileText->setFocus();
         return;
     }
 
@@ -432,6 +437,7 @@ void CAVPDlg::clickAERun()
     if( mAEReqFileText->text().length() < 1 )
     {
         berApplet->warningBox( tr("Select requested file"), this );
+        mAEReqFileText->setFocus();
         return;
     }
 
@@ -585,6 +591,7 @@ void CAVPDlg::clickHMACRun()
     if( mHMACReqFileText->text().length() < 1 )
     {
         berApplet->warningBox( tr("Select requested file"), this );
+        mHMACReqFileText->setFocus();
         return;
     }
 
@@ -694,6 +701,7 @@ void CAVPDlg::clickHashRun()
     if( mHashReqFileText->text().length() < 1 )
     {
         berApplet->warningBox( tr("Select requested file"), this );
+        mHashReqFileText->setFocus();
         return;
     }
 
@@ -801,6 +809,7 @@ void CAVPDlg::clickECCRun()
     if( mECCReqFileText->text().length() < 1 )
     {
         berApplet->warningBox( tr("Select requested file"), this );
+        mECCReqFileText->setFocus();
         return;
     }
 
@@ -1052,6 +1061,7 @@ void CAVPDlg::clickRSARun()
     if( mRSAReqFileText->text().length() < 1 )
     {
         berApplet->warningBox( tr( "Select requested file" ), this );
+        mRSAReqFileText->setFocus();
         return;
     }
 
@@ -1317,6 +1327,7 @@ void CAVPDlg::clickDRBGRun()
     if( mDRBGReqFileText->text().length() < 1 )
     {
         berApplet->warningBox( tr("Select requested file"), this );
+        mDRBGReqFileText->setFocus();
         return;
     }
 
@@ -1512,6 +1523,7 @@ void CAVPDlg::clickPBKDFRun()
     if( mPBKDFReqFileText->text().length() < 1 )
     {
         berApplet->warningBox( tr("Select requested file"), this );
+        mPBKDFReqFileText->setFocus();
         return;
     }
 
@@ -1924,18 +1936,34 @@ void CAVPDlg::clickSymMCTRun()
     QString strKey = mSymMCTKeyText->text();
     QString strIV = mSymMCTIVText->text();
     QString strPT = mSymMCTPTText->text();
+    QString strCT = mSymMCTCTText->text();
     QString strRspPath = mRspPathText->text();
+    QString strDirection = mSymMCTDirectionCombo->currentText();
 
     if( strKey.length() < 1 )
     {
-        berApplet->elog( "Please enter a key" );
+        berApplet->warningBox( tr("Please enter a key"), this );
+        mSymMCTKeyText->setFocus();
         return;
     }
 
-    if( strPT.length() < 1 )
+    if( strDirection == "Encrypt" )
     {
-        berApplet->elog( "Please enter a PT" );
-        return;
+        if( strPT.length() < 1 )
+        {
+            berApplet->warningBox( tr("Please enter a PT"), this );
+            mSymMCTPTText->setFocus();
+            return;
+        }
+    }
+    else
+    {
+        if( strCT.length() < 1 )
+        {
+            berApplet->warningBox( tr("Please enter a CT"), this );
+            mSymMCTCTText->setFocus();
+            return;
+        }
     }
 
     rsp_name_ = QString( "%1/%2_%3_%4_MCT.rsp")
@@ -1954,16 +1982,32 @@ void CAVPDlg::clickSymMCTRun()
     mSymMCTLastPTText->clear();
     mSymMCTLastCTText->clear();
 
-    if( mSymMCTModeCombo->currentText() == "ECB" )
-        nRet = makeSymECB_MCT( strKey, strPT, true );
-    else if( mSymMCTModeCombo->currentText() == "CBC" )
-        nRet = makeSymCBC_MCT( strKey, strIV, strPT, true );
-    else if( mSymMCTModeCombo->currentText() == "CTR" )
-        nRet = makeSymCTR_MCT( strKey, strIV, strPT, true );
-    else if( mSymMCTModeCombo->currentText() == "CFB" )
-        nRet = makeSymCFB_MCT( strKey, strIV, strPT, true );
-    else if( mSymMCTModeCombo->currentText() == "OFB" )
-        nRet = makeSymOFB_MCT( strKey, strIV, strPT, true );
+    if( strDirection == "Encrypt" )
+    {
+        if( mSymMCTModeCombo->currentText() == "ECB" )
+            nRet = makeSymECB_MCT( strKey, strPT, true );
+        else if( mSymMCTModeCombo->currentText() == "CBC" )
+            nRet = makeSymCBC_MCT( strKey, strIV, strPT, true );
+        else if( mSymMCTModeCombo->currentText() == "CTR" )
+            nRet = makeSymCTR_MCT( strKey, strIV, strPT, true );
+        else if( mSymMCTModeCombo->currentText() == "CFB" )
+            nRet = makeSymCFB_MCT( strKey, strIV, strPT, true );
+        else if( mSymMCTModeCombo->currentText() == "OFB" )
+            nRet = makeSymOFB_MCT( strKey, strIV, strPT, true );
+    }
+    else
+    {
+        if( mSymMCTModeCombo->currentText() == "ECB" )
+            nRet = makeSymDecECB_MCT( strKey, strCT, true );
+        else if( mSymMCTModeCombo->currentText() == "CBC" )
+            nRet = makeSymDecCBC_MCT( strKey, strIV, strCT, true );
+        else if( mSymMCTModeCombo->currentText() == "CTR" )
+            nRet = makeSymDecCTR_MCT( strKey, strIV, strCT, true );
+        else if( mSymMCTModeCombo->currentText() == "CFB" )
+            nRet = makeSymDecCFB_MCT( strKey, strIV, strCT, true );
+        else if( mSymMCTModeCombo->currentText() == "OFB" )
+            nRet = makeSymDecOFB_MCT( strKey, strIV, strCT, true );
+    }
 
     if( nRet == 0 )
         berApplet->messageBox( tr("Monte Carlo Test Done[Rsp: %1]").arg(rsp_name_), this );
@@ -1992,7 +2036,8 @@ void CAVPDlg::clickHashMCTRun()
 
     if( strSeed.length() < 1 )
     {
-        berApplet->elog( "Please enter a Seed value" );
+        berApplet->warningBox( tr("Please enter a Seed value"), this );
+        mHashMCTSeedText->setFocus();
         return;
     }
 
@@ -2042,6 +2087,13 @@ void CAVPDlg::clickDRBG2Run()
     QString strAdditionalInputReseed = mDRBG2AdditionalInputReseedText->text();
     QString strAdditionalInput = mDRBG2AdditionalInputText->text();
     QString strAdditionalInput2 = mDRBG2AdditionalInput2Text->text();
+
+    if( strEntroypInput.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a entropy input" ), this );
+        mDRBG2EntropyInputText->setFocus();
+        return;
+    }
 
     ret = makeDRBG( strMethod,
                     nRandLen,
@@ -2266,6 +2318,168 @@ end :
     }
 }
 
+int CAVPDlg::makeSymDecCBC_MCT( const QString strKey, const QString strIV, const QString strCT, bool bInfo )
+{
+    int ret = 0;
+    int i = 0;
+    int j = 0;
+
+    BIN binKey[100 + 1];
+    BIN binIV[100 + 1];
+    BIN binPT[1000 + 1];
+    BIN binCT[1000 + 1];
+
+    QString strAlg;
+    QString strMode;
+
+    memset( &binKey, 0x00, sizeof(BIN) * 101 );
+    memset( &binIV, 0x00, sizeof(BIN) * 101 );
+    memset( &binPT, 0x00, sizeof(BIN) * 1001 );
+    memset( &binCT, 0x00, sizeof(BIN) * 1001 );
+
+    if( bInfo == true )
+    {
+        strAlg = mSymMCTAlgCombo->currentText();
+        strMode = mSymMCTModeCombo->currentText();
+    }
+    else
+    {
+        strAlg = mSymAlgCombo->currentText();
+        strMode = mSymModeCombo->currentText();
+    }
+
+    if( strKey.length() > 0 )
+        JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey[0] );
+
+    if( strIV.length() > 0 )
+        JS_BIN_decodeHex( strIV.toStdString().c_str(), &binIV[0] );
+
+    if( strCT.length() > 0 )
+        JS_BIN_decodeHex( strCT.toStdString().c_str(), &binCT[0] );
+
+    QString strSymAlg = getSymAlg( strAlg, strMode, binKey[0].nLen );
+    berApplet->log( QString("Symmetric Alg: %1").arg( strSymAlg ));
+
+    for( i = 0; i < 100; i++ )
+    {
+        if( bInfo )
+        {
+            mSymMCTCountText->setText( QString("%1").arg(i) );
+
+            if( i == 99 )
+            {
+                mSymMCTLastKeyText->setText( getHexString(binKey[i].pVal, binKey[i].nLen));
+                mSymMCTLastIVText->setText(getHexString(binIV[i].pVal, binIV[i].nLen));
+                mSymMCTLastCTText->setText( getHexString(binCT[0].pVal, binCT[0].nLen));
+            }
+        }
+
+        logRsp( QString("COUNT = %1").arg(i));
+        logRsp( QString("KEY = %1").arg( getHexString(binKey[i].pVal, binKey[i].nLen)));
+        logRsp( QString("IV = %1").arg( getHexString(binIV[i].pVal, binIV[i].nLen)));
+        logRsp( QString("CT = %1").arg(getHexString(binCT[0].pVal, binCT[0].nLen)));
+
+        for( j = 0; j < 1000; j++ )
+        {
+            JS_BIN_reset( &binPT[j] );
+            if( strAlg == "SEED" )
+            {
+                if( j == 0 )
+                {
+                    ret = JS_PKI_decryptSEED( strMode.toStdString().c_str(), 0, &binCT[j], &binIV[i], &binKey[i], &binPT[j] );
+                }
+                else
+                {
+                    ret = JS_PKI_decryptSEED( strMode.toStdString().c_str(), 0, &binCT[j], &binCT[j-1], &binKey[i], &binPT[j] );
+                }
+            }
+            else
+            {
+                if( j == 0 )
+                    ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), 0, &binCT[j], &binIV[i], &binKey[i], &binPT[j] );
+                else
+                    ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), 0, &binCT[j], &binCT[j-1], &binKey[i], &binPT[j]);
+            }
+
+            if( ret != 0 ) goto end;
+
+            if( j == 0 )
+            {
+                JS_BIN_reset( &binCT[j+1] );
+                JS_BIN_copy( &binCT[j+1], &binIV[i] );
+            }
+            else
+            {
+                JS_BIN_reset( &binCT[j+1] );
+                JS_BIN_copy( &binCT[j+1], &binPT[j-1] );
+            }
+        }
+
+        j = j - 1;
+
+        if( bInfo )
+        {
+            if( i == 0 )
+            {
+                mSymMCTPTText->setText( getHexString(binPT[j].pVal, binPT[j].nLen) );
+            }
+            else if( i == 99 )
+            {
+                mSymMCTLastPTText->setText( getHexString(binPT[j].pVal, binPT[j].nLen) );
+            }
+        }
+
+        logRsp( QString("PT = %1").arg(getHexString(binPT[j].pVal, binPT[j].nLen)));
+        logRsp( "" );
+
+        if( (strKey.length()/2) == 16 )
+        {
+            JS_BIN_reset( &binKey[i+1] );
+            JS_BIN_XOR( &binKey[i+1], &binKey[i], &binPT[j] );
+        }
+        else if( (strKey.length()/2) == 24 )
+        {
+            BIN binTmp = {0,0};
+
+            JS_BIN_set( &binTmp, &binPT[j-1].pVal[8], 8 );
+            JS_BIN_appendBin( &binTmp, &binPT[j] );
+
+            JS_BIN_reset( &binKey[i+1] );
+            JS_BIN_XOR( &binKey[i+1], &binKey[i], &binTmp );
+            JS_BIN_reset( &binTmp );
+        }
+        else if( (strKey.length()/2) == 32 )
+        {
+            BIN binTmp = {0,0};
+
+            JS_BIN_copy( &binTmp, &binPT[j-1] );
+            JS_BIN_appendBin( &binTmp, &binPT[j] );
+
+            JS_BIN_reset( &binKey[i+1] );
+            JS_BIN_XOR( &binKey[i+1], &binKey[i], &binTmp );
+            JS_BIN_reset( &binTmp );
+        }
+
+        JS_BIN_reset( &binIV[i+1] );
+        JS_BIN_copy( &binIV[i+1], &binPT[j] );
+        JS_BIN_reset( &binCT[0] );
+        JS_BIN_copy( &binCT[0], &binPT[j-1]);
+    }
+
+end :
+    for( int i = 0; i < 101; i++ )
+    {
+        JS_BIN_reset( &binKey[i]);
+        JS_BIN_reset( &binIV[i]);
+    }
+
+    for( int i = 0; i < 1001; i++ )
+    {
+        JS_BIN_reset( &binPT[i] );
+        JS_BIN_reset( &binCT[i] );
+    }
+}
+
 int CAVPDlg::makeSymECB_MCT( const QString strKey, const QString strPT, bool bInfo )
 {
     int i = 0;
@@ -2395,6 +2609,137 @@ int CAVPDlg::makeSymECB_MCT( const QString strKey, const QString strPT, bool bIn
 
     return ret;
 }
+
+ int CAVPDlg::makeSymDecECB_MCT( const QString strKey, const QString strCT, bool bInfo )
+ {
+    int i = 0;
+    int j = 0;
+    int ret = 0;
+
+    BIN binKey[100 + 1];
+    BIN binPT[1000 + 1];
+    BIN binCT[1000 + 1];
+
+    memset( &binKey, 0x00, sizeof(BIN) * 101 );
+    memset( &binPT, 0x00, sizeof(BIN) * 1001 );
+    memset( &binCT, 0x00, sizeof(BIN) * 1001 );
+
+    JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey[0] );
+    JS_BIN_decodeHex( strCT.toStdString().c_str(), &binCT[0] );
+
+    QString strAlg;
+    QString strMode;
+
+    if( bInfo == true )
+    {
+        strAlg = mSymMCTAlgCombo->currentText();
+        strMode = mSymMCTModeCombo->currentText();
+    }
+    else
+    {
+        strAlg = mSymAlgCombo->currentText();
+        strMode = mSymModeCombo->currentText();
+    }
+
+    QString strSymAlg = getSymAlg( strAlg, strMode, binKey[0].nLen );
+    berApplet->log( QString("Symmetric Alg: %1").arg( strSymAlg ));
+
+
+    for( i = 0; i < 100; i++ )
+    {
+        logRsp( QString("COUNT = %1").arg(i));
+        logRsp( QString("KEY = %1").arg( getHexString(binKey[i].pVal, binKey[i].nLen)));
+        logRsp( QString("CT = %1").arg(getHexString(binCT[0].pVal, binCT[0].nLen)));
+
+        if( bInfo )
+        {
+            mSymMCTCountText->setText( QString("%1").arg(i) );
+
+            if( i == 99 )
+            {
+                mSymMCTLastKeyText->setText( getHexString(binKey[i].pVal, binKey[i].nLen));
+                mSymMCTLastCTText->setText( getHexString(binCT[0].pVal, binCT[0].nLen));
+            }
+        }
+
+        for( j = 0; j < 1000; j++ )
+        {
+            if( strAlg == "SEED" )
+                ret = JS_PKI_decryptSEED( strMode.toStdString().c_str(), 0, &binCT[j], NULL, &binKey[i], &binPT[j] );
+            else
+                ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), 0, &binCT[j], NULL, &binKey[i], &binPT[j] );
+
+            if( ret != 0 ) goto end;
+
+            JS_BIN_reset( &binCT[j+1] );
+            JS_BIN_copy( &binCT[j+1], &binPT[j] );
+        }
+
+        j = j - 1;
+
+        if( bInfo )
+        {
+            if( i == 0 )
+            {
+                mSymMCTPTText->setText( getHexString(binPT[j].pVal, binPT[j].nLen) );
+            }
+            else if( i == 99 )
+            {
+                mSymMCTLastPTText->setText( getHexString(binPT[j].pVal, binPT[j].nLen) );
+            }
+        }
+
+        logRsp( QString("PT = %1").arg(getHexString(binPT[j].pVal, binPT[j].nLen)));
+        logRsp( "" );
+
+        if( (strKey.length()/2) == 16 )
+        {
+            JS_BIN_reset( &binKey[i+1] );
+            JS_BIN_XOR( &binKey[i+1], &binKey[i], &binPT[j] );
+        }
+        else if( (strKey.length()/2) == 24 )
+        {
+            BIN binTmp = {0,0};
+
+            JS_BIN_set( &binTmp, &binPT[j-1].pVal[8], 8 );
+            JS_BIN_appendBin( &binTmp, &binPT[j] );
+
+            JS_BIN_reset( &binKey[i+1] );
+            JS_BIN_XOR( &binKey[i+1], &binKey[i], &binTmp );
+            JS_BIN_reset( &binTmp );
+        }
+        else if( (strKey.length()/2) == 32 )
+        {
+            BIN binTmp = {0,0};
+
+            JS_BIN_copy( &binTmp, &binPT[j-1] );
+            JS_BIN_appendBin( &binTmp, &binPT[j] );
+
+            JS_BIN_reset( &binKey[i+1] );
+            JS_BIN_XOR( &binKey[i+1], &binKey[i], &binTmp );
+            JS_BIN_reset( &binTmp );
+        }
+
+        JS_BIN_reset( &binCT[0] );
+        JS_BIN_copy( &binCT[0], &binPT[j]);
+    }
+
+
+ end :
+    for( int i = 0; i < 101; i++ )
+    {
+        JS_BIN_reset( &binKey[i] );
+    }
+
+    for( int i = 0; i < 1001; i++ )
+    {
+        JS_BIN_reset( &binPT[i] );
+        JS_BIN_reset( &binCT[i] );
+    }
+
+    return ret;
+ }
+
 
 int CAVPDlg::makeSymCTR_MCT( const QString strKey, const QString strIV, const QString strPT, bool bInfo )
 {
@@ -2530,6 +2875,142 @@ int CAVPDlg::makeSymCTR_MCT( const QString strKey, const QString strIV, const QS
 
     return ret;
 }
+
+ int CAVPDlg::makeSymDecCTR_MCT( const QString strKey, const QString strIV, const QString strCT, bool bInfo )
+ {
+    int i = 0;
+    int j = 0;
+    int ret = 0;
+
+    BIN binKey[100+1];
+    BIN binCTR = {0,0};
+    BIN binPT[1000+1];
+    BIN binCT[1000+1];
+
+    memset( &binKey, 0x00, sizeof(BIN) * 101 );
+    memset( &binPT, 0x00, sizeof(BIN) * 1001 );
+    memset( &binCT, 0x00, sizeof(BIN) * 1001 );
+
+    JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey[0] );
+    JS_BIN_decodeHex( strIV.toStdString().c_str(), &binCTR );
+    JS_BIN_decodeHex( strCT.toStdString().c_str(), &binCT[0] );
+
+    QString strAlg;
+    QString strMode;
+
+    if( bInfo == true )
+    {
+        strAlg = mSymMCTAlgCombo->currentText();
+        strMode = mSymMCTModeCombo->currentText();
+    }
+    else
+    {
+        strAlg = mSymAlgCombo->currentText();
+        strMode = mSymModeCombo->currentText();
+    }
+
+    QString strSymAlg = getSymAlg( strAlg, strMode, binKey[0].nLen );
+    berApplet->log( QString("Symmetric Alg: %1").arg( strSymAlg ));
+
+    for( i = 0; i < 100; i++ )
+    {
+        if( bInfo )
+        {
+            mSymMCTCountText->setText( QString("%1").arg(i) );
+
+            if( i == 99 )
+            {
+                mSymMCTLastKeyText->setText( getHexString(binKey[i].pVal, binKey[i].nLen));
+                mSymMCTLastIVText->setText(getHexString( binCTR.pVal, binCTR.nLen ));
+                mSymMCTLastCTText->setText( getHexString(binCT[0].pVal, binCT[0].nLen));
+            }
+        }
+
+        logRsp( QString("COUNT = %1").arg(i));
+        logRsp( QString("KEY = %1").arg( getHexString(binKey[i].pVal, binKey[i].nLen)));
+        logRsp( QString("CTR = %1").arg( getHexString(binCTR.pVal, binCTR.nLen)));
+        logRsp( QString("CT = %1").arg(getHexString(binCT[0].pVal, binCT[0].nLen)));
+
+        for( j = 0; j < 1000; j++ )
+        {
+            if( strAlg == "SEED" )
+                ret = JS_PKI_decryptSEED( strMode.toStdString().c_str(), 0, &binCT[j], &binCTR, &binKey[i], &binPT[j] );
+            else
+                ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), 0, &binCT[j], &binCTR, &binKey[i], &binPT[j] );
+            if( ret != 0 ) goto end;
+
+            JS_BIN_INC( &binCTR );
+
+            JS_BIN_reset( &binCT[j+1] );
+            JS_BIN_copy( &binCT[j+1], &binPT[j] );
+        }
+
+        j = j - 1;
+
+        if( bInfo )
+        {
+            if( i == 0 )
+            {
+                mSymMCTPTText->setText( getHexString(binPT[j].pVal, binPT[j].nLen) );
+            }
+            else if( i == 99 )
+            {
+                mSymMCTLastPTText->setText( getHexString(binPT[j].pVal, binPT[j].nLen) );
+            }
+        }
+
+        logRsp( QString("PT = %1").arg(getHexString(binPT[j].pVal, binPT[j].nLen)));
+        logRsp( "" );
+
+        if( (strKey.length()/2) == 16 )
+        {
+            JS_BIN_reset( &binKey[i+1] );
+            JS_BIN_XOR( &binKey[i+1], &binKey[i], &binPT[j] );
+        }
+        else if( (strKey.length()/2) == 24 )
+        {
+            BIN binTmp = {0,0};
+
+            JS_BIN_set( &binTmp, &binPT[j-1].pVal[8], 8 );
+            JS_BIN_appendBin( &binTmp, &binPT[j] );
+
+            JS_BIN_reset( &binKey[i+1] );
+            JS_BIN_XOR( &binKey[i+1], &binKey[i], &binTmp );
+            JS_BIN_reset( &binTmp );
+        }
+        else if( (strKey.length()/2) == 32 )
+        {
+            BIN binTmp = {0,0};
+
+            JS_BIN_copy( &binTmp, &binPT[j-1] );
+            JS_BIN_appendBin( &binTmp, &binPT[j] );
+
+            JS_BIN_reset( &binKey[i+1] );
+            JS_BIN_XOR( &binKey[i+1], &binKey[i], &binTmp );
+            JS_BIN_reset( &binTmp );
+        }
+
+        JS_BIN_reset( &binCT[0] );
+        JS_BIN_copy( &binCT[0], &binPT[j]);
+    }
+
+ end :
+    JS_BIN_reset( &binCTR );
+
+    for( int i = 0; i < 101; i++ )
+    {
+        JS_BIN_reset( &binKey[i] );
+    }
+
+    for( int i = 0; i < 1001; i++ )
+    {
+        JS_BIN_reset( &binPT[i] );
+        JS_BIN_reset( &binCT[i] );
+    }
+
+    return ret;
+ }
+
 
 int CAVPDlg::makeSymCFB_MCT( const QString strKey, const QString strIV, const QString strPT, bool bInfo )
 {
@@ -2692,6 +3173,168 @@ end :
     return ret;
 }
 
+int CAVPDlg::makeSymDecCFB_MCT( const QString strKey, const QString strIV, const QString strCT, bool bInfo )
+{
+    int ret = 0;
+    int i = 0;
+    int j = 0;
+
+    BIN binKey[100 + 1];
+    BIN binIV[100 + 1];
+    BIN binPT[1000 + 1];
+    BIN binCT[1000 + 1];
+
+    QString strAlg;
+    QString strMode;
+
+    memset( &binKey, 0x00, sizeof(BIN) * 101 );
+    memset( &binIV, 0x00, sizeof(BIN) * 101 );
+    memset( &binPT, 0x00, sizeof(BIN) * 1001 );
+    memset( &binCT, 0x00, sizeof(BIN) * 1001 );
+
+    if( bInfo == true )
+    {
+        strAlg = mSymMCTAlgCombo->currentText();
+        strMode = mSymMCTModeCombo->currentText();
+    }
+    else
+    {
+        strAlg = mSymAlgCombo->currentText();
+        strMode = mSymModeCombo->currentText();
+    }
+
+    if( strKey.length() > 0 )
+        JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey[0] );
+
+    if( strIV.length() > 0 )
+        JS_BIN_decodeHex( strIV.toStdString().c_str(), &binIV[0] );
+
+    if( strCT.length() > 0 )
+        JS_BIN_decodeHex( strCT.toStdString().c_str(), &binCT[0] );
+
+    QString strSymAlg = getSymAlg( strAlg, strMode, binKey[0].nLen );
+    berApplet->log( QString("Symmetric Alg: %1").arg( strSymAlg ));
+
+    for( i = 0; i < 100; i++ )
+    {
+        if( bInfo )
+        {
+            mSymMCTCountText->setText( QString("%1").arg(i) );
+
+            if( i == 99 )
+            {
+                mSymMCTLastKeyText->setText( getHexString(binKey[i].pVal, binKey[i].nLen));
+                mSymMCTLastIVText->setText(getHexString(binIV[i].pVal, binIV[i].nLen));
+                mSymMCTLastCTText->setText( getHexString(binCT[0].pVal, binCT[0].nLen));
+            }
+        }
+
+        logRsp( QString("COUNT = %1").arg(i));
+        logRsp( QString("KEY = %1").arg( getHexString(binKey[i].pVal, binKey[i].nLen)));
+        logRsp( QString("IV = %1").arg( getHexString(binIV[i].pVal, binIV[i].nLen)));
+        logRsp( QString("CT = %1").arg(getHexString(binCT[0].pVal, binCT[0].nLen)));
+
+        for( j = 0; j < 1000; j++ )
+        {
+            JS_BIN_reset( &binCT[j] );
+
+            if( strAlg == "SEED" )
+            {
+                if( j == 0 )
+                    ret = JS_PKI_decryptSEED( strMode.toStdString().c_str(), 0, &binCT[j], &binIV[i], &binKey[i], &binPT[j] );
+                else
+                    ret = JS_PKI_decryptSEED( strMode.toStdString().c_str(), 0, &binCT[j], &binCT[j-1], &binKey[i], &binPT[j] );
+            }
+            else
+            {
+                if( j == 0 )
+                    ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), 0, &binCT[j], &binIV[i], &binKey[i], &binPT[j] );
+                else
+                    ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), 0, &binCT[j], &binCT[j-1], &binKey[i], &binPT[j]);
+            }
+
+            if( ret != 0 ) goto end;
+
+            if( j == 0 )
+            {
+                JS_BIN_reset( &binCT[j+1] );
+                JS_BIN_copy( &binCT[j+1], &binIV[i] );
+            }
+            else
+            {
+                JS_BIN_reset( &binCT[j+1] );
+                JS_BIN_copy( &binCT[j+1], &binPT[j-1] );
+            }
+        }
+
+        j = j - 1;
+
+        if( bInfo )
+        {
+            if( i == 0 )
+            {
+                mSymMCTPTText->setText( getHexString(binPT[j].pVal, binPT[j].nLen) );
+            }
+            else if( i == 99 )
+            {
+                mSymMCTLastPTText->setText( getHexString(binPT[j].pVal, binPT[j].nLen) );
+            }
+        }
+
+        logRsp( QString("PT = %1").arg(getHexString(binPT[j].pVal, binPT[j].nLen)));
+        logRsp( "" );
+
+        if( (strKey.length()/2) == 16 )
+        {
+            JS_BIN_reset( &binKey[i+1] );
+            JS_BIN_XOR( &binKey[i+1], &binKey[i], &binPT[j] );
+        }
+        else if( (strKey.length()/2) == 24 )
+        {
+            BIN binTmp = {0,0};
+
+            JS_BIN_set( &binTmp, &binPT[j-1].pVal[8], 8 );
+            JS_BIN_appendBin( &binTmp, &binPT[j] );
+
+            JS_BIN_reset( &binKey[i+1] );
+            JS_BIN_XOR( &binKey[i+1], &binKey[i], &binTmp );
+            JS_BIN_reset( &binTmp );
+        }
+        else if( (strKey.length()/2) == 32 )
+        {
+            BIN binTmp = {0,0};
+
+            JS_BIN_copy( &binTmp, &binPT[j-1] );
+            JS_BIN_appendBin( &binTmp, &binPT[j] );
+
+            JS_BIN_reset( &binKey[i+1] );
+            JS_BIN_XOR( &binKey[i+1], &binKey[i], &binTmp );
+            JS_BIN_reset( &binTmp );
+        }
+
+        JS_BIN_reset( &binIV[i+1] );
+        JS_BIN_copy( &binIV[i+1], &binPT[j] );
+        JS_BIN_reset( &binCT[0] );
+        JS_BIN_copy( &binCT[0], &binPT[j-1]);
+    }
+
+end :
+    for( int i = 0; i < 101; i++ )
+    {
+        JS_BIN_reset( &binKey[i]);
+        JS_BIN_reset( &binIV[i]);
+    }
+
+    for( int i = 0; i < 1001; i++ )
+    {
+        JS_BIN_reset( &binPT[i] );
+        JS_BIN_reset( &binCT[i] );
+    }
+
+    return ret;
+}
+
+
 int CAVPDlg::makeSymOFB_MCT( const QString strKey, const QString strIV, const QString strPT, bool bInfo )
 {
     int ret = 0;
@@ -2840,6 +3483,173 @@ int CAVPDlg::makeSymOFB_MCT( const QString strKey, const QString strIV, const QS
         JS_BIN_copy( &binIV[i+1], &binCT[j] );
         JS_BIN_reset( &binPT[0] );
         JS_BIN_copy( &binPT[0], &binCT[j-1]);
+    }
+
+end :
+    for( int i = 0; i < 101; i++ )
+    {
+        JS_BIN_reset( &binKey[i]);
+        JS_BIN_reset( &binIV[i]);
+    }
+
+    for( int i = 0; i < 1001; i++ )
+    {
+        JS_BIN_reset( &binPT[i] );
+        JS_BIN_reset( &binCT[i] );
+        JS_BIN_reset( &binOT[i] );
+    }
+
+    return ret;
+}
+
+int CAVPDlg::makeSymDecOFB_MCT( const QString strKey, const QString strIV, const QString strCT, bool bInfo )
+{
+    int ret = 0;
+    int i = 0;
+    int j = 0;
+
+    BIN binKey[100 + 1];
+    BIN binIV[100 + 1];
+    BIN binPT[1000 + 1];
+    BIN binCT[1000 + 1];
+    BIN binOT[1000 + 1];
+
+    QString strAlg;
+    QString strMode;
+
+    memset( &binKey, 0x00, sizeof(BIN) * 101 );
+    memset( &binIV, 0x00, sizeof(BIN) * 101 );
+    memset( &binPT, 0x00, sizeof(BIN) * 1001 );
+    memset( &binCT, 0x00, sizeof(BIN) * 1001 );
+    memset( &binOT, 0x00, sizeof(BIN) * 1001 );
+
+    if( bInfo == true )
+    {
+        strAlg = mSymMCTAlgCombo->currentText();
+        strMode = mSymMCTModeCombo->currentText();
+    }
+    else
+    {
+        strAlg = mSymAlgCombo->currentText();
+        strMode = mSymModeCombo->currentText();
+    }
+
+    if( strKey.length() > 0 )
+        JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey[0] );
+
+    if( strIV.length() > 0 )
+        JS_BIN_decodeHex( strIV.toStdString().c_str(), &binIV[0] );
+
+    if( strCT.length() > 0 )
+        JS_BIN_decodeHex( strCT.toStdString().c_str(), &binCT[0] );
+
+    QString strSymAlg = getSymAlg( strAlg, strMode, binKey[0].nLen );
+    berApplet->log( QString("Symmetric Alg: %1").arg( strSymAlg ));
+
+    for( i = 0; i < 100; i++ )
+    {
+        if( bInfo )
+        {
+            mSymMCTCountText->setText( QString("%1").arg(i) );
+
+            if( i == 99 )
+            {
+                mSymMCTLastKeyText->setText( getHexString(binKey[i].pVal, binKey[i].nLen));
+                mSymMCTLastIVText->setText(getHexString(binIV[i].pVal, binIV[i].nLen));
+                mSymMCTLastCTText->setText( getHexString(binCT[0].pVal, binCT[0].nLen));
+            }
+        }
+
+        logRsp( QString("COUNT = %1").arg(i));
+        logRsp( QString("KEY = %1").arg( getHexString(binKey[i].pVal, binKey[i].nLen)));
+        logRsp( QString("IV = %1").arg( getHexString(binIV[i].pVal, binIV[i].nLen)));
+        logRsp( QString("CT = %1").arg(getHexString(binCT[0].pVal, binCT[0].nLen)));
+
+        for( j = 0; j < 1000; j++ )
+        {
+            JS_BIN_reset( &binOT[j] );
+            JS_BIN_reset( &binPT[j] );
+
+            if( strAlg == "SEED" )
+            {
+                if( j == 0 )
+                    ret = JS_PKI_decryptSEED( "ECB", 0, &binIV[i], NULL, &binKey[i], &binOT[j] );
+                else
+                    ret = JS_PKI_decryptSEED( "ECB", 0, &binOT[j-1], NULL, &binKey[i], &binOT[j] );
+            }
+            else
+            {
+                if( j == 0 )
+                    ret = JS_PKI_decryptData( "ECB", 0, &binIV[i], NULL, &binKey[i], &binOT[j] );
+                else
+                    ret = JS_PKI_decryptData( "ECB", 0, &binOT[j-1], NULL, &binKey[i], &binOT[j]);
+            }
+
+            if( ret != 0 ) goto end;
+
+            JS_BIN_XOR( &binPT[j], &binCT[j], &binOT[j] );
+
+            if( j == 0 )
+            {
+                JS_BIN_reset( &binCT[j+1] );
+                JS_BIN_copy( &binCT[j+1], &binIV[i] );
+            }
+            else
+            {
+                JS_BIN_reset( &binCT[j+1] );
+                JS_BIN_copy( &binCT[j+1], &binPT[j-1] );
+            }
+        }
+
+        j = j - 1;
+
+        if( bInfo )
+        {
+            if( i == 0 )
+            {
+                mSymMCTPTText->setText( getHexString(binPT[j].pVal, binPT[j].nLen) );
+            }
+            else if( i == 99 )
+            {
+                mSymMCTLastPTText->setText( getHexString(binPT[j].pVal, binPT[j].nLen) );
+            }
+        }
+
+        logRsp( QString("PT = %1").arg(getHexString(binPT[j].pVal, binPT[j].nLen)));
+        logRsp( "" );
+
+        if( (strKey.length()/2) == 16 )
+        {
+            JS_BIN_reset( &binKey[i+1] );
+            JS_BIN_XOR( &binKey[i+1], &binKey[i], &binPT[j] );
+        }
+        else if( (strKey.length()/2) == 24 )
+        {
+            BIN binTmp = {0,0};
+
+            JS_BIN_set( &binTmp, &binPT[j-1].pVal[8], 8 );
+            JS_BIN_appendBin( &binTmp, &binPT[j] );
+
+            JS_BIN_reset( &binKey[i+1] );
+            JS_BIN_XOR( &binKey[i+1], &binKey[i], &binTmp );
+            JS_BIN_reset( &binTmp );
+        }
+        else if( (strKey.length()/2) == 32 )
+        {
+            BIN binTmp = {0,0};
+
+            JS_BIN_copy( &binTmp, &binPT[j-1] );
+            JS_BIN_appendBin( &binTmp, &binPT[j] );
+
+            JS_BIN_reset( &binKey[i+1] );
+            JS_BIN_XOR( &binKey[i+1], &binKey[i], &binTmp );
+            JS_BIN_reset( &binTmp );
+        }
+
+        JS_BIN_reset( &binIV[i+1] );
+        JS_BIN_copy( &binIV[i+1], &binPT[j] );
+        JS_BIN_reset( &binCT[0] );
+        JS_BIN_copy( &binCT[0], &binPT[j-1]);
     }
 
 end :
