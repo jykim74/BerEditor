@@ -209,11 +209,7 @@ void CertManDlg::initUI()
 {
     mTLVersionCombo->addItems( kVersionList );
 
-#if defined(Q_OS_MAC)
     int nWidth = width() * 9/10;
-#else
-    int nWidth = width() * 7/10;
-#endif
 
     QStringList sTableLabels = { tr( "Subject DN" ), tr( "Expire" ), tr( "Issuer DN" ) };
 
