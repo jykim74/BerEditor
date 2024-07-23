@@ -28,7 +28,8 @@ VIDDlg::VIDDlg(QWidget *parent)
     connect( mClearHashContentBtn, SIGNAL(clicked()), this, SLOT(clickClearHashContent()));
 
     connect( mSSNText, SIGNAL(textChanged(QString)), this, SLOT(changeSSN(QString)));
-    connect( mRandText, SIGNAL(textChanged(QString)), this, SLOT(changeRand(QString)));
+    connect( mRandCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeRand()));
+    connect( mRandText, SIGNAL(textChanged(QString)), this, SLOT(changeRand()));
     connect( mHashContentText, SIGNAL(textChanged()), this, SLOT(changeHashContent()));
     connect( mVIDText, SIGNAL(textChanged()), this, SLOT(changeVID()));
     connect( mClearVIDBtn, SIGNAL(clicked()), this, SLOT(clickClearVID()));
@@ -66,7 +67,7 @@ void VIDDlg::changeSSN( const QString& text )
     mSSNLenText->setText( QString("%1").arg( strLen ));
 }
 
-void VIDDlg::changeRand( const QString& text )
+void VIDDlg::changeRand()
 {
     QString strRand = mRandText->text();
     QString strLen = getDataLenString( mRandCombo->currentText(), strRand );

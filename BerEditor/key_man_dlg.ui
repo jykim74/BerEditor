@@ -17,7 +17,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -110,25 +110,6 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_2">
-         <item row="0" column="1">
-          <widget class="QComboBox" name="mSaltTypeCombo"/>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_3">
-           <property name="minimumSize">
-            <size>
-             <width>100</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Salt</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QLineEdit" name="mSaltText"/>
-         </item>
          <item row="0" column="3">
           <widget class="QLineEdit" name="mSaltLenText">
            <property name="maximumSize">
@@ -179,7 +160,39 @@
            </property>
           </widget>
          </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_3">
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Salt</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="mSaltTypeCombo"/>
+         </item>
+         <item row="0" column="2">
+          <spacer name="horizontalSpacer_9">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
         </layout>
+       </item>
+       <item>
+        <widget class="QPlainTextEdit" name="mSaltText"/>
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_3">
@@ -880,8 +893,8 @@
   <tabstop>mPasswordText</tabstop>
   <tabstop>mPasswordLenText</tabstop>
   <tabstop>mSaltTypeCombo</tabstop>
-  <tabstop>mSaltText</tabstop>
   <tabstop>mSaltLenText</tabstop>
+  <tabstop>mSaltText</tabstop>
   <tabstop>mIterCntText</tabstop>
   <tabstop>mHashCombo</tabstop>
   <tabstop>mKeyLenText</tabstop>
@@ -902,11 +915,11 @@
   <tabstop>mDstLenText</tabstop>
   <tabstop>mDstText</tabstop>
   <tabstop>mWrapBtn</tabstop>
+  <tabstop>mUnwrapBtn</tabstop>
   <tabstop>mChangeBtn</tabstop>
   <tabstop>mClearBtn</tabstop>
   <tabstop>mClearDataAllBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
-  <tabstop>mUnwrapBtn</tabstop>
  </tabstops>
  <resources/>
  <connections/>

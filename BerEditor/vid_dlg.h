@@ -18,7 +18,7 @@ public:
 
 private slots:
     void changeSSN( const QString& text );
-    void changeRand( const QString& text );
+    void changeRand();
     void changeVID();
     void changeHashContent();
 

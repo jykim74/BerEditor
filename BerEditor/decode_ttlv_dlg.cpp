@@ -11,6 +11,8 @@ DecodeTTLVDlg::DecodeTTLVDlg(QWidget *parent) :
 
     connect( mViewBtn, SIGNAL(clicked()), this, SLOT(clickView()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mHexRadio, SIGNAL(clicked()), this, SLOT(changeData()));
+    connect( mBase64Radio, SIGNAL(clicked()), this, SLOT(changeData()));
     connect( mDataText, SIGNAL(textChanged()), this, SLOT(changeData()));
 
     connect( mFindBtn, SIGNAL(clicked()), this, SLOT(findData()));

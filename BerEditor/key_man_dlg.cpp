@@ -29,7 +29,7 @@ KeyManDlg::KeyManDlg(QWidget *parent) :
     connect( mOutputText, SIGNAL(textChanged()), this, SLOT(keyValueChanged()));
 
     connect( mPasswordText, SIGNAL(textChanged(const QString&)), this, SLOT(passwordChanged()));
-    connect( mSaltText, SIGNAL(textChanged(const QString&)), this, SLOT(saltChanged()));
+    connect( mSaltText, SIGNAL(textChanged()), this, SLOT(saltChanged()));
     connect( mSaltTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(saltChanged()));
 
     connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickOutputClear()));
@@ -39,9 +39,11 @@ KeyManDlg::KeyManDlg(QWidget *parent) :
     connect( mClearBtn, SIGNAL(clicked()), this, SLOT(clickClear()));
     connect( mChangeBtn, SIGNAL(clicked()), this, SLOT(clickChange()));
 
+    connect( mSrcTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(srcChanged()));
     connect( mSrcText, SIGNAL(textChanged()), this, SLOT(srcChanged()));
     connect( mDstText, SIGNAL(textChanged()), this, SLOT(dstChanged()));
-    connect( mKEKText, SIGNAL(textChanged(const QString&)), this, SLOT(kekChanged(const QString&)));
+    connect( mKEKTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(kekChanged()));
+    connect( mKEKText, SIGNAL(textChanged(const QString&)), this, SLOT(kekChanged()));
 
     connect( mGenKEKBtn, SIGNAL(clicked()), this, SLOT(clickKeyWrapGenKEK()));
 
@@ -105,7 +107,7 @@ void KeyManDlg::PBKDF()
     nIter = mIterCntText->text().toInt();
     nKeySize = mKeyLenText->text().toInt();
 
-    QString strSalt = mSaltText->text();
+    QString strSalt = mSaltText->toPlainText();
 
     if( mSaltTypeCombo->currentIndex() == 0 )
         JS_BIN_set( &binSalt, (unsigned char *)strSalt.toStdString().c_str(), strSalt.length() );
@@ -147,7 +149,8 @@ void KeyManDlg::passwordChanged()
 
 void KeyManDlg::saltChanged()
 {
-    QString strLen = getDataLenString( mSaltTypeCombo->currentText(), mSaltText->text() );
+    QString strSalt = mSaltText->toPlainText();
+    QString strLen = getDataLenString( mSaltTypeCombo->currentText(), strSalt );
     mSaltLenText->setText( QString("%1").arg(strLen));
 }
 
@@ -312,7 +315,7 @@ void KeyManDlg::dstChanged()
     mDstLenText->setText( QString("%1").arg(strLen));
 }
 
-void KeyManDlg::kekChanged( const QString& text )
+void KeyManDlg::kekChanged()
 {
     QString strKEK = mKEKText->text();
     QString strLen = getDataLenString( mKEKTypeCombo->currentText(), strKEK );

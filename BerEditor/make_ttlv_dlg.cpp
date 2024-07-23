@@ -17,6 +17,7 @@ MakeTTLVDlg::MakeTTLVDlg(QWidget *parent) :
     connect( mCancelBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mTagText, SIGNAL(textChanged(QString)), this, SLOT(changeTag(QString)));
     connect( mTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeType(int)));
+    connect( mValueCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeValue()));
     connect( mValueText, SIGNAL(textChanged()), this, SLOT(changeValue()));
     connect( mTTLVText, SIGNAL(textChanged()), this, SLOT(changeTTLV()));
     connect( mOKBtn, SIGNAL(clicked()), this, SLOT(clickOK()));

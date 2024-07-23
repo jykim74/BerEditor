@@ -75,7 +75,7 @@ QString DecodeDataDlg::getTextData()
 
 void DecodeDataDlg::dataChanged()
 {
-    int nType = 0;
+    int nType = DATA_STRING;
 
     if( mTypeHex->isChecked() )
         nType = DATA_HEX;
