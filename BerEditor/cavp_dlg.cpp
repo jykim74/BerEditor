@@ -1976,7 +1976,11 @@ void CAVPDlg::clickSymMCTRun()
             .arg( mSymMCTAlgCombo->currentText() )
             .arg( mSymMCTModeCombo->currentText() ));
 
-    mSymMCTCTText->clear();
+    if( strDirection == "Encrypt" )
+        mSymMCTCTText->clear();
+    else
+        mSymMCTPTText->clear();
+
     mSymMCTLastKeyText->clear();
     mSymMCTLastIVText->clear();
     mSymMCTLastPTText->clear();
