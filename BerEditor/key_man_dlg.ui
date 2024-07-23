@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>442</width>
-    <height>455</height>
+    <width>470</width>
+    <height>575</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <property name="currentIndex">
       <number>1</number>
      </property>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="mDeriveTab">
       <attribute name="title">
        <string>KeyDerive</string>
       </attribute>
@@ -424,7 +424,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_2">
+     <widget class="QWidget" name="mWrapTab">
       <attribute name="title">
        <string>KeyWrap</string>
       </attribute>

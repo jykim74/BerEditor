@@ -98,6 +98,11 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+    mDataTab->layout()->setSpacing(5);
+    mDataTab->layout()->setMargin(5);
+    mFileTab->layout()->setSpacing(5);
+    mFileTab->layout()->setMargin(5);
+
     mCertGroup->layout()->setSpacing(5);
     mCertGroup->layout()->setMargin(10);
 

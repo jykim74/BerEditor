@@ -66,6 +66,10 @@ KeyAgreeDlg::KeyAgreeDlg(QWidget *parent) :
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+    mDHTab->layout()->setSpacing(5);
+    mDHTab->layout()->setMargin(5);
+    mECDHTab->layout()->setSpacing(5);
+    mECDHTab->layout()->setMargin(5);
 #endif
     resize(minimumSizeHint().width(), minimumSizeHint().height());
 

@@ -76,7 +76,7 @@
      <property name="currentIndex">
       <number>1</number>
      </property>
-     <widget class="QWidget" name="tab_5">
+     <widget class="QWidget" name="mServerTab">
       <attribute name="title">
        <string>Server</string>
       </attribute>
@@ -349,7 +349,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_6">
+     <widget class="QWidget" name="mMutualTab">
       <attribute name="title">
        <string>Mutual</string>
       </attribute>
@@ -678,7 +678,7 @@
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
      </property>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="mTreeTab">
       <attribute name="title">
        <string>Tree</string>
       </attribute>
@@ -697,7 +697,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_2">
+     <widget class="QWidget" name="mLogTab">
       <attribute name="title">
        <string>Log</string>
       </attribute>
