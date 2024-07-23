@@ -721,21 +721,7 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="5">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>Len</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mOutputClearBtn">
-       <property name="text">
-        <string>Output Clear</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="6">
+     <item row="0" column="7">
       <widget class="QLineEdit" name="mOutputLenText">
        <property name="minimumSize">
         <size>
@@ -791,13 +777,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Output Data</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
       <widget class="QComboBox" name="mOutputTypeCombo">
        <property name="minimumSize">
@@ -814,7 +793,7 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
+     <item row="0" column="3">
       <spacer name="horizontalSpacer_5">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -827,7 +806,21 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="4">
+     <item row="0" column="6">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Len</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Output Data</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
       <widget class="QPushButton" name="mChangeBtn">
        <property name="minimumSize">
         <size>
@@ -843,6 +836,13 @@
        </property>
        <property name="text">
         <string>Change</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mOutputClearBtn">
+       <property name="text">
+        <string>Output Clear</string>
        </property>
       </widget>
      </item>
@@ -977,7 +977,6 @@
   <tabstop>mOtherPubLenText</tabstop>
   <tabstop>mOtherPubText</tabstop>
   <tabstop>mOutputTypeCombo</tabstop>
-  <tabstop>mOutputClearBtn</tabstop>
   <tabstop>mChangeBtn</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
