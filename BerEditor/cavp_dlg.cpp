@@ -1979,15 +1979,17 @@ void CAVPDlg::clickSymMCTRun()
         }
     }
 
-    rsp_name_ = QString( "%1/%2_%3_%4_MCT.rsp")
+    rsp_name_ = QString( "%1/%2_%3_%4_%5_MCT.rsp")
             .arg( strRspPath )
             .arg( mSymMCTAlgCombo->currentText() )
             .arg( mSymMCTModeCombo->currentText() )
-            .arg( strKey.length() / 2 );
+            .arg( strKey.length() / 2 )
+            .arg( strDirection );
 
-    logRsp( QString( "# SYM MCT-%1-%2 Response")
+    logRsp( QString( "# SYM MCT-%1-%2-%3 Response")
             .arg( mSymMCTAlgCombo->currentText() )
-            .arg( mSymMCTModeCombo->currentText() ));
+            .arg( mSymMCTModeCombo->currentText() )
+            .arg( strDirection ));
 
     if( strDirection == "Encrypt" )
         mSymMCTCTText->clear();
