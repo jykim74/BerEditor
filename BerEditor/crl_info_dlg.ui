@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>466</width>
-    <height>335</height>
+    <width>519</width>
+    <height>373</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mCRLTab">
       <attribute name="title">
@@ -110,18 +110,23 @@
           <string/>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
+          <property name="leftMargin">
+           <number>5</number>
+          </property>
+          <property name="topMargin">
+           <number>5</number>
+          </property>
+          <property name="rightMargin">
+           <number>5</number>
+          </property>
+          <property name="bottomMargin">
+           <number>5</number>
+          </property>
           <item>
            <layout class="QGridLayout" name="gridLayout_2">
             <property name="topMargin">
              <number>0</number>
             </property>
-            <item row="0" column="2">
-             <widget class="QPushButton" name="mDecodeCRLBtn">
-              <property name="text">
-               <string>Decode CRL</string>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="1">
              <widget class="QPushButton" name="mVerifyCRLBtn">
               <property name="text">
@@ -129,7 +134,14 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="0">
+            <item row="0" column="2">
+             <widget class="QPushButton" name="mDecodeCRLBtn">
+              <property name="text">
+               <string>Decode CRL</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
              <spacer name="horizontalSpacer_2">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
@@ -141,6 +153,13 @@
                </size>
               </property>
              </spacer>
+            </item>
+            <item row="0" column="4">
+             <widget class="QPushButton" name="mSaveToManBtn">
+              <property name="text">
+               <string>Save to Man</string>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -183,13 +202,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mSaveToManBtn">
-       <property name="text">
-        <string>Save to Manager</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
   </layout>
@@ -202,8 +214,8 @@
   <tabstop>mRevokeDetailTable</tabstop>
   <tabstop>mVerifyCRLBtn</tabstop>
   <tabstop>mDecodeCRLBtn</tabstop>
-  <tabstop>mSaveBtn</tabstop>
   <tabstop>mSaveToManBtn</tabstop>
+  <tabstop>mSaveBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>

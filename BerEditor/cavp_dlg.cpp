@@ -1830,116 +1830,116 @@ void CAVPDlg::changeDRBG2Method( int index )
 
 void CAVPDlg::MCTKeyChanged( const QString& text )
 {
-    int nLen = text.length() / 2;
-    mSymMCTKeyLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( DATA_HEX, text );
+    mSymMCTKeyLenText->setText( QString("%1").arg(strLen));
 }
 
 void CAVPDlg::MCTIVChanged( const QString& text )
 {
-    int nLen = text.length() / 2;
-    mSymMCTIVLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( DATA_HEX, text );
+    mSymMCTIVLenText->setText( QString("%1").arg(strLen));
 }
 
 void CAVPDlg::MCTPTChanged( const QString& text )
 {
-    int nLen = text.length() / 2;
-    mSymMCTPTLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( DATA_HEX, text );
+    mSymMCTPTLenText->setText( QString("%1").arg(strLen));
 }
 
 void CAVPDlg::MCTCTChanged( const QString& text )
 {
-    int nLen = text.length() / 2;
-    mSymMCTCTLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( DATA_HEX, text );
+    mSymMCTCTLenText->setText( QString("%1").arg(strLen));
 }
 
 void CAVPDlg::MCTLastKeyChanged( const QString& text )
 {
-    int nLen = text.length() / 2;
-    mSymMCTLastKeyLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( DATA_HEX, text );
+    mSymMCTLastKeyLenText->setText( QString("%1").arg(strLen));
 }
 
 void CAVPDlg::MCTLastIVChanged( const QString& text )
 {
-    int nLen = text.length() / 2;
-    mSymMCTLastIVLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( DATA_HEX, text );
+    mSymMCTLastIVLenText->setText( QString("%1").arg(strLen));
 }
 
 void CAVPDlg::MCTLastPTChanged( const QString& text )
 {
-    int nLen = text.length() / 2;
-    mSymMCTLastPTLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( DATA_HEX, text );
+    mSymMCTLastPTLenText->setText( QString("%1").arg(strLen));
 }
 
 void CAVPDlg::MCTLastCTChanged( const QString& text )
 {
-    int nLen = text.length() / 2;
-    mSymMCTLastCTLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( DATA_HEX, text );
+    mSymMCTLastCTLenText->setText( QString("%1").arg(strLen));
 }
 
 void CAVPDlg::MCTSHA256SeedChanged( const QString& text )
 {
-    int nLen = text.length() / 2;
-    mHashMCTSeedLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( DATA_HEX, text );
+    mHashMCTSeedLenText->setText( QString("%1").arg(strLen));
 }
 
 void CAVPDlg::MCTSHA256FirstMDChanged( const QString& text )
 {
-    int nLen = text.length() / 2;
-    mHashMCTFirstMDLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( DATA_HEX, text );
+    mHashMCTFirstMDLenText->setText( QString("%1").arg(strLen));
 }
 
 void CAVPDlg::MCTSHA256LastMDChanged( const QString& text )
 {
-    int nLen = text.length() / 2;
-    mHashMCTLastMDLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( DATA_HEX, text );
+    mHashMCTLastMDLenText->setText( QString("%1").arg(strLen));
 }
 
 void CAVPDlg::DRBG2EntropyInputChanged( const QString& text )
 {
-    int nLen = text.length() / 2;
-    mDRBG2EntropyInputLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( DATA_HEX, text );
+    mDRBG2EntropyInputLenText->setText( QString("%1").arg(strLen));
 }
 
 void CAVPDlg::DRBG2NonceChanged( const QString& text )
 {
-    int nLen = text.length() / 2;
-    mDRBG2NonceLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( DATA_HEX, text );
+    mDRBG2NonceLenText->setText( QString("%1").arg(strLen));
 }
 
 void CAVPDlg::DRBG2PersonalStringChanged( const QString& text )
 {
-    int nLen = text.length() / 2;
-    mDRBG2PersonalStringLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( DATA_HEX, text );
+    mDRBG2PersonalStringLenText->setText( QString("%1").arg(strLen));
 }
 
 void CAVPDlg::DRBG2EntropyInputReseedChanged( const QString& text )
 {
-    int nLen = text.length() / 2;
-    mDRBG2EntropyInputReseedLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( DATA_HEX, text );
+    mDRBG2EntropyInputReseedLenText->setText( QString("%1").arg(strLen));
 }
 
 void CAVPDlg::DRBG2AdditionalInputReseedChanged( const QString& text )
 {
-    int nLen = text.length() / 2;
-    mDRBG2AdditionalInputReseedLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( DATA_HEX, text );
+    mDRBG2AdditionalInputReseedLenText->setText( QString("%1").arg(strLen));
 }
 
 void CAVPDlg::DRBG2AdditionalInputChanged( const QString& text )
 {
-    int nLen = text.length() / 2;
-    mDRBG2AdditionalInputLenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( DATA_HEX, text );
+    mDRBG2AdditionalInputLenText->setText( QString("%1").arg(strLen));
 }
 
 void CAVPDlg::DRBG2AdditionalInput2Changed( const QString& text )
 {
-    int nLen = text.length() / 2;
-    mDRBG2AdditionalInput2LenText->setText( QString("%1").arg(nLen));
+    QString strLen = getDataLenString( DATA_HEX, text );
+    mDRBG2AdditionalInput2LenText->setText( QString("%1").arg(strLen));
 }
 
 void CAVPDlg::DRBG2ReturnedBitsChanged()
-{
-    int nLen = mDRBG2ReturnedBitsText->toPlainText().length() / 2;
-    mDRBG2ReturnedBitsLenText->setText( QString("%1").arg(nLen));
+{   
+    QString strLen = getDataLenString( DATA_HEX, mDRBG2ReturnedBitsText->toPlainText() );
+    mDRBG2ReturnedBitsLenText->setText( QString("%1").arg(strLen));
 }
 
 void CAVPDlg::clickSymMCTRun()
@@ -1958,6 +1958,16 @@ void CAVPDlg::clickSymMCTRun()
         berApplet->warningBox( tr("Please enter a key"), this );
         mSymMCTKeyText->setFocus();
         return;
+    }
+
+    if( mSymMCTModeCombo->currentText() != "ECB" )
+    {
+        if( strIV.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Please enter  a IV" ), this );
+            mSymMCTIVText->setFocus();
+            return;
+        }
     }
 
     if( strDirection == "Encrypt" )

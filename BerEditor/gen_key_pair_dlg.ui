@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>142</height>
+    <width>445</width>
+    <height>186</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -85,13 +85,13 @@
       <widget class="QLineEdit" name="mExponentText">
        <property name="minimumSize">
         <size>
-         <width>60</width>
+         <width>80</width>
          <height>0</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>60</width>
+         <width>80</width>
          <height>16777215</height>
         </size>
        </property>
@@ -111,7 +111,7 @@
       <widget class="QComboBox" name="mOptionCombo">
        <property name="minimumSize">
         <size>
-         <width>100</width>
+         <width>160</width>
          <height>0</height>
         </size>
        </property>

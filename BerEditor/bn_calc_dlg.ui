@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>604</width>
+    <width>702</width>
     <height>879</height>
    </rect>
   </property>
@@ -163,7 +163,7 @@
         <item row="0" column="8">
          <widget class="QPushButton" name="mAIsPrimeBtn">
           <property name="text">
-           <string>IsPrime</string>
+           <string>Is P</string>
           </property>
          </widget>
         </item>
@@ -215,7 +215,7 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>60</width>
+            <width>80</width>
             <height>16777215</height>
            </size>
           </property>
@@ -227,7 +227,7 @@
         <item row="0" column="6">
          <widget class="QPushButton" name="mAGenPrimeBtn">
           <property name="text">
-           <string>GenPrime</string>
+           <string>Gen P</string>
           </property>
          </widget>
         </item>
@@ -345,7 +345,7 @@
         <item row="0" column="6">
          <widget class="QPushButton" name="mBGenPrimeBtn">
           <property name="text">
-           <string>GenPrime</string>
+           <string>Gen P</string>
           </property>
          </widget>
         </item>
@@ -405,7 +405,7 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>60</width>
+            <width>80</width>
             <height>16777215</height>
            </size>
           </property>
@@ -436,7 +436,7 @@
         <item row="0" column="8">
          <widget class="QPushButton" name="mBIsPrimeBtn">
           <property name="text">
-           <string>IsPrime</string>
+           <string>Is P</string>
           </property>
          </widget>
         </item>
@@ -583,7 +583,7 @@
         <item row="0" column="6">
          <widget class="QPushButton" name="mModGenPrimeBtn">
           <property name="text">
-           <string>GenPrime</string>
+           <string>Gen P</string>
           </property>
          </widget>
         </item>
@@ -710,7 +710,7 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>60</width>
+            <width>80</width>
             <height>16777215</height>
            </size>
           </property>
@@ -722,7 +722,7 @@
         <item row="0" column="8">
          <widget class="QPushButton" name="mModChecPrimeBtn">
           <property name="text">
-           <string>IsPrime</string>
+           <string>Is P</string>
           </property>
          </widget>
         </item>

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>517</width>
-    <height>415</height>
+    <width>660</width>
+    <height>558</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -59,6 +59,12 @@
     <layout class="QGridLayout" name="gridLayout_7">
      <item row="0" column="1">
       <widget class="QLineEdit" name="mSavePathText">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="palette">
         <palette>
          <active>
@@ -676,6 +682,12 @@
      </item>
      <item row="0" column="4">
       <widget class="QLineEdit" name="mPasswdText">
+       <property name="minimumSize">
+        <size>
+         <width>300</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="echoMode">
         <enum>QLineEdit::Password</enum>
        </property>
