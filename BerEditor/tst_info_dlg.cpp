@@ -25,6 +25,7 @@ TSTInfoDlg::TSTInfoDlg(QWidget *parent) :
 #endif
 
     initUI();
+    resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 
 TSTInfoDlg::~TSTInfoDlg()

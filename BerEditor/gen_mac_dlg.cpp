@@ -83,7 +83,7 @@ GenMacDlg::GenMacDlg(QWidget *parent) :
     mFileTab->layout()->setSpacing(5);
     mFileTab->layout()->setMargin(5);
 #endif
-    resize(width(), minimumSizeHint().height());
+    resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 
 GenMacDlg::~GenMacDlg()

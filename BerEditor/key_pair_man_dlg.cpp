@@ -89,6 +89,7 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
 #endif
 
     initialize();
+    resize(minimumSizeHint().width(), minimumSizeHint().height());
     mGenKeyPairBtn->setDefault(true);
 }
 

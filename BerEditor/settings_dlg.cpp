@@ -36,7 +36,7 @@ SettingsDlg::SettingsDlg(QWidget *parent) :
     mBasicTab->layout()->setSpacing(5);
     mAdvancedTab->layout()->setSpacing(5);
 #endif
-    resize(width(), minimumSizeHint().height());
+    resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 
 SettingsDlg::~SettingsDlg()

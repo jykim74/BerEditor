@@ -75,7 +75,7 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
     mTargetInfoBtn->setFixedWidth(34);
     mTargetDecodeBtn->setFixedWidth(34);
 #endif
-
+    resize(minimumSizeHint().width(), minimumSizeHint().height());
     mPathValidationBtn->setFocus();
 }
 

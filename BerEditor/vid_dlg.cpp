@@ -45,7 +45,7 @@ VIDDlg::VIDDlg(QWidget *parent)
     initialize();
     mMakeVIDBtn->setDefault(true);
 
-    resize(width(), minimumSizeHint().height());
+    resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 
 VIDDlg::~VIDDlg()

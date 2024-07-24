@@ -47,10 +47,14 @@ SSSDlg::SSSDlg(QWidget *parent) :
     connect( mMakePrimeBtn, SIGNAL(clicked()), this, SLOT(clickMakePrime()));
     connect( mPrimeText, SIGNAL(textChanged(QString)), this, SLOT(changePrime(QString)));
 
-    resize(width(), minimumSizeHint().height());
-
     initialize();
     mSplitBtn->setDefault(true);
+
+#if defined(Q_OS_MAC)
+    layout()->setSpacing(5);
+#endif
+
+    resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 
 SSSDlg::~SSSDlg()

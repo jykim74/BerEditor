@@ -65,7 +65,7 @@ PriKeyInfoDlg::PriKeyInfoDlg(QWidget *parent) :
     tabEdDSA->layout()->setSpacing(5);
     tabEdDSA->layout()->setMargin(5);
 #endif
-    resize(width(), minimumSizeHint().height());
+    resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 
 PriKeyInfoDlg::~PriKeyInfoDlg()
