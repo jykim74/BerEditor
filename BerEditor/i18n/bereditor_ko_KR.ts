@@ -1095,130 +1095,130 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">PBKDF 실행 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="330"/>
-        <location filename="../cavp_dlg.cpp" line="451"/>
-        <location filename="../cavp_dlg.cpp" line="605"/>
-        <location filename="../cavp_dlg.cpp" line="715"/>
-        <location filename="../cavp_dlg.cpp" line="823"/>
-        <location filename="../cavp_dlg.cpp" line="1075"/>
-        <location filename="../cavp_dlg.cpp" line="1341"/>
-        <location filename="../cavp_dlg.cpp" line="1537"/>
+        <location filename="../cavp_dlg.cpp" line="331"/>
+        <location filename="../cavp_dlg.cpp" line="452"/>
+        <location filename="../cavp_dlg.cpp" line="606"/>
+        <location filename="../cavp_dlg.cpp" line="716"/>
+        <location filename="../cavp_dlg.cpp" line="824"/>
+        <location filename="../cavp_dlg.cpp" line="1076"/>
+        <location filename="../cavp_dlg.cpp" line="1342"/>
+        <location filename="../cavp_dlg.cpp" line="1538"/>
         <source>Select requested file</source>
         <translation>요청 파일을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="342"/>
+        <location filename="../cavp_dlg.cpp" line="343"/>
         <source>Is %1 the test file?</source>
         <translation>%1 이 테스트 파일입니까?</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="427"/>
+        <location filename="../cavp_dlg.cpp" line="428"/>
         <source>SYM execution failed [%1]</source>
         <translation>SYM MCT 실행 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="441"/>
-        <location filename="../cavp_dlg.cpp" line="595"/>
-        <location filename="../cavp_dlg.cpp" line="705"/>
-        <location filename="../cavp_dlg.cpp" line="812"/>
-        <location filename="../cavp_dlg.cpp" line="1064"/>
-        <location filename="../cavp_dlg.cpp" line="1317"/>
-        <location filename="../cavp_dlg.cpp" line="1527"/>
-        <location filename="../cavp_dlg.cpp" line="1641"/>
+        <location filename="../cavp_dlg.cpp" line="442"/>
+        <location filename="../cavp_dlg.cpp" line="596"/>
+        <location filename="../cavp_dlg.cpp" line="706"/>
+        <location filename="../cavp_dlg.cpp" line="813"/>
+        <location filename="../cavp_dlg.cpp" line="1065"/>
+        <location filename="../cavp_dlg.cpp" line="1318"/>
+        <location filename="../cavp_dlg.cpp" line="1528"/>
+        <location filename="../cavp_dlg.cpp" line="1642"/>
         <source>CAVP completed[Rsp: %1]</source>
         <translation>CAVP 실행 완료[응답: %1]</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="689"/>
+        <location filename="../cavp_dlg.cpp" line="690"/>
         <source>HMAC execution failed [%1]</source>
         <translation>HMAC 실행 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="803"/>
+        <location filename="../cavp_dlg.cpp" line="804"/>
         <source>Hash execution failed [%1]</source>
         <translation>Hash 실행 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="928"/>
-        <location filename="../cavp_dlg.cpp" line="946"/>
-        <location filename="../cavp_dlg.cpp" line="965"/>
-        <location filename="../cavp_dlg.cpp" line="984"/>
-        <location filename="../cavp_dlg.cpp" line="1001"/>
-        <location filename="../cavp_dlg.cpp" line="1020"/>
-        <location filename="../cavp_dlg.cpp" line="1040"/>
+        <location filename="../cavp_dlg.cpp" line="929"/>
+        <location filename="../cavp_dlg.cpp" line="947"/>
+        <location filename="../cavp_dlg.cpp" line="966"/>
+        <location filename="../cavp_dlg.cpp" line="985"/>
+        <location filename="../cavp_dlg.cpp" line="1002"/>
+        <location filename="../cavp_dlg.cpp" line="1021"/>
+        <location filename="../cavp_dlg.cpp" line="1041"/>
         <source>ECC execution fail [%1]</source>
         <translation>ECC 실행 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="1163"/>
-        <location filename="../cavp_dlg.cpp" line="1200"/>
-        <location filename="../cavp_dlg.cpp" line="1226"/>
+        <location filename="../cavp_dlg.cpp" line="1164"/>
+        <location filename="../cavp_dlg.cpp" line="1201"/>
+        <location filename="../cavp_dlg.cpp" line="1227"/>
         <source>RSA execution failed [%1]</source>
         <translation>RSA 실행 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="1238"/>
+        <location filename="../cavp_dlg.cpp" line="1239"/>
         <source>Select RSA private key for DET</source>
         <translation>DET용 RSA 개인키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="1628"/>
+        <location filename="../cavp_dlg.cpp" line="1629"/>
         <source>PBKDF execution failed [%1]</source>
         <translation>PBKDF 실행 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="1957"/>
+        <location filename="../cavp_dlg.cpp" line="1958"/>
         <source>Please enter a key</source>
         <translation>키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="1966"/>
+        <location filename="../cavp_dlg.cpp" line="1967"/>
         <source>Please enter a PT</source>
         <translation>PT를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="1975"/>
+        <location filename="../cavp_dlg.cpp" line="1976"/>
         <source>Please enter a CT</source>
         <translation>CT를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="2029"/>
-        <location filename="../cavp_dlg.cpp" line="2068"/>
+        <location filename="../cavp_dlg.cpp" line="2030"/>
+        <location filename="../cavp_dlg.cpp" line="2069"/>
         <source>Monte Carlo Test Done[Rsp: %1]</source>
         <translation>몬테카를로 테스트 완료 [응답: %1]</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="2031"/>
+        <location filename="../cavp_dlg.cpp" line="2032"/>
         <source>Sym MCT execution failed [%1]</source>
         <translation>SYM용 MCT 실행 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="2055"/>
+        <location filename="../cavp_dlg.cpp" line="2056"/>
         <source>Please enter a Seed value</source>
         <translation>씨드를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="2070"/>
+        <location filename="../cavp_dlg.cpp" line="2071"/>
         <source>Hash MCT execution failed [%1]</source>
         <translation>Hash용 MCT 실행 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="2109"/>
+        <location filename="../cavp_dlg.cpp" line="2110"/>
         <source>Enter a entropy input</source>
         <translation>엔트로피를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="2129"/>
+        <location filename="../cavp_dlg.cpp" line="2130"/>
         <source>DRBG2 execution success</source>
         <translation>DRBG2 실행 성공</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="2131"/>
+        <location filename="../cavp_dlg.cpp" line="2132"/>
         <source>DRBG2 execution failed [%1]</source>
         <translation>DRBG2 실행 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg.cpp" line="4039"/>
+        <location filename="../cavp_dlg.cpp" line="4040"/>
         <source>Invalid DRBG method [%1]</source>
         <translation>유효하지 않은 DRBG 방식 [%1]</translation>
     </message>
@@ -3963,9 +3963,8 @@ mailto : jykim74@gmail.com</translation>
         <translation>X509Strict</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="547"/>
         <source>SuiteB128Los</source>
-        <translation>SuiteB128Los</translation>
+        <translation type="vanished">SuiteB128Los</translation>
     </message>
     <message>
         <source>Path Validation Target Certificate</source>
@@ -3987,9 +3986,8 @@ mailto : jykim74@gmail.com</translation>
         <translation>PolicyCheck</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="533"/>
         <source>SuiteB128LosOnly</source>
-        <translation>SuiteB128LosOnly</translation>
+        <translation type="vanished">SuiteB128LosOnly</translation>
     </message>
     <message>
         <location filename="../cert_pvd_dlg.ui" line="477"/>
@@ -4032,6 +4030,21 @@ mailto : jykim74@gmail.com</translation>
         <translation>CRLCheckAll</translation>
     </message>
     <message>
+        <location filename="../cert_pvd_dlg.ui" line="533"/>
+        <source>SuiteB128LOSOnly</source>
+        <translation>SuiteB128LOSOnly</translation>
+    </message>
+    <message>
+        <location filename="../cert_pvd_dlg.ui" line="540"/>
+        <source>SuiteB192LOS</source>
+        <translation>SuiteB192LOS</translation>
+    </message>
+    <message>
+        <location filename="../cert_pvd_dlg.ui" line="547"/>
+        <source>SuiteB128LOS</source>
+        <translation>SuiteB128LOS</translation>
+    </message>
+    <message>
         <location filename="../cert_pvd_dlg.ui" line="561"/>
         <source>NoALTChains</source>
         <translation>NoALTChains</translation>
@@ -4067,9 +4080,8 @@ mailto : jykim74@gmail.com</translation>
         <translation>UseDeltas</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="540"/>
         <source>SuiteB192Los</source>
-        <translation>SuiteB192Los</translation>
+        <translation type="vanished">SuiteB192Los</translation>
     </message>
     <message>
         <location filename="../cert_pvd_dlg.ui" line="435"/>
@@ -5074,7 +5086,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">로그 기록</translation>
     </message>
     <message>
-        <location filename="../gen_hash_dlg.ui" line="717"/>
+        <location filename="../gen_hash_dlg.ui" line="723"/>
         <source>Digest</source>
         <translation>해쉬</translation>
     </message>
@@ -5083,7 +5095,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">입력 속성</translation>
     </message>
     <message>
-        <location filename="../gen_hash_dlg.ui" line="781"/>
+        <location filename="../gen_hash_dlg.ui" line="787"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -5097,7 +5109,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">쓰레드 실행</translation>
     </message>
     <message>
-        <location filename="../gen_hash_dlg.ui" line="683"/>
+        <location filename="../gen_hash_dlg.ui" line="689"/>
         <source>OutputClear</source>
         <translation>출력 지움</translation>
     </message>
@@ -5179,7 +5191,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">블록 데이타 로그 기록</translation>
     </message>
     <message>
-        <location filename="../gen_hash_dlg.ui" line="676"/>
+        <location filename="../gen_hash_dlg.ui" line="682"/>
         <source>Status</source>
         <translation>상태</translation>
     </message>
@@ -5204,7 +5216,7 @@ Do you want to delete the file and continue?</source>
         <translation>쓰레드 실행</translation>
     </message>
     <message>
-        <location filename="../gen_hash_dlg.ui" line="774"/>
+        <location filename="../gen_hash_dlg.ui" line="780"/>
         <source>Clear Data All</source>
         <translation>전체 데이타 지우기</translation>
     </message>
@@ -5228,7 +5240,7 @@ Do you want to delete the file and continue?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../gen_hash_dlg.ui" line="737"/>
+        <location filename="../gen_hash_dlg.ui" line="743"/>
         <source>hash algorithm</source>
         <translation>해쉬 알고리즘</translation>
     </message>
@@ -5366,7 +5378,7 @@ Do you want to delete the file and continue?</source>
         <translation>쓰레드 실행</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.ui" line="846"/>
+        <location filename="../gen_mac_dlg.ui" line="852"/>
         <source>GMAC</source>
         <translation>GMAC</translation>
     </message>
@@ -5390,12 +5402,12 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">로그 기록</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.ui" line="867"/>
+        <location filename="../gen_mac_dlg.ui" line="873"/>
         <source>HMAC</source>
         <translation>HMAC</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.ui" line="924"/>
+        <location filename="../gen_mac_dlg.ui" line="930"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -5405,7 +5417,7 @@ Do you want to delete the file and continue?</source>
         <translation>MAC 값 생성</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.ui" line="860"/>
+        <location filename="../gen_mac_dlg.ui" line="866"/>
         <source>MAC</source>
         <translation>MAC</translation>
     </message>
@@ -5483,12 +5495,12 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">블록 데이타 로그 기록</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.ui" line="904"/>
+        <location filename="../gen_mac_dlg.ui" line="910"/>
         <source>Clear Data All</source>
         <translation>전체 데이타 지우기</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.ui" line="853"/>
+        <location filename="../gen_mac_dlg.ui" line="859"/>
         <source>CMAC</source>
         <translation>CMAC</translation>
     </message>
@@ -5502,7 +5514,7 @@ Do you want to delete the file and continue?</source>
         <translation>결과 데이타</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.ui" line="812"/>
+        <location filename="../gen_mac_dlg.ui" line="818"/>
         <source>OutputClear</source>
         <translation>출력 지움</translation>
     </message>
@@ -5512,7 +5524,7 @@ Do you want to delete the file and continue?</source>
         <translation>키 값</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.ui" line="805"/>
+        <location filename="../gen_mac_dlg.ui" line="811"/>
         <source>Status</source>
         <translation>상태</translation>
     </message>

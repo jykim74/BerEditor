@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>578</width>
-    <height>696</height>
+    <width>499</width>
+    <height>660</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -528,23 +528,23 @@
        </widget>
       </item>
       <item row="3" column="3">
-       <widget class="QCheckBox" name="mSuiteB128LosOnlyCheck">
+       <widget class="QCheckBox" name="mSuiteB128LOSOnlyCheck">
         <property name="text">
-         <string>SuiteB128LosOnly</string>
+         <string>SuiteB128LOSOnly</string>
         </property>
        </widget>
       </item>
       <item row="4" column="0">
-       <widget class="QCheckBox" name="mSuiteB192LosCheck">
+       <widget class="QCheckBox" name="mSuiteB192LOSCheck">
         <property name="text">
-         <string>SuiteB192Los</string>
+         <string>SuiteB192LOS</string>
         </property>
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="QCheckBox" name="mSuiteB128LogCheck">
+       <widget class="QCheckBox" name="mSuiteB128LOSCheck">
         <property name="text">
-         <string>SuiteB128Los</string>
+         <string>SuiteB128LOS</string>
         </property>
        </widget>
       </item>
@@ -785,9 +785,9 @@
   <tabstop>mUseDeltasCheck</tabstop>
   <tabstop>mCheckSSSignatureCheck</tabstop>
   <tabstop>mTrustedFirstCheck</tabstop>
-  <tabstop>mSuiteB128LosOnlyCheck</tabstop>
-  <tabstop>mSuiteB192LosCheck</tabstop>
-  <tabstop>mSuiteB128LogCheck</tabstop>
+  <tabstop>mSuiteB128LOSOnlyCheck</tabstop>
+  <tabstop>mSuiteB192LOSCheck</tabstop>
+  <tabstop>mSuiteB128LOSCheck</tabstop>
   <tabstop>mPartialChainCheck</tabstop>
   <tabstop>mNoALTChainsCheck</tabstop>
   <tabstop>mNoCheckTimeCheck</tabstop>

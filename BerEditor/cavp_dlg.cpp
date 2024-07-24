@@ -163,6 +163,7 @@ void CAVPDlg::initialize()
     mSymMCTModeCombo->addItems( kSymModeList );
     mSymMCTDirectionCombo->addItems( kDirectionType );
     mHashMCTAlgCombo->addItems( kHashAlgList );
+    mHashMCTAlgCombo->setCurrentText( setMgr->defaultHash() );
 
     mPBKDFAlgCombo->addItems( kHashAlgList );
     mPBKDFAlgCombo->setCurrentText( setMgr->defaultHash() );
@@ -2406,7 +2407,7 @@ int CAVPDlg::makeSymDecCBC_MCT( const QString strKey, const QString strIV, const
                 }
                 else
                 {
-                    ret = JS_PKI_decryptSEED( strMode.toStdString().c_str(), 0, &binCT[j], &binCT[j-1], &binKey[i], &binPT[j] );
+                    ret = JS_PKI_decryptSEED( strMode.toStdString().c_str(), 0, &binCT[j], &binPT[j-1], &binKey[i], &binPT[j] );
                 }
             }
             else
@@ -2414,7 +2415,7 @@ int CAVPDlg::makeSymDecCBC_MCT( const QString strKey, const QString strIV, const
                 if( j == 0 )
                     ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), 0, &binCT[j], &binIV[i], &binKey[i], &binPT[j] );
                 else
-                    ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), 0, &binCT[j], &binCT[j-1], &binKey[i], &binPT[j]);
+                    ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), 0, &binCT[j], &binPT[j-1], &binKey[i], &binPT[j]);
             }
 
             if( ret != 0 ) goto end;
@@ -3252,21 +3253,21 @@ int CAVPDlg::makeSymDecCFB_MCT( const QString strKey, const QString strIV, const
 
         for( j = 0; j < 1000; j++ )
         {
-            JS_BIN_reset( &binCT[j] );
+            JS_BIN_reset( &binPT[j] );
 
             if( strAlg == "SEED" )
             {
                 if( j == 0 )
                     ret = JS_PKI_decryptSEED( strMode.toStdString().c_str(), 0, &binCT[j], &binIV[i], &binKey[i], &binPT[j] );
                 else
-                    ret = JS_PKI_decryptSEED( strMode.toStdString().c_str(), 0, &binCT[j], &binCT[j-1], &binKey[i], &binPT[j] );
+                    ret = JS_PKI_decryptSEED( strMode.toStdString().c_str(), 0, &binCT[j], &binPT[j-1], &binKey[i], &binPT[j] );
             }
             else
             {
                 if( j == 0 )
                     ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), 0, &binCT[j], &binIV[i], &binKey[i], &binPT[j] );
                 else
-                    ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), 0, &binCT[j], &binCT[j-1], &binKey[i], &binPT[j]);
+                    ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), 0, &binCT[j], &binPT[j-1], &binKey[i], &binPT[j]);
             }
 
             if( ret != 0 ) goto end;
@@ -3417,25 +3418,25 @@ int CAVPDlg::makeSymOFB_MCT( const QString strKey, const QString strIV, const QS
         for( j = 0; j < 1000; j++ )
         {
             JS_BIN_reset( &binOT[j] );
-            JS_BIN_reset( &binCT[j] );
 
             if( strAlg == "SEED" )
             {
                 if( j == 0 )
-                    ret = JS_PKI_encryptSEED( "ECB", 0, &binIV[i], NULL, &binKey[i], &binOT[j] );
+                    ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binOT[j] );
                 else
-                    ret = JS_PKI_encryptSEED( "ECB", 0, &binOT[j-1], NULL, &binKey[i], &binOT[j] );
+                    ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binPT[j], &binOT[j-1], &binKey[i], &binOT[j] );
             }
             else
             {
                 if( j == 0 )
-                    ret = JS_PKI_encryptData( "ECB", 0, &binIV[i], NULL, &binKey[i], &binOT[j] );
+                    ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binOT[j] );
                 else
-                    ret = JS_PKI_encryptData( "ECB", 0, &binOT[j-1], NULL, &binKey[i], &binOT[j]);
+                    ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], &binOT[j-1], &binKey[i], &binOT[j]);
             }
 
             if( ret != 0 ) goto end;
 
+            JS_BIN_reset( &binCT[j] );
             JS_BIN_XOR( &binCT[j], &binPT[j], &binOT[j] );
 
             if( j == 0 )
@@ -3584,25 +3585,25 @@ int CAVPDlg::makeSymDecOFB_MCT( const QString strKey, const QString strIV, const
         for( j = 0; j < 1000; j++ )
         {
             JS_BIN_reset( &binOT[j] );
-            JS_BIN_reset( &binPT[j] );
 
             if( strAlg == "SEED" )
             {
                 if( j == 0 )
-                    ret = JS_PKI_decryptSEED( "ECB", 0, &binIV[i], NULL, &binKey[i], &binOT[j] );
+                    ret = JS_PKI_decryptSEED( strMode.toStdString().c_str(), 0, &binIV[i], NULL, &binKey[i], &binOT[j] );
                 else
-                    ret = JS_PKI_decryptSEED( "ECB", 0, &binOT[j-1], NULL, &binKey[i], &binOT[j] );
+                    ret = JS_PKI_decryptSEED( strMode.toStdString().c_str(), 0, &binOT[j-1], NULL, &binKey[i], &binOT[j] );
             }
             else
             {
                 if( j == 0 )
-                    ret = JS_PKI_decryptData( "ECB", 0, &binIV[i], NULL, &binKey[i], &binOT[j] );
+                    ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), 0, &binCT[j], &binIV[i], &binKey[i], &binOT[j] );
                 else
-                    ret = JS_PKI_decryptData( "ECB", 0, &binOT[j-1], NULL, &binKey[i], &binOT[j]);
+                    ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), 0, &binCT[j], &binOT[j-1], &binKey[i], &binOT[j]);
             }
 
             if( ret != 0 ) goto end;
 
+            JS_BIN_reset( &binPT[j] );
             JS_BIN_XOR( &binPT[j], &binCT[j], &binOT[j] );
 
             if( j == 0 )
