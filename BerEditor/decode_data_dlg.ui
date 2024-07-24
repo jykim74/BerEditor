@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>418</width>
-    <height>422</height>
+    <width>518</width>
+    <height>322</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,8 +25,8 @@
     <widget class="QPlainTextEdit" name="mDataText">
      <property name="minimumSize">
       <size>
-       <width>400</width>
-       <height>300</height>
+       <width>500</width>
+       <height>200</height>
       </size>
      </property>
     </widget>
