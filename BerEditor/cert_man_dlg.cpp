@@ -209,7 +209,11 @@ void CertManDlg::initUI()
 {
     mTLVersionCombo->addItems( kVersionList );
 
+#if defined(Q_OS_MAC)
     int nWidth = width() * 9/10;
+#else
+    int nWidth = width() * 8/10;
+#endif
 
     QStringList sTableLabels = { tr( "Subject DN" ), tr( "Expire" ), tr( "Issuer DN" ) };
 
@@ -221,9 +225,9 @@ void CertManDlg::initUI()
     mEE_CertTable->horizontalHeader()->setStyleSheet( kTableStyle );
     mEE_CertTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mEE_CertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    mEE_CertTable->setColumnWidth( 0, nWidth * 4/10 );
+    mEE_CertTable->setColumnWidth( 0, nWidth * 5/10 );
     mEE_CertTable->setColumnWidth( 1, nWidth * 2/10 );
-    mEE_CertTable->setColumnWidth( 2, nWidth * 4/10 );
+    mEE_CertTable->setColumnWidth( 2, nWidth * 3/10 );
 
 
     QStringList sOtherTableLabels = { tr( "Subject DN" ), tr( "Expire" ), tr( "Issuer DN" ) };
@@ -238,9 +242,9 @@ void CertManDlg::initUI()
     mOther_CertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
 
-    mOther_CertTable->setColumnWidth( 0, nWidth * 4/10 );
+    mOther_CertTable->setColumnWidth( 0, nWidth * 5/10 );
     mOther_CertTable->setColumnWidth( 1, nWidth * 2/10 );
-    mOther_CertTable->setColumnWidth( 2, nWidth * 4/10 );
+    mOther_CertTable->setColumnWidth( 2, nWidth * 3/10 );
 
     QStringList sCATableLabels = { tr( "Subject DN" ), tr( "Expire" ), tr( "Issuer DN" ) };
 
@@ -253,9 +257,9 @@ void CertManDlg::initUI()
     mCA_CertTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mCA_CertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    mCA_CertTable->setColumnWidth( 0, nWidth * 4/10 );
+    mCA_CertTable->setColumnWidth( 0, nWidth * 5/10 );
     mCA_CertTable->setColumnWidth( 1, nWidth * 2/10 );
-    mCA_CertTable->setColumnWidth( 2, nWidth * 4/10 );
+    mCA_CertTable->setColumnWidth( 2, nWidth * 3/10 );
 
     QStringList sCRLTableLabels = { tr( "Issuer DN" ), tr( "This Update"), tr( "Next Update" ) };
 

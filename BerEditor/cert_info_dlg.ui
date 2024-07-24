@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>592</width>
-    <height>462</height>
+    <width>489</width>
+    <height>387</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,9 +17,9 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
-     <widget class="QWidget" name="InfoTab">
+     <widget class="QWidget" name="mInfoTab">
       <attribute name="title">
        <string>Information</string>
       </attribute>
@@ -82,7 +82,14 @@
         </widget>
        </item>
        <item row="2" column="0">
-        <widget class="QTableWidget" name="mFieldTable"/>
+        <widget class="QTableWidget" name="mFieldTable">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>160</height>
+          </size>
+         </property>
+        </widget>
        </item>
        <item row="0" column="0">
         <layout class="QGridLayout" name="gridLayout_3">
@@ -116,7 +123,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="PathTab">
+     <widget class="QWidget" name="mPathTab">
       <attribute name="title">
        <string>Path Validataion</string>
       </attribute>

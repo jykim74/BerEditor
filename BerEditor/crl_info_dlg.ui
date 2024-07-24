@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>466</width>
-    <height>396</height>
+    <height>335</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,15 +17,22 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="mCRLTab">
       <attribute name="title">
        <string>CRL</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QTableWidget" name="mCRLListTable"/>
+        <widget class="QTableWidget" name="mCRLListTable">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>160</height>
+          </size>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QPlainTextEdit" name="mCRLDetailText">
@@ -79,7 +86,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_2">
+     <widget class="QWidget" name="mRevokeTab">
       <attribute name="title">
        <string>Revoke</string>
       </attribute>

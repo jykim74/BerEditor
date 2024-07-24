@@ -108,8 +108,15 @@ CertInfoDlg::CertInfoDlg(QWidget *parent) :
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+
+    mInfoTab->layout()->setSpacing(5);
+    mInfoTab->layout()->setMargin(5);
+    mPathTab->layout()->setSpacing(5);
+    mPathTab->layout()->setMargin(5);
 #endif
-    resize(width(), minimumSizeHint().height());
+
+
+    resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 
 CertInfoDlg::~CertInfoDlg()

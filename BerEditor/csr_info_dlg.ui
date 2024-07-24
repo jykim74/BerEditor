@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>471</width>
-    <height>382</height>
+    <height>352</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,7 +22,14 @@
     </widget>
    </item>
    <item>
-    <widget class="QTableWidget" name="mFieldTable"/>
+    <widget class="QTableWidget" name="mFieldTable">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>120</height>
+      </size>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QLabel" name="label_2">
