@@ -96,7 +96,7 @@ EncDecDlg::EncDecDlg(QWidget *parent) :
     mFileTab->layout()->setSpacing(5);
     mFileTab->layout()->setMargin(5);
 #endif
-    resize(width(), minimumSizeHint().height());
+    resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 
 EncDecDlg::~EncDecDlg()
@@ -164,11 +164,33 @@ void EncDecDlg::dataRun()
     int nDataType = DATA_STRING;
 
     QString strInput = mInputText->toPlainText();
+    QString strKey = mKeyText->text();
+    QString strIV = mIVText->text();
+    QString strAlg = mAlgCombo->currentText();
+    QString strMode = mModeCombo->currentText();
+
     mOutputText->clear();
 
     if( strInput.isEmpty() )
     {
 
+    }
+
+    if( strKey.isEmpty() )
+    {
+        berApplet->warningBox( tr( "Please enter key value" ), this );
+        mKeyText->setFocus();
+        return;
+    }
+
+    if( strMode != "ECB" )
+    {
+        if( strIV.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Please enter a IV" ), this );
+            mIVText->setFocus();
+            return;
+        }
     }
 
     if( mInputStringRadio->isChecked() )
@@ -183,17 +205,6 @@ void EncDecDlg::dataRun()
     }
 
     getBINFromString( &binSrc, nDataType, strInput );
-
-    QString strKey = mKeyText->text();
-
-    if( strKey.isEmpty() )
-    {
-        berApplet->warningBox( tr( "Please enter key value" ), this );
-        mKeyText->setFocus();
-        JS_BIN_reset(&binSrc);
-        return;
-    }
-
     getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
 
     if( binKey.nLen < 16 )
@@ -205,7 +216,7 @@ void EncDecDlg::dataRun()
         return;
     }
 
-    QString strIV = mIVText->text();
+
     QString strMethod;
 
     getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
@@ -213,8 +224,7 @@ void EncDecDlg::dataRun()
     bool bPad = mPadCheck->isChecked();
 
     char *pOut = NULL;
-    QString strAlg = mAlgCombo->currentText();
-    QString strMode = mModeCombo->currentText();
+
     QString strSymAlg = getSymAlg( strAlg, strMode, binKey.nLen );
 
     if( strSymAlg.isEmpty() || strSymAlg.isNull() )
@@ -582,12 +592,31 @@ int EncDecDlg::encDecInit()
     update_cnt_ = 0;
 
     QString strKey = mKeyText->text();
+    QString strAlg = mAlgCombo->currentText();
+    QString strMode = mModeCombo->currentText();
+
+    QString strReqTagLen = mReqTagLenText->text();
+    QString strTag = mTagText->text();
+    QString strIV = mIVText->text();
+
 
     if( strKey.isEmpty() )
     {
         berApplet->warningBox( tr( "Please enter a key value" ), this );
+        mKeyText->setFocus();
         return -1;
     }
+
+    if( strMode != "ECB" )
+    {
+        if( strIV.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Please enter a IV" ), this );
+            mIVText->setFocus();
+            return -1;
+        }
+    }
+
 
     mOutputText->clear();
 
@@ -606,24 +635,15 @@ int EncDecDlg::encDecInit()
 
     getBINFromString( &binSrc, nDataType, strInput );
     getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
-
-    QString strIV = mIVText->text();
-
     getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
 
     bool bPad = mPadCheck->isChecked();
-
-    QString strAlg = mAlgCombo->currentText();
-    QString strMode = mModeCombo->currentText();
     QString strSymAlg = getSymAlg( strAlg, strMode, binKey.nLen );
-    QString strReqTagLen = mReqTagLenText->text();
-    QString strTag = mTagText->text();
-
-
 
     if( binKey.nLen < 16 )
     {
         berApplet->warningBox( tr( "Key length(%1) is incorrect" ).arg( binKey.nLen), this );
+        mKeyText->setFocus();
         ret = -1;
         goto end;
     }

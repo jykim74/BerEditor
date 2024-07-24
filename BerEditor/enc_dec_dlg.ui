@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>570</width>
-    <height>848</height>
+    <height>661</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -757,8 +757,11 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
+    <layout class="QGridLayout" name="gridLayout_2">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="1" column="0">
       <widget class="QLabel" name="label">
        <property name="minimumSize">
         <size>
@@ -771,13 +774,10 @@
        </property>
       </widget>
      </item>
-     <item>
+     <item row="1" column="1">
       <widget class="QComboBox" name="mIVTypeCombo"/>
      </item>
-     <item>
-      <widget class="QLineEdit" name="mIVText"/>
-     </item>
-     <item>
+     <item row="1" column="3">
       <widget class="QLineEdit" name="mIVLenText">
        <property name="minimumSize">
         <size>
@@ -833,11 +833,10 @@
        </property>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_4">
-     <item>
+     <item row="1" column="2">
+      <widget class="QLineEdit" name="mIVText"/>
+     </item>
+     <item row="0" column="0">
       <widget class="QLabel" name="label_2">
        <property name="minimumSize">
         <size>
@@ -850,13 +849,13 @@
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="1">
       <widget class="QComboBox" name="mKeyTypeCombo"/>
      </item>
-     <item>
+     <item row="0" column="2">
       <widget class="QLineEdit" name="mKeyText"/>
      </item>
-     <item>
+     <item row="0" column="3">
       <widget class="QLineEdit" name="mKeyLenText">
        <property name="minimumSize">
         <size>
@@ -1343,6 +1342,12 @@
      </item>
      <item row="0" column="4">
       <widget class="QPushButton" name="mChangeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>34</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="text">
         <string>⬆</string>
        </property>
@@ -1469,12 +1474,12 @@
   <tabstop>mFindDstFileBtn</tabstop>
   <tabstop>mDstFileInfoText</tabstop>
   <tabstop>mDstFileSizeText</tabstop>
-  <tabstop>mIVTypeCombo</tabstop>
-  <tabstop>mIVText</tabstop>
-  <tabstop>mIVLenText</tabstop>
   <tabstop>mKeyTypeCombo</tabstop>
   <tabstop>mKeyText</tabstop>
   <tabstop>mKeyLenText</tabstop>
+  <tabstop>mIVTypeCombo</tabstop>
+  <tabstop>mIVText</tabstop>
+  <tabstop>mIVLenText</tabstop>
   <tabstop>mAEADGroup</tabstop>
   <tabstop>mCCMDataLength</tabstop>
   <tabstop>mReqTagLenText</tabstop>

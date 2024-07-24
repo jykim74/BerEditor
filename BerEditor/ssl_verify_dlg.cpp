@@ -256,6 +256,7 @@ SSLVerifyDlg::SSLVerifyDlg(QWidget *parent) :
 
     mClearSaveURLBtn->setFixedWidth(34);
 #endif
+    resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 
 SSLVerifyDlg::~SSLVerifyDlg()
@@ -289,7 +290,7 @@ void SSLVerifyDlg::initialize()
     mModeCombo->addItems( kModeLists );
     mVerifyDepthText->setText( QString("%1").arg( 4 ));
 
-    QStringList sURLLabels = { tr( "URL" ), tr( "Port" ), tr( "DN" ), tr( "To" ), tr( "Left") };
+    QStringList sURLLabels = { tr( "URL" ), tr( "Port" ), tr( "DN" ), tr( "To" ) };
 
     mURLTable->clear();
     mURLTable->horizontalHeader()->setStretchLastSection(true);
@@ -636,7 +637,6 @@ int SSLVerifyDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
     mURLTable->setItem( row, 2, new QTableWidgetItem( sCertInfo.pSubjectName ));
 //      mURLTable->setItem( row, 3, new QTableWidgetItem( sNotBefore ));
     mURLTable->setItem( row, 3, new QTableWidgetItem( sNotAfter ));
-    mURLTable->setItem( row, 4, new QTableWidgetItem( strLeft ));
 
     createTree( strHost, nPort, pCertList, bGood );
 

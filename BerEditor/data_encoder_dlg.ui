@@ -41,6 +41,12 @@
      </item>
      <item>
       <widget class="QPushButton" name="mChangeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>34</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="text">
         <string>⬆</string>
        </property>

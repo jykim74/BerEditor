@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>608</width>
-    <height>725</height>
+    <width>518</width>
+    <height>672</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -71,10 +71,10 @@
       </size>
      </property>
      <property name="tabPosition">
-      <enum>QTabWidget::East</enum>
+      <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="mServerTab">
       <attribute name="title">
@@ -655,6 +655,12 @@
    </item>
    <item>
     <widget class="QTableWidget" name="mURLTable">
+     <property name="minimumSize">
+      <size>
+       <width>500</width>
+       <height>120</height>
+      </size>
+     </property>
      <property name="contextMenuPolicy">
       <enum>Qt::CustomContextMenu</enum>
      </property>
@@ -670,10 +676,10 @@
    <item>
     <widget class="QTabWidget" name="mURLTab">
      <property name="tabPosition">
-      <enum>QTabWidget::East</enum>
+      <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -685,6 +691,12 @@
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="QTreeWidget" name="mURLTree">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>100</height>
+          </size>
+         </property>
          <property name="contextMenuPolicy">
           <enum>Qt::CustomContextMenu</enum>
          </property>
