@@ -99,7 +99,7 @@
    <item row="0" column="0" colspan="2">
     <widget class="QTabWidget" name="mTabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="mDHTab">
       <attribute name="title">
@@ -1167,7 +1167,7 @@
      <item row="0" column="0">
       <widget class="QPushButton" name="mSecretClearBtn">
        <property name="text">
-        <string>Secret Clear</string>
+        <string>Clear</string>
        </property>
       </widget>
      </item>

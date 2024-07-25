@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>465</width>
+    <width>518</width>
     <height>475</height>
    </rect>
   </property>
@@ -342,7 +342,14 @@
     </layout>
    </item>
    <item>
-    <widget class="QPlainTextEdit" name="mValueText"/>
+    <widget class="QPlainTextEdit" name="mValueText">
+     <property name="minimumSize">
+      <size>
+       <width>500</width>
+       <height>0</height>
+      </size>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="Line" name="line_6">

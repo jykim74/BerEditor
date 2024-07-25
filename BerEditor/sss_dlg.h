@@ -24,18 +24,22 @@ public:
 private slots:
     void srcChanged();
     void joinedChanged();
-    void clickClearResult();
     void clickAdd();
     void clickSplit();
     void clickJoin();
     void clickMakePrime();
 
     void changePrime( const QString& text );
+    void changeShare( const QString& text );
 
     void slotShareList(QPoint pos);
     void delShare();
 
+    void clearShareTable();
     void clickClearDataAll();
+    void clearSrc();
+    void clearPrime();
+    void clearJoined();
 
 private:
     void initialize();

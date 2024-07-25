@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>286</height>
+    <width>418</width>
+    <height>230</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -117,6 +117,12 @@
    </item>
    <item>
     <widget class="QPlainTextEdit" name="mHexText">
+     <property name="minimumSize">
+      <size>
+       <width>400</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="palette">
       <palette>
        <active>

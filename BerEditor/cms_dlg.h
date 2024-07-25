@@ -57,6 +57,9 @@ private slots:
     void srcChanged();
     void outputChanged();
 
+    void clearSrc();
+    void clearOutput();
+
     void clickClearDataAll();
     void clickReadFile();
 

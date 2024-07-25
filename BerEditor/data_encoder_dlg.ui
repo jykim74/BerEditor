@@ -22,7 +22,7 @@
      <item>
       <widget class="QPushButton" name="mInputClearBtn">
        <property name="text">
-        <string>Input Clear</string>
+        <string>Clear</string>
        </property>
       </widget>
      </item>
@@ -89,7 +89,7 @@
      <item row="0" column="0">
       <widget class="QPushButton" name="mOutputClearBtn">
        <property name="text">
-        <string>Output Clear</string>
+        <string>Clear</string>
        </property>
       </widget>
      </item>

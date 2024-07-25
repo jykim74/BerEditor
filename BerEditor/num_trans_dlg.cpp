@@ -145,7 +145,7 @@ void NumTransDlg::clickOutputClear()
 void NumTransDlg::clickInputHex()
 {
     mInputText->clear();
-    QRegExp regExp("^[0-9a-zA-Z]*$");
+    QRegExp regExp("^[0-9a-fA-F]*$");
     QRegExpValidator* regVal = new QRegExpValidator( regExp );
     mInputText->setValidator( regVal );
 }

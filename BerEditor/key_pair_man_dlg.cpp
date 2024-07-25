@@ -390,6 +390,7 @@ void KeyPairManDlg::clickDecrypt()
     if( strPasswd.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a password" ), this );
+        mPasswdText->setFocus();
         return;
     }
 

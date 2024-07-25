@@ -24,6 +24,9 @@ CMSDlg::CMSDlg(QWidget *parent) :
     group_ = new QButtonGroup;
     last_path_ = berApplet->curFolder();
 
+    connect( mSrcClearBtn, SIGNAL(clicked()), this, SLOT(clearSrc()));
+    connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clearOutput()));
+
     connect( mDecodeBtn, SIGNAL(clicked()), this, SLOT(clickDecode()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(clickClose()));
     connect( mChangeBtn, SIGNAL(clicked()), this, SLOT(clickChange()));
@@ -90,11 +93,12 @@ CMSDlg::CMSDlg(QWidget *parent) :
     mKMCertDecodeBtn->setFixedWidth(34);
     mKMCertTypeBtn->setFixedWidth(34);
     mKMCertViewBtn->setFixedWidth(34);
-#endif
 
-#if defined(Q_OS_MAC)
-    layout()->setSpacing(5);
-#endif
+    mSrcClearBtn->setFixedWidth(34);
+    mOutputClearBtn->setFixedWidth(34);
+    mDecodeBtn->setFixedWidth(34);
+#endif    
+
     resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 
@@ -967,6 +971,16 @@ void CMSDlg::outputChanged()
 
     QString strLen = getDataLenString( nType, mOutputText->toPlainText() );
     mOutputLenText->setText( QString("%1").arg(strLen));
+}
+
+void CMSDlg::clearSrc()
+{
+    mSrcText->clear();
+}
+
+void CMSDlg::clearOutput()
+{
+    mOutputText->clear();
 }
 
 void CMSDlg::clickSignPriKeyDecode()

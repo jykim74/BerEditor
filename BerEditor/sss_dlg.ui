@@ -89,10 +89,30 @@
      <item row="0" column="1">
       <widget class="QComboBox" name="mSrcTypeCombo"/>
      </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mSrcClearBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>C</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
-    <widget class="QLineEdit" name="mSrcText"/>
+    <widget class="QLineEdit" name="mSrcText">
+     <property name="minimumSize">
+      <size>
+       <width>500</width>
+       <height>0</height>
+      </size>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="Line" name="line_3">
@@ -174,14 +194,14 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_6">
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mMakePrimeBtn">
        <property name="text">
-        <string>SSS Prime</string>
+        <string>Make Prime</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="7">
+     <item row="0" column="8">
       <widget class="QLineEdit" name="mPrimeLenText">
        <property name="minimumSize">
         <size>
@@ -227,7 +247,14 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="6">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>SSS Prime</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="7">
       <spacer name="horizontalSpacer_6">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -240,20 +267,26 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="5">
-      <widget class="QPushButton" name="mMakePrimeBtn">
+     <item row="0" column="4">
+      <widget class="QLabel" name="label_7">
        <property name="text">
-        <string>Make Prime</string>
+        <string>Bytes</string>
        </property>
       </widget>
      </item>
      <item row="0" column="3">
       <widget class="QComboBox" name="mPrimeBitsCombo"/>
      </item>
-     <item row="0" column="4">
-      <widget class="QLabel" name="label_7">
+     <item row="0" column="6">
+      <widget class="QPushButton" name="mPrimeClearBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="text">
-        <string>Bytes</string>
+        <string>C</string>
        </property>
       </widget>
      </item>
@@ -297,13 +330,6 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mAddBtn">
-       <property name="text">
-        <string>Add</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_5">
        <property name="text">
@@ -313,6 +339,93 @@
      </item>
      <item row="0" column="1">
       <widget class="QLineEdit" name="mShareText"/>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLineEdit" name="mShareLenText">
+       <property name="minimumSize">
+        <size>
+         <width>40</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled/>
+        </palette>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_9">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mClearResultBtn">
+       <property name="text">
+        <string>Clear</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mAddBtn">
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <spacer name="horizontalSpacer_7">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mJoinBtn">
+       <property name="text">
+        <string>Join</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -330,40 +443,6 @@
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout_7">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mJoinBtn">
-       <property name="text">
-        <string>Join</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <spacer name="horizontalSpacer_5">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mClearResultBtn">
-       <property name="text">
-        <string>Clear Result</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
     <widget class="Line" name="line_4">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -375,14 +454,20 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Joined Data</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="3">
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="4">
       <widget class="QLineEdit" name="mJoinedLenText">
        <property name="maximumSize">
         <size>
@@ -432,21 +517,28 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Joined Data</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="1">
       <widget class="QComboBox" name="mJoinedTypeCombo"/>
      </item>
      <item row="0" column="2">
-      <spacer name="horizontalSpacer_4">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
+      <widget class="QPushButton" name="mJoinedClearBtn">
+       <property name="maximumSize">
         <size>
-         <width>40</width>
-         <height>20</height>
+         <width>20</width>
+         <height>16777215</height>
         </size>
        </property>
-      </spacer>
+       <property name="text">
+        <string>C</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -539,6 +631,7 @@
  </widget>
  <tabstops>
   <tabstop>mSrcTypeCombo</tabstop>
+  <tabstop>mSrcClearBtn</tabstop>
   <tabstop>mSrcLenText</tabstop>
   <tabstop>mSrcText</tabstop>
   <tabstop>mSharesText</tabstop>
@@ -546,14 +639,17 @@
   <tabstop>mSplitBtn</tabstop>
   <tabstop>mPrimeBitsCombo</tabstop>
   <tabstop>mMakePrimeBtn</tabstop>
+  <tabstop>mPrimeClearBtn</tabstop>
   <tabstop>mPrimeLenText</tabstop>
   <tabstop>mPrimeText</tabstop>
   <tabstop>mShareText</tabstop>
-  <tabstop>mAddBtn</tabstop>
-  <tabstop>mShareTable</tabstop>
+  <tabstop>mShareLenText</tabstop>
   <tabstop>mClearResultBtn</tabstop>
   <tabstop>mJoinBtn</tabstop>
+  <tabstop>mAddBtn</tabstop>
+  <tabstop>mShareTable</tabstop>
   <tabstop>mJoinedTypeCombo</tabstop>
+  <tabstop>mJoinedClearBtn</tabstop>
   <tabstop>mJoinedLenText</tabstop>
   <tabstop>mJoinedText</tabstop>
   <tabstop>mClearDataAllBtn</tabstop>

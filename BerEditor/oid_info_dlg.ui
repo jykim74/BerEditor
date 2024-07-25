@@ -403,7 +403,7 @@
      <item>
       <widget class="QPushButton" name="mOutputClearBtn">
        <property name="text">
-        <string>Output Clear</string>
+        <string>Clear</string>
        </property>
       </widget>
      </item>

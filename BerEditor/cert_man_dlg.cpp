@@ -1325,6 +1325,7 @@ void CertManDlg::clickExport()
     if( strPass.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a password"), this );
+        mEE_PasswdText->setFocus();
         return;
     }
 
@@ -1382,6 +1383,7 @@ void CertManDlg::clickChangePasswd()
     if( strPass.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a password" ), this );
+        mEE_PasswdText->setFocus();
         return;
     }
 
@@ -1444,6 +1446,7 @@ void CertManDlg::clickViewPriKey()
     if( strPass.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a password" ), this );
+        mEE_PasswdText->setFocus();
         return;
     }
 
@@ -2225,6 +2228,7 @@ void CertManDlg::decodeTLPriKey()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find Private Key" ), this );
+        mTLPriKeyPathText->setFocus();
         return;
     }
 
@@ -2243,6 +2247,7 @@ void CertManDlg::decodeTLCert()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find Certificate" ), this );
+        mTLCertPathText->setFocus();
         return;
     }
 
@@ -2261,6 +2266,7 @@ void CertManDlg::decodeTLPFX()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find PFX" ), this );
+        mTLPFXPathText->setFocus();
         return;
     }
 
@@ -2468,6 +2474,7 @@ void CertManDlg::clickTLEncryptPFX()
     if( strPFXPasswd.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a password" ), this );
+        mTLPasswdText->setFocus();
         return;
     }
 
@@ -2547,6 +2554,7 @@ void CertManDlg::clickTLDecryptPFX()
     if( strPasswd.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a password" ), this );
+        mTLPasswdText->setFocus();
         return;
     }
 
@@ -2627,6 +2635,7 @@ void CertManDlg::clickTLSavePFX()
     if( strPasswd.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a password" ), this );
+        mTLPasswdText->setFocus();
         return;
     }
 

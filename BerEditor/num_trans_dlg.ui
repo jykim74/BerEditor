@@ -60,7 +60,7 @@
       <item row="0" column="4">
        <widget class="QPushButton" name="mInputClearBtn">
         <property name="text">
-         <string>Input Clear</string>
+         <string>Clear</string>
         </property>
        </widget>
       </item>
@@ -104,8 +104,14 @@
      </item>
      <item row="0" column="3">
       <widget class="QPushButton" name="mChangeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>34</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="text">
-        <string>Change</string>
+        <string>⬆</string>
        </property>
       </widget>
      </item>
@@ -206,7 +212,7 @@
      <item row="0" column="0">
       <widget class="QPushButton" name="mOutputClearBtn">
        <property name="text">
-        <string>Output Clear</string>
+        <string>Clear</string>
        </property>
       </widget>
      </item>

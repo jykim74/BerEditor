@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 #include <QMenu>
+#include <QRegExpValidator>
+#include <QValidator>
 
 #include "js_pki.h"
 #include "js_sss.h"
@@ -27,13 +29,9 @@ SSSDlg::SSSDlg(QWidget *parent) :
 {
     setupUi(this);
 
-#if defined(Q_OS_MAC)
-    layout()->setSpacing(5);
-#endif
-
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mAddBtn, SIGNAL(clicked()), this, SLOT(clickAdd()));
-    connect( mClearResultBtn, SIGNAL(clicked()), this, SLOT(clickClearResult()));
+    connect( mClearResultBtn, SIGNAL(clicked()), this, SLOT(clearShareTable()));
     connect( mSplitBtn, SIGNAL(clicked()), this, SLOT(clickSplit()));
     connect( mJoinBtn, SIGNAL(clicked()), this, SLOT(clickJoin()));
 
@@ -46,12 +44,21 @@ SSSDlg::SSSDlg(QWidget *parent) :
 
     connect( mMakePrimeBtn, SIGNAL(clicked()), this, SLOT(clickMakePrime()));
     connect( mPrimeText, SIGNAL(textChanged(QString)), this, SLOT(changePrime(QString)));
+    connect( mShareText, SIGNAL(textChanged(QString)), this, SLOT(changeShare(QString)));
+
+    connect( mSrcClearBtn, SIGNAL(clicked()), this, SLOT(clearSrc()));
+    connect( mPrimeClearBtn, SIGNAL(clicked()), this, SLOT(clearPrime()));
+    connect( mJoinedClearBtn, SIGNAL(clicked()), this, SLOT(clearJoined()));
 
     initialize();
     mSplitBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+
+    mSrcClearBtn->setFixedWidth(34);
+    mPrimeClearBtn->setFixedWidth(34);
+    mJoinedClearBtn->setFixedWidth(34);
 #endif
 
     resize(minimumSizeHint().width(), minimumSizeHint().height());
@@ -83,14 +90,14 @@ void SSSDlg::initialize()
 //    mShareTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     mShareTable->setColumnWidth(0, 40);
 
-    QRegExp regExp("^[0-9a-zA-Z]*$");
+    QRegExp regExp("^[0-9a-fA-F]*$");
     QRegExpValidator* regVal = new QRegExpValidator( regExp );
     mPrimeText->setValidator( regVal );
 
     mPrimeBitsCombo->addItems( primeBits );
     mPrimeBitsCombo->setEditable( true );
 
-    mCloseBtn->setDefault(true);
+    mShareText->setValidator( regVal );
 }
 
 void SSSDlg::srcChanged()
@@ -127,17 +134,6 @@ void SSSDlg::joinedChanged()
     mJoinedLenText->setText( QString("%1").arg(strLen));
 }
 
-void SSSDlg::clickClearResult()
-{
-    int nRow = mShareTable->rowCount();
-
-    for( int i = 0; i < nRow; i++ )
-    {
-        mShareTable->removeRow( nRow - 1 - i );
-    }
-
-    mJoinedText->clear();
-}
 
 void SSSDlg::clickAdd()
 {
@@ -160,11 +156,17 @@ void SSSDlg::clickAdd()
             berApplet->warningBox( tr( "%1 is already added").arg( strValue ), this );
             return;
         }
+
+        if( item->text().length() != strValue.length() )
+        {
+            berApplet->warningBox( tr( "All inputs must have the same length."), this );
+            return;
+        }
     }
 
     mShareTable->insertRow(row);
     mShareTable->setRowHeight( row, 10 );
-    mShareTable->setItem( row, 0, new QTableWidgetItem( QString( "%1").arg(row)));
+    mShareTable->setItem( row, 0, new QTableWidgetItem( QString( "%1").arg(row + 1)));
     mShareTable->setItem( row, 1, new QTableWidgetItem( strValue ));
 
     mShareText->clear();
@@ -176,7 +178,6 @@ void SSSDlg::clickSplit()
     int i = 0;
     int nShares = mSharesText->text().toInt();
     int nThreshold = mThresholdText->text().toInt();
-    int nCount = 0;
 
     QString strSrc = mSrcText->text();
 
@@ -192,7 +193,7 @@ void SSSDlg::clickSplit()
         return;
     }
 
-    clickClearResult();
+    clearShareTable();
     getBINFromString( &binSrc, mSrcTypeCombo->currentText(), strSrc );
     JS_BIN_decodeHex( mPrimeText->text().toStdString().c_str(), &binPrime );
 
@@ -223,8 +224,6 @@ void SSSDlg::clickSplit()
     }
 
     pCurList = pShareList;
-
-    nCount = JS_BIN_countList( pCurList );
 
 
     berApplet->logLine();
@@ -351,6 +350,12 @@ void SSSDlg::changePrime( const QString& text )
     mPrimeLenText->setText( QString("%1").arg( strLen ));
 }
 
+void SSSDlg::changeShare( const QString& text )
+{
+    QString strLen = getDataLenString( DATA_HEX, text );
+    mShareLenText->setText( QString("%1").arg( strLen ));
+}
+
 void SSSDlg::slotShareList(QPoint pos)
 {
     QMenu *menu = new QMenu(this);
@@ -367,10 +372,34 @@ void SSSDlg::delShare()
     mShareTable->removeRow( idx.row() );
 }
 
+void SSSDlg::clearShareTable()
+{
+    mShareTable->setRowCount(0);
+}
+
 void SSSDlg::clickClearDataAll()
 {
-    clickClearResult();
-    mSrcText->clear();
+    clearShareTable();
+
     mShareText->clear();
+    mSharesText->clear();
     mThresholdText->clear();
+
+    clearSrc();
+    clearPrime();
+    clearJoined();
+}
+
+void SSSDlg::clearSrc()
+{
+    mSrcText->clear();
+}
+
+void SSSDlg::clearPrime()
+{
+    mPrimeText->clear();
+}
+void SSSDlg::clearJoined()
+{
+    mJoinedText->clear();
 }
