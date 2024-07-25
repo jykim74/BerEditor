@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>570</width>
+    <width>524</width>
     <height>661</height>
    </rect>
   </property>
@@ -23,6 +23,12 @@
    </item>
    <item row="3" column="0">
     <widget class="QPlainTextEdit" name="mSecretKeyText">
+     <property name="minimumSize">
+      <size>
+       <width>500</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="palette">
       <palette>
        <active>
