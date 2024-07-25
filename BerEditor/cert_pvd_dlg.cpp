@@ -659,6 +659,7 @@ void CertPVDDlg::clickTrustInfo()
     if( strPath.length() < 1 )
     {
         berApplet->warningBox( "Select trust certificate", this );
+        mTrustPathText->setFocus();
         return;
     }
 
@@ -673,6 +674,7 @@ void CertPVDDlg::clickUntrustInfo()
     if( strPath.length() < 1 )
     {
         berApplet->warningBox( "Select untrust certificate", this );
+        mUntrustPathText->setFocus();
         return;
     }
 
@@ -687,6 +689,7 @@ void CertPVDDlg::clickCRLInfo()
     if( strPath.length() < 1 )
     {
         berApplet->warningBox( "Select CRL", this );
+        mCRLPathText->setFocus();
         return;
     }
 
@@ -701,6 +704,7 @@ void CertPVDDlg::clickTargetInfo()
     if( strPath.length() < 1 )
     {
         berApplet->warningBox( "Select target ceritifcate", this );
+        mTargetPathText->setFocus();
         return;
     }
 
@@ -843,6 +847,7 @@ void CertPVDDlg::clickParamAdd()
     if( strValue.length() < 1 )
     {
         berApplet->warningBox( "Please enter parameter value", this );
+        mParamValueText->setFocus();
         return;
     }
 
@@ -870,6 +875,13 @@ void CertPVDDlg::clickTrustDecode()
     BIN binData = {0,0};
     QString strPath = mTrustPathText->text();
 
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( "Select trust certificate", this );
+        mTrustPathText->setFocus();
+        return;
+    }
+
     JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
 
     if( binData.nLen < 1 )
@@ -887,6 +899,13 @@ void CertPVDDlg::clickUntrustDecode()
 {
     BIN binData = {0,0};
     QString strPath = mUntrustPathText->text();
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( "Select untrust certificate", this );
+        mUntrustPathText->setFocus();
+        return;
+    }
 
     JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
 
@@ -906,6 +925,13 @@ void CertPVDDlg::clickCRLDecode()
     BIN binData = {0,0};
     QString strPath = mCRLPathText->text();
 
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( "Select CRL", this );
+        mCRLPathText->setFocus();
+        return;
+    }
+
     JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
 
     if( binData.nLen < 1 )
@@ -923,6 +949,13 @@ void CertPVDDlg::clickTargetDecode()
 {
     BIN binData = {0,0};
     QString strPath = mTargetPathText->text();
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( "Select target ceritifcate", this );
+        mTargetPathText->setFocus();
+        return;
+    }
 
     JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
 

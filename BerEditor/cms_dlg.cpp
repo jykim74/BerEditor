@@ -128,7 +128,7 @@ int CMSDlg::readSignPrivateKey( BIN *pPriKey )
 
     if( strPriPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "Select a private key for signing"), this );
+        berApplet->warningBox( tr( "Select a private key for sign"), this );
         mSignPriKeyPathText->setFocus();
         return -1;
     }
@@ -186,6 +186,13 @@ int CMSDlg::readKMPrivateKey( BIN *pPriKey )
     BIN binInfo = {0,0};
 
     QString strPriPath = mKMPriKeyPathText->text();
+
+    if( strPriPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Select a private key for KM"), this );
+        mSignPriKeyPathText->setFocus();
+        return -1;
+    }
 
     ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binData );
     if( ret <= 0 )
@@ -967,11 +974,19 @@ void CMSDlg::clickSignPriKeyDecode()
     BIN binData = {0,0};
     QString strPath = mSignPriKeyPathText->text();
 
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Select a private key for sign"), this );
+        mSignPriKeyPathText->setFocus();
+        return;
+    }
+
     JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
 
     if( binData.nLen < 1 )
     {
         berApplet->warningBox( tr("failed to read data"), this );
+        mSignPriKeyPathText->setFocus();
         return;
     }
 
@@ -986,6 +1001,7 @@ void CMSDlg::clickSignCertView()
     if( strPath.length() < 1 )
     {
         berApplet->warningBox( "Select a certificate", this );
+        mSignCertPathText->setFocus();
         return;
     }
 
@@ -998,6 +1014,13 @@ void CMSDlg::clickSignCertDecode()
 {
     BIN binData = {0,0};
     QString strPath = mSignCertPathText->text();
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( "Select a certificate", this );
+        mSignCertPathText->setFocus();
+        return;
+    }
 
     JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
 
@@ -1016,6 +1039,13 @@ void CMSDlg::clickKMPriKeyDecode()
 {
     BIN binData = {0,0};
     QString strPath = mKMPriKeyPathText->text();
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Select a private key for KM"), this );
+        mSignPriKeyPathText->setFocus();
+        return;
+    }
 
     JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
 
@@ -1036,6 +1066,7 @@ void CMSDlg::clickKMCertView()
     if( strPath.length() < 1 )
     {
         berApplet->warningBox( "Select a certificate", this );
+        mKMCertPathText->setFocus();
         return;
     }
 
@@ -1049,11 +1080,19 @@ void CMSDlg::clickKMCertDecode()
     BIN binData = {0,0};
     QString strPath = mKMCertPathText->text();
 
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( "Select a certificate", this );
+        mKMCertPathText->setFocus();
+        return;
+    }
+
     JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
 
     if( binData.nLen < 1 )
     {
         berApplet->warningBox( tr("failed to read data"), this );
+        mKMCertPathText->setFocus();
         return;
     }
 
@@ -1105,7 +1144,8 @@ void CMSDlg::clickSignCertType()
 
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "Select a certificate for signing"), this );
+        berApplet->warningBox( tr( "Select a certificate for sign"), this );
+        mSignCertPathText->setFocus();
         return;
     }
 
@@ -1114,7 +1154,7 @@ void CMSDlg::clickSignCertType()
 
     nType = JS_PKI_getPubKeyType( &binPubKey );
 
-    berApplet->messageBox( tr( "Certificate type for signing is %1" ).arg( getKeyTypeName(nType)), this);
+    berApplet->messageBox( tr( "Certificate type for sign is %1" ).arg( getKeyTypeName(nType)), this);
 
 end :
     JS_BIN_reset( &binCert );
@@ -1166,6 +1206,7 @@ void CMSDlg::clickKMCertType()
     if( strPath.length() < 1 )
     {
         berApplet->warningBox( tr( "Select a certificate for KM"), this );
+        mKMCertPathText->setFocus();
         return;
     }
 

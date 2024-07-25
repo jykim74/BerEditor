@@ -3885,7 +3885,7 @@ int CAVPDlg::makeHashMCT( const QString strAlg, const QString strSeed, bool bInf
                 mHashMCTFirstMDText->setText( getHexString(binMD[j].pVal, binMD[j].nLen));
 
             if( j == 99 )
-                mHashMCTFirstMDText->setText( getHexString(binMD[j].pVal, binMD[j].nLen));
+                mHashMCTLastMDText->setText( getHexString(binMD[j].pVal, binMD[j].nLen));
         }
 
         logRsp( QString( "COUNT = %1").arg(j));

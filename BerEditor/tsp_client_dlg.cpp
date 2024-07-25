@@ -148,6 +148,14 @@ void TSPClientDlg::decodeRequest()
 {
     BIN binData = {0,0};
     QString strHex = mRequestText->toPlainText();
+
+    if( strHex.length() < 1)
+    {
+        berApplet->warningBox( tr( "There is no request" ), this );
+        mRequestText->setFocus();
+        return;
+    }
+
     JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
 
     berApplet->decodeData( &binData, NULL );
@@ -159,6 +167,14 @@ void TSPClientDlg::decodeResponse()
 {
     BIN binData = {0,0};
     QString strHex = mResponseText->toPlainText();
+
+    if( strHex.length() < 1)
+    {
+        berApplet->warningBox( tr( "There is no response" ), this );
+        mResponseText->setFocus();
+        return;
+    }
+
     JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
 
     berApplet->decodeData( &binData, NULL );
@@ -224,7 +240,7 @@ void TSPClientDlg::decodeSrvCert()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find a server certificate" ), this );
-        mSrvCertPathText->text();
+        mSrvCertPathText->setFocus();
         return;
     }
 

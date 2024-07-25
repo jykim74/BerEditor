@@ -74,7 +74,7 @@
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mServerTab">
       <attribute name="title">
@@ -368,7 +368,7 @@
             </size>
            </property>
            <property name="text">
-            <string>C</string>
+            <string>V</string>
            </property>
           </widget>
          </item>

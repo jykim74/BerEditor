@@ -1489,11 +1489,19 @@ void SignVerifyDlg::clickPriKeyDecode()
     BIN binData = {0,0};
     QString strPath = mPriKeyPath->text();
 
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "select a private key"), this );
+        mPriKeyPath->setFocus();
+        return;
+    }
+
     JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
 
     if( binData.nLen < 1 )
     {
         berApplet->warningBox( tr("failed to read data"), this );
+        mPriKeyPath->setFocus();
         return;
     }
 
@@ -1508,6 +1516,7 @@ void SignVerifyDlg::clickCertView()
     if( strPath.length() < 1 )
     {
         berApplet->warningBox( tr("Select a certificate"), this );
+        mCertPath->setFocus();
         return;
     }
 
@@ -1520,6 +1529,13 @@ void SignVerifyDlg::clickCertDecode()
 {
     BIN binData = {0,0};
     QString strPath = mCertPath->text();
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr("Select a certificate"), this );
+        mCertPath->setFocus();
+        return;
+    }
 
     JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
 
@@ -1561,6 +1577,7 @@ void SignVerifyDlg::clickCertType()
     if( strPath.length() < 1 )
     {
         berApplet->warningBox( tr( "Select certificate or public key"), this );
+        mCertPath->setFocus();
         return;
     }
 

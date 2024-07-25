@@ -1344,6 +1344,7 @@ void SSLVerifyDlg::clickTrustCAView()
     if( strPath.length() < 1 )
     {
         berApplet->warningBox( "Select a certificate", this );
+        mTrustCAPathText->setFocus();
         return;
     }
 
@@ -1360,6 +1361,7 @@ void SSLVerifyDlg::clickTrustCADecode()
     if( strPath.length() < 1 )
     {
         berApplet->warningBox( "Select a certificate", this );
+        mTrustCAPathText->text();
         return;
     }
 
@@ -1387,6 +1389,7 @@ void SSLVerifyDlg::clickTrustCAType()
     if( strPath.length() < 1 )
     {
         berApplet->warningBox( tr( "Select a certificate"), this );
+        mTrustCAPathText->setFocus();
         return;
     }
 
@@ -1418,6 +1421,7 @@ void SSLVerifyDlg::clickClientCAView()
     if( strPath.length() < 1 )
     {
         berApplet->warningBox( "Select a certificate", this );
+        mClientCAPathText->setFocus();
         return;
     }
 
@@ -1434,6 +1438,7 @@ void SSLVerifyDlg::clickClientCADecode()
     if( strPath.length() < 1 )
     {
         berApplet->warningBox( "Select a certificate", this );
+        mClientCAPathText->setFocus();
         return;
     }
 
@@ -1461,6 +1466,7 @@ void SSLVerifyDlg::clickClientCAType()
     if( strPath.length() < 1 )
     {
         berApplet->warningBox( tr( "Select a certificate"), this );
+        mClientCAPathText->setFocus();
         return;
     }
 
@@ -1492,6 +1498,7 @@ void SSLVerifyDlg::clickClientCertView()
     if( strPath.length() < 1 )
     {
         berApplet->warningBox( "Select a certificate", this );
+        mClientCertPathText->setFocus();
         return;
     }
 
@@ -1508,6 +1515,7 @@ void SSLVerifyDlg::clickClientCertDecode()
     if( strPath.length() < 1 )
     {
         berApplet->warningBox( "Select a certificate", this );
+        mClientCertPathText->setFocus();
         return;
     }
 
@@ -1535,6 +1543,7 @@ void SSLVerifyDlg::clickClientCertType()
     if( strPath.length() < 1 )
     {
         berApplet->warningBox( tr( "Select a certificate"), this );
+        mClientCertPathText->setFocus();
         return;
     }
 
@@ -1568,6 +1577,7 @@ void SSLVerifyDlg::clickClientPriKeyDecode()
     if( strPath.length() < 1 )
     {
         berApplet->warningBox( "Select a private key", this );
+        mClientPriKeyPathText->setFocus();
         return;
     }
 

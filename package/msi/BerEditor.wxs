@@ -53,7 +53,9 @@
                 			<RegistryValue Name="CustomComponent" Value="1" Type="integer" KeyPath='yes' />
               			</RegistryKey>
 
+						<!--
               			<File Id="bereditor.ico" Name="bereditor.ico" Source="bereditor.ico" />
+						-->
 
               			<!-- bereditor shortcut on desktop -->
               			<Shortcut Id="ApplicationDesktopShortCut" Directory="DesktopFolder"

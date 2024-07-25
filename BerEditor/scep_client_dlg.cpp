@@ -328,6 +328,7 @@ void SCEPClientDlg::typeCACert()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find a CA certificate" ), this );
+        mCACertPathText->setFocus();
         return;
     }
 
@@ -352,6 +353,7 @@ void SCEPClientDlg::typeCert()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find a certificate" ), this );
+        mCertPathText->setFocus();
         return;
     }
 
@@ -391,6 +393,7 @@ void SCEPClientDlg::viewCACert()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find a certificate" ), this );
+        mCACertPathText->setFocus();
         return;
     }
 
@@ -412,6 +415,7 @@ void SCEPClientDlg::viewCert()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find a certificate" ), this );
+        mCertPathText->setFocus();
         return;
     }
 
@@ -448,6 +452,7 @@ void SCEPClientDlg::decodeCACert()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find a CA certificate" ), this );
+        mCACertPathText->setFocus();
         return;
     }
 
@@ -466,6 +471,7 @@ void SCEPClientDlg::decodeCert()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find a certificate" ), this );
+        mCertPathText->setFocus();
         return;
     }
 
@@ -484,6 +490,7 @@ void SCEPClientDlg::decodePriKey()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find a private key" ), this );
+        mPriKeyPathText->setFocus();
         return;
     }
 
@@ -498,6 +505,14 @@ void SCEPClientDlg::decodeRequest()
 {
     BIN binData = {0,0};
     QString strHex = mRequestText->toPlainText();
+
+    if( strHex.length() < 1)
+    {
+        berApplet->warningBox( tr( "There is no request" ), this );
+        mRequestText->setFocus();
+        return;
+    }
+
     JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
 
     berApplet->decodeData( &binData, NULL );
@@ -509,6 +524,14 @@ void SCEPClientDlg::decodeResponse()
 {
     BIN binData = {0,0};
     QString strHex = mResponseText->toPlainText();
+
+    if( strHex.length() < 1)
+    {
+        berApplet->warningBox( tr( "There is no response" ), this );
+        mResponseText->setFocus();
+        return;
+    }
+
     JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
 
     berApplet->decodeData( &binData, NULL );

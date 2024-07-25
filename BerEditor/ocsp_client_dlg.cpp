@@ -441,6 +441,7 @@ void OCSPClientDlg::typeCACert()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find a CA certificate" ), this );
+        mCACertPathText->setFocus();
         return;
     }
 
@@ -472,6 +473,7 @@ void OCSPClientDlg::typeCert()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find a certificate" ), this );
+        mCertPathText->setFocus();
         return;
     }
 
@@ -496,6 +498,7 @@ void OCSPClientDlg::typeSignCert()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find a sign certificate" ), this );
+        mSignCertPathText->setFocus();
         return;
     }
 
@@ -535,6 +538,7 @@ void OCSPClientDlg::typeSrvCert()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find a server certificate" ), this );
+        mSrvCertPathText->setFocus();
         return;
     }
 
@@ -560,6 +564,7 @@ void OCSPClientDlg::viewCACert()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find a CA certificate" ), this );
+        mCACertPathText->setFocus();
         return;
     }
 
@@ -588,6 +593,7 @@ void OCSPClientDlg::viewCert()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find a certificate" ), this );
+        mCertPathText->setFocus();
         return;
     }
 
@@ -609,6 +615,7 @@ void OCSPClientDlg::viewSignCert()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find a sign certificate" ), this );
+        mSignCertPathText->setFocus();
         return;
     }
 
@@ -645,6 +652,7 @@ void OCSPClientDlg::viewSrvCert()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find a server certificate" ), this );
+        mSrvCertPathText->setFocus();
         return;
     }
 
@@ -665,6 +673,7 @@ void OCSPClientDlg::decodeCACert()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find a CA certificate" ), this );
+        mCACertPathText->setFocus();
         return;
     }
 
@@ -690,6 +699,7 @@ void OCSPClientDlg::decodeCert()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find a certificate" ), this );
+        mCertPathText->setFocus();
         return;
     }
 
@@ -708,6 +718,7 @@ void OCSPClientDlg::decodeSignCert()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find a sign certificate" ), this );
+        mSignCertPathText->setFocus();
         return;
     }
 
@@ -726,6 +737,7 @@ void OCSPClientDlg::decodeSignPriKey()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find a sign private key" ), this );
+        mSignPriKeyPathText->setFocus();
         return;
     }
 
@@ -744,6 +756,7 @@ void OCSPClientDlg::decodeSrvCert()
     if( strFile.length() < 1 )
     {
         berApplet->warningBox( tr( "Find a server certificate" ), this );
+        mSrvCertPathText->setFocus();
         return;
     }
 
@@ -758,6 +771,13 @@ void OCSPClientDlg::decodeRequest()
 {
     BIN binData = {0,0};
     QString strHex = mRequestText->toPlainText();
+    if( strHex.length() < 1)
+    {
+        berApplet->warningBox( tr( "There is no request" ), this );
+        mRequestText->setFocus();
+        return;
+    }
+
     JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
 
     berApplet->decodeData( &binData, NULL );
@@ -769,6 +789,14 @@ void OCSPClientDlg::decodeResponse()
 {
     BIN binData = {0,0};
     QString strHex = mResponseText->toPlainText();
+
+    if( strHex.length() < 1)
+    {
+        berApplet->warningBox( tr( "There is no response" ), this );
+        mResponseText->setFocus();
+        return;
+    }
+
     JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
 
     berApplet->decodeData( &binData, NULL );
