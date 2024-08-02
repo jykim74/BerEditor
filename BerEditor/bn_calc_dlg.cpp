@@ -181,6 +181,18 @@ int BNCalcDlg::getInput( BIN *pA, BIN *pB, BIN *pMod )
     QString strB = mBText->toPlainText().simplified();
     QString strMod = mModText->toPlainText().simplified();
 
+    if( mHexCheck->isChecked() )
+    {
+        if( (strA.length() > 0) && (strA.length() % 2) )
+            strA = QString( "0%1").arg( strA );
+
+        if( (strB.length() > 0) && (strB.length() % 2) )
+            strB = QString( "0%1").arg( strB );
+
+        if( (strMod.length() > 0) && (strMod.length() % 2) )
+            strMod = QString( "0%1").arg( strMod );
+    }
+
     if( mBaseGroupCombo->currentText() == "Number" )
         strMod.clear();
 
