@@ -1468,12 +1468,15 @@ bool isValidNumFormat( const QString strInput, int nNumber )
 {
     QRegExp strReg;
 
+    if( strInput.isEmpty() || strInput.length() < 1 ) return false;
+
     if( nNumber == 2 )
     {
         strReg.setPattern( "[0-1]+");
     }
     else if( nNumber == 16 )
     {
+        if( strInput.length() % 2 ) return false;
         strReg.setPattern( "[0-9a-fA-F]+" );
     }
     else

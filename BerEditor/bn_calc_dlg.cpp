@@ -34,7 +34,7 @@ const QString kMulMod = "(A*B) Mod M";
 const QString kDivMod = "(A/B) Mod M";
 const QString kExpMod = "(A^B) Mod M";
 const QString kSqrMod = "(A^2) Mod M";
-const QString kShlMod = "A<< Mod M";
+const QString kShlMod = "A << Mod M";
 const QString kInvMod = "A^-1 Mod M";
 const QString kSqrtMod = "√ A Mod M";
 
@@ -196,6 +196,7 @@ int BNCalcDlg::getInput( BIN *pA, BIN *pB, BIN *pMod )
         if( isValidNumFormat( strA, nNum ) != 1 )
         {
             berApplet->warningBox( tr( "The A value have wrong character" ), this );
+            mAText->setFocus();
             return -1;
         }
 
@@ -207,6 +208,7 @@ int BNCalcDlg::getInput( BIN *pA, BIN *pB, BIN *pMod )
         if( isValidNumFormat( strB, nNum ) != 1 )
         {
             berApplet->warningBox( tr( "The B value have wrong character" ), this );
+            mBText->setFocus();
             return -2;
         }
 
@@ -218,6 +220,7 @@ int BNCalcDlg::getInput( BIN *pA, BIN *pB, BIN *pMod )
         if( isValidNumFormat( strMod, nNum ) != 1 )
         {
             berApplet->warningBox( tr( "The M value have wrong character" ), this );
+            mModText->setFocus();
             return -3;
         }
 
@@ -311,6 +314,8 @@ void BNCalcDlg::changeBaseGroup( int index )
     bool bCOMP = false;
     bool bSHR = false;
 
+    bool bSendM = false;
+
     if( strName == "Number" )
     {
         bModGroup = false;
@@ -326,6 +331,8 @@ void BNCalcDlg::changeBaseGroup( int index )
         bXOR = true;
         bCOMP = true;
         bSHR = true;
+
+        bSendM = false;
 
         mADDBtn->setText( kAdd );
         mSUBBtn->setText( kSub );
@@ -360,6 +367,8 @@ void BNCalcDlg::changeBaseGroup( int index )
         bCOMP = false;
         bSHR = false;
 
+        bSendM = true;
+
         mADDBtn->setText( kAddMod );
         mSUBBtn->setText( kSubMod );
         mMULBtn->setText( kMulMod );
@@ -386,6 +395,8 @@ void BNCalcDlg::changeBaseGroup( int index )
         bCOMP = false;
         bSHR = false;
 
+        bSendM = true;
+
         mADDBtn->setText( kAdd );
         mSUBBtn->setText( kSub );
         mMULBtn->setText( kMulMod );
@@ -410,6 +421,8 @@ void BNCalcDlg::changeBaseGroup( int index )
     mXORBtn->setEnabled( bXOR );
     mCOMPBtn->setEnabled( bCOMP );
     mSHRBtn->setEnabled( bSHR );
+
+    mResSendModBtn->setEnabled( bSendM );
 }
 
 void BNCalcDlg::clickAGenPrime()
@@ -694,8 +707,11 @@ void BNCalcDlg::clickDiv()
 
     if( mBaseGroupCombo->currentText() == "Number" )
     {
-        mResText->appendPlainText( QString( "REM : %1").arg( getHexString( &binREM )));
-        berApplet->log( QString( "REM : %1").arg( getHexString(&binREM)));
+        if( binREM.nLen > 0 )
+        {
+            mResText->appendPlainText( QString( "REM : %1").arg( getHexString( &binREM )));
+            berApplet->log( QString( "REM : %1").arg( getHexString(&binREM)));
+        }
     }
 
 end :
