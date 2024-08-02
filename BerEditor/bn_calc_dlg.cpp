@@ -177,24 +177,45 @@ int BNCalcDlg::getInput( BIN *pA, BIN *pB, BIN *pMod )
 {
     int nNum = 0;
 
-    QString strA = mAText->toPlainText().simplified();
-    QString strB = mBText->toPlainText().simplified();
-    QString strMod = mModText->toPlainText().simplified();
+    QString strA;
+    QString strB;
+    QString strMod;
 
-    if( mHexCheck->isChecked() )
+    if( pA != NULL )
     {
-        if( (strA.length() > 0) && (strA.length() % 2) )
-            strA = QString( "0%1").arg( strA );
+        strA = mAText->toPlainText().simplified();
 
-        if( (strB.length() > 0) && (strB.length() % 2) )
-            strB = QString( "0%1").arg( strB );
-
-        if( (strMod.length() > 0) && (strMod.length() % 2) )
-            strMod = QString( "0%1").arg( strMod );
+        if( strA.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Please enter A" ), this );
+            mAText->setFocus();
+            return -1;
+        }
     }
 
-    if( mBaseGroupCombo->currentText() == "Number" )
-        strMod.clear();
+    if( pB != NULL )
+    {
+        strB = mBText->toPlainText().simplified();
+
+        if( strB.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Please enter B" ), this );
+            mBText->setFocus();
+            return -1;
+        }
+    }
+
+    if( pMod != NULL )
+    {
+        strMod = mModText->toPlainText().simplified();
+
+        if( strMod.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Please enter M" ), this );
+            mModText->setFocus();
+            return -1;
+        }
+    }
 
     if( mBinCheck->isChecked() )
         nNum = 2;
@@ -203,7 +224,28 @@ int BNCalcDlg::getInput( BIN *pA, BIN *pB, BIN *pMod )
     else
         nNum = 16;
 
-    if( pA != NULL && strA.length() > 0 )
+    if( nNum == 16 )
+    {
+        if( (strA.length() > 0) && (strA.length() % 2) )
+        {
+            strA = QString( "0%1").arg( strA );
+            mAText->setPlainText( strA );
+        }
+
+        if( (strB.length() > 0) && (strB.length() % 2) )
+        {
+            strB = QString( "0%1").arg( strB );
+            mBText->setPlainText( strB );
+        }
+
+        if( (strMod.length() > 0) && (strMod.length() % 2) )
+        {
+            strMod = QString( "0%1").arg( strMod );
+            mModText->setPlainText(strMod);
+        }
+    }
+
+    if( strA.length() > 0 )
     {
         if( isValidNumFormat( strA, nNum ) != 1 )
         {
@@ -215,7 +257,7 @@ int BNCalcDlg::getInput( BIN *pA, BIN *pB, BIN *pMod )
         getBIN( strA, pA );
     }
 
-    if( pB != NULL && strB.length() > 0 )
+    if( strB.length() > 0 )
     {
         if( isValidNumFormat( strB, nNum ) != 1 )
         {
@@ -227,7 +269,7 @@ int BNCalcDlg::getInput( BIN *pA, BIN *pB, BIN *pMod )
         getBIN( strB, pB );
     }
 
-    if( pMod != NULL && strMod.length() > 0 )
+    if( strMod.length() > 0 )
     {
         if( isValidNumFormat( strMod, nNum ) != 1 )
         {
@@ -550,15 +592,21 @@ void BNCalcDlg::clickAdd()
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
-    if( getInput( &binA, &binB, &binMod ) != 0 )
-        goto end;
-
     if( mBaseGroupCombo->currentText() == "Number" )
-        ret =JS_BN_add( &binR, &binA, &binB );
+    {
+        if( getInput( &binA, &binB, NULL ) != 0 ) goto end;
+        ret = JS_BN_add( &binR, &binA, &binB );
+    }
     else if( mBaseGroupCombo->currentText() == "Modular" )
+    {
+        if( getInput( &binA, &binB, &binMod ) != 0 ) goto end;
         ret = JS_BN_addMod( &binR, &binA, &binB, &binMod );
+    }
     else
+    {
+        if( getInput( &binA, &binB, NULL ) != 0 ) goto end;
         ret = JS_BN_GF2m_add( &binR, &binA, &binB );
+    }
 
     if( ret != 0 )
     {
@@ -594,20 +642,27 @@ void BNCalcDlg::clickSub()
 
     QString strOut;
 
-    if( getInput( &binA, &binB, &binMod ) != 0 )
-        goto end;
-
     if( mBaseGroupCombo->currentText() == "Number" )
     {
+        if( getInput( &binA, &binB, NULL ) != 0 ) goto end;
+
         if( JS_BN_cmp( &binA, &binB ) < 0 )
             strOut = "-";
 
         ret = JS_BN_sub( &binR, &binA, &binB );
     }
     else if( mBaseGroupCombo->currentText() == "Modular" )
+    {
+        if( getInput( &binA, &binB, &binMod ) != 0 ) goto end;
+
         ret = JS_BN_subMod( &binR, &binA, &binB, &binMod );
+    }
     else
+    {
+        if( getInput( &binA, &binB, NULL ) != 0 ) goto end;
+
         ret = JS_BN_GF2m_sub( &binR, &binA, &binB );
+    }
 
     if( ret != 0 )
     {
@@ -644,15 +699,21 @@ void BNCalcDlg::clickMultiple()
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
-    if( getInput( &binA, &binB, &binMod ) != 0 )
-        goto end;
-
     if( mBaseGroupCombo->currentText() == "Number" )
+    {
+        if( getInput( &binA, &binB, NULL ) != 0 ) goto end;
         ret = JS_BN_mul( &binR, &binA, &binB );
+    }
     else if( mBaseGroupCombo->currentText() == "Modular" )
+    {
+        if( getInput( &binA, &binB, &binMod ) != 0 ) goto end;
         ret = JS_BN_mulMod( &binR, &binA, &binB, &binMod );
+    }
     else
+    {
+        if( getInput( &binA, &binB, &binMod ) != 0 ) goto end;
         ret = JS_BN_GF2m_mulMod( &binR, &binA, &binB, &binMod );
+    }
 
     if( ret != 0 )
     {
@@ -687,18 +748,21 @@ void BNCalcDlg::clickDiv()
     BIN binREM = {0,0};
     BIN binMod = {0,0};
 
-    if( getInput( &binA, &binB, &binMod ) != 0 )
-        goto end;
-
     if( mBaseGroupCombo->currentText() == "Number" )
+    {
+        if( getInput( &binA, &binB, NULL ) != 0 ) goto end;
         ret = JS_BN_div( &binR, &binREM, &binA, &binB );
+    }
     else if( mBaseGroupCombo->currentText() == "Modular" )
     {
         berApplet->elog( "Modular does not support div" );
         goto end;
     }
     else
+    {
+        if( getInput( &binA, &binB, &binMod ) != 0 ) goto end;
         ret = JS_BN_GF2m_divMod( &binR, &binA, &binB, &binMod );
+    }
 
     if( ret != 0 )
     {
@@ -742,15 +806,21 @@ void BNCalcDlg::clickExp()
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
-    if( getInput( &binA, &binB, &binMod ) != 0 )
-        goto end;
-
     if( mBaseGroupCombo->currentText() == "Number" )
+    {
+        if( getInput( &binA, &binB, NULL ) != 0 ) goto end;
         ret = JS_BN_exp( &binR, &binA, &binB );
+    }
     else if( mBaseGroupCombo->currentText() == "Modular" )
+    {
+        if( getInput( &binA, &binB, &binMod ) != 0 ) goto end;
         ret = JS_BN_expMod( &binR, &binA, &binB, &binMod );
+    }
     else
+    {
+        if( getInput( &binA, &binB, &binMod ) != 0 ) goto end;
         ret = JS_BN_GF2m_expMod( &binR, &binA, &binB, &binMod );
+    }
 
     if( ret != 0 )
     {
@@ -783,15 +853,21 @@ void BNCalcDlg::clickSqr()
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
-    if( getInput( &binA, NULL, &binMod ) != 0 )
-        goto end;
-
     if( mBaseGroupCombo->currentText() == "Number" )
+    {
+        if( getInput( &binA, NULL, NULL ) != 0 ) goto end;
         ret = JS_BN_sqr( &binR, &binA );
+    }
     else if( mBaseGroupCombo->currentText() == "Modular" )
+    {
+        if( getInput( &binA, NULL, &binMod ) != 0 ) goto end;
         ret = JS_BN_sqrMod( &binR, &binA, &binMod );
+    }
     else
+    {
+        if( getInput( &binA, NULL, &binMod ) != 0 ) goto end;
         ret = JS_BN_GF2m_sqrMod( &binR, &binA, &binMod );
+    }
 
     if( ret != 0 )
     {
@@ -822,18 +898,21 @@ void BNCalcDlg::clickMod()
     BIN binB = {0,0};
     BIN binR = {0,0};
 
-    if( getInput( &binA, &binB, NULL ) != 0 )
-        goto end;
-
     if( mBaseGroupCombo->currentText() == "Number" )
+    {
+        if( getInput( &binA, &binB, NULL ) != 0 ) goto end;
         ret = JS_BN_mod( &binR, &binA, &binB );
+    }
     else if( mBaseGroupCombo->currentText() == "Modular" )
     {
         berApplet->elog( "Modular does not support mod" );
         goto end;
     }
     else
+    {
+        if( getInput( &binA, &binB, NULL ) != 0 ) goto end;
         ret = JS_BN_GF2m_mod( &binR, &binA, &binB );
+    }
 
     if( ret != 0 )
     {
@@ -865,15 +944,13 @@ void BNCalcDlg::clickGcd()
     BIN binB = {0,0};
     BIN binR = {0,0};
 
-    if( getInput( &binA, &binB, NULL ) != 0 )
-        goto end;
-
     if( mBaseGroupCombo->currentText() != "Number" )
     {
         berApplet->elog( "GCD support Number only" );
         goto end;
     }
 
+    if( getInput( &binA, &binB, NULL ) != 0 ) goto end;
     ret = JS_BN_gcd( &binR, &binA, &binB );
 
     if( ret != 0 )
@@ -1066,13 +1143,16 @@ void BNCalcDlg::clickShl()
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
-    if( getInput( &binA, NULL, &binMod ) != 0 )
-        goto end;
-
     if( mBaseGroupCombo->currentText() == "Number" )
+    {
+        if( getInput( &binA, NULL, NULL ) != 0 ) goto end;
         ret = JS_BN_lshift( &binR, &binA );
+    }
     else if( mBaseGroupCombo->currentText() == "Modular" )
+    {
+        if( getInput( &binA, NULL, &binMod ) != 0 ) goto end;
         ret = JS_BN_lshiftMod( &binR, &binA, &binMod );
+    }
     else
     {
         berApplet->elog( "GF2m does not support SHL" );
@@ -1108,18 +1188,21 @@ void BNCalcDlg::clickInv()
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
-    if( getInput( &binA, NULL, &binMod ) != 0 )
-        goto end;
-
     if( mBaseGroupCombo->currentText() == "Number" )
     {
         berApplet->elog( "Number does not support INV" );
         goto end;
     }
     else if( mBaseGroupCombo->currentText() == "Modular" )
+    {
+        if( getInput( &binA, NULL, &binMod ) != 0 ) goto end;
         ret = JS_BN_invMod( &binR, &binA, &binMod );
+    }
     else
+    {
+        if( getInput( &binA, NULL, &binMod ) != 0 ) goto end;
         ret = JS_BN_GF2m_invMod( &binR, &binA, &binMod );
+    }
 
     if( ret != 0 )
     {
@@ -1150,18 +1233,21 @@ void BNCalcDlg::clickSqrt()
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
-    if( getInput( &binA, NULL, &binMod ) != 0 )
-        goto end;
-
     if( mBaseGroupCombo->currentText() == "Number" )
     {
         berApplet->elog( "Number does not support SQRT" );
         goto end;
     }
     else if( mBaseGroupCombo->currentText() == "Modular" )
+    {
+        if( getInput( &binA, NULL, &binMod ) != 0 ) goto end;
         ret = JS_BN_sqrtMod( &binR, &binA, &binMod );
+    }
     else
+    {
+        if( getInput( &binA, NULL, &binMod ) != 0 ) goto end;
         ret = JS_BN_GF2m_sqrtMod( &binR, &binA, &binMod );
+    }
 
     if( ret != 0 )
     {
