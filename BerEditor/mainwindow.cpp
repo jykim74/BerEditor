@@ -182,8 +182,6 @@ void MainWindow::initialize()
     right_text_->setReadOnly(true);
     table_tab_->addTab( right_text_, tr( "Text" ));
 
-
-
     vsplitter_->addWidget( table_tab_ );
 
     text_tab_ = new QTabWidget;
@@ -199,16 +197,26 @@ void MainWindow::initialize()
 
         text_tab_->setTabEnabled( 1, false );
     }
-
+/*
     QList <int> vsizes;
     vsizes << 1200 << 500;
     vsplitter_->setSizes(vsizes);
 
     QList<int> sizes;
     sizes << 400 << 1200;
+    hsplitter_->setSizes(sizes);
+*/
+    vsplitter_->setStretchFactor(0,2);
+    vsplitter_->setStretchFactor(1,1);
+    hsplitter_->setStretchFactor(1,3);
+
+    setCentralWidget(hsplitter_);
+    createTableMenu();
+    setTitle( "" );
 
 #ifdef Q_OS_MAC
     resize( 960, 760 );
+//    resize( sizeHint().width(), 760 );
 #else
 #ifdef Q_OS_WIN
     resize( 940, 760 );
@@ -216,12 +224,6 @@ void MainWindow::initialize()
     resize( 1020, 760 );
 #endif
 #endif
-
-    hsplitter_->setSizes(sizes);
-
-    setCentralWidget(hsplitter_);
-    createTableMenu();
-    setTitle( "" );
 }
 
 void MainWindow::createTableMenu()
