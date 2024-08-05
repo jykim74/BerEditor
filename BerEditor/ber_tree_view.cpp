@@ -25,6 +25,7 @@
 BerTreeView::BerTreeView( QWidget *parent )
     : QTreeView (parent)
 {
+    is_set_ = false;
     connect( this, SIGNAL(clicked(const QModelIndex&)), this, SLOT(onItemClicked(const QModelIndex&)));
 
     setAcceptDrops(false);
@@ -76,6 +77,11 @@ void BerTreeView::viewRoot()
     QModelIndex ri = tree_model->index(0,0);
     onItemClicked( ri );
     setExpanded( rootIndex(), true );
+}
+
+void BerTreeView::Unset()
+{
+    is_set_ = false;
 }
 
 void BerTreeView::infoItem( BerItem *pItem, int nWidth )
@@ -204,6 +210,8 @@ QString BerTreeView::GetTextView()
 
 void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
 {
+    is_set_ = false;
+
     int line = 0;
     BIN binPart = {0,0};
     QString text;
@@ -308,7 +316,7 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
     QTableWidget* rightTable = berApplet->mainWindow()->rightTable();
     rightTable->setRowCount(0);
 
-    if( berApplet->isLicense() == true )
+    if( berApplet->isLicense() == true && is_set_ == false )
     {
         BerModel *tree_model = (BerModel *)model();
         BerItem *root = (BerItem *)tree_model->item(0,0);
@@ -318,6 +326,7 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
 
         showXML( 0, "<!-- XML Decoded Message -->\n", QColor(Qt::darkGreen) );
         showItemXML( root, pItem );
+/*
         int nXMLLine = pItem->data(Qt::UserRole + 1).toInt();
         QTextCursor xml_cursor = xmlEdit->textCursor();
         xml_cursor.movePosition(QTextCursor::Start);
@@ -327,13 +336,13 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
         }
         xmlEdit->setTextCursor(xml_cursor);
         xmlEdit->ensureCursorVisible();
- //       xmlEdit->moveCursor(QTextCursor::Start);
-
+*/
         QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
         txtEdit->clear();
 
         showText( 0, "-- Text Decoded Message --\n", QColor(Qt::blue) );
         showItemText( root, pItem );
+/*
         int nLine = pItem->data(Qt::UserRole + 2).toInt();
         QTextCursor cursor = txtEdit->textCursor();
         cursor.movePosition(QTextCursor::Start);
@@ -343,7 +352,7 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
         }
         txtEdit->setTextCursor(cursor);
         txtEdit->ensureCursorVisible();
-        //txtEdit->moveCursor(QTextCursor::Start);
+*/
     }
 
     for( int i = 0; i < pBer->nLen; i++ )
@@ -408,6 +417,8 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
 
     QTableWidgetItem *item = rightTable->item( start_row, start_col );
     rightTable->scrollToItem( item );
+
+    is_set_ = true;
 }
 
 void BerTreeView::copy()
@@ -577,6 +588,7 @@ void BerTreeView::ExpandValue()
             tree_model->parseConstruct( offset + item->GetHeaderSize(), item );
     }
 
+    is_set_ = false;
     onItemClicked( index );
     expand( index );
 }
@@ -636,6 +648,7 @@ void BerTreeView::EditValue()
     if( ret == QDialog::Accepted )
     {
         tree_model->parseTree();
+        is_set_ = false;
         viewRoot();
         QModelIndex ri = tree_model->index(0,0);
         expand(ri);
@@ -673,6 +686,8 @@ void BerTreeView::InsertBER()
         if( ret != 0 ) goto end;
 
         tree_model->parseTree();
+
+        is_set_ = false;
         viewRoot();
         QModelIndex ri = tree_model->index(0,0);
         expand(ri);
@@ -753,10 +768,11 @@ void BerTreeView::showItemText( BerItem* item, BerItem* setItem, bool bBold )
         if( item == setItem )
         {
             bBold = true;
+            /*
             QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
             int nLine = txtEdit->toPlainText().split("\n").count();
-
             setItem->setData( nLine, Qt::UserRole + 2);
+            */
         }
     }
 
@@ -804,11 +820,11 @@ void BerTreeView::showItemXML( BerItem* item, BerItem* setItem, bool bBold )
         if( item == setItem )
         {
             bBold = true;
-
+            /*
             QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
             int nLine = xmlEdit->toPlainText().split("\n").count();
-
             setItem->setData( nLine, Qt::UserRole + 1 );
+            */
         }
     }
 

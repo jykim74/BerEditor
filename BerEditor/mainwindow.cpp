@@ -219,7 +219,7 @@ void MainWindow::initialize()
 #ifdef Q_OS_LINUX
     resize( 1020, 760 );
 #else
-    resize( 960, 760 );
+    resize( 970, 760 );
 #endif
 }
 
@@ -1202,6 +1202,7 @@ void MainWindow::openBer( const BIN *pBer )
     ber_model_->setBER( pBer );
     ber_model_->parseTree();
 
+    left_tree_->Unset();
     left_tree_->header()->setVisible(false);
     left_tree_->viewRoot();
     QModelIndex ri = ber_model_->index(0,0);
@@ -1778,7 +1779,7 @@ void MainWindow::decodeTTLV( const BIN *pData )
 
     ttlv_model_->setTTLV( pData );
     ttlv_model_->parseTree();
-
+    ttlv_tree_->Unset();
     ttlv_tree_->header()->setVisible(false);
     ttlv_tree_->viewRoot();
     QModelIndex ri = ttlv_model_->index(0,0);

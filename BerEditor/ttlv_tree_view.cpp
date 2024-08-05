@@ -22,6 +22,8 @@
 TTLVTreeView::TTLVTreeView( QWidget *parent )
     : QTreeView(parent)
 {
+    is_set_ = false;
+
     connect( this, SIGNAL(clicked(const QModelIndex&)), this, SLOT(onItemClicked(const QModelIndex&)));
     setContextMenuPolicy(Qt::CustomContextMenu);
 
@@ -54,6 +56,11 @@ void TTLVTreeView::viewRoot()
     QModelIndex ri = tree_model->index(0,0);
     onItemClicked( ri );
     setExpanded( rootIndex(), true );
+}
+
+void TTLVTreeView::Unset()
+{
+    is_set_ = false;
 }
 
 void TTLVTreeView::showRight()
@@ -139,7 +146,7 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
 
     rightTable->setRowCount(0);
 
-    if( berApplet->isLicense() == true )
+    if( berApplet->isLicense() == true && is_set_ == false )
     {
         TTLVTreeModel *tree_model = (TTLVTreeModel *)model();
         TTLVTreeItem *root = (TTLVTreeItem *)tree_model->item(0,0);
@@ -149,14 +156,36 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
 
         showXML( 0, "<!-- XML Decoded Message -->\n", QColor(Qt::darkGreen) );
         showItemXML( root );
-        xmlEdit->moveCursor(QTextCursor::Start);
+
+        /*
+        int nXMLLine = pItem->data(Qt::UserRole + 1).toInt();
+        QTextCursor xml_cursor = xmlEdit->textCursor();
+        xml_cursor.movePosition(QTextCursor::Start);
+        for( int i = 1; i < nXMLLine; i++ )
+        {
+            xml_cursor.movePosition(QTextCursor::Down);
+        }
+        xmlEdit->setTextCursor(xml_cursor);
+        xmlEdit->ensureCursorVisible();
+        */
 
         QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
         txtEdit->clear();
 
         showText( 0, "-- Text Decoded Message --\n", QColor(Qt::blue) );
         showItemText( root );
-        txtEdit->moveCursor(QTextCursor::Start);
+
+        /*
+        int nLine = pItem->data(Qt::UserRole + 2).toInt();
+        QTextCursor cursor = txtEdit->textCursor();
+        cursor.movePosition(QTextCursor::Start);
+        for( int i = 1; i < nLine; i++ )
+        {
+            cursor.movePosition(QTextCursor::Down);
+        }
+        txtEdit->setTextCursor(cursor);
+        txtEdit->ensureCursorVisible();
+        */
     }
 
     for( int i = 0; i < TTLV.nLen; i++ )
@@ -221,12 +250,14 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
         rightTable->item( line, 17 )->setBackgroundColor(QColor(210,240,210));
     }
 
+    is_set_ = true;
 //    getInfoView( pItem );
 }
 
 void TTLVTreeView::showRightPart( TTLVTreeItem *pItem )
 {
     int line = 0;
+    is_set_ = false;
 
     QString text;
     QString hex;
@@ -490,6 +521,7 @@ void TTLVTreeView::AddTTLV()
         if( ret == 0 )
         {
             ttlv_model->parseTree();
+            is_set_ = false;
             viewRoot();
 
             QModelIndex ri = ttlv_model->index(0,0);
@@ -512,6 +544,7 @@ void TTLVTreeView::editItem()
         TTLVTreeModel *ttlv_model = (TTLVTreeModel *)model();
 
         ttlv_model->parseTree();
+        is_set_ = false;
         viewRoot();
         QModelIndex ri = ttlv_model->index(0,0);
         expand(ri);
@@ -560,7 +593,7 @@ void TTLVTreeView::saveItemValue()
     berApplet->setCurFile( fileName );
 }
 
-void TTLVTreeView::showItemText( TTLVTreeItem* item, const TTLVTreeItem *setItem, bool bBold )
+void TTLVTreeView::showItemText( TTLVTreeItem* item, TTLVTreeItem *setItem, bool bBold )
 {
     int row = 0;
     int col = 0;
@@ -578,7 +611,15 @@ void TTLVTreeView::showItemText( TTLVTreeItem* item, const TTLVTreeItem *setItem
 
     if( bBold == false )
     {
-        if( item == setItem ) bBold = true;
+        if( item == setItem )
+        {
+            bBold = true;
+            /*
+            QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
+            int nLine = txtEdit->toPlainText().split("\n").count();
+            setItem->setData( nLine, Qt::UserRole + 2);
+            */
+        }
     }
 
 
@@ -606,7 +647,7 @@ void TTLVTreeView::showItemText( TTLVTreeItem* item, const TTLVTreeItem *setItem
     }
 }
 
-void TTLVTreeView::showItemXML( TTLVTreeItem* item, const TTLVTreeItem *setItem, bool bBold )
+void TTLVTreeView::showItemXML( TTLVTreeItem* item, TTLVTreeItem *setItem, bool bBold )
 {
     int row = 0;
     int col = 0;
@@ -626,7 +667,16 @@ void TTLVTreeView::showItemXML( TTLVTreeItem* item, const TTLVTreeItem *setItem,
 
     if( bBold == false )
     {
-        if( item == setItem ) bBold = true;
+        if( item == setItem )
+        {
+            bBold = true;
+
+            /*
+            QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
+            int nLine = xmlEdit->toPlainText().split("\n").count();
+            setItem->setData( nLine, Qt::UserRole + 1 );
+            */
+        }
     }
 
     if( item->isStructure() )
