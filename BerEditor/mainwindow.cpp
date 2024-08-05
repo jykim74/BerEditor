@@ -206,23 +206,20 @@ void MainWindow::initialize()
     sizes << 400 << 1200;
     hsplitter_->setSizes(sizes);
 */
+    createTableMenu();
     vsplitter_->setStretchFactor(0,2);
     vsplitter_->setStretchFactor(1,1);
+
     hsplitter_->setStretchFactor(1,3);
 
     setCentralWidget(hsplitter_);
-    createTableMenu();
+
     setTitle( "" );
 
-#ifdef Q_OS_MAC
-    resize( 960, 760 );
-//    resize( sizeHint().width(), 760 );
-#else
-#ifdef Q_OS_WIN
-    resize( 940, 760 );
-#else
+#ifdef Q_OS_LINUX
     resize( 1020, 760 );
-#endif
+#else
+    resize( 960, 760 );
 #endif
 }
 
@@ -252,7 +249,11 @@ void MainWindow::createTableMenu()
     for( int i=1; i <= 16; i++ )
         right_table_->setColumnWidth(i, 30);
 
+#ifdef Q_OS_MAC
     right_table_->setColumnWidth( 17, 100 );
+#else
+    right_table_->setColumnWidth( 17, 120 );
+#endif
 
     right_table_->setHorizontalHeaderLabels( labels );
     right_table_->verticalHeader()->setVisible(false);
@@ -1205,13 +1206,13 @@ void MainWindow::openBer( const BIN *pBer )
     left_tree_->viewRoot();
     QModelIndex ri = ber_model_->index(0,0);
     left_tree_->expand(ri);
-
+/*
     if( berApplet->isLicense() )
     {
         left_tree_->showTextView();
         left_tree_->showXMLView();
     }
-
+*/
     if( hsplitter_->widget(0) != left_tree_ )
         hsplitter_->replaceWidget(0, left_tree_ );
 }
@@ -1782,13 +1783,13 @@ void MainWindow::decodeTTLV( const BIN *pData )
     ttlv_tree_->viewRoot();
     QModelIndex ri = ttlv_model_->index(0,0);
     ttlv_tree_->expand(ri);
-
+/*
     if( berApplet->isLicense() )
     {
         ttlv_tree_->showTextView();
         ttlv_tree_->showXMLView();
     }
-
+*/
     if( hsplitter_->widget(0) != ttlv_tree_ )
         hsplitter_->replaceWidget(0, ttlv_tree_ );
 

@@ -138,6 +138,7 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
     berApplet->info( QString( "Tag         : 0x%1 - %2\n").arg( pItem->GetTag(), 2, 16, QChar('0')).arg(pItem->GetTagString()));
     berApplet->info( QString( "Offset      : %1 - %2\n" ).arg( strOffset ).arg(pItem->GetOffset()));
     berApplet->info( QString( "Length      : 0x%1 - %2 Bytes\n" ).arg( getHexString(sLen, nLenSize) ).arg(pItem->GetLength()));
+    berApplet->info( QString( "Level       : %1\n").arg( pItem->GetLevel() ));
 
     QString strVal = pItem->GetValueString( &binBer, nWidth );
 
@@ -207,20 +208,32 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
     BIN binPart = {0,0};
     QString text;
     QString hex;
-    QColor green(Qt::green);
-    QColor yellow(Qt::yellow);
-    QColor cyan(Qt::cyan);
-    QColor lightGray(Qt::lightGray);
 
     int len_len = 0;
 
     JS_BIN_set( &binPart, pBer->pVal + pItem->GetOffset(), pItem->GetHeaderSize() + pItem->GetLength() );
 
     QTableWidget* rightTable = berApplet->mainWindow()->rightTable();
+    rightTable->setRowCount(0);
 
-    int row_cnt = rightTable->rowCount();
-    for( int k = 0; k < row_cnt; k++ )
-        rightTable->removeRow(0);
+    if( berApplet->isLicense() == true )
+    {
+        QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
+        xmlEdit->clear();
+
+        showXML( 0, "<!-- XML Decoded Message -->\n", QColor(Qt::darkGreen) );
+        showItemXML( pItem );
+        xmlEdit->moveCursor(QTextCursor::Start);;
+
+
+        QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
+        txtEdit->clear();
+
+        showText( 0, "-- Text Decoded Message --\n", QColor(Qt::blue) );
+        showItemText( pItem );
+        txtEdit->moveCursor(QTextCursor::Start);
+    }
+
 
     for( int i = 0; i < binPart.nLen; i++ )
     {
@@ -287,20 +300,33 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
 
     QString text;
     QString hex;
-    QColor green(Qt::green);
-    QColor yellow(Qt::yellow);
-    QColor cyan(Qt::cyan);
-    QColor lightGray(Qt::lightGray);
 
     int len_len = 0;
     int start_col = 0;
     int start_row = 0;
 
     QTableWidget* rightTable = berApplet->mainWindow()->rightTable();
+    rightTable->setRowCount(0);
 
-    int row_cnt = rightTable->rowCount();
-    for( int k = 0; k < row_cnt; k++ )
-        rightTable->removeRow(0);
+    if( berApplet->isLicense() == true )
+    {
+        BerModel *tree_model = (BerModel *)model();
+        BerItem *root = (BerItem *)tree_model->item(0,0);
+
+        QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
+        xmlEdit->clear();
+
+        showXML( 0, "<!-- XML Decoded Message -->\n", QColor(Qt::darkGreen) );
+        showItemXML( root, pItem );
+        xmlEdit->moveCursor(QTextCursor::Start);
+
+        QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
+        txtEdit->clear();
+
+        showText( 0, "-- Text Decoded Message --\n", QColor(Qt::blue) );
+        showItemText( root, pItem );
+        txtEdit->moveCursor(QTextCursor::Start);
+    }
 
     for( int i = 0; i < pBer->nLen; i++ )
     {
@@ -592,9 +618,10 @@ void BerTreeView::EditValue()
         viewRoot();
         QModelIndex ri = tree_model->index(0,0);
         expand(ri);
-
+/*
         showTextView();
         showXMLView();
+*/
     }
 }
 
@@ -643,9 +670,13 @@ void BerTreeView::showText( int level, const QString& strMsg, QColor cr, bool bB
     QTextCharFormat format;
     format.setForeground( cr );
     if( bBold )
-        format.setFontWeight(QFont::Bold);
+    {
+        format.setFontWeight(QFont::DemiBold);
+    }
     else
+    {
         format.setFontWeight(QFont::Normal);
+    }
 
     cursor.mergeCharFormat( format );
 
@@ -667,7 +698,7 @@ void BerTreeView::showXML( int level, const QString& strMsg, QColor cr, bool bBo
     format.setForeground( cr );
 
     if( bBold )
-        format.setFontWeight(QFont::Bold);
+        format.setFontWeight(QFont::DemiBold);
     else
         format.setFontWeight(QFont::Normal);
 
@@ -680,7 +711,7 @@ void BerTreeView::showXML( int level, const QString& strMsg, QColor cr, bool bBo
     xmlEdit->repaint();
 }
 
-void BerTreeView::showItemText( BerItem* item )
+void BerTreeView::showItemText( BerItem* item, BerItem* setItem, bool bBold )
 {
     int row = 0;
     int col = 0;
@@ -696,33 +727,38 @@ void BerTreeView::showItemText( BerItem* item )
     col = item->column();
     level = item->GetLevel();
 
+    if( bBold == false )
+    {
+        if( item == setItem ) bBold = true;
+    }
+
 //    berApplet->log( QString( "Item row: %1 col: %2 level: %3" ).arg(row).arg(col).arg(level));
 
     if( item->isConstructed() )
     {
-        showText( level, QString("%1 {\n").arg( item->text()), QColor(Qt::darkCyan) );
+        showText( level, QString("%1 {\n").arg( item->text()), QColor(Qt::darkCyan), bBold );
 
         while( 1 )
         {
             BerItem* child = (BerItem *)item->child( pos++ );
             if( child == NULL ) break;
 
-            showItemText( child );
+            showItemText( child, setItem, bBold );
         }
 
-        showText( level, "}\n", QColor(Qt::darkCyan) );
+        showText( level, "}\n", QColor(Qt::darkCyan), bBold );
     }
     else
     {
         QString strName = item->GetTagString();
         QString strValue = item->GetValueString( &binBer );
 
-        showText( level, QString( "%1" ).arg( strName ), QColor(Qt::darkMagenta) );
-        showText( 0, QString( " = %1\n" ).arg( strValue ) );
+        showText( level, QString( "%1" ).arg( strName ), QColor(Qt::darkMagenta), bBold );
+        showText( 0, QString( " = %1\n" ).arg( strValue ), bBold );
     }
 }
 
-void BerTreeView::showItemXML( BerItem* item )
+void BerTreeView::showItemXML( BerItem* item, BerItem* setItem, bool bBold )
 {
     int row = 0;
     int col = 0;
@@ -735,6 +771,19 @@ void BerTreeView::showItemXML( BerItem* item )
     const BIN& binBer = tree_model->getBER();
     QString strName = item->GetTagXMLString();
 
+    if( bBold == false )
+    {
+        if( item == setItem )
+        {
+            bBold = true;
+            QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
+            int pos = xmlEdit->textCursor().position();
+            setItem->setData( pos, Qt::UserRole );
+
+            berApplet->log( QString( "Point: %1").arg( pos) );
+        }
+    }
+
     row = item->row();
     col = item->column();
     level = item->GetLevel();
@@ -745,13 +794,13 @@ void BerTreeView::showItemXML( BerItem* item )
     {
         if( strName == "NODE" )
         {
-            showXML( level, QString( "<%1 Sign=" ).arg(strName), QColor(Qt::darkCyan) );
-            showXML( 0, QString( "\"%1\"" ).arg( item->GetTag() | item->GetId(), 2, 16, QLatin1Char('0')), QColor(Qt::darkRed) );
-            showXML( 0, QString( ">\n"), QColor(Qt::darkCyan) );
+            showXML( level, QString( "<%1 Sign=" ).arg(strName), QColor(Qt::darkCyan), bBold );
+            showXML( 0, QString( "\"%1\"" ).arg( item->GetTag() | item->GetId(), 2, 16, QLatin1Char('0')), QColor(Qt::darkRed), bBold );
+            showXML( 0, QString( ">\n"), QColor(Qt::darkCyan), bBold );
         }
         else
         {
-            showXML( level, QString("<%1>\n").arg( strName), QColor(Qt::darkCyan) );
+            showXML( level, QString("<%1>\n").arg( strName), QColor(Qt::darkCyan), bBold );
         }
 
         while( 1 )
@@ -759,10 +808,10 @@ void BerTreeView::showItemXML( BerItem* item )
             BerItem* child = (BerItem *)item->child( pos++ );
             if( child == NULL ) break;
 
-            showItemXML( child );
+            showItemXML( child, setItem, bBold );
         }
 
-        showXML( level, QString("</%1>\n").arg( strName ), QColor(Qt::darkCyan) );
+        showXML( level, QString("</%1>\n").arg( strName ), QColor(Qt::darkCyan), bBold );
     }
     else
     {
@@ -776,33 +825,33 @@ void BerTreeView::showItemXML( BerItem* item )
             strComment = JS_PKI_getLNFromOID( strValue.toStdString().c_str() );
             strDesc = JS_PKI_getSNFromOID( strValue.toStdString().c_str() );
 
-            showXML( level, QString( "<%1" ).arg( strName ), QColor(Qt::darkMagenta) );
+            showXML( level, QString( "<%1" ).arg( strName ), QColor(Qt::darkMagenta), bBold );
 
             if( strComment.length() > 0 )
             {
-                showXML( 0, " Comment=", QColor(Qt::blue) );
-                showXML( 0, QString("\"%1\"").arg( strComment), QColor(Qt::darkRed) );
+                showXML( 0, " Comment=", QColor(Qt::blue), bBold );
+                showXML( 0, QString("\"%1\"").arg( strComment), QColor(Qt::darkRed), bBold );
             }
 
             if( strDesc.length() > 0 )
             {
-                showXML( 0, " Description=", QColor(Qt::blue) );
-                showXML( 0, QString("\"%1\"").arg( strDesc), QColor(Qt::darkRed) );
+                showXML( 0, " Description=", QColor(Qt::blue), bBold );
+                showXML( 0, QString("\"%1\"").arg( strDesc), QColor(Qt::darkRed), bBold );
             }
 
-            showXML( 0, ">", QColor(Qt::darkMagenta) );
+            showXML( 0, ">", QColor(Qt::darkMagenta), bBold );
         }
         else
         {
-            showXML( level, QString( "<%1>" ).arg( strName ), QColor(Qt::darkMagenta) );
+            showXML( level, QString( "<%1>" ).arg( strName ), QColor(Qt::darkMagenta), bBold );
         }
 
-        showXML( 0, QString( "%1" ).arg( strValue ) );
-        showXML( 0, QString( "</%1>\n" ).arg( strName ), QColor(Qt::darkMagenta) );
+        showXML( 0, QString( "%1" ).arg( strValue ), bBold );
+        showXML( 0, QString( "</%1>\n" ).arg( strName ), QColor(Qt::darkMagenta), bBold );
     }
 }
 
-
+/*
 void BerTreeView::showTextView()
 {
     BerModel *tree_model = (BerModel *)model();
@@ -828,3 +877,4 @@ void BerTreeView::showXMLView()
     showItemXML( root );
     xmlEdit->moveCursor(QTextCursor::Start);
 }
+*/

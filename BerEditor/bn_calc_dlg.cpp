@@ -229,19 +229,16 @@ int BNCalcDlg::getInput( BIN *pA, BIN *pB, BIN *pMod )
         if( (strA.length() > 0) && (strA.length() % 2) )
         {
             strA = QString( "0%1").arg( strA );
-            mAText->setPlainText( strA );
         }
 
         if( (strB.length() > 0) && (strB.length() % 2) )
         {
             strB = QString( "0%1").arg( strB );
-            mBText->setPlainText( strB );
         }
 
         if( (strMod.length() > 0) && (strMod.length() % 2) )
         {
             strMod = QString( "0%1").arg( strMod );
-            mModText->setPlainText(strMod);
         }
     }
 

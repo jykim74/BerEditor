@@ -21,9 +21,10 @@ public:
 
     void viewRoot();
     QString GetTextView();
-
+/*
     void showTextView();
     void showXMLView();
+*/
 
 private slots:
     void onItemClicked( const QModelIndex& index );
@@ -53,8 +54,8 @@ private:
     void infoItem( BerItem *pItem, int nWidth );
     BerItem* currentItem();
 
-    void showItemText( BerItem* item );
-    void showItemXML( BerItem* item );
+    void showItemText( BerItem* item, BerItem* setItem = nullptr, bool bBold = false );
+    void showItemXML( BerItem* item, BerItem* setItem = nullptr, bool bBold = false );
 
     void showText( int level, const QString& strMsg, QColor cr = QColor(0x00, 0x00, 0x00), bool bBold = false );
     void showXML( int level, const QString& strMsg, QColor cr = QColor(0x00, 0x00, 0x00), bool bBold = false );
