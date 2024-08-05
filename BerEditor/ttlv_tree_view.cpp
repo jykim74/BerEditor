@@ -156,6 +156,7 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
 
         showXML( 0, "<!-- XML Decoded Message -->\n", QColor(Qt::darkGreen) );
         showItemXML( root );
+        xmlEdit->moveCursor(QTextCursor::Start);
 
         /*
         int nXMLLine = pItem->data(Qt::UserRole + 1).toInt();
@@ -174,6 +175,7 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
 
         showText( 0, "-- Text Decoded Message --\n", QColor(Qt::blue) );
         showItemText( root );
+        txtEdit->moveCursor(QTextCursor::Start);
 
         /*
         int nLine = pItem->data(Qt::UserRole + 2).toInt();
