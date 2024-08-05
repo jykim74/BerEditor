@@ -45,7 +45,6 @@ int BerModel::parseTree()
     QStringList labels;
     setHorizontalHeaderLabels( labels );
 
-
     pRootItem->SetOffset(offset);
     pRootItem->SetLevel(0);
 
