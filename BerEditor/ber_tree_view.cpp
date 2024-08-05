@@ -318,14 +318,32 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
 
         showXML( 0, "<!-- XML Decoded Message -->\n", QColor(Qt::darkGreen) );
         showItemXML( root, pItem );
-        xmlEdit->moveCursor(QTextCursor::Start);
+        int nXMLLine = pItem->data(Qt::UserRole + 1).toInt();
+        QTextCursor xml_cursor = xmlEdit->textCursor();
+        xml_cursor.movePosition(QTextCursor::Start);
+        for( int i = 1; i < nXMLLine; i++ )
+        {
+            xml_cursor.movePosition(QTextCursor::Down);
+        }
+        xmlEdit->setTextCursor(xml_cursor);
+        xmlEdit->ensureCursorVisible();
+ //       xmlEdit->moveCursor(QTextCursor::Start);
 
         QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
         txtEdit->clear();
 
         showText( 0, "-- Text Decoded Message --\n", QColor(Qt::blue) );
         showItemText( root, pItem );
-        txtEdit->moveCursor(QTextCursor::Start);
+        int nLine = pItem->data(Qt::UserRole + 2).toInt();
+        QTextCursor cursor = txtEdit->textCursor();
+        cursor.movePosition(QTextCursor::Start);
+        for( int i = 1; i < nLine; i++ )
+        {
+            cursor.movePosition(QTextCursor::Down);
+        }
+        txtEdit->setTextCursor(cursor);
+        txtEdit->ensureCursorVisible();
+        //txtEdit->moveCursor(QTextCursor::Start);
     }
 
     for( int i = 0; i < pBer->nLen; i++ )
@@ -558,6 +576,9 @@ void BerTreeView::ExpandValue()
         if( item->GetLength() > 0 )
             tree_model->parseConstruct( offset + item->GetHeaderSize(), item );
     }
+
+    onItemClicked( index );
+    expand( index );
 }
 
 void BerTreeView::SaveNode()
@@ -729,12 +750,19 @@ void BerTreeView::showItemText( BerItem* item, BerItem* setItem, bool bBold )
 
     if( bBold == false )
     {
-        if( item == setItem ) bBold = true;
+        if( item == setItem )
+        {
+            bBold = true;
+            QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
+            int nLine = txtEdit->toPlainText().split("\n").count();
+
+            setItem->setData( nLine, Qt::UserRole + 2);
+        }
     }
 
 //    berApplet->log( QString( "Item row: %1 col: %2 level: %3" ).arg(row).arg(col).arg(level));
 
-    if( item->isConstructed() )
+    if( item->isConstructed() || item->hasChildren() )
     {
         showText( level, QString("%1 {\n").arg( item->text()), QColor(Qt::darkCyan), bBold );
 
@@ -776,11 +804,11 @@ void BerTreeView::showItemXML( BerItem* item, BerItem* setItem, bool bBold )
         if( item == setItem )
         {
             bBold = true;
-            QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
-            int pos = xmlEdit->textCursor().position();
-            setItem->setData( pos, Qt::UserRole );
 
-            berApplet->log( QString( "Point: %1").arg( pos) );
+            QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
+            int nLine = xmlEdit->toPlainText().split("\n").count();
+
+            setItem->setData( nLine, Qt::UserRole + 1 );
         }
     }
 
@@ -790,7 +818,7 @@ void BerTreeView::showItemXML( BerItem* item, BerItem* setItem, bool bBold )
 
 //    berApplet->log( QString( "Item row: %1 col: %2 level: %3" ).arg(row).arg(col).arg(level));
 
-    if( item->isConstructed() )
+    if( item->isConstructed() || item->hasChildren() )
     {
         if( strName == "NODE" )
         {
