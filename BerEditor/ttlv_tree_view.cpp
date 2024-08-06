@@ -146,48 +146,57 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
 
     rightTable->setRowCount(0);
 
-    if( berApplet->isLicense() == true && is_set_ == false )
+    if( berApplet->isLicense() == true )
     {
-        TTLVTreeModel *tree_model = (TTLVTreeModel *)model();
-        TTLVTreeItem *root = (TTLVTreeItem *)tree_model->item(0,0);
-
-        QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
-        xmlEdit->clear();
-
-        showXML( 0, "<!-- XML Decoded Message -->\n", QColor(Qt::darkGreen) );
-        showItemXML( root );
-        xmlEdit->moveCursor(QTextCursor::Start);
-
-        /*
-        int nXMLLine = pItem->data(Qt::UserRole + 1).toInt();
-        QTextCursor xml_cursor = xmlEdit->textCursor();
-        xml_cursor.movePosition(QTextCursor::Start);
-        for( int i = 1; i < nXMLLine; i++ )
+        if( is_set_ == false )
         {
-            xml_cursor.movePosition(QTextCursor::Down);
+            TTLVTreeModel *tree_model = (TTLVTreeModel *)model();
+            TTLVTreeItem *root = (TTLVTreeItem *)tree_model->item(0,0);
+
+            QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
+            xmlEdit->clear();
+
+            showXML( 0, "<!-- XML Decoded Message -->\n", QColor(Qt::darkGreen) );
+            showItemXML( root );
+            xmlEdit->moveCursor(QTextCursor::Start);
+
+            /*
+            int nXMLLine = pItem->data(Qt::UserRole + 1).toInt();
+            QTextCursor xml_cursor = xmlEdit->textCursor();
+            xml_cursor.movePosition(QTextCursor::Start);
+            for( int i = 1; i < nXMLLine; i++ )
+            {
+                xml_cursor.movePosition(QTextCursor::Down);
+            }
+            xmlEdit->setTextCursor(xml_cursor);
+            xmlEdit->ensureCursorVisible();
+            */
+
+            QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
+            txtEdit->clear();
+
+            showText( 0, "-- Text Decoded Message --\n", QColor(Qt::blue) );
+            showItemText( root );
+            txtEdit->moveCursor(QTextCursor::Start);
+
+            /*
+            int nLine = pItem->data(Qt::UserRole + 2).toInt();
+            QTextCursor cursor = txtEdit->textCursor();
+            cursor.movePosition(QTextCursor::Start);
+            for( int i = 1; i < nLine; i++ )
+            {
+                cursor.movePosition(QTextCursor::Down);
+            }
+            txtEdit->setTextCursor(cursor);
+            txtEdit->ensureCursorVisible();
+            */
         }
-        xmlEdit->setTextCursor(xml_cursor);
-        xmlEdit->ensureCursorVisible();
-        */
-
-        QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
-        txtEdit->clear();
-
-        showText( 0, "-- Text Decoded Message --\n", QColor(Qt::blue) );
-        showItemText( root );
-        txtEdit->moveCursor(QTextCursor::Start);
-
-        /*
-        int nLine = pItem->data(Qt::UserRole + 2).toInt();
-        QTextCursor cursor = txtEdit->textCursor();
-        cursor.movePosition(QTextCursor::Start);
-        for( int i = 1; i < nLine; i++ )
+        else
         {
-            cursor.movePosition(QTextCursor::Down);
+#ifdef QT_DEBUG
+
+#endif
         }
-        txtEdit->setTextCursor(cursor);
-        txtEdit->ensureCursorVisible();
-        */
     }
 
     for( int i = 0; i < TTLV.nLen; i++ )

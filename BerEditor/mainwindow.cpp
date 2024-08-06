@@ -176,10 +176,12 @@ void MainWindow::initialize()
 
     right_xml_ = new QTextEdit;
     right_xml_->setReadOnly(true);
+    right_xml_->setAcceptRichText(true);
     table_tab_->addTab( right_xml_, tr( "XML" ));
 
     right_text_ = new QTextEdit;
     right_text_->setReadOnly(true);
+    right_text_->setAcceptRichText(true);
     table_tab_->addTab( right_text_, tr( "Text" ));
 
     vsplitter_->addWidget( table_tab_ );
