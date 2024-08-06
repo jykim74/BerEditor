@@ -764,19 +764,19 @@ void BerTreeView::showItemText( BerItem* item, BerItem* setItem, bool bBold )
     row = item->row();
     col = item->column();
     level = item->GetLevel();
-
+/*
     if( bBold == false )
     {
         if( item == setItem )
         {
             bBold = true;
-            /*
+
             QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
             int nLine = txtEdit->toPlainText().split("\n").count();
             setItem->setData( nLine, Qt::UserRole + 2);
-            */
         }
     }
+*/
 
 //    berApplet->log( QString( "Item row: %1 col: %2 level: %3" ).arg(row).arg(col).arg(level));
 
@@ -816,20 +816,19 @@ void BerTreeView::showItemXML( BerItem* item, BerItem* setItem, bool bBold )
     BerModel *tree_model = (BerModel *)model();
     const BIN& binBer = tree_model->getBER();
     QString strName = item->GetTagXMLString();
-
+/*
     if( bBold == false )
     {
         if( item == setItem )
         {
             bBold = true;
-            /*
+
             QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
             int nLine = xmlEdit->toPlainText().split("\n").count();
             setItem->setData( nLine, Qt::UserRole + 1 );
-            */
         }
     }
-
+*/
     row = item->row();
     col = item->column();
     level = item->GetLevel();

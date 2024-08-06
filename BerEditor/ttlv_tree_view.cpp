@@ -610,20 +610,19 @@ void TTLVTreeView::showItemText( TTLVTreeItem* item, TTLVTreeItem *setItem, bool
     row = item->row();
     col = item->column();
     level = item->getLevel();
-
+/*
     if( bBold == false )
     {
         if( item == setItem )
         {
             bBold = true;
-            /*
+
             QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
             int nLine = txtEdit->toPlainText().split("\n").count();
             setItem->setData( nLine, Qt::UserRole + 2);
-            */
         }
     }
-
+*/
 
     if( item->isStructure() )
     {
@@ -666,21 +665,19 @@ void TTLVTreeView::showItemXML( TTLVTreeItem* item, TTLVTreeItem *setItem, bool 
     level = item->getLevel();
 
     QString strName = item->getTagName();
-
+/*
     if( bBold == false )
     {
         if( item == setItem )
         {
             bBold = true;
 
-            /*
             QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
             int nLine = xmlEdit->toPlainText().split("\n").count();
             setItem->setData( nLine, Qt::UserRole + 1 );
-            */
         }
     }
-
+*/
     if( item->isStructure() )
     {
         showXML( level, QString("<%1>\n").arg( strName), QColor(Qt::darkCyan), bBold );
