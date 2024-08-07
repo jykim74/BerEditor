@@ -350,7 +350,7 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
         int nEnd = pItem->data(Qt::UserRole + 1).toInt();
         xml_cursor.setPosition( nEnd, QTextCursor::KeepAnchor );
         QTextCharFormat format;
-        format.setFontWeight(QFont::DemiBold);
+        //format.setFontWeight(QFont::DemiBold);
         // 선택된 텍스트에 포맷을 적용합니다.
         xml_cursor.setCharFormat( format );
 
