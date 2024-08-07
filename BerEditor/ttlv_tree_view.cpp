@@ -149,17 +149,11 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
 
         showXML( 0, "<!-- XML Decoded Message -->\n", QColor(Qt::darkGreen) );
         showItemXML( root, pItem );
-        xmlEdit->moveCursor(QTextCursor::Start);
 
-        int nXMLLine = pItem->data(Qt::UserRole + 1).toInt();
         QTextCursor xml_cursor = xmlEdit->textCursor();
-
-        for( int i = 1; i < nXMLLine; i++ )
-        {
-            xml_cursor.movePosition(QTextCursor::Down);
-        }
+        int nPos = pItem->data(Qt::UserRole).toInt();
+        xml_cursor.setPosition( nPos );
         xmlEdit->setTextCursor(xml_cursor);
-        xmlEdit->ensureCursorVisible();
     }
     else if( table_idx == TABLE_IDX_TXT )
     {
@@ -168,18 +162,11 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
 
         showText( 0, "-- Text Decoded Message --\n", QColor(Qt::blue) );
         showItemText( root, pItem );
-        txtEdit->moveCursor(QTextCursor::Start);
 
-        int nLine = pItem->data(Qt::UserRole + 2).toInt();
         QTextCursor cursor = txtEdit->textCursor();
-
-        for( int i = 1; i < nLine; i++ )
-        {
-            cursor.movePosition(QTextCursor::Down);
-        }
-
+        int nPos = pItem->data(Qt::UserRole).toInt();
+        cursor.setPosition( nPos );
         txtEdit->setTextCursor(cursor);
-        txtEdit->ensureCursorVisible();
     }
     else
     {
@@ -628,8 +615,8 @@ void TTLVTreeView::showItemText( TTLVTreeItem* item, TTLVTreeItem *setItem, bool
             bBold = true;
 
             QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
-            int nLine = txtEdit->toPlainText().split("\n").count();
-            setItem->setData( nLine, Qt::UserRole + 2);
+            int pos = txtEdit->textCursor().position();
+            setItem->setData( pos, Qt::UserRole );
         }
     }
 
@@ -682,8 +669,8 @@ void TTLVTreeView::showItemXML( TTLVTreeItem* item, TTLVTreeItem *setItem, bool 
             bBold = true;
 
             QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
-            int nLine = xmlEdit->toPlainText().split("\n").count();
-            setItem->setData( nLine, Qt::UserRole + 1 );
+            int nPos = xmlEdit->textCursor().position();
+            setItem->setData( nPos, Qt::UserRole );
         }
     }
 
