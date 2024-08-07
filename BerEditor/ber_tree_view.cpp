@@ -324,16 +324,36 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
         QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
         xmlEdit->clear();
 
+#ifdef QT_DEBUG
+        str_xml_.clear();
+
+        setXML( 0, "<!-- XML Decoded Message -->\n" );
+        setItemXML( root, pItem );
+        xmlEdit->setPlainText( str_xml_ );
+#else
         showXML( 0, "<!-- XML Decoded Message -->\n", QColor(Qt::darkGreen) );
 
         if( root == pItem )
             showItemXML( root );
         else
             showItemXML( root, pItem );
-
+#endif
         QTextCursor xml_cursor = xmlEdit->textCursor();
         int nPos = pItem->data(Qt::UserRole).toInt();
+        // 시작 위치로 커서를 이동합니다.
         xml_cursor.setPosition( nPos );
+
+        /*
+        // 끝 위치까지의 영역을 선택합니다.
+        int nEnd = pItem->data(Qt::UserRole + 1).toInt();
+        xml_cursor.setPosition( nEnd, QTextCursor::KeepAnchor );
+        QTextCharFormat format;
+        format.setFontWeight(QFont::DemiBold);
+        // 선택된 텍스트에 포맷을 적용합니다.
+        xml_cursor.setCharFormat( format );
+        */
+
+
         xmlEdit->setTextCursor(xml_cursor);
     }
     else if( table_idx == TABLE_IDX_TXT )
@@ -341,13 +361,20 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
         QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
         txtEdit->clear();
 
+#ifdef QT_DEBUG
+        str_txt_.clear();
+        setText( 0, "-- Text Decoded Message --\n" );
+
+        setItemText( root, pItem );
+        txtEdit->setPlainText( str_txt_ );
+#else
         showText( 0, "-- Text Decoded Message --\n", QColor(Qt::blue) );
 
         if( root == pItem )
             showItemText( root );
         else
             showItemText( root, pItem );
-
+#endif
         QTextCursor cursor = txtEdit->textCursor();
         int nPos = pItem->data(Qt::UserRole).toInt();
         cursor.setPosition( nPos );
@@ -806,7 +833,7 @@ void BerTreeView::showItemText( BerItem* item, BerItem* setItem, bool bBold )
         QString strValue = item->GetValueString( &binBer );
 
         showText( level, QString( "%1" ).arg( strName ), QColor(Qt::darkMagenta), bBold );
-        showText( 0, QString( " = %1\n" ).arg( strValue ), bBold );
+        showText( 0, QString( " = %1\n" ).arg( strValue ), QColor(Qt::black), bBold );
     }
 }
 
@@ -897,8 +924,165 @@ void BerTreeView::showItemXML( BerItem* item, BerItem* setItem, bool bBold )
             showXML( level, QString( "<%1>" ).arg( strName ), QColor(Qt::darkMagenta), bBold );
         }
 
-        showXML( 0, QString( "%1" ).arg( strValue ), bBold );
+        showXML( 0, QString( "%1" ).arg( strValue ), QColor(Qt::black), bBold );
         showXML( 0, QString( "</%1>\n" ).arg( strName ), QColor(Qt::darkMagenta), bBold );
+    }
+}
+
+
+void BerTreeView::setText( int level, const QString& strMsg )
+{
+    if( level > 0 )
+    {
+        QString strEmpty = QString( "%1" ).arg( " ", 4 * level, QLatin1Char( ' ' ));
+        str_txt_ += strEmpty;
+    }
+
+    str_txt_ += strMsg;
+}
+
+void BerTreeView::setXML( int level, const QString& strMsg )
+{
+    if( level > 0 )
+    {
+        QString strEmpty = QString( "%1" ).arg( " ", 4 * level, QLatin1Char( ' ' ));
+        str_xml_ += strEmpty;
+    }
+
+    str_xml_ += strMsg;
+}
+
+void BerTreeView::setItemText( BerItem* item, BerItem* setItem )
+{
+    int pos = 0;
+    int level = 0;
+
+    if( item == NULL ) return;
+
+    BerModel *tree_model = (BerModel *)model();
+    const BIN& binBer = tree_model->getBER();
+
+    level = item->GetLevel();
+
+    if( item == setItem )
+    {
+        int pos = str_txt_.length();
+        setItem->setData( pos, Qt::UserRole );
+    }
+
+    if( item->isConstructed() || item->hasChildren() )
+    {
+        setText( level, QString("%1 {\n").arg( item->text()) );
+
+        while( 1 )
+        {
+            BerItem* child = (BerItem *)item->child( pos++ );
+            if( child == NULL ) break;
+
+            setItemText( child, setItem );
+        }
+
+        setText( level, "}\n" );
+    }
+    else
+    {
+        QString strName = item->GetTagString();
+        QString strValue = item->GetValueString( &binBer );
+
+        setText( level, QString( "%1" ).arg( strName ) );
+        setText( 0, QString( " = %1\n" ).arg( strValue ) );
+    }
+
+    if( item == setItem )
+    {
+        int nPos = str_xml_.length();
+        setItem->setData( nPos, Qt::UserRole + 1 );
+    }
+}
+
+void BerTreeView::setItemXML( BerItem* item, BerItem* setItem )
+{
+    int pos = 0;
+    int level = 0;
+
+    if( item == NULL ) return;
+
+    BerModel *tree_model = (BerModel *)model();
+    const BIN& binBer = tree_model->getBER();
+    QString strName = item->GetTagXMLString();
+
+    if( item == setItem )
+    {
+        int nPos = str_xml_.length();
+        setItem->setData( nPos, Qt::UserRole );
+    }
+
+    level = item->GetLevel();
+
+    if( item->isConstructed() || item->hasChildren() )
+    {
+        if( strName == "NODE" )
+        {
+            setXML( level, QString( "<%1 Sign=" ).arg(strName) );
+            setXML( 0, QString( "\"%1\"" ).arg( item->GetTag() | item->GetId(), 2, 16, QLatin1Char('0')) );
+            setXML( 0, QString( ">\n") );
+        }
+        else
+        {
+            setXML( level, QString("<%1>\n").arg( strName) );
+        }
+
+        while( 1 )
+        {
+            BerItem* child = (BerItem *)item->child( pos++ );
+            if( child == NULL ) break;
+
+            setItemXML( child, setItem );
+        }
+
+        setXML( level, QString("</%1>\n").arg( strName ) );
+    }
+    else
+    {
+        QString strValue = item->GetValueString( &binBer );
+
+        if( strName == "OBJECT_IDENTIFIER" )
+        {
+            QString strComment;
+            QString strDesc;
+
+            strComment = JS_PKI_getLNFromOID( strValue.toStdString().c_str() );
+            strDesc = JS_PKI_getSNFromOID( strValue.toStdString().c_str() );
+
+            setXML( level, QString( "<%1" ).arg( strName ) );
+
+            if( strComment.length() > 0 )
+            {
+                setXML( 0, " Comment=" );
+                setXML( 0, QString("\"%1\"").arg( strComment) );
+            }
+
+            if( strDesc.length() > 0 )
+            {
+                setXML( 0, " Description=" );
+                setXML( 0, QString("\"%1\"").arg( strDesc) );
+            }
+
+            setXML( 0, ">" );
+        }
+        else
+        {
+            setXML( level, QString( "<%1>" ).arg( strName ) );
+        }
+
+        setXML( 0, QString( "%1" ).arg( strValue ) );
+        setXML( 0, QString( "</%1>\n" ).arg( strName ) );
+    }
+
+    if( item == setItem )
+    {
+        int nPos = str_xml_.length();
+        setItem->setData( nPos, Qt::UserRole + 1 );
     }
 }
 

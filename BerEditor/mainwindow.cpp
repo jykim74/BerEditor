@@ -49,6 +49,7 @@
 #include "ttlv_client_dlg.h"
 #include "ttlv_encoder_dlg.h"
 #include "make_ttlv_dlg.h"
+#include "BasicXMLSyntaxHighlighter.h"
 
 #include "js_pki_tools.h"
 #include "js_kms.h"
@@ -177,6 +178,12 @@ void MainWindow::initialize()
     right_xml_ = new QTextEdit;
     right_xml_->setReadOnly(true);
     right_xml_->setAcceptRichText(true);
+
+#ifdef QT_DEBUG
+    BasicXMLSyntaxHighlighter * highlighter = new BasicXMLSyntaxHighlighter(right_xml_);
+    Q_UNUSED(highlighter);
+#endif
+
     table_tab_->addTab( right_xml_, tr( "XML" ));
 
     right_text_ = new QTextEdit;
