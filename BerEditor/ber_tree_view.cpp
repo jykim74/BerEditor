@@ -325,7 +325,11 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
         xmlEdit->clear();
 
         showXML( 0, "<!-- XML Decoded Message -->\n", QColor(Qt::darkGreen) );
-        showItemXML( root, pItem );
+
+        if( root == pItem )
+            showItemXML( root );
+        else
+            showItemXML( root, pItem );
 
         QTextCursor xml_cursor = xmlEdit->textCursor();
         int nPos = pItem->data(Qt::UserRole).toInt();
@@ -338,7 +342,11 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
         txtEdit->clear();
 
         showText( 0, "-- Text Decoded Message --\n", QColor(Qt::blue) );
-        showItemText( root, pItem );
+
+        if( root == pItem )
+            showItemText( root );
+        else
+            showItemText( root, pItem );
 
         QTextCursor cursor = txtEdit->textCursor();
         int nPos = pItem->data(Qt::UserRole).toInt();
