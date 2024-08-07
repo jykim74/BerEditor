@@ -20,7 +20,8 @@ public:
     BerTreeView( QWidget* parent = 0 );
 
     void viewRoot();
-    void Unset();
+    void viewCurrent();
+
     QString GetTextView();
 /*
     void showTextView();
@@ -60,8 +61,6 @@ private:
 
     void showText( int level, const QString& strMsg, QColor cr = QColor(0x00, 0x00, 0x00), bool bBold = false );
     void showXML( int level, const QString& strMsg, QColor cr = QColor(0x00, 0x00, 0x00), bool bBold = false );
-
-    bool is_set_;
 };
 
 #endif // BER_TREE_VIEW_H

@@ -184,6 +184,8 @@ void MainWindow::initialize()
     right_text_->setAcceptRichText(true);
     table_tab_->addTab( right_text_, tr( "Text" ));
 
+    connect( table_tab_, SIGNAL(currentChanged(int)), this, SLOT(changeTableTab()));
+
     vsplitter_->addWidget( table_tab_ );
 
     text_tab_ = new QTabWidget;
@@ -844,6 +846,18 @@ void MainWindow::newFile()
     process->start();
 }
 
+void MainWindow::changeTableTab()
+{
+    if( isTTLV() == true )
+    {
+        ttlv_tree_->viewCurrent();
+    }
+    else
+    {
+        left_tree_->viewCurrent();
+    }
+}
+
 void MainWindow::runMakeBER()
 {
     int ret = 0;
@@ -1204,7 +1218,6 @@ void MainWindow::openBer( const BIN *pBer )
     ber_model_->setBER( pBer );
     ber_model_->parseTree();
 
-    left_tree_->Unset();
     left_tree_->header()->setVisible(false);
     left_tree_->viewRoot();
     QModelIndex ri = ber_model_->index(0,0);
@@ -1327,6 +1340,11 @@ void MainWindow::setTitle( const QString strName )
 void MainWindow::showTextMsg(const QString &msg)
 {
     log_text_->setText( msg );
+}
+
+int MainWindow::tableCurrentIndex()
+{
+    return table_tab_->currentIndex();
 }
 
 void MainWindow::adjustForCurrentFile( const QString& filePath )
@@ -1781,7 +1799,7 @@ void MainWindow::decodeTTLV( const BIN *pData )
 
     ttlv_model_->setTTLV( pData );
     ttlv_model_->parseTree();
-    ttlv_tree_->Unset();
+
     ttlv_tree_->header()->setVisible(false);
     ttlv_tree_->viewRoot();
     QModelIndex ri = ttlv_model_->index(0,0);

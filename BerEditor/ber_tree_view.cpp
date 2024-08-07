@@ -25,7 +25,6 @@
 BerTreeView::BerTreeView( QWidget *parent )
     : QTreeView (parent)
 {
-    is_set_ = false;
     connect( this, SIGNAL(clicked(const QModelIndex&)), this, SLOT(onItemClicked(const QModelIndex&)));
 
     setAcceptDrops(false);
@@ -79,9 +78,18 @@ void BerTreeView::viewRoot()
     setExpanded( rootIndex(), true );
 }
 
-void BerTreeView::Unset()
+void BerTreeView::viewCurrent()
 {
-    is_set_ = false;
+    QModelIndex ci = currentIndex();
+
+    if( ci.isValid() == true )
+    {
+        onItemClicked( ci );
+        setExpanded( ci, true );
+    }
+    else {
+        viewRoot();
+    }
 }
 
 void BerTreeView::infoItem( BerItem *pItem, int nWidth )
@@ -210,21 +218,9 @@ QString BerTreeView::GetTextView()
 
 void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
 {
-    is_set_ = false;
+    int table_idx = berApplet->mainWindow()->tableCurrentIndex();
 
-    int line = 0;
-    BIN binPart = {0,0};
-    QString text;
-    QString hex;
-
-    int len_len = 0;
-
-    JS_BIN_set( &binPart, pBer->pVal + pItem->GetOffset(), pItem->GetHeaderSize() + pItem->GetLength() );
-
-    QTableWidget* rightTable = berApplet->mainWindow()->rightTable();
-    rightTable->setRowCount(0);
-
-    if( berApplet->isLicense() == true )
+    if( table_idx == TABLE_IDX_XML )
     {
         QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
         xmlEdit->clear();
@@ -232,8 +228,9 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
         showXML( 0, "<!-- XML Decoded Message -->\n", QColor(Qt::darkGreen) );
         showItemXML( pItem );
         xmlEdit->moveCursor(QTextCursor::Start);;
-
-
+    }
+    else if( table_idx == TABLE_IDX_TXT )
+    {
         QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
         txtEdit->clear();
 
@@ -241,200 +238,203 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
         showItemText( pItem );
         txtEdit->moveCursor(QTextCursor::Start);
     }
-
-
-    for( int i = 0; i < binPart.nLen; i++ )
+    else
     {
-        if( i % 16 == 0 )
+        int line = 0;
+        BIN binPart = {0,0};
+        QString text;
+        QString hex;
+
+        int len_len = 0;
+
+        JS_BIN_set( &binPart, pBer->pVal + pItem->GetOffset(), pItem->GetHeaderSize() + pItem->GetLength() );
+
+        QTableWidget* rightTable = berApplet->mainWindow()->rightTable();
+        rightTable->setRowCount(0);
+
+        for( int i = 0; i < binPart.nLen; i++ )
         {
-            rightTable->insertRow(line);
-            QString address;
-
-            address = QString( "%1" ).arg( i + pItem->GetOffset(), 8, 16, QLatin1Char( '0') ).toUpper();
-            rightTable->setItem( line, 0, new QTableWidgetItem( address ));
-            rightTable->item( line, 0 )->setBackground( kAddrColor );
-        }
-
-
-        hex = QString( "%1").arg( binPart.pVal[i], 2, 16, QLatin1Char('0') ).toUpper();
-        rightTable->setItem( line, (i%16)+1, new QTableWidgetItem(hex));
-        rightTable->item( line, (i%16) +1 )->setBackground(kValueColor);
-
-        if( i== 0 )
-        {
-            rightTable->item( line, 1)->setBackground(kTagColor);
-        }
-        else if( i== 1 )
-        {
-            if( binPart.pVal[i] & JS_LEN_XTND )
+            if( i % 16 == 0 )
             {
-                len_len = binPart.pVal[i] & JS_LEN_MASK;
-                rightTable->item( line, 2)->setBackground(kLenTypeColor);
+                rightTable->insertRow(line);
+                QString address;
+
+                address = QString( "%1" ).arg( i + pItem->GetOffset(), 8, 16, QLatin1Char( '0') ).toUpper();
+                rightTable->setItem( line, 0, new QTableWidgetItem( address ));
+                rightTable->item( line, 0 )->setBackground( kAddrColor );
             }
-            else
+
+
+            hex = QString( "%1").arg( binPart.pVal[i], 2, 16, QLatin1Char('0') ).toUpper();
+            rightTable->setItem( line, (i%16)+1, new QTableWidgetItem(hex));
+            rightTable->item( line, (i%16) +1 )->setBackground(kValueColor);
+
+            if( i== 0 )
+            {
+                rightTable->item( line, 1)->setBackground(kTagColor);
+            }
+            else if( i== 1 )
+            {
+                if( binPart.pVal[i] & JS_LEN_XTND )
+                {
+                    len_len = binPart.pVal[i] & JS_LEN_MASK;
+                    rightTable->item( line, 2)->setBackground(kLenTypeColor);
+                }
+                else
+                {
+                    rightTable->item( line, i + 1 )->setBackground(kLenColor);
+                }
+            }
+            else if( i <= (1 + len_len))
             {
                 rightTable->item( line, i + 1 )->setBackground(kLenColor);
             }
+
+
+            text += getch( binPart.pVal[i]);
+
+            if( i % 16 - 15 == 0 )
+            {
+                rightTable->setItem( line, 17, new QTableWidgetItem(text));
+                rightTable->item( line, 17 )->setBackground(kTextColor);
+                text.clear();
+                line++;
+            }
         }
-        else if( i <= (1 + len_len))
+
+        if( !text.isEmpty() )
         {
-            rightTable->item( line, i + 1 )->setBackground(kLenColor);
-        }
-
-
-        text += getch( binPart.pVal[i]);
-
-        if( i % 16 - 15 == 0 )
-        {
-            rightTable->setItem( line, 17, new QTableWidgetItem(text));
+            rightTable->setItem(line, 17, new QTableWidgetItem(text));
             rightTable->item( line, 17 )->setBackground(kTextColor);
-            text.clear();
-            line++;
         }
-    }
 
-    if( !text.isEmpty() )
-    {
-        rightTable->setItem(line, 17, new QTableWidgetItem(text));
-        rightTable->item( line, 17 )->setBackground(kTextColor);
+        JS_BIN_reset(&binPart);
     }
-
-    JS_BIN_reset(&binPart);
 }
 
 void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
 {
-    int line = 0;
+    int table_idx = berApplet->mainWindow()->tableCurrentIndex();
 
-    QString text;
-    QString hex;
+    BerModel *tree_model = (BerModel *)model();
+    BerItem *root = (BerItem *)tree_model->item(0,0);
 
-    int len_len = 0;
-    int start_col = 0;
-    int start_row = 0;
-
-    QTableWidget* rightTable = berApplet->mainWindow()->rightTable();
-    rightTable->setRowCount(0);
-
-    if( berApplet->isLicense() == true )
+    if( table_idx == TABLE_IDX_XML )
     {
-        if( is_set_ == false )
+        QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
+        xmlEdit->clear();
+
+        showXML( 0, "<!-- XML Decoded Message -->\n", QColor(Qt::darkGreen) );
+        showItemXML( root, pItem );
+        xmlEdit->moveCursor(QTextCursor::Start);
+
+        int nXMLLine = pItem->data(Qt::UserRole + 1).toInt();
+        QTextCursor xml_cursor = xmlEdit->textCursor();
+
+        for( int i = 1; i < nXMLLine; i++ )
         {
-            BerModel *tree_model = (BerModel *)model();
-            BerItem *root = (BerItem *)tree_model->item(0,0);
-
-            QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
-            xmlEdit->clear();
-
-            showXML( 0, "<!-- XML Decoded Message -->\n", QColor(Qt::darkGreen) );
-            showItemXML( root, pItem );
-            xmlEdit->moveCursor(QTextCursor::Start);
-/*
-            int nXMLLine = pItem->data(Qt::UserRole + 1).toInt();
-            QTextCursor xml_cursor = xmlEdit->textCursor();
-            xml_cursor.movePosition(QTextCursor::Start);
-            for( int i = 1; i < nXMLLine; i++ )
-            {
-                xml_cursor.movePosition(QTextCursor::Down);
-            }
-            xmlEdit->setTextCursor(xml_cursor);
-            xmlEdit->ensureCursorVisible();
-*/
-            QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
-            txtEdit->clear();
-
-            showText( 0, "-- Text Decoded Message --\n", QColor(Qt::blue) );
-            showItemText( root, pItem );
-            txtEdit->moveCursor(QTextCursor::Start);
-/*
-            int nLine = pItem->data(Qt::UserRole + 2).toInt();
-            QTextCursor cursor = txtEdit->textCursor();
-            cursor.movePosition(QTextCursor::Start);
-            for( int i = 1; i < nLine; i++ )
-            {
-                cursor.movePosition(QTextCursor::Down);
-            }
-            txtEdit->setTextCursor(cursor);
-            txtEdit->ensureCursorVisible();
-*/
+            xml_cursor.movePosition(QTextCursor::Down);
         }
-        else
-        {
-#ifdef QT_DEBUG
-            QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
-            QTextDocument *xmlDoc = xmlEdit->document();
-            QTextCursor xmlCursor = xmlEdit->textCursor();
-            xmlCursor.movePosition(QTextCursor::StartOfWord);
-            xmlCursor.movePosition(QTextCursor::EndOfWord, QTextCursor::KeepAnchor);
-            xmlEdit->setTextCursor( xmlCursor );
-#endif
-        }
+        xmlEdit->setTextCursor(xml_cursor);
+        xmlEdit->ensureCursorVisible();
+
     }
-
-    for( int i = 0; i < pBer->nLen; i++ )
+    else if( table_idx == TABLE_IDX_TXT )
     {
-        int pos = 0;
-        if( i % 16 == 0 )
-        {
-            rightTable->insertRow(line);
-            QString address;
+        QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
+        txtEdit->clear();
 
-            address = QString( "%1" ).arg( i, 8, 16, QLatin1Char( '0') ).toUpper();
-            rightTable->setItem( line, 0, new QTableWidgetItem( address ));
-            rightTable->item( line, 0 )->setBackground( kAddrColor );
-        }
+        showText( 0, "-- Text Decoded Message --\n", QColor(Qt::blue) );
+        showItemText( root, pItem );
+        txtEdit->moveCursor(QTextCursor::Start);
 
-        hex = QString( "%1").arg( pBer->pVal[i], 2, 16, QLatin1Char('0') ).toUpper();
-        pos = (i%16) + 1;
-        rightTable->setItem( line, pos, new QTableWidgetItem(hex));
-        if( i== pItem->GetOffset() )
+        int nLine = pItem->data(Qt::UserRole + 2).toInt();
+        QTextCursor cursor = txtEdit->textCursor();
+
+        for( int i = 1; i < nLine; i++ )
         {
-            rightTable->item( line, pos)->setBackground(kTagColor);
-            start_row = line;
-            start_col = pos;
+            cursor.movePosition(QTextCursor::Down);
         }
-        else if( i== pItem->GetOffset()+1 )
+        txtEdit->setTextCursor(cursor);
+        txtEdit->ensureCursorVisible();
+    }
+    else
+    {
+        int line = 0;
+
+        QString text;
+        QString hex;
+
+        int len_len = 0;
+        int start_col = 0;
+        int start_row = 0;
+
+        QTableWidget* rightTable = berApplet->mainWindow()->rightTable();
+        rightTable->setRowCount(0);
+
+        for( int i = 0; i < pBer->nLen; i++ )
         {
-            if( pBer->pVal[i] & JS_LEN_XTND )
+            int pos = 0;
+            if( i % 16 == 0 )
             {
-                rightTable->item( line, pos)->setBackground(kLenTypeColor);
-                len_len = pBer->pVal[i] & JS_LEN_MASK;
+                rightTable->insertRow(line);
+                QString address;
+
+                address = QString( "%1" ).arg( i, 8, 16, QLatin1Char( '0') ).toUpper();
+                rightTable->setItem( line, 0, new QTableWidgetItem( address ));
+                rightTable->item( line, 0 )->setBackground( kAddrColor );
             }
-            else
+
+            hex = QString( "%1").arg( pBer->pVal[i], 2, 16, QLatin1Char('0') ).toUpper();
+            pos = (i%16) + 1;
+            rightTable->setItem( line, pos, new QTableWidgetItem(hex));
+            if( i== pItem->GetOffset() )
             {
-                rightTable->item( line, pos)->setBackground(kLenColor);
+                rightTable->item( line, pos)->setBackground(kTagColor);
+                start_row = line;
+                start_col = pos;
+            }
+            else if( i== pItem->GetOffset()+1 )
+            {
+                if( pBer->pVal[i] & JS_LEN_XTND )
+                {
+                    rightTable->item( line, pos)->setBackground(kLenTypeColor);
+                    len_len = pBer->pVal[i] & JS_LEN_MASK;
+                }
+                else
+                {
+                    rightTable->item( line, pos)->setBackground(kLenColor);
+                }
+            }
+            else if( (i > pItem->GetOffset() + 1 ) && (i <= (pItem->GetOffset() + 1 + len_len)))
+            {
+                rightTable->item( line, pos )->setBackground(kLenColor);
+            }
+            else if( (i > pItem->GetOffset() + 1 ) && ( i < pItem->GetOffset() + pItem->GetHeaderSize() + pItem->GetLength() ))
+            {
+                rightTable->item(line, pos )->setBackground(kValueColor);
+            }
+
+            text += getch( pBer->pVal[i]);
+
+            if( i % 16 - 15 == 0 )
+            {
+                rightTable->setItem( line, 17, new QTableWidgetItem(text));
+                rightTable->item( line, 17 )->setBackground( kTextColor );
+                text.clear();
+                line++;
             }
         }
-        else if( (i > pItem->GetOffset() + 1 ) && (i <= (pItem->GetOffset() + 1 + len_len)))
-        {
-            rightTable->item( line, pos )->setBackground(kLenColor);
-        }
-        else if( (i > pItem->GetOffset() + 1 ) && ( i < pItem->GetOffset() + pItem->GetHeaderSize() + pItem->GetLength() ))
-        {
-            rightTable->item(line, pos )->setBackground(kValueColor);
-        }
 
-        text += getch( pBer->pVal[i]);
-
-        if( i % 16 - 15 == 0 )
+        if( !text.isEmpty() )
         {
-            rightTable->setItem( line, 17, new QTableWidgetItem(text));
+            rightTable->setItem(line, 17, new QTableWidgetItem(text));
             rightTable->item( line, 17 )->setBackground( kTextColor );
-            text.clear();
-            line++;
         }
+
+        QTableWidgetItem *item = rightTable->item( start_row, start_col );
+        rightTable->scrollToItem( item );
     }
-
-    if( !text.isEmpty() )
-    {
-        rightTable->setItem(line, 17, new QTableWidgetItem(text));
-        rightTable->item( line, 17 )->setBackground( kTextColor );
-    }
-
-    QTableWidgetItem *item = rightTable->item( start_row, start_col );
-    rightTable->scrollToItem( item );
-
-    is_set_ = true;
 }
 
 void BerTreeView::copy()
@@ -604,7 +604,6 @@ void BerTreeView::ExpandValue()
             tree_model->parseConstruct( offset + item->GetHeaderSize(), item );
     }
 
-    is_set_ = false;
     onItemClicked( index );
     expand( index );
 }
@@ -664,7 +663,6 @@ void BerTreeView::EditValue()
     if( ret == QDialog::Accepted )
     {
         tree_model->parseTree();
-        is_set_ = false;
         viewRoot();
         QModelIndex ri = tree_model->index(0,0);
         expand(ri);
@@ -703,7 +701,6 @@ void BerTreeView::InsertBER()
 
         tree_model->parseTree();
 
-        is_set_ = false;
         viewRoot();
         QModelIndex ri = tree_model->index(0,0);
         expand(ri);
@@ -778,7 +775,7 @@ void BerTreeView::showItemText( BerItem* item, BerItem* setItem, bool bBold )
     row = item->row();
     col = item->column();
     level = item->GetLevel();
-/*
+
     if( bBold == false )
     {
         if( item == setItem )
@@ -790,7 +787,7 @@ void BerTreeView::showItemText( BerItem* item, BerItem* setItem, bool bBold )
             setItem->setData( nLine, Qt::UserRole + 2);
         }
     }
-*/
+
 
 //    berApplet->log( QString( "Item row: %1 col: %2 level: %3" ).arg(row).arg(col).arg(level));
 
@@ -830,7 +827,7 @@ void BerTreeView::showItemXML( BerItem* item, BerItem* setItem, bool bBold )
     BerModel *tree_model = (BerModel *)model();
     const BIN& binBer = tree_model->getBER();
     QString strName = item->GetTagXMLString();
-/*
+
     if( bBold == false )
     {
         if( item == setItem )
@@ -842,7 +839,7 @@ void BerTreeView::showItemXML( BerItem* item, BerItem* setItem, bool bBold )
             setItem->setData( nLine, Qt::UserRole + 1 );
         }
     }
-*/
+
     row = item->row();
     col = item->column();
     level = item->GetLevel();

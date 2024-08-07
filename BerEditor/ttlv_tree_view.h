@@ -12,7 +12,7 @@ class TTLVTreeView : public QTreeView
 public:
     TTLVTreeView( QWidget* parent = 0 );
     void viewRoot();
-    void Unset();
+    void viewCurrent();
 
     void showRight();
     void showRightFull( TTLVTreeItem *pItem );
@@ -53,7 +53,6 @@ private slots:
 
 public:
     TTLVTreeItem* currentItem();
-    bool is_set_ = false;
 };
 
 #endif // READERTREEVIEW_H

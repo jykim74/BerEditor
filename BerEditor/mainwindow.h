@@ -49,6 +49,12 @@ namespace Ui {
 class MainWindow;
 }
 
+enum {
+    TABLE_IDX_HEX = 0,
+    TABLE_IDX_XML = 1,
+    TABLE_IDX_TXT = 2
+};
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -69,6 +75,7 @@ public:
     BerModel* berModel() { return ber_model_; };
 
     void showTextMsg( const QString& msg );
+    int tableCurrentIndex();
 
     void showWindow();
     void openBer( const BIN *pBer );
@@ -87,6 +94,8 @@ public:
     bool isTTLV();
 
 private slots:
+    void changeTableTab();
+
     void newFile();
     void open();
     void openRecent();

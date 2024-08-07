@@ -22,8 +22,6 @@
 TTLVTreeView::TTLVTreeView( QWidget *parent )
     : QTreeView(parent)
 {
-    is_set_ = false;
-
     connect( this, SIGNAL(clicked(const QModelIndex&)), this, SLOT(onItemClicked(const QModelIndex&)));
     setContextMenuPolicy(Qt::CustomContextMenu);
 
@@ -58,9 +56,18 @@ void TTLVTreeView::viewRoot()
     setExpanded( rootIndex(), true );
 }
 
-void TTLVTreeView::Unset()
+void TTLVTreeView::viewCurrent()
 {
-    is_set_ = false;
+    QModelIndex ci = currentIndex();
+
+    if( ci.isValid() == true )
+    {
+        onItemClicked( ci );
+        setExpanded( ci, true );
+    }
+    else {
+        viewRoot();
+    }
 }
 
 void TTLVTreeView::showRight()
@@ -130,170 +137,137 @@ static char getch( unsigned char c )
 
 void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
 {
-    int line = 0;
+    int table_idx = berApplet->mainWindow()->tableCurrentIndex();
 
-    QString text;
-    QString hex;
-    QColor green(Qt::green);
-    QColor yellow(Qt::yellow);
-    QColor cyan(Qt::cyan);
-    QColor lightGray(Qt::lightGray);
+    TTLVTreeModel *tree_model = (TTLVTreeModel *)model();
+    TTLVTreeItem *root = (TTLVTreeItem *)tree_model->item(0,0);
 
-    QTableWidget* rightTable = berApplet->mainWindow()->rightTable();
-
-    TTLVTreeModel *left_model = (TTLVTreeModel *)model();
-    BIN TTLV = left_model->getTTLV();
-
-    rightTable->setRowCount(0);
-
-    if( berApplet->isLicense() == true )
+    if( table_idx == TABLE_IDX_XML )
     {
-        if( is_set_ == false )
+        QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
+        xmlEdit->clear();
+
+        showXML( 0, "<!-- XML Decoded Message -->\n", QColor(Qt::darkGreen) );
+        showItemXML( root, pItem );
+        xmlEdit->moveCursor(QTextCursor::Start);
+
+        int nXMLLine = pItem->data(Qt::UserRole + 1).toInt();
+        QTextCursor xml_cursor = xmlEdit->textCursor();
+
+        for( int i = 1; i < nXMLLine; i++ )
         {
-            TTLVTreeModel *tree_model = (TTLVTreeModel *)model();
-            TTLVTreeItem *root = (TTLVTreeItem *)tree_model->item(0,0);
-
-            QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
-            xmlEdit->clear();
-
-            showXML( 0, "<!-- XML Decoded Message -->\n", QColor(Qt::darkGreen) );
-            showItemXML( root );
-            xmlEdit->moveCursor(QTextCursor::Start);
-
-            /*
-            int nXMLLine = pItem->data(Qt::UserRole + 1).toInt();
-            QTextCursor xml_cursor = xmlEdit->textCursor();
-            xml_cursor.movePosition(QTextCursor::Start);
-            for( int i = 1; i < nXMLLine; i++ )
-            {
-                xml_cursor.movePosition(QTextCursor::Down);
-            }
-            xmlEdit->setTextCursor(xml_cursor);
-            xmlEdit->ensureCursorVisible();
-            */
-
-            QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
-            txtEdit->clear();
-
-            showText( 0, "-- Text Decoded Message --\n", QColor(Qt::blue) );
-            showItemText( root );
-            txtEdit->moveCursor(QTextCursor::Start);
-
-            /*
-            int nLine = pItem->data(Qt::UserRole + 2).toInt();
-            QTextCursor cursor = txtEdit->textCursor();
-            cursor.movePosition(QTextCursor::Start);
-            for( int i = 1; i < nLine; i++ )
-            {
-                cursor.movePosition(QTextCursor::Down);
-            }
-            txtEdit->setTextCursor(cursor);
-            txtEdit->ensureCursorVisible();
-            */
+            xml_cursor.movePosition(QTextCursor::Down);
         }
-        else
-        {
-#ifdef QT_DEBUG
-
-#endif
-        }
+        xmlEdit->setTextCursor(xml_cursor);
+        xmlEdit->ensureCursorVisible();
     }
-
-    for( int i = 0; i < TTLV.nLen; i++ )
+    else if( table_idx == TABLE_IDX_TXT )
     {
-        int pos = 0;
-        int len = 0;
-        int pad = 0;
+        QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
+        txtEdit->clear();
 
-        if( i % 16 == 0 )
+        showText( 0, "-- Text Decoded Message --\n", QColor(Qt::blue) );
+        showItemText( root, pItem );
+        txtEdit->moveCursor(QTextCursor::Start);
+
+        int nLine = pItem->data(Qt::UserRole + 2).toInt();
+        QTextCursor cursor = txtEdit->textCursor();
+
+        for( int i = 1; i < nLine; i++ )
         {
-            rightTable->insertRow(line);
-            QString address;
-            address = QString( "%1" ).arg( i, 8, 16, QLatin1Char( '0' ));
-            rightTable->setItem( line, 0, new QTableWidgetItem(address));
-            rightTable->item( line, 0 )->setBackgroundColor( QColor(220,220,250) );
+            cursor.movePosition(QTextCursor::Down);
         }
 
-        hex = QString( "%1" ).arg( TTLV.pVal[i], 2, 16, QLatin1Char('0') ).toUpper();
-        pos = (i%16) + 1;
-        rightTable->setItem( line, pos, new QTableWidgetItem(hex));
+        txtEdit->setTextCursor(cursor);
+        txtEdit->ensureCursorVisible();
+    }
+    else
+    {
+        int line = 0;
 
-        len = pItem->getLengthInt();
-        pad = 8 - (len % 8);
-        if( pad == 8 ) pad = 0;
+        QString text;
+        QString hex;
+        QColor green(Qt::green);
+        QColor yellow(Qt::yellow);
+        QColor cyan(Qt::cyan);
+        QColor lightGray(Qt::lightGray);
 
-        if( i >= pItem->getOffset() && i < pItem->getOffset() + 3 )
+        QTableWidget* rightTable = berApplet->mainWindow()->rightTable();
+
+        TTLVTreeModel *left_model = (TTLVTreeModel *)model();
+        BIN TTLV = left_model->getTTLV();
+
+        rightTable->setRowCount(0);
+
+        for( int i = 0; i < TTLV.nLen; i++ )
         {
-            rightTable->item( line, pos )->setBackgroundColor(green);
-        }
-        else if( i == pItem->getOffset() + 3 )
-        {
-            rightTable->item( line, pos )->setBackgroundColor(yellow);
-        }
-        else if( i >= pItem->getOffset() + 4 && i < pItem->getOffset() + 8 )
-        {
-            rightTable->item( line, pos )->setBackgroundColor(cyan);
-        }
-        else if( i >= pItem->getOffset() + 8 && i < pItem->getOffset() + 8 + len )
-        {
-            rightTable->item( line, pos )->setBackgroundColor(kValueColor);
-        }
-        else if( i >= (pItem->getOffset() + 8 + len) && i < (pItem->getOffset() + 8 + len + pad ))
-        {
-            rightTable->item( line, pos )->setBackgroundColor(lightGray);
-        }
+            int pos = 0;
+            int len = 0;
+            int pad = 0;
+
+            if( i % 16 == 0 )
+            {
+                rightTable->insertRow(line);
+                QString address;
+                address = QString( "%1" ).arg( i, 8, 16, QLatin1Char( '0' ));
+                rightTable->setItem( line, 0, new QTableWidgetItem(address));
+                rightTable->item( line, 0 )->setBackgroundColor( QColor(220,220,250) );
+            }
+
+            hex = QString( "%1" ).arg( TTLV.pVal[i], 2, 16, QLatin1Char('0') ).toUpper();
+            pos = (i%16) + 1;
+            rightTable->setItem( line, pos, new QTableWidgetItem(hex));
+
+            len = pItem->getLengthInt();
+            pad = 8 - (len % 8);
+            if( pad == 8 ) pad = 0;
+
+            if( i >= pItem->getOffset() && i < pItem->getOffset() + 3 )
+            {
+                rightTable->item( line, pos )->setBackgroundColor(green);
+            }
+            else if( i == pItem->getOffset() + 3 )
+            {
+                rightTable->item( line, pos )->setBackgroundColor(yellow);
+            }
+            else if( i >= pItem->getOffset() + 4 && i < pItem->getOffset() + 8 )
+            {
+                rightTable->item( line, pos )->setBackgroundColor(cyan);
+            }
+            else if( i >= pItem->getOffset() + 8 && i < pItem->getOffset() + 8 + len )
+            {
+                rightTable->item( line, pos )->setBackgroundColor(kValueColor);
+            }
+            else if( i >= (pItem->getOffset() + 8 + len) && i < (pItem->getOffset() + 8 + len + pad ))
+            {
+                rightTable->item( line, pos )->setBackgroundColor(lightGray);
+            }
 
 
-        text += getch( TTLV.pVal[i] );
+            text += getch( TTLV.pVal[i] );
 
-        if( i % 16 - 15 == 0 )
+            if( i % 16 - 15 == 0 )
+            {
+                rightTable->setItem( line, 17, new QTableWidgetItem(text));
+                rightTable->item( line, 17 )->setBackgroundColor(QColor(210,240,210));
+                text.clear();
+                line++;
+            }
+        }
+
+        if( !text.isEmpty() )
         {
             rightTable->setItem( line, 17, new QTableWidgetItem(text));
             rightTable->item( line, 17 )->setBackgroundColor(QColor(210,240,210));
-            text.clear();
-            line++;
         }
     }
-
-    if( !text.isEmpty() )
-    {
-        rightTable->setItem( line, 17, new QTableWidgetItem(text));
-        rightTable->item( line, 17 )->setBackgroundColor(QColor(210,240,210));
-    }
-
-    is_set_ = true;
-//    getInfoView( pItem );
 }
 
 void TTLVTreeView::showRightPart( TTLVTreeItem *pItem )
 {
-    int line = 0;
-    is_set_ = false;
+    int table_idx = berApplet->mainWindow()->tableCurrentIndex();
 
-    QString text;
-    QString hex;
-    QColor green(Qt::green);
-    QColor yellow(Qt::yellow);
-    QColor cyan(Qt::cyan);
-    QColor lightGray(Qt::lightGray);
-    BIN     binPart = {0,0};
-
-    int length = 0;
-    int pad = 0;
-
-    QTableWidget* rightTable = berApplet->mainWindow()->rightTable();
-    TTLVTreeModel *left_model = (TTLVTreeModel *)model();
-    BIN TTLV = left_model->getTTLV();
-
-    length = pItem->getLengthInt();
-    pad = 8 - length % 8;
-    if( pad == 8 ) pad = 0;
-
-    JS_BIN_set( &binPart, TTLV.pVal + pItem->getOffset(), 8 + length + pad );
-
-    rightTable->setRowCount(0);
-
-    if( berApplet->isLicense() == true )
+    if( table_idx == TABLE_IDX_XML )
     {
         QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
         xmlEdit->clear();
@@ -301,7 +275,9 @@ void TTLVTreeView::showRightPart( TTLVTreeItem *pItem )
         showXML( 0, "<!-- XML Decoded Message -->\n", QColor(Qt::darkGreen) );
         showItemXML( pItem );
         xmlEdit->moveCursor(QTextCursor::Start);
-
+    }
+    else if( table_idx == TABLE_IDX_TXT )
+    {
         QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
         txtEdit->clear();
 
@@ -309,65 +285,92 @@ void TTLVTreeView::showRightPart( TTLVTreeItem *pItem )
         showItemText( pItem );
         txtEdit->moveCursor(QTextCursor::Start);
     }
-
-    for( int i = 0; i < binPart.nLen; i++ )
+    else
     {
-        int pos = 0;
+        int line = 0;
 
-        if( i % 16 == 0 )
+        QString text;
+        QString hex;
+        QColor green(Qt::green);
+        QColor yellow(Qt::yellow);
+        QColor cyan(Qt::cyan);
+        QColor lightGray(Qt::lightGray);
+        BIN     binPart = {0,0};
+
+        int length = 0;
+        int pad = 0;
+
+        QTableWidget* rightTable = berApplet->mainWindow()->rightTable();
+        TTLVTreeModel *left_model = (TTLVTreeModel *)model();
+        BIN TTLV = left_model->getTTLV();
+
+        length = pItem->getLengthInt();
+        pad = 8 - length % 8;
+        if( pad == 8 ) pad = 0;
+
+        JS_BIN_set( &binPart, TTLV.pVal + pItem->getOffset(), 8 + length + pad );
+
+        rightTable->setRowCount(0);
+
+        for( int i = 0; i < binPart.nLen; i++ )
         {
-            rightTable->insertRow(line);
-            QString address;
+            int pos = 0;
 
-            address = QString( "%1" ).arg( i, 8, 16, QLatin1Char( '0' ));
-            rightTable->setItem( line, 0, new QTableWidgetItem(address));
-            rightTable->item( line, 0 )->setBackgroundColor( QColor(220,220,250) );
+            if( i % 16 == 0 )
+            {
+                rightTable->insertRow(line);
+                QString address;
+
+                address = QString( "%1" ).arg( i, 8, 16, QLatin1Char( '0' ));
+                rightTable->setItem( line, 0, new QTableWidgetItem(address));
+                rightTable->item( line, 0 )->setBackgroundColor( QColor(220,220,250) );
+            }
+
+            hex = QString( "%1" ).arg( TTLV.pVal[i], 2, 16, QLatin1Char('0') ).toUpper();
+            pos = (i%16) + 1;
+            rightTable->setItem( line, pos, new QTableWidgetItem(hex));
+
+            if( i >= 0 && i < 3 )
+            {
+                rightTable->item( line, pos )->setBackgroundColor(green);
+            }
+            else if( i == 3 )
+            {
+                rightTable->item( line, pos )->setBackgroundColor(yellow);
+            }
+            else if( i >= 4 && i < 8 )
+            {
+                rightTable->item( line, pos )->setBackgroundColor(cyan);
+            }
+            else if( i >= 8 && i < 8 + length )
+            {
+                rightTable->item( line, pos )->setBackgroundColor(kValueColor);
+            }
+            else if( i >= (8 + length ) && i < ( 8 + length + pad ))
+            {
+                rightTable->item( line, pos )->setBackgroundColor(lightGray);
+            }
+
+
+            text += getch( binPart.pVal[i] );
+
+            if( i % 16 - 15 == 0 )
+            {
+                rightTable->setItem( line, 17, new QTableWidgetItem(text));
+                rightTable->item( line, 17 )->setBackgroundColor(QColor(210,240,210));
+                text.clear();
+                line++;
+            }
         }
 
-        hex = QString( "%1" ).arg( TTLV.pVal[i], 2, 16, QLatin1Char('0') ).toUpper();
-        pos = (i%16) + 1;
-        rightTable->setItem( line, pos, new QTableWidgetItem(hex));
-
-        if( i >= 0 && i < 3 )
-        {
-            rightTable->item( line, pos )->setBackgroundColor(green);
-        }
-        else if( i == 3 )
-        {
-            rightTable->item( line, pos )->setBackgroundColor(yellow);
-        }
-        else if( i >= 4 && i < 8 )
-        {
-            rightTable->item( line, pos )->setBackgroundColor(cyan);
-        }
-        else if( i >= 8 && i < 8 + length )
-        {
-            rightTable->item( line, pos )->setBackgroundColor(kValueColor);
-        }
-        else if( i >= (8 + length ) && i < ( 8 + length + pad ))
-        {
-            rightTable->item( line, pos )->setBackgroundColor(lightGray);
-        }
-
-
-        text += getch( binPart.pVal[i] );
-
-        if( i % 16 - 15 == 0 )
+        if( !text.isEmpty() )
         {
             rightTable->setItem( line, 17, new QTableWidgetItem(text));
             rightTable->item( line, 17 )->setBackgroundColor(QColor(210,240,210));
-            text.clear();
-            line++;
         }
-    }
 
-    if( !text.isEmpty() )
-    {
-        rightTable->setItem( line, 17, new QTableWidgetItem(text));
-        rightTable->item( line, 17 )->setBackgroundColor(QColor(210,240,210));
+        JS_BIN_reset( &binPart );
     }
-
-    JS_BIN_reset( &binPart );
 }
 
 void TTLVTreeView::getInfoView(TTLVTreeItem *pItem, int nWidth )
@@ -532,7 +535,6 @@ void TTLVTreeView::AddTTLV()
         if( ret == 0 )
         {
             ttlv_model->parseTree();
-            is_set_ = false;
             viewRoot();
 
             QModelIndex ri = ttlv_model->index(0,0);
@@ -555,7 +557,6 @@ void TTLVTreeView::editItem()
         TTLVTreeModel *ttlv_model = (TTLVTreeModel *)model();
 
         ttlv_model->parseTree();
-        is_set_ = false;
         viewRoot();
         QModelIndex ri = ttlv_model->index(0,0);
         expand(ri);
@@ -619,7 +620,7 @@ void TTLVTreeView::showItemText( TTLVTreeItem* item, TTLVTreeItem *setItem, bool
     row = item->row();
     col = item->column();
     level = item->getLevel();
-/*
+
     if( bBold == false )
     {
         if( item == setItem )
@@ -631,7 +632,6 @@ void TTLVTreeView::showItemText( TTLVTreeItem* item, TTLVTreeItem *setItem, bool
             setItem->setData( nLine, Qt::UserRole + 2);
         }
     }
-*/
 
     if( item->isStructure() )
     {
@@ -674,7 +674,7 @@ void TTLVTreeView::showItemXML( TTLVTreeItem* item, TTLVTreeItem *setItem, bool 
     level = item->getLevel();
 
     QString strName = item->getTagName();
-/*
+
     if( bBold == false )
     {
         if( item == setItem )
@@ -686,7 +686,7 @@ void TTLVTreeView::showItemXML( TTLVTreeItem* item, TTLVTreeItem *setItem, bool 
             setItem->setData( nLine, Qt::UserRole + 1 );
         }
     }
-*/
+
     if( item->isStructure() )
     {
         showXML( level, QString("<%1>\n").arg( strName), QColor(Qt::darkCyan), bBold );
