@@ -180,8 +180,8 @@ void MainWindow::initialize()
     right_xml_->setAcceptRichText(true);
 
 #ifdef QT_DEBUG
-    BasicXMLSyntaxHighlighter * highlighter = new BasicXMLSyntaxHighlighter(right_xml_);
-    Q_UNUSED(highlighter);
+//    BasicXMLSyntaxHighlighter * highlighter = new BasicXMLSyntaxHighlighter(right_xml_);
+//    Q_UNUSED(highlighter);
 #endif
 
     table_tab_->addTab( right_xml_, tr( "XML" ));

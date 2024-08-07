@@ -14,6 +14,7 @@
 #include "make_ber_dlg.h"
 #include "common.h"
 #include "js_pki_tools.h"
+#include "BasicXMLSyntaxHighlighter.h"
 
 #include <QStandardItemModel>
 #include <QTreeView>
@@ -325,6 +326,7 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
         xmlEdit->clear();
 
 #ifdef QT_DEBUG
+
         str_xml_.clear();
 
         setXML( 0, "<!-- XML Decoded Message -->\n" );
@@ -343,7 +345,7 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
         // 시작 위치로 커서를 이동합니다.
         xml_cursor.setPosition( nPos );
 
-        /*
+
         // 끝 위치까지의 영역을 선택합니다.
         int nEnd = pItem->data(Qt::UserRole + 1).toInt();
         xml_cursor.setPosition( nEnd, QTextCursor::KeepAnchor );
@@ -351,8 +353,6 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
         format.setFontWeight(QFont::DemiBold);
         // 선택된 텍스트에 포맷을 적용합니다.
         xml_cursor.setCharFormat( format );
-        */
-
 
         xmlEdit->setTextCursor(xml_cursor);
     }
@@ -378,6 +378,15 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
         QTextCursor cursor = txtEdit->textCursor();
         int nPos = pItem->data(Qt::UserRole).toInt();
         cursor.setPosition( nPos );
+
+        // 끝 위치까지의 영역을 선택합니다.
+        int nEnd = pItem->data(Qt::UserRole + 1).toInt();
+        cursor.setPosition( nEnd, QTextCursor::KeepAnchor );
+        QTextCharFormat format;
+        format.setFontWeight(QFont::DemiBold);
+        // 선택된 텍스트에 포맷을 적용합니다.
+        cursor.setCharFormat( format );
+
         txtEdit->setTextCursor(cursor);
     }
     else
@@ -995,7 +1004,7 @@ void BerTreeView::setItemText( BerItem* item, BerItem* setItem )
 
     if( item == setItem )
     {
-        int nPos = str_xml_.length();
+        int nPos = str_txt_.length();
         setItem->setData( nPos, Qt::UserRole + 1 );
     }
 }

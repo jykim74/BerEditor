@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>487</width>
+    <width>523</width>
     <height>390</height>
    </rect>
   </property>
@@ -361,6 +361,12 @@
          <layout class="QGridLayout" name="gridLayout_6">
           <item row="0" column="1">
            <widget class="QLineEdit" name="mFileReadSizeText">
+            <property name="minimumSize">
+             <size>
+              <width>60</width>
+              <height>0</height>
+             </size>
+            </property>
             <property name="maximumSize">
              <size>
               <width>80</width>
