@@ -12,8 +12,6 @@ public:
     ~SignVerifyThread();
 
     void setSignCTX( void *pCTX );
-    void setHashCTX( void *pCTX );
-    void setEdDSA( bool bEdDSA );
     void setVeify( bool bVerify );
     void setSrcFile( const QString strSrcFile );
 
@@ -26,8 +24,6 @@ protected:
 
 private:
     void *sctx_;
-    void *hctx_;
-    bool is_eddsa_;
     bool is_verify_;
 
     QString src_file_;

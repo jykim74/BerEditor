@@ -12,32 +12,18 @@
 SignVerifyThread::SignVerifyThread()
 {
     sctx_ = NULL;
-    hctx_ = NULL;
-    is_eddsa_ = false;
     is_verify_ = false;
 }
 
 SignVerifyThread::~SignVerifyThread()
 {
     sctx_ = NULL;
-    hctx_ = NULL;
-    is_eddsa_ = false;
     is_verify_ = false;
 }
 
 void SignVerifyThread::setSignCTX( void *pCTX )
 {
     sctx_ = pCTX;
-}
-
-void SignVerifyThread::setHashCTX( void *pCTX )
-{
-    hctx_ = pCTX;
-}
-
-void SignVerifyThread::setEdDSA( bool bEdDSA )
-{
-    is_eddsa_ = bEdDSA;
 }
 
 void SignVerifyThread::setVeify( bool bVerify )
@@ -83,20 +69,13 @@ void SignVerifyThread::run()
         nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
         if( nRead <= 0 ) break;
 
-        if( is_eddsa_ == true )
+        if( is_verify_ == false )
         {
-            ret = JS_PKI_hashUpdate( hctx_, &binPart );
+            ret = JS_PKI_signUpdate( sctx_, &binPart );
         }
         else
         {
-            if( is_verify_ == false )
-            {
-                ret = JS_PKI_signUpdate( sctx_, &binPart );
-            }
-            else
-            {
-                ret = JS_PKI_verifyUpdate( sctx_, &binPart );
-            }
+            ret = JS_PKI_verifyUpdate( sctx_, &binPart );
         }
 
         if( ret != 0 )

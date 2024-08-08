@@ -41,8 +41,7 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     QDialog(parent)
 {
     sctx_ = NULL;
-    hctx_ = NULL;
-    is_eddsa_ = false;
+
     thread_ = NULL;
     update_cnt_ = 0;
 
@@ -119,7 +118,6 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
 SignVerifyDlg::~SignVerifyDlg()
 {
     if( sctx_ ) JS_PKI_signFree( &sctx_ );
-    if( hctx_ ) JS_PKI_hashFree( &hctx_ );
     if( thread_ ) delete thread_;
 }
 
@@ -364,19 +362,12 @@ int SignVerifyDlg::signVerifyInit()
     BIN binCert = {0,0};
     BIN binPubKey = {0,0};
 
-    is_eddsa_ = false;
     update_cnt_ = 0;
 
     if( sctx_ )
     {
         JS_PKI_signFree( &sctx_ );
         sctx_ = NULL;
-    }
-
-    if( hctx_ )
-    {
-        JS_PKI_hashFree( &hctx_ );
-        hctx_ = NULL;
     }
 
     QString strHash = mHashTypeCombo->currentText();
@@ -433,12 +424,10 @@ int SignVerifyDlg::signVerifyInit()
         else if( mAlgTypeCombo->currentText() == "Ed25519" )
         {
             nType = JS_PKI_KEY_TYPE_ED25519;
-            is_eddsa_ = true;
         }
         else if( mAlgTypeCombo->currentText() == "Ed448" )
         {
             nType = JS_PKI_KEY_TYPE_ED448;
-            is_eddsa_ = true;
         }
         else
             nType = JS_PKI_KEY_TYPE_ECC;
@@ -543,12 +532,10 @@ int SignVerifyDlg::signVerifyInit()
         else if( mAlgTypeCombo->currentText() == "Ed25519" )
         {
             nType = JS_PKI_KEY_TYPE_ED25519;
-            is_eddsa_ = true;
         }
         else if( mAlgTypeCombo->currentText() == "Ed448" )
         {
             nType = JS_PKI_KEY_TYPE_ED448;
-            is_eddsa_ = true;
         }
         else
             nType = JS_PKI_KEY_TYPE_ECC;
@@ -577,11 +564,6 @@ int SignVerifyDlg::signVerifyInit()
             berApplet->log( QString( "Hash            : %1" ).arg( strHash ));
             berApplet->log( QString( "Init Public Key : %1" ).arg(getHexString(&binPubKey)));
         }
-    }
-
-    if( is_eddsa_ == true )
-    {
-        ret = JS_PKI_hashInit( &hctx_, strHash.toStdString().c_str() );
     }
 
     if( ret == 0 )
@@ -627,10 +609,7 @@ void SignVerifyDlg::signVerifyUpdate()
 
     if( mSignRadio->isChecked() )
     {
-        if( is_eddsa_ )
-            ret = JS_PKI_hashUpdate( hctx_, &binSrc );
-        else
-            ret = JS_PKI_signUpdate( sctx_, &binSrc );
+        ret = JS_PKI_signUpdate( sctx_, &binSrc );
 
         if( ret == 0 )
         {
@@ -640,10 +619,7 @@ void SignVerifyDlg::signVerifyUpdate()
     }
     else
     {
-        if( is_eddsa_ )
-            ret = JS_PKI_hashUpdate( hctx_, &binSrc );
-        else
-            ret = JS_PKI_verifyUpdate( sctx_, &binSrc );
+        ret = JS_PKI_verifyUpdate( sctx_, &binSrc );
 
         if( ret == 0 )
         {
@@ -672,24 +648,10 @@ void SignVerifyDlg::signVerifyFinal()
 {
     int ret = 0;
     BIN binSign = {0,0};
-    BIN binDigest = {0,0};
-
-    if( is_eddsa_ )
-    {
-        ret = JS_PKI_hashFinal( hctx_, &binDigest );
-        if( ret != 0 ) goto end;
-    }
 
     if( mSignRadio->isChecked() )
     {
-        if( is_eddsa_ )
-        {
-            ret = JS_PKI_sign( sctx_, &binDigest, &binSign );
-        }
-        else
-        {
-            ret = JS_PKI_signFinal( sctx_, &binSign );
-        }
+        ret = JS_PKI_signFinal( sctx_, &binSign );
 
         if( ret == 0 )
         {
@@ -721,10 +683,7 @@ void SignVerifyDlg::signVerifyFinal()
         QString strOut = mOutputText->toPlainText();
         JS_BIN_decodeHex( strOut.toStdString().c_str(), &binSign );
 
-        if( is_eddsa_ )
-            ret = JS_PKI_verify( sctx_, &binDigest, &binSign );
-        else
-            ret = JS_PKI_verifyFinal( sctx_, &binSign );
+        ret = JS_PKI_verifyFinal( sctx_, &binSign );
 
         if( ret == JSR_VERIFY )
             berApplet->messageBox( tr("Verification successful"), this );
@@ -746,12 +705,10 @@ void SignVerifyDlg::signVerifyFinal()
 
 
 end :
-    JS_BIN_reset( &binDigest );
     JS_BIN_reset( &binSign );
 
     if( sctx_ ) JS_PKI_signFree( &sctx_ );
-    if( hctx_ ) JS_PKI_hashFree( &hctx_ );
-    is_eddsa_ = false;
+
 
     repaint();
 }
@@ -795,12 +752,6 @@ void SignVerifyDlg::dataRun()
     {
         JS_PKI_signFree( &sctx_ );
         sctx_ = NULL;
-    }
-
-    if( hctx_ )
-    {
-        JS_PKI_hashFree( &hctx_ );
-        hctx_ = NULL;
     }
 
     if( mInputStringRadio->isChecked() )
@@ -895,13 +846,7 @@ void SignVerifyDlg::dataRun()
             int nParam = JS_PKI_KEY_TYPE_ED25519;
             if( strAlg == "Ed448" ) nParam = JS_PKI_KEY_TYPE_ED448;
 
-            BIN binDigest = {0,0};
-            JS_PKI_genHash( strAlg.toStdString().c_str(), &binSrc, &binDigest );
-            berApplet->log( QString( "Hash Value: %1").arg( getHexString(&binDigest)));
-
-            ret = JS_PKI_EdDSA_Sign( nParam, &binDigest, &binPri, &binOut );
-
-            JS_BIN_reset( &binDigest );
+            ret = JS_PKI_EdDSA_Sign( nParam, &binSrc, &binPri, &binOut );
         }
 
         JS_BIN_encodeHex( &binOut, &pOut );
@@ -1030,12 +975,7 @@ void SignVerifyDlg::dataRun()
         }
         else if( strAlg == "Ed25519" || strAlg == "Ed448" )
         {
-            BIN binDigest = {0,0};
-            JS_PKI_genHash( strAlg.toStdString().c_str(), &binSrc, &binDigest );
-            berApplet->log( QString( "Hash Value: %1").arg( getHexString(&binDigest)));
-
-            ret = JS_PKI_EdDSA_Verify( &binDigest, &binOut, &binPubKey );
-            JS_BIN_reset( &binDigest );
+            ret = JS_PKI_EdDSA_Verify( &binSrc, &binOut, &binPubKey );
         }
 
         if( ret == 0 )
@@ -1135,20 +1075,13 @@ void SignVerifyDlg::fileRun()
         nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
         if( nRead <= 0 ) break;
 
-        if( is_eddsa_ == true )
+        if( mSignRadio->isChecked() )
         {
-            ret = JS_PKI_hashUpdate( hctx_, &binPart );
+            ret = JS_PKI_signUpdate( sctx_, &binPart );
         }
         else
         {
-            if( mSignRadio->isChecked() )
-            {
-                ret = JS_PKI_signUpdate( sctx_, &binPart );
-            }
-            else
-            {
-                ret = JS_PKI_verifyUpdate( sctx_, &binPart );
-            }
+            ret = JS_PKI_verifyUpdate( sctx_, &binPart );
         }
 
         if( ret != 0 )
@@ -1705,8 +1638,6 @@ void SignVerifyDlg::startTask()
     connect( thread_, &SignVerifyThread::taskUpdate, this, &SignVerifyDlg::onTaskUpdate);
 
     thread_->setSignCTX( sctx_ );
-    thread_->setHashCTX( hctx_ );
-    thread_->setEdDSA( is_eddsa_ );
     thread_->setVeify( mSignRadio->isChecked() ? false : true );
     thread_->setSrcFile( strSrcFile );
     thread_->start();
