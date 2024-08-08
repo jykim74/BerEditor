@@ -46,20 +46,15 @@ private slots:
     void leftContextMenu( QPoint point );
 
 private :
-    void showItemText( TTLVTreeItem* item, TTLVTreeItem *setItem = nullptr, bool bBold = false );
-    void showItemXML( TTLVTreeItem* item, TTLVTreeItem *setItem = nullptr, bool bBold = false );
-
-    void showText( int level, const QString& strMsg, QColor cr = QColor(0x00, 0x00, 0x00), bool bBold = false );
-    void showXML( int level, const QString& strMsg, QColor cr = QColor(0x00, 0x00, 0x00), bool bBold = false );
-
-    void setItemText( TTLVTreeItem* item, TTLVTreeItem *setItem = nullptr );
-    void setItemXML( TTLVTreeItem* item, TTLVTreeItem *setItem = nullptr );
+    void setItemText( int level, TTLVTreeItem* item, TTLVTreeItem *setItem = nullptr );
+    void setItemXML( int level, TTLVTreeItem* item, TTLVTreeItem *setItem = nullptr );
 
     void setText( int level, const QString& strMsg );
     void setXML( int level, const QString& strMsg );
 
-    QString str_xml_;
-    QString str_txt_;
+    QString str_edit_;
+    int pos_start_;
+    int pos_end_;
 
 public:
     TTLVTreeItem* currentItem();

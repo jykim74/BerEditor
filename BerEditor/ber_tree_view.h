@@ -56,20 +56,15 @@ private:
     void infoItem( BerItem *pItem, int nWidth );
     BerItem* currentItem();
 
-    void showItemText( BerItem* item, BerItem* setItem = nullptr, bool bBold = false );
-    void showItemXML( BerItem* item, BerItem* setItem = nullptr, bool bBold = false );
-
-    void showText( int level, const QString& strMsg, QColor cr = QColor(0x00, 0x00, 0x00), bool bBold = false );
-    void showXML( int level, const QString& strMsg, QColor cr = QColor(0x00, 0x00, 0x00), bool bBold = false );
-
-    void setItemText( BerItem* item, BerItem* setItem = nullptr );
-    void setItemXML( BerItem* item, BerItem* setItem = nullptr );
+    void setItemText( int level, BerItem* item, BerItem* setItem = nullptr );
+    void setItemXML( int level, BerItem* item, BerItem* setItem = nullptr );
 
     void setText( int level, const QString& strMsg );
     void setXML( int level, const QString& strMsg );
 
-    QString str_xml_;
-    QString str_txt_;
+    QString str_edit_;
+    int pos_start_;
+    int pos_end_;
 };
 
 #endif // BER_TREE_VIEW_H

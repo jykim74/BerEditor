@@ -51,7 +51,9 @@ void BerTreeView::onItemClicked(const QModelIndex& index )
 {
     QString strInfo;
     BerModel *tree_model = (BerModel *)model();
-    BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
+    BerItem *item = NULL;
+
+    item = (BerItem *)tree_model->itemFromIndex(index);
     if( item == NULL ) return;
 
     const BIN& binBer = tree_model->getBER();
@@ -220,23 +222,43 @@ QString BerTreeView::GetTextView()
 void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
 {
     int table_idx = berApplet->mainWindow()->tableCurrentIndex();
+    str_edit_.clear();
 
     if( table_idx == TABLE_IDX_XML )
     {
         QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
+
+        QTextCursor xml_cursor = xmlEdit->textCursor();
+        QTextCharFormat format = xmlEdit->currentCharFormat();
+        //format.setFontWeight(QFont::Normal);
+        format.setForeground(Qt::black);
+        xml_cursor.setCharFormat( format );
+        xmlEdit->setTextCursor(xml_cursor);
+
         xmlEdit->clear();
 
-        showXML( 0, "<!-- XML Decoded Message -->\n", QColor(Qt::darkGreen) );
-        showItemXML( pItem );
+        setXML( 0, "<!-- XML Decoded Message -->\n" );
+        setItemXML( 0, pItem );
+        xmlEdit->setPlainText( str_edit_ );
         xmlEdit->moveCursor(QTextCursor::Start);;
     }
     else if( table_idx == TABLE_IDX_TXT )
     {
         QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
+
+        QTextCursor cursor = txtEdit->textCursor();
+        QTextCharFormat format = txtEdit->currentCharFormat();
+        //format.setFontWeight(QFont::Normal);
+        format.setForeground(Qt::black);
+        cursor.setCharFormat( format );
+        txtEdit->setTextCursor(cursor);
+
         txtEdit->clear();
 
-        showText( 0, "-- Text Decoded Message --\n", QColor(Qt::blue) );
-        showItemText( pItem );
+        setText( 0, "-- Text Decoded Message --\n" );
+        setItemText( 0, pItem );
+        txtEdit->setPlainText( str_edit_ );
+
         txtEdit->moveCursor(QTextCursor::Start);
     }
     else
@@ -315,6 +337,10 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
 
 void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
 {
+    pos_start_ = -1;
+    pos_end_ = -1;
+    str_edit_.clear();
+
     int table_idx = berApplet->mainWindow()->tableCurrentIndex();
 
     BerModel *tree_model = (BerModel *)model();
@@ -325,69 +351,63 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
         QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
         xmlEdit->clear();
 
-#ifdef QT_DEBUG
-
-        str_xml_.clear();
+        QTextCursor xml_cursor = xmlEdit->textCursor();
+        QTextCharFormat format = xmlEdit->currentCharFormat();
+        //format.setFontWeight(QFont::Normal);
+        format.setForeground(Qt::black);
+        xml_cursor.setCharFormat( format );
+        xmlEdit->setTextCursor(xml_cursor);
 
         setXML( 0, "<!-- XML Decoded Message -->\n" );
-        setItemXML( root, pItem );
-        xmlEdit->setPlainText( str_xml_ );
-#else
-        showXML( 0, "<!-- XML Decoded Message -->\n", QColor(Qt::darkGreen) );
+        setItemXML( 0, root, pItem );
 
-        if( root == pItem )
-            showItemXML( root );
-        else
-            showItemXML( root, pItem );
-#endif
-        QTextCursor xml_cursor = xmlEdit->textCursor();
-        int nPos = pItem->data(Qt::UserRole).toInt();
-        // 시작 위치로 커서를 이동합니다.
-        xml_cursor.setPosition( nPos );
+        xmlEdit->setPlainText( str_edit_ );
+
+        if( pos_start_ >= 0 && pos_end_ > pos_start_ )
+        {
+            berApplet->log( QString( "Sel [%1:%2]").arg( pos_start_ ).arg( pos_end_ ));
 
 
-        // 끝 위치까지의 영역을 선택합니다.
-        int nEnd = pItem->data(Qt::UserRole + 1).toInt();
-        xml_cursor.setPosition( nEnd, QTextCursor::KeepAnchor );
-        QTextCharFormat format;
-        //format.setFontWeight(QFont::DemiBold);
-        // 선택된 텍스트에 포맷을 적용합니다.
-        xml_cursor.setCharFormat( format );
+            xml_cursor.setPosition( pos_start_ );
+            xml_cursor.setPosition( pos_end_, QTextCursor::KeepAnchor );
 
-        xmlEdit->setTextCursor(xml_cursor);
+            QTextCharFormat format = xmlEdit->currentCharFormat();
+//            format.setFontWeight(QFont::Bold);
+            format.setForeground(Qt::blue);
+            xml_cursor.setCharFormat( format );
+            xml_cursor.clearSelection();
+            xmlEdit->setTextCursor(xml_cursor);
+        }
     }
     else if( table_idx == TABLE_IDX_TXT )
     {
         QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
         txtEdit->clear();
 
-#ifdef QT_DEBUG
-        str_txt_.clear();
-        setText( 0, "-- Text Decoded Message --\n" );
-
-        setItemText( root, pItem );
-        txtEdit->setPlainText( str_txt_ );
-#else
-        showText( 0, "-- Text Decoded Message --\n", QColor(Qt::blue) );
-
-        if( root == pItem )
-            showItemText( root );
-        else
-            showItemText( root, pItem );
-#endif
         QTextCursor cursor = txtEdit->textCursor();
-        int nPos = pItem->data(Qt::UserRole).toInt();
-        cursor.setPosition( nPos );
-
-        // 끝 위치까지의 영역을 선택합니다.
-        int nEnd = pItem->data(Qt::UserRole + 1).toInt();
-        cursor.setPosition( nEnd, QTextCursor::KeepAnchor );
-        QTextCharFormat format;
-        format.setFontWeight(QFont::DemiBold);
-        // 선택된 텍스트에 포맷을 적용합니다.
+        QTextCharFormat format = txtEdit->currentCharFormat();
+        //format.setFontWeight(QFont::Normal);
+        format.setForeground(Qt::black);
         cursor.setCharFormat( format );
-
         txtEdit->setTextCursor(cursor);
+
+        setText( 0, "-- Text Decoded Message --\n" );
+        setItemText( 0, root, pItem );
+        txtEdit->setPlainText( str_edit_ );
+
+        if( pos_start_ >= 0 && pos_end_ > pos_start_ )
+        {
+            berApplet->log( QString( "Sel [%1:%2]").arg( pos_start_ ).arg( pos_end_ ));
+            cursor.setPosition( pos_start_ );
+            cursor.setPosition( pos_end_, QTextCursor::KeepAnchor );
+
+            QTextCharFormat format = txtEdit->currentCharFormat();
+            // format.setFontWeight(QFont::Bold);
+            format.setForeground(Qt::blue);
+            cursor.setCharFormat( format );
+            cursor.clearSelection();
+            txtEdit->setTextCursor(cursor);
+        }
     }
     else
     {
@@ -741,213 +761,15 @@ end:
     JS_BIN_reset( &binData );
 }
 
-void BerTreeView::showText( int level, const QString& strMsg, QColor cr, bool bBold )
-{
-    QString strEmpty = QString( "%1" ).arg( " ", 4 * level, QLatin1Char( ' ' ));
-    QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
-
-    QTextCursor cursor = txtEdit->textCursor();
-    QTextCharFormat format;
-    format.setForeground( cr );
-    if( bBold )
-    {
-        format.setFontWeight(QFont::DemiBold);
-    }
-    else
-    {
-        format.setFontWeight(QFont::Normal);
-    }
-
-    cursor.mergeCharFormat( format );
-
-    if( level > 0 ) cursor.insertText( strEmpty );
-    cursor.insertText( strMsg );
-
-    txtEdit->setTextCursor( cursor );
-    txtEdit->repaint();
-}
-
-void BerTreeView::showXML( int level, const QString& strMsg, QColor cr, bool bBold )
-{
-    QString strEmpty = QString( "%1" ).arg( " ", 4 * level, QLatin1Char( ' ' ));
-    QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
-
-
-    QTextCursor cursor = xmlEdit->textCursor();
-    QTextCharFormat format;
-    format.setForeground( cr );
-
-    if( bBold )
-        format.setFontWeight(QFont::DemiBold);
-    else
-        format.setFontWeight(QFont::Normal);
-
-    cursor.mergeCharFormat( format );
-
-    if( level > 0 ) cursor.insertText( strEmpty );
-    cursor.insertText( strMsg );
-
-    xmlEdit->setTextCursor( cursor );
-    xmlEdit->repaint();
-}
-
-void BerTreeView::showItemText( BerItem* item, BerItem* setItem, bool bBold )
-{
-    int row = 0;
-    int col = 0;
-    int pos = 0;
-    int level = 0;
-
-    if( item == NULL ) return;
-
-    BerModel *tree_model = (BerModel *)model();
-    const BIN& binBer = tree_model->getBER();
-
-    row = item->row();
-    col = item->column();
-    level = item->GetLevel();
-
-    if( bBold == false )
-    {
-        if( item == setItem )
-        {
-            bBold = true;
-
-            QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
-            int pos = txtEdit->textCursor().position();
-            setItem->setData( pos, Qt::UserRole );
-        }
-    }
-
-
-//    berApplet->log( QString( "Item row: %1 col: %2 level: %3" ).arg(row).arg(col).arg(level));
-
-    if( item->isConstructed() || item->hasChildren() )
-    {
-        showText( level, QString("%1 {\n").arg( item->text()), QColor(Qt::darkCyan), bBold );
-
-        while( 1 )
-        {
-            BerItem* child = (BerItem *)item->child( pos++ );
-            if( child == NULL ) break;
-
-            showItemText( child, setItem, bBold );
-        }
-
-        showText( level, "}\n", QColor(Qt::darkCyan), bBold );
-    }
-    else
-    {
-        QString strName = item->GetTagString();
-        QString strValue = item->GetValueString( &binBer );
-
-        showText( level, QString( "%1" ).arg( strName ), QColor(Qt::darkMagenta), bBold );
-        showText( 0, QString( " = %1\n" ).arg( strValue ), QColor(Qt::black), bBold );
-    }
-}
-
-void BerTreeView::showItemXML( BerItem* item, BerItem* setItem, bool bBold )
-{
-    int row = 0;
-    int col = 0;
-    int pos = 0;
-    int level = 0;
-
-    if( item == NULL ) return;
-
-    BerModel *tree_model = (BerModel *)model();
-    const BIN& binBer = tree_model->getBER();
-    QString strName = item->GetTagXMLString();
-
-    if( bBold == false )
-    {
-        if( item == setItem )
-        {
-            bBold = true;
-
-            QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
-            int nPos = xmlEdit->textCursor().position();
-            setItem->setData( nPos, Qt::UserRole );
-        }
-    }
-
-    row = item->row();
-    col = item->column();
-    level = item->GetLevel();
-
-//    berApplet->log( QString( "Item row: %1 col: %2 level: %3" ).arg(row).arg(col).arg(level));
-
-    if( item->isConstructed() || item->hasChildren() )
-    {
-        if( strName == "NODE" )
-        {
-            showXML( level, QString( "<%1 Sign=" ).arg(strName), QColor(Qt::darkCyan), bBold );
-            showXML( 0, QString( "\"%1\"" ).arg( item->GetTag() | item->GetId(), 2, 16, QLatin1Char('0')), QColor(Qt::darkRed), bBold );
-            showXML( 0, QString( ">\n"), QColor(Qt::darkCyan), bBold );
-        }
-        else
-        {
-            showXML( level, QString("<%1>\n").arg( strName), QColor(Qt::darkCyan), bBold );
-        }
-
-        while( 1 )
-        {
-            BerItem* child = (BerItem *)item->child( pos++ );
-            if( child == NULL ) break;
-
-            showItemXML( child, setItem, bBold );
-        }
-
-        showXML( level, QString("</%1>\n").arg( strName ), QColor(Qt::darkCyan), bBold );
-    }
-    else
-    {
-        QString strValue = item->GetValueString( &binBer );
-
-        if( strName == "OBJECT_IDENTIFIER" )
-        {
-            QString strComment;
-            QString strDesc;
-
-            strComment = JS_PKI_getLNFromOID( strValue.toStdString().c_str() );
-            strDesc = JS_PKI_getSNFromOID( strValue.toStdString().c_str() );
-
-            showXML( level, QString( "<%1" ).arg( strName ), QColor(Qt::darkMagenta), bBold );
-
-            if( strComment.length() > 0 )
-            {
-                showXML( 0, " Comment=", QColor(Qt::blue), bBold );
-                showXML( 0, QString("\"%1\"").arg( strComment), QColor(Qt::darkRed), bBold );
-            }
-
-            if( strDesc.length() > 0 )
-            {
-                showXML( 0, " Description=", QColor(Qt::blue), bBold );
-                showXML( 0, QString("\"%1\"").arg( strDesc), QColor(Qt::darkRed), bBold );
-            }
-
-            showXML( 0, ">", QColor(Qt::darkMagenta), bBold );
-        }
-        else
-        {
-            showXML( level, QString( "<%1>" ).arg( strName ), QColor(Qt::darkMagenta), bBold );
-        }
-
-        showXML( 0, QString( "%1" ).arg( strValue ), QColor(Qt::black), bBold );
-        showXML( 0, QString( "</%1>\n" ).arg( strName ), QColor(Qt::darkMagenta), bBold );
-    }
-}
-
-
 void BerTreeView::setText( int level, const QString& strMsg )
 {
     if( level > 0 )
     {
         QString strEmpty = QString( "%1" ).arg( " ", 4 * level, QLatin1Char( ' ' ));
-        str_txt_ += strEmpty;
+        str_edit_ += strEmpty;
     }
 
-    str_txt_ += strMsg;
+    str_edit_ += strMsg;
 }
 
 void BerTreeView::setXML( int level, const QString& strMsg )
@@ -955,28 +777,24 @@ void BerTreeView::setXML( int level, const QString& strMsg )
     if( level > 0 )
     {
         QString strEmpty = QString( "%1" ).arg( " ", 4 * level, QLatin1Char( ' ' ));
-        str_xml_ += strEmpty;
+        str_edit_ += strEmpty;
     }
 
-    str_xml_ += strMsg;
+    str_edit_ += strMsg;
 }
 
-void BerTreeView::setItemText( BerItem* item, BerItem* setItem )
+void BerTreeView::setItemText( int level, BerItem* item, BerItem* setItem )
 {
     int pos = 0;
-    int level = 0;
 
     if( item == NULL ) return;
 
     BerModel *tree_model = (BerModel *)model();
     const BIN& binBer = tree_model->getBER();
 
-    level = item->GetLevel();
-
     if( item == setItem )
     {
-        int pos = str_txt_.length();
-        setItem->setData( pos, Qt::UserRole );
+        pos_start_ = str_edit_.length();
     }
 
     if( item->isConstructed() || item->hasChildren() )
@@ -988,7 +806,7 @@ void BerTreeView::setItemText( BerItem* item, BerItem* setItem )
             BerItem* child = (BerItem *)item->child( pos++ );
             if( child == NULL ) break;
 
-            setItemText( child, setItem );
+            setItemText( level + 1, child, setItem );
         }
 
         setText( level, "}\n" );
@@ -1004,15 +822,13 @@ void BerTreeView::setItemText( BerItem* item, BerItem* setItem )
 
     if( item == setItem )
     {
-        int nPos = str_txt_.length();
-        setItem->setData( nPos, Qt::UserRole + 1 );
+        pos_end_ = str_edit_.length();
     }
 }
 
-void BerTreeView::setItemXML( BerItem* item, BerItem* setItem )
+void BerTreeView::setItemXML( int level, BerItem* item, BerItem* setItem )
 {
     int pos = 0;
-    int level = 0;
 
     if( item == NULL ) return;
 
@@ -1022,11 +838,8 @@ void BerTreeView::setItemXML( BerItem* item, BerItem* setItem )
 
     if( item == setItem )
     {
-        int nPos = str_xml_.length();
-        setItem->setData( nPos, Qt::UserRole );
+        pos_start_ = str_edit_.length();
     }
-
-    level = item->GetLevel();
 
     if( item->isConstructed() || item->hasChildren() )
     {
@@ -1046,7 +859,7 @@ void BerTreeView::setItemXML( BerItem* item, BerItem* setItem )
             BerItem* child = (BerItem *)item->child( pos++ );
             if( child == NULL ) break;
 
-            setItemXML( child, setItem );
+            setItemXML( level + 1, child, setItem );
         }
 
         setXML( level, QString("</%1>\n").arg( strName ) );
@@ -1090,8 +903,7 @@ void BerTreeView::setItemXML( BerItem* item, BerItem* setItem )
 
     if( item == setItem )
     {
-        int nPos = str_xml_.length();
-        setItem->setData( nPos, Qt::UserRole + 1 );
+        pos_end_ = str_edit_.length();
     }
 }
 

@@ -137,6 +137,7 @@ static char getch( unsigned char c )
 
 void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
 {
+    str_edit_.clear();
     int table_idx = berApplet->mainWindow()->tableCurrentIndex();
 
     TTLVTreeModel *tree_model = (TTLVTreeModel *)model();
@@ -147,46 +148,62 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
         QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
         xmlEdit->clear();
 
-#ifdef QT_DEBUG
-        str_xml_.clear();
-        setXML( 0, "<!-- XML Decoded Message -->\n" );
-        setItemXML( root, pItem );
-        xmlEdit->setPlainText( str_xml_ );
-#else
-        showXML( 0, "<!-- XML Decoded Message -->\n", QColor(Qt::darkGreen) );
-        if( root == pItem )
-            showItemXML( root );
-        else
-            showItemXML( root, pItem );
-#endif
         QTextCursor xml_cursor = xmlEdit->textCursor();
-        int nPos = pItem->data(Qt::UserRole).toInt();
-        xml_cursor.setPosition( nPos );
+        QTextCharFormat format = xmlEdit->currentCharFormat();
+        //format.setFontWeight(QFont::Normal);
+        format.setForeground(Qt::black);
+        xml_cursor.setCharFormat( format );
         xmlEdit->setTextCursor(xml_cursor);
+
+        setXML( 0, "<!-- XML Decoded Message -->\n" );
+        setItemXML( 0, root, pItem );
+        xmlEdit->setPlainText( str_edit_ );
+
+        if( pos_start_ >= 0 && pos_end_ > pos_start_ )
+        {
+            berApplet->log( QString( "Sel [%1:%2]").arg( pos_start_ ).arg( pos_end_ ));
+
+
+            xml_cursor.setPosition( pos_start_ );
+            xml_cursor.setPosition( pos_end_, QTextCursor::KeepAnchor );
+
+            QTextCharFormat format = xmlEdit->currentCharFormat();
+            //            format.setFontWeight(QFont::Bold);
+            format.setForeground(Qt::blue);
+            xml_cursor.setCharFormat( format );
+            xml_cursor.clearSelection();
+            xmlEdit->setTextCursor(xml_cursor);
+        }
     }
     else if( table_idx == TABLE_IDX_TXT )
     {
         QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
         txtEdit->clear();
 
-#ifdef QT_DEBUG
-        str_txt_.clear();
-        setText( 0, "-- Text Decoded Message --\n" );
-        setItemText( root, pItem );
-        txtEdit->setPlainText( str_txt_ );
-#else
-        showText( 0, "-- Text Decoded Message --\n", QColor(Qt::blue) );
-
-        if( root == pItem )
-            showItemText( root );
-        else
-            showItemText( root, pItem );
-#endif
-
         QTextCursor cursor = txtEdit->textCursor();
-        int nPos = pItem->data(Qt::UserRole).toInt();
-        cursor.setPosition( nPos );
+        QTextCharFormat format = txtEdit->currentCharFormat();
+        //format.setFontWeight(QFont::Normal);
+        format.setForeground(Qt::black);
+        cursor.setCharFormat( format );
         txtEdit->setTextCursor(cursor);
+
+        setText( 0, "-- Text Decoded Message --\n" );
+        setItemText( 0, root, pItem );
+        txtEdit->setPlainText( str_edit_ );
+
+        if( pos_start_ >= 0 && pos_end_ > pos_start_ )
+        {
+            berApplet->log( QString( "Sel [%1:%2]").arg( pos_start_ ).arg( pos_end_ ));
+            cursor.setPosition( pos_start_ );
+            cursor.setPosition( pos_end_, QTextCursor::KeepAnchor );
+
+            QTextCharFormat format = txtEdit->currentCharFormat();
+            // format.setFontWeight(QFont::Bold);
+            format.setForeground(Qt::blue);
+            cursor.setCharFormat( format );
+            cursor.clearSelection();
+            txtEdit->setTextCursor(cursor);
+        }
     }
     else
     {
@@ -272,24 +289,43 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
 
 void TTLVTreeView::showRightPart( TTLVTreeItem *pItem )
 {
+    str_edit_.clear();
     int table_idx = berApplet->mainWindow()->tableCurrentIndex();
 
     if( table_idx == TABLE_IDX_XML )
     {
         QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
+
+        QTextCursor xml_cursor = xmlEdit->textCursor();
+        QTextCharFormat format = xmlEdit->currentCharFormat();
+        //format.setFontWeight(QFont::Normal);
+        format.setForeground(Qt::black);
+        xml_cursor.setCharFormat( format );
+        xmlEdit->setTextCursor(xml_cursor);
+
         xmlEdit->clear();
 
-        showXML( 0, "<!-- XML Decoded Message -->\n", QColor(Qt::darkGreen) );
-        showItemXML( pItem );
+        setXML( 0, "<!-- XML Decoded Message -->\n" );
+        setItemXML( 0, pItem );
+        xmlEdit->setPlainText( str_edit_ );
         xmlEdit->moveCursor(QTextCursor::Start);
     }
     else if( table_idx == TABLE_IDX_TXT )
     {
         QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
+
+        QTextCursor cursor = txtEdit->textCursor();
+        QTextCharFormat format = txtEdit->currentCharFormat();
+        //format.setFontWeight(QFont::Normal);
+        format.setForeground(Qt::black);
+        cursor.setCharFormat( format );
+        txtEdit->setTextCursor(cursor);
+
         txtEdit->clear();
 
-        showText( 0, "-- Text Decoded Message --\n", QColor(Qt::blue) );
-        showItemText( pItem );
+        setText( 0, "-- Text Decoded Message --\n" );
+        setItemText( 0, pItem );
+        txtEdit->setPlainText( str_edit_ );
         txtEdit->moveCursor(QTextCursor::Start);
     }
     else
@@ -612,174 +648,20 @@ void TTLVTreeView::saveItemValue()
     berApplet->setCurFile( fileName );
 }
 
-void TTLVTreeView::showItemText( TTLVTreeItem* item, TTLVTreeItem *setItem, bool bBold )
+
+void TTLVTreeView::setItemText( int level, TTLVTreeItem* item, TTLVTreeItem *setItem )
 {
-    int row = 0;
-    int col = 0;
     int pos = 0;
-    int level = 0;
 
     if( item == NULL ) return;
 
     TTLVTreeModel *tree_model = (TTLVTreeModel *)model();
     BIN binTTLV = tree_model->getTTLV();
 
-    row = item->row();
-    col = item->column();
-    level = item->getLevel();
-
-    if( bBold == false )
-    {
-        if( item == setItem )
-        {
-            bBold = true;
-
-            QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
-            int pos = txtEdit->textCursor().position();
-            setItem->setData( pos, Qt::UserRole );
-        }
-    }
-
-    if( item->isStructure() )
-    {
-        showText( level, QString("%1 {\n").arg( item->text()), QColor(Qt::darkCyan), bBold );
-
-        while( 1 )
-        {
-            TTLVTreeItem* child = (TTLVTreeItem *)item->child( pos++ );
-            if( child == NULL ) break;
-
-            showItemText( child, setItem, bBold );
-        }
-
-        showText( level, "}\n", QColor(Qt::darkCyan), bBold );
-    }
-    else
-    {
-        QString strName = item->getTagName();
-        QString strValue = item->getPrintValue( &binTTLV );
-
-        showText( level, QString( "%1" ).arg( strName ), QColor(Qt::darkMagenta), bBold );
-        showText( 0, QString( " = %1\n" ).arg( strValue ), QColor(Qt::black), bBold );
-    }
-}
-
-void TTLVTreeView::showItemXML( TTLVTreeItem* item, TTLVTreeItem *setItem, bool bBold )
-{
-    int row = 0;
-    int col = 0;
-    int pos = 0;
-    int level = 0;
-
-    if( item == NULL ) return;
-
-    TTLVTreeModel *tree_model = (TTLVTreeModel *)model();
-    BIN binTTLV = tree_model->getTTLV();
-
-    row = item->row();
-    col = item->column();
-    level = item->getLevel();
-
-    QString strName = item->getTagName();
-
-    if( bBold == false )
-    {
-        if( item == setItem )
-        {
-            bBold = true;
-
-            QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
-            int nPos = xmlEdit->textCursor().position();
-            setItem->setData( nPos, Qt::UserRole );
-        }
-    }
-
-    if( item->isStructure() )
-    {
-        showXML( level, QString("<%1>\n").arg( strName), QColor(Qt::darkCyan), bBold );
-
-        while( 1 )
-        {
-            TTLVTreeItem* child = (TTLVTreeItem *)item->child( pos++ );
-            if( child == NULL ) break;
-
-            showItemXML( child, setItem, bBold );
-        }
-
-        showXML( level, QString("</%1>\n").arg( strName ), QColor(Qt::darkCyan), bBold );
-    }
-    else
-    {
-        QString strValue = item->getPrintValue( &binTTLV );
-
-        showXML( level, QString( "<%1>" ).arg( strName ), QColor(Qt::darkMagenta), bBold );
-        showXML( 0, QString( "%1" ).arg( strValue ), QColor(Qt::black), bBold );
-        showXML( 0, QString( "</%1>\n" ).arg( strName ), QColor(Qt::darkMagenta), bBold );
-    }
-}
-
-void TTLVTreeView::showText( int level, const QString& strMsg, QColor cr, bool bBold )
-{
-    QString strEmpty = QString( "%1" ).arg( " ", 4 * level, QLatin1Char( ' ' ));
-    QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
-
-    QTextCursor cursor = txtEdit->textCursor();
-    QTextCharFormat format;
-    format.setForeground( cr );
-    if( bBold )
-        format.setFontWeight(QFont::DemiBold);
-    else
-        format.setFontWeight(QFont::Normal);
-
-    cursor.mergeCharFormat( format );
-
-    if( level > 0 ) cursor.insertText( strEmpty );
-    cursor.insertText( strMsg );
-
-    txtEdit->setTextCursor( cursor );
-    txtEdit->repaint();
-}
-
-void TTLVTreeView::showXML( int level, const QString& strMsg, QColor cr, bool bBold )
-{
-    QString strEmpty = QString( "%1" ).arg( " ", 4 * level, QLatin1Char( ' ' ));
-    QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
-
-
-    QTextCursor cursor = xmlEdit->textCursor();
-    QTextCharFormat format;
-    format.setForeground( cr );
-
-    if( bBold )
-        format.setFontWeight(QFont::DemiBold);
-    else
-        format.setFontWeight(QFont::Normal);
-
-    cursor.mergeCharFormat( format );
-
-    if( level > 0 ) cursor.insertText( strEmpty );
-    cursor.insertText( strMsg );
-
-    xmlEdit->setTextCursor( cursor );
-    xmlEdit->repaint();
-}
-
-void TTLVTreeView::setItemText( TTLVTreeItem* item, TTLVTreeItem *setItem )
-{
-    int pos = 0;
-    int level = 0;
-
-    if( item == NULL ) return;
-
-    TTLVTreeModel *tree_model = (TTLVTreeModel *)model();
-    BIN binTTLV = tree_model->getTTLV();
-
-    level = item->getLevel();
 
     if( item == setItem )
     {
-        int pos = str_txt_.length();
-        setItem->setData( pos, Qt::UserRole );
+        pos_start_ = str_edit_.length();
     }
 
 
@@ -792,7 +674,7 @@ void TTLVTreeView::setItemText( TTLVTreeItem* item, TTLVTreeItem *setItem )
             TTLVTreeItem* child = (TTLVTreeItem *)item->child( pos++ );
             if( child == NULL ) break;
 
-            setItemText( child, setItem );
+            setItemText( level + 1, child, setItem );
         }
 
         setText( level, "}\n" );
@@ -805,26 +687,28 @@ void TTLVTreeView::setItemText( TTLVTreeItem* item, TTLVTreeItem *setItem )
         setText( level, QString( "%1" ).arg( strName ) );
         setText( 0, QString( " = %1\n" ).arg( strValue ) );
     }
+
+    if( item == setItem )
+    {
+        pos_end_ = str_edit_.length();
+    }
 }
 
-void TTLVTreeView::setItemXML( TTLVTreeItem* item, TTLVTreeItem *setItem )
+void TTLVTreeView::setItemXML( int level, TTLVTreeItem* item, TTLVTreeItem *setItem )
 {
     int pos = 0;
-    int level = 0;
 
     if( item == NULL ) return;
 
     TTLVTreeModel *tree_model = (TTLVTreeModel *)model();
     BIN binTTLV = tree_model->getTTLV();
 
-    level = item->getLevel();
 
     QString strName = item->getTagName();
 
     if( item == setItem )
     {
-        int nPos = str_xml_.length();
-        setItem->setData( nPos, Qt::UserRole );
+        pos_start_ = str_edit_.length();
     }
 
     if( item->isStructure() )
@@ -836,7 +720,7 @@ void TTLVTreeView::setItemXML( TTLVTreeItem* item, TTLVTreeItem *setItem )
             TTLVTreeItem* child = (TTLVTreeItem *)item->child( pos++ );
             if( child == NULL ) break;
 
-            setItemXML( child, setItem );
+            setItemXML( level+1, child, setItem );
         }
 
         setXML( level, QString("</%1>\n").arg( strName ) );
@@ -849,6 +733,11 @@ void TTLVTreeView::setItemXML( TTLVTreeItem* item, TTLVTreeItem *setItem )
         setXML( 0, QString( "%1" ).arg( strValue ) );
         setXML( 0, QString( "</%1>\n" ).arg( strName ) );
     }
+
+    if( item == setItem )
+    {
+        pos_end_ = str_edit_.length();
+    }
 }
 
 void TTLVTreeView::setText( int level, const QString& strMsg )
@@ -856,10 +745,10 @@ void TTLVTreeView::setText( int level, const QString& strMsg )
     if( level > 0 )
     {
         QString strEmpty = QString( "%1" ).arg( " ", 4 * level, QLatin1Char( ' ' ));
-        str_txt_ += strEmpty;
+        str_edit_ += strEmpty;
     }
 
-    str_txt_ += strMsg;
+    str_edit_ += strMsg;
 }
 
 void TTLVTreeView::setXML( int level, const QString& strMsg )
@@ -867,10 +756,10 @@ void TTLVTreeView::setXML( int level, const QString& strMsg )
     if( level > 0 )
     {
         QString strEmpty = QString( "%1" ).arg( " ", 4 * level, QLatin1Char( ' ' ));
-        str_xml_ += strEmpty;
+        str_edit_ += strEmpty;
     }
 
-    str_xml_ += strMsg;
+    str_edit_ += strMsg;
 }
 
 /*
