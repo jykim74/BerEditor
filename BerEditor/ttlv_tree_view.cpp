@@ -161,9 +161,6 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
 
         if( pos_start_ >= 0 && pos_end_ > pos_start_ )
         {
-            berApplet->log( QString( "Sel [%1:%2]").arg( pos_start_ ).arg( pos_end_ ));
-
-
             xml_cursor.setPosition( pos_start_ );
             xml_cursor.setPosition( pos_end_, QTextCursor::KeepAnchor );
 
@@ -193,7 +190,6 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
 
         if( pos_start_ >= 0 && pos_end_ > pos_start_ )
         {
-            berApplet->log( QString( "Sel [%1:%2]").arg( pos_start_ ).arg( pos_end_ ));
             cursor.setPosition( pos_start_ );
             cursor.setPosition( pos_end_, QTextCursor::KeepAnchor );
 
