@@ -44,7 +44,6 @@ void SignVerifyThread::run()
     int nReadSize = 0;
     int nLeft = 0;
     int nOffset = 0;
-    int nPercent = 0;
 
     BIN binPart = {0,0};
     QFileInfo fileInfo;

@@ -851,7 +851,7 @@
       <widget class="QComboBox" name="mHashTypeCombo"/>
      </item>
      <item>
-      <widget class="QLabel" name="label_12">
+      <widget class="QLabel" name="mVersionLabel">
        <property name="text">
         <string>RSA Version</string>
        </property>

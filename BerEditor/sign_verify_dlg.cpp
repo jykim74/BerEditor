@@ -326,9 +326,15 @@ void SignVerifyDlg::algChanged(int index)
     if( mUseKeyAlgCheck->isChecked() == false )
     {
         if( strAlg == "RSA" )
+        {
             mVersionCombo->setEnabled(true);
+            mVersionLabel->setEnabled(true);
+        }
         else
+        {
             mVersionCombo->setEnabled( false );
+            mVersionLabel->setEnabled( false );
+        }
     }
     else
     {
@@ -347,10 +353,12 @@ void SignVerifyDlg::algChanged(int index)
     if( strAlg == "Ed25519" || strAlg == "Ed448" )
     {
         mDigestBtn->setEnabled(false);
+        mHashTypeCombo->setDisabled(true);
     }
     else
     {
         mDigestBtn->setEnabled(true);
+        mHashTypeCombo->setDisabled(false);
     }
 }
 
@@ -372,49 +380,45 @@ int SignVerifyDlg::signVerifyInit()
 
     QString strHash = mHashTypeCombo->currentText();
 
-
-    if( mSignRadio->isChecked() )
+    if( mCertGroup->isChecked() == true )
     {
-        if( mCertGroup->isChecked() == true )
-        {
-            ret = readPrivateKey( &binPri );
-            if( ret != 0 ) goto end;
-        }
-        else
-        {
-            CertManDlg certMan;
-            QString strPriHex;
-            certMan.setMode(ManModeSelBoth );
-            certMan.setTitle( tr( "Select a sign certificate") );
+        ret = readPrivateKey( &binPri );
+        if( ret != 0 ) goto end;
+    }
+    else
+    {
+        CertManDlg certMan;
+        QString strPriHex;
+        certMan.setMode(ManModeSelBoth );
+        certMan.setTitle( tr( "Select a sign certificate") );
 
-            if( certMan.exec() != QDialog::Accepted )
-                goto end;
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
 
-            strPriHex = certMan.getPriKeyHex();
-            JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binPri );
-        }
+        strPriHex = certMan.getPriKeyHex();
+        JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binPri );
+    }
 
-        mOutputText->clear();
+    if( mUseKeyAlgCheck->isChecked() )
+    {
+        nType = JS_PKI_getPriKeyType( &binPri );
+        berApplet->log( QString( "PriKey Type : %1").arg( getKeyTypeName( nType )));
 
-        if( mUseKeyAlgCheck->isChecked() )
-        {
-            nType = JS_PKI_getPriKeyType( &binPri );
-            berApplet->log( QString( "PriKey Type : %1").arg( getKeyTypeName( nType )));
-
-            if( nType == JS_PKI_KEY_TYPE_RSA )
-                mAlgTypeCombo->setCurrentText( "RSA" );
-            else if( nType == JS_PKI_KEY_TYPE_ECC )
-                mAlgTypeCombo->setCurrentText( "ECDSA" );
-            else if( nType == JS_PKI_KEY_TYPE_SM2 )
-                mAlgTypeCombo->setCurrentText( "SM2" );
-            else if( nType == JS_PKI_KEY_TYPE_DSA )
-                mAlgTypeCombo->setCurrentText( "DSA" );
-            else if( nType == JS_PKI_KEY_TYPE_ED25519 )
-                mAlgTypeCombo->setCurrentText( "Ed25519" );
-            else if( nType == JS_PKI_KEY_TYPE_ED448 )
-                mAlgTypeCombo->setCurrentText( "Ed448" );
-        }
-
+        if( nType == JS_PKI_KEY_TYPE_RSA )
+            mAlgTypeCombo->setCurrentText( "RSA" );
+        else if( nType == JS_PKI_KEY_TYPE_ECC )
+            mAlgTypeCombo->setCurrentText( "ECDSA" );
+        else if( nType == JS_PKI_KEY_TYPE_SM2 )
+            mAlgTypeCombo->setCurrentText( "SM2" );
+        else if( nType == JS_PKI_KEY_TYPE_DSA )
+            mAlgTypeCombo->setCurrentText( "DSA" );
+        else if( nType == JS_PKI_KEY_TYPE_ED25519 )
+            mAlgTypeCombo->setCurrentText( "Ed25519" );
+        else if( nType == JS_PKI_KEY_TYPE_ED448 )
+            mAlgTypeCombo->setCurrentText( "Ed448" );
+    }
+    else
+    {
         if( mAlgTypeCombo->currentText() == "RSA" )
             nType = JS_PKI_KEY_TYPE_RSA;
         else if( mAlgTypeCombo->currentText() == "SM2" )
@@ -431,22 +435,33 @@ int SignVerifyDlg::signVerifyInit()
         }
         else
             nType = JS_PKI_KEY_TYPE_ECC;
+    }
 
-        if( nType == JS_PKI_KEY_TYPE_SM2 )
+    if( nType == JS_PKI_KEY_TYPE_ED25519 || nType == JS_PKI_KEY_TYPE_ED448 )
+    {
+        berApplet->warningBox(tr( "EdDSA does not support this feature."), this );
+        ret = JSR_UNSUPPORTED_ALGORITHM;
+        goto end;
+    }
+
+    if( nType == JS_PKI_KEY_TYPE_SM2 )
+    {
+        if( strHash != "SM3" )
         {
-            if( strHash != "SM3" )
-            {
-                QString strMsg = tr("SM2 Key have to use SM3 hash for signature. do you change hash as SM3?");
-                bool bVal = berApplet->yesOrNoBox( strMsg, this, true );
+            QString strMsg = tr("SM2 Key have to use SM3 hash for signature. do you change hash as SM3?");
+            bool bVal = berApplet->yesOrNoBox( strMsg, this, true );
 
-                if( bVal == true )
-                {
-                    strHash = "SM3";
-                    mHashTypeCombo->setCurrentText( strHash );
-                }
+            if( bVal == true )
+            {
+                strHash = "SM3";
+                mHashTypeCombo->setCurrentText( strHash );
             }
         }
+    }
 
+    if( mSignRadio->isChecked() )
+    {
+        mOutputText->clear();
         ret = JS_PKI_signInit( &sctx_, strHash.toStdString().c_str(), nType, &binPri );
 
         if( ret == 0 )
@@ -459,102 +474,6 @@ int SignVerifyDlg::signVerifyInit()
     }
     else
     {
-        if( mCertGroup->isChecked() == true )
-        {
-            if( mCertPath->text().isEmpty() )
-            {
-                berApplet->warningBox( tr( "Select a certificate"), this );
-                goto end;
-            }
-
-            JS_BIN_fileReadBER( mCertPath->text().toLocal8Bit().toStdString().c_str(), &binCert );
-        }
-        else
-        {
-            CertManDlg certMan;
-            QString strCertHex;
-
-            certMan.setMode(ManModeSelCert);
-            certMan.setTitle( tr( "Select a sign certificate") );
-
-            if( certMan.exec() != QDialog::Accepted )
-                goto end;
-
-            strCertHex = certMan.getCertHex();
-            JS_BIN_decodeHex( strCertHex.toStdString().c_str(), &binCert );
-        }
-        if( mAutoCertPubKeyCheck->isChecked() )
-        {
-            if( JS_PKI_isCert( &binCert ) == 0 )
-            {
-                mPubKeyVerifyCheck->setChecked(true);
-                JS_BIN_copy( &binPubKey, &binCert );
-            }
-            else
-            {
-                mPubKeyVerifyCheck->setChecked(false);
-                JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
-            }
-        }
-        else
-        {
-            if( mPubKeyVerifyCheck->isChecked() == false )
-                JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
-            else
-                JS_BIN_copy( &binPubKey, &binCert );
-        }
-
-        if( mUseKeyAlgCheck->isChecked() )
-        {
-            nType = JS_PKI_getPubKeyType( &binPubKey );
-            berApplet->log( QString( "PubKey Type : %1").arg( getKeyTypeName( nType )));
-
-            if( nType == JS_PKI_KEY_TYPE_RSA )
-                mAlgTypeCombo->setCurrentText( "RSA" );
-            else if( nType == JS_PKI_KEY_TYPE_SM2 )
-                mAlgTypeCombo->setCurrentText( "SM2" );
-            else if( nType == JS_PKI_KEY_TYPE_ECC )
-                mAlgTypeCombo->setCurrentText( "ECDSA" );
-            else if( nType == JS_PKI_KEY_TYPE_DSA )
-                mAlgTypeCombo->setCurrentText( "DSA" );
-            else if( nType == JS_PKI_KEY_TYPE_ED25519 )
-                mAlgTypeCombo->setCurrentText( "Ed25519" );
-            else if( nType == JS_PKI_KEY_TYPE_ED448 )
-                mAlgTypeCombo->setCurrentText( "Ed448" );
-        }
-
-        if( mAlgTypeCombo->currentText() == "RSA" )
-            nType = JS_PKI_KEY_TYPE_RSA;
-        else if( mAlgTypeCombo->currentText() == "SM2" )
-            nType = JS_PKI_KEY_TYPE_SM2;
-        else if( mAlgTypeCombo->currentText() == "DSA" )
-            nType = JS_PKI_KEY_TYPE_DSA;
-        else if( mAlgTypeCombo->currentText() == "Ed25519" )
-        {
-            nType = JS_PKI_KEY_TYPE_ED25519;
-        }
-        else if( mAlgTypeCombo->currentText() == "Ed448" )
-        {
-            nType = JS_PKI_KEY_TYPE_ED448;
-        }
-        else
-            nType = JS_PKI_KEY_TYPE_ECC;
-
-        if( nType == JS_PKI_KEY_TYPE_SM2 )
-        {
-            if( strHash != "SM3" )
-            {
-                QString strMsg = tr("SM2 Key have to use SM3 hash for verifing. do you change hash as SM3?");
-                bool bVal = berApplet->yesOrNoBox( strMsg, this, true );
-
-                if( bVal == true )
-                {
-                    strHash = "SM3";
-                    mHashTypeCombo->setCurrentText( strHash );
-                }
-            }
-        }
-
         ret = JS_PKI_verifyInit( &sctx_, strHash.toStdString().c_str(), nType, &binPubKey );
 
         if( ret == 0 )
@@ -740,7 +659,9 @@ void SignVerifyDlg::dataRun()
     char *pOut = NULL;
 
     int nDataType = DATA_HEX;
+    QString strAlg;
     QString strInput = mInputText->toPlainText();
+
 
     if( strInput.isEmpty() )
     {
@@ -770,71 +691,69 @@ void SignVerifyDlg::dataRun()
     }
 
     QString strHash = mHashTypeCombo->currentText();
+    if( mCertGroup->isChecked() == true )
+    {
+        ret = readPrivateKey( &binPri );
+        if( ret != 0 ) goto end;
+    }
+    else
+    {
+        CertManDlg certMan;
+        QString strPriHex;
+        certMan.setMode(ManModeSelBoth );
+        certMan.setTitle( tr( "Select a sign certificate") );
 
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
+
+        strPriHex = certMan.getPriKeyHex();
+        JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binPri );
+    }
+
+    if( mUseKeyAlgCheck->isChecked() )
+    {
+        int nAlgType = JS_PKI_getPriKeyType( &binPri );
+        berApplet->log( QString( "PriKey Type : %1").arg( getKeyTypeName( nAlgType )));
+
+        if( nAlgType == JS_PKI_KEY_TYPE_RSA )
+            mAlgTypeCombo->setCurrentText( "RSA" );
+        else if( nAlgType == JS_PKI_KEY_TYPE_ECC )
+            mAlgTypeCombo->setCurrentText( "ECDSA" );
+        else if( nAlgType == JS_PKI_KEY_TYPE_SM2 )
+            mAlgTypeCombo->setCurrentText( "SM2" );
+        else if( nAlgType == JS_PKI_KEY_TYPE_DSA )
+            mAlgTypeCombo->setCurrentText( "DSA" );
+        else if( nAlgType == JS_PKI_KEY_TYPE_ED25519 )
+            mAlgTypeCombo->setCurrentText( "Ed25519" );
+        else if( nAlgType == JS_PKI_KEY_TYPE_ED448 )
+            mAlgTypeCombo->setCurrentText( "Ed448" );
+    }
+
+    strAlg = mAlgTypeCombo->currentText();
+
+    if( strAlg == "SM2" )
+    {
+        if( strHash != "SM3" )
+        {
+            QString strMsg = tr("SM2 Key have to use SM3 hash for signature. do you change hash as SM3?");
+            bool bVal = berApplet->yesOrNoBox( strMsg, this, true );
+
+            if( bVal == true )
+            {
+                strHash = "SM3";
+                mHashTypeCombo->setCurrentText( strHash );
+            }
+        }
+    }
 
     if( mSignRadio->isChecked() )
     {
-        if( mCertGroup->isChecked() == true )
-        {
-            ret = readPrivateKey( &binPri );
-            if( ret != 0 ) goto end;
-        }
-        else
-        {
-            CertManDlg certMan;
-            QString strPriHex;
-            certMan.setMode(ManModeSelBoth );
-            certMan.setTitle( tr( "Select a sign certificate") );
-
-            if( certMan.exec() != QDialog::Accepted )
-                goto end;
-
-            strPriHex = certMan.getPriKeyHex();
-            JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binPri );
-        }
-
-        if( mUseKeyAlgCheck->isChecked() )
-        {
-            int nAlgType = JS_PKI_getPriKeyType( &binPri );
-            berApplet->log( QString( "PriKey Type : %1").arg( getKeyTypeName( nAlgType )));
-
-            if( nAlgType == JS_PKI_KEY_TYPE_RSA )
-                mAlgTypeCombo->setCurrentText( "RSA" );
-            else if( nAlgType == JS_PKI_KEY_TYPE_ECC )
-                mAlgTypeCombo->setCurrentText( "ECDSA" );
-            else if( nAlgType == JS_PKI_KEY_TYPE_SM2 )
-                mAlgTypeCombo->setCurrentText( "SM2" );
-            else if( nAlgType == JS_PKI_KEY_TYPE_DSA )
-                mAlgTypeCombo->setCurrentText( "DSA" );
-            else if( nAlgType == JS_PKI_KEY_TYPE_ED25519 )
-                mAlgTypeCombo->setCurrentText( "Ed25519" );
-            else if( nAlgType == JS_PKI_KEY_TYPE_ED448 )
-                mAlgTypeCombo->setCurrentText( "Ed448" );
-        }
-
-        QString strAlg = mAlgTypeCombo->currentText();
-
         if( strAlg == "RSA" )
         {
             ret = JS_PKI_RSAMakeSign( strHash.toStdString().c_str(), nVersion, &binSrc, &binPri, &binOut );
         }
         else if( strAlg == "SM2" || strAlg == "ECDSA" )
         {
-            if( strAlg == "SM2" )
-            {
-                if( strHash != "SM3" )
-                {
-                    QString strMsg = tr("SM2 Key have to use SM3 hash for signature. do you change hash as SM3?");
-                    bool bVal = berApplet->yesOrNoBox( strMsg, this, true );
-
-                    if( bVal == true )
-                    {
-                        strHash = "SM3";
-                        mHashTypeCombo->setCurrentText( strHash );
-                    }
-                }
-            }
-
             ret = JS_PKI_ECCMakeSign( strHash.toStdString().c_str(), &binSrc, &binPri, &binOut );
         }
         else if( strAlg == "DSA" )
@@ -876,97 +795,12 @@ void SignVerifyDlg::dataRun()
     }
     else
     {
-        if( mCertGroup->isChecked() == true )
-        {
-            if( mCertPath->text().isEmpty() )
-            {
-                berApplet->warningBox( tr( "Select a certificate"), this );
-                mCertPath->setFocus();
-                goto end;
-            }
-
-            JS_BIN_fileReadBER( mCertPath->text().toLocal8Bit().toStdString().c_str(), &binCert );
-        }
-        else
-        {
-            CertManDlg certMan;
-            QString strCertHex;
-
-            certMan.setMode(ManModeSelCert);
-            certMan.setTitle( tr( "Select a sign certificate") );
-
-            if( certMan.exec() != QDialog::Accepted )
-                goto end;
-
-            strCertHex = certMan.getCertHex();
-            JS_BIN_decodeHex( strCertHex.toStdString().c_str(), &binCert );
-        }
-
-        JS_BIN_decodeHex( mOutputText->toPlainText().toStdString().c_str(), &binOut );
-
-        if( mAutoCertPubKeyCheck->isChecked() )
-        {
-            if( JS_PKI_isCert( &binCert ) == 0 )
-            {
-                mPubKeyVerifyCheck->setChecked(true);
-                JS_BIN_copy( &binPubKey, &binCert );
-            }
-            else
-            {
-                mPubKeyVerifyCheck->setChecked(false);
-                JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
-            }
-        }
-        else
-        {
-            if( mPubKeyVerifyCheck->isChecked() == false )
-                JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
-            else
-                JS_BIN_copy( &binPubKey, &binCert );
-        }
-
-        if( mUseKeyAlgCheck->isChecked() )
-        {
-            int id = JS_PKI_getPubKeyType( &binPubKey );
-            berApplet->log( QString( "PubKey Type : %1").arg( getKeyTypeName( id )));
-
-            if( id == JS_PKI_KEY_TYPE_RSA )
-                mAlgTypeCombo->setCurrentText( "RSA" );
-            else if( id == JS_PKI_KEY_TYPE_SM2 )
-                mAlgTypeCombo->setCurrentText( "SM2" );
-            else if( id == JS_PKI_KEY_TYPE_ECC )
-                mAlgTypeCombo->setCurrentText( "ECDSA" );
-            else if( id == JS_PKI_KEY_TYPE_DSA )
-                mAlgTypeCombo->setCurrentText( "DSA" );
-            else if( id == JS_PKI_KEY_TYPE_ED25519 )
-                mAlgTypeCombo->setCurrentText( "Ed25519" );
-            else if( id == JS_PKI_KEY_TYPE_ED448 )
-                mAlgTypeCombo->setCurrentText( "Ed448" );
-        }
-
-        QString strAlg = mAlgTypeCombo->currentText();
-
         if( strAlg == "RSA" )
         {
             ret = JS_PKI_RSAVerifySign( strHash.toStdString().c_str(), nVersion, &binSrc, &binOut, &binPubKey );
         }
         else if( strAlg == "ECDSA" || strAlg == "SM2" )
         {
-            if( strAlg == "SM2" )
-            {
-                if( strHash != "SM3" )
-                {
-                    QString strMsg = tr("SM2 Key have to use SM3 hash for verifing. do you change hash as SM3?");
-                    bool bVal = berApplet->yesOrNoBox( strMsg, this, true );
-
-                    if( bVal == true )
-                    {
-                        strHash = "SM3";
-                        mHashTypeCombo->setCurrentText( strHash );
-                    }
-                }
-            }
-
             ret = JS_PKI_ECCVerifySign( strHash.toStdString().c_str(), &binSrc, &binOut, &binPubKey );
         }
         else if( strAlg == "DSA" )
