@@ -634,9 +634,15 @@ void PubEncDecDlg::algChanged()
     if( mUseKeyAlgCheck->isChecked() == false )
     {
         if( strAlg == "RSA" )
+        {
+            mVersionLabel->setEnabled( true );
             mVersionTypeCombo->setEnabled( true );
+        }
         else
+        {
+            mVersionLabel->setEnabled( false );
             mVersionTypeCombo->setEnabled( false );
+        }
 
         if( strAlg == "ECIES" )
             mECIESGroup->setEnabled( true );
@@ -694,6 +700,8 @@ void PubEncDecDlg::clickPriKeyDecode()
 
 void PubEncDecDlg::clickCertView()
 {
+    BIN binCert = {0,0};
+
     QString strPath = mCertPath->text();
     if( strPath.length() < 1 )
     {
@@ -701,6 +709,17 @@ void PubEncDecDlg::clickCertView()
         mCertPath->setFocus();
         return;
     }
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    if( JS_PKI_isCert( &binCert ) != 1 )
+    {
+        berApplet->warningBox( tr( "It is not a certificate"), this );
+        mCertPath->setFocus();
+        JS_BIN_reset( &binCert );
+        return;
+    }
+
+    JS_BIN_reset( &binCert );
 
     CertInfoDlg certInfoDlg;
     certInfoDlg.setCertPath( strPath );

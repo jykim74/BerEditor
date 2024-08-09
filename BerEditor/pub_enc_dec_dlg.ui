@@ -413,7 +413,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="label_6">
+      <widget class="QLabel" name="mVersionLabel">
        <property name="text">
         <string>For RSA Version</string>
        </property>

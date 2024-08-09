@@ -13,7 +13,7 @@ qtHaveModule(printsupport): QT += printsupport
 
 TARGET = BerEditor
 TEMPLATE = app
-PROJECT_VERSION = "2.0.0"
+PROJECT_VERSION = "2.0.2"
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -99,7 +99,8 @@ SOURCES += \
     ttlv_tree_model.cpp \
     ttlv_tree_view.cpp \
     make_ttlv_dlg.cpp \
-    pri_key_info_dlg.cpp
+    pri_key_info_dlg.cpp \
+    BasicXMLSyntaxHighlighter.cpp
 
 HEADERS += \
     about_dlg.h \
@@ -166,7 +167,8 @@ HEADERS += \
     ttlv_tree_model.h \
     ttlv_tree_view.h \
     make_ttlv_dlg.h \
-    pri_key_info_dlg.h
+    pri_key_info_dlg.h \
+    BasicXMLSyntaxHighlighter.h
 
 
 

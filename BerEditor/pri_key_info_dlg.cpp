@@ -172,7 +172,6 @@ void PriKeyInfoDlg::setDSAKey( const BIN *pKey, bool bPri )
 void PriKeyInfoDlg::setEdDSAKey( int nKeyType, const BIN *pKey, bool bPri )
 {
     int ret = 0;
-    int nType = 0;
     JRawKeyVal sRawKeyVal;
 
     if( pKey == NULL || pKey->nLen <= 0 ) return;
@@ -180,9 +179,9 @@ void PriKeyInfoDlg::setEdDSAKey( int nKeyType, const BIN *pKey, bool bPri )
     memset( &sRawKeyVal, 0x00, sizeof(sRawKeyVal));
 
     if( bPri == true )
-        ret = JS_PKI_getRawKeyVal( nType, pKey, &sRawKeyVal );
+        ret = JS_PKI_getRawKeyVal( nKeyType, pKey, &sRawKeyVal );
     else
-        ret = JS_PKI_getRawKeyValFromPub( nType, pKey, &sRawKeyVal );
+        ret = JS_PKI_getRawKeyValFromPub( nKeyType, pKey, &sRawKeyVal );
 
     if( ret == 0 )
     {

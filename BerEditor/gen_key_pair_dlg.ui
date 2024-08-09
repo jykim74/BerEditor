@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>445</width>
+    <width>418</width>
     <height>186</height>
    </rect>
   </property>
@@ -16,6 +16,12 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label">
+     <property name="minimumSize">
+      <size>
+       <width>400</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="text">
       <string>KeyPair Information</string>
      </property>
@@ -111,7 +117,7 @@
       <widget class="QComboBox" name="mOptionCombo">
        <property name="minimumSize">
         <size>
-         <width>160</width>
+         <width>100</width>
          <height>0</height>
         </size>
        </property>
