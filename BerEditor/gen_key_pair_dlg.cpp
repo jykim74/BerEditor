@@ -150,6 +150,15 @@ void GenKeyPairDlg::clickOK()
     JS_BIN_reset( &pri_key_ );
     JS_BIN_reset( &pub_key_ );
 
+    QString strName = mNameText->text();
+
+    if( strName.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a name" ), this );
+        mNameText->setFocus();
+        return;
+    }
+
     if( mRSACheck->isChecked() )
     {
         int nKeySize = mOptionCombo->currentText().toInt();

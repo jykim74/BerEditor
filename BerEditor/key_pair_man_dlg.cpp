@@ -23,6 +23,8 @@ static QStringList kVersionList = { "V1", "V2" };
 static QStringList kPBEv1List = { "PBE-SHA1-3DES", "PBE-SHA1-2DES" };
 static QStringList kPBEv2List = { "AES-128-CBC", "AES-256-CBC", "ARIA-128-CBC", "ARIA-256-CBC" };
 
+static QString kPrivateFile = "private.pem";
+static QString kPublicFile = "public.pem";
 
 KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
     QDialog(parent)
@@ -38,7 +40,6 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
     connect( mPriViewBtn, SIGNAL(clicked()), this, SLOT(viewPriKey()));
     connect( mPubViewBtn, SIGNAL(clicked()), this, SLOT(viewPubKey()));
 
-    connect( mFindSavePathBtn, SIGNAL(clicked()), this, SLOT(findSavePath()));
     connect( mFindPriKeyBtn, SIGNAL(clicked()), this, SLOT(findPriKey()));
     connect( mFindPubKeyBtn, SIGNAL(clicked()), this, SLOT(findPubKey()));
     connect( mFindEncPriKeyBtn, SIGNAL(clicked()), this, SLOT(findEncPriKey()));
@@ -69,6 +70,11 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+
+    tabList->layout()->setSpacing(5);
+    tabTools->layout()->setSpacing(5);
+
+
     mPriViewBtn->setFixedWidth(34);
     mPubViewBtn->setFixedWidth(34);
 
@@ -87,8 +93,8 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
     mCSRClearBtn->setFixedWidth(34);
     mCSRDecodeBtn->setFixedWidth(34);
 #endif
+    initUI();
 
-    initialize();
     resize(minimumSizeHint().width(), minimumSizeHint().height());
     mGenKeyPairBtn->setDefault(true);
 }
@@ -98,9 +104,112 @@ KeyPairManDlg::~KeyPairManDlg()
 
 }
 
+void KeyPairManDlg::initUI()
+{
+#if defined(Q_OS_MAC)
+    int nWidth = width() * 9/10;
+#else
+    int nWidth = width() * 8/10;
+#endif
+
+    QStringList sTableLabels = { tr( "FolderName" ), tr( "Algorithm"), tr("Option") };
+
+    mKeyPairTable->clear();
+    mKeyPairTable->horizontalHeader()->setStretchLastSection(true);
+    mKeyPairTable->setColumnCount( sTableLabels.size() );
+    mKeyPairTable->setHorizontalHeaderLabels( sTableLabels );
+    mKeyPairTable->verticalHeader()->setVisible(false);
+    mKeyPairTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mKeyPairTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mKeyPairTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    mKeyPairTable->setColumnWidth( 0, nWidth * 5/10 );
+    mKeyPairTable->setColumnWidth( 1, nWidth * 2/10 );
+    mKeyPairTable->setColumnWidth( 2, nWidth * 3/10 );
+}
+
+void KeyPairManDlg::showEvent(QShowEvent *event)
+{
+    initialize();
+}
+
+void KeyPairManDlg::closeEvent(QCloseEvent *event )
+{
+
+}
+
 void KeyPairManDlg::initialize()
 {
+    QString strKeyPairPath = berApplet->settingsMgr()->keyPairPath();
+    mSavePathText->setText( strKeyPairPath );
+
     mVersionCombo->addItems(kVersionList);
+
+    loadKeyPairList();
+}
+
+void KeyPairManDlg::loadKeyPairList()
+{
+    int ret = 0;
+    int row = 0;
+
+    mKeyPairTable->setRowCount(0);
+
+    QString strPath = berApplet->settingsMgr()->keyPairPath();
+    QDir dir( strPath );
+
+    for( const QFileInfo &folder: dir.entryInfoList(QDir::Dirs))
+    {
+        BIN binPri = {0,0};
+        BIN binPub = {0,0};
+
+        int nAlg = -1;
+        int nOption = -1;
+
+        const char *pAlg = NULL;
+        const char *pGroup = NULL;
+
+        if( folder.isFile() ) continue;
+
+        QString strPubKeyPath = QString( "%1/%2" ).arg( folder.filePath() ).arg( kPublicFile );
+        QFileInfo pubKeyFile( strPubKeyPath );
+        QString strPriKeyPath = QString( "%1/%2" ).arg( folder.filePath() ).arg( kPrivateFile );
+        QFileInfo priKeyFile( strPriKeyPath );
+
+        QString strOption;
+
+        if( pubKeyFile.exists() == false || priKeyFile.exists() == false ) continue;
+
+        JS_BIN_fileReadBER( strPriKeyPath.toLocal8Bit().toStdString().c_str(), &binPri );
+        JS_BIN_fileReadBER( strPubKeyPath.toLocal8Bit().toStdString().c_str(), &binPub );
+
+        JS_PKI_getPubKeyInfo( &binPub, &nAlg, &nOption );
+
+        pAlg = JS_PKI_getKeyAlgName( nAlg );
+
+        if( nAlg == JS_PKI_KEY_TYPE_ECC || nAlg == JS_PKI_KEY_TYPE_SM2 )
+        {
+            pGroup = JS_PKI_getSNFromNid( nOption );
+            strOption = pGroup;
+        }
+        else
+        {
+            strOption = QString( "%1").arg( nOption );
+        }
+
+
+        mKeyPairTable->insertRow(row);
+        mKeyPairTable->setRowHeight( row, 10 );
+        QTableWidgetItem *item = new QTableWidgetItem( folder.baseName() );
+
+        mKeyPairTable->setItem( row, 0, item );
+        mKeyPairTable->setItem( row, 1, new QTableWidgetItem(QString("%1").arg( pAlg)));
+        mKeyPairTable->setItem( row, 2, new QTableWidgetItem( QString("%1" ).arg( strOption )));
+
+        JS_BIN_reset( &binPri );
+        JS_BIN_reset( &binPub );
+
+        row++;
+    }
 }
 
 const QString KeyPairManDlg::getTypePathName( qint64 now_t, DerType nType )
@@ -226,16 +335,43 @@ int KeyPairManDlg::Save( qint64 tTime, DerType nType, const BIN *pBin )
 
 void KeyPairManDlg::clickGenKeyPair()
 {
+    QDir dir;
+    QString strKeyPairPath = berApplet->settingsMgr()->keyPairPath();
     GenKeyPairDlg genKeyPair;
+
     if( genKeyPair.exec() == QDialog::Accepted )
     {
-        time_t now_t = time(NULL);
+        BIN binPri = {0,0};
+        BIN binPub = {0,0};
 
-        QString strPriHex = genKeyPair.getPriKeyHex();
-        QString strPubHex = genKeyPair.getPubKeyHex();
+        QString strName = genKeyPair.mNameText->text();
 
-        Save( now_t, TypePriKey, strPriHex );
-        Save( now_t, TypePubKey, strPubHex );
+        QString fullPath = QString( "%1/%2" ).arg( strKeyPairPath ).arg( strName );
+        if( dir.exists( fullPath ) )
+        {
+            berApplet->warningBox( tr( "The folder(%1) is already existed" ).arg( strName ), this );
+            return;
+        }
+        else
+        {
+            dir.mkdir( fullPath );
+        }
+
+        QString strPriPath = QString( "%1/%2" ).arg( fullPath ).arg( kPrivateFile );
+        QString strPubPath = QString( "%1/%2" ).arg( fullPath ).arg( kPublicFile );
+
+        JS_BIN_decodeHex( genKeyPair.getPriKeyHex().toStdString().c_str(), &binPri );
+        JS_BIN_decodeHex( genKeyPair.getPubKeyHex().toStdString().c_str(), &binPub );
+
+        JS_BIN_writePEM( &binPri, JS_PEM_TYPE_PRIVATE_KEY, strPriPath.toLocal8Bit().toStdString().c_str() );
+        JS_BIN_writePEM( &binPub, JS_PEM_TYPE_PUBLIC_KEY, strPubPath.toLocal8Bit().toStdString().c_str() );
+
+        JS_BIN_reset( &binPri );
+        JS_BIN_reset( &binPub );
+
+        loadKeyPairList();
+
+        berApplet->messageLog( tr( "Key pair generation was successful"), this );
     }
 }
 
@@ -458,27 +594,6 @@ void KeyPairManDlg::viewPubKey()
     priKeyInfo.exec();
 
     JS_BIN_reset( &binPubKey );
-}
-
-void KeyPairManDlg::findSavePath()
-{
-    QString strPath = mSavePathText->text();
-
-    if( strPath.length() < 1 )
-    {
-        QDir dir;
-        strPath = berApplet->settingsMgr()->tempCertPath();
-
-        if( dir.exists(strPath) == false )
-            dir.mkdir( strPath );
-    }
-
-    QString folderPath = findFolder( this, strPath );
-    if( folderPath.length() > 0 )
-    {
-        mSavePathText->setText( folderPath );
-        berApplet->setCurFile(folderPath);
-    }
 }
 
 void KeyPairManDlg::findPriKey()

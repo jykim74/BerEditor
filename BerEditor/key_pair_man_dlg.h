@@ -26,6 +26,9 @@ public:
     ~KeyPairManDlg();
 
 private slots:
+    void showEvent(QShowEvent *event);
+    void closeEvent(QCloseEvent *event );
+
     void changeVerison( int index );
 
     void clickGenKeyPair();
@@ -41,7 +44,6 @@ private slots:
     void viewPriKey();
     void viewPubKey();
 
-    void findSavePath();
     void findPriKey();
     void findPubKey();
     void findEncPriKey();
@@ -61,11 +63,13 @@ private slots:
     void typePriKey();
     void typePubKey();
 private:
-
+    void initUI();
     void initialize();
     const QString getTypePathName( qint64 now_t, DerType nType );
     int Save( qint64 tTime, DerType nType, const QString strHex );
     int Save( qint64 tTime, DerType nType, const BIN *pBin );
+
+    void loadKeyPairList();
 };
 
 #endif // KEY_PAIR_MAN_DLG_H
