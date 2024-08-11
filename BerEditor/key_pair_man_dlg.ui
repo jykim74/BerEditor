@@ -88,7 +88,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tabList">
       <attribute name="title">
@@ -120,56 +120,56 @@
           <item>
            <layout class="QGridLayout" name="gridLayout_3">
             <item row="0" column="0">
-             <widget class="QPushButton" name="mGenKeyPairBtn">
+             <widget class="QPushButton" name="mLGenKeyPairBtn">
               <property name="text">
                <string>Generate KeyPair</string>
               </property>
              </widget>
             </item>
             <item row="0" column="2">
-             <widget class="QPushButton" name="pushButton_2">
+             <widget class="QPushButton" name="mLMakeCSRBtn">
               <property name="text">
                <string>Make CSR</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QPushButton" name="pushButton">
+             <widget class="QPushButton" name="mLDeleteBtn">
               <property name="text">
                <string>Delete</string>
               </property>
              </widget>
             </item>
-            <item row="0" column="3">
-             <widget class="QPushButton" name="pushButton_3">
+            <item row="1" column="2">
+             <widget class="QPushButton" name="mLDecodePriKeyBtn">
               <property name="text">
-               <string>View PriKey</string>
+               <string>Decode PriKey</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="0">
-             <widget class="QPushButton" name="pushButton_4">
+            <item row="1" column="3">
+             <widget class="QPushButton" name="mLDecodePubKeyBtn">
+              <property name="text">
+               <string>Decode PubKey</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="mLViewPubKeyBtn">
               <property name="text">
                <string>View PubKey</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="2">
-             <widget class="QPushButton" name="pushButton_6">
+            <item row="1" column="0">
+             <widget class="QPushButton" name="mLViewPriKeyBtn">
               <property name="text">
-               <string>Import</string>
+               <string>View PriKey</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="3">
-             <widget class="QPushButton" name="pushButton_7">
-              <property name="text">
-               <string>Export</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QPushButton" name="pushButton_5">
+            <item row="0" column="3">
+             <widget class="QPushButton" name="mLEncryptBtn">
               <property name="text">
                <string>Encrypt</string>
               </property>
@@ -458,20 +458,6 @@
        <item>
         <layout class="QGridLayout" name="gridLayout_4">
          <item row="0" column="3">
-          <widget class="QPushButton" name="mMakeCSRBtn">
-           <property name="text">
-            <string>Make CSR</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QPushButton" name="mCheckKeyPairBtn">
-           <property name="text">
-            <string>Check KeyPair</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
           <spacer name="horizontalSpacer_3">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -483,6 +469,27 @@
             </size>
            </property>
           </spacer>
+         </item>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="mCheckKeyPairBtn">
+           <property name="text">
+            <string>Check KeyPair</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QPushButton" name="mMakeCSRBtn">
+           <property name="text">
+            <string>Make CSR</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QPushButton" name="mSaveToListBtn">
+           <property name="text">
+            <string>Save to List</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>

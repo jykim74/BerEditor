@@ -29,9 +29,19 @@ private slots:
     void showEvent(QShowEvent *event);
     void closeEvent(QCloseEvent *event );
 
-    void changeVerison( int index );
 
-    void clickGenKeyPair();
+
+    void clickLGenKeyPair();
+    void clickLDelete();
+    void clickLMakeCSR();
+    void clickLEncrypt();
+    void clickLViewPriKey();
+    void clickLViewPubKey();
+    void clickLDecodePriKey();
+    void clickLDecodePubKey();
+
+    void changeVerison( int index );
+    void clickSaveToList();
     void clickMakeCSR();
 
     void clickCheckKeyPair();
@@ -70,6 +80,7 @@ private:
     int Save( qint64 tTime, DerType nType, const BIN *pBin );
 
     void loadKeyPairList();
+    const QString getSelectedPath();
 };
 
 #endif // KEY_PAIR_MAN_DLG_H

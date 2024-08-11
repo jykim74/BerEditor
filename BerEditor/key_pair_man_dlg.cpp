@@ -10,6 +10,9 @@
 #include "csr_info_dlg.h"
 #include "settings_mgr.h"
 #include "pri_key_info_dlg.h"
+#include "new_passwd_dlg.h"
+#include "passwd_dlg.h"
+#include "name_dlg.h"
 
 #include "js_pki.h"
 #include "js_pki_eddsa.h"
@@ -34,7 +37,16 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
     connect( mVersionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeVerison(int)));
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
-    connect( mGenKeyPairBtn, SIGNAL(clicked()), this, SLOT(clickGenKeyPair()));
+    connect( mLGenKeyPairBtn, SIGNAL(clicked()), this, SLOT(clickLGenKeyPair()));
+    connect( mLDeleteBtn, SIGNAL(clicked()), this, SLOT(clickLDelete()));
+    connect( mLMakeCSRBtn, SIGNAL(clicked()), this, SLOT(clickLMakeCSR()));
+    connect( mLEncryptBtn, SIGNAL(clicked()), this, SLOT(clickLEncrypt()));
+    connect( mLViewPriKeyBtn, SIGNAL(clicked()), this, SLOT(clickLViewPriKey()));
+    connect( mLViewPubKeyBtn, SIGNAL(clicked()), this, SLOT(clickLViewPubKey()));
+    connect( mLDecodePriKeyBtn, SIGNAL(clicked()), this, SLOT(clickLDecodePriKey()));
+    connect( mLDecodePubKeyBtn, SIGNAL(clicked()), this, SLOT(clickLDecodePubKey()));
+
+    connect( mSaveToListBtn, SIGNAL(clicked()), this, SLOT(clickSaveToList()));
     connect( mMakeCSRBtn, SIGNAL(clicked()), this, SLOT(clickMakeCSR()));
 
     connect( mPriViewBtn, SIGNAL(clicked()), this, SLOT(viewPriKey()));
@@ -96,7 +108,7 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
     initUI();
 
     resize(minimumSizeHint().width(), minimumSizeHint().height());
-    mGenKeyPairBtn->setDefault(true);
+    mLGenKeyPairBtn->setDefault(true);
 }
 
 KeyPairManDlg::~KeyPairManDlg()
@@ -145,6 +157,18 @@ void KeyPairManDlg::initialize()
     mVersionCombo->addItems(kVersionList);
 
     loadKeyPairList();
+}
+
+const QString KeyPairManDlg::getSelectedPath()
+{
+    QString strPath;
+
+    QModelIndex idx = mKeyPairTable->currentIndex();
+    QTableWidgetItem* item = mKeyPairTable->item( idx.row(), 0 );
+
+    if( item ) strPath = item->data(Qt::UserRole).toString();
+
+    return strPath;
 }
 
 void KeyPairManDlg::loadKeyPairList()
@@ -200,6 +224,8 @@ void KeyPairManDlg::loadKeyPairList()
         mKeyPairTable->insertRow(row);
         mKeyPairTable->setRowHeight( row, 10 );
         QTableWidgetItem *item = new QTableWidgetItem( folder.baseName() );
+
+        item->setData(Qt::UserRole, folder.filePath() );
 
         mKeyPairTable->setItem( row, 0, item );
         mKeyPairTable->setItem( row, 1, new QTableWidgetItem(QString("%1").arg( pAlg)));
@@ -333,7 +359,7 @@ int KeyPairManDlg::Save( qint64 tTime, DerType nType, const BIN *pBin )
     return 0;
 }
 
-void KeyPairManDlg::clickGenKeyPair()
+void KeyPairManDlg::clickLGenKeyPair()
 {
     QDir dir;
     QString strKeyPairPath = berApplet->settingsMgr()->keyPairPath();
@@ -373,6 +399,288 @@ void KeyPairManDlg::clickGenKeyPair()
 
         berApplet->messageLog( tr( "Key pair generation was successful"), this );
     }
+}
+
+void KeyPairManDlg::clickLDelete()
+{
+    int ret = 0;
+    QDir dir;
+
+    QString strPubKeyPath;
+    QString strPriKeyPath;
+    QString strPath = getSelectedPath();
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Please select keypair" ), this );
+        return;
+    }
+
+    bool bVal = berApplet->yesOrCancelBox( tr( "Are you sure to delete the keypair" ), this, false );
+    if( bVal == false ) return;
+
+    strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
+    strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+
+    dir.remove( strPubKeyPath );
+    dir.remove( strPriKeyPath );
+    dir.rmdir( strPath );
+
+    loadKeyPairList();
+}
+
+void KeyPairManDlg::clickLMakeCSR()
+{
+    int ret = 0;
+    QDir dir;
+
+    QString strPubKeyPath;
+    QString strPriKeyPath;
+    QString strPath = getSelectedPath();
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Please select keypair" ), this );
+        return;
+    }
+
+    strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
+    strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+
+    BIN binPri = {0,0};
+    JS_BIN_fileReadBER( strPriKeyPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    MakeCSRDlg makeCSR;
+    makeCSR.setPriKey( &binPri );
+
+    if( makeCSR.exec() == QDialog::Accepted )
+    {
+        QString strHexCSR = makeCSR.getCSRHex();
+        QString strCurFolder = berApplet->curFolder();
+
+        QString fileName = findSaveFile( this, JS_FILE_TYPE_REQ, strCurFolder );
+        if( fileName.length() > 1 )
+        {
+            JS_BIN_writePEM( &binPri, JS_FILE_TYPE_REQ, fileName.toLocal8Bit().toStdString().c_str() );
+            berApplet->messageLog(tr("The CSR(%1) is saved successfully").arg( fileName ), this );
+        }
+    }
+
+    JS_BIN_reset( &binPri );
+}
+
+void KeyPairManDlg::clickLEncrypt()
+{
+    int ret = 0;
+    QDir dir;
+
+    QString strPubKeyPath;
+    QString strPriKeyPath;
+    QString strPath = getSelectedPath();
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Please select keypair" ), this );
+        return;
+    }
+
+    strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
+    strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+
+    BIN binPri = {0,0};
+    BIN binEncPri = {0,0};
+    QString fileName;
+
+    JS_BIN_fileReadBER( strPriKeyPath.toLocal8Bit().toStdString().c_str(), &binPri );
+
+    QString strCurFolder = berApplet->curFolder();
+
+    NewPasswdDlg newPass;
+    QString strPass;
+    newPass.setTitle( tr( "Enter a new private key password" ));
+
+    if( newPass.exec() != QDialog::Accepted )
+        goto end;
+
+    strPass = newPass.mPasswdText->text();
+    ret = JS_PKI_encryptPrivateKey2( -1, strPass.toStdString().c_str(), &binPri, NULL, &binEncPri );
+    if( ret != 0 )
+    {
+        berApplet->warnLog( tr( "fail to encrypt private key: %1").arg( ret ));
+        goto end;
+    }
+
+    fileName = findSaveFile( this, JS_FILE_TYPE_REQ, strCurFolder );
+    if( fileName.length() > 1 )
+    {
+        JS_BIN_writePEM( &binPri, JS_FILE_TYPE_REQ, fileName.toLocal8Bit().toStdString().c_str() );
+        berApplet->messageLog(tr("The Enc PrivateKey(%1) is saved successfully").arg( fileName ), this );
+    }
+
+end :
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binEncPri );
+}
+
+void KeyPairManDlg::clickLViewPriKey()
+{
+    int ret = 0;
+    QDir dir;
+
+    QString strPubKeyPath;
+    QString strPriKeyPath;
+    QString strPath = getSelectedPath();
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Please select keypair" ), this );
+        return;
+    }
+
+    strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
+    strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+
+    BIN binPri = {0,0};
+    JS_BIN_fileReadBER( strPriKeyPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    PriKeyInfoDlg priKeyInfo;
+    priKeyInfo.setPrivateKey( &binPri );
+    priKeyInfo.exec();
+    JS_BIN_reset( &binPri );
+}
+
+void KeyPairManDlg::clickLViewPubKey()
+{
+    int ret = 0;
+    QDir dir;
+
+    QString strPubKeyPath;
+    QString strPriKeyPath;
+    QString strPath = getSelectedPath();
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Please select keypair" ), this );
+        return;
+    }
+
+    strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
+    strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+
+    BIN binPub = {0,0};
+    JS_BIN_fileReadBER( strPubKeyPath.toLocal8Bit().toStdString().c_str(), &binPub );
+    PriKeyInfoDlg priKeyInfo;
+    priKeyInfo.setPublicKey( &binPub );
+    priKeyInfo.exec();
+    JS_BIN_reset( &binPub );
+}
+
+void KeyPairManDlg::clickLDecodePriKey()
+{
+    int ret = 0;
+    QDir dir;
+
+    QString strPubKeyPath;
+    QString strPriKeyPath;
+    QString strPath = getSelectedPath();
+
+    BIN binPri = {0,0};
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Please select keypair" ), this );
+        return;
+    }
+
+    strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
+    strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+
+    JS_BIN_fileReadBER( strPriKeyPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    berApplet->decodeData( &binPri, strPriKeyPath );
+    JS_BIN_reset( &binPri );
+}
+
+void KeyPairManDlg::clickLDecodePubKey()
+{
+    int ret = 0;
+    QDir dir;
+
+    BIN binPub = {0,0};
+
+    QString strPubKeyPath;
+    QString strPriKeyPath;
+    QString strPath = getSelectedPath();
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Please select keypair" ), this );
+        return;
+    }
+
+    strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
+    strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+
+    JS_BIN_fileReadBER( strPubKeyPath.toLocal8Bit().toStdString().c_str(), &binPub );
+    berApplet->decodeData( &binPub, strPubKeyPath );
+    JS_BIN_reset( &binPub );
+}
+
+void KeyPairManDlg::clickSaveToList()
+{
+    BIN binPri = {0,0};
+    BIN binPub = {0,0};
+
+    QString strPriPath = mPriPathText->text();
+    QString strPubPath = mPubPathText->text();
+
+    if( strPriPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Find Private Key" ), this );
+        return;
+    }
+
+    if( strPubPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Find Public Key" ), this );
+        return;
+    }
+
+    JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPub );
+
+    NameDlg nameDlg;
+
+    if( nameDlg.exec() == QDialog::Accepted )
+    {
+        QDir dir;
+
+        QString strKeyPairPath = berApplet->settingsMgr()->keyPairPath();
+        QString strName = nameDlg.mNameText->text();
+
+        QString fullPath = QString( "%1/%2" ).arg( strKeyPairPath ).arg( strName );
+        if( dir.exists( fullPath ) )
+        {
+            berApplet->warningBox( tr( "The folder(%1) is already existed" ).arg( strName ), this );
+            return;
+        }
+        else
+        {
+            dir.mkdir( fullPath );
+        }
+
+        QString strPriSavePath = QString( "%1/%2" ).arg( fullPath ).arg( kPrivateFile );
+        QString strPubSavePath = QString( "%1/%2" ).arg( fullPath ).arg( kPublicFile );
+
+        JS_BIN_writePEM( &binPri, JS_PEM_TYPE_PRIVATE_KEY, strPriSavePath.toLocal8Bit().toStdString().c_str() );
+        JS_BIN_writePEM( &binPub, JS_PEM_TYPE_PUBLIC_KEY, strPubSavePath.toLocal8Bit().toStdString().c_str() );
+
+        loadKeyPairList();
+
+        berApplet->messageLog( tr( "Key pair saving was successful"), this );
+    }
+
+
+end :
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binPub );
 }
 
 void KeyPairManDlg::clickMakeCSR()
