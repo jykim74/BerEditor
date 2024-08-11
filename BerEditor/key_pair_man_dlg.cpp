@@ -195,7 +195,6 @@ void KeyPairManDlg::loadKeyPairList()
         int nAlg = -1;
         int nOption = -1;
 
-        const char *pAlg = NULL;
         const char *pGroup = NULL;
 
         if( folder.isFile() ) continue;
@@ -206,6 +205,7 @@ void KeyPairManDlg::loadKeyPairList()
         QFileInfo priKeyFile( strPriKeyPath );
 
         QString strOption;
+        QString strAlg;
 
         if( pubKeyFile.exists() == false || priKeyFile.exists() == false ) continue;
 
@@ -214,12 +214,17 @@ void KeyPairManDlg::loadKeyPairList()
 
         JS_PKI_getPubKeyInfo( &binPub, &nAlg, &nOption );
 
-        pAlg = JS_PKI_getKeyAlgName( nAlg );
+        strAlg = JS_PKI_getKeyAlgName( nAlg );
 
         if( nAlg == JS_PKI_KEY_TYPE_ECC || nAlg == JS_PKI_KEY_TYPE_SM2 )
         {
             pGroup = JS_PKI_getSNFromNid( nOption );
             strOption = pGroup;
+        }
+        else if( nAlg == JS_PKI_KEY_TYPE_ED25519 || nAlg == JS_PKI_KEY_TYPE_ED448 )
+        {
+            strOption = strAlg;
+            strAlg = "EdDSA";
         }
         else
         {
@@ -234,7 +239,7 @@ void KeyPairManDlg::loadKeyPairList()
         item->setData(Qt::UserRole, folder.filePath() );
 
         mKeyPairTable->setItem( row, 0, item );
-        mKeyPairTable->setItem( row, 1, new QTableWidgetItem(QString("%1").arg( pAlg)));
+        mKeyPairTable->setItem( row, 1, new QTableWidgetItem(QString("%1").arg( strAlg)));
         mKeyPairTable->setItem( row, 2, new QTableWidgetItem( QString("%1" ).arg( strOption )));
 
         JS_BIN_reset( &binPri );
