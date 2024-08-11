@@ -86,6 +86,8 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
     tabList->layout()->setSpacing(5);
     tabTools->layout()->setSpacing(5);
 
+    mListManGroup->layout()->setMargin(5);
+
 
     mPriViewBtn->setFixedWidth(34);
     mPubViewBtn->setFixedWidth(34);
@@ -119,7 +121,7 @@ KeyPairManDlg::~KeyPairManDlg()
 void KeyPairManDlg::initUI()
 {
 #if defined(Q_OS_MAC)
-    int nWidth = width() * 9/10;
+    int nWidth = width() * 8/10;
 #else
     int nWidth = width() * 8/10;
 #endif
@@ -151,6 +153,8 @@ void KeyPairManDlg::closeEvent(QCloseEvent *event )
 
 void KeyPairManDlg::initialize()
 {
+    tabWidget->setCurrentIndex(0);
+
     QString strKeyPairPath = berApplet->settingsMgr()->keyPairPath();
     mSavePathText->setText( strKeyPairPath );
 
@@ -910,7 +914,7 @@ void KeyPairManDlg::findPriKey()
 
     if( strPath.length() < 1 )
     {
-        strPath = berApplet->settingsMgr()->tempCertPath();
+        strPath = berApplet->settingsMgr()->keyPairPath();
     }
 
     QString filePath = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
@@ -923,7 +927,7 @@ void KeyPairManDlg::findPubKey()
 
     if( strPath.length() < 1 )
     {
-        strPath = berApplet->settingsMgr()->tempCertPath();
+        strPath = berApplet->settingsMgr()->keyPairPath();
     }
 
     QString filePath = findFile( this, JS_FILE_TYPE_BER, strPath );
@@ -936,7 +940,7 @@ void KeyPairManDlg::findEncPriKey()
 
     if( strPath.length() < 1 )
     {
-        strPath = berApplet->settingsMgr()->tempCertPath();
+        strPath = berApplet->settingsMgr()->keyPairPath();
     }
 
     QString filePath = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );

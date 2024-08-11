@@ -60,7 +60,6 @@ private slots:
 private:
     void initialize();
     int readPrivateKey( BIN *pPriKey );
-    QString last_path_;
 
 };
 

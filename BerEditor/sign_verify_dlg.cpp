@@ -48,8 +48,6 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     setupUi(this);
     initialize();
 
-    last_path_ = berApplet->curFolder();
-
     connect( mFindPriKeyBtn, SIGNAL(clicked()), this, SLOT(findPrivateKey()));
     connect( mFindCertBtn, SIGNAL(clicked()), this, SLOT(findCert()));
     connect( mAlgTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(algChanged(int)));
@@ -496,13 +494,12 @@ void SignVerifyDlg::findPrivateKey()
     QString strPath = mPriKeyPath->text();
 
     if( strPath.length() < 1 )
-        strPath = last_path_;
+        strPath = berApplet->settingsMgr()->keyPairPath();
 
     QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( fileName.isEmpty() ) return;
 
     mPriKeyPath->setText(fileName);
-    last_path_ = fileName;
 
     repaint();
 }
@@ -512,13 +509,12 @@ void SignVerifyDlg::findCert()
     QString strPath = mCertPath->text();
 
     if( strPath.length() < 1 )
-        strPath = last_path_;
+        strPath = berApplet->settingsMgr()->keyPairPath();
 
     QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( fileName.isEmpty() ) return;
 
     mCertPath->setText( fileName );
-    last_path_ = fileName;
 
     repaint();
 }

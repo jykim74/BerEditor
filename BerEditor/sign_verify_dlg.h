@@ -80,8 +80,6 @@ private:
 
     void *sctx_;
 
-    QString last_path_;
-
     int update_cnt_;
     SignVerifyThread *thread_;
 };

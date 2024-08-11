@@ -10,6 +10,7 @@
 #include "cert_info_dlg.h"
 #include "cert_man_dlg.h"
 #include "pri_key_info_dlg.h"
+#include "settings_mgr.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -43,7 +44,6 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
 {
     setupUi(this);
     initialize();
-    last_path_ = berApplet->curFolder();
 
     connect( mFindPriKeyBtn, SIGNAL(clicked()), this, SLOT(findPrivateKey()));
     connect( mFindCertBtn, SIGNAL(clicked()), this, SLOT(findCert()));
@@ -562,13 +562,12 @@ void PubEncDecDlg::findCert()
     QString strPath = mCertPath->text();
 
     if( strPath.length() < 1 )
-        strPath = last_path_;
+        strPath = berApplet->settingsMgr()->keyPairPath();
 
     QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( fileName.isEmpty() ) return;
 
     mCertPath->setText(fileName);
-    last_path_ = fileName;
 
     repaint();
 }
@@ -578,13 +577,12 @@ void PubEncDecDlg::findPrivateKey()
     QString strPath = mPriKeyPath->text();
 
     if( strPath.length() < 1 )
-        strPath = last_path_;
+        strPath = berApplet->settingsMgr()->keyPairPath();
 
     QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( fileName.isEmpty() ) return;
 
     mPriKeyPath->setText(fileName);
-    last_path_ = fileName;
 
     repaint();
 }
