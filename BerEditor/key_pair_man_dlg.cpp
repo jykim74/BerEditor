@@ -80,6 +80,8 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
     connect( mDecryptBtn, SIGNAL(clicked()), this, SLOT(clickDecrypt()));
     connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clickClearAll()));
 
+    connect( mKeyPairTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickLViewPriKey()));
+
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
 
