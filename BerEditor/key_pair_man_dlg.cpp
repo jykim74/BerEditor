@@ -235,6 +235,7 @@ void KeyPairManDlg::loadKeyPairList()
         mKeyPairTable->insertRow(row);
         mKeyPairTable->setRowHeight( row, 10 );
         QTableWidgetItem *item = new QTableWidgetItem( folder.baseName() );
+        item->setIcon(QIcon(":/images/keypair.png" ));
 
         item->setData(Qt::UserRole, folder.filePath() );
 
@@ -520,10 +521,10 @@ void KeyPairManDlg::clickLEncrypt()
         goto end;
     }
 
-    fileName = findSaveFile( this, JS_FILE_TYPE_REQ, strCurFolder );
+    fileName = findSaveFile( this, JS_FILE_TYPE_PRIKEY, strCurFolder );
     if( fileName.length() > 1 )
     {
-        JS_BIN_writePEM( &binPri, JS_FILE_TYPE_REQ, fileName.toLocal8Bit().toStdString().c_str() );
+        JS_BIN_writePEM( &binPri, JS_FILE_TYPE_PRIKEY, fileName.toLocal8Bit().toStdString().c_str() );
         berApplet->messageLog(tr("The Enc PrivateKey(%1) is saved successfully").arg( fileName ), this );
     }
 

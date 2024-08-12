@@ -6,14 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>629</width>
-    <height>576</height>
+    <width>562</width>
+    <height>483</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Key Pair Manage Window</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="mTitleLabel">
+     <property name="text">
+      <string>Key Pair Management</string>
+     </property>
+    </widget>
+   </item>
    <item>
     <widget class="Line" name="line">
      <property name="orientation">
@@ -456,6 +463,13 @@
         </layout>
        </item>
        <item>
+        <widget class="Line" name="line_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
         <layout class="QGridLayout" name="gridLayout_4">
          <item row="0" column="3">
           <spacer name="horizontalSpacer_3">
@@ -492,6 +506,13 @@
           </widget>
          </item>
         </layout>
+       </item>
+       <item>
+        <widget class="Line" name="line_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_8">
@@ -729,6 +750,13 @@
           </widget>
          </item>
         </layout>
+       </item>
+       <item>
+        <widget class="Line" name="line_7">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_5">
