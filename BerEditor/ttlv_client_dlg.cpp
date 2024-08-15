@@ -278,9 +278,8 @@ void TTLVClientDlg::clickSend()
 
     QUrl url;
     url.setUrl( strURL );
-
     strHost = url.host();
-    nPort = url.port(443);
+    nPort = url.port(80);
 
     if( strCACertPath.length() < 1 )
     {
@@ -342,20 +341,30 @@ void TTLVClientDlg::clickSend()
         goto end;
     }
 
-    JS_SSL_initClient( &pCTX );
-    JS_SSL_initSSL( pCTX, nSockFd, &pSSL );
-    JS_SSL_setClientCACert( pCTX, &binCA );
-    JS_SSL_setCertAndPriKey( pCTX, &binPriKey, &binCert );
-
-    JS_SSL_connect( pSSL );
-    if( pSSL == NULL )
+    if( url.scheme().toLower() == "https" )
     {
-        goto end;
+        JS_SSL_initClient( &pCTX );
+        JS_SSL_initSSL( pCTX, nSockFd, &pSSL );
+        JS_SSL_setClientCACert( pCTX, &binCA );
+        JS_SSL_setCertAndPriKey( pCTX, &binPriKey, &binCert );
+
+        JS_SSL_connect( pSSL );
+        if( pSSL == NULL )
+        {
+            goto end;
+        }
+
+        ret = JS_KMS_sendSSL( pSSL, &binTTLV );
+
+        ret = JS_KMS_receiveSSL( pSSL, &binResponse );
+    }
+    else
+    {
+        ret = JS_KMS_send( nSockFd, &binTTLV );
+
+        ret = JS_KMS_receive( nSockFd, &binResponse );
     }
 
-    ret = JS_KMS_sendSSL( pSSL, &binTTLV );
-
-    ret = JS_KMS_receiveSSL( pSSL, &binResponse );
     JS_BIN_encodeHex( &binResponse, &pHex );
 
     if( pHex )
