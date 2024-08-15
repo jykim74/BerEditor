@@ -353,9 +353,9 @@ void TTLVClientDlg::clickSend()
         goto end;
     }
 
-    ret = JS_KMS_send( pSSL, &binTTLV );
+    ret = JS_KMS_sendSSL( pSSL, &binTTLV );
 
-    ret = JS_KMS_receive( pSSL, &binResponse );
+    ret = JS_KMS_receiveSSL( pSSL, &binResponse );
     JS_BIN_encodeHex( &binResponse, &pHex );
 
     if( pHex )
