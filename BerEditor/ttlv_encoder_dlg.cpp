@@ -213,7 +213,7 @@ void TTLVEncoderDlg::clickGet()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
     JS_BIN_reset( &binData );
@@ -239,7 +239,7 @@ void TTLVEncoderDlg::clickActivate()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
     JS_BIN_reset( &binData );
@@ -263,7 +263,7 @@ void TTLVEncoderDlg::clickCreate()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
     JS_BIN_reset( &binData );
@@ -288,7 +288,7 @@ void TTLVEncoderDlg::clickDestroy()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
     JS_BIN_reset( &binData );
@@ -325,7 +325,7 @@ void TTLVEncoderDlg::clickEncrypt()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
     JS_BIN_reset( &binData );
@@ -361,7 +361,7 @@ void TTLVEncoderDlg::clickDecrypt()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
     JS_BIN_reset( &binData );
@@ -406,7 +406,7 @@ void TTLVEncoderDlg::clickSign()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
     JS_BIN_reset( &binData );
@@ -457,7 +457,7 @@ void TTLVEncoderDlg::clickVerify()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
     JS_BIN_reset( &binData );
@@ -512,7 +512,7 @@ void TTLVEncoderDlg::clickRegister()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
     JS_BIN_reset( &binData );
@@ -551,7 +551,7 @@ void TTLVEncoderDlg::clickCreateKeyPair()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
     JS_BIN_reset( &binData );
@@ -578,7 +578,7 @@ void TTLVEncoderDlg::clickGetAttributeList()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
     JS_BIN_reset( &binData );
@@ -606,7 +606,7 @@ void TTLVEncoderDlg::clickAddAttribute()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
     JS_BIN_reset( &binData );
@@ -633,7 +633,7 @@ void TTLVEncoderDlg::clickGetAttributes()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
     JS_BIN_reset( &binData );
@@ -661,7 +661,7 @@ void TTLVEncoderDlg::clickModifyAttribute()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
     JS_BIN_reset( &binData );
@@ -688,7 +688,7 @@ void TTLVEncoderDlg::clickDeleteAttribute()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
     JS_BIN_reset( &binData );
@@ -728,7 +728,7 @@ void TTLVEncoderDlg::clickLocate()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
     JS_BIN_reset( &binData );
@@ -753,7 +753,7 @@ void TTLVEncoderDlg::clickRNGRetrieve()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
     JS_BIN_reset( &binData );
@@ -781,7 +781,7 @@ void TTLVEncoderDlg::clickRNGSeed()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
     JS_BIN_reset( &binData );
@@ -814,7 +814,7 @@ void TTLVEncoderDlg::clickHash()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ) );
+        berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
     JS_BIN_reset( &binData );
