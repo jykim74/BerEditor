@@ -238,6 +238,7 @@ end :
 void TTLVClientDlg::clickSend()
 {
     int ret = 0;
+    bool bSSL = true;
 
     SSL_CTX *pCTX = NULL;
     SSL *pSSL = NULL;
@@ -281,68 +282,78 @@ void TTLVClientDlg::clickSend()
     strHost = url.host();
     nPort = url.port(80);
 
-    if( strCACertPath.length() < 1 )
+    if( url.scheme().toLower() == "https" )
     {
-        CertManDlg certMan;
-        certMan.setMode(ManModeSelCA);
-        certMan.setTitle( tr( "Select CA certificate" ));
-        if( certMan.exec() != QDialog::Accepted )
-            goto end;
-
-        strCACertPath = certMan.getSeletedCAPath();
-        if( strCACertPath.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Find a CA certificate" ), this );
-            return;
-        }
-        else
-        {
-            mCACertPathText->setText( strCACertPath );
-        }
-    }
-
-    JS_BIN_fileRead( strCACertPath.toStdString().c_str(), &binCA );
-
-    if( mCertGroup->isChecked() )
-    {
-        if( strCertPath.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Find a certificate" ), this );
-            mClientCertPathText->setFocus();
-            return;
-        }
-
-        JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
-        ret = readPrivateKey( &binPriKey );
-        if( ret != 0 ) goto end;
+        bSSL = true;
     }
     else
     {
-        CertManDlg certMan;
-        QString strPriHex;
-        QString strCertHex;
-
-        certMan.setMode( ManModeSelBoth );
-        certMan.setTitle( tr( "Select a certificate") );
-
-        if( certMan.exec() != QDialog::Accepted )
-            goto end;
-
-        strPriHex = certMan.getPriKeyHex();
-        strCertHex = certMan.getCertHex();
-
-        JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binPriKey );
-        JS_BIN_decodeHex( strCertHex.toStdString().c_str(), &binCert );
+        bSSL = false;
     }
 
     nSockFd = JS_NET_connect( strHost.toStdString().c_str(), nPort );
     if( nSockFd < 0 )
     {
+        berApplet->warningBox( tr( "fail to connect TTLV: %1").arg(ret), this );
         goto end;
     }
 
-    if( url.scheme().toLower() == "https" )
+    if( bSSL == true )
     {
+        if( strCACertPath.length() < 1 )
+        {
+            CertManDlg certMan;
+            certMan.setMode(ManModeSelCA);
+            certMan.setTitle( tr( "Select CA certificate" ));
+            if( certMan.exec() != QDialog::Accepted )
+                goto end;
+
+            strCACertPath = certMan.getSeletedCAPath();
+            if( strCACertPath.length() < 1 )
+            {
+                berApplet->warningBox( tr( "Find a CA certificate" ), this );
+                return;
+            }
+            else
+            {
+                mCACertPathText->setText( strCACertPath );
+            }
+        }
+
+        JS_BIN_fileRead( strCACertPath.toStdString().c_str(), &binCA );
+
+        if( mCertGroup->isChecked() )
+        {
+            if( strCertPath.length() < 1 )
+            {
+                berApplet->warningBox( tr( "Find a certificate" ), this );
+                mClientCertPathText->setFocus();
+                return;
+            }
+
+            JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+            ret = readPrivateKey( &binPriKey );
+            if( ret != 0 ) goto end;
+        }
+        else
+        {
+            CertManDlg certMan;
+            QString strPriHex;
+            QString strCertHex;
+
+            certMan.setMode( ManModeSelBoth );
+            certMan.setTitle( tr( "Select a certificate") );
+
+            if( certMan.exec() != QDialog::Accepted )
+                goto end;
+
+            strPriHex = certMan.getPriKeyHex();
+            strCertHex = certMan.getCertHex();
+
+            JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binPriKey );
+            JS_BIN_decodeHex( strCertHex.toStdString().c_str(), &binCert );
+        }
+
         JS_SSL_initClient( &pCTX );
         JS_SSL_initSSL( pCTX, nSockFd, &pSSL );
         JS_SSL_setClientCACert( pCTX, &binCA );
@@ -355,14 +366,34 @@ void TTLVClientDlg::clickSend()
         }
 
         ret = JS_KMS_sendSSL( pSSL, &binTTLV );
+        if( ret != 0 )
+        {
+            berApplet->warningBox( tr( "fail to send TTLV: %1").arg( ret ), this );
+            goto end;
+        }
 
         ret = JS_KMS_receiveSSL( pSSL, &binResponse );
+        if( ret != 0 )
+        {
+            berApplet->warningBox( tr( "fail to recv TTLV: %1").arg( ret ), this );
+            goto end;
+        }
     }
     else
     {
         ret = JS_KMS_send( nSockFd, &binTTLV );
+        if( ret != 0 )
+        {
+            berApplet->warningBox( tr( "fail to send TTLV: %1").arg( ret ), this );
+            goto end;
+        }
 
         ret = JS_KMS_receive( nSockFd, &binResponse );
+        if( ret != 0 )
+        {
+            berApplet->warningBox( tr( "fail to recv TTLV: %1").arg( ret ), this );
+            goto end;
+        }
     }
 
     JS_BIN_encodeHex( &binResponse, &pHex );
@@ -382,8 +413,15 @@ end :
     JS_BIN_reset( &binPriKey );
     JS_BIN_reset( &binResponse );
 
-    JS_SSL_clear( pSSL );
-    JS_SSL_finish( &pCTX );
+    if( bSSL == true )
+    {
+        if( pSSL ) JS_SSL_clear( pSSL );
+        if( pCTX ) JS_SSL_finish( &pCTX );
+    }
+    else
+    {
+        if( nSockFd > 0 ) JS_NET_close( nSockFd );
+    }
 }
 
 void TTLVClientDlg::close()
