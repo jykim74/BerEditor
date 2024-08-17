@@ -210,7 +210,7 @@ void TTLVEncoderDlg::clickGet()
         return;
     }
 
-    ret = JS_KMS_encodeGetReq( &sAuth, strUUID.toStdString().c_str(), &binData );
+    ret = JS_KMS_encodeGetReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, strUUID.toStdString().c_str(), &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
@@ -244,7 +244,7 @@ void TTLVEncoderDlg::clickActivate()
     JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
 
 
-    ret = JS_KMS_encodeActivateReq( &sAuth, strUUID.toStdString().c_str(), &binData );
+    ret = JS_KMS_encodeActivateReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, strUUID.toStdString().c_str(), &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
@@ -268,7 +268,7 @@ void TTLVEncoderDlg::clickCreate()
     Authentication sAuth = {0};
     JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
 
-    ret = JS_KMS_encodeCreateReq( &sAuth, &binData );
+    ret = JS_KMS_encodeCreateReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
@@ -300,7 +300,7 @@ void TTLVEncoderDlg::clickDestroy()
     }
 
     JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
-    ret = JS_KMS_encodeDestroyReq( &sAuth, strUUID.toStdString().c_str(), &binData );
+    ret = JS_KMS_encodeDestroyReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, strUUID.toStdString().c_str(), &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
@@ -349,7 +349,7 @@ void TTLVEncoderDlg::clickEncrypt()
     JS_BIN_set( &binIV, (unsigned char *)"1234567890123456", 16);
     JS_BIN_set( &binPlain, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
 
-    ret = JS_KMS_encodeEncryptReq( &sAuth, strUUID.toStdString().c_str(), &binIV, &binPlain, &binData );
+    ret = JS_KMS_encodeEncryptReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, strUUID.toStdString().c_str(), &binIV, &binPlain, &binData );
 
     JS_BIN_reset( &binIV );
     JS_BIN_reset( &binPlain );
@@ -400,7 +400,7 @@ void TTLVEncoderDlg::clickDecrypt()
     JS_BIN_set( &binIV, (unsigned char *)"1234567890123456", 16);
     JS_BIN_decodeHex( strInput.toStdString().c_str(), &binEncrypt );
 
-    ret = JS_KMS_encodeDecryptReq( &sAuth, strUUID.toStdString().c_str(), &binIV, &binEncrypt, &binData );
+    ret = JS_KMS_encodeDecryptReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, strUUID.toStdString().c_str(), &binIV, &binEncrypt, &binData );
 
     JS_BIN_reset( &binIV );
     JS_BIN_reset( &binEncrypt );
@@ -461,7 +461,7 @@ void TTLVEncoderDlg::clickSign()
 
     JS_BIN_set( &binPlain, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
 
-    ret = JS_KMS_encodeSignReq( &sAuth, strUUID.toStdString().c_str(), nMech, &binPlain, &binData );
+    ret = JS_KMS_encodeSignReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, strUUID.toStdString().c_str(), nMech, &binPlain, &binData );
 
     JS_BIN_reset( &binPlain );
 
@@ -533,7 +533,7 @@ void TTLVEncoderDlg::clickVerify()
     JS_BIN_set( &binPlain, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
     JS_BIN_decodeHex( strOutput.toStdString().c_str(), &binSign );
 
-    ret = JS_KMS_encodeVerifyReq( &sAuth, strUUID.toStdString().c_str(), nMech, &binPlain, &binSign, &binData );
+    ret = JS_KMS_encodeVerifyReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, strUUID.toStdString().c_str(), nMech, &binPlain, &binSign, &binData );
 
     JS_BIN_reset( &binPlain );
     JS_BIN_reset( &binSign );
@@ -597,7 +597,7 @@ void TTLVEncoderDlg::clickRegister()
         nParam = KMIP_CURVE_P_256;
     }
 
-    ret = JS_KMS_encodeRegisterReq( &sAuth, nAlg, nParam, nType, &binInput, &binData );
+    ret = JS_KMS_encodeRegisterReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, nAlg, nParam, nType, &binInput, &binData );
 
     JS_BIN_reset( &binInput );
     JS_KMS_resetAuthentication( &sAuth );
@@ -637,7 +637,7 @@ void TTLVEncoderDlg::clickCreateKeyPair()
         nParam = KMIP_CURVE_P_256;
     }
 
-    ret = JS_KMS_encodeCreateKeyPairReq( &sAuth, nAlg, nParam, &binData );
+    ret = JS_KMS_encodeCreateKeyPairReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, nAlg, nParam, &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
@@ -672,7 +672,7 @@ void TTLVEncoderDlg::clickGetAttributeList()
     JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
 
 
-    ret = JS_KMS_encodeGetAttributeListReq( &sAuth, strUUID.toStdString().c_str(), &binData );
+    ret = JS_KMS_encodeGetAttributeListReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, strUUID.toStdString().c_str(), &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
@@ -715,7 +715,7 @@ void TTLVEncoderDlg::clickAddAttribute()
 
     JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
 
-    ret = JS_KMS_encodeAddAttributeReq( &sAuth, strUUID.toStdString().c_str(), strAttrName.toStdString().c_str(), strAttrValue.toStdString().c_str(), &binData );
+    ret = JS_KMS_encodeAddAttributeReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, strUUID.toStdString().c_str(), strAttrName.toStdString().c_str(), strAttrValue.toStdString().c_str(), &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
@@ -750,7 +750,7 @@ void TTLVEncoderDlg::clickGetAttributes()
     JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
 
 
-    ret = JS_KMS_encodeGetAttributesReq( &sAuth, strUUID.toStdString().c_str(), NULL, &binData );
+    ret = JS_KMS_encodeGetAttributesReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, strUUID.toStdString().c_str(), NULL, &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
@@ -793,7 +793,7 @@ void TTLVEncoderDlg::clickModifyAttribute()
 
     JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
 
-    ret = JS_KMS_encodeModifyAttributeReq( &sAuth, strUUID.toStdString().c_str(), strAttrName.toStdString().c_str(), strAttrValue.toStdString().c_str(), &binData );
+    ret = JS_KMS_encodeModifyAttributeReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, strUUID.toStdString().c_str(), strAttrName.toStdString().c_str(), strAttrValue.toStdString().c_str(), &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
@@ -828,7 +828,7 @@ void TTLVEncoderDlg::clickDeleteAttribute()
 
     JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
 
-    ret = JS_KMS_encodeDeleteAttributeReq( &sAuth, strUUID.toStdString().c_str(), strAttrName.toStdString().c_str(), 0, &binData );
+    ret = JS_KMS_encodeDeleteAttributeReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, strUUID.toStdString().c_str(), strAttrName.toStdString().c_str(), 0, &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
@@ -868,7 +868,7 @@ void TTLVEncoderDlg::clickLocate()
         nAlg = JS_PKI_KEY_TYPE_AES;
     }
 
-    ret = JS_KMS_encodeLocateReq( &sAuth, nAlg, &binData );
+    ret = JS_KMS_encodeLocateReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, nAlg, &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
@@ -901,7 +901,7 @@ void TTLVEncoderDlg::clickRNGRetrieve()
 
     JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
 
-    ret = JS_KMS_encodeRNGRetrieveReq( &sAuth, nLen, &binData );
+    ret = JS_KMS_encodeRNGRetrieveReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, nLen, &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
@@ -936,7 +936,7 @@ void TTLVEncoderDlg::clickRNGSeed()
     JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
     JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
 
-    ret = JS_KMS_encodeRNGSeedReq( &sAuth, &binSrc, &binData );
+    ret = JS_KMS_encodeRNGSeedReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, &binSrc, &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
@@ -977,7 +977,7 @@ void TTLVEncoderDlg::clickHash()
 
     JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
 
-    ret = JS_KMS_encodeHashReq( &sAuth, nMech, &binSrc, &binData );
+    ret = JS_KMS_encodeHashReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, nMech, &binSrc, &binData );
 
     JS_KMS_resetAuthentication( &sAuth );
 
