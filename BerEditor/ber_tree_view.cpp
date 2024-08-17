@@ -813,7 +813,11 @@ void BerTreeView::setItemText( int level, BerItem* item, BerItem* setItem )
         QString strValue = item->GetValueString( &binBer );
 
         setText( level, QString( "%1" ).arg( strName ) );
-        setText( 0, QString( " = %1\n" ).arg( strValue ) );
+
+        if( strName == "NULL")
+            setText( 0, "\n" );
+        else
+            setText( 0, QString( " = %1\n" ).arg( strValue ) );
     }
 
     if( item == setItem )

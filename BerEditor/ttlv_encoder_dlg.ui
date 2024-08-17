@@ -140,13 +140,6 @@
      <item row="0" column="3">
       <widget class="QComboBox" name="mObjectTypeCombo"/>
      </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mFindInputBtn">
-       <property name="text">
-        <string>FindInput</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_10">
        <property name="minimumSize">
@@ -174,20 +167,33 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="minimumSize">
+     <item row="0" column="2">
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
         <size>
-         <width>60</width>
-         <height>0</height>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mInputClearBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
         </size>
        </property>
        <property name="text">
-        <string>Input</string>
+        <string>C</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
+     <item row="0" column="4">
       <widget class="QLineEdit" name="mInputLenText">
        <property name="minimumSize">
         <size>
@@ -233,29 +239,23 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <spacer name="horizontalSpacer_4">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="minimumSize">
         <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mInputClearBtn">
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
+         <width>60</width>
+         <height>0</height>
         </size>
        </property>
        <property name="text">
-        <string>C</string>
+        <string>Input</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mFindInputBtn">
+       <property name="text">
+        <string>FindInput</string>
        </property>
       </widget>
      </item>
@@ -619,7 +619,6 @@
   <tabstop>mLenText</tabstop>
   <tabstop>mAttributeCombo</tabstop>
   <tabstop>mObjectTypeCombo</tabstop>
-  <tabstop>mFindInputBtn</tabstop>
   <tabstop>mInputClearBtn</tabstop>
   <tabstop>mInputLenText</tabstop>
   <tabstop>mInputText</tabstop>
