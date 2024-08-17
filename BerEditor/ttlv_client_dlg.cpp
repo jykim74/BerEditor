@@ -282,7 +282,7 @@ void TTLVClientDlg::clickSend()
     strHost = url.host();
     nPort = url.port(80);
 
-    if( url.scheme().toLower() == "https" )
+    if( url.scheme().toLower() == "https" || url.scheme().toLower() == "ssl" )
     {
         bSSL = true;
     }
