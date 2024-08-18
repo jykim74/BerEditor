@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>337</height>
+    <width>424</width>
+    <height>417</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,7 +22,14 @@
     </widget>
    </item>
    <item>
-    <widget class="QTableWidget" name="mInfoTable"/>
+    <widget class="QTableWidget" name="mInfoTable">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>200</height>
+      </size>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
@@ -112,6 +119,12 @@
    </item>
    <item>
     <widget class="QPlainTextEdit" name="mDataText">
+     <property name="minimumSize">
+      <size>
+       <width>400</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
