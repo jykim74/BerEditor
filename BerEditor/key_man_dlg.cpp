@@ -141,6 +141,7 @@ void KeyManDlg::clickMakeKey()
         ret = JS_PKI_PBKDF2( strSecret.toStdString().c_str(), &binSalt, nIter, strHash.toStdString().c_str(), nKeySize, &binKey );
         berApplet->log( QString( "-- PBKDF2" ));
         berApplet->logLine();
+        berApplet->log( QString( "Iter Cnt : %1" ).arg( nIter ));
         berApplet->log( QString( "Salt     : %1" ).arg(getHexString(&binSalt)));
     }
     else if( mHKDFRadio->isChecked() )
