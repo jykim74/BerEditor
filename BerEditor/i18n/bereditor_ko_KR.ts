@@ -6498,32 +6498,48 @@ Do you want to delete the file and continue?</source>
         <translation>키 추출</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="30"/>
+        <location filename="../key_man_dlg.ui" line="35"/>
+        <source>HKDF</source>
+        <translation>HKDF</translation>
+    </message>
+    <message>
+        <location filename="../key_man_dlg.ui" line="42"/>
         <source>PBKDF2</source>
         <translation>PBKDF2</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="52"/>
+        <location filename="../key_man_dlg.ui" line="49"/>
+        <source>ANS.X963</source>
+        <translation>ANS.X963</translation>
+    </message>
+    <message>
+        <location filename="../key_man_dlg.ui" line="145"/>
+        <location filename="../key_man_dlg.cpp" line="351"/>
         <source>Password</source>
         <translation>암호</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="172"/>
+        <location filename="../key_man_dlg.ui" line="189"/>
+        <source>Info</source>
+        <translation>정보</translation>
+    </message>
+    <message>
+        <location filename="../key_man_dlg.ui" line="285"/>
         <source>Salt</source>
         <translation>첨가값(Salt)</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="202"/>
+        <location filename="../key_man_dlg.ui" line="365"/>
         <source>Key Len</source>
         <translation>키 길이</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="228"/>
+        <location filename="../key_man_dlg.ui" line="391"/>
         <source>Iteration Count</source>
         <translation>반복 수</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="245"/>
+        <location filename="../key_man_dlg.ui" line="408"/>
         <source>Hash</source>
         <translation>해쉬</translation>
     </message>
@@ -6532,7 +6548,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">확인</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="412"/>
+        <location filename="../key_man_dlg.ui" line="575"/>
         <source>Make Key</source>
         <translation>키 만들기</translation>
     </message>
@@ -6541,57 +6557,57 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">결과 지우기</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="429"/>
+        <location filename="../key_man_dlg.ui" line="592"/>
         <source>KeyWrap</source>
         <translation>키 암호화</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="440"/>
+        <location filename="../key_man_dlg.ui" line="603"/>
         <source>KWP</source>
         <translation>KWP</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="447"/>
+        <location filename="../key_man_dlg.ui" line="610"/>
         <source>Wrap Method</source>
         <translation>암호화 방식</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="454"/>
+        <location filename="../key_man_dlg.ui" line="617"/>
         <source>KW</source>
         <translation>KW</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="557"/>
+        <location filename="../key_man_dlg.ui" line="720"/>
         <source>Source</source>
         <translation>소스</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="590"/>
+        <location filename="../key_man_dlg.ui" line="753"/>
         <source>KEK</source>
         <translation>KEK</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="597"/>
+        <location filename="../key_man_dlg.ui" line="760"/>
         <source>Gen KEK</source>
         <translation>KEK 생성</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="753"/>
+        <location filename="../key_man_dlg.ui" line="916"/>
         <source>Output </source>
         <translation>결과</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="779"/>
+        <location filename="../key_man_dlg.ui" line="942"/>
         <source>⬆</source>
         <translation>⬆</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="837"/>
+        <location filename="../key_man_dlg.ui" line="1000"/>
         <source>Wrap</source>
         <translation>암호화</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="851"/>
+        <location filename="../key_man_dlg.ui" line="1014"/>
         <source>Unwrap</source>
         <translation>복호화</translation>
     </message>
@@ -6600,18 +6616,18 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">교환</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="419"/>
-        <location filename="../key_man_dlg.ui" line="844"/>
+        <location filename="../key_man_dlg.ui" line="582"/>
+        <location filename="../key_man_dlg.ui" line="1007"/>
         <source>Clear</source>
         <translation>지우기</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="882"/>
+        <location filename="../key_man_dlg.ui" line="1045"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.ui" line="902"/>
+        <location filename="../key_man_dlg.ui" line="1065"/>
         <source>Clear Data All</source>
         <translation>전체 데이타 지우기</translation>
     </message>
@@ -6620,9 +6636,19 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">암호를 입력하세요.</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.cpp" line="107"/>
         <source>Enter a passphrase</source>
-        <translation>암호를 입력해야 합니다</translation>
+        <translation type="vanished">암호를 입력해야 합니다</translation>
+    </message>
+    <message>
+        <location filename="../key_man_dlg.cpp" line="121"/>
+        <source>Enter a secret or password</source>
+        <translation>암호 또는 비밀키를 입력해야 합니다</translation>
+    </message>
+    <message>
+        <location filename="../key_man_dlg.cpp" line="364"/>
+        <location filename="../key_man_dlg.cpp" line="377"/>
+        <source>Secret</source>
+        <translation>비밀키</translation>
     </message>
 </context>
 <context>
@@ -11881,17 +11907,17 @@ Do you want to delete the file and continue?</source>
         <translation>TST 정보</translation>
     </message>
     <message>
-        <location filename="../tst_info_dlg.ui" line="94"/>
+        <location filename="../tst_info_dlg.ui" line="101"/>
         <source>Data</source>
         <translation>데이타</translation>
     </message>
     <message>
-        <location filename="../tst_info_dlg.ui" line="107"/>
+        <location filename="../tst_info_dlg.ui" line="114"/>
         <source>D</source>
         <translation>D</translation>
     </message>
     <message>
-        <location filename="../tst_info_dlg.ui" line="161"/>
+        <location filename="../tst_info_dlg.ui" line="174"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -12162,12 +12188,12 @@ Do you want to delete the file and continue?</source>
         <translation>길이</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="159"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="152"/>
         <source>Attribute</source>
         <translation>속성</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="146"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="258"/>
         <source>FindInput</source>
         <translation>입력찾기</translation>
     </message>
@@ -12182,12 +12208,12 @@ Do you want to delete the file and continue?</source>
         <translation>객체 타입</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="186"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="251"/>
         <source>Input</source>
         <translation>입력값</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="258"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="192"/>
         <location filename="../ttlv_encoder_dlg.ui" line="430"/>
         <source>C</source>
         <translation>C</translation>

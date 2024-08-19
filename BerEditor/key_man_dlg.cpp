@@ -25,10 +25,18 @@ KeyManDlg::KeyManDlg(QWidget *parent) :
     setupUi(this);
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
-    connect( mMakeKeyBtn, SIGNAL(clicked()), this, SLOT(PBKDF()));
+
+    connect( mPBKDF2Radio, SIGNAL(clicked()), this, SLOT(checkPBKDF()));
+    connect( mHKDFRadio, SIGNAL(clicked()), this, SLOT(checkHKDF()));
+    connect( mANSX963Radio, SIGNAL(clicked()), this, SLOT(checkX963()));
+
+    connect( mMakeKeyBtn, SIGNAL(clicked()), this, SLOT(clickMakeKey()));
     connect( mOutputText, SIGNAL(textChanged()), this, SLOT(keyValueChanged()));
 
-    connect( mPasswordText, SIGNAL(textChanged(const QString&)), this, SLOT(passwordChanged()));
+    connect( mSecretText, SIGNAL(textChanged(const QString&)), this, SLOT(secretChanged()));
+    connect( mSecretTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(secretChanged()));
+    connect( mInfoText, SIGNAL(textChanged(QString)), this, SLOT(infoChanged()));
+    connect( mInfoTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(infoChanged()));
     connect( mSaltText, SIGNAL(textChanged()), this, SLOT(saltChanged()));
     connect( mSaltTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(saltChanged()));
 
@@ -75,6 +83,8 @@ void KeyManDlg::initialize()
     mHashCombo->addItems( kHashList );
     mHashCombo->setCurrentText( setMgr->defaultHash() );
 
+    mSecretTypeCombo->addItems( dataTypes );
+    mInfoTypeCombo->addItems( dataTypes );
     mSaltTypeCombo->addItems( dataTypes );
 
     mKeyLenText->setText( "32" );
@@ -89,22 +99,26 @@ void KeyManDlg::initialize()
     mDstTypeCombo->addItems( kValueTypeList );
     mDstTypeCombo->setCurrentIndex(1);
 
+    mPBKDF2Radio->click();
+
     tabWidget->setCurrentIndex(0);
 }
 
-void KeyManDlg::PBKDF()
+void KeyManDlg::clickMakeKey()
 {
     int ret = 0;
+    BIN binSecret = {0,0};
     BIN binSalt = { 0,0 };
+    BIN binInfo = {0,0};
     BIN binKey = { 0, 0 };
     int nIter = 0;
     int nKeySize = 0;
 
-    QString strPasswd = mPasswordText->text();
+    QString strSecret = mSecretText->text();
 
-    if( strPasswd.length() <= 0 )
+    if( strSecret.length() <= 0 )
     {
-        berApplet->warningBox( tr( "Enter a passphrase"), this );
+        berApplet->warningBox( tr( "Enter a secret or password"), this );
         return;
     }
 
@@ -112,17 +126,39 @@ void KeyManDlg::PBKDF()
     nIter = mIterCntText->text().toInt();
     nKeySize = mKeyLenText->text().toInt();
 
+    getBINFromString( &binSecret, mSecretTypeCombo->currentText(), strSecret );
+
     QString strSalt = mSaltText->toPlainText();
+    getBINFromString( &binSalt, mSaltTypeCombo->currentText(), strSalt );
 
-    if( mSaltTypeCombo->currentIndex() == 0 )
-        JS_BIN_set( &binSalt, (unsigned char *)strSalt.toStdString().c_str(), strSalt.length() );
-    else if( mSaltTypeCombo->currentIndex() == 1 )
-        JS_BIN_decodeHex( strSalt.toStdString().c_str(), &binSalt );
-    else if( mSaltTypeCombo->currentIndex() == 2 )
-        JS_BIN_decodeBase64( strSalt.toStdString().c_str(), &binSalt );
+    QString strInfo = mInfoText->text();
+    getBINFromString( &binInfo, mInfoTypeCombo->currentText(), strInfo );
 
+    berApplet->logLine();
 
-    ret = JS_PKI_PBKDF2( strPasswd.toStdString().c_str(), &binSalt, nIter, strHash.toStdString().c_str(), nKeySize, &binKey );
+    if( mPBKDF2Radio->isChecked() )
+    {
+        ret = JS_PKI_PBKDF2( strSecret.toStdString().c_str(), &binSalt, nIter, strHash.toStdString().c_str(), nKeySize, &binKey );
+        berApplet->log( QString( "-- PBKDF2" ));
+        berApplet->logLine();
+        berApplet->log( QString( "Salt     : %1" ).arg(getHexString(&binSalt)));
+    }
+    else if( mHKDFRadio->isChecked() )
+    {
+        ret = JS_PKI_KDF_HKDF( &binSecret, &binSalt, &binInfo, strHash.toStdString().c_str(), nKeySize, &binKey );
+        berApplet->log( QString( "-- HKDF" ));
+        berApplet->logLine();
+        berApplet->log( QString( "Salt     : %1" ).arg(getHexString(&binSalt)));
+        berApplet->log( QString( "Info     : %1" ).arg(getHexString(&binInfo)));
+    }
+    else if( mANSX963Radio->isChecked() )
+    {
+        ret = JS_PKI_KDF_X963( &binSecret, &binInfo, strHash.toStdString().c_str(), nKeySize, &binKey );
+        berApplet->log( QString( "-- ANS X963" ));
+        berApplet->logLine();
+        berApplet->log( QString( "Info     : %1" ).arg(getHexString(&binInfo)));
+    }
+
     if( ret == 0 )
     {
         char *pHex = NULL;
@@ -130,26 +166,26 @@ void KeyManDlg::PBKDF()
         mOutputText->setPlainText( pHex );
         if( pHex ) JS_free( pHex );
 
-        berApplet->logLine();
-        berApplet->log( QString( "-- PBKDF2" ));
-        berApplet->logLine();
-        berApplet->log( QString( "Password : %1").arg( strPasswd ));
+
+        berApplet->log( QString( "Secret   : %1").arg( strSecret ));
         berApplet->log( QString( "Hash     : %1 | Iteration Count: %2").arg( strHash ).arg( nIter ));
-        berApplet->log( QString( "Salt     : %1" ).arg(getHexString(&binSalt)));
         berApplet->log( QString( "Key      : %1" ).arg(getHexString(&binKey)));
         berApplet->logLine();
     }
 
+    JS_BIN_reset( &binSecret );
     JS_BIN_reset( &binSalt );
+    JS_BIN_reset( &binInfo );
     JS_BIN_reset( &binKey );
 
     repaint();
 }
 
-void KeyManDlg::passwordChanged()
+void KeyManDlg::secretChanged()
 {
-    int nLen = getDataLen( DATA_STRING, mPasswordText->text() );
-    mPasswordLenText->setText(QString("%1").arg(nLen));
+    QString strSecret = mSecretText->text();
+    QString strLen = getDataLenString( mSecretTypeCombo->currentText(), strSecret );
+    mSecretLenText->setText(QString("%1").arg(strLen));
 }
 
 void KeyManDlg::saltChanged()
@@ -159,6 +195,12 @@ void KeyManDlg::saltChanged()
     mSaltLenText->setText( QString("%1").arg(strLen));
 }
 
+void KeyManDlg::infoChanged()
+{
+    QString strInfo = mInfoText->text();
+    QString strLen = getDataLenString( mInfoTypeCombo->currentText(), strInfo );
+    mInfoLenText->setText( QString("%1").arg(strLen));
+}
 
 void KeyManDlg::keyValueChanged()
 {
@@ -301,6 +343,45 @@ void KeyManDlg::clickChange()
     mDstText->clear();
 }
 
+void KeyManDlg::checkPBKDF()
+{
+    mSecretTypeCombo->clear();
+    mSecretTypeCombo->addItem( "String" );
+
+    mSecretLabel->setText( tr("Password"));
+
+    mInfoGroup->setEnabled(false);
+    mSaltGroup->setEnabled(true);
+    mIterCntLabel->setEnabled(true);
+    mIterCntText->setEnabled(true);
+}
+
+void KeyManDlg::checkHKDF()
+{
+    mSecretTypeCombo->clear();
+    mSecretTypeCombo->addItems( dataTypes );
+
+    mSecretLabel->setText( tr("Secret"));
+
+    mInfoGroup->setEnabled(true);
+    mSaltGroup->setEnabled(true);
+    mIterCntLabel->setEnabled(false);
+    mIterCntText->setEnabled(false);
+}
+
+void KeyManDlg::checkX963()
+{
+    mSecretTypeCombo->clear();
+    mSecretTypeCombo->addItems( dataTypes );
+
+    mSecretLabel->setText( tr("Secret"));
+
+    mInfoGroup->setEnabled(true);
+    mSaltGroup->setEnabled(false);
+    mIterCntLabel->setEnabled(false);
+    mIterCntText->setEnabled(false);
+}
+
 void KeyManDlg::clickOutputClear()
 {
     mOutputText->clear();
@@ -329,7 +410,8 @@ void KeyManDlg::kekChanged()
 
 void KeyManDlg::clickClearDataAll()
 {
-    mPasswordText->clear();
+    mSecretText->clear();
+    mInfoText->clear();
     mSaltText->clear();
     mIterCntText->clear();
     mKeyLenText->clear();

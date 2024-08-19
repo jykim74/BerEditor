@@ -22,15 +22,20 @@ public:
     ~KeyManDlg();
 
 private slots:
-    void PBKDF();
-    void passwordChanged();
+    void clickMakeKey();
+    void secretChanged();
     void saltChanged();
+    void infoChanged();
     void keyValueChanged();
 
     void clickWrap();
     void clickUnwrap();
     void clickClear();
     void clickChange();
+
+    void checkPBKDF();
+    void checkHKDF();
+    void checkX963();
 
     void clickOutputClear();
 
