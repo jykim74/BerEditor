@@ -11,7 +11,7 @@
 const QStringList kObjetType = { "SecretKey", "PrivateKey", "PublicKey", "Certificate" };
 const QStringList kAlgList = { "RSA", "ECDSA", "AES" };
 const QStringList kRSAOptionList = { "1024", "2048", "3072", "4096" };
-const QStringList kECDSAOptionList = { "P-256" };
+const QStringList kECDSAOptionList = { "P-256", "P-384", "P-521" };
 
 
 /*
@@ -593,8 +593,15 @@ void TTLVEncoderDlg::clickRegister()
     }
     else if( mAlgCombo->currentIndex() == 1 )
     {
+        QString strOption = mAlgCombo->currentText();
         nAlg = JS_PKI_KEY_TYPE_ECC;
-        nParam = KMIP_CURVE_P_256;
+
+        if( strOption == "P-256")
+            nParam = KMIP_CURVE_P_256;
+        else if( strOption == "P-384" )
+            nParam = KMIP_CURVE_P_384;
+        else if( strOption == "P-521" )
+            nParam = KMIP_CURVE_P_521;
     }
 
     ret = JS_KMS_encodeRegisterReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, nAlg, nParam, nType, &binInput, &binData );
@@ -633,8 +640,15 @@ void TTLVEncoderDlg::clickCreateKeyPair()
     }
     else if( mAlgCombo->currentIndex() == 1 )
     {
+        QString strOption = mAlgCombo->currentText();
         nAlg = JS_PKI_KEY_TYPE_ECC;
-        nParam = KMIP_CURVE_P_256;
+
+        if( strOption == "P-256")
+            nParam = KMIP_CURVE_P_256;
+        else if( strOption == "P-384" )
+            nParam = KMIP_CURVE_P_384;
+        else if( strOption == "P-521" )
+            nParam = KMIP_CURVE_P_521;
     }
 
     ret = JS_KMS_encodeCreateKeyPairReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, nAlg, nParam, &binData );
