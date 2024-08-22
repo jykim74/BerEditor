@@ -8921,6 +8921,11 @@ Do you want to delete the file and continue?</source>
         <translation>OCSP 검증 성공 [상테: %1(%2)]</translation>
     </message>
     <message>
+        <location filename="../ocsp_client_dlg.cpp" line="1056"/>
+        <source>failed to decode response: %1</source>
+        <translation>응답 디코딩 실패: %1</translation>
+    </message>
+    <message>
         <location filename="../ocsp_client_dlg.cpp" line="526"/>
         <source>The private key type is %1</source>
         <translation>개인키 타입은 %1 입니다</translation>

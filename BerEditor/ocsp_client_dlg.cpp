@@ -1039,17 +1039,21 @@ void OCSPClientDlg::clickVerify()
 
     ret = JS_OCSP_decodeResponse( &binRsp, &binSrvCert, &sIDInfo, &sStatusInfo );
 
-    if( ret != JSR_VERIFY )
+    if( ret == JSR_INVALID )
     {
         berApplet->warningBox( tr( "OCSP Verify fail [status: %1(%2)]" )
                                   .arg( JS_OCSP_getCertStatusName( sStatusInfo.nStatus ) )
                                   .arg( sStatusInfo.nStatus ), this);
     }
-    else
+    else if( ret == JSR_VERIFY)
     {
         berApplet->messageBox( tr( "OCSP Verify OK [status: %1(%2)]" )
                                   .arg( JS_OCSP_getCertStatusName( sStatusInfo.nStatus ) )
                                   .arg( sStatusInfo.nStatus ), this);
+    }
+    else
+    {
+        berApplet->warningBox( tr( "failed to decode response: %1").arg( ret ));
     }
 
 end :
