@@ -14,6 +14,7 @@
 #include "js_http.h"
 #include "js_pki_x509.h"
 #include "js_pki_ext.h"
+#include "js_error.h"
 
 const QString kOCSPUsedURL = "OCSPUsedURL";
 
@@ -1037,21 +1038,16 @@ void OCSPClientDlg::clickVerify()
     JS_BIN_decodeHex( strRspHex.toStdString().c_str(), &binRsp );
 
     ret = JS_OCSP_decodeResponse( &binRsp, &binSrvCert, &sIDInfo, &sStatusInfo );
-    if( ret != 0 )
-    {
-        fprintf( stderr, "fail to decode respose:%d\n", ret);
-        goto end;
-    }
 
-    if( ret != 0 )
+    if( ret != JSR_VERIFY )
     {
-        berApplet->warningBox( tr( "Certificate status verification failed with OCSP: %1(%2)")
-                                  .arg( JS_OCSP_getResponseStatusName(ret) )
-                                  .arg( ret ), this );
+        berApplet->warningBox( tr( "OCSP Verify fail [status: %1(%2)]" )
+                                  .arg( JS_OCSP_getCertStatusName( sStatusInfo.nStatus ) )
+                                  .arg( sStatusInfo.nStatus ), this);
     }
     else
     {
-        berApplet->messageBox( tr( "Verification results with OCSP: %1(%2)" )
+        berApplet->messageBox( tr( "OCSP Verify OK [status: %1(%2)]" )
                                   .arg( JS_OCSP_getCertStatusName( sStatusInfo.nStatus ) )
                                   .arg( sStatusInfo.nStatus ), this);
     }
