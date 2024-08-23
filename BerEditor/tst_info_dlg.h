@@ -22,6 +22,7 @@ public:
 private slots:
     void showEvent(QShowEvent *event);
     void clickField( QModelIndex index );
+    void clickDataDecode();
 
 private:
     BIN tst_;

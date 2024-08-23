@@ -124,6 +124,12 @@ void TTLVClientDlg::setUsedURL( const QString strURL )
 {
     if( strURL.length() <= 4 ) return;
 
+    for( int i = 0; i < mURLCombo->count(); i++ )
+    {
+        QString strPosURL = mURLCombo->itemText(i);
+        if( strURL == strPosURL ) return;
+    }
+
     QSettings settings;
     settings.beginGroup( kSettingBer );
     QStringList list = settings.value( kKMIPUsedURL ).toStringList();
@@ -131,6 +137,14 @@ void TTLVClientDlg::setUsedURL( const QString strURL )
     list.insert( 0, strURL );
     settings.setValue( kKMIPUsedURL, list );
     settings.endGroup();
+
+    mURLCombo->clear();
+    QStringList usedList = getUsedURL();
+    for( int i = 0; i < usedList.size(); i++ )
+    {
+        QString url = usedList.at(i);
+        if( url.length() > 4 ) mURLCombo->addItem( url );
+    }
 }
 
 

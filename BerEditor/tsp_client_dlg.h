@@ -34,6 +34,11 @@ private slots:
     void decodeSrvCert();
     void typeSrvCert();
 
+    void findCACert();
+    void viewCACert();
+    void decodeCACert();
+    void typeCACert();
+
     void clickEncode();
     void clickSend();
     void clickVerify();

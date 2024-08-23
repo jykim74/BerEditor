@@ -12,6 +12,7 @@
 #include "js_pki.h"
 #include "js_tsp.h"
 #include "js_http.h"
+#include "js_error.h"
 
 const QString kTSPUsedURL = "TSPUsedURL";
 
@@ -36,8 +37,13 @@ TSPClientDlg::TSPClientDlg(QWidget *parent) :
 
     connect( mFindSrvCertBtn, SIGNAL(clicked()), this, SLOT(findSrvCert()));
     connect( mSrvCertViewBtn, SIGNAL(clicked()), this, SLOT(viewSrvCert()));
-    connect( mSrvCertDeocodeBtn, SIGNAL(clicked()), this, SLOT(decodeSrvCert()));
+    connect( mSrvCertDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeSrvCert()));
     connect( mSrvCertTypeBtn, SIGNAL(clicked()), this, SLOT(typeSrvCert()));
+
+    connect( mFindCACertBtn, SIGNAL(clicked()), this, SLOT(findCACert()));
+    connect( mCACertViewBtn, SIGNAL(clicked()), this, SLOT(viewCACert()));
+    connect( mCACertDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeCACert()));
+    connect( mCACertTypeBtn, SIGNAL(clicked()), this, SLOT(typeCACert()));
 
     connect( mEncodeBtn, SIGNAL(clicked()), this, SLOT(clickEncode()));
     connect( mSendBtn, SIGNAL(clicked()), this, SLOT(clickSend()));
@@ -103,6 +109,12 @@ void TSPClientDlg::setUsedURL( const QString strURL )
 {
     if( strURL.length() <= 4 ) return;
 
+    for( int i = 0; i < mURLCombo->count(); i++ )
+    {
+        QString strPosURL = mURLCombo->itemText(i);
+        if( strURL == strPosURL ) return;
+    }
+
     QSettings settings;
     settings.beginGroup( kSettingBer );
     QStringList list = settings.value( kTSPUsedURL ).toStringList();
@@ -110,6 +122,14 @@ void TSPClientDlg::setUsedURL( const QString strURL )
     list.insert( 0, strURL );
     settings.setValue( kTSPUsedURL, list );
     settings.endGroup();
+
+    mURLCombo->clear();
+    QStringList usedList = getUsedURL();
+    for( int i = 0; i < usedList.size(); i++ )
+    {
+        QString url = usedList.at(i);
+        if( url.length() > 4 ) mURLCombo->addItem( url );
+    }
 }
 
 void TSPClientDlg::clickClearURL()
@@ -276,6 +296,88 @@ void TSPClientDlg::typeSrvCert()
     JS_BIN_reset( &binPubInfo );
 }
 
+void TSPClientDlg::findCACert()
+{
+    QString strPath = mCACertPathText->text();
+
+    if( strPath.length() < 1 )
+    {
+        strPath = berApplet->curFolder();
+    }
+
+    QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    if( filePath.length() > 0 )
+    {
+        mCACertPathText->setText( filePath );
+        berApplet->setCurFile(filePath);
+    }
+}
+
+void TSPClientDlg::viewCACert()
+{
+    CertInfoDlg certInfo;
+
+    BIN binData = {0,0};
+    QString strFile = mCACertPathText->text();
+
+    if( strFile.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Find a CA certificate" ), this );
+        mCACertPathText->setFocus();
+        return;
+    }
+
+    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+
+    certInfo.setCertBIN( &binData );
+    certInfo.exec();
+
+    JS_BIN_reset( &binData );
+}
+
+void TSPClientDlg::decodeCACert()
+{
+    BIN binData = {0,0};
+    QString strFile = mCACertPathText->text();
+
+    if( strFile.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Find a CA certificate" ), this );
+        mCACertPathText->setFocus();
+        return;
+    }
+
+    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+
+    berApplet->decodeData( &binData, strFile );
+
+    JS_BIN_reset( &binData );
+}
+
+void TSPClientDlg::typeCACert()
+{
+    int nType = -1;
+    BIN binData = {0,0};
+    BIN binPubInfo = {0,0};
+    QString strFile = mCACertPathText->text();
+
+    if( strFile.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Find a CA certificate" ), this );
+        mCACertPathText->setFocus();
+        return;
+    }
+
+    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    JS_PKI_getPubKeyFromCert( &binData, &binPubInfo );
+
+    nType = JS_PKI_getPubKeyType( &binPubInfo );
+    berApplet->messageBox( tr( "The certificate type is %1").arg( getKeyTypeName( nType )), this);
+
+
+    JS_BIN_reset( &binData );
+    JS_BIN_reset( &binPubInfo );
+}
 
 void TSPClientDlg::clickEncode()
 {
@@ -361,16 +463,38 @@ end :
 void TSPClientDlg::clickVerify()
 {
     int ret = 0;
+    BIN binCA = {0,0};
     BIN binSrvCert = {0,0};
     BIN binRsp = {0,0};
     BIN binData = {0,0};
 
+    QString strCAPath = mCACertPathText->text();
     QString strSrvCertPath = mSrvCertPathText->text();
     QString strRspHex = mResponseText->toPlainText();
 
     JTSTInfo    sTSTInfo;
 
     memset( &sTSTInfo, 0x00, sizeof(sTSTInfo));
+
+    if( strCAPath.length() < 1 )
+    {
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelCA);
+        certMan.setTitle( tr( "Select CA certificate" ));
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
+
+        strCAPath = certMan.getSeletedCAPath();
+        if( strCAPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Find a CA certificate" ), this );
+            return;
+        }
+        else
+        {
+            mCACertPathText->setText( strCAPath );
+        }
+    }
 
     if( strSrvCertPath.length() < 1 )
     {
@@ -399,20 +523,27 @@ void TSPClientDlg::clickVerify()
         goto end;
     }
 
+    JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
     JS_BIN_fileReadBER( strSrvCertPath.toLocal8Bit().toStdString().c_str(), &binSrvCert );
     JS_BIN_decodeHex( strRspHex.toStdString().c_str(), &binRsp );
 
-    ret = JS_TSP_verifyResponse( &binRsp, &binSrvCert, &binData, &sTSTInfo );
-    if( ret != 0 )
+    ret = JS_TSP_verifyResponse( &binRsp, &binCA, &binSrvCert, &binData, &sTSTInfo );
+    if( ret == JSR_VERIFY )
     {
-        berApplet->elog( QString( "failed to verify response message [%1]").arg(ret));
-        goto end;
+        berApplet->messageLog( tr( "verify reponse successfully"), this );
     }
-
-    berApplet->messageLog( tr( "verify reponse successfully"), this );
+    else if( ret == JSR_INVALID )
+    {
+        berApplet->warnLog( tr( "failed to verify signature"), this );
+    }
+    else
+    {
+        berApplet->warnLog( QString( "failed to verify response message [%1]").arg(ret), this );
+    }
 
 end :
     JS_BIN_reset( &binRsp );
+    JS_BIN_reset( &binCA );
     JS_BIN_reset( &binSrvCert );
     JS_BIN_reset( &binData );
     JS_TSP_resetTSTInfo( &sTSTInfo );

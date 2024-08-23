@@ -18,6 +18,7 @@ TSTInfoDlg::TSTInfoDlg(QWidget *parent) :
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mInfoTable, SIGNAL(clicked(QModelIndex)), this, SLOT(clickField(QModelIndex)));
+    connect( mDataDecodeBtn, SIGNAL(clicked()), this, SLOT(clickDataDecode()));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -150,6 +151,11 @@ void TSTInfoDlg::clickField( QModelIndex index )
     if( item0 == NULL || item1 == NULL ) return;
 
     mDataText->setPlainText( item1->text() );
+}
+
+void TSTInfoDlg::clickDataDecode()
+{
+    berApplet->decodeData( &tst_, NULL );
 }
 
 void TSTInfoDlg::setTST( const BIN *pTST )
