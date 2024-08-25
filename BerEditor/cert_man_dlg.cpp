@@ -986,7 +986,7 @@ int CertManDlg::writeNameHash( const QString strPath, const BIN *pCert )
     ret = JS_PKI_getSubjectNameHash( pCert, &uHash );
     if( ret != 0 ) return ret;
 
-    strFilePath = QString( "%1/%2.0").arg( strPath ).arg( uHash );
+    strFilePath = QString( "%1/%2.0").arg( strPath ).arg( uHash, 8, 16, QLatin1Char('0') );
 
     if( QFileInfo::exists( strFilePath ) == true )
     {
@@ -1017,7 +1017,7 @@ int CertManDlg::writeCRL( const QString strCRLPath, const BIN *pCRL )
 
     while( i < 100 )
     {
-        strFilePath = QString( "%1/%2.%3").arg( strCRLPath ).arg( uHash ).arg(i);
+        strFilePath = QString( "%1/%2.%3").arg( strCRLPath ).arg( uHash, 8, 16, QLatin1Char('0')  ).arg(i);
         if( QFileInfo::exists( strFilePath ) == false )
             break;
         i++;

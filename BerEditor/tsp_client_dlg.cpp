@@ -477,6 +477,7 @@ void TSPClientDlg::clickVerify()
     QString strSrvCertPath = mSrvCertPathText->text();
     QString strRspHex = mResponseText->toPlainText();
     QString strCAManPath = berApplet->settingsMgr()->CACertPath();
+    QString strTrustPath = berApplet->settingsMgr()->trustCertPath();
 
     JTSTInfo    sTSTInfo;
 
@@ -535,6 +536,7 @@ void TSPClientDlg::clickVerify()
 
     ret = JS_TSP_verifyResponse( &binRsp,
                                 strCAManPath.toLocal8Bit().toStdString().c_str(),
+                                strTrustPath.toLocal8Bit().toStdString().c_str(),
                                 &binCA,
                                 &binSrvCert, &binData, &sTSTInfo );
     if( ret == JSR_VERIFY )
