@@ -472,7 +472,7 @@ void KeyPairManDlg::clickLMakeCSR()
         QString fileName = findSaveFile( this, JS_FILE_TYPE_REQ, strCurFolder );
         if( fileName.length() > 1 )
         {
-            JS_BIN_writePEM( &binPri, JS_FILE_TYPE_REQ, fileName.toLocal8Bit().toStdString().c_str() );
+            JS_BIN_writePEM( &binPri, JS_PEM_TYPE_CSR, fileName.toLocal8Bit().toStdString().c_str() );
             berApplet->messageLog(tr("The CSR(%1) is saved successfully").arg( fileName ), this );
         }
     }
@@ -524,7 +524,7 @@ void KeyPairManDlg::clickLEncrypt()
     fileName = findSaveFile( this, JS_FILE_TYPE_PRIKEY, strCurFolder );
     if( fileName.length() > 1 )
     {
-        JS_BIN_writePEM( &binPri, JS_FILE_TYPE_PRIKEY, fileName.toLocal8Bit().toStdString().c_str() );
+        JS_BIN_writePEM( &binPri, JS_PEM_TYPE_PRIVATE_KEY, fileName.toLocal8Bit().toStdString().c_str() );
         berApplet->messageLog(tr("The Enc PrivateKey(%1) is saved successfully").arg( fileName ), this );
     }
 

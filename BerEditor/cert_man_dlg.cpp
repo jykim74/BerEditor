@@ -994,7 +994,7 @@ int CertManDlg::writeNameHash( const QString strPath, const BIN *pCert )
         return -1;
     }
 
-    ret = JS_BIN_writePEM( pCert, JS_FILE_TYPE_CERT, strFilePath.toLocal8Bit().toStdString().c_str() );
+    ret = JS_BIN_writePEM( pCert, JS_PEM_TYPE_CERTIFICATE, strFilePath.toLocal8Bit().toStdString().c_str() );
 
     return ret;
 }
@@ -1025,7 +1025,7 @@ int CertManDlg::writeCRL( const QString strCRLPath, const BIN *pCRL )
 
     if( i == 100 ) return JSR_ERR2;
 
-    ret = JS_BIN_writePEM( pCRL, JS_FILE_TYPE_CRL, strFilePath.toLocal8Bit().toStdString().c_str() );
+    ret = JS_BIN_writePEM( pCRL, JS_PEM_TYPE_CRL, strFilePath.toLocal8Bit().toStdString().c_str() );
 
     return ret;
 }

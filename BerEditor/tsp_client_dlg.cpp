@@ -16,6 +16,7 @@
 
 const QString kTSPUsedURL = "TSPUsedURL";
 
+
 TSPClientDlg::TSPClientDlg(QWidget *parent) :
     QDialog(parent)
 {
@@ -52,9 +53,13 @@ TSPClientDlg::TSPClientDlg(QWidget *parent) :
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
 
-    mSrvCertDeocodeBtn->setFixedWidth(34);
+    mSrvCertDecodeBtn->setFixedWidth(34);
     mSrvCertViewBtn->setFixedWidth(34);
     mSrvCertTypeBtn->setFixedWidth(34);
+
+    mCACertDecodeBtn->setFixedWidth(34);
+    mCACertViewBtn->setFixedWidth(34);
+    mCACertTypeBtn->setFixedWidth(34);
 
     mRequestClearBtn->setFixedWidth(34);
     mRequestDecodeBtn->setFixedWidth(34);
@@ -471,6 +476,7 @@ void TSPClientDlg::clickVerify()
     QString strCAPath = mCACertPathText->text();
     QString strSrvCertPath = mSrvCertPathText->text();
     QString strRspHex = mResponseText->toPlainText();
+    QString strCAManPath = berApplet->settingsMgr()->CACertPath();
 
     JTSTInfo    sTSTInfo;
 
@@ -527,7 +533,10 @@ void TSPClientDlg::clickVerify()
     JS_BIN_fileReadBER( strSrvCertPath.toLocal8Bit().toStdString().c_str(), &binSrvCert );
     JS_BIN_decodeHex( strRspHex.toStdString().c_str(), &binRsp );
 
-    ret = JS_TSP_verifyResponse( &binRsp, &binCA, &binSrvCert, &binData, &sTSTInfo );
+    ret = JS_TSP_verifyResponse( &binRsp,
+                                strCAManPath.toLocal8Bit().toStdString().c_str(),
+                                &binCA,
+                                &binSrvCert, &binData, &sTSTInfo );
     if( ret == JSR_VERIFY )
     {
         berApplet->messageLog( tr( "verify reponse successfully"), this );
