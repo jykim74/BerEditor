@@ -542,6 +542,7 @@ void CMPClientDlg::clickGENM()
         if( strCAPath.length() < 1 )
         {
             berApplet->warningBox( tr( "Find a CA certificate" ), this );
+            mCACertPathText->setFocus();
             return;
         }
         else
@@ -674,6 +675,7 @@ void CMPClientDlg::clickIR()
         if( strCAPath.length() < 1 )
         {
             berApplet->warningBox( tr( "Find a CA certificate" ), this );
+            mCACertPathText->setFocus();
             return;
         }
         else
@@ -800,6 +802,7 @@ void CMPClientDlg::clickCR()
         if( strCAPath.length() < 1 )
         {
             berApplet->warningBox( tr( "Find a CA certificate" ), this );
+            mCACertPathText->setFocus();
             return;
         }
         else
@@ -923,6 +926,7 @@ void CMPClientDlg::clickP10CR()
         if( strCAPath.length() < 1 )
         {
             berApplet->warningBox( tr( "Find a CA certificate" ), this );
+            mCACertPathText->setFocus();
             return;
         }
         else
@@ -1048,6 +1052,7 @@ void CMPClientDlg::clickSignGENM()
         if( strCAPath.length() < 1 )
         {
             berApplet->warningBox( tr( "Find a CA certificate" ), this );
+            mCACertPathText->setFocus();
             return;
         }
         else
@@ -1181,6 +1186,7 @@ void CMPClientDlg::clickKUR()
         if( strCAPath.length() < 1 )
         {
             berApplet->warningBox( tr( "Find a CA certificate" ), this );
+            mCACertPathText->setFocus();
             return;
         }
         else
@@ -1301,6 +1307,7 @@ void CMPClientDlg::clickRR()
         if( strCAPath.length() < 1 )
         {
             berApplet->warningBox( tr( "Find a CA certificate" ), this );
+            mCACertPathText->setFocus();
             return;
         }
         else
@@ -1393,12 +1400,14 @@ void CMPClientDlg::clickSend()
     if( strURL.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter CMP URL"), this );
+        mURLCombo->setFocus();
         return;
     }
 
     if( strReq.length() < 1 )
     {
         berApplet->warningBox( tr("There is no request" ), this );
+        mRequestText->setFocus();
         goto end;
     }
 
