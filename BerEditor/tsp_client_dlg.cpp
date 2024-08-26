@@ -37,11 +37,13 @@ TSPClientDlg::TSPClientDlg(QWidget *parent) :
     connect( mResponseClearBtn, SIGNAL(clicked()), this, SLOT(clearResponse()));
 
     connect( mFindSrvCertBtn, SIGNAL(clicked()), this, SLOT(findSrvCert()));
+    connect( mAddSrvCertBtn, SIGNAL(clicked()), this, SLOT(addSrvCert()));
     connect( mSrvCertViewBtn, SIGNAL(clicked()), this, SLOT(viewSrvCert()));
     connect( mSrvCertDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeSrvCert()));
     connect( mSrvCertTypeBtn, SIGNAL(clicked()), this, SLOT(typeSrvCert()));
 
     connect( mFindCACertBtn, SIGNAL(clicked()), this, SLOT(findCACert()));
+    connect( mAddCACertBtn, SIGNAL(clicked()), this, SLOT(addCACert()));
     connect( mCACertViewBtn, SIGNAL(clicked()), this, SLOT(viewCACert()));
     connect( mCACertDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeCACert()));
     connect( mCACertTypeBtn, SIGNAL(clicked()), this, SLOT(typeCACert()));
@@ -235,6 +237,32 @@ void TSPClientDlg::findSrvCert()
     }
 }
 
+void TSPClientDlg::addSrvCert()
+{
+    QString strPath = mSrvCertPathText->text();
+
+    if( strPath.length() < 1 )
+    {
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelCert);
+        certMan.setTitle( tr( "Select TSP certificate" ));
+
+        if( certMan.exec() != QDialog::Accepted )
+            return;
+
+        strPath = certMan.getSeletedCertPath();
+        if( strPath.length() < 1 )
+        {
+            berApplet->warningBox( "Select TSP certificate", this );
+            return;
+        }
+        else
+        {
+            mSrvCertPathText->setText( strPath );
+        }
+    }
+}
+
 void TSPClientDlg::viewSrvCert()
 {
     CertInfoDlg certInfo;
@@ -315,6 +343,32 @@ void TSPClientDlg::findCACert()
     {
         mCACertPathText->setText( filePath );
         berApplet->setCurFile(filePath);
+    }
+}
+
+void TSPClientDlg::addCACert()
+{
+    QString strPath = mCACertPathText->text();
+
+    if( strPath.length() < 1 )
+    {
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelCA);
+        certMan.setTitle( tr( "Select CA certificate" ));
+
+        if( certMan.exec() != QDialog::Accepted )
+            return;
+
+        strPath = certMan.getSeletedCAPath();
+        if( strPath.length() < 1 )
+        {
+            berApplet->warningBox( "Select trust certificate", this );
+            return;
+        }
+        else
+        {
+            mCACertPathText->setText( strPath );
+        }
     }
 }
 
@@ -483,45 +537,14 @@ void TSPClientDlg::clickVerify()
 
     memset( &sTSTInfo, 0x00, sizeof(sTSTInfo));
 
-    if( strCAPath.length() < 1 )
+    if( strCAPath.length() > 0 )
     {
-        CertManDlg certMan;
-        certMan.setMode(ManModeSelCA);
-        certMan.setTitle( tr( "Select CA certificate" ));
-        if( certMan.exec() != QDialog::Accepted )
-            goto end;
-
-        strCAPath = certMan.getSeletedCAPath();
-        if( strCAPath.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Find a CA certificate" ), this );
-            return;
-        }
-        else
-        {
-            mCACertPathText->setText( strCAPath );
-        }
+        JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
     }
 
-    if( strSrvCertPath.length() < 1 )
+    if( strSrvCertPath.length() > 0 )
     {
-        CertManDlg certMan;
-        certMan.setMode(ManModeSelCert);
-        certMan.setTitle( tr( "Select TSP server certificate" ));
-        if( certMan.exec() != QDialog::Accepted )
-            goto end;
-
-        strSrvCertPath = certMan.getSeletedCertPath();
-
-        if( strSrvCertPath.length() < 1 )
-        {
-            berApplet->warningBox( tr( "find a TSP server certificate"), this );
-            goto end;
-        }
-        else
-        {
-            mSrvCertPathText->setText( strSrvCertPath );
-        }
+        JS_BIN_fileReadBER( strSrvCertPath.toLocal8Bit().toStdString().c_str(), &binSrvCert );
     }
 
     if( strRspHex.length() < 1 )
