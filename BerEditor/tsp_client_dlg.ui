@@ -449,13 +449,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mFindCACertBtn">
-       <property name="text">
-        <string>Find</string>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="6">
       <widget class="QPushButton" name="mSrvCertTypeBtn">
        <property name="maximumSize">
@@ -471,13 +464,6 @@
      </item>
      <item row="1" column="1">
       <widget class="QLineEdit" name="mSrvCertPathText"/>
-     </item>
-     <item row="1" column="2">
-      <widget class="QPushButton" name="mFindSrvCertBtn">
-       <property name="text">
-        <string>Find</string>
-       </property>
-      </widget>
      </item>
      <item row="0" column="4">
       <widget class="QPushButton" name="mCACertViewBtn">
@@ -499,9 +485,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="mCACertPathText"/>
-     </item>
      <item row="0" column="6">
       <widget class="QPushButton" name="mCACertTypeBtn">
        <property name="maximumSize">
@@ -516,16 +499,26 @@
       </widget>
      </item>
      <item row="0" column="3">
-      <widget class="QPushButton" name="mAddCACertBtn">
+      <widget class="QPushButton" name="mFindCACertBtn">
        <property name="text">
-        <string>Add</string>
+        <string>Find</string>
        </property>
       </widget>
      </item>
+     <item row="0" column="1" colspan="2">
+      <widget class="QLineEdit" name="mCACertPathText"/>
+     </item>
      <item row="1" column="3">
-      <widget class="QPushButton" name="mAddSrvCertBtn">
+      <widget class="QPushButton" name="mFindSrvCertBtn">
        <property name="text">
-        <string>Add</string>
+        <string>Find</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="mSelectSrvCertBtn">
+       <property name="text">
+        <string>Select</string>
        </property>
       </widget>
      </item>
@@ -735,13 +728,12 @@
   <tabstop>mVerifyBtn</tabstop>
   <tabstop>mCACertPathText</tabstop>
   <tabstop>mFindCACertBtn</tabstop>
-  <tabstop>mAddCACertBtn</tabstop>
   <tabstop>mCACertViewBtn</tabstop>
   <tabstop>mCACertDecodeBtn</tabstop>
   <tabstop>mCACertTypeBtn</tabstop>
   <tabstop>mSrvCertPathText</tabstop>
+  <tabstop>mSelectSrvCertBtn</tabstop>
   <tabstop>mFindSrvCertBtn</tabstop>
-  <tabstop>mAddSrvCertBtn</tabstop>
   <tabstop>mSrvCertViewBtn</tabstop>
   <tabstop>mSrvCertDecodeBtn</tabstop>
   <tabstop>mSrvCertTypeBtn</tabstop>

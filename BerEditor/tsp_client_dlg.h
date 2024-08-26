@@ -30,13 +30,12 @@ private slots:
     void clearResponse();
 
     void findSrvCert();
-    void addSrvCert();
+    void selectSrvCert();
     void viewSrvCert();
     void decodeSrvCert();
     void typeSrvCert();
 
     void findCACert();
-    void addCACert();
     void viewCACert();
     void decodeCACert();
     void typeCACert();
