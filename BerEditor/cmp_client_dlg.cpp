@@ -584,6 +584,8 @@ void CMPClientDlg::clickGENM()
     ret = JS_CMP_execGENMWithSecret( pCTX, &binRef, &binAuth, &pNameValList );
     JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
 
+    setUsedURL( strURL );
+
     mRequestText->setPlainText( getHexString( &binReq ) );
     mResponseText->setPlainText( getHexString( &binRsp ));
 
@@ -610,7 +612,7 @@ void CMPClientDlg::clickGENM()
     }
 
 end :
-    setUsedURL( strURL );
+
     if( ret != 0 )
     {
         berApplet->warnLog( tr( "GENM fail: %1").arg(ret), this );
@@ -722,6 +724,7 @@ void CMPClientDlg::clickIR()
 
     ret = JS_CMP_execIR( pCTX, &binRef, &binAuth, strDN.toStdString().c_str(), &binNewPri, &binNewCert );
     JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
+    setUsedURL( strURL );
 
     mRequestText->setPlainText( getHexString( &binReq ) );
     mResponseText->setPlainText( getHexString( &binRsp ));
@@ -738,7 +741,7 @@ void CMPClientDlg::clickIR()
     }
 
 end :
-    setUsedURL( strURL );
+
     if( ret != 0 )
     {
         berApplet->warnLog( tr( "IR fail: %1").arg(ret), this );
@@ -851,6 +854,8 @@ void CMPClientDlg::clickCR()
     ret = JS_CMP_execCR( pCTX, &binRef, &binAuth, strDN.toStdString().c_str(), &binNewPri, &binNewCert );
     JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
 
+    setUsedURL( strURL );
+
     mRequestText->setPlainText( getHexString( &binReq ) );
     mResponseText->setPlainText( getHexString( &binRsp ));
 
@@ -866,7 +871,7 @@ void CMPClientDlg::clickCR()
     }
 
 end :
-    setUsedURL( strURL );
+
     if( ret != 0 )
     {
         berApplet->warnLog( tr( "CR fail: %1").arg(ret), this );
@@ -984,6 +989,8 @@ void CMPClientDlg::clickP10CR()
     ret = JS_CMP_execP10CSR( pCTX, &binRef, &binAuth, &binCSR, &binNewCert );
     JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
 
+    setUsedURL( strURL );
+
     mRequestText->setPlainText( getHexString( &binReq ) );
     mResponseText->setPlainText( getHexString( &binRsp ));
 
@@ -999,7 +1006,7 @@ void CMPClientDlg::clickP10CR()
     }
 
 end :
-    setUsedURL( strURL );
+
     if( ret != 0 )
     {
         berApplet->warnLog( tr( "CR fail: %1").arg(ret), this );
@@ -1104,6 +1111,8 @@ void CMPClientDlg::clickSignGENM()
     ret = JS_CMP_execGENMWithSign( pCTX, &binPri, &binCert, &pNameValList );
     JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
 
+    setUsedURL( strURL );
+
     mRequestText->setPlainText( getHexString( &binReq ) );
     mResponseText->setPlainText( getHexString( &binRsp ));
 
@@ -1131,7 +1140,7 @@ void CMPClientDlg::clickSignGENM()
     }
 
 end :
-    setUsedURL( strURL );
+
     if( ret != 0 )
     {
         berApplet->warnLog( tr( "GENM fail: %1").arg(ret), this );
@@ -1245,6 +1254,8 @@ void CMPClientDlg::clickKUR()
     ret = JS_CMP_execKUR( pCTX, &binPri, &binCert, &binNewPri, &binNewCert );
     JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
 
+    setUsedURL( strURL );
+
     mRequestText->setPlainText( getHexString( &binReq ) );
     mResponseText->setPlainText( getHexString( &binRsp ));
 
@@ -1260,7 +1271,7 @@ void CMPClientDlg::clickKUR()
     }
 
 end :
-    setUsedURL( strURL );
+
     if( ret != 0 )
     {
         berApplet->warnLog( tr( "KUR fail: %1").arg(ret), this );
@@ -1360,6 +1371,8 @@ void CMPClientDlg::clickRR()
     ret = JS_CMP_execRR( pCTX, &binPri, &binCert, nReason );
     JS_CMP_getReqRsp( pCTX, &binReq, &binRsp );
 
+    setUsedURL( strURL );
+
     mRequestText->setPlainText( getHexString( &binReq ) );
     mResponseText->setPlainText( getHexString( &binRsp ));
 
@@ -1374,7 +1387,7 @@ void CMPClientDlg::clickRR()
     }
 
 end :
-    setUsedURL( strURL );
+
     if( ret != 0 )
     {
         berApplet->warnLog( tr( "RR fail: %1").arg(ret), this );
