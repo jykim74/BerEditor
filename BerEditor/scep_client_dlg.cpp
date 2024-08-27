@@ -611,7 +611,7 @@ void SCEPClientDlg::clickGetCA()
 
     if( ret != 0 || nStatus != JS_HTTP_STATUS_OK )
     {
-        berApplet->warnLog( QString( "failed to request HTTP get [%1:%2]").arg(ret).arg(nStatus));
+        berApplet->warnLog( QString( "failed to request HTTP get [%1:%2]").arg(ret).arg(nStatus), this );
         goto end;
     }
 
@@ -685,6 +685,7 @@ void SCEPClientDlg::clickMakeIssue()
         goto end;
     }
 
+    genKeyPair.setFixName( tr("SCEP Issue KeyPair" ));
     if( genKeyPair.exec() != QDialog::Accepted ) goto end;
 
     strPriHex = genKeyPair.getPriKeyHex();

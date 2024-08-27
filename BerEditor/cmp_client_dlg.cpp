@@ -706,6 +706,7 @@ void CMPClientDlg::clickIR()
 
     JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
 
+    genKeyPair.setFixName( tr("CMP IR KeyPair" ));
     genKeyPair.setRegInfo( getRegInfo() );
     if( genKeyPair.exec() != QDialog::Accepted ) goto end;
 
@@ -836,6 +837,7 @@ void CMPClientDlg::clickCR()
     genKeyPair.setRegInfo( getRegInfo() );
     if( genKeyPair.exec() != QDialog::Accepted ) goto end;
 
+    genKeyPair.setFixName( tr("CMP CR KeyPair" ));
     strPriHex = genKeyPair.getPriKeyHex();
     JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binNewPri );
 
@@ -957,6 +959,7 @@ void CMPClientDlg::clickP10CR()
     JS_BIN_set( &binAuth, (unsigned char *)strAuth.toStdString().c_str(), strAuth.length() );
     JS_BIN_set( &binRef, (unsigned char *)strRef.toStdString().c_str(), strRef.length() );
 
+    genKeyPair.setFixName( tr("CMP P10CR KeyPair" ));
     genKeyPair.setRegInfo( getRegInfo() );
     if( genKeyPair.exec() != QDialog::Accepted ) goto end;
 
@@ -1197,6 +1200,7 @@ void CMPClientDlg::clickKUR()
 
     JS_BIN_fileReadBER( strCAPath.toLocal8Bit().toStdString().c_str(), &binCA );
 
+    genKeyPair.setFixName( tr("CMP KUR KeyPair" ));
     genKeyPair.setRegInfo( getRegInfo() );
     if( genKeyPair.exec() != QDialog::Accepted ) goto end;
 

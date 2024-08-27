@@ -21,6 +21,7 @@ public:
     const QString getPubKeyHex();
 
     void setRegInfo( const QString strRegInfo );
+    void setFixName( const QString strName );
 
 private slots:
     void clickRSA();

@@ -95,6 +95,13 @@ void GenKeyPairDlg::setRegInfo( const QString strRegInfo )
     if( strOption.length() > 0 ) mOptionCombo->setCurrentText( strOption );
 }
 
+void GenKeyPairDlg::setFixName( const QString strName )
+{
+    mNameText->setText( strName );
+    mNameText->setStyleSheet( "background-color:#ddddff" );
+    mNameText->setReadOnly(true);
+}
+
 const QString GenKeyPairDlg::getPriKeyHex()
 {
     return getHexString( &pri_key_ );
