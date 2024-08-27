@@ -649,6 +649,7 @@ void SCEPClientDlg::clickMakeIssue()
     QString strCAPath = mCACertPathText->text();
     QString strNonce = mNonceText->text();
     QString strTransID = mTransIDText->text();
+    QString strLink;
 
     if( strURL.length() < 1 )
     {
@@ -656,8 +657,6 @@ void SCEPClientDlg::clickMakeIssue()
         mURLCombo->setFocus();
         return;
     }
-
-    setUsedURL( strURL );
 
     if( strCAPath.length() < 1 )
     {
@@ -727,10 +726,11 @@ void SCEPClientDlg::clickMakeIssue()
         berApplet->warnLog( tr( "fail to make request: %1").arg(ret), this );
     }
 
-    strURL += "/pkiclient.exe?operation=PKIOperation";
+    strLink = strURL;
+    strLink += "/pkiclient.exe?operation=PKIOperation";
 
     ret = JS_HTTP_requestPostBin2(
-        strURL.toStdString().c_str(),
+        strLink.toStdString().c_str(),
         NULL,
         NULL,
         "application/x-pki-message",
@@ -743,6 +743,8 @@ void SCEPClientDlg::clickMakeIssue()
         berApplet->warnLog( QString( "failed to request HTTP post [%1:%2]" ).arg( ret ).arg( nStatus ), this );
         goto end;
     }
+
+    setUsedURL( strURL );
 
     mResponseText->setPlainText( getHexString( &binRsp ));
 
@@ -808,6 +810,7 @@ void SCEPClientDlg::clickMakeUpdate()
     QString strTransID = mTransIDText->text();
 
     QString strURL = mURLCombo->currentText();
+    QString strLink;
 
     if( strURL.length() < 1 )
     {
@@ -816,7 +819,7 @@ void SCEPClientDlg::clickMakeUpdate()
         return;
     }
 
-    setUsedURL( strURL );
+
 
     if( strCAPath.length() < 1 )
     {
@@ -907,10 +910,11 @@ void SCEPClientDlg::clickMakeUpdate()
         berApplet->warnLog( tr( "fail to make request: %1").arg(ret), this );
     }
 
-    strURL += "/pkiclient.exe?operation=PKIOperation";
+    strLink = strURL;
+    strLink += "/pkiclient.exe?operation=PKIOperation";
 
     ret = JS_HTTP_requestPostBin2(
-        strURL.toStdString().c_str(),
+        strLink.toStdString().c_str(),
         NULL,
         NULL,
         "application/x-pki-message",
@@ -924,6 +928,7 @@ void SCEPClientDlg::clickMakeUpdate()
         goto end;
     }
 
+    setUsedURL( strURL );
     mResponseText->setPlainText( getHexString( &binRsp ));
 
     ret = JS_SCEP_parseCertRsp(
@@ -985,6 +990,7 @@ void SCEPClientDlg::clickMakeGetCRL()
     char *pTransID = NULL;
 
     QString strURL = mURLCombo->currentText();
+    QString strLink;
 
     if( strURL.length() < 1 )
     {
@@ -992,7 +998,7 @@ void SCEPClientDlg::clickMakeGetCRL()
         return;
     }
 
-    setUsedURL( strURL );
+
 
     if( strCAPath.length() < 1 )
     {
@@ -1078,10 +1084,11 @@ void SCEPClientDlg::clickMakeGetCRL()
         berApplet->warnLog( tr( "fail to make to get crl: %1").arg(ret), this );
     }
 
-    strURL += "/pkiclient.exe?operation=PKIOperation";
+    strLink = strURL;
+    strLink += "/pkiclient.exe?operation=PKIOperation";
 
     ret = JS_HTTP_requestPostBin2(
-        strURL.toStdString().c_str(),
+        strLink.toStdString().c_str(),
         NULL,
         NULL,
         "application/x-pki-message",
@@ -1095,6 +1102,7 @@ void SCEPClientDlg::clickMakeGetCRL()
         goto end;
     }
 
+    setUsedURL( strURL );
     mResponseText->setPlainText( getHexString( &binRsp ));
 
     ret = JS_SCEP_parseCertRsp(
@@ -1142,6 +1150,7 @@ void SCEPClientDlg::clickSend()
 
     QString strURL = mURLCombo->currentText();
     QString strReq = mRequestText->toPlainText();
+    QString strLink;
 
     CertInfoDlg certInfo;
 
@@ -1159,10 +1168,11 @@ void SCEPClientDlg::clickSend()
 
     getBINFromString( &binReq, DATA_HEX, strReq );
 
-    strURL += "/pkiclient.exe?operation=PKIOperation";
+    strLink = strURL;
+    strLink += "/pkiclient.exe?operation=PKIOperation";
 
     ret = JS_HTTP_requestPostBin2(
-        strURL.toStdString().c_str(),
+        strLink.toStdString().c_str(),
         NULL,
         NULL,
         "application/x-pki-message",
@@ -1207,8 +1217,21 @@ void SCEPClientDlg::clickVerify()
         goto end;
     }
 
-    ret = readPrivateKey( &binPriKey );
-    if( ret != 0 ) goto end;
+    if( mCertGroup->isChecked() == true )
+    {
+        ret = readPrivateKey( &binPriKey );
+        if( ret != 0 ) goto end;
+    }
+    else
+    {
+        CertManDlg certMan;
+        certMan.setMode( ManModeSelBoth );
+
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
+
+        certMan.getPriKey( &binPriKey );
+    }
 
     getBINFromString( &binRsp, DATA_HEX, strRsp );
     getBINFromString( &binNonce, DATA_HEX, strNonce );
@@ -1228,11 +1251,11 @@ void SCEPClientDlg::clickVerify()
     if( ret != 0 )
     {
         berApplet->warnLog( QString( "failed to verify Rsp" ), this );
-        goto end;
     }
     else
     {
-        berApplet->log( QString("SignedData: %1").arg(getHexString(&binData)));
+        berApplet->messageLog( QString( "Verify OK" ), this );
+        berApplet->log( QString( "SignedData: %1").arg( getHexString(&binData)));
     }
 
 
