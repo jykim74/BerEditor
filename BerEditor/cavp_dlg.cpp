@@ -2207,12 +2207,10 @@ int CAVPDlg::makeSymCBC_MCT( const QString strKey, const QString strIV, const QS
     if( bInfo == true )
     {
         strAlg = mSymMCTAlgCombo->currentText();
-        strMode = mSymMCTModeCombo->currentText();
     }
     else
     {
         strAlg = mSymAlgCombo->currentText();
-        strMode = mSymModeCombo->currentText();
     }
 
     if( strKey.length() > 0 )
@@ -2224,8 +2222,8 @@ int CAVPDlg::makeSymCBC_MCT( const QString strKey, const QString strIV, const QS
     if( strPT.length() > 0 )
         JS_BIN_decodeHex( strPT.toStdString().c_str(), &binPT[0] );
 
-    QString strSymAlg = getSymAlg( strAlg, strMode, binKey[0].nLen );
-    berApplet->log( QString("Symmetric Alg: %1").arg( strSymAlg ));
+    QString strSymAlg = getSymAlg( strAlg, "ECB", binKey[0].nLen );
+    berApplet->log( QString("Symmetric Alg: %1-%2-cbc").arg( strAlg ).arg( binKey[0].nLen ));
 
     for( i = 0; i < 100; i++ )
     {
@@ -2248,25 +2246,20 @@ int CAVPDlg::makeSymCBC_MCT( const QString strKey, const QString strIV, const QS
 
         for( j = 0; j < 1000; j++ )
         {
+            BIN binXOR = {0,0};
             JS_BIN_reset( &binCT[j] );
-            if( strAlg == "SEED" )
-            {
-                if( j == 0 )
-                {
-                    ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binCT[j] );
-                }
-                else
-                {
-                    ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binPT[j], &binCT[j-1], &binKey[i], &binCT[j] );
-                }
-            }
+
+            if( j == 0 )
+                JS_BIN_XOR( &binXOR, &binPT[j], &binIV[i] );
             else
-            {
-                if( j == 0 )
-                    ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binCT[j] );
-                else
-                    ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], &binCT[j-1], &binKey[i], &binCT[j]);
-            }
+                JS_BIN_XOR( &binXOR, &binPT[j], &binCT[j-1] );
+
+            if( strAlg == "SEED" )
+                ret = JS_PKI_encryptSEED( "ECB", 0, &binXOR, NULL, &binKey[i], &binCT[j] );
+            else
+                ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binXOR, NULL, &binKey[i], &binCT[j] );
+
+            JS_BIN_reset( &binXOR );
 
             if( ret != 0 ) goto end;
 
@@ -2369,12 +2362,12 @@ int CAVPDlg::makeSymDecCBC_MCT( const QString strKey, const QString strIV, const
     if( bInfo == true )
     {
         strAlg = mSymMCTAlgCombo->currentText();
-        strMode = mSymMCTModeCombo->currentText();
+//        strMode = mSymMCTModeCombo->currentText();
     }
     else
     {
         strAlg = mSymAlgCombo->currentText();
-        strMode = mSymModeCombo->currentText();
+//        strMode = mSymModeCombo->currentText();
     }
 
     if( strKey.length() > 0 )
@@ -2386,8 +2379,8 @@ int CAVPDlg::makeSymDecCBC_MCT( const QString strKey, const QString strIV, const
     if( strCT.length() > 0 )
         JS_BIN_decodeHex( strCT.toStdString().c_str(), &binCT[0] );
 
-    QString strSymAlg = getSymAlg( strAlg, strMode, binKey[0].nLen );
-    berApplet->log( QString("Symmetric Alg: %1").arg( strSymAlg ));
+    QString strSymAlg = getSymAlg( strAlg, "ECB", binKey[0].nLen );
+    berApplet->log( QString("Symmetric Alg: %1-%2-cbc").arg( strAlg ).arg( binKey[0].nLen ));
 
     for( i = 0; i < 100; i++ )
     {
@@ -2410,25 +2403,20 @@ int CAVPDlg::makeSymDecCBC_MCT( const QString strKey, const QString strIV, const
 
         for( j = 0; j < 1000; j++ )
         {
+            BIN binDec = {0,0};
             JS_BIN_reset( &binPT[j] );
+
             if( strAlg == "SEED" )
-            {
-                if( j == 0 )
-                {
-                    ret = JS_PKI_decryptSEED( strMode.toStdString().c_str(), 0, &binCT[j], &binIV[i], &binKey[i], &binPT[j] );
-                }
-                else
-                {
-                    ret = JS_PKI_decryptSEED( strMode.toStdString().c_str(), 0, &binCT[j], &binPT[j-1], &binKey[i], &binPT[j] );
-                }
-            }
+                ret = JS_PKI_decryptSEED( "ECB", 0, &binCT[j], NULL, &binKey[i], &binDec );
             else
-            {
-                if( j == 0 )
-                    ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), 0, &binCT[j], &binIV[i], &binKey[i], &binPT[j] );
-                else
-                    ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), 0, &binCT[j], &binPT[j-1], &binKey[i], &binPT[j]);
-            }
+                ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), 0, &binCT[j], NULL, &binKey[i], &binDec );
+
+            if( j == 0 )
+                JS_BIN_XOR( &binPT[j], &binDec, &binIV[i] );
+            else
+                JS_BIN_XOR( &binPT[j], &binDec, &binCT[j-1] );
+
+            JS_BIN_reset( &binDec );
 
             if( ret != 0 ) goto end;
 
@@ -2795,16 +2783,17 @@ int CAVPDlg::makeSymCTR_MCT( const QString strKey, const QString strIV, const QS
     if( bInfo == true )
     {
         strAlg = mSymMCTAlgCombo->currentText();
-        strMode = mSymMCTModeCombo->currentText();
+//        strMode = mSymMCTModeCombo->currentText();
     }
     else
     {
         strAlg = mSymAlgCombo->currentText();
-        strMode = mSymModeCombo->currentText();
+//        strMode = mSymModeCombo->currentText();
     }
 
-    QString strSymAlg = getSymAlg( strAlg, strMode, binKey[0].nLen );
-    berApplet->log( QString("Symmetric Alg: %1").arg( strSymAlg ));
+    QString strSymAlg = getSymAlg( strAlg, "ECB", binKey[0].nLen );
+    berApplet->log( QString("Symmetric Alg: %1-%2-ctr").arg( strAlg ).arg( binKey[0].nLen ));
+
 
     for( i = 0; i < 100; i++ )
     {
@@ -2827,11 +2816,19 @@ int CAVPDlg::makeSymCTR_MCT( const QString strKey, const QString strIV, const QS
 
         for( j = 0; j < 1000; j++ )
         {
+            BIN binEnc = {0,0};
+
             if( strAlg == "SEED" )
-                ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binPT[j], &binCTR, &binKey[i], &binCT[j] );
+                ret = JS_PKI_encryptSEED( "ECB", 0, &binCTR, NULL, &binKey[i], &binEnc );
             else
-                ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], &binCTR, &binKey[i], &binCT[j] );
+                ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binCTR, NULL, &binKey[i], &binEnc );
+
             if( ret != 0 ) goto end;
+
+            JS_BIN_reset( &binCT[j]);
+            JS_BIN_XOR( &binCT[j], &binEnc, &binPT[j] );
+
+            JS_BIN_reset( &binEnc );
 
             JS_BIN_INC( &binCTR );
 
@@ -2930,16 +2927,16 @@ int CAVPDlg::makeSymCTR_MCT( const QString strKey, const QString strIV, const QS
     if( bInfo == true )
     {
         strAlg = mSymMCTAlgCombo->currentText();
-        strMode = mSymMCTModeCombo->currentText();
+//        strMode = mSymMCTModeCombo->currentText();
     }
     else
     {
         strAlg = mSymAlgCombo->currentText();
-        strMode = mSymModeCombo->currentText();
+//        strMode = mSymModeCombo->currentText();
     }
 
-    QString strSymAlg = getSymAlg( strAlg, strMode, binKey[0].nLen );
-    berApplet->log( QString("Symmetric Alg: %1").arg( strSymAlg ));
+    QString strSymAlg = getSymAlg( strAlg, "ECB", binKey[0].nLen );
+    berApplet->log( QString("Symmetric Alg: %1-%2-ctr").arg( strAlg ).arg( binKey[0].nLen ));
 
     for( i = 0; i < 100; i++ )
     {
@@ -2962,11 +2959,17 @@ int CAVPDlg::makeSymCTR_MCT( const QString strKey, const QString strIV, const QS
 
         for( j = 0; j < 1000; j++ )
         {
+            BIN binEnc = {0,0};
+
             if( strAlg == "SEED" )
-                ret = JS_PKI_decryptSEED( strMode.toStdString().c_str(), 0, &binCT[j], &binCTR, &binKey[i], &binPT[j] );
+                ret = JS_PKI_encryptSEED( "ECB", 0, &binCTR, NULL, &binKey[i], &binEnc );
             else
-                ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), 0, &binCT[j], &binCTR, &binKey[i], &binPT[j] );
+                ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binCTR, NULL, &binKey[i], &binEnc );
+
             if( ret != 0 ) goto end;
+
+            JS_BIN_reset( &binPT[j] );
+            JS_BIN_XOR( &binPT[j], &binEnc, &binCT[j] );
 
             JS_BIN_INC( &binCTR );
 
@@ -3063,12 +3066,12 @@ int CAVPDlg::makeSymCFB_MCT( const QString strKey, const QString strIV, const QS
     if( bInfo == true )
     {
         strAlg = mSymMCTAlgCombo->currentText();
-        strMode = mSymMCTModeCombo->currentText();
+//        strMode = mSymMCTModeCombo->currentText();
     }
     else
     {
         strAlg = mSymAlgCombo->currentText();
-        strMode = mSymModeCombo->currentText();
+//        strMode = mSymModeCombo->currentText();
     }
 
     if( strKey.length() > 0 )
@@ -3080,8 +3083,9 @@ int CAVPDlg::makeSymCFB_MCT( const QString strKey, const QString strIV, const QS
     if( strPT.length() > 0 )
         JS_BIN_decodeHex( strPT.toStdString().c_str(), &binPT[0] );
 
-    QString strSymAlg = getSymAlg( strAlg, strMode, binKey[0].nLen );
-    berApplet->log( QString("Symmetric Alg: %1").arg( strSymAlg ));
+    QString strSymAlg = getSymAlg( strAlg, "ECB", binKey[0].nLen );
+    berApplet->log( QString("Symmetric Alg: %1-%2-cfb").arg( strAlg ).arg( binKey[0].nLen ));
+
 
     for( i = 0; i < 100; i++ )
     {
@@ -3104,23 +3108,27 @@ int CAVPDlg::makeSymCFB_MCT( const QString strKey, const QString strIV, const QS
 
         for( j = 0; j < 1000; j++ )
         {
+            BIN binEnc = {0,0};
             JS_BIN_reset( &binCT[j] );
 
             if( strAlg == "SEED" )
             {
                 if( j == 0 )
-                    ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binCT[j] );
+                    ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binIV[i], NULL, &binKey[i], &binEnc );
                 else
-                    ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binPT[j], &binCT[j-1], &binKey[i], &binCT[j] );
+                    ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binCT[j-1], NULL, &binKey[i], &binEnc );
             }
             else
             {
                 if( j == 0 )
-                    ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binCT[j] );
+                    ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binIV[i], NULL, &binKey[i], &binEnc );
                 else
-                    ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], &binCT[j-1], &binKey[i], &binCT[j]);
+                    ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binCT[j-1], NULL, &binKey[i], &binEnc );
             }
 
+            JS_BIN_XOR( &binCT[j], &binEnc, &binPT[j] );
+
+            JS_BIN_reset( &binEnc );
             if( ret != 0 ) goto end;
 
             if( j == 0 )
@@ -3224,12 +3232,12 @@ int CAVPDlg::makeSymDecCFB_MCT( const QString strKey, const QString strIV, const
     if( bInfo == true )
     {
         strAlg = mSymMCTAlgCombo->currentText();
-        strMode = mSymMCTModeCombo->currentText();
+//        strMode = mSymMCTModeCombo->currentText();
     }
     else
     {
         strAlg = mSymAlgCombo->currentText();
-        strMode = mSymModeCombo->currentText();
+//        strMode = mSymModeCombo->currentText();
     }
 
     if( strKey.length() > 0 )
@@ -3241,8 +3249,8 @@ int CAVPDlg::makeSymDecCFB_MCT( const QString strKey, const QString strIV, const
     if( strCT.length() > 0 )
         JS_BIN_decodeHex( strCT.toStdString().c_str(), &binCT[0] );
 
-    QString strSymAlg = getSymAlg( strAlg, strMode, binKey[0].nLen );
-    berApplet->log( QString("Symmetric Alg: %1").arg( strSymAlg ));
+    QString strSymAlg = getSymAlg( strAlg, "ECB", binKey[0].nLen );
+    berApplet->log( QString("Symmetric Alg: %1-%2-cfb").arg( strAlg ).arg( binKey[0].nLen ));
 
     for( i = 0; i < 100; i++ )
     {
@@ -3265,23 +3273,26 @@ int CAVPDlg::makeSymDecCFB_MCT( const QString strKey, const QString strIV, const
 
         for( j = 0; j < 1000; j++ )
         {
+            BIN binDec = {0,0};
             JS_BIN_reset( &binPT[j] );
 
             if( strAlg == "SEED" )
             {
                 if( j == 0 )
-                    ret = JS_PKI_decryptSEED( strMode.toStdString().c_str(), 0, &binCT[j], &binIV[i], &binKey[i], &binPT[j] );
+                    ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binIV[i], NULL, &binKey[i], &binDec );
                 else
-                    ret = JS_PKI_decryptSEED( strMode.toStdString().c_str(), 0, &binCT[j], &binPT[j-1], &binKey[i], &binPT[j] );
+                    ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binCT[j-1], NULL, &binKey[i], &binDec );
             }
             else
             {
                 if( j == 0 )
-                    ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), 0, &binCT[j], &binIV[i], &binKey[i], &binPT[j] );
+                    ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binIV[i], NULL, &binKey[i], &binDec );
                 else
-                    ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), 0, &binCT[j], &binPT[j-1], &binKey[i], &binPT[j]);
+                    ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binCT[j-1], NULL, &binKey[i], &binDec );
             }
 
+            JS_BIN_XOR( &binPT[j], &binDec, &binCT[j] );
+            JS_BIN_reset( &binDec );
             if( ret != 0 ) goto end;
 
             if( j == 0 )
@@ -3405,8 +3416,9 @@ int CAVPDlg::makeSymOFB_MCT( const QString strKey, const QString strIV, const QS
     if( strPT.length() > 0 )
         JS_BIN_decodeHex( strPT.toStdString().c_str(), &binPT[0] );
 
-    QString strSymAlg = getSymAlg( strAlg, strMode, binKey[0].nLen );
-    berApplet->log( QString("Symmetric Alg: %1").arg( strSymAlg ));
+    QString strSymAlg = getSymAlg( strAlg, "ECB", binKey[0].nLen );
+    berApplet->log( QString("Symmetric Alg: %1-%2-ofb").arg( strAlg ).arg( binKey[0].nLen ));
+
 
     for( i = 0; i < 100; i++ )
     {
@@ -3434,16 +3446,16 @@ int CAVPDlg::makeSymOFB_MCT( const QString strKey, const QString strIV, const QS
             if( strAlg == "SEED" )
             {
                 if( j == 0 )
-                    ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binOT[j] );
+                    ret = JS_PKI_encryptSEED( "ECB", 0, &binIV[i], NULL, &binKey[i], &binOT[j] );
                 else
-                    ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binPT[j], &binOT[j-1], &binKey[i], &binOT[j] );
+                    ret = JS_PKI_encryptSEED( "ECB", 0, &binOT[j-1], NULL, &binKey[i], &binOT[j] );
             }
             else
             {
                 if( j == 0 )
-                    ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], &binIV[i], &binKey[i], &binOT[j] );
+                    ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binIV[i], NULL, &binKey[i], &binOT[j] );
                 else
-                    ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], &binOT[j-1], &binKey[i], &binOT[j]);
+                    ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binOT[j-1], NULL, &binKey[i], &binOT[j]);
             }
 
             if( ret != 0 ) goto end;
@@ -3555,12 +3567,12 @@ int CAVPDlg::makeSymDecOFB_MCT( const QString strKey, const QString strIV, const
     if( bInfo == true )
     {
         strAlg = mSymMCTAlgCombo->currentText();
-        strMode = mSymMCTModeCombo->currentText();
+//        strMode = mSymMCTModeCombo->currentText();
     }
     else
     {
         strAlg = mSymAlgCombo->currentText();
-        strMode = mSymModeCombo->currentText();
+//        strMode = mSymModeCombo->currentText();
     }
 
     if( strKey.length() > 0 )
@@ -3572,8 +3584,9 @@ int CAVPDlg::makeSymDecOFB_MCT( const QString strKey, const QString strIV, const
     if( strCT.length() > 0 )
         JS_BIN_decodeHex( strCT.toStdString().c_str(), &binCT[0] );
 
-    QString strSymAlg = getSymAlg( strAlg, strMode, binKey[0].nLen );
-    berApplet->log( QString("Symmetric Alg: %1").arg( strSymAlg ));
+    QString strSymAlg = getSymAlg( strAlg, "ECB", binKey[0].nLen );
+    berApplet->log( QString("Symmetric Alg: %1-%2-ofb").arg( strAlg ).arg( binKey[0].nLen ));
+
 
     for( i = 0; i < 100; i++ )
     {
@@ -3601,16 +3614,16 @@ int CAVPDlg::makeSymDecOFB_MCT( const QString strKey, const QString strIV, const
             if( strAlg == "SEED" )
             {
                 if( j == 0 )
-                    ret = JS_PKI_decryptSEED( strMode.toStdString().c_str(), 0, &binIV[i], NULL, &binKey[i], &binOT[j] );
+                    ret = JS_PKI_encryptSEED( "ECB", 0, &binIV[i], NULL, &binKey[i], &binOT[j] );
                 else
-                    ret = JS_PKI_decryptSEED( strMode.toStdString().c_str(), 0, &binOT[j-1], NULL, &binKey[i], &binOT[j] );
+                    ret = JS_PKI_encryptSEED( "ECB", 0, &binOT[j-1], NULL, &binKey[i], &binOT[j] );
             }
             else
             {
                 if( j == 0 )
-                    ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), 0, &binCT[j], &binIV[i], &binKey[i], &binOT[j] );
+                    ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binIV[i], NULL, &binKey[i], &binOT[j] );
                 else
-                    ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), 0, &binCT[j], &binOT[j-1], &binKey[i], &binOT[j]);
+                    ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binOT[j-1], NULL, &binKey[i], &binOT[j]);
             }
 
             if( ret != 0 ) goto end;
