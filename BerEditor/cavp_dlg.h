@@ -99,6 +99,7 @@ private slots:
     void clickACVP_LDTThreadStop();
 
     void ACVP_LDTContentChanged( const QString& text );
+    void ACVP_LDT_MDChanged( const QString& text );
 
     void checkACVPSetTgId();
     void checkACVPSetTcId();
@@ -108,6 +109,7 @@ private:
     bool isNameValid( const QString strPathName, const QString strVal1, const QString strVal2, const QString strVal3 );
     QString getRspFile(const QString &reqFileName );
     void logRsp( const QString& strLog );
+    void saveJsonRsp();
 
     int makeSymData( const QString strKey, const QString strIV, const QString strPT );
 

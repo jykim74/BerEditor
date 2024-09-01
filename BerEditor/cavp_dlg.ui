@@ -3248,6 +3248,12 @@
          </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label_64">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
             <string>Request JSON</string>
            </property>
@@ -3264,6 +3270,13 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_24">
+         <item row="0" column="2">
+          <widget class="QCheckBox" name="mACVP_SetTGIDCheck">
+           <property name="text">
+            <string>SetTgId</string>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="3">
           <widget class="QLineEdit" name="mACVP_SetTGIDText">
            <property name="maximumSize">
@@ -3274,10 +3287,20 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="4">
-          <widget class="QCheckBox" name="mACVP_SetTCIDCheck">
+         <item row="0" column="6">
+          <widget class="QLineEdit" name="mACVP_SetTCIDText">
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="mACVP_SkipLDTCheck">
            <property name="text">
-            <string>SetTcId</string>
+            <string>SkipLDT</string>
            </property>
           </widget>
          </item>
@@ -3295,26 +3318,16 @@
           </spacer>
          </item>
          <item row="0" column="5">
-          <widget class="QLineEdit" name="mACVP_SetTCIDText">
-           <property name="maximumSize">
-            <size>
-             <width>80</width>
-             <height>16777215</height>
-            </size>
+          <widget class="QCheckBox" name="mACVP_SetTCIDCheck">
+           <property name="text">
+            <string>SetTcId</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
-          <widget class="QCheckBox" name="mACVP_SetTGIDCheck">
-           <property name="text">
-            <string>SetTgId</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QCheckBox" name="mACVP_SkipLDTCheck">
-           <property name="text">
-            <string>SkipLDT</string>
+         <item row="0" column="4">
+          <widget class="Line" name="line_21">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
            </property>
           </widget>
          </item>
@@ -3324,6 +3337,12 @@
         <layout class="QGridLayout" name="gridLayout_26">
          <item row="0" column="0">
           <widget class="QLabel" name="label_65">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
             <string>Progress</string>
            </property>
@@ -3421,13 +3440,32 @@
          </property>
          <item row="0" column="0">
           <widget class="QLabel" name="label_68">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
             <string>Hash</string>
            </property>
           </widget>
          </item>
          <item row="0" column="4">
-          <widget class="QLineEdit" name="lineEdit"/>
+          <widget class="QLineEdit" name="mACVP_LDTFullLengthText">
+           <property name="minimumSize">
+            <size>
+             <width>120</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>120</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item row="0" column="3">
           <widget class="QLabel" name="label_69">
@@ -3461,16 +3499,109 @@
          </property>
          <item row="0" column="0">
           <widget class="QLabel" name="label_70">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
             <string>Content</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLineEdit" name="mACVP_LDTContentLenText">
+           <property name="minimumSize">
+            <size>
+             <width>40</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="palette">
+            <palette>
+             <active>
+              <colorrole role="Base">
+               <brush brushstyle="SolidPattern">
+                <color alpha="255">
+                 <red>221</red>
+                 <green>221</green>
+                 <blue>255</blue>
+                </color>
+               </brush>
+              </colorrole>
+             </active>
+             <inactive>
+              <colorrole role="Base">
+               <brush brushstyle="SolidPattern">
+                <color alpha="255">
+                 <red>221</red>
+                 <green>221</green>
+                 <blue>255</blue>
+                </color>
+               </brush>
+              </colorrole>
+             </inactive>
+             <disabled/>
+            </palette>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
          <item row="0" column="1">
           <widget class="QLineEdit" name="mACVP_LDTContentText"/>
          </item>
-         <item row="0" column="2">
-          <widget class="QLineEdit" name="mACVP_LDTContentLenText">
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_72">
+           <property name="text">
+            <string>MD</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="mACVP_LDT_MDText">
+           <property name="palette">
+            <palette>
+             <active>
+              <colorrole role="Base">
+               <brush brushstyle="SolidPattern">
+                <color alpha="255">
+                 <red>221</red>
+                 <green>221</green>
+                 <blue>255</blue>
+                </color>
+               </brush>
+              </colorrole>
+             </active>
+             <inactive>
+              <colorrole role="Base">
+               <brush brushstyle="SolidPattern">
+                <color alpha="255">
+                 <red>221</red>
+                 <green>221</green>
+                 <blue>255</blue>
+                </color>
+               </brush>
+              </colorrole>
+             </inactive>
+             <disabled/>
+            </palette>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLineEdit" name="mACVP_LDT_MDLenText">
            <property name="minimumSize">
             <size>
              <width>40</width>
@@ -3524,6 +3655,12 @@
          </property>
          <item row="0" column="0">
           <widget class="QLabel" name="label_71">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
             <string>Progress</string>
            </property>

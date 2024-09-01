@@ -124,6 +124,8 @@ CAVPDlg::CAVPDlg(QWidget *parent) :
     connect( mACVP_LDTThreadStopBtn, SIGNAL(clicked()), this, SLOT(clickACVP_LDTThreadStop()));
 
     connect( mACVP_LDTContentText, SIGNAL(textChanged(QString)), this, SLOT(ACVP_LDTContentChanged(QString)));
+    connect( mACVP_LDT_MDText, SIGNAL(textChanged(QString)), this, SLOT(ACVP_LDT_MDChanged(QString)));
+
     connect( mACVP_FindReqBtn, SIGNAL(clicked()), this, SLOT(clickFindACVPReqPath()));
 
     connect( mACVP_SetTGIDCheck, SIGNAL(clicked()), this, SLOT(checkACVPSetTgId()));
@@ -192,6 +194,7 @@ void CAVPDlg::initialize()
     mECCHashCombo->setCurrentText( setMgr->defaultHash() );
 
     mACVP_LDTHashCombo->addItems( kHashAlgList );
+    mACVP_LDTHashCombo->setCurrentText( setMgr->defaultHash() );
 
     QButtonGroup *pECCGroup = new QButtonGroup();
     pECCGroup->addButton( mECC_ECDSARadio );
