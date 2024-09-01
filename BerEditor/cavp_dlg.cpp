@@ -128,6 +128,9 @@ CAVPDlg::CAVPDlg(QWidget *parent) :
 
     mAsymDRBGHashTab->layout()->setSpacing(5);
     mAsymDRBGHashTab->layout()->setMargin(5);
+
+    mACVPTab->layout()->setSpacing(5);
+    mACVPTab->layout()->setMargin(5);
 #endif
 
     resize(minimumSizeHint().width(), minimumSizeHint().height());
