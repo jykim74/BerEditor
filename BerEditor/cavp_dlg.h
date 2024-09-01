@@ -86,6 +86,20 @@ private slots:
     void clickDRBG2Clear();
     void clickDRBG2Run();
 
+    void clickACVPClear();
+    void clickACVPRun();
+    void clickACVPThreadRun();
+    void clickACVPThreadStop();
+
+
+
+    void clickACVP_LDTClear();
+    void clickACVP_LDTRun();
+    void clickACVP_LDTThreadRun();
+    void clickACVP_LDTThreadStop();
+
+    void ACVP_LDTContentChanged( const QString& text );
+
 private:
     void initialize();
     bool isNameValid( const QString strPathName, const QString strVal1, const QString strVal2, const QString strVal3 );
