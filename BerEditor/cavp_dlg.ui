@@ -3351,12 +3351,12 @@
          <item row="0" column="1">
           <widget class="QProgressBar" name="mACVP_ProgressBar">
            <property name="value">
-            <number>24</number>
+            <number>0</number>
            </property>
           </widget>
          </item>
          <item row="0" column="2">
-          <widget class="QLineEdit" name="mACVP_StatusInfoText">
+          <widget class="QLineEdit" name="mACVP_StatusText">
            <property name="maximumSize">
             <size>
              <width>120</width>
@@ -3376,17 +3376,10 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="4">
+         <item row="0" column="2">
           <widget class="QPushButton" name="mACVP_RunBtn">
            <property name="text">
             <string>Run</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QPushButton" name="mACVP_ThreadRunBtn">
-           <property name="text">
-            <string>Thread Run</string>
            </property>
           </widget>
          </item>
@@ -3402,13 +3395,6 @@
             </size>
            </property>
           </spacer>
-         </item>
-         <item row="0" column="3">
-          <widget class="QPushButton" name="mACVP_ThreadStopBtn">
-           <property name="text">
-            <string>Thread Stop</string>
-           </property>
-          </widget>
          </item>
         </layout>
        </item>
@@ -3669,7 +3655,7 @@
          <item row="0" column="1">
           <widget class="QProgressBar" name="mACVP_LDTProgressBar">
            <property name="value">
-            <number>24</number>
+            <number>0</number>
            </property>
           </widget>
          </item>

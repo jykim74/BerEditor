@@ -88,8 +88,6 @@ private slots:
 
     void clickACVPClear();
     void clickACVPRun();
-    void clickACVPThreadRun();
-    void clickACVPThreadStop();
 
     void clickFindACVPReqPath();
 
@@ -109,7 +107,7 @@ private:
     bool isNameValid( const QString strPathName, const QString strVal1, const QString strVal2, const QString strVal3 );
     QString getRspFile(const QString &reqFileName );
     void logRsp( const QString& strLog );
-    void saveJsonRsp();
+    void saveJsonRsp( const QJsonDocument& pJsonDoc );
 
     int makeSymData( const QString strKey, const QString strIV, const QString strPT );
 

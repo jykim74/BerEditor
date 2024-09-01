@@ -115,8 +115,6 @@ CAVPDlg::CAVPDlg(QWidget *parent) :
     connect( mDRBG2MethodCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeDRBG2Method(int)));
 
     connect( mACVP_ClearBtn, SIGNAL(clicked()), this, SLOT(clickACVPClear()));
-    connect( mACVP_ThreadRunBtn, SIGNAL(clicked()), this, SLOT( clickACVPThreadRun()));
-    connect( mACVP_ThreadStopBtn, SIGNAL(clicked()), this, SLOT(clickACVPThreadStop()));
     connect( mACVP_RunBtn, SIGNAL(clicked()), this, SLOT(clickACVPRun()));
 
     connect( mACVP_LDTClearBtn, SIGNAL(clicked()), this, SLOT(clickACVP_LDTClear()));

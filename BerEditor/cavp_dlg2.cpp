@@ -13,23 +13,20 @@
 void CAVPDlg::clickACVPClear()
 {
     mACVP_ReqPathText->clear();
-    mACVP_StatusInfoText->clear();
+    mACVP_StatusText->clear();
     mACVP_ProgressBar->setValue(0);
 }
 
 void CAVPDlg::clickACVPRun()
 {
+    QString strReqPath = mACVP_ReqPathText->text();
+    QJsonDocument jReqDoc;
 
-}
+    QJsonDocument jRspDoc;
+    QJsonDocument jRspArr;
+    QJsonDocument jRspObj;
 
-void CAVPDlg::clickACVPThreadRun()
-{
-
-}
-
-void CAVPDlg::clickACVPThreadStop()
-{
-
+    saveJsonRsp( jRspDoc );
 }
 
 void CAVPDlg::clickACVP_LDTClear()
@@ -38,7 +35,7 @@ void CAVPDlg::clickACVP_LDTClear()
     mACVP_LDTFullLengthText->clear();
     mACVP_LDT_MDText->clear();
     mACVP_LDTStatusText->clear();
-    mACVP_ProgressBar->setValue(0);
+    mACVP_LDTProgressBar->setValue(0);
 }
 
 void CAVPDlg::clickACVP_LDTRun()
@@ -150,7 +147,7 @@ void CAVPDlg::checkACVPSetTcId()
     mACVP_SetTCIDText->setEnabled( bVal );
 }
 
-void CAVPDlg::saveJsonRsp()
+void CAVPDlg::saveJsonRsp( const QJsonDocument& pJsonDoc )
 {
     QString strRspPath = mRspPathText->text();
     QString strReqPath = mACVP_ReqPathText->text();
