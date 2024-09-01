@@ -91,7 +91,7 @@ private slots:
     void clickACVPThreadRun();
     void clickACVPThreadStop();
 
-
+    void clickFindACVPReqPath();
 
     void clickACVP_LDTClear();
     void clickACVP_LDTRun();
@@ -99,6 +99,9 @@ private slots:
     void clickACVP_LDTThreadStop();
 
     void ACVP_LDTContentChanged( const QString& text );
+
+    void checkACVPSetTgId();
+    void checkACVPSetTcId();
 
 private:
     void initialize();

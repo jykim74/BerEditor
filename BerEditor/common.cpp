@@ -83,6 +83,8 @@ static const QString _getFileFilter( int nType )
         strFilter = QObject::tr("PFX Files (*.pfx *.p12);;All Files(*.*)" );
     else if( nType == JS_FILE_TYPE_BIN )
         strFilter = QObject::tr("Binary Files (*.bin *.ber);;All Files(*.*)" );
+    else if( nType == JS_FILE_TYPE_JSON )
+        strFilter = QObject::tr("JSON Files (*.json);;All Files(*.*)" );
     else if( nType == JS_FILE_TYPE_LCN )
         strFilter = QObject::tr( "License Files (*.lcn *.txt);;All Files (*.*)" );
     else

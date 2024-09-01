@@ -124,6 +124,10 @@ CAVPDlg::CAVPDlg(QWidget *parent) :
     connect( mACVP_LDTThreadStopBtn, SIGNAL(clicked()), this, SLOT(clickACVP_LDTThreadStop()));
 
     connect( mACVP_LDTContentText, SIGNAL(textChanged(QString)), this, SLOT(ACVP_LDTContentChanged(QString)));
+    connect( mACVP_FindReqBtn, SIGNAL(clicked()), this, SLOT(clickFindACVPReqPath()));
+
+    connect( mACVP_SetTGIDCheck, SIGNAL(clicked()), this, SLOT(checkACVPSetTgId()));
+    connect( mACVP_SetTCIDCheck, SIGNAL(clicked()), this, SLOT(checkACVPSetTcId()));
 
     initialize();
 #if defined(Q_OS_MAC)
@@ -187,6 +191,8 @@ void CAVPDlg::initialize()
     mECCHashCombo->addItems( kHashAlgList );
     mECCHashCombo->setCurrentText( setMgr->defaultHash() );
 
+    mACVP_LDTHashCombo->addItems( kHashAlgList );
+
     QButtonGroup *pECCGroup = new QButtonGroup();
     pECCGroup->addButton( mECC_ECDSARadio );
     pECCGroup->addButton(mECC_ECDHRadio );
@@ -215,6 +221,9 @@ void CAVPDlg::initialize()
     mDRBG2AlgCombo->addItems( kDRBGAlgList );
     mDRBG2UseDFCheck->setChecked( true );
     mDRBG2RandLenText->setText( "512" );
+
+    checkACVPSetTcId();
+    checkACVPSetTgId();
 }
 
 bool CAVPDlg::isNameValid( const QString strPathName, const QString strVal1, const QString strVal2, const QString strVal3 )
