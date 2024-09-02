@@ -108,25 +108,31 @@ private:
     QString getRspFile(const QString &reqFileName );
     void logRsp( const QString& strLog );
     void saveJsonRsp( const QJsonDocument& pJsonDoc );
+    int readJsonReq( const QString strPath, QJsonDocument& pJsonDoc );
+
+    int makeUnitJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject );
+    int hashJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject );
+    int ecdsaJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject );
 
     int makeSymData( const QString strKey, const QString strIV, const QString strPT );
 
-    int makeSymCBC_MCT( const QString strKey, const QString strIV, const QString strPT, bool bInfo = false );
-    int makeSymECB_MCT( const QString strKey, const QString strPT, bool bInfo = false );
-    int makeSymCTR_MCT( const QString strKey, const QString strIV, const QString strPT, bool bInfo = false );
-    int makeSymCFB_MCT( const QString strKey, const QString strIV, const QString strPT, bool bInfo = false );
-    int makeSymOFB_MCT( const QString strKey, const QString strIV, const QString strPT, bool bInfo = false );
+    int makeSymCBC_MCT( const QString strKey, const QString strIV, const QString strPT, QJsonArray *pRspArr, bool bInfo = false );
+    int makeSymECB_MCT( const QString strKey, const QString strPT, QJsonArray *pRspArr, bool bInfo = false );
+    int makeSymCTR_MCT( const QString strKey, const QString strIV, const QString strPT, QJsonArray *pRspArr, bool bInfo = false );
+    int makeSymCFB_MCT( const QString strKey, const QString strIV, const QString strPT, QJsonArray *pRspArr, bool bInfo = false );
+    int makeSymOFB_MCT( const QString strKey, const QString strIV, const QString strPT, QJsonArray *pRspArr, bool bInfo = false );
 
-    int makeSymDecCBC_MCT( const QString strKey, const QString strIV, const QString strCT, bool bInfo = false );
-    int makeSymDecECB_MCT( const QString strKey, const QString strCT, bool bInfo = false );
-    int makeSymDecCTR_MCT( const QString strKey, const QString strIV, const QString strCT, bool bInfo = false );
-    int makeSymDecCFB_MCT( const QString strKey, const QString strIV, const QString strCT, bool bInfo = false );
-    int makeSymDecOFB_MCT( const QString strKey, const QString strIV, const QString strCT, bool bInfo = false );
+    int makeSymDecCBC_MCT( const QString strKey, const QString strIV, const QString strCT, QJsonArray *pRspArr, bool bInfo = false );
+    int makeSymDecECB_MCT( const QString strKey, const QString strCT, QJsonArray *pRspArr, bool bInfo = false );
+    int makeSymDecCTR_MCT( const QString strKey, const QString strIV, const QString strCT, QJsonArray *pRspArr, bool bInfo = false );
+    int makeSymDecCFB_MCT( const QString strKey, const QString strIV, const QString strCT, QJsonArray *pRspArr, bool bInfo = false );
+    int makeSymDecOFB_MCT( const QString strKey, const QString strIV, const QString strCT, QJsonArray *pRspArr, bool bInfo = false );
 
     int makeAEData( const QString strKey, const QString strIV, const QString strPT, const QString strAAD, int nTagLen );
     int makeADData( const QString strKey, const QString strIV, const QString strCT, const QString strAAD, const QString strTag );
     int makeHashData( int nLen, const QString strVal );
-    int makeHashMCT( const QString strAlg, const QString strSeed, bool bInfo = false );
+    int makeHashMCT( const QString strAlg, const QString strSeed, QJsonArray *pRspArr, bool bInfo = false );
+    int makeHashAlternateMCT( const QString strAlg, const QString strSeed, QJsonArray *pRspArr, bool bInfo = false );
     int makeHMACData( const QString strCount, const QString strKLen, const QString strTLen, const QString strKey, const QString strMsg );
     int makePBKDF( int nIteration, const QString strPass, QString strSalt, int nKLen );
     int makeDRBG( const QString strMethod,
@@ -162,6 +168,7 @@ private:
 
 private:
     QString rsp_name_;
+    const QString getPKI_Alg( const QString strACVP_Alg );
 };
 
 #endif // CAVP_DLG_H

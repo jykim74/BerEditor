@@ -8,6 +8,9 @@
 #include <QTextStream>
 #include <QThread>
 #include <QButtonGroup>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -37,6 +40,7 @@ const QStringList kDirectionType = { "Encrypt", "Decrypt" };
 const QStringList kDRBGMethodList = { "CIPHER", "Hash", "HMAC" };
 const QStringList kDRBGAlgList = { "ARIA-128-CTR", "ARIA-192-CTR", "ARIA-256-CTR", "AES-128-CTR", "AES-192-CTR", "AES-256-CTR" };
 
+const QStringList kHashMCTVersionList = { "standard", "alternate" };
 
 CAVPDlg::CAVPDlg(QWidget *parent) :
     QDialog(parent)
@@ -222,6 +226,8 @@ void CAVPDlg::initialize()
     mDRBG2AlgCombo->addItems( kDRBGAlgList );
     mDRBG2UseDFCheck->setChecked( true );
     mDRBG2RandLenText->setText( "512" );
+
+    mHashMctVersionCombo->addItems( kHashMCTVersionList );
 
     checkACVPSetTcId();
     checkACVPSetTgId();
@@ -425,23 +431,23 @@ void CAVPDlg::clickSymRun()
                 {
                     if( strMode == "CBC" )
                     {
-                        ret = makeSymCBC_MCT( strKey, strIV, strPT );
+                        ret = makeSymCBC_MCT( strKey, strIV, strPT, NULL);
                     }
                     else if( strMode == "ECB" )
                     {
-                        ret = makeSymECB_MCT( strKey, strPT );
+                        ret = makeSymECB_MCT( strKey, strPT, NULL );
                     }
                     else if( strMode == "CTR" )
                     {
-                        ret = makeSymCTR_MCT( strKey, strIV, strPT );
+                        ret = makeSymCTR_MCT( strKey, strIV, strPT, NULL );
                     }
                     else if( strMode == "CFB" )
                     {
-                        ret = makeSymCFB_MCT( strKey, strIV, strPT );
+                        ret = makeSymCFB_MCT( strKey, strIV, strPT, NULL );
                     }
                     else if( strMode == "OFB" )
                     {
-                        ret = makeSymOFB_MCT( strKey, strIV, strPT );
+                        ret = makeSymOFB_MCT( strKey, strIV, strPT, NULL );
                     }
                 }
                 else
@@ -816,7 +822,7 @@ void CAVPDlg::clickHashRun()
             }
             else if( strSeed.length() > 0 )
             {
-                ret = makeHashMCT( mHashAlgCombo->currentText(), strSeed );
+                ret = makeHashMCT( mHashAlgCombo->currentText(), strSeed, NULL );
             }
 
             strMsg.clear();
@@ -1977,6 +1983,10 @@ void CAVPDlg::clickSymMCTRun()
     QString strRspPath = mRspPathText->text();
     QString strDirection = mSymMCTDirectionCombo->currentText();
 
+    QJsonObject jObject;
+    QJsonArray jArray;
+    QJsonDocument jDoc;
+
     if( strKey.length() < 1 )
     {
         berApplet->warningBox( tr("Please enter a key"), this );
@@ -2038,34 +2048,41 @@ void CAVPDlg::clickSymMCTRun()
     if( strDirection == "Encrypt" )
     {
         if( mSymMCTModeCombo->currentText() == "ECB" )
-            nRet = makeSymECB_MCT( strKey, strPT, true );
+            nRet = makeSymECB_MCT( strKey, strPT, &jArray, true );
         else if( mSymMCTModeCombo->currentText() == "CBC" )
-            nRet = makeSymCBC_MCT( strKey, strIV, strPT, true );
+            nRet = makeSymCBC_MCT( strKey, strIV, strPT, &jArray, true );
         else if( mSymMCTModeCombo->currentText() == "CTR" )
-            nRet = makeSymCTR_MCT( strKey, strIV, strPT, true );
+            nRet = makeSymCTR_MCT( strKey, strIV, strPT, &jArray, true );
         else if( mSymMCTModeCombo->currentText() == "CFB" )
-            nRet = makeSymCFB_MCT( strKey, strIV, strPT, true );
+            nRet = makeSymCFB_MCT( strKey, strIV, strPT, &jArray, true );
         else if( mSymMCTModeCombo->currentText() == "OFB" )
-            nRet = makeSymOFB_MCT( strKey, strIV, strPT, true );
+            nRet = makeSymOFB_MCT( strKey, strIV, strPT, &jArray, true );
     }
     else
     {
         if( mSymMCTModeCombo->currentText() == "ECB" )
-            nRet = makeSymDecECB_MCT( strKey, strCT, true );
+            nRet = makeSymDecECB_MCT( strKey, strCT, &jArray, true );
         else if( mSymMCTModeCombo->currentText() == "CBC" )
-            nRet = makeSymDecCBC_MCT( strKey, strIV, strCT, true );
+            nRet = makeSymDecCBC_MCT( strKey, strIV, strCT, &jArray, true );
         else if( mSymMCTModeCombo->currentText() == "CTR" )
-            nRet = makeSymDecCTR_MCT( strKey, strIV, strCT, true );
+            nRet = makeSymDecCTR_MCT( strKey, strIV, strCT, &jArray, true );
         else if( mSymMCTModeCombo->currentText() == "CFB" )
-            nRet = makeSymDecCFB_MCT( strKey, strIV, strCT, true );
+            nRet = makeSymDecCFB_MCT( strKey, strIV, strCT, &jArray, true );
         else if( mSymMCTModeCombo->currentText() == "OFB" )
-            nRet = makeSymDecOFB_MCT( strKey, strIV, strCT, true );
+            nRet = makeSymDecOFB_MCT( strKey, strIV, strCT, &jArray, true );
     }
 
     if( nRet == 0 )
+    {
+        jObject["resultsArray"] = jArray;
+        jDoc.setObject( jObject );
+        berApplet->log( jDoc.toJson());
         berApplet->messageBox( tr("Monte Carlo Test Done[Rsp: %1]").arg(rsp_name_), this );
+    }
     else
+    {
         berApplet->warningBox( tr( "Sym MCT execution failed [%1]").arg(nRet), this);
+    }
 }
 
 void CAVPDlg::clickSymMCTClear()
@@ -2084,8 +2101,12 @@ void CAVPDlg::clickHashMCTRun()
 {
     int ret = 0;
     QString strRspPath = mRspPathText->text();
-
+    QString strMCTVersion = mHashMctVersionCombo->currentText();
     QString strSeed = mHashMCTSeedText->text();
+
+    QJsonObject jObject;
+    QJsonArray jArray;
+    QJsonDocument jDoc;
 
     if( strSeed.length() < 1 )
     {
@@ -2099,10 +2120,19 @@ void CAVPDlg::clickHashMCTRun()
     logRsp( QString( "# HASH MCT-%1 Response")
             .arg( mHashMCTAlgCombo->currentText() ));
 
-    ret = makeHashMCT( mHashMCTAlgCombo->currentText(), strSeed, true );
+    if( strMCTVersion == "alternate" )
+        ret = makeHashAlternateMCT( mHashMCTAlgCombo->currentText(), strSeed, &jArray, true );
+    else
+        ret = makeHashMCT( mHashMCTAlgCombo->currentText(), strSeed, &jArray, true );
 
     if( ret == 0 )
+    {
+        jObject["resultsArray"] = jArray;
+        jDoc.setObject( jObject );
+        berApplet->log( jDoc.toJson());
+
         berApplet->messageBox( tr("Monte Carlo Test Done[Rsp: %1]").arg(rsp_name_), this );
+    }
     else
         berApplet->warningBox( tr( "Hash MCT execution failed [%1]").arg(ret), this);
 }
@@ -2209,7 +2239,7 @@ end :
     return ret;
 }
 
-int CAVPDlg::makeSymCBC_MCT( const QString strKey, const QString strIV, const QString strPT, bool bInfo )
+int CAVPDlg::makeSymCBC_MCT( const QString strKey, const QString strIV, const QString strPT, QJsonArray *pRspArr, bool bInfo )
 {
     int ret = 0;
     int i = 0;
@@ -2251,6 +2281,8 @@ int CAVPDlg::makeSymCBC_MCT( const QString strKey, const QString strIV, const QS
 
     for( i = 0; i < 100; i++ )
     {
+
+
         if( bInfo )
         {
             mSymMCTCountText->setText( QString("%1").arg(i) );
@@ -2316,6 +2348,18 @@ int CAVPDlg::makeSymCBC_MCT( const QString strKey, const QString strIV, const QS
         logRsp( QString("CT = %1").arg(getHexString(binCT[j].pVal, binCT[j].nLen)));
         logRsp( "" );
 
+        if( pRspArr != NULL )
+        {
+            QJsonObject jRspUnit;
+
+            jRspUnit["ct"] = getHexString( &binCT[j] );
+            jRspUnit["key"] = getHexString( &binKey[i] );
+            jRspUnit["iv"] = getHexString( &binIV[i] );
+            jRspUnit["pt"] = getHexString( &binPT[0] );
+
+            pRspArr->insert( i, jRspUnit );
+        }
+
         if( (strKey.length()/2) == 16 )
         {
             JS_BIN_reset( &binKey[i+1] );
@@ -2364,7 +2408,7 @@ end :
     }
 }
 
-int CAVPDlg::makeSymDecCBC_MCT( const QString strKey, const QString strIV, const QString strCT, bool bInfo )
+int CAVPDlg::makeSymDecCBC_MCT( const QString strKey, const QString strIV, const QString strCT, QJsonArray *pRspArr, bool bInfo )
 {
     int ret = 0;
     int i = 0;
@@ -2473,6 +2517,18 @@ int CAVPDlg::makeSymDecCBC_MCT( const QString strKey, const QString strIV, const
         logRsp( QString("PT = %1").arg(getHexString(binPT[j].pVal, binPT[j].nLen)));
         logRsp( "" );
 
+        if( pRspArr != NULL )
+        {
+            QJsonObject jRspUnit;
+
+            jRspUnit["ct"] = getHexString( &binCT[0] );
+            jRspUnit["key"] = getHexString( &binKey[i] );
+            jRspUnit["iv"] = getHexString( &binIV[i] );
+            jRspUnit["pt"] = getHexString( &binPT[j] );
+
+            pRspArr->insert( i, jRspUnit );
+        }
+
         if( (strKey.length()/2) == 16 )
         {
             JS_BIN_reset( &binKey[i+1] );
@@ -2521,7 +2577,7 @@ end :
     }
 }
 
-int CAVPDlg::makeSymECB_MCT( const QString strKey, const QString strPT, bool bInfo )
+int CAVPDlg::makeSymECB_MCT( const QString strKey, const QString strPT, QJsonArray *pRspArr, bool bInfo )
 {
     int i = 0;
     int j = 0;
@@ -2558,9 +2614,12 @@ int CAVPDlg::makeSymECB_MCT( const QString strKey, const QString strPT, bool bIn
 
     for( i = 0; i < 100; i++ )
     {
+
+
         logRsp( QString("COUNT = %1").arg(i));
         logRsp( QString("KEY = %1").arg( getHexString(binKey[i].pVal, binKey[i].nLen)));
         logRsp( QString("PT = %1").arg(getHexString(binPT[0].pVal, binPT[0].nLen)));
+
 
         if( bInfo )
         {
@@ -2602,6 +2661,17 @@ int CAVPDlg::makeSymECB_MCT( const QString strKey, const QString strPT, bool bIn
 
         logRsp( QString("CT = %1").arg(getHexString(binCT[j].pVal, binCT[j].nLen)));
         logRsp( "" );
+
+        if( pRspArr != NULL )
+        {
+            QJsonObject jRspUnit;
+
+            jRspUnit["ct"] = getHexString( &binCT[j] );
+            jRspUnit["key"] = getHexString( &binKey[i] );
+            jRspUnit["pt"] = getHexString( &binPT[0] );
+
+            pRspArr->insert( i, jRspUnit );
+        }
 
         if( (strKey.length()/2) == 16 )
         {
@@ -2651,7 +2721,7 @@ int CAVPDlg::makeSymECB_MCT( const QString strKey, const QString strPT, bool bIn
     return ret;
 }
 
- int CAVPDlg::makeSymDecECB_MCT( const QString strKey, const QString strCT, bool bInfo )
+ int CAVPDlg::makeSymDecECB_MCT( const QString strKey, const QString strCT, QJsonArray *pRspArr, bool bInfo )
  {
     int i = 0;
     int j = 0;
@@ -2733,6 +2803,17 @@ int CAVPDlg::makeSymECB_MCT( const QString strKey, const QString strPT, bool bIn
         logRsp( QString("PT = %1").arg(getHexString(binPT[j].pVal, binPT[j].nLen)));
         logRsp( "" );
 
+        if( pRspArr != NULL )
+        {
+            QJsonObject jRspUnit;
+
+            jRspUnit["ct"] = getHexString( &binCT[0] );
+            jRspUnit["key"] = getHexString( &binKey[i] );
+            jRspUnit["pt"] = getHexString( &binPT[j] );
+
+            pRspArr->insert( i, jRspUnit );
+        }
+
         if( (strKey.length()/2) == 16 )
         {
             JS_BIN_reset( &binKey[i+1] );
@@ -2782,7 +2863,7 @@ int CAVPDlg::makeSymECB_MCT( const QString strKey, const QString strPT, bool bIn
  }
 
 
-int CAVPDlg::makeSymCTR_MCT( const QString strKey, const QString strIV, const QString strPT, bool bInfo )
+int CAVPDlg::makeSymCTR_MCT( const QString strKey, const QString strIV, const QString strPT, QJsonArray *pRspArr, bool bInfo )
 {
     int i = 0;
     int j = 0;
@@ -2821,6 +2902,8 @@ int CAVPDlg::makeSymCTR_MCT( const QString strKey, const QString strIV, const QS
 
     for( i = 0; i < 100; i++ )
     {
+
+
         if( bInfo )
         {
             mSymMCTCountText->setText( QString("%1").arg(i) );
@@ -2877,6 +2960,18 @@ int CAVPDlg::makeSymCTR_MCT( const QString strKey, const QString strIV, const QS
         logRsp( QString("CT = %1").arg(getHexString(binCT[j].pVal, binCT[j].nLen)));
         logRsp( "" );
 
+        if( pRspArr != NULL )
+        {
+            QJsonObject jRspUnit;
+
+            jRspUnit["ct"] = getHexString( &binCT[j] );
+            jRspUnit["key"] = getHexString( &binKey[i] );
+            jRspUnit["iv"] = getHexString( &binCTR );
+            jRspUnit["pt"] = getHexString( &binPT[0] );
+
+            pRspArr->insert( i, jRspUnit );
+        }
+
         if( (strKey.length()/2) == 16 )
         {
             JS_BIN_reset( &binKey[i+1] );
@@ -2926,7 +3021,7 @@ int CAVPDlg::makeSymCTR_MCT( const QString strKey, const QString strIV, const QS
     return ret;
 }
 
- int CAVPDlg::makeSymDecCTR_MCT( const QString strKey, const QString strIV, const QString strCT, bool bInfo )
+ int CAVPDlg::makeSymDecCTR_MCT( const QString strKey, const QString strIV, const QString strCT, QJsonArray *pRspArr, bool bInfo )
  {
     int i = 0;
     int j = 0;
@@ -3018,6 +3113,18 @@ int CAVPDlg::makeSymCTR_MCT( const QString strKey, const QString strIV, const QS
         logRsp( QString("PT = %1").arg(getHexString(binPT[j].pVal, binPT[j].nLen)));
         logRsp( "" );
 
+        if( pRspArr != NULL )
+        {
+            QJsonObject jRspUnit;
+
+            jRspUnit["ct"] = getHexString( &binCT[0] );
+            jRspUnit["key"] = getHexString( &binKey[i] );
+            jRspUnit["iv"] = getHexString( &binCTR );
+            jRspUnit["pt"] = getHexString( &binPT[j] );
+
+            pRspArr->insert( i, jRspUnit );
+        }
+
         if( (strKey.length()/2) == 16 )
         {
             JS_BIN_reset( &binKey[i+1] );
@@ -3068,7 +3175,7 @@ int CAVPDlg::makeSymCTR_MCT( const QString strKey, const QString strIV, const QS
  }
 
 
-int CAVPDlg::makeSymCFB_MCT( const QString strKey, const QString strIV, const QString strPT, bool bInfo )
+int CAVPDlg::makeSymCFB_MCT( const QString strKey, const QString strIV, const QString strPT, QJsonArray *pRspArr, bool bInfo )
 {
     int ret = 0;
     int i = 0;
@@ -3113,6 +3220,8 @@ int CAVPDlg::makeSymCFB_MCT( const QString strKey, const QString strIV, const QS
 
     for( i = 0; i < 100; i++ )
     {
+
+
         if( bInfo )
         {
             mSymMCTCountText->setText( QString("%1").arg(i) );
@@ -3184,6 +3293,18 @@ int CAVPDlg::makeSymCFB_MCT( const QString strKey, const QString strIV, const QS
         logRsp( QString("CT = %1").arg(getHexString(binCT[j].pVal, binCT[j].nLen)));
         logRsp( "" );
 
+        if( pRspArr != NULL )
+        {
+            QJsonObject jRspUnit;
+
+            jRspUnit["ct"] = getHexString( &binCT[j] );
+            jRspUnit["key"] = getHexString( &binKey[i] );
+            jRspUnit["iv"] = getHexString( &binIV[i] );
+            jRspUnit["pt"] = getHexString( &binPT[0] );
+
+            pRspArr->insert( i, jRspUnit );
+        }
+
         if( (strKey.length()/2) == 16 )
         {
             JS_BIN_reset( &binKey[i+1] );
@@ -3234,7 +3355,7 @@ end :
     return ret;
 }
 
-int CAVPDlg::makeSymDecCFB_MCT( const QString strKey, const QString strIV, const QString strCT, bool bInfo )
+int CAVPDlg::makeSymDecCFB_MCT( const QString strKey, const QString strIV, const QString strCT, QJsonArray *pRspArr, bool bInfo )
 {
     int ret = 0;
     int i = 0;
@@ -3348,6 +3469,18 @@ int CAVPDlg::makeSymDecCFB_MCT( const QString strKey, const QString strIV, const
         logRsp( QString("PT = %1").arg(getHexString(binPT[j].pVal, binPT[j].nLen)));
         logRsp( "" );
 
+        if( pRspArr != NULL )
+        {
+            QJsonObject jRspUnit;
+
+            jRspUnit["ct"] = getHexString( &binCT[0] );
+            jRspUnit["key"] = getHexString( &binKey[i] );
+            jRspUnit["iv"] = getHexString( &binIV[i] );
+            jRspUnit["pt"] = getHexString( &binPT[j] );
+
+            pRspArr->insert( i, jRspUnit );
+        }
+
         if( (strKey.length()/2) == 16 )
         {
             JS_BIN_reset( &binKey[i+1] );
@@ -3399,7 +3532,7 @@ end :
 }
 
 
-int CAVPDlg::makeSymOFB_MCT( const QString strKey, const QString strIV, const QString strPT, bool bInfo )
+int CAVPDlg::makeSymOFB_MCT( const QString strKey, const QString strIV, const QString strPT, QJsonArray *pRspArr, bool bInfo )
 {
     int ret = 0;
     int i = 0;
@@ -3446,6 +3579,8 @@ int CAVPDlg::makeSymOFB_MCT( const QString strKey, const QString strIV, const QS
 
     for( i = 0; i < 100; i++ )
     {
+
+
         if( bInfo )
         {
             mSymMCTCountText->setText( QString("%1").arg(i) );
@@ -3516,6 +3651,18 @@ int CAVPDlg::makeSymOFB_MCT( const QString strKey, const QString strIV, const QS
         logRsp( QString("CT = %1").arg(getHexString(binCT[j].pVal, binCT[j].nLen)));
         logRsp( "" );
 
+        if( pRspArr != NULL )
+        {
+            QJsonObject jRspUnit;
+
+            jRspUnit["ct"] = getHexString( &binCT[j] );
+            jRspUnit["key"] = getHexString( &binKey[i] );
+            jRspUnit["iv"] = getHexString( &binIV[i] );
+            jRspUnit["pt"] = getHexString( &binPT[0] );
+
+            pRspArr->insert( i, jRspUnit );
+        }
+
         if( (strKey.length()/2) == 16 )
         {
             JS_BIN_reset( &binKey[i+1] );
@@ -3567,7 +3714,7 @@ end :
     return ret;
 }
 
-int CAVPDlg::makeSymDecOFB_MCT( const QString strKey, const QString strIV, const QString strCT, bool bInfo )
+int CAVPDlg::makeSymDecOFB_MCT( const QString strKey, const QString strIV, const QString strCT, QJsonArray *pRspArr, bool bInfo )
 {
     int ret = 0;
     int i = 0;
@@ -3683,6 +3830,18 @@ int CAVPDlg::makeSymDecOFB_MCT( const QString strKey, const QString strIV, const
 
         logRsp( QString("PT = %1").arg(getHexString(binPT[j].pVal, binPT[j].nLen)));
         logRsp( "" );
+
+        if( pRspArr != NULL )
+        {
+            QJsonObject jRspUnit;
+
+            jRspUnit["ct"] = getHexString( &binCT[0] );
+            jRspUnit["key"] = getHexString( &binKey[i] );
+            jRspUnit["iv"] = getHexString( &binIV[i] );
+            jRspUnit["pt"] = getHexString( &binPT[j] );
+
+            pRspArr->insert( i, jRspUnit );
+        }
 
         if( (strKey.length()/2) == 16 )
         {
@@ -3872,7 +4031,7 @@ end :
     return ret;
 }
 
-int CAVPDlg::makeHashMCT( const QString strAlg, const QString strSeed, bool bInfo )
+int CAVPDlg::makeHashMCT( const QString strAlg, const QString strSeed, QJsonArray *pRspArr, bool bInfo )
 {
     int ret = 0;
     BIN binMD[1003 + 1];
@@ -3889,6 +4048,8 @@ int CAVPDlg::makeHashMCT( const QString strAlg, const QString strSeed, bool bInf
 
     for( int j = 0; j < 100; j++ )
     {
+        QJsonObject jRspUnit;
+
         JS_BIN_reset( &binMD[0] );
         JS_BIN_reset( &binMD[1] );
         JS_BIN_reset( &binMD[2] );
@@ -3928,6 +4089,104 @@ int CAVPDlg::makeHashMCT( const QString strAlg, const QString strSeed, bool bInf
         logRsp( QString( "COUNT = %1").arg(j));
         logRsp( QString( "MD = %1").arg(getHexString(binMD[j].pVal, binMD[j].nLen)));
         logRsp( "" );
+
+        if( pRspArr != NULL )
+        {
+            jRspUnit["md"] = getHexString( &binMD[j] );
+            pRspArr->insert( j, jRspUnit );
+        }
+    }
+
+end :
+    for( int i = 0; i < 1004; i++ )
+    {
+        JS_BIN_reset( &binMD[i] );
+        JS_BIN_reset( &binM[i] );
+    }
+
+    JS_BIN_reset( &binSeed );
+    return ret;
+}
+
+int CAVPDlg::makeHashAlternateMCT( const QString strAlg, const QString strSeed, QJsonArray *pRspArr, bool bInfo )
+{
+    int ret = 0;
+    BIN binMD[1003 + 1];
+    BIN binM[1003 + 1];
+    BIN binSeed = {0,0};
+
+    int nInitSeedLen = 0;
+
+    logRsp( QString("Seed = %1").arg(strSeed));
+    logRsp( "" );
+
+    memset( &binMD, 0x00, sizeof(BIN) * 1004 );
+    memset( &binM, 0x00, sizeof(BIN) * 1004 );
+
+    JS_BIN_decodeHex( strSeed.toStdString().c_str(), &binSeed );
+
+    nInitSeedLen = binSeed.nLen;
+
+    for( int j = 0; j < 100; j++ )
+    {
+        QJsonObject jRspUnit;
+
+        JS_BIN_reset( &binMD[0] );
+        JS_BIN_reset( &binMD[1] );
+        JS_BIN_reset( &binMD[2] );
+
+        JS_BIN_copy( &binMD[0], &binSeed );
+        JS_BIN_copy( &binMD[1], &binSeed );
+        JS_BIN_copy( &binMD[2], &binSeed );
+
+        if( bInfo ) mHashMCTCountText->setText( QString("%1").arg(j));
+
+        for( int i = 3; i < 1003; i++ )
+        {
+            JS_BIN_reset( &binM[i] );
+            JS_BIN_appendBin( &binM[i], &binMD[i-3] );
+            JS_BIN_appendBin( &binM[i], &binMD[i-2] );
+            JS_BIN_appendBin( &binM[i], &binMD[i-1] );
+
+            JS_BIN_reset( &binMD[i] );
+
+            if( binM[i].nLen >= nInitSeedLen  )
+            {
+                binM[i].nLen = nInitSeedLen;
+            }
+            else
+            {
+                int nDiff = nInitSeedLen - binM[i].nLen;
+                JS_BIN_appendCh( &binM[i], 0x00, nDiff );
+            }
+
+            ret = JS_PKI_genHash( strAlg.toStdString().c_str(), &binM[i], &binMD[i] );
+            if( ret != 0 ) goto end;
+        }
+
+        JS_BIN_reset( &binMD[j] );
+        JS_BIN_reset( &binSeed );
+        JS_BIN_copy( &binSeed, &binMD[1002] );
+        JS_BIN_copy( &binMD[j], &binSeed );
+
+        if( bInfo )
+        {
+            if( j == 0 )
+                mHashMCTFirstMDText->setText( getHexString(binMD[j].pVal, binMD[j].nLen));
+
+            if( j == 99 )
+                mHashMCTLastMDText->setText( getHexString(binMD[j].pVal, binMD[j].nLen));
+        }
+
+        logRsp( QString( "COUNT = %1").arg(j));
+        logRsp( QString( "MD = %1").arg(getHexString(binMD[j].pVal, binMD[j].nLen)));
+        logRsp( "" );
+
+        if( pRspArr != NULL )
+        {
+            jRspUnit["md"] = getHexString( &binMD[j] );
+            pRspArr->insert( j, jRspUnit );
+        }
     }
 
 end :
