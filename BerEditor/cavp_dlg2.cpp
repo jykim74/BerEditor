@@ -163,7 +163,7 @@ void CAVPDlg::clickACVPRun()
 
             for( int k = 0; k < jTestGroupArr.size(); k++ )
             {
-                QJsonValue jSubVal = jTestGroupArr.at(i);
+                QJsonValue jSubVal = jTestGroupArr.at(k);
                 QJsonObject jSubObj = jSubVal.toObject();
                 int nTgId = jSubObj["tgId"].toInt();
                 QJsonObject jRspObject;
@@ -470,9 +470,11 @@ int CAVPDlg::hashJsonWork( const QString strAlg, const QJsonObject jObject, QJso
             QJsonArray jMDArr;
 
             if( strMctVersion == "alternate" )
-                makeHashAlternateMCT( strAlg.toStdString().c_str(), strMsg, &jMDArr );
+                ret = makeHashAlternateMCT( strAlg.toStdString().c_str(), strMsg, &jMDArr );
             else
-                makeHashMCT( strAlg.toStdString().c_str(), strMsg, &jMDArr );
+                ret = makeHashMCT( strAlg.toStdString().c_str(), strMsg, &jMDArr );
+
+            if( ret != 0 ) goto end;
 
             jRspTestObj["resultsArray"] = jMDArr;
         }
@@ -502,30 +504,298 @@ end :
 
 int CAVPDlg::ecdsaJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject )
 {
-    return 0;
+    int ret = 0;
+    QString strTestType = jObject["testType"].toString();
+    int nTgId = jObject["tgId"].toInt();
+    QJsonArray jArr = jObject["tests"].toArray();
+    QJsonArray jRspArr;
+
+    for( int i = 0; i < jArr.size(); i++ )
+    {
+        QJsonValue jVal = jArr.at(i);
+        QJsonObject jObj = jVal.toObject();
+        int nTcId = jObj["tcId"].toInt();
+        QString strMsg = jObj["msg"].toString();
+
+        QJsonObject jRspTestObj;
+        jRspTestObj["tcId"] = nTcId;
+
+        if( mACVP_SetTCIDCheck->isChecked() == true )
+        {
+            int nSetTcId = mACVP_SetTCIDText->text().toInt();
+            if( nSetTcId != nTcId ) continue;
+        }
+
+        if( strTestType == "AFT" )
+        {
+
+        }
+        else
+        {
+            berApplet->warnLog( tr("Invalid test type: %1").arg( strTestType), this );
+            ret = -1;
+            goto end;
+        }
+
+        if( mACVP_SetTCIDCheck->isChecked() == true )
+            jRspArr.insert( 0, jRspTestObj );
+        else
+            jRspArr.insert( i, jRspTestObj );
+    }
+
+    jRspObject["tests"] = jRspArr;
+    jRspObject["tgId"] = nTgId;
+
+end :
+
+    return ret;
 }
 
 int CAVPDlg::rsaJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject )
 {
-    return 0;
+    int ret = 0;
+    QString strTestType = jObject["testType"].toString();
+    int nTgId = jObject["tgId"].toInt();
+    QJsonArray jArr = jObject["tests"].toArray();
+    QJsonArray jRspArr;
+
+    for( int i = 0; i < jArr.size(); i++ )
+    {
+        QJsonValue jVal = jArr.at(i);
+        QJsonObject jObj = jVal.toObject();
+        int nTcId = jObj["tcId"].toInt();
+        QString strMsg = jObj["msg"].toString();
+
+        QJsonObject jRspTestObj;
+        jRspTestObj["tcId"] = nTcId;
+
+        if( mACVP_SetTCIDCheck->isChecked() == true )
+        {
+            int nSetTcId = mACVP_SetTCIDText->text().toInt();
+            if( nSetTcId != nTcId ) continue;
+        }
+
+        if( strTestType == "GDT" )
+        {
+
+        }
+        else
+        {
+            berApplet->warnLog( tr("Invalid test type: %1").arg( strTestType), this );
+            ret = -1;
+            goto end;
+        }
+
+        if( mACVP_SetTCIDCheck->isChecked() == true )
+            jRspArr.insert( 0, jRspTestObj );
+        else
+            jRspArr.insert( i, jRspTestObj );
+    }
+
+    jRspObject["tests"] = jRspArr;
+    jRspObject["tgId"] = nTgId;
+
+end :
+
+    return ret;
 }
 
 int CAVPDlg::macJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject )
 {
-    return 0;
+    int ret = 0;
+    QString strTestType = jObject["testType"].toString();
+    int nTgId = jObject["tgId"].toInt();
+    QJsonArray jArr = jObject["tests"].toArray();
+    QJsonArray jRspArr;
+
+    for( int i = 0; i < jArr.size(); i++ )
+    {
+        QJsonValue jVal = jArr.at(i);
+        QJsonObject jObj = jVal.toObject();
+        int nTcId = jObj["tcId"].toInt();
+        QString strMsg = jObj["msg"].toString();
+
+        QJsonObject jRspTestObj;
+        jRspTestObj["tcId"] = nTcId;
+
+        if( mACVP_SetTCIDCheck->isChecked() == true )
+        {
+            int nSetTcId = mACVP_SetTCIDText->text().toInt();
+            if( nSetTcId != nTcId ) continue;
+        }
+
+        if( strTestType == "AFT" )
+        {
+
+        }
+        else
+        {
+            berApplet->warnLog( tr("Invalid test type: %1").arg( strTestType), this );
+            ret = -1;
+            goto end;
+        }
+
+        if( mACVP_SetTCIDCheck->isChecked() == true )
+            jRspArr.insert( 0, jRspTestObj );
+        else
+            jRspArr.insert( i, jRspTestObj );
+    }
+
+    jRspObject["tests"] = jRspArr;
+    jRspObject["tgId"] = nTgId;
+
+end :
+
+    return ret;
 }
 
 int CAVPDlg::blockCipherJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject )
 {
-    return 0;
+    int ret = 0;
+    QString strTestType = jObject["testType"].toString();
+    int nTgId = jObject["tgId"].toInt();
+    QJsonArray jArr = jObject["tests"].toArray();
+    QJsonArray jRspArr;
+
+    for( int i = 0; i < jArr.size(); i++ )
+    {
+        QJsonValue jVal = jArr.at(i);
+        QJsonObject jObj = jVal.toObject();
+        int nTcId = jObj["tcId"].toInt();
+        QString strMsg = jObj["msg"].toString();
+
+        QJsonObject jRspTestObj;
+        jRspTestObj["tcId"] = nTcId;
+
+        if( mACVP_SetTCIDCheck->isChecked() == true )
+        {
+            int nSetTcId = mACVP_SetTCIDText->text().toInt();
+            if( nSetTcId != nTcId ) continue;
+        }
+
+        if( strTestType == "MCT" )
+        {
+
+        }
+        else if( strTestType == "CTR" )
+        {
+
+        }
+        else // AFT
+        {
+
+        }
+
+        if( mACVP_SetTCIDCheck->isChecked() == true )
+            jRspArr.insert( 0, jRspTestObj );
+        else
+            jRspArr.insert( i, jRspTestObj );
+    }
+
+    jRspObject["tests"] = jRspArr;
+    jRspObject["tgId"] = nTgId;
+
+end :
+
+    return ret;
 }
 
 int CAVPDlg::kdaJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject )
 {
-    return 0;
+    int ret = 0;
+    QString strTestType = jObject["testType"].toString();
+    int nTgId = jObject["tgId"].toInt();
+    QJsonArray jArr = jObject["tests"].toArray();
+    QJsonArray jRspArr;
+
+    for( int i = 0; i < jArr.size(); i++ )
+    {
+        QJsonValue jVal = jArr.at(i);
+        QJsonObject jObj = jVal.toObject();
+        int nTcId = jObj["tcId"].toInt();
+        QString strMsg = jObj["msg"].toString();
+
+        QJsonObject jRspTestObj;
+        jRspTestObj["tcId"] = nTcId;
+
+        if( mACVP_SetTCIDCheck->isChecked() == true )
+        {
+            int nSetTcId = mACVP_SetTCIDText->text().toInt();
+            if( nSetTcId != nTcId ) continue;
+        }
+
+        if( strTestType == "AFT" )
+        {
+
+        }
+        else
+        {
+            berApplet->warnLog( tr("Invalid test type: %1").arg( strTestType), this );
+            ret = -1;
+            goto end;
+        }
+
+        if( mACVP_SetTCIDCheck->isChecked() == true )
+            jRspArr.insert( 0, jRspTestObj );
+        else
+            jRspArr.insert( i, jRspTestObj );
+    }
+
+    jRspObject["tests"] = jRspArr;
+    jRspObject["tgId"] = nTgId;
+
+end :
+
+    return ret;
 }
 
 int CAVPDlg::drbgJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject )
 {
-    return 0;
+    int ret = 0;
+    QString strTestType = jObject["testType"].toString();
+    int nTgId = jObject["tgId"].toInt();
+    QJsonArray jArr = jObject["tests"].toArray();
+    QJsonArray jRspArr;
+
+
+
+    for( int i = 0; i < jArr.size(); i++ )
+    {
+        QJsonValue jVal = jArr.at(i);
+        QJsonObject jObj = jVal.toObject();
+        int nTcId = jObj["tcId"].toInt();
+        QString strMsg = jObj["msg"].toString();
+
+        QJsonObject jRspTestObj;
+        jRspTestObj["tcId"] = nTcId;
+
+        if( mACVP_SetTCIDCheck->isChecked() == true )
+        {
+            int nSetTcId = mACVP_SetTCIDText->text().toInt();
+            if( nSetTcId != nTcId ) continue;
+        }
+
+        if( strTestType == "AFT" )
+        {
+
+        }
+        else
+        {
+            berApplet->warnLog( tr("Invalid test type: %1").arg( strTestType), this );
+            ret = -1;
+            goto end;
+        }
+
+        if( mACVP_SetTCIDCheck->isChecked() == true )
+            jRspArr.insert( 0, jRspTestObj );
+        else
+            jRspArr.insert( i, jRspTestObj );
+    }
+
+    jRspObject["tests"] = jRspArr;
+    jRspObject["tgId"] = nTgId;
+
+end :
+
+    return ret;
 }
