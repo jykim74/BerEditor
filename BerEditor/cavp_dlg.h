@@ -117,6 +117,7 @@ private:
     int macJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject );
     int blockCipherJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject );
     int kdaJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject );
+    int drbgJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject );
 
     int makeSymData( const QString strKey, const QString strIV, const QString strPT );
 

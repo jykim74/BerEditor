@@ -3,12 +3,32 @@
 #include <QJsonObject>
 #include <QDateTime>
 #include <QFileInfo>
+#include <QDir>
 
 #include "cavp_dlg.h"
 #include "common.h"
 #include "ber_applet.h"
 
 #include "js_pki.h"
+
+static const int kACVP_TYPE_BLOCK_CIPHER = 0;
+static const int kACVP_TYPE_HASH = 1;
+static const int kACVP_TYPE_MAC = 2;
+static const int kACVP_TYPE_RSA = 3;
+static const int kACVP_TYPE_ECDSA = 4;
+static const int kACVP_TYPE_DRBG = 5;
+static const int kACVP_TYPE_KDA = 6;
+
+static QStringList kACVP_HashList =
+    { "SHA-1", "SHA2-224", "SHA2-256", "SHA2-384", "SHA2-512" };
+static QStringList kACVP_BlockCipherList =
+    { "ACVP-AES-ECB", "ACVP-AES-CBC", "ACVP-AES-CFB128", "ACVP-AES-OFB", "ACVP-AES-CTR", "ACVP-AES-CCM", "ACVP-AES-KW", "ACVP-AES-GCM" };
+static QStringList kACVP_MACList =
+    { "HMAC-SHA-1", "HMAC-SHA2-224", "HMAC-SHA2-256", "HMAC-SHA2-384", "HMAC-SHA2-512", "ACVP-AES-GMAC", "CMAC-AES" };
+static QStringList kACVP_RSAList = { "RSA" };
+static QStringList kACVP_ECDSAList = { "ECDSA" };
+static QStringList kACVP_DRBGList = { "ctrDRBG" };
+static QStringList kACVP_KDAList = { "KAS-ECC", "kdf-components" };
 
 const QString CAVPDlg::getPKI_Alg( const QString strACVP_Alg )
 {
@@ -26,6 +46,53 @@ const QString CAVPDlg::getPKI_Alg( const QString strACVP_Alg )
         return "ECC";
     else
         return "Not defined";
+}
+
+int getACVPType( const QString strAlg )
+{
+    for( int i = 0; i < kACVP_HashList.size(); i++ )
+    {
+        if( strAlg.toUpper() == kACVP_HashList.at(i).toUpper() )
+            return kACVP_TYPE_HASH;
+    }
+
+    for( int i = 0; i < kACVP_BlockCipherList.size(); i++ )
+    {
+        if( strAlg.toUpper() == kACVP_BlockCipherList.at(i).toUpper() )
+            return kACVP_TYPE_BLOCK_CIPHER;
+    }
+
+    for( int i = 0; i < kACVP_MACList.size(); i++ )
+    {
+        if( strAlg.toUpper() == kACVP_MACList.at(i).toUpper() )
+            return kACVP_TYPE_MAC;
+    }
+
+    for( int i = 0; i < kACVP_RSAList.size(); i++ )
+    {
+        if( strAlg.toUpper() == kACVP_RSAList.at(i).toUpper() )
+            return kACVP_TYPE_RSA;
+    }
+
+    for( int i = 0; i < kACVP_ECDSAList.size(); i++ )
+    {
+        if( strAlg.toUpper() == kACVP_ECDSAList.at(i).toUpper() )
+            return kACVP_TYPE_ECDSA;
+    }
+
+    for( int i = 0; i < kACVP_DRBGList.size(); i++ )
+    {
+        if( strAlg.toUpper() == kACVP_DRBGList.at(i).toUpper() )
+            return kACVP_TYPE_DRBG;
+    }
+
+    for( int i = 0; i < kACVP_KDAList.size(); i++ )
+    {
+        if( strAlg.toUpper() == kACVP_KDAList.at(i).toUpper() )
+            return kACVP_TYPE_KDA;
+    }
+
+    return -1;
 }
 
 void CAVPDlg::clickACVPClear()
@@ -121,6 +188,7 @@ void CAVPDlg::clickACVPRun()
         }
     }
 
+    jRspDoc.setArray( jRspArr );
     saveJsonRsp( jRspDoc );
 }
 
@@ -220,7 +288,8 @@ void CAVPDlg::ACVP_LDT_MDChanged( const QString& text )
 void CAVPDlg::clickFindACVPReqPath()
 {
     QString strPath = mACVP_ReqPathText->text();
-    if( strPath.length() < 1 ) strPath = berApplet->curFile();
+    if( strPath.length() < 1 )
+        strPath = mRspPathText->text();
 
     QString strFile = findFile( this, JS_FILE_TYPE_JSON, strPath );
     if( strFile.length() > 0 )
@@ -244,6 +313,7 @@ void CAVPDlg::checkACVPSetTcId()
 
 void CAVPDlg::saveJsonRsp( const QJsonDocument& pJsonDoc )
 {
+    QDir dir;
     QString strRspPath = mRspPathText->text();
     QString strReqPath = mACVP_ReqPathText->text();
 
@@ -252,9 +322,29 @@ void CAVPDlg::saveJsonRsp( const QJsonDocument& pJsonDoc )
 
     QString strSaveName;
 
+    QDateTime date;
+    date.setTime_t( time(NULL));
+
     if( strRspPath.length() > 0 ) strRspPath += "/";
 
-    strSaveName = QString( "%1/%2_rsp.json" ).arg( strRspPath ).arg( strBaseName );
+    strRspPath += "acvp_rsp";
+
+    if( dir.exists( strRspPath ) == false )
+        dir.mkdir( strRspPath );
+
+
+    strSaveName = QString( "%1/%2_%3.json" )
+                      .arg( strRspPath )
+                      .arg( strBaseName )
+                      .arg( date.toString( "yyyy_MM_dd_HHmmss" ));
+
+    QFile saveFile( strSaveName );
+    saveFile.open(QFile::WriteOnly | QFile::Append| QFile::Text );
+    saveFile.write( pJsonDoc.toJson() );
+    saveFile.close();
+
+    berApplet->messageBox( tr( "%1 file save successfully").arg( strSaveName ), this );
+
 }
 
 int CAVPDlg::readJsonReq( const QString strPath, QJsonDocument& pJsonDoc )
@@ -281,21 +371,43 @@ int CAVPDlg::readJsonReq( const QString strPath, QJsonDocument& pJsonDoc )
 int CAVPDlg::makeUnitJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject )
 {
     int ret = 0;
+    int nACVP_Type = -1;
 
-    QString strTestType = jObject["testType"].toString();
-    int nTgId = jObject["tgId"].toInt();
+    nACVP_Type = getACVPType( strAlg );
 
-    QJsonArray jArr = jObject["tests"].toArray();
-    QJsonArray jRspArr;
+    switch ( nACVP_Type ) {
+    case kACVP_TYPE_BLOCK_CIPHER :
+        ret = blockCipherJsonWork( strAlg, jObject, jRspObject );
+        break;
 
-    if( strAlg == "SHA-1" || strAlg == "SHA2-224" || strAlg == "SHA2-256" || strAlg == "SHA2-384" || strAlg == "SHA2-512" )
-        ret = hashJsonWork( getPKI_Alg( strAlg ), jObject, jRspObject );
-    else if( strAlg == "ECDSA" )
-        ret = ecdsaJsonWork( getPKI_Alg( strAlg ), jObject, jRspObject );
-    else
-    {
+    case kACVP_TYPE_HASH :
+        ret = hashJsonWork( strAlg, jObject, jRspObject );
+        break;
+
+    case kACVP_TYPE_MAC :
+        ret = macJsonWork( strAlg, jObject, jRspObject );
+        break;
+
+    case kACVP_TYPE_RSA :
+        ret = rsaJsonWork( strAlg, jObject, jRspObject );
+        break;
+
+    case kACVP_TYPE_ECDSA :
+        ret = ecdsaJsonWork( strAlg, jObject, jRspObject );
+        break;
+
+    case kACVP_TYPE_DRBG :
+        ret = drbgJsonWork( strAlg, jObject, jRspObject );
+        break;
+
+    case kACVP_TYPE_KDA :
+        ret = kdaJsonWork( strAlg, jObject, jRspObject );
+        break;
+
+    default:
         ret = -1;
         berApplet->warnLog( QString( "Invalid Algorithm: %1" ).arg( strAlg ), this );
+        break;
     }
 
     return ret;
@@ -313,6 +425,24 @@ int CAVPDlg::hashJsonWork( const QString strAlg, const QJsonObject jObject, QJso
 
     BIN binMsg = {0,0};
     BIN binMD = {0,0};
+
+    QString strHash;
+
+    if( strAlg == "SHA-1" )
+        strHash = "SHA1";
+    else if( strAlg == "SHA2-224" )
+        strHash = "SHA224";
+    else if( strAlg == "SHA2-256" )
+        strHash = "SHA256";
+    else if( strAlg == "SHA2-384" )
+        strHash = "SHA384";
+    else if( strAlg == "SHA2-512" )
+        strHash = "SHA512";
+    else
+    {
+        berApplet->warningBox( QString("Invalid algorithm: %1").arg( strAlg ), this );
+        return -1;
+    }
 
     for( int i = 0; i < jArr.size(); i++ )
     {
@@ -348,7 +478,7 @@ int CAVPDlg::hashJsonWork( const QString strAlg, const QJsonObject jObject, QJso
         }
         else
         {
-            ret = JS_PKI_genHash( strAlg.toStdString().c_str(), &binMsg, &binMD );
+            ret = JS_PKI_genHash( strHash.toStdString().c_str(), &binMsg, &binMD );
             if( ret != 0 ) goto end;
 
             jRspTestObj["md"] = getHexString( &binMD );
@@ -391,6 +521,11 @@ int CAVPDlg::blockCipherJsonWork( const QString strAlg, const QJsonObject jObjec
 }
 
 int CAVPDlg::kdaJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject )
+{
+    return 0;
+}
+
+int CAVPDlg::drbgJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject )
 {
     return 0;
 }
