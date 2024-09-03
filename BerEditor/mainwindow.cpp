@@ -106,8 +106,6 @@ MainWindow::~MainWindow()
 
     delete log_text_;
     delete info_text_;
-    delete right_table_;
-    delete right_xml_;
 
     delete key_man_dlg_;
     delete gen_hash_dlg_;
@@ -136,6 +134,7 @@ MainWindow::~MainWindow()
 
     delete table_tab_;
     delete text_tab_;
+
     delete vsplitter_;
     delete hsplitter_;
 }
