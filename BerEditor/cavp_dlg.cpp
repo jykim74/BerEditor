@@ -11,6 +11,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QSettings>
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -160,6 +161,34 @@ CAVPDlg::~CAVPDlg()
 
 }
 
+void CAVPDlg::settingRspPath( const QString strPath )
+{
+    QSettings setting;
+    setting.beginGroup( "CAVP" );
+    setting.setValue( "CAVP_RSP_PATH", strPath );
+    setting.endGroup();
+}
+
+QString CAVPDlg::gettingRspPath()
+{
+    QSettings setting;
+    QString strPath;
+
+    setting.beginGroup( "CAVP" );
+    strPath = setting.value( "CAVP_RSP_PATH", "" ).toString();
+    setting.endGroup();
+
+    return strPath;
+}
+
+bool CAVPDlg::isSkipTestType( const QString strTestType )
+{
+    if( mACVP_SkipLDTCheck->isChecked() == true )
+        if( strTestType == "MCT" ) return true;
+
+    return false;
+}
+
 void CAVPDlg::initialize()
 {
     SettingsMgr* setMgr = berApplet->settingsMgr();
@@ -228,6 +257,7 @@ void CAVPDlg::initialize()
     mDRBG2RandLenText->setText( "512" );
 
     mHashMctVersionCombo->addItems( kHashMCTVersionList );
+    mRspPathText->setText( gettingRspPath() );
 
     checkACVPSetTcId();
     checkACVPSetTgId();
@@ -314,7 +344,8 @@ void CAVPDlg::clickRspPathFind()
     if( folderName.length() > 0 )
     {
         mRspPathText->setText( folderName );
-        berApplet->setCurFile( folderName );
+        settingRspPath( folderName );
+        //berApplet->setCurFile( folderName );
     }
 }
 

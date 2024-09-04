@@ -174,6 +174,11 @@ private:
 private:
     QString rsp_name_;
     const QString getPKI_Alg( const QString strACVP_Alg );
+
+    void settingRspPath( const QString strPath );
+    QString gettingRspPath();
+
+    bool isSkipTestType( const QString strTestType );
 };
 
 #endif // CAVP_DLG_H

@@ -30,6 +30,28 @@ static QStringList kACVP_ECDSAList = { "ECDSA" };
 static QStringList kACVP_DRBGList = { "ctrDRBG" };
 static QStringList kACVP_KDAList = { "KAS-ECC", "kdf-components" };
 
+static int _getAlgMode( const QString strAlg, QString& strSymAlg, QString& strMode )
+{
+    QStringList strList = strAlg.split( "-" );
+
+    if( strList.size() >= 3 )
+    {
+        strSymAlg = strList.at(1);
+        strMode = strList.at(2);
+    }
+    else if( strList.size() == 2 )
+    {
+        strSymAlg = strList.at(0);
+        strMode = strList.at(1);
+    }
+    else
+    {
+        return -1;
+    }
+
+    return 0;
+}
+
 const QString CAVPDlg::getPKI_Alg( const QString strACVP_Alg )
 {
     if( strACVP_Alg == "SHA-1" )
@@ -153,9 +175,12 @@ void CAVPDlg::clickACVPRun()
         {
             QString strAlg = jObj["algorithm"].toString();
             QString strRevision = jObj["revision"].toString();
+            QString strMode = jObj["mode"].toString();
             int nVsId = jObj["vsId"].toInt();
 
             QJsonArray jTestGroupArr = jObj["testGroups"].toArray();
+
+            if( strAlg == "ECDSA" || strAlg == "RSA" ) strAlg = strMode;
 
             jRspObj["algorithm"] = strAlg;
             jRspObj["revision"] = strRevision;
@@ -372,6 +397,17 @@ int CAVPDlg::makeUnitJsonWork( const QString strAlg, const QJsonObject jObject, 
 {
     int ret = 0;
     int nACVP_Type = -1;
+    QString strTestType = jObject["testType"].toString();
+    int nTgId = jObject["tgId"].toInt();
+
+    if( isSkipTestType( strTestType ) == true )
+    {
+        QJsonObject jSkipObj;
+        jRspObject["tests"] = jSkipObj;
+        jRspObject["tgId"] = nTgId;
+
+        return 0;
+    }
 
     nACVP_Type = getACVPType( strAlg );
 
@@ -507,8 +543,20 @@ int CAVPDlg::ecdsaJsonWork( const QString strAlg, const QJsonObject jObject, QJs
     int ret = 0;
     QString strTestType = jObject["testType"].toString();
     int nTgId = jObject["tgId"].toInt();
+
+    QString strCurve = jObject["curve"].toString();
+    QString strHashAlg = jObject["hashAlg"].toString();
+    QString strConformance = jObject["conformance"].toString();
+    QString strSecretGerenationMode = jObject["secretGenerationMode"].toString();
+
     QJsonArray jArr = jObject["tests"].toArray();
     QJsonArray jRspArr;
+
+    if( strAlg == "sigGen" )
+    {
+        jRspObject["qx"] = "";
+        jRspObject["qy"] = "";
+    }
 
     for( int i = 0; i < jArr.size(); i++ )
     {
@@ -520,6 +568,12 @@ int CAVPDlg::ecdsaJsonWork( const QString strAlg, const QJsonObject jObject, QJs
         QJsonObject jRspTestObj;
         jRspTestObj["tcId"] = nTcId;
 
+        QString strQX = jObj["qx"].toString();
+        QString strQY = jObj["qy"].toString();
+
+        QString strR = jObj["r"].toString();
+        QString strS = jObj["s"].toString();
+
         if( mACVP_SetTCIDCheck->isChecked() == true )
         {
             int nSetTcId = mACVP_SetTCIDText->text().toInt();
@@ -528,7 +582,25 @@ int CAVPDlg::ecdsaJsonWork( const QString strAlg, const QJsonObject jObject, QJs
 
         if( strTestType == "AFT" )
         {
-
+            if( strAlg == "keyGen" )
+            {
+                jRspObject["d"] = "";
+                jRspObject["qx"] = "";
+                jRspObject["qy"] = "";
+            }
+            else if( strAlg == "keyVer" )
+            {
+                jRspObject["testPassed"] = false;
+            }
+            else if( strAlg == "sigGen" )
+            {
+                jRspObject["r"] = "";
+                jRspObject["s"] = "";
+            }
+            else if( strAlg == "sigVer" )
+            {
+                jRspObject["testPassed"] = false;
+            }
         }
         else
         {
@@ -556,6 +628,27 @@ int CAVPDlg::rsaJsonWork( const QString strAlg, const QJsonObject jObject, QJson
     int ret = 0;
     QString strTestType = jObject["testType"].toString();
     int nTgId = jObject["tgId"].toInt();
+
+    int nModulo = jObject["modulo"].toInt();
+
+    //KeyGen
+    bool bInfoGeneratedByServer = jObject["infoGeneratedByServer"].toBool();
+    QString strKeyFormat = jObject["keyFormat"].toString();
+
+    QString strPrimeTest = jObject["primeTest"].toString();
+    QString strPubExp = jObject["pubExp"].toString();
+    QString strRandPQ = jObject["randPQ"].toString();
+    QString strFixedPubExt = jObject["fixedPubExt"].toString();
+
+    //SigGen or SigVer
+    QString strHashAlg = jObject["hashAlg"].toString();
+    QString strMaskFunction = jObject["maskFunction"].toString();
+    int nSaltLen = jObject["saltLen"].toInt();
+    QString strSigType = jObject["sigType"].toString();
+
+    QString strE = jObject["e"].toString();
+    QString strN = jObject["n"].toString();
+
     QJsonArray jArr = jObject["tests"].toArray();
     QJsonArray jRspArr;
 
@@ -564,7 +657,12 @@ int CAVPDlg::rsaJsonWork( const QString strAlg, const QJsonObject jObject, QJson
         QJsonValue jVal = jArr.at(i);
         QJsonObject jObj = jVal.toObject();
         int nTcId = jObj["tcId"].toInt();
-        QString strMsg = jObj["msg"].toString();
+
+        bool bDeferred = jObj["deferred"].toBool();
+        QString strMsg = jObj["message"].toString();
+        QString strValE = jObj["e"].toString();
+        QString strValP = jObj["p"].toString();
+        QString strValQ = jObj["q"].toString();
 
         QJsonObject jRspTestObj;
         jRspTestObj["tcId"] = nTcId;
@@ -577,7 +675,22 @@ int CAVPDlg::rsaJsonWork( const QString strAlg, const QJsonObject jObject, QJson
 
         if( strTestType == "GDT" )
         {
-
+            if( strAlg == "keyGen" )
+            {
+                jRspObject["d"] = "";
+                jRspObject["e"] = "";
+                jRspObject["n"] = "";
+                jRspObject["p"] = "";
+                jRspObject["q"] = "";
+            }
+            else if( strAlg == "sigGen" )
+            {
+                jRspObject["signature"] = "";
+            }
+            else if( strAlg == "sigVer" )
+            {
+                jRspObject["testPassed"] = true;
+            }
         }
         else
         {
@@ -604,16 +717,36 @@ int CAVPDlg::macJsonWork( const QString strAlg, const QJsonObject jObject, QJson
 {
     int ret = 0;
     QString strTestType = jObject["testType"].toString();
+    QString strDirection = jObject["direction"].toString();
     int nTgId = jObject["tgId"].toInt();
     QJsonArray jArr = jObject["tests"].toArray();
     QJsonArray jRspArr;
+
+    QString strSymAlg;
+    QString strMode;
+
+    if( _getAlgMode( strAlg, strSymAlg, strMode ) != 0 )
+        return -1;
+
+    int nAadLen = jObject["aadLen"].toInt();
+    QString strIvGen = jObject["ivGen"].toString();
+    int nPayloadLen = jObject["payloadLen"].toInt();
+    int nIVLen = jObject["ivLen"].toInt();
+    int nTagLen = jObject["tagLen"].toInt();
 
     for( int i = 0; i < jArr.size(); i++ )
     {
         QJsonValue jVal = jArr.at(i);
         QJsonObject jObj = jVal.toObject();
         int nTcId = jObj["tcId"].toInt();
+
         QString strMsg = jObj["msg"].toString();
+        QString strKey = jObj["key"].toString();
+        QString strMAC = jObj["mac"].toString();
+
+        QString strAad = jObj["aad"].toString();
+        QString strIv = jObj["iv"].toString();
+        QString strTag = jObj["tag"].toString();
 
         QJsonObject jRspTestObj;
         jRspTestObj["tcId"] = nTcId;
@@ -626,7 +759,21 @@ int CAVPDlg::macJsonWork( const QString strAlg, const QJsonObject jObject, QJson
 
         if( strTestType == "AFT" )
         {
-
+            if( strDirection == "encrypt" || strDirection == "gen" )
+            {
+                if( strMode == "GMAC" )
+                {
+                    jRspObject["tag"] = "";
+                }
+                else
+                {
+                    jRspObject["mac"] = "";
+                }
+            }
+            else
+            {
+                jRspObject["testPassed"] = false;
+            }
         }
         else
         {
@@ -649,13 +796,32 @@ end :
     return ret;
 }
 
+
+
 int CAVPDlg::blockCipherJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject )
 {
     int ret = 0;
     QString strTestType = jObject["testType"].toString();
+    QString strDirection = jObject["direction"].toString();
     int nTgId = jObject["tgId"].toInt();
+    int nKeyLen = jObject["keyLen"].toInt();
+
+    QString strSymAlg;
+    QString strMode;
+
     QJsonArray jArr = jObject["tests"].toArray();
     QJsonArray jRspArr;
+
+    if( _getAlgMode( strAlg, strSymAlg, strMode ) != 0 )
+        return -1;
+
+    int nAADLen = jObject["aadLen"].toInt();
+    QString strIVGen = jObject["ivGen"].toString();
+    int nIVLen = jObject["ivLen"].toInt();
+    int nPayLoadLen = jObject["payloadLen"].toInt();
+    int nTagLen = jObject["tagLen"].toInt();
+
+    QString strKwCipher = jObject["kwCipher"].toString();
 
     for( int i = 0; i < jArr.size(); i++ )
     {
@@ -667,6 +833,14 @@ int CAVPDlg::blockCipherJsonWork( const QString strAlg, const QJsonObject jObjec
         QJsonObject jRspTestObj;
         jRspTestObj["tcId"] = nTcId;
 
+        QString strPT = jObj["pt"].toString();
+        QString strCT = jObj["ct"].toString();
+        QString strIV = jObj["iv"].toString();
+        QString strKey = jObj["key"].toString();
+
+        QString strAAD = jObj["aad"].toString();
+        QString strTag = jObj["tag"].toString();
+
         if( mACVP_SetTCIDCheck->isChecked() == true )
         {
             int nSetTcId = mACVP_SetTCIDText->text().toInt();
@@ -675,15 +849,55 @@ int CAVPDlg::blockCipherJsonWork( const QString strAlg, const QJsonObject jObjec
 
         if( strTestType == "MCT" )
         {
+            if( strMode == "CCM" || strMode == "GCM" )
+                return -2;
 
+            if( strDirection == "encrypt" )
+            {
+
+            }
+            else
+            {
+
+            }
         }
         else if( strTestType == "CTR" )
         {
+            if( strMode == "CTR" )
+                return -2;
 
+            if( strDirection == "encrypt" )
+            {
+                jRspObject["ct"] = "";
+            }
+            else
+            {
+                jRspObject["pt"] = "";
+            }
         }
         else // AFT
         {
+            if( strDirection == "encrypt" )
+            {
+                jRspObject["ct"] = "";
 
+                if( strMode == "GCM" )
+                    jRspObject["tag"] = "";
+            }
+            else
+            {
+                if( strMode == "GCM" || strMode == "CCM" )
+                {
+                    // decrypt fail
+                    // jRspObject["testPassed"] = false;
+                    // decrypt success
+                    jRspObject["pt"] = "";
+                }
+                else
+                {
+                    jRspObject["pt"] = "";
+                }
+            }
         }
 
         if( mACVP_SetTCIDCheck->isChecked() == true )
@@ -705,6 +919,16 @@ int CAVPDlg::kdaJsonWork( const QString strAlg, const QJsonObject jObject, QJson
     int ret = 0;
     QString strTestType = jObject["testType"].toString();
     int nTgId = jObject["tgId"].toInt();
+
+    // For KAS-ECC
+    QString strCurve = jObject["curve"].toString();
+
+    // For kdf-components
+    int nFieldSize = jObject["fieldSize"].toInt();
+    QString strHashAlg = jObject["hashAlg"].toString();
+    int nKeyDataLength = jObject["keyDataLength"].toInt();
+    int nSharedInfoLength = jObject["sharedInfoLength"].toInt();
+
     QJsonArray jArr = jObject["tests"].toArray();
     QJsonArray jRspArr;
 
@@ -726,7 +950,15 @@ int CAVPDlg::kdaJsonWork( const QString strAlg, const QJsonObject jObject, QJson
 
         if( strTestType == "AFT" )
         {
-
+            if( strAlg == "kdf-components" )
+            {
+                jRspObject["keyData"] = "";
+            }
+            else if( strAlg == "KAS-ECC" )
+            {
+                jRspObject["publicIutX"] = "";
+                jRspObject["publicIutY"] = "";
+            }
         }
         else
         {
@@ -754,10 +986,18 @@ int CAVPDlg::drbgJsonWork( const QString strAlg, const QJsonObject jObject, QJso
     int ret = 0;
     QString strTestType = jObject["testType"].toString();
     int nTgId = jObject["tgId"].toInt();
+
+    int nAdditionalInputLen = jObject["additionalInputLen"].toInt();
+    bool bDerFunc = jObject["derFunc"].toBool();
+    QString strMode = jObject["mode"].toString();
+    int nNonceLen = jObject["nonceLen"].toInt();
+    int nPersoStringLen = jObject["persoStringLen"].toInt();
+    bool bPredResistance = jObject["predResistance"].toBool();
+    bool bReSeed = jObject["reSeed"].toBool();
+    int nReturnedBitsLen = jObject["returnedBitsLen"].toInt();
+
     QJsonArray jArr = jObject["tests"].toArray();
     QJsonArray jRspArr;
-
-
 
     for( int i = 0; i < jArr.size(); i++ )
     {
@@ -769,10 +1009,34 @@ int CAVPDlg::drbgJsonWork( const QString strAlg, const QJsonObject jObject, QJso
         QJsonObject jRspTestObj;
         jRspTestObj["tcId"] = nTcId;
 
+        QString strEntropyInput = jObj["entropyInput"].toString();
+        QString strNonce = jObj["nonce"].toString();
+        QString strPersoString = jObj["persoString"].toString();
+
         if( mACVP_SetTCIDCheck->isChecked() == true )
         {
             int nSetTcId = mACVP_SetTCIDText->text().toInt();
             if( nSetTcId != nTcId ) continue;
+        }
+
+        QJsonArray jArrSub = jObj["otherInput"].toArray();
+        for( int j = 0; j < jArrSub.size(); j++ )
+        {
+            QJsonValue jValSub = jArrSub.at(j);
+            QJsonObject jObjSub = jValSub.toObject();
+
+            QString strAdditionalInput = jObjSub["additionalInput"].toString();
+            QString strEntropyInputSub = jObjSub["entropyInput"].toString();
+            QString strIntendedUse = jObjSub["intendedUse"].toString();
+
+            if( j == 0 )
+            {
+                // AddInput1
+            }
+            else if( j == 1 )
+            {
+                // AddInput2
+            }
         }
 
         if( strTestType == "AFT" )
