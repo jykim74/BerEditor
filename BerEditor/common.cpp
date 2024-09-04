@@ -598,9 +598,9 @@ QString getSymAlg( const QString strAlg, const QString strMode, int nKeyLen )
 
     if( strAlg.isEmpty() || strMode.isEmpty() ) return strRes;
 
-    if( strLAlg == "des" || strLAlg == "seed" || strLAlg == "sm4" )
+    if( strLAlg.toLower() == "des" || strLAlg.toLower() == "seed" || strLAlg.toLower() == "sm4" )
         strRes = QString( "%1-%2").arg(strLAlg).arg(strLMode );
-    else if( strLAlg == "des3" )
+    else if( strLAlg.toLower() == "des3" )
         strRes = QString( "des-ede-%1").arg(strLMode);
     else
         strRes = QString( "%1-%2-%3" ).arg( strLAlg ).arg( nKeyLen * 8 ).arg( strLMode);

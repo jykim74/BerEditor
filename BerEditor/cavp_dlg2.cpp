@@ -491,6 +491,11 @@ int CAVPDlg::hashJsonWork( const QString strAlg, const QJsonObject jObject, QJso
 
         jRspTestObj["tcId"] = nTcId;
 
+        JS_BIN_reset( &binMD );
+        JS_BIN_reset( &binMsg );
+
+        if( strMsg.length() > 0 ) JS_BIN_decodeHex( strMsg.toStdString().c_str(), &binMsg );
+
         if( mACVP_SetTCIDCheck->isChecked() == true )
         {
             int nSetTcId = mACVP_SetTCIDText->text().toInt();
@@ -728,6 +733,13 @@ int CAVPDlg::macJsonWork( const QString strAlg, const QJsonObject jObject, QJson
     if( _getAlgMode( strAlg, strSymAlg, strMode ) != 0 )
         return -1;
 
+    BIN binMsg = {0,0};
+    BIN binKKey = {0,0};
+    BIN binIV = {0,0};
+    BIN binAAD = {0,0};
+    BIN binMAC = {0,0};
+    BIN binTag = {0,0};
+
     int nAadLen = jObject["aadLen"].toInt();
     QString strIvGen = jObject["ivGen"].toString();
     int nPayloadLen = jObject["payloadLen"].toInt();
@@ -750,6 +762,20 @@ int CAVPDlg::macJsonWork( const QString strAlg, const QJsonObject jObject, QJson
 
         QJsonObject jRspTestObj;
         jRspTestObj["tcId"] = nTcId;
+
+        JS_BIN_reset( &binMsg );
+        JS_BIN_reset( &binKKey );
+        JS_BIN_reset( &binIV );
+        JS_BIN_reset( &binAAD );
+        JS_BIN_reset( &binMAC );
+        JS_BIN_reset( &binTag );
+
+        if( strMsg.length() > 0 ) JS_BIN_decodeHex( strMsg.toStdString().c_str(), &binMsg );
+        if( strKey.length() > 0 ) JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKKey );
+        if( strMAC.length() > 0 ) JS_BIN_decodeHex( strMAC.toStdString().c_str(), &binMAC );
+        if( strAad.length() > 0 ) JS_BIN_decodeHex( strAad.toStdString().c_str(), &binAAD );
+        if( strIv.length() > 0 ) JS_BIN_decodeHex( strIv.toStdString().c_str(), &binIV );
+        if( strTag.length() > 0 ) JS_BIN_decodeHex( strTag.toStdString().c_str(), &binTag );
 
         if( mACVP_SetTCIDCheck->isChecked() == true )
         {
@@ -792,6 +818,12 @@ int CAVPDlg::macJsonWork( const QString strAlg, const QJsonObject jObject, QJson
     jRspObject["tgId"] = nTgId;
 
 end :
+    JS_BIN_reset( &binMsg );
+    JS_BIN_reset( &binKKey );
+    JS_BIN_reset( &binIV );
+    JS_BIN_reset( &binAAD );
+    JS_BIN_reset( &binMAC );
+    JS_BIN_reset( &binTag );
 
     return ret;
 }
@@ -823,6 +855,13 @@ int CAVPDlg::blockCipherJsonWork( const QString strAlg, const QJsonObject jObjec
 
     QString strKwCipher = jObject["kwCipher"].toString();
 
+    BIN binKey = {0,0};
+    BIN binCT = {0,0};
+    BIN binPT = {0,0};
+    BIN binIV = {0,0};
+    BIN binTag = {0,0};
+    BIN binAAD = {0,0};
+
     for( int i = 0; i < jArr.size(); i++ )
     {
         QJsonValue jVal = jArr.at(i);
@@ -841,6 +880,20 @@ int CAVPDlg::blockCipherJsonWork( const QString strAlg, const QJsonObject jObjec
         QString strAAD = jObj["aad"].toString();
         QString strTag = jObj["tag"].toString();
 
+        JS_BIN_reset( &binKey );
+        JS_BIN_reset( &binCT );
+        JS_BIN_reset( &binPT );
+        JS_BIN_reset( &binIV );
+        JS_BIN_reset( &binTag );
+        JS_BIN_reset( &binAAD );
+
+        if( strPT.length() > 0 ) JS_BIN_decodeHex( strPT.toStdString().c_str(), &binPT );
+        if( strCT.length() > 0 ) JS_BIN_decodeHex( strCT.toStdString().c_str(), &binCT );
+        if( strIV.length() > 0 ) JS_BIN_decodeHex( strIV.toStdString().c_str(), &binIV );
+        if( strKey.length() > 0 ) JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey );
+        if( strAAD.length() > 0 ) JS_BIN_decodeHex( strAAD.toStdString().c_str(), &binAAD );
+        if( strTag.length() > 0 ) JS_BIN_decodeHex( strTag.toStdString().c_str(), &binTag );
+
         if( mACVP_SetTCIDCheck->isChecked() == true )
         {
             int nSetTcId = mACVP_SetTCIDText->text().toInt();
@@ -849,6 +902,8 @@ int CAVPDlg::blockCipherJsonWork( const QString strAlg, const QJsonObject jObjec
 
         if( strTestType == "MCT" )
         {
+            QJsonArray jSymArr;
+
             if( strMode == "CCM" || strMode == "GCM" )
                 return -2;
 
@@ -860,6 +915,8 @@ int CAVPDlg::blockCipherJsonWork( const QString strAlg, const QJsonObject jObjec
             {
 
             }
+
+            jRspTestObj["resultsArray"] = jSymArr;
         }
         else if( strTestType == "CTR" )
         {
@@ -877,12 +934,19 @@ int CAVPDlg::blockCipherJsonWork( const QString strAlg, const QJsonObject jObjec
         }
         else // AFT
         {
+            QString strCipher = getSymAlg( strSymAlg, strMode, nKeyLen/8 );
+
             if( strDirection == "encrypt" )
             {
-                jRspObject["ct"] = "";
+                ret = JS_PKI_encryptData( strCipher.toStdString().c_str(), 0, &binPT, &binIV, &binKey, &binCT);
+                if( ret != 0 ) goto end;
+
+                jRspObject["ct"] = getHexString( &binCT );
 
                 if( strMode == "GCM" )
                     jRspObject["tag"] = "";
+
+
             }
             else
             {
@@ -895,7 +959,8 @@ int CAVPDlg::blockCipherJsonWork( const QString strAlg, const QJsonObject jObjec
                 }
                 else
                 {
-                    jRspObject["pt"] = "";
+                    ret = JS_PKI_decryptData( strCipher.toStdString().c_str(), 0, &binCT, &binIV, &binKey, &binPT );
+                    jRspObject["pt"] = getHexString( &binPT );
                 }
             }
         }
@@ -910,6 +975,12 @@ int CAVPDlg::blockCipherJsonWork( const QString strAlg, const QJsonObject jObjec
     jRspObject["tgId"] = nTgId;
 
 end :
+    JS_BIN_reset( &binKey );
+    JS_BIN_reset( &binCT );
+    JS_BIN_reset( &binPT );
+    JS_BIN_reset( &binIV );
+    JS_BIN_reset( &binTag );
+    JS_BIN_reset( &binAAD );
 
     return ret;
 }
