@@ -462,23 +462,23 @@ void CAVPDlg::clickSymRun()
                 {
                     if( strMode == "CBC" )
                     {
-                        ret = makeSymCBC_MCT( strKey, strIV, strPT, NULL);
+                        ret = makeSymCBC_MCT( strAlg, strKey, strIV, strPT, NULL);
                     }
                     else if( strMode == "ECB" )
                     {
-                        ret = makeSymECB_MCT( strKey, strPT, NULL );
+                        ret = makeSymECB_MCT( strAlg, strKey, strPT, NULL );
                     }
                     else if( strMode == "CTR" )
                     {
-                        ret = makeSymCTR_MCT( strKey, strIV, strPT, NULL );
+                        ret = makeSymCTR_MCT( strAlg, strKey, strIV, strPT, NULL );
                     }
                     else if( strMode == "CFB" )
                     {
-                        ret = makeSymCFB_MCT( strKey, strIV, strPT, NULL );
+                        ret = makeSymCFB_MCT( strAlg, strKey, strIV, strPT, NULL );
                     }
                     else if( strMode == "OFB" )
                     {
-                        ret = makeSymOFB_MCT( strKey, strIV, strPT, NULL );
+                        ret = makeSymOFB_MCT( strAlg, strKey, strIV, strPT, NULL );
                     }
                 }
                 else
@@ -2007,6 +2007,7 @@ void CAVPDlg::clickSymMCTRun()
 {
     int nRet = 0;
 
+    QString strAlg = mSymMCTAlgCombo->currentText();
     QString strKey = mSymMCTKeyText->text();
     QString strIV = mSymMCTIVText->text();
     QString strPT = mSymMCTPTText->text();
@@ -2079,28 +2080,28 @@ void CAVPDlg::clickSymMCTRun()
     if( strDirection == "Encrypt" )
     {
         if( mSymMCTModeCombo->currentText() == "ECB" )
-            nRet = makeSymECB_MCT( strKey, strPT, &jArray, true );
+            nRet = makeSymECB_MCT( strAlg, strKey, strPT, &jArray, true );
         else if( mSymMCTModeCombo->currentText() == "CBC" )
-            nRet = makeSymCBC_MCT( strKey, strIV, strPT, &jArray, true );
+            nRet = makeSymCBC_MCT( strAlg, strKey, strIV, strPT, &jArray, true );
         else if( mSymMCTModeCombo->currentText() == "CTR" )
-            nRet = makeSymCTR_MCT( strKey, strIV, strPT, &jArray, true );
+            nRet = makeSymCTR_MCT( strAlg, strKey, strIV, strPT, &jArray, true );
         else if( mSymMCTModeCombo->currentText() == "CFB" )
-            nRet = makeSymCFB_MCT( strKey, strIV, strPT, &jArray, true );
+            nRet = makeSymCFB_MCT( strAlg, strKey, strIV, strPT, &jArray, true );
         else if( mSymMCTModeCombo->currentText() == "OFB" )
-            nRet = makeSymOFB_MCT( strKey, strIV, strPT, &jArray, true );
+            nRet = makeSymOFB_MCT( strAlg, strKey, strIV, strPT, &jArray, true );
     }
     else
     {
         if( mSymMCTModeCombo->currentText() == "ECB" )
-            nRet = makeSymDecECB_MCT( strKey, strCT, &jArray, true );
+            nRet = makeSymDecECB_MCT( strAlg, strKey, strCT, &jArray, true );
         else if( mSymMCTModeCombo->currentText() == "CBC" )
-            nRet = makeSymDecCBC_MCT( strKey, strIV, strCT, &jArray, true );
+            nRet = makeSymDecCBC_MCT( strAlg, strKey, strIV, strCT, &jArray, true );
         else if( mSymMCTModeCombo->currentText() == "CTR" )
-            nRet = makeSymDecCTR_MCT( strKey, strIV, strCT, &jArray, true );
+            nRet = makeSymDecCTR_MCT( strAlg, strKey, strIV, strCT, &jArray, true );
         else if( mSymMCTModeCombo->currentText() == "CFB" )
-            nRet = makeSymDecCFB_MCT( strKey, strIV, strCT, &jArray, true );
+            nRet = makeSymDecCFB_MCT( strAlg, strKey, strIV, strCT, &jArray, true );
         else if( mSymMCTModeCombo->currentText() == "OFB" )
-            nRet = makeSymDecOFB_MCT( strKey, strIV, strCT, &jArray, true );
+            nRet = makeSymDecOFB_MCT( strAlg, strKey, strIV, strCT, &jArray, true );
     }
 
     if( nRet == 0 )
@@ -2270,7 +2271,7 @@ end :
     return ret;
 }
 
-int CAVPDlg::makeSymCBC_MCT( const QString strKey, const QString strIV, const QString strPT, QJsonArray *pRspArr, bool bInfo )
+int CAVPDlg::makeSymCBC_MCT( const QString strAlg, const QString strKey, const QString strIV, const QString strPT, QJsonArray *pRspArr, bool bInfo )
 {
     int ret = 0;
     int i = 0;
@@ -2281,22 +2282,11 @@ int CAVPDlg::makeSymCBC_MCT( const QString strKey, const QString strIV, const QS
     BIN binPT[1000 + 1];
     BIN binCT[1000 + 1];
 
-    QString strAlg;
-    QString strMode;
-
     memset( &binKey, 0x00, sizeof(BIN) * 101 );
     memset( &binIV, 0x00, sizeof(BIN) * 101 );
     memset( &binPT, 0x00, sizeof(BIN) * 1001 );
     memset( &binCT, 0x00, sizeof(BIN) * 1001 );
 
-    if( bInfo == true )
-    {
-        strAlg = mSymMCTAlgCombo->currentText();
-    }
-    else
-    {
-        strAlg = mSymAlgCombo->currentText();
-    }
 
     if( strKey.length() > 0 )
         JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey[0] );
@@ -2312,8 +2302,6 @@ int CAVPDlg::makeSymCBC_MCT( const QString strKey, const QString strIV, const QS
 
     for( i = 0; i < 100; i++ )
     {
-
-
         if( bInfo )
         {
             mSymMCTCountText->setText( QString("%1").arg(i) );
@@ -2439,7 +2427,7 @@ end :
     }
 }
 
-int CAVPDlg::makeSymDecCBC_MCT( const QString strKey, const QString strIV, const QString strCT, QJsonArray *pRspArr, bool bInfo )
+int CAVPDlg::makeSymDecCBC_MCT( const QString strAlg, const QString strKey, const QString strIV, const QString strCT, QJsonArray *pRspArr, bool bInfo )
 {
     int ret = 0;
     int i = 0;
@@ -2450,24 +2438,10 @@ int CAVPDlg::makeSymDecCBC_MCT( const QString strKey, const QString strIV, const
     BIN binPT[1000 + 1];
     BIN binCT[1000 + 1];
 
-    QString strAlg;
-    QString strMode;
-
     memset( &binKey, 0x00, sizeof(BIN) * 101 );
     memset( &binIV, 0x00, sizeof(BIN) * 101 );
     memset( &binPT, 0x00, sizeof(BIN) * 1001 );
     memset( &binCT, 0x00, sizeof(BIN) * 1001 );
-
-    if( bInfo == true )
-    {
-        strAlg = mSymMCTAlgCombo->currentText();
-//        strMode = mSymMCTModeCombo->currentText();
-    }
-    else
-    {
-        strAlg = mSymAlgCombo->currentText();
-//        strMode = mSymModeCombo->currentText();
-    }
 
     if( strKey.length() > 0 )
         JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey[0] );
@@ -2608,7 +2582,7 @@ end :
     }
 }
 
-int CAVPDlg::makeSymECB_MCT( const QString strKey, const QString strPT, QJsonArray *pRspArr, bool bInfo )
+int CAVPDlg::makeSymECB_MCT( const QString strAlg, const QString strKey, const QString strPT, QJsonArray *pRspArr, bool bInfo )
 {
     int i = 0;
     int j = 0;
@@ -2625,28 +2599,12 @@ int CAVPDlg::makeSymECB_MCT( const QString strKey, const QString strPT, QJsonArr
     JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey[0] );
     JS_BIN_decodeHex( strPT.toStdString().c_str(), &binPT[0] );
 
-    QString strAlg;
-    QString strMode;
-
-    if( bInfo == true )
-    {
-        strAlg = mSymMCTAlgCombo->currentText();
-        strMode = mSymMCTModeCombo->currentText();
-    }
-    else
-    {
-        strAlg = mSymAlgCombo->currentText();
-        strMode = mSymModeCombo->currentText();
-    }
-
-    QString strSymAlg = getSymAlg( strAlg, strMode, binKey[0].nLen );
+    QString strSymAlg = getSymAlg( strAlg, "ECB", binKey[0].nLen );
     berApplet->log( QString("Symmetric Alg: %1").arg( strSymAlg ));
 
 
     for( i = 0; i < 100; i++ )
     {
-
-
         logRsp( QString("COUNT = %1").arg(i));
         logRsp( QString("KEY = %1").arg( getHexString(binKey[i].pVal, binKey[i].nLen)));
         logRsp( QString("PT = %1").arg(getHexString(binPT[0].pVal, binPT[0].nLen)));
@@ -2666,7 +2624,7 @@ int CAVPDlg::makeSymECB_MCT( const QString strKey, const QString strPT, QJsonArr
         for( j = 0; j < 1000; j++ )
         {
             if( strAlg == "SEED" )
-                ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binPT[j], NULL, &binKey[i], &binCT[j] );
+                ret = JS_PKI_encryptSEED( "ECB", 0, &binPT[j], NULL, &binKey[i], &binCT[j] );
             else
                 ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPT[j], NULL, &binKey[i], &binCT[j] );
 
@@ -2752,7 +2710,7 @@ int CAVPDlg::makeSymECB_MCT( const QString strKey, const QString strPT, QJsonArr
     return ret;
 }
 
- int CAVPDlg::makeSymDecECB_MCT( const QString strKey, const QString strCT, QJsonArray *pRspArr, bool bInfo )
+ int CAVPDlg::makeSymDecECB_MCT( const QString strAlg, const QString strKey, const QString strCT, QJsonArray *pRspArr, bool bInfo )
  {
     int i = 0;
     int j = 0;
@@ -2769,21 +2727,7 @@ int CAVPDlg::makeSymECB_MCT( const QString strKey, const QString strPT, QJsonArr
     JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey[0] );
     JS_BIN_decodeHex( strCT.toStdString().c_str(), &binCT[0] );
 
-    QString strAlg;
-    QString strMode;
-
-    if( bInfo == true )
-    {
-        strAlg = mSymMCTAlgCombo->currentText();
-        strMode = mSymMCTModeCombo->currentText();
-    }
-    else
-    {
-        strAlg = mSymAlgCombo->currentText();
-        strMode = mSymModeCombo->currentText();
-    }
-
-    QString strSymAlg = getSymAlg( strAlg, strMode, binKey[0].nLen );
+    QString strSymAlg = getSymAlg( strAlg, "ECB", binKey[0].nLen );
     berApplet->log( QString("Symmetric Alg: %1").arg( strSymAlg ));
 
 
@@ -2807,7 +2751,7 @@ int CAVPDlg::makeSymECB_MCT( const QString strKey, const QString strPT, QJsonArr
         for( j = 0; j < 1000; j++ )
         {
             if( strAlg == "SEED" )
-                ret = JS_PKI_decryptSEED( strMode.toStdString().c_str(), 0, &binCT[j], NULL, &binKey[i], &binPT[j] );
+                ret = JS_PKI_decryptSEED( "ECB", 0, &binCT[j], NULL, &binKey[i], &binPT[j] );
             else
                 ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), 0, &binCT[j], NULL, &binKey[i], &binPT[j] );
 
@@ -2894,7 +2838,7 @@ int CAVPDlg::makeSymECB_MCT( const QString strKey, const QString strPT, QJsonArr
  }
 
 
-int CAVPDlg::makeSymCTR_MCT( const QString strKey, const QString strIV, const QString strPT, QJsonArray *pRspArr, bool bInfo )
+int CAVPDlg::makeSymCTR_MCT( const QString strAlg, const QString strKey, const QString strIV, const QString strPT, QJsonArray *pRspArr, bool bInfo )
 {
     int i = 0;
     int j = 0;
@@ -2913,28 +2857,12 @@ int CAVPDlg::makeSymCTR_MCT( const QString strKey, const QString strIV, const QS
     JS_BIN_decodeHex( strIV.toStdString().c_str(), &binCTR );
     JS_BIN_decodeHex( strPT.toStdString().c_str(), &binPT[0] );
 
-    QString strAlg;
-    QString strMode;
-
-    if( bInfo == true )
-    {
-        strAlg = mSymMCTAlgCombo->currentText();
-//        strMode = mSymMCTModeCombo->currentText();
-    }
-    else
-    {
-        strAlg = mSymAlgCombo->currentText();
-//        strMode = mSymModeCombo->currentText();
-    }
-
     QString strSymAlg = getSymAlg( strAlg, "ECB", binKey[0].nLen );
     berApplet->log( QString("Symmetric Alg: %1-%2-ctr").arg( strAlg ).arg( binKey[0].nLen ));
 
 
     for( i = 0; i < 100; i++ )
     {
-
-
         if( bInfo )
         {
             mSymMCTCountText->setText( QString("%1").arg(i) );
@@ -3052,7 +2980,7 @@ int CAVPDlg::makeSymCTR_MCT( const QString strKey, const QString strIV, const QS
     return ret;
 }
 
- int CAVPDlg::makeSymDecCTR_MCT( const QString strKey, const QString strIV, const QString strCT, QJsonArray *pRspArr, bool bInfo )
+ int CAVPDlg::makeSymDecCTR_MCT( const QString strAlg, const QString strKey, const QString strIV, const QString strCT, QJsonArray *pRspArr, bool bInfo )
  {
     int i = 0;
     int j = 0;
@@ -3070,20 +2998,6 @@ int CAVPDlg::makeSymCTR_MCT( const QString strKey, const QString strIV, const QS
     JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey[0] );
     JS_BIN_decodeHex( strIV.toStdString().c_str(), &binCTR );
     JS_BIN_decodeHex( strCT.toStdString().c_str(), &binCT[0] );
-
-    QString strAlg;
-    QString strMode;
-
-    if( bInfo == true )
-    {
-        strAlg = mSymMCTAlgCombo->currentText();
-//        strMode = mSymMCTModeCombo->currentText();
-    }
-    else
-    {
-        strAlg = mSymAlgCombo->currentText();
-//        strMode = mSymModeCombo->currentText();
-    }
 
     QString strSymAlg = getSymAlg( strAlg, "ECB", binKey[0].nLen );
     berApplet->log( QString("Symmetric Alg: %1-%2-ctr").arg( strAlg ).arg( binKey[0].nLen ));
@@ -3206,7 +3120,7 @@ int CAVPDlg::makeSymCTR_MCT( const QString strKey, const QString strIV, const QS
  }
 
 
-int CAVPDlg::makeSymCFB_MCT( const QString strKey, const QString strIV, const QString strPT, QJsonArray *pRspArr, bool bInfo )
+int CAVPDlg::makeSymCFB_MCT( const QString strAlg, const QString strKey, const QString strIV, const QString strPT, QJsonArray *pRspArr, bool bInfo )
 {
     int ret = 0;
     int i = 0;
@@ -3217,24 +3131,10 @@ int CAVPDlg::makeSymCFB_MCT( const QString strKey, const QString strIV, const QS
     BIN binPT[1000 + 1];
     BIN binCT[1000 + 1];
 
-    QString strAlg;
-    QString strMode;
-
     memset( &binKey, 0x00, sizeof(BIN) * 101 );
     memset( &binIV, 0x00, sizeof(BIN) * 101 );
     memset( &binPT, 0x00, sizeof(BIN) * 1001 );
     memset( &binCT, 0x00, sizeof(BIN) * 1001 );
-
-    if( bInfo == true )
-    {
-        strAlg = mSymMCTAlgCombo->currentText();
-//        strMode = mSymMCTModeCombo->currentText();
-    }
-    else
-    {
-        strAlg = mSymAlgCombo->currentText();
-//        strMode = mSymModeCombo->currentText();
-    }
 
     if( strKey.length() > 0 )
         JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey[0] );
@@ -3251,8 +3151,6 @@ int CAVPDlg::makeSymCFB_MCT( const QString strKey, const QString strIV, const QS
 
     for( i = 0; i < 100; i++ )
     {
-
-
         if( bInfo )
         {
             mSymMCTCountText->setText( QString("%1").arg(i) );
@@ -3278,9 +3176,9 @@ int CAVPDlg::makeSymCFB_MCT( const QString strKey, const QString strIV, const QS
             if( strAlg == "SEED" )
             {
                 if( j == 0 )
-                    ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binIV[i], NULL, &binKey[i], &binEnc );
+                    ret = JS_PKI_encryptSEED( "ECB", 0, &binIV[i], NULL, &binKey[i], &binEnc );
                 else
-                    ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binCT[j-1], NULL, &binKey[i], &binEnc );
+                    ret = JS_PKI_encryptSEED( "ECB", 0, &binCT[j-1], NULL, &binKey[i], &binEnc );
             }
             else
             {
@@ -3386,7 +3284,7 @@ end :
     return ret;
 }
 
-int CAVPDlg::makeSymDecCFB_MCT( const QString strKey, const QString strIV, const QString strCT, QJsonArray *pRspArr, bool bInfo )
+int CAVPDlg::makeSymDecCFB_MCT( const QString strAlg, const QString strKey, const QString strIV, const QString strCT, QJsonArray *pRspArr, bool bInfo )
 {
     int ret = 0;
     int i = 0;
@@ -3397,24 +3295,10 @@ int CAVPDlg::makeSymDecCFB_MCT( const QString strKey, const QString strIV, const
     BIN binPT[1000 + 1];
     BIN binCT[1000 + 1];
 
-    QString strAlg;
-    QString strMode;
-
     memset( &binKey, 0x00, sizeof(BIN) * 101 );
     memset( &binIV, 0x00, sizeof(BIN) * 101 );
     memset( &binPT, 0x00, sizeof(BIN) * 1001 );
     memset( &binCT, 0x00, sizeof(BIN) * 1001 );
-
-    if( bInfo == true )
-    {
-        strAlg = mSymMCTAlgCombo->currentText();
-//        strMode = mSymMCTModeCombo->currentText();
-    }
-    else
-    {
-        strAlg = mSymAlgCombo->currentText();
-//        strMode = mSymModeCombo->currentText();
-    }
 
     if( strKey.length() > 0 )
         JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey[0] );
@@ -3455,9 +3339,9 @@ int CAVPDlg::makeSymDecCFB_MCT( const QString strKey, const QString strIV, const
             if( strAlg == "SEED" )
             {
                 if( j == 0 )
-                    ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binIV[i], NULL, &binKey[i], &binDec );
+                    ret = JS_PKI_encryptSEED( "ECB", 0, &binIV[i], NULL, &binKey[i], &binDec );
                 else
-                    ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binCT[j-1], NULL, &binKey[i], &binDec );
+                    ret = JS_PKI_encryptSEED( "ECB", 0, &binCT[j-1], NULL, &binKey[i], &binDec );
             }
             else
             {
@@ -3563,7 +3447,7 @@ end :
 }
 
 
-int CAVPDlg::makeSymOFB_MCT( const QString strKey, const QString strIV, const QString strPT, QJsonArray *pRspArr, bool bInfo )
+int CAVPDlg::makeSymOFB_MCT( const QString strAlg, const QString strKey, const QString strIV, const QString strPT, QJsonArray *pRspArr, bool bInfo )
 {
     int ret = 0;
     int i = 0;
@@ -3575,25 +3459,11 @@ int CAVPDlg::makeSymOFB_MCT( const QString strKey, const QString strIV, const QS
     BIN binCT[1000 + 1];
     BIN binOT[1000 + 1];
 
-    QString strAlg;
-    QString strMode;
-
     memset( &binKey, 0x00, sizeof(BIN) * 101 );
     memset( &binIV, 0x00, sizeof(BIN) * 101 );
     memset( &binPT, 0x00, sizeof(BIN) * 1001 );
     memset( &binCT, 0x00, sizeof(BIN) * 1001 );
     memset( &binOT, 0x00, sizeof(BIN) * 1001 );
-
-    if( bInfo == true )
-    {
-        strAlg = mSymMCTAlgCombo->currentText();
-        strMode = mSymMCTModeCombo->currentText();
-    }
-    else
-    {
-        strAlg = mSymAlgCombo->currentText();
-        strMode = mSymModeCombo->currentText();
-    }
 
     if( strKey.length() > 0 )
         JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey[0] );
@@ -3745,7 +3615,7 @@ end :
     return ret;
 }
 
-int CAVPDlg::makeSymDecOFB_MCT( const QString strKey, const QString strIV, const QString strCT, QJsonArray *pRspArr, bool bInfo )
+int CAVPDlg::makeSymDecOFB_MCT( const QString strAlg, const QString strKey, const QString strIV, const QString strCT, QJsonArray *pRspArr, bool bInfo )
 {
     int ret = 0;
     int i = 0;
@@ -3757,25 +3627,11 @@ int CAVPDlg::makeSymDecOFB_MCT( const QString strKey, const QString strIV, const
     BIN binCT[1000 + 1];
     BIN binOT[1000 + 1];
 
-    QString strAlg;
-    QString strMode;
-
     memset( &binKey, 0x00, sizeof(BIN) * 101 );
     memset( &binIV, 0x00, sizeof(BIN) * 101 );
     memset( &binPT, 0x00, sizeof(BIN) * 1001 );
     memset( &binCT, 0x00, sizeof(BIN) * 1001 );
     memset( &binOT, 0x00, sizeof(BIN) * 1001 );
-
-    if( bInfo == true )
-    {
-        strAlg = mSymMCTAlgCombo->currentText();
-//        strMode = mSymMCTModeCombo->currentText();
-    }
-    else
-    {
-        strAlg = mSymAlgCombo->currentText();
-//        strMode = mSymModeCombo->currentText();
-    }
 
     if( strKey.length() > 0 )
         JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey[0] );

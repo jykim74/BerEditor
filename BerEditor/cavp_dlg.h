@@ -121,17 +121,17 @@ private:
 
     int makeSymData( const QString strKey, const QString strIV, const QString strPT );
 
-    int makeSymCBC_MCT( const QString strKey, const QString strIV, const QString strPT, QJsonArray *pRspArr, bool bInfo = false );
-    int makeSymECB_MCT( const QString strKey, const QString strPT, QJsonArray *pRspArr, bool bInfo = false );
-    int makeSymCTR_MCT( const QString strKey, const QString strIV, const QString strPT, QJsonArray *pRspArr, bool bInfo = false );
-    int makeSymCFB_MCT( const QString strKey, const QString strIV, const QString strPT, QJsonArray *pRspArr, bool bInfo = false );
-    int makeSymOFB_MCT( const QString strKey, const QString strIV, const QString strPT, QJsonArray *pRspArr, bool bInfo = false );
+    int makeSymCBC_MCT( const QString strAlg, const QString strKey, const QString strIV, const QString strPT, QJsonArray *pRspArr, bool bInfo = false );
+    int makeSymECB_MCT( const QString strAlg, const QString strKey, const QString strPT, QJsonArray *pRspArr, bool bInfo = false );
+    int makeSymCTR_MCT( const QString strAlg, const QString strKey, const QString strIV, const QString strPT, QJsonArray *pRspArr, bool bInfo = false );
+    int makeSymCFB_MCT( const QString strAlg, const QString strKey, const QString strIV, const QString strPT, QJsonArray *pRspArr, bool bInfo = false );
+    int makeSymOFB_MCT( const QString strAlg, const QString strKey, const QString strIV, const QString strPT, QJsonArray *pRspArr, bool bInfo = false );
 
-    int makeSymDecCBC_MCT( const QString strKey, const QString strIV, const QString strCT, QJsonArray *pRspArr, bool bInfo = false );
-    int makeSymDecECB_MCT( const QString strKey, const QString strCT, QJsonArray *pRspArr, bool bInfo = false );
-    int makeSymDecCTR_MCT( const QString strKey, const QString strIV, const QString strCT, QJsonArray *pRspArr, bool bInfo = false );
-    int makeSymDecCFB_MCT( const QString strKey, const QString strIV, const QString strCT, QJsonArray *pRspArr, bool bInfo = false );
-    int makeSymDecOFB_MCT( const QString strKey, const QString strIV, const QString strCT, QJsonArray *pRspArr, bool bInfo = false );
+    int makeSymDecCBC_MCT( const QString strAlg, const QString strKey, const QString strIV, const QString strCT, QJsonArray *pRspArr, bool bInfo = false );
+    int makeSymDecECB_MCT( const QString strAlg, const QString strKey, const QString strCT, QJsonArray *pRspArr, bool bInfo = false );
+    int makeSymDecCTR_MCT( const QString strAlg, const QString strKey, const QString strIV, const QString strCT, QJsonArray *pRspArr, bool bInfo = false );
+    int makeSymDecCFB_MCT( const QString strAlg, const QString strKey, const QString strIV, const QString strCT, QJsonArray *pRspArr, bool bInfo = false );
+    int makeSymDecOFB_MCT( const QString strAlg, const QString strKey, const QString strIV, const QString strCT, QJsonArray *pRspArr, bool bInfo = false );
 
     int makeAEData( const QString strKey, const QString strIV, const QString strPT, const QString strAAD, int nTagLen );
     int makeADData( const QString strKey, const QString strIV, const QString strCT, const QString strAAD, const QString strTag );
