@@ -505,11 +505,47 @@ int CAVPDlg::hashJsonWork( const QString strAlg, const QJsonObject jObject, QJso
 
         if( strTestType == "LDT" )
         {
+            void *pCTX = NULL;
             QJsonObject jLDTObj = jObj["largeMsg"].toObject();
             QString strContent = jLDTObj["content"].toString();
             int nContentLength = jLDTObj["contentLength"].toInt();
             QString strExpansionTechnique = jLDTObj["repeating"].toString();
             qint64 nFullLength = jLDTObj["fullLength"].toDouble();
+
+            qint64 nFullBytes = nFullLength / 8;
+            qint64 nLeft = nFullBytes;
+
+            BIN binData = {0,0};
+            BIN binMD = {0,0};
+
+            JS_BIN_decodeHex( strContent.toStdString().c_str(), &binData );
+
+            ret = JS_PKI_hashInit( &pCTX, strHash.toStdString().c_str() );
+
+            if( ret != 0 )
+            {
+                JS_BIN_reset( &binData );
+                goto end;
+            }
+
+            while( nLeft > 0 )
+            {
+                ret = JS_PKI_hashUpdate( pCTX, &binData );
+                if( ret != 0 )
+                {
+                    JS_BIN_reset( &binData );
+                    goto end;
+                }
+
+                nLeft -= binData.nLen;
+            }
+
+            ret = JS_PKI_hashUpdate( pCTX, &binMD );
+
+            if( ret == 0 ) jRspObject["md"] = getHexString( &binMD );
+
+            JS_BIN_reset( &binMD );
+            JS_BIN_reset( &binData );
         }
         else if( strTestType == "MCT" )
         {
@@ -963,7 +999,16 @@ int CAVPDlg::macJsonWork( const QString strAlg, const QJsonObject jObject, QJson
             {
                 if( strMode == "GMAC" )
                 {
-                    jRspTestObj["tag"] = "";
+                    ret = JS_PKI_genGMAC( strAlg.toStdString().c_str(), &binMsg, &binKey, &binMAC );
+                    if( ret != 0 ) goto end;
+
+                    jRspTestObj["tag"] = getHexString( &binMAC );
+                }
+                else if( strMode == "CMAC" )
+                {
+                    ret = JS_PKI_genCMAC( strAlg.toStdString().c_str(), &binMsg, &binKey, &binMAC );
+                    if( ret != 0 ) goto end;
+                    jRspTestObj["mac"] = getHexString( &binMAC );
                 }
                 else
                 {
@@ -978,8 +1023,21 @@ int CAVPDlg::macJsonWork( const QString strAlg, const QJsonObject jObject, QJson
                 bool bRes = false;
                 BIN binGenMAC = {0,0};
 
-                ret = JS_PKI_genHMAC( strAlg.toStdString().c_str(), &binMsg, &binKey, &binGenMAC );
-                if( ret != 0 ) goto end;
+                if( strMode == "GMAC" )
+                {
+                    ret = JS_PKI_genGMAC( strAlg.toStdString().c_str(), &binMsg, &binKey, &binGenMAC );
+                    if( ret != 0 ) goto end;
+                }
+                else if( strMode == "CMAC" )
+                {
+                    ret = JS_PKI_genCMAC( strAlg.toStdString().c_str(), &binMsg, &binKey, &binGenMAC );
+                    if( ret != 0 ) goto end;
+                }
+                else
+                {
+                    ret = JS_PKI_genHMAC( strAlg.toStdString().c_str(), &binMsg, &binKey, &binGenMAC );
+                    if( ret != 0 ) goto end;
+                }
 
                 if( JS_BIN_cmp( &binGenMAC, &binMAC ) == 0 )
                     bRes = true;
@@ -1191,30 +1249,42 @@ int CAVPDlg::blockCipherJsonWork( const QString strAlg, const QJsonObject jObjec
 
             if( strDirection == "encrypt" )
             {
-                ret = JS_PKI_encryptData( strCipher.toStdString().c_str(), 0, &binPT, &binIV, &binKey, &binCT);
-                if( ret != 0 ) goto end;
+                if( strMode == "GCM" || strMode == "CCM" )
+                {
+                    if( strMode == "CCM" )
+                        ret = JS_PKI_encryptCCM( strCipher.toStdString().c_str(), &binPT, &binKey, &binIV, &binAAD, nTagLen/8, &binTag, &binCT );
+                    else
+                        ret = JS_PKI_encryptGCM( strCipher.toStdString().c_str(), &binPT, &binKey, &binIV, &binAAD, nTagLen/8, &binTag, &binCT );
 
-                jRspTestObj["ct"] = getHexString( &binCT );
-
-                if( strMode == "GCM" )
-                    jRspTestObj["tag"] = "";
-
-
+                    jRspTestObj["tag"] = getHexString( &binTag );
+                }
+                else
+                {
+                    ret = JS_PKI_encryptData( strCipher.toStdString().c_str(), 0, &binPT, &binIV, &binKey, &binCT);
+                    if( ret != 0 ) goto end;
+                }
             }
             else
             {
                 if( strMode == "GCM" || strMode == "CCM" )
                 {
-                    // decrypt fail
-                    // jRspObject["testPassed"] = false;
-                    // decrypt success
-                    jRspTestObj["pt"] = "";
+                    if( strMode == "CCM" )
+                        ret = JS_PKI_decryptCCM( strCipher.toStdString().c_str(), &binCT, &binKey, &binIV, &binAAD, &binTag, &binPT );
+                    else
+                        ret = JS_PKI_decryptGCM( strCipher.toStdString().c_str(), &binCT, &binKey, &binIV, &binAAD, &binTag, &binPT );
+
+                    if( ret == 0 )
+                        jRspTestObj["pt"] = getHexString( &binPT );
+                    else
+                        jRspTestObj["testPassed"] = false;
                 }
                 else
                 {
                     ret = JS_PKI_decryptData( strCipher.toStdString().c_str(), 0, &binCT, &binIV, &binKey, &binPT );
                     jRspTestObj["pt"] = getHexString( &binPT );
                 }
+
+
             }
         }
 
@@ -1313,11 +1383,27 @@ int CAVPDlg::kdaJsonWork( const QString strAlg, const QJsonObject jObject, QJson
                 BIN binPri = {0,0};
                 BIN binPub = {0,0};
 
+                JECKeyVal sECKey;
+
+                memset( &sECKey, 0x00, sizeof(sECKey));
+
+                ret = JS_PKI_ECCGenKeyPair( strCurve.toStdString().c_str(), &binPub, &binPri );
+                if( ret != 0 ) goto end;
+
                 ret = JS_PKI_getECDHSecretWithValue( strCurve.toStdString().c_str(), &binPri, &binPubSrvX, &binPubSrvY, &binSecret );
+                if( ret != 0 )
+                {
+                    JS_BIN_reset( &binPri );
+                    JS_BIN_reset( &binPub );
+                    goto end;
+                }
 
+                ret = JS_PKI_getECKeyVal( &binPri, &sECKey );
 
-                jRspTestObj["publicIutX"] = "";
-                jRspTestObj["publicIutY"] = "";
+                jRspTestObj["publicIutX"] = sECKey.pPubX;
+                jRspTestObj["publicIutY"] = sECKey.pPubY;
+
+                JS_PKI_resetECKeyVal( &sECKey );
 
                 JS_BIN_reset( &binPri );
                 JS_BIN_reset( &binPub );
