@@ -10,6 +10,7 @@
 #include "ber_applet.h"
 #include "js_error.h"
 #include "js_pki.h"
+#include "js_pki_tools.h"
 
 static const int kACVP_TYPE_BLOCK_CIPHER = 0;
 static const int kACVP_TYPE_HASH = 1;
@@ -563,6 +564,9 @@ int CAVPDlg::ecdsaJsonWork( const QString strAlg, const QJsonObject jObject, QJs
     BIN binMsg = {0,0};
     BIN binSign = {0,0};
 
+    BIN binR = {0,0};
+    BIN binS = {0,0};
+
     QJsonArray jArr = jObject["tests"].toArray();
     QJsonArray jRspArr;
 
@@ -602,6 +606,8 @@ int CAVPDlg::ecdsaJsonWork( const QString strAlg, const QJsonObject jObject, QJs
 
         JS_BIN_reset( &binSign );
         JS_BIN_reset( &binMsg );
+        JS_BIN_reset( &binR );
+        JS_BIN_reset( &binS );
 
         if( mACVP_SetTCIDCheck->isChecked() == true )
         {
@@ -664,15 +670,23 @@ int CAVPDlg::ecdsaJsonWork( const QString strAlg, const QJsonObject jObject, QJs
                 ret = JS_PKI_ECCMakeSign( strHashAlg.toStdString().c_str(), &binMsg, &binPri, &binSign );
                 if( ret != 0 ) goto end;
 
-                jRspTestObj["r"] = "";
-                jRspTestObj["s"] = "";
+                ret = JS_PKI_decodeECCSign( &binSign, &binR, &binS );
+                if( ret != 0 ) goto end;
+
+                jRspTestObj["r"] = getHexString( &binR );
+                jRspTestObj["s"] = getHexString( &binS );
             }
             else if( strAlg == "sigVer" )
             {
                 bool bRes = false;
 
                 if( strMsg.length() > 0 ) JS_BIN_decodeHex( strMsg.toStdString().c_str(), &binMsg );
+                if( strR.length() > 0 ) JS_BIN_decodeHex( strR.toStdString().c_str(), &binR );
+                if( strS.length() > 0 ) JS_BIN_decodeHex( strS.toStdString().c_str(), &binS );
+
                 // Need to make sign
+                ret = JS_PKI_encodeECCSign( &binR, &binS, &binSign );
+                if( ret != 0 ) goto end;
 
                 ret = JS_PKI_ECCVerifySign( strHashAlg.toStdString().c_str(), &binMsg, &binSign, &binPub );
                 if( ret == JSR_VERIFY )
@@ -704,6 +718,8 @@ end :
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binMsg );
     JS_BIN_reset( &binSign );
+    JS_BIN_reset( &binR );
+    JS_BIN_reset( &binS );
 
     return ret;
 }
