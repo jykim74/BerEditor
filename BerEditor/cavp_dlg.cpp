@@ -2425,6 +2425,8 @@ end :
         JS_BIN_reset( &binPT[i] );
         JS_BIN_reset( &binCT[i] );
     }
+
+    return ret;
 }
 
 int CAVPDlg::makeSymDecCBC_MCT( const QString strAlg, const QString strKey, const QString strIV, const QString strCT, QJsonArray *pRspArr, bool bInfo )
@@ -2580,6 +2582,8 @@ end :
         JS_BIN_reset( &binPT[i] );
         JS_BIN_reset( &binCT[i] );
     }
+
+    return ret;
 }
 
 int CAVPDlg::makeSymECB_MCT( const QString strAlg, const QString strKey, const QString strPT, QJsonArray *pRspArr, bool bInfo )
