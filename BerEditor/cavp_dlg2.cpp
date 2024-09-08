@@ -1038,31 +1038,7 @@ int CAVPDlg::macJsonWork( const QString strAlg, const QJsonObject jObject, QJson
 
         if( strTestType == "AFT" )
         {
-            if( strDirection == "encrypt" || strDirection == "gen" )
-            {
-                if( strMode == "GMAC" )
-                {
-                    ret = JS_PKI_genGMAC( strSymAlg.toStdString().c_str(), &binMsg, &binKey, &binMAC );
-                    if( ret != 0 ) goto end;
-
-                    jRspTestObj["tag"] = getHexString( &binMAC );
-                }
-                else if( strMode == "CMAC" )
-                {
-                    ret = JS_PKI_genCMAC( strSymAlg.toStdString().c_str(), &binMsg, &binKey, &binMAC );
-                    if( ret != 0 ) goto end;
-                    jRspTestObj["mac"] = getHexString( &binMAC );
-                }
-                else
-                {
-                    QString strUseHash = _getHashNameFromMAC( strAlg );
-                    ret = JS_PKI_genHMAC( strUseHash.toStdString().c_str(), &binMsg, &binKey, &binMAC );
-                    if( ret != 0 ) goto end;
-
-                    jRspTestObj["mac"] = getHexString( &binMAC );
-                }
-            }
-            else
+            if( strDirection == "decrypt" || strDirection == "ver" )
             {
                 bool bRes = false;
                 BIN binGenMAC = {0,0};
@@ -1090,6 +1066,30 @@ int CAVPDlg::macJsonWork( const QString strAlg, const QJsonObject jObject, QJson
                     bRes = false;
 
                 jRspTestObj["testPassed"] = bRes;
+            }
+            else
+            {
+                if( strMode == "GMAC" )
+                {
+                    ret = JS_PKI_genGMAC( strSymAlg.toStdString().c_str(), &binMsg, &binKey, &binMAC );
+                    if( ret != 0 ) goto end;
+
+                    jRspTestObj["tag"] = getHexString( &binMAC );
+                }
+                else if( strMode == "CMAC" )
+                {
+                    ret = JS_PKI_genCMAC( strSymAlg.toStdString().c_str(), &binMsg, &binKey, &binMAC );
+                    if( ret != 0 ) goto end;
+                    jRspTestObj["mac"] = getHexString( &binMAC );
+                }
+                else
+                {
+                    QString strUseHash = _getHashNameFromMAC( strAlg );
+                    ret = JS_PKI_genHMAC( strUseHash.toStdString().c_str(), &binMsg, &binKey, &binMAC );
+                    if( ret != 0 ) goto end;
+
+                    jRspTestObj["mac"] = getHexString( &binMAC );
+                }
             }
         }
         else
