@@ -598,6 +598,8 @@ QString getSymAlg( const QString strAlg, const QString strMode, int nKeyLen )
 
     if( strAlg.isEmpty() || strMode.isEmpty() ) return strRes;
 
+    if( strLMode == "cfb128" ) strLMode = "cfb";
+
     if( strLAlg.toLower() == "des" || strLAlg.toLower() == "seed" || strLAlg.toLower() == "sm4" )
         strRes = QString( "%1-%2").arg(strLAlg).arg(strLMode );
     else if( strLAlg.toLower() == "des3" )

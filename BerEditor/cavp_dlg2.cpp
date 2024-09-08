@@ -147,8 +147,6 @@ int getACVPType( const QString strAlg )
 void CAVPDlg::clickACVPClear()
 {
     mACVP_ReqPathText->clear();
-    mACVP_StatusText->clear();
-    mACVP_ProgressBar->setValue(0);
 }
 
 void CAVPDlg::clickACVPRun()
@@ -282,8 +280,6 @@ void CAVPDlg::clickACVP_LDTRun()
     qint64 nFullLenght = strFullLength.toLongLong();
     qint64 nCurLength = 0;
 
-    mACVP_ProgressBar->setValue(0);
-
     JS_BIN_decodeHex( strContent.toStdString().c_str(), &binContent );
 
     ret = JS_PKI_hashInit( &pCTX, strHash.toStdString().c_str() );
@@ -299,7 +295,6 @@ void CAVPDlg::clickACVP_LDTRun()
         nCurLength += binContent.nLen;
 
         nPercent = ( nCurLength * 100 ) / nFullLenght;
-        mACVP_ProgressBar->setValue( nPercent );
     }
 
     ret = JS_PKI_hashFinal( pCTX, &binMD );
@@ -1005,7 +1000,7 @@ int CAVPDlg::macJsonWork( const QString strAlg, const QJsonObject jObject, QJson
         QJsonObject jObj = jVal.toObject();
         int nTcId = jObj["tcId"].toInt();
 
-        QString strMsg = jObj["msg"].toString();
+        QString strMsg;
         QString strKey = jObj["key"].toString();
         QString strMAC = jObj["mac"].toString();
 
@@ -1015,6 +1010,11 @@ int CAVPDlg::macJsonWork( const QString strAlg, const QJsonObject jObject, QJson
 
         QJsonObject jRspTestObj;
         jRspTestObj["tcId"] = nTcId;
+
+        if( strMode == "CMAC" )
+            strMsg = jObj["message"].toString();
+        else
+            strMsg = jObj["msg"].toString();
 
         JS_BIN_reset( &binMsg );
         JS_BIN_reset( &binKey );
@@ -1198,6 +1198,8 @@ int CAVPDlg::blockCipherJsonWork( const QString strAlg, const QJsonObject jObjec
             if( strMode == "CCM" || strMode == "GCM" )
                 return -2;
 
+            if( strMode == "CFB128" ) strMode = "CFB";
+
             if( strDirection == "encrypt" )
             {
                 if( strMode == "ECB" )
@@ -1239,7 +1241,7 @@ int CAVPDlg::blockCipherJsonWork( const QString strAlg, const QJsonObject jObjec
 
             QString strCipher = getSymAlg( strSymAlg, strMode, nKeyLen/8 );
 
-            if( strMode == "CTR" )
+            if( strMode.toUpper() != "CTR" )
                 return -2;
 
             if( strDirection == "encrypt" )
@@ -1253,7 +1255,7 @@ int CAVPDlg::blockCipherJsonWork( const QString strAlg, const QJsonObject jObjec
                     binPart.nLen = nBlock;
                     binPart.pVal = &binPT.pVal[nPos];
 
-                    ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPart, &binIV, &binKey, &binRes );
+                    ret = JS_PKI_encryptData( strCipher.toStdString().c_str(), 0, &binPart, &binIV, &binKey, &binRes );
                     if( ret != 0 ) return ret;
 
                     JS_BIN_appendBin( &binCT, &binRes );
@@ -1264,7 +1266,7 @@ int CAVPDlg::blockCipherJsonWork( const QString strAlg, const QJsonObject jObjec
                     nPos += nBlock;
                 }
 
-                jRspTestObj["ct"] = "";
+                jRspTestObj["ct"] = getHexString( &binCT );
             }
             else
             {
@@ -1277,15 +1279,18 @@ int CAVPDlg::blockCipherJsonWork( const QString strAlg, const QJsonObject jObjec
                     binPart.nLen = nBlock;
                     binPart.pVal = &binCT.pVal[nPos];
 
-                    ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), 0, &binPart, &binIV, &binKey, &binRes );
+                    ret = JS_PKI_encryptData( strCipher.toStdString().c_str(), 0, &binPart, &binIV, &binKey, &binRes );
                     if( ret != 0 ) return ret;
 
                     JS_BIN_appendBin( &binPT, &binRes );
                     JS_BIN_reset( &binRes );
                     JS_BIN_DEC( &binIV );
+
+                    nLeft -= nBlock;
+                    nPos += nBlock;
                 }
 
-                jRspTestObj["pt"] = "";
+                jRspTestObj["pt"] = getHexString( &binPT );
             }
         }
         else // AFT
@@ -1294,7 +1299,7 @@ int CAVPDlg::blockCipherJsonWork( const QString strAlg, const QJsonObject jObjec
 
             if( strDirection == "encrypt" )
             {
-                if( strMode == "GCM" || strMode == "CCM" )
+                if( strMode.toUpper() == "GCM" || strMode.toUpper() == "CCM" )
                 {
                     if( strMode == "CCM" )
                         ret = JS_PKI_encryptCCM( strCipher.toStdString().c_str(), &binPT, &binKey, &binIV, &binAAD, nTagLen/8, &binTag, &binCT );
@@ -1308,10 +1313,12 @@ int CAVPDlg::blockCipherJsonWork( const QString strAlg, const QJsonObject jObjec
                     ret = JS_PKI_encryptData( strCipher.toStdString().c_str(), 0, &binPT, &binIV, &binKey, &binCT);
                     if( ret != 0 ) goto end;
                 }
+
+                jRspTestObj["ct"] = getHexString( &binCT );
             }
             else
             {
-                if( strMode == "GCM" || strMode == "CCM" )
+                if( strMode.toUpper() == "GCM" || strMode.toUpper() == "CCM" )
                 {
                     if( strMode == "CCM" )
                         ret = JS_PKI_decryptCCM( strCipher.toStdString().c_str(), &binCT, &binKey, &binIV, &binAAD, &binTag, &binPT );
