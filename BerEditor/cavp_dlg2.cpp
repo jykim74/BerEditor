@@ -1306,7 +1306,19 @@ int CAVPDlg::blockCipherJsonWork( const QString strAlg, const QJsonObject jObjec
                     else
                         ret = JS_PKI_encryptGCM( strCipher.toStdString().c_str(), &binPT, &binKey, &binIV, &binAAD, nTagLen/8, &binTag, &binCT );
 
+                    if( ret != 0 ) goto end;
+
                     jRspTestObj["tag"] = getHexString( &binTag );
+                }
+                else if( strMode.toUpper() == "KW" || strMode.toUpper() == "KWP" )
+                {
+                    int nPad = 0;
+                    if( strMode == "KWP" ) nPad = 1;
+
+                    ret = JS_PKI_WrapKey( nPad, &binKey, &binPT, &binCT );
+                    if( ret != 0 ) goto end;
+
+                    jRspTestObj["ct"] = getHexString( &binCT );
                 }
                 else
                 {
@@ -1329,11 +1341,29 @@ int CAVPDlg::blockCipherJsonWork( const QString strAlg, const QJsonObject jObjec
                         jRspTestObj["pt"] = getHexString( &binPT );
                     else
                         jRspTestObj["testPassed"] = false;
+
+                    ret = 0;
+                }
+                else if( strMode.toUpper() == "KW" || strMode.toUpper() == "KWP" )
+                {
+                    int nPad = 0;
+                    if( strMode == "KWP" ) nPad = 1;
+
+                    ret = JS_PKI_UnwrapKey( nPad, &binKey, &binCT, &binPT );
+
+                    if( ret == 0 )
+                        jRspTestObj["pt"] = getHexString( &binPT );
+                    else
+                        jRspTestObj["testPassed"] = false;
+
+                    ret = 0;
                 }
                 else
                 {
                     ret = JS_PKI_decryptData( strCipher.toStdString().c_str(), 0, &binCT, &binIV, &binKey, &binPT );
                     jRspTestObj["pt"] = getHexString( &binPT );
+
+                    if( ret != 0 ) goto end;
                 }
 
 
