@@ -1302,13 +1302,21 @@ int CAVPDlg::blockCipherJsonWork( const QString strAlg, const QJsonObject jObjec
                 if( strMode.toUpper() == "GCM" || strMode.toUpper() == "CCM" )
                 {
                     if( strMode == "CCM" )
+                    {
                         ret = JS_PKI_encryptCCM( strCipher.toStdString().c_str(), &binPT, &binKey, &binIV, &binAAD, nTagLen/8, &binTag, &binCT );
+
+                        JS_BIN_appendBin( &binCT, &binTag );
+                        jRspTestObj["ct"] = getHexString( &binCT );
+                    }
                     else
+                    {
                         ret = JS_PKI_encryptGCM( strCipher.toStdString().c_str(), &binPT, &binKey, &binIV, &binAAD, nTagLen/8, &binTag, &binCT );
 
-                    if( ret != 0 ) goto end;
+                        if( ret != 0 ) goto end;
 
-                    jRspTestObj["tag"] = getHexString( &binTag );
+                        jRspTestObj["tag"] = getHexString( &binTag );
+                        jRspTestObj["ct"] = getHexString( &binCT );
+                    }
                 }
                 else if( strMode.toUpper() == "KW" || strMode.toUpper() == "KWP" )
                 {
@@ -1324,18 +1332,29 @@ int CAVPDlg::blockCipherJsonWork( const QString strAlg, const QJsonObject jObjec
                 {
                     ret = JS_PKI_encryptData( strCipher.toStdString().c_str(), 0, &binPT, &binIV, &binKey, &binCT);
                     if( ret != 0 ) goto end;
+
+                    jRspTestObj["ct"] = getHexString( &binCT );
                 }
 
-                jRspTestObj["ct"] = getHexString( &binCT );
+
             }
             else
             {
                 if( strMode.toUpper() == "GCM" || strMode.toUpper() == "CCM" )
                 {
                     if( strMode == "CCM" )
+                    {
+                        int nTagBytes = nTagLen / 8;
+
+                        JS_BIN_set( &binTag, &binCT.pVal[binCT.nLen-nTagBytes], nTagBytes );
+                        binCT.nLen = binCT.nLen - nTagBytes;
+
                         ret = JS_PKI_decryptCCM( strCipher.toStdString().c_str(), &binCT, &binKey, &binIV, &binAAD, &binTag, &binPT );
+                    }
                     else
+                    {
                         ret = JS_PKI_decryptGCM( strCipher.toStdString().c_str(), &binCT, &binKey, &binIV, &binAAD, &binTag, &binPT );
+                    }
 
                     if( ret == 0 )
                         jRspTestObj["pt"] = getHexString( &binPT );
