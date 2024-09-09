@@ -110,7 +110,7 @@ private:
     void saveJsonRsp( const QJsonDocument& pJsonDoc );
     int readJsonReq( const QString strPath, QJsonDocument& pJsonDoc );
 
-    int makeUnitJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject );
+    int makeUnitJsonWork( const QString strAlg, const QString strMode, const QJsonObject jObject, QJsonObject& jRspObject );
     int hashJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject );
     int ecdsaJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject );
     int rsaJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject );

@@ -40,6 +40,7 @@ private slots:
         void inputChanged();
         void outputChanged();
         void keyChanged();
+        void ivChanged();
 
         void checkHMAC();
         void checkCMAC();

@@ -64,6 +64,7 @@ GenMacDlg::GenMacDlg(QWidget *parent) :
     connect( mInputBase64Radio, SIGNAL(clicked()), this, SLOT(inputChanged()));
 
     connect( mKeyText, SIGNAL(textChanged(const QString&)), this, SLOT(keyChanged()));
+    connect( mIVText, SIGNAL(textChanged(const QString&)), this, SLOT(ivChanged()));
     connect( mKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(keyChanged()));
     connect( mHMACRadio, SIGNAL(clicked()), this, SLOT(checkHMAC()));
     connect( mCMACRadio, SIGNAL(clicked()), this, SLOT(checkCMAC()));
@@ -97,6 +98,7 @@ GenMacDlg::~GenMacDlg()
 void GenMacDlg::initialize()
 {
     mKeyTypeCombo->addItems( keyTypes );
+    mIVTypeCombo->addItems( keyTypes );
 
     group_->addButton( mHMACRadio );
     group_->addButton( mCMACRadio );
@@ -180,10 +182,21 @@ int GenMacDlg::macInit()
    {
        BIN binIV = {0,0};
        QString strSymAlg = getSymAlg( strAlg, "gcm", binKey.nLen );
-       JS_BIN_setChar( &binIV, 0x00, 16 );
+       QString strIV = mIVText->text();
+
+       getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
+
+       if( strIV.length() < 1 )
+       {
+            berApplet->warningBox( tr("Enter a IV value"), this );
+            mIVText->setFocus();
+            ret = JSR_ERR;
+            goto end;
+       }
+
+
        ret = JS_PKI_encryptGCMInit( &hctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, NULL );
        if( ret == 0 ) type_ = JS_TYPE_GMAC;
-       JS_BIN_reset( &binIV );
    }
 
    berApplet->log( QString( "Algorithm : %1" ).arg( strAlg ));
@@ -196,6 +209,7 @@ int GenMacDlg::macInit()
    else
        mStatusLabel->setText( QString("Initialization failed [%1]").arg( ret ) );
 
+end :
    JS_BIN_reset( &binKey );
    repaint();
    return ret;
@@ -345,6 +359,8 @@ void GenMacDlg::clickMAC()
     BIN binSrc = {0,0};
     BIN binKey = {0,0};
     BIN binMAC = {0,0};
+    BIN binIV = {0,0};
+
     int nDataType = DATA_STRING;
 
     QString strInput = mInputText->toPlainText();
@@ -396,7 +412,17 @@ void GenMacDlg::clickMAC()
    }
    else if( mGMACRadio->isChecked() )
    {
-        ret = JS_PKI_genGMAC( strAlg.toStdString().c_str(), &binSrc, &binKey, &binMAC );
+       QString strIV = mIVText->text();
+       getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
+       if( strIV.length() < 1 )
+       {
+            berApplet->warningBox( tr("Enter a IV value"), this );
+            mIVText->setFocus();
+            ret = JSR_ERR;
+            goto end;
+       }
+
+       ret = JS_PKI_genGMAC( strAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binMAC );
    }
 
    if( ret == 0 )
@@ -421,9 +447,11 @@ void GenMacDlg::clickMAC()
        mStatusLabel->setText( QString("MAC failure [%1]").arg(ret) );
    }
 
+end :
    JS_BIN_reset(&binSrc);
    JS_BIN_reset(&binKey);
    JS_BIN_reset(&binMAC);
+   JS_BIN_reset(&binIV);
 
    repaint();
 }
@@ -600,8 +628,21 @@ void GenMacDlg::keyChanged()
     mKeyLenText->setText( QString("%1").arg(strLen));
 }
 
+void GenMacDlg::ivChanged()
+{
+    QString strLen = getDataLenString( mIVTypeCombo->currentText(), mIVText->text() );
+    mIVLenText->setText( QString("%1").arg(strLen));
+}
+
 void GenMacDlg::checkHMAC()
 {
+    bool bVal = false;
+
+    mIVLabel->setEnabled(bVal);
+    mIVTypeCombo->setEnabled(bVal);
+    mIVText->setEnabled(bVal);
+    mIVLenText->setEnabled(bVal );
+
     mHMACRadio->setChecked(true);
 
     mAlgTypeCombo->clear();
@@ -612,6 +653,13 @@ void GenMacDlg::checkHMAC()
 
 void GenMacDlg::checkCMAC()
 {
+    bool bVal = false;
+
+    mIVLabel->setEnabled(bVal);
+    mIVTypeCombo->setEnabled(bVal);
+    mIVText->setEnabled(bVal);
+    mIVLenText->setEnabled(bVal );
+
     mCMACRadio->setChecked(true);
 
     mAlgTypeCombo->clear();
@@ -620,6 +668,13 @@ void GenMacDlg::checkCMAC()
 
 void GenMacDlg::checkGMAC()
 {
+    bool bVal = true;
+
+    mIVLabel->setEnabled(bVal);
+    mIVTypeCombo->setEnabled(bVal);
+    mIVText->setEnabled(bVal);
+    mIVLenText->setEnabled(bVal );
+
     mGMACRadio->setChecked(true);
     mAlgTypeCombo->clear();
     mAlgTypeCombo->addItems( gmacList );
