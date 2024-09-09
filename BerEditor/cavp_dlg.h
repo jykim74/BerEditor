@@ -113,11 +113,13 @@ private:
     int makeUnitJsonWork( const QString strAlg, const QString strMode, const QJsonObject jObject, QJsonObject& jRspObject );
     int hashJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject );
     int ecdsaJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject );
+    int eddsaJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject );
     int rsaJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject );
     int macJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject );
     int blockCipherJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject );
     int kdaJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject );
     int drbgJsonWork( const QString strAlg, const QJsonObject jObject, QJsonObject& jRspObject );
+
 
     int makeSymData( const QString strKey, const QString strIV, const QString strPT );
 
