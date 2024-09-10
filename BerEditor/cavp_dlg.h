@@ -8,6 +8,7 @@
 
 #include <QDialog>
 #include "ui_cavp_dlg.h"
+#include "ldt_hash_thread.h"
 
 namespace Ui {
 class CAVPDlg;
@@ -173,6 +174,12 @@ private:
     int makeECDSA_SGT( const QString strParam, const QString strHash, const QString strM );
     int makeECDSA_SVT( const QString strParam, const QString strHash, const QString strM, const QString strYX, const QString strYY, const QString strR, const QString strS );
 
+    void startLDTHash();
+    void stopLDTHash();
+    void onLDTHashFinished( int ret );
+    void onLDTHashUpdate( qint64 nCurBits );
+    void onLDTHashLastUpdate( const QString strMD );
+
 private:
     QString rsp_name_;
     const QString getPKI_Alg( const QString strACVP_Alg );
@@ -181,6 +188,8 @@ private:
     QString gettingRspPath();
 
     bool isSkipTestType( const QString strTestType );
+
+    LDTHashThread *ldt_hash_;
 };
 
 #endif // CAVP_DLG_H

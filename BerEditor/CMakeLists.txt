@@ -199,6 +199,7 @@ add_executable(${PROJECT_NAME}
     BasicXMLSyntaxHighlighter.cpp BasicXMLSyntaxHighlighter.h
     name_dlg.h name_dlg.cpp name_dlg.ui
     cavp_dlg2.cpp
+    ldt_hash_thread.h ldt_hash_thread.cpp
 )
 
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )

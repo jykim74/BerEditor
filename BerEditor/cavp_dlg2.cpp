@@ -279,6 +279,7 @@ void CAVPDlg::clickACVP_LDTRun()
     QString strHash = mACVP_LDTHashCombo->currentText();
     QString strFullLength = mACVP_LDTFullLengthText->text();
 
+
     if( strFullLength.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a full length" ), this );
@@ -294,10 +295,13 @@ void CAVPDlg::clickACVP_LDTRun()
         return;
     }
 
+    mACVP_LDTProgressBar->setValue( 0 );
+    mACVP_LDTStatusText->clear();
+
     BIN binContent = {0,0};
     BIN binMD = {0,0};
 
-    qint64 nFullLenght = strFullLength.toLongLong();
+    qint64 nFullLength = strFullLength.toLongLong() / 8;
     qint64 nCurLength = 0;
 
     JS_BIN_decodeHex( strContent.toStdString().c_str(), &binContent );
@@ -305,7 +309,7 @@ void CAVPDlg::clickACVP_LDTRun()
     ret = JS_PKI_hashInit( &pCTX, strHash.toStdString().c_str() );
     if( ret != 0 ) goto end;
 
-    while( nFullLenght > nCurLength )
+    while( nFullLength > nCurLength )
     {
         int nPercent = 0;
 
@@ -314,7 +318,11 @@ void CAVPDlg::clickACVP_LDTRun()
 
         nCurLength += binContent.nLen;
 
-        nPercent = ( nCurLength * 100 ) / nFullLenght;
+        nPercent = ( nCurLength * 100 ) / nFullLength;
+
+        berApplet->log( QString( "CurLength: %1" ).arg( nCurLength * 8));
+        mACVP_LDTProgressBar->setValue( nPercent );
+        mACVP_LDTStatusText->setText( QString( "%1").arg( nCurLength * 8));
     }
 
     ret = JS_PKI_hashFinal( pCTX, &binMD );
@@ -332,12 +340,29 @@ end :
 
 void CAVPDlg::clickACVP_LDTThreadRun()
 {
+    QString strContent = mACVP_LDTContentText->text();
+    QString strFullLength = mACVP_LDTFullLengthText->text();
 
+    if( strFullLength.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a full length bits" ), this );
+        mACVP_LDTFullLengthText->setFocus();
+        return;
+    }
+
+    if( strContent.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a content" ), this );
+        mACVP_LDTContentText->setFocus();
+        return;
+    }
+
+    startLDTHash();
 }
 
 void CAVPDlg::clickACVP_LDTThreadStop()
 {
-
+    stopLDTHash();
 }
 
 void CAVPDlg::ACVP_LDTContentChanged( const QString& text )
@@ -575,7 +600,7 @@ int CAVPDlg::hashJsonWork( const QString strAlg, const QJsonObject jObject, QJso
                 nLeft -= binData.nLen;
             }
 
-            ret = JS_PKI_hashUpdate( pCTX, &binMD );
+            ret = JS_PKI_hashFinal( pCTX, &binMD );
 
             if( ret == 0 ) jRspObject["md"] = getHexString( &binMD );
 
@@ -885,8 +910,12 @@ int CAVPDlg::eddsaJsonWork( const QString strAlg, const QJsonObject jObject, QJs
             }
             else if( strAlg == "keyVer" )
             {
+#if 1
+                berApplet->elog( QString( "(%1) does not support" ).arg( strAlg ));
+                ret = -1;
+                goto end;
+#else
                 bool bRes = false;
-
                 ret = JS_PKI_encodeRawPublicKeyValue( nEdDSA_Type, &binQ, &binPub );
                 if( ret != 0 ) goto end;
 
@@ -900,6 +929,7 @@ int CAVPDlg::eddsaJsonWork( const QString strAlg, const QJsonObject jObject, QJs
                 jRspTestObj["testPassed"] = bRes;
 
                 ret = 0;
+#endif
             }
             else if( strAlg == "sigGen" )
             {
@@ -1932,4 +1962,62 @@ end :
     JS_BIN_reset( &binReturnedBits );
 
     return ret;
+}
+
+void CAVPDlg::startLDTHash()
+{
+    mACVP_LDTProgressBar->setMaximum( 100 );
+    mACVP_LDTProgressBar->setValue(0);
+
+    mACVP_LDTStatusText->clear();
+    mACVP_LDT_MDText->clear();
+
+    QString strContent = mACVP_LDTContentText->text();
+    QString strHash = mACVP_LDTHashCombo->currentText();
+    QString strFullLength = mACVP_LDTFullLengthText->text();
+
+    if( ldt_hash_ == nullptr )
+    {
+        ldt_hash_ = new LDTHashThread;
+
+        connect( ldt_hash_, &LDTHashThread::taskFinished, this, &CAVPDlg::onLDTHashFinished );
+        connect( ldt_hash_, &LDTHashThread::taskUpdate, this, &CAVPDlg::onLDTHashUpdate );
+        connect( ldt_hash_, &LDTHashThread::taskLastUpdate, this, &CAVPDlg::onLDTHashLastUpdate );
+    }
+
+    ldt_hash_->setContent( strContent );
+    ldt_hash_->setHash( strHash );
+    ldt_hash_->setFullLengthBits( strFullLength.toLongLong());
+
+    ldt_hash_->start();
+}
+
+void CAVPDlg::stopLDTHash()
+{
+    bool bVal = berApplet->yesOrCancelBox( tr( "Are you sure to stop?"), this, true );
+    if( bVal == false ) return;
+
+    if( ldt_hash_ == NULL ) return;
+
+    ldt_hash_->setStop( true );
+}
+
+void CAVPDlg::onLDTHashFinished( int ret )
+{
+    berApplet->messageLog( QString( "LDT hash finished: %1").arg(ret), this );
+}
+
+void CAVPDlg::onLDTHashUpdate( qint64 nCurBits )
+{
+    QString strFullLength = mACVP_LDTFullLengthText->text();
+
+    mACVP_LDTStatusText->setText( QString("%1").arg( nCurBits ));
+    int nPercent = int( ( nCurBits * 100 ) / strFullLength.toLongLong() );
+
+    mACVP_LDTProgressBar->setValue(nPercent);
+}
+
+void CAVPDlg::onLDTHashLastUpdate( const QString strMD )
+{
+    mACVP_LDT_MDText->setText( strMD );
 }

@@ -48,6 +48,8 @@ CAVPDlg::CAVPDlg(QWidget *parent) :
 {
     setupUi(this);
 
+    ldt_hash_ = NULL;
+
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mRspPathFindBtn, SIGNAL(clicked()), this, SLOT(clickRspPathFind()));
 
@@ -123,6 +125,7 @@ CAVPDlg::CAVPDlg(QWidget *parent) :
     connect( mACVP_RunBtn, SIGNAL(clicked()), this, SLOT(clickACVPRun()));
 
     connect( mACVP_LDTClearBtn, SIGNAL(clicked()), this, SLOT(clickACVP_LDTClear()));
+    connect( mACVP_LDTRun, SIGNAL(clicked()), this, SLOT(clickACVP_LDTRun()));
     connect( mACVP_LDTThreadRunBtn, SIGNAL(clicked()), this, SLOT(clickACVP_LDTThreadRun()));
     connect( mACVP_LDTThreadStopBtn, SIGNAL(clicked()), this, SLOT(clickACVP_LDTThreadStop()));
 
@@ -158,7 +161,7 @@ CAVPDlg::CAVPDlg(QWidget *parent) :
 
 CAVPDlg::~CAVPDlg()
 {
-
+    if( ldt_hash_ ) delete ldt_hash_;
 }
 
 void CAVPDlg::settingRspPath( const QString strPath )

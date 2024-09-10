@@ -43,6 +43,7 @@ SOURCES += \
     ber_tray_icon.cpp \
     ber_tree_view.cpp \
     cavp_dlg.cpp \
+    cavp_dlg2.cpp \
     cert_info_dlg.cpp \
     cert_pvd_dlg.cpp \
     cms_dlg.cpp \
@@ -101,7 +102,8 @@ SOURCES += \
     make_ttlv_dlg.cpp \
     pri_key_info_dlg.cpp \
     BasicXMLSyntaxHighlighter.cpp \
-    name_dlg.cpp
+    name_dlg.cpp \
+    ldt_hash_thread.cpp
 
 HEADERS += \
     about_dlg.h \
@@ -170,7 +172,8 @@ HEADERS += \
     make_ttlv_dlg.h \
     pri_key_info_dlg.h \
     BasicXMLSyntaxHighlighter.h \
-    name_dlg.h
+    name_dlg.h \
+    ldt_hash_thread.h
 
 
 
