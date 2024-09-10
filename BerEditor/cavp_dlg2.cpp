@@ -25,7 +25,7 @@ static const int kACVP_TYPE_EDDSA = 7;
 static QStringList kACVP_HashList =
     { "SHA-1", "SHA2-224", "SHA2-256", "SHA2-384", "SHA2-512" };
 static QStringList kACVP_BlockCipherList =
-    { "ACVP-AES-ECB", "ACVP-AES-CBC", "ACVP-AES-CFB128", "ACVP-AES-OFB", "ACVP-AES-CTR", "ACVP-AES-CCM", "ACVP-AES-KW", "ACVP-AES-GCM" };
+    { "ACVP-AES-ECB", "ACVP-AES-CBC", "ACVP-AES-CFB128", "ACVP-AES-OFB", "ACVP-AES-CTR", "ACVP-AES-CCM", "ACVP-AES-KW", "ACVP-AES-KWP", "ACVP-AES-GCM" };
 static QStringList kACVP_MACList =
     { "HMAC-SHA-1", "HMAC-SHA2-224", "HMAC-SHA2-256", "HMAC-SHA2-384", "HMAC-SHA2-512", "ACVP-AES-GMAC", "CMAC-AES" };
 static QStringList kACVP_RSAList = { "RSA" };
@@ -229,6 +229,7 @@ void CAVPDlg::clickACVPRun()
             jRspObj["algorithm"] = strAlg;
             jRspObj["revision"] = strRevision;
             jRspObj["vsId"] = nVsId;
+            if( strMode.length() > 0 ) jRspObj["mode"] = strMode;
 
             for( int k = 0; k < jTestGroupArr.size(); k++ )
             {
@@ -711,8 +712,8 @@ int CAVPDlg::ecdsaJsonWork( const QString strAlg, const QJsonObject jObject, QJs
                 if( ret != 0 ) goto end;
 
                 jRspTestObj["d"] = sECKeyVal.pPrivate;
-                jRspObject["qx"] = sECKeyVal.pPubX;
-                jRspObject["qy"] = sECKeyVal.pPubY;
+                jRspTestObj["qx"] = sECKeyVal.pPubX;
+                jRspTestObj["qy"] = sECKeyVal.pPubY;
 
                 JS_PKI_resetECKeyVal( &sECKeyVal );
             }
@@ -724,7 +725,7 @@ int CAVPDlg::ecdsaJsonWork( const QString strAlg, const QJsonObject jObject, QJs
                 JS_BIN_decodeHex( strQY.toStdString().c_str(), &binQY );
 
                 ret = JS_PKI_IsValidECCPubKey( strUseCurve.toStdString().c_str(), &binQX, &binQY );
-                if( ret == JSR_INVALID )
+                if( ret == JSR_VALID )
                     bRes = true;
                 else
                     bRes = false;
@@ -1184,7 +1185,7 @@ int CAVPDlg::macJsonWork( const QString strAlg, const QJsonObject jObject, QJson
         QJsonObject jRspTestObj;
         jRspTestObj["tcId"] = nTcId;
 
-        if( strMode == "CMAC" )
+        if( strMode == "AES" && strSymAlg == "CMAC" )
             strMsg = jObj["message"].toString();
         else
             strMsg = jObj["msg"].toString();
@@ -1223,9 +1224,10 @@ int CAVPDlg::macJsonWork( const QString strAlg, const QJsonObject jObject, QJson
 
                     JS_BIN_copy( &binMAC, &binTag );
                 }
-                else if( strMode == "CMAC" )
+                else if( strMode == "AES" && strSymAlg == "CMAC" )
                 {
-                    ret = JS_PKI_genCMAC( strSymAlg.toStdString().c_str(), &binMsg, &binKey, &binGenMAC );
+                    QString strMACAlg = getSymAlg( strMode, "CBC", binKey.nLen );
+                    ret = JS_PKI_genCMAC( strMACAlg.toStdString().c_str(), &binMsg, &binKey, &binGenMAC );
                     if( ret != 0 ) goto end;
                 }
                 else
@@ -1251,9 +1253,10 @@ int CAVPDlg::macJsonWork( const QString strAlg, const QJsonObject jObject, QJson
 
                     jRspTestObj["tag"] = getHexString( &binMAC );
                 }
-                else if( strMode == "CMAC" )
+                else if( strMode == "AES" && strSymAlg == "CMAC" )
                 {
-                    ret = JS_PKI_genCMAC( strSymAlg.toStdString().c_str(), &binMsg, &binKey, &binMAC );
+                    QString strMACAlg = getSymAlg( strMode, "CBC", binKey.nLen );
+                    ret = JS_PKI_genCMAC( strMACAlg.toStdString().c_str(), &binMsg, &binKey, &binMAC );
                     if( ret != 0 ) goto end;
                     jRspTestObj["mac"] = getHexString( &binMAC );
                 }
@@ -1498,6 +1501,13 @@ int CAVPDlg::blockCipherJsonWork( const QString strAlg, const QJsonObject jObjec
                     int nPad = 0;
                     if( strMode == "KWP" ) nPad = 1;
 
+                    if( strKwCipher == "inverse" )
+                    {
+                        berApplet->elog( QString( "KwCiper(%1) does not support" ).arg( strKwCipher ));
+                        ret = -1;
+                        goto end;
+                    }
+
                     ret = JS_PKI_WrapKey( nPad, &binKey, &binPT, &binCT );
                     if( ret != 0 ) goto end;
 
@@ -1619,7 +1629,6 @@ int CAVPDlg::kdaJsonWork( const QString strAlg, const QJsonObject jObject, QJson
     BIN binPubSrvX = {0,0};
     BIN binPubSrvY = {0,0};
 
-    BIN binPasswd = {0,0};
     BIN binSalt = {0,0};
     BIN binDerivedKey = {0,0};
 
@@ -1653,7 +1662,6 @@ int CAVPDlg::kdaJsonWork( const QString strAlg, const QJsonObject jObject, QJson
         JS_BIN_reset( &binPubSrvX );
         JS_BIN_reset( &binPubSrvY );
 
-        JS_BIN_reset( &binPasswd );
         JS_BIN_reset( &binDerivedKey );
         JS_BIN_reset( &binSalt );
 
@@ -1673,7 +1681,7 @@ int CAVPDlg::kdaJsonWork( const QString strAlg, const QJsonObject jObject, QJson
         {
             if( strAlg == "kdf-components" )
             {
-                ret = JS_PKI_KDF_X963( &binSecret, &binInfo, strUseHash.toStdString().c_str(), nKeyDataLength, &binKey );
+                ret = JS_PKI_KDF_X963( &binSecret, &binInfo, strUseHash.toStdString().c_str(), nKeyDataLength/8, &binKey );
                 if( ret != 0 ) goto end;
 
                 jRspTestObj["keyData"] = getHexString( &binKey );
@@ -1702,6 +1710,7 @@ int CAVPDlg::kdaJsonWork( const QString strAlg, const QJsonObject jObject, QJson
 
                 jRspTestObj["publicIutX"] = sECKey.pPubX;
                 jRspTestObj["publicIutY"] = sECKey.pPubY;
+                jRspTestObj["z"] = getHexString( &binSecret );
 
                 JS_PKI_resetECKeyVal( &sECKey );
 
@@ -1710,16 +1719,9 @@ int CAVPDlg::kdaJsonWork( const QString strAlg, const QJsonObject jObject, QJson
             }
             else if( strAlg == "PBKDF" )
             {
-                char *pPasswd = NULL;
-
-                JS_BIN_decodeBase64( strPassword.toStdString().c_str(), &binPasswd );
                 JS_BIN_decodeHex( strSalt.toStdString().c_str(), &binSalt );
 
-                JS_BIN_string( &binPasswd, &pPasswd );
-
-                ret = JS_PKI_PBKDF2( pPasswd, &binSalt, nIterCount, strUseHash.toStdString().c_str(), nKeyLen/8, &binDerivedKey );
-                if( pPasswd ) JS_free( pPasswd );
-
+                ret = JS_PKI_PBKDF2( strPassword.toStdString().c_str(), &binSalt, nIterCount, strUseHash.toStdString().c_str(), nKeyLen/8, &binDerivedKey );
                 if( ret != 0 ) goto end;
 
                 jRspTestObj["derivedKey"] = getHexString( &binDerivedKey );
@@ -1749,7 +1751,6 @@ end :
     JS_BIN_reset( &binPubSrvX );
     JS_BIN_reset( &binPubSrvY );
 
-    JS_BIN_reset( &binPasswd );
     JS_BIN_reset( &binDerivedKey );
     JS_BIN_reset( &binSalt );
 
@@ -1790,7 +1791,6 @@ int CAVPDlg::drbgJsonWork( const QString strAlg, const QJsonObject jObject, QJso
         QJsonValue jVal = jArr.at(i);
         QJsonObject jObj = jVal.toObject();
         int nTcId = jObj["tcId"].toInt();
-        QString strMsg = jObj["msg"].toString();
 
         QJsonObject jRspTestObj;
         jRspTestObj["tcId"] = nTcId;
@@ -1849,7 +1849,7 @@ int CAVPDlg::drbgJsonWork( const QString strAlg, const QJsonObject jObject, QJso
 
         if( strTestType == "AFT" )
         {
-            if( strMode == "ctrDRBG" )
+            if( strAlg == "ctrDRBG" )
             {
                 ret = JS_PKI_genCTR_DRBG( nReturnedBitsLen/8,
                                      bDerFunc,
@@ -1864,7 +1864,7 @@ int CAVPDlg::drbgJsonWork( const QString strAlg, const QJsonObject jObject, QJso
                                      &binAddInput2,
                                      &binReturnedBits );
             }
-            else if( strMode == "hashDRBG" )
+            else if( strAlg == "hashDRBG" )
             {
                 QString strUseHash = _getHashName( strMode );
 
@@ -1880,7 +1880,7 @@ int CAVPDlg::drbgJsonWork( const QString strAlg, const QJsonObject jObject, QJso
                                          &binAddInput2,
                                          &binReturnedBits );
             }
-            else if( strMode == "hmacDRBG" )
+            else if( strAlg == "hmacDRBG" )
             {
                 QString strUseHash = _getHashName( strMode );
 
