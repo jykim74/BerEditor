@@ -86,7 +86,7 @@
    <item row="1" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>4</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="mSymHashTab">
       <attribute name="title">
@@ -3828,6 +3828,7 @@
   <tabstop>mSymMCTClearBtn</tabstop>
   <tabstop>mSymMCTRunBtn</tabstop>
   <tabstop>mHashMCTAlgCombo</tabstop>
+  <tabstop>mHashMctVersionCombo</tabstop>
   <tabstop>mHashMCTCountText</tabstop>
   <tabstop>mHashMCTSeedText</tabstop>
   <tabstop>mHashMCTSeedLenText</tabstop>
@@ -3860,6 +3861,26 @@
   <tabstop>mDRBG2ReturnedBitsText</tabstop>
   <tabstop>mDRBG2ClearBtn</tabstop>
   <tabstop>mDRBG2RunBtn</tabstop>
+  <tabstop>mACVP_ReqPathText</tabstop>
+  <tabstop>mACVP_FindReqBtn</tabstop>
+  <tabstop>mACVP_SkipLDTCheck</tabstop>
+  <tabstop>mACVP_SetTGIDCheck</tabstop>
+  <tabstop>mACVP_SetTGIDText</tabstop>
+  <tabstop>mACVP_SetTCIDCheck</tabstop>
+  <tabstop>mACVP_SetTCIDText</tabstop>
+  <tabstop>mACVP_ClearBtn</tabstop>
+  <tabstop>mACVP_RunBtn</tabstop>
+  <tabstop>mACVP_LDTHashCombo</tabstop>
+  <tabstop>mACVP_LDTFullLengthText</tabstop>
+  <tabstop>mACVP_LDTContentText</tabstop>
+  <tabstop>mACVP_LDTContentLenText</tabstop>
+  <tabstop>mACVP_LDT_MDText</tabstop>
+  <tabstop>mACVP_LDT_MDLenText</tabstop>
+  <tabstop>mACVP_LDTStatusText</tabstop>
+  <tabstop>mACVP_LDTClearBtn</tabstop>
+  <tabstop>mACVP_LDTThreadRunBtn</tabstop>
+  <tabstop>mACVP_LDTThreadStopBtn</tabstop>
+  <tabstop>mACVP_LDTRun</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>
