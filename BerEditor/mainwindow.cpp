@@ -1693,13 +1693,16 @@ bool MainWindow::isTTLV()
         return false;
 }
 
-void MainWindow::runSignVerify( bool bSign, bool bEncPri, const QString strKeyPath )
+void MainWindow::runSignVerify( bool bSign, bool bEncPri, const QString strPriPath, const QString strCertPath )
 {
-    sign_verify_dlg_->clickClearDataAll();
+//    sign_verify_dlg_->clickClearDataAll();
     sign_verify_dlg_->mAutoCertPubKeyCheck->setChecked(true);
     sign_verify_dlg_->mCertGroup->setChecked(true);
     sign_verify_dlg_->mUseKeyAlgCheck->setChecked(true);
     sign_verify_dlg_->mEncPrikeyCheck->setChecked( bEncPri );
+
+    sign_verify_dlg_->mPriKeyPath->setText( strPriPath );
+    sign_verify_dlg_->mCertPath->setText( strCertPath );
 
     sign_verify_dlg_->checkUseKeyAlg();
     sign_verify_dlg_->checkEncPriKey();
@@ -1707,13 +1710,11 @@ void MainWindow::runSignVerify( bool bSign, bool bEncPri, const QString strKeyPa
     if( bSign == true )
     {
         sign_verify_dlg_->mSignRadio->setChecked(true);
-        sign_verify_dlg_->mPriKeyPath->setText( strKeyPath );
         sign_verify_dlg_->clickSign();
     }
     else
     {
         sign_verify_dlg_->mVerifyRadio->setChecked(true);
-        sign_verify_dlg_->mCertPath->setText( strKeyPath );
         sign_verify_dlg_->clickVerify();
     }
 
@@ -1722,13 +1723,16 @@ void MainWindow::runSignVerify( bool bSign, bool bEncPri, const QString strKeyPa
     sign_verify_dlg_->activateWindow();
 }
 
-void MainWindow::runPubEncDec( bool bEnc, bool bEncPri, const QString strKeyPath )
+void MainWindow::runPubEncDec( bool bEnc, bool bEncPri, const QString strPriPath, const QString strCertPath )
 {
-    pub_enc_dec_dlg_->clickClearDataAll();
+//    pub_enc_dec_dlg_->clickClearDataAll();
     pub_enc_dec_dlg_->mCertGroup->setChecked(true);
     pub_enc_dec_dlg_->mAutoCertPubKeyCheck->setChecked(true);
     pub_enc_dec_dlg_->mUseKeyAlgCheck->setChecked(true);
     pub_enc_dec_dlg_->mEncPrikeyCheck->setChecked( bEncPri );
+
+    pub_enc_dec_dlg_->mCertPath->setText( strCertPath );
+    pub_enc_dec_dlg_->mPriKeyPath->setText( strPriPath );
 
     pub_enc_dec_dlg_->checkUseKeyAlg();
     pub_enc_dec_dlg_->checkEncPriKey();
@@ -1736,13 +1740,13 @@ void MainWindow::runPubEncDec( bool bEnc, bool bEncPri, const QString strKeyPath
     if( bEnc == true )
     {
         pub_enc_dec_dlg_->mEncryptRadio->setChecked(true);
-        pub_enc_dec_dlg_->mCertPath->setText( strKeyPath );
+
         pub_enc_dec_dlg_->clickEncrypt();
     }
     else
     {
         pub_enc_dec_dlg_->mDecryptRadio->setChecked(true);
-        pub_enc_dec_dlg_->mPriKeyPath->setText( strKeyPath );
+
         pub_enc_dec_dlg_->clickDecrypt();
     }
 

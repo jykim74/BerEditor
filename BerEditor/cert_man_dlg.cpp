@@ -1518,7 +1518,7 @@ void CertManDlg::clickRunSign()
     QString strPriPath = QString("%1/%2").arg( strPath ).arg( kPriKeyFile );
     QString strCertPath = QString("%1/%2").arg( strPath ).arg( kCertFile );
 
-    berApplet->mainWindow()->runSignVerify( true, true, strPriPath );
+    berApplet->mainWindow()->runSignVerify( true, true, strPriPath, strCertPath );
 }
 
 void CertManDlg::clickRunVerify()
@@ -1533,7 +1533,7 @@ void CertManDlg::clickRunVerify()
     QString strPriPath = QString("%1/%2").arg( strPath ).arg( kPriKeyFile );
     QString strCertPath = QString("%1/%2").arg( strPath ).arg( kCertFile );
 
-    berApplet->mainWindow()->runSignVerify( false, true, strCertPath );
+    berApplet->mainWindow()->runSignVerify( false, true, strPriPath, strCertPath );
 }
 
 void CertManDlg::clickRunPubEnc()
@@ -1548,7 +1548,7 @@ void CertManDlg::clickRunPubEnc()
     QString strPriPath = QString("%1/%2").arg( strPath ).arg( kPriKeyFile );
     QString strCertPath = QString("%1/%2").arg( strPath ).arg( kCertFile );
 
-    berApplet->mainWindow()->runPubEncDec( true, true, strCertPath );
+    berApplet->mainWindow()->runPubEncDec( true, true, strPriPath, strCertPath );
 }
 
 void CertManDlg::clickRunPubDec()
@@ -1563,7 +1563,7 @@ void CertManDlg::clickRunPubDec()
     QString strPriPath = QString("%1/%2").arg( strPath ).arg( kPriKeyFile );
     QString strCertPath = QString("%1/%2").arg( strPath ).arg( kCertFile );
 
-    berApplet->mainWindow()->runPubEncDec( false, true, strPriPath );
+    berApplet->mainWindow()->runPubEncDec( false, true, strPriPath, strCertPath );
 }
 
 void CertManDlg::clickOK()
@@ -2019,7 +2019,7 @@ void CertManDlg::clickRunVerifyOther()
 
     const QString strPath = item->data( Qt::UserRole ).toString();
 
-    berApplet->mainWindow()->runSignVerify( false, true, strPath );
+    berApplet->mainWindow()->runSignVerify( false, true, "", strPath );
 }
 
 void CertManDlg::clickRunPubEncOther()
@@ -2035,7 +2035,7 @@ void CertManDlg::clickRunPubEncOther()
 
     const QString strPath = item->data( Qt::UserRole ).toString();
 
-    berApplet->mainWindow()->runPubEncDec( true, true, strPath );
+    berApplet->mainWindow()->runPubEncDec( true, true, "", strPath );
 }
 
 void CertManDlg::clickAddCRL()

@@ -865,11 +865,15 @@ void PubEncDecDlg::changeTag( const QString& text )
 void PubEncDecDlg::clickEncrypt()
 {
     mRunBtn->setText( tr("Encrypt" ));
+    mCertPath->setEnabled(true);
+    mPriKeyPath->setEnabled(false);
 }
 
 void PubEncDecDlg::clickDecrypt()
 {
     mRunBtn->setText( tr("Decrypt" ) );
+    mCertPath->setEnabled(false);
+    mPriKeyPath->setEnabled(true);
 }
 
 void PubEncDecDlg::clickInputClear()

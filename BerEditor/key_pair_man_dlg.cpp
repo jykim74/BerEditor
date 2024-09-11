@@ -656,7 +656,7 @@ void KeyPairManDlg::clickLRunSign()
     strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
     strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
 
-    berApplet->mainWindow()->runSignVerify( true, false, strPriKeyPath );
+    berApplet->mainWindow()->runSignVerify( true, false, strPriKeyPath, strPubKeyPath );
 }
 
 void KeyPairManDlg::clickLRunVerify()
@@ -674,7 +674,7 @@ void KeyPairManDlg::clickLRunVerify()
     strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
     strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
 
-    berApplet->mainWindow()->runSignVerify( false, false, strPubKeyPath );
+    berApplet->mainWindow()->runSignVerify( false, false, strPubKeyPath, strPubKeyPath );
 }
 
 void KeyPairManDlg::clickLRunPubEnc()
@@ -692,7 +692,7 @@ void KeyPairManDlg::clickLRunPubEnc()
     strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
     strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
 
-    berApplet->mainWindow()->runPubEncDec( true, false, strPubKeyPath );
+    berApplet->mainWindow()->runPubEncDec( true, false, strPriKeyPath, strPubKeyPath );
 }
 
 void KeyPairManDlg::clickLRunPubDec()
@@ -710,7 +710,7 @@ void KeyPairManDlg::clickLRunPubDec()
     strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
     strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
 
-    berApplet->mainWindow()->runPubEncDec( false, false, strPriKeyPath );
+    berApplet->mainWindow()->runPubEncDec( false, false, strPriKeyPath, strPubKeyPath );
 }
 
 void KeyPairManDlg::clickSaveToList()

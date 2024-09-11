@@ -1311,12 +1311,16 @@ void SignVerifyDlg::clickSign()
 {
     mRunBtn->setText( tr( "Sign" ));
     mDigestBtn->setText( tr( "SignDigest" ));
+    mPriKeyPath->setEnabled( true );
+    mCertPath->setEnabled(false);
 }
 
 void SignVerifyDlg::clickVerify()
 {
     mRunBtn->setText( tr( "Verify"));
     mDigestBtn->setText( tr( "VerifyDigest" ));
+    mPriKeyPath->setEnabled( false );
+    mCertPath->setEnabled( true );
 }
 
 void SignVerifyDlg::clickInputClear()
