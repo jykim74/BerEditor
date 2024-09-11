@@ -432,6 +432,12 @@ void PubEncDecDlg::Run()
             berApplet->log( QString( "Enc PublicKey : %1").arg(getHexString(&binPubKey)));
             berApplet->log( QString( "Enc Output    : %1" ).arg( getHexString( &binOut )));
             berApplet->logLine();
+
+            berApplet->messageLog( tr( "Public key encryption success" ), this );
+        }
+        else
+        {
+            berApplet->warnLog( tr( "Public key encryption failed: %1").arg( ret ), this );
         }
     }
     else {
@@ -526,13 +532,19 @@ void PubEncDecDlg::Run()
         if( ret == 0 )
         {
             berApplet->logLine();
-            berApplet->log( "-- Public Decrypt" );
+            berApplet->log( "-- Private Decrypt" );
             berApplet->logLine();
             berApplet->log( QString( "Algorithm      : %1").arg( mAlgCombo->currentText() ));
             berApplet->log( QString( "Dec Src        : %1").arg( getHexString(&binSrc)));
             berApplet->log( QString( "Dec PrivateKey : %1").arg(getHexString(&binPri)));
             berApplet->log( QString( "Dec Output     : %1" ).arg( getHexString( &binOut )));
             berApplet->logLine();
+
+            berApplet->messageLog( tr( "Private key decryption success" ), this );
+        }
+        else
+        {
+            berApplet->warnLog( tr( "Private key decryption failed: %1").arg( ret ), this );
         }
     }
 

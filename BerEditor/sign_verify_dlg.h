@@ -45,9 +45,6 @@ private slots:
     void inputChanged();
     void outputChanged();
 
-    void clickSign();
-    void clickVerify();
-
     void clickInputClear();
     void clickOutputClear();
 
@@ -59,17 +56,21 @@ private slots:
     void clickPriKeyType();
     void clickCertType();
 
-    void checkUseKeyAlg();
-    void clickClearDataAll();
     void clickFindSrcFile();
-
     void changeInputTab( int index );
-    void checkEncPriKey();
 
     void fileRunThread();
     void startTask();
     void onTaskFinished();
     void onTaskUpdate( int nUpdate );
+
+public slots:
+    void checkEncPriKey();
+    void checkUseKeyAlg();
+    void clickSign();
+    void clickVerify();
+    void clickClearDataAll();
+
 private:
     void initialize();
     void appendStatusLabel( const QString& strLabel );

@@ -76,6 +76,11 @@ private slots:
     void clickViewPriKey();
     void clickViewPubKey();
 
+    void clickRunSign();
+    void clickRunVerify();
+    void clickRunPubEnc();
+    void clickRunPubDec();
+
     void clickOK();
 
     void clickAddCA();
@@ -89,6 +94,9 @@ private slots:
     void clickViewOther();
     void clickDecodeOther();
     void clickViewPubKeyOther();
+
+    void clickRunVerifyOther();
+    void clickRunPubEncOther();
 
     void clickAddCRL();
     void clickRemoveCRL();

@@ -5,6 +5,7 @@
 #include "gen_key_pair_dlg.h"
 #include "make_csr_dlg.h"
 #include "ber_applet.h"
+#include "mainwindow.h"
 #include "common.h"
 #include "cert_info_dlg.h"
 #include "csr_info_dlg.h"
@@ -45,6 +46,11 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
     connect( mLViewPubKeyBtn, SIGNAL(clicked()), this, SLOT(clickLViewPubKey()));
     connect( mLDecodePriKeyBtn, SIGNAL(clicked()), this, SLOT(clickLDecodePriKey()));
     connect( mLDecodePubKeyBtn, SIGNAL(clicked()), this, SLOT(clickLDecodePubKey()));
+
+    connect( mLRunSignBtn, SIGNAL(clicked()), this, SLOT(clickLRunSign()));
+    connect( mLRunVerifyBtn, SIGNAL(clicked()), this, SLOT(clickLRunVerify()));
+    connect( mLRunPubEncBtn, SIGNAL(clicked()), this, SLOT(clickLRunPubEnc()));
+    connect( mLRunPubDecBtn, SIGNAL(clicked()), this, SLOT(clickLRunPubDec()));
 
     connect( mSaveToListBtn, SIGNAL(clicked()), this, SLOT(clickSaveToList()));
     connect( mMakeCSRBtn, SIGNAL(clicked()), this, SLOT(clickMakeCSR()));
@@ -633,6 +639,78 @@ void KeyPairManDlg::clickLDecodePubKey()
     JS_BIN_fileReadBER( strPubKeyPath.toLocal8Bit().toStdString().c_str(), &binPub );
     berApplet->decodeData( &binPub, strPubKeyPath );
     JS_BIN_reset( &binPub );
+}
+
+void KeyPairManDlg::clickLRunSign()
+{
+    QString strPubKeyPath;
+    QString strPriKeyPath;
+    QString strPath = getSelectedPath();
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Please select keypair" ), this );
+        return;
+    }
+
+    strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
+    strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+
+    berApplet->mainWindow()->runSignVerify( true, false, strPriKeyPath );
+}
+
+void KeyPairManDlg::clickLRunVerify()
+{
+    QString strPubKeyPath;
+    QString strPriKeyPath;
+    QString strPath = getSelectedPath();
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Please select keypair" ), this );
+        return;
+    }
+
+    strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
+    strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+
+    berApplet->mainWindow()->runSignVerify( false, false, strPubKeyPath );
+}
+
+void KeyPairManDlg::clickLRunPubEnc()
+{
+    QString strPubKeyPath;
+    QString strPriKeyPath;
+    QString strPath = getSelectedPath();
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Please select keypair" ), this );
+        return;
+    }
+
+    strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
+    strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+
+    berApplet->mainWindow()->runPubEncDec( true, false, strPubKeyPath );
+}
+
+void KeyPairManDlg::clickLRunPubDec()
+{
+    QString strPubKeyPath;
+    QString strPriKeyPath;
+    QString strPath = getSelectedPath();
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Please select keypair" ), this );
+        return;
+    }
+
+    strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
+    strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+
+    berApplet->mainWindow()->runPubEncDec( false, false, strPriKeyPath );
 }
 
 void KeyPairManDlg::clickSaveToList()

@@ -133,17 +133,10 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="2">
-             <widget class="QPushButton" name="mLMakeCSRBtn">
+            <item row="1" column="1">
+             <widget class="QPushButton" name="mLViewPubKeyBtn">
               <property name="text">
-               <string>Make CSR</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QPushButton" name="mLDeleteBtn">
-              <property name="text">
-               <string>Delete</string>
+               <string>View PubKey</string>
               </property>
              </widget>
             </item>
@@ -154,17 +147,17 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="3">
-             <widget class="QPushButton" name="mLDecodePubKeyBtn">
+            <item row="0" column="1">
+             <widget class="QPushButton" name="mLDeleteBtn">
               <property name="text">
-               <string>Decode PubKey</string>
+               <string>Delete</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
-             <widget class="QPushButton" name="mLViewPubKeyBtn">
+            <item row="0" column="3">
+             <widget class="QPushButton" name="mLEncryptBtn">
               <property name="text">
-               <string>View PubKey</string>
+               <string>Encrypt</string>
               </property>
              </widget>
             </item>
@@ -175,10 +168,45 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="3">
-             <widget class="QPushButton" name="mLEncryptBtn">
+            <item row="0" column="2">
+             <widget class="QPushButton" name="mLMakeCSRBtn">
               <property name="text">
-               <string>Encrypt</string>
+               <string>Make CSR</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="3">
+             <widget class="QPushButton" name="mLDecodePubKeyBtn">
+              <property name="text">
+               <string>Decode PubKey</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QPushButton" name="mLRunSignBtn">
+              <property name="text">
+               <string>Run Sign</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QPushButton" name="mLRunVerifyBtn">
+              <property name="text">
+               <string>Run Verify</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="2">
+             <widget class="QPushButton" name="mLRunPubEncBtn">
+              <property name="text">
+               <string>Run Encrypt</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="3">
+             <widget class="QPushButton" name="mLRunPubDecBtn">
+              <property name="text">
+               <string>Run Decrypt</string>
               </property>
              </widget>
             </item>
@@ -914,6 +942,10 @@
   <tabstop>mLViewPubKeyBtn</tabstop>
   <tabstop>mLDecodePriKeyBtn</tabstop>
   <tabstop>mLDecodePubKeyBtn</tabstop>
+  <tabstop>mLRunSignBtn</tabstop>
+  <tabstop>mLRunVerifyBtn</tabstop>
+  <tabstop>mLRunPubEncBtn</tabstop>
+  <tabstop>mLRunPubDecBtn</tabstop>
   <tabstop>mSavePEMCheck</tabstop>
   <tabstop>mPriPathText</tabstop>
   <tabstop>mFindPriKeyBtn</tabstop>

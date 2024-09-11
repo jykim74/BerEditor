@@ -51,6 +51,10 @@ CertManDlg::CertManDlg(QWidget *parent) :
     connect( mChangePasswdBtn, SIGNAL(clicked()), this, SLOT(clickChangePasswd()));
     connect( mViewPriKeyBtn, SIGNAL(clicked()), this, SLOT(clickViewPriKey()));
     connect( mViewPubKeyBtn, SIGNAL(clicked()), this, SLOT(clickViewPubKey()));
+    connect( mRunSignBtn, SIGNAL(clicked()), this, SLOT(clickRunSign()));
+    connect( mRunVerifyBtn, SIGNAL(clicked()), this, SLOT(clickRunVerify()));
+    connect( mRunPubEncBtn, SIGNAL(clicked()), this, SLOT(clickRunPubEnc()));
+    connect( mRunPubDecBtn, SIGNAL(clicked()), this, SLOT(clickRunPubDec()));
 
     connect( mAddCABtn, SIGNAL(clicked()), this, SLOT(clickAddCA()));
     connect( mRemoveCABtn, SIGNAL(clicked()), this, SLOT(clickRemoveCA()));
@@ -63,6 +67,8 @@ CertManDlg::CertManDlg(QWidget *parent) :
     connect( mViewOtherBtn, SIGNAL(clicked()), this, SLOT(clickViewOther()));
     connect( mDecodeOtherBtn, SIGNAL(clicked()), this, SLOT(clickDecodeOther()));
     connect( mViewPubKeyOtherBtn, SIGNAL(clicked()), this, SLOT(clickViewPubKeyOther()));
+    connect( mRunOtherVerifyBtn, SIGNAL(clicked()), this, SLOT(clickRunVerifyOther()));
+    connect( mRunOtherPubEncBtn, SIGNAL(clicked()), this, SLOT(clickRunPubEncOther()));
 
     connect( mAddCRLBtn, SIGNAL(clicked()), this, SLOT(clickAddCRL()));
     connect( mRemoveCRLBtn, SIGNAL(clicked()), this, SLOT(clickRemoveCRL()));
@@ -1500,6 +1506,66 @@ end :
     JS_BIN_reset( &binPub );
 }
 
+void CertManDlg::clickRunSign()
+{
+    QString strPath = getSeletedPath();
+    if( strPath.length() < 1 )
+    {
+        berApplet->elog( QString( "There is no selected item" ) );
+        return;
+    }
+
+    QString strPriPath = QString("%1/%2").arg( strPath ).arg( kPriKeyFile );
+    QString strCertPath = QString("%1/%2").arg( strPath ).arg( kCertFile );
+
+    berApplet->mainWindow()->runSignVerify( true, true, strPriPath );
+}
+
+void CertManDlg::clickRunVerify()
+{
+    QString strPath = getSeletedPath();
+    if( strPath.length() < 1 )
+    {
+        berApplet->elog( QString( "There is no selected item" ) );
+        return;
+    }
+
+    QString strPriPath = QString("%1/%2").arg( strPath ).arg( kPriKeyFile );
+    QString strCertPath = QString("%1/%2").arg( strPath ).arg( kCertFile );
+
+    berApplet->mainWindow()->runSignVerify( false, true, strCertPath );
+}
+
+void CertManDlg::clickRunPubEnc()
+{
+    QString strPath = getSeletedPath();
+    if( strPath.length() < 1 )
+    {
+        berApplet->elog( QString( "There is no selected item" ) );
+        return;
+    }
+
+    QString strPriPath = QString("%1/%2").arg( strPath ).arg( kPriKeyFile );
+    QString strCertPath = QString("%1/%2").arg( strPath ).arg( kCertFile );
+
+    berApplet->mainWindow()->runPubEncDec( true, true, strCertPath );
+}
+
+void CertManDlg::clickRunPubDec()
+{
+    QString strPath = getSeletedPath();
+    if( strPath.length() < 1 )
+    {
+        berApplet->elog( QString( "There is no selected item" ) );
+        return;
+    }
+
+    QString strPriPath = QString("%1/%2").arg( strPath ).arg( kPriKeyFile );
+    QString strCertPath = QString("%1/%2").arg( strPath ).arg( kCertFile );
+
+    berApplet->mainWindow()->runPubEncDec( false, true, strPriPath );
+}
+
 void CertManDlg::clickOK()
 {
     int ret = 0;
@@ -1938,6 +2004,38 @@ void CertManDlg::clickViewPubKeyOther()
 end :
     JS_BIN_reset( &binCert );
     JS_BIN_reset( &binPub );
+}
+
+void CertManDlg::clickRunVerifyOther()
+{
+    QModelIndex idx = mOther_CertTable->currentIndex();
+
+    QTableWidgetItem* item = mOther_CertTable->item( idx.row(), 0 );
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "Please select a certificate" ), this );
+        return;
+    }
+
+    const QString strPath = item->data( Qt::UserRole ).toString();
+
+    berApplet->mainWindow()->runSignVerify( false, true, strPath );
+}
+
+void CertManDlg::clickRunPubEncOther()
+{
+    QModelIndex idx = mOther_CertTable->currentIndex();
+
+    QTableWidgetItem* item = mOther_CertTable->item( idx.row(), 0 );
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "Please select a certificate" ), this );
+        return;
+    }
+
+    const QString strPath = item->data( Qt::UserRole ).toString();
+
+    berApplet->mainWindow()->runPubEncDec( true, true, strPath );
 }
 
 void CertManDlg::clickAddCRL()

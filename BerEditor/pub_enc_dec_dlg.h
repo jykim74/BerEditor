@@ -43,19 +43,19 @@ private slots:
     void clickPriKeyType();
     void clickCertType();
 
-    void checkUseKeyAlg();
-    void clickClearDataAll();
-    void checkEncPriKey();
-
     void changeOtherPub();
     void changeIV( const QString& text );
     void changeTag( const QString& text );
 
-    void clickEncrypt();
-    void clickDecrypt();
-
     void clickInputClear();
     void clickOutputClear();
+
+public slots:
+    void clickEncrypt();
+    void clickDecrypt();
+    void checkUseKeyAlg();
+    void checkEncPriKey();
+    void clickClearDataAll();
 
 private:
     void initialize();

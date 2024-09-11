@@ -93,6 +93,9 @@ public:
     void decodeTTLV( const BIN *pData );
     bool isTTLV();
 
+    void runSignVerify( bool bSign, bool bEncPri, const QString strKeyPath );
+    void runPubEncDec( bool bEnc, bool bEncPri, const QString strKeyPath );
+
 private slots:
     void changeTableTab();
 

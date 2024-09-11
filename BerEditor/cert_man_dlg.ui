@@ -189,45 +189,10 @@
           </property>
           <item>
            <layout class="QGridLayout" name="gridLayout_4">
-            <item row="0" column="2">
-             <widget class="QPushButton" name="mDecodeCertBtn">
-              <property name="text">
-               <string>Decode Cert</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0">
-             <widget class="QPushButton" name="mViewCertBtn">
-              <property name="text">
-               <string>View Cert</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QPushButton" name="mImportBtn">
-              <property name="text">
-               <string>Import PFX</string>
-              </property>
-             </widget>
-            </item>
             <item row="1" column="1">
              <widget class="QPushButton" name="mExportBtn">
               <property name="text">
                <string>Export PFX</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="3">
-             <widget class="QPushButton" name="mChangePasswdBtn">
-              <property name="text">
-               <string>Change Passwd</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="2">
-             <widget class="QPushButton" name="mCheckKeyPairBtn">
-              <property name="text">
-               <string>Check KeyPair</string>
               </property>
              </widget>
             </item>
@@ -238,10 +203,31 @@
               </property>
              </widget>
             </item>
+            <item row="0" column="3">
+             <widget class="QPushButton" name="mChangePasswdBtn">
+              <property name="text">
+               <string>Change Passwd</string>
+              </property>
+             </widget>
+            </item>
             <item row="0" column="1">
              <widget class="QPushButton" name="mDelCertBtn">
               <property name="text">
                <string>Delete Cert</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QPushButton" name="mImportBtn">
+              <property name="text">
+               <string>Import PFX</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QPushButton" name="mCheckKeyPairBtn">
+              <property name="text">
+               <string>Check KeyPair</string>
               </property>
              </widget>
             </item>
@@ -252,10 +238,52 @@
               </property>
              </widget>
             </item>
+            <item row="2" column="2">
+             <widget class="QPushButton" name="mRunSignBtn">
+              <property name="text">
+               <string>Run Sign</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="3">
+             <widget class="QPushButton" name="mRunVerifyBtn">
+              <property name="text">
+               <string>Run Verify</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QPushButton" name="mViewCertBtn">
+              <property name="text">
+               <string>View Cert</string>
+              </property>
+             </widget>
+            </item>
             <item row="2" column="1">
              <widget class="QPushButton" name="mViewPubKeyBtn">
               <property name="text">
                <string>View PubKey</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QPushButton" name="mDecodeCertBtn">
+              <property name="text">
+               <string>Decode Cert</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QPushButton" name="mRunPubEncBtn">
+              <property name="text">
+               <string>Run Encrypt</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QPushButton" name="mRunPubDecBtn">
+              <property name="text">
+               <string>Run Decrypt</string>
               </property>
              </widget>
             </item>
@@ -391,6 +419,20 @@
              <widget class="QPushButton" name="mViewPubKeyOtherBtn">
               <property name="text">
                <string>View PubKey</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="mRunOtherVerifyBtn">
+              <property name="text">
+               <string>Run Verify</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QPushButton" name="mRunOtherPubEncBtn">
+              <property name="text">
+               <string>Run Encrypt</string>
               </property>
              </widget>
             </item>
@@ -1285,6 +1327,12 @@
   <tabstop>mExportBtn</tabstop>
   <tabstop>mCheckKeyPairBtn</tabstop>
   <tabstop>mDecodePriKeyBtn</tabstop>
+  <tabstop>mViewPriKeyBtn</tabstop>
+  <tabstop>mViewPubKeyBtn</tabstop>
+  <tabstop>mRunSignBtn</tabstop>
+  <tabstop>mRunVerifyBtn</tabstop>
+  <tabstop>mRunPubEncBtn</tabstop>
+  <tabstop>mRunPubDecBtn</tabstop>
   <tabstop>mOtherCertPathText</tabstop>
   <tabstop>mOther_CertTable</tabstop>
   <tabstop>mAddOtherBtn</tabstop>
@@ -1292,6 +1340,8 @@
   <tabstop>mViewOtherBtn</tabstop>
   <tabstop>mDecodeOtherBtn</tabstop>
   <tabstop>mViewPubKeyOtherBtn</tabstop>
+  <tabstop>mRunOtherVerifyBtn</tabstop>
+  <tabstop>mRunOtherPubEncBtn</tabstop>
   <tabstop>mCAPathText</tabstop>
   <tabstop>mCA_CertTable</tabstop>
   <tabstop>mAddCABtn</tabstop>
