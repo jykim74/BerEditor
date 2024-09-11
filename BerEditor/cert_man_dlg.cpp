@@ -1511,7 +1511,7 @@ void CertManDlg::clickRunSign()
     QString strPath = getSeletedPath();
     if( strPath.length() < 1 )
     {
-        berApplet->elog( QString( "There is no selected item" ) );
+        berApplet->warningBox( QString( "There is no selected item" ), this );
         return;
     }
 
@@ -1526,7 +1526,7 @@ void CertManDlg::clickRunVerify()
     QString strPath = getSeletedPath();
     if( strPath.length() < 1 )
     {
-        berApplet->elog( QString( "There is no selected item" ) );
+        berApplet->warningBox( QString( "There is no selected item" ), this );
         return;
     }
 
@@ -1541,7 +1541,7 @@ void CertManDlg::clickRunPubEnc()
     QString strPath = getSeletedPath();
     if( strPath.length() < 1 )
     {
-        berApplet->elog( QString( "There is no selected item" ) );
+        berApplet->warningBox( QString( "There is no selected item" ), this );
         return;
     }
 
@@ -1556,7 +1556,7 @@ void CertManDlg::clickRunPubDec()
     QString strPath = getSeletedPath();
     if( strPath.length() < 1 )
     {
-        berApplet->elog( QString( "There is no selected item" ) );
+        berApplet->warningBox( QString( "There is no selected item" ), this );
         return;
     }
 
