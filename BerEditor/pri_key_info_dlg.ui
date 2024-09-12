@@ -37,7 +37,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tabRSA">
       <attribute name="title">
@@ -947,6 +947,25 @@
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
         <layout class="QGridLayout" name="gridLayout_4">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_10">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Curve OID</string>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="1">
           <widget class="QLineEdit" name="mECC_CurveOIDText">
            <property name="palette">
@@ -991,22 +1010,43 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_10">
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>0</height>
-            </size>
-           </property>
+         <item row="0" column="2">
+          <widget class="QLineEdit" name="mECC_CurveSNText">
            <property name="maximumSize">
             <size>
-             <width>80</width>
+             <width>120</width>
              <height>16777215</height>
             </size>
            </property>
-           <property name="text">
-            <string>Curve OID</string>
+           <property name="palette">
+            <palette>
+             <active>
+              <colorrole role="Base">
+               <brush brushstyle="SolidPattern">
+                <color alpha="255">
+                 <red>221</red>
+                 <green>221</green>
+                 <blue>255</blue>
+                </color>
+               </brush>
+              </colorrole>
+             </active>
+             <inactive>
+              <colorrole role="Base">
+               <brush brushstyle="SolidPattern">
+                <color alpha="255">
+                 <red>221</red>
+                 <green>221</green>
+                 <blue>255</blue>
+                </color>
+               </brush>
+              </colorrole>
+             </inactive>
+             <disabled/>
+            </palette>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -2335,19 +2375,26 @@
     </widget>
    </item>
    <item>
-    <widget class="Line" name="line_2">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QGridLayout" name="gridLayout">
+    <layout class="QGridLayout" name="gridLayout_10">
      <property name="topMargin">
       <number>0</number>
      </property>
+     <item row="0" column="6">
+      <widget class="QPushButton" name="mApplyChangeBtn">
+       <property name="text">
+        <string>Apply Change</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="1">
-      <spacer name="horizontalSpacer">
+      <widget class="QPushButton" name="mCheckKeyPairBtn">
+       <property name="text">
+        <string>Check KeyPair</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <spacer name="horizontalSpacer_6">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -2360,16 +2407,71 @@
       </spacer>
      </item>
      <item row="0" column="0">
+      <widget class="QPushButton" name="mCheckPubKeyBtn">
+       <property name="text">
+        <string>Check PublicKey</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QCheckBox" name="mEditModeCheck">
+       <property name="text">
+        <string>Edit Mode</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
       <widget class="QPushButton" name="mDecodeBtn">
        <property name="text">
         <string>Decode</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="4">
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="3">
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="6">
       <widget class="QPushButton" name="mCloseBtn">
        <property name="text">
         <string>Close</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mSavePriKeyBtn">
+       <property name="text">
+        <string>Save PriKey</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mSavePubKeyBtn">
+       <property name="text">
+        <string>Save PubKey</string>
        </property>
       </widget>
      </item>
@@ -2417,7 +2519,6 @@
   <tabstop>mEdDSA_RawPrivateText</tabstop>
   <tabstop>mEdDSA_RawPublicLenText</tabstop>
   <tabstop>mEdDSA_RawPublicText</tabstop>
-  <tabstop>mDecodeBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>

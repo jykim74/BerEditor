@@ -465,21 +465,8 @@ int CertInfoDlg::saveAsPEM( const BIN *pData )
 {
     if( pData == NULL || pData->nLen <= 0 ) return -1;
 
-
-    QFileDialog::Options options;
-    options |= QFileDialog::DontUseNativeDialog;
-
     QString strPath = berApplet->curFolder();
-
-    QString strFilter = tr("Cert Files (*.crt);;CRL Files (*.crl);;PEM Files (*.pem);;All Files (*.*)");
-    QString selectedFilter;
-
-    QString fileName = QFileDialog::getSaveFileName( this,
-                                                    tr("Export Files"),
-                                                    strPath,
-                                                    strFilter,
-                                                    &selectedFilter,
-                                                    options );
+    QString fileName = findSaveFile( this, JS_FILE_TYPE_CERT, strPath );
 
     if( fileName.length() > 0 )
     {

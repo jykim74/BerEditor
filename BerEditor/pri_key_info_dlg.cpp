@@ -3,17 +3,19 @@
  *
  * All rights reserved.
  */
+#include <QFileDialog>
+
 #include "js_bin.h"
 #include "js_pki.h"
 #include "js_pki_eddsa.h"
 #include "js_pki_tools.h"
+#include "js_pki_key.h"
 
 #include "ber_applet.h"
 #include "pri_key_info_dlg.h"
 #include "settings_mgr.h"
 #include "mainwindow.h"
 #include "js_pkcs11.h"
-#include "js_pki_tools.h"
 #include "js_error.h"
 #include "common.h"
 
@@ -22,6 +24,7 @@ PriKeyInfoDlg::PriKeyInfoDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
+    key_type_ = -1;
 
     memset( &pri_key_, 0x00, sizeof(BIN));
     memset( &pub_key_, 0x00, sizeof(BIN));
@@ -50,6 +53,13 @@ PriKeyInfoDlg::PriKeyInfoDlg(QWidget *parent) :
     connect( mEdDSA_RawPublicText, SIGNAL(textChanged()), this, SLOT(changeEdDSA_RawPublic()));
     connect( mEdDSA_RawPrivateText, SIGNAL(textChanged()), this, SLOT(changeEdDSA_RawPrivate()));
     connect( mDecodeBtn, SIGNAL(clicked()), this, SLOT(clickDecode()));
+    connect( mCheckPubKeyBtn, SIGNAL(clicked()), this, SLOT(clickCheckPubKey()));
+
+    connect( mCheckKeyPairBtn, SIGNAL(clicked()), this, SLOT(clickCheckKeyPair()));
+    connect( mApplyChangeBtn, SIGNAL(clicked()), this, SLOT(clickApplyChange()));
+    connect( mSavePriKeyBtn, SIGNAL(clicked()), this, SLOT(clickSavePriKey()));
+    connect( mSavePubKeyBtn, SIGNAL(clicked()), this, SLOT(clickSavePubKey()));
+    connect( mEditModeCheck, SIGNAL(clicked()), this, SLOT(checkEditMode()));
 
     initialize();
     mCloseBtn->setDefault(true);
@@ -133,7 +143,8 @@ void PriKeyInfoDlg::setECCKey( const BIN *pKey, bool bPri )
     if( ret == 0 )
     {
         QString strSN = JS_PKI_getSNFromOID( sECKey.pCurveOID );
-        mECC_CurveOIDText->setText( QString( "%1 (%2)" ).arg(sECKey.pCurveOID).arg( strSN ) );
+        mECC_CurveOIDText->setText( sECKey.pCurveOID );
+        mECC_CurveSNText->setText( strSN );
 
         mECC_PubXText->setPlainText( sECKey.pPubX );
         mECC_PubYText->setPlainText( sECKey.pPubY );
@@ -340,15 +351,363 @@ void PriKeyInfoDlg::clearAll()
 
 void PriKeyInfoDlg::clickDecode()
 {
+    if( mEditModeCheck->isChecked() == true )
+    {
+        berApplet->warningBox( tr( "Not available in edit mode" ), this );
+        return;
+    }
+
     if( pri_key_.nLen > 0 )
         berApplet->decodeData( &pri_key_, NULL );
     else
         berApplet->decodeData( &pub_key_, NULL );
 }
 
+void PriKeyInfoDlg::clickCheckPubKey()
+{
+    if( mEditModeCheck->isChecked() == true )
+    {
+        berApplet->warningBox( tr( "Not available in edit mode" ), this );
+        return;
+    }
+
+    int ret = 0;
+    if( pub_key_.nLen > 0 )
+    {
+        ret = JS_PKI_checkPublicKey( &pub_key_ );
+    }
+    else
+    {
+        BIN binPub = {0,0};
+        JS_PKI_getPubKeyFromPriKey( key_type_, &pri_key_, &binPub );
+        ret = JS_PKI_checkPublicKey( &binPub );
+        JS_BIN_reset( &binPub );
+    }
+
+    if( ret == JSR_VALID )
+        berApplet->messageBox( tr( "PublicKey is valid" ), this );
+    else
+        berApplet->warningBox( tr( "PublicKey is invalid" ), this );
+}
+
+void PriKeyInfoDlg::clickSavePriKey()
+{
+    if( mEditModeCheck->isChecked() == true )
+    {
+        berApplet->warningBox( tr( "Not available in edit mode" ), this );
+        return;
+    }
+
+    QString strPath = berApplet->curFolder();
+    QString fileName = findSaveFile( this, JS_FILE_TYPE_BER, strPath );
+
+    if( fileName.length() > 0 )
+    {
+        int ret = JS_BIN_writePEM( &pri_key_, JS_PEM_TYPE_PRIVATE_KEY, fileName.toLocal8Bit().toStdString().c_str() );
+        if( ret > 0 )
+        {
+            berApplet->messageBox( tr( "Save a private key as a PEM file" ), this );
+        }
+    }
+}
+
+void PriKeyInfoDlg::clickSavePubKey()
+{
+    if( mEditModeCheck->isChecked() == true )
+    {
+        berApplet->warningBox( tr( "Not available in edit mode" ), this );
+        return;
+    }
+
+    BIN binPub = {0,0};
+
+    if( pri_key_.nLen > 0 )
+        JS_PKI_getPubKeyFromPriKey( key_type_, &pri_key_, &binPub );
+    else
+        JS_BIN_copy( &binPub, &pub_key_ );
+
+    QString strPath = berApplet->curFolder();
+    QString fileName = findSaveFile( this, JS_FILE_TYPE_BER, strPath );
+
+    if( fileName.length() > 0 )
+    {
+        int ret = JS_BIN_writePEM( &pri_key_, JS_PEM_TYPE_PUBLIC_KEY, fileName.toLocal8Bit().toStdString().c_str() );
+        if( ret > 0 )
+        {
+            berApplet->messageBox( tr( "Save a public key as a PEM file" ), this );
+        }
+    }
+
+    JS_BIN_reset( &binPub );
+}
+
+void PriKeyInfoDlg::clickCheckKeyPair()
+{
+    if( mEditModeCheck->isChecked() == true )
+    {
+        berApplet->warningBox( tr( "Not available in edit mode" ), this );
+        return;
+    }
+
+    BIN binPub = {0,0};
+
+    int ret = JS_PKI_getPubKeyFromPriKey( key_type_, &pri_key_, &binPub );
+    if( ret != 0 ) goto end;
+
+    ret = JS_PKI_IsValidKeyPair( &pri_key_, &binPub );
+    if( ret == 1 )
+        ret = JSR_VALID;
+
+end :
+    if( ret == JSR_VALID )
+        berApplet->messageBox( tr( "KeyPair is matched" ), this );
+    else
+        berApplet->warningBox( tr( "KeyPais is not matched" ), this );
+
+    JS_BIN_reset( &binPub );
+}
+
+void PriKeyInfoDlg::clickApplyChange()
+{
+    int ret = 0;
+    BIN binKey = {0,0};
+
+    if( key_type_ == JS_PKI_KEY_TYPE_RSA )
+    {
+        JRSAKeyVal sRSAKey;
+
+        memset( &sRSAKey, 0x00, sizeof(sRSAKey));
+
+        JS_PKI_setRSAKeyVal( &sRSAKey,
+                            mRSA_NText->toPlainText().toStdString().c_str(),
+                            mRSA_EText->text().toStdString().c_str(),
+                            mRSA_DText->toPlainText().toStdString().c_str(),
+                            mRSA_PText->text().toStdString().c_str(),
+                            mRSA_QText->text().toStdString().c_str(),
+                            mRSA_DMP1Text->text().toStdString().c_str(),
+                            mRSA_DMQ1Text->text().toStdString().c_str(),
+                            mRSA_IQMPText->text().toStdString().c_str() );
+
+        if( pri_key_.nLen > 0 )
+        {
+            ret = JS_PKI_encodeRSAPrivateKey( &sRSAKey, &binKey );
+        }
+        else
+        {
+            ret = JS_PKI_encodeRSAPublicKey( &sRSAKey, &binKey );
+        }
+
+        JS_PKI_resetRSAKeyVal( &sRSAKey );
+    }
+    else if( key_type_ == JS_PKI_KEY_TYPE_ECC || key_type_ == JS_PKI_KEY_TYPE_SM2 )
+    {
+        JECKeyVal sECKey;
+
+        memset( &sECKey, 0x00, sizeof(sECKey));
+
+        JS_PKI_setECKeyVal( &sECKey,
+                           mECC_CurveOIDText->text().toStdString().c_str(),
+                           mECC_PubXText->toPlainText().toStdString().c_str(),
+                           mECC_PubYText->toPlainText().toStdString().c_str(),
+                           mECC_PrivateText->toPlainText().toStdString().c_str() );
+
+        if( pri_key_.nLen > 0 )
+        {
+            ret = JS_PKI_encodeECPrivateKey( &sECKey, &binKey );
+        }
+        else
+        {
+            ret = JS_PKI_encodeECPublicKey( &sECKey, &binKey );
+        }
+
+        JS_PKI_resetECKeyVal( &sECKey );
+    }
+    else if( key_type_ == JS_PKI_KEY_TYPE_DSA )
+    {
+        JDSAKeyVal sDSAKey;
+
+        memset( &sDSAKey, 0x00, sizeof(sDSAKey));
+
+        JS_PKI_setDSAKeyVal( &sDSAKey,
+                            mDSA_GText->toPlainText().toStdString().c_str(),
+                            mDSA_PText->toPlainText().toStdString().c_str(),
+                            mDSA_QText->text().toStdString().c_str(),
+                            mDSA_PublicText->toPlainText().toStdString().c_str(),
+                            mDSA_PrivateText->text().toStdString().c_str() );
+
+        if( pri_key_.nLen > 0 )
+        {
+            ret = JS_PKI_encodeDSAPrivateKey( &sDSAKey, &binKey );
+        }
+        else
+        {
+            ret = JS_PKI_encodeDSAPublicKey( &sDSAKey, &binKey );
+        }
+
+        JS_PKI_resetDSAKeyVal( &sDSAKey );
+    }
+    else if( key_type_ == JS_PKI_KEY_TYPE_ED25519 || key_type_ == JS_PKI_KEY_TYPE_ED448 )
+    {
+        JRawKeyVal sRawKey;
+
+        memset( &sRawKey, 0x00, sizeof(sRawKey));
+
+        JS_PKI_setRawKeyVal( &sRawKey,
+                            mEdDSA_RawPublicText->toPlainText().toStdString().c_str(),
+                            mEdDSA_RawPrivateText->toPlainText().toStdString().c_str(),
+                            mEdDSA_NameText->text().toStdString().c_str() );
+
+        if( pri_key_.nLen > 0 )
+        {
+            ret = JS_PKI_encodeRawPrivateKey( &sRawKey, &binKey );
+        }
+        else
+        {
+            ret = JS_PKI_encodeRawPublicKey( &sRawKey, &binKey );
+        }
+
+        JS_PKI_resetRawKeyVal( &sRawKey );
+    }
+
+    if( ret == 0 )
+    {
+        berApplet->messageBox( tr( "Key value change was successful" ), this );
+        if( pri_key_.nLen > 0 )
+        {
+            JS_BIN_reset( &pri_key_ );
+            JS_BIN_copy( &pri_key_, &binKey );
+        }
+        else
+        {
+            JS_BIN_reset( &pub_key_ );
+            JS_BIN_copy( &pub_key_, &binKey );
+        }
+
+        mEditModeCheck->setChecked( false );
+        mApplyChangeBtn->setEnabled( false );
+        setModeUI( false );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to apply change: %1").arg( ret ), this );
+    }
+
+    JS_BIN_reset( &binKey );
+}
+
+void PriKeyInfoDlg::setModeUI( bool bVal )
+{
+    QString strStyle;
+
+    if( bVal == true )
+        strStyle = "background-color:#FFFFFF";
+    else
+        strStyle = "background-color:#ddddff";
+
+    if( key_type_ == JS_PKI_KEY_TYPE_RSA )
+    {
+        mRSA_EText->setStyleSheet( strStyle );
+        mRSA_EText->setReadOnly(!bVal);
+        mRSA_NText->setStyleSheet( strStyle );
+        mRSA_NText->setReadOnly(!bVal);
+
+        if( pri_key_.nLen > 0 )
+        {
+            mRSA_DText->setStyleSheet( strStyle );
+            mRSA_DText->setReadOnly(!bVal);
+            mRSA_PText->setStyleSheet( strStyle );
+            mRSA_PText->setReadOnly(!bVal);
+            mRSA_QText->setStyleSheet( strStyle );
+            mRSA_QText->setReadOnly(!bVal);
+            mRSA_DMP1Text->setStyleSheet( strStyle );
+            mRSA_DMP1Text->setReadOnly(!bVal);
+            mRSA_DMQ1Text->setStyleSheet( strStyle );
+            mRSA_DMQ1Text->setReadOnly(!bVal);
+            mRSA_IQMPText->setStyleSheet( strStyle );
+            mRSA_IQMPText->setReadOnly(!bVal);
+        }
+    }
+    else if( key_type_ == JS_PKI_KEY_TYPE_ECC || key_type_ == JS_PKI_KEY_TYPE_SM2 )
+    {
+        mECC_PubXText->setStyleSheet( strStyle );
+        mECC_PubXText->setReadOnly( !bVal );
+        mECC_PubYText->setStyleSheet( strStyle );
+        mECC_PubYText->setReadOnly( !bVal );
+
+        if( pri_key_.nLen > 0 )
+        {
+            mECC_PrivateText->setStyleSheet( strStyle );
+            mECC_PrivateText->setReadOnly( !bVal );
+        }
+    }
+    else if( key_type_ == JS_PKI_KEY_TYPE_DSA )
+    {
+        mDSA_GText->setStyleSheet( strStyle );
+        mDSA_GText->setReadOnly( !bVal );
+        mDSA_PText->setStyleSheet( strStyle );
+        mDSA_PText->setReadOnly( !bVal );
+        mDSA_QText->setStyleSheet( strStyle );
+        mDSA_QText->setReadOnly( !bVal );
+        mDSA_PublicText->setStyleSheet( strStyle );
+        mDSA_PublicText->setReadOnly( !bVal );
+
+        if( pri_key_.nLen > 0 )
+        {
+            mDSA_PrivateText->setStyleSheet( strStyle );
+            mDSA_PrivateText->setReadOnly( !bVal );
+        }
+    }
+    else if( key_type_ == JS_PKI_KEY_TYPE_ED25519 || key_type_ == JS_PKI_KEY_TYPE_ED448 )
+    {
+        mEdDSA_RawPublicText->setStyleSheet( strStyle );
+        mEdDSA_RawPublicText->setReadOnly( !bVal );
+
+        if( pri_key_.nLen > 0 )
+        {
+            mEdDSA_RawPrivateText->setStyleSheet( strStyle );
+            mEdDSA_RawPrivateText->setReadOnly( !bVal );
+        }
+    }
+}
+
+void PriKeyInfoDlg::checkEditMode()
+{
+    QString strStyle;
+
+    bool bVal = mEditModeCheck->isChecked();
+    mApplyChangeBtn->setEnabled( bVal );
+
+    if( bVal == false )
+    {
+        if( berApplet->yesOrCancelBox(
+                tr( "Would you like to revert to the state before editing?" ),
+                this, true ) == false )
+        {
+            mEditModeCheck->setChecked(true);
+            return;
+        }
+
+        BIN binKey = {0,0};
+        if( pri_key_.nLen > 0 )
+        {
+            JS_BIN_copy( &binKey, &pri_key_ );
+            JS_BIN_reset( &pri_key_ );
+            setPrivateKey( &binKey );
+        }
+        else
+        {
+            JS_BIN_copy( &binKey, &pub_key_ );
+            JS_BIN_reset( &pub_key_ );
+            setPublicKey( &binKey );
+        }
+        JS_BIN_reset( &binKey );
+    }
+
+    setModeUI( bVal );
+}
+
 void PriKeyInfoDlg::setPrivateKey( const BIN *pPriKey )
 {
-    int nKeyType = -1;
     clearAll();
 
     QString strTitle = tr( "Private Key Information" );
@@ -364,42 +723,41 @@ void PriKeyInfoDlg::setPrivateKey( const BIN *pPriKey )
     if( pPriKey == NULL || pPriKey->nLen <= 0 )
         return;
 
-    nKeyType = JS_PKI_getPriKeyType( pPriKey );
-    if( nKeyType < 0 ) return;
+    key_type_ = JS_PKI_getPriKeyType( pPriKey );
+    if( key_type_ < 0 ) return;
 
-    if( nKeyType == JS_PKI_KEY_TYPE_RSA )
+    if( key_type_ == JS_PKI_KEY_TYPE_RSA )
     {
         mKeyTab->setCurrentIndex(0);
         mKeyTab->setTabEnabled(0, true);
         setRSAKey( pPriKey );
     }
-    else if( nKeyType == JS_PKI_KEY_TYPE_ECC || nKeyType == JS_PKI_KEY_TYPE_SM2 )
+    else if( key_type_ == JS_PKI_KEY_TYPE_ECC || key_type_ == JS_PKI_KEY_TYPE_SM2 )
     {
         mKeyTab->setCurrentIndex(1);
         mKeyTab->setTabEnabled(1, true);
         setECCKey( pPriKey );
     }
-    else if( nKeyType == JS_PKI_KEY_TYPE_DSA )
+    else if( key_type_ == JS_PKI_KEY_TYPE_DSA )
     {
         mKeyTab->setCurrentIndex( 2 );
         mKeyTab->setTabEnabled(2, true);
         setDSAKey( pPriKey );
     }
-    else if( nKeyType == JS_PKI_KEY_TYPE_ED25519 || nKeyType == JS_PKI_KEY_TYPE_ED448 )
+    else if( key_type_ == JS_PKI_KEY_TYPE_ED25519 || key_type_ == JS_PKI_KEY_TYPE_ED448 )
     {
         mKeyTab->setCurrentIndex( 3 );
         mKeyTab->setTabEnabled(3, true);
-        setEdDSAKey( nKeyType, pPriKey );
+        setEdDSAKey( key_type_, pPriKey );
     }
     else
     {
-        berApplet->warningBox( tr("Private key algorithm(%1) not supported").arg( nKeyType ));
+        berApplet->warningBox( tr("Private key algorithm(%1) not supported").arg( key_type_ ));
     }
 }
 
 void PriKeyInfoDlg::setPublicKey( const BIN *pPubKey )
 {
-    int nKeyType = -1;
     clearAll();
 
     QString strTitle = tr( "Public Key Information" );
@@ -414,34 +772,37 @@ void PriKeyInfoDlg::setPublicKey( const BIN *pPubKey )
     if( pPubKey == NULL || pPubKey->nLen <= 0 )
         return;
 
-    nKeyType = JS_PKI_getPubKeyType( pPubKey );
+    key_type_ = JS_PKI_getPubKeyType( pPubKey );
 
-    if( nKeyType == JS_PKI_KEY_TYPE_RSA )
+    if( key_type_ == JS_PKI_KEY_TYPE_RSA )
     {
         mKeyTab->setCurrentIndex(0);
         mKeyTab->setTabEnabled(0, true);
         setRSAKey( pPubKey, false );
     }
-    else if( nKeyType == JS_PKI_KEY_TYPE_ECC || nKeyType == JS_PKI_KEY_TYPE_SM2 )
+    else if( key_type_ == JS_PKI_KEY_TYPE_ECC || key_type_ == JS_PKI_KEY_TYPE_SM2 )
     {
         mKeyTab->setCurrentIndex(1);
         mKeyTab->setTabEnabled(1, true);
         setECCKey( pPubKey, false );
     }
-    else if( nKeyType == JS_PKI_KEY_TYPE_DSA )
+    else if( key_type_ == JS_PKI_KEY_TYPE_DSA )
     {
         mKeyTab->setCurrentIndex( 2 );
         mKeyTab->setTabEnabled(2, true);
         setDSAKey( pPubKey, false );
     }
-    else if( nKeyType == JS_PKI_KEY_TYPE_ED25519 || nKeyType == JS_PKI_KEY_TYPE_ED448  )
+    else if( key_type_ == JS_PKI_KEY_TYPE_ED25519 || key_type_ == JS_PKI_KEY_TYPE_ED448  )
     {
         mKeyTab->setCurrentIndex( 3 );
         mKeyTab->setTabEnabled(3, true);
-        setEdDSAKey( nKeyType, pPubKey, false );
+        setEdDSAKey( key_type_, pPubKey, false );
     }
     else
     {
-        berApplet->warningBox( tr("Public key algorithm(%1) not supported").arg( nKeyType ));
+        berApplet->warningBox( tr("Public key algorithm(%1) not supported").arg( key_type_ ));
     }
+
+    mCheckKeyPairBtn->setEnabled(false);
+    mSavePriKeyBtn->setEnabled(false);
 }

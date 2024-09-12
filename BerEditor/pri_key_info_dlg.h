@@ -52,6 +52,13 @@ private slots:
 
     void clearAll();
     void clickDecode();
+    void clickCheckPubKey();
+
+    void clickSavePriKey();
+    void clickSavePubKey();
+    void clickCheckKeyPair();
+    void clickApplyChange();
+    void checkEditMode();
 
 private:
     void initialize();
@@ -61,8 +68,11 @@ private:
     void setDSAKey( const BIN *pKey, bool bPri = true );
     void setEdDSAKey( int nKeyType, const BIN *pKey, bool bPri = true );
 
+    void setModeUI( bool bVal );
+
     BIN pri_key_;
     BIN pub_key_;
+    int key_type_;
 };
 
 #endif // PRI_KEY_INFO_DLG_H

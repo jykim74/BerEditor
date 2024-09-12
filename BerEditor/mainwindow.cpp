@@ -50,6 +50,7 @@
 #include "ttlv_encoder_dlg.h"
 #include "make_ttlv_dlg.h"
 #include "BasicXMLSyntaxHighlighter.h"
+#include "pri_key_info_dlg.h"
 
 #include "js_pki_tools.h"
 #include "js_kms.h"
@@ -335,6 +336,20 @@ void MainWindow::createActions()
     openCSRAct->setStatusTip(tr("Open a CSR"));
     connect( openCSRAct, &QAction::triggered, this, &MainWindow::openCSR);
     fileMenu->addAction(openCSRAct);
+
+    const QIcon openKeyPairIcon = QIcon::fromTheme("document-csr", QIcon(":/images/keypair.png"));
+
+    QAction *openPriKeyAct = new QAction( openKeyPairIcon, tr("&Open PrivateKey"), this );
+    openPriKeyAct->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_R));
+    openPriKeyAct->setStatusTip(tr("Open PrivateKey"));
+    connect( openPriKeyAct, &QAction::triggered, this, &MainWindow::openPriKey);
+    fileMenu->addAction(openPriKeyAct);
+
+    QAction *openPubKeyAct = new QAction( openKeyPairIcon, tr("&Open PublicKey"), this );
+    openPubKeyAct->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_U));
+    openPubKeyAct->setStatusTip(tr("Open PublicKey"));
+    connect( openPubKeyAct, &QAction::triggered, this, &MainWindow::openPubKey);
+    fileMenu->addAction(openPubKeyAct);
 
     const QIcon saveIcon = QIcon::fromTheme("document-save", QIcon(":/images/save.png"));
     QAction *saveAct = new QAction(saveIcon, tr("&Save"), this);
@@ -653,6 +668,8 @@ void MainWindow::createActions()
 
     if( berApplet->isLicense() == false )
     {
+        openPriKeyAct->setEnabled(false);
+        openPubKeyAct->setEnabled(false);
         keyManAct->setEnabled( false );
         hashAct->setEnabled( false );
         macAct->setEnabled( false );
@@ -1109,6 +1126,96 @@ void MainWindow::openCSR()
     }
 
     JS_BIN_reset( &binCSR );
+}
+
+void MainWindow::openPriKey()
+{
+    int nKeyType = -1;
+    QString strPath = berApplet->curFile();
+
+    QString fileName = findFile( this, JS_FILE_TYPE_BER, strPath );
+    BIN binKey = {0,0};
+
+    if( fileName.length() < 1 ) return;
+
+    JS_BIN_fileReadBER( fileName.toLocal8Bit().toStdString().c_str(), &binKey );
+
+    nKeyType = JS_PKI_getPriKeyType( &binKey );
+    if( nKeyType < 0 )
+    {
+        nKeyType = JS_PKI_getPubKeyType( &binKey );
+        if( nKeyType > 0 )
+        {
+            bool bVal = berApplet->yesOrCancelBox( tr( "This file is Public Key. Open it as Public Key?"), this, true );
+            if( bVal == true )
+            {
+                PriKeyInfoDlg priKeyInfo;
+                priKeyInfo.setPublicKey( &binKey );
+                priKeyInfo.exec();
+
+                berApplet->setCurFile( strPath );
+            }
+        }
+        else
+        {
+            berApplet->warningBox( tr( "Invalid Private Key" ), this );
+        }
+    }
+    else
+    {
+        PriKeyInfoDlg priKeyInfo;
+        priKeyInfo.setPrivateKey( &binKey );
+        priKeyInfo.exec();
+
+        berApplet->setCurFile( strPath );
+    }
+
+    JS_BIN_reset( &binKey );
+}
+
+void MainWindow::openPubKey()
+{
+    int nKeyType = -1;
+    QString strPath = berApplet->curFile();
+
+    QString fileName = findFile( this, JS_FILE_TYPE_BER, strPath );
+    BIN binKey = {0,0};
+
+    if( fileName.length() < 1 ) return;
+
+    JS_BIN_fileReadBER( fileName.toLocal8Bit().toStdString().c_str(), &binKey );
+
+    nKeyType = JS_PKI_getPubKeyType( &binKey );
+    if( nKeyType < 0 )
+    {
+        nKeyType = JS_PKI_getPriKeyType( &binKey );
+        if( nKeyType > 0 )
+        {
+            bool bVal = berApplet->yesOrCancelBox( tr( "This file is Private Key. Open it as Private Key?"), this, true );
+            if( bVal == true )
+            {
+                PriKeyInfoDlg priKeyInfo;
+                priKeyInfo.setPrivateKey( &binKey );
+                priKeyInfo.exec();
+
+                berApplet->setCurFile( strPath );
+            }
+        }
+        else
+        {
+            berApplet->warningBox( tr( "Invalid Public Key" ), this );
+        }
+    }
+    else
+    {
+        PriKeyInfoDlg priKeyInfo;
+        priKeyInfo.setPublicKey( &binKey );
+        priKeyInfo.exec();
+
+        berApplet->setCurFile( strPath );
+    }
+
+    JS_BIN_reset( &binKey );
 }
 
 void MainWindow::copy()
