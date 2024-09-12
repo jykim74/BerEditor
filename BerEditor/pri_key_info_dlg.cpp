@@ -399,6 +399,11 @@ void PriKeyInfoDlg::clickSavePriKey()
     }
 
     QString strPath = berApplet->curFolder();
+    QString strAlg = JS_PKI_getKeyTypeName( key_type_ );
+
+    if( strPath.length() > 0 ) strPath += "/";
+    strPath = QString( "%1%2_private_key.pem" ).arg( strPath ).arg(strAlg);
+
     QString fileName = findSaveFile( this, JS_FILE_TYPE_BER, strPath );
 
     if( fileName.length() > 0 )
@@ -427,7 +432,14 @@ void PriKeyInfoDlg::clickSavePubKey()
         JS_BIN_copy( &binPub, &pub_key_ );
 
     QString strPath = berApplet->curFolder();
+    QString strAlg = JS_PKI_getKeyTypeName( key_type_ );
+
+    if( strPath.length() > 0 ) strPath += "/";
+    strPath = QString( "%1%2_public_key.pem" ).arg( strPath ).arg(strAlg);
+
     QString fileName = findSaveFile( this, JS_FILE_TYPE_BER, strPath );
+
+
 
     if( fileName.length() > 0 )
     {
