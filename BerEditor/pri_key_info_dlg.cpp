@@ -484,6 +484,9 @@ void PriKeyInfoDlg::clickApplyChange()
     int ret = 0;
     BIN binKey = {0,0};
 
+    bool bVal = berApplet->yesOrCancelBox( tr("Do you want to save the key value?"), this, false );
+    if( bVal == false ) return;
+
     if( key_type_ == JS_PKI_KEY_TYPE_RSA )
     {
         JRSAKeyVal sRSAKey;

@@ -29,7 +29,7 @@ private slots:
     void showEvent(QShowEvent *event);
     void closeEvent(QCloseEvent *event );
 
-
+    void keyTypeChanged( int index );
 
     void clickLGenKeyPair();
     void clickLDelete();

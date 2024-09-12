@@ -63,6 +63,11 @@ private slots:
     void showEvent(QShowEvent *event);
     void closeEvent(QCloseEvent *event );
 
+    void keyTypeChanged( int index );
+    void otherKeyTypeChanged( int index );
+    void CAKeyTypeChanged( int index );
+    void RCAKeyTypeChanged( int index );
+
     void changeTLVerison( int index );
 
     void clickViewCert();

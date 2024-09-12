@@ -25,6 +25,8 @@ static QStringList kVersionList = { "V1", "V2" };
 static QStringList kPBEv1List = { "PBE-SHA1-3DES", "PBE-SHA1-2DES" };
 static QStringList kPBEv2List = { "AES-128-CBC", "AES-256-CBC", "ARIA-128-CBC", "ARIA-256-CBC" };
 
+static QStringList kKeyTypeList = { "ALL", "RSA", "ECDSA", "DSA", "EdDSA" };
+
 CertManDlg::CertManDlg(QWidget *parent) :
     QDialog(parent)
 {
@@ -38,6 +40,11 @@ CertManDlg::CertManDlg(QWidget *parent) :
 
     connect( mCancelBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mOKBtn, SIGNAL(clicked()), this, SLOT(clickOK()));
+
+    connect( mKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(keyTypeChanged(int)));
+    connect( mOtherKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(otherKeyTypeChanged(int)));
+    connect( mCAKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(CAKeyTypeChanged(int)));
+    connect( mRCAKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(RCAKeyTypeChanged(int)));
 
     connect( mTLVersionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeTLVerison(int)));
 
@@ -181,6 +188,26 @@ void CertManDlg::closeEvent(QCloseEvent *event )
     setOKHide( false );
 }
 
+void CertManDlg::keyTypeChanged( int index )
+{
+    loadEEList();
+}
+
+void CertManDlg::otherKeyTypeChanged( int index )
+{
+    loadOtherList();
+}
+
+void CertManDlg::CAKeyTypeChanged( int index )
+{
+    loadCAList();
+}
+
+void CertManDlg::RCAKeyTypeChanged( int index )
+{
+    loadTrustList();
+}
+
 const QString CertManDlg::getModeName( int nMode )
 {
     QString strMode;
@@ -220,6 +247,10 @@ void CertManDlg::initUI()
 #else
     int nWidth = width() * 8/10;
 #endif
+    mKeyTypeCombo->addItems( kKeyTypeList );
+    mOtherKeyTypeCombo->addItems( kKeyTypeList );
+    mCAKeyTypeCombo->addItems( kKeyTypeList );
+    mRCAKeyTypeCombo->addItems( kKeyTypeList );
 
     QStringList sTableLabels = { tr( "Subject DN" ), tr( "Expire" ), tr( "Issuer DN" ) };
 
@@ -512,6 +543,8 @@ void CertManDlg::loadEEList()
     clearEEList();
 
     QString strPath = berApplet->settingsMgr()->EECertPath();
+    QString strKeyType = mKeyTypeCombo->currentText();
+
     QDir dir( strPath );
 
     for (const QFileInfo &folder : dir.entryInfoList(QDir::Dirs))
@@ -533,6 +566,7 @@ void CertManDlg::loadEEList()
         char    sNotAfter[64];
         int nKeyType = 0;
 
+
         memset( &sCertInfo, 0x00, sizeof(sCertInfo));
 
         QString strName = certFile.baseName();
@@ -541,6 +575,28 @@ void CertManDlg::loadEEList()
         JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
         if( binCert.nLen < 1 ) continue;
 
+        nKeyType = JS_PKI_getCertKeyType( &binCert );
+        if( nKeyType < 0 ) continue;
+
+        if( strKeyType == "RSA" )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_RSA ) continue;
+        }
+        else if( strKeyType == "ECDSA" )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+                continue;
+        }
+        else if( strKeyType == "DSA" )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_DSA ) continue;
+        }
+        else if( strKeyType == "EdDSA" )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_ED25519 && nKeyType != JS_PKI_KEY_TYPE_ED448 )
+                continue;
+        }
+
         ret = JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
         if( ret != 0 )
         {
@@ -548,7 +604,6 @@ void CertManDlg::loadEEList()
             continue;
         }
 
-        nKeyType = JS_PKI_getCertKeyType( &binCert );
         JS_UTIL_getDate( sCertInfo.uNotBefore, sNotBefore );
         JS_UTIL_getDate( sCertInfo.uNotAfter, sNotAfter );
 
@@ -583,6 +638,7 @@ void CertManDlg::loadOtherList()
     clearOtherList();
 
     QString strPath = berApplet->settingsMgr()->otherCertPath();
+    QString strKeyType = mOtherKeyTypeCombo->currentText();
 
     QDir dir( strPath );
     for (const QFileInfo &file : dir.entryInfoList(QDir::Files))
@@ -592,6 +648,7 @@ void CertManDlg::loadOtherList()
         char    sNotBefore[64];
         char    sNotAfter[64];
         int nKeyType = 0;
+
 
         memset( &sCertInfo, 0x00, sizeof(sCertInfo));
 
@@ -606,6 +663,28 @@ void CertManDlg::loadOtherList()
         JS_BIN_fileReadBER( file.absoluteFilePath().toLocal8Bit().toStdString().c_str(), &binCert );
         if( binCert.nLen < 1 ) continue;
 
+        nKeyType = JS_PKI_getCertKeyType( &binCert );
+        if( nKeyType < 0 ) continue;
+
+        if( strKeyType == "RSA" )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_RSA ) continue;
+        }
+        else if( strKeyType == "ECDSA" )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+                continue;
+        }
+        else if( strKeyType == "DSA" )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_DSA ) continue;
+        }
+        else if( strKeyType == "EdDSA" )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_ED25519 && nKeyType != JS_PKI_KEY_TYPE_ED448 )
+                continue;
+        }
+
         ret = JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
         if( ret != 0 )
         {
@@ -613,7 +692,6 @@ void CertManDlg::loadOtherList()
             continue;
         }
 
-        nKeyType = JS_PKI_getCertKeyType( &binCert );
         JS_UTIL_getDate( sCertInfo.uNotBefore, sNotBefore );
         JS_UTIL_getDate( sCertInfo.uNotAfter, sNotAfter );
 
@@ -649,6 +727,7 @@ void CertManDlg::loadCAList()
     clearCAList();
 
     QString strPath = berApplet->settingsMgr()->CACertPath();
+    QString strKeyType = mCAKeyTypeCombo->currentText();
 
     QDir dir( strPath );
     for (const QFileInfo &file : dir.entryInfoList(QDir::Files))
@@ -672,6 +751,28 @@ void CertManDlg::loadCAList()
         JS_BIN_fileReadBER( file.absoluteFilePath().toLocal8Bit().toStdString().c_str(), &binCert );
         if( binCert.nLen < 1 ) continue;
 
+        nKeyType = JS_PKI_getCertKeyType( &binCert );
+        if( nKeyType < 0 ) continue;
+
+        if( strKeyType == "RSA" )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_RSA ) continue;
+        }
+        else if( strKeyType == "ECDSA" )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+                continue;
+        }
+        else if( strKeyType == "DSA" )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_DSA ) continue;
+        }
+        else if( strKeyType == "EdDSA" )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_ED25519 && nKeyType != JS_PKI_KEY_TYPE_ED448 )
+                continue;
+        }
+
         ret = JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
         if( ret != 0 )
         {
@@ -679,7 +780,6 @@ void CertManDlg::loadCAList()
             continue;
         }
 
-        nKeyType = JS_PKI_getCertKeyType( &binCert );
         JS_UTIL_getDate( sCertInfo.uNotBefore, sNotBefore );
         JS_UTIL_getDate( sCertInfo.uNotAfter, sNotAfter );
 
@@ -778,6 +878,7 @@ void CertManDlg::loadTrustList()
     clearTrustList();
 
     QString strPath = berApplet->settingsMgr()->trustCertPath();
+    QString strKeyType = mRCAKeyTypeCombo->currentText();
 
     QDir dir( strPath );
     for (const QFileInfo &file : dir.entryInfoList(QDir::Files))
@@ -801,6 +902,28 @@ void CertManDlg::loadTrustList()
         JS_BIN_fileReadBER( file.absoluteFilePath().toLocal8Bit().toStdString().c_str(), &binCert );
         if( binCert.nLen < 1 ) continue;
 
+        nKeyType = JS_PKI_getCertKeyType( &binCert );
+        if( nKeyType < 0 ) continue;
+
+        if( strKeyType == "RSA" )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_RSA ) continue;
+        }
+        else if( strKeyType == "ECDSA" )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+                continue;
+        }
+        else if( strKeyType == "DSA" )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_DSA ) continue;
+        }
+        else if( strKeyType == "EdDSA" )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_ED25519 && nKeyType != JS_PKI_KEY_TYPE_ED448 )
+                continue;
+        }
+
         ret = JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
         if( ret != 0 )
         {
@@ -808,7 +931,6 @@ void CertManDlg::loadTrustList()
             continue;
         }
 
-        nKeyType = JS_PKI_getCertKeyType( &binCert );
         JS_UTIL_getDate( sCertInfo.uNotBefore, sNotBefore );
         JS_UTIL_getDate( sCertInfo.uNotAfter, sNotAfter );
 

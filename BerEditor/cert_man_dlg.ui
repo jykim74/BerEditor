@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>570</width>
-    <height>567</height>
+    <width>573</width>
+    <height>601</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -51,7 +51,7 @@
    <item>
     <widget class="QTabWidget" name="mTabWidget">
      <property name="currentIndex">
-      <number>5</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="mEETab">
       <attribute name="title">
@@ -109,6 +109,9 @@
             <bool>true</bool>
            </property>
           </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QComboBox" name="mKeyTypeCombo"/>
          </item>
         </layout>
        </item>
@@ -301,13 +304,6 @@
       <layout class="QVBoxLayout" name="verticalLayout_12">
        <item>
         <layout class="QGridLayout" name="gridLayout_16">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_7">
-           <property name="text">
-            <string>Other Cert Path</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="1">
           <widget class="QLineEdit" name="mOtherCertPathText">
            <property name="palette">
@@ -341,6 +337,16 @@
             <bool>true</bool>
            </property>
           </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_7">
+           <property name="text">
+            <string>Other Cert Path</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QComboBox" name="mOtherKeyTypeCombo"/>
          </item>
         </layout>
        </item>
@@ -490,6 +496,9 @@
             <bool>true</bool>
            </property>
           </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QComboBox" name="mCAKeyTypeCombo"/>
          </item>
         </layout>
        </item>
@@ -723,13 +732,6 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label">
-           <property name="text">
-            <string>TrustRootCA Path</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="1">
           <widget class="QLineEdit" name="mTrustRCAPathText">
            <property name="palette">
@@ -763,6 +765,16 @@
             <bool>true</bool>
            </property>
           </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>TrustRootCA Path</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QComboBox" name="mRCAKeyTypeCombo"/>
          </item>
         </layout>
        </item>

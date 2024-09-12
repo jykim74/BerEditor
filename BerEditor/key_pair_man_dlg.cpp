@@ -26,6 +26,7 @@
 static QStringList kVersionList = { "V1", "V2" };
 static QStringList kPBEv1List = { "PBE-SHA1-3DES", "PBE-SHA1-2DES" };
 static QStringList kPBEv2List = { "AES-128-CBC", "AES-256-CBC", "ARIA-128-CBC", "ARIA-256-CBC" };
+static QStringList kKeyTypeList = { "ALL", "RSA", "ECDSA", "DSA", "EdDSA" };
 
 static QString kPrivateFile = "private.pem";
 static QString kPublicFile = "public.pem";
@@ -36,6 +37,7 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
     setupUi(this);
 
     connect( mVersionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeVerison(int)));
+    connect( mKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(keyTypeChanged(int)));
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mLGenKeyPairBtn, SIGNAL(clicked()), this, SLOT(clickLGenKeyPair()));
@@ -133,6 +135,7 @@ void KeyPairManDlg::initUI()
 #else
     int nWidth = width() * 8/10;
 #endif
+    mKeyTypeCombo->addItems( kKeyTypeList );
 
     QStringList sTableLabels = { tr( "FolderName" ), tr( "Algorithm"), tr("Option") };
 
@@ -157,6 +160,11 @@ void KeyPairManDlg::showEvent(QShowEvent *event)
 void KeyPairManDlg::closeEvent(QCloseEvent *event )
 {
 
+}
+
+void KeyPairManDlg::keyTypeChanged( int index )
+{
+    loadKeyPairList();
 }
 
 void KeyPairManDlg::initialize()
@@ -212,6 +220,7 @@ void KeyPairManDlg::loadKeyPairList()
 
         QString strOption;
         QString strAlg;
+        QString strKeyType = mKeyTypeCombo->currentText();
 
         if( pubKeyFile.exists() == false || priKeyFile.exists() == false ) continue;
 
@@ -219,6 +228,24 @@ void KeyPairManDlg::loadKeyPairList()
         JS_BIN_fileReadBER( strPubKeyPath.toLocal8Bit().toStdString().c_str(), &binPub );
 
         JS_PKI_getPubKeyInfo( &binPub, &nAlg, &nOption );
+        if( strKeyType == "RSA" )
+        {
+            if( nAlg != JS_PKI_KEY_TYPE_RSA ) continue;
+        }
+        else if( strKeyType == "ECDSA" )
+        {
+            if( nAlg != JS_PKI_KEY_TYPE_ECC && nAlg != JS_PKI_KEY_TYPE_SM2 )
+                continue;
+        }
+        else if( strKeyType == "DSA" )
+        {
+            if( nAlg != JS_PKI_KEY_TYPE_DSA ) continue;
+        }
+        else if( strKeyType == "EdDSA" )
+        {
+            if( nAlg != JS_PKI_KEY_TYPE_ED25519 && nAlg != JS_PKI_KEY_TYPE_ED448 )
+                continue;
+        }
 
         strAlg = JS_PKI_getKeyAlgName( nAlg );
 
