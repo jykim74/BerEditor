@@ -1511,7 +1511,7 @@ void CertManDlg::clickRunSign()
     QString strPath = getSeletedPath();
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( QString( "There is no selected item" ), this );
+        berApplet->warningBox( tr( "There is no selected item" ), this );
         return;
     }
 
@@ -1526,7 +1526,7 @@ void CertManDlg::clickRunVerify()
     QString strPath = getSeletedPath();
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( QString( "There is no selected item" ), this );
+        berApplet->warningBox( tr( "There is no selected item" ), this );
         return;
     }
 
@@ -1541,12 +1541,25 @@ void CertManDlg::clickRunPubEnc()
     QString strPath = getSeletedPath();
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( QString( "There is no selected item" ), this );
+        berApplet->warningBox( tr( "There is no selected item" ), this );
         return;
     }
 
     QString strPriPath = QString("%1/%2").arg( strPath ).arg( kPriKeyFile );
     QString strCertPath = QString("%1/%2").arg( strPath ).arg( kCertFile );
+
+    int nKeyType = -1;
+    BIN binCert = {0,0};
+
+    JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    nKeyType = JS_PKI_getCertKeyType( &binCert );
+    JS_BIN_reset( &binCert );
+
+    if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+    {
+        berApplet->warningBox( tr( "This key does not support public key encryption" ), this );
+        return;
+    }
 
     berApplet->mainWindow()->runPubEncDec( true, true, strPriPath, strCertPath );
 }
@@ -1556,12 +1569,25 @@ void CertManDlg::clickRunPubDec()
     QString strPath = getSeletedPath();
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( QString( "There is no selected item" ), this );
+        berApplet->warningBox( tr( "There is no selected item" ), this );
         return;
     }
 
     QString strPriPath = QString("%1/%2").arg( strPath ).arg( kPriKeyFile );
     QString strCertPath = QString("%1/%2").arg( strPath ).arg( kCertFile );
+
+    int nKeyType = -1;
+    BIN binCert = {0,0};
+
+    JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    nKeyType = JS_PKI_getCertKeyType( &binCert );
+    JS_BIN_reset( &binCert );
+
+    if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+    {
+        berApplet->warningBox( tr( "This key does not support public key encryption" ), this );
+        return;
+    }
 
     berApplet->mainWindow()->runPubEncDec( false, true, strPriPath, strCertPath );
 }
@@ -2034,6 +2060,19 @@ void CertManDlg::clickRunPubEncOther()
     }
 
     const QString strPath = item->data( Qt::UserRole ).toString();
+
+    int nKeyType = -1;
+    BIN binCert = {0,0};
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    nKeyType = JS_PKI_getCertKeyType( &binCert );
+    JS_BIN_reset( &binCert );
+
+    if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+    {
+        berApplet->warningBox( tr( "This key does not support public key encryption" ), this );
+        return;
+    }
 
     berApplet->mainWindow()->runPubEncDec( true, true, "", strPath );
 }

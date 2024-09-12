@@ -50,6 +50,8 @@ private slots:
     void clickInputClear();
     void clickOutputClear();
 
+    void checkCertGroup();
+
 public slots:
     void clickEncrypt();
     void clickDecrypt();

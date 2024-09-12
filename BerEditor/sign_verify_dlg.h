@@ -64,6 +64,8 @@ private slots:
     void onTaskFinished();
     void onTaskUpdate( int nUpdate );
 
+    void checkCertGroup();
+
 public slots:
     void checkEncPriKey();
     void checkUseKeyAlg();

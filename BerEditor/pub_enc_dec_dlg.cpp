@@ -86,6 +86,8 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
     connect( mInputClearBtn, SIGNAL(clicked()), this, SLOT(clickInputClear()));
     connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickOutputClear()));
 
+    connect( mCertGroup, SIGNAL(clicked()), this, SLOT(checkCertGroup()));
+
     mRunBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
@@ -865,15 +867,33 @@ void PubEncDecDlg::changeTag( const QString& text )
 void PubEncDecDlg::clickEncrypt()
 {
     mRunBtn->setText( tr("Encrypt" ));
-    mCertPath->setEnabled(true);
-    mPriKeyPath->setEnabled(false);
+
+    if( mCertGroup->isChecked() )
+    {
+        mCertPath->setEnabled(true);
+        mPriKeyPath->setEnabled(false);
+    }
+    else
+    {
+        mCertPath->setEnabled(false);
+        mPriKeyPath->setEnabled(false);
+    }
 }
 
 void PubEncDecDlg::clickDecrypt()
 {
     mRunBtn->setText( tr("Decrypt" ) );
-    mCertPath->setEnabled(false);
-    mPriKeyPath->setEnabled(true);
+
+    if( mCertGroup->isChecked() == true )
+    {
+        mCertPath->setEnabled(false);
+        mPriKeyPath->setEnabled(true);
+    }
+    else
+    {
+        mCertPath->setEnabled(false);
+        mPriKeyPath->setEnabled(false);
+    }
 }
 
 void PubEncDecDlg::clickInputClear()
@@ -884,4 +904,15 @@ void PubEncDecDlg::clickInputClear()
 void PubEncDecDlg::clickOutputClear()
 {
     mOutputText->clear();
+}
+
+void PubEncDecDlg::checkCertGroup()
+{
+    if( mCertGroup->isChecked() == true )
+    {
+        if( mEncryptRadio->isChecked() == true )
+            clickEncrypt();
+        else
+            clickDecrypt();
+    }
 }

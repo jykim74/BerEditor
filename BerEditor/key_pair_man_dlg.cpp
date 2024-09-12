@@ -692,6 +692,19 @@ void KeyPairManDlg::clickLRunPubEnc()
     strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
     strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
 
+    int nKeyType = -1;
+    BIN binPub = {0,0};
+
+    JS_BIN_fileReadBER( strPubKeyPath.toLocal8Bit().toStdString().c_str(), &binPub );
+    nKeyType = JS_PKI_getPubKeyType( &binPub );
+    JS_BIN_reset( &binPub );
+
+    if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+    {
+        berApplet->warningBox( tr( "This key does not support public key encryption" ), this );
+        return;
+    }
+
     berApplet->mainWindow()->runPubEncDec( true, false, strPriKeyPath, strPubKeyPath );
 }
 
@@ -709,6 +722,19 @@ void KeyPairManDlg::clickLRunPubDec()
 
     strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
     strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+
+    int nKeyType = -1;
+    BIN binPub = {0,0};
+
+    JS_BIN_fileReadBER( strPubKeyPath.toLocal8Bit().toStdString().c_str(), &binPub );
+    nKeyType = JS_PKI_getPubKeyType( &binPub );
+    JS_BIN_reset( &binPub );
+
+    if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+    {
+        berApplet->warningBox( tr( "This key does not support public key encryption" ), this );
+        return;
+    }
 
     berApplet->mainWindow()->runPubEncDec( false, false, strPriKeyPath, strPubKeyPath );
 }

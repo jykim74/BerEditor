@@ -90,6 +90,7 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     connect( mInputTab, SIGNAL(currentChanged(int)), this, SLOT(changeInputTab(int)));
 
     connect( mEncPrikeyCheck, SIGNAL(clicked()), this, SLOT(checkEncPriKey()));
+    connect( mCertGroup, SIGNAL(clicked(bool)), this, SLOT(checkCertGroup()));
 
     mRunBtn->setDefault(true);
 
@@ -1311,16 +1312,34 @@ void SignVerifyDlg::clickSign()
 {
     mRunBtn->setText( tr( "Sign" ));
     mDigestBtn->setText( tr( "SignDigest" ));
-    mPriKeyPath->setEnabled( true );
-    mCertPath->setEnabled(false);
+
+    if( mCertGroup->isChecked() == true )
+    {
+        mPriKeyPath->setEnabled( true );
+        mCertPath->setEnabled(false);
+    }
+    else
+    {
+        mPriKeyPath->setEnabled( false );
+        mCertPath->setEnabled(false);
+    }
 }
 
 void SignVerifyDlg::clickVerify()
 {
     mRunBtn->setText( tr( "Verify"));
     mDigestBtn->setText( tr( "VerifyDigest" ));
-    mPriKeyPath->setEnabled( false );
-    mCertPath->setEnabled( true );
+
+    if( mCertGroup->isChecked() == true )
+    {
+        mPriKeyPath->setEnabled( false );
+        mCertPath->setEnabled( true );
+    }
+    else
+    {
+        mPriKeyPath->setEnabled( false );
+        mCertPath->setEnabled(false);
+    }
 }
 
 void SignVerifyDlg::clickInputClear()
@@ -1615,4 +1634,15 @@ void SignVerifyDlg::onTaskUpdate( int nUpdate )
 
     mFileReadSizeText->setText( QString("%1").arg( nUpdate ));
     mSignProgBar->setValue( nPercent );
+}
+
+void SignVerifyDlg::checkCertGroup()
+{
+    if( mCertGroup->isChecked() == true )
+    {
+        if( mSignRadio->isChecked() == true )
+            clickSign();
+        else
+            clickVerify();
+    }
 }
