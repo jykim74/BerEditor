@@ -985,3 +985,17 @@ void PriKeyInfoDlg::setPublicKey( const BIN *pPubKey )
     mCheckKeyPairBtn->setEnabled(false);
     mSavePriKeyBtn->setEnabled(false);
 }
+
+void PriKeyInfoDlg::readPrivateKey( BIN *pPriKey )
+{
+    if( pPriKey == NULL ) return;
+
+    JS_BIN_copy( pPriKey, &pri_key_ );
+}
+
+void PriKeyInfoDlg::readPublicKey( BIN *pPubKey )
+{
+    if( pPubKey == NULL ) return;
+
+    JS_BIN_copy( pPubKey, &pub_key_ );
+}

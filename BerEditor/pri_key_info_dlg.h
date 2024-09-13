@@ -25,6 +25,9 @@ public:
     void setPrivateKey( const BIN *pPriKey );
     void setPublicKey( const BIN *pPubKey );
 
+    void readPrivateKey( BIN *pPriKey );
+    void readPublicKey( BIN *pPubKey );
+
 private slots:
     void showEvent(QShowEvent *event);
 

@@ -1153,6 +1153,20 @@ void MainWindow::openPriKey()
                 priKeyInfo.setPublicKey( &binKey );
                 priKeyInfo.exec();
 
+                BIN binRead = {0,0};
+                priKeyInfo.readPublicKey( &binRead );
+
+                if( JS_BIN_cmp( &binRead, &binKey ) != 0 )
+                {
+                    bVal = berApplet->yesOrCancelBox( tr( "Do you want to change the original key to the changed key?" ), this, false );
+                    if( bVal == true )
+                    {
+                        JS_BIN_writePEM( &binRead, JS_PEM_TYPE_PUBLIC_KEY, strPath.toLocal8Bit().toStdString().c_str() );
+                        berApplet->messageLog( tr( "Key change saved." ), this );
+                    }
+                }
+
+                JS_BIN_reset( &binRead );
                 berApplet->setCurFile( strPath );
             }
         }
@@ -1166,6 +1180,21 @@ void MainWindow::openPriKey()
         PriKeyInfoDlg priKeyInfo;
         priKeyInfo.setPrivateKey( &binKey );
         priKeyInfo.exec();
+
+        BIN binRead = {0,0};
+        priKeyInfo.readPrivateKey( &binRead );
+
+        if( JS_BIN_cmp( &binRead, &binKey ) != 0 )
+        {
+            bool bVal = berApplet->yesOrCancelBox( tr( "Do you want to change the original key to the changed key?" ), this, false );
+            if( bVal == true )
+            {
+                JS_BIN_writePEM( &binRead, JS_PEM_TYPE_PRIVATE_KEY, strPath.toLocal8Bit().toStdString().c_str() );
+                berApplet->messageLog( tr( "Key change saved." ), this );
+            }
+        }
+
+        JS_BIN_reset( &binRead );
 
         berApplet->setCurFile( strPath );
     }
@@ -1198,6 +1227,21 @@ void MainWindow::openPubKey()
                 priKeyInfo.setPrivateKey( &binKey );
                 priKeyInfo.exec();
 
+                BIN binRead = {0,0};
+                priKeyInfo.readPrivateKey( &binRead );
+
+                if( JS_BIN_cmp( &binRead, &binKey ) != 0 )
+                {
+                    bool bVal = berApplet->yesOrCancelBox( tr( "Do you want to change the original key to the changed key?" ), this, false );
+                    if( bVal == true )
+                    {
+                        JS_BIN_writePEM( &binRead, JS_PEM_TYPE_PRIVATE_KEY, strPath.toLocal8Bit().toStdString().c_str() );
+                        berApplet->messageLog( tr( "Key change saved." ), this );
+                    }
+                }
+
+                JS_BIN_reset( &binRead );
+
                 berApplet->setCurFile( strPath );
             }
         }
@@ -1211,6 +1255,21 @@ void MainWindow::openPubKey()
         PriKeyInfoDlg priKeyInfo;
         priKeyInfo.setPublicKey( &binKey );
         priKeyInfo.exec();
+
+        BIN binRead = {0,0};
+        priKeyInfo.readPublicKey( &binRead );
+
+        if( JS_BIN_cmp( &binRead, &binKey ) != 0 )
+        {
+            bool bVal = berApplet->yesOrCancelBox( tr( "Do you want to change the original key to the changed key?" ), this, false );
+            if( bVal == true )
+            {
+                JS_BIN_writePEM( &binRead, JS_PEM_TYPE_PUBLIC_KEY, strPath.toLocal8Bit().toStdString().c_str() );
+                berApplet->messageLog( tr( "Key change saved." ), this );
+            }
+        }
+
+        JS_BIN_reset( &binRead );
 
         berApplet->setCurFile( strPath );
     }
