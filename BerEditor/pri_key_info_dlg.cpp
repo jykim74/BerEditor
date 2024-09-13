@@ -92,6 +92,164 @@ void PriKeyInfoDlg::initialize()
     mKeyTab->setTabEnabled(3, false);
 }
 
+bool PriKeyInfoDlg::isChanged()
+{
+    if( key_type_ < 0 ) return true;
+
+    if( key_type_ == JS_PKI_KEY_TYPE_RSA )
+    {
+        JRSAKeyVal sRSAKey;
+        memset( &sRSAKey, 0x00, sizeof(sRSAKey));
+
+        if( pri_key_.nLen > 0 )
+            JS_PKI_getRSAKeyVal( &pri_key_, &sRSAKey );
+        else
+            JS_PKI_getRSAKeyValFromPub( &pub_key_, &sRSAKey );
+
+        if( mRSA_EText->text() != QString( "%1" ).arg( sRSAKey.pE ) )
+            return true;
+
+        if( mRSA_NText->toPlainText() != QString( "%1" ).arg( sRSAKey.pN ) )
+            return true;
+
+        if( pri_key_.nLen > 0 )
+        {
+            if( mRSA_DText->toPlainText() != QString( "%1" ).arg( sRSAKey.pD ) )
+            {
+                JS_PKI_resetRSAKeyVal( &sRSAKey );
+                return true;
+            }
+
+            if( mRSA_DMP1Text->text() != QString( "%1" ).arg( sRSAKey.pDMP1 ))
+            {
+                JS_PKI_resetRSAKeyVal( &sRSAKey );
+                return true;
+            }
+
+            if( mRSA_DMQ1Text->text() != QString( "%1" ).arg( sRSAKey.pDMQ1) )
+            {
+                JS_PKI_resetRSAKeyVal( &sRSAKey );
+                return true;
+            }
+
+            if( mRSA_IQMPText->text() != QString( "%1" ).arg( sRSAKey.pIQMP ))
+            {
+                JS_PKI_resetRSAKeyVal( &sRSAKey );
+                return true;
+            }
+        }
+
+        JS_PKI_resetRSAKeyVal( &sRSAKey );
+    }
+    else if( key_type_ == JS_PKI_KEY_TYPE_ECC || key_type_ == JS_PKI_KEY_TYPE_SM2 )
+    {
+        JECKeyVal sECKey;
+        memset( &sECKey, 0x00, sizeof(sECKey));
+
+        if( pri_key_.nLen > 0 )
+            JS_PKI_getECKeyVal( &pri_key_, &sECKey );
+        else
+            JS_PKI_getECKeyValFromPub( &pub_key_, &sECKey );
+
+        if( mECC_PubXText->toPlainText() != QString( "%1" ).arg( sECKey.pPubX ))
+        {
+            JS_PKI_resetECKeyVal( &sECKey );
+            return true;
+        }
+
+        if( mECC_PubXText->toPlainText() != QString( "%1" ).arg( sECKey.pPubY ))
+        {
+            JS_PKI_resetECKeyVal( &sECKey );
+            return true;
+        }
+
+        if( pri_key_.nLen > 0 )
+        {
+            if( mECC_PrivateText->toPlainText() != QString( "%1" ).arg( sECKey.pPrivate ))
+            {
+                JS_PKI_resetECKeyVal( &sECKey );
+                return true;
+            }
+        }
+
+        JS_PKI_resetECKeyVal( &sECKey );
+    }
+    else if( key_type_ == JS_PKI_KEY_TYPE_DSA )
+    {
+        JDSAKeyVal sDSAKey;
+        memset( &sDSAKey, 0x00, sizeof(sDSAKey));
+
+        if( pri_key_.nLen > 0 )
+            JS_PKI_getDSAKeyVal( &pri_key_, &sDSAKey );
+        else
+            JS_PKI_getDSAKeyValFromPub( &pub_key_, &sDSAKey );
+
+        if( mDSA_QText->text() != QString( "%1" ).arg( sDSAKey.pQ ) )
+        {
+            JS_PKI_resetDSAKeyVal( &sDSAKey );
+            return true;
+        }
+
+        if( mDSA_GText->toPlainText() != QString( "%1" ).arg( sDSAKey.pG ))
+        {
+            JS_PKI_resetDSAKeyVal( &sDSAKey );
+            return true;
+        }
+
+        if( mDSA_PText->toPlainText() != QString( "%1" ).arg( sDSAKey.pP ))
+        {
+            JS_PKI_resetDSAKeyVal( &sDSAKey );
+            return true;
+        }
+
+        if( mDSA_PublicText->toPlainText() != QString("%1").arg( sDSAKey.pPublic ))
+        {
+            JS_PKI_resetDSAKeyVal( &sDSAKey );
+            return true;
+        }
+
+        if( pri_key_.nLen > 0 )
+        {
+            if( mDSA_PrivateText->text() != QString( "%1" ).arg( sDSAKey.pPrivate ))
+            {
+                JS_PKI_resetDSAKeyVal( &sDSAKey );
+                return true;
+            }
+        }
+
+        JS_PKI_resetDSAKeyVal( &sDSAKey );
+    }
+    else if( key_type_ == JS_PKI_KEY_TYPE_ED25519 || key_type_ == JS_PKI_KEY_TYPE_ED448 )
+    {
+        JRawKeyVal sRawKey;
+        memset( &sRawKey, 0x00, sizeof(sRawKey));
+
+        if( pri_key_.nLen > 0 )
+            JS_PKI_getRawKeyVal( key_type_, &pri_key_, &sRawKey );
+        else
+            JS_PKI_getRawKeyValFromPub( key_type_, &pub_key_, &sRawKey );
+
+        if( mEdDSA_RawPublicText->toPlainText() != QString("%1").arg( sRawKey.pPub ) )
+        {
+            JS_PKI_resetRawKeyVal( &sRawKey );
+            return true;
+        }
+
+        if( pri_key_.nLen > 0 )
+        {
+            if( mEdDSA_RawPrivateText->toPlainText() != QString("%1").arg( sRawKey.pPri ))
+            {
+                JS_PKI_resetRawKeyVal( &sRawKey );
+                return true;
+            }
+        }
+
+        JS_PKI_resetRawKeyVal( &sRawKey );
+    }
+
+    return false;
+}
+
 void PriKeyInfoDlg::showEvent(QShowEvent *event)
 {
 
@@ -694,6 +852,12 @@ void PriKeyInfoDlg::checkEditMode()
 
     if( bVal == false )
     {
+        if( isChanged() == false )
+        {
+            setModeUI( bVal );
+            return;
+        }
+
         if( berApplet->yesOrCancelBox(
                 tr( "Would you like to revert to the state before editing?" ),
                 this, true ) == false )

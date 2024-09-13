@@ -62,6 +62,7 @@ private slots:
 
 private:
     void initialize();
+    bool isChanged();
 
     void setRSAKey( const BIN *pKey, bool bPri = true );
     void setECCKey( const BIN *pKey, bool bPri = true );
