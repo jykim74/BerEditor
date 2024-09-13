@@ -106,33 +106,33 @@ bool PriKeyInfoDlg::isChanged()
         else
             JS_PKI_getRSAKeyValFromPub( &pub_key_, &sRSAKey );
 
-        if( mRSA_EText->text() != QString( "%1" ).arg( sRSAKey.pE ) )
+        if( mRSA_EText->text().simplified().toUpper() != QString( "%1" ).arg( sRSAKey.pE ) )
             return true;
 
-        if( mRSA_NText->toPlainText() != QString( "%1" ).arg( sRSAKey.pN ) )
+        if( mRSA_NText->toPlainText().simplified().toUpper() != QString( "%1" ).arg( sRSAKey.pN ) )
             return true;
 
         if( pri_key_.nLen > 0 )
         {
-            if( mRSA_DText->toPlainText() != QString( "%1" ).arg( sRSAKey.pD ) )
+            if( mRSA_DText->toPlainText().simplified().toUpper() != QString( "%1" ).arg( sRSAKey.pD ) )
             {
                 JS_PKI_resetRSAKeyVal( &sRSAKey );
                 return true;
             }
 
-            if( mRSA_DMP1Text->text() != QString( "%1" ).arg( sRSAKey.pDMP1 ))
+            if( mRSA_DMP1Text->text().simplified().toUpper() != QString( "%1" ).arg( sRSAKey.pDMP1 ))
             {
                 JS_PKI_resetRSAKeyVal( &sRSAKey );
                 return true;
             }
 
-            if( mRSA_DMQ1Text->text() != QString( "%1" ).arg( sRSAKey.pDMQ1) )
+            if( mRSA_DMQ1Text->text().simplified().toUpper() != QString( "%1" ).arg( sRSAKey.pDMQ1) )
             {
                 JS_PKI_resetRSAKeyVal( &sRSAKey );
                 return true;
             }
 
-            if( mRSA_IQMPText->text() != QString( "%1" ).arg( sRSAKey.pIQMP ))
+            if( mRSA_IQMPText->text().simplified().toUpper() != QString( "%1" ).arg( sRSAKey.pIQMP ))
             {
                 JS_PKI_resetRSAKeyVal( &sRSAKey );
                 return true;
@@ -151,13 +151,13 @@ bool PriKeyInfoDlg::isChanged()
         else
             JS_PKI_getECKeyValFromPub( &pub_key_, &sECKey );
 
-        if( mECC_PubXText->toPlainText() != QString( "%1" ).arg( sECKey.pPubX ))
+        if( mECC_PubXText->toPlainText().simplified().toUpper() != QString( "%1" ).arg( sECKey.pPubX ))
         {
             JS_PKI_resetECKeyVal( &sECKey );
             return true;
         }
 
-        if( mECC_PubXText->toPlainText() != QString( "%1" ).arg( sECKey.pPubY ))
+        if( mECC_PubYText->toPlainText().simplified().toUpper() != QString( "%1" ).arg( sECKey.pPubY ))
         {
             JS_PKI_resetECKeyVal( &sECKey );
             return true;
@@ -165,7 +165,7 @@ bool PriKeyInfoDlg::isChanged()
 
         if( pri_key_.nLen > 0 )
         {
-            if( mECC_PrivateText->toPlainText() != QString( "%1" ).arg( sECKey.pPrivate ))
+            if( mECC_PrivateText->toPlainText().simplified().toUpper() != QString( "%1" ).arg( sECKey.pPrivate ))
             {
                 JS_PKI_resetECKeyVal( &sECKey );
                 return true;
@@ -184,25 +184,25 @@ bool PriKeyInfoDlg::isChanged()
         else
             JS_PKI_getDSAKeyValFromPub( &pub_key_, &sDSAKey );
 
-        if( mDSA_QText->text() != QString( "%1" ).arg( sDSAKey.pQ ) )
+        if( mDSA_QText->text().simplified().toUpper() != QString( "%1" ).arg( sDSAKey.pQ ) )
         {
             JS_PKI_resetDSAKeyVal( &sDSAKey );
             return true;
         }
 
-        if( mDSA_GText->toPlainText() != QString( "%1" ).arg( sDSAKey.pG ))
+        if( mDSA_GText->toPlainText().simplified().toUpper() != QString( "%1" ).arg( sDSAKey.pG ))
         {
             JS_PKI_resetDSAKeyVal( &sDSAKey );
             return true;
         }
 
-        if( mDSA_PText->toPlainText() != QString( "%1" ).arg( sDSAKey.pP ))
+        if( mDSA_PText->toPlainText().simplified().toUpper() != QString( "%1" ).arg( sDSAKey.pP ))
         {
             JS_PKI_resetDSAKeyVal( &sDSAKey );
             return true;
         }
 
-        if( mDSA_PublicText->toPlainText() != QString("%1").arg( sDSAKey.pPublic ))
+        if( mDSA_PublicText->toPlainText().simplified().toUpper() != QString("%1").arg( sDSAKey.pPublic ))
         {
             JS_PKI_resetDSAKeyVal( &sDSAKey );
             return true;
@@ -210,7 +210,7 @@ bool PriKeyInfoDlg::isChanged()
 
         if( pri_key_.nLen > 0 )
         {
-            if( mDSA_PrivateText->text() != QString( "%1" ).arg( sDSAKey.pPrivate ))
+            if( mDSA_PrivateText->text().simplified().toUpper() != QString( "%1" ).arg( sDSAKey.pPrivate ))
             {
                 JS_PKI_resetDSAKeyVal( &sDSAKey );
                 return true;
@@ -229,7 +229,7 @@ bool PriKeyInfoDlg::isChanged()
         else
             JS_PKI_getRawKeyValFromPub( key_type_, &pub_key_, &sRawKey );
 
-        if( mEdDSA_RawPublicText->toPlainText() != QString("%1").arg( sRawKey.pPub ) )
+        if( mEdDSA_RawPublicText->toPlainText().simplified().toUpper() != QString("%1").arg( sRawKey.pPub ) )
         {
             JS_PKI_resetRawKeyVal( &sRawKey );
             return true;
@@ -237,7 +237,7 @@ bool PriKeyInfoDlg::isChanged()
 
         if( pri_key_.nLen > 0 )
         {
-            if( mEdDSA_RawPrivateText->toPlainText() != QString("%1").arg( sRawKey.pPri ))
+            if( mEdDSA_RawPrivateText->toPlainText().simplified().toUpper() != QString("%1").arg( sRawKey.pPri ))
             {
                 JS_PKI_resetRawKeyVal( &sRawKey );
                 return true;
