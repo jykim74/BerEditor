@@ -58,6 +58,7 @@ void SettingsDlg::initialize()
         mFileReadSizeGroup->setEnabled( false );
         mUseLogTabCheck->setEnabled( false );
         mCertPathGroup->setEnabled( false );
+        mSupportKeyPairChangeCheck->setEnabled( false );
     }
 
     initFontFamily();
@@ -88,6 +89,7 @@ void SettingsDlg::updateSettings()
         mgr->setFileReadSize( mFileReadSizeText->text().toInt() );
         mgr->setCertPath( mCertPathText->text() );
         mgr->makeCertPath();
+        mgr->setSupportKeyPairChagne( mSupportKeyPairChangeCheck->checkState() == Qt::Checked );
     }
 
     bool language_changed = false;
@@ -155,7 +157,7 @@ void SettingsDlg::showEvent(QShowEvent *event)
 
     Qt::CheckState state;
 
-    state = mgr->showPartOnly() ? Qt::Checked : Qt::Unchecked;
+    state = mgr->getShowPartOnly() ? Qt::Checked : Qt::Unchecked;
     mCheckShowPartOnly->setCheckState(state);
 
     mOIDConfigPathText->setText( mgr->OIDConfigPath() );
@@ -164,6 +166,9 @@ void SettingsDlg::showEvent(QShowEvent *event)
     {
         state = mgr->getUseLogTab() ? Qt::Checked : Qt::Unchecked;
         mUseLogTabCheck->setCheckState(state);
+
+        state = mgr->getSupportKeyPairChange() ? Qt::Checked : Qt::Unchecked;
+        mSupportKeyPairChangeCheck->setCheckState(state);
     }
 
     mFileReadSizeText->setText( QString("%1").arg(mgr->getFileReadSize()));
@@ -185,6 +190,8 @@ void SettingsDlg::showEvent(QShowEvent *event)
     mLangComboBox->setCurrentIndex(I18NHelper::getInstance()->preferredLanguage());
     mFontFamilyCombo->setCurrentText( mgr->getFontFamily() );
     mHexAreaWidthCombo->setCurrentText( QString( "%1" ).arg( berApplet->settingsMgr()->getHexAreaWidth()));
+
+
 
     QDialog::showEvent(event);
 }

@@ -1153,20 +1153,24 @@ void MainWindow::openPriKey()
                 priKeyInfo.setPublicKey( &binKey );
                 priKeyInfo.exec();
 
-                BIN binRead = {0,0};
-                priKeyInfo.readPublicKey( &binRead );
-
-                if( JS_BIN_cmp( &binRead, &binKey ) != 0 )
+                if( berApplet->settingsMgr()->supportKeyPairChange() == true )
                 {
-                    bVal = berApplet->yesOrCancelBox( tr( "Do you want to change the original key to the changed key?" ), this, false );
-                    if( bVal == true )
+                    BIN binRead = {0,0};
+                    priKeyInfo.readPublicKey( &binRead );
+
+                    if( JS_BIN_cmp( &binRead, &binKey ) != 0 )
                     {
-                        JS_BIN_writePEM( &binRead, JS_PEM_TYPE_PUBLIC_KEY, strPath.toLocal8Bit().toStdString().c_str() );
-                        berApplet->messageLog( tr( "Key change saved." ), this );
+                        bVal = berApplet->yesOrCancelBox( tr( "Do you want to change the original key to the changed key?" ), this, false );
+                        if( bVal == true )
+                        {
+                            JS_BIN_writePEM( &binRead, JS_PEM_TYPE_PUBLIC_KEY, strPath.toLocal8Bit().toStdString().c_str() );
+                            berApplet->messageLog( tr( "Key change saved." ), this );
+                        }
                     }
+
+                    JS_BIN_reset( &binRead );
                 }
 
-                JS_BIN_reset( &binRead );
                 berApplet->setCurFile( strPath );
             }
         }
@@ -1181,20 +1185,23 @@ void MainWindow::openPriKey()
         priKeyInfo.setPrivateKey( &binKey );
         priKeyInfo.exec();
 
-        BIN binRead = {0,0};
-        priKeyInfo.readPrivateKey( &binRead );
-
-        if( JS_BIN_cmp( &binRead, &binKey ) != 0 )
+        if( berApplet->settingsMgr()->supportKeyPairChange() == true )
         {
-            bool bVal = berApplet->yesOrCancelBox( tr( "Do you want to change the original key to the changed key?" ), this, false );
-            if( bVal == true )
-            {
-                JS_BIN_writePEM( &binRead, JS_PEM_TYPE_PRIVATE_KEY, strPath.toLocal8Bit().toStdString().c_str() );
-                berApplet->messageLog( tr( "Key change saved." ), this );
-            }
-        }
+            BIN binRead = {0,0};
+            priKeyInfo.readPrivateKey( &binRead );
 
-        JS_BIN_reset( &binRead );
+            if( JS_BIN_cmp( &binRead, &binKey ) != 0 )
+            {
+                bool bVal = berApplet->yesOrCancelBox( tr( "Do you want to change the original key to the changed key?" ), this, false );
+                if( bVal == true )
+                {
+                    JS_BIN_writePEM( &binRead, JS_PEM_TYPE_PRIVATE_KEY, strPath.toLocal8Bit().toStdString().c_str() );
+                    berApplet->messageLog( tr( "Key change saved." ), this );
+                }
+            }
+
+            JS_BIN_reset( &binRead );
+        }
 
         berApplet->setCurFile( strPath );
     }
@@ -1227,20 +1234,23 @@ void MainWindow::openPubKey()
                 priKeyInfo.setPrivateKey( &binKey );
                 priKeyInfo.exec();
 
-                BIN binRead = {0,0};
-                priKeyInfo.readPrivateKey( &binRead );
-
-                if( JS_BIN_cmp( &binRead, &binKey ) != 0 )
+                if( berApplet->settingsMgr()->getSupportKeyPairChange() == true )
                 {
-                    bool bVal = berApplet->yesOrCancelBox( tr( "Do you want to change the original key to the changed key?" ), this, false );
-                    if( bVal == true )
-                    {
-                        JS_BIN_writePEM( &binRead, JS_PEM_TYPE_PRIVATE_KEY, strPath.toLocal8Bit().toStdString().c_str() );
-                        berApplet->messageLog( tr( "Key change saved." ), this );
-                    }
-                }
+                    BIN binRead = {0,0};
+                    priKeyInfo.readPrivateKey( &binRead );
 
-                JS_BIN_reset( &binRead );
+                    if( JS_BIN_cmp( &binRead, &binKey ) != 0 )
+                    {
+                        bool bVal = berApplet->yesOrCancelBox( tr( "Do you want to change the original key to the changed key?" ), this, false );
+                        if( bVal == true )
+                        {
+                            JS_BIN_writePEM( &binRead, JS_PEM_TYPE_PRIVATE_KEY, strPath.toLocal8Bit().toStdString().c_str() );
+                            berApplet->messageLog( tr( "Key change saved." ), this );
+                        }
+                    }
+
+                    JS_BIN_reset( &binRead );
+                }
 
                 berApplet->setCurFile( strPath );
             }
@@ -1256,20 +1266,23 @@ void MainWindow::openPubKey()
         priKeyInfo.setPublicKey( &binKey );
         priKeyInfo.exec();
 
-        BIN binRead = {0,0};
-        priKeyInfo.readPublicKey( &binRead );
-
-        if( JS_BIN_cmp( &binRead, &binKey ) != 0 )
+        if( berApplet->settingsMgr()->supportKeyPairChange() == true )
         {
-            bool bVal = berApplet->yesOrCancelBox( tr( "Do you want to change the original key to the changed key?" ), this, false );
-            if( bVal == true )
-            {
-                JS_BIN_writePEM( &binRead, JS_PEM_TYPE_PUBLIC_KEY, strPath.toLocal8Bit().toStdString().c_str() );
-                berApplet->messageLog( tr( "Key change saved." ), this );
-            }
-        }
+            BIN binRead = {0,0};
+            priKeyInfo.readPublicKey( &binRead );
 
-        JS_BIN_reset( &binRead );
+            if( JS_BIN_cmp( &binRead, &binKey ) != 0 )
+            {
+                bool bVal = berApplet->yesOrCancelBox( tr( "Do you want to change the original key to the changed key?" ), this, false );
+                if( bVal == true )
+                {
+                    JS_BIN_writePEM( &binRead, JS_PEM_TYPE_PUBLIC_KEY, strPath.toLocal8Bit().toStdString().c_str() );
+                    berApplet->messageLog( tr( "Key change saved." ), this );
+                }
+            }
+
+            JS_BIN_reset( &binRead );
+        }
 
         berApplet->setCurFile( strPath );
     }

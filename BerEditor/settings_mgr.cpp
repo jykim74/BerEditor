@@ -21,19 +21,28 @@ const char *kLicense = "license";
 const char *kStopMessage = "stopMessage";
 const char *kCertPath = "certPath";
 const char *kHexAreaWidth = "hexAreaWidth";
+const char *kSupportKeyPairChange = "SupportKeyPairChange";
 }
 
 SettingsMgr::SettingsMgr(QObject *parent) : QObject(parent)
 {
+    show_part_ = false;
+    default_hash_ = "";
+    cert_path_ = "";
+    hex_area_width_ = -1;
+    support_keypair_change_ = false;
+
     initialize();
 }
 
 void SettingsMgr::initialize()
 {
+    getShowPartOnly();
     getDefaultHash();
     getFileReadSize();
     getHexAreaWidth();
     getCertPath();
+    getSupportKeyPairChange();
 }
 
 void SettingsMgr::removeSet( const QString& group, const QString& name )
@@ -49,24 +58,23 @@ void SettingsMgr::setShowPartOnly(bool val)
 {
 //    QSettings settings( "myapp.plist", QSettings::NativeFormat );
     QSettings settings;
+    show_part_ = val;
 
     settings.beginGroup(kBehaviorGroup);
-    settings.setValue( kShowPartOnly, val );
+    settings.setValue( kShowPartOnly, show_part_ );
     settings.endGroup();
 }
 
-bool SettingsMgr::showPartOnly()
+bool SettingsMgr::getShowPartOnly()
 {
 //    QSettings settings( "myapp.plist", QSettings::NativeFormat );
     QSettings settings;
 
-    bool val;
-
     settings.beginGroup(kBehaviorGroup);
-    val = settings.value(kShowPartOnly, false).toBool();
+    show_part_ = settings.value(kShowPartOnly, false).toBool();
     settings.endGroup();
 
-    return val;
+    return show_part_;
 }
 
 void SettingsMgr::setOIDConfigPath( const QString& strPath )
@@ -367,4 +375,25 @@ int SettingsMgr::getHexAreaWidth()
     sets.endGroup();
 
     return hex_area_width_;
+}
+
+void SettingsMgr::setSupportKeyPairChagne( bool val )
+{
+    QSettings settings;
+    show_part_ = val;
+
+    settings.beginGroup(kBehaviorGroup);
+    settings.setValue( kSupportKeyPairChange, support_keypair_change_ );
+    settings.endGroup();
+}
+
+bool SettingsMgr::getSupportKeyPairChange()
+{
+    QSettings settings;
+
+    settings.beginGroup(kBehaviorGroup);
+    support_keypair_change_ = settings.value(kSupportKeyPairChange, false).toBool();
+    settings.endGroup();
+
+    return support_keypair_change_;
 }

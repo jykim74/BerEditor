@@ -18,7 +18,8 @@ public:
     void removeSet( const QString& group, const QString& name );
 
     void setShowPartOnly( bool val );
-    bool showPartOnly();
+    bool getShowPartOnly();
+    bool showPartOnly() { return show_part_; };
 
     void setOIDConfigPath( const QString& strPath );
     QString OIDConfigPath();
@@ -64,6 +65,10 @@ public:
     int getHexAreaWidth();
     int hexAreaWidth() { return hex_area_width_; };
 
+    void setSupportKeyPairChagne( bool val );
+    bool getSupportKeyPairChange();
+    bool supportKeyPairChange() { return support_keypair_change_; };
+
 
 signals:
 
@@ -71,10 +76,12 @@ private:
     void initialize();
 
 private:
+    bool show_part_;
     QString default_hash_;
     int file_read_size_;
     QString cert_path_;
     int hex_area_width_;
+    bool support_keypair_change_;
 
 private:
     Q_DISABLE_COPY(SettingsMgr)
