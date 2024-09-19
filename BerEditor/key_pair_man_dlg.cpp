@@ -589,6 +589,25 @@ void KeyPairManDlg::clickLViewPriKey()
     PriKeyInfoDlg priKeyInfo;
     priKeyInfo.setPrivateKey( &binPri );
     priKeyInfo.exec();
+
+    if( berApplet->settingsMgr()->supportKeyPairChange() == true )
+    {
+        BIN binRead = {0,0};
+        priKeyInfo.readPrivateKey( &binRead );
+
+        if( JS_BIN_cmp( &binRead, &binPri ) != 0 )
+        {
+            bool bVal = berApplet->yesOrCancelBox( tr( "Do you want to change the original key to the changed key?" ), this, false );
+            if( bVal == true )
+            {
+                JS_BIN_writePEM( &binRead, JS_PEM_TYPE_PRIVATE_KEY, strPriKeyPath.toLocal8Bit().toStdString().c_str() );
+                berApplet->messageLog( tr( "Key change saved." ), this );
+            }
+        }
+
+        JS_BIN_reset( &binRead );
+    }
+
     JS_BIN_reset( &binPri );
 }
 
@@ -615,6 +634,25 @@ void KeyPairManDlg::clickLViewPubKey()
     PriKeyInfoDlg priKeyInfo;
     priKeyInfo.setPublicKey( &binPub );
     priKeyInfo.exec();
+
+    if( berApplet->settingsMgr()->supportKeyPairChange() == true )
+    {
+        BIN binRead = {0,0};
+        priKeyInfo.readPublicKey( &binRead );
+
+        if( JS_BIN_cmp( &binRead, &binPub ) != 0 )
+        {
+            bool bVal = berApplet->yesOrCancelBox( tr( "Do you want to change the original key to the changed key?" ), this, false );
+            if( bVal == true )
+            {
+                JS_BIN_writePEM( &binRead, JS_PEM_TYPE_PUBLIC_KEY, strPubKeyPath.toLocal8Bit().toStdString().c_str() );
+                berApplet->messageLog( tr( "Key change saved." ), this );
+            }
+        }
+
+        JS_BIN_reset( &binRead );
+    }
+
     JS_BIN_reset( &binPub );
 }
 

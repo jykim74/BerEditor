@@ -1595,6 +1595,30 @@ void CertManDlg::clickViewPriKey()
     priKeyInfo.setPrivateKey( &binPriKey );
     priKeyInfo.exec();
 
+    if( berApplet->settingsMgr()->supportKeyPairChange() == true )
+    {
+        BIN binRead = {0,0};
+        BIN binEnc = {0,0};
+        priKeyInfo.readPrivateKey( &binRead );
+
+        if( JS_BIN_cmp( &binRead, &binPriKey ) != 0 )
+        {
+            bool bVal = berApplet->yesOrCancelBox( tr( "Do you want to change the original key to the changed key?" ), this, false );
+            if( bVal == true )
+            {
+                ret = JS_PKI_encryptPrivateKey2( -1, strPass.toStdString().c_str(), &binRead, NULL, &binEnc );
+                if( ret == 0 )
+                {
+                    ret = writePriKeyCert( &binEnc, &binCert );
+                    berApplet->messageLog( tr( "Key change saved." ), this );
+                }
+            }
+        }
+
+        JS_BIN_reset( &binRead );
+        JS_BIN_reset( &binEnc );
+    }
+
 end :
     JS_BIN_reset( &binPriKey );
     JS_BIN_reset( &binEncPriKey );
