@@ -15,6 +15,7 @@
 #include "cert_info_dlg.h"
 #include "cert_man_dlg.h"
 #include "pri_key_info_dlg.h"
+#include "cms_info_dlg.h"
 #include "common.h"
 
 CMSDlg::CMSDlg(QWidget *parent) :
@@ -65,6 +66,7 @@ CMSDlg::CMSDlg(QWidget *parent) :
     connect( mKMPriKeyTypeBtn, SIGNAL(clicked()), this, SLOT(clickKMPriKeyType()));
     connect( mKMCertTypeBtn, SIGNAL(clicked()), this, SLOT(clickKMCertType()));
 
+    connect( mCMSViewBtn, SIGNAL(clicked()), this, SLOT(clickCMSView()));
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
     connect( mReadFileBtn, SIGNAL(clicked()), this, SLOT(clickReadFile()));
 
@@ -1234,6 +1236,28 @@ void CMSDlg::clickKMCertType()
 end :
     JS_BIN_reset( &binCert );
     JS_BIN_reset( &binPubKey );
+}
+
+void CMSDlg::clickCMSView()
+{
+    BIN binCMS = {0,0};
+
+    int nDataType = DATA_HEX;
+    QString strOutput = mOutputText->toPlainText();
+
+    CMSInfoDlg cmsInfo;
+
+    if( mOutputBase64Radio->isChecked() == true )
+        nDataType = DATA_BASE64;
+    else if( mOutputStringRadio->isChecked() == true )
+        nDataType = DATA_STRING;
+
+    getBINFromString( &binCMS, nDataType, strOutput );
+
+    cmsInfo.setCMS( &binCMS );
+    cmsInfo.exec();
+
+    JS_BIN_reset( &binCMS );
 }
 
 void CMSDlg::clickClearDataAll()

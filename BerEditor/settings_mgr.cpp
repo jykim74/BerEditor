@@ -380,7 +380,7 @@ int SettingsMgr::getHexAreaWidth()
 void SettingsMgr::setSupportKeyPairChagne( bool val )
 {
     QSettings settings;
-    show_part_ = val;
+    support_keypair_change_ = val;
 
     settings.beginGroup(kBehaviorGroup);
     settings.setValue( kSupportKeyPairChange, support_keypair_change_ );

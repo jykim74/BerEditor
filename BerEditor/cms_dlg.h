@@ -60,6 +60,7 @@ private slots:
     void clearSrc();
     void clearOutput();
 
+    void clickCMSView();
     void clickClearDataAll();
     void clickReadFile();
 

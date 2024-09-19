@@ -200,6 +200,7 @@ add_executable(${PROJECT_NAME}
     name_dlg.h name_dlg.cpp name_dlg.ui
     cavp_dlg2.cpp
     ldt_hash_thread.h ldt_hash_thread.cpp
+    cms_info_dlg.h cms_info_dlg.cpp cms_info_dlg.ui
 )
 
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )
