@@ -23,6 +23,8 @@ private slots:
     void dataChanged();
 
 private:
+    void initUI();
+
     BIN cms_bin_;
 };
 
