@@ -25,7 +25,12 @@ private slots:
 private:
     void initUI();
 
+    void setSigned();
+    void setEnveloped();
+    void setSignedAndEnveloped();
+
     BIN cms_bin_;
+    int cms_type_;
 };
 
 #endif // CMS_INFO_DLG_H

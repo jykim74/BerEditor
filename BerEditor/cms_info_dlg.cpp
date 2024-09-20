@@ -1,4 +1,5 @@
 #include "cms_info_dlg.h"
+#include "ber_applet.h"
 
 #include "js_pki.h"
 #include "js_pkcs7.h"
@@ -18,6 +19,12 @@ CMSInfoDlg::CMSInfoDlg(QWidget *parent) :
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+
+    mCertCRLTab->layout()->setSpacing(5);
+    mCertCRLTab->layout()->setMargin(5);
+
+    mSignerRecipTab->layout()->setSpacing(5);
+    mSignerRecipTab->layout()->setMargin(5);
 #endif
     initUI();
 
@@ -69,6 +76,45 @@ void CMSInfoDlg::initUI()
 
 void CMSInfoDlg::setCMS( const BIN *pCMS )
 {
+    QString strType;
+    cms_type_ = JS_PKCS7_getType( pCMS );
+
+    JS_BIN_reset( &cms_bin_ );
+    JS_BIN_copy( &cms_bin_, pCMS );
+
+    if( cms_type_ == JS_PKCS7_TYPE_SIGNED )
+    {
+        setSigned();
+        strType = "Signed";
+    }
+    else if( cms_type_ == JS_PKCS7_TYPE_ENVELOED )
+    {
+        setEnveloped();
+        strType = "Enveloped";
+    }
+    else if( cms_type_ == JS_PKCS7_TYPE_SIGNED_AND_ENVELOPED )
+    {
+        setSignedAndEnveloped();
+        strType = "SignedAndEnveloped";
+    }
+    else
+    {
+        berApplet->warningBox( tr( "This type is not supported." ).arg( cms_type_ ), this );
+    }
+
+    mTypeText->setText( strType );
+}
+
+void CMSInfoDlg::dataChanged()
+{
+    QString strData = mDataText->toPlainText();
+
+    QString strLen = getDataLenString( DATA_HEX, strData );
+    mDataLenText->setText( QString("%1").arg( strLen ));
+}
+
+void CMSInfoDlg::setSigned()
+{
     int ret = 0;
     int row = 0;
     JSignedData sSignedData;
@@ -76,9 +122,6 @@ void CMSInfoDlg::setCMS( const BIN *pCMS )
     time_t now = time(NULL);
 
     memset( &sSignedData, 0x00, sizeof(sSignedData));
-
-    JS_BIN_reset( &cms_bin_ );
-    JS_BIN_copy( &cms_bin_, pCMS );
 
     ret = JS_PKCS7_getSignedData( &cms_bin_, &sSignedData, &pInfoList );
 
@@ -100,7 +143,7 @@ void CMSInfoDlg::setCMS( const BIN *pCMS )
             pCurList = pCurList->pNext;
         }
 
-        mDigestAlgText->setText( strAlg );
+    //    mDigestAlgText->setText( strAlg );
     }
 
     for( int i = 0; i < sSignedData.nCertCnt; i++ )
@@ -170,10 +213,12 @@ void CMSInfoDlg::setCMS( const BIN *pCMS )
     if( pInfoList ) JS_PKCS7_resetSignerInfoList( &pInfoList );
 }
 
-void CMSInfoDlg::dataChanged()
+void CMSInfoDlg::setEnveloped()
 {
-    QString strData = mDataText->toPlainText();
 
-    QString strLen = getDataLenString( DATA_HEX, strData );
-    mDataLenText->setText( QString("%1").arg( strLen ));
+}
+
+void CMSInfoDlg::setSignedAndEnveloped()
+{
+
 }
