@@ -71,20 +71,39 @@ void CMSInfoDlg::setCMS( const BIN *pCMS )
 {
     int ret = 0;
     int row = 0;
-    JSignedInfo sSignedInfo;
+    JSignedData sSignedData;
+    JSignerInfoList *pInfoList = NULL;
     time_t now = time(NULL);
 
-    memset( &sSignedInfo, 0x00, sizeof(JSignedInfo));
+    memset( &sSignedData, 0x00, sizeof(sSignedData));
 
     JS_BIN_reset( &cms_bin_ );
     JS_BIN_copy( &cms_bin_, pCMS );
 
-    ret = JS_PKCS7_getSignedData( &cms_bin_, &sSignedInfo );
+    ret = JS_PKCS7_getSignedData( &cms_bin_, &sSignedData, &pInfoList );
 
-    mVersionText->setText( QString("%1").arg( sSignedInfo.nVersion ));
-    mDataText->setPlainText( getHexString( &sSignedInfo.binContent ));
+    mVersionText->setText( QString("%1").arg( sSignedData.nVersion ));
+    mDataText->setPlainText( getHexString( &sSignedData.binContent ));
 
-    for( int i = 0; i < sSignedInfo.nCertCnt; i++ )
+    if( sSignedData.nMDCnt > 0 )
+    {
+        QString strAlg;
+        JStrList *pCurList = sSignedData.pMDList;
+
+        while( pCurList )
+        {
+            if( strAlg.length() < 1 )
+                strAlg = pCurList->pStr;
+            else
+                strAlg = QString( ";%1" ).arg( pCurList->pStr );
+
+            pCurList = pCurList->pNext;
+        }
+
+        mDigestAlgText->setText( strAlg );
+    }
+
+    for( int i = 0; i < sSignedData.nCertCnt; i++ )
     {
         JCertInfo sCertInfo;
 
@@ -93,7 +112,7 @@ void CMSInfoDlg::setCMS( const BIN *pCMS )
 
         memset( &sCertInfo, 0x00, sizeof(sCertInfo));
 
-        ret = JS_PKI_getCertInfo( &sSignedInfo.pCertList[i], &sCertInfo, NULL );
+        ret = JS_PKI_getCertInfo( &sSignedData.pCertList[i], &sCertInfo, NULL );
         if( ret != 0 ) continue;
 
         JS_UTIL_getDate( sCertInfo.uNotBefore, sNotBefore );
@@ -115,7 +134,7 @@ void CMSInfoDlg::setCMS( const BIN *pCMS )
         JS_PKI_resetCertInfo( &sCertInfo );
     }
 
-    for( int i = 0; i < sSignedInfo.nCRLCnt; i++ )
+    for( int i = 0; i < sSignedData.nCRLCnt; i++ )
     {
         JCRLInfo sCRLInfo;
 
@@ -124,7 +143,7 @@ void CMSInfoDlg::setCMS( const BIN *pCMS )
 
         memset( &sCRLInfo, 0x00, sizeof(sCRLInfo));
 
-        ret = JS_PKI_getCRLInfo( &sSignedInfo.pCRLList[i], &sCRLInfo, NULL, NULL );
+        ret = JS_PKI_getCRLInfo( &sSignedData.pCRLList[i], &sCRLInfo, NULL, NULL );
         if( ret != 0 ) continue;
 
         JS_UTIL_getDate( sCRLInfo.uThisUpdate, sThisUpdate );
@@ -147,7 +166,8 @@ void CMSInfoDlg::setCMS( const BIN *pCMS )
         JS_PKI_resetCRLInfo( &sCRLInfo );
     }
 
-    JS_PKCS7_resetSignedInfo( &sSignedInfo );
+    JS_PKCS7_resetSignedData( &sSignedData );
+    if( pInfoList ) JS_PKCS7_resetSignerInfoList( &pInfoList );
 }
 
 void CMSInfoDlg::dataChanged()
