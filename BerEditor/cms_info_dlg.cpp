@@ -43,6 +43,16 @@ void CMSInfoDlg::initUI()
 #else
     int nWidth = width() * 8/10;
 #endif
+    QStringList sDataLabels = { tr("Name"), tr("Value") };
+    mDataTable->clear();
+    mDataTable->horizontalHeader()->setStretchLastSection(true);
+    mDataTable->setColumnCount( sDataLabels.size() );
+    mDataTable->setHorizontalHeaderLabels( sDataLabels );
+    mDataTable->verticalHeader()->setVisible(false);
+    mDataTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mDataTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mDataTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    mDataTable->setColumnWidth( 0, nWidth * 5/10 );
 
     QStringList sTableLabels = { tr( "Subject DN" ), tr( "Expire" ), tr( "Issuer DN" ) };
 
@@ -72,6 +82,26 @@ void CMSInfoDlg::initUI()
     mCRLTable->setColumnWidth( 0, nWidth * 6/10 );
     mCRLTable->setColumnWidth( 1, nWidth * 2/10 );
     mCRLTable->setColumnWidth( 2, nWidth * 2/10 );
+
+    mSignerTable->clear();
+    mSignerTable->horizontalHeader()->setStretchLastSection(true);
+    mSignerTable->setColumnCount( sDataLabels.size() );
+    mSignerTable->setHorizontalHeaderLabels( sDataLabels );
+    mSignerTable->verticalHeader()->setVisible(false);
+    mSignerTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mSignerTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mSignerTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    mSignerTable->setColumnWidth( 0, nWidth * 5/10 );
+
+    mRecipTable->clear();
+    mRecipTable->horizontalHeader()->setStretchLastSection(true);
+    mRecipTable->setColumnCount( sDataLabels.size() );
+    mRecipTable->setHorizontalHeaderLabels( sDataLabels );
+    mRecipTable->verticalHeader()->setVisible(false);
+    mRecipTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mRecipTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mRecipTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    mRecipTable->setColumnWidth( 0, nWidth * 5/10 );
 }
 
 void CMSInfoDlg::setCMS( const BIN *pCMS )
@@ -144,6 +174,9 @@ void CMSInfoDlg::setSigned()
         }
 
     //    mDigestAlgText->setText( strAlg );
+        mDataTable->insertRow(row);
+        mDataTable->setItem( row, 0, new QTableWidgetItem("Digest Alg"));
+        mDataTable->setItem( row, 1, new QTableWidgetItem( strAlg));
     }
 
     for( int i = 0; i < sSignedData.nCertCnt; i++ )
@@ -161,8 +194,8 @@ void CMSInfoDlg::setSigned()
         JS_UTIL_getDate( sCertInfo.uNotBefore, sNotBefore );
         JS_UTIL_getDate( sCertInfo.uNotAfter, sNotAfter );
 
-        mCertTable->insertRow( row );
-        mCertTable->setRowHeight( row, 10 );
+        mCertTable->insertRow( i );
+        mCertTable->setRowHeight( i, 10 );
         QTableWidgetItem *item = new QTableWidgetItem( sCertInfo.pSubjectName );
 
         if( now > sCertInfo.uNotAfter )
@@ -170,9 +203,9 @@ void CMSInfoDlg::setSigned()
         else
             item->setIcon(QIcon(":/images/cert.png" ));
 
-        mCertTable->setItem( row, 0, item );
-        mCertTable->setItem( row, 1, new QTableWidgetItem( sNotAfter ));
-        mCertTable->setItem( row, 2, new QTableWidgetItem( sCertInfo.pIssuerName ));
+        mCertTable->setItem( i, 0, item );
+        mCertTable->setItem( i, 1, new QTableWidgetItem( sNotAfter ));
+        mCertTable->setItem( i, 2, new QTableWidgetItem( sCertInfo.pIssuerName ));
 
         JS_PKI_resetCertInfo( &sCertInfo );
     }
@@ -192,8 +225,8 @@ void CMSInfoDlg::setSigned()
         JS_UTIL_getDate( sCRLInfo.uThisUpdate, sThisUpdate );
         JS_UTIL_getDate( sCRLInfo.uNextUpdate, sNextUpdate );
 
-        mCRLTable->insertRow( row );
-        mCRLTable->setRowHeight( row, 10 );
+        mCRLTable->insertRow( i );
+        mCRLTable->setRowHeight( i, 10 );
         QTableWidgetItem *item = new QTableWidgetItem( sCRLInfo.pIssuerName );
 
         if( now > sCRLInfo.uNextUpdate )
@@ -201,9 +234,9 @@ void CMSInfoDlg::setSigned()
         else
             item->setIcon(QIcon(":/images/crl.png" ));
 
-        mCRLTable->setItem( row, 0, item );
-        mCRLTable->setItem( row, 1, new QTableWidgetItem( sThisUpdate ));
-        mCRLTable->setItem( row, 2, new QTableWidgetItem( sNextUpdate ));
+        mCRLTable->setItem( i, 0, item );
+        mCRLTable->setItem( i, 1, new QTableWidgetItem( sThisUpdate ));
+        mCRLTable->setItem( i, 2, new QTableWidgetItem( sNextUpdate ));
 
 
         JS_PKI_resetCRLInfo( &sCRLInfo );

@@ -42,6 +42,7 @@ enum {
     JS_FILE_TYPE_BIN,
     JS_FILE_TYPE_LCN,
     JS_FILE_TYPE_JSON,
+    JS_FILE_TYPE_PKCS7,
     JS_FILE_TYPE_ALL };
 
 const QColor kAddrColor( 220, 220, 250 );
