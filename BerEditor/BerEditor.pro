@@ -103,7 +103,8 @@ SOURCES += \
     pri_key_info_dlg.cpp \
     BasicXMLSyntaxHighlighter.cpp \
     name_dlg.cpp \
-    ldt_hash_thread.cpp
+    ldt_hash_thread.cpp \
+    cms_info_dlg.cpp
 
 HEADERS += \
     about_dlg.h \
@@ -173,7 +174,8 @@ HEADERS += \
     pri_key_info_dlg.h \
     BasicXMLSyntaxHighlighter.h \
     name_dlg.h \
-    ldt_hash_thread.h
+    ldt_hash_thread.h \
+    cms_info_dlg.h
 
 
 
@@ -311,7 +313,8 @@ FORMS += \
         edit_ttlv_dlg.ui \
         make_ttlv_dlg.ui \
         pri_key_info_dlg.ui \
-        name_dlg.ui
+        name_dlg.ui \
+        cms_info_dlg.ui
 
 RESOURCES += \
     bereditor.qrc

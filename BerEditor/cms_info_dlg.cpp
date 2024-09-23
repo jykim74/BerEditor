@@ -2,6 +2,7 @@
 #include "ber_applet.h"
 #include "cert_info_dlg.h"
 #include "crl_info_dlg.h"
+#include "settings_mgr.h"
 
 #include "js_pki.h"
 #include "js_pkcs7.h"
@@ -116,6 +117,8 @@ void CMSInfoDlg::initUI()
     mRecipTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mRecipTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     mRecipTable->setColumnWidth( 0, nWidth * 3/10 );
+
+    mInfoTab->setCurrentIndex(0);
 }
 
 void CMSInfoDlg::setCMS( const BIN *pCMS )
@@ -237,10 +240,11 @@ void CMSInfoDlg::setSigned()
     JSignerInfoList *pInfoList = NULL;
     JSignerInfoList *pCurList = NULL;
     time_t now = time(NULL);
+    QString strCAPath = berApplet->settingsMgr()->CACertPath();
 
     memset( &sSignedData, 0x00, sizeof(sSignedData));
 
-    ret = JS_PKCS7_getSignedData( &cms_bin_, &sSignedData, &pInfoList );
+    ret = JS_PKCS7_getSignedData( &cms_bin_, strCAPath.toStdString().c_str(), &sSignedData, &pInfoList );
 
     mVersionText->setText( QString("%1").arg( sSignedData.nVersion ));
     mDataText->setPlainText( getHexString( &sSignedData.binContent ));
@@ -266,6 +270,11 @@ void CMSInfoDlg::setSigned()
         mDataTable->setItem( row, 0, new QTableWidgetItem("Digest Alg"));
         mDataTable->setItem( row, 1, new QTableWidgetItem( strAlg));
     }
+
+    mDataTable->insertRow(++row);
+    mDataTable->setRowHeight( row, 10 );
+    mDataTable->setItem( row, 0, new QTableWidgetItem( "Verify" ));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( sSignedData.nVerify )));
 
     for( int i = 0; i < sSignedData.nCertCnt; i++ )
     {
@@ -482,9 +491,11 @@ void CMSInfoDlg::setSignedAndEnveloped()
     JRecipInfoList *pRecipList = NULL;
     JRecipInfoList *pCurRecipList = NULL;
 
+    QString strCAPath = berApplet->settingsMgr()->CACertPath();
+
     memset( &sSignAndEnveloped, 0x00, sizeof(sSignAndEnveloped));
 
-    ret = JS_PKCS7_getSignedAndEnvelopedData( &cms_bin_, &sSignAndEnveloped, &pSignerList, &pRecipList );
+    ret = JS_PKCS7_getSignedAndEnvelopedData( &cms_bin_, strCAPath.toStdString().c_str(), &sSignAndEnveloped, &pSignerList, &pRecipList );
 
     mVersionText->setText( QString("%1").arg( sSignAndEnveloped.nVersion ));
     mDataText->setPlainText( getHexString( &sSignAndEnveloped.binEncData ));
@@ -587,6 +598,11 @@ void CMSInfoDlg::setSignedAndEnveloped()
     mDataTable->setRowHeight(row,10);
     mDataTable->setItem( row, 0, new QTableWidgetItem("Alg"));
     mDataTable->setItem( row, 1, new QTableWidgetItem( sSignAndEnveloped.pAlg ));
+
+    mDataTable->insertRow(++row);
+    mDataTable->setRowHeight( row, 10 );
+    mDataTable->setItem( row, 0, new QTableWidgetItem( "Verify" ));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( sSignAndEnveloped.nVerify )));
 
     pCurSignerList = pSignerList;
 
