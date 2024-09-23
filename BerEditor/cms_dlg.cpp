@@ -1242,6 +1242,7 @@ void CMSDlg::clickCMSView()
 {
     BIN binCMS = {0,0};
 
+    int nCMSType = -1;
     int nDataType = DATA_HEX;
     QString strOutput = mOutputText->toPlainText();
 
@@ -1253,6 +1254,15 @@ void CMSDlg::clickCMSView()
         nDataType = DATA_STRING;
 
     getBINFromString( &binCMS, nDataType, strOutput );
+
+    nCMSType = JS_PKCS7_getType( &binCMS );
+    if( nCMSType != JS_PKCS7_TYPE_SIGNED && nCMSType != JS_PKCS7_TYPE_ENVELOED && nCMSType != JS_PKCS7_TYPE_SIGNED_AND_ENVELOPED )
+    {
+        berApplet->warningBox( tr( "This CMS type is not supported.").arg( nCMSType ), this );
+        JS_BIN_reset( &binCMS );
+        return;
+    }
+
 
     cmsInfo.setCMS( &binCMS );
     cmsInfo.exec();

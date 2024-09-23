@@ -107,6 +107,7 @@ private slots:
     void openCSR();
     void openPriKey();
     void openPubKey();
+    void openCMS();
 
     void copy();
     void copyAsHex();

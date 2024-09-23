@@ -51,9 +51,11 @@
 #include "make_ttlv_dlg.h"
 #include "BasicXMLSyntaxHighlighter.h"
 #include "pri_key_info_dlg.h"
+#include "cms_info_dlg.h"
 
 #include "js_pki_tools.h"
 #include "js_kms.h"
+#include "js_pkcs7.h"
 
 #include <QtWidgets>
 #include <QFileDialog>
@@ -350,6 +352,15 @@ void MainWindow::createActions()
     openPubKeyAct->setStatusTip(tr("Open PublicKey"));
     connect( openPubKeyAct, &QAction::triggered, this, &MainWindow::openPubKey);
     fileMenu->addAction(openPubKeyAct);
+
+
+    const QIcon openCMSIcon = QIcon::fromTheme("CMS", QIcon(":/images/cms.png"));
+
+    QAction *openCMSAct = new QAction( openCMSIcon, tr("&Open CMS"), this );
+    openCMSAct->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_M));
+    openCMSAct->setStatusTip(tr("Open CMS"));
+    connect( openCMSAct, &QAction::triggered, this, &MainWindow::openCMS);
+    fileMenu->addAction(openCMSAct);
 
     const QIcon saveIcon = QIcon::fromTheme("document-save", QIcon(":/images/save.png"));
     QAction *saveAct = new QAction(saveIcon, tr("&Save"), this);
@@ -670,6 +681,7 @@ void MainWindow::createActions()
     {
         openPriKeyAct->setEnabled(false);
         openPubKeyAct->setEnabled(false);
+        openCMSAct->setEnabled( false );
         keyManAct->setEnabled( false );
         hashAct->setEnabled( false );
         macAct->setEnabled( false );
@@ -1288,6 +1300,35 @@ void MainWindow::openPubKey()
     }
 
     JS_BIN_reset( &binKey );
+}
+
+void MainWindow::openCMS()
+{
+    int ret = 0;
+    int nCMSType = -1;
+    QString strPath = berApplet->curFile();
+
+    QString fileName = findFile( this, JS_FILE_TYPE_PKCS7, strPath );
+    BIN binCMS = {0,0};
+
+    if( fileName.length() < 1 ) return;
+
+    JS_BIN_fileReadBER( fileName.toLocal8Bit().toStdString().c_str(), &binCMS );
+
+    nCMSType = JS_PKCS7_getType( &binCMS );
+
+    if( nCMSType != JS_PKCS7_TYPE_SIGNED && nCMSType != JS_PKCS7_TYPE_ENVELOED && nCMSType != JS_PKCS7_TYPE_SIGNED_AND_ENVELOPED )
+    {
+        berApplet->warningBox( tr( "This CMS type is not supported.").arg( nCMSType ), this );
+        JS_BIN_reset( &binCMS );
+        return;
+    }
+
+    CMSInfoDlg cmsInfo;
+    cmsInfo.setCMS( &binCMS );
+    cmsInfo.exec();
+
+    JS_BIN_reset( &binCMS );
 }
 
 void MainWindow::copy()

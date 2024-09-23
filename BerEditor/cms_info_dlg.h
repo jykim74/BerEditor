@@ -22,6 +22,13 @@ public:
 private slots:
     void dataChanged();
 
+    void clickDataField(QModelIndex index);
+    void clickSignerField(QModelIndex index);
+    void clickRecipField(QModelIndex index);
+
+    void clickViewCert();
+    void clickViewCRL();
+
 private:
     void initUI();
 

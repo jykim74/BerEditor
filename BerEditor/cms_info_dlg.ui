@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>524</width>
-    <height>767</height>
+    <height>513</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -226,16 +226,6 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label_6">
-     <property name="text">
-      <string>Data Information</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QTableWidget" name="mDataTable"/>
-   </item>
-   <item>
     <widget class="Line" name="line_3">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -244,12 +234,35 @@
    </item>
    <item>
     <widget class="QTabWidget" name="mInfoTab">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>200</height>
+      </size>
+     </property>
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="mCertCRLTab">
+     <widget class="QWidget" name="mDataTab">
       <attribute name="title">
-       <string>Certficate and CRL</string>
+       <string>Data</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <item>
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>Data Information</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="mDataTable"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="mCertTab">
+      <attribute name="title">
+       <string>Certficate</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
@@ -262,13 +275,13 @@
        <item>
         <widget class="QTableWidget" name="mCertTable"/>
        </item>
-       <item>
-        <widget class="Line" name="line_4">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="mCRLTab">
+      <attribute name="title">
+       <string>CRL</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
         <widget class="QLabel" name="label_5">
          <property name="text">
@@ -281,9 +294,9 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="mSignerRecipTab">
+     <widget class="QWidget" name="mSignerTab">
       <attribute name="title">
-       <string>Signer and Recip</string>
+       <string>Signer</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
@@ -296,6 +309,13 @@
        <item>
         <widget class="QTableWidget" name="mSignerTable"/>
        </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="mRecipTab">
+      <attribute name="title">
+       <string>Recip</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
         <widget class="QLabel" name="label_9">
          <property name="text">
@@ -311,7 +331,38 @@
     </widget>
    </item>
    <item>
-    <widget class="QPlainTextEdit" name="mValueText"/>
+    <widget class="QPlainTextEdit" name="mValueText">
+     <property name="palette">
+      <palette>
+       <active>
+        <colorrole role="Base">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>221</red>
+           <green>221</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </active>
+       <inactive>
+        <colorrole role="Base">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>221</red>
+           <green>221</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </inactive>
+       <disabled/>
+      </palette>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="Line" name="line">
