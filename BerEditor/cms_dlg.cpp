@@ -9,6 +9,7 @@
 #include "cms_dlg.h"
 #include "js_pki.h"
 #include "js_pkcs7.h"
+#include "js_error.h"
 
 #include "mainwindow.h"
 #include "ber_applet.h"
@@ -26,11 +27,10 @@ CMSDlg::CMSDlg(QWidget *parent) :
     last_path_ = berApplet->curFolder();
 
     connect( mSrcClearBtn, SIGNAL(clicked()), this, SLOT(clearSrc()));
-    connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clearOutput()));
+    connect( mCMSClearBtn, SIGNAL(clicked()), this, SLOT(clearCMS()));
 
-    connect( mDecodeBtn, SIGNAL(clicked()), this, SLOT(clickDecode()));
+    connect( mCMSDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCMSDecode()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(clickClose()));
-    connect( mChangeBtn, SIGNAL(clicked()), this, SLOT(clickChange()));
     connect( mSignPriKeyFindBtn, SIGNAL(clicked()), this, SLOT(clickSignPriFind()));
     connect( mSignCertFindBtn, SIGNAL(clicked()), this, SLOT(clickSignCertFind()));
     connect( mKMPriKeyFindBtn, SIGNAL(clicked()), this, SLOT(clickKMPriFind()));
@@ -43,13 +43,12 @@ CMSDlg::CMSDlg(QWidget *parent) :
     connect( mDevelopedAndVerifyBtn, SIGNAL(clicked()), this, SLOT(clickDevelopedAndVerify()));
 
     connect( mSrcText, SIGNAL(textChanged()), this, SLOT(srcChanged()));
-    connect( mOutputText, SIGNAL(textChanged()), this, SLOT(outputChanged()));
+    connect( mCMSText, SIGNAL(textChanged()), this, SLOT(CMSChanged()));
     connect( mSrcStringRadio, SIGNAL(clicked()), this, SLOT(srcChanged()));
     connect( mSrcHexRadio, SIGNAL(clicked()), this, SLOT(srcChanged()));
     connect( mSrcBase64Radio, SIGNAL(clicked()), this, SLOT(srcChanged()));
-    connect( mOutputStringRadio, SIGNAL(clicked()), this, SLOT(outputChanged()));
-    connect( mOutputHexRadio, SIGNAL(clicked()), this, SLOT(outputChanged()));
-    connect( mOutputBase64Radio, SIGNAL(clicked()), this, SLOT(outputChanged()));
+    connect( mCMSHexRadio, SIGNAL(clicked()), this, SLOT(CMSChanged()));
+    connect( mCMSBase64Radio, SIGNAL(clicked()), this, SLOT(CMSChanged()));
 
     connect( mSignPriKeyViewBtn, SIGNAL(clicked()), this, SLOT(clickSignPriKeyView()));
     connect( mSignPriKeyDecodeBtn, SIGNAL(clicked()), this, SLOT(clickSignPriKeyDecode()));
@@ -113,11 +112,10 @@ CMSDlg::~CMSDlg()
 
 void CMSDlg::initialize()
 {
-    group_->addButton( mOutputStringRadio );
-    group_->addButton( mOutputHexRadio );
-    group_->addButton( mOutputBase64Radio );
+    group_->addButton( mCMSHexRadio );
+    group_->addButton( mCMSBase64Radio );
 
-    mSrcStringRadio->setChecked(true);
+    mSrcHexRadio->setChecked(true);
 
     checkSignEncPriKey();
     checkKMEncPriKey();
@@ -250,38 +248,20 @@ void CMSDlg::clickClose()
     close();
 }
 
-void CMSDlg::clickDecode()
+void CMSDlg::clickCMSDecode()
 {
     BIN binOutput = {0,0};
 
-    QString strOutput = mOutputText->toPlainText();
+    QString strOutput = mCMSText->toPlainText();
 
-    if( mOutputStringRadio->isChecked() )
-        JS_BIN_set( &binOutput, (unsigned char *)strOutput.toStdString().c_str(), strOutput.length() );
-    else if( mOutputHexRadio->isChecked() )
+    if( mCMSHexRadio->isChecked() )
         JS_BIN_decodeHex( strOutput.toStdString().c_str(), &binOutput );
-    else if( mOutputBase64Radio->isChecked() )
+    else if( mCMSBase64Radio->isChecked() )
         JS_BIN_decodeBase64( strOutput.toStdString().c_str(), &binOutput );
 
     berApplet->mainWindow()->openBer( &binOutput );
 
     JS_BIN_reset( &binOutput );
-}
-
-void CMSDlg::clickChange()
-{
-    QString strSrc = mSrcText->toPlainText();
-    QString strOutput = mOutputText->toPlainText();
-
-    mSrcText->setPlainText( strOutput );
-    mOutputText->clear();
-
-    if( mOutputStringRadio->isChecked() )
-        mSrcStringRadio->setChecked(true);
-    else if( mOutputHexRadio->isChecked() )
-        mSrcHexRadio->setChecked(true);
-    else if( mOutputBase64Radio->isChecked() )
-        mSrcBase64Radio->setChecked(true);
 }
 
 void CMSDlg::clickSignPriFind()
@@ -405,6 +385,8 @@ void CMSDlg::clickSignedData()
 
     if( ret == 0 )
     {
+        mCMSTypeText->setText( "SignedData" );
+
         berApplet->logLine();
         berApplet->log( "-- Signed Data" );
         berApplet->logLine();
@@ -416,14 +398,12 @@ void CMSDlg::clickSignedData()
         berApplet->logLine();
     }
 
-    if( mOutputStringRadio->isChecked() )
-        JS_BIN_string( &binOutput, &pOutput );
-    else if( mOutputHexRadio->isChecked() )
+    if( mCMSHexRadio->isChecked() )
         JS_BIN_encodeHex( &binOutput, &pOutput );
-    else if( mOutputBase64Radio->isChecked() )
+    else if( mCMSBase64Radio->isChecked() )
         JS_BIN_encodeBase64( &binOutput, &pOutput );
 
-    mOutputText->setPlainText( pOutput );
+    mCMSText->setPlainText( pOutput );
 
 end :
     if( pOutput ) JS_free( pOutput );
@@ -502,6 +482,8 @@ void CMSDlg::clickEnvelopedData()
 
     if( ret == 0 )
     {
+        mCMSTypeText->setText( "EnvelopedData" );
+
         berApplet->logLine();
         berApplet->log( "-- Enveloped Data" );
         berApplet->logLine();
@@ -511,14 +493,12 @@ void CMSDlg::clickEnvelopedData()
         berApplet->logLine();
     }
 
-    if( mOutputStringRadio->isChecked() )
-        JS_BIN_string( &binOutput, &pOutput );
-    else if( mOutputHexRadio->isChecked() )
+    if( mCMSHexRadio->isChecked() )
         JS_BIN_encodeHex( &binOutput, &pOutput );
-    else if( mOutputBase64Radio->isChecked() )
+    else if( mCMSBase64Radio->isChecked() )
         JS_BIN_encodeBase64( &binOutput, &pOutput );
 
-    mOutputText->setPlainText( pOutput );
+    mCMSText->setPlainText( pOutput );
 
 end :
     if( pOutput ) JS_free( pOutput );
@@ -633,6 +613,8 @@ void CMSDlg::clickSignAndEnvloped()
 
     if( ret == 0 )
     {
+        mCMSTypeText->setText( "SignedAndEnvelopedData" );
+
         berApplet->logLine();
         berApplet->log( "-- SignedAndEnveloped Data" );
         berApplet->logLine();
@@ -644,14 +626,12 @@ void CMSDlg::clickSignAndEnvloped()
         berApplet->logLine();
     }
 
-    if( mOutputStringRadio->isChecked() )
-        JS_BIN_string( &binOutput, &pOutput );
-    else if( mOutputHexRadio->isChecked() )
+    if( mCMSHexRadio->isChecked() )
         JS_BIN_encodeHex( &binOutput, &pOutput );
-    else if( mOutputBase64Radio->isChecked() )
+    else if( mCMSBase64Radio->isChecked() )
         JS_BIN_encodeBase64( &binOutput, &pOutput );
 
-    mOutputText->setPlainText( pOutput );
+    mCMSText->setPlainText( pOutput );
 
 end :
     if( pOutput ) JS_free( pOutput );
@@ -666,21 +646,27 @@ end :
 void CMSDlg::clickVerifyData()
 {
     int ret = 0;
-    int nType = -1;
+    int nCMSType = -1;
     char *pOutput = NULL;
 
     BIN binCert = {0,0};
+    BIN binCMS = {0,0};
     BIN binSrc = {0,0};
-    BIN binOutput = {0,0};
 
-    QString strInput = mSrcText->toPlainText();
+    QString strCMS = mCMSText->toPlainText();
+    QString strSrc;
 
-    if( strInput.isEmpty() )
+    if( strCMS.isEmpty() )
     {
-        berApplet->warningBox( tr( "Please enter input value" ), this );
-        mSrcText->setFocus();
+        berApplet->warningBox( tr( "Please enter CMS value" ), this );
+        mCMSText->setFocus();
         return;
     }
+
+    if( mCMSHexRadio->isChecked() )
+        JS_BIN_decodeHex( strCMS.toStdString().c_str(), &binCMS );
+    else if( mCMSBase64Radio->isChecked() )
+        JS_BIN_decodeBase64( strCMS.toStdString().c_str(), &binCMS );
 
     if( mSignCertGroup->isChecked() == true )
     {
@@ -706,37 +692,46 @@ void CMSDlg::clickVerifyData()
         certMan.getCert( &binCert );
     }
 
-    if( mSrcStringRadio->isChecked() )
-        JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
-    else if( mSrcHexRadio->isChecked() )
-        JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
-    else if( mSrcBase64Radio->isChecked() )
-        JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
+    nCMSType = JS_PKCS7_getType( &binCMS );
+    if( nCMSType != JS_PKCS7_TYPE_SIGNED )
+    {
+        berApplet->warningBox( tr( "Not a SignedData type[Type:%1]").arg( nCMSType ));
+        goto end;
+    }
 
-    ret = JS_PKCS7_verifySignedData( &binSrc, &binCert, &binOutput );
-    berApplet->log( QString("SignedData verification result: %1").arg( ret ));
-    berApplet->logLine();
-    berApplet->log( "-- Verify Data" );
-    berApplet->logLine();
-    berApplet->log( QString( "Src    : %1" ).arg( getHexString( &binSrc )));
-    berApplet->log( QString( "Cert   : %1" ).arg( getHexString( &binCert )));
-    berApplet->log( QString( "Output : %1" ).arg( getHexString( &binOutput )));
-    berApplet->logLine();
+    ret = JS_PKCS7_verifySignedData( &binCMS, &binCert, &binSrc );
+    if( ret == JSR_VERIFY )
+    {
+        berApplet->log( QString("SignedData verification result: %1").arg( ret ));
+        berApplet->logLine();
+        berApplet->log( "-- Verify Data" );
+        berApplet->logLine();
+        berApplet->log( QString( "CMS    : %1" ).arg( getHexString( &binCMS )));
+        berApplet->log( QString( "Cert   : %1" ).arg( getHexString( &binCert )));
+        berApplet->log( QString( "Src    : %1" ).arg( getHexString( &binSrc )));
+        berApplet->logLine();
 
 
-    if( mOutputStringRadio->isChecked() )
-        JS_BIN_string( &binOutput, &pOutput );
-    else if( mOutputHexRadio->isChecked() )
-        JS_BIN_encodeHex( &binOutput, &pOutput );
-    else if( mOutputBase64Radio->isChecked() )
-        JS_BIN_encodeBase64( &binOutput, &pOutput );
+        if( mSrcStringRadio->isChecked() )
+            JS_BIN_string( &binSrc, &pOutput );
+        else if( mSrcHexRadio->isChecked() )
+            JS_BIN_encodeHex( &binSrc, &pOutput );
+        else if( mSrcBase64Radio->isChecked() )
+            JS_BIN_encodeBase64( &binSrc, &pOutput );
 
-    mOutputText->setPlainText( pOutput );
+        mSrcText->setPlainText( pOutput );
+
+        berApplet->messageBox( tr( "VerifyData Success" ), this );
+    }
+    else
+    {
+        berApplet->warnLog( tr( "fail to verify signedData: %1").arg( ret ), this );
+    }
 
 end :
     if( pOutput ) JS_free( pOutput );
     JS_BIN_reset( &binSrc );
-    JS_BIN_reset( &binOutput );
+    JS_BIN_reset( &binCMS );
     JS_BIN_reset( &binCert );
 }
 
@@ -744,19 +739,20 @@ void CMSDlg::clickDevelopedData()
 {
     int ret = 0;
     int nType = -1;
+    int nCMSType = -1;
     char *pOutput = NULL;
 
     BIN binPri = {0,0};
     BIN binCert = {0,0};
     BIN binSrc = {0,0};
-    BIN binOutput = {0,0};
+    BIN binCMS = {0,0};
 
-    QString strInput = mSrcText->toPlainText();
+    QString strCMS = mCMSText->toPlainText();
 
-    if( strInput.isEmpty() )
+    if( strCMS.isEmpty() )
     {
-        berApplet->warningBox( tr( "Please enter input value" ), this );
-        mSrcText->setFocus();
+        berApplet->warningBox( tr( "Please enter CMS value" ), this );
+        mCMSText->setFocus();
         return;
     }
 
@@ -788,12 +784,10 @@ void CMSDlg::clickDevelopedData()
         certMan.getPriKey( &binPri );
     }
 
-    if( mSrcStringRadio->isChecked() )
-        JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
-    else if( mSrcHexRadio->isChecked() )
-        JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
-    else if( mSrcBase64Radio->isChecked() )
-        JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
+    if( mCMSHexRadio->isChecked() )
+        JS_BIN_decodeHex( strCMS.toStdString().c_str(), &binCMS );
+    else if( mCMSBase64Radio->isChecked() )
+        JS_BIN_decodeBase64( strCMS.toStdString().c_str(), &binCMS );
 
     nType = JS_PKI_getPriKeyType( &binPri );
     if( nType < 0 )
@@ -802,31 +796,47 @@ void CMSDlg::clickDevelopedData()
         goto end;
     }
 
-    ret = JS_PKCS7_makeDevelopedData( &binSrc, &binPri, &binCert, &binOutput );
+    nCMSType = JS_PKCS7_getType( &binCMS );
+    if( nCMSType != JS_PKCS7_TYPE_ENVELOED )
+    {
+        berApplet->warningBox( tr( "Not a EnvelopedData type[Type:%1]").arg( nCMSType ));
+        goto end;
+    }
+
+    ret = JS_PKCS7_makeDevelopedData( &binCMS, &binPri, &binCert, &binSrc );
     berApplet->log( QString( "developedData results: %1").arg(ret));
 
-    berApplet->logLine();
-    berApplet->log( "-- Verify Data" );
-    berApplet->logLine();
-    berApplet->log( QString( "Src        : %1" ).arg( getHexString( &binSrc )));
-    berApplet->log( QString( "Cert       : %1" ).arg( getHexString( &binCert )));
-    berApplet->log( QString( "PrivateKey : %1" ).arg( getHexString( &binPri )));
-    berApplet->log( QString( "Output     : %1" ).arg( getHexString( &binOutput )));
-    berApplet->logLine();
+    if( ret == 0 )
+    {
+        berApplet->logLine();
+        berApplet->log( "-- Verify Data" );
+        berApplet->logLine();
+        berApplet->log( QString( "CMS        : %1" ).arg( getHexString( &binCMS )));
+        berApplet->log( QString( "Cert       : %1" ).arg( getHexString( &binCert )));
+        berApplet->log( QString( "PrivateKey : %1" ).arg( getHexString( &binPri )));
+        berApplet->log( QString( "Src        : %1" ).arg( getHexString( &binSrc )));
+        berApplet->logLine();
 
-    if( mOutputStringRadio->isChecked() )
-        JS_BIN_string( &binOutput, &pOutput );
-    else if( mOutputHexRadio->isChecked() )
-        JS_BIN_encodeHex( &binOutput, &pOutput );
-    else if( mOutputBase64Radio->isChecked() )
-        JS_BIN_encodeBase64( &binOutput, &pOutput );
+        if( mSrcStringRadio->isChecked() )
+            JS_BIN_string( &binSrc, &pOutput );
+        else if( mSrcHexRadio->isChecked() )
+            JS_BIN_encodeHex( &binSrc, &pOutput );
+        else if( mSrcBase64Radio->isChecked() )
+            JS_BIN_encodeBase64( &binSrc, &pOutput );
 
-    mOutputText->setPlainText( pOutput );
+        mSrcText->setPlainText( pOutput );
+
+        berApplet->messageBox( tr( "DevelopedData Success" ), this );
+    }
+    else
+    {
+        berApplet->warnLog( tr( "fail to develop data: %1").arg(ret), this );
+    }
 
 end :
     if( pOutput ) JS_free( pOutput );
     JS_BIN_reset( &binSrc );
-    JS_BIN_reset( &binOutput );
+    JS_BIN_reset( &binCMS );
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binCert );
 }
@@ -835,20 +845,21 @@ void CMSDlg::clickDevelopedAndVerify()
 {
     int ret = 0;
     int nType = -1;
+    int nCMSType = -1;
     char *pOutput = NULL;
 
     BIN binSignCert = {0,0};
     BIN binKMPri = {0,0};
     BIN binKMCert = {0,0};
     BIN binSrc = {0,0};
-    BIN binOutput = {0,0};
+    BIN binCMS = {0,0};
 
-    QString strInput = mSrcText->toPlainText();
+    QString strCMS = mCMSText->toPlainText();
 
-    if( strInput.isEmpty() )
+    if( strCMS.isEmpty() )
     {
-        berApplet->warningBox( tr( "Please enter input value" ), this );
-        mSrcText->setFocus();
+        berApplet->warningBox( tr( "Please enter CMS value" ), this );
+        mCMSText->setFocus();
         return;
     }
 
@@ -904,12 +915,10 @@ void CMSDlg::clickDevelopedAndVerify()
         certMan.getPriKey( &binKMPri );
     }
 
-    if( mSrcStringRadio->isChecked() )
-        JS_BIN_set( &binSrc, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
-    else if( mSrcHexRadio->isChecked() )
-        JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
-    else if( mSrcBase64Radio->isChecked() )
-        JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
+    if( mCMSHexRadio->isChecked() )
+        JS_BIN_decodeHex( strCMS.toStdString().c_str(), &binCMS );
+    else if( mCMSBase64Radio->isChecked() )
+        JS_BIN_decodeBase64( strCMS.toStdString().c_str(), &binCMS );
 
     nType = JS_PKI_getPriKeyType( &binKMPri );
     if( nType < 0 )
@@ -918,32 +927,48 @@ void CMSDlg::clickDevelopedAndVerify()
         goto end;
     }
 
-    ret = JS_PKCS7_makeDevelopedAndVerify( &binSrc, &binSignCert, &binKMPri, &binKMCert, &binOutput );
+    nCMSType = JS_PKCS7_getType( &binCMS );
+    if( nCMSType != JS_PKCS7_TYPE_SIGNED_AND_ENVELOPED )
+    {
+        berApplet->warningBox( tr( "Not a SignedAndEnvelopedData type[Type:%1]").arg( nCMSType ));
+        goto end;
+    }
+
+    ret = JS_PKCS7_makeDevelopedAndVerify( &binCMS, &binSignCert, &binKMPri, &binKMCert, &binSrc );
     berApplet->log( QString("developedAndVerify Results: %1").arg(ret));
 
-    berApplet->logLine();
-    berApplet->log( "-- Developed And Verify" );
-    berApplet->logLine();
-    berApplet->log( QString( "Src           : %1" ).arg( getHexString( &binSrc )));
-    berApplet->log( QString( "Sign Cert     : %1" ).arg( getHexString( &binSignCert )));
-    berApplet->log( QString( "KM PrivateKey : %1" ).arg( getHexString( &binKMPri )));
-    berApplet->log( QString( "KM Cert       : %1" ).arg( getHexString( &binKMCert )));
-    berApplet->log( QString( "Output        : %1" ).arg( getHexString( &binOutput )));
-    berApplet->logLine();
+    if( ret == JSR_VERIFY )
+    {
+        berApplet->logLine();
+        berApplet->log( "-- Developed And Verify" );
+        berApplet->logLine();
+        berApplet->log( QString( "CMS           : %1" ).arg( getHexString( &binCMS )));
+        berApplet->log( QString( "Sign Cert     : %1" ).arg( getHexString( &binSignCert )));
+        berApplet->log( QString( "KM PrivateKey : %1" ).arg( getHexString( &binKMPri )));
+        berApplet->log( QString( "KM Cert       : %1" ).arg( getHexString( &binKMCert )));
+        berApplet->log( QString( "Src           : %1" ).arg( getHexString( &binSrc )));
+        berApplet->logLine();
 
-    if( mOutputStringRadio->isChecked() )
-        JS_BIN_string( &binOutput, &pOutput );
-    else if( mOutputHexRadio->isChecked() )
-        JS_BIN_encodeHex( &binOutput, &pOutput );
-    else if( mOutputBase64Radio->isChecked() )
-        JS_BIN_encodeBase64( &binOutput, &pOutput );
+        if( mSrcStringRadio->isChecked() )
+            JS_BIN_string( &binSrc, &pOutput );
+        else if( mSrcHexRadio->isChecked() )
+            JS_BIN_encodeHex( &binSrc, &pOutput );
+        else if( mSrcBase64Radio->isChecked() )
+            JS_BIN_encodeBase64( &binSrc, &pOutput );
 
-    mOutputText->setPlainText( pOutput );
+        mSrcText->setPlainText( pOutput );
+
+        berApplet->messageBox( tr( "verify and develop data successfully"), this );
+    }
+    else
+    {
+        berApplet->warnLog( tr( "fail to verify and develop data: %1").arg( ret ), this );
+    }
 
 end :
     if( pOutput ) JS_free( pOutput );
     JS_BIN_reset( &binSrc );
-    JS_BIN_reset( &binOutput );
+    JS_BIN_reset( &binCMS );
     JS_BIN_reset( &binSignCert );
     JS_BIN_reset( &binKMPri );
     JS_BIN_reset( &binKMCert );
@@ -962,17 +987,17 @@ void CMSDlg::srcChanged()
     mSrcLenText->setText( QString("%1").arg(strLen));
 }
 
-void CMSDlg::outputChanged()
+void CMSDlg::CMSChanged()
 {
     int nType = DATA_STRING;
 
-    if( mOutputHexRadio->isChecked() )
+    if( mCMSHexRadio->isChecked() )
         nType = DATA_HEX;
-    else if( mOutputBase64Radio->isChecked() )
+    else if( mCMSBase64Radio->isChecked() )
         nType = DATA_BASE64;
 
-    QString strLen = getDataLenString( nType, mOutputText->toPlainText() );
-    mOutputLenText->setText( QString("%1").arg(strLen));
+    QString strLen = getDataLenString( nType, mCMSText->toPlainText() );
+    mCMSLenText->setText( QString("%1").arg(strLen));
 }
 
 void CMSDlg::clearSrc()
@@ -980,9 +1005,9 @@ void CMSDlg::clearSrc()
     mSrcText->clear();
 }
 
-void CMSDlg::clearOutput()
+void CMSDlg::clearCMS()
 {
-    mOutputText->clear();
+    mCMSText->clear();
 }
 
 void CMSDlg::clickSignPriKeyDecode()
@@ -1244,16 +1269,16 @@ void CMSDlg::clickCMSView()
 
     int nCMSType = -1;
     int nDataType = DATA_HEX;
-    QString strOutput = mOutputText->toPlainText();
+    QString strCMS = mCMSText->toPlainText();
 
     CMSInfoDlg cmsInfo;
 
-    if( mOutputBase64Radio->isChecked() == true )
+    if( mCMSBase64Radio->isChecked() == true )
         nDataType = DATA_BASE64;
-    else if( mOutputStringRadio->isChecked() == true )
-        nDataType = DATA_STRING;
+    else if( mCMSHexRadio->isChecked() == true )
+        nDataType = DATA_HEX;
 
-    getBINFromString( &binCMS, nDataType, strOutput );
+    getBINFromString( &binCMS, nDataType, strCMS );
 
     nCMSType = JS_PKCS7_getType( &binCMS );
     if( nCMSType != JS_PKCS7_TYPE_SIGNED && nCMSType != JS_PKCS7_TYPE_ENVELOED && nCMSType != JS_PKCS7_TYPE_SIGNED_AND_ENVELOPED )
@@ -1273,7 +1298,9 @@ void CMSDlg::clickCMSView()
 void CMSDlg::clickClearDataAll()
 {
     mSrcText->clear();
-    mOutputText->clear();
+    mCMSText->clear();
+
+    mCMSTypeText->clear();
 
     mSignPriKeyPathText->clear();
     mSignCertPathText->clear();

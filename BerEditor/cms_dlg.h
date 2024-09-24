@@ -24,8 +24,7 @@ public:
 
 private slots:
     void clickClose();
-    void clickDecode();
-    void clickChange();
+    void clickCMSDecode();
     void clickSignPriFind();
     void clickSignCertFind();
     void clickKMPriFind();
@@ -55,10 +54,10 @@ private slots:
     void clickKMCertType();
 
     void srcChanged();
-    void outputChanged();
+    void CMSChanged();
 
     void clearSrc();
-    void clearOutput();
+    void clearCMS();
 
     void clickCMSView();
     void clickClearDataAll();

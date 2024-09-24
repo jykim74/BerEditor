@@ -1824,25 +1824,23 @@ mailto : jykim74@gmail.com</translation>
         <translation>PKCS#7 Cryptographic Message Syntax</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.ui" line="573"/>
         <source>Output Data</source>
-        <translation>결과 데이타</translation>
+        <translation type="vanished">결과 데이타</translation>
     </message>
     <message>
         <location filename="../cms_dlg.ui" line="144"/>
-        <location filename="../cms_dlg.ui" line="649"/>
+        <location filename="../cms_dlg.ui" line="713"/>
         <source>Base64</source>
         <translation>베이스64</translation>
     </message>
     <message>
         <location filename="../cms_dlg.ui" line="38"/>
-        <location filename="../cms_dlg.ui" line="663"/>
+        <location filename="../cms_dlg.ui" line="636"/>
         <source>Hex</source>
         <translation>16진수</translation>
     </message>
     <message>
         <location filename="../cms_dlg.ui" line="52"/>
-        <location filename="../cms_dlg.ui" line="699"/>
         <source>String</source>
         <translation>문자열</translation>
     </message>
@@ -1885,13 +1883,13 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">디코딩</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.ui" line="836"/>
+        <location filename="../cms_dlg.ui" line="850"/>
         <source>Clear Data All</source>
         <translation>전체 데이타 지우기</translation>
     </message>
     <message>
         <location filename="../cms_dlg.ui" line="45"/>
-        <location filename="../cms_dlg.ui" line="656"/>
+        <location filename="../cms_dlg.ui" line="706"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
@@ -1933,42 +1931,41 @@ mailto : jykim74@gmail.com</translation>
         <translation>암호화된 KM 개인키</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.ui" line="692"/>
         <source>⬆</source>
-        <translation>⬆</translation>
+        <translation type="vanished">⬆</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.ui" line="760"/>
+        <location filename="../cms_dlg.ui" line="774"/>
         <source>DevelopedAndVerify</source>
         <translation>DevelopedAndVerify</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.ui" line="767"/>
+        <location filename="../cms_dlg.ui" line="781"/>
         <source>SignedData</source>
         <translation>SignedData</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.ui" line="774"/>
+        <location filename="../cms_dlg.ui" line="788"/>
         <source>VerifyData</source>
         <translation>VerifyData</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.ui" line="781"/>
+        <location filename="../cms_dlg.ui" line="795"/>
         <source>EnvelopedData</source>
         <translation>EnvelopedData</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.ui" line="788"/>
+        <location filename="../cms_dlg.ui" line="802"/>
         <source>DevelopedData</source>
         <translation>DevelopedData</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.ui" line="795"/>
+        <location filename="../cms_dlg.ui" line="809"/>
         <source>SignAndEnveloped</source>
         <translation>SignAndEnveloped</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.ui" line="843"/>
+        <location filename="../cms_dlg.ui" line="857"/>
         <source>CMS View</source>
         <translation>CMS 보기</translation>
     </message>
@@ -1995,7 +1992,7 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../cms_dlg.ui" line="157"/>
-        <location filename="../cms_dlg.ui" line="586"/>
+        <location filename="../cms_dlg.ui" line="726"/>
         <source>C</source>
         <translation>C</translation>
     </message>
@@ -2004,12 +2001,17 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../cms_dlg.ui" line="290"/>
         <location filename="../cms_dlg.ui" line="401"/>
         <location filename="../cms_dlg.ui" line="486"/>
-        <location filename="../cms_dlg.ui" line="712"/>
+        <location filename="../cms_dlg.ui" line="686"/>
         <source>D</source>
         <translation>D</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.ui" line="829"/>
+        <location filename="../cms_dlg.ui" line="573"/>
+        <source>CMS Data</source>
+        <translation>CMS 데이타</translation>
+    </message>
+    <message>
+        <location filename="../cms_dlg.ui" line="843"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -2058,135 +2060,184 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">서명용 개인키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="137"/>
-        <location filename="../cms_dlg.cpp" line="995"/>
+        <location filename="../cms_dlg.cpp" line="135"/>
+        <location filename="../cms_dlg.cpp" line="1020"/>
         <source>Select a private key for sign</source>
         <translation>서명용 개인키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="145"/>
+        <location filename="../cms_dlg.cpp" line="143"/>
         <source>failed to read private key: %1</source>
         <translation>개인키 읽기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="155"/>
-        <location filename="../cms_dlg.cpp" line="216"/>
+        <location filename="../cms_dlg.cpp" line="153"/>
+        <location filename="../cms_dlg.cpp" line="214"/>
         <source>Please enter a password</source>
         <translation>암호를 입력해야 합니다</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="164"/>
-        <location filename="../cms_dlg.cpp" line="206"/>
-        <location filename="../cms_dlg.cpp" line="225"/>
+        <location filename="../cms_dlg.cpp" line="162"/>
+        <location filename="../cms_dlg.cpp" line="204"/>
+        <location filename="../cms_dlg.cpp" line="223"/>
         <source>Private key decryption failed [%1]</source>
         <translation>개인키 복호화 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="198"/>
-        <location filename="../cms_dlg.cpp" line="1061"/>
+        <location filename="../cms_dlg.cpp" line="196"/>
+        <location filename="../cms_dlg.cpp" line="1086"/>
         <source>Select a private key for KM</source>
         <translation>KM용 개인키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="357"/>
-        <location filename="../cms_dlg.cpp" line="451"/>
-        <location filename="../cms_dlg.cpp" line="548"/>
-        <location filename="../cms_dlg.cpp" line="680"/>
-        <location filename="../cms_dlg.cpp" line="758"/>
-        <location filename="../cms_dlg.cpp" line="850"/>
+        <location filename="../cms_dlg.cpp" line="337"/>
+        <location filename="../cms_dlg.cpp" line="431"/>
+        <location filename="../cms_dlg.cpp" line="528"/>
         <source>Please enter input value</source>
         <translation>입력값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="370"/>
-        <location filename="../cms_dlg.cpp" line="561"/>
-        <location filename="../cms_dlg.cpp" line="690"/>
-        <location filename="../cms_dlg.cpp" line="860"/>
+        <location filename="../cms_dlg.cpp" line="350"/>
+        <location filename="../cms_dlg.cpp" line="541"/>
+        <location filename="../cms_dlg.cpp" line="676"/>
+        <location filename="../cms_dlg.cpp" line="871"/>
         <source>Select a certificate for signing</source>
         <translation>서명용 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="380"/>
-        <location filename="../cms_dlg.cpp" line="572"/>
-        <location filename="../cms_dlg.cpp" line="701"/>
-        <location filename="../cms_dlg.cpp" line="871"/>
+        <location filename="../cms_dlg.cpp" line="360"/>
+        <location filename="../cms_dlg.cpp" line="552"/>
+        <location filename="../cms_dlg.cpp" line="687"/>
+        <location filename="../cms_dlg.cpp" line="882"/>
         <source>Select a sign certificate</source>
         <translation>서명용 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="402"/>
+        <location filename="../cms_dlg.cpp" line="382"/>
         <source>Failed to create SignedData [%1]</source>
         <translation>SignedData 생성 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="461"/>
-        <location filename="../cms_dlg.cpp" line="586"/>
-        <location filename="../cms_dlg.cpp" line="771"/>
-        <location filename="../cms_dlg.cpp" line="884"/>
-        <location filename="../cms_dlg.cpp" line="1224"/>
+        <location filename="../cms_dlg.cpp" line="441"/>
+        <location filename="../cms_dlg.cpp" line="566"/>
+        <location filename="../cms_dlg.cpp" line="767"/>
+        <location filename="../cms_dlg.cpp" line="895"/>
+        <location filename="../cms_dlg.cpp" line="1249"/>
         <source>Select a certificate for KM</source>
         <translation>암호용 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="472"/>
-        <location filename="../cms_dlg.cpp" line="597"/>
-        <location filename="../cms_dlg.cpp" line="782"/>
-        <location filename="../cms_dlg.cpp" line="898"/>
+        <location filename="../cms_dlg.cpp" line="452"/>
+        <location filename="../cms_dlg.cpp" line="577"/>
+        <location filename="../cms_dlg.cpp" line="778"/>
+        <location filename="../cms_dlg.cpp" line="909"/>
         <source>Select a KM certificate</source>
         <translation>KM용 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="485"/>
-        <location filename="../cms_dlg.cpp" line="609"/>
+        <location filename="../cms_dlg.cpp" line="465"/>
+        <location filename="../cms_dlg.cpp" line="589"/>
         <source>It is not an RSA certificate</source>
         <translation>RSA 인증서가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="499"/>
+        <location filename="../cms_dlg.cpp" line="479"/>
         <source>Failed to create EnvelopedData [%1]</source>
         <translation>EnvelopedData 생성 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="623"/>
+        <location filename="../cms_dlg.cpp" line="603"/>
         <source>It is not a private key for RSA.</source>
         <translation>RSA용 개인키가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="630"/>
+        <location filename="../cms_dlg.cpp" line="610"/>
         <source>Signed And Enveloped data creation failed [%1]</source>
         <translation>서명 및 암호화 데이타(Signed And Enveloped Data) 만들기 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="801"/>
-        <location filename="../cms_dlg.cpp" line="917"/>
+        <location filename="../cms_dlg.cpp" line="661"/>
+        <location filename="../cms_dlg.cpp" line="754"/>
+        <location filename="../cms_dlg.cpp" line="861"/>
+        <source>Please enter CMS value</source>
+        <translation>CMS 값을 입력하세요</translation>
+    </message>
+    <message>
+        <location filename="../cms_dlg.cpp" line="698"/>
+        <source>Not a SignedData type[Type:%1]</source>
+        <translation>SignedData 타입이 아닙니다 [타입:%1]</translation>
+    </message>
+    <message>
+        <location filename="../cms_dlg.cpp" line="724"/>
+        <source>VerifyData Success</source>
+        <translation>VerifyData 성공</translation>
+    </message>
+    <message>
+        <location filename="../cms_dlg.cpp" line="728"/>
+        <source>fail to verify signedData: %1</source>
+        <translation>SignedData 검증 실패: %1</translation>
+    </message>
+    <message>
+        <location filename="../cms_dlg.cpp" line="795"/>
+        <location filename="../cms_dlg.cpp" line="926"/>
         <source>Invalid private key</source>
         <translation>잘못 된 개인키 입니다</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="1004"/>
-        <location filename="../cms_dlg.cpp" line="1045"/>
+        <location filename="../cms_dlg.cpp" line="802"/>
+        <source>Not a EnvelopedData type[Type:%1]</source>
+        <translation>EnvelopedData 타입이 아닙니다 [타입:%1]</translation>
+    </message>
+    <message>
+        <location filename="../cms_dlg.cpp" line="829"/>
+        <source>DevelopedData Success</source>
+        <translation>DevelopedData 성공</translation>
+    </message>
+    <message>
+        <location filename="../cms_dlg.cpp" line="833"/>
+        <source>fail to develop data: %1</source>
+        <translation>DevelopData 실패: %1</translation>
+    </message>
+    <message>
+        <location filename="../cms_dlg.cpp" line="933"/>
+        <source>Not a SignedAndEnvelopedData type[Type:%1]</source>
+        <translation>SignedAndEnvelopedData 타입이 아닙니다 [타입:%1]</translation>
+    </message>
+    <message>
+        <location filename="../cms_dlg.cpp" line="961"/>
+        <source>verify and develop data successfully</source>
+        <translation>검증 및 Develop 성공</translation>
+    </message>
+    <message>
+        <location filename="../cms_dlg.cpp" line="965"/>
+        <source>fail to verify and develop data: %1</source>
+        <translation>검증 및 Develop 데이타 실패: %1</translation>
+    </message>
+    <message>
+        <location filename="../cms_dlg.cpp" line="1029"/>
         <location filename="../cms_dlg.cpp" line="1070"/>
-        <location filename="../cms_dlg.cpp" line="1110"/>
+        <location filename="../cms_dlg.cpp" line="1095"/>
+        <location filename="../cms_dlg.cpp" line="1135"/>
         <source>failed to read data</source>
         <translation>데이타 읽기 실패</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="1147"/>
+        <location filename="../cms_dlg.cpp" line="1172"/>
         <source>Private key type for signing is %1</source>
         <translation>서명용 개인키 타입은 %1 이다</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="1163"/>
+        <location filename="../cms_dlg.cpp" line="1188"/>
         <source>Select a certificate for sign</source>
         <translation>서명용 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="1173"/>
+        <location filename="../cms_dlg.cpp" line="1198"/>
         <source>Certificate type for sign is %1</source>
         <translation>서명용 인증서 타입은 %1 이다</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="1261"/>
+        <location filename="../cms_dlg.cpp" line="1286"/>
         <source>This CMS type is not supported.</source>
         <translation>이 CMS 타입은 지원 하지 않습니다</translation>
     </message>
@@ -2195,12 +2246,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">서명용 인증서 타입은 %1 이다</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="1208"/>
+        <location filename="../cms_dlg.cpp" line="1233"/>
         <source>Private key type for KM is %1</source>
         <translation>암호용 개인키 타입은 %1 이다</translation>
     </message>
     <message>
-        <location filename="../cms_dlg.cpp" line="1234"/>
+        <location filename="../cms_dlg.cpp" line="1259"/>
         <source>Certificate type for KM is %1</source>
         <translation>암호용 인증서 타입은 %1 이다</translation>
     </message>
@@ -2275,6 +2326,126 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <source>fail to read data</source>
         <translation type="vanished">데이타 읽기 실패</translation>
+    </message>
+</context>
+<context>
+    <name>CMSInfoDlg</name>
+    <message>
+        <location filename="../cms_info_dlg.ui" line="14"/>
+        <source>CMS Information Dialog</source>
+        <translation>CMS 정보 창</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.ui" line="20"/>
+        <source>Cryptographic Message Syntax</source>
+        <translation>Cryptographic Message Syntax</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.ui" line="39"/>
+        <source>CMS Type</source>
+        <translation>CMS 타입</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.ui" line="46"/>
+        <source>Version</source>
+        <translation>버젼</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.ui" line="123"/>
+        <location filename="../cms_info_dlg.ui" line="248"/>
+        <source>Data</source>
+        <translation>데이타</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.ui" line="254"/>
+        <source>Data Information</source>
+        <translation>데이타 정보</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.ui" line="265"/>
+        <source>Certficate</source>
+        <translation>인증서</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.ui" line="271"/>
+        <source>Certficate List</source>
+        <translation>인증서 목록</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.ui" line="282"/>
+        <source>CRL</source>
+        <translation>CRL</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.ui" line="288"/>
+        <source>CRL List</source>
+        <translation>CRL 목록</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.ui" line="299"/>
+        <source>Signer</source>
+        <translation>서명자</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.ui" line="305"/>
+        <source>Signer Information</source>
+        <translation>서명자 정보</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.ui" line="316"/>
+        <source>Recip</source>
+        <translation>수신자</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.ui" line="322"/>
+        <source>Recip Information</source>
+        <translation>수신자 정보</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.ui" line="379"/>
+        <source>Close</source>
+        <translation>닫기</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.cpp" line="61"/>
+        <source>Name</source>
+        <translation>이름</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.cpp" line="61"/>
+        <source>Value</source>
+        <translation>값</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.cpp" line="72"/>
+        <source>Subject DN</source>
+        <translation>주체자 DN</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.cpp" line="72"/>
+        <source>Expire</source>
+        <translation>만료 일자</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.cpp" line="72"/>
+        <location filename="../cms_info_dlg.cpp" line="86"/>
+        <source>Issuer DN</source>
+        <translation>발급자 이름</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.cpp" line="86"/>
+        <source>This Update</source>
+        <translation>이번 업데이트</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.cpp" line="86"/>
+        <source>Next Update</source>
+        <translation>다음 업데이트</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.cpp" line="149"/>
+        <source>This type is not supported.</source>
+        <translation>이 타입은 지원 하지 않습니다</translation>
     </message>
 </context>
 <context>
