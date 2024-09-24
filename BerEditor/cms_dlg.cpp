@@ -96,8 +96,8 @@ CMSDlg::CMSDlg(QWidget *parent) :
     mKMCertViewBtn->setFixedWidth(34);
 
     mSrcClearBtn->setFixedWidth(34);
-    mOutputClearBtn->setFixedWidth(34);
-    mDecodeBtn->setFixedWidth(34);
+    mCMSClearBtn->setFixedWidth(34);
+    mCMSDecodeBtn->setFixedWidth(34);
 #endif    
 
     resize(minimumSizeHint().width(), minimumSizeHint().height());
@@ -613,7 +613,7 @@ void CMSDlg::clickSignAndEnvloped()
 
     if( ret == 0 )
     {
-        mCMSTypeText->setText( "SignedAndEnvelopedData" );
+        mCMSTypeText->setText( "SignedAndEnveloped" );
 
         berApplet->logLine();
         berApplet->log( "-- SignedAndEnveloped Data" );
@@ -695,7 +695,7 @@ void CMSDlg::clickVerifyData()
     nCMSType = JS_PKCS7_getType( &binCMS );
     if( nCMSType != JS_PKCS7_TYPE_SIGNED )
     {
-        berApplet->warningBox( tr( "Not a SignedData type[Type:%1]").arg( nCMSType ));
+        berApplet->warningBox( tr( "Not a SignedData type[Type:%1]").arg( nCMSType ), this);
         goto end;
     }
 
@@ -799,7 +799,7 @@ void CMSDlg::clickDevelopedData()
     nCMSType = JS_PKCS7_getType( &binCMS );
     if( nCMSType != JS_PKCS7_TYPE_ENVELOED )
     {
-        berApplet->warningBox( tr( "Not a EnvelopedData type[Type:%1]").arg( nCMSType ));
+        berApplet->warningBox( tr( "Not a EnvelopedData type[Type:%1]").arg( nCMSType ), this);
         goto end;
     }
 
@@ -930,7 +930,7 @@ void CMSDlg::clickDevelopedAndVerify()
     nCMSType = JS_PKCS7_getType( &binCMS );
     if( nCMSType != JS_PKCS7_TYPE_SIGNED_AND_ENVELOPED )
     {
-        berApplet->warningBox( tr( "Not a SignedAndEnvelopedData type[Type:%1]").arg( nCMSType ));
+        berApplet->warningBox( tr( "Not a SignedAndEnvelopedData type[Type:%1]").arg( nCMSType ), this);
         goto end;
     }
 
