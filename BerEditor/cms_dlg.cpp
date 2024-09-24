@@ -1273,6 +1273,13 @@ void CMSDlg::clickCMSView()
 
     CMSInfoDlg cmsInfo;
 
+    if( strCMS.isEmpty() )
+    {
+        berApplet->warningBox( tr( "Please enter CMS value" ), this );
+        mCMSText->setFocus();
+        return;
+    }
+
     if( mCMSBase64Radio->isChecked() == true )
         nDataType = DATA_BASE64;
     else if( mCMSHexRadio->isChecked() == true )
