@@ -241,7 +241,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="mDataTab">
       <attribute name="title">
@@ -397,6 +397,20 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mVersionText</tabstop>
+  <tabstop>mTypeText</tabstop>
+  <tabstop>mDataLenText</tabstop>
+  <tabstop>mDataText</tabstop>
+  <tabstop>mInfoTab</tabstop>
+  <tabstop>mDataTable</tabstop>
+  <tabstop>mCertTable</tabstop>
+  <tabstop>mCRLTable</tabstop>
+  <tabstop>mSignerTable</tabstop>
+  <tabstop>mRecipTable</tabstop>
+  <tabstop>mValueText</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

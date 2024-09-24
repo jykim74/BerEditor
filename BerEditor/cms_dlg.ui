@@ -899,6 +899,8 @@
   <tabstop>mCMSHexRadio</tabstop>
   <tabstop>mCMSBase64Radio</tabstop>
   <tabstop>mCMSClearBtn</tabstop>
+  <tabstop>mCMSDecodeBtn</tabstop>
+  <tabstop>mCMSTypeText</tabstop>
   <tabstop>mCMSLenText</tabstop>
   <tabstop>mCMSText</tabstop>
   <tabstop>mSignedDataBtn</tabstop>
@@ -907,6 +909,7 @@
   <tabstop>mVerifyDataBtn</tabstop>
   <tabstop>mDevelopedDataBtn</tabstop>
   <tabstop>mDevelopedAndVerifyBtn</tabstop>
+  <tabstop>mCMSViewBtn</tabstop>
   <tabstop>mClearDataAllBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
