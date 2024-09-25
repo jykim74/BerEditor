@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>582</width>
+    <width>482</width>
     <height>764</height>
    </rect>
   </property>
@@ -567,14 +567,30 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_7">
+     <item row="0" column="1">
+      <widget class="QRadioButton" name="mCMSHexRadio">
        <property name="text">
-        <string>CMS Data</string>
+        <string>Hex</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
-     <item row="0" column="8">
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mCMSClearBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>C</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="9">
       <widget class="QLineEdit" name="mCMSLenText">
        <property name="minimumSize">
         <size>
@@ -630,17 +646,41 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QRadioButton" name="mCMSHexRadio">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_7">
        <property name="text">
-        <string>Hex</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
+        <string>CMS Data</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="6">
+     <item row="0" column="5">
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="8">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>Len</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QRadioButton" name="mCMSBase64Radio">
+       <property name="text">
+        <string>Base64</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="7">
       <widget class="QLineEdit" name="mCMSTypeText">
        <property name="palette">
         <palette>
@@ -687,45 +727,8 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="5">
-      <spacer name="horizontalSpacer_4">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="7">
-      <widget class="QLabel" name="label_8">
-       <property name="text">
-        <string>Len</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QRadioButton" name="mCMSBase64Radio">
-       <property name="text">
-        <string>Base64</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mCMSClearBtn">
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>C</string>
-       </property>
-      </widget>
+     <item row="0" column="6">
+      <widget class="QComboBox" name="mHashCombo"/>
      </item>
     </layout>
    </item>
@@ -768,17 +771,17 @@
      <property name="topMargin">
       <number>0</number>
      </property>
+     <item row="1" column="1">
+      <widget class="QPushButton" name="mDevelopedDataBtn">
+       <property name="text">
+        <string>DevelopedData</string>
+       </property>
+      </widget>
+     </item>
      <item row="1" column="2">
       <widget class="QPushButton" name="mDevelopedAndVerifyBtn">
        <property name="text">
         <string>DevelopedAndVerify</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="mSignedDataBtn">
-       <property name="text">
-        <string>SignedData</string>
        </property>
       </widget>
      </item>
@@ -796,10 +799,10 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="mDevelopedDataBtn">
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mSignedDataBtn">
        <property name="text">
-        <string>DevelopedData</string>
+        <string>SignedData</string>
        </property>
       </widget>
      </item>
@@ -807,6 +810,20 @@
       <widget class="QPushButton" name="mSignAndEnvelopedBtn">
        <property name="text">
         <string>SignAndEnveloped</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mAddSignerBtn">
+       <property name="text">
+        <string>Add Signer</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QPushButton" name="mAddRecipBtn">
+       <property name="text">
+        <string>Add Recip</string>
        </property>
       </widget>
      </item>

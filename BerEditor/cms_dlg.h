@@ -37,6 +37,9 @@ private slots:
     void clickDevelopedData();
     void clickDevelopedAndVerify();
 
+    void clickAddSigner();
+    void clickAddRecip();
+
     void clickSignPriKeyView();
     void clickSignPriKeyDecode();
     void clickSignCertView();
@@ -46,7 +49,6 @@ private slots:
     void clickKMPriKeyDecode();
     void clickKMCertView();
     void clickKMCertDecode();
-
 
     void clickSignPriKeyType();
     void clickSignCertType();
