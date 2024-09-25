@@ -986,6 +986,7 @@ void CMSDlg::clickAddSigner()
 {
     int ret = 0;
     int nType = DATA_HEX;
+    int nCMSType = -1;
     char *pOutput = NULL;
 
     BIN binPri = {0,0};
@@ -1036,6 +1037,14 @@ void CMSDlg::clickAddSigner()
         nType = DATA_STRING;
 
     getBINFromString( &binCMS, nType, strCMS.toStdString().c_str() );
+
+    nCMSType = JS_PKCS7_getType( &binCMS );
+    if( nCMSType != JS_PKCS7_TYPE_SIGNED && nCMSType != JS_PKCS7_TYPE_SIGNED_AND_ENVELOPED )
+    {
+        berApplet->warningBox( tr( "Not a valid type[Type:%1]").arg( nCMSType ), this);
+        goto end;
+    }
+
     ret = JS_PKCS7_addSigner( &binCMS, strHash.toStdString().c_str(), &binPri, &binCert, &binOutput );
     if( ret != 0 )
     {
@@ -1077,6 +1086,7 @@ void CMSDlg::clickAddRecip()
 {
     int ret = 0;
     int nType = -1;
+    int nCMSType = -1;
     char *pOutput = NULL;
 
     BIN binCert = {0,0};
@@ -1131,7 +1141,14 @@ void CMSDlg::clickAddRecip()
     else if( mCMSBase64Radio->isChecked() )
         JS_BIN_decodeBase64( strCMS.toStdString().c_str(), &binCMS );
 
-    ret = JS_PKCS7_addRecip( &binCert, &binCert, &binOutput );
+    nCMSType = JS_PKCS7_getType( &binCMS );
+    if( nCMSType != JS_PKCS7_TYPE_ENVELOED && nCMSType != JS_PKCS7_TYPE_SIGNED_AND_ENVELOPED )
+    {
+        berApplet->warningBox( tr( "Not a valid type[Type:%1]").arg( nCMSType ), this);
+        goto end;
+    }
+
+    ret = JS_PKCS7_addRecip( &binCMS, &binCert, &binOutput );
     if( ret != 0 )
     {
         berApplet->warningBox(tr( "Failed to add recip [%1]").arg(ret), this );
