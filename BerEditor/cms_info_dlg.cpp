@@ -249,6 +249,11 @@ void CMSInfoDlg::setSigned()
     mVersionText->setText( QString("%1").arg( sSignedData.nVersion ));
     mDataText->setPlainText( getHexString( &sSignedData.binContent ));
 
+    mDataTable->insertRow(row);
+    mDataTable->setRowHeight( row, 10 );
+    mDataTable->setItem( row, 0, new QTableWidgetItem("Type"));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( sSignedData.pType ));
+
     if( sSignedData.nMDCnt > 0 )
     {
         QString strAlg;
@@ -265,7 +270,7 @@ void CMSInfoDlg::setSigned()
         }
 
     //    mDigestAlgText->setText( strAlg );
-        mDataTable->insertRow(row);
+        mDataTable->insertRow(++row);
         mDataTable->setRowHeight( row, 10 );
         mDataTable->setItem( row, 0, new QTableWidgetItem("Digest Alg"));
         mDataTable->setItem( row, 1, new QTableWidgetItem( strAlg));
@@ -426,11 +431,17 @@ void CMSInfoDlg::setEnveloped()
     memset( &sEnvelopedData, 0x00, sizeof(sEnvelopedData));
 
     ret = JS_PKCS7_getEnvelopedData( &cms_bin_, &sEnvelopedData, &pInfoList );
+    if( ret != 0 ) goto end;
 
     mVersionText->setText( QString("%1").arg( sEnvelopedData.nVersion ));
     mDataText->setPlainText( getHexString( &sEnvelopedData.binEncData ));
 
     mDataTable->insertRow(row);
+    mDataTable->setRowHeight(row, 10);
+    mDataTable->setItem( row, 0, new QTableWidgetItem("Type"));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( sEnvelopedData.pType ));
+
+    mDataTable->insertRow(++row);
     mDataTable->setRowHeight(row, 10);
     mDataTable->setItem( row, 0, new QTableWidgetItem("ContentType"));
     mDataTable->setItem( row, 1, new QTableWidgetItem( sEnvelopedData.pContentType ));
@@ -496,9 +507,15 @@ void CMSInfoDlg::setSignedAndEnveloped()
     memset( &sSignAndEnveloped, 0x00, sizeof(sSignAndEnveloped));
 
     ret = JS_PKCS7_getSignedAndEnvelopedData( &cms_bin_, strCAPath.toStdString().c_str(), &sSignAndEnveloped, &pSignerList, &pRecipList );
+    if( ret != 0 ) goto end;
 
     mVersionText->setText( QString("%1").arg( sSignAndEnveloped.nVersion ));
     mDataText->setPlainText( getHexString( &sSignAndEnveloped.binEncData ));
+
+    mDataTable->insertRow(row);
+    mDataTable->setRowHeight(row, 10);
+    mDataTable->setItem( row, 0, new QTableWidgetItem("Type"));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( sSignAndEnveloped.pType ));
 
     if( sSignAndEnveloped.nMDCnt > 0 )
     {
@@ -516,7 +533,7 @@ void CMSInfoDlg::setSignedAndEnveloped()
         }
 
         //    mDigestAlgText->setText( strAlg );
-        mDataTable->insertRow(row);
+        mDataTable->insertRow(++row);
         mDataTable->setRowHeight(row, 10);
         mDataTable->setItem( row, 0, new QTableWidgetItem("Digest Alg"));
         mDataTable->setItem( row, 1, new QTableWidgetItem( strAlg));
