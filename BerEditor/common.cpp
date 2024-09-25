@@ -1482,7 +1482,7 @@ bool isValidNumFormat( const QString strInput, int nNumber )
     }
     else if( nNumber == 16 )
     {
-        if( strInput.length() % 2 ) return false;
+//        if( strInput.length() % 2 ) return false;
         strReg.setPattern( "[0-9a-fA-F]+" );
     }
     else
