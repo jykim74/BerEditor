@@ -7,6 +7,7 @@
 #include "settings_mgr.h"
 #include "tst_info_dlg.h"
 #include "cert_man_dlg.h"
+#include "cms_info_dlg.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -25,6 +26,7 @@ TSPClientDlg::TSPClientDlg(QWidget *parent) :
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mURLClearBtn, SIGNAL(clicked()), this, SLOT(clickClearURL()));
     connect( mTSTInfoBtn, SIGNAL(clicked()), this, SLOT(clickTSTInfo()));
+    connect( mViewCMSBtn, SIGNAL(clicked()), this, SLOT(clickViewCMS()));
 
     connect( mInputText, SIGNAL(textChanged()), this, SLOT(inputChanged()));
     connect( mRequestText, SIGNAL(textChanged()), this, SLOT(requestChanged()));
@@ -569,6 +571,7 @@ void TSPClientDlg::clickTSTInfo()
     if( strOut.length() < 1 )
     {
         berApplet->warningBox( tr( "There is no TSP response" ), this );
+        mResponseText->setFocus();
         return;
     }
 
@@ -582,6 +585,40 @@ void TSPClientDlg::clickTSTInfo()
 
     tstInfo.setTST( &binTST );
     tstInfo.exec();
+
+end :
+    JS_BIN_reset( &binRsp );
+    JS_BIN_reset( &binData );
+    JS_BIN_reset( &binTST );
+}
+
+void TSPClientDlg::clickViewCMS()
+{
+    int ret = 0;
+    BIN binData = {0,0};
+    BIN binTST = {0,0};
+    BIN binRsp = {0,0};
+
+    CMSInfoDlg cmsInfo;
+
+    QString strOut = mResponseText->toPlainText();
+    if( strOut.length() < 1 )
+    {
+        berApplet->warningBox( tr( "There is no TSP response" ), this );
+        mResponseText->setFocus();
+        return;
+    }
+
+    JS_BIN_decodeHex( strOut.toStdString().c_str(), &binRsp );
+    ret = JS_TSP_decodeResponse( &binRsp, &binData, &binTST );
+    if( ret != 0 )
+    {
+        berApplet->warningBox(tr( "failed to decode TSP response"), this );
+        goto end;
+    }
+
+    cmsInfo.setCMS( &binData );
+    cmsInfo.exec();
 
 end :
     JS_BIN_reset( &binRsp );

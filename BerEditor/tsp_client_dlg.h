@@ -45,6 +45,7 @@ private slots:
     void clickVerify();
 
     void clickTSTInfo();
+    void clickViewCMS();
 private:
     void initialize();
 
