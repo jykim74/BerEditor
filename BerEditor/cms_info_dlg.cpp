@@ -19,6 +19,7 @@ CMSInfoDlg::CMSInfoDlg(QWidget *parent) :
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mDataText, SIGNAL(textChanged()), this, SLOT(dataChanged()));
+    connect( mDecodeDataBtn, SIGNAL(clicked()), this, SLOT(clickDecodeData()));
 
     connect( mDataTable, SIGNAL(clicked(QModelIndex)), this, SLOT(clickDataField(QModelIndex)));
     connect( mSignerTable, SIGNAL(clicked(QModelIndex)), this, SLOT(clickSignerField(QModelIndex)));
@@ -27,8 +28,11 @@ CMSInfoDlg::CMSInfoDlg(QWidget *parent) :
     connect( mCertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewCert()));
     connect( mCRLTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewCRL()));
 
+
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+
+    mDecodeDataBtn->setFixedWidth(34);
 
     mDataTab->layout()->setSpacing(5);
     mDataTab->layout()->setMargin(5);
@@ -132,16 +136,19 @@ void CMSInfoDlg::setCMS( const BIN *pCMS )
     if( cms_type_ == JS_PKCS7_TYPE_SIGNED )
     {
         setSigned();
+        mDecodeDataBtn->setEnabled(true);
         strType = "Signed";
     }
     else if( cms_type_ == JS_PKCS7_TYPE_ENVELOED )
     {
         setEnveloped();
+        mDecodeDataBtn->setEnabled(false);
         strType = "Enveloped";
     }
     else if( cms_type_ == JS_PKCS7_TYPE_SIGNED_AND_ENVELOPED )
     {
         setSignedAndEnveloped();
+        mDecodeDataBtn->setEnabled(false);
         strType = "SignedAndEnveloped";
     }
     else
@@ -158,6 +165,15 @@ void CMSInfoDlg::dataChanged()
 
     QString strLen = getDataLenString( DATA_HEX, strData );
     mDataLenText->setText( QString("%1").arg( strLen ));
+}
+
+void CMSInfoDlg::clickDecodeData()
+{
+    BIN binData = {0,0};
+    QString strData = mDataText->toPlainText();
+    getBINFromString( &binData, DATA_HEX, strData );
+    berApplet->decodeData( &binData, "" );
+    JS_BIN_reset( &binData );
 }
 
 void CMSInfoDlg::clickDataField(QModelIndex index)

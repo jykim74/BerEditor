@@ -21,6 +21,7 @@ public:
 
 private slots:
     void dataChanged();
+    void clickDecodeData();
 
     void clickDataField(QModelIndex index);
     void clickSignerField(QModelIndex index);
