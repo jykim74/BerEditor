@@ -42,6 +42,9 @@ private:
     void setSigned();
     void setEnveloped();
     void setSignedAndEnveloped();
+    void setData();
+    void setDigest();
+    void setEncrypted();
 
     BIN cms_bin_;
     int cms_type_;

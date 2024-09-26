@@ -155,6 +155,24 @@ void CMSInfoDlg::setCMS( const BIN *pCMS )
         mDecodeDataBtn->setEnabled(false);
         strType = "SignedAndEnveloped";
     }
+    else if( cms_type_ == JS_PKCS7_TYPE_DATA )
+    {
+        setData();
+        mDecodeDataBtn->setEnabled(false);
+        strType = "Data";
+    }
+    else if( cms_type_ == JS_PKCS7_TYPE_DIGEST )
+    {
+        setDigest();
+        mDecodeDataBtn->setEnabled( true );
+        strType = "Digest";
+    }
+    else if( cms_type_ == JS_PKCS7_TYPE_ENCRYPTED )
+    {
+        setEncrypted();
+        mDecodeDataBtn->setEnabled( false );
+        strType = "Encrypted";
+    }
     else
     {
         berApplet->warningBox( tr( "This type is not supported." ).arg( cms_type_ ), this );
@@ -256,9 +274,9 @@ void CMSInfoDlg::setSigned()
 {
     int ret = 0;
     int row = 0;
-    JSignedData sSignedData;
-    JSignerInfoList *pInfoList = NULL;
-    JSignerInfoList *pCurList = NULL;
+    JP7SignedData sSignedData;
+    JP7SignerInfoList *pInfoList = NULL;
+    JP7SignerInfoList *pCurList = NULL;
     time_t now = time(NULL);
     QString strCAPath = berApplet->settingsMgr()->CACertPath();
 
@@ -449,9 +467,9 @@ void CMSInfoDlg::setEnveloped()
 {
     int ret = 0;
     int row = 0;
-    JEnvelopedData sEnvelopedData;
-    JRecipInfoList *pInfoList = NULL;
-    JRecipInfoList *pCurList = NULL;
+    JP7EnvelopedData sEnvelopedData;
+    JP7RecipInfoList *pInfoList = NULL;
+    JP7RecipInfoList *pCurList = NULL;
 
     memset( &sEnvelopedData, 0x00, sizeof(sEnvelopedData));
 
@@ -521,12 +539,12 @@ void CMSInfoDlg::setSignedAndEnveloped()
     int ret = 0;
     int row = 0;
     time_t now = time(NULL);
-    JSignedAndEnvelopedData sSignAndEnveloped;
-    JSignerInfoList *pSignerList = NULL;
-    JSignerInfoList *pCurSignerList = NULL;
+    JP7SignedAndEnvelopedData sSignAndEnveloped;
+    JP7SignerInfoList *pSignerList = NULL;
+    JP7SignerInfoList *pCurSignerList = NULL;
 
-    JRecipInfoList *pRecipList = NULL;
-    JRecipInfoList *pCurRecipList = NULL;
+    JP7RecipInfoList *pRecipList = NULL;
+    JP7RecipInfoList *pCurRecipList = NULL;
 
     QString strCAPath = berApplet->settingsMgr()->CACertPath();
 
@@ -759,4 +777,92 @@ end :
     JS_PKCS7_resetSignedAndEnvelopedData( &sSignAndEnveloped );
     if( pSignerList ) JS_PKCS7_resetSignerInfoList( &pSignerList );
     if( pRecipList ) JS_PKCS7_resetRecipInfoList( &pRecipList );
+}
+
+void CMSInfoDlg::setData()
+{
+    int ret = 0;
+    int row = 0;
+    JP7Data sData;
+
+    memset( &sData, 0x00, sizeof(sData));
+
+    ret = JS_PKCS7_getData( &cms_bin_, &sData );
+    if( ret != 0 ) return;
+
+    mDataText->setPlainText( getHexString( &sData.binData ));
+
+    mDataTable->insertRow(row);
+    mDataTable->setRowHeight( row, 10 );
+    mDataTable->setItem( row, 0, new QTableWidgetItem("Type"));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( sData.pType ));
+
+    JS_PKCS7_resetData( &sData );
+}
+
+void CMSInfoDlg::setDigest()
+{
+    int ret = 0;
+    int row = 0;
+    JP7DigestData sDigestData;
+
+    memset( &sDigestData, 0x00, sizeof(sDigestData));
+
+    ret = JS_PKCS7_getDigestData( &cms_bin_, &sDigestData );
+    if( ret != 0 ) return;
+
+    mVersionText->setText( QString("%1").arg( sDigestData.nVersion ));
+    mDataText->setPlainText( getHexString( &sDigestData.binContent ));
+
+    mDataTable->insertRow(row);
+    mDataTable->setRowHeight( row, 10 );
+    mDataTable->setItem( row, 0, new QTableWidgetItem("Type"));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( sDigestData.pType ));
+
+    mDataTable->insertRow(++row);
+    mDataTable->setRowHeight(row, 10);
+    mDataTable->setItem( row, 0, new QTableWidgetItem("Digest"));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( sDigestData.pDigest ));
+
+    mDataTable->insertRow(++row);
+    mDataTable->setRowHeight(row, 10);
+    mDataTable->setItem( row, 0, new QTableWidgetItem("Alg"));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( sDigestData.pAlg ));
+
+
+end :
+    JS_PKCS7_resetDigestData( &sDigestData );
+}
+
+void CMSInfoDlg::setEncrypted()
+{
+    int ret = 0;
+    int row = 0;
+    JP7EncryptedData sEncryptData;
+
+    memset( &sEncryptData, 0x00, sizeof(sEncryptData));
+
+    ret = JS_PKCS7_getEncryptedData( &cms_bin_, &sEncryptData );
+    if( ret != 0 ) goto end;
+
+    mVersionText->setText( QString("%1").arg( sEncryptData.nVersion ));
+    mDataText->setPlainText( getHexString( &sEncryptData.binEncData ));
+
+    mDataTable->insertRow(row);
+    mDataTable->setRowHeight(row, 10);
+    mDataTable->setItem( row, 0, new QTableWidgetItem("Type"));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( sEncryptData.pType ));
+
+    mDataTable->insertRow(++row);
+    mDataTable->setRowHeight(row, 10);
+    mDataTable->setItem( row, 0, new QTableWidgetItem("ContentType"));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( sEncryptData.pContentType ));
+
+    mDataTable->insertRow(++row);
+    mDataTable->setRowHeight(row, 10);
+    mDataTable->setItem( row, 0, new QTableWidgetItem("Alg"));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( sEncryptData.pAlg ));
+
+end :
+    JS_PKCS7_resetEncryptedData( &sEncryptData );
 }
