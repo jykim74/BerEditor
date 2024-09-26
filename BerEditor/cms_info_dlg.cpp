@@ -413,6 +413,11 @@ void CMSInfoDlg::setSigned()
 
         mSignerTable->insertRow( ++idx );
         mSignerTable->setRowHeight(idx, 10);
+        mSignerTable->setItem( idx, 0, new QTableWidgetItem("SignTime"));
+        mSignerTable->setItem( idx, 1, new QTableWidgetItem( QString( "%1").arg( pCurList->sSignerInfo.pSignTime )));
+
+        mSignerTable->insertRow( ++idx );
+        mSignerTable->setRowHeight(idx, 10);
         mSignerTable->setItem( idx, 0, new QTableWidgetItem("DigestAlg"));
         mSignerTable->setItem( idx, 1, new QTableWidgetItem( QString( "%1").arg( pCurList->sSignerInfo.pDigestAlg )));
 
@@ -692,6 +697,11 @@ void CMSInfoDlg::setSignedAndEnveloped()
         mSignerTable->setItem( idx, 1, new QTableWidgetItem( QString( "%1").arg( pCurSignerList->sSignerInfo.pSerial )));
 
         mSignerTable->insertRow( ++idx );
+        mSignerTable->setRowHeight(idx, 10);
+        mSignerTable->setItem( idx, 0, new QTableWidgetItem("SignTime"));
+        mSignerTable->setItem( idx, 1, new QTableWidgetItem( QString( "%1").arg( pCurSignerList->sSignerInfo.pSignTime )));
+
+        mSignerTable->insertRow( ++idx );
         mSignerTable->setRowHeight(idx,10);
         mSignerTable->setItem( idx, 0, new QTableWidgetItem("DigestAlg"));
         mSignerTable->setItem( idx, 1, new QTableWidgetItem( QString( "%1").arg( pCurSignerList->sSignerInfo.pDigestAlg )));
@@ -790,6 +800,7 @@ void CMSInfoDlg::setData()
     ret = JS_PKCS7_getData( &cms_bin_, &sData );
     if( ret != 0 ) return;
 
+    mVersionText->clear();
     mDataText->setPlainText( getHexString( &sData.binData ));
 
     mDataTable->insertRow(row);
