@@ -59,38 +59,78 @@ const QString GetSystemID()
     return strID;
 }
 
-static const QString _getFileFilter( int nType )
+static const QString _getFileFilter( int nType, QString& strFileType )
 {
     QString strFilter;
 
     if( nType == JS_FILE_TYPE_CERT )
-        strFilter = QObject::tr("Cert Files (*.crt *.der *.cer *.pem);;All Files(*.*)");
+    {
+        strFileType = QObject::tr("Cert");
+        strFilter = QString("%1 Files (*.crt *.der *.cer *.pem)").arg( strFileType );
+    }
     else if( nType == JS_FILE_TYPE_CRL )
-        strFilter = QObject::tr("CRL Files (*.crl *.der *.cer *.pem);;All Files(*.*)");
+    {
+        strFileType = QObject::tr( "CRL" );
+        strFilter = QString("%1 Files (*.crl *.der *.cer *.pem)").arg( strFileType );
+    }
     else if( nType == JS_FILE_TYPE_CSR )
-        strFilter = QObject::tr("CSR Files (*.csr *.der *.cer *.pem);;All Files(*.*)");
+    {
+        strFileType = QObject::tr( "CSR" );
+        strFilter = QString("%1 Files (*.csr *.der *.cer *.pem)").arg( strFileType );
+    }
     else if( nType == JS_FILE_TYPE_PRIKEY )
-        strFilter = QObject::tr("Key Files (*.key *.der *.pem);;All Files(*.*)");
+    {
+        strFileType = QObject::tr("PrivateKey");
+        strFilter = QString("%1 Files (*.key *.der *.pem)").arg( strFileType );
+    }
     else if( nType == JS_FILE_TYPE_TXT )
-        strFilter = QObject::tr("TXT Files (*.txt *.log);;All Files(*.*)");
+    {
+        strFileType = QObject::tr("TXT");
+        strFilter = QString("%1 Files (*.txt *.log)").arg( strFileType );
+    }
     else if( nType == JS_FILE_TYPE_BER )
-        strFilter = QObject::tr("BER Files (*.ber *.der *.cer *.crt *.crl *.pem);;All Files(*.*)");
+    {
+        strFileType = QObject::tr("BER");
+        strFilter = QString("%1 Files (*.ber *.der *.cer *.pem)").arg( strFileType );
+    }
     else if( nType == JS_FILE_TYPE_CFG )
-        strFilter = QObject::tr("Config Files (*.cfg *.ini);;All Files(*.*)" );
+    {
+        strFileType = QObject::tr("Config");
+        strFilter = QString("%1 Files (*.cfg *.ini)" ).arg( strFileType );
+    }
     else if( nType == JS_FILE_TYPE_REQ )
-        strFilter = QObject::tr("Req Files (*.req *.txt);;All Files(*.*)" );
+    {
+        strFileType = QObject::tr("Request");
+        strFilter = QString("%1 Files (*.req *.csr *.pem)" ).arg( strFileType );
+    }
     else if( nType == JS_FILE_TYPE_PFX )
-        strFilter = QObject::tr("PFX Files (*.pfx *.p12);;All Files(*.*)" );
+    {
+        strFileType = QObject::tr("PFX");
+        strFilter = QString("%1 Files (*.pfx *.p12 *.pem)" ).arg( strFileType );
+    }
     else if( nType == JS_FILE_TYPE_BIN )
-        strFilter = QObject::tr("Binary Files (*.bin *.ber);;All Files(*.*)" );
+    {
+        strFileType = QObject::tr("Binary");
+        strFilter = QString("%1 Files (*.bin *.ber *.der)" ).arg( strFileType );
+    }
     else if( nType == JS_FILE_TYPE_PKCS7 )
-        strFilter = QObject::tr("PKCS7 Files (*.p7b *.pkcs7 *.ber);;All Files(*.*)" );
+    {
+        strFileType = QObject::tr("PKCS7");
+        strFilter = QString("%1 Files (*.p7b *.pkcs7 *.der *.pem)" ).arg( strFileType );
+    }
     else if( nType == JS_FILE_TYPE_JSON )
-        strFilter = QObject::tr("JSON Files (*.json);;All Files(*.*)" );
+    {
+        strFileType = QObject::tr("JSON");
+        strFilter = QString("%1 Files (*.json *.txt)" ).arg( strFileType );
+    }
     else if( nType == JS_FILE_TYPE_LCN )
-        strFilter = QObject::tr( "License Files (*.lcn *.txt);;All Files (*.*)" );
-    else
-        strFilter = QObject::tr("All Files(*.*)" );
+    {
+        strFileType = QObject::tr("License");
+        strFilter = QString( "%1 Files (*.lcn *.txt)" ).arg( strFileType );
+    }
+
+    if( strFilter.length() > 0 ) strFilter += ";;";
+    strFilter += QObject::tr( "All Files (*.*)" );
 
     return strFilter;
 }
@@ -107,12 +147,13 @@ QString findFile( QWidget *parent, int nType, const QString strPath )
     else
         strCurPath = strPath;
 
-    QString strFilter = _getFileFilter( nType );
+    QString strFileType;
+    QString strFilter = _getFileFilter( nType, strFileType );
     QString selectedFilter;
 
 
     QString fileName = QFileDialog::getOpenFileName( parent,
-                                                     QObject::tr( "Open File" ),
+                                                    QObject::tr( "Open %1 File" ).arg( strFileType ),
                                                      strCurPath,
                                                      strFilter,
                                                      &selectedFilter,
@@ -137,11 +178,12 @@ QString findSaveFile( QWidget *parent, int nType, const QString strPath )
 
     //    QString strPath = QDir::currentPath();
 
-    QString strFilter = _getFileFilter( nType );
+    QString strFileType;
+    QString strFilter = _getFileFilter( nType, strFileType );
     QString selectedFilter;
 
     QString fileName = QFileDialog::getSaveFileName( parent,
-                                                    QObject::tr( "Save File" ),
+                                                    QObject::tr( "Save %s File" ).arg( strFileType ),
                                                     strCurPath,
                                                     strFilter,
                                                     &selectedFilter,

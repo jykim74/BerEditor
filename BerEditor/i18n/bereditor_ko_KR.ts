@@ -2456,43 +2456,43 @@ mailto : jykim74@gmail.com</translation>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="65"/>
+        <location filename="../cms_info_dlg.cpp" line="67"/>
         <source>Name</source>
         <translation>이름</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="65"/>
+        <location filename="../cms_info_dlg.cpp" line="67"/>
         <source>Value</source>
         <translation>값</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="76"/>
+        <location filename="../cms_info_dlg.cpp" line="78"/>
         <source>Subject DN</source>
         <translation>주체자 DN</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="76"/>
+        <location filename="../cms_info_dlg.cpp" line="78"/>
         <source>Expire</source>
         <translation>만료 일자</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="76"/>
-        <location filename="../cms_info_dlg.cpp" line="90"/>
+        <location filename="../cms_info_dlg.cpp" line="78"/>
+        <location filename="../cms_info_dlg.cpp" line="92"/>
         <source>Issuer DN</source>
         <translation>발급자 이름</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="90"/>
+        <location filename="../cms_info_dlg.cpp" line="92"/>
         <source>This Update</source>
         <translation>이번 업데이트</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="90"/>
+        <location filename="../cms_info_dlg.cpp" line="92"/>
         <source>Next Update</source>
         <translation>다음 업데이트</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="178"/>
+        <location filename="../cms_info_dlg.cpp" line="180"/>
         <source>This type is not supported.</source>
         <translation>이 타입은 지원 하지 않습니다</translation>
     </message>
@@ -10432,9 +10432,13 @@ Do you want to delete the file and continue?</source>
         <translation>BIN 파일 (*.ber *.der);;모든 파일들(*.*)</translation>
     </message>
     <message>
-        <location filename="../common.cpp" line="87"/>
         <source>PKCS7 Files (*.p7b *.pkcs7 *.ber);;All Files(*.*)</source>
-        <translation>PKCS7 파일들 (*.p7b *.pkcs7 *.ber);;모든 파일들 (*.*)</translation>
+        <translation type="vanished">PKCS7 파일들 (*.p7b *.pkcs7 *.ber);;모든 파일들 (*.*)</translation>
+    </message>
+    <message>
+        <location filename="../common.cpp" line="87"/>
+        <source>PKCS7 Files (*.p7b *.pkcs7 *.ber *.pem);;All Files(*.*)</source>
+        <translation>PKCS7 파일들 (*.p7b *.pkcs7 *.ber *.pem);;모든 파일들 (*.*)</translation>
     </message>
     <message>
         <location filename="../common.cpp" line="89"/>

@@ -1145,7 +1145,7 @@ void MainWindow::openPriKey()
     int nKeyType = -1;
     QString strPath = berApplet->curFile();
 
-    QString fileName = findFile( this, JS_FILE_TYPE_BER, strPath );
+    QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     BIN binKey = {0,0};
 
     if( fileName.length() < 1 ) return;
