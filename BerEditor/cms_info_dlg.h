@@ -5,6 +5,12 @@
 #include "ui_cms_info_dlg.h"
 #include "js_bin.h"
 
+#define JS_CMS_DATA_IDX     0
+#define JS_CMS_CERT_IDX     1
+#define JS_CMS_CRL_IDX      2
+#define JS_CMS_SIGNER_IDX   3
+#define JS_CMS_RECIP_IDX    4
+
 namespace Ui {
 class CMSInfoDlg;
 }

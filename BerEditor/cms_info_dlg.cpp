@@ -123,6 +123,10 @@ void CMSInfoDlg::initUI()
     mRecipTable->setColumnWidth( 0, nWidth * 3/10 );
 
     mInfoTab->setCurrentIndex(0);
+    mInfoTab->setTabEnabled( JS_CMS_CERT_IDX, false );
+    mInfoTab->setTabEnabled( JS_CMS_CRL_IDX, false );
+    mInfoTab->setTabEnabled( JS_CMS_SIGNER_IDX, false );
+    mInfoTab->setTabEnabled( JS_CMS_RECIP_IDX, false );
 }
 
 void CMSInfoDlg::setCMS( const BIN *pCMS )
@@ -297,6 +301,9 @@ void CMSInfoDlg::setSigned()
     mDataTable->setItem( row, 0, new QTableWidgetItem( "Verify" ));
     mDataTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( sSignedData.nVerify )));
 
+    if( sSignedData.nCertCnt > 0 ) mInfoTab->setTabEnabled( JS_CMS_CERT_IDX, true );
+    if( sSignedData.nCRLCnt > 0 ) mInfoTab->setTabEnabled( JS_CMS_CRL_IDX, true );
+
     for( int i = 0; i < sSignedData.nCertCnt; i++ )
     {
         JCertInfo sCertInfo;
@@ -365,6 +372,8 @@ void CMSInfoDlg::setSigned()
     }
 
     pCurList = pInfoList;
+
+    if( pCurList ) mInfoTab->setTabEnabled( JS_CMS_SIGNER_IDX, true );
 
     while( pCurList )
     {
@@ -469,6 +478,7 @@ void CMSInfoDlg::setEnveloped()
 
 
     pCurList = pInfoList;
+    if( pCurList ) mInfoTab->setTabEnabled( JS_CMS_RECIP_IDX, true );
 
     while( pCurList )
     {
@@ -555,6 +565,10 @@ void CMSInfoDlg::setSignedAndEnveloped()
         mDataTable->setItem( row, 1, new QTableWidgetItem( strAlg));
     }
 
+    if( sSignAndEnveloped.nCertCnt > 0 ) mInfoTab->setTabEnabled( JS_CMS_CERT_IDX, true );
+    if( sSignAndEnveloped.nCRLCnt > 0 ) mInfoTab->setTabEnabled( JS_CMS_CRL_IDX, true );
+
+
     for( int i = 0; i < sSignAndEnveloped.nCertCnt; i++ )
     {
         JCertInfo sCertInfo;
@@ -639,6 +653,8 @@ void CMSInfoDlg::setSignedAndEnveloped()
 
     pCurSignerList = pSignerList;
 
+    if( pCurSignerList ) mInfoTab->setTabEnabled( JS_CMS_SIGNER_IDX, true );
+
     while( pCurSignerList )
     {
         int idx = 0;
@@ -706,6 +722,7 @@ void CMSInfoDlg::setSignedAndEnveloped()
     }
 
     pCurRecipList = pRecipList;
+    if( pCurRecipList ) mInfoTab->setTabEnabled( JS_CMS_RECIP_IDX, true );
 
     while( pCurRecipList )
     {
