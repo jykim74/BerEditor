@@ -1,3 +1,5 @@
+#include <QDateTime>
+
 #include "cms_info_dlg.h"
 #include "ber_applet.h"
 #include "cert_info_dlg.h"
@@ -396,6 +398,10 @@ void CMSInfoDlg::setSigned()
     while( pCurList )
     {
         int idx = 0;
+        char    sSignTime[64];
+
+        memset( sSignTime, 0x00, sizeof(sSignTime));
+
         mSignerTable->insertRow(idx);
         mSignerTable->setRowHeight(idx, 10);
         mSignerTable->setItem( idx, 0, new QTableWidgetItem("Version"));
@@ -411,10 +417,12 @@ void CMSInfoDlg::setSigned()
         mSignerTable->setItem( idx, 0, new QTableWidgetItem("Serial"));
         mSignerTable->setItem( idx, 1, new QTableWidgetItem( QString( "%1").arg( pCurList->sSignerInfo.pSerial )));
 
+        JS_UTIL_getDateTime( pCurList->sSignerInfo.tSignTime, sSignTime );
+
         mSignerTable->insertRow( ++idx );
         mSignerTable->setRowHeight(idx, 10);
         mSignerTable->setItem( idx, 0, new QTableWidgetItem("SignTime"));
-        mSignerTable->setItem( idx, 1, new QTableWidgetItem( QString( "%1").arg( pCurList->sSignerInfo.pSignTime )));
+        mSignerTable->setItem( idx, 1, new QTableWidgetItem( QString( "%1").arg( sSignTime )));
 
         mSignerTable->insertRow( ++idx );
         mSignerTable->setRowHeight(idx, 10);
@@ -681,6 +689,11 @@ void CMSInfoDlg::setSignedAndEnveloped()
     while( pCurSignerList )
     {
         int idx = 0;
+
+        char    sSignTime[64];
+
+        memset( sSignTime, 0x00, sizeof(sSignTime));
+
         mSignerTable->insertRow(idx);
         mSignerTable->setRowHeight(idx,10);
         mSignerTable->setItem( idx, 0, new QTableWidgetItem("Version"));
@@ -696,10 +709,12 @@ void CMSInfoDlg::setSignedAndEnveloped()
         mSignerTable->setItem( idx, 0, new QTableWidgetItem("Serial"));
         mSignerTable->setItem( idx, 1, new QTableWidgetItem( QString( "%1").arg( pCurSignerList->sSignerInfo.pSerial )));
 
+        JS_UTIL_getDateTime( pCurSignerList->sSignerInfo.tSignTime, sSignTime );
+
         mSignerTable->insertRow( ++idx );
         mSignerTable->setRowHeight(idx, 10);
         mSignerTable->setItem( idx, 0, new QTableWidgetItem("SignTime"));
-        mSignerTable->setItem( idx, 1, new QTableWidgetItem( QString( "%1").arg( pCurSignerList->sSignerInfo.pSignTime )));
+        mSignerTable->setItem( idx, 1, new QTableWidgetItem( QString( "%1").arg( sSignTime )));
 
         mSignerTable->insertRow( ++idx );
         mSignerTable->setRowHeight(idx,10);

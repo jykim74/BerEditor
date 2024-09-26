@@ -2390,104 +2390,109 @@ mailto : jykim74@gmail.com</translation>
         <translation>CMS 타입</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.ui" line="46"/>
+        <location filename="../cms_info_dlg.ui" line="52"/>
         <source>Version</source>
         <translation>버젼</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.ui" line="123"/>
-        <location filename="../cms_info_dlg.ui" line="248"/>
+        <location filename="../cms_info_dlg.ui" line="211"/>
+        <location filename="../cms_info_dlg.ui" line="303"/>
         <source>Data</source>
         <translation>데이타</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.ui" line="254"/>
+        <location filename="../cms_info_dlg.ui" line="237"/>
+        <source>D</source>
+        <translation>D</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.ui" line="309"/>
         <source>Data Information</source>
         <translation>데이타 정보</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.ui" line="265"/>
+        <location filename="../cms_info_dlg.ui" line="320"/>
         <source>Certficate</source>
         <translation>인증서</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.ui" line="271"/>
+        <location filename="../cms_info_dlg.ui" line="326"/>
         <source>Certficate List</source>
         <translation>인증서 목록</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.ui" line="282"/>
+        <location filename="../cms_info_dlg.ui" line="337"/>
         <source>CRL</source>
         <translation>CRL</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.ui" line="288"/>
+        <location filename="../cms_info_dlg.ui" line="343"/>
         <source>CRL List</source>
         <translation>CRL 목록</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.ui" line="299"/>
+        <location filename="../cms_info_dlg.ui" line="354"/>
         <source>Signer</source>
         <translation>서명자</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.ui" line="305"/>
+        <location filename="../cms_info_dlg.ui" line="360"/>
         <source>Signer Information</source>
         <translation>서명자 정보</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.ui" line="316"/>
+        <location filename="../cms_info_dlg.ui" line="371"/>
         <source>Recip</source>
         <translation>수신자</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.ui" line="322"/>
+        <location filename="../cms_info_dlg.ui" line="377"/>
         <source>Recip Information</source>
         <translation>수신자 정보</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.ui" line="379"/>
+        <location filename="../cms_info_dlg.ui" line="434"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="61"/>
+        <location filename="../cms_info_dlg.cpp" line="65"/>
         <source>Name</source>
         <translation>이름</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="61"/>
+        <location filename="../cms_info_dlg.cpp" line="65"/>
         <source>Value</source>
         <translation>값</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="72"/>
+        <location filename="../cms_info_dlg.cpp" line="76"/>
         <source>Subject DN</source>
         <translation>주체자 DN</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="72"/>
+        <location filename="../cms_info_dlg.cpp" line="76"/>
         <source>Expire</source>
         <translation>만료 일자</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="72"/>
-        <location filename="../cms_info_dlg.cpp" line="86"/>
+        <location filename="../cms_info_dlg.cpp" line="76"/>
+        <location filename="../cms_info_dlg.cpp" line="90"/>
         <source>Issuer DN</source>
         <translation>발급자 이름</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="86"/>
+        <location filename="../cms_info_dlg.cpp" line="90"/>
         <source>This Update</source>
         <translation>이번 업데이트</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="86"/>
+        <location filename="../cms_info_dlg.cpp" line="90"/>
         <source>Next Update</source>
         <translation>다음 업데이트</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="149"/>
+        <location filename="../cms_info_dlg.cpp" line="178"/>
         <source>This type is not supported.</source>
         <translation>이 타입은 지원 하지 않습니다</translation>
     </message>

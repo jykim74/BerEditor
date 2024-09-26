@@ -1497,7 +1497,7 @@ void CMSDlg::clickCMSView()
     getBINFromString( &binCMS, nDataType, strCMS );
 
     nCMSType = JS_PKCS7_getType( &binCMS );
-    if( nCMSType != JS_PKCS7_TYPE_SIGNED && nCMSType != JS_PKCS7_TYPE_ENVELOED && nCMSType != JS_PKCS7_TYPE_SIGNED_AND_ENVELOPED )
+    if( nCMSType < 0 )
     {
         berApplet->warningBox( tr( "This CMS type is not supported.").arg( nCMSType ), this );
         JS_BIN_reset( &binCMS );
