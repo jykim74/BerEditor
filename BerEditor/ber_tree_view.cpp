@@ -280,6 +280,8 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
             if( i % 16 == 0 )
             {
                 rightTable->insertRow(line);
+                rightTable->setRowHeight(line, 10);
+
                 QString address;
 
                 address = QString( "%1" ).arg( i + pItem->GetOffset(), 8, 16, QLatin1Char( '0') ).toUpper();
@@ -425,6 +427,7 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
             if( i % 16 == 0 )
             {
                 rightTable->insertRow(line);
+                rightTable->setRowHeight(line, 10);
                 QString address;
 
                 address = QString( "%1" ).arg( i, 8, 16, QLatin1Char( '0') ).toUpper();

@@ -228,6 +228,8 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
             if( i % 16 == 0 )
             {
                 rightTable->insertRow(line);
+                rightTable->setRowHeight( line, 10 );
+
                 QString address;
                 address = QString( "%1" ).arg( i, 8, 16, QLatin1Char( '0' ));
                 rightTable->setItem( line, 0, new QTableWidgetItem(address));
@@ -358,6 +360,8 @@ void TTLVTreeView::showRightPart( TTLVTreeItem *pItem )
             if( i % 16 == 0 )
             {
                 rightTable->insertRow(line);
+                rightTable->setRowHeight( line, 10 );
+
                 QString address;
 
                 address = QString( "%1" ).arg( i, 8, 16, QLatin1Char( '0' ));
