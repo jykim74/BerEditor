@@ -20,6 +20,8 @@
 #include "common.h"
 #include "settings_mgr.h"
 
+static const QStringList kCipherList = { "aes-128-cbc", "aes-192-cbc", "aes-256-cbc" };
+
 CMSDlg::CMSDlg(QWidget *parent) :
     QDialog(parent)
 {
@@ -44,7 +46,6 @@ CMSDlg::CMSDlg(QWidget *parent) :
     connect( mDevelopedAndVerifyBtn, SIGNAL(clicked()), this, SLOT(clickDevelopedAndVerify()));
 
     connect( mAddSignerBtn, SIGNAL(clicked()), this, SLOT(clickAddSigner()));
-    connect( mAddRecipBtn, SIGNAL(clicked()), this, SLOT(clickAddRecip()));
 
     connect( mSrcText, SIGNAL(textChanged()), this, SLOT(srcChanged()));
     connect( mCMSText, SIGNAL(textChanged()), this, SLOT(CMSChanged()));
@@ -122,6 +123,8 @@ void CMSDlg::initialize()
     mSrcHexRadio->setChecked(true);
     mHashCombo->addItems( kHashList );
     mHashCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
+
+    mCipherCombo->addItems( kCipherList );
 
     checkSignEncPriKey();
     checkKMEncPriKey();
@@ -432,6 +435,7 @@ void CMSDlg::clickEnvelopedData()
     BIN binOutput = {0,0};
 
     QString strInput = mSrcText->toPlainText();
+    QString strCipher = mCipherCombo->currentText();
 
     if( strInput.isEmpty() )
     {
@@ -480,7 +484,7 @@ void CMSDlg::clickEnvelopedData()
     else if( mSrcBase64Radio->isChecked() )
         JS_BIN_decodeBase64( strInput.toStdString().c_str(), &binSrc );
 
-    ret = JS_PKCS7_makeEnvelopedData( &binSrc, &binCert, &binOutput );
+    ret = JS_PKCS7_makeEnvelopedData( strCipher.toStdString().c_str(), &binSrc, &binCert, &binOutput );
     if( ret != 0 )
     {
         berApplet->warningBox(tr( "Failed to create EnvelopedData [%1]").arg(ret), this );
@@ -530,6 +534,7 @@ void CMSDlg::clickSignAndEnvloped()
 
     QString strInput = mSrcText->toPlainText();
     QString strHash = mHashCombo->currentText();
+    QString strCipher = mCipherCombo->currentText();
 
     if( strInput.isEmpty() )
     {
@@ -612,7 +617,7 @@ void CMSDlg::clickSignAndEnvloped()
         goto end;
     }
 
-    ret = JS_PKCS7_makeSignedAndEnveloped( strHash.toStdString().c_str(), &binSrc, &binSignCert, &binSignPri, &binKMCert, &binOutput );
+    ret = JS_PKCS7_makeSignedAndEnveloped( strHash.toStdString().c_str(), strCipher.toStdString().c_str(), &binSrc, &binSignCert, &binSignPri, &binKMCert, &binOutput );
     if( ret != 0 )
     {
         berApplet->warningBox( tr( "Signed And Enveloped data creation failed [%1]").arg(ret), this );
@@ -1039,7 +1044,7 @@ void CMSDlg::clickAddSigner()
     getBINFromString( &binCMS, nType, strCMS.toStdString().c_str() );
 
     nCMSType = JS_PKCS7_getType( &binCMS );
-    if( nCMSType != JS_PKCS7_TYPE_SIGNED && nCMSType != JS_PKCS7_TYPE_SIGNED_AND_ENVELOPED )
+    if( nCMSType != JS_PKCS7_TYPE_SIGNED )
     {
         berApplet->warningBox( tr( "Not a valid type[Type:%1]").arg( nCMSType ), this);
         goto end;
@@ -1080,107 +1085,6 @@ end :
     JS_BIN_reset( &binOutput );
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binCert );
-}
-
-void CMSDlg::clickAddRecip()
-{
-    int ret = 0;
-    int nType = -1;
-    int nCMSType = -1;
-    char *pOutput = NULL;
-
-    BIN binCert = {0,0};
-    BIN binPubKey = {0,0};
-    BIN binCMS = {0,0};
-    BIN binOutput = {0,0};
-
-    QString strCMS = mCMSText->toPlainText();
-
-    if( strCMS.isEmpty() )
-    {
-        berApplet->warningBox( tr( "Please enter CMS value" ), this );
-        mCMSText->setFocus();
-        return;
-    }
-
-    if( mKMCertGroup->isChecked() == true )
-    {
-        QString strKMCertPath = mKMCertPathText->text();
-        if( strKMCertPath.isEmpty() )
-        {
-            berApplet->warningBox(tr("Select a certificate for KM" ), this );
-            mKMCertPathText->setFocus();
-            return;
-        }
-
-        JS_BIN_fileReadBER( strKMCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
-    }
-    else
-    {
-        CertManDlg certMan;
-        certMan.setMode(ManModeSelCert);
-        certMan.setTitle( tr( "Select a KM certificate") );
-
-        if( certMan.exec() != QDialog::Accepted )
-            goto end;
-
-        certMan.getCert( &binCert );
-    }
-
-    JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
-
-    nType = JS_PKI_getPubKeyType( &binPubKey );
-    if( nType != JS_PKI_KEY_TYPE_RSA )
-    {
-        berApplet->warningBox(tr( "It is not an RSA certificate"), this );
-        goto end;
-    }
-
-    if( mCMSHexRadio->isChecked() )
-        JS_BIN_decodeHex( strCMS.toStdString().c_str(), &binCMS );
-    else if( mCMSBase64Radio->isChecked() )
-        JS_BIN_decodeBase64( strCMS.toStdString().c_str(), &binCMS );
-
-    nCMSType = JS_PKCS7_getType( &binCMS );
-    if( nCMSType != JS_PKCS7_TYPE_ENVELOED && nCMSType != JS_PKCS7_TYPE_SIGNED_AND_ENVELOPED )
-    {
-        berApplet->warningBox( tr( "Not a valid type[Type:%1]").arg( nCMSType ), this);
-        goto end;
-    }
-
-    ret = JS_PKCS7_addRecip( &binCMS, &binCert, &binOutput );
-    if( ret != 0 )
-    {
-        berApplet->warningBox(tr( "Failed to add recip [%1]").arg(ret), this );
-        goto end;
-    }
-
-    if( ret == 0 )
-    {
-        berApplet->logLine();
-
-        berApplet->logLine();
-        berApplet->log( QString( "CMS         : %1" ).arg( getHexString( &binCMS )));
-        berApplet->log( QString( "Certificate : %1" ).arg( getHexString( &binCert )));
-        berApplet->log( QString( "Output      : %1" ).arg( getHexString( &binOutput )));
-        berApplet->logLine();
-
-        if( mCMSHexRadio->isChecked() )
-            JS_BIN_encodeHex( &binOutput, &pOutput );
-        else if( mCMSBase64Radio->isChecked() )
-            JS_BIN_encodeBase64( &binOutput, &pOutput );
-
-        mCMSText->setPlainText( pOutput );
-
-        berApplet->messageBox( tr( "Recip is added successfully"), this );
-    }
-
-end :
-    if( pOutput ) JS_free( pOutput );
-    JS_BIN_reset( &binCMS );
-    JS_BIN_reset( &binOutput );
-    JS_BIN_reset( &binCert );
-    JS_BIN_reset( &binPubKey );
 }
 
 void CMSDlg::srcChanged()

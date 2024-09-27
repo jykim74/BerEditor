@@ -76,7 +76,7 @@ static const QString _getFileFilter( int nType, QString& strFileType )
     else if( nType == JS_FILE_TYPE_CSR )
     {
         strFileType = QObject::tr( "CSR Files" );
-        strFilter = QString("%1 (*.csr *.der *.cer *.pem)").arg( strFileType );
+        strFilter = QString("%1 (*.csr *.der *.req *.pem)").arg( strFileType );
     }
     else if( nType == JS_FILE_TYPE_PRIKEY )
     {
@@ -97,11 +97,6 @@ static const QString _getFileFilter( int nType, QString& strFileType )
     {
         strFileType = QObject::tr("Config Files");
         strFilter = QString("%1 (*.cfg *.ini)" ).arg( strFileType );
-    }
-    else if( nType == JS_FILE_TYPE_REQ )
-    {
-        strFileType = QObject::tr("Request Files");
-        strFilter = QString("%1 (*.req *.csr *.pem)" ).arg( strFileType );
     }
     else if( nType == JS_FILE_TYPE_PFX )
     {
@@ -183,7 +178,7 @@ QString findSaveFile( QWidget *parent, int nType, const QString strPath )
     QString selectedFilter;
 
     QString fileName = QFileDialog::getSaveFileName( parent,
-                                                    QObject::tr( "Save %s" ).arg( strFileType ),
+                                                    QObject::tr( "Save %1" ).arg( strFileType ),
                                                     strCurPath,
                                                     strFilter,
                                                     &selectedFilter,

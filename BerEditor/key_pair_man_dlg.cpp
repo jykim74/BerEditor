@@ -502,7 +502,7 @@ void KeyPairManDlg::clickLMakeCSR()
         QString strHexCSR = makeCSR.getCSRHex();
         QString strCurFolder = berApplet->curFolder();
 
-        QString fileName = findSaveFile( this, JS_FILE_TYPE_REQ, strCurFolder );
+        QString fileName = findSaveFile( this, JS_FILE_TYPE_CSR, strCurFolder );
         if( fileName.length() > 1 )
         {
             JS_BIN_writePEM( &binPri, JS_PEM_TYPE_CSR, fileName.toLocal8Bit().toStdString().c_str() );

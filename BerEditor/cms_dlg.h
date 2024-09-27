@@ -38,7 +38,6 @@ private slots:
     void clickDevelopedAndVerify();
 
     void clickAddSigner();
-    void clickAddRecip();
 
     void clickSignPriKeyView();
     void clickSignPriKeyDecode();

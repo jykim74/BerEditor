@@ -4,6 +4,7 @@
 #include <QDialog>
 #include "ui_cms_info_dlg.h"
 #include "js_bin.h"
+#include "js_pkcs7.h"
 
 #define JS_CMS_DATA_IDX     0
 #define JS_CMS_CERT_IDX     1
@@ -38,6 +39,9 @@ private slots:
 
 private:
     void initUI();
+
+    void setSignerInfo( const JP7SignerInfoList *pSignerList );
+    void setRecipInfo( const JP7RecipInfoList *pRecipList );
 
     void setSigned();
     void setEnveloped();
