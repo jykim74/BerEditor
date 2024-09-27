@@ -738,7 +738,7 @@ void KeyAgreeDlg::findAECDHPriKey()
 
     if( nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
     {
-        berApplet->warningBox( tr("Invalid PrivateKey Type: %1").arg( nKeyType ));
+        berApplet->warningBox( tr("Invalid PrivateKey Type: %1").arg( nKeyType ), this);
         goto end;
     }
 
@@ -781,7 +781,7 @@ void KeyAgreeDlg::getAFromMan()
 
     if( nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
     {
-        berApplet->warningBox( tr("Invalid PrivateKey Type: %1").arg( nKeyType ));
+        berApplet->warningBox( tr("Invalid PrivateKey Type: %1").arg( nKeyType ), this);
         goto end;
     }
 
@@ -865,7 +865,7 @@ void KeyAgreeDlg::findBECDHPriKey()
 
     if( nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
     {
-        berApplet->warningBox( tr("Invalid PrivateKey Type: %1").arg( nKeyType ));
+        berApplet->warningBox( tr("Invalid PrivateKey Type: %1").arg( nKeyType ), this);
         goto end;
     }
 
@@ -908,7 +908,7 @@ void KeyAgreeDlg::getBFromMan()
 
     if( nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
     {
-        berApplet->warningBox( tr("Invalid PrivateKey Type: %1").arg( nKeyType ));
+        berApplet->warningBox( tr("Invalid PrivateKey Type: %1").arg( nKeyType ), this);
         goto end;
     }
 

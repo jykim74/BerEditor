@@ -205,7 +205,7 @@ void GenKeyPairDlg::clickOK()
         return QDialog::accept();
     else
     {
-        berApplet->warnLog( tr( "fail to generate keypair: %1").arg( ret ));
+        berApplet->warnLog( tr( "fail to generate keypair: %1").arg( ret ), this);
         return QDialog::reject();
     }
 }

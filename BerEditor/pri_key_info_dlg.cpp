@@ -931,7 +931,7 @@ void PriKeyInfoDlg::setPrivateKey( const BIN *pPriKey )
     }
     else
     {
-        berApplet->warningBox( tr("Private key algorithm(%1) not supported").arg( key_type_ ));
+        berApplet->warningBox( tr("Private key algorithm(%1) not supported").arg( key_type_ ), this);
     }
 }
 
@@ -979,7 +979,7 @@ void PriKeyInfoDlg::setPublicKey( const BIN *pPubKey )
     }
     else
     {
-        berApplet->warningBox( tr("Public key algorithm(%1) not supported").arg( key_type_ ));
+        berApplet->warningBox( tr("Public key algorithm(%1) not supported").arg( key_type_ ), this);
     }
 
     mCheckKeyPairBtn->setEnabled(false);

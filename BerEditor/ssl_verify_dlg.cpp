@@ -1231,7 +1231,7 @@ void SSLVerifyDlg::saveTrustedCA()
     {
         if( dir.mkdir( strTrustedCAPath ) == false )
         {
-            berApplet->warningBox( tr( "fail to mkdir:%1").arg( strTrustedCAPath));
+            berApplet->warningBox( tr( "fail to mkdir:%1").arg( strTrustedCAPath), this);
             return;
         }
     }

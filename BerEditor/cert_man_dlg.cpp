@@ -2865,7 +2865,7 @@ void CertManDlg::clickTLDecryptPFX()
         ret = JS_PKI_encryptPrivateKey( nKeyType, -1, strPass.toStdString().c_str(), &binPri, NULL, &binEncPri );
         if( ret != 0 )
         {
-            berApplet->warnLog( tr( "fail to encrypt private key: %1").arg( ret ));
+            berApplet->warnLog( tr( "fail to encrypt private key: %1").arg( ret ), this);
             goto end;
         }
 

@@ -1067,7 +1067,7 @@ void OCSPClientDlg::clickVerify()
     }
     else
     {
-        berApplet->warningBox( tr( "failed to decode response: %1").arg( ret ));
+        berApplet->warningBox( tr( "failed to decode response: %1").arg( ret ), this);
     }
 
 end :
