@@ -40,12 +40,14 @@ private slots:
     void genAECDHPriKey();
     void genAECDHPubKey();
     void findAECDHPriKey();
-    void getAFromMan();
+    void getAFromCertMan();
+    void getAFromKeyPair();
 
     void genBECDHPriKey();
     void genBECDHPubKey();
     void findBECDHPriKey();
-    void getBFromMan();
+    void getBFromCertMan();
+    void getBFromKeyPair();
 
     void pChanged();
 
@@ -63,6 +65,7 @@ private slots:
     void clickClearDataAll();
 
     void changeECDHParam( int index );
+
 
 private:
     void initialize();

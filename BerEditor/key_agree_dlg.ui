@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>570</width>
-    <height>651</height>
+    <height>530</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -974,9 +974,16 @@
           </widget>
          </item>
          <item row="1" column="4">
-          <widget class="QPushButton" name="mAGetFromManBtn">
+          <widget class="QPushButton" name="mAGetFromCertManBtn">
            <property name="text">
-            <string>GetFromManager</string>
+            <string>GetFromCertMan</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="5">
+          <widget class="QPushButton" name="mAGetFromKeyPairMan">
+           <property name="text">
+            <string>GetFromKeyPair</string>
            </property>
           </widget>
          </item>
@@ -1030,9 +1037,16 @@
           </widget>
          </item>
          <item row="1" column="4">
-          <widget class="QPushButton" name="mBGetFromManBtn">
+          <widget class="QPushButton" name="mBGetFromCertManBtn">
            <property name="text">
-            <string>GetFromManager</string>
+            <string>GetFromCertMan</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="5">
+          <widget class="QPushButton" name="mBGetFromKeyPairBtn">
+           <property name="text">
+            <string>GetFromKeyPair</string>
            </property>
           </widget>
          </item>
@@ -1219,7 +1233,8 @@
   <tabstop>mAFindPriKeyBtn</tabstop>
   <tabstop>mACheckKeyPairBtn</tabstop>
   <tabstop>mACheckPubKeyBtn</tabstop>
-  <tabstop>mAGetFromManBtn</tabstop>
+  <tabstop>mAGetFromCertManBtn</tabstop>
+  <tabstop>mAGetFromKeyPairMan</tabstop>
   <tabstop>mBECDHPriKeyText</tabstop>
   <tabstop>mBECDHPriKeyLenText</tabstop>
   <tabstop>mBECDHPubKeyText</tabstop>
@@ -1230,7 +1245,8 @@
   <tabstop>mBFindPriKeyBtn</tabstop>
   <tabstop>mBCheckPubKeyBtn</tabstop>
   <tabstop>mBCheckKeyPairBtn</tabstop>
-  <tabstop>mBGetFromManBtn</tabstop>
+  <tabstop>mBGetFromCertManBtn</tabstop>
+  <tabstop>mBGetFromKeyPairBtn</tabstop>
   <tabstop>mSecretKeyLenText</tabstop>
   <tabstop>mSecretKeyText</tabstop>
   <tabstop>mSecretClearBtn</tabstop>

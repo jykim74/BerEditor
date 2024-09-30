@@ -665,54 +665,54 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../ber_tree_view.cpp" line="204"/>
-        <location filename="../ber_tree_view.cpp" line="492"/>
-        <location filename="../ber_tree_view.cpp" line="580"/>
-        <location filename="../ber_tree_view.cpp" line="602"/>
+        <location filename="../ber_tree_view.cpp" line="495"/>
+        <location filename="../ber_tree_view.cpp" line="583"/>
+        <location filename="../ber_tree_view.cpp" line="605"/>
         <source>There are no items selected.</source>
         <translation>선택한 아이템이 없습니다</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="532"/>
+        <location filename="../ber_tree_view.cpp" line="535"/>
         <source>Copy Information</source>
         <translation>정보 복사</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="533"/>
+        <location filename="../ber_tree_view.cpp" line="536"/>
         <source>Copy as hex</source>
         <translation>Hex로 복사</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="534"/>
+        <location filename="../ber_tree_view.cpp" line="537"/>
         <source>Copy as base64</source>
         <translation>Base64로 복사</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="535"/>
+        <location filename="../ber_tree_view.cpp" line="538"/>
         <source>Save node</source>
         <translation>노드 저장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="536"/>
+        <location filename="../ber_tree_view.cpp" line="539"/>
         <source>Save node value</source>
         <translation>노드 값 저장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="554"/>
+        <location filename="../ber_tree_view.cpp" line="557"/>
         <source>Edit value</source>
         <translation>값 수정</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="568"/>
+        <location filename="../ber_tree_view.cpp" line="571"/>
         <source>Expand value</source>
         <translation>확장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="740"/>
+        <location filename="../ber_tree_view.cpp" line="743"/>
         <source>Are you sure you want to add it?</source>
         <translation>정말로 추가 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="558"/>
+        <location filename="../ber_tree_view.cpp" line="561"/>
         <source>Insert BER</source>
         <translation>BER 추가</translation>
     </message>
@@ -6590,7 +6590,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../key_agree_dlg.ui" line="215"/>
-        <location filename="../key_agree_dlg.ui" line="1142"/>
+        <location filename="../key_agree_dlg.ui" line="1156"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
@@ -6616,44 +6616,54 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../key_agree_dlg.ui" line="944"/>
-        <location filename="../key_agree_dlg.ui" line="993"/>
+        <location filename="../key_agree_dlg.ui" line="1000"/>
         <source>GenKeyPair</source>
         <translation>키 쌍 생성</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.ui" line="937"/>
-        <location filename="../key_agree_dlg.ui" line="1014"/>
+        <location filename="../key_agree_dlg.ui" line="1021"/>
         <source>GenPriKey</source>
         <translation>개인키 생성</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="1163"/>
+        <location filename="../key_agree_dlg.ui" line="979"/>
+        <location filename="../key_agree_dlg.ui" line="1042"/>
+        <source>GetFromCertMan</source>
+        <translation>관리자 가져오기</translation>
+    </message>
+    <message>
+        <location filename="../key_agree_dlg.ui" line="986"/>
+        <location filename="../key_agree_dlg.ui" line="1049"/>
+        <source>GetFromKeyPair</source>
+        <translation>키쌍 가져오기</translation>
+    </message>
+    <message>
+        <location filename="../key_agree_dlg.ui" line="1177"/>
         <source>Clear</source>
         <translation>지우기</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.ui" line="965"/>
-        <location filename="../key_agree_dlg.ui" line="1007"/>
+        <location filename="../key_agree_dlg.ui" line="1014"/>
         <source>CheckPubKey</source>
         <translation>공개키 체크</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.ui" line="958"/>
-        <location filename="../key_agree_dlg.ui" line="1000"/>
+        <location filename="../key_agree_dlg.ui" line="1007"/>
         <source>GenPubKey</source>
         <translation>공개키 생성</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.ui" line="951"/>
-        <location filename="../key_agree_dlg.ui" line="1028"/>
+        <location filename="../key_agree_dlg.ui" line="1035"/>
         <source>CheckKeyPair</source>
         <translation>키 쌍 체크</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="979"/>
-        <location filename="../key_agree_dlg.ui" line="1035"/>
         <source>GetFromManager</source>
-        <translation>매니저에서 가져오기</translation>
+        <translation type="vanished">매니저에서 가져오기</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.ui" line="820"/>
@@ -6689,17 +6699,17 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">비밀값 지우기</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="1170"/>
+        <location filename="../key_agree_dlg.ui" line="1184"/>
         <source>A Calculate</source>
         <translation>A 비밀값 계산</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="1156"/>
+        <location filename="../key_agree_dlg.ui" line="1170"/>
         <source>B Calculate</source>
         <translation>B 비밀값 계산</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="1135"/>
+        <location filename="../key_agree_dlg.ui" line="1149"/>
         <source>Secret Key</source>
         <translation>비밀키</translation>
     </message>
@@ -6722,7 +6732,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../key_agree_dlg.ui" line="972"/>
-        <location filename="../key_agree_dlg.ui" line="1021"/>
+        <location filename="../key_agree_dlg.ui" line="1028"/>
         <source>FindPriKey</source>
         <translation>개인키 찾기</translation>
     </message>
@@ -6787,96 +6797,104 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">잘못된 ECC 키 쌍입니다.</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="99"/>
-        <location filename="../key_agree_dlg.cpp" line="228"/>
+        <location filename="../key_agree_dlg.cpp" line="102"/>
+        <location filename="../key_agree_dlg.cpp" line="231"/>
         <source>Enter P value</source>
         <translation>P를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="106"/>
+        <location filename="../key_agree_dlg.cpp" line="109"/>
         <source>Enter A Private Key</source>
         <translation>A 개인키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="113"/>
+        <location filename="../key_agree_dlg.cpp" line="116"/>
         <source>Enter B Public Key</source>
         <translation>B 공개키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="140"/>
-        <location filename="../key_agree_dlg.cpp" line="187"/>
-        <location filename="../key_agree_dlg.cpp" line="264"/>
-        <location filename="../key_agree_dlg.cpp" line="311"/>
+        <location filename="../key_agree_dlg.cpp" line="143"/>
+        <location filename="../key_agree_dlg.cpp" line="190"/>
+        <location filename="../key_agree_dlg.cpp" line="267"/>
+        <location filename="../key_agree_dlg.cpp" line="314"/>
         <source>fail to calculate Secret: %1</source>
         <translation>비밀키 계산 실패: %1</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="153"/>
+        <location filename="../key_agree_dlg.cpp" line="156"/>
         <source>Enter ECDH A Private Key</source>
         <translation>ECDH A의 개인키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="160"/>
+        <location filename="../key_agree_dlg.cpp" line="163"/>
         <source>Enter ECDH B Public Key</source>
         <translation>ECDH B의 공개키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="235"/>
+        <location filename="../key_agree_dlg.cpp" line="238"/>
         <source>Enter B Private Key</source>
         <translation>B 개인키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="242"/>
+        <location filename="../key_agree_dlg.cpp" line="245"/>
         <source>Enter A Public Key</source>
         <translation>A 공개키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="277"/>
+        <location filename="../key_agree_dlg.cpp" line="280"/>
         <source>Enter ECDH B Private Key</source>
         <translation>ECDH B의 개인키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="284"/>
+        <location filename="../key_agree_dlg.cpp" line="287"/>
         <source>Enter ECDH A Public Key</source>
         <translation>ECDH A의 공개키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="583"/>
-        <location filename="../key_agree_dlg.cpp" line="608"/>
+        <location filename="../key_agree_dlg.cpp" line="586"/>
+        <location filename="../key_agree_dlg.cpp" line="611"/>
         <source>The public key is correct</source>
         <translation>공개키가 맞습니다</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="585"/>
-        <location filename="../key_agree_dlg.cpp" line="610"/>
+        <location filename="../key_agree_dlg.cpp" line="588"/>
+        <location filename="../key_agree_dlg.cpp" line="613"/>
         <source>The public key is incorrect</source>
         <translation>공개키가 틀립니다</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="636"/>
-        <location filename="../key_agree_dlg.cpp" line="665"/>
+        <location filename="../key_agree_dlg.cpp" line="639"/>
+        <location filename="../key_agree_dlg.cpp" line="668"/>
         <source>The key pair is correct</source>
         <translation>키 쌍이 맞습니다</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="638"/>
-        <location filename="../key_agree_dlg.cpp" line="667"/>
+        <location filename="../key_agree_dlg.cpp" line="641"/>
+        <location filename="../key_agree_dlg.cpp" line="670"/>
         <source>The key pair is incorrect</source>
         <translation>키 쌍이 틀립니다</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="741"/>
-        <location filename="../key_agree_dlg.cpp" line="784"/>
-        <location filename="../key_agree_dlg.cpp" line="868"/>
-        <location filename="../key_agree_dlg.cpp" line="911"/>
+        <location filename="../key_agree_dlg.cpp" line="744"/>
+        <location filename="../key_agree_dlg.cpp" line="788"/>
+        <location filename="../key_agree_dlg.cpp" line="834"/>
+        <location filename="../key_agree_dlg.cpp" line="918"/>
+        <location filename="../key_agree_dlg.cpp" line="962"/>
+        <location filename="../key_agree_dlg.cpp" line="1008"/>
         <source>Invalid PrivateKey Type: %1</source>
         <translation>잘못된 개인키 타입입니다:%1</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="771"/>
-        <location filename="../key_agree_dlg.cpp" line="898"/>
+        <location filename="../key_agree_dlg.cpp" line="774"/>
+        <location filename="../key_agree_dlg.cpp" line="948"/>
         <source>Select a certificate</source>
         <translation>인증서를 선택하세요</translation>
+    </message>
+    <message>
+        <location filename="../key_agree_dlg.cpp" line="819"/>
+        <location filename="../key_agree_dlg.cpp" line="993"/>
+        <source>Select keypair</source>
+        <translation>키 쌍을 선택하세요</translation>
     </message>
 </context>
 <context>
@@ -7112,39 +7130,39 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">키 쌍 관리</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="82"/>
+        <location filename="../key_pair_man_dlg.ui" line="109"/>
         <source>Save Path</source>
         <translation>저장 경로</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="306"/>
-        <location filename="../key_pair_man_dlg.ui" line="426"/>
-        <location filename="../key_pair_man_dlg.ui" line="553"/>
+        <location filename="../key_pair_man_dlg.ui" line="333"/>
+        <location filename="../key_pair_man_dlg.ui" line="453"/>
+        <location filename="../key_pair_man_dlg.ui" line="580"/>
         <source>Find</source>
         <translation>찾기</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="236"/>
+        <location filename="../key_pair_man_dlg.ui" line="263"/>
         <source>Save as PEM</source>
         <translation>PEM 저장</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="378"/>
-        <location filename="../key_pair_man_dlg.ui" line="490"/>
+        <location filename="../key_pair_man_dlg.ui" line="405"/>
+        <location filename="../key_pair_man_dlg.ui" line="517"/>
         <source>T</source>
         <translation>T</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="286"/>
+        <location filename="../key_pair_man_dlg.ui" line="313"/>
         <source>Private Key</source>
         <translation>개인 키</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="325"/>
-        <location filename="../key_pair_man_dlg.ui" line="471"/>
-        <location filename="../key_pair_man_dlg.ui" line="572"/>
-        <location filename="../key_pair_man_dlg.ui" line="652"/>
-        <location filename="../key_pair_man_dlg.ui" line="779"/>
+        <location filename="../key_pair_man_dlg.ui" line="352"/>
+        <location filename="../key_pair_man_dlg.ui" line="498"/>
+        <location filename="../key_pair_man_dlg.ui" line="599"/>
+        <location filename="../key_pair_man_dlg.ui" line="679"/>
+        <location filename="../key_pair_man_dlg.ui" line="806"/>
         <source>D</source>
         <translation>D</translation>
     </message>
@@ -7153,133 +7171,143 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">인증서</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="385"/>
+        <location filename="../key_pair_man_dlg.ui" line="412"/>
         <source>Public Key</source>
         <translation>공개 키</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="299"/>
-        <location filename="../key_pair_man_dlg.ui" line="439"/>
-        <location filename="../key_pair_man_dlg.ui" line="585"/>
-        <location filename="../key_pair_man_dlg.ui" line="665"/>
-        <location filename="../key_pair_man_dlg.ui" line="760"/>
+        <location filename="../key_pair_man_dlg.ui" line="326"/>
+        <location filename="../key_pair_man_dlg.ui" line="466"/>
+        <location filename="../key_pair_man_dlg.ui" line="612"/>
+        <location filename="../key_pair_man_dlg.ui" line="692"/>
+        <location filename="../key_pair_man_dlg.ui" line="787"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="273"/>
-        <location filename="../key_pair_man_dlg.ui" line="452"/>
+        <location filename="../key_pair_man_dlg.ui" line="300"/>
+        <location filename="../key_pair_man_dlg.ui" line="479"/>
         <source>V</source>
         <translation>V</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="605"/>
+        <location filename="../key_pair_man_dlg.ui" line="632"/>
         <source>PriKey Info</source>
         <translation>개인키 정보</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="598"/>
+        <location filename="../key_pair_man_dlg.ui" line="625"/>
         <source>Enc PriKey</source>
         <translation>암호화 개인키</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="20"/>
+        <location filename="../key_pair_man_dlg.ui" line="32"/>
         <source>Key Pair Management</source>
         <translation>키 쌍 관리</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="105"/>
+        <location filename="../key_pair_man_dlg.ui" line="132"/>
         <source>List</source>
         <translation>목록</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="111"/>
+        <location filename="../key_pair_man_dlg.ui" line="138"/>
         <source>KeyPair List</source>
         <translation>키 쌍 목록</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="135"/>
+        <location filename="../key_pair_man_dlg.ui" line="162"/>
         <source>Generate KeyPair</source>
         <translation>키 쌍 생성</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="156"/>
+        <location filename="../key_pair_man_dlg.ui" line="183"/>
         <source>Delete</source>
         <translation>삭제</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="149"/>
+        <location filename="../key_pair_man_dlg.ui" line="176"/>
         <source>Decode PriKey</source>
         <translation>개인키 디코딩</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="184"/>
+        <location filename="../key_pair_man_dlg.ui" line="211"/>
         <source>Decode PubKey</source>
         <translation>공개키 디코딩</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="142"/>
+        <location filename="../key_pair_man_dlg.ui" line="169"/>
         <source>View PubKey</source>
         <translation>공개키 보기</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="170"/>
+        <location filename="../key_pair_man_dlg.ui" line="25"/>
+        <source>Base</source>
+        <translation>기본</translation>
+    </message>
+    <message>
+        <location filename="../key_pair_man_dlg.ui" line="197"/>
         <source>View PriKey</source>
         <translation>개인키 보기</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="191"/>
+        <location filename="../key_pair_man_dlg.ui" line="218"/>
         <source>Run Sign</source>
         <translation>서명 실행</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="198"/>
+        <location filename="../key_pair_man_dlg.ui" line="225"/>
         <source>Run Verify</source>
         <translation>검증 실행</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="205"/>
+        <location filename="../key_pair_man_dlg.ui" line="232"/>
         <source>Run Encrypt</source>
         <translation>암호화 실행</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="212"/>
+        <location filename="../key_pair_man_dlg.ui" line="239"/>
         <source>Run Decrypt</source>
         <translation>복호화 실행</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="225"/>
+        <location filename="../key_pair_man_dlg.ui" line="252"/>
         <source>Tools</source>
         <translation>도구</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="243"/>
+        <location filename="../key_pair_man_dlg.ui" line="270"/>
         <source>Path Information</source>
         <translation>경로 정보</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="535"/>
+        <location filename="../key_pair_man_dlg.ui" line="562"/>
         <source>Save to List</source>
         <translation>목록에 저장</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="866"/>
+        <location filename="../key_pair_man_dlg.ui" line="893"/>
         <source>Encrypt PrivateKey</source>
         <translation>개인키 암호화</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="873"/>
+        <location filename="../key_pair_man_dlg.ui" line="900"/>
         <source>Decrypt PrivateKey</source>
         <translation>개인키 복호화</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="521"/>
+        <location filename="../key_pair_man_dlg.ui" line="962"/>
+        <source>OK</source>
+        <translation>확인</translation>
+    </message>
+    <message>
+        <location filename="../key_pair_man_dlg.ui" line="548"/>
         <source>Check KeyPair</source>
         <translation>키 쌍 체크</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="177"/>
-        <location filename="../key_pair_man_dlg.ui" line="528"/>
+        <location filename="../key_pair_man_dlg.ui" line="204"/>
+        <location filename="../key_pair_man_dlg.ui" line="555"/>
         <source>Make CSR</source>
         <translation>CSR 만들기</translation>
     </message>
@@ -7292,7 +7320,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">PFX</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="747"/>
+        <location filename="../key_pair_man_dlg.ui" line="774"/>
         <source>View</source>
         <translation>보기</translation>
     </message>
@@ -7301,7 +7329,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">암호화 개인키</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="706"/>
+        <location filename="../key_pair_man_dlg.ui" line="733"/>
         <source>CSR</source>
         <translation>CSR</translation>
     </message>
@@ -7310,7 +7338,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">PrivateKey Info</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="819"/>
+        <location filename="../key_pair_man_dlg.ui" line="846"/>
         <source>Password</source>
         <translation>암호</translation>
     </message>
@@ -7327,7 +7355,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">복호화</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="163"/>
+        <location filename="../key_pair_man_dlg.ui" line="190"/>
         <source>Encrypt</source>
         <translation>암호화</translation>
     </message>
@@ -7336,20 +7364,20 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">PFX 암호화</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="915"/>
+        <location filename="../key_pair_man_dlg.ui" line="955"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="880"/>
+        <location filename="../key_pair_man_dlg.ui" line="907"/>
         <source>Clear All</source>
         <translation>전체 지우기</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="817"/>
-        <location filename="../key_pair_man_dlg.cpp" line="874"/>
-        <location filename="../key_pair_man_dlg.cpp" line="1159"/>
-        <location filename="../key_pair_man_dlg.cpp" line="1250"/>
+        <location filename="../key_pair_man_dlg.cpp" line="841"/>
+        <location filename="../key_pair_man_dlg.cpp" line="898"/>
+        <location filename="../key_pair_man_dlg.cpp" line="1183"/>
+        <location filename="../key_pair_man_dlg.cpp" line="1274"/>
         <source>Find Private Key</source>
         <translation>개인키를 찾으세요</translation>
     </message>
@@ -7358,7 +7386,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">공개 키</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="906"/>
+        <location filename="../key_pair_man_dlg.cpp" line="930"/>
         <source>find private key</source>
         <translation>개인키를 찾으세요</translation>
     </message>
@@ -7375,7 +7403,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">키 쌍이 틀립니다 [%1]</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="912"/>
+        <location filename="../key_pair_man_dlg.cpp" line="936"/>
         <source>find public key or certificate</source>
         <translation>공개키 또는 인증서를 찾으세요</translation>
     </message>
@@ -7392,19 +7420,19 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">개인키와 %1 은 쌍이 맞지 않습니다</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="945"/>
+        <location filename="../key_pair_man_dlg.cpp" line="969"/>
         <source>Find private key</source>
         <translation>개인키를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="951"/>
-        <location filename="../key_pair_man_dlg.cpp" line="1017"/>
+        <location filename="../key_pair_man_dlg.cpp" line="975"/>
+        <location filename="../key_pair_man_dlg.cpp" line="1041"/>
         <source>Enter a password</source>
         <translation>암호를 입력해야 합니다</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="553"/>
-        <location filename="../key_pair_man_dlg.cpp" line="963"/>
+        <location filename="../key_pair_man_dlg.cpp" line="577"/>
+        <location filename="../key_pair_man_dlg.cpp" line="987"/>
         <source>fail to encrypt private key: %1</source>
         <translation>개인키 암호화 실패: %1</translation>
     </message>
@@ -7421,18 +7449,18 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="986"/>
-        <location filename="../key_pair_man_dlg.cpp" line="1231"/>
+        <location filename="../key_pair_man_dlg.cpp" line="1010"/>
+        <location filename="../key_pair_man_dlg.cpp" line="1255"/>
         <source>Find CSR</source>
         <translation>CSR 을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="1011"/>
+        <location filename="../key_pair_man_dlg.cpp" line="1035"/>
         <source>Find encrypted private key</source>
         <translation>암호화된 개인키를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="1027"/>
+        <location filename="../key_pair_man_dlg.cpp" line="1051"/>
         <source>fail to decrypt private key: %1</source>
         <translation>개인키 복호화 실패: %1</translation>
     </message>
@@ -7445,7 +7473,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">PFX 복호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="921"/>
+        <location filename="../key_pair_man_dlg.cpp" line="945"/>
         <source>The private key and the public key are correct</source>
         <translation>개인키와 공개키가 맞습니다.</translation>
     </message>
@@ -7454,128 +7482,129 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">개인키와 공개키가 틀립니다[%2]</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="923"/>
+        <location filename="../key_pair_man_dlg.cpp" line="947"/>
         <source>The private key and the public key are incorrect [%1]</source>
         <translation>개인키와 공개키가 틀립니다 [%1]</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="1056"/>
+        <location filename="../key_pair_man_dlg.cpp" line="1080"/>
         <source>find a private key</source>
         <translation>개인키를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="1076"/>
+        <location filename="../key_pair_man_dlg.cpp" line="1100"/>
         <source>find a public key</source>
         <translation>공개키를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="823"/>
-        <location filename="../key_pair_man_dlg.cpp" line="1177"/>
-        <location filename="../key_pair_man_dlg.cpp" line="1270"/>
+        <location filename="../key_pair_man_dlg.cpp" line="847"/>
+        <location filename="../key_pair_man_dlg.cpp" line="1201"/>
+        <location filename="../key_pair_man_dlg.cpp" line="1294"/>
         <source>Find Public Key</source>
         <translation>공개키를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="140"/>
+        <location filename="../key_pair_man_dlg.cpp" line="162"/>
         <source>FolderName</source>
         <translation>폴더 이름</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="140"/>
+        <location filename="../key_pair_man_dlg.cpp" line="162"/>
         <source>Algorithm</source>
         <translation>알고리즘</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="140"/>
+        <location filename="../key_pair_man_dlg.cpp" line="162"/>
         <source>Option</source>
         <translation>옵션</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="423"/>
-        <location filename="../key_pair_man_dlg.cpp" line="842"/>
+        <location filename="../key_pair_man_dlg.cpp" line="447"/>
+        <location filename="../key_pair_man_dlg.cpp" line="866"/>
         <source>The folder(%1) is already existed</source>
         <translation>해당 폴더(%1)이 이미 존재 합니다</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="445"/>
+        <location filename="../key_pair_man_dlg.cpp" line="469"/>
         <source>Key pair generation was successful</source>
         <translation>키 쌍 생성 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="460"/>
-        <location filename="../key_pair_man_dlg.cpp" line="488"/>
-        <location filename="../key_pair_man_dlg.cpp" line="527"/>
-        <location filename="../key_pair_man_dlg.cpp" line="580"/>
-        <location filename="../key_pair_man_dlg.cpp" line="625"/>
-        <location filename="../key_pair_man_dlg.cpp" line="672"/>
-        <location filename="../key_pair_man_dlg.cpp" line="697"/>
-        <location filename="../key_pair_man_dlg.cpp" line="717"/>
-        <location filename="../key_pair_man_dlg.cpp" line="735"/>
-        <location filename="../key_pair_man_dlg.cpp" line="753"/>
-        <location filename="../key_pair_man_dlg.cpp" line="784"/>
+        <location filename="../key_pair_man_dlg.cpp" line="484"/>
+        <location filename="../key_pair_man_dlg.cpp" line="512"/>
+        <location filename="../key_pair_man_dlg.cpp" line="551"/>
+        <location filename="../key_pair_man_dlg.cpp" line="604"/>
+        <location filename="../key_pair_man_dlg.cpp" line="649"/>
+        <location filename="../key_pair_man_dlg.cpp" line="696"/>
+        <location filename="../key_pair_man_dlg.cpp" line="721"/>
+        <location filename="../key_pair_man_dlg.cpp" line="741"/>
+        <location filename="../key_pair_man_dlg.cpp" line="759"/>
+        <location filename="../key_pair_man_dlg.cpp" line="777"/>
+        <location filename="../key_pair_man_dlg.cpp" line="808"/>
+        <location filename="../key_pair_man_dlg.cpp" line="1335"/>
         <source>Please select keypair</source>
         <translation>키 쌍을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="464"/>
+        <location filename="../key_pair_man_dlg.cpp" line="488"/>
         <source>Are you sure to delete the keypair</source>
         <translation>정말로 키 쌍을 삭제 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="509"/>
+        <location filename="../key_pair_man_dlg.cpp" line="533"/>
         <source>The CSR(%1) is saved successfully</source>
         <translation>해당 CSR(%1) 저장에 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="544"/>
+        <location filename="../key_pair_man_dlg.cpp" line="568"/>
         <source>Enter a new private key password</source>
         <translation>새로운 개인키 암호를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="561"/>
+        <location filename="../key_pair_man_dlg.cpp" line="585"/>
         <source>The Enc PrivateKey(%1) is saved successfully</source>
         <translation>해당 암호화 개인키 저장에 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="600"/>
-        <location filename="../key_pair_man_dlg.cpp" line="645"/>
+        <location filename="../key_pair_man_dlg.cpp" line="624"/>
+        <location filename="../key_pair_man_dlg.cpp" line="669"/>
         <source>Do you want to change the original key to the changed key?</source>
         <translation>원래키를 변경된 키로 바꾸겠습니까?</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="604"/>
-        <location filename="../key_pair_man_dlg.cpp" line="649"/>
+        <location filename="../key_pair_man_dlg.cpp" line="628"/>
+        <location filename="../key_pair_man_dlg.cpp" line="673"/>
         <source>Key change saved.</source>
         <translation>키 변경이 저장 되었습니다</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="769"/>
-        <location filename="../key_pair_man_dlg.cpp" line="800"/>
+        <location filename="../key_pair_man_dlg.cpp" line="793"/>
+        <location filename="../key_pair_man_dlg.cpp" line="824"/>
         <source>This key does not support public key encryption</source>
         <translation>해당 키는 공개키 암호화를 지원하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="858"/>
+        <location filename="../key_pair_man_dlg.cpp" line="882"/>
         <source>Key pair saving was successful</source>
         <translation>키 쌍 저장에 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="1195"/>
+        <location filename="../key_pair_man_dlg.cpp" line="1219"/>
         <source>Find Encrypted Private Key</source>
         <translation>암호화된 개인키를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="1213"/>
+        <location filename="../key_pair_man_dlg.cpp" line="1237"/>
         <source>There is no private key information</source>
         <translation>개인키 정보가 없습니다</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="1257"/>
+        <location filename="../key_pair_man_dlg.cpp" line="1281"/>
         <source>The private key type is %1</source>
         <translation>개인키 타입은 %1 입니다</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.cpp" line="1277"/>
+        <location filename="../key_pair_man_dlg.cpp" line="1301"/>
         <source>The public key type is %1</source>
         <translation>공개키 타입은 %1 입니다</translation>
     </message>
@@ -13249,24 +13278,24 @@ Do you want to delete the file and continue?</source>
         <translation>TTLV 추가</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="447"/>
+        <location filename="../ttlv_tree_view.cpp" line="451"/>
         <source>There are no items selected.</source>
         <translation>선택한 아이템이 없습니다</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="472"/>
-        <location filename="../ttlv_tree_view.cpp" line="493"/>
-        <location filename="../ttlv_tree_view.cpp" line="512"/>
+        <location filename="../ttlv_tree_view.cpp" line="476"/>
+        <location filename="../ttlv_tree_view.cpp" line="497"/>
+        <location filename="../ttlv_tree_view.cpp" line="516"/>
         <source>There is no selected item</source>
         <translation>선택한 아이템이 없습니다.</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="555"/>
+        <location filename="../ttlv_tree_view.cpp" line="559"/>
         <source>The item is not structured</source>
         <translation>해당 아이템이 구조적이지 않습니다</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="564"/>
+        <location filename="../ttlv_tree_view.cpp" line="568"/>
         <source>Are you sure you want to add it?</source>
         <translation>정말로 추가 하겠습니까?</translation>
     </message>

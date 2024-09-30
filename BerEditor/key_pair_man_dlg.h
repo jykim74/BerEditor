@@ -17,6 +17,11 @@ enum DerType {
     TypeCSR
 };
 
+enum KeyPairMode {
+    KeyPairModeBase = 0,
+    KeyPairModeSelect = 1
+};
+
 class KeyPairManDlg : public QDialog, public Ui::KeyPairManDlg
 {
     Q_OBJECT
@@ -24,12 +29,17 @@ class KeyPairManDlg : public QDialog, public Ui::KeyPairManDlg
 public:
     explicit KeyPairManDlg(QWidget *parent = nullptr);
     ~KeyPairManDlg();
+    void setMode( int nMode );
+    void setTitle( const QString strTitle );
+    const QString getPriPath();
+    const QString getPubPath();
 
 private slots:
     void showEvent(QShowEvent *event);
     void closeEvent(QCloseEvent *event );
 
     void keyTypeChanged( int index );
+
 
     void clickLGenKeyPair();
     void clickLDelete();
@@ -77,6 +87,11 @@ private slots:
 
     void typePriKey();
     void typePubKey();
+
+
+
+    void clickOK();
+
 private:
     void initUI();
     void initialize();
@@ -86,6 +101,7 @@ private:
 
     void loadKeyPairList();
     const QString getSelectedPath();
+    int mode_;
 };
 
 #endif // KEY_PAIR_MAN_DLG_H

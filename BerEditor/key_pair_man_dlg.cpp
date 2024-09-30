@@ -7,7 +7,6 @@
 #include "ber_applet.h"
 #include "mainwindow.h"
 #include "common.h"
-#include "cert_info_dlg.h"
 #include "csr_info_dlg.h"
 #include "settings_mgr.h"
 #include "pri_key_info_dlg.h"
@@ -35,9 +34,11 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
+    mode_ = 0;
 
     connect( mVersionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeVerison(int)));
     connect( mKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(keyTypeChanged(int)));
+    connect( mOKBtn, SIGNAL(clicked()), this, SLOT(clickOK()));
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mLGenKeyPairBtn, SIGNAL(clicked()), this, SLOT(clickLGenKeyPair()));
@@ -128,6 +129,27 @@ KeyPairManDlg::~KeyPairManDlg()
 
 }
 
+void KeyPairManDlg::setMode( int nMode )
+{
+    mode_ = nMode;
+
+    if( mode_ == KeyPairModeSelect )
+    {
+        mModeLabel->setText( "Select" );
+        mOKBtn->show();
+    }
+    else
+    {
+        mModeLabel->setText( "Manage" );
+        mOKBtn->hide();
+    }
+}
+
+void KeyPairManDlg::setTitle( const QString strTitle )
+{
+    mTitleLabel->setText( strTitle );
+}
+
 void KeyPairManDlg::initUI()
 {
 #if defined(Q_OS_MAC)
@@ -150,6 +172,8 @@ void KeyPairManDlg::initUI()
     mKeyPairTable->setColumnWidth( 0, nWidth * 5/10 );
     mKeyPairTable->setColumnWidth( 1, nWidth * 2/10 );
     mKeyPairTable->setColumnWidth( 2, nWidth * 3/10 );
+
+    mOKBtn->hide();
 }
 
 void KeyPairManDlg::showEvent(QShowEvent *event)
@@ -1279,3 +1303,38 @@ void KeyPairManDlg::typePubKey()
     JS_BIN_reset( &binData );
 }
 
+const QString KeyPairManDlg::getPriPath()
+{
+    QString strPriPath;
+
+    QString strPath = getSelectedPath();
+    if( strPath.length() < 1 ) return strPriPath;
+
+    strPriPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+    return strPriPath;
+}
+
+const QString KeyPairManDlg::getPubPath()
+{
+    QString strPubPath;
+
+    QString strPath = getSelectedPath();
+    if( strPath.length() < 1 ) return strPubPath;
+
+    strPubPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
+    return strPubPath;
+}
+
+void KeyPairManDlg::clickOK()
+{
+    if( mode_ == KeyPairModeBase )
+        return accept();
+
+    if( getSelectedPath().length() < 1 )
+    {
+        berApplet->warningBox( tr( "Please select keypair" ), this );
+        return;
+    }
+
+    return accept();
+}

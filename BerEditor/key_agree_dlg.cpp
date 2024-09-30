@@ -12,6 +12,7 @@
 #include "common.h"
 #include "ber_applet.h"
 #include "cert_man_dlg.h"
+#include "key_pair_man_dlg.h"
 
 const QStringList sGList = { "02", "05" };
 
@@ -32,11 +33,13 @@ KeyAgreeDlg::KeyAgreeDlg(QWidget *parent) :
     connect( mAGenPriKeyBtn, SIGNAL(clicked()), this, SLOT(genAECDHPriKey()));
     connect( mAGenPubKeyBtn, SIGNAL(clicked()), this, SLOT(genAECDHPubKey()));
     connect( mAFindPriKeyBtn, SIGNAL(clicked()), this, SLOT(findAECDHPriKey() ));
-    connect( mAGetFromManBtn, SIGNAL(clicked()), this, SLOT(getAFromMan()));
+    connect( mAGetFromCertManBtn, SIGNAL(clicked()), this, SLOT(getAFromCertMan()));
+    connect( mAGetFromKeyPairMan, SIGNAL(clicked()), this, SLOT(getAFromKeyPair()));
     connect( mBGenPriKeyBtn, SIGNAL(clicked()), this, SLOT(genBECDHPriKey()));
     connect( mBGenPubKeyBtn, SIGNAL(clicked()), this, SLOT(genBECDHPubKey()));
     connect( mBFindPriKeyBtn, SIGNAL(clicked()), this, SLOT(findBECDHPriKey()));
-    connect( mBGetFromManBtn, SIGNAL(clicked()), this, SLOT(getBFromMan()));
+    connect( mBGetFromCertManBtn, SIGNAL(clicked()), this, SLOT(getBFromCertMan()));
+    connect( mBGetFromKeyPairBtn, SIGNAL(clicked()), this, SLOT(getBFromKeyPair()));
     connect( mAGenKeyPairBtn, SIGNAL(clicked()), this, SLOT(genAKeyPair()));
     connect( mBGenKeyPairBtn, SIGNAL(clicked()), this, SLOT(genBKeyPair()));
     connect( mACheckPubKeyBtn, SIGNAL(clicked()), this, SLOT(checkAPubKey()));
@@ -758,7 +761,7 @@ end :
     repaint();
 }
 
-void KeyAgreeDlg::getAFromMan()
+void KeyAgreeDlg::getAFromCertMan()
 {
     int nKeyType = -1;
     BIN binPri = {0,0};
@@ -769,6 +772,7 @@ void KeyAgreeDlg::getAFromMan()
     CertManDlg certMan;
     certMan.setMode( ManModeSelBoth );
     certMan.setTitle( tr( "Select a certificate") );
+    certMan.mKeyTypeCombo->setCurrentText( "ECDSA" );
 
     if( certMan.exec() != QDialog::Accepted )
         return;
@@ -777,6 +781,52 @@ void KeyAgreeDlg::getAFromMan()
 
     memset( &sECKeyVal, 0x00, sizeof(sECKeyVal));
 
+    nKeyType = JS_PKI_getPriKeyType( &binPri );
+
+    if( nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+    {
+        berApplet->warningBox( tr("Invalid PrivateKey Type: %1").arg( nKeyType ), this);
+        goto end;
+    }
+
+    JS_PKI_getECKeyVal( &binPri, &sECKeyVal );
+    pSN = JS_PKI_getSNFromOID( sECKeyVal.pCurveOID );
+
+    strPub += sECKeyVal.pPubX;
+    strPub += sECKeyVal.pPubY;
+
+    mAECDHPriKeyText->setText( sECKeyVal.pPrivate );
+    mAECDHPubKeyText->setText( strPub );
+    mECDHParamCombo->setCurrentText( pSN );
+
+end :
+    JS_BIN_reset( &binPri );
+    JS_PKI_resetECKeyVal( &sECKeyVal );
+}
+
+void KeyAgreeDlg::getAFromKeyPair()
+{
+    int nKeyType = -1;
+    BIN binPri = {0,0};
+    JECKeyVal sECKeyVal;
+    const char  *pSN = NULL;
+    QString strPath;
+    QString strPub;
+
+
+    KeyPairManDlg keyPairMan;
+    keyPairMan.setMode( KeyPairModeSelect );
+    keyPairMan.setTitle( tr( "Select keypair") );
+    keyPairMan.mKeyTypeCombo->setCurrentText( "ECDSA" );
+
+    if( keyPairMan.exec() != QDialog::Accepted )
+        return;
+
+    strPath = keyPairMan.getPriPath();
+
+    memset( &sECKeyVal, 0x00, sizeof(sECKeyVal));
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binPri );
     nKeyType = JS_PKI_getPriKeyType( &binPri );
 
     if( nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
@@ -885,7 +935,7 @@ end :
     repaint();
 }
 
-void KeyAgreeDlg::getBFromMan()
+void KeyAgreeDlg::getBFromCertMan()
 {
     int nKeyType = -1;
     BIN binPri = {0,0};
@@ -896,6 +946,7 @@ void KeyAgreeDlg::getBFromMan()
     CertManDlg certMan;
     certMan.setMode( ManModeSelBoth );
     certMan.setTitle( tr( "Select a certificate") );
+    certMan.mKeyTypeCombo->setCurrentText( "ECDSA" );
 
     if( certMan.exec() != QDialog::Accepted )
         return;
@@ -904,6 +955,52 @@ void KeyAgreeDlg::getBFromMan()
 
     memset( &sECKeyVal, 0x00, sizeof(sECKeyVal));
 
+    nKeyType = JS_PKI_getPriKeyType( &binPri );
+
+    if( nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+    {
+        berApplet->warningBox( tr("Invalid PrivateKey Type: %1").arg( nKeyType ), this);
+        goto end;
+    }
+
+    JS_PKI_getECKeyVal( &binPri, &sECKeyVal );
+    pSN = JS_PKI_getSNFromOID( sECKeyVal.pCurveOID );
+
+    strPub += sECKeyVal.pPubX;
+    strPub += sECKeyVal.pPubY;
+
+    mBECDHPriKeyText->setText( sECKeyVal.pPrivate );
+    mBECDHPubKeyText->setText( strPub );
+    mECDHParamCombo->setCurrentText( pSN );
+
+end :
+    JS_BIN_reset( &binPri );
+    JS_PKI_resetECKeyVal( &sECKeyVal );
+}
+
+void KeyAgreeDlg::getBFromKeyPair()
+{
+    int nKeyType = -1;
+    BIN binPri = {0,0};
+    JECKeyVal sECKeyVal;
+    const char  *pSN = NULL;
+    QString strPath;
+    QString strPub;
+
+
+    KeyPairManDlg keyPairMan;
+    keyPairMan.setMode( KeyPairModeSelect );
+    keyPairMan.setTitle( tr( "Select keypair") );
+    keyPairMan.mKeyTypeCombo->setCurrentText( "ECDSA" );
+
+    if( keyPairMan.exec() != QDialog::Accepted )
+        return;
+
+    strPath = keyPairMan.getPriPath();
+
+    memset( &sECKeyVal, 0x00, sizeof(sECKeyVal));
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binPri );
     nKeyType = JS_PKI_getPriKeyType( &binPri );
 
     if( nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
