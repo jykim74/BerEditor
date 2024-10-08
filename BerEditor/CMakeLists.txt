@@ -22,6 +22,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Gui)
 find_package(Qt${QT_VERSION_MAJOR} OPTIONAL_COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} OPTIONAL_COMPONENTS PrintSupport Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Network)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Help)
 
 if(APPLE)
     SET(platform_specific_sources ${platform_specific_sources} mac_sparkle_support.mm)
@@ -201,6 +202,8 @@ add_executable(${PROJECT_NAME}
     cavp_dlg2.cpp
     ldt_hash_thread.h ldt_hash_thread.cpp
     cms_info_dlg.h cms_info_dlg.cpp cms_info_dlg.ui
+
+    content_main.h content_main.cpp content_main.ui
 )
 
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )

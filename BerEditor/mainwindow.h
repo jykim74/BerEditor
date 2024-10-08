@@ -44,6 +44,7 @@ class SCEPClientDlg;
 class CertManDlg;
 class TTLVEncoderDlg;
 class TTLVClientDlg;
+class ContentMain;
 
 namespace Ui {
 class MainWindow;
@@ -155,6 +156,7 @@ private slots:
     void saveAs();
     void clearLog();
     void toggleLog();
+    void content();
     void licenseInfo();
 
     void bugIssueReport();
@@ -234,6 +236,7 @@ private:
     CertManDlg      *cert_man_dlg_;
     TTLVEncoderDlg  *ttlv_encoder_dlg_;
     TTLVClientDlg   *ttlv_client_dlg_;
+    ContentMain     *content_;
 
     bool log_halt_;
 };

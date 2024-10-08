@@ -72,5 +72,6 @@
         <file>images/kms.png</file>
         <file>images/kms_client.png</file>
         <file>images/kms_encoder.png</file>
+        <file>images/info.png</file>
     </qresource>
 </RCC>

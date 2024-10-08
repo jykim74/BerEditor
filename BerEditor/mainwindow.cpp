@@ -52,6 +52,7 @@
 #include "BasicXMLSyntaxHighlighter.h"
 #include "pri_key_info_dlg.h"
 #include "cms_info_dlg.h"
+#include "content_main.h"
 
 #include "js_pki_tools.h"
 #include "js_kms.h"
@@ -131,6 +132,7 @@ MainWindow::~MainWindow()
     delete cmp_client_dlg_;
     delete scep_client_dlg_;
     delete cert_man_dlg_;
+    delete content_;
 
     delete ttlv_encoder_dlg_;
     delete ttlv_client_dlg_;
@@ -808,6 +810,14 @@ void MainWindow::createActions()
     helpMenu->addAction( logAct );
     helpToolBar->addAction( logAct );
 
+    QIcon infoIcon = QIcon::fromTheme( "content", QIcon(":/images/info.png"));
+    QAction *contentAct = new QAction( infoIcon, tr( "Content" ), this );
+    connect( contentAct, &QAction::triggered, this, &MainWindow::content );
+    contentAct->setShortcut( QKeySequence(Qt::CTRL | Qt::Key_H ));
+    contentAct->setStatusTip( tr("Content" ));
+    helpMenu->addAction( contentAct );
+    helpToolBar->addAction( contentAct );
+
     if( berApplet->isLicense() == false )
     {
         clearAct->setEnabled( false );
@@ -872,6 +882,7 @@ void MainWindow::createCryptoDlg()
     cert_man_dlg_ = new CertManDlg;
     ttlv_encoder_dlg_ = new TTLVEncoderDlg;
     ttlv_client_dlg_ = new TTLVClientDlg;
+    content_ = new ContentMain;
 }
 
 void MainWindow::newFile()
@@ -2029,6 +2040,13 @@ void MainWindow::toggleLog()
         log( "Log is halt" );
         log_halt_ = true;
     }
+}
+
+void MainWindow::content()
+{
+    content_->show();
+    content_->raise();
+    content_->activateWindow();
 }
 
 void MainWindow::licenseInfo()
