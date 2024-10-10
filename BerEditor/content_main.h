@@ -2,6 +2,9 @@
 #define CONTENT_MAIN_H
 
 #include <QMainWindow>
+#include <QTreeWidget>
+#include <QMenu>
+#include <QtHelp/QHelpEngine>
 #include "ui_content_main.h"
 
 namespace Ui {
@@ -16,8 +19,16 @@ public:
     explicit ContentMain(QWidget *parent = nullptr);
     ~ContentMain();
 
-private:
+private slots:
+    void clickMenu();
 
+private:
+    void createActions();
+    void createStatusBar();
+    void createDockWindows();
+
+    void initialize();
+    QHelpEngine* help_;
 };
 
 #endif // CONTENT_MAIN_H

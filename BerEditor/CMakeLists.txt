@@ -29,7 +29,6 @@ if(APPLE)
     SET(platform_specific_headers ${platform_specific_headers} mac_sparkle_support.h)
     SET_SOURCE_FILES_PROPERTIES(mac_sparkle_support.mm PROPERTIES COMPILE_FLAGS -fobjc-arc)
     SET(SPARKLE_FRAMEWORK /usr/local/Sparkle.framework)
-    INCLUDE_DIRECTORIES(${SPARKLE_FRAMEWORK}/Headers)
 endif()
 
 set(PROJECT_SRC
