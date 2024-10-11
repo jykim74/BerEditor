@@ -1,5 +1,11 @@
+#include <QFileInfo>
+#include <QTextStream>
+
 #include <QtHelp/QHelpEngine>
 #include "content_main.h"
+#include "common.h"
+#include "ber_applet.h"
+#include "js_http.h"
 
 ContentMain::ContentMain(QWidget *parent) :
     QMainWindow(parent)
@@ -71,14 +77,35 @@ void ContentMain::createDockWindows()
 
 void ContentMain::clickMenu()
 {
+    int ret = 0;
+    int nStatus = 0;
+    char *pBody = NULL;
+    BIN binBody = {0,0};
+    QString strURL = "https://www.rfc-editor.org/rfc/inline-errata/rfc5280.html";
+//    QString strURL = "https://www.naver.com";
     QTreeWidgetItem* item = mMenuTree->currentItem();
 
     if( item == NULL ) return;
 
-    QString strName = item->text(0);
-    QUrl url;
-    url.setHost( "https://www.google.com" );
+    ret = JS_HTTP_requestGetBin2( strURL.toStdString().c_str(), NULL, NULL, &nStatus, &binBody );
+/*
+    // HTML 파일 읽기
 
-//    mContentBroswer->loadResource( QTextDocument::HtmlResource, url );
-    mContentBroswer->setPlainText( strName );
+    QString fileName = "D:/mywork/QtHelpManual/documentation/index.html";  // 표시할 HTML 파일 경로
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        berApplet->warningBox( tr( "fail to open HTML" ), this );
+        return;
+    }
+
+    // 파일 내용 읽기
+    QTextStream in(&file);
+    QString htmlContent = in.readAll();
+    file.close();
+*/
+    JS_BIN_string( &binBody, &pBody );
+    mContentBroswer->setHtml( pBody );
+    if( pBody ) JS_free( pBody );
+    JS_BIN_reset( &binBody );
+//    mContentBroswer->setPlainText( htmlContent );
 }
