@@ -1,11 +1,17 @@
 #include <QFileInfo>
 #include <QTextStream>
+#include <QDir>
 
 #include <QtHelp/QHelpEngine>
 #include "content_main.h"
 #include "common.h"
 #include "ber_applet.h"
 #include "js_http.h"
+
+static const QString kDoc = "DOC";
+static const QString kRFC = "RFC";
+static const QString kASN1 = "ASN1";
+static const QString kPKIX = "PKIX";
 
 ContentMain::ContentMain(QWidget *parent) :
     QMainWindow(parent)
@@ -54,29 +60,45 @@ void ContentMain::createStatusBar()
 
 void ContentMain::createDockWindows()
 {
-
     mMenuTree->header()->setVisible(false);
     mMenuTree->clear();
+
+    QDir dir;
+    if( dir.exists( kDoc ) == false )
+        dir.mkdir( kDoc );
 
     QTreeWidgetItem *rootItem = new QTreeWidgetItem;
     rootItem->setText( 0, "PKI Standard" );
     mMenuTree->insertTopLevelItem( 0, rootItem );
 
     QTreeWidgetItem *itemASN = new QTreeWidgetItem;
-    itemASN->setText( 0, "ASN.1" );
+    itemASN->setText( 0, kASN1 );
     rootItem->addChild( itemASN );
+
+    QString strASNPath = QString( "%1/%2" ).arg( kDoc ).arg( kASN1 );
+
+    if( dir.exists( strASNPath ) == false )
+        dir.mkdir( strASNPath );
 
     makeASNMenu( itemASN );
 
     QTreeWidgetItem *itemRFC = new QTreeWidgetItem;
-    itemRFC->setText( 0, "RFC" );
+    itemRFC->setText( 0, kRFC );
     rootItem->addChild( itemRFC );
+
+    QString strRFCPath = QString( "%1/%2" ).arg( kDoc ).arg( kRFC );
+    if( dir.exists( strRFCPath ) == false )
+        dir.mkdir( strRFCPath );
 
     makeRFCMenu( itemRFC );
 
     QTreeWidgetItem *itemPKIX = new QTreeWidgetItem;
-    itemPKIX->setText( 0, "PKIX" );
+    itemPKIX->setText( 0, kPKIX );
     rootItem->addChild( itemPKIX );
+
+    QString strPKIXPath = QString( "%1/%2" ).arg( kDoc ).arg( kPKIX );
+    if( dir.exists( strPKIXPath ) == false )
+        dir.mkdir( strPKIXPath );
 
     makePKIXMenu( itemPKIX );
 }
@@ -94,9 +116,10 @@ void ContentMain::makeRFCMenu( QTreeWidgetItem* parent )
     {
         QString strRFC = sRFCList.at(i);
         QTreeWidgetItem *item = new QTreeWidgetItem;
+        QString strData = QString( "%1/%2" ).arg( kRFC ).arg( strRFC );
 
         item->setText( 0, strRFC );
-        item->setData( 0, Qt::UserRole, "RFC" );
+        item->setData( 0, Qt::UserRole, strData );
         parent->addChild( item );
     }
 }
@@ -109,9 +132,10 @@ void ContentMain::makePKIXMenu( QTreeWidgetItem* parent )
     {
         QString strPKIX = sPKIXList.at(i);
         QTreeWidgetItem *item = new QTreeWidgetItem;
+        QString strData = QString( "%1/%2" ).arg( kPKIX ).arg( strPKIX );
 
         item->setText( 0, strPKIX );
-        item->setData( 0, Qt::UserRole, "PKIX" );
+        item->setData( 0, Qt::UserRole, strData );
         parent->addChild( item );
     }
 }
@@ -133,29 +157,39 @@ void ContentMain::clickMenu()
         BIN binBody = {0,0};
         QString strHost = "https://www.rfc-editor.org/rfc/inline-errata";
         QString strRFC = item->text(0);
+        QString strData = item->data(0, Qt::UserRole).toString();
 
         QString strURL = QString( "%1/%2.html").arg( strHost ).arg( strRFC ).toLower();
+        QString strSavePath = QString ( "%1/%2.html" ).arg( kDoc ).arg( strData );
 
-        ret = JS_HTTP_requestGetBin2( strURL.toStdString().c_str(), NULL, NULL, &nStatus, &binBody );
-/*
-    // HTML 파일 읽기
+        QFileInfo fileInfo( strSavePath );
+        if( fileInfo.exists() == true )
+        {
+//            QString fileName = "D:/mywork/QtHelpManual/documentation/index.html";  // 표시할 HTML 파일 경로
+            QFile file( strSavePath );
+            if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                berApplet->warningBox( tr( "fail to open HTML" ), this );
+                return;
+            }
 
-    QString fileName = "D:/mywork/QtHelpManual/documentation/index.html";  // 표시할 HTML 파일 경로
-    QFile file(fileName);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        berApplet->warningBox( tr( "fail to open HTML" ), this );
-        return;
-    }
+            // 파일 내용 읽기
+            QTextStream in(&file);
+            QString htmlContent = in.readAll();
+            file.close();
+            mContentBroswer->setHtml( htmlContent );
+        }
+        else
+        {
+            ret = JS_HTTP_requestGetBin2( strURL.toStdString().c_str(), NULL, NULL, &nStatus, &binBody );
 
-    // 파일 내용 읽기
-    QTextStream in(&file);
-    QString htmlContent = in.readAll();
-    file.close();
-*/
-        JS_BIN_string( &binBody, &pBody );
-        mContentBroswer->setHtml( pBody );
-        if( pBody ) JS_free( pBody );
-        JS_BIN_reset( &binBody );
-//    mContentBroswer->setPlainText( htmlContent );
+            JS_BIN_string( &binBody, &pBody );
+            mContentBroswer->setHtml( pBody );
+            JS_BIN_fileWrite( &binBody, strSavePath.toLocal8Bit().toStdString().c_str() );
+
+
+            if( pBody ) JS_free( pBody );
+            JS_BIN_reset( &binBody );
+
+        }
     }
 }

@@ -7,6 +7,7 @@
 #include <QtHelp/QHelpEngine>
 #include "ui_content_main.h"
 
+
 namespace Ui {
 class ContentMain;
 }
