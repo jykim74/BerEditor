@@ -66,28 +66,77 @@ void ContentMain::createDockWindows()
     itemASN->setText( 0, "ASN.1" );
     rootItem->addChild( itemASN );
 
+    makeASNMenu( itemASN );
+
     QTreeWidgetItem *itemRFC = new QTreeWidgetItem;
     itemRFC->setText( 0, "RFC" );
     rootItem->addChild( itemRFC );
 
+    makeRFCMenu( itemRFC );
+
     QTreeWidgetItem *itemPKIX = new QTreeWidgetItem;
     itemPKIX->setText( 0, "PKIX" );
     rootItem->addChild( itemPKIX );
+
+    makePKIXMenu( itemPKIX );
+}
+
+void ContentMain::makeASNMenu( QTreeWidgetItem* parent )
+{
+
+}
+
+void ContentMain::makeRFCMenu( QTreeWidgetItem* parent )
+{
+    QStringList sRFCList = { "RFC5280", "RFC4210", "RFC4211", "RFC2560", "RFC3161", "RFC8894" };
+
+    for( int i = 0; i < sRFCList.size(); i++ )
+    {
+        QString strRFC = sRFCList.at(i);
+        QTreeWidgetItem *item = new QTreeWidgetItem;
+
+        item->setText( 0, strRFC );
+        item->setData( 0, Qt::UserRole, "RFC" );
+        parent->addChild( item );
+    }
+}
+
+void ContentMain::makePKIXMenu( QTreeWidgetItem* parent )
+{
+    QStringList sPKIXList = { "PKCS#1", "PKCS#3", "PKCS#5", "PKCS#7", "PKCS#8", "PKCS#9", "PKCS#10", "PKCS#11", "PKCS#13", "PKCS#15" };
+
+    for( int i = 0; i < sPKIXList.size(); i++ )
+    {
+        QString strPKIX = sPKIXList.at(i);
+        QTreeWidgetItem *item = new QTreeWidgetItem;
+
+        item->setText( 0, strPKIX );
+        item->setData( 0, Qt::UserRole, "PKIX" );
+        parent->addChild( item );
+    }
 }
 
 void ContentMain::clickMenu()
 {
     int ret = 0;
-    int nStatus = 0;
-    char *pBody = NULL;
-    BIN binBody = {0,0};
-    QString strURL = "https://www.rfc-editor.org/rfc/inline-errata/rfc5280.html";
+
 //    QString strURL = "https://www.naver.com";
     QTreeWidgetItem* item = mMenuTree->currentItem();
 
     if( item == NULL ) return;
+    QString strType = item->data(0, Qt::UserRole).toString();
 
-    ret = JS_HTTP_requestGetBin2( strURL.toStdString().c_str(), NULL, NULL, &nStatus, &binBody );
+    if( strType == "RFC" )
+    {
+        int nStatus = 0;
+        char *pBody = NULL;
+        BIN binBody = {0,0};
+        QString strHost = "https://www.rfc-editor.org/rfc/inline-errata";
+        QString strRFC = item->text(0);
+
+        QString strURL = QString( "%1/%2.html").arg( strHost ).arg( strRFC ).toLower();
+
+        ret = JS_HTTP_requestGetBin2( strURL.toStdString().c_str(), NULL, NULL, &nStatus, &binBody );
 /*
     // HTML 파일 읽기
 
@@ -103,9 +152,10 @@ void ContentMain::clickMenu()
     QString htmlContent = in.readAll();
     file.close();
 */
-    JS_BIN_string( &binBody, &pBody );
-    mContentBroswer->setHtml( pBody );
-    if( pBody ) JS_free( pBody );
-    JS_BIN_reset( &binBody );
+        JS_BIN_string( &binBody, &pBody );
+        mContentBroswer->setHtml( pBody );
+        if( pBody ) JS_free( pBody );
+        JS_BIN_reset( &binBody );
 //    mContentBroswer->setPlainText( htmlContent );
+    }
 }

@@ -27,6 +27,10 @@ private:
     void createStatusBar();
     void createDockWindows();
 
+    void makeASNMenu( QTreeWidgetItem* parent );
+    void makeRFCMenu( QTreeWidgetItem* parent );
+    void makePKIXMenu( QTreeWidgetItem* parent );
+
     void initialize();
     QHelpEngine* help_;
 };

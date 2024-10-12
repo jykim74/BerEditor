@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>581</width>
-    <height>563</height>
+    <width>780</width>
+    <height>574</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,7 +30,7 @@
        <widget class="QTextBrowser" name="mContentBroswer">
         <property name="minimumSize">
          <size>
-          <width>400</width>
+          <width>600</width>
           <height>500</height>
          </size>
         </property>
@@ -72,8 +72,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>581</width>
-     <height>22</height>
+     <width>780</width>
+     <height>24</height>
     </rect>
    </property>
   </widget>
@@ -82,7 +82,7 @@
    <property name="minimumSize">
     <size>
      <width>160</width>
-     <height>113</height>
+     <height>120</height>
     </size>
    </property>
    <property name="features">
