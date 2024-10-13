@@ -137,7 +137,16 @@ void ContentMain::makeRFCMenu( QTreeWidgetItem* parent )
 
 void ContentMain::makePKIXMenu( QTreeWidgetItem* parent )
 {
-    QStringList sPKIXList = { "PKCS#1", "PKCS#3", "PKCS#5", "PKCS#7", "PKCS#8", "PKCS#9", "PKCS#10", "PKCS#11", "PKCS#13", "PKCS#15" };
+    QStringList sPKIXList = { "PKCS#1", "PKCS#3", "PKCS#5", "PKCS#7", "PKCS#8", "PKCS#9", "PKCS#10", "PKCS#11", "PKCS#12" };
+    // PKCS#1 : RFC2437
+    // PKCS#3 : RFC2631
+    // PKCS#5 : RFC2898
+    // PKCS#7 : RFC2315
+    // PKCS#8 : RFC5208
+    // PKCS#9 : RFC2985
+    // PKCS#10 : RFC2986
+    // PKCS#11
+    // PKCS#12 : RFC7292
 
     for( int i = 0; i < sPKIXList.size(); i++ )
     {
