@@ -105,7 +105,18 @@ void ContentMain::createDockWindows()
 
 void ContentMain::makeASNMenu( QTreeWidgetItem* parent )
 {
+    QStringList sASN1List = { "Implicit", "Explicit" };
 
+    for( int i = 0; i < sASN1List.size(); i++ )
+    {
+        QString strASN1 = sASN1List.at(i);
+        QTreeWidgetItem *item = new QTreeWidgetItem;
+        QString strData = QString( "%1/%2" ).arg( kASN1 ).arg( strASN1 );
+
+        item->setText( 0, strASN1 );
+        item->setData( 0, Qt::UserRole, strData );
+        parent->addChild( item );
+    }
 }
 
 void ContentMain::makeRFCMenu( QTreeWidgetItem* parent )
@@ -146,20 +157,26 @@ void ContentMain::clickMenu()
 
 //    QString strURL = "https://www.naver.com";
     QTreeWidgetItem* item = mMenuTree->currentItem();
-
     if( item == NULL ) return;
-    QString strType = item->data(0, Qt::UserRole).toString();
 
-    if( strType == "RFC" )
+    QString strName = item->text(0);
+    QString strData = item->data(0, Qt::UserRole).toString();
+
+    QStringList strList;
+
+    strList = strData.split( "/" );
+    if( strList.size() < 2 ) return;
+
+    QString strType = strList.at(0);
+
+    if( strType == kRFC )
     {
         int nStatus = 0;
         char *pBody = NULL;
         BIN binBody = {0,0};
         QString strHost = "https://www.rfc-editor.org/rfc/inline-errata";
-        QString strRFC = item->text(0);
-        QString strData = item->data(0, Qt::UserRole).toString();
 
-        QString strURL = QString( "%1/%2.html").arg( strHost ).arg( strRFC ).toLower();
+        QString strURL = QString( "%1/%2.html").arg( strHost ).arg( strName ).toLower();
         QString strSavePath = QString ( "%1/%2.html" ).arg( kDoc ).arg( strData );
 
         QFileInfo fileInfo( strSavePath );
@@ -190,6 +207,30 @@ void ContentMain::clickMenu()
             if( pBody ) JS_free( pBody );
             JS_BIN_reset( &binBody );
 
+        }
+    }
+    else
+    {
+        QString strSavePath = QString ( "%1/%2.html" ).arg( kDoc ).arg( strData );
+        QFileInfo fileInfo( strSavePath );
+
+        if( fileInfo.exists() == true )
+        {
+            QFile file( strSavePath );
+            if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                berApplet->warningBox( tr( "fail to open HTML" ), this );
+                return;
+            }
+
+            // 파일 내용 읽기
+            QTextStream in(&file);
+            QString textContent = in.readAll();
+            file.close();
+            mContentBroswer->setPlainText( textContent );
+        }
+        else
+        {
+            mContentBroswer->setPlainText( "There is no data" );
         }
     }
 }
