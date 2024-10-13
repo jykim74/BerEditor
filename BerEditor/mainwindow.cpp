@@ -799,7 +799,7 @@ void MainWindow::createActions()
     clearAct->setShortcut( QKeySequence(Qt::Key_F9));
     clearAct->setStatusTip(tr("clear information and log"));
     helpMenu->addAction( clearAct );
-    helpToolBar->addAction( clearAct );
+//    helpToolBar->addAction( clearAct );
 
     QIcon logIcon = QIcon::fromTheme( "log-halt", QIcon(":/images/log_halt.png" ));
     QAction *logAct = new QAction( logIcon, tr( "&Log Halt" ), this );
@@ -808,7 +808,7 @@ void MainWindow::createActions()
     logAct->setCheckable(true);
     logAct->setStatusTip( tr( "Log Halt" ));
     helpMenu->addAction( logAct );
-    helpToolBar->addAction( logAct );
+//    helpToolBar->addAction( logAct );
 
     QIcon infoIcon = QIcon::fromTheme( "content", QIcon(":/images/info.png"));
     QAction *contentAct = new QAction( infoIcon, tr( "Content" ), this );
