@@ -13,12 +13,24 @@ static const QString kRFC = "RFC";
 static const QString kASN1 = "ASN1";
 static const QString kPKIX = "PKIX";
 
+QString kRFCHost = "https://www.rfc-editor.org/rfc/inline-errata";
+QString kPKIXHost = "https://www.rfc-editor.org/rfc";
+
+static const QStringList kRFCList = { "RFC5280", "RFC4210", "RFC4211", "RFC2560", "RFC3161", "RFC8894" };
+static const QStringList kPKIXList = { "PKCS#1:RFC8017", "PKCS#3:RFC2631", "PKCS#5:RFC2898", "PKCS#7:RFC5652",
+                                      "PKCS#8:RFC5208", "PKCS#10:RFC2986", "PKCS#12:RFC7292" };
+
 ContentMain::ContentMain(QWidget *parent) :
     QMainWindow(parent)
 {
     setupUi(this);
 
     connect( mMenuTree, SIGNAL(clicked(QModelIndex)), this, SLOT(clickMenu()));
+
+    QFile qss(":/treewidget.qss");
+    qss.open( QFile::ReadOnly );
+    mMenuTree->setStyleSheet( qss.readAll() );
+    qss.close();
 
     createActions();
     createStatusBar();
@@ -34,6 +46,8 @@ ContentMain::ContentMain(QWidget *parent) :
 #endif
 
     resize(minimumSizeHint().width(), minimumSizeHint().height());
+
+
 }
 
 ContentMain::~ContentMain()
@@ -101,19 +115,30 @@ void ContentMain::createDockWindows()
         dir.mkdir( strPKIXPath );
 
     makePKIXMenu( itemPKIX );
+
+    mMenuTree->expandAll();
 }
 
 void ContentMain::makeASNMenu( QTreeWidgetItem* parent )
 {
     QStringList sASN1List = { "Implicit", "Explicit" };
+    QString strPath = QString( "%1/%2" ).arg( kDoc ).arg( kASN1 );
 
-    for( int i = 0; i < sASN1List.size(); i++ )
+    QDir dir( strPath );
+    for( const QFileInfo &file : dir.entryInfoList(QDir::Files))
     {
-        QString strASN1 = sASN1List.at(i);
+        if( file.isFile() == false )
+            continue;
+
+        if( file.completeSuffix().toLower() != "asn1" )
+            continue;
+
         QTreeWidgetItem *item = new QTreeWidgetItem;
+        QString strBase = file.baseName();
+        QString strASN1 = file.fileName();
         QString strData = QString( "%1/%2" ).arg( kASN1 ).arg( strASN1 );
 
-        item->setText( 0, strASN1 );
+        item->setText( 0, strBase );
         item->setData( 0, Qt::UserRole, strData );
         parent->addChild( item );
     }
@@ -121,11 +146,9 @@ void ContentMain::makeASNMenu( QTreeWidgetItem* parent )
 
 void ContentMain::makeRFCMenu( QTreeWidgetItem* parent )
 {
-    QStringList sRFCList = { "RFC5280", "RFC4210", "RFC4211", "RFC2560", "RFC3161", "RFC8894" };
-
-    for( int i = 0; i < sRFCList.size(); i++ )
+    for( int i = 0; i < kRFCList.size(); i++ )
     {
-        QString strRFC = sRFCList.at(i);
+        QString strRFC = kRFCList.at(i);
         QTreeWidgetItem *item = new QTreeWidgetItem;
         QString strData = QString( "%1/%2" ).arg( kRFC ).arg( strRFC );
 
@@ -137,24 +160,30 @@ void ContentMain::makeRFCMenu( QTreeWidgetItem* parent )
 
 void ContentMain::makePKIXMenu( QTreeWidgetItem* parent )
 {
-    QStringList sPKIXList = { "PKCS#1", "PKCS#3", "PKCS#5", "PKCS#7", "PKCS#8", "PKCS#9", "PKCS#10", "PKCS#11", "PKCS#12" };
-    // PKCS#1 : RFC2437
+    //QStringList sPKIXList = { "PKCS#1", "PKCS#3", "PKCS#5", "PKCS#7", "PKCS#8", "PKCS#10", "PKCS#11", "PKCS#12" };
+    // PKCS#1 : RFC8017
     // PKCS#3 : RFC2631
     // PKCS#5 : RFC2898
-    // PKCS#7 : RFC2315
+    // PKCS#7 : RFC5652
     // PKCS#8 : RFC5208
     // PKCS#9 : RFC2985
     // PKCS#10 : RFC2986
     // PKCS#11
     // PKCS#12 : RFC7292
 
-    for( int i = 0; i < sPKIXList.size(); i++ )
+    for( int i = 0; i < kPKIXList.size(); i++ )
     {
-        QString strPKIX = sPKIXList.at(i);
+        QString strPKIX = kPKIXList.at(i);
+        QStringList nameRFC = strPKIX.split(":");
+
+        if( nameRFC.size() < 2 ) continue;
+
+        QString strName = nameRFC.at(0);
+
         QTreeWidgetItem *item = new QTreeWidgetItem;
         QString strData = QString( "%1/%2" ).arg( kPKIX ).arg( strPKIX );
 
-        item->setText( 0, strPKIX );
+        item->setText( 0, strName );
         item->setData( 0, Qt::UserRole, strData );
         parent->addChild( item );
     }
@@ -178,15 +207,27 @@ void ContentMain::clickMenu()
 
     QString strType = strList.at(0);
 
-    if( strType == kRFC )
+    if( strType == kRFC || strType == kPKIX )
     {
         int nStatus = 0;
         char *pBody = NULL;
         BIN binBody = {0,0};
-        QString strHost = "https://www.rfc-editor.org/rfc/inline-errata";
+        QString strURL;
+        QString strSavePath;
 
-        QString strURL = QString( "%1/%2.html").arg( strHost ).arg( strName ).toLower();
-        QString strSavePath = QString ( "%1/%2.html" ).arg( kDoc ).arg( strData );
+        if( strType == kRFC )
+        {
+            strURL = QString( "%1/%2.html").arg( kRFCHost ).arg( strName ).toLower();
+            strSavePath = QString ( "%1/%2.html" ).arg( kDoc ).arg( strData );
+        }
+        else
+        {
+            QStringList nameRFC = strData.split(":" );
+            if( nameRFC.size() < 2 ) return;
+
+            strURL = QString( "%1/%2.html" ).arg( kPKIXHost ).arg( nameRFC.at(1) ).toLower();
+            strSavePath = QString( "%1/%2/%3.html" ).arg( kDoc ).arg( kPKIX ).arg( nameRFC.at(1));
+        }
 
         QFileInfo fileInfo( strSavePath );
         if( fileInfo.exists() == true )
@@ -220,7 +261,7 @@ void ContentMain::clickMenu()
     }
     else
     {
-        QString strSavePath = QString ( "%1/%2.html" ).arg( kDoc ).arg( strData );
+        QString strSavePath = QString ( "%1/%2" ).arg( kDoc ).arg( strData );
         QFileInfo fileInfo( strSavePath );
 
         if( fileInfo.exists() == true )
