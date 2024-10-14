@@ -29,12 +29,16 @@ static const QString kRFC = "RFC";
 static const QString kASN1 = "ASN1";
 static const QString kPKIX = "PKIX";
 
-QString kRFCHost = "https://www.rfc-editor.org/rfc/inline-errata";
-QString kPKIXHost = "https://www.rfc-editor.org/rfc";
+static const QString kRFCHost = "https://www.rfc-editor.org/rfc/inline-errata";
+static const QString kPKIXHost = "https://www.rfc-editor.org/rfc";
 
 static const QStringList kRFCList = { "RFC5280", "RFC5480", "RFC4210", "RFC4211", "RFC2560", "RFC3161", "RFC8894" };
 static const QStringList kPKIXList = { "PKCS#1:RFC8017", "PKCS#3:RFC2631", "PKCS#5:RFC2898", "PKCS#7:RFC5652",
                                       "PKCS#8:RFC5208", "PKCS#10:RFC2986", "PKCS#12:RFC7292" };
+
+static const QString kASN1Desc = "Abstract Syntax Notation One";
+static const QString kRFCDesc = "Request for Comments";
+static const QString kPKIXDesc = "Public Key Infrastructure X.509";
 
 ContentMain::ContentMain(QWidget *parent) :
     QMainWindow(parent)
@@ -76,6 +80,17 @@ void ContentMain::initialize()
     mMenuDock->setWindowTitle( tr("Information Menu") );
     mMenuDock->layout()->setSpacing(0);
     mMenuDock->layout()->setMargin(0);
+
+    mContentBroswer->clear();
+
+    mContentBroswer->append( kASN1 );
+    mContentBroswer->append( QString( "%1\n").arg( kASN1Desc ));
+
+    mContentBroswer->append( kRFC );
+    mContentBroswer->append( QString( "%1\n" ).arg( kRFCDesc ));
+
+    mContentBroswer->append( kPKIX );
+    mContentBroswer->append( QString( "%1\n" ).arg( kPKIXDesc ));
 }
 
 void ContentMain::actSave()
