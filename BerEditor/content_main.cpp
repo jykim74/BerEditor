@@ -236,38 +236,47 @@ void ContentMain::createActions()
 
     const QIcon saveIcon = QIcon::fromTheme("document-save", QIcon(":/images/save.png"));
     actionSave->setIcon( saveIcon );
+    actionSave->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_1));
     fileToolBar->addAction( actionSave );
 
     const QIcon printIcon = QIcon::fromTheme("documet-print", QIcon(":/images/fileprint.png"));
     actionPrint->setIcon( printIcon );
+    actionPrint->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_2));
     fileToolBar->addAction( actionPrint );
 
     actionPrint_Preview->setIcon( printIcon );
+    actionPrint_Preview->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_3));
 
     QToolBar *editToolBar = addToolBar( tr( "Edit" ));
 
     const QIcon expandAllIcon = QIcon::fromTheme("expand-all", QIcon(":/images/expand_all.png"));
     actionExpand_All->setIcon( expandAllIcon );
+    actionExpand_All->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_4));
     editToolBar->addAction( actionExpand_All );
 
     const QIcon expandNodeIcon = QIcon::fromTheme("expand-node", QIcon(":/images/expand_node.png"));
     actionExpand_Node->setIcon( expandNodeIcon );
+    actionExpand_Node->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_5));
     editToolBar->addAction( actionExpand_Node );
 
     const QIcon collapseAllIcon = QIcon::fromTheme("collapse-all", QIcon(":/images/collapse_all.png"));
     actionCollapse_All->setIcon( collapseAllIcon );
+    actionCollapse_All->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_6));
     editToolBar->addAction( actionCollapse_All );
 
     const QIcon collapseNodeIcon = QIcon::fromTheme("collapse-node", QIcon(":/images/collapse_node.png"));
     actionCollapse_Node->setIcon( collapseNodeIcon );
+    actionCollapse_Node->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_7));
     editToolBar->addAction( actionCollapse_Node );
 
     const QIcon showMenuIcon = QIcon::fromTheme( "show-menu", QIcon(":/images/menu_show.png" ));
     actionShow_Menu->setIcon( showMenuIcon );
+    actionShow_Menu->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_8));
     editToolBar->addAction( actionShow_Menu );
 
     const QIcon hideMenuIcon = QIcon::fromTheme( "hide-menu", QIcon(":/images/menu_hide.png"));
     actionHide_Menu->setIcon( hideMenuIcon );
+    actionHide_Menu->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_9));
     editToolBar->addAction( actionHide_Menu );
 }
 
