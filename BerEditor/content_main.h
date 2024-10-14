@@ -5,6 +5,7 @@
 #include <QTreeWidget>
 #include <QMenu>
 #include <QtHelp/QHelpEngine>
+#include <QPrinter>
 #include "ui_content_main.h"
 
 
@@ -22,6 +23,19 @@ public:
 
 private slots:
     void clickMenu();
+
+    void actSave();
+    void actPrint();
+    void actPrintPreview();
+    void actExpandAll();
+    void actExpandNode();
+    void actCollapseAll();
+    void actCollapseNode();
+    void actShowMenu();
+    void actHideMenu();
+    void actQuit();
+
+    void printPreview(QPrinter *printer);
 
 private:
     void createActions();

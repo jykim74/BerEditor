@@ -74,5 +74,7 @@
         <file>images/kms_encoder.png</file>
         <file>images/info.png</file>
         <file>treewidget.qss</file>
+        <file>images/menu_hide.png</file>
+        <file>images/menu_show.png</file>
     </qresource>
 </RCC>

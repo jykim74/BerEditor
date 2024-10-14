@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>780</width>
+    <width>817</width>
     <height>574</height>
    </rect>
   </property>
@@ -72,18 +72,44 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>780</width>
-     <height>24</height>
+     <width>817</width>
+     <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionSave"/>
+    <addaction name="actionPrint"/>
+    <addaction name="actionPrint_Preview"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionExpand_All"/>
+    <addaction name="actionExpand_Node"/>
+    <addaction name="actionCollapse_All"/>
+    <addaction name="actionCollapse_Node"/>
+    <addaction name="separator"/>
+    <addaction name="actionShow_Menu"/>
+    <addaction name="actionHide_Menu"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QDockWidget" name="mMenuDock">
    <property name="minimumSize">
     <size>
-     <width>160</width>
+     <width>200</width>
      <height>120</height>
     </size>
+   </property>
+   <property name="floating">
+    <bool>false</bool>
    </property>
    <property name="features">
     <set>QDockWidget::DockWidgetClosable|QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
@@ -105,6 +131,56 @@
     </layout>
    </widget>
   </widget>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionPrint">
+   <property name="text">
+    <string>Print</string>
+   </property>
+  </action>
+  <action name="actionPrint_Preview">
+   <property name="text">
+    <string>Print Preview</string>
+   </property>
+  </action>
+  <action name="actionExpand_All">
+   <property name="text">
+    <string>Expand All</string>
+   </property>
+  </action>
+  <action name="actionExpand_Node">
+   <property name="text">
+    <string>Expand Node</string>
+   </property>
+  </action>
+  <action name="actionCollapse_All">
+   <property name="text">
+    <string>Collapse All</string>
+   </property>
+  </action>
+  <action name="actionCollapse_Node">
+   <property name="text">
+    <string>Collapse Node</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </action>
+  <action name="actionShow_Menu">
+   <property name="text">
+    <string>Show Menu</string>
+   </property>
+  </action>
+  <action name="actionHide_Menu">
+   <property name="text">
+    <string>Hide Menu</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
