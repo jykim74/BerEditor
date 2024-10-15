@@ -315,6 +315,7 @@ void ContentMain::createDockWindows()
 
     QTreeWidgetItem *itemASN = new QTreeWidgetItem;
     itemASN->setText( 0, kASN1 );
+    itemASN->setData( 0, Qt::UserRole, kASN1 );
     rootItem->addChild( itemASN );
 
     QString strASNPath = QString( "%1/%2" ).arg( kDoc ).arg( kASN1 );
@@ -326,6 +327,7 @@ void ContentMain::createDockWindows()
 
     QTreeWidgetItem *itemRFC = new QTreeWidgetItem;
     itemRFC->setText( 0, kRFC );
+    itemRFC->setData( 0, Qt::UserRole, kRFC );
     rootItem->addChild( itemRFC );
 
     QString strRFCPath = QString( "%1/%2" ).arg( kDoc ).arg( kRFC );
@@ -336,6 +338,7 @@ void ContentMain::createDockWindows()
 
     QTreeWidgetItem *itemPKIX = new QTreeWidgetItem;
     itemPKIX->setText( 0, kPKIX );
+    itemPKIX->setData( 0, Qt::UserRole, kPKIX );
     rootItem->addChild( itemPKIX );
 
     QString strPKIXPath = QString( "%1/%2" ).arg( kDoc ).arg( kPKIX );
@@ -432,7 +435,28 @@ void ContentMain::clickMenu()
     QStringList strList;
 
     strList = strData.split( "/" );
-    if( strList.size() < 2 ) return;
+    if( strList.size() < 2 )
+    {
+        mContentBroswer->clear();
+
+        if( strData == kASN1 )
+        {
+            mContentBroswer->append( kASN1 );
+            mContentBroswer->append( QString( "%1\n").arg( kASN1Desc ));
+        }
+        else if( strData == kRFC )
+        {
+            mContentBroswer->append( kRFC );
+            mContentBroswer->append( QString( "%1\n" ).arg( kRFCDesc ));
+        }
+        else if( strData == kPKIX )
+        {
+            mContentBroswer->append( kPKIX );
+            mContentBroswer->append( QString( "%1\n" ).arg( kPKIXDesc ));
+        }
+
+        return;
+    }
 
     QString strType = strList.at(0);
 

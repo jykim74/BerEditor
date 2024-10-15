@@ -47,6 +47,8 @@ private:
     void makePKIXMenu( QTreeWidgetItem* parent );
 
     void initialize();
+
+
     QHelpEngine* help_;
 };
 
