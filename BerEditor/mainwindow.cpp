@@ -213,29 +213,29 @@ void MainWindow::initialize()
 
         text_tab_->setTabEnabled( 1, false );
     }
-/*
-    QList <int> vsizes;
-    vsizes << 1200 << 500;
-    vsplitter_->setSizes(vsizes);
 
-    QList<int> sizes;
-    sizes << 400 << 1200;
-    hsplitter_->setSizes(sizes);
-*/
     createTableMenu();
+
+
     vsplitter_->setStretchFactor(0,2);
     vsplitter_->setStretchFactor(1,1);
 
     hsplitter_->setStretchFactor(1,3);
 
     setCentralWidget(hsplitter_);
-
     setTitle( "" );
 
+#if 1
 #ifdef Q_OS_LINUX
     resize( 1020, 760 );
 #else
     resize( 970, 760 );
+#endif
+#else
+    table_tab_->setMinimumWidth( 700 );
+    left_tree_->setMinimumWidth( 270 );
+    left_tree_->setMinimumHeight( 600 );
+    resize( minimumSizeHint().width(), minimumSizeHint().height() );
 #endif
 }
 
@@ -300,83 +300,83 @@ void MainWindow::createActions()
     int nSpacing = 0;
 
     QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
-    QToolBar *fileToolBar = addToolBar(tr("File"));
+    file_tool_ = addToolBar(tr("File"));
 
-    fileToolBar->setIconSize( QSize(nWidth,nHeight) );
-    fileToolBar->layout()->setSpacing(nSpacing);
+    file_tool_->setIconSize( QSize(nWidth,nHeight) );
+    file_tool_->layout()->setSpacing(nSpacing);
 
     const QIcon newIcon = QIcon::fromTheme("document-new", QIcon(":/images/new.png"));
-    QAction *newAct = new QAction( newIcon, tr("&New"), this );
-    newAct->setShortcut(QKeySequence::New);
-    newAct->setStatusTip(tr("Create a new file"));
-    connect( newAct, &QAction::triggered, this, &MainWindow::newFile);
-    fileMenu->addAction(newAct);
-    fileToolBar->addAction(newAct);
+    new_act_ = new QAction( newIcon, tr("&New"), this );
+    new_act_->setShortcut(QKeySequence::New);
+    new_act_->setStatusTip(tr("Create a new file"));
+    connect( new_act_, &QAction::triggered, this, &MainWindow::newFile);
+    fileMenu->addAction(new_act_);
+    file_tool_->addAction(new_act_);
 
     const QIcon openIcon = QIcon::fromTheme("document-open", QIcon(":/images/open.png"));
-    QAction *openAct = new QAction( openIcon, tr("&Open..."), this );
-    openAct->setShortcut(QKeySequence::Open);
-    openAct->setStatusTip(tr("Open an existing file"));
-    connect( openAct, &QAction::triggered, this, &MainWindow::open);
-    fileMenu->addAction(openAct);
-    fileToolBar->addAction(openAct);
+    open_act_ = new QAction( openIcon, tr("&Open..."), this );
+    open_act_->setShortcut(QKeySequence::Open);
+    open_act_->setStatusTip(tr("Open an existing file"));
+    connect( open_act_, &QAction::triggered, this, &MainWindow::open);
+    fileMenu->addAction(open_act_);
+    file_tool_->addAction(open_act_);
 
     const QIcon openCertIcon = QIcon::fromTheme("document-cert", QIcon(":/images/cert.png"));
-    QAction *openCertAct = new QAction( openCertIcon, tr("&Open Certificate"), this );
-    openCertAct->setShortcut(QKeySequence(Qt::Key_F2));
-    openCertAct->setStatusTip(tr("Open a certificate"));
-    connect( openCertAct, &QAction::triggered, this, &MainWindow::openCert);
-    fileMenu->addAction(openCertAct);
+    open_cert_act_ = new QAction( openCertIcon, tr("&Open Certificate"), this );
+    open_cert_act_->setShortcut(QKeySequence(Qt::Key_F2));
+    open_cert_act_->setStatusTip(tr("Open a certificate"));
+    connect( open_cert_act_, &QAction::triggered, this, &MainWindow::openCert);
+    fileMenu->addAction(open_cert_act_);
 
     const QIcon openCRLIcon = QIcon::fromTheme("document-crl", QIcon(":/images/crl.png"));
-    QAction *openCRLAct = new QAction( openCRLIcon, tr("&Open CRL"), this );
-    openCRLAct->setShortcut(QKeySequence(Qt::Key_F3));
-    openCRLAct->setStatusTip(tr("Open a CRL"));
-    connect( openCRLAct, &QAction::triggered, this, &MainWindow::openCRL);
-    fileMenu->addAction(openCRLAct);
+    open_crl_act_ = new QAction( openCRLIcon, tr("&Open CRL"), this );
+    open_crl_act_->setShortcut(QKeySequence(Qt::Key_F3));
+    open_crl_act_->setStatusTip(tr("Open a CRL"));
+    connect( open_crl_act_, &QAction::triggered, this, &MainWindow::openCRL);
+    fileMenu->addAction(open_crl_act_);
 
     const QIcon openCSRIcon = QIcon::fromTheme("document-csr", QIcon(":/images/csr.png"));
-    QAction *openCSRAct = new QAction( openCSRIcon, tr("&Open CSR"), this );
-    openCSRAct->setShortcut(QKeySequence(Qt::Key_F4));
-    openCSRAct->setStatusTip(tr("Open a CSR"));
-    connect( openCSRAct, &QAction::triggered, this, &MainWindow::openCSR);
-    fileMenu->addAction(openCSRAct);
+    open_csr_act_ = new QAction( openCSRIcon, tr("&Open CSR"), this );
+    open_csr_act_->setShortcut(QKeySequence(Qt::Key_F4));
+    open_csr_act_->setStatusTip(tr("Open a CSR"));
+    connect( open_csr_act_, &QAction::triggered, this, &MainWindow::openCSR);
+    fileMenu->addAction(open_csr_act_);
 
     const QIcon openKeyPairIcon = QIcon::fromTheme("document-csr", QIcon(":/images/keypair.png"));
 
-    QAction *openPriKeyAct = new QAction( openKeyPairIcon, tr("&Open PrivateKey"), this );
-    openPriKeyAct->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_R));
-    openPriKeyAct->setStatusTip(tr("Open PrivateKey"));
-    connect( openPriKeyAct, &QAction::triggered, this, &MainWindow::openPriKey);
-    fileMenu->addAction(openPriKeyAct);
+    open_pri_key_act_ = new QAction( openKeyPairIcon, tr("&Open PrivateKey"), this );
+    open_pri_key_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_R));
+    open_pri_key_act_->setStatusTip(tr("Open PrivateKey"));
+    connect( open_pri_key_act_, &QAction::triggered, this, &MainWindow::openPriKey);
+    fileMenu->addAction(open_pri_key_act_);
 
-    QAction *openPubKeyAct = new QAction( openKeyPairIcon, tr("&Open PublicKey"), this );
-    openPubKeyAct->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_U));
-    openPubKeyAct->setStatusTip(tr("Open PublicKey"));
-    connect( openPubKeyAct, &QAction::triggered, this, &MainWindow::openPubKey);
-    fileMenu->addAction(openPubKeyAct);
+    open_pub_key_act_ = new QAction( openKeyPairIcon, tr("&Open PublicKey"), this );
+    open_pub_key_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_U));
+    open_pub_key_act_->setStatusTip(tr("Open PublicKey"));
+    connect( open_pub_key_act_, &QAction::triggered, this, &MainWindow::openPubKey);
+    fileMenu->addAction(open_pub_key_act_);
 
 
     const QIcon openCMSIcon = QIcon::fromTheme("CMS", QIcon(":/images/cms.png"));
 
-    QAction *openCMSAct = new QAction( openCMSIcon, tr("&Open CMS"), this );
-    openCMSAct->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_M));
-    openCMSAct->setStatusTip(tr("Open CMS"));
-    connect( openCMSAct, &QAction::triggered, this, &MainWindow::openCMS);
-    fileMenu->addAction(openCMSAct);
+    open_cms_act_ = new QAction( openCMSIcon, tr("&Open CMS"), this );
+    open_cms_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_M));
+    open_cms_act_->setStatusTip(tr("Open CMS"));
+    connect( open_cms_act_, &QAction::triggered, this, &MainWindow::openCMS);
+    fileMenu->addAction(open_cms_act_);
 
     const QIcon saveIcon = QIcon::fromTheme("document-save", QIcon(":/images/save.png"));
-    QAction *saveAct = new QAction(saveIcon, tr("&Save"), this);
-    saveAct->setShortcuts(QKeySequence::Save);
-    saveAct->setStatusTip(tr("Save the document to disk"));
-    connect(saveAct, &QAction::triggered, this, &MainWindow::save);
-    fileMenu->addAction(saveAct);
-    fileToolBar->addAction(saveAct);
+    save_act_ = new QAction(saveIcon, tr("&Save"), this);
+    save_act_->setShortcuts(QKeySequence::Save);
+    save_act_->setStatusTip(tr("Save the document to disk"));
+    connect(save_act_, &QAction::triggered, this, &MainWindow::save);
+    fileMenu->addAction(save_act_);
+    file_tool_->addAction(save_act_);
 
     const QIcon saveAsIcon = QIcon::fromTheme("document-save-as");
-    QAction *saveAsAct = fileMenu->addAction(saveAsIcon, tr("Save &As..."), this, &MainWindow::saveAs);
-    saveAsAct->setShortcuts(QKeySequence::SaveAs);
-    saveAsAct->setStatusTip(tr("Save the document under a new name"));
+    save_as_act_ = fileMenu->addAction(saveAsIcon, tr("Save &As..."), this, &MainWindow::saveAs);
+    save_as_act_->setShortcuts(QKeySequence::SaveAs);
+    save_as_act_->setStatusTip(tr("Save the document under a new name"));
 
     QAction* recentFileAct = NULL;
     for( auto i = 0; i < kMaxRecentFiles; ++i )
@@ -399,83 +399,91 @@ void MainWindow::createActions()
     fileMenu->addSeparator();
 
     const QIcon printIcon = QIcon::fromTheme("documet-print", QIcon(":/images/fileprint.png"));
-    QAction *printAct = new QAction(printIcon, tr("&Print"), this);
-    printAct->setShortcut(QKeySequence::Print);
-    connect( printAct, &QAction::triggered, this, &MainWindow::print);
-    fileMenu->addAction(printAct);
-//    fileToolBar->addAction(printAct);
+    print_act_ = new QAction(printIcon, tr("&Print"), this);
+    print_act_->setShortcut(QKeySequence::Print);
+    connect( print_act_, &QAction::triggered, this, &MainWindow::print);
+    fileMenu->addAction(print_act_);
+//    file_tool_->addAction(printAct);
 
-    QAction *printPreAct = new QAction(printIcon, tr("&Print Preview"), this);
-    printPreAct->setStatusTip(tr( "Print preview"));
-    connect( printPreAct, &QAction::triggered, this, &MainWindow::filePrintPreview);
-    fileMenu->addAction(printPreAct);
+    print_pre_act_ = new QAction(printIcon, tr("&Print Preview"), this);
+    print_pre_act_->setStatusTip(tr( "Print preview"));
+    connect( print_pre_act_, &QAction::triggered, this, &MainWindow::filePrintPreview);
+    fileMenu->addAction(print_pre_act_);
 
 
     fileMenu->addSeparator();
 
-    QAction *quitAct = new QAction( tr("&Quit"), this );
-    quitAct->setStatusTip( tr( "Quit BerEditor" ));
-    quitAct->setShortcut(QKeySequence::Quit);
-    connect( quitAct, &QAction::triggered, this, &MainWindow::quit);
-    fileMenu->addAction(quitAct);
+    quit_act_ = new QAction( tr("&Quit"), this );
+    quit_act_->setStatusTip( tr( "Quit BerEditor" ));
+    quit_act_->setShortcut(QKeySequence::Quit);
+    connect( quit_act_, &QAction::triggered, this, &MainWindow::quit);
+    fileMenu->addAction(quit_act_);
 
     QMenu *editMenu = menuBar()->addMenu(tr("&Edit"));
-    QToolBar *editToolBar = addToolBar(tr("Edit"));
+    edit_tool_ = addToolBar(tr("Edit"));
 
-    editToolBar->setIconSize( QSize(nWidth,nHeight));
-    editToolBar->layout()->setSpacing(nSpacing);
+    edit_tool_->setIconSize( QSize(nWidth,nHeight));
+    edit_tool_->layout()->setSpacing(nSpacing);
 
     const QIcon copyIcon = QIcon::fromTheme("edit-copy", QIcon(":/images/copy.png"));
-    QAction *copyAct = new QAction(copyIcon, tr("&Copy Information"), this);
-    copyAct->setShortcuts(QKeySequence::Copy);
-    copyAct->setStatusTip(tr("Copy the current selection's contents to the clipboard"));
-    connect( copyAct, &QAction::triggered, this, &MainWindow::copy );
-    editMenu->addAction(copyAct);
-//    editToolBar->addAction(copyAct);
+    copy_act_ = new QAction(copyIcon, tr("&Copy Information"), this);
+    copy_act_->setShortcuts(QKeySequence::Copy);
+    copy_act_->setStatusTip(tr("Copy the current selection's contents to the clipboard"));
+    connect( copy_act_, &QAction::triggered, this, &MainWindow::copy );
+    editMenu->addAction(copy_act_);
+//    edit_tool_->addAction(copyAct);
 
-    QAction *copyAsHexAct = new QAction(copyIcon, tr("Copy As &Hex"), this);
-    copyAsHexAct->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_X));
-    copyAsHexAct->setStatusTip(tr("Copy ber data as hex"));
-    connect( copyAsHexAct, &QAction::triggered, this, &MainWindow::copyAsHex );
-    editMenu->addAction( copyAsHexAct );
+    copy_as_hex_act_ = new QAction(copyIcon, tr("Copy As &Hex"), this);
+    copy_as_hex_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_X));
+    copy_as_hex_act_->setStatusTip(tr("Copy ber data as hex"));
+    connect( copy_as_hex_act_, &QAction::triggered, this, &MainWindow::copyAsHex );
+    editMenu->addAction( copy_as_hex_act_ );
 
-    QAction *copyAsBase64Act = new QAction(copyIcon, tr("Copy As &Base64"), this);
-    copyAsBase64Act->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_B));
-    copyAsBase64Act->setStatusTip(tr("Copy ber data as base64"));
-    connect( copyAsBase64Act, &QAction::triggered, this, &MainWindow::copyAsBase64 );
-    editMenu->addAction( copyAsBase64Act );
+    copy_as_base64_act_ = new QAction(copyIcon, tr("Copy As &Base64"), this);
+    copy_as_base64_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_B));
+    copy_as_base64_act_->setStatusTip(tr("Copy ber data as base64"));
+    connect( copy_as_base64_act_, &QAction::triggered, this, &MainWindow::copyAsBase64 );
+    editMenu->addAction( copy_as_base64_act_ );
 
     const QIcon expandAllIcon = QIcon::fromTheme("expand-all", QIcon(":/images/expand_all.png"));
-    QAction *expandAllAct = new QAction(expandAllIcon, tr("&Expand All"), this );
-    expandAllAct->setShortcut( QKeySequence(Qt::Key_F5) );
-    expandAllAct->setStatusTip(tr("Show all nodes"));
-    connect( expandAllAct, &QAction::triggered, this, &MainWindow::treeExpandAll );
-    editMenu->addAction(expandAllAct);
-    editToolBar->addAction(expandAllAct);
+    expand_all_act_ = new QAction(expandAllIcon, tr("&Expand All"), this );
+    expand_all_act_->setShortcut( QKeySequence(Qt::Key_F5) );
+    expand_all_act_->setStatusTip(tr("Show all nodes"));
+    connect( expand_all_act_, &QAction::triggered, this, &MainWindow::treeExpandAll );
+    editMenu->addAction(expand_all_act_);
+    edit_tool_->addAction(expand_all_act_);
 
     const QIcon expandNodeIcon = QIcon::fromTheme("expand-node", QIcon(":/images/expand_node.png"));
-    QAction *expandNodeAct = new QAction(expandNodeIcon, tr("&Expand Node"), this );
-    expandNodeAct->setStatusTip(tr("Show node"));
-    expandNodeAct->setShortcut( QKeySequence(Qt::Key_F6));
-    connect( expandNodeAct, &QAction::triggered, this, &MainWindow::treeExpandNode );
-    editMenu->addAction(expandNodeAct);
-    editToolBar->addAction(expandNodeAct);
+    expand_node_act_ = new QAction(expandNodeIcon, tr("&Expand Node"), this );
+    expand_node_act_->setStatusTip(tr("Show node"));
+    expand_node_act_->setShortcut( QKeySequence(Qt::Key_F6));
+    connect( expand_node_act_, &QAction::triggered, this, &MainWindow::treeExpandNode );
+    editMenu->addAction(expand_node_act_);
+    edit_tool_->addAction(expand_node_act_);
 
     const QIcon collapseAllIcon = QIcon::fromTheme("collapse-all", QIcon(":/images/collapse_all.png"));
-    QAction *collapseAllAct = new QAction(collapseAllIcon, tr("&Collapse All"), this );
-    collapseAllAct->setStatusTip(tr("Collapse all nodes"));
-    collapseAllAct->setShortcut( QKeySequence(Qt::Key_F7));
-    connect( collapseAllAct, &QAction::triggered, this, &MainWindow::treeCollapseAll );
-    editMenu->addAction(collapseAllAct);
-    editToolBar->addAction(collapseAllAct);
+    collapse_all_act_ = new QAction(collapseAllIcon, tr("&Collapse All"), this );
+    collapse_all_act_->setStatusTip(tr("Collapse all nodes"));
+    collapse_all_act_->setShortcut( QKeySequence(Qt::Key_F7));
+    connect( collapse_all_act_, &QAction::triggered, this, &MainWindow::treeCollapseAll );
+    editMenu->addAction(collapse_all_act_);
+    edit_tool_->addAction(collapse_all_act_);
 
     const QIcon collapseNodeIcon = QIcon::fromTheme("collapse-node", QIcon(":/images/collapse_node.png"));
-    QAction *collapseNodeAct = new QAction(collapseNodeIcon, tr("&Collapse Node"), this );
-    collapseNodeAct->setStatusTip(tr("Show node"));
-    collapseNodeAct->setShortcut( QKeySequence(Qt::Key_F8));
-    connect( collapseNodeAct, &QAction::triggered, this, &MainWindow::treeCollapseNode );
-    editMenu->addAction(collapseNodeAct);
-    editToolBar->addAction(collapseNodeAct);
+    collapse_node_act_ = new QAction(collapseNodeIcon, tr("&Collapse Node"), this );
+    collapse_node_act_->setStatusTip(tr("Show node"));
+    collapse_node_act_->setShortcut( QKeySequence(Qt::Key_F8));
+    connect( collapse_node_act_, &QAction::triggered, this, &MainWindow::treeCollapseNode );
+    editMenu->addAction(collapse_node_act_);
+    edit_tool_->addAction(collapse_node_act_);
+
+    QMenu *viewMenu = menuBar()->addMenu( tr("&View" ));
+
+    QAction *viewAct = new QAction( tr( "ViewFile"), this );
+    connect( viewAct, &QAction::triggered, this, &MainWindow::viewToolBar );
+    viewMenu->addAction( viewAct );
+    viewAct->setCheckable(true );
+    viewAct->setChecked(true);
 
     QMenu *toolMenu = menuBar()->addMenu(tr("&Tool"));
     QToolBar *toolToolBar = addToolBar(tr("Tool"));
@@ -682,9 +690,9 @@ void MainWindow::createActions()
 
     if( berApplet->isLicense() == false )
     {
-        openPriKeyAct->setEnabled(false);
-        openPubKeyAct->setEnabled(false);
-        openCMSAct->setEnabled( false );
+        open_pri_key_act_->setEnabled(false);
+        open_pub_key_act_->setEnabled(false);
+        open_cms_act_->setEnabled( false );
         keyManAct->setEnabled( false );
         hashAct->setEnabled( false );
         macAct->setEnabled( false );
@@ -1985,6 +1993,14 @@ void MainWindow::runPubEncDec( bool bEnc, bool bEncPri, const QString strPriPath
     pub_enc_dec_dlg_->show();
     pub_enc_dec_dlg_->raise();
     pub_enc_dec_dlg_->activateWindow();
+}
+
+void MainWindow::viewToolBar()
+{
+    if( file_tool_->isHidden() )
+        file_tool_->show();
+    else
+        file_tool_->hide();
 }
 
 void MainWindow::save()

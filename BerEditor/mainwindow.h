@@ -97,6 +97,8 @@ public:
     void runSignVerify( bool bSign, bool bEncPri, const QString strPriPath, const QString strCertPath );
     void runPubEncDec( bool bEnc, bool bEncPri, const QString strPriPath, const QString strCertPath );
 
+    void viewToolBar();
+
 private slots:
     void changeTableTab();
 
@@ -237,6 +239,30 @@ private:
     TTLVEncoderDlg  *ttlv_encoder_dlg_;
     TTLVClientDlg   *ttlv_client_dlg_;
     ContentMain     *content_;
+
+    QToolBar* file_tool_;
+    QAction* new_act_;
+    QAction* open_act_;
+    QAction* open_cert_act_;
+    QAction* open_crl_act_;
+    QAction* open_csr_act_;
+    QAction* open_pri_key_act_;
+    QAction* open_pub_key_act_;
+    QAction* open_cms_act_;
+    QAction* save_act_;
+    QAction* save_as_act_;
+    QAction* print_act_;
+    QAction* print_pre_act_;
+    QAction* quit_act_;
+
+    QToolBar* edit_tool_;
+    QAction* copy_act_;
+    QAction* copy_as_hex_act_;
+    QAction* copy_as_base64_act_;
+    QAction* expand_all_act_;
+    QAction* expand_node_act_;
+    QAction* collapse_all_act_;
+    QAction* collapse_node_act_;
 
     bool log_halt_;
 };
