@@ -293,6 +293,63 @@ void MainWindow::loadFile(const QString &filename)
     JS_BIN_reset( &binData );
 }
 
+void MainWindow::createViewActions()
+{
+    QMenu *viewMenu = menuBar()->addMenu( tr("&View" ));
+
+    QMenu *subMenu = viewMenu->addMenu( "File" );
+
+    QAction *viewAct = new QAction( tr( "View File"), this );
+    connect( viewAct, &QAction::triggered, this, &MainWindow::viewFileBar );
+    viewAct->setCheckable(true );
+    viewAct->setChecked(true);
+    subMenu->addAction( viewAct );
+
+    QAction *fileNewAct = new QAction( tr( "View New"), this );
+    fileNewAct->setCheckable(true);
+    fileNewAct->setChecked( true );
+
+    connect( fileNewAct, &QAction::triggered, this, &MainWindow::viewFileNew );
+
+    subMenu->addAction( fileNewAct );
+
+    QAction *editAct = new QAction( tr( "View Edit"), this );
+    connect( editAct, &QAction::triggered, this, &MainWindow::viewEditBar );
+    editAct->setCheckable(true);
+    editAct->setChecked(true);
+    viewMenu->addAction( editAct );
+
+    QAction *toolAct = new QAction( tr( "View Tool"), this );
+    connect( toolAct, &QAction::triggered, this, &MainWindow::viewToolBar );
+    toolAct->setCheckable(true);
+    toolAct->setChecked(true);
+    viewMenu->addAction( toolAct );
+
+    QAction *cryptAct = new QAction( tr( "View Crypt"), this );
+    connect( cryptAct, &QAction::triggered, this, &MainWindow::viewCryptBar );
+    cryptAct->setCheckable(true);
+    cryptAct->setChecked(true);
+    viewMenu->addAction( cryptAct );
+
+    QAction *protoAct = new QAction( tr( "View Protocol"), this );
+    connect( protoAct, &QAction::triggered, this, &MainWindow::viewProtoBar );
+    protoAct->setCheckable(true);
+    protoAct->setChecked(true);
+    viewMenu->addAction( protoAct );
+
+    QAction *kmipAct = new QAction( tr( "View KMIP"), this );
+    connect( kmipAct, &QAction::triggered, this, &MainWindow::viewKMIPBar );
+    kmipAct->setCheckable(true);
+    kmipAct->setChecked(true);
+    viewMenu->addAction( kmipAct );
+
+    QAction *helpAct = new QAction( tr( "View Help"), this );
+    connect( helpAct, &QAction::triggered, this, &MainWindow::viewHelpBar );
+    helpAct->setCheckable(true);
+    helpAct->setChecked(true);
+    viewMenu->addAction( helpAct );
+}
+
 void MainWindow::createActions()
 {
     int nWidth = 24;
@@ -477,13 +534,7 @@ void MainWindow::createActions()
     editMenu->addAction(collapse_node_act_);
     edit_tool_->addAction(collapse_node_act_);
 
-    QMenu *viewMenu = menuBar()->addMenu( tr("&View" ));
-
-    QAction *viewAct = new QAction( tr( "ViewFile"), this );
-    connect( viewAct, &QAction::triggered, this, &MainWindow::viewToolBar );
-    viewMenu->addAction( viewAct );
-    viewAct->setCheckable(true );
-    viewAct->setChecked(true);
+    createViewActions();
 
     QMenu *toolMenu = menuBar()->addMenu(tr("&Tool"));
     tool_tool_ = addToolBar(tr("Tool"));
@@ -1998,12 +2049,71 @@ void MainWindow::runPubEncDec( bool bEnc, bool bEncPri, const QString strPriPath
     pub_enc_dec_dlg_->activateWindow();
 }
 
-void MainWindow::viewToolBar()
+void MainWindow::viewFileBar()
 {
     if( file_tool_->isHidden() )
         file_tool_->show();
     else
         file_tool_->hide();
+}
+
+void MainWindow::viewEditBar()
+{
+    if( edit_tool_->isHidden() )
+        edit_tool_->show();
+    else
+        edit_tool_->hide();
+}
+
+void MainWindow::viewToolBar()
+{
+    if( tool_tool_->isHidden() )
+        tool_tool_->show();
+    else
+        tool_tool_->hide();
+}
+
+void MainWindow::viewCryptBar()
+{
+    if( crypt_tool_->isHidden() )
+        crypt_tool_->show();
+    else
+        crypt_tool_->hide();
+}
+
+void MainWindow::viewProtoBar()
+{
+    if( proto_tool_->isHidden() )
+        proto_tool_->show();
+    else
+        proto_tool_->hide();
+}
+
+void MainWindow::viewKMIPBar()
+{
+    if( kmip_tool_->isHidden() )
+        kmip_tool_->show();
+    else
+        kmip_tool_->hide();
+}
+
+void MainWindow::viewHelpBar()
+{
+    if( help_tool_->isHidden() )
+        help_tool_->show();
+    else
+        help_tool_->hide();
+}
+
+
+void MainWindow::viewFileNew( bool bChecked )
+{
+    berApplet->log( QString( "Checked: %1").arg( bChecked ));
+
+    if( bChecked == true )
+        file_tool_->addAction( new_act_ );
+    else
+        file_tool_->removeAction( new_act_ );
 }
 
 void MainWindow::save()

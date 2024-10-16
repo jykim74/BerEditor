@@ -97,7 +97,15 @@ public:
     void runSignVerify( bool bSign, bool bEncPri, const QString strPriPath, const QString strCertPath );
     void runPubEncDec( bool bEnc, bool bEncPri, const QString strPriPath, const QString strCertPath );
 
+    void viewFileBar();
+    void viewEditBar();
     void viewToolBar();
+    void viewCryptBar();
+    void viewProtoBar();
+    void viewKMIPBar();
+    void viewHelpBar();
+
+    void viewFileNew( bool bChecked );
 
 private slots:
     void changeTableTab();
@@ -182,6 +190,7 @@ private slots:
 
 private:
     void createActions();
+    void createViewActions();
     void createStatusBar();
     void createCryptoDlg();
 
