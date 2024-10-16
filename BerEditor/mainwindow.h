@@ -264,6 +264,55 @@ private:
     QAction* collapse_all_act_;
     QAction* collapse_node_act_;
 
+    QToolBar* tool_tool_;
+    QAction* data_encode_act_;
+    QAction* num_trans_act_;
+    QAction* oid_act_;
+    QAction* make_ber_act_;
+    QAction* decode_data_act_;
+    QAction* get_uri_act_;
+
+    QToolBar* crypt_tool_;
+    QAction* key_man_act_;
+    QAction* hash_act_;
+    QAction* mac_act_;
+    QAction* enc_dec_act_;
+    QAction* sign_verify_act_;
+    QAction* pub_enc_dec_act_;
+    QAction* key_agree_act_;
+    QAction* cms_act_;
+    QAction* sss_act_;
+    QAction* cert_pvd_act_;
+    QAction* gen_otp_act_;
+    QAction* vid_act_;
+    QAction* calc_act_;
+    QAction* key_pair_man_act_;
+    QAction* cert_man_act_;
+    QAction* cavp_act_;
+    QAction* ssl_act_;
+
+    QToolBar* proto_tool_;
+    QAction* ocsp_act_;
+    QAction* tsp_act_;
+    QAction* cmp_act_;
+    QAction* scep_act_;
+
+    QToolBar* kmip_tool_;
+    QAction* ttlv_decode_act_;
+    QAction* ttlv_make_act_;
+    QAction* ttlv_encode_act_;
+    QAction* ttlv_client_act_;
+
+    QToolBar* help_tool_;
+    QAction* setting_act_;
+    QAction* clear_act_;
+    QAction* log_act_;
+    QAction* content_act_;
+    QAction* lcn_act_;
+    QAction* bug_issue_act_;
+    QAction* qna_act_;
+    QAction* about_act_;
+
     bool log_halt_;
 };
 

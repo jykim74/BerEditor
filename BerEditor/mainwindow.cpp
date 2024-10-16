@@ -486,376 +486,379 @@ void MainWindow::createActions()
     viewAct->setChecked(true);
 
     QMenu *toolMenu = menuBar()->addMenu(tr("&Tool"));
-    QToolBar *toolToolBar = addToolBar(tr("Tool"));
+    tool_tool_ = addToolBar(tr("Tool"));
 
 
-    toolToolBar->setIconSize( QSize(nWidth,nHeight));
-    toolToolBar->layout()->setSpacing(nSpacing);
+    tool_tool_->setIconSize( QSize(nWidth,nHeight));
+    tool_tool_->layout()->setSpacing(nSpacing);
 
 
     const QIcon dataTransIcon = QIcon::fromTheme("data-trans", QIcon(":/images/data_trans.png"));
-    QAction *dataEncodeAct = new QAction( dataTransIcon, tr("Data&Encoder"), this );
-    dataEncodeAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_E));
-    connect( dataEncodeAct, &QAction::triggered, this, &MainWindow::dataEncoder );
-    dataEncodeAct->setStatusTip(tr("This is tool for encoding data" ));
-    toolMenu->addAction( dataEncodeAct );
-    toolToolBar->addAction( dataEncodeAct );
+    data_encode_act_ = new QAction( dataTransIcon, tr("Data&Encoder"), this );
+    data_encode_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_E));
+    connect( data_encode_act_, &QAction::triggered, this, &MainWindow::dataEncoder );
+    data_encode_act_->setStatusTip(tr("This is tool for encoding data" ));
+    toolMenu->addAction( data_encode_act_ );
+    tool_tool_->addAction( data_encode_act_ );
 
     const QIcon numTransIcon = QIcon::fromTheme("number-trans", QIcon(":/images/two.png"));
-    QAction *numTransAct = new QAction( numTransIcon, tr("&NumTrans"), this);
-    numTransAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_N));
-    connect( numTransAct, &QAction::triggered, this, &MainWindow::numTrans );
-    numTransAct->setStatusTip(tr("Number transmission" ));
-    toolMenu->addAction( numTransAct );
+    num_trans_act_ = new QAction( numTransIcon, tr("&NumTrans"), this);
+    num_trans_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_N));
+    connect( num_trans_act_, &QAction::triggered, this, &MainWindow::numTrans );
+    num_trans_act_->setStatusTip(tr("Number transmission" ));
+    toolMenu->addAction( num_trans_act_ );
 //    toolToolBar->addAction( numTransAct );
 
     const QIcon oidIcon = QIcon::fromTheme("tool-oid", QIcon(":/images/oid.png"));
-    QAction *oidAct = new QAction(oidIcon, tr("&OID Information"), this);
-    oidAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_I));
-    connect( oidAct, &QAction::triggered, this, &MainWindow::oidInfo );
-    oidAct->setStatusTip(tr("Show OID information"));
-    toolMenu->addAction( oidAct );
-    toolToolBar->addAction( oidAct );
+    oid_act_ = new QAction(oidIcon, tr("&OID Information"), this);
+    oid_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_I));
+    connect( oid_act_, &QAction::triggered, this, &MainWindow::oidInfo );
+    oid_act_->setStatusTip(tr("Show OID information"));
+    toolMenu->addAction( oid_act_ );
+    tool_tool_->addAction( oid_act_ );
 
     const QIcon berIcon = QIcon::fromTheme("ber-insert", QIcon(":/images/ber.png"));
-    QAction *makeBerAct = new QAction(berIcon, tr("Make &BER"), this);
-    makeBerAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_B));
-    connect( makeBerAct, &QAction::triggered, this, &MainWindow::runMakeBER );
-    makeBerAct->setStatusTip(tr("Make BER record"));
-    toolMenu->addAction( makeBerAct );
-    toolToolBar->addAction( makeBerAct );
+    make_ber_act_ = new QAction(berIcon, tr("Make &BER"), this);
+    make_ber_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_B));
+    connect( make_ber_act_, &QAction::triggered, this, &MainWindow::runMakeBER );
+    make_ber_act_->setStatusTip(tr("Make BER record"));
+    toolMenu->addAction( make_ber_act_ );
+    tool_tool_->addAction( make_ber_act_ );
 
     if( berApplet->isLicense() == false )
     {
-        makeBerAct->setEnabled( false );
+        make_ber_act_->setEnabled( false );
     }
 
     const QIcon decodeIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/decode.png"));
-    QAction *decodeDataAct = new QAction(decodeIcon, tr("&Decode Data"), this);
-    decodeDataAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_D));
-    connect( decodeDataAct, &QAction::triggered, this, &MainWindow::runDecodeData );
-    decodeDataAct->setStatusTip(tr("Decode BER data"));
-    toolMenu->addAction( decodeDataAct );
-    toolToolBar->addAction( decodeDataAct );
+    decode_data_act_ = new QAction(decodeIcon, tr("&Decode Data"), this);
+    decode_data_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_D));
+    connect( decode_data_act_, &QAction::triggered, this, &MainWindow::runDecodeData );
+    decode_data_act_->setStatusTip(tr("Decode BER data"));
+    toolMenu->addAction( decode_data_act_ );
+    tool_tool_->addAction( decode_data_act_ );
 
     const QIcon uriIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/uri.png"));
-    QAction *getURIAct = new QAction(uriIcon, tr("&Get URI data"), this);
-    getURIAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_U));
-    connect( getURIAct, &QAction::triggered, this, &MainWindow::getURI );
-    getURIAct->setStatusTip(tr("Get Ber data from URI"));
-    toolMenu->addAction( getURIAct );
-    toolToolBar->addAction( getURIAct );
+    get_uri_act_ = new QAction(uriIcon, tr("&Get URI data"), this);
+    get_uri_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_U));
+    connect( get_uri_act_, &QAction::triggered, this, &MainWindow::getURI );
+    get_uri_act_->setStatusTip(tr("Get Ber data from URI"));
+    toolMenu->addAction( get_uri_act_ );
+    tool_tool_->addAction( get_uri_act_ );
 
     menuBar()->addSeparator();
 
     QMenu *cryptMenu = menuBar()->addMenu(tr("&Cryptogram"));
-    QToolBar *cryptToolBar = addToolBar( "Cryptogram" );
+    crypt_tool_ = addToolBar( "Cryptogram" );
 
-    cryptToolBar->setIconSize( QSize(nWidth,nHeight));
-    cryptToolBar->layout()->setSpacing(nSpacing);
+    crypt_tool_->setIconSize( QSize(nWidth,nHeight));
+    crypt_tool_->layout()->setSpacing(nSpacing);
 
     const QIcon keyIcon = QIcon::fromTheme("key-man", QIcon(":/images/key.png"));
-    QAction *keyManAct = new QAction( keyIcon, tr("&KeyManage"), this );
-    keyManAct->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_K));
-    connect( keyManAct, &QAction::triggered, this, &MainWindow::keyManage );
-    keyManAct->setStatusTip(tr("Key Manage function" ));
-    cryptMenu->addAction( keyManAct );
+    key_man_act_ = new QAction( keyIcon, tr("&KeyManage"), this );
+    key_man_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_K));
+    connect( key_man_act_, &QAction::triggered, this, &MainWindow::keyManage );
+    key_man_act_->setStatusTip(tr("Key Manage function" ));
+    cryptMenu->addAction( key_man_act_ );
 //    cryptToolBar->addAction( keyManAct );
 
     const QIcon hashIcon = QIcon::fromTheme("Hash", QIcon(":/images/hash.png"));
-    QAction *hashAct = new QAction( hashIcon, tr("&Hash"), this );
-    hashAct->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_D));
-    connect( hashAct, &QAction::triggered, this, &MainWindow::hash );
-    hashAct->setStatusTip(tr("Generate hash value" ));
-    cryptMenu->addAction( hashAct );
-    cryptToolBar->addAction( hashAct );
+    hash_act_ = new QAction( hashIcon, tr("&Hash"), this );
+    hash_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_D));
+    connect( hash_act_, &QAction::triggered, this, &MainWindow::hash );
+    hash_act_->setStatusTip(tr("Generate hash value" ));
+    cryptMenu->addAction( hash_act_ );
+    crypt_tool_->addAction( hash_act_ );
 
     const QIcon macIcon = QIcon::fromTheme("MAC", QIcon(":/images/mac.png"));
-    QAction *macAct = new QAction( macIcon, tr("M&AC"), this );
-    macAct->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_M));
-    connect( macAct, &QAction::triggered, this, &MainWindow::mac );
-    macAct->setStatusTip(tr("Generate MAC value" ));
-    cryptMenu->addAction( macAct );
-    cryptToolBar->addAction( macAct );
+    mac_act_ = new QAction( macIcon, tr("M&AC"), this );
+    mac_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_M));
+    connect( mac_act_, &QAction::triggered, this, &MainWindow::mac );
+    mac_act_->setStatusTip(tr("Generate MAC value" ));
+    cryptMenu->addAction( mac_act_ );
+    crypt_tool_->addAction( mac_act_ );
 
     const QIcon encIcon = QIcon::fromTheme("Encrypt_Decrypt", QIcon(":/images/enc.png"));
-    QAction *encDecAct = new QAction( encIcon, tr("&Encrypt/Decrypt"), this );
-    encDecAct->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_E));
-    connect( encDecAct, &QAction::triggered, this, &MainWindow::encDec );
-    encDecAct->setStatusTip(tr("Data encrypt decrypt" ));
-    cryptMenu->addAction( encDecAct );
-    cryptToolBar->addAction( encDecAct );
+    enc_dec_act_ = new QAction( encIcon, tr("&Encrypt/Decrypt"), this );
+    enc_dec_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_E));
+    connect( enc_dec_act_, &QAction::triggered, this, &MainWindow::encDec );
+    enc_dec_act_->setStatusTip(tr("Data encrypt decrypt" ));
+    cryptMenu->addAction( enc_dec_act_ );
+    crypt_tool_->addAction( enc_dec_act_ );
 
     const QIcon signIcon = QIcon::fromTheme("Sign/Verify", QIcon(":/images/sign.png"));
-    QAction *signVerifyAct = new QAction( signIcon, tr("&Sign/Verify"), this );
-    signVerifyAct->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_S));
-    connect( signVerifyAct, &QAction::triggered, this, &MainWindow::signVerify );
-    signVerifyAct->setStatusTip(tr("Data signature and verify" ));
-    cryptMenu->addAction( signVerifyAct );
-    cryptToolBar->addAction( signVerifyAct );
+    sign_verify_act_ = new QAction( signIcon, tr("&Sign/Verify"), this );
+    sign_verify_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_S));
+    connect( sign_verify_act_, &QAction::triggered, this, &MainWindow::signVerify );
+    sign_verify_act_->setStatusTip(tr("Data signature and verify" ));
+    cryptMenu->addAction( sign_verify_act_ );
+    crypt_tool_->addAction( sign_verify_act_ );
 
     const QIcon pubEncIcon = QIcon::fromTheme("PubKey Encrypt/Decrypt", QIcon(":/images/pub_enc.png"));
-    QAction *pubEncDecAct = new QAction( pubEncIcon, tr("&PubKey Encrypt/Decrypt"), this );
-    pubEncDecAct->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_P));
-    connect( pubEncDecAct, &QAction::triggered, this, &MainWindow::pubEncDec );
-    pubEncDecAct->setStatusTip(tr("Data PubKey encrypt decrypt" ));
-    cryptMenu->addAction( pubEncDecAct );
-    cryptToolBar->addAction( pubEncDecAct );
+    pub_enc_dec_act_ = new QAction( pubEncIcon, tr("&PubKey Encrypt/Decrypt"), this );
+    pub_enc_dec_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_P));
+    connect( pub_enc_dec_act_, &QAction::triggered, this, &MainWindow::pubEncDec );
+    pub_enc_dec_act_->setStatusTip(tr("Data PubKey encrypt decrypt" ));
+    cryptMenu->addAction( pub_enc_dec_act_ );
+    crypt_tool_->addAction( pub_enc_dec_act_ );
 
     const QIcon agreeIcon = QIcon::fromTheme("Key Agreement", QIcon(":/images/agree.png"));
-    QAction *keyAgreeAct = new QAction( agreeIcon, tr("Key&Agreement"), this );
-    keyAgreeAct->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_A));
-    connect( keyAgreeAct, &QAction::triggered, this, &MainWindow::keyAgree );
-    keyAgreeAct->setStatusTip(tr("Key Agreement" ));
-    cryptMenu->addAction( keyAgreeAct );
-    cryptToolBar->addAction( keyAgreeAct );
+    key_agree_act_ = new QAction( agreeIcon, tr("Key&Agreement"), this );
+    key_agree_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_A));
+    connect( key_agree_act_, &QAction::triggered, this, &MainWindow::keyAgree );
+    key_agree_act_->setStatusTip(tr("Key Agreement" ));
+    cryptMenu->addAction( key_agree_act_ );
+    crypt_tool_->addAction( key_agree_act_ );
 
 
     const QIcon cmsIcon = QIcon::fromTheme("CMS", QIcon(":/images/cms.png"));
-    QAction *cmsAct = new QAction( cmsIcon, tr("&CMS"), this );
-    cmsAct->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_G));
-    connect( cmsAct, &QAction::triggered, this, &MainWindow::cms );
-    cmsAct->setStatusTip(tr("PKCS#7 Cryptographic Message Syntax" ));
-    cryptMenu->addAction( cmsAct );
+    cms_act_ = new QAction( cmsIcon, tr("&CMS"), this );
+    cms_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_G));
+    connect( cms_act_, &QAction::triggered, this, &MainWindow::cms );
+    cms_act_->setStatusTip(tr("PKCS#7 Cryptographic Message Syntax" ));
+    cryptMenu->addAction( cms_act_ );
 //    cryptToolBar->addAction( cmsAct );
 
     const QIcon sssIcon = QIcon::fromTheme("SSS", QIcon(":/images/sss.png"));
-    QAction *sssAct = new QAction( sssIcon, tr("&SSS"), this );
-    sssAct->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_R));
-    connect( sssAct, &QAction::triggered, this, &MainWindow::sss );
-    sssAct->setStatusTip(tr("Shamir Secret Sharing Scheme" ));
-    cryptMenu->addAction( sssAct );
+    sss_act_ = new QAction( sssIcon, tr("&SSS"), this );
+    sss_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_R));
+    connect( sss_act_, &QAction::triggered, this, &MainWindow::sss );
+    sss_act_->setStatusTip(tr("Shamir Secret Sharing Scheme" ));
+    cryptMenu->addAction( sss_act_ );
 //    cryptToolBar->addAction( sssAct );
 
     const QIcon certPVDIcon = QIcon::fromTheme("Cert PathValidation", QIcon(":/images/cert_pvd.png"));
-    QAction *certPVDAct = new QAction( certPVDIcon, tr( "Cert &PathValidation"), this );
-    certPVDAct->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_T));
-    connect( certPVDAct, &QAction::triggered, this, &MainWindow::certPVD );
-    certPVDAct->setStatusTip(tr("Certificate Path Validation"));
-    cryptMenu->addAction( certPVDAct );
-    cryptToolBar->addAction( certPVDAct );
+    cert_pvd_act_ = new QAction( certPVDIcon, tr( "Cert &PathValidation"), this );
+    cert_pvd_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_T));
+    connect( cert_pvd_act_, &QAction::triggered, this, &MainWindow::certPVD );
+    cert_pvd_act_->setStatusTip(tr("Certificate Path Validation"));
+    cryptMenu->addAction( cert_pvd_act_ );
+    crypt_tool_->addAction( cert_pvd_act_ );
 
     const QIcon otpIcon = QIcon::fromTheme("OTP", QIcon(":/images/otp.png"));
-    QAction *genOTPAct = new QAction( otpIcon, tr("&OTP generate"), this );
-    genOTPAct->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_O));
-    connect( genOTPAct, &QAction::triggered, this, &MainWindow::genOTP );
-    genOTPAct->setStatusTip(tr("Generate OTP value" ));
-    cryptMenu->addAction( genOTPAct );
+    gen_otp_act_ = new QAction( otpIcon, tr("&OTP generate"), this );
+    gen_otp_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_O));
+    connect( gen_otp_act_, &QAction::triggered, this, &MainWindow::genOTP );
+    gen_otp_act_->setStatusTip(tr("Generate OTP value" ));
+    cryptMenu->addAction( gen_otp_act_ );
 
     const QIcon vidIcon = QIcon::fromTheme("VID", QIcon(":/images/vid.png"));
-    QAction *vidAct = new QAction( vidIcon, tr("&VID"), this );
-    vidAct->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_I));
-    connect( vidAct, &QAction::triggered, this, &MainWindow::VID );
-    vidAct->setStatusTip(tr("Make and Verify VID" ));
-    cryptMenu->addAction( vidAct );
+    vid_act_ = new QAction( vidIcon, tr("&VID"), this );
+    vid_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_I));
+    connect( vid_act_, &QAction::triggered, this, &MainWindow::VID );
+    vid_act_->setStatusTip(tr("Make and Verify VID" ));
+    cryptMenu->addAction( vid_act_ );
 
     const QIcon calcIcon = QIcon::fromTheme("BN Calc", QIcon(":/images/bn_calc.png"));
-    QAction *calcAct = new QAction( calcIcon, tr("&BN Calculator"), this );
-    calcAct->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_B));
-    connect( calcAct, &QAction::triggered, this, &MainWindow::BNCalc );
-    calcAct->setStatusTip(tr("Big Num Calculator" ));
-    cryptMenu->addAction( calcAct );
-    cryptToolBar->addAction( calcAct );
+    calc_act_ = new QAction( calcIcon, tr("&BN Calculator"), this );
+    calc_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_B));
+    connect( calc_act_, &QAction::triggered, this, &MainWindow::BNCalc );
+    calc_act_->setStatusTip(tr("Big Num Calculator" ));
+    cryptMenu->addAction( calc_act_ );
+    crypt_tool_->addAction( calc_act_ );
 
     const QIcon keyPairIcon = QIcon::fromTheme("KeyPair Manage", QIcon(":/images/keypair.png"));
-    QAction *keyPairManAct = new QAction( keyPairIcon, tr( "KeyPair Manage" ), this );
-    keyPairManAct->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_Y ));
-    connect( keyPairManAct, &QAction::triggered, this, &MainWindow::keyPairMan );
-    keyPairManAct->setStatusTip( tr( "Key Pair Manage" ));
-    cryptMenu->addAction( keyPairManAct );
-    cryptToolBar->addAction( keyPairManAct );
+    key_pair_man_act_ = new QAction( keyPairIcon, tr( "KeyPair Manage" ), this );
+    key_pair_man_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_Y ));
+    connect( key_pair_man_act_, &QAction::triggered, this, &MainWindow::keyPairMan );
+    key_pair_man_act_->setStatusTip( tr( "Key Pair Manage" ));
+    cryptMenu->addAction( key_pair_man_act_ );
+    crypt_tool_->addAction( key_pair_man_act_ );
 
     const QIcon certManIcon = QIcon::fromTheme("Certificate Manage", QIcon(":/images/cert.png"));
-    QAction *certManAct = new QAction( certManIcon, tr( "Certificate Manage" ), this );
-    certManAct->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_M ));
-    connect( certManAct, &QAction::triggered, this, &MainWindow::certMan );
-    certManAct->setStatusTip( tr( "Certificate Manage" ));
-    cryptMenu->addAction( certManAct );
-    cryptToolBar->addAction( certManAct );
+    cert_man_act_ = new QAction( certManIcon, tr( "Certificate Manage" ), this );
+    cert_man_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_M ));
+    connect( cert_man_act_, &QAction::triggered, this, &MainWindow::certMan );
+    cert_man_act_->setStatusTip( tr( "Certificate Manage" ));
+    cryptMenu->addAction( cert_man_act_ );
+    crypt_tool_->addAction( cert_man_act_ );
 
     const QIcon cavpIcon = QIcon::fromTheme( "tool-cavp", QIcon(":/images/cavp.png"));
-    QAction *cavpAct = new QAction(cavpIcon, tr("&CAVP"), this);
-    cavpAct->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_F));
-    connect( cavpAct, &QAction::triggered, this, &MainWindow::CAVP );
-    cavpAct->setStatusTip(tr("CAVP Test"));
-    cryptMenu->addAction( cavpAct );
+    cavp_act_ = new QAction(cavpIcon, tr("&CAVP"), this);
+    cavp_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_F));
+    connect( cavp_act_, &QAction::triggered, this, &MainWindow::CAVP );
+    cavp_act_->setStatusTip(tr("CAVP Test"));
+    cryptMenu->addAction( cavp_act_ );
 
     const QIcon sslIcon = QIcon::fromTheme( "tool-ssl", QIcon(":/images/ssl.png"));
-    QAction *sslAct = new QAction(sslIcon, tr("&SSL Verify"), this);
-    sslAct->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_V));
-    connect( sslAct, &QAction::triggered, this, &MainWindow::sslVerify );
-    cavpAct->setStatusTip(tr("SSL Verify"));
-    cryptMenu->addAction( sslAct );
-    cryptToolBar->addAction( sslAct );
+    ssl_act_ = new QAction(sslIcon, tr("&SSL Verify"), this);
+    ssl_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_V));
+    connect( ssl_act_, &QAction::triggered, this, &MainWindow::sslVerify );
+    ssl_act_->setStatusTip(tr("SSL Verify"));
+    cryptMenu->addAction( ssl_act_ );
+    crypt_tool_->addAction( ssl_act_ );
 
     if( berApplet->isLicense() == false )
     {
         open_pri_key_act_->setEnabled(false);
         open_pub_key_act_->setEnabled(false);
         open_cms_act_->setEnabled( false );
-        keyManAct->setEnabled( false );
-        hashAct->setEnabled( false );
-        macAct->setEnabled( false );
-        encDecAct->setEnabled( false );
-        signVerifyAct->setEnabled( false );
-        pubEncDecAct->setEnabled( false );
-        keyAgreeAct->setEnabled( false );
-        cmsAct->setEnabled( false );
-        sssAct->setEnabled( false );
-        certPVDAct->setEnabled( false );
-        genOTPAct->setEnabled( false );
-        vidAct->setEnabled( false );
-        calcAct->setEnabled( false );
-        keyPairManAct->setEnabled( false );
-        certManAct->setEnabled( false );
-        cavpAct->setEnabled( false );
-        sslAct->setEnabled( false );
+        key_man_act_->setEnabled( false );
+        hash_act_->setEnabled( false );
+        mac_act_->setEnabled( false );
+        enc_dec_act_->setEnabled( false );
+        sign_verify_act_->setEnabled( false );
+        pub_enc_dec_act_->setEnabled( false );
+        key_agree_act_->setEnabled( false );
+        cms_act_->setEnabled( false );
+        sss_act_->setEnabled( false );
+        cert_pvd_act_->setEnabled( false );
+        gen_otp_act_->setEnabled( false );
+        vid_act_->setEnabled( false );
+        calc_act_->setEnabled( false );
+        key_pair_man_act_->setEnabled( false );
+        cert_man_act_->setEnabled( false );
+        cavp_act_->setEnabled( false );
+        ssl_act_->setEnabled( false );
     }
 
 
     QMenu *protoMenu = menuBar()->addMenu( tr("&Protocol" ));
-//    QToolBar *protoToolBar = addToolBar( tr( "Protocol" ));
-//    protoToolBar->setIconSize( QSize(nWidth,nHeight));
-//    protoToolBar->layout()->setSpacing(nSpacing);
+    proto_tool_ = addToolBar( tr( "Protocol" ));
+    proto_tool_->setIconSize( QSize(nWidth,nHeight));
+    proto_tool_->layout()->setSpacing(nSpacing);
 
     const QIcon ocspIcon = QIcon::fromTheme( "ocsp_client", QIcon(":/images/ocsp.png"));
-    QAction *ocspAct = new QAction( ocspIcon, tr( "&OCSP client"), this );
-    ocspAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_O));
-    connect( ocspAct, &QAction::triggered, this, &MainWindow::ocspClient );
-    protoMenu->addAction( ocspAct );
+    ocsp_act_ = new QAction( ocspIcon, tr( "&OCSP client"), this );
+    ocsp_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_O));
+    connect( ocsp_act_, &QAction::triggered, this, &MainWindow::ocspClient );
+    protoMenu->addAction( ocsp_act_ );
 
     const QIcon tspIcon = QIcon::fromTheme( "tsp_client", QIcon(":/images/tsp.png"));
-    QAction *tspAct = new QAction( tspIcon, tr( "&TSP client"), this );
-    tspAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_T));
-    connect( tspAct, &QAction::triggered, this, &MainWindow::tspClient );
-    protoMenu->addAction( tspAct );
+    tsp_act_ = new QAction( tspIcon, tr( "&TSP client"), this );
+    tsp_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_T));
+    connect( tsp_act_, &QAction::triggered, this, &MainWindow::tspClient );
+    protoMenu->addAction( tsp_act_ );
 
     const QIcon cmpIcon = QIcon::fromTheme( "cmp_client", QIcon(":/images/cmp.png"));
-    QAction *cmpAct = new QAction( cmpIcon, tr( "&CMP client"), this );
-    cmpAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_C));
-    connect( cmpAct, &QAction::triggered, this, &MainWindow::cmpClient );
-    protoMenu->addAction( cmpAct );
+    cmp_act_ = new QAction( cmpIcon, tr( "&CMP client"), this );
+    cmp_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_C));
+    connect( cmp_act_, &QAction::triggered, this, &MainWindow::cmpClient );
+    protoMenu->addAction( cmp_act_ );
 
     const QIcon scepIcon = QIcon::fromTheme( "scep_client", QIcon(":/images/scep.png"));
-    QAction *scepAct = new QAction( scepIcon, tr( "&SCEP client"), this );
-    scepAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_S));
-    connect( scepAct, &QAction::triggered, this, &MainWindow::scepClient );
-    protoMenu->addAction( scepAct );
+    scep_act_ = new QAction( scepIcon, tr( "&SCEP client"), this );
+    scep_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_S));
+    connect( scep_act_, &QAction::triggered, this, &MainWindow::scepClient );
+    protoMenu->addAction( scep_act_ );
 
     if( berApplet->isLicense() == false )
     {
-        ocspAct->setEnabled( false );
-        tspAct->setEnabled( false );
-        cmpAct->setEnabled( false );
-        scepAct->setEnabled( false );
+        ocsp_act_->setEnabled( false );
+        tsp_act_->setEnabled( false );
+        cmp_act_->setEnabled( false );
+        scep_act_->setEnabled( false );
     }
 
     QMenu *kmipMenu = menuBar()->addMenu( tr("&KMIP" ));
+    kmip_tool_ = addToolBar( tr( "KMIP" ));
+    kmip_tool_->setIconSize( QSize(nWidth,nHeight));
+    kmip_tool_->layout()->setSpacing(nSpacing);
 
     const QIcon decodeKMIPIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/kms.png"));
-    QAction *decodeTTLVAct = new QAction(decodeKMIPIcon, tr("&Decode TTLV"), this);
-    decodeTTLVAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_K));
-    connect( decodeTTLVAct, &QAction::triggered, this, &MainWindow::runDecodeTTLV );
-    decodeTTLVAct->setStatusTip(tr("Decode TTLV data"));
-    kmipMenu->addAction( decodeTTLVAct );
+    ttlv_decode_act_ = new QAction(decodeKMIPIcon, tr("&Decode TTLV"), this);
+    ttlv_decode_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_K));
+    connect( ttlv_decode_act_, &QAction::triggered, this, &MainWindow::runDecodeTTLV );
+    ttlv_decode_act_->setStatusTip(tr("Decode TTLV data"));
+    kmipMenu->addAction( ttlv_decode_act_ );
 
     const QIcon makeTTLVIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/kms.png"));
-    QAction *makeTTLVAct = new QAction(makeTTLVIcon, tr("&Make TTLV"), this);
-    makeTTLVAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_Y));
-    connect( makeTTLVAct, &QAction::triggered, this, &MainWindow::runMakeTTLV );
-    makeTTLVAct->setStatusTip(tr("Make TTLV data"));
-    kmipMenu->addAction( makeTTLVAct );
+    ttlv_make_act_ = new QAction(makeTTLVIcon, tr("&Make TTLV"), this);
+    ttlv_make_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_Y));
+    connect( ttlv_make_act_, &QAction::triggered, this, &MainWindow::runMakeTTLV );
+    ttlv_make_act_->setStatusTip(tr("Make TTLV data"));
+    kmipMenu->addAction( ttlv_make_act_ );
 
     const QIcon ttlvEncoderIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/kms_encoder.png"));
-    QAction *ttlvEncoderAct = new QAction(ttlvEncoderIcon, tr("&TTLV Encoder"), this);
-    ttlvEncoderAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_M));
-    connect( ttlvEncoderAct, &QAction::triggered, this, &MainWindow::ttlvEncoder );
-    ttlvEncoderAct->setStatusTip(tr("TTLV Encoder"));
-    kmipMenu->addAction( ttlvEncoderAct );
+    ttlv_encode_act_ = new QAction(ttlvEncoderIcon, tr("&TTLV Encoder"), this);
+    ttlv_encode_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_M));
+    connect( ttlv_encode_act_, &QAction::triggered, this, &MainWindow::ttlvEncoder );
+    ttlv_encode_act_->setStatusTip(tr("TTLV Encoder"));
+    kmipMenu->addAction( ttlv_encode_act_ );
 
     const QIcon ttlvClientIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/kms_client.png"));
-    QAction *ttlvClientAct = new QAction(ttlvClientIcon, tr("&TTLV Client"), this);
-    ttlvClientAct->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_P));
-    connect( ttlvClientAct, &QAction::triggered, this, &MainWindow::ttlvClient );
-    ttlvClientAct->setStatusTip(tr("TTLV Client"));
-    kmipMenu->addAction( ttlvClientAct );
+    ttlv_client_act_ = new QAction(ttlvClientIcon, tr("&TTLV Client"), this);
+    ttlv_client_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_P));
+    connect( ttlv_client_act_, &QAction::triggered, this, &MainWindow::ttlvClient );
+    ttlv_client_act_->setStatusTip(tr("TTLV Client"));
+    kmipMenu->addAction( ttlv_client_act_ );
 
     if( berApplet->isLicense() == false )
     {
-        decodeTTLVAct->setEnabled( false );
-        makeTTLVAct->setEnabled( false );
-        ttlvEncoderAct->setEnabled( false );
-        ttlvClientAct->setEnabled( false );
+        ttlv_decode_act_->setEnabled( false );
+        ttlv_make_act_->setEnabled( false );
+        ttlv_encode_act_->setEnabled( false );
+        ttlv_client_act_->setEnabled( false );
     }
 
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
-    QToolBar *helpToolBar = addToolBar(tr("Help"));
+    help_tool_ = addToolBar(tr("Help"));
 
-    helpToolBar->setIconSize( QSize(nWidth,nHeight));
-    helpToolBar->layout()->setSpacing(nSpacing);
+    help_tool_->setIconSize( QSize(nWidth,nHeight));
+    help_tool_->layout()->setSpacing(nSpacing);
 
     const QIcon settingIcon = QIcon::fromTheme("berview-help", QIcon(":/images/setting.png"));
-    QAction *settingAct = new QAction( settingIcon, tr("&Settings"), this );
-    connect( settingAct, &QAction::triggered, this, &MainWindow::setting );
-    settingAct->setStatusTip(tr("Set the variable"));
-    helpMenu->addAction( settingAct );
+    setting_act_ = new QAction( settingIcon, tr("&Settings"), this );
+    connect( setting_act_, &QAction::triggered, this, &MainWindow::setting );
+    setting_act_->setStatusTip(tr("Set the variable"));
+    helpMenu->addAction( setting_act_ );
  //   helpToolBar->addAction( settingAct );
 
     const QIcon clearIcon = QIcon::fromTheme( "clear-log", QIcon(":/images/clear.png"));
-    QAction *clearAct = new QAction( clearIcon, tr("&Clear Log"), this );
-    connect( clearAct, &QAction::triggered, this, &MainWindow::clearLog );
-    clearAct->setShortcut( QKeySequence(Qt::Key_F9));
-    clearAct->setStatusTip(tr("clear information and log"));
-    helpMenu->addAction( clearAct );
+    clear_act_ = new QAction( clearIcon, tr("&Clear Log"), this );
+    connect( clear_act_, &QAction::triggered, this, &MainWindow::clearLog );
+    clear_act_->setShortcut( QKeySequence(Qt::Key_F9));
+    clear_act_->setStatusTip(tr("clear information and log"));
+    helpMenu->addAction( clear_act_ );
 //    helpToolBar->addAction( clearAct );
 
     QIcon logIcon = QIcon::fromTheme( "log-halt", QIcon(":/images/log_halt.png" ));
-    QAction *logAct = new QAction( logIcon, tr( "&Log Halt" ), this );
-    connect( logAct, &QAction::triggered, this, &MainWindow::toggleLog );
-    logAct->setShortcut( QKeySequence(Qt::Key_F10));
-    logAct->setCheckable(true);
-    logAct->setStatusTip( tr( "Log Halt" ));
-    helpMenu->addAction( logAct );
+    log_act_ = new QAction( logIcon, tr( "&Log Halt" ), this );
+    connect( log_act_, &QAction::triggered, this, &MainWindow::toggleLog );
+    log_act_->setShortcut( QKeySequence(Qt::Key_F10));
+    log_act_->setCheckable(true);
+    log_act_->setStatusTip( tr( "Log Halt" ));
+    helpMenu->addAction( log_act_ );
 //    helpToolBar->addAction( logAct );
 
     QIcon infoIcon = QIcon::fromTheme( "content", QIcon(":/images/info.png"));
-    QAction *contentAct = new QAction( infoIcon, tr( "Content" ), this );
-    connect( contentAct, &QAction::triggered, this, &MainWindow::content );
-    contentAct->setShortcut( QKeySequence(Qt::CTRL | Qt::Key_H ));
-    contentAct->setStatusTip( tr("Content" ));
-    helpMenu->addAction( contentAct );
-    helpToolBar->addAction( contentAct );
+    content_act_ = new QAction( infoIcon, tr( "Content" ), this );
+    connect( content_act_, &QAction::triggered, this, &MainWindow::content );
+    content_act_->setShortcut( QKeySequence(Qt::CTRL | Qt::Key_H ));
+    content_act_->setStatusTip( tr("Content" ));
+    helpMenu->addAction( content_act_ );
+    help_tool_->addAction( content_act_ );
 
     if( berApplet->isLicense() == false )
     {
-        clearAct->setEnabled( false );
-        logAct->setEnabled( false );
+        clear_act_->setEnabled( false );
+        log_act_->setEnabled( false );
     }
 
     const QIcon lcnIcon = QIcon::fromTheme("berview-license", QIcon(":/images/license.png"));
-    QAction *lcnAct = new QAction( lcnIcon, tr("License Information"), this);
-    connect( lcnAct, &QAction::triggered, this, &MainWindow::licenseInfo);
-    helpMenu->addAction( lcnAct );
-    lcnAct->setStatusTip(tr("License Information"));
+    lcn_act_ = new QAction( lcnIcon, tr("License Information"), this);
+    connect( lcn_act_, &QAction::triggered, this, &MainWindow::licenseInfo);
+    helpMenu->addAction( lcn_act_ );
+    lcn_act_->setStatusTip(tr("License Information"));
 
     const QIcon aboutIcon = QIcon::fromTheme("berview-icon", QIcon(":/images/bereditor.png"));
 
-    QAction *bugIssueAct = new QAction( aboutIcon, tr("Bug or Issue Report"), this);
-    connect( bugIssueAct, &QAction::triggered, this, &MainWindow::bugIssueReport);
-    helpMenu->addAction( bugIssueAct );
-    bugIssueAct->setStatusTip(tr("Bug or Issue Report"));
+    bug_issue_act_ = new QAction( aboutIcon, tr("Bug or Issue Report"), this);
+    connect( bug_issue_act_, &QAction::triggered, this, &MainWindow::bugIssueReport);
+    helpMenu->addAction( bug_issue_act_ );
+    bug_issue_act_->setStatusTip(tr("Bug or Issue Report"));
 
-    QAction *qnaAct = new QAction( aboutIcon, tr("Q and A"), this);
-    connect( qnaAct, &QAction::triggered, this, &MainWindow::qnaDiscussion);
-    helpMenu->addAction( qnaAct );
-    qnaAct->setStatusTip(tr("Question and Answer"));
+    qna_act_ = new QAction( aboutIcon, tr("Q and A"), this);
+    connect( qna_act_, &QAction::triggered, this, &MainWindow::qnaDiscussion);
+    helpMenu->addAction( qna_act_ );
+    qna_act_->setStatusTip(tr("Question and Answer"));
 
-    QAction *aboutAct = new QAction( aboutIcon, tr("&About BerEditor"), this );
-    connect( aboutAct, &QAction::triggered, this, &MainWindow::about );
-    aboutAct->setShortcut( QKeySequence(Qt::Key_F1));
-    aboutAct->setStatusTip(tr("Show the BerEditor"));
-    helpMenu->addAction( aboutAct );
-    helpToolBar->addAction( aboutAct );
+    about_act_ = new QAction( aboutIcon, tr("&About BerEditor"), this );
+    connect( about_act_, &QAction::triggered, this, &MainWindow::about );
+    about_act_->setShortcut( QKeySequence(Qt::Key_F1));
+    about_act_->setStatusTip(tr("Show the BerEditor"));
+    helpMenu->addAction( about_act_ );
+    help_tool_->addAction( about_act_ );
 
     menuBar()->show();
 }
