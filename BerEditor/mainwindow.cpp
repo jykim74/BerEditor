@@ -319,6 +319,8 @@ void MainWindow::createViewActions()
     editAct->setChecked(true);
     viewMenu->addAction( editAct );
 
+    viewMenu->addSeparator();
+
     QAction *toolAct = new QAction( tr( "View Tool"), this );
     connect( toolAct, &QAction::triggered, this, &MainWindow::viewToolBar );
     toolAct->setCheckable(true);
@@ -342,6 +344,8 @@ void MainWindow::createViewActions()
     kmipAct->setCheckable(true);
     kmipAct->setChecked(true);
     viewMenu->addAction( kmipAct );
+
+    viewMenu->addSeparator();
 
     QAction *helpAct = new QAction( tr( "View Help"), this );
     connect( helpAct, &QAction::triggered, this, &MainWindow::viewHelpBar );
