@@ -22,6 +22,13 @@ const char *kStopMessage = "stopMessage";
 const char *kCertPath = "certPath";
 const char *kHexAreaWidth = "hexAreaWidth";
 const char *kSupportKeyPairChange = "SupportKeyPairChange";
+const char *kViewFile = "viewFile";
+const char *kViewEdit = "viewEdit";
+const char *kViewTool = "viewTool";
+const char *kViewCrypt = "viewCrypt";
+const char *kViewProto = "viewProto";
+const char *kViewKMIP = "viewKMIP";
+const char *kViewHelp = "viewHelp";
 }
 
 SettingsMgr::SettingsMgr(QObject *parent) : QObject(parent)
@@ -43,6 +50,14 @@ void SettingsMgr::initialize()
     getHexAreaWidth();
     getCertPath();
     getSupportKeyPairChange();
+
+    getViewValue( VIEW_FILE );
+    getViewValue( VIEW_EDIT );
+    getViewValue( VIEW_TOOL );
+    getViewValue( VIEW_CRYPT );
+    getViewValue( VIEW_PROTO );
+    getViewValue( VIEW_KMIP );
+    getViewValue( VIEW_HELP );
 }
 
 void SettingsMgr::removeSet( const QString& group, const QString& name )
@@ -396,4 +411,107 @@ bool SettingsMgr::getSupportKeyPairChange()
     settings.endGroup();
 
     return support_keypair_change_;
+}
+
+int SettingsMgr::viewValue( ViewType nType )
+{
+    switch (nType) {
+    case VIEW_FILE: return view_file_;
+    case VIEW_EDIT: return view_edit_;
+    case VIEW_TOOL: return view_tool_;
+    case VIEW_CRYPT: return view_crypt_;
+    case VIEW_PROTO: return view_proto_;
+    case VIEW_KMIP: return view_kmip_;
+    case VIEW_HELP: return view_help_;
+    default:
+        break;
+    }
+
+    return -1;
+}
+
+
+int SettingsMgr::getViewValue( ViewType nType )
+{
+    int ret = -1;
+    QSettings settings;
+    settings.beginGroup(kBehaviorGroup);
+
+    switch (nType) {
+    case VIEW_FILE:
+        ret = settings.value( kViewFile, kFileDefault ).toInt();
+        view_file_ = ret;
+        break;
+    case VIEW_EDIT:
+        ret = settings.value( kViewEdit, kEditDefault ).toInt();
+        view_edit_ = ret;
+        break;
+    case VIEW_TOOL:
+        ret = settings.value( kViewTool, kToolDefault ).toInt();
+        view_tool_ = ret;
+        break;
+    case VIEW_CRYPT:
+        ret = settings.value( kViewCrypt, kCryptDefault ).toInt();
+        view_crypt_ = ret;
+        break;
+    case VIEW_PROTO:
+        ret = settings.value( kViewProto, kProtoDefault ).toInt();
+        view_proto_ = ret;
+        break;
+    case VIEW_KMIP:
+        ret = settings.value( kViewKMIP, kKMIPDefault ).toInt();
+        view_kmip_ = ret;
+        break;
+    case VIEW_HELP:
+        ret = settings.value( kViewHelp, kHelpDefault ).toInt();
+        view_file_ = ret;
+        break;
+    default:
+        break;
+    }
+
+    settings.endGroup();
+    return ret;
+}
+
+
+void SettingsMgr::setViewValue( ViewType nType, int nVal )
+{
+    QSettings settings;
+    settings.beginGroup(kBehaviorGroup);
+
+    switch (nType) {
+    case VIEW_FILE:
+        settings.setValue( kViewFile, nVal );
+        view_file_ = nVal;
+        break;
+    case VIEW_EDIT:
+        settings.setValue( kViewEdit, nVal );
+        view_edit_ = nVal;
+        break;
+    case VIEW_TOOL:
+        settings.setValue( kViewTool, nVal );
+        view_tool_ = nVal;
+        break;
+    case VIEW_CRYPT:
+        settings.setValue( kViewCrypt, nVal );
+        view_crypt_ = nVal;
+        break;
+    case VIEW_PROTO:
+        settings.setValue( kViewProto, nVal );
+        view_proto_ = nVal;
+        break;
+    case VIEW_KMIP:
+        settings.setValue( kViewKMIP, nVal );
+        view_kmip_ = nVal;
+        break;
+    case VIEW_HELP:
+        settings.setValue( kViewHelp, nVal );
+        view_help_ = nVal;
+        break;
+    default:
+        break;
+    }
+
+    settings.endGroup();
 }

@@ -51,6 +51,101 @@ const QColor kTagColor( 102, 255, 102 );
 const QColor kLenColor( 240, 214, 255 );
 const QColor kLenTypeColor( Qt::cyan );
 
+enum ViewType {
+    VIEW_FILE = 1,
+    VIEW_EDIT,
+    VIEW_TOOL,
+    VIEW_CRYPT,
+    VIEW_PROTO,
+    VIEW_KMIP,
+    VIEW_HELP
+};
+
+
+#define ACT_FILE_NEW                0x00000001
+#define ACT_FILE_OPEN               0x00000002
+#define ACT_FILE_OPEN_CERT          0x00000004
+#define ACT_FILE_OPEN_CRL           0x00000008
+#define ACT_FILE_OPEN_CSR           0x00000010
+#define ACT_FILE_OPEN_PRI_KEY       0x00000020
+#define ACT_FILE_OPEN_PUB_KEY       0x00000040
+#define ACT_FILE_OPEN_CMS           0x00000080
+#define ACT_FILE_SAVE               0x00000100
+#define ACT_FILE_SAVE_AS            0x00000200
+#define ACT_FILE_PRINT              0x00000400
+#define ACT_FILE_PRINT_PREVEIW      0x00000800
+#define ACT_FILE_QUIT               0x00001000
+
+#define ACT_EDIT_COPY_INFO          0x00000001
+#define ACT_EDIT_COPY_AS_HEX        0x00000002
+#define ACT_EDIT_COPY_AS_BASE64     0x00000004
+#define ACT_EDIT_EXPAND_ALL         0x00000008
+#define ACT_EDIT_EXPAND_NODE        0x00000010
+#define ACT_EDIT_COLLAPSE_ALL       0x00000020
+#define ACT_EDIT_COLLAPSE_NODE      0x00000040
+
+#define ACT_TOOL_DATA_ENCODER       0x00000001
+#define ACT_TOOL_NUM_TRANS          0x00000002
+#define ACT_TOOL_OID_INFO           0x00000004
+#define ACT_TOOL_MAKE_BER           0x00000008
+#define ACT_TOOL_DECODE_DATA        0x00000010
+#define ACT_TOOL_GET_URI            0x00000020
+
+#define ACT_CRYPT_KEY_MAN           0x00000001
+#define ACT_CRYPT_HASH              0x00000002
+#define ACT_CRYPT_MAC               0x00000004
+#define ACT_CRYPT_ENC_DEC           0x00000008
+#define ACT_CRYPT_SIGN_VERIFY       0x00000010
+#define ACT_CRYPT_PUB_ENC           0x00000020
+#define ACT_CRYPT_KEY_AGREE         0x00000040
+#define ACT_CRYPT_CMS               0x00000080
+#define ACT_CRYPT_SSS               0x00000100
+#define ACT_CRYPT_CERT_PVD          0x00000200
+#define ACT_CRYPT_OTP_GEN           0x00000400
+#define ACT_CRYPT_VID               0x00000800
+#define ACT_CRYPT_BN_CALC           0x00001000
+#define ACT_CRYPT_KEY_PAIR_MAN      0x00002000
+#define ACT_CRYPT_CERT_MAN          0x00004000
+#define ACT_CRYPT_CAVP              0x00008000
+#define ACT_CRYPT_SSL_VERIFY        0x00010000
+
+#define ACT_PROTO_OCSP              0x00000001
+#define ACT_PROTO_TSP               0x00000002
+#define ACT_PROTO_CMP               0x00000004
+#define ACT_PROTO_SCEP              0x00000008
+
+#define ACT_KMIP_DECODE_TTLV        0x00000001
+#define ACT_KMIP_MAKE_TTLV          0x00000002
+#define ACT_KMIP_ENCODE_TTLV        0x00000004
+#define ACT_KMIP_CLIENT_TTLV        0x00000008
+
+#define ACT_HELP_SETTINGS           0x00000001
+#define ACT_HELP_CLEAR_LOG          0x00000002
+#define ACT_HELP_HALT_LOG           0x00000004
+#define ACT_HELP_CONTENT            0x00000008
+#define ACT_HELP_LICENSE_INFO       0x00000010
+#define ACT_HELP_BUG_REPORT         0x00000020
+#define ACT_HELP_QNA                0x00000040
+#define ACT_HELP_ABOUT              0x00000080
+
+static const int kFileDefault = ACT_FILE_NEW | ACT_FILE_OPEN | ACT_FILE_SAVE;
+
+static const int kEditDefault = ACT_EDIT_EXPAND_ALL | ACT_EDIT_EXPAND_NODE | ACT_EDIT_COLLAPSE_ALL \
+                         | ACT_EDIT_COLLAPSE_NODE;
+
+static const int kToolDefault = ACT_TOOL_DATA_ENCODER | ACT_TOOL_OID_INFO | ACT_TOOL_MAKE_BER \
+                         | ACT_TOOL_DECODE_DATA | ACT_TOOL_GET_URI;
+
+static const int kCryptDefault = ACT_CRYPT_HASH | ACT_CRYPT_MAC | ACT_CRYPT_ENC_DEC \
+                          | ACT_CRYPT_SIGN_VERIFY | ACT_CRYPT_PUB_ENC | ACT_CRYPT_KEY_AGREE \
+                          | ACT_CRYPT_CERT_PVD | ACT_CRYPT_BN_CALC | ACT_CRYPT_KEY_PAIR_MAN \
+                          | ACT_CRYPT_CERT_MAN | ACT_CRYPT_SSL_VERIFY;
+
+static const int kProtoDefault = 0;
+static const int kKMIPDefault = 0;
+static const int kHelpDefault = ACT_HELP_CLEAR_LOG | ACT_HELP_HALT_LOG | ACT_HELP_CONTENT | ACT_HELP_ABOUT;
+
+
 const QStringList kECCParamList = {
     "secp112r1", "secp112r2", "secp128r1", "secp128r2", "secp160k1",
     "secp160r1", "secp160r2", "secp192r1", "secp192k1", "secp224k1",

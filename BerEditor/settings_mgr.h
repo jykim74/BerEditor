@@ -7,6 +7,7 @@
 #define SETTINGS_MGR_H
 
 #include <QObject>
+#include "common.h"
 
 class SettingsMgr : public QObject
 {
@@ -69,6 +70,9 @@ public:
     bool getSupportKeyPairChange();
     bool supportKeyPairChange() { return support_keypair_change_; };
 
+    int viewValue( ViewType nType );
+    int getViewValue( ViewType nType );
+    void setViewValue( ViewType nType, int nVal );
 
 signals:
 
@@ -82,6 +86,14 @@ private:
     QString cert_path_;
     int hex_area_width_;
     bool support_keypair_change_;
+
+    int view_file_;
+    int view_edit_;
+    int view_tool_;
+    int view_crypt_;
+    int view_proto_;
+    int view_kmip_;
+    int view_help_;
 
 private:
     Q_DISABLE_COPY(SettingsMgr)

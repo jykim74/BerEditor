@@ -254,6 +254,10 @@ void ContentMain::printPreview(QPrinter *printer)
 
 void ContentMain::createActions()
 {
+    int nWidth = 16;
+    int nHeight = 16;
+    int nSpacing = 0;
+
     connect( actionSave, &QAction::triggered, this, &ContentMain::actSave );
     connect( actionPrint, &QAction::triggered, this, &ContentMain::actPrint );
     connect( actionPrint_Preview, &QAction::triggered, this, &ContentMain::actPrintPreview);
@@ -266,6 +270,8 @@ void ContentMain::createActions()
     connect( actionQuit, &QAction::triggered, this, &ContentMain::actQuit );
 
     QToolBar *fileToolBar = addToolBar( tr("File" ));
+    fileToolBar->setIconSize( QSize(nWidth, nHeight));
+    fileToolBar->layout()->setSpacing(nSpacing);
 
     const QIcon saveIcon = QIcon::fromTheme("document-save", QIcon(":/images/save.png"));
     actionSave->setIcon( saveIcon );
@@ -281,6 +287,8 @@ void ContentMain::createActions()
     actionPrint_Preview->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_3));
 
     QToolBar *editToolBar = addToolBar( tr( "Edit" ));
+    editToolBar->setIconSize( QSize(nWidth, nHeight));
+    editToolBar->layout()->setSpacing(nSpacing);
 
     const QIcon expandAllIcon = QIcon::fromTheme("expand-all", QIcon(":/images/expand_all.png"));
     actionExpand_All->setIcon( expandAllIcon );

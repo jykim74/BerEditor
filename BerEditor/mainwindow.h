@@ -18,6 +18,7 @@
 #include "ttlv_tree_model.h"
 #include "ttlv_tree_view.h"
 #include "js_bin.h"
+#include "common.h"
 
 class QPrinter;
 
@@ -45,6 +46,7 @@ class CertManDlg;
 class TTLVEncoderDlg;
 class TTLVClientDlg;
 class ContentMain;
+
 
 namespace Ui {
 class MainWindow;
@@ -201,6 +203,9 @@ private:
     void adjustForCurrentFile( const QString& filePath );
     void updateRecentActionList();
 
+    bool isView( ViewType type, int nAct );
+    void setView( ViewType type, int nAct );
+    void unsetView( ViewType type, int nAct );
 
     QList<QAction *>  recent_file_list_;
 
