@@ -4,6 +4,7 @@
 #include <QToolBar>
 #include <QtPrintSupport/qtprintsupportglobal.h>
 #include <QtHelp/QHelpEngine>
+#include <QDesktopServices>
 
 #include "content_main.h"
 #include "common.h"
@@ -28,10 +29,13 @@ static const QString kDoc = "DOC";
 static const QString kRFC = "RFC";
 static const QString kASN1 = "ASN1";
 static const QString kPKIX = "PKIX";
+static const QString kLink = "Link";
 
 static const QString kRFCHost = "https://www.rfc-editor.org/rfc/inline-errata";
 static const QString kPKIXHost = "https://www.rfc-editor.org/rfc";
 
+static const QStringList kASN1List = { "EXPLICIT", "IMPLICIT", "OCSP", "TSP", "PKCS1", "PKCS7", "PKCS10", "PKCS12",
+                                      "CMP", "CRMF", "ECDSA", "ECDSA_PRI_KEY" };
 static const QStringList kRFCList = { "RFC5280", "RFC5480", "RFC4210", "RFC4211", "RFC2560", "RFC3161", "RFC8894" };
 static const QStringList kPKIXList = { "PKCS#1:RFC8017", "PKCS#3:RFC2631", "PKCS#5:RFC2898", "PKCS#7:RFC5652",
                                       "PKCS#8:RFC5208", "PKCS#10:RFC2986", "PKCS#12:RFC7292" };
@@ -46,6 +50,7 @@ ContentMain::ContentMain(QWidget *parent) :
     setupUi(this);
 
     connect( mMenuTree, SIGNAL(clicked(QModelIndex)), this, SLOT(clickMenu()));
+    connect( mOpenURIBtn, SIGNAL(clicked()), this, SLOT(clickOpenURI()));
 
     QFile qss(":/treewidget.qss");
     qss.open( QFile::ReadOnly );
@@ -81,6 +86,9 @@ void ContentMain::initialize()
     mMenuDock->layout()->setSpacing(0);
     mMenuDock->layout()->setMargin(0);
 
+    mContentBroswer->setOpenExternalLinks(true);
+    mContentBroswer->setOpenLinks(true);
+    mContentBroswer->setAcceptRichText(true);
     mContentBroswer->clear();
 
     mContentBroswer->append( kASN1 );
@@ -131,17 +139,27 @@ void ContentMain::actSave()
 
 
         fileName = findSaveFile( this, JS_FILE_TYPE_ALL, strPath );
+
+        if( fileName.length() < 1 ) return;
+
+        JS_BIN_fileRead( strSavePath.toLocal8Bit().toStdString().c_str(), &binData );
+
     }
     else
     {
-        strSavePath = QString ( "%1/%2" ).arg( kDoc ).arg( strData );
-        strPath = QString( "%1.asn1" ).arg( strData );
+        QString resPath = QString( ":/%1.asn1").arg( strData );
+        QFile resFile( resPath );
+        resFile.open(QIODevice::ReadOnly);
+        QByteArray data = resFile.readAll();
+        resFile.close();
+
         fileName = findSaveFile( this, JS_FILE_TYPE_ALL, strPath );
+        if( fileName.length() < 1 ) return;
+
+        JS_BIN_set( &binData, (unsigned char *)data.data(), data.length() );
     }
 
-    if( fileName.length() < 1 ) return;
 
-    JS_BIN_fileRead( strSavePath.toLocal8Bit().toStdString().c_str(), &binData );
     JS_BIN_fileWrite( &binData, fileName.toLocal8Bit().toStdString().c_str() );
     JS_BIN_reset( &binData );
 
@@ -318,11 +336,6 @@ void ContentMain::createDockWindows()
     itemASN->setData( 0, Qt::UserRole, kASN1 );
     rootItem->addChild( itemASN );
 
-    QString strASNPath = QString( "%1/%2" ).arg( kDoc ).arg( kASN1 );
-
-    if( dir.exists( strASNPath ) == false )
-        dir.mkdir( strASNPath );
-
     makeASNMenu( itemASN );
 
     QTreeWidgetItem *itemRFC = new QTreeWidgetItem;
@@ -347,12 +360,24 @@ void ContentMain::createDockWindows()
 
     makePKIXMenu( itemPKIX );
 
+    QTreeWidgetItem *itemLink = new QTreeWidgetItem;
+    QString strURL = "https://luca.ntop.org/Teaching/Appunti/asn1.html";
+    itemLink->setText( 0, "LaymanGuide" );
+    itemLink->setData( 0, Qt::UserRole, kLink );
+    itemLink->setData( 0, 99, strURL );
+    rootItem->addChild( itemLink );
+
+    QString strLinkPath = QString( "%1/%2" ).arg( kDoc ).arg( kLink );
+    if( dir.exists( strLinkPath ) == false )
+        dir.mkdir( strLinkPath );
+
+
     mMenuTree->expandAll();
 }
 
 void ContentMain::makeASNMenu( QTreeWidgetItem* parent )
 {
-    QStringList sASN1List = { "Implicit", "Explicit" };
+#if 0
     QString strPath = QString( "%1/%2" ).arg( kDoc ).arg( kASN1 );
 
     QDir dir( strPath );
@@ -373,6 +398,18 @@ void ContentMain::makeASNMenu( QTreeWidgetItem* parent )
         item->setData( 0, Qt::UserRole, strData );
         parent->addChild( item );
     }
+#else
+    for( int i = 0; i < kASN1List.size(); i++ )
+    {
+        QString strASN1 = kASN1List.at(i);
+        QTreeWidgetItem *item = new QTreeWidgetItem;
+        QString strData = QString( "%1/%2" ).arg( kASN1 ).arg( strASN1 );
+
+        item->setText( 0, strASN1 );
+        item->setData( 0, Qt::UserRole, strData );
+        parent->addChild( item );
+    }
+#endif
 }
 
 void ContentMain::makeRFCMenu( QTreeWidgetItem* parent )
@@ -424,6 +461,7 @@ void ContentMain::clickMenu()
 {
     int ret = 0;
     mContentBroswer->clear();
+    mContentBroswer->setOpenLinks(false);
 
 //    QString strURL = "https://www.naver.com";
     QTreeWidgetItem* item = mMenuTree->currentItem();
@@ -434,9 +472,52 @@ void ContentMain::clickMenu()
 
     QStringList strList;
 
+    if( strData == kLink )
+    {
+        int nStatus = 0;
+        char *pBody = NULL;
+        BIN binBody = {0,0};
+        QString strURL = item->data( 0, 99 ).toString();
+        QString strSavePath;
+        QString strName = item->text(0);
+
+        strSavePath = QString ( "%1/%2/%3.html" ).arg( kDoc ).arg( kLink ).arg( strName );
+
+        mURIText->setText( strURL );
+
+        QFileInfo fileInfo( strSavePath );
+        if( fileInfo.exists() == true )
+        {
+            QFile file( strSavePath );
+            if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                berApplet->warningBox( tr( "fail to open HTML" ), this );
+                return;
+            }
+
+            // 파일 내용 읽기
+            QTextStream in(&file);
+            QString htmlContent = in.readAll();
+            file.close();
+            mContentBroswer->setHtml( htmlContent );
+        }
+        else
+        {
+            ret = JS_HTTP_requestGetBin2( strURL.toStdString().c_str(), NULL, NULL, &nStatus, &binBody );
+
+            JS_BIN_string( &binBody, &pBody );
+            mContentBroswer->setHtml( pBody );
+            JS_BIN_fileWrite( &binBody, strSavePath.toLocal8Bit().toStdString().c_str() );
+
+            if( pBody ) JS_free( pBody );
+            JS_BIN_reset( &binBody );
+        }
+        return;
+    }
+
     strList = strData.split( "/" );
     if( strList.size() < 2 )
     {
+        mURIText->clear();
         mContentBroswer->clear();
 
         if( strData == kASN1 )
@@ -468,6 +549,8 @@ void ContentMain::clickMenu()
         QString strURL;
         QString strSavePath;
 
+        mContentBroswer->setOpenLinks(true);
+
         if( strType == kRFC )
         {
             strURL = QString( "%1/%2.html").arg( kRFCHost ).arg( strName ).toLower();
@@ -482,10 +565,11 @@ void ContentMain::clickMenu()
             strSavePath = QString( "%1/%2/%3.html" ).arg( kDoc ).arg( kPKIX ).arg( nameRFC.at(1));
         }
 
+        mURIText->setText( strURL );
+
         QFileInfo fileInfo( strSavePath );
         if( fileInfo.exists() == true )
         {
-//            QString fileName = "D:/mywork/QtHelpManual/documentation/index.html";  // 표시할 HTML 파일 경로
             QFile file( strSavePath );
             if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
                 berApplet->warningBox( tr( "fail to open HTML" ), this );
@@ -509,31 +593,39 @@ void ContentMain::clickMenu()
 
             if( pBody ) JS_free( pBody );
             JS_BIN_reset( &binBody );
-
         }
     }
     else
     {
-        QString strSavePath = QString ( "%1/%2" ).arg( kDoc ).arg( strData );
-        QFileInfo fileInfo( strSavePath );
+        QString resPath = QString( ":/%1.asn1").arg( strData );
+        QFile resFile( resPath );
+        resFile.open(QIODevice::ReadOnly);
+        QByteArray data = resFile.readAll();
+        resFile.close();
 
-        if( fileInfo.exists() == true )
-        {
-            QFile file( strSavePath );
-            if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                berApplet->warningBox( tr( "fail to open HTML" ), this );
-                return;
-            }
-
-            // 파일 내용 읽기
-            QTextStream in(&file);
-            QString textContent = in.readAll();
-            file.close();
-            mContentBroswer->setPlainText( textContent );
-        }
-        else
-        {
-            mContentBroswer->setPlainText( "There is no data" );
-        }
+        mURIText->setText( resPath );
+        mContentBroswer->setFontUnderline(false);
+        mContentBroswer->setTextColor( Qt::black );
+        mContentBroswer->setPlainText( data.data() );
     }
+}
+
+void ContentMain::clickOpenURI()
+{
+    QString strURI = mURIText->text();
+    QUrl url( strURI );
+
+    if( strURI.length() < 1 )
+    {
+        berApplet->warningBox( tr( "There is no URI" ), this );
+        return;
+    }
+
+    if( url.scheme().toLower() != "http" && url.scheme().toLower() != "https" )
+    {
+        berApplet->warningBox( tr( "URI is not http or https" ), this );
+        return;
+    }
+
+    QDesktopServices::openUrl( QUrl(strURI));
 }

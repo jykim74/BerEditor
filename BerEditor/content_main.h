@@ -23,6 +23,7 @@ public:
 
 private slots:
     void clickMenu();
+    void clickOpenURI();
 
     void actSave();
     void actPrint();

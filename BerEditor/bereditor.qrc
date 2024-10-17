@@ -76,5 +76,17 @@
         <file>treewidget.qss</file>
         <file>images/menu_hide.png</file>
         <file>images/menu_show.png</file>
+        <file>ASN1/CMP.asn1</file>
+        <file>ASN1/CRMF.asn1</file>
+        <file>ASN1/ECDSA.asn1</file>
+        <file>ASN1/ECDSA_PRI_KEY.asn1</file>
+        <file>ASN1/EXPLICIT.asn1</file>
+        <file>ASN1/IMPLICIT.asn1</file>
+        <file>ASN1/OCSP.asn1</file>
+        <file>ASN1/PKCS1.asn1</file>
+        <file>ASN1/PKCS10.asn1</file>
+        <file>ASN1/PKCS12.asn1</file>
+        <file>ASN1/PKCS7.asn1</file>
+        <file>ASN1/TSP.asn1</file>
     </qresource>
 </RCC>
