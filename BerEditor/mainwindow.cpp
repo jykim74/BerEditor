@@ -81,7 +81,7 @@
 #endif
 
 const int kMaxRecentFiles = 10;
-static const int kColWidth = 24;
+static const int kColWidth = 26;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
