@@ -515,3 +515,37 @@ void SettingsMgr::setViewValue( ViewType nType, int nVal )
 
     settings.endGroup();
 }
+
+void SettingsMgr::clearViewValue( ViewType nType )
+{
+    QSettings settings;
+
+    settings.beginGroup(kBehaviorGroup);
+    switch (nType) {
+    case VIEW_FILE:
+        settings.remove( kViewFile );
+        break;
+    case VIEW_EDIT:
+        settings.remove( kViewEdit );
+        break;
+    case VIEW_TOOL:
+        settings.remove( kViewTool );
+        break;
+    case VIEW_CRYPT:
+        settings.remove( kViewCrypt );
+        break;
+    case VIEW_PROTO:
+        settings.remove( kViewProto );
+        break;
+    case VIEW_KMIP:
+        settings.remove( kViewKMIP );
+        break;
+    case VIEW_HELP:
+        settings.remove( kViewHelp );
+        break;
+    default:
+        break;
+    }
+
+    settings.endGroup();
+}

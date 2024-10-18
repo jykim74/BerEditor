@@ -73,6 +73,7 @@ public:
     int viewValue( ViewType nType );
     int getViewValue( ViewType nType );
     void setViewValue( ViewType nType, int nVal );
+    void clearViewValue( ViewType nType );
 
 signals:
 

@@ -156,6 +156,8 @@ public:
     void viewHelpContent( bool bChecked );
     void viewHelpAbout( bool bChecked );
 
+    void viewSetDefault();
+
 private slots:
     void changeTableTab();
 

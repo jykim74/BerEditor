@@ -270,7 +270,11 @@ void BerApplet::info( const QString strLog, QColor cr )
 
 void BerApplet::line( QColor cr )
 {
+#ifdef Q_OS_LINUX
+    info( "====================================================================\n", cr );
+#else
     info( "=================================================================================\n", cr );
+#endif
 }
 
 void BerApplet::elog( const QString strLog )

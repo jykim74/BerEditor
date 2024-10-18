@@ -227,11 +227,7 @@ void MainWindow::initialize()
     setTitle( "" );
 
 #if 1
-#ifdef Q_OS_LINUX
     resize( 900, 700 );
-#else
-    resize( 870, 700 );
-#endif
 #else
     table_tab_->setMinimumWidth( 700 );
     left_tree_->setMinimumWidth( 270 );
@@ -306,8 +302,8 @@ void MainWindow::createViewActions()
     QMenu *cryptMenu = viewMenu->addMenu( tr( "Cryptogram ToolBar"));
     QMenu *protoMenu = viewMenu->addMenu( tr( "Protocol ToolBar"));
     QMenu *kmipMenu = viewMenu->addMenu( tr( "KMIP ToolBar"));
-    viewMenu->addSeparator();
     QMenu *helpMenu = viewMenu->addMenu( tr( "Help ToolBar" ));
+    viewMenu->addSeparator();
 
     QAction *fileNewAct = new QAction( tr( "New"), this );
     bVal = isView( VIEW_FILE, ACT_FILE_NEW );
@@ -663,6 +659,10 @@ void MainWindow::createViewActions()
     helpAboutAct->setChecked(bVal);
     connect( helpAboutAct, &QAction::triggered, this, &MainWindow::viewHelpAbout );
     helpMenu->addAction( helpAboutAct );
+
+    QAction *setDefaultAct = new QAction( tr( "Set Default" ), this );
+    connect( setDefaultAct, &QAction::triggered, this, &MainWindow::viewSetDefault );
+    viewMenu->addAction( setDefaultAct );
 }
 
 void MainWindow::createActions()
@@ -3157,6 +3157,25 @@ void MainWindow::viewHelpAbout( bool bChecked )
         help_tool_->removeAction( about_act_ );
         unsetView( VIEW_HELP, ACT_HELP_ABOUT );
     }
+}
+
+void MainWindow::viewSetDefault()
+{
+    bool bVal = berApplet->yesOrCancelBox( tr( "Would you like to change to the initial toolbar view?"), this, true );
+    if( bVal == false ) return;
+
+    berApplet->settingsMgr()->clearViewValue(VIEW_FILE);
+    berApplet->settingsMgr()->clearViewValue(VIEW_EDIT);
+    berApplet->settingsMgr()->clearViewValue(VIEW_TOOL);
+    berApplet->settingsMgr()->clearViewValue(VIEW_CRYPT);
+    berApplet->settingsMgr()->clearViewValue(VIEW_PROTO);
+    berApplet->settingsMgr()->clearViewValue(VIEW_KMIP);
+    berApplet->settingsMgr()->clearViewValue(VIEW_HELP);
+
+    bVal = berApplet->yesOrNoBox(tr("You have changed toolbar settings. Restart to apply it?"), this, false);
+    if( bVal == false ) return;
+
+    berApplet->restartApp();
 }
 
 void MainWindow::save()
