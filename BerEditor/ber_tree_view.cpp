@@ -144,9 +144,9 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
     strOffset = QString( "%1" ).arg( pItem->GetOffset(), 8, 16, QLatin1Char('0')).toUpper();
 
     berApplet->mainWindow()->infoText()->clear();
-    berApplet->info( "=================================================================================\n" );
+    berApplet->line();
     berApplet->info( QString( "== BER Information [Depth:%1]\n" ).arg(pItem->GetLevel()) );
-    berApplet->info( "=================================================================================\n" );
+    berApplet->line();
     berApplet->info( QString( "Header      : %1\n").arg( getHexString(header.pVal, header.nLen)));
     berApplet->info( QString( "[T]         : 0x%1 - %2\n" ).arg(getHexString(bin.pVal,1)).arg(pBitString) );
     berApplet->info( QString( "Class       : %1\n").arg( pItem->GetClassString()));
@@ -155,7 +155,6 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
     berApplet->info( QString( "Tag         : 0x%1 - %2\n").arg( pItem->GetTag(), 2, 16, QChar('0')).arg(pItem->GetTagString()));
     berApplet->info( QString( "Offset      : %1 - %2\n" ).arg( strOffset ).arg(pItem->GetOffset()));
     berApplet->info( QString( "Length      : 0x%1 - %2 Bytes\n" ).arg( getHexString(sLen, nLenSize) ).arg(pItem->GetLength()));
-    berApplet->info( QString( "Level       : %1\n").arg( pItem->GetLevel() ));
 
     QString strVal = pItem->GetValueString( &binBer, nWidth );
 
@@ -166,15 +165,15 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
         berApplet->info( QString( "Unused Bits : 0x%1 - %2 Bits\n" ).arg(getHexString( &binVal.pVal[0], 1)).arg(binVal.pVal[0]));
     }
 
-    berApplet->info( "=================================================================================\n" );
+    berApplet->line();
     berApplet->info( strVal );
 
     if( pItem->GetTag() == JS_BITSTRING )
     {
         berApplet->info( "\n" );
-        berApplet->info( "=================================================================================\n" );
+        berApplet->line();
         berApplet->info( "== Hex Value\n" );
-        berApplet->info( "=================================================================================\n" );
+        berApplet->line();
         berApplet->info( getHexStringArea(&binVal.pVal[1], binVal.nLen - 1, nWidth ));
     }
 

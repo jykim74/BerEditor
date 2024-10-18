@@ -81,6 +81,7 @@
 #endif
 
 const int kMaxRecentFiles = 10;
+static const int kColWidth = 24;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -227,9 +228,9 @@ void MainWindow::initialize()
 
 #if 1
 #ifdef Q_OS_LINUX
-    resize( 1020, 760 );
+    resize( 900, 700 );
 #else
-    resize( 970, 760 );
+    resize( 870, 700 );
 #endif
 #else
     table_tab_->setMinimumWidth( 700 );
@@ -263,7 +264,7 @@ void MainWindow::createTableMenu()
 #endif
 
     for( int i=1; i <= 16; i++ )
-        right_table_->setColumnWidth(i, 30);
+        right_table_->setColumnWidth(i, kColWidth);
 
 #ifdef Q_OS_MAC
     right_table_->setColumnWidth( 17, 100 );

@@ -425,18 +425,18 @@ void TTLVTreeView::getInfoView(TTLVTreeItem *pItem, int nWidth )
 
     berApplet->mainWindow()->infoClear();
 
-    berApplet->info( "========================================================================\n" );
-    berApplet->info( "== TTLV Information\n" );
-    berApplet->info( "========================================================================\n" );
+    berApplet->line();
+    berApplet->info( QString( "== TTLV Information [Depth:%1]\n").arg(pItem->getLevel()) );
+    berApplet->line();
 
     berApplet->info( QString( "Header   : %1\n" ).arg( getHexString( &binHeader )));
     berApplet->info( QString( "Tag      : 0x%1 - %2\n" ).arg( pItem->getTagHex() ).arg( pItem->getTagName() ));
     berApplet->info( QString( "Type     : 0x%1 - %2\n").arg( pItem->getTypeHex() ).arg( pItem->getTypeName() ));
     berApplet->info( QString( "Length   : 0x%1 - %2 Bytes\n" ).arg( pItem->getLengthHex() ).arg( pItem->getLengthInt() ));
     berApplet->info( QString( "Offset   : 0x%1 - %2\n").arg( pItem->getOffset(), 0, 16).arg( pItem->getOffset()) );
-    berApplet->info( QString( "Level    : %1\n").arg( pItem->getLevel()));
-    berApplet->info( "========================================================================\n" );
+    berApplet->line();
     berApplet->info( QString( "%1").arg( pItem->getPrintValue( &binTTLV, nWidth ) ) );
+    berApplet->line();
 
     JS_BIN_reset( &binHeader );
 }

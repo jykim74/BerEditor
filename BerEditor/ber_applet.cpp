@@ -268,6 +268,11 @@ void BerApplet::info( const QString strLog, QColor cr )
     main_win_->info( strLog, cr );
 }
 
+void BerApplet::line( QColor cr )
+{
+    info( "=================================================================================\n", cr );
+}
+
 void BerApplet::elog( const QString strLog )
 {
     main_win_->elog( strLog );
