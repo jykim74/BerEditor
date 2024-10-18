@@ -81,7 +81,12 @@
 #endif
 
 const int kMaxRecentFiles = 10;
+
+#ifdef Q_OS_WINDOW
 static const int kColWidth = 26;
+#else
+static const int kColWidth = 28;
+#endif
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -227,7 +232,11 @@ void MainWindow::initialize()
     setTitle( "" );
 
 #if 1
+#ifdef Q_OS_WINDOW
     resize( 900, 700 );
+#else
+    resize( 940, 700 );
+#endif
 #else
     table_tab_->setMinimumWidth( 700 );
     left_tree_->setMinimumWidth( 270 );
