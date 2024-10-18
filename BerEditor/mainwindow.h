@@ -153,6 +153,7 @@ public:
     void viewHelpSettings( bool bChecked );
     void viewHelpClearLog( bool bChecked );
     void viewHelpHaltLog( bool bChecked );
+    void viewHelpContent( bool bChecked );
     void viewHelpAbout( bool bChecked );
 
 private slots:

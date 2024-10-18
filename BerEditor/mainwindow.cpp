@@ -650,6 +650,13 @@ void MainWindow::createViewActions()
     connect( helpHaltLogAct, &QAction::triggered, this, &MainWindow::viewHelpHaltLog );
     helpMenu->addAction( helpHaltLogAct );
 
+    QAction *helpContentAct = new QAction( tr( "Content"), this );
+    bVal = isView( VIEW_HELP, ACT_HELP_CONTENT );
+    helpContentAct->setCheckable(true);
+    helpContentAct->setChecked(bVal);
+    connect( helpContentAct, &QAction::triggered, this, &MainWindow::viewHelpContent );
+    helpMenu->addAction( helpContentAct );
+
     QAction *helpAboutAct = new QAction( tr( "About"), this );
     bVal = isView( VIEW_HELP, ACT_HELP_ABOUT );
     helpAboutAct->setCheckable(true);
@@ -3089,6 +3096,20 @@ void MainWindow::viewHelpHaltLog( bool bChecked )
     {
         help_tool_->removeAction( halt_log_act_ );
         unsetView( VIEW_HELP, ACT_HELP_HALT_LOG );
+    }
+}
+
+void MainWindow::viewHelpContent( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        help_tool_->addAction( content_act_ );
+        setView( VIEW_HELP, ACT_HELP_CONTENT );
+    }
+    else
+    {
+        help_tool_->removeAction( content_act_ );
+        unsetView( VIEW_HELP, ACT_HELP_CONTENT );
     }
 }
 
