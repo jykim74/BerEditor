@@ -99,15 +99,61 @@ public:
     void runSignVerify( bool bSign, bool bEncPri, const QString strPriPath, const QString strCertPath );
     void runPubEncDec( bool bEnc, bool bEncPri, const QString strPriPath, const QString strCertPath );
 
-    void viewFileBar();
-    void viewEditBar();
-    void viewToolBar();
-    void viewCryptBar();
-    void viewProtoBar();
-    void viewKMIPBar();
-    void viewHelpBar();
-
     void viewFileNew( bool bChecked );
+    void viewFileOpen( bool bChecked );
+    void viewFileOpenCert( bool bChecked );
+    void viewFileOpenCRL( bool bChecked );
+    void viewFileOpenCSR( bool bChecked );
+    void viewFileOpenPriKey( bool bChecked );
+    void viewFileOpenPubKey( bool bChecked );
+    void viewFileOpenCMS( bool bChecked );
+    void viewFileSave( bool bChecked );
+    void viewFilePrint( bool bChecked );
+
+    void viewEditExpandAll( bool bChecked );
+    void viewEditExpandNode( bool bChecked );
+    void viewEditCollapseAll( bool bChecked );
+    void viewEditCollapseNode( bool bChecked );
+
+    void viewToolDataEncode( bool bChecked );
+    void viewToolNumTrans( bool bChecked );
+    void viewToolOIDInfo( bool bChecked );
+    void viewToolMakeBER( bool bChecked );
+    void viewToolDecodeData( bool bChecked );
+    void viewToolGetURI( bool bChecked );
+
+    void viewCryptKeyMan( bool bChecked );
+    void viewCryptHash( bool bChecked );
+    void viewCryptMAC( bool bChecked );
+    void viewCryptEncDec( bool bChecked );
+    void viewCryptSignVerify( bool bChecked );
+    void viewCryptPubEnc( bool bChecked );
+    void viewCryptKeyAgree( bool bChecked );
+    void viewCryptCMS( bool bChecked );
+    void viewCryptSSS( bool bChecked );
+    void viewCryptCertPVD( bool bChecked );
+    void viewCryptOTPGen( bool bChecked );
+    void viewCryptVID( bool bChecked );
+    void viewCryptBNCalc( bool bChecked );
+    void viewCryptKeyPairMan( bool bChecked );
+    void viewCryptCertMan( bool bChecked );
+    void viewCryptCAVP( bool bChecked );
+    void viewCryptSSLVerify( bool bChecked );
+
+    void viewProtoOCSP( bool bChecked );
+    void viewProtoTSP( bool bChecked );
+    void viewProtoCMP( bool bChecked );
+    void viewProtoSCEP( bool bChecked );
+
+    void viewKMIPDecodeTTLV( bool bChecked );
+    void viewKMIPMakeTTLV( bool bChecked );
+    void viewKMIPEncodeTTLV( bool bChecked );
+    void viewKMIPClientTTLV( bool bChecked );
+
+    void viewHelpSettings( bool bChecked );
+    void viewHelpClearLog( bool bChecked );
+    void viewHelpHaltLog( bool bChecked );
+    void viewHelpAbout( bool bChecked );
 
 private slots:
     void changeTableTab();
@@ -319,8 +365,8 @@ private:
 
     QToolBar* help_tool_;
     QAction* setting_act_;
-    QAction* clear_act_;
-    QAction* log_act_;
+    QAction* clear_log_act_;
+    QAction* halt_log_act_;
     QAction* content_act_;
     QAction* lcn_act_;
     QAction* bug_issue_act_;

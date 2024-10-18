@@ -295,63 +295,366 @@ void MainWindow::loadFile(const QString &filename)
 
 void MainWindow::createViewActions()
 {
+    bool bVal = false;
     QMenu *viewMenu = menuBar()->addMenu( tr("&View" ));
 
-    QMenu *subMenu = viewMenu->addMenu( "File" );
+    QMenu *fileMenu = viewMenu->addMenu( tr("File ToolBar") );
+    QMenu *editMenu = viewMenu->addMenu( tr("Edit ToolBar") );
+    viewMenu->addSeparator();
+    QMenu *toolMenu = viewMenu->addMenu( tr("Tool ToolBar" ));
+    QMenu *cryptMenu = viewMenu->addMenu( tr( "Cryptogram ToolBar"));
+    QMenu *protoMenu = viewMenu->addMenu( tr( "Protocol ToolBar"));
+    QMenu *kmipMenu = viewMenu->addMenu( tr( "KMIP ToolBar"));
+    viewMenu->addSeparator();
+    QMenu *helpMenu = viewMenu->addMenu( tr( "Help ToolBar" ));
 
-    QAction *viewAct = new QAction( tr( "View File"), this );
-    connect( viewAct, &QAction::triggered, this, &MainWindow::viewFileBar );
-    viewAct->setCheckable(true );
-    viewAct->setChecked(true);
-    subMenu->addAction( viewAct );
-
-    QAction *fileNewAct = new QAction( tr( "View New"), this );
-    fileNewAct->setCheckable(true);
-    fileNewAct->setChecked( true );
-
+    QAction *fileNewAct = new QAction( tr( "New"), this );
+    bVal = isView( VIEW_FILE, ACT_FILE_NEW );
+    fileNewAct->setCheckable( true );
+    fileNewAct->setChecked( bVal );
     connect( fileNewAct, &QAction::triggered, this, &MainWindow::viewFileNew );
+    fileMenu->addAction( fileNewAct );
 
-    subMenu->addAction( fileNewAct );
+    QAction *fileOpenAct = new QAction( tr( "Open" ), this );
+    bVal = isView( VIEW_FILE, ACT_FILE_OPEN );
+    fileOpenAct->setCheckable( true );
+    fileOpenAct->setChecked( bVal );
+    connect( fileOpenAct, &QAction::triggered, this, &MainWindow::viewFileOpen );
+    fileMenu->addAction( fileOpenAct );
 
-    QAction *editAct = new QAction( tr( "View Edit"), this );
-    connect( editAct, &QAction::triggered, this, &MainWindow::viewEditBar );
-    editAct->setCheckable(true);
-    editAct->setChecked(true);
-    viewMenu->addAction( editAct );
+    QAction *fileOpenCertAct = new QAction( tr( "Open Certificate" ), this );
+    bVal = isView( VIEW_FILE, ACT_FILE_OPEN_CERT );
+    fileOpenCertAct->setCheckable( true );
+    fileOpenCertAct->setChecked( bVal );
+    connect( fileOpenCertAct, &QAction::triggered, this, &MainWindow::viewFileOpenCert );
+    fileMenu->addAction( fileOpenCertAct );
 
-    viewMenu->addSeparator();
+    QAction *fileOpenCRLAct = new QAction( tr( "Open CRL" ), this );
+    bVal = isView( VIEW_FILE, ACT_FILE_OPEN_CRL );
+    fileOpenCRLAct->setCheckable( true );
+    fileOpenCRLAct->setChecked( bVal );
+    connect( fileOpenCRLAct, &QAction::triggered, this, &MainWindow::viewFileOpenCRL );
+    fileMenu->addAction( fileOpenCRLAct );
 
-    QAction *toolAct = new QAction( tr( "View Tool"), this );
-    connect( toolAct, &QAction::triggered, this, &MainWindow::viewToolBar );
-    toolAct->setCheckable(true);
-    toolAct->setChecked(true);
-    viewMenu->addAction( toolAct );
+    QAction *fileOpenCSRAct = new QAction( tr( "Open CSR" ), this );
+    bVal = isView( VIEW_FILE, ACT_FILE_OPEN_CSR );
+    fileOpenCSRAct->setCheckable( true );
+    fileOpenCSRAct->setChecked( bVal );
+    connect( fileOpenCSRAct, &QAction::triggered, this, &MainWindow::viewFileOpenCSR );
+    fileMenu->addAction( fileOpenCSRAct );
 
-    QAction *cryptAct = new QAction( tr( "View Crypt"), this );
-    connect( cryptAct, &QAction::triggered, this, &MainWindow::viewCryptBar );
-    cryptAct->setCheckable(true);
-    cryptAct->setChecked(true);
-    viewMenu->addAction( cryptAct );
+    QAction *fileOpenPriKeyAct = new QAction( tr( "Open PrivateKey" ), this );
+    bVal = isView( VIEW_FILE, ACT_FILE_OPEN_PRI_KEY );
+    fileOpenPriKeyAct->setCheckable( true );
+    fileOpenPriKeyAct->setChecked( bVal );
+    connect( fileOpenPriKeyAct, &QAction::triggered, this, &MainWindow::viewFileOpenPriKey );
+    fileMenu->addAction( fileOpenPriKeyAct );
 
-    QAction *protoAct = new QAction( tr( "View Protocol"), this );
-    connect( protoAct, &QAction::triggered, this, &MainWindow::viewProtoBar );
-    protoAct->setCheckable(true);
-    protoAct->setChecked(true);
-    viewMenu->addAction( protoAct );
+    QAction *fileOpenPubKeyAct = new QAction( tr( "Open PublicKey" ), this );
+    bVal = isView( VIEW_FILE, ACT_FILE_OPEN_PUB_KEY );
+    fileOpenPubKeyAct->setCheckable( true );
+    fileOpenPubKeyAct->setChecked( bVal );
+    connect( fileOpenPubKeyAct, &QAction::triggered, this, &MainWindow::viewFileOpenPubKey );
+    fileMenu->addAction( fileOpenPubKeyAct );
 
-    QAction *kmipAct = new QAction( tr( "View KMIP"), this );
-    connect( kmipAct, &QAction::triggered, this, &MainWindow::viewKMIPBar );
-    kmipAct->setCheckable(true);
-    kmipAct->setChecked(true);
-    viewMenu->addAction( kmipAct );
+    QAction *fileOpenCMSAct = new QAction( tr( "Open CMS" ), this );
+    bVal = isView( VIEW_FILE, ACT_FILE_OPEN_CMS );
+    fileOpenCMSAct->setCheckable( true );
+    fileOpenCMSAct->setChecked( bVal );
+    connect( fileOpenCMSAct, &QAction::triggered, this, &MainWindow::viewFileOpenCMS );
+    fileMenu->addAction( fileOpenCMSAct );
 
-    viewMenu->addSeparator();
+    QAction *fileSaveAct = new QAction( tr( "Save" ), this );
+    bVal = isView( VIEW_FILE, ACT_FILE_SAVE );
+    fileSaveAct->setCheckable( true );
+    fileSaveAct->setChecked( bVal );
+    connect( fileSaveAct, &QAction::triggered, this, &MainWindow::viewFileSave );
+    fileMenu->addAction( fileSaveAct );
 
-    QAction *helpAct = new QAction( tr( "View Help"), this );
-    connect( helpAct, &QAction::triggered, this, &MainWindow::viewHelpBar );
-    helpAct->setCheckable(true);
-    helpAct->setChecked(true);
-    viewMenu->addAction( helpAct );
+    QAction *filePrintAct = new QAction( tr( "Print" ), this );
+    bVal = isView( VIEW_FILE, ACT_FILE_PRINT );
+    filePrintAct->setCheckable( true );
+    filePrintAct->setChecked( bVal );
+    connect( filePrintAct, &QAction::triggered, this, &MainWindow::viewFilePrint );
+    fileMenu->addAction( filePrintAct );
+
+
+
+    QAction *editExpandAllAct = new QAction( tr( "Expand All"), this );
+    bVal = isView( VIEW_EDIT, ACT_EDIT_EXPAND_ALL );
+    editExpandAllAct->setCheckable(true);
+    editExpandAllAct->setChecked(bVal);
+    connect( editExpandAllAct, &QAction::triggered, this, &MainWindow::viewEditExpandAll );
+    editMenu->addAction( editExpandAllAct );
+
+    QAction *editExpandNodeAct = new QAction( tr( "Expand Node"), this );
+    bVal = isView( VIEW_EDIT, ACT_EDIT_EXPAND_NODE );
+    editExpandNodeAct->setCheckable(true);
+    editExpandNodeAct->setChecked(bVal);
+    connect( editExpandNodeAct, &QAction::triggered, this, &MainWindow::viewEditExpandNode );
+    editMenu->addAction( editExpandNodeAct );
+
+    QAction *editCollapseAllAct = new QAction( tr( "Collapse All"), this );
+    bVal = isView( VIEW_EDIT, ACT_EDIT_COLLAPSE_ALL );
+    editCollapseAllAct->setCheckable(true);
+    editCollapseAllAct->setChecked(bVal);
+    connect( editCollapseAllAct, &QAction::triggered, this, &MainWindow::viewEditCollapseAll );
+    editMenu->addAction( editCollapseAllAct );
+
+    QAction *editCollapseNodeAct = new QAction( tr( "Collapse Node"), this );
+    bVal = isView( VIEW_EDIT, ACT_EDIT_COLLAPSE_NODE );
+    editCollapseNodeAct->setCheckable(true);
+    editCollapseNodeAct->setChecked(bVal);
+    connect( editCollapseNodeAct, &QAction::triggered, this, &MainWindow::viewEditCollapseNode );
+    editMenu->addAction( editCollapseNodeAct );
+
+
+
+    QAction *toolDataEncodeAct = new QAction( tr( "Data Encode"), this );
+    bVal = isView( VIEW_TOOL, ACT_TOOL_DATA_ENCODER );
+    toolDataEncodeAct->setCheckable(true);
+    toolDataEncodeAct->setChecked(bVal);
+    connect( toolDataEncodeAct, &QAction::triggered, this, &MainWindow::viewToolDataEncode );
+    toolMenu->addAction( toolDataEncodeAct );
+
+    QAction *toolNumTransAct = new QAction( tr( "NumTrans"), this );
+    bVal = isView( VIEW_TOOL, ACT_TOOL_NUM_TRANS );
+    toolNumTransAct->setCheckable(true);
+    toolNumTransAct->setChecked(bVal);
+    connect( toolNumTransAct, &QAction::triggered, this, &MainWindow::viewToolNumTrans );
+    toolMenu->addAction( toolNumTransAct );
+
+    QAction *toolOIDInfoAct = new QAction( tr( "OID Information"), this );
+    bVal = isView( VIEW_TOOL, ACT_TOOL_OID_INFO );
+    toolOIDInfoAct->setCheckable(true);
+    toolOIDInfoAct->setChecked(bVal);
+    connect( toolOIDInfoAct, &QAction::triggered, this, &MainWindow::viewToolOIDInfo );
+    toolMenu->addAction( toolOIDInfoAct );
+
+    QAction *toolMakeBERAct = new QAction( tr( "Make BER"), this );
+    bVal = isView( VIEW_TOOL, ACT_TOOL_MAKE_BER );
+    toolMakeBERAct->setCheckable(true);
+    toolMakeBERAct->setChecked(bVal);
+    connect( toolMakeBERAct, &QAction::triggered, this, &MainWindow::viewToolMakeBER );
+    toolMenu->addAction( toolMakeBERAct );
+
+    QAction *toolDecodeDataAct = new QAction( tr( "Decode Data"), this );
+    bVal = isView( VIEW_TOOL, ACT_TOOL_DECODE_DATA );
+    toolDecodeDataAct->setCheckable(true);
+    toolDecodeDataAct->setChecked(bVal);
+    connect( toolDecodeDataAct, &QAction::triggered, this, &MainWindow::viewToolDecodeData );
+    toolMenu->addAction( toolDecodeDataAct );
+
+    QAction *toolGetURIAct = new QAction( tr( "Get URI"), this );
+    bVal = isView( VIEW_TOOL, ACT_TOOL_GET_URI );
+    toolGetURIAct->setCheckable(true);
+    toolGetURIAct->setChecked(bVal);
+    connect( toolGetURIAct, &QAction::triggered, this, &MainWindow::viewToolGetURI );
+    toolMenu->addAction( toolGetURIAct );
+
+
+    QAction *cryptKeyManAct = new QAction( tr( "Key Manage"), this );
+    bVal = isView( VIEW_CRYPT, ACT_CRYPT_KEY_MAN );
+    cryptKeyManAct->setCheckable(true);
+    cryptKeyManAct->setChecked(bVal);
+    connect( cryptKeyManAct, &QAction::triggered, this, &MainWindow::viewCryptKeyMan );
+    cryptMenu->addAction( cryptKeyManAct );
+
+    QAction *cryptHashAct = new QAction( tr( "Hash"), this );
+    bVal = isView( VIEW_CRYPT, ACT_CRYPT_HASH );
+    cryptHashAct->setCheckable(true);
+    cryptHashAct->setChecked(bVal);
+    connect( cryptHashAct, &QAction::triggered, this, &MainWindow::viewCryptHash );
+    cryptMenu->addAction( cryptHashAct );
+
+    QAction *cryptMACAct = new QAction( tr( "MAC"), this );
+    bVal = isView( VIEW_CRYPT, ACT_CRYPT_MAC );
+    cryptMACAct->setCheckable(true);
+    cryptMACAct->setChecked(bVal);
+    connect( cryptMACAct, &QAction::triggered, this, &MainWindow::viewCryptMAC );
+    cryptMenu->addAction( cryptMACAct );
+
+    QAction *cryptEncDecAct = new QAction( tr( "Encrypt/Decrypt"), this );
+    bVal = isView( VIEW_CRYPT, ACT_CRYPT_ENC_DEC );
+    cryptEncDecAct->setCheckable(true);
+    cryptEncDecAct->setChecked(bVal);
+    connect( cryptEncDecAct, &QAction::triggered, this, &MainWindow::viewCryptEncDec );
+    cryptMenu->addAction( cryptEncDecAct );
+
+    QAction *cryptSignVerifyAct = new QAction( tr( "Sign/Verify"), this );
+    bVal = isView( VIEW_CRYPT, ACT_CRYPT_SIGN_VERIFY );
+    cryptSignVerifyAct->setCheckable(true);
+    cryptSignVerifyAct->setChecked(bVal);
+    connect( cryptSignVerifyAct, &QAction::triggered, this, &MainWindow::viewCryptSignVerify );
+    cryptMenu->addAction( cryptSignVerifyAct );
+
+    QAction *cryptPubEncAct = new QAction( tr( "PubKey Encrypt/Decrypt"), this );
+    bVal = isView( VIEW_CRYPT, ACT_CRYPT_PUB_ENC );
+    cryptPubEncAct->setCheckable(true);
+    cryptPubEncAct->setChecked(bVal);
+    connect( cryptPubEncAct, &QAction::triggered, this, &MainWindow::viewCryptPubEnc );
+    cryptMenu->addAction( cryptPubEncAct );
+
+    QAction *cryptKeyAgreeAct = new QAction( tr( "Key Agree"), this );
+    bVal = isView( VIEW_CRYPT, ACT_CRYPT_KEY_AGREE );
+    cryptKeyAgreeAct->setCheckable(true);
+    cryptKeyAgreeAct->setChecked(bVal);
+    connect( cryptKeyAgreeAct, &QAction::triggered, this, &MainWindow::viewCryptKeyAgree );
+    cryptMenu->addAction( cryptKeyAgreeAct );
+
+    QAction *cryptCMSAct = new QAction( tr( "CMS"), this );
+    bVal = isView( VIEW_CRYPT, ACT_CRYPT_CMS );
+    cryptCMSAct->setCheckable(true);
+    cryptCMSAct->setChecked(bVal);
+    connect( cryptCMSAct, &QAction::triggered, this, &MainWindow::viewCryptCMS );
+    cryptMenu->addAction( cryptCMSAct );
+
+    QAction *cryptSSSAct = new QAction( tr( "SSS"), this );
+    bVal = isView( VIEW_CRYPT, ACT_CRYPT_SSS );
+    cryptSSSAct->setCheckable(true);
+    cryptSSSAct->setChecked(bVal);
+    connect( cryptSSSAct, &QAction::triggered, this, &MainWindow::viewCryptSSS );
+    cryptMenu->addAction( cryptSSSAct );
+
+    QAction *cryptCertPVDAct = new QAction( tr( "Cert PathValidation"), this );
+    bVal = isView( VIEW_CRYPT, ACT_CRYPT_CERT_PVD );
+    cryptCertPVDAct->setCheckable(true);
+    cryptCertPVDAct->setChecked(bVal);
+    connect( cryptCertPVDAct, &QAction::triggered, this, &MainWindow::viewCryptCertPVD );
+    cryptMenu->addAction( cryptCertPVDAct );
+
+    QAction *cryptOTPGenAct = new QAction( tr( "OTP generate"), this );
+    bVal = isView( VIEW_CRYPT, ACT_CRYPT_OTP_GEN );
+    cryptOTPGenAct->setCheckable(true);
+    cryptOTPGenAct->setChecked(bVal);
+    connect( cryptOTPGenAct, &QAction::triggered, this, &MainWindow::viewCryptOTPGen );
+    cryptMenu->addAction( cryptOTPGenAct );
+
+    QAction *cryptVIDAct = new QAction( tr( "VID"), this );
+    bVal = isView( VIEW_CRYPT, ACT_CRYPT_VID );
+    cryptVIDAct->setCheckable(true);
+    cryptVIDAct->setChecked(bVal);
+    connect( cryptVIDAct, &QAction::triggered, this, &MainWindow::viewCryptVID );
+    cryptMenu->addAction( cryptVIDAct );
+
+    QAction *cryptBNCalcAct = new QAction( tr( "BN Calculator"), this );
+    bVal = isView( VIEW_CRYPT, ACT_CRYPT_BN_CALC );
+    cryptBNCalcAct->setCheckable(true);
+    cryptBNCalcAct->setChecked(bVal);
+    connect( cryptBNCalcAct, &QAction::triggered, this, &MainWindow::viewCryptBNCalc );
+    cryptMenu->addAction( cryptBNCalcAct );
+
+    QAction *cryptKeyPairManAct = new QAction( tr( "KeyPair Manage"), this );
+    bVal = isView( VIEW_CRYPT, ACT_CRYPT_KEY_PAIR_MAN );
+    cryptKeyPairManAct->setCheckable(true);
+    cryptKeyPairManAct->setChecked(bVal);
+    connect( cryptKeyPairManAct, &QAction::triggered, this, &MainWindow::viewCryptKeyPairMan );
+    cryptMenu->addAction( cryptKeyPairManAct );
+
+    QAction *cryptCertManAct = new QAction( tr( "Certificate Manage"), this );
+    bVal = isView( VIEW_CRYPT, ACT_CRYPT_CERT_MAN );
+    cryptCertManAct->setCheckable(true);
+    cryptCertManAct->setChecked(bVal);
+    connect( cryptCertManAct, &QAction::triggered, this, &MainWindow::viewCryptCertMan );
+    cryptMenu->addAction( cryptCertManAct );
+
+    QAction *cryptCAVPAct = new QAction( tr( "CAVP"), this );
+    bVal = isView( VIEW_CRYPT, ACT_CRYPT_CAVP );
+    cryptCAVPAct->setCheckable(true);
+    cryptCAVPAct->setChecked(bVal);
+    connect( cryptCAVPAct, &QAction::triggered, this, &MainWindow::viewCryptCAVP );
+    cryptMenu->addAction( cryptCAVPAct );
+
+    QAction *cryptSSLVerifyAct = new QAction( tr( "SSL Verify"), this );
+    bVal = isView( VIEW_CRYPT, ACT_CRYPT_SSL_VERIFY );
+    cryptSSLVerifyAct->setCheckable(true);
+    cryptSSLVerifyAct->setChecked(bVal);
+    connect( cryptSSLVerifyAct, &QAction::triggered, this, &MainWindow::viewCryptSSLVerify );
+    cryptMenu->addAction( cryptSSLVerifyAct );
+
+    QAction *protoOCSPAct = new QAction( tr( "OCSP client"), this );
+    bVal = isView( VIEW_PROTO, ACT_PROTO_OCSP );
+    protoOCSPAct->setCheckable(true);
+    protoOCSPAct->setChecked(bVal);
+    connect( protoOCSPAct, &QAction::triggered, this, &MainWindow::viewProtoOCSP );
+    protoMenu->addAction( protoOCSPAct );
+
+    QAction *protoTSPAct = new QAction( tr( "TSP client"), this );
+    bVal = isView( VIEW_PROTO, ACT_PROTO_TSP );
+    protoTSPAct->setCheckable(true);
+    protoTSPAct->setChecked(bVal);
+    connect( protoTSPAct, &QAction::triggered, this, &MainWindow::viewProtoTSP );
+    protoMenu->addAction( protoTSPAct );
+
+    QAction *protoCMPAct = new QAction( tr( "CMP client"), this );
+    bVal = isView( VIEW_PROTO, ACT_PROTO_CMP );
+    protoCMPAct->setCheckable(true);
+    protoCMPAct->setChecked(bVal);
+    connect( protoCMPAct, &QAction::triggered, this, &MainWindow::viewProtoCMP );
+    protoMenu->addAction( protoCMPAct );
+
+    QAction *protoSCEPAct = new QAction( tr( "SCEP client"), this );
+    bVal = isView( VIEW_PROTO, ACT_PROTO_SCEP );
+    protoSCEPAct->setCheckable(true);
+    protoSCEPAct->setChecked(bVal);
+    connect( protoSCEPAct, &QAction::triggered, this, &MainWindow::viewProtoSCEP );
+    protoMenu->addAction( protoSCEPAct );
+
+    QAction *kmipDecodeTTLVAct = new QAction( tr( "Decode TTLV"), this );
+    bVal = isView( VIEW_KMIP, ACT_KMIP_DECODE_TTLV );
+    kmipDecodeTTLVAct->setCheckable(true);
+    kmipDecodeTTLVAct->setChecked(bVal);
+    connect( kmipDecodeTTLVAct, &QAction::triggered, this, &MainWindow::viewKMIPDecodeTTLV );
+    kmipMenu->addAction( kmipDecodeTTLVAct );
+
+    QAction *kmipMakeTTLVAct = new QAction( tr( "Make TTLV"), this );
+    bVal = isView( VIEW_KMIP, ACT_KMIP_MAKE_TTLV );
+    kmipMakeTTLVAct->setCheckable(true);
+    kmipMakeTTLVAct->setChecked(bVal);
+    connect( kmipMakeTTLVAct, &QAction::triggered, this, &MainWindow::viewKMIPMakeTTLV );
+    kmipMenu->addAction( kmipMakeTTLVAct );
+
+    QAction *kmipEncodeTTLVAct = new QAction( tr( "TTLV Encoder"), this );
+    bVal = isView( VIEW_KMIP, ACT_KMIP_ENCODE_TTLV );
+    kmipEncodeTTLVAct->setCheckable(true);
+    kmipEncodeTTLVAct->setChecked(bVal);
+    connect( kmipEncodeTTLVAct, &QAction::triggered, this, &MainWindow::viewKMIPEncodeTTLV );
+    kmipMenu->addAction( kmipEncodeTTLVAct );
+
+    QAction *kmipClientTTLVAct = new QAction( tr( "TTLV Client"), this );
+    bVal = isView( VIEW_KMIP, ACT_KMIP_CLIENT_TTLV );
+    kmipClientTTLVAct->setCheckable(true);
+    kmipClientTTLVAct->setChecked(bVal);
+    connect( kmipClientTTLVAct, &QAction::triggered, this, &MainWindow::viewKMIPClientTTLV );
+    kmipMenu->addAction( kmipClientTTLVAct );
+
+    QAction *helpSettingsAct = new QAction( tr( "Settings"), this );
+    bVal = isView( VIEW_HELP, ACT_HELP_SETTINGS );
+    helpSettingsAct->setCheckable(true);
+    helpSettingsAct->setChecked(bVal);
+    connect( helpSettingsAct, &QAction::triggered, this, &MainWindow::viewHelpSettings );
+    helpMenu->addAction( helpSettingsAct );
+
+    QAction *helpClearLogAct = new QAction( tr( "Clear Log"), this );
+    bVal = isView( VIEW_HELP, ACT_HELP_CLEAR_LOG );
+    helpClearLogAct->setCheckable(true);
+    helpClearLogAct->setChecked(bVal);
+    connect( helpClearLogAct, &QAction::triggered, this, &MainWindow::viewHelpClearLog );
+    helpMenu->addAction( helpClearLogAct );
+
+    QAction *helpHaltLogAct = new QAction( tr( "Halt Log"), this );
+    bVal = isView( VIEW_HELP, ACT_HELP_HALT_LOG );
+    helpHaltLogAct->setCheckable(true);
+    helpHaltLogAct->setChecked(bVal);
+    connect( helpHaltLogAct, &QAction::triggered, this, &MainWindow::viewHelpHaltLog );
+    helpMenu->addAction( helpHaltLogAct );
+
+    QAction *helpAboutAct = new QAction( tr( "About"), this );
+    bVal = isView( VIEW_HELP, ACT_HELP_ABOUT );
+    helpAboutAct->setCheckable(true);
+    helpAboutAct->setChecked(bVal);
+    connect( helpAboutAct, &QAction::triggered, this, &MainWindow::viewHelpAbout );
+    helpMenu->addAction( helpAboutAct );
 }
 
 void MainWindow::createActions()
@@ -406,16 +709,17 @@ void MainWindow::createActions()
     fileMenu->addAction(open_csr_act_);
     if( isView( VIEW_FILE, ACT_FILE_OPEN_CSR ) ) file_tool_->addAction( open_csr_act_ );
 
-    const QIcon openKeyPairIcon = QIcon::fromTheme("document-csr", QIcon(":/images/keypair.png"));
+    const QIcon priKeyIcon = QIcon::fromTheme("document-csr", QIcon(":/images/pri_key.png"));
 
-    open_pri_key_act_ = new QAction( openKeyPairIcon, tr("&Open PrivateKey"), this );
+    open_pri_key_act_ = new QAction( priKeyIcon, tr("&Open PrivateKey"), this );
     open_pri_key_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_R));
     open_pri_key_act_->setStatusTip(tr("Open PrivateKey"));
     connect( open_pri_key_act_, &QAction::triggered, this, &MainWindow::openPriKey);
     fileMenu->addAction(open_pri_key_act_);
     if( isView( VIEW_FILE, ACT_FILE_OPEN_PRI_KEY ) ) file_tool_->addAction( open_pri_key_act_ );
 
-    open_pub_key_act_ = new QAction( openKeyPairIcon, tr("&Open PublicKey"), this );
+    const QIcon pubKeyIcon = QIcon::fromTheme("document-csr", QIcon(":/images/pub_key.png"));
+    open_pub_key_act_ = new QAction( pubKeyIcon, tr("&Open PublicKey"), this );
     open_pub_key_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_U));
     open_pub_key_act_->setStatusTip(tr("Open PublicKey"));
     connect( open_pub_key_act_, &QAction::triggered, this, &MainWindow::openPubKey);
@@ -881,21 +1185,21 @@ void MainWindow::createActions()
     if( isView( VIEW_HELP, ACT_HELP_SETTINGS ) ) help_tool_->addAction( setting_act_ );
 
     const QIcon clearIcon = QIcon::fromTheme( "clear-log", QIcon(":/images/clear.png"));
-    clear_act_ = new QAction( clearIcon, tr("&Clear Log"), this );
-    connect( clear_act_, &QAction::triggered, this, &MainWindow::clearLog );
-    clear_act_->setShortcut( QKeySequence(Qt::Key_F9));
-    clear_act_->setStatusTip(tr("clear information and log"));
-    helpMenu->addAction( clear_act_ );
-    if( isView( VIEW_HELP, ACT_HELP_CLEAR_LOG ) ) help_tool_->addAction( clear_act_ );
+    clear_log_act_ = new QAction( clearIcon, tr("&Clear Log"), this );
+    connect( clear_log_act_, &QAction::triggered, this, &MainWindow::clearLog );
+    clear_log_act_->setShortcut( QKeySequence(Qt::Key_F9));
+    clear_log_act_->setStatusTip(tr("clear information and log"));
+    helpMenu->addAction( clear_log_act_ );
+    if( isView( VIEW_HELP, ACT_HELP_CLEAR_LOG ) ) help_tool_->addAction( clear_log_act_ );
 
     QIcon logIcon = QIcon::fromTheme( "log-halt", QIcon(":/images/log_halt.png" ));
-    log_act_ = new QAction( logIcon, tr( "&Log Halt" ), this );
-    connect( log_act_, &QAction::triggered, this, &MainWindow::toggleLog );
-    log_act_->setShortcut( QKeySequence(Qt::Key_F10));
-    log_act_->setCheckable(true);
-    log_act_->setStatusTip( tr( "Log Halt" ));
-    helpMenu->addAction( log_act_ );
-    if( isView( VIEW_HELP, ACT_HELP_HALT_LOG ) ) help_tool_->addAction( log_act_ );
+    halt_log_act_ = new QAction( logIcon, tr( "&Log Halt" ), this );
+    connect( halt_log_act_, &QAction::triggered, this, &MainWindow::toggleLog );
+    halt_log_act_->setShortcut( QKeySequence(Qt::Key_F10));
+    halt_log_act_->setCheckable(true);
+    halt_log_act_->setStatusTip( tr( "Log Halt" ));
+    helpMenu->addAction( halt_log_act_ );
+    if( isView( VIEW_HELP, ACT_HELP_HALT_LOG ) ) help_tool_->addAction( halt_log_act_ );
 
     QIcon infoIcon = QIcon::fromTheme( "content", QIcon(":/images/info.png"));
     content_act_ = new QAction( infoIcon, tr( "Content" ), this );
@@ -907,8 +1211,8 @@ void MainWindow::createActions()
 
     if( berApplet->isLicense() == false )
     {
-        clear_act_->setEnabled( false );
-        log_act_->setEnabled( false );
+        clear_log_act_->setEnabled( false );
+        halt_log_act_->setEnabled( false );
     }
 
     const QIcon lcnIcon = QIcon::fromTheme("berview-license", QIcon(":/images/license.png"));
@@ -1743,7 +2047,7 @@ void MainWindow::unsetView( ViewType type, int nAct )
     int nValue = berApplet->settingsMgr()->getViewValue( type );
     if( nValue < 0 ) return;
 
-    nValue ^= nAct;
+    if( nValue & nAct ) nValue -= nAct;
 
     berApplet->settingsMgr()->setViewValue( type, nValue );
 }
@@ -2108,71 +2412,697 @@ void MainWindow::runPubEncDec( bool bEnc, bool bEncPri, const QString strPriPath
     pub_enc_dec_dlg_->activateWindow();
 }
 
-void MainWindow::viewFileBar()
-{
-    if( file_tool_->isHidden() )
-        file_tool_->show();
-    else
-        file_tool_->hide();
-}
-
-void MainWindow::viewEditBar()
-{
-    if( edit_tool_->isHidden() )
-        edit_tool_->show();
-    else
-        edit_tool_->hide();
-}
-
-void MainWindow::viewToolBar()
-{
-    if( tool_tool_->isHidden() )
-        tool_tool_->show();
-    else
-        tool_tool_->hide();
-}
-
-void MainWindow::viewCryptBar()
-{
-    if( crypt_tool_->isHidden() )
-        crypt_tool_->show();
-    else
-        crypt_tool_->hide();
-}
-
-void MainWindow::viewProtoBar()
-{
-    if( proto_tool_->isHidden() )
-        proto_tool_->show();
-    else
-        proto_tool_->hide();
-}
-
-void MainWindow::viewKMIPBar()
-{
-    if( kmip_tool_->isHidden() )
-        kmip_tool_->show();
-    else
-        kmip_tool_->hide();
-}
-
-void MainWindow::viewHelpBar()
-{
-    if( help_tool_->isHidden() )
-        help_tool_->show();
-    else
-        help_tool_->hide();
-}
-
 
 void MainWindow::viewFileNew( bool bChecked )
 {
     berApplet->log( QString( "Checked: %1").arg( bChecked ));
 
     if( bChecked == true )
+    {
         file_tool_->addAction( new_act_ );
+        setView( VIEW_FILE, ACT_FILE_NEW );
+    }
     else
+    {
         file_tool_->removeAction( new_act_ );
+        unsetView( VIEW_FILE, ACT_FILE_NEW );
+    }
+}
+
+void MainWindow::viewFileOpen( bool bChecked )
+{
+    berApplet->log( QString( "Checked: %1").arg( bChecked ));
+
+    if( bChecked == true )
+    {
+        file_tool_->addAction( open_act_ );
+        setView( VIEW_FILE, ACT_FILE_OPEN );
+    }
+    else
+    {
+        file_tool_->removeAction( open_act_ );
+        unsetView( VIEW_FILE, ACT_FILE_OPEN );
+    }
+}
+
+void MainWindow::viewFileOpenCert( bool bChecked )
+{
+    berApplet->log( QString( "Checked: %1").arg( bChecked ));
+
+    if( bChecked == true )
+    {
+        file_tool_->addAction( open_cert_act_ );
+        setView( VIEW_FILE, ACT_FILE_OPEN_CERT );
+    }
+    else
+    {
+        file_tool_->removeAction( open_cert_act_ );
+        unsetView( VIEW_FILE, ACT_FILE_OPEN_CERT );
+    }
+}
+
+void MainWindow::viewFileOpenCRL( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        file_tool_->addAction( open_crl_act_ );
+        setView( VIEW_FILE, ACT_FILE_OPEN_CRL );
+    }
+    else
+    {
+        file_tool_->removeAction( open_crl_act_ );
+        unsetView( VIEW_FILE, ACT_FILE_OPEN_CRL );
+    }
+}
+
+void MainWindow::viewFileOpenCSR( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        file_tool_->addAction( open_csr_act_ );
+        setView( VIEW_FILE, ACT_FILE_OPEN_CSR );
+    }
+    else
+    {
+        file_tool_->removeAction( open_csr_act_ );
+        unsetView( VIEW_FILE, ACT_FILE_OPEN_CSR );
+    }
+}
+
+void MainWindow::viewFileOpenPriKey( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        file_tool_->addAction( open_pri_key_act_ );
+        setView( VIEW_FILE, ACT_FILE_OPEN_PRI_KEY );
+    }
+    else
+    {
+        file_tool_->removeAction( open_pri_key_act_ );
+        unsetView( VIEW_FILE, ACT_FILE_OPEN_PRI_KEY );
+    }
+}
+
+void MainWindow::viewFileOpenPubKey( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        file_tool_->addAction( open_pub_key_act_ );
+        setView( VIEW_FILE, ACT_FILE_OPEN_PUB_KEY );
+    }
+    else
+    {
+        file_tool_->removeAction( open_pub_key_act_ );
+        unsetView( VIEW_FILE, ACT_FILE_OPEN_PUB_KEY );
+    }
+}
+
+void MainWindow::viewFileOpenCMS( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        file_tool_->addAction( open_cms_act_ );
+        setView( VIEW_FILE, ACT_FILE_OPEN_CMS );
+    }
+    else
+    {
+        file_tool_->removeAction( open_cms_act_ );
+        unsetView( VIEW_FILE, ACT_FILE_OPEN_CMS );
+    }
+}
+
+void MainWindow::viewFileSave( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        file_tool_->addAction( save_act_ );
+        setView( VIEW_FILE, ACT_FILE_SAVE );
+    }
+    else
+    {
+        file_tool_->removeAction( save_act_ );
+        unsetView( VIEW_FILE, ACT_FILE_SAVE );
+    }
+}
+
+void MainWindow::viewFilePrint( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        file_tool_->addAction( print_act_ );
+        setView( VIEW_FILE, ACT_FILE_PRINT );
+    }
+    else
+    {
+        file_tool_->removeAction( print_act_ );
+        unsetView( VIEW_FILE, ACT_FILE_PRINT );
+    }
+}
+
+void MainWindow::viewEditExpandAll( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        edit_tool_->addAction( expand_all_act_ );
+        setView( VIEW_EDIT, ACT_EDIT_EXPAND_ALL );
+    }
+    else
+    {
+        edit_tool_->removeAction( expand_all_act_ );
+        unsetView( VIEW_EDIT, ACT_EDIT_EXPAND_ALL );
+    }
+}
+
+void MainWindow::viewEditExpandNode( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        edit_tool_->addAction( expand_node_act_ );
+        setView( VIEW_EDIT, ACT_EDIT_EXPAND_NODE );
+    }
+    else
+    {
+        edit_tool_->removeAction( expand_node_act_ );
+        unsetView( VIEW_EDIT, ACT_EDIT_EXPAND_NODE );
+    }
+}
+
+void MainWindow::viewEditCollapseAll( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        edit_tool_->addAction( collapse_all_act_ );
+        setView( VIEW_EDIT, ACT_EDIT_COLLAPSE_ALL );
+    }
+    else
+    {
+        edit_tool_->removeAction( collapse_all_act_ );
+        unsetView( VIEW_EDIT, ACT_EDIT_COLLAPSE_ALL );
+    }
+}
+
+void MainWindow::viewEditCollapseNode( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        edit_tool_->addAction( collapse_node_act_ );
+        setView( VIEW_EDIT, ACT_EDIT_COLLAPSE_NODE );
+    }
+    else
+    {
+        edit_tool_->removeAction( collapse_node_act_ );
+        unsetView( VIEW_EDIT, ACT_EDIT_COLLAPSE_NODE );
+    }
+}
+
+void MainWindow::viewToolDataEncode( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        tool_tool_->addAction( data_encode_act_ );
+        setView( VIEW_TOOL, ACT_TOOL_DATA_ENCODER );
+    }
+    else
+    {
+        tool_tool_->removeAction( data_encode_act_ );
+        unsetView( VIEW_TOOL, ACT_TOOL_DATA_ENCODER );
+    }
+}
+
+void MainWindow::viewToolNumTrans( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        tool_tool_->addAction( num_trans_act_ );
+        setView( VIEW_TOOL, ACT_TOOL_NUM_TRANS );
+    }
+    else
+    {
+        tool_tool_->removeAction( num_trans_act_ );
+        unsetView( VIEW_TOOL, ACT_TOOL_NUM_TRANS );
+    }
+}
+
+void MainWindow::viewToolOIDInfo( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        tool_tool_->addAction( oid_act_ );
+        setView( VIEW_TOOL, ACT_TOOL_OID_INFO );
+    }
+    else
+    {
+        tool_tool_->removeAction( oid_act_ );
+        unsetView( VIEW_TOOL, ACT_TOOL_OID_INFO );
+    }
+}
+
+void MainWindow::viewToolMakeBER( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        tool_tool_->addAction( make_ber_act_ );
+        setView( VIEW_TOOL, ACT_TOOL_MAKE_BER );
+    }
+    else
+    {
+        tool_tool_->removeAction( make_ber_act_ );
+        unsetView( VIEW_TOOL, ACT_TOOL_MAKE_BER );
+    }
+}
+
+void MainWindow::viewToolDecodeData( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        tool_tool_->addAction( decode_data_act_ );
+        setView( VIEW_TOOL, ACT_TOOL_DECODE_DATA );
+    }
+    else
+    {
+        tool_tool_->removeAction( decode_data_act_ );
+        unsetView( VIEW_TOOL, ACT_TOOL_DECODE_DATA );
+    }
+}
+
+void MainWindow::viewToolGetURI( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        tool_tool_->addAction( get_uri_act_ );
+        setView( VIEW_TOOL, ACT_TOOL_GET_URI );
+    }
+    else
+    {
+        tool_tool_->removeAction( get_uri_act_ );
+        unsetView( VIEW_TOOL, ACT_TOOL_GET_URI );
+    }
+}
+
+void MainWindow::viewCryptKeyMan( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        crypt_tool_->addAction( key_man_act_ );
+        setView( VIEW_CRYPT, ACT_CRYPT_KEY_MAN );
+    }
+    else
+    {
+        crypt_tool_->removeAction( key_man_act_ );
+        unsetView( VIEW_CRYPT, ACT_CRYPT_KEY_MAN );
+    }
+}
+
+void MainWindow::viewCryptHash( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        crypt_tool_->addAction( hash_act_ );
+        setView( VIEW_CRYPT, ACT_CRYPT_HASH );
+    }
+    else
+    {
+        crypt_tool_->removeAction( hash_act_ );
+        unsetView( VIEW_CRYPT, ACT_CRYPT_HASH );
+    }
+}
+
+void MainWindow::viewCryptMAC( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        crypt_tool_->addAction( mac_act_ );
+        setView( VIEW_CRYPT, ACT_CRYPT_MAC );
+    }
+    else
+    {
+        crypt_tool_->removeAction( mac_act_ );
+        unsetView( VIEW_CRYPT, ACT_CRYPT_MAC );
+    }
+}
+
+void MainWindow::viewCryptEncDec( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        crypt_tool_->addAction( enc_dec_act_ );
+        setView( VIEW_CRYPT, ACT_CRYPT_ENC_DEC );
+    }
+    else
+    {
+        crypt_tool_->removeAction( enc_dec_act_ );
+        unsetView( VIEW_CRYPT, ACT_CRYPT_ENC_DEC );
+    }
+}
+
+void MainWindow::viewCryptSignVerify( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        crypt_tool_->addAction( sign_verify_act_ );
+        setView( VIEW_CRYPT, ACT_CRYPT_SIGN_VERIFY );
+    }
+    else
+    {
+        crypt_tool_->removeAction( sign_verify_act_ );
+        unsetView( VIEW_CRYPT, ACT_CRYPT_SIGN_VERIFY );
+    }
+}
+
+void MainWindow::viewCryptPubEnc( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        crypt_tool_->addAction( pub_enc_dec_act_ );
+        setView( VIEW_CRYPT, ACT_CRYPT_PUB_ENC );
+    }
+    else
+    {
+        crypt_tool_->removeAction( pub_enc_dec_act_ );
+        unsetView( VIEW_CRYPT, ACT_CRYPT_PUB_ENC );
+    }
+}
+
+void MainWindow::viewCryptKeyAgree( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        crypt_tool_->addAction( key_agree_act_ );
+        setView( VIEW_CRYPT, ACT_CRYPT_KEY_AGREE );
+    }
+    else
+    {
+        crypt_tool_->removeAction( key_agree_act_ );
+        unsetView( VIEW_CRYPT, ACT_CRYPT_KEY_AGREE );
+    }
+}
+
+void MainWindow::viewCryptCMS( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        crypt_tool_->addAction( cms_act_ );
+        setView( VIEW_CRYPT, ACT_CRYPT_CMS );
+    }
+    else
+    {
+        crypt_tool_->removeAction( cms_act_ );
+        unsetView( VIEW_CRYPT, ACT_CRYPT_CMS );
+    }
+}
+
+void MainWindow::viewCryptSSS( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        crypt_tool_->addAction( sss_act_ );
+        setView( VIEW_CRYPT, ACT_CRYPT_SSS );
+    }
+    else
+    {
+        crypt_tool_->removeAction( sss_act_ );
+        unsetView( VIEW_CRYPT, ACT_CRYPT_SSS );
+    }
+}
+
+void MainWindow::viewCryptCertPVD( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        crypt_tool_->addAction( cert_pvd_act_ );
+        setView( VIEW_CRYPT, ACT_CRYPT_CERT_PVD );
+    }
+    else
+    {
+        crypt_tool_->removeAction( cert_pvd_act_ );
+        unsetView( VIEW_CRYPT, ACT_CRYPT_CERT_PVD );
+    }
+}
+
+void MainWindow::viewCryptOTPGen( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        crypt_tool_->addAction( gen_otp_act_ );
+        setView( VIEW_CRYPT, ACT_CRYPT_OTP_GEN );
+    }
+    else
+    {
+        crypt_tool_->removeAction( gen_otp_act_ );
+        unsetView( VIEW_CRYPT, ACT_CRYPT_OTP_GEN );
+    }
+}
+
+void MainWindow::viewCryptVID( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        crypt_tool_->addAction( vid_act_ );
+        setView( VIEW_CRYPT, ACT_CRYPT_VID );
+    }
+    else
+    {
+        crypt_tool_->removeAction( vid_act_ );
+        unsetView( VIEW_CRYPT, ACT_CRYPT_VID );
+    }
+}
+
+void MainWindow::viewCryptBNCalc( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        crypt_tool_->addAction( calc_act_ );
+        setView( VIEW_CRYPT, ACT_CRYPT_BN_CALC );
+    }
+    else
+    {
+        crypt_tool_->removeAction( calc_act_ );
+        unsetView( VIEW_CRYPT, ACT_CRYPT_BN_CALC );
+    }
+}
+
+void MainWindow::viewCryptKeyPairMan( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        crypt_tool_->addAction( key_pair_man_act_ );
+        setView( VIEW_CRYPT, ACT_CRYPT_KEY_PAIR_MAN );
+    }
+    else
+    {
+        crypt_tool_->removeAction( key_pair_man_act_ );
+        unsetView( VIEW_CRYPT, ACT_CRYPT_KEY_PAIR_MAN );
+    }
+}
+
+void MainWindow::viewCryptCertMan( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        crypt_tool_->addAction( cert_man_act_ );
+        setView( VIEW_CRYPT, ACT_CRYPT_CERT_MAN );
+    }
+    else
+    {
+        crypt_tool_->removeAction( cert_man_act_ );
+        unsetView( VIEW_CRYPT, ACT_CRYPT_CERT_MAN );
+    }
+}
+
+void MainWindow::viewCryptCAVP( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        crypt_tool_->addAction( cavp_act_ );
+        setView( VIEW_CRYPT, ACT_CRYPT_CAVP );
+    }
+    else
+    {
+        crypt_tool_->removeAction( cavp_act_ );
+        unsetView( VIEW_CRYPT, ACT_CRYPT_CAVP );
+    }
+}
+
+void MainWindow::viewCryptSSLVerify( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        crypt_tool_->addAction( ssl_act_ );
+        setView( VIEW_CRYPT, ACT_CRYPT_SSL_VERIFY );
+    }
+    else
+    {
+        crypt_tool_->removeAction( ssl_act_ );
+        unsetView( VIEW_CRYPT, ACT_CRYPT_SSL_VERIFY );
+    }
+}
+
+void MainWindow::viewProtoOCSP( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        proto_tool_->addAction( ocsp_act_ );
+        setView( VIEW_PROTO, ACT_PROTO_OCSP );
+    }
+    else
+    {
+        proto_tool_->removeAction( ocsp_act_ );
+        unsetView( VIEW_PROTO, ACT_PROTO_OCSP );
+    }
+}
+
+void MainWindow::viewProtoTSP( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        proto_tool_->addAction( tsp_act_ );
+        setView( VIEW_PROTO, ACT_PROTO_TSP );
+    }
+    else
+    {
+        proto_tool_->removeAction( tsp_act_ );
+        unsetView( VIEW_PROTO, ACT_PROTO_TSP );
+    }
+}
+
+void MainWindow::viewProtoCMP( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        proto_tool_->addAction( cmp_act_ );
+        setView( VIEW_PROTO, ACT_PROTO_CMP );
+    }
+    else
+    {
+        proto_tool_->removeAction( cmp_act_ );
+        unsetView( VIEW_PROTO, ACT_PROTO_CMP );
+    }
+}
+
+void MainWindow::viewProtoSCEP( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        proto_tool_->addAction( scep_act_ );
+        setView( VIEW_PROTO, ACT_PROTO_SCEP );
+    }
+    else
+    {
+        proto_tool_->removeAction( scep_act_ );
+        unsetView( VIEW_PROTO, ACT_PROTO_SCEP );
+    }
+}
+
+void MainWindow::viewKMIPDecodeTTLV( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        kmip_tool_->addAction( ttlv_decode_act_ );
+        setView( VIEW_KMIP, ACT_KMIP_DECODE_TTLV );
+    }
+    else
+    {
+        kmip_tool_->removeAction( ttlv_decode_act_ );
+        unsetView( VIEW_KMIP, ACT_KMIP_DECODE_TTLV );
+    }
+}
+
+void MainWindow::viewKMIPMakeTTLV( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        kmip_tool_->addAction( ttlv_make_act_ );
+        setView( VIEW_KMIP, ACT_KMIP_MAKE_TTLV );
+    }
+    else
+    {
+        kmip_tool_->removeAction( ttlv_make_act_ );
+        unsetView( VIEW_KMIP, ACT_KMIP_MAKE_TTLV );
+    }
+}
+
+void MainWindow::viewKMIPEncodeTTLV( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        kmip_tool_->addAction( ttlv_encode_act_ );
+        setView( VIEW_KMIP, ACT_KMIP_ENCODE_TTLV );
+    }
+    else
+    {
+        kmip_tool_->removeAction( ttlv_encode_act_ );
+        unsetView( VIEW_KMIP, ACT_KMIP_ENCODE_TTLV );
+    }
+}
+
+void MainWindow::viewKMIPClientTTLV( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        kmip_tool_->addAction( ttlv_client_act_ );
+        setView( VIEW_KMIP, ACT_KMIP_CLIENT_TTLV );
+    }
+    else
+    {
+        kmip_tool_->removeAction( ttlv_client_act_ );
+        unsetView( VIEW_KMIP, ACT_KMIP_CLIENT_TTLV );
+    }
+}
+
+void MainWindow::viewHelpSettings( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        help_tool_->addAction( setting_act_ );
+        setView( VIEW_HELP, ACT_HELP_SETTINGS );
+    }
+    else
+    {
+        help_tool_->removeAction( setting_act_ );
+        unsetView( VIEW_HELP, ACT_HELP_SETTINGS );
+    }
+}
+
+void MainWindow::viewHelpClearLog( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        help_tool_->addAction( clear_log_act_ );
+        setView( VIEW_HELP, ACT_HELP_CLEAR_LOG );
+    }
+    else
+    {
+        help_tool_->removeAction( clear_log_act_ );
+        unsetView( VIEW_HELP, ACT_HELP_CLEAR_LOG );
+    }
+}
+
+void MainWindow::viewHelpHaltLog( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        help_tool_->addAction( halt_log_act_ );
+        setView( VIEW_HELP, ACT_HELP_HALT_LOG );
+    }
+    else
+    {
+        help_tool_->removeAction( halt_log_act_ );
+        unsetView( VIEW_HELP, ACT_HELP_HALT_LOG );
+    }
+}
+
+void MainWindow::viewHelpAbout( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        help_tool_->addAction( about_act_ );
+        setView( VIEW_HELP, ACT_HELP_ABOUT );
+    }
+    else
+    {
+        help_tool_->removeAction( about_act_ );
+        unsetView( VIEW_HELP, ACT_HELP_ABOUT );
+    }
 }
 
 void MainWindow::save()

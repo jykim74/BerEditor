@@ -88,5 +88,7 @@
         <file>ASN1/PKCS12.asn1</file>
         <file>ASN1/PKCS7.asn1</file>
         <file>ASN1/TSP.asn1</file>
+        <file>images/pri_key.png</file>
+        <file>images/pub_key.png</file>
     </qresource>
 </RCC>
