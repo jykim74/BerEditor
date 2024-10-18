@@ -90,5 +90,7 @@
         <file>ASN1/TSP.asn1</file>
         <file>images/pri_key.png</file>
         <file>images/pub_key.png</file>
+        <file>images/cert_man.png</file>
+        <file>images/cms_open.png</file>
     </qresource>
 </RCC>

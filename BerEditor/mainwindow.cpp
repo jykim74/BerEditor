@@ -735,7 +735,7 @@ void MainWindow::createActions()
     if( isView( VIEW_FILE, ACT_FILE_OPEN_PUB_KEY ) ) file_tool_->addAction( open_pub_key_act_ );
 
 
-    const QIcon openCMSIcon = QIcon::fromTheme("CMS", QIcon(":/images/cms.png"));
+    const QIcon openCMSIcon = QIcon::fromTheme("CMS", QIcon(":/images/cms_open.png"));
 
     open_cms_act_ = new QAction( openCMSIcon, tr("&Open CMS"), this );
     open_cms_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_M));
@@ -1045,7 +1045,7 @@ void MainWindow::createActions()
     cryptMenu->addAction( key_pair_man_act_ );
     if( isView( VIEW_CRYPT, ACT_CRYPT_KEY_PAIR_MAN ) ) crypt_tool_->addAction( key_pair_man_act_ );
 
-    const QIcon certManIcon = QIcon::fromTheme("Certificate Manage", QIcon(":/images/cert.png"));
+    const QIcon certManIcon = QIcon::fromTheme("Certificate Manage", QIcon(":/images/cert_man.png"));
     cert_man_act_ = new QAction( certManIcon, tr( "Certificate Manage" ), this );
     cert_man_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_M ));
     connect( cert_man_act_, &QAction::triggered, this, &MainWindow::certMan );
@@ -2031,7 +2031,39 @@ void MainWindow::updateRecentActionList()
 
 bool MainWindow::isView( ViewType type, int nAct )
 {
-    int nValue = berApplet->settingsMgr()->getViewValue( type );
+    int nValue = -1;
+
+    if( berApplet->isLicense() )
+        nValue = berApplet->settingsMgr()->getViewValue( type );
+    else
+    {
+        switch (type) {
+        case VIEW_FILE:
+            nValue = kFileDefault;
+            break;
+        case VIEW_EDIT:
+            nValue = kEditDefault;
+            break;
+        case VIEW_TOOL:
+            nValue = kToolDefault;
+            break;
+        case VIEW_CRYPT:
+            nValue = kCryptDefault;
+            break;
+        case VIEW_PROTO:
+            nValue = kProtoDefault;
+            break;
+        case VIEW_KMIP:
+            nValue = kKMIPDefault;
+            break;
+        case VIEW_HELP:
+            nValue = kHelpDefault;
+            break;
+        default:
+            break;
+        }
+    }
+
     if( nValue < 0 ) return false;
 
     if( nValue & nAct )
