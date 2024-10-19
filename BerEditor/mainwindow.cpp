@@ -676,8 +676,8 @@ void MainWindow::createViewActions()
 
 void MainWindow::createActions()
 {
-    int nWidth = 16;
-    int nHeight = 16;
+    int nWidth = 24;
+    int nHeight = 24;
     int nSpacing = 0;
 
     QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
@@ -2043,7 +2043,7 @@ bool MainWindow::isView( ViewType type, int nAct )
     int nValue = -1;
 
     if( berApplet->isLicense() )
-        nValue = berApplet->settingsMgr()->getViewValue( type );
+        nValue = berApplet->settingsMgr()->viewValue( type );
     else
     {
         switch (type) {
