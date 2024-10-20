@@ -252,9 +252,9 @@ private:
     void adjustForCurrentFile( const QString& filePath );
     void updateRecentActionList();
 
-    bool isView( ViewType type, int nAct );
-    void setView( ViewType type, int nAct );
-    void unsetView( ViewType type, int nAct );
+    bool isView( int nAct );
+    void setView( int nAct );
+    void unsetView( int nAct );
 
     QList<QAction *>  recent_file_list_;
 
