@@ -464,7 +464,7 @@ int SettingsMgr::getViewValue( int nType )
         break;
     case VIEW_HELP:
         ret = settings.value( kViewHelp, kHelpDefault ).toInt();
-        view_file_ = ret;
+        view_help_ = ret;
         break;
     default:
         break;

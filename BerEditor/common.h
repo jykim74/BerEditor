@@ -118,13 +118,13 @@ const QColor kLenTypeColor( Qt::cyan );
 #define ACT_KMIP_CLIENT_TTLV        VIEW_KMIP | 0x00000008
 
 #define ACT_HELP_SETTINGS           VIEW_HELP | 0x00000001
-#define ACT_HELP_CLEAR_LOG          VIEW_KMIP | 0x00000002
-#define ACT_HELP_HALT_LOG           VIEW_KMIP | 0x00000004
-#define ACT_HELP_CONTENT            VIEW_KMIP | 0x00000008
-#define ACT_HELP_LICENSE_INFO       VIEW_KMIP | 0x00000010
-#define ACT_HELP_BUG_REPORT         VIEW_KMIP | 0x00000020
-#define ACT_HELP_QNA                VIEW_KMIP | 0x00000040
-#define ACT_HELP_ABOUT              VIEW_KMIP | 0x00000080
+#define ACT_HELP_CLEAR_LOG          VIEW_HELP | 0x00000002
+#define ACT_HELP_HALT_LOG           VIEW_HELP | 0x00000004
+#define ACT_HELP_CONTENT            VIEW_HELP | 0x00000008
+#define ACT_HELP_LICENSE_INFO       VIEW_HELP | 0x00000010
+#define ACT_HELP_BUG_REPORT         VIEW_HELP | 0x00000020
+#define ACT_HELP_QNA                VIEW_HELP | 0x00000040
+#define ACT_HELP_ABOUT              VIEW_HELP | 0x00000080
 
 static const int kFileDefault = ACT_FILE_NEW | ACT_FILE_OPEN | ACT_FILE_SAVE;
 
