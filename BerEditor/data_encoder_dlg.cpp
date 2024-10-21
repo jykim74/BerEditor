@@ -14,7 +14,8 @@ static QStringList enTypes = {
     "String",
     "Hex",
     "Base64",
-    "URL"
+    "URL",
+    "Base64URL"
 };
 
 DataEncoderDlg::DataEncoderDlg(QWidget *parent) :
@@ -29,10 +30,11 @@ DataEncoderDlg::DataEncoderDlg(QWidget *parent) :
     connect( mOutputTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(outTypeChanged(int)));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mInputText, SIGNAL(textChanged()), this, SLOT(inputChanged()));
-    connect( mInputTypeURL, SIGNAL(clicked()), this, SLOT(inputChanged()));
-    connect( mInputTypeHexBtn, SIGNAL(clicked()), this, SLOT(inputChanged()));
-    connect( mInputTypeBase64Btn, SIGNAL(clicked()), this, SLOT(inputChanged()));
-    connect( mInputTypeStringBtn, SIGNAL(clicked()), this, SLOT(inputChanged()));
+    connect( mInputTypeURLCheck, SIGNAL(clicked()), this, SLOT(inputChanged()));
+    connect( mInputTypeHexCheck, SIGNAL(clicked()), this, SLOT(inputChanged()));
+    connect( mInputTypeBase64Check, SIGNAL(clicked()), this, SLOT(inputChanged()));
+    connect( mInputTypeStringCheck, SIGNAL(clicked()), this, SLOT(inputChanged()));
+    connect( mInputTypeBase64URLCheck, SIGNAL(clicked()), this, SLOT(inputChanged()));
     connect( mOutputText, SIGNAL(textChanged()), this, SLOT(outputChanged()));
     connect( mChangeBtn, SIGNAL(clicked()), this, SLOT(clickChange()));
 
@@ -80,7 +82,7 @@ void DataEncoderDlg::clickFindFile()
 
     if( strFile.length() > 0 )
     {
-        mInputTypeHexBtn->setChecked(true);
+        mInputTypeHexCheck->setChecked(true);
         BIN binFile = {0,0};
         JS_BIN_fileRead( strFile.toLocal8Bit().toStdString().c_str(), &binFile );
 
@@ -108,13 +110,15 @@ void DataEncoderDlg::onClickEncodeBtn()
         return;
     }
 
-    if( mInputTypeStringBtn->isChecked() )
+    if( mInputTypeStringCheck->isChecked() )
         input_type = DATA_STRING;
-    else if( mInputTypeHexBtn->isChecked() )
+    else if( mInputTypeHexCheck->isChecked() )
         input_type = DATA_HEX;
-    else if( mInputTypeBase64Btn->isChecked() )
+    else if( mInputTypeBase64Check->isChecked() )
         input_type = DATA_BASE64;
-    else if( mInputTypeURL->isChecked() )
+    else if( mInputTypeBase64URLCheck->isChecked())
+        input_type = DATA_BASE64URL;
+    else if( mInputTypeURLCheck->isChecked() )
         input_type = DATA_URL;
 
     getBINFromString( &binSrc, input_type, inputStr );
@@ -143,13 +147,15 @@ void DataEncoderDlg::inputChanged()
     int nInputType = 0;
     QString strInput = mInputText->toPlainText();
 
-    if( mInputTypeStringBtn->isChecked() )
+    if( mInputTypeStringCheck->isChecked() )
         nInputType = DATA_STRING;
-    else if( mInputTypeHexBtn->isChecked() )
+    else if( mInputTypeHexCheck->isChecked() )
         nInputType = DATA_HEX;
-    else if( mInputTypeBase64Btn->isChecked() )
+    else if( mInputTypeBase64Check->isChecked() )
         nInputType = DATA_BASE64;
-    else if( mInputTypeURL->isChecked() )
+    else if( mInputTypeBase64URLCheck->isChecked() )
+        nInputType = DATA_BASE64URL;
+    else if( mInputTypeURLCheck->isChecked() )
         nInputType = DATA_URL;
 
     QString strLen = getDataLenString( nInputType, strInput );
@@ -165,13 +171,15 @@ void DataEncoderDlg::outputChanged()
 void DataEncoderDlg::clickChange()
 {
     if( mOutputTypeCombo->currentText() == "String" )
-        mInputTypeStringBtn->setChecked(true);
+        mInputTypeStringCheck->setChecked(true);
     else if( mOutputTypeCombo->currentText() == "Hex" )
-        mInputTypeHexBtn->setChecked(true);
+        mInputTypeHexCheck->setChecked(true);
     else if( mOutputTypeCombo->currentText() == "Base64" )
-        mInputTypeBase64Btn->setChecked(true);
+        mInputTypeBase64Check->setChecked(true);
+    else if( mOutputTypeCombo->currentText() == "Base64URL" )
+        mInputTypeBase64URLCheck->setChecked( true );
     else if( mOutputTypeCombo->currentText() == "URL" )
-        mInputTypeURL->setChecked(true);
+        mInputTypeURLCheck->setChecked(true);
 
     QString strOut = mOutputText->toPlainText();
     mInputText->setPlainText( strOut );

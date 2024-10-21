@@ -16,6 +16,7 @@ enum {
     DATA_STRING,
     DATA_HEX,
     DATA_BASE64,
+    DATA_BASE64URL,
     DATA_URL
 };
 

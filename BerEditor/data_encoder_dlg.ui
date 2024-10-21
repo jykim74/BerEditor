@@ -348,7 +348,21 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="4">
+     <item row="0" column="1">
+      <widget class="QRadioButton" name="mInputTypeHexCheck">
+       <property name="text">
+        <string>Hex</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QRadioButton" name="mInputTypeBase64Check">
+       <property name="text">
+        <string>Base64</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -361,21 +375,21 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="2">
-      <widget class="QRadioButton" name="mInputTypeBase64Btn">
-       <property name="text">
-        <string>Base64</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QRadioButton" name="mInputTypeHexBtn">
-       <property name="text">
-        <string>Hex</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="7">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Len</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="6">
+      <widget class="QPushButton" name="mFindFileBtn">
+       <property name="text">
+        <string>Find File</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="8">
       <widget class="QLineEdit" name="mInputLenText">
        <property name="minimumSize">
         <size>
@@ -431,8 +445,15 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="3">
+      <widget class="QRadioButton" name="mInputTypeURLCheck">
+       <property name="text">
+        <string>URL</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="0">
-      <widget class="QRadioButton" name="mInputTypeStringBtn">
+      <widget class="QRadioButton" name="mInputTypeStringCheck">
        <property name="text">
         <string>String</string>
        </property>
@@ -441,24 +462,10 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
-      <widget class="QRadioButton" name="mInputTypeURL">
+     <item row="0" column="4">
+      <widget class="QRadioButton" name="mInputTypeBase64URLCheck">
        <property name="text">
-        <string>URL</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="6">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Len</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="5">
-      <widget class="QPushButton" name="mFindFileBtn">
-       <property name="text">
-        <string>Find File</string>
+        <string>Base64URL</string>
        </property>
       </widget>
      </item>
@@ -481,10 +488,10 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>mInputTypeStringBtn</tabstop>
-  <tabstop>mInputTypeHexBtn</tabstop>
-  <tabstop>mInputTypeBase64Btn</tabstop>
-  <tabstop>mInputTypeURL</tabstop>
+  <tabstop>mInputTypeStringCheck</tabstop>
+  <tabstop>mInputTypeHexCheck</tabstop>
+  <tabstop>mInputTypeBase64Check</tabstop>
+  <tabstop>mInputTypeURLCheck</tabstop>
   <tabstop>mFindFileBtn</tabstop>
   <tabstop>mInputLenText</tabstop>
   <tabstop>mInputText</tabstop>

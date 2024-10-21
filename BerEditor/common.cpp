@@ -492,6 +492,13 @@ int getDataLen( int nType, const QString strData )
         nLen = bin.nLen;
         JS_BIN_reset( &bin );
     }
+    else if( nType == DATA_BASE64URL )
+    {
+        BIN bin = {0,0};
+        JS_BIN_decodeBase64URL( strMsg.toStdString().c_str(), &bin );
+        nLen = bin.nLen;
+        JS_BIN_reset( &bin );
+    }
     else if( nType == DATA_URL )
     {
         if( isURLEncode( strMsg ) == false ) return -1;
@@ -522,6 +529,8 @@ int getDataLen( const QString strType, const QString strData )
         nType = DATA_HEX;
     else if( strLower == "base64" )
         nType = DATA_BASE64;
+    else if( strLower == "base64url" )
+        nType = DATA_BASE64URL;
     else if( strLower == "url" )
         nType = DATA_URL;
 
@@ -582,6 +591,15 @@ const QString getDataLenString( int nType, const QString strData )
 
         strLen = QString( "%1" ).arg( nLen );
     }
+    else if( nType == DATA_BASE64URL )
+    {
+        BIN bin = {0,0};
+        JS_BIN_decodeBase64URL( strMsg.toStdString().c_str(), &bin );
+        nLen = bin.nLen;
+        JS_BIN_reset( &bin );
+
+        strLen = QString( "%1" ).arg( nLen );
+    }
     else if( nType == DATA_URL )
     {
         if( isURLEncode( strMsg ) == false )
@@ -618,6 +636,8 @@ const QString getDataLenString( const QString strType, const QString strData )
         nType = DATA_HEX;
     else if( strLower == "base64" )
         nType = DATA_BASE64;
+    else if( strLower == "base64url" )
+        nType = DATA_BASE64URL;
     else if( strLower == "url" )
         nType = DATA_URL;
 
@@ -1328,6 +1348,8 @@ void getBINFromString( BIN *pBin, const QString& strType, const QString& strStri
         nType = DATA_HEX;
     else if( strType.toUpper() == "BASE64" )
         nType = DATA_BASE64;
+    else if( strType.toUpper() == "BASE64URL" )
+        nType = DATA_BASE64URL;
     else if( strType.toUpper() == "URL" )
         nType = DATA_URL;
     else
@@ -1358,6 +1380,11 @@ void getBINFromString( BIN *pBin, int nType, const QString& strString )
 
         JS_BIN_decodeBase64( srcString.toStdString().c_str(), pBin );
     }
+    else if( nType == DATA_BASE64URL )
+    {
+        srcString.remove( QRegularExpression("[\t\r\n\\s]") );
+        JS_BIN_decodeBase64URL( srcString.toStdString().c_str(), pBin );
+    }
     else if( nType == DATA_URL )
     {
         char *pStr = NULL;
@@ -1385,6 +1412,8 @@ QString getStringFromBIN( const BIN *pBin, const QString& strType, bool bSeenOnl
         nType = DATA_HEX;
     else if( strType.toUpper() == "BASE64" )
         nType = DATA_BASE64;
+    else if( strType.toUpper() == "BASE64URL" )
+        nType = DATA_BASE64URL;
     else if( strType.toUpper() == "URL" )
         nType = DATA_URL;
     else
@@ -1417,6 +1446,11 @@ QString getStringFromBIN( const BIN *pBin, int nType, bool bSeenOnly )
     else if( nType == DATA_BASE64 )
     {
         JS_BIN_encodeBase64( pBin, &pOut );
+        strOut = pOut;
+    }
+    else if( nType == DATA_BASE64URL )
+    {
+        JS_BIN_encodeBase64URL( pBin, &pOut );
         strOut = pOut;
     }
     else if( nType == DATA_URL )
