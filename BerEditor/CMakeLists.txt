@@ -203,6 +203,7 @@ add_executable(${PROJECT_NAME}
     cms_info_dlg.h cms_info_dlg.cpp cms_info_dlg.ui
 
     content_main.h content_main.cpp content_main.ui
+    export_dlg.h export_dlg.cpp export_dlg.ui
 )
 
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )

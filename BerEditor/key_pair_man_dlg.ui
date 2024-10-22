@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>605</width>
-    <height>654</height>
+    <width>562</width>
+    <height>489</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -175,24 +175,10 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
-             <widget class="QPushButton" name="mLViewPubKeyBtn">
+            <item row="0" column="2">
+             <widget class="QPushButton" name="mLMakeCSRBtn">
               <property name="text">
-               <string>View PubKey</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="2">
-             <widget class="QPushButton" name="mLDecodePriKeyBtn">
-              <property name="text">
-               <string>Decode PriKey</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QPushButton" name="mLDeleteBtn">
-              <property name="text">
-               <string>Delete</string>
+               <string>Make CSR</string>
               </property>
              </widget>
             </item>
@@ -203,52 +189,80 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="0">
+            <item row="0" column="1">
+             <widget class="QPushButton" name="mLDeleteBtn">
+              <property name="text">
+               <string>Delete</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="4">
              <widget class="QPushButton" name="mLViewPriKeyBtn">
               <property name="text">
                <string>View PriKey</string>
               </property>
              </widget>
             </item>
-            <item row="0" column="2">
-             <widget class="QPushButton" name="mLMakeCSRBtn">
+            <item row="1" column="0">
+             <widget class="QPushButton" name="mLViewPubKeyBtn">
               <property name="text">
-               <string>Make CSR</string>
+               <string>View PubKey</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="3">
+            <item row="1" column="1">
+             <widget class="QPushButton" name="mLDecodePriKeyBtn">
+              <property name="text">
+               <string>Decode PriKey</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
              <widget class="QPushButton" name="mLDecodePubKeyBtn">
               <property name="text">
                <string>Decode PubKey</string>
               </property>
              </widget>
             </item>
-            <item row="2" column="0">
+            <item row="1" column="3">
              <widget class="QPushButton" name="mLRunSignBtn">
               <property name="text">
                <string>Run Sign</string>
               </property>
              </widget>
             </item>
-            <item row="2" column="1">
+            <item row="1" column="4">
              <widget class="QPushButton" name="mLRunVerifyBtn">
               <property name="text">
                <string>Run Verify</string>
               </property>
              </widget>
             </item>
-            <item row="2" column="2">
+            <item row="2" column="0">
              <widget class="QPushButton" name="mLRunPubEncBtn">
               <property name="text">
                <string>Run Encrypt</string>
               </property>
              </widget>
             </item>
-            <item row="2" column="3">
+            <item row="2" column="1">
              <widget class="QPushButton" name="mLRunPubDecBtn">
               <property name="text">
                <string>Run Decrypt</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="2">
+             <widget class="QPushButton" name="mImportBtn">
+              <property name="text">
+               <string>Import</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="3">
+             <widget class="QPushButton" name="mExportBtn">
+              <property name="text">
+               <string>Export</string>
               </property>
              </widget>
             </item>
@@ -988,14 +1002,6 @@
   <tabstop>mLDeleteBtn</tabstop>
   <tabstop>mLMakeCSRBtn</tabstop>
   <tabstop>mLEncryptBtn</tabstop>
-  <tabstop>mLViewPriKeyBtn</tabstop>
-  <tabstop>mLViewPubKeyBtn</tabstop>
-  <tabstop>mLDecodePriKeyBtn</tabstop>
-  <tabstop>mLDecodePubKeyBtn</tabstop>
-  <tabstop>mLRunSignBtn</tabstop>
-  <tabstop>mLRunVerifyBtn</tabstop>
-  <tabstop>mLRunPubEncBtn</tabstop>
-  <tabstop>mLRunPubDecBtn</tabstop>
   <tabstop>mSavePEMCheck</tabstop>
   <tabstop>mPriPathText</tabstop>
   <tabstop>mFindPriKeyBtn</tabstop>

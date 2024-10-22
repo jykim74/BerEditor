@@ -88,7 +88,8 @@ private slots:
     void typePriKey();
     void typePubKey();
 
-
+    void clickImport();
+    void clickExport();
 
     void clickOK();
 

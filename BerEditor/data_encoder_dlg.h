@@ -38,7 +38,6 @@ private slots:
 private:
     void makeDump( const BIN *pData );
     void initialize();
-//    Ui::DataEncoderDlg *ui;
 };
 
 #endif // DATA_ENCODER_DLG_H

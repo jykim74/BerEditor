@@ -193,6 +193,7 @@ const QString kTableStyle = "QHeaderView::section {background-color:#404040;colo
 const QString GetSystemID();
 
 QString findFile( QWidget *parent, int nType, const QString strPath );
+QString findFile( QWidget *parent, int nType, const QString strPath, QString& strSelected );
 QString findSaveFile( QWidget *parent, int nType, const QString strPath );
 QString findFolder( QWidget *parent, const QString strPath );
 
@@ -229,6 +230,7 @@ bool isValidNumFormat( const QString strInput, int nNumber );
 bool isEmail( const QString strEmail );
 bool isHex( const QString strHexString );
 bool isBase64( const QString strBase64String );
+bool isBase64URL( const QString strBase64URLString );
 bool isURLEncode( const QString strURLEncode );
 
 int getDataFromURI( const QString strURI, BIN *pData );

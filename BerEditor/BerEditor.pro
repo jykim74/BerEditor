@@ -105,7 +105,8 @@ SOURCES += \
     name_dlg.cpp \
     ldt_hash_thread.cpp \
     cms_info_dlg.cpp \
-    content_main.cpp
+    content_main.cpp \
+    export_dlg.cpp
 
 HEADERS += \
     about_dlg.h \
@@ -177,7 +178,8 @@ HEADERS += \
     name_dlg.h \
     ldt_hash_thread.h \
     cms_info_dlg.h \
-    content_main.h
+    content_main.h \
+    export_dlg.h
 
 
 
@@ -317,7 +319,8 @@ FORMS += \
         pri_key_info_dlg.ui \
         name_dlg.ui \
         cms_info_dlg.ui \
-        content_main.ui
+        content_main.ui \
+        export_dlg.ui
 
 RESOURCES += \
     bereditor.qrc

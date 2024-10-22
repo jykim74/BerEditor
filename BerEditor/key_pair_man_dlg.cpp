@@ -13,6 +13,7 @@
 #include "new_passwd_dlg.h"
 #include "passwd_dlg.h"
 #include "name_dlg.h"
+#include "export_dlg.h"
 
 #include "js_pki.h"
 #include "js_pki_eddsa.h"
@@ -90,6 +91,9 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
     connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clickClearAll()));
 
     connect( mKeyPairTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickLViewPriKey()));
+
+    connect( mImportBtn, SIGNAL(clicked()), this, SLOT(clickImport()));
+    connect( mExportBtn, SIGNAL(clicked()), this, SLOT(clickExport()));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -1301,6 +1305,46 @@ void KeyPairManDlg::typePubKey()
     berApplet->messageBox( tr( "The public key type is %1").arg( getKeyTypeName( nType )), this);
 
     JS_BIN_reset( &binData );
+}
+
+void KeyPairManDlg::clickImport()
+{
+    QString strPath = berApplet->curFolder();
+    QString strSelected;
+    QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath, strSelected);
+
+    if( fileName.length() < 1 ) return;
+
+    NameDlg nameDlg;
+    nameDlg.exec();
+}
+
+void KeyPairManDlg::clickExport()
+{
+    BIN binPri = {0,0};
+
+    QString strPath;
+    QString strPriPath;
+
+    QModelIndex idx = mKeyPairTable->currentIndex();
+    QTableWidgetItem* item = mKeyPairTable->item( idx.row(), 0 );
+
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "Please select keypair" ), this );
+        return;
+    }
+
+    if( item ) strPath = item->data(Qt::UserRole).toString();
+    strPriPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+
+    JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+
+    ExportDlg exportDlg;
+    exportDlg.setName( item->text() );
+    exportDlg.setPrivateKey( &binPri );
+    exportDlg.exec();
+    JS_BIN_reset( &binPri );
 }
 
 const QString KeyPairManDlg::getPriPath()

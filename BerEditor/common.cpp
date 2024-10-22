@@ -157,6 +157,32 @@ QString findFile( QWidget *parent, int nType, const QString strPath )
     return fileName;
 };
 
+QString findFile( QWidget *parent, int nType, const QString strPath, QString& strSelected )
+{
+    QString strCurPath;
+
+    QFileDialog::Options options;
+    options |= QFileDialog::DontUseNativeDialog;
+
+    if( strPath.length() <= 0 )
+        strCurPath = QDir::currentPath();
+    else
+        strCurPath = strPath;
+
+    QString strFileType;
+    QString strFilter = _getFileFilter( nType, strFileType );
+    QString selectedFilter;
+
+
+    QString fileName = QFileDialog::getOpenFileName( parent,
+                                                    QObject::tr( "Open %1" ).arg( strFileType ),
+                                                    strCurPath,
+                                                    strFilter,
+                                                    &strSelected,
+                                                    options );
+
+    return fileName;
+};
 
 
 QString findSaveFile( QWidget *parent, int nType, const QString strPath )
@@ -494,6 +520,7 @@ int getDataLen( int nType, const QString strData )
     }
     else if( nType == DATA_BASE64URL )
     {
+        if( isBase64URL( strMsg ) == false ) return -1;
         BIN bin = {0,0};
         JS_BIN_decodeBase64URL( strMsg.toStdString().c_str(), &bin );
         nLen = bin.nLen;
@@ -504,7 +531,7 @@ int getDataLen( int nType, const QString strData )
         if( isURLEncode( strMsg ) == false ) return -1;
 
         char *pURL = NULL;
-        JS_UTIL_decodeURL( strMsg.toStdString().c_str(), &pURL );
+        JS_BIN_decodeURL( strMsg.toStdString().c_str(), &pURL );
         if( pURL )
         {
             nLen = strlen( pURL );
@@ -609,7 +636,7 @@ const QString getDataLenString( int nType, const QString strData )
         }
 
         char *pURL = NULL;
-        JS_UTIL_decodeURL( strMsg.toStdString().c_str(), &pURL );
+        JS_BIN_decodeURL( strMsg.toStdString().c_str(), &pURL );
         if( pURL )
         {
             nLen = strlen( pURL );
@@ -1383,6 +1410,7 @@ void getBINFromString( BIN *pBin, int nType, const QString& strString )
     else if( nType == DATA_BASE64URL )
     {
         srcString.remove( QRegularExpression("[\t\r\n\\s]") );
+        if( isBase64URL( srcString ) == false ) return;
         JS_BIN_decodeBase64URL( srcString.toStdString().c_str(), pBin );
     }
     else if( nType == DATA_URL )
@@ -1390,7 +1418,7 @@ void getBINFromString( BIN *pBin, int nType, const QString& strString )
         char *pStr = NULL;
         if( isURLEncode( srcString ) == false ) return;
 
-        JS_UTIL_decodeURL( srcString.toLocal8Bit().toStdString().c_str(), &pStr );
+        JS_BIN_decodeURL( srcString.toLocal8Bit().toStdString().c_str(), &pStr );
 
         if( pStr )
         {
@@ -1457,7 +1485,7 @@ QString getStringFromBIN( const BIN *pBin, int nType, bool bSeenOnly )
     {
         char *pStr = NULL;
         JS_BIN_string( pBin, &pStr );
-        JS_UTIL_encodeURL( pStr, &pOut );
+        JS_BIN_encodeURL( pStr, &pOut );
         strOut = pOut;
         if( pStr ) JS_free( pStr );
     }
@@ -1531,6 +1559,14 @@ bool isBase64( const QString strBase64String )
     base64REX.setCaseSensitivity(Qt::CaseInsensitive );
 
     return base64REX.exactMatch( strBase64String );
+}
+
+bool isBase64URL( const QString strBase64URLString )
+{
+    QRegExp base64REXURL("^[A-Za-z0-9_-]+$");
+    base64REXURL.setCaseSensitivity(Qt::CaseInsensitive );
+
+    return base64REXURL.exactMatch( strBase64URLString );
 }
 
 bool isURLEncode( const QString strURLEncode )
