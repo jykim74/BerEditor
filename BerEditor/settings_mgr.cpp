@@ -342,6 +342,14 @@ QString SettingsMgr::keyPairPath()
     return strPath;
 }
 
+QString SettingsMgr::docPath()
+{
+    QString strPath;
+
+    strPath = QString( "%1/DOC" ).arg( cert_path_ );
+    return strPath;
+}
+
 void SettingsMgr::makeCertPath()
 {
     QDir dir;
@@ -369,6 +377,9 @@ void SettingsMgr::makeCertPath()
 
     if( dir.exists( keyPairPath() ) == false )
         dir.mkdir( keyPairPath() );
+
+    if( dir.exists( docPath() ) == false )
+        dir.mkdir( docPath() );
 }
 
 void SettingsMgr::setHexAreaWidth( int width )

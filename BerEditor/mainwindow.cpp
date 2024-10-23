@@ -676,8 +676,8 @@ void MainWindow::createViewActions()
 
 void MainWindow::createActions()
 {
-    int nWidth = 24;
-    int nHeight = 24;
+    int nWidth = TOOL_BAR_WIDTH;
+    int nHeight = TOOL_BAR_HEIGHT;
     int nSpacing = 0;
 
     QMenu *fileMenu = menuBar()->addMenu(tr("&File"));

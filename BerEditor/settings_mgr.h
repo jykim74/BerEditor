@@ -59,6 +59,7 @@ public:
     QString CRLPath();
     QString tempCertPath();
     QString keyPairPath();
+    QString docPath();
 
     void makeCertPath();
 

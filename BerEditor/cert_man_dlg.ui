@@ -51,7 +51,7 @@
    <item>
     <widget class="QTabWidget" name="mTabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="mEETab">
       <attribute name="title">
@@ -1357,6 +1357,7 @@
  <tabstops>
   <tabstop>mTabWidget</tabstop>
   <tabstop>mCertPathText</tabstop>
+  <tabstop>mKeyTypeCombo</tabstop>
   <tabstop>mEE_CertTable</tabstop>
   <tabstop>mEE_PasswdText</tabstop>
   <tabstop>mViewCertBtn</tabstop>
@@ -1374,6 +1375,7 @@
   <tabstop>mRunPubEncBtn</tabstop>
   <tabstop>mRunPubDecBtn</tabstop>
   <tabstop>mOtherCertPathText</tabstop>
+  <tabstop>mOtherKeyTypeCombo</tabstop>
   <tabstop>mOther_CertTable</tabstop>
   <tabstop>mAddOtherBtn</tabstop>
   <tabstop>mRemoveOtherBtn</tabstop>
@@ -1382,26 +1384,32 @@
   <tabstop>mViewPubKeyOtherBtn</tabstop>
   <tabstop>mRunOtherVerifyBtn</tabstop>
   <tabstop>mRunOtherPubEncBtn</tabstop>
+  <tabstop>mExportOtherBtn</tabstop>
   <tabstop>mCAPathText</tabstop>
+  <tabstop>mCAKeyTypeCombo</tabstop>
   <tabstop>mCA_CertTable</tabstop>
   <tabstop>mAddCABtn</tabstop>
   <tabstop>mRemoveCABtn</tabstop>
   <tabstop>mViewCABtn</tabstop>
   <tabstop>mDecodeCABtn</tabstop>
   <tabstop>mViewPubKeyCABtn</tabstop>
+  <tabstop>mExportCABtn</tabstop>
   <tabstop>mCRLPathText</tabstop>
   <tabstop>mCRL_Table</tabstop>
   <tabstop>mAddCRLBtn</tabstop>
   <tabstop>mRemoveCRLBtn</tabstop>
   <tabstop>mViewCRLBtn</tabstop>
   <tabstop>mDecodeCRLBtn</tabstop>
+  <tabstop>mExportCRLBtn</tabstop>
   <tabstop>mTrustRCAPathText</tabstop>
+  <tabstop>mRCAKeyTypeCombo</tabstop>
   <tabstop>mRCA_CertTable</tabstop>
   <tabstop>mAddTrustBtn</tabstop>
   <tabstop>mRemoveTrustBtn</tabstop>
   <tabstop>mViewTrustBtn</tabstop>
   <tabstop>mDecodeTrustBtn</tabstop>
   <tabstop>mViewPubKeyTrustBtn</tabstop>
+  <tabstop>mExportTrustBtn</tabstop>
   <tabstop>mTLEncPriKeyCheck</tabstop>
   <tabstop>mTLPriKeyPathText</tabstop>
   <tabstop>mFindTLPriKeyBtn</tabstop>

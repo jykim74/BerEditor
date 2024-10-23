@@ -54,6 +54,9 @@ const QColor kTagColor( 102, 255, 102 );
 const QColor kLenColor( 240, 214, 255 );
 const QColor kLenTypeColor( Qt::cyan );
 
+#define TOOL_BAR_WIDTH      24
+#define TOOL_BAR_HEIGHT     24
+
 
 #define VIEW_FILE                   0x01000000
 #define VIEW_EDIT                   0x02000000

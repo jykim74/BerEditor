@@ -11,6 +11,7 @@
 #include "ber_applet.h"
 #include "js_http.h"
 #include "mainwindow.h"
+#include "settings_mgr.h"
 
 #if defined(QT_PRINTSUPPORT_LIB)
 #include <QtPrintSupport/qtprintsupportglobal.h>
@@ -254,8 +255,8 @@ void ContentMain::printPreview(QPrinter *printer)
 
 void ContentMain::createActions()
 {
-    int nWidth = 16;
-    int nHeight = 16;
+    int nWidth = TOOL_BAR_WIDTH;
+    int nHeight = TOOL_BAR_HEIGHT;
     int nSpacing = 0;
 
     connect( actionSave, &QAction::triggered, this, &ContentMain::actSave );
@@ -328,12 +329,13 @@ void ContentMain::createStatusBar()
 
 void ContentMain::createDockWindows()
 {
+    QString strDocPath = berApplet->settingsMgr()->docPath();
     mMenuTree->header()->setVisible(false);
     mMenuTree->clear();
 
     QDir dir;
-    if( dir.exists( kDoc ) == false )
-        dir.mkdir( kDoc );
+    if( dir.exists( strDocPath ) == false )
+        dir.mkdir( strDocPath );
 
     QTreeWidgetItem *rootItem = new QTreeWidgetItem;
     rootItem->setText( 0, "PKI Standard" );
@@ -351,7 +353,7 @@ void ContentMain::createDockWindows()
     itemRFC->setData( 0, Qt::UserRole, kRFC );
     rootItem->addChild( itemRFC );
 
-    QString strRFCPath = QString( "%1/%2" ).arg( kDoc ).arg( kRFC );
+    QString strRFCPath = QString( "%1/%2" ).arg( strDocPath ).arg( kRFC );
     if( dir.exists( strRFCPath ) == false )
         dir.mkdir( strRFCPath );
 
@@ -362,7 +364,7 @@ void ContentMain::createDockWindows()
     itemPKIX->setData( 0, Qt::UserRole, kPKIX );
     rootItem->addChild( itemPKIX );
 
-    QString strPKIXPath = QString( "%1/%2" ).arg( kDoc ).arg( kPKIX );
+    QString strPKIXPath = QString( "%1/%2" ).arg( strDocPath ).arg( kPKIX );
     if( dir.exists( strPKIXPath ) == false )
         dir.mkdir( strPKIXPath );
 
@@ -375,7 +377,7 @@ void ContentMain::createDockWindows()
     itemLink->setData( 0, 99, strURL );
     rootItem->addChild( itemLink );
 
-    QString strLinkPath = QString( "%1/%2" ).arg( kDoc ).arg( kLink );
+    QString strLinkPath = QString( "%1/%2" ).arg( strDocPath ).arg( kLink );
     if( dir.exists( strLinkPath ) == false )
         dir.mkdir( strLinkPath );
 
@@ -468,6 +470,8 @@ void ContentMain::makePKIXMenu( QTreeWidgetItem* parent )
 void ContentMain::clickMenu()
 {
     int ret = 0;
+    QString strDocPath = berApplet->settingsMgr()->docPath();
+
     mContentBroswer->clear();
     mContentBroswer->setOpenLinks(false);
 
@@ -489,7 +493,7 @@ void ContentMain::clickMenu()
         QString strSavePath;
         QString strName = item->text(0);
 
-        strSavePath = QString ( "%1/%2/%3.html" ).arg( kDoc ).arg( kLink ).arg( strName );
+        strSavePath = QString ( "%1/%2/%3.html" ).arg( strDocPath ).arg( kLink ).arg( strName );
 
         mURIText->setText( strURL );
 
@@ -562,7 +566,7 @@ void ContentMain::clickMenu()
         if( strType == kRFC )
         {
             strURL = QString( "%1/%2.html").arg( kRFCHost ).arg( strName ).toLower();
-            strSavePath = QString ( "%1/%2.html" ).arg( kDoc ).arg( strData );
+            strSavePath = QString ( "%1/%2.html" ).arg( strDocPath ).arg( strData );
         }
         else
         {
@@ -570,7 +574,7 @@ void ContentMain::clickMenu()
             if( nameRFC.size() < 2 ) return;
 
             strURL = QString( "%1/%2.html" ).arg( kPKIXHost ).arg( nameRFC.at(1) ).toLower();
-            strSavePath = QString( "%1/%2/%3.html" ).arg( kDoc ).arg( kPKIX ).arg( nameRFC.at(1));
+            strSavePath = QString( "%1/%2/%3.html" ).arg( strDocPath ).arg( kPKIX ).arg( nameRFC.at(1));
         }
 
         mURIText->setText( strURL );

@@ -277,14 +277,14 @@ void ExportDlg::setPrivateKey( const BIN *pPriKey )
 
     mTitleLabel->setText( tr( "Private Key Export" ));
 
-    mFormatCombo->addItem( getFormatName( ExportPubPEM ), ExportPubPEM );
-    mFormatCombo->addItem( getFormatName( ExportPubDER ), ExportPubDER);
-    mFormatCombo->addItem( getFormatName( ExportPriPEM ), ExportPriPEM);
-    mFormatCombo->addItem( getFormatName( ExportPriDER ), ExportPriDER);
-    mFormatCombo->addItem( getFormatName( ExportP8InfoPEM ), ExportP8InfoPEM);
-    mFormatCombo->addItem( getFormatName( ExportP8InfoDER ), ExportP8InfoDER);
     mFormatCombo->addItem( getFormatName( ExportP8EncPEM ), ExportP8EncPEM );
     mFormatCombo->addItem( getFormatName( ExportP8EncDER ), ExportP8EncDER );
+    mFormatCombo->addItem( getFormatName( ExportPriPEM ), ExportPriPEM);
+    mFormatCombo->addItem( getFormatName( ExportPriDER ), ExportPriDER);
+    mFormatCombo->addItem( getFormatName( ExportPubPEM ), ExportPubPEM );
+    mFormatCombo->addItem( getFormatName( ExportPubDER ), ExportPubDER);
+    mFormatCombo->addItem( getFormatName( ExportP8InfoPEM ), ExportP8InfoPEM);
+    mFormatCombo->addItem( getFormatName( ExportP8InfoDER ), ExportP8InfoDER);
 }
 
 void ExportDlg::setCert( const BIN *pCert )
@@ -343,17 +343,20 @@ void ExportDlg::setPriKeyAndCert( const BIN *pPriKey, const BIN *pCert )
 
     mFormatCombo->addItem( getFormatName( ExportPFX ), ExportPFX );
 
-    mFormatCombo->addItem( getFormatName( ExportPubPEM ), ExportPubPEM );
-    mFormatCombo->addItem( getFormatName( ExportPubDER ), ExportPubDER);
-    mFormatCombo->addItem( getFormatName( ExportPriPEM ), ExportPriPEM);
-    mFormatCombo->addItem( getFormatName( ExportPriDER ), ExportPriDER);
-    mFormatCombo->addItem( getFormatName( ExportP8InfoPEM ), ExportP8InfoPEM);
-    mFormatCombo->addItem( getFormatName( ExportP8InfoDER ), ExportP8InfoDER);
+    mFormatCombo->addItem( getFormatName( ExportCertPEM ), ExportCertPEM );
+    mFormatCombo->addItem( getFormatName( ExportCertDER ), ExportCertDER);
+
     mFormatCombo->addItem( getFormatName( ExportP8EncPEM ), ExportP8EncPEM );
     mFormatCombo->addItem( getFormatName( ExportP8EncDER ), ExportP8EncDER );
 
-    mFormatCombo->addItem( getFormatName( ExportCertPEM ), ExportCertPEM );
-    mFormatCombo->addItem( getFormatName( ExportCertDER ), ExportCertDER);
+    mFormatCombo->addItem( getFormatName( ExportPriPEM ), ExportPriPEM);
+    mFormatCombo->addItem( getFormatName( ExportPriDER ), ExportPriDER);
+
+    mFormatCombo->addItem( getFormatName( ExportPubPEM ), ExportPubPEM );
+    mFormatCombo->addItem( getFormatName( ExportPubDER ), ExportPubDER);
+
+    mFormatCombo->addItem( getFormatName( ExportP8InfoPEM ), ExportP8InfoPEM);
+    mFormatCombo->addItem( getFormatName( ExportP8InfoDER ), ExportP8InfoDER);
 }
 
 
