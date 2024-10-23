@@ -326,14 +326,6 @@ QString SettingsMgr::CRLPath()
     return strPath;
 }
 
-QString SettingsMgr::tempCertPath()
-{
-    QString strPath;
-
-    strPath = QString( "%1/Temp" ).arg( cert_path_ );
-    return strPath;
-}
-
 QString SettingsMgr::keyPairPath()
 {
     QString strPath;
@@ -371,9 +363,6 @@ void SettingsMgr::makeCertPath()
 
     if( dir.exists( trustCertPath() ) == false )
         dir.mkdir( trustCertPath() );
-
-    if( dir.exists( tempCertPath() ) == false )
-        dir.mkdir( tempCertPath() );
 
     if( dir.exists( keyPairPath() ) == false )
         dir.mkdir( keyPairPath() );

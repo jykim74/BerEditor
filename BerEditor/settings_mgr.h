@@ -57,7 +57,6 @@ public:
     QString otherCertPath();
     QString CACertPath();
     QString CRLPath();
-    QString tempCertPath();
     QString keyPairPath();
     QString docPath();
 

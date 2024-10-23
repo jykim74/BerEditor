@@ -1116,11 +1116,7 @@ void KeyPairManDlg::viewPubKey()
 void KeyPairManDlg::findPriKey()
 {
     QString strPath = mPriPathText->text();
-
-    if( strPath.length() < 1 )
-    {
-        strPath = berApplet->settingsMgr()->keyPairPath();
-    }
+    strPath = berApplet->curFilePath( strPath );
 
     QString filePath = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( filePath.length() > 0 ) mPriPathText->setText( filePath );
@@ -1129,11 +1125,7 @@ void KeyPairManDlg::findPriKey()
 void KeyPairManDlg::findPubKey()
 {
     QString strPath = mPubPathText->text();
-
-    if( strPath.length() < 1 )
-    {
-        strPath = berApplet->settingsMgr()->keyPairPath();
-    }
+    strPath = berApplet->curFilePath( strPath );
 
     QString filePath = findFile( this, JS_FILE_TYPE_BER, strPath );
     if( filePath.length() > 0 ) mPubPathText->setText( filePath );
@@ -1142,11 +1134,7 @@ void KeyPairManDlg::findPubKey()
 void KeyPairManDlg::findEncPriKey()
 {
     QString strPath = mEncPriPathText->text();
-
-    if( strPath.length() < 1 )
-    {
-        strPath = berApplet->settingsMgr()->keyPairPath();
-    }
+    strPath = berApplet->curFilePath( strPath );
 
     QString filePath = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( filePath.length() > 0 ) mEncPriPathText->setText( filePath );
@@ -1391,7 +1379,7 @@ void KeyPairManDlg::clickImport()
         goto end;
     }
 
-    if( nameDlg.exec() != QDialog::Accepted )
+    if( nameDlg.exec() == QDialog::Accepted )
     {
         QDir dir;
 

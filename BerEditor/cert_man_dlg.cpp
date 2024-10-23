@@ -2703,11 +2703,7 @@ void CertManDlg::clearTLPFX()
 void CertManDlg::findTLPriKey()
 {
     QString strPath = mTLPriKeyPathText->text();
-
-    if( strPath.length() < 1 )
-    {
-        strPath = berApplet->settingsMgr()->tempCertPath();
-    }
+    strPath = berApplet->curPath( strPath );
 
     QString filePath = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( filePath.length() > 0 )
@@ -2719,11 +2715,7 @@ void CertManDlg::findTLPriKey()
 void CertManDlg::findTLCert()
 {
     QString strPath = mTLCertPathText->text();
-
-    if( strPath.length() < 1 )
-    {
-        strPath = berApplet->settingsMgr()->tempCertPath();
-    }
+    strPath = berApplet->curPath( strPath );
 
     QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( filePath.length() > 0 )
@@ -2735,11 +2727,7 @@ void CertManDlg::findTLCert()
 void CertManDlg::findTLPFX()
 {
     QString strPath = mTLPFXPathText->text();
-
-    if( strPath.length() < 1 )
-    {
-        strPath = berApplet->settingsMgr()->tempCertPath();
-    }
+    strPath = berApplet->curPath( strPath );
 
     QString filePath = findFile( this, JS_FILE_TYPE_PFX, strPath );
     if( filePath.length() > 0 )
