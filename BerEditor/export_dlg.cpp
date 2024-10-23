@@ -5,6 +5,10 @@
 #include "common.h"
 #include "export_dlg.h"
 #include "ber_applet.h"
+#include "js_pki.h"
+#include "js_pki_key.h"
+#include "js_error.h"
+#include "new_passwd_dlg.h"
 
 static const QString getFormatName( int nFormatType )
 {
@@ -23,18 +27,22 @@ static const QString getFormatName( int nFormatType )
         return QObject::tr( "DER certificate (*.cer)" );
     case ExportPFX:
         return QObject::tr( "PKCS12 (*.pfx)" );
-    case ExportP8Info:
+    case ExportP8InfoPEM:
         return QObject::tr( "PEM PKCS8 Info (*.pk8)" );
-    case ExportP8Enc:
-        return QObject::tr( "PEM PKCS8 Encrypt (*.pk8)" );
+    case ExportP8InfoDER:
+        return QObject::tr( "DER PKCS8 Info (*.der)" );
+    case ExportP8EncPEM:
+        return QObject::tr( "PEM PKCS8 Encrypt (*.key)" );
+    case ExportP8EncDER:
+        return QObject::tr( "DER PKCS8 Encrypt (*.der)" );
     case ExportCSR_PEM:
         return QObject::tr( "PEM CSR (*.csr)" );
+    case ExportCSR_DER:
+        return QObject::tr( "DER CSR (*.der)" );
     case ExportCRL_PEM:
         return QObject::tr( "PEM CRL (*.crl)" );
-    case ExportPEM:
-        return QObject::tr( "PEM (*.pem)" );
-    case ExportDER:
-        return QObject::tr( "DER (*.der)" );
+    case ExportCRL_DER:
+        return QObject::tr( "DER CRL (*.der)" );
 
     default:
         break;
@@ -60,18 +68,22 @@ static const QString getFormatDesc( int nFormatType )
         return QObject::tr( "Certificate DER format file" );
     case ExportPFX:
         return QObject::tr( "PKCS12 (PFX) format file" );
-    case ExportP8Info:
+    case ExportP8InfoPEM:
         return QObject::tr( "Unencrypted PKCS8 PEM format file" );
-    case ExportP8Enc:
+    case ExportP8InfoDER:
+        return QObject::tr( "Unencrypted PKCS8 DER format file" );
+    case ExportP8EncPEM:
         return QObject::tr( "Encrypted PKCS8 PEM format file" );
+    case ExportP8EncDER:
+        return QObject::tr( "Encrypted PKCS8 DER format file" );
     case ExportCSR_PEM:
         return QObject::tr( "CSR PEM format file" );
+    case ExportCSR_DER:
+        return QObject::tr( "CSR DER format file" );
     case ExportCRL_PEM:
         return QObject::tr( "CRL PEM format file" );
-    case ExportPEM:
-        return QObject::tr( "PEM format file" );
-    case ExportDER:
-        return QObject::tr( "DER format file" );
+    case ExportCRL_DER:
+        return QObject::tr( "CRL DER format file" );
 
     default:
         break;
@@ -97,17 +109,21 @@ static const QString getFormatExtend( int nFormatType )
         return "cer";
     case ExportPFX:
         return "pfx";
-    case ExportP8Info:
+    case ExportP8InfoPEM:
         return "pk8";
-    case ExportP8Enc:
-        return "pk8";
+    case ExportP8InfoDER:
+        return "der";
+    case ExportP8EncPEM:
+        return "key";
+    case ExportP8EncDER:
+        return "der";
     case ExportCSR_PEM:
         return "csr";
+    case ExportCSR_DER:
+        return "der";
     case ExportCRL_PEM:
         return "crl";
-    case ExportPEM:
-        return "pem";
-    case ExportDER:
+    case ExportCRL_DER:
         return "der";
 
     default:
@@ -123,12 +139,12 @@ ExportDlg::ExportDlg(QWidget *parent) :
     setupUi(this);
 
     data_type_ = -1;
+    key_type_ = -1;
 
     memset( &pri_key_, 0x00, sizeof(BIN));
     memset( &cert_, 0x00, sizeof(BIN));
     memset( &csr_, 0x00, sizeof(BIN));
     memset( &crl_, 0x00, sizeof(BIN));
-
 
     connect( mFindFilenameBtn, SIGNAL(clicked()), this, SLOT(clickFindFilename()));
     connect( mOKBtn, SIGNAL(clicked()), this, SLOT(clickOK()));
@@ -181,7 +197,54 @@ void ExportDlg::changeFormatType( int index )
 
 void ExportDlg::clickOK()
 {
-    QDialog::accept();
+    int ret = 0;
+    int nExportType = mFormatCombo->currentData().toInt();
+
+    switch ( nExportType ) {
+    case ExportPubPEM:
+    case ExportPubDER:
+        ret = exportPublic();
+        break;
+
+    case ExportPriPEM:
+    case ExportPriDER:
+        ret = exportPrivate();
+        break;
+
+    case ExportCertPEM:
+    case ExportCertDER:
+        ret = exportCert();
+        break;
+
+    case ExportPFX:
+        ret = exportPFX();
+        break;
+
+    case ExportP8InfoPEM:
+    case ExportP8InfoDER:
+        ret = exportP8Info();
+        break;
+
+    case ExportP8EncPEM:
+    case ExportP8EncDER:
+        ret = exportP8Enc();
+        break;
+
+    case ExportCSR_PEM:
+    case ExportCSR_DER:
+        ret = exportCSR();
+        break;
+
+    case ExportCRL_PEM:
+    case ExportCRL_DER:
+        ret = exportCRL();
+        break;
+
+    default:
+        break;
+    }
+
+    if( ret == 0 ) QDialog::accept();
 }
 
 void ExportDlg::clickFindFilename()
@@ -189,7 +252,7 @@ void ExportDlg::clickFindFilename()
     int nType = JS_FILE_TYPE_BIN;
 
     if( data_type_ == DataPriKey )
-        nType = JS_FILE_TYPE_PRIKEY;
+        nType = JS_FILE_TYPE_PRIKEY_PKCS8_PFX;
     else if( data_type_ == DataCert )
         nType = JS_FILE_TYPE_CERT;
     else if( data_type_ == DataCRL )
@@ -209,19 +272,27 @@ void ExportDlg::setPrivateKey( const BIN *pPriKey )
 {
     data_type_ = DataPriKey;
     JS_BIN_copy( &pri_key_, pPriKey );
+    key_type_ = JS_PKI_getPriKeyType( &pri_key_ );
+
+    mTitleLabel->setText( tr( "Private Key Export" ));
 
     mFormatCombo->addItem( getFormatName( ExportPubPEM ), ExportPubPEM );
     mFormatCombo->addItem( getFormatName( ExportPubDER ), ExportPubDER);
     mFormatCombo->addItem( getFormatName( ExportPriPEM ), ExportPriPEM);
     mFormatCombo->addItem( getFormatName( ExportPriDER ), ExportPriDER);
-    mFormatCombo->addItem( getFormatName( ExportP8Info ), ExportP8Info);
-    mFormatCombo->addItem( getFormatName( ExportP8Enc ), ExportP8Enc );
+    mFormatCombo->addItem( getFormatName( ExportP8InfoPEM ), ExportP8InfoPEM);
+    mFormatCombo->addItem( getFormatName( ExportP8InfoDER ), ExportP8InfoDER);
+    mFormatCombo->addItem( getFormatName( ExportP8EncPEM ), ExportP8EncPEM );
+    mFormatCombo->addItem( getFormatName( ExportP8EncDER ), ExportP8EncDER );
 }
 
 void ExportDlg::setCert( const BIN *pCert )
 {
     data_type_ = DataCert;
     JS_BIN_copy( &cert_, pCert );
+    key_type_ = JS_PKI_getCertKeyType( &cert_ );
+
+    mTitleLabel->setText( tr( "Certificate Export" ));
 
     mFormatCombo->addItem( getFormatName( ExportCertPEM ), ExportCertPEM );
     mFormatCombo->addItem( getFormatName( ExportCertDER ), ExportCertDER);
@@ -233,18 +304,26 @@ void ExportDlg::setCRL( const BIN *pCRL )
 {
     data_type_ = DataCRL;
     JS_BIN_copy( &crl_, pCRL );
+    key_type_ = -1;
+
+    mTitleLabel->setText( tr( "CRL Export" ));
 
     mFormatCombo->addItem( getFormatName( ExportCRL_PEM ), ExportCRL_PEM );
-    mFormatCombo->addItem( getFormatName( ExportDER ), ExportDER);
+    mFormatCombo->addItem( getFormatName( ExportCRL_DER ), ExportCRL_DER);
 }
 
 void ExportDlg::setCSR( const BIN *pCSR )
 {
     data_type_ = DataCSR;
     JS_BIN_copy( &csr_, pCSR );
+    key_type_ = JS_PKI_getCSRKeyType( pCSR );
+
+    mTitleLabel->setText( tr( "CSR Export" ));
 
     mFormatCombo->addItem( getFormatName( ExportCSR_PEM ), ExportCSR_PEM );
-    mFormatCombo->addItem( getFormatName( ExportDER ), ExportDER);
+    mFormatCombo->addItem( getFormatName( ExportCSR_DER ), ExportCSR_DER);
+    mFormatCombo->addItem( getFormatName( ExportPubPEM ), ExportPubPEM );
+    mFormatCombo->addItem( getFormatName( ExportPubDER ), ExportPubDER);
 }
 
 void ExportDlg::setPriKeyAndCert( const BIN *pPriKey, const BIN *pCert )
@@ -253,14 +332,19 @@ void ExportDlg::setPriKeyAndCert( const BIN *pPriKey, const BIN *pCert )
     JS_BIN_copy( &pri_key_, pPriKey );
     JS_BIN_copy( &cert_, pCert );
 
+    mTitleLabel->setText( tr( "Certificate and Private Key Export" ));
+
+    key_type_ = JS_PKI_getCertKeyType( &cert_ );
     mFormatCombo->addItem( getFormatName( ExportPFX ), ExportPFX );
 
     mFormatCombo->addItem( getFormatName( ExportPubPEM ), ExportPubPEM );
     mFormatCombo->addItem( getFormatName( ExportPubDER ), ExportPubDER);
     mFormatCombo->addItem( getFormatName( ExportPriPEM ), ExportPriPEM);
     mFormatCombo->addItem( getFormatName( ExportPriDER ), ExportPriDER);
-    mFormatCombo->addItem( getFormatName( ExportP8Info ), ExportP8Info);
-    mFormatCombo->addItem( getFormatName( ExportP8Enc ), ExportP8Enc );
+    mFormatCombo->addItem( getFormatName( ExportP8InfoPEM ), ExportP8InfoPEM);
+    mFormatCombo->addItem( getFormatName( ExportP8InfoDER ), ExportP8InfoDER);
+    mFormatCombo->addItem( getFormatName( ExportP8EncPEM ), ExportP8EncPEM );
+    mFormatCombo->addItem( getFormatName( ExportP8EncDER ), ExportP8EncDER );
 
     mFormatCombo->addItem( getFormatName( ExportCertPEM ), ExportCertPEM );
     mFormatCombo->addItem( getFormatName( ExportCertDER ), ExportCertDER);
@@ -269,50 +353,285 @@ void ExportDlg::setPriKeyAndCert( const BIN *pPriKey, const BIN *pCert )
 
 int ExportDlg::exportPublic()
 {
+    int ret = -1;
+    int nExportType = -1;
+    BIN binPub = {0,0};
+    QString strFilename = mFilenameText->text();
+
     if( data_type_ == DataCRL ) return -1;
-    if( data_type_ == DataCSR ) return -1;
 
+    if( data_type_ == DataPriKey )
+    {
+        JS_PKI_getPubKeyFromPri( key_type_, &pri_key_, &binPub );
+    }
+    else if( data_type_ == DataCSR )
+    {
+        JS_PKI_getPubKeyFromCSR( &csr_, &binPub );
+    }
+    else if( data_type_ == DataCert || data_type_ == DataPriKeyCert )
+    {
+        JS_PKI_getPubKeyFromCert( &cert_, &binPub );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "invalid service: %1").arg( data_type_ ), this);
+        ret = -1;
+        goto end;
+    }
 
-    return 0;
+    nExportType = mFormatCombo->currentData().toInt();
+
+    if( nExportType == ExportPubPEM )
+    {
+        ret = JS_BIN_writePEM( &binPub, JS_PEM_TYPE_PUBLIC_KEY, strFilename.toLocal8Bit().toStdString().c_str() );
+    }
+    else if( nExportType == ExportPubDER )
+    {
+        ret = JS_BIN_fileWrite( &binPub, strFilename.toLocal8Bit().toStdString().c_str() );
+    }
+
+    if( ret > 0 )
+    {
+        berApplet->messageBox( tr( "Public Key export successfully" ), this );
+        ret = JSR_OK;
+    }
+
+end :
+    JS_BIN_reset( &binPub );
+    return ret;
 }
 
 int ExportDlg::exportPrivate()
 {
+    int ret = -1;
+    int nExportType = -1;
+    QString strFilename = mFilenameText->text();
+
     if( data_type_ == DataCRL ) return -1;
     if( data_type_ == DataCSR ) return -1;
     if( data_type_ == DataCert ) return -1;
 
+    nExportType = mFormatCombo->currentData().toInt();
 
-    return 0;
+    if( nExportType == ExportPriPEM )
+    {
+        ret = JS_BIN_writePEM( &pri_key_, JS_PEM_TYPE_PRIVATE_KEY, strFilename.toLocal8Bit().toStdString().c_str() );
+    }
+    else if( nExportType == ExportPriDER )
+    {
+        ret = JS_BIN_fileWrite( &pri_key_, strFilename.toLocal8Bit().toStdString().c_str() );
+    }
+
+    if( ret > 0 )
+    {
+        berApplet->messageBox( tr( "Private Key export successfully" ), this );
+        ret = JSR_OK;
+    }
+
+    return ret;
 }
 
 int ExportDlg::exportCert()
 {
+    int ret = -1;
+    int nExportType = -1;
+    QString strFilename = mFilenameText->text();
+
     if( data_type_ == DataPriKey ) return -1;
     if( data_type_ == DataCRL ) return -1;
     if( data_type_ == DataCSR ) return -1;
-    if( data_type_ == DataCert ) return -1;
 
-    return 0;
+    nExportType = mFormatCombo->currentData().toInt();
+
+    if( nExportType == ExportCertPEM )
+    {
+        ret = JS_BIN_writePEM( &cert_, JS_PEM_TYPE_CERTIFICATE, strFilename.toLocal8Bit().toStdString().c_str() );
+    }
+    else if( nExportType == ExportCertDER )
+    {
+        ret = JS_BIN_fileWrite( &cert_, strFilename.toLocal8Bit().toStdString().c_str() );
+    }
+
+    if( ret > 0 )
+    {
+        berApplet->messageBox( tr( "Certificate export successfully" ), this );
+        ret = JSR_OK;
+    }
+
+    return ret;
 }
 
 int ExportDlg::exportCRL()
 {
+    int ret = -1;
+    int nExportType = -1;
+    QString strFilename = mFilenameText->text();
+
     if( data_type_ != DataCRL ) return -1;
 
-    return 0;
+    nExportType = mFormatCombo->currentData().toInt();
+
+    if( nExportType == ExportCRL_PEM )
+    {
+        ret = JS_BIN_writePEM( &crl_, JS_PEM_TYPE_CERTIFICATE, strFilename.toLocal8Bit().toStdString().c_str() );
+    }
+    else if( nExportType == ExportCRL_DER )
+    {
+        ret = JS_BIN_fileWrite( &crl_, strFilename.toLocal8Bit().toStdString().c_str() );
+    }
+
+    if( ret > 0 )
+    {
+        berApplet->messageBox( tr( "CRL export successfully" ), this );
+        ret = JSR_OK;
+    }
+
+    return ret;
 }
 
 int ExportDlg::exportCSR()
 {
+    int ret = -1;
+    int nExportType = -1;
+    QString strFilename = mFilenameText->text();
+
     if( data_type_ != DataCSR ) return -1;
 
-    return 0;
+    nExportType = mFormatCombo->currentData().toInt();
+
+    if( nExportType == ExportCRL_PEM )
+    {
+        ret = JS_BIN_writePEM( &csr_, JS_PEM_TYPE_CSR, strFilename.toLocal8Bit().toStdString().c_str() );
+    }
+    else if( nExportType == ExportCRL_DER )
+    {
+        ret = JS_BIN_fileWrite( &csr_, strFilename.toLocal8Bit().toStdString().c_str() );
+    }
+
+    if( ret > 0 )
+    {
+        berApplet->messageBox( tr( "CSR export successfully" ), this );
+        ret = JSR_OK;
+    }
+
+    return ret;
 }
 
 int ExportDlg::exportPFX()
 {
+    int ret = -1;
+    BIN binPFX = {0,0};
+    int nExportType = mFormatCombo->currentData().toInt();
+    QString strFilename = mFilenameText->text();
+    QString strPass;
+
     if( data_type_ != DataPriKeyCert ) return -1;
 
-    return 0;
+    if( nExportType != ExportPFX ) return -1;
+
+    NewPasswdDlg newPass;
+
+    if( newPass.exec() != QDialog::Accepted )
+        return -1;
+
+    strPass = newPass.mPasswdText->text();
+
+    ret = JS_PKI_encodePFX( &binPFX, key_type_, strPass.toStdString().c_str(), -1, &pri_key_, &cert_ );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "fail to encrypt PFX: %1").arg(ret), this);
+        goto end;
+    }
+
+    ret = JS_BIN_fileWrite( &binPFX, strFilename.toLocal8Bit().toStdString().c_str() );
+    if( ret > 0 )
+    {
+        berApplet->messageBox( tr( "PFX export successfully" ), this );
+        ret = JSR_OK;
+    }
+
+end :
+    JS_BIN_reset( &binPFX );
+    return ret;
 }
+
+int ExportDlg::exportP8Enc()
+{
+    int ret = -1;
+    BIN binEncPri = {0,0};
+    int nExportType = mFormatCombo->currentData().toInt();
+    QString strFilename = mFilenameText->text();
+    QString strPass;
+
+    if( data_type_ != DataPriKey && data_type_ != DataPriKeyCert )
+        return -1;
+
+    if( nExportType != ExportP8EncPEM && nExportType != ExportP8EncDER ) return -1;
+
+    NewPasswdDlg newPass;
+
+    if( newPass.exec() != QDialog::Accepted )
+        return -1;
+
+    strPass = newPass.mPasswdText->text();
+
+    ret = JS_PKI_encryptPrivateKey( key_type_, -1, strPass.toStdString().c_str(), &pri_key_, NULL, &binEncPri );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "fail to encrypt private key: %1").arg(ret), this);
+        goto end;
+    }
+
+    if( nExportType == ExportP8EncPEM )
+        ret = JS_BIN_writePEM( &binEncPri, JS_PEM_TYPE_ENCRYPTED_PRIVATE_KEY, strFilename.toLocal8Bit().toStdString().c_str() );
+    else
+        ret = JS_BIN_fileWrite( &binEncPri, strFilename.toLocal8Bit().toStdString().c_str() );
+
+    if( ret > 0 )
+    {
+        berApplet->messageBox( tr( "Encrypted privateKey export successfully" ), this );
+        ret = JSR_OK;
+    }
+
+end :
+    JS_BIN_reset( &binEncPri );
+    return ret;
+}
+
+int ExportDlg::exportP8Info()
+{
+    int ret = -1;
+    int nExportType = mFormatCombo->currentData().toInt();
+    BIN binP8 = {0,0};
+    QString strFilename = mFilenameText->text();
+
+    if( data_type_ != DataPriKey && data_type_ != DataPriKeyCert )
+        return -1;
+
+    ret = JS_PKI_encodePrivateKeyInfo( key_type_, &pri_key_, &binP8 );
+    if( ret != 0 )
+    {
+        goto end;
+    }
+
+    if( nExportType == ExportP8InfoPEM )
+    {
+        ret = JS_BIN_writePEM( &binP8, JS_PEM_TYPE_PRIVATE_KEY, strFilename.toLocal8Bit().toStdString().c_str() );
+    }
+    else if( nExportType == ExportP8EncDER )
+    {
+        ret = JS_BIN_fileWrite( &binP8, strFilename.toLocal8Bit().toStdString().c_str() );
+    }
+
+    if( ret > 0 )
+    {
+        berApplet->messageBox( tr( "PKCS8 Info export successfully" ), this );
+        ret = JSR_OK;
+    }
+
+end :
+    JS_BIN_reset( &binP8 );
+    return ret;
+}
+
+

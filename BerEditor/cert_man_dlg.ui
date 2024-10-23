@@ -51,7 +51,7 @@
    <item>
     <widget class="QTabWidget" name="mTabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mEETab">
       <attribute name="title">
@@ -442,6 +442,13 @@
               </property>
              </widget>
             </item>
+            <item row="1" column="3">
+             <widget class="QPushButton" name="mExportOtherBtn">
+              <property name="text">
+               <string>Export Cert</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
          </layout>
@@ -584,6 +591,13 @@
               </property>
              </widget>
             </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="mExportCABtn">
+              <property name="text">
+               <string>Export CA</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
          </layout>
@@ -694,10 +708,10 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="1">
-             <widget class="QPushButton" name="mRemoveCRLBtn">
+            <item row="0" column="3">
+             <widget class="QPushButton" name="mDecodeCRLBtn">
               <property name="text">
-               <string>Remove CRL</string>
+               <string>Decode CRL</string>
               </property>
              </widget>
             </item>
@@ -708,10 +722,17 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="3">
-             <widget class="QPushButton" name="mDecodeCRLBtn">
+            <item row="0" column="1">
+             <widget class="QPushButton" name="mRemoveCRLBtn">
               <property name="text">
-               <string>Decode CRL</string>
+               <string>Remove CRL</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QPushButton" name="mExportCRLBtn">
+              <property name="text">
+               <string>Export CRL</string>
               </property>
              </widget>
             </item>
@@ -853,6 +874,13 @@
              <widget class="QPushButton" name="mViewPubKeyTrustBtn">
               <property name="text">
                <string>View PubKey</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="mExportTrustBtn">
+              <property name="text">
+               <string>Export Trust</string>
               </property>
              </widget>
             </item>

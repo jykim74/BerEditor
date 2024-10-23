@@ -93,12 +93,14 @@ private slots:
     void clickViewCA();
     void clickDecodeCA();
     void clickViewPubKeyCA();
+    void clickExportCA();
 
     void clickAddOther();
     void clickRemoveOther();
     void clickViewOther();
     void clickDecodeOther();
     void clickViewPubKeyOther();
+    void clickExportOther();
 
     void clickRunVerifyOther();
     void clickRunPubEncOther();
@@ -107,6 +109,7 @@ private slots:
     void clickRemoveCRL();
     void clickViewCRL();
     void clickDecodeCRL();
+    void clickExportCRL();
 
 
     void clickAddTrust();
@@ -114,6 +117,7 @@ private slots:
     void clickViewTrust();
     void clickDecodeTrust();
     void clickViewPubKeyTrust();
+    void clickExportTrust();
 
     void decodeTLPriKey();
     void decodeTLCert();

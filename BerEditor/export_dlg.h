@@ -25,12 +25,14 @@ enum {
     ExportCertPEM,      // PEM certificate (*.crt)
     ExportCertDER,      // DER certificate (*.cer)
     ExportPFX,          // PKCS12 (*.pfx)
-    ExportP8Info,       // PEM PKCS8 Info (*.pk8)
-    ExportP8Enc,        // PEM PKCS8 Encrypt (*.pk8)
+    ExportP8InfoPEM,    // PEM PKCS8 Info (*.pk8)
+    ExportP8InfoDER,    // DER PKCS8 Info (*.der)
+    ExportP8EncPEM,     // PEM PKCS8 Encrypt (*.key)
+    ExportP8EncDER,     // DER PKCS8 Encrypt (*.der)
     ExportCSR_PEM,      // PEM CSR (*.csr)
+    ExportCSR_DER,      // DER CSR (*.der)
     ExportCRL_PEM,      // PEM CRL (*.crl)
-    ExportPEM,          // PEM (*.pem)
-    ExportDER           // DER (*.der)
+    ExportCRL_DER,      // DER CRL (*.der)
 };
 
 class ExportDlg : public QDialog, public Ui::ExportDlg
@@ -63,6 +65,8 @@ private:
     int exportCRL();
     int exportCSR();
     int exportPFX();
+    int exportP8Enc();
+    int exportP8Info();
 
     BIN pri_key_;
     BIN cert_;
@@ -70,6 +74,7 @@ private:
     BIN crl_;
 
     int data_type_;
+    int key_type_;
 };
 
 #endif // EXPORT_DLG_H

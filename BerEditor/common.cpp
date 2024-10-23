@@ -71,17 +71,22 @@ static const QString _getFileFilter( int nType, QString& strFileType )
     else if( nType == JS_FILE_TYPE_CRL )
     {
         strFileType = QObject::tr( "CRL Files" );
-        strFilter = QString("%1 (*.crl *.der *.cer *.pem)").arg( strFileType );
+        strFilter = QString("%1 (*.crl *.der *.pem)").arg( strFileType );
     }
     else if( nType == JS_FILE_TYPE_CSR )
     {
         strFileType = QObject::tr( "CSR Files" );
-        strFilter = QString("%1 (*.csr *.der *.req *.pem)").arg( strFileType );
+        strFilter = QString("%1 (*.csr *.der *.pem)").arg( strFileType );
     }
     else if( nType == JS_FILE_TYPE_PRIKEY )
     {
         strFileType = QObject::tr("PrivateKey Files");
-        strFilter = QString("%1 (*.key *.der *.pem)").arg( strFileType );
+        strFilter = QString("%1 (*.key *.pk8 *.der *.pem)").arg( strFileType );
+    }
+    else if( nType == JS_FILE_TYPE_PKCS8 )
+    {
+        strFileType = QObject::tr("PKCS8 Files");
+        strFilter = QString("%1 (*.pk8 *.p8 *.der *.pem)").arg( strFileType );
     }
     else if( nType == JS_FILE_TYPE_TXT )
     {
@@ -101,7 +106,7 @@ static const QString _getFileFilter( int nType, QString& strFileType )
     else if( nType == JS_FILE_TYPE_PFX )
     {
         strFileType = QObject::tr("PFX Files");
-        strFilter = QString("%1 (*.pfx *.p12 *.pem)" ).arg( strFileType );
+        strFilter = QString("%1 (*.pfx *.p12)" ).arg( strFileType );
     }
     else if( nType == JS_FILE_TYPE_BIN )
     {
@@ -122,6 +127,19 @@ static const QString _getFileFilter( int nType, QString& strFileType )
     {
         strFileType = QObject::tr("License Files");
         strFilter = QString( "%1 (*.lcn *.txt)" ).arg( strFileType );
+    }
+    else if( nType == JS_FILE_TYPE_PRIKEY_PKCS8_PFX )
+    {
+        strFileType = QObject::tr("PrivateKey Files");
+        strFilter = QString("%1 (*.key *.der *.pem)").arg( strFileType );
+
+        strFilter += ";;";
+        strFileType = QObject::tr("PKCS8 Files");
+        strFilter += QString("%1 (*.pk8 *.p8)" ).arg( strFileType );
+
+        strFilter += ";;";
+        strFileType = QObject::tr("PFX Files");
+        strFilter += QString("%1 (*.pfx *.p12 *.pem)" ).arg( strFileType );
     }
 
     if( strFilter.length() > 0 ) strFilter += ";;";

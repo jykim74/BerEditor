@@ -11,6 +11,7 @@
 #include "cert_info_dlg.h"
 #include "crl_info_dlg.h"
 #include "pri_key_info_dlg.h"
+#include "export_dlg.h"
 
 #include "js_pki.h"
 #include "js_pki_x509.h"
@@ -68,6 +69,7 @@ CertManDlg::CertManDlg(QWidget *parent) :
     connect( mViewCABtn, SIGNAL(clicked()), this, SLOT(clickViewCA()));
     connect( mDecodeCABtn, SIGNAL(clicked()), this, SLOT(clickDecodeCA()));
     connect( mViewPubKeyCABtn, SIGNAL(clicked()), this, SLOT(clickViewPubKeyCA()));
+    connect( mExportCABtn, SIGNAL(clicked()), this, SLOT(clickExportCA()));
 
     connect( mAddOtherBtn, SIGNAL(clicked()), this, SLOT(clickAddOther()));
     connect( mRemoveOtherBtn, SIGNAL(clicked()), this, SLOT(clickRemoveOther()));
@@ -76,17 +78,20 @@ CertManDlg::CertManDlg(QWidget *parent) :
     connect( mViewPubKeyOtherBtn, SIGNAL(clicked()), this, SLOT(clickViewPubKeyOther()));
     connect( mRunOtherVerifyBtn, SIGNAL(clicked()), this, SLOT(clickRunVerifyOther()));
     connect( mRunOtherPubEncBtn, SIGNAL(clicked()), this, SLOT(clickRunPubEncOther()));
+    connect( mExportOtherBtn, SIGNAL(clicked()), this, SLOT(clickExportOther()));
 
     connect( mAddCRLBtn, SIGNAL(clicked()), this, SLOT(clickAddCRL()));
     connect( mRemoveCRLBtn, SIGNAL(clicked()), this, SLOT(clickRemoveCRL()));
     connect( mViewCRLBtn, SIGNAL(clicked()), this, SLOT(clickViewCRL()));
     connect( mDecodeCRLBtn, SIGNAL(clicked()), this, SLOT(clickDecodeCRL()));
+    connect( mExportCRLBtn, SIGNAL(clicked()), this, SLOT(clickExportCRL()));
 
     connect( mAddTrustBtn, SIGNAL(clicked()), this, SLOT(clickAddTrust()));
     connect( mRemoveTrustBtn, SIGNAL(clicked()), this, SLOT(clickRemoveTrust()));
     connect( mViewTrustBtn, SIGNAL(clicked()), this, SLOT(clickViewTrust()));
     connect( mDecodeTrustBtn, SIGNAL(clicked()), this, SLOT(clickDecodeTrust()));
     connect( mViewPubKeyTrustBtn, SIGNAL(clicked()), this, SLOT(clickViewPubKeyTrust()));
+    connect( mExportTrustBtn, SIGNAL(clicked()), this, SLOT(clickExportTrust()));
 
     connect( mFindTLPriKeyBtn, SIGNAL(clicked()), this, SLOT(findTLPriKey()));
     connect( mFindTLCertBtn, SIGNAL(clicked()), this, SLOT(findTLCert()));
@@ -1439,16 +1444,18 @@ end :
 void CertManDlg::clickExport()
 {
     int ret = 0;
-    int nKeyType = 0;
 
     BIN binPri = {0,0};
     BIN binEncPri = {0,0};
     BIN binCert = {0,0};
-    BIN binPFX = {0,0};
 
     QString strPass = mEE_PasswdText->text();
 
     QString strPFXPath;
+    ExportDlg exportDlg;
+    JCertInfo sCertInfo;
+
+    memset( &sCertInfo, 0x00, sizeof(sCertInfo));
 
     if( strPass.length() < 1 )
     {
@@ -1464,6 +1471,13 @@ void CertManDlg::clickExport()
         goto end;
     }
 
+    ret = JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr("fail to get certificate information [%1]").arg(ret), this );
+        goto end;
+    }
+
     ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEncPri, NULL, &binPri );
     if( ret != 0 )
     {
@@ -1471,28 +1485,20 @@ void CertManDlg::clickExport()
         goto end;
     }
 
-    nKeyType = JS_PKI_getPriKeyType( &binPri );
+    exportDlg.setName( sCertInfo.pSubjectName );
+    exportDlg.setPriKeyAndCert( &binPri, &binCert );
+    exportDlg.exec();
 
-    ret = JS_PKI_encodePFX( &binPFX, nKeyType, strPass.toStdString().c_str(), -1, &binPri, &binCert );
-    if( ret != 0 )
+    if( exportDlg.exec() == QDialog::Accepted )
     {
-        berApplet->warnLog( tr( "fail to encode PFX: %1" ).arg(ret ), this );
-        goto end;
+        berApplet->messageLog( tr( "PFX saved successfully:%1").arg( strPFXPath ), this );
     }
-
-    strPFXPath = findSaveFile( this, JS_FILE_TYPE_PFX, berApplet->curFolder() );
-    if( strPFXPath.length() < 1 ) goto end;
-
-    JS_BIN_fileWrite( &binPFX, strPFXPath.toStdString().c_str() );
-
-    berApplet->messageLog( tr( "PFX saved successfully:%1").arg( strPFXPath ), this );
-    berApplet->setCurFile(strPFXPath);
 
 end :
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binEncPri );
     JS_BIN_reset( &binCert );
-    JS_BIN_reset( &binPFX );
+    JS_PKI_resetCertInfo( &sCertInfo );
 }
 
 void CertManDlg::clickChangePasswd()
@@ -2018,6 +2024,36 @@ end :
     JS_BIN_reset( &binPub );
 }
 
+void CertManDlg::clickExportCA()
+{
+    BIN binCert = {0,0};
+    QModelIndex idx = mCA_CertTable->currentIndex();
+
+    QTableWidgetItem* item = mCA_CertTable->item( idx.row(), 0 );
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "Please select a CA certificate" ), this );
+        return;
+    }
+
+    const QString strPath = item->data( Qt::UserRole ).toString();
+    ExportDlg exportDlg;
+    JCertInfo sCertInfo;
+
+    memset( &sCertInfo, 0x00, sizeof(sCertInfo));
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
+
+    exportDlg.setName( sCertInfo.pSubjectName );
+    exportDlg.setCert( &binCert );
+    exportDlg.exec();
+
+    JS_PKI_resetCertInfo( &sCertInfo );
+    JS_BIN_reset( &binCert );
+
+}
+
 void CertManDlg::clickAddOther()
 {
     int ret = 0;
@@ -2178,6 +2214,36 @@ end :
     JS_BIN_reset( &binPub );
 }
 
+void CertManDlg::clickExportOther()
+{
+    BIN binCert = {0,0};
+    QModelIndex idx = mOther_CertTable->currentIndex();
+
+    QTableWidgetItem* item = mOther_CertTable->item( idx.row(), 0 );
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "Please select a certificate" ), this );
+        return;
+    }
+
+    const QString strPath = item->data( Qt::UserRole ).toString();
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
+
+    ExportDlg exportDlg;
+    JCertInfo sCertInfo;
+
+    memset( &sCertInfo, 0x00, sizeof(sCertInfo));
+
+    JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
+
+    exportDlg.setName( sCertInfo.pSubjectName );
+    exportDlg.setCert( &binCert );
+    exportDlg.exec();
+
+    JS_PKI_resetCertInfo( &sCertInfo );
+    JS_BIN_reset( &binCert );
+}
+
 void CertManDlg::clickRunVerifyOther()
 {
     QModelIndex idx = mOther_CertTable->currentIndex();
@@ -2322,7 +2388,7 @@ void CertManDlg::clickViewCRL()
 
 void CertManDlg::clickDecodeCRL()
 {
-    BIN binCert = {0,0};
+    BIN binCRL = {0,0};
     QModelIndex idx = mCRL_Table->currentIndex();
 
     QTableWidgetItem* item = mCRL_Table->item( idx.row(), 0 );
@@ -2334,11 +2400,41 @@ void CertManDlg::clickDecodeCRL()
 
     const QString strPath = item->data( Qt::UserRole ).toString();
 
-    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
-    berApplet->decodeData( &binCert, strPath );
-    JS_BIN_reset( &binCert );
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCRL );
+    berApplet->decodeData( &binCRL, strPath );
+    JS_BIN_reset( &binCRL );
 }
 
+void CertManDlg::clickExportCRL()
+{
+    BIN binCRL = {0,0};
+    QModelIndex idx = mCRL_Table->currentIndex();
+
+    QTableWidgetItem* item = mCRL_Table->item( idx.row(), 0 );
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "Please select a CRL" ), this );
+        return;
+    }
+
+    const QString strPath = item->data( Qt::UserRole ).toString();
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCRL );
+
+    ExportDlg exportDlg;
+    JCRLInfo sCRLInfo;
+
+    memset( &sCRLInfo, 0x00, sizeof(sCRLInfo));
+
+    JS_PKI_getCRLInfo( &binCRL, &sCRLInfo, NULL, NULL );
+
+    exportDlg.setName( sCRLInfo.pIssuerName );
+    exportDlg.setCRL( &binCRL );
+    exportDlg.exec();
+
+    JS_PKI_resetCRLInfo( &sCRLInfo );
+    JS_BIN_reset( &binCRL );
+}
 
 void CertManDlg::clickAddTrust()
 {
@@ -2501,6 +2597,36 @@ void CertManDlg::clickViewPubKeyTrust()
 end :
     JS_BIN_reset( &binCert );
     JS_BIN_reset( &binPub );
+}
+
+void CertManDlg::clickExportTrust()
+{
+    BIN binCert = {0,0};
+    QModelIndex idx = mRCA_CertTable->currentIndex();
+
+    QTableWidgetItem* item = mRCA_CertTable->item( idx.row(), 0 );
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "Please select a Trust RootCA" ), this );
+        return;
+    }
+
+    const QString strPath = item->data( Qt::UserRole ).toString();
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    ExportDlg exportDlg;
+    JCertInfo sCertInfo;
+
+    memset( &sCertInfo, 0x00, sizeof(sCertInfo));
+
+    JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
+
+    exportDlg.setName( sCertInfo.pSubjectName );
+    exportDlg.setCert( &binCert );
+    exportDlg.exec();
+
+    JS_PKI_resetCertInfo( &sCertInfo );
+    JS_BIN_reset( &binCert );
 }
 
 void CertManDlg::decodeTLPriKey()

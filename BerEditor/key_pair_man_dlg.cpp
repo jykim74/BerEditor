@@ -1309,14 +1309,124 @@ void KeyPairManDlg::typePubKey()
 
 void KeyPairManDlg::clickImport()
 {
+    int ret = 0;
+    int nKeyType = 0;
+
+    BIN binPri = {0,0};
+    BIN binPub = {0,0};
+    BIN binP8 = {0,0};
+    BIN binPFX = {0,0};
+    BIN binCert = {0,0};
+
     QString strPath = berApplet->curFolder();
     QString strSelected;
-    QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath, strSelected);
+    QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY_PKCS8_PFX, strPath, strSelected);
 
     if( fileName.length() < 1 ) return;
 
+    QFileInfo fileInfo( fileName );
+    QString strPasswd;
+    QString strName;
+
     NameDlg nameDlg;
-    nameDlg.exec();
+    PasswdDlg passDlg;
+
+
+    QString strExt = fileInfo.suffix();
+
+    if( strExt == "key" || strExt == "p8" || strExt == "pk8" )
+    {
+
+        JS_BIN_fileReadBER( fileName.toLocal8Bit().toStdString().c_str(), &binP8 );
+
+        ret = JS_PKI_decodePrivateKeyInfo( &binP8, &binPri );
+        if( ret != 0 )
+        {
+            if( passDlg.exec() != QDialog::Accepted )
+            {
+                goto end;
+            }
+
+            strPasswd = passDlg.mPasswdText->text();
+
+            ret = JS_PKI_decryptPrivateKey( strPasswd.toStdString().c_str(), &binP8, NULL, &binPri );
+            if( ret != 0 )
+            {
+                berApplet->warningBox( tr( "fail to decrypt private key: %1" ).arg(ret), this );
+                goto end;
+            }
+        }
+    }
+    else if( strExt == "pfx" || strExt == "p12" )
+    {
+        if( passDlg.exec() != QDialog::Accepted )
+        {
+            goto end;
+        }
+
+        strPasswd = passDlg.mPasswdText->text();
+
+        ret = JS_PKI_decodePFX( &binPFX, strPasswd.toStdString().c_str(), &binPri, &binCert );
+        if( ret != 0 )
+        {
+            berApplet->warningBox( tr( "fail to decrypt PFX: %1" ).arg(ret), this );
+            goto end;
+        }
+    }
+    else
+    {
+        JS_BIN_fileReadBER( fileName.toLocal8Bit().toStdString().c_str(), &binPri );
+    }
+
+    nKeyType = JS_PKI_getPriKeyType( &binPri );
+    if( nKeyType < 0 )
+    {
+        berApplet->warningBox( tr( "invalid private key" ), this );
+        goto end;
+    }
+
+    ret = JS_PKI_getPubKeyFromPriKey( nKeyType, &binPri, &binPub );
+    if( ret != 0 )
+    {
+        goto end;
+    }
+
+    if( nameDlg.exec() != QDialog::Accepted )
+    {
+        QDir dir;
+
+        QString strKeyPairPath = berApplet->settingsMgr()->keyPairPath();
+        QString strName = nameDlg.mNameText->text();
+
+        QString fullPath = QString( "%1/%2" ).arg( strKeyPairPath ).arg( strName );
+        if( dir.exists( fullPath ) )
+        {
+            berApplet->warningBox( tr( "The folder(%1) is already existed" ).arg( strName ), this );
+            return;
+        }
+        else
+        {
+            dir.mkdir( fullPath );
+        }
+
+        QString strPriSavePath = QString( "%1/%2" ).arg( fullPath ).arg( kPrivateFile );
+        QString strPubSavePath = QString( "%1/%2" ).arg( fullPath ).arg( kPublicFile );
+
+        JS_BIN_writePEM( &binPri, JS_PEM_TYPE_PRIVATE_KEY, strPriSavePath.toLocal8Bit().toStdString().c_str() );
+        JS_BIN_writePEM( &binPub, JS_PEM_TYPE_PUBLIC_KEY, strPubSavePath.toLocal8Bit().toStdString().c_str() );
+
+        loadKeyPairList();
+
+        berApplet->messageLog( tr( "Key pair saving was successful"), this );
+    }
+
+
+end :
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binPub );
+    JS_BIN_reset( &binP8 );
+    JS_BIN_reset( &binPFX );
+    JS_BIN_reset( &binCert );
 }
 
 void KeyPairManDlg::clickExport()
