@@ -273,6 +273,7 @@ void ExportDlg::setPrivateKey( const BIN *pPriKey )
     data_type_ = DataPriKey;
     JS_BIN_copy( &pri_key_, pPriKey );
     key_type_ = JS_PKI_getPriKeyType( &pri_key_ );
+    mAlgText->setText( JS_PKI_getKeyTypeName( key_type_ ));
 
     mTitleLabel->setText( tr( "Private Key Export" ));
 
@@ -291,6 +292,7 @@ void ExportDlg::setCert( const BIN *pCert )
     data_type_ = DataCert;
     JS_BIN_copy( &cert_, pCert );
     key_type_ = JS_PKI_getCertKeyType( &cert_ );
+    mAlgText->setText( JS_PKI_getKeyTypeName( key_type_ ));
 
     mTitleLabel->setText( tr( "Certificate Export" ));
 
@@ -305,6 +307,7 @@ void ExportDlg::setCRL( const BIN *pCRL )
     data_type_ = DataCRL;
     JS_BIN_copy( &crl_, pCRL );
     key_type_ = -1;
+    mAlgText->setText( "CRL" );
 
     mTitleLabel->setText( tr( "CRL Export" ));
 
@@ -317,6 +320,7 @@ void ExportDlg::setCSR( const BIN *pCSR )
     data_type_ = DataCSR;
     JS_BIN_copy( &csr_, pCSR );
     key_type_ = JS_PKI_getCSRKeyType( pCSR );
+    mAlgText->setText( JS_PKI_getKeyTypeName( key_type_ ));
 
     mTitleLabel->setText( tr( "CSR Export" ));
 
@@ -335,6 +339,8 @@ void ExportDlg::setPriKeyAndCert( const BIN *pPriKey, const BIN *pCert )
     mTitleLabel->setText( tr( "Certificate and Private Key Export" ));
 
     key_type_ = JS_PKI_getCertKeyType( &cert_ );
+    mAlgText->setText( JS_PKI_getKeyTypeName( key_type_ ));
+
     mFormatCombo->addItem( getFormatName( ExportPFX ), ExportPFX );
 
     mFormatCombo->addItem( getFormatName( ExportPubPEM ), ExportPubPEM );
