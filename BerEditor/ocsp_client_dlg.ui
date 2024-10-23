@@ -202,28 +202,21 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mSetURLBtn">
-       <property name="text">
-        <string>Set OCSP URL from AIA</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="mOCSPClearBtn">
-       <property name="text">
-        <string>Clear</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
+     <item row="0" column="5">
       <widget class="QPushButton" name="mSetCACertBtn">
        <property name="text">
         <string>Set CA from AIA</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
+     <item row="0" column="0">
+      <widget class="QCheckBox" name="mUseSignCheck">
+       <property name="text">
+        <string>Use Sign</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
       <spacer name="horizontalSpacer_5">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -235,6 +228,20 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mSetURLBtn">
+       <property name="text">
+        <string>Set OCSP URL from AIA</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mOCSPClearBtn">
+       <property name="text">
+        <string>Clear</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -530,38 +537,21 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="5">
-      <widget class="QPushButton" name="mSendBtn">
-       <property name="text">
-        <string>Send</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QCheckBox" name="mUseSignCheck">
-       <property name="text">
-        <string>Use Sign</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QComboBox" name="mHashCombo"/>
-     </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mEncodeBtn">
-       <property name="text">
-        <string>Encode</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="6">
+     <item row="0" column="7">
       <widget class="QPushButton" name="mVerifyBtn">
        <property name="text">
         <string>Verify</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_10">
+       <property name="text">
+        <string>Hash</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
       <spacer name="horizontalSpacer_4">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -574,12 +564,22 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="2">
-      <widget class="QLabel" name="label_10">
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mEncodeBtn">
        <property name="text">
-        <string>Hash</string>
+        <string>Encode</string>
        </property>
       </widget>
+     </item>
+     <item row="0" column="6">
+      <widget class="QPushButton" name="mSendBtn">
+       <property name="text">
+        <string>Send</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="mHashCombo"/>
      </item>
     </layout>
    </item>
@@ -832,7 +832,6 @@
   <tabstop>mCertViewBtn</tabstop>
   <tabstop>mCertDecodeBtn</tabstop>
   <tabstop>mCertTypeBtn</tabstop>
-  <tabstop>mOCSPClearBtn</tabstop>
   <tabstop>mSetURLBtn</tabstop>
   <tabstop>mSetCACertBtn</tabstop>
   <tabstop>mCertGroup</tabstop>
@@ -852,8 +851,6 @@
   <tabstop>mRequestDecodeBtn</tabstop>
   <tabstop>mRequestLenText</tabstop>
   <tabstop>mRequestText</tabstop>
-  <tabstop>mUseSignCheck</tabstop>
-  <tabstop>mHashCombo</tabstop>
   <tabstop>mEncodeBtn</tabstop>
   <tabstop>mSendBtn</tabstop>
   <tabstop>mVerifyBtn</tabstop>
