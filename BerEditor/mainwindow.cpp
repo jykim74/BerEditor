@@ -842,7 +842,6 @@ void MainWindow::createActions()
     expand_all_act_->setStatusTip(tr("Show all nodes"));
     connect( expand_all_act_, &QAction::triggered, this, &MainWindow::treeExpandAll );
     editMenu->addAction(expand_all_act_);
-    edit_tool_->addAction(expand_all_act_);
     if( isView( ACT_EDIT_EXPAND_ALL )) edit_tool_->addAction( expand_all_act_ );
 
     const QIcon expandNodeIcon = QIcon::fromTheme("expand-node", QIcon(":/images/expand_node.png"));
@@ -851,7 +850,6 @@ void MainWindow::createActions()
     expand_node_act_->setShortcut( QKeySequence(Qt::Key_F6));
     connect( expand_node_act_, &QAction::triggered, this, &MainWindow::treeExpandNode );
     editMenu->addAction(expand_node_act_);
-    edit_tool_->addAction(expand_node_act_);
     if( isView( ACT_EDIT_EXPAND_NODE )) edit_tool_->addAction( expand_node_act_);
 
     const QIcon collapseAllIcon = QIcon::fromTheme("collapse-all", QIcon(":/images/collapse_all.png"));
@@ -860,7 +858,6 @@ void MainWindow::createActions()
     collapse_all_act_->setShortcut( QKeySequence(Qt::Key_F7));
     connect( collapse_all_act_, &QAction::triggered, this, &MainWindow::treeCollapseAll );
     editMenu->addAction(collapse_all_act_);
-    edit_tool_->addAction(collapse_all_act_);
     if( isView( ACT_EDIT_COLLAPSE_ALL )) edit_tool_->addAction(collapse_all_act_ );
 
     const QIcon collapseNodeIcon = QIcon::fromTheme("collapse-node", QIcon(":/images/collapse_node.png"));
@@ -869,7 +866,6 @@ void MainWindow::createActions()
     collapse_node_act_->setShortcut( QKeySequence(Qt::Key_F8));
     connect( collapse_node_act_, &QAction::triggered, this, &MainWindow::treeCollapseNode );
     editMenu->addAction(collapse_node_act_);
-    edit_tool_->addAction(collapse_node_act_);
     if( isView( ACT_EDIT_COLLAPSE_NODE )) edit_tool_->addAction(collapse_node_act_ );
 
     if( berApplet->isLicense() ) createViewActions();
@@ -886,7 +882,6 @@ void MainWindow::createActions()
     connect( data_encode_act_, &QAction::triggered, this, &MainWindow::dataEncoder );
     data_encode_act_->setStatusTip(tr("This is tool for encoding data" ));
     toolMenu->addAction( data_encode_act_ );
-    tool_tool_->addAction( data_encode_act_ );
     if( isView( ACT_TOOL_DATA_ENCODER ) ) tool_tool_->addAction( data_encode_act_ );
 
     const QIcon numTransIcon = QIcon::fromTheme("number-trans", QIcon(":/images/two.png"));
@@ -2073,7 +2068,7 @@ void MainWindow::setView( int nAct )
 {
     int nType = nAct & 0xFF000000;
 
-    int nValue = berApplet->settingsMgr()->getViewValue( nType );
+    int nValue = berApplet->settingsMgr()->viewValue( nType );
     if( nValue < 0 ) return;
 
     nValue |= nAct;
@@ -2085,7 +2080,7 @@ void MainWindow::unsetView( int nAct )
 {
     int nType = nAct & 0xFF000000;
 
-    int nValue = berApplet->settingsMgr()->getViewValue( nType );
+    int nValue = berApplet->settingsMgr()->viewValue( nType );
     if( nValue < 0 ) return;
 
     if( nValue & nAct ) nValue -= nAct;
