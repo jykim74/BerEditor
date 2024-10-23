@@ -612,7 +612,7 @@ void TTLVTreeView::editItem()
 
 void TTLVTreeView::saveItem()
 {
-    QString strPath = berApplet->curFolder();
+    QString strPath = berApplet->curPath();
     QString fileName = findSaveFile( this, JS_FILE_TYPE_BIN, strPath );
     if( fileName.length() < 1 ) return;
 
@@ -625,13 +625,11 @@ void TTLVTreeView::saveItem()
     pItem->getDataAll( &binTTLV, &binData );
     JS_BIN_fileWrite( &binData, fileName.toLocal8Bit().toStdString().c_str() );
     JS_BIN_reset( &binData );
-
-    berApplet->setCurFile( fileName );
 }
 
 void TTLVTreeView::saveItemValue()
 {
-    QString strPath = berApplet->curFolder();
+    QString strPath = berApplet->curPath();
     QString fileName = findSaveFile( this, JS_FILE_TYPE_BIN, strPath );
     if( fileName.length() < 1 ) return;
 
@@ -644,8 +642,6 @@ void TTLVTreeView::saveItemValue()
     pItem->getValueWithPad( &binTTLV, &binData );
     JS_BIN_fileWrite( &binData, fileName.toLocal8Bit().toStdString().c_str() );
     JS_BIN_reset( &binData );
-
-    berApplet->setCurFile( fileName );
 }
 
 

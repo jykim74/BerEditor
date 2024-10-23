@@ -138,7 +138,7 @@ void CRLInfoDlg::clickVerifyCRL()
 {
     int ret = 0;
     BIN binCA = {0,0};
-    QString strPath = berApplet->curFile();
+    QString strPath = berApplet->curFilePath();
 
     QString strFileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
 
@@ -406,7 +406,7 @@ int CRLInfoDlg::saveAsPEM( const BIN *pData )
     QFileDialog::Options options;
     options |= QFileDialog::DontUseNativeDialog;
 
-    QString strPath = berApplet->curFolder();
+    QString strPath = berApplet->curPath();
 
     QString strFilter = tr("CRL Files (*.crl);;PEM Files (*.pem);;All Files (*.*)");
     QString selectedFilter;

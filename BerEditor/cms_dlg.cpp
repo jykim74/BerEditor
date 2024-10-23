@@ -27,7 +27,7 @@ CMSDlg::CMSDlg(QWidget *parent) :
 {
     setupUi(this);
     group_ = new QButtonGroup;
-    last_path_ = berApplet->curFolder();
+    last_path_ = berApplet->curPath( last_path_ );
 
     connect( mSrcClearBtn, SIGNAL(clicked()), this, SLOT(clearSrc()));
     connect( mCMSClearBtn, SIGNAL(clicked()), this, SLOT(clearCMS()));

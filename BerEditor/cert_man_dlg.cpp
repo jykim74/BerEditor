@@ -1394,7 +1394,7 @@ void CertManDlg::clickImport()
     int nKeyType = -1;
     QString strPass;
     PasswdDlg passwdDlg;
-    QString strPFXFile = berApplet->curFolder();
+    QString strPFXFile = berApplet->curPath();
 
     BIN binPFX = {0,0};
     BIN binPri = {0,0};
@@ -1431,7 +1431,6 @@ void CertManDlg::clickImport()
     if( ret == 0 )
     {
         berApplet->messageLog( tr( "The private key and certificate are saved successfully"), this );
-        berApplet->setCurFile(strPFXFile);
     }
 
 end :
@@ -1866,7 +1865,7 @@ void CertManDlg::clickAddCA()
     BIN binCA = {0,0};
     JCertInfo sCertInfo;
     JExtensionInfoList *pExtList = NULL;
-    QString strPath = berApplet->curFile();
+    QString strPath = berApplet->curFilePath();
 
     QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
     QString strCAPath = berApplet->settingsMgr()->CACertPath();
@@ -2063,7 +2062,7 @@ void CertManDlg::clickAddOther()
     BIN binOther = {0,0};
     JCertInfo sCertInfo;
     JExtensionInfoList *pExtList = NULL;
-    QString strPath = berApplet->curFile();
+    QString strPath = berApplet->curFilePath();
 
     QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
     QString strOtherPath = berApplet->settingsMgr()->otherCertPath();
@@ -2297,7 +2296,7 @@ void CertManDlg::clickAddCRL()
 
     BIN binCRL = {0,0};
     JCRLInfo sCRLInfo;
-    QString strPath = berApplet->curFile();
+    QString strPath = berApplet->curFilePath();
 
     QString fileName = findFile( this, JS_FILE_TYPE_CRL, strPath );
     QString strCRLPath = berApplet->settingsMgr()->CRLPath();
@@ -2444,7 +2443,7 @@ void CertManDlg::clickAddTrust()
 
     BIN binCA = {0,0};
     JCertInfo sCertInfo;
-    QString strPath = berApplet->curFile();
+    QString strPath = berApplet->curFilePath();
 
     QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
     QString strTrustPath = berApplet->settingsMgr()->trustCertPath();
@@ -2714,7 +2713,6 @@ void CertManDlg::findTLPriKey()
     if( filePath.length() > 0 )
     {
         mTLPriKeyPathText->setText( filePath );
-        berApplet->setCurFile( filePath );
     }
 }
 
@@ -2731,7 +2729,6 @@ void CertManDlg::findTLCert()
     if( filePath.length() > 0 )
     {
         mTLCertPathText->setText( filePath );
-        berApplet->setCurFile( filePath );
     }
 }
 
@@ -2748,7 +2745,6 @@ void CertManDlg::findTLPFX()
     if( filePath.length() > 0 )
     {
         mTLPFXPathText->setText( filePath );
-        berApplet->setCurFile( filePath );
     }
 }
 

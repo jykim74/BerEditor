@@ -1023,7 +1023,7 @@ void SSLVerifyDlg::findTrustCACert()
 {
     QString strPath = mTrustCAPathText->text();
     if( strPath.length() < 1 )
-        strPath = berApplet->curFolder();
+        strPath = berApplet->curPath();
 
     QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( fileName.length() > 1 ) mTrustCAPathText->setText( fileName );
@@ -1409,7 +1409,7 @@ void SSLVerifyDlg::findClientCA()
 {
     QString strPath = mClientCAPathText->text();
     if( strPath.length() < 1 )
-        strPath = berApplet->curFolder();
+        strPath = berApplet->curPath();
 
     QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( fileName.length() > 1 ) mClientCAPathText->setText( fileName );
@@ -1486,7 +1486,7 @@ void SSLVerifyDlg::findClientCert()
 {
     QString strPath = mClientCertPathText->text();
     if( strPath.length() < 1 )
-        strPath = berApplet->curFolder();
+        strPath = berApplet->curPath();
 
     QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( fileName.length() > 1 ) mClientCertPathText->setText( fileName );
@@ -1563,7 +1563,7 @@ void SSLVerifyDlg::findClientPriKey()
 {
     QString strPath = mClientPriKeyPathText->text();
     if( strPath.length() < 1 )
-        strPath = berApplet->curFolder();
+        strPath = berApplet->curPath();
 
     QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( fileName.length() > 1 ) mClientPriKeyPathText->setText( fileName );

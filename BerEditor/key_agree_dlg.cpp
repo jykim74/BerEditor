@@ -730,7 +730,7 @@ void KeyAgreeDlg::findAECDHPriKey()
 
     memset( &sECKeyVal, 0x00, sizeof(sECKeyVal));
 
-    QString strPath = berApplet->curFolder();
+    QString strPath = berApplet->curPath();
     QString strPub;
 
     QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
@@ -904,7 +904,7 @@ void KeyAgreeDlg::findBECDHPriKey()
 
     memset( &sECKeyVal, 0x00, sizeof(sECKeyVal));
 
-    QString strPath = berApplet->curFolder();
+    QString strPath = berApplet->curPath();
     QString strPub;
 
     QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );

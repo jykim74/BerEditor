@@ -66,9 +66,9 @@ public:
 
     bool isPRO() { return is_pro_; };
     bool isLicense() { return is_license_; };
-    QString curFile() { return cur_file_; };
-    QString curFolder();
-    void setCurFile( const QString& strFile );
+
+    QString curFilePath( const QString strPath = "" );
+    QString curPath( const QString strPath = "" );
 
 signals:
 

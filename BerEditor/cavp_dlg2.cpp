@@ -395,7 +395,6 @@ void CAVPDlg::clickFindACVPReqPath()
     if( strFile.length() > 0 )
     {
         mACVP_ReqPathText->setText( strFile );
-        berApplet->setCurFile( strFile );
     }
 }
 

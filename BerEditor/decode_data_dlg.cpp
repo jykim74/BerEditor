@@ -94,7 +94,7 @@ void DecodeDataDlg::clearData()
 void DecodeDataDlg::findData()
 {
     BIN binData = {0,0};
-    QString strPath = berApplet->curFolder();
+    QString strPath = berApplet->curPath();
 
     QString strFileName = findFile( this, JS_FILE_TYPE_BER, strPath );
     if( strFileName.length() < 1 ) return;
@@ -118,5 +118,4 @@ void DecodeDataDlg::findData()
     }
 
     JS_BIN_reset( &binData );
-    berApplet->setCurFile( strFileName );
 }

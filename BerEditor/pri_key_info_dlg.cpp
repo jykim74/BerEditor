@@ -556,7 +556,7 @@ void PriKeyInfoDlg::clickSavePriKey()
         return;
     }
 
-    QString strPath = berApplet->curFolder();
+    QString strPath = berApplet->curPath();
     QString strAlg = JS_PKI_getKeyTypeName( key_type_ );
 
     if( strPath.length() > 0 ) strPath += "/";
@@ -589,7 +589,7 @@ void PriKeyInfoDlg::clickSavePubKey()
     else
         JS_BIN_copy( &binPub, &pub_key_ );
 
-    QString strPath = berApplet->curFolder();
+    QString strPath = berApplet->curPath();
     QString strAlg = JS_PKI_getKeyTypeName( key_type_ );
 
     if( strPath.length() > 0 ) strPath += "/";

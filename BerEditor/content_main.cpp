@@ -333,6 +333,8 @@ void ContentMain::createDockWindows()
     mMenuTree->header()->setVisible(false);
     mMenuTree->clear();
 
+    if( berApplet->isLicense() == false ) return;
+
     QDir dir;
     if( dir.exists( strDocPath ) == false )
         dir.mkdir( strDocPath );
@@ -381,34 +383,11 @@ void ContentMain::createDockWindows()
     if( dir.exists( strLinkPath ) == false )
         dir.mkdir( strLinkPath );
 
-
     mMenuTree->expandAll();
 }
 
 void ContentMain::makeASNMenu( QTreeWidgetItem* parent )
 {
-#if 0
-    QString strPath = QString( "%1/%2" ).arg( kDoc ).arg( kASN1 );
-
-    QDir dir( strPath );
-    for( const QFileInfo &file : dir.entryInfoList(QDir::Files))
-    {
-        if( file.isFile() == false )
-            continue;
-
-        if( file.completeSuffix().toLower() != "asn1" )
-            continue;
-
-        QTreeWidgetItem *item = new QTreeWidgetItem;
-        QString strBase = file.baseName();
-        QString strASN1 = file.fileName();
-        QString strData = QString( "%1/%2" ).arg( kASN1 ).arg( strASN1 );
-
-        item->setText( 0, strBase );
-        item->setData( 0, Qt::UserRole, strData );
-        parent->addChild( item );
-    }
-#else
     for( int i = 0; i < kASN1List.size(); i++ )
     {
         QString strASN1 = kASN1List.at(i);
@@ -419,7 +398,6 @@ void ContentMain::makeASNMenu( QTreeWidgetItem* parent )
         item->setData( 0, Qt::UserRole, strData );
         parent->addChild( item );
     }
-#endif
 }
 
 void ContentMain::makeRFCMenu( QTreeWidgetItem* parent )

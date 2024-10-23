@@ -659,7 +659,7 @@ void BerTreeView::ExpandValue()
 
 void BerTreeView::SaveNode()
 {
-    QString strPath = berApplet->curFolder();
+    QString strPath = berApplet->curPath();
     QString fileName = findSaveFile( this, JS_FILE_TYPE_BER, strPath );
     if( fileName.length() < 1 ) return;
 
@@ -673,13 +673,11 @@ void BerTreeView::SaveNode()
     JS_BIN_set( &binData, binBer.pVal + item->GetOffset(), item->GetHeaderSize() + item->GetLength() );
     JS_BIN_fileWrite( &binData, fileName.toLocal8Bit().toStdString().c_str());
     JS_BIN_reset( &binData );
-
-    berApplet->setCurFile( fileName );
 }
 
 void BerTreeView::SaveNodeValue()
 {
-    QString strPath = berApplet->curFolder();
+    QString strPath = berApplet->curPath();
     QString fileName = findSaveFile( this, JS_FILE_TYPE_BER, strPath );
     if( fileName.length() < 1 ) return;
 
@@ -693,8 +691,6 @@ void BerTreeView::SaveNodeValue()
     JS_BIN_set( &binData, binBer.pVal + item->GetOffset() + item->GetHeaderSize(), item->GetLength() );
     JS_BIN_fileWrite( &binData, fileName.toLocal8Bit().toStdString().c_str());
     JS_BIN_reset(&binData);
-
-    berApplet->setCurFile( fileName );
 }
 
 void BerTreeView::EditValue()

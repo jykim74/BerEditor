@@ -528,7 +528,7 @@ void KeyPairManDlg::clickLMakeCSR()
     if( makeCSR.exec() == QDialog::Accepted )
     {
         QString strHexCSR = makeCSR.getCSRHex();
-        QString strCurFolder = berApplet->curFolder();
+        QString strCurFolder = berApplet->curPath();
 
         QString fileName = findSaveFile( this, JS_FILE_TYPE_CSR, strCurFolder );
         if( fileName.length() > 1 )
@@ -565,7 +565,7 @@ void KeyPairManDlg::clickLEncrypt()
 
     JS_BIN_fileReadBER( strPriKeyPath.toLocal8Bit().toStdString().c_str(), &binPri );
 
-    QString strCurFolder = berApplet->curFolder();
+    QString strCurFolder = berApplet->curPath();
 
     NewPasswdDlg newPass;
     QString strPass;
@@ -1318,7 +1318,7 @@ void KeyPairManDlg::clickImport()
     BIN binPFX = {0,0};
     BIN binCert = {0,0};
 
-    QString strPath = berApplet->curFolder();
+    QString strPath = berApplet->curPath();
     QString strSelected;
     QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY_PKCS8_PFX, strPath, strSelected);
 

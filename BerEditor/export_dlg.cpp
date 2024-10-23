@@ -175,7 +175,7 @@ void ExportDlg::initialize()
 void ExportDlg::setName( const QString strName )
 {
     mNameText->setText( strName );
-    QString strFolder = berApplet->curFolder();
+    QString strFolder = berApplet->curPath();
 
     QString strFilename = QString( "%1/%2.pem" ).arg( strFolder ).arg( strName );
     mFilenameText->setText( strFilename );
@@ -260,7 +260,7 @@ void ExportDlg::clickFindFilename()
     else if( data_type_ == DataCSR )
         nType = JS_FILE_TYPE_CSR;
 
-    QString strPath = mFilenameText->text();
+    QString strPath = berApplet->curFilePath( mFilenameText->text() );
 
     QString strFilename = findSaveFile( this, nType, strPath );
     if( strFilename.length() < 1 ) return;

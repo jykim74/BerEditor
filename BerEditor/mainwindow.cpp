@@ -1409,7 +1409,7 @@ void MainWindow::openRecent()
 
 void MainWindow::openCert()
 {
-    QString strPath = berApplet->curFile();
+    QString strPath = berApplet->curFilePath();
 
     QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
     BIN binCert = {0,0};
@@ -1424,7 +1424,6 @@ void MainWindow::openCert()
 //        certInfo.setCertBIN( &binCert );
         certInfo.setCertPath( fileName );
         certInfo.exec();
-        berApplet->setCurFile( fileName );
     }
     else
     {
@@ -1463,7 +1462,7 @@ end :
 
 void MainWindow::openCRL()
 {
-    QString strPath = berApplet->curFile();
+    QString strPath = berApplet->curFilePath();
 
     QString fileName = findFile( this, JS_FILE_TYPE_CRL, strPath );
     BIN binCRL = {0,0};
@@ -1477,8 +1476,6 @@ void MainWindow::openCRL()
         CRLInfoDlg crlInfo;
         crlInfo.setCRL_BIN( &binCRL );
         crlInfo.exec();
-
-        berApplet->setCurFile( fileName );
     }
     else
     {
@@ -1514,7 +1511,7 @@ void MainWindow::openCRL()
 
 void MainWindow::openCSR()
 {
-    QString strPath = berApplet->curFile();
+    QString strPath = berApplet->curFilePath();
 
     QString fileName = findFile( this, JS_FILE_TYPE_CSR, strPath );
     BIN binCSR = {0,0};
@@ -1528,8 +1525,6 @@ void MainWindow::openCSR()
         CSRInfoDlg csrInfo;
         csrInfo.setReqBIN( &binCSR );
         csrInfo.exec();
-
-        berApplet->setCurFile( fileName );
     }
     else
     {
@@ -1566,7 +1561,7 @@ void MainWindow::openCSR()
 void MainWindow::openPriKey()
 {
     int nKeyType = -1;
-    QString strPath = berApplet->curFile();
+    QString strPath = berApplet->curFilePath();
 
     QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     BIN binKey = {0,0};
@@ -1605,8 +1600,6 @@ void MainWindow::openPriKey()
 
                     JS_BIN_reset( &binRead );
                 }
-
-                berApplet->setCurFile( strPath );
             }
         }
         else
@@ -1637,8 +1630,6 @@ void MainWindow::openPriKey()
 
             JS_BIN_reset( &binRead );
         }
-
-        berApplet->setCurFile( strPath );
     }
 
     JS_BIN_reset( &binKey );
@@ -1647,7 +1638,7 @@ void MainWindow::openPriKey()
 void MainWindow::openPubKey()
 {
     int nKeyType = -1;
-    QString strPath = berApplet->curFile();
+    QString strPath = berApplet->curFilePath();
 
     QString fileName = findFile( this, JS_FILE_TYPE_BER, strPath );
     BIN binKey = {0,0};
@@ -1686,8 +1677,6 @@ void MainWindow::openPubKey()
 
                     JS_BIN_reset( &binRead );
                 }
-
-                berApplet->setCurFile( strPath );
             }
         }
         else
@@ -1718,8 +1707,6 @@ void MainWindow::openPubKey()
 
             JS_BIN_reset( &binRead );
         }
-
-        berApplet->setCurFile( strPath );
     }
 
     JS_BIN_reset( &binKey );
@@ -1729,7 +1716,7 @@ void MainWindow::openCMS()
 {
     int ret = 0;
     int nCMSType = -1;
-    QString strPath = berApplet->curFile();
+    QString strPath = berApplet->curFilePath();
 
     QString fileName = findFile( this, JS_FILE_TYPE_PKCS7, strPath );
     BIN binCMS = {0,0};

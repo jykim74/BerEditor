@@ -91,7 +91,7 @@ void DecodeTTLVDlg::clearData()
 void DecodeTTLVDlg::findData()
 {
     BIN binData = {0,0};
-    QString strPath = berApplet->curFolder();
+    QString strPath = berApplet->curPath();
 
     QString strFileName = findFile( this, JS_FILE_TYPE_BIN, strPath );
     if( strFileName.length() < 1 ) return;
@@ -114,6 +114,5 @@ void DecodeTTLVDlg::findData()
     }
 
     JS_BIN_reset( &binData );
-    berApplet->setCurFile( strFileName );
 }
 

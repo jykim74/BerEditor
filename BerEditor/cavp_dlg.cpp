@@ -340,7 +340,7 @@ void CAVPDlg::logRsp( const QString& strLog )
 void CAVPDlg::clickRspPathFind()
 {
     QString strPath = mRspPathText->text();
-    if( strPath.length() < 1 ) strPath = berApplet->curFolder();
+    if( strPath.length() < 1 ) strPath = berApplet->curPath(strPath);
 
     QString folderName = findFolder( this, strPath );
 
@@ -1709,117 +1709,108 @@ void CAVPDlg::clickPBKDFRun()
 void CAVPDlg::clickSymFind()
 {
     QString strPath = mSymReqFileText->text();
-    if( strPath.length() < 1 ) strPath = berApplet->curFile();
+    if( strPath.length() < 1 ) strPath = berApplet->curFilePath(strPath);
 
     QString strFile = findFile( this, JS_FILE_TYPE_CSR, strPath );
     if( strFile.length() > 0 )
     {
         mSymReqFileText->setText( strFile );
-        berApplet->setCurFile( strFile );
     }
 }
 
 void CAVPDlg::clickAEFind()
 {
     QString strPath = mAEReqFileText->text();
-    if( strPath.length() < 1 ) strPath = berApplet->curFile();
+    if( strPath.length() < 1 ) strPath = berApplet->curFilePath(strPath);
 
     QString strFile = findFile( this, JS_FILE_TYPE_CSR, strPath );
     if( strFile.length() > 0 )
     {
         mAEReqFileText->setText( strFile );
-        berApplet->setCurFile( strFile );
     }
 }
 
 void CAVPDlg::clickHashFind()
 {
     QString strPath = mHashReqFileText->text();
-    if( strPath.length() < 1 ) strPath = berApplet->curFile();
+    if( strPath.length() < 1 ) strPath = berApplet->curFilePath(strPath);
 
     QString strFile = findFile( this, JS_FILE_TYPE_CSR, strPath );
     if( strFile.length() > 0 )
     {
         mHashReqFileText->setText( strFile );
-        berApplet->setCurFile( strFile );
     }
 }
 
 void CAVPDlg::clickHMACFind()
 {
     QString strPath = mHMACReqFileText->text();
-    if( strPath.length() < 1 ) strPath = berApplet->curFile();
+    if( strPath.length() < 1 ) strPath = berApplet->curFilePath( strPath );
 
     QString strFile = findFile( this, JS_FILE_TYPE_CSR, strPath );
     if( strFile.length() > 0 )
     {
         mHMACReqFileText->setText( strFile );
-        berApplet->setCurFile( strFile );
     }
 }
 
 void CAVPDlg::clickECCFind()
 {
     QString strPath = mECCReqFileText->text();
-    if( strPath.length() < 1 ) strPath = berApplet->curFile();
+    if( strPath.length() < 1 ) strPath = berApplet->curFilePath(strPath);
 
     QString strFile = findFile( this, JS_FILE_TYPE_CSR, strPath );
     if( strFile.length() > 0 )
     {
         mECCReqFileText->setText( strFile );
-        berApplet->setCurFile( strFile );
     }
 }
 
 void CAVPDlg::clickRSAFind()
 {
     QString strPath = mRSAReqFileText->text();
-    if( strPath.length() < 1 ) strPath = berApplet->curFile();
+    if( strPath.length() < 1 ) strPath = berApplet->curFilePath(strPath);
 
     QString strFile = findFile( this, JS_FILE_TYPE_CSR, strPath );
     if( strFile.length() > 0 )
     {
         mRSAReqFileText->setText( strFile );
-        berApplet->setCurFile( strFile );
     }
 }
 
 void CAVPDlg::clickDRBGFind()
 {
     QString strPath = mDRBGReqFileText->text();
-    if( strPath.length() < 1 ) strPath = berApplet->curFile();
+    if( strPath.length() < 1 ) strPath = berApplet->curFilePath(strPath);
 
     QString strFile = findFile( this, JS_FILE_TYPE_CSR, strPath );
     if( strFile.length() > 0 )
     {
         mDRBGReqFileText->setText( strFile );
-        berApplet->setCurFile( strFile );
     }
 }
 
 void CAVPDlg::clickPBKDFFind()
 {
     QString strPath = mPBKDFReqFileText->text();
-    if( strPath.length() < 1 ) strPath = berApplet->curFile();
+    if( strPath.length() < 1 ) strPath = berApplet->curFilePath(strPath);
 
     QString strFile = findFile( this, JS_FILE_TYPE_CSR, strPath );
     if( strFile.length() > 0 )
     {
         mPBKDFReqFileText->setText( strFile );
-        berApplet->setCurFile( strFile );
     }
 }
 
 void CAVPDlg::clickRSADETPriFind()
 {
     QString strPath = mRSA_DETPriPathText->text();
-    if( strPath.length() < 1 ) strPath = berApplet->curFile();
+    if( strPath.length() < 1 ) strPath = berApplet->curFilePath(strPath);
 
     QString strFile = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( strFile.length() > 0 )
     {
         mRSA_DETPriPathText->setText( strFile );
-        berApplet->setCurFile( strFile );
     }
 }
 

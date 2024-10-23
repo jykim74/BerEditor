@@ -137,20 +137,38 @@ void BerApplet::start()
     log( "======================================================");
 }
 
-QString BerApplet::curFolder()
+QString BerApplet::curFilePath( const QString strPath )
 {
-    if( cur_file_.length() < 1 ) return ".";
+    if( strPath.length() > 1 )
+    {
+        cur_file_ = strPath;
+    }
+    else
+    {
+        if( cur_file_.length() < 1 )
+            cur_file_ = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+    }
+
+    return cur_file_;
+}
+
+QString BerApplet::curPath( const QString strPath )
+{
+    if( strPath.length() > 1 )
+    {
+        cur_file_ = strPath;
+    }
+    else
+    {
+        if( cur_file_.length() < 1 )
+            cur_file_ = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+    }
 
     QFileInfo file;
     file.setFile( cur_file_ );
     QDir folder = file.dir();
 
     return folder.path();
-}
-
-void BerApplet::setCurFile( const QString& strFile )
-{
-    cur_file_ = strFile;
 }
 
 void BerApplet::decodeData( const BIN *pData, const QString strPath )

@@ -227,14 +227,13 @@ void TSPClientDlg::findSrvCert()
 
     if( strPath.length() < 1 )
     {
-        strPath = berApplet->curFolder();
+        strPath = berApplet->curPath();
     }
 
     QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( filePath.length() > 0 )
     {
         mSrvCertPathText->setText( filePath );
-        berApplet->setCurFile(filePath);
     }
 }
 
@@ -336,14 +335,13 @@ void TSPClientDlg::findCACert()
 
     if( strPath.length() < 1 )
     {
-        strPath = berApplet->curFolder();
+        strPath = berApplet->curPath();
     }
 
     QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( filePath.length() > 0 )
     {
         mCACertPathText->setText( filePath );
-        berApplet->setCurFile(filePath);
     }
 }
 

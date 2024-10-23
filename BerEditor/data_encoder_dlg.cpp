@@ -76,7 +76,7 @@ static char getch( unsigned char c )
 
 void DataEncoderDlg::clickFindFile()
 {
-    QString strPath = berApplet->curFolder();
+    QString strPath = berApplet->curPath();
 
     QString strFile = findFile( this, JS_FILE_TYPE_ALL, strPath );
 
@@ -88,8 +88,6 @@ void DataEncoderDlg::clickFindFile()
 
         mInputText->setPlainText( getHexString( &binFile ));
         JS_BIN_reset( &binFile );
-
-        berApplet->setCurFile( strFile );
     }
 }
 
