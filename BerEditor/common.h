@@ -141,7 +141,7 @@ static const int kToolDefault = ACT_TOOL_DATA_ENCODER | ACT_TOOL_OID_INFO | ACT_
                          | ACT_TOOL_DECODE_DATA | ACT_TOOL_GET_URI;
 
 static const int kCryptDefault = ACT_CRYPT_HASH | ACT_CRYPT_MAC | ACT_CRYPT_ENC_DEC \
-                          | ACT_CRYPT_SIGN_VERIFY | ACT_CRYPT_PUB_ENC | ACT_CRYPT_KEY_AGREE \
+                          | ACT_CRYPT_SIGN_VERIFY | ACT_CRYPT_KEY_AGREE \
                           | ACT_CRYPT_CERT_PVD | ACT_CRYPT_BN_CALC | ACT_CRYPT_KEY_PAIR_MAN \
                           | ACT_CRYPT_CERT_MAN | ACT_CRYPT_SSL_VERIFY;
 
