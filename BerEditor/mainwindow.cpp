@@ -82,7 +82,7 @@
 
 const int kMaxRecentFiles = 10;
 
-#ifdef Q_OS_WINDOW
+#ifdef Q_OS_WINDOWS
 static const int kColWidth = 26;
 #else
 static const int kColWidth = 28;
@@ -233,10 +233,10 @@ void MainWindow::initialize()
     setTitle( "" );
 
 #if 1
-#ifdef Q_OS_WINDOW
+#ifdef Q_OS_WINDOWS
     resize( 900, 700 );
 #else
-    resize( 940, 700 );
+    resize( 960, 700 );
 #endif
 #else
     table_tab_->setMinimumWidth( 700 );

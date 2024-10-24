@@ -147,7 +147,7 @@ static const int kCryptDefault = ACT_CRYPT_HASH | ACT_CRYPT_MAC | ACT_CRYPT_ENC_
 
 static const int kProtoDefault = 0;
 static const int kKMIPDefault = 0;
-static const int kHelpDefault = ACT_HELP_CLEAR_LOG | ACT_HELP_HALT_LOG | ACT_HELP_CONTENT | ACT_HELP_ABOUT;
+static const int kHelpDefault = ACT_HELP_CLEAR_LOG | ACT_HELP_HALT_LOG | ACT_HELP_ABOUT;
 
 
 const QStringList kECCParamList = {
