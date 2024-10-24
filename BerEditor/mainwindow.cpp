@@ -1226,6 +1226,7 @@ void MainWindow::createActions()
     {
         clear_log_act_->setEnabled( false );
         halt_log_act_->setEnabled( false );
+        content_act_->setEnabled( false );
     }
 
     const QIcon lcnIcon = QIcon::fromTheme("berview-license", QIcon(":/images/license.png"));
