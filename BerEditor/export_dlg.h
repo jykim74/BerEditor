@@ -11,6 +11,7 @@ class ExportDlg;
 
 enum {
     DataPriKey = 1,
+    DataPubKey,
     DataCert,
     DataCRL,
     DataCSR,
@@ -46,6 +47,7 @@ public:
     void setName( const QString strName );
 
     void setPrivateKey( const BIN *pPriKey );
+    void setPublicKey( const BIN *pPubKey );
     void setCert( const BIN *pCert );
     void setCRL( const BIN *pCRL );
     void setCSR( const BIN *pCSR );
@@ -69,6 +71,7 @@ private:
     int exportP8Info();
 
     BIN pri_key_;
+    BIN pub_key_;
     BIN cert_;
     BIN csr_;
     BIN crl_;
