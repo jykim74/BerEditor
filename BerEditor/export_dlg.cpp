@@ -142,6 +142,7 @@ ExportDlg::ExportDlg(QWidget *parent) :
     key_type_ = -1;
 
     memset( &pri_key_, 0x00, sizeof(BIN));
+    memset( &pub_key_, 0x00, sizeof(BIN));
     memset( &cert_, 0x00, sizeof(BIN));
     memset( &csr_, 0x00, sizeof(BIN));
     memset( &crl_, 0x00, sizeof(BIN));
@@ -162,6 +163,7 @@ ExportDlg::ExportDlg(QWidget *parent) :
 ExportDlg::~ExportDlg()
 {
     JS_BIN_reset( &pri_key_ );
+    JS_BIN_reset( &pub_key_ );
     JS_BIN_reset( &cert_ );
     JS_BIN_reset( &csr_ );
     JS_BIN_reset( &crl_ );
