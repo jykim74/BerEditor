@@ -200,6 +200,14 @@ void ExportDlg::clickOK()
     int ret = 0;
     int nExportType = mFormatCombo->currentData().toInt();
 
+    QString strFilename = mFilenameText->text();
+
+    if( QFileInfo::exists( strFilename ) == true )
+    {
+        bool bVal = berApplet->yesOrNoBox( tr( "That file name already exists. Do you want to overwrite it?" ), this );
+        if( bVal == false ) return;
+    }
+
     switch ( nExportType ) {
     case ExportPubPEM:
     case ExportPubDER:

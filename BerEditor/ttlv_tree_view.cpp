@@ -232,7 +232,9 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
 
                 QString address;
                 address = QString( "%1" ).arg( i, 8, 16, QLatin1Char( '0' ));
-                rightTable->setItem( line, 0, new QTableWidgetItem(address));
+                QTableWidgetItem *addrItem = new QTableWidgetItem( address );
+                addrItem->setFlags(addrItem->flags() & ~Qt::ItemIsSelectable );
+                rightTable->setItem( line, 0, addrItem);
                 rightTable->item( line, 0 )->setBackgroundColor( QColor(220,220,250) );
             }
 
@@ -270,7 +272,9 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
 
             if( i % 16 - 15 == 0 )
             {
-                rightTable->setItem( line, 17, new QTableWidgetItem(text));
+                QTableWidgetItem *textItem = new QTableWidgetItem( text );
+                textItem->setFlags(textItem->flags() & ~Qt::ItemIsSelectable );
+                rightTable->setItem( line, 17, textItem );
                 rightTable->item( line, 17 )->setBackgroundColor(QColor(210,240,210));
                 text.clear();
                 line++;
@@ -279,7 +283,9 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
 
         if( !text.isEmpty() )
         {
-            rightTable->setItem( line, 17, new QTableWidgetItem(text));
+            QTableWidgetItem *textItem = new QTableWidgetItem( text );
+            textItem->setFlags(textItem->flags() & ~Qt::ItemIsSelectable );
+            rightTable->setItem( line, 17, textItem);
             rightTable->item( line, 17 )->setBackgroundColor(QColor(210,240,210));
         }
     }
@@ -365,7 +371,9 @@ void TTLVTreeView::showRightPart( TTLVTreeItem *pItem )
                 QString address;
 
                 address = QString( "%1" ).arg( i, 8, 16, QLatin1Char( '0' ));
-                rightTable->setItem( line, 0, new QTableWidgetItem(address));
+                QTableWidgetItem *addrItem = new QTableWidgetItem( address );
+                addrItem->setFlags(addrItem->flags() & ~Qt::ItemIsSelectable );
+                rightTable->setItem( line, 0, addrItem );
                 rightTable->item( line, 0 )->setBackgroundColor( QColor(220,220,250) );
             }
 
@@ -399,7 +407,9 @@ void TTLVTreeView::showRightPart( TTLVTreeItem *pItem )
 
             if( i % 16 - 15 == 0 )
             {
-                rightTable->setItem( line, 17, new QTableWidgetItem(text));
+                QTableWidgetItem *textItem = new QTableWidgetItem( text );
+                textItem->setFlags(textItem->flags() & ~Qt::ItemIsSelectable );
+                rightTable->setItem( line, 17, textItem );
                 rightTable->item( line, 17 )->setBackgroundColor(QColor(210,240,210));
                 text.clear();
                 line++;
@@ -408,7 +418,9 @@ void TTLVTreeView::showRightPart( TTLVTreeItem *pItem )
 
         if( !text.isEmpty() )
         {
-            rightTable->setItem( line, 17, new QTableWidgetItem(text));
+            QTableWidgetItem *textItem = new QTableWidgetItem( text );
+            textItem->setFlags(textItem->flags() & ~Qt::ItemIsSelectable );
+            rightTable->setItem( line, 17, textItem );
             rightTable->item( line, 17 )->setBackgroundColor(QColor(210,240,210));
         }
 

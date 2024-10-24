@@ -507,9 +507,18 @@ void KeyPairManDlg::clickLMakeCSR()
     int ret = 0;
     QDir dir;
 
+    BIN binPri = {0,0};
+    BIN binCSR = {0,0};
+
     QString strPubKeyPath;
     QString strPriKeyPath;
-    QString strPath = getSelectedPath();
+
+    QString strPath;
+
+    QModelIndex idx = mKeyPairTable->currentIndex();
+    QTableWidgetItem* item = mKeyPairTable->item( idx.row(), 0 );
+
+    if( item ) strPath = item->data(Qt::UserRole).toString();
 
     if( strPath.length() < 1 )
     {
@@ -517,10 +526,12 @@ void KeyPairManDlg::clickLMakeCSR()
         return;
     }
 
+    QString strName = item->text();
+
     strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
     strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
 
-    BIN binPri = {0,0};
+
     JS_BIN_fileReadBER( strPriKeyPath.toLocal8Bit().toStdString().c_str(), &binPri );
     MakeCSRDlg makeCSR;
     makeCSR.setPriKey( &binPri );
@@ -528,16 +539,16 @@ void KeyPairManDlg::clickLMakeCSR()
     if( makeCSR.exec() == QDialog::Accepted )
     {
         QString strHexCSR = makeCSR.getCSRHex();
-        QString strCurFolder = berApplet->curPath();
+        JS_BIN_decodeHex( strHexCSR.toStdString().c_str(), &binCSR );
 
-        QString fileName = findSaveFile( this, JS_FILE_TYPE_CSR, strCurFolder );
-        if( fileName.length() > 1 )
-        {
-            JS_BIN_writePEM( &binPri, JS_PEM_TYPE_CSR, fileName.toLocal8Bit().toStdString().c_str() );
-            berApplet->messageLog(tr("The CSR(%1) is saved successfully").arg( fileName ), this );
-        }
+        ExportDlg exportDlg;
+        exportDlg.setCRL( &binCSR );
+        exportDlg.setName( strName );
+        exportDlg.exec();
     }
 
+end :
+    JS_BIN_reset( &binCSR );
     JS_BIN_reset( &binPri );
 }
 

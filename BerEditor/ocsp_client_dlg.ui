@@ -832,6 +832,8 @@
   <tabstop>mCertViewBtn</tabstop>
   <tabstop>mCertDecodeBtn</tabstop>
   <tabstop>mCertTypeBtn</tabstop>
+  <tabstop>mUseSignCheck</tabstop>
+  <tabstop>mOCSPClearBtn</tabstop>
   <tabstop>mSetURLBtn</tabstop>
   <tabstop>mSetCACertBtn</tabstop>
   <tabstop>mCertGroup</tabstop>
@@ -851,6 +853,7 @@
   <tabstop>mRequestDecodeBtn</tabstop>
   <tabstop>mRequestLenText</tabstop>
   <tabstop>mRequestText</tabstop>
+  <tabstop>mHashCombo</tabstop>
   <tabstop>mEncodeBtn</tabstop>
   <tabstop>mSendBtn</tabstop>
   <tabstop>mVerifyBtn</tabstop>

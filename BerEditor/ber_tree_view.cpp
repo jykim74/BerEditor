@@ -284,7 +284,9 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
                 QString address;
 
                 address = QString( "%1" ).arg( i + pItem->GetOffset(), 8, 16, QLatin1Char( '0') ).toUpper();
-                rightTable->setItem( line, 0, new QTableWidgetItem( address ));
+                QTableWidgetItem *addrItem = new QTableWidgetItem( address );
+                addrItem->setFlags(addrItem->flags() & ~Qt::ItemIsSelectable );
+                rightTable->setItem( line, 0, addrItem);
                 rightTable->item( line, 0 )->setBackground( kAddrColor );
             }
 
@@ -319,7 +321,9 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
 
             if( i % 16 - 15 == 0 )
             {
-                rightTable->setItem( line, 17, new QTableWidgetItem(text));
+                QTableWidgetItem *textItem = new QTableWidgetItem( text );
+                textItem->setFlags(textItem->flags() & ~Qt::ItemIsSelectable );
+                rightTable->setItem( line, 17, textItem );
                 rightTable->item( line, 17 )->setBackground(kTextColor);
                 text.clear();
                 line++;
@@ -328,7 +332,9 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
 
         if( !text.isEmpty() )
         {
-            rightTable->setItem(line, 17, new QTableWidgetItem(text));
+            QTableWidgetItem *textItem = new QTableWidgetItem( text );
+            textItem->setFlags(textItem->flags() & ~Qt::ItemIsSelectable );
+            rightTable->setItem(line, 17, textItem);
             rightTable->item( line, 17 )->setBackground(kTextColor);
         }
 
@@ -430,7 +436,9 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
                 QString address;
 
                 address = QString( "%1" ).arg( i, 8, 16, QLatin1Char( '0') ).toUpper();
-                rightTable->setItem( line, 0, new QTableWidgetItem( address ));
+                QTableWidgetItem *addrItem = new QTableWidgetItem( address );
+                addrItem->setFlags(addrItem->flags() & ~Qt::ItemIsSelectable );
+                rightTable->setItem( line, 0, addrItem);
                 rightTable->item( line, 0 )->setBackground( kAddrColor );
             }
 
@@ -468,7 +476,9 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
 
             if( i % 16 - 15 == 0 )
             {
-                rightTable->setItem( line, 17, new QTableWidgetItem(text));
+                QTableWidgetItem *textItem = new QTableWidgetItem( text );
+                textItem->setFlags(textItem->flags() & ~Qt::ItemIsSelectable );
+                rightTable->setItem( line, 17, textItem );
                 rightTable->item( line, 17 )->setBackground( kTextColor );
                 text.clear();
                 line++;
@@ -477,7 +487,10 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
 
         if( !text.isEmpty() )
         {
-            rightTable->setItem(line, 17, new QTableWidgetItem(text));
+            QTableWidgetItem *textItem = new QTableWidgetItem( text );
+            textItem->setFlags(textItem->flags() & ~Qt::ItemIsSelectable );
+            rightTable->setItem( line, 17, textItem );
+
             rightTable->item( line, 17 )->setBackground( kTextColor );
         }
 
