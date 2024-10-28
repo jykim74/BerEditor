@@ -75,6 +75,10 @@ public:
     void setViewValue( int nVal );
     void clearViewValue( int nType );
 
+    void setLinkList( const QString strLinkList );
+    QString getLinkList();
+    QString linkList() { return link_list_; };
+
 signals:
 
 private:
@@ -95,6 +99,8 @@ private:
     int view_proto_;
     int view_kmip_;
     int view_help_;
+
+    QString link_list_;
 
 private:
     Q_DISABLE_COPY(SettingsMgr)

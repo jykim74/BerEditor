@@ -35,6 +35,7 @@ private slots:
     void actShowMenu();
     void actHideMenu();
     void actQuit();
+    void actLinkMan();
 
     void printPreview(QPrinter *printer);
 
@@ -47,10 +48,13 @@ private:
     void makeRFCMenu( QTreeWidgetItem* parent );
     void makePKIXMenu( QTreeWidgetItem* parent );
 
+    void makeLinkMenu( QTreeWidgetItem* parent );
+
     void initialize();
 
 
     QHelpEngine* help_;
+    QTreeWidgetItem *item_link_;
 };
 
 #endif // CONTENT_MAIN_H

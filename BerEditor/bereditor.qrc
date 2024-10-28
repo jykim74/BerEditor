@@ -92,5 +92,6 @@
         <file>images/pub_key.png</file>
         <file>images/cert_man.png</file>
         <file>images/cms_open.png</file>
+        <file>images/link.png</file>
     </qresource>
 </RCC>

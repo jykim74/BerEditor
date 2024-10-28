@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>817</width>
-    <height>574</height>
+    <height>595</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -157,6 +157,8 @@
     <addaction name="separator"/>
     <addaction name="actionShow_Menu"/>
     <addaction name="actionHide_Menu"/>
+    <addaction name="separator"/>
+    <addaction name="actionLink_Manage"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -240,6 +242,11 @@
   <action name="actionHide_Menu">
    <property name="text">
     <string>Hide Menu</string>
+   </property>
+  </action>
+  <action name="actionLink_Manage">
+   <property name="text">
+    <string>Link Manage</string>
    </property>
   </action>
  </widget>

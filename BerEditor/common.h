@@ -233,6 +233,7 @@ QString getKeyTypeName( int nKeyType );
 bool isValidNumFormat( const QString strInput, int nNumber );
 
 bool isEmail( const QString strEmail );
+bool isHTTP( const QString strURL );
 bool isHex( const QString strHexString );
 bool isBase64( const QString strBase64String );
 bool isBase64URL( const QString strBase64URLString );

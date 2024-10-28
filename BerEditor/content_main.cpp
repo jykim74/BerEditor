@@ -12,6 +12,7 @@
 #include "js_http.h"
 #include "mainwindow.h"
 #include "settings_mgr.h"
+#include "link_man_dlg.h"
 
 #if defined(QT_PRINTSUPPORT_LIB)
 #include <QtPrintSupport/qtprintsupportglobal.h>
@@ -44,6 +45,7 @@ static const QStringList kPKIXList = { "PKCS#1:RFC8017", "PKCS#3:RFC2631", "PKCS
 static const QString kASN1Desc = "Abstract Syntax Notation One";
 static const QString kRFCDesc = "Request for Comments";
 static const QString kPKIXDesc = "Public Key Infrastructure X.509";
+static const QString kLinkDesc = "Usefull Link Information";
 
 ContentMain::ContentMain(QWidget *parent) :
     QMainWindow(parent)
@@ -100,6 +102,9 @@ void ContentMain::initialize()
 
     mContentBroswer->append( kPKIX );
     mContentBroswer->append( QString( "%1\n" ).arg( kPKIXDesc ));
+
+    mContentBroswer->append( kLink );
+    mContentBroswer->append( QString( "%1\n" ).arg( kLinkDesc ));
 }
 
 void ContentMain::actSave()
@@ -240,6 +245,15 @@ void ContentMain::actQuit()
     close();
 }
 
+void ContentMain::actLinkMan()
+{
+    LinkManDlg linkMan;
+    if( linkMan.exec() == QDialog::Accepted )
+    {
+        makeLinkMenu( item_link_ );
+    }
+}
+
 void ContentMain::printPreview(QPrinter *printer)
 {
 #ifdef QT_NO_PRINTER
@@ -269,6 +283,7 @@ void ContentMain::createActions()
     connect( actionShow_Menu, &QAction::triggered, this, &ContentMain::actShowMenu );
     connect( actionHide_Menu, &QAction::triggered, this, &ContentMain::actHideMenu );
     connect( actionQuit, &QAction::triggered, this, &ContentMain::actQuit );
+    connect( actionLink_Manage, &QAction::triggered, this, &ContentMain::actLinkMan );
 
     QToolBar *fileToolBar = addToolBar( tr("File" ));
     fileToolBar->setIconSize( QSize(nWidth, nHeight));
@@ -320,6 +335,11 @@ void ContentMain::createActions()
     actionHide_Menu->setIcon( hideMenuIcon );
     actionHide_Menu->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_9));
     editToolBar->addAction( actionHide_Menu );
+
+    const QIcon linkIcon = QIcon::fromTheme( "link", QIcon(":/images/link.png"));
+    actionLink_Manage->setIcon( linkIcon );
+    actionLink_Manage->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_A));
+    editToolBar->addAction( actionLink_Manage );
 }
 
 void ContentMain::createStatusBar()
@@ -372,16 +392,18 @@ void ContentMain::createDockWindows()
 
     makePKIXMenu( itemPKIX );
 
-    QTreeWidgetItem *itemLink = new QTreeWidgetItem;
-    QString strURL = "https://luca.ntop.org/Teaching/Appunti/asn1.html";
-    itemLink->setText( 0, "LaymanGuide" );
-    itemLink->setData( 0, Qt::UserRole, kLink );
-    itemLink->setData( 0, 99, strURL );
-    rootItem->addChild( itemLink );
+    item_link_ = new QTreeWidgetItem;
+    item_link_->setText( 0, kLink );
+    item_link_->setData( 0, Qt::UserRole, kLink );
+    rootItem->addChild( item_link_ );
+
+
 
     QString strLinkPath = QString( "%1/%2" ).arg( strDocPath ).arg( kLink );
     if( dir.exists( strLinkPath ) == false )
         dir.mkdir( strLinkPath );
+
+    makeLinkMenu( item_link_ );
 
     mMenuTree->expandAll();
 }
@@ -445,6 +467,35 @@ void ContentMain::makePKIXMenu( QTreeWidgetItem* parent )
     }
 }
 
+void ContentMain::makeLinkMenu( QTreeWidgetItem* parent )
+{
+    QString strLinkList = berApplet->settingsMgr()->linkList();
+    QStringList listLink = strLinkList.split( "\n" );
+
+    int count = parent->childCount();
+    for( int i = count; i > 0 ; i-- )
+    {
+        QTreeWidgetItem *child = parent->child(i-1);
+        parent->removeChild( child );
+    }
+
+    for( int i = 0; i < listLink.size(); i++ )
+    {
+        QString strNameURI = listLink.at(i);
+        QStringList nameVal = strNameURI.split( "##" );
+        if( nameVal.size() < 2 ) continue;
+
+        QString strName = nameVal.at(0);
+        QString strURI = nameVal.at(1);
+
+        QTreeWidgetItem* itemLink = new QTreeWidgetItem;
+        itemLink->setText( 0, strName );
+        itemLink->setData( 0, Qt::UserRole, kLink );
+        itemLink->setData( 0, 99, strURI );
+        parent->addChild( itemLink );
+    }
+}
+
 void ContentMain::clickMenu()
 {
     int ret = 0;
@@ -470,6 +521,13 @@ void ContentMain::clickMenu()
         QString strURL = item->data( 0, 99 ).toString();
         QString strSavePath;
         QString strName = item->text(0);
+
+        if( strURL.length() < 1 )
+        {
+            mContentBroswer->append( kLink );
+            mContentBroswer->append( QString( "%1\n" ).arg( kLinkDesc ));
+            return;
+        }
 
         strSavePath = QString ( "%1/%2/%3.html" ).arg( strDocPath ).arg( kLink ).arg( strName );
 
@@ -524,6 +582,11 @@ void ContentMain::clickMenu()
         {
             mContentBroswer->append( kPKIX );
             mContentBroswer->append( QString( "%1\n" ).arg( kPKIXDesc ));
+        }
+        else if( strData == kLink )
+        {
+            mContentBroswer->append( kLink );
+            mContentBroswer->append( QString( "%1\n" ).arg( kLinkDesc ));
         }
 
         return;

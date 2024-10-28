@@ -1566,6 +1566,16 @@ bool isEmail( const QString strEmail )
     return mailREX.exactMatch( strEmail );
 }
 
+bool isHTTP( const QString strURL )
+{
+    // HTTP 또는 HTTPS URL을 검증하는 정규 표현식
+    QRegularExpression regex(R"(^(https?://)?([\w.-]+)(\.[a-z]{2,6})([/\w .-]*)*/?$)",
+                             QRegularExpression::CaseInsensitiveOption);
+
+    // 정규 표현식으로 URL이 유효한지 검사
+    return regex.match(strURL).hasMatch();
+}
+
 bool isHex( const QString strHexString )
 {
     return isValidNumFormat( strHexString, 16 );

@@ -29,6 +29,7 @@ const char *kViewCrypt = "viewCrypt";
 const char *kViewProto = "viewProto";
 const char *kViewKMIP = "viewKMIP";
 const char *kViewHelp = "viewHelp";
+const char *kLinkList = "linkList";
 }
 
 SettingsMgr::SettingsMgr(QObject *parent) : QObject(parent)
@@ -58,6 +59,8 @@ void SettingsMgr::initialize()
     getViewValue( VIEW_PROTO );
     getViewValue( VIEW_KMIP );
     getViewValue( VIEW_HELP );
+
+    getLinkList();
 }
 
 void SettingsMgr::removeSet( const QString& group, const QString& name )
@@ -552,4 +555,25 @@ void SettingsMgr::clearViewValue( int nType )
     }
 
     settings.endGroup();
+}
+
+void SettingsMgr::setLinkList( const QString strPath )
+{
+    QSettings sets;
+    sets.beginGroup( kBehaviorGroup );
+    sets.setValue( kLinkList, strPath );
+    sets.endGroup();
+
+    link_list_ = strPath;
+}
+
+QString SettingsMgr::getLinkList()
+{
+    QSettings sets;
+
+    sets.beginGroup( kBehaviorGroup );
+    link_list_ = sets.value( kLinkList, "" ).toString();
+    sets.endGroup();
+
+    return link_list_;
 }
