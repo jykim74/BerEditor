@@ -1,3 +1,6 @@
+#include <QDir>
+#include <QFileInfo>
+
 #include "link_man_dlg.h"
 #include "common.h"
 #include "ber_applet.h"

@@ -471,11 +471,16 @@ void ContentMain::makeLinkMenu( QTreeWidgetItem* parent )
 {
     QString strLinkList = berApplet->settingsMgr()->linkList();
     QStringList listLink = strLinkList.split( "\n" );
+    QString strDocPath = berApplet->settingsMgr()->docPath();
 
     int count = parent->childCount();
     for( int i = count; i > 0 ; i-- )
     {
         QTreeWidgetItem *child = parent->child(i-1);
+        QString strName = child->text(0);
+        QString strSavePath = QString ( "%1/%2/%3.html" ).arg( strDocPath ).arg( kLink ).arg( strName );
+        QFile::remove( strSavePath );
+
         parent->removeChild( child );
     }
 
