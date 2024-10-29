@@ -488,15 +488,17 @@ void ContentMain::makeLinkMenu( QTreeWidgetItem* parent )
     {
         QString strNameURI = listLink.at(i);
         QStringList nameVal = strNameURI.split( "##" );
-        if( nameVal.size() < 2 ) continue;
+        if( nameVal.size() < 3 ) continue;
 
         QString strName = nameVal.at(0);
-        QString strURI = nameVal.at(1);
+        QString strType = nameVal.at(1);
+        QString strURI = nameVal.at(2);
+        QString strData = QString( "%1##%2" ).arg( strType ).arg( strURI );
 
         QTreeWidgetItem* itemLink = new QTreeWidgetItem;
         itemLink->setText( 0, strName );
         itemLink->setData( 0, Qt::UserRole, kLink );
-        itemLink->setData( 0, 99, strURI );
+        itemLink->setData( 0, 99, strData );
         parent->addChild( itemLink );
     }
 }
@@ -534,9 +536,14 @@ void ContentMain::clickMenu()
             return;
         }
 
-        strSavePath = QString ( "%1/%2/%3.html" ).arg( strDocPath ).arg( kLink ).arg( strName );
+        QStringList typeURI = strURL.split( "##" );
+        if( typeURI.size() < 2 ) return;
+        QString strType = typeURI.at(0);
+        QString strAddress = typeURI.at(1);
 
-        mURIText->setText( strURL );
+        strSavePath = QString ( "%1/%2/%3.%4" ).arg( strDocPath ).arg( kLink ).arg( strAddress ).arg( strType );
+
+        mURIText->setText( strAddress );
 
         QFileInfo fileInfo( strSavePath );
         if( fileInfo.exists() == true )
@@ -551,11 +558,15 @@ void ContentMain::clickMenu()
             QTextStream in(&file);
             QString htmlContent = in.readAll();
             file.close();
-            mContentBroswer->setHtml( htmlContent );
+
+            if( strType == "txt" )
+                mContentBroswer->setPlainText( htmlContent );
+            else
+                mContentBroswer->setHtml( htmlContent );
         }
         else
         {
-            ret = JS_HTTP_requestGetBin2( strURL.toStdString().c_str(), NULL, NULL, &nStatus, &binBody );
+            ret = JS_HTTP_requestGetBin2( strAddress.toStdString().c_str(), NULL, NULL, &nStatus, &binBody );
 
             JS_BIN_string( &binBody, &pBody );
             mContentBroswer->setHtml( pBody );

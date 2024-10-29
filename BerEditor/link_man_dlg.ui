@@ -36,19 +36,22 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Name</string>
+        <string>URI Address</string>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QLineEdit" name="mNameText"/>
+      <widget class="QLineEdit" name="mURIText"/>
      </item>
      <item row="0" column="0">
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="Name">
        <property name="text">
-        <string>URL Address</string>
+        <string>Name</string>
        </property>
       </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="mNameText"/>
      </item>
      <item row="1" column="2">
       <widget class="QPushButton" name="mAddBtn">
@@ -57,8 +60,12 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1" colspan="2">
-      <widget class="QLineEdit" name="mURIText"/>
+     <item row="0" column="2">
+      <widget class="QCheckBox" name="mTextCheck">
+       <property name="text">
+        <string>Text</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -134,9 +141,8 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>mURIText</tabstop>
   <tabstop>mNameText</tabstop>
-  <tabstop>mAddBtn</tabstop>
+  <tabstop>mURIText</tabstop>
   <tabstop>mLinkTable</tabstop>
   <tabstop>mRemoveBtn</tabstop>
   <tabstop>mClearAllBtn</tabstop>

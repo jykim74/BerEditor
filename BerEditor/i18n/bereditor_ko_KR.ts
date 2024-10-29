@@ -4877,18 +4877,18 @@ mailto : jykim74@gmail.com</translation>
         <translation>준비</translation>
     </message>
     <message>
-        <location filename="../content_main.cpp" line="541"/>
-        <location filename="../content_main.cpp" line="628"/>
+        <location filename="../content_main.cpp" line="553"/>
+        <location filename="../content_main.cpp" line="644"/>
         <source>fail to open HTML</source>
         <translation>HTML 열기 실패</translation>
     </message>
     <message>
-        <location filename="../content_main.cpp" line="673"/>
+        <location filename="../content_main.cpp" line="689"/>
         <source>There is no URI</source>
         <translation>URI 가 없습니다</translation>
     </message>
     <message>
-        <location filename="../content_main.cpp" line="679"/>
+        <location filename="../content_main.cpp" line="695"/>
         <source>URI is not http or https</source>
         <translation>URI가 http 또는 https가 아닙니다</translation>
     </message>
@@ -8185,72 +8185,86 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../link_man_dlg.ui" line="39"/>
-        <location filename="../link_man_dlg.cpp" line="35"/>
+        <source>URI Address</source>
+        <translation>URI 주소</translation>
+    </message>
+    <message>
+        <location filename="../link_man_dlg.ui" line="49"/>
+        <location filename="../link_man_dlg.cpp" line="38"/>
         <source>Name</source>
         <translation>이름</translation>
     </message>
     <message>
-        <location filename="../link_man_dlg.ui" line="49"/>
         <source>URL Address</source>
-        <translation>URL 주소</translation>
+        <translation type="vanished">URL 주소</translation>
     </message>
     <message>
-        <location filename="../link_man_dlg.ui" line="56"/>
+        <location filename="../link_man_dlg.ui" line="59"/>
         <source>Add</source>
         <translation>추가</translation>
     </message>
     <message>
-        <location filename="../link_man_dlg.ui" line="94"/>
+        <location filename="../link_man_dlg.ui" line="66"/>
+        <source>Text</source>
+        <translation>텍스트</translation>
+    </message>
+    <message>
+        <location filename="../link_man_dlg.ui" line="101"/>
         <source>Clear All</source>
         <translation>전체 지우기</translation>
     </message>
     <message>
-        <location filename="../link_man_dlg.ui" line="101"/>
+        <location filename="../link_man_dlg.ui" line="108"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
     <message>
-        <location filename="../link_man_dlg.ui" line="108"/>
+        <location filename="../link_man_dlg.ui" line="115"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../link_man_dlg.ui" line="128"/>
+        <location filename="../link_man_dlg.ui" line="135"/>
         <source>Remove</source>
         <translation>제거 하기</translation>
     </message>
     <message>
-        <location filename="../link_man_dlg.cpp" line="35"/>
+        <location filename="../link_man_dlg.cpp" line="38"/>
         <source>URI</source>
         <translation>URI</translation>
     </message>
     <message>
-        <location filename="../link_man_dlg.cpp" line="74"/>
+        <location filename="../link_man_dlg.cpp" line="87"/>
         <source>Enter a URI</source>
         <translation>URI 를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../link_man_dlg.cpp" line="81"/>
+        <location filename="../link_man_dlg.cpp" line="80"/>
         <source>Enter a name</source>
         <translation>이름을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../link_man_dlg.cpp" line="88"/>
+        <location filename="../link_man_dlg.cpp" line="38"/>
+        <source>Type</source>
+        <translation>타입</translation>
+    </message>
+    <message>
+        <location filename="../link_man_dlg.cpp" line="94"/>
         <source>URI is not http link</source>
         <translation>URI가 http 또는 https가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../link_man_dlg.cpp" line="108"/>
+        <location filename="../link_man_dlg.cpp" line="117"/>
         <source>Select URI</source>
         <translation>URI 을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../link_man_dlg.cpp" line="112"/>
+        <location filename="../link_man_dlg.cpp" line="121"/>
         <source>Are you sure to remove?</source>
         <translation>정말 제거 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../link_man_dlg.cpp" line="120"/>
+        <location filename="../link_man_dlg.cpp" line="129"/>
         <source>Are you sure to clear all?</source>
         <translation>정말 전체 지우겠습니까?</translation>
     </message>

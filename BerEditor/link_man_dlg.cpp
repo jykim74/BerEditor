@@ -23,7 +23,7 @@ LinkManDlg::LinkManDlg(QWidget *parent) :
     layout()->setSpacing(5);
 #endif
 
-    mURIText->setFocus();
+    mNameText->setFocus();
     resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 
@@ -35,7 +35,7 @@ LinkManDlg::~LinkManDlg()
 void LinkManDlg::initialize()
 {
     int row = 0;
-    QStringList sLinkFields = { tr( "Name" ), tr( "URI" ) };
+    QStringList sLinkFields = { tr( "Name" ), tr("Type"), tr( "URI" ) };
 
     mLinkTable->clear();
     mLinkTable->horizontalHeader()->setStretchLastSection( true );
@@ -53,15 +53,17 @@ void LinkManDlg::initialize()
     {
         QString strNameURI = listLink.at(i);
         QStringList nameVal = strNameURI.split( "##" );
-        if( nameVal.size() < 2 ) continue;
+        if( nameVal.size() < 3 ) continue;
 
         QString strName = nameVal.at(0);
-        QString strURI = nameVal.at(1);
+        QString strType = nameVal.at(1);
+        QString strURI = nameVal.at(2);
 
         mLinkTable->insertRow(row);
         mLinkTable->setRowHeight(row, 10);
         mLinkTable->setItem( row, 0, new QTableWidgetItem( QString("%1").arg( strName )));
-        mLinkTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( strURI )));
+        mLinkTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( strType )));
+        mLinkTable->setItem( row, 2, new QTableWidgetItem( QString("%1").arg( strURI )));
 
         row++;
     }
@@ -71,18 +73,19 @@ void LinkManDlg::clickAdd()
 {
     QString strURI = mURIText->text();
     QString strName = mNameText->text();
-
-    if( strURI.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Enter a URI" ), this );
-        mURIText->setFocus();
-        return;
-    }
+    QString strType = "html";
 
     if( strName.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a name" ), this );
         mNameText->setFocus();
+        return;
+    }
+
+    if( strURI.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a URI" ), this );
+        mURIText->setFocus();
         return;
     }
 
@@ -93,11 +96,14 @@ void LinkManDlg::clickAdd()
         return;
     }
 
+    if( mTextCheck->isChecked() ) strType = "txt";
+
     int row = mLinkTable->rowCount();
     mLinkTable->insertRow(row);
     mLinkTable->setRowHeight(row, 10);
     mLinkTable->setItem( row, 0, new QTableWidgetItem( QString("%1").arg( strName ).simplified()));
-    mLinkTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( strURI ).simplified()));
+    mLinkTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( strType ).simplified()));
+    mLinkTable->setItem( row, 2, new QTableWidgetItem( QString("%1").arg( strURI ).simplified()));
 
     mURIText->clear();
     mNameText->clear();
@@ -135,10 +141,11 @@ void LinkManDlg::clickOK()
     {
         QTableWidgetItem *item0 = mLinkTable->item( i, 0 );
         QTableWidgetItem* item1 = mLinkTable->item( i, 1 );
+        QTableWidgetItem* item2 = mLinkTable->item( i, 2 );
 
         if( item0 == NULL || item1 == NULL ) return;
 
-        QString strLink = QString( "%1##%2\n" ).arg( item0->text() ).arg( item1->text() );
+        QString strLink = QString( "%1##%2##%3\n" ).arg( item0->text() ).arg( item1->text() ).arg( item2->text());
         strLinkList += strLink;
     }
 
