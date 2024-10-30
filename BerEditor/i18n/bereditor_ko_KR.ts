@@ -4440,9 +4440,8 @@ mailto : jykim74@gmail.com</translation>
         <translation>D</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="109"/>
         <source>Trusted Certificate</source>
-        <translation>신뢰 인증서</translation>
+        <translation type="vanished">신뢰 인증서</translation>
     </message>
     <message>
         <location filename="../cert_pvd_dlg.ui" line="122"/>
@@ -4536,9 +4535,8 @@ mailto : jykim74@gmail.com</translation>
         <translation>ExplicitPolicy</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="64"/>
         <source>Untrusted Certificate</source>
-        <translation>비 신뢰 인증서</translation>
+        <translation type="vanished">비 신뢰 인증서</translation>
     </message>
     <message>
         <location filename="../cert_pvd_dlg.ui" line="428"/>
@@ -4564,6 +4562,16 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../cert_pvd_dlg.ui" line="484"/>
         <source>InhibitAny</source>
         <translation>InhibitAny</translation>
+    </message>
+    <message>
+        <location filename="../cert_pvd_dlg.ui" line="64"/>
+        <source>UntrustedCert</source>
+        <translation>비 신뢰 인증서</translation>
+    </message>
+    <message>
+        <location filename="../cert_pvd_dlg.ui" line="109"/>
+        <source>TrustedCert</source>
+        <translation>신뢰 인증서</translation>
     </message>
     <message>
         <location filename="../cert_pvd_dlg.ui" line="421"/>

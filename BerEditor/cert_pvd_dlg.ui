@@ -50,7 +50,7 @@
       <widget class="QLabel" name="label_3">
        <property name="minimumSize">
         <size>
-         <width>100</width>
+         <width>0</width>
          <height>0</height>
         </size>
        </property>
@@ -61,7 +61,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Untrusted Certificate</string>
+        <string>UntrustedCert</string>
        </property>
       </widget>
      </item>
@@ -95,7 +95,7 @@
       <widget class="QLabel" name="label_2">
        <property name="minimumSize">
         <size>
-         <width>100</width>
+         <width>0</width>
          <height>0</height>
         </size>
        </property>
@@ -106,7 +106,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Trusted Certificate</string>
+        <string>TrustedCert</string>
        </property>
       </widget>
      </item>
@@ -185,7 +185,7 @@
       <widget class="QLabel" name="label_4">
        <property name="minimumSize">
         <size>
-         <width>100</width>
+         <width>0</width>
          <height>0</height>
         </size>
        </property>
