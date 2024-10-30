@@ -944,14 +944,19 @@ void BerTreeView::setItemXML( int level, BerItem* item, BerItem* setItem )
             }
 
             addEdit( 0, ">" );
+            addEdit( 0, QString( "%1" ).arg( strValue ) );
+            addEdit( 0, QString( "</%1>\n" ).arg( strName ) );
+        }
+        else if( strName == "NULL_TAG" )
+        {
+            addEdit( level, QString( "<NULL/>\n" ));
         }
         else
         {
             addEdit( level, QString( "<%1>" ).arg( strName ) );
+            addEdit( 0, QString( "%1" ).arg( strValue ) );
+            addEdit( 0, QString( "</%1>\n" ).arg( strName ) );
         }
-
-        addEdit( 0, QString( "%1" ).arg( strValue ) );
-        addEdit( 0, QString( "</%1>\n" ).arg( strName ) );
     }
 
     if( item == setItem )
