@@ -48,9 +48,9 @@ private slots:
 private :
     void setItemText( int level, TTLVTreeItem* item, TTLVTreeItem *setItem = nullptr );
     void setItemXML( int level, TTLVTreeItem* item, TTLVTreeItem *setItem = nullptr );
+    void setItemJSON( int level, TTLVTreeItem* item, bool bNext, TTLVTreeItem *setItem = nullptr );
 
-    void setText( int level, const QString& strMsg );
-    void setXML( int level, const QString& strMsg );
+    void addEdit( int level, const QString& strMsg );
 
     QString str_edit_;
     int pos_start_;

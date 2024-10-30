@@ -190,18 +190,22 @@ void MainWindow::initialize()
     right_xml_ = new QTextEdit;
     right_xml_->setReadOnly(true);
     right_xml_->setAcceptRichText(true);
+    table_tab_->addTab( right_xml_, tr( "XML" ));
 
 #ifdef QT_DEBUG
 //    BasicXMLSyntaxHighlighter * highlighter = new BasicXMLSyntaxHighlighter(right_xml_);
 //    Q_UNUSED(highlighter);
 #endif
 
-    table_tab_->addTab( right_xml_, tr( "XML" ));
-
     right_text_ = new QTextEdit;
     right_text_->setReadOnly(true);
     right_text_->setAcceptRichText(true);
     table_tab_->addTab( right_text_, tr( "Text" ));
+
+    right_json_ = new QTextEdit;
+    right_json_->setReadOnly(true);
+    right_json_->setAcceptRichText(true);
+    table_tab_->addTab( right_json_, tr( "JSON" ));
 
     connect( table_tab_, SIGNAL(currentChanged(int)), this, SLOT(changeTableTab()));
 
@@ -217,6 +221,7 @@ void MainWindow::initialize()
     {
         table_tab_->setTabEnabled( 1, false );
         table_tab_->setTabEnabled( 2, false );
+        table_tab_->setTabEnabled( 3, false );
 
         text_tab_->setTabEnabled( 1, false );
     }

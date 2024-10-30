@@ -55,7 +55,8 @@ class MainWindow;
 enum {
     TABLE_IDX_HEX = 0,
     TABLE_IDX_XML = 1,
-    TABLE_IDX_TXT = 2
+    TABLE_IDX_TXT = 2,
+    TABLE_IDX_JSON = 3
 };
 
 class MainWindow : public QMainWindow
@@ -73,6 +74,7 @@ public:
     QTableWidget* rightTable() { return right_table_; };
     QTextEdit* rightText() { return right_text_; };
     QTextEdit* rightXML() { return right_xml_; };
+    QTextEdit* rightJSON() { return right_json_; };
     TTLVTreeView* ttlvTree() { return ttlv_tree_; };
     TTLVTreeModel* ttlvModel() { return ttlv_model_; };
     BerModel* berModel() { return ber_model_; };
@@ -275,6 +277,7 @@ private:
     QTableWidget    *right_table_;
     QTextEdit       *right_text_;
     QTextEdit       *right_xml_;
+    QTextEdit       *right_json_;
     QString          file_path_;
 
     // Cryptogram dlg

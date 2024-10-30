@@ -148,6 +148,71 @@ static const QString _getFileFilter( int nType, QString& strFileType )
     return strFilter;
 }
 
+static const QString _getFileExt( int nType )
+{
+    QString strExt;
+
+    if( nType == JS_FILE_TYPE_CERT )
+    {
+        strExt = "crt";
+    }
+    else if( nType == JS_FILE_TYPE_CRL )
+    {
+        strExt = "crl";
+    }
+    else if( nType == JS_FILE_TYPE_CSR )
+    {
+        strExt = "csr";
+    }
+    else if( nType == JS_FILE_TYPE_PRIKEY )
+    {
+        strExt = "key";
+    }
+    else if( nType == JS_FILE_TYPE_PKCS8 )
+    {
+        strExt = "pk8";
+    }
+    else if( nType == JS_FILE_TYPE_TXT )
+    {
+        strExt = "txt";
+    }
+    else if( nType == JS_FILE_TYPE_BER )
+    {
+        strExt = "ber";
+    }
+    else if( nType == JS_FILE_TYPE_CFG )
+    {
+        strExt = "cfg";
+    }
+    else if( nType == JS_FILE_TYPE_PFX )
+    {
+        strExt = "pfx";
+    }
+    else if( nType == JS_FILE_TYPE_BIN )
+    {
+        strExt = "bin";
+    }
+    else if( nType == JS_FILE_TYPE_PKCS7 )
+    {
+        strExt = "p7b";
+    }
+    else if( nType == JS_FILE_TYPE_JSON )
+    {
+        strExt = "json";
+    }
+    else if( nType == JS_FILE_TYPE_LCN )
+    {
+        strExt = "lcn";
+    }
+    else
+    {
+        strExt = "pem";
+    }
+
+    return strExt;
+}
+
+
 QString findFile( QWidget *parent, int nType, const QString strPath )
 {
     QString strCurPath;
@@ -171,6 +236,8 @@ QString findFile( QWidget *parent, int nType, const QString strPath )
                                                      strFilter,
                                                      &selectedFilter,
                                                      options );
+
+
 
     return fileName;
 };
@@ -227,6 +294,13 @@ QString findSaveFile( QWidget *parent, int nType, const QString strPath )
                                                     strFilter,
                                                     &selectedFilter,
                                                     options );
+
+    if( fileName.length() > 0 )
+    {
+        QStringList nameVal = fileName.split( "." );
+        if( nameVal.size() < 2 )
+            fileName = QString( "%1.%2" ).arg( fileName ).arg( _getFileExt( nType ) );
+    }
 
     return fileName;
 };

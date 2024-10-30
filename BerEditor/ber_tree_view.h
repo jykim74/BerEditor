@@ -58,9 +58,9 @@ private:
 
     void setItemText( int level, BerItem* item, BerItem* setItem = nullptr );
     void setItemXML( int level, BerItem* item, BerItem* setItem = nullptr );
+    void setItemJSON( int level, BerItem* item, bool bNext, BerItem* setItem = nullptr );
 
-    void setText( int level, const QString& strMsg );
-    void setXML( int level, const QString& strMsg );
+    void addEdit( int level, const QString& strMsg );
 
     QString str_edit_;
     int pos_start_;

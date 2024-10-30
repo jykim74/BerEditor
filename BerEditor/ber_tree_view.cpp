@@ -236,7 +236,7 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
 
         xmlEdit->clear();
 
-        setXML( 0, "<!-- XML Decoded Message -->\n" );
+        addEdit( 0, "<!-- XML Decoded Message -->\n" );
         setItemXML( 0, pItem );
         xmlEdit->setPlainText( str_edit_ );
         xmlEdit->moveCursor(QTextCursor::Start);;
@@ -254,9 +254,30 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
 
         txtEdit->clear();
 
-        setText( 0, "-- Text Decoded Message --\n" );
+        addEdit( 0, "-- Text Decoded Message --\n" );
         setItemText( 0, pItem );
         txtEdit->setPlainText( str_edit_ );
+
+        txtEdit->moveCursor(QTextCursor::Start);
+    }
+    else if( table_idx == TABLE_IDX_JSON )
+    {
+        QTextEdit *txtEdit = berApplet->mainWindow()->rightJSON();
+
+        QTextCursor cursor = txtEdit->textCursor();
+        QTextCharFormat format = txtEdit->currentCharFormat();
+        //format.setFontWeight(QFont::Normal);
+        format.setForeground(Qt::black);
+        cursor.setCharFormat( format );
+        txtEdit->setTextCursor(cursor);
+
+        txtEdit->clear();
+
+        addEdit( 0, "[\n" );
+        setItemJSON( 1, pItem, false );
+        addEdit( 0, "]\n" );
+        txtEdit->setPlainText( str_edit_ );
+
 
         txtEdit->moveCursor(QTextCursor::Start);
     }
@@ -365,7 +386,7 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
         xml_cursor.setCharFormat( format );
         xmlEdit->setTextCursor(xml_cursor);
 
-        setXML( 0, "<!-- XML Decoded Message -->\n" );
+        addEdit( 0, "<!-- XML Decoded Message -->\n" );
         setItemXML( 0, root, pItem );
 
         xmlEdit->setPlainText( str_edit_ );
@@ -395,9 +416,41 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
         cursor.setCharFormat( format );
         txtEdit->setTextCursor(cursor);
 
-        setText( 0, "-- Text Decoded Message --\n" );
+        addEdit( 0, "-- Text Decoded Message --\n" );
         setItemText( 0, root, pItem );
         txtEdit->setPlainText( str_edit_ );
+
+        if( pos_start_ >= 0 && pos_end_ > pos_start_ )
+        {
+            cursor.setPosition( pos_start_ );
+            cursor.setPosition( pos_end_, QTextCursor::KeepAnchor );
+
+            QTextCharFormat format = txtEdit->currentCharFormat();
+            // format.setFontWeight(QFont::Bold);
+            format.setForeground(Qt::blue);
+            cursor.setCharFormat( format );
+            cursor.clearSelection();
+            txtEdit->setTextCursor(cursor);
+        }
+    }
+    else if( table_idx == TABLE_IDX_JSON )
+    {
+        QTextEdit *txtEdit = berApplet->mainWindow()->rightJSON();
+        txtEdit->clear();
+
+        QTextCursor cursor = txtEdit->textCursor();
+        QTextCharFormat format = txtEdit->currentCharFormat();
+        //format.setFontWeight(QFont::Normal);
+        format.setForeground(Qt::black);
+        cursor.setCharFormat( format );
+        txtEdit->setTextCursor(cursor);
+
+        addEdit( 0, "[\n" );
+        setItemJSON( 1, root, false, pItem );
+        addEdit( 0, "]\n" );
+
+        txtEdit->setPlainText( str_edit_ );
+
 
         if( pos_start_ >= 0 && pos_end_ > pos_start_ )
         {
@@ -768,18 +821,7 @@ end:
     JS_BIN_reset( &binData );
 }
 
-void BerTreeView::setText( int level, const QString& strMsg )
-{
-    if( level > 0 )
-    {
-        QString strEmpty = QString( "%1" ).arg( " ", 4 * level, QLatin1Char( ' ' ));
-        str_edit_ += strEmpty;
-    }
-
-    str_edit_ += strMsg;
-}
-
-void BerTreeView::setXML( int level, const QString& strMsg )
+void BerTreeView::addEdit( int level, const QString& strMsg )
 {
     if( level > 0 )
     {
@@ -806,7 +848,7 @@ void BerTreeView::setItemText( int level, BerItem* item, BerItem* setItem )
 
     if( item->isConstructed() || item->hasChildren() )
     {
-        setText( level, QString("%1 {\n").arg( item->text()) );
+        addEdit( level, QString("%1 {\n").arg( item->text()) );
 
         while( 1 )
         {
@@ -816,19 +858,19 @@ void BerTreeView::setItemText( int level, BerItem* item, BerItem* setItem )
             setItemText( level + 1, child, setItem );
         }
 
-        setText( level, "}\n" );
+        addEdit( level, "}\n" );
     }
     else
     {
         QString strName = item->GetTagString();
         QString strValue = item->GetValueString( &binBer );
 
-        setText( level, QString( "%1" ).arg( strName ) );
+        addEdit( level, QString( "%1" ).arg( strName ) );
 
         if( strName == "NULL")
-            setText( 0, "\n" );
+            addEdit( 0, "\n" );
         else
-            setText( 0, QString( " = %1\n" ).arg( strValue ) );
+            addEdit( 0, QString( " = %1\n" ).arg( strValue ) );
     }
 
     if( item == setItem )
@@ -856,13 +898,13 @@ void BerTreeView::setItemXML( int level, BerItem* item, BerItem* setItem )
     {
         if( strName == "NODE" )
         {
-            setXML( level, QString( "<%1 Sign=" ).arg(strName) );
-            setXML( 0, QString( "\"%1\"" ).arg( item->GetTag() | item->GetId(), 2, 16, QLatin1Char('0')) );
-            setXML( 0, QString( ">\n") );
+            addEdit( level, QString( "<%1 Sign=" ).arg(strName) );
+            addEdit( 0, QString( "\"%1\"" ).arg( item->GetTag() | item->GetId(), 2, 16, QLatin1Char('0')) );
+            addEdit( 0, QString( ">\n") );
         }
         else
         {
-            setXML( level, QString("<%1>\n").arg( strName) );
+            addEdit( level, QString("<%1>\n").arg( strName) );
         }
 
         while( 1 )
@@ -873,7 +915,7 @@ void BerTreeView::setItemXML( int level, BerItem* item, BerItem* setItem )
             setItemXML( level + 1, child, setItem );
         }
 
-        setXML( level, QString("</%1>\n").arg( strName ) );
+        addEdit( level, QString("</%1>\n").arg( strName ) );
     }
     else
     {
@@ -887,29 +929,29 @@ void BerTreeView::setItemXML( int level, BerItem* item, BerItem* setItem )
             strComment = JS_PKI_getLNFromOID( strValue.toStdString().c_str() );
             strDesc = JS_PKI_getSNFromOID( strValue.toStdString().c_str() );
 
-            setXML( level, QString( "<%1" ).arg( strName ) );
+            addEdit( level, QString( "<%1" ).arg( strName ) );
 
             if( strComment.length() > 0 )
             {
-                setXML( 0, " Comment=" );
-                setXML( 0, QString("\"%1\"").arg( strComment) );
+                addEdit( 0, " Comment=" );
+                addEdit( 0, QString("\"%1\"").arg( strComment) );
             }
 
             if( strDesc.length() > 0 )
             {
-                setXML( 0, " Description=" );
-                setXML( 0, QString("\"%1\"").arg( strDesc) );
+                addEdit( 0, " Description=" );
+                addEdit( 0, QString("\"%1\"").arg( strDesc) );
             }
 
-            setXML( 0, ">" );
+            addEdit( 0, ">" );
         }
         else
         {
-            setXML( level, QString( "<%1>" ).arg( strName ) );
+            addEdit( level, QString( "<%1>" ).arg( strName ) );
         }
 
-        setXML( 0, QString( "%1" ).arg( strValue ) );
-        setXML( 0, QString( "</%1>\n" ).arg( strName ) );
+        addEdit( 0, QString( "%1" ).arg( strValue ) );
+        addEdit( 0, QString( "</%1>\n" ).arg( strName ) );
     }
 
     if( item == setItem )
@@ -918,30 +960,90 @@ void BerTreeView::setItemXML( int level, BerItem* item, BerItem* setItem )
     }
 }
 
-/*
-void BerTreeView::showTextView()
+void BerTreeView::setItemJSON( int level, BerItem* item, bool bNext, BerItem* setItem )
 {
+    int pos = 0;
+
+    if( item == NULL ) return;
+
     BerModel *tree_model = (BerModel *)model();
-    BerItem *root = (BerItem *)tree_model->item(0,0);
+    const BIN& binBer = tree_model->getBER();
+    QString strName = item->GetTagXMLString();
 
-    QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
-    txtEdit->clear();
+    if( item == setItem )
+    {
+        pos_start_ = str_edit_.length();
+    }
 
-    showText( 0, "-- Text Decoded Message --\n", QColor(Qt::blue) );
-    showItemText( root );
-    txtEdit->moveCursor(QTextCursor::Start);
+    if( item->isConstructed() || item->hasChildren() )
+    {
+        if( strName == "NODE" )
+        {
+            addEdit( level, QString( "\"CONTEXT_%1\": {\n" ).arg( item->GetTag() ));
+        }
+        else
+        {
+            addEdit( level, QString("\"%1\": {\n").arg( strName) );
+        }
+
+        while( 1 )
+        {
+            bool bNext = false;
+            BerItem* child = (BerItem *)item->child( pos );
+            if( child == NULL ) break;
+
+            pos++;
+            BerItem* next = (BerItem *)item->child( pos );
+            if( next ) bNext = true;
+
+            setItemJSON( level + 1, child, bNext, setItem );
+        }
+
+
+        addEdit( level, QString( "}" ) );
+        if( bNext == true ) addEdit( 0, "," );
+        addEdit( 0, QString( "\n" ));
+    }
+    else
+    {
+        QString strValue = item->GetValueString( &binBer );
+
+        if( strName == "NULL_TAG" )
+        {
+            addEdit( level, "\"NULL\"" );
+        }
+        else
+        {
+            addEdit( level, QString( "\"%1\": " ).arg( strName ) );
+
+            if( strName == "INTEGER" )
+            {
+                addEdit( 0, QString( "%1" ).arg( strValue ) );
+            }
+            else if( strName == "BOOLEAN" )
+            {
+                addEdit( 0, QString( "%1" ).arg( strValue ).toLower() );
+            }
+            else if( strName == "OBJECT_IDENTIFIER" )
+            {
+                QString strSN = JS_PKI_getSNFromOID( strValue.toStdString().c_str() );
+                if( strSN.length() < 1 ) strSN = strValue;
+
+                addEdit( 0, QString( "\"%1\"" ).arg( strSN ) );
+            }
+            else
+            {
+                addEdit( 0, QString( "\"%1\"" ).arg( strValue ) );
+            }
+
+        }
+
+        if( bNext == true ) addEdit( 0, "," );
+        addEdit( 0, QString( "\n" ) );
+    }
+
+    if( item == setItem )
+    {
+        pos_end_ = str_edit_.length();
+    }
 }
-
-void BerTreeView::showXMLView()
-{
-    BerModel *tree_model = (BerModel *)model();
-    BerItem *root = (BerItem *)tree_model->item(0,0);
-
-    QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
-    xmlEdit->clear();
-
-    showXML( 0, "<!-- XML Decoded Message -->\n", QColor(Qt::darkGreen) );
-    showItemXML( root );
-    xmlEdit->moveCursor(QTextCursor::Start);
-}
-*/
