@@ -541,7 +541,7 @@ void ContentMain::clickMenu()
         QString strType = typeURI.at(0);
         QString strAddress = typeURI.at(1);
 
-        strSavePath = QString ( "%1/%2/%3.%4" ).arg( strDocPath ).arg( kLink ).arg( strAddress ).arg( strType );
+        strSavePath = QString ( "%1/%2/%3.%4" ).arg( strDocPath ).arg( kLink ).arg( strName ).arg( strType );
 
         mURIText->setText( strAddress );
 
