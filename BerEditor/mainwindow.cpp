@@ -205,7 +205,12 @@ void MainWindow::initialize()
     right_json_ = new QTextEdit;
     right_json_->setReadOnly(true);
     right_json_->setAcceptRichText(true);
-    table_tab_->addTab( right_json_, tr( "JSON" ));
+
+#ifdef Q_OS_MACOS
+    table_tab_->addTab( right_json_, tr( "JSON " ));
+#else
+    table_tab_->addTab( right_json_, tr( "JSON " ));
+#endif
 
     connect( table_tab_, SIGNAL(currentChanged(int)), this, SLOT(changeTableTab()));
 
