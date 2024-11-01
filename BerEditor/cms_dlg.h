@@ -72,7 +72,6 @@ private:
     int readSignPrivateKey( BIN *pPriKey );
     int readKMPrivateKey( BIN *pPriKey );
 
-    QString last_path_;
     QButtonGroup* group_;
 
 };

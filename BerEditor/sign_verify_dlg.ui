@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>570</width>
-    <height>805</height>
+    <height>652</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,9 +15,66 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <layout class="QGridLayout" name="gridLayout_14">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="6">
+      <widget class="QRadioButton" name="mVerifyRadio">
+       <property name="text">
+        <string>Verify</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
+      <widget class="QRadioButton" name="mSignRadio">
+       <property name="text">
+        <string>Sign</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="mVersionLabel">
+       <property name="text">
+        <string>RSA Version</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QComboBox" name="mAlgTypeCombo"/>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="mHashTypeCombo"/>
+     </item>
+     <item row="0" column="3">
+      <widget class="QComboBox" name="mVersionCombo"/>
+     </item>
+     <item row="0" column="4">
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QTabWidget" name="mInputTab">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mDataTab">
       <attribute name="title">
@@ -843,53 +900,6 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_4">
-     <item>
-      <widget class="QComboBox" name="mAlgTypeCombo"/>
-     </item>
-     <item>
-      <widget class="QComboBox" name="mHashTypeCombo"/>
-     </item>
-     <item>
-      <widget class="QLabel" name="mVersionLabel">
-       <property name="text">
-        <string>RSA Version</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="mVersionCombo"/>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_3">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QRadioButton" name="mSignRadio">
-       <property name="text">
-        <string>Sign</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QRadioButton" name="mVerifyRadio">
-       <property name="text">
-        <string>Verify</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
     <widget class="Line" name="line">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -1113,6 +1123,11 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>mAlgTypeCombo</tabstop>
+  <tabstop>mHashTypeCombo</tabstop>
+  <tabstop>mVersionCombo</tabstop>
+  <tabstop>mSignRadio</tabstop>
+  <tabstop>mVerifyRadio</tabstop>
   <tabstop>mInputTab</tabstop>
   <tabstop>mInputStringRadio</tabstop>
   <tabstop>mInputHexRadio</tabstop>
@@ -1147,11 +1162,6 @@
   <tabstop>mEncPrikeyCheck</tabstop>
   <tabstop>mPasswdText</tabstop>
   <tabstop>mUseKeyAlgCheck</tabstop>
-  <tabstop>mAlgTypeCombo</tabstop>
-  <tabstop>mHashTypeCombo</tabstop>
-  <tabstop>mVersionCombo</tabstop>
-  <tabstop>mSignRadio</tabstop>
-  <tabstop>mVerifyRadio</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
   <tabstop>mOutputClearBtn</tabstop>

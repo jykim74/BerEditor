@@ -27,7 +27,6 @@ CMSDlg::CMSDlg(QWidget *parent) :
 {
     setupUi(this);
     group_ = new QButtonGroup;
-    last_path_ = berApplet->curPath( last_path_ );
 
     connect( mSrcClearBtn, SIGNAL(clicked()), this, SLOT(clearSrc()));
     connect( mCMSClearBtn, SIGNAL(clicked()), this, SLOT(clearCMS()));
@@ -276,56 +275,44 @@ void CMSDlg::clickCMSDecode()
 void CMSDlg::clickSignPriFind()
 {
     QString strPath = mSignPriKeyPathText->text();
-
-    if( strPath.length() < 1 )
-        strPath = last_path_;
+    strPath = berApplet->curFilePath( strPath );
 
     QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( fileName.isEmpty() ) return;
     mSignPriKeyPathText->setText( fileName );
-
-    last_path_ = fileName;
 }
 
 void CMSDlg::clickSignCertFind()
 {
     QString strPath = mSignCertPathText->text();
-    if( strPath.length() < 1 )
-        strPath = last_path_;
+    strPath = berApplet->curFilePath( strPath );
 
     QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( fileName.isEmpty() ) return;
 
     mSignCertPathText->setText( fileName );
-    last_path_ = fileName;
 }
 
 void CMSDlg::clickKMPriFind()
 {
     QString strPath = mKMPriKeyPathText->text();
-
-    if( strPath.length() < 1 )
-        strPath = last_path_;
+    strPath = berApplet->curFilePath( strPath );
 
     QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( fileName.isEmpty() ) return;
 
     mKMPriKeyPathText->setText( fileName );
-    last_path_ = fileName;
 }
 
 void CMSDlg::clickKMCertFind()
 {
     QString strPath = mKMCertPathText->text();
-
-    if( strPath.length() < 1 )
-        strPath = last_path_;
+    strPath = berApplet->curFilePath( strPath );
 
     QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( fileName.isEmpty() ) return;
 
     mKMCertPathText->setText( fileName );
-    last_path_ = fileName;
 }
 
 void CMSDlg::clickSignedData()

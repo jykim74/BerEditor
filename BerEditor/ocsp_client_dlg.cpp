@@ -363,11 +363,7 @@ end :
 void OCSPClientDlg::findCACert()
 {
     QString strPath = mCACertPathText->text();
-
-    if( strPath.length() < 1 )
-    {
-        strPath = berApplet->curPath();
-    }
+    strPath = berApplet->curFilePath( strPath );
 
     QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( filePath.length() > 0 )
@@ -395,11 +391,7 @@ void OCSPClientDlg::findCert()
 void OCSPClientDlg::findSignCert()
 {
     QString strPath = mSignCertPathText->text();
-
-    if( strPath.length() < 1 )
-    {
-        strPath = berApplet->curPath();
-    }
+    strPath = berApplet->curFilePath( strPath );
 
     QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( filePath.length() > 0 )
@@ -411,11 +403,8 @@ void OCSPClientDlg::findSignCert()
 void OCSPClientDlg::findSignPriKey()
 {
     QString strPath = mSignPriKeyPathText->text();
+    strPath = berApplet->curFilePath( strPath );
 
-    if( strPath.length() < 1 )
-    {
-        strPath = berApplet->curPath();
-    }
 
     QString filePath = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( filePath.length() > 0 )
@@ -427,11 +416,7 @@ void OCSPClientDlg::findSignPriKey()
 void OCSPClientDlg::findSrvCert()
 {
     QString strPath = mSrvCertPathText->text();
-
-    if( strPath.length() < 1 )
-    {
-        strPath = berApplet->curPath();
-    }
+    strPath = berApplet->curFilePath( strPath );
 
     QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( filePath.length() > 0 )

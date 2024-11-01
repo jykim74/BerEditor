@@ -170,7 +170,7 @@ void GenHashDlg::hashFinal()
     }
     else
     {
-        mStatusLabel->setText( QString("Final failed [%1]").arg(ret) );
+        appendStatusLabel( QString("|Final failed [%1]").arg(ret) );
     }
 
     JS_PKI_hashFree( &pctx_ );
@@ -304,6 +304,7 @@ void GenHashDlg::clickClearDataAll()
 void GenHashDlg::clickFindSrcFile()
 {
     QString strPath = mSrcFileText->text();
+    strPath = berApplet->curFilePath( strPath );
 
     QString strSrcFile = findFile( this, JS_FILE_TYPE_ALL, strPath );
 
@@ -376,7 +377,11 @@ void GenHashDlg::clickDigestSrcFile()
             nPartSize = nLeft;
 
         nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
-        if( nRead <= 0 ) break;
+        if( nRead <= 0 )
+        {
+            berApplet->warnLog( tr( "fail to read file: %1").arg( nRead ), this );
+            goto end;
+        }
 
         ret = JS_PKI_hashUpdate( pctx_, &binPart );
         if( ret != 0 )

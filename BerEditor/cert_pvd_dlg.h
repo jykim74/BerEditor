@@ -60,8 +60,6 @@ private slots:
     void clickClearDataAll();
 private:
     void initialize();
-    QString last_path_;
-
 };
 
 #endif // CERT_PVD_DLG_H

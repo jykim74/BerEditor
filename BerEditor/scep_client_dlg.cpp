@@ -284,11 +284,7 @@ void SCEPClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
 void SCEPClientDlg::findCACert()
 {
     QString strPath = mCACertPathText->text();
-
-    if( strPath.length() < 1 )
-    {
-        strPath = berApplet->curPath();
-    }
+    strPath = berApplet->curFilePath( strPath );
 
     QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( filePath.length() > 0 )
@@ -316,11 +312,7 @@ void SCEPClientDlg::findCert()
 void SCEPClientDlg::findPriKey()
 {
     QString strPath = mPriKeyPathText->text();
-
-    if( strPath.length() < 1 )
-    {
-        strPath = berApplet->curPath();
-    }
+    strPath = berApplet->curFilePath( strPath );
 
     QString filePath = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( filePath.length() > 0 )

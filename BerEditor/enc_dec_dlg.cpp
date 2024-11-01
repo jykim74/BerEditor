@@ -464,7 +464,11 @@ void EncDecDlg::fileRun()
             nPartSize = nLeft;
 
         nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
-        if( nRead <= 0 ) break;
+        if( nRead <= 0 )
+        {
+            berApplet->warnLog( tr( "fail to read file: %1").arg( nRead ), this );
+            goto end;
+        }
 
         if( mAEADGroup->isChecked() )
         {
@@ -500,14 +504,23 @@ void EncDecDlg::fileRun()
 
         if( ret != 0 )
         {
-            berApplet->elog( QString( "Encryption/decryption update failed [%1]").arg(ret));
-            break;
+            berApplet->warnLog( tr( "Encryption/decryption update failed [%1]").arg(ret), this );
+            goto end;
         }
 
         nUpdateCnt++;
 
         if( binDst.nLen > 0 )
-            JS_BIN_fileAppend( &binDst, strDstFile.toLocal8Bit().toStdString().c_str() );
+        {
+            ret = JS_BIN_fileAppend( &binDst, strDstFile.toLocal8Bit().toStdString().c_str() );
+            if( ret != binDst.nLen )
+            {
+                berApplet->warnLog( tr( "fail to append file: %1" ).arg( ret ), this );
+                goto end;
+            }
+
+            ret = 0;
+        }
 
         nReadSize += nRead;
         nPercent = ( nReadSize * 100 ) / fileSize;
@@ -535,7 +548,11 @@ void EncDecDlg::fileRun()
             QString strStatus = QString( "|Update X %1").arg( nUpdateCnt );
             appendStatusLabel( strStatus );
 
-            encDecFinal();
+            ret = encDecFinal();
+            if( ret == 0 )
+            {
+                berApplet->messageLog( tr( "File(%1) save was successful" ).arg( strDstFile ), this );
+            }
 
             QFileInfo fileInfo;
             fileInfo.setFile( strDstFile );
@@ -768,7 +785,7 @@ end :
     return ret;
 }
 
-void EncDecDlg::encDecUpdate()
+int EncDecDlg::encDecUpdate()
 {
     int ret = -1;
     BIN binSrc = {0,0};
@@ -892,9 +909,10 @@ void EncDecDlg::encDecUpdate()
     JS_BIN_reset( &binOut );
 
     repaint();
+    return ret;
 }
 
-void EncDecDlg::encDecFinal()
+int EncDecDlg::encDecFinal()
 {
     int ret = -1;
     BIN binOut = {0,0};
@@ -1037,8 +1055,8 @@ void EncDecDlg::encDecFinal()
         appendStatusLabel( "|Final OK" );
     else
     {
-        QString strFail = QString("final failure [%1]").arg(ret);
-        mStatusLabel->setText( strFail );
+        QString strFail = QString("|Final failure [%1]").arg(ret);
+        appendStatusLabel( strFail );
         berApplet->elog( strFail );
     }
 
@@ -1047,6 +1065,7 @@ void EncDecDlg::encDecFinal()
     JS_BIN_reset( &binTag );
 
     repaint();
+    return ret;
 }
 
 void EncDecDlg::dataChange()
@@ -1159,12 +1178,20 @@ void EncDecDlg::clickOutputClear()
 void EncDecDlg::clickFindSrcFile()
 {
     QString strPath = mSrcFileText->text();
+    strPath = berApplet->curFilePath( strPath );
+
     QString strSrcFile = findFile( this, JS_FILE_TYPE_ALL, strPath );
 
     if( strSrcFile.length() > 0 )
     {
         QFileInfo fileInfo;
         fileInfo.setFile( strSrcFile );
+        QString strMode;
+
+        if( mEncryptRadio->isChecked() == true )
+            strMode = "enc";
+        else
+            strMode = "dec";
 
         qint64 fileSize = fileInfo.size();
         QDateTime cTime = fileInfo.lastModified();
@@ -1176,12 +1203,9 @@ void EncDecDlg::clickFindSrcFile()
         mSrcFileInfoText->setText( strInfo );
         mEncProgBar->setValue(0);
 
-        QStringList nameExt = strSrcFile.split(".");
-        QString strDstName = QString( "%1.dst" ).arg( nameExt.at(0) );
-        if( strSrcFile == strDstName )
-        {
-            strDstName += "_dst";
-        }
+
+
+        QString strDstName = QString( "%1/%2_%3.bin" ).arg( fileInfo.absolutePath() ).arg( fileInfo.baseName() ).arg( strMode );
 
         mDstFileText->setText( strDstName );
 
@@ -1194,19 +1218,11 @@ void EncDecDlg::clickFindSrcFile()
 
 void EncDecDlg::clickFindDstFile()
 {
-    QFileDialog::Options options;
-    options |= QFileDialog::DontUseNativeDialog;
-
-    QString strFilter;
+    int nType = JS_FILE_TYPE_BIN;
     QString strPath = mDstFileText->text();
+    strPath = berApplet->curFilePath( strPath );
 
-    QString selectedFilter;
-    QString fileName = QFileDialog::getSaveFileName( this,
-                                                     tr("encryption or decryption files"),
-                                                     strPath,
-                                                     strFilter,
-                                                     &selectedFilter,
-                                                     options );
+    QString fileName = findSaveFile( this, nType, strPath );
 
     if( fileName.length() > 0 ) mDstFileText->setText( fileName );
 }
@@ -1293,12 +1309,18 @@ void EncDecDlg::startTask()
 
 void EncDecDlg::onTaskFinished()
 {
+    int ret = 0;
     berApplet->log("Task finished");
+    QString strDstFile = mDstFileText->text();
 
     QString strStatus = QString( "|Update X %1").arg( update_cnt_ );
     appendStatusLabel( strStatus );
 
-    encDecFinal();
+    ret = encDecFinal();
+    if( ret == 0 )
+    {
+        berApplet->messageLog( tr( "File(%1) save was successful" ).arg( strDstFile ), this );
+    }
 
     thread_->quit();
     thread_->wait();

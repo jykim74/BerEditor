@@ -61,7 +61,11 @@ void HashThread::run()
             nPartSize = nLeft;
 
         nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
-        if( nRead <= 0 ) break;
+        if( nRead <= 0 )
+        {
+            fprintf( stderr, "fail to read file: %d\n", nRead );
+            goto end;
+        }
 
         ret = JS_PKI_hashUpdate( pctx_, &binPart );
         if( ret != 0 )

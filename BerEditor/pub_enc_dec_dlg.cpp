@@ -574,9 +574,7 @@ end :
 void PubEncDecDlg::findCert()
 {
     QString strPath = mCertPath->text();
-
-    if( strPath.length() < 1 )
-        strPath = berApplet->settingsMgr()->keyPairPath();
+    strPath = berApplet->curFilePath( strPath );
 
     QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( fileName.isEmpty() ) return;
@@ -589,9 +587,7 @@ void PubEncDecDlg::findCert()
 void PubEncDecDlg::findPrivateKey()
 {
     QString strPath = mPriKeyPath->text();
-
-    if( strPath.length() < 1 )
-        strPath = berApplet->settingsMgr()->keyPairPath();
+    strPath = berApplet->curFilePath( strPath );
 
     QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( fileName.isEmpty() ) return;

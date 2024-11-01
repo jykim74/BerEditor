@@ -1022,8 +1022,7 @@ void SSLVerifyDlg::clickClearLog()
 void SSLVerifyDlg::findTrustCACert()
 {
     QString strPath = mTrustCAPathText->text();
-    if( strPath.length() < 1 )
-        strPath = berApplet->curPath();
+    strPath = berApplet->curFilePath( strPath );
 
     QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( fileName.length() > 1 ) mTrustCAPathText->setText( fileName );
@@ -1408,8 +1407,7 @@ end :
 void SSLVerifyDlg::findClientCA()
 {
     QString strPath = mClientCAPathText->text();
-    if( strPath.length() < 1 )
-        strPath = berApplet->curPath();
+    strPath = berApplet->curFilePath( strPath );
 
     QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( fileName.length() > 1 ) mClientCAPathText->setText( fileName );

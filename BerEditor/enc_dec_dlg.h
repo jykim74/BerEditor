@@ -30,8 +30,8 @@ private slots:
     void fileRun();
     void clickUseAEAD();
     int encDecInit();
-    void encDecUpdate();
-    void encDecFinal();
+    int encDecUpdate();
+    int encDecFinal();
     void dataChange();
 
     void inputChanged();

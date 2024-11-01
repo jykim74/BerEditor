@@ -493,9 +493,7 @@ end :
 void SignVerifyDlg::findPrivateKey()
 {
     QString strPath = mPriKeyPath->text();
-
-    if( strPath.length() < 1 )
-        strPath = berApplet->settingsMgr()->keyPairPath();
+    strPath = berApplet->curFilePath( strPath );
 
     QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( fileName.isEmpty() ) return;
@@ -508,9 +506,7 @@ void SignVerifyDlg::findPrivateKey()
 void SignVerifyDlg::findCert()
 {
     QString strPath = mCertPath->text();
-
-    if( strPath.length() < 1 )
-        strPath = berApplet->settingsMgr()->keyPairPath();
+    strPath = berApplet->curFilePath( strPath );
 
     QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( fileName.isEmpty() ) return;
@@ -727,12 +723,12 @@ void SignVerifyDlg::signVerifyFinal()
 
         if( ret == 0 )
         {
-            mStatusLabel->setText( "Final OK" );
+            appendStatusLabel( "|Final OK" );
         }
         else
         {
-            QString strFail = QString("Final failure [%1]").arg(ret);
-            mStatusLabel->setText( strFail );
+            QString strFail = QString("|Final failure [%1]").arg(ret);
+            appendStatusLabel( strFail );
             berApplet->elog( strFail );
         }
     }
@@ -1003,7 +999,11 @@ void SignVerifyDlg::fileRun()
             nPartSize = nLeft;
 
         nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
-        if( nRead <= 0 ) break;
+        if( nRead <= 0 )
+        {
+            berApplet->warnLog( tr( "fail to read file: %1").arg( nRead ), this );
+            goto end;
+        }
 
         if( mSignRadio->isChecked() )
         {
@@ -1528,6 +1528,8 @@ void SignVerifyDlg::clickClearDataAll()
 void SignVerifyDlg::clickFindSrcFile()
 {
     QString strPath = mSrcFileText->text();
+    strPath = berApplet->curFilePath( strPath );
+
     QString strSrcFile = findFile( this, JS_FILE_TYPE_ALL, strPath );
 
     if( strSrcFile.length() > 0 )

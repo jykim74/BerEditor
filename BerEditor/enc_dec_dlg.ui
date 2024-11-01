@@ -15,9 +15,70 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <layout class="QGridLayout" name="gridLayout_13">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QComboBox" name="mAlgCombo">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="mModeCombo"/>
+     </item>
+     <item row="0" column="4">
+      <widget class="QRadioButton" name="mEncryptRadio">
+       <property name="text">
+        <string>Encrypt</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QCheckBox" name="mPadCheck">
+       <property name="text">
+        <string>Pad</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
+      <widget class="QRadioButton" name="mDecryptRadio">
+       <property name="text">
+        <string>Decrypt</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QTabWidget" name="mInputTab">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mDataTab">
       <attribute name="title">
@@ -1166,70 +1227,6 @@
     </widget>
    </item>
    <item>
-    <widget class="Line" name="line_4">
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>2</height>
-      </size>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="QComboBox" name="mAlgCombo">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>0</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="mModeCombo"/>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="mPadCheck">
-       <property name="text">
-        <string>Pad</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QRadioButton" name="mEncryptRadio">
-       <property name="text">
-        <string>Encrypt</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QRadioButton" name="mDecryptRadio">
-       <property name="text">
-        <string>Decrypt</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
     <widget class="Line" name="line">
      <property name="maximumSize">
       <size>
@@ -1453,6 +1450,11 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>mAlgCombo</tabstop>
+  <tabstop>mModeCombo</tabstop>
+  <tabstop>mPadCheck</tabstop>
+  <tabstop>mEncryptRadio</tabstop>
+  <tabstop>mDecryptRadio</tabstop>
   <tabstop>mInputTab</tabstop>
   <tabstop>mInputStringRadio</tabstop>
   <tabstop>mInputHexRadio</tabstop>
@@ -1489,11 +1491,6 @@
   <tabstop>mTagTypeCombo</tabstop>
   <tabstop>mTagText</tabstop>
   <tabstop>mTagLenText</tabstop>
-  <tabstop>mAlgCombo</tabstop>
-  <tabstop>mModeCombo</tabstop>
-  <tabstop>mPadCheck</tabstop>
-  <tabstop>mEncryptRadio</tabstop>
-  <tabstop>mDecryptRadio</tabstop>
   <tabstop>mOutputTypeCombo</tabstop>
   <tabstop>mOutputClearBtn</tabstop>
   <tabstop>mChangeBtn</tabstop>

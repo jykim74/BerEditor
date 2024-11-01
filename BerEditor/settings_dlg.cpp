@@ -126,6 +126,8 @@ void SettingsDlg::onCancelBtnClicked()
 void SettingsDlg::findOIDConfig()
 {
     QString strPath = mOIDConfigPathText->text();
+    strPath = berApplet->curFilePath( strPath );
+
     QString fileName = findFile( this, JS_FILE_TYPE_CFG, strPath );
 
     if( fileName.length() > 0 ) mOIDConfigPathText->setText( fileName );

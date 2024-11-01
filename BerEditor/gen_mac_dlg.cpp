@@ -329,7 +329,7 @@ void GenMacDlg::macFinal()
         berApplet->log( QString( "Final Digest : %1" ).arg( getHexString( &binMAC )) );
     }
     else
-        mStatusLabel->setText( QString("Final failure [%1]").arg(ret) );
+        appendStatusLabel( QString("|Final failure [%1]").arg(ret) );
 
     freeCTX();
 
@@ -459,6 +459,8 @@ end :
 void GenMacDlg::clickFindSrcFile()
 {
     QString strPath = mSrcFileText->text();
+    strPath = berApplet->curFilePath( strPath );
+
     QString strSrcFile = findFile( this, JS_FILE_TYPE_ALL, strPath );
 
     if( strSrcFile.length() > 0 )
@@ -535,7 +537,11 @@ void GenMacDlg::clickMACSrcFile()
             nPartSize = nLeft;
 
         nRead = JS_BIN_fileReadPartFP( fp, nOffset, nPartSize, &binPart );
-        if( nRead <= 0 ) break;
+        if( nRead <= 0 )
+        {
+            berApplet->warnLog( tr( "fail to read file: %1").arg( nRead ), this );
+            goto end;
+        }
 
         if( mCMACRadio->isChecked() )
         {

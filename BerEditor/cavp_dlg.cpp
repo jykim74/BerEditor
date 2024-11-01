@@ -1709,7 +1709,7 @@ void CAVPDlg::clickPBKDFRun()
 void CAVPDlg::clickSymFind()
 {
     QString strPath = mSymReqFileText->text();
-    if( strPath.length() < 1 ) strPath = berApplet->curFilePath(strPath);
+    strPath = berApplet->curFilePath(strPath);
 
     QString strFile = findFile( this, JS_FILE_TYPE_CSR, strPath );
     if( strFile.length() > 0 )
@@ -1721,7 +1721,7 @@ void CAVPDlg::clickSymFind()
 void CAVPDlg::clickAEFind()
 {
     QString strPath = mAEReqFileText->text();
-    if( strPath.length() < 1 ) strPath = berApplet->curFilePath(strPath);
+    strPath = berApplet->curFilePath(strPath);
 
     QString strFile = findFile( this, JS_FILE_TYPE_CSR, strPath );
     if( strFile.length() > 0 )
@@ -1733,7 +1733,7 @@ void CAVPDlg::clickAEFind()
 void CAVPDlg::clickHashFind()
 {
     QString strPath = mHashReqFileText->text();
-    if( strPath.length() < 1 ) strPath = berApplet->curFilePath(strPath);
+    strPath = berApplet->curFilePath(strPath);
 
     QString strFile = findFile( this, JS_FILE_TYPE_CSR, strPath );
     if( strFile.length() > 0 )
@@ -1745,7 +1745,7 @@ void CAVPDlg::clickHashFind()
 void CAVPDlg::clickHMACFind()
 {
     QString strPath = mHMACReqFileText->text();
-    if( strPath.length() < 1 ) strPath = berApplet->curFilePath( strPath );
+    strPath = berApplet->curFilePath( strPath );
 
     QString strFile = findFile( this, JS_FILE_TYPE_CSR, strPath );
     if( strFile.length() > 0 )
@@ -1757,7 +1757,7 @@ void CAVPDlg::clickHMACFind()
 void CAVPDlg::clickECCFind()
 {
     QString strPath = mECCReqFileText->text();
-    if( strPath.length() < 1 ) strPath = berApplet->curFilePath(strPath);
+    strPath = berApplet->curFilePath(strPath);
 
     QString strFile = findFile( this, JS_FILE_TYPE_CSR, strPath );
     if( strFile.length() > 0 )
@@ -1769,7 +1769,7 @@ void CAVPDlg::clickECCFind()
 void CAVPDlg::clickRSAFind()
 {
     QString strPath = mRSAReqFileText->text();
-    if( strPath.length() < 1 ) strPath = berApplet->curFilePath(strPath);
+    strPath = berApplet->curFilePath(strPath);
 
     QString strFile = findFile( this, JS_FILE_TYPE_CSR, strPath );
     if( strFile.length() > 0 )
@@ -1781,7 +1781,7 @@ void CAVPDlg::clickRSAFind()
 void CAVPDlg::clickDRBGFind()
 {
     QString strPath = mDRBGReqFileText->text();
-    if( strPath.length() < 1 ) strPath = berApplet->curFilePath(strPath);
+    strPath = berApplet->curFilePath(strPath);
 
     QString strFile = findFile( this, JS_FILE_TYPE_CSR, strPath );
     if( strFile.length() > 0 )
@@ -1793,7 +1793,7 @@ void CAVPDlg::clickDRBGFind()
 void CAVPDlg::clickPBKDFFind()
 {
     QString strPath = mPBKDFReqFileText->text();
-    if( strPath.length() < 1 ) strPath = berApplet->curFilePath(strPath);
+    strPath = berApplet->curFilePath(strPath);
 
     QString strFile = findFile( this, JS_FILE_TYPE_CSR, strPath );
     if( strFile.length() > 0 )
@@ -1805,7 +1805,7 @@ void CAVPDlg::clickPBKDFFind()
 void CAVPDlg::clickRSADETPriFind()
 {
     QString strPath = mRSA_DETPriPathText->text();
-    if( strPath.length() < 1 ) strPath = berApplet->curFilePath(strPath);
+    strPath = berApplet->curFilePath(strPath);
 
     QString strFile = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( strFile.length() > 0 )

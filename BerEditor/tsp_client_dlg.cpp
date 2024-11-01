@@ -224,11 +224,7 @@ void TSPClientDlg::clearResponse()
 void TSPClientDlg::findSrvCert()
 {
     QString strPath = mSrvCertPathText->text();
-
-    if( strPath.length() < 1 )
-    {
-        strPath = berApplet->curPath();
-    }
+    strPath = berApplet->curFilePath( strPath );
 
     QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( filePath.length() > 0 )

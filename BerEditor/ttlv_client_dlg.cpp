@@ -164,7 +164,8 @@ void TTLVClientDlg::initialize()
 
 void TTLVClientDlg::findCA()
 {
-    QString strPath = QDir::currentPath();
+    QString strPath = berApplet->curFilePath();
+
     QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( filePath.isEmpty() ) return;
 
@@ -173,7 +174,8 @@ void TTLVClientDlg::findCA()
 
 void TTLVClientDlg::findCert()
 {
-    QString strPath = QDir::currentPath();
+    QString strPath = berApplet->curFilePath();
+
     QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( filePath.isEmpty() ) return;
 
@@ -182,7 +184,8 @@ void TTLVClientDlg::findCert()
 
 void TTLVClientDlg::findPriKey()
 {
-    QString strPath = QDir::currentPath();
+    QString strPath = berApplet->curFilePath();
+
     QString filePath = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( filePath.isEmpty() ) return;
 

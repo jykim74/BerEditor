@@ -176,7 +176,7 @@ void TTLVEncoderDlg::findInput()
     BIN binFile = {0,0};
     char *pHex = NULL;
 
-    QString strPath = QDir::currentPath();
+    QString strPath = berApplet->curFilePath();
     QString fileName = findFile( this, JS_FILE_TYPE_ALL, strPath );
     if( fileName.isEmpty() ) return;
 

@@ -24,7 +24,6 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
-    last_path_ = berApplet->curPath( last_path_ );
 
     connect( mTrustFindBtn, SIGNAL(clicked()), this, SLOT(clickTrustFind()));
     connect( mUntrustFindBtn, SIGNAL(clicked()), this, SLOT(clickUntrustFind()));
@@ -122,56 +121,48 @@ void CertPVDDlg::initialize()
 void CertPVDDlg::clickTrustFind()
 {
     QString strPath = mTrustPathText->text();
-
-    if( strPath.length() < 1 ) strPath = last_path_;
+    strPath = berApplet->curFilePath( strPath );
 
     QString strFile = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( strFile.length() > 0 )
     {
         mTrustPathText->setText( strFile );
-        last_path_ = strFile;
     }
 }
 
 void CertPVDDlg::clickUntrustFind()
 {
     QString strPath = mUntrustPathText->text();
-
-    if( strPath.length() < 1 ) strPath = last_path_;
+    strPath = berApplet->curFilePath( strPath );
 
     QString strFile = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( strFile.length() > 0 )
     {
         mUntrustPathText->setText( strFile );
-        last_path_ = strFile;
     }
 }
 
 void CertPVDDlg::clickCRLFind()
 {
     QString strPath = mCRLPathText->text();
-
-    if( strPath.length() < 1 ) strPath = last_path_;
+    strPath = berApplet->curFilePath( strPath );
 
     QString strFile = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( strFile.length() > 0 )
     {
         mCRLPathText->setText( strFile );
-        last_path_ = strFile;
     }
 }
 
 void CertPVDDlg::clickTargetFind()
 {
     QString strPath = mTargetPathText->text();
-
-    if( strPath.length() < 1 ) strPath = last_path_;
+    strPath = berApplet->curFilePath( strPath );
 
     QString strFile = findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( strFile.length() > 0 )
     {
         mTargetPathText->setText( strFile );
-        last_path_ = strFile;
     }
 }
 
