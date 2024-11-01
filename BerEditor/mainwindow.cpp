@@ -209,7 +209,7 @@ void MainWindow::initialize()
 #ifdef Q_OS_MACOS
     table_tab_->addTab( right_json_, tr( "JSON " ));
 #else
-    table_tab_->addTab( right_json_, tr( "JSON " ));
+    table_tab_->addTab( right_json_, tr( "JSON" ));
 #endif
 
     connect( table_tab_, SIGNAL(currentChanged(int)), this, SLOT(changeTableTab()));
