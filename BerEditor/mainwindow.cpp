@@ -207,7 +207,7 @@ void MainWindow::initialize()
     right_json_->setAcceptRichText(true);
 
 #ifdef Q_OS_MACOS
-    table_tab_->addTab( right_json_, tr( "JSON " ));
+    table_tab_->addTab( right_json_, tr("JSON ") );
 #else
     table_tab_->addTab( right_json_, tr( "JSON" ));
 #endif
