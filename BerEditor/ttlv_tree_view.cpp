@@ -235,6 +235,8 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
     else
     {
         int line = 0;
+        int start_col = 0;
+        int start_row = 0;
 
         QString text;
         QString hex;
@@ -279,6 +281,11 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
 
             if( i >= pItem->getOffset() && i < pItem->getOffset() + 3 )
             {
+                if( i == pItem->getOffset() )
+                {
+                    start_row = line;
+                    start_col = pos;
+                }
                 rightTable->item( line, pos )->setBackgroundColor(green);
             }
             else if( i == pItem->getOffset() + 3 )
@@ -319,6 +326,9 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
             rightTable->setItem( line, 17, textItem);
             rightTable->item( line, 17 )->setBackgroundColor(QColor(210,240,210));
         }
+
+        QTableWidgetItem *item = rightTable->item( start_row, start_col );
+        rightTable->scrollToItem( item );
     }
 }
 
