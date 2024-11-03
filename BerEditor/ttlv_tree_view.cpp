@@ -328,7 +328,7 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
         }
 
         QTableWidgetItem *item = rightTable->item( start_row, start_col );
-        rightTable->scrollToItem( item );
+        rightTable->scrollToItem( item, ScrollHint::PositionAtTop );
     }
 }
 
