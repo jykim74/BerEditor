@@ -548,7 +548,7 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
         }
 
         QTableWidgetItem *item = rightTable->item( start_row, start_col );
-        rightTable->scrollToItem( item, ScrollHint::PositionAtTop );
+        rightTable->scrollToItem( item, ScrollHint::PositionAtCenter );
     }
 }
 
