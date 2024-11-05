@@ -210,22 +210,7 @@ int BerApplet::checkLicense()
     if( binEncLCN.nLen > 0 ) JS_LCN_dec( strEmail.toStdString().c_str(), &binEncLCN, &binLCN );
 
     ret = JS_LCN_ParseBIN( &binLCN, &license_info_ );
-
-#ifdef _USE_RC_LCN
-    if( ret != 0 )
-    {
-        QFile resFile( ":/bereditor_license.lcn" );
-        resFile.open(QIODevice::ReadOnly);
-        QByteArray data = resFile.readAll();
-        resFile.close();
-
-        if( data.size() != sizeof( JS_LICENSE_INFO ) ) goto end;
-
-        memcpy( &license_info_, data.data(), data.size() );
-    }
-#else
     if( ret != 0 ) goto end;
-#endif
 
 #ifdef USE_TIME_SRV
     ntp_t = JS_NET_clientNTP( JS_NTP_SERVER, JS_NTP_PORT, 2 );

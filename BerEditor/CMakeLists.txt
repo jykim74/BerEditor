@@ -14,7 +14,6 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-#add_definitions( -D_USE_RC_LCN )
 add_definitions( -D_USE_LCN_SRV )
 
 find_package(QT NAMES Qt5 Qt6 REQUIRED COMPONENTS Core)
