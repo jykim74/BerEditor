@@ -9,6 +9,10 @@
 #include "js_pki_key.h"
 #include "js_error.h"
 #include "new_passwd_dlg.h"
+#include "cert_info_dlg.h"
+#include "crl_info_dlg.h"
+#include "csr_info_dlg.h"
+#include "pri_key_info_dlg.h"
 
 static const QString getFormatName( int nFormatType )
 {
@@ -148,6 +152,7 @@ ExportDlg::ExportDlg(QWidget *parent) :
     memset( &crl_, 0x00, sizeof(BIN));
 
     connect( mFindFilenameBtn, SIGNAL(clicked()), this, SLOT(clickFindFilename()));
+    connect( mViewBtn, SIGNAL(clicked()), this, SLOT(clickView()));
     connect( mOKBtn, SIGNAL(clicked()), this, SLOT(clickOK()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mFormatCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeFormatType(int)));
@@ -276,6 +281,44 @@ void ExportDlg::clickFindFilename()
     if( strFilename.length() < 1 ) return;
 
     mFilenameText->setText( strFilename );
+}
+
+void ExportDlg::clickView()
+{
+    if( data_type_ == DataPriKey )
+    {
+        PriKeyInfoDlg priKeyInfo;
+        priKeyInfo.setPrivateKey( &pri_key_ );
+        priKeyInfo.exec();
+    }
+    else if( data_type_ == DataPubKey )
+    {
+        PriKeyInfoDlg priKeyInfo;
+        priKeyInfo.setPublicKey( &pub_key_ );
+        priKeyInfo.exec();
+    }
+    else if( data_type_ == DataCert )
+    {
+        CertInfoDlg certInfo;
+        certInfo.setCertBIN( &cert_ );
+        certInfo.exec();
+    }
+    else if( data_type_ == DataCSR )
+    {
+        CSRInfoDlg csrInfo;
+        csrInfo.setReqBIN( &csr_ );
+        csrInfo.exec();
+    }
+    else if( data_type_ == DataCRL )
+    {
+        CRLInfoDlg crlInfo;
+        crlInfo.setCRL_BIN( &crl_ );
+        crlInfo.exec();
+    }
+    else
+    {
+        berApplet->warningBox( tr( "This data is not supported."), this );
+    }
 }
 
 void ExportDlg::setPrivateKey( const BIN *pPriKey )
@@ -537,11 +580,11 @@ int ExportDlg::exportCSR()
 
     nExportType = mFormatCombo->currentData().toInt();
 
-    if( nExportType == ExportCRL_PEM )
+    if( nExportType == ExportCSR_PEM )
     {
         ret = JS_BIN_writePEM( &csr_, JS_PEM_TYPE_CSR, strFilename.toLocal8Bit().toStdString().c_str() );
     }
-    else if( nExportType == ExportCRL_DER )
+    else if( nExportType == ExportCSR_DER )
     {
         ret = JS_BIN_fileWrite( &csr_, strFilename.toLocal8Bit().toStdString().c_str() );
     }

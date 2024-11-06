@@ -246,21 +246,7 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mCloseBtn">
-       <property name="text">
-        <string>Close</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
-      <widget class="QPushButton" name="mOKBtn">
-       <property name="text">
-        <string>OK</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -273,6 +259,27 @@
        </property>
       </spacer>
      </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mCloseBtn">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mOKBtn">
+       <property name="text">
+        <string>OK</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mViewBtn">
+       <property name="text">
+        <string>View</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
   </layout>
@@ -284,6 +291,7 @@
   <tabstop>mFindFilenameBtn</tabstop>
   <tabstop>mFormatCombo</tabstop>
   <tabstop>mFormatInfoText</tabstop>
+  <tabstop>mViewBtn</tabstop>
   <tabstop>mOKBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
