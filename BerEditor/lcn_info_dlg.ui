@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>418</width>
-    <height>368</height>
+    <width>427</width>
+    <height>455</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,9 +42,9 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="mLicenseTab">
       <attribute name="title">
        <string>Current License</string>
       </attribute>
@@ -219,7 +219,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_2">
+     <widget class="QWidget" name="mMessageTab">
       <attribute name="title">
        <string>Message</string>
       </attribute>

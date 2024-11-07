@@ -195,6 +195,10 @@ int BerApplet::checkLicense()
 {
     int ret = 0;
     time_t ntp_t = 0;
+    time_t now_t = 0;
+    time_t run_t = 0;
+    int fail = 0;
+
     is_license_ = false;
 
 
@@ -203,22 +207,53 @@ int BerApplet::checkLicense()
 
     QString strEmail = settings_mgr_->getEmail();
     QString strLicense = settings_mgr_->getLicense();
+    QString strRunTime = settings_mgr_->getRunTime();
+
     QString strSID = GetSystemID();
 
+    now_t = time(NULL);
     JS_BIN_decodeHex( strLicense.toStdString().c_str(), &binEncLCN );
 
-    if( binEncLCN.nLen > 0 ) JS_LCN_dec( strEmail.toStdString().c_str(), &binEncLCN, &binLCN );
+    if( binEncLCN.nLen > 0 )
+        JS_LCN_dec( strEmail.toStdString().c_str(), &binEncLCN, &binLCN );
+    else
+        goto end;
 
     ret = JS_LCN_ParseBIN( &binLCN, &license_info_ );
     if( ret != 0 ) goto end;
 
-#ifdef USE_TIME_SRV
-    ntp_t = JS_NET_clientNTP( JS_NTP_SERVER, JS_NTP_PORT, 2 );
-#endif
+    if( strRunTime.length() > 0 )
+    {
+        QStringList timeFail = strRunTime.split( ":" );
+        if( timeFail.size() > 0 )
+            run_t = timeFail.at(0).toInt();
 
-    if( ntp_t <= 0 ) ntp_t = time(NULL);
+        if( timeFail.size() > 1 )
+            fail = timeFail.at(1).toInt();
 
-    ret = JS_LCN_IsValid( &license_info_, strEmail.toStdString().c_str(), JS_LCN_PRODUCT_BEREDITOR_NAME, strSID.toStdString().c_str(), ntp_t );
+        if( now_t < run_t )
+        {
+            ntp_t = JS_NET_clientNTP( JS_NTP_SERVER, JS_NTP_PORT, 2 );
+            if( ntp_t <= 0 )
+            {
+                if( fail > 5 ) goto end;
+                fail++;
+                settings_mgr_->setRunTime( QString("%1:%2").arg( run_t ).arg(fail));
+            }
+            else
+            {
+                fail = 0;
+                now_t = ntp_t;
+                settings_mgr_->setRunTime( QString("%1").arg( ntp_t ) );
+            }
+        }
+    }
+    else
+    {
+        settings_mgr_->setRunTime( QString("%1").arg( now_t ) );
+    }
+
+    ret = JS_LCN_IsValid( &license_info_, strEmail.toStdString().c_str(), JS_LCN_PRODUCT_BEREDITOR_NAME, strSID.toStdString().c_str(), now_t );
 
     if( ret == JSR_VALID )
     {

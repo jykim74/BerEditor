@@ -30,6 +30,7 @@ const char *kViewProto = "viewProto";
 const char *kViewKMIP = "viewKMIP";
 const char *kViewHelp = "viewHelp";
 const char *kLinkList = "linkList";
+const char *kRunTime = "runTime";
 }
 
 SettingsMgr::SettingsMgr(QObject *parent) : QObject(parent)
@@ -576,4 +577,24 @@ QString SettingsMgr::getLinkList()
     sets.endGroup();
 
     return link_list_;
+}
+
+void SettingsMgr::setRunTime( const QString strTime )
+{
+    QSettings sets;
+    sets.beginGroup( kBehaviorGroup );
+    sets.setValue( kRunTime, strTime );
+    sets.endGroup();
+}
+
+QString SettingsMgr::getRunTime()
+{
+    QString strTime;
+    QSettings sets;
+
+    sets.beginGroup( kBehaviorGroup );
+    strTime = sets.value( kRunTime, "" ).toString();
+    sets.endGroup();
+
+    return strTime;
 }
