@@ -224,14 +224,14 @@ void MakeBerDlg::classChanged(int index)
 {
     if( index == 2 )
     {
-        mPrimitiveCombo->hide();
+        mPrimitiveCombo->setEnabled( false );
         mNumText->setReadOnly( false );
         mNumText->clear();
         mTagLabel->setText(tr("Number"));
     }
     else
     {
-        mPrimitiveCombo->show();
+        mPrimitiveCombo->setEnabled(true);
         mNumText->setReadOnly( true );
         mTagLabel->setText(tr("Tag"));
     }

@@ -46,6 +46,7 @@ class CertManDlg;
 class TTLVEncoderDlg;
 class TTLVClientDlg;
 class ContentMain;
+class FindDlg;
 
 
 namespace Ui {
@@ -75,9 +76,13 @@ public:
     QTextEdit* rightText() { return right_text_; };
     QTextEdit* rightXML() { return right_xml_; };
     QTextEdit* rightJSON() { return right_json_; };
+
+    BerTreeView* berTree() { return left_tree_; };
+    BerModel* berModel() { return ber_model_; };
+
     TTLVTreeView* ttlvTree() { return ttlv_tree_; };
     TTLVTreeModel* ttlvModel() { return ttlv_model_; };
-    BerModel* berModel() { return ber_model_; };
+
 
     void showTextMsg( const QString& msg );
     int tableCurrentIndex();
@@ -116,6 +121,7 @@ public:
     void viewEditExpandNode( bool bChecked );
     void viewEditCollapseAll( bool bChecked );
     void viewEditCollapseNode( bool bChecked );
+    void viewEditFindNode( bool bChecked );
 
     void viewToolDataEncode( bool bChecked );
     void viewToolNumTrans( bool bChecked );
@@ -180,6 +186,7 @@ private slots:
     void treeExpandNode();
     void treeCollapseAll();
     void treeCollapseNode();
+    void findNode();
 
     void about();
     void setting();
@@ -305,6 +312,7 @@ private:
     TTLVEncoderDlg  *ttlv_encoder_dlg_;
     TTLVClientDlg   *ttlv_client_dlg_;
     ContentMain     *content_;
+    FindDlg         *find_dlg_;
 
     QToolBar* file_tool_;
     QAction* new_act_;
@@ -329,6 +337,7 @@ private:
     QAction* expand_node_act_;
     QAction* collapse_all_act_;
     QAction* collapse_node_act_;
+    QAction* find_node_act_;
 
     QToolBar* tool_tool_;
     QAction* data_encode_act_;

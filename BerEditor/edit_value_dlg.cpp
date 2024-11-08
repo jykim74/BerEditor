@@ -130,11 +130,12 @@ void EditValueDlg::setItem(BerItem *pItem)
 
     if( mClassText->text() == "Context-specific" )
     {
+        mTagText->setEnabled(false);
         mTagLabel->setText(tr("Number"));
-        mTagText->hide();
     }
     else
     {
+        mTagText->setEnabled(true);
         mTagText->setText( ber_item_->GetTagString() );
     }
 

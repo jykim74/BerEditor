@@ -87,6 +87,7 @@ const QColor kLenTypeColor( Qt::cyan );
 #define ACT_EDIT_EXPAND_NODE        VIEW_EDIT | 0x00000010
 #define ACT_EDIT_COLLAPSE_ALL       VIEW_EDIT | 0x00000020
 #define ACT_EDIT_COLLAPSE_NODE      VIEW_EDIT | 0x00000040
+#define ACT_EDIT_FIND_NODE          VIEW_EDIT | 0x00000080
 
 #define ACT_TOOL_DATA_ENCODER       VIEW_TOOL | 0x00000001
 #define ACT_TOOL_NUM_TRANS          VIEW_TOOL | 0x00000002
@@ -134,8 +135,7 @@ const QColor kLenTypeColor( Qt::cyan );
 
 static const int kFileDefault = ACT_FILE_NEW | ACT_FILE_OPEN | ACT_FILE_SAVE;
 
-static const int kEditDefault = ACT_EDIT_EXPAND_ALL | ACT_EDIT_EXPAND_NODE | ACT_EDIT_COLLAPSE_ALL \
-                         | ACT_EDIT_COLLAPSE_NODE;
+static const int kEditDefault = ACT_EDIT_EXPAND_ALL | ACT_EDIT_EXPAND_NODE | ACT_EDIT_FIND_NODE;
 
 static const int kToolDefault = ACT_TOOL_DATA_ENCODER | ACT_TOOL_OID_INFO | ACT_TOOL_MAKE_BER \
                          | ACT_TOOL_DECODE_DATA | ACT_TOOL_GET_URI;

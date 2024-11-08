@@ -53,6 +53,7 @@
 #include "pri_key_info_dlg.h"
 #include "cms_info_dlg.h"
 #include "content_main.h"
+#include "find_dlg.h"
 
 #include "js_pki_tools.h"
 #include "js_kms.h"
@@ -425,7 +426,12 @@ void MainWindow::createViewActions()
     connect( editCollapseNodeAct, &QAction::triggered, this, &MainWindow::viewEditCollapseNode );
     editMenu->addAction( editCollapseNodeAct );
 
-
+    QAction *editFindNodeAct = new QAction( tr( "Find"), this );
+    bVal = isView( ACT_EDIT_FIND_NODE );
+    editFindNodeAct->setCheckable(true);
+    editFindNodeAct->setChecked(bVal);
+    connect( editFindNodeAct, &QAction::triggered, this, &MainWindow::viewEditFindNode );
+    editMenu->addAction( editFindNodeAct );
 
     QAction *toolDataEncodeAct = new QAction( tr( "Data Encode"), this );
     bVal = isView( ACT_TOOL_DATA_ENCODER );
@@ -873,11 +879,24 @@ void MainWindow::createActions()
 
     const QIcon collapseNodeIcon = QIcon::fromTheme("collapse-node", QIcon(":/images/collapse_node.png"));
     collapse_node_act_ = new QAction(collapseNodeIcon, tr("&Collapse Node"), this );
-    collapse_node_act_->setStatusTip(tr("Show node"));
+    collapse_node_act_->setStatusTip(tr("Collapse node"));
     collapse_node_act_->setShortcut( QKeySequence(Qt::Key_F8));
     connect( collapse_node_act_, &QAction::triggered, this, &MainWindow::treeCollapseNode );
     editMenu->addAction(collapse_node_act_);
     if( isView( ACT_EDIT_COLLAPSE_NODE )) edit_tool_->addAction(collapse_node_act_ );
+
+    const QIcon findIcon = QIcon::fromTheme("find", QIcon(":/images/find.png"));
+    find_node_act_ = new QAction( findIcon, tr("&Find"), this );
+    find_node_act_->setStatusTip(tr("Find node"));
+    find_node_act_->setShortcut( QKeySequence(Qt::CTRL | Qt::Key_F));
+    connect( find_node_act_, &QAction::triggered, this, &MainWindow::findNode );
+    editMenu->addAction( find_node_act_);
+    if( isView( ACT_EDIT_FIND_NODE )) edit_tool_->addAction( find_node_act_ );
+
+    if( berApplet->isLicense() == false )
+    {
+        find_node_act_->setEnabled( false );
+    }
 
     if( berApplet->isLicense() ) createViewActions();
 
@@ -1301,6 +1320,7 @@ void MainWindow::createCryptoDlg()
     ttlv_encoder_dlg_ = new TTLVEncoderDlg;
     ttlv_client_dlg_ = new TTLVClientDlg;
     content_ = new ContentMain;
+    find_dlg_ = new FindDlg;
 }
 
 void MainWindow::newFile()
@@ -1830,6 +1850,13 @@ void MainWindow::treeCollapseNode()
     {
         left_tree_->treeCollapseNode();
     }
+}
+
+void MainWindow::findNode()
+{
+    find_dlg_->show();
+    find_dlg_->raise();
+    find_dlg_->activateWindow();
 }
 
 void MainWindow::openBer( const BIN *pBer )
@@ -2662,6 +2689,20 @@ void MainWindow::viewEditCollapseNode( bool bChecked )
     {
         edit_tool_->removeAction( collapse_node_act_ );
         unsetView( ACT_EDIT_COLLAPSE_NODE );
+    }
+}
+
+void MainWindow::viewEditFindNode( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        edit_tool_->addAction( find_node_act_ );
+        setView( ACT_EDIT_FIND_NODE );
+    }
+    else
+    {
+        edit_tool_->removeAction( find_node_act_ );
+        unsetView( ACT_EDIT_FIND_NODE );
     }
 }
 

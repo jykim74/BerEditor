@@ -93,5 +93,6 @@
         <file>images/cert_man.png</file>
         <file>images/cms_open.png</file>
         <file>images/link.png</file>
+        <file>images/find.png</file>
     </qresource>
 </RCC>
