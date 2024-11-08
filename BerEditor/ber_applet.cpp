@@ -238,7 +238,13 @@ int BerApplet::checkLicense()
     }
     else
     {
-        QString strMsg = tr( "License is invalid: %1" ).arg(ret);
+        QString strMsg;
+
+        if( ret == JSR_LCN_ERR_EXPIRED )
+            strMsg = tr( "The license has expired" );
+        else
+            strMsg = tr( "The license is invalid: %1" ).arg(ret);
+
         berApplet->warningBox( strMsg, nullptr );
     }
 
