@@ -79,8 +79,8 @@ public:
     QString getLinkList();
     QString linkList() { return link_list_; };
 
-    void setRunTime( const QString strTime );
-    QString getRunTime();
+    void setRunTime( time_t tRun );
+    time_t getRunTime();
 
 signals:
 

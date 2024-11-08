@@ -579,22 +579,22 @@ QString SettingsMgr::getLinkList()
     return link_list_;
 }
 
-void SettingsMgr::setRunTime( const QString strTime )
+void SettingsMgr::setRunTime( time_t tRun )
 {
     QSettings sets;
     sets.beginGroup( kBehaviorGroup );
-    sets.setValue( kRunTime, strTime );
+    sets.setValue( kRunTime, tRun );
     sets.endGroup();
 }
 
-QString SettingsMgr::getRunTime()
+time_t SettingsMgr::getRunTime()
 {
-    QString strTime;
+    time_t tRun = 0;
     QSettings sets;
 
     sets.beginGroup( kBehaviorGroup );
-    strTime = sets.value( kRunTime, "" ).toString();
+    tRun = sets.value( kRunTime, 0 ).toInt();
     sets.endGroup();
 
-    return strTime;
+    return tRun;
 }

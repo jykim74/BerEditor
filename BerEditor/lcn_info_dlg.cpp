@@ -410,6 +410,8 @@ end :
 
     if( ret == 0 )
     {
+        berApplet->settingsMgr()->setRunTime(0);
+
         if( berApplet->yesOrNoBox(tr("You have changed license. Restart to apply it?"), this, true))
             berApplet->restartApp();
 
