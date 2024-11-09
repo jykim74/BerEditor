@@ -390,7 +390,14 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QComboBox" name="mValueTypeCombo"/>
+      <widget class="QComboBox" name="mValueTypeCombo">
+       <property name="minimumSize">
+        <size>
+         <width>120</width>
+         <height>0</height>
+        </size>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -444,7 +451,14 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QComboBox" name="mLevelCombo"/>
+      <widget class="QComboBox" name="mLevelCombo">
+       <property name="minimumSize">
+        <size>
+         <width>120</width>
+         <height>0</height>
+        </size>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

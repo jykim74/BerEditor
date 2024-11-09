@@ -46,10 +46,16 @@ private:
 
     void getValueBIN( BIN *pBin );
     bool isBerFind( BerItem *pItem );
+    bool isTTLVFind( TTLVTreeItem *pItem );
     void setBerCondition();
 
+    void setTTLVCondition();
+
     BerItem* findBerItem( BerItem *pItem, const BerItem *pSelItem );
-    TTLVTreeItem* findTTLVItem( TTLVTreeItem *pItem );
+    BerItem* getFoundBerItem( BerItem *pSelItem );
+
+    TTLVTreeItem* findTTLVItem( TTLVTreeItem *pItem, const TTLVTreeItem *pSelItem  );
+    TTLVTreeItem* getFoundTTLVItem( TTLVTreeItem *pSelItem );
 
 private:
     int col_;

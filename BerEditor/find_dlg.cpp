@@ -13,9 +13,10 @@ static const QStringList kTTLVTypeList = { "None", "Structure", "Integer", "Long
                                    "BigInteger", "Enumeration", "Boolean", "TextString",
                                    "ByteString", "DateTime", "Interval", "DateTimeExtented" };
 
-static const QStringList kLevelList = { "Any", "1", "2", "3", "4", "5", "6", "7", "8" };
+static const QStringList kLevelList = { "Any", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
-static const QStringList kValueType = { "String", "Hex", "Integer", "OID", "Bit" };
+static const QStringList kBerValueType = { "String", "Hex", "Decimal", "OID", "Bit" };
+static const QStringList kTTLVValueType = { "String", "Hex", "Number" };
 
 FindDlg::FindDlg(QWidget *parent) :
     QDialog(parent)
@@ -67,8 +68,7 @@ void FindDlg::initUI()
 
 //    mPreviousBtn->setEnabled( false );
     mLevelCombo->addItems( kLevelList );
-    mLevelCombo->setEnabled( true );
-    mValueTypeCombo->addItems( kValueType );
+    mValueTypeCombo->addItems( kBerValueType );
 }
 
 void FindDlg::initialize()
@@ -76,10 +76,12 @@ void FindDlg::initialize()
     col_ = 0;
     row_ = 0;
     find_list_.clear();
+    mValueTypeCombo->clear();
 
     if( berApplet->mainWindow()->isTTLV() == true )
     {
         mTitleLabel->setText( tr( "Find TTLV" ));
+        mValueTypeCombo->addItems( kTTLVValueType );
 
         tabWidget->setTabEnabled(0, false);
         tabWidget->setTabEnabled(1, true);
@@ -87,6 +89,7 @@ void FindDlg::initialize()
     else
     {
         mTitleLabel->setText( tr( "Find BER" ));
+        mValueTypeCombo->addItems( kBerValueType );
 
         tabWidget->setTabEnabled(0, true);
         tabWidget->setTabEnabled(1, false);
@@ -111,7 +114,7 @@ void FindDlg::getValueBIN( BIN *pBin )
     {
         JS_BIN_decodeHex( strValue.toStdString().c_str(), pBin );
     }
-    else if( strType == "Integer" )
+    else if( strType == "Decimal" )
     {
         JS_PKI_decimalToBin( strValue.toStdString().c_str(), pBin );
     }
@@ -134,6 +137,16 @@ void FindDlg::getValueBIN( BIN *pBin )
     else if( strType == "OID" )
     {
         JS_PKI_getOIDValueFromString( strValue.toStdString().c_str(), pBin );
+    }
+    else if( strType == "Number" )
+    {
+        BIN binTmp = {0,0};
+        JS_PKI_decimalToBin( strValue.toStdString().c_str(), &binTmp );
+        int nLeft = 4 - pBin->nLen % 4;
+
+        if( nLeft > 0 ) JS_BIN_setChar(pBin, 0x00, nLeft );
+        JS_BIN_appendBin( pBin, &binTmp );
+        JS_BIN_reset( &binTmp );
     }
 }
 
@@ -194,6 +207,59 @@ bool FindDlg::isBerFind( BerItem *pItem )
 
         getValueBIN( &binVal );
         pItem->getValueBin( &model->getBER(), &binItemVal );
+
+        if( JS_BIN_cmp( &binVal, &binItemVal ) == 0 )
+        {
+            JS_BIN_reset( &binVal );
+            JS_BIN_reset( &binItemVal );
+
+            return true;
+        }
+
+        JS_BIN_reset( &binVal );
+        JS_BIN_reset( &binItemVal );
+    }
+
+    return false;
+}
+
+bool FindDlg::isTTLVFind( TTLVTreeItem *pItem )
+{
+    QString strHeader = mTTLV_HeaderText->text();
+    QString strValue = mValueText->text();
+    int nLevel = mLevelCombo->currentIndex();
+
+    BIN binHeader = {0,0};
+    pItem->getHeader( &binHeader );
+
+    if( binHeader.nLen != 8 )
+    {
+        JS_BIN_reset( &binHeader );
+        return false;
+    }
+
+    QString strItemHeader = getHexString( binHeader.pVal, 4 );
+    JS_BIN_reset( &binHeader );
+
+    if( nLevel > 0 )
+    {
+        if( pItem->getLevel() != nLevel )
+            return false;
+    }
+
+    if( strHeader == strItemHeader )
+    {
+        BIN binVal = {0,0};
+        BIN binItemVal = {0,0};
+
+        TTLVTreeModel* model = berApplet->mainWindow()->ttlvModel();
+
+        if( strValue.length() < 1 )
+            return true;
+
+        getValueBIN( &binVal );
+
+        pItem->getValue( &model->getTTLV(), &binItemVal );
 
         if( JS_BIN_cmp( &binVal, &binItemVal ) == 0 )
         {
@@ -294,7 +360,7 @@ void FindDlg::findBER_Next()
 {
     BerTreeView *tree = berApplet->mainWindow()->berTree();
     BerModel* model = berApplet->mainWindow()->berModel();
-    QModelIndex ri = model->index(row_,col_);
+    QModelIndex ri = model->index(0,0);
 
     BerItem* root = (BerItem *)model->itemFromIndex(ri);
     if( root == NULL )
@@ -308,8 +374,13 @@ void FindDlg::findBER_Next()
     BerItem* curItem = (BerItem *)model->itemFromIndex( tree->currentIndex() );
 
     tree->expandAll();
+    BerItem *findItem = NULL;
 
-    BerItem* findItem = findBerItem( root, curItem );
+    if( curItem ) findItem = getFoundBerItem( curItem );
+
+    if( findItem == NULL )
+        findItem = findBerItem( root, curItem );
+
     if( findItem )
     {
         QModelIndex fi = findItem->index();
@@ -367,6 +438,37 @@ void FindDlg::findBER_Previous()
     }
 }
 
+void FindDlg::setTTLVCondition()
+{
+    BIN binVal = {0,0};
+
+    QString strHeader = mTTLV_HeaderText->text();
+    QString strValue;
+    int nLevel = mLevelCombo->currentIndex();
+
+    if( last_level_ != nLevel )
+    {
+        find_list_.clear();
+        last_level_ = nLevel;
+    }
+
+    if( last_head_ != strHeader )
+    {
+        find_list_.clear();
+        last_head_ = strHeader;
+    }
+
+    getValueBIN( &binVal );
+    strValue = getHexString( &binVal );
+    JS_BIN_reset( &binVal );
+
+    if( last_value_ != strValue )
+    {
+        find_list_.clear();
+        last_value_ = strValue;
+    }
+}
+
 void FindDlg::changeTTLV_Type()
 {
     makeTTLV_Header();
@@ -406,32 +508,79 @@ void FindDlg::findTTLV_Next()
 
     QModelIndex ri = model->index(0,0);
 
-    QString strHeader = mTTLV_HeaderText->text();
-    QString strValue = mValueText->text();
-    int nLevel = mLevelCombo->currentIndex();
-
     TTLVTreeItem* root = (TTLVTreeItem *)model->itemFromIndex(ri);
+    if( root == NULL )
+    {
+        berApplet->warningBox( tr( "There is no node to find" ), this );
+        return;
+    }
 
-    tree->clicked( ri );
-    tree->setCurrentIndex(ri);
-    berApplet->log( root->text() );
+    setTTLVCondition();
+    TTLVTreeItem* curItem = (TTLVTreeItem *)model->itemFromIndex( tree->currentIndex() );
+
+    tree->expandAll();
+    TTLVTreeItem *findItem = NULL;
+
+    if( curItem ) findItem = getFoundTTLVItem( curItem );
+
+    if( findItem == NULL )
+        findItem = findTTLVItem( root, curItem );
+
+    if( findItem )
+    {
+        QModelIndex fi = findItem->index();
+
+        tree->clicked( fi );
+        tree->setCurrentIndex(fi);
+    }
+    else
+    {
+        berApplet->warningBox( tr( "There is no node to find" ), this );
+        return;
+    }
+
 }
 
 void FindDlg::findTTLV_Previous()
 {
     TTLVTreeView* tree = berApplet->mainWindow()->ttlvTree();
     TTLVTreeModel* model = berApplet->mainWindow()->ttlvModel();
+    QModelIndex ri = tree->currentIndex();
 
-    QModelIndex ri = model->index(0,0);
+    TTLVTreeItem* item = (TTLVTreeItem *)model->itemFromIndex( ri );
 
-    QString strHeader = mTTLV_HeaderText->text();
-    QString strValue = mValueText->text();
-    int nLevel = mLevelCombo->currentIndex();
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "There is no node to find" ), this );
+        return;
+    }
 
-    TTLVTreeItem* root = (TTLVTreeItem *)model->itemFromIndex(ri);
-    tree->clicked( ri );
-    tree->setCurrentIndex(ri);
-    berApplet->log( root->text() );
+    setTTLVCondition();
+
+    bool bExist = false;
+
+    for( int i = 1; i < find_list_.size(); i++ )
+    {
+        QModelIndex find_idx = find_list_.at(i);
+
+        if( find_idx == ri )
+        {
+            ri = find_list_.at( i - 1 );
+            bExist = true;
+        }
+    }
+
+    if( bExist == true )
+    {
+        tree->expandAll();
+        tree->clicked( ri );
+        tree->setCurrentIndex(ri);
+    }
+    else
+    {
+        berApplet->warningBox( tr( "There is no node to find" ), this );
+        return;
+    }
 }
 
 void FindDlg::clickPrevious()
@@ -450,6 +599,42 @@ void FindDlg::clickNext()
         findBER_Next();
 }
 
+BerItem* FindDlg::getFoundBerItem( BerItem *pSelItem )
+{
+    if( pSelItem == NULL ) return nullptr;
+
+    for( int i = 0; i < find_list_.size() - 1; i++ )
+    {
+        QModelIndex find_idx = find_list_.at(i);
+
+        if( find_idx == pSelItem->index() )
+        {
+            BerModel* model = berApplet->mainWindow()->berModel();
+            return (BerItem *)model->itemFromIndex( find_list_.at( i+1 ) );
+        }
+    }
+
+    return NULL;
+}
+
+TTLVTreeItem* FindDlg::getFoundTTLVItem( TTLVTreeItem *pSelItem )
+{
+    if( pSelItem == NULL ) return nullptr;
+
+    for( int i = 0; i < find_list_.size() - 1; i++ )
+    {
+        QModelIndex find_idx = find_list_.at(i);
+
+        if( find_idx == pSelItem->index() )
+        {
+            TTLVTreeModel* model = berApplet->mainWindow()->ttlvModel();
+            return (TTLVTreeItem *)model->itemFromIndex( find_list_.at( i+1 ) );
+        }
+    }
+
+    return NULL;
+}
+
 BerItem* FindDlg::findBerItem( BerItem *pItem, const BerItem *pSelItem )
 {
     if( pItem == NULL ) return NULL;
@@ -459,20 +644,6 @@ BerItem* FindDlg::findBerItem( BerItem *pItem, const BerItem *pSelItem )
         bool bExist = false;
         berApplet->log( QString( "Find: %1" ).arg( pItem->text() ));
         QModelIndex curIndex = pItem->index();
-
-        if( pSelItem )
-        {
-            for( int i = 0; i < find_list_.size() - 1; i++ )
-            {
-                QModelIndex find_idx = find_list_.at(i);
-
-                if( find_idx == pSelItem->index() )
-                {
-                    BerModel* model = berApplet->mainWindow()->berModel();
-                    return (BerItem *)model->itemFromIndex( find_list_.at( i+1 ) );
-                }
-            }
-        }
 
         for( int i = 0; i < find_list_.size(); i++ )
         {
@@ -511,7 +682,49 @@ BerItem* FindDlg::findBerItem( BerItem *pItem, const BerItem *pSelItem )
     return NULL;
 }
 
-TTLVTreeItem* FindDlg::findTTLVItem( TTLVTreeItem *pParent )
+TTLVTreeItem* FindDlg::findTTLVItem( TTLVTreeItem *pItem, const TTLVTreeItem *pSelItem )
 {
+    if( pItem == NULL ) return NULL;
+
+    if( isTTLVFind( pItem ) == true )
+    {
+        bool bExist = false;
+        berApplet->log( QString( "Find: %1" ).arg( pItem->text() ));
+        QModelIndex curIndex = pItem->index();
+
+        for( int i = 0; i < find_list_.size(); i++ )
+        {
+            QModelIndex find_idx = find_list_.at(i);
+
+            if( find_idx == curIndex )
+                bExist = true;
+        }
+
+        if( bExist == false )
+        {
+            find_list_.append( curIndex );
+            return pItem;
+        }
+    }
+
+
+    //    ber_list_.append( pItem );
+
+    if( pItem->hasChildren() )
+    {
+        int i = 0;
+
+        while( 1 )
+        {
+            TTLVTreeItem* pChild = (TTLVTreeItem *)pItem->child(i);
+            if( pChild == NULL ) return NULL;
+
+            TTLVTreeItem* pFind = findTTLVItem( pChild, pSelItem );
+            if( pFind ) return pFind;
+
+            i++;
+        }
+    }
+
     return NULL;
 }
