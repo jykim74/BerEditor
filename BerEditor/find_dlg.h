@@ -3,6 +3,8 @@
 
 #include <QDialog>
 #include "ui_find_dlg.h"
+#include "ber_item.h"
+#include "ttlv_tree_item.h"
 
 namespace Ui {
 class FindDlg;
@@ -41,6 +43,22 @@ private:
     void makeTTLV_Header();
     void findTTLV_Next();
     void findTTLV_Previous();
+
+    void getValueBIN( BIN *pBin );
+    bool isBerFind( BerItem *pItem );
+    void setBerCondition();
+
+    BerItem* findBerItem( BerItem *pItem, const BerItem *pSelItem );
+    TTLVTreeItem* findTTLVItem( TTLVTreeItem *pItem );
+
+private:
+    int col_;
+    int row_;
+    QModelIndexList find_list_;
+
+    QString last_head_;
+    QString last_value_;
+    int last_level_;
 };
 
 #endif // FIND_DLG_H
