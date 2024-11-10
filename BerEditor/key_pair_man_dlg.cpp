@@ -104,7 +104,7 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
     tabTools->layout()->setMargin(5);
 
     mListManGroup->layout()->setMargin(5);
-
+    mListManGroup->layout()->setSpacing(5);
 
     mPriViewBtn->setFixedWidth(34);
     mPubViewBtn->setFixedWidth(34);
