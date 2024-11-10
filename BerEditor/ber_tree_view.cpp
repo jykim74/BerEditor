@@ -767,6 +767,12 @@ void BerTreeView::EditValue()
     BerModel *tree_model = (BerModel *)model();
     BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
 
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "There is no item to select" ), this );
+        return;
+    }
+
     EditValueDlg editValueDlg;
     editValueDlg.setItem( item );
     ret = editValueDlg.exec();

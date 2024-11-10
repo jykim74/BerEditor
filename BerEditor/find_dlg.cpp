@@ -40,6 +40,7 @@ FindDlg::FindDlg(QWidget *parent) :
     connect( mPreviousBtn, SIGNAL(clicked()), this, SLOT(clickPrevious()));
     connect( mNextBtn, SIGNAL(clicked()), this, SLOT(clickNext()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mEditBtn, SIGNAL(clicked()), this, SLOT(clickEdit()));
 
     initUI();
 
@@ -77,8 +78,7 @@ void FindDlg::initUI()
     mLevelCombo->addItems( kLevelList );
     mValueTypeCombo->addItems( kBerValueType );
 
-    mBERGroup->setEnabled(false);
-    mTTLVGroup->setEnabled(false);
+    mHeadCheck->setChecked(true);
 }
 
 void FindDlg::initialize()
@@ -651,6 +651,26 @@ void FindDlg::clickNext()
         findTTLV_Next();
     else
         findBER_Next();
+}
+
+void FindDlg::clickEdit()
+{
+    if( find_list_.size() < 1 )
+    {
+        berApplet->warningBox( tr( "There is no node to find" ), this );
+        return;
+    }
+
+    if( berApplet->mainWindow()->isTTLV() )
+    {
+        TTLVTreeView* tree = berApplet->mainWindow()->ttlvTree();
+        tree->editItem();
+    }
+    else
+    {
+        BerTreeView *tree = berApplet->mainWindow()->berTree();
+        tree->EditValue();
+    }
 }
 
 BerItem* FindDlg::getFoundBerItem( BerItem *pSelItem )

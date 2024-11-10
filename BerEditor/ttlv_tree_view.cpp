@@ -666,6 +666,16 @@ void TTLVTreeView::AddTTLV()
 void TTLVTreeView::editItem()
 {
     int ret = 0;
+
+    TTLVTreeItem *pItem = berApplet->mainWindow()->ttlvTree()->currentItem();
+    BIN binTTLV = berApplet->getTTLV();
+
+    if( pItem == NULL )
+    {
+        berApplet->warningBox( tr( "There is no item to select" ), this );
+        return;
+    }
+
     EditTTLVDlg editTTLV;
     ret = editTTLV.exec();
     if( ret == QDialog::Accepted )

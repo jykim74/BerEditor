@@ -24,6 +24,7 @@ private slots:
 
     void clickPrevious();
     void clickNext();
+    void clickEdit();
 
     void checkBER_Constructed();
     void changeBER_Class( int index );
