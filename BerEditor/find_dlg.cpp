@@ -23,6 +23,8 @@ FindDlg::FindDlg(QWidget *parent) :
 {
     setupUi(this);
 
+    connect( mHeadCheck, SIGNAL(clicked()), this, SLOT(checkHeader()));
+
     connect( mBER_ClassCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeBER_Class(int)));
     connect( mBER_TagCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeBER_Tag()));
     connect( mBER_ConstructedCheck, SIGNAL(clicked()), this, SLOT(checkBER_Constructed()));
@@ -64,11 +66,15 @@ void FindDlg::initUI()
         mBER_TagCombo->addItem( pName );
     }
 
+    mTTLV_TagText->setPlaceholderText( "4200XX" );
     mTTLV_TypeCombo->addItems( kTTLVTypeList );
 
 //    mPreviousBtn->setEnabled( false );
     mLevelCombo->addItems( kLevelList );
     mValueTypeCombo->addItems( kBerValueType );
+
+    mBERGroup->setEnabled(false);
+    mTTLVGroup->setEnabled(false);
 }
 
 void FindDlg::initialize()
@@ -85,6 +91,7 @@ void FindDlg::initialize()
 
         tabWidget->setTabEnabled(0, false);
         tabWidget->setTabEnabled(1, true);
+        tabWidget->setCurrentIndex(1);
     }
     else
     {
@@ -93,12 +100,22 @@ void FindDlg::initialize()
 
         tabWidget->setTabEnabled(0, true);
         tabWidget->setTabEnabled(1, false);
+        tabWidget->setCurrentIndex(0);
     }
 }
 
 void FindDlg::showEvent(QShowEvent *event)
 {
     initialize();
+}
+
+
+void FindDlg::checkHeader()
+{
+    bool bVal = mHeadCheck->isChecked();
+
+    mBERGroup->setEnabled(bVal);
+    mTTLVGroup->setEnabled(bVal);
 }
 
 void FindDlg::getValueBIN( BIN *pBin )
@@ -195,14 +212,14 @@ bool FindDlg::isBerFind( BerItem *pItem )
             return false;
     }
 
-    if( strHeader == strItemHeader )
+    if( strHeader == strItemHeader || strHeader == "00" )
     {
         BIN binVal = {0,0};
         BIN binItemVal = {0,0};
 
         BerModel* model = berApplet->mainWindow()->berModel();
 
-        if( strValue.length() < 1 )
+        if( strValue.length() < 1 && strHeader != "00" )
             return true;
 
         getValueBIN( &binVal );
@@ -479,6 +496,7 @@ void FindDlg::changeTTLV_Tag( const QString text )
     if( text.length() < 6 )
     {
         mTTLV_TagNameText->clear();
+        makeTTLV_Header();
         return;
     }
 
@@ -492,7 +510,11 @@ void FindDlg::changeTTLV_Tag( const QString text )
 void FindDlg::makeTTLV_Header()
 {
     QString strTag = mTTLV_TagText->text();
-    if( strTag.length() < 6 ) return;
+    if( strTag.length() < 6 )
+    {
+        mTTLV_HeaderText->clear();
+        return;
+    }
 
     QString strHeader = QString( "%1%2" )
                             .arg( strTag )

@@ -20,6 +20,7 @@ public:
 
 private slots:
     void showEvent(QShowEvent *event);
+    void checkHeader();
 
     void clickPrevious();
     void clickNext();

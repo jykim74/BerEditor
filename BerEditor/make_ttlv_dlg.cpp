@@ -48,6 +48,7 @@ void MakeTTLVDlg::initialize()
     QRegExpValidator* regVal = new QRegExpValidator( regExp );
 
     mTagText->setValidator( regVal );
+    mTagText->setPlaceholderText( "4200XX" );
     mTypeCombo->addItems( kTTLVTypeList );
     mTypeCombo->setCurrentIndex(1);
     mValueCombo->addItems( kValueTypeList );
