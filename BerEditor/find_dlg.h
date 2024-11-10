@@ -64,7 +64,7 @@ private:
     QModelIndexList find_list_;
 
     QString last_head_;
-    QString last_value_;
+    BIN last_value_;
     int last_level_;
 };
 

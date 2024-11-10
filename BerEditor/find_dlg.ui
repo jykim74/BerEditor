@@ -541,7 +541,10 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>mHeadCheck</tabstop>
   <tabstop>tabWidget</tabstop>
+  <tabstop>mBER_ClassCombo</tabstop>
+  <tabstop>mBER_TagCombo</tabstop>
   <tabstop>mBER_TagIDText</tabstop>
   <tabstop>mBER_ConstructedCheck</tabstop>
   <tabstop>mBER_HeaderText</tabstop>

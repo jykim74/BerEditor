@@ -66,6 +66,7 @@ void MakeTTLVDlg::changeTag( const QString text )
     if( text.length() < 6 )
     {
         mTagNameText->clear();
+        makeHeader();
         return;
     }
 
@@ -101,7 +102,11 @@ void MakeTTLVDlg::makeHeader()
     QString strTag = mTagText->text();
     QString strValue = mValueText->toPlainText();
 
-    if( strTag.length() < 6 ) return;
+    if( strTag.length() < 6 )
+    {
+        mHeaderText->clear();
+        return;
+    }
 
     int nLen = getDataLen( mValueCombo->currentText(), strValue );
 

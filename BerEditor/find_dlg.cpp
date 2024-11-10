@@ -21,6 +21,10 @@ static const QStringList kTTLVValueType = { "String", "Hex", "Number" };
 FindDlg::FindDlg(QWidget *parent) :
     QDialog(parent)
 {
+    last_head_ = "";
+    memset( &last_value_, 0x00, sizeof(BIN));
+    last_level_ = 0;
+
     setupUi(this);
 
     connect( mHeadCheck, SIGNAL(clicked()), this, SLOT(checkHeader()));
@@ -50,7 +54,7 @@ FindDlg::FindDlg(QWidget *parent) :
 
 FindDlg::~FindDlg()
 {
-
+    JS_BIN_reset( &last_value_ );
 }
 
 void FindDlg::initUI()
@@ -116,6 +120,9 @@ void FindDlg::checkHeader()
 
     mBERGroup->setEnabled(bVal);
     mTTLVGroup->setEnabled(bVal);
+
+    last_head_.clear();
+    find_list_.clear();
 }
 
 void FindDlg::getValueBIN( BIN *pBin )
@@ -159,7 +166,7 @@ void FindDlg::getValueBIN( BIN *pBin )
     {
         BIN binTmp = {0,0};
         JS_PKI_decimalToBin( strValue.toStdString().c_str(), &binTmp );
-        int nLeft = 4 - pBin->nLen % 4;
+        int nLeft = 4 - binTmp.nLen % 4;
 
         if( nLeft > 0 ) JS_BIN_setChar(pBin, 0x00, nLeft );
         JS_BIN_appendBin( pBin, &binTmp );
@@ -172,7 +179,6 @@ void FindDlg::setBerCondition()
     BIN binVal = {0,0};
 
     QString strHeader = mBER_HeaderText->text();
-    QString strValue;
     int nLevel = mLevelCombo->currentIndex();
 
     if( last_level_ != nLevel )
@@ -188,52 +194,66 @@ void FindDlg::setBerCondition()
     }
 
     getValueBIN( &binVal );
-    strValue = getHexString( &binVal );
-    JS_BIN_reset( &binVal );
 
-    if( last_value_ != strValue )
+    if( JS_BIN_cmp( &last_value_, &binVal ) != 0 )
     {
         find_list_.clear();
-        last_value_ = strValue;
+        JS_BIN_reset( &last_value_ );
+        JS_BIN_copy( &last_value_, &binVal );
     }
+
+    JS_BIN_reset( &binVal );
 }
 
 bool FindDlg::isBerFind( BerItem *pItem )
 {
-    QString strHeader = mBER_HeaderText->text();
-    QString strValue = mValueText->text();
-    int nLevel = mLevelCombo->currentIndex();
+    BerModel* model = berApplet->mainWindow()->berModel();
 
     QString strItemHeader = getHexString( pItem->GetHeader(), 1 );
 
-    if( nLevel > 0 )
+    if( last_level_ > 0 )
     {
-        if( pItem->GetLevel() != nLevel )
+        if( pItem->GetLevel() != last_level_ )
             return false;
     }
 
-    if( strHeader == strItemHeader || strHeader == "00" )
+    if( mHeadCheck->isChecked() == true )
     {
-        BIN binVal = {0,0};
+        if( last_head_ == strItemHeader )
+        {
+            BIN binItemVal = {0,0};
+
+            if( last_value_.nLen < 1 )
+                return true;
+
+            pItem->getValueBin( &model->getBER(), &binItemVal );
+
+            if( JS_BIN_cmp( &last_value_, &binItemVal ) == 0 )
+            {
+                JS_BIN_reset( &binItemVal );
+
+                return true;
+            }
+
+            JS_BIN_reset( &binItemVal );
+        }
+    }
+    else
+    {
         BIN binItemVal = {0,0};
 
-        BerModel* model = berApplet->mainWindow()->berModel();
+        if( last_value_.nLen < 1 )
+            return false;
 
-        if( strValue.length() < 1 && strHeader != "00" )
-            return true;
-
-        getValueBIN( &binVal );
         pItem->getValueBin( &model->getBER(), &binItemVal );
 
-        if( JS_BIN_cmp( &binVal, &binItemVal ) == 0 )
+        if( JS_BIN_cmp( &last_value_, &binItemVal ) == 0 )
         {
-            JS_BIN_reset( &binVal );
             JS_BIN_reset( &binItemVal );
 
             return true;
         }
 
-        JS_BIN_reset( &binVal );
         JS_BIN_reset( &binItemVal );
     }
 
@@ -242,51 +262,63 @@ bool FindDlg::isBerFind( BerItem *pItem )
 
 bool FindDlg::isTTLVFind( TTLVTreeItem *pItem )
 {
-    QString strHeader = mTTLV_HeaderText->text();
-    QString strValue = mValueText->text();
-    int nLevel = mLevelCombo->currentIndex();
+    TTLVTreeModel* model = berApplet->mainWindow()->ttlvModel();
 
-    BIN binHeader = {0,0};
-    pItem->getHeader( &binHeader );
-
-    if( binHeader.nLen != 8 )
+    if( last_level_ > 0 )
     {
-        JS_BIN_reset( &binHeader );
-        return false;
-    }
-
-    QString strItemHeader = getHexString( binHeader.pVal, 4 );
-    JS_BIN_reset( &binHeader );
-
-    if( nLevel > 0 )
-    {
-        if( pItem->getLevel() != nLevel )
+        if( pItem->getLevel() != last_level_ )
             return false;
     }
 
-    if( strHeader == strItemHeader )
+    if( mHeadCheck->isChecked() == true )
     {
-        BIN binVal = {0,0};
+        BIN binHeader = {0,0};
+        pItem->getHeader( &binHeader );
+
+        if( binHeader.nLen != 8 )
+        {
+            JS_BIN_reset( &binHeader );
+            return false;
+        }
+
+        QString strItemHeader = getHexString( binHeader.pVal, 4 );
+        JS_BIN_reset( &binHeader );
+
+        if( last_head_ == strItemHeader )
+        {
+            BIN binItemVal = {0,0};
+
+            if( last_value_.nLen < 1 )
+                return true;
+
+            pItem->getValue( &model->getTTLV(), &binItemVal );
+
+            if( JS_BIN_cmp( &last_value_, &binItemVal ) == 0 )
+            {
+                JS_BIN_reset( &binItemVal );
+
+                return true;
+            }
+
+            JS_BIN_reset( &binItemVal );
+        }
+    }
+    else
+    {
         BIN binItemVal = {0,0};
 
-        TTLVTreeModel* model = berApplet->mainWindow()->ttlvModel();
-
-        if( strValue.length() < 1 )
-            return true;
-
-        getValueBIN( &binVal );
+        if( last_value_.nLen < 1 )
+            return false;
 
         pItem->getValue( &model->getTTLV(), &binItemVal );
 
-        if( JS_BIN_cmp( &binVal, &binItemVal ) == 0 )
+        if( JS_BIN_cmp( &last_value_, &binItemVal ) == 0 )
         {
-            JS_BIN_reset( &binVal );
             JS_BIN_reset( &binItemVal );
 
             return true;
         }
 
-        JS_BIN_reset( &binVal );
         JS_BIN_reset( &binItemVal );
     }
 
@@ -460,7 +492,6 @@ void FindDlg::setTTLVCondition()
     BIN binVal = {0,0};
 
     QString strHeader = mTTLV_HeaderText->text();
-    QString strValue;
     int nLevel = mLevelCombo->currentIndex();
 
     if( last_level_ != nLevel )
@@ -476,14 +507,15 @@ void FindDlg::setTTLVCondition()
     }
 
     getValueBIN( &binVal );
-    strValue = getHexString( &binVal );
-    JS_BIN_reset( &binVal );
 
-    if( last_value_ != strValue )
+    if( JS_BIN_cmp( &last_value_, &binVal ) != 0 )
     {
         find_list_.clear();
-        last_value_ = strValue;
+        JS_BIN_reset( &last_value_ );
+        JS_BIN_copy( &last_value_, &binVal );
     }
+
+    JS_BIN_reset( &binVal );
 }
 
 void FindDlg::changeTTLV_Type()
