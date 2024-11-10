@@ -99,7 +99,9 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
     layout()->setSpacing(5);
 
     tabList->layout()->setSpacing(5);
+    tabList->layout()->setMargin(5);
     tabTools->layout()->setSpacing(5);
+    tabTools->layout()->setMargin(5);
 
     mListManGroup->layout()->setMargin(5);
 
