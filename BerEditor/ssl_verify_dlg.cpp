@@ -301,10 +301,9 @@ void SSLVerifyDlg::initialize()
     mURLTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mURLTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    mURLTable->setColumnWidth( 0, 200 );
-    mURLTable->setColumnWidth( 1, 60 );
-    mURLTable->setColumnWidth( 2, 140 );
-    mURLTable->setColumnWidth( 3, 80 );
+    mURLTable->setColumnWidth( 0, 240 );
+    mURLTable->setColumnWidth( 1, 40 );
+    mURLTable->setColumnWidth( 2, 200 );
 
     mURLCombo->setEditable( true );
     QStringList usedList = getUsedURL();

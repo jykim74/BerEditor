@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>499</width>
-    <height>660</height>
+    <width>556</width>
+    <height>817</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -671,6 +671,66 @@
     </layout>
    </item>
    <item>
+    <widget class="Line" name="line_4">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_4">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mPathValidationBtn">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Path Validation</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mClearDataAllBtn">
+       <property name="text">
+        <string>Clear Data All</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mPolicyCheckBtn">
+       <property name="minimumSize">
+        <size>
+         <width>90</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Policy Check</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
     <widget class="Line" name="line_5">
      <property name="maximumSize">
       <size>
@@ -684,45 +744,19 @@
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout_10">
+    <layout class="QGridLayout" name="gridLayout_6">
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mPolicyCheckBtn">
-       <property name="minimumSize">
-        <size>
-         <width>90</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Policy Check</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mPathValidationBtn">
-       <property name="minimumSize">
-        <size>
-         <width>100</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Path Validation</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="5">
+     <item row="0" column="1">
       <widget class="QPushButton" name="mCloseBtn">
        <property name="text">
         <string>Close</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <spacer name="horizontalSpacer_4">
+     <item row="0" column="0">
+      <spacer name="horizontalSpacer_5">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -733,13 +767,6 @@
         </size>
        </property>
       </spacer>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mClearDataAllBtn">
-       <property name="text">
-        <string>Clear Data All</string>
-       </property>
-      </widget>
      </item>
     </layout>
    </item>
@@ -800,10 +827,6 @@
   <tabstop>mTargetFindBtn</tabstop>
   <tabstop>mTargetInfoBtn</tabstop>
   <tabstop>mTargetDecodeBtn</tabstop>
-  <tabstop>mClearDataAllBtn</tabstop>
-  <tabstop>mPolicyCheckBtn</tabstop>
-  <tabstop>mPathValidationBtn</tabstop>
-  <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>
  <connections/>
