@@ -397,8 +397,6 @@ void ContentMain::createDockWindows()
     item_link_->setData( 0, Qt::UserRole, kLink );
     rootItem->addChild( item_link_ );
 
-
-
     QString strLinkPath = QString( "%1/%2" ).arg( strDocPath ).arg( kLink );
     if( dir.exists( strLinkPath ) == false )
         dir.mkdir( strLinkPath );

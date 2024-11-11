@@ -166,15 +166,16 @@ int LCNInfoDlg::getLCN( const QString& strEmail, const QString& strKey, BIN *pLC
     JCC_NameVal sNameVal;
 
     QString strProduct = berApplet->getBrand();
+    QString strVersion = STRINGIZE(BER_EDITOR_VERSION);
+
     QSysInfo sysInfo;
     QString strInfo = QString( "%1_%2_%3_%4")
-                          .arg( sysInfo.prettyProductName())
-                          .arg( sysInfo.currentCpuArchitecture())
+                          .arg( strProduct )
+                          .arg( strVersion )
                           .arg( sysInfo.productType() )
                           .arg( sysInfo.productVersion());
 
     memset( &sNameVal, 0x00, sizeof(sNameVal));
-    strProduct.remove( "Lite" );
 
     strURL = getLicenseURI();
     strURL += JS_LCN_PATH;
