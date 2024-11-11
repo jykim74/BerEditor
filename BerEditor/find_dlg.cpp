@@ -87,6 +87,8 @@ void FindDlg::initialize()
     row_ = 0;
     find_list_.clear();
     mValueTypeCombo->clear();
+    mPreviousBtn->setDisabled(true);
+    mEditBtn->setDisabled(true);
 
     if( berApplet->mainWindow()->isTTLV() == true )
     {
@@ -647,10 +649,20 @@ void FindDlg::clickPrevious()
 
 void FindDlg::clickNext()
 {
+    if( find_list_.size() < 1 )
+        mPreviousBtn->setEnabled(false);
+    else
+        mPreviousBtn->setEnabled(true);
+
     if( berApplet->mainWindow()->isTTLV() )
         findTTLV_Next();
     else
         findBER_Next();
+
+    if( find_list_.size() > 0 )
+        mEditBtn->setEnabled(true);
+    else
+        mEditBtn->setEnabled(false);
 }
 
 void FindDlg::clickEdit()

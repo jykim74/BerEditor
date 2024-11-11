@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>545</width>
-    <height>654</height>
+    <width>542</width>
+    <height>489</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -140,7 +140,14 @@
         </widget>
        </item>
        <item>
-        <widget class="QTableWidget" name="mKeyPairTable"/>
+        <widget class="QTableWidget" name="mKeyPairTable">
+         <property name="minimumSize">
+          <size>
+           <width>500</width>
+           <height>0</height>
+          </size>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QGroupBox" name="mListManGroup">
