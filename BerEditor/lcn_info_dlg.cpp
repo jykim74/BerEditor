@@ -180,10 +180,11 @@ int LCNInfoDlg::getLCN( const QString& strEmail, const QString& strKey, BIN *pLC
     strURL = getLicenseURI();
     strURL += JS_LCN_PATH;
 
-    QString strBody = QString( "email=%1&key=%2&product=%3&sid=%4&sysinfo=%5")
+    QString strBody = QString( "email=%1&key=%2&product=%3&sid=%4&version=%5&sysinfo=%6")
                           .arg( strEmail.simplified() )
                           .arg( strKey.simplified() )
                           .arg(strProduct).arg( SID_.simplified() )
+                          .arg( strVersion )
                           .arg( strInfo.simplified() );
 #ifdef QT_DEBUG
     berApplet->log( QString( "Body: %1" ).arg( strBody ));
