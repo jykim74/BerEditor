@@ -405,7 +405,8 @@ void ContentMain::createDockWindows()
 
     makeLinkMenu( item_link_ );
 
-    mMenuTree->expandAll();
+    mMenuTree->expandItem( itemASN );
+    mMenuTree->expandItem( rootItem );
 }
 
 void ContentMain::makeASNMenu( QTreeWidgetItem* parent )

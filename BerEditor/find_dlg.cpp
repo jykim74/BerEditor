@@ -15,7 +15,7 @@ static const QStringList kTTLVTypeList = { "None", "Structure", "Integer", "Long
 
 static const QStringList kLevelList = { "Any", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
-static const QStringList kBerValueType = { "String", "Hex", "Decimal", "OID", "Bit" };
+static const QStringList kBerValueType = { "String", "Hex", "Decimal", "OID" };
 static const QStringList kTTLVValueType = { "String", "Hex", "Number" };
 
 FindDlg::FindDlg(QWidget *parent) :
@@ -78,7 +78,9 @@ void FindDlg::initUI()
     mLevelCombo->addItems( kLevelList );
     mValueTypeCombo->addItems( kBerValueType );
 
-    mHeadCheck->setChecked(true);
+//    mHeadCheck->setChecked(true);
+    mBERGroup->setEnabled(false);
+    mTTLVGroup->setEnabled(false);
 }
 
 void FindDlg::initialize()
@@ -649,20 +651,25 @@ void FindDlg::clickPrevious()
 
 void FindDlg::clickNext()
 {
-    if( find_list_.size() < 1 )
-        mPreviousBtn->setEnabled(false);
-    else
-        mPreviousBtn->setEnabled(true);
-
     if( berApplet->mainWindow()->isTTLV() )
         findTTLV_Next();
     else
         findBER_Next();
 
     if( find_list_.size() > 0 )
+    {
         mEditBtn->setEnabled(true);
+
+        if( find_list_.size() > 1 )
+            mPreviousBtn->setEnabled( true );
+        else
+            mPreviousBtn->setEnabled( false );
+    }
     else
+    {
+        mPreviousBtn->setEnabled( false );
         mEditBtn->setEnabled(false);
+    }
 }
 
 void FindDlg::clickEdit()
