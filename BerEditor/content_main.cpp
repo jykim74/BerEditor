@@ -510,7 +510,6 @@ void ContentMain::clickMenu()
     mContentBroswer->clear();
     mContentBroswer->setOpenLinks(false);
 
-//    QString strURL = "https://www.naver.com";
     QTreeWidgetItem* item = mMenuTree->currentItem();
     if( item == NULL ) return;
 

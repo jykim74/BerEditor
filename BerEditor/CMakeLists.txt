@@ -205,6 +205,7 @@ add_executable(${PROJECT_NAME}
     export_dlg.h export_dlg.cpp export_dlg.ui
     link_man_dlg.h link_man_dlg.cpp link_man_dlg.ui
     find_dlg.h find_dlg.cpp find_dlg.ui
+
 )
 
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )
