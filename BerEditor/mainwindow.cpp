@@ -54,6 +54,7 @@
 #include "cms_info_dlg.h"
 #include "content_main.h"
 #include "find_dlg.h"
+#include "key_list_dlg.h"
 
 #include "js_pki_tools.h"
 #include "js_kms.h"
@@ -140,6 +141,8 @@ MainWindow::~MainWindow()
     delete scep_client_dlg_;
     delete cert_man_dlg_;
     delete content_;
+    delete find_dlg_;
+    delete key_list_dlg_;
 
     delete ttlv_encoder_dlg_;
     delete ttlv_client_dlg_;
@@ -580,6 +583,13 @@ void MainWindow::createViewActions()
     cryptCertManAct->setChecked(bVal);
     connect( cryptCertManAct, &QAction::triggered, this, &MainWindow::viewCryptCertMan );
     cryptMenu->addAction( cryptCertManAct );
+
+    QAction *cryptKeyListAct = new QAction( tr( "Key List"), this );
+    bVal = isView( ACT_CRYPT_KEY_LIST );
+    cryptKeyListAct->setCheckable(true);
+    cryptKeyListAct->setChecked(bVal);
+    connect( cryptKeyListAct, &QAction::triggered, this, &MainWindow::viewCryptKeyList );
+    cryptMenu->addAction( cryptKeyListAct );
 
     QAction *cryptCAVPAct = new QAction( tr( "CAVP"), this );
     bVal = isView( ACT_CRYPT_CAVP );
@@ -1087,6 +1097,14 @@ void MainWindow::createActions()
     cryptMenu->addAction( cert_man_act_ );
     if( isView( ACT_CRYPT_CERT_MAN ) ) crypt_tool_->addAction( cert_man_act_ );
 
+    const QIcon keyListIcon = QIcon::fromTheme("Key List", QIcon(":/images/keylist.png"));
+    key_list_act_ = new QAction( keyListIcon, tr( "Key List" ), this );
+    key_list_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_L ));
+    connect( key_list_act_, &QAction::triggered, this, &MainWindow::keyList );
+    key_list_act_->setStatusTip( tr( "Key List" ));
+    cryptMenu->addAction( key_list_act_ );
+    if( isView( ACT_CRYPT_KEY_LIST ) ) crypt_tool_->addAction( key_list_act_ );
+
     const QIcon cavpIcon = QIcon::fromTheme( "tool-cavp", QIcon(":/images/cavp.png"));
     cavp_act_ = new QAction(cavpIcon, tr("&CAVP"), this);
     cavp_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_F));
@@ -1321,6 +1339,7 @@ void MainWindow::createCryptoDlg()
     ttlv_client_dlg_ = new TTLVClientDlg;
     content_ = new ContentMain;
     find_dlg_ = new FindDlg;
+    key_list_dlg_ = new KeyListDlg;
 }
 
 void MainWindow::newFile()
@@ -2310,6 +2329,13 @@ void MainWindow::certMan()
     cert_man_dlg_->activateWindow();
 }
 
+void MainWindow::keyList()
+{
+    key_list_dlg_->show();
+    key_list_dlg_->raise();
+    key_list_dlg_->activateWindow();
+}
+
 void MainWindow::getURI()
 {
     GetURIDlg getURIDlg;
@@ -2997,6 +3023,20 @@ void MainWindow::viewCryptCertMan( bool bChecked )
     {
         crypt_tool_->removeAction( cert_man_act_ );
         unsetView( ACT_CRYPT_CERT_MAN );
+    }
+}
+
+void MainWindow::viewCryptKeyList( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        crypt_tool_->addAction( key_list_act_ );
+        setView( ACT_CRYPT_KEY_LIST );
+    }
+    else
+    {
+        crypt_tool_->removeAction( key_list_act_ );
+        unsetView( ACT_CRYPT_KEY_LIST );
     }
 }
 

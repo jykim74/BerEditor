@@ -113,6 +113,7 @@ const QColor kLenTypeColor( Qt::cyan );
 #define ACT_CRYPT_CERT_MAN          VIEW_CRYPT | 0x00004000
 #define ACT_CRYPT_CAVP              VIEW_CRYPT | 0x00008000
 #define ACT_CRYPT_SSL_VERIFY        VIEW_CRYPT | 0x00010000
+#define ACT_CRYPT_KEY_LIST          VIEW_CRYPT | 0x00020000
 
 #define ACT_PROTO_OCSP              VIEW_PROTO | 0x00000001
 #define ACT_PROTO_TSP               VIEW_PROTO | 0x00000002
@@ -143,7 +144,7 @@ static const int kToolDefault = ACT_TOOL_DATA_ENCODER | ACT_TOOL_OID_INFO | ACT_
 static const int kCryptDefault = ACT_CRYPT_HASH | ACT_CRYPT_MAC | ACT_CRYPT_ENC_DEC \
                           | ACT_CRYPT_SIGN_VERIFY | ACT_CRYPT_KEY_AGREE \
                           | ACT_CRYPT_CERT_PVD | ACT_CRYPT_BN_CALC | ACT_CRYPT_KEY_PAIR_MAN \
-                          | ACT_CRYPT_CERT_MAN | ACT_CRYPT_SSL_VERIFY;
+                          | ACT_CRYPT_CERT_MAN | ACT_CRYPT_KEY_LIST | ACT_CRYPT_SSL_VERIFY;
 
 static const int kProtoDefault = 0;
 static const int kKMIPDefault = 0;

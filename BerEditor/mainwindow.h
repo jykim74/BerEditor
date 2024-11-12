@@ -47,6 +47,7 @@ class TTLVEncoderDlg;
 class TTLVClientDlg;
 class ContentMain;
 class FindDlg;
+class KeyListDlg;
 
 
 namespace Ui {
@@ -145,6 +146,7 @@ public:
     void viewCryptBNCalc( bool bChecked );
     void viewCryptKeyPairMan( bool bChecked );
     void viewCryptCertMan( bool bChecked );
+    void viewCryptKeyList( bool bChecked );
     void viewCryptCAVP( bool bChecked );
     void viewCryptSSLVerify( bool bChecked );
 
@@ -214,6 +216,7 @@ private slots:
     void cmpClient();
     void scepClient();
     void certMan();
+    void keyList();
     void runMakeBER();
     void runDecodeData();
     void runDecodeTTLV();
@@ -313,6 +316,7 @@ private:
     TTLVClientDlg   *ttlv_client_dlg_;
     ContentMain     *content_;
     FindDlg         *find_dlg_;
+    KeyListDlg      *key_list_dlg_;
 
     QToolBar* file_tool_;
     QAction* new_act_;
@@ -363,6 +367,7 @@ private:
     QAction* calc_act_;
     QAction* key_pair_man_act_;
     QAction* cert_man_act_;
+    QAction* key_list_act_;
     QAction* cavp_act_;
     QAction* ssl_act_;
 

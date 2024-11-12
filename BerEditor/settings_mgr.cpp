@@ -338,6 +338,14 @@ QString SettingsMgr::keyPairPath()
     return strPath;
 }
 
+QString SettingsMgr::keyListPath()
+{
+    QString strPath;
+
+    strPath = QString( "%1/KeyList" ).arg( cert_path_ );
+    return strPath;
+}
+
 QString SettingsMgr::docPath()
 {
     QString strPath;
@@ -370,6 +378,9 @@ void SettingsMgr::makeCertPath()
 
     if( dir.exists( keyPairPath() ) == false )
         dir.mkdir( keyPairPath() );
+
+    if( dir.exists( keyListPath() ) == false )
+        dir.mkdir( keyListPath() );
 
     if( dir.exists( docPath() ) == false )
         dir.mkdir( docPath() );

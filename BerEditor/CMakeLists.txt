@@ -205,6 +205,8 @@ add_executable(${PROJECT_NAME}
     export_dlg.h export_dlg.cpp export_dlg.ui
     link_man_dlg.h link_man_dlg.cpp link_man_dlg.ui
     find_dlg.h find_dlg.cpp find_dlg.ui
+    key_add_dlg.h key_add_dlg.cpp key_add_dlg.ui
+    key_list_dlg.h key_list_dlg.cpp key_list_dlg.ui
 
 )
 

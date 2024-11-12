@@ -108,7 +108,9 @@ SOURCES += \
     content_main.cpp \
     export_dlg.cpp \
     link_man_dlg.cpp \
-    find_dlg.cpp
+    find_dlg.cpp \
+    key_list_dlg.cpp \
+    key_add_dlg.cpp
 
 HEADERS += \
     about_dlg.h \
@@ -183,7 +185,9 @@ HEADERS += \
     content_main.h \
     export_dlg.h \
     link_man_dlg.h \
-    find_dlg.h
+    find_dlg.h \
+    key_list_dlg.h \
+    key_add_dlg.h
 
 
 
@@ -326,7 +330,9 @@ FORMS += \
         content_main.ui \
         export_dlg.ui \
         link_man_dlg.ui \
-        find_dlg.ui
+        find_dlg.ui \
+        key_list_dlg.ui \
+        key_add_dlg.ui
 
 RESOURCES += \
     bereditor.qrc

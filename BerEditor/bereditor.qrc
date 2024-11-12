@@ -94,5 +94,6 @@
         <file>images/cms_open.png</file>
         <file>images/link.png</file>
         <file>images/find.png</file>
+        <file>images/keylist.png</file>
     </qresource>
 </RCC>
