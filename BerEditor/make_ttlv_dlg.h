@@ -26,6 +26,8 @@ private slots:
 
     void clickOK();
 
+
+
 private:
     void initialize();
     void makeHeader();

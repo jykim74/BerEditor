@@ -20,8 +20,14 @@ private slots:
     void clickClearAll();
     void clickOK();
 
-private:
+    void clickRandKey();
+    void changeKeyType();
+    void changeIVType();
+    void changeType();
 
+private:
+    void initUI();
+    void initialize();
 };
 
 #endif // KEY_ADD_DLG_H
