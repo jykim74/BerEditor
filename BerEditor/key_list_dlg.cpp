@@ -34,6 +34,7 @@ KeyListDlg::KeyListDlg(QWidget *parent) :
     initialize();
 
     resize(minimumSizeHint().width(), minimumSizeHint().height());
+    mOKBtn->setDefault(true);
 }
 
 KeyListDlg::~KeyListDlg()
@@ -68,7 +69,6 @@ void KeyListDlg::initialize()
     int nWidth = width() * 8/10;
 #endif
 
-
     QString strPath = berApplet->settingsMgr()->keyListPath();
 
     mSavePathText->setText( strPath );
@@ -87,6 +87,8 @@ void KeyListDlg::initialize()
     mKeyTable->setColumnWidth( 0, nWidth * 6/10 );
     mKeyTable->setColumnWidth( 1, nWidth * 2/10 );
     mKeyTable->setColumnWidth( 3, nWidth * 1/10 );
+
+    setManage(false);
 }
 
 void KeyListDlg::showEvent(QShowEvent *event)

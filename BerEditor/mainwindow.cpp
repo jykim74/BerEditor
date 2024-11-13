@@ -2198,7 +2198,6 @@ void MainWindow::mac()
 
 void MainWindow::mac2( const QString strKey, const QString strIV )
 {
-    gen_mac_dlg_->mClearDataAllBtn->click();
     gen_mac_dlg_->mKeyTypeCombo->setCurrentText( "Hex" );
     gen_mac_dlg_->mKeyText->setText( strKey );
 
@@ -2232,8 +2231,6 @@ void MainWindow::encDec()
 
 void MainWindow::encDec2( const QString strKey, const QString strIV )
 {
-    enc_dec_dlg_->mClearDataAllBtn->click();
-
     enc_dec_dlg_->mKeyTypeCombo->setCurrentText( "Hex" );
     enc_dec_dlg_->mKeyText->setText( strKey );
 
