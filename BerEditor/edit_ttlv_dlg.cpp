@@ -57,7 +57,7 @@ void EditTTLVDlg::initialize()
     if( pItem->isStructure() == true )
     {
         mValueText->setReadOnly( true );
-        mValueText->setStyleSheet( "background-color:#ddddff" );
+        mValueText->setStyleSheet( kReadOnlyStyle );
         mModifyBtn->hide();
         mCancelBtn->setDefault(true);
     }

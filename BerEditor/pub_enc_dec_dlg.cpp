@@ -599,12 +599,7 @@ void PubEncDecDlg::findPrivateKey()
 
 void PubEncDecDlg::changeValue()
 {
-//    QString strInput = mInputText->toPlainText();
     QString strOutput = mOutputText->toPlainText();
-
-    mInputText->setPlainText( strOutput );
-//    mOutputText->setPlainText( "" );
-    mOutputText->clear();
 
     if( mOutputTypeCombo->currentIndex() == 0 )
         mInputStringRadio->setChecked(true);
@@ -612,6 +607,9 @@ void PubEncDecDlg::changeValue()
         mInputHexRadio->setChecked(true);
     else if( mOutputTypeCombo->currentIndex() == 2 )
         mInputBase64Radio->setChecked(true);
+
+    mOutputText->clear();
+    mInputText->setPlainText( strOutput );
 
     repaint();
 }

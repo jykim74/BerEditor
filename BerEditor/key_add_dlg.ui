@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>583</width>
+    <width>441</width>
     <height>310</height>
    </rect>
   </property>
@@ -37,7 +37,7 @@
       <widget class="QLineEdit" name="mNameText">
        <property name="minimumSize">
         <size>
-         <width>400</width>
+         <width>300</width>
          <height>0</height>
         </size>
        </property>
@@ -70,20 +70,6 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Key Length</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mRandKeyBtn">
-       <property name="text">
-        <string>Random Key</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
       <widget class="QComboBox" name="mKeyLenCombo">
        <property name="minimumSize">
@@ -91,6 +77,13 @@
          <width>80</width>
          <height>0</height>
         </size>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mRandKeyBtn">
+       <property name="text">
+        <string>Random Key</string>
        </property>
       </widget>
      </item>
@@ -106,6 +99,20 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Key Length</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QCheckBox" name="mEncCheck">
+       <property name="text">
+        <string>Encrypt</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

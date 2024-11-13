@@ -172,6 +172,9 @@ static QStringList kHashList = {
 };
 
 
+static int kIterCnt = 1024;
+static QString kSalt = "BerEditor";
+
 static const QString kSettingBer = "SettingBer";
 
 static QStringList kValueTypeList = { "String", "Hex", "Base64" };
@@ -195,6 +198,7 @@ const QString kExtNameCRLReason = "CRLReason";
 const int kNoLicenseLimitMaxSize = 10000;
 
 const QString kTableStyle = "QHeaderView::section {background-color:#404040;color:#FFFFFF;}";
+const QString kReadOnlyStyle = "background-color:#ddddff";
 
 const QString GetSystemID();
 
@@ -242,5 +246,8 @@ bool isURLEncode( const QString strURLEncode );
 
 int getDataFromURI( const QString strURI, BIN *pData );
 int checkOCSP( const QString strURL, const BIN *pCA, const BIN *pCert, JCertStatusInfo* pStatusInfo);
+
+int getWrapKey( const char *pPasswd, const BIN *pKey, BIN *pEncKey );
+int getUnwrapKey( const char *pPasswd, const BIN *pEncKey, BIN *pKey );
 
 #endif // COMMON_H

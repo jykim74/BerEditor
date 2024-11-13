@@ -1,6 +1,7 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QTextStream>
+#include <QDateTime>
 
 #include "key_list_dlg.h"
 #include "ui_key_list_dlg.h"
@@ -10,6 +11,9 @@
 #include "ber_applet.h"
 #include "settings_mgr.h"
 #include "key_add_dlg.h"
+#include "passwd_dlg.h"
+
+#include "js_error.h"
 
 static const QStringList kTypeList = { "ALL", "AES", "ARIA", "SEED", "TDES", "HMAC" };
 
@@ -27,6 +31,7 @@ KeyListDlg::KeyListDlg(QWidget *parent) :
     connect( mGenMACBtn, SIGNAL(clicked()), this, SLOT(clickGenMAC()));
     connect( mEncDecBtn, SIGNAL(clicked()), this, SLOT(clickEncDec()));
     connect( mKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeKeyType()));
+    connect( mKeyTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickKeyView()));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -74,7 +79,7 @@ void KeyListDlg::initialize()
     mSavePathText->setText( strPath );
     mKeyTypeCombo->addItems( kTypeList );
 
-    QStringList sTableLabels = { tr( "Name" ), tr( "Algorithm"), tr("Length"), tr( "IV Len") };
+    QStringList sTableLabels = { tr( "Name" ), tr( "Algorithm"), tr( "IV"), tr( "LastModified") };
 
     mKeyTable->clear();
     mKeyTable->horizontalHeader()->setStretchLastSection(true);
@@ -86,7 +91,7 @@ void KeyListDlg::initialize()
     mKeyTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     mKeyTable->setColumnWidth( 0, nWidth * 6/10 );
     mKeyTable->setColumnWidth( 1, nWidth * 2/10 );
-    mKeyTable->setColumnWidth( 3, nWidth * 1/10 );
+    mKeyTable->setColumnWidth( 2, nWidth * 1/10 );
 
     setManage(false);
 }
@@ -94,6 +99,47 @@ void KeyListDlg::initialize()
 void KeyListDlg::showEvent(QShowEvent *event)
 {
     loadKeyList();
+}
+
+int KeyListDlg::getPlainKeyIV( const QString strData, QString& strKey, QString& strIV )
+{
+    int ret = 0;
+
+    QStringList listKeyIV = strData.split(":");
+
+    if( listKeyIV.size() < 1 ) return JSR_ERR;
+
+    strKey = listKeyIV.at(0);
+
+    if( strKey.contains( "{ENC}" ) == true )
+    {
+        PasswdDlg passDlg;
+        QString strPasswd;
+        QString strValue = strKey.mid(5);
+
+        BIN binEnc = {0,0};
+        BIN binKey = {0,0};
+
+        if( passDlg.exec() != QDialog::Accepted )
+            return JSR_ERR2;
+
+        JS_BIN_decodeHex( strValue.toStdString().c_str(), &binEnc );
+
+        strPasswd = passDlg.mPasswdText->text();
+        ret = getUnwrapKey( strPasswd.toStdString().c_str(), &binEnc, &binKey );
+        strKey = getHexString( &binKey );
+        JS_BIN_reset( &binEnc );
+        JS_BIN_reset( &binKey );
+
+        if( ret != 0 ) return ret;
+    }
+
+    if( listKeyIV.size() > 1 )
+        strIV = listKeyIV.at(1);
+
+    ret = 0;
+
+    return ret;
 }
 
 void KeyListDlg::loadKeyList()
@@ -122,7 +168,7 @@ void KeyListDlg::loadKeyList()
         }
 
         QString strName = file.baseName();
-        QString strLength;
+
         QString strAlg;
         QString strKey;
         QString strIV;
@@ -130,6 +176,7 @@ void KeyListDlg::loadKeyList()
 
         QTextStream in( &keyFile );
         QString strLine = in.readLine();
+        QDateTime date = file.lastModified();
 
         while( strLine.isNull() == false )
         {
@@ -151,8 +198,6 @@ void KeyListDlg::loadKeyList()
 
             if( strFirst == "ALG" )
                 strAlg = strSecond;
-            else if( strFirst == "Length" )
-                strLength = strSecond;
             else if( strFirst == "Key" )
                 strKey = strSecond;
             else if( strFirst == "IV" )
@@ -171,15 +216,24 @@ void KeyListDlg::loadKeyList()
         mKeyTable->insertRow(row);
         mKeyTable->setRowHeight( row, 10 );
         QTableWidgetItem *item = new QTableWidgetItem( strName );
-        item->setIcon(QIcon(":/images/key.png" ));
+
 
         strData = QString( "%1:%2" ).arg( strKey ).arg( strIV );
         item->setData( Qt::UserRole, strData );
 
+        if( strKey.contains( "{ENC}") == true )
+        {
+            item->setIcon(QIcon(":/images/enc_key.png" ));
+        }
+        else
+        {
+            item->setIcon(QIcon(":/images/key.png" ));
+        }
+
         mKeyTable->setItem( row, 0, item );
         mKeyTable->setItem( row, 1, new QTableWidgetItem(QString("%1").arg( strAlg)));
-        mKeyTable->setItem( row, 2, new QTableWidgetItem( QString("%1" ).arg( strLength )));
-        mKeyTable->setItem( row, 3, new QTableWidgetItem(QString("%1").arg( strIV.length() / 2 )));
+        mKeyTable->setItem( row, 2, new QTableWidgetItem(QString("%1").arg( strIV.length() / 2 )));
+        mKeyTable->setItem( row, 3, new QTableWidgetItem(QString("%1").arg( date.toString("yy-MM-dd hh:mm") )));
     }
 }
 
@@ -191,15 +245,14 @@ void KeyListDlg::clickKeyAdd()
     if( keyAdd.exec() == QDialog::Accepted )
     {
         QDir dir;
-        BIN binKey = {0,0};
         BIN binIV = {0,0};
         BIN binData = {0,0};
 
         QString strName = keyAdd.mNameText->text();
         QString strAlg = keyAdd.mTypeCombo->currentText();
-        QString strKey = keyAdd.mKeyText->text();
+        QString strKey = keyAdd.getResKey();
         QString strIV = keyAdd.mIVText->text();
-        int nLen = keyAdd.mKeyLenCombo->currentText().toInt();
+
 
         QString fullPath = QString( "%1/%2" ).arg( strPath ).arg( strName );
         QFile file( fullPath );
@@ -212,20 +265,19 @@ void KeyListDlg::clickKeyAdd()
 
         QString strInfo;
 
-        getBINFromString( &binKey, keyAdd.mKeyTypeCombo->currentText(), strKey );
         getBINFromString( &binIV, keyAdd.mIVTypeCombo->currentText(), strIV );
 
         strInfo += QString( "ALG: %1\n" ).arg( strAlg );
-        strInfo += QString( "Length: %1\n" ).arg( nLen );
-        strInfo += QString( "Key: %1\n" ).arg( getHexString( &binKey ));
+        strInfo += QString( "Key: %1\n" ).arg( strKey);
         strInfo += QString( "IV: %1\n" ).arg( getHexString( &binIV ));
 
         JS_BIN_set( &binData, (unsigned char *)strInfo.toStdString().c_str(), strInfo.length() );
         JS_BIN_fileWrite( &binData, fullPath.toLocal8Bit().toStdString().c_str() );
 
-        JS_BIN_reset( &binKey );
         JS_BIN_reset( &binIV );
         JS_BIN_reset( &binData );
+
+        loadKeyList();
     }
 }
 
@@ -271,7 +323,13 @@ void KeyListDlg::clickKeyView()
     KeyAddDlg keyDlg;
 
     keyDlg.setTitle( tr( "Symmetric Key View" ));
-    keyDlg.readFile( item->text() );
+    int ret = keyDlg.readFile( item->text() );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "fail to get symmetric key: %1").arg( ret ), this );
+        return;
+    }
+
     keyDlg.setReadOnly();
     keyDlg.exec();
 }
@@ -282,6 +340,10 @@ void KeyListDlg::clickOK()
 
     QModelIndex idx = mKeyTable->currentIndex();
     QTableWidgetItem* item = mKeyTable->item( idx.row(), 0 );
+    QString strData;
+    QStringList listKeyIV;
+    QString strKey;
+    QString strIV;
 
     if( item == NULL )
     {
@@ -289,7 +351,15 @@ void KeyListDlg::clickOK()
         return;
     }
 
-    str_data_ = item->data(Qt::UserRole).toString();
+    strData = item->data(Qt::UserRole).toString();
+    int ret = getPlainKeyIV( strData, strKey, strIV );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "fail to get symmetric key: %1").arg( ret ), this );
+        return;
+    }
+
+    str_data_ = QString( "%1:%2" ).arg( strKey ).arg( strIV );
 
     accept();
 }
@@ -315,11 +385,8 @@ void KeyListDlg::clickGenMAC()
     QString strData = item->data(Qt::UserRole).toString();
     QStringList keyIV = strData.split(":");
 
-    if( keyIV.size() > 0 )
-        strKey = keyIV.at(0);
-
-    if( keyIV.size() > 1 )
-        strIV = keyIV.at(1);
+    int ret = getPlainKeyIV( strData, strKey, strIV );
+    if( ret != 0 ) return;
 
     berApplet->mainWindow()->mac2( strKey, strIV );
 }
@@ -338,13 +405,9 @@ void KeyListDlg::clickEncDec()
     QString strKey;
     QString strIV;
     QString strData = item->data(Qt::UserRole).toString();
-    QStringList keyIV = strData.split(":");
 
-    if( keyIV.size() > 0 )
-        strKey = keyIV.at(0);
-
-    if( keyIV.size() > 1 )
-        strIV = keyIV.at(1);
+    int ret = getPlainKeyIV( strData, strKey, strIV );
+    if( ret != 0 ) return;
 
     berApplet->mainWindow()->encDec2( strKey, strIV );
 }

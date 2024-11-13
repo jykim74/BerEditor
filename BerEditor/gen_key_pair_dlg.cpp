@@ -98,7 +98,7 @@ void GenKeyPairDlg::setRegInfo( const QString strRegInfo )
 void GenKeyPairDlg::setFixName( const QString strName )
 {
     mNameText->setText( strName );
-    mNameText->setStyleSheet( "background-color:#ddddff" );
+    mNameText->setStyleSheet( kReadOnlyStyle );
     mNameText->setReadOnly(true);
 }
 

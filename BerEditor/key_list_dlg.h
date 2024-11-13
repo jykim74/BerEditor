@@ -19,6 +19,8 @@ public:
     const QString getData() { return str_data_; };
     void setTitle( const QString strTitle );
 
+    static int getPlainKeyIV( const QString strData, QString& strKey, QString& strIV );
+
 private slots:
     void showEvent(QShowEvent *event);
 
@@ -33,6 +35,8 @@ private slots:
 private:
     void initialize();
     void loadKeyList();
+
+
 
     QString str_data_;
 };

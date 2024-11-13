@@ -1780,3 +1780,45 @@ end :
 
     return ret;
 }
+
+int getWrapKey( const char *pPasswd, const BIN *pKey, BIN *pEncKey )
+{
+    int ret = 0;
+
+    BIN binSalt = {0,0};
+    BIN binKEK = {0,0};
+
+    binSalt.pVal = (unsigned char *)kSalt.toStdString().c_str();
+    binSalt.nLen = kSalt.length();
+
+    ret = JS_PKI_PBKDF2( pPasswd, &binSalt, kIterCnt, "SHA256", 16, &binKEK );
+    if( ret != 0 ) goto end;
+
+    ret = JS_PKI_WrapKey( 0, &binKEK, pKey, pEncKey );
+    if( ret != 0 ) goto end;
+
+end :
+    JS_BIN_reset( &binKEK );
+    return ret;
+}
+
+int getUnwrapKey( const char *pPasswd, const BIN *pEncKey, BIN *pKey )
+{
+    int ret = 0;
+
+    BIN binSalt = {0,0};
+    BIN binKEK = {0,0};
+
+    binSalt.pVal = (unsigned char *)kSalt.toStdString().c_str();
+    binSalt.nLen = kSalt.length();
+
+    ret = JS_PKI_PBKDF2( pPasswd, &binSalt, kIterCnt, "SHA256", 16, &binKEK );
+    if( ret != 0 ) goto end;
+
+    ret = JS_PKI_UnwrapKey( 0, &binKEK, pEncKey, pKey );
+    if( ret != 0 ) goto end;
+
+end :
+    JS_BIN_reset( &binKEK );
+    return ret;
+}

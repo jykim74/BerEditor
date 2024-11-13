@@ -165,7 +165,7 @@ void KeyPairManDlg::initUI()
 #endif
     mKeyTypeCombo->addItems( kKeyTypeList );
 
-    QStringList sTableLabels = { tr( "FolderName" ), tr( "Algorithm"), tr("Option") };
+    QStringList sTableLabels = { tr( "FolderName" ), tr( "ALG"), tr("Option"), tr("LastModified") };
 
     mKeyPairTable->clear();
     mKeyPairTable->horizontalHeader()->setStretchLastSection(true);
@@ -175,9 +175,9 @@ void KeyPairManDlg::initUI()
     mKeyPairTable->horizontalHeader()->setStyleSheet( kTableStyle );
     mKeyPairTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mKeyPairTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    mKeyPairTable->setColumnWidth( 0, nWidth * 5/10 );
+    mKeyPairTable->setColumnWidth( 0, nWidth * 4/10 );
     mKeyPairTable->setColumnWidth( 1, nWidth * 2/10 );
-    mKeyPairTable->setColumnWidth( 2, nWidth * 3/10 );
+    mKeyPairTable->setColumnWidth( 2, nWidth * 2/10 );
 
     mOKBtn->hide();
 }
@@ -243,6 +243,8 @@ void KeyPairManDlg::loadKeyPairList()
 
         if( folder.isFile() ) continue;
 
+        QDateTime date = folder.lastModified();
+
         QString strPubKeyPath = QString( "%1/%2" ).arg( folder.filePath() ).arg( kPublicFile );
         QFileInfo pubKeyFile( strPubKeyPath );
         QString strPriKeyPath = QString( "%1/%2" ).arg( folder.filePath() ).arg( kPrivateFile );
@@ -305,6 +307,7 @@ void KeyPairManDlg::loadKeyPairList()
         mKeyPairTable->setItem( row, 0, item );
         mKeyPairTable->setItem( row, 1, new QTableWidgetItem(QString("%1").arg( strAlg)));
         mKeyPairTable->setItem( row, 2, new QTableWidgetItem( QString("%1" ).arg( strOption )));
+        mKeyPairTable->setItem( row, 3, new QTableWidgetItem(QString("%1").arg( date.toString("yy-MM-dd HH:mm") )));
 
         JS_BIN_reset( &binPri );
         JS_BIN_reset( &binPub );

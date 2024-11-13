@@ -15,9 +15,10 @@ class KeyAddDlg : public QDialog, public Ui::KeyAddDlg
 public:
     explicit KeyAddDlg(QWidget *parent = nullptr);
     ~KeyAddDlg();
-    void readFile( const QString strName );
+    int readFile( const QString strName );
     void setReadOnly();
     void setTitle( const QString strTitle );
+    const QString getResKey() { return res_key_; };
 
 private slots:
     void clickClearAll();
@@ -31,6 +32,8 @@ private slots:
 private:
     void initUI();
     void initialize();
+
+    QString res_key_;
 };
 
 #endif // KEY_ADD_DLG_H

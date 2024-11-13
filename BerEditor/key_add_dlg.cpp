@@ -6,7 +6,10 @@
 #include "ber_applet.h"
 #include "common.h"
 #include "settings_mgr.h"
+#include "new_passwd_dlg.h"
+#include "passwd_dlg.h"
 
+#include "js_error.h"
 #include "js_pki.h"
 
 static const QStringList kTypeList = { "AES", "ARIA", "SEED", "TDES", "HMAC" };
@@ -34,6 +37,9 @@ KeyAddDlg::KeyAddDlg(QWidget *parent) :
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
 #endif
+
+    mOKBtn->setDefault(true);
+
     resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 
@@ -42,8 +48,9 @@ KeyAddDlg::~KeyAddDlg()
 
 }
 
-void KeyAddDlg::readFile( const QString strName )
+int KeyAddDlg::readFile( const QString strName )
 {
+    int ret = 0;
     QString strPath = berApplet->settingsMgr()->keyListPath();
     QString strFilePath = QString( "%1/%2" ).arg( strPath ).arg( strName );
 
@@ -52,10 +59,9 @@ void KeyAddDlg::readFile( const QString strName )
     if( keyFile.open( QIODevice::ReadOnly | QIODevice::Text ) == false )
     {
         berApplet->elog( QString( "fail to read key: %1" ).arg( strFilePath ));
-        return;
+        return JSR_ERR;
     }
 
-    QString strLength;
     QString strAlg;
     QString strKey;
     QString strIV;
@@ -84,8 +90,6 @@ void KeyAddDlg::readFile( const QString strName )
 
         if( strFirst == "ALG" )
             strAlg = strSecond;
-        else if( strFirst == "Length" )
-            strLength = strSecond;
         else if( strFirst == "Key" )
             strKey = strSecond;
         else if( strFirst == "IV" )
@@ -95,6 +99,29 @@ void KeyAddDlg::readFile( const QString strName )
     }
 
     keyFile.close();
+
+    if( strKey.contains( "{ENC}" ) == true )
+    {
+        PasswdDlg passDlg;
+        QString strPasswd;
+        QString strValue = strKey.mid(5);
+
+        BIN binEnc = {0,0};
+        BIN binKey = {0,0};
+
+        if( passDlg.exec() != QDialog::Accepted )
+            return JSR_ERR2;
+
+        JS_BIN_decodeHex( strValue.toStdString().c_str(), &binEnc );
+
+        strPasswd = passDlg.mPasswdText->text();
+        ret = getUnwrapKey( strPasswd.toStdString().c_str(), &binEnc, &binKey );
+        strKey = getHexString( &binKey );
+        JS_BIN_reset( &binEnc );
+        JS_BIN_reset( &binKey );
+
+        if( ret != 0 ) return ret;
+    }
 
     mTypeCombo->clear();
     mKeyLenCombo->clear();
@@ -107,10 +134,12 @@ void KeyAddDlg::readFile( const QString strName )
     mIVTypeCombo->addItem( "Hex" );
 
     mTypeCombo->addItem( strAlg );
-    mKeyLenCombo->addItem( strLength );
+    mKeyLenCombo->addItem( QString( "%1" ).arg( strKey.length() / 2) );
     mNameText->setText( strName );
     mKeyText->setText( strKey );
     mIVText->setText( strIV );
+
+    return 0;
 }
 
 void KeyAddDlg::setReadOnly()
@@ -119,7 +148,9 @@ void KeyAddDlg::setReadOnly()
 
     mNameText->setReadOnly(true);
     mKeyText->setReadOnly(true);
+    mKeyText->setStyleSheet(kReadOnlyStyle);
     mIVText->setReadOnly(true);
+    mIVText->setStyleSheet(kReadOnlyStyle);
 
     mClearAllBtn->hide();
     mOKBtn->hide();
@@ -160,6 +191,8 @@ void KeyAddDlg::clickOK()
     BIN binKey = {0,0};
     BIN binIV = {0,0};
 
+    BIN binWrapKey = {0,0};
+
     int nLen = mKeyLenCombo->currentText().toInt();
 
     if( strName.length() < 1 )
@@ -179,11 +212,32 @@ void KeyAddDlg::clickOK()
     JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey );
     JS_BIN_decodeHex( strIV.toStdString().c_str(), &binIV );
 
-    if( nLen != binKey.nLen )
+    if( nLen > 0 && nLen != binKey.nLen )
     {
         berApplet->warningBox( tr( "Key Length is not %1 bytes").arg( nLen ), this );
         ret = -1;
         goto end;
+    }
+
+    if( mEncCheck->isChecked() == true )
+    {
+        NewPasswdDlg newPass;
+        if( newPass.exec() != QDialog::Accepted )
+        {
+            ret = JSR_ERR;
+            goto end;
+        }
+
+        QString strPasswd = newPass.mPasswdText->text();
+
+        ret = getWrapKey( strPasswd.toStdString().c_str(), &binKey, &binWrapKey );
+        if( ret != 0 ) goto end;
+
+        res_key_ = QString( "{ENC}%1").arg( getHexString( &binWrapKey ));
+    }
+    else
+    {
+        res_key_ = getHexString( &binKey );
     }
 
     ret = 0;
@@ -191,6 +245,7 @@ void KeyAddDlg::clickOK()
 end :
     JS_BIN_reset( &binKey );
     JS_BIN_reset( &binIV );
+    JS_BIN_reset( &binWrapKey );
 
     if( ret == 0 ) accept();
 }

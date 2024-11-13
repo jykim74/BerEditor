@@ -1099,15 +1099,15 @@ void EncDecDlg::dataChange()
 {
     QString strOutput = mOutputText->toPlainText();
 
-    mInputText->setPlainText( strOutput );
-    mOutputText->clear();
-
     if( mOutputTypeCombo->currentIndex() == 0 )
         mInputStringRadio->setChecked(true);
     else if( mOutputTypeCombo->currentIndex() == 1 )
         mInputHexRadio->setChecked(true);
     else if( mOutputTypeCombo->currentIndex() == 2 )
         mInputBase64Radio->setChecked(true);
+
+    mOutputText->clear();
+    mInputText->setPlainText( strOutput );
 
     repaint();
 }

@@ -775,7 +775,7 @@ void PriKeyInfoDlg::setModeUI( bool bVal )
     if( bVal == true )
         strStyle = "background-color:#FFFFFF";
     else
-        strStyle = "background-color:#ddddff";
+        strStyle = kReadOnlyStyle;
 
     if( key_type_ == JS_PKI_KEY_TYPE_RSA )
     {
