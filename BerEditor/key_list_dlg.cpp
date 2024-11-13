@@ -107,6 +107,7 @@ int KeyListDlg::getPlainKeyIV( const QString strData, QString& strKey, QString& 
 {
     int ret = 0;
 
+    PasswdDlg passDlg;
     QStringList listKeyIV = strData.split(":");
 
     if( listKeyIV.size() < 1 ) return JSR_ERR;
@@ -115,7 +116,6 @@ int KeyListDlg::getPlainKeyIV( const QString strData, QString& strKey, QString& 
 
     if( strKey.contains( "{ENC}" ) == true )
     {
-        PasswdDlg passDlg;
         QString strPasswd;
         QString strValue = strKey.mid(5);
 

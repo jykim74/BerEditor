@@ -39,5 +39,6 @@ void PasswdDlg::clickOK()
         return;
     }
 
-    QDialog::accept();
+    accept();
+    return;
 }

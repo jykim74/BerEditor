@@ -674,59 +674,59 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../ber_tree_view.cpp" line="203"/>
-        <location filename="../ber_tree_view.cpp" line="560"/>
-        <location filename="../ber_tree_view.cpp" line="648"/>
-        <location filename="../ber_tree_view.cpp" line="670"/>
+        <location filename="../ber_tree_view.cpp" line="566"/>
+        <location filename="../ber_tree_view.cpp" line="654"/>
+        <location filename="../ber_tree_view.cpp" line="676"/>
         <source>There are no items selected.</source>
         <translation>선택한 아이템이 없습니다</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="600"/>
+        <location filename="../ber_tree_view.cpp" line="606"/>
         <source>Copy Information</source>
         <translation>정보 복사</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="601"/>
+        <location filename="../ber_tree_view.cpp" line="607"/>
         <source>Copy as hex</source>
         <translation>Hex로 복사</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="602"/>
+        <location filename="../ber_tree_view.cpp" line="608"/>
         <source>Copy as base64</source>
         <translation>Base64로 복사</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="603"/>
+        <location filename="../ber_tree_view.cpp" line="609"/>
         <source>Save node</source>
         <translation>노드 저장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="604"/>
+        <location filename="../ber_tree_view.cpp" line="610"/>
         <source>Save node value</source>
         <translation>노드 값 저장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="622"/>
+        <location filename="../ber_tree_view.cpp" line="628"/>
         <source>Edit value</source>
         <translation>값 수정</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="636"/>
+        <location filename="../ber_tree_view.cpp" line="642"/>
         <source>Expand value</source>
         <translation>확장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="772"/>
+        <location filename="../ber_tree_view.cpp" line="778"/>
         <source>There is no item to select</source>
         <translation>선택한 아이템이 없습니다.</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="810"/>
+        <location filename="../ber_tree_view.cpp" line="816"/>
         <source>Are you sure you want to add it?</source>
         <translation>정말로 추가 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="626"/>
+        <location filename="../ber_tree_view.cpp" line="632"/>
         <source>Insert BER</source>
         <translation>BER 추가</translation>
     </message>
@@ -7569,12 +7569,12 @@ Do you want to delete the file and continue?</source>
         <translation>확인</translation>
     </message>
     <message>
-        <location filename="../key_list_dlg.cpp" line="82"/>
+        <location filename="../key_list_dlg.cpp" line="84"/>
         <source>Name</source>
         <translation>이름</translation>
     </message>
     <message>
-        <location filename="../key_list_dlg.cpp" line="82"/>
+        <location filename="../key_list_dlg.cpp" line="84"/>
         <source>Algorithm</source>
         <translation>알고리즘</translation>
     </message>
@@ -7583,46 +7583,46 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">길이</translation>
     </message>
     <message>
+        <location filename="../key_list_dlg.cpp" line="84"/>
         <source>IV Len</source>
-        <translation type="vanished">IV 길이</translation>
+        <translation>IV 길이</translation>
     </message>
     <message>
-        <location filename="../key_list_dlg.cpp" line="82"/>
         <source>IV</source>
-        <translation>IV</translation>
+        <translation type="vanished">IV</translation>
     </message>
     <message>
-        <location filename="../key_list_dlg.cpp" line="82"/>
+        <location filename="../key_list_dlg.cpp" line="84"/>
         <source>LastModified</source>
         <translation>변경시간</translation>
     </message>
     <message>
-        <location filename="../key_list_dlg.cpp" line="262"/>
+        <location filename="../key_list_dlg.cpp" line="264"/>
         <source>The file(%1) is already existed</source>
         <translation>해당 파일(%1)이 이미 있습니다</translation>
     </message>
     <message>
-        <location filename="../key_list_dlg.cpp" line="296"/>
-        <location filename="../key_list_dlg.cpp" line="319"/>
-        <location filename="../key_list_dlg.cpp" line="350"/>
-        <location filename="../key_list_dlg.cpp" line="379"/>
-        <location filename="../key_list_dlg.cpp" line="401"/>
+        <location filename="../key_list_dlg.cpp" line="298"/>
+        <location filename="../key_list_dlg.cpp" line="321"/>
+        <location filename="../key_list_dlg.cpp" line="352"/>
+        <location filename="../key_list_dlg.cpp" line="381"/>
+        <location filename="../key_list_dlg.cpp" line="403"/>
         <source>There is no key to select</source>
         <translation>선택한 키가 없습니다</translation>
     </message>
     <message>
-        <location filename="../key_list_dlg.cpp" line="300"/>
+        <location filename="../key_list_dlg.cpp" line="302"/>
         <source>Are you sure to delete the key</source>
         <translation>정말로 해당 키를 삭제 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../key_list_dlg.cpp" line="325"/>
+        <location filename="../key_list_dlg.cpp" line="327"/>
         <source>Symmetric Key View</source>
         <translation>대칭키 보기</translation>
     </message>
     <message>
-        <location filename="../key_list_dlg.cpp" line="329"/>
-        <location filename="../key_list_dlg.cpp" line="358"/>
+        <location filename="../key_list_dlg.cpp" line="331"/>
+        <location filename="../key_list_dlg.cpp" line="360"/>
         <source>fail to get symmetric key: %1</source>
         <translation>대칭키 가져오기 실패: %1</translation>
     </message>
@@ -14579,29 +14579,29 @@ Do you want to delete the file and continue?</source>
         <translation>TTLV 추가</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="524"/>
+        <location filename="../ttlv_tree_view.cpp" line="530"/>
         <source>There are no items selected.</source>
         <translation>선택한 아이템이 없습니다</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="549"/>
-        <location filename="../ttlv_tree_view.cpp" line="570"/>
-        <location filename="../ttlv_tree_view.cpp" line="589"/>
+        <location filename="../ttlv_tree_view.cpp" line="555"/>
+        <location filename="../ttlv_tree_view.cpp" line="576"/>
+        <location filename="../ttlv_tree_view.cpp" line="595"/>
         <source>There is no selected item</source>
         <translation>선택한 아이템이 없습니다.</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="632"/>
+        <location filename="../ttlv_tree_view.cpp" line="638"/>
         <source>The item is not structured</source>
         <translation>해당 아이템이 구조적이지 않습니다</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="641"/>
+        <location filename="../ttlv_tree_view.cpp" line="647"/>
         <source>Are you sure you want to add it?</source>
         <translation>정말로 추가 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="675"/>
+        <location filename="../ttlv_tree_view.cpp" line="681"/>
         <source>There is no item to select</source>
         <translation></translation>
     </message>
