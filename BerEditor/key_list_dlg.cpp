@@ -35,6 +35,8 @@ KeyListDlg::KeyListDlg(QWidget *parent) :
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+    mManGroup->layout()->setSpacing(5);
+    mManGroup->layout()->setMargin(5);
 #endif
     initialize();
 
@@ -79,7 +81,7 @@ void KeyListDlg::initialize()
     mSavePathText->setText( strPath );
     mKeyTypeCombo->addItems( kTypeList );
 
-    QStringList sTableLabels = { tr( "Name" ), tr( "Algorithm"), tr( "IV"), tr( "LastModified") };
+    QStringList sTableLabels = { tr( "Name" ), tr( "Algorithm"), tr( "IV Len"), tr( "LastModified") };
 
     mKeyTable->clear();
     mKeyTable->horizontalHeader()->setStretchLastSection(true);
@@ -89,9 +91,9 @@ void KeyListDlg::initialize()
     mKeyTable->horizontalHeader()->setStyleSheet( kTableStyle );
     mKeyTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mKeyTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    mKeyTable->setColumnWidth( 0, nWidth * 6/10 );
+    mKeyTable->setColumnWidth( 0, nWidth * 5/10 );
     mKeyTable->setColumnWidth( 1, nWidth * 2/10 );
-    mKeyTable->setColumnWidth( 2, nWidth * 1/10 );
+    mKeyTable->setColumnWidth( 2, nWidth * 2/10 );
 
     setManage(false);
 }
@@ -232,7 +234,7 @@ void KeyListDlg::loadKeyList()
 
         mKeyTable->setItem( row, 0, item );
         mKeyTable->setItem( row, 1, new QTableWidgetItem(QString("%1").arg( strAlg)));
-        mKeyTable->setItem( row, 2, new QTableWidgetItem(QString("%1").arg( strIV.length() / 2 )));
+        mKeyTable->setItem( row, 2, new QTableWidgetItem(QString("%1 Bytes").arg( strIV.length() / 2 )));
         mKeyTable->setItem( row, 3, new QTableWidgetItem(QString("%1").arg( date.toString("yy-MM-dd hh:mm") )));
     }
 }

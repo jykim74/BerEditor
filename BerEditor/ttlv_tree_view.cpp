@@ -171,6 +171,8 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
             xml_cursor.clearSelection();
             xmlEdit->setTextCursor(xml_cursor);
         }
+
+        if( root == pItem ) xmlEdit->moveCursor (QTextCursor::Start);
     }
     else if( table_idx == TABLE_IDX_TXT )
     {
@@ -200,6 +202,8 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
             cursor.clearSelection();
             txtEdit->setTextCursor(cursor);
         }
+
+        if( root == pItem ) txtEdit->moveCursor (QTextCursor::Start);
     }
     else if( table_idx == TABLE_IDX_JSON )
     {
@@ -231,6 +235,8 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
             cursor.clearSelection();
             txtEdit->setTextCursor(cursor);
         }
+
+        if( root == pItem ) txtEdit->moveCursor (QTextCursor::Start);
     }
     else
     {
