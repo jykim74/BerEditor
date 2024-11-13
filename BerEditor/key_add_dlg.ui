@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="mTitleLabel">
      <property name="text">
       <string>Symmetric Key Add</string>
      </property>
@@ -291,6 +291,21 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mNameText</tabstop>
+  <tabstop>mTypeCombo</tabstop>
+  <tabstop>mKeyLenCombo</tabstop>
+  <tabstop>mRandKeyBtn</tabstop>
+  <tabstop>mKeyTypeCombo</tabstop>
+  <tabstop>mKeyText</tabstop>
+  <tabstop>mKeyLenText</tabstop>
+  <tabstop>mIVTypeCombo</tabstop>
+  <tabstop>mIVText</tabstop>
+  <tabstop>mIVLenText</tabstop>
+  <tabstop>mClearAllBtn</tabstop>
+  <tabstop>mOKBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

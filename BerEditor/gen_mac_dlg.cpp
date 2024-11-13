@@ -17,6 +17,7 @@
 #include "common.h"
 #include "mac_thread.h"
 #include "js_error.h"
+#include "key_list_dlg.h"
 
 
 static QStringList cryptList = {
@@ -147,11 +148,41 @@ int GenMacDlg::macInit()
     BIN binKey = {0,0};
 
     QString strKey = mKeyText->text();
+    QString strIV = mIVText->text();
+
     if( strKey.length() < 1 )
     {
-        berApplet->warningBox( tr("Enter a key value"), this );
-        mKeyText->setFocus();
-        return JSR_ERR;
+        KeyListDlg keyList;
+        keyList.setTitle( tr( "Select symmetric key" ));
+
+        keyList.mKeyTypeCombo->setCurrentText( "HMAC" );
+
+        if( keyList.exec() == QDialog::Accepted )
+        {
+            QString strData = keyList.getData();
+            QStringList keyIV = strData.split(":");
+
+            if( keyIV.size() > 0 )
+            {
+                mKeyTypeCombo->setCurrentText( "Hex" );
+                strKey = keyIV.at(0);
+                mKeyText->setText( strKey );
+            }
+
+            if( keyIV.size() > 1 )
+            {
+                mIVTypeCombo->setCurrentText( "Hex" );
+                strIV = keyIV.at(1);
+                mIVText->setText( strIV );
+            }
+        }
+
+        if( strKey.length() < 1 )
+        {
+            berApplet->warningBox( tr("Enter a key value"), this );
+            mKeyText->setFocus();
+            return JSR_ERR;
+        }
     }
 
     getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
@@ -382,13 +413,42 @@ void GenMacDlg::clickMAC()
     }
 
     QString strKey = mKeyText->text();
+    QString strIV = mIVText->text();
 
     if( strKey.isEmpty() )
     {
-        berApplet->warningBox( tr( "Please Enter a key value"), this );
-        JS_BIN_reset(&binSrc);
-        mKeyText->setFocus();
-        return;
+        KeyListDlg keyList;
+        keyList.setTitle( tr( "Select symmetric key" ));
+
+        keyList.mKeyTypeCombo->setCurrentText( "HMAC" );
+
+        if( keyList.exec() == QDialog::Accepted )
+        {
+            QString strData = keyList.getData();
+            QStringList keyIV = strData.split(":");
+
+            if( keyIV.size() > 0 )
+            {
+                mKeyTypeCombo->setCurrentText( "Hex" );
+                strKey = keyIV.at(0);
+                mKeyText->setText( strKey );
+            }
+
+            if( keyIV.size() > 1 )
+            {
+                mIVTypeCombo->setCurrentText( "Hex" );
+                strIV = keyIV.at(1);
+                mIVText->setText( strIV );
+            }
+        }
+
+        if( strKey.isEmpty() )
+        {
+            berApplet->warningBox( tr( "Please Enter a key value"), this );
+            JS_BIN_reset(&binSrc);
+            mKeyText->setFocus();
+            return;
+        }
     }
 
     if( mKeyTypeCombo->currentIndex() == 0 )

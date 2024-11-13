@@ -1,7 +1,11 @@
+#include <QFile>
+#include <QTextStream>
+
 #include "key_add_dlg.h"
 #include "ui_key_add_dlg.h"
 #include "ber_applet.h"
 #include "common.h"
+#include "settings_mgr.h"
 
 #include "js_pki.h"
 
@@ -36,6 +40,94 @@ KeyAddDlg::KeyAddDlg(QWidget *parent) :
 KeyAddDlg::~KeyAddDlg()
 {
 
+}
+
+void KeyAddDlg::readFile( const QString strName )
+{
+    QString strPath = berApplet->settingsMgr()->keyListPath();
+    QString strFilePath = QString( "%1/%2" ).arg( strPath ).arg( strName );
+
+    QFile keyFile( strFilePath );
+
+    if( keyFile.open( QIODevice::ReadOnly | QIODevice::Text ) == false )
+    {
+        berApplet->elog( QString( "fail to read key: %1" ).arg( strFilePath ));
+        return;
+    }
+
+    QString strLength;
+    QString strAlg;
+    QString strKey;
+    QString strIV;
+    QString strData;
+
+    QTextStream in( &keyFile );
+    QString strLine = in.readLine();
+
+    while( strLine.isNull() == false )
+    {
+        if( strLine.length() < 2 || strLine.at(0) == '#' )
+        {
+            strLine = in.readLine();
+            continue;
+        }
+
+        QStringList nameVal = strLine.split(":");
+        if( nameVal.size() < 2 )
+        {
+            strLine = in.readLine();
+            continue;
+        }
+
+        QString strFirst = nameVal.at(0).simplified();
+        QString strSecond = nameVal.at(1).simplified();
+
+        if( strFirst == "ALG" )
+            strAlg = strSecond;
+        else if( strFirst == "Length" )
+            strLength = strSecond;
+        else if( strFirst == "Key" )
+            strKey = strSecond;
+        else if( strFirst == "IV" )
+            strIV = strSecond;
+
+        strLine = in.readLine();
+    }
+
+    keyFile.close();
+
+    mTypeCombo->clear();
+    mKeyLenCombo->clear();
+    mKeyTypeCombo->clear();
+    mIVTypeCombo->clear();
+
+    disconnect( mTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT( changeType() ) );
+
+    mKeyTypeCombo->addItem( "Hex" );
+    mIVTypeCombo->addItem( "Hex" );
+
+    mTypeCombo->addItem( strAlg );
+    mKeyLenCombo->addItem( strLength );
+    mNameText->setText( strName );
+    mKeyText->setText( strKey );
+    mIVText->setText( strIV );
+}
+
+void KeyAddDlg::setReadOnly()
+{
+    mRandKeyBtn->setEnabled(false);
+
+    mNameText->setReadOnly(true);
+    mKeyText->setReadOnly(true);
+    mIVText->setReadOnly(true);
+
+    mClearAllBtn->hide();
+    mOKBtn->hide();
+}
+
+void KeyAddDlg::setTitle( const QString strTitle )
+{
+    mTitleLabel->setText( strTitle );
 }
 
 void KeyAddDlg::initUI()

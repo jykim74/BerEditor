@@ -15,6 +15,9 @@ class KeyAddDlg : public QDialog, public Ui::KeyAddDlg
 public:
     explicit KeyAddDlg(QWidget *parent = nullptr);
     ~KeyAddDlg();
+    void readFile( const QString strName );
+    void setReadOnly();
+    void setTitle( const QString strTitle );
 
 private slots:
     void clickClearAll();

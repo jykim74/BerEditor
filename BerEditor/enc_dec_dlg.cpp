@@ -17,6 +17,7 @@
 #include "settings_mgr.h"
 #include "common.h"
 #include "enc_dec_thread.h"
+#include "key_list_dlg.h"
 
 static QStringList dataTypes = {
     "String",
@@ -178,9 +179,35 @@ void EncDecDlg::dataRun()
 
     if( strKey.isEmpty() )
     {
-        berApplet->warningBox( tr( "Please enter key value" ), this );
-        mKeyText->setFocus();
-        return;
+        KeyListDlg keyList;
+        keyList.setTitle( tr( "Select symmetric key" ));
+
+        if( keyList.exec() == QDialog::Accepted )
+        {
+            QString strData = keyList.getData();
+            QStringList keyIV = strData.split(":");
+
+            if( keyIV.size() > 0 )
+            {
+                mKeyTypeCombo->setCurrentText( "Hex" );
+                strKey = keyIV.at(0);
+                mKeyText->setText( strKey );
+            }
+
+            if( keyIV.size() > 1 )
+            {
+                mIVTypeCombo->setCurrentText( "Hex" );
+                strIV = keyIV.at(1);
+                mIVText->setText( strIV );
+            }
+        }
+
+        if( strKey.isEmpty() )
+        {
+            berApplet->warningBox( tr( "Please enter key value" ), this );
+            mKeyText->setFocus();
+            return;
+        }
     }
 
     if( strMode != "ECB" )

@@ -1141,6 +1141,7 @@ void MainWindow::createActions()
         calc_act_->setEnabled( false );
         key_pair_man_act_->setEnabled( false );
         cert_man_act_->setEnabled( false );
+        key_list_act_->setEnabled( false );
         cavp_act_->setEnabled( false );
         ssl_act_->setEnabled( false );
     }
@@ -2195,6 +2196,20 @@ void MainWindow::mac()
     gen_mac_dlg_->activateWindow();
 }
 
+void MainWindow::mac2( const QString strKey, const QString strIV )
+{
+    gen_mac_dlg_->mClearDataAllBtn->click();
+    gen_mac_dlg_->mKeyTypeCombo->setCurrentText( "Hex" );
+    gen_mac_dlg_->mKeyText->setText( strKey );
+
+    gen_mac_dlg_->mIVTypeCombo->setCurrentText( "Hex" );
+    gen_mac_dlg_->mIVText->setText( strIV );
+
+    gen_mac_dlg_->show();
+    gen_mac_dlg_->raise();
+    gen_mac_dlg_->activateWindow();
+}
+
 void MainWindow::keyAgree()
 {
     key_agree_dlg_->show();
@@ -2210,6 +2225,21 @@ void MainWindow::oidInfo()
 
 void MainWindow::encDec()
 {
+    enc_dec_dlg_->show();
+    enc_dec_dlg_->raise();
+    enc_dec_dlg_->activateWindow();
+}
+
+void MainWindow::encDec2( const QString strKey, const QString strIV )
+{
+    enc_dec_dlg_->mClearDataAllBtn->click();
+
+    enc_dec_dlg_->mKeyTypeCombo->setCurrentText( "Hex" );
+    enc_dec_dlg_->mKeyText->setText( strKey );
+
+    enc_dec_dlg_->mIVTypeCombo->setCurrentText( "Hex" );
+    enc_dec_dlg_->mIVText->setText( strIV );
+
     enc_dec_dlg_->show();
     enc_dec_dlg_->raise();
     enc_dec_dlg_->activateWindow();
@@ -2331,6 +2361,8 @@ void MainWindow::certMan()
 
 void MainWindow::keyList()
 {
+    key_list_dlg_->setManage(true);
+
     key_list_dlg_->show();
     key_list_dlg_->raise();
     key_list_dlg_->activateWindow();

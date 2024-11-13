@@ -168,6 +168,9 @@ public:
 
     void viewSetDefault();
 
+    void mac2( const QString strKey, const QString strIV );
+    void encDec2( const QString strKey, const QString strIV );
+
 private slots:
     void changeTableTab();
 
@@ -197,9 +200,11 @@ private slots:
     void keyManage();
     void hash();
     void mac();
+
     void keyAgree();
     void oidInfo();
     void encDec();
+
     void signVerify();
     void pubEncDec();
     void cms();

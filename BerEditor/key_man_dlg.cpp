@@ -11,6 +11,7 @@
 #include "ber_applet.h"
 #include "settings_mgr.h"
 #include "common.h"
+#include "key_list_dlg.h"
 
 static QStringList dataTypes = {
     "String",
@@ -224,16 +225,55 @@ void KeyManDlg::clickWrap()
 
     if( strInput.length() < 1 )
     {
-        berApplet->warningBox( "Enter input data", this );
-        mSrcText->setFocus();
-        goto end;
+        KeyListDlg keyList;
+        keyList.setTitle( tr( "Select symmetric key for source" ));
+
+        if( keyList.exec() == QDialog::Accepted )
+        {
+            QString strData = keyList.getData();
+            QStringList keyIV = strData.split(":");
+
+            if( keyIV.size() > 0 )
+            {
+                mSrcTypeCombo->setCurrentText( "Hex" );
+                strInput = keyIV.at(0);
+                mSrcText->setPlainText( strInput );
+            }
+        }
+
+        if( strInput.length() < 1 )
+        {
+            berApplet->warningBox( "Enter input data", this );
+            mSrcText->setFocus();
+            goto end;
+        }
     }
 
     if( strWrappingKey.length() < 1 )
     {
-        berApplet->warningBox( "Enter KEK", this );
-        mKEKText->setFocus();
-        goto end;
+        KeyListDlg keyList;
+        keyList.setTitle( tr( "Select symmetric key for KEK" ));
+        keyList.mKeyTypeCombo->setCurrentText( "AES" );
+
+        if( keyList.exec() == QDialog::Accepted )
+        {
+            QString strData = keyList.getData();
+            QStringList keyIV = strData.split(":");
+
+            if( keyIV.size() > 0 )
+            {
+                mKEKTypeCombo->setCurrentText( "Hex" );
+                strWrappingKey = keyIV.at(0);
+                mKEKText->setText( strWrappingKey );
+            }
+        }
+
+        if( strWrappingKey.length() < 1 )
+        {
+            berApplet->warningBox( "Enter KEK", this );
+            mKEKText->setFocus();
+            goto end;
+        }
     }
 
     if( mKWPRadio->isChecked() )
@@ -286,9 +326,29 @@ void KeyManDlg::clickUnwrap()
 
     if( strWrappingKey.length() < 1 )
     {
-        berApplet->warningBox( "Enter KEK", this );
-        mKEKText->setFocus();
-        goto end;
+        KeyListDlg keyList;
+        keyList.setTitle( tr( "Select symmetric key for KEK" ));
+        keyList.mKeyTypeCombo->setCurrentText( "AES" );
+
+        if( keyList.exec() == QDialog::Accepted )
+        {
+            QString strData = keyList.getData();
+            QStringList keyIV = strData.split(":");
+
+            if( keyIV.size() > 0 )
+            {
+                mKEKTypeCombo->setCurrentText( "Hex" );
+                strWrappingKey = keyIV.at(0);
+                mKEKText->setText( strWrappingKey );
+            }
+        }
+
+        if( strWrappingKey.length() < 1 )
+        {
+            berApplet->warningBox( "Enter KEK", this );
+            mKEKText->setFocus();
+            goto end;
+        }
     }
 
     if( mKWPRadio->isChecked() )
