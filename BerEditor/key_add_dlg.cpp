@@ -120,7 +120,11 @@ int KeyAddDlg::readFile( const QString strName )
         JS_BIN_reset( &binEnc );
         JS_BIN_reset( &binKey );
 
-        if( ret != 0 ) return ret;
+        if( ret != 0 )
+        {
+            ret = JSR_PASSWORD_WRONG;
+            return ret;
+        }
     }
 
     mTypeCombo->clear();

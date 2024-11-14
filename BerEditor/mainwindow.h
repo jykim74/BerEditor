@@ -12,6 +12,7 @@
 #include <QTableWidget>
 #include <QTextBrowser>
 #include <QList>
+#include <QPlainTextEdit>
 
 #include "ber_model.h"
 #include "ber_tree_view.h"
@@ -19,6 +20,7 @@
 #include "ttlv_tree_view.h"
 #include "js_bin.h"
 #include "common.h"
+#include "code_editor.h"
 
 class QPrinter;
 
@@ -72,11 +74,11 @@ public:
     void initialize();
     void loadFile( const QString &filename );
     QTextEdit* logText() { return log_text_; };
-    QTextEdit* infoText() { return info_text_; };
+    CodeEditor* infoText() { return info_text_; };
     QTableWidget* rightTable() { return right_table_; };
-    QTextEdit* rightText() { return right_text_; };
-    QTextEdit* rightXML() { return right_xml_; };
-    QTextEdit* rightJSON() { return right_json_; };
+    CodeEditor* rightText() { return right_text_; };
+    CodeEditor* rightXML() { return right_xml_; };
+    CodeEditor* rightJSON() { return right_json_; };
 
     BerTreeView* berTree() { return left_tree_; };
     BerModel* berModel() { return ber_model_; };
@@ -287,12 +289,13 @@ private:
     QTabWidget      *table_tab_;
     QTabWidget      *text_tab_;
     QTextEdit       *log_text_;
-    QTextEdit       *info_text_;
+    CodeEditor       *info_text_;
 
     QTableWidget    *right_table_;
-    QTextEdit       *right_text_;
-    QTextEdit       *right_xml_;
-    QTextEdit       *right_json_;
+
+    CodeEditor       *right_text_;
+    CodeEditor       *right_xml_;
+    CodeEditor       *right_json_;
     QString          file_path_;
 
     // Cryptogram dlg

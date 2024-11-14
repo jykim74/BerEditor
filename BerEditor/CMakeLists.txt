@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 project(BerEditor
-    VERSION 2.1.2
+    VERSION 2.1.4
     DESCRIPTION "BerEditor Application"
     LANGUAGES CXX )
 
@@ -207,6 +207,7 @@ add_executable(${PROJECT_NAME}
     find_dlg.h find_dlg.cpp find_dlg.ui
     key_add_dlg.h key_add_dlg.cpp key_add_dlg.ui
     key_list_dlg.h key_list_dlg.cpp key_list_dlg.ui
+    code_editor.h code_editor.cpp
 
 )
 

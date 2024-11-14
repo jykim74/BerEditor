@@ -197,7 +197,10 @@ const QString kExtNameIDP = "issuingDistributionPoint";
 const QString kExtNameCRLReason = "CRLReason";
 const int kNoLicenseLimitMaxSize = 10000;
 
-const QString kTableStyle = "QHeaderView::section {background-color:#404040;color:#FFFFFF;}";
+const QString kTableStyle = "QHeaderView::section {background-color:#404040;color:#FFFFFF;}\n"
+                            "QHeaderView::section:selected {background-color:#404040;}\n"
+                            "QHeaderView::section:pressed {background-color:#404040;}";
+
 const QString kReadOnlyStyle = "background-color:#ddddff";
 
 const QString GetSystemID();

@@ -170,7 +170,7 @@ void MainWindow::initialize()
     log_text_ = new QTextEdit();
     log_text_->setReadOnly(true);
 
-    info_text_ = new QTextEdit;
+    info_text_ = new CodeEditor;
     info_text_->setReadOnly(true);
 
     right_table_ = new QTableWidget;
@@ -191,9 +191,8 @@ void MainWindow::initialize()
     table_tab_->setTabPosition( QTabWidget::South );
     table_tab_->addTab( right_table_, tr( "Hex" ));
 
-    right_xml_ = new QTextEdit;
+    right_xml_ = new CodeEditor;
     right_xml_->setReadOnly(true);
-//    right_xml_->setAcceptRichText(true);
     table_tab_->addTab( right_xml_, tr( "XML" ));
 
 #ifdef QT_DEBUG
@@ -201,14 +200,12 @@ void MainWindow::initialize()
 //    Q_UNUSED(highlighter);
 #endif
 
-    right_text_ = new QTextEdit;
+    right_text_ = new CodeEditor;
     right_text_->setReadOnly(true);
-//    right_text_->setAcceptRichText(true);
     table_tab_->addTab( right_text_, tr( "Text" ));
 
-    right_json_ = new QTextEdit;
+    right_json_ = new CodeEditor;
     right_json_->setReadOnly(true);
-//    right_json_->setAcceptRichText(true);
 
 #ifdef Q_OS_MACOS
     table_tab_->addTab( right_json_, tr("JSON ") );

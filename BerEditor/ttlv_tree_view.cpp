@@ -145,7 +145,7 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
 
     if( table_idx == TABLE_IDX_XML )
     {
-        QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
+        QPlainTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
         xmlEdit->clear();
 
         QTextCursor xml_cursor = xmlEdit->textCursor();
@@ -172,10 +172,12 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
             xml_cursor.setPosition( pos_start_ + 512 );
             xmlEdit->setTextCursor(xml_cursor);
         }
+
+        xmlEdit->update();
     }
     else if( table_idx == TABLE_IDX_TXT )
     {
-        QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
+        QPlainTextEdit *txtEdit = berApplet->mainWindow()->rightText();
         txtEdit->clear();
 
         QTextCursor cursor = txtEdit->textCursor();
@@ -202,10 +204,12 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
             cursor.setPosition( pos_start_ + 512 );
             txtEdit->setTextCursor(cursor);
         }
+
+        txtEdit->update();
     }
     else if( table_idx == TABLE_IDX_JSON )
     {
-        QTextEdit *txtEdit = berApplet->mainWindow()->rightJSON();
+        QPlainTextEdit *txtEdit = berApplet->mainWindow()->rightJSON();
         txtEdit->clear();
 
         QTextCursor cursor = txtEdit->textCursor();
@@ -234,6 +238,8 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
             cursor.setPosition( pos_start_ + 512 );
             txtEdit->setTextCursor(cursor);
         }
+
+        txtEdit->update();
     }
     else
     {
@@ -342,7 +348,7 @@ void TTLVTreeView::showRightPart( TTLVTreeItem *pItem )
 
     if( table_idx == TABLE_IDX_XML )
     {
-        QTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
+        QPlainTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
 
         QTextCursor xml_cursor = xmlEdit->textCursor();
         QTextCharFormat format = xmlEdit->currentCharFormat();
@@ -360,7 +366,7 @@ void TTLVTreeView::showRightPart( TTLVTreeItem *pItem )
     }
     else if( table_idx == TABLE_IDX_TXT )
     {
-        QTextEdit *txtEdit = berApplet->mainWindow()->rightText();
+        QPlainTextEdit *txtEdit = berApplet->mainWindow()->rightText();
 
         QTextCursor cursor = txtEdit->textCursor();
         QTextCharFormat format = txtEdit->currentCharFormat();
@@ -378,7 +384,7 @@ void TTLVTreeView::showRightPart( TTLVTreeItem *pItem )
     }
     else if( table_idx == TABLE_IDX_JSON )
     {
-        QTextEdit *txtEdit = berApplet->mainWindow()->rightJSON();
+        QPlainTextEdit *txtEdit = berApplet->mainWindow()->rightJSON();
 
         QTextCursor cursor = txtEdit->textCursor();
         QTextCharFormat format = txtEdit->currentCharFormat();
@@ -739,17 +745,16 @@ void TTLVTreeView::setItemText( int level, TTLVTreeItem* item, TTLVTreeItem *set
 
     TTLVTreeModel *tree_model = (TTLVTreeModel *)model();
     BIN binTTLV = tree_model->getTTLV();
-
+    QString strName = item->getTagName().toUpper();
 
     if( item == setItem )
     {
         pos_start_ = str_edit_.length();
     }
 
-
     if( item->isStructure() )
     {
-        addEdit( level, QString("%1 {\n").arg( item->text()) );
+        addEdit( level, QString("%1 {\n").arg( strName ) );
 
         while( 1 )
         {
@@ -763,7 +768,6 @@ void TTLVTreeView::setItemText( int level, TTLVTreeItem* item, TTLVTreeItem *set
     }
     else
     {
-        QString strName = item->getTagName();
         QString strValue = item->getPrintValue( &binTTLV );
 
         addEdit( level, QString( "%1" ).arg( strName ) );
@@ -786,7 +790,7 @@ void TTLVTreeView::setItemXML( int level, TTLVTreeItem* item, TTLVTreeItem *setI
     BIN binTTLV = tree_model->getTTLV();
 
 
-    QString strName = item->getTagName();
+    QString strName = item->getTagName().toUpper();
 
     if( item == setItem )
     {
@@ -832,7 +836,7 @@ void TTLVTreeView::setItemJSON( int level, TTLVTreeItem* item, bool bNext, TTLVT
     BIN binTTLV = tree_model->getTTLV();
 
 
-    QString strName = item->getTagName();
+    QString strName = item->getTagName().toUpper();
 
     if( item == setItem )
     {
