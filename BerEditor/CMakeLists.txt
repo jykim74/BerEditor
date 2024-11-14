@@ -195,7 +195,7 @@ add_executable(${PROJECT_NAME}
     pri_key_info_dlg.h
     pri_key_info_dlg.cpp
     pri_key_info_dlg.ui
-    BasicXMLSyntaxHighlighter.cpp BasicXMLSyntaxHighlighter.h
+
     name_dlg.h name_dlg.cpp name_dlg.ui
     cavp_dlg2.cpp
     ldt_hash_thread.h ldt_hash_thread.cpp

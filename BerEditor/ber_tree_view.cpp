@@ -14,7 +14,6 @@
 #include "make_ber_dlg.h"
 #include "common.h"
 #include "js_pki_tools.h"
-#include "BasicXMLSyntaxHighlighter.h"
 
 #include <QStandardItemModel>
 #include <QTreeView>

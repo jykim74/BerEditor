@@ -49,7 +49,6 @@
 #include "ttlv_client_dlg.h"
 #include "ttlv_encoder_dlg.h"
 #include "make_ttlv_dlg.h"
-#include "BasicXMLSyntaxHighlighter.h"
 #include "pri_key_info_dlg.h"
 #include "cms_info_dlg.h"
 #include "content_main.h"
@@ -194,11 +193,6 @@ void MainWindow::initialize()
     right_xml_ = new CodeEditor;
     right_xml_->setReadOnly(true);
     table_tab_->addTab( right_xml_, tr( "XML" ));
-
-#ifdef QT_DEBUG
-//    BasicXMLSyntaxHighlighter * highlighter = new BasicXMLSyntaxHighlighter(right_xml_);
-//    Q_UNUSED(highlighter);
-#endif
 
     right_text_ = new CodeEditor;
     right_text_->setReadOnly(true);

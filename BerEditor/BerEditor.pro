@@ -101,7 +101,6 @@ SOURCES += \
     ttlv_tree_view.cpp \
     make_ttlv_dlg.cpp \
     pri_key_info_dlg.cpp \
-    BasicXMLSyntaxHighlighter.cpp \
     name_dlg.cpp \
     ldt_hash_thread.cpp \
     cms_info_dlg.cpp \
@@ -179,7 +178,6 @@ HEADERS += \
     ttlv_tree_view.h \
     make_ttlv_dlg.h \
     pri_key_info_dlg.h \
-    BasicXMLSyntaxHighlighter.h \
     name_dlg.h \
     ldt_hash_thread.h \
     cms_info_dlg.h \
