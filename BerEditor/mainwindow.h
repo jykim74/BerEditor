@@ -73,7 +73,7 @@ public:
 
     void initialize();
     void loadFile( const QString &filename );
-    QTextEdit* logText() { return log_text_; };
+    QPlainTextEdit* logText() { return log_text_; };
     CodeEditor* infoText() { return info_text_; };
     QTableWidget* rightTable() { return right_table_; };
     CodeEditor* rightText() { return right_text_; };
@@ -288,7 +288,7 @@ private:
 
     QTabWidget      *table_tab_;
     QTabWidget      *text_tab_;
-    QTextEdit       *log_text_;
+    QPlainTextEdit  *log_text_;
     CodeEditor       *info_text_;
 
     QTableWidget    *right_table_;

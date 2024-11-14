@@ -167,7 +167,7 @@ void MainWindow::initialize()
     ttlv_model_ = new TTLVTreeModel;
     ttlv_tree_->setModel( ttlv_model_ );
 
-    log_text_ = new QTextEdit();
+    log_text_ = new QPlainTextEdit();
     log_text_->setReadOnly(true);
 
     info_text_ = new CodeEditor;
@@ -2026,7 +2026,7 @@ void MainWindow::setTitle( const QString strName )
 
 void MainWindow::showTextMsg(const QString &msg)
 {
-    log_text_->setText( msg );
+    log_text_->setPlainText( msg );
 }
 
 int MainWindow::tableCurrentIndex()
