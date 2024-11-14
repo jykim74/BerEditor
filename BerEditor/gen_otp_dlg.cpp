@@ -139,7 +139,7 @@ void GenOTPDlg::clickGenOTP()
 
     JS_BIN_reset(&binKey);
     JS_BIN_reset(&binT);
-    repaint();
+    update();
 }
 
 void GenOTPDlg::keyChanged()

@@ -413,7 +413,7 @@ end :
     JS_BIN_reset( &binAAD );
     JS_BIN_reset( &binTag );
 
-    repaint();
+    update();
 }
 
 void EncDecDlg::fileRun()
@@ -560,7 +560,7 @@ void EncDecDlg::fileRun()
 
         JS_BIN_reset( &binPart );
         JS_BIN_reset( &binDst );
-        repaint();
+        update();
     }
 
     fclose( fp );
@@ -808,7 +808,7 @@ end :
     JS_BIN_reset( &binSrc );
     JS_BIN_reset( &binTag );
 
-    repaint();
+    update();
     return ret;
 }
 
@@ -935,7 +935,7 @@ int EncDecDlg::encDecUpdate()
     JS_BIN_reset( &binDst );
     JS_BIN_reset( &binOut );
 
-    repaint();
+    update();
     return ret;
 }
 
@@ -1091,7 +1091,7 @@ int EncDecDlg::encDecFinal()
     JS_BIN_reset( &binDst );
     JS_BIN_reset( &binTag );
 
-    repaint();
+    update();
     return ret;
 }
 
@@ -1109,7 +1109,7 @@ void EncDecDlg::dataChange()
     mOutputText->clear();
     mInputText->setPlainText( strOutput );
 
-    repaint();
+    update();
 }
 
 bool EncDecDlg::isCCM( const QString strMode )

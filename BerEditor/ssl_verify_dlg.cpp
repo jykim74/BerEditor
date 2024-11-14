@@ -277,7 +277,7 @@ void SSLVerifyDlg::log( const QString strLog, QColor cr )
     cursor.insertText( "\n" );
 
     mLogText->setTextCursor( cursor );
-    mLogText->repaint();
+    mLogText->update();
 }
 
 void SSLVerifyDlg::elog( const QString strLog )

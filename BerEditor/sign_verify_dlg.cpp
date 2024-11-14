@@ -500,7 +500,7 @@ void SignVerifyDlg::findPrivateKey()
 
     mPriKeyPath->setText(fileName);
 
-    repaint();
+    update();
 }
 
 void SignVerifyDlg::findCert()
@@ -513,7 +513,7 @@ void SignVerifyDlg::findCert()
 
     mCertPath->setText( fileName );
 
-    repaint();
+    update();
 }
 
 void SignVerifyDlg::algChanged(int index)
@@ -638,7 +638,7 @@ int SignVerifyDlg::signVerifyInit()
         berApplet->elog( strFail );
     }
 
-    repaint();
+    update();
 
 end :
     JS_BIN_reset( &binPri );
@@ -694,7 +694,7 @@ void SignVerifyDlg::signVerifyUpdate()
         berApplet->elog( strFail );
     }
 
-    repaint();
+    update();
     JS_BIN_reset( &binSrc );
 }
 
@@ -764,7 +764,7 @@ end :
     if( sctx_ ) JS_PKI_signFree( &sctx_ );
 
 
-    repaint();
+    update();
 }
 
 void SignVerifyDlg::Run()
@@ -934,7 +934,7 @@ void SignVerifyDlg::dataRun()
         }
     }
 
-    repaint();
+    update();
 end :
 
     JS_BIN_reset( &binSrc );
@@ -1031,7 +1031,7 @@ void SignVerifyDlg::fileRun()
         nOffset += nRead;
 
         JS_BIN_reset( &binPart );
-        repaint();
+        update();
     }
 
     fclose( fp );
@@ -1278,7 +1278,7 @@ void SignVerifyDlg::digestRun()
         }
     }
 
-    repaint();
+    update();
 end :
 
     JS_BIN_reset( &binSrc );

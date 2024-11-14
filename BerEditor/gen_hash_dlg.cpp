@@ -108,7 +108,7 @@ int GenHashDlg::hashInit()
     else
         mStatusLabel->setText( QString("Initialization failed [%1]").arg(ret) );
 
-    repaint();
+    update();
     return 0;
 }
 
@@ -152,7 +152,7 @@ void GenHashDlg::hashUpdate()
         mStatusLabel->setText( QString("Update failed [%1]").arg(ret) );
 
     JS_BIN_reset( &binSrc );
-    repaint();
+    update();
 }
 
 void GenHashDlg::hashFinal()
@@ -177,7 +177,7 @@ void GenHashDlg::hashFinal()
     pctx_ = NULL;
     JS_BIN_reset( &binMD );
 
-    repaint();
+    update();
 }
 
 void GenHashDlg::digest()
@@ -252,19 +252,19 @@ void GenHashDlg::clickDigest()
     JS_BIN_reset(&binSrc);
     JS_BIN_reset(&binHash);
 
-    repaint();
+    update();
 }
 
 void GenHashDlg::clearInput()
 {
     mInputText->clear();
-    repaint();
+    update();
 }
 
 void GenHashDlg::clearOutput()
 {
     mOutputText->clear();
-    repaint();
+    update();
 }
 
 void GenHashDlg::inputChanged()
@@ -401,7 +401,7 @@ void GenHashDlg::clickDigestSrcFile()
         nOffset += nRead;
 
         JS_BIN_reset( &binPart );
-        repaint();
+        update();
     }
 
     fclose( fp );

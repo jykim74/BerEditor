@@ -145,7 +145,7 @@ void OIDInfoDlg::findOID()
     JS_BIN_reset(&binOID);
     JS_BIN_reset( &binInput );
 
-    repaint();
+    update();
 }
 
 void OIDInfoDlg::accept()

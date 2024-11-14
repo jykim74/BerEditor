@@ -560,7 +560,7 @@ void PubEncDecDlg::Run()
     mOutputText->setPlainText(pOut);
 
 end :
-    repaint();
+    update();
 
     JS_BIN_reset(&binSrc);
     JS_BIN_reset(&binPri);
@@ -581,7 +581,7 @@ void PubEncDecDlg::findCert()
 
     mCertPath->setText(fileName);
 
-    repaint();
+    update();
 }
 
 void PubEncDecDlg::findPrivateKey()
@@ -594,7 +594,7 @@ void PubEncDecDlg::findPrivateKey()
 
     mPriKeyPath->setText(fileName);
 
-    repaint();
+    update();
 }
 
 void PubEncDecDlg::changeValue()
@@ -611,7 +611,7 @@ void PubEncDecDlg::changeValue()
     mOutputText->clear();
     mInputText->setPlainText( strOutput );
 
-    repaint();
+    update();
 }
 
 void PubEncDecDlg::inputChanged()

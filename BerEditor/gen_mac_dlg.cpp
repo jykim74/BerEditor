@@ -242,7 +242,7 @@ int GenMacDlg::macInit()
 
 end :
    JS_BIN_reset( &binKey );
-   repaint();
+   update();
    return ret;
 }
 
@@ -311,7 +311,7 @@ void GenMacDlg::macUpdate()
         mStatusLabel->setText( QString("Update failure [%1]").arg(ret) );
 
     JS_BIN_reset( &binSrc );
-    repaint();
+    update();
 }
 
 void GenMacDlg::macFinal()
@@ -366,7 +366,7 @@ void GenMacDlg::macFinal()
 
     JS_BIN_reset( &binMAC );
 
-    repaint();
+    update();
 }
 
 void GenMacDlg::mac()
@@ -513,7 +513,7 @@ end :
    JS_BIN_reset(&binMAC);
    JS_BIN_reset(&binIV);
 
-   repaint();
+   update();
 }
 
 void GenMacDlg::clickFindSrcFile()
@@ -633,7 +633,7 @@ void GenMacDlg::clickMACSrcFile()
         nOffset += nRead;
 
         JS_BIN_reset( &binPart );
-        repaint();
+        update();
     }
 
     fclose( fp );
@@ -660,13 +660,13 @@ end :
 void GenMacDlg::inputClear()
 {
     mInputText->clear();
-    repaint();
+    update();
 }
 
 void GenMacDlg::outputClear()
 {
     mOutputText->clear();
-    repaint();
+    update();
 }
 
 void GenMacDlg::inputChanged()

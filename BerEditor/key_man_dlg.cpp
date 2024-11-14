@@ -180,7 +180,7 @@ void KeyManDlg::clickMakeKey()
     JS_BIN_reset( &binInfo );
     JS_BIN_reset( &binKey );
 
-    repaint();
+    update();
 }
 
 void KeyManDlg::secretChanged()

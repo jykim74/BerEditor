@@ -110,7 +110,7 @@ void NumTransDlg::dataTrans()
 end :
     if( pOutput ) JS_free( pOutput );
     JS_BIN_reset( &binSrc );
-    repaint();
+    update();
 }
 
 void NumTransDlg::dataChange()
@@ -129,7 +129,7 @@ void NumTransDlg::dataChange()
 
     mInputText->setText( strOutput );
 
-    repaint();
+    update();
 }
 
 void NumTransDlg::clickInputClear()

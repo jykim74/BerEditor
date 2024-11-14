@@ -200,7 +200,7 @@ void KeyAgreeDlg::calcualteA()
         if( binSecY.nLen > 0 ) mSecretKeyText->appendPlainText(getHexString(binSecY.pVal, binSecY.nLen));
     }
 
-    repaint();
+    update();
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binPub );
     JS_BIN_reset( &binSecX );
@@ -324,7 +324,7 @@ void KeyAgreeDlg::calcualteB()
         if( binSecY.nLen > 0 ) mSecretKeyText->appendPlainText(getHexString(binSecY.pVal, binSecY.nLen));
     }
 
-    repaint();
+    update();
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binPub );
     JS_BIN_reset( &binSecX );
@@ -334,7 +334,7 @@ void KeyAgreeDlg::calcualteB()
 void KeyAgreeDlg::secretClear()
 {
     mSecretKeyText->clear();
-    repaint();
+    update();
 }
 
 void KeyAgreeDlg::initialize()
@@ -368,7 +368,7 @@ void KeyAgreeDlg::genDHParam()
 
     JS_BIN_reset( &binP );
     JS_BIN_reset( &binG );
-    repaint();
+    update();
 }
 
 void KeyAgreeDlg::genADHPri()
@@ -386,7 +386,7 @@ void KeyAgreeDlg::genADHPri()
     berApplet->log( QString( "A PrivteKey : %1").arg( pHex ));
 
     if( pHex ) JS_free( pHex );
-    repaint();
+    update();
 }
 
 void KeyAgreeDlg::genBDHPri()
@@ -404,7 +404,7 @@ void KeyAgreeDlg::genBDHPri()
     berApplet->log( QString( "B PrivteKey : %1").arg( pHex ));
 
     if( pHex ) JS_free( pHex );
-    repaint();
+    update();
 }
 
 void KeyAgreeDlg::genADHKey()
@@ -450,7 +450,7 @@ void KeyAgreeDlg::genADHKey()
     JS_BIN_reset( &binG );
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binPub );
-    repaint();
+    update();
 }
 
 void KeyAgreeDlg::genBDHKey()
@@ -496,7 +496,7 @@ void KeyAgreeDlg::genBDHKey()
     JS_BIN_reset( &binG );
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binPub );
-    repaint();
+    update();
 }
 
 void KeyAgreeDlg::genAKeyPair()
@@ -691,7 +691,7 @@ void KeyAgreeDlg::genAECDHPriKey()
 
     if( pHex ) JS_free( pHex );
 
-    repaint();
+    update();
 }
 
 void KeyAgreeDlg::genAECDHPubKey()
@@ -717,7 +717,7 @@ void KeyAgreeDlg::genAECDHPubKey()
     JS_BIN_reset( &binAPubX );
     JS_BIN_reset( &binAPubY );
 
-    repaint();
+    update();
 }
 
 void KeyAgreeDlg::findAECDHPriKey()
@@ -758,7 +758,7 @@ void KeyAgreeDlg::findAECDHPriKey()
 end :
     JS_BIN_reset( &binECKey );
     JS_PKI_resetECKeyVal( &sECKeyVal );
-    repaint();
+    update();
 }
 
 void KeyAgreeDlg::getAFromCertMan()
@@ -865,7 +865,7 @@ void KeyAgreeDlg::genBECDHPriKey()
     mBECDHPriKeyText->setText( pHex );
 
     if( pHex ) JS_free( pHex );
-    repaint();
+    update();
 }
 
 void KeyAgreeDlg::genBECDHPubKey()
@@ -891,7 +891,7 @@ void KeyAgreeDlg::genBECDHPubKey()
     JS_BIN_reset( &binPubX );
     JS_BIN_reset( &binPubY );
 
-    repaint();
+    update();
 }
 
 void KeyAgreeDlg::findBECDHPriKey()
@@ -932,7 +932,7 @@ void KeyAgreeDlg::findBECDHPriKey()
 end :
     JS_BIN_reset( &binECKey );
     JS_PKI_resetECKeyVal( &sECKeyVal );
-    repaint();
+    update();
 }
 
 void KeyAgreeDlg::getBFromCertMan()

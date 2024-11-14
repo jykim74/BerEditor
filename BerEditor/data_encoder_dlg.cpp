@@ -125,7 +125,7 @@ void DataEncoderDlg::onClickEncodeBtn()
     makeDump( &binSrc );
 
     JS_BIN_reset(&binSrc);
-    repaint();
+    update();
 }
 
 void DataEncoderDlg::outTypeChanged(int index)

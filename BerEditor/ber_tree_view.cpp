@@ -401,10 +401,9 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
             format.setForeground(Qt::blue);
             xml_cursor.setCharFormat( format );
             xml_cursor.clearSelection();
+            xml_cursor.setPosition( pos_start_ + 512 );
             xmlEdit->setTextCursor(xml_cursor);
         }
-
-        if( root == pItem ) xmlEdit->moveCursor (QTextCursor::Start);
     }
     else if( table_idx == TABLE_IDX_TXT )
     {
@@ -432,10 +431,9 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
             format.setForeground(Qt::blue);
             cursor.setCharFormat( format );
             cursor.clearSelection();
+            cursor.setPosition( pos_start_ + 512 );
             txtEdit->setTextCursor(cursor);
         }
-
-        if( root == pItem ) txtEdit->moveCursor (QTextCursor::Start);
     }
     else if( table_idx == TABLE_IDX_JSON )
     {
@@ -455,7 +453,6 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
 
         txtEdit->setPlainText( str_edit_ );
 
-
         if( pos_start_ >= 0 && pos_end_ > pos_start_ )
         {
             cursor.setPosition( pos_start_ );
@@ -466,10 +463,9 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
             format.setForeground(Qt::blue);
             cursor.setCharFormat( format );
             cursor.clearSelection();
+            cursor.setPosition( pos_start_ + 512 );
             txtEdit->setTextCursor(cursor);
         }
-
-        if( root == pItem ) txtEdit->moveCursor (QTextCursor::Start);
     }
     else
     {
@@ -556,6 +552,7 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
         QTableWidgetItem *item = rightTable->item( start_row, start_col );
         rightTable->scrollToItem( item, ScrollHint::PositionAtCenter );
     }
+
 }
 
 void BerTreeView::copy()
