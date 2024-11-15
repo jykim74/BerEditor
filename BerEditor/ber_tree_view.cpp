@@ -157,23 +157,29 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
 
     QString strVal = pItem->GetValueString( &binBer, nWidth );
 
-    if( pItem->GetTag() == JS_BITSTRING )
+    if( (pItem->GetId() & JS_CLASS_MASK) == 0 )
     {
-        pItem->getValueBin( &binBer, &binVal );
-        berApplet->info( QString( "Bit Length  : %1 Bits\n" ).arg(strVal.length()));
-        berApplet->info( QString( "Unused Bits : 0x%1 - %2 Bits\n" ).arg(getHexString( &binVal.pVal[0], 1)).arg(binVal.pVal[0]));
+        if( pItem->GetTag() == JS_BITSTRING  )
+        {
+            pItem->getValueBin( &binBer, &binVal );
+            berApplet->info( QString( "Bit Length  : %1 Bits\n" ).arg(strVal.length()));
+            berApplet->info( QString( "Unused Bits : 0x%1 - %2 Bits\n" ).arg(getHexString( &binVal.pVal[0], 1)).arg(binVal.pVal[0]));
+        }
     }
 
     berApplet->line();
     berApplet->info( strVal );
 
-    if( pItem->GetTag() == JS_BITSTRING )
+    if( (pItem->GetId() & JS_CLASS_MASK) == 0 )
     {
-        berApplet->info( "\n" );
-        berApplet->line();
-        berApplet->info( "== Hex Value\n" );
-        berApplet->line();
-        berApplet->info( getHexStringArea(&binVal.pVal[1], binVal.nLen - 1, nWidth ));
+        if( pItem->GetTag() == JS_BITSTRING )
+        {
+            berApplet->info( "\n" );
+            berApplet->line();
+            berApplet->info( "== Hex Value\n" );
+            berApplet->line();
+            berApplet->info( getHexStringArea(&binVal.pVal[1], binVal.nLen - 1, nWidth ));
+        }
     }
 
     berApplet->mainWindow()->infoText()->moveCursor(QTextCursor::Start);
@@ -863,7 +869,7 @@ void BerTreeView::setItemText( int level, BerItem* item, BerItem* setItem )
 
     if( item->isConstructed() || item->hasChildren() )
     {
-        if( strName == "NODE" )
+        if( strName == "CONTEXT" )
         {
             addEdit( level, QString("CONTEXT_%1 {\n").arg( item->GetTag() ) );
         }
@@ -919,7 +925,7 @@ void BerTreeView::setItemXML( int level, BerItem* item, BerItem* setItem )
 
     if( item->isConstructed() || item->hasChildren() )
     {
-        if( strName == "NODE" )
+        if( strName == "CONTEXT" )
         {
             addEdit( level, QString( "<CONTEXT_%1>\n" ).arg(item->GetTag()) );
         }
@@ -936,10 +942,7 @@ void BerTreeView::setItemXML( int level, BerItem* item, BerItem* setItem )
             setItemXML( level + 1, child, setItem );
         }
 
-        if( strName == "NODE" )
-            addEdit( level, QString("</CONTEXT>\n") );
-        else
-            addEdit( level, QString("</%1>\n").arg( strName ) );
+        addEdit( level, QString("</%1>\n").arg( strName ) );
     }
     else
     {
@@ -1006,7 +1009,7 @@ void BerTreeView::setItemJSON( int level, BerItem* item, bool bNext, BerItem* se
 
     if( item->isConstructed() || item->hasChildren() )
     {
-        if( strName == "NODE" )
+        if( strName == "CONTEXT" )
         {
             addEdit( level, QString( "\"CONTEXT_%1\": {\n" ).arg( item->GetTag() ));
         }

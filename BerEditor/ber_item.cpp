@@ -110,7 +110,7 @@ QString BerItem::GetTagXMLString()
 
     if( id_ & JS_CLASS_MASK )
     {
-        QString strOut = "NODE";
+        QString strOut = "CONTEXT";
         return strOut;
     }
     else
@@ -176,54 +176,61 @@ QString BerItem::GetValueString( const BIN *pBer, int nWidth )
 
     JS_BIN_set( &binVal, pBer->pVal + offset_ + header_size_, length_ );
 
-    if( tag_ == JS_OID )
+    if( id_ & JS_CLASS_MASK )
     {
-        char sOID[1024];
-        memset( sOID, 0x00, sizeof(sOID));
-        JS_PKI_getStringFromOIDValue( &binVal, sOID );
-        strVal = sOID;
-    }
-    else if( tag_ == JS_NULLTAG )
-    {
-        strVal = "NULL";
-    }
-    else if( tag_ == JS_INTEGER )
-    {
-        char *pDecimal = NULL;
-        JS_PKI_binToDecimal( &binVal, &pDecimal );
-        if( pDecimal )
-        {
-            strVal = pDecimal;
-            JS_free( pDecimal );
-        }
-    }
-    else if( tag_ == JS_PRINTABLESTRING || tag_ == JS_IA5STRING || tag_ == JS_UTF8STRING \
-             || tag_ == JS_UTCTIME || tag_ == JS_GENERALIZEDTIME || tag_ == JS_VISIBLESTRING )
-    {
-        char *pStr = NULL;
-        pStr = (char *)JS_calloc(1, binVal.nLen + 1 );
-        memcpy( pStr, binVal.pVal, binVal.nLen );
-        strVal = pStr;
-        JS_free(pStr);
-    }
-    else if( tag_ == JS_BITSTRING )
-    {
-        int iUnused = 0;
-        char *pBitStr = (char *)JS_malloc( binVal.nLen * 8 + 8 );
-        JS_PKI_getBitString( &binVal, &iUnused, pBitStr );
-        strVal = pBitStr;
-        JS_free(pBitStr);
-        strVal = getHexStringArea( strVal, nWidth );
-    }
-    else if( tag_ == JS_BOOLEAN )
-    {
-        if( binVal.pVal[0] == 0x00 )
-            strVal = "False";
-        else
-            strVal = "True";
-    }
-    else {
         strVal = getHexStringArea( &binVal, nWidth );
+    }
+    else
+    {
+        if( tag_ == JS_OID )
+        {
+            char sOID[1024];
+            memset( sOID, 0x00, sizeof(sOID));
+            JS_PKI_getStringFromOIDValue( &binVal, sOID );
+            strVal = sOID;
+        }
+        else if( tag_ == JS_NULLTAG )
+        {
+            strVal = "NULL";
+        }
+        else if( tag_ == JS_INTEGER )
+        {
+            char *pDecimal = NULL;
+            JS_PKI_binToDecimal( &binVal, &pDecimal );
+            if( pDecimal )
+            {
+                strVal = pDecimal;
+                JS_free( pDecimal );
+            }
+        }
+        else if( tag_ == JS_PRINTABLESTRING || tag_ == JS_IA5STRING || tag_ == JS_UTF8STRING \
+                 || tag_ == JS_UTCTIME || tag_ == JS_GENERALIZEDTIME || tag_ == JS_VISIBLESTRING )
+        {
+            char *pStr = NULL;
+            pStr = (char *)JS_calloc(1, binVal.nLen + 1 );
+            memcpy( pStr, binVal.pVal, binVal.nLen );
+            strVal = pStr;
+            JS_free(pStr);
+        }
+        else if( tag_ == JS_BITSTRING )
+        {
+            int iUnused = 0;
+            char *pBitStr = (char *)JS_malloc( binVal.nLen * 8 + 8 );
+            JS_PKI_getBitString( &binVal, &iUnused, pBitStr );
+            strVal = pBitStr;
+            JS_free(pBitStr);
+            strVal = getHexStringArea( strVal, nWidth );
+        }
+        else if( tag_ == JS_BOOLEAN )
+        {
+            if( binVal.pVal[0] == 0x00 )
+                strVal = "False";
+            else
+                strVal = "True";
+        }
+        else {
+            strVal = getHexStringArea( &binVal, nWidth );
+        }
     }
 
     JS_BIN_reset( &binVal );
