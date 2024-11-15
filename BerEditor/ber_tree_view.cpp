@@ -157,7 +157,7 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
 
     QString strVal = pItem->GetValueString( &binBer, nWidth );
 
-    if( (pItem->GetId() & JS_CLASS_MASK) == 0 )
+    if( (pItem->GetId() & JS_CLASS_MASK) == JS_UNIVERSAL )
     {
         if( pItem->GetTag() == JS_BITSTRING  )
         {
@@ -170,7 +170,7 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
     berApplet->line();
     berApplet->info( strVal );
 
-    if( (pItem->GetId() & JS_CLASS_MASK) == 0 )
+    if( (pItem->GetId() & JS_CLASS_MASK) == JS_UNIVERSAL )
     {
         if( pItem->GetTag() == JS_BITSTRING )
         {
