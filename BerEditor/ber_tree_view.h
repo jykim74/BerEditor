@@ -23,10 +23,6 @@ public:
     void viewCurrent();
 
     QString GetTextView();
-/*
-    void showTextView();
-    void showXMLView();
-*/
 
 private slots:
     void onItemClicked( const QModelIndex& index );
