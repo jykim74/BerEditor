@@ -21,6 +21,7 @@
 #include "js_bin.h"
 #include "common.h"
 #include "code_editor.h"
+#include "highlighter_xml.h"
 
 class QPrinter;
 

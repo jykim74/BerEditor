@@ -145,7 +145,7 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
 
     if( table_idx == TABLE_IDX_XML )
     {
-        QPlainTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
+        CodeEditor *xmlEdit = berApplet->mainWindow()->rightXML();
         xmlEdit->clear();
 
         QTextCursor xml_cursor = xmlEdit->textCursor();
@@ -177,7 +177,7 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
     }
     else if( table_idx == TABLE_IDX_TXT )
     {
-        QPlainTextEdit *txtEdit = berApplet->mainWindow()->rightText();
+        CodeEditor *txtEdit = berApplet->mainWindow()->rightText();
         txtEdit->clear();
 
         QTextCursor cursor = txtEdit->textCursor();
@@ -209,7 +209,7 @@ void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
     }
     else if( table_idx == TABLE_IDX_JSON )
     {
-        QPlainTextEdit *txtEdit = berApplet->mainWindow()->rightJSON();
+        CodeEditor *txtEdit = berApplet->mainWindow()->rightJSON();
         txtEdit->clear();
 
         QTextCursor cursor = txtEdit->textCursor();
@@ -348,7 +348,7 @@ void TTLVTreeView::showRightPart( TTLVTreeItem *pItem )
 
     if( table_idx == TABLE_IDX_XML )
     {
-        QPlainTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
+        CodeEditor *xmlEdit = berApplet->mainWindow()->rightXML();
 
         QTextCursor xml_cursor = xmlEdit->textCursor();
         QTextCharFormat format = xmlEdit->currentCharFormat();
@@ -366,7 +366,7 @@ void TTLVTreeView::showRightPart( TTLVTreeItem *pItem )
     }
     else if( table_idx == TABLE_IDX_TXT )
     {
-        QPlainTextEdit *txtEdit = berApplet->mainWindow()->rightText();
+        CodeEditor *txtEdit = berApplet->mainWindow()->rightText();
 
         QTextCursor cursor = txtEdit->textCursor();
         QTextCharFormat format = txtEdit->currentCharFormat();
@@ -384,7 +384,7 @@ void TTLVTreeView::showRightPart( TTLVTreeItem *pItem )
     }
     else if( table_idx == TABLE_IDX_JSON )
     {
-        QPlainTextEdit *txtEdit = berApplet->mainWindow()->rightJSON();
+        CodeEditor *txtEdit = berApplet->mainWindow()->rightJSON();
 
         QTextCursor cursor = txtEdit->textCursor();
         QTextCharFormat format = txtEdit->currentCharFormat();
@@ -500,6 +500,7 @@ void TTLVTreeView::showRightPart( TTLVTreeItem *pItem )
 
 void TTLVTreeView::getInfoView(TTLVTreeItem *pItem, int nWidth )
 {
+    int nFieldWidth = -16;
     BIN binTTLV = berApplet->getTTLV();
     BIN binHeader = {0,0};
 
@@ -512,10 +513,10 @@ void TTLVTreeView::getInfoView(TTLVTreeItem *pItem, int nWidth )
     berApplet->line();
 
     berApplet->info( QString( "Header   : %1\n" ).arg( getHexString( &binHeader )));
-    berApplet->info( QString( "Tag      : 0x%1 - %2\n" ).arg( pItem->getTagHex() ).arg( pItem->getTagName() ));
-    berApplet->info( QString( "Type     : 0x%1 - %2\n").arg( pItem->getTypeHex() ).arg( pItem->getTypeName() ));
-    berApplet->info( QString( "Length   : 0x%1 - %2 Bytes\n" ).arg( pItem->getLengthHex() ).arg( pItem->getLengthInt() ));
-    berApplet->info( QString( "Offset   : 0x%1 - %2\n").arg( pItem->getOffset(), 0, 16).arg( pItem->getOffset()) );
+    berApplet->info( QString( "Tag      : 0x%1 - %2\n" ).arg( pItem->getTagHex(), nFieldWidth ).arg( pItem->getTagName() ));
+    berApplet->info( QString( "Type     : 0x%1 - %2\n").arg( pItem->getTypeHex(), nFieldWidth ).arg( pItem->getTypeName() ));
+    berApplet->info( QString( "Length   : 0x%1 - %2 Bytes\n" ).arg( pItem->getLengthHex(), nFieldWidth ).arg( pItem->getLengthInt() ));
+    berApplet->info( QString( "Offset   : 0x%1 - %2\n").arg( pItem->getOffset(), nFieldWidth, 16).arg( pItem->getOffset()) );
     berApplet->line();
     berApplet->info( QString( "%1\n").arg( pItem->getPrintValue( &binTTLV, nWidth ) ) );
     berApplet->line();

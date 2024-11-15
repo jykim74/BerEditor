@@ -96,6 +96,7 @@ void BerTreeView::viewCurrent()
 
 void BerTreeView::infoItem( BerItem *pItem, int nWidth )
 {
+    int nFieldWidth = -20;
     BerModel *tree_model = (BerModel *)model();
     const BIN& binBer = tree_model->getBER();
 
@@ -107,7 +108,12 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
     JS_BIN_set( &bin, binBer.pVal + pItem->GetOffset(), 1 );
     JS_BIN_bitString( &bin, &pBitString );
     unsigned char cID = pItem->GetId();
-    char sID[3+1];
+
+    char sClassBit[8 + 1] = "--------";
+    char sIDBit[8 + 1] = "--------";
+    char sPCBit[8 + 1] = "--------";
+    char sTagBit[8 + 1] = "--------";
+
     unsigned char cLen = 0x00;
     int nLenSize = 0;
     unsigned char sLen[4];
@@ -115,10 +121,22 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
     pItem->getHeaderBin( &header );
     if( header.nLen < 2 ) return;
 
-    memset( sID, 0x00, sizeof(sID));
-    if( pBitString )
+    if( pBitString && strlen( pBitString ) >= 8 )
     {
-        memcpy( sID, pBitString, 3 );
+        sClassBit[0] = pBitString[0];
+        sClassBit[1] = pBitString[1];
+
+        sIDBit[0] = pBitString[0];
+        sIDBit[1] = pBitString[1];
+        sIDBit[2] = pBitString[2];
+
+        sPCBit[2] = pBitString[2];
+
+        sTagBit[3] = pBitString[3];
+        sTagBit[4] = pBitString[4];
+        sTagBit[5] = pBitString[5];
+        sTagBit[6] = pBitString[6];
+        sTagBit[7] = pBitString[7];
     }
 
     cLen = header.pVal[1];
@@ -142,18 +160,20 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
     QString strOffset;
     strOffset = QString( "%1" ).arg( pItem->GetOffset(), 8, 16, QLatin1Char('0')).toUpper();
 
+
     berApplet->mainWindow()->infoText()->clear();
     berApplet->line();
     berApplet->info( QString( "== BER Information [Depth:%1]\n" ).arg(pItem->GetLevel()) );
     berApplet->line();
     berApplet->info( QString( "Header      : %1\n").arg( getHexString(header.pVal, header.nLen)));
-    berApplet->info( QString( "[T]         : 0x%1 - %2\n" ).arg(getHexString(bin.pVal,1)).arg(pBitString) );
-    berApplet->info( QString( "Class       : %1\n").arg( pItem->GetClassString()));
-    berApplet->info( QString( "ID          : 0x%1 - %2\n").arg( getHexString( &cID, 1) ).arg( sID ));
-    berApplet->info( QString( "P/C         : %1\n").arg(strPC));
-    berApplet->info( QString( "Tag         : 0x%1 - %2\n").arg( pItem->GetTag(), 2, 16, QChar('0')).arg(pItem->GetTagString()));
-    berApplet->info( QString( "Offset      : %1 - %2\n" ).arg( strOffset ).arg(pItem->GetOffset()));
-    berApplet->info( QString( "Length      : 0x%1 - %2 Bytes\n" ).arg( getHexString(sLen, nLenSize) ).arg(pItem->GetLength()));
+    berApplet->info( QString( "[T]         : 0x%1 - 0b%2\n" ).arg(getHexString(bin.pVal,1), nFieldWidth ).arg(pBitString) );
+    berApplet->info( QString( "Class       : %1 - 0b%2\n").arg( pItem->GetClassString(), nFieldWidth -2).arg( sClassBit ));
+    berApplet->info( QString( "ID          : 0x%1 - 0b%2\n").arg( getHexString( &cID, 1), nFieldWidth ).arg( sIDBit ));
+    berApplet->info( QString( "P/C         : %1 - 0b%2\n").arg(strPC, nFieldWidth - 2).arg( sPCBit ));
+    berApplet->info( QString( "Tag         : %1 - 0b%2\n").arg( pItem->GetTagString(), nFieldWidth - 2 ).arg( sTagBit ));
+    berApplet->info( QString( "Length      : 0x%1 - %2 Bytes\n" ).arg( getHexString(sLen, nLenSize), nFieldWidth ).arg(pItem->GetLength()));
+    berApplet->info( QString( "Offset      : 0x%1 - %2\n" ).arg( strOffset, nFieldWidth ).arg(pItem->GetOffset()));
+
 
     QString strVal = pItem->GetValueString( &binBer, nWidth );
 
@@ -161,26 +181,28 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
     {
         if( pItem->GetTag() == JS_BITSTRING  )
         {
+            BIN binInt = {0,0};
             pItem->getValueBin( &binBer, &binVal );
-            berApplet->info( QString( "Bit Length  : %1 Bits\n" ).arg(strVal.length()));
-            berApplet->info( QString( "Unused Bits : 0x%1 - %2 Bits\n" ).arg(getHexString( &binVal.pVal[0], 1)).arg(binVal.pVal[0]));
+            int nUnused = binVal.pVal[0];
+            int nBitBytes = binVal.nLen - 1;
+
+            int nBitLen = ( nBitBytes * 8 ) - nUnused;
+            JS_BIN_intToBin( nBitLen, &binInt );
+
+            berApplet->info( QString( "Unused Bits : 0x%1 - %2 Bits\n" ).arg(getHexString( &binVal.pVal[0], 1), nFieldWidth ).arg( nUnused));
+            berApplet->info( QString( "Bit Length  : 0x%1 - %2 Bits\n" ).arg( getHexString( &binInt ), nFieldWidth ).arg( nBitLen ));
+
+            berApplet->line();
+            berApplet->info( "== Bit value to hex\n" );
+            berApplet->line();
+            berApplet->info( getHexStringArea(&binVal.pVal[1], binVal.nLen - 1, nWidth ));
+
+            JS_BIN_reset( &binInt );
         }
     }
 
     berApplet->line();
     berApplet->info( strVal );
-
-    if( (pItem->GetId() & JS_CLASS_MASK) == JS_UNIVERSAL )
-    {
-        if( pItem->GetTag() == JS_BITSTRING )
-        {
-            berApplet->info( "\n" );
-            berApplet->line();
-            berApplet->info( "== Hex Value\n" );
-            berApplet->line();
-            berApplet->info( getHexStringArea(&binVal.pVal[1], binVal.nLen - 1, nWidth ));
-        }
-    }
 
     berApplet->mainWindow()->infoText()->moveCursor(QTextCursor::Start);
     if( pBitString ) JS_free( pBitString );
@@ -230,7 +252,7 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
 
     if( table_idx == TABLE_IDX_XML )
     {
-        QPlainTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
+        CodeEditor *xmlEdit = berApplet->mainWindow()->rightXML();
 
         QTextCursor xml_cursor = xmlEdit->textCursor();
         QTextCharFormat format = xmlEdit->currentCharFormat();
@@ -248,7 +270,7 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
     }
     else if( table_idx == TABLE_IDX_TXT )
     {
-        QPlainTextEdit *txtEdit = berApplet->mainWindow()->rightText();
+        CodeEditor *txtEdit = berApplet->mainWindow()->rightText();
 
         QTextCursor cursor = txtEdit->textCursor();
         QTextCharFormat format = txtEdit->currentCharFormat();
@@ -267,7 +289,7 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
     }
     else if( table_idx == TABLE_IDX_JSON )
     {
-        QPlainTextEdit *txtEdit = berApplet->mainWindow()->rightJSON();
+        CodeEditor *txtEdit = berApplet->mainWindow()->rightJSON();
 
         QTextCursor cursor = txtEdit->textCursor();
         QTextCharFormat format = txtEdit->currentCharFormat();
@@ -381,7 +403,7 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
 
     if( table_idx == TABLE_IDX_XML )
     {
-        QPlainTextEdit *xmlEdit = berApplet->mainWindow()->rightXML();
+        CodeEditor *xmlEdit = berApplet->mainWindow()->rightXML();
         xmlEdit->clear();
 
         QTextCursor xml_cursor = xmlEdit->textCursor();
@@ -401,11 +423,14 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
             xml_cursor.setPosition( pos_start_ );
             xml_cursor.setPosition( pos_end_, QTextCursor::KeepAnchor );
 
+
             QTextCharFormat format = xmlEdit->currentCharFormat();
-//            format.setFontWeight(QFont::Bold);
+
             format.setForeground(Qt::blue);
             xml_cursor.setCharFormat( format );
+            xml_cursor.mergeCharFormat( format );
             xml_cursor.clearSelection();
+
             xml_cursor.setPosition( pos_start_ + 512 );
             xmlEdit->setTextCursor(xml_cursor);
         }
@@ -414,7 +439,7 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
     }
     else if( table_idx == TABLE_IDX_TXT )
     {
-        QPlainTextEdit *txtEdit = berApplet->mainWindow()->rightText();
+        CodeEditor *txtEdit = berApplet->mainWindow()->rightText();
         txtEdit->clear();
 
         QTextCursor cursor = txtEdit->textCursor();
@@ -446,7 +471,7 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
     }
     else if( table_idx == TABLE_IDX_JSON )
     {
-        QPlainTextEdit *txtEdit = berApplet->mainWindow()->rightJSON();
+        CodeEditor *txtEdit = berApplet->mainWindow()->rightJSON();
         txtEdit->clear();
 
         QTextCursor cursor = txtEdit->textCursor();

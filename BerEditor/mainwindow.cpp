@@ -190,6 +190,8 @@ void MainWindow::initialize()
     table_tab_->setTabPosition( QTabWidget::South );
     table_tab_->addTab( right_table_, tr( "Hex" ));
 
+
+
     right_xml_ = new CodeEditor;
     right_xml_->setReadOnly(true);
     table_tab_->addTab( right_xml_, tr( "XML" ));
