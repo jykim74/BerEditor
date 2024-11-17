@@ -567,10 +567,10 @@ const QString getHexStringArea( const QString strMsg, int nWidth )
             nBlock = nLen;
 
         strAreaMsg += strMsg.mid( nPos, nBlock );
-        strAreaMsg += "\n";
 
         nLen -= nBlock;
         nPos += nBlock;
+        if( nLen > 0 ) strAreaMsg += "\n";
     }
 
     return strAreaMsg;
