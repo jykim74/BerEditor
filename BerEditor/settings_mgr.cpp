@@ -31,6 +31,9 @@ const char *kViewKMIP = "viewKMIP";
 const char *kViewHelp = "viewHelp";
 const char *kLinkList = "linkList";
 const char *kRunTime = "runTime";
+const char *kHsmUse = "hsmUse";
+const char *kHsmPath = "hsmPath";
+const char *kHsmIndex = "hsmIndex";
 }
 
 SettingsMgr::SettingsMgr(QObject *parent) : QObject(parent)
@@ -62,6 +65,13 @@ void SettingsMgr::initialize()
     getViewValue( VIEW_HELP );
 
     getLinkList();
+
+    getHsmUse();
+    if( hsm_use_ == true )
+    {
+        getHsmPath();
+        getHsmIndex();
+    }
 }
 
 void SettingsMgr::removeSet( const QString& group, const QString& name )
@@ -609,4 +619,67 @@ time_t SettingsMgr::getRunTime()
     sets.endGroup();
 
     return tRun;
+}
+
+void SettingsMgr::setHsmUse( bool bVal )
+{
+    QSettings sets;
+    sets.beginGroup( kBehaviorGroup );
+    sets.setValue( kHsmUse, bVal );
+    sets.endGroup();
+
+    hsm_use_ = bVal;
+}
+
+bool SettingsMgr::getHsmUse()
+{
+    QSettings sets;
+
+    sets.beginGroup( kBehaviorGroup );
+    hsm_use_ = sets.value( kHsmUse, false ).toBool();
+    sets.endGroup();
+
+    return hsm_use_;
+}
+
+void SettingsMgr::setHsmPath( const QString strPath )
+{
+    QSettings sets;
+    sets.beginGroup( kBehaviorGroup );
+    sets.setValue( kHsmPath, strPath );
+    sets.endGroup();
+
+    hsm_path_ = strPath;
+}
+
+QString SettingsMgr::getHsmPath()
+{
+    QSettings sets;
+
+    sets.beginGroup( kBehaviorGroup );
+    hsm_path_ = sets.value( kHsmPath, "" ).toString();
+    sets.endGroup();
+
+    return hsm_path_;
+}
+
+void SettingsMgr::setHsmIndex( int nIndex )
+{
+    QSettings sets;
+    sets.beginGroup( kBehaviorGroup );
+    sets.setValue( kHsmIndex, nIndex );
+    sets.endGroup();
+
+    hsm_index_ = nIndex;
+}
+
+int SettingsMgr::getHsmIndex()
+{
+    QSettings sets;
+
+    sets.beginGroup( kBehaviorGroup );
+    hsm_index_ = sets.value( kHsmIndex, 0 ).toInt();
+    sets.endGroup();
+
+    return hsm_index_;
 }

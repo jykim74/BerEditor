@@ -59,6 +59,7 @@ void SettingsDlg::initialize()
         mUseLogTabCheck->setEnabled( false );
         mCertPathGroup->setEnabled( false );
         mSupportKeyPairChangeCheck->setEnabled( false );
+        mHsmGroup->setEnabled(false);
     }
 
     initFontFamily();
@@ -90,6 +91,14 @@ void SettingsDlg::updateSettings()
         mgr->setCertPath( mCertPathText->text() );
         mgr->makeCertPath();
         mgr->setSupportKeyPairChagne( mSupportKeyPairChangeCheck->checkState() == Qt::Checked );
+
+        mgr->setHsmUse( mHsmGroup->isChecked() );
+
+        if( mHsmGroup->isChecked() == true )
+        {
+            mgr->setHsmPath( mHsmPathText->text() );
+            mgr->setHsmIndex( mHsmIndexText->text().toInt() );
+        }
     }
 
     bool language_changed = false;
@@ -171,6 +180,15 @@ void SettingsDlg::showEvent(QShowEvent *event)
 
         state = mgr->getSupportKeyPairChange() ? Qt::Checked : Qt::Unchecked;
         mSupportKeyPairChangeCheck->setCheckState(state);
+
+        bool bVal = mgr->getHsmUse();
+        mHsmGroup->setEnabled(bVal);
+
+        if( bVal == true )
+        {
+            mHsmPathText->setText( mgr->hsmPath() );
+            mHsmIndexText->setText( QString("%1").arg( mgr->hsmIndex() ));
+        }
     }
 
     mFileReadSizeText->setText( QString("%1").arg(mgr->getFileReadSize()));

@@ -83,6 +83,18 @@ public:
     void setRunTime( time_t tRun );
     time_t getRunTime();
 
+    void setHsmUse( bool bVall );
+    bool getHsmUse();
+    bool hsmUse() { return hsm_use_; };
+
+    void setHsmPath( const QString strPath );
+    QString getHsmPath();
+    QString hsmPath() { return hsm_path_; };
+
+    void setHsmIndex( int nIndex );
+    int getHsmIndex();
+    int hsmIndex() { return hsm_index_; };
+
 signals:
 
 private:
@@ -105,6 +117,10 @@ private:
     int view_help_;
 
     QString link_list_;
+
+    bool hsm_use_;
+    QString hsm_path_;
+    int hsm_index_;
 
 private:
     Q_DISABLE_COPY(SettingsMgr)
