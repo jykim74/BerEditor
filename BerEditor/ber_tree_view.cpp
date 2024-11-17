@@ -196,6 +196,7 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
             berApplet->info( "== Bit value to hex\n" );
             berApplet->line();
             berApplet->info( getHexStringArea(&binVal.pVal[1], binVal.nLen - 1, nWidth ));
+            berApplet->info( "\n" );
 
             JS_BIN_reset( &binInt );
         }
