@@ -521,6 +521,7 @@ void TTLVTreeView::getInfoView(TTLVTreeItem *pItem, int nWidth )
     berApplet->info( QString( "%1\n").arg( pItem->getPrintValue( &binTTLV, nWidth ) ) );
     berApplet->line();
 
+    berApplet->mainWindow()->infoText()->moveCursor(QTextCursor::Start);
     JS_BIN_reset( &binHeader );
 }
 
