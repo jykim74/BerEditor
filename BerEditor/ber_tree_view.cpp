@@ -117,6 +117,7 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
     unsigned char cLen = 0x00;
     int nLenSize = 0;
     unsigned char sLen[4];
+    int nValueType = -1;
 
     pItem->getHeaderBin( &header );
     if( header.nLen < 2 ) return;
@@ -174,15 +175,15 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
     berApplet->info( QString( "Length      : 0x%1 - %2 Bytes\n" ).arg( getHexString(sLen, nLenSize), nFieldWidth ).arg(pItem->GetLength()));
     berApplet->info( QString( "Offset      : 0x%1 - %2\n" ).arg( strOffset, nFieldWidth ).arg(pItem->GetOffset()));
 
+    QString strVal = pItem->GetValueString( &binBer, &nValueType, nWidth );
 
-    QString strVal = pItem->GetValueString( &binBer, nWidth );
-
-    if( (pItem->GetId() & JS_CLASS_MASK) == JS_UNIVERSAL )
+    if( nValueType != JS_VALUE_HEX )
     {
-        if( pItem->GetTag() == JS_BITSTRING  )
+        pItem->getValueBin( &binBer, &binVal );
+
+        if( nValueType == JS_VALUE_BITSTRING  )
         {
             BIN binInt = {0,0};
-            pItem->getValueBin( &binBer, &binVal );
             int nUnused = binVal.pVal[0];
             int nBitBytes = binVal.nLen - 1;
 
@@ -192,19 +193,30 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
             berApplet->info( QString( "Unused Bits : 0x%1 - %2 Bits\n" ).arg(getHexString( &binVal.pVal[0], 1), nFieldWidth ).arg( nUnused));
             berApplet->info( QString( "Bit Length  : 0x%1 - %2 Bits\n" ).arg( getHexString( &binInt ), nFieldWidth ).arg( nBitLen ));
 
-            berApplet->line();
-            berApplet->info( "== Bit value to hex\n" );
-            berApplet->line();
-            berApplet->info( getHexStringArea(&binVal.pVal[1], binVal.nLen - 1, nWidth ));
-            berApplet->info( "\n" );
-
             JS_BIN_reset( &binInt );
         }
+
+        berApplet->line();
+        berApplet->info( "-- Print Value\n" );
+        berApplet->line2();
+        berApplet->info( strVal );
+        berApplet->info( "\n" );
+
+        berApplet->line();
+        berApplet->info( "-- Hex Value\n" );
+        berApplet->line2();
+        berApplet->info( getHexStringArea( &binVal, nWidth ) );
+    }
+    else
+    {
+        berApplet->line();
+        berApplet->info( "-- Hex Value\n" );
+        berApplet->line2();
+        berApplet->info( strVal );
     }
 
+    berApplet->info( "\n" );
     berApplet->line();
-    berApplet->info( strVal );
-
     berApplet->mainWindow()->infoText()->moveCursor(QTextCursor::Start);
     if( pBitString ) JS_free( pBitString );
     JS_BIN_reset( &bin );

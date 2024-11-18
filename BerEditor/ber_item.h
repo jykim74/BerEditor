@@ -10,6 +10,15 @@
 #include "js_bin.h"
 #include "js_ber.h"
 
+enum {
+    JS_VALUE_HEX = 0,
+    JS_VALUE_OID,
+    JS_VALUE_NULL,
+    JS_VALUE_INTEGER,
+    JS_VALUE_STRING,
+    JS_VALUE_BITSTRING,
+    JS_VALUE_BOOLEAN
+};
 
 class BerItem : public QStandardItem
 {
@@ -41,6 +50,7 @@ public:
     QString GetTagString();
     QString GetTagXMLString();
     QString GetClassString();
+    QString GetValueString( const BIN *pBer, int *pnType, int nWidth = -1 );
     QString GetValueString( const BIN *pBer, int nWidth = -1 );
     QString GetInfoString( const BIN *pBer );
     BYTE GetDataPos( const BIN *pBer, int nPos );

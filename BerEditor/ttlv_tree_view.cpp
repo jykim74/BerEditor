@@ -503,6 +503,9 @@ void TTLVTreeView::getInfoView(TTLVTreeItem *pItem, int nWidth )
     int nFieldWidth = -16;
     BIN binTTLV = berApplet->getTTLV();
     BIN binHeader = {0,0};
+    int nType = -1;
+    QString strVal;
+    BIN binVal = {0,0};
 
     pItem->getHeader( &binHeader );
 
@@ -517,12 +520,38 @@ void TTLVTreeView::getInfoView(TTLVTreeItem *pItem, int nWidth )
     berApplet->info( QString( "Type     : 0x%1 - %2\n").arg( pItem->getTypeHex(), nFieldWidth ).arg( pItem->getTypeName() ));
     berApplet->info( QString( "Length   : 0x%1 - %2 Bytes\n" ).arg( pItem->getLengthHex(), nFieldWidth ).arg( pItem->getLengthInt() ));
     berApplet->info( QString( "Offset   : 0x%1 - %2\n").arg( pItem->getOffset(), nFieldWidth, 16).arg( pItem->getOffset()) );
-    berApplet->line();
-    berApplet->info( QString( "%1\n").arg( pItem->getPrintValue( &binTTLV, nWidth ) ) );
+
+    strVal = pItem->getPrintValue( &binTTLV, &nType, nWidth );
+
+    if( nType == KMIP_TYPE_INTEGER || nType == KMIP_TYPE_TEXT_STRING || nType == KMIP_TYPE_ENUMERATION )
+    {
+        pItem->getValue( &binTTLV, &binVal );
+
+        berApplet->line();
+        berApplet->info( "-- Print Value\n" );
+        berApplet->line2();
+        berApplet->info( strVal );
+        berApplet->info( "\n" );
+
+        berApplet->line();
+        berApplet->info( "-- Hex Value\n" );
+        berApplet->line2();
+        berApplet->info( getHexStringArea( &binVal, nWidth));
+    }
+    else
+    {
+        berApplet->line();
+        berApplet->info( "-- Hex Value\n" );
+        berApplet->line2();
+        berApplet->info( QString( "%1").arg( strVal ) );
+    }
+
+    berApplet->info( "\n" );
     berApplet->line();
 
     berApplet->mainWindow()->infoText()->moveCursor(QTextCursor::Start);
     JS_BIN_reset( &binHeader );
+    JS_BIN_reset( &binVal );
 }
 
 QString TTLVTreeView::GetTextView()

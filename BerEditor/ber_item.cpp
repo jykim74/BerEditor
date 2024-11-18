@@ -169,16 +169,22 @@ QString BerItem::GetClassString()
 
 QString BerItem::GetValueString( const BIN *pBer, int nWidth )
 {
+    return GetValueString( pBer, NULL, nWidth );
+}
+
+QString BerItem::GetValueString( const BIN *pBer, int *pnType, int nWidth )
+{
     QString strVal;
     BIN     binVal = {0,0};
 
-    if( length_ <= 0 ) return strVal;
+//    if( length_ <= 0 ) return strVal;
 
     JS_BIN_set( &binVal, pBer->pVal + offset_ + header_size_, length_ );
 
     if( id_ & JS_CLASS_MASK )
     {
         strVal = getHexStringArea( &binVal, nWidth );
+        if( pnType ) *pnType = JS_VALUE_HEX;
     }
     else
     {
@@ -188,10 +194,13 @@ QString BerItem::GetValueString( const BIN *pBer, int nWidth )
             memset( sOID, 0x00, sizeof(sOID));
             JS_PKI_getStringFromOIDValue( &binVal, sOID );
             strVal = sOID;
+
+            if( pnType ) *pnType = JS_VALUE_OID;
         }
         else if( tag_ == JS_NULLTAG )
         {
             strVal = "NULL";
+            if( pnType ) *pnType = JS_VALUE_NULL;
         }
         else if( tag_ == JS_INTEGER )
         {
@@ -202,6 +211,8 @@ QString BerItem::GetValueString( const BIN *pBer, int nWidth )
                 strVal = pDecimal;
                 JS_free( pDecimal );
             }
+
+            if( pnType ) *pnType = JS_VALUE_INTEGER;
         }
         else if( tag_ == JS_PRINTABLESTRING || tag_ == JS_IA5STRING || tag_ == JS_UTF8STRING \
                  || tag_ == JS_UTCTIME || tag_ == JS_GENERALIZEDTIME || tag_ == JS_VISIBLESTRING )
@@ -211,6 +222,8 @@ QString BerItem::GetValueString( const BIN *pBer, int nWidth )
             memcpy( pStr, binVal.pVal, binVal.nLen );
             strVal = pStr;
             JS_free(pStr);
+
+            if( pnType ) *pnType = JS_VALUE_STRING;
         }
         else if( tag_ == JS_BITSTRING )
         {
@@ -220,6 +233,8 @@ QString BerItem::GetValueString( const BIN *pBer, int nWidth )
             strVal = pBitStr;
             JS_free(pBitStr);
             strVal = getHexStringArea( strVal, nWidth );
+
+            if( pnType ) *pnType = JS_VALUE_BITSTRING;
         }
         else if( tag_ == JS_BOOLEAN )
         {
@@ -227,15 +242,20 @@ QString BerItem::GetValueString( const BIN *pBer, int nWidth )
                 strVal = "False";
             else
                 strVal = "True";
+
+            if( pnType ) *pnType = JS_VALUE_BOOLEAN;
         }
         else {
             strVal = getHexStringArea( &binVal, nWidth );
+            if( pnType ) *pnType = JS_VALUE_HEX;
         }
     }
 
     JS_BIN_reset( &binVal );
     return strVal;
 }
+
+
 BYTE BerItem::GetDataPos( const BIN *pBer, int nPos )
 {
     if( nPos > (offset_ + header_size_ + length_) ) return -1;

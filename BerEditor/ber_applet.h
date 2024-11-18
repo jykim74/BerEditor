@@ -41,6 +41,7 @@ public:
     void elog( const QString strLog );
     void info( const QString strLog, QColor cr = QColor(00,00,00) );
     void line( QColor cr = QColor(00,00,00) );
+    void line2( QColor cr = QColor(00,00,00) );
 
     void messageBox(const QString& msg, QWidget *parent);
     void warningBox(const QString& msg, QWidget *parent);
