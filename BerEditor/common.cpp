@@ -128,6 +128,16 @@ static const QString _getFileFilter( int nType, QString& strFileType )
         strFileType = QObject::tr("License Files");
         strFilter = QString( "%1 (*.lcn *.txt)" ).arg( strFileType );
     }
+    else if( nType == JS_FILE_TYPE_DLL )
+    {
+#ifdef WIN32
+        strFileType = QObject::tr( "DLL Files" );
+        strFilter = QString( "%1 (*.dll);;SO Files (*.so)" ).arg( strFileType );
+#else
+        strFileType = QObject::tr( "SO Files" );
+        strFilter = QString( "SO Files (*.so *.dylib)" ).arg( strFileType );
+#endif
+    }
     else if( nType == JS_FILE_TYPE_PRIKEY_PKCS8_PFX )
     {
         strFileType = QObject::tr("PrivateKey Files");

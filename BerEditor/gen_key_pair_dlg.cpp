@@ -6,6 +6,7 @@
 #include "js_pki_eddsa.h"
 #include "js_pki_tools.h"
 #include "ber_applet.h"
+#include "settings_mgr.h"
 
 static QStringList kRSAOptionList = { "1024", "2048", "3072", "4096" };
 static QStringList kECCOptionList = { "prime256v1",
@@ -58,6 +59,8 @@ void GenKeyPairDlg::initialize()
     QIntValidator* intVal = new QIntValidator(1, 65537);
     mExponentText->setValidator( intVal );
     mExponentText->setText( "65537" );
+
+    mHsmCheck->setEnabled(berApplet->settingsMgr()->hsmUse());
 }
 
 void GenKeyPairDlg::setRegInfo( const QString strRegInfo )

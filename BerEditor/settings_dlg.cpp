@@ -26,6 +26,7 @@ SettingsDlg::SettingsDlg(QWidget *parent) :
     connect( mCancelBtn, SIGNAL(clicked()), this, SLOT(onCancelBtnClicked()));
     connect( mFindOIDConfig, SIGNAL(clicked()), this, SLOT(findOIDConfig()));
     connect( mFindCertPathBtn, SIGNAL(clicked()), this, SLOT(findCertPath()));
+    connect( mFindHsmPathBtn, SIGNAL(clicked()), this, SLOT(findHsmPath()));
 
     initialize();
 
@@ -156,6 +157,17 @@ void SettingsDlg::findCertPath()
     }
 }
 
+void SettingsDlg::findHsmPath()
+{
+    QString strPath = mHsmPathText->text();
+
+    QString fileName = findFile( this, JS_FILE_TYPE_DLL, strPath );
+    if( fileName.length() > 0 )
+    {
+        mHsmPathText->setText( fileName );
+    }
+}
+
 void SettingsDlg::closeEvent(QCloseEvent *event)
 {
     event->ignore();
@@ -182,13 +194,13 @@ void SettingsDlg::showEvent(QShowEvent *event)
         mSupportKeyPairChangeCheck->setCheckState(state);
 
         bool bVal = mgr->getHsmUse();
-        mHsmGroup->setEnabled(bVal);
-
-        if( bVal == true )
-        {
-            mHsmPathText->setText( mgr->hsmPath() );
-            mHsmIndexText->setText( QString("%1").arg( mgr->hsmIndex() ));
-        }
+        mHsmGroup->setChecked(bVal);
+        mHsmPathText->setText( mgr->hsmPath() );
+        mHsmIndexText->setText( QString("%1").arg( mgr->hsmIndex() ));
+    }
+    else
+    {
+        mHsmGroup->setEnabled(false);
     }
 
     mFileReadSizeText->setText( QString("%1").arg(mgr->getFileReadSize()));
