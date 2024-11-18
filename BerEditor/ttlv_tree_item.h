@@ -48,6 +48,7 @@ public:
     QString getTagName();
     QString getTypeName();
     QString getTitle( const BIN *pTTLV );
+    QString getPrintValue( const BIN *pTTLV, int *pnType, int nWidth = -1 );
     QString getPrintValue( const BIN *pTTLV, int nWidth = -1 );
 
     void dataReset();

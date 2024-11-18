@@ -298,6 +298,15 @@ void BerApplet::line( QColor cr )
 #endif
 }
 
+void BerApplet::line2( QColor cr )
+{
+#ifdef Q_OS_LINUX
+    info( "--------------------------------------------------------------------\n", cr );
+#else
+    info( "---------------------------------------------------------------------------------\n", cr );
+#endif
+}
+
 void BerApplet::elog( const QString strLog )
 {
     main_win_->elog( strLog );

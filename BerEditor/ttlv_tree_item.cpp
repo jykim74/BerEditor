@@ -311,6 +311,11 @@ QString TTLVTreeItem::getTitle( const BIN *pTTLV )
 
 QString TTLVTreeItem::getPrintValue( const BIN *pTTLV, int nWidth )
 {
+    return getPrintValue( pTTLV, NULL, nWidth );
+}
+
+QString TTLVTreeItem::getPrintValue( const BIN *pTTLV, int *pnType, int nWidth )
+{
     BIN binType = {0,0};
     BIN binVal = {0,0};
 
@@ -324,6 +329,8 @@ QString TTLVTreeItem::getPrintValue( const BIN *pTTLV, int nWidth )
 
     int nType = JS_BIN_int( &binType );
     QString strPrint;
+
+    if( pnType ) *pnType = nType;
 
     if( nType == KMIP_TYPE_INTEGER )
     {
