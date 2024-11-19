@@ -184,6 +184,7 @@ void KeyPairManDlg::initUI()
 
 void KeyPairManDlg::showEvent(QShowEvent *event)
 {
+    mHsmCheck->setEnabled( berApplet->settingsMgr()->hsmUse() );
     initialize();
 }
 

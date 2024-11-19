@@ -29,6 +29,11 @@ void PasswdDlg::setTitle( const QString strTitle )
     mTitleLabel->setText( strTitle );
 }
 
+void PasswdDlg::setPasswordLabel( const QString strLabel )
+{
+    mPasswordLabel->setText( strLabel );
+}
+
 void PasswdDlg::clickOK()
 {
     QString strPasswd = mPasswdText->text();

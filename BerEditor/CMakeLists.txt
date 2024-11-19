@@ -210,6 +210,7 @@ add_executable(${PROJECT_NAME}
     code_editor.h code_editor.cpp
     highlighter_xml.h highlighter_xml.cpp
     p11api.h p11api.cpp
+    p11_rec.h p11_rec.cpp
 
 )
 

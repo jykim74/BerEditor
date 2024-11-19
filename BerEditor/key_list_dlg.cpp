@@ -12,8 +12,10 @@
 #include "settings_mgr.h"
 #include "key_add_dlg.h"
 #include "passwd_dlg.h"
-
+#include "settings_mgr.h"
 #include "js_error.h"
+#include "js_pkcs11.h"
+#include "p11api.h"
 
 static const QStringList kTypeList = { "ALL", "AES", "ARIA", "SEED", "TDES", "HMAC" };
 
@@ -100,6 +102,7 @@ void KeyListDlg::initialize()
 
 void KeyListDlg::showEvent(QShowEvent *event)
 {
+    mHsmCheck->setEnabled( berApplet->settingsMgr()->hsmUse() );
     loadKeyList();
 }
 
@@ -241,6 +244,11 @@ void KeyListDlg::loadKeyList()
         mKeyTable->setItem( row, 2, new QTableWidgetItem(QString("%1 Bytes").arg( strIV.length() / 2 )));
         mKeyTable->setItem( row, 3, new QTableWidgetItem(QString("%1").arg( date.toString("yy-MM-dd hh:mm") )));
     }
+}
+
+void KeyListDlg::loadHsmKeyList()
+{
+
 }
 
 void KeyListDlg::clickKeyAdd()

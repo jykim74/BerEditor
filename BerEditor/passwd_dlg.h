@@ -16,6 +16,7 @@ public:
     explicit PasswdDlg(QWidget *parent = nullptr);
     ~PasswdDlg();
     void setTitle( const QString strTitle );
+    void setPasswordLabel( const QString strLabel );
 
 private slots:
     void clickOK();

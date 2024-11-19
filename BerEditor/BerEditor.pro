@@ -111,7 +111,8 @@ SOURCES += \
     key_list_dlg.cpp \
     key_add_dlg.cpp \
     code_editor.cpp \
-    p11api.cpp
+    p11api.cpp \
+    p11_rec.cpp
 
 HEADERS += \
     about_dlg.h \
@@ -189,7 +190,8 @@ HEADERS += \
     key_list_dlg.h \
     key_add_dlg.h \
     code_editor.h \
-    p11api.h
+    p11api.h \
+    p11_rec.h
 
 
 

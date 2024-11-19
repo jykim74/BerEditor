@@ -10,6 +10,7 @@
 #include <QMessageBox>
 #include "js_bin.h"
 #include "js_license.h"
+#include "js_pkcs11.h"
 
 class MainWindow;
 class SettingsMgr;
@@ -28,6 +29,8 @@ public:
 
     MainWindow* mainWindow() { return main_win_; };
     SettingsMgr *settingsMgr() { return settings_mgr_; };
+    JP11_CTX* getP11CTX() { return p11_ctx_; };
+
     void decodeData( const BIN *pData, const QString strPath );
     void decodeTTLV( const BIN *pData );
 
@@ -87,6 +90,7 @@ private:
 
     QString cmd_;
     QString cur_file_;
+    JP11_CTX*    p11_ctx_;
 };
 
 extern BerApplet *berApplet;

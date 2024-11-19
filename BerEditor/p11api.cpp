@@ -7,6 +7,33 @@
 #include "js_pki_x509.h"
 #include "js_pki_eddsa.h"
 
+int loadPKCS11Libray( const QString strLibPath, JP11_CTX **ppCTX )
+{
+    int rv = 0;
+    JP11_CTX *pCTX = NULL;
+
+    if( strLibPath.length() < 1) return -1;
+
+    rv = JS_PKCS11_LoadLibrary( (JP11_CTX **)&pCTX, strLibPath.toStdString().c_str() );
+    if( rv != CKR_OK )
+    {
+        return rv;
+    }
+
+    rv = JS_PKCS11_Initialize( (JP11_CTX *)pCTX, NULL );
+    if( rv != CKR_OK )
+    {
+        if( pCTX ) JS_PKCS11_ReleaseLibrry( (JP11_CTX **)&pCTX );
+    }
+
+    if( rv == CKR_OK )
+    {
+        *ppCTX = pCTX;
+    }
+
+    return rv;
+}
+
 CK_SESSION_HANDLE getP11Session( void *pP11CTX, int nSlotID, const QString strPIN )
 {
     int ret = 0;
@@ -1209,6 +1236,381 @@ int createDSAPrivateKeyP11( JP11_CTX *pCTX, const QString& strLabel, const BIN *
         fprintf(stderr, "fail to create DSA private key(%s)\n", JS_PKCS11_GetErrorMsg(rv));
         return rv;
     }
+
+    return rv;
+}
+
+int getKeyList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& keyList )
+{
+    int rv = -1;
+
+    CK_ATTRIBUTE sTemplate[20];
+    long uCount = 0;
+
+    CK_OBJECT_CLASS objClass = CKO_SECRET_KEY;
+    CK_KEY_TYPE keyType = CKK_DSA;
+
+    CK_OBJECT_HANDLE hObjects[100];
+    CK_ULONG uObjCnt = 0;
+
+    sTemplate[uCount].type = CKA_CLASS;
+    sTemplate[uCount].pValue = &objClass;
+    sTemplate[uCount].ulValueLen = sizeof(objClass);
+    uCount++;
+
+    sTemplate[uCount].type = CKA_KEY_TYPE;
+    sTemplate[uCount].pValue = &keyType;
+    sTemplate[uCount].ulValueLen = sizeof(keyType);
+    uCount++;
+
+    rv = JS_PKCS11_FindObjectsInit( pCTX, sTemplate, uCount );
+    if( rv != CKR_OK ) goto end;
+
+    rv = JS_PKCS11_FindObjects( pCTX, hObjects, 100, &uObjCnt );
+    if( rv != CKR_OK ) goto end;
+
+    rv = JS_PKCS11_FindObjectsFinal( pCTX );
+    if( rv != CKR_OK ) goto end;
+
+    for( int i = 0; i < uObjCnt; i++ )
+    {
+        BIN binVal = {0,0};
+        char *pLabel = NULL;
+
+        rv = JS_PKCS11_GetAttributeValue2( pCTX, hObjects[i], CKA_LABEL, &binVal );
+        if( rv != CKR_OK ) goto end;
+
+        JS_BIN_string( &binVal, &pLabel );
+
+        P11Rec P11Rec;
+        P11Rec.setHandle( hObjects[i] );
+        P11Rec.setLabel( pLabel );
+
+        keyList.append( P11Rec );
+
+        JS_BIN_reset( &binVal );
+        if( pLabel ) JS_free( pLabel );
+    }
+
+end :
+
+    return rv;
+}
+
+int getPubList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& pubList )
+{
+    int rv = -1;
+
+    CK_ATTRIBUTE sTemplate[20];
+    long uCount = 0;
+
+    CK_OBJECT_CLASS objClass = CKO_PUBLIC_KEY;
+    CK_KEY_TYPE keyType = CKK_DSA;
+
+    CK_OBJECT_HANDLE hObjects[100];
+    CK_ULONG uObjCnt = 0;
+
+    sTemplate[uCount].type = CKA_CLASS;
+    sTemplate[uCount].pValue = &objClass;
+    sTemplate[uCount].ulValueLen = sizeof(objClass);
+    uCount++;
+
+    sTemplate[uCount].type = CKA_KEY_TYPE;
+    sTemplate[uCount].pValue = &keyType;
+    sTemplate[uCount].ulValueLen = sizeof(keyType);
+    uCount++;
+
+    rv = JS_PKCS11_FindObjectsInit( pCTX, sTemplate, uCount );
+    if( rv != CKR_OK ) goto end;
+
+    rv = JS_PKCS11_FindObjects( pCTX, hObjects, 100, &uObjCnt );
+    if( rv != CKR_OK ) goto end;
+
+    rv = JS_PKCS11_FindObjectsFinal( pCTX );
+    if( rv != CKR_OK ) goto end;
+
+    for( int i = 0; i < uObjCnt; i++ )
+    {
+        BIN binVal = {0,0};
+        char *pLabel = NULL;
+
+        rv = JS_PKCS11_GetAttributeValue2( pCTX, hObjects[i], CKA_LABEL, &binVal );
+        if( rv != CKR_OK ) goto end;
+
+        JS_BIN_string( &binVal, &pLabel );
+
+        P11Rec P11Rec;
+        P11Rec.setHandle( hObjects[i] );
+        P11Rec.setLabel( pLabel );
+
+        pubList.append( P11Rec );
+
+        JS_BIN_reset( &binVal );
+        if( pLabel ) JS_free( pLabel );
+    }
+
+end :
+
+    return rv;
+}
+
+int getCertList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& certList )
+{
+    int rv = -1;
+
+    CK_ATTRIBUTE sTemplate[20];
+    long uCount = 0;
+
+    CK_OBJECT_CLASS objClass = CKO_SECRET_KEY;
+    CK_KEY_TYPE keyType = CKK_DSA;
+
+    CK_OBJECT_HANDLE hObjects[100];
+    CK_ULONG uObjCnt = 0;
+
+    sTemplate[uCount].type = CKA_CLASS;
+    sTemplate[uCount].pValue = &objClass;
+    sTemplate[uCount].ulValueLen = sizeof(objClass);
+    uCount++;
+
+    sTemplate[uCount].type = CKA_KEY_TYPE;
+    sTemplate[uCount].pValue = &keyType;
+    sTemplate[uCount].ulValueLen = sizeof(keyType);
+    uCount++;
+
+    rv = JS_PKCS11_FindObjectsInit( pCTX, sTemplate, uCount );
+    if( rv != CKR_OK ) goto end;
+
+    rv = JS_PKCS11_FindObjects( pCTX, hObjects, 100, &uObjCnt );
+    if( rv != CKR_OK ) goto end;
+
+    rv = JS_PKCS11_FindObjectsFinal( pCTX );
+    if( rv != CKR_OK ) goto end;
+
+    for( int i = 0; i < uObjCnt; i++ )
+    {
+        BIN binVal = {0,0};
+        char *pLabel = NULL;
+
+        rv = JS_PKCS11_GetAttributeValue2( pCTX, hObjects[i], CKA_LABEL, &binVal );
+        if( rv != CKR_OK ) goto end;
+
+        JS_BIN_string( &binVal, &pLabel );
+
+        P11Rec P11Rec;
+        P11Rec.setHandle( hObjects[i] );
+        P11Rec.setLabel( pLabel );
+
+        certList.append( P11Rec );
+
+        JS_BIN_reset( &binVal );
+        if( pLabel ) JS_free( pLabel );
+    }
+
+end :
+
+    return rv;
+}
+
+int getKeyPairList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& pubList, QList<P11Rec>& priList )
+{
+    int rv = -1;
+
+    BIN binVal = {0,0};
+    BIN binID = {0,0};
+
+    char *pLabel = NULL;
+
+    CK_ATTRIBUTE sTemplate[20];
+    long uCount = 0;
+
+    CK_OBJECT_CLASS objClass = CKO_PUBLIC_KEY;
+    CK_KEY_TYPE keyType = CKK_DSA;
+
+    CK_OBJECT_HANDLE hObjects[100];
+    CK_ULONG uObjCnt = 0;
+
+    sTemplate[uCount].type = CKA_CLASS;
+    sTemplate[uCount].pValue = &objClass;
+    sTemplate[uCount].ulValueLen = sizeof(objClass);
+    uCount++;
+
+    sTemplate[uCount].type = CKA_KEY_TYPE;
+    sTemplate[uCount].pValue = &keyType;
+    sTemplate[uCount].ulValueLen = sizeof(keyType);
+    uCount++;
+
+    rv = JS_PKCS11_FindObjectsInit( pCTX, sTemplate, uCount );
+    if( rv != CKR_OK ) goto end;
+
+    rv = JS_PKCS11_FindObjects( pCTX, hObjects, 100, &uObjCnt );
+    if( rv != CKR_OK ) goto end;
+
+    rv = JS_PKCS11_FindObjectsFinal( pCTX );
+    if( rv != CKR_OK ) goto end;
+
+    for( int i = 0; i < uObjCnt; i++ )
+    {
+        CK_OBJECT_HANDLE hPriObj = -1;
+        CK_ULONG uPriObjCnt = 0;
+
+        rv = JS_PKCS11_GetAttributeValue2( pCTX, hObjects[i], CKA_ID, &binID );
+        if( rv != CKR_OK ) goto end;
+
+        rv = JS_PKCS11_GetAttributeValue2( pCTX, hObjects[i], CKA_LABEL, &binVal );
+        if( rv != CKR_OK ) goto end;
+
+        JS_BIN_string( &binVal, &pLabel );
+
+        P11Rec PubRec;
+        PubRec.setHandle( hObjects[i] );
+        PubRec.setLabel( pLabel );
+
+        JS_BIN_reset( &binVal );
+        if( pLabel ) JS_free( pLabel );
+
+        uCount = 0;
+        objClass = CKO_PRIVATE_KEY;
+
+        sTemplate[uCount].type = CKA_CLASS;
+        sTemplate[uCount].pValue = &objClass;
+        sTemplate[uCount].ulValueLen = sizeof(objClass);
+        uCount++;
+
+        sTemplate[uCount].type = CKA_ID;
+        sTemplate[uCount].pValue = binID.pVal;
+        sTemplate[uCount].ulValueLen = binID.nLen;
+        uCount++;
+
+        rv = JS_PKCS11_FindObjectsInit( pCTX, sTemplate, uCount );
+        if( rv != CKR_OK ) goto end;
+
+        rv = JS_PKCS11_FindObjects( pCTX, &hPriObj, 1, &uPriObjCnt );
+        if( rv != CKR_OK ) goto end;
+
+        rv = JS_PKCS11_FindObjectsFinal( pCTX );
+        if( rv != CKR_OK ) goto end;
+
+        rv = JS_PKCS11_GetAttributeValue2( pCTX, hPriObj, CKA_LABEL, &binVal );
+        if( rv != CKR_OK ) goto end;
+
+        JS_BIN_string( &binVal, &pLabel );
+
+        P11Rec PriRec;
+        PriRec.setHandle( hPriObj );
+        PriRec.setLabel( pLabel );
+
+        pubList.append( PubRec );
+        priList.append( PriRec );
+
+        JS_BIN_reset( &binID );
+    }
+
+end :
+    JS_BIN_reset( &binID );
+    JS_BIN_reset( &binVal );
+    if( pLabel ) JS_free( pLabel );
+
+    return rv;
+}
+
+int getPriCertList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& certList, QList<P11Rec>& priList )
+{
+    int rv = -1;
+
+    BIN binVal = {0,0};
+    BIN binID = {0,0};
+
+    char *pLabel = NULL;
+
+    CK_ATTRIBUTE sTemplate[20];
+    long uCount = 0;
+
+    CK_OBJECT_CLASS objClass = CKO_PRIVATE_KEY;
+    CK_KEY_TYPE keyType = CKK_DSA;
+
+    CK_OBJECT_HANDLE hObjects[100];
+    CK_ULONG uObjCnt = 0;
+
+    sTemplate[uCount].type = CKA_CLASS;
+    sTemplate[uCount].pValue = &objClass;
+    sTemplate[uCount].ulValueLen = sizeof(objClass);
+    uCount++;
+
+    sTemplate[uCount].type = CKA_KEY_TYPE;
+    sTemplate[uCount].pValue = &keyType;
+    sTemplate[uCount].ulValueLen = sizeof(keyType);
+    uCount++;
+
+    rv = JS_PKCS11_FindObjectsInit( pCTX, sTemplate, uCount );
+    if( rv != CKR_OK ) goto end;
+
+    rv = JS_PKCS11_FindObjects( pCTX, hObjects, 100, &uObjCnt );
+    if( rv != CKR_OK ) goto end;
+
+    rv = JS_PKCS11_FindObjectsFinal( pCTX );
+    if( rv != CKR_OK ) goto end;
+
+    for( int i = 0; i < uObjCnt; i++ )
+    {
+        CK_OBJECT_HANDLE hPriObj = -1;
+        CK_ULONG uPriObjCnt = 0;
+
+        rv = JS_PKCS11_GetAttributeValue2( pCTX, hObjects[i], CKA_ID, &binID );
+        if( rv != CKR_OK ) goto end;
+
+        rv = JS_PKCS11_GetAttributeValue2( pCTX, hObjects[i], CKA_LABEL, &binVal );
+        if( rv != CKR_OK ) goto end;
+
+        JS_BIN_string( &binVal, &pLabel );
+
+        P11Rec PriRec;
+        PriRec.setHandle( hObjects[i] );
+        PriRec.setLabel( pLabel );
+
+        JS_BIN_reset( &binVal );
+        if( pLabel ) JS_free( pLabel );
+
+        uCount = 0;
+        objClass = CKO_CERTIFICATE;
+
+        sTemplate[uCount].type = CKA_CLASS;
+        sTemplate[uCount].pValue = &objClass;
+        sTemplate[uCount].ulValueLen = sizeof(objClass);
+        uCount++;
+
+        sTemplate[uCount].type = CKA_ID;
+        sTemplate[uCount].pValue = binID.pVal;
+        sTemplate[uCount].ulValueLen = binID.nLen;
+        uCount++;
+
+        rv = JS_PKCS11_FindObjectsInit( pCTX, sTemplate, uCount );
+        if( rv != CKR_OK ) goto end;
+
+        rv = JS_PKCS11_FindObjects( pCTX, &hPriObj, 1, &uPriObjCnt );
+        if( rv != CKR_OK ) goto end;
+
+        rv = JS_PKCS11_FindObjectsFinal( pCTX );
+        if( rv != CKR_OK ) goto end;
+
+        rv = JS_PKCS11_GetAttributeValue2( pCTX, hPriObj, CKA_LABEL, &binVal );
+        if( rv != CKR_OK ) goto end;
+
+        JS_BIN_string( &binVal, &pLabel );
+
+        P11Rec CertRec;
+        CertRec.setHandle( hPriObj );
+        CertRec.setLabel( pLabel );
+
+        certList.append( CertRec );
+        priList.append( PriRec );
+
+        JS_BIN_reset( &binID );
+    }
+
+end :
+    JS_BIN_reset( &binID );
+    JS_BIN_reset( &binVal );
+    if( pLabel ) JS_free( pLabel );
 
     return rv;
 }

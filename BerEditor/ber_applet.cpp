@@ -33,11 +33,13 @@
 #include "js_net.h"
 #include "js_error.h"
 #include "lcn_info_dlg.h"
+#include "p11api.h"
 
 BerApplet *berApplet;
 
 BerApplet::BerApplet(QObject *parent) : QObject(parent)
 {
+    p11_ctx_ = NULL;
     main_win_ = nullptr;
     settings_mgr_ = new SettingsMgr;
 
@@ -65,6 +67,8 @@ BerApplet::~BerApplet()
 
     if( main_win_ != nullptr ) delete main_win_;
     if( settings_mgr_ != nullptr ) delete settings_mgr_;
+
+    if( p11_ctx_ ) JS_PKCS11_ReleaseLibrry( &p11_ctx_ );
 }
 
 void BerApplet::setCmd(const QString cmd)
@@ -107,6 +111,16 @@ void BerApplet::start()
     {
         main_win_->useLog( settings_mgr_->getUseLogTab() );
         settings_mgr_->makeCertPath();
+
+        if( settings_mgr_->hsmUse() == true )
+        {
+            QString strLibPath = settings_mgr_->hsmPath();
+            int rv = loadPKCS11Libray( strLibPath, &p11_ctx_ );
+            if( rv != CKR_OK )
+            {
+                elog( QString( "fail to load p11 library(%1:%2)" ).arg( strLibPath).arg( rv ));
+            }
+        }
     }
     else
     {

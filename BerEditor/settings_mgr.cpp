@@ -43,6 +43,7 @@ SettingsMgr::SettingsMgr(QObject *parent) : QObject(parent)
     cert_path_ = "";
     hex_area_width_ = -1;
     support_keypair_change_ = false;
+    hsm_use_ = false;
 
     initialize();
 }

@@ -35,8 +35,7 @@ private slots:
 private:
     void initialize();
     void loadKeyList();
-
-
+    void loadHsmKeyList();
 
     QString str_data_;
 };

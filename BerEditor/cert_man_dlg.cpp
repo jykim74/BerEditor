@@ -184,6 +184,7 @@ void CertManDlg::setTitle( const QString strTitle )
 
 void CertManDlg::showEvent(QShowEvent *event)
 {
+    mHsmCheck->setEnabled( berApplet->settingsMgr()->hsmUse() );
     initialize();
 }
 

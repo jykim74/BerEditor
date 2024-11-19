@@ -2,10 +2,12 @@
 #define P11API_H
 
 #include <QString>
+#include <QList>
 
 #include "js_pki.h"
 #include "js_pkcs11.h"
 #include "js_error.h"
+#include "p11_rec.h"
 
 const QString kMechRSA = "RSA";
 const QString kMechEC = "EC";
@@ -17,7 +19,10 @@ const QString kMechPKCS11_RSA = "PKCS11_RSA";
 const QString kMechPKCS11_EC = "PKCS11_EC";
 const QString kMechPKCS11_DSA = "PKCS11_DSA";
 
+static CK_BBOOL kTrue = CK_TRUE;
+static CK_BBOOL kFalse = CK_FALSE;
 
+int loadPKCS11Libray( const QString strLibPath, JP11_CTX **ppCTX );
 CK_SESSION_HANDLE getP11Session( void *pP11CTX, int nSlotID, const QString strPIN = nullptr );
 int genKeyPairWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, QString strParam, int nExponent, BIN *pPri, BIN *pPub );
 
@@ -28,5 +33,10 @@ int createECPrivateKeyP11( JP11_CTX *pCTX, const QString& strLabel, const BIN *p
 int createDSAPublicKeyP11( JP11_CTX *pCTX, const QString& strLabel, const BIN *pID, const JDSAKeyVal *pDSAKeyVal );
 int createDSAPrivateKeyP11( JP11_CTX *pCTX, const QString& strLabel, const BIN *pID, const JDSAKeyVal *pDSAKeyVal );
 
+int getKeyList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& keyList );
+int getPubList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& pubList );
+int getCertList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& certList );
+int getPubKeyList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& pubList, QList<P11Rec>& priList );
+int getPriCertList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& certList, QList<P11Rec>& priList );
 
 #endif // P11API_H

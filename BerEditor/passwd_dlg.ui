@@ -31,7 +31,7 @@
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
      <item row="0" column="0">
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="mPasswordLabel">
        <property name="text">
         <string>Password</string>
        </property>
