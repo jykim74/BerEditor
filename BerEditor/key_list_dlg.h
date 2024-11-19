@@ -32,6 +32,8 @@ private slots:
     void clickGenMAC();
     void clickEncDec();
 
+    void checkHSM();
+
 private:
     void initialize();
     void loadKeyList();

@@ -14,6 +14,7 @@
 #include "settings_mgr.h"
 #include "common.h"
 #include "mainwindow.h"
+#include "p11api.h"
 
 SettingsDlg::SettingsDlg(QWidget *parent) :
     QDialog(parent)
@@ -99,6 +100,7 @@ void SettingsDlg::updateSettings()
         {
             mgr->setHsmPath( mHsmPathText->text() );
             mgr->setHsmIndex( mHsmIndexText->text().toInt() );
+            berApplet->P11Load();
         }
     }
 
@@ -160,6 +162,7 @@ void SettingsDlg::findCertPath()
 void SettingsDlg::findHsmPath()
 {
     QString strPath = mHsmPathText->text();
+    if( strPath.length() < 1 ) strPath = QDir::homePath();
 
     QString fileName = findFile( this, JS_FILE_TYPE_DLL, strPath );
     if( fileName.length() > 0 )

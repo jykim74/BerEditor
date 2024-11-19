@@ -34,7 +34,49 @@ int loadPKCS11Libray( const QString strLibPath, JP11_CTX **ppCTX )
     return rv;
 }
 
-CK_SESSION_HANDLE getP11Session( void *pP11CTX, int nSlotID, const QString strPIN )
+CK_SESSION_HANDLE getP11Session( void *pP11CTX, int nSlotIndex )
+{
+    int ret = 0;
+
+    JP11_CTX    *pCTX = (JP11_CTX *)pP11CTX;
+
+    int nFlags = 0;
+
+    CK_ULONG uSlotCnt = 0;
+    CK_SLOT_ID  sSlotList[10];
+
+    int nUserType = 0;
+
+    nFlags |= CKF_RW_SESSION;
+    nFlags |= CKF_SERIAL_SESSION;
+    nUserType = CKU_USER;
+
+
+    ret = JS_PKCS11_GetSlotList2( pCTX, CK_TRUE, sSlotList, &uSlotCnt );
+    if( ret != CKR_OK )
+    {
+        fprintf( stderr, "fail to run getSlotList fail(%d)\n", ret );
+        return -1;
+    }
+
+    if( uSlotCnt < 1 || uSlotCnt < nSlotIndex )
+    {
+        fprintf( stderr, "there is no slot(%d)\n", uSlotCnt );
+        return -1;
+    }
+
+    ret = JS_PKCS11_OpenSession( pCTX, sSlotList[nSlotIndex], nFlags );
+    if( ret != CKR_OK )
+    {
+        fprintf( stderr, "fail to run opensession(%s:%x)\n", JS_PKCS11_GetErrorMsg(ret), ret );
+        return -1;
+    }
+
+    return pCTX->hSession;
+}
+
+
+CK_SESSION_HANDLE getP11SessionLogin( void *pP11CTX, int nSlotID, const QString strPIN )
 {
     int ret = 0;
 
@@ -1257,11 +1299,12 @@ int getKeyList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& keyList )
     sTemplate[uCount].pValue = &objClass;
     sTemplate[uCount].ulValueLen = sizeof(objClass);
     uCount++;
-
+/*
     sTemplate[uCount].type = CKA_KEY_TYPE;
     sTemplate[uCount].pValue = &keyType;
     sTemplate[uCount].ulValueLen = sizeof(keyType);
     uCount++;
+*/
 
     rv = JS_PKCS11_FindObjectsInit( pCTX, sTemplate, uCount );
     if( rv != CKR_OK ) goto end;

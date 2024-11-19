@@ -25,6 +25,7 @@ public:
 
     void start();
     int checkLicense();
+    int P11Load();
     JS_LICENSE_INFO& LicenseInfo() { return license_info_; };
 
     MainWindow* mainWindow() { return main_win_; };

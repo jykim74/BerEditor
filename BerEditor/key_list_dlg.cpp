@@ -26,6 +26,7 @@ KeyListDlg::KeyListDlg(QWidget *parent) :
     setupUi(this);
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mHsmCheck, SIGNAL(clicked()), this, SLOT(checkHSM()));
     connect( mKeyAddBtn, SIGNAL(clicked()), this, SLOT(clickKeyAdd()));
     connect( mKeyDelBtn, SIGNAL(clicked()), this, SLOT(clickKeyDel()));
     connect( mKeyViewBtn, SIGNAL(clicked()), this, SLOT(clickKeyView()));
@@ -248,7 +249,35 @@ void KeyListDlg::loadKeyList()
 
 void KeyListDlg::loadHsmKeyList()
 {
+    int ret = 0;
+    int row = 0;
+    str_data_.clear();
 
+    mKeyTable->setRowCount(0);
+    QString strSelType = mKeyTypeCombo->currentText();
+
+    JP11_CTX *pCTX = berApplet->getP11CTX();
+    int nIndex = berApplet->settingsMgr()->hsmIndex();
+    QList<P11Rec> keyList;
+
+    CK_SESSION_HANDLE hSession = getP11Session( pCTX, nIndex );
+
+    ret = getKeyList( pCTX, strSelType, keyList );
+
+    for( int i = 0; i < keyList.size(); i++ )
+    {
+        P11Rec record = keyList.at(i);
+
+        mKeyTable->insertRow(row);
+        mKeyTable->setRowHeight( row, 10 );
+
+        QTableWidgetItem *item = new QTableWidgetItem( record.getLabel() );
+        item->setIcon(QIcon(":/images/key.png" ));
+
+        mKeyTable->setItem( row, 0, item );
+    }
+
+    JS_PKCS11_CloseSession( pCTX );
 }
 
 void KeyListDlg::clickKeyAdd()
@@ -433,4 +462,14 @@ void KeyListDlg::clickEncDec()
     if( ret != 0 ) return;
 
     berApplet->mainWindow()->encDec2( strKey, strIV );
+}
+
+void KeyListDlg::checkHSM()
+{
+    bool bVal = mHsmCheck->isChecked();
+
+    if( bVal == true )
+        loadHsmKeyList();
+    else
+        loadKeyList();
 }
