@@ -462,7 +462,7 @@ end :
     return rv;
 }
 
-int genKeyWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, BIN *pSecret )
+int createKeyWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, BIN *pSecret )
 {
     int rv = -1;
     CK_ATTRIBUTE sTemplate[20];
@@ -522,6 +522,12 @@ int genKeyWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, BIN *pSecret
     return rv;
 
 
+    return 0;
+}
+
+
+int createKeyPairWithP11( JP11_CTX *pCTX, QString strName, const BIN *pPri, const BIN *pPub )
+{
     return 0;
 }
 

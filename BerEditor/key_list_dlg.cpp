@@ -310,45 +310,65 @@ void KeyListDlg::loadHsmKeyList()
 
 void KeyListDlg::clickKeyAdd()
 {
+    int ret = 0;
     QString strPath = berApplet->settingsMgr()->keyListPath();
 
     KeyAddDlg keyAdd;
     if( keyAdd.exec() == QDialog::Accepted )
     {
-        QDir dir;
-        BIN binIV = {0,0};
-        BIN binData = {0,0};
-
         QString strName = keyAdd.mNameText->text();
         QString strAlg = keyAdd.mTypeCombo->currentText();
         QString strKey = keyAdd.getResKey();
         QString strIV = keyAdd.mIVText->text();
+        bool bHSM = keyAdd.mHsmCheck->isChecked();
 
 
-        QString fullPath = QString( "%1/%2" ).arg( strPath ).arg( strName );
-        QFile file( fullPath );
-
-        if( file.exists( fullPath ) )
+        if( bHSM == true )
         {
-            berApplet->warningBox( tr( "The file(%1) is already existed" ).arg( strName ), this );
-            return;
+            JP11_CTX *pCTX = berApplet->getP11CTX();
+            int nIndex = berApplet->settingsMgr()->hsmIndex();
+            BIN binSecret = {0,0};
+
+            ret = getP11SessionLogin( pCTX, nIndex );
+            if( ret != 0 ) return;
+
+            JS_BIN_decodeHex( strKey.toStdString().c_str(), &binSecret );
+
+            ret = createKeyWithP11( pCTX, strName, strAlg, &binSecret );
+
+            JS_BIN_reset( &binSecret );
+            loadHsmKeyList();
         }
+        else
+        {
+            QDir dir;
+            BIN binIV = {0,0};
+            BIN binData = {0,0};
+            QString fullPath = QString( "%1/%2" ).arg( strPath ).arg( strName );
+            QFile file( fullPath );
 
-        QString strInfo;
+            if( file.exists( fullPath ) )
+            {
+                berApplet->warningBox( tr( "The file(%1) is already existed" ).arg( strName ), this );
+                return;
+            }
 
-        getBINFromString( &binIV, keyAdd.mIVTypeCombo->currentText(), strIV );
+            QString strInfo;
 
-        strInfo += QString( "ALG: %1\n" ).arg( strAlg );
-        strInfo += QString( "Key: %1\n" ).arg( strKey);
-        strInfo += QString( "IV: %1\n" ).arg( getHexString( &binIV ));
+            getBINFromString( &binIV, keyAdd.mIVTypeCombo->currentText(), strIV );
 
-        JS_BIN_set( &binData, (unsigned char *)strInfo.toStdString().c_str(), strInfo.length() );
-        JS_BIN_fileWrite( &binData, fullPath.toLocal8Bit().toStdString().c_str() );
+            strInfo += QString( "ALG: %1\n" ).arg( strAlg );
+            strInfo += QString( "Key: %1\n" ).arg( strKey);
+            strInfo += QString( "IV: %1\n" ).arg( getHexString( &binIV ));
 
-        JS_BIN_reset( &binIV );
-        JS_BIN_reset( &binData );
+            JS_BIN_set( &binData, (unsigned char *)strInfo.toStdString().c_str(), strInfo.length() );
+            JS_BIN_fileWrite( &binData, fullPath.toLocal8Bit().toStdString().c_str() );
 
-        loadKeyList();
+            JS_BIN_reset( &binIV );
+            JS_BIN_reset( &binData );
+
+            loadKeyList();
+        }
     }
 }
 

@@ -27,7 +27,10 @@ CK_SESSION_HANDLE getP11Session( void *pP11CTX, int nSlotIndex = 0 );
 CK_SESSION_HANDLE getP11SessionLogin( void *pP11CTX, int nSlotID, const QString strPIN = nullptr );
 
 int genKeyPairWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, QString strParam, int nExponent, BIN *pPri, BIN *pPub );
-int genKeyWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, BIN *pSecret );
+
+int createKeyWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, BIN *pSecret );
+
+int createKeyPairWithP11( JP11_CTX *pCTX, QString strName, const BIN *pPri, const BIN *pPub );
 
 int createRSAPublicKeyP11( JP11_CTX *pCTX, const QString& strLabel, const BIN *pID, const JRSAKeyVal *pRsaKeyVal );
 int createRSAPrivateKeyP11( JP11_CTX *pCTX, const QString& strLabel, const BIN *pID, const JRSAKeyVal *pRsaKeyVal );

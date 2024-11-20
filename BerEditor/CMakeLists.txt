@@ -211,6 +211,7 @@ add_executable(${PROJECT_NAME}
     highlighter_xml.h highlighter_xml.cpp
     p11api.h p11api.cpp
     p11_rec.h p11_rec.cpp
+    save_device_dlg.h save_device_dlg.cpp save_device_dlg.ui
 
 )
 

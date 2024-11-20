@@ -112,7 +112,8 @@ SOURCES += \
     key_add_dlg.cpp \
     code_editor.cpp \
     p11api.cpp \
-    p11_rec.cpp
+    p11_rec.cpp \
+    save_device_dlg.cpp
 
 HEADERS += \
     about_dlg.h \
@@ -191,7 +192,8 @@ HEADERS += \
     key_add_dlg.h \
     code_editor.h \
     p11api.h \
-    p11_rec.h
+    p11_rec.h \
+    save_device_dlg.h
 
 
 
@@ -336,7 +338,8 @@ FORMS += \
         link_man_dlg.ui \
         find_dlg.ui \
         key_list_dlg.ui \
-        key_add_dlg.ui
+        key_add_dlg.ui \
+        save_device_dlg.ui
 
 RESOURCES += \
     bereditor.qrc

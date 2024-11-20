@@ -7,6 +7,8 @@
 #include "js_pki_tools.h"
 #include "ber_applet.h"
 #include "settings_mgr.h"
+#include "js_pkcs11.h"
+#include "p11api.h"
 
 static QStringList kRSAOptionList = { "1024", "2048", "3072", "4096" };
 static QStringList kECCOptionList = { "prime256v1",
@@ -202,6 +204,17 @@ void GenKeyPairDlg::clickOK()
             nParam = JS_PKI_KEY_TYPE_ED448;
 
         ret = JS_PKI_EdDSA_GenKeyPair( nParam, &pub_key_, &pri_key_ );
+    }
+
+    if( mHsmCheck->isChecked() == true )
+    {
+        JP11_CTX *pCTX = berApplet->getP11CTX();
+        int nIndex = berApplet->settingsMgr()->hsmIndex();
+
+        ret = getP11SessionLogin( pCTX, nIndex );
+        if( ret != 0 ) return;
+
+        ret = createKeyPairWithP11( pCTX, strName, &pri_key_, &pub_key_ );
     }
 
     if( ret == 0 )
