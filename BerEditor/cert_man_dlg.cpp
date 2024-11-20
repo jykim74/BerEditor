@@ -18,6 +18,8 @@
 #include "js_error.h"
 #include "js_util.h"
 #include "js_pki_tools.h"
+#include "js_pkcs11.h"
+#include "p11api.h"
 
 static const QString kCertFile = "js_cert.crt";
 static const QString kPriKeyFile = "js_private.key";
@@ -41,6 +43,7 @@ CertManDlg::CertManDlg(QWidget *parent) :
 
     connect( mCancelBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mOKBtn, SIGNAL(clicked()), this, SLOT(clickOK()));
+    connect( mHsmCheck, SIGNAL(clicked()), this, SLOT(checkHSM()));
 
     connect( mKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(keyTypeChanged(int)));
     connect( mOtherKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(otherKeyTypeChanged(int)));
@@ -633,6 +636,97 @@ void CertManDlg::loadEEList()
 
         row++;
     }
+}
+
+void CertManDlg::loadHsmEEList()
+{
+    int ret = 0;
+    int row = 0;
+    time_t now = time(NULL);
+
+    clearEEList();
+
+    QString strPath = berApplet->settingsMgr()->EECertPath();
+    QString strKeyType = mKeyTypeCombo->currentText();
+
+    QDir dir( strPath );
+
+    QList<P11Rec> certList;
+    JP11_CTX *pCTX = berApplet->getP11CTX();
+    int nIndex = berApplet->settingsMgr()->hsmIndex();
+    CK_SESSION_HANDLE hSession = getP11Session( pCTX, nIndex );
+
+    ret = getHsmCertList( pCTX, strKeyType, certList );
+
+
+    for ( int i = 0; i < certList.size(); i++ )
+    {
+        BIN binCert = {0,0};
+        JCertInfo sCertInfo;
+        char    sNotBefore[64];
+        char    sNotAfter[64];
+        int nKeyType = 0;
+        P11Rec rec = certList.at(i);
+
+
+        memset( &sCertInfo, 0x00, sizeof(sCertInfo));
+
+        JS_BIN_decodeHex( rec.getValue().toStdString().c_str(), &binCert );
+        if( binCert.nLen < 1 ) continue;
+
+        nKeyType = JS_PKI_getCertKeyType( &binCert );
+        if( nKeyType < 0 ) continue;
+
+        if( strKeyType == "RSA" )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_RSA ) continue;
+        }
+        else if( strKeyType == "ECDSA" )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+                continue;
+        }
+        else if( strKeyType == "DSA" )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_DSA ) continue;
+        }
+        else if( strKeyType == "EdDSA" )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_ED25519 && nKeyType != JS_PKI_KEY_TYPE_ED448 )
+                continue;
+        }
+
+        ret = JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
+        if( ret != 0 )
+        {
+            JS_BIN_reset( &binCert );
+            continue;
+        }
+
+        JS_UTIL_getDate( sCertInfo.uNotBefore, sNotBefore );
+        JS_UTIL_getDate( sCertInfo.uNotAfter, sNotAfter );
+
+        mEE_CertTable->insertRow( row );
+        mEE_CertTable->setRowHeight( row, 10 );
+        QTableWidgetItem *item = new QTableWidgetItem( sCertInfo.pSubjectName );
+
+        if( now > sCertInfo.uNotAfter )
+            item->setIcon(QIcon(":/images/cert_revoked.png" ));
+        else
+            item->setIcon(QIcon(":/images/cert.png" ));
+
+
+        mEE_CertTable->setItem( row, 0, item );
+        mEE_CertTable->setItem( row, 1, new QTableWidgetItem( sNotAfter ));
+        mEE_CertTable->setItem( row, 2, new QTableWidgetItem( sCertInfo.pIssuerName ));
+
+        JS_BIN_reset( &binCert );
+        JS_PKI_resetCertInfo( &sCertInfo );
+
+        row++;
+    }
+
+    JS_PKCS11_CloseSession( pCTX );
 }
 
 void CertManDlg::loadOtherList()
@@ -1855,6 +1949,16 @@ end :
     JS_BIN_reset( &binPriKey );
 
     if( ret == 0 )  QDialog::accept();
+}
+
+void CertManDlg::checkHSM()
+{
+    bool bVal = mHsmCheck->isChecked();
+
+    if( bVal == true )
+        loadHsmEEList();
+    else
+        loadEEList();
 }
 
 void CertManDlg::clickAddCA()

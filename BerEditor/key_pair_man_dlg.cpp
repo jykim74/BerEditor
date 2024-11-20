@@ -22,6 +22,8 @@
 #include "js_pki_x509.h"
 #include "js_pki_tools.h"
 #include "js_error.h"
+#include "p11api.h"
+#include "js_pkcs11.h"
 
 static QStringList kVersionList = { "V1", "V2" };
 static QStringList kPBEv1List = { "PBE-SHA1-3DES", "PBE-SHA1-2DES" };
@@ -40,6 +42,7 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
     connect( mVersionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeVerison(int)));
     connect( mKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(keyTypeChanged(int)));
     connect( mOKBtn, SIGNAL(clicked()), this, SLOT(clickOK()));
+    connect( mHsmCheck, SIGNAL(clicked()), this, SLOT(checkHSM()));
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mLGenKeyPairBtn, SIGNAL(clicked()), this, SLOT(clickLGenKeyPair()));
@@ -158,27 +161,8 @@ void KeyPairManDlg::setTitle( const QString strTitle )
 
 void KeyPairManDlg::initUI()
 {
-#if defined(Q_OS_MAC)
-    int nWidth = width() * 8/10;
-#else
-    int nWidth = width() * 8/10;
-#endif
+
     mKeyTypeCombo->addItems( kKeyTypeList );
-
-    QStringList sTableLabels = { tr( "FolderName" ), tr( "ALG"), tr("Option"), tr("LastModified") };
-
-    mKeyPairTable->clear();
-    mKeyPairTable->horizontalHeader()->setStretchLastSection(true);
-    mKeyPairTable->setColumnCount( sTableLabels.size() );
-    mKeyPairTable->setHorizontalHeaderLabels( sTableLabels );
-    mKeyPairTable->verticalHeader()->setVisible(false);
-    mKeyPairTable->horizontalHeader()->setStyleSheet( kTableStyle );
-    mKeyPairTable->setSelectionBehavior(QAbstractItemView::SelectRows);
-    mKeyPairTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    mKeyPairTable->setColumnWidth( 0, nWidth * 4/10 );
-    mKeyPairTable->setColumnWidth( 1, nWidth * 2/10 );
-    mKeyPairTable->setColumnWidth( 2, nWidth * 2/10 );
-
     mOKBtn->hide();
 }
 
@@ -226,6 +210,26 @@ void KeyPairManDlg::loadKeyPairList()
 {
     int ret = 0;
     int row = 0;
+
+#if defined(Q_OS_MAC)
+    int nWidth = width() * 8/10;
+#else
+    int nWidth = width() * 8/10;
+#endif
+
+    QStringList sTableLabels = { tr( "FolderName" ), tr( "Algorithm"), tr("Option"), tr("LastModified") };
+
+    mKeyPairTable->clear();
+    mKeyPairTable->horizontalHeader()->setStretchLastSection(true);
+    mKeyPairTable->setColumnCount( sTableLabels.size() );
+    mKeyPairTable->setHorizontalHeaderLabels( sTableLabels );
+    mKeyPairTable->verticalHeader()->setVisible(false);
+    mKeyPairTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mKeyPairTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mKeyPairTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    mKeyPairTable->setColumnWidth( 0, nWidth * 4/10 );
+    mKeyPairTable->setColumnWidth( 1, nWidth * 2/10 );
+    mKeyPairTable->setColumnWidth( 2, nWidth * 2/10 );
 
     mKeyPairTable->setRowCount(0);
 
@@ -315,6 +319,59 @@ void KeyPairManDlg::loadKeyPairList()
 
         row++;
     }
+}
+
+void KeyPairManDlg::loadHsmKeyPairList()
+{
+    int ret = 0;
+    int row = 0;
+    JP11_CTX *pCTX = berApplet->getP11CTX();
+    int nIndex = berApplet->settingsMgr()->hsmIndex();
+    QList<P11Rec> pubList;
+
+    QString strKeyType = mKeyTypeCombo->currentText();
+    CK_SESSION_HANDLE hSession = getP11Session( pCTX, nIndex );
+
+#if defined(Q_OS_MAC)
+    int nWidth = width() * 8/10;
+#else
+    int nWidth = width() * 8/10;
+#endif
+
+    QStringList sTableLabels = { tr( "Name" ), tr( "Algorithm"), tr("Handle"), tr("ID") };
+
+    mKeyPairTable->clear();
+    mKeyPairTable->horizontalHeader()->setStretchLastSection(true);
+    mKeyPairTable->setColumnCount( sTableLabels.size() );
+    mKeyPairTable->setHorizontalHeaderLabels( sTableLabels );
+    mKeyPairTable->verticalHeader()->setVisible(false);
+    mKeyPairTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mKeyPairTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mKeyPairTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    mKeyPairTable->setColumnWidth( 0, nWidth * 4/10 );
+    mKeyPairTable->setColumnWidth( 1, nWidth * 2/10 );
+    mKeyPairTable->setColumnWidth( 2, nWidth * 2/10 );
+
+    ret = getHsmPubList( pCTX, strKeyType, pubList );
+
+    mKeyPairTable->setRowCount(0);
+
+    for( int i = 0; i < pubList.size(); i++ )
+    {
+        P11Rec rec = pubList.at(i);
+
+        mKeyPairTable->insertRow(row);
+        mKeyPairTable->setRowHeight( row, 10 );
+        QTableWidgetItem *item = new QTableWidgetItem( rec.getLabel() );
+        item->setIcon(QIcon(":/images/keypair.png" ));
+
+        mKeyPairTable->setItem( row, 0, item );
+        mKeyPairTable->setItem( row, 1, new QTableWidgetItem(QString("%1").arg( JS_PKCS11_GetCKKName( rec.getKeyType() ) )));
+        mKeyPairTable->setItem( row, 2, new QTableWidgetItem(QString("%1").arg( rec.getHandle() )));
+        mKeyPairTable->setItem( row, 3, new QTableWidgetItem(QString("%1").arg( rec.getID() )));
+    }
+
+    JS_PKCS11_CloseSession( pCTX );
 }
 
 const QString KeyPairManDlg::getTypePathName( qint64 now_t, DerType nType )
@@ -1496,4 +1553,14 @@ void KeyPairManDlg::clickOK()
     }
 
     return accept();
+}
+
+void KeyPairManDlg::checkHSM()
+{
+    bool bVal = mHsmCheck->isChecked();
+
+    if( bVal == true )
+        loadHsmKeyPairList();
+    else
+        loadKeyPairList();
 }

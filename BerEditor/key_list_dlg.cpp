@@ -73,30 +73,14 @@ void KeyListDlg::setTitle( const QString strTitle )
 
 void KeyListDlg::initialize()
 {
-#if defined(Q_OS_MAC)
-    int nWidth = width() * 8/10;
-#else
-    int nWidth = width() * 8/10;
-#endif
+
 
     QString strPath = berApplet->settingsMgr()->keyListPath();
 
     mSavePathText->setText( strPath );
     mKeyTypeCombo->addItems( kTypeList );
 
-    QStringList sTableLabels = { tr( "Name" ), tr( "Algorithm"), tr( "IV Len"), tr( "LastModified") };
 
-    mKeyTable->clear();
-    mKeyTable->horizontalHeader()->setStretchLastSection(true);
-    mKeyTable->setColumnCount( sTableLabels.size() );
-    mKeyTable->setHorizontalHeaderLabels( sTableLabels );
-    mKeyTable->verticalHeader()->setVisible(false);
-    mKeyTable->horizontalHeader()->setStyleSheet( kTableStyle );
-    mKeyTable->setSelectionBehavior(QAbstractItemView::SelectRows);
-    mKeyTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    mKeyTable->setColumnWidth( 0, nWidth * 5/10 );
-    mKeyTable->setColumnWidth( 1, nWidth * 2/10 );
-    mKeyTable->setColumnWidth( 2, nWidth * 2/10 );
 
     setManage(false);
 }
@@ -156,6 +140,26 @@ void KeyListDlg::loadKeyList()
 {
     int row = 0;
     str_data_.clear();
+
+#if defined(Q_OS_MAC)
+    int nWidth = width() * 8/10;
+#else
+    int nWidth = width() * 8/10;
+#endif
+
+    QStringList sTableLabels = { tr( "Name" ), tr( "Algorithm"), tr( "IV Len"), tr( "LastModified") };
+
+    mKeyTable->clear();
+    mKeyTable->horizontalHeader()->setStretchLastSection(true);
+    mKeyTable->setColumnCount( sTableLabels.size() );
+    mKeyTable->setHorizontalHeaderLabels( sTableLabels );
+    mKeyTable->verticalHeader()->setVisible(false);
+    mKeyTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mKeyTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mKeyTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    mKeyTable->setColumnWidth( 0, nWidth * 5/10 );
+    mKeyTable->setColumnWidth( 1, nWidth * 2/10 );
+    mKeyTable->setColumnWidth( 2, nWidth * 2/10 );
 
     mKeyTable->setRowCount(0);
     QString strPath = berApplet->settingsMgr()->keyListPath();
@@ -253,6 +257,26 @@ void KeyListDlg::loadHsmKeyList()
     int row = 0;
     str_data_.clear();
 
+#if defined(Q_OS_MAC)
+    int nWidth = width() * 8/10;
+#else
+    int nWidth = width() * 8/10;
+#endif
+
+    QStringList sTableLabels = { tr( "Name" ), tr( "Algorithm"), tr( "Handle"), tr( "ID") };
+
+    mKeyTable->clear();
+    mKeyTable->horizontalHeader()->setStretchLastSection(true);
+    mKeyTable->setColumnCount( sTableLabels.size() );
+    mKeyTable->setHorizontalHeaderLabels( sTableLabels );
+    mKeyTable->verticalHeader()->setVisible(false);
+    mKeyTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mKeyTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mKeyTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    mKeyTable->setColumnWidth( 0, nWidth * 5/10 );
+    mKeyTable->setColumnWidth( 1, nWidth * 2/10 );
+    mKeyTable->setColumnWidth( 2, nWidth * 2/10 );
+
     mKeyTable->setRowCount(0);
     QString strSelType = mKeyTypeCombo->currentText();
 
@@ -260,9 +284,10 @@ void KeyListDlg::loadHsmKeyList()
     int nIndex = berApplet->settingsMgr()->hsmIndex();
     QList<P11Rec> keyList;
 
-    CK_SESSION_HANDLE hSession = getP11Session( pCTX, nIndex );
+    CK_SESSION_HANDLE hSession = getP11SessionLogin( pCTX, nIndex );
 
-    ret = getKeyList( pCTX, strSelType, keyList );
+
+    ret = getHsmKeyList( pCTX, strSelType, keyList );
 
     for( int i = 0; i < keyList.size(); i++ )
     {
@@ -275,6 +300,9 @@ void KeyListDlg::loadHsmKeyList()
         item->setIcon(QIcon(":/images/key.png" ));
 
         mKeyTable->setItem( row, 0, item );
+        mKeyTable->setItem( row, 1, new QTableWidgetItem(QString("%1").arg( JS_PKCS11_GetCKKName( record.getKeyType() ) )));
+        mKeyTable->setItem( row, 2, new QTableWidgetItem(QString("%1").arg( record.getHandle() )));
+        mKeyTable->setItem( row, 3, new QTableWidgetItem(QString("%1").arg( record.getID() )));
     }
 
     JS_PKCS11_CloseSession( pCTX );

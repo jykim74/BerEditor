@@ -87,6 +87,7 @@ private slots:
     void clickRunPubDec();
 
     void clickOK();
+    void checkHSM();
 
     void clickAddCA();
     void clickRemoveCA();
@@ -148,6 +149,7 @@ private:
     void setTrustOnly();
 
     void loadEEList();
+    void loadHsmEEList();
     void loadOtherList();
     void loadCAList();
     void loadCRLList();

@@ -25,7 +25,9 @@ static CK_BBOOL kFalse = CK_FALSE;
 int loadPKCS11Libray( const QString strLibPath, JP11_CTX **ppCTX );
 CK_SESSION_HANDLE getP11Session( void *pP11CTX, int nSlotIndex = 0 );
 CK_SESSION_HANDLE getP11SessionLogin( void *pP11CTX, int nSlotID, const QString strPIN = nullptr );
+
 int genKeyPairWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, QString strParam, int nExponent, BIN *pPri, BIN *pPub );
+int genKeyWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, BIN *pSecret );
 
 int createRSAPublicKeyP11( JP11_CTX *pCTX, const QString& strLabel, const BIN *pID, const JRSAKeyVal *pRsaKeyVal );
 int createRSAPrivateKeyP11( JP11_CTX *pCTX, const QString& strLabel, const BIN *pID, const JRSAKeyVal *pRsaKeyVal );
@@ -34,10 +36,10 @@ int createECPrivateKeyP11( JP11_CTX *pCTX, const QString& strLabel, const BIN *p
 int createDSAPublicKeyP11( JP11_CTX *pCTX, const QString& strLabel, const BIN *pID, const JDSAKeyVal *pDSAKeyVal );
 int createDSAPrivateKeyP11( JP11_CTX *pCTX, const QString& strLabel, const BIN *pID, const JDSAKeyVal *pDSAKeyVal );
 
-int getKeyList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& keyList );
-int getPubList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& pubList );
-int getCertList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& certList );
-int getPubKeyList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& pubList, QList<P11Rec>& priList );
-int getPriCertList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& certList, QList<P11Rec>& priList );
+int getHsmKeyList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& keyList );
+int getHsmPubList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& pubList );
+int getHsmCertList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& certList );
+int getHsmKeyPairList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& pubList, QList<P11Rec>& priList );
+int getHsmPriCertList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& certList, QList<P11Rec>& priList );
 
 #endif // P11API_H

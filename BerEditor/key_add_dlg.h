@@ -23,6 +23,7 @@ public:
 private slots:
     void clickClearAll();
     void clickOK();
+    void checkHSM();
 
     void clickRandKey();
     void changeKeyType();

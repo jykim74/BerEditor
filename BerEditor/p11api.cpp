@@ -99,6 +99,8 @@ CK_SESSION_HANDLE getP11SessionLogin( void *pP11CTX, int nSlotID, const QString 
     if( strPIN == nullptr || strPIN.length() < 1 )
     {
         PasswdDlg pinDlg;
+        pinDlg.setPasswordLabel( QString( "PIN") );
+
         ret = pinDlg.exec();
         if( ret == QDialog::Accepted )
             strPass = pinDlg.mPasswdText->text();
@@ -458,6 +460,69 @@ end :
     JS_BIN_reset( &binPubY );
 
     return rv;
+}
+
+int genKeyWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, BIN *pSecret )
+{
+    int rv = -1;
+    CK_ATTRIBUTE sTemplate[20];
+    long uCount = 0;
+    CK_BBOOL bTrue = CK_TRUE;
+    CK_BBOOL bFalse = CK_FALSE;
+    CK_OBJECT_CLASS objClass = CKO_SECRET_KEY;
+    CK_KEY_TYPE keyType = 0;
+    CK_OBJECT_HANDLE    hObject = 0;
+
+    sTemplate[uCount].type = CKA_CLASS;
+    sTemplate[uCount].pValue = &objClass;
+    sTemplate[uCount].ulValueLen = sizeof(objClass);
+    uCount++;
+
+    sTemplate[uCount].type = CKA_KEY_TYPE;
+    sTemplate[uCount].pValue = &keyType;
+    sTemplate[uCount].ulValueLen = sizeof(keyType);
+    uCount++;
+
+    BIN binLabel = {0,0};
+
+    if( !strName.isEmpty() )
+    {
+        JS_BIN_set( &binLabel, (unsigned char *)strName.toStdString().c_str(), strName.toUtf8().length() );
+
+        sTemplate[uCount].type = CKA_LABEL;
+        sTemplate[uCount].pValue = binLabel.pVal;
+        sTemplate[uCount].ulValueLen = binLabel.nLen;
+        uCount++;
+    }
+
+    BIN binID = {0,0};
+    JS_PKI_genHash( "SHA1", pSecret, &binID );
+
+    sTemplate[uCount].type = CKA_ID;
+    sTemplate[uCount].pValue = binID.pVal;
+    sTemplate[uCount].ulValueLen = binID.nLen;
+    uCount++;
+
+    sTemplate[uCount].type = CKA_VALUE;
+    sTemplate[uCount].pValue = pSecret->pVal;
+    sTemplate[uCount].ulValueLen = pSecret->nLen;
+    uCount++;
+
+    rv = JS_PKCS11_CreateObject( pCTX, sTemplate, uCount, &hObject );
+
+    JS_BIN_reset( &binLabel );
+    JS_BIN_reset( &binID );
+
+    if( rv != CKR_OK )
+    {
+        fprintf( stderr, "fail to create RSA public key(%s)\n", JS_PKCS11_GetErrorMsg(rv) );
+        return rv;
+    }
+
+    return rv;
+
+
+    return 0;
 }
 
 int createRSAPublicKeyP11( JP11_CTX *pCTX, const QString& strLabel, const BIN *pID, const JRSAKeyVal *pRsaKeyVal )
@@ -1282,9 +1347,14 @@ int createDSAPrivateKeyP11( JP11_CTX *pCTX, const QString& strLabel, const BIN *
     return rv;
 }
 
-int getKeyList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& keyList )
+int getHsmKeyList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& keyList )
 {
     int rv = -1;
+
+    BIN binLabel = {0,0};
+    BIN binID = {0,0};
+    BIN binKeyType = {0,0};
+
 
     CK_ATTRIBUTE sTemplate[20];
     long uCount = 0;
@@ -1317,32 +1387,51 @@ int getKeyList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& keyList )
 
     for( int i = 0; i < uObjCnt; i++ )
     {
-        BIN binVal = {0,0};
         char *pLabel = NULL;
+        long nKeyType = -1;
 
-        rv = JS_PKCS11_GetAttributeValue2( pCTX, hObjects[i], CKA_LABEL, &binVal );
+        rv = JS_PKCS11_GetAttributeValue2( pCTX, hObjects[i], CKA_LABEL, &binLabel );
         if( rv != CKR_OK ) goto end;
 
-        JS_BIN_string( &binVal, &pLabel );
+        rv = JS_PKCS11_GetAttributeValue2( pCTX, hObjects[i], CKA_KEY_TYPE, &binKeyType );
+        if( rv != CKR_OK ) goto end;
+
+        rv = JS_PKCS11_GetAttributeValue2( pCTX, hObjects[i], CKA_ID, &binID );
+        if( rv != CKR_OK ) goto end;
+
+        JS_BIN_string( &binLabel, &pLabel );
+        memcpy( &nKeyType, binKeyType.pVal, binKeyType.nLen );
 
         P11Rec P11Rec;
         P11Rec.setHandle( hObjects[i] );
         P11Rec.setLabel( pLabel );
+        P11Rec.setKeyType( nKeyType );
+        P11Rec.setID( getHexString( &binID ));
 
         keyList.append( P11Rec );
 
-        JS_BIN_reset( &binVal );
+        JS_BIN_reset( &binLabel );
+        JS_BIN_reset( &binKeyType );
+        JS_BIN_reset( &binID );
         if( pLabel ) JS_free( pLabel );
     }
 
 end :
+    JS_BIN_reset( &binLabel );
+    JS_BIN_reset( &binKeyType );
+    JS_BIN_reset( &binID );
 
     return rv;
 }
 
-int getPubList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& pubList )
+int getHsmPubList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& pubList )
 {
     int rv = -1;
+
+    BIN binLabel = {0,0};
+    BIN binID = {0,0};
+    BIN binKeyType = {0,0};
+
 
     CK_ATTRIBUTE sTemplate[20];
     long uCount = 0;
@@ -1357,12 +1446,12 @@ int getPubList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& pubList )
     sTemplate[uCount].pValue = &objClass;
     sTemplate[uCount].ulValueLen = sizeof(objClass);
     uCount++;
-
+/*
     sTemplate[uCount].type = CKA_KEY_TYPE;
     sTemplate[uCount].pValue = &keyType;
     sTemplate[uCount].ulValueLen = sizeof(keyType);
     uCount++;
-
+*/
     rv = JS_PKCS11_FindObjectsInit( pCTX, sTemplate, uCount );
     if( rv != CKR_OK ) goto end;
 
@@ -1374,37 +1463,57 @@ int getPubList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& pubList )
 
     for( int i = 0; i < uObjCnt; i++ )
     {
-        BIN binVal = {0,0};
         char *pLabel = NULL;
+        long nKeyType = -1;
 
-        rv = JS_PKCS11_GetAttributeValue2( pCTX, hObjects[i], CKA_LABEL, &binVal );
+        rv = JS_PKCS11_GetAttributeValue2( pCTX, hObjects[i], CKA_LABEL, &binLabel );
         if( rv != CKR_OK ) goto end;
 
-        JS_BIN_string( &binVal, &pLabel );
+        rv = JS_PKCS11_GetAttributeValue2( pCTX, hObjects[i], CKA_KEY_TYPE, &binKeyType );
+        if( rv != CKR_OK ) goto end;
+
+        rv = JS_PKCS11_GetAttributeValue2( pCTX, hObjects[i], CKA_ID, &binID );
+        if( rv != CKR_OK ) goto end;
+
+        JS_BIN_string( &binLabel, &pLabel );
+        memcpy( &nKeyType, binKeyType.pVal, binKeyType.nLen );
 
         P11Rec P11Rec;
         P11Rec.setHandle( hObjects[i] );
         P11Rec.setLabel( pLabel );
+        P11Rec.setKeyType( nKeyType );
+        P11Rec.setID( getHexString( &binID ));
 
         pubList.append( P11Rec );
 
-        JS_BIN_reset( &binVal );
+        JS_BIN_reset( &binLabel );
+        JS_BIN_reset( &binKeyType );
+        JS_BIN_reset( &binID );
         if( pLabel ) JS_free( pLabel );
     }
 
 end :
+    JS_BIN_reset( &binLabel );
+    JS_BIN_reset( &binKeyType );
+    JS_BIN_reset( &binID );
 
     return rv;
 }
 
-int getCertList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& certList )
+int getHsmCertList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& certList )
 {
     int rv = -1;
+
+    BIN binVal = {0,0};
+    BIN binID = {0,0};
+    BIN binLabel = {0,0};
+
+    char *pLabel = NULL;
 
     CK_ATTRIBUTE sTemplate[20];
     long uCount = 0;
 
-    CK_OBJECT_CLASS objClass = CKO_SECRET_KEY;
+    CK_OBJECT_CLASS objClass = CKO_CERTIFICATE;
     CK_KEY_TYPE keyType = CKK_DSA;
 
     CK_OBJECT_HANDLE hObjects[100];
@@ -1415,11 +1524,6 @@ int getCertList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& certList )
     sTemplate[uCount].ulValueLen = sizeof(objClass);
     uCount++;
 
-    sTemplate[uCount].type = CKA_KEY_TYPE;
-    sTemplate[uCount].pValue = &keyType;
-    sTemplate[uCount].ulValueLen = sizeof(keyType);
-    uCount++;
-
     rv = JS_PKCS11_FindObjectsInit( pCTX, sTemplate, uCount );
     if( rv != CKR_OK ) goto end;
 
@@ -1431,30 +1535,45 @@ int getCertList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& certList )
 
     for( int i = 0; i < uObjCnt; i++ )
     {
-        BIN binVal = {0,0};
         char *pLabel = NULL;
+        long nKeyType = -1;
 
-        rv = JS_PKCS11_GetAttributeValue2( pCTX, hObjects[i], CKA_LABEL, &binVal );
+        rv = JS_PKCS11_GetAttributeValue2( pCTX, hObjects[i], CKA_LABEL, &binLabel );
         if( rv != CKR_OK ) goto end;
 
-        JS_BIN_string( &binVal, &pLabel );
+        rv = JS_PKCS11_GetAttributeValue2( pCTX, hObjects[i], CKA_VALUE, &binVal );
+        if( rv != CKR_OK ) goto end;
+
+        rv = JS_PKCS11_GetAttributeValue2( pCTX, hObjects[i], CKA_ID, &binID );
+        if( rv != CKR_OK ) goto end;
+
+        JS_BIN_string( &binLabel, &pLabel );
 
         P11Rec P11Rec;
         P11Rec.setHandle( hObjects[i] );
         P11Rec.setLabel( pLabel );
+        P11Rec.setValue( getHexString( &binVal ) );
+        P11Rec.setID( getHexString( &binID ));
 
         certList.append( P11Rec );
 
+        JS_BIN_reset( &binLabel );
         JS_BIN_reset( &binVal );
+        JS_BIN_reset( &binID );
         if( pLabel ) JS_free( pLabel );
     }
 
 end :
+    JS_BIN_reset( &binLabel );
+    JS_BIN_reset( &binVal );
+    JS_BIN_reset( &binID );
+
+    if( pLabel ) JS_free( pLabel );
 
     return rv;
 }
 
-int getKeyPairList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& pubList, QList<P11Rec>& priList )
+int getHsmKeyPairList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& pubList, QList<P11Rec>& priList )
 {
     int rv = -1;
 
@@ -1556,7 +1675,7 @@ end :
     return rv;
 }
 
-int getPriCertList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& certList, QList<P11Rec>& priList )
+int getHsmPriCertList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& certList, QList<P11Rec>& priList )
 {
     int rv = -1;
 

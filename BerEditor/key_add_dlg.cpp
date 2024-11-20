@@ -22,6 +22,7 @@ KeyAddDlg::KeyAddDlg(QWidget *parent) :
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mOKBtn, SIGNAL(clicked()), this, SLOT(clickOK()));
     connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clickClearAll()));
+    connect( mHsmCheck, SIGNAL(clicked()), this, SLOT(checkHSM()));
 
     connect( mRandKeyBtn, SIGNAL(clicked()), this, SLOT(clickRandKey()));
 
@@ -252,6 +253,16 @@ end :
     JS_BIN_reset( &binWrapKey );
 
     if( ret == 0 ) accept();
+}
+
+void KeyAddDlg::checkHSM()
+{
+    bool bVal = mHsmCheck->isChecked();
+
+    mEncCheck->setEnabled( !bVal );
+    mIVText->setEnabled( !bVal );
+    mIVTypeCombo->setEnabled( !bVal );
+    mIVLenText->setEnabled( !bVal );
 }
 
 void KeyAddDlg::clickRandKey()

@@ -92,6 +92,7 @@ private slots:
     void clickExport();
 
     void clickOK();
+    void checkHSM();
 
 private:
     void initUI();
@@ -101,6 +102,8 @@ private:
     int Save( qint64 tTime, DerType nType, const BIN *pBin );
 
     void loadKeyPairList();
+    void loadHsmKeyPairList();
+
     const QString getSelectedPath();
     int mode_;
 };
