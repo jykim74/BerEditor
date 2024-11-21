@@ -16,6 +16,7 @@ public:
     explicit KeyAddDlg(QWidget *parent = nullptr);
     ~KeyAddDlg();
     int readFile( const QString strName );
+    int setHSM( long hObject );
     void setReadOnly();
     void setTitle( const QString strTitle );
     const QString getResKey() { return res_key_; };

@@ -389,9 +389,6 @@ void KeyListDlg::clickKeyDel()
 
     QModelIndex idx = mKeyTable->currentIndex();
     QTableWidgetItem* item = mKeyTable->item( idx.row(), 0 );
-    QString strPath = berApplet->settingsMgr()->keyListPath();
-
-    QString strSavePath;
 
     if( item == NULL )
     {
@@ -399,22 +396,39 @@ void KeyListDlg::clickKeyDel()
         return;
     }
 
+    QString strData = item->data(Qt::UserRole).toString();
+    QStringList listData = strData.split(":");
+
     bool bVal = berApplet->yesOrCancelBox( tr( "Are you sure to delete the key" ), this, false );
     if( bVal == false ) return;
 
-    strSavePath = QString( "%1/%2" ).arg( strPath ).arg( item->text() );
-    dir.remove( strSavePath );
+    if( listData.size() >= 2 && listData.at(0) == "HSM" )
+    {
+        long hObject = listData.at(1).toLong();
+        JP11_CTX* pCTX = berApplet->getP11CTX();
+        int nIndex = berApplet->settingsMgr()->hsmIndex();
 
-    loadKeyList();
+        int rv = getP11SessionLogin( pCTX, nIndex );
+        if( rv <= 0 ) return;
+
+        rv = JS_PKCS11_DestroyObject( pCTX, listData.at(1).toLong());
+        if( rv == CKR_OK ) loadHsmKeyList();
+    }
+    else
+    {
+        QString strPath = berApplet->settingsMgr()->keyListPath();
+        QString strSavePath;
+        strSavePath = QString( "%1/%2" ).arg( strPath ).arg( item->text() );
+        dir.remove( strSavePath );
+
+        loadKeyList();
+    }
 }
 
 void KeyListDlg::clickKeyView()
 {
     QModelIndex idx = mKeyTable->currentIndex();
     QTableWidgetItem* item = mKeyTable->item( idx.row(), 0 );
-    QString strPath = berApplet->settingsMgr()->keyListPath();
-
-    QString strSavePath;
 
     if( item == NULL )
     {
@@ -422,18 +436,34 @@ void KeyListDlg::clickKeyView()
         return;
     }
 
+    QString strData = item->data(Qt::UserRole).toString();
+
+    QStringList listData = strData.split(":");
     KeyAddDlg keyDlg;
 
-    keyDlg.setTitle( tr( "Symmetric Key View" ));
-    int ret = keyDlg.readFile( item->text() );
-    if( ret != 0 )
+    if( listData.size() >= 2 && listData.at(0) == "HSM" )
     {
-        berApplet->elog( QString( "fail to get symmetric key: %1").arg( ret ) );
-        if( ret == JSR_PASSWORD_WRONG )
+        long hObject = listData.at(1).toLong();
+        keyDlg.setHSM( hObject );
+    }
+    else
+    {
+        QString strPath = berApplet->settingsMgr()->keyListPath();
+        QString strSavePath;
+
+
+
+        keyDlg.setTitle( tr( "Symmetric Key View" ));
+        int ret = keyDlg.readFile( item->text() );
+        if( ret != 0 )
         {
-            berApplet->warningBox( tr( "The password is incorrect" ), this );
+            berApplet->elog( QString( "fail to get symmetric key: %1").arg( ret ) );
+            if( ret == JSR_PASSWORD_WRONG )
+            {
+                berApplet->warningBox( tr( "The password is incorrect" ), this );
+            }
+            return;
         }
-        return;
     }
 
     keyDlg.setReadOnly();

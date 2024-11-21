@@ -29,6 +29,28 @@ long getP11KeyType( const QString strAlg )
     return -1;
 }
 
+const QString getP11KeyTypeName( long uKeyType )
+{
+    if( uKeyType == CKK_AES )
+        return "AES";
+    else if( uKeyType == CKK_SEED )
+        return "SEED";
+    else if( uKeyType == CKK_ARIA )
+        return "ARIA";
+    else if( uKeyType == CKK_DES3 )
+        return "TDES";
+    else if( uKeyType == CKK_EC )
+        return "ECDSA";
+    else if( uKeyType == CKK_RSA )
+        return "RSA";
+    else if( uKeyType == CKK_EC_EDWARDS )
+        return "EDDSA";
+    else if( uKeyType == CKK_GENERIC_SECRET )
+        return "HMAC";
+
+    return "";
+}
+
 long getHandleHSM( JP11_CTX *pCTX, CK_OBJECT_CLASS objClass, const BIN *pID )
 {
     int rv;

@@ -11,6 +11,8 @@
 
 #include "js_error.h"
 #include "js_pki.h"
+#include "js_pkcs11.h"
+#include "p11api.h"
 
 static const QStringList kTypeList = { "AES", "ARIA", "SEED", "TDES", "HMAC" };
 
@@ -145,6 +147,64 @@ int KeyAddDlg::readFile( const QString strName )
     mIVText->setText( strIV );
 
     return 0;
+}
+
+int KeyAddDlg::setHSM( long hObject )
+{
+    int rv = 0;
+    BIN binVal = {0,0};
+    BIN binLabel = {0,0};
+    BIN binLen = {0,0};
+    BIN binType = {0,0};
+
+    char *pLabel = NULL;
+
+    JP11_CTX *pCTX = berApplet->getP11CTX();
+    int nIndex = berApplet->settingsMgr()->hsmIndex();
+    int nKeyLen = 0;
+    int nKeyType = 0;
+
+    rv = getP11SessionLogin( pCTX, nIndex );
+    if( rv <= 0 ) goto end;
+
+    rv = JS_PKCS11_GetAttributeValue2( pCTX, hObject, CKA_LABEL, &binLabel );
+    if( rv != 0 ) goto end;
+
+    JS_BIN_string( &binLabel, &pLabel );
+
+    rv = JS_PKCS11_GetAttributeValue2( pCTX, hObject, CKA_VALUE, &binVal );
+
+    rv = JS_PKCS11_GetAttributeValue2( pCTX, hObject, CKA_VALUE_LEN, &binLen );
+
+    if( binLen.nLen > 0 ) memcpy( &nKeyLen, binLen.pVal, binLen.nLen );
+
+    rv = JS_PKCS11_GetAttributeValue2( pCTX, hObject, CKA_KEY_TYPE, &binType );
+
+    if( binType.nLen > 0 ) memcpy( &nKeyType, binType.pVal, binType.nLen );
+
+    mHsmCheck->setChecked(true);
+    checkHSM();
+
+    mTypeCombo->clear();
+    mKeyLenCombo->clear();
+    mKeyTypeCombo->clear();
+    mIVTypeCombo->clear();
+
+    mNameText->setText( pLabel );
+    mKeyText->setText( getHexString( &binVal ));
+    mKeyTypeCombo->addItem( "Hex" );
+    mKeyLenCombo->addItem( QString("%1").arg( nKeyLen ));
+    mTypeCombo->addItem( QString( "%1").arg( getP11KeyTypeName( nKeyType )));
+
+end :
+    JS_BIN_reset( &binVal );
+    JS_BIN_reset( &binLabel );
+    JS_BIN_reset( &binLen );
+    JS_BIN_reset( &binType );
+
+    if( pLabel ) JS_free( pLabel );
+
+    return rv;
 }
 
 void KeyAddDlg::setReadOnly()

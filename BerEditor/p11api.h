@@ -22,6 +22,8 @@ static unsigned char kOID_X448[] = { 0x06, 0x03, 0x2B, 0x65, 0x6F };
 
 
 long getP11KeyType( const QString strAlg );
+const QString getP11KeyTypeName( long uKeyType );
+
 long getHandleHSM( JP11_CTX *pCTX, CK_OBJECT_CLASS objClass, const BIN *pID );
 
 int loadPKCS11Libray( const QString strLibPath, JP11_CTX **ppCTX );
