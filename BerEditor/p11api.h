@@ -9,33 +9,36 @@
 #include "js_error.h"
 #include "p11_rec.h"
 
-const QString kMechRSA = "RSA";
-const QString kMechEC = "EC";
-const QString kMechEdDSA = "EdDSA";
-const QString kMechDSA = "DSA";
-const QString kMechEd25519 = "Ed25519";
-const QString kMechEd448 = "Ed448";
-const QString kMechPKCS11_RSA = "PKCS11_RSA";
-const QString kMechPKCS11_EC = "PKCS11_EC";
-const QString kMechPKCS11_DSA = "PKCS11_DSA";
-
 static CK_BBOOL kTrue = CK_TRUE;
 static CK_BBOOL kFalse = CK_FALSE;
 
+//PrintableString curve25519
+static unsigned char kCurveNameX25519[] = { 0x13, 0x0a, 0x63, 0x75, 0x72, 0x76, 0x65, 0x32, 0x35, 0x35, 0x31, 0x39 };
+static unsigned char kOID_X25519[] = { 0x06, 0x03, 0x2B, 0x65, 0x6E };
+
+//PrintableString cruve448
+static unsigned char kCurveNameX448[] = { 0x13, 0x08, 0x63, 0x75, 0x72, 0x76, 0x65, 0x34, 0x34, 0x38 };
+static unsigned char kOID_X448[] = { 0x06, 0x03, 0x2B, 0x65, 0x6F };
+
+
+long getP11KeyType( const QString strAlg );
+
 int loadPKCS11Libray( const QString strLibPath, JP11_CTX **ppCTX );
 CK_SESSION_HANDLE getP11Session( void *pP11CTX, int nSlotIndex = 0 );
-CK_SESSION_HANDLE getP11SessionLogin( void *pP11CTX, int nSlotID, const QString strPIN = nullptr );
+CK_SESSION_HANDLE getP11SessionLogin( void *pP11CTX, int nSlotIndex, const QString strPIN = nullptr );
 
+int genKeyWithP11( JP11_CTX *pCTX, QString strName, QString strAlg );
 int genKeyPairWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, QString strParam, int nExponent, BIN *pPri, BIN *pPub );
-
-int createKeyWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, BIN *pSecret );
-
-int createKeyPairWithP11( JP11_CTX *pCTX, QString strName, const BIN *pPri, const BIN *pPub );
+int createKeyWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, const BIN *pSecret );
+int createCertWithP11( JP11_CTX *pCTX, QString strName, const BIN *pID, const BIN *pCert );
+int createKeyPairWithP11( JP11_CTX *pCTX, const QString strName, const BIN *pPri );
 
 int createRSAPublicKeyP11( JP11_CTX *pCTX, const QString& strLabel, const BIN *pID, const JRSAKeyVal *pRsaKeyVal );
 int createRSAPrivateKeyP11( JP11_CTX *pCTX, const QString& strLabel, const BIN *pID, const JRSAKeyVal *pRsaKeyVal );
 int createECPublicKeyP11( JP11_CTX *pCTX, const QString& strLabel, const BIN *pID, const JECKeyVal *pEcKeyVal );
 int createECPrivateKeyP11( JP11_CTX *pCTX, const QString& strLabel, const BIN *pID, const JECKeyVal *pECKeyVal );
+int createEDPublicKeyP11( JP11_CTX *pCTX, const QString& strLabel, const BIN *pID, const JRawKeyVal *pRawKeyVal );
+int createEDPrivateKeyP11( JP11_CTX *pCTX, const QString& strLabel, const BIN *pID, const JRawKeyVal *pRawKeyVal );
 int createDSAPublicKeyP11( JP11_CTX *pCTX, const QString& strLabel, const BIN *pID, const JDSAKeyVal *pDSAKeyVal );
 int createDSAPrivateKeyP11( JP11_CTX *pCTX, const QString& strLabel, const BIN *pID, const JDSAKeyVal *pDSAKeyVal );
 

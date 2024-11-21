@@ -304,8 +304,6 @@ void KeyListDlg::loadHsmKeyList()
         mKeyTable->setItem( row, 2, new QTableWidgetItem(QString("%1").arg( record.getHandle() )));
         mKeyTable->setItem( row, 3, new QTableWidgetItem(QString("%1").arg( record.getID() )));
     }
-
-    JS_PKCS11_CloseSession( pCTX );
 }
 
 void KeyListDlg::clickKeyAdd()
@@ -330,13 +328,23 @@ void KeyListDlg::clickKeyAdd()
             BIN binSecret = {0,0};
 
             ret = getP11SessionLogin( pCTX, nIndex );
-            if( ret != 0 ) return;
+            if( ret <= 0 )
+            {
+                berApplet->elog( QString("P11 Session Login fail:%1").arg(ret));
+                return;
+            }
 
             JS_BIN_decodeHex( strKey.toStdString().c_str(), &binSecret );
 
             ret = createKeyWithP11( pCTX, strName, strAlg, &binSecret );
-
             JS_BIN_reset( &binSecret );
+
+            if( ret != 0 )
+            {
+                berApplet->elog( QString( "failed to create key in HSM: %1" ).arg( ret ));
+            }
+
+            mHsmCheck->setChecked(true);
             loadHsmKeyList();
         }
         else

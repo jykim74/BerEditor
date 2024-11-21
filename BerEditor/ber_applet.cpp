@@ -68,7 +68,11 @@ BerApplet::~BerApplet()
     if( main_win_ != nullptr ) delete main_win_;
     if( settings_mgr_ != nullptr ) delete settings_mgr_;
 
-    if( p11_ctx_ ) JS_PKCS11_ReleaseLibrry( &p11_ctx_ );
+    if( p11_ctx_ )
+    {
+        JS_PKCS11_CloseSession( p11_ctx_ );
+        JS_PKCS11_ReleaseLibrry( &p11_ctx_ );
+    }
 }
 
 void BerApplet::setCmd(const QString cmd)

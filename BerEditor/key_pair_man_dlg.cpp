@@ -370,8 +370,6 @@ void KeyPairManDlg::loadHsmKeyPairList()
         mKeyPairTable->setItem( row, 2, new QTableWidgetItem(QString("%1").arg( rec.getHandle() )));
         mKeyPairTable->setItem( row, 3, new QTableWidgetItem(QString("%1").arg( rec.getID() )));
     }
-
-    JS_PKCS11_CloseSession( pCTX );
 }
 
 const QString KeyPairManDlg::getTypePathName( qint64 now_t, DerType nType )
@@ -497,44 +495,64 @@ int KeyPairManDlg::Save( qint64 tTime, DerType nType, const BIN *pBin )
 
 void KeyPairManDlg::clickLGenKeyPair()
 {
+    int ret = 0;
     QDir dir;
     QString strKeyPairPath = berApplet->settingsMgr()->keyPairPath();
     GenKeyPairDlg genKeyPair;
 
+    BIN binPri = {0,0};
+    BIN binPub = {0,0};
+
     if( genKeyPair.exec() == QDialog::Accepted )
     {
-        BIN binPri = {0,0};
-        BIN binPub = {0,0};
-
         QString strName = genKeyPair.mNameText->text();
-
-        QString fullPath = QString( "%1/%2" ).arg( strKeyPairPath ).arg( strName );
-        if( dir.exists( fullPath ) )
-        {
-            berApplet->warningBox( tr( "The folder(%1) is already existed" ).arg( strName ), this );
-            return;
-        }
-        else
-        {
-            dir.mkdir( fullPath );
-        }
-
-        QString strPriPath = QString( "%1/%2" ).arg( fullPath ).arg( kPrivateFile );
-        QString strPubPath = QString( "%1/%2" ).arg( fullPath ).arg( kPublicFile );
-
         JS_BIN_decodeHex( genKeyPair.getPriKeyHex().toStdString().c_str(), &binPri );
         JS_BIN_decodeHex( genKeyPair.getPubKeyHex().toStdString().c_str(), &binPub );
 
-        JS_BIN_writePEM( &binPri, JS_PEM_TYPE_PRIVATE_KEY, strPriPath.toLocal8Bit().toStdString().c_str() );
-        JS_BIN_writePEM( &binPub, JS_PEM_TYPE_PUBLIC_KEY, strPubPath.toLocal8Bit().toStdString().c_str() );
+        if( genKeyPair.mHsmCheck->isChecked() == true )
+        {
+            JP11_CTX *pCTX = berApplet->getP11CTX();
+            int nIndex = berApplet->settingsMgr()->hsmIndex();
 
-        JS_BIN_reset( &binPri );
-        JS_BIN_reset( &binPub );
+            ret = getP11SessionLogin( pCTX, nIndex );
+            if( ret < 0 ) return;
 
-        loadKeyPairList();
+            ret = createKeyPairWithP11( pCTX, strName, &binPri );
+            if( ret == 0 )
+            {
+                mHsmCheck->setChecked(true);
+                loadHsmKeyPairList();
+            }
+        }
+        else
+        {
+            QString fullPath = QString( "%1/%2" ).arg( strKeyPairPath ).arg( strName );
+            if( dir.exists( fullPath ) )
+            {
+                berApplet->warningBox( tr( "The folder(%1) is already existed" ).arg( strName ), this );
+                return;
+            }
+            else
+            {
+                dir.mkdir( fullPath );
+            }
 
-        berApplet->messageLog( tr( "Key pair generation was successful"), this );
+            QString strPriPath = QString( "%1/%2" ).arg( fullPath ).arg( kPrivateFile );
+            QString strPubPath = QString( "%1/%2" ).arg( fullPath ).arg( kPublicFile );
+
+            JS_BIN_writePEM( &binPri, JS_PEM_TYPE_PRIVATE_KEY, strPriPath.toLocal8Bit().toStdString().c_str() );
+            JS_BIN_writePEM( &binPub, JS_PEM_TYPE_PUBLIC_KEY, strPubPath.toLocal8Bit().toStdString().c_str() );
+            mHsmCheck->setChecked(false);
+            loadKeyPairList();
+        }
+
+        if( ret == 0 )
+            berApplet->messageLog( tr( "Key pair generation was successful"), this );
     }
+
+end :
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binPub );
 }
 
 void KeyPairManDlg::clickLDelete()

@@ -7,6 +7,28 @@
 #include "js_pki_x509.h"
 #include "js_pki_eddsa.h"
 
+long getP11KeyType( const QString strAlg )
+{
+    if( strAlg == "AES" )
+        return CKK_AES;
+    else if( strAlg == "SEED" )
+        return CKK_SEED;
+    else if( strAlg == "ARIA" )
+        return CKK_ARIA;
+    else if( strAlg == "TDES" || strAlg == "3DES" )
+        return CKK_DES3;
+    else if( strAlg == "RSA" )
+        return CKK_RSA;
+    else if( strAlg == "EC" || strAlg == "ECDSA" )
+        return CKK_EC;
+    else if( strAlg == "EDDSA" )
+        return CKK_EC_EDWARDS;
+    else if( strAlg == "HMAC" )
+        return CKK_GENERIC_SECRET;
+
+    return -1;
+}
+
 int loadPKCS11Libray( const QString strLibPath, JP11_CTX **ppCTX )
 {
     int rv = 0;
@@ -45,7 +67,18 @@ CK_SESSION_HANDLE getP11Session( void *pP11CTX, int nSlotIndex )
     CK_ULONG uSlotCnt = 0;
     CK_SLOT_ID  sSlotList[10];
 
+
     int nUserType = 0;
+
+    CK_SESSION_INFO sSessInfo;
+    memset( &sSessInfo, 0x00, sizeof(sSessInfo));
+
+    ret = JS_PKCS11_GetSessionInfo( pCTX, &sSessInfo );
+    if( ret == CKR_OK )
+    {
+        // 이미 세션이 열린 상태
+        return ret;
+    }
 
     nFlags |= CKF_RW_SESSION;
     nFlags |= CKF_SERIAL_SESSION;
@@ -76,7 +109,7 @@ CK_SESSION_HANDLE getP11Session( void *pP11CTX, int nSlotIndex )
 }
 
 
-CK_SESSION_HANDLE getP11SessionLogin( void *pP11CTX, int nSlotID, const QString strPIN )
+CK_SESSION_HANDLE getP11SessionLogin( void *pP11CTX, int nSlotIndex, const QString strPIN )
 {
     int ret = 0;
 
@@ -90,11 +123,48 @@ CK_SESSION_HANDLE getP11SessionLogin( void *pP11CTX, int nSlotID, const QString 
     CK_SLOT_ID  sSlotList[10];
 
     int nUserType = 0;
+    int nState = -1;
+
+    CK_SESSION_INFO sSessInfo;
+    memset( &sSessInfo, 0x00, sizeof(sSessInfo));
+
+    ret = JS_PKCS11_GetSessionInfo( pCTX, &sSessInfo );
 
     nFlags |= CKF_RW_SESSION;
     nFlags |= CKF_SERIAL_SESSION;
     nUserType = CKU_USER;
 
+    if( ret == CKR_OK )
+    {
+        nState = sSessInfo.state;
+
+        if( nState == CKS_RO_USER_FUNCTIONS || nState == CKS_RW_USER_FUNCTIONS )
+        {
+            return pCTX->hSession;
+        }
+    }
+
+    ret = JS_PKCS11_GetSlotList2( pCTX, CK_TRUE, sSlotList, &uSlotCnt );
+    if( ret != CKR_OK )
+    {
+        fprintf( stderr, "fail to run getSlotList fail(%d)\n", ret );
+        return -1;
+    }
+
+    if( uSlotCnt < 1 || uSlotCnt < nSlotIndex )
+    {
+        fprintf( stderr, "there is no slot(%d)\n", uSlotCnt );
+        return -1;
+    }
+
+    JS_PKCS11_CloseSession( pCTX );
+
+    ret = JS_PKCS11_OpenSession( pCTX, sSlotList[nSlotIndex], nFlags );
+    if( ret != CKR_OK )
+    {
+        fprintf( stderr, "fail to run opensession(%s:%x)\n", JS_PKCS11_GetErrorMsg(ret), ret );
+        return -1;
+    }
 
     if( strPIN == nullptr || strPIN.length() < 1 )
     {
@@ -110,26 +180,6 @@ CK_SESSION_HANDLE getP11SessionLogin( void *pP11CTX, int nSlotID, const QString 
         strPass = strPIN;
     }
 
-    ret = JS_PKCS11_GetSlotList2( pCTX, CK_TRUE, sSlotList, &uSlotCnt );
-    if( ret != CKR_OK )
-    {
-        fprintf( stderr, "fail to run getSlotList fail(%d)\n", ret );
-        return -1;
-    }
-
-    if( uSlotCnt < 1 || uSlotCnt < nSlotID )
-    {
-        fprintf( stderr, "there is no slot(%d)\n", uSlotCnt );
-        return -1;
-    }
-
-    ret = JS_PKCS11_OpenSession( pCTX, sSlotList[nSlotID], nFlags );
-    if( ret != CKR_OK )
-    {
-        fprintf( stderr, "fail to run opensession(%s:%x)\n", JS_PKCS11_GetErrorMsg(ret), ret );
-        return -1;
-    }
-
     getBINFromString( &binPIN, DATA_STRING, strPass );
 
     ret = JS_PKCS11_Login( pCTX, nUserType, binPIN.pVal, binPIN.nLen );
@@ -142,6 +192,71 @@ CK_SESSION_HANDLE getP11SessionLogin( void *pP11CTX, int nSlotID, const QString 
     }
 
     return pCTX->hSession;
+}
+
+int genKeyWithP11( JP11_CTX *pCTX, QString strName, QString strAlg )
+{
+    int rv = -1;
+    CK_ATTRIBUTE sTemplate[20];
+    long uCount = 0;
+
+    CK_OBJECT_CLASS objClass = CKO_SECRET_KEY;
+    CK_KEY_TYPE keyType = 0;
+    CK_OBJECT_HANDLE    hObject = 0;
+    CK_OBJECT_HANDLE    hKey = 0;
+
+    CK_MECHANISM sMech;
+
+    memset( &sMech, 0x00, sizeof(sMech));
+
+    keyType = getP11KeyType( strAlg );
+
+    sTemplate[uCount].type = CKA_CLASS;
+    sTemplate[uCount].pValue = &objClass;
+    sTemplate[uCount].ulValueLen = sizeof(objClass);
+    uCount++;
+
+    if( keyType >= 0 )
+    {
+        if( keyType == CKK_AES )
+            sMech.mechanism = CKM_AES_KEY_GEN;
+        else if( keyType == CKK_ARIA )
+            sMech.mechanism = CKM_ARIA_KEY_GEN;
+        else if( keyType == CKK_SEED )
+            sMech.mechanism = CKM_SEED_KEY_GEN;
+        else if( keyType == CKK_DES3 )
+            sMech.mechanism = CKM_DES3_KEY_GEN;
+        else
+            sMech.mechanism = CKM_GENERIC_SECRET_KEY_GEN;
+    }
+    else
+    {
+        sMech.mechanism = CKM_GENERIC_SECRET_KEY_GEN;
+    }
+
+    BIN binLabel = {0,0};
+
+    if( !strName.isEmpty() )
+    {
+        JS_BIN_set( &binLabel, (unsigned char *)strName.toStdString().c_str(), strName.toUtf8().length() );
+
+        sTemplate[uCount].type = CKA_LABEL;
+        sTemplate[uCount].pValue = binLabel.pVal;
+        sTemplate[uCount].ulValueLen = binLabel.nLen;
+        uCount++;
+    }
+
+    rv = JS_PKCS11_GenerateKey( pCTX, &sMech, sTemplate, uCount, &hKey );
+
+    JS_BIN_reset( &binLabel );
+
+    if( rv != CKR_OK )
+    {
+        fprintf( stderr, "fail to create RSA public key(%s)\n", JS_PKCS11_GetErrorMsg(rv) );
+        return rv;
+    }
+
+    return rv;
 }
 
 int genKeyPairWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, QString strParam, int nExponent, BIN *pPri, BIN *pPub )
@@ -161,9 +276,6 @@ int genKeyPairWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, QString 
 
     CK_OBJECT_HANDLE uPubObj = 0;
     CK_OBJECT_HANDLE uPriObj = 0;
-
-    CK_BBOOL bTrue = CK_TRUE;
-    CK_BBOOL bFalse = CK_FALSE;
 
     CK_OBJECT_CLASS pubClass = CKO_PUBLIC_KEY;
     CK_OBJECT_CLASS priClass = CKO_PRIVATE_KEY;
@@ -192,21 +304,7 @@ int genKeyPairWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, QString 
     memset( &sMech, 0x00, sizeof(sMech) );
     memset( sCurveOID, 0x00, sizeof(sCurveOID));
 
-    if( strAlg == kMechPKCS11_RSA )
-    {
-        sMech.mechanism = CKM_RSA_PKCS_KEY_PAIR_GEN;
-        keyType = CKK_RSA;
-    }
-    else if( strAlg == kMechPKCS11_EC )
-    {
-        sMech.mechanism = CKM_ECDSA_KEY_PAIR_GEN;
-        keyType = CKK_ECDSA;
-    }
-    else if( strAlg == kMechPKCS11_DSA )
-    {
-        sMech.mechanism = CKM_DSA_KEY_PAIR_GEN;
-        keyType = CKK_DSA;
-    }
+    keyType = getP11KeyType( strAlg );
 
     sPubTemplate[uPubCount].type = CKA_CLASS;
     sPubTemplate[uPubCount].pValue = &pubClass;
@@ -230,6 +328,8 @@ int genKeyPairWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, QString 
 
     if( keyType == CKK_RSA )
     {
+        sMech.mechanism = CKM_RSA_PKCS_KEY_PAIR_GEN;
+
         QString strDecimal = "";
         strDecimal = QString( "%1" ).arg( nExponent );
         JS_PKI_decimalToBin( strDecimal.toStdString().c_str(), &binPubExponent );
@@ -248,6 +348,8 @@ int genKeyPairWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, QString 
     }
     else if( keyType == CKK_ECDSA )
     {
+        sMech.mechanism = CKM_ECDSA_KEY_PAIR_GEN;
+
         JS_PKI_getOIDFromSN( strParam.toStdString().c_str(), sCurveOID );
         JS_PKI_getOIDFromString( sCurveOID, &binGroup );
 
@@ -256,8 +358,31 @@ int genKeyPairWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, QString 
         sPubTemplate[uPubCount].ulValueLen = binGroup.nLen;
         uPubCount++;
     }
+    else if( keyType == CKK_EC_EDWARDS )
+    {
+        QString strCurveName = strParam;
+
+        if( strCurveName == "ED25519" )
+        {
+            sPubTemplate[uPubCount].type = CKA_EC_PARAMS;
+            sPubTemplate[uPubCount].pValue = kOID_X25519;
+            sPubTemplate[uPubCount].ulValueLen = sizeof(kOID_X25519);
+            uPubCount++;
+        }
+        else if( strCurveName == "ED448" )
+        {
+            sPubTemplate[uPubCount].type = CKA_EC_PARAMS;
+            sPubTemplate[uPubCount].pValue = kOID_X448;
+            sPubTemplate[uPubCount].ulValueLen = sizeof(kOID_X448);
+            uPubCount++;
+        }
+
+        sMech.mechanism = CKM_EC_EDWARDS_KEY_PAIR_GEN;
+    }
     else if( keyType == CKK_DSA )
     {
+        sMech.mechanism = CKM_DSA_KEY_PAIR_GEN;
+
         uModBitLen = strParam.toInt();
         JS_PKI_DSA_GenParamValue( uModBitLen, &binP, &binQ, &binG );
 
@@ -278,25 +403,25 @@ int genKeyPairWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, QString 
     }
 
     sPubTemplate[uPubCount].type = CKA_TOKEN;
-    sPubTemplate[uPubCount].pValue = &bTrue;
-    sPubTemplate[uPubCount].ulValueLen = sizeof(bTrue);
+    sPubTemplate[uPubCount].pValue = &kTrue;
+    sPubTemplate[uPubCount].ulValueLen = sizeof(kTrue);
     uPubCount++;
 
     sPubTemplate[uPubCount].type = CKA_VERIFY;
-    sPubTemplate[uPubCount].pValue = &bTrue;
-    sPubTemplate[uPubCount].ulValueLen = sizeof(bTrue);
+    sPubTemplate[uPubCount].pValue = &kTrue;
+    sPubTemplate[uPubCount].ulValueLen = sizeof(kTrue);
     uPubCount++;
 
     if( keyType == CKK_RSA )
     {
         sPubTemplate[uPubCount].type = CKA_ENCRYPT;
-        sPubTemplate[uPubCount].pValue = &bTrue;
-        sPubTemplate[uPubCount].ulValueLen = sizeof(bTrue);
+        sPubTemplate[uPubCount].pValue = &kTrue;
+        sPubTemplate[uPubCount].ulValueLen = sizeof(kTrue);
         uPubCount++;
 
         sPubTemplate[uPubCount].type = CKA_WRAP;
-        sPubTemplate[uPubCount].pValue = &bTrue;
-        sPubTemplate[uPubCount].ulValueLen = sizeof(bTrue);
+        sPubTemplate[uPubCount].pValue = &kTrue;
+        sPubTemplate[uPubCount].ulValueLen = sizeof(kTrue);
         uPubCount++;
     }
 
@@ -322,36 +447,36 @@ int genKeyPairWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, QString 
     uPriCount++;
 
     sPriTemplate[uPriCount].type = CKA_TOKEN;
-    sPriTemplate[uPriCount].pValue = &bTrue;
-    sPriTemplate[uPriCount].ulValueLen = sizeof( bTrue );
+    sPriTemplate[uPriCount].pValue = &kTrue;
+    sPriTemplate[uPriCount].ulValueLen = sizeof( kTrue );
     uPriCount++;
 
     sPriTemplate[uPriCount].type = CKA_PRIVATE;
-    sPriTemplate[uPriCount].pValue = &bTrue;
-    sPriTemplate[uPriCount].ulValueLen = sizeof( bTrue );
+    sPriTemplate[uPriCount].pValue = &kTrue;
+    sPriTemplate[uPriCount].ulValueLen = sizeof( kTrue );
     uPriCount++;
 
     if( keyType == CKK_RSA )
     {
         sPriTemplate[uPriCount].type = CKA_DECRYPT;
-        sPriTemplate[uPriCount].pValue = &bTrue;
-        sPriTemplate[uPriCount].ulValueLen = sizeof( bTrue );
+        sPriTemplate[uPriCount].pValue = &kTrue;
+        sPriTemplate[uPriCount].ulValueLen = sizeof( kTrue );
         uPriCount++;
 
         sPriTemplate[uPriCount].type = CKA_UNWRAP;
-        sPriTemplate[uPriCount].pValue = &bTrue;
-        sPriTemplate[uPriCount].ulValueLen = sizeof( bTrue );
+        sPriTemplate[uPriCount].pValue = &kTrue;
+        sPriTemplate[uPriCount].ulValueLen = sizeof( kTrue );
         uPriCount++;
     }
 
     sPriTemplate[uPriCount].type = CKA_SENSITIVE;
-    sPriTemplate[uPriCount].pValue = &bTrue;
-    sPriTemplate[uPriCount].ulValueLen = sizeof( bTrue );
+    sPriTemplate[uPriCount].pValue = &kTrue;
+    sPriTemplate[uPriCount].ulValueLen = sizeof( kTrue );
     uPriCount++;
 
     sPriTemplate[uPriCount].type = CKA_SIGN;
-    sPriTemplate[uPriCount].pValue = &bTrue;
-    sPriTemplate[uPriCount].ulValueLen = sizeof( bTrue );
+    sPriTemplate[uPriCount].pValue = &kTrue;
+    sPriTemplate[uPriCount].ulValueLen = sizeof( kTrue );
     uPriCount++;
 
     rv = JS_PKCS11_GenerateKeyPair( pP11CTX, &sMech, sPubTemplate, uPubCount, sPriTemplate, uPriCount, &uPubObj, &uPriObj );
@@ -462,26 +587,30 @@ end :
     return rv;
 }
 
-int createKeyWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, BIN *pSecret )
+int createKeyWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, const BIN *pSecret )
 {
     int rv = -1;
     CK_ATTRIBUTE sTemplate[20];
     long uCount = 0;
-    CK_BBOOL bTrue = CK_TRUE;
-    CK_BBOOL bFalse = CK_FALSE;
+
     CK_OBJECT_CLASS objClass = CKO_SECRET_KEY;
     CK_KEY_TYPE keyType = 0;
     CK_OBJECT_HANDLE    hObject = 0;
+
+    keyType = getP11KeyType( strAlg );
 
     sTemplate[uCount].type = CKA_CLASS;
     sTemplate[uCount].pValue = &objClass;
     sTemplate[uCount].ulValueLen = sizeof(objClass);
     uCount++;
 
-    sTemplate[uCount].type = CKA_KEY_TYPE;
-    sTemplate[uCount].pValue = &keyType;
-    sTemplate[uCount].ulValueLen = sizeof(keyType);
-    uCount++;
+    if( keyType >= 0 )
+    {
+        sTemplate[uCount].type = CKA_KEY_TYPE;
+        sTemplate[uCount].pValue = &keyType;
+        sTemplate[uCount].ulValueLen = sizeof(keyType);
+        uCount++;
+    }
 
     BIN binLabel = {0,0};
 
@@ -508,6 +637,11 @@ int createKeyWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, BIN *pSec
     sTemplate[uCount].ulValueLen = pSecret->nLen;
     uCount++;
 
+    sTemplate[uCount].type = CKA_TOKEN;
+    sTemplate[uCount].pValue = &kTrue;
+    sTemplate[uCount].ulValueLen = sizeof(CK_BBOOL);
+    uCount++;
+
     rv = JS_PKCS11_CreateObject( pCTX, sTemplate, uCount, &hObject );
 
     JS_BIN_reset( &binLabel );
@@ -520,15 +654,157 @@ int createKeyWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, BIN *pSec
     }
 
     return rv;
-
-
-    return 0;
 }
 
-
-int createKeyPairWithP11( JP11_CTX *pCTX, QString strName, const BIN *pPri, const BIN *pPub )
+int createCertWithP11( JP11_CTX *pCTX, QString strName, const BIN *pID, const BIN *pCert )
 {
-    return 0;
+    int rv = -1;
+    CK_ATTRIBUTE sTemplate[20];
+    long uCount = 0;
+
+    CK_OBJECT_CLASS objClass = CKO_CERTIFICATE;
+    CK_OBJECT_HANDLE    hObject = 0;
+    CK_CERTIFICATE_TYPE certType = CKC_X_509;
+
+    sTemplate[uCount].type = CKA_CLASS;
+    sTemplate[uCount].pValue = &objClass;
+    sTemplate[uCount].ulValueLen = sizeof(objClass);
+    uCount++;
+
+    sTemplate[uCount].type = CKA_CERTIFICATE_TYPE;
+    sTemplate[uCount].pValue = &certType;
+    sTemplate[uCount].ulValueLen = sizeof(certType);
+    uCount++;
+
+    BIN binSubject = {0,0};
+    BIN binLabel = {0,0};
+
+    if( !strName.isEmpty() )
+    {
+        JS_BIN_set( &binLabel, (unsigned char *)strName.toStdString().c_str(), strName.toUtf8().length() );
+
+        sTemplate[uCount].type = CKA_LABEL;
+        sTemplate[uCount].pValue = binLabel.pVal;
+        sTemplate[uCount].ulValueLen = binLabel.nLen;
+        uCount++;
+    }
+
+    if( pID )
+    {
+        sTemplate[uCount].type = CKA_ID;
+        sTemplate[uCount].pValue = pID->pVal;
+        sTemplate[uCount].ulValueLen = pID->nLen;
+        uCount++;
+    }
+
+    rv = JS_PKI_getCertSubjetDN( pCert, &binSubject );
+    if( rv == 0 )
+    {
+        sTemplate[uCount].type = CKA_SUBJECT;
+        sTemplate[uCount].pValue = binSubject.pVal;
+        sTemplate[uCount].ulValueLen = binSubject.nLen;
+        uCount++;
+    }
+
+    sTemplate[uCount].type = CKA_VALUE;
+    sTemplate[uCount].pValue = pCert->pVal;
+    sTemplate[uCount].ulValueLen = pCert->nLen;
+    uCount++;
+
+    JS_BIN_reset( &binSubject );
+    JS_BIN_reset( &binLabel );
+
+    rv = JS_PKCS11_CreateObject( pCTX, sTemplate, uCount, &hObject );
+
+    JS_BIN_reset( &binLabel );
+
+    if( rv != CKR_OK )
+    {
+        fprintf( stderr, "fail to create certificate(%s)\n", JS_PKCS11_GetErrorMsg(rv) );
+        return rv;
+    }
+
+    return rv;
+}
+
+int createKeyPairWithP11( JP11_CTX *pCTX, const QString strName, const BIN *pPri )
+{
+    int rv = 0;
+    BIN binID = {0,0};
+    BIN binPub = {0,0};
+
+    JRSAKeyVal  sRSAKey;
+    JECKeyVal   sECKey;
+    JDSAKeyVal  sDSAKey;
+    JRawKeyVal  sRawKey;
+
+
+    int nKeyType = JS_PKI_getPriKeyType( pPri );
+    if( nKeyType < 0 ) return JSR_ERR;
+
+    JS_PKI_getPubKeyFromPriKey( nKeyType, pPri, &binPub );
+    JS_PKI_getKeyIdentifier( &binPub, &binID );
+
+    memset( &sRSAKey, 0x00, sizeof(sRSAKey));
+    memset( &sECKey, 0x00, sizeof(sECKey));
+    memset( &sDSAKey, 0x00, sizeof(sDSAKey));
+    memset( &sRawKey, 0x00, sizeof(sRawKey));
+
+    if( nKeyType == JS_PKI_KEY_TYPE_RSA )
+    {
+        rv = JS_PKI_getRSAKeyVal( pPri, &sRSAKey );
+        if( rv != 0 ) goto end;
+
+        rv = createRSAPrivateKeyP11( pCTX, strName, &binID, &sRSAKey );
+        if( rv != 0 ) goto end;
+
+        rv = createRSAPublicKeyP11( pCTX, strName, &binID, &sRSAKey );
+        if( rv != 0 ) goto end;
+    }
+    else if( nKeyType == JS_PKI_KEY_TYPE_ECC || nKeyType == JS_PKI_KEY_TYPE_SM2 )
+    {
+        rv = JS_PKI_getECKeyVal( pPri, &sECKey );
+        if( rv != 0 ) goto end;
+
+        rv = createECPrivateKeyP11( pCTX, strName, &binID, &sECKey );
+        if( rv != 0 ) goto end;
+
+        rv = createECPublicKeyP11( pCTX, strName, &binID, &sECKey );
+        if( rv != 0 ) goto end;
+    }
+    else if( nKeyType == JS_PKI_KEY_TYPE_DSA )
+    {
+        rv = JS_PKI_getDSAKeyVal( pPri, &sDSAKey );
+        if( rv != 0 ) goto end;
+
+        rv = createDSAPrivateKeyP11( pCTX, strName, &binID, &sDSAKey );
+        if( rv != 0 ) goto end;
+
+        rv = createDSAPublicKeyP11( pCTX, strName, &binID, &sDSAKey );
+        if( rv != 0 ) goto end;
+    }
+    else if( nKeyType == JS_PKI_KEY_TYPE_ED25519 || nKeyType == JS_PKI_KEY_TYPE_ED448 )
+    {
+        rv = JS_PKI_getRawKeyVal( nKeyType, pPri, &sRawKey );
+        if( rv != 0 ) goto end;
+
+        rv = createEDPrivateKeyP11( pCTX, strName, &binID, &sRawKey );
+        if( rv != 0 ) goto end;
+
+        rv = createEDPublicKeyP11( pCTX, strName, &binID, &sRawKey );
+        if( rv != 0 ) goto end;
+    }
+
+end :
+    JS_BIN_reset( &binID );
+    JS_BIN_reset( &binPub );
+
+    JS_PKI_resetRSAKeyVal( &sRSAKey );
+    JS_PKI_resetECKeyVal( &sECKey );
+    JS_PKI_resetDSAKeyVal( &sDSAKey );
+    JS_PKI_resetRawKeyVal( &sRawKey );
+
+    return rv;
 }
 
 int createRSAPublicKeyP11( JP11_CTX *pCTX, const QString& strLabel, const BIN *pID, const JRSAKeyVal *pRsaKeyVal )
@@ -985,6 +1261,228 @@ int createECPrivateKeyP11( JP11_CTX *pCTX, const QString& strLabel, const BIN *p
     }
 
     QString strValue = pECKeyVal->pPrivate;
+    BIN binValue = {0,0};
+
+    if( !strValue.isEmpty() )
+    {
+        JS_BIN_decodeHex( strValue.toStdString().c_str(), &binValue);
+        sTemplate[uCount].type = CKA_VALUE;
+        sTemplate[uCount].pValue = binValue.pVal;
+        sTemplate[uCount].ulValueLen = binValue.nLen;
+        uCount++;
+    }
+
+    BIN binLabel = {0,0};
+
+    if( !strLabel.isEmpty() )
+    {
+        JS_BIN_set( &binLabel, (unsigned char *)strLabel.toStdString().c_str(), strLabel.toUtf8().length() );
+        sTemplate[uCount].type = CKA_LABEL;
+        sTemplate[uCount].pValue = binLabel.pVal;
+        sTemplate[uCount].ulValueLen = binLabel.nLen;
+        uCount++;
+    }
+
+    BIN binID = {0,0};
+
+    if( pID )
+    {
+        JS_BIN_copy( &binID, pID );
+        sTemplate[uCount].type = CKA_ID;
+        sTemplate[uCount].pValue = binID.pVal;
+        sTemplate[uCount].ulValueLen = binID.nLen;
+        uCount++;
+    }
+
+    sTemplate[uCount].type = CKA_CLASS;
+    sTemplate[uCount].pValue = &objClass;
+    sTemplate[uCount].ulValueLen = sizeof( objClass );
+    uCount++;
+
+    sTemplate[uCount].type = CKA_KEY_TYPE;
+    sTemplate[uCount].pValue = &keyType;
+    sTemplate[uCount].ulValueLen = sizeof( keyType );
+    uCount++;
+
+    sTemplate[uCount].type = CKA_LABEL;
+    sTemplate[uCount].pValue = binLabel.pVal;
+    sTemplate[uCount].ulValueLen = binLabel.nLen;
+    uCount++;
+
+    sTemplate[uCount].type = CKA_ID;
+    sTemplate[uCount].pValue = binLabel.pVal;
+    sTemplate[uCount].ulValueLen = binLabel.nLen;
+    uCount++;
+
+    sTemplate[uCount].type = CKA_TOKEN;
+    sTemplate[uCount].pValue = &bTrue;
+    sTemplate[uCount].ulValueLen = sizeof( bTrue );
+    uCount++;
+
+    sTemplate[uCount].type = CKA_PRIVATE;
+    sTemplate[uCount].pValue = &bTrue;
+    sTemplate[uCount].ulValueLen = sizeof( bTrue );
+    uCount++;
+
+    sTemplate[uCount].type = CKA_SENSITIVE;
+    sTemplate[uCount].pValue = &bTrue;
+    sTemplate[uCount].ulValueLen = sizeof( bTrue );
+    uCount++;
+
+    sTemplate[uCount].type = CKA_SIGN;
+    sTemplate[uCount].pValue = &bTrue;
+    sTemplate[uCount].ulValueLen = sizeof( bTrue );
+    uCount++;
+
+    CK_OBJECT_HANDLE hObject = 0;
+
+    rv = JS_PKCS11_CreateObject( pCTX, sTemplate, uCount, &hObject );
+
+    JS_BIN_reset( &binECParams );
+    JS_BIN_reset( &binValue );
+    JS_BIN_reset( &binLabel );
+    JS_BIN_reset( &binID );
+
+
+    if( rv != CKR_OK )
+    {
+        fprintf( stderr, "fail to create EC private key(%s)\n", JS_PKCS11_GetErrorMsg(rv));
+        return rv;
+    }
+
+    return rv;
+}
+
+int createEDPublicKeyP11( JP11_CTX *pCTX, const QString& strLabel, const BIN *pID, const JRawKeyVal *pRawKeyVal )
+{
+    int rv = -1;
+
+    CK_ATTRIBUTE sTemplate[20];
+    long uCount = 0;
+    CK_BBOOL    bTrue = CK_TRUE;
+    CK_OBJECT_HANDLE    hObject = 0;
+
+    CK_OBJECT_CLASS objClass = CKO_PUBLIC_KEY;
+    CK_KEY_TYPE keyType = CKK_EC_EDWARDS;
+
+    sTemplate[uCount].type = CKA_CLASS;
+    sTemplate[uCount].pValue = &objClass;
+    sTemplate[uCount].ulValueLen = sizeof(objClass);
+    uCount++;
+
+    sTemplate[uCount].type = CKA_KEY_TYPE;
+    sTemplate[uCount].pValue = &keyType;
+    sTemplate[uCount].ulValueLen = sizeof(keyType);
+    uCount++;
+
+    QString strECParams = pRawKeyVal->pName;
+    BIN binECParams = {0,0};
+
+    if( !strECParams.isEmpty() )
+    {
+        JS_PKI_getOIDFromString( strECParams.toStdString().c_str(), &binECParams );
+        sTemplate[uCount].type = CKA_EC_PARAMS;
+        sTemplate[uCount].pValue = binECParams.pVal;
+        sTemplate[uCount].ulValueLen = binECParams.nLen;
+        uCount++;
+    }
+
+    QString strECPoints = pRawKeyVal->pPub;
+    BIN binECPoints = {0,0};
+
+    if( !strECPoints.isEmpty() )
+    {
+        JS_BIN_decodeHex( strECPoints.toStdString().c_str(), &binECPoints );
+        sTemplate[uCount].type = CKA_EC_POINT;
+        sTemplate[uCount].pValue = binECPoints.pVal;
+        sTemplate[uCount].ulValueLen = binECPoints.nLen;
+        uCount++;
+    }
+
+    BIN binLabel = {0,0};
+
+    if( !strLabel.isEmpty() )
+    {
+        JS_BIN_set( &binLabel, (unsigned char *)strLabel.toStdString().c_str(), strLabel.toUtf8().length() );
+        sTemplate[uCount].type = CKA_LABEL;
+        sTemplate[uCount].pValue = binLabel.pVal;
+        sTemplate[uCount].ulValueLen = binLabel.nLen;
+        uCount++;
+    }
+
+    BIN binID = {0,0};
+
+    if( pID )
+    {
+        JS_BIN_copy( &binID, pID );
+
+        sTemplate[uCount].type = CKA_ID;
+        sTemplate[uCount].pValue = binID.pVal;
+        sTemplate[uCount].ulValueLen = binID.nLen;
+        uCount++;
+    }
+
+    sTemplate[uCount].type = CKA_TOKEN;
+    sTemplate[uCount].pValue = &bTrue;
+    sTemplate[uCount].ulValueLen = sizeof(bTrue);
+    uCount++;
+
+    sTemplate[uCount].type = CKA_VERIFY;
+    sTemplate[uCount].pValue = &bTrue;
+    sTemplate[uCount].ulValueLen = sizeof(bTrue);
+    uCount++;
+
+    rv = JS_PKCS11_CreateObject( pCTX, sTemplate, uCount, &hObject );
+
+    JS_BIN_reset( &binECParams );
+    JS_BIN_reset( &binECPoints );
+    JS_BIN_reset( &binLabel );
+    JS_BIN_reset( &binID );
+
+    if( rv != CKR_OK )
+    {
+        fprintf( stderr, "fail to create EC public key(%s)\n", JS_PKCS11_GetErrorMsg(rv));
+        return rv;
+    }
+
+    return rv;
+}
+
+int createEDPrivateKeyP11( JP11_CTX *pCTX, const QString& strLabel, const BIN *pID, const JRawKeyVal *pRawKeyVal )
+{
+    int rv = -1;
+
+    CK_ATTRIBUTE sTemplate[20];
+    long uCount = 0;
+    CK_BBOOL bTrue = CK_TRUE;
+    CK_BBOOL bFalse = CK_FALSE;
+
+    CK_OBJECT_CLASS objClass = CKO_PRIVATE_KEY;
+    CK_KEY_TYPE keyType = CKK_EC;
+
+    sTemplate[uCount].type = CKA_CLASS;
+    sTemplate[uCount].pValue = &objClass;
+    sTemplate[uCount].ulValueLen = sizeof(objClass);
+    uCount++;
+
+    sTemplate[uCount].type = CKA_KEY_TYPE;
+    sTemplate[uCount].pValue = &keyType;
+    sTemplate[uCount].ulValueLen = sizeof(keyType);
+    uCount++;
+
+    QString strECParams = pRawKeyVal->pName;
+    BIN binECParams = {0,0};
+
+    if( !strECParams.isEmpty() )
+    {
+        JS_PKI_getOIDFromString( strECParams.toStdString().c_str(), &binECParams );
+        sTemplate[uCount].type = CKA_EC_PARAMS;
+        sTemplate[uCount].pValue = binECParams.pVal;
+        sTemplate[uCount].ulValueLen = binECParams.nLen;
+        uCount++;
+    }
+
+    QString strValue = pRawKeyVal->pPri;
     BIN binValue = {0,0};
 
     if( !strValue.isEmpty() )

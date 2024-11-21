@@ -206,17 +206,6 @@ void GenKeyPairDlg::clickOK()
         ret = JS_PKI_EdDSA_GenKeyPair( nParam, &pub_key_, &pri_key_ );
     }
 
-    if( mHsmCheck->isChecked() == true )
-    {
-        JP11_CTX *pCTX = berApplet->getP11CTX();
-        int nIndex = berApplet->settingsMgr()->hsmIndex();
-
-        ret = getP11SessionLogin( pCTX, nIndex );
-        if( ret != 0 ) return;
-
-        ret = createKeyPairWithP11( pCTX, strName, &pri_key_, &pub_key_ );
-    }
-
     if( ret == 0 )
         return QDialog::accept();
     else

@@ -20,6 +20,8 @@
 #include "js_pki_tools.h"
 #include "js_pkcs11.h"
 #include "p11api.h"
+#include "save_device_dlg.h"
+#include "name_dlg.h"
 
 static const QString kCertFile = "js_cert.crt";
 static const QString kPriKeyFile = "js_private.key";
@@ -725,8 +727,6 @@ void CertManDlg::loadHsmEEList()
 
         row++;
     }
-
-    JS_PKCS11_CloseSession( pCTX );
 }
 
 void CertManDlg::loadOtherList()
@@ -1495,6 +1495,7 @@ void CertManDlg::clickImport()
     BIN binPri = {0,0};
     BIN binEncPri = {0,0};
     BIN binCert = {0,0};
+    BIN binID = {0,0};
 
     strPFXFile = findFile( this, JS_FILE_TYPE_PFX, strPFXFile );
     if( strPFXFile.length() < 1 ) return;
@@ -1522,10 +1523,62 @@ void CertManDlg::clickImport()
         goto end;
     }
 
+    if( berApplet->settingsMgr()->hsmUse() )
+    {
+        SaveDeviceDlg saveDevice;
+
+        if( saveDevice.exec() == QDialog::Accepted )
+        {
+            if( saveDevice.getDevice() == DeviceHSM )
+            {
+                QString strAlg = JS_PKI_getKeyAlgName( nKeyType );
+                JP11_CTX *pCTX = berApplet->getP11CTX();
+                int nIndex = berApplet->settingsMgr()->hsmIndex();
+                BIN binPub = {0,0};
+
+                QString strName = "PFX Import";
+
+                JS_PKI_getPubKeyFromCert( &binCert, &binPub );
+                JS_PKI_getKeyIdentifier( &binPub, &binID );
+                JS_BIN_reset( &binPub );
+
+                ret = getP11SessionLogin( pCTX, nIndex );
+                if( ret <= 0 )
+                {
+                    goto end;
+                }
+
+                ret = createCertWithP11( pCTX, strName, &binID, &binCert );
+                if( ret != 0 )
+                {
+                    berApplet->elog( QString( "fail to create certificate in HSM: %1").arg( ret ));
+                    goto end;
+                }
+
+                ret = createKeyPairWithP11( pCTX, strName, &binPri );
+                if( ret != 0 )
+                {
+                    berApplet->elog( QString( "fail to create keypair in HSM: %1").arg( ret));
+                    goto end;
+                }
+
+                if( ret == 0 )
+                {
+                    berApplet->messageLog( tr( "The private key and certificate are saved to HSM successfully"), this );
+                    mHsmCheck->setChecked(true);
+                    loadHsmEEList();
+                    goto end;
+                }
+            }
+        }
+    }
+
     ret = writePriKeyCert( &binEncPri, &binCert );
     if( ret == 0 )
     {
         berApplet->messageLog( tr( "The private key and certificate are saved successfully"), this );
+        mHsmCheck->setChecked(false);
+        loadEEList();
     }
 
 end :
@@ -1533,6 +1586,7 @@ end :
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binEncPri );
     JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binID );
 }
 
 void CertManDlg::clickExport()
