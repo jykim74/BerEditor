@@ -22,6 +22,7 @@ static unsigned char kOID_X448[] = { 0x06, 0x03, 0x2B, 0x65, 0x6F };
 
 
 long getP11KeyType( const QString strAlg );
+long getHandleHSM( JP11_CTX *pCTX, CK_OBJECT_CLASS objClass, const BIN *pID );
 
 int loadPKCS11Libray( const QString strLibPath, JP11_CTX **ppCTX );
 CK_SESSION_HANDLE getP11Session( void *pP11CTX, int nSlotIndex = 0 );
@@ -47,5 +48,20 @@ int getHsmPubList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& pubList 
 int getHsmCertList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& certList );
 int getHsmKeyPairList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& pubList, QList<P11Rec>& priList );
 int getHsmPriCertList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& certList, QList<P11Rec>& priList );
+
+
+int getRSAPublicKeyHSM( JP11_CTX *pCTX, long hSesson, long hObject, BIN *pPubKey );
+int getECPublicKeyHSM( JP11_CTX *pCTX, long hSesson, long hObject, BIN *pPubKey );
+int getDSAPublicKeyHSM( JP11_CTX *pCTX, long hSesson, long hObject, BIN *pPubKey );
+int getEDPublicKeyHSM( JP11_CTX *pCTX, long hSesson, long hObject, BIN *pPubKey );
+
+int getPublicKeyHSM( JP11_CTX *pCTX, long hSession, long hObject, BIN *pPubKey );
+
+int getRSAPrivateKeyHSM( JP11_CTX *pCTX, long hSession, long hObject, BIN *pPriKey );
+int getECPrivateKeyHSM( JP11_CTX *pCTX, long hSession, long hObject, BIN *pPriKey );
+int getDSAPrivateKeyHSM( JP11_CTX *pCTX, long hSession, long hObject, BIN *pPriKey );
+int getEDPrivateKeyHSM( JP11_CTX *pCTX, long hSession, long hObject, BIN *pPubKey );
+
+int getPrivateKeyHSM( JP11_CTX *pCTX, long hSession, long hObject, BIN *pPriKey );
 
 #endif // P11API_H

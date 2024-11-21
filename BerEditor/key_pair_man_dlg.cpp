@@ -365,6 +365,9 @@ void KeyPairManDlg::loadHsmKeyPairList()
         QTableWidgetItem *item = new QTableWidgetItem( rec.getLabel() );
         item->setIcon(QIcon(":/images/keypair.png" ));
 
+        QString strData = QString( "HSM:%1" ).arg( rec.getHandle() );
+        item->setData( Qt::UserRole, strData );
+
         mKeyPairTable->setItem( row, 0, item );
         mKeyPairTable->setItem( row, 1, new QTableWidgetItem(QString("%1").arg( JS_PKCS11_GetCKKName( rec.getKeyType() ) )));
         mKeyPairTable->setItem( row, 2, new QTableWidgetItem(QString("%1").arg( rec.getHandle() )));

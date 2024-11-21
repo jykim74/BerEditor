@@ -717,6 +717,8 @@ void CertManDlg::loadHsmEEList()
         else
             item->setIcon(QIcon(":/images/cert.png" ));
 
+        QString strData = QString( "HSM:%1" ).arg( rec.getHandle() );
+        item->setData( Qt::UserRole, strData );
 
         mEE_CertTable->setItem( row, 0, item );
         mEE_CertTable->setItem( row, 1, new QTableWidgetItem( sNotAfter ));

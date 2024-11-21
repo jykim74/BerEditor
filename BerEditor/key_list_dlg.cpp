@@ -299,6 +299,9 @@ void KeyListDlg::loadHsmKeyList()
         QTableWidgetItem *item = new QTableWidgetItem( record.getLabel() );
         item->setIcon(QIcon(":/images/key.png" ));
 
+        QString strData = QString( "HSM:%1" ).arg( record.getHandle() );
+        item->setData( Qt::UserRole, strData );
+
         mKeyTable->setItem( row, 0, item );
         mKeyTable->setItem( row, 1, new QTableWidgetItem(QString("%1").arg( JS_PKCS11_GetCKKName( record.getKeyType() ) )));
         mKeyTable->setItem( row, 2, new QTableWidgetItem(QString("%1").arg( record.getHandle() )));
