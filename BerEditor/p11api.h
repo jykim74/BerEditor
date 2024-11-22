@@ -40,7 +40,7 @@ int getP11SessionLogin( void *pP11CTX, int nSlotIndex, const QString strPIN = nu
 
 int genKeyWithP11( JP11_CTX *pCTX, QString strName, QString strAlg );
 int genKeyPairWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, QString strParam, int nExponent, BIN *pPri, BIN *pPub );
-int createKeyWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, const BIN *pSecret );
+int createKeyWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, const BIN *pID, const BIN *pSecret );
 int createCertWithP11( JP11_CTX *pCTX, QString strName, const BIN *pID, const BIN *pCert );
 int createKeyPairWithP11( JP11_CTX *pCTX, const QString strName, const BIN *pPri );
 

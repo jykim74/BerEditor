@@ -1321,7 +1321,11 @@ int CertManDlg::readPriKeyCert( const QString strPass, BIN *pPriKey, BIN *pCert 
         int nIndex = berApplet->settingsMgr()->hsmIndex();
 
         ret = getP11SessionLogin( pCTX, nIndex, strPass );
-        if( ret != CKR_OK ) return ret;
+        if( ret != CKR_OK )
+        {
+            berApplet->elog( QString( "getP11SessionLogin fail:%1").arg( ret ));
+            return ret;
+        }
 
         JS_BIN_decodeHex( strDst.toStdString().c_str(), &binID );
 
@@ -1331,10 +1335,18 @@ int CertManDlg::readPriKeyCert( const QString strPass, BIN *pPriKey, BIN *pCert 
         JS_BIN_reset( &binID );
 
         ret = getCertHSM( pCTX, hCert, pCert );
-        if( ret != 0 ) return ret;
+        if( ret != 0 )
+        {
+            berApplet->elog( QString( "fail to get certificate from HSM: %1").arg(ret));
+            return ret;
+        }
 
         ret = getPrivateKeyHSM( pCTX, hPri, pPriKey );
-        if( ret != 0 ) return ret;
+        if( ret != 0 )
+        {
+            berApplet->elog( QString( "fail to get private key from HSM: %1").arg(ret));
+            return ret;
+        }
     }
     else
     {
@@ -1585,7 +1597,6 @@ void CertManDlg::clickCheckKeyPair()
     int ret = 0;
 
     BIN binPriKey = {0,0};
-    BIN binEncPriKey = {0,0};
     BIN binCert = {0,0};
 
     QString strPass = mEE_PasswdText->text();
@@ -1596,17 +1607,10 @@ void CertManDlg::clickCheckKeyPair()
         return;
     }
 
-    ret = readEncPriKeyCert( &binEncPriKey, &binCert );
+    ret = readPriKeyCert( strPass, &binPriKey, &binCert );
     if( ret != 0 )
     {
-        berApplet->warnLog( tr( "Please select a certificate [%1]").arg(ret), this );
-        goto end;
-    }
-
-    ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEncPriKey, NULL, &binPriKey );
-    if( ret != 0 )
-    {
-        berApplet->warnLog( tr( "fail to decrypt private key: %1").arg( ret ), this );
+        berApplet->warnLog( tr( "failed to read private key and certificate [%1]").arg(ret), this );
         goto end;
     }
 
@@ -1622,7 +1626,6 @@ void CertManDlg::clickCheckKeyPair()
 
 end :
     JS_BIN_reset( &binPriKey );
-    JS_BIN_reset( &binEncPriKey );
     JS_BIN_reset( &binCert );
 }
 
@@ -1738,7 +1741,6 @@ void CertManDlg::clickExport()
     int ret = 0;
 
     BIN binPri = {0,0};
-    BIN binEncPri = {0,0};
     BIN binCert = {0,0};
 
     QString strPass = mEE_PasswdText->text();
@@ -1756,10 +1758,10 @@ void CertManDlg::clickExport()
         return;
     }
 
-    ret = readEncPriKeyCert( &binEncPri, &binCert );
+    ret = readPriKeyCert( strPass, &binPri, &binCert );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr("Please select a certificate [%1]").arg(ret), this );
+        berApplet->warningBox( tr("fail to read private key and certificate [%1]").arg(ret), this );
         goto end;
     }
 
@@ -1767,13 +1769,6 @@ void CertManDlg::clickExport()
     if( ret != 0 )
     {
         berApplet->warningBox( tr("fail to get certificate information [%1]").arg(ret), this );
-        goto end;
-    }
-
-    ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEncPri, NULL, &binPri );
-    if( ret != 0 )
-    {
-        berApplet->warnLog( tr( "fail to decrypt private key: %1").arg( ret ), this );
         goto end;
     }
 
@@ -1788,7 +1783,6 @@ void CertManDlg::clickExport()
 
 end :
     JS_BIN_reset( &binPri );
-    JS_BIN_reset( &binEncPri );
     JS_BIN_reset( &binCert );
     JS_PKI_resetCertInfo( &sCertInfo );
 }
@@ -1863,7 +1857,6 @@ void CertManDlg::clickViewPriKey()
     int ret = 0;
 
     BIN binPriKey = {0,0};
-    BIN binEncPriKey = {0,0};
     BIN binCert = {0,0};
     PriKeyInfoDlg priKeyInfo;
 
@@ -1876,17 +1869,10 @@ void CertManDlg::clickViewPriKey()
         return;
     }
 
-    ret = readEncPriKeyCert( &binEncPriKey, &binCert );
+    ret = readPriKeyCert( strPass, &binPriKey, &binCert );
     if( ret != 0 )
     {
-        berApplet->warnLog( tr( "Please select a certificate [%1]").arg(ret), this );
-        goto end;
-    }
-
-    ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEncPriKey, NULL, &binPriKey );
-    if( ret != 0 )
-    {
-        berApplet->warnLog( tr( "fail to decrypt private key: %1").arg( ret ), this );
+        berApplet->warnLog( tr( "failed to read private key and certificate [%1]").arg(ret), this );
         goto end;
     }
 
@@ -1919,7 +1905,6 @@ void CertManDlg::clickViewPriKey()
 
 end :
     JS_BIN_reset( &binPriKey );
-    JS_BIN_reset( &binEncPriKey );
     JS_BIN_reset( &binCert );
 }
 

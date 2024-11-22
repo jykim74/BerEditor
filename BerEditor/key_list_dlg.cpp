@@ -303,7 +303,7 @@ void KeyListDlg::loadHsmKeyList()
         QTableWidgetItem *item = new QTableWidgetItem( record.getLabel() );
         item->setIcon(QIcon(":/images/key.png" ));
 
-        QString strData = QString( "HSM:%1" ).arg( record.getHandle() );
+        QString strData = QString( "HSM:%1" ).arg( record.getID() );
         item->setData( Qt::UserRole, strData );
 
         mKeyTable->setItem( row, 0, item );
@@ -332,6 +332,7 @@ void KeyListDlg::clickKeyAdd()
         {
             JP11_CTX *pCTX = berApplet->getP11CTX();
             int nIndex = berApplet->settingsMgr()->hsmIndex();
+            BIN binID = {0,0};
             BIN binSecret = {0,0};
 
             ret = getP11SessionLogin( pCTX, nIndex );
@@ -341,10 +342,12 @@ void KeyListDlg::clickKeyAdd()
                 return;
             }
 
+            JS_BIN_decodeHex( strIV.toStdString().c_str(), &binID );
             JS_BIN_decodeHex( strKey.toStdString().c_str(), &binSecret );
 
-            ret = createKeyWithP11( pCTX, strName, strAlg, &binSecret );
+            ret = createKeyWithP11( pCTX, strName, strAlg, &binID, &binSecret );
             JS_BIN_reset( &binSecret );
+            JS_BIN_reset( &binID );
 
             if( ret != 0 )
             {
@@ -408,12 +411,18 @@ void KeyListDlg::clickKeyDel()
 
     if( listData.size() >= 2 && listData.at(0) == "HSM" )
     {
-        long hObject = listData.at(1).toLong();
+        long hObject = -1;
+        BIN binID = {0,0};
+        QString strID  = listData.at(1);
         JP11_CTX* pCTX = berApplet->getP11CTX();
         int nIndex = berApplet->settingsMgr()->hsmIndex();
 
         int rv = getP11SessionLogin( pCTX, nIndex );
         if( rv != CKR_OK ) return;
+
+        JS_BIN_decodeHex( strID.toStdString().c_str(), &binID );
+        hObject = getHandleHSM( pCTX, CKO_SECRET_KEY, &binID );
+        JS_BIN_reset( &binID );
 
         rv = JS_PKCS11_DestroyObject( pCTX, hObject );
         if( rv == CKR_OK ) loadHsmKeyList();
@@ -447,8 +456,10 @@ void KeyListDlg::clickKeyView()
 
     if( listData.size() >= 2 && listData.at(0) == "HSM" )
     {
-        long hObject = listData.at(1).toLong();
-        keyDlg.setHSM( hObject );
+        BIN binID = {0,0};
+        JS_BIN_decodeHex( listData.at(1).toStdString().c_str(), &binID );
+        keyDlg.setHSM( &binID );
+        JS_BIN_reset( &binID );
     }
     else
     {

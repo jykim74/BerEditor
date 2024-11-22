@@ -149,15 +149,17 @@ int KeyAddDlg::readFile( const QString strName )
     return 0;
 }
 
-int KeyAddDlg::setHSM( long hObject )
+int KeyAddDlg::setHSM( const BIN *pID )
 {
     int rv = 0;
     BIN binVal = {0,0};
+    BIN binID = {0,0};
     BIN binLabel = {0,0};
     BIN binLen = {0,0};
     BIN binType = {0,0};
 
     char *pLabel = NULL;
+    long hObject = -1;
 
     JP11_CTX *pCTX = berApplet->getP11CTX();
     int nIndex = berApplet->settingsMgr()->hsmIndex();
@@ -166,6 +168,8 @@ int KeyAddDlg::setHSM( long hObject )
 
     rv = getP11SessionLogin( pCTX, nIndex );
     if( rv != CKR_OK ) goto end;
+
+    hObject = getHandleHSM( pCTX, CKO_SECRET_KEY, pID );
 
     rv = JS_PKCS11_GetAttributeValue2( pCTX, hObject, CKA_LABEL, &binLabel );
     if( rv != CKR_OK ) goto end;
@@ -189,6 +193,14 @@ int KeyAddDlg::setHSM( long hObject )
         mKeyText->setText( QString("%1").arg( pCTX->sLastLog ));
     }
 
+    rv = JS_PKCS11_GetAttributeValue2( pCTX, hObject, CKA_ID, &binID );
+
+    if( binID.nLen > 0 )
+    {
+        mIVTypeCombo->addItem( "Hex" );
+        mIVText->setText( getHexString(&binID));
+    }
+
     rv = JS_PKCS11_GetAttributeValue2( pCTX, hObject, CKA_VALUE_LEN, &binLen );
 
     if( binLen.nLen > 0 ) memcpy( &nKeyLen, binLen.pVal, binLen.nLen );
@@ -207,6 +219,7 @@ int KeyAddDlg::setHSM( long hObject )
 
 end :
     JS_BIN_reset( &binVal );
+    JS_BIN_reset( &binID );
     JS_BIN_reset( &binLabel );
     JS_BIN_reset( &binLen );
     JS_BIN_reset( &binType );
@@ -329,9 +342,23 @@ void KeyAddDlg::checkHSM()
     bool bVal = mHsmCheck->isChecked();
 
     mEncCheck->setEnabled( !bVal );
-    mIVText->setEnabled( !bVal );
+    mIVText->setReadOnly( bVal );
     mIVTypeCombo->setEnabled( !bVal );
     mIVLenText->setEnabled( !bVal );
+
+    if( bVal == true )
+    {
+        BIN binID = {0,0};
+        JS_PKI_genRandom(16, &binID);
+        mIVTypeCombo->setCurrentText( "Hex" );
+        mIVText->setText( getHexString( &binID ));
+        mIVLabel->setText( "ID" );
+        JS_BIN_reset( &binID );
+    }
+    else
+    {
+        mIVLabel->setText( "IV" );
+    }
 }
 
 void KeyAddDlg::clickRandKey()

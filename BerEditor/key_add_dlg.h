@@ -2,6 +2,7 @@
 #define KEY_ADD_DLG_H
 
 #include <QDialog>
+#include "js_bin.h"
 #include "ui_key_add_dlg.h"
 
 namespace Ui {
@@ -16,7 +17,7 @@ public:
     explicit KeyAddDlg(QWidget *parent = nullptr);
     ~KeyAddDlg();
     int readFile( const QString strName );
-    int setHSM( long hObject );
+    int setHSM( const BIN *pID );
     void setReadOnly();
     void setTitle( const QString strTitle );
     const QString getResKey() { return res_key_; };

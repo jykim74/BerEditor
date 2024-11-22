@@ -656,7 +656,7 @@ end :
     return rv;
 }
 
-int createKeyWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, const BIN *pSecret )
+int createKeyWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, const BIN *pID, const BIN *pSecret )
 {
     int rv = -1;
     CK_ATTRIBUTE sTemplate[20];
@@ -693,12 +693,9 @@ int createKeyWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, const BIN
         uCount++;
     }
 
-    BIN binID = {0,0};
-    JS_PKI_genHash( "SHA1", pSecret, &binID );
-
     sTemplate[uCount].type = CKA_ID;
-    sTemplate[uCount].pValue = binID.pVal;
-    sTemplate[uCount].ulValueLen = binID.nLen;
+    sTemplate[uCount].pValue = pID->pVal;
+    sTemplate[uCount].ulValueLen = pID->nLen;
     uCount++;
 
     sTemplate[uCount].type = CKA_VALUE;
@@ -714,7 +711,6 @@ int createKeyWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, const BIN
     rv = JS_PKCS11_CreateObject( pCTX, sTemplate, uCount, &hObject );
 
     JS_BIN_reset( &binLabel );
-    JS_BIN_reset( &binID );
 
     if( rv != CKR_OK )
     {
@@ -1969,6 +1965,8 @@ int getHsmKeyList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& keyList 
 
         rv = JS_PKCS11_GetAttributeValue2( pCTX, hObjects[i], CKA_ID, &binID );
         if( rv != CKR_OK ) goto end;
+
+        if( binID.nLen < 1 ) continue;
 
         JS_BIN_string( &binLabel, &pLabel );
         memcpy( &nKeyType, binKeyType.pVal, binKeyType.nLen );

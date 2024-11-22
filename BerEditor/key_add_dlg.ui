@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>441</width>
-    <height>310</height>
+    <width>483</width>
+    <height>321</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -169,7 +169,7 @@
       <widget class="QLineEdit" name="mIVText"/>
      </item>
      <item row="1" column="0">
-      <widget class="QLabel" name="label_4">
+      <widget class="QLabel" name="mIVLabel">
        <property name="text">
         <string>IV</string>
        </property>
