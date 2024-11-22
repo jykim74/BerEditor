@@ -9,6 +9,12 @@
 #include "js_error.h"
 #include "p11_rec.h"
 
+enum DeviceType {
+    DeviceHDD = 0,
+    DeviceHSM
+};
+
+
 static CK_BBOOL kTrue = CK_TRUE;
 static CK_BBOOL kFalse = CK_FALSE;
 
@@ -25,10 +31,11 @@ long getP11KeyType( const QString strAlg );
 const QString getP11KeyTypeName( long uKeyType );
 
 long getHandleHSM( JP11_CTX *pCTX, CK_OBJECT_CLASS objClass, const BIN *pID );
+int getID_HSM( JP11_CTX *pCTX, CK_OBJECT_HANDLE hObj, BIN *pID );
 
 int loadPKCS11Libray( const QString strLibPath, JP11_CTX **ppCTX );
-CK_SESSION_HANDLE getP11Session( void *pP11CTX, int nSlotIndex = 0 );
-CK_SESSION_HANDLE getP11SessionLogin( void *pP11CTX, int nSlotIndex, const QString strPIN = nullptr );
+int getP11Session( void *pP11CTX, int nSlotIndex = 0 );
+int getP11SessionLogin( void *pP11CTX, int nSlotIndex, const QString strPIN = nullptr );
 
 int genKeyWithP11( JP11_CTX *pCTX, QString strName, QString strAlg );
 int genKeyPairWithP11( JP11_CTX *pCTX, QString strName, QString strAlg, QString strParam, int nExponent, BIN *pPri, BIN *pPub );
@@ -52,18 +59,18 @@ int getHsmKeyPairList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& pubL
 int getHsmPriCertList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& certList, QList<P11Rec>& priList );
 
 
-int getRSAPublicKeyHSM( JP11_CTX *pCTX, long hSesson, long hObject, BIN *pPubKey );
-int getECPublicKeyHSM( JP11_CTX *pCTX, long hSesson, long hObject, BIN *pPubKey );
-int getDSAPublicKeyHSM( JP11_CTX *pCTX, long hSesson, long hObject, BIN *pPubKey );
-int getEDPublicKeyHSM( JP11_CTX *pCTX, long hSesson, long hObject, BIN *pPubKey );
+int getRSAPublicKeyHSM( JP11_CTX *pCTX, long hObject, BIN *pPubKey );
+int getECPublicKeyHSM( JP11_CTX *pCTX, long hObject, BIN *pPubKey );
+int getDSAPublicKeyHSM( JP11_CTX *pCTX, long hObject, BIN *pPubKey );
+int getEDPublicKeyHSM( JP11_CTX *pCTX, long hObject, BIN *pPubKey );
 
-int getPublicKeyHSM( JP11_CTX *pCTX, long hSession, long hObject, BIN *pPubKey );
+int getPublicKeyHSM( JP11_CTX *pCTX, long hObject, BIN *pPubKey );
 
-int getRSAPrivateKeyHSM( JP11_CTX *pCTX, long hSession, long hObject, BIN *pPriKey );
-int getECPrivateKeyHSM( JP11_CTX *pCTX, long hSession, long hObject, BIN *pPriKey );
-int getDSAPrivateKeyHSM( JP11_CTX *pCTX, long hSession, long hObject, BIN *pPriKey );
-int getEDPrivateKeyHSM( JP11_CTX *pCTX, long hSession, long hObject, BIN *pPubKey );
+int getRSAPrivateKeyHSM( JP11_CTX *pCTX, long hObject, BIN *pPriKey );
+int getECPrivateKeyHSM( JP11_CTX *pCTX, long hObject, BIN *pPriKey );
+int getDSAPrivateKeyHSM( JP11_CTX *pCTX, long hObject, BIN *pPriKey );
+int getEDPrivateKeyHSM( JP11_CTX *pCTX, long hObject, BIN *pPubKey );
 
-int getPrivateKeyHSM( JP11_CTX *pCTX, long hSession, long hObject, BIN *pPriKey );
+int getPrivateKeyHSM( JP11_CTX *pCTX, long hObject, BIN *pPriKey );
 
 #endif // P11API_H

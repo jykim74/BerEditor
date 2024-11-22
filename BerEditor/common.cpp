@@ -19,6 +19,7 @@
 #include "js_http.h"
 #include "js_ldap.h"
 #include "js_scep.h"
+#include "p11api.h"
 
 const QString GetSystemID()
 {
@@ -1831,4 +1832,33 @@ int getUnwrapKey( const char *pPasswd, const BIN *pEncKey, BIN *pKey )
 end :
     JS_BIN_reset( &binKEK );
     return ret;
+}
+
+int getDevicePath( const QString strData, int& nType, QString& strPath )
+{
+    if( strData.length() < 1 ) return -1;
+
+    QStringList listData = strData.split(":");
+
+    if( listData.size() == 1 )
+    {
+        nType = DeviceHDD;
+        strPath = listData.at(0);
+    }
+
+    if( listData.size() >= 2 )
+    {
+        if( listData.at(0) == "HSM" )
+        {
+            nType = DeviceHSM;
+        }
+        else
+        {
+            nType = DeviceHDD;
+        }
+
+        strPath = listData.at(1);
+    }
+
+    return 0;
 }

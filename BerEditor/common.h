@@ -254,5 +254,6 @@ int checkOCSP( const QString strURL, const BIN *pCA, const BIN *pCert, JCertStat
 int getWrapKey( const char *pPasswd, const BIN *pKey, BIN *pEncKey );
 int getUnwrapKey( const char *pPasswd, const BIN *pEncKey, BIN *pKey );
 
+int getDevicePath( const QString strData, int& nType, QString& strPath );
 
 #endif // COMMON_H

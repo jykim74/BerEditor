@@ -646,8 +646,6 @@ void CertManDlg::loadHsmEEList()
     int row = 0;
     time_t now = time(NULL);
 
-    clearEEList();
-
     QString strPath = berApplet->settingsMgr()->EECertPath();
     QString strKeyType = mKeyTypeCombo->currentText();
 
@@ -656,7 +654,14 @@ void CertManDlg::loadHsmEEList()
     QList<P11Rec> certList;
     JP11_CTX *pCTX = berApplet->getP11CTX();
     int nIndex = berApplet->settingsMgr()->hsmIndex();
-    CK_SESSION_HANDLE hSession = getP11Session( pCTX, nIndex );
+    ret = getP11Session( pCTX, nIndex );
+    if( ret != 0 )
+    {
+        mHsmCheck->setChecked(false);
+        return;
+    }
+
+    clearEEList();
 
     ret = getHsmCertList( pCTX, strKeyType, certList );
 
@@ -717,7 +722,7 @@ void CertManDlg::loadHsmEEList()
         else
             item->setIcon(QIcon(":/images/cert.png" ));
 
-        QString strData = QString( "HSM:%1" ).arg( rec.getHandle() );
+        QString strData = QString( "HSM:%1" ).arg( rec.getID() );
         item->setData( Qt::UserRole, strData );
 
         mEE_CertTable->setItem( row, 0, item );
@@ -1545,7 +1550,7 @@ void CertManDlg::clickImport()
                 JS_BIN_reset( &binPub );
 
                 ret = getP11SessionLogin( pCTX, nIndex );
-                if( ret <= 0 )
+                if( ret != 0 )
                 {
                     goto end;
                 }

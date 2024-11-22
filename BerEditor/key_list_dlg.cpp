@@ -257,6 +257,17 @@ void KeyListDlg::loadHsmKeyList()
     int row = 0;
     str_data_.clear();
 
+    JP11_CTX *pCTX = berApplet->getP11CTX();
+    int nIndex = berApplet->settingsMgr()->hsmIndex();
+    QList<P11Rec> keyList;
+
+    ret = getP11SessionLogin( pCTX, nIndex );
+    if( ret != CKR_OK )
+    {
+        mHsmCheck->setChecked(false);
+        return;
+    }
+
 #if defined(Q_OS_MAC)
     int nWidth = width() * 8/10;
 #else
@@ -279,13 +290,6 @@ void KeyListDlg::loadHsmKeyList()
 
     mKeyTable->setRowCount(0);
     QString strSelType = mKeyTypeCombo->currentText();
-
-    JP11_CTX *pCTX = berApplet->getP11CTX();
-    int nIndex = berApplet->settingsMgr()->hsmIndex();
-    QList<P11Rec> keyList;
-
-    CK_SESSION_HANDLE hSession = getP11SessionLogin( pCTX, nIndex );
-
 
     ret = getHsmKeyList( pCTX, strSelType, keyList );
 
@@ -409,9 +413,9 @@ void KeyListDlg::clickKeyDel()
         int nIndex = berApplet->settingsMgr()->hsmIndex();
 
         int rv = getP11SessionLogin( pCTX, nIndex );
-        if( rv <= 0 ) return;
+        if( rv != CKR_OK ) return;
 
-        rv = JS_PKCS11_DestroyObject( pCTX, listData.at(1).toLong());
+        rv = JS_PKCS11_DestroyObject( pCTX, hObject );
         if( rv == CKR_OK ) loadHsmKeyList();
     }
     else

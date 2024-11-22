@@ -1,3 +1,4 @@
+#include "p11api.h"
 #include "save_device_dlg.h"
 
 SaveDeviceDlg::SaveDeviceDlg(QWidget *parent)

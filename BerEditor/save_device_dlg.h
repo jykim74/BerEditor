@@ -8,10 +8,6 @@ namespace Ui {
 class SaveDeviceDlg;
 }
 
-enum DeviceType {
-    DeviceHDD = 0,
-    DeviceHSM
-};
 
 class SaveDeviceDlg : public QDialog, public Ui::SaveDeviceDlg
 {

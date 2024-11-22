@@ -14,6 +14,7 @@
 #include "passwd_dlg.h"
 #include "name_dlg.h"
 #include "export_dlg.h"
+#include "save_device_dlg.h"
 
 #include "js_pki.h"
 #include "js_pki_eddsa.h"
@@ -330,7 +331,12 @@ void KeyPairManDlg::loadHsmKeyPairList()
     QList<P11Rec> pubList;
 
     QString strKeyType = mKeyTypeCombo->currentText();
-    CK_SESSION_HANDLE hSession = getP11Session( pCTX, nIndex );
+    ret = getP11Session( pCTX, nIndex );
+    if( ret != 0 )
+    {
+        mHsmCheck->setChecked(false);
+        return;
+    }
 
 #if defined(Q_OS_MAC)
     int nWidth = width() * 8/10;
@@ -365,7 +371,7 @@ void KeyPairManDlg::loadHsmKeyPairList()
         QTableWidgetItem *item = new QTableWidgetItem( rec.getLabel() );
         item->setIcon(QIcon(":/images/keypair.png" ));
 
-        QString strData = QString( "HSM:%1" ).arg( rec.getHandle() );
+        QString strData = QString( "HSM:%1" ).arg( rec.getID() );
         item->setData( Qt::UserRole, strData );
 
         mKeyPairTable->setItem( row, 0, item );
@@ -518,7 +524,7 @@ void KeyPairManDlg::clickLGenKeyPair()
             int nIndex = berApplet->settingsMgr()->hsmIndex();
 
             ret = getP11SessionLogin( pCTX, nIndex );
-            if( ret < 0 ) return;
+            if( ret != 0 ) return;
 
             ret = createKeyPairWithP11( pCTX, strName, &binPri );
             if( ret == 0 )
@@ -576,14 +582,46 @@ void KeyPairManDlg::clickLDelete()
     bool bVal = berApplet->yesOrCancelBox( tr( "Are you sure to delete the keypair" ), this, false );
     if( bVal == false ) return;
 
-    strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
-    strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+    int nDevType = -1;
+    QString strDst;
 
-    dir.remove( strPubKeyPath );
-    dir.remove( strPriKeyPath );
-    dir.rmdir( strPath );
+    getDevicePath( strPath, nDevType, strDst );
 
-    loadKeyPairList();
+    if( nDevType == DeviceHSM )
+    {
+        long hPri = -1;
+        long hPub = -1;
+        BIN binID = {0,0};
+
+        JP11_CTX *pCTX = berApplet->getP11CTX();
+        int nIndex = berApplet->settingsMgr()->hsmIndex();
+
+        ret = getP11SessionLogin( pCTX, nIndex );
+        if( ret != CKR_OK ) return;
+
+        JS_BIN_decodeHex( strDst.toStdString().c_str(), &binID );
+
+        hPri = getHandleHSM( pCTX, CKO_PRIVATE_KEY, &binID );
+        hPub = getHandleHSM( pCTX, CKO_PUBLIC_KEY, &binID );
+
+        JS_BIN_reset( &binID );
+
+        ret = JS_PKCS11_DestroyObject( pCTX, hPub );
+        ret = JS_PKCS11_DestroyObject( pCTX, hPri );
+
+        loadHsmKeyPairList();
+    }
+    else
+    {
+        strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
+        strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+
+        dir.remove( strPubKeyPath );
+        dir.remove( strPriKeyPath );
+        dir.rmdir( strPath );
+
+        loadKeyPairList();
+    }
 }
 
 void KeyPairManDlg::clickLMakeCSR()
@@ -612,13 +650,27 @@ void KeyPairManDlg::clickLMakeCSR()
 
     QString strName = item->text();
 
-    strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
-    strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+    int nDevType = -1;
+    QString strDst;
 
-
-    JS_BIN_fileReadBER( strPriKeyPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    getDevicePath( strPath, nDevType, strDst );
     MakeCSRDlg makeCSR;
-    makeCSR.setPriKey( &binPri );
+
+    if( nDevType == DeviceHSM )
+    {
+        BIN binID = {0,0};
+        JS_BIN_decodeHex( strDst.toStdString().c_str(), &binID );
+        makeCSR.setHsmID( &binID );
+        JS_BIN_reset( &binID );
+    }
+    else
+    {
+        strPubKeyPath = QString( "%1/%2" ).arg( strDst ).arg( kPublicFile );
+        strPriKeyPath = QString( "%1/%2" ).arg( strDst ).arg( kPrivateFile );
+
+        JS_BIN_fileReadBER( strPriKeyPath.toLocal8Bit().toStdString().c_str(), &binPri );
+        makeCSR.setPriKey( &binPri );
+    }
 
     if( makeCSR.exec() == QDialog::Accepted )
     {
@@ -693,6 +745,7 @@ void KeyPairManDlg::clickLViewPriKey()
 {
     int ret = 0;
     QDir dir;
+    BIN binPri = {0,0};
 
     QString strPubKeyPath;
     QString strPriKeyPath;
@@ -704,13 +757,50 @@ void KeyPairManDlg::clickLViewPriKey()
         return;
     }
 
-    strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
-    strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+    int nDevType = -1;
+    QString strDst;
 
-    BIN binPri = {0,0};
-    JS_BIN_fileReadBER( strPriKeyPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    getDevicePath( strPath, nDevType, strDst );
+
+    if( nDevType == DeviceHSM )
+    {
+        long hPri = -1;
+        BIN binID = {0,0};
+
+        JP11_CTX *pCTX = berApplet->getP11CTX();
+        int nIndex = berApplet->settingsMgr()->hsmIndex();
+
+        ret = getP11SessionLogin( pCTX, nIndex );
+        if( ret != CKR_OK ) return;
+
+        JS_BIN_decodeHex( strDst.toStdString().c_str(), &binID );
+        hPri = getHandleHSM( pCTX, CKO_PRIVATE_KEY, &binID );
+
+        JS_BIN_reset( &binID );
+
+        ret = getPrivateKeyHSM( pCTX, hPri, &binPri );
+        if( ret != CKR_OK )
+        {
+            berApplet->warningBox( tr( "fail to get private key from HSM: %1" ).arg( ret ), this );
+            return;
+        }
+    }
+    else
+    {
+        strPubKeyPath = QString( "%1/%2" ).arg( strDst ).arg( kPublicFile );
+        strPriKeyPath = QString( "%1/%2" ).arg( strDst ).arg( kPrivateFile );
+        JS_BIN_fileReadBER( strPriKeyPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    }
+
     PriKeyInfoDlg priKeyInfo;
     priKeyInfo.setPrivateKey( &binPri );
+
+    if( nDevType == DeviceHSM )
+    {
+        priKeyInfo.mApplyChangeBtn->setEnabled(false);
+        priKeyInfo.mEditModeCheck->setEnabled(false);
+    }
+
     priKeyInfo.exec();
 
     if( berApplet->settingsMgr()->supportKeyPairChange() == true )
@@ -739,6 +829,8 @@ void KeyPairManDlg::clickLViewPubKey()
     int ret = 0;
     QDir dir;
 
+    BIN binPub = {0,0};
+
     QString strPubKeyPath;
     QString strPriKeyPath;
     QString strPath = getSelectedPath();
@@ -749,13 +841,44 @@ void KeyPairManDlg::clickLViewPubKey()
         return;
     }
 
-    strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
-    strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+    int nDevType = -1;
+    QString strDst;
 
-    BIN binPub = {0,0};
-    JS_BIN_fileReadBER( strPubKeyPath.toLocal8Bit().toStdString().c_str(), &binPub );
+    getDevicePath( strPath, nDevType, strDst );
+
+    if( nDevType == DeviceHSM )
+    {
+        long hPub = -1;
+        BIN binID = {0,0};
+        JP11_CTX *pCTX = berApplet->getP11CTX();
+        int nIndex = berApplet->settingsMgr()->hsmIndex();
+        ret = getP11Session( pCTX, nIndex );
+        if( ret != CKR_OK ) return;
+
+        JS_BIN_decodeHex( strDst.toStdString().c_str(), &binID );
+        hPub = getHandleHSM( pCTX, CKO_PUBLIC_KEY, &binID );
+        JS_BIN_reset( &binID );
+
+        ret = getPublicKeyHSM( pCTX, hPub, &binPub );
+    }
+    else
+    {
+        strPubKeyPath = QString( "%1/%2" ).arg( strDst ).arg( kPublicFile );
+        strPriKeyPath = QString( "%1/%2" ).arg( strDst ).arg( kPrivateFile );
+
+
+        JS_BIN_fileReadBER( strPubKeyPath.toLocal8Bit().toStdString().c_str(), &binPub );
+    }
+
     PriKeyInfoDlg priKeyInfo;
     priKeyInfo.setPublicKey( &binPub );
+
+    if( nDevType == DeviceHSM )
+    {
+        priKeyInfo.mApplyChangeBtn->setEnabled(false);
+        priKeyInfo.mEditModeCheck->setEnabled(false);
+    }
+
     priKeyInfo.exec();
 
     if( berApplet->settingsMgr()->supportKeyPairChange() == true )
@@ -796,10 +919,43 @@ void KeyPairManDlg::clickLDecodePriKey()
         return;
     }
 
-    strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
-    strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+    int nDevType = -1;
+    QString strDst;
+
+    getDevicePath( strPath, nDevType, strDst );
+
+    if( nDevType == DeviceHSM )
+    {
+        long hPri = -1;
+        BIN binID = {0,0};
+
+        JP11_CTX *pCTX = berApplet->getP11CTX();
+        int nIndex = berApplet->settingsMgr()->hsmIndex();
+
+        ret = getP11SessionLogin( pCTX, nIndex );
+        if( ret != CKR_OK ) return;
+
+        JS_BIN_decodeHex( strDst.toStdString().c_str(), &binID );
+        hPri = getHandleHSM( pCTX, CKO_PRIVATE_KEY, &binID );
+
+        JS_BIN_reset( &binID );
+
+        ret = getPrivateKeyHSM( pCTX, hPri, &binPri );
+        if( ret != CKR_OK )
+        {
+            berApplet->warningBox( tr( "fail to get private key from HSM: %1" ).arg( ret ), this );
+            return;
+        }
+    }
+    else
+    {
+        strPubKeyPath = QString( "%1/%2" ).arg( strDst ).arg( kPublicFile );
+        strPriKeyPath = QString( "%1/%2" ).arg( strDst ).arg( kPrivateFile );
+        JS_BIN_fileReadBER( strPriKeyPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    }
 
     JS_BIN_fileReadBER( strPriKeyPath.toLocal8Bit().toStdString().c_str(), &binPri );
+
     berApplet->decodeData( &binPri, strPriKeyPath );
     JS_BIN_reset( &binPri );
 }
@@ -821,10 +977,35 @@ void KeyPairManDlg::clickLDecodePubKey()
         return;
     }
 
-    strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
-    strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+    int nDevType = -1;
+    QString strDst;
 
-    JS_BIN_fileReadBER( strPubKeyPath.toLocal8Bit().toStdString().c_str(), &binPub );
+    getDevicePath( strPath, nDevType, strDst );
+
+    if( nDevType == DeviceHSM )
+    {
+        long hPub = -1;
+        BIN binID = {0,0};
+        JP11_CTX *pCTX = berApplet->getP11CTX();
+        int nIndex = berApplet->settingsMgr()->hsmIndex();
+        ret = getP11Session( pCTX, nIndex );
+        if( ret != CKR_OK ) return;
+
+        JS_BIN_decodeHex( strDst.toStdString().c_str(), &binID );
+        hPub = getHandleHSM( pCTX, CKO_PUBLIC_KEY, &binID );
+        JS_BIN_reset( &binID );
+
+        ret = getPublicKeyHSM( pCTX, hPub, &binPub );
+    }
+    else
+    {
+        strPubKeyPath = QString( "%1/%2" ).arg( strDst ).arg( kPublicFile );
+        strPriKeyPath = QString( "%1/%2" ).arg( strDst ).arg( kPrivateFile );
+
+
+        JS_BIN_fileReadBER( strPubKeyPath.toLocal8Bit().toStdString().c_str(), &binPub );
+    }
+
     berApplet->decodeData( &binPub, strPubKeyPath );
     JS_BIN_reset( &binPub );
 }
@@ -1476,6 +1657,47 @@ void KeyPairManDlg::clickImport()
 
     if( nameDlg.exec() == QDialog::Accepted )
     {
+        if( berApplet->settingsMgr()->hsmUse() == true )
+        {
+            SaveDeviceDlg saveDevice;
+            if( saveDevice.exec() == QDialog::Accepted )
+            {
+                if( saveDevice.getDevice() == DeviceHSM )
+                {
+                    QString strAlg = JS_PKI_getKeyAlgName( nKeyType );
+                    JP11_CTX *pCTX = berApplet->getP11CTX();
+                    int nIndex = berApplet->settingsMgr()->hsmIndex();
+
+                    QString strName = nameDlg.mNameText->text();
+
+                    ret = getP11SessionLogin( pCTX, nIndex );
+                    if( ret != 0 )
+                    {
+                        goto end;
+                    }
+
+                    ret = createKeyPairWithP11( pCTX, strName, &binPri );
+                    if( ret != 0 )
+                    {
+                        berApplet->elog( QString( "fail to create keypair in HSM: %1").arg( ret));
+                        goto end;
+                    }
+
+                    if( ret == 0 )
+                    {
+                        berApplet->messageLog( tr( "The private key and certificate are saved to HSM successfully"), this );
+                        mHsmCheck->setChecked(true);
+                        loadHsmKeyPairList();
+                        goto end;
+                    }
+                }
+            }
+            else
+            {
+                goto end;
+            }
+        }
+
         QDir dir;
 
         QString strKeyPairPath = berApplet->settingsMgr()->keyPairPath();
@@ -1485,7 +1707,7 @@ void KeyPairManDlg::clickImport()
         if( dir.exists( fullPath ) )
         {
             berApplet->warningBox( tr( "The folder(%1) is already existed" ).arg( strName ), this );
-            return;
+            goto end;
         }
         else
         {
@@ -1498,8 +1720,8 @@ void KeyPairManDlg::clickImport()
         JS_BIN_writePEM( &binPri, JS_PEM_TYPE_PRIVATE_KEY, strPriSavePath.toLocal8Bit().toStdString().c_str() );
         JS_BIN_writePEM( &binPub, JS_PEM_TYPE_PUBLIC_KEY, strPubSavePath.toLocal8Bit().toStdString().c_str() );
 
+        mHsmCheck->setChecked(false);
         loadKeyPairList();
-
         berApplet->messageLog( tr( "Key pair saving was successful"), this );
     }
 
@@ -1514,6 +1736,7 @@ end :
 
 void KeyPairManDlg::clickExport()
 {
+    int ret = 0;
     BIN binPri = {0,0};
 
     QString strPath;
@@ -1528,10 +1751,40 @@ void KeyPairManDlg::clickExport()
         return;
     }
 
-    if( item ) strPath = item->data(Qt::UserRole).toString();
-    strPriPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+    int nDevType = -1;
+    QString strDst;
+    strPath = item->data(Qt::UserRole).toString();
 
-    JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    getDevicePath( strPath, nDevType, strDst );
+
+    if( nDevType == DeviceHSM )
+    {
+        long hPri = -1;
+        BIN binID = {0,0};
+
+        JP11_CTX *pCTX = berApplet->getP11CTX();
+        int nIndex = berApplet->settingsMgr()->hsmIndex();
+
+        ret = getP11SessionLogin( pCTX, nIndex );
+        if( ret != CKR_OK ) return;
+
+        JS_BIN_decodeHex( strDst.toStdString().c_str(), &binID );
+        hPri = getHandleHSM( pCTX, CKO_PRIVATE_KEY, &binID );
+
+        JS_BIN_reset( &binID );
+
+        ret = getPrivateKeyHSM( pCTX, hPri, &binPri );
+        if( ret != CKR_OK )
+        {
+            berApplet->warningBox( tr( "fail to get private key from HSM: %1" ).arg( ret ), this );
+            return;
+        }
+    }
+    else
+    {
+        strPriPath = QString( "%1/%2" ).arg( strDst ).arg( kPrivateFile );
+        JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    }
 
     ExportDlg exportDlg;
     exportDlg.setName( item->text() );

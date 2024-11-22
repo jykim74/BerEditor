@@ -19,6 +19,7 @@ public:
 
     const QString getDN();
     void setPriKey( const BIN *pPri );
+    void setHsmID( const BIN *pID );
     const QString getCSRHex();
 
 private slots:
@@ -30,6 +31,7 @@ private:
 
     BIN csr_;
     BIN pri_key_;
+    BIN hsm_id_;
 };
 
 #endif // MAKE_CSR_DLG_H

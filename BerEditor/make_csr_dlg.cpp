@@ -5,6 +5,8 @@
 #include "js_pki_x509.h"
 #include "js_pki_ext.h"
 #include "ber_applet.h"
+#include "js_pkcs11.h"
+#include "p11api.h"
 
 #include "settings_mgr.h"
 
@@ -15,6 +17,7 @@ MakeCSRDlg::MakeCSRDlg(QWidget *parent) :
 
     memset( &csr_, 0x00, sizeof(BIN));
     memset( &pri_key_, 0x00, sizeof(BIN));
+    memset( &hsm_id_, 0x00, sizeof(BIN));
 
     connect( mCancelBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mOKBtn, SIGNAL(clicked()), this, SLOT(clickOK()));
@@ -33,6 +36,7 @@ MakeCSRDlg::~MakeCSRDlg()
 {
     JS_BIN_reset( &csr_ );
     JS_BIN_reset( &pri_key_ );
+    JS_BIN_reset( &hsm_id_ );
 }
 
 void MakeCSRDlg::initialize()
@@ -45,8 +49,16 @@ void MakeCSRDlg::initialize()
 
 void MakeCSRDlg::setPriKey( const BIN *pPri )
 {
+    JS_BIN_reset( &hsm_id_ );
     JS_BIN_reset( &pri_key_ );
     JS_BIN_copy( &pri_key_, pPri );
+}
+
+void MakeCSRDlg::setHsmID( const BIN *pID )
+{
+    JS_BIN_reset( &hsm_id_ );
+    JS_BIN_reset( &pri_key_ );
+    JS_BIN_copy( &hsm_id_, pID );
 }
 
 const QString MakeCSRDlg::getCSRHex()
@@ -137,10 +149,44 @@ void MakeCSRDlg::clickOK()
 
     JS_BIN_reset( &csr_ );
 
-    ret = JS_PKI_makeCSR(
-        strHash.toStdString().c_str(),
-        strDN.toStdString().c_str(),
-        NULL, NULL, &pri_key_, NULL, &csr_ );
+    if( pri_key_.nLen > 0)
+    {
+        ret = JS_PKI_makeCSR(
+            strHash.toStdString().c_str(),
+            strDN.toStdString().c_str(),
+            NULL, NULL, &pri_key_, NULL, &csr_ );
+    }
+    else
+    {
+        long hPub = -1;
+
+        BIN binPub = {0,0};
+
+        JP11_CTX *pCTX = berApplet->getP11CTX();
+        int nIndex = berApplet->settingsMgr()->hsmIndex();
+
+        ret = getP11SessionLogin( pCTX, nIndex );
+        if( ret != CKR_OK ) return;
+
+        hPub = getHandleHSM( pCTX, CKO_PUBLIC_KEY, &hsm_id_ );
+        if( ret != 0 ) return;
+
+        ret = getPublicKeyHSM( pCTX, hPub, &binPub );
+        if( ret < 0 ) return;
+
+        ret = JS_PKI_makeCSRByP11(
+            strHash.toStdString().c_str(),
+            strDN.toStdString().c_str(),
+            NULL,
+            NULL,
+            &hsm_id_,
+            &binPub,
+            NULL,
+            pCTX,
+            &csr_ );
+
+        JS_BIN_reset( &binPub );
+    }
 
     if( ret == 0 )
         return QDialog::accept();

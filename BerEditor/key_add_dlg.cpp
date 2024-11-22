@@ -165,14 +165,29 @@ int KeyAddDlg::setHSM( long hObject )
     int nKeyType = 0;
 
     rv = getP11SessionLogin( pCTX, nIndex );
-    if( rv <= 0 ) goto end;
+    if( rv != CKR_OK ) goto end;
 
     rv = JS_PKCS11_GetAttributeValue2( pCTX, hObject, CKA_LABEL, &binLabel );
-    if( rv != 0 ) goto end;
+    if( rv != CKR_OK ) goto end;
 
     JS_BIN_string( &binLabel, &pLabel );
 
+    mTypeCombo->clear();
+    mKeyLenCombo->clear();
+    mKeyTypeCombo->clear();
+    mIVTypeCombo->clear();
+
     rv = JS_PKCS11_GetAttributeValue2( pCTX, hObject, CKA_VALUE, &binVal );
+    if( rv == CKR_OK )
+    {
+        mKeyText->setText( getHexString( &binVal ));
+        mKeyTypeCombo->addItem( "Hex" );
+    }
+    else
+    {
+        mKeyTypeCombo->addItem( "String" );
+        mKeyText->setText( QString("%1").arg( pCTX->sLastLog ));
+    }
 
     rv = JS_PKCS11_GetAttributeValue2( pCTX, hObject, CKA_VALUE_LEN, &binLen );
 
@@ -185,14 +200,8 @@ int KeyAddDlg::setHSM( long hObject )
     mHsmCheck->setChecked(true);
     checkHSM();
 
-    mTypeCombo->clear();
-    mKeyLenCombo->clear();
-    mKeyTypeCombo->clear();
-    mIVTypeCombo->clear();
-
     mNameText->setText( pLabel );
-    mKeyText->setText( getHexString( &binVal ));
-    mKeyTypeCombo->addItem( "Hex" );
+
     mKeyLenCombo->addItem( QString("%1").arg( nKeyLen ));
     mTypeCombo->addItem( QString( "%1").arg( getP11KeyTypeName( nKeyType )));
 

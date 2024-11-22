@@ -80,6 +80,15 @@ end :
     return hObjects;
 }
 
+int getID_HSM( JP11_CTX *pCTX, CK_OBJECT_HANDLE hObj, BIN *pID )
+{
+    int rv = 0;
+
+    rv = JS_PKCS11_GetAttributeValue2( pCTX, hObj, CKA_ID, pID );
+
+    return rv;
+}
+
 int loadPKCS11Libray( const QString strLibPath, JP11_CTX **ppCTX )
 {
     int rv = 0;
@@ -107,7 +116,7 @@ int loadPKCS11Libray( const QString strLibPath, JP11_CTX **ppCTX )
     return rv;
 }
 
-CK_SESSION_HANDLE getP11Session( void *pP11CTX, int nSlotIndex )
+int getP11Session( void *pP11CTX, int nSlotIndex )
 {
     int ret = 0;
 
@@ -140,7 +149,7 @@ CK_SESSION_HANDLE getP11Session( void *pP11CTX, int nSlotIndex )
     if( ret != CKR_OK )
     {
         fprintf( stderr, "fail to run getSlotList fail(%d)\n", ret );
-        return -1;
+        return ret;
     }
 
     if( uSlotCnt < 1 || uSlotCnt < nSlotIndex )
@@ -153,14 +162,14 @@ CK_SESSION_HANDLE getP11Session( void *pP11CTX, int nSlotIndex )
     if( ret != CKR_OK )
     {
         fprintf( stderr, "fail to run opensession(%s:%x)\n", JS_PKCS11_GetErrorMsg(ret), ret );
-        return -1;
+        return ret;
     }
 
-    return pCTX->hSession;
+    return CKR_OK;
 }
 
 
-CK_SESSION_HANDLE getP11SessionLogin( void *pP11CTX, int nSlotIndex, const QString strPIN )
+int getP11SessionLogin( void *pP11CTX, int nSlotIndex, const QString strPIN )
 {
     int ret = 0;
 
@@ -191,7 +200,7 @@ CK_SESSION_HANDLE getP11SessionLogin( void *pP11CTX, int nSlotIndex, const QStri
 
         if( nState == CKS_RO_USER_FUNCTIONS || nState == CKS_RW_USER_FUNCTIONS )
         {
-            return pCTX->hSession;
+            return CKR_OK;
         }
     }
 
@@ -199,7 +208,7 @@ CK_SESSION_HANDLE getP11SessionLogin( void *pP11CTX, int nSlotIndex, const QStri
     if( ret != CKR_OK )
     {
         fprintf( stderr, "fail to run getSlotList fail(%d)\n", ret );
-        return -1;
+        return ret;
     }
 
     if( uSlotCnt < 1 || uSlotCnt < nSlotIndex )
@@ -214,7 +223,7 @@ CK_SESSION_HANDLE getP11SessionLogin( void *pP11CTX, int nSlotIndex, const QStri
     if( ret != CKR_OK )
     {
         fprintf( stderr, "fail to run opensession(%s:%x)\n", JS_PKCS11_GetErrorMsg(ret), ret );
-        return -1;
+        return ret;
     }
 
     if( strPIN == nullptr || strPIN.length() < 1 )
@@ -239,10 +248,10 @@ CK_SESSION_HANDLE getP11SessionLogin( void *pP11CTX, int nSlotIndex, const QStri
     if( ret != 0 )
     {
         fprintf( stderr, "fail to run login hsm(%d)\n", ret );
-        return -1;
+        return ret;
     }
 
-    return pCTX->hSession;
+    return CKR_OK;
 }
 
 int genKeyWithP11( JP11_CTX *pCTX, QString strName, QString strAlg )
@@ -2028,6 +2037,8 @@ int getHsmPubList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& pubList 
         rv = JS_PKCS11_GetAttributeValue2( pCTX, hObjects[i], CKA_ID, &binID );
         if( rv != CKR_OK ) goto end;
 
+        if( binID.nLen <= 0 ) continue;
+
         JS_BIN_string( &binLabel, &pLabel );
         memcpy( &nKeyType, binKeyType.pVal, binKeyType.nLen );
 
@@ -2100,6 +2111,8 @@ int getHsmCertList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& certLis
         rv = JS_PKCS11_GetAttributeValue2( pCTX, hObjects[i], CKA_ID, &binID );
         if( rv != CKR_OK ) goto end;
 
+        if( binID.nLen <= 0 ) continue;
+
         JS_BIN_string( &binLabel, &pLabel );
 
         P11Rec P11Rec;
@@ -2170,6 +2183,8 @@ int getHsmKeyPairList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& pubL
 
         rv = JS_PKCS11_GetAttributeValue2( pCTX, hObjects[i], CKA_ID, &binID );
         if( rv != CKR_OK ) goto end;
+
+        if( binID.nLen <= 0 ) continue;
 
         rv = JS_PKCS11_GetAttributeValue2( pCTX, hObjects[i], CKA_LABEL, &binVal );
         if( rv != CKR_OK ) goto end;
@@ -2273,6 +2288,8 @@ int getHsmPriCertList( JP11_CTX *pCTX, const QString strAlg, QList<P11Rec>& cert
         rv = JS_PKCS11_GetAttributeValue2( pCTX, hObjects[i], CKA_ID, &binID );
         if( rv != CKR_OK ) goto end;
 
+        if( binID.nLen <= 0 ) continue;
+
         rv = JS_PKCS11_GetAttributeValue2( pCTX, hObjects[i], CKA_LABEL, &binVal );
         if( rv != CKR_OK ) goto end;
 
@@ -2330,7 +2347,7 @@ end :
     return rv;
 }
 
-int getRSAPublicKeyHSM( JP11_CTX *pCTX, long hSesson, long hObject, BIN *pPubKey )
+int getRSAPublicKeyHSM( JP11_CTX *pCTX, long hObject, BIN *pPubKey )
 {
     int ret = 0;
     BIN binPubExp = {0,0};
@@ -2366,7 +2383,7 @@ end :
     return ret;
 }
 
-int getECPublicKeyHSM( JP11_CTX *pCTX, long hSession, long hObject, BIN *pPubKey )
+int getECPublicKeyHSM( JP11_CTX *pCTX, long hObject, BIN *pPubKey )
 {
     int ret = 1;
     BIN binParam = {0,0};
@@ -2404,7 +2421,7 @@ end :
     return ret;
 }
 
-int getDSAPublicKeyHSM( JP11_CTX *pCTX, long hSession, long hObject, BIN *pPubKey )
+int getDSAPublicKeyHSM( JP11_CTX *pCTX, long hObject, BIN *pPubKey )
 {
     int ret = 0;
     BIN binP = {0,0};
@@ -2447,7 +2464,7 @@ end :
     return ret;
 }
 
-int getEDPublicKeyHSM( JP11_CTX *pCTX, long hSession, long hObject, BIN *pPubKey )
+int getEDPublicKeyHSM( JP11_CTX *pCTX, long hObject, BIN *pPubKey )
 {
     int ret = -1;
     BIN binPoint = {0,0};
@@ -2481,7 +2498,7 @@ end :
     return ret;
 }
 
-int getPublicKeyHSM( JP11_CTX *pCTX, long hSession, long hObject, BIN *pPubKey )
+int getPublicKeyHSM( JP11_CTX *pCTX, long hObject, BIN *pPubKey )
 {
     int ret = 0;
     BIN binVal = {0,0};
@@ -2493,13 +2510,13 @@ int getPublicKeyHSM( JP11_CTX *pCTX, long hSession, long hObject, BIN *pPubKey )
     memcpy( &uKeyType, binVal.pVal, binVal.nLen );
 
     if( uKeyType == CKK_RSA )
-        ret = getRSAPublicKeyHSM( pCTX, hSession, hObject, pPubKey );
+        ret = getRSAPublicKeyHSM( pCTX, hObject, pPubKey );
     else if( uKeyType == CKK_EC )
-        ret = getECPublicKeyHSM( pCTX, hSession, hObject, pPubKey );
+        ret = getECPublicKeyHSM( pCTX, hObject, pPubKey );
     else if( uKeyType == CKK_DSA )
-        ret = getDSAPublicKeyHSM( pCTX, hSession, hObject, pPubKey );
+        ret = getDSAPublicKeyHSM( pCTX, hObject, pPubKey );
     else if( uKeyType == CKK_EC_EDWARDS )
-        ret = getEDPublicKeyHSM( pCTX, hSession, hObject, pPubKey );
+        ret = getEDPublicKeyHSM( pCTX, hObject, pPubKey );
     else
         ret = -1;
 
@@ -2510,7 +2527,7 @@ end :
 }
 
 
-int getRSAPrivateKeyHSM( JP11_CTX *pCTX, long hSession, long hObject, BIN *pPriKey )
+int getRSAPrivateKeyHSM( JP11_CTX *pCTX, long hObject, BIN *pPriKey )
 {
     int ret = 0;
     BIN binN = {0,0};
@@ -2577,7 +2594,7 @@ end :
     return ret;
 }
 
-int getECPrivateKeyHSM( JP11_CTX *pCTX, long hSession, long hObject, BIN *pPriKey )
+int getECPrivateKeyHSM( JP11_CTX *pCTX, long hObject, BIN *pPriKey )
 {
     int ret = 1;
     BIN binParam = {0,0};
@@ -2607,7 +2624,7 @@ end :
     return ret;
 }
 
-int getDSAPrivateKeyHSM( JP11_CTX *pCTX, long hSession, long hObject, BIN *pPriKey )
+int getDSAPrivateKeyHSM( JP11_CTX *pCTX, long hObject, BIN *pPriKey )
 {
     int ret = 0;
     BIN binP = {0,0};
@@ -2649,7 +2666,7 @@ end :
     return ret;
 }
 
-int getEDPrivateKeyHSM( JP11_CTX *pCTX, long hSession, long hObject, BIN *pPriKey )
+int getEDPrivateKeyHSM( JP11_CTX *pCTX, long hObject, BIN *pPriKey )
 {
     int ret = -1;
     BIN binParam = {0,0};
@@ -2694,7 +2711,7 @@ end :
 }
 
 
-int getPrivateKeyHSM( JP11_CTX *pCTX, long hSession, long hObject, BIN *pPriKey )
+int getPrivateKeyHSM( JP11_CTX *pCTX, long hObject, BIN *pPriKey )
 {
     int ret = 0;
     BIN binVal = {0,0};
@@ -2706,13 +2723,13 @@ int getPrivateKeyHSM( JP11_CTX *pCTX, long hSession, long hObject, BIN *pPriKey 
     memcpy( &uKeyType, binVal.pVal, binVal.nLen );
 
     if( uKeyType == CKK_RSA )
-        ret = getRSAPrivateKeyHSM( pCTX, hSession, hObject, pPriKey );
+        ret = getRSAPrivateKeyHSM( pCTX, hObject, pPriKey );
     else if( uKeyType == CKK_EC )
-        ret = getECPrivateKeyHSM( pCTX, hSession, hObject, pPriKey );
+        ret = getECPrivateKeyHSM( pCTX, hObject, pPriKey );
     else if( uKeyType == CKK_DSA )
-        ret = getDSAPrivateKeyHSM( pCTX, hSession, hObject, pPriKey );
+        ret = getDSAPrivateKeyHSM( pCTX, hObject, pPriKey );
     else if( uKeyType == CKK_EC_EDWARDS )
-        ret = getEDPrivateKeyHSM( pCTX, hSession, hObject, pPriKey );
+        ret = getEDPrivateKeyHSM( pCTX, hObject, pPriKey );
     else
         ret = -1;
 
