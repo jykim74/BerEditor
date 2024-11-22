@@ -89,6 +89,15 @@ int getID_HSM( JP11_CTX *pCTX, CK_OBJECT_HANDLE hObj, BIN *pID )
     return rv;
 }
 
+int getCertHSM( JP11_CTX *pCTX, CK_OBJECT_HANDLE hObj, BIN *pCert )
+{
+    int rv = 0;
+
+    rv = JS_PKCS11_GetAttributeValue2( pCTX, hObj, CKA_VALUE, pCert );
+
+    return rv;
+}
+
 int loadPKCS11Libray( const QString strLibPath, JP11_CTX **ppCTX )
 {
     int rv = 0;

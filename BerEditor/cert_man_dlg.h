@@ -162,7 +162,8 @@ private:
 
 
     int changePriKey( const BIN *pNewEncPriKey );
-    int readPriKeyCert( BIN *pEncPriKey, BIN *pCert );
+    int readEncPriKeyCert( BIN *pEncPriKey, BIN *pCert );
+    int readPriKeyCert( const QString strPass, BIN *pPriKey, BIN *pCert );
     int readCert( BIN *pCert );
     int readCACert( BIN *pCert );
     int readCRL( BIN *pCRL );

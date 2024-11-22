@@ -1265,7 +1265,7 @@ int CertManDlg::writeCRL( const QString strCRLPath, const BIN *pCRL )
     return ret;
 }
 
-int CertManDlg::readPriKeyCert( BIN *pEncPriKey, BIN *pCert )
+int CertManDlg::readEncPriKeyCert( BIN *pEncPriKey, BIN *pCert )
 {
     int ret = 0;
     QString strPriPath;
@@ -1277,6 +1277,12 @@ int CertManDlg::readPriKeyCert( BIN *pEncPriKey, BIN *pCert )
         berApplet->elog( QString( "There is no selected item" ) );
         return JSR_ERR;
     }
+
+    int nDeviceType = -1;
+    QString strDst;
+
+    getDevicePath( strPath, nDeviceType, strDst );
+    if( nDeviceType == DeviceHSM ) return JSR_ERR2;
 
     strPriPath = QString("%1/%2").arg( strPath ).arg( kPriKeyFile );
     strCertPath = QString("%1/%2").arg( strPath ).arg( kCertFile );
@@ -1290,6 +1296,74 @@ int CertManDlg::readPriKeyCert( BIN *pEncPriKey, BIN *pCert )
     return 0;
 }
 
+int CertManDlg::readPriKeyCert( const QString strPass, BIN *pPriKey, BIN *pCert )
+{
+    int ret = 0;
+
+    QString strPath = getSeletedPath();
+    if( strPath.length() < 1 )
+    {
+        berApplet->elog( QString( "There is no selected item" ) );
+        return JSR_ERR;
+    }
+
+    int nDeviceType = -1;
+    QString strDst;
+
+    getDevicePath( strPath, nDeviceType, strDst );
+    if( nDeviceType == DeviceHSM )
+    {
+        long hPri = -1;
+        long hCert = -1;
+        BIN binID = {0,0};
+
+        JP11_CTX *pCTX = berApplet->getP11CTX();
+        int nIndex = berApplet->settingsMgr()->hsmIndex();
+
+        ret = getP11SessionLogin( pCTX, nIndex, strPass );
+        if( ret != CKR_OK ) return ret;
+
+        JS_BIN_decodeHex( strDst.toStdString().c_str(), &binID );
+
+        hCert = getHandleHSM( pCTX, CKO_CERTIFICATE, &binID );
+        hPri = getHandleHSM( pCTX, CKO_PRIVATE_KEY, &binID );
+
+        JS_BIN_reset( &binID );
+
+        ret = getCertHSM( pCTX, hCert, pCert );
+        if( ret != 0 ) return ret;
+
+        ret = getPrivateKeyHSM( pCTX, hPri, pPriKey );
+        if( ret != 0 ) return ret;
+    }
+    else
+    {
+        BIN binEnc = {0,0};
+
+        QString strPriPath;
+        QString strCertPath;
+
+        strPriPath = QString("%1/%2").arg( strPath ).arg( kPriKeyFile );
+        strCertPath = QString("%1/%2").arg( strPath ).arg( kCertFile );
+
+        ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binEnc );
+        if( ret <= 0 ) return JSR_ERR2;
+
+        ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEnc, NULL, pPriKey );
+        if( ret != 0 )
+        {
+            JS_BIN_reset( &binEnc );
+            return JSR_ERR3;
+        }
+
+        JS_BIN_reset( &binEnc );
+
+        ret = JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), pCert );
+        if( ret <= 0 ) return JSR_ERR4;
+    }
+
+    return 0;
+}
 int CertManDlg::readCert( BIN *pCert )
 {
     int ret = 0;
@@ -1300,8 +1374,35 @@ int CertManDlg::readCert( BIN *pCert )
         return JSR_ERR;
     }
 
-    ret = JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), pCert );
-    if( ret <= 0 ) return JSR_ERR2;
+    int nDeviceType = -1;
+    QString strDst;
+
+    getDevicePath( strPath, nDeviceType, strDst );
+
+    if( nDeviceType == DeviceHSM )
+    {
+        long hObj = -1;
+        BIN binID = {0,0};
+
+        JP11_CTX *pCTX = berApplet->getP11CTX();
+        int nIndex = berApplet->settingsMgr()->hsmIndex();
+
+        ret = getP11Session( pCTX, nIndex );
+        if( ret != CKR_OK ) return ret;
+
+        JS_BIN_decodeHex( strDst.toStdString().c_str(), &binID );
+
+        hObj = getHandleHSM( pCTX, CKO_CERTIFICATE, &binID );
+        JS_BIN_reset( &binID );
+
+        ret = getCertHSM( pCTX, hObj, pCert );
+        if( ret != 0 ) return ret;
+    }
+    else
+    {
+        ret = JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), pCert );
+        if( ret <= 0 ) return JSR_ERR2;
+    }
 
     return 0;
 }
@@ -1341,12 +1442,12 @@ int CertManDlg::readCRL( BIN *pCRL )
 void CertManDlg::clickViewCert()
 {
     int ret = 0;
-    BIN binEncPri = {0,0};
+
     BIN binCert = {0,0};
 
     CertInfoDlg certInfo;
 
-    ret = readPriKeyCert( &binEncPri, &binCert );
+    ret = readCert( &binCert );
     if( ret != 0 )
     {
         berApplet->warningBox( tr( "Please select a certificate [%1]" ).arg(ret), this);
@@ -1357,7 +1458,6 @@ void CertManDlg::clickViewCert()
     certInfo.exec();
 
 end :
-    JS_BIN_reset( &binEncPri );
     JS_BIN_reset( &binCert );
 }
 
@@ -1366,9 +1466,7 @@ void CertManDlg::clickDeleteCert()
     int ret = 0;
 
     bool bVal = false;
-    QDir dir;
-    QString strCertPath;
-    QString strPriKeyPath;
+
 
     QString strPath = getSeletedPath();
     if( strPath.length() < 1 )
@@ -1380,20 +1478,60 @@ void CertManDlg::clickDeleteCert()
     bVal = berApplet->yesOrCancelBox( tr( "Are you sure to delete the certificate" ), this, false );
     if( bVal == false ) return;
 
-    strCertPath = QString( "%1/%2" ).arg( strPath ).arg( kCertFile );
-    strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPriKeyFile );
+    int nDevType = -1;
+    QString strDst;
 
-    dir.remove( strCertPath );
-    dir.remove( strPriKeyPath );
-    dir.rmdir( strPath );
+    getDevicePath( strPath, nDevType, strDst );
 
-    loadEEList();
+    if( nDevType == DeviceHSM )
+    {
+        long hPri = -1;
+        long hPub = -1;
+        long hCert = -1;
+        BIN binID = {0,0};
+
+        JP11_CTX *pCTX = berApplet->getP11CTX();
+        int nIndex = berApplet->settingsMgr()->hsmIndex();
+
+        ret = getP11SessionLogin( pCTX, nIndex );
+        if( ret != CKR_OK ) return;
+
+        JS_BIN_decodeHex( strDst.toStdString().c_str(), &binID );
+
+        hPri = getHandleHSM( pCTX, CKO_PRIVATE_KEY, &binID );
+        hPub = getHandleHSM( pCTX, CKO_PUBLIC_KEY, &binID );
+        hCert = getHandleHSM( pCTX, CKO_CERTIFICATE, &binID );
+
+        JS_BIN_reset( &binID );
+
+        ret = JS_PKCS11_DestroyObject( pCTX, hPub );
+        ret = JS_PKCS11_DestroyObject( pCTX, hPri );
+        ret = JS_PKCS11_DestroyObject( pCTX, hCert );
+
+        loadHsmEEList();
+    }
+    else
+    {
+        QDir dir;
+        QString strCertPath;
+        QString strPriKeyPath;
+
+        strCertPath = QString( "%1/%2" ).arg( strPath ).arg( kCertFile );
+        strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPriKeyFile );
+
+        dir.remove( strCertPath );
+        dir.remove( strPriKeyPath );
+        dir.rmdir( strPath );
+
+        loadEEList();
+    }
+
+
 }
 
 void CertManDlg::clickDecodeCert()
 {
     int ret = 0;
-    BIN binEncPri = {0,0};
     BIN binCert = {0,0};
     QString strPath = getSeletedPath();
 
@@ -1403,7 +1541,7 @@ void CertManDlg::clickDecodeCert()
         return;
     }
 
-    ret = readPriKeyCert( &binEncPri, &binCert );
+    ret = readCert( &binCert );
     if( ret != 0 )
     {
         berApplet->warningBox( tr( "Please select a certificate [%1]" ).arg(ret ), this);
@@ -1416,7 +1554,6 @@ void CertManDlg::clickDecodeCert()
     berApplet->decodeData( &binCert, strPath );
 
 end :
-    JS_BIN_reset( &binEncPri );
     JS_BIN_reset( &binCert );
 }
 
@@ -1427,7 +1564,7 @@ void CertManDlg::clickDecodePriKey()
     BIN binCert = {0,0};
     QString strPath = getSeletedPath();
 
-    ret = readPriKeyCert( &binEncPri, &binCert );
+    ret = readEncPriKeyCert( &binEncPri, &binCert );
     if( ret != 0 )
     {
         berApplet->warningBox( tr( "Please select a certificate [%1]" ).arg(ret ), this);
@@ -1459,7 +1596,7 @@ void CertManDlg::clickCheckKeyPair()
         return;
     }
 
-    ret = readPriKeyCert( &binEncPriKey, &binCert );
+    ret = readEncPriKeyCert( &binEncPriKey, &binCert );
     if( ret != 0 )
     {
         berApplet->warnLog( tr( "Please select a certificate [%1]").arg(ret), this );
@@ -1619,7 +1756,7 @@ void CertManDlg::clickExport()
         return;
     }
 
-    ret = readPriKeyCert( &binEncPri, &binCert );
+    ret = readEncPriKeyCert( &binEncPri, &binCert );
     if( ret != 0 )
     {
         berApplet->warningBox( tr("Please select a certificate [%1]").arg(ret), this );
@@ -1676,7 +1813,7 @@ void CertManDlg::clickChangePasswd()
         return;
     }
 
-    ret = readPriKeyCert( &binEncPriKey, &binCert );
+    ret = readEncPriKeyCert( &binEncPriKey, &binCert );
     if( ret != 0 )
     {
         berApplet->warnLog( tr( "Please select a certificate [%1]").arg(ret), this );
@@ -1739,7 +1876,7 @@ void CertManDlg::clickViewPriKey()
         return;
     }
 
-    ret = readPriKeyCert( &binEncPriKey, &binCert );
+    ret = readEncPriKeyCert( &binEncPriKey, &binCert );
     if( ret != 0 )
     {
         berApplet->warnLog( tr( "Please select a certificate [%1]").arg(ret), this );
@@ -1789,12 +1926,12 @@ end :
 void CertManDlg::clickViewPubKey()
 {
     int ret = 0;
-    BIN binEncPri = {0,0};
+
     BIN binCert = {0,0};
     BIN binPub = {0,0};
     PriKeyInfoDlg priKeyInfo;
 
-    ret = readPriKeyCert( &binEncPri, &binCert );
+    ret = readCert( &binCert );
     if( ret != 0 )
     {
         berApplet->warningBox( tr( "Please select a certificate [%1]" ).arg(ret ), this);
@@ -1808,7 +1945,6 @@ void CertManDlg::clickViewPubKey()
     priKeyInfo.exec();
 
 end :
-    JS_BIN_reset( &binEncPri );
     JS_BIN_reset( &binCert );
     JS_BIN_reset( &binPub );
 }
@@ -1985,7 +2121,7 @@ void CertManDlg::clickOK()
             return;
         }
 
-        ret = readPriKeyCert( &binEncPriKey, &binCert );
+        ret = readEncPriKeyCert( &binEncPriKey, &binCert );
         if( ret != 0 )
         {
             berApplet->warningBox( tr( "Please select a certificate [%1]" ).arg(ret), this );
@@ -2015,6 +2151,9 @@ end :
 void CertManDlg::checkHSM()
 {
     bool bVal = mHsmCheck->isChecked();
+
+    mChangePasswdBtn->setEnabled(!bVal);
+    mDecodePriKeyBtn->setEnabled(!bVal);
 
     if( bVal == true )
         loadHsmEEList();
