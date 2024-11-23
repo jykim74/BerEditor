@@ -1022,8 +1022,17 @@ void KeyPairManDlg::clickLRunSign()
         return;
     }
 
-    strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
-    strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+    if( mHsmCheck->isChecked() == true )
+    {
+        strPubKeyPath = strPath;
+        strPriKeyPath = strPath;
+    }
+    else
+    {
+        strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
+        strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+    }
+
 
     berApplet->mainWindow()->runSignVerify( true, false, strPriKeyPath, strPubKeyPath );
 }
@@ -1040,14 +1049,23 @@ void KeyPairManDlg::clickLRunVerify()
         return;
     }
 
-    strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
-    strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+    if( mHsmCheck->isChecked() == true )
+    {
+        strPubKeyPath = strPath;
+        strPriKeyPath = strPath;
+    }
+    else
+    {
+        strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
+        strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+    }
 
     berApplet->mainWindow()->runSignVerify( false, false, strPubKeyPath, strPubKeyPath );
 }
 
 void KeyPairManDlg::clickLRunPubEnc()
 {
+    int ret = 0;
     QString strPubKeyPath;
     QString strPriKeyPath;
     QString strPath = getSelectedPath();
@@ -1058,27 +1076,66 @@ void KeyPairManDlg::clickLRunPubEnc()
         return;
     }
 
-    strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
-    strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+    int nType = DeviceHDD;
+    QString strDst;
 
-    int nKeyType = -1;
-    BIN binPub = {0,0};
+    getDevicePath( strPath, nType, strDst );
 
-    JS_BIN_fileReadBER( strPubKeyPath.toLocal8Bit().toStdString().c_str(), &binPub );
-    nKeyType = JS_PKI_getPubKeyType( &binPub );
-    JS_BIN_reset( &binPub );
 
-    if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+    if( mHsmCheck->isChecked() == true )
     {
-        berApplet->warningBox( tr( "This key does not support public key encryption" ), this );
-        return;
+        BIN binID = {0,0};
+        JS_BIN_decodeHex( strDst.toStdString().c_str(), &binID );
+        JP11_CTX *pCTX = berApplet->getP11CTX();
+        int nIndex = berApplet->settingsMgr()->hsmIndex();
+
+        ret = getP11Session( pCTX, nIndex );
+        if( ret != 0 )
+        {
+            JS_BIN_reset( &binID );
+            return;
+        }
+
+        long hObj = getHandleHSM( pCTX, CKO_PUBLIC_KEY, &binID );
+        long uKeyType = getKeyTypeHSM( pCTX, hObj );
+
+        JS_BIN_reset( &binID );
+
+        if( uKeyType != CKK_RSA )
+        {
+            berApplet->warningBox( tr( "This key does not support public key encryption" ), this );
+            return;
+        }
+
+        strPubKeyPath = strPath;
+        strPriKeyPath = strPath;
     }
+    else
+    {
+        strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
+        strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+
+        int nKeyType = -1;
+        BIN binPub = {0,0};
+
+        JS_BIN_fileReadBER( strPubKeyPath.toLocal8Bit().toStdString().c_str(), &binPub );
+        nKeyType = JS_PKI_getPubKeyType( &binPub );
+        JS_BIN_reset( &binPub );
+
+        if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+        {
+            berApplet->warningBox( tr( "This key does not support public key encryption" ), this );
+            return;
+        }
+    }
+
 
     berApplet->mainWindow()->runPubEncDec( true, false, strPriKeyPath, strPubKeyPath );
 }
 
 void KeyPairManDlg::clickLRunPubDec()
 {
+    int ret = 0;
     QString strPubKeyPath;
     QString strPriKeyPath;
     QString strPath = getSelectedPath();
@@ -1089,20 +1146,56 @@ void KeyPairManDlg::clickLRunPubDec()
         return;
     }
 
-    strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
-    strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+    int nType = DeviceHDD;
+    QString strDst;
 
-    int nKeyType = -1;
-    BIN binPub = {0,0};
+    getDevicePath( strPath, nType, strDst );
 
-    JS_BIN_fileReadBER( strPubKeyPath.toLocal8Bit().toStdString().c_str(), &binPub );
-    nKeyType = JS_PKI_getPubKeyType( &binPub );
-    JS_BIN_reset( &binPub );
-
-    if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+    if( mHsmCheck->isChecked() == true )
     {
-        berApplet->warningBox( tr( "This key does not support public key encryption" ), this );
-        return;
+        BIN binID = {0,0};
+        JS_BIN_decodeHex( strDst.toStdString().c_str(), &binID );
+        JP11_CTX *pCTX = berApplet->getP11CTX();
+        int nIndex = berApplet->settingsMgr()->hsmIndex();
+
+        ret = getP11SessionLogin( pCTX, nIndex );
+        if( ret != 0 )
+        {
+            JS_BIN_reset( &binID );
+            return;
+        }
+
+        long hObj = getHandleHSM( pCTX, CKO_PRIVATE_KEY, &binID );
+        long uKeyType = getKeyTypeHSM( pCTX, hObj );
+
+        JS_BIN_reset( &binID );
+
+        if( uKeyType != CKK_RSA )
+        {
+            berApplet->warningBox( tr( "This key does not support public key encryption" ), this );
+            return;
+        }
+
+        strPubKeyPath = strPath;
+        strPriKeyPath = strPath;
+    }
+    else
+    {
+        strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
+        strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+
+        int nKeyType = -1;
+        BIN binPub = {0,0};
+
+        JS_BIN_fileReadBER( strPubKeyPath.toLocal8Bit().toStdString().c_str(), &binPub );
+        nKeyType = JS_PKI_getPubKeyType( &binPub );
+        JS_BIN_reset( &binPub );
+
+        if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+        {
+            berApplet->warningBox( tr( "This key does not support public key encryption" ), this );
+            return;
+        }
     }
 
     berApplet->mainWindow()->runPubEncDec( false, false, strPriKeyPath, strPubKeyPath );
@@ -1110,6 +1203,7 @@ void KeyPairManDlg::clickLRunPubDec()
 
 void KeyPairManDlg::clickSaveToList()
 {
+    int ret = 0;
     BIN binPri = {0,0};
     BIN binPub = {0,0};
 
@@ -1131,10 +1225,53 @@ void KeyPairManDlg::clickSaveToList()
     JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
     JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPub );
 
+    int nKeyType = JS_PKI_getPriKeyType( &binPri );
+
     NameDlg nameDlg;
 
     if( nameDlg.exec() == QDialog::Accepted )
     {
+        if( berApplet->settingsMgr()->hsmUse() == true )
+        {
+            SaveDeviceDlg saveDevice;
+            if( saveDevice.exec() == QDialog::Accepted )
+            {
+                if( saveDevice.getDevice() == DeviceHSM )
+                {
+                    QString strAlg = JS_PKI_getKeyAlgName( nKeyType );
+                    JP11_CTX *pCTX = berApplet->getP11CTX();
+                    int nIndex = berApplet->settingsMgr()->hsmIndex();
+
+                    QString strName = nameDlg.mNameText->text();
+
+                    ret = getP11SessionLogin( pCTX, nIndex );
+                    if( ret != 0 )
+                    {
+                        goto end;
+                    }
+
+                    ret = createKeyPairWithP11( pCTX, strName, &binPri );
+                    if( ret != 0 )
+                    {
+                        berApplet->elog( QString( "fail to create keypair in HSM: %1").arg( ret));
+                        goto end;
+                    }
+
+                    if( ret == 0 )
+                    {
+                        berApplet->messageLog( tr( "The private key and certificate are saved to HSM successfully"), this );
+                        mHsmCheck->setChecked(true);
+                        loadHsmKeyPairList();
+                        goto end;
+                    }
+                }
+            }
+            else
+            {
+                goto end;
+            }
+        }
+
         QDir dir;
 
         QString strKeyPairPath = berApplet->settingsMgr()->keyPairPath();

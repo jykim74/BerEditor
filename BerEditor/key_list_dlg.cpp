@@ -96,7 +96,7 @@ int KeyListDlg::getPlainKeyIV( const QString strData, QString& strKey, QString& 
     int ret = 0;
 
     PasswdDlg passDlg;
-    QStringList listKeyIV = strData.split(":");
+    QStringList listKeyIV = strData.split("#");
 
     if( listKeyIV.size() < 1 ) return JSR_ERR;
 
@@ -123,7 +123,9 @@ int KeyListDlg::getPlainKeyIV( const QString strData, QString& strKey, QString& 
 
         if( ret != 0 )
         {
+            berApplet->elog( QString( "failed to decrypt symmetric key: %1").arg( ret ));
             ret = JSR_PASSWORD_WRONG;
+
             return ret;
         }
     }
@@ -232,7 +234,7 @@ void KeyListDlg::loadKeyList()
         QTableWidgetItem *item = new QTableWidgetItem( strName );
 
 
-        strData = QString( "%1:%2" ).arg( strKey ).arg( strIV );
+        strData = QString( "%1#%2" ).arg( strKey ).arg( strIV );
         item->setData( Qt::UserRole, strData );
 
         if( strKey.contains( "{ENC}") == true )
@@ -515,7 +517,7 @@ void KeyListDlg::clickOK()
         return;
     }
 
-    str_data_ = QString( "%1:%2" ).arg( strKey ).arg( strIV );
+    str_data_ = QString( "%1#%2" ).arg( strKey ).arg( strIV );
 
     accept();
 }
@@ -539,10 +541,13 @@ void KeyListDlg::clickGenMAC()
     QString strKey;
     QString strIV;
     QString strData = item->data(Qt::UserRole).toString();
-    QStringList keyIV = strData.split(":");
 
     int ret = getPlainKeyIV( strData, strKey, strIV );
-    if( ret != 0 ) return;
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr("fail to get symmetric key:%1").arg(ret), this );
+        return;
+    }
 
     berApplet->mainWindow()->mac2( strKey, strIV );
 }
@@ -563,7 +568,11 @@ void KeyListDlg::clickEncDec()
     QString strData = item->data(Qt::UserRole).toString();
 
     int ret = getPlainKeyIV( strData, strKey, strIV );
-    if( ret != 0 ) return;
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr("fail to get symmetric key:%1").arg(ret), this );
+        return;
+    }
 
     berApplet->mainWindow()->encDec2( strKey, strIV );
 }

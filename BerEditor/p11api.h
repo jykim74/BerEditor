@@ -33,6 +33,7 @@ const QString getP11KeyTypeName( long uKeyType );
 long getHandleHSM( JP11_CTX *pCTX, CK_OBJECT_CLASS objClass, const BIN *pID );
 int getID_HSM( JP11_CTX *pCTX, CK_OBJECT_HANDLE hObj, BIN *pID );
 int getCertHSM( JP11_CTX *pCTX, CK_OBJECT_HANDLE hObj, BIN *pCert );
+long getKeyTypeHSM( JP11_CTX *pCTX, CK_OBJECT_HANDLE hObj );
 
 int loadPKCS11Libray( const QString strLibPath, JP11_CTX **ppCTX );
 int getP11Session( void *pP11CTX, int nSlotIndex = 0 );

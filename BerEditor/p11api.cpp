@@ -98,6 +98,21 @@ int getCertHSM( JP11_CTX *pCTX, CK_OBJECT_HANDLE hObj, BIN *pCert )
     return rv;
 }
 
+long getKeyTypeHSM( JP11_CTX *pCTX, CK_OBJECT_HANDLE hObj )
+{
+    int rv = 0;
+    BIN binType = {0,0};
+    long uType = -1;
+
+    rv = JS_PKCS11_GetAttributeValue2( pCTX, hObj, CKA_KEY_TYPE, &binType );
+
+    if( rv == CKR_OK ) memcpy( &uType, binType.pVal, sizeof(long));
+
+    JS_BIN_reset( &binType );
+
+    return uType;
+}
+
 int loadPKCS11Libray( const QString strLibPath, JP11_CTX **ppCTX )
 {
     int rv = 0;
