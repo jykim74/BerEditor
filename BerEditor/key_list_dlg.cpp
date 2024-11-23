@@ -88,7 +88,11 @@ void KeyListDlg::initialize()
 void KeyListDlg::showEvent(QShowEvent *event)
 {
     mHsmCheck->setEnabled( berApplet->settingsMgr()->hsmUse() );
-    loadKeyList();
+
+    if( mHsmCheck->isChecked() )
+        loadHsmKeyList();
+    else
+        loadKeyList();
 }
 
 int KeyListDlg::getPlainKeyIV( const QString strData, QString& strKey, QString& strIV )
@@ -305,7 +309,7 @@ void KeyListDlg::loadHsmKeyList()
         QTableWidgetItem *item = new QTableWidgetItem( record.getLabel() );
         item->setIcon(QIcon(":/images/key.png" ));
 
-        QString strData = QString( "HSM:%1" ).arg( record.getID() );
+        QString strData = QString( "HSM:%1:%2" ).arg( record.getID() ).arg( record.getKeyType());
         item->setData( Qt::UserRole, strData );
 
         mKeyTable->setItem( row, 0, item );

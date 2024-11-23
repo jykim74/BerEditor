@@ -192,7 +192,10 @@ void KeyPairManDlg::initialize()
 
     mVersionCombo->addItems(kVersionList);
 
-    loadKeyPairList();
+    if( mHsmCheck->isChecked() )
+        loadHsmKeyPairList();
+    else
+        loadKeyPairList();
 }
 
 const QString KeyPairManDlg::getSelectedPath()
@@ -371,7 +374,7 @@ void KeyPairManDlg::loadHsmKeyPairList()
         QTableWidgetItem *item = new QTableWidgetItem( rec.getLabel() );
         item->setIcon(QIcon(":/images/keypair.png" ));
 
-        QString strData = QString( "HSM:%1" ).arg( rec.getID() );
+        QString strData = QString( "HSM:%1:%2" ).arg( rec.getID() ).arg( rec.getKeyType() );
         item->setData( Qt::UserRole, strData );
 
         mKeyPairTable->setItem( row, 0, item );
@@ -583,9 +586,10 @@ void KeyPairManDlg::clickLDelete()
     if( bVal == false ) return;
 
     int nDevType = -1;
+    long uKeyType = -1;
     QString strDst;
 
-    getDevicePath( strPath, nDevType, strDst );
+    getDevicePath( strPath, nDevType, strDst, uKeyType );
 
     if( nDevType == DeviceHSM )
     {
@@ -651,9 +655,10 @@ void KeyPairManDlg::clickLMakeCSR()
     QString strName = item->text();
 
     int nDevType = -1;
+    long uKeyType = -1;
     QString strDst;
 
-    getDevicePath( strPath, nDevType, strDst );
+    getDevicePath( strPath, nDevType, strDst, uKeyType );
     MakeCSRDlg makeCSR;
 
     if( nDevType == DeviceHSM )
@@ -758,9 +763,10 @@ void KeyPairManDlg::clickLViewPriKey()
     }
 
     int nDevType = -1;
+    long uKeyType = -1;
     QString strDst;
 
-    getDevicePath( strPath, nDevType, strDst );
+    getDevicePath( strPath, nDevType, strDst, uKeyType );
 
     if( nDevType == DeviceHSM )
     {
@@ -842,9 +848,10 @@ void KeyPairManDlg::clickLViewPubKey()
     }
 
     int nDevType = -1;
+    long uKeyType = -1;
     QString strDst;
 
-    getDevicePath( strPath, nDevType, strDst );
+    getDevicePath( strPath, nDevType, strDst, uKeyType );
 
     if( nDevType == DeviceHSM )
     {
@@ -920,9 +927,10 @@ void KeyPairManDlg::clickLDecodePriKey()
     }
 
     int nDevType = -1;
+    long uKeyType = -1;
     QString strDst;
 
-    getDevicePath( strPath, nDevType, strDst );
+    getDevicePath( strPath, nDevType, strDst, uKeyType );
 
     if( nDevType == DeviceHSM )
     {
@@ -978,9 +986,10 @@ void KeyPairManDlg::clickLDecodePubKey()
     }
 
     int nDevType = -1;
+    long uKeyType = -1;
     QString strDst;
 
-    getDevicePath( strPath, nDevType, strDst );
+    getDevicePath( strPath, nDevType, strDst, uKeyType );
 
     if( nDevType == DeviceHSM )
     {
@@ -1077,30 +1086,13 @@ void KeyPairManDlg::clickLRunPubEnc()
     }
 
     int nType = DeviceHDD;
+    long uKeyType = -1;
     QString strDst;
 
-    getDevicePath( strPath, nType, strDst );
-
+    getDevicePath( strPath, nType, strDst, uKeyType );
 
     if( mHsmCheck->isChecked() == true )
     {
-        BIN binID = {0,0};
-        JS_BIN_decodeHex( strDst.toStdString().c_str(), &binID );
-        JP11_CTX *pCTX = berApplet->getP11CTX();
-        int nIndex = berApplet->settingsMgr()->hsmIndex();
-
-        ret = getP11Session( pCTX, nIndex );
-        if( ret != 0 )
-        {
-            JS_BIN_reset( &binID );
-            return;
-        }
-
-        long hObj = getHandleHSM( pCTX, CKO_PUBLIC_KEY, &binID );
-        long uKeyType = getKeyTypeHSM( pCTX, hObj );
-
-        JS_BIN_reset( &binID );
-
         if( uKeyType != CKK_RSA )
         {
             berApplet->warningBox( tr( "This key does not support public key encryption" ), this );
@@ -1147,32 +1139,16 @@ void KeyPairManDlg::clickLRunPubDec()
     }
 
     int nType = DeviceHDD;
+    long uKeyType = -1;
     QString strDst;
 
-    getDevicePath( strPath, nType, strDst );
+    getDevicePath( strPath, nType, strDst, uKeyType );
 
     if( mHsmCheck->isChecked() == true )
     {
-        BIN binID = {0,0};
-        JS_BIN_decodeHex( strDst.toStdString().c_str(), &binID );
-        JP11_CTX *pCTX = berApplet->getP11CTX();
-        int nIndex = berApplet->settingsMgr()->hsmIndex();
-
-        ret = getP11SessionLogin( pCTX, nIndex );
-        if( ret != 0 )
-        {
-            JS_BIN_reset( &binID );
-            return;
-        }
-
-        long hObj = getHandleHSM( pCTX, CKO_PRIVATE_KEY, &binID );
-        long uKeyType = getKeyTypeHSM( pCTX, hObj );
-
-        JS_BIN_reset( &binID );
-
         if( uKeyType != CKK_RSA )
         {
-            berApplet->warningBox( tr( "This key does not support public key encryption" ), this );
+            berApplet->warningBox( tr( "This key does not support public key encryption [0x%1]" ).arg( uKeyType, 0, 16), this );
             return;
         }
 
@@ -1889,10 +1865,11 @@ void KeyPairManDlg::clickExport()
     }
 
     int nDevType = -1;
+    long uKeyType = -1;
     QString strDst;
     strPath = item->data(Qt::UserRole).toString();
 
-    getDevicePath( strPath, nDevType, strDst );
+    getDevicePath( strPath, nDevType, strDst, uKeyType );
 
     if( nDevType == DeviceHSM )
     {

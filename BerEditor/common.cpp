@@ -1834,7 +1834,7 @@ end :
     return ret;
 }
 
-int getDevicePath( const QString strData, int& nType, QString& strPath )
+int getDevicePath( const QString strData, int& nSaveType, QString& strPath, long& uKeyType )
 {
     if( strData.length() < 1 ) return -1;
 
@@ -1842,7 +1842,7 @@ int getDevicePath( const QString strData, int& nType, QString& strPath )
 
     if( listData.size() == 1 )
     {
-        nType = DeviceHDD;
+        nSaveType = DeviceHDD;
         strPath = listData.at(0);
     }
 
@@ -1850,15 +1850,18 @@ int getDevicePath( const QString strData, int& nType, QString& strPath )
     {
         if( listData.at(0) == "HSM" )
         {
-            nType = DeviceHSM;
+            nSaveType = DeviceHSM;
         }
         else
         {
-            nType = DeviceHDD;
+            nSaveType = DeviceHDD;
         }
 
         strPath = listData.at(1);
     }
+
+    if( listData.size() >= 3 )
+        uKeyType = listData.at(2).toLong();
 
     return 0;
 }

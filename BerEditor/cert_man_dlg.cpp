@@ -420,7 +420,12 @@ void CertManDlg::initialize()
     else
     {
         mTabWidget->setCurrentIndex(TAB_EE_IDX);
-        loadEEList();
+
+        if( mHsmCheck->isChecked() )
+            loadHsmEEList();
+        else
+            loadEEList();
+
         loadOtherList();
         setGroupHide( false );
 //        mTabWidget->setTabEnabled( 3, true );
@@ -722,7 +727,7 @@ void CertManDlg::loadHsmEEList()
         else
             item->setIcon(QIcon(":/images/cert.png" ));
 
-        QString strData = QString( "HSM:%1" ).arg( rec.getID() );
+        QString strData = QString( "HSM:%1:%2" ).arg( rec.getID() ).arg( rec.getKeyType() );
         item->setData( Qt::UserRole, strData );
 
         mEE_CertTable->setItem( row, 0, item );
@@ -1279,9 +1284,10 @@ int CertManDlg::readEncPriKeyCert( BIN *pEncPriKey, BIN *pCert )
     }
 
     int nDeviceType = -1;
+    long uKeyType = -1;
     QString strDst;
 
-    getDevicePath( strPath, nDeviceType, strDst );
+    getDevicePath( strPath, nDeviceType, strDst, uKeyType );
     if( nDeviceType == DeviceHSM ) return JSR_ERR2;
 
     strPriPath = QString("%1/%2").arg( strPath ).arg( kPriKeyFile );
@@ -1308,9 +1314,10 @@ int CertManDlg::readPriKeyCert( const QString strPass, BIN *pPriKey, BIN *pCert 
     }
 
     int nDeviceType = -1;
+    long uKeyType = -1;
     QString strDst;
 
-    getDevicePath( strPath, nDeviceType, strDst );
+    getDevicePath( strPath, nDeviceType, strDst, uKeyType );
     if( nDeviceType == DeviceHSM )
     {
         long hPri = -1;
@@ -1387,9 +1394,10 @@ int CertManDlg::readCert( BIN *pCert )
     }
 
     int nDeviceType = -1;
+    long uKeyType = -1;
     QString strDst;
 
-    getDevicePath( strPath, nDeviceType, strDst );
+    getDevicePath( strPath, nDeviceType, strDst, uKeyType );
 
     if( nDeviceType == DeviceHSM )
     {
@@ -1491,9 +1499,10 @@ void CertManDlg::clickDeleteCert()
     if( bVal == false ) return;
 
     int nDevType = -1;
+    long uKeyType = -1;
     QString strDst;
 
-    getDevicePath( strPath, nDevType, strDst );
+    getDevicePath( strPath, nDevType, strDst, uKeyType );
 
     if( nDevType == DeviceHSM )
     {
@@ -2001,9 +2010,10 @@ void CertManDlg::clickRunPubEnc()
     }
 
     int nType = DeviceHDD;
+    long uKeyType = -1;
     QString strDst;
 
-    getDevicePath( strPath, nType, strDst );
+    getDevicePath( strPath, nType, strDst, uKeyType );
 
     int nKeyType = -1;
     BIN binCert = {0,0};
@@ -2073,34 +2083,18 @@ void CertManDlg::clickRunPubDec()
     }
 
     int nType = DeviceHDD;
+    long uKeyType = -1;
     QString strDst;
     int nKeyType = -1;
     BIN binCert = {0,0};
 
-    getDevicePath( strPath, nType, strDst );
+    getDevicePath( strPath, nType, strDst, uKeyType );
 
     if( mHsmCheck->isChecked() == true )
     {
-        BIN binID = {0,0};
-        JS_BIN_decodeHex( strDst.toStdString().c_str(), &binID );
-        JP11_CTX *pCTX = berApplet->getP11CTX();
-        int nIndex = berApplet->settingsMgr()->hsmIndex();
-
-        ret = getP11SessionLogin( pCTX, nIndex );
-        if( ret != 0 )
-        {
-            JS_BIN_reset( &binID );
-            return;
-        }
-
-        long hObj = getHandleHSM( pCTX, CKO_PRIVATE_KEY, &binID );
-        long uKeyType = getKeyTypeHSM( pCTX, hObj );
-
-        JS_BIN_reset( &binID );
-
         if( uKeyType != CKK_RSA )
         {
-            berApplet->warningBox( tr( "This key does not support public key encryption" ), this );
+            berApplet->warningBox( tr( "This key does not support public key encryption [0x%1]" ).arg( uKeyType, 0, 16), this );
             return;
         }
 
