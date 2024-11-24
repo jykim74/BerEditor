@@ -192,7 +192,7 @@ void GenHashDlg::hashFinal()
     if( mHSMCheck->isChecked() == true )
     {
         unsigned char sDigest[512];
-        long uDigestLen = 0;
+        long uDigestLen = 512;
 
         ret = JS_PKCS11_DigestFinal( berApplet->getP11CTX(), (CK_BYTE_PTR)sDigest, (CK_ULONG_PTR)&uDigestLen );
         if( ret == CKR_OK ) JS_BIN_set( &binMD, sDigest, uDigestLen );
@@ -272,13 +272,20 @@ void GenHashDlg::clickDigest()
     {
         CK_MECHANISM sMech;
         CK_BYTE sDigest[512];
-        CK_ULONG uDigestLen = 0;
+        CK_ULONG uDigestLen = 512;
 
         memset( &sMech, 0x00, sizeof(sMech));
         sMech.mechanism = getP11HashMech( strHash );
-        ret = JS_PKCS11_DigestInit( berApplet->getP11CTX(), &sMech );
 
-        ret = JS_PKCS11_Digest( berApplet->getP11CTX(), (CK_BYTE_PTR)binSrc.pVal, binSrc.nLen, sDigest, &uDigestLen );
+        JP11_CTX *pCTX = berApplet->getP11CTX();
+        int nIndex = berApplet->settingsMgr()->hsmIndex();
+
+        ret = getP11Session( pCTX, nIndex );
+        if( ret != 0 ) return;
+
+        ret = JS_PKCS11_DigestInit( pCTX, &sMech );
+
+        ret = JS_PKCS11_Digest( pCTX, (CK_BYTE_PTR)binSrc.pVal, binSrc.nLen, sDigest, &uDigestLen );
         if( ret == CKR_OK )
         {
             JS_BIN_set( &binHash, sDigest, uDigestLen );
@@ -520,9 +527,17 @@ void GenHashDlg::startTask()
     connect(thread_, &HashThread::taskFinished, this, &GenHashDlg::onTaskFinished);
     connect( thread_, &HashThread::taskUpdate, this, &GenHashDlg::onTaskUpdate);
 
-    thread_->setCTX( pctx_ );
+    if( mHSMCheck->isChecked() == true )
+    {
+        thread_->setCTX( berApplet->getP11CTX() );
+        thread_->setHSM( true );
+    }
+    else
+    {
+        thread_->setCTX( pctx_ );
+    }
+
     thread_->setSrcFile( strSrcFile );
-    thread_->setHSM( mHSMCheck->isChecked() );
 
     thread_->start();
     berApplet->log("Task is running...");

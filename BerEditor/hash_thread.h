@@ -2,6 +2,7 @@
 #define HASHTHREAD_H
 
 #include <QThread>
+#include "js_pkcs11.h"
 
 class HashThread : public QThread
 {
@@ -25,6 +26,7 @@ protected:
 private:
     void *pctx_;
     bool is_hsm_;
+
     QString src_file_;
 };
 

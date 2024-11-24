@@ -76,7 +76,7 @@ void HashThread::run()
         }
 
         if( is_hsm_ == true )
-            ret = JS_PKCS11_DigestUpdate( berApplet->getP11CTX(), (CK_BYTE_PTR)&binPart.pVal, binPart.nLen );
+            ret = JS_PKCS11_DigestUpdate( (JP11_CTX *)pctx_, (CK_BYTE_PTR)&binPart.pVal, binPart.nLen );
         else
             ret = JS_PKI_hashUpdate( pctx_, &binPart );
 
