@@ -13,6 +13,8 @@
 #include "settings_mgr.h"
 #include "common.h"
 #include "hash_thread.h"
+#include "js_pkcs11.h"
+#include "p11api.h"
 
 #include <QDialogButtonBox>
 #include <QFileInfo>
@@ -75,6 +77,9 @@ void GenHashDlg::initialize()
     mOutputHashCombo->setCurrentText( setMgr->defaultHash() );
 
     mInputTab->setCurrentIndex(0);
+
+    if( berApplet->settingsMgr()->hsmUse() == false )
+        mHSMCheck->setEnabled( false );
 }
 
 void GenHashDlg::appendStatusLabel( const QString& strLabel )
@@ -87,18 +92,38 @@ void GenHashDlg::appendStatusLabel( const QString& strLabel )
 int GenHashDlg::hashInit()
 {
     int ret = 0;
-
-    if( pctx_ )
-    {
-        JS_PKI_hashFree( &pctx_ );
-        pctx_ = NULL;
-    }
-    update_cnt_ = 0;
-
     QString strAlg = mOutputHashCombo->currentText();
-    mOutputText->clear();
 
-    ret = JS_PKI_hashInit( &pctx_, strAlg.toStdString().c_str() );
+    if( mHSMCheck->isChecked() == true )
+    {
+        CK_MECHANISM sMech;
+
+        memset( &sMech, 0x00, sizeof(sMech));
+
+        JP11_CTX *pCTX = berApplet->getP11CTX();
+        int nIndex = berApplet->settingsMgr()->hsmIndex();
+
+        ret = getP11Session( pCTX, nIndex );
+        if( ret != 0 ) return ret;
+
+        sMech.mechanism = getP11HashMech( strAlg );
+
+        ret = JS_PKCS11_DigestInit( pCTX, &sMech );
+        if( ret != CKR_OK ) return ret;
+    }
+    else
+    {
+       if( pctx_ )
+       {
+           JS_PKI_hashFree( &pctx_ );
+           pctx_ = NULL;
+       }
+       update_cnt_ = 0;
+       mOutputText->clear();
+
+       ret = JS_PKI_hashInit( &pctx_, strAlg.toStdString().c_str() );
+    }
+
     if( ret == 0 )
     {
         mStatusLabel->setText( "Initialization successful" );
@@ -141,7 +166,11 @@ void GenHashDlg::hashUpdate()
         getBINFromString( &binSrc, nDataType, inputStr );
     }
 
-    ret = JS_PKI_hashUpdate( pctx_, &binSrc );
+    if( mHSMCheck->isChecked() == true )
+        JS_PKCS11_DigestUpdate( berApplet->getP11CTX(), binSrc.pVal, binSrc.nLen );
+    else
+        ret = JS_PKI_hashUpdate( pctx_, &binSrc );
+
     if( ret == 0 )
     {
         update_cnt_++;
@@ -160,7 +189,22 @@ void GenHashDlg::hashFinal()
     int ret = 0;
     BIN binMD = {0,0};
 
-    ret = JS_PKI_hashFinal( pctx_, &binMD );
+    if( mHSMCheck->isChecked() == true )
+    {
+        unsigned char sDigest[512];
+        long uDigestLen = 0;
+
+        ret = JS_PKCS11_DigestFinal( berApplet->getP11CTX(), (CK_BYTE_PTR)sDigest, (CK_ULONG_PTR)&uDigestLen );
+        if( ret == CKR_OK ) JS_BIN_set( &binMD, sDigest, uDigestLen );
+    }
+    else
+    {
+        ret = JS_PKI_hashFinal( pctx_, &binMD );
+
+        JS_PKI_hashFree( &pctx_ );
+        pctx_ = NULL;
+    }
+
     if( ret == 0 )
     {
         mOutputText->setPlainText( getHexString( &binMD) );
@@ -173,8 +217,6 @@ void GenHashDlg::hashFinal()
         appendStatusLabel( QString("|Final failed [%1]").arg(ret) );
     }
 
-    JS_PKI_hashFree( &pctx_ );
-    pctx_ = NULL;
     JS_BIN_reset( &binMD );
 
     update();
@@ -226,7 +268,27 @@ void GenHashDlg::clickDigest()
 
     QString strHash = mOutputHashCombo->currentText();
 
-    ret = JS_PKI_genHash( strHash.toStdString().c_str(), &binSrc, &binHash );
+    if( mHSMCheck->isChecked() == true )
+    {
+        CK_MECHANISM sMech;
+        CK_BYTE sDigest[512];
+        CK_ULONG uDigestLen = 0;
+
+        memset( &sMech, 0x00, sizeof(sMech));
+        sMech.mechanism = getP11HashMech( strHash );
+        ret = JS_PKCS11_DigestInit( berApplet->getP11CTX(), &sMech );
+
+        ret = JS_PKCS11_Digest( berApplet->getP11CTX(), (CK_BYTE_PTR)binSrc.pVal, binSrc.nLen, sDigest, &uDigestLen );
+        if( ret == CKR_OK )
+        {
+            JS_BIN_set( &binHash, sDigest, uDigestLen );
+        }
+    }
+    else
+    {
+        ret = JS_PKI_genHash( strHash.toStdString().c_str(), &binSrc, &binHash );
+    }
+
     if( ret == 0 )
     {
         char *pHex = NULL;
@@ -383,7 +445,11 @@ void GenHashDlg::clickDigestSrcFile()
             goto end;
         }
 
-        ret = JS_PKI_hashUpdate( pctx_, &binPart );
+        if( mHSMCheck->isChecked() == true )
+            ret = JS_PKCS11_DigestUpdate( berApplet->getP11CTX(), binPart.pVal, binPart.nLen );
+        else
+            ret = JS_PKI_hashUpdate( pctx_, &binPart );
+
         if( ret != 0 )
         {
             berApplet->elog( QString( "failed to update : %1").arg(ret));
@@ -456,6 +522,7 @@ void GenHashDlg::startTask()
 
     thread_->setCTX( pctx_ );
     thread_->setSrcFile( strSrcFile );
+    thread_->setHSM( mHSMCheck->isChecked() );
 
     thread_->start();
     berApplet->log("Task is running...");

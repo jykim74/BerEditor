@@ -29,6 +29,24 @@ long getP11KeyType( const QString strAlg )
     return -1;
 }
 
+long getP11HashMech( const QString strAlg )
+{
+    if( strAlg == "SHA1" )
+        return CKM_SHA_1;
+    else if( strAlg == "SHA224" )
+        return CKM_SHA224;
+    else if( strAlg == "SHA256" )
+        return CKM_SHA256;
+    else if( strAlg == "SHA384" )
+        return CKM_SHA384;
+    else if( strAlg == "SHA512" )
+        return CKM_SHA512;
+    else if( strAlg == "MD5" )
+        return CKM_MD5;
+
+    return -1;
+}
+
 const QString getP11KeyTypeName( long uKeyType )
 {
     if( uKeyType == CKK_AES )

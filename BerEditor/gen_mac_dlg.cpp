@@ -160,7 +160,7 @@ int GenMacDlg::macInit()
         if( keyList.exec() == QDialog::Accepted )
         {
             QString strData = keyList.getData();
-            QStringList keyIV = strData.split(":");
+            QStringList keyIV = strData.split("#");
 
             if( keyIV.size() > 0 )
             {
@@ -425,7 +425,7 @@ void GenMacDlg::clickMAC()
         if( keyList.exec() == QDialog::Accepted )
         {
             QString strData = keyList.getData();
-            QStringList keyIV = strData.split(":");
+            QStringList keyIV = strData.split("#");
 
             if( keyIV.size() > 0 )
             {

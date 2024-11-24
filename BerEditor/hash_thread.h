@@ -12,6 +12,7 @@ public:
     ~HashThread();
 
     void setCTX( void *pCTX );
+    void setHSM( bool bVal );
     void setSrcFile( const QString strSrcFile );
 
 signals:
@@ -23,6 +24,7 @@ protected:
 
 private:
     void *pctx_;
+    bool is_hsm_;
     QString src_file_;
 };
 

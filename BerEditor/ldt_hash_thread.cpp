@@ -1,9 +1,13 @@
 #include "ldt_hash_thread.h"
 #include "common.h"
+#include "js_pkcs11.h"
+#include "p11api.h"
+#include "ber_applet.h"
 
 LDTHashThread::LDTHashThread()
 {
     is_stop_ = false;
+    is_hsm_ = false;
 
     content_.clear();
     hash_.clear();
@@ -18,6 +22,11 @@ LDTHashThread::~LDTHashThread()
 void LDTHashThread::setStop( bool bStop )
 {
     is_stop_ = bStop;
+}
+
+void LDTHashThread::setHSM( bool bHSM )
+{
+    is_hsm_ = bHSM;
 }
 
 void LDTHashThread::setContent( const QString strContent )

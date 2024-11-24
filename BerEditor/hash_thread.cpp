@@ -4,6 +4,9 @@
 #include "mainwindow.h"
 #include "js_pki.h"
 #include "common.h"
+#include "js_pkcs11.h"
+#include "p11api.h"
+
 
 #include <QFileInfo>
 #include <QTextCursor>
@@ -21,6 +24,11 @@ HashThread::~HashThread()
 void HashThread::setCTX( void *pCTX )
 {
     pctx_ = pCTX;
+}
+
+void HashThread::setHSM( bool bVal )
+{
+    is_hsm_ = bVal;
 }
 
 void HashThread::setSrcFile( const QString strSrcFile )
@@ -67,7 +75,11 @@ void HashThread::run()
             goto end;
         }
 
-        ret = JS_PKI_hashUpdate( pctx_, &binPart );
+        if( is_hsm_ == true )
+            ret = JS_PKCS11_DigestUpdate( berApplet->getP11CTX(), (CK_BYTE_PTR)&binPart.pVal, binPart.nLen );
+        else
+            ret = JS_PKI_hashUpdate( pctx_, &binPart );
+
         if( ret != 0 )
         {
             berApplet->elog( QString( "failed to update : %1").arg(ret));

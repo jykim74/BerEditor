@@ -14,6 +14,7 @@ public:
     ~LDTHashThread();
 
     void setStop( bool bStop );
+    void setHSM( bool bHSM );
     void setContent( const QString strContent );
     void setHash( const QString strHash );
     void setFullLengthBits( qint64 nLengthBits );
@@ -30,6 +31,7 @@ protected:
 
 private:
     bool is_stop_;
+    bool is_hsm_;
     QString content_;
     QString hash_;
     qint64 full_length_bits_;

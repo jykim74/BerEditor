@@ -6,14 +6,48 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>518</width>
-    <height>429</height>
+    <width>524</width>
+    <height>575</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Generate hash value</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QGridLayout" name="gridLayout_6">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="2">
+      <widget class="QCheckBox" name="mHSMCheck">
+       <property name="text">
+        <string>HSM</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_12">
+       <property name="text">
+        <string>Generate Digest</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
    <item>
     <widget class="QTabWidget" name="mInputTab">
      <property name="currentIndex">
