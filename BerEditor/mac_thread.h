@@ -10,7 +10,7 @@ public:
     MacThread();
     ~MacThread();
 
-    void setCTX( void *pCTX );
+    void setCTX( bool bHSM, void *pCTX );
     void setSrcFile( const QString strSrcFile );
     int setType( int nType );
 
@@ -25,6 +25,7 @@ private:
     void *hctx_;
     int type_;
     QString src_file_;
+    bool is_hsm_;
 };
 
 #endif // MACTHREAD_H

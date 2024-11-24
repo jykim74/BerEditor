@@ -62,6 +62,8 @@ private:
     void initialize();
     void appendStatusLabel( const QString& strLabel );
     bool isCCM( const QString strAlg );
+    long getEncMech();
+
     void *ctx_;
     int update_cnt_;
     EncDecThread *thread_;

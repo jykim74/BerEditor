@@ -11,6 +11,7 @@
 MacThread::MacThread()
 {
     hctx_ = NULL;
+    is_hsm_ = false;
 }
 
 MacThread::~MacThread()
@@ -18,9 +19,10 @@ MacThread::~MacThread()
     hctx_ = NULL;
 }
 
-void MacThread::setCTX( void *pCTX )
+void MacThread::setCTX( bool bHSM, void *pCTX )
 {
     hctx_ = pCTX;
+    is_hsm_ = bHSM;
 }
 
 void MacThread::setSrcFile( const QString strSrcFile )
@@ -71,17 +73,24 @@ void MacThread::run()
             goto end;
         }
 
-        if( type_ == JS_TYPE_CMAC )
+        if( is_hsm_ == true )
         {
-            ret = JS_PKI_cmacUpdate( hctx_, &binPart );
+            ret = JS_PKCS11_SignUpdate( (JP11_CTX *)hctx_, binPart.pVal, binPart.nLen );
         }
-        else if( type_ == JS_TYPE_HMAC )
+        else
         {
-            ret = JS_PKI_hmacUpdate( hctx_, &binPart );
-        }
-        else if( type_ == JS_TYPE_GMAC )
-        {
-            ret = JS_PKI_encryptGCMUpdateAAD( hctx_, &binPart );
+            if( type_ == JS_TYPE_CMAC )
+            {
+                ret = JS_PKI_cmacUpdate( hctx_, &binPart );
+            }
+            else if( type_ == JS_TYPE_HMAC )
+            {
+                ret = JS_PKI_hmacUpdate( hctx_, &binPart );
+            }
+            else if( type_ == JS_TYPE_GMAC )
+            {
+                ret = JS_PKI_encryptGCMUpdateAAD( hctx_, &binPart );
+            }
         }
 
         if( ret != 0 )

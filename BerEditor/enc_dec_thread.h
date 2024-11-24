@@ -11,7 +11,7 @@ public:
     EncDecThread();
     ~EncDecThread();
 
-    void setCTX( void *pCTX );
+    void setCTX( bool bHSM, void *pCTX );
     void setAE( bool bAE );
     void setMethod( bool bDec );
     void setMode( const QString strMode );
@@ -33,6 +33,7 @@ private:
     QString mode_;
     QString src_file_;
     QString dst_file_;
+    bool is_hsm_;
 };
 
 #endif // ENCDECTHREAD_H

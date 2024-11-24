@@ -6,6 +6,7 @@
 #include "js_pki.h"
 #include "common.h"
 #include "gen_mac_dlg.h"
+#include "js_pkcs11.h"
 
 #include <QFileInfo>
 
@@ -19,6 +20,7 @@ static bool isCCM( const QString strMode )
 
 EncDecThread::EncDecThread()
 {
+    is_hsm_ = false;
     ctx_ = NULL;
     is_ae_ = false;
     is_dec_ = false;
@@ -35,8 +37,9 @@ EncDecThread::~EncDecThread()
     dst_file_.clear();
 }
 
-void EncDecThread::setCTX( void *pCTX )
+void EncDecThread::setCTX( bool bHSM, void *pCTX )
 {
+    is_hsm_ = bHSM;
     ctx_ = pCTX;
 }
 
@@ -103,31 +106,45 @@ void EncDecThread::run()
             goto end;
         }
 
-        if( is_ae_ )
+        if( is_hsm_ == true )
         {
-            if( is_dec_ == false )
+            CK_BYTE *pOut = NULL;
+            CK_ULONG uOutLen = 0;
+            pOut = (CK_BYTE *)JS_malloc( nPartSize + 32 );
+            uOutLen = nPartSize + 32;
+            ret = JS_PKCS11_EncryptUpdate( berApplet->getP11CTX(), binPart.pVal, binPart.nLen, pOut, &uOutLen );
+            if( ret == CKR_OK ) JS_BIN_set( &binDst, pOut, uOutLen );
+            if( pOut )
             {
-                if( isCCM( mode_) )
-                    ret = JS_PKI_encryptCCMUpdate( ctx_, &binPart, &binDst );
-                else
-                    ret = JS_PKI_encryptGCMUpdate( ctx_, &binPart, &binDst );
-            }
-            else
-            {
-                if( isCCM(mode_))
-                    ret = JS_PKI_decryptCCMUpdate( ctx_, &binPart, &binDst );
-                else
-                    ret = JS_PKI_decryptGCMUpdate( ctx_, &binPart, &binDst );
+                JS_free( pOut );
+                pOut = NULL;
             }
         }
-        else {
-            if( is_dec_ == false )
+        else
+        {
+            if( is_ae_ )
             {
-                ret = JS_PKI_encryptUpdate( ctx_, &binPart, &binDst );
+                if( is_dec_ == false )
+                {
+                    if( isCCM( mode_) )
+                        ret = JS_PKI_encryptCCMUpdate( ctx_, &binPart, &binDst );
+                    else
+                        ret = JS_PKI_encryptGCMUpdate( ctx_, &binPart, &binDst );
+                }
+                else
+                {
+                    if( isCCM(mode_))
+                        ret = JS_PKI_decryptCCMUpdate( ctx_, &binPart, &binDst );
+                    else
+                        ret = JS_PKI_decryptGCMUpdate( ctx_, &binPart, &binDst );
+                }
             }
             else
             {
-                ret = JS_PKI_decryptUpdate( ctx_, &binPart, &binDst );
+                if( is_dec_ == false )
+                    ret = JS_PKI_encryptUpdate( ctx_, &binPart, &binDst );
+                else
+                    ret = JS_PKI_decryptUpdate( ctx_, &binPart, &binDst );
             }
         }
 

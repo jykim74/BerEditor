@@ -18,6 +18,8 @@
 #include "common.h"
 #include "enc_dec_thread.h"
 #include "key_list_dlg.h"
+#include "js_pkcs11.h"
+#include "p11api.h"
 
 static QStringList dataTypes = {
     "String",
@@ -646,6 +648,29 @@ int EncDecDlg::encDecInit()
 
     if( strKey.isEmpty() )
     {
+        KeyListDlg keyList;
+        keyList.setTitle( tr( "Select symmetric key" ));
+
+        if( keyList.exec() == QDialog::Accepted )
+        {
+            QString strData = keyList.getData();
+            QStringList keyIV = strData.split(":");
+
+            if( keyIV.size() > 0 )
+            {
+                mKeyTypeCombo->setCurrentText( "Hex" );
+                strKey = keyIV.at(0);
+                mKeyText->setText( strKey );
+            }
+
+            if( keyIV.size() > 1 )
+            {
+                mIVTypeCombo->setCurrentText( "Hex" );
+                strIV = keyIV.at(1);
+                mIVText->setText( strIV );
+            }
+        }
+
         berApplet->warningBox( tr( "Please enter a key value" ), this );
         mKeyText->setFocus();
         return -1;
@@ -1120,6 +1145,74 @@ bool EncDecDlg::isCCM( const QString strMode )
     return false;
 }
 
+long EncDecDlg::getEncMech()
+{
+    QString strAlg = mAlgCombo->currentText();
+    QString strMode = mModeCombo->currentText();
+    bool bPad = mPadCheck->isChecked();
+
+    if( strAlg == "AES" )
+    {
+        if( strMode == "ECB" )
+            return CKM_AES_ECB;
+        else if( strAlg == "CBC" )
+        {
+            if( bPad == true )
+                return CKM_AES_CBC_PAD;
+            else {
+                return CKM_AES_CBC;
+            }
+        }
+        else if( strAlg == "CTR" )
+            return CKM_AES_CTR;
+        else if( strAlg == "CFB" )
+            return CKM_AES_CFB128;
+        else if( strAlg == "OFB" )
+            return CKM_AES_OFB;
+    }
+    else if( strAlg == "ARIA" )
+    {
+        if( strMode == "ECB" )
+            return CKM_ARIA_ECB;
+        else if( strAlg == "CBC" )
+        {
+            if( bPad == true )
+                return CKM_ARIA_CBC_PAD;
+            else {
+                return CKM_ARIA_CBC;
+            }
+        }
+    }
+    else if( strAlg == "SEED" )
+    {
+        if( strMode == "ECB" )
+            return CKM_SEED_ECB;
+        else if( strAlg == "CBC" )
+        {
+            if( bPad == true )
+                return CKM_SEED_CBC_PAD;
+            else {
+                return CKM_SEED_CBC;
+            }
+        }
+    }
+    else if( strAlg == "DES3" )
+    {
+        if( strMode == "ECB" )
+            return CKM_DES3_ECB;
+        else if( strAlg == "CBC" )
+        {
+            if( bPad == true )
+                return CKM_DES3_CBC_PAD;
+            else {
+                return CKM_DES3_CBC;
+            }
+        }
+    }
+
+    return -1;
+}
+
 void EncDecDlg::inputChanged()
 {
     int nType = DATA_STRING;
@@ -1323,7 +1416,7 @@ void EncDecDlg::startTask()
     connect( thread_, &EncDecThread::taskFinished, this, &EncDecDlg::onTaskFinished);
     connect( thread_, &EncDecThread::taskUpdate, this, &EncDecDlg::onTaskUpdate);
 
-    thread_->setCTX( ctx_ );
+    thread_->setCTX( false, ctx_ );
 
     thread_->setMethod( mEncryptRadio->isChecked() ? false : true );
     thread_->setMode( mModeCombo->currentText() );

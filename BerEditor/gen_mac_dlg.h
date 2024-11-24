@@ -57,14 +57,18 @@ private slots:
         void onTaskUpdate( int nUpdate );
 private:
         void freeCTX();
+        long getP11Mech();
 
         void initialize();
+        int hsmMACInit( const QString strKey, const QString strIV );
+
         void appendStatusLabel( const QString strLabel );
         void *hctx_;
         int type_;
         int update_cnt_;
         QButtonGroup* group_;
         MacThread *thread_;
+        bool is_hsm_;
 };
 
 #endif // GEN_MAC_DLG_H

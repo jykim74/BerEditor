@@ -18,6 +18,8 @@
 #include "mac_thread.h"
 #include "js_error.h"
 #include "key_list_dlg.h"
+#include "save_device_dlg.h"
+#include "p11api.h"
 
 
 static QStringList cryptList = {
@@ -46,6 +48,7 @@ GenMacDlg::GenMacDlg(QWidget *parent) :
     group_ = new QButtonGroup;
     thread_ = NULL;
     update_cnt_ = 0;
+    is_hsm_ = false;
 
     setupUi(this);
 
@@ -134,6 +137,45 @@ void GenMacDlg::freeCTX()
     type_ = 0;
 }
 
+long GenMacDlg::getP11Mech()
+{
+    QString strAlg = mAlgTypeCombo->currentText();
+
+    if( mHMACRadio->isChecked() == true );
+    {
+        if( strAlg == "SHA1" )
+            return CKM_SHA_1_HMAC;
+        else if( strAlg == "SHA224" )
+            return CKM_SHA224_HMAC;
+        else if( strAlg == "SHA256" )
+            return CKM_SHA256_HMAC;
+        else if( strAlg == "SHA384" )
+            return CKM_SHA384_HMAC;
+        else if( strAlg == "SHA512" )
+            return CKM_SHA512_HMAC;
+        else if( strAlg == "MD5" )
+            return CKM_MD5_HMAC;
+    }
+
+    if( mCMACRadio->isChecked() == true )
+    {
+        if( strAlg == "AES" )
+            return CKM_AES_CMAC;
+        else if( strAlg == "ARIA" )
+            return CKM_ARIA_MAC;
+        else if( strAlg == "3DES" )
+            return CKM_DES3_CMAC;
+    }
+
+    if( mGMACRadio->isChecked() == true )
+    {
+        if( strAlg == "AES" )
+            return CKM_AES_GMAC;
+    }
+
+    return -1;
+}
+
 int GenMacDlg::macInit()
 {
     int ret = 0;
@@ -185,65 +227,71 @@ int GenMacDlg::macInit()
         }
     }
 
-    getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
-    if( binKey.nLen <= 0 )
+    QString strAlg = mAlgTypeCombo->currentText();
+
+    if( strKey.contains( "HSM:" ) == true )
     {
-        berApplet->warningBox( tr( "There is an invalid character"), this );
-        mKeyText->setFocus();
-        return JSR_ERR2;
+        ret = hsmMACInit( strKey, strIV );
+    }
+    else
+    {
+        getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
+        if( binKey.nLen <= 0 )
+        {
+            berApplet->warningBox( tr( "There is an invalid character"), this );
+            mKeyText->setFocus();
+            return JSR_ERR2;
+        }
+
+        mOutputText->clear();
+
+        if( mCMACRadio->isChecked() )
+        {
+            QString strSymAlg = getSymAlg( strAlg, "CBC", binKey.nLen );
+
+            ret = JS_PKI_cmacInit( &hctx_, strSymAlg.toStdString().c_str(), &binKey );
+            if( ret == 0 ) type_ = JS_TYPE_CMAC;
+        }
+        else if( mHMACRadio->isChecked() )
+        {
+            ret = JS_PKI_hmacInit( &hctx_, strAlg.toStdString().c_str(), &binKey );
+            if( ret == 0 ) type_ = JS_TYPE_HMAC;
+        }
+        else if( mGMACRadio->isChecked() )
+        {
+            BIN binIV = {0,0};
+            QString strSymAlg = getSymAlg( strAlg, "gcm", binKey.nLen );
+            QString strIV = mIVText->text();
+
+            getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
+
+            if( strIV.length() < 1 )
+            {
+                berApplet->warningBox( tr("Enter a IV value"), this );
+                mIVText->setFocus();
+                ret = JSR_ERR;
+                goto end;
+            }
+
+            ret = JS_PKI_encryptGCMInit( &hctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, NULL );
+            if( ret == 0 ) type_ = JS_TYPE_GMAC;
+        }
     }
 
+    berApplet->log( QString( "Algorithm : %1" ).arg( strAlg ));
+    berApplet->log( QString( "Key       : %1" ).arg( getHexString( &binKey )));
 
-   QString strAlg = mAlgTypeCombo->currentText();
-   mOutputText->clear();
-
-   if( mCMACRadio->isChecked() )
-   {
-        QString strSymAlg = getSymAlg( strAlg, "CBC", binKey.nLen );
-
-        ret = JS_PKI_cmacInit( &hctx_, strSymAlg.toStdString().c_str(), &binKey );
-        if( ret == 0 ) type_ = JS_TYPE_CMAC;
-   }
-   else if( mHMACRadio->isChecked() )
-   {
-        ret = JS_PKI_hmacInit( &hctx_, strAlg.toStdString().c_str(), &binKey );
-        if( ret == 0 ) type_ = JS_TYPE_HMAC;
-   }
-   else if( mGMACRadio->isChecked() )
-   {
-       BIN binIV = {0,0};
-       QString strSymAlg = getSymAlg( strAlg, "gcm", binKey.nLen );
-       QString strIV = mIVText->text();
-
-       getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
-
-       if( strIV.length() < 1 )
-       {
-            berApplet->warningBox( tr("Enter a IV value"), this );
-            mIVText->setFocus();
-            ret = JSR_ERR;
-            goto end;
-       }
-
-
-       ret = JS_PKI_encryptGCMInit( &hctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, NULL );
-       if( ret == 0 ) type_ = JS_TYPE_GMAC;
-   }
-
-   berApplet->log( QString( "Algorithm : %1" ).arg( strAlg ));
-   berApplet->log( QString( "Key       : %1" ).arg( getHexString( &binKey )));
-
-   if( ret == 0 )
-   {
-       mStatusLabel->setText( "Initialization successful" );
-   }
-   else
-       mStatusLabel->setText( QString("Initialization failed [%1]").arg( ret ) );
+    if( ret == 0 )
+    {
+        mStatusLabel->setText( "Initialization successful" );
+    }
+    else
+        mStatusLabel->setText( QString("Initialization failed [%1]").arg( ret ) );
 
 end :
-   JS_BIN_reset( &binKey );
-   update();
-   return ret;
+    JS_BIN_reset( &binKey );
+    update();
+    return ret;
 }
 
 void GenMacDlg::macUpdate()
@@ -270,35 +318,42 @@ void GenMacDlg::macUpdate()
         getBINFromString( &binSrc, nDataType, strInput );
     }
 
-    if( mCMACRadio->isChecked() )
+    if( is_hsm_ == true )
     {
-        if( type_ != JS_TYPE_CMAC )
-        {
-            berApplet->elog( "Invalid type" );
-            return;
-        }
-
-        ret = JS_PKI_cmacUpdate( hctx_, &binSrc );
+        ret = JS_PKCS11_SignUpdate( berApplet->getP11CTX(), binSrc.pVal, binSrc.nLen );
     }
-    else if( mHMACRadio->isChecked() )
+    else
     {
-        if( type_ != JS_TYPE_HMAC )
+        if( mCMACRadio->isChecked() )
         {
-            berApplet->elog( "Invalid type" );
-            return;
-        }
+            if( type_ != JS_TYPE_CMAC )
+            {
+                berApplet->elog( "Invalid type" );
+                return;
+            }
 
-        ret = JS_PKI_hmacUpdate( hctx_, &binSrc );
-    }
-    else if( mGMACRadio->isChecked() )
-    {
-        if( type_ != JS_TYPE_GMAC )
+            ret = JS_PKI_cmacUpdate( hctx_, &binSrc );
+        }
+        else if( mHMACRadio->isChecked() )
         {
-            berApplet->elog( "Invalid type" );
-            return;
-        }
+            if( type_ != JS_TYPE_HMAC )
+            {
+                berApplet->elog( "Invalid type" );
+                return;
+            }
 
-        ret = JS_PKI_encryptGCMUpdateAAD( hctx_, &binSrc );
+            ret = JS_PKI_hmacUpdate( hctx_, &binSrc );
+        }
+        else if( mGMACRadio->isChecked() )
+        {
+            if( type_ != JS_TYPE_GMAC )
+            {
+                berApplet->elog( "Invalid type" );
+                return;
+            }
+
+            ret = JS_PKI_encryptGCMUpdateAAD( hctx_, &binSrc );
+        }
     }
 
     berApplet->log( QString( "Update input : %1" ).arg( getHexString(&binSrc)));
@@ -319,37 +374,48 @@ void GenMacDlg::macFinal()
     int ret = 0;
     BIN binMAC = {0,0};
 
-    if( mCMACRadio->isChecked() )
+    if( is_hsm_ == true )
     {
-        if( type_ != JS_TYPE_CMAC )
-        {
-            berApplet->elog( "Invalid type" );
-            return;
-        }
+        CK_BYTE sSign[512];
+        CK_ULONG uSignLen = 512;
 
-        ret = JS_PKI_cmacFinal( hctx_, &binMAC );
+        ret = JS_PKCS11_SignFinal( berApplet->getP11CTX(), sSign, &uSignLen );
+        if( ret == CKR_OK ) JS_BIN_set( &binMAC, sSign, uSignLen );
     }
-    else if( mHMACRadio->isChecked() )
+    else
     {
-        if( type_ != JS_TYPE_HMAC )
+        if( mCMACRadio->isChecked() )
         {
-            berApplet->elog( "Invalid type" );
-            return;
-        }
+            if( type_ != JS_TYPE_CMAC )
+            {
+                berApplet->elog( "Invalid type" );
+                return;
+            }
 
-        ret = JS_PKI_hmacFinal( hctx_, &binMAC );
-    }
-    else if( mGMACRadio->isChecked() )
-    {
-        BIN binEnc = {0,0};
-        if( type_ != JS_TYPE_GMAC )
+            ret = JS_PKI_cmacFinal( hctx_, &binMAC );
+        }
+        else if( mHMACRadio->isChecked() )
         {
-            berApplet->elog( "Invalid type" );
-            return;
-        }
+            if( type_ != JS_TYPE_HMAC )
+            {
+                berApplet->elog( "Invalid type" );
+                return;
+            }
 
-        ret = JS_PKI_encryptGCMFinal( hctx_, &binEnc, 16, &binMAC );
-        JS_BIN_reset( &binEnc );
+            ret = JS_PKI_hmacFinal( hctx_, &binMAC );
+        }
+        else if( mGMACRadio->isChecked() )
+        {
+            BIN binEnc = {0,0};
+            if( type_ != JS_TYPE_GMAC )
+            {
+                berApplet->elog( "Invalid type" );
+                return;
+            }
+
+            ret = JS_PKI_encryptGCMFinal( hctx_, &binEnc, 16, &binMAC );
+            JS_BIN_reset( &binEnc );
+        }
     }
 
     if( ret == 0 )
@@ -382,6 +448,49 @@ void GenMacDlg::mac()
         else
             clickMACSrcFile();
     }
+}
+
+int GenMacDlg::hsmMACInit( const QString strKey, const QString strIV )
+{
+    int ret = 0;
+    BIN binID = {0,0};
+    BIN binIV = {0,0};
+    JP11_CTX *pCTX = berApplet->getP11CTX();
+    int nIndex = berApplet->settingsMgr()->hsmIndex();
+
+    int nSaveType = -1;
+    long uKeyType = -1;
+    QString strID;
+
+    long hObj = -1;
+    CK_MECHANISM sMech;
+
+    memset( &sMech, 0x00, sizeof(sMech));
+
+    getDevicePath( strKey, nSaveType, strID, uKeyType );
+
+    ret = getP11SessionLogin( pCTX, nIndex );
+    if( ret != 0 ) goto end;
+
+    JS_BIN_decodeHex( strID.toStdString().c_str(), &binID );
+    JS_BIN_decodeHex( strIV.toStdString().c_str(), &binIV );
+
+    hObj = getHandleHSM( pCTX, CKO_SECRET_KEY, &binID );
+
+    sMech.mechanism = getP11Mech();
+    if( binIV.nLen > 0 )
+    {
+        sMech.pParameter = binIV.pVal;
+        sMech.ulParameterLen = binIV.nLen;
+    }
+
+    ret = JS_PKCS11_SignInit( pCTX, &sMech, hObj );
+
+end :
+    JS_BIN_reset( &binID );
+    JS_BIN_reset( &binIV );
+
+    return ret;
 }
 
 void GenMacDlg::clickMAC()
@@ -451,69 +560,70 @@ void GenMacDlg::clickMAC()
         }
     }
 
-    if( mKeyTypeCombo->currentIndex() == 0 )
-        JS_BIN_set( &binKey, (unsigned char *)strKey.toStdString().c_str(), strKey.length() );
-    else if( mKeyTypeCombo->currentIndex() == 1 )
-        JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey );
-    else if( mKeyTypeCombo->currentIndex() == 2 )
-        JS_BIN_decodeBase64( strKey.toStdString().c_str(), &binKey );
+    QString strAlg = mAlgTypeCombo->currentText();
 
+    if( strKey.contains( "HSM:" ) == true )
+    {
+        ret = hsmMACInit( strKey, strIV );
+    }
+    else
+    {
+        getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
 
-   QString strAlg = mAlgTypeCombo->currentText();
+        if( mCMACRadio->isChecked() )
+        {
+            QString strSymAlg = getSymAlg( strAlg, "CBC", binKey.nLen );
+            ret = JS_PKI_genCMAC( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binMAC );
+        }
+        else if( mHMACRadio->isChecked() )
+        {
+            ret = JS_PKI_genHMAC( strAlg.toStdString().c_str(), &binSrc, &binKey, &binMAC );
+        }
+        else if( mGMACRadio->isChecked() )
+        {
+            QString strIV = mIVText->text();
+            getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
+            if( strIV.length() < 1 )
+            {
+                 berApplet->warningBox( tr("Enter a IV value"), this );
+                 mIVText->setFocus();
+                 ret = JSR_ERR;
+                 goto end;
+            }
 
-   if( mCMACRadio->isChecked() )
-   {
-       QString strSymAlg = getSymAlg( strAlg, "CBC", binKey.nLen );
-       ret = JS_PKI_genCMAC( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binMAC );
-   }
-   else if( mHMACRadio->isChecked() )
-   {
-       ret = JS_PKI_genHMAC( strAlg.toStdString().c_str(), &binSrc, &binKey, &binMAC );
-   }
-   else if( mGMACRadio->isChecked() )
-   {
-       QString strIV = mIVText->text();
-       getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
-       if( strIV.length() < 1 )
-       {
-            berApplet->warningBox( tr("Enter a IV value"), this );
-            mIVText->setFocus();
-            ret = JSR_ERR;
-            goto end;
-       }
+            ret = JS_PKI_genGMAC( strAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binMAC );
+        }
+    }
 
-       ret = JS_PKI_genGMAC( strAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binMAC );
-   }
+    if( ret == 0 )
+    {
+        char *pHex = NULL;
+        JS_BIN_encodeHex( &binMAC, &pHex );
+        mOutputText->setPlainText( pHex );
+        mStatusLabel->setText( "MAC success" );
+        if( pHex ) JS_free(pHex);
 
-   if( ret == 0 )
-   {
-       char *pHex = NULL;
-       JS_BIN_encodeHex( &binMAC, &pHex );
-       mOutputText->setPlainText( pHex );
-       mStatusLabel->setText( "MAC success" );
-       if( pHex ) JS_free(pHex);
-
-       berApplet->logLine();
-       berApplet->log( "-- MAC" );
-       berApplet->logLine();
-       berApplet->log( QString( "Algorithm : %1" ).arg( strAlg ));
-       berApplet->log( QString( "Input : %1" ).arg(getHexString(&binSrc)));
-       berApplet->log( QString( "Key   : %1" ).arg( getHexString(&binKey)));
-       berApplet->log( QString( "MAC   : %1" ).arg( getHexString(&binMAC)));
-       berApplet->logLine();
-   }
-   else
-   {
-       mStatusLabel->setText( QString("MAC failure [%1]").arg(ret) );
-   }
+        berApplet->logLine();
+        berApplet->log( "-- MAC" );
+        berApplet->logLine();
+        berApplet->log( QString( "Algorithm : %1" ).arg( strAlg ));
+        berApplet->log( QString( "Input : %1" ).arg(getHexString(&binSrc)));
+        berApplet->log( QString( "Key   : %1" ).arg( getHexString(&binKey)));
+        berApplet->log( QString( "MAC   : %1" ).arg( getHexString(&binMAC)));
+        berApplet->logLine();
+    }
+    else
+    {
+        mStatusLabel->setText( QString("MAC failure [%1]").arg(ret) );
+    }
 
 end :
-   JS_BIN_reset(&binSrc);
-   JS_BIN_reset(&binKey);
-   JS_BIN_reset(&binMAC);
-   JS_BIN_reset(&binIV);
+    JS_BIN_reset(&binSrc);
+    JS_BIN_reset(&binKey);
+    JS_BIN_reset(&binMAC);
+    JS_BIN_reset(&binIV);
 
-   update();
+    update();
 }
 
 void GenMacDlg::clickFindSrcFile()
@@ -603,17 +713,24 @@ void GenMacDlg::clickMACSrcFile()
             goto end;
         }
 
-        if( mCMACRadio->isChecked() )
+        if( is_hsm_ == true )
         {
-            ret = JS_PKI_cmacUpdate( hctx_, &binPart );
+            ret = JS_PKCS11_SignUpdate( berApplet->getP11CTX(), binPart.pVal, binPart.nLen );
         }
-        else if( mHMACRadio->isChecked() )
+        else
         {
-            ret = JS_PKI_hmacUpdate( hctx_, &binPart );
-        }
-        else if( mGMACRadio->isChecked() )
-        {
-            ret = JS_PKI_encryptGCMUpdateAAD( hctx_, &binPart );
+            if( mCMACRadio->isChecked() )
+            {
+                ret = JS_PKI_cmacUpdate( hctx_, &binPart );
+            }
+            else if( mHMACRadio->isChecked() )
+            {
+                ret = JS_PKI_hmacUpdate( hctx_, &binPart );
+            }
+            else if( mGMACRadio->isChecked() )
+            {
+                ret = JS_PKI_encryptGCMUpdateAAD( hctx_, &binPart );
+            }
         }
 
         if( ret != 0 )
@@ -799,7 +916,7 @@ void GenMacDlg::startTask()
     connect( thread_, &MacThread::taskUpdate, this, &GenMacDlg::onTaskUpdate);
 
     thread_->setType( type_ );
-    thread_->setCTX( hctx_ );
+    thread_->setCTX( is_hsm_, hctx_ );
     thread_->setSrcFile( strSrcFile );
     thread_->start();
 
