@@ -21,15 +21,13 @@ HashThread::~HashThread()
     pctx_ = NULL;
 }
 
-void HashThread::setCTX( void *pCTX )
+void HashThread::setCTX( bool bHSM, void *pCTX )
 {
+    is_hsm_ = bHSM;
+
     pctx_ = pCTX;
 }
 
-void HashThread::setHSM( bool bVal )
-{
-    is_hsm_ = bVal;
-}
 
 void HashThread::setSrcFile( const QString strSrcFile )
 {
@@ -76,7 +74,9 @@ void HashThread::run()
         }
 
         if( is_hsm_ == true )
-            ret = JS_PKCS11_DigestUpdate( (JP11_CTX *)pctx_, (CK_BYTE_PTR)&binPart.pVal, binPart.nLen );
+        {
+            ret = JS_PKCS11_DigestUpdate( (JP11_CTX *)pctx_, (CK_BYTE_PTR)binPart.pVal, binPart.nLen );
+        }
         else
             ret = JS_PKI_hashUpdate( pctx_, &binPart );
 

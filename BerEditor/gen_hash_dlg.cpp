@@ -529,12 +529,11 @@ void GenHashDlg::startTask()
 
     if( mHSMCheck->isChecked() == true )
     {
-        thread_->setCTX( berApplet->getP11CTX() );
-        thread_->setHSM( true );
+        thread_->setCTX( true, berApplet->getP11CTX() );
     }
     else
     {
-        thread_->setCTX( pctx_ );
+        thread_->setCTX( false, pctx_ );
     }
 
     thread_->setSrcFile( strSrcFile );

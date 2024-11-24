@@ -12,8 +12,7 @@ public:
     HashThread();
     ~HashThread();
 
-    void setCTX( void *pCTX );
-    void setHSM( bool bVal );
+    void setCTX( bool bHSM, void *pCTX );
     void setSrcFile( const QString strSrcFile );
 
 signals:
