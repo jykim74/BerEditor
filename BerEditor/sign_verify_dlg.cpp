@@ -44,6 +44,7 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
 
     thread_ = NULL;
     update_cnt_ = 0;
+    is_hsm_ = false;
 
     setupUi(this);
     initialize();
@@ -210,10 +211,26 @@ int SignVerifyDlg::getPrivateKey( BIN *pPriKey, int *pnType )
 
     QString strHash = mHashTypeCombo->currentText();
 
+    int nSaveType = -1;
+    long uKeyType = -1;
+    QString strKind;
+    QString strID;
+
+
     if( mCertGroup->isChecked() == true )
     {
-        ret = readPrivateKey( pPriKey );
-        if( ret != 0 ) goto end;
+        QString strKey = mPriKeyPath->text();
+
+        if( strKey.left(4) == "HSM:" )
+        {
+            is_hsm_ = true;
+            getHSMPath( strKey, nSaveType, uKeyType, strKind, strID );
+        }
+        else
+        {
+            ret = readPrivateKey( pPriKey );
+            if( ret != 0 ) goto end;
+        }
     }
     else
     {
@@ -226,45 +243,89 @@ int SignVerifyDlg::getPrivateKey( BIN *pPriKey, int *pnType )
             goto end;
 
         strPriHex = certMan.getPriKeyHex();
-        JS_BIN_decodeHex( strPriHex.toStdString().c_str(), pPriKey );
+        if( strPriHex.left(4) == "HSM:" )
+        {
+            is_hsm_ = true;
+            getHSMPath( strPriHex, nSaveType, uKeyType, strKind, strID );
+        }
+        else
+        {
+            JS_BIN_decodeHex( strPriHex.toStdString().c_str(), pPriKey );
+        }
     }
 
-    if( mUseKeyAlgCheck->isChecked() )
+    if( is_hsm_ == false )
     {
-        nType = JS_PKI_getPriKeyType( pPriKey );
-        berApplet->log( QString( "PriKey Type : %1").arg( getKeyTypeName( nType )));
+        if( mUseKeyAlgCheck->isChecked() )
+        {
+            nType = JS_PKI_getPriKeyType( pPriKey );
+            berApplet->log( QString( "PriKey Type : %1").arg( getKeyTypeName( nType )));
 
-        if( nType == JS_PKI_KEY_TYPE_RSA )
-            mAlgTypeCombo->setCurrentText( "RSA" );
-        else if( nType == JS_PKI_KEY_TYPE_ECC )
-            mAlgTypeCombo->setCurrentText( "ECDSA" );
-        else if( nType == JS_PKI_KEY_TYPE_SM2 )
-            mAlgTypeCombo->setCurrentText( "SM2" );
-        else if( nType == JS_PKI_KEY_TYPE_DSA )
-            mAlgTypeCombo->setCurrentText( "DSA" );
-        else if( nType == JS_PKI_KEY_TYPE_ED25519 )
-            mAlgTypeCombo->setCurrentText( "Ed25519" );
-        else if( nType == JS_PKI_KEY_TYPE_ED448 )
-            mAlgTypeCombo->setCurrentText( "Ed448" );
+            if( nType == JS_PKI_KEY_TYPE_RSA )
+                mAlgTypeCombo->setCurrentText( "RSA" );
+            else if( nType == JS_PKI_KEY_TYPE_ECC )
+                mAlgTypeCombo->setCurrentText( "ECDSA" );
+            else if( nType == JS_PKI_KEY_TYPE_SM2 )
+                mAlgTypeCombo->setCurrentText( "SM2" );
+            else if( nType == JS_PKI_KEY_TYPE_DSA )
+                mAlgTypeCombo->setCurrentText( "DSA" );
+            else if( nType == JS_PKI_KEY_TYPE_ED25519 )
+                mAlgTypeCombo->setCurrentText( "Ed25519" );
+            else if( nType == JS_PKI_KEY_TYPE_ED448 )
+                mAlgTypeCombo->setCurrentText( "Ed448" );
+        }
+        else
+        {
+            if( mAlgTypeCombo->currentText() == "RSA" )
+                nType = JS_PKI_KEY_TYPE_RSA;
+            else if( mAlgTypeCombo->currentText() == "SM2" )
+                nType = JS_PKI_KEY_TYPE_SM2;
+            else if( mAlgTypeCombo->currentText() == "DSA" )
+                nType = JS_PKI_KEY_TYPE_DSA;
+            else if( mAlgTypeCombo->currentText() == "Ed25519" )
+            {
+                nType = JS_PKI_KEY_TYPE_ED25519;
+            }
+            else if( mAlgTypeCombo->currentText() == "Ed448" )
+            {
+                nType = JS_PKI_KEY_TYPE_ED448;
+            }
+            else
+                nType = JS_PKI_KEY_TYPE_ECC;
+        }
     }
     else
     {
-        if( mAlgTypeCombo->currentText() == "RSA" )
-            nType = JS_PKI_KEY_TYPE_RSA;
-        else if( mAlgTypeCombo->currentText() == "SM2" )
-            nType = JS_PKI_KEY_TYPE_SM2;
-        else if( mAlgTypeCombo->currentText() == "DSA" )
-            nType = JS_PKI_KEY_TYPE_DSA;
-        else if( mAlgTypeCombo->currentText() == "Ed25519" )
+        if( mUseKeyAlgCheck->isChecked() )
         {
-            nType = JS_PKI_KEY_TYPE_ED25519;
-        }
-        else if( mAlgTypeCombo->currentText() == "Ed448" )
-        {
-            nType = JS_PKI_KEY_TYPE_ED448;
+            if( uKeyType == CKK_RSA )
+                mAlgTypeCombo->setCurrentText( "RSA" );
+            else if( nType == CKK_EC )
+                mAlgTypeCombo->setCurrentText( "ECDSA" );
+            else if( nType == CKK_DSA )
+                mAlgTypeCombo->setCurrentText( "DSA" );
+            else if( nType == CKK_EC_EDWARDS )
+                mAlgTypeCombo->setCurrentText( "Ed25519" );
         }
         else
-            nType = JS_PKI_KEY_TYPE_ECC;
+        {
+            if( mAlgTypeCombo->currentText() == "RSA" )
+                nType = JS_PKI_KEY_TYPE_RSA;
+            else if( mAlgTypeCombo->currentText() == "SM2" )
+                nType = JS_PKI_KEY_TYPE_SM2;
+            else if( mAlgTypeCombo->currentText() == "DSA" )
+                nType = JS_PKI_KEY_TYPE_DSA;
+            else if( mAlgTypeCombo->currentText() == "Ed25519" )
+            {
+                nType = JS_PKI_KEY_TYPE_ED25519;
+            }
+            else if( mAlgTypeCombo->currentText() == "Ed448" )
+            {
+                nType = JS_PKI_KEY_TYPE_ED448;
+            }
+            else
+                nType = JS_PKI_KEY_TYPE_ECC;
+        }
     }
 
     if( nType == JS_PKI_KEY_TYPE_SM2 )
@@ -405,6 +466,95 @@ end :
     JS_BIN_reset( &binCert );
 
     return ret;
+}
+
+int SignVerifyDlg::hsmSignInit()
+{
+    return 0;
+}
+
+int SignVerifyDlg::hsmSignUpdate()
+{
+    return 0;
+}
+
+int SignVerifyDlg::hsmSignFinal( BIN *pSign )
+{
+    return 0;
+}
+
+int SignVerifyDlg::hsmSign( BIN *pSign )
+{
+    return 0;
+}
+
+long SignVerifyDlg::getP11Mech()
+{
+    QString strAlg = mAlgTypeCombo->currentText();
+    QString strHash = mHashTypeCombo->currentText();
+    QString strVersion = mVersionCombo->currentText();
+
+    if( strAlg == "RSA" )
+    {
+        if( strVersion == "V15" )
+        {
+            if( strHash == "SHA1" )
+                return CKM_SHA1_RSA_PKCS;
+            else if( strHash == "SHA224" )
+                return CKM_SHA224_RSA_PKCS;
+            else if( strHash == "SHA256" )
+                return CKM_SHA256_RSA_PKCS;
+            else if( strHash == "SHA384" )
+                return CKM_SHA384_RSA_PKCS;
+            else if( strHash == "SHA512" )
+                return CKM_SHA512_RSA_PKCS;
+        }
+        else
+        {
+            if( strHash == "SHA1" )
+                return CKM_SHA1_RSA_PKCS_PSS;
+            else if( strHash == "SHA224" )
+                return CKM_SHA224_RSA_PKCS_PSS;
+            else if( strHash == "SHA256" )
+                return CKM_SHA256_RSA_PKCS_PSS;
+            else if( strHash == "SHA384" )
+                return CKM_SHA384_RSA_PKCS_PSS;
+            else if( strHash == "SHA512" )
+                return CKM_SHA512_RSA_PKCS_PSS;
+        }
+    }
+    else if( strAlg == "ECDSA" )
+    {
+        if( strHash == "SHA1" )
+            return CKM_ECDSA_SHA1;
+        else if( strHash == "SHA224" )
+            return CKM_ECDSA_SHA224;
+        else if( strHash == "SHA256" )
+            return CKM_ECDSA_SHA256;
+        else if( strHash == "SHA384" )
+            return CKM_ECDSA_SHA384;
+        else if( strHash == "SHA512" )
+            return CKM_ECDSA_SHA512;
+    }
+    else if( strAlg == "DSA" )
+    {
+        if( strHash == "SHA1" )
+            return CKM_DSA_SHA1;
+        else if( strHash == "SHA224" )
+            return CKM_DSA_SHA224;
+        else if( strHash == "SHA256" )
+            return CKM_DSA_SHA256;
+        else if( strHash == "SHA384" )
+            return CKM_DSA_SHA384;
+        else if( strHash == "SHA512" )
+            return CKM_DSA_SHA512;
+    }
+    else if( strAlg == "Ed25519" || strAlg == "Ed448")
+    {
+        return CKM_EDDSA;
+    }
+
+    return -1;
 }
 
 void SignVerifyDlg::appendStatusLabel( const QString& strLabel )
@@ -598,7 +748,11 @@ int SignVerifyDlg::signVerifyInit()
     if( mSignRadio->isChecked() )
     {
         mOutputText->clear();
-        ret = JS_PKI_signInit( &sctx_, strHash.toStdString().c_str(), nType, &binPri );
+
+        if( is_hsm_ == true )
+            ret = hsmSignInit();
+        else
+            ret = JS_PKI_signInit( &sctx_, strHash.toStdString().c_str(), nType, &binPri );
 
         if( ret == 0 )
         {
@@ -663,7 +817,10 @@ void SignVerifyDlg::signVerifyUpdate()
 
     if( mSignRadio->isChecked() )
     {
-        ret = JS_PKI_signUpdate( sctx_, &binSrc );
+        if( is_hsm_ == true )
+            ret = hsmSignUpdate();
+        else
+            ret = JS_PKI_signUpdate( sctx_, &binSrc );
 
         if( ret == 0 )
         {
@@ -705,7 +862,10 @@ void SignVerifyDlg::signVerifyFinal()
 
     if( mSignRadio->isChecked() )
     {
-        ret = JS_PKI_signFinal( sctx_, &binSign );
+        if( is_hsm_ == true )
+            ret = hsmSignFinal( &binSign );
+        else
+            ret = JS_PKI_signFinal( sctx_, &binSign );
 
         if( ret == 0 )
         {
@@ -836,43 +996,50 @@ void SignVerifyDlg::dataRun()
 
     if( mSignRadio->isChecked() )
     {
-        if( strAlg == "RSA" )
+        if( is_hsm_ == true )
         {
-            ret = JS_PKI_RSAMakeSign( strHash.toStdString().c_str(), nVersion, &binSrc, &binPri, &binOut );
+            ret = hsmSign( &binOut );
         }
-        else if( strAlg == "SM2" || strAlg == "ECDSA" )
+        else
         {
-            ret = JS_PKI_ECCMakeSign( strHash.toStdString().c_str(), &binSrc, &binPri, &binOut );
-        }
-        else if( strAlg == "DSA" )
-        {
-            ret = JS_PKI_DSA_Sign( strHash.toStdString().c_str(), &binSrc, &binPri, &binOut );
-        }
-        else if( strAlg == "Ed25519" || strAlg == "Ed448" )
-        {
-            int nParam = JS_PKI_KEY_TYPE_ED25519;
-            if( strAlg == "Ed448" ) nParam = JS_PKI_KEY_TYPE_ED448;
+            if( strAlg == "RSA" )
+            {
+                ret = JS_PKI_RSAMakeSign( strHash.toStdString().c_str(), nVersion, &binSrc, &binPri, &binOut );
+            }
+            else if( strAlg == "SM2" || strAlg == "ECDSA" )
+            {
+                ret = JS_PKI_ECCMakeSign( strHash.toStdString().c_str(), &binSrc, &binPri, &binOut );
+            }
+            else if( strAlg == "DSA" )
+            {
+                ret = JS_PKI_DSA_Sign( strHash.toStdString().c_str(), &binSrc, &binPri, &binOut );
+            }
+            else if( strAlg == "Ed25519" || strAlg == "Ed448" )
+            {
+                int nParam = JS_PKI_KEY_TYPE_ED25519;
+                if( strAlg == "Ed448" ) nParam = JS_PKI_KEY_TYPE_ED448;
 
-            ret = JS_PKI_EdDSA_Sign( nParam, &binSrc, &binPri, &binOut );
-        }
+                ret = JS_PKI_EdDSA_Sign( nParam, &binSrc, &binPri, &binOut );
+            }
 
-        JS_BIN_encodeHex( &binOut, &pOut );
-        mOutputText->setPlainText(pOut);
+            JS_BIN_encodeHex( &binOut, &pOut );
+            mOutputText->setPlainText(pOut);
 
-        if( ret == 0 )
-        {
-            berApplet->logLine();
-            berApplet->log("-- Make Signature" );
-            berApplet->logLine();
-            berApplet->log( QString( "Algorithm        : %1" ).arg( mAlgTypeCombo->currentText() ));
+            if( ret == 0 )
+            {
+                berApplet->logLine();
+                berApplet->log("-- Make Signature" );
+                berApplet->logLine();
+                berApplet->log( QString( "Algorithm        : %1" ).arg( mAlgTypeCombo->currentText() ));
 
-            if( nType != JS_PKI_KEY_TYPE_ED25519 && nType != JS_PKI_KEY_TYPE_ED448 )
-                berApplet->log( QString( "Hash             : %1").arg( strHash ));
+                if( nType != JS_PKI_KEY_TYPE_ED25519 && nType != JS_PKI_KEY_TYPE_ED448 )
+                    berApplet->log( QString( "Hash             : %1").arg( strHash ));
 
-            berApplet->log( QString( "Sign Src         : %1" ).arg(getHexString(&binSrc)));
-            berApplet->log( QString( "Sign Private Key : %1" ).arg(getHexString( &binPri )));
-            berApplet->log( QString( "Signature        : %1" ).arg( getHexString( &binOut )));
-            berApplet->logLine();
+                berApplet->log( QString( "Sign Src         : %1" ).arg(getHexString(&binSrc)));
+                berApplet->log( QString( "Sign Private Key : %1" ).arg(getHexString( &binPri )));
+                berApplet->log( QString( "Signature        : %1" ).arg( getHexString( &binOut )));
+                berApplet->logLine();
+            }
         }
 
         if( ret == 0 )
@@ -1604,8 +1771,12 @@ void SignVerifyDlg::startTask()
     connect( thread_, &SignVerifyThread::taskFinished, this, &SignVerifyDlg::onTaskFinished);
     connect( thread_, &SignVerifyThread::taskUpdate, this, &SignVerifyDlg::onTaskUpdate);
 
-    thread_->setSignCTX( sctx_ );
-    thread_->setVeify( mSignRadio->isChecked() ? false : true );
+    if( mSignRadio->isChecked() && is_hsm_ == true )
+        thread_->setSignCTX( true, berApplet->getP11CTX() );
+    else
+        thread_->setSignCTX( false, sctx_ );
+
+    thread_->setVerify( mSignRadio->isChecked() ? false : true );
     thread_->setSrcFile( strSrcFile );
     thread_->start();
 

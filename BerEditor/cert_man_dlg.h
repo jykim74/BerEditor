@@ -164,12 +164,14 @@ private:
     int changePriKey( const BIN *pNewEncPriKey );
     int readEncPriKeyCert( BIN *pEncPriKey, BIN *pCert );
     int readPriKeyCert( const QString strPass, BIN *pPriKey, BIN *pCert );
+    int readHSMPriKeyCert( const QString strPass, QString& strPri, BIN *pCert );
     int readCert( BIN *pCert );
     int readCACert( BIN *pCert );
     int readCRL( BIN *pCRL );
     const QString getModeName( int nMode );
 
     BIN pri_key_;
+    QString pri_hsm_;
     BIN cert_;
     BIN ca_cert_;
     BIN crl_;

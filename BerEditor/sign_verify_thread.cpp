@@ -13,6 +13,7 @@ SignVerifyThread::SignVerifyThread()
 {
     sctx_ = NULL;
     is_verify_ = false;
+    is_hsm_ = false;
 }
 
 SignVerifyThread::~SignVerifyThread()
@@ -21,12 +22,13 @@ SignVerifyThread::~SignVerifyThread()
     is_verify_ = false;
 }
 
-void SignVerifyThread::setSignCTX( void *pCTX )
+void SignVerifyThread::setSignCTX( bool bHSM, void *pCTX )
 {
+    is_hsm_ = bHSM;
     sctx_ = pCTX;
 }
 
-void SignVerifyThread::setVeify( bool bVerify )
+void SignVerifyThread::setVerify( bool bVerify )
 {
     is_verify_ = bVerify;
 }
@@ -74,7 +76,10 @@ void SignVerifyThread::run()
 
         if( is_verify_ == false )
         {
-            ret = JS_PKI_signUpdate( sctx_, &binPart );
+            if( is_hsm_ == true )
+                ret = JS_PKCS11_SignUpdate( (JP11_CTX *)sctx_, binPart.pVal, binPart.nLen );
+            else
+                ret = JS_PKI_signUpdate( sctx_, &binPart );
         }
         else
         {

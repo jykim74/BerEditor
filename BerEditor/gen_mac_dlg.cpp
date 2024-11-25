@@ -460,6 +460,7 @@ int GenMacDlg::hsmMACInit( const QString strKey, const QString strIV )
 
     int nSaveType = -1;
     long uKeyType = -1;
+    QString strKind;
     QString strID;
 
     long hObj = -1;
@@ -467,7 +468,7 @@ int GenMacDlg::hsmMACInit( const QString strKey, const QString strIV )
 
     memset( &sMech, 0x00, sizeof(sMech));
 
-    getDevicePath( strKey, nSaveType, strID, uKeyType );
+    getHSMPath( strKey, nSaveType, uKeyType, strKind, strID );
 
     ret = getP11SessionLogin( pCTX, nIndex );
     if( ret != 0 ) goto end;

@@ -59,14 +59,20 @@ private slots:
     void onTaskUpdate( int nUpdate );
 
 private:
+    int hsmEncDecInit();
+    int hsmEncDecUpdate();
+    int hsmEncDecFinal();
+    int hsmEncDec();
+
     void initialize();
     void appendStatusLabel( const QString& strLabel );
     bool isCCM( const QString strAlg );
-    long getEncMech();
+    long getP11EncMech();
 
     void *ctx_;
     int update_cnt_;
     EncDecThread *thread_;
+    bool is_hsm_;
 };
 
 #endif // ENC_DEC_DLG_H

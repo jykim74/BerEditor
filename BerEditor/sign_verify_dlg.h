@@ -81,10 +81,17 @@ private:
     int getPrivateKey( BIN *pPriKey, int *pnType );
     int getPublicKey( BIN *pPubKey, int *pnType );
 
+    int hsmSignInit();
+    int hsmSignUpdate();
+    int hsmSignFinal( BIN *pSign );
+    int hsmSign( BIN *pSign );
+    long getP11Mech();
+
     void *sctx_;
 
     int update_cnt_;
     SignVerifyThread *thread_;
+    bool is_hsm_;
 };
 
 #endif // SIGN_VERIFY_DLG_H

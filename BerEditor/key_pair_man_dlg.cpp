@@ -374,7 +374,7 @@ void KeyPairManDlg::loadHsmKeyPairList()
         QTableWidgetItem *item = new QTableWidgetItem( rec.getLabel() );
         item->setIcon(QIcon(":/images/keypair.png" ));
 
-        QString strData = QString( "HSM:%1:%2" ).arg( rec.getID() ).arg( rec.getKeyType() );
+        QString strData = QString( "HSM:%1:PUBLIC:%2" ).arg( rec.getKeyType() ).arg( rec.getID() );
         item->setData( Qt::UserRole, strData );
 
         mKeyPairTable->setItem( row, 0, item );
@@ -585,11 +585,12 @@ void KeyPairManDlg::clickLDelete()
     bool bVal = berApplet->yesOrCancelBox( tr( "Are you sure to delete the keypair" ), this, false );
     if( bVal == false ) return;
 
-    int nDevType = -1;
+    int nDevType = DeviceHDD;;
     long uKeyType = -1;
-    QString strDst;
+    QString strKind;
+    QString strID;
 
-    getDevicePath( strPath, nDevType, strDst, uKeyType );
+    if( strPath.left(4) == "HSM:" ) getHSMPath( strPath, nDevType, uKeyType, strID, strKind );
 
     if( nDevType == DeviceHSM )
     {
@@ -603,7 +604,7 @@ void KeyPairManDlg::clickLDelete()
         ret = getP11SessionLogin( pCTX, nIndex );
         if( ret != CKR_OK ) return;
 
-        JS_BIN_decodeHex( strDst.toStdString().c_str(), &binID );
+        JS_BIN_decodeHex( strID.toStdString().c_str(), &binID );
 
         hPri = getHandleHSM( pCTX, CKO_PRIVATE_KEY, &binID );
         hPub = getHandleHSM( pCTX, CKO_PUBLIC_KEY, &binID );
@@ -654,24 +655,26 @@ void KeyPairManDlg::clickLMakeCSR()
 
     QString strName = item->text();
 
-    int nDevType = -1;
+    int nDevType = DeviceHDD;
     long uKeyType = -1;
-    QString strDst;
+    QString strKind;
+    QString strID;
 
-    getDevicePath( strPath, nDevType, strDst, uKeyType );
+    if( strPath.left(4) == "HSM:" ) getHSMPath( strPath, nDevType, uKeyType, strID, strKind );
+
     MakeCSRDlg makeCSR;
 
     if( nDevType == DeviceHSM )
     {
         BIN binID = {0,0};
-        JS_BIN_decodeHex( strDst.toStdString().c_str(), &binID );
+        JS_BIN_decodeHex( strID.toStdString().c_str(), &binID );
         makeCSR.setHsmID( &binID );
         JS_BIN_reset( &binID );
     }
     else
     {
-        strPubKeyPath = QString( "%1/%2" ).arg( strDst ).arg( kPublicFile );
-        strPriKeyPath = QString( "%1/%2" ).arg( strDst ).arg( kPrivateFile );
+        strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
+        strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
 
         JS_BIN_fileReadBER( strPriKeyPath.toLocal8Bit().toStdString().c_str(), &binPri );
         makeCSR.setPriKey( &binPri );
@@ -762,11 +765,12 @@ void KeyPairManDlg::clickLViewPriKey()
         return;
     }
 
-    int nDevType = -1;
+    int nDevType = DeviceHDD;
     long uKeyType = -1;
-    QString strDst;
+    QString strKind;
+    QString strID;
 
-    getDevicePath( strPath, nDevType, strDst, uKeyType );
+    if( strPath.left(4) == "HSM:" ) getHSMPath( strPath, nDevType, uKeyType, strID, strKind );
 
     if( nDevType == DeviceHSM )
     {
@@ -779,7 +783,7 @@ void KeyPairManDlg::clickLViewPriKey()
         ret = getP11SessionLogin( pCTX, nIndex );
         if( ret != CKR_OK ) return;
 
-        JS_BIN_decodeHex( strDst.toStdString().c_str(), &binID );
+        JS_BIN_decodeHex( strID.toStdString().c_str(), &binID );
         hPri = getHandleHSM( pCTX, CKO_PRIVATE_KEY, &binID );
 
         JS_BIN_reset( &binID );
@@ -793,8 +797,8 @@ void KeyPairManDlg::clickLViewPriKey()
     }
     else
     {
-        strPubKeyPath = QString( "%1/%2" ).arg( strDst ).arg( kPublicFile );
-        strPriKeyPath = QString( "%1/%2" ).arg( strDst ).arg( kPrivateFile );
+        strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
+        strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
         JS_BIN_fileReadBER( strPriKeyPath.toLocal8Bit().toStdString().c_str(), &binPri );
     }
 
@@ -847,11 +851,12 @@ void KeyPairManDlg::clickLViewPubKey()
         return;
     }
 
-    int nDevType = -1;
+    int nDevType = DeviceHDD;
     long uKeyType = -1;
-    QString strDst;
+    QString strKind;
+    QString strID;
 
-    getDevicePath( strPath, nDevType, strDst, uKeyType );
+    if( strPath.left(4) == "HSM:" ) getHSMPath( strPath, nDevType, uKeyType, strID, strKind );
 
     if( nDevType == DeviceHSM )
     {
@@ -862,7 +867,7 @@ void KeyPairManDlg::clickLViewPubKey()
         ret = getP11Session( pCTX, nIndex );
         if( ret != CKR_OK ) return;
 
-        JS_BIN_decodeHex( strDst.toStdString().c_str(), &binID );
+        JS_BIN_decodeHex( strID.toStdString().c_str(), &binID );
         hPub = getHandleHSM( pCTX, CKO_PUBLIC_KEY, &binID );
         JS_BIN_reset( &binID );
 
@@ -870,8 +875,8 @@ void KeyPairManDlg::clickLViewPubKey()
     }
     else
     {
-        strPubKeyPath = QString( "%1/%2" ).arg( strDst ).arg( kPublicFile );
-        strPriKeyPath = QString( "%1/%2" ).arg( strDst ).arg( kPrivateFile );
+        strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
+        strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
 
 
         JS_BIN_fileReadBER( strPubKeyPath.toLocal8Bit().toStdString().c_str(), &binPub );
@@ -926,11 +931,13 @@ void KeyPairManDlg::clickLDecodePriKey()
         return;
     }
 
-    int nDevType = -1;
+    int nDevType = DeviceHDD;
     long uKeyType = -1;
-    QString strDst;
+    QString strKind;
+    QString strID;
 
-    getDevicePath( strPath, nDevType, strDst, uKeyType );
+    if( strPath.left(4) == "HSM:" ) getHSMPath( strPath, nDevType, uKeyType, strID, strKind );
+
 
     if( nDevType == DeviceHSM )
     {
@@ -943,7 +950,7 @@ void KeyPairManDlg::clickLDecodePriKey()
         ret = getP11SessionLogin( pCTX, nIndex );
         if( ret != CKR_OK ) return;
 
-        JS_BIN_decodeHex( strDst.toStdString().c_str(), &binID );
+        JS_BIN_decodeHex( strID.toStdString().c_str(), &binID );
         hPri = getHandleHSM( pCTX, CKO_PRIVATE_KEY, &binID );
 
         JS_BIN_reset( &binID );
@@ -957,8 +964,8 @@ void KeyPairManDlg::clickLDecodePriKey()
     }
     else
     {
-        strPubKeyPath = QString( "%1/%2" ).arg( strDst ).arg( kPublicFile );
-        strPriKeyPath = QString( "%1/%2" ).arg( strDst ).arg( kPrivateFile );
+        strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
+        strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
         JS_BIN_fileReadBER( strPriKeyPath.toLocal8Bit().toStdString().c_str(), &binPri );
     }
 
@@ -985,11 +992,12 @@ void KeyPairManDlg::clickLDecodePubKey()
         return;
     }
 
-    int nDevType = -1;
+    int nDevType = DeviceHDD;
     long uKeyType = -1;
-    QString strDst;
+    QString strKind;
+    QString strID;
 
-    getDevicePath( strPath, nDevType, strDst, uKeyType );
+    if( strPath.left(4) == "HSM:" ) getHSMPath( strPath, nDevType, uKeyType, strID, strKind );
 
     if( nDevType == DeviceHSM )
     {
@@ -1000,7 +1008,7 @@ void KeyPairManDlg::clickLDecodePubKey()
         ret = getP11Session( pCTX, nIndex );
         if( ret != CKR_OK ) return;
 
-        JS_BIN_decodeHex( strDst.toStdString().c_str(), &binID );
+        JS_BIN_decodeHex( strID.toStdString().c_str(), &binID );
         hPub = getHandleHSM( pCTX, CKO_PUBLIC_KEY, &binID );
         JS_BIN_reset( &binID );
 
@@ -1008,8 +1016,8 @@ void KeyPairManDlg::clickLDecodePubKey()
     }
     else
     {
-        strPubKeyPath = QString( "%1/%2" ).arg( strDst ).arg( kPublicFile );
-        strPriKeyPath = QString( "%1/%2" ).arg( strDst ).arg( kPrivateFile );
+        strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
+        strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
 
 
         JS_BIN_fileReadBER( strPubKeyPath.toLocal8Bit().toStdString().c_str(), &binPub );
@@ -1085,11 +1093,13 @@ void KeyPairManDlg::clickLRunPubEnc()
         return;
     }
 
-    int nType = DeviceHDD;
+    int nDevType = DeviceHDD;
     long uKeyType = -1;
-    QString strDst;
+    QString strKind;
+    QString strID;
 
-    getDevicePath( strPath, nType, strDst, uKeyType );
+    if( strPath.left(4) == "HSM:" ) getHSMPath( strPath, nDevType, uKeyType, strID, strKind );
+
 
     if( mHsmCheck->isChecked() == true )
     {
@@ -1138,11 +1148,13 @@ void KeyPairManDlg::clickLRunPubDec()
         return;
     }
 
-    int nType = DeviceHDD;
+    int nDevType = DeviceHDD;
     long uKeyType = -1;
-    QString strDst;
+    QString strKind;
+    QString strID;
 
-    getDevicePath( strPath, nType, strDst, uKeyType );
+    if( strPath.left(4) == "HSM:" ) getHSMPath( strPath, nDevType, uKeyType, strID, strKind );
+
 
     if( mHsmCheck->isChecked() == true )
     {
@@ -1864,12 +1876,13 @@ void KeyPairManDlg::clickExport()
         return;
     }
 
-    int nDevType = -1;
+    int nDevType = DeviceHDD;
     long uKeyType = -1;
-    QString strDst;
-    strPath = item->data(Qt::UserRole).toString();
+    QString strKind;
+    QString strID;
 
-    getDevicePath( strPath, nDevType, strDst, uKeyType );
+    if( strPath.left(4) == "HSM:" ) getHSMPath( strPath, nDevType, uKeyType, strID, strKind );
+
 
     if( nDevType == DeviceHSM )
     {
@@ -1882,7 +1895,7 @@ void KeyPairManDlg::clickExport()
         ret = getP11SessionLogin( pCTX, nIndex );
         if( ret != CKR_OK ) return;
 
-        JS_BIN_decodeHex( strDst.toStdString().c_str(), &binID );
+        JS_BIN_decodeHex( strID.toStdString().c_str(), &binID );
         hPri = getHandleHSM( pCTX, CKO_PRIVATE_KEY, &binID );
 
         JS_BIN_reset( &binID );
@@ -1896,7 +1909,7 @@ void KeyPairManDlg::clickExport()
     }
     else
     {
-        strPriPath = QString( "%1/%2" ).arg( strDst ).arg( kPrivateFile );
+        strPriPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
         JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
     }
 

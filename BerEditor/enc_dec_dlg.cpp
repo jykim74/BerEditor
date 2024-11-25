@@ -49,6 +49,7 @@ EncDecDlg::EncDecDlg(QWidget *parent) :
     ctx_ = NULL;
     thread_ = NULL;
     update_cnt_ = 0;
+    is_hsm_ = false;
 
     setupUi(this);
     initialize();
@@ -222,176 +223,186 @@ void EncDecDlg::dataRun()
         }
     }
 
-    if( mInputStringRadio->isChecked() )
-        nDataType = DATA_STRING;
-    else if( mInputHexRadio->isChecked() )
-    {
-        nDataType = DATA_HEX;
-    }
-    else if( mInputBase64Radio->isChecked() )
-    {
-        nDataType = DATA_BASE64;
-    }
-
-    getBINFromString( &binSrc, nDataType, strInput );
-    getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
-
-    if( binKey.nLen < 16 )
-    {
-        berApplet->warningBox( tr( "Key length(%1) is incorrect" ).arg( binKey.nLen), this );
-        JS_BIN_reset( &binSrc );
-        JS_BIN_reset( &binKey );
-        mKeyText->setFocus();
-        return;
-    }
-
-
     QString strMethod;
-
-    getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
-
-    bool bPad = mPadCheck->isChecked();
-
     char *pOut = NULL;
 
-    QString strSymAlg = getSymAlg( strAlg, strMode, binKey.nLen );
-
-    if( strSymAlg.isEmpty() || strSymAlg.isNull() )
+    if( strKey.contains( "HSM:" ) == true )
     {
-        berApplet->elog( QString("There is no symmetric key algorithm" ));
-        goto end;
-    }
-
-    if( mAEADGroup->isChecked() )
-    {
-        int nReqTagLen = mReqTagLenText->text().toInt();
-        QString strAAD = mAADText->text();
-
-        getBINFromString( &binAAD, mAADTypeCombo->currentText(), strAAD );
-
-        if( mEncryptRadio->isChecked() )
-        {
-            char *pTag = NULL;
-            strMethod = "AE Encrypt";
-
-            if( isCCM(strMode) )
-                ret = JS_PKI_encryptCCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, nReqTagLen, &binTag, &binOut );
-            else
-                ret = JS_PKI_encryptGCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, nReqTagLen, &binTag, &binOut );
-
-            mTagTypeCombo->setCurrentIndex( DATA_HEX );
-            JS_BIN_encodeHex( &binTag, &pTag );
-            if( pTag )
-            {
-                mTagText->setText( pTag );
-                JS_free( pTag );
-            }
-
-            if( ret == 0 )
-            {
-                berApplet->logLine();
-                berApplet->log( "-- AE Encrypt" );
-                berApplet->logLine();
-                berApplet->log( QString( "SymAlg     : %1").arg( strSymAlg ));
-                berApplet->log( QString( "Enc Src    : %1" ).arg( getHexString( &binSrc )));
-                berApplet->log( QString( "Enc Key    : %1" ).arg( getHexString( &binKey )));
-                berApplet->log( QString( "Enc IV     : %1" ).arg( getHexString( &binIV )));
-                berApplet->log( QString( "Enc AAD    : %1" ).arg( getHexString( &binAAD )));
-                berApplet->log( QString( "Enc Tag    : %1" ).arg( getHexString( &binTag )));
-                berApplet->log( QString( "Enc Output : %1" ).arg(getHexString( &binOut )));
-                berApplet->logLine();
-            }
-        }
-        else
-        {
-            QString strTag = mTagText->text();
-            strMethod = "AE Decrypt";
-
-            getBINFromString( &binTag, mTagTypeCombo->currentText(), strTag );
-
-            if( isCCM( strMode ) )
-                ret = JS_PKI_decryptCCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
-            else
-                ret = JS_PKI_decryptGCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
-
-            if( ret == 0 )
-            {
-                berApplet->logLine();
-                berApplet->log("-- AE Decrypt" );
-                berApplet->logLine();
-                berApplet->log( QString( "SymAlg     : %1").arg( strSymAlg ));
-                berApplet->log( QString( "Dec Src    : %1" ).arg( getHexString( &binSrc )));
-                berApplet->log( QString( "Dec Key    : %1" ).arg( getHexString( &binKey )));
-                berApplet->log( QString( "Dec IV     : %1" ).arg( getHexString( &binIV )));
-                berApplet->log( QString( "Dec AAD    : %1" ).arg( getHexString( &binAAD )));
-                berApplet->log( QString( "Dec Tag    : %1" ).arg( getHexString( &binTag )));
-                berApplet->log( QString( "Dec Output : %1" ).arg(getHexString( &binOut )));
-                berApplet->logLine();
-            }
-        }
+        ret = hsmEncDec();
     }
     else
     {
-        if( mEncryptRadio->isChecked() )
+        if( mInputStringRadio->isChecked() )
+            nDataType = DATA_STRING;
+        else if( mInputHexRadio->isChecked() )
         {
-            strMethod = "Encrypt";
+            nDataType = DATA_HEX;
+        }
+        else if( mInputBase64Radio->isChecked() )
+        {
+            nDataType = DATA_BASE64;
+        }
 
-            if( strAlg == "SEED" )
-                ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
-            else
-                ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
+        getBINFromString( &binSrc, nDataType, strInput );
+        getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
 
-            if( ret == 0 )
+        if( binKey.nLen < 16 )
+        {
+            berApplet->warningBox( tr( "Key length(%1) is incorrect" ).arg( binKey.nLen), this );
+            JS_BIN_reset( &binSrc );
+            JS_BIN_reset( &binKey );
+            mKeyText->setFocus();
+            return;
+        }
+
+
+
+
+        getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
+
+        bool bPad = mPadCheck->isChecked();
+
+
+
+        QString strSymAlg = getSymAlg( strAlg, strMode, binKey.nLen );
+
+        if( strSymAlg.isEmpty() || strSymAlg.isNull() )
+        {
+            berApplet->elog( QString("There is no symmetric key algorithm" ));
+            goto end;
+        }
+
+        if( mAEADGroup->isChecked() )
+        {
+            int nReqTagLen = mReqTagLenText->text().toInt();
+            QString strAAD = mAADText->text();
+
+            getBINFromString( &binAAD, mAADTypeCombo->currentText(), strAAD );
+
+            if( mEncryptRadio->isChecked() )
             {
-                berApplet->logLine();
-                berApplet->log( "-- Encrypt" );
-                berApplet->logLine();
-                berApplet->log( QString( "SymAlg     : %1").arg( strSymAlg ));
-                berApplet->log( QString( "Enc Src    : %1" ).arg( getHexString( &binSrc )));
-                berApplet->log( QString( "Enc Key    : %1" ).arg( getHexString( &binKey )));
-                berApplet->log( QString( "Enc IV     : %1" ).arg( getHexString( &binIV )));
-                berApplet->log( QString( "Enc Output : %1" ).arg(getHexString( &binOut )));
-                berApplet->logLine();
+                char *pTag = NULL;
+                strMethod = "AE Encrypt";
+
+                if( isCCM(strMode) )
+                    ret = JS_PKI_encryptCCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, nReqTagLen, &binTag, &binOut );
+                else
+                    ret = JS_PKI_encryptGCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, nReqTagLen, &binTag, &binOut );
+
+                mTagTypeCombo->setCurrentIndex( DATA_HEX );
+                JS_BIN_encodeHex( &binTag, &pTag );
+                if( pTag )
+                {
+                    mTagText->setText( pTag );
+                    JS_free( pTag );
+                }
+
+                if( ret == 0 )
+                {
+                    berApplet->logLine();
+                    berApplet->log( "-- AE Encrypt" );
+                    berApplet->logLine();
+                    berApplet->log( QString( "SymAlg     : %1").arg( strSymAlg ));
+                    berApplet->log( QString( "Enc Src    : %1" ).arg( getHexString( &binSrc )));
+                    berApplet->log( QString( "Enc Key    : %1" ).arg( getHexString( &binKey )));
+                    berApplet->log( QString( "Enc IV     : %1" ).arg( getHexString( &binIV )));
+                    berApplet->log( QString( "Enc AAD    : %1" ).arg( getHexString( &binAAD )));
+                    berApplet->log( QString( "Enc Tag    : %1" ).arg( getHexString( &binTag )));
+                    berApplet->log( QString( "Enc Output : %1" ).arg(getHexString( &binOut )));
+                    berApplet->logLine();
+                }
+            }
+            else
+            {
+                QString strTag = mTagText->text();
+                strMethod = "AE Decrypt";
+
+                getBINFromString( &binTag, mTagTypeCombo->currentText(), strTag );
+
+                if( isCCM( strMode ) )
+                    ret = JS_PKI_decryptCCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
+                else
+                    ret = JS_PKI_decryptGCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
+
+                if( ret == 0 )
+                {
+                    berApplet->logLine();
+                    berApplet->log("-- AE Decrypt" );
+                    berApplet->logLine();
+                    berApplet->log( QString( "SymAlg     : %1").arg( strSymAlg ));
+                    berApplet->log( QString( "Dec Src    : %1" ).arg( getHexString( &binSrc )));
+                    berApplet->log( QString( "Dec Key    : %1" ).arg( getHexString( &binKey )));
+                    berApplet->log( QString( "Dec IV     : %1" ).arg( getHexString( &binIV )));
+                    berApplet->log( QString( "Dec AAD    : %1" ).arg( getHexString( &binAAD )));
+                    berApplet->log( QString( "Dec Tag    : %1" ).arg( getHexString( &binTag )));
+                    berApplet->log( QString( "Dec Output : %1" ).arg(getHexString( &binOut )));
+                    berApplet->logLine();
+                }
             }
         }
         else
         {
-            strMethod = "Decrypt";
-
-            if( strAlg == "SEED" )
-                ret = JS_PKI_decryptSEED( strMode.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
-            else
-                ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
-
-            if( ret == 0 )
+            if( mEncryptRadio->isChecked() )
             {
-                berApplet->logLine();
-                berApplet->log( "-- Decrypt" );
-                berApplet->logLine();
-                berApplet->log( QString( "SymAlg     : %1").arg( strSymAlg ));
-                berApplet->log( QString( "Dec Src    : %1" ).arg( getHexString( &binSrc )));
-                berApplet->log( QString( "Dec Key    : %1" ).arg( getHexString( &binKey )));
-                berApplet->log( QString( "Dec IV     : %1" ).arg( getHexString( &binIV )));
-                berApplet->log( QString( "Dec Output : %1" ).arg(getHexString( &binOut )));
-                berApplet->logLine();
+                strMethod = "Encrypt";
+
+                if( strAlg == "SEED" )
+                    ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
+                else
+                    ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
+
+                if( ret == 0 )
+                {
+                    berApplet->logLine();
+                    berApplet->log( "-- Encrypt" );
+                    berApplet->logLine();
+                    berApplet->log( QString( "SymAlg     : %1").arg( strSymAlg ));
+                    berApplet->log( QString( "Enc Src    : %1" ).arg( getHexString( &binSrc )));
+                    berApplet->log( QString( "Enc Key    : %1" ).arg( getHexString( &binKey )));
+                    berApplet->log( QString( "Enc IV     : %1" ).arg( getHexString( &binIV )));
+                    berApplet->log( QString( "Enc Output : %1" ).arg(getHexString( &binOut )));
+                    berApplet->logLine();
+                }
+            }
+            else
+            {
+                strMethod = "Decrypt";
+
+                if( strAlg == "SEED" )
+                    ret = JS_PKI_decryptSEED( strMode.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
+                else
+                    ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
+
+                if( ret == 0 )
+                {
+                    berApplet->logLine();
+                    berApplet->log( "-- Decrypt" );
+                    berApplet->logLine();
+                    berApplet->log( QString( "SymAlg     : %1").arg( strSymAlg ));
+                    berApplet->log( QString( "Dec Src    : %1" ).arg( getHexString( &binSrc )));
+                    berApplet->log( QString( "Dec Key    : %1" ).arg( getHexString( &binKey )));
+                    berApplet->log( QString( "Dec IV     : %1" ).arg( getHexString( &binIV )));
+                    berApplet->log( QString( "Dec Output : %1" ).arg(getHexString( &binOut )));
+                    berApplet->logLine();
+                }
             }
         }
-    }
 
-    if( mOutputTypeCombo->currentIndex() == DATA_STRING )
-    {
-        JS_BIN_string( &binOut, &pOut );
-    }
-    else if( mOutputTypeCombo->currentIndex() == DATA_HEX )
-    {
-        JS_BIN_encodeHex( &binOut, &pOut );
-    }
-    else if( mOutputTypeCombo->currentIndex() == DATA_BASE64 )
-    {
-        JS_BIN_encodeBase64( &binOut, &pOut );
-    }
+        if( mOutputTypeCombo->currentIndex() == DATA_STRING )
+        {
+            JS_BIN_string( &binOut, &pOut );
+        }
+        else if( mOutputTypeCombo->currentIndex() == DATA_HEX )
+        {
+            JS_BIN_encodeHex( &binOut, &pOut );
+        }
+        else if( mOutputTypeCombo->currentIndex() == DATA_BASE64 )
+        {
+            JS_BIN_encodeBase64( &binOut, &pOut );
+        }
 
-    mOutputText->setPlainText( pOut );
+        mOutputText->setPlainText( pOut );
+    }
 
     if( ret == 0 )
     {
@@ -619,6 +630,306 @@ void EncDecDlg::clickUseAEAD()
     modeChanged();
 }
 
+int EncDecDlg::hsmEncDecInit()
+{
+    int ret = 0;
+    BIN binID = {0,0};
+    BIN binIV = {0,0};
+    BIN binAAD = {0,0};
+    BIN binSrc = {0,0};
+    JP11_CTX *pCTX = berApplet->getP11CTX();
+    int nIndex = berApplet->settingsMgr()->hsmIndex();
+
+    int nSaveType = -1;
+    long uKeyType = -1;
+    QString strKind;
+    QString strID;
+    QString strKey = mKeyText->text();
+    QString strIV = mIVText->text();
+
+    long hObj = -1;
+    int nDataType = DATA_HEX;
+    CK_MECHANISM sMech;
+    CK_GCM_PARAMS_PTR gcmParam = NULL;
+    CK_CCM_PARAMS_PTR ccmParam = NULL;
+
+    QString strAAD = mAADText->text();
+    int nReqLen = mReqTagLenText->text().toInt();
+    QString strInput = mInputText->toPlainText();
+
+    getBINFromString( &binAAD, mAADTypeCombo->currentText(), strAAD );
+
+    memset( &sMech, 0x00, sizeof(sMech));
+
+    getHSMPath( strKey, nSaveType, uKeyType, strKind, strID );
+
+    ret = getP11SessionLogin( pCTX, nIndex );
+    if( ret != 0 ) goto end;
+
+    JS_BIN_decodeHex( strID.toStdString().c_str(), &binID );
+    JS_BIN_decodeHex( strIV.toStdString().c_str(), &binIV );
+
+    hObj = getHandleHSM( pCTX, CKO_SECRET_KEY, &binID );
+
+
+    if( mInputStringRadio->isChecked() )
+        nDataType = DATA_STRING;
+    else if( mInputHexRadio->isChecked() )
+    {
+        nDataType = DATA_HEX;
+    }
+    else if( mInputBase64Radio->isChecked() )
+    {
+        nDataType = DATA_BASE64;
+    }
+
+    getBINFromString( &binSrc, nDataType, strInput );
+
+    sMech.mechanism = getP11EncMech();
+
+    if( sMech.mechanism == CKM_AES_GCM )
+    {
+        gcmParam = (CK_GCM_PARAMS *)JS_calloc( 1, sizeof(CK_GCM_PARAMS));
+
+        gcmParam->ulIvLen = binIV.nLen;
+        gcmParam->pIv = binIV.pVal;
+        gcmParam->ulAADLen = binAAD.nLen;
+        gcmParam->pAAD = binAAD.pVal;
+        gcmParam->ulIvBits = binIV.nLen * 8;
+        gcmParam->ulTagBits = nReqLen * 8;
+
+        sMech.pParameter = gcmParam;
+        sMech.ulParameterLen = sizeof(CK_GCM_PARAMS);
+    }
+    else if( sMech.mechanism == CKM_AES_CCM )
+    {
+        int nDataLen = mCCMDataLength->text().toInt();
+        if( nDataLen <= 0 )
+        {
+            nDataLen = binSrc.nLen;
+        }
+        ccmParam->ulDataLen = nDataLen;
+        ccmParam->pNonce = binIV.pVal;
+        ccmParam->ulNonceLen = binIV.nLen;
+        ccmParam->pAAD = binAAD.pVal;
+        ccmParam->ulAADLen = binAAD.nLen;
+        ccmParam->ulMACLen = nReqLen;
+
+        sMech.pParameter = ccmParam;
+        sMech.ulParameterLen = sizeof(CK_CCM_PARAMS);
+    }
+    else
+    {
+        if( binIV.nLen > 0 )
+        {
+            sMech.pParameter = binIV.pVal;
+            sMech.ulParameterLen = binIV.nLen;
+        }
+    }
+
+    if( mEncryptRadio->isChecked() == true )
+        ret = JS_PKCS11_EncryptInit( pCTX, &sMech, hObj );
+    else
+        ret = JS_PKCS11_DecryptInit( pCTX, &sMech, hObj );
+
+end :
+    JS_BIN_reset( &binID );
+    JS_BIN_reset( &binIV );
+    JS_BIN_reset( &binAAD );
+    JS_BIN_reset( &binSrc );
+
+    if( gcmParam ) JS_free( gcmParam );
+    if( ccmParam ) JS_free( ccmParam );
+
+    return ret;
+}
+
+int EncDecDlg::hsmEncDecUpdate()
+{
+    int ret = 0;
+    int nDataType = DATA_STRING;
+
+    QString strInput = mInputText->toPlainText();
+    BIN binSrc = {0,0};
+    BIN binOut = {0,0};
+    CK_BYTE *pRes = NULL;
+    CK_ULONG uResLen = -1;
+    char *pOut = NULL;
+
+    if( mInputStringRadio->isChecked() )
+        nDataType = DATA_STRING;
+    else if( mInputHexRadio->isChecked() )
+    {
+        nDataType = DATA_HEX;
+    }
+    else if( mInputBase64Radio->isChecked() )
+    {
+        nDataType = DATA_BASE64;
+    }
+
+    getBINFromString( &binSrc, nDataType, strInput );
+
+    pRes = (CK_BYTE *)JS_malloc( binSrc.nLen + 32 );
+    uResLen = binSrc.nLen + 32;
+
+    if( mEncryptRadio->isChecked() == true )
+        ret = JS_PKCS11_EncryptUpdate( berApplet->getP11CTX(), binSrc.pVal, binSrc.nLen, pRes, &uResLen );
+    else
+        ret = JS_PKCS11_DecryptUpdate( berApplet->getP11CTX(), binSrc.pVal, binSrc.nLen, pRes, &uResLen );
+
+    if( ret == CKR_OK)
+    {
+        JS_BIN_set( &binOut, pRes, uResLen );
+
+        if( mAEADGroup->isChecked() == true )
+        {
+            int nTagLen = mReqTagLenText->text().toInt();
+            BIN binTag = {0,0};
+
+            if( nTagLen > binOut.nLen )
+            {
+                ret = JSR_ERR;
+                goto end;
+            }
+
+            JS_BIN_set( &binTag, &binOut.pVal[binOut.nLen-nTagLen], nTagLen );
+            binOut.nLen = binOut.nLen - nTagLen;
+            mTagText->setText( getHexString( &binTag));
+            JS_BIN_reset( &binTag );
+        }
+    }
+
+    if( mOutputTypeCombo->currentIndex() == DATA_STRING )
+    {
+        JS_BIN_string( &binOut, &pOut );
+    }
+    else if( mOutputTypeCombo->currentIndex() == DATA_HEX )
+    {
+        JS_BIN_encodeHex( &binOut, &pOut );
+    }
+    else if( mOutputTypeCombo->currentIndex() == DATA_BASE64 )
+    {
+        JS_BIN_encodeBase64( &binOut, &pOut );
+    }
+
+    mOutputText->setPlainText( pOut );
+
+end :
+    JS_BIN_reset( &binSrc );
+    JS_BIN_reset( &binOut );
+    if( pRes ) JS_free( pRes );
+    if( pOut ) JS_free( pOut );
+
+    return ret;
+}
+
+int EncDecDlg::hsmEncDecFinal()
+{
+    int ret = 0;
+    int nDataType = DATA_STRING;
+
+    QString strInput = mInputText->toPlainText();
+    BIN binOut = {0,0};
+    CK_BYTE *pRes = NULL;
+    CK_ULONG uResLen = -1;
+    char *pOut = NULL;
+
+
+    pRes = (CK_BYTE *)JS_malloc( 32 );
+    uResLen = 32;
+
+    if( mEncryptRadio->isChecked() == true )
+        ret = JS_PKCS11_EncryptFinal( berApplet->getP11CTX(), pRes, &uResLen );
+    else
+        ret = JS_PKCS11_DecryptFinal( berApplet->getP11CTX(), pRes, &uResLen );
+
+    if( ret == CKR_OK) JS_BIN_set( &binOut, pRes, uResLen );
+
+    if( mOutputTypeCombo->currentIndex() == DATA_STRING )
+    {
+        JS_BIN_string( &binOut, &pOut );
+    }
+    else if( mOutputTypeCombo->currentIndex() == DATA_HEX )
+    {
+        JS_BIN_encodeHex( &binOut, &pOut );
+    }
+    else if( mOutputTypeCombo->currentIndex() == DATA_BASE64 )
+    {
+        JS_BIN_encodeBase64( &binOut, &pOut );
+    }
+
+    mOutputText->setPlainText( pOut );
+
+end :
+    JS_BIN_reset( &binOut );
+    if( pRes ) JS_free( pRes );
+    if( pOut ) JS_free( pOut );
+
+    return ret;
+}
+
+int EncDecDlg::hsmEncDec()
+{
+    int nDataType = DATA_STRING;
+
+    QString strInput = mInputText->toPlainText();
+    BIN binSrc = {0,0};
+    BIN binOut = {0,0};
+    CK_BYTE *pRes = NULL;
+    CK_ULONG uResLen = -1;
+    char *pOut = NULL;
+
+
+    int ret = hsmEncDecInit();
+    if( ret != CKR_OK ) return ret;
+
+    if( mInputStringRadio->isChecked() )
+        nDataType = DATA_STRING;
+    else if( mInputHexRadio->isChecked() )
+    {
+        nDataType = DATA_HEX;
+    }
+    else if( mInputBase64Radio->isChecked() )
+    {
+        nDataType = DATA_BASE64;
+    }
+
+    getBINFromString( &binSrc, nDataType, strInput );
+
+    pRes = (CK_BYTE *)JS_malloc( binSrc.nLen + 32 );
+    uResLen = binSrc.nLen + 32;
+
+    if( mEncryptRadio->isChecked() == true )
+        ret = JS_PKCS11_Encrypt( berApplet->getP11CTX(), binSrc.pVal, binSrc.nLen, pRes, &uResLen );
+    else
+        ret = JS_PKCS11_Decrypt( berApplet->getP11CTX(), binSrc.pVal, binSrc.nLen, pRes, &uResLen );
+
+    if( ret == CKR_OK) JS_BIN_set( &binOut, pRes, uResLen );
+
+    if( mOutputTypeCombo->currentIndex() == DATA_STRING )
+    {
+        JS_BIN_string( &binOut, &pOut );
+    }
+    else if( mOutputTypeCombo->currentIndex() == DATA_HEX )
+    {
+        JS_BIN_encodeHex( &binOut, &pOut );
+    }
+    else if( mOutputTypeCombo->currentIndex() == DATA_BASE64 )
+    {
+        JS_BIN_encodeBase64( &binOut, &pOut );
+    }
+
+    mOutputText->setPlainText( pOut );
+
+end :
+    JS_BIN_reset( &binSrc );
+    JS_BIN_reset( &binOut );
+    if( pRes ) JS_free( pRes );
+    if( pOut ) JS_free( pOut );
+
+    return ret;
+}
+
 int EncDecDlg::encDecInit()
 {
     int ret = -1;
@@ -686,9 +997,6 @@ int EncDecDlg::encDecInit()
         }
     }
 
-
-    mOutputText->clear();
-
     QString strInput = mInputText->toPlainText();
 
     if( mInputStringRadio->isChecked() )
@@ -703,113 +1011,124 @@ int EncDecDlg::encDecInit()
     }
 
     getBINFromString( &binSrc, nDataType, strInput );
-    getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
-    getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
 
-    bool bPad = mPadCheck->isChecked();
-    QString strSymAlg = getSymAlg( strAlg, strMode, binKey.nLen );
+    mOutputText->clear();
 
-    if( binKey.nLen < 16 )
+    if( strKey.contains( "HSM:") == true )
     {
-        berApplet->warningBox( tr( "Key length(%1) is incorrect" ).arg( binKey.nLen), this );
-        mKeyText->setFocus();
-        ret = -1;
-        goto end;
+        is_hsm_ = true;
+        ret = hsmEncDecInit();
     }
-
-    if( mAEADGroup->isChecked() )
+    else
     {
-        QString strAAD = mAADText->text();
+        getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
+        getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
 
-        getBINFromString( &binAAD, mAADTypeCombo->currentText(), strAAD );
+        bool bPad = mPadCheck->isChecked();
+        QString strSymAlg = getSymAlg( strAlg, strMode, binKey.nLen );
 
-        int nDataLen = mCCMDataLength->text().toInt();
-        if( nDataLen <= 0 )
+        if( binKey.nLen < 16 )
         {
-            nDataLen = binSrc.nLen;
-            mCCMDataLength->setText( QString("%1").arg( nDataLen ));
+            berApplet->warningBox( tr( "Key length(%1) is incorrect" ).arg( binKey.nLen), this );
+            mKeyText->setFocus();
+            ret = -1;
+            goto end;
         }
 
-        if( mEncryptRadio->isChecked() )
+        if( mAEADGroup->isChecked() )
         {
-            if( isCCM( strMode) )
-            {
-                int nReqTagLen = 0;
+            QString strAAD = mAADText->text();
 
-                if( strReqTagLen.length() < 1 )
+            getBINFromString( &binAAD, mAADTypeCombo->currentText(), strAAD );
+
+            int nDataLen = mCCMDataLength->text().toInt();
+            if( nDataLen <= 0 )
+            {
+                nDataLen = binSrc.nLen;
+                mCCMDataLength->setText( QString("%1").arg( nDataLen ));
+            }
+
+            if( mEncryptRadio->isChecked() )
+            {
+                if( isCCM( strMode) )
                 {
-                    berApplet->warnLog( tr("Please enter request tag length" ), this );
-                    goto end;
+                    int nReqTagLen = 0;
+
+                    if( strReqTagLen.length() < 1 )
+                    {
+                        berApplet->warnLog( tr("Please enter request tag length" ), this );
+                        goto end;
+                    }
+
+                    nReqTagLen = strReqTagLen.toInt();
+
+                    ret = JS_PKI_encryptCCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD, nReqTagLen, nDataLen );
+                }
+                else
+                {
+                    ret = JS_PKI_encryptGCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD );
                 }
 
-                nReqTagLen = strReqTagLen.toInt();
-
-                ret = JS_PKI_encryptCCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD, nReqTagLen, nDataLen );
+                if( ret == 0 )
+                {
+                    berApplet->log( "-- AE Encrypt Init" );
+                    berApplet->log( QString( "SymAlg  : %1").arg( strSymAlg ));
+                    berApplet->log( QString( "Enc Key : %1" ).arg( getHexString( &binKey )));
+                    berApplet->log( QString( "Enc IV  : %1" ).arg( getHexString( &binIV )));
+                    berApplet->log( QString( "Enc AAD : %1" ).arg( getHexString( &binAAD )));
+                }
             }
             else
             {
-                ret = JS_PKI_encryptGCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD );
-            }
+                if( isCCM( strMode ) )
+                {
+                    if( strTag.length() < 1 )
+                    {
+                        berApplet->warnLog( tr( "Please enter tag"), this );
+                        ret = -1;
+                        goto end;
+                    }
 
-            if( ret == 0 )
-            {
-                berApplet->log( "-- AE Encrypt Init" );
-                berApplet->log( QString( "SymAlg  : %1").arg( strSymAlg ));
-                berApplet->log( QString( "Enc Key : %1" ).arg( getHexString( &binKey )));
-                berApplet->log( QString( "Enc IV  : %1" ).arg( getHexString( &binIV )));
-                berApplet->log( QString( "Enc AAD : %1" ).arg( getHexString( &binAAD )));
+                    JS_BIN_decodeHex( strTag.toStdString().c_str(), &binTag );
+                    ret = JS_PKI_decryptCCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD, &binTag, nDataLen );
+                }
+                else
+                    ret = JS_PKI_decryptGCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD );
+
+                if( ret == 0 )
+                {
+                    berApplet->log( "-- AE Decrypt Init" );
+                    berApplet->log( QString( "SymAlg  : %1").arg( strSymAlg ));
+                    berApplet->log( QString( "Dec Key : %1" ).arg( getHexString( &binKey )));
+                    berApplet->log( QString( "Dec IV  : %1" ).arg( getHexString( &binIV )));
+                    berApplet->log( QString( "Dec AAD : %1" ).arg( getHexString( &binAAD )));
+                }
             }
         }
-        else
-        {
-            if( isCCM( strMode ) )
+        else {
+            if( mEncryptRadio->isChecked() )
             {
-                if( strTag.length() < 1 )
-                {
-                    berApplet->warnLog( tr( "Please enter tag"), this );
-                    ret = -1;
-                    goto end;
-                }
+                ret = JS_PKI_encryptInit( &ctx_, strSymAlg.toStdString().c_str(), bPad, &binIV, &binKey );
 
-                JS_BIN_decodeHex( strTag.toStdString().c_str(), &binTag );
-                ret = JS_PKI_decryptCCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD, &binTag, nDataLen );
+                if( ret == 0 )
+                {
+                    berApplet->log( "-- Encrypt Init" );
+                    berApplet->log( QString( "SymAlg  : %1").arg( strSymAlg ));
+                    berApplet->log( QString( "Enc Key : %1" ).arg( getHexString( &binKey )));
+                    berApplet->log( QString( "Enc IV  : %1" ).arg( getHexString( &binIV )));
+                }
             }
             else
-                ret = JS_PKI_decryptGCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD );
-
-            if( ret == 0 )
             {
-                berApplet->log( "-- AE Decrypt Init" );
-                berApplet->log( QString( "SymAlg  : %1").arg( strSymAlg ));
-                berApplet->log( QString( "Dec Key : %1" ).arg( getHexString( &binKey )));
-                berApplet->log( QString( "Dec IV  : %1" ).arg( getHexString( &binIV )));
-                berApplet->log( QString( "Dec AAD : %1" ).arg( getHexString( &binAAD )));
-            }
-        }
-    }
-    else {
-        if( mEncryptRadio->isChecked() )
-        {
-            ret = JS_PKI_encryptInit( &ctx_, strSymAlg.toStdString().c_str(), bPad, &binIV, &binKey );
+                ret = JS_PKI_decryptInit( &ctx_, strSymAlg.toStdString().c_str(), bPad, &binIV, &binKey );
 
-            if( ret == 0 )
-            {
-                berApplet->log( "-- Encrypt Init" );
-                berApplet->log( QString( "SymAlg  : %1").arg( strSymAlg ));
-                berApplet->log( QString( "Enc Key : %1" ).arg( getHexString( &binKey )));
-                berApplet->log( QString( "Enc IV  : %1" ).arg( getHexString( &binIV )));
-            }
-        }
-        else
-        {
-            ret = JS_PKI_decryptInit( &ctx_, strSymAlg.toStdString().c_str(), bPad, &binIV, &binKey );
-
-            if( ret == 0 )
-            {
-                berApplet->log( "-- Decrypt Init" );
-                berApplet->log( QString( "SymAlg  : %1").arg( strSymAlg ));
-                berApplet->log( QString( "Dec Key : %1" ).arg( getHexString( &binKey )));
-                berApplet->log( QString( "Dec IV  : %1" ).arg( getHexString( &binIV )));
+                if( ret == 0 )
+                {
+                    berApplet->log( "-- Decrypt Init" );
+                    berApplet->log( QString( "SymAlg  : %1").arg( strSymAlg ));
+                    berApplet->log( QString( "Dec Key : %1" ).arg( getHexString( &binKey )));
+                    berApplet->log( QString( "Dec IV  : %1" ).arg( getHexString( &binIV )));
+                }
             }
         }
     }
@@ -852,92 +1171,97 @@ int EncDecDlg::encDecUpdate()
 
     }
 
-    if( mInputStringRadio->isChecked() )
-        nDataType = DATA_STRING;
-    else if( mInputHexRadio->isChecked() )
+    if( is_hsm_ == true )
     {
-        nDataType = DATA_HEX;
+        ret = hsmEncDecUpdate();
     }
-    else if( mInputBase64Radio->isChecked() )
+    else
     {
-        nDataType = DATA_BASE64;
-    }
-
-    getBINFromString( &binSrc, nDataType, strInput );
-
-    QString strOut = mOutputText->toPlainText();
-
-    if( strOut.length() > 0 )
-    {
-        if( mOutputTypeCombo->currentIndex() == DATA_STRING )
-            JS_BIN_set( &binOut, (unsigned char *)strOut.toStdString().c_str(), strOut.length() );
-        else if( mOutputTypeCombo->currentIndex() == DATA_HEX )
-            JS_BIN_decodeHex( strOut.toStdString().c_str(), &binOut );
-        else if( mOutputTypeCombo->currentIndex() == DATA_BASE64 )
-            JS_BIN_decodeBase64( strOut.toStdString().c_str(), &binOut );
-    }
-
-    QString strAlg = mAlgCombo->currentText();
-    QString strMode = mModeCombo->currentText();
-
-    if( mAEADGroup->isChecked() )
-    {
-        if( mEncryptRadio->isChecked() )
+        if( mInputStringRadio->isChecked() )
+            nDataType = DATA_STRING;
+        else if( mInputHexRadio->isChecked() )
         {
-            if( isCCM(strMode) )
-                ret = JS_PKI_encryptCCMUpdate( ctx_, &binSrc, &binDst );
+            nDataType = DATA_HEX;
+        }
+        else if( mInputBase64Radio->isChecked() )
+        {
+            nDataType = DATA_BASE64;
+        }
+
+        getBINFromString( &binSrc, nDataType, strInput );
+
+        QString strOut = mOutputText->toPlainText();
+
+        if( strOut.length() > 0 )
+        {
+            if( mOutputTypeCombo->currentIndex() == DATA_STRING )
+                JS_BIN_set( &binOut, (unsigned char *)strOut.toStdString().c_str(), strOut.length() );
+            else if( mOutputTypeCombo->currentIndex() == DATA_HEX )
+                JS_BIN_decodeHex( strOut.toStdString().c_str(), &binOut );
+            else if( mOutputTypeCombo->currentIndex() == DATA_BASE64 )
+                JS_BIN_decodeBase64( strOut.toStdString().c_str(), &binOut );
+        }
+
+        QString strAlg = mAlgCombo->currentText();
+        QString strMode = mModeCombo->currentText();
+
+        if( mAEADGroup->isChecked() )
+        {
+            if( mEncryptRadio->isChecked() )
+            {
+                if( isCCM(strMode) )
+                    ret = JS_PKI_encryptCCMUpdate( ctx_, &binSrc, &binDst );
+                else
+                    ret = JS_PKI_encryptGCMUpdate( ctx_, &binSrc, &binDst );
+
+                if( ret == 0 )
+                {
+                    berApplet->log( "-- AE Encrypt Update" );
+                    berApplet->log( QString( "Enc Src    : %1" ).arg( getHexString( &binSrc )));
+                    berApplet->log( QString( "Enc Output : %1" ).arg( getHexString( &binDst )));
+                }
+            }
             else
-                ret = JS_PKI_encryptGCMUpdate( ctx_, &binSrc, &binDst );
-
-            if( ret == 0 )
             {
-                berApplet->log( "-- AE Encrypt Update" );
-                berApplet->log( QString( "Enc Src    : %1" ).arg( getHexString( &binSrc )));
-                berApplet->log( QString( "Enc Output : %1" ).arg( getHexString( &binDst )));
+                if( isCCM(strMode))
+                    ret = JS_PKI_decryptCCMUpdate( ctx_, &binSrc, &binDst );
+                else
+                    ret = JS_PKI_decryptGCMUpdate( ctx_, &binSrc, &binDst );
+
+                if( ret == 0 )
+                {
+                    berApplet->log( "-- AE Decrypt Update" );
+                    berApplet->log( QString( "Dec Src    : %1" ).arg( getHexString( &binSrc )));
+                    berApplet->log( QString( "Dec Output : %1" ).arg( getHexString( &binDst )));
+                }
             }
+
+
         }
-        else
-        {
-            if( isCCM(strMode))
-                ret = JS_PKI_decryptCCMUpdate( ctx_, &binSrc, &binDst );
+        else {
+            if( mEncryptRadio->isChecked() )
+            {
+                ret = JS_PKI_encryptUpdate( ctx_, &binSrc, &binDst );
+
+                if( ret == 0 )
+                {
+                    berApplet->log( "-- Encrypt Update");
+                    berApplet->log( QString( "Enc Src    : %1" ).arg( getHexString( &binSrc )));
+                    berApplet->log( QString( "Enc Output : %1" ).arg( getHexString( &binDst )));
+                }
+            }
             else
-                ret = JS_PKI_decryptGCMUpdate( ctx_, &binSrc, &binDst );
-
-            if( ret == 0 )
             {
-                berApplet->log( "-- AE Decrypt Update" );
-                berApplet->log( QString( "Dec Src    : %1" ).arg( getHexString( &binSrc )));
-                berApplet->log( QString( "Dec Output : %1" ).arg( getHexString( &binDst )));
+                ret = JS_PKI_decryptUpdate( ctx_, &binSrc, &binDst );
+
+                if( ret == 0 )
+                {
+                    berApplet->log( "-- Decrypt Update");
+                    berApplet->log( QString( "Dec Src    : %1" ).arg( getHexString( &binSrc )));
+                    berApplet->log( QString( "Dec Output : %1" ).arg( getHexString( &binDst )));
+                }
             }
         }
-
-
-    }
-    else {
-        if( mEncryptRadio->isChecked() )
-        {
-            ret = JS_PKI_encryptUpdate( ctx_, &binSrc, &binDst );
-
-            if( ret == 0 )
-            {
-                berApplet->log( "-- Encrypt Update");
-                berApplet->log( QString( "Enc Src    : %1" ).arg( getHexString( &binSrc )));
-                berApplet->log( QString( "Enc Output : %1" ).arg( getHexString( &binDst )));
-            }
-        }
-        else
-        {
-            ret = JS_PKI_decryptUpdate( ctx_, &binSrc, &binDst );
-
-            if( ret == 0 )
-            {
-                berApplet->log( "-- Decrypt Update");
-                berApplet->log( QString( "Dec Src    : %1" ).arg( getHexString( &binSrc )));
-                berApplet->log( QString( "Dec Output : %1" ).arg( getHexString( &binDst )));
-            }
-        }
-
-
     }
 
     if( ret == 0 )
@@ -971,135 +1295,142 @@ int EncDecDlg::encDecFinal()
     BIN binDst = {0,0};
     BIN binTag = {0,0};
 
-    QString strOut = mOutputText->toPlainText();
-
-    if( mInputTab->currentIndex() == 0 && strOut.length() > 0 )
+    if( is_hsm_ == true )
     {
-        if( mOutputTypeCombo->currentIndex() == DATA_STRING )
-            JS_BIN_set( &binOut, (unsigned char *)strOut.toStdString().c_str(), strOut.length() );
-        else if( mOutputTypeCombo->currentIndex() == DATA_HEX )
-            JS_BIN_decodeHex( strOut.toStdString().c_str(), &binOut );
-        else if( mOutputTypeCombo->currentIndex() == DATA_BASE64 )
-            JS_BIN_decodeBase64( strOut.toStdString().c_str(), &binOut );
+        ret = hsmEncDecFinal();
     }
-
-    QString strAlg = mAlgCombo->currentText();
-    QString strMode = mModeCombo->currentText();
-
-    if( mAEADGroup->isChecked() )
+    else
     {
-        int nReqTagLen = mReqTagLenText->text().toInt();
+        QString strOut = mOutputText->toPlainText();
 
-        if( mEncryptRadio->isChecked() )
+        if( mInputTab->currentIndex() == 0 && strOut.length() > 0 )
         {
-            if( isCCM(strMode) )
-                ret = JS_PKI_encryptCCMFinal( ctx_, &binDst, nReqTagLen, &binTag );
-            else
-                ret = JS_PKI_encryptGCMFinal( ctx_, &binDst, nReqTagLen, &binTag );
+            if( mOutputTypeCombo->currentIndex() == DATA_STRING )
+                JS_BIN_set( &binOut, (unsigned char *)strOut.toStdString().c_str(), strOut.length() );
+            else if( mOutputTypeCombo->currentIndex() == DATA_HEX )
+                JS_BIN_decodeHex( strOut.toStdString().c_str(), &binOut );
+            else if( mOutputTypeCombo->currentIndex() == DATA_BASE64 )
+                JS_BIN_decodeBase64( strOut.toStdString().c_str(), &binOut );
+        }
 
-            if( binTag.nLen > 0 )
+        QString strAlg = mAlgCombo->currentText();
+        QString strMode = mModeCombo->currentText();
+
+        if( mAEADGroup->isChecked() )
+        {
+            int nReqTagLen = mReqTagLenText->text().toInt();
+
+            if( mEncryptRadio->isChecked() )
             {
-                char *pTag = NULL;
-                JS_BIN_encodeHex( &binTag, &pTag );
-                if( pTag )
+                if( isCCM(strMode) )
+                    ret = JS_PKI_encryptCCMFinal( ctx_, &binDst, nReqTagLen, &binTag );
+                else
+                    ret = JS_PKI_encryptGCMFinal( ctx_, &binDst, nReqTagLen, &binTag );
+
+                if( binTag.nLen > 0 )
                 {
-                    mTagText->setText( pTag );
-                    JS_free( pTag );
+                    char *pTag = NULL;
+                    JS_BIN_encodeHex( &binTag, &pTag );
+                    if( pTag )
+                    {
+                        mTagText->setText( pTag );
+                        JS_free( pTag );
+                    }
+                }
+
+                if( ret == 0 )
+                {
+                    berApplet->log( "-- AE Encrypt Final" );
+                    berApplet->log( QString( "ReqTagLen  : %1").arg( nReqTagLen ));
+                    berApplet->log( QString( "Enc Tag    : %1" ).arg( getHexString( &binTag )));
+                    berApplet->log( QString( "Enc Output : %1" ).arg(getHexString( &binDst )));
                 }
             }
-
-            if( ret == 0 )
-            {
-                berApplet->log( "-- AE Encrypt Final" );
-                berApplet->log( QString( "ReqTagLen  : %1").arg( nReqTagLen ));
-                berApplet->log( QString( "Enc Tag    : %1" ).arg( getHexString( &binTag )));
-                berApplet->log( QString( "Enc Output : %1" ).arg(getHexString( &binDst )));
-            }
-        }
-        else
-        {
-            QString strTag = mTagText->text();
-
-            if( mTagTypeCombo->currentIndex() == DATA_STRING )
-                JS_BIN_set( &binTag, (unsigned char *)strTag.toStdString().c_str(), strTag.length() );
-            else if( mTagTypeCombo->currentIndex() == DATA_HEX )
-                JS_BIN_decodeHex( strTag.toStdString().c_str(), &binTag );
-            else if( mTagTypeCombo->currentIndex() == DATA_BASE64 )
-                JS_BIN_decodeBase64( strTag.toStdString().c_str(), &binTag );
-
-            if( isCCM(strMode) )
-                ret = JS_PKI_decryptCCMFinal( ctx_, &binDst );
             else
-                ret = JS_PKI_decryptGCMFinal( ctx_, &binTag, &binDst );
-
-            if( ret == 0 )
             {
-                berApplet->log( "-- AE Decrypt Final" );
-                berApplet->log( QString( "Dec Tag    : %1" ).arg( getHexString( &binTag )));
-                berApplet->log( QString( "Final Output : %1" ).arg(getHexString( &binDst )));
+                QString strTag = mTagText->text();
+
+                if( mTagTypeCombo->currentIndex() == DATA_STRING )
+                    JS_BIN_set( &binTag, (unsigned char *)strTag.toStdString().c_str(), strTag.length() );
+                else if( mTagTypeCombo->currentIndex() == DATA_HEX )
+                    JS_BIN_decodeHex( strTag.toStdString().c_str(), &binTag );
+                else if( mTagTypeCombo->currentIndex() == DATA_BASE64 )
+                    JS_BIN_decodeBase64( strTag.toStdString().c_str(), &binTag );
+
+                if( isCCM(strMode) )
+                    ret = JS_PKI_decryptCCMFinal( ctx_, &binDst );
+                else
+                    ret = JS_PKI_decryptGCMFinal( ctx_, &binTag, &binDst );
+
+                if( ret == 0 )
+                {
+                    berApplet->log( "-- AE Decrypt Final" );
+                    berApplet->log( QString( "Dec Tag    : %1" ).arg( getHexString( &binTag )));
+                    berApplet->log( QString( "Final Output : %1" ).arg(getHexString( &binDst )));
+                }
             }
         }
-    }
-    else {
-        if( mEncryptRadio->isChecked() )
-        {
-            ret = JS_PKI_encryptFinal( ctx_, &binDst );
-            JS_PKI_encryptFree( &ctx_ );
-
-            if( ret == 0 )
+        else {
+            if( mEncryptRadio->isChecked() )
             {
-                berApplet->log( "-- Encrypt Final" );
-                berApplet->log( QString( "Enc Tag    : %1" ).arg( getHexString( &binTag )));
-                berApplet->log( QString( "Enc Output : %1" ).arg(getHexString( &binDst )));
-            }
+                ret = JS_PKI_encryptFinal( ctx_, &binDst );
+                JS_PKI_encryptFree( &ctx_ );
 
-            berApplet->log( QString( "Final encryption result : %1" ).arg(getHexString( &binDst )));
+                if( ret == 0 )
+                {
+                    berApplet->log( "-- Encrypt Final" );
+                    berApplet->log( QString( "Enc Tag    : %1" ).arg( getHexString( &binTag )));
+                    berApplet->log( QString( "Enc Output : %1" ).arg(getHexString( &binDst )));
+                }
+
+                berApplet->log( QString( "Final encryption result : %1" ).arg(getHexString( &binDst )));
+            }
+            else
+            {
+                ret = JS_PKI_decryptFinal( ctx_, &binDst );
+                JS_PKI_decryptFree( &ctx_ );
+
+                berApplet->log( QString( "Final decryption result : %1" ).arg(getHexString( &binDst )));
+
+                if( ret == 0 )
+                {
+                    berApplet->log( "-- Decrypt Final" );
+                    berApplet->log( QString( "Final Output : %1" ).arg(getHexString( &binDst )));
+                }
+            }
         }
-        else
+
+        berApplet->log( QString( "final length : %1").arg( binDst.nLen ));
+
+        if( binDst.nLen > 0 )
         {
-            ret = JS_PKI_decryptFinal( ctx_, &binDst );
-            JS_PKI_decryptFree( &ctx_ );
-
-            berApplet->log( QString( "Final decryption result : %1" ).arg(getHexString( &binDst )));
-
-            if( ret == 0 )
+            if( mInputTab->currentIndex() == 0 )
             {
-                berApplet->log( "-- Decrypt Final" );
-                berApplet->log( QString( "Final Output : %1" ).arg(getHexString( &binDst )));
+                JS_BIN_appendBin( &binOut, &binDst );
+                char *pOut = NULL;
+
+                if( mOutputTypeCombo->currentIndex() == DATA_STRING )
+                {
+                    JS_BIN_string( &binOut, &pOut );
+                }
+                else if( mOutputTypeCombo->currentIndex() == DATA_HEX )
+                {
+                    JS_BIN_encodeHex( &binOut, &pOut );
+                }
+                else if( mOutputTypeCombo->currentIndex() == DATA_BASE64 )
+                {
+                    JS_BIN_encodeBase64( &binOut, &pOut );
+                }
+
+                mOutputText->setPlainText( pOut );
+
+                if( pOut ) JS_free(pOut);
             }
-        }
-    }
-
-    berApplet->log( QString( "final length : %1").arg( binDst.nLen ));
-
-    if( binDst.nLen > 0 )
-    {
-        if( mInputTab->currentIndex() == 0 )
-        {
-            JS_BIN_appendBin( &binOut, &binDst );
-            char *pOut = NULL;
-
-            if( mOutputTypeCombo->currentIndex() == DATA_STRING )
+            else
             {
-                JS_BIN_string( &binOut, &pOut );
+                QString strDstPath = mDstFileText->text();
+                JS_BIN_fileAppend( &binDst, strDstPath.toLocal8Bit().toStdString().c_str() );
             }
-            else if( mOutputTypeCombo->currentIndex() == DATA_HEX )
-            {
-                JS_BIN_encodeHex( &binOut, &pOut );
-            }
-            else if( mOutputTypeCombo->currentIndex() == DATA_BASE64 )
-            {
-                JS_BIN_encodeBase64( &binOut, &pOut );
-            }
-
-            mOutputText->setPlainText( pOut );
-
-            if( pOut ) JS_free(pOut);
-        }
-        else
-        {
-            QString strDstPath = mDstFileText->text();
-            JS_BIN_fileAppend( &binDst, strDstPath.toLocal8Bit().toStdString().c_str() );
         }
     }
 
@@ -1145,7 +1476,7 @@ bool EncDecDlg::isCCM( const QString strMode )
     return false;
 }
 
-long EncDecDlg::getEncMech()
+long EncDecDlg::getP11EncMech()
 {
     QString strAlg = mAlgCombo->currentText();
     QString strMode = mModeCombo->currentText();
@@ -1155,7 +1486,7 @@ long EncDecDlg::getEncMech()
     {
         if( strMode == "ECB" )
             return CKM_AES_ECB;
-        else if( strAlg == "CBC" )
+        else if( strMode == "CBC" )
         {
             if( bPad == true )
                 return CKM_AES_CBC_PAD;
@@ -1163,18 +1494,22 @@ long EncDecDlg::getEncMech()
                 return CKM_AES_CBC;
             }
         }
-        else if( strAlg == "CTR" )
+        else if( strMode == "CTR" )
             return CKM_AES_CTR;
-        else if( strAlg == "CFB" )
+        else if( strMode == "CFB" )
             return CKM_AES_CFB128;
-        else if( strAlg == "OFB" )
+        else if( strMode == "OFB" )
             return CKM_AES_OFB;
+        else if( strMode == "GCM" )
+            return CKM_AES_GCM;
+        else if( strMode == "CCM" )
+            return CKM_AES_CCM;
     }
     else if( strAlg == "ARIA" )
     {
         if( strMode == "ECB" )
             return CKM_ARIA_ECB;
-        else if( strAlg == "CBC" )
+        else if( strMode == "CBC" )
         {
             if( bPad == true )
                 return CKM_ARIA_CBC_PAD;
@@ -1187,7 +1522,7 @@ long EncDecDlg::getEncMech()
     {
         if( strMode == "ECB" )
             return CKM_SEED_ECB;
-        else if( strAlg == "CBC" )
+        else if( strMode == "CBC" )
         {
             if( bPad == true )
                 return CKM_SEED_CBC_PAD;
@@ -1200,7 +1535,7 @@ long EncDecDlg::getEncMech()
     {
         if( strMode == "ECB" )
             return CKM_DES3_ECB;
-        else if( strAlg == "CBC" )
+        else if( strMode == "CBC" )
         {
             if( bPad == true )
                 return CKM_DES3_CBC_PAD;
@@ -1416,7 +1751,10 @@ void EncDecDlg::startTask()
     connect( thread_, &EncDecThread::taskFinished, this, &EncDecDlg::onTaskFinished);
     connect( thread_, &EncDecThread::taskUpdate, this, &EncDecDlg::onTaskUpdate);
 
-    thread_->setCTX( false, ctx_ );
+    if( is_hsm_ == true )
+        thread_->setCTX( true, berApplet->getP11CTX() );
+    else
+        thread_->setCTX( false, ctx_ );
 
     thread_->setMethod( mEncryptRadio->isChecked() ? false : true );
     thread_->setMode( mModeCombo->currentText() );

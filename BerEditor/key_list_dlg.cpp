@@ -309,7 +309,7 @@ void KeyListDlg::loadHsmKeyList()
         QTableWidgetItem *item = new QTableWidgetItem( record.getLabel() );
         item->setIcon(QIcon(":/images/key.png" ));
 
-        QString strData = QString( "HSM:%1:%2" ).arg( record.getID() ).arg( record.getKeyType());
+        QString strData = QString( "HSM:%1:SECRET:%2" ).arg( record.getKeyType()).arg( record.getID() );
         item->setData( Qt::UserRole, strData );
 
         mKeyTable->setItem( row, 0, item );

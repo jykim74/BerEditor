@@ -11,8 +11,8 @@ public:
     SignVerifyThread();
     ~SignVerifyThread();
 
-    void setSignCTX( void *pCTX );
-    void setVeify( bool bVerify );
+    void setSignCTX( bool bHSM, void *pCTX );
+    void setVerify( bool bVerify );
     void setSrcFile( const QString strSrcFile );
 
 signals:
@@ -25,7 +25,7 @@ protected:
 private:
     void *sctx_;
     bool is_verify_;
-
+    bool is_hsm_;
     QString src_file_;
 };
 
