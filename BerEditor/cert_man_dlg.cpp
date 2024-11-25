@@ -1093,9 +1093,17 @@ int CertManDlg::writePriKeyCert( const BIN *pEncPriKey, const BIN *pCert )
     strPath += "/";
     strPath += sCertInfo.pSubjectName;
 
+    if( dir.exists( strPath ) == true )
+    {
+        berApplet->elog( QString( "the path(%1) is already exist").arg( strPath ) );
+        ret = JSR_ERR;
+        goto end;
+    }
+
     if( dir.mkdir( strPath ) == false )
     {
         berApplet->elog( QString( "fail to make path: %1").arg( strPath ) );
+        ret = JSR_ERR2;
         goto end;
     }
 
@@ -1106,10 +1114,11 @@ int CertManDlg::writePriKeyCert( const BIN *pEncPriKey, const BIN *pCert )
     JS_BIN_writePEM( pEncPriKey, JS_PEM_TYPE_ENCRYPTED_PRIVATE_KEY, strPriPath.toLocal8Bit().toStdString().c_str() );
 
     loadEEList();
+    ret = 0;
 
 end :
     JS_PKI_resetCertInfo( &sCertInfo );
-    return 0;
+    return ret;
 }
 
 int CertManDlg::changePriKey( const BIN *pNewEncPriKey )
@@ -1800,6 +1809,10 @@ void CertManDlg::clickImport()
         berApplet->messageLog( tr( "The private key and certificate are saved successfully"), this );
         mHsmCheck->setChecked(false);
         loadEEList();
+    }
+    else
+    {
+        berApplet->warnLog( tr( "fail to write private key and certificate: %1").arg(ret), this );
     }
 
 end :

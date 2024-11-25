@@ -982,9 +982,18 @@ int EncDecDlg::encDecInit()
             }
         }
 
+<<<<<<< HEAD
         berApplet->warningBox( tr( "Please enter a key value" ), this );
         mKeyText->setFocus();
         return -1;
+=======
+        if( strKey.isEmpty() )
+        {
+            berApplet->warningBox( tr( "Please enter a key value" ), this );
+            mKeyText->setFocus();
+            return -1;
+        }
+>>>>>>> master
     }
 
     if( strMode != "ECB" )
