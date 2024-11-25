@@ -646,9 +646,35 @@ int EncDecDlg::encDecInit()
 
     if( strKey.isEmpty() )
     {
-        berApplet->warningBox( tr( "Please enter a key value" ), this );
-        mKeyText->setFocus();
-        return -1;
+        KeyListDlg keyList;
+        keyList.setTitle( tr( "Select symmetric key" ));
+
+        if( keyList.exec() == QDialog::Accepted )
+        {
+            QString strData = keyList.getData();
+            QStringList keyIV = strData.split(":");
+
+            if( keyIV.size() > 0 )
+            {
+                mKeyTypeCombo->setCurrentText( "Hex" );
+                strKey = keyIV.at(0);
+                mKeyText->setText( strKey );
+            }
+
+            if( keyIV.size() > 1 )
+            {
+                mIVTypeCombo->setCurrentText( "Hex" );
+                strIV = keyIV.at(1);
+                mIVText->setText( strIV );
+            }
+        }
+
+        if( strKey.isEmpty() )
+        {
+            berApplet->warningBox( tr( "Please enter a key value" ), this );
+            mKeyText->setFocus();
+            return -1;
+        }
     }
 
     if( strMode != "ECB" )
