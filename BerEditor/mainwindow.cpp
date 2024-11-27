@@ -1975,7 +1975,7 @@ void MainWindow::info( const QString strLog, QColor cr )
     cursor.insertText( strLog );
 
     info_text_->setTextCursor( cursor );
-    info_text_->repaint();
+    info_text_->update();
 }
 
 void MainWindow::infoClear()
