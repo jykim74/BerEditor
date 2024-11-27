@@ -117,6 +117,11 @@ void GenMacDlg::appendStatusLabel( const QString strLabel )
     mStatusLabel->setText( strStatus );
 }
 
+void GenMacDlg::updateStatusLabel()
+{
+    mStatusLabel->setText( QString( "Init|Update X %1").arg( update_cnt_));
+}
+
 void GenMacDlg::freeCTX()
 {
     if( hctx_ )
@@ -305,7 +310,8 @@ void GenMacDlg::macUpdate()
 
     if( ret == 0 )
     {
-        appendStatusLabel( "|Update OK" );
+        update_cnt_++;
+        updateStatusLabel();
     }
     else
         mStatusLabel->setText( QString("Update failure [%1]").arg(ret) );

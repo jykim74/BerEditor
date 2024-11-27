@@ -48,6 +48,7 @@ private slots:
 private:
     void initialize();
     void appendStatusLabel( const QString& strLabel );
+    void updateStatusLabel();
 
     int update_cnt_;
     void *pctx_;

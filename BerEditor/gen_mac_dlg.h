@@ -60,6 +60,8 @@ private:
 
         void initialize();
         void appendStatusLabel( const QString strLabel );
+        void updateStatusLabel();
+
         void *hctx_;
         int type_;
         int update_cnt_;

@@ -61,6 +61,8 @@ private slots:
 private:
     void initialize();
     void appendStatusLabel( const QString& strLabel );
+    void updateStatusLabel();
+
     bool isCCM( const QString strAlg );
     void *ctx_;
     int update_cnt_;

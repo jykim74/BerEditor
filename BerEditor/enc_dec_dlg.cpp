@@ -132,6 +132,11 @@ void EncDecDlg::appendStatusLabel( const QString& strLabel )
     mStatusLabel->setText( strStatus );
 }
 
+void EncDecDlg::updateStatusLabel()
+{
+    mStatusLabel->setText( QString( "Init|Update X %1").arg( update_cnt_));
+}
+
 void EncDecDlg::showEvent( QShowEvent *event )
 {
 
@@ -948,7 +953,8 @@ int EncDecDlg::encDecUpdate()
         QString strOut = getStringFromBIN( &binOut, mOutputTypeCombo->currentText() );
         mOutputText->setPlainText( strOut );
 
-        appendStatusLabel( "|Update OK" );
+        update_cnt_++;
+        updateStatusLabel();
     }
     else
     {

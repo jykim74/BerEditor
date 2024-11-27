@@ -84,6 +84,12 @@ void GenHashDlg::appendStatusLabel( const QString& strLabel )
     mStatusLabel->setText( strStatus );
 }
 
+void GenHashDlg::updateStatusLabel()
+{
+    mStatusLabel->setText( QString( "Init|Update X %1").arg( update_cnt_));
+}
+
+
 int GenHashDlg::hashInit()
 {
     int ret = 0;
@@ -146,7 +152,7 @@ void GenHashDlg::hashUpdate()
     {
         update_cnt_++;
         berApplet->log( QString( "Update input : %1" ).arg( getHexString(&binSrc)));
-        appendStatusLabel( "|Update OK" );
+        updateStatusLabel();
     }
     else
         mStatusLabel->setText( QString("Update failed [%1]").arg(ret) );

@@ -414,6 +414,11 @@ void SignVerifyDlg::appendStatusLabel( const QString& strLabel )
     mStatusLabel->setText( strStatus );
 }
 
+void SignVerifyDlg::updateStatusLabel()
+{
+    mStatusLabel->setText( QString( "Init|Update X %1").arg( update_cnt_));
+}
+
 void SignVerifyDlg::checkPubKeyVerify()
 {
     bool bVal = mPubKeyVerifyCheck->isChecked();
@@ -685,7 +690,8 @@ void SignVerifyDlg::signVerifyUpdate()
 
     if( ret == 0 )
     {
-        appendStatusLabel( "|Update OK" );
+        update_cnt_++;
+        updateStatusLabel();
     }
     else
     {

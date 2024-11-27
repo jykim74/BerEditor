@@ -76,6 +76,7 @@ public slots:
 private:
     void initialize();
     void appendStatusLabel( const QString& strLabel );
+    void updateStatusLabel();
     int readPrivateKey( BIN *pPriKey );
 
     int getPrivateKey( BIN *pPriKey, int *pnType );
