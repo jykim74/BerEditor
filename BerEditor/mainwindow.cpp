@@ -1956,7 +1956,7 @@ void MainWindow::log( const QString strLog, QColor cr )
     cursor.insertText( "\n" );
 
     log_text_->setTextCursor( cursor );
-    log_text_->update();
+    log_text_->repaint();
 }
 
 void MainWindow::elog( const QString strLog )
@@ -1975,7 +1975,7 @@ void MainWindow::info( const QString strLog, QColor cr )
     cursor.insertText( strLog );
 
     info_text_->setTextCursor( cursor );
-    info_text_->update();
+    info_text_->repaint();
 }
 
 void MainWindow::infoClear()

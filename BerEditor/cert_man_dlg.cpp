@@ -1003,7 +1003,7 @@ int CertManDlg::writePriKeyCert( const BIN *pEncPriKey, const BIN *pCert )
     JS_BIN_writePEM( pCert, JS_PEM_TYPE_CERTIFICATE, strCertPath.toLocal8Bit().toStdString().c_str() );
     JS_BIN_writePEM( pEncPriKey, JS_PEM_TYPE_ENCRYPTED_PRIVATE_KEY, strPriPath.toLocal8Bit().toStdString().c_str() );
 
-    loadEEList();
+
     ret = 0;
 
 end :
@@ -1439,6 +1439,7 @@ void CertManDlg::clickImport()
     ret = writePriKeyCert( &binEncPri, &binCert );
     if( ret == 0 )
     {
+        loadEEList();
         berApplet->messageLog( tr( "The private key and certificate are saved successfully"), this );
     }
     else
@@ -3066,6 +3067,7 @@ void CertManDlg::clickTLSavePFX()
     ret = writePriKeyCert( &binEncPri, &binCert );
     if( ret == 0 )
     {
+        loadEEList();
         berApplet->messageLog( tr( "The private key and certificate are saved successfully"), this );
     }
 
