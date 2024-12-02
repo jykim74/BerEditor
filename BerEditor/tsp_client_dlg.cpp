@@ -98,7 +98,7 @@ void TSPClientDlg::initialize()
     mHashCombo->addItems( kHashList );
     mHashCombo->setCurrentText( setMgr->defaultHash() );
 
-    mPolicyText->setText( "1.2.3.4" );
+    mPolicyText->setPlaceholderText( "1.2.3.4" );
 }
 
 QStringList TSPClientDlg::getUsedURL()
@@ -415,6 +415,7 @@ void TSPClientDlg::clickEncode()
     QString strHash = mHashCombo->currentText();
     QString strInput = mInputText->toPlainText();
     QString strPolicy = mPolicyText->text();
+    const char *pPolicy = NULL;
 
     if( strInput.length() < 1 )
     {
@@ -422,17 +423,19 @@ void TSPClientDlg::clickEncode()
         mInputText->setFocus();
         return;
     }
-
+/*
     if( strPolicy.length() < 1 )
     {
         berApplet->warningBox( tr( "Insert policy OID" ), this );
         mPolicyText->setFocus();
         return;
     }
-
+*/
     getBINFromString( &binInput, mInputTypeCombo->currentText(), strInput );
 
-    ret = JS_TSP_encodeRequest( &binInput, strHash.toStdString().c_str(), strPolicy.toStdString().c_str(), &binReq );
+    if( strPolicy.length() > 0 ) pPolicy = strPolicy.toStdString().c_str();
+
+    ret = JS_TSP_encodeRequest( &binInput, strHash.toStdString().c_str(), pPolicy, &binReq );
     if( ret != 0 )
     {
         berApplet->elog( QString("failed to encode TSP request [%1]").arg( ret ));
