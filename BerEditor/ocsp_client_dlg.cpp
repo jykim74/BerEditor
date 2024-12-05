@@ -908,7 +908,7 @@ void OCSPClientDlg::clickEncode()
     ret = getDataFromURI( strCAPath, &binCA );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to get CA"), this );
+        berApplet->warningBox( tr( "fail to get CA: %1").arg(ret), this );
         goto end;
     }
 
