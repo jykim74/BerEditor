@@ -1067,6 +1067,26 @@ const QString CertManDlg::getSeletedCertPath()
     return strPath;
 }
 
+const QString CertManDlg::getSelectedPriPath()
+{
+    QString strPath;
+    int nTabIdx = mTabWidget->currentIndex();
+
+    if( nTabIdx == TAB_EE_IDX )
+    {
+        QModelIndex idx = mEE_CertTable->currentIndex();
+        QTableWidgetItem* item = mEE_CertTable->item( idx.row(), 0 );
+
+        if( item )
+        {
+            QString strDir = item->data(Qt::UserRole).toString();
+            strPath = QString( "%1/%2").arg( strDir ).arg( kPriKeyFile );
+        }
+    }
+
+    return strPath;
+}
+
 const QString CertManDlg::getSeletedCAPath()
 {
     QString strPath;

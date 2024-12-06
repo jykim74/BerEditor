@@ -52,6 +52,7 @@ public:
     int writePriKeyCert( const BIN *pEncPriKey, const BIN *pCert );
     const QString getSeletedPath();
     const QString getSeletedCertPath();
+    const QString getSelectedPriPath();
     const QString getSeletedCAPath();
     const QString getSeletedCRLPath();
 
