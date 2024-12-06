@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>482</width>
-    <height>614</height>
+    <height>653</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -343,7 +343,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Encrypted Sign PrivateKey</string>
+           <string>Encrypted PrivateKey</string>
           </property>
          </widget>
         </item>
@@ -532,7 +532,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Encrypted KM PrivateKey</string>
+           <string>Encrypted PrivateKey</string>
           </property>
          </widget>
         </item>
