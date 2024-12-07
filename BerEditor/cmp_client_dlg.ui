@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>518</width>
-    <height>691</height>
+    <width>524</width>
+    <height>883</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -305,26 +305,6 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="3">
-      <widget class="QLineEdit" name="mRefNumText"/>
-     </item>
-     <item row="0" column="2">
-      <widget class="QLabel" name="mRefNumLabel">
-       <property name="text">
-        <string>Referrence Number</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="mAuthCodeText"/>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_8">
-       <property name="text">
-        <string>Authorization Code</string>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_10">
        <property name="text">
@@ -334,6 +314,26 @@
      </item>
      <item row="1" column="1" colspan="3">
       <widget class="QLineEdit" name="mSubjectDNText"/>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>Auth Code</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="mRefNumLabel">
+       <property name="text">
+        <string>Ref Num</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="mRefNumText"/>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLineEdit" name="mAuthCodeText"/>
      </item>
     </layout>
    </item>
@@ -804,8 +804,6 @@
   <tabstop>mCertTypeBtn</tabstop>
   <tabstop>mEncPriKeyCheck</tabstop>
   <tabstop>mPasswdText</tabstop>
-  <tabstop>mAuthCodeText</tabstop>
-  <tabstop>mRefNumText</tabstop>
   <tabstop>mSubjectDNText</tabstop>
   <tabstop>mRegInfoText</tabstop>
   <tabstop>mRegInfoClearBtn</tabstop>
