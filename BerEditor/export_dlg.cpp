@@ -264,20 +264,10 @@ void ExportDlg::clickOK()
 
 void ExportDlg::clickFindFilename()
 {
-    int nType = JS_FILE_TYPE_BIN;
-
-    if( data_type_ == DataPriKey )
-        nType = JS_FILE_TYPE_PRIKEY_PKCS8_PFX;
-    else if( data_type_ == DataCert )
-        nType = JS_FILE_TYPE_CERT;
-    else if( data_type_ == DataCRL )
-        nType = JS_FILE_TYPE_CRL;
-    else if( data_type_ == DataCSR )
-        nType = JS_FILE_TYPE_CSR;
-
     QString strPath = berApplet->curFilePath( mFilenameText->text() );
+    QString strFilter = mFormatCombo->currentText();
+    QString strFilename = findSaveFile( this, strFilter, strPath );
 
-    QString strFilename = findSaveFile( this, nType, strPath );
     if( strFilename.length() < 1 ) return;
 
     mFilenameText->setText( strFilename );

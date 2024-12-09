@@ -305,6 +305,33 @@ QString findSaveFile( QWidget *parent, int nType, const QString strPath )
     return fileName;
 };
 
+QString findSaveFile( QWidget *parent, const QString strFilter, const QString strPath )
+{
+    QString strCurPath;
+
+    QFileDialog::Options options;
+    options |= QFileDialog::DontUseNativeDialog;
+
+    if( strPath.length() <= 0 )
+        strCurPath = QDir::currentPath();
+    else
+        strCurPath = strPath;
+
+    //    QString strPath = QDir::currentPath();
+
+    QString strFileType;
+    QString selectedFilter;
+
+    QString fileName = QFileDialog::getSaveFileName( parent,
+                                                    QObject::tr( "Save %1" ).arg( strFileType ),
+                                                    strCurPath,
+                                                    strFilter,
+                                                    &selectedFilter,
+                                                    options );
+
+    return fileName;
+}
+
 QString findFolder( QWidget *parent, const QString strPath )
 {
     QFileDialog::Options options;

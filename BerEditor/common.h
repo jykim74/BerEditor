@@ -208,6 +208,7 @@ const QString GetSystemID();
 QString findFile( QWidget *parent, int nType, const QString strPath );
 QString findFile( QWidget *parent, int nType, const QString strPath, QString& strSelected );
 QString findSaveFile( QWidget *parent, int nType, const QString strPath );
+QString findSaveFile( QWidget *parent, const QString strFilter, const QString strPath );
 QString findFolder( QWidget *parent, const QString strPath );
 
 int setOIDList( const QString& strOIDPath );
