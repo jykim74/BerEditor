@@ -551,17 +551,17 @@ void CMPClientDlg::clickGENM()
     QString strAuth = mAuthCodeText->text();
     QString strRef = mRefNumText->text();
 
-    if( strAuth.length() < 1 )
-    {
-        berApplet->warningBox(tr("Enter Authorization Code"), this );
-        mAuthCodeText->setFocus();
-        return;
-    }
-
     if( strRef.length() < 1 )
     {
         berApplet->warningBox(tr("Enter Referrence Number"), this );
         mRefNumText->setFocus();
+        return;
+    }
+
+    if( strAuth.length() < 1 )
+    {
+        berApplet->warningBox(tr("Enter Authorization Code"), this );
+        mAuthCodeText->setFocus();
         return;
     }
 
@@ -686,17 +686,17 @@ void CMPClientDlg::clickIR()
     QString strAuth = mAuthCodeText->text();
     QString strRef = mRefNumText->text();
 
-    if( strAuth.length() < 1 )
-    {
-        berApplet->warningBox(tr("Enter Authorization Code"), this );
-        mAuthCodeText->setFocus();
-        return;
-    }
-
     if( strRef.length() < 1 )
     {
         berApplet->warningBox(tr("Enter Referrence Number"), this );
         mRefNumText->setFocus();
+        return;
+    }
+
+    if( strAuth.length() < 1 )
+    {
+        berApplet->warningBox(tr("Enter Authorization Code"), this );
+        mAuthCodeText->setFocus();
         return;
     }
 
@@ -815,17 +815,17 @@ void CMPClientDlg::clickCR()
     QString strAuth = mAuthCodeText->text();
     QString strRef = mRefNumText->text();
 
-    if( strAuth.length() < 1 )
-    {
-        berApplet->warningBox(tr("Enter Authorization Code"), this );
-        mAuthCodeText->setFocus();
-        return;
-    }
-
     if( strRef.length() < 1 )
     {
         berApplet->warningBox(tr("Enter Referrence Number"), this );
         mRefNumText->setFocus();
+        return;
+    }
+
+    if( strAuth.length() < 1 )
+    {
+        berApplet->warningBox(tr("Enter Authorization Code"), this );
+        mAuthCodeText->setFocus();
         return;
     }
 
