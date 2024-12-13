@@ -96,8 +96,6 @@ void KeyListDlg::initialize()
     mKeyTable->setColumnWidth( 0, nWidth * 5/10 );
     mKeyTable->setColumnWidth( 1, nWidth * 2/10 );
     mKeyTable->setColumnWidth( 2, nWidth * 2/10 );
-
-    setManage(false);
 }
 
 void KeyListDlg::showEvent(QShowEvent *event)
