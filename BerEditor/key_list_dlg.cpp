@@ -31,7 +31,7 @@ KeyListDlg::KeyListDlg(QWidget *parent) :
     connect( mGenMACBtn, SIGNAL(clicked()), this, SLOT(clickGenMAC()));
     connect( mEncDecBtn, SIGNAL(clicked()), this, SLOT(clickEncDec()));
     connect( mKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeKeyType()));
-    connect( mKeyTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickKeyView()));
+
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -49,15 +49,17 @@ KeyListDlg::~KeyListDlg()
 
 }
 
-void KeyListDlg::setManage( bool bSel )
+void KeyListDlg::setManage( bool bMan )
 {
-    if( bSel == true )
+    if( bMan == true )
     {
+        connect( mKeyTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickKeyView()));
         mOKBtn->setHidden(true);
         mManGroup->setHidden(false);
     }
     else
     {
+        connect( mKeyTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickOK()));
         mOKBtn->setHidden(false);
         mManGroup->setHidden( true );
     }
@@ -101,6 +103,11 @@ void KeyListDlg::initialize()
 void KeyListDlg::showEvent(QShowEvent *event)
 {
     loadKeyList();
+}
+
+void KeyListDlg::closeEvent(QCloseEvent *event )
+{
+
 }
 
 int KeyListDlg::getPlainKeyIV( const QString strData, QString& strKey, QString& strIV )
@@ -342,6 +349,8 @@ void KeyListDlg::clickKeyView()
 
     keyDlg.setReadOnly();
     keyDlg.exec();
+
+    return;
 }
 
 void KeyListDlg::clickOK()

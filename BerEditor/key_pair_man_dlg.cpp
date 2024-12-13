@@ -90,7 +90,7 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
     connect( mDecryptBtn, SIGNAL(clicked()), this, SLOT(clickDecrypt()));
     connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clickClearAll()));
 
-    connect( mKeyPairTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickLViewPriKey()));
+
 
     connect( mImportBtn, SIGNAL(clicked()), this, SLOT(clickImport()));
     connect( mExportBtn, SIGNAL(clicked()), this, SLOT(clickExport()));
@@ -141,12 +141,16 @@ void KeyPairManDlg::setMode( int nMode )
 
     if( mode_ == KeyPairModeSelect )
     {
-        mModeLabel->setText( "Select" );
+        connect( mKeyPairTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickOK()));
+
+        mModeLabel->setText( tr("Select") );
         mOKBtn->show();
     }
     else
     {
-        mModeLabel->setText( "Manage" );
+        connect( mKeyPairTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickLViewPriKey()));
+
+        mModeLabel->setText( tr("Manage") );
         mOKBtn->hide();
     }
 }

@@ -114,11 +114,7 @@ CertManDlg::CertManDlg(QWidget *parent) :
     connect( mTLViewPriKeyBtn, SIGNAL(clicked()), this, SLOT(clickTLViewPriKey()));
     connect( mTLViewPubKeyBtn, SIGNAL(clicked()), this, SLOT(clickTLViewPubKey()));
 
-    connect( mEE_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewCert()));
-    connect( mOther_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewOther()));
-    connect( mCA_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewCA()));
-    connect( mRCA_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewTrust()));
-    connect( mCRL_Table, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewCRL()));
+
 
     initUI();
 
@@ -175,6 +171,25 @@ CertManDlg::~CertManDlg()
 void CertManDlg::setMode( int nMode )
 {
     mode_ = nMode;
+
+    if( mode_ == ManModeBase )
+    {
+        connect( mEE_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewCert()));
+        connect( mOther_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewOther()));
+        connect( mCA_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewCA()));
+        connect( mRCA_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewTrust()));
+        connect( mCRL_Table, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewCRL()));
+
+        mOKBtn->hide();
+    }
+    else
+    {
+        connect( mEE_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickOK()));
+        connect( mOther_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickOK()));
+        connect( mCA_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickOK()));
+        connect( mRCA_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickOK()));
+        connect( mCRL_Table, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickOK()));
+    }
 }
 
 void CertManDlg::setTitle( const QString strTitle )

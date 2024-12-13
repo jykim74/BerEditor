@@ -1324,6 +1324,7 @@ void MainWindow::createCryptoDlg()
     vid_dlg_ = new VIDDlg;
     bn_calc_dlg_ = new BNCalcDlg;
     key_pair_man_dlg_ = new KeyPairManDlg;
+    key_pair_man_dlg_->setMode( KeyPairModeBase );
     ocsp_client_dlg_ = new OCSPClientDlg;
     tsp_client_dlg_ = new TSPClientDlg;
     cmp_client_dlg_ = new CMPClientDlg;
@@ -1334,6 +1335,7 @@ void MainWindow::createCryptoDlg()
     content_ = new ContentMain;
     find_dlg_ = new FindDlg;
     key_list_dlg_ = new KeyListDlg;
+    key_list_dlg_->setManage( true );
 }
 
 void MainWindow::newFile()
@@ -2354,8 +2356,6 @@ void MainWindow::certMan()
 
 void MainWindow::keyList()
 {
-    key_list_dlg_->setManage(true);
-
     key_list_dlg_->show();
     key_list_dlg_->raise();
     key_list_dlg_->activateWindow();
