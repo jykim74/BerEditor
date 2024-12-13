@@ -1945,15 +1945,18 @@ void MainWindow::log( const QString strLog, QColor cr )
     if( log_halt_ == true ) return;    
     if( text_tab_->isTabEnabled( 1 ) == false ) return;
 
+    QDateTime date;
+    date.setTime_t( time(NULL));
+    QString strMsg;
+
     QTextCursor cursor = log_text_->textCursor();
-//    cursor.movePosition( QTextCursor::End );
 
     QTextCharFormat format;
     format.setForeground( cr );
     cursor.mergeCharFormat(format);
 
-    cursor.insertText( strLog );
-    cursor.insertText( "\n" );
+    strMsg = QString( "[%1] %2\n" ).arg( date.toString("HH:mm:ss") ).arg( strLog );
+    cursor.insertText( strMsg );
 
     log_text_->setTextCursor( cursor );
     log_text_->repaint();
