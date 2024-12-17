@@ -253,5 +253,6 @@ int checkOCSP( const QString strURL, const BIN *pCA, const BIN *pCert, JCertStat
 
 int getWrapKey( const char *pPasswd, const BIN *pKey, BIN *pEncKey );
 int getUnwrapKey( const char *pPasswd, const BIN *pEncKey, BIN *pKey );
+int getDigestLength( const QString strHash );
 
 #endif // COMMON_H

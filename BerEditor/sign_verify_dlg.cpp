@@ -1073,10 +1073,10 @@ void SignVerifyDlg::digestRun()
     int nAlgType = 0;
 
     int nDataType = DATA_STRING;
+    int nDigestLen = 0;
 
+    QString strHash = mHashTypeCombo->currentText();
     QString strInput = mInputText->toPlainText();
-
-
 
     if( strInput.isEmpty() )
     {
@@ -1095,15 +1095,16 @@ void SignVerifyDlg::digestRun()
         nDataType = DATA_BASE64;
     }
 
+    nDigestLen = getDigestLength( strHash );
     getBINFromString( &binSrc, nDataType, strInput );
 
-    if( mVersionCombo->currentIndex() == 0 )
-        nVersion = JS_PKI_RSA_PADDING_V15;
-    else {
-        nVersion = JS_PKI_RSA_PADDING_V21;
-    }
+    if( binSrc.nLen != nDigestLen )
+    {
+        bool bVal = berApplet->yesOrNoBox(
+            tr( "The input length(%1) and digest length(%2) do not match. Do you want to continue?").arg( binSrc.nLen ).arg( nDigestLen), this, true );
 
-    QString strHash = mHashTypeCombo->currentText();
+        if( bVal == false ) goto end;
+    }
 
     berApplet->log( QString( "Algorithm : %1 Hash %2").arg( mAlgTypeCombo->currentText()).arg( strHash ));
 
@@ -1165,7 +1166,7 @@ void SignVerifyDlg::digestRun()
         }
 
         ret = JS_PKI_SignDigest( nAlgType, strHash.toStdString().c_str(), &binSrc, &binPri, &binOut );
-        mOutputText->setPlainText(pOut);
+        mOutputText->setPlainText( getHexString( &binOut ));
 
         berApplet->log( QString( "Algorithm        : %1" ).arg( mAlgTypeCombo->currentText() ));
         berApplet->log( QString( "Sign Digest Src  : %1" ).arg(getHexString(&binSrc)));

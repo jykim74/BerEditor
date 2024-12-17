@@ -1857,3 +1857,21 @@ end :
     JS_BIN_reset( &binKEK );
     return ret;
 }
+
+int getDigestLength( const QString strHash )
+{
+    if( strHash == "MD5" )
+        return 16;
+    else if( strHash == "SHA1" )
+        return 20;
+    else if( strHash == "SHA224" )
+        return 24;
+    else if( strHash == "SHA256" || strHash == "SM3" )
+        return 32;
+    else if( strHash == "SHA384" )
+        return 48;
+    else if( strHash == "SHA512" )
+        return 64;
+
+    return -1;
+}
