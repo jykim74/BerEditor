@@ -9486,9 +9486,8 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">클립보드 내용을 붙여넣기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="258"/>
         <source>Field</source>
-        <translation>위치</translation>
+        <translation type="vanished">위치</translation>
     </message>
     <message>
         <source>&amp;Crypt</source>
@@ -9666,8 +9665,9 @@ Do you want to delete the file and continue?</source>
         <translation>데이타&amp;인코딩</translation>
     </message>
     <message>
+        <location filename="../mainwindow.cpp" line="258"/>
         <source>Address</source>
-        <translation type="vanished">위치</translation>
+        <translation>위치</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="201"/>
