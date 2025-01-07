@@ -32,7 +32,7 @@ private slots:
     void closeEvent(QCloseEvent *event );
     void showEvent(QShowEvent *event);
 
-
+    void clickRestoreDefaults();
 
 private:
     void initialize();

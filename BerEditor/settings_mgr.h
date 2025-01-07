@@ -9,6 +9,32 @@
 #include <QObject>
 #include "common.h"
 
+namespace  {
+const char *kBehaviorGroup = "Behavior";
+const char *kShowPartOnly = "showPartOnly";
+const char *kOIDConfigPath = "OIDConfigPath";
+const char *kUseLogTab = "useLogTab";
+const char *kDefaultHash = "defaultHash";
+const char *kFileReadSize = "fileReadSize";
+const char *kFontFamily = "fontFamily";
+const char *kMisc = "Misc";
+const char *kEmail = "email";
+const char *kLicense = "license";
+const char *kStopMessage = "stopMessage";
+const char *kCertPath = "certPath";
+const char *kHexAreaWidth = "hexAreaWidth";
+const char *kSupportKeyPairChange = "SupportKeyPairChange";
+const char *kViewFile = "viewFile";
+const char *kViewEdit = "viewEdit";
+const char *kViewTool = "viewTool";
+const char *kViewCrypt = "viewCrypt";
+const char *kViewProto = "viewProto";
+const char *kViewKMIP = "viewKMIP";
+const char *kViewHelp = "viewHelp";
+const char *kLinkList = "linkList";
+const char *kRunTime = "runTime";
+}
+
 class SettingsMgr : public QObject
 {
     Q_OBJECT

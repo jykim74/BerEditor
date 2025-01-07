@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>509</width>
-    <height>459</height>
+    <height>468</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -619,11 +619,23 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>mSharesText</tabstop>
+  <tabstop>mThresholdText</tabstop>
+  <tabstop>mPrimeBitsCombo</tabstop>
+  <tabstop>mMakePrimeBtn</tabstop>
+  <tabstop>mPrimeClearBtn</tabstop>
+  <tabstop>mPrimeText</tabstop>
+  <tabstop>mPrimeLenText</tabstop>
   <tabstop>mSrcTypeCombo</tabstop>
   <tabstop>mSrcClearBtn</tabstop>
+  <tabstop>mSplitBtn</tabstop>
+  <tabstop>mSrcText</tabstop>
+  <tabstop>mSrcLenText</tabstop>
   <tabstop>mShareText</tabstop>
   <tabstop>mShareLenText</tabstop>
   <tabstop>mClearResultBtn</tabstop>
+  <tabstop>mAddBtn</tabstop>
+  <tabstop>mJoinBtn</tabstop>
   <tabstop>mShareTable</tabstop>
   <tabstop>mJoinedTypeCombo</tabstop>
   <tabstop>mJoinedClearBtn</tabstop>

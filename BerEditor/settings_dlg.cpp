@@ -26,6 +26,7 @@ SettingsDlg::SettingsDlg(QWidget *parent) :
     connect( mCancelBtn, SIGNAL(clicked()), this, SLOT(onCancelBtnClicked()));
     connect( mFindOIDConfig, SIGNAL(clicked()), this, SLOT(findOIDConfig()));
     connect( mFindCertPathBtn, SIGNAL(clicked()), this, SLOT(findCertPath()));
+    connect( mRestoreDefaultsBtn, SIGNAL(clicked()), this, SLOT(clickRestoreDefaults()));
 
     initialize();
 
@@ -110,6 +111,29 @@ void SettingsDlg::updateSettings()
 
     mgr->setFontFamily( mFontFamilyCombo->currentText());
     mgr->setHexAreaWidth( mHexAreaWidthCombo->currentText().toInt());
+}
+
+void SettingsDlg::clickRestoreDefaults()
+{
+    SettingsMgr *mgr = berApplet->settingsMgr();
+
+    QString strMsg = tr( "Are you sure you want to clear all the saved settings?" );
+
+    bool bVal = berApplet->yesOrNoBox( strMsg, this, false );
+    if( bVal == false ) return;
+
+    mgr->removeSet( "Language", "current" );
+    mgr->removeSet( kBehaviorGroup, kShowPartOnly );
+    mgr->removeSet( kBehaviorGroup, kOIDConfigPath );
+    mgr->removeSet( kBehaviorGroup, kUseLogTab );
+    mgr->removeSet( kBehaviorGroup, kDefaultHash );
+    mgr->removeSet( kBehaviorGroup, kFileReadSize );
+    mgr->removeSet( kBehaviorGroup, kFontFamily );
+    mgr->removeSet( kBehaviorGroup, kHexAreaWidth );
+    mgr->removeSet( kBehaviorGroup, kSupportKeyPairChange );
+    mgr->removeSet( kBehaviorGroup, kCertPath );
+
+    close();
 }
 
 void SettingsDlg::onOkBtnClicked()

@@ -538,7 +538,7 @@ void PubEncDecDlg::Run()
             berApplet->logLine();
             berApplet->log( QString( "Algorithm      : %1").arg( mAlgCombo->currentText() ));
             berApplet->log( QString( "Dec Src        : %1").arg( getHexString(&binSrc)));
-//            berApplet->log( QString( "Dec PrivateKey : %1").arg(getHexString(&binPri)));
+            berApplet->log( QString( "Dec PrivateKey : [hidden]"));
             berApplet->log( QString( "Dec Output     : %1" ).arg( getHexString( &binOut )));
             berApplet->logLine();
 

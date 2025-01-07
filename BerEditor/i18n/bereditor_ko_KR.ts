@@ -13385,19 +13385,29 @@ Do you want to delete the file and continue?</source>
         <translation>원본 키쌍 변경 지원</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="463"/>
+        <location filename="../settings_dlg.ui" line="443"/>
+        <source>Restore defaults</source>
+        <translation>기본값 복원</translation>
+    </message>
+    <message>
+        <location filename="../settings_dlg.ui" line="470"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="456"/>
+        <location filename="../settings_dlg.ui" line="463"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.cpp" line="103"/>
+        <location filename="../settings_dlg.cpp" line="104"/>
         <source>You have changed language. Restart to apply it?</source>
         <translation>언어를 변경 하였습니다. 적용을 위해 다시 시작 할까요?</translation>
+    </message>
+    <message>
+        <location filename="../settings_dlg.cpp" line="120"/>
+        <source>Are you sure you want to clear all the saved settings?</source>
+        <translation>정말로 저장 된 설정 값을 지우겠습니까?</translation>
     </message>
 </context>
 <context>
