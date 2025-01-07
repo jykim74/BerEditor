@@ -169,8 +169,8 @@ void KeyManDlg::clickMakeKey()
         if( pHex ) JS_free( pHex );
 
 
-        berApplet->log( QString( "Secret   : %1").arg( strSecret ));
-        berApplet->log( QString( "Hash     : %1 | Iteration Count: %2").arg( strHash ).arg( nIter ));
+        berApplet->log( QString( "Secret   : %1").arg( getHexString( &binSecret) ));
+        berApplet->log( QString( "Hash     : %1").arg( strHash ));
         berApplet->log( QString( "Key      : %1" ).arg(getHexString(&binKey)));
         berApplet->logLine();
     }
@@ -284,6 +284,9 @@ void KeyManDlg::clickWrap()
     getBINFromString( &binInput, mSrcTypeCombo->currentText(), strInput );
     getBINFromString( &binWrappingKey, mKEKTypeCombo->currentText(), strWrappingKey );
 
+    berApplet->logLine();
+    berApplet->log( QString( "-- Wrap Key (%1)" ).arg( mKWRadio->isChecked() ? "KW" : "KWP" ) );
+
     ret = JS_PKI_WrapKey( nPad, &binWrappingKey, &binInput, &binOutput );
 
     if( ret != 0 )
@@ -295,9 +298,11 @@ void KeyManDlg::clickWrap()
     strOutput = getStringFromBIN( &binOutput, mDstTypeCombo->currentText() );
     mDstText->setPlainText( strOutput );
 
+    berApplet->logLine();
     berApplet->log( QString( "Input Key   : %1" ).arg(getHexString(&binInput)));
-    berApplet->log( QString( "Wrapping Key: %1" ).arg( getHexString( &binWrappingKey)));
+    berApplet->log( QString( "KEK         : %1" ).arg( getHexString( &binWrappingKey)));
     berApplet->log( QString( "Wrapped Key : %1" ).arg( getHexString(&binOutput)));
+    berApplet->logLine();
 
 end :
     JS_BIN_reset( &binInput );
@@ -359,6 +364,10 @@ void KeyManDlg::clickUnwrap()
     getBINFromString( &binInput, mSrcTypeCombo->currentText(), strInput );
     getBINFromString( &binWrappingKey, mKEKTypeCombo->currentText(), strWrappingKey );
 
+    berApplet->logLine();
+    berApplet->log( QString( "-- Unwrap Key (%1)" ).arg( mKWRadio->isChecked() ? "KW" : "KWP" ) );
+
+
     ret = JS_PKI_UnwrapKey( nPad, &binWrappingKey, &binInput, &binOutput );
     if( ret != 0 )
     {
@@ -369,9 +378,11 @@ void KeyManDlg::clickUnwrap()
     strOutput = getStringFromBIN( &binOutput, mDstTypeCombo->currentText() );
     mDstText->setPlainText( strOutput );
 
+    berApplet->logLine();
     berApplet->log( QString( "Input Key      : %1" ).arg(getHexString(&binInput)));
-    berApplet->log( QString( "Unwrapping Key : %1" ).arg( getHexString( &binWrappingKey)));
+    berApplet->log( QString( "KEK            : %1" ).arg( getHexString( &binWrappingKey)));
     berApplet->log( QString( "Unwrapped Key  : %1" ).arg( getHexString(&binOutput)));
+    berApplet->logLine();
 
 end :
     JS_BIN_reset( &binInput );

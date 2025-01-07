@@ -213,8 +213,8 @@ void KeyAddDlg::clickOK()
         return;
     }
 
-    JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey );
-    JS_BIN_decodeHex( strIV.toStdString().c_str(), &binIV );
+    getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
+    getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
 
     if( nLen > 0 && nLen != binKey.nLen )
     {

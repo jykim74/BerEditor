@@ -876,7 +876,7 @@ void SignVerifyDlg::dataRun()
                 berApplet->log( QString( "Hash             : %1").arg( strHash ));
 
             berApplet->log( QString( "Sign Src         : %1" ).arg(getHexString(&binSrc)));
-            berApplet->log( QString( "Sign Private Key : %1" ).arg(getHexString( &binPri )));
+//            berApplet->log( QString( "Sign Private Key : %1" ).arg(getHexString( &binPri )));
             berApplet->log( QString( "Signature        : %1" ).arg( getHexString( &binOut )));
             berApplet->logLine();
         }

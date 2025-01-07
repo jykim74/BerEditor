@@ -132,9 +132,9 @@ void BerApplet::start()
     }
 
     QString strVersion = STRINGIZE(BER_EDITOR_VERSION);
-    log( "======================================================");
+    logLine();
     log( QString( "== Start BerEditor Version: %1" ).arg( strVersion ));
-    log( "======================================================");
+    logLine();
 }
 
 QString BerApplet::curFilePath( const QString strPath )

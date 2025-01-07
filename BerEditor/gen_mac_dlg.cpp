@@ -235,15 +235,16 @@ int GenMacDlg::macInit()
        if( ret == 0 ) type_ = JS_TYPE_GMAC;
    }
 
+   berApplet->log( QString( "Init" ));
    berApplet->log( QString( "Algorithm : %1" ).arg( strAlg ));
    berApplet->log( QString( "Key       : %1" ).arg( getHexString( &binKey )));
 
    if( ret == 0 )
    {
-       mStatusLabel->setText( "Initialization successful" );
+       mStatusLabel->setText( "Init OK" );
    }
    else
-       mStatusLabel->setText( QString("Initialization failed [%1]").arg( ret ) );
+       mStatusLabel->setText( QString("Init fail [%1]").arg( ret ) );
 
 end :
    JS_BIN_reset( &binKey );
