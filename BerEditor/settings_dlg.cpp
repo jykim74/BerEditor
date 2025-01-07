@@ -122,6 +122,7 @@ void SettingsDlg::clickRestoreDefaults()
     bool bVal = berApplet->yesOrNoBox( strMsg, this, false );
     if( bVal == false ) return;
 
+    mgr->removeSet( "Misc", "SparkleAlreadyEnableUpdateByDefault" );
     mgr->removeSet( "Language", "current" );
     mgr->removeSet( kBehaviorGroup, kShowPartOnly );
     mgr->removeSet( kBehaviorGroup, kOIDConfigPath );
