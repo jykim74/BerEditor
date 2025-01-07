@@ -5,7 +5,7 @@
  */
 #include <QStringList>
 
-#include "num_trans_dlg.h"
+#include "num_converter_dlg.h"
 #include "js_pki.h"
 #include "js_pki_tools.h"
 #include "js_util.h"
@@ -14,12 +14,12 @@
 
 const QStringList sTypeList = { "Bit", "Decimal", "Hex" };
 
-NumTransDlg::NumTransDlg(QWidget *parent) :
+NumConverterDlg::NumConverterDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
 
-    connect( mTransBtn, SIGNAL(clicked()), this, SLOT(dataTrans()));
+    connect( mConversionBtn, SIGNAL(clicked()), this, SLOT(dataConversion()));
     connect( mChangeBtn, SIGNAL(clicked()), this, SLOT(dataChange()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
@@ -30,7 +30,7 @@ NumTransDlg::NumTransDlg(QWidget *parent) :
     connect( mDecimalBtn, SIGNAL(clicked()), this, SLOT(clickInputDec()));
     connect( mHexBtn, SIGNAL(clicked()), this, SLOT(clickInputHex()));
 
-    mTransBtn->setDefault(true);
+    mConversionBtn->setDefault(true);
 
     mDecimalBtn->click();
 
@@ -41,18 +41,18 @@ NumTransDlg::NumTransDlg(QWidget *parent) :
     resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 
-NumTransDlg::~NumTransDlg()
+NumConverterDlg::~NumConverterDlg()
 {
 
 }
 
-void NumTransDlg::initialize()
+void NumConverterDlg::initialize()
 {
     mOutputTypeCombo->addItems( sTypeList );
     mOutputTypeCombo->setCurrentIndex(2);
 }
 
-void NumTransDlg::dataTrans()
+void NumConverterDlg::dataConversion()
 {
     BIN binSrc = {0,0};
     char *pOutput = NULL;
@@ -113,7 +113,7 @@ end :
     update();
 }
 
-void NumTransDlg::dataChange()
+void NumConverterDlg::dataChange()
 {
     QString strOutput = mOutputText->toPlainText();
     mOutputText->clear();
@@ -132,17 +132,17 @@ void NumTransDlg::dataChange()
     update();
 }
 
-void NumTransDlg::clickInputClear()
+void NumConverterDlg::clickInputClear()
 {
     mInputText->clear();
 }
 
-void NumTransDlg::clickOutputClear()
+void NumConverterDlg::clickOutputClear()
 {
     mOutputText->clear();
 }
 
-void NumTransDlg::clickInputHex()
+void NumConverterDlg::clickInputHex()
 {
     mInputText->clear();
     QRegExp regExp("^[0-9a-fA-F]*$");
@@ -150,7 +150,7 @@ void NumTransDlg::clickInputHex()
     mInputText->setValidator( regVal );
 }
 
-void NumTransDlg::clickInputBit()
+void NumConverterDlg::clickInputBit()
 {
     mInputText->clear();
     QRegExp regExp("^[0-1]*$");
@@ -158,7 +158,7 @@ void NumTransDlg::clickInputBit()
     mInputText->setValidator( regVal );
 }
 
-void NumTransDlg::clickInputDec()
+void NumConverterDlg::clickInputDec()
 {
     mInputText->clear();
     QRegExp regExp("^[0-9-]*$");

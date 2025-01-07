@@ -1,68 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>NumTransDlg</class>
- <widget class="QDialog" name="NumTransDlg">
+ <class>NumConverterDlg</class>
+ <widget class="QDialog" name="NumConverterDlg">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>418</width>
-    <height>321</height>
+    <height>373</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Number Transmission</string>
+   <string>Number Conversion</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="title">
       <string>Number Type</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QRadioButton" name="mBitBtn">
-        <property name="text">
-         <string>Bit</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QRadioButton" name="mHexBtn">
-        <property name="text">
-         <string>Hex</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QRadioButton" name="mDecimalBtn">
-        <property name="text">
-         <string>Decimal</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="3">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="0" column="4">
-       <widget class="QPushButton" name="mInputClearBtn">
-        <property name="text">
-         <string>Clear</string>
-        </property>
-       </widget>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="1">
+         <widget class="QRadioButton" name="mDecimalBtn">
+          <property name="text">
+           <string>Decimal</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QRadioButton" name="mHexBtn">
+          <property name="text">
+           <string>Hex</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="4">
+         <widget class="QPushButton" name="mInputClearBtn">
+          <property name="text">
+           <string>Clear</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QRadioButton" name="mBitBtn">
+          <property name="text">
+           <string>Bit</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -116,9 +126,9 @@
       </widget>
      </item>
      <item row="0" column="4">
-      <widget class="QPushButton" name="mTransBtn">
+      <widget class="QPushButton" name="mConversionBtn">
        <property name="text">
-        <string>Transmission</string>
+        <string>Conversion</string>
        </property>
       </widget>
      </item>
@@ -221,14 +231,9 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>mBitBtn</tabstop>
-  <tabstop>mDecimalBtn</tabstop>
-  <tabstop>mHexBtn</tabstop>
-  <tabstop>mInputClearBtn</tabstop>
-  <tabstop>mInputText</tabstop>
   <tabstop>mOutputTypeCombo</tabstop>
   <tabstop>mChangeBtn</tabstop>
-  <tabstop>mTransBtn</tabstop>
+  <tabstop>mConversionBtn</tabstop>
   <tabstop>mOutputText</tabstop>
   <tabstop>mOutputClearBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>

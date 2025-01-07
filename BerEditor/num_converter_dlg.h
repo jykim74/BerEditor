@@ -3,26 +3,26 @@
  *
  * All rights reserved.
  */
-#ifndef NUM_TRANS_DLG_H
-#define NUM_TRANS_DLG_H
+#ifndef NUM_CONVERTER_DLG_H
+#define NUM_CONVERTER_DLG_H
 
 #include <QDialog>
-#include "ui_num_trans_dlg.h"
+#include "ui_num_converter_dlg.h"
 
 namespace Ui {
-class NumTransDlg;
+class NumConverterDlg;
 }
 
-class NumTransDlg : public QDialog, public Ui::NumTransDlg
+class NumConverterDlg : public QDialog, public Ui::NumConverterDlg
 {
     Q_OBJECT
 
 public:
-    explicit NumTransDlg(QWidget *parent = nullptr);
-    ~NumTransDlg();
+    explicit NumConverterDlg(QWidget *parent = nullptr);
+    ~NumConverterDlg();
 
 private slots:
-    void dataTrans();
+    void dataConversion();
     void dataChange();
 
     void clickInputClear();
@@ -36,4 +36,4 @@ private:
     void initialize();
 };
 
-#endif // NUM_TRANS_DLG_H
+#endif // NUM_CONVERTER_DLG_H

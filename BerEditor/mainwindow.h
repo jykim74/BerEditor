@@ -128,7 +128,7 @@ public:
     void viewEditFindNode( bool bChecked );
 
     void viewToolDataEncode( bool bChecked );
-    void viewToolNumTrans( bool bChecked );
+    void viewToolNumConverter( bool bChecked );
     void viewToolOIDInfo( bool bChecked );
     void viewToolMakeBER( bool bChecked );
     void viewToolDecodeData( bool bChecked );
@@ -231,7 +231,7 @@ private slots:
     void runMakeTTLV();
     void ttlvClient();
     void ttlvEncoder();
-    void numTrans();
+    void numConverter();
     void getURI();
     void save();
     void saveAs();
@@ -354,7 +354,7 @@ private:
 
     QToolBar* tool_tool_;
     QAction* data_encode_act_;
-    QAction* num_trans_act_;
+    QAction* num_converter_act_;
     QAction* oid_act_;
     QAction* make_ber_act_;
     QAction* decode_data_act_;

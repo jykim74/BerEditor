@@ -65,7 +65,7 @@ SOURCES += \
     lcn_info_dlg.cpp \
     main.cpp \
     mainwindow.cpp \
-    num_trans_dlg.cpp \
+    num_converter_dlg.cpp \
     oid_info_dlg.cpp \
     pub_enc_dec_dlg.cpp \
     settings_dlg.cpp \
@@ -141,7 +141,7 @@ HEADERS += \
     key_man_dlg.h \
     lcn_info_dlg.h \
     mainwindow.h \
-    num_trans_dlg.h \
+    num_converter_dlg.h \
     oid_info_dlg.h \
     pub_enc_dec_dlg.h \
     settings_dlg.h \
@@ -297,7 +297,7 @@ FORMS += \
         key_man_dlg.ui \
         lcn_info_dlg.ui \
         mainwindow.ui \
-        num_trans_dlg.ui \
+        num_converter_dlg.ui \
         oid_info_dlg.ui \
         pub_enc_dec_dlg.ui \
         settings_dlg.ui \

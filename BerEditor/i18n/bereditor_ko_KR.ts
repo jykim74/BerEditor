@@ -6584,7 +6584,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../gen_mac_dlg.cpp" line="161"/>
-        <location filename="../gen_mac_dlg.cpp" line="427"/>
+        <location filename="../gen_mac_dlg.cpp" line="428"/>
         <source>Select symmetric key</source>
         <translation>대칭키를 선택 하세요</translation>
     </message>
@@ -6600,27 +6600,27 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../gen_mac_dlg.cpp" line="227"/>
-        <location filename="../gen_mac_dlg.cpp" line="485"/>
+        <location filename="../gen_mac_dlg.cpp" line="486"/>
         <source>Enter a IV value</source>
         <translation>IV 를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="453"/>
+        <location filename="../gen_mac_dlg.cpp" line="454"/>
         <source>Please Enter a key value</source>
         <translation>키 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="568"/>
+        <location filename="../gen_mac_dlg.cpp" line="569"/>
         <source>Select a input file</source>
         <translation>입력 파일을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="608"/>
+        <location filename="../gen_mac_dlg.cpp" line="609"/>
         <source>fail to read file: %1</source>
         <translation>파일 읽기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="791"/>
+        <location filename="../gen_mac_dlg.cpp" line="792"/>
         <source>Find source file</source>
         <translation>소스 파일을 찾으세요</translation>
     </message>
@@ -7682,7 +7682,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../key_man_dlg.ui" line="145"/>
-        <location filename="../key_man_dlg.cpp" line="412"/>
+        <location filename="../key_man_dlg.cpp" line="423"/>
         <source>Password</source>
         <translation>암호</translation>
     </message>
@@ -7819,13 +7819,13 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../key_man_dlg.cpp" line="255"/>
-        <location filename="../key_man_dlg.cpp" line="330"/>
+        <location filename="../key_man_dlg.cpp" line="335"/>
         <source>Select symmetric key for KEK</source>
         <translation>KEK 용 대칭키를 선택 하세요</translation>
     </message>
     <message>
-        <location filename="../key_man_dlg.cpp" line="425"/>
-        <location filename="../key_man_dlg.cpp" line="438"/>
+        <location filename="../key_man_dlg.cpp" line="436"/>
+        <location filename="../key_man_dlg.cpp" line="449"/>
         <source>Secret</source>
         <translation>비밀키</translation>
     </message>
@@ -8928,9 +8928,8 @@ Do you want to delete the file and continue?</source>
         <translation>데이타 인코더</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="439"/>
         <source>NumTrans</source>
-        <translation>숫자 변환</translation>
+        <translation type="vanished">숫자 변환</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="446"/>
@@ -9148,6 +9147,16 @@ Do you want to delete the file and continue?</source>
         <location filename="../mainwindow.cpp" line="893"/>
         <source>Find node</source>
         <translation>노드 찾기</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="921"/>
+        <source>&amp;NumConverter</source>
+        <translation>숫자 변환기(&amp;N)</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="924"/>
+        <source>Number Converter</source>
+        <translation>숫자 변환기</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="937"/>
@@ -9589,14 +9598,12 @@ Do you want to delete the file and continue?</source>
         <translation>도구</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="921"/>
         <source>&amp;NumTrans</source>
-        <translation>숫자 변환(&amp;N)</translation>
+        <translation type="vanished">숫자 변환(&amp;N)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="924"/>
         <source>Number transmission</source>
-        <translation>숫자 변경하기</translation>
+        <translation type="vanished">숫자 변경하기</translation>
     </message>
     <message>
         <source>O&amp;ID Information</source>
@@ -9679,6 +9686,11 @@ Do you want to delete the file and continue?</source>
         <location filename="../mainwindow.cpp" line="220"/>
         <source>Log</source>
         <translation>로그</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="439"/>
+        <source>Num Converter</source>
+        <translation>숫자 변환기</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="827"/>
@@ -10337,69 +10349,122 @@ Do you want to delete the file and continue?</source>
     </message>
 </context>
 <context>
+    <name>NumConverterDlg</name>
+    <message>
+        <location filename="../num_converter_dlg.ui" line="14"/>
+        <source>Number Conversion</source>
+        <translation>숫자 변환기</translation>
+    </message>
+    <message>
+        <location filename="../num_converter_dlg.ui" line="26"/>
+        <source>Number Type</source>
+        <translation>숫자 타입</translation>
+    </message>
+    <message>
+        <location filename="../num_converter_dlg.ui" line="34"/>
+        <source>Decimal</source>
+        <translation>10진수</translation>
+    </message>
+    <message>
+        <location filename="../num_converter_dlg.ui" line="44"/>
+        <source>Hex</source>
+        <translation>16진수</translation>
+    </message>
+    <message>
+        <location filename="../num_converter_dlg.ui" line="51"/>
+        <location filename="../num_converter_dlg.ui" line="225"/>
+        <source>Clear</source>
+        <translation>지우기</translation>
+    </message>
+    <message>
+        <location filename="../num_converter_dlg.ui" line="58"/>
+        <source>Bit</source>
+        <translation>2진수</translation>
+    </message>
+    <message>
+        <location filename="../num_converter_dlg.ui" line="111"/>
+        <source>Output</source>
+        <translation>결과</translation>
+    </message>
+    <message>
+        <location filename="../num_converter_dlg.ui" line="124"/>
+        <source>⬆</source>
+        <translation>⬆</translation>
+    </message>
+    <message>
+        <location filename="../num_converter_dlg.ui" line="131"/>
+        <source>Conversion</source>
+        <translation>변환</translation>
+    </message>
+    <message>
+        <location filename="../num_converter_dlg.ui" line="205"/>
+        <source>Close</source>
+        <translation>닫기</translation>
+    </message>
+    <message>
+        <location filename="../num_converter_dlg.cpp" line="66"/>
+        <source>Enter input data</source>
+        <translation>입력데이타를 입력하세요</translation>
+    </message>
+    <message>
+        <location filename="../num_converter_dlg.cpp" line="80"/>
+        <source>Input contains non-numeric values</source>
+        <translation>입력에 숫자가 아닌 값을 포함 하였습니다</translation>
+    </message>
+</context>
+<context>
     <name>NumTransDlg</name>
     <message>
-        <location filename="../num_trans_dlg.ui" line="14"/>
         <source>Number Transmission</source>
-        <translation>숫자 변환창</translation>
+        <translation type="vanished">숫자 변환창</translation>
     </message>
     <message>
         <source>Input Clear</source>
         <translation type="vanished">입력 지움</translation>
     </message>
     <message>
-        <location filename="../num_trans_dlg.ui" line="101"/>
         <source>Output</source>
-        <translation>결과</translation>
+        <translation type="vanished">결과</translation>
     </message>
     <message>
-        <location filename="../num_trans_dlg.ui" line="114"/>
         <source>⬆</source>
-        <translation>⬆</translation>
+        <translation type="vanished">⬆</translation>
     </message>
     <message>
-        <location filename="../num_trans_dlg.ui" line="195"/>
         <source>Close</source>
-        <translation>닫기</translation>
+        <translation type="vanished">닫기</translation>
     </message>
     <message>
         <source>Output Clear</source>
         <translation type="vanished">결과 지우기</translation>
     </message>
     <message>
-        <location filename="../num_trans_dlg.ui" line="121"/>
         <source>Transmission</source>
-        <translation>변환</translation>
+        <translation type="vanished">변환</translation>
     </message>
     <message>
         <source>Change</source>
         <translation type="vanished">교환</translation>
     </message>
     <message>
-        <location filename="../num_trans_dlg.ui" line="20"/>
         <source>Number Type</source>
-        <translation>숫자 타입</translation>
+        <translation type="vanished">숫자 타입</translation>
     </message>
     <message>
-        <location filename="../num_trans_dlg.ui" line="26"/>
         <source>Bit</source>
-        <translation>2진수</translation>
+        <translation type="vanished">2진수</translation>
     </message>
     <message>
-        <location filename="../num_trans_dlg.ui" line="40"/>
         <source>Decimal</source>
-        <translation>10진수</translation>
+        <translation type="vanished">10진수</translation>
     </message>
     <message>
-        <location filename="../num_trans_dlg.ui" line="63"/>
-        <location filename="../num_trans_dlg.ui" line="215"/>
         <source>Clear</source>
-        <translation>지우기</translation>
+        <translation type="vanished">지우기</translation>
     </message>
     <message>
-        <location filename="../num_trans_dlg.ui" line="33"/>
         <source>Hex</source>
-        <translation>16진수</translation>
+        <translation type="vanished">16진수</translation>
     </message>
     <message>
         <source>Insert data</source>
@@ -10410,14 +10475,12 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">입력 데이타에 잘못 된 형식의 값이 있습니다</translation>
     </message>
     <message>
-        <location filename="../num_trans_dlg.cpp" line="66"/>
         <source>Enter input data</source>
-        <translation>입력데이타를 입력하세요</translation>
+        <translation type="vanished">입력데이타를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../num_trans_dlg.cpp" line="80"/>
         <source>Input contains non-numeric values</source>
-        <translation>입력에 숫자가 아닌 값을 포함 하였습니다</translation>
+        <translation type="vanished">입력에 숫자가 아닌 값을 포함 하였습니다</translation>
     </message>
 </context>
 <context>
@@ -13029,48 +13092,57 @@ Do you want to delete the file and continue?</source>
         <translation>Shamir Secret Sharing Scheme</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="22"/>
+        <location filename="../sss_dlg.ui" line="201"/>
         <source>Source Data</source>
         <translation>소스 데이타</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="101"/>
-        <location filename="../sss_dlg.ui" line="289"/>
-        <location filename="../sss_dlg.ui" line="539"/>
+        <location filename="../sss_dlg.ui" line="111"/>
+        <location filename="../sss_dlg.ui" line="230"/>
+        <location filename="../sss_dlg.ui" line="528"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="149"/>
+        <location filename="../sss_dlg.ui" line="26"/>
+        <source>Shamir Secret Sharing</source>
+        <translation>Shamir Secret Sharing</translation>
+    </message>
+    <message>
+        <location filename="../sss_dlg.ui" line="54"/>
         <source>Threshold</source>
         <translation>분계점</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="166"/>
+        <location filename="../sss_dlg.ui" line="78"/>
+        <source>Prime</source>
+        <translation>소수</translation>
+    </message>
+    <message>
+        <location filename="../sss_dlg.ui" line="98"/>
         <source>Shares</source>
         <translation>공유</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="200"/>
+        <location filename="../sss_dlg.ui" line="34"/>
         <source>Make Prime</source>
         <translation>소수 만들기</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="253"/>
         <source>SSS Prime</source>
-        <translation>SSS 소수</translation>
+        <translation type="vanished">SSS 소수</translation>
     </message>
     <message>
         <source>Bits</source>
         <translation type="vanished">비트</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="406"/>
+        <location filename="../sss_dlg.ui" line="408"/>
         <source>Add</source>
         <translation>추가</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="336"/>
+        <location filename="../sss_dlg.ui" line="325"/>
         <source>Share Data</source>
         <translation>공유 데이타</translation>
     </message>
@@ -13079,17 +13151,17 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">결과 지우기</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="523"/>
+        <location filename="../sss_dlg.ui" line="512"/>
         <source>Joined Data</source>
         <translation>결합 데이타</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="624"/>
+        <location filename="../sss_dlg.ui" line="613"/>
         <source>Clear Data All</source>
         <translation>전체 데이타 지우기</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="399"/>
+        <location filename="../sss_dlg.ui" line="401"/>
         <source>Clear</source>
         <translation>지우기</translation>
     </message>
@@ -13102,77 +13174,77 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">K</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="426"/>
+        <location filename="../sss_dlg.ui" line="415"/>
         <source>Join</source>
         <translation>합치기</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="142"/>
+        <location filename="../sss_dlg.ui" line="237"/>
         <source>Split</source>
         <translation>나누기</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="273"/>
+        <location filename="../sss_dlg.ui" line="61"/>
         <source>Bytes</source>
         <translation>바이트</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="617"/>
+        <location filename="../sss_dlg.ui" line="606"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="77"/>
+        <location filename="../sss_dlg.cpp" line="80"/>
         <source>Seq</source>
         <translation>시퀀스</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="77"/>
+        <location filename="../sss_dlg.cpp" line="80"/>
         <source>Value</source>
         <translation>값</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="144"/>
+        <location filename="../sss_dlg.cpp" line="147"/>
         <source>Enter shared value</source>
         <translation>공유키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="162"/>
+        <location filename="../sss_dlg.cpp" line="165"/>
         <source>All inputs must have the same length.</source>
         <translation>모든 입력값의 길이는 같아야 합니다</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="191"/>
+        <location filename="../sss_dlg.cpp" line="194"/>
         <source>Enter source value</source>
         <translation>소스 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="206"/>
+        <location filename="../sss_dlg.cpp" line="209"/>
         <source>Input value must be at least 8 bytes</source>
         <translation>소스 값은 8바이트 이상이어야 합니다.</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="213"/>
+        <location filename="../sss_dlg.cpp" line="216"/>
         <source>Prime value ​​must be longer than or equal to the source value</source>
         <translation>소수는 입력 소스 길이보다 같거나 커야 합니다</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="222"/>
+        <location filename="../sss_dlg.cpp" line="225"/>
         <source>fail to split key: %1</source>
         <translation>키 나누기 실패 : %1</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="268"/>
+        <location filename="../sss_dlg.cpp" line="271"/>
         <source>Two or more shared values ​​are required</source>
         <translation>2개 이상의 공유된 값이 요구 됩니다</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="275"/>
+        <location filename="../sss_dlg.cpp" line="278"/>
         <source>Enter a prime number</source>
         <translation>소수 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="309"/>
+        <location filename="../sss_dlg.cpp" line="312"/>
         <source>fail to join key: %1</source>
         <translation>키 합치기 실패 : %1</translation>
     </message>
@@ -13181,7 +13253,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">공유키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="156"/>
+        <location filename="../sss_dlg.cpp" line="159"/>
         <source>%1 is already added</source>
         <translation>%1 은 이미 추가 되었습니다</translation>
     </message>
@@ -13194,7 +13266,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">소스 값은 8바이트 이상이어야 합니다.</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="362"/>
+        <location filename="../sss_dlg.cpp" line="365"/>
         <source>Delete</source>
         <translation>삭제</translation>
     </message>

@@ -24,7 +24,7 @@
 #include "get_uri_dlg.h"
 #include "key_agree_dlg.h"
 #include "key_man_dlg.h"
-#include "num_trans_dlg.h"
+#include "num_converter_dlg.h"
 #include "about_dlg.h"
 #include "cms_dlg.h"
 #include "sss_dlg.h"
@@ -436,11 +436,11 @@ void MainWindow::createViewActions()
     connect( toolDataEncodeAct, &QAction::triggered, this, &MainWindow::viewToolDataEncode );
     toolMenu->addAction( toolDataEncodeAct );
 
-    QAction *toolNumTransAct = new QAction( tr( "NumTrans"), this );
-    bVal = isView( ACT_TOOL_NUM_TRANS );
+    QAction *toolNumTransAct = new QAction( tr( "Num Converter"), this );
+    bVal = isView( ACT_TOOL_NUM_CONVERTER );
     toolNumTransAct->setCheckable(true);
     toolNumTransAct->setChecked(bVal);
-    connect( toolNumTransAct, &QAction::triggered, this, &MainWindow::viewToolNumTrans );
+    connect( toolNumTransAct, &QAction::triggered, this, &MainWindow::viewToolNumConverter );
     toolMenu->addAction( toolNumTransAct );
 
     QAction *toolOIDInfoAct = new QAction( tr( "OID Information"), this );
@@ -917,13 +917,13 @@ void MainWindow::createActions()
     toolMenu->addAction( data_encode_act_ );
     if( isView( ACT_TOOL_DATA_ENCODER ) ) tool_tool_->addAction( data_encode_act_ );
 
-    const QIcon numTransIcon = QIcon::fromTheme("number-trans", QIcon(":/images/two.png"));
-    num_trans_act_ = new QAction( numTransIcon, tr("&NumTrans"), this);
-    num_trans_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_N));
-    connect( num_trans_act_, &QAction::triggered, this, &MainWindow::numTrans );
-    num_trans_act_->setStatusTip(tr("Number transmission" ));
-    toolMenu->addAction( num_trans_act_ );
-    if( isView( ACT_TOOL_NUM_TRANS ) ) tool_tool_->addAction( num_trans_act_ );
+    const QIcon numTransIcon = QIcon::fromTheme("number-converter", QIcon(":/images/two.png"));
+    num_converter_act_ = new QAction( numTransIcon, tr("&NumConverter"), this);
+    num_converter_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_N));
+    connect( num_converter_act_, &QAction::triggered, this, &MainWindow::numConverter );
+    num_converter_act_->setStatusTip(tr("Number Converter" ));
+    toolMenu->addAction( num_converter_act_ );
+    if( isView( ACT_TOOL_NUM_CONVERTER ) ) tool_tool_->addAction( num_converter_act_ );
 
     const QIcon oidIcon = QIcon::fromTheme("tool-oid", QIcon(":/images/oid.png"));
     oid_act_ = new QAction(oidIcon, tr("&OID Information"), this);
@@ -1417,10 +1417,10 @@ void MainWindow::ttlvEncoder()
     ttlv_encoder_dlg_->activateWindow();
 }
 
-void MainWindow::numTrans()
+void MainWindow::numConverter()
 {
-    NumTransDlg numTransDlg;
-    numTransDlg.exec();
+    NumConverterDlg numConverterDlg;
+    numConverterDlg.exec();
 }
 
 void MainWindow::open()
@@ -2771,17 +2771,17 @@ void MainWindow::viewToolDataEncode( bool bChecked )
     }
 }
 
-void MainWindow::viewToolNumTrans( bool bChecked )
+void MainWindow::viewToolNumConverter( bool bChecked )
 {
     if( bChecked == true )
     {
-        tool_tool_->addAction( num_trans_act_ );
-        setView( ACT_TOOL_NUM_TRANS );
+        tool_tool_->addAction( num_converter_act_ );
+        setView( ACT_TOOL_NUM_CONVERTER );
     }
     else
     {
-        tool_tool_->removeAction( num_trans_act_ );
-        unsetView( ACT_TOOL_NUM_TRANS );
+        tool_tool_->removeAction( num_converter_act_ );
+        unsetView( ACT_TOOL_NUM_CONVERTER );
     }
 }
 

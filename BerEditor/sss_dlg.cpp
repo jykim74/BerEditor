@@ -56,6 +56,9 @@ SSSDlg::SSSDlg(QWidget *parent) :
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
 
+    mInfoTab->layout()->setSpacing(5);
+    mInfoTab->layout()->setMargin(5);
+
     mSrcClearBtn->setFixedWidth(34);
     mPrimeClearBtn->setFixedWidth(34);
     mJoinedClearBtn->setFixedWidth(34);
