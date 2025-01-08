@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 project(BerEditor
-    VERSION 2.1.6
+    VERSION 2.1.8
     DESCRIPTION "BerEditor Application"
     LANGUAGES CXX )
 
