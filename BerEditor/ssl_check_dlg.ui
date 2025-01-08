@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SSLVerifyDlg</class>
- <widget class="QDialog" name="SSLVerifyDlg">
+ <class>SSLCheckDlg</class>
+ <widget class="QDialog" name="SSLCheckDlg">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>624</width>
-    <height>877</height>
+    <height>704</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>SSL Verify</string>
+   <string>SSL Check Window</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -29,7 +29,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>SSL Verify Information</string>
+        <string>SSL Check Information</string>
        </property>
       </widget>
      </item>
@@ -629,9 +629,9 @@
       </widget>
      </item>
      <item row="0" column="2">
-      <widget class="QPushButton" name="mVerifyBtn">
+      <widget class="QPushButton" name="mCheckBtn">
        <property name="text">
-        <string>Verify</string>
+        <string>Check</string>
        </property>
       </widget>
      </item>
@@ -890,7 +890,7 @@
   <tabstop>mEncPriKeyCheck</tabstop>
   <tabstop>mPasswordText</tabstop>
   <tabstop>mURLCombo</tabstop>
-  <tabstop>mVerifyBtn</tabstop>
+  <tabstop>mCheckBtn</tabstop>
   <tabstop>mClearSaveURLBtn</tabstop>
   <tabstop>mURLTable</tabstop>
   <tabstop>mClearURLBtn</tabstop>

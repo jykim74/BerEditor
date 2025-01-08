@@ -3,7 +3,7 @@
  *
  * All rights reserved.
  */
-#include "data_encoder_dlg.h"
+#include "data_converter_dlg.h"
 #include "js_bin.h"
 #include "js_util.h"
 #include "js_ber.h"
@@ -18,7 +18,7 @@ static QStringList enTypes = {
     "Base64URL"
 };
 
-DataEncoderDlg::DataEncoderDlg(QWidget *parent) :
+DataConverterDlg::DataConverterDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
@@ -54,12 +54,12 @@ DataEncoderDlg::DataEncoderDlg(QWidget *parent) :
 
 }
 
-DataEncoderDlg::~DataEncoderDlg()
+DataConverterDlg::~DataConverterDlg()
 {
 
 }
 
-void DataEncoderDlg::initialize()
+void DataConverterDlg::initialize()
 {
     mOutputTab->setCurrentIndex(0);
     mOutputTypeCombo->setCurrentIndex(1);
@@ -74,7 +74,7 @@ static char getch( unsigned char c )
     }
 }
 
-void DataEncoderDlg::clickFindFile()
+void DataConverterDlg::clickFindFile()
 {
     QString strPath = berApplet->curPath();
 
@@ -91,7 +91,7 @@ void DataEncoderDlg::clickFindFile()
     }
 }
 
-void DataEncoderDlg::onClickEncodeBtn()
+void DataConverterDlg::onClickEncodeBtn()
 {
     int input_type = 0;
     BIN binSrc = {0,0};
@@ -128,7 +128,7 @@ void DataEncoderDlg::onClickEncodeBtn()
     update();
 }
 
-void DataEncoderDlg::outTypeChanged(int index)
+void DataConverterDlg::outTypeChanged(int index)
 {
     if( index == 0 )
     {
@@ -140,7 +140,7 @@ void DataEncoderDlg::outTypeChanged(int index)
     }
 }
 
-void DataEncoderDlg::inputChanged()
+void DataConverterDlg::inputChanged()
 {
     int nInputType = 0;
     QString strInput = mInputText->toPlainText();
@@ -160,13 +160,13 @@ void DataEncoderDlg::inputChanged()
     mInputLenText->setText( QString("%1").arg(strLen));
 }
 
-void DataEncoderDlg::outputChanged()
+void DataConverterDlg::outputChanged()
 {
     QString strLen = getDataLenString( mOutputTypeCombo->currentText(), mOutputText->toPlainText() );
     mOutputLenText->setText( QString("%1").arg(strLen));
 }
 
-void DataEncoderDlg::clickChange()
+void DataConverterDlg::clickChange()
 {
     if( mOutputTypeCombo->currentText() == "String" )
         mInputTypeStringCheck->setChecked(true);
@@ -185,18 +185,18 @@ void DataEncoderDlg::clickChange()
     mDumpText->clear();
 }
 
-void DataEncoderDlg::clickInputClear()
+void DataConverterDlg::clickInputClear()
 {
     mInputText->clear();
 }
 
-void DataEncoderDlg::clickOutputClear()
+void DataConverterDlg::clickOutputClear()
 {
     mOutputText->clear();
     mDumpText->clear();
 }
 
-void DataEncoderDlg::makeDump( const BIN *pData )
+void DataConverterDlg::makeDump( const BIN *pData )
 {
     mDumpText->clear();
     if( pData == NULL || pData->nLen <= 0 ) return;

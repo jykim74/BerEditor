@@ -3,26 +3,26 @@
  *
  * All rights reserved.
  */
-#ifndef DATA_ENCODER_DLG_H
-#define DATA_ENCODER_DLG_H
+#ifndef DATA_CONVERTER_DLG_H
+#define DATA_CONVERTER_DLG_H
 
 #include <QDialog>
-#include "ui_data_encoder_dlg.h"
+#include "ui_data_converter_dlg.h"
 #include "js_bin.h"
 
 namespace Ui {
-class DataEncoderDlg;
+class DataConverterDlg;
 }
 
 
 
-class DataEncoderDlg : public QDialog, public Ui::DataEncoderDlg
+class DataConverterDlg : public QDialog, public Ui::DataConverterDlg
 {
     Q_OBJECT
 
 public:
-    explicit DataEncoderDlg(QWidget *parent = nullptr);
-    ~DataEncoderDlg();
+    explicit DataConverterDlg(QWidget *parent = nullptr);
+    ~DataConverterDlg();
 
 private slots:
     void clickFindFile();
@@ -40,4 +40,4 @@ private:
     void initialize();
 };
 
-#endif // DATA_ENCODER_DLG_H
+#endif // DATA_CONVERTER_DLG_H

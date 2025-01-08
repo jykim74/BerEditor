@@ -45,7 +45,7 @@ set(PROJECT_SRC
     cms_dlg.cpp
     common.cpp
     crl_info_dlg.cpp
-    data_encoder_dlg.cpp
+    data_converter_dlg.cpp
     dumpasn1.c
     edit_value_dlg.cpp
     enc_dec_dlg.cpp
@@ -68,7 +68,7 @@ set(PROJECT_SRC
     settings_mgr.cpp
     sign_verify_dlg.cpp
     sss_dlg.cpp
-    ssl_verify_dlg.cpp
+    ssl_check_dlg.cpp
     csr_info_dlg.cpp
     vid_dlg.cpp
     make_value_dlg.cpp
@@ -91,7 +91,7 @@ set( PROJECT_HEADER
     cms_dlg.h
     common.h
     crl_info_dlg.h
-    data_encoder_dlg.h
+    data_converter_dlg.h
     edit_value_dlg.h
     enc_dec_dlg.h
     gen_hash_dlg.h
@@ -113,7 +113,7 @@ set( PROJECT_HEADER
     sign_verify_dlg.h
     singleton.h
     sss_dlg.h
-    ssl_verify_dlg.h
+    ssl_check_dlg.h
     csr_info_dlg.h
     vid_dlg.h
     make_value_dlg.h
@@ -128,7 +128,7 @@ set( PROJECT_FORM
     cert_pvd_dlg.ui
     cms_dlg.ui
     crl_info_dlg.ui
-    data_encoder_dlg.ui
+    data_converter_dlg.ui
     edit_value_dlg.ui
     enc_dec_dlg.ui
     gen_hash_dlg.ui
@@ -147,7 +147,7 @@ set( PROJECT_FORM
     settings_dlg.ui
     sign_verify_dlg.ui
     sss_dlg.ui
-    ssl_verify_dlg.ui
+    ssl_check_dlg.ui
     csr_info_dlg.ui
     vid_dlg.ui
     make_value_dlg.ui

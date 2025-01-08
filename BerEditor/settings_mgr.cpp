@@ -33,6 +33,7 @@ void SettingsMgr::initialize()
     getViewValue( VIEW_EDIT );
     getViewValue( VIEW_TOOL );
     getViewValue( VIEW_CRYPT );
+    getViewValue( VIEW_SERVICE );
     getViewValue( VIEW_PROTO );
     getViewValue( VIEW_KMIP );
     getViewValue( VIEW_HELP );
@@ -411,6 +412,7 @@ int SettingsMgr::viewValue( int nType )
     case VIEW_EDIT: return view_edit_;
     case VIEW_TOOL: return view_tool_;
     case VIEW_CRYPT: return view_crypt_;
+    case VIEW_SERVICE: return view_service_;
     case VIEW_PROTO: return view_proto_;
     case VIEW_KMIP: return view_kmip_;
     case VIEW_HELP: return view_help_;
@@ -444,6 +446,10 @@ int SettingsMgr::getViewValue( int nType )
     case VIEW_CRYPT:
         ret = settings.value( kViewCrypt, kCryptDefault ).toInt();
         view_crypt_ = ret;
+        break;
+    case VIEW_SERVICE:
+        ret = settings.value( kViewService, kServiceDefault ).toInt();
+        view_service_ = ret;
         break;
     case VIEW_PROTO:
         ret = settings.value( kViewProto, kProtoDefault ).toInt();
@@ -492,6 +498,10 @@ void SettingsMgr::setViewValue( int nVal )
         settings.setValue( kViewCrypt, nVal );
         view_crypt_ = nVal;
         break;
+    case VIEW_SERVICE:
+        settings.setValue( kViewService, nVal );
+        view_service_ = nVal;
+        break;
     case VIEW_PROTO:
         settings.setValue( kViewProto, nVal );
         view_proto_ = nVal;
@@ -528,6 +538,9 @@ void SettingsMgr::clearViewValue( int nType )
         break;
     case VIEW_CRYPT:
         settings.remove( kViewCrypt );
+        break;
+    case VIEW_SERVICE:
+        settings.remove( kViewService );
         break;
     case VIEW_PROTO:
         settings.remove( kViewProto );

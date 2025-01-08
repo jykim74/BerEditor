@@ -28,6 +28,7 @@ const char *kViewFile = "viewFile";
 const char *kViewEdit = "viewEdit";
 const char *kViewTool = "viewTool";
 const char *kViewCrypt = "viewCrypt";
+const char *kViewService = "viewService";
 const char *kViewProto = "viewProto";
 const char *kViewKMIP = "viewKMIP";
 const char *kViewHelp = "viewHelp";
@@ -126,6 +127,7 @@ private:
     int view_edit_;
     int view_tool_;
     int view_crypt_;
+    int view_service_;
     int view_proto_;
     int view_kmip_;
     int view_help_;

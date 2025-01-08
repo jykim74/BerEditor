@@ -49,7 +49,7 @@ SOURCES += \
     cms_dlg.cpp \
     common.cpp \
     crl_info_dlg.cpp \
-    data_encoder_dlg.cpp \
+    data_converter_dlg.cpp \
     dumpasn1.c \
     edit_value_dlg.cpp \
     enc_dec_dlg.cpp \
@@ -71,8 +71,8 @@ SOURCES += \
     settings_dlg.cpp \
     settings_mgr.cpp \
     sign_verify_dlg.cpp \
+    ssl_check_dlg.cpp \
     sss_dlg.cpp \
-    ssl_verify_dlg.cpp \
     csr_info_dlg.cpp \
     vid_dlg.cpp \
     make_value_dlg.cpp \
@@ -127,7 +127,7 @@ HEADERS += \
     cms_dlg.h \
     common.h \
     crl_info_dlg.h \
-    data_encoder_dlg.h \
+    data_converter_dlg.h \
     edit_value_dlg.h \
     enc_dec_dlg.h \
     gen_hash_dlg.h \
@@ -148,8 +148,8 @@ HEADERS += \
     settings_mgr.h \
     sign_verify_dlg.h \
     singleton.h \
+    ssl_check_dlg.h \
     sss_dlg.h \
-    ssl_verify_dlg.h \
     csr_info_dlg.h \
     vid_dlg.h \
     make_value_dlg.h \
@@ -284,7 +284,7 @@ FORMS += \
         cert_pvd_dlg.ui \
         cms_dlg.ui \
         crl_info_dlg.ui \
-        data_encoder_dlg.ui \
+        data_converter_dlg.ui \
         edit_value_dlg.ui \
         enc_dec_dlg.ui \
         gen_hash_dlg.ui \
@@ -302,8 +302,8 @@ FORMS += \
         pub_enc_dec_dlg.ui \
         settings_dlg.ui \
         sign_verify_dlg.ui \
+        ssl_check_dlg.ui \
         sss_dlg.ui \
-        ssl_verify_dlg.ui \
         csr_info_dlg.ui \
         vid_dlg.ui \
         make_value_dlg.ui \

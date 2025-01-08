@@ -62,9 +62,10 @@ const QColor kLenTypeColor( Qt::cyan );
 #define VIEW_EDIT                   0x02000000
 #define VIEW_TOOL                   0x03000000
 #define VIEW_CRYPT                  0x04000000
-#define VIEW_PROTO                  0x05000000
-#define VIEW_KMIP                   0x06000000
-#define VIEW_HELP                   0x07000000
+#define VIEW_SERVICE                0x05000000
+#define VIEW_PROTO                  0x06000000
+#define VIEW_KMIP                   0x07000000
+#define VIEW_HELP                   0x08000000
 
 #define ACT_FILE_NEW                VIEW_FILE | 0x00000001
 #define ACT_FILE_OPEN               VIEW_FILE | 0x00000002
@@ -89,7 +90,7 @@ const QColor kLenTypeColor( Qt::cyan );
 #define ACT_EDIT_COLLAPSE_NODE      VIEW_EDIT | 0x00000040
 #define ACT_EDIT_FIND_NODE          VIEW_EDIT | 0x00000080
 
-#define ACT_TOOL_DATA_ENCODER       VIEW_TOOL | 0x00000001
+#define ACT_TOOL_DATA_CONVERTER     VIEW_TOOL | 0x00000001
 #define ACT_TOOL_NUM_CONVERTER      VIEW_TOOL | 0x00000002
 #define ACT_TOOL_OID_INFO           VIEW_TOOL | 0x00000004
 #define ACT_TOOL_MAKE_BER           VIEW_TOOL | 0x00000008
@@ -109,11 +110,12 @@ const QColor kLenTypeColor( Qt::cyan );
 #define ACT_CRYPT_OTP_GEN           VIEW_CRYPT | 0x00000400
 #define ACT_CRYPT_VID               VIEW_CRYPT | 0x00000800
 #define ACT_CRYPT_BN_CALC           VIEW_CRYPT | 0x00001000
-#define ACT_CRYPT_KEY_PAIR_MAN      VIEW_CRYPT | 0x00002000
-#define ACT_CRYPT_CERT_MAN          VIEW_CRYPT | 0x00004000
-#define ACT_CRYPT_CAVP              VIEW_CRYPT | 0x00008000
-#define ACT_CRYPT_SSL_VERIFY        VIEW_CRYPT | 0x00010000
-#define ACT_CRYPT_KEY_LIST          VIEW_CRYPT | 0x00020000
+
+#define ACT_SERVICE_KEY_PAIR_MAN    VIEW_SERVICE | 0x00000001
+#define ACT_SERVICE_CERT_MAN        VIEW_SERVICE | 0x00000002
+#define ACT_SERVICE_CAVP            VIEW_SERVICE | 0x00000004
+#define ACT_SERVICE_SSL_CHECK       VIEW_SERVICE | 0x00000008
+#define ACT_SERVICE_KEY_LIST        VIEW_SERVICE | 0x00000010
 
 #define ACT_PROTO_OCSP              VIEW_PROTO | 0x00000001
 #define ACT_PROTO_TSP               VIEW_PROTO | 0x00000002
@@ -138,13 +140,13 @@ static const int kFileDefault = ACT_FILE_NEW | ACT_FILE_OPEN | ACT_FILE_SAVE;
 
 static const int kEditDefault = ACT_EDIT_EXPAND_ALL | ACT_EDIT_EXPAND_NODE | ACT_EDIT_FIND_NODE;
 
-static const int kToolDefault = ACT_TOOL_DATA_ENCODER | ACT_TOOL_OID_INFO | ACT_TOOL_MAKE_BER \
+static const int kToolDefault = ACT_TOOL_DATA_CONVERTER | ACT_TOOL_OID_INFO | ACT_TOOL_MAKE_BER \
                          | ACT_TOOL_DECODE_DATA | ACT_TOOL_GET_URI;
 
 static const int kCryptDefault = ACT_CRYPT_HASH | ACT_CRYPT_MAC | ACT_CRYPT_ENC_DEC \
-                          | ACT_CRYPT_SIGN_VERIFY | ACT_CRYPT_KEY_AGREE \
-                          | ACT_CRYPT_CERT_PVD | ACT_CRYPT_BN_CALC | ACT_CRYPT_KEY_PAIR_MAN \
-                          | ACT_CRYPT_CERT_MAN | ACT_CRYPT_KEY_LIST | ACT_CRYPT_SSL_VERIFY;
+                          | ACT_CRYPT_SIGN_VERIFY | ACT_CRYPT_KEY_AGREE | ACT_CRYPT_CERT_PVD | ACT_CRYPT_BN_CALC;
+
+static const int kServiceDefault = ACT_SERVICE_KEY_PAIR_MAN | ACT_SERVICE_CERT_MAN | ACT_SERVICE_KEY_LIST | ACT_SERVICE_SSL_CHECK;
 
 static const int kProtoDefault = 0;
 static const int kKMIPDefault = 0;

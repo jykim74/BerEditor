@@ -37,7 +37,7 @@ class SSSDlg;
 class CertPVDDlg;
 class GenOTPDlg;
 class CAVPDlg;
-class SSLVerifyDlg;
+class SSLCheckDlg;
 class VIDDlg;
 class BNCalcDlg;
 class KeyPairManDlg;
@@ -127,7 +127,7 @@ public:
     void viewEditCollapseNode( bool bChecked );
     void viewEditFindNode( bool bChecked );
 
-    void viewToolDataEncode( bool bChecked );
+    void viewToolDataConverter( bool bChecked );
     void viewToolNumConverter( bool bChecked );
     void viewToolOIDInfo( bool bChecked );
     void viewToolMakeBER( bool bChecked );
@@ -147,11 +147,12 @@ public:
     void viewCryptOTPGen( bool bChecked );
     void viewCryptVID( bool bChecked );
     void viewCryptBNCalc( bool bChecked );
-    void viewCryptKeyPairMan( bool bChecked );
-    void viewCryptCertMan( bool bChecked );
-    void viewCryptKeyList( bool bChecked );
-    void viewCryptCAVP( bool bChecked );
-    void viewCryptSSLVerify( bool bChecked );
+
+    void viewServiceKeyPairMan( bool bChecked );
+    void viewServiceCertMan( bool bChecked );
+    void viewServiceKeyList( bool bChecked );
+    void viewServiceCAVP( bool bChecked );
+    void viewServiceSSLCheck( bool bChecked );
 
     void viewProtoOCSP( bool bChecked );
     void viewProtoTSP( bool bChecked );
@@ -199,7 +200,7 @@ private slots:
     void about();
     void setting();
     void test();
-    void dataEncoder();
+    void dataConvert();
     void keyManage();
     void hash();
     void mac();
@@ -214,7 +215,7 @@ private slots:
     void sss();
     void certPVD();
     void CAVP();
-    void sslVerify();
+    void sslCheck();
     void genOTP();
     void VID();
     void BNCalc();
@@ -312,7 +313,7 @@ private:
     CertPVDDlg      *cert_pvd_dlg_;
     GenOTPDlg       *gen_otp_dlg_;
     CAVPDlg         *cavp_dlg_;
-    SSLVerifyDlg    *ssl_verify_dlg_;
+    SSLCheckDlg     *ssl_check_dlg_;
     VIDDlg          *vid_dlg_;
     BNCalcDlg       *bn_calc_dlg_;
     KeyPairManDlg   *key_pair_man_dlg_;
@@ -374,6 +375,8 @@ private:
     QAction* gen_otp_act_;
     QAction* vid_act_;
     QAction* calc_act_;
+
+    QToolBar* service_tool_;
     QAction* key_pair_man_act_;
     QAction* cert_man_act_;
     QAction* key_list_act_;

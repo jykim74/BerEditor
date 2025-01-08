@@ -3,31 +3,31 @@
  *
  * All rights reserved.
  */
-#ifndef SSL_VERIFY_DLG_H
-#define SSL_VERIFY_DLG_H
+#ifndef SSL_CHECK_DLG_H
+#define SSL_CHECK_DLG_H
 
 #include <QDialog>
-#include "ui_ssl_verify_dlg.h"
+#include "ui_ssl_check_dlg.h"
 #include "js_bin.h"
 
 
 namespace Ui {
-class SSLVerifyDlg;
+class SSLCheckDlg;
 }
 
-class SSLVerifyDlg : public QDialog, public Ui::SSLVerifyDlg
+class SSLCheckDlg : public QDialog, public Ui::SSLCheckDlg
 {
     Q_OBJECT
 
 public:
-    explicit SSLVerifyDlg(QWidget *parent = nullptr);
-    ~SSLVerifyDlg();
+    explicit SSLCheckDlg(QWidget *parent = nullptr);
+    ~SSLCheckDlg();
 
     void log( const QString strLog, QColor cr = QColor(0x00, 0x00, 0x00) );
     void elog( const QString strLog );
 
 private slots:
-    void clickVerify();
+    void clickCheck();
     void clickRefresh();
     void clickClearURL();
     void clickClearSaveURL();
@@ -89,4 +89,4 @@ private:
     QTreeWidgetItem* url_tree_root_;
 };
 
-#endif // SSL_VERIFY_DLG_H
+#endif // SSL_CHECK_DLG_H

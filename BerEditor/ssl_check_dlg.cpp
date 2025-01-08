@@ -11,7 +11,7 @@
 #include <QFile>
 
 #include "common.h"
-#include "ssl_verify_dlg.h"
+#include "ssl_check_dlg.h"
 #include "ber_applet.h"
 #include "mainwindow.h"
 #include "js_net.h"
@@ -178,13 +178,13 @@ int verify_callback(int preverify, X509_STORE_CTX* x509_ctx)
     return preverify;
 }
 
-SSLVerifyDlg::SSLVerifyDlg(QWidget *parent) :
+SSLCheckDlg::SSLCheckDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
     url_tree_root_ = NULL;
 
-    connect( mVerifyBtn, SIGNAL(clicked()), this, SLOT(clickVerify()));
+    connect( mCheckBtn, SIGNAL(clicked()), this, SLOT(clickCheck()));
     connect( mRefreshBtn, SIGNAL(clicked()), this, SLOT(clickRefresh()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mClearLogBtn, SIGNAL(clicked()), this, SLOT(clickClearLog()));
@@ -226,7 +226,7 @@ SSLVerifyDlg::SSLVerifyDlg(QWidget *parent) :
     connect( mClientPriKeyTypeBtn, SIGNAL(clicked()), this, SLOT(clickClientPriKeyType()));
 
     initialize();
-    mVerifyBtn->setDefault(true);
+    mCheckBtn->setDefault(true);
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
     mServerTab->layout()->setSpacing(5);
@@ -259,12 +259,12 @@ SSLVerifyDlg::SSLVerifyDlg(QWidget *parent) :
     resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 
-SSLVerifyDlg::~SSLVerifyDlg()
+SSLCheckDlg::~SSLCheckDlg()
 {
     if( url_tree_root_ ) delete url_tree_root_;
 }
 
-void SSLVerifyDlg::log( const QString strLog, QColor cr )
+void SSLCheckDlg::log( const QString strLog, QColor cr )
 {
     QTextCursor cursor = mLogText->textCursor();
     //    cursor.movePosition( QTextCursor::End );
@@ -280,12 +280,12 @@ void SSLVerifyDlg::log( const QString strLog, QColor cr )
     mLogText->update();
 }
 
-void SSLVerifyDlg::elog( const QString strLog )
+void SSLCheckDlg::elog( const QString strLog )
 {
     log( strLog, QColor(0xFF,0x00,0x00));
 }
 
-void SSLVerifyDlg::initialize()
+void SSLCheckDlg::initialize()
 {
     mModeCombo->addItems( kModeLists );
     mVerifyDepthText->setText( QString("%1").arg( 4 ));
@@ -349,7 +349,7 @@ void SSLVerifyDlg::initialize()
 
 }
 
-QStringList SSLVerifyDlg::getUsedURL()
+QStringList SSLCheckDlg::getUsedURL()
 {
     QSettings settings;
     QStringList retList;
@@ -361,7 +361,7 @@ QStringList SSLVerifyDlg::getUsedURL()
     return retList;
 }
 
-void SSLVerifyDlg::setUsedURL( const QString strURL )
+void SSLCheckDlg::setUsedURL( const QString strURL )
 {
     if( strURL.length() <= 4 ) return;
 
@@ -374,7 +374,7 @@ void SSLVerifyDlg::setUsedURL( const QString strURL )
     settings.endGroup();
 }
 
-int SSLVerifyDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
+int SSLCheckDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
 {
     int ret = 0;
     int count = 0;
@@ -655,7 +655,7 @@ end :
     return ret;
 }
 
-const QTreeWidgetItem* SSLVerifyDlg::createTree( const QString strHost, int nPort, const BINList *pCertList, bool bGood )
+const QTreeWidgetItem* SSLCheckDlg::createTree( const QString strHost, int nPort, const BINList *pCertList, bool bGood )
 {
     int ret = 0;
     int nCount = 0;
@@ -745,7 +745,7 @@ const QTreeWidgetItem* SSLVerifyDlg::createTree( const QString strHost, int nPor
     return itemHost;
 }
 
-long SSLVerifyDlg::getFlags()
+long SSLCheckDlg::getFlags()
 {
     long uFlags = 0;
 
@@ -776,7 +776,7 @@ long SSLVerifyDlg::getFlags()
     return uFlags;
 }
 
-void SSLVerifyDlg::clickVerify()
+void SSLCheckDlg::clickCheck()
 {
     int ret = 0;
     QString strHost;
@@ -846,7 +846,7 @@ void SSLVerifyDlg::clickVerify()
     JS_BIN_reset( &binCA );
 }
 
-void SSLVerifyDlg::checkRootAndTrust( const BIN *pCA, const QString strHost, int nPort )
+void SSLCheckDlg::checkRootAndTrust( const BIN *pCA, const QString strHost, int nPort )
 {
     int ret = 0;
     int bSelfSign = 0;
@@ -957,7 +957,7 @@ end :
     if( pExtList ) JS_PKI_resetExtensionInfoList( &pExtList );
 }
 
-void SSLVerifyDlg::clickRefresh()
+void SSLCheckDlg::clickRefresh()
 {
     int ret = 0;
 //    clickClearResult();
@@ -983,12 +983,12 @@ void SSLVerifyDlg::clickRefresh()
     }
 }
 
-void SSLVerifyDlg::clickClearURL()
+void SSLCheckDlg::clickClearURL()
 {
     mURLTable->setRowCount(0);
 }
 
-void SSLVerifyDlg::clickClearSaveURL()
+void SSLCheckDlg::clickClearSaveURL()
 {
     QSettings settings;
     settings.beginGroup( kSettingBer );
@@ -1001,7 +1001,7 @@ void SSLVerifyDlg::clickClearSaveURL()
     berApplet->log( "clear used URLs" );
 }
 
-void SSLVerifyDlg::clickClearResult()
+void SSLCheckDlg::clickClearResult()
 {
     mLogText->clear();
 
@@ -1013,12 +1013,12 @@ void SSLVerifyDlg::clickClearResult()
     }
 }
 
-void SSLVerifyDlg::clickClearLog()
+void SSLCheckDlg::clickClearLog()
 {
     mLogText->clear();
 }
 
-void SSLVerifyDlg::findTrustCACert()
+void SSLCheckDlg::findTrustCACert()
 {
     QString strPath = mTrustCAPathText->text();
     strPath = berApplet->curFilePath( strPath );
@@ -1027,7 +1027,7 @@ void SSLVerifyDlg::findTrustCACert()
     if( fileName.length() > 1 ) mTrustCAPathText->setText( fileName );
 }
 
-void SSLVerifyDlg::checkFixCipherName()
+void SSLCheckDlg::checkFixCipherName()
 {
     bool bVal = mFixCipherNameCheck->isChecked();
 
@@ -1038,12 +1038,12 @@ void SSLVerifyDlg::checkFixCipherName()
 }
 
 
-void SSLVerifyDlg::clickClearCipher()
+void SSLCheckDlg::clickClearCipher()
 {
     mCipherListText->clear();
 }
 
-void SSLVerifyDlg::clickViewTrustList()
+void SSLCheckDlg::clickViewTrustList()
 {
 //    TrustListDlg trustList;
 //    trustList.exec();
@@ -1053,7 +1053,7 @@ void SSLVerifyDlg::clickViewTrustList()
     certMan.exec();
 }
 
-void SSLVerifyDlg::clickAddCipher()
+void SSLCheckDlg::clickAddCipher()
 {
     QString strCipher = mCipherListCombo->currentText();
     QString strCipherList = mCipherListText->text();
@@ -1079,12 +1079,12 @@ void SSLVerifyDlg::clickAddCipher()
 }
 
 
-void SSLVerifyDlg::selectTable(QModelIndex index)
+void SSLCheckDlg::selectTable(QModelIndex index)
 {
 
 }
 
-void SSLVerifyDlg::slotTableMenuRequested( QPoint pos )
+void SSLCheckDlg::slotTableMenuRequested( QPoint pos )
 {
     QMenu *menu = new QMenu(this);
     QAction *verifyAct = new QAction( tr("Verify" ), this );
@@ -1105,7 +1105,7 @@ void SSLVerifyDlg::slotTableMenuRequested( QPoint pos )
     menu->popup( mURLTable->viewport()->mapToGlobal(pos));
 }
 
-void SSLVerifyDlg::verifyTableMenu()
+void SSLCheckDlg::verifyTableMenu()
 {
     QModelIndex idx = mURLTable->currentIndex();
     QTableWidgetItem *item0 = mURLTable->item(idx.row(), 0);
@@ -1117,14 +1117,14 @@ void SSLVerifyDlg::verifyTableMenu()
     verifyURL( strHost, nPort );
 }
 
-void SSLVerifyDlg::deleteTableMenu()
+void SSLCheckDlg::deleteTableMenu()
 {
     QModelIndex idx = mURLTable->currentIndex();
     QTableWidgetItem *item = mURLTable->item(idx.row(), 0);
     mURLTable->removeRow(idx.row());
 }
 
-void SSLVerifyDlg::viewCertTableMenu()
+void SSLCheckDlg::viewCertTableMenu()
 {
     BIN binCert = {0,0};
 
@@ -1142,7 +1142,7 @@ void SSLVerifyDlg::viewCertTableMenu()
     certInfo.exec();
 }
 
-void SSLVerifyDlg::decodeCertTableMenu()
+void SSLCheckDlg::decodeCertTableMenu()
 {
     BIN binCert = {0,0};
     QModelIndex idx = mURLTable->currentIndex();
@@ -1157,7 +1157,7 @@ void SSLVerifyDlg::decodeCertTableMenu()
     JS_BIN_reset( &binCert );
 }
 
-void SSLVerifyDlg::slotTreeMenuRequested( QPoint pos )
+void SSLCheckDlg::slotTreeMenuRequested( QPoint pos )
 {
     QTreeWidgetItem* item = mURLTree->currentItem();
     if( item == NULL || item == url_tree_root_ ) return;
@@ -1186,7 +1186,7 @@ void SSLVerifyDlg::slotTreeMenuRequested( QPoint pos )
     menu->popup( mURLTree->viewport()->mapToGlobal(pos));
 }
 
-void SSLVerifyDlg::viewCertTreeMenu()
+void SSLCheckDlg::viewCertTreeMenu()
 {
     QTreeWidgetItem *item = mURLTree->currentItem();
     if( item == NULL ) return;
@@ -1202,7 +1202,7 @@ void SSLVerifyDlg::viewCertTreeMenu()
     certInfo.exec();
 }
 
-void SSLVerifyDlg::saveTrustedCA()
+void SSLCheckDlg::saveTrustedCA()
 {
     int ret = 0;
     unsigned long uHash = 0;
@@ -1254,14 +1254,14 @@ end :
     JS_BIN_reset( &binCert );
 }
 
-void SSLVerifyDlg::checkUseMutual()
+void SSLCheckDlg::checkUseMutual()
 {
     bool bVal = mUseMutualCheck->isChecked();
 
     mAuthTab->setTabEnabled( 1, bVal );
 }
 
-void SSLVerifyDlg::decodeCertTreeMenu()
+void SSLCheckDlg::decodeCertTreeMenu()
 {
     QTreeWidgetItem *item = mURLTree->currentItem();
 
@@ -1276,7 +1276,7 @@ void SSLVerifyDlg::decodeCertTreeMenu()
     JS_BIN_reset( &binCert );
 }
 
-int SSLVerifyDlg::readPrivateKey( BIN *pPriKey )
+int SSLCheckDlg::readPrivateKey( BIN *pPriKey )
 {
     int ret = 0;
     BIN binData = {0,0};
@@ -1336,7 +1336,7 @@ end :
     return ret;
 }
 
-void SSLVerifyDlg::clickTrustCAView()
+void SSLCheckDlg::clickTrustCAView()
 {
     QString strPath = mTrustCAPathText->text();
     if( strPath.length() < 1 )
@@ -1351,7 +1351,7 @@ void SSLVerifyDlg::clickTrustCAView()
     certInfoDlg.exec();
 }
 
-void SSLVerifyDlg::clickTrustCADecode()
+void SSLCheckDlg::clickTrustCADecode()
 {
     BIN binData = {0,0};
     QString strPath = mTrustCAPathText->text();
@@ -1376,7 +1376,7 @@ void SSLVerifyDlg::clickTrustCADecode()
     JS_BIN_reset( &binData );
 }
 
-void SSLVerifyDlg::clickTrustCAType()
+void SSLCheckDlg::clickTrustCAType()
 {
     BIN binCert = {0,0};
     BIN binPubKey = {0,0};
@@ -1403,7 +1403,7 @@ end :
     JS_BIN_reset( &binPubKey );
 }
 
-void SSLVerifyDlg::findClientCA()
+void SSLCheckDlg::findClientCA()
 {
     QString strPath = mClientCAPathText->text();
     strPath = berApplet->curFilePath( strPath );
@@ -1412,7 +1412,7 @@ void SSLVerifyDlg::findClientCA()
     if( fileName.length() > 1 ) mClientCAPathText->setText( fileName );
 }
 
-void SSLVerifyDlg::clickClientCAView()
+void SSLCheckDlg::clickClientCAView()
 {
     QString strPath = mClientCAPathText->text();
     if( strPath.length() < 1 )
@@ -1427,7 +1427,7 @@ void SSLVerifyDlg::clickClientCAView()
     certInfoDlg.exec();
 }
 
-void SSLVerifyDlg::clickClientCADecode()
+void SSLCheckDlg::clickClientCADecode()
 {
     BIN binData = {0,0};
     QString strPath = mClientCAPathText->text();
@@ -1452,7 +1452,7 @@ void SSLVerifyDlg::clickClientCADecode()
     JS_BIN_reset( &binData );
 }
 
-void SSLVerifyDlg::clickClientCAType()
+void SSLCheckDlg::clickClientCAType()
 {
     BIN binCert = {0,0};
     BIN binPubKey = {0,0};
@@ -1479,7 +1479,7 @@ end :
     JS_BIN_reset( &binPubKey );
 }
 
-void SSLVerifyDlg::findClientCert()
+void SSLCheckDlg::findClientCert()
 {
     QString strPath = mClientCertPathText->text();
     if( strPath.length() < 1 )
@@ -1489,7 +1489,7 @@ void SSLVerifyDlg::findClientCert()
     if( fileName.length() > 1 ) mClientCertPathText->setText( fileName );
 }
 
-void SSLVerifyDlg::clickClientCertView()
+void SSLCheckDlg::clickClientCertView()
 {
     QString strPath = mClientCertPathText->text();
     if( strPath.length() < 1 )
@@ -1504,7 +1504,7 @@ void SSLVerifyDlg::clickClientCertView()
     certInfoDlg.exec();
 }
 
-void SSLVerifyDlg::clickClientCertDecode()
+void SSLCheckDlg::clickClientCertDecode()
 {
     BIN binData = {0,0};
     QString strPath = mClientCertPathText->text();
@@ -1529,7 +1529,7 @@ void SSLVerifyDlg::clickClientCertDecode()
     JS_BIN_reset( &binData );
 }
 
-void SSLVerifyDlg::clickClientCertType()
+void SSLCheckDlg::clickClientCertType()
 {
     BIN binCert = {0,0};
     BIN binPubKey = {0,0};
@@ -1556,7 +1556,7 @@ end :
     JS_BIN_reset( &binPubKey );
 }
 
-void SSLVerifyDlg::findClientPriKey()
+void SSLCheckDlg::findClientPriKey()
 {
     QString strPath = mClientPriKeyPathText->text();
     if( strPath.length() < 1 )
@@ -1566,7 +1566,7 @@ void SSLVerifyDlg::findClientPriKey()
     if( fileName.length() > 1 ) mClientPriKeyPathText->setText( fileName );
 }
 
-void SSLVerifyDlg::clickClientPriKeyDecode()
+void SSLCheckDlg::clickClientPriKeyDecode()
 {
     BIN binData = {0,0};
     QString strPath = mClientPriKeyPathText->text();
@@ -1591,7 +1591,7 @@ void SSLVerifyDlg::clickClientPriKeyDecode()
     JS_BIN_reset( &binData );
 }
 
-void SSLVerifyDlg::clickClientPriKeyView()
+void SSLCheckDlg::clickClientPriKeyView()
 {
     int ret = 0;
     BIN binPri = {0,0};
@@ -1607,7 +1607,7 @@ end :
     JS_BIN_reset( &binPri );
 }
 
-void SSLVerifyDlg::clickClientPriKeyType()
+void SSLCheckDlg::clickClientPriKeyType()
 {
     int ret = 0;
     BIN binPri = {0,0};
@@ -1623,7 +1623,7 @@ end :
     JS_BIN_reset( &binPri );
 }
 
-int SSLVerifyDlg::removeExistURL( const QString strHost, int nPort )
+int SSLCheckDlg::removeExistURL( const QString strHost, int nPort )
 {
     int count = mURLTable->rowCount();
 

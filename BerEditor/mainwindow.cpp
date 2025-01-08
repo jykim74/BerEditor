@@ -13,7 +13,7 @@
 #include "ber_applet.h"
 #include "settings_dlg.h"
 #include "settings_mgr.h"
-#include "data_encoder_dlg.h"
+#include "data_converter_dlg.h"
 #include "gen_hash_dlg.h"
 #include "gen_mac_dlg.h"
 #include "oid_info_dlg.h"
@@ -32,7 +32,7 @@
 #include "make_ber_dlg.h"
 #include "cert_pvd_dlg.h"
 #include "lcn_info_dlg.h"
-#include "ssl_verify_dlg.h"
+#include "ssl_check_dlg.h"
 #include "cert_info_dlg.h"
 #include "crl_info_dlg.h"
 #include "csr_info_dlg.h"
@@ -130,7 +130,7 @@ MainWindow::~MainWindow()
     delete cert_pvd_dlg_;
     delete gen_otp_dlg_;
     delete cavp_dlg_;
-    delete ssl_verify_dlg_;
+    delete ssl_check_dlg_;
     delete vid_dlg_;
     delete bn_calc_dlg_;
     delete key_pair_man_dlg_;
@@ -317,6 +317,7 @@ void MainWindow::createViewActions()
     viewMenu->addSeparator();
     QMenu *toolMenu = viewMenu->addMenu( tr("Tool ToolBar" ));
     QMenu *cryptMenu = viewMenu->addMenu( tr( "Cryptogram ToolBar"));
+    QMenu *serviceMenu = viewMenu->addMenu( tr( "Service ToolBar"));
     QMenu *protoMenu = viewMenu->addMenu( tr( "Protocol ToolBar"));
     QMenu *kmipMenu = viewMenu->addMenu( tr( "KMIP ToolBar"));
     QMenu *helpMenu = viewMenu->addMenu( tr( "Help ToolBar" ));
@@ -429,11 +430,11 @@ void MainWindow::createViewActions()
     connect( editFindNodeAct, &QAction::triggered, this, &MainWindow::viewEditFindNode );
     editMenu->addAction( editFindNodeAct );
 
-    QAction *toolDataEncodeAct = new QAction( tr( "Data Encode"), this );
-    bVal = isView( ACT_TOOL_DATA_ENCODER );
+    QAction *toolDataEncodeAct = new QAction( tr( "Data Converter"), this );
+    bVal = isView( ACT_TOOL_DATA_CONVERTER );
     toolDataEncodeAct->setCheckable(true);
     toolDataEncodeAct->setChecked(bVal);
-    connect( toolDataEncodeAct, &QAction::triggered, this, &MainWindow::viewToolDataEncode );
+    connect( toolDataEncodeAct, &QAction::triggered, this, &MainWindow::viewToolDataConverter );
     toolMenu->addAction( toolDataEncodeAct );
 
     QAction *toolNumTransAct = new QAction( tr( "Num Converter"), this );
@@ -457,14 +458,14 @@ void MainWindow::createViewActions()
     connect( toolMakeBERAct, &QAction::triggered, this, &MainWindow::viewToolMakeBER );
     toolMenu->addAction( toolMakeBERAct );
 
-    QAction *toolDecodeDataAct = new QAction( tr( "Decode Data"), this );
+    QAction *toolDecodeDataAct = new QAction( tr( "Decode BER"), this );
     bVal = isView( ACT_TOOL_DECODE_DATA );
     toolDecodeDataAct->setCheckable(true);
     toolDecodeDataAct->setChecked(bVal);
     connect( toolDecodeDataAct, &QAction::triggered, this, &MainWindow::viewToolDecodeData );
     toolMenu->addAction( toolDecodeDataAct );
 
-    QAction *toolGetURIAct = new QAction( tr( "Get URI"), this );
+    QAction *toolGetURIAct = new QAction( tr( "Get BER from URI"), this );
     bVal = isView( ACT_TOOL_GET_URI );
     toolGetURIAct->setCheckable(true);
     toolGetURIAct->setChecked(bVal);
@@ -472,7 +473,7 @@ void MainWindow::createViewActions()
     toolMenu->addAction( toolGetURIAct );
 
 
-    QAction *cryptKeyManAct = new QAction( tr( "Key Manage"), this );
+    QAction *cryptKeyManAct = new QAction( tr( "KeyManage"), this );
     bVal = isView( ACT_CRYPT_KEY_MAN );
     cryptKeyManAct->setCheckable(true);
     cryptKeyManAct->setChecked(bVal);
@@ -486,7 +487,7 @@ void MainWindow::createViewActions()
     connect( cryptHashAct, &QAction::triggered, this, &MainWindow::viewCryptHash );
     cryptMenu->addAction( cryptHashAct );
 
-    QAction *cryptMACAct = new QAction( tr( "MAC"), this );
+    QAction *cryptMACAct = new QAction( tr( "Message Authentication Code"), this );
     bVal = isView( ACT_CRYPT_MAC );
     cryptMACAct->setCheckable(true);
     cryptMACAct->setChecked(bVal);
@@ -514,21 +515,21 @@ void MainWindow::createViewActions()
     connect( cryptPubEncAct, &QAction::triggered, this, &MainWindow::viewCryptPubEnc );
     cryptMenu->addAction( cryptPubEncAct );
 
-    QAction *cryptKeyAgreeAct = new QAction( tr( "Key Agree"), this );
+    QAction *cryptKeyAgreeAct = new QAction( tr( "KeyAgree"), this );
     bVal = isView( ACT_CRYPT_KEY_AGREE );
     cryptKeyAgreeAct->setCheckable(true);
     cryptKeyAgreeAct->setChecked(bVal);
     connect( cryptKeyAgreeAct, &QAction::triggered, this, &MainWindow::viewCryptKeyAgree );
     cryptMenu->addAction( cryptKeyAgreeAct );
 
-    QAction *cryptCMSAct = new QAction( tr( "CMS"), this );
+    QAction *cryptCMSAct = new QAction( tr( "Cryptography Message Syntax"), this );
     bVal = isView( ACT_CRYPT_CMS );
     cryptCMSAct->setCheckable(true);
     cryptCMSAct->setChecked(bVal);
     connect( cryptCMSAct, &QAction::triggered, this, &MainWindow::viewCryptCMS );
     cryptMenu->addAction( cryptCMSAct );
 
-    QAction *cryptSSSAct = new QAction( tr( "SSS"), this );
+    QAction *cryptSSSAct = new QAction( tr( "Shamir Secret Sharing"), this );
     bVal = isView( ACT_CRYPT_SSS );
     cryptSSSAct->setCheckable(true);
     cryptSSSAct->setChecked(bVal);
@@ -563,40 +564,40 @@ void MainWindow::createViewActions()
     connect( cryptBNCalcAct, &QAction::triggered, this, &MainWindow::viewCryptBNCalc );
     cryptMenu->addAction( cryptBNCalcAct );
 
-    QAction *cryptKeyPairManAct = new QAction( tr( "KeyPair Manage"), this );
-    bVal = isView( ACT_CRYPT_KEY_PAIR_MAN );
-    cryptKeyPairManAct->setCheckable(true);
-    cryptKeyPairManAct->setChecked(bVal);
-    connect( cryptKeyPairManAct, &QAction::triggered, this, &MainWindow::viewCryptKeyPairMan );
-    cryptMenu->addAction( cryptKeyPairManAct );
+    QAction *serviceKeyPairManAct = new QAction( tr( "KeyPair Manage"), this );
+    bVal = isView( ACT_SERVICE_KEY_PAIR_MAN );
+    serviceKeyPairManAct->setCheckable(true);
+    serviceKeyPairManAct->setChecked(bVal);
+    connect( serviceKeyPairManAct, &QAction::triggered, this, &MainWindow::viewServiceKeyPairMan );
+    serviceMenu->addAction( serviceKeyPairManAct );
 
-    QAction *cryptCertManAct = new QAction( tr( "Certificate Manage"), this );
-    bVal = isView( ACT_CRYPT_CERT_MAN );
-    cryptCertManAct->setCheckable(true);
-    cryptCertManAct->setChecked(bVal);
-    connect( cryptCertManAct, &QAction::triggered, this, &MainWindow::viewCryptCertMan );
-    cryptMenu->addAction( cryptCertManAct );
+    QAction *serviceCertManAct = new QAction( tr( "Certificate Manage"), this );
+    bVal = isView( ACT_SERVICE_CERT_MAN );
+    serviceCertManAct->setCheckable(true);
+    serviceCertManAct->setChecked(bVal);
+    connect( serviceCertManAct, &QAction::triggered, this, &MainWindow::viewServiceCertMan );
+    serviceMenu->addAction( serviceCertManAct );
 
-    QAction *cryptKeyListAct = new QAction( tr( "Key List"), this );
-    bVal = isView( ACT_CRYPT_KEY_LIST );
-    cryptKeyListAct->setCheckable(true);
-    cryptKeyListAct->setChecked(bVal);
-    connect( cryptKeyListAct, &QAction::triggered, this, &MainWindow::viewCryptKeyList );
-    cryptMenu->addAction( cryptKeyListAct );
+    QAction *serviceKeyListAct = new QAction( tr( "Key List"), this );
+    bVal = isView( ACT_SERVICE_KEY_LIST );
+    serviceKeyListAct->setCheckable(true);
+    serviceKeyListAct->setChecked(bVal);
+    connect( serviceKeyListAct, &QAction::triggered, this, &MainWindow::viewServiceKeyList );
+    serviceMenu->addAction( serviceKeyListAct );
 
-    QAction *cryptCAVPAct = new QAction( tr( "CAVP"), this );
-    bVal = isView( ACT_CRYPT_CAVP );
-    cryptCAVPAct->setCheckable(true);
-    cryptCAVPAct->setChecked(bVal);
-    connect( cryptCAVPAct, &QAction::triggered, this, &MainWindow::viewCryptCAVP );
-    cryptMenu->addAction( cryptCAVPAct );
+    QAction *serviceCAVPAct = new QAction( tr( "CAVP"), this );
+    bVal = isView( ACT_SERVICE_CAVP );
+    serviceCAVPAct->setCheckable(true);
+    serviceCAVPAct->setChecked(bVal);
+    connect( serviceCAVPAct, &QAction::triggered, this, &MainWindow::viewServiceCAVP );
+    serviceMenu->addAction( serviceCAVPAct );
 
-    QAction *cryptSSLVerifyAct = new QAction( tr( "SSL Verify"), this );
-    bVal = isView( ACT_CRYPT_SSL_VERIFY );
-    cryptSSLVerifyAct->setCheckable(true);
-    cryptSSLVerifyAct->setChecked(bVal);
-    connect( cryptSSLVerifyAct, &QAction::triggered, this, &MainWindow::viewCryptSSLVerify );
-    cryptMenu->addAction( cryptSSLVerifyAct );
+    QAction *serviceSSLVerifyAct = new QAction( tr( "SSL Check"), this );
+    bVal = isView( ACT_SERVICE_SSL_CHECK );
+    serviceSSLVerifyAct->setCheckable(true);
+    serviceSSLVerifyAct->setChecked(bVal);
+    connect( serviceSSLVerifyAct, &QAction::triggered, this, &MainWindow::viewServiceSSLCheck );
+    serviceMenu->addAction( serviceSSLVerifyAct );
 
     QAction *protoOCSPAct = new QAction( tr( "OCSP client"), this );
     bVal = isView( ACT_PROTO_OCSP );
@@ -910,15 +911,15 @@ void MainWindow::createActions()
 
 
     const QIcon dataTransIcon = QIcon::fromTheme("data-trans", QIcon(":/images/data_trans.png"));
-    data_encode_act_ = new QAction( dataTransIcon, tr("Data&Encoder"), this );
+    data_encode_act_ = new QAction( dataTransIcon, tr("Data &Converter"), this );
     data_encode_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_E));
-    connect( data_encode_act_, &QAction::triggered, this, &MainWindow::dataEncoder );
+    connect( data_encode_act_, &QAction::triggered, this, &MainWindow::dataConvert );
     data_encode_act_->setStatusTip(tr("This is tool for encoding data" ));
     toolMenu->addAction( data_encode_act_ );
-    if( isView( ACT_TOOL_DATA_ENCODER ) ) tool_tool_->addAction( data_encode_act_ );
+    if( isView( ACT_TOOL_DATA_CONVERTER ) ) tool_tool_->addAction( data_encode_act_ );
 
     const QIcon numTransIcon = QIcon::fromTheme("number-converter", QIcon(":/images/two.png"));
-    num_converter_act_ = new QAction( numTransIcon, tr("&NumConverter"), this);
+    num_converter_act_ = new QAction( numTransIcon, tr("&Num Converter"), this);
     num_converter_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_N));
     connect( num_converter_act_, &QAction::triggered, this, &MainWindow::numConverter );
     num_converter_act_->setStatusTip(tr("Number Converter" ));
@@ -947,7 +948,7 @@ void MainWindow::createActions()
     }
 
     const QIcon decodeIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/decode.png"));
-    decode_data_act_ = new QAction(decodeIcon, tr("&Decode Data"), this);
+    decode_data_act_ = new QAction(decodeIcon, tr("&Decode BER"), this);
     decode_data_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_D));
     connect( decode_data_act_, &QAction::triggered, this, &MainWindow::runDecodeData );
     decode_data_act_->setStatusTip(tr("Decode BER data"));
@@ -955,7 +956,7 @@ void MainWindow::createActions()
     if( isView( ACT_TOOL_DECODE_DATA ) ) tool_tool_->addAction( decode_data_act_ );
 
     const QIcon uriIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/uri.png"));
-    get_uri_act_ = new QAction(uriIcon, tr("&Get URI data"), this);
+    get_uri_act_ = new QAction(uriIcon, tr("&Get BER from URI"), this);
     get_uri_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_U));
     connect( get_uri_act_, &QAction::triggered, this, &MainWindow::getURI );
     get_uri_act_->setStatusTip(tr("Get Ber data from URI"));
@@ -964,7 +965,7 @@ void MainWindow::createActions()
 
     menuBar()->addSeparator();
 
-    QMenu *cryptMenu = menuBar()->addMenu(tr("&Cryptogram"));
+    QMenu *cryptMenu = menuBar()->addMenu(tr("&Cryptography"));
     crypt_tool_ = addToolBar( "Cryptogram" );
     crypt_tool_->setIconSize( QSize(nWidth,nHeight));
     crypt_tool_->layout()->setSpacing(nSpacing);
@@ -986,7 +987,7 @@ void MainWindow::createActions()
     if( isView( ACT_CRYPT_HASH ) ) crypt_tool_->addAction( hash_act_ );
 
     const QIcon macIcon = QIcon::fromTheme("MAC", QIcon(":/images/mac.png"));
-    mac_act_ = new QAction( macIcon, tr("M&AC"), this );
+    mac_act_ = new QAction( macIcon, tr("M&essage Authentication Code"), this );
     mac_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_M));
     connect( mac_act_, &QAction::triggered, this, &MainWindow::mac );
     mac_act_->setStatusTip(tr("Generate MAC value" ));
@@ -1027,15 +1028,15 @@ void MainWindow::createActions()
 
 
     const QIcon cmsIcon = QIcon::fromTheme("CMS", QIcon(":/images/cms.png"));
-    cms_act_ = new QAction( cmsIcon, tr("&CMS"), this );
+    cms_act_ = new QAction( cmsIcon, tr("&Cryptography Message Syntax"), this );
     cms_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_G));
     connect( cms_act_, &QAction::triggered, this, &MainWindow::cms );
-    cms_act_->setStatusTip(tr("PKCS#7 Cryptographic Message Syntax" ));
+    cms_act_->setStatusTip(tr("PKCS#7 Cryptography Message Syntax" ));
     cryptMenu->addAction( cms_act_ );
     if( isView( ACT_CRYPT_CMS ) ) crypt_tool_->addAction( cms_act_ );
 
     const QIcon sssIcon = QIcon::fromTheme("SSS", QIcon(":/images/sss.png"));
-    sss_act_ = new QAction( sssIcon, tr("&SSS"), this );
+    sss_act_ = new QAction( sssIcon, tr("&Shamir Secret Sharing"), this );
     sss_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_R));
     connect( sss_act_, &QAction::triggered, this, &MainWindow::sss );
     sss_act_->setStatusTip(tr("Shamir Secret Sharing Scheme" ));
@@ -1074,45 +1075,50 @@ void MainWindow::createActions()
     cryptMenu->addAction( calc_act_ );
     if( isView( ACT_CRYPT_BN_CALC ) ) crypt_tool_->addAction( calc_act_ );
 
+    QMenu *serviceMenu = menuBar()->addMenu( tr("&Service" ));
+    service_tool_ = addToolBar( tr( "Service" ));
+    service_tool_->setIconSize( QSize(nWidth,nHeight));
+    service_tool_->layout()->setSpacing(nSpacing);
+
     const QIcon keyPairIcon = QIcon::fromTheme("KeyPair Manage", QIcon(":/images/keypair.png"));
     key_pair_man_act_ = new QAction( keyPairIcon, tr( "KeyPair Manage" ), this );
     key_pair_man_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_Y ));
     connect( key_pair_man_act_, &QAction::triggered, this, &MainWindow::keyPairMan );
     key_pair_man_act_->setStatusTip( tr( "Key Pair Manage" ));
-    cryptMenu->addAction( key_pair_man_act_ );
-    if( isView( ACT_CRYPT_KEY_PAIR_MAN ) ) crypt_tool_->addAction( key_pair_man_act_ );
+    serviceMenu->addAction( key_pair_man_act_ );
+    if( isView( ACT_SERVICE_KEY_PAIR_MAN ) ) service_tool_->addAction( key_pair_man_act_ );
 
     const QIcon certManIcon = QIcon::fromTheme("Certificate Manage", QIcon(":/images/cert_man.png"));
     cert_man_act_ = new QAction( certManIcon, tr( "Certificate Manage" ), this );
     cert_man_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_M ));
     connect( cert_man_act_, &QAction::triggered, this, &MainWindow::certMan );
     cert_man_act_->setStatusTip( tr( "Certificate Manage" ));
-    cryptMenu->addAction( cert_man_act_ );
-    if( isView( ACT_CRYPT_CERT_MAN ) ) crypt_tool_->addAction( cert_man_act_ );
+    serviceMenu->addAction( cert_man_act_ );
+    if( isView( ACT_SERVICE_CERT_MAN ) ) service_tool_->addAction( cert_man_act_ );
 
     const QIcon keyListIcon = QIcon::fromTheme("Key List", QIcon(":/images/keylist.png"));
     key_list_act_ = new QAction( keyListIcon, tr( "Key List" ), this );
     key_list_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_L ));
     connect( key_list_act_, &QAction::triggered, this, &MainWindow::keyList );
     key_list_act_->setStatusTip( tr( "Key List" ));
-    cryptMenu->addAction( key_list_act_ );
-    if( isView( ACT_CRYPT_KEY_LIST ) ) crypt_tool_->addAction( key_list_act_ );
+    serviceMenu->addAction( key_list_act_ );
+    if( isView( ACT_SERVICE_KEY_LIST ) ) service_tool_->addAction( key_list_act_ );
 
     const QIcon cavpIcon = QIcon::fromTheme( "tool-cavp", QIcon(":/images/cavp.png"));
     cavp_act_ = new QAction(cavpIcon, tr("&CAVP"), this);
     cavp_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_F));
     connect( cavp_act_, &QAction::triggered, this, &MainWindow::CAVP );
-    cavp_act_->setStatusTip(tr("CAVP Test"));
-    cryptMenu->addAction( cavp_act_ );
-    if( isView( ACT_CRYPT_CAVP ) ) crypt_tool_->addAction( cavp_act_ );
+    cavp_act_->setStatusTip(tr("Cryptography Algorithm Valication Program"));
+    serviceMenu->addAction( cavp_act_ );
+    if( isView( ACT_SERVICE_CAVP ) ) service_tool_->addAction( cavp_act_ );
 
     const QIcon sslIcon = QIcon::fromTheme( "tool-ssl", QIcon(":/images/ssl.png"));
-    ssl_act_ = new QAction(sslIcon, tr("&SSL Verify"), this);
+    ssl_act_ = new QAction(sslIcon, tr("&SSL Check"), this);
     ssl_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_V));
-    connect( ssl_act_, &QAction::triggered, this, &MainWindow::sslVerify );
-    ssl_act_->setStatusTip(tr("SSL Verify"));
-    cryptMenu->addAction( ssl_act_ );
-    if( isView( ACT_CRYPT_SSL_VERIFY ) ) crypt_tool_->addAction( ssl_act_ );
+    connect( ssl_act_, &QAction::triggered, this, &MainWindow::sslCheck );
+    ssl_act_->setStatusTip(tr("Check SSL URL"));
+    serviceMenu->addAction( ssl_act_ );
+    if( isView( ACT_SERVICE_SSL_CHECK ) ) service_tool_->addAction( ssl_act_ );
 
     if( berApplet->isLicense() == false )
     {
@@ -1320,7 +1326,7 @@ void MainWindow::createCryptoDlg()
     cert_pvd_dlg_ = new CertPVDDlg;
     gen_otp_dlg_ = new GenOTPDlg;
     cavp_dlg_ = new CAVPDlg;
-    ssl_verify_dlg_ = new SSLVerifyDlg;
+    ssl_check_dlg_ = new SSLCheckDlg;
     vid_dlg_ = new VIDDlg;
     bn_calc_dlg_ = new BNCalcDlg;
     key_pair_man_dlg_ = new KeyPairManDlg;
@@ -2099,6 +2105,9 @@ bool MainWindow::isView( int nAct )
         case VIEW_CRYPT:
             nValue = kCryptDefault;
             break;
+        case VIEW_SERVICE:
+            nValue = kServiceDefault;
+            break;
         case VIEW_PROTO:
             nValue = kProtoDefault;
             break;
@@ -2167,10 +2176,10 @@ void MainWindow::test()
     settingsDlg.exec();
 }
 
-void MainWindow::dataEncoder()
+void MainWindow::dataConvert()
 {
-    DataEncoderDlg dataEncoderDlg;
-    dataEncoderDlg.exec();
+    DataConverterDlg dataConverterDlg;
+    dataConverterDlg.exec();
 }
 
 void MainWindow::keyManage()
@@ -2282,11 +2291,11 @@ void MainWindow::CAVP()
     cavp_dlg_->activateWindow();
 }
 
-void MainWindow::sslVerify()
+void MainWindow::sslCheck()
 {
-    ssl_verify_dlg_->show();
-    ssl_verify_dlg_->raise();
-    ssl_verify_dlg_->activateWindow();
+    ssl_check_dlg_->show();
+    ssl_check_dlg_->raise();
+    ssl_check_dlg_->activateWindow();
 }
 
 void MainWindow::genOTP()
@@ -2757,17 +2766,17 @@ void MainWindow::viewEditFindNode( bool bChecked )
     }
 }
 
-void MainWindow::viewToolDataEncode( bool bChecked )
+void MainWindow::viewToolDataConverter( bool bChecked )
 {
     if( bChecked == true )
     {
         tool_tool_->addAction( data_encode_act_ );
-        setView( ACT_TOOL_DATA_ENCODER );
+        setView( ACT_TOOL_DATA_CONVERTER );
     }
     else
     {
         tool_tool_->removeAction( data_encode_act_ );
-        unsetView( ACT_TOOL_DATA_ENCODER );
+        unsetView( ACT_TOOL_DATA_CONVERTER );
     }
 }
 
@@ -3023,73 +3032,73 @@ void MainWindow::viewCryptBNCalc( bool bChecked )
     }
 }
 
-void MainWindow::viewCryptKeyPairMan( bool bChecked )
+void MainWindow::viewServiceKeyPairMan( bool bChecked )
 {
     if( bChecked == true )
     {
-        crypt_tool_->addAction( key_pair_man_act_ );
-        setView( ACT_CRYPT_KEY_PAIR_MAN );
+        service_tool_->addAction( key_pair_man_act_ );
+        setView( ACT_SERVICE_KEY_PAIR_MAN );
     }
     else
     {
-        crypt_tool_->removeAction( key_pair_man_act_ );
-        unsetView( ACT_CRYPT_KEY_PAIR_MAN );
+        service_tool_->removeAction( key_pair_man_act_ );
+        unsetView( ACT_SERVICE_KEY_PAIR_MAN );
     }
 }
 
-void MainWindow::viewCryptCertMan( bool bChecked )
+void MainWindow::viewServiceCertMan( bool bChecked )
 {
     if( bChecked == true )
     {
-        crypt_tool_->addAction( cert_man_act_ );
-        setView( ACT_CRYPT_CERT_MAN );
+        service_tool_->addAction( cert_man_act_ );
+        setView( ACT_SERVICE_CERT_MAN );
     }
     else
     {
-        crypt_tool_->removeAction( cert_man_act_ );
-        unsetView( ACT_CRYPT_CERT_MAN );
+        service_tool_->removeAction( cert_man_act_ );
+        unsetView( ACT_SERVICE_CERT_MAN );
     }
 }
 
-void MainWindow::viewCryptKeyList( bool bChecked )
+void MainWindow::viewServiceKeyList( bool bChecked )
 {
     if( bChecked == true )
     {
-        crypt_tool_->addAction( key_list_act_ );
-        setView( ACT_CRYPT_KEY_LIST );
+        service_tool_->addAction( key_list_act_ );
+        setView( ACT_SERVICE_KEY_LIST );
     }
     else
     {
-        crypt_tool_->removeAction( key_list_act_ );
-        unsetView( ACT_CRYPT_KEY_LIST );
+        service_tool_->removeAction( key_list_act_ );
+        unsetView( ACT_SERVICE_KEY_LIST );
     }
 }
 
-void MainWindow::viewCryptCAVP( bool bChecked )
+void MainWindow::viewServiceCAVP( bool bChecked )
 {
     if( bChecked == true )
     {
-        crypt_tool_->addAction( cavp_act_ );
-        setView( ACT_CRYPT_CAVP );
+        service_tool_->addAction( cavp_act_ );
+        setView( ACT_SERVICE_CAVP );
     }
     else
     {
-        crypt_tool_->removeAction( cavp_act_ );
-        unsetView( ACT_CRYPT_CAVP );
+        service_tool_->removeAction( cavp_act_ );
+        unsetView( ACT_SERVICE_CAVP );
     }
 }
 
-void MainWindow::viewCryptSSLVerify( bool bChecked )
+void MainWindow::viewServiceSSLCheck( bool bChecked )
 {
     if( bChecked == true )
     {
-        crypt_tool_->addAction( ssl_act_ );
-        setView( ACT_CRYPT_SSL_VERIFY );
+        service_tool_->addAction( ssl_act_ );
+        setView( ACT_SERVICE_SSL_CHECK );
     }
     else
     {
-        crypt_tool_->removeAction( ssl_act_ );
-        unsetView( ACT_CRYPT_SSL_VERIFY );
+        service_tool_->removeAction( ssl_act_ );
+        unsetView( ACT_SERVICE_SSL_CHECK );
     }
 }
 
@@ -3284,6 +3293,7 @@ void MainWindow::viewSetDefault()
     berApplet->settingsMgr()->clearViewValue(VIEW_EDIT);
     berApplet->settingsMgr()->clearViewValue(VIEW_TOOL);
     berApplet->settingsMgr()->clearViewValue(VIEW_CRYPT);
+    berApplet->settingsMgr()->clearViewValue(VIEW_SERVICE);
     berApplet->settingsMgr()->clearViewValue(VIEW_PROTO);
     berApplet->settingsMgr()->clearViewValue(VIEW_KMIP);
     berApplet->settingsMgr()->clearViewValue(VIEW_HELP);

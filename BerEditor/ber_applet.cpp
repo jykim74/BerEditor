@@ -15,7 +15,7 @@
 #include "ber_applet.h"
 #include "settings_dlg.h"
 #include "settings_mgr.h"
-#include "data_encoder_dlg.h"
+#include "data_converter_dlg.h"
 #include "gen_hash_dlg.h"
 #include "gen_mac_dlg.h"
 #include "oid_info_dlg.h"
