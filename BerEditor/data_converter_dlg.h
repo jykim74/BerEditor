@@ -26,7 +26,7 @@ public:
 
 private slots:
     void clickFindFile();
-    void onClickEncodeBtn();
+    void onClickConvertBtn();
     void outTypeChanged( int index );
     void inputChanged();
     void outputChanged();

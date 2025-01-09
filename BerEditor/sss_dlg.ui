@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Shamir Secret Sharing Scheme</string>
   </property>
+  <property name="sizeGripEnabled">
+   <bool>false</bool>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QGroupBox" name="mInfoTab">

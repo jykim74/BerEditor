@@ -139,6 +139,9 @@ void SettingsDlg::clickRestoreDefaults()
     mgr->removeSet( kBehaviorGroup, kSupportKeyPairChange );
     mgr->removeSet( kBehaviorGroup, kCertPath );
 
+    if( berApplet->yesOrNoBox(tr("Restored to default settings. Restart to apply it?"), this, true))
+        berApplet->restartApp();
+
     close();
 }
 

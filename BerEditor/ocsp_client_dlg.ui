@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>OCSP Client Window</string>
+   <string>OCSP Client</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

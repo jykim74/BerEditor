@@ -131,6 +131,12 @@ void OCSPClientDlg::initialize()
     mHashCombo->addItems( kHashList );
     mHashCombo->setCurrentText( setMgr->defaultHash() );
 
+    mCertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
+    mCACertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
+
+    mSignPriKeyPathText->setPlaceholderText( tr("Select CertMan private key") );
+    mSignCertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
+
     checkUseSign();
     checkEncPriKey();
 }
@@ -259,7 +265,7 @@ void OCSPClientDlg::clickSetCACert()
     JExtensionInfoList *pExtList = NULL;
     QString strAIAExt;
     QString strCAPath;
-    QString strFile = mCertPathText->text();
+    QString strFile = mCACertPathText->text();
 
 
     if( strFile.length() < 1 )

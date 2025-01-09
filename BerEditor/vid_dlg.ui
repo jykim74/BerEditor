@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Virtual Identification</string>
+   <string>VID</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

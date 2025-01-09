@@ -26,7 +26,7 @@ DataConverterDlg::DataConverterDlg(QWidget *parent) :
     mOutputTypeCombo->addItems( enTypes );
 
     connect( mFindFileBtn, SIGNAL(clicked()), this, SLOT(clickFindFile()));
-    connect( mEncodeBtn, SIGNAL(clicked()), this, SLOT(onClickEncodeBtn()));
+    connect( mConvertBtn, SIGNAL(clicked()), this, SLOT(onClickConvertBtn()));
     connect( mOutputTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(outTypeChanged(int)));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mInputText, SIGNAL(textChanged()), this, SLOT(inputChanged()));
@@ -43,7 +43,7 @@ DataConverterDlg::DataConverterDlg(QWidget *parent) :
 
     initialize();
 
-    mEncodeBtn->setDefault(true);
+    mConvertBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -91,7 +91,7 @@ void DataConverterDlg::clickFindFile()
     }
 }
 
-void DataConverterDlg::onClickEncodeBtn()
+void DataConverterDlg::onClickConvertBtn()
 {
     int input_type = 0;
     BIN binSrc = {0,0};

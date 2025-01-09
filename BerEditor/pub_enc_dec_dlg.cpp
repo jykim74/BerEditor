@@ -129,6 +129,9 @@ void PubEncDecDlg::initialize()
     checkEncPriKey();
 
     mEncryptRadio->click();
+
+    mPriKeyPath->setPlaceholderText( tr("Select CertMan private key") );
+    mCertPath->setPlaceholderText( tr( "Select CertMan certificate" ));
 }
 
 int PubEncDecDlg::readPrivateKey( BIN *pPriKey )

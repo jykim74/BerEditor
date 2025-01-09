@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Certificate Manage Window</string>
+   <string>Certificate Manage</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

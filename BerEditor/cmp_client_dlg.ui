@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>CMP Client Window</string>
+   <string>CMP Client</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

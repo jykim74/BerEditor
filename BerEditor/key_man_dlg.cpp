@@ -102,6 +102,9 @@ void KeyManDlg::initialize()
 
     mPBKDF2Radio->click();
 
+    mSrcText->setPlaceholderText( tr("Select KeyList key" ));
+    mKEKText->setPlaceholderText( tr("Select KeyList key") );
+
     tabWidget->setCurrentIndex(0);
 }
 

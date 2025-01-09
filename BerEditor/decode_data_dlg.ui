@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Decode data</string>
+   <string>Decode BER</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="4" column="0">

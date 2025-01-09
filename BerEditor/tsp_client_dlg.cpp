@@ -99,6 +99,9 @@ void TSPClientDlg::initialize()
     mHashCombo->setCurrentText( setMgr->defaultHash() );
 
     mPolicyText->setPlaceholderText( "1.2.3.4" );
+
+    mCACertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
+    mSrvCertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
 }
 
 QStringList TSPClientDlg::getUsedURL()

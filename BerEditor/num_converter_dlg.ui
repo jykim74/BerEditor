@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Number Conversion</string>
+   <string>Number Converter</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

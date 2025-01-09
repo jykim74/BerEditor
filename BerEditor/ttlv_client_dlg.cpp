@@ -160,6 +160,11 @@ void TTLVClientDlg::initialize()
     }
 
     checkEncPriKey();
+
+    mCACertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
+
+    mClientPriKeyPathText->setPlaceholderText( tr("Select CertMan private key") );
+    mClientCertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
 }
 
 void TTLVClientDlg::findCA()

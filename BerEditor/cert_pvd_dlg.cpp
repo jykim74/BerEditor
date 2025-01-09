@@ -116,6 +116,7 @@ void CertPVDDlg::initialize()
     checkUseTrustList();
 
     mTargetPathText->setFocus();
+    mTargetPathText->setPlaceholderText( tr( "Select CertMan certificate" ) );
 }
 
 void CertPVDDlg::clickTrustFind()

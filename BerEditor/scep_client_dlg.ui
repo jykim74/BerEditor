@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>SCEP Client Window</string>
+   <string>SCEP Client</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

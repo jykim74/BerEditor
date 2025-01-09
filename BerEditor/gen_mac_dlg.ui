@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Generate Mac value</string>
+   <string>Message Authentication Code</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

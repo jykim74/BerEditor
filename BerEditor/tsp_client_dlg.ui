@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>TSP Client Window</string>
+   <string>TSP Client</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

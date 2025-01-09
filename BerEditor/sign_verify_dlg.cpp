@@ -141,6 +141,9 @@ void SignVerifyDlg::initialize()
     checkUseKeyAlg();
     checkEncPriKey();
     mSignRadio->click();
+
+    mPriKeyPath->setPlaceholderText( tr("Select CertMan private key") );
+    mCertPath->setPlaceholderText( tr( "Select CertMan certificate" ));
 }
 
 int SignVerifyDlg::readPrivateKey( BIN *pPriKey )

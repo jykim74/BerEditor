@@ -121,6 +121,11 @@ void SCEPClientDlg::initialize()
 
     JS_SCEP_init();
     checkEncPriKey();
+
+    mCACertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
+
+    mPriKeyPathText->setPlaceholderText( tr("Select CertMan private key") );
+    mCertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
 }
 
 QStringList SCEPClientDlg::getUsedURL()

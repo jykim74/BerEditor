@@ -123,6 +123,8 @@ void EncDecDlg::initialize()
 
     mReqTagLenText->setText( "16" );
     mInputTab->setCurrentIndex(0);
+
+    mKeyText->setPlaceholderText( tr( "Select KeyList key" ));
 }
 
 void EncDecDlg::appendStatusLabel( const QString& strLabel )
