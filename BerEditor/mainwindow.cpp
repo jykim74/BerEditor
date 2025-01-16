@@ -94,15 +94,18 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     log_halt_ = false;
 
-    initialize();
-
     createCryptoDlg();
     createActions();
     createStatusBar();
 
     setUnifiedTitleAndToolBarOnMac(true);
-
     setAcceptDrops(true);
+
+#if defined( Q_OS_MAC )
+    layout()->setSpacing(5);
+#endif
+
+    initialize();
 }
 
 MainWindow::~MainWindow()

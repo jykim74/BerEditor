@@ -127,6 +127,12 @@ void CMSDlg::initialize()
 
     checkSignEncPriKey();
     checkKMEncPriKey();
+
+    mSignPriKeyPathText->setPlaceholderText( tr("Select CertMan private key") );
+    mSignCertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
+
+    mKMPriKeyPathText->setPlaceholderText( tr("Select CertMan private key") );
+    mKMCertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
 }
 
 int CMSDlg::readSignPrivateKey( BIN *pPriKey )
