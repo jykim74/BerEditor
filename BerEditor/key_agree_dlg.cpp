@@ -130,7 +130,7 @@ void KeyAgreeDlg::calcualteA()
         {
             berApplet->logLine();
             berApplet->log( "-- DH Calculate A" );
-            berApplet->logLine();
+            berApplet->logLine2();
             berApplet->log( QString ( "P          : %1" ).arg( getHexString(&binP)));
             berApplet->log( QString ( "G          : %1" ).arg( getHexString(&binG)));
             berApplet->log( QString ( "PrivateKey : %1" ).arg( getHexString(&binPri)));
@@ -177,7 +177,7 @@ void KeyAgreeDlg::calcualteA()
         {
             berApplet->logLine();
             berApplet->log( "-- ECDH Calculate A" );
-            berApplet->logLine();
+            berApplet->logLine2();
             berApplet->log( QString( "PrivateKey : %1").arg( getHexString( &binPri )));
             berApplet->log( QString( "X          : %1").arg( getHexString( &binX )));
             berApplet->log( QString( "Y          : %1").arg( getHexString( &binY )));
@@ -254,7 +254,7 @@ void KeyAgreeDlg::calcualteB()
         {
             berApplet->logLine();
             berApplet->log( "-- DH Calculate B" );
-            berApplet->logLine();
+            berApplet->logLine2();
             berApplet->log( QString ( "P          : %1" ).arg( getHexString(&binP)));
             berApplet->log( QString ( "G          : %1" ).arg( getHexString(&binG)));
             berApplet->log( QString ( "PrivateKey : %1" ).arg( getHexString(&binPri)));
@@ -301,7 +301,7 @@ void KeyAgreeDlg::calcualteB()
         {
             berApplet->logLine();
             berApplet->log( "-- ECDH Calculate A" );
-            berApplet->logLine();
+            berApplet->logLine2();
             berApplet->log( QString( "PrivateKey : %1").arg( getHexString( &binPri )));
             berApplet->log( QString( "X          : %1").arg( getHexString( &binX )));
             berApplet->log( QString( "Y          : %1").arg( getHexString( &binY )));

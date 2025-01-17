@@ -144,7 +144,7 @@ void KeyManDlg::clickMakeKey()
     {
         ret = JS_PKI_PBKDF2( strSecret.toStdString().c_str(), &binSalt, nIter, strHash.toStdString().c_str(), nKeySize, &binKey );
         berApplet->log( QString( "-- PBKDF2" ));
-        berApplet->logLine();
+        berApplet->logLine2();
         berApplet->log( QString( "Iter Cnt : %1" ).arg( nIter ));
         berApplet->log( QString( "Salt     : %1" ).arg(getHexString(&binSalt)));
     }
@@ -152,7 +152,7 @@ void KeyManDlg::clickMakeKey()
     {
         ret = JS_PKI_KDF_HKDF( &binSecret, &binSalt, &binInfo, strHash.toStdString().c_str(), nKeySize, &binKey );
         berApplet->log( QString( "-- HKDF" ));
-        berApplet->logLine();
+        berApplet->logLine2();
         berApplet->log( QString( "Salt     : %1" ).arg(getHexString(&binSalt)));
         berApplet->log( QString( "Info     : %1" ).arg(getHexString(&binInfo)));
     }
@@ -160,7 +160,7 @@ void KeyManDlg::clickMakeKey()
     {
         ret = JS_PKI_KDF_X963( &binSecret, &binInfo, strHash.toStdString().c_str(), nKeySize, &binKey );
         berApplet->log( QString( "-- ANS X963" ));
-        berApplet->logLine();
+        berApplet->logLine2();
         berApplet->log( QString( "Info     : %1" ).arg(getHexString(&binInfo)));
     }
 
@@ -301,7 +301,7 @@ void KeyManDlg::clickWrap()
     strOutput = getStringFromBIN( &binOutput, mDstTypeCombo->currentText() );
     mDstText->setPlainText( strOutput );
 
-    berApplet->logLine();
+    berApplet->logLine2();
     berApplet->log( QString( "Input Key   : %1" ).arg(getHexString(&binInput)));
     berApplet->log( QString( "KEK         : %1" ).arg( getHexString( &binWrappingKey)));
     berApplet->log( QString( "Wrapped Key : %1" ).arg( getHexString(&binOutput)));
@@ -381,7 +381,7 @@ void KeyManDlg::clickUnwrap()
     strOutput = getStringFromBIN( &binOutput, mDstTypeCombo->currentText() );
     mDstText->setPlainText( strOutput );
 
-    berApplet->logLine();
+    berApplet->logLine2();
     berApplet->log( QString( "Input Key      : %1" ).arg(getHexString(&binInput)));
     berApplet->log( QString( "KEK            : %1" ).arg( getHexString( &binWrappingKey)));
     berApplet->log( QString( "Unwrapped Key  : %1" ).arg( getHexString(&binOutput)));

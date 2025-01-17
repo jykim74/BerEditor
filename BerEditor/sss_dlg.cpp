@@ -202,6 +202,7 @@ void SSSDlg::clickSplit()
 
     berApplet->logLine();
     berApplet->log( "-- Split Key" );
+    berApplet->logLine2();
     berApplet->log( QString( "Prime Value : %1").arg( getHexString( &binPrime )));
 
     if( binSrc.nLen < 8 )
@@ -282,7 +283,7 @@ void SSSDlg::clickJoin()
 
     berApplet->logLine();
     berApplet->log( "-- Join Key" );
-    berApplet->logLine();
+    berApplet->logLine2();
 
     JS_BIN_decodeHex( strPrime.toStdString().c_str(), &binPrime );
     berApplet->log( QString( "Prime Value : %1").arg( getHexString( &binPrime )));

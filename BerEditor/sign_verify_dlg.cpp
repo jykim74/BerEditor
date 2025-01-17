@@ -871,8 +871,8 @@ void SignVerifyDlg::dataRun()
         if( ret == 0 )
         {
             berApplet->logLine();
-            berApplet->log("-- Make Signature" );
-            berApplet->logLine();
+            berApplet->log("-- Compute Signature" );
+            berApplet->logLine2();
             berApplet->log( QString( "Algorithm        : %1" ).arg( mAlgTypeCombo->currentText() ));
 
             if( nType != JS_PKI_KEY_TYPE_ED25519 && nType != JS_PKI_KEY_TYPE_ED448 )
@@ -918,7 +918,7 @@ void SignVerifyDlg::dataRun()
         {
             berApplet->logLine();
             berApplet->log( "-- Verify Signature" );
-            berApplet->logLine();
+            berApplet->logLine2();
             berApplet->log( QString( "Algorithm         : %1" ).arg( mAlgTypeCombo->currentText() ));
             berApplet->log( QString( "Verify Src        : %1" ).arg(getHexString(&binSrc)));
             berApplet->log( QString( "Verify Public Key : %1" ).arg(getHexString( &binPubKey )));

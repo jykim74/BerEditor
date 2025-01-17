@@ -392,7 +392,7 @@ void CMSDlg::clickSignedData()
 
         berApplet->logLine();
         berApplet->log( "-- Signed Data" );
-        berApplet->logLine();
+        berApplet->logLine2();
         berApplet->log( QString( "Hash        : SHA256" ));
         berApplet->log( QString( "Src         : %1" ).arg( getHexString( &binSrc )));
         berApplet->log( QString( "Private Key : [hidden]" ));
@@ -490,7 +490,7 @@ void CMSDlg::clickEnvelopedData()
 
         berApplet->logLine();
         berApplet->log( "-- Enveloped Data" );
-        berApplet->logLine();
+        berApplet->logLine2();
         berApplet->log( QString( "Src         : %1" ).arg( getHexString( &binSrc )));
         berApplet->log( QString( "Certificate : %1" ).arg( getHexString( &binCert )));
         berApplet->log( QString( "Output      : %1" ).arg( getHexString( &binOutput )));
@@ -623,7 +623,7 @@ void CMSDlg::clickSignAndEnvloped()
 
         berApplet->logLine();
         berApplet->log( "-- SignedAndEnveloped Data" );
-        berApplet->logLine();
+        berApplet->logLine2();
         berApplet->log( QString( "Src             : %1" ).arg( getHexString( &binSrc )));
         berApplet->log( QString( "Sign Cert       : %1" ).arg( getHexString( &binSignCert )));
         berApplet->log( QString( "Sign PrivateKey : [hidden]" ));
@@ -711,7 +711,7 @@ void CMSDlg::clickVerifyData()
         berApplet->log( QString("SignedData verification result: %1").arg( ret ));
         berApplet->logLine();
         berApplet->log( "-- Verify Data" );
-        berApplet->logLine();
+        berApplet->logLine2();
         berApplet->log( QString( "CMS    : %1" ).arg( getHexString( &binCMS )));
         berApplet->log( QString( "Cert   : %1" ).arg( getHexString( &binCert )));
         berApplet->log( QString( "Src    : %1" ).arg( getHexString( &binSrc )));
@@ -816,7 +816,7 @@ void CMSDlg::clickDevelopedData()
     {
         berApplet->logLine();
         berApplet->log( "-- Verify Data" );
-        berApplet->logLine();
+        berApplet->logLine2();
         berApplet->log( QString( "CMS        : %1" ).arg( getHexString( &binCMS )));
         berApplet->log( QString( "Cert       : %1" ).arg( getHexString( &binCert )));
         berApplet->log( QString( "PrivateKey : [hidden]" ));
@@ -947,7 +947,7 @@ void CMSDlg::clickDevelopedAndVerify()
     {
         berApplet->logLine();
         berApplet->log( "-- Developed And Verify" );
-        berApplet->logLine();
+        berApplet->logLine2();
         berApplet->log( QString( "CMS           : %1" ).arg( getHexString( &binCMS )));
         berApplet->log( QString( "Sign Cert     : %1" ).arg( getHexString( &binSignCert )));
         berApplet->log( QString( "KM PrivateKey : [hidden]" ));
@@ -1053,8 +1053,8 @@ void CMSDlg::clickAddSigner()
     if( ret == 0 )
     {
         berApplet->logLine();
-        berApplet->log( "-- Signed Data" );
-        berApplet->logLine();
+        berApplet->log( "-- Added SignedData" );
+        berApplet->logLine2();
         berApplet->log( QString( "Hash        : SHA256" ));
         berApplet->log( QString( "CMS         : %1" ).arg( getHexString( &binCMS )));
         berApplet->log( QString( "Private Key : [hidden]" ));

@@ -137,6 +137,8 @@ void OCSPClientDlg::initialize()
     mSignPriKeyPathText->setPlaceholderText( tr("Select CertMan private key") );
     mSignCertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
 
+    mSrvCertPathText->setPlaceholderText( tr("Select CertMan certificate") );
+
     checkUseSign();
     checkEncPriKey();
 }

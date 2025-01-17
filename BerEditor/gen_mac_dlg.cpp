@@ -504,7 +504,7 @@ void GenMacDlg::clickMAC()
 
        berApplet->logLine();
        berApplet->log( "-- MAC" );
-       berApplet->logLine();
+       berApplet->logLine2();
        berApplet->log( QString( "Algorithm : %1" ).arg( strAlg ));
        berApplet->log( QString( "Input : %1" ).arg(getHexString(&binSrc)));
        berApplet->log( QString( "Key   : %1" ).arg( getHexString(&binKey)));

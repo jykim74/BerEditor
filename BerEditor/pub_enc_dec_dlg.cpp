@@ -415,7 +415,9 @@ void PubEncDecDlg::Run()
                 mIVText->setText( getHexString( &binIV ));
                 mTagText->setText( getHexString( &binTag ));
 
+                berApplet->logLine();
                 berApplet->log( "-- ECIES Encrypt" );
+                berApplet->logLine2();
                 berApplet->log( QString( "ECIES OtherPub : %1").arg( getHexString(&binOtherPub)));
                 berApplet->log( QString( "ECIES IV       : %1").arg( getHexString(&binIV)));
                 berApplet->log( QString( "ECIES Tag      : %1" ).arg( getHexString( &binTag )));
@@ -431,7 +433,7 @@ void PubEncDecDlg::Run()
         {
             berApplet->logLine();
             berApplet->log( "-- Public Encrypt" );
-            berApplet->logLine();
+            berApplet->logLine2();
             berApplet->log( QString( "Algorithm     : %1").arg( mAlgCombo->currentText() ));
             berApplet->log( QString( "Enc Src       : %1").arg( getHexString(&binSrc)));
             berApplet->log( QString( "Enc PublicKey : %1").arg(getHexString(&binPubKey)));
@@ -523,10 +525,13 @@ void PubEncDecDlg::Run()
 
             if( ret == 0 )
             {
+                berApplet->logLine();
                 berApplet->log( "-- ECIES Decrypt" );
+                berApplet->logLine2();
                 berApplet->log( QString( "ECIES OtherPub : %1").arg( getHexString(&binOtherPub)));
                 berApplet->log( QString( "ECIES IV       : %1").arg( getHexString(&binIV)));
                 berApplet->log( QString( "ECIES Tag      : %1" ).arg( getHexString( &binTag )));
+                berApplet->logLine();
             }
 
             JS_BIN_reset( &binOtherPub );
@@ -538,7 +543,7 @@ void PubEncDecDlg::Run()
         {
             berApplet->logLine();
             berApplet->log( "-- Private Decrypt" );
-            berApplet->logLine();
+            berApplet->logLine2();
             berApplet->log( QString( "Algorithm      : %1").arg( mAlgCombo->currentText() ));
             berApplet->log( QString( "Dec Src        : %1").arg( getHexString(&binSrc)));
             berApplet->log( QString( "Dec PrivateKey : [hidden]"));

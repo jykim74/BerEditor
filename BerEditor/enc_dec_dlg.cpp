@@ -296,7 +296,7 @@ void EncDecDlg::dataRun()
             {
                 berApplet->logLine();
                 berApplet->log( "-- AE Encrypt" );
-                berApplet->logLine();
+                berApplet->logLine2();
                 berApplet->log( QString( "SymAlg     : %1").arg( strSymAlg ));
                 berApplet->log( QString( "Enc Src    : %1" ).arg( getHexString( &binSrc )));
                 berApplet->log( QString( "Enc Key    : %1" ).arg( getHexString( &binKey )));
@@ -323,7 +323,7 @@ void EncDecDlg::dataRun()
             {
                 berApplet->logLine();
                 berApplet->log("-- AE Decrypt" );
-                berApplet->logLine();
+                berApplet->logLine2();
                 berApplet->log( QString( "SymAlg     : %1").arg( strSymAlg ));
                 berApplet->log( QString( "Dec Src    : %1" ).arg( getHexString( &binSrc )));
                 berApplet->log( QString( "Dec Key    : %1" ).arg( getHexString( &binKey )));

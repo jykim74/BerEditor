@@ -172,12 +172,13 @@ void CertManDlg::setMode( int nMode )
 {
     mode_ = nMode;
 
+    connect( mRCA_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewTrust()));
+
     if( mode_ == ManModeBase )
     {
         connect( mEE_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewCert()));
         connect( mOther_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewOther()));
         connect( mCA_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewCA()));
-        connect( mRCA_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewTrust()));
         connect( mCRL_Table, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewCRL()));
 
         mOKBtn->hide();
@@ -187,7 +188,6 @@ void CertManDlg::setMode( int nMode )
         connect( mEE_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickOK()));
         connect( mOther_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickOK()));
         connect( mCA_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickOK()));
-        connect( mRCA_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickOK()));
         connect( mCRL_Table, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickOK()));
     }
 }

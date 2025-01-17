@@ -284,6 +284,11 @@ void BerApplet::logLine()
     log( QString( "====================================================================" ));
 }
 
+void BerApplet::logLine2()
+{
+    log( QString( "--------------------------------------------------------------------" ));
+}
+
 void BerApplet::info( const QString strLog, QColor cr )
 {
     main_win_->info( strLog, cr );

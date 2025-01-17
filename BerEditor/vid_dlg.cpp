@@ -134,8 +134,8 @@ void VIDDlg::clickVerifyVID()
         berApplet->messageLog( tr( "VID verification successful"), this );
 
         berApplet->logLine();
-        berApplet->log( "-- Verify VID Information" );
-        berApplet->logLine();
+        berApplet->log( "-- Verification VID Information" );
+        berApplet->logLine2();
         berApplet->log( QString( "SSN         : %1" ).arg( strSSN ));
         berApplet->log( QString( "Random      : %1" ).arg( getHexString( &binRand )));
         berApplet->log( QString( "HashContent : %1").arg( getHexString( &binHashContent )));
@@ -193,8 +193,8 @@ void VIDDlg::clickMakeVID()
         berApplet->messageLog( tr( "VID creation successful" ), this );
 
         berApplet->logLine();
-        berApplet->log( "-- Make VID Information" );
-        berApplet->logLine();
+        berApplet->log( "-- Generate VID Information" );
+        berApplet->logLine2();
         berApplet->log( QString( "SSN         : %1" ).arg( strSSN ));
         berApplet->log( QString( "Random      : %1" ).arg( getHexString( &binRand )));
         berApplet->log( QString( "Hash        : %1" ).arg( mHashCombo->currentText() ));
