@@ -110,7 +110,8 @@ SOURCES += \
     find_dlg.cpp \
     key_list_dlg.cpp \
     key_add_dlg.cpp \
-    code_editor.cpp
+    code_editor.cpp \
+    cavp_dlg.cpp
 
 HEADERS += \
     about_dlg.h \
@@ -187,7 +188,8 @@ HEADERS += \
     find_dlg.h \
     key_list_dlg.h \
     key_add_dlg.h \
-    code_editor.h
+    code_editor.h \
+    cavp_dlg.h
 
 
 
@@ -332,7 +334,8 @@ FORMS += \
         link_man_dlg.ui \
         find_dlg.ui \
         key_list_dlg.ui \
-        key_add_dlg.ui
+        key_add_dlg.ui \
+        cavp_dlg.ui
 
 RESOURCES += \
     bereditor.qrc
