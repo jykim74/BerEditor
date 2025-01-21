@@ -347,6 +347,9 @@ void SSLCheckDlg::initialize()
 
     mURLTree->insertTopLevelItem( 0, url_tree_root_ );
 
+    mClientCAPathText->setPlaceholderText( "Select CertMan CA certificate" );
+    mClientCertPathText->setPlaceholderText( "Select CertMan certificate" );
+    mClientPriKeyPathText->setPlaceholderText( "Select CertMan private key" );
 }
 
 QStringList SSLCheckDlg::getUsedURL()
