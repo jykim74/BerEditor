@@ -298,7 +298,7 @@ void CAVPDlg::clickACVP_LDTRun()
     QString strContent = mACVP_LDTContentText->text();
     if( strContent.length() < 1 )
     {
-        berApplet->warningBox( tr( "Enter a contentn" ), this );
+        berApplet->warningBox( tr( "Enter a content" ), this );
         mACVP_LDTContentText->setFocus();
         return;
     }
