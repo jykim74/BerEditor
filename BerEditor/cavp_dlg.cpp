@@ -4390,6 +4390,8 @@ int CAVPDlg::makeRSA_PSS_KPG( int nLen, int nE, int nCount )
         logRsp( QString( "n = %1").arg( sKeyVal.pN ));
         logRsp( QString( "s = %1").arg( sKeyVal.pD));
         logRsp( "" );
+
+        JS_PKI_resetRSAKeyVal( &sKeyVal );
     }
 
 end :
