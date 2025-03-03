@@ -15,7 +15,7 @@ static QStringList kECCOptionList = { "prime256v1",
     "sect113r1", "sect113r2", "sect131r1", "sect131r2", "sect163k1",
     "sect163r1", "sect163r2", "sect193r1", "sect193r2", "sect233k1",
     "sect233r1", "sect239k1", "sect283k1", "sect283r1", "sect409k1",
-    "sect409r1", "sect571k1", "sect571r1", "SM2"
+    "sect409r1", "sect571k1", "sect571r1"
 };
 
 static QStringList kEdDSAOptionList = { "Ed25519", "Ed448" };
@@ -31,14 +31,15 @@ GenKeyPairDlg::GenKeyPairDlg(QWidget *parent) :
     memset( &pub_key_, 0x00, sizeof(BIN));
 
     connect( mCancelBtn, SIGNAL(clicked()), this, SLOT(close()));
-    connect( mRSACheck, SIGNAL(clicked()), this, SLOT(clickRSA()));
-    connect( mECDSACheck, SIGNAL(clicked()), this, SLOT(clickECDSA()));
-    connect( mDSACheck, SIGNAL(clicked()), this, SLOT(clickDSA()));
-    connect( mEdDSACheck, SIGNAL(clicked()), this, SLOT(clickEdDSA()));
+    connect( mRSARadio, SIGNAL(clicked()), this, SLOT(clickRSA()));
+    connect( mECDSARadio, SIGNAL(clicked()), this, SLOT(clickECDSA()));
+    connect( mDSARadio, SIGNAL(clicked()), this, SLOT(clickDSA()));
+    connect( mEdDSARadio, SIGNAL(clicked()), this, SLOT(clickEdDSA()));
+    connect( mSM2Radio, SIGNAL(clicked()), this, SLOT(clickSM2()));
     connect( mOKBtn, SIGNAL(clicked()), this, SLOT(clickOK()));
 
     initialize();
-    mRSACheck->click();
+    mRSARadio->click();
     mOKBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
@@ -84,13 +85,15 @@ void GenKeyPairDlg::setRegInfo( const QString strRegInfo )
     }
 
     if( strAlg.toUpper() == "RSA" )
-            mRSACheck->click();
+        mRSARadio->click();
     else if( strAlg.toUpper() == "ECDSA" || strAlg.toUpper() == "EC" )
-            mECDSACheck->click();
+        mECDSARadio->click();
     else if( strAlg.toUpper() == "DSA" )
-            mDSACheck->click();
+        mDSARadio->click();
     else if( strAlg.toUpper() == "EDDSA" )
-            mEdDSACheck->click();
+        mEdDSARadio->click();
+    else if( strAlg.toUpper() == "SM2" )
+        mSM2Radio->click();
 
     if( strOption.length() > 0 ) mOptionCombo->setCurrentText( strOption );
 }
@@ -150,6 +153,15 @@ void GenKeyPairDlg::clickEdDSA()
     mOptionLabel->setText( tr("Named Curve" ));
 }
 
+void GenKeyPairDlg::clickSM2()
+{
+    mOptionCombo->clear();
+    mOptionCombo->addItem( "SM2" );
+    mExponentLabel->setEnabled( false );
+    mExponentText->setEnabled( false );
+    mOptionLabel->setText( tr("Named Curve" ));
+}
+
 void GenKeyPairDlg::clickOK()
 {
     int ret = 0;
@@ -166,7 +178,7 @@ void GenKeyPairDlg::clickOK()
         return;
     }
 
-    if( mRSACheck->isChecked() )
+    if( mRSARadio->isChecked() )
     {
         int nKeySize = mOptionCombo->currentText().toInt();
         int nExponent = mExponentText->text().toInt();
@@ -178,17 +190,22 @@ void GenKeyPairDlg::clickOK()
 
         ret = JS_PKI_RSAGenKeyPair( nKeySize, nExponent, &pub_key_, &pri_key_ );
     }
-    else if( mECDSACheck->isChecked() )
+    else if( mECDSARadio->isChecked() )
     {
         QString strCurve = mOptionCombo->currentText();
         ret = JS_PKI_ECCGenKeyPair( strCurve.toStdString().c_str(), &pub_key_, &pri_key_ );
     }
-    else if( mDSACheck->isChecked() )
+    else if( mSM2Radio->isChecked() )
+    {
+        QString strCurve = mOptionCombo->currentText();
+        ret = JS_PKI_ECCGenKeyPair( strCurve.toStdString().c_str(), &pub_key_, &pri_key_ );
+    }
+    else if( mDSARadio->isChecked() )
     {
         int nKeySize = mOptionCombo->currentText().toInt();
         ret = JS_PKI_DSA_GenKeyPair( nKeySize, &pub_key_, &pri_key_ );
     }
-    else if( mEdDSACheck->isChecked() )
+    else if( mEdDSARadio->isChecked() )
     {
         int nParam = -1;
         QString strCurve = mOptionCombo->currentText();

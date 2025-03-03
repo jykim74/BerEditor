@@ -1384,9 +1384,8 @@ mailto : jykim74@gmail.com</translation>
         <translation>전체 길이를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../cavp_dlg2.cpp" line="301"/>
         <source>Enter a contentn</source>
-        <translation>내용을 입력하세요</translation>
+        <translation type="vanished">내용을 입력하세요</translation>
     </message>
     <message>
         <location filename="../cavp_dlg2.cpp" line="356"/>
@@ -1394,6 +1393,7 @@ mailto : jykim74@gmail.com</translation>
         <translation>전체 길이 비트를 입력하세요</translation>
     </message>
     <message>
+        <location filename="../cavp_dlg2.cpp" line="301"/>
         <location filename="../cavp_dlg2.cpp" line="363"/>
         <source>Enter a content</source>
         <translation>내용을 입력하세요</translation>
@@ -6452,70 +6452,76 @@ Do you want to delete the file and continue?</source>
         <translation>이름</translation>
     </message>
     <message>
-        <location filename="../gen_key_pair_dlg.ui" line="72"/>
+        <location filename="../gen_key_pair_dlg.ui" line="98"/>
         <source>EdDSA</source>
         <translation>EdDSA</translation>
     </message>
     <message>
-        <location filename="../gen_key_pair_dlg.ui" line="79"/>
+        <location filename="../gen_key_pair_dlg.ui" line="105"/>
         <source>RSA</source>
         <translation>RSA</translation>
     </message>
     <message>
-        <location filename="../gen_key_pair_dlg.ui" line="86"/>
+        <location filename="../gen_key_pair_dlg.ui" line="72"/>
         <source>ECDSA</source>
         <translation>ECDSA</translation>
     </message>
     <message>
-        <location filename="../gen_key_pair_dlg.ui" line="93"/>
+        <location filename="../gen_key_pair_dlg.ui" line="112"/>
         <source>DSA</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../gen_key_pair_dlg.ui" line="112"/>
+        <location filename="../gen_key_pair_dlg.ui" line="91"/>
         <source>Algorithm</source>
         <translation>알고리즘</translation>
     </message>
     <message>
-        <location filename="../gen_key_pair_dlg.ui" line="142"/>
-        <location filename="../gen_key_pair_dlg.cpp" line="122"/>
-        <location filename="../gen_key_pair_dlg.cpp" line="141"/>
+        <location filename="../gen_key_pair_dlg.ui" line="119"/>
+        <source>SM2</source>
+        <translation>SM2</translation>
+    </message>
+    <message>
+        <location filename="../gen_key_pair_dlg.ui" line="149"/>
+        <location filename="../gen_key_pair_dlg.cpp" line="125"/>
+        <location filename="../gen_key_pair_dlg.cpp" line="144"/>
         <source>Key Length</source>
         <translation>키 길이</translation>
     </message>
     <message>
-        <location filename="../gen_key_pair_dlg.ui" line="171"/>
+        <location filename="../gen_key_pair_dlg.ui" line="178"/>
         <source>Exponent</source>
         <translation>Exponent</translation>
     </message>
     <message>
-        <location filename="../gen_key_pair_dlg.ui" line="202"/>
+        <location filename="../gen_key_pair_dlg.ui" line="209"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
     <message>
-        <location filename="../gen_key_pair_dlg.ui" line="209"/>
+        <location filename="../gen_key_pair_dlg.ui" line="216"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
     <message>
-        <location filename="../gen_key_pair_dlg.cpp" line="131"/>
-        <location filename="../gen_key_pair_dlg.cpp" line="150"/>
+        <location filename="../gen_key_pair_dlg.cpp" line="134"/>
+        <location filename="../gen_key_pair_dlg.cpp" line="153"/>
+        <location filename="../gen_key_pair_dlg.cpp" line="162"/>
         <source>Named Curve</source>
         <translation>네임즈 커브</translation>
     </message>
     <message>
-        <location filename="../gen_key_pair_dlg.cpp" line="164"/>
+        <location filename="../gen_key_pair_dlg.cpp" line="176"/>
         <source>Enter a name</source>
         <translation>이름을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../gen_key_pair_dlg.cpp" line="175"/>
+        <location filename="../gen_key_pair_dlg.cpp" line="187"/>
         <source>Enter exponent</source>
         <translation>Exponent 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../gen_key_pair_dlg.cpp" line="208"/>
+        <location filename="../gen_key_pair_dlg.cpp" line="225"/>
         <source>fail to generate keypair: %1</source>
         <translation>키 쌍 생성 실패: %1</translation>
     </message>

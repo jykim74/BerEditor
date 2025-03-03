@@ -43,6 +43,7 @@ private slots:
     void clickEncode();
     void clickSend();
     void clickVerify();
+    void clickVerifySigned();
 
     void clickTSTInfo();
     void clickViewCMS();

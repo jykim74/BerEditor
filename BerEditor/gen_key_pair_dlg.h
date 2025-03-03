@@ -28,6 +28,7 @@ private slots:
     void clickECDSA();
     void clickDSA();
     void clickEdDSA();
+    void clickSM2();
 
     void clickOK();
 
