@@ -14882,7 +14882,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../tsp_client_dlg.ui" line="263"/>
-        <location filename="../tsp_client_dlg.ui" line="568"/>
+        <location filename="../tsp_client_dlg.ui" line="575"/>
         <source>C</source>
         <translation>C</translation>
     </message>
@@ -14893,112 +14893,118 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../tsp_client_dlg.ui" line="296"/>
-        <location filename="../tsp_client_dlg.ui" line="422"/>
-        <location filename="../tsp_client_dlg.ui" line="435"/>
-        <location filename="../tsp_client_dlg.ui" line="555"/>
+        <location filename="../tsp_client_dlg.ui" line="429"/>
+        <location filename="../tsp_client_dlg.ui" line="442"/>
+        <location filename="../tsp_client_dlg.ui" line="562"/>
         <source>D</source>
         <translation>D</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="351"/>
+        <location filename="../tsp_client_dlg.ui" line="381"/>
         <source>Encode</source>
         <translation>인코딩</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="358"/>
+        <location filename="../tsp_client_dlg.ui" line="388"/>
         <source>Hash</source>
         <translation>해쉬</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="378"/>
+        <location filename="../tsp_client_dlg.ui" line="374"/>
         <source>Send</source>
         <translation>보내기</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="385"/>
+        <location filename="../tsp_client_dlg.ui" line="367"/>
         <source>Verify</source>
         <translation>검증</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="409"/>
+        <location filename="../tsp_client_dlg.ui" line="395"/>
+        <source>VerifySigned</source>
+        <translation>VerifySigned</translation>
+    </message>
+    <message>
+        <location filename="../tsp_client_dlg.ui" line="416"/>
         <source>CA Certificate</source>
         <translation>CA 인증서</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="448"/>
-        <location filename="../tsp_client_dlg.ui" line="477"/>
+        <location filename="../tsp_client_dlg.ui" line="455"/>
+        <location filename="../tsp_client_dlg.ui" line="484"/>
         <source>V</source>
         <translation>V</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="484"/>
+        <location filename="../tsp_client_dlg.ui" line="491"/>
         <source>TSP Certificate</source>
         <translation>TSP 인증서</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="504"/>
-        <location filename="../tsp_client_dlg.ui" line="514"/>
+        <location filename="../tsp_client_dlg.ui" line="511"/>
+        <location filename="../tsp_client_dlg.ui" line="521"/>
         <source>Find</source>
         <translation>찾기</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="461"/>
-        <location filename="../tsp_client_dlg.ui" line="497"/>
+        <location filename="../tsp_client_dlg.ui" line="468"/>
+        <location filename="../tsp_client_dlg.ui" line="504"/>
         <source>T</source>
         <translation>T</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="521"/>
+        <location filename="../tsp_client_dlg.ui" line="528"/>
         <source>Select</source>
         <translation>선택</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="588"/>
+        <location filename="../tsp_client_dlg.ui" line="595"/>
         <source>Response</source>
         <translation>응답</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="542"/>
+        <location filename="../tsp_client_dlg.ui" line="549"/>
         <source>TST Information</source>
         <translation>TST 정보</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="641"/>
+        <location filename="../tsp_client_dlg.ui" line="648"/>
         <source>View CMS</source>
         <translation>CMS 보기</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="706"/>
+        <location filename="../tsp_client_dlg.ui" line="713"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="713"/>
+        <location filename="../tsp_client_dlg.ui" line="720"/>
         <source>Clear All</source>
         <translation>전체 지우기</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="274"/>
-        <location filename="../tsp_client_dlg.cpp" line="294"/>
-        <location filename="../tsp_client_dlg.cpp" line="315"/>
+        <location filename="../tsp_client_dlg.cpp" line="276"/>
+        <location filename="../tsp_client_dlg.cpp" line="296"/>
+        <location filename="../tsp_client_dlg.cpp" line="317"/>
         <source>Find a server certificate</source>
         <translation>서버 인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="324"/>
-        <location filename="../tsp_client_dlg.cpp" line="406"/>
+        <location filename="../tsp_client_dlg.cpp" line="326"/>
+        <location filename="../tsp_client_dlg.cpp" line="408"/>
         <source>The certificate type is %1</source>
         <translation>인증서 타입은 %1 입니다.</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="356"/>
-        <location filename="../tsp_client_dlg.cpp" line="376"/>
-        <location filename="../tsp_client_dlg.cpp" line="397"/>
+        <location filename="../tsp_client_dlg.cpp" line="358"/>
+        <location filename="../tsp_client_dlg.cpp" line="378"/>
+        <location filename="../tsp_client_dlg.cpp" line="399"/>
+        <location filename="../tsp_client_dlg.cpp" line="527"/>
         <source>Find a CA certificate</source>
         <translation>CA 인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="425"/>
+        <location filename="../tsp_client_dlg.cpp" line="427"/>
         <source>There is no input</source>
         <translation>입력 값이 없습니다</translation>
     </message>
@@ -15007,65 +15013,86 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">정책 OID를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="468"/>
+        <location filename="../tsp_client_dlg.cpp" line="470"/>
         <source>Insert TSP URL</source>
         <translation>TSP URL 을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="185"/>
-        <location filename="../tsp_client_dlg.cpp" line="474"/>
+        <location filename="../tsp_client_dlg.cpp" line="187"/>
+        <location filename="../tsp_client_dlg.cpp" line="476"/>
         <source>There is no request</source>
         <translation>요청서가 없습니다</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="103"/>
-        <location filename="../tsp_client_dlg.cpp" line="104"/>
+        <location filename="../tsp_client_dlg.cpp" line="105"/>
+        <location filename="../tsp_client_dlg.cpp" line="106"/>
         <source>Select CertMan certificate</source>
         <translation>인증서 관리자 인증서 선택</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="488"/>
+        <location filename="../tsp_client_dlg.cpp" line="490"/>
         <source>fail to send a request to TSP server: %1</source>
         <translation>TSP 서버에 요청 보내기 실패: %1</translation>
     </message>
     <message>
+        <location filename="../tsp_client_dlg.cpp" line="541"/>
+        <location filename="../tsp_client_dlg.cpp" line="619"/>
         <source>Select TSP server certificate</source>
-        <translation type="vanished">TSP 서버 인증서를 찾으세요</translation>
+        <translation>TSP 서버 인증서를 찾으세요</translation>
     </message>
     <message>
+        <location filename="../tsp_client_dlg.cpp" line="548"/>
+        <location filename="../tsp_client_dlg.cpp" line="626"/>
         <source>find a TSP server certificate</source>
-        <translation type="vanished">TSP 서버 인증서를 찾으세요</translation>
+        <translation>TSP 서버 인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="204"/>
-        <location filename="../tsp_client_dlg.cpp" line="527"/>
+        <location filename="../tsp_client_dlg.cpp" line="206"/>
+        <location filename="../tsp_client_dlg.cpp" line="566"/>
+        <location filename="../tsp_client_dlg.cpp" line="640"/>
         <source>There is no response</source>
         <translation>응답이 없습니다</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="247"/>
+        <location filename="../tsp_client_dlg.cpp" line="249"/>
         <source>Select TSP certificate</source>
         <translation>TSP 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="542"/>
+        <location filename="../tsp_client_dlg.cpp" line="521"/>
+        <source>Select CA certificate</source>
+        <translation>CA 인증서를 선택하세요</translation>
+    </message>
+    <message>
+        <source>Select OCSP server certificate</source>
+        <translation type="obsolete">OCSP 서버 인증서를 찾으세요</translation>
+    </message>
+    <message>
+        <source>find a OCSP server certificate</source>
+        <translation type="obsolete">OCSP 서버 인증서를 찾으세요</translation>
+    </message>
+    <message>
+        <location filename="../tsp_client_dlg.cpp" line="581"/>
+        <location filename="../tsp_client_dlg.cpp" line="658"/>
         <source>verify reponse successfully</source>
         <translation>검증에 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="546"/>
+        <location filename="../tsp_client_dlg.cpp" line="585"/>
+        <location filename="../tsp_client_dlg.cpp" line="662"/>
         <source>failed to verify signature</source>
         <translation>서명 검증에 실패 하였습니다</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="573"/>
-        <location filename="../tsp_client_dlg.cpp" line="607"/>
+        <location filename="../tsp_client_dlg.cpp" line="689"/>
+        <location filename="../tsp_client_dlg.cpp" line="723"/>
         <source>There is no TSP response</source>
         <translation>TSP 응답이 없습니다</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="582"/>
-        <location filename="../tsp_client_dlg.cpp" line="616"/>
+        <location filename="../tsp_client_dlg.cpp" line="650"/>
+        <location filename="../tsp_client_dlg.cpp" line="698"/>
+        <location filename="../tsp_client_dlg.cpp" line="732"/>
         <source>failed to decode TSP response</source>
         <translation>TST 메세지 디코딩 실패</translation>
     </message>

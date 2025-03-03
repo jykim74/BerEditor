@@ -15,9 +15,9 @@
 	<key>CFBundleName</key>
 	<string>BerEditor</string>
 	<key>CFBundleShortVersionString</key>
-        <string>2.1.8</string>
+        <string>2.2.0</string>
 	<key>CFBundleVersion</key>
-        <string>2.1.8</string>
+        <string>2.2.0</string>
 	<key>CFBundleSignature</key>
         <string>hbwr</string>
         <key>SUFeedURL</key>

@@ -538,14 +538,14 @@ void TSPClientDlg::clickVerify()
     {
         CertManDlg certMan;
         certMan.setMode(ManModeSelCert);
-        certMan.setTitle( tr( "Select OCSP server certificate" ));
+        certMan.setTitle( tr( "Select TSP server certificate" ));
         if( certMan.exec() != QDialog::Accepted )
             goto end;
 
         strSrvCertPath = certMan.getSeletedCertPath();
         if( strSrvCertPath.length() < 1 )
         {
-            berApplet->warningBox( tr( "find a OCSP server certificate"), this );
+            berApplet->warningBox( tr( "find a TSP server certificate"), this );
             goto end;
         }
         else
@@ -616,14 +616,14 @@ void TSPClientDlg::clickVerifySigned()
     {
         CertManDlg certMan;
         certMan.setMode(ManModeSelCert);
-        certMan.setTitle( tr( "Select OCSP server certificate" ));
+        certMan.setTitle( tr( "Select TSP server certificate" ));
         if( certMan.exec() != QDialog::Accepted )
             goto end;
 
         strSrvCertPath = certMan.getSeletedCertPath();
         if( strSrvCertPath.length() < 1 )
         {
-            berApplet->warningBox( tr( "find a OCSP server certificate"), this );
+            berApplet->warningBox( tr( "find a TSP server certificate"), this );
             goto end;
         }
         else
