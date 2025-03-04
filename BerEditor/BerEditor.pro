@@ -111,7 +111,8 @@ SOURCES += \
     key_list_dlg.cpp \
     key_add_dlg.cpp \
     code_editor.cpp \
-    cavp_dlg.cpp
+    cavp_dlg.cpp \
+    cavp_dlg2.cpp
 
 HEADERS += \
     about_dlg.h \
