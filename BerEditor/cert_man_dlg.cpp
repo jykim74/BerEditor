@@ -26,7 +26,7 @@ static QStringList kVersionList = { "V1", "V2" };
 static QStringList kPBEv1List = { "PBE-SHA1-3DES", "PBE-SHA1-2DES" };
 static QStringList kPBEv2List = { "AES-128-CBC", "AES-256-CBC", "ARIA-128-CBC", "ARIA-256-CBC" };
 
-static QStringList kKeyTypeList = { "ALL", "RSA", "ECDSA", "DSA", "EdDSA" };
+static QStringList kKeyTypeList = { "ALL", "RSA", "ECDSA", "DSA", "EdDSA", "SM2" };
 
 CertManDlg::CertManDlg(QWidget *parent) :
     QDialog(parent)
@@ -604,7 +604,12 @@ void CertManDlg::loadEEList()
         }
         else if( strKeyType == "ECDSA" )
         {
-            if( nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+            if( nKeyType != JS_PKI_KEY_TYPE_ECC )
+                continue;
+        }
+        else if( strKeyType == "SM2" )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_SM2 )
                 continue;
         }
         else if( strKeyType == "DSA" )
@@ -692,7 +697,12 @@ void CertManDlg::loadOtherList()
         }
         else if( strKeyType == "ECDSA" )
         {
-            if( nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+            if( nKeyType != JS_PKI_KEY_TYPE_ECC )
+                continue;
+        }
+        else if( strKeyType == "SM2" )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_SM2 )
                 continue;
         }
         else if( strKeyType == "DSA" )
@@ -780,7 +790,12 @@ void CertManDlg::loadCAList()
         }
         else if( strKeyType == "ECDSA" )
         {
-            if( nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+            if( nKeyType != JS_PKI_KEY_TYPE_ECC )
+                continue;
+        }
+        else if( strKeyType == "SM2" )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_SM2 )
                 continue;
         }
         else if( strKeyType == "DSA" )
@@ -931,7 +946,12 @@ void CertManDlg::loadTrustList()
         }
         else if( strKeyType == "ECDSA" )
         {
-            if( nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+            if( nKeyType != JS_PKI_KEY_TYPE_ECC )
+                continue;
+        }
+        else if( strKeyType == "SM2" )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_SM2 )
                 continue;
         }
         else if( strKeyType == "DSA" )

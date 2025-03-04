@@ -26,7 +26,7 @@
 static QStringList kVersionList = { "V1", "V2" };
 static QStringList kPBEv1List = { "PBE-SHA1-3DES", "PBE-SHA1-2DES" };
 static QStringList kPBEv2List = { "AES-128-CBC", "AES-256-CBC", "ARIA-128-CBC", "ARIA-256-CBC" };
-static QStringList kKeyTypeList = { "ALL", "RSA", "ECDSA", "DSA", "EdDSA" };
+static QStringList kKeyTypeList = { "ALL", "RSA", "ECDSA", "DSA", "EdDSA", "SM2" };
 
 static QString kPrivateFile = "private.pem";
 static QString kPublicFile = "public.pem";
@@ -270,7 +270,12 @@ void KeyPairManDlg::loadKeyPairList()
         }
         else if( strKeyType == "ECDSA" )
         {
-            if( nAlg != JS_PKI_KEY_TYPE_ECC && nAlg != JS_PKI_KEY_TYPE_SM2 )
+            if( nAlg != JS_PKI_KEY_TYPE_ECC )
+                continue;
+        }
+        else if( strKeyType == "SM2" )
+        {
+            if( nAlg != JS_PKI_KEY_TYPE_SM2 )
                 continue;
         }
         else if( strKeyType == "DSA" )
