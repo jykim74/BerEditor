@@ -112,7 +112,7 @@ static int _getEdDSAType( const QString strACVPCurve )
     return -1;
 }
 
-int getACVPType( const QString strAlg )
+static int getACVPType( const QString strAlg )
 {
     for( int i = 0; i < kACVP_HashList.size(); i++ )
     {

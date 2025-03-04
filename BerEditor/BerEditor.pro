@@ -42,8 +42,6 @@ SOURCES += \
     ber_model.cpp \
     ber_tray_icon.cpp \
     ber_tree_view.cpp \
-    cavp_dlg.cpp \
-    cavp_dlg2.cpp \
     cert_info_dlg.cpp \
     cert_pvd_dlg.cpp \
     cms_dlg.cpp \
