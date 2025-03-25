@@ -558,7 +558,12 @@ int SSLCheckDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
         {
             bGood = false;
             elog( QString( "SSL certificate verification failed : %1(%2)").arg( X509_verify_cert_error_string(ret)).arg( ret ));
-            ret = JSR_INVALID;
+
+            // ret == 20 (unable to get local issuer certificate)
+            if( ret == 20 )
+                ret = JSR_SSL_LOCAL_ISSUER_CERT;
+            else
+                ret = JSR_INVALID;
         }
         else
         {
@@ -841,7 +846,8 @@ void SSLCheckDlg::clickCheck()
         berApplet->warnLog( tr( "Verify failed : %1").arg( ret ), this );
         if( binCA.nLen > 0 )
         {
-            checkRootAndTrust( &binCA, strHost, nPort );
+            if( ret == JSR_SSL_LOCAL_ISSUER_CERT )
+                checkRootAndTrust( &binCA, strHost, nPort );
         }
     }
 
