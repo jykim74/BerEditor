@@ -36,6 +36,7 @@ private slots:
     void checkPBKDF();
     void checkHKDF();
     void checkX963();
+    void checkScrypt();
 
     void clickOutputClear();
 

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>570</width>
-    <height>626</height>
+    <height>497</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,17 +29,10 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="1">
-          <widget class="QRadioButton" name="mHKDFRadio">
+         <item row="0" column="5">
+          <widget class="QLabel" name="label_6">
            <property name="text">
-            <string>HKDF</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QRadioButton" name="mPBKDF2Radio">
-           <property name="text">
-            <string>PBKDF2</string>
+            <string>Key Len</string>
            </property>
           </widget>
          </item>
@@ -50,7 +43,14 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="3">
+         <item row="0" column="0">
+          <widget class="QRadioButton" name="mPBKDF2Radio">
+           <property name="text">
+            <string>PBKDF2</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
           <spacer name="horizontalSpacer_11">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -62,6 +62,30 @@
             </size>
            </property>
           </spacer>
+         </item>
+         <item row="0" column="3">
+          <widget class="QRadioButton" name="mScryptRadio">
+           <property name="text">
+            <string>Scrypt</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QRadioButton" name="mHKDFRadio">
+           <property name="text">
+            <string>HKDF</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="6">
+          <widget class="QLineEdit" name="mKeyLenText">
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -359,36 +383,49 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_3">
-         <item row="0" column="5">
-          <widget class="QLabel" name="label_6">
-           <property name="text">
-            <string>Key Len</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <spacer name="horizontalSpacer_6">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
          <item row="0" column="0">
           <widget class="QLabel" name="mIterCntLabel">
            <property name="minimumSize">
             <size>
-             <width>100</width>
+             <width>0</width>
              <height>0</height>
             </size>
            </property>
            <property name="text">
             <string>Iteration Count</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QLabel" name="mPLabel">
+           <property name="text">
+            <string>P</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QLineEdit" name="mRText">
+           <property name="minimumSize">
+            <size>
+             <width>20</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="maxLength">
+            <number>2</number>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLabel" name="mRLabel">
+           <property name="text">
+            <string>R</string>
            </property>
           </widget>
          </item>
@@ -402,23 +439,45 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="3">
-          <widget class="QLabel" name="label_5">
+         <item row="0" column="8">
+          <widget class="QComboBox" name="mHashCombo"/>
+         </item>
+         <item row="0" column="6">
+          <spacer name="horizontalSpacer_6">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="7">
+          <widget class="QLabel" name="mHashLabel">
            <property name="text">
             <string>Hash</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="4">
-          <widget class="QComboBox" name="mHashCombo"/>
-         </item>
-         <item row="0" column="6">
-          <widget class="QLineEdit" name="mKeyLenText">
+         <item row="0" column="5">
+          <widget class="QLineEdit" name="mPText">
+           <property name="minimumSize">
+            <size>
+             <width>20</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="maximumSize">
             <size>
-             <width>40</width>
+             <width>20</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="maxLength">
+            <number>2</number>
            </property>
           </widget>
          </item>
@@ -1086,7 +1145,6 @@
   <tabstop>mSaltText</tabstop>
   <tabstop>mIterCntText</tabstop>
   <tabstop>mHashCombo</tabstop>
-  <tabstop>mKeyLenText</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
   <tabstop>mOutputClearBtn</tabstop>

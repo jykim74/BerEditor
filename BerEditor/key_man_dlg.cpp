@@ -30,6 +30,7 @@ KeyManDlg::KeyManDlg(QWidget *parent) :
     connect( mPBKDF2Radio, SIGNAL(clicked()), this, SLOT(checkPBKDF()));
     connect( mHKDFRadio, SIGNAL(clicked()), this, SLOT(checkHKDF()));
     connect( mANSX963Radio, SIGNAL(clicked()), this, SLOT(checkX963()));
+    connect( mScryptRadio, SIGNAL(clicked()), this, SLOT(checkScrypt()));
 
     connect( mMakeKeyBtn, SIGNAL(clicked()), this, SLOT(clickMakeKey()));
     connect( mOutputText, SIGNAL(textChanged()), this, SLOT(keyValueChanged()));
@@ -90,6 +91,8 @@ void KeyManDlg::initialize()
 
     mKeyLenText->setText( "32" );
     mIterCntText->setText( "1024" );
+    mRText->setText( "8" );
+    mPText->setText( "16" );
 
     mSrcTypeCombo->addItems( kValueTypeList );
     mSrcTypeCombo->setCurrentIndex(1);
@@ -117,6 +120,8 @@ void KeyManDlg::clickMakeKey()
     BIN binKey = { 0, 0 };
     int nIter = 0;
     int nKeySize = 0;
+    int nR = 0;
+    int nP = 0;
 
     QString strSecret = mSecretText->text();
 
@@ -129,6 +134,8 @@ void KeyManDlg::clickMakeKey()
     QString strHash = mHashCombo->currentText();
     nIter = mIterCntText->text().toInt();
     nKeySize = mKeyLenText->text().toInt();
+    nR = mRText->text().toInt();
+    nP = mPText->text().toInt();
 
     getBINFromString( &binSecret, mSecretTypeCombo->currentText(), strSecret );
 
@@ -139,6 +146,8 @@ void KeyManDlg::clickMakeKey()
     getBINFromString( &binInfo, mInfoTypeCombo->currentText(), strInfo );
 
     berApplet->logLine();
+
+    mOutputText->clear();
 
     if( mPBKDF2Radio->isChecked() )
     {
@@ -163,6 +172,16 @@ void KeyManDlg::clickMakeKey()
         berApplet->logLine2();
         berApplet->log( QString( "Info     : %1" ).arg(getHexString(&binInfo)));
     }
+    else if( mScryptRadio->isChecked() )
+    {
+        ret = JS_PKI_Scrypt( strSecret.toStdString().c_str(), &binSalt, nIter, nP, nR, nKeySize, &binKey );
+        berApplet->log( QString( "-- Scrypt" ));
+        berApplet->logLine2();
+        berApplet->log( QString( "N        : %1" ).arg( nIter ));
+        berApplet->log( QString( "R        : %1" ).arg( nR ));
+        berApplet->log( QString( "P        : %1" ).arg( nP ));
+        berApplet->log( QString( "Salt     : %1" ).arg(getHexString(&binSalt)));
+    }
 
     if( ret == 0 )
     {
@@ -171,11 +190,14 @@ void KeyManDlg::clickMakeKey()
         mOutputText->setPlainText( pHex );
         if( pHex ) JS_free( pHex );
 
-
         berApplet->log( QString( "Secret   : %1").arg( getHexString( &binSecret) ));
         berApplet->log( QString( "Hash     : %1").arg( strHash ));
         berApplet->log( QString( "Key      : %1" ).arg(getHexString(&binKey)));
         berApplet->logLine();
+    }
+    else
+    {
+        berApplet->warnLog( tr( "fail to make key: %1").arg(ret), this );
     }
 
     JS_BIN_reset( &binSecret );
@@ -427,8 +449,14 @@ void KeyManDlg::checkPBKDF()
 
     mInfoGroup->setEnabled(false);
     mSaltGroup->setEnabled(true);
+    mHashLabel->setEnabled(true);
+    mHashCombo->setEnabled( true );
     mIterCntLabel->setEnabled(true);
     mIterCntText->setEnabled(true);
+    mRLabel->setEnabled(false);
+    mRText->setEnabled(false);
+    mPLabel->setEnabled(false);
+    mPText->setEnabled(false);
 }
 
 void KeyManDlg::checkHKDF()
@@ -440,8 +468,14 @@ void KeyManDlg::checkHKDF()
 
     mInfoGroup->setEnabled(true);
     mSaltGroup->setEnabled(true);
+    mHashLabel->setEnabled(true);
+    mHashCombo->setEnabled( true );
     mIterCntLabel->setEnabled(false);
     mIterCntText->setEnabled(false);
+    mRLabel->setEnabled(false);
+    mRText->setEnabled(false);
+    mPLabel->setEnabled(false);
+    mPText->setEnabled(false);
 }
 
 void KeyManDlg::checkX963()
@@ -453,8 +487,33 @@ void KeyManDlg::checkX963()
 
     mInfoGroup->setEnabled(true);
     mSaltGroup->setEnabled(false);
+    mHashLabel->setEnabled(true);
+    mHashCombo->setEnabled( true );
     mIterCntLabel->setEnabled(false);
     mIterCntText->setEnabled(false);
+    mRLabel->setEnabled(false);
+    mRText->setEnabled(false);
+    mPLabel->setEnabled(false);
+    mPText->setEnabled(false);
+}
+
+void KeyManDlg::checkScrypt()
+{
+    mSecretTypeCombo->clear();
+    mSecretTypeCombo->addItem( "String" );
+
+    mSecretLabel->setText( tr("Password"));
+
+    mInfoGroup->setEnabled(false);
+    mSaltGroup->setEnabled(true);
+    mHashLabel->setEnabled(false);
+    mHashCombo->setEnabled( false );
+    mIterCntLabel->setEnabled(true);
+    mIterCntText->setEnabled(true);
+    mRLabel->setEnabled(true);
+    mRText->setEnabled(true);
+    mPLabel->setEnabled(true);
+    mPText->setEnabled(true);
 }
 
 void KeyManDlg::clickOutputClear()
