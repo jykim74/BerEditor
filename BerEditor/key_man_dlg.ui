@@ -466,18 +466,18 @@
           <widget class="QLineEdit" name="mPText">
            <property name="minimumSize">
             <size>
-             <width>20</width>
+             <width>40</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>20</width>
+             <width>40</width>
              <height>16777215</height>
             </size>
            </property>
            <property name="maxLength">
-            <number>2</number>
+            <number>4</number>
            </property>
           </widget>
          </item>
@@ -1134,6 +1134,8 @@
   <tabstop>mPBKDF2Radio</tabstop>
   <tabstop>mHKDFRadio</tabstop>
   <tabstop>mANSX963Radio</tabstop>
+  <tabstop>mScryptRadio</tabstop>
+  <tabstop>mKeyLenText</tabstop>
   <tabstop>mSecretTypeCombo</tabstop>
   <tabstop>mSecretText</tabstop>
   <tabstop>mSecretLenText</tabstop>
@@ -1144,6 +1146,8 @@
   <tabstop>mSaltLenText</tabstop>
   <tabstop>mSaltText</tabstop>
   <tabstop>mIterCntText</tabstop>
+  <tabstop>mRText</tabstop>
+  <tabstop>mPText</tabstop>
   <tabstop>mHashCombo</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
