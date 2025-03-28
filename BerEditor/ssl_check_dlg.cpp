@@ -499,7 +499,7 @@ int SSLCheckDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
 
     log( "========================================================================");
     log( QString( "SSL Host:Port       : %1:%2 (CheckTime:%3)" ).arg( strHost ).arg( nPort ).arg( dateTime.toString("yyyy-MM-dd HH:mm:ss")));
-    log( "========================================================================");
+    log( "------------------------------------------------------------------------");
 
     int nSockFd = JS_NET_connect( strHost.toStdString().c_str(), nPort );
     if( nSockFd < 0 )
@@ -509,7 +509,7 @@ int SSLCheckDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
         goto end;
     }
 
-    log( "Server connected successfully" );
+    log( "Server connection   : OK" );
 
     ret = JS_SSL_initSSL( pCTX, nSockFd, &pSSL );
     if( ret != 0 )
@@ -528,7 +528,7 @@ int SSLCheckDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
     if( nVerifyDepth > 0 )
     {
         SSL_set_verify_depth( pSSL, nVerifyDepth );
-        log( QString( "Verify Depth: %1" ).arg( nVerifyDepth ));
+        log( QString( "Verify depth        : %1" ).arg( nVerifyDepth ));
     }
 
     JS_SSL_setTLSExtHostName( pSSL, strHost.toStdString().c_str() );
@@ -537,19 +537,19 @@ int SSLCheckDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
     if( ret != 0 )
     {
         berApplet->elog( QString( "failed to handshake SSL [%1]").arg( ret ));
-        elog( QString( "SSL handshake fail(%1)" ).arg( ret ) );
+        elog( QString( "Handshake           : Fail [ %1 ]" ).arg( ret ) );
         ret = JSR_SSL_CONNECT_FAIL;
     }
     else
     {
-        log( QString( "SSL handshake is done successfully" ) );
-        log( QString( "Current TLS Version : %1").arg( JS_SSL_getCurrentVersionName( pSSL )));
-        log( QString( "Current Cipher Name : %1").arg( JS_SSL_getCurrentCipherName( pSSL ) ));
+        log( QString( "Handshake           : OK" ) );
+        log( QString( "TLS Version         : %1").arg( JS_SSL_getCurrentVersionName( pSSL )));
+        log( QString( "CipherSuiteName     : %1").arg( JS_SSL_getCurrentCipherName( pSSL ) ));
     }
 
     JS_SSL_getChains( pSSL, &pCertList );
     count = JS_BIN_countList( pCertList );
-    log( QString( "Server returned %1 certificates").arg( count ) );
+    log( QString( "Server certificates : %1 counts").arg( count ) );
 
     if( ret == 0 )
     {
@@ -557,7 +557,7 @@ int SSLCheckDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
         if( ret != 0)
         {
             bGood = false;
-            elog( QString( "SSL certificate verification failed : %1(%2)").arg( X509_verify_cert_error_string(ret)).arg( ret ));
+            elog( QString( "Verification        : Fail [ %1(%2) ]").arg( X509_verify_cert_error_string(ret)).arg( ret ));
 
             // ret == 20 (unable to get local issuer certificate)
             if( ret == 20 )
@@ -567,7 +567,7 @@ int SSLCheckDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
         }
         else
         {
-            log( QString( "SSL certificate verification successful" ));
+            log( QString( "Verification        : OK" ));
             ret = JSR_VERIFY;
         }
     }
@@ -595,25 +595,25 @@ int SSLCheckDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
         if( ret == 1 )
         {
             strRes = "Valid";
-            log( QString( "TLS hostname check : %1 (%2 : %3)").arg( strHost ).arg( strRes ).arg( ret ));
+            log( QString( "Hostname check      : %1 (%2 : %3)").arg( strHost ).arg( strRes ).arg( ret ));
             ret = JSR_VERIFY;
         }
         else if( ret == 0)
         {
             bGood = false;
             strRes = "NameMismatch";
-            elog( QString( "TLS hostname check : %1 (%2 : %3)").arg( strHost ).arg( strRes ).arg( ret ));
+            elog( QString( "Hostname check      : %1 (%2 : %3)").arg( strHost ).arg( strRes ).arg( ret ));
             ret = JSR_SSL_HOST_NAME_MISMATCH;
         }
         else
         {
             bGood = false;
             strRes = "Error";
-            elog( QString( "TLS hostname check : %1 (%2 : %3)").arg( strHost ).arg( strRes ).arg( ret ));
+            elog( QString( "Hostname check      : %1 (%2 : %3)").arg( strHost ).arg( strRes ).arg( ret ));
         }
     }
 
-    log( QString( "The Subject Name is '%1'" ).arg( sCertInfo.pSubjectName ));
+    log( QString( "Subject Name        : %1" ).arg( sCertInfo.pSubjectName ));
 
     JS_UTIL_getDate( sCertInfo.uNotBefore, sNotBefore );
     JS_UTIL_getDate( sCertInfo.uNotAfter, sNotAfter );
