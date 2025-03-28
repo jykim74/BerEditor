@@ -560,7 +560,8 @@ int SSLCheckDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
             elog( QString( "Verification        : Fail [ %1(%2) ]").arg( X509_verify_cert_error_string(ret)).arg( ret ));
 
             // ret == 20 (unable to get local issuer certificate)
-            if( ret == 20 )
+
+            if( ret == X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT_LOCALLY || ret == X509_V_ERR_SELF_SIGNED_CERT_IN_CHAIN )
                 ret = JSR_SSL_LOCAL_ISSUER_CERT;
             else
                 ret = JSR_INVALID;
