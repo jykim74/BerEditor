@@ -498,7 +498,7 @@ int SSLCheckDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
     }
 
     log( "========================================================================");
-    log( QString( "SSL Host:Port       : %1:%2 (CheckTime:%3)" ).arg( strHost ).arg( nPort ).arg( dateTime.toString("yyyy-MM-dd HH:mm:ss")));
+    log( QString( "SSL Host:Port       : %1:%2" ).arg( strHost ).arg( nPort ));
     log( "------------------------------------------------------------------------");
 
     int nSockFd = JS_NET_connect( strHost.toStdString().c_str(), nPort );
@@ -509,6 +509,7 @@ int SSLCheckDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
         goto end;
     }
 
+    log( QString( "Check time          : %1").arg( dateTime.toString("yyyy-MM-dd HH:mm:ss") ) );
     log( "Server connection   : OK" );
 
     ret = JS_SSL_initSSL( pCTX, nSockFd, &pSSL );
@@ -523,7 +524,10 @@ int SSLCheckDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
         JS_SSL_setClientCACert( pCTX, &binClientCA );
 
     if( binClientPriKey.nLen > 0 && binClientCert.nLen > 0 )
+    {
         JS_SSL_setCertAndPriKey( pCTX, &binClientPriKey, &binClientCert );
+        log( "Mutual Auth         : OK" );
+    }
 
     if( nVerifyDepth > 0 )
     {

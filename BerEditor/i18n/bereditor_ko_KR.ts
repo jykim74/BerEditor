@@ -13404,162 +13404,162 @@ Do you want to delete the file and continue?</source>
         <translation>클라이언트 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="799"/>
+        <location filename="../ssl_check_dlg.cpp" line="804"/>
         <source>Insert URL</source>
         <translation>URL 을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="817"/>
+        <location filename="../ssl_check_dlg.cpp" line="822"/>
         <source>Invalid URL: %1</source>
         <translation>유효하지 않은 URL: %1</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="842"/>
-        <location filename="../ssl_check_dlg.cpp" line="956"/>
-        <location filename="../ssl_check_dlg.cpp" line="989"/>
+        <location filename="../ssl_check_dlg.cpp" line="847"/>
+        <location filename="../ssl_check_dlg.cpp" line="961"/>
+        <location filename="../ssl_check_dlg.cpp" line="994"/>
         <source>Verify successful : %1</source>
         <translation>검증 성공 : %1</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="846"/>
-        <location filename="../ssl_check_dlg.cpp" line="960"/>
-        <location filename="../ssl_check_dlg.cpp" line="991"/>
+        <location filename="../ssl_check_dlg.cpp" line="851"/>
+        <location filename="../ssl_check_dlg.cpp" line="965"/>
+        <location filename="../ssl_check_dlg.cpp" line="996"/>
         <source>Verify failed : %1</source>
         <translation>검증 실패 : %1</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="882"/>
-        <location filename="../ssl_check_dlg.cpp" line="910"/>
+        <location filename="../ssl_check_dlg.cpp" line="887"/>
+        <location filename="../ssl_check_dlg.cpp" line="915"/>
         <source>Invalid certificate : %1</source>
         <translation>잘못된 인증서 파일 : %1</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="889"/>
+        <location filename="../ssl_check_dlg.cpp" line="894"/>
         <source>There is no root certificate in SSL. Would you like to retrieve the root certificate from certificate information?</source>
         <translation>SSL 메세지에 루트 인증서가 없습니다. 인증서 정보로 부터 루트 인증서를 가져오겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="900"/>
+        <location filename="../ssl_check_dlg.cpp" line="905"/>
         <source>fail to get RootCA : %1</source>
         <translation>루트CA 가져오기 실패 : %1</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="921"/>
+        <location filename="../ssl_check_dlg.cpp" line="926"/>
         <source>This ceriticate is not root( DN: %1)</source>
         <translation>이 인증서는 루트가 아닙니다(DN: %1)</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="930"/>
+        <location filename="../ssl_check_dlg.cpp" line="935"/>
         <source>Would you like to add that root certificate to the trust list and verify it again?</source>
         <translation>루트 인증서를 신뢰 목록에 추가 후 다시 검증 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="942"/>
-        <location filename="../ssl_check_dlg.cpp" line="1252"/>
+        <location filename="../ssl_check_dlg.cpp" line="947"/>
+        <location filename="../ssl_check_dlg.cpp" line="1257"/>
         <source>The file(%1) is already existed</source>
         <translation>해당 파일(%1) 은 이미 존재 합니다</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="949"/>
+        <location filename="../ssl_check_dlg.cpp" line="954"/>
         <source>The Certificate failed to save to trustedCA folder:%1</source>
         <translation>인증서가 신뢰 CA목록 저장에 실패함 : %1</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1061"/>
+        <location filename="../ssl_check_dlg.cpp" line="1066"/>
         <source>Trust RootCA List</source>
         <translation>신뢰 최상위CA목록</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1099"/>
+        <location filename="../ssl_check_dlg.cpp" line="1104"/>
         <source>Verify</source>
         <translation>검증</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1100"/>
+        <location filename="../ssl_check_dlg.cpp" line="1105"/>
         <source>Delete</source>
         <translation>삭제</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1101"/>
-        <location filename="../ssl_check_dlg.cpp" line="1178"/>
+        <location filename="../ssl_check_dlg.cpp" line="1106"/>
+        <location filename="../ssl_check_dlg.cpp" line="1183"/>
         <source>View Cert</source>
         <translation>인증서 보기</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1102"/>
-        <location filename="../ssl_check_dlg.cpp" line="1179"/>
+        <location filename="../ssl_check_dlg.cpp" line="1107"/>
+        <location filename="../ssl_check_dlg.cpp" line="1184"/>
         <source>Decode Cert</source>
         <translation>인증서 디코딩</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1180"/>
+        <location filename="../ssl_check_dlg.cpp" line="1185"/>
         <source>Save to trustedCA</source>
         <translation>신뢰CA에 저장</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1233"/>
+        <location filename="../ssl_check_dlg.cpp" line="1238"/>
         <source>This certificate is not self-signed</source>
         <translation>인증서가 자체 서명이 아닙니다</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1241"/>
+        <location filename="../ssl_check_dlg.cpp" line="1246"/>
         <source>fail to mkdir:%1</source>
         <translation>경로 만들기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1258"/>
+        <location filename="../ssl_check_dlg.cpp" line="1263"/>
         <source>The Certificate saved to trusted CA directory</source>
         <translation>인증서가 신뢰CA목록에 저장 되었습니다</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1260"/>
+        <location filename="../ssl_check_dlg.cpp" line="1265"/>
         <source>The Certificate failed to save to trusted CA directory [%1]</source>
         <translation>인증서가 신뢰 CA목록 저장에 실패함 [%1]</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1298"/>
+        <location filename="../ssl_check_dlg.cpp" line="1303"/>
         <source>select a private key</source>
         <translation>개인키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1306"/>
+        <location filename="../ssl_check_dlg.cpp" line="1311"/>
         <source>failed to read private key: %1</source>
         <translation>개인키 읽기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1316"/>
+        <location filename="../ssl_check_dlg.cpp" line="1321"/>
         <source>Enter a password</source>
         <translation>암호를 입력해야 합니다</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1325"/>
+        <location filename="../ssl_check_dlg.cpp" line="1330"/>
         <source>failed to decrypt private key:%1</source>
         <translation>개인키 복호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1379"/>
-        <location filename="../ssl_check_dlg.cpp" line="1455"/>
-        <location filename="../ssl_check_dlg.cpp" line="1532"/>
-        <location filename="../ssl_check_dlg.cpp" line="1594"/>
+        <location filename="../ssl_check_dlg.cpp" line="1384"/>
+        <location filename="../ssl_check_dlg.cpp" line="1460"/>
+        <location filename="../ssl_check_dlg.cpp" line="1537"/>
+        <location filename="../ssl_check_dlg.cpp" line="1599"/>
         <source>failed to read data</source>
         <translation>데이타 읽기 실패</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1398"/>
-        <location filename="../ssl_check_dlg.cpp" line="1474"/>
-        <location filename="../ssl_check_dlg.cpp" line="1551"/>
+        <location filename="../ssl_check_dlg.cpp" line="1403"/>
+        <location filename="../ssl_check_dlg.cpp" line="1479"/>
+        <location filename="../ssl_check_dlg.cpp" line="1556"/>
         <source>Select a certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1408"/>
-        <location filename="../ssl_check_dlg.cpp" line="1484"/>
-        <location filename="../ssl_check_dlg.cpp" line="1561"/>
+        <location filename="../ssl_check_dlg.cpp" line="1413"/>
+        <location filename="../ssl_check_dlg.cpp" line="1489"/>
+        <location filename="../ssl_check_dlg.cpp" line="1566"/>
         <source>Certificate Type is %1</source>
         <translation>인증서 타입은 %1 이다</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1629"/>
+        <location filename="../ssl_check_dlg.cpp" line="1634"/>
         <source>KM Private Key Type is %1</source>
         <translation>KM용 개인키 타입은 %1 이다</translation>
     </message>
