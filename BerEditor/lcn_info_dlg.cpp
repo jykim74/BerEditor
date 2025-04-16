@@ -517,11 +517,11 @@ void LCNInfoDlg::checkUseFile()
 
     if( bVal )
     {
-        mGetBtn->setText( "Find" );
+        mGetBtn->setText( tr("Find") );
     }
     else
     {
-        mGetBtn->setText( "Get" );
+        mGetBtn->setText( tr("Get") );
     }
 
     mEmailText->setEnabled( !bVal );

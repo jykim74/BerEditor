@@ -8641,6 +8641,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../lcn_info_dlg.ui" line="328"/>
+        <location filename="../lcn_info_dlg.cpp" line="524"/>
         <source>Get</source>
         <translation>가져오기</translation>
     </message>
@@ -8757,6 +8758,11 @@ Do you want to delete the file and continue?</source>
         <location filename="../lcn_info_dlg.cpp" line="446"/>
         <source>There is currently no license.</source>
         <translation>현재 라이선스가 없습니다</translation>
+    </message>
+    <message>
+        <location filename="../lcn_info_dlg.cpp" line="520"/>
+        <source>Find</source>
+        <translation>찾기</translation>
     </message>
     <message>
         <source>failed to renew license:%1</source>
