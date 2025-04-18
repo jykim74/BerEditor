@@ -17,9 +17,9 @@ all: $(TARGET)
 en: all
 ko: all
 
-CC=/c/bin/wix/candle.exe
-LD=/c/bin/wix/light.exe
-PARAFFIN=/c/bin/Paraffin.exe
+CC=/d/bin/wix/candle.exe
+LD=/d/bin/wix/light.exe
+PARAFFIN=/d/bin/Paraffin/Paraffin.exe
 
 CFLAGS = -ext WixUIExtension -ext WixUtilExtension
 LDFLAGS = -spdb -ext WixUIExtension -ext WixUtilExtension \

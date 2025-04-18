@@ -151,11 +151,8 @@ void AboutDlg::showCopyright()
     strCopyRight += "<br>- https://www.openssl.org";
     strCopyRight += "<br>- <a href=https://github.com/openssl/openssl/blob/master/LICENSE.txt>Apache 2.0 License</a>";
 
-#ifdef Q_OS_MACOS
     strCopyRight += "<br><br><b>QT 5.15.2</b>";
-#else
-    strCopyRight += "<br><br><b>QT 5.13.2</b>";
-#endif
+
     strCopyRight += "<br>- https://www.qt.io";
     strCopyRight += "<br>- <a href=https://www.qt.io/licensing/open-source-lgpl-obligations>LGPL 3.0 License</a>";
 
