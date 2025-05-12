@@ -38,8 +38,13 @@ const QString kShlMod = "A << Mod M";
 const QString kInvMod = "A^-1 Mod M";
 const QString kSqrtMod = "√ A Mod M";
 
+const QString kNumber = "Number";
+const QString kModular = "Modular";
+const QString kGF2m = "GF2m";
+
 const QStringList kBitType = { "8", "16", "32", "64", "128", "256", "512", "1024", "2048", "3072", "4096" };
-const QStringList kGroupList = { "Number", "Modular", "GF2m" };
+//const QStringList kGroupList = { "Number", "Modular", "GF2m" };
+const QStringList kGroupList = { kNumber, kModular, kGF2m };
 
 BNCalcDlg::BNCalcDlg(QWidget *parent) :
     QDialog(parent)
@@ -367,7 +372,7 @@ void BNCalcDlg::changeBaseGroup( int index )
 
     bool bSendM = false;
 
-    if( strName == "Number" )
+    if( strName == kNumber )
     {
         bModGroup = false;
         bSQRT = false;
@@ -402,7 +407,7 @@ void BNCalcDlg::changeBaseGroup( int index )
         mINVBtn->setText( kInv );
         mSQRTBtn->setText( kSqrt );
     }
-    else if( strName == "Modular" )
+    else if( strName == kModular )
     {
         bModGroup = true;
         bSQRT = true;
@@ -589,12 +594,12 @@ void BNCalcDlg::clickAdd()
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
-    if( mBaseGroupCombo->currentText() == "Number" )
+    if( mBaseGroupCombo->currentText() == kNumber )
     {
         if( getInput( &binA, &binB, NULL ) != 0 ) goto end;
         ret = JS_BN_add( &binR, &binA, &binB );
     }
-    else if( mBaseGroupCombo->currentText() == "Modular" )
+    else if( mBaseGroupCombo->currentText() == kModular )
     {
         if( getInput( &binA, &binB, &binMod ) != 0 ) goto end;
         ret = JS_BN_addMod( &binR, &binA, &binB, &binMod );
@@ -618,7 +623,7 @@ void BNCalcDlg::clickAdd()
     berApplet->logLine2();
     berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
     berApplet->log( QString( "B : %1").arg( getHexString(&binB)));
-    if( mBaseGroupCombo->currentText() != "Number" )
+    if( mBaseGroupCombo->currentText() != kNumber )
         berApplet->log( QString( "M : %1").arg( getHexString(&binMod)));
     berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
     berApplet->logLine();
@@ -640,7 +645,7 @@ void BNCalcDlg::clickSub()
 
     QString strOut;
 
-    if( mBaseGroupCombo->currentText() == "Number" )
+    if( mBaseGroupCombo->currentText() == kNumber )
     {
         if( getInput( &binA, &binB, NULL ) != 0 ) goto end;
 
@@ -649,7 +654,7 @@ void BNCalcDlg::clickSub()
 
         ret = JS_BN_sub( &binR, &binA, &binB );
     }
-    else if( mBaseGroupCombo->currentText() == "Modular" )
+    else if( mBaseGroupCombo->currentText() == kModular )
     {
         if( getInput( &binA, &binB, &binMod ) != 0 ) goto end;
 
@@ -678,7 +683,7 @@ void BNCalcDlg::clickSub()
     berApplet->logLine2();
     berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
     berApplet->log( QString( "B : %1").arg( getHexString(&binB)));
-    if( mBaseGroupCombo->currentText() != "Number" )
+    if( mBaseGroupCombo->currentText() != kNumber )
         berApplet->log( QString( "M : %1").arg( getHexString(&binMod)));
     berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
     berApplet->logLine();
@@ -698,12 +703,12 @@ void BNCalcDlg::clickMultiple()
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
-    if( mBaseGroupCombo->currentText() == "Number" )
+    if( mBaseGroupCombo->currentText() == kNumber )
     {
         if( getInput( &binA, &binB, NULL ) != 0 ) goto end;
         ret = JS_BN_mul( &binR, &binA, &binB );
     }
-    else if( mBaseGroupCombo->currentText() == "Modular" )
+    else if( mBaseGroupCombo->currentText() == kModular )
     {
         if( getInput( &binA, &binB, &binMod ) != 0 ) goto end;
         ret = JS_BN_mulMod( &binR, &binA, &binB, &binMod );
@@ -727,7 +732,7 @@ void BNCalcDlg::clickMultiple()
     berApplet->logLine2();
     berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
     berApplet->log( QString( "B : %1").arg( getHexString(&binB)));
-    if( mBaseGroupCombo->currentText() != "Number" )
+    if( mBaseGroupCombo->currentText() != kNumber )
         berApplet->log( QString( "M : %1").arg( getHexString(&binMod)));
     berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
     berApplet->logLine();
@@ -748,12 +753,12 @@ void BNCalcDlg::clickDiv()
     BIN binREM = {0,0};
     BIN binMod = {0,0};
 
-    if( mBaseGroupCombo->currentText() == "Number" )
+    if( mBaseGroupCombo->currentText() == kNumber )
     {
         if( getInput( &binA, &binB, NULL ) != 0 ) goto end;
         ret = JS_BN_div( &binR, &binREM, &binA, &binB );
     }
-    else if( mBaseGroupCombo->currentText() == "Modular" )
+    else if( mBaseGroupCombo->currentText() == kModular )
     {
         berApplet->elog( "Modular does not support div" );
         goto end;
@@ -777,11 +782,11 @@ void BNCalcDlg::clickDiv()
     berApplet->logLine2();
     berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
     berApplet->log( QString( "B : %1").arg( getHexString(&binB)));
-    if( mBaseGroupCombo->currentText() != "Number" )
+    if( mBaseGroupCombo->currentText() != kNumber )
         berApplet->log( QString( "M : %1").arg( getHexString(&binMod)));
     berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
 
-    if( mBaseGroupCombo->currentText() == "Number" )
+    if( mBaseGroupCombo->currentText() == kNumber )
     {
         if( binREM.nLen > 0 )
         {
@@ -808,12 +813,12 @@ void BNCalcDlg::clickExp()
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
-    if( mBaseGroupCombo->currentText() == "Number" )
+    if( mBaseGroupCombo->currentText() == kNumber )
     {
         if( getInput( &binA, &binB, NULL ) != 0 ) goto end;
         ret = JS_BN_exp( &binR, &binA, &binB );
     }
-    else if( mBaseGroupCombo->currentText() == "Modular" )
+    else if( mBaseGroupCombo->currentText() == kModular )
     {
         if( getInput( &binA, &binB, &binMod ) != 0 ) goto end;
         ret = JS_BN_expMod( &binR, &binA, &binB, &binMod );
@@ -837,7 +842,7 @@ void BNCalcDlg::clickExp()
     berApplet->logLine2();
     berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
     berApplet->log( QString( "B : %1").arg( getHexString(&binB)));
-    if( mBaseGroupCombo->currentText() != "Number" )
+    if( mBaseGroupCombo->currentText() != kNumber )
         berApplet->log( QString( "M : %1").arg( getHexString(&binMod)));
     berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
     berApplet->logLine();
@@ -856,12 +861,12 @@ void BNCalcDlg::clickSqr()
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
-    if( mBaseGroupCombo->currentText() == "Number" )
+    if( mBaseGroupCombo->currentText() == kNumber )
     {
         if( getInput( &binA, NULL, NULL ) != 0 ) goto end;
         ret = JS_BN_sqr( &binR, &binA );
     }
-    else if( mBaseGroupCombo->currentText() == "Modular" )
+    else if( mBaseGroupCombo->currentText() == kModular )
     {
         if( getInput( &binA, NULL, &binMod ) != 0 ) goto end;
         ret = JS_BN_sqrMod( &binR, &binA, &binMod );
@@ -884,7 +889,7 @@ void BNCalcDlg::clickSqr()
     berApplet->log( QString( mSQRBtn->text() ));
     berApplet->logLine2();
     berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
-    if( mBaseGroupCombo->currentText() != "Number" )
+    if( mBaseGroupCombo->currentText() != kNumber )
         berApplet->log( QString( "M : %1").arg( getHexString(&binMod)));
     berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
     berApplet->logLine();
@@ -902,12 +907,12 @@ void BNCalcDlg::clickMod()
     BIN binB = {0,0};
     BIN binR = {0,0};
 
-    if( mBaseGroupCombo->currentText() == "Number" )
+    if( mBaseGroupCombo->currentText() == kNumber )
     {
         if( getInput( &binA, &binB, NULL ) != 0 ) goto end;
         ret = JS_BN_mod( &binR, &binA, &binB );
     }
-    else if( mBaseGroupCombo->currentText() == "Modular" )
+    else if( mBaseGroupCombo->currentText() == kModular )
     {
         berApplet->elog( "Modular does not support mod" );
         goto end;
@@ -949,7 +954,7 @@ void BNCalcDlg::clickGcd()
     BIN binB = {0,0};
     BIN binR = {0,0};
 
-    if( mBaseGroupCombo->currentText() != "Number" )
+    if( mBaseGroupCombo->currentText() != kNumber )
     {
         berApplet->elog( "GCD support Number only" );
         goto end;
@@ -1121,7 +1126,7 @@ void BNCalcDlg::clickShr()
     if( getInput( &binA, NULL, NULL ) != 0 )
         goto end;
 /*
-    if( mBaseGroupCombo->currentText() != "Number" )
+    if( mBaseGroupCombo->currentText() != kNumber )
     {
         berApplet->elog( "SHR support Number only" );
         goto end;
@@ -1154,12 +1159,12 @@ void BNCalcDlg::clickShl()
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
-    if( mBaseGroupCombo->currentText() == "Number" )
+    if( mBaseGroupCombo->currentText() == kNumber )
     {
         if( getInput( &binA, NULL, NULL ) != 0 ) goto end;
         ret = JS_BN_lshift( &binR, &binA );
     }
-    else if( mBaseGroupCombo->currentText() == "Modular" )
+    else if( mBaseGroupCombo->currentText() == kModular )
     {
         if( getInput( &binA, NULL, &binMod ) != 0 ) goto end;
         ret = JS_BN_lshiftMod( &binR, &binA, &binMod );
@@ -1182,7 +1187,7 @@ void BNCalcDlg::clickShl()
     berApplet->log( QString( mSHLBtn->text() ));
     berApplet->logLine2();
     berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
-    if( mBaseGroupCombo->currentText() != "Number" )
+    if( mBaseGroupCombo->currentText() != kNumber )
         berApplet->log( QString( "M : %1").arg( getHexString(&binMod)));
     berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
     berApplet->logLine();
@@ -1200,12 +1205,12 @@ void BNCalcDlg::clickInv()
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
-    if( mBaseGroupCombo->currentText() == "Number" )
+    if( mBaseGroupCombo->currentText() == kNumber )
     {
         berApplet->elog( "Number does not support INV" );
         goto end;
     }
-    else if( mBaseGroupCombo->currentText() == "Modular" )
+    else if( mBaseGroupCombo->currentText() == kModular )
     {
         if( getInput( &binA, NULL, &binMod ) != 0 ) goto end;
         ret = JS_BN_invMod( &binR, &binA, &binMod );
@@ -1228,7 +1233,7 @@ void BNCalcDlg::clickInv()
     berApplet->log( QString( mINVBtn->text() ));
     berApplet->logLine2();
     berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
-    if( mBaseGroupCombo->currentText() != "Number" )
+    if( mBaseGroupCombo->currentText() != kNumber )
         berApplet->log( QString( "M : %1").arg( getHexString(&binMod)));
     berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
     berApplet->logLine();
@@ -1246,12 +1251,12 @@ void BNCalcDlg::clickSqrt()
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
-    if( mBaseGroupCombo->currentText() == "Number" )
+    if( mBaseGroupCombo->currentText() == kNumber )
     {
         berApplet->elog( "Number does not support SQRT" );
         goto end;
     }
-    else if( mBaseGroupCombo->currentText() == "Modular" )
+    else if( mBaseGroupCombo->currentText() == kModular )
     {
         if( getInput( &binA, NULL, &binMod ) != 0 ) goto end;
         ret = JS_BN_sqrtMod( &binR, &binA, &binMod );
@@ -1274,7 +1279,7 @@ void BNCalcDlg::clickSqrt()
     berApplet->log( QString( mSQRTBtn->text() ));
     berApplet->logLine2();
     berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
-    if( mBaseGroupCombo->currentText() != "Number" )
+    if( mBaseGroupCombo->currentText() != kNumber )
         berApplet->log( QString( "M : %1").arg( getHexString(&binMod)));
     berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
     berApplet->logLine();
