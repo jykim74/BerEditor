@@ -330,7 +330,19 @@ void BNCalcDlg::getBIN( const QString strValue, BIN *pBin )
     }
     else
     {
-        JS_BIN_decodeHex( strValue.toStdString().c_str(), pBin );
+        QString strNum;
+
+        if( strValue.length() % 2 )
+        {
+            strNum = "0";
+            strNum += strValue;
+        }
+        else
+        {
+            strNum = strValue;
+        }
+
+        JS_BIN_decodeHex( strNum.toStdString().c_str(), pBin );
     }
 }
 
@@ -527,6 +539,12 @@ void BNCalcDlg::clickAIsPrime()
     }
 
     getBIN( strVal, &binVal );
+    if( binVal.nLen < 1 )
+    {
+        berApplet->warnLog( tr( "Invalid A value" ), this );
+        JS_BIN_reset( &binVal );
+        return;
+    }
 
     ret = JS_BN_isPrime( &binVal );
 
@@ -551,6 +569,12 @@ void BNCalcDlg::clickBIsPrime()
     }
 
     getBIN( strVal, &binVal );
+    if( binVal.nLen < 1 )
+    {
+        berApplet->warnLog( tr( "Invalid B value" ), this );
+        JS_BIN_reset( &binVal );
+        return;
+    }
 
     ret = JS_BN_isPrime( &binVal );
 
@@ -575,6 +599,12 @@ void BNCalcDlg::clickModIsPrime()
     }
 
     getBIN( strVal, &binVal );
+    if( binVal.nLen < 1 )
+    {
+        berApplet->warnLog( tr( "Invalid M value" ), this );
+        JS_BIN_reset( &binVal );
+        return;
+    }
 
     ret = JS_BN_isPrime( &binVal );
 
