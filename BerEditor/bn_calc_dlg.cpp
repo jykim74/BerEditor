@@ -680,9 +680,14 @@ void BNCalcDlg::clickSub()
         if( getInput( &binA, &binB, NULL ) != 0 ) goto end;
 
         if( JS_BN_cmp( &binA, &binB ) < 0 )
+        {
             strOut = "-";
-
-        ret = JS_BN_sub( &binR, &binA, &binB );
+            ret = JS_BN_sub( &binR, &binB, &binA );
+        }
+        else
+        {
+            ret = JS_BN_sub( &binR, &binA, &binB );
+        }
     }
     else if( mBaseGroupCombo->currentText() == kModular )
     {
