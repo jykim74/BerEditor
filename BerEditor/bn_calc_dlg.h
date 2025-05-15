@@ -86,6 +86,7 @@ private:
 
     const QString getOutput( const BIN *pBin );
     void getBIN( const QString strValue, BIN *pBin );
+    const QString validChars();
 };
 
 #endif // BN_CALC_DLG_H

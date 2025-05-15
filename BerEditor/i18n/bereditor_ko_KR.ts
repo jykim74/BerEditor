@@ -495,103 +495,127 @@ mailto : jykim74@gmail.com</translation>
         <translation>Test</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="254"/>
         <source>The A value have wrong character</source>
-        <translation>A 값에 잘못된 문자가 있습니다.</translation>
+        <translation type="vanished">A 값에 잘못된 문자가 있습니다.</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="266"/>
         <source>The B value have wrong character</source>
-        <translation>B 값에 잘못된 문자가 있습니다.</translation>
+        <translation type="vanished">B 값에 잘못된 문자가 있습니다.</translation>
     </message>
     <message>
         <source>The Mod value have wrong character</source>
         <translation type="vanished">M 값에 잘못된 무자가 있습니다.</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="195"/>
+        <location filename="../bn_calc_dlg.cpp" line="199"/>
         <source>Please enter A</source>
         <translation>A를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="207"/>
+        <location filename="../bn_calc_dlg.cpp" line="211"/>
         <source>Please enter B</source>
         <translation>B를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="219"/>
+        <location filename="../bn_calc_dlg.cpp" line="223"/>
         <source>Please enter M</source>
         <translation>M를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="278"/>
         <source>The M value have wrong character</source>
-        <translation>M 값에 잘못된 문자가 있습니다.</translation>
+        <translation type="vanished">M 값에 잘못된 문자가 있습니다.</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="537"/>
+        <location filename="../bn_calc_dlg.cpp" line="551"/>
         <source>Insert A value</source>
         <translation>A 을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="544"/>
         <source>Invalid A value</source>
-        <translation>유효하지 않는 A 값입니다</translation>
+        <translation type="vanished">유효하지 않는 A 값입니다</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="552"/>
+        <location filename="../bn_calc_dlg.cpp" line="566"/>
         <source>The A value is prime</source>
         <translation>A는 소수 입니다.</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="554"/>
+        <location filename="../bn_calc_dlg.cpp" line="568"/>
         <source>The A value is not prime</source>
         <translation>A 는 소수가 아닙니다.</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="567"/>
+        <location filename="../bn_calc_dlg.cpp" line="581"/>
         <source>Insert B value</source>
         <translation>B 을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="574"/>
         <source>Invalid B value</source>
-        <translation>유효하지 않는 B 값입니다</translation>
+        <translation type="vanished">유효하지 않는 B 값입니다</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="582"/>
+        <location filename="../bn_calc_dlg.cpp" line="596"/>
         <source>The B value is prime</source>
         <translation>B는 소수 입니다.</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="584"/>
+        <location filename="../bn_calc_dlg.cpp" line="598"/>
         <source>The B value is not prime</source>
         <translation>B 는 소수가 아닙니다.</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="597"/>
         <source>Insert M value</source>
-        <translation>M 을 입력하세요</translation>
+        <translation type="vanished">M 을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="604"/>
+        <location filename="../bn_calc_dlg.cpp" line="258"/>
+        <source>The A value have wrong character ( valid characters : %1 )</source>
+        <translation>A 값에 잘못된 문자가 있습니다 (유효한 문자: %1)</translation>
+    </message>
+    <message>
+        <location filename="../bn_calc_dlg.cpp" line="270"/>
+        <source>The B value have wrong character ( valid characters : %1 )</source>
+        <translation>B 값에 잘못된 문자가 있습니다 (유효한 문자: %1)</translation>
+    </message>
+    <message>
+        <location filename="../bn_calc_dlg.cpp" line="282"/>
+        <source>The M value have wrong character ( valid characters : %1 )</source>
+        <translation>M 값에 잘못된 문자가 있습니다 (유효한 문자: %1)</translation>
+    </message>
+    <message>
+        <location filename="../bn_calc_dlg.cpp" line="558"/>
+        <source>Invalid A value ( valid characters: %1 )</source>
+        <translation>A 값에 잘못된 문자가 있습니다 (유효한 문자: %1)</translation>
+    </message>
+    <message>
+        <location filename="../bn_calc_dlg.cpp" line="588"/>
+        <source>Invalid B value ( valid characters: %1 )</source>
+        <translation>B 값에 잘못된 문자가 있습니다 (유효한 문자: %1)</translation>
+    </message>
+    <message>
+        <location filename="../bn_calc_dlg.cpp" line="611"/>
+        <source>Insert M value ( valid characters: %1 )</source>
+        <translation>M 값에 잘못된 문자가 있습니다 (유효한 문자: %1)</translation>
+    </message>
+    <message>
+        <location filename="../bn_calc_dlg.cpp" line="618"/>
         <source>Invalid M value</source>
         <translation>유효하지 않는 M 값입니다</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="612"/>
+        <location filename="../bn_calc_dlg.cpp" line="626"/>
         <source>The M value is prime</source>
         <translation>M 은 소수 입니다</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="614"/>
+        <location filename="../bn_calc_dlg.cpp" line="628"/>
         <source>The M value is not prime</source>
         <translation>M 은 소수가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="1446"/>
-        <location filename="../bn_calc_dlg.cpp" line="1480"/>
-        <location filename="../bn_calc_dlg.cpp" line="1514"/>
+        <location filename="../bn_calc_dlg.cpp" line="1465"/>
+        <location filename="../bn_calc_dlg.cpp" line="1499"/>
+        <location filename="../bn_calc_dlg.cpp" line="1533"/>
         <source>Number must be greater than 0</source>
         <translation>숫자가 0보다 커야 합니다</translation>
     </message>
@@ -608,28 +632,28 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">M 은 소수가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.cpp" line="645"/>
-        <location filename="../bn_calc_dlg.cpp" line="702"/>
-        <location filename="../bn_calc_dlg.cpp" line="754"/>
-        <location filename="../bn_calc_dlg.cpp" line="804"/>
-        <location filename="../bn_calc_dlg.cpp" line="864"/>
-        <location filename="../bn_calc_dlg.cpp" line="912"/>
-        <location filename="../bn_calc_dlg.cpp" line="958"/>
-        <location filename="../bn_calc_dlg.cpp" line="998"/>
-        <location filename="../bn_calc_dlg.cpp" line="1032"/>
-        <location filename="../bn_calc_dlg.cpp" line="1066"/>
-        <location filename="../bn_calc_dlg.cpp" line="1100"/>
-        <location filename="../bn_calc_dlg.cpp" line="1132"/>
-        <location filename="../bn_calc_dlg.cpp" line="1168"/>
-        <location filename="../bn_calc_dlg.cpp" line="1210"/>
-        <location filename="../bn_calc_dlg.cpp" line="1256"/>
-        <location filename="../bn_calc_dlg.cpp" line="1302"/>
-        <location filename="../bn_calc_dlg.cpp" line="1364"/>
-        <location filename="../bn_calc_dlg.cpp" line="1392"/>
-        <location filename="../bn_calc_dlg.cpp" line="1420"/>
-        <location filename="../bn_calc_dlg.cpp" line="1454"/>
-        <location filename="../bn_calc_dlg.cpp" line="1488"/>
-        <location filename="../bn_calc_dlg.cpp" line="1522"/>
+        <location filename="../bn_calc_dlg.cpp" line="659"/>
+        <location filename="../bn_calc_dlg.cpp" line="721"/>
+        <location filename="../bn_calc_dlg.cpp" line="773"/>
+        <location filename="../bn_calc_dlg.cpp" line="823"/>
+        <location filename="../bn_calc_dlg.cpp" line="883"/>
+        <location filename="../bn_calc_dlg.cpp" line="931"/>
+        <location filename="../bn_calc_dlg.cpp" line="977"/>
+        <location filename="../bn_calc_dlg.cpp" line="1017"/>
+        <location filename="../bn_calc_dlg.cpp" line="1051"/>
+        <location filename="../bn_calc_dlg.cpp" line="1085"/>
+        <location filename="../bn_calc_dlg.cpp" line="1119"/>
+        <location filename="../bn_calc_dlg.cpp" line="1151"/>
+        <location filename="../bn_calc_dlg.cpp" line="1187"/>
+        <location filename="../bn_calc_dlg.cpp" line="1229"/>
+        <location filename="../bn_calc_dlg.cpp" line="1275"/>
+        <location filename="../bn_calc_dlg.cpp" line="1321"/>
+        <location filename="../bn_calc_dlg.cpp" line="1383"/>
+        <location filename="../bn_calc_dlg.cpp" line="1411"/>
+        <location filename="../bn_calc_dlg.cpp" line="1439"/>
+        <location filename="../bn_calc_dlg.cpp" line="1473"/>
+        <location filename="../bn_calc_dlg.cpp" line="1507"/>
+        <location filename="../bn_calc_dlg.cpp" line="1541"/>
         <source>Calc fail: %1</source>
         <translation>계산 실패 : %1</translation>
     </message>

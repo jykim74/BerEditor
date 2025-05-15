@@ -46,6 +46,10 @@ const QStringList kBitType = { "8", "16", "32", "64", "128", "256", "512", "1024
 //const QStringList kGroupList = { "Number", "Modular", "GF2m" };
 const QStringList kGroupList = { kNumber, kModular, kGF2m };
 
+const QString kBinaryChars = "[01]*";
+const QString kHexChars = "[A-Za-f0-9]*";
+const QString kDecimalChars = "[0-9]*";
+
 BNCalcDlg::BNCalcDlg(QWidget *parent) :
     QDialog(parent)
 {
@@ -251,7 +255,7 @@ int BNCalcDlg::getInput( BIN *pA, BIN *pB, BIN *pMod )
     {
         if( isValidNumFormat( strA, nNum ) != 1 )
         {
-            berApplet->warningBox( tr( "The A value have wrong character" ), this );
+            berApplet->warningBox( tr( "The A value have wrong character ( valid characters : %1 )" ).arg( validChars()), this );
             mAText->setFocus();
             return -1;
         }
@@ -263,7 +267,7 @@ int BNCalcDlg::getInput( BIN *pA, BIN *pB, BIN *pMod )
     {
         if( isValidNumFormat( strB, nNum ) != 1 )
         {
-            berApplet->warningBox( tr( "The B value have wrong character" ), this );
+            berApplet->warningBox( tr( "The B value have wrong character ( valid characters : %1 )" ).arg( validChars()), this );
             mBText->setFocus();
             return -2;
         }
@@ -275,7 +279,7 @@ int BNCalcDlg::getInput( BIN *pA, BIN *pB, BIN *pMod )
     {
         if( isValidNumFormat( strMod, nNum ) != 1 )
         {
-            berApplet->warningBox( tr( "The M value have wrong character" ), this );
+            berApplet->warningBox( tr( "The M value have wrong character ( valid characters : %1 )" ).arg( validChars()), this );
             mModText->setFocus();
             return -3;
         }
@@ -316,6 +320,16 @@ const QString BNCalcDlg::getOutput( const BIN *pBin )
     }
 
     return strValue;
+}
+
+const QString BNCalcDlg::validChars()
+{
+    if( mBinCheck->isChecked() )
+        return kBinaryChars;
+    else if( mDecCheck->isChecked() )
+        return kDecimalChars;
+    else
+        return kHexChars;
 }
 
 void BNCalcDlg::getBIN( const QString strValue, BIN *pBin )
@@ -541,7 +555,7 @@ void BNCalcDlg::clickAIsPrime()
     getBIN( strVal, &binVal );
     if( binVal.nLen < 1 )
     {
-        berApplet->warnLog( tr( "Invalid A value" ), this );
+        berApplet->warnLog( tr( "Invalid A value ( valid characters: %1 )" ).arg(validChars()), this );
         JS_BIN_reset( &binVal );
         return;
     }
@@ -571,7 +585,7 @@ void BNCalcDlg::clickBIsPrime()
     getBIN( strVal, &binVal );
     if( binVal.nLen < 1 )
     {
-        berApplet->warnLog( tr( "Invalid B value" ), this );
+        berApplet->warnLog( tr( "Invalid B value ( valid characters: %1 )" ).arg(validChars()), this );
         JS_BIN_reset( &binVal );
         return;
     }
@@ -594,7 +608,7 @@ void BNCalcDlg::clickModIsPrime()
 
     if( strVal.length() < 1 )
     {
-        berApplet->warningBox( tr( "Insert M value" ), this );
+        berApplet->warningBox( tr( "Insert M value ( valid characters: %1 )" ).arg(validChars()), this );
         return;
     }
 
