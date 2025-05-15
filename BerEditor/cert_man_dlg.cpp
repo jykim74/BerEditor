@@ -282,9 +282,9 @@ void CertManDlg::initUI()
     mEE_CertTable->horizontalHeader()->setStyleSheet( kTableStyle );
     mEE_CertTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mEE_CertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    mEE_CertTable->setColumnWidth( 0, nWidth * 5/10 );
-    mEE_CertTable->setColumnWidth( 1, nWidth * 2/10 );
-    mEE_CertTable->setColumnWidth( 2, nWidth * 3/10 );
+    mEE_CertTable->setColumnWidth( 0, nWidth * 8/20 );
+    mEE_CertTable->setColumnWidth( 1, nWidth * 5/20 );
+ //   mEE_CertTable->setColumnWidth( 2, nWidth * 3/10 );
 
 
     QStringList sOtherTableLabels = { tr( "Subject DN" ), tr( "Expire" ), tr( "Issuer DN" ) };
@@ -635,6 +635,8 @@ void CertManDlg::loadEEList()
         mEE_CertTable->insertRow( row );
         mEE_CertTable->setRowHeight( row, 10 );
         QTableWidgetItem *item = new QTableWidgetItem( sCertInfo.pSubjectName );
+        QTableWidgetItem *item1 = new QTableWidgetItem( sNotAfter );
+        QTableWidgetItem *item2 = new QTableWidgetItem( sCertInfo.pIssuerName );
 
         if( now > sCertInfo.uNotAfter )
             item->setIcon(QIcon(":/images/cert_revoked.png" ));
@@ -642,10 +644,11 @@ void CertManDlg::loadEEList()
             item->setIcon(QIcon(":/images/cert.png" ));
 
         item->setData(Qt::UserRole, folder.filePath() );
+        item1->setIcon(QIcon(":/images/keypair.png"));
 
         mEE_CertTable->setItem( row, 0, item );
-        mEE_CertTable->setItem( row, 1, new QTableWidgetItem( sNotAfter ));
-        mEE_CertTable->setItem( row, 2, new QTableWidgetItem( sCertInfo.pIssuerName ));
+        mEE_CertTable->setItem( row, 1, item1 );
+        mEE_CertTable->setItem( row, 2, item2 );
 
         JS_BIN_reset( &binCert );
         JS_PKI_resetCertInfo( &sCertInfo );
