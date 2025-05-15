@@ -103,6 +103,7 @@ void OIDInfoDlg::findOID()
          mOIDHexText->clear();
          mSNText->clear();
          mLNText->clear();
+         mNidText->clear();
 
          return;
      }
@@ -138,7 +139,10 @@ void OIDInfoDlg::findOID()
     mOIDHexText->setText( getHexString( &binOID ));
     mSNText->setText( JS_PKI_getSNFromOID(sOID));
     mLNText->setText(JS_PKI_getLNFromOID(sOID));
-    mNidText->setText( QString( "%1" ).arg( nNid ));
+    if( nNid > 0 )
+        mNidText->setText( QString( "%1" ).arg( nNid ));
+    else
+        mNidText->clear();
 
 
     JS_BIN_reset( &binOIDVal );
