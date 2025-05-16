@@ -46,9 +46,7 @@ const QStringList kBitType = { "8", "16", "32", "64", "128", "256", "512", "1024
 //const QStringList kGroupList = { "Number", "Modular", "GF2m" };
 const QStringList kGroupList = { kNumber, kModular, kGF2m };
 
-const QString kBinaryChars = "[0-1]";
-const QString kHexChars = "[A-Za-f0-9]";
-const QString kDecimalChars = "[0-9]";
+
 
 BNCalcDlg::BNCalcDlg(QWidget *parent) :
     QDialog(parent)

@@ -148,6 +148,7 @@ void NumConverterDlg::clickInputHex()
     QRegExp regExp("^[0-9a-fA-F]*$");
     QRegExpValidator* regVal = new QRegExpValidator( regExp );
     mInputText->setValidator( regVal );
+    mInputText->setPlaceholderText( tr("valid characters: %1").arg( kHexChars ));
 }
 
 void NumConverterDlg::clickInputBit()
@@ -156,6 +157,7 @@ void NumConverterDlg::clickInputBit()
     QRegExp regExp("^[0-1]*$");
     QRegExpValidator* regVal = new QRegExpValidator( regExp );
     mInputText->setValidator( regVal );
+    mInputText->setPlaceholderText( tr("valid characters: %1").arg( kBinaryChars ));
 }
 
 void NumConverterDlg::clickInputDec()
@@ -164,4 +166,5 @@ void NumConverterDlg::clickInputDec()
     QRegExp regExp("^[0-9-]*$");
     QRegExpValidator* regVal = new QRegExpValidator( regExp );
     mInputText->setValidator( regVal );
+    mInputText->setPlaceholderText( tr("valid characters: %1").arg( kDecimalChars ));
 }

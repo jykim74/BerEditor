@@ -108,6 +108,7 @@ void GenMacDlg::initialize()
     mInputTab->setCurrentIndex(0);
 
     mKeyText->setPlaceholderText( tr( "Select KeyList key"));
+    mSrcFileText->setPlaceholderText( tr( "Find the target file" ));
 
     checkHMAC();
 }

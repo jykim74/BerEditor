@@ -144,6 +144,7 @@ void SignVerifyDlg::initialize()
 
     mPriKeyPath->setPlaceholderText( tr("Select CertMan private key") );
     mCertPath->setPlaceholderText( tr( "Select CertMan certificate" ));
+    mSrcFileText->setPlaceholderText( tr( "Find the target file" ));
 }
 
 int SignVerifyDlg::readPrivateKey( BIN *pPriKey )

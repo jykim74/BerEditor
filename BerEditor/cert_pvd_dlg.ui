@@ -429,13 +429,6 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="0">
-       <widget class="QCheckBox" name="mNoCheckTimeCheck">
-        <property name="text">
-         <string>NoCheckTime</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="1">
        <widget class="QCheckBox" name="mCRLCheckCheck">
         <property name="text">
@@ -528,34 +521,20 @@
        </widget>
       </item>
       <item row="3" column="3">
-       <widget class="QCheckBox" name="mSuiteB128LOSOnlyCheck">
+       <widget class="QCheckBox" name="mNoCheckTimeCheck">
         <property name="text">
-         <string>SuiteB128LOSOnly</string>
+         <string>NoCheckTime</string>
         </property>
        </widget>
       </item>
       <item row="4" column="0">
-       <widget class="QCheckBox" name="mSuiteB192LOSCheck">
-        <property name="text">
-         <string>SuiteB192LOS</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="QCheckBox" name="mSuiteB128LOSCheck">
-        <property name="text">
-         <string>SuiteB128LOS</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="2">
        <widget class="QCheckBox" name="mPartialChainCheck">
         <property name="text">
          <string>PartialChain</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="3">
+      <item row="4" column="1">
        <widget class="QCheckBox" name="mNoALTChainsCheck">
         <property name="text">
          <string>NoALTChains</string>
@@ -812,12 +791,6 @@
   <tabstop>mUseDeltasCheck</tabstop>
   <tabstop>mCheckSSSignatureCheck</tabstop>
   <tabstop>mTrustedFirstCheck</tabstop>
-  <tabstop>mSuiteB128LOSOnlyCheck</tabstop>
-  <tabstop>mSuiteB192LOSCheck</tabstop>
-  <tabstop>mSuiteB128LOSCheck</tabstop>
-  <tabstop>mPartialChainCheck</tabstop>
-  <tabstop>mNoALTChainsCheck</tabstop>
-  <tabstop>mNoCheckTimeCheck</tabstop>
   <tabstop>mParamCombo</tabstop>
   <tabstop>mParamValueText</tabstop>
   <tabstop>mParamAddBtn</tabstop>

@@ -107,6 +107,8 @@ void KeyManDlg::initialize()
 
     mSrcText->setPlaceholderText( tr("Select KeyList key" ));
     mKEKText->setPlaceholderText( tr("Select KeyList key") );
+    mSecretText->setPlaceholderText( tr( "Enter a password" ));
+
 
     tabWidget->setCurrentIndex(0);
 }

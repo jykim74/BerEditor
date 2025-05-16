@@ -74,7 +74,7 @@
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="mServerTab">
       <attribute name="title">
@@ -607,6 +607,13 @@
     <widget class="Line" name="line_3">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="mURLLabel">
+     <property name="text">
+      <string/>
      </property>
     </widget>
    </item>

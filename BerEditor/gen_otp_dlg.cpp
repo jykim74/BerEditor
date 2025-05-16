@@ -12,6 +12,7 @@
 #include "js_pki.h"
 #include "common.h"
 #include "settings_mgr.h"
+#include "key_list_dlg.h"
 
 static QStringList dataTypes = {
     "String",
@@ -64,6 +65,8 @@ void GenOTPDlg::initialize()
     mIntervalSpin->setValue(60);
     mLengthSpin->setValue(6);
 
+    mKeyText->setPlaceholderText( tr( "Select KeyList key" ) );
+
     setNow();
 }
 
@@ -82,8 +85,6 @@ void GenOTPDlg::clickGenOTP()
     BIN binT = {0,0};
     char sOTP[128];
 
-    update();
-
     time_t tTime = mDateTime->dateTime().toSecsSinceEpoch();
     int nInterval = mIntervalSpin->value();
     int nLen = mLengthSpin->value();
@@ -94,9 +95,28 @@ void GenOTPDlg::clickGenOTP()
 
     if( strKey.isEmpty() )
     {
-        berApplet->warningBox( tr( "Please enter a key value"), this );
-        mKeyText->setFocus();
-        return;
+        KeyListDlg keyList;
+        keyList.setTitle( tr( "Select symmetric key" ));
+
+        if( keyList.exec() == QDialog::Accepted )
+        {
+            QString strData = keyList.getData();
+            QStringList keyIV = strData.split(":");
+
+            if( keyIV.size() > 0 )
+            {
+                mKeyTypeCombo->setCurrentText( "Hex" );
+                strKey = keyIV.at(0);
+                mKeyText->setText( strKey );
+            }
+        }
+
+        if( strKey.isEmpty() )
+        {
+            berApplet->warningBox( tr( "Please enter a key value"), this );
+            mKeyText->setFocus();
+            return;
+        }
     }
 
     getBINFromString( &binKey, mKeyTypeCombo->currentIndex(), strKey );

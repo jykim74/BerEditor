@@ -101,6 +101,10 @@ void SSSDlg::initialize()
     mPrimeBitsCombo->setEditable( true );
 
     mShareText->setValidator( regVal );
+
+    mPrimeText->setPlaceholderText( tr( "Enter the prime number to use for SSS" ) );
+    mShareText->setPlaceholderText( tr( "Enter the values ​​to combine" ));
+    mSrcText->setPlaceholderText( tr( "Enter the key value to split" ) );
 }
 
 void SSSDlg::srcChanged()

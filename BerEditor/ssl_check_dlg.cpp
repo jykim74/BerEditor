@@ -350,6 +350,8 @@ void SSLCheckDlg::initialize()
     mClientCAPathText->setPlaceholderText( "Select CertMan CA certificate" );
     mClientCertPathText->setPlaceholderText( "Select CertMan certificate" );
     mClientPriKeyPathText->setPlaceholderText( "Select CertMan private key" );
+
+    mURLLabel->setText( tr( "Enter a URL (ex https://www.google.com, www.naver.com)") );
 }
 
 QStringList SSLCheckDlg::getUsedURL()

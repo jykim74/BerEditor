@@ -343,6 +343,15 @@ void KeyAgreeDlg::initialize()
     mECDHParamCombo->addItems( kECCParamList );
     mECDHParamCombo->setCurrentText( "prime256v1" );
 
+    mAPrivateKeyText->setPlaceholderText( tr("Hex value") );
+    mAPublicKeyText->setPlaceholderText( tr( "Hex value" ) );
+    mBPrivateKeyText->setPlaceholderText( tr("Hex value") );
+    mBPublicKeyText->setPlaceholderText( tr("Hex value") );
+    mAECDHPriKeyText->setPlaceholderText( tr("Hex value") );
+    mAECDHPubKeyText->setPlaceholderText( tr("Hex value") );
+    mBECDHPriKeyText->setPlaceholderText( tr("Hex value") );
+    mBECDHPubKeyText->setPlaceholderText( tr("Hex value") );
+
     mLengthText->setText( "512" );
     mTabWidget->setCurrentIndex(0);
 }

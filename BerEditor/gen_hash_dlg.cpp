@@ -74,6 +74,7 @@ void GenHashDlg::initialize()
     mOutputHashCombo->addItems( kHashList );
     mOutputHashCombo->setCurrentText( setMgr->defaultHash() );
 
+    mSrcFileText->setPlaceholderText( tr( "Find the target file" ));
     mInputTab->setCurrentIndex(0);
 }
 
