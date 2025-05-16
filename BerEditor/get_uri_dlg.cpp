@@ -227,6 +227,7 @@ void GetURIDlg::initUI()
 
     clickUseLDAPHost();
     mURICombo->addItems( getUsedURI() );
+    mURILabel->setText( tr("ex) http://i.pki.goog/we2.crt") );
 }
 
 void GetURIDlg::clickUseLDAPHost()

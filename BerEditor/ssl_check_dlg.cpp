@@ -831,7 +831,7 @@ void SSLCheckDlg::clickCheck()
     berApplet->log( QString( "Host:Port => %1:%2" ).arg( strHost ).arg( nPort ) );
 
     ret = verifyURL( strHost, nPort, &binCA );
-    if( strHost.length() > 3 && ret == 0 )
+    if( strHost.length() > 3 )
     {
         setUsedURL( strURL );
         mURLCombo->clear();

@@ -132,6 +132,9 @@ void PubEncDecDlg::initialize()
 
     mPriKeyPath->setPlaceholderText( tr("Select CertMan private key") );
     mCertPath->setPlaceholderText( tr( "Select CertMan certificate" ));
+    mIVText->setPlaceholderText( tr( "Hex value" ));
+    mTagText->setPlaceholderText( tr( "Hex value" ));
+    mOtherPubText->setPlaceholderText( tr( "Hex value" ));
 }
 
 int PubEncDecDlg::readPrivateKey( BIN *pPriKey )

@@ -727,7 +727,7 @@ void MainWindow::createActions()
     if( isView( ACT_FILE_OPEN ) ) file_tool_->addAction(open_act_);
 
     const QIcon openCertIcon = QIcon::fromTheme("document-cert", QIcon(":/images/cert.png"));
-    open_cert_act_ = new QAction( openCertIcon, tr("&Open Certificate"), this );
+    open_cert_act_ = new QAction( openCertIcon, tr("Open &Certificate"), this );
     open_cert_act_->setShortcut(QKeySequence(Qt::Key_F2));
     open_cert_act_->setStatusTip(tr("Open certificate file"));
     connect( open_cert_act_, &QAction::triggered, this, &MainWindow::openCert);
@@ -735,7 +735,7 @@ void MainWindow::createActions()
     if( isView( ACT_FILE_OPEN_CERT ) ) file_tool_->addAction( open_cert_act_ );
 
     const QIcon openCRLIcon = QIcon::fromTheme("document-crl", QIcon(":/images/crl.png"));
-    open_crl_act_ = new QAction( openCRLIcon, tr("&Open CRL"), this );
+    open_crl_act_ = new QAction( openCRLIcon, tr("Open CR&L"), this );
     open_crl_act_->setShortcut(QKeySequence(Qt::Key_F3));
     open_crl_act_->setStatusTip(tr("Open CRL file"));
     connect( open_crl_act_, &QAction::triggered, this, &MainWindow::openCRL);
@@ -743,7 +743,7 @@ void MainWindow::createActions()
     if( isView( ACT_FILE_OPEN_CRL) ) file_tool_->addAction( open_crl_act_ );
 
     const QIcon openCSRIcon = QIcon::fromTheme("document-csr", QIcon(":/images/csr.png"));
-    open_csr_act_ = new QAction( openCSRIcon, tr("&Open CSR"), this );
+    open_csr_act_ = new QAction( openCSRIcon, tr("Open CS&R"), this );
     open_csr_act_->setShortcut(QKeySequence(Qt::Key_F4));
     open_csr_act_->setStatusTip(tr("Open CSR file"));
     connect( open_csr_act_, &QAction::triggered, this, &MainWindow::openCSR);
@@ -752,7 +752,7 @@ void MainWindow::createActions()
 
     const QIcon priKeyIcon = QIcon::fromTheme("document-csr", QIcon(":/images/pri_key.png"));
 
-    open_pri_key_act_ = new QAction( priKeyIcon, tr("&Open PrivateKey"), this );
+    open_pri_key_act_ = new QAction( priKeyIcon, tr("Open &PrivateKey"), this );
     open_pri_key_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_R));
     open_pri_key_act_->setStatusTip(tr("Open private key file"));
     connect( open_pri_key_act_, &QAction::triggered, this, &MainWindow::openPriKey);
@@ -770,7 +770,7 @@ void MainWindow::createActions()
 
     const QIcon openCMSIcon = QIcon::fromTheme("CMS", QIcon(":/images/cms_open.png"));
 
-    open_cms_act_ = new QAction( openCMSIcon, tr("&Open CMS"), this );
+    open_cms_act_ = new QAction( openCMSIcon, tr("Open C&MS"), this );
     open_cms_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_M));
     open_cms_act_->setStatusTip(tr("Open CMS file"));
     connect( open_cms_act_, &QAction::triggered, this, &MainWindow::openCMS);
@@ -1084,7 +1084,7 @@ void MainWindow::createActions()
     service_tool_->layout()->setSpacing(nSpacing);
 
     const QIcon keyPairIcon = QIcon::fromTheme("KeyPair Manage", QIcon(":/images/keypair.png"));
-    key_pair_man_act_ = new QAction( keyPairIcon, tr( "KeyPair Manage" ), this );
+    key_pair_man_act_ = new QAction( keyPairIcon, tr( "Key&Pair Manage" ), this );
     key_pair_man_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_Y ));
     connect( key_pair_man_act_, &QAction::triggered, this, &MainWindow::keyPairMan );
     key_pair_man_act_->setStatusTip( tr( "List and manage asymmetric keys" ));
@@ -1092,7 +1092,7 @@ void MainWindow::createActions()
     if( isView( ACT_SERVICE_KEY_PAIR_MAN ) ) service_tool_->addAction( key_pair_man_act_ );
 
     const QIcon certManIcon = QIcon::fromTheme("Certificate Manage", QIcon(":/images/cert_man.png"));
-    cert_man_act_ = new QAction( certManIcon, tr( "Certificate Manage" ), this );
+    cert_man_act_ = new QAction( certManIcon, tr( "&Certificate Manage" ), this );
     cert_man_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_M ));
     connect( cert_man_act_, &QAction::triggered, this, &MainWindow::certMan );
     cert_man_act_->setStatusTip( tr( "List and manage certificates and keys" ));
@@ -1100,7 +1100,7 @@ void MainWindow::createActions()
     if( isView( ACT_SERVICE_CERT_MAN ) ) service_tool_->addAction( cert_man_act_ );
 
     const QIcon keyListIcon = QIcon::fromTheme("Key List", QIcon(":/images/keylist.png"));
-    key_list_act_ = new QAction( keyListIcon, tr( "Key List" ), this );
+    key_list_act_ = new QAction( keyListIcon, tr( "&Key List" ), this );
     key_list_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_L ));
     connect( key_list_act_, &QAction::triggered, this, &MainWindow::keyList );
     key_list_act_->setStatusTip( tr( "List and manage symmetric keys" ));
@@ -1224,7 +1224,7 @@ void MainWindow::createActions()
     if( isView( ACT_KMIP_ENCODE_TTLV ) ) kmip_tool_->addAction( ttlv_encode_act_ );
 
     const QIcon ttlvClientIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/kms_client.png"));
-    ttlv_client_act_ = new QAction(ttlvClientIcon, tr("&TTLV Client"), this);
+    ttlv_client_act_ = new QAction(ttlvClientIcon, tr("TTLV &Client"), this);
     ttlv_client_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_P));
     connect( ttlv_client_act_, &QAction::triggered, this, &MainWindow::ttlvClient );
     ttlv_client_act_->setStatusTip(tr("KMIP TTLV Client Tool"));
