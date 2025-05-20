@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>418</width>
-    <height>373</height>
+    <height>503</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -88,11 +88,187 @@
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout_2">
+    <layout class="QGridLayout" name="gridLayout">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Binary</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mBinChangeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>34</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>⬆</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QPlainTextEdit" name="mBinOutputText">
+     <property name="palette">
+      <palette>
+       <active>
+        <colorrole role="Base">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>221</red>
+           <green>221</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </active>
+       <inactive>
+        <colorrole role="Base">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>221</red>
+           <green>221</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </inactive>
+       <disabled/>
+      </palette>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line_3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_5">
      <property name="topMargin">
       <number>0</number>
      </property>
      <item row="0" column="2">
+      <widget class="QPushButton" name="mDecChangeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>34</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>⬆</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Decimal</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer_5">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QPlainTextEdit" name="mDecOutputText">
+     <property name="palette">
+      <palette>
+       <active>
+        <colorrole role="Base">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>221</red>
+           <green>221</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </active>
+       <inactive>
+        <colorrole role="Base">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>221</red>
+           <green>221</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </inactive>
+       <disabled/>
+      </palette>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line_4">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_2">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Hex</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mHexChangeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>34</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>⬆</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -105,40 +281,10 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Output</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mChangeBtn">
-       <property name="maximumSize">
-        <size>
-         <width>34</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>⬆</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mConversionBtn">
-       <property name="text">
-        <string>Conversion</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="mOutputTypeCombo"/>
-     </item>
     </layout>
    </item>
    <item>
-    <widget class="QPlainTextEdit" name="mOutputText">
+    <widget class="QPlainTextEdit" name="mHexOutputText">
      <property name="minimumSize">
       <size>
        <width>400</width>
@@ -231,10 +377,8 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>mOutputTypeCombo</tabstop>
-  <tabstop>mChangeBtn</tabstop>
-  <tabstop>mConversionBtn</tabstop>
-  <tabstop>mOutputText</tabstop>
+  <tabstop>mHexChangeBtn</tabstop>
+  <tabstop>mHexOutputText</tabstop>
   <tabstop>mOutputClearBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>

@@ -4,6 +4,7 @@
  * All rights reserved.
  */
 #include <QStringList>
+#include <QRegExpValidator>
 
 #include "num_converter_dlg.h"
 #include "js_pki.h"
@@ -19,8 +20,9 @@ NumConverterDlg::NumConverterDlg(QWidget *parent) :
 {
     setupUi(this);
 
-    connect( mConversionBtn, SIGNAL(clicked()), this, SLOT(dataConversion()));
-    connect( mChangeBtn, SIGNAL(clicked()), this, SLOT(dataChange()));
+    connect( mBinChangeBtn, SIGNAL(clicked()), this, SLOT(binChange()));
+    connect( mDecChangeBtn, SIGNAL(clicked()), this, SLOT(decChange()));
+    connect( mHexChangeBtn, SIGNAL(clicked()), this, SLOT(hexChange()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
     connect( mInputClearBtn, SIGNAL(clicked()), this, SLOT(clickInputClear()));
@@ -30,7 +32,7 @@ NumConverterDlg::NumConverterDlg(QWidget *parent) :
     connect( mDecimalBtn, SIGNAL(clicked()), this, SLOT(clickInputDec()));
     connect( mHexBtn, SIGNAL(clicked()), this, SLOT(clickInputHex()));
 
-    mConversionBtn->setDefault(true);
+    connect( mInputText, SIGNAL(textChanged(QString)), this, SLOT(dataConversion()));
 
     mDecimalBtn->click();
 
@@ -48,14 +50,19 @@ NumConverterDlg::~NumConverterDlg()
 
 void NumConverterDlg::initialize()
 {
-    mOutputTypeCombo->addItems( sTypeList );
-    mOutputTypeCombo->setCurrentIndex(2);
+
 }
 
 void NumConverterDlg::dataConversion()
 {
     BIN binSrc = {0,0};
-    char *pOutput = NULL;
+
+    char *pBinOutput = NULL;
+    char *pDecOutput = NULL;
+    char *pHexOutput = NULL;
+
+    const char *pTrimOut = NULL;
+
     int nNum = 0;
 
     QString strInput = mInputText->text();
@@ -63,7 +70,8 @@ void NumConverterDlg::dataConversion()
 
     if( strInput.length() < 1 )
     {
-        berApplet->warningBox( tr( "Enter input data" ), this );
+//        berApplet->warningBox( tr( "Enter input data" ), this );
+        clickOutputClear();
         mInputText->setFocus();
         return;
     }
@@ -86,50 +94,74 @@ void NumConverterDlg::dataConversion()
     else if( mDecimalBtn->isChecked() )
         JS_PKI_decimalToBin( strInput.toStdString().c_str(), &binSrc );
     else if( mHexBtn->isChecked() )
-        JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
+    {
+        QString strHex;
+
+        if( strInput.length() % 2)
+            strHex = "0";
+
+        strHex += strInput;
+        JS_BIN_decodeHex( strHex.toStdString().c_str(), &binSrc );
+    }
 
     if( binSrc.nLen <= 0 ) goto end;
 
-    if( mOutputTypeCombo->currentIndex() == 0 )
-        JS_PKI_binToBit( &binSrc, &pOutput );
-    else if( mOutputTypeCombo->currentIndex() == 1 )
-        JS_PKI_binToDecimal( &binSrc, &pOutput );
-    else if( mOutputTypeCombo->currentIndex() == 2 )
-        JS_BIN_encodeHex( &binSrc, &pOutput );
+    JS_PKI_binToBit( &binSrc, &pBinOutput );
 
-    if( mOutputTypeCombo->currentIndex() == 0 )
+    if( binSrc.pVal[0] & 0xFF )
     {
-        char *pTrimOut = JS_UTIL_trimChLeft( '0', pOutput );
-        mOutputText->setPlainText( pTrimOut );
+        BIN binTmp = {0,0};
+        JS_BIN_setChar( &binTmp, 0x00, 1 );
+        JS_BIN_appendBin( &binTmp, &binSrc );
+        JS_PKI_binToDecimal( &binTmp, &pDecOutput );
+        JS_BIN_reset( &binTmp );
     }
     else
     {
-        mOutputText->setPlainText( pOutput );
+        JS_PKI_binToDecimal( &binSrc, &pDecOutput );
     }
 
+    JS_BIN_encodeHex( &binSrc, &pHexOutput );
+
+    mDecOutputText->setPlainText( pDecOutput );
+    mHexOutputText->setPlainText( pHexOutput );
+
+    pTrimOut = JS_UTIL_trimChLeft( '0', pBinOutput );
+    mBinOutputText->setPlainText( pTrimOut );
+
 end :
-    if( pOutput ) JS_free( pOutput );
+    if( pBinOutput ) JS_free( pBinOutput );
+    if( pDecOutput ) JS_free( pDecOutput );
+    if( pHexOutput ) JS_free( pHexOutput );
     JS_BIN_reset( &binSrc );
     update();
 }
 
-void NumConverterDlg::dataChange()
+void NumConverterDlg::binChange()
 {
-    QString strOutput = mOutputText->toPlainText();
-    mOutputText->clear();
+    QString strOutput = mBinOutputText->toPlainText();
+    mBinOutputText->clear();
 
-
-
-    if( mOutputTypeCombo->currentIndex() == 0 )
-        mBitBtn->click();
-    else if( mOutputTypeCombo->currentIndex() == 1 )
-        mDecimalBtn->click();
-    else if( mOutputTypeCombo->currentIndex() == 2 )
-        mHexBtn->click();
-
+    mBitBtn->click();
     mInputText->setText( strOutput );
+}
 
-    update();
+void NumConverterDlg::decChange()
+{
+    QString strOutput = mDecOutputText->toPlainText();
+    mDecOutputText->clear();
+
+    mDecimalBtn->click();
+    mInputText->setText( strOutput );
+}
+
+void NumConverterDlg::hexChange()
+{
+    QString strOutput = mHexOutputText->toPlainText();
+    mHexOutputText->clear();
+
+    mHexBtn->click();
+    mInputText->setText( strOutput );
 }
 
 void NumConverterDlg::clickInputClear()
@@ -139,7 +171,9 @@ void NumConverterDlg::clickInputClear()
 
 void NumConverterDlg::clickOutputClear()
 {
-    mOutputText->clear();
+    mBinOutputText->clear();
+    mDecOutputText->clear();
+    mHexOutputText->clear();
 }
 
 void NumConverterDlg::clickInputHex()

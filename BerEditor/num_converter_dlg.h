@@ -23,7 +23,10 @@ public:
 
 private slots:
     void dataConversion();
-    void dataChange();
+
+    void binChange();
+    void decChange();
+    void hexChange();
 
     void clickInputClear();
     void clickOutputClear();

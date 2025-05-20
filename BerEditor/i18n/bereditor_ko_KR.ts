@@ -11049,17 +11049,19 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../num_converter_dlg.ui" line="34"/>
+        <location filename="../num_converter_dlg.ui" line="189"/>
         <source>Decimal</source>
         <translation>10진수</translation>
     </message>
     <message>
         <location filename="../num_converter_dlg.ui" line="44"/>
+        <location filename="../num_converter_dlg.ui" line="254"/>
         <source>Hex</source>
         <translation>16진수</translation>
     </message>
     <message>
         <location filename="../num_converter_dlg.ui" line="51"/>
-        <location filename="../num_converter_dlg.ui" line="225"/>
+        <location filename="../num_converter_dlg.ui" line="371"/>
         <source>Clear</source>
         <translation>지우기</translation>
     </message>
@@ -11069,39 +11071,43 @@ Do you want to delete the file and continue?</source>
         <translation>2진수</translation>
     </message>
     <message>
-        <location filename="../num_converter_dlg.ui" line="111"/>
-        <source>Output</source>
-        <translation>결과</translation>
+        <location filename="../num_converter_dlg.ui" line="98"/>
+        <source>Binary</source>
+        <translation>2진수</translation>
     </message>
     <message>
-        <location filename="../num_converter_dlg.ui" line="124"/>
+        <source>Output</source>
+        <translation type="vanished">결과</translation>
+    </message>
+    <message>
+        <location filename="../num_converter_dlg.ui" line="111"/>
+        <location filename="../num_converter_dlg.ui" line="182"/>
+        <location filename="../num_converter_dlg.ui" line="267"/>
         <source>⬆</source>
         <translation>⬆</translation>
     </message>
     <message>
-        <location filename="../num_converter_dlg.ui" line="131"/>
         <source>Conversion</source>
-        <translation>변환</translation>
+        <translation type="vanished">변환</translation>
     </message>
     <message>
-        <location filename="../num_converter_dlg.ui" line="205"/>
+        <location filename="../num_converter_dlg.ui" line="351"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../num_converter_dlg.cpp" line="66"/>
         <source>Enter input data</source>
-        <translation>입력데이타를 입력하세요</translation>
+        <translation type="vanished">입력데이타를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../num_converter_dlg.cpp" line="80"/>
+        <location filename="../num_converter_dlg.cpp" line="88"/>
         <source>Input contains non-numeric values</source>
         <translation>입력에 숫자가 아닌 값을 포함 하였습니다</translation>
     </message>
     <message>
-        <location filename="../num_converter_dlg.cpp" line="151"/>
-        <location filename="../num_converter_dlg.cpp" line="160"/>
-        <location filename="../num_converter_dlg.cpp" line="169"/>
+        <location filename="../num_converter_dlg.cpp" line="185"/>
+        <location filename="../num_converter_dlg.cpp" line="194"/>
+        <location filename="../num_converter_dlg.cpp" line="203"/>
         <source>valid characters: %1</source>
         <translation>유효한 문자: %1</translation>
     </message>
