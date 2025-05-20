@@ -347,10 +347,11 @@ void SSLCheckDlg::initialize()
 
     mURLTree->insertTopLevelItem( 0, url_tree_root_ );
 
-    mClientCAPathText->setPlaceholderText( "Select CertMan CA certificate" );
-    mClientCertPathText->setPlaceholderText( "Select CertMan certificate" );
-    mClientPriKeyPathText->setPlaceholderText( "Select CertMan private key" );
+    mClientCAPathText->setPlaceholderText( tr("Select CertMan CA certificate") );
+    mClientCertPathText->setPlaceholderText( tr("Select CertMan certificate") );
+    mClientPriKeyPathText->setPlaceholderText( tr("Select CertMan private key") );
 
+    mTrustCAPathText->setPlaceholderText( tr("Find a trusted CA certificate") );
     mURLLabel->setText( tr( "Enter a URL (ex https://www.google.com, www.naver.com)") );
 }
 

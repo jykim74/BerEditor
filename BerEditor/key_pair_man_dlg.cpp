@@ -531,6 +531,8 @@ void KeyPairManDlg::clickLMakeCSR()
 
     QModelIndex idx = mKeyPairTable->currentIndex();
     QTableWidgetItem* item = mKeyPairTable->item( idx.row(), 0 );
+    QTableWidgetItem* item1 = mKeyPairTable->item( idx.row(), 1 );
+    QTableWidgetItem* item2 = mKeyPairTable->item( idx.row(), 2 );
 
     if( item ) strPath = item->data(Qt::UserRole).toString();
 
@@ -541,6 +543,8 @@ void KeyPairManDlg::clickLMakeCSR()
     }
 
     QString strName = item->text();
+    QString strAlg = item1->text();
+    QString strOpt = item2->text();
 
     strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
     strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
@@ -548,6 +552,7 @@ void KeyPairManDlg::clickLMakeCSR()
 
     JS_BIN_fileReadBER( strPriKeyPath.toLocal8Bit().toStdString().c_str(), &binPri );
     MakeCSRDlg makeCSR;
+    makeCSR.setInfo( tr( "Target [%1:%2:%3]").arg( strName ).arg( strAlg ).arg( strOpt ));
     makeCSR.setPriKey( &binPri );
 
     if( makeCSR.exec() == QDialog::Accepted )

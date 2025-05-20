@@ -21,6 +21,8 @@ public:
     void setPriKey( const BIN *pPri );
     const QString getCSRHex();
 
+    void setInfo( const QString strInfo );
+
 private slots:
     void clickOK();
     void clickClear();

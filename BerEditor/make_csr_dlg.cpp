@@ -54,6 +54,11 @@ const QString MakeCSRDlg::getCSRHex()
     return getHexString( &csr_ );
 }
 
+void MakeCSRDlg::setInfo( const QString strInfo )
+{
+    mInfoLabel->setText( strInfo );
+}
+
 const QString MakeCSRDlg::getDN()
 {
     QString strEmailAddress = mEMAILADDRESSText->text();

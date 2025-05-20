@@ -28,6 +28,7 @@ FindDlg::FindDlg(QWidget *parent) :
     setupUi(this);
 
     connect( mHeadCheck, SIGNAL(clicked()), this, SLOT(checkHeader()));
+    connect( mValueTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeValueType()));
 
     connect( mBER_ClassCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeBER_Class(int)));
     connect( mBER_TagCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeBER_Tag()));
@@ -541,6 +542,39 @@ void FindDlg::changeTTLV_Tag( const QString text )
     mTTLV_TagNameText->setText( strName );
 
     makeTTLV_Header();
+}
+
+void FindDlg::changeValueType()
+{
+    QString strType = mValueTypeCombo->currentText();
+    mValueText->clear();
+
+    if( strType == "Hex" )
+    {
+        QRegExp regExp("^[0-9a-fA-F]*$");
+        QRegExpValidator* regVal = new QRegExpValidator( regExp );
+        mValueText->setValidator( regVal );
+        mValueText->setPlaceholderText( tr("valid characters: %1").arg( kHexChars ));
+    }
+    else if( strType == "String" )
+    {
+        mValueText->setValidator( NULL );
+        mValueText->setPlaceholderText( tr("all characters") );
+    }
+    else if( strType == "Decimal" )
+    {
+        QRegExp regExp("^[0-9-]*$");
+        QRegExpValidator* regVal = new QRegExpValidator( regExp );
+        mValueText->setValidator( regVal );
+        mValueText->setPlaceholderText( tr("valid characters: %1").arg( kDecimalChars ));
+    }
+    else if( strType == "OID" )
+    {
+        QRegExp regExp("^[0-9.]*$");
+        QRegExpValidator* regVal = new QRegExpValidator( regExp );
+        mValueText->setValidator( regVal );
+        mValueText->setPlaceholderText( "1.2" );
+    }
 }
 
 void FindDlg::makeTTLV_Header()

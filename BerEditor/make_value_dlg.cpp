@@ -90,17 +90,20 @@ void MakeValueDlg::typeChanged()
         QRegExp regExp("^[0-9-]*$");
         QRegExpValidator* regVal = new QRegExpValidator( regExp );
         mInputText->setValidator( regVal );
+        mInputText->setPlaceholderText( tr("valid characters: %1").arg( kDecimalChars ));
     }
     else if( strType == "Bit" )
     {
         QRegExp regExp("^[0-1]*$");
         QRegExpValidator* regVal = new QRegExpValidator( regExp );
         mInputText->setValidator( regVal );
+        mInputText->setPlaceholderText( tr("valid characters: %1").arg( kBinaryChars ));
     }
     else if( strType == "OID" )
     {
         QRegExp regExp("^[0-9.]*$");
         QRegExpValidator* regVal = new QRegExpValidator( regExp );
         mInputText->setValidator( regVal );
+        mInputText->setPlaceholderText( "1.2" );
     }
 }

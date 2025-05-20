@@ -34,6 +34,8 @@ private slots:
     void changeTTLV_Type();
     void changeTTLV_Tag( const QString text );
 
+    void changeValueType();
+
 private:
     void initUI();
     void initialize();
