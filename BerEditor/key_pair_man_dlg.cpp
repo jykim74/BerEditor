@@ -183,6 +183,12 @@ void KeyPairManDlg::initUI()
     mKeyPairTable->setColumnWidth( 1, nWidth * 2/10 );
     mKeyPairTable->setColumnWidth( 2, nWidth * 2/10 );
 
+    mPriPathText->setPlaceholderText( tr("Find a private key") );
+    mPubPathText->setPlaceholderText( tr( "Find a public key" ) );
+    mEncPriPathText->setPlaceholderText( tr( "Find a encrypted private key" ));
+    mPriInfoPathText->setPlaceholderText( tr( "Private key information file path") );
+    mCSRPathText->setPlaceholderText( tr( "CSR file path") );
+
     mOKBtn->hide();
 }
 

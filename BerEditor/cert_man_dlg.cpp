@@ -347,6 +347,10 @@ void CertManDlg::initUI()
     mRCA_CertTable->setColumnWidth( 0, nWidth * 2/10 );
     mRCA_CertTable->setColumnWidth( 1, nWidth * 6/10 );
     mRCA_CertTable->setColumnWidth( 2, nWidth * 2/10 );
+
+    mTLPriKeyPathText->setPlaceholderText( tr("Find a private key") );
+    mTLCertPathText->setPlaceholderText( tr("Find a certificate") );
+    mTLPFXPathText->setPlaceholderText( tr("Find a PFX") );
 }
 
 void CertManDlg::initialize()

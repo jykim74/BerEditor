@@ -23,7 +23,7 @@ public:
     QString getData();
 
 private slots:
-    void runInsert();
+    void runMake();
     void checkConstructed();
     void valueChanged();
     void berChanged();

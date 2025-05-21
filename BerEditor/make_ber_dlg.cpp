@@ -21,7 +21,7 @@ MakeBerDlg::MakeBerDlg(QWidget *parent) :
 {
     setupUi(this);
 
-    connect( mInsertBtn, SIGNAL(clicked()), this, SLOT(runInsert()));
+    connect( mMakeBtn, SIGNAL(clicked()), this, SLOT(runMake()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mConstructedCheck, SIGNAL(clicked()), this, SLOT(checkConstructed()));
 
@@ -36,7 +36,7 @@ MakeBerDlg::MakeBerDlg(QWidget *parent) :
 //    connectSig();
 
     initialize();
-    mInsertBtn->setDefault(true);
+    mMakeBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -46,7 +46,7 @@ MakeBerDlg::MakeBerDlg(QWidget *parent) :
 
 void MakeBerDlg::connectSig()
 {
-    connect( mInsertBtn, SIGNAL(clicked()), this, SLOT(runInsert()));
+    connect( mMakeBtn, SIGNAL(clicked()), this, SLOT(runMake()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mConstructedCheck, SIGNAL(clicked()), this, SLOT(checkConstructed()));
 
@@ -61,7 +61,7 @@ void MakeBerDlg::connectSig()
 
 void MakeBerDlg::disconectSig()
 {
-    disconnect( mInsertBtn, SIGNAL(clicked()), this, SLOT(runInsert()));
+    disconnect( mMakeBtn, SIGNAL(clicked()), this, SLOT(runMake()));
     disconnect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     disconnect( mConstructedCheck, SIGNAL(clicked()), this, SLOT(checkConstructed()));
 
@@ -180,7 +180,7 @@ end :
     if( pHex ) JS_free( pHex );
 }
 
-void MakeBerDlg::runInsert()
+void MakeBerDlg::runMake()
 {
     if( mTagText->text().toInt() <= 0 )
     {
