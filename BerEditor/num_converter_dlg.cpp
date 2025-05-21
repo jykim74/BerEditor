@@ -136,8 +136,9 @@ void NumConverterDlg::dataConversion()
 
     if( pHexOutput )
     {
-        mHexOutputText->setPlainText( pHexOutput );
-        mHexOutputLenText->setText( QString("%1").arg( strlen(pHexOutput)));
+        pTrimOut = JS_UTIL_trimChLeft( '0', pHexOutput );
+        mHexOutputText->setPlainText( pTrimOut );
+        mHexOutputLenText->setText( QString("%1").arg( strlen(pTrimOut)));
     }
     else
     {
