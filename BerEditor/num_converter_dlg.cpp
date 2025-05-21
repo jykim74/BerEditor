@@ -123,11 +123,39 @@ void NumConverterDlg::dataConversion()
 
     JS_BIN_encodeHex( &binSrc, &pHexOutput );
 
-    mDecOutputText->setPlainText( pDecOutput );
-    mHexOutputText->setPlainText( pHexOutput );
+    if( pDecOutput )
+    {
+        mDecOutputText->setPlainText( pDecOutput );
+        mDecOutputLenText->setText( QString("%1").arg( strlen( pDecOutput )));
+    }
+    else
+    {
+        mDecOutputText->clear();
+        mDecOutputLenText->clear();
+    }
 
-    pTrimOut = JS_UTIL_trimChLeft( '0', pBinOutput );
-    mBinOutputText->setPlainText( pTrimOut );
+    if( pHexOutput )
+    {
+        mHexOutputText->setPlainText( pHexOutput );
+        mHexOutputLenText->setText( QString("%1").arg( strlen(pHexOutput)));
+    }
+    else
+    {
+        mHexOutputText->clear();
+        mHexOutputLenText->clear();
+    }
+
+    if( pBinOutput )
+    {
+        pTrimOut = JS_UTIL_trimChLeft( '0', pBinOutput );
+        mBinOutputText->setPlainText( pTrimOut );
+        mBinOutputLenText->setText( QString("%1").arg( strlen(pTrimOut)));
+    }
+    else
+    {
+        mBinOutputText->clear();
+        mBinOutputLenText->clear();
+    }
 
 end :
     if( pBinOutput ) JS_free( pBinOutput );
@@ -172,8 +200,11 @@ void NumConverterDlg::clickInputClear()
 void NumConverterDlg::clickOutputClear()
 {
     mBinOutputText->clear();
+    mBinOutputLenText->clear();
     mDecOutputText->clear();
+    mDecOutputLenText->clear();
     mHexOutputText->clear();
+    mHexOutputLenText->clear();
 }
 
 void NumConverterDlg::clickInputHex()

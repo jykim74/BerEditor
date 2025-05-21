@@ -6237,32 +6237,43 @@ Do you want to delete the file and continue?</source>
         <translation>편집</translation>
     </message>
     <message>
-        <location filename="../find_dlg.cpp" line="97"/>
+        <location filename="../find_dlg.cpp" line="98"/>
         <source>Find TTLV</source>
         <translation>TTLV 찾기</translation>
     </message>
     <message>
-        <location filename="../find_dlg.cpp" line="106"/>
+        <location filename="../find_dlg.cpp" line="107"/>
         <source>Find BER</source>
         <translation>BER 찾기</translation>
     </message>
     <message>
-        <location filename="../find_dlg.cpp" line="359"/>
+        <location filename="../find_dlg.cpp" line="360"/>
         <source>Invalid Number: %1</source>
         <translation>유효하지 않는 번호: %1</translation>
     </message>
     <message>
-        <location filename="../find_dlg.cpp" line="421"/>
-        <location filename="../find_dlg.cpp" line="446"/>
-        <location filename="../find_dlg.cpp" line="462"/>
-        <location filename="../find_dlg.cpp" line="489"/>
-        <location filename="../find_dlg.cpp" line="572"/>
-        <location filename="../find_dlg.cpp" line="596"/>
-        <location filename="../find_dlg.cpp" line="612"/>
-        <location filename="../find_dlg.cpp" line="639"/>
-        <location filename="../find_dlg.cpp" line="679"/>
+        <location filename="../find_dlg.cpp" line="422"/>
+        <location filename="../find_dlg.cpp" line="447"/>
+        <location filename="../find_dlg.cpp" line="463"/>
+        <location filename="../find_dlg.cpp" line="490"/>
+        <location filename="../find_dlg.cpp" line="606"/>
+        <location filename="../find_dlg.cpp" line="630"/>
+        <location filename="../find_dlg.cpp" line="646"/>
+        <location filename="../find_dlg.cpp" line="673"/>
+        <location filename="../find_dlg.cpp" line="713"/>
         <source>There is no node to find</source>
         <translation>찾은 노드가 없습니다</translation>
+    </message>
+    <message>
+        <location filename="../find_dlg.cpp" line="557"/>
+        <location filename="../find_dlg.cpp" line="569"/>
+        <source>valid characters: %1</source>
+        <translation>유효한 문자: %1</translation>
+    </message>
+    <message>
+        <location filename="../find_dlg.cpp" line="562"/>
+        <source>all characters</source>
+        <translation>모든 문자</translation>
     </message>
 </context>
 <context>
