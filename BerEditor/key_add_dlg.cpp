@@ -175,7 +175,7 @@ void KeyAddDlg::initUI()
 
 void KeyAddDlg::initialize()
 {
-
+    mNameText->setPlaceholderText( tr("Enter a name") );
 }
 
 void KeyAddDlg::clickClearAll()

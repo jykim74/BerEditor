@@ -7369,6 +7369,7 @@ Do you want to delete the file and continue?</source>
         <translation>전체 지우기</translation>
     </message>
     <message>
+        <location filename="../key_add_dlg.cpp" line="178"/>
         <location filename="../key_add_dlg.cpp" line="204"/>
         <source>Enter a name</source>
         <translation>이름을 입력하세요</translation>
