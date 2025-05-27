@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>524</width>
-    <height>513</height>
+    <height>515</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -311,7 +311,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QTableWidget" name="mDataTable"/>
+        <widget class="QTableWidget" name="mDataTable">
+         <attribute name="horizontalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -328,7 +332,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QTableWidget" name="mCertTable"/>
+        <widget class="QTableWidget" name="mCertTable">
+         <attribute name="horizontalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -345,7 +353,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QTableWidget" name="mCRLTable"/>
+        <widget class="QTableWidget" name="mCRLTable">
+         <attribute name="horizontalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -362,7 +374,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QTableWidget" name="mSignerTable"/>
+        <widget class="QTableWidget" name="mSignerTable">
+         <attribute name="horizontalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -379,7 +395,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QTableWidget" name="mRecipTable"/>
+        <widget class="QTableWidget" name="mRecipTable">
+         <attribute name="horizontalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
+        </widget>
        </item>
       </layout>
      </widget>

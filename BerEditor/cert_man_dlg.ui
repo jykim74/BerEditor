@@ -51,7 +51,7 @@
    <item>
     <widget class="QTabWidget" name="mTabWidget">
      <property name="currentIndex">
-      <number>5</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mEETab">
       <attribute name="title">
@@ -137,6 +137,9 @@
            <height>160</height>
           </size>
          </property>
+         <attribute name="horizontalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
         </widget>
        </item>
        <item>
@@ -365,7 +368,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QTableWidget" name="mOther_CertTable"/>
+        <widget class="QTableWidget" name="mOther_CertTable">
+         <attribute name="horizontalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
+        </widget>
        </item>
        <item>
         <widget class="QGroupBox" name="mOther_ManGroup">
@@ -528,6 +535,9 @@
          <property name="horizontalScrollBarPolicy">
           <enum>Qt::ScrollBarAsNeeded</enum>
          </property>
+         <attribute name="horizontalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
         </widget>
        </item>
        <item>
@@ -673,7 +683,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QTableWidget" name="mCRL_Table"/>
+        <widget class="QTableWidget" name="mCRL_Table">
+         <attribute name="horizontalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
+        </widget>
        </item>
        <item>
         <widget class="QGroupBox" name="mCRL_ManGroup">
@@ -814,7 +828,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QTableWidget" name="mRCA_CertTable"/>
+        <widget class="QTableWidget" name="mRCA_CertTable">
+         <attribute name="horizontalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
+        </widget>
        </item>
        <item>
         <widget class="QGroupBox" name="mRCA_ManGroup">

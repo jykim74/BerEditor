@@ -32,6 +32,9 @@
            <height>160</height>
           </size>
          </property>
+         <attribute name="horizontalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
         </widget>
        </item>
        <item>
@@ -92,7 +95,11 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QTableWidget" name="mRevokeListTable"/>
+        <widget class="QTableWidget" name="mRevokeListTable">
+         <attribute name="horizontalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
+        </widget>
        </item>
        <item>
         <widget class="QTableWidget" name="mRevokeDetailTable">
@@ -102,6 +109,9 @@
            <height>100</height>
           </size>
          </property>
+         <attribute name="horizontalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
         </widget>
        </item>
        <item>
