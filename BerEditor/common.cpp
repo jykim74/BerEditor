@@ -904,7 +904,7 @@ static int _getCRLNum( const BIN *pBinExt, bool bShow, QString& strVal )
 
     if( pCRLNum ) {
         if(bShow)
-            strVal = QString( "CRL Number=%1" ).arg( pCRLNum );
+            strVal = QString( "CRL Number=0x%1" ).arg( pCRLNum );
         else
             strVal = pCRLNum;
 
