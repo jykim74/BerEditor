@@ -6,9 +6,11 @@
 #include <QMenu>
 #include <QRegExpValidator>
 #include <QValidator>
+#include <QClipboard>
 
 #include "js_pki.h"
 #include "js_sss.h"
+#include "js_bn.h"
 #include "sss_dlg.h"
 #include "common.h"
 #include "mainwindow.h"
@@ -34,6 +36,7 @@ SSSDlg::SSSDlg(QWidget *parent) :
     connect( mClearResultBtn, SIGNAL(clicked()), this, SLOT(clearShareTable()));
     connect( mSplitBtn, SIGNAL(clicked()), this, SLOT(clickSplit()));
     connect( mJoinBtn, SIGNAL(clicked()), this, SLOT(clickJoin()));
+    connect( mIsPrimeBtn, SIGNAL(clicked()), this, SLOT(clickIsPrime()));
 
     connect( mSrcTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(srcChanged()));
     connect( mSrcText, SIGNAL(textChanged(const QString&)), this, SLOT(srcChanged()));
@@ -77,10 +80,11 @@ void SSSDlg::initialize()
     mSharesText->setText( "5" );
     mThresholdText->setText( "3" );
 
-    QStringList headerList = { tr( "Seq"), tr( "Value") };
+    QStringList headerList = { tr( "Num"), tr( "X||Y Value") };
 
     mSrcTypeCombo->addItems( dataTypes );
     mJoinedTypeCombo->addItems( dataTypes );
+    mJoinedTypeCombo->setCurrentIndex(1);
 
     mShareTable->horizontalHeader()->setStretchLastSection(true);
     QString style = "QHeaderView::section {background-color:#404040;color:#FFFFFF;}";
@@ -112,11 +116,17 @@ void SSSDlg::srcChanged()
     int nInputType = 0;
 
     if( mSrcTypeCombo->currentText() == "String" )
+    {
         nInputType = DATA_STRING;
+    }
     else if( mSrcTypeCombo->currentText() == "Hex" )
+    {
         nInputType = DATA_HEX;
+    }
     else if( mSrcTypeCombo->currentText() == "Base64" )
+    {
         nInputType = DATA_BASE64;
+    }
     else
         nInputType = DATA_HEX;
 
@@ -207,24 +217,16 @@ void SSSDlg::clickSplit()
     berApplet->logLine();
     berApplet->log( "-- Split Key" );
     berApplet->logLine2();
-    berApplet->log( QString( "Prime Value : %1").arg( getHexString( &binPrime )));
+    berApplet->log( QString( "Prime Value     : %1").arg( getHexString( &binPrime )));
 
-    if( binSrc.nLen < 8 )
+    if( JS_BN_cmp( &binPrime, &binSrc ) <= 0 )
     {
-        berApplet->warningBox( tr( "Input value must be at least 8 bytes"), this );
-        mSrcText->setFocus();
-        goto end;
-    }
-
-    if( binSrc.nLen > binPrime.nLen )
-    {
-        berApplet->warningBox( tr( "Prime value ​​must be longer than or equal to the source value" ), this );
+        berApplet->warningBox( tr( "Prime value ​​must be greater to the source value" ), this );
         mPrimeText->setFocus();
         goto end;
     }
 
-//    ret = JS_PKI_splitKey( nShares, nThreshold, &binSrc, &pShareList );
-    ret = JS_PKI_splitKey2( nShares, nThreshold, &binPrime, &binSrc, &pShareList );
+    ret = JS_PKI_splitKey( nShares, nThreshold, &binPrime, &binSrc, &pShareList );
     if( ret != 0 )
     {
         berApplet->warningBox( tr( "fail to split key: %1").arg(ret), this );
@@ -242,7 +244,7 @@ void SSSDlg::clickSplit()
         mShareTable->insertRow(i);
 
         mShareTable->setRowHeight( i, 10 );
-        mShareTable->setItem( i, 0, new QTableWidgetItem( QString( "%1").arg(i)));
+        mShareTable->setItem( i, 0, new QTableWidgetItem( QString( "%1").arg(i+1)));
         mShareTable->setItem( i, 1, new QTableWidgetItem( strVal ));
 
         berApplet->log( QString( "Split Key Value : %1").arg( getHexString(&pCurList->Bin)));
@@ -290,7 +292,7 @@ void SSSDlg::clickJoin()
     berApplet->logLine2();
 
     JS_BIN_decodeHex( strPrime.toStdString().c_str(), &binPrime );
-    berApplet->log( QString( "Prime Value : %1").arg( getHexString( &binPrime )));
+    berApplet->log( QString( "Prime Value      : %1").arg( getHexString( &binPrime )));
 
     for( int i = 0; i < nRow; i++ )
     {
@@ -310,7 +312,7 @@ void SSSDlg::clickJoin()
     berApplet->logLine();
 
 //    ret = JS_PKI_joinKey( nRow, pShareList, &binKey );
-    ret = JS_PKI_joinKey2( nRow, &binPrime, pShareList, &binKey );
+    ret = JS_PKI_joinKey( nRow, &binPrime, pShareList, &binKey );
 
     if( ret != 0 )
     {
@@ -328,7 +330,7 @@ void SSSDlg::clickJoin()
     else if( mJoinedTypeCombo->currentText() == "Base64" )
         JS_BIN_encodeBase64( &binKey, &pKeyVal );
 
-    berApplet->log( QString( "Combined Key : %1").arg( getHexString( &binKey )));
+    berApplet->log( QString( "Combined Key     : %1").arg( getHexString( &binKey )));
     berApplet->logLine();
 
     mJoinedText->setText( pKeyVal );
@@ -370,7 +372,12 @@ void SSSDlg::slotShareList(QPoint pos)
     QAction *delAct = new QAction( tr("Delete"), this );
     connect( delAct, SIGNAL(triggered()), this, SLOT(delShare()));
 
+    QAction *copyAct = new QAction( tr( "Copy" ), this );
+    connect( copyAct, SIGNAL(triggered(bool)), this, SLOT(copyShare()));
+
     menu->addAction( delAct );
+    menu->addAction( copyAct );
+
     menu->popup( mShareTable->viewport()->mapToGlobal(pos));
 }
 
@@ -378,6 +385,16 @@ void SSSDlg::delShare()
 {
     QModelIndex idx = mShareTable->currentIndex();
     mShareTable->removeRow( idx.row() );
+}
+
+void SSSDlg::copyShare()
+{
+    QModelIndex idx = mShareTable->currentIndex();
+    QTableWidgetItem* item = mShareTable->item( idx.row(), 1 );
+    if( item == NULL ) return;
+
+    QClipboard *clipboard = QGuiApplication::clipboard();
+    clipboard->setText( item->text() );
 }
 
 void SSSDlg::clearShareTable()
@@ -410,4 +427,36 @@ void SSSDlg::clearPrime()
 void SSSDlg::clearJoined()
 {
     mJoinedText->clear();
+}
+
+void SSSDlg::clickIsPrime()
+{
+    int ret = 0;
+    BIN binVal = {0,0};
+    QString strPrime = mPrimeText->text();
+    QString strVal;
+
+    if( strPrime.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Insert a prime value" ), this );
+        mPrimeText->setFocus();
+        return;
+    }
+
+    if( strPrime.length() % 2 )
+    {
+        strVal = "0";
+    }
+
+    strVal += strPrime;
+    JS_BIN_decodeHex( strVal.toStdString().c_str(), &binVal );
+
+    ret = JS_BN_isPrime( &binVal );
+
+    if( ret == 1 )
+        berApplet->messageLog( tr( "The value is prime"), this );
+    else
+        berApplet->warnLog( tr( "The value is not prime" ), this );
+
+    JS_BIN_reset( &binVal );
 }

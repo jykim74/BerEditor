@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>509</width>
-    <height>468</height>
+    <width>518</width>
+    <height>542</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -49,6 +49,9 @@
             <height>16777215</height>
            </size>
           </property>
+          <property name="maxLength">
+           <number>2</number>
+          </property>
          </widget>
         </item>
         <item row="0" column="2">
@@ -72,6 +75,9 @@
             <width>40</width>
             <height>16777215</height>
            </size>
+          </property>
+          <property name="maxLength">
+           <number>2</number>
           </property>
          </widget>
         </item>
@@ -181,6 +187,13 @@
           </property>
           <property name="readOnly">
            <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QPushButton" name="mIsPrimeBtn">
+          <property name="text">
+           <string>IsPrime</string>
           </property>
          </widget>
         </item>
@@ -329,9 +342,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="mShareText"/>
-     </item>
      <item row="0" column="2">
       <widget class="QLineEdit" name="mShareLenText">
        <property name="minimumSize">
@@ -378,15 +388,55 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="mShareText"/>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mAddBtn">
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout_9">
+    <widget class="QTableWidget" name="mShareTable">
+     <property name="minimumSize">
+      <size>
+       <width>500</width>
+       <height>160</height>
+      </size>
+     </property>
+     <property name="contextMenuPolicy">
+      <enum>Qt::CustomContextMenu</enum>
+     </property>
+     <attribute name="horizontalHeaderHighlightSections">
+      <bool>false</bool>
+     </attribute>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_8">
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="3">
-      <spacer name="horizontalSpacer_7">
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mClearResultBtn">
+       <property name="text">
+        <string>Clear</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mJoinBtn">
+       <property name="text">
+        <string>Join</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -398,44 +448,7 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="mClearResultBtn">
-       <property name="text">
-        <string>Clear</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mAddBtn">
-       <property name="text">
-        <string>Add</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mJoinBtn">
-       <property name="text">
-        <string>Join</string>
-       </property>
-      </widget>
-     </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QTableWidget" name="mShareTable">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>100</height>
-      </size>
-     </property>
-     <property name="contextMenuPolicy">
-      <enum>Qt::CustomContextMenu</enum>
-     </property>
-     <attribute name="horizontalHeaderHighlightSections">
-      <bool>false</bool>
-     </attribute>
-    </widget>
    </item>
    <item>
     <widget class="Line" name="line_4">
@@ -639,9 +652,6 @@
   <tabstop>mSrcLenText</tabstop>
   <tabstop>mShareText</tabstop>
   <tabstop>mShareLenText</tabstop>
-  <tabstop>mClearResultBtn</tabstop>
-  <tabstop>mAddBtn</tabstop>
-  <tabstop>mJoinBtn</tabstop>
   <tabstop>mShareTable</tabstop>
   <tabstop>mJoinedTypeCombo</tabstop>
   <tabstop>mJoinedClearBtn</tabstop>

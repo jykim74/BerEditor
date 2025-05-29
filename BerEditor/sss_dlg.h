@@ -34,12 +34,15 @@ private slots:
 
     void slotShareList(QPoint pos);
     void delShare();
+    void copyShare();
 
     void clearShareTable();
     void clickClearDataAll();
     void clearSrc();
     void clearPrime();
     void clearJoined();
+
+    void clickIsPrime();
 
 private:
     void initialize();
