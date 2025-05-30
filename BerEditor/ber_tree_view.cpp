@@ -171,7 +171,7 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
     berApplet->info( QString( "Class       : %1 - 0b%2\n").arg( pItem->GetClassString(), nFieldWidth -2).arg( sClassBit ));
     berApplet->info( QString( "ID          : 0x%1 - 0b%2\n").arg( getHexString( &cID, 1), nFieldWidth ).arg( sIDBit ));
     berApplet->info( QString( "P/C         : %1 - 0b%2\n").arg(strPC, nFieldWidth - 2).arg( sPCBit ));
-    berApplet->info( QString( "Tag         : %1 - 0b%2\n").arg( pItem->GetTagString(), nFieldWidth - 2 ).arg( sTagBit ));
+    berApplet->info( QString( "Tag         : %1 - 0b%2 (0x%3)\n").arg( pItem->GetTagString(), nFieldWidth - 2 ).arg( sTagBit ).arg( pItem->tag_, 2, 16, QLatin1Char('0')));
     berApplet->info( QString( "Length      : 0x%1 - %2 Bytes\n" ).arg( getHexString(sLen, nLenSize), nFieldWidth ).arg(pItem->GetLength()));
     berApplet->info( QString( "Offset      : 0x%1 - %2\n" ).arg( strOffset, nFieldWidth ).arg(pItem->GetOffset()));
 
