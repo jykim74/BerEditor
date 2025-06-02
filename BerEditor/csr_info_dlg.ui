@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>471</width>
-    <height>352</height>
+    <width>418</width>
+    <height>392</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,7 +26,7 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>120</height>
+       <height>160</height>
       </size>
      </property>
      <attribute name="horizontalHeaderHighlightSections">
@@ -43,6 +43,12 @@
    </item>
    <item>
     <widget class="QPlainTextEdit" name="mDetailText">
+     <property name="minimumSize">
+      <size>
+       <width>400</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>

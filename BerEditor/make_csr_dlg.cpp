@@ -19,6 +19,13 @@ MakeCSRDlg::MakeCSRDlg(QWidget *parent) :
     connect( mCancelBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mOKBtn, SIGNAL(clicked()), this, SLOT(clickOK()));
     connect( mClearBtn, SIGNAL(clicked()), this, SLOT(clickClear()));
+    connect( mEMAILADDRESSText, SIGNAL(textChanged(QString)), this, SLOT(changeDN()));
+    connect( mCNText, SIGNAL(textChanged(QString)), this, SLOT(changeDN()));
+    connect( mOText, SIGNAL(textChanged(QString)), this, SLOT(changeDN()));
+    connect( mOUText, SIGNAL(textChanged(QString)), this, SLOT(changeDN()));
+    connect( mLText, SIGNAL(textChanged(QString)), this, SLOT(changeDN()));
+    connect( mSTText, SIGNAL(textChanged(QString)), this, SLOT(changeDN()));
+    connect( mCText, SIGNAL(textChanged(QString)), this, SLOT(changeDN()));
 
     initialize();
     mOKBtn->setDefault(true);
@@ -125,6 +132,12 @@ void MakeCSRDlg::clickClear()
     mLText->clear();
     mSTText->clear();
     mCText->clear();
+}
+
+void MakeCSRDlg::changeDN()
+{
+    QString strDN = getDN();
+    mDNText->setText( strDN );
 }
 
 void MakeCSRDlg::clickOK()

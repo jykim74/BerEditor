@@ -26,6 +26,7 @@ public:
 private slots:
     void clickOK();
     void clickClear();
+    void changeDN();
 
 private:
     void initialize();
