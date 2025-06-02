@@ -54,19 +54,28 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="3" column="0">
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="mEMAILADDRESSText"/>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLineEdit" name="mOUText"/>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>State/Province (ST)</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
       <widget class="QLabel" name="label_5">
        <property name="text">
         <string>Organization Unit (OU)</string>
        </property>
       </widget>
      </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_6">
-       <property name="text">
-        <string>Locality (L)</string>
-       </property>
-      </widget>
+     <item row="5" column="1">
+      <widget class="QLineEdit" name="mLText"/>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_3">
@@ -75,7 +84,44 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>Locality (L)</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="QLineEdit" name="mCText"/>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="mOText"/>
+     </item>
+     <item row="7" column="0">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>Country or Region (C)</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Organization (O)</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QLineEdit" name="mSTText"/>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Common Name (CN)</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
       <widget class="QLineEdit" name="mCNText">
        <property name="minimumSize">
         <size>
@@ -84,52 +130,6 @@
         </size>
        </property>
       </widget>
-     </item>
-     <item row="6" column="0">
-      <widget class="QLabel" name="label_8">
-       <property name="text">
-        <string>Country or Region (C)</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="1">
-      <widget class="QLineEdit" name="mSTText"/>
-     </item>
-     <item row="2" column="1">
-      <widget class="QLineEdit" name="mOText"/>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="mEMAILADDRESSText"/>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>Organization (O)</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QLineEdit" name="mLText"/>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Common Name (CN)</string>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="1">
-      <widget class="QLineEdit" name="mCText"/>
-     </item>
-     <item row="5" column="0">
-      <widget class="QLabel" name="label_7">
-       <property name="text">
-        <string>State/Province (ST)</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QLineEdit" name="mOUText"/>
      </item>
     </layout>
    </item>
@@ -249,7 +249,6 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>mCNText</tabstop>
   <tabstop>mEMAILADDRESSText</tabstop>
   <tabstop>mOText</tabstop>
   <tabstop>mOUText</tabstop>
