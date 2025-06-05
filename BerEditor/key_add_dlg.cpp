@@ -151,6 +151,8 @@ void KeyAddDlg::setReadOnly()
     mRandKeyBtn->setEnabled(false);
 
     mNameText->setReadOnly(true);
+    mNameText->setStyleSheet(kReadOnlyStyle);
+
     mKeyText->setReadOnly(true);
     mKeyText->setStyleSheet(kReadOnlyStyle);
     mIVText->setReadOnly(true);

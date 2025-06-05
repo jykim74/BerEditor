@@ -716,60 +716,60 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">선택한 노드가 없습니다.</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="243"/>
-        <location filename="../ber_tree_view.cpp" line="612"/>
-        <location filename="../ber_tree_view.cpp" line="700"/>
-        <location filename="../ber_tree_view.cpp" line="722"/>
+        <location filename="../ber_tree_view.cpp" line="247"/>
+        <location filename="../ber_tree_view.cpp" line="616"/>
+        <location filename="../ber_tree_view.cpp" line="704"/>
+        <location filename="../ber_tree_view.cpp" line="726"/>
         <source>There are no items selected.</source>
         <translation>선택한 아이템이 없습니다</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="652"/>
+        <location filename="../ber_tree_view.cpp" line="656"/>
         <source>Copy Information</source>
         <translation>정보 복사</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="653"/>
+        <location filename="../ber_tree_view.cpp" line="657"/>
         <source>Copy as hex</source>
         <translation>Hex로 복사</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="654"/>
+        <location filename="../ber_tree_view.cpp" line="658"/>
         <source>Copy as base64</source>
         <translation>Base64로 복사</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="655"/>
+        <location filename="../ber_tree_view.cpp" line="659"/>
         <source>Save node</source>
         <translation>노드 저장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="656"/>
+        <location filename="../ber_tree_view.cpp" line="660"/>
         <source>Save node value</source>
         <translation>노드 값 저장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="674"/>
+        <location filename="../ber_tree_view.cpp" line="678"/>
         <source>Edit value</source>
         <translation>값 수정</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="688"/>
+        <location filename="../ber_tree_view.cpp" line="692"/>
         <source>Expand value</source>
         <translation>확장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="824"/>
+        <location filename="../ber_tree_view.cpp" line="828"/>
         <source>There is no item to select</source>
         <translation>선택한 아이템이 없습니다.</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="862"/>
+        <location filename="../ber_tree_view.cpp" line="866"/>
         <source>Are you sure you want to add it?</source>
         <translation>정말로 추가 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="678"/>
+        <location filename="../ber_tree_view.cpp" line="682"/>
         <source>Insert BER</source>
         <translation>BER 추가</translation>
     </message>
@@ -2882,22 +2882,22 @@ mailto : jykim74@gmail.com</translation>
         <translation>상세 값</translation>
     </message>
     <message>
-        <location filename="../csr_info_dlg.ui" line="108"/>
+        <location filename="../csr_info_dlg.ui" line="114"/>
         <source>Verify CSR</source>
         <translation>CSR 검증</translation>
     </message>
     <message>
-        <location filename="../csr_info_dlg.ui" line="115"/>
+        <location filename="../csr_info_dlg.ui" line="121"/>
         <source>Decode CSR</source>
         <translation>CSR 디코딩</translation>
     </message>
     <message>
-        <location filename="../csr_info_dlg.ui" line="165"/>
+        <location filename="../csr_info_dlg.ui" line="171"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../csr_info_dlg.ui" line="172"/>
+        <location filename="../csr_info_dlg.ui" line="178"/>
         <source>Save</source>
         <translation>저장</translation>
     </message>
@@ -7204,7 +7204,7 @@ Do you want to delete the file and continue?</source>
         <translation>LDAP 서버로 부터 데이타 가져오기 실패</translation>
     </message>
     <message>
-        <location filename="../get_uri_dlg.cpp" line="230"/>
+        <location filename="../get_uri_dlg.cpp" line="232"/>
         <source>ex) http://i.pki.goog/we2.crt</source>
         <translation>예제) http://i.pki.goog/we2.crt</translation>
     </message>
@@ -7369,18 +7369,18 @@ Do you want to delete the file and continue?</source>
         <translation>전체 지우기</translation>
     </message>
     <message>
-        <location filename="../key_add_dlg.cpp" line="178"/>
-        <location filename="../key_add_dlg.cpp" line="204"/>
+        <location filename="../key_add_dlg.cpp" line="180"/>
+        <location filename="../key_add_dlg.cpp" line="206"/>
         <source>Enter a name</source>
         <translation>이름을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../key_add_dlg.cpp" line="211"/>
+        <location filename="../key_add_dlg.cpp" line="213"/>
         <source>Enter a key</source>
         <translation>키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../key_add_dlg.cpp" line="221"/>
+        <location filename="../key_add_dlg.cpp" line="223"/>
         <source>Key Length is not %1 bytes</source>
         <translation>키 길이가 %1 바이트가 아닙니다</translation>
     </message>
@@ -7460,9 +7460,8 @@ Do you want to delete the file and continue?</source>
         <translation>A DH 개인키</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="475"/>
         <source>Parameter Length</source>
-        <translation>파라미터 길이</translation>
+        <translation type="vanished">파라미터 길이</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.ui" line="563"/>
@@ -7480,6 +7479,11 @@ Do you want to delete the file and continue?</source>
         <location filename="../key_agree_dlg.ui" line="1021"/>
         <source>GenPriKey</source>
         <translation>개인키 생성</translation>
+    </message>
+    <message>
+        <location filename="../key_agree_dlg.ui" line="475"/>
+        <source>Parameter Length (Bits)</source>
+        <translation>파라미터 길이 (비트)</translation>
     </message>
     <message>
         <location filename="../key_agree_dlg.ui" line="979"/>
@@ -7718,50 +7722,66 @@ Do you want to delete the file and continue?</source>
         <translation>16진수 값</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="595"/>
-        <location filename="../key_agree_dlg.cpp" line="620"/>
+        <location filename="../key_agree_dlg.cpp" line="429"/>
+        <location filename="../key_agree_dlg.cpp" line="482"/>
+        <source>Parameter value is required</source>
+        <translation>파라미터 값이 요구 됩니다</translation>
+    </message>
+    <message>
+        <location filename="../key_agree_dlg.cpp" line="609"/>
+        <location filename="../key_agree_dlg.cpp" line="634"/>
         <source>The public key is correct</source>
         <translation>공개키가 맞습니다</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="597"/>
-        <location filename="../key_agree_dlg.cpp" line="622"/>
+        <location filename="../key_agree_dlg.cpp" line="611"/>
+        <location filename="../key_agree_dlg.cpp" line="636"/>
         <source>The public key is incorrect</source>
         <translation>공개키가 틀립니다</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="648"/>
-        <location filename="../key_agree_dlg.cpp" line="677"/>
+        <location filename="../key_agree_dlg.cpp" line="662"/>
+        <location filename="../key_agree_dlg.cpp" line="691"/>
         <source>The key pair is correct</source>
         <translation>키 쌍이 맞습니다</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="650"/>
-        <location filename="../key_agree_dlg.cpp" line="679"/>
+        <location filename="../key_agree_dlg.cpp" line="664"/>
+        <location filename="../key_agree_dlg.cpp" line="693"/>
         <source>The key pair is incorrect</source>
         <translation>키 쌍이 틀립니다</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="753"/>
-        <location filename="../key_agree_dlg.cpp" line="797"/>
-        <location filename="../key_agree_dlg.cpp" line="843"/>
-        <location filename="../key_agree_dlg.cpp" line="927"/>
-        <location filename="../key_agree_dlg.cpp" line="971"/>
-        <location filename="../key_agree_dlg.cpp" line="1017"/>
+        <location filename="../key_agree_dlg.cpp" line="729"/>
+        <source>A private key value is required</source>
+        <translation>A 개인키 값이 요구 됩니다</translation>
+    </message>
+    <message>
+        <location filename="../key_agree_dlg.cpp" line="773"/>
+        <location filename="../key_agree_dlg.cpp" line="817"/>
+        <location filename="../key_agree_dlg.cpp" line="863"/>
+        <location filename="../key_agree_dlg.cpp" line="954"/>
+        <location filename="../key_agree_dlg.cpp" line="998"/>
+        <location filename="../key_agree_dlg.cpp" line="1044"/>
         <source>Invalid PrivateKey Type: %1</source>
         <translation>잘못된 개인키 타입입니다:%1</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="783"/>
-        <location filename="../key_agree_dlg.cpp" line="957"/>
+        <location filename="../key_agree_dlg.cpp" line="803"/>
+        <location filename="../key_agree_dlg.cpp" line="984"/>
         <source>Select a certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="828"/>
-        <location filename="../key_agree_dlg.cpp" line="1002"/>
+        <location filename="../key_agree_dlg.cpp" line="848"/>
+        <location filename="../key_agree_dlg.cpp" line="1029"/>
         <source>Select keypair</source>
         <translation>키 쌍을 선택하세요</translation>
+    </message>
+    <message>
+        <location filename="../key_agree_dlg.cpp" line="910"/>
+        <source>B private key value is required</source>
+        <translation>B 개인키 값이 요구 됩니다</translation>
     </message>
 </context>
 <context>
@@ -10847,67 +10867,67 @@ Do you want to delete the file and continue?</source>
         <translation>CSR 정보</translation>
     </message>
     <message>
-        <location filename="../make_csr_dlg.ui" line="60"/>
+        <location filename="../make_csr_dlg.ui" line="73"/>
         <source>Organization Unit (OU)</source>
         <translation>Organization Unit (OU)</translation>
     </message>
     <message>
-        <location filename="../make_csr_dlg.ui" line="67"/>
+        <location filename="../make_csr_dlg.ui" line="90"/>
         <source>Locality (L)</source>
         <translation>Locality (L)</translation>
     </message>
     <message>
-        <location filename="../make_csr_dlg.ui" line="74"/>
+        <location filename="../make_csr_dlg.ui" line="83"/>
         <source>Email (EMAILADDRESS)</source>
         <translation>Email (EMAILADDRESS)</translation>
     </message>
     <message>
-        <location filename="../make_csr_dlg.ui" line="91"/>
+        <location filename="../make_csr_dlg.ui" line="103"/>
         <source>Country or Region (C)</source>
         <translation>Country or Region (C)</translation>
     </message>
     <message>
-        <location filename="../make_csr_dlg.ui" line="107"/>
+        <location filename="../make_csr_dlg.ui" line="110"/>
         <source>Organization (O)</source>
         <translation>Organization (O)</translation>
     </message>
     <message>
-        <location filename="../make_csr_dlg.ui" line="117"/>
+        <location filename="../make_csr_dlg.ui" line="120"/>
         <source>Common Name (CN)</source>
         <translation>Common Name (CN)</translation>
     </message>
     <message>
-        <location filename="../make_csr_dlg.ui" line="127"/>
+        <location filename="../make_csr_dlg.ui" line="66"/>
         <source>State/Province (ST)</source>
         <translation>State/Province (ST)</translation>
     </message>
     <message>
-        <location filename="../make_csr_dlg.ui" line="148"/>
+        <location filename="../make_csr_dlg.ui" line="182"/>
         <source>Signature Hash</source>
         <translation>서명 해시</translation>
     </message>
     <message>
-        <location filename="../make_csr_dlg.ui" line="182"/>
+        <location filename="../make_csr_dlg.ui" line="216"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
     <message>
-        <location filename="../make_csr_dlg.ui" line="189"/>
+        <location filename="../make_csr_dlg.ui" line="223"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
     <message>
-        <location filename="../make_csr_dlg.ui" line="196"/>
+        <location filename="../make_csr_dlg.ui" line="230"/>
         <source>Clear</source>
         <translation>지우기</translation>
     </message>
     <message>
-        <location filename="../make_csr_dlg.cpp" line="138"/>
+        <location filename="../make_csr_dlg.cpp" line="151"/>
         <source>Insert DN</source>
         <translation>DN 을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../make_csr_dlg.cpp" line="154"/>
+        <location filename="../make_csr_dlg.cpp" line="167"/>
         <source>fail to make CSR: %1</source>
         <translation>CSR 만들기 실패: %1</translation>
     </message>

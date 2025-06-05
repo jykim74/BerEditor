@@ -424,6 +424,13 @@ void KeyAgreeDlg::genADHKey()
     BIN binPri = {0,0};
     BIN binPub = {0,0};
 
+    if( mPText->toPlainText().length() < 1 )
+    {
+        berApplet->warningBox( tr( "Parameter value is required" ), this );
+        mPText->setFocus();
+        return;
+    }
+
     JS_BIN_decodeHex( mPText->toPlainText().toStdString().c_str(), &binP );
     JS_BIN_decodeHex( mGCombo->currentText().toStdString().c_str(), &binG );
 
@@ -469,6 +476,13 @@ void KeyAgreeDlg::genBDHKey()
     BIN binG = {0,0};
     BIN binPri = {0,0};
     BIN binPub = {0,0};
+
+    if( mPText->toPlainText().length() < 1 )
+    {
+        berApplet->warningBox( tr( "Parameter value is required" ), this );
+        mPText->setFocus();
+        return;
+    }
 
     JS_BIN_decodeHex( mPText->toPlainText().toStdString().c_str(), &binP );
     JS_BIN_decodeHex( mGCombo->currentText().toStdString().c_str(), &binG );
@@ -710,6 +724,12 @@ void KeyAgreeDlg::genAECDHPubKey()
     BIN binAPubY = {0,0};
     QString strPub;
 
+    if( mAECDHPriKeyText->text().length() < 1 )
+    {
+        berApplet->warningBox( tr( "A private key value is required" ), this );
+        mAECDHPriKeyText->setFocus();
+        return;
+    }
 
     JS_BIN_decodeHex( mAECDHPriKeyText->text().toStdString().c_str(), &binAPri );
     JS_PKI_genECPubKey( mECDHParamCombo->currentText().toStdString().c_str(), &binAPri, &binAPubX, &binAPubY );
@@ -884,6 +904,13 @@ void KeyAgreeDlg::genBECDHPubKey()
     BIN binPubY = {0,0};
 
     QString strPub;
+
+    if( mBECDHPriKeyText->text().length() < 1 )
+    {
+        berApplet->warningBox( tr( "B private key value is required" ), this );
+        mBECDHPriKeyText->setFocus();
+        return;
+    }
 
     JS_BIN_decodeHex( mBECDHPriKeyText->text().toStdString().c_str(), &binPri );
     JS_PKI_genECPubKey( mECDHParamCombo->currentText().toStdString().c_str(), &binPri, &binPubX, &binPubY );
