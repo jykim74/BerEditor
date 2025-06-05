@@ -168,7 +168,7 @@ void SettingsDlg::findOIDConfig()
 void SettingsDlg::findCertPath()
 {
     QString strPath = mCertPathText->text();
-    QString folderName = berApplet->findFolder( this, strPath );
+    QString folderName = berApplet->findFolder( this, strPath, false );
 
     if( folderName.length() > 0 )
     {

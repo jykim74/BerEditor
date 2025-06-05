@@ -1440,7 +1440,7 @@ void MainWindow::numConverter()
 void MainWindow::open()
 {
     QString strPath = berApplet->getBERPath();
-    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_BER, strPath );
+    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_BER, strPath, false );
 
     if( !fileName.isEmpty() )
     {
