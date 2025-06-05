@@ -85,6 +85,7 @@ void KeyManDlg::initialize()
     mHashCombo->addItems( kHashList );
     mHashCombo->setCurrentText( setMgr->defaultHash() );
 
+
     mSecretTypeCombo->addItems( dataTypes );
     mInfoTypeCombo->addItems( dataTypes );
     mSaltTypeCombo->addItems( dataTypes );
@@ -309,6 +310,16 @@ void KeyManDlg::clickWrap()
         nPad = 0;
 
     getBINFromString( &binInput, mSrcTypeCombo->currentText(), strInput );
+    if( nPad == 0 )
+    {
+        if( binInput.nLen < 16 )
+        {
+            berApplet->warningBox( tr("Must be 16 bytes or more in KW mode"), this );
+            mInfoText->setFocus();
+            goto end;
+        }
+    }
+
     getBINFromString( &binWrappingKey, mKEKTypeCombo->currentText(), strWrappingKey );
 
     berApplet->logLine();

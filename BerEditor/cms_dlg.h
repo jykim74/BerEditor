@@ -71,9 +71,6 @@ private:
     void initialize();
     int readSignPrivateKey( BIN *pPriKey );
     int readKMPrivateKey( BIN *pPriKey );
-
-    QButtonGroup* group_;
-
 };
 
 #endif // CMS_DLG_H

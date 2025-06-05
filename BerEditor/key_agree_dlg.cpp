@@ -461,6 +461,10 @@ void KeyAgreeDlg::genADHKey()
         mAPublicKeyText->setText( getHexString( binPub.pVal, binPub.nLen ));
         berApplet->log( QString( "A PublicKey  : %1").arg( getHexString( binPub.pVal, binPub.nLen) ));
     }
+    else
+    {
+        berApplet->elog( QString( "Key generation failed : %1" ).arg(ret));
+    }
 
     JS_BIN_reset( &binP );
     JS_BIN_reset( &binG );
@@ -513,6 +517,10 @@ void KeyAgreeDlg::genBDHKey()
     {
         mBPublicKeyText->setText( getHexString( binPub.pVal, binPub.nLen ));
         berApplet->log( QString( "B PublicKey  : %1").arg( getHexString( binPub.pVal, binPub.nLen) ));
+    }
+    else
+    {
+        berApplet->elog( QString( "Key generation failed : %1" ).arg(ret));
     }
 
     JS_BIN_reset( &binP );
