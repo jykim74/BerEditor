@@ -311,9 +311,8 @@ void GenHashDlg::clickClearDataAll()
 void GenHashDlg::clickFindSrcFile()
 {
     QString strPath = mSrcFileText->text();
-    strPath = berApplet->curFilePath( strPath );
 
-    QString strSrcFile = findFile( this, JS_FILE_TYPE_ALL, strPath );
+    QString strSrcFile = berApplet->findFile( this, JS_FILE_TYPE_ALL, strPath );
 
     if( strSrcFile.length() > 0 )
     {

@@ -182,7 +182,7 @@ void ExportDlg::initialize()
 void ExportDlg::setName( const QString strName )
 {
     mNameText->setText( strName );
-    QString strFolder = berApplet->curPath();
+    QString strFolder;
 
     QString strFilename = QString( "%1/%2.pem" ).arg( strFolder ).arg( strName );
     mFilenameText->setText( strFilename );
@@ -264,12 +264,12 @@ void ExportDlg::clickOK()
 
 void ExportDlg::clickFindFilename()
 {
-    QString strPath = berApplet->curFilePath( mFilenameText->text() );
+    QString strPath = mFilenameText->text();
     QString strFilter = mFormatCombo->currentText();
-    QString strFilename = findSaveFile( this, strFilter, strPath );
+    QString strFilename = berApplet->findSaveFile( this, strFilter, strPath );
 
     if( strFilename.length() < 1 ) return;
-    berApplet->curFilePath( strFilename );
+
     mFilenameText->setText( strFilename );
 }
 

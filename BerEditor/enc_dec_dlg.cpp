@@ -1240,9 +1240,8 @@ void EncDecDlg::clickOutputClear()
 void EncDecDlg::clickFindSrcFile()
 {
     QString strPath = mSrcFileText->text();
-    strPath = berApplet->curFilePath( strPath );
 
-    QString strSrcFile = findFile( this, JS_FILE_TYPE_ALL, strPath );
+    QString strSrcFile = berApplet->findFile( this, JS_FILE_TYPE_ALL, strPath );
 
     if( strSrcFile.length() > 0 )
     {
@@ -1282,9 +1281,8 @@ void EncDecDlg::clickFindDstFile()
 {
     int nType = JS_FILE_TYPE_BIN;
     QString strPath = mDstFileText->text();
-    strPath = berApplet->curFilePath( strPath );
 
-    QString fileName = findSaveFile( this, nType, strPath );
+    QString fileName = berApplet->findSaveFile( this, nType, strPath );
 
     if( fileName.length() > 0 ) mDstFileText->setText( fileName );
 }

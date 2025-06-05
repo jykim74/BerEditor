@@ -781,8 +781,8 @@ void BerTreeView::ExpandValue()
 
 void BerTreeView::SaveNode()
 {
-    QString strPath = berApplet->curPath();
-    QString fileName = findSaveFile( this, JS_FILE_TYPE_BER, strPath );
+    QString strPath;
+    QString fileName = berApplet->findSaveFile( this, JS_FILE_TYPE_BER, strPath );
     if( fileName.length() < 1 ) return;
 
     QModelIndex index = currentIndex();
@@ -799,8 +799,8 @@ void BerTreeView::SaveNode()
 
 void BerTreeView::SaveNodeValue()
 {
-    QString strPath = berApplet->curPath();
-    QString fileName = findSaveFile( this, JS_FILE_TYPE_BER, strPath );
+    QString strPath;
+    QString fileName = berApplet->findSaveFile( this, JS_FILE_TYPE_BER, strPath );
     if( fileName.length() < 1 ) return;
 
     QModelIndex index = currentIndex();

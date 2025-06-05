@@ -502,9 +502,8 @@ end :
 void SignVerifyDlg::findPrivateKey()
 {
     QString strPath = mPriKeyPath->text();
-    strPath = berApplet->curFilePath( strPath );
 
-    QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
+    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( fileName.isEmpty() ) return;
 
     mPriKeyPath->setText(fileName);
@@ -515,9 +514,8 @@ void SignVerifyDlg::findPrivateKey()
 void SignVerifyDlg::findCert()
 {
     QString strPath = mCertPath->text();
-    strPath = berApplet->curFilePath( strPath );
 
-    QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( fileName.isEmpty() ) return;
 
     mCertPath->setText( fileName );
@@ -1539,9 +1537,8 @@ void SignVerifyDlg::clickClearDataAll()
 void SignVerifyDlg::clickFindSrcFile()
 {
     QString strPath = mSrcFileText->text();
-    strPath = berApplet->curFilePath( strPath );
 
-    QString strSrcFile = findFile( this, JS_FILE_TYPE_ALL, strPath );
+    QString strSrcFile = berApplet->findFile( this, JS_FILE_TYPE_ALL, strPath );
 
     if( strSrcFile.length() > 0 )
     {

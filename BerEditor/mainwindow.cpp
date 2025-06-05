@@ -1440,7 +1440,7 @@ void MainWindow::numConverter()
 void MainWindow::open()
 {
     QString strPath = berApplet->getBERPath();
-    QString fileName = findFile( this, JS_FILE_TYPE_BER, strPath );
+    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_BER, strPath );
 
     if( !fileName.isEmpty() )
     {
@@ -1465,9 +1465,9 @@ void MainWindow::openRecent()
 
 void MainWindow::openCert()
 {
-    QString strPath = berApplet->curFilePath();
+    QString strPath;
 
-    QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
     BIN binCert = {0,0};
 
     if( fileName.length() < 1 ) return;
@@ -1518,9 +1518,9 @@ end :
 
 void MainWindow::openCRL()
 {
-    QString strPath = berApplet->curFilePath();
+    QString strPath;
 
-    QString fileName = findFile( this, JS_FILE_TYPE_CRL, strPath );
+    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_CRL, strPath );
     BIN binCRL = {0,0};
 
     if( fileName.length() < 1 ) return;
@@ -1567,9 +1567,9 @@ void MainWindow::openCRL()
 
 void MainWindow::openCSR()
 {
-    QString strPath = berApplet->curFilePath();
+    QString strPath;
 
-    QString fileName = findFile( this, JS_FILE_TYPE_CSR, strPath );
+    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_CSR, strPath );
     BIN binCSR = {0,0};
 
     if( fileName.length() < 1 ) return;
@@ -1617,9 +1617,9 @@ void MainWindow::openCSR()
 void MainWindow::openPriKey()
 {
     int nKeyType = -1;
-    QString strPath = berApplet->curFilePath();
+    QString strPath;
 
-    QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
+    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     BIN binKey = {0,0};
 
     if( fileName.length() < 1 ) return;
@@ -1694,9 +1694,9 @@ void MainWindow::openPriKey()
 void MainWindow::openPubKey()
 {
     int nKeyType = -1;
-    QString strPath = berApplet->curFilePath();
+    QString strPath;
 
-    QString fileName = findFile( this, JS_FILE_TYPE_BER, strPath );
+    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_BER, strPath );
     BIN binKey = {0,0};
 
     if( fileName.length() < 1 ) return;
@@ -1772,9 +1772,9 @@ void MainWindow::openCMS()
 {
     int ret = 0;
     int nCMSType = -1;
-    QString strPath = berApplet->curFilePath();
+    QString strPath;
 
-    QString fileName = findFile( this, JS_FILE_TYPE_PKCS7, strPath );
+    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_PKCS7, strPath );
     BIN binCMS = {0,0};
 
     if( fileName.length() < 1 ) return;

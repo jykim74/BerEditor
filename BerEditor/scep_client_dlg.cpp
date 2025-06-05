@@ -289,9 +289,8 @@ void SCEPClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
 void SCEPClientDlg::findCACert()
 {
     QString strPath = mCACertPathText->text();
-    strPath = berApplet->curFilePath( strPath );
 
-    QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    QString filePath = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( filePath.length() > 0 )
     {
         mCACertPathText->setText( filePath );
@@ -302,12 +301,7 @@ void SCEPClientDlg::findCert()
 {
     QString strPath = mCertPathText->text();
 
-    if( strPath.length() < 1 )
-    {
-        strPath = berApplet->curPath();
-    }
-
-    QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    QString filePath = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( filePath.length() > 0 )
     {
         mCertPathText->setText( filePath );
@@ -317,9 +311,8 @@ void SCEPClientDlg::findCert()
 void SCEPClientDlg::findPriKey()
 {
     QString strPath = mPriKeyPathText->text();
-    strPath = berApplet->curFilePath( strPath );
 
-    QString filePath = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
+    QString filePath = berApplet->findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( filePath.length() > 0 )
     {
         mPriKeyPathText->setText( filePath );

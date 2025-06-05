@@ -767,10 +767,10 @@ void KeyAgreeDlg::findAECDHPriKey()
 
     memset( &sECKeyVal, 0x00, sizeof(sECKeyVal));
 
-    QString strPath = berApplet->curPath();
+    QString strPath;
     QString strPub;
 
-    QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
+    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( fileName.isEmpty() ) return;
 
     JS_BIN_fileRead( fileName.toLocal8Bit().toStdString().c_str(), &binECKey );
@@ -948,10 +948,10 @@ void KeyAgreeDlg::findBECDHPriKey()
 
     memset( &sECKeyVal, 0x00, sizeof(sECKeyVal));
 
-    QString strPath = berApplet->curPath();
+    QString strPath;
     QString strPub;
 
-    QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
+    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( fileName.isEmpty() ) return;
 
     JS_BIN_fileRead( fileName.toLocal8Bit().toStdString().c_str(), &binECKey );

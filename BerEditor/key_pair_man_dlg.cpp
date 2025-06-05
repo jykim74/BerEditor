@@ -601,7 +601,7 @@ void KeyPairManDlg::clickLEncrypt()
 
     JS_BIN_fileReadBER( strPriKeyPath.toLocal8Bit().toStdString().c_str(), &binPri );
 
-    QString strCurFolder = berApplet->curPath();
+    QString strCurFolder;
 
     NewPasswdDlg newPass;
     QString strPass;
@@ -618,7 +618,7 @@ void KeyPairManDlg::clickLEncrypt()
         goto end;
     }
 
-    fileName = findSaveFile( this, JS_FILE_TYPE_PRIKEY, strCurFolder );
+    fileName = berApplet->findSaveFile( this, JS_FILE_TYPE_PRIKEY, strCurFolder );
     if( fileName.length() > 1 )
     {
         JS_BIN_writePEM( &binPri, JS_PEM_TYPE_PRIVATE_KEY, fileName.toLocal8Bit().toStdString().c_str() );
@@ -1152,27 +1152,27 @@ void KeyPairManDlg::viewPubKey()
 void KeyPairManDlg::findPriKey()
 {
     QString strPath = mPriPathText->text();
-    strPath = berApplet->curFilePath( strPath );
 
-    QString filePath = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
+
+    QString filePath = berApplet->findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( filePath.length() > 0 ) mPriPathText->setText( filePath );
 }
 
 void KeyPairManDlg::findPubKey()
 {
     QString strPath = mPubPathText->text();
-    strPath = berApplet->curFilePath( strPath );
 
-    QString filePath = findFile( this, JS_FILE_TYPE_BER, strPath );
+
+    QString filePath = berApplet->findFile( this, JS_FILE_TYPE_BER, strPath );
     if( filePath.length() > 0 ) mPubPathText->setText( filePath );
 }
 
 void KeyPairManDlg::findEncPriKey()
 {
     QString strPath = mEncPriPathText->text();
-    strPath = berApplet->curFilePath( strPath );
 
-    QString filePath = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
+
+    QString filePath = berApplet->findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( filePath.length() > 0 ) mEncPriPathText->setText( filePath );
 }
 
@@ -1342,9 +1342,9 @@ void KeyPairManDlg::clickImport()
     BIN binPFX = {0,0};
     BIN binCert = {0,0};
 
-    QString strPath = berApplet->curPath();
+    QString strPath;
     QString strSelected;
-    QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY_PKCS8_PFX, strPath, strSelected);
+    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_PRIKEY_PKCS8_PFX, strPath, strSelected);
 
     if( fileName.length() < 1 ) return;
 

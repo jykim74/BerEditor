@@ -371,9 +371,8 @@ end :
 void OCSPClientDlg::findCACert()
 {
     QString strPath = mCACertPathText->text();
-    strPath = berApplet->curFilePath( strPath );
 
-    QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    QString filePath = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( filePath.length() > 0 )
     {
         mCACertPathText->setText( filePath );
@@ -384,12 +383,7 @@ void OCSPClientDlg::findCert()
 {
     QString strPath = mCertPathText->text();
 
-    if( strPath.length() < 1 )
-    {
-        strPath = berApplet->curPath();
-    }
-
-    QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    QString filePath = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( filePath.length() > 0 )
     {
         mCertPathText->setText( filePath );
@@ -399,9 +393,8 @@ void OCSPClientDlg::findCert()
 void OCSPClientDlg::findSignCert()
 {
     QString strPath = mSignCertPathText->text();
-    strPath = berApplet->curFilePath( strPath );
 
-    QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    QString filePath = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( filePath.length() > 0 )
     {
         mSignCertPathText->setText( filePath );
@@ -411,10 +404,9 @@ void OCSPClientDlg::findSignCert()
 void OCSPClientDlg::findSignPriKey()
 {
     QString strPath = mSignPriKeyPathText->text();
-    strPath = berApplet->curFilePath( strPath );
 
 
-    QString filePath = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
+    QString filePath = berApplet->findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( filePath.length() > 0 )
     {
         mSignPriKeyPathText->setText( filePath );
@@ -424,9 +416,8 @@ void OCSPClientDlg::findSignPriKey()
 void OCSPClientDlg::findSrvCert()
 {
     QString strPath = mSrvCertPathText->text();
-    strPath = berApplet->curFilePath( strPath );
 
-    QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    QString filePath = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( filePath.length() > 0 )
     {
         mSrvCertPathText->setText( filePath );

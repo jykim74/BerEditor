@@ -215,12 +215,7 @@ void CMPClientDlg::findCACert()
 {
     QString strPath = mCACertPathText->text();
 
-    if( strPath.length() < 1 )
-    {
-        strPath = berApplet->curPath();
-    }
-
-    QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    QString filePath = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( filePath.length() > 0 )
     {
         mCACertPathText->setText( filePath );
@@ -298,12 +293,7 @@ void CMPClientDlg::findCert()
 {
     QString strPath = mCertPathText->text();
 
-    if( strPath.length() < 1 )
-    {
-        strPath = berApplet->curPath();
-    }
-
-    QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    QString filePath = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( filePath.length() > 0 )
     {
         mCertPathText->setText( filePath );
@@ -381,12 +371,7 @@ void CMPClientDlg::findPriKey()
 {
     QString strPath = mPriKeyPathText->text();
 
-    if( strPath.length() < 1 )
-    {
-        strPath = berApplet->curPath();
-    }
-
-    QString filePath = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
+    QString filePath = berApplet->findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( filePath.length() > 0 )
     {
         mPriKeyPathText->setText( filePath );

@@ -465,8 +465,8 @@ int CertInfoDlg::saveAsPEM( const BIN *pData )
 {
     if( pData == NULL || pData->nLen <= 0 ) return -1;
 
-    QString strPath = berApplet->curPath();
-    QString fileName = findSaveFile( this, JS_FILE_TYPE_CERT, strPath );
+    QString strPath;
+    QString fileName = berApplet->findSaveFile( this, JS_FILE_TYPE_CERT, strPath );
 
     if( fileName.length() > 0 )
     {

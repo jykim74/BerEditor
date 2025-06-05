@@ -1465,14 +1465,14 @@ void CertManDlg::clickImport()
     int nKeyType = -1;
     QString strPass;
     PasswdDlg passwdDlg;
-    QString strPFXFile = berApplet->curPath();
+    QString strPFXFile;
 
     BIN binPFX = {0,0};
     BIN binPri = {0,0};
     BIN binEncPri = {0,0};
     BIN binCert = {0,0};
 
-    strPFXFile = findFile( this, JS_FILE_TYPE_PFX, strPFXFile );
+    strPFXFile = berApplet->findFile( this, JS_FILE_TYPE_PFX, strPFXFile );
     if( strPFXFile.length() < 1 ) return;
 
     JS_BIN_fileReadBER( strPFXFile.toLocal8Bit().toStdString().c_str(), &binPFX );
@@ -1941,9 +1941,9 @@ void CertManDlg::clickAddCA()
     BIN binCA = {0,0};
     JCertInfo sCertInfo;
     JExtensionInfoList *pExtList = NULL;
-    QString strPath = berApplet->curFilePath();
+    QString strPath;
 
-    QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
     QString strCAPath = berApplet->settingsMgr()->CACertPath();
 
     QDir dir;
@@ -2138,9 +2138,9 @@ void CertManDlg::clickAddOther()
     BIN binOther = {0,0};
     JCertInfo sCertInfo;
     JExtensionInfoList *pExtList = NULL;
-    QString strPath = berApplet->curFilePath();
+    QString strPath;
 
-    QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
     QString strOtherPath = berApplet->settingsMgr()->otherCertPath();
 
     QDir dir;
@@ -2372,9 +2372,9 @@ void CertManDlg::clickAddCRL()
 
     BIN binCRL = {0,0};
     JCRLInfo sCRLInfo;
-    QString strPath = berApplet->curFilePath();
+    QString strPath;
 
-    QString fileName = findFile( this, JS_FILE_TYPE_CRL, strPath );
+    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_CRL, strPath );
     QString strCRLPath = berApplet->settingsMgr()->CRLPath();
 
     QDir dir;
@@ -2519,9 +2519,9 @@ void CertManDlg::clickAddTrust()
 
     BIN binCA = {0,0};
     JCertInfo sCertInfo;
-    QString strPath = berApplet->curFilePath();
+    QString strPath;
 
-    QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
     QString strTrustPath = berApplet->settingsMgr()->trustCertPath();
 
     QDir dir;
@@ -2779,9 +2779,9 @@ void CertManDlg::clearTLPFX()
 void CertManDlg::findTLPriKey()
 {
     QString strPath = mTLPriKeyPathText->text();
-    strPath = berApplet->curPath( strPath );
 
-    QString filePath = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
+
+    QString filePath = berApplet->findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( filePath.length() > 0 )
     {
         mTLPriKeyPathText->setText( filePath );
@@ -2791,9 +2791,9 @@ void CertManDlg::findTLPriKey()
 void CertManDlg::findTLCert()
 {
     QString strPath = mTLCertPathText->text();
-    strPath = berApplet->curPath( strPath );
 
-    QString filePath = findFile( this, JS_FILE_TYPE_CERT, strPath );
+
+    QString filePath = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( filePath.length() > 0 )
     {
         mTLCertPathText->setText( filePath );
@@ -2803,9 +2803,9 @@ void CertManDlg::findTLCert()
 void CertManDlg::findTLPFX()
 {
     QString strPath = mTLPFXPathText->text();
-    strPath = berApplet->curPath( strPath );
 
-    QString filePath = findFile( this, JS_FILE_TYPE_PFX, strPath );
+
+    QString filePath = berApplet->findFile( this, JS_FILE_TYPE_PFX, strPath );
     if( filePath.length() > 0 )
     {
         mTLPFXPathText->setText( filePath );

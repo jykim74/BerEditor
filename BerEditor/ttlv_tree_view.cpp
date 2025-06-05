@@ -735,8 +735,8 @@ void TTLVTreeView::editItem()
 
 void TTLVTreeView::saveItem()
 {
-    QString strPath = berApplet->curPath();
-    QString fileName = findSaveFile( this, JS_FILE_TYPE_BIN, strPath );
+    QString strPath;
+    QString fileName = berApplet->findSaveFile( this, JS_FILE_TYPE_BIN, strPath );
     if( fileName.length() < 1 ) return;
 
     TTLVTreeItem *pItem = currentItem();
@@ -752,8 +752,8 @@ void TTLVTreeView::saveItem()
 
 void TTLVTreeView::saveItemValue()
 {
-    QString strPath = berApplet->curPath();
-    QString fileName = findSaveFile( this, JS_FILE_TYPE_BIN, strPath );
+    QString strPath;
+    QString fileName = berApplet->findSaveFile( this, JS_FILE_TYPE_BIN, strPath );
     if( fileName.length() < 1 ) return;
 
     TTLVTreeItem *pItem = currentItem();

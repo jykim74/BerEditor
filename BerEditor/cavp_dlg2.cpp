@@ -388,9 +388,8 @@ void CAVPDlg::ACVP_LDT_MDChanged( const QString& text )
 void CAVPDlg::clickFindACVPReqPath()
 {
     QString strPath = mACVP_ReqPathText->text();
-    strPath = berApplet->curFilePath( strPath );
 
-    QString strFile = findFile( this, JS_FILE_TYPE_JSON, strPath );
+    QString strFile = berApplet->findFile( this, JS_FILE_TYPE_JSON, strPath );
     if( strFile.length() > 0 )
     {
         mACVP_ReqPathText->setText( strFile );

@@ -22,6 +22,8 @@ public:
     ~CertPVDDlg();
 
 private slots:
+    void clickViewCertCRL();
+
     void clickTrustFind();
     void clickUntrustFind();
     void clickCRLFind();

@@ -159,9 +159,8 @@ void SettingsDlg::onCancelBtnClicked()
 void SettingsDlg::findOIDConfig()
 {
     QString strPath = mOIDConfigPathText->text();
-    strPath = berApplet->curFilePath( strPath );
 
-    QString fileName = findFile( this, JS_FILE_TYPE_CFG, strPath );
+    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_CFG, strPath );
 
     if( fileName.length() > 0 ) mOIDConfigPathText->setText( fileName );
 }
@@ -169,7 +168,7 @@ void SettingsDlg::findOIDConfig()
 void SettingsDlg::findCertPath()
 {
     QString strPath = mCertPathText->text();
-    QString folderName = findFolder( this, strPath );
+    QString folderName = berApplet->findFolder( this, strPath );
 
     if( folderName.length() > 0 )
     {

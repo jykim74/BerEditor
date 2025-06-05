@@ -1038,9 +1038,9 @@ void SSLCheckDlg::clickClearLog()
 void SSLCheckDlg::findTrustCACert()
 {
     QString strPath = mTrustCAPathText->text();
-    strPath = berApplet->curFilePath( strPath );
 
-    QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
+
+    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( fileName.length() > 1 ) mTrustCAPathText->setText( fileName );
 }
 
@@ -1423,9 +1423,8 @@ end :
 void SSLCheckDlg::findClientCA()
 {
     QString strPath = mClientCAPathText->text();
-    strPath = berApplet->curFilePath( strPath );
 
-    QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( fileName.length() > 1 ) mClientCAPathText->setText( fileName );
 }
 
@@ -1499,10 +1498,8 @@ end :
 void SSLCheckDlg::findClientCert()
 {
     QString strPath = mClientCertPathText->text();
-    if( strPath.length() < 1 )
-        strPath = berApplet->curPath();
 
-    QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( fileName.length() > 1 ) mClientCertPathText->setText( fileName );
 }
 
@@ -1576,10 +1573,8 @@ end :
 void SSLCheckDlg::findClientPriKey()
 {
     QString strPath = mClientPriKeyPathText->text();
-    if( strPath.length() < 1 )
-        strPath = berApplet->curPath();
 
-    QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
+    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( fileName.length() > 1 ) mClientPriKeyPathText->setText( fileName );
 }
 

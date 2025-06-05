@@ -76,9 +76,9 @@ static char getch( unsigned char c )
 
 void DataConverterDlg::clickFindFile()
 {
-    QString strPath = berApplet->curPath();
+    QString strPath;
 
-    QString strFile = findFile( this, JS_FILE_TYPE_ALL, strPath );
+    QString strFile = berApplet->findFile( this, JS_FILE_TYPE_ALL, strPath );
 
     if( strFile.length() > 0 )
     {

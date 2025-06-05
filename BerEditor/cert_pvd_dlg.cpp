@@ -29,6 +29,8 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
     connect( mUntrustFindBtn, SIGNAL(clicked()), this, SLOT(clickUntrustFind()));
     connect( mCRLFindBtn, SIGNAL(clicked()), this, SLOT(clickCRLFind()));
 
+    connect( mPathTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewCertCRL()));
+
     connect( mUseTrustListCheck, SIGNAL(clicked()), this, SLOT(checkUseTrustList()));
     connect( mTrustListBtn, SIGNAL(clicked()), this, SLOT(clickTrustList()));
 
@@ -119,12 +121,38 @@ void CertPVDDlg::initialize()
     mTargetPathText->setPlaceholderText( tr( "Select CertMan certificate" ) );
 }
 
+void CertPVDDlg::clickViewCertCRL()
+{
+    QString strPath;
+
+    QModelIndex idx = mPathTable->currentIndex();
+    QTableWidgetItem* item = mPathTable->item( idx.row(), 0 );
+    if( item == NULL ) return;
+
+    QTableWidgetItem* item1 = mPathTable->item( idx.row(), 1 );
+    if( item1 == NULL ) return;
+
+    strPath = item1->text();
+
+    if( item->text().toUpper() == "CRL" )
+    {
+        CRLInfoDlg crlInfo;
+        crlInfo.setCRLPath( item1->text() );
+        crlInfo.exec();
+    }
+    else
+    {
+        CertInfoDlg certInfo;
+        certInfo.setCertPath( item1->text() );
+        certInfo.exec();
+    }
+}
+
 void CertPVDDlg::clickTrustFind()
 {
     QString strPath = mTrustPathText->text();
-    strPath = berApplet->curFilePath( strPath );
 
-    QString strFile = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    QString strFile = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( strFile.length() > 0 )
     {
         mTrustPathText->setText( strFile );
@@ -134,9 +162,8 @@ void CertPVDDlg::clickTrustFind()
 void CertPVDDlg::clickUntrustFind()
 {
     QString strPath = mUntrustPathText->text();
-    strPath = berApplet->curFilePath( strPath );
 
-    QString strFile = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    QString strFile = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( strFile.length() > 0 )
     {
         mUntrustPathText->setText( strFile );
@@ -146,9 +173,8 @@ void CertPVDDlg::clickUntrustFind()
 void CertPVDDlg::clickCRLFind()
 {
     QString strPath = mCRLPathText->text();
-    strPath = berApplet->curFilePath( strPath );
 
-    QString strFile = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    QString strFile = berApplet->findFile( this, JS_FILE_TYPE_CRL, strPath );
     if( strFile.length() > 0 )
     {
         mCRLPathText->setText( strFile );
@@ -158,9 +184,8 @@ void CertPVDDlg::clickCRLFind()
 void CertPVDDlg::clickTargetFind()
 {
     QString strPath = mTargetPathText->text();
-    strPath = berApplet->curFilePath( strPath );
 
-    QString strFile = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    QString strFile = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( strFile.length() > 0 )
     {
         mTargetPathText->setText( strFile );

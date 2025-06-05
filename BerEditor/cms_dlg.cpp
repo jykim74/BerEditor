@@ -270,7 +270,7 @@ void CMSDlg::clickCMSDecode()
 
     getBINFromString( &binOutput, strType, strOutput );
 
-    berApplet->mainWindow()->openBer( &binOutput );
+    berApplet->decodeData( &binOutput, "" );
 
     JS_BIN_reset( &binOutput );
 }
@@ -278,9 +278,8 @@ void CMSDlg::clickCMSDecode()
 void CMSDlg::clickSignPriFind()
 {
     QString strPath = mSignPriKeyPathText->text();
-    strPath = berApplet->curFilePath( strPath );
 
-    QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
+    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( fileName.isEmpty() ) return;
     mSignPriKeyPathText->setText( fileName );
 }
@@ -288,9 +287,8 @@ void CMSDlg::clickSignPriFind()
 void CMSDlg::clickSignCertFind()
 {
     QString strPath = mSignCertPathText->text();
-    strPath = berApplet->curFilePath( strPath );
 
-    QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( fileName.isEmpty() ) return;
 
     mSignCertPathText->setText( fileName );
@@ -299,9 +297,8 @@ void CMSDlg::clickSignCertFind()
 void CMSDlg::clickKMPriFind()
 {
     QString strPath = mKMPriKeyPathText->text();
-    strPath = berApplet->curFilePath( strPath );
 
-    QString fileName = findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
+    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_PRIKEY, strPath );
     if( fileName.isEmpty() ) return;
 
     mKMPriKeyPathText->setText( fileName );
@@ -310,9 +307,8 @@ void CMSDlg::clickKMPriFind()
 void CMSDlg::clickKMCertFind()
 {
     QString strPath = mKMCertPathText->text();
-    strPath = berApplet->curFilePath( strPath );
 
-    QString fileName = findFile( this, JS_FILE_TYPE_CERT, strPath );
+    QString fileName = berApplet->findFile( this, JS_FILE_TYPE_CERT, strPath );
     if( fileName.isEmpty() ) return;
 
     mKMCertPathText->setText( fileName );
@@ -1391,7 +1387,7 @@ void CMSDlg::clickReadFile()
 {
     QString strPath;
 
-    QString strFile = findFile( this, JS_FILE_TYPE_BER, strPath);
+    QString strFile = berApplet->findFile( this, JS_FILE_TYPE_BER, strPath);
 
     if( strFile.length() > 0 )
     {

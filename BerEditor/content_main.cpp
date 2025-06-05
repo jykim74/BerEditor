@@ -144,7 +144,7 @@ void ContentMain::actSave()
         }
 
 
-        fileName = findSaveFile( this, JS_FILE_TYPE_ALL, strPath );
+        fileName = berApplet->findSaveFile( this, JS_FILE_TYPE_ALL, strPath );
 
         if( fileName.length() < 1 ) return;
 
@@ -159,7 +159,7 @@ void ContentMain::actSave()
         QByteArray data = resFile.readAll();
         resFile.close();
 
-        fileName = findSaveFile( this, JS_FILE_TYPE_ALL, strPath );
+        fileName = berApplet->findSaveFile( this, JS_FILE_TYPE_ALL, strPath );
         if( fileName.length() < 1 ) return;
 
         JS_BIN_set( &binData, (unsigned char *)data.data(), data.length() );

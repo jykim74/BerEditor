@@ -95,7 +95,7 @@ int CSRInfoDlg::saveAsPEM( const BIN *pData )
     QFileDialog::Options options;
     options |= QFileDialog::DontUseNativeDialog;
 
-    QString strPath = berApplet->curPath();
+    QString strPath;
 
     QString strFilter = tr("CSR Files (*.csr);;PEM Files (*.pem);;All Files (*.*)");
     QString selectedFilter;

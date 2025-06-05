@@ -94,9 +94,9 @@ void DecodeDataDlg::clearData()
 void DecodeDataDlg::findData()
 {
     BIN binData = {0,0};
-    QString strPath = berApplet->curPath();
+    QString strPath;
 
-    QString strFileName = findFile( this, JS_FILE_TYPE_BER, strPath );
+    QString strFileName = berApplet->findFile( this, JS_FILE_TYPE_BER, strPath );
     if( strFileName.length() < 1 ) return;
 
     JS_BIN_fileReadBER( strFileName.toLocal8Bit().toStdString().c_str(), &binData );
