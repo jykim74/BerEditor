@@ -479,6 +479,10 @@ static const QString _getFileExt( int nType )
     {
         strExt = "lcn";
     }
+    else if( nType == JS_FILE_TYPE_DH_PARAM )
+    {
+        strExt = "pem";
+    }
     else
     {
         strExt = "pem";
@@ -555,6 +559,11 @@ static const QString _getFileFilter( int nType, QString& strFileType )
     {
         strFileType = QObject::tr("License Files");
         strFilter = QString( "%1 (*.lcn *.txt)" ).arg( strFileType );
+    }
+    else if( nType == JS_FILE_TYPE_DH_PARAM )
+    {
+        strFileType = QObject::tr("DH Parameter Files");
+        strFilter = QString("%1 (*.pem *.der)" ).arg( strFileType );
     }
     else if( nType == JS_FILE_TYPE_PRIKEY_PKCS8_PFX )
     {

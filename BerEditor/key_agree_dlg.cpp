@@ -28,6 +28,7 @@ KeyAgreeDlg::KeyAgreeDlg(QWidget *parent) :
 
     connect( mGenParamBtn, SIGNAL(clicked()), this, SLOT(genDHParam()));
     connect( mExportParamBtn, SIGNAL(clicked()), this, SLOT(exportDHParam()));
+    connect( mImportParamBtn, SIGNAL(clicked()), this, SLOT(importDHParam()));
     connect( mADHPriBtn, SIGNAL(clicked()), this, SLOT(genADHPri()));
     connect( mBDHPriBtn, SIGNAL(clicked()), this, SLOT(genBDHPri()));
     connect( mAGenDHKeyBtn, SIGNAL(clicked()), this, SLOT(genADHKey()));
@@ -417,6 +418,40 @@ end :
     JS_BIN_reset( &binP );
     JS_BIN_reset( &binG );
     JS_BIN_reset( &binParam );
+}
+
+void KeyAgreeDlg::importDHParam()
+{
+    int ret = 0;
+    BIN binParam = {0,0};
+    BIN binP = {0,0};
+    BIN binG = {0,0};
+
+    QString strPath = berApplet->curFilePath();
+    QString strFileName = berApplet->findFile( this, JS_FILE_TYPE_DH_PARAM, strPath );
+    if( strFileName.length() < 1 ) return;
+
+    ret = JS_BIN_fileReadBER( strFileName.toLocal8Bit().toStdString().c_str(), &binParam );
+    if( ret <= 0 )
+    {
+        berApplet->elog( QString( "fail to read parameters: %1" ).arg( ret ));
+        goto end;
+    }
+
+    ret = JS_PKI_decodeDHParam( &binParam, &binP, &binG );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "fail to decode DH parameters: %1").arg( ret ), this );
+        goto end;
+    }
+
+    mPText->setPlainText( getHexString( &binP ));
+    mGCombo->setCurrentText( getHexString( &binG ));
+
+end :
+    JS_BIN_reset( &binParam );
+    JS_BIN_reset( &binP );
+    JS_BIN_reset( &binG );
 }
 
 void KeyAgreeDlg::genADHPri()

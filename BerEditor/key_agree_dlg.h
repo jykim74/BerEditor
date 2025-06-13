@@ -27,6 +27,7 @@ private slots:
     void secretClear();
     void genDHParam();
     void exportDHParam();
+    void importDHParam();
     void genADHPri();
     void genBDHPri();
     void genADHKey();
