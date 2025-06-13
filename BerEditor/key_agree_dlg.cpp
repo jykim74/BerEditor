@@ -403,7 +403,7 @@ void KeyAgreeDlg::exportDHParam()
     JS_BIN_decodeHex( mPText->toPlainText().toStdString().c_str(), &binP );
     JS_BIN_decodeHex( mGCombo->currentText().toStdString().c_str(), &binG );
 
-    ret = JS_PKI_encodeDHParam( &binP, &binG, &binParam );
+    ret = JS_PKI_encodeDHParam( &binP, &binG, NULL, &binParam );
     if( ret != 0 )
     {
         berApplet->elog( QString( "fail to encode DH param: %1").arg( ret ));
@@ -438,7 +438,7 @@ void KeyAgreeDlg::importDHParam()
         goto end;
     }
 
-    ret = JS_PKI_decodeDHParam( &binParam, &binP, &binG );
+    ret = JS_PKI_decodeDHParam( &binParam, &binP, &binG, NULL );
     if( ret != 0 )
     {
         berApplet->warningBox( tr( "fail to decode DH parameters: %1").arg( ret ), this );
