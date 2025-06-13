@@ -13,6 +13,7 @@
 #include "ber_applet.h"
 #include "cert_man_dlg.h"
 #include "key_pair_man_dlg.h"
+#include "export_dlg.h"
 
 const QStringList sGList = { "02", "05" };
 
@@ -26,6 +27,7 @@ KeyAgreeDlg::KeyAgreeDlg(QWidget *parent) :
     connect( mECDHParamCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeECDHParam(int)));
 
     connect( mGenParamBtn, SIGNAL(clicked()), this, SLOT(genDHParam()));
+    connect( mExportParamBtn, SIGNAL(clicked()), this, SLOT(exportDHParam()));
     connect( mADHPriBtn, SIGNAL(clicked()), this, SLOT(genADHPri()));
     connect( mBDHPriBtn, SIGNAL(clicked()), this, SLOT(genBDHPri()));
     connect( mAGenDHKeyBtn, SIGNAL(clicked()), this, SLOT(genADHKey()));
@@ -378,6 +380,42 @@ void KeyAgreeDlg::genDHParam()
     JS_BIN_reset( &binP );
     JS_BIN_reset( &binG );
     update();
+}
+
+void KeyAgreeDlg::exportDHParam()
+{
+    int ret = 0;
+    BIN binP = {0,0};
+    BIN binG = {0,0};
+    BIN binParam = {0,0};
+
+    ExportDlg exportDlg;
+
+    if( mPText->toPlainText().length() < 1 )
+    {
+        berApplet->warningBox( tr( "Parameter value is required" ), this );
+        mPText->setFocus();
+        return;
+    }
+
+    JS_BIN_decodeHex( mPText->toPlainText().toStdString().c_str(), &binP );
+    JS_BIN_decodeHex( mGCombo->currentText().toStdString().c_str(), &binG );
+
+    ret = JS_PKI_encodeDHParam( &binP, &binG, &binParam );
+    if( ret != 0 )
+    {
+        berApplet->elog( QString( "fail to encode DH param: %1").arg( ret ));
+        goto end;
+    }
+
+    exportDlg.setDHParam( &binParam );
+    exportDlg.setName( "DH_param" );
+    exportDlg.exec();
+
+end :
+    JS_BIN_reset( &binP );
+    JS_BIN_reset( &binG );
+    JS_BIN_reset( &binParam );
 }
 
 void KeyAgreeDlg::genADHPri()
