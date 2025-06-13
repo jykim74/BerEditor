@@ -41,6 +41,7 @@ KeyAddDlg::KeyAddDlg(QWidget *parent) :
     mOKBtn->setDefault(true);
 
     resize(minimumSizeHint().width(), minimumSizeHint().height());
+    initialize();
 }
 
 KeyAddDlg::~KeyAddDlg()
@@ -173,11 +174,13 @@ void KeyAddDlg::initUI()
 
     mKeyTypeCombo->addItems( kValueTypeList );
     mIVTypeCombo->addItems( kValueTypeList );
+
+    mNameText->setPlaceholderText( tr("Enter a name") );
 }
 
 void KeyAddDlg::initialize()
 {
-    mNameText->setPlaceholderText( tr("Enter a name") );
+
 }
 
 void KeyAddDlg::clickClearAll()
