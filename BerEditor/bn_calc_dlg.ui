@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>584</width>
-    <height>710</height>
+    <width>651</width>
+    <height>879</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,7 +26,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Big Number Calculator</string>
+        <string>Numeric type</string>
        </property>
       </widget>
      </item>
@@ -98,6 +98,108 @@
       </property>
       <item>
        <layout class="QGridLayout" name="gridLayout_8">
+        <item row="0" column="1">
+         <widget class="QPushButton" name="mAClearBtn">
+          <property name="minimumSize">
+           <size>
+            <width>20</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>20</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>C</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QPushButton" name="mAAddOneBtn">
+          <property name="minimumSize">
+           <size>
+            <width>20</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>20</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>+1</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="9">
+         <widget class="QPushButton" name="mACopyBtn">
+          <property name="minimumSize">
+           <size>
+            <width>60</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Copy</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="8">
+         <widget class="QPushButton" name="mAIsPrimeBtn">
+          <property name="text">
+           <string>Is P</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_7">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>30</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>A</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QPushButton" name="mASubOneBtn">
+          <property name="minimumSize">
+           <size>
+            <width>20</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>20</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>-1</string>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="14">
          <widget class="QLineEdit" name="mALenText">
           <property name="minimumSize">
@@ -144,24 +246,25 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_7">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>30</width>
-            <height>16777215</height>
-           </size>
-          </property>
+        <item row="0" column="6">
+         <widget class="QPushButton" name="mAGenPrimeBtn">
           <property name="text">
-           <string>A</string>
+           <string>Gen P</string>
           </property>
          </widget>
+        </item>
+        <item row="0" column="7">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
         <item row="0" column="5">
          <widget class="QComboBox" name="mAPrimeBitsCombo">
@@ -170,51 +273,6 @@
             <width>80</width>
             <height>16777215</height>
            </size>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="8">
-         <widget class="QPushButton" name="mAIsPrimeBtn">
-          <property name="text">
-           <string>Is P</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QPushButton" name="mAAddOneBtn">
-          <property name="minimumSize">
-           <size>
-            <width>20</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>20</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>+1</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="9">
-         <widget class="QPushButton" name="mACopyBtn">
-          <property name="minimumSize">
-           <size>
-            <width>60</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>60</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Copy</string>
           </property>
          </widget>
         </item>
@@ -237,68 +295,10 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="6">
-         <widget class="QPushButton" name="mAGenPrimeBtn">
-          <property name="text">
-           <string>Gen P</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QPushButton" name="mAClearBtn">
-          <property name="minimumSize">
-           <size>
-            <width>20</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>20</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>C</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="7">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
         <item row="0" column="4">
          <widget class="QLabel" name="label_8">
           <property name="text">
            <string>Bits</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="3">
-         <widget class="QPushButton" name="mASubOneBtn">
-          <property name="minimumSize">
-           <size>
-            <width>20</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>20</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>-1</string>
           </property>
          </widget>
         </item>
@@ -362,10 +362,22 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="6">
-         <widget class="QPushButton" name="mBGenPrimeBtn">
+        <item row="0" column="3">
+         <widget class="QPushButton" name="mBSubOneBtn">
+          <property name="minimumSize">
+           <size>
+            <width>20</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>20</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="text">
-           <string>Gen P</string>
+           <string>-1</string>
           </property>
          </widget>
         </item>
@@ -415,90 +427,6 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="10">
-         <widget class="QPushButton" name="mBPasteBtn">
-          <property name="minimumSize">
-           <size>
-            <width>60</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>80</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Paste</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QPushButton" name="mBClearBtn">
-          <property name="minimumSize">
-           <size>
-            <width>20</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>20</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>C</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="8">
-         <widget class="QPushButton" name="mBIsPrimeBtn">
-          <property name="text">
-           <string>Is P</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="7">
-         <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_9">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>30</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>B</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="4">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Bits</string>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="9">
          <widget class="QPushButton" name="mBCopyBtn">
           <property name="minimumSize">
@@ -537,8 +465,15 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="3">
-         <widget class="QPushButton" name="mBSubOneBtn">
+        <item row="0" column="8">
+         <widget class="QPushButton" name="mBIsPrimeBtn">
+          <property name="text">
+           <string>Is P</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QPushButton" name="mBClearBtn">
           <property name="minimumSize">
            <size>
             <width>20</width>
@@ -552,7 +487,72 @@
            </size>
           </property>
           <property name="text">
-           <string>-1</string>
+           <string>C</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_9">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>30</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>B</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="6">
+         <widget class="QPushButton" name="mBGenPrimeBtn">
+          <property name="text">
+           <string>Gen P</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="7">
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="10">
+         <widget class="QPushButton" name="mBPasteBtn">
+          <property name="minimumSize">
+           <size>
+            <width>60</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>80</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Paste</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="4">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Bits</string>
           </property>
          </widget>
         </item>
@@ -606,39 +606,48 @@
       </property>
       <item>
        <layout class="QGridLayout" name="gridLayout_3">
-        <item row="0" column="6">
-         <widget class="QPushButton" name="mModGenPrimeBtn">
-          <property name="text">
-           <string>Gen P</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="5">
-         <widget class="QComboBox" name="mModPrimeBitsCombo">
-          <property name="maximumSize">
-           <size>
-            <width>80</width>
-            <height>16777215</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="9">
-         <widget class="QPushButton" name="mModCopyBtn">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_10">
           <property name="minimumSize">
            <size>
-            <width>60</width>
+            <width>0</width>
             <height>0</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>60</width>
+            <width>30</width>
             <height>16777215</height>
            </size>
           </property>
           <property name="text">
-           <string>Copy</string>
+           <string>M</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QPushButton" name="mModSubOneBtn">
+          <property name="minimumSize">
+           <size>
+            <width>20</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>20</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>-1</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="8">
+         <widget class="QPushButton" name="mModChecPrimeBtn">
+          <property name="text">
+           <string>Is P</string>
           </property>
          </widget>
         </item>
@@ -688,29 +697,13 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
-         <widget class="QPushButton" name="mModClearBtn">
-          <property name="minimumSize">
-           <size>
-            <width>20</width>
-            <height>0</height>
-           </size>
-          </property>
+        <item row="0" column="5">
+         <widget class="QComboBox" name="mModPrimeBitsCombo">
           <property name="maximumSize">
            <size>
-            <width>20</width>
+            <width>80</width>
             <height>16777215</height>
            </size>
-          </property>
-          <property name="text">
-           <string>C</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="4">
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>Bits</string>
           </property>
          </widget>
         </item>
@@ -733,6 +726,52 @@
           </property>
          </widget>
         </item>
+        <item row="0" column="4">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Bits</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="9">
+         <widget class="QPushButton" name="mModCopyBtn">
+          <property name="minimumSize">
+           <size>
+            <width>60</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Copy</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="6">
+         <widget class="QPushButton" name="mModGenPrimeBtn">
+          <property name="text">
+           <string>Gen P</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="7">
+         <spacer name="horizontalSpacer_6">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
         <item row="0" column="10">
          <widget class="QPushButton" name="mModPasteBtn">
           <property name="minimumSize">
@@ -752,47 +791,8 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="8">
-         <widget class="QPushButton" name="mModChecPrimeBtn">
-          <property name="text">
-           <string>Is P</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_10">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>30</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>M</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="7">
-         <spacer name="horizontalSpacer_6">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="0" column="3">
-         <widget class="QPushButton" name="mModSubOneBtn">
+        <item row="0" column="1">
+         <widget class="QPushButton" name="mModClearBtn">
           <property name="minimumSize">
            <size>
             <width>20</width>
@@ -806,7 +806,7 @@
            </size>
           </property>
           <property name="text">
-           <string>-1</string>
+           <string>C</string>
           </property>
          </widget>
         </item>

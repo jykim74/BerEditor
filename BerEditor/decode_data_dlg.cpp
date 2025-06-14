@@ -12,6 +12,8 @@ DecodeDataDlg::DecodeDataDlg(QWidget *parent) :
 {
     setupUi(this);
 
+    initUI();
+
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mViewBtn, SIGNAL(clicked()), this, SLOT(viewData()));
     connect( mDataText, SIGNAL(textChanged()), this, SLOT(dataChanged()));
@@ -33,6 +35,11 @@ DecodeDataDlg::DecodeDataDlg(QWidget *parent) :
 DecodeDataDlg::~DecodeDataDlg()
 {
 
+}
+
+void DecodeDataDlg::initUI()
+{
+    mDataText->setPlaceholderText( tr( "Hex value" ));
 }
 
 void DecodeDataDlg::viewData()
@@ -78,9 +85,15 @@ void DecodeDataDlg::dataChanged()
     int nType = DATA_STRING;
 
     if( mTypeHex->isChecked() )
+    {
         nType = DATA_HEX;
+        mDataText->setPlaceholderText( tr( "Hex value" ));
+    }
     else if( mTypeBase64->isChecked() )
+    {
         nType = DATA_BASE64;
+        mDataText->setPlaceholderText( tr( "Base64 or PEM value" ));
+    }
 
     QString strLen = getDataLenString( nType, mDataText->toPlainText() );
     mDataLenText->setText( QString("%1").arg(strLen));

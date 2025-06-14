@@ -30,6 +30,7 @@ private slots :
     void findData();
 
 private:
+    void initUI();
 };
 
 #endif // DECODE_DATA_DLG_H
