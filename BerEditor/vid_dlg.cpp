@@ -62,6 +62,7 @@ void VIDDlg::initialize()
 
     mSSNText->setPlaceholderText( tr( "Enter a identity value") );
     mRandText->setPlaceholderText( tr( "Enter a random value" ) );
+    mVIDText->setPlaceholderText( tr( "Hex value" ));
 }
 
 void VIDDlg::changeSSN( const QString& text )

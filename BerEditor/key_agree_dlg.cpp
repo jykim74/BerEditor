@@ -16,7 +16,7 @@
 #include "export_dlg.h"
 
 const QStringList sGList = { "02", "05" };
-
+const QStringList sParamList = { "512", "1024", "2048", "3072", "4096" };
 
 
 KeyAgreeDlg::KeyAgreeDlg(QWidget *parent) :
@@ -356,7 +356,9 @@ void KeyAgreeDlg::initialize()
     mBECDHPriKeyText->setPlaceholderText( tr("Hex value") );
     mBECDHPubKeyText->setPlaceholderText( tr("Hex value") );
 
-    mLengthText->setText( "512" );
+
+    mParamLenCombo->addItems( sParamList );
+    mParamLenCombo->setCurrentIndex(2);
     mTabWidget->setCurrentIndex(0);
 }
 
@@ -365,22 +367,26 @@ void KeyAgreeDlg::genDHParam()
     int ret = 0;
     BIN binP = {0,0};
     BIN binG = {0,0};
+    BIN binQ = {0,0};
 
-    int nLen = mLengthText->text().toInt();
+    int nLen = mParamLenCombo->currentText().toInt();
     int nG = mGCombo->currentText().toInt();
 
-    ret = JS_PKI_genDHParam( nLen, nG, &binP, &binG );
+    ret = JS_PKI_genDHParam( nLen, nG, &binP, &binG, &binQ );
     if( ret == 0 )
     {
         mPText->setPlainText( getHexString( binP.pVal, binP.nLen));
 
         berApplet->log( "-- Genreate DH parameter" );
-        berApplet->log( QString( "P : %1").arg(getHexString( &binP)));
-        berApplet->log( QString( "G : %1").arg(getHexString( &binG)));
+        berApplet->log( QString( "Length : %1").arg( mParamLenCombo->currentText()));
+        berApplet->log( QString( "P      : %1").arg(getHexString( &binP)));
+        berApplet->log( QString( "G      : %1").arg(getHexString( &binG)));
+        if( binQ.nLen > 0 ) berApplet->log( QString( "Q      : %1" ).arg( getHexString( &binQ )));
     }
 
     JS_BIN_reset( &binP );
     JS_BIN_reset( &binG );
+    JS_BIN_reset( &binQ );
     update();
 }
 
@@ -458,7 +464,7 @@ void KeyAgreeDlg::genADHPri()
 {
     BIN binPri = {0,0};
     char *pHex = NULL;
-    int nLen = mLengthText->text().toInt();
+    int nLen = mParamLenCombo->currentText().toInt();
     nLen = nLen / 8;
 
     JS_PKI_genRandom( nLen, &binPri );
@@ -476,7 +482,7 @@ void KeyAgreeDlg::genBDHPri()
 {
     BIN binPri = {0,0};
     char *pHex = NULL;
-    int nLen = mLengthText->text().toInt();
+    int nLen = mParamLenCombo->currentText().toInt();
     nLen = nLen / 8;
 
     JS_PKI_genRandom( nLen, &binPri );

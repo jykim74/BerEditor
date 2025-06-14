@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>570</width>
-    <height>530</height>
+    <width>676</width>
+    <height>651</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -442,37 +442,6 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="7">
-          <widget class="QPushButton" name="mExportParamBtn">
-           <property name="text">
-            <string>Export</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="5">
-          <widget class="QPushButton" name="mGenParamBtn">
-           <property name="text">
-            <string>GenParam</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLineEdit" name="mLengthText">
-           <property name="maximumSize">
-            <size>
-             <width>60</width>
-             <height>16777215</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>g value</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="2">
           <spacer name="horizontalSpacer_7">
            <property name="orientation">
@@ -486,10 +455,24 @@
            </property>
           </spacer>
          </item>
+         <item row="0" column="3">
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>g value</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="7">
+          <widget class="QPushButton" name="mExportParamBtn">
+           <property name="text">
+            <string>Export</string>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label">
            <property name="text">
-            <string>Parameter(Bits)</string>
+            <string>Parameter Len</string>
            </property>
           </widget>
          </item>
@@ -502,6 +485,16 @@
             <string>Import</string>
            </property>
           </widget>
+         </item>
+         <item row="0" column="5">
+          <widget class="QPushButton" name="mGenParamBtn">
+           <property name="text">
+            <string>GenParam</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="mParamLenCombo"/>
          </item>
         </layout>
        </item>
@@ -1218,7 +1211,6 @@
  </widget>
  <tabstops>
   <tabstop>mTabWidget</tabstop>
-  <tabstop>mLengthText</tabstop>
   <tabstop>mGCombo</tabstop>
   <tabstop>mGenParamBtn</tabstop>
   <tabstop>mPLenText</tabstop>
