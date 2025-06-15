@@ -396,7 +396,7 @@ void CertInfoDlg::initUI()
 
     mFieldTable->clear();
     mFieldTable->horizontalHeader()->setStretchLastSection(true);
-    mFieldTable->setColumnCount(2);
+    mFieldTable->setColumnCount(sBaseLabels.size());
     mFieldTable->setHorizontalHeaderLabels( sBaseLabels );
     mFieldTable->verticalHeader()->setVisible(false);
     mFieldTable->horizontalHeader()->setStyleSheet( kTableStyle );

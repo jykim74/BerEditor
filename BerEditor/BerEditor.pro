@@ -110,7 +110,8 @@ SOURCES += \
     key_add_dlg.cpp \
     code_editor.cpp \
     cavp_dlg.cpp \
-    cavp_dlg2.cpp
+    cavp_dlg2.cpp \
+    x509_compare_dlg.cpp
 
 HEADERS += \
     about_dlg.h \
@@ -188,7 +189,8 @@ HEADERS += \
     key_list_dlg.h \
     key_add_dlg.h \
     code_editor.h \
-    cavp_dlg.h
+    cavp_dlg.h \
+    x509_compare_dlg.h
 
 
 
@@ -334,7 +336,8 @@ FORMS += \
         find_dlg.ui \
         key_list_dlg.ui \
         key_add_dlg.ui \
-        cavp_dlg.ui
+        cavp_dlg.ui \
+        x509_compare_dlg.ui
 
 RESOURCES += \
     bereditor.qrc

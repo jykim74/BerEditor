@@ -51,7 +51,7 @@ class TTLVClientDlg;
 class ContentMain;
 class FindDlg;
 class KeyListDlg;
-
+class X509CompareDlg;
 
 namespace Ui {
 class MainWindow;
@@ -153,6 +153,7 @@ public:
     void viewServiceKeyList( bool bChecked );
     void viewServiceCAVP( bool bChecked );
     void viewServiceSSLCheck( bool bChecked );
+    void viewServiceX509Comp( bool bChecked );
 
     void viewProtoOCSP( bool bChecked );
     void viewProtoTSP( bool bChecked );
@@ -216,6 +217,7 @@ private slots:
     void certPVD();
     void CAVP();
     void sslCheck();
+    void x509Compare();
     void genOTP();
     void VID();
     void BNCalc();
@@ -327,6 +329,7 @@ private:
     ContentMain     *content_;
     FindDlg         *find_dlg_;
     KeyListDlg      *key_list_dlg_;
+    X509CompareDlg  *x509_comp_dlg_;
 
     QToolBar* file_tool_;
     QAction* new_act_;
@@ -382,6 +385,7 @@ private:
     QAction* key_list_act_;
     QAction* cavp_act_;
     QAction* ssl_act_;
+    QAction* x509_comp_act_;
 
     QToolBar* proto_tool_;
     QAction* ocsp_act_;

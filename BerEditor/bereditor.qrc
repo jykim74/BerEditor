@@ -96,5 +96,6 @@
         <file>images/find.png</file>
         <file>images/keylist.png</file>
         <file>images/enc_key.png</file>
+        <file>images/compare.png</file>
     </qresource>
 </RCC>

@@ -121,6 +121,7 @@ const QString kDecimalChars = "[0-9]";
 #define ACT_SERVICE_CAVP            VIEW_SERVICE | 0x00000004
 #define ACT_SERVICE_SSL_CHECK       VIEW_SERVICE | 0x00000008
 #define ACT_SERVICE_KEY_LIST        VIEW_SERVICE | 0x00000010
+#define ACT_SERVICE_X509_COMP       VIEW_SERVICE | 0x00000020
 
 #define ACT_PROTO_OCSP              VIEW_PROTO | 0x00000001
 #define ACT_PROTO_TSP               VIEW_PROTO | 0x00000002
@@ -141,7 +142,7 @@ const QString kDecimalChars = "[0-9]";
 #define ACT_HELP_QNA                VIEW_HELP | 0x00000040
 #define ACT_HELP_ABOUT              VIEW_HELP | 0x00000080
 
-static const int kFileDefault = ACT_FILE_NEW | ACT_FILE_OPEN | ACT_FILE_SAVE;
+static const int kFileDefault = ACT_FILE_NEW | ACT_FILE_OPEN;
 
 static const int kEditDefault = ACT_EDIT_EXPAND_ALL | ACT_EDIT_EXPAND_NODE | ACT_EDIT_FIND_NODE;
 
@@ -151,7 +152,8 @@ static const int kToolDefault = ACT_TOOL_DATA_CONVERTER | ACT_TOOL_OID_INFO | AC
 static const int kCryptDefault = ACT_CRYPT_HASH | ACT_CRYPT_MAC | ACT_CRYPT_ENC_DEC \
                           | ACT_CRYPT_SIGN_VERIFY | ACT_CRYPT_KEY_AGREE | ACT_CRYPT_CERT_PVD | ACT_CRYPT_BN_CALC;
 
-static const int kServiceDefault = ACT_SERVICE_KEY_PAIR_MAN | ACT_SERVICE_CERT_MAN | ACT_SERVICE_KEY_LIST | ACT_SERVICE_SSL_CHECK;
+static const int kServiceDefault = ACT_SERVICE_KEY_PAIR_MAN | ACT_SERVICE_CERT_MAN | \
+                                   ACT_SERVICE_KEY_LIST | ACT_SERVICE_SSL_CHECK | ACT_SERVICE_X509_COMP;
 
 static const int kProtoDefault = 0;
 static const int kKMIPDefault = 0;

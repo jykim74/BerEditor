@@ -209,6 +209,7 @@ add_executable(${PROJECT_NAME}
     key_list_dlg.h key_list_dlg.cpp key_list_dlg.ui
     code_editor.h code_editor.cpp
     highlighter_xml.h highlighter_xml.cpp
+    x509_compare_dlg.h x509_compare_dlg.cpp x509_compare_dlg.ui
 
 )
 

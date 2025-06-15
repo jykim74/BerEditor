@@ -54,6 +54,7 @@
 #include "content_main.h"
 #include "find_dlg.h"
 #include "key_list_dlg.h"
+#include "x509_compare_dlg.h"
 
 #include "js_pki_tools.h"
 #include "js_kms.h"
@@ -603,6 +604,13 @@ void MainWindow::createViewActions()
     connect( serviceSSLVerifyAct, &QAction::triggered, this, &MainWindow::viewServiceSSLCheck );
     serviceMenu->addAction( serviceSSLVerifyAct );
 
+    QAction *serviceX509CompAct = new QAction( tr( "X509 Compare"), this );
+    bVal = isView( ACT_SERVICE_X509_COMP );
+    serviceX509CompAct->setCheckable(true);
+    serviceX509CompAct->setChecked(bVal);
+    connect( serviceX509CompAct, &QAction::triggered, this, &MainWindow::viewServiceX509Comp );
+    serviceMenu->addAction( serviceX509CompAct );
+
     QAction *protoOCSPAct = new QAction( tr( "OCSP client"), this );
     bVal = isView( ACT_PROTO_OCSP );
     protoOCSPAct->setCheckable(true);
@@ -1116,13 +1124,21 @@ void MainWindow::createActions()
     serviceMenu->addAction( cavp_act_ );
     if( isView( ACT_SERVICE_CAVP ) ) service_tool_->addAction( cavp_act_ );
 
-    const QIcon sslIcon = QIcon::fromTheme( "tool-ssl", QIcon(":/images/ssl.png"));
+    const QIcon sslIcon = QIcon::fromTheme( "service-ssl", QIcon(":/images/ssl.png"));
     ssl_act_ = new QAction(sslIcon, tr("&SSL Check"), this);
     ssl_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_V));
     connect( ssl_act_, &QAction::triggered, this, &MainWindow::sslCheck );
     ssl_act_->setStatusTip(tr("Check SSL and TLS protocols"));
     serviceMenu->addAction( ssl_act_ );
     if( isView( ACT_SERVICE_SSL_CHECK ) ) service_tool_->addAction( ssl_act_ );
+
+    const QIcon x509Icon = QIcon::fromTheme( "service-x509", QIcon(":/images/compare.png"));
+    x509_comp_act_ = new QAction(x509Icon, tr("&X509 Compare"), this);
+    x509_comp_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_C));
+    connect( x509_comp_act_, &QAction::triggered, this, &MainWindow::x509Compare );
+    x509_comp_act_->setStatusTip(tr("Compare X509"));
+    serviceMenu->addAction( x509_comp_act_ );
+    if( isView( ACT_SERVICE_X509_COMP ) ) service_tool_->addAction( x509_comp_act_ );
 
     if( berApplet->isLicense() == false )
     {
@@ -1147,6 +1163,7 @@ void MainWindow::createActions()
         key_list_act_->setEnabled( false );
         cavp_act_->setEnabled( false );
         ssl_act_->setEnabled( false );
+        x509_comp_act_->setEnabled( false );
     }
 
 
@@ -1350,6 +1367,7 @@ void MainWindow::createCryptoDlg()
     find_dlg_ = new FindDlg;
     key_list_dlg_ = new KeyListDlg;
     key_list_dlg_->setManage( true );
+    x509_comp_dlg_ = new X509CompareDlg;
 }
 
 void MainWindow::newFile()
@@ -2306,6 +2324,13 @@ void MainWindow::sslCheck()
     ssl_check_dlg_->activateWindow();
 }
 
+void MainWindow::x509Compare()
+{
+    x509_comp_dlg_->show();
+    x509_comp_dlg_->raise();
+    x509_comp_dlg_->activateWindow();
+}
+
 void MainWindow::genOTP()
 {
     gen_otp_dlg_->show();
@@ -3107,6 +3132,20 @@ void MainWindow::viewServiceSSLCheck( bool bChecked )
     {
         service_tool_->removeAction( ssl_act_ );
         unsetView( ACT_SERVICE_SSL_CHECK );
+    }
+}
+
+void MainWindow::viewServiceX509Comp( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        service_tool_->addAction( x509_comp_act_ );
+        setView( ACT_SERVICE_X509_COMP );
+    }
+    else
+    {
+        service_tool_->removeAction( x509_comp_act_ );
+        unsetView( ACT_SERVICE_X509_COMP );
     }
 }
 
