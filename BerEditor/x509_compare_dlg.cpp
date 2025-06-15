@@ -434,6 +434,8 @@ int X509CompareDlg::compareCRL()
     JExtensionInfoList *pAExtList = NULL;
     JExtensionInfoList *pBExtList = NULL;
 
+    QTableWidgetItem *iconItem = new QTableWidgetItem( "" );
+
     memset( &ACRLInfo, 0x00, sizeof(JCRLInfo));
     memset( &BCRLInfo, 0x00, sizeof(JCRLInfo));
     ret = JS_PKI_getCRLInfo( &A_bin_, &ACRLInfo, &pAExtList, NULL );
@@ -449,11 +451,20 @@ int X509CompareDlg::compareCRL()
     }
 
     JS_PKI_genHash( "SHA1", &A_bin_, &binFingerA );
+    JS_PKI_genHash( "SHA1", &B_bin_, &binFingerB );
 
     mCompareTable->insertRow(i);
     mCompareTable->setRowHeight(i,10);
     mCompareTable->setItem( i, 0, new QTableWidgetItem( tr("Version")));
     mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("V%1").arg(ACRLInfo.nVersion+1)));
+    mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("V%1").arg(BCRLInfo.nVersion + 1)));
+
+    if( ACRLInfo.nVersion == BCRLInfo.nVersion )
+        iconItem->setIcon( QIcon(":/images/valid.png" ));
+    else
+        iconItem->setIcon( QIcon(":/images/invalid.png" ));
+
+    mCompareTable->setItem(i, 3, iconItem );
     i++;
 
     if( ACRLInfo.pIssuerName )
@@ -462,22 +473,47 @@ int X509CompareDlg::compareCRL()
         mCompareTable->setRowHeight(i,10);
         mCompareTable->setItem( i, 0, new QTableWidgetItem( tr("IssuerName")));
         mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(ACRLInfo.pIssuerName)));
+        mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(BCRLInfo.pIssuerName)));
+        if( QString( ACRLInfo.pIssuerName ) == QString( BCRLInfo.pIssuerName ) )
+            iconItem->setIcon( QIcon(":/images/valid.png" ));
+        else
+            iconItem->setIcon( QIcon(":/images/invalid.png" ));
+
+        mCompareTable->setItem(i, 3, iconItem );
         i++;
     }
 
 
     JS_UTIL_getDateTime( ACRLInfo.uThisUpdate, sThisUpdateA );
+    JS_UTIL_getDateTime( BCRLInfo.uThisUpdate, sThisUpdateB );
+
     mCompareTable->insertRow(i);
     mCompareTable->setRowHeight(i,10);
     mCompareTable->setItem( i, 0, new QTableWidgetItem( tr("ThisUpdate")));
     mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(sThisUpdateA)));
+    mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(sThisUpdateB)));
+    if( ACRLInfo.uThisUpdate == BCRLInfo.uThisUpdate )
+        iconItem->setIcon( QIcon(":/images/valid.png" ));
+    else
+        iconItem->setIcon( QIcon(":/images/invalid.png" ));
+
+    mCompareTable->setItem(i, 3, iconItem );
     i++;
 
     JS_UTIL_getDateTime( ACRLInfo.uNextUpdate, sNextUpdateA );
+    JS_UTIL_getDateTime( BCRLInfo.uNextUpdate, sNextUpdateB );
+
     mCompareTable->insertRow(i);
     mCompareTable->setRowHeight(i,10);
     mCompareTable->setItem( i, 0, new QTableWidgetItem( tr("NextUpdate")));
     mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(sNextUpdateA)));
+    mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(sNextUpdateB)));
+    if( ACRLInfo.uNextUpdate == BCRLInfo.uNextUpdate )
+        iconItem->setIcon( QIcon(":/images/valid.png" ));
+    else
+        iconItem->setIcon( QIcon(":/images/invalid.png" ));
+
+    mCompareTable->setItem(i, 3, iconItem );
     i++;
 
     if( ACRLInfo.pSignAlgorithm )
@@ -486,6 +522,13 @@ int X509CompareDlg::compareCRL()
         mCompareTable->setRowHeight(i,10);
         mCompareTable->setItem( i, 0, new QTableWidgetItem( tr("SignAlgorithm")));
         mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(ACRLInfo.pSignAlgorithm)));
+        mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(BCRLInfo.pSignAlgorithm)));
+        if( QString( ACRLInfo.pSignAlgorithm ) == QString( BCRLInfo.pSignAlgorithm ) )
+            iconItem->setIcon( QIcon(":/images/valid.png" ));
+        else
+            iconItem->setIcon( QIcon(":/images/invalid.png" ));
+
+        mCompareTable->setItem(i, 3, iconItem );
         i++;
     }
 
@@ -495,6 +538,14 @@ int X509CompareDlg::compareCRL()
         mCompareTable->setRowHeight(i,10);
         mCompareTable->setItem( i, 0, new QTableWidgetItem( tr("Signature")));
         mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(ACRLInfo.pSignature)));
+        mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(BCRLInfo.pSignature)));
+
+        if( QString( ACRLInfo.pSignature ) == QString( BCRLInfo.pSignature ) )
+            iconItem->setIcon( QIcon(":/images/valid.png" ));
+        else
+            iconItem->setIcon( QIcon(":/images/invalid.png" ));
+
+        mCompareTable->setItem(i, 3, iconItem );
         i++;
     }
 
@@ -502,6 +553,14 @@ int X509CompareDlg::compareCRL()
     mCompareTable->setRowHeight(i,10);
     mCompareTable->setItem(i, 0, new QTableWidgetItem(tr("FingerPrint")));
     mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(getHexString(binFingerA.pVal, binFingerA.nLen))));
+    mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(getHexString(binFingerB.pVal, binFingerB.nLen))));
+
+    if( JS_BIN_cmp( &binFingerA, &binFingerB ) == 0 )
+        iconItem->setIcon( QIcon(":/images/valid.png" ));
+    else
+        iconItem->setIcon( QIcon(":/images/invalid.png" ));
+
+    mCompareTable->setItem(i, 3, iconItem );
     i++;
 
     compareExt( pAExtList, pBExtList );
@@ -522,14 +581,13 @@ int X509CompareDlg::compareCSR()
     int ret = 0;
     int i = 0;
 
-    BIN binPubA = {0,0};
-    BIN binPubB = {0,0};
-
     JReqInfo AReqInfo;
     JReqInfo BReqInfo;
 
     JExtensionInfoList *pAExtList = NULL;
     JExtensionInfoList *pBExtList = NULL;
+
+    QTableWidgetItem *iconItem = new QTableWidgetItem( "" );
 
     memset( &AReqInfo, 0x00, sizeof(JReqInfo));
     memset( &BReqInfo, 0x00, sizeof(JReqInfo));
@@ -550,60 +608,50 @@ int X509CompareDlg::compareCSR()
     mCompareTable->setRowHeight(i,10);
     mCompareTable->setItem( i, 0, new QTableWidgetItem( tr("Version")));
     mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("V%1").arg(AReqInfo.nVersion + 1)));
+    mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("V%1").arg(BReqInfo.nVersion + 1)));
+
+    if( AReqInfo.nVersion == BReqInfo.nVersion )
+        iconItem->setIcon( QIcon(":/images/valid.png" ));
+    else
+        iconItem->setIcon( QIcon(":/images/invalid.png" ));
+
+    mCompareTable->setItem(i, 3, iconItem );
     i++;
 
     if( AReqInfo.pSubjectDN )
     {
-        QString name = QString::fromUtf8( AReqInfo.pSubjectDN );
+        QString nameA = QString::fromUtf8( AReqInfo.pSubjectDN );
+        QString nameB = QString::fromUtf8( BReqInfo.pSubjectDN );
 
         mCompareTable->insertRow(i);
         mCompareTable->setRowHeight(i,10);
         mCompareTable->setItem(i, 0, new QTableWidgetItem(tr("SubjectName")));
-        mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg( name )));
+        mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg( nameA )));
+        mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg( nameB )));
+
+        if( nameA == nameB )
+            iconItem->setIcon( QIcon(":/images/valid.png" ));
+        else
+            iconItem->setIcon( QIcon(":/images/invalid.png" ));
+
+        mCompareTable->setItem(i, 3, iconItem );
         i++;
     }
 
-    mCompareTable->insertRow(i);
-    mCompareTable->setRowHeight(i,10);
-    mCompareTable->setItem(i, 0, new QTableWidgetItem(tr("Verify")));
-    mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(AReqInfo.bVerify ? "Verify" : "Not Verify")));
-    i++;
-
     if( AReqInfo.pPublicKey )
     {
-        int nKeyType = -1;
-        int nOption = -1;
-
-        QString strAlg;
-        QString strParam;
-
-        JS_BIN_decodeHex( AReqInfo.pPublicKey, &binPubA );
-        JS_PKI_getPubKeyInfo( &binPubA, &nKeyType, &nOption );
-
-        strAlg = JS_PKI_getKeyAlgName( nKeyType );
-
-        if( nKeyType == JS_PKI_KEY_TYPE_ECC )
-        {
-            strParam = JS_PKI_getSNFromNid( nOption );
-        }
-        else if( nKeyType == JS_PKI_KEY_TYPE_RSA || nKeyType == JS_PKI_KEY_TYPE_DSA )
-        {
-            strParam = QString( "%1" ).arg( nOption );
-        }
-
-        QTableWidgetItem *item = NULL;
-
         mCompareTable->insertRow(i);
         mCompareTable->setRowHeight(i,10);
         mCompareTable->setItem(i, 0, new QTableWidgetItem(tr("PublicKey")));
+        mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(AReqInfo.pPublicKey)));
+        mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(BReqInfo.pPublicKey)));
 
-        if( strParam.length() > 0 )
-            item = new QTableWidgetItem(QString("%1 (%2)").arg( strAlg ).arg( strParam ));
+        if( QString( AReqInfo.pPublicKey ) == QString( BReqInfo.pPublicKey ) )
+            iconItem->setIcon( QIcon(":/images/valid.png" ));
         else
-            item = new QTableWidgetItem(QString("%1").arg(strAlg));
+            iconItem->setIcon( QIcon(":/images/invalid.png" ));
 
-        item->setData( Qt::UserRole, QString( AReqInfo.pPublicKey ) );
-        mCompareTable->setItem( i, 1, item );
+        mCompareTable->setItem(i, 3, iconItem );
         i++;
     }
 
@@ -613,6 +661,14 @@ int X509CompareDlg::compareCSR()
         mCompareTable->setRowHeight(i,10);
         mCompareTable->setItem(i, 0, new QTableWidgetItem(tr("SigAlgorithm")));
         mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(AReqInfo.pSignAlgorithm)));
+        mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(BReqInfo.pSignAlgorithm)));
+
+        if( QString( AReqInfo.pSignAlgorithm ) == QString( BReqInfo.pSignAlgorithm ) )
+            iconItem->setIcon( QIcon(":/images/valid.png" ));
+        else
+            iconItem->setIcon( QIcon(":/images/invalid.png" ));
+
+        mCompareTable->setItem(i, 3, iconItem );
         i++;
     }
 
@@ -622,6 +678,14 @@ int X509CompareDlg::compareCSR()
         mCompareTable->setRowHeight(i,10);
         mCompareTable->setItem(i, 0, new QTableWidgetItem(tr("Signature")));
         mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(AReqInfo.pSignature)));
+        mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(BReqInfo.pSignature)));
+
+        if( QString( AReqInfo.pSignature ) == QString( BReqInfo.pSignature ) )
+            iconItem->setIcon( QIcon(":/images/valid.png" ));
+        else
+            iconItem->setIcon( QIcon(":/images/invalid.png" ));
+
+        mCompareTable->setItem(i, 3, iconItem );
         i++;
     }
 
@@ -631,6 +695,14 @@ int X509CompareDlg::compareCSR()
         mCompareTable->setRowHeight(i,10);
         mCompareTable->setItem(i, 0, new QTableWidgetItem(tr("Challenge")));
         mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(AReqInfo.pChallenge)));
+        mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(BReqInfo.pChallenge)));
+
+        if( QString( AReqInfo.pChallenge ) == QString( BReqInfo.pChallenge ) )
+            iconItem->setIcon( QIcon(":/images/valid.png" ));
+        else
+            iconItem->setIcon( QIcon(":/images/invalid.png" ));
+
+        mCompareTable->setItem(i, 3, iconItem );
         i++;
     }
 
@@ -640,6 +712,14 @@ int X509CompareDlg::compareCSR()
         mCompareTable->setRowHeight(i,10);
         mCompareTable->setItem(i, 0, new QTableWidgetItem(tr("UnstructuredName")));
         mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(AReqInfo.pUnstructuredName)));
+        mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(BReqInfo.pUnstructuredName)));
+
+        if( QString( AReqInfo.pUnstructuredName ) == QString( BReqInfo.pUnstructuredName ) )
+            iconItem->setIcon( QIcon(":/images/valid.png" ));
+        else
+            iconItem->setIcon( QIcon(":/images/invalid.png" ));
+
+        mCompareTable->setItem(i, 3, iconItem );
         i++;
     }
 
@@ -651,9 +731,6 @@ end :
 
     if( pAExtList ) JS_PKI_resetExtensionInfoList( &pAExtList );
     if( pBExtList ) JS_PKI_resetExtensionInfoList( &pBExtList );
-
-    JS_BIN_reset( &binPubA );
-    JS_BIN_reset( &binPubB );
 }
 
 void X509CompareDlg::clickCompare()
