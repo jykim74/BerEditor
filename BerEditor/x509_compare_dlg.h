@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "ui_x509_compare_dlg.h"
+#include "js_bin.h"
 
 namespace Ui {
 class X509CompareDlg;
@@ -25,6 +26,10 @@ private slots:
 private:
     void initUI();
     void initialize();
+
+private:
+    BIN A_bin_;
+    BIN B_bin_;
 };
 
 #endif // X509_COMPARE_DLG_H
