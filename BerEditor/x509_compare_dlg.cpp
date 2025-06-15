@@ -93,6 +93,78 @@ void X509CompareDlg::clickClear()
     mCompareTable->setRowCount(0);
 }
 
+int X509CompareDlg::compareExt( const JExtensionInfoList *pAExtList, const JExtensionInfoList *pBExtList )
+{
+    int i = mCompareTable->rowCount();
+
+    if( pAExtList )
+    {
+        const JExtensionInfoList *pCurList = pAExtList;
+        const JExtensionInfoList *pFindList = NULL;
+
+        while( pCurList )
+        {
+            QString strValue;
+            QString strSN = pCurList->sExtensionInfo.pOID;
+            bool bCrit = pCurList->sExtensionInfo.bCritical;
+            getInfoValue( &pCurList->sExtensionInfo, strValue );
+
+            pFindList = JS_PKI_getExtensionBySN( strSN.toStdString().c_str(), pBExtList );
+
+            pCurList = pCurList->pNext;
+
+
+            QTableWidgetItem *item = new QTableWidgetItem( strValue );
+            if( bCrit )
+                item->setIcon(QIcon(":/images/critical.png"));
+            else
+                item->setIcon(QIcon(":/images/normal.png"));
+
+            mCompareTable->insertRow(i);
+            mCompareTable->setRowHeight(i,10);
+            mCompareTable->setItem(i,0, CertInfoDlg::getExtNameItem(strSN));
+            mCompareTable->setItem(i, 1, item );
+
+            i++;
+        }
+    }
+
+    if( pBExtList )
+    {
+        const JExtensionInfoList *pCurList = pBExtList;
+        const JExtensionInfoList *pFindList = NULL;
+
+        while( pCurList )
+        {
+            QString strValue;
+            QString strSN = pCurList->sExtensionInfo.pOID;
+            bool bCrit = pCurList->sExtensionInfo.bCritical;
+            getInfoValue( &pCurList->sExtensionInfo, strValue );
+
+            pFindList = JS_PKI_getExtensionBySN( strSN.toStdString().c_str(), pAExtList );
+            if( pFindList == NULL )
+            {
+                QTableWidgetItem *item = new QTableWidgetItem( strValue );
+                if( bCrit )
+                    item->setIcon(QIcon(":/images/critical.png"));
+                else
+                    item->setIcon(QIcon(":/images/normal.png"));
+
+                mCompareTable->insertRow(i);
+                mCompareTable->setRowHeight(i,10);
+                mCompareTable->setItem(i,0, CertInfoDlg::getExtNameItem(strSN));
+                mCompareTable->setItem(i, 1, item );
+
+                i++;
+            }
+
+            pCurList = pCurList->pNext;
+        }
+    }
+
+    return 0;
+}
+
 int X509CompareDlg::compareCert()
 {
     int i = 0;
@@ -104,11 +176,17 @@ int X509CompareDlg::compareCert()
     JExtensionInfoList *pAExtList = NULL;
     JExtensionInfoList *pBExtList = NULL;
 
-    BIN binFinger = {0,0};
-    BIN binPub = {0,0};
+    BIN binFingerA = {0,0};
+    BIN binFingerB = {0,0};
 
-    char    sNotBefore[64];
-    char    sNotAfter[64];
+    BIN binPubA = {0,0};
+    BIN binPubB = {0,0};
+
+    char    sNotBeforeA[64];
+    char    sNotAfterA[64];
+
+    char    sNotBeforeB[64];
+    char    sNotAfterB[64];
 
     memset( &ACertInfo, 0x00, sizeof(JCertInfo));
     memset( &BCertInfo, 0x00, sizeof(JCertInfo));
@@ -125,12 +203,14 @@ int X509CompareDlg::compareCert()
         goto end;
     }
 
-    JS_PKI_genHash( "SHA1", &A_bin_, &binFinger );
+    JS_PKI_genHash( "SHA1", &A_bin_, &binFingerA );
 
     mCompareTable->insertRow(i);
     mCompareTable->setRowHeight(i,10);
     mCompareTable->setItem( i, 0, new QTableWidgetItem( tr("Version")));
     mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("V%1").arg(ACertInfo.nVersion + 1)));
+
+
     i++;
 
     if( ACertInfo.pSerial )
@@ -142,18 +222,18 @@ int X509CompareDlg::compareCert()
         i++;
     }
 
-    JS_UTIL_getDateTime( ACertInfo.uNotBefore, sNotBefore );
+    JS_UTIL_getDateTime( ACertInfo.uNotBefore, sNotBeforeA );
     mCompareTable->insertRow(i);
     mCompareTable->setRowHeight(i,10);
     mCompareTable->setItem( i, 0, new QTableWidgetItem( tr("NotBefore")));
-    mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(sNotBefore)));
+    mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(sNotBeforeA)));
     i++;
 
-    JS_UTIL_getDateTime( ACertInfo.uNotAfter, sNotAfter );
+    JS_UTIL_getDateTime( ACertInfo.uNotAfter, sNotAfterA );
     mCompareTable->insertRow(i);
     mCompareTable->setRowHeight(i,10);
     mCompareTable->setItem( i, 0, new QTableWidgetItem( tr("NotAfter")));
-    mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(sNotAfter)));
+    mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(sNotAfterA)));
     i++;
 
     if( ACertInfo.pSubjectName )
@@ -175,8 +255,8 @@ int X509CompareDlg::compareCert()
         QString strAlg;
         QString strParam;
 
-        JS_BIN_decodeHex( ACertInfo.pPublicKey, &binPub );
-        JS_PKI_getPubKeyInfo( &binPub, &nKeyType, &nOption );
+        JS_BIN_decodeHex( ACertInfo.pPublicKey, &binPubA );
+        JS_PKI_getPubKeyInfo( &binPubA, &nKeyType, &nOption );
 
         strAlg = JS_PKI_getKeyAlgName( nKeyType );
 
@@ -235,37 +315,10 @@ int X509CompareDlg::compareCert()
     mCompareTable->insertRow(i);
     mCompareTable->setRowHeight(i,10);
     mCompareTable->setItem(i, 0, new QTableWidgetItem(tr("FingerPrint")));
-    mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(getHexString(binFinger.pVal, binFinger.nLen))));
+    mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(getHexString(binFingerA.pVal, binFingerA.nLen))));
     i++;
 
-    if( pAExtList )
-    {
-        JExtensionInfoList *pCurList = pAExtList;
-
-        while( pCurList )
-        {
-            QString strValue;
-            QString strSN = pCurList->sExtensionInfo.pOID;
-            bool bCrit = pCurList->sExtensionInfo.bCritical;
-            getInfoValue( &pCurList->sExtensionInfo, strValue );
-
-            pCurList = pCurList->pNext;
-
-
-            QTableWidgetItem *item = new QTableWidgetItem( strValue );
-            if( bCrit )
-                item->setIcon(QIcon(":/images/critical.png"));
-            else
-                item->setIcon(QIcon(":/images/normal.png"));
-
-            mCompareTable->insertRow(i);
-            mCompareTable->setRowHeight(i,10);
-            mCompareTable->setItem(i,0, CertInfoDlg::getExtNameItem(strSN));
-            mCompareTable->setItem(i, 1, item );
-
-            i++;
-        }
-    }
+    compareExt( pAExtList, pBExtList );
 
 end :
     JS_PKI_resetCertInfo( &ACertInfo );
@@ -274,8 +327,10 @@ end :
     if( pAExtList ) JS_PKI_resetExtensionInfoList( &pAExtList );
     if( pBExtList ) JS_PKI_resetExtensionInfoList( &pBExtList );
 
-    JS_BIN_reset( &binFinger );
-    JS_BIN_reset( &binPub );
+    JS_BIN_reset( &binFingerA );
+    JS_BIN_reset( &binFingerB );
+    JS_BIN_reset( &binPubA );
+    JS_BIN_reset( &binPubB );
 }
 
 int X509CompareDlg::compareCRL()
@@ -283,10 +338,14 @@ int X509CompareDlg::compareCRL()
     int ret = 0;
     int i = 0;
 
-    BIN binFinger = {0,0};
+    BIN binFingerA = {0,0};
+    BIN binFingerB = {0,0};
 
-    char    sThisUpdate[64];
-    char    sNextUpdate[64];
+    char    sThisUpdateA[64];
+    char    sNextUpdateA[64];
+
+    char    sThisUpdateB[64];
+    char    sNextUpdateB[64];
 
     JCRLInfo ACRLInfo;
     JCRLInfo BCRLInfo;
@@ -308,7 +367,7 @@ int X509CompareDlg::compareCRL()
         goto end;
     }
 
-    JS_PKI_genHash( "SHA1", &A_bin_, &binFinger );
+    JS_PKI_genHash( "SHA1", &A_bin_, &binFingerA );
 
     mCompareTable->insertRow(i);
     mCompareTable->setRowHeight(i,10);
@@ -326,18 +385,18 @@ int X509CompareDlg::compareCRL()
     }
 
 
-    JS_UTIL_getDateTime( ACRLInfo.uThisUpdate, sThisUpdate );
+    JS_UTIL_getDateTime( ACRLInfo.uThisUpdate, sThisUpdateA );
     mCompareTable->insertRow(i);
     mCompareTable->setRowHeight(i,10);
     mCompareTable->setItem( i, 0, new QTableWidgetItem( tr("ThisUpdate")));
-    mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(sThisUpdate)));
+    mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(sThisUpdateA)));
     i++;
 
-    JS_UTIL_getDateTime( ACRLInfo.uNextUpdate, sNextUpdate );
+    JS_UTIL_getDateTime( ACRLInfo.uNextUpdate, sNextUpdateA );
     mCompareTable->insertRow(i);
     mCompareTable->setRowHeight(i,10);
     mCompareTable->setItem( i, 0, new QTableWidgetItem( tr("NextUpdate")));
-    mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(sNextUpdate)));
+    mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(sNextUpdateA)));
     i++;
 
     if( ACRLInfo.pSignAlgorithm )
@@ -358,38 +417,13 @@ int X509CompareDlg::compareCRL()
         i++;
     }
 
-    if( pAExtList )
-    {
-        JExtensionInfoList *pCurList = pAExtList;
-
-        while( pCurList )
-        {
-            QString strValue;
-            QString strSN = pCurList->sExtensionInfo.pOID;
-            bool bCrit = pCurList->sExtensionInfo.bCritical;
-            getInfoValue( &pCurList->sExtensionInfo, strValue );
-
-            QTableWidgetItem *item = new QTableWidgetItem( strValue );
-            if( bCrit )
-                item->setIcon(QIcon(":/images/critical.png"));
-            else
-                item->setIcon(QIcon(":/images/normal.png"));
-
-            mCompareTable->insertRow(i);
-            mCompareTable->setRowHeight(i,10);
-            mCompareTable->setItem(i,0, CRLInfoDlg::getExtNameItem(strSN));
-            mCompareTable->setItem(i,1, item );
-
-            pCurList = pCurList->pNext;
-            i++;
-        }
-    }
-
     mCompareTable->insertRow(i);
     mCompareTable->setRowHeight(i,10);
     mCompareTable->setItem(i, 0, new QTableWidgetItem(tr("FingerPrint")));
-    mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(getHexString(binFinger.pVal, binFinger.nLen))));
+    mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(getHexString(binFingerA.pVal, binFingerA.nLen))));
     i++;
+
+    compareExt( pAExtList, pBExtList );
 
 end :
     JS_PKI_resetCRLInfo( &ACRLInfo );
@@ -398,7 +432,8 @@ end :
     if( pAExtList ) JS_PKI_resetExtensionInfoList( &pAExtList );
     if( pBExtList ) JS_PKI_resetExtensionInfoList( &pBExtList );
 
-    JS_BIN_reset( &binFinger );
+    JS_BIN_reset( &binFingerA );
+    JS_BIN_reset( &binFingerB );
 }
 
 int X509CompareDlg::compareCSR()
@@ -406,7 +441,8 @@ int X509CompareDlg::compareCSR()
     int ret = 0;
     int i = 0;
 
-    BIN binPub = {0,0};
+    BIN binPubA = {0,0};
+    BIN binPubB = {0,0};
 
     JReqInfo AReqInfo;
     JReqInfo BReqInfo;
@@ -460,8 +496,8 @@ int X509CompareDlg::compareCSR()
         QString strAlg;
         QString strParam;
 
-        JS_BIN_decodeHex( AReqInfo.pPublicKey, &binPub );
-        JS_PKI_getPubKeyInfo( &binPub, &nKeyType, &nOption );
+        JS_BIN_decodeHex( AReqInfo.pPublicKey, &binPubA );
+        JS_PKI_getPubKeyInfo( &binPubA, &nKeyType, &nOption );
 
         strAlg = JS_PKI_getKeyAlgName( nKeyType );
 
@@ -526,35 +562,7 @@ int X509CompareDlg::compareCSR()
         i++;
     }
 
-
-    if( pAExtList )
-    {
-        JExtensionInfoList *pCurList = pAExtList;
-
-        while( pCurList )
-        {
-            QString strValue;
-            QString strSN = pCurList->sExtensionInfo.pOID;
-            bool bCrit = pCurList->sExtensionInfo.bCritical;
-            getInfoValue( &pCurList->sExtensionInfo, strValue );
-
-            QTableWidgetItem *item = new QTableWidgetItem( strValue );
-            if( bCrit )
-                item->setIcon(QIcon(":/images/critical.png"));
-            else
-                item->setIcon(QIcon(":/images/normal.png"));
-
-            mCompareTable->insertRow(i);
-            mCompareTable->setRowHeight(i,10);
-
-            mCompareTable->setItem(i,0, CSRInfoDlg::getExtNameItem( strSN ));
-            mCompareTable->setItem(i, 1, item );
-
-
-            pCurList = pCurList->pNext;
-            i++;
-        }
-    }
+    compareExt( pAExtList, pBExtList );
 
 end :
     JS_PKI_resetReqInfo( &AReqInfo );
@@ -563,7 +571,8 @@ end :
     if( pAExtList ) JS_PKI_resetExtensionInfoList( &pAExtList );
     if( pBExtList ) JS_PKI_resetExtensionInfoList( &pBExtList );
 
-    JS_BIN_reset( &binPub );
+    JS_BIN_reset( &binPubA );
+    JS_BIN_reset( &binPubB );
 }
 
 void X509CompareDlg::clickCompare()

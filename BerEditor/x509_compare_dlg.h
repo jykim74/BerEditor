@@ -4,6 +4,7 @@
 #include <QDialog>
 #include "ui_x509_compare_dlg.h"
 #include "js_bin.h"
+#include "js_pki_x509.h"
 
 namespace Ui {
 class X509CompareDlg;
@@ -27,6 +28,7 @@ private:
     void initUI();
     void initialize();
 
+    int compareExt( const JExtensionInfoList *pAExtList, const JExtensionInfoList *pBExtList );
     int compareCert();
     int compareCRL();
     int compareCSR();
