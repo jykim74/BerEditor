@@ -27,7 +27,7 @@ public:
     int setCertPath( const QString strPath );
     void setCertBIN( const BIN *pCert );
 
-    QTableWidgetItem* getExtNameItem( const QString strSN );
+    static QTableWidgetItem* getExtNameItem( const QString strSN );
 
     static const QString getCRL_URIFromExt( const QString strExtCRLDP );
     static const QString getOCSP_URIFromExt( const QString strExtAIA );

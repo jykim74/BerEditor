@@ -26,7 +26,7 @@ public:
     int setReqPath( const QString strPath );
     void setReqBIN( const BIN *pReq );
 
-    QTableWidgetItem* getExtNameItem( const QString strSN );
+    static QTableWidgetItem* getExtNameItem( const QString strSN );
 
 private slots:
     void showEvent(QShowEvent *event);

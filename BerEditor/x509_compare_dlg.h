@@ -27,6 +27,10 @@ private:
     void initUI();
     void initialize();
 
+    int compareCert();
+    int compareCRL();
+    int compareCSR();
+
 private:
     BIN A_bin_;
     BIN B_bin_;

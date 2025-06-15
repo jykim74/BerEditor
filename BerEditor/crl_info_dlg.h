@@ -24,7 +24,7 @@ public:
     ~CRLInfoDlg();
 
     int setCRLPath( const QString strPath );
-    QTableWidgetItem* getExtNameItem( const QString strSN );
+    static QTableWidgetItem* getExtNameItem( const QString strSN );
 
     void setCRL_BIN( const BIN *pCRL );
 
