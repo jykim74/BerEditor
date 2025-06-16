@@ -19,10 +19,20 @@ public:
     ~X509CompareDlg();
 
 private slots:
+    void changeType();
+
     void clickAFind();
     void clickBFind();
     void clickClear();
     void clickCompare();
+
+    void clickCompareTable( QModelIndex index );
+
+    void clickViewA();
+    void clickDecodeA();
+
+    void clickViewB();
+    void clickDecodeB();
 
 private:
     void initUI();

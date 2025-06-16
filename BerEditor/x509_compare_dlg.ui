@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>524</width>
-    <height>643</height>
+    <width>718</width>
+    <height>656</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,7 +22,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="mTitleLabel">
        <property name="text">
-        <string>Certificate Compare</string>
+        <string>Certificate Comparison</string>
        </property>
       </widget>
      </item>
@@ -50,25 +50,21 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_3">
+     <item row="1" column="3">
+      <widget class="QPushButton" name="mBViewBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>V</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="1">
       <widget class="QLineEdit" name="mAPathText"/>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="mBPathText"/>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="mALabel">
-       <property name="text">
-        <string>A Path</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="mBLabel">
-       <property name="text">
-        <string>B Path</string>
-       </property>
-      </widget>
      </item>
      <item row="0" column="2">
       <widget class="QPushButton" name="mAFindBtn">
@@ -77,10 +73,72 @@
        </property>
       </widget>
      </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="mBPathText"/>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mAViewBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>V</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mADecodeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>D</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="mBPathLabel">
+       <property name="text">
+        <string>B Certificate Path</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="mAPathLabel">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>A Certificate Path</string>
+       </property>
+      </widget>
+     </item>
      <item row="1" column="2">
       <widget class="QPushButton" name="mBFindBtn">
        <property name="text">
         <string>Find</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="4">
+      <widget class="QPushButton" name="mBDecodeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>D</string>
        </property>
       </widget>
      </item>
@@ -94,6 +152,20 @@
     </widget>
    </item>
    <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="mCompareLabel">
+       <property name="text">
+        <string>Not Compared</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <widget class="QTableWidget" name="mCompareTable">
      <property name="minimumSize">
       <size>
@@ -101,6 +173,9 @@
        <height>300</height>
       </size>
      </property>
+     <attribute name="horizontalHeaderHighlightSections">
+      <bool>false</bool>
+     </attribute>
      <attribute name="verticalHeaderHighlightSections">
       <bool>false</bool>
      </attribute>
@@ -119,11 +194,31 @@
       <number>0</number>
      </property>
      <item row="0" column="0">
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="mInfoLabel">
        <property name="text">
-        <string>Compare Information</string>
+        <string>Certificate Comparison Information</string>
        </property>
       </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="mFieldCompLabel">
+       <property name="text">
+        <string>Same</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
      </item>
     </layout>
    </item>
@@ -131,8 +226,8 @@
     <widget class="QPlainTextEdit" name="mCompareInfoText">
      <property name="minimumSize">
       <size>
-       <width>500</width>
-       <height>0</height>
+       <width>700</width>
+       <height>120</height>
       </size>
      </property>
      <property name="palette">
