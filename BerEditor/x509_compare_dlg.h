@@ -26,6 +26,7 @@ private slots:
     void clickClear();
     void clickCompare();
 
+    void clickShowInfo();
     void clickCompareTable( QModelIndex index );
 
     void clickViewA();

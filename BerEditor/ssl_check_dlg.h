@@ -33,6 +33,7 @@ private slots:
     void clickClearSaveURL();
     void clickClearResult();
     void clickClearLog();
+    void clickShowInfo();
 
     void clickAddCipher();
     void checkFixCipherName();

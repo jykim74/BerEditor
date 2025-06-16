@@ -196,6 +196,7 @@ SSLCheckDlg::SSLCheckDlg(QWidget *parent) :
     connect( mFixCipherNameCheck, SIGNAL(clicked()), this, SLOT(checkFixCipherName()));
     connect( mCipherClearBtn, SIGNAL(clicked()), this, SLOT(clickClearCipher()));
     connect( mViewTrustListBtn, SIGNAL(clicked()), this, SLOT(clickViewTrustList()));
+    connect( mShowInfoBtn, SIGNAL(clicked()), this, SLOT(clickShowInfo()));
 
     connect( mURLTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotTableMenuRequested(QPoint)));
     connect( mURLTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(viewCertTableMenu()));
@@ -229,6 +230,7 @@ SSLCheckDlg::SSLCheckDlg(QWidget *parent) :
     mCheckBtn->setDefault(true);
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+
     mServerTab->layout()->setSpacing(5);
     mServerTab->layout()->setMargin(5);
     mMutualTab->layout()->setSpacing(5);
@@ -277,7 +279,7 @@ void SSLCheckDlg::log( const QString strLog, QColor cr )
     cursor.insertText( "\n" );
 
     mLogText->setTextCursor( cursor );
-    mLogText->update();
+    mLogText->repaint();
 }
 
 void SSLCheckDlg::elog( const QString strLog )
@@ -500,9 +502,9 @@ int SSLCheckDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
         }
     }
 
-    log( "========================================================================");
+    log( "===================================================================");
     log( QString( "SSL Host:Port       : %1:%2" ).arg( strHost ).arg( nPort ));
-    log( "------------------------------------------------------------------------");
+    log( "-------------------------------------------------------------------");
 
     int nSockFd = JS_NET_connect( strHost.toStdString().c_str(), nPort );
     if( nSockFd < 0 )
@@ -655,7 +657,7 @@ int SSLCheckDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
 
     createTree( strHost, nPort, pCertList, bGood );
 
-    log( "========================================================================");
+    log( "===================================================================");
 
 end :
     if( pSSL ) JS_SSL_clear( pSSL );
@@ -1033,6 +1035,11 @@ void SSLCheckDlg::clickClearResult()
 void SSLCheckDlg::clickClearLog()
 {
     mLogText->clear();
+}
+
+void SSLCheckDlg::clickShowInfo()
+{
+    mInfoDock->show();
 }
 
 void SSLCheckDlg::findTrustCACert()

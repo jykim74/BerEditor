@@ -29,6 +29,7 @@ X509CompareDlg::X509CompareDlg(QWidget *parent)
 
     connect( mTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeType()));
 
+    connect( mShowInfoBtn, SIGNAL(clicked()), this, SLOT(clickShowInfo()));
     connect( mCompareTable, SIGNAL(clicked(QModelIndex)), this, SLOT(clickCompareTable(QModelIndex)));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mAFindBtn, SIGNAL(clicked()), this, SLOT(clickAFind()));
@@ -44,6 +45,11 @@ X509CompareDlg::X509CompareDlg(QWidget *parent)
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+
+    mAViewBtn->setFixedWidth(34);
+    mADecodeBtn->setFixedWidth(34);
+    mBViewBtn->setFixedWidth(34);
+    mBDecodeBtn->setFixedWidth(34);
 #endif
     resize(minimumSizeHint().width(), minimumSizeHint().height());
     mCompareBtn->setDefault(true);
@@ -64,8 +70,6 @@ void X509CompareDlg::changeType()
 
     mCompareTable->horizontalHeaderItem(1)->setText( tr("A %1 value").arg( strType ));
     mCompareTable->horizontalHeaderItem(2)->setText( tr("B %1 value").arg( strType ));
-
-    mInfoLabel->setText( tr( "%1 Comparison Information" ).arg( strType ));
 }
 
 void X509CompareDlg::initUI()
@@ -87,7 +91,6 @@ void X509CompareDlg::initUI()
 
     mTypeCombo->addItems( sTypeList );
     mResBtn->setIcon( QIcon( ":/images/compare.png" ));
-    mFieldResBtn->setIcon( QIcon( ":/images/compare.png" ));
 }
 
 
@@ -135,11 +138,10 @@ void X509CompareDlg::clickBFind()
 void X509CompareDlg::clickClear()
 {
     mCompareTable->setRowCount(0);
-    mCompareInfoText->clear();
-    mFieldCompLabel->setText( tr( "Field Name" ));
+    mAInfoText->clear();
+    mBInfoText->clear();
     mCompareLabel->setText( tr( "Not Compared" ));
     mResBtn->setIcon( QIcon( ":/images/compare.png" ));
-    mFieldResBtn->setIcon( QIcon( ":/images/compare.png" ));
 }
 
 int X509CompareDlg::compareExt( const JExtensionInfoList *pAExtList, const JExtensionInfoList *pBExtList )
@@ -1086,13 +1088,19 @@ end :
     return;
 }
 
+void X509CompareDlg::clickShowInfo()
+{
+    mInfoDock->show();
+}
+
 void X509CompareDlg::clickCompareTable( QModelIndex index )
 {
     int row = index.row();
-    QString strInfo;
+    QString strInfoA;
+    QString strInfoB;
 
-    QString strLine = QString( "====================================================================\n" );
-    QString strLine2 = QString( "--------------------------------------------------------------------\n" );
+    QString strLine = QString( "=======================================\n" );
+    QString strLine2 = QString( "---------------------------------------\n" );
 
     QTableWidgetItem *item0 = mCompareTable->item( row, 0 );
     QTableWidgetItem* item1 = mCompareTable->item( row, 1 );
@@ -1100,36 +1108,35 @@ void X509CompareDlg::clickCompareTable( QModelIndex index )
 
     if( item0 == NULL || item1 == NULL ) return;
 
-    if( item0->data(Qt::UserRole).toInt() == 0 )
-        mFieldResBtn->setIcon( QIcon( kValidIcon ));
-    else
-        mFieldResBtn->setIcon( QIcon( kInvalidIcon ));
+    strInfoA += strLine;
+    strInfoA += QString( "== %1\n").arg( item0->text() );
+    strInfoA += strLine;
 
-    mFieldCompLabel->setText( item0->text() );
+    strInfoB = strInfoA;
 
-    strInfo += strLine;
-    strInfo += QString( "== %1\n").arg( item0->text() );
-    strInfo += strLine;
-    strInfo += QString( "-- A value" );
+    strInfoA += QString( "-- A value" );
 
     if( item1->data(Qt::UserRole).toString().length() > 0 )
-        strInfo += QString( " [%1]" ).arg( item1->data(Qt::UserRole).toString() );
+        strInfoA += QString( " [%1]" ).arg( item1->data(Qt::UserRole).toString() );
 
-    strInfo += "\n";
-    strInfo += strLine2;
-    strInfo += QString( "%1\n" ).arg( item1->text() );
-    strInfo += strLine;
-    strInfo += QString( "-- B value" );
+    strInfoA += "\n";
+    strInfoA += strLine2;
+    strInfoA += QString( "%1\n" ).arg( item1->text() );
+    strInfoA += strLine;
+
+
+    strInfoB += QString( "-- B value" );
 
     if( item2->data(Qt::UserRole).toString().length() > 0 )
-        strInfo += QString( " [%1]" ).arg( item2->data(Qt::UserRole).toString() );
+        strInfoB += QString( " [%1]" ).arg( item2->data(Qt::UserRole).toString() );
 
-    strInfo += "\n";
-    strInfo += strLine2;
-    strInfo += QString( "%1\n" ).arg( item2->text() );
-    strInfo += strLine;
+    strInfoB += "\n";
+    strInfoB += strLine2;
+    strInfoB += QString( "%1\n" ).arg( item2->text() );
+    strInfoB += strLine;
 
-    mCompareInfoText->setPlainText( strInfo );
+    mAInfoText->setPlainText( strInfoA );
+    mBInfoText->setPlainText( strInfoB );
 }
 
 void X509CompareDlg::clickViewA()
