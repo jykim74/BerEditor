@@ -16393,8 +16393,12 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../x509_compare_dlg.ui" line="206"/>
+        <source>Field Name</source>
+        <translation>필드 이름</translation>
+    </message>
+    <message>
         <source>Same</source>
-        <translation>동일</translation>
+        <translation type="vanished">동일</translation>
     </message>
     <message>
         <location filename="../x509_compare_dlg.ui" line="277"/>

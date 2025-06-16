@@ -46,6 +46,7 @@ X509CompareDlg::X509CompareDlg(QWidget *parent)
     layout()->setSpacing(5);
 #endif
     resize(minimumSizeHint().width(), minimumSizeHint().height());
+    mCompareBtn->setDefault(true);
 }
 
 X509CompareDlg::~X509CompareDlg()
@@ -81,10 +82,12 @@ void X509CompareDlg::initUI()
     mCompareTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mCompareTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    mCompareTable->setColumnWidth( 0, 160 );
-    mCompareTable->setColumnWidth( 1, 270 );
+    mCompareTable->setColumnWidth( 0, 140 );
+    mCompareTable->setColumnWidth( 1, 280 );
 
     mTypeCombo->addItems( sTypeList );
+    mResBtn->setIcon( QIcon( ":/images/compare.png" ));
+    mFieldResBtn->setIcon( QIcon( ":/images/compare.png" ));
 }
 
 
@@ -132,6 +135,11 @@ void X509CompareDlg::clickBFind()
 void X509CompareDlg::clickClear()
 {
     mCompareTable->setRowCount(0);
+    mCompareInfoText->clear();
+    mFieldCompLabel->setText( tr( "Field Name" ));
+    mCompareLabel->setText( tr( "Not Compared" ));
+    mResBtn->setIcon( QIcon( ":/images/compare.png" ));
+    mFieldResBtn->setIcon( QIcon( ":/images/compare.png" ));
 }
 
 int X509CompareDlg::compareExt( const JExtensionInfoList *pAExtList, const JExtensionInfoList *pBExtList )
@@ -179,9 +187,15 @@ int X509CompareDlg::compareExt( const JExtensionInfoList *pAExtList, const JExte
 
                 if( pCurList->sExtensionInfo.bCritical == pFindList->sExtensionInfo.bCritical &&
                     QString( pCurList->sExtensionInfo.pValue ) == QString( pFindList->sExtensionInfo.pValue ))
+                {
+                    mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
                     strIcon = kValidIcon;
+                }
                 else
+                {
+                    mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
                     strIcon = kInvalidIcon;
+                }
 
                 mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
             }
@@ -190,6 +204,7 @@ int X509CompareDlg::compareExt( const JExtensionInfoList *pAExtList, const JExte
                 strIcon = kInvalidIcon;
                 mCompareTable->setItem(i, 2, new QTableWidgetItem( "" ) );
                 mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
+                mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
             }
 
             pCurList = pCurList->pNext;
@@ -226,6 +241,7 @@ int X509CompareDlg::compareExt( const JExtensionInfoList *pAExtList, const JExte
 
                 strIcon = kInvalidIcon;
                 mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
+                mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
                 i++;
             }
 
@@ -283,9 +299,15 @@ int X509CompareDlg::compareCert()
     mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("V%1").arg(BCertInfo.nVersion + 1)));
 
     if( ACertInfo.nVersion == BCertInfo.nVersion )
+    {
+        mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
         strIcon = kValidIcon;
+    }
     else
+    {
+        mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
         strIcon = kInvalidIcon;
+    }
 
     mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
 
@@ -300,9 +322,15 @@ int X509CompareDlg::compareCert()
         mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(BCertInfo.pSerial)));
 
         if( QString( ACertInfo.pSerial ) == QString( BCertInfo.pSerial ) )
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
             strIcon = kValidIcon;
+        }
         else
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
             strIcon = kInvalidIcon;
+        }
 
         mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
         i++;
@@ -318,9 +346,15 @@ int X509CompareDlg::compareCert()
     mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(sNotBeforeB)));
 
     if( QString( sNotBeforeA ) == QString( sNotBeforeB ) )
+    {
+        mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
         strIcon = kValidIcon;
+    }
     else
+    {
+        mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
         strIcon = kInvalidIcon;
+    }
 
     mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
     i++;
@@ -335,9 +369,15 @@ int X509CompareDlg::compareCert()
     mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(sNotAfterB)));
 
     if( QString( sNotAfterA ) == QString( sNotAfterB ) )
+    {
+        mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
         strIcon = kValidIcon;
+    }
     else
+    {
+        mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
         strIcon = kInvalidIcon;
+    }
 
     mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
     i++;
@@ -354,9 +394,15 @@ int X509CompareDlg::compareCert()
         mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg( nameB )));
 
         if( nameA == nameB )
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
             strIcon = kValidIcon;
+        }
         else
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
             strIcon = kInvalidIcon;
+        }
 
         mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
         i++;
@@ -371,9 +417,15 @@ int X509CompareDlg::compareCert()
         mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(BCertInfo.pPublicKey)));
 
         if( QString( ACertInfo.pPublicKey ) == QString( BCertInfo.pPublicKey ) )
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
             strIcon = kValidIcon;
+        }
         else
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
             strIcon = kInvalidIcon;
+        }
 
         mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
 
@@ -389,9 +441,15 @@ int X509CompareDlg::compareCert()
         mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(BCertInfo.pIssuerName)));
 
         if( QString( ACertInfo.pIssuerName ) == QString( BCertInfo.pIssuerName ) )
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
             strIcon = kValidIcon;
+        }
         else
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
             strIcon = kInvalidIcon;
+        }
 
         mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
         i++;
@@ -406,9 +464,15 @@ int X509CompareDlg::compareCert()
         mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(BCertInfo.pSignAlgorithm)));
 
         if( QString( ACertInfo.pSignAlgorithm ) == QString( BCertInfo.pSignAlgorithm ) )
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
             strIcon = kValidIcon;
+        }
         else
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
             strIcon = kInvalidIcon;
+        }
 
         mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
         i++;
@@ -423,9 +487,15 @@ int X509CompareDlg::compareCert()
         mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(BCertInfo.pSignature)));
 
         if( QString( ACertInfo.pSignature ) == QString( BCertInfo.pSignature ) )
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
             strIcon = kValidIcon;
+        }
         else
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
             strIcon = kInvalidIcon;
+        }
 
         mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
         i++;
@@ -440,14 +510,17 @@ int X509CompareDlg::compareCert()
     if( JS_BIN_cmp( &binFingerA, &binFingerB ) == 0 )
     {
         strIcon = kValidIcon;
+        mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
         mCompareLabel->setText( tr( "A and B %1 are the same" ).arg( mTypeCombo->currentText() ));
     }
     else
     {
         strIcon = kInvalidIcon;
+        mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
         mCompareLabel->setText( tr( "A and B %1 are different" ).arg( mTypeCombo->currentText() ));
     }
 
+    mResBtn->setIcon( QIcon(strIcon));
     mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
     i++;
 
@@ -510,9 +583,15 @@ int X509CompareDlg::compareCRL()
     mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("V%1").arg(BCRLInfo.nVersion + 1)));
 
     if( ACRLInfo.nVersion == BCRLInfo.nVersion )
+    {
+        mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
         strIcon = kValidIcon;
+    }
     else
+    {
+        mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
         strIcon = kInvalidIcon;
+    }
 
     mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
     i++;
@@ -525,9 +604,15 @@ int X509CompareDlg::compareCRL()
         mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(ACRLInfo.pIssuerName)));
         mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(BCRLInfo.pIssuerName)));
         if( QString( ACRLInfo.pIssuerName ) == QString( BCRLInfo.pIssuerName ) )
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
             strIcon = kValidIcon;
+        }
         else
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
             strIcon = kInvalidIcon;
+        }
 
         mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
         i++;
@@ -543,9 +628,15 @@ int X509CompareDlg::compareCRL()
     mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(sThisUpdateA)));
     mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(sThisUpdateB)));
     if( ACRLInfo.uThisUpdate == BCRLInfo.uThisUpdate )
+    {
+        mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
         strIcon = kValidIcon;
+    }
     else
+    {
+        mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
         strIcon = kInvalidIcon;
+    }
 
     mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
     i++;
@@ -559,9 +650,15 @@ int X509CompareDlg::compareCRL()
     mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(sNextUpdateA)));
     mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(sNextUpdateB)));
     if( ACRLInfo.uNextUpdate == BCRLInfo.uNextUpdate )
+    {
+        mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
         strIcon = kValidIcon;
+    }
     else
+    {
+        mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
         strIcon = kInvalidIcon;
+    }
 
     mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
     i++;
@@ -574,9 +671,15 @@ int X509CompareDlg::compareCRL()
         mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(ACRLInfo.pSignAlgorithm)));
         mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(BCRLInfo.pSignAlgorithm)));
         if( QString( ACRLInfo.pSignAlgorithm ) == QString( BCRLInfo.pSignAlgorithm ) )
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
             strIcon = kValidIcon;
+        }
         else
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
             strIcon = kInvalidIcon;
+        }
 
         mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
         i++;
@@ -591,9 +694,15 @@ int X509CompareDlg::compareCRL()
         mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(BCRLInfo.pSignature)));
 
         if( QString( ACRLInfo.pSignature ) == QString( BCRLInfo.pSignature ) )
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
             strIcon = kValidIcon;
+        }
         else
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
             strIcon = kInvalidIcon;
+        }
 
         mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
         i++;
@@ -608,14 +717,17 @@ int X509CompareDlg::compareCRL()
     if( JS_BIN_cmp( &binFingerA, &binFingerB ) == 0 )
     {
         strIcon = kValidIcon;
+        mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
         mCompareLabel->setText( tr( "A and B %1 are the same" ).arg( mTypeCombo->currentText() ));
     }
     else
     {
         strIcon = kInvalidIcon;
+        mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
         mCompareLabel->setText( tr( "A and B %1 are different" ).arg( mTypeCombo->currentText() ));
     }
 
+    mResBtn->setIcon( QIcon(strIcon));
     mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
     i++;
 
@@ -673,9 +785,15 @@ int X509CompareDlg::compareCSR()
     mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("V%1").arg(BReqInfo.nVersion + 1)));
 
     if( AReqInfo.nVersion == BReqInfo.nVersion )
+    {
+        mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
         strIcon = kValidIcon;
+    }
     else
+    {
+        mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
         strIcon = kInvalidIcon;
+    }
 
     mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
     i++;
@@ -692,9 +810,15 @@ int X509CompareDlg::compareCSR()
         mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg( nameB )));
 
         if( nameA == nameB )
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
             strIcon = kValidIcon;
+        }
         else
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
             strIcon = kInvalidIcon;
+        }
 
         mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
         i++;
@@ -709,9 +833,15 @@ int X509CompareDlg::compareCSR()
         mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(BReqInfo.pPublicKey)));
 
         if( QString( AReqInfo.pPublicKey ) == QString( BReqInfo.pPublicKey ) )
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
             strIcon = kValidIcon;
+        }
         else
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
             strIcon = kInvalidIcon;
+        }
 
         mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
         i++;
@@ -726,9 +856,15 @@ int X509CompareDlg::compareCSR()
         mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(BReqInfo.pSignAlgorithm)));
 
         if( QString( AReqInfo.pSignAlgorithm ) == QString( BReqInfo.pSignAlgorithm ) )
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
             strIcon = kValidIcon;
+        }
         else
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
             strIcon = kInvalidIcon;
+        }
 
         mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
         i++;
@@ -743,9 +879,15 @@ int X509CompareDlg::compareCSR()
         mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(BReqInfo.pSignature)));
 
         if( QString( AReqInfo.pSignature ) == QString( BReqInfo.pSignature ) )
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
             strIcon = kValidIcon;
+        }
         else
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
             strIcon = kInvalidIcon;
+        }
 
         mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
         i++;
@@ -760,9 +902,15 @@ int X509CompareDlg::compareCSR()
         mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(BReqInfo.pChallenge)));
 
         if( QString( AReqInfo.pChallenge ) == QString( BReqInfo.pChallenge ) )
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
             strIcon = kValidIcon;
+        }
         else
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
             strIcon = kInvalidIcon;
+        }
 
         mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
         i++;
@@ -777,9 +925,15 @@ int X509CompareDlg::compareCSR()
         mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(BReqInfo.pUnstructuredName)));
 
         if( QString( AReqInfo.pUnstructuredName ) == QString( BReqInfo.pUnstructuredName ) )
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
             strIcon = kValidIcon;
+        }
         else
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
             strIcon = kInvalidIcon;
+        }
 
         mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
         i++;
@@ -794,14 +948,17 @@ int X509CompareDlg::compareCSR()
     if( JS_BIN_cmp( &binFingerA, &binFingerB ) == 0 )
     {
         strIcon = kValidIcon;
+        mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
         mCompareLabel->setText( tr( "A and B %1 are the same" ).arg( mTypeCombo->currentText() ));
     }
     else
     {
         strIcon = kInvalidIcon;
+        mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
         mCompareLabel->setText( tr( "A and B %1 are different" ).arg( mTypeCombo->currentText() ));
     }
 
+    mResBtn->setIcon( QIcon(strIcon));
     mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
     i++;
 
@@ -928,11 +1085,16 @@ void X509CompareDlg::clickCompareTable( QModelIndex index )
 
     if( item0 == NULL || item1 == NULL ) return;
 
+    if( item0->data(Qt::UserRole).toInt() == 0 )
+        mFieldResBtn->setIcon( QIcon( kValidIcon ));
+    else
+        mFieldResBtn->setIcon( QIcon( kInvalidIcon ));
+
     mFieldCompLabel->setText( item0->text() );
 
     strInfo += strLine;
     strInfo += QString( "== %1\n").arg( item0->text() );
-    strInfo += strLine2;
+    strInfo += strLine;
     strInfo += QString( "-- A value\n" );
     strInfo += strLine2;
     strInfo += QString( "%1\n" ).arg( item1->text() );

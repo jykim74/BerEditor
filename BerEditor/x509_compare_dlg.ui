@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>718</width>
-    <height>656</height>
+    <height>696</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -156,12 +156,47 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="0">
+     <item row="0" column="1">
       <widget class="QLabel" name="mCompareLabel">
        <property name="text">
         <string>Not Compared</string>
        </property>
       </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mResBtn">
+       <property name="minimumSize">
+        <size>
+         <width>20</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
      </item>
     </layout>
    </item>
@@ -193,17 +228,10 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="0">
-      <widget class="QLabel" name="mInfoLabel">
-       <property name="text">
-        <string>Certificate Comparison Information</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
+     <item row="0" column="3">
       <widget class="QLabel" name="mFieldCompLabel">
        <property name="text">
-        <string>Same</string>
+        <string>Field Name</string>
        </property>
       </widget>
      </item>
@@ -220,6 +248,29 @@
        </property>
       </spacer>
      </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="mInfoLabel">
+       <property name="text">
+        <string>Certificate Comparison Information</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mFieldResBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
@@ -227,7 +278,7 @@
      <property name="minimumSize">
       <size>
        <width>700</width>
-       <height>120</height>
+       <height>160</height>
       </size>
      </property>
      <property name="palette">
