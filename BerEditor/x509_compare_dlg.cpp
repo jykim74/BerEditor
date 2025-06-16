@@ -162,10 +162,17 @@ int X509CompareDlg::compareExt( const JExtensionInfoList *pAExtList, const JExte
             pFindList = JS_PKI_getExtensionBySN( strSN.toStdString().c_str(), pBExtList );
 
             QTableWidgetItem *item = new QTableWidgetItem( strValue );
+
             if( bCrit )
+            {
                 item->setIcon(QIcon(":/images/critical.png"));
+                item->setData( Qt::UserRole, "critical" );
+            }
             else
+            {
                 item->setIcon(QIcon(":/images/normal.png"));
+                item->setData( Qt::UserRole, "non-critical" );
+            }
 
             mCompareTable->insertRow(i);
             mCompareTable->setRowHeight(i,10);
@@ -178,10 +185,17 @@ int X509CompareDlg::compareExt( const JExtensionInfoList *pAExtList, const JExte
 
                 getInfoValue( &pFindList->sExtensionInfo, strValue );
                 QTableWidgetItem *item2 = new QTableWidgetItem( strValue );
+
                 if( pFindList->sExtensionInfo.bCritical )
+                {
                     item2->setIcon(QIcon(":/images/critical.png"));
+                    item2->setData( Qt::UserRole, "critical" );
+                }
                 else
+                {
                     item2->setIcon(QIcon(":/images/normal.png"));
+                    item2->setData( Qt::UserRole, "non-critical" );
+                }
 
                 mCompareTable->setItem(i, 2, item2 );
 
@@ -237,6 +251,7 @@ int X509CompareDlg::compareExt( const JExtensionInfoList *pAExtList, const JExte
                 mCompareTable->insertRow(i);
                 mCompareTable->setRowHeight(i,10);
                 mCompareTable->setItem(i,0, CertInfoDlg::getExtNameItem(strSN));
+                mCompareTable->setItem( i, 1, new QTableWidgetItem( "" ));
                 mCompareTable->setItem(i, 2, item );
 
                 strIcon = kInvalidIcon;
@@ -1095,11 +1110,21 @@ void X509CompareDlg::clickCompareTable( QModelIndex index )
     strInfo += strLine;
     strInfo += QString( "== %1\n").arg( item0->text() );
     strInfo += strLine;
-    strInfo += QString( "-- A value\n" );
+    strInfo += QString( "-- A value" );
+
+    if( item1->data(Qt::UserRole).toString().length() > 0 )
+        strInfo += QString( " [%1]" ).arg( item1->data(Qt::UserRole).toString() );
+
+    strInfo += "\n";
     strInfo += strLine2;
     strInfo += QString( "%1\n" ).arg( item1->text() );
     strInfo += strLine;
-    strInfo += QString( "-- B value\n" );
+    strInfo += QString( "-- B value" );
+
+    if( item2->data(Qt::UserRole).toString().length() > 0 )
+        strInfo += QString( " [%1]" ).arg( item2->data(Qt::UserRole).toString() );
+
+    strInfo += "\n";
     strInfo += strLine2;
     strInfo += QString( "%1\n" ).arg( item2->text() );
     strInfo += strLine;

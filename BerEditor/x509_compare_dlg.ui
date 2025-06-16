@@ -198,6 +198,13 @@
        </property>
       </spacer>
      </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mCompareBtn">
+       <property name="text">
+        <string>Compare</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
@@ -322,17 +329,17 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mClearBtn">
+       <property name="text">
+        <string>Clear</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="3">
       <widget class="QPushButton" name="mCloseBtn">
        <property name="text">
         <string>Close</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mCompareBtn">
-       <property name="text">
-        <string>Compare</string>
        </property>
       </widget>
      </item>
@@ -348,13 +355,6 @@
         </size>
        </property>
       </spacer>
-     </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="mClearBtn">
-       <property name="text">
-        <string>Clear</string>
-       </property>
-      </widget>
      </item>
     </layout>
    </item>
