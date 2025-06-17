@@ -993,7 +993,7 @@ int CertInfoDlg::getCA( const QString strExtAIA, BIN *pCA )
     if( strURI.length() < 1 )
     {
         berApplet->elog( "failed to get CA certificate URI address" );
-        return -1;
+        return JSR_SSL_NO_CA_ISSUER_INFO;
     }
 
     berApplet->log( QString( "CA URI: %1").arg( strURI));
@@ -1013,7 +1013,7 @@ int CertInfoDlg::getCRL( const QString strExtCRLDP, BIN *pCRL )
     if( strURI.length() < 1 )
     {
         berApplet->elog( "failed to get CRL URI address" );
-        return -1;
+        return JSR_SSL_NO_CRLDP_INFO;
     }
 
     berApplet->log( QString( "CRL URI: %1").arg( strURI));
