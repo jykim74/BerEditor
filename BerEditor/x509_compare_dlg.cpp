@@ -160,6 +160,22 @@ void X509CompareDlg::elogAB( const QString strLog )
     elogB( strLog );
 }
 
+void X509CompareDlg::moveStartA()
+{
+    mAInfoText->moveCursor(QTextCursor::Start);
+}
+
+void X509CompareDlg::moveStartB()
+{
+    mBInfoText->moveCursor(QTextCursor::Start);
+}
+
+void X509CompareDlg::moveStartAB()
+{
+    moveStartA();
+    moveStartB();
+}
+
 void X509CompareDlg::clickAFind()
 {
     int nFileType = JS_FILE_TYPE_CERT;
@@ -1239,6 +1255,7 @@ void X509CompareDlg::clickCompareTable( QModelIndex index )
         elogB( QString( "%1\n" ).arg( strValueB ) );
 
     logB( strLine );
+    moveStartAB();
 }
 
 void X509CompareDlg::dblClickTable()

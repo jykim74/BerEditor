@@ -54,6 +54,10 @@ private:
     void logAB( const QString strLog, QColor cr = QColor(0x00, 0x00, 0x00) );
     void elogAB( const QString strLog );
 
+    void moveStartA();
+    void moveStartB();
+    void moveStartAB();
+
 private:
     BIN A_bin_;
     BIN B_bin_;
