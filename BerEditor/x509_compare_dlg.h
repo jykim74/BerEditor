@@ -57,6 +57,7 @@ private:
 private:
     BIN A_bin_;
     BIN B_bin_;
+    int bin_type_ = -1;
 };
 
 #endif // X509_COMPARE_DLG_H

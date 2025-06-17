@@ -203,6 +203,10 @@ void X509CompareDlg::clickClear()
     mBInfoText->clear();
     mCompareLabel->setText( tr( "Not Compared" ));
     mResBtn->setIcon( QIcon( ":/images/compare.png" ));
+
+    JS_BIN_reset( &A_bin_ );
+    JS_BIN_reset( &B_bin_ );
+    bin_type_ = -1;
 }
 
 int X509CompareDlg::compareExt( const JExtensionInfoList *pAExtList, const JExtensionInfoList *pBExtList )
@@ -358,12 +362,14 @@ int X509CompareDlg::compareCert()
     ret = JS_PKI_getCertInfo( &A_bin_, &ACertInfo, &pAExtList );
     if( ret != 0 )
     {
+        berApplet->warningBox( tr( "File A is not a certificate" ), this );
         goto end;
     }
 
     ret = JS_PKI_getCertInfo( &B_bin_, &BCertInfo, &pBExtList );
     if( ret != 0 )
     {
+        berApplet->warningBox( tr( "File B is not a certificate" ), this );
         goto end;
     }
 
@@ -642,12 +648,14 @@ int X509CompareDlg::compareCRL()
     ret = JS_PKI_getCRLInfo( &A_bin_, &ACRLInfo, &pAExtList, NULL );
     if( ret != 0 )
     {
+        berApplet->warningBox( tr( "File A is not a CRL" ), this );
         goto end;
     }
 
     ret = JS_PKI_getCRLInfo( &B_bin_, &BCRLInfo, &pBExtList, NULL );
     if( ret != 0 )
     {
+        berApplet->warningBox( tr( "File B is not a CRL" ), this );
         goto end;
     }
 
@@ -844,12 +852,14 @@ int X509CompareDlg::compareCSR()
     ret = JS_PKI_getReqInfo( &A_bin_, &AReqInfo, 0, &pAExtList );
     if( ret != 0 )
     {
+        berApplet->warningBox( tr( "File A is not a CSR" ), this );
         goto end;
     }
 
     ret = JS_PKI_getReqInfo( &B_bin_, &BReqInfo, 0, &pBExtList );
     if( ret != 0 )
     {
+        berApplet->warningBox( tr( "File B is not a CSR" ), this );
         goto end;
     }
 
@@ -1131,6 +1141,7 @@ void X509CompareDlg::clickCompare()
     }
 
     mCompareTable->setRowCount(0);
+    bin_type_ = mTypeCombo->currentIndex();
 
     if( mTypeCombo->currentIndex() == 0 ) // Certificate
     {
@@ -1240,18 +1251,18 @@ void X509CompareDlg::dblClickTable()
 
     if( col == 1 )
     {
-        if( mTypeCombo->currentIndex() == 0 )
+        if( bin_type_ == 0 )
         {
             CertInfoDlg certInfo;
             certInfo.setCertBIN( &A_bin_ );
             certInfo.exec();
         }
-        else if( mTypeCombo->currentIndex() == 1 )
+        else if( bin_type_ == 1 )
         {
             CRLInfoDlg crlInfo;
             crlInfo.setCRL_BIN( &A_bin_ );
         }
-        else if( mTypeCombo->currentIndex() == 2 )
+        else if( bin_type_ == 2 )
         {
             CSRInfoDlg csrInfo;
             csrInfo.setReqBIN( &A_bin_ );
@@ -1260,18 +1271,18 @@ void X509CompareDlg::dblClickTable()
     }
     else if( col == 2 )
     {
-        if( mTypeCombo->currentIndex() == 0 )
+        if( bin_type_ == 0 )
         {
             CertInfoDlg certInfo;
             certInfo.setCertBIN( &B_bin_ );
             certInfo.exec();
         }
-        else if( mTypeCombo->currentIndex() == 1 )
+        else if( bin_type_ == 1 )
         {
             CRLInfoDlg crlInfo;
             crlInfo.setCRL_BIN( &B_bin_ );
         }
-        else if( mTypeCombo->currentIndex() == 2 )
+        else if( bin_type_ == 2 )
         {
             CSRInfoDlg csrInfo;
             csrInfo.setReqBIN( &B_bin_ );
