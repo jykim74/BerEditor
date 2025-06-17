@@ -31,6 +31,8 @@ X509CompareDlg::X509CompareDlg(QWidget *parent)
 
     connect( mShowInfoBtn, SIGNAL(clicked()), this, SLOT(clickShowInfo()));
     connect( mCompareTable, SIGNAL(clicked(QModelIndex)), this, SLOT(clickCompareTable(QModelIndex)));
+    connect( mCompareTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(dblClickTable()));
+
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mAFindBtn, SIGNAL(clicked()), this, SLOT(clickAFind()));
     connect( mBFindBtn, SIGNAL(clicked()), this, SLOT(clickBFind()));
@@ -1221,6 +1223,56 @@ void X509CompareDlg::clickCompareTable( QModelIndex index )
         elogB( QString( "%1\n" ).arg( strValueB ) );
 
     logB( strLine );
+}
+
+void X509CompareDlg::dblClickTable()
+{
+    QTableWidgetItem* item = mCompareTable->currentItem();
+
+    if( item == NULL ) return;
+
+    int col = item->column();
+
+    if( col == 1 )
+    {
+        if( mTypeCombo->currentIndex() == 0 )
+        {
+            CertInfoDlg certInfo;
+            certInfo.setCertBIN( &A_bin_ );
+            certInfo.exec();
+        }
+        else if( mTypeCombo->currentIndex() == 1 )
+        {
+            CRLInfoDlg crlInfo;
+            crlInfo.setCRL_BIN( &A_bin_ );
+        }
+        else if( mTypeCombo->currentIndex() == 2 )
+        {
+            CSRInfoDlg csrInfo;
+            csrInfo.setReqBIN( &A_bin_ );
+            csrInfo.exec();
+        }
+    }
+    else if( col == 2 )
+    {
+        if( mTypeCombo->currentIndex() == 0 )
+        {
+            CertInfoDlg certInfo;
+            certInfo.setCertBIN( &B_bin_ );
+            certInfo.exec();
+        }
+        else if( mTypeCombo->currentIndex() == 1 )
+        {
+            CRLInfoDlg crlInfo;
+            crlInfo.setCRL_BIN( &B_bin_ );
+        }
+        else if( mTypeCombo->currentIndex() == 2 )
+        {
+            CSRInfoDlg csrInfo;
+            csrInfo.setReqBIN( &B_bin_ );
+            csrInfo.exec();
+        }
+    }
 }
 
 void X509CompareDlg::clickViewA()

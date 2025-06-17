@@ -28,6 +28,7 @@ private slots:
 
     void clickShowInfo();
     void clickCompareTable( QModelIndex index );
+    void dblClickTable();
 
     void clickViewA();
     void clickDecodeA();
