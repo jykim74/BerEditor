@@ -93,6 +93,11 @@ void X509CompareDlg::initUI()
 
     mTypeCombo->addItems( sTypeList );
     mResBtn->setIcon( QIcon( ":/images/compare.png" ));
+
+    mAPathText->setPlaceholderText( tr("Find file A") );
+    mBPathText->setPlaceholderText( tr("Find file B") );
+    mAInfoText->setPlaceholderText( tr( "A field value" ));
+    mBInfoText->setPlaceholderText( tr( "B field value" ));
 }
 
 
