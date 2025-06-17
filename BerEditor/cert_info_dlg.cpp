@@ -171,17 +171,27 @@ void CertInfoDlg::showEvent(QShowEvent *event)
         mPathValidBtn->setEnabled( false );
         mMakeTreeBtn->setEnabled( false );
         mVerifyCertBtn->setEnabled( false );
+
+        mGetCABtn->setToolTip( tr( "There is no CA url" ));
+        mOCSPCheckBtn->setToolTip( tr( "There is no CA url" ));
+        mPathValidBtn->setToolTip( tr( "There is no CA url" ));
+        mMakeTreeBtn->setToolTip( tr( "There is no CA url" ));
+        mVerifyCertBtn->setToolTip( tr( "There is no CA url" ));
     }
 
     if( strCRL.length() < 4 )
     {
         mGetCRLBtn->setEnabled( false );
         mCRLCheckBtn->setEnabled( false );
+
+        mGetCRLBtn->setToolTip( tr( "There is no CRL url" ) );
+        mCRLCheckBtn->setToolTip( tr( "There is no CRL url" ) );
     }
 
     if( strOCSP.length() < 4 )
     {
         mOCSPCheckBtn->setEnabled( false );
+        mOCSPCheckBtn->setToolTip( tr( "There is no OCSP url" ) );
     }
 
     if( berApplet->isLicense() == true )

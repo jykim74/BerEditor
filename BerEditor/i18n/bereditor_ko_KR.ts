@@ -3346,98 +3346,118 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">인증서 정보 읽기에 실패하였습니다.</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="216"/>
+        <location filename="../cert_info_dlg.cpp" line="175"/>
+        <location filename="../cert_info_dlg.cpp" line="176"/>
+        <location filename="../cert_info_dlg.cpp" line="177"/>
+        <location filename="../cert_info_dlg.cpp" line="178"/>
+        <location filename="../cert_info_dlg.cpp" line="179"/>
+        <source>There is no CA url</source>
+        <translation>CA url 이 없습니다</translation>
+    </message>
+    <message>
+        <location filename="../cert_info_dlg.cpp" line="187"/>
+        <location filename="../cert_info_dlg.cpp" line="188"/>
+        <source>There is no CRL url</source>
+        <translation>CRL url 이 없습니다</translation>
+    </message>
+    <message>
+        <location filename="../cert_info_dlg.cpp" line="194"/>
+        <source>There is no OCSP url</source>
+        <translation>OCSP url 이 없습니다</translation>
+    </message>
+    <message>
+        <location filename="../cert_info_dlg.cpp" line="226"/>
         <source>Select a certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="226"/>
+        <location filename="../cert_info_dlg.cpp" line="236"/>
         <source>failed to get certificate information</source>
         <translation>인증서 정보 읽기에 실패하였습니다.</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="239"/>
+        <location filename="../cert_info_dlg.cpp" line="249"/>
         <source>Version</source>
         <translation>버젼</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="247"/>
+        <location filename="../cert_info_dlg.cpp" line="257"/>
         <source>Serial</source>
         <translation>일련 번호</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="255"/>
+        <location filename="../cert_info_dlg.cpp" line="265"/>
         <source>NotBefore</source>
         <translation>유효 시작 기간</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="262"/>
+        <location filename="../cert_info_dlg.cpp" line="272"/>
         <source>NotAfter</source>
         <translation>유효 끝 기간</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="272"/>
+        <location filename="../cert_info_dlg.cpp" line="282"/>
         <source>SubjectName</source>
         <translation>주체자 이름</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="303"/>
-        <location filename="../cert_info_dlg.cpp" line="436"/>
+        <location filename="../cert_info_dlg.cpp" line="313"/>
+        <location filename="../cert_info_dlg.cpp" line="446"/>
         <source>PublicKey</source>
         <translation>공개키</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="319"/>
+        <location filename="../cert_info_dlg.cpp" line="329"/>
         <source>IssuerName</source>
         <translation>발급자 이름</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="328"/>
+        <location filename="../cert_info_dlg.cpp" line="338"/>
         <source>SigAlgorithm</source>
         <translation>서명 알고리즘</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="337"/>
+        <location filename="../cert_info_dlg.cpp" line="347"/>
         <source>Signature</source>
         <translation>서명</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="380"/>
+        <location filename="../cert_info_dlg.cpp" line="390"/>
         <source>FingerPrint</source>
         <translation>지문</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="392"/>
+        <location filename="../cert_info_dlg.cpp" line="402"/>
         <source>Field</source>
         <translation>필드</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="392"/>
+        <location filename="../cert_info_dlg.cpp" line="402"/>
         <source>Value</source>
         <translation>값</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="393"/>
+        <location filename="../cert_info_dlg.cpp" line="403"/>
         <source>All</source>
         <translation>전체</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="393"/>
+        <location filename="../cert_info_dlg.cpp" line="403"/>
         <source>Version1 Only</source>
         <translation>버전1 필드만</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="393"/>
+        <location filename="../cert_info_dlg.cpp" line="403"/>
         <source>Extension Only</source>
         <translation>확장 필드만</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="393"/>
+        <location filename="../cert_info_dlg.cpp" line="403"/>
         <source>Critical Extension Only</source>
         <translation>중요 확장 필드만</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="393"/>
+        <location filename="../cert_info_dlg.cpp" line="403"/>
         <source>Attribute Only</source>
         <translation>속성만</translation>
     </message>
@@ -3450,79 +3470,79 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">파일 내보내기</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="476"/>
+        <location filename="../cert_info_dlg.cpp" line="486"/>
         <source>Save a certificate or CRL as a PEM file</source>
         <translation>인증서나 CRL 을 PEM 으로 저장</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="501"/>
-        <location filename="../cert_info_dlg.cpp" line="514"/>
+        <location filename="../cert_info_dlg.cpp" line="511"/>
+        <location filename="../cert_info_dlg.cpp" line="524"/>
         <source>The certificate is saved to manager folder</source>
         <translation>인증서를 관리 폴더에 저장 하였습니다</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="503"/>
-        <location filename="../cert_info_dlg.cpp" line="516"/>
+        <location filename="../cert_info_dlg.cpp" line="513"/>
+        <location filename="../cert_info_dlg.cpp" line="526"/>
         <source>failed to save to manager foler: %1</source>
         <translation>관리 폴더에 저장 실패 : %1</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="535"/>
+        <location filename="../cert_info_dlg.cpp" line="545"/>
         <source>The file(%1) is already existed</source>
         <translation>해당파일(%1)은 이미 존재합니다</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="541"/>
+        <location filename="../cert_info_dlg.cpp" line="551"/>
         <source>The Certificate saved to trusted CA directory</source>
         <translation>인증서가 신뢰CA목록에 저장 되었습니다</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="543"/>
+        <location filename="../cert_info_dlg.cpp" line="553"/>
         <source>The Certificate failed to save to trusted CA directory [%1]</source>
         <translation>인증서가 신뢰 CA목록 저장에 실패함 [%1]</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="711"/>
+        <location filename="../cert_info_dlg.cpp" line="721"/>
         <source>Path verification result : %1 (%2)</source>
         <translation>경로 검증 결과: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="734"/>
+        <location filename="../cert_info_dlg.cpp" line="744"/>
         <source>failed to get CA certificate [%1]</source>
         <translation>CA 인증서 읽기 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="737"/>
+        <location filename="../cert_info_dlg.cpp" line="747"/>
         <source>failed to get CRL [%1]</source>
         <translation>CRL 가져오기 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="741"/>
+        <location filename="../cert_info_dlg.cpp" line="751"/>
         <source>Verification results: %1(%2)</source>
         <translation>검증 결과: %1(%2)</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="764"/>
+        <location filename="../cert_info_dlg.cpp" line="774"/>
         <source>failed to get CA certificate: %1</source>
         <translation>CA 인증서 읽기 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="772"/>
+        <location filename="../cert_info_dlg.cpp" line="782"/>
         <source>failed to get OCSP URI address</source>
         <translation>OCSP URI 가져오기 실패</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="780"/>
+        <location filename="../cert_info_dlg.cpp" line="790"/>
         <source>Certificate status verification failed with OCSP: %1(%2)</source>
         <translation>OCSP 인증서 상태 검증 실패: %1(%2)</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="786"/>
+        <location filename="../cert_info_dlg.cpp" line="796"/>
         <source>Verification results with OCSP: %1(%2)</source>
         <translation>OCSP 검증 결과: %1(%2)</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="804"/>
+        <location filename="../cert_info_dlg.cpp" line="814"/>
         <source>failed to get CRL : %1</source>
         <translation>CRL 가져오기 실패 [%1]</translation>
     </message>
@@ -3563,12 +3583,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">CRL 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="826"/>
+        <location filename="../cert_info_dlg.cpp" line="836"/>
         <source>The certificate is not revoked (STATUS:Good)</source>
         <translation>인증서가 폐기 되지 않았습니다(상태:유효함)</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.cpp" line="828"/>
+        <location filename="../cert_info_dlg.cpp" line="838"/>
         <source>The certificate is revoked: (STATUS:Revoked %1:%2)</source>
         <translation>인증서가 폐기 되었습니다(상태:폐기됨 %1%2)</translation>
     </message>
