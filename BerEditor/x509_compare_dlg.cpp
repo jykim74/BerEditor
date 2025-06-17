@@ -99,6 +99,60 @@ void X509CompareDlg::initialize()
 
 }
 
+void X509CompareDlg::logA( const QString strLog, QColor cr )
+{
+    QTextCursor cursor = mAInfoText->textCursor();
+    //    cursor.movePosition( QTextCursor::End );
+
+    QTextCharFormat format;
+    format.setForeground( cr );
+    cursor.mergeCharFormat(format);
+
+    cursor.insertText( strLog );
+    //cursor.insertText( "\n" );
+
+    mAInfoText->setTextCursor( cursor );
+    mAInfoText->repaint();
+}
+
+void X509CompareDlg::elogA( const QString strLog )
+{
+    logA( strLog, QColor(0xFF,0x00,0x00));
+}
+
+void X509CompareDlg::logB( const QString strLog, QColor cr )
+{
+    QTextCursor cursor = mBInfoText->textCursor();
+    //    cursor.movePosition( QTextCursor::End );
+
+    QTextCharFormat format;
+    format.setForeground( cr );
+    cursor.mergeCharFormat(format);
+
+    cursor.insertText( strLog );
+    //cursor.insertText( "\n" );
+
+    mBInfoText->setTextCursor( cursor );
+    mBInfoText->repaint();
+}
+
+void X509CompareDlg::elogB( const QString strLog )
+{
+    logB( strLog, QColor(0xFF,0x00,0x00));
+}
+
+void X509CompareDlg::logAB( const QString strLog, QColor cr )
+{
+    logA( strLog, cr );
+    logB( strLog, cr );
+}
+
+void X509CompareDlg::elogAB( const QString strLog )
+{
+    elogA( strLog );
+    elogB( strLog );
+}
+
 void X509CompareDlg::clickAFind()
 {
     int nFileType = JS_FILE_TYPE_CERT;
@@ -1106,37 +1160,67 @@ void X509CompareDlg::clickCompareTable( QModelIndex index )
     QTableWidgetItem* item1 = mCompareTable->item( row, 1 );
     QTableWidgetItem* item2 = mCompareTable->item( row, 2 );
 
-    if( item0 == NULL || item1 == NULL ) return;
+    QString strCritA;
+    QString strCritB;
+    QString strValueA;
+    QString strValueB;
 
-    strInfoA += strLine;
-    strInfoA += QString( "== %1\n").arg( item0->text() );
-    strInfoA += strLine;
+    mAInfoText->clear();
+    mBInfoText->clear();
 
-    strInfoB = strInfoA;
+    if( item0 == NULL || item1 == NULL || item2 == NULL) return;
 
-    strInfoA += QString( "-- A value" );
+    strCritA = item1->data(Qt::UserRole).toString();
+    strCritB = item2->data(Qt::UserRole).toString();
 
-    if( item1->data(Qt::UserRole).toString().length() > 0 )
-        strInfoA += QString( " [%1]" ).arg( item1->data(Qt::UserRole).toString() );
-
-    strInfoA += "\n";
-    strInfoA += strLine2;
-    strInfoA += QString( "%1\n" ).arg( item1->text() );
-    strInfoA += strLine;
+    strValueA = item1->text();
+    strValueB = item2->text();
 
 
-    strInfoB += QString( "-- B value" );
+    logAB( strLine );
+    logAB( QString( "== %1\n").arg( item0->text() ) );
+    logAB( strLine );
 
-    if( item2->data(Qt::UserRole).toString().length() > 0 )
-        strInfoB += QString( " [%1]" ).arg( item2->data(Qt::UserRole).toString() );
+    logA( QString( "-- A value" ) );
 
-    strInfoB += "\n";
-    strInfoB += strLine2;
-    strInfoB += QString( "%1\n" ).arg( item2->text() );
-    strInfoB += strLine;
+    if( strCritA.length() > 0 )
+    {
+        if( strCritA == strCritB )
+            logA( QString( " [%1]" ).arg( strCritA ));
+        else
+            elogA( QString( " [%1]" ).arg( strCritA ));
+    }
 
-    mAInfoText->setPlainText( strInfoA );
-    mBInfoText->setPlainText( strInfoB );
+    logA( "\n" );
+    logA( strLine2 );
+
+    if( strValueA == strValueB )
+        logA( QString( "%1\n" ).arg( strValueA ) );
+    else
+        elogA( QString( "%1\n" ).arg( strValueA ) );
+
+    logA( strLine );
+
+
+    logB( QString( "-- B value" ) );
+
+    if( strCritB.length() > 0 )
+    {
+        if( strCritA == strCritB )
+            logB( QString( " [%1]" ).arg( strCritB ) );
+        else
+            elogB( QString( " [%1]" ).arg( strCritB ) );
+    }
+
+    logB( "\n" );
+    logB( strLine2 );
+
+    if( strValueA == strValueB )
+        logB( QString( "%1\n" ).arg( strValueB ) );
+    else
+        elogB( QString( "%1\n" ).arg( strValueB ) );
+
+    logB( strLine );
 }
 
 void X509CompareDlg::clickViewA()
