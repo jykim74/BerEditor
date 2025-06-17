@@ -987,7 +987,7 @@ int CertInfoDlg::getCA( const QString strExtAIA, BIN *pCA )
     int ret = 0;
     QString strURI;
 
-    berApplet->log( QString( "AIA : %1" ).arg( strExtAIA ));
+//    berApplet->log( QString( "AIA : %1" ).arg( strExtAIA ));
     strURI = getCA_URIFromExt( strExtAIA );
 
     if( strURI.length() < 1 )
