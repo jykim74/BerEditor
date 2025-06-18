@@ -112,7 +112,7 @@ TTLVEncoderDlg::TTLVEncoderDlg(QWidget *parent) :
     connect( mFindInputBtn, SIGNAL(clicked()), this, SLOT(findInput()));
     connect( mTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeType()));
     connect( mCmdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeCmd()));
-    connect( mRunBtn, SIGNAL(clicked()), this, SLOT(clickRun()));
+    connect( mEncodeBtn, SIGNAL(clicked()), this, SLOT(clickEncode()));
 
     connect( mAlgCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(algChanged(int)));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
@@ -354,7 +354,7 @@ void TTLVEncoderDlg::changeCmd()
     }
 }
 
-void TTLVEncoderDlg::clickRun()
+void TTLVEncoderDlg::clickEncode()
 {
     QString strCmd = mCmdCombo->currentText();
 

@@ -41,7 +41,7 @@ public:
 private slots:
     void changeType();
     void changeCmd();
-    void clickRun();
+    void clickEncode();
 
     void clickGet();
     void clickActivate();

@@ -610,9 +610,9 @@
       </spacer>
      </item>
      <item row="0" column="4">
-      <widget class="QPushButton" name="mRunBtn">
+      <widget class="QPushButton" name="mEncodeBtn">
        <property name="text">
-        <string>Run</string>
+        <string>Encode</string>
        </property>
       </widget>
      </item>

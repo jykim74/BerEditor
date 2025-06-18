@@ -15888,6 +15888,11 @@ Do you want to delete the file and continue?</source>
         <translation>입력찾기</translation>
     </message>
     <message>
+        <location filename="../ttlv_encoder_dlg.ui" line="615"/>
+        <source>Encode</source>
+        <translation>인코딩</translation>
+    </message>
+    <message>
         <location filename="../ttlv_encoder_dlg.ui" line="734"/>
         <source>D</source>
         <translation>D</translation>
@@ -15945,9 +15950,8 @@ Do you want to delete the file and continue?</source>
         <translation>서명</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="615"/>
         <source>Run</source>
-        <translation>실행</translation>
+        <translation type="vanished">실행</translation>
     </message>
     <message>
         <location filename="../ttlv_encoder_dlg.ui" line="622"/>
