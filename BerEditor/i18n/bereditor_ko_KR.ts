@@ -15883,9 +15883,8 @@ Do you want to delete the file and continue?</source>
         <translation>IV</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="364"/>
         <source>FindInput</source>
-        <translation>입력찾기</translation>
+        <translation type="vanished">입력찾기</translation>
     </message>
     <message>
         <location filename="../ttlv_encoder_dlg.ui" line="615"/>
@@ -15912,6 +15911,11 @@ Do you want to delete the file and continue?</source>
         <translation>객체 타입</translation>
     </message>
     <message>
+        <location filename="../ttlv_encoder_dlg.ui" line="364"/>
+        <source>Find</source>
+        <translation>찾기</translation>
+    </message>
+    <message>
         <location filename="../ttlv_encoder_dlg.ui" line="377"/>
         <source>Input</source>
         <translation>입력값</translation>
@@ -15930,7 +15934,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../ttlv_encoder_dlg.ui" line="207"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="411"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="424"/>
         <source>KeyLength</source>
         <translation>키 길이</translation>
     </message>
@@ -16041,125 +16045,125 @@ Do you want to delete the file and continue?</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.cpp" line="167"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="168"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="174"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="175"/>
         <source>Hex value</source>
         <translation>16진수 값</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.cpp" line="401"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="414"/>
         <source>Unknown Cmd: %1</source>
         <translation>알수 없는 명령: %1</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.cpp" line="416"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="429"/>
         <source>NamedCurve</source>
         <translation>네임즈 커브</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.cpp" line="461"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="514"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="565"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="611"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="670"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="740"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="811"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="895"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="985"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1069"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1135"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1191"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1252"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1308"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1369"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1422"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1481"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1535"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1593"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="474"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="527"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="578"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="624"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="683"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="753"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="824"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="908"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="998"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1082"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1148"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1204"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1265"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1321"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1382"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1435"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1494"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1548"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1606"/>
         <source>Enter a UserID</source>
         <translation>UserID를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.cpp" line="468"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="521"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="572"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="618"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="677"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="747"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="818"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="902"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="992"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1076"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1142"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1198"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1259"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1315"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1376"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1429"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1488"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1542"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1600"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="481"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="534"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="585"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="631"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="690"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="760"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="831"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="915"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1005"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1089"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1155"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1211"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1272"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1328"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1389"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1442"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1501"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1555"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1613"/>
         <source>Enter a password</source>
         <translation>암호를 입력해야 합니다</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.cpp" line="478"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="531"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="628"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="687"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="757"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="828"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="913"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1152"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1208"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1269"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1325"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1386"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="491"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="544"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="641"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="700"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="770"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="841"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="926"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1165"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1221"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1282"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1338"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1399"/>
         <source>Enter a UUID</source>
         <translation>UUID 를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.cpp" line="491"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="544"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="588"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="641"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="710"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="779"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="861"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="953"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1044"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1111"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1165"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1228"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1282"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1344"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1398"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1458"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1511"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1567"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1626"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="504"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="557"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="601"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="654"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="723"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="792"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="874"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="966"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1057"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1124"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1178"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1241"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1295"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1357"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1411"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1471"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1524"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1580"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1639"/>
         <source>fail to encode TTLV: %1</source>
         <translation>TTLV 인코딩 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.cpp" line="694"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="764"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="835"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="920"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1002"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1552"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1610"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="707"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="777"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="848"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="933"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1015"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1565"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1623"/>
         <source>Enter a input</source>
         <translation>입력값을 넣으세요</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.cpp" line="927"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="940"/>
         <source>Enter a sign</source>
         <translation>서명을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1215"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1332"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1228"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1345"/>
         <source>Enter the attribute value into the input field.</source>
         <translation>속성 값을 입력 필드에 입력하세요</translation>
     </message>
@@ -16168,7 +16172,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">출력 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1498"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1511"/>
         <source>Enter a length</source>
         <translation>길이를 입력하세요</translation>
     </message>
