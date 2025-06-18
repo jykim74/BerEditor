@@ -48,6 +48,7 @@ private slots:
     void clearRequest();
     void clearResponse();
 
+    void clickTTLVEncode();
     void clickReadMain();
 private:
     void initialize();

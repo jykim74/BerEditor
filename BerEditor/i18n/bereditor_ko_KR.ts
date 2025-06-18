@@ -13696,37 +13696,37 @@ Do you want to delete the file and continue?</source>
         <translation>다시 읽기</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.ui" line="714"/>
+        <location filename="../ssl_check_dlg.ui" line="849"/>
         <source>Show Information</source>
         <translation>정보 보이기</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.ui" line="723"/>
+        <location filename="../ssl_check_dlg.ui" line="716"/>
         <source>SSL Tree and Log Information</source>
         <translation>SSL 트리 및 로그 정보</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.ui" line="740"/>
+        <location filename="../ssl_check_dlg.ui" line="733"/>
         <source>Tree</source>
         <translation>트리</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.ui" line="765"/>
+        <location filename="../ssl_check_dlg.ui" line="758"/>
         <source>Log</source>
         <translation>로그</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.ui" line="822"/>
+        <location filename="../ssl_check_dlg.ui" line="815"/>
         <source>Clear Log</source>
         <translation>로그 지우기</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.ui" line="829"/>
+        <location filename="../ssl_check_dlg.ui" line="822"/>
         <source>Clear Result</source>
         <translation>결과 지우기</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.ui" line="836"/>
+        <location filename="../ssl_check_dlg.ui" line="829"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -15623,8 +15623,8 @@ Do you want to delete the file and continue?</source>
         <location filename="../ttlv_client_dlg.ui" line="92"/>
         <location filename="../ttlv_client_dlg.ui" line="187"/>
         <location filename="../ttlv_client_dlg.ui" line="246"/>
-        <location filename="../ttlv_client_dlg.ui" line="369"/>
-        <location filename="../ttlv_client_dlg.ui" line="465"/>
+        <location filename="../ttlv_client_dlg.ui" line="395"/>
+        <location filename="../ttlv_client_dlg.ui" line="472"/>
         <source>D</source>
         <translation>D</translation>
     </message>
@@ -15680,13 +15680,13 @@ Do you want to delete the file and continue?</source>
         <translation>암호화 개인키</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.ui" line="408"/>
-        <location filename="../ttlv_client_dlg.ui" line="537"/>
+        <location filename="../ttlv_client_dlg.ui" line="323"/>
+        <location filename="../ttlv_client_dlg.ui" line="544"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.ui" line="395"/>
+        <location filename="../ttlv_client_dlg.ui" line="415"/>
         <source>Request</source>
         <translation>요청</translation>
     </message>
@@ -15696,123 +15696,128 @@ Do you want to delete the file and continue?</source>
         <translation>TTLV 클라이언트</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.ui" line="415"/>
+        <location filename="../ttlv_client_dlg.ui" line="402"/>
         <source>Read Main</source>
         <translation>메인 데이타 일기</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.ui" line="452"/>
+        <location filename="../ttlv_client_dlg.ui" line="422"/>
+        <source>TTLV Encoder</source>
+        <translation>TTLV 인코더</translation>
+    </message>
+    <message>
+        <location filename="../ttlv_client_dlg.ui" line="459"/>
         <source>Response</source>
         <translation>응답</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.ui" line="605"/>
+        <location filename="../ttlv_client_dlg.ui" line="612"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.ui" line="612"/>
+        <location filename="../ttlv_client_dlg.ui" line="619"/>
         <source>Send</source>
         <translation>보내기</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="164"/>
         <location filename="../ttlv_client_dlg.cpp" line="167"/>
+        <location filename="../ttlv_client_dlg.cpp" line="170"/>
         <source>Select CertMan certificate</source>
         <translation>인증서 관리자 인증서 선택</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="166"/>
+        <location filename="../ttlv_client_dlg.cpp" line="169"/>
         <source>Select CertMan private key</source>
         <translation>인증서 관리자 개인키 선택</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="210"/>
+        <location filename="../ttlv_client_dlg.cpp" line="213"/>
         <source>select a private key</source>
         <translation>개인키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="218"/>
+        <location filename="../ttlv_client_dlg.cpp" line="221"/>
         <source>failed to read a private key: %1</source>
         <translation>개인키 읽기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="228"/>
+        <location filename="../ttlv_client_dlg.cpp" line="231"/>
         <source>Enter a password</source>
         <translation>암호를 입력해야 합니다</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="237"/>
+        <location filename="../ttlv_client_dlg.cpp" line="240"/>
         <source>failed to decrypt private key:%1</source>
         <translation>개인키 복호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="282"/>
+        <location filename="../ttlv_client_dlg.cpp" line="285"/>
         <source>Insert KMIP URL</source>
         <translation>KMIP URL 을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="289"/>
-        <location filename="../ttlv_client_dlg.cpp" line="656"/>
+        <location filename="../ttlv_client_dlg.cpp" line="292"/>
+        <location filename="../ttlv_client_dlg.cpp" line="659"/>
         <source>There is no request</source>
         <translation>요청서가 없습니다</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="319"/>
+        <location filename="../ttlv_client_dlg.cpp" line="322"/>
         <source>fail to connect TTLV: %1</source>
         <translation>TTLV 연결 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="329"/>
+        <location filename="../ttlv_client_dlg.cpp" line="332"/>
         <source>Select CA certificate</source>
         <translation>CA 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="336"/>
-        <location filename="../ttlv_client_dlg.cpp" line="475"/>
-        <location filename="../ttlv_client_dlg.cpp" line="599"/>
+        <location filename="../ttlv_client_dlg.cpp" line="339"/>
+        <location filename="../ttlv_client_dlg.cpp" line="478"/>
+        <location filename="../ttlv_client_dlg.cpp" line="602"/>
         <source>Find a CA certificate</source>
         <translation>CA 인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="351"/>
-        <location filename="../ttlv_client_dlg.cpp" line="500"/>
-        <location filename="../ttlv_client_dlg.cpp" line="540"/>
-        <location filename="../ttlv_client_dlg.cpp" line="562"/>
-        <location filename="../ttlv_client_dlg.cpp" line="618"/>
+        <location filename="../ttlv_client_dlg.cpp" line="354"/>
+        <location filename="../ttlv_client_dlg.cpp" line="503"/>
+        <location filename="../ttlv_client_dlg.cpp" line="543"/>
+        <location filename="../ttlv_client_dlg.cpp" line="565"/>
+        <location filename="../ttlv_client_dlg.cpp" line="621"/>
         <source>Find a certificate</source>
         <translation>인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="367"/>
+        <location filename="../ttlv_client_dlg.cpp" line="370"/>
         <source>Select a certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="393"/>
-        <location filename="../ttlv_client_dlg.cpp" line="409"/>
+        <location filename="../ttlv_client_dlg.cpp" line="396"/>
+        <location filename="../ttlv_client_dlg.cpp" line="412"/>
         <source>fail to send TTLV: %1</source>
         <translation>TTLV 보내기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="400"/>
-        <location filename="../ttlv_client_dlg.cpp" line="416"/>
+        <location filename="../ttlv_client_dlg.cpp" line="403"/>
+        <location filename="../ttlv_client_dlg.cpp" line="419"/>
         <source>fail to recv TTLV: %1</source>
         <translation>TTLV 받기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="484"/>
-        <location filename="../ttlv_client_dlg.cpp" line="509"/>
+        <location filename="../ttlv_client_dlg.cpp" line="487"/>
+        <location filename="../ttlv_client_dlg.cpp" line="512"/>
         <source>The certificate type is %1</source>
         <translation>인증서 타입은 %1 입니다.</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="675"/>
+        <location filename="../ttlv_client_dlg.cpp" line="678"/>
         <source>There is no response</source>
         <translation>응답이 없습니다</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="702"/>
+        <location filename="../ttlv_client_dlg.cpp" line="719"/>
         <source>There is no TTLV data</source>
         <translation>TTLV 데이타가 없습니다</translation>
     </message>
@@ -15821,12 +15826,12 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">서명용 개인키를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="525"/>
+        <location filename="../ttlv_client_dlg.cpp" line="528"/>
         <source>The private key type is %1</source>
         <translation>개인키 타입은 %1 입니다</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="637"/>
+        <location filename="../ttlv_client_dlg.cpp" line="640"/>
         <source>Find a private key</source>
         <translation>개인키를 찾으세요</translation>
     </message>
@@ -15843,53 +15848,73 @@ Do you want to delete the file and continue?</source>
         <translation>인증</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="55"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="61"/>
         <source>UserID</source>
         <translation>유저 ID</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="45"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="51"/>
         <source>Password</source>
         <translation>암호</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="85"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="121"/>
         <source>UUID</source>
         <translation>UUID</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="92"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="108"/>
         <source>Length</source>
         <translation>길이</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="152"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="20"/>
+        <source>TTLV command encoder</source>
+        <translation>TTLV 명령 인코더</translation>
+    </message>
+    <message>
+        <location filename="../ttlv_encoder_dlg.ui" line="154"/>
         <source>Attribute</source>
         <translation>속성</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="258"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="289"/>
+        <source>IV</source>
+        <translation>IV</translation>
+    </message>
+    <message>
+        <location filename="../ttlv_encoder_dlg.ui" line="364"/>
         <source>FindInput</source>
         <translation>입력찾기</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="20"/>
-        <source>TTLV Information</source>
-        <translation>TTLV 정보</translation>
+        <location filename="../ttlv_encoder_dlg.ui" line="734"/>
+        <source>D</source>
+        <translation>D</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="126"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="815"/>
+        <source>Clear All</source>
+        <translation>전체 지우기</translation>
+    </message>
+    <message>
+        <source>TTLV Information</source>
+        <translation type="vanished">TTLV 정보</translation>
+    </message>
+    <message>
+        <location filename="../ttlv_encoder_dlg.ui" line="177"/>
         <source>ObjectType</source>
         <translation>객체 타입</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="251"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="377"/>
         <source>Input</source>
         <translation>입력값</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="192"/>
-        <location filename="../ttlv_encoder_dlg.ui" line="430"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="439"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="569"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="662"/>
         <source>C</source>
         <translation>C</translation>
     </message>
@@ -15899,186 +15924,247 @@ Do you want to delete the file and continue?</source>
         <translation>TTLV 인코더</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="275"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="165"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="207"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="411"/>
         <source>KeyLength</source>
         <translation>키 길이</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="308"/>
-        <location filename="../ttlv_encoder_dlg.ui" line="559"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="236"/>
         <source>Hash</source>
         <translation>Hash</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="331"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="223"/>
         <source>Algorithm</source>
         <translation>알고리즘</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="371"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="491"/>
+        <source>Signature</source>
+        <translation>서명</translation>
+    </message>
+    <message>
+        <location filename="../ttlv_encoder_dlg.ui" line="615"/>
+        <source>Run</source>
+        <translation>실행</translation>
+    </message>
+    <message>
+        <location filename="../ttlv_encoder_dlg.ui" line="622"/>
+        <source>Command</source>
+        <translation>명령</translation>
+    </message>
+    <message>
+        <location filename="../ttlv_encoder_dlg.ui" line="675"/>
         <source>Output</source>
         <translation>결과</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="475"/>
         <source>Activate</source>
-        <translation>Activate</translation>
+        <translation type="vanished">Activate</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="454"/>
         <source>GetAttributes</source>
-        <translation>GetAttribute</translation>
+        <translation type="vanished">GetAttribute</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="482"/>
         <source>Register</source>
-        <translation>Register</translation>
+        <translation type="vanished">Register</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="517"/>
         <source>Create</source>
-        <translation>Create</translation>
+        <translation type="vanished">Create</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="489"/>
         <source>GetAttributeList</source>
-        <translation>GetAttributeList</translation>
+        <translation type="vanished">GetAttributeList</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="552"/>
         <source>Encrypt</source>
-        <translation>Encrypt</translation>
+        <translation type="vanished">Encrypt</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="538"/>
         <source>DeleteAttribute</source>
-        <translation>DeleteAttribute</translation>
+        <translation type="vanished">DeleteAttribute</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="524"/>
         <source>Destroy</source>
-        <translation>Destroy</translation>
+        <translation type="vanished">Destroy</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="545"/>
         <source>Locate</source>
-        <translation>Locate</translation>
+        <translation type="vanished">Locate</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="531"/>
         <source>Decrypt</source>
-        <translation>Decrypt</translation>
+        <translation type="vanished">Decrypt</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="461"/>
         <source>CreateKeyPair</source>
-        <translation>CreateKeyPair</translation>
+        <translation type="vanished">CreateKeyPair</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="468"/>
         <source>AddAttribute</source>
-        <translation>AddAttribute</translation>
+        <translation type="vanished">AddAttribute</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="503"/>
         <source>Get</source>
-        <translation>Get</translation>
+        <translation type="vanished">Get</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="447"/>
         <source>Sign</source>
-        <translation>Sign</translation>
+        <translation type="vanished">Sign</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="496"/>
         <source>Verify</source>
-        <translation>Verify</translation>
+        <translation type="vanished">Verify</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="510"/>
         <source>ModifyAttribute</source>
-        <translation>ModifyAttribute</translation>
+        <translation type="vanished">ModifyAttribute</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="573"/>
         <source>RNGRetrieve</source>
-        <translation>RNGRetrieve</translation>
+        <translation type="vanished">RNGRetrieve</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="566"/>
         <source>RNGSeed</source>
-        <translation>RNGSeed</translation>
+        <translation type="vanished">RNGSeed</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="594"/>
+        <location filename="../ttlv_encoder_dlg.ui" line="808"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.cpp" line="170"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="167"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="168"/>
+        <source>Hex value</source>
+        <translation>16진수 값</translation>
+    </message>
+    <message>
+        <location filename="../ttlv_encoder_dlg.cpp" line="401"/>
+        <source>Unknown Cmd: %1</source>
+        <translation>알수 없는 명령: %1</translation>
+    </message>
+    <message>
+        <location filename="../ttlv_encoder_dlg.cpp" line="416"/>
         <source>NamedCurve</source>
         <translation>네임즈 커브</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.cpp" line="208"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="239"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="297"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="334"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="385"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="437"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="502"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="681"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="718"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="759"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="796"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="838"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="461"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="514"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="565"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="611"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="670"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="740"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="811"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="895"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="985"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1069"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1135"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1191"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1252"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1308"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1369"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1422"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1481"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1535"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1593"/>
+        <source>Enter a UserID</source>
+        <translation>UserID를 입력하세요</translation>
+    </message>
+    <message>
+        <location filename="../ttlv_encoder_dlg.cpp" line="468"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="521"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="572"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="618"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="677"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="747"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="818"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="902"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="992"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1076"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1142"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1198"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1259"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1315"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1376"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1429"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1488"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1542"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1600"/>
+        <source>Enter a password</source>
+        <translation>암호를 입력해야 합니다</translation>
+    </message>
+    <message>
+        <location filename="../ttlv_encoder_dlg.cpp" line="478"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="531"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="628"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="687"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="757"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="828"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="913"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1152"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1208"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1269"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1325"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1386"/>
         <source>Enter a UUID</source>
         <translation>UUID 를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.cpp" line="223"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="257"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="281"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="313"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="365"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="416"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="476"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="549"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="618"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="664"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="699"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="742"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="777"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="820"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="855"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="895"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="928"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="963"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="1004"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="491"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="544"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="588"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="641"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="710"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="779"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="861"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="953"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1044"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1111"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1165"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1228"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1282"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1344"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1398"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1458"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1511"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1567"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1626"/>
         <source>fail to encode TTLV: %1</source>
         <translation>TTLV 인코딩 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.cpp" line="341"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="392"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="444"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="509"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="573"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="725"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="803"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="945"/>
-        <location filename="../ttlv_encoder_dlg.cpp" line="982"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="694"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="764"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="835"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="920"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1002"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1552"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1610"/>
         <source>Enter a input</source>
         <translation>입력값을 넣으세요</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.cpp" line="516"/>
-        <source>Enter a output</source>
-        <translation>출력 값을 입력하세요</translation>
+        <location filename="../ttlv_encoder_dlg.cpp" line="927"/>
+        <source>Enter a sign</source>
+        <translation>서명을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.cpp" line="911"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1215"/>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1332"/>
+        <source>Enter the attribute value into the input field.</source>
+        <translation>속성 값을 입력 필드에 입력하세요</translation>
+    </message>
+    <message>
+        <source>Enter a output</source>
+        <translation type="vanished">출력 값을 입력하세요</translation>
+    </message>
+    <message>
+        <location filename="../ttlv_encoder_dlg.cpp" line="1498"/>
         <source>Enter a length</source>
         <translation>길이를 입력하세요</translation>
     </message>
@@ -16422,7 +16508,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../x509_compare_dlg.ui" line="169"/>
-        <location filename="../x509_compare_dlg.cpp" line="204"/>
+        <location filename="../x509_compare_dlg.cpp" line="220"/>
         <source>Not Compared</source>
         <translation>비교 안됨</translation>
     </message>
@@ -16439,7 +16525,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">동일</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.ui" line="348"/>
+        <location filename="../x509_compare_dlg.ui" line="347"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -16449,17 +16535,17 @@ Do you want to delete the file and continue?</source>
         <translation>비교하기</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.ui" line="222"/>
+        <location filename="../x509_compare_dlg.ui" line="361"/>
         <source>Show Information</source>
         <translation>정보 보이기</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.ui" line="247"/>
+        <location filename="../x509_compare_dlg.ui" line="240"/>
         <source>X509 A and B Value</source>
         <translation>X509 A 와 B 값</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.ui" line="341"/>
+        <location filename="../x509_compare_dlg.ui" line="354"/>
         <source>Clear</source>
         <translation>지우기</translation>
     </message>
@@ -16543,165 +16629,165 @@ Do you want to delete the file and continue?</source>
         <translation>B 필드 값</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="365"/>
+        <location filename="../x509_compare_dlg.cpp" line="381"/>
         <source>File A is not a certificate</source>
         <translation>A 파일은 인증서가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="372"/>
+        <location filename="../x509_compare_dlg.cpp" line="388"/>
         <source>File B is not a certificate</source>
         <translation>B 파일은 인증서가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="381"/>
-        <location filename="../x509_compare_dlg.cpp" line="667"/>
-        <location filename="../x509_compare_dlg.cpp" line="871"/>
+        <location filename="../x509_compare_dlg.cpp" line="397"/>
+        <location filename="../x509_compare_dlg.cpp" line="683"/>
+        <location filename="../x509_compare_dlg.cpp" line="887"/>
         <source>Version</source>
         <translation>버젼</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="404"/>
+        <location filename="../x509_compare_dlg.cpp" line="420"/>
         <source>Serial</source>
         <translation>일련번호</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="428"/>
+        <location filename="../x509_compare_dlg.cpp" line="444"/>
         <source>NotBefore</source>
         <translation>유효 시작 기간</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="451"/>
+        <location filename="../x509_compare_dlg.cpp" line="467"/>
         <source>NotAfter</source>
         <translation>유효 끝 기간</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="476"/>
-        <location filename="../x509_compare_dlg.cpp" line="896"/>
+        <location filename="../x509_compare_dlg.cpp" line="492"/>
+        <location filename="../x509_compare_dlg.cpp" line="912"/>
         <source>SubjectName</source>
         <translation>주체자 이름</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="499"/>
-        <location filename="../x509_compare_dlg.cpp" line="919"/>
+        <location filename="../x509_compare_dlg.cpp" line="515"/>
+        <location filename="../x509_compare_dlg.cpp" line="935"/>
         <source>PublicKey</source>
         <translation>공개키</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="523"/>
-        <location filename="../x509_compare_dlg.cpp" line="689"/>
+        <location filename="../x509_compare_dlg.cpp" line="539"/>
+        <location filename="../x509_compare_dlg.cpp" line="705"/>
         <source>IssuerName</source>
         <translation>발급자 이름</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="546"/>
-        <location filename="../x509_compare_dlg.cpp" line="942"/>
+        <location filename="../x509_compare_dlg.cpp" line="562"/>
+        <location filename="../x509_compare_dlg.cpp" line="958"/>
         <source>SigAlgorithm</source>
         <translation>서명 알고리즘</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="569"/>
-        <location filename="../x509_compare_dlg.cpp" line="778"/>
-        <location filename="../x509_compare_dlg.cpp" line="965"/>
+        <location filename="../x509_compare_dlg.cpp" line="585"/>
+        <location filename="../x509_compare_dlg.cpp" line="794"/>
+        <location filename="../x509_compare_dlg.cpp" line="981"/>
         <source>Signature</source>
         <translation>서명</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="590"/>
-        <location filename="../x509_compare_dlg.cpp" line="799"/>
-        <location filename="../x509_compare_dlg.cpp" line="1032"/>
+        <location filename="../x509_compare_dlg.cpp" line="606"/>
+        <location filename="../x509_compare_dlg.cpp" line="815"/>
+        <location filename="../x509_compare_dlg.cpp" line="1048"/>
         <source>FingerPrint</source>
         <translation>지문</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="598"/>
-        <location filename="../x509_compare_dlg.cpp" line="807"/>
-        <location filename="../x509_compare_dlg.cpp" line="1040"/>
+        <location filename="../x509_compare_dlg.cpp" line="614"/>
+        <location filename="../x509_compare_dlg.cpp" line="823"/>
+        <location filename="../x509_compare_dlg.cpp" line="1056"/>
         <source>A and B %1 are the same</source>
         <translation>A 와 B %1 은 같습니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="604"/>
-        <location filename="../x509_compare_dlg.cpp" line="813"/>
-        <location filename="../x509_compare_dlg.cpp" line="1046"/>
+        <location filename="../x509_compare_dlg.cpp" line="620"/>
+        <location filename="../x509_compare_dlg.cpp" line="829"/>
+        <location filename="../x509_compare_dlg.cpp" line="1062"/>
         <source>A and B %1 are different</source>
         <translation>A 와 B %1 은 다릅니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="651"/>
+        <location filename="../x509_compare_dlg.cpp" line="667"/>
         <source>File A is not a CRL</source>
         <translation>A 파일은 CRL이 아닙니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="658"/>
+        <location filename="../x509_compare_dlg.cpp" line="674"/>
         <source>File B is not a CRL</source>
         <translation>B 파일은 CRL이 아닙니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="713"/>
+        <location filename="../x509_compare_dlg.cpp" line="729"/>
         <source>ThisUpdate</source>
         <translation>이번 업데이트</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="735"/>
+        <location filename="../x509_compare_dlg.cpp" line="751"/>
         <source>NextUpdate</source>
         <translation>다음 업데이트</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="756"/>
+        <location filename="../x509_compare_dlg.cpp" line="772"/>
         <source>SignAlgorithm</source>
         <translation>서명 알고리즘</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="855"/>
+        <location filename="../x509_compare_dlg.cpp" line="871"/>
         <source>File A is not a CSR</source>
         <translation>A 파일은 CSR이 아닙니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="862"/>
+        <location filename="../x509_compare_dlg.cpp" line="878"/>
         <source>File B is not a CSR</source>
         <translation>B 파일은 CSR이 아닙니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="988"/>
+        <location filename="../x509_compare_dlg.cpp" line="1004"/>
         <source>Challenge</source>
         <translation>Challenge</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1011"/>
+        <location filename="../x509_compare_dlg.cpp" line="1027"/>
         <source>UnstructuredName</source>
         <translation>UnstructuredName</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1087"/>
+        <location filename="../x509_compare_dlg.cpp" line="1103"/>
         <source>Select a A %1</source>
         <translation>A %1을 선택 하세요</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1099"/>
+        <location filename="../x509_compare_dlg.cpp" line="1115"/>
         <source>Find a A file</source>
         <translation>A 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1121"/>
+        <location filename="../x509_compare_dlg.cpp" line="1137"/>
         <source>Select a B %1</source>
         <translation>B %1을 선택 하세요</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1133"/>
+        <location filename="../x509_compare_dlg.cpp" line="1149"/>
         <source>Find a B file</source>
         <translation>B 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1299"/>
-        <location filename="../x509_compare_dlg.cpp" line="1331"/>
-        <location filename="../x509_compare_dlg.cpp" line="1354"/>
-        <location filename="../x509_compare_dlg.cpp" line="1386"/>
+        <location filename="../x509_compare_dlg.cpp" line="1316"/>
+        <location filename="../x509_compare_dlg.cpp" line="1348"/>
+        <location filename="../x509_compare_dlg.cpp" line="1371"/>
+        <location filename="../x509_compare_dlg.cpp" line="1403"/>
         <source>Select a %1</source>
         <translation>%1을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1340"/>
-        <location filename="../x509_compare_dlg.cpp" line="1395"/>
+        <location filename="../x509_compare_dlg.cpp" line="1357"/>
+        <location filename="../x509_compare_dlg.cpp" line="1412"/>
         <source>failed to read data</source>
         <translation>데이타 읽기 실패</translation>
     </message>

@@ -10,6 +10,7 @@
 #include "cert_man_dlg.h"
 #include "cert_info_dlg.h"
 #include "pri_key_info_dlg.h"
+#include "ttlv_encoder_dlg.h"
 
 #include "js_kms.h"
 #include "js_net.h"
@@ -54,6 +55,8 @@ TTLVClientDlg::TTLVClientDlg(QWidget *parent) :
 
     connect( mResponseClearBtn, SIGNAL(clicked()), this, SLOT(clearResponse()));
     connect( mResponseDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeResponse()));
+
+    connect( mEncodeBtn, SIGNAL(clicked()), this, SLOT(clickTTLVEncode()));
     connect( mReadMainBtn, SIGNAL(clicked()), this, SLOT(clickReadMain()));
 
     initialize();
@@ -692,6 +695,20 @@ void TTLVClientDlg::clearRequest()
 void TTLVClientDlg::clearResponse()
 {
     mResponseText->clear();
+}
+
+void TTLVClientDlg::clickTTLVEncode()
+{
+    QString strRequest;
+
+    TTLVEncoderDlg encoder;
+    encoder.exec();
+    strRequest = encoder.getOutput();
+
+    if( strRequest.length() > 0 )
+    {
+        mRequestText->setPlainText( strRequest );
+    }
 }
 
 void TTLVClientDlg::clickReadMain()

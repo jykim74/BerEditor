@@ -8,6 +8,16 @@
 
 #include <QFileDialog>
 
+const QStringList kTypeList = { "Object", "Cryptography", "Attribute" };
+const QStringList kCmdObject =
+    { kCMD_CREATE, kCMD_ACTIVATE, kCMD_GET, kCMD_DESTROY, kCMD_REGISTER, kCMD_LOCATE, kCMD_CREATE_KEY_PAIR };
+
+const QStringList kCmdCryptography =
+    { kCMD_ENCRYPT, kCMD_DECRYPT, kCMD_SIGN, kCMD_VERIFY, kCMD_HASH, kCMD_RNG_SEED, kCMD_RNG_RETRIEVE };
+
+const QStringList kCmdAttribute =
+    { kCMD_ADD_ATTRIBUTE, kCMD_GET_ATTRIBUTES, kCMD_MODIFY_ATTRIBUTE, kCMD_GET_ATTRIBUTE_LIST, kCMD_DELETE_ATTRIBUTE };
+
 const QStringList kObjetType = { "SecretKey", "PrivateKey", "PublicKey", "Certificate" };
 const QStringList kAlgList = { "RSA", "ECDSA", "AES" };
 const QStringList kRSAOptionList = { "1024", "2048", "3072", "4096" };
@@ -97,46 +107,34 @@ TTLVEncoderDlg::TTLVEncoderDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
+    initUI();
 
     connect( mFindInputBtn, SIGNAL(clicked()), this, SLOT(findInput()));
-
-    connect( mCreateBtn, SIGNAL(clicked()), this, SLOT(clickCreate()));
-    connect( mActivateBtn, SIGNAL(clicked()), this, SLOT(clickActivate()));
-    connect( mGetBtn, SIGNAL(clicked()), this, SLOT(clickGet()));
-    connect( mDestroyBtn, SIGNAL(clicked()), this, SLOT(clickDestroy()));
-    connect( mEncryptBtn, SIGNAL(clicked()), this, SLOT(clickEncrypt()));
-    connect( mDecryptBtn, SIGNAL(clicked()), this, SLOT(clickDecrypt()));
-    connect( mSignBtn, SIGNAL(clicked()), this, SLOT(clickSign()));
-    connect( mVerifyBtn, SIGNAL(clicked()), this, SLOT(clickVerify()));
-    connect( mRegisterBtn, SIGNAL(clicked()), this, SLOT(clickRegister()));
-    connect( mCreateKeyPairBtn, SIGNAL(clicked()), this, SLOT(clickCreateKeyPair()));
-
-    connect( mGetAttributeListBtn, SIGNAL(clicked()), this, SLOT(clickGetAttributeList()));
-    connect( mAddAttributeBtn, SIGNAL(clicked()), this, SLOT(clickAddAttribute()));
-    connect( mGetAttributes, SIGNAL(clicked()), this, SLOT(clickGetAttributes()));
-    connect( mModifyAttributeBtn, SIGNAL(clicked()), this, SLOT(clickModifyAttribute()));
-    connect( mDeleteAttributeBtn, SIGNAL(clicked()), this, SLOT(clickDeleteAttribute()));
-    connect( mLocateBtn, SIGNAL(clicked()), this, SLOT(clickLocate()));
-    connect( mRNGRetrieveBtn, SIGNAL(clicked()), this, SLOT(clickRNGRetrieve()));
-    connect( mRNGSeedBtn, SIGNAL(clicked()), this, SLOT(clickRNGSeed()));
-    connect( mHashBtn, SIGNAL(clicked()), this, SLOT(clickHash()));
+    connect( mTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeType()));
+    connect( mCmdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeCmd()));
+    connect( mRunBtn, SIGNAL(clicked()), this, SLOT(clickRun()));
 
     connect( mAlgCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(algChanged(int)));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
+    connect( mIVText, SIGNAL(textChanged(QString)), this, SLOT(changeIV()));
     connect( mInputText, SIGNAL(textChanged()), this, SLOT(changeInput()));
     connect( mOutputText, SIGNAL(textChanged()), this, SLOT(changeOutput()));
     connect( mInputClearBtn, SIGNAL(clicked()), this, SLOT(clearInput()));
+    connect( mSignClearBtn, SIGNAL(clicked()), this, SLOT(clearSign()));
     connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clearOutput()));
+    connect( mOutputDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeOutput()));
+    connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clearAll()));
 
     initialize();
-    mCreateBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
 
     mInputClearBtn->setFixedWidth(34);
+    mSignClearBtn->setFixedWidth(34);
     mOutputClearBtn->setFixedWidth(34);
+    mOutputDecodeBtn->setFixedWidth(34);
 #endif
     resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
@@ -146,14 +144,262 @@ TTLVEncoderDlg::~TTLVEncoderDlg()
 
 }
 
-void TTLVEncoderDlg::initialize()
+const QString TTLVEncoderDlg::getOutput()
 {
+    QString strOutput = mOutputText->toPlainText();
+    return strOutput;
+}
+
+void TTLVEncoderDlg::initUI()
+{
+    mTypeCombo->addItems( kTypeList );
+    mCmdCombo->addItems( kCmdObject );
+    mIVTypeCombo->addItems( kValueTypeList );
+    mInputTypeCombo->addItems( kValueTypeList );
+
     mObjectTypeCombo->addItems( kObjetType );
     mAlgCombo->addItems( kAlgList );
     mOptionCombo->addItems( kRSAOptionList );
     mHashCombo->addItems( kHashList );
     mHashCombo->setCurrentText(berApplet->settingsMgr()->defaultHash());
     mAttributeCombo->addItems( kAttrList );
+
+    mSignText->setPlaceholderText( tr("Hex value" ));
+    mOutputText->setPlaceholderText( tr("Hex value" ));
+    mIVTypeCombo->setCurrentText( "String" );
+    mIVText->setText( "0123456789ABCDEF" );
+}
+
+void TTLVEncoderDlg::initialize()
+{
+    changeCmd();
+    changeIV();
+}
+
+void TTLVEncoderDlg::setEnableUUID( bool bVal )
+{
+    mUUIDLabel->setEnabled(bVal);
+    mUUIDText->setEnabled(bVal);
+}
+
+void TTLVEncoderDlg::setEnableLen( bool bVal )
+{
+    mLenLabel->setEnabled(bVal);
+    mLenText->setEnabled(bVal);
+}
+
+void TTLVEncoderDlg::setEnableAttribute( bool bVal )
+{
+    mAttributeLabel->setEnabled(bVal);
+    mAttributeCombo->setEnabled(bVal);
+}
+
+void TTLVEncoderDlg::setEnableObjectType( bool bVal )
+{
+    mObjectTypeLabel->setEnabled(bVal);
+    mObjectTypeCombo->setEnabled(bVal);
+}
+
+void TTLVEncoderDlg::setEnableAlg( bool bVal )
+{
+    mAlgLabel->setEnabled(bVal);
+    mAlgCombo->setEnabled(bVal);
+}
+
+void TTLVEncoderDlg::setEnableOption( bool bVal )
+{
+    mOptionLabel->setEnabled(bVal);
+    mOptionCombo->setEnabled(bVal);
+}
+
+void TTLVEncoderDlg::setEnableHash( bool bVal )
+{
+    mHashLabel->setEnabled(bVal);
+    mHashCombo->setEnabled(bVal);
+}
+
+void TTLVEncoderDlg::setEnableIV( bool bVal )
+{
+    mIVLabel->setEnabled( bVal );
+    mIVTypeCombo->setEnabled( bVal );
+    mIVText->setEnabled( bVal );
+    mIVLenText->setEnabled( bVal );
+}
+
+void TTLVEncoderDlg::setEnableInput( bool bVal )
+{
+    mInputGroup->setEnabled(bVal);
+}
+
+void TTLVEncoderDlg::setEnableSign( bool bVal )
+{
+    mSignGroup->setEnabled(bVal);
+}
+
+void TTLVEncoderDlg::setEnableAll( bool bVal )
+{
+    setEnableUUID(bVal);
+    setEnableLen(bVal);
+    setEnableAttribute(bVal);
+    setEnableObjectType(bVal);
+    setEnableAlg(bVal);
+    setEnableOption(bVal);
+    setEnableIV( bVal );
+    setEnableHash(bVal);
+    setEnableInput(bVal);
+    setEnableSign(bVal);
+}
+
+void TTLVEncoderDlg::changeType()
+{
+    QString strType = mTypeCombo->currentText();
+
+    mCmdCombo->clear();
+
+    if( strType == "Object" )
+        mCmdCombo->addItems( kCmdObject );
+    else if( strType == "Cryptography" )
+        mCmdCombo->addItems( kCmdCryptography );
+    else
+        mCmdCombo->addItems( kCmdAttribute );
+}
+
+void TTLVEncoderDlg::changeCmd()
+{
+    QString strCmd = mCmdCombo->currentText();
+
+    setEnableAll(false);
+
+    if( strCmd == kCMD_GET || strCmd == kCMD_ACTIVATE || strCmd == kCMD_DESTROY || strCmd == kCMD_GET_ATTRIBUTE_LIST )
+    {
+        setEnableUUID(true);
+    }
+    else if( strCmd == kCMD_CREATE )
+    {
+
+    }
+    else if( strCmd == kCMD_ENCRYPT || strCmd == kCMD_DECRYPT )
+    {
+        setEnableUUID(true);
+        setEnableInput(true);
+        setEnableIV(true);
+    }
+    else if( strCmd == kCMD_SIGN )
+    {
+        setEnableUUID(true);
+        setEnableInput(true);
+        setEnableAlg(true);
+        setEnableHash(true);
+    }
+    else if( strCmd == kCMD_VERIFY )
+    {
+        setEnableUUID(true);
+        setEnableInput(true);
+        setEnableSign(true);
+        setEnableAlg(true);
+        setEnableHash(true);
+    }
+    else if( strCmd == kCMD_HASH )
+    {
+        setEnableInput(true);
+        setEnableHash(true);
+    }
+    else if( strCmd == kCMD_REGISTER )
+    {
+        setEnableInput(true);
+        setEnableObjectType(true);
+        setEnableAlg(true);
+    }
+    else if( strCmd == kCMD_CREATE_KEY_PAIR )
+    {
+        setEnableAlg(true);
+        setEnableOption(true);
+    }
+    else if( strCmd == kCMD_ADD_ATTRIBUTE )
+    {
+        setEnableUUID(true);
+        setEnableInput(true);
+        setEnableAttribute(true);
+    }
+    else if( strCmd == kCMD_GET_ATTRIBUTES )
+    {
+        setEnableUUID(true);
+    }
+    else if( strCmd == kCMD_MODIFY_ATTRIBUTE )
+    {
+        setEnableUUID( true );
+        setEnableInput( true );
+    }
+    else if( strCmd == kCMD_DELETE_ATTRIBUTE )
+    {
+        setEnableUUID(true);
+    }
+    else if( strCmd == kCMD_LOCATE )
+    {
+        setEnableAlg(true);
+        setEnableAttribute(true);
+    }
+    else if( strCmd == kCMD_RNG_RETRIEVE )
+    {
+        setEnableLen( true );
+    }
+    else if( strCmd == kCMD_RNG_SEED )
+    {
+        setEnableInput(true);
+    }
+    else if( strCmd == kCMD_HASH )
+    {
+        setEnableInput(true);
+        setEnableHash( true );
+    }
+}
+
+void TTLVEncoderDlg::clickRun()
+{
+    QString strCmd = mCmdCombo->currentText();
+
+    if( strCmd == kCMD_GET )
+        clickGet();
+    else if( strCmd == kCMD_ACTIVATE )
+        clickActivate();
+    else if( strCmd == kCMD_CREATE )
+        clickCreate();
+    else if( strCmd == kCMD_DESTROY )
+        clickDestroy();
+    else if( strCmd == kCMD_ENCRYPT )
+        clickEncrypt();
+    else if( strCmd == kCMD_DECRYPT )
+        clickDecrypt();
+    else if( strCmd == kCMD_SIGN )
+        clickSign();
+    else if( strCmd == kCMD_VERIFY )
+        clickVerify();
+    else if( strCmd == kCMD_HASH )
+        clickHash();
+    else if( strCmd == kCMD_REGISTER )
+        clickRegister();
+    else if( strCmd == kCMD_ADD_ATTRIBUTE )
+        clickAddAttribute();
+    else if( strCmd == kCMD_CREATE_KEY_PAIR )
+        clickCreateKeyPair();
+    else if( strCmd == kCMD_GET_ATTRIBUTE_LIST )
+        clickGetAttributeList();
+    else if( strCmd == kCMD_GET_ATTRIBUTES )
+        clickGetAttributes();
+    else if( strCmd == kCMD_MODIFY_ATTRIBUTE )
+        clickModifyAttribute();
+    else if( strCmd == kCMD_DELETE_ATTRIBUTE )
+        clickDeleteAttribute();
+    else if( strCmd == kCMD_LOCATE )
+        clickLocate();
+    else if( strCmd == kCMD_RNG_RETRIEVE )
+        clickRNGRetrieve();
+    else if( strCmd == kCMD_RNG_SEED )
+        clickRNGSeed();
+    else
+    {
+        berApplet->warnLog( tr( "Unknown Cmd: %1").arg( strCmd ), this );
+    }
 }
 
 void TTLVEncoderDlg::algChanged( int index )
@@ -165,10 +411,14 @@ void TTLVEncoderDlg::algChanged( int index )
        mOptionLabel->setText( tr("KeyLength") );
        mOptionCombo->addItems(kRSAOptionList);
    }
-   else
+   else if( index == 1)
    {
        mOptionLabel->setText( tr("NamedCurve" ) );
        mOptionCombo->addItems(kECDSAOptionList);
+   }
+   else
+   {
+       mOptionLabel->setText( "" );
    }
 }
 void TTLVEncoderDlg::findInput()
@@ -199,30 +449,50 @@ void TTLVEncoderDlg::clickGet()
     BIN binData = {0,0};
 
     Authentication sAuth = {0};
-    JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
-
     QString strUUID = mUUIDText->text();
+
+    if( mAuthGroup->isChecked() == true )
+    {
+        QString strUserID = mUserIDText->text();
+        QString strPasswd = mPasswdText->text();
+
+        if( strUserID.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a UserID" ), this );
+            mUserIDText->setFocus();
+            return;
+        }
+
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password" ), this );
+            mPasswdText->setFocus();
+            return;
+        }
+
+        JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
+    }
 
     if( strUUID.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a UUID" ), this );
         mUUIDText->setFocus();
-        return;
+        goto end;
     }
 
-    ret = JS_KMS_encodeGetReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, strUUID.toStdString().c_str(), &binData );
-
-    JS_KMS_resetAuthentication( &sAuth );
+    ret = JS_KMS_encodeGetReq( mAuthGroup->isChecked() ? &sAuth : NULL, strUUID.toStdString().c_str(), &binData );
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV( &binData );
+        mOutputText->setPlainText( getHexString( &binData ));
     }
     else
     {
         berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
+end :
+    JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
 }
 
@@ -234,29 +504,48 @@ void TTLVEncoderDlg::clickActivate()
     QString strUUID = mUUIDText->text();
     Authentication sAuth = {0};
 
+    if( mAuthGroup->isChecked() == true )
+    {
+        QString strUserID = mUserIDText->text();
+        QString strPasswd = mPasswdText->text();
+
+        if( strUserID.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a UserID" ), this );
+            mUserIDText->setFocus();
+            return;
+        }
+
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password" ), this );
+            mPasswdText->setFocus();
+            return;
+        }
+
+        JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
+    }
+
     if( strUUID.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a UUID" ), this );
         mUUIDText->setFocus();
-        return;
+        goto end;
     }
 
-    JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
-
-
-    ret = JS_KMS_encodeActivateReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, strUUID.toStdString().c_str(), &binData );
-
-    JS_KMS_resetAuthentication( &sAuth );
+    ret = JS_KMS_encodeActivateReq( mAuthGroup->isChecked() ? &sAuth : NULL, strUUID.toStdString().c_str(), &binData );
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV( &binData );
+        mOutputText->setPlainText( getHexString( &binData ));
     }
     else
     {
         berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
+end :
+    JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
 }
 
@@ -266,21 +555,41 @@ void TTLVEncoderDlg::clickCreate()
     BIN binData = {0,0};
 
     Authentication sAuth = {0};
-    JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
+    if( mAuthGroup->isChecked() == true )
+    {
+        QString strUserID = mUserIDText->text();
+        QString strPasswd = mPasswdText->text();
 
-    ret = JS_KMS_encodeCreateReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, &binData );
+        if( strUserID.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a UserID" ), this );
+            mUserIDText->setFocus();
+            return;
+        }
 
-    JS_KMS_resetAuthentication( &sAuth );
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password" ), this );
+            mPasswdText->setFocus();
+            return;
+        }
+
+        JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
+    }
+
+    ret = JS_KMS_encodeCreateReq( mAuthGroup->isChecked() ? &sAuth : NULL, &binData );
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV( &binData );
+        mOutputText->setPlainText( getHexString( &binData ));
     }
     else
     {
         berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
+end :
+    JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
 }
 
@@ -292,27 +601,48 @@ void TTLVEncoderDlg::clickDestroy()
     QString strUUID = mUUIDText->text();
     Authentication sAuth = {0};
 
+    if( mAuthGroup->isChecked() == true )
+    {
+        QString strUserID = mUserIDText->text();
+        QString strPasswd = mPasswdText->text();
+
+        if( strUserID.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a UserID" ), this );
+            mUserIDText->setFocus();
+            return;
+        }
+
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password" ), this );
+            mPasswdText->setFocus();
+            return;
+        }
+
+        JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
+    }
+
     if( strUUID.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a UUID" ), this );
         mUUIDText->setFocus();
-        return;
+        goto end;
     }
 
-    JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
-    ret = JS_KMS_encodeDestroyReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, strUUID.toStdString().c_str(), &binData );
-
-    JS_KMS_resetAuthentication( &sAuth );
+    ret = JS_KMS_encodeDestroyReq( mAuthGroup->isChecked() ? &sAuth : NULL, strUUID.toStdString().c_str(), &binData );
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV( &binData );
+        mOutputText->setPlainText( getHexString( &binData ));
     }
     else
     {
         berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
+end :
+    JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
 }
 
@@ -326,45 +656,64 @@ void TTLVEncoderDlg::clickEncrypt()
 
     QString strUUID = mUUIDText->text();
     QString strInput = mInputText->toPlainText();
+    QString strIV = mIVText->text();
 
     Authentication sAuth = {0};
+
+    if( mAuthGroup->isChecked() == true )
+    {
+        QString strUserID = mUserIDText->text();
+        QString strPasswd = mPasswdText->text();
+
+        if( strUserID.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a UserID" ), this );
+            mUserIDText->setFocus();
+            return;
+        }
+
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password" ), this );
+            mPasswdText->setFocus();
+            return;
+        }
+
+        JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
+    }
 
     if( strUUID.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a UUID" ), this );
         mUUIDText->setFocus();
-        return;
+        goto end;
     }
 
     if( strInput.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a input" ), this );
         mInputText->setFocus();
-        return;
+        goto end;
     }
 
-    JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
+    getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
+    getBINFromString( &binPlain, mInputTypeCombo->currentText(), strInput );
 
-
-    JS_BIN_set( &binIV, (unsigned char *)"1234567890123456", 16);
-    JS_BIN_set( &binPlain, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
-
-    ret = JS_KMS_encodeEncryptReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, strUUID.toStdString().c_str(), &binIV, &binPlain, &binData );
-
-    JS_BIN_reset( &binIV );
-    JS_BIN_reset( &binPlain );
-
-    JS_KMS_resetAuthentication( &sAuth );
+    ret = JS_KMS_encodeEncryptReq( mAuthGroup->isChecked() ? &sAuth : NULL, strUUID.toStdString().c_str(), &binIV, &binPlain, &binData );
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV( &binData );
+        mOutputText->setPlainText( getHexString( &binData ));
     }
     else
     {
         berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
+end :
+    JS_BIN_reset( &binIV );
+    JS_BIN_reset( &binPlain );
+    JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
 }
 
@@ -377,45 +726,64 @@ void TTLVEncoderDlg::clickDecrypt()
 
     QString strUUID = mUUIDText->text();
     QString strInput = mInputText->toPlainText();
+    QString strIV = mIVText->text();
 
     Authentication sAuth = {0};
+
+    if( mAuthGroup->isChecked() == true )
+    {
+        QString strUserID = mUserIDText->text();
+        QString strPasswd = mPasswdText->text();
+
+        if( strUserID.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a UserID" ), this );
+            mUserIDText->setFocus();
+            return;
+        }
+
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password" ), this );
+            mPasswdText->setFocus();
+            return;
+        }
+
+        JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
+    }
 
     if( strUUID.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a UUID" ), this );
         mUUIDText->setFocus();
-        return;
+        goto end;
     }
 
     if( strInput.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a input" ), this );
         mInputText->setFocus();
-        return;
+        goto end;
     }
 
-    JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
+    getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
+    getBINFromString( &binEncrypt, mInputTypeCombo->currentText(), strInput );
 
-
-    JS_BIN_set( &binIV, (unsigned char *)"1234567890123456", 16);
-    JS_BIN_decodeHex( strInput.toStdString().c_str(), &binEncrypt );
-
-    ret = JS_KMS_encodeDecryptReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, strUUID.toStdString().c_str(), &binIV, &binEncrypt, &binData );
-
-    JS_BIN_reset( &binIV );
-    JS_BIN_reset( &binEncrypt );
-
-    JS_KMS_resetAuthentication( &sAuth );
-
+    ret = JS_KMS_encodeDecryptReq( mAuthGroup->isChecked() ? &sAuth : NULL, strUUID.toStdString().c_str(), &binIV, &binEncrypt, &binData );
     if( ret == 0 )
     {
-        berApplet->decodeTTLV( &binData );
+        mOutputText->setPlainText( getHexString( &binData ));
     }
     else
     {
         berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
+end :
+    JS_BIN_reset( &binIV );
+    JS_BIN_reset( &binEncrypt );
+
+    JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
 }
 
@@ -432,23 +800,42 @@ void TTLVEncoderDlg::clickSign()
     QString strInput = mInputText->toPlainText();
 
     Authentication sAuth = {0};
+
+    if( mAuthGroup->isChecked() == true )
+    {
+        QString strUserID = mUserIDText->text();
+        QString strPasswd = mPasswdText->text();
+
+        if( strUserID.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a UserID" ), this );
+            mUserIDText->setFocus();
+            return;
+        }
+
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password" ), this );
+            mPasswdText->setFocus();
+            return;
+        }
+
+        JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
+    }
+
     if( strUUID.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a UUID" ), this );
         mUUIDText->setFocus();
-        return;
+        goto end;
     }
 
     if( strInput.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a input" ), this );
         mInputText->setFocus();
-        return;
+        goto end;
     }
-
-
-    JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
-
 
     if( mAlgCombo->currentIndex() == 0 )
         nAlg = JS_PKI_KEY_TYPE_RSA;
@@ -459,23 +846,24 @@ void TTLVEncoderDlg::clickSign()
 
     nMech = _getMech( nAlg, strHash );
 
-    JS_BIN_set( &binPlain, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
+    getBINFromString( &binPlain, mInputTypeCombo->currentText(), strInput );
 
-    ret = JS_KMS_encodeSignReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, strUUID.toStdString().c_str(), nMech, &binPlain, &binData );
+    ret = JS_KMS_encodeSignReq( mAuthGroup->isChecked() ? &sAuth : NULL, strUUID.toStdString().c_str(), nMech, &binPlain, &binData );
 
-    JS_BIN_reset( &binPlain );
 
-    JS_KMS_resetAuthentication( &sAuth );
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV( &binData );
+        mOutputText->setPlainText( getHexString( &binData ));
     }
     else
     {
         berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
+end :
+    JS_BIN_reset( &binPlain );
+    JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
 }
 
@@ -493,32 +881,53 @@ void TTLVEncoderDlg::clickVerify()
 
     QString strUUID = mUUIDText->text();
     QString strInput = mInputText->toPlainText();
-    QString strOutput = mOutputText->toPlainText();
+    QString strSign = mSignText->toPlainText();
 
     Authentication sAuth = {0};
+
+    if( mAuthGroup->isChecked() == true )
+    {
+        QString strUserID = mUserIDText->text();
+        QString strPasswd = mPasswdText->text();
+
+        if( strUserID.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a UserID" ), this );
+            mUserIDText->setFocus();
+            return;
+        }
+
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password" ), this );
+            mPasswdText->setFocus();
+            return;
+        }
+
+        JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
+    }
+
 
     if( strUUID.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a UUID" ), this );
         mUUIDText->setFocus();
-        return;
+        goto end;
     }
 
     if( strInput.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a input" ), this );
         mInputText->setFocus();
-        return;
+        goto end;
     }
 
-    if( strOutput.length() < 1 )
+    if( strSign.length() < 1 )
     {
-        berApplet->warningBox( tr( "Enter a output" ), this );
-        mOutputText->setFocus();
-        return;
+        berApplet->warningBox( tr( "Enter a sign" ), this );
+        mSignText->setFocus();
+        goto end;
     }
-
-    JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
 
 
     if( mAlgCombo->currentIndex() == 0 )
@@ -530,25 +939,25 @@ void TTLVEncoderDlg::clickVerify()
 
     nMech = _getMech( nAlg, strHash );
 
-    JS_BIN_set( &binPlain, (unsigned char *)strInput.toStdString().c_str(), strInput.length() );
-    JS_BIN_decodeHex( strOutput.toStdString().c_str(), &binSign );
+    getBINFromString( &binPlain, mInputTypeCombo->currentText(), strInput );
+    JS_BIN_decodeHex( strSign.toStdString().c_str(), &binSign );
 
-    ret = JS_KMS_encodeVerifyReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, strUUID.toStdString().c_str(), nMech, &binPlain, &binSign, &binData );
-
-    JS_BIN_reset( &binPlain );
-    JS_BIN_reset( &binSign );
-
-    JS_KMS_resetAuthentication( &sAuth );
+    ret = JS_KMS_encodeVerifyReq( mAuthGroup->isChecked() ? &sAuth : NULL, strUUID.toStdString().c_str(), nMech, &binPlain, &binSign, &binData );
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV( &binData );
+        mOutputText->setPlainText( getHexString( &binData ));
     }
     else
     {
         berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
+end :
+    JS_BIN_reset( &binPlain );
+    JS_BIN_reset( &binSign );
+
+    JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
 }
 
@@ -563,16 +972,36 @@ void TTLVEncoderDlg::clickRegister()
     BIN binInput = {0};
 
     Authentication sAuth = {0};
-    JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
-
 
     QString strInput = mInputText->toPlainText();
+
+    if( mAuthGroup->isChecked() == true )
+    {
+        QString strUserID = mUserIDText->text();
+        QString strPasswd = mPasswdText->text();
+
+        if( strUserID.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a UserID" ), this );
+            mUserIDText->setFocus();
+            return;
+        }
+
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password" ), this );
+            mPasswdText->setFocus();
+            return;
+        }
+
+        JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
+    }
 
     if( strInput.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a input" ), this );
         mInputText->setFocus();
-        return;
+        goto end;
     }
 
     if( mObjectTypeCombo->currentIndex() == 0 )
@@ -584,7 +1013,7 @@ void TTLVEncoderDlg::clickRegister()
     else if( mObjectTypeCombo->currentIndex() == 3 )
         nType = JS_KMS_OBJECT_TYPE_CERT;
 
-    JS_BIN_decodeHex( strInput.toStdString().c_str(), &binInput );
+    getBINFromString( &binInput, mInputTypeCombo->currentText(), strInput );
 
     if( mAlgCombo->currentIndex() == 0 )
     {
@@ -604,20 +1033,20 @@ void TTLVEncoderDlg::clickRegister()
             nParam = KMIP_CURVE_P_521;
     }
 
-    ret = JS_KMS_encodeRegisterReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, nAlg, nParam, nType, &binInput, &binData );
-
-    JS_BIN_reset( &binInput );
-    JS_KMS_resetAuthentication( &sAuth );
+    ret = JS_KMS_encodeRegisterReq( mAuthGroup->isChecked() ? &sAuth : NULL, nAlg, nParam, nType, &binInput, &binData );
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV( &binData );
+        mOutputText->setPlainText( getHexString( &binData ));
     }
     else
     {
         berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
+end :
+    JS_BIN_reset( &binInput );
+    JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
 }
 
@@ -630,7 +1059,27 @@ void TTLVEncoderDlg::clickCreateKeyPair()
     BIN binData = {0,0};
 
     Authentication sAuth = {0};
-    JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
+    if( mAuthGroup->isChecked() == true )
+    {
+        QString strUserID = mUserIDText->text();
+        QString strPasswd = mPasswdText->text();
+
+        if( strUserID.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a UserID" ), this );
+            mUserIDText->setFocus();
+            return;
+        }
+
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password" ), this );
+            mPasswdText->setFocus();
+            return;
+        }
+
+        JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
+    }
 
 
     if( mAlgCombo->currentIndex() == 0 )
@@ -651,19 +1100,19 @@ void TTLVEncoderDlg::clickCreateKeyPair()
             nParam = KMIP_CURVE_P_521;
     }
 
-    ret = JS_KMS_encodeCreateKeyPairReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, nAlg, nParam, &binData );
-
-    JS_KMS_resetAuthentication( &sAuth );
+    ret = JS_KMS_encodeCreateKeyPairReq( mAuthGroup->isChecked() ? &sAuth : NULL, nAlg, nParam, &binData );
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV( &binData );
+        mOutputText->setPlainText( getHexString( &binData ));
     }
     else
     {
         berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
+end :
+    JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
 }
 
@@ -676,29 +1125,48 @@ void TTLVEncoderDlg::clickGetAttributeList()
 
     Authentication sAuth = {0};
 
+    if( mAuthGroup->isChecked() == true )
+    {
+        QString strUserID = mUserIDText->text();
+        QString strPasswd = mPasswdText->text();
+
+        if( strUserID.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a UserID" ), this );
+            mUserIDText->setFocus();
+            return;
+        }
+
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password" ), this );
+            mPasswdText->setFocus();
+            return;
+        }
+
+        JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
+    }
+
     if( strUUID.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a UUID" ), this );
         mUUIDText->setFocus();
-        return;
+        goto end;
     }
 
-    JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
-
-
-    ret = JS_KMS_encodeGetAttributeListReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, strUUID.toStdString().c_str(), &binData );
-
-    JS_KMS_resetAuthentication( &sAuth );
+    ret = JS_KMS_encodeGetAttributeListReq( mAuthGroup->isChecked() ? &sAuth : NULL, strUUID.toStdString().c_str(), &binData );
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV( &binData );
+        mOutputText->setPlainText( getHexString( &binData ));
     }
     else
     {
         berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
+end :
+    JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
 }
 
@@ -713,35 +1181,55 @@ void TTLVEncoderDlg::clickAddAttribute()
 
     Authentication sAuth = {0};
 
+    if( mAuthGroup->isChecked() == true )
+    {
+        QString strUserID = mUserIDText->text();
+        QString strPasswd = mPasswdText->text();
+
+        if( strUserID.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a UserID" ), this );
+            mUserIDText->setFocus();
+            return;
+        }
+
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password" ), this );
+            mPasswdText->setFocus();
+            return;
+        }
+
+        JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
+    }
+
     if( strUUID.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a UUID" ), this );
         mUUIDText->setFocus();
-        return;
+        goto end;
     }
 
     if( strAttrValue.length() < 1 )
     {
-        berApplet->warningBox( tr( "Enter a input" ), this );
+        berApplet->warningBox( tr( "Enter the attribute value into the input field." ), this );
         mInputText->setFocus();
-        return;
+        goto end;
     }
 
-    JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
-
-    ret = JS_KMS_encodeAddAttributeReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, strUUID.toStdString().c_str(), strAttrName.toStdString().c_str(), strAttrValue.toStdString().c_str(), &binData );
-
-    JS_KMS_resetAuthentication( &sAuth );
+    ret = JS_KMS_encodeAddAttributeReq( mAuthGroup->isChecked() ? &sAuth : NULL, strUUID.toStdString().c_str(), strAttrName.toStdString().c_str(), strAttrValue.toStdString().c_str(), &binData );
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV( &binData );
+        mOutputText->setPlainText( getHexString( &binData ));
     }
     else
     {
         berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
+end :
+    JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
 }
 
@@ -754,29 +1242,48 @@ void TTLVEncoderDlg::clickGetAttributes()
 
     Authentication sAuth = {0};
 
+    if( mAuthGroup->isChecked() == true )
+    {
+        QString strUserID = mUserIDText->text();
+        QString strPasswd = mPasswdText->text();
+
+        if( strUserID.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a UserID" ), this );
+            mUserIDText->setFocus();
+            return;
+        }
+
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password" ), this );
+            mPasswdText->setFocus();
+            return;
+        }
+
+        JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
+    }
+
     if( strUUID.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a UUID" ), this );
         mUUIDText->setFocus();
-        return;
+        goto end;
     }
 
-    JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
-
-
-    ret = JS_KMS_encodeGetAttributesReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, strUUID.toStdString().c_str(), NULL, &binData );
-
-    JS_KMS_resetAuthentication( &sAuth );
+    ret = JS_KMS_encodeGetAttributesReq( mAuthGroup->isChecked() ? &sAuth : NULL, strUUID.toStdString().c_str(), NULL, &binData );
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV( &binData );
+        mOutputText->setPlainText( getHexString( &binData ));
     }
     else
     {
         berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
+end :
+    JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
 }
 
@@ -791,35 +1298,54 @@ void TTLVEncoderDlg::clickModifyAttribute()
 
     Authentication sAuth = {0};
 
+    if( mAuthGroup->isChecked() == true )
+    {
+        QString strUserID = mUserIDText->text();
+        QString strPasswd = mPasswdText->text();
+
+        if( strUserID.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a UserID" ), this );
+            mUserIDText->setFocus();
+            return;
+        }
+
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password" ), this );
+            mPasswdText->setFocus();
+            return;
+        }
+
+        JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
+    }
+
     if( strUUID.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a UUID" ), this );
         mUUIDText->setFocus();
-        return;
+        goto end;
     }
 
     if( strAttrValue.length() < 1 )
     {
-        berApplet->warningBox( tr( "Enter a input" ), this );
+        berApplet->warningBox( tr( "Enter the attribute value into the input field." ), this );
         mInputText->setFocus();
-        return;
+        goto end;
     }
 
-    JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
-
-    ret = JS_KMS_encodeModifyAttributeReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, strUUID.toStdString().c_str(), strAttrName.toStdString().c_str(), strAttrValue.toStdString().c_str(), &binData );
-
-    JS_KMS_resetAuthentication( &sAuth );
-
+    ret = JS_KMS_encodeModifyAttributeReq( mAuthGroup->isChecked() ? &sAuth : NULL, strUUID.toStdString().c_str(), strAttrName.toStdString().c_str(), strAttrValue.toStdString().c_str(), &binData );
     if( ret == 0 )
     {
-        berApplet->decodeTTLV( &binData );
+        mOutputText->setPlainText( getHexString( &binData ));
     }
     else
     {
         berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
+end :
+    JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
 }
 
@@ -833,28 +1359,47 @@ void TTLVEncoderDlg::clickDeleteAttribute()
 
     Authentication sAuth = {0};
 
+    if( mAuthGroup->isChecked() == true )
+    {
+        QString strUserID = mUserIDText->text();
+        QString strPasswd = mPasswdText->text();
+
+        if( strUserID.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a UserID" ), this );
+            mUserIDText->setFocus();
+            return;
+        }
+
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password" ), this );
+            mPasswdText->setFocus();
+            return;
+        }
+
+        JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
+    }
+
     if( strUUID.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a UUID" ), this );
         mUUIDText->setFocus();
-        return;
+        goto end;
     }
 
-    JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
-
-    ret = JS_KMS_encodeDeleteAttributeReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, strUUID.toStdString().c_str(), strAttrName.toStdString().c_str(), 0, &binData );
-
-    JS_KMS_resetAuthentication( &sAuth );
-
+    ret = JS_KMS_encodeDeleteAttributeReq( mAuthGroup->isChecked() ? &sAuth : NULL, strUUID.toStdString().c_str(), strAttrName.toStdString().c_str(), 0, &binData );
     if( ret == 0 )
     {
-        berApplet->decodeTTLV( &binData );
+        mOutputText->setPlainText( getHexString( &binData ));
     }
     else
     {
         berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
+end :
+    JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
 }
 
@@ -866,8 +1411,28 @@ void TTLVEncoderDlg::clickLocate()
     BIN binData = { 0, 0};
 
     Authentication sAuth = {0};
-    JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
 
+    if( mAuthGroup->isChecked() == true )
+    {
+        QString strUserID = mUserIDText->text();
+        QString strPasswd = mPasswdText->text();
+
+        if( strUserID.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a UserID" ), this );
+            mUserIDText->setFocus();
+            return;
+        }
+
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password" ), this );
+            mPasswdText->setFocus();
+            return;
+        }
+
+        JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
+    }
 
     if( mAlgCombo->currentIndex() == 0 )
     {
@@ -882,19 +1447,19 @@ void TTLVEncoderDlg::clickLocate()
         nAlg = JS_PKI_KEY_TYPE_AES;
     }
 
-    ret = JS_KMS_encodeLocateReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, nAlg, &binData );
-
-    JS_KMS_resetAuthentication( &sAuth );
+    ret = JS_KMS_encodeLocateReq( mAuthGroup->isChecked() ? &sAuth : NULL, nAlg, &binData );
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV( &binData );
+        mOutputText->setPlainText( getHexString( &binData ));
     }
     else
     {
         berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
+end :
+    JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
 }
 
@@ -906,28 +1471,48 @@ void TTLVEncoderDlg::clickRNGRetrieve()
 
     Authentication sAuth = {0};
 
+    if( mAuthGroup->isChecked() == true )
+    {
+        QString strUserID = mUserIDText->text();
+        QString strPasswd = mPasswdText->text();
+
+        if( strUserID.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a UserID" ), this );
+            mUserIDText->setFocus();
+            return;
+        }
+
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password" ), this );
+            mPasswdText->setFocus();
+            return;
+        }
+
+        JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
+    }
+
     if( nLen <= 0 )
     {
         berApplet->warningBox( tr( "Enter a length" ), this );
         mLenText->setFocus();
-        return;
+        goto end;
     }
 
-    JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
-
-    ret = JS_KMS_encodeRNGRetrieveReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, nLen, &binData );
-
-    JS_KMS_resetAuthentication( &sAuth );
+    ret = JS_KMS_encodeRNGRetrieveReq( mAuthGroup->isChecked() ? &sAuth : NULL, nLen, &binData );
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV( &binData );
+        mOutputText->setPlainText( getHexString( &binData ));
     }
     else
     {
         berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
+end :
+    JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
 }
 
@@ -940,29 +1525,50 @@ void TTLVEncoderDlg::clickRNGSeed()
     Authentication sAuth = {0};
     QString strInput = mInputText->toPlainText();
 
+    if( mAuthGroup->isChecked() == true )
+    {
+        QString strUserID = mUserIDText->text();
+        QString strPasswd = mPasswdText->text();
+
+        if( strUserID.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a UserID" ), this );
+            mUserIDText->setFocus();
+            return;
+        }
+
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password" ), this );
+            mPasswdText->setFocus();
+            return;
+        }
+
+        JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
+    }
+
     if( strInput.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a input" ), this );
         mInputText->setFocus();
-        return;
+        goto end;
     }
 
-    JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
-    JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
+    getBINFromString( &binSrc, mInputTypeCombo->currentText(), strInput );
 
-    ret = JS_KMS_encodeRNGSeedReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, &binSrc, &binData );
-
-    JS_KMS_resetAuthentication( &sAuth );
+    ret = JS_KMS_encodeRNGSeedReq( mAuthGroup->isChecked() ? &sAuth : NULL, &binSrc, &binData );
 
     if( ret == 0 )
     {
-        berApplet->decodeTTLV( &binData );
+        mOutputText->setPlainText( getHexString( &binData ));
     }
     else
     {
         berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
+end :
+    JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
 }
 
@@ -971,40 +1577,65 @@ void TTLVEncoderDlg::clickHash()
     int ret = 0;
     BIN binSrc = {0};
     BIN binData = {0,0};
+    int nMech = -1;
 
     QString strHash = mHashCombo->currentText();
     QString strInput = mInputText->toPlainText();
 
     Authentication sAuth = {0};
+    if( mAuthGroup->isChecked() == true )
+    {
+        QString strUserID = mUserIDText->text();
+        QString strPasswd = mPasswdText->text();
+
+        if( strUserID.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a UserID" ), this );
+            mUserIDText->setFocus();
+            return;
+        }
+
+        if( strPasswd.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password" ), this );
+            mPasswdText->setFocus();
+            return;
+        }
+
+        JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
+    }
 
     if( strInput.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a input" ), this );
         mInputText->setFocus();
-        return;
+        goto end;
     }
 
-    JS_KMS_makeAuthentication( mUserIDText->text().toStdString().c_str(), mPasswdText->text().toStdString().c_str(), &sAuth );
+    nMech = _getMechHash( strHash );
 
+    getBINFromString( &binSrc, mInputTypeCombo->currentText(), strInput );
 
-    int nMech = _getMechHash( strHash );
-
-    JS_BIN_decodeHex( strInput.toStdString().c_str(), &binSrc );
-
-    ret = JS_KMS_encodeHashReq( mUserIDText->text().length() > 1 ? &sAuth : NULL, nMech, &binSrc, &binData );
-
-    JS_KMS_resetAuthentication( &sAuth );
-
+    ret = JS_KMS_encodeHashReq( mAuthGroup->isChecked() ? &sAuth : NULL, nMech, &binSrc, &binData );
     if( ret == 0 )
     {
-        berApplet->decodeTTLV( &binData );
+        mOutputText->setPlainText( getHexString( &binData ));
     }
     else
     {
         berApplet->warningBox( tr( "fail to encode TTLV: %1").arg( ret ), this );
     }
 
+end :
+    JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
+}
+
+void TTLVEncoderDlg::changeIV()
+{
+    QString strIV = mIVText->text();
+    QString strLen = getDataLenString( mIVTypeCombo->currentText(), strIV );
+    mIVLenText->setText( QString("%1").arg( strLen ));
 }
 
 void TTLVEncoderDlg::changeInput()
@@ -1012,6 +1643,13 @@ void TTLVEncoderDlg::changeInput()
     QString strInput = mInputText->toPlainText();
     QString strLen = getDataLenString( DATA_HEX, strInput );
     mInputLenText->setText( QString("%1").arg( strLen ));
+}
+
+void TTLVEncoderDlg::changeSign()
+{
+    QString strSign = mSignText->toPlainText();
+    QString strLen = getDataLenString( mInputTypeCombo->currentText(), strSign );
+    mSignLenText->setText( QString("%1").arg( strLen ));
 }
 
 void TTLVEncoderDlg::changeOutput()
@@ -1026,7 +1664,32 @@ void TTLVEncoderDlg::clearInput()
     mInputText->clear();
 }
 
+void TTLVEncoderDlg::clearSign()
+{
+    mSignText->clear();
+}
+
 void TTLVEncoderDlg::clearOutput()
 {
     mOutputText->clear();
+}
+
+void TTLVEncoderDlg::decodeOutput()
+{
+    BIN binData = {0,0};
+    QString strOutput = mOutputText->toPlainText();
+
+    getBINFromString( &binData, DATA_HEX, strOutput );
+    berApplet->decodeTTLV( &binData );
+    JS_BIN_reset( &binData );
+}
+
+void TTLVEncoderDlg::clearAll()
+{
+    mUUIDText->clear();
+    mLenText->clear();
+
+    clearInput();
+    clearSign();
+    clearOutput();
 }
