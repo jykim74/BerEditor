@@ -270,7 +270,7 @@ void TTLVEncoderDlg::changeCmd()
 
     setEnableAll(false);
 
-    if( strCmd == kCMD_GET || strCmd == kCMD_ACTIVATE || strCmd == kCMD_DESTROY || strCmd == kCMD_GET_ATTRIBUTE_LIST )
+    if( strCmd == kCMD_GET || strCmd == kCMD_ACTIVATE || strCmd == kCMD_DESTROY )
     {
         setEnableUUID(true);
     }
@@ -308,12 +308,17 @@ void TTLVEncoderDlg::changeCmd()
     {
         setEnableInput(true);
         setEnableObjectType(true);
+        setEnableOption( true );
         setEnableAlg(true);
     }
     else if( strCmd == kCMD_CREATE_KEY_PAIR )
     {
         setEnableAlg(true);
         setEnableOption(true);
+    }
+    else if( strCmd == kCMD_GET_ATTRIBUTE_LIST )
+    {
+        setEnableUUID(true);
     }
     else if( strCmd == kCMD_ADD_ATTRIBUTE )
     {
@@ -328,16 +333,17 @@ void TTLVEncoderDlg::changeCmd()
     else if( strCmd == kCMD_MODIFY_ATTRIBUTE )
     {
         setEnableUUID( true );
+        setEnableAttribute( true );
         setEnableInput( true );
     }
     else if( strCmd == kCMD_DELETE_ATTRIBUTE )
     {
         setEnableUUID(true);
+        setEnableAttribute( true );
     }
     else if( strCmd == kCMD_LOCATE )
     {
         setEnableAlg(true);
-        setEnableAttribute(true);
     }
     else if( strCmd == kCMD_RNG_RETRIEVE )
     {
