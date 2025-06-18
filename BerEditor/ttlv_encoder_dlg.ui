@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>518</width>
-    <height>687</height>
+    <width>524</width>
+    <height>894</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -361,7 +361,7 @@
         <item row="0" column="4">
          <widget class="QPushButton" name="mFindInputBtn">
           <property name="text">
-           <string>FindInput</string>
+           <string>Find</string>
           </property>
          </widget>
         </item>
