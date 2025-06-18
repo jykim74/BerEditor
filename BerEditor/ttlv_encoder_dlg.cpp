@@ -135,6 +135,13 @@ TTLVEncoderDlg::TTLVEncoderDlg(QWidget *parent) :
     mSignClearBtn->setFixedWidth(34);
     mOutputClearBtn->setFixedWidth(34);
     mOutputDecodeBtn->setFixedWidth(34);
+
+    mAuthGroup->layout()->setMargin(5);
+    mAuthGroup->layout()->setSpacing(5);
+    mInputGroup->layout()->setMargin(5);
+    mInputGroup->layout()->setSpacing(5);
+    mSignGroup->layout()->setMargin(5);
+    mSignGroup->layout()->setSpacing(5);
 #endif
     resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
