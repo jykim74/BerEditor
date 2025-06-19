@@ -76,6 +76,7 @@ private slots:
 
     void findInput();
     void algChanged( int index );
+    void objectTypeChanged( int index );
 
 private:
     void initUI();

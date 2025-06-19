@@ -66,6 +66,8 @@ static int _getMech( int nAlg, QString strHash, QString strMode )
                 return CKM_RSA_PKCS_PSS;
             else if( strHash == "SHA1" )
                 return CKM_SHA1_RSA_PKCS_PSS;
+            else if( strHash == "SHA224" )
+                return CKM_SHA224_RSA_PKCS_PSS;
             else if( strHash == "SHA256" )
                 return CKM_SHA256_RSA_PKCS_PSS;
             else if( strHash == "SHA384" )
@@ -81,6 +83,8 @@ static int _getMech( int nAlg, QString strHash, QString strMode )
                 return CKM_RSA_PKCS;
             else if( strHash == "SHA1" )
                 return CKM_SHA1_RSA_PKCS;
+            else if( strHash == "SHA224" )
+                return CKM_SHA224_RSA_PKCS;
             else if( strHash == "SHA256" )
                 return CKM_SHA256_RSA_PKCS;
             else if( strHash == "SHA384" )
@@ -97,12 +101,31 @@ static int _getMech( int nAlg, QString strHash, QString strMode )
             return CKM_ECDSA;
         else if( strHash == "SHA1" )
             return CKM_ECDSA_SHA1;
+        else if( strHash == "SHA224" )
+            return CKM_ECDSA_SHA224;
         else if( strHash == "SHA256" )
             return CKM_ECDSA_SHA256;
         else if( strHash == "SHA384" )
             return CKM_ECDSA_SHA384;
         else if( strHash == "SHA512" )
             return CKM_ECDSA_SHA512;
+        else
+            return -1;
+    }
+    else if( nAlg == JS_PKI_KEY_TYPE_AES )
+    {
+        if( strHash == "None" )
+            return CKM_AES_CMAC;
+        else if( strHash == "SHA1" )
+            return CKM_SHA_1_HMAC;
+        else if( strHash == "SHA224" )
+            return CKM_SHA224_HMAC;
+        else if( strHash == "SHA256" )
+            return CKM_SHA256_HMAC;
+        else if( strHash == "SHA384" )
+            return CKM_SHA384_HMAC;
+        else if( strHash == "SHA512" )
+            return CKM_SHA512_HMAC;
         else
             return -1;
     }
@@ -157,6 +180,8 @@ TTLVEncoderDlg::TTLVEncoderDlg(QWidget *parent) :
     connect( mEncodeBtn, SIGNAL(clicked()), this, SLOT(clickEncode()));
 
     connect( mAlgCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(algChanged(int)));
+    connect( mObjectTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(objectTypeChanged(int)));
+
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
     connect( mIVText, SIGNAL(textChanged(QString)), this, SLOT(changeIV()));
@@ -500,6 +525,17 @@ void TTLVEncoderDlg::algChanged( int index )
         mModeCombo->addItems( kSymModeList );
     }
 }
+
+void TTLVEncoderDlg::objectTypeChanged( int index )
+{
+    QString strObjType = mObjectTypeCombo->currentText();
+
+    if( strObjType == "SecretKey" )
+        mAlgCombo->setCurrentText( "AES" );
+    else if( strObjType == "PrivateKey" || strObjType == "PublicKey" )
+        mAlgCombo->setCurrentText( "RSA" );
+}
+
 void TTLVEncoderDlg::findInput()
 {
     BIN binFile = {0,0};
@@ -802,15 +838,27 @@ void TTLVEncoderDlg::clickEncrypt()
     getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
     getBINFromString( &binPlain, mInputTypeCombo->currentText(), strInput );
 
-    if( strAlg != "AES" )
+    if( strAlg == "AES" )
+    {
+        strMode = mModeCombo->currentText();
+        nAlg = JS_PKI_KEY_TYPE_AES;
+        nMech = _getMechMode( nAlg, strMode );
+    }
+    else if( strAlg == "RSA" )
+    {
+        strMode = mModeCombo->currentText();
+        nAlg = JS_PKI_KEY_TYPE_RSA;
+
+        if( strMode == "V21" )
+            nMech = CKM_RSA_PKCS_OAEP;
+        else
+            nMech = CKM_RSA_PKCS;
+    }
+    else
     {
         berApplet->warningBox( tr( "Invalid algorithm: %1").arg( strAlg ), this );
         goto end;
     }
-
-    strMode = mModeCombo->currentText();
-    nAlg = JS_PKI_KEY_TYPE_AES;
-    nMech = _getMechMode( nAlg, strMode );
 
     ret = JS_KMS_encodeEncryptReq( mAuthGroup->isChecked() ? &sAuth : NULL, strUUID.toStdString().c_str(), nMech, &binIV, &binPlain, &binData );
 
@@ -886,15 +934,27 @@ void TTLVEncoderDlg::clickDecrypt()
     getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
     getBINFromString( &binEncrypt, mInputTypeCombo->currentText(), strInput );
 
-    if( strAlg != "AES" )
+    if( strAlg == "AES" )
+    {
+        strMode = mModeCombo->currentText();
+        nAlg = JS_PKI_KEY_TYPE_AES;
+        nMech = _getMechMode( nAlg, strMode );
+    }
+    else if( strAlg == "RSA" )
+    {
+        strMode = mModeCombo->currentText();
+        nAlg = JS_PKI_KEY_TYPE_RSA;
+
+        if( strMode == "V21" )
+            nMech = CKM_RSA_PKCS_OAEP;
+        else
+            nMech = CKM_RSA_PKCS;
+    }
+    else
     {
         berApplet->warningBox( tr( "Invalid algorithm: %1").arg( strAlg ), this );
         goto end;
     }
-
-    strMode = mModeCombo->currentText();
-    nAlg = JS_PKI_KEY_TYPE_AES;
-    nMech = _getMechMode( nAlg, strMode );
 
     ret = JS_KMS_encodeDecryptReq( mAuthGroup->isChecked() ? &sAuth : NULL, strUUID.toStdString().c_str(), nMech, &binIV, &binEncrypt, &binData );
     if( ret == 0 )
@@ -921,11 +981,12 @@ void TTLVEncoderDlg::clickSign()
     BIN binPlain = {0};
     int nMech = 0;
     int nAlg = 0;
-    QString strHash;
-    QString strMode;
 
     QString strUUID = mUUIDText->text();
     QString strInput = mInputText->toPlainText();
+    QString strAlg = mAlgCombo->currentText();
+    QString strHash = mHashCombo->currentText();
+    QString strMode = mModeCombo->currentText();
 
     Authentication sAuth = {0};
 
@@ -965,21 +1026,18 @@ void TTLVEncoderDlg::clickSign()
         goto end;
     }
 
-    if( mAlgCombo->currentIndex() == 0 )
+    if( strAlg == "RSA" )
         nAlg = JS_PKI_KEY_TYPE_RSA;
-    else if( mAlgCombo->currentIndex() == 1 )
+    else if( strAlg == "ECDSA" )
         nAlg = JS_PKI_KEY_TYPE_ECC;
-
-    strHash = mHashCombo->currentText();
-    strMode = mModeCombo->currentText();
+    else if( strAlg == "AES" )
+        nAlg = JS_PKI_KEY_TYPE_AES;
 
     nMech = _getMech( nAlg, strHash, strMode );
 
     getBINFromString( &binPlain, mInputTypeCombo->currentText(), strInput );
 
     ret = JS_KMS_encodeSignReq( mAuthGroup->isChecked() ? &sAuth : NULL, strUUID.toStdString().c_str(), nMech, &binPlain, &binData );
-
-
 
     if( ret == 0 )
     {
@@ -1001,8 +1059,7 @@ void TTLVEncoderDlg::clickVerify()
     int ret = 0;
     int nAlg = 0;
     int nMech = 0;
-    QString strHash;
-    QString strMode;
+
 
     BIN binData = {0,0};
 
@@ -1012,6 +1069,10 @@ void TTLVEncoderDlg::clickVerify()
     QString strUUID = mUUIDText->text();
     QString strInput = mInputText->toPlainText();
     QString strSign = mSignText->toPlainText();
+
+    QString strAlg = mAlgCombo->currentText();
+    QString strHash = mHashCombo->currentText();
+    QString strMode = mModeCombo->currentText();
 
     Authentication sAuth = {0};
 
@@ -1060,13 +1121,12 @@ void TTLVEncoderDlg::clickVerify()
     }
 
 
-    if( mAlgCombo->currentIndex() == 0 )
+    if( strAlg == "RSA" )
         nAlg = JS_PKI_KEY_TYPE_RSA;
-    else if( mAlgCombo->currentIndex() == 1 )
+    else if( strAlg == "ECDSA" )
         nAlg = JS_PKI_KEY_TYPE_ECC;
-
-    strHash = mHashCombo->currentText();
-    strMode = mModeCombo->currentText();
+    else if( strAlg == "AES" )
+        nAlg = JS_PKI_KEY_TYPE_AES;
 
     nMech = _getMech( nAlg, strHash, strMode );
 
@@ -1105,6 +1165,8 @@ void TTLVEncoderDlg::clickRegister()
     Authentication sAuth = {0};
 
     QString strInput = mInputText->toPlainText();
+    QString strAlg = mAlgCombo->currentText();
+    QString strOption = mOptionCombo->currentText();
 
     if( mAuthGroup->isChecked() == true )
     {
@@ -1136,24 +1198,37 @@ void TTLVEncoderDlg::clickRegister()
     }
 
     if( mObjectTypeCombo->currentIndex() == 0 )
+    {
         nType = JS_KMS_OBJECT_TYPE_SECRET;
+    }
     else if( mObjectTypeCombo->currentIndex() == 1 )
+    {
         nType = JS_KMS_OBJECT_TYPE_PRIKEY;
+    }
     else if( mObjectTypeCombo->currentIndex() == 2 )
+    {
         nType = JS_KMS_OBJECT_TYPE_PUBKEY;
+    }
     else if( mObjectTypeCombo->currentIndex() == 3 )
+    {
         nType = JS_KMS_OBJECT_TYPE_CERT;
+    }
 
     getBINFromString( &binInput, mInputTypeCombo->currentText(), strInput );
 
-    if( mAlgCombo->currentIndex() == 0 )
+    if( strAlg == "RSA" )
     {
         nAlg = JS_PKI_KEY_TYPE_RSA;
-        nParam = mOptionCombo->currentText().toInt();
+        nParam = strOption.toInt();
+
+        if( nType == JS_KMS_OBJECT_TYPE_SECRET )
+        {
+            berApplet->warningBox( tr("Invalid algorithm: %1").arg( strAlg ), this );
+            goto end;
+        }
     }
-    else if( mAlgCombo->currentIndex() == 1 )
+    else if( strAlg == "ECDSA" )
     {
-        QString strOption = mAlgCombo->currentText();
         nAlg = JS_PKI_KEY_TYPE_ECC;
 
         if( strOption == "P-256")
@@ -1162,6 +1237,23 @@ void TTLVEncoderDlg::clickRegister()
             nParam = KMIP_CURVE_P_384;
         else if( strOption == "P-521" )
             nParam = KMIP_CURVE_P_521;
+
+        if( nType == JS_KMS_OBJECT_TYPE_SECRET )
+        {
+            berApplet->warningBox( tr("Invalid algorithm: %1").arg( strAlg ), this );
+            goto end;
+        }
+    }
+    else if( strAlg == "AES" )
+    {
+        nAlg = JS_PKI_KEY_TYPE_AES;
+        nParam = strOption.toInt();
+
+        if( nType != JS_KMS_OBJECT_TYPE_SECRET )
+        {
+            berApplet->warningBox( tr("Invalid algorithm: %1").arg( strAlg ), this );
+            goto end;
+        }
     }
 
     ret = JS_KMS_encodeRegisterReq( mAuthGroup->isChecked() ? &sAuth : NULL, nAlg, nParam, nType, &binInput, &binData );
