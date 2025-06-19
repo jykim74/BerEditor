@@ -799,17 +799,24 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="2">
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mClearAllBtn">
+       <property name="text">
+        <string>Clear All</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
       <widget class="QPushButton" name="mCloseBtn">
        <property name="text">
         <string>Close</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="mClearAllBtn">
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mOKBtn">
        <property name="text">
-        <string>Clear All</string>
+        <string>OK</string>
        </property>
       </widget>
      </item>

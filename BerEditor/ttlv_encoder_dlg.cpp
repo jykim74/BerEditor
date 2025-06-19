@@ -182,6 +182,7 @@ TTLVEncoderDlg::TTLVEncoderDlg(QWidget *parent) :
     connect( mAlgCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(algChanged(int)));
     connect( mObjectTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(objectTypeChanged(int)));
 
+    connect( mOKBtn, SIGNAL(clicked()), this, SLOT(clickOK()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
     connect( mIVText, SIGNAL(textChanged(QString)), this, SLOT(changeIV()));
@@ -216,6 +217,11 @@ TTLVEncoderDlg::TTLVEncoderDlg(QWidget *parent) :
 TTLVEncoderDlg::~TTLVEncoderDlg()
 {
 
+}
+
+void TTLVEncoderDlg::setManage()
+{
+    mOKBtn->hide();
 }
 
 const QString TTLVEncoderDlg::getOutput()
@@ -498,6 +504,16 @@ void TTLVEncoderDlg::clickEncode()
     {
         berApplet->warnLog( tr( "Unknown Cmd: %1").arg( strCmd ), this );
     }
+}
+
+void TTLVEncoderDlg::clickOK()
+{
+    QString strOutput = mOutputText->toPlainText();
+
+    if( strOutput.length() > 0 )
+        accept();
+    else
+        reject();
 }
 
 void TTLVEncoderDlg::algChanged( int index )

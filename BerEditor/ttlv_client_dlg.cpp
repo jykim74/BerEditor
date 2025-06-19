@@ -702,12 +702,15 @@ void TTLVClientDlg::clickTTLVEncode()
     QString strRequest;
 
     TTLVEncoderDlg encoder;
-    encoder.exec();
-    strRequest = encoder.getOutput();
 
-    if( strRequest.length() > 0 )
+    if( encoder.exec() == QDialog::Accepted )
     {
-        mRequestText->setPlainText( strRequest );
+        strRequest = encoder.getOutput();
+
+        if( strRequest.length() > 0 )
+        {
+            mRequestText->setPlainText( strRequest );
+        }
     }
 }
 

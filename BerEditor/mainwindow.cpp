@@ -1362,6 +1362,7 @@ void MainWindow::createCryptoDlg()
     scep_client_dlg_ = new SCEPClientDlg;
     cert_man_dlg_ = new CertManDlg;
     ttlv_encoder_dlg_ = new TTLVEncoderDlg;
+    ttlv_encoder_dlg_->setManage();
     ttlv_client_dlg_ = new TTLVClientDlg;
     content_ = new ContentMain;
     find_dlg_ = new FindDlg;

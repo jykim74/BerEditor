@@ -713,7 +713,7 @@
    <item>
     <widget class="QDockWidget" name="mInfoDock">
      <property name="windowTitle">
-      <string>SSL Tree and Log Information</string>
+      <string>SSL Tree and Log</string>
      </property>
      <widget class="QWidget" name="dockWidgetContents">
       <layout class="QVBoxLayout" name="verticalLayout_7">

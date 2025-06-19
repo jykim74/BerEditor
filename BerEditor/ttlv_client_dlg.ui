@@ -399,7 +399,7 @@
      <item row="0" column="5">
       <widget class="QPushButton" name="mReadMainBtn">
        <property name="text">
-        <string>Read Main</string>
+        <string>Read from main window</string>
        </property>
       </widget>
      </item>

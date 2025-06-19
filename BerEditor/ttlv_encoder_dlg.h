@@ -47,11 +47,13 @@ public:
     explicit TTLVEncoderDlg(QWidget *parent = nullptr);
     ~TTLVEncoderDlg();
     const QString getOutput();
+    void setManage();
 
 private slots:
     void changeType();
     void changeCmd();
     void clickEncode();
+    void clickOK();
 
     void clickGet();
     void clickActivate();
