@@ -19,9 +19,10 @@ const QStringList kCmdAttribute =
     { kCMD_ADD_ATTRIBUTE, kCMD_GET_ATTRIBUTES, kCMD_MODIFY_ATTRIBUTE, kCMD_GET_ATTRIBUTE_LIST, kCMD_DELETE_ATTRIBUTE };
 
 const QStringList kObjetType = { "SecretKey", "PrivateKey", "PublicKey", "Certificate" };
-const QStringList kAlgList = { "RSA", "ECDSA", "AES" };
+const QStringList kAlgList = { "RSA", "ECDSA", "AES", "ARIA" };
 const QStringList kRSAOptionList = { "1024", "2048", "3072", "4096" };
 const QStringList kECDSAOptionList = { "P-256", "P-384", "P-521" };
+const QStringList kSymOptionList = { "16", "24", "32" };
 
 
 /*
@@ -283,7 +284,9 @@ void TTLVEncoderDlg::changeCmd()
     }
     else if( strCmd == kCMD_CREATE )
     {
-
+        setEnableAlg( true );
+        setEnableOption( true );
+        mAlgCombo->setCurrentText( "AES" );
     }
     else if( strCmd == kCMD_ENCRYPT || strCmd == kCMD_DECRYPT )
     {
@@ -322,6 +325,7 @@ void TTLVEncoderDlg::changeCmd()
     {
         setEnableAlg(true);
         setEnableOption(true);
+        mAlgCombo->setCurrentText( "RSA" );
     }
     else if( strCmd == kCMD_GET_ATTRIBUTE_LIST )
     {
@@ -417,21 +421,24 @@ void TTLVEncoderDlg::clickEncode()
 
 void TTLVEncoderDlg::algChanged( int index )
 {
+    QString strAlg = mAlgCombo->currentText();
+
     mOptionCombo->clear();
 
-   if( index == 0 )
+   if( strAlg == "RSA" )
    {
        mOptionLabel->setText( tr("KeyLength") );
        mOptionCombo->addItems(kRSAOptionList);
    }
-   else if( index == 1)
+   else if( strAlg == "ECDSA")
    {
        mOptionLabel->setText( tr("NamedCurve" ) );
        mOptionCombo->addItems(kECDSAOptionList);
    }
-   else
+   else if( strAlg == "AES" || strAlg == "ARIA" )
    {
-       mOptionLabel->setText( "" );
+       mOptionLabel->setText( tr("KeyLength") );
+       mOptionCombo->addItems( kSymOptionList );
    }
 }
 void TTLVEncoderDlg::findInput()
@@ -566,8 +573,12 @@ void TTLVEncoderDlg::clickCreate()
 {
     int ret = 0;
     BIN binData = {0,0};
+    int nAlg = -1;
+    int nKeyLen = -1;
+    QString strAlg;
 
     Authentication sAuth = {0};
+
     if( mAuthGroup->isChecked() == true )
     {
         QString strUserID = mUserIDText->text();
@@ -590,7 +601,21 @@ void TTLVEncoderDlg::clickCreate()
         JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
     }
 
-    ret = JS_KMS_encodeCreateReq( mAuthGroup->isChecked() ? &sAuth : NULL, &binData );
+    strAlg = mAlgCombo->currentText();
+
+    if( strAlg == "AES" )
+        nAlg = JS_PKI_KEY_TYPE_AES;
+    else if( strAlg == "ARIA" )
+        nAlg = JS_PKI_KEY_TYPE_ARIA;
+    else
+    {
+        berApplet->warningBox( tr( "Invalid algorith: %1" ).arg( strAlg ), this );
+        goto end;
+    }
+
+    nKeyLen = mOptionCombo->currentText().toInt();
+
+    ret = JS_KMS_encodeCreateReq( mAuthGroup->isChecked() ? &sAuth : NULL, nAlg, nKeyLen, &binData );
 
     if( ret == 0 )
     {
@@ -1068,6 +1093,7 @@ void TTLVEncoderDlg::clickCreateKeyPair()
     int ret = 0;
     int nAlg = -1;
     int nParam = 2048;
+    QString strAlg;
 
     BIN binData = {0,0};
 
@@ -1094,13 +1120,14 @@ void TTLVEncoderDlg::clickCreateKeyPair()
         JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
     }
 
+    strAlg = mAlgCombo->currentText();
 
-    if( mAlgCombo->currentIndex() == 0 )
+    if( strAlg == "RSA" )
     {
         nAlg = JS_PKI_KEY_TYPE_RSA;
         nParam = mOptionCombo->currentText().toInt();
     }
-    else if( mAlgCombo->currentIndex() == 1 )
+    else if( strAlg == "ECDSA" )
     {
         QString strOption = mAlgCombo->currentText();
         nAlg = JS_PKI_KEY_TYPE_ECC;
@@ -1111,6 +1138,11 @@ void TTLVEncoderDlg::clickCreateKeyPair()
             nParam = KMIP_CURVE_P_384;
         else if( strOption == "P-521" )
             nParam = KMIP_CURVE_P_521;
+    }
+    else
+    {
+        berApplet->warningBox( tr( "Invalid algorith: %1" ).arg( strAlg ), this );
+        goto end;
     }
 
     ret = JS_KMS_encodeCreateKeyPairReq( mAuthGroup->isChecked() ? &sAuth : NULL, nAlg, nParam, &binData );
