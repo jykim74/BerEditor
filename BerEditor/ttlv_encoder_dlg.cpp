@@ -18,8 +18,8 @@ const QStringList kCmdCryptography =
 const QStringList kCmdAttribute =
     { kCMD_ADD_ATTRIBUTE, kCMD_GET_ATTRIBUTES, kCMD_MODIFY_ATTRIBUTE, kCMD_GET_ATTRIBUTE_LIST, kCMD_DELETE_ATTRIBUTE };
 
-const QStringList kObjetType = { "SecretKey", "PrivateKey", "PublicKey", "Certificate" };
-const QStringList kAlgList = { "RSA", "ECDSA", "AES" };
+const QStringList kObjetType = { kOBJ_SECRET_KEY, kOBJ_PRIVATE_KEY, kOBJ_PUBLIC_KEY, kOBJ_CERTIFICATE };
+const QStringList kAlgList = { kALG_RSA, kALG_ECDSA, kALG_AES };
 const QStringList kRSAOptionList = { "1024", "2048", "3072", "4096" };
 const QStringList kECDSAOptionList = { "P-256", "P-384", "P-521" };
 const QStringList kSymOptionList = { "16", "24", "32" };
@@ -360,7 +360,7 @@ void TTLVEncoderDlg::changeCmd()
     {
         setEnableAlg( true );
         setEnableOption( true );
-        mAlgCombo->setCurrentText( "AES" );
+        mAlgCombo->setCurrentText( kALG_AES );
     }
     else if( strCmd == kCMD_ENCRYPT || strCmd == kCMD_DECRYPT )
     {
@@ -369,7 +369,7 @@ void TTLVEncoderDlg::changeCmd()
         setEnableIV(true);
         setEnableAlg(true);
         setEnableMode(true);
-        mAlgCombo->setCurrentText( "AES" );
+        mAlgCombo->setCurrentText( kALG_AES );
     }
     else if( strCmd == kCMD_SIGN )
     {
@@ -378,7 +378,7 @@ void TTLVEncoderDlg::changeCmd()
         setEnableAlg(true);
         setEnableHash(true);
         setEnableMode(true);
-        mAlgCombo->setCurrentText( "RSA" );
+        mAlgCombo->setCurrentText( kALG_RSA );
     }
     else if( strCmd == kCMD_VERIFY )
     {
@@ -388,7 +388,7 @@ void TTLVEncoderDlg::changeCmd()
         setEnableAlg(true);
         setEnableHash(true);
         setEnableMode(true);
-        mAlgCombo->setCurrentText( "RSA" );
+        mAlgCombo->setCurrentText( kALG_RSA );
     }
     else if( strCmd == kCMD_HASH )
     {
@@ -406,7 +406,7 @@ void TTLVEncoderDlg::changeCmd()
     {
         setEnableAlg(true);
         setEnableOption(true);
-        mAlgCombo->setCurrentText( "RSA" );
+        mAlgCombo->setCurrentText( kALG_RSA );
     }
     else if( strCmd == kCMD_GET_ATTRIBUTE_LIST )
     {
@@ -507,18 +507,18 @@ void TTLVEncoderDlg::algChanged( int index )
     mOptionCombo->clear();
     mModeCombo->clear();
 
-    if( strAlg == "RSA" )
+    if( strAlg == kALG_RSA )
     {
         mOptionLabel->setText( tr("KeyLength") );
         mOptionCombo->addItems(kRSAOptionList);
         mModeCombo->addItems( kRSAModeList );
     }
-    else if( strAlg == "ECDSA")
+    else if( strAlg == kALG_ECDSA )
     {
         mOptionLabel->setText( tr("NamedCurve" ) );
         mOptionCombo->addItems(kECDSAOptionList);
     }
-    else if( strAlg == "AES" )
+    else if( strAlg == kALG_AES )
     {
         mOptionLabel->setText( tr("KeyLength") );
         mOptionCombo->addItems( kSymOptionList );
@@ -530,10 +530,10 @@ void TTLVEncoderDlg::objectTypeChanged( int index )
 {
     QString strObjType = mObjectTypeCombo->currentText();
 
-    if( strObjType == "SecretKey" )
-        mAlgCombo->setCurrentText( "AES" );
-    else if( strObjType == "PrivateKey" || strObjType == "PublicKey" )
-        mAlgCombo->setCurrentText( "RSA" );
+    if( strObjType == kOBJ_SECRET_KEY )
+        mAlgCombo->setCurrentText( kALG_AES );
+    else if( strObjType == kOBJ_PRIVATE_KEY || strObjType == kOBJ_PUBLIC_KEY )
+        mAlgCombo->setCurrentText( kALG_RSA );
 }
 
 void TTLVEncoderDlg::findInput()
@@ -698,10 +698,8 @@ void TTLVEncoderDlg::clickCreate()
 
     strAlg = mAlgCombo->currentText();
 
-    if( strAlg == "AES" )
+    if( strAlg == kALG_AES )
         nAlg = JS_PKI_KEY_TYPE_AES;
-    else if( strAlg == "ARIA" )
-        nAlg = JS_PKI_KEY_TYPE_ARIA;
     else
     {
         berApplet->warningBox( tr( "Invalid algorith: %1" ).arg( strAlg ), this );
@@ -838,13 +836,13 @@ void TTLVEncoderDlg::clickEncrypt()
     getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
     getBINFromString( &binPlain, mInputTypeCombo->currentText(), strInput );
 
-    if( strAlg == "AES" )
+    if( strAlg == kALG_AES )
     {
         strMode = mModeCombo->currentText();
         nAlg = JS_PKI_KEY_TYPE_AES;
         nMech = _getMechMode( nAlg, strMode );
     }
-    else if( strAlg == "RSA" )
+    else if( strAlg == kALG_RSA )
     {
         strMode = mModeCombo->currentText();
         nAlg = JS_PKI_KEY_TYPE_RSA;
@@ -934,13 +932,13 @@ void TTLVEncoderDlg::clickDecrypt()
     getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
     getBINFromString( &binEncrypt, mInputTypeCombo->currentText(), strInput );
 
-    if( strAlg == "AES" )
+    if( strAlg == kALG_AES )
     {
         strMode = mModeCombo->currentText();
         nAlg = JS_PKI_KEY_TYPE_AES;
         nMech = _getMechMode( nAlg, strMode );
     }
-    else if( strAlg == "RSA" )
+    else if( strAlg == kALG_RSA )
     {
         strMode = mModeCombo->currentText();
         nAlg = JS_PKI_KEY_TYPE_RSA;
@@ -1026,11 +1024,11 @@ void TTLVEncoderDlg::clickSign()
         goto end;
     }
 
-    if( strAlg == "RSA" )
+    if( strAlg == kALG_RSA )
         nAlg = JS_PKI_KEY_TYPE_RSA;
-    else if( strAlg == "ECDSA" )
+    else if( strAlg == kALG_ECDSA )
         nAlg = JS_PKI_KEY_TYPE_ECC;
-    else if( strAlg == "AES" )
+    else if( strAlg == kALG_AES )
         nAlg = JS_PKI_KEY_TYPE_AES;
 
     nMech = _getMech( nAlg, strHash, strMode );
@@ -1121,11 +1119,11 @@ void TTLVEncoderDlg::clickVerify()
     }
 
 
-    if( strAlg == "RSA" )
+    if( strAlg == kALG_RSA )
         nAlg = JS_PKI_KEY_TYPE_RSA;
-    else if( strAlg == "ECDSA" )
+    else if( strAlg == kALG_ECDSA )
         nAlg = JS_PKI_KEY_TYPE_ECC;
-    else if( strAlg == "AES" )
+    else if( strAlg == kALG_AES )
         nAlg = JS_PKI_KEY_TYPE_AES;
 
     nMech = _getMech( nAlg, strHash, strMode );
@@ -1164,6 +1162,7 @@ void TTLVEncoderDlg::clickRegister()
 
     Authentication sAuth = {0};
 
+    QString strObject = mObjectTypeCombo->currentText();
     QString strInput = mInputText->toPlainText();
     QString strAlg = mAlgCombo->currentText();
     QString strOption = mOptionCombo->currentText();
@@ -1197,37 +1196,37 @@ void TTLVEncoderDlg::clickRegister()
         goto end;
     }
 
-    if( mObjectTypeCombo->currentIndex() == 0 )
+    if( strObject == kOBJ_SECRET_KEY )
     {
         nType = JS_KMS_OBJECT_TYPE_SECRET;
     }
-    else if( mObjectTypeCombo->currentIndex() == 1 )
+    else if( strObject == kOBJ_PRIVATE_KEY )
     {
         nType = JS_KMS_OBJECT_TYPE_PRIKEY;
     }
-    else if( mObjectTypeCombo->currentIndex() == 2 )
+    else if( strObject == kOBJ_PUBLIC_KEY )
     {
         nType = JS_KMS_OBJECT_TYPE_PUBKEY;
     }
-    else if( mObjectTypeCombo->currentIndex() == 3 )
+    else if( strObject == kOBJ_CERTIFICATE )
     {
         nType = JS_KMS_OBJECT_TYPE_CERT;
     }
 
     getBINFromString( &binInput, mInputTypeCombo->currentText(), strInput );
 
-    if( strAlg == "RSA" )
+    if( strAlg == kALG_RSA )
     {
         nAlg = JS_PKI_KEY_TYPE_RSA;
         nParam = strOption.toInt();
 
         if( nType == JS_KMS_OBJECT_TYPE_SECRET )
         {
-            berApplet->warningBox( tr("Invalid algorithm: %1").arg( strAlg ), this );
+            berApplet->warningBox( tr("ObjectType[%1] and Algorithm[%2] do not match").arg(strObject).arg( strAlg ), this );
             goto end;
         }
     }
-    else if( strAlg == "ECDSA" )
+    else if( strAlg == kALG_ECDSA )
     {
         nAlg = JS_PKI_KEY_TYPE_ECC;
 
@@ -1240,18 +1239,18 @@ void TTLVEncoderDlg::clickRegister()
 
         if( nType == JS_KMS_OBJECT_TYPE_SECRET )
         {
-            berApplet->warningBox( tr("Invalid algorithm: %1").arg( strAlg ), this );
+            berApplet->warningBox( tr("ObjectType[%1] and Algorithm[%2] do not match").arg(strObject).arg( strAlg ), this );
             goto end;
         }
     }
-    else if( strAlg == "AES" )
+    else if( strAlg == kALG_AES )
     {
         nAlg = JS_PKI_KEY_TYPE_AES;
         nParam = strOption.toInt();
 
         if( nType != JS_KMS_OBJECT_TYPE_SECRET )
         {
-            berApplet->warningBox( tr("Invalid algorithm: %1").arg( strAlg ), this );
+            berApplet->warningBox( tr("ObjectType[%1] and Algorithm[%2] do not match").arg(strObject).arg( strAlg ), this );
             goto end;
         }
     }
@@ -1307,12 +1306,12 @@ void TTLVEncoderDlg::clickCreateKeyPair()
 
     strAlg = mAlgCombo->currentText();
 
-    if( strAlg == "RSA" )
+    if( strAlg == kALG_RSA )
     {
         nAlg = JS_PKI_KEY_TYPE_RSA;
         nParam = mOptionCombo->currentText().toInt();
     }
-    else if( strAlg == "ECDSA" )
+    else if( strAlg == kALG_ECDSA )
     {
         QString strOption = mAlgCombo->currentText();
         nAlg = JS_PKI_KEY_TYPE_ECC;
@@ -1641,6 +1640,7 @@ void TTLVEncoderDlg::clickLocate()
     BIN binData = { 0, 0};
 
     Authentication sAuth = {0};
+    QString strAlg = mAlgCombo->currentText();
 
     if( mAuthGroup->isChecked() == true )
     {
@@ -1664,15 +1664,15 @@ void TTLVEncoderDlg::clickLocate()
         JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
     }
 
-    if( mAlgCombo->currentIndex() == 0 )
+    if( strAlg == kALG_RSA )
     {
         nAlg = JS_PKI_KEY_TYPE_RSA;
     }
-    else if( mAlgCombo->currentIndex() == 1 )
+    else if( strAlg == kALG_ECDSA )
     {
         nAlg = JS_PKI_KEY_TYPE_ECC;
     }
-    else if( mAlgCombo->currentIndex() == 2 )
+    else if( strAlg == kALG_AES )
     {
         nAlg = JS_PKI_KEY_TYPE_AES;
     }

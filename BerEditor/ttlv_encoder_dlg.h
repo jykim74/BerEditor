@@ -29,6 +29,16 @@ const QString kCMD_LOCATE               = "Locate";
 const QString kCMD_RNG_RETRIEVE         = "RNGRetrieve";
 const QString kCMD_RNG_SEED             = "RNGSeed";
 
+
+const QString kOBJ_SECRET_KEY           = "SecretKey";
+const QString kOBJ_PRIVATE_KEY          = "PrivateKey";
+const QString kOBJ_PUBLIC_KEY           = "PublicKey";
+const QString kOBJ_CERTIFICATE          = "Certificate";
+
+const QString kALG_RSA                  = "RSA";
+const QString kALG_ECDSA                = "ECDSA";
+const QString kALG_AES                  = "AES";
+
 class TTLVEncoderDlg : public QDialog, public Ui::TTLVEncoderDlg
 {
     Q_OBJECT
