@@ -1591,3 +1591,14 @@ int getDigestLength( const QString strHash )
 
     return -1;
 }
+
+const QString getMS( qint64 time )
+{
+    QString strTime;
+    qint64 ms = time / 1000;
+    qint64 us = time % 1000;
+
+    strTime = QString( "%1.%2" ).arg( ms ).arg( us, 3, 10, QLatin1Char('0'));
+
+    return strTime;
+}

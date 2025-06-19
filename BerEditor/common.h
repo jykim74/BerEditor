@@ -266,4 +266,6 @@ int getWrapKey( const char *pPasswd, const BIN *pKey, BIN *pEncKey );
 int getUnwrapKey( const char *pPasswd, const BIN *pEncKey, BIN *pKey );
 int getDigestLength( const QString strHash );
 
+const QString getMS( qint64 time );
+
 #endif // COMMON_H

@@ -1,3 +1,5 @@
+#include <QElapsedTimer>
+
 #include "common.h"
 #include "js_pki.h"
 #include "js_pki_tools.h"
@@ -507,34 +509,85 @@ void BNCalcDlg::changeBaseGroup( int index )
 
 void BNCalcDlg::clickAGenPrime()
 {
+    int ret = 0;
     BIN binPrime = {0,0};
     int nBits = mAPrimeBitsCombo->currentText().toInt();
 
-    JS_BN_genPrime( nBits, &binPrime );
-    mAText->setPlainText( getOutput( &binPrime ));
+    qint64 us = 0;
+    QElapsedTimer timer;
 
+    timer.start();
+    ret = JS_BN_genPrime( nBits, &binPrime );
+    mAText->setPlainText( getOutput( &binPrime ));
+    us = timer.nsecsElapsed() / 1000;
+
+    if( ret != 0 )
+    {
+        berApplet->warnLog( QString( tr( "GenPrime fail: %1").arg( JS_BN_lastError())), this);
+        mResTimeText->clear();
+        goto end;
+    }
+
+    mResTimeText->setText( QString("%1").arg( getMS( us )));
+    berApplet->log( QString( "Gen Prime Timer : %1 ms" ).arg( getMS( us ) ));
+
+end:
     JS_BIN_reset( &binPrime );
 }
 
 void BNCalcDlg::clickBGenPrime()
 {
+    int ret = 0;
     BIN binPrime = {0,0};
     int nBits = mBPrimeBitsCombo->currentText().toInt();
 
-    JS_BN_genPrime( nBits, &binPrime );
-    mBText->setPlainText( getOutput( &binPrime ));
+    qint64 us = 0;
+    QElapsedTimer timer;
 
+    timer.start();
+    ret = JS_BN_genPrime( nBits, &binPrime );
+    mBText->setPlainText( getOutput( &binPrime ));
+    us = timer.nsecsElapsed() / 1000;
+
+    if( ret != 0 )
+    {
+        berApplet->warnLog( QString( tr( "GenPrime: %1").arg( JS_BN_lastError())), this);
+        mResTimeText->clear();
+        goto end;
+    }
+
+    mResTimeText->setText( QString("%1").arg( getMS( us )));
+    berApplet->log( QString( "Gen Prime Timer : %1 ms" ).arg( getMS( us ) ));
+
+end:
     JS_BIN_reset( &binPrime );
 }
 
 void BNCalcDlg::clickModGenPrime()
 {
+    int ret = 0;
     BIN binPrime = {0,0};
     int nBits = mModPrimeBitsCombo->currentText().toInt();
 
-    JS_BN_genPrime( nBits, &binPrime );
-    mModText->setPlainText( getOutput( &binPrime ));
+    qint64 us = 0;
+    QElapsedTimer timer;
 
+    timer.start();
+    ret = JS_BN_genPrime( nBits, &binPrime );
+    mModText->setPlainText( getOutput( &binPrime ));
+    us = timer.nsecsElapsed() / 1000;
+
+    if( ret != 0 )
+    {
+        berApplet->warnLog( QString( tr( "GenPrime: %1").arg( JS_BN_lastError())), this);
+        mResTimeText->clear();
+        goto end;
+    }
+
+    mResTimeText->setText( QString("%1").arg( getMS( us )));
+    berApplet->log( QString( "Gen Prime Timer : %1 ms" ).arg( getMS( us ) ));
+
+end:
     JS_BIN_reset( &binPrime );
 }
 
@@ -635,39 +688,50 @@ void BNCalcDlg::clickAdd()
     BIN binB = {0,0};
     BIN binR = {0,0};
     BIN binMod = {0,0};
+    qint64 us = 0;
+    QElapsedTimer timer;
 
     if( mBaseGroupCombo->currentText() == kNumber )
     {
         if( getInput( &binA, &binB, NULL ) != 0 ) goto end;
+        timer.start();
         ret = JS_BN_add( &binR, &binA, &binB );
+        us = timer.nsecsElapsed() / 1000;
     }
     else if( mBaseGroupCombo->currentText() == kModular )
     {
         if( getInput( &binA, &binB, &binMod ) != 0 ) goto end;
+        timer.start();
         ret = JS_BN_addMod( &binR, &binA, &binB, &binMod );
+        us = timer.nsecsElapsed() / 1000;
     }
     else
     {
         if( getInput( &binA, &binB, NULL ) != 0 ) goto end;
+        timer.start();
         ret = JS_BN_GF2m_add( &binR, &binA, &binB );
+        us = timer.nsecsElapsed() / 1000;
     }
 
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
+        mResTimeText->clear();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
+    mResTimeText->setText( QString("%1").arg( getMS( us )));
 
     berApplet->logLine();
     berApplet->log( QString( mADDBtn->text() ));
     berApplet->logLine2();
-    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
-    berApplet->log( QString( "B : %1").arg( getHexString(&binB)));
+    berApplet->log( QString( "A     : %1").arg( getHexString(&binA)));
+    berApplet->log( QString( "B     : %1").arg( getHexString(&binB)));
     if( mBaseGroupCombo->currentText() != kNumber )
-        berApplet->log( QString( "M : %1").arg( getHexString(&binMod)));
-    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+        berApplet->log( QString( "M     : %1").arg( getHexString(&binMod)));
+    berApplet->log( QString( "R     : %1").arg( getHexString(&binR)));
+    berApplet->log( QString( "Timer : %1 ms" ).arg( getMS( us ) ));
     berApplet->logLine();
 
 end :
@@ -685,6 +749,9 @@ void BNCalcDlg::clickSub()
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     QString strOut;
 
     if( mBaseGroupCombo->currentText() == kNumber )
@@ -694,29 +761,38 @@ void BNCalcDlg::clickSub()
         if( JS_BN_cmp( &binA, &binB ) < 0 )
         {
             strOut = "-";
+            timer.start();
             ret = JS_BN_sub( &binR, &binB, &binA );
+            us = timer.nsecsElapsed() / 1000;
         }
         else
         {
+            timer.start();
             ret = JS_BN_sub( &binR, &binA, &binB );
+            us = timer.nsecsElapsed() / 1000;
         }
     }
     else if( mBaseGroupCombo->currentText() == kModular )
     {
         if( getInput( &binA, &binB, &binMod ) != 0 ) goto end;
 
+        timer.start();
         ret = JS_BN_subMod( &binR, &binA, &binB, &binMod );
+        us = timer.nsecsElapsed() / 1000;
     }
     else
     {
         if( getInput( &binA, &binB, NULL ) != 0 ) goto end;
 
+        timer.start();
         ret = JS_BN_GF2m_sub( &binR, &binA, &binB );
+        us = timer.nsecsElapsed() / 1000;
     }
 
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
+        mResTimeText->clear();
         goto end;
     }
 
@@ -724,15 +800,17 @@ void BNCalcDlg::clickSub()
     strOut += QString( "%1" ).arg( getOutput(&binR));
 
     mResText->setPlainText( strOut );
+    mResTimeText->setText( QString("%1").arg( getMS( us )));
 
     berApplet->logLine();
     berApplet->log( QString( mSUBBtn->text() ));
     berApplet->logLine2();
-    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
-    berApplet->log( QString( "B : %1").arg( getHexString(&binB)));
+    berApplet->log( QString( "A     : %1").arg( getHexString(&binA)));
+    berApplet->log( QString( "B     : %1").arg( getHexString(&binB)));
     if( mBaseGroupCombo->currentText() != kNumber )
-        berApplet->log( QString( "M : %1").arg( getHexString(&binMod)));
-    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+        berApplet->log( QString( "M     : %1").arg( getHexString(&binMod)));
+    berApplet->log( QString( "R     : %1").arg( getHexString(&binR)));
+    berApplet->log( QString( "Timer : %1 ms" ).arg( getMS( us ) ));
     berApplet->logLine();
 
 end :
@@ -750,38 +828,53 @@ void BNCalcDlg::clickMultiple()
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     if( mBaseGroupCombo->currentText() == kNumber )
     {
         if( getInput( &binA, &binB, NULL ) != 0 ) goto end;
+
+        timer.start();
         ret = JS_BN_mul( &binR, &binA, &binB );
+        us = timer.nsecsElapsed() / 1000;
     }
     else if( mBaseGroupCombo->currentText() == kModular )
     {
         if( getInput( &binA, &binB, &binMod ) != 0 ) goto end;
+
+        timer.start();
         ret = JS_BN_mulMod( &binR, &binA, &binB, &binMod );
+        us = timer.nsecsElapsed() / 1000;
     }
     else
     {
         if( getInput( &binA, &binB, &binMod ) != 0 ) goto end;
+
+        timer.start();
         ret = JS_BN_GF2m_mulMod( &binR, &binA, &binB, &binMod );
+        us = timer.nsecsElapsed() / 1000;
     }
 
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
+        mResTimeText->clear();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
+    mResTimeText->setText( QString("%1").arg( getMS( us )));
 
     berApplet->logLine();
     berApplet->log( QString( mMULBtn->text() ));
     berApplet->logLine2();
-    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
-    berApplet->log( QString( "B : %1").arg( getHexString(&binB)));
+    berApplet->log( QString( "A     : %1").arg( getHexString(&binA)));
+    berApplet->log( QString( "B     : %1").arg( getHexString(&binB)));
     if( mBaseGroupCombo->currentText() != kNumber )
-        berApplet->log( QString( "M : %1").arg( getHexString(&binMod)));
-    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+        berApplet->log( QString( "M     : %1").arg( getHexString(&binMod)));
+    berApplet->log( QString( "R     : %1").arg( getHexString(&binR)));
+    berApplet->log( QString( "Timer : %1 ms" ).arg( getMS( us ) ));
     berApplet->logLine();
 
 end :
@@ -800,10 +893,16 @@ void BNCalcDlg::clickDiv()
     BIN binREM = {0,0};
     BIN binMod = {0,0};
 
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     if( mBaseGroupCombo->currentText() == kNumber )
     {
         if( getInput( &binA, &binB, NULL ) != 0 ) goto end;
+
+        timer.start();
         ret = JS_BN_div( &binR, &binREM, &binA, &binB );
+        us = timer.nsecsElapsed() / 1000;
     }
     else if( mBaseGroupCombo->currentText() == kModular )
     {
@@ -813,25 +912,31 @@ void BNCalcDlg::clickDiv()
     else
     {
         if( getInput( &binA, &binB, &binMod ) != 0 ) goto end;
+
+        timer.start();
         ret = JS_BN_GF2m_divMod( &binR, &binA, &binB, &binMod );
+        us = timer.nsecsElapsed() / 1000;
     }
 
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
+        mResTimeText->clear();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
+    mResTimeText->setText( QString("%1").arg( getMS( us )));
 
     berApplet->logLine();
     berApplet->log( QString( mDIVBtn->text() ));
     berApplet->logLine2();
-    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
-    berApplet->log( QString( "B : %1").arg( getHexString(&binB)));
+    berApplet->log( QString( "A     : %1").arg( getHexString(&binA)));
+    berApplet->log( QString( "B     : %1").arg( getHexString(&binB)));
     if( mBaseGroupCombo->currentText() != kNumber )
-        berApplet->log( QString( "M : %1").arg( getHexString(&binMod)));
-    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+        berApplet->log( QString( "M     : %1").arg( getHexString(&binMod)));
+    berApplet->log( QString( "R     : %1").arg( getHexString(&binR)));
+    berApplet->log( QString( "Timer : %1 ms" ).arg( getMS( us ) ));
 
     if( mBaseGroupCombo->currentText() == kNumber )
     {
@@ -860,38 +965,53 @@ void BNCalcDlg::clickExp()
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     if( mBaseGroupCombo->currentText() == kNumber )
     {
         if( getInput( &binA, &binB, NULL ) != 0 ) goto end;
+
+        timer.start();
         ret = JS_BN_exp( &binR, &binA, &binB );
+        us = timer.nsecsElapsed() / 1000;
     }
     else if( mBaseGroupCombo->currentText() == kModular )
     {
         if( getInput( &binA, &binB, &binMod ) != 0 ) goto end;
+
+        timer.start();
         ret = JS_BN_expMod( &binR, &binA, &binB, &binMod );
+        us = timer.nsecsElapsed() / 1000;
     }
     else
     {
         if( getInput( &binA, &binB, &binMod ) != 0 ) goto end;
+
+        timer.start();
         ret = JS_BN_GF2m_expMod( &binR, &binA, &binB, &binMod );
+        us = timer.nsecsElapsed() / 1000;
     }
 
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
+        mResTimeText->clear();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
+    mResTimeText->setText( QString("%1").arg( getMS( us )));
 
     berApplet->logLine();
     berApplet->log( QString( mEXPBtn->text() ));
     berApplet->logLine2();
-    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
-    berApplet->log( QString( "B : %1").arg( getHexString(&binB)));
+    berApplet->log( QString( "A     : %1").arg( getHexString(&binA)));
+    berApplet->log( QString( "B     : %1").arg( getHexString(&binB)));
     if( mBaseGroupCombo->currentText() != kNumber )
-        berApplet->log( QString( "M : %1").arg( getHexString(&binMod)));
-    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+        berApplet->log( QString( "M     : %1").arg( getHexString(&binMod)));
+    berApplet->log( QString( "R     : %1").arg( getHexString(&binR)));
+    berApplet->log( QString( "Timer : %1 ms" ).arg( getMS( us ) ));
     berApplet->logLine();
 
 end :
@@ -908,37 +1028,52 @@ void BNCalcDlg::clickSqr()
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     if( mBaseGroupCombo->currentText() == kNumber )
     {
         if( getInput( &binA, NULL, NULL ) != 0 ) goto end;
+
+        timer.start();
         ret = JS_BN_sqr( &binR, &binA );
+        us = timer.nsecsElapsed() / 1000;
     }
     else if( mBaseGroupCombo->currentText() == kModular )
     {
         if( getInput( &binA, NULL, &binMod ) != 0 ) goto end;
+
+        timer.start();
         ret = JS_BN_sqrMod( &binR, &binA, &binMod );
+        us = timer.nsecsElapsed() / 1000;
     }
     else
     {
         if( getInput( &binA, NULL, &binMod ) != 0 ) goto end;
+
+        timer.start();
         ret = JS_BN_GF2m_sqrMod( &binR, &binA, &binMod );
+        us = timer.nsecsElapsed() / 1000;
     }
 
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
+        mResTimeText->clear();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
+    mResTimeText->setText( QString("%1").arg( getMS( us )));
 
     berApplet->logLine();
     berApplet->log( QString( mSQRBtn->text() ));
     berApplet->logLine2();
-    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
+    berApplet->log( QString( "A     : %1").arg( getHexString(&binA)));
     if( mBaseGroupCombo->currentText() != kNumber )
-        berApplet->log( QString( "M : %1").arg( getHexString(&binMod)));
-    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+        berApplet->log( QString( "M     : %1").arg( getHexString(&binMod)));
+    berApplet->log( QString( "R     : %1").arg( getHexString(&binR)));
+    berApplet->log( QString( "Timer : %1 ms" ).arg( getMS( us ) ));
     berApplet->logLine();
 
 end :
@@ -954,10 +1089,16 @@ void BNCalcDlg::clickMod()
     BIN binB = {0,0};
     BIN binR = {0,0};
 
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     if( mBaseGroupCombo->currentText() == kNumber )
     {
         if( getInput( &binA, &binB, NULL ) != 0 ) goto end;
+
+        timer.start();
         ret = JS_BN_mod( &binR, &binA, &binB );
+        us = timer.nsecsElapsed() / 1000;
     }
     else if( mBaseGroupCombo->currentText() == kModular )
     {
@@ -967,24 +1108,30 @@ void BNCalcDlg::clickMod()
     else
     {
         if( getInput( &binA, &binB, NULL ) != 0 ) goto end;
+
+        timer.start();
         ret = JS_BN_GF2m_mod( &binR, &binA, &binB );
+        us = timer.nsecsElapsed() / 1000;
     }
 
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
+        mResTimeText->clear();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
+    mResTimeText->setText( QString("%1").arg( getMS( us )));
 
     berApplet->logLine();
     berApplet->log( QString( mMODBtn->text() ));
     berApplet->logLine2();
-    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
-    berApplet->log( QString( "B : %1").arg( getHexString(&binB)));
+    berApplet->log( QString( "A     : %1").arg( getHexString(&binA)));
+    berApplet->log( QString( "B     : %1").arg( getHexString(&binB)));
 
-    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+    berApplet->log( QString( "R     : %1").arg( getHexString(&binR)));
+    berApplet->log( QString( "Timer : %1 ms" ).arg( getMS( us ) ));
     berApplet->logLine();
 
 end :
@@ -1001,6 +1148,9 @@ void BNCalcDlg::clickGcd()
     BIN binB = {0,0};
     BIN binR = {0,0};
 
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     if( mBaseGroupCombo->currentText() != kNumber )
     {
         berApplet->elog( "GCD support Number only" );
@@ -1008,22 +1158,28 @@ void BNCalcDlg::clickGcd()
     }
 
     if( getInput( &binA, &binB, NULL ) != 0 ) goto end;
+
+    timer.start();
     ret = JS_BN_gcd( &binR, &binA, &binB );
+    us = timer.nsecsElapsed() / 1000;
 
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
+        mResTimeText->clear();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
+    mResTimeText->setText( QString("%1").arg( getMS( us )));
 
     berApplet->logLine();
     berApplet->log( QString( mGCDBtn->text() ));
     berApplet->logLine2();
-    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
-    berApplet->log( QString( "B : %1").arg( getHexString(&binB)));
-    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+    berApplet->log( QString( "A     : %1").arg( getHexString(&binA)));
+    berApplet->log( QString( "B     : %1").arg( getHexString(&binB)));
+    berApplet->log( QString( "R     : %1").arg( getHexString(&binR)));
+    berApplet->log( QString( "Timer : %1 ms" ).arg( getMS( us ) ));
     berApplet->logLine();
 
 end :
@@ -1039,25 +1195,33 @@ void BNCalcDlg::clickOr()
     BIN binB = {0,0};
     BIN binR = {0,0};
 
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     if( getInput( &binA, &binB, NULL ) != 0 )
         goto end;
 
+    timer.start();
     ret = JS_BN_or( &binR, &binA, &binB );
+    us = timer.nsecsElapsed() / 1000;
 
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
+        mResTimeText->clear();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
+    mResTimeText->setText( QString("%1").arg( getMS( us )));
 
     berApplet->logLine();
     berApplet->log( QString( mORBtn->text() ));
     berApplet->logLine2();
-    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
-    berApplet->log( QString( "B : %1").arg( getHexString(&binB)));
-    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+    berApplet->log( QString( "A     : %1").arg( getHexString(&binA)));
+    berApplet->log( QString( "B     : %1").arg( getHexString(&binB)));
+    berApplet->log( QString( "R     : %1").arg( getHexString(&binR)));
+    berApplet->log( QString( "Timer : %1 ms" ).arg( getMS( us ) ));
     berApplet->logLine();
 
 end :
@@ -1073,25 +1237,33 @@ void BNCalcDlg::clickAnd()
     BIN binB = {0,0};
     BIN binR = {0,0};
 
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     if( getInput( &binA, &binB, NULL ) != 0 )
         goto end;
 
+    timer.start();
     ret = JS_BN_and( &binR, &binA, &binB );
+    us = timer.nsecsElapsed() / 1000;
 
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
+        mResTimeText->clear();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
+    mResTimeText->setText( QString("%1").arg( getMS( us )));
 
     berApplet->logLine();
     berApplet->log( QString( mANDBtn->text() ));
     berApplet->logLine2();
-    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
-    berApplet->log( QString( "B : %1").arg( getHexString(&binB)));
-    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+    berApplet->log( QString( "A     : %1").arg( getHexString(&binA)));
+    berApplet->log( QString( "B     : %1").arg( getHexString(&binB)));
+    berApplet->log( QString( "R     : %1").arg( getHexString(&binR)));
+    berApplet->log( QString( "Timer : %1 ms" ).arg( getMS( us ) ));
     berApplet->logLine();
 
 end :
@@ -1107,24 +1279,33 @@ void BNCalcDlg::clickXor()
     BIN binB = {0,0};
     BIN binR = {0,0};
 
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     if( getInput( &binA, &binB, NULL ) != 0 )
         goto end;
 
+    timer.start();
     ret = JS_BN_xor( &binR, &binA, &binB );
+    us = timer.nsecsElapsed() / 1000;
 
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
+        mResTimeText->clear();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
+    mResTimeText->setText( QString("%1").arg( getMS( us )));
+
     berApplet->logLine();
     berApplet->log( QString( mXORBtn->text() ));
     berApplet->logLine2();
-    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
-    berApplet->log( QString( "B : %1").arg( getHexString(&binB)));
-    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+    berApplet->log( QString( "A     : %1").arg( getHexString(&binA)));
+    berApplet->log( QString( "B     : %1").arg( getHexString(&binB)));
+    berApplet->log( QString( "R     : %1").arg( getHexString(&binR)));
+    berApplet->log( QString( "Timer : %1 ms" ).arg( getMS( us ) ));
     berApplet->logLine();
 
 end :
@@ -1139,24 +1320,32 @@ void BNCalcDlg::clickComp()
     BIN binA = {0,0};
     BIN binR = {0,0};
 
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     if( getInput( &binA, NULL, NULL ) != 0 )
         goto end;
 
+    timer.start();
     ret = JS_BN_comp( &binR, &binA );
+    us = timer.nsecsElapsed() / 1000;
 
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
+        mResTimeText->clear();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
+    mResTimeText->setText( QString("%1").arg( getMS( us )));
 
     berApplet->logLine();
     berApplet->log( QString( mCOMPBtn->text() ));
     berApplet->logLine2();
-    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));;
-    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+    berApplet->log( QString( "A     : %1").arg( getHexString(&binA)));;
+    berApplet->log( QString( "R     : %1").arg( getHexString(&binR)));
+    berApplet->log( QString( "Timer : %1 ms" ).arg( getMS( us ) ));
     berApplet->logLine();
 
 end :
@@ -1170,6 +1359,9 @@ void BNCalcDlg::clickShr()
     BIN binA = {0,0};
     BIN binR = {0,0};
 
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     if( getInput( &binA, NULL, NULL ) != 0 )
         goto end;
 /*
@@ -1179,19 +1371,26 @@ void BNCalcDlg::clickShr()
         goto end;
     }
 */
+    timer.start();
     ret = JS_BN_rshift( &binR, &binA );
+    us = timer.nsecsElapsed() / 1000;
+
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
+        mResTimeText->clear();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
+    mResTimeText->setText( QString("%1").arg( getMS( us )));
+
     berApplet->logLine();
     berApplet->log( QString( mSHRBtn->text() ));
     berApplet->logLine2();
-    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
-    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+    berApplet->log( QString( "A     : %1").arg( getHexString(&binA)));
+    berApplet->log( QString( "R     : %1").arg( getHexString(&binR)));
+    berApplet->log( QString( "Timer : %1 ms" ).arg( getMS( us ) ));
     berApplet->logLine();
 
 end :
@@ -1206,15 +1405,24 @@ void BNCalcDlg::clickShl()
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     if( mBaseGroupCombo->currentText() == kNumber )
     {
         if( getInput( &binA, NULL, NULL ) != 0 ) goto end;
+
+        timer.start();
         ret = JS_BN_lshift( &binR, &binA );
+        us = timer.nsecsElapsed() / 1000;
     }
     else if( mBaseGroupCombo->currentText() == kModular )
     {
         if( getInput( &binA, NULL, &binMod ) != 0 ) goto end;
+
+        timer.start();
         ret = JS_BN_lshiftMod( &binR, &binA, &binMod );
+        us = timer.nsecsElapsed() / 1000;
     }
     else
     {
@@ -1225,18 +1433,21 @@ void BNCalcDlg::clickShl()
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
+        mResTimeText->clear();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
+    mResTimeText->setText( QString("%1").arg( getMS( us )));
 
     berApplet->logLine();
     berApplet->log( QString( mSHLBtn->text() ));
     berApplet->logLine2();
-    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
+    berApplet->log( QString( "A     : %1").arg( getHexString(&binA)));
     if( mBaseGroupCombo->currentText() != kNumber )
-        berApplet->log( QString( "M : %1").arg( getHexString(&binMod)));
-    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+        berApplet->log( QString( "M     : %1").arg( getHexString(&binMod)));
+    berApplet->log( QString( "R     : %1").arg( getHexString(&binR)));
+    berApplet->log( QString( "Timer : %1 ms" ).arg( getMS( us ) ));
     berApplet->logLine();
 
 end :
@@ -1252,6 +1463,9 @@ void BNCalcDlg::clickInv()
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     if( mBaseGroupCombo->currentText() == kNumber )
     {
         berApplet->elog( "Number does not support INV" );
@@ -1260,29 +1474,38 @@ void BNCalcDlg::clickInv()
     else if( mBaseGroupCombo->currentText() == kModular )
     {
         if( getInput( &binA, NULL, &binMod ) != 0 ) goto end;
+
+        timer.start();
         ret = JS_BN_invMod( &binR, &binA, &binMod );
+        us = timer.nsecsElapsed() / 1000;
     }
     else
     {
         if( getInput( &binA, NULL, &binMod ) != 0 ) goto end;
+
+        timer.start();
         ret = JS_BN_GF2m_invMod( &binR, &binA, &binMod );
+        us = timer.nsecsElapsed() / 1000;
     }
 
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
+        mResTimeText->clear();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
+    mResTimeText->setText( QString("%1").arg( getMS( us )));
 
     berApplet->logLine();
     berApplet->log( QString( mINVBtn->text() ));
     berApplet->logLine2();
-    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
+    berApplet->log( QString( "A     : %1").arg( getHexString(&binA)));
     if( mBaseGroupCombo->currentText() != kNumber )
-        berApplet->log( QString( "M : %1").arg( getHexString(&binMod)));
-    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+        berApplet->log( QString( "M     : %1").arg( getHexString(&binMod)));
+    berApplet->log( QString( "R     : %1").arg( getHexString(&binR)));
+    berApplet->log( QString( "Timer : %1 ms" ).arg( getMS( us ) ));
     berApplet->logLine();
 
 end :
@@ -1298,6 +1521,9 @@ void BNCalcDlg::clickSqrt()
     BIN binR = {0,0};
     BIN binMod = {0,0};
 
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     if( mBaseGroupCombo->currentText() == kNumber )
     {
         berApplet->elog( "Number does not support SQRT" );
@@ -1306,29 +1532,38 @@ void BNCalcDlg::clickSqrt()
     else if( mBaseGroupCombo->currentText() == kModular )
     {
         if( getInput( &binA, NULL, &binMod ) != 0 ) goto end;
+
+        timer.start();
         ret = JS_BN_sqrtMod( &binR, &binA, &binMod );
+        us = timer.nsecsElapsed() / 1000;
     }
     else
     {
         if( getInput( &binA, NULL, &binMod ) != 0 ) goto end;
+
+        timer.start();
         ret = JS_BN_GF2m_sqrtMod( &binR, &binA, &binMod );
+        us = timer.nsecsElapsed() / 1000;
     }
 
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
+        mResTimeText->clear();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
+    mResTimeText->setText( QString("%1").arg( getMS( us )));
 
     berApplet->logLine();
     berApplet->log( QString( mSQRTBtn->text() ));
     berApplet->logLine2();
-    berApplet->log( QString( "A : %1").arg( getHexString(&binA)));
+    berApplet->log( QString( "A     : %1").arg( getHexString(&binA)));
     if( mBaseGroupCombo->currentText() != kNumber )
-        berApplet->log( QString( "M : %1").arg( getHexString(&binMod)));
-    berApplet->log( QString( "R : %1").arg( getHexString(&binR)));
+        berApplet->log( QString( "M     : %1").arg( getHexString(&binMod)));
+    berApplet->log( QString( "R     : %1").arg( getHexString(&binR)));
+    berApplet->log( QString( "Timer : %1 ms" ).arg( getMS( us ) ));
     berApplet->logLine();
 
 end :
