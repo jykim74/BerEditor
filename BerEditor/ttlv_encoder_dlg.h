@@ -88,6 +88,7 @@ private:
     void setEnableAlg( bool bVal );
     void setEnableOption( bool bVal );
     void setEnableHash( bool bVal );
+    void setEnableMode( bool bVal );
     void setEnableIV( bool bVal );
     void setEnableInput( bool bVal );
     void setEnableSign( bool bVal );

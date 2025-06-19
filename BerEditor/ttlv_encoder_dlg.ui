@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>524</width>
+    <width>568</width>
     <height>894</height>
    </rect>
   </property>
@@ -185,59 +185,7 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="7">
-      <widget class="QComboBox" name="mHashCombo">
-       <property name="minimumSize">
-        <size>
-         <width>80</width>
-         <height>0</height>
-        </size>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="3">
-      <widget class="QLabel" name="mOptionLabel">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>KeyLength</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="mAlgLabel">
-       <property name="minimumSize">
-        <size>
-         <width>70</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Algorithm</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="6">
-      <widget class="QLabel" name="mHashLabel">
-       <property name="minimumSize">
-        <size>
-         <width>60</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Hash</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
       <widget class="QComboBox" name="mOptionCombo">
        <property name="minimumSize">
         <size>
@@ -257,18 +205,67 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+     <item row="0" column="7">
+      <widget class="QLabel" name="mModeLabel">
+       <property name="text">
+        <string>Mode</string>
        </property>
-       <property name="sizeHint" stdset="0">
+      </widget>
+     </item>
+     <item row="0" column="6">
+      <widget class="QComboBox" name="mHashCombo">
+       <property name="minimumSize">
         <size>
-         <width>40</width>
-         <height>20</height>
+         <width>80</width>
+         <height>0</height>
         </size>
        </property>
-      </spacer>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="mAlgLabel">
+       <property name="minimumSize">
+        <size>
+         <width>70</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Algorithm</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="mOptionLabel">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>KeyLength</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
+      <widget class="QLabel" name="mHashLabel">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Hash</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="8">
+      <widget class="QComboBox" name="mModeCombo"/>
      </item>
     </layout>
    </item>
