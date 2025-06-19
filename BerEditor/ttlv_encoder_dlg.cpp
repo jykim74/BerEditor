@@ -1455,6 +1455,13 @@ void TTLVEncoderDlg::clickAddAttribute()
         goto end;
     }
 
+    if( strAttrName.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Select a Attribute Name" ), this );
+        mAttributeCombo->setFocus();
+        goto end;
+    }
+
     if( strAttrValue.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter the attribute value into the input field." ), this );
@@ -1572,6 +1579,13 @@ void TTLVEncoderDlg::clickModifyAttribute()
         goto end;
     }
 
+    if( strAttrName.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Select a Attribute Name" ), this );
+        mAttributeCombo->setFocus();
+        goto end;
+    }
+
     if( strAttrValue.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter the attribute value into the input field." ), this );
@@ -1630,6 +1644,13 @@ void TTLVEncoderDlg::clickDeleteAttribute()
     {
         berApplet->warningBox( tr( "Enter a UUID" ), this );
         mUUIDText->setFocus();
+        goto end;
+    }
+
+    if( strAttrName.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Select a Attribute Name" ), this );
+        mAttributeCombo->setFocus();
         goto end;
     }
 
