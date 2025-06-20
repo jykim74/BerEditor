@@ -236,6 +236,7 @@ void TTLVEncoderDlg::initUI()
     mCmdCombo->addItems( kCmdObject );
     mIVTypeCombo->addItems( kValueTypeList );
     mInputTypeCombo->addItems( kValueTypeList );
+    mInputTypeCombo->setCurrentText( "Hex" );
 
     mObjectTypeCombo->addItems( kObjetType );
     mAlgCombo->addItems( kAlgList );
