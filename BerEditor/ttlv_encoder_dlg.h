@@ -55,26 +55,26 @@ private slots:
     void clickEncode();
     void clickOK();
 
-    void clickGet();
-    void clickActivate();
-    void clickCreate();
-    void clickDestroy();
-    void clickEncrypt();
-    void clickDecrypt();
-    void clickSign();
-    void clickVerify();
-    void clickRegister();
-    void clickCreateKeyPair();
+    int runGet();
+    int runActivate();
+    int runCreate();
+    int runDestroy();
+    int runEncrypt();
+    int runDecrypt();
+    int runSign();
+    int runVerify();
+    int runRegister();
+    int runCreateKeyPair();
 
-    void clickGetAttributeList();
-    void clickAddAttribute();
-    void clickGetAttributes();
-    void clickModifyAttribute();
-    void clickDeleteAttribute();
-    void clickLocate();
-    void clickRNGRetrieve();
-    void clickRNGSeed();
-    void clickHash();
+    int runGetAttributeList();
+    int runAddAttribute();
+    int runGetAttributes();
+    int runModifyAttribute();
+    int runDeleteAttribute();
+    int runLocate();
+    int runRNGRetrieve();
+    int runRNGSeed();
+    int runHash();
 
     void changeIV();
     void changeInput();

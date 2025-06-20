@@ -1523,7 +1523,7 @@ void SignVerifyDlg::clickClearDataAll()
     mPriKeyPath->clear();
     mCertPath->clear();
     mOutputText->clear();
-    mStatusLabel->clear();
+    mStatusLabel->setText( tr("Status") );
     mPasswdText->clear();
 
     mSrcFileText->clear();

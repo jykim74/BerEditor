@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>570</width>
-    <height>661</height>
+    <height>671</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -78,7 +78,7 @@
    <item>
     <widget class="QTabWidget" name="mInputTab">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mDataTab">
       <attribute name="title">
@@ -1261,13 +1261,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mOutputClearBtn">
-       <property name="text">
-        <string>Clear</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="3">
       <spacer name="horizontalSpacer_5">
        <property name="orientation">
@@ -1387,11 +1380,38 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="mStatusLabel">
-     <property name="text">
-      <string>Status</string>
+    <layout class="QGridLayout" name="gridLayout_14">
+     <property name="topMargin">
+      <number>0</number>
      </property>
-    </widget>
+     <item row="0" column="0">
+      <widget class="QLabel" name="mStatusLabel">
+       <property name="text">
+        <string>Status</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mOutputClearBtn">
+       <property name="text">
+        <string>Clear</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="Line" name="line_5">
@@ -1492,7 +1512,6 @@
   <tabstop>mTagText</tabstop>
   <tabstop>mTagLenText</tabstop>
   <tabstop>mOutputTypeCombo</tabstop>
-  <tabstop>mOutputClearBtn</tabstop>
   <tabstop>mChangeBtn</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>

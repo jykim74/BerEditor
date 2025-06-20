@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>651</width>
-    <height>879</height>
+    <height>694</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -82,19 +82,19 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <property name="spacing">
-       <number>6</number>
+       <number>5</number>
       </property>
       <property name="leftMargin">
-       <number>9</number>
+       <number>5</number>
       </property>
       <property name="topMargin">
-       <number>9</number>
+       <number>5</number>
       </property>
       <property name="rightMargin">
-       <number>9</number>
+       <number>5</number>
       </property>
       <property name="bottomMargin">
-       <number>9</number>
+       <number>5</number>
       </property>
       <item>
        <layout class="QGridLayout" name="gridLayout_8">
@@ -166,7 +166,7 @@
          <widget class="QLabel" name="label_7">
           <property name="minimumSize">
            <size>
-            <width>0</width>
+            <width>20</width>
             <height>0</height>
            </size>
           </property>
@@ -336,19 +336,19 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <property name="spacing">
-       <number>6</number>
+       <number>5</number>
       </property>
       <property name="leftMargin">
-       <number>9</number>
+       <number>5</number>
       </property>
       <property name="topMargin">
-       <number>9</number>
+       <number>5</number>
       </property>
       <property name="rightMargin">
-       <number>9</number>
+       <number>5</number>
       </property>
       <property name="bottomMargin">
-       <number>9</number>
+       <number>5</number>
       </property>
       <item>
        <layout class="QGridLayout" name="gridLayout_2">
@@ -495,7 +495,7 @@
          <widget class="QLabel" name="label_9">
           <property name="minimumSize">
            <size>
-            <width>0</width>
+            <width>20</width>
             <height>0</height>
            </size>
           </property>
@@ -590,19 +590,19 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <property name="spacing">
-       <number>6</number>
+       <number>5</number>
       </property>
       <property name="leftMargin">
-       <number>9</number>
+       <number>5</number>
       </property>
       <property name="topMargin">
-       <number>9</number>
+       <number>5</number>
       </property>
       <property name="rightMargin">
-       <number>9</number>
+       <number>5</number>
       </property>
       <property name="bottomMargin">
-       <number>9</number>
+       <number>5</number>
       </property>
       <item>
        <layout class="QGridLayout" name="gridLayout_3">
@@ -610,7 +610,7 @@
          <widget class="QLabel" name="label_10">
           <property name="minimumSize">
            <size>
-            <width>0</width>
+            <width>20</width>
             <height>0</height>
            </size>
           </property>
@@ -872,62 +872,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="4">
-      <widget class="QLineEdit" name="mResTimeText">
-       <property name="minimumSize">
-        <size>
-         <width>80</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>80</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="palette">
-        <palette>
-         <active>
-          <colorrole role="Base">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>221</red>
-             <green>221</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </active>
-         <inactive>
-          <colorrole role="Base">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>221</red>
-             <green>221</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </inactive>
-         <disabled/>
-        </palette>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="5">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>ms</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="11">
       <widget class="QLineEdit" name="mResLenText">
        <property name="minimumSize">
@@ -1014,13 +958,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
-      <widget class="QLabel" name="label_11">
-       <property name="text">
-        <string>Timer</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
    <item>
@@ -1077,21 +1014,288 @@
     </widget>
    </item>
    <item>
+    <layout class="QGridLayout" name="gridLayout_9">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="2">
+      <widget class="QLabel" name="mCalcLabel">
+       <property name="minimumSize">
+        <size>
+         <width>90</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>90</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Calculation</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="13">
+      <widget class="QLineEdit" name="mSumTimeText">
+       <property name="minimumSize">
+        <size>
+         <width>90</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>90</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled/>
+        </palette>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="8">
+      <widget class="QPushButton" name="mAddSumBtn">
+       <property name="minimumSize">
+        <size>
+         <width>40</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="15">
+      <widget class="QPushButton" name="mSumTimeClearBtn">
+       <property name="minimumSize">
+        <size>
+         <width>20</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>C</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLineEdit" name="mResTimeText">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>80</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled/>
+        </palette>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="12">
+      <widget class="QLabel" name="label_12">
+       <property name="text">
+        <string>Sum</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="Line" name="line_5">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mResTimeClearBtn">
+       <property name="minimumSize">
+        <size>
+         <width>20</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>C</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="11">
+      <widget class="Line" name="line_4">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="14">
+      <widget class="QLabel" name="label_13">
+       <property name="text">
+        <string>ms</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="7">
+      <widget class="QCheckBox" name="mAutoSumCheck">
+       <property name="text">
+        <string>Auto sum</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="9">
+      <spacer name="horizontalSpacer_7">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_11">
+       <property name="text">
+        <string>Timer</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>ms</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="6">
+      <widget class="Line" name="line_6">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QGridLayout" name="gridLayout_6">
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="2" column="0">
-      <widget class="QPushButton" name="mDIVBtn">
+     <item row="1" column="0">
+      <widget class="QPushButton" name="mXORBtn">
        <property name="text">
-        <string>A / B</string>
+        <string>A xor B</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="mORBtn">
+     <item row="2" column="0">
+      <widget class="QPushButton" name="mSQRTBtn">
        <property name="text">
-        <string>A or B</string>
+        <string>√ A</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="QPushButton" name="mSUBBtn">
+       <property name="text">
+        <string>A - B</string>
        </property>
       </widget>
      </item>
@@ -1102,24 +1306,38 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="3">
-      <widget class="QPushButton" name="mADDBtn">
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mORBtn">
        <property name="text">
-        <string>A + B</string>
+        <string>A or B</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="2">
+     <item row="1" column="5">
+      <widget class="QPushButton" name="mMULBtn">
+       <property name="text">
+        <string>A * B</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mSHRBtn">
+       <property name="text">
+        <string>A &gt;&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mSHLBtn">
+       <property name="text">
+        <string>A &lt;&lt;</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="4">
       <widget class="QPushButton" name="mMODBtn">
        <property name="text">
         <string>A % B</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="mANDBtn">
-       <property name="text">
-        <string>A and B</string>
        </property>
       </widget>
      </item>
@@ -1131,65 +1349,44 @@
       </widget>
      </item>
      <item row="1" column="2">
-      <widget class="QPushButton" name="mXORBtn">
+      <widget class="QPushButton" name="mDIVBtn">
        <property name="text">
-        <string>A xor B</string>
+        <string>A / B</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
+     <item row="1" column="3">
       <widget class="QPushButton" name="mEXPBtn">
        <property name="text">
         <string>A ^ B</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mSHLBtn">
+     <item row="2" column="1">
+      <widget class="QPushButton" name="mINVBtn">
        <property name="text">
-        <string>A &lt;&lt;</string>
+        <string>A^-1</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mSHRBtn">
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mANDBtn">
        <property name="text">
-        <string>A &gt;&gt;</string>
+        <string>A and B</string>
        </property>
       </widget>
      </item>
-     <item row="3" column="0">
-      <widget class="QPushButton" name="mSQRTBtn">
+     <item row="1" column="1">
+      <widget class="QPushButton" name="mADDBtn">
        <property name="text">
-        <string>√ A</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="3">
-      <widget class="QPushButton" name="mGCDBtn">
-       <property name="text">
-        <string>GCD(A,B)</string>
+        <string>A + B</string>
        </property>
       </widget>
      </item>
      <item row="2" column="3">
-      <widget class="QPushButton" name="mMULBtn">
+      <widget class="QPushButton" name="mGCDBtn">
        <property name="text">
-        <string>A * B</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="2">
-      <widget class="QPushButton" name="mSUBBtn">
-       <property name="text">
-        <string>A - B</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QPushButton" name="mINVBtn">
-       <property name="text">
-        <string>A^-1</string>
+        <string>GCD(A,B)</string>
        </property>
       </widget>
      </item>
@@ -1284,6 +1481,12 @@
   <tabstop>mResCopyBtn</tabstop>
   <tabstop>mResLenText</tabstop>
   <tabstop>mResText</tabstop>
+  <tabstop>mResTimeText</tabstop>
+  <tabstop>mResTimeClearBtn</tabstop>
+  <tabstop>mAutoSumCheck</tabstop>
+  <tabstop>mAddSumBtn</tabstop>
+  <tabstop>mSumTimeText</tabstop>
+  <tabstop>mSumTimeClearBtn</tabstop>
   <tabstop>mSQRBtn</tabstop>
   <tabstop>mCOMPBtn</tabstop>
   <tabstop>mSHRBtn</tabstop>

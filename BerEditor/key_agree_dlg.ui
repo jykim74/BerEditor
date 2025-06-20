@@ -105,7 +105,7 @@
    <item row="0" column="0" colspan="2">
     <widget class="QTabWidget" name="mTabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mDHTab">
       <attribute name="title">
@@ -1211,8 +1211,11 @@
  </widget>
  <tabstops>
   <tabstop>mTabWidget</tabstop>
+  <tabstop>mParamLenCombo</tabstop>
   <tabstop>mGCombo</tabstop>
   <tabstop>mGenParamBtn</tabstop>
+  <tabstop>mImportParamBtn</tabstop>
+  <tabstop>mExportParamBtn</tabstop>
   <tabstop>mPLenText</tabstop>
   <tabstop>mPText</tabstop>
   <tabstop>mAPrivateKeyText</tabstop>

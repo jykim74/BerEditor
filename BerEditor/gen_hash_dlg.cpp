@@ -297,7 +297,7 @@ void GenHashDlg::clickClearDataAll()
 {
     mInputText->clear();
     mOutputText->clear();
-    mStatusLabel->clear();
+    mStatusLabel->setText( tr("Status"));
 
     mSrcFileText->clear();
     mSrcFileInfoText->clear();

@@ -250,11 +250,13 @@
  </widget>
  <tabstops>
   <tabstop>mEMAILADDRESSText</tabstop>
+  <tabstop>mCNText</tabstop>
   <tabstop>mOText</tabstop>
   <tabstop>mOUText</tabstop>
   <tabstop>mLText</tabstop>
   <tabstop>mSTText</tabstop>
   <tabstop>mCText</tabstop>
+  <tabstop>mDNText</tabstop>
   <tabstop>mSignHashCombo</tabstop>
   <tabstop>mClearBtn</tabstop>
   <tabstop>mOKBtn</tabstop>

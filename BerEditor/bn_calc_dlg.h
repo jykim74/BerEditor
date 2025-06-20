@@ -79,6 +79,11 @@ private slots:
     void clickResSendB();
     void clickResSendMod();
 
+    void clearTime();
+    void clearSum();
+    void clickAddSum();
+    void setResTime( const QString strCmd, qint64 time_us );
+
     void clickTest();
 private:
     void intialize();
@@ -87,6 +92,9 @@ private:
     const QString getOutput( const BIN *pBin );
     void getBIN( const QString strValue, BIN *pBin );
     const QString validChars();
+
+    qint64 time_us_ = 0;
+    qint64 sum_us_ = 0;
 };
 
 #endif // BN_CALC_DLG_H

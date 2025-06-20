@@ -17,7 +17,7 @@
    <item>
     <widget class="QTabWidget" name="mInputTab">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mDataTab">
       <attribute name="title">
@@ -557,6 +557,26 @@
      <property name="topMargin">
       <number>0</number>
      </property>
+     <item row="0" column="2">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Len</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Output Data</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="3">
       <widget class="QLineEdit" name="mOutputLenText">
        <property name="minimumSize">
@@ -613,19 +633,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="minimumSize">
-        <size>
-         <width>80</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Output Data</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
       <spacer name="horizontalSpacer_4">
        <property name="orientation">
@@ -638,13 +645,6 @@
         </size>
        </property>
       </spacer>
-     </item>
-     <item row="0" column="2">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Len</string>
-       </property>
-      </widget>
      </item>
     </layout>
    </item>
@@ -710,13 +710,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mOutputClearBtn">
-       <property name="text">
-        <string>Clear</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
       <spacer name="horizontalSpacer_5">
        <property name="orientation">
@@ -729,6 +722,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mOutputClearBtn">
+       <property name="text">
+        <string>Clear</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

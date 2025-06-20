@@ -2730,7 +2730,7 @@ void CertManDlg::decodeTLCert()
 
     if( strFile.length() < 1 )
     {
-        berApplet->warningBox( tr( "Find Certificate" ), this );
+        berApplet->warningBox( tr( "Find a certificate" ), this );
         mTLCertPathText->setFocus();
         return;
     }
@@ -2749,7 +2749,7 @@ void CertManDlg::decodeTLPFX()
 
     if( strFile.length() < 1 )
     {
-        berApplet->warningBox( tr( "Find PFX" ), this );
+        berApplet->warningBox( tr( "Find a PFX" ), this );
         mTLPFXPathText->setFocus();
         return;
     }
@@ -2895,7 +2895,7 @@ void CertManDlg::clickTLViewCert()
 
     if( strFile.length() < 1 )
     {
-        berApplet->warningBox( tr( "Find Certificate" ), this );
+        berApplet->warningBox( tr( "Find a certificate" ), this );
         return;
     }
 
@@ -2934,7 +2934,7 @@ void CertManDlg::clickTLEncryptPFX()
 
     if( strCertPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "find certificate" ), this );
+        berApplet->warningBox( tr( "Find a certificate" ), this );
         return;
     }
 
@@ -3199,7 +3199,7 @@ void CertManDlg::clickTLViewPubKey()
 
     if( strFile.length() < 1 )
     {
-        berApplet->warningBox( tr( "Find Certificate" ), this );
+        berApplet->warningBox( tr( "Find a certificate" ), this );
         return;
     }
 

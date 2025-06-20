@@ -142,7 +142,9 @@
  </widget>
  <tabstops>
   <tabstop>mNameText</tabstop>
+  <tabstop>mTextCheck</tabstop>
   <tabstop>mURIText</tabstop>
+  <tabstop>mAddBtn</tabstop>
   <tabstop>mLinkTable</tabstop>
   <tabstop>mRemoveBtn</tabstop>
   <tabstop>mClearAllBtn</tabstop>

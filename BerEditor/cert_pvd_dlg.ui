@@ -799,6 +799,9 @@
   <tabstop>mUseDeltasCheck</tabstop>
   <tabstop>mCheckSSSignatureCheck</tabstop>
   <tabstop>mTrustedFirstCheck</tabstop>
+  <tabstop>mNoCheckTimeCheck</tabstop>
+  <tabstop>mPartialChainCheck</tabstop>
+  <tabstop>mNoALTChainsCheck</tabstop>
   <tabstop>mParamCombo</tabstop>
   <tabstop>mParamValueText</tabstop>
   <tabstop>mParamAddBtn</tabstop>
@@ -808,6 +811,10 @@
   <tabstop>mTargetFindBtn</tabstop>
   <tabstop>mTargetInfoBtn</tabstop>
   <tabstop>mTargetDecodeBtn</tabstop>
+  <tabstop>mPolicyCheckBtn</tabstop>
+  <tabstop>mClearDataAllBtn</tabstop>
+  <tabstop>mPathValidationBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>
  <connections/>

@@ -902,10 +902,19 @@
   <tabstop>mKMCertTypeBtn</tabstop>
   <tabstop>mKMEncPriKeyCheck</tabstop>
   <tabstop>mKMPasswdText</tabstop>
+  <tabstop>mHashCombo</tabstop>
+  <tabstop>mCipherCombo</tabstop>
+  <tabstop>mSignedDataBtn</tabstop>
+  <tabstop>mEnvelopedDataBtn</tabstop>
+  <tabstop>mSignAndEnvelopedBtn</tabstop>
+  <tabstop>mCMSTypeCombo</tabstop>
   <tabstop>mCMSClearBtn</tabstop>
   <tabstop>mCMSDecodeBtn</tabstop>
+  <tabstop>mCMSTypeText</tabstop>
+  <tabstop>mCMSViewBtn</tabstop>
   <tabstop>mCMSLenText</tabstop>
   <tabstop>mCMSText</tabstop>
+  <tabstop>mAddSignerBtn</tabstop>
   <tabstop>mVerifyDataBtn</tabstop>
   <tabstop>mDevelopedDataBtn</tabstop>
   <tabstop>mDevelopedAndVerifyBtn</tabstop>

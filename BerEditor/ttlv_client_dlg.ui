@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>524</width>
-    <height>655</height>
+    <height>512</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -647,6 +647,7 @@
   <tabstop>mPasswdText</tabstop>
   <tabstop>mRequestClearBtn</tabstop>
   <tabstop>mRequestDecodeBtn</tabstop>
+  <tabstop>mEncodeBtn</tabstop>
   <tabstop>mReadMainBtn</tabstop>
   <tabstop>mRequestLenText</tabstop>
   <tabstop>mRequestText</tabstop>

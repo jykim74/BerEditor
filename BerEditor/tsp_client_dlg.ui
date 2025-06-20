@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>535</width>
-    <height>774</height>
+    <height>610</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -740,6 +740,7 @@
   <tabstop>mEncodeBtn</tabstop>
   <tabstop>mSendBtn</tabstop>
   <tabstop>mVerifyBtn</tabstop>
+  <tabstop>mVerifySignedBtn</tabstop>
   <tabstop>mCACertPathText</tabstop>
   <tabstop>mFindCACertBtn</tabstop>
   <tabstop>mCACertViewBtn</tabstop>
@@ -754,6 +755,7 @@
   <tabstop>mResponseClearBtn</tabstop>
   <tabstop>mResponseDecodeBtn</tabstop>
   <tabstop>mTSTInfoBtn</tabstop>
+  <tabstop>mViewCMSBtn</tabstop>
   <tabstop>mResponseLenText</tabstop>
   <tabstop>mResponseText</tabstop>
   <tabstop>mClearAllBtn</tabstop>

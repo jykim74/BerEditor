@@ -1216,7 +1216,7 @@ void EncDecDlg::clickClearDataAll()
     mIVText->clear();
     mKeyText->clear();
     mTagText->clear();
-    mStatusLabel->clear();
+    mStatusLabel->setText( tr("Status" ));
 
     mSrcFileText->clear();
     mSrcFileInfoText->clear();

@@ -302,6 +302,7 @@
   <tabstop>mNameText</tabstop>
   <tabstop>mTypeCombo</tabstop>
   <tabstop>mKeyLenCombo</tabstop>
+  <tabstop>mEncCheck</tabstop>
   <tabstop>mRandKeyBtn</tabstop>
   <tabstop>mKeyTypeCombo</tabstop>
   <tabstop>mKeyText</tabstop>

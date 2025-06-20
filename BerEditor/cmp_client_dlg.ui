@@ -804,6 +804,8 @@
   <tabstop>mCertTypeBtn</tabstop>
   <tabstop>mEncPriKeyCheck</tabstop>
   <tabstop>mPasswdText</tabstop>
+  <tabstop>mRefNumText</tabstop>
+  <tabstop>mAuthCodeText</tabstop>
   <tabstop>mSubjectDNText</tabstop>
   <tabstop>mRegInfoText</tabstop>
   <tabstop>mRegInfoClearBtn</tabstop>

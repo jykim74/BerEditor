@@ -250,6 +250,8 @@ void TTLVEncoderDlg::initUI()
     mOutputText->setPlaceholderText( tr("Hex value" ));
     mIVTypeCombo->setCurrentText( "String" );
     mIVText->setText( "0123456789ABCDEF" );
+
+    mOKBtn->setEnabled(false);
 }
 
 void TTLVEncoderDlg::initialize()
@@ -461,50 +463,54 @@ void TTLVEncoderDlg::changeCmd()
 
 void TTLVEncoderDlg::clickEncode()
 {
+    int ret = 0;
     QString strCmd = mCmdCombo->currentText();
 
     if( strCmd == kCMD_GET )
-        clickGet();
+        ret = runGet();
     else if( strCmd == kCMD_ACTIVATE )
-        clickActivate();
+        ret = runActivate();
     else if( strCmd == kCMD_CREATE )
-        clickCreate();
+        ret = runCreate();
     else if( strCmd == kCMD_DESTROY )
-        clickDestroy();
+        ret = runDestroy();
     else if( strCmd == kCMD_ENCRYPT )
-        clickEncrypt();
+        ret = runEncrypt();
     else if( strCmd == kCMD_DECRYPT )
-        clickDecrypt();
+        ret = runDecrypt();
     else if( strCmd == kCMD_SIGN )
-        clickSign();
+        ret = runSign();
     else if( strCmd == kCMD_VERIFY )
-        clickVerify();
+        ret = runVerify();
     else if( strCmd == kCMD_HASH )
-        clickHash();
+        ret = runHash();
     else if( strCmd == kCMD_REGISTER )
-        clickRegister();
+        ret = runRegister();
     else if( strCmd == kCMD_ADD_ATTRIBUTE )
-        clickAddAttribute();
+        ret = runAddAttribute();
     else if( strCmd == kCMD_CREATE_KEY_PAIR )
-        clickCreateKeyPair();
+        ret = runCreateKeyPair();
     else if( strCmd == kCMD_GET_ATTRIBUTE_LIST )
-        clickGetAttributeList();
+        ret = runGetAttributeList();
     else if( strCmd == kCMD_GET_ATTRIBUTES )
-        clickGetAttributes();
+        ret = runGetAttributes();
     else if( strCmd == kCMD_MODIFY_ATTRIBUTE )
-        clickModifyAttribute();
+        ret = runModifyAttribute();
     else if( strCmd == kCMD_DELETE_ATTRIBUTE )
-        clickDeleteAttribute();
+        ret = runDeleteAttribute();
     else if( strCmd == kCMD_LOCATE )
-        clickLocate();
+        ret = runLocate();
     else if( strCmd == kCMD_RNG_RETRIEVE )
-        clickRNGRetrieve();
+        ret = runRNGRetrieve();
     else if( strCmd == kCMD_RNG_SEED )
-        clickRNGSeed();
+        ret = runRNGSeed();
     else
     {
         berApplet->warnLog( tr( "Unknown Cmd: %1").arg( strCmd ), this );
+        return;
     }
+
+    if( ret == 0 ) mOKBtn->setEnabled(true);
 }
 
 void TTLVEncoderDlg::clickOK()
@@ -575,9 +581,9 @@ void TTLVEncoderDlg::findInput()
 }
 
 
-void TTLVEncoderDlg::clickGet()
+int TTLVEncoderDlg::runGet()
 {
-    int ret = 0;
+    int ret = -1;
     BIN binData = {0,0};
 
     Authentication sAuth = {0};
@@ -592,14 +598,14 @@ void TTLVEncoderDlg::clickGet()
         {
             berApplet->warningBox( tr( "Enter a UserID" ), this );
             mUserIDText->setFocus();
-            return;
+            return -1;
         }
 
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a password" ), this );
             mPasswdText->setFocus();
-            return;
+            return -1;
         }
 
         JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
@@ -626,11 +632,12 @@ void TTLVEncoderDlg::clickGet()
 end :
     JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
+    return ret;
 }
 
-void TTLVEncoderDlg::clickActivate()
+int TTLVEncoderDlg::runActivate()
 {
-    int ret = 0;
+    int ret = -1;
     BIN binData = {0,0};
 
     QString strUUID = mUUIDText->text();
@@ -645,14 +652,14 @@ void TTLVEncoderDlg::clickActivate()
         {
             berApplet->warningBox( tr( "Enter a UserID" ), this );
             mUserIDText->setFocus();
-            return;
+            return -1;
         }
 
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a password" ), this );
             mPasswdText->setFocus();
-            return;
+            return -1;
         }
 
         JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
@@ -679,11 +686,12 @@ void TTLVEncoderDlg::clickActivate()
 end :
     JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
+    return ret;
 }
 
-void TTLVEncoderDlg::clickCreate()
+int TTLVEncoderDlg::runCreate()
 {
-    int ret = 0;
+    int ret = -1;
     BIN binData = {0,0};
     int nAlg = -1;
     int nKeyLen = -1;
@@ -700,14 +708,14 @@ void TTLVEncoderDlg::clickCreate()
         {
             berApplet->warningBox( tr( "Enter a UserID" ), this );
             mUserIDText->setFocus();
-            return;
+            return -1;
         }
 
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a password" ), this );
             mPasswdText->setFocus();
-            return;
+            return -1;
         }
 
         JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
@@ -739,11 +747,12 @@ void TTLVEncoderDlg::clickCreate()
 end :
     JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
+    return ret;
 }
 
-void TTLVEncoderDlg::clickDestroy()
+int TTLVEncoderDlg::runDestroy()
 {
-    int ret = 0;
+    int ret = -1;
     BIN binData = {0,0};
 
     QString strUUID = mUUIDText->text();
@@ -758,14 +767,14 @@ void TTLVEncoderDlg::clickDestroy()
         {
             berApplet->warningBox( tr( "Enter a UserID" ), this );
             mUserIDText->setFocus();
-            return;
+            return -1;
         }
 
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a password" ), this );
             mPasswdText->setFocus();
-            return;
+            return -1;
         }
 
         JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
@@ -792,11 +801,12 @@ void TTLVEncoderDlg::clickDestroy()
 end :
     JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
+    return ret;
 }
 
-void TTLVEncoderDlg::clickEncrypt()
+int TTLVEncoderDlg::runEncrypt()
 {
-    int ret = 0;
+    int ret = -1;
     BIN binData = {0,0};
 
     BIN binIV = {0};
@@ -821,14 +831,14 @@ void TTLVEncoderDlg::clickEncrypt()
         {
             berApplet->warningBox( tr( "Enter a UserID" ), this );
             mUserIDText->setFocus();
-            return;
+            return -1;
         }
 
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a password" ), this );
             mPasswdText->setFocus();
-            return;
+            return -1;
         }
 
         JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
@@ -891,11 +901,12 @@ end :
     JS_BIN_reset( &binPlain );
     JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
+    return ret;
 }
 
-void TTLVEncoderDlg::clickDecrypt()
+int TTLVEncoderDlg::runDecrypt()
 {
-    int ret = 0;
+    int ret = -1;
     BIN binData = {0,0};
     BIN binIV = {0};
     BIN binEncrypt = {0};
@@ -919,14 +930,14 @@ void TTLVEncoderDlg::clickDecrypt()
         {
             berApplet->warningBox( tr( "Enter a UserID" ), this );
             mUserIDText->setFocus();
-            return;
+            return -1;
         }
 
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a password" ), this );
             mPasswdText->setFocus();
-            return;
+            return -1;
         }
 
         JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
@@ -987,11 +998,12 @@ end :
 
     JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
+    return ret;
 }
 
-void TTLVEncoderDlg::clickSign()
+int TTLVEncoderDlg::runSign()
 {
-    int ret = 0;
+    int ret = -1;
     BIN binData = {0,0};
     BIN binPlain = {0};
     int nMech = 0;
@@ -1014,14 +1026,14 @@ void TTLVEncoderDlg::clickSign()
         {
             berApplet->warningBox( tr( "Enter a UserID" ), this );
             mUserIDText->setFocus();
-            return;
+            return -1;
         }
 
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a password" ), this );
             mPasswdText->setFocus();
-            return;
+            return -1;
         }
 
         JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
@@ -1067,11 +1079,12 @@ end :
     JS_BIN_reset( &binPlain );
     JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
+    return ret;
 }
 
-void TTLVEncoderDlg::clickVerify()
+int TTLVEncoderDlg::runVerify()
 {
-    int ret = 0;
+    int ret = -1;
     int nAlg = 0;
     int nMech = 0;
 
@@ -1100,14 +1113,14 @@ void TTLVEncoderDlg::clickVerify()
         {
             berApplet->warningBox( tr( "Enter a UserID" ), this );
             mUserIDText->setFocus();
-            return;
+            return -1;
         }
 
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a password" ), this );
             mPasswdText->setFocus();
-            return;
+            return -1;
         }
 
         JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
@@ -1165,11 +1178,12 @@ end :
 
     JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
+    return ret;
 }
 
-void TTLVEncoderDlg::clickRegister()
+int TTLVEncoderDlg::runRegister()
 {
-    int ret = 0;
+    int ret = -1;
     int nAlg = 0;
     int nParam = 0;
     BIN binData = {0,0};
@@ -1193,14 +1207,14 @@ void TTLVEncoderDlg::clickRegister()
         {
             berApplet->warningBox( tr( "Enter a UserID" ), this );
             mUserIDText->setFocus();
-            return;
+            return -1;
         }
 
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a password" ), this );
             mPasswdText->setFocus();
-            return;
+            return -1;
         }
 
         JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
@@ -1287,11 +1301,12 @@ end :
     JS_BIN_reset( &binInput );
     JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
+    return ret;
 }
 
-void TTLVEncoderDlg::clickCreateKeyPair()
+int TTLVEncoderDlg::runCreateKeyPair()
 {
-    int ret = 0;
+    int ret = -1;
     int nAlg = -1;
     int nParam = 2048;
     QString strAlg;
@@ -1308,14 +1323,14 @@ void TTLVEncoderDlg::clickCreateKeyPair()
         {
             berApplet->warningBox( tr( "Enter a UserID" ), this );
             mUserIDText->setFocus();
-            return;
+            return -1;
         }
 
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a password" ), this );
             mPasswdText->setFocus();
-            return;
+            return -1;
         }
 
         JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
@@ -1360,11 +1375,12 @@ void TTLVEncoderDlg::clickCreateKeyPair()
 end :
     JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
+    return ret;
 }
 
-void TTLVEncoderDlg::clickGetAttributeList()
+int TTLVEncoderDlg::runGetAttributeList()
 {
-    int ret = 0;
+    int ret = -1;
     BIN binData = {0,0};
 
     QString strUUID = mUUIDText->text();
@@ -1380,14 +1396,14 @@ void TTLVEncoderDlg::clickGetAttributeList()
         {
             berApplet->warningBox( tr( "Enter a UserID" ), this );
             mUserIDText->setFocus();
-            return;
+            return -1;
         }
 
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a password" ), this );
             mPasswdText->setFocus();
-            return;
+            return -1;
         }
 
         JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
@@ -1414,11 +1430,12 @@ void TTLVEncoderDlg::clickGetAttributeList()
 end :
     JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
+    return ret;
 }
 
-void TTLVEncoderDlg::clickAddAttribute()
+int TTLVEncoderDlg::runAddAttribute()
 {
-    int ret = 0;
+    int ret = -1;
     BIN binData = {0,0};
 
     QString strUUID = mUUIDText->text();
@@ -1436,14 +1453,14 @@ void TTLVEncoderDlg::clickAddAttribute()
         {
             berApplet->warningBox( tr( "Enter a UserID" ), this );
             mUserIDText->setFocus();
-            return;
+            return -1;
         }
 
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a password" ), this );
             mPasswdText->setFocus();
-            return;
+            return -1;
         }
 
         JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
@@ -1484,11 +1501,12 @@ void TTLVEncoderDlg::clickAddAttribute()
 end :
     JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
+    return ret;
 }
 
-void TTLVEncoderDlg::clickGetAttributes()
+int TTLVEncoderDlg::runGetAttributes()
 {
-    int ret = 0;
+    int ret = -1;
     BIN binData = {0,0};
 
     QString strUUID = mUUIDText->text();
@@ -1504,14 +1522,14 @@ void TTLVEncoderDlg::clickGetAttributes()
         {
             berApplet->warningBox( tr( "Enter a UserID" ), this );
             mUserIDText->setFocus();
-            return;
+            return -1;
         }
 
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a password" ), this );
             mPasswdText->setFocus();
-            return;
+            return -1;
         }
 
         JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
@@ -1538,11 +1556,12 @@ void TTLVEncoderDlg::clickGetAttributes()
 end :
     JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
+    return ret;
 }
 
-void TTLVEncoderDlg::clickModifyAttribute()
+int TTLVEncoderDlg::runModifyAttribute()
 {
-    int ret = 0;
+    int ret = -1;
     BIN binData = {0,0};
 
     QString strUUID = mUUIDText->text();
@@ -1560,14 +1579,14 @@ void TTLVEncoderDlg::clickModifyAttribute()
         {
             berApplet->warningBox( tr( "Enter a UserID" ), this );
             mUserIDText->setFocus();
-            return;
+            return -1;
         }
 
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a password" ), this );
             mPasswdText->setFocus();
-            return;
+            return -1;
         }
 
         JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
@@ -1607,11 +1626,12 @@ void TTLVEncoderDlg::clickModifyAttribute()
 end :
     JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
+    return ret;
 }
 
-void TTLVEncoderDlg::clickDeleteAttribute()
+int TTLVEncoderDlg::runDeleteAttribute()
 {
-    int ret = 0;
+    int ret = -1;
     BIN binData = {0,0};
 
     QString strUUID = mUUIDText->text();
@@ -1628,14 +1648,14 @@ void TTLVEncoderDlg::clickDeleteAttribute()
         {
             berApplet->warningBox( tr( "Enter a UserID" ), this );
             mUserIDText->setFocus();
-            return;
+            return -1;
         }
 
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a password" ), this );
             mPasswdText->setFocus();
-            return;
+            return -1;
         }
 
         JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
@@ -1668,11 +1688,12 @@ void TTLVEncoderDlg::clickDeleteAttribute()
 end :
     JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
+    return ret;
 }
 
-void TTLVEncoderDlg::clickLocate()
+int TTLVEncoderDlg::runLocate()
 {
-    int ret = 0;
+    int ret = -1;
     int nAlg = -1;
 
     BIN binData = { 0, 0};
@@ -1689,14 +1710,14 @@ void TTLVEncoderDlg::clickLocate()
         {
             berApplet->warningBox( tr( "Enter a UserID" ), this );
             mUserIDText->setFocus();
-            return;
+            return -1;
         }
 
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a password" ), this );
             mPasswdText->setFocus();
-            return;
+            return -1;
         }
 
         JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
@@ -1729,11 +1750,12 @@ void TTLVEncoderDlg::clickLocate()
 end :
     JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
+    return ret;
 }
 
-void TTLVEncoderDlg::clickRNGRetrieve()
+int TTLVEncoderDlg::runRNGRetrieve()
 {
-    int ret = 0;
+    int ret = -1;
     int nLen = mLenText->text().toInt();
     BIN binData = {0,0};
 
@@ -1748,14 +1770,14 @@ void TTLVEncoderDlg::clickRNGRetrieve()
         {
             berApplet->warningBox( tr( "Enter a UserID" ), this );
             mUserIDText->setFocus();
-            return;
+            return -1;
         }
 
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a password" ), this );
             mPasswdText->setFocus();
-            return;
+            return -1;
         }
 
         JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
@@ -1782,11 +1804,12 @@ void TTLVEncoderDlg::clickRNGRetrieve()
 end :
     JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
+    return ret;
 }
 
-void TTLVEncoderDlg::clickRNGSeed()
+int TTLVEncoderDlg::runRNGSeed()
 {
-    int ret = 0;
+    int ret = -1;
     BIN binSrc = {0};
     BIN binData = {0,0};
 
@@ -1802,14 +1825,14 @@ void TTLVEncoderDlg::clickRNGSeed()
         {
             berApplet->warningBox( tr( "Enter a UserID" ), this );
             mUserIDText->setFocus();
-            return;
+            return -1;
         }
 
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a password" ), this );
             mPasswdText->setFocus();
-            return;
+            return -1;
         }
 
         JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
@@ -1838,11 +1861,12 @@ void TTLVEncoderDlg::clickRNGSeed()
 end :
     JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
+    return ret;
 }
 
-void TTLVEncoderDlg::clickHash()
+int TTLVEncoderDlg::runHash()
 {
-    int ret = 0;
+    int ret = -1;
     BIN binSrc = {0};
     BIN binData = {0,0};
     int nMech = -1;
@@ -1860,14 +1884,14 @@ void TTLVEncoderDlg::clickHash()
         {
             berApplet->warningBox( tr( "Enter a UserID" ), this );
             mUserIDText->setFocus();
-            return;
+            return -1;
         }
 
         if( strPasswd.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a password" ), this );
             mPasswdText->setFocus();
-            return;
+            return -1;
         }
 
         JS_KMS_makeAuthentication( strUserID.toStdString().c_str(), strPasswd.toStdString().c_str(), &sAuth );
@@ -1897,6 +1921,7 @@ void TTLVEncoderDlg::clickHash()
 end :
     JS_KMS_resetAuthentication( &sAuth );
     JS_BIN_reset( &binData );
+    return ret;
 }
 
 void TTLVEncoderDlg::changeIV()

@@ -723,7 +723,7 @@
           <enum>QTabWidget::North</enum>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <property name="elideMode">
           <enum>Qt::ElideNone</enum>
@@ -903,10 +903,12 @@
   <tabstop>mURLTable</tabstop>
   <tabstop>mClearURLBtn</tabstop>
   <tabstop>mRefreshBtn</tabstop>
+  <tabstop>mURLTab</tabstop>
   <tabstop>mURLTree</tabstop>
   <tabstop>mLogText</tabstop>
   <tabstop>mClearResultBtn</tabstop>
   <tabstop>mClearLogBtn</tabstop>
+  <tabstop>mShowInfoBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>588</width>
-    <height>894</height>
+    <height>687</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -831,10 +831,32 @@
   <tabstop>mLenText</tabstop>
   <tabstop>mAttributeCombo</tabstop>
   <tabstop>mObjectTypeCombo</tabstop>
+  <tabstop>mAlgCombo</tabstop>
+  <tabstop>mOptionCombo</tabstop>
+  <tabstop>mHashCombo</tabstop>
+  <tabstop>mModeCombo</tabstop>
+  <tabstop>mIVTypeCombo</tabstop>
+  <tabstop>mIVText</tabstop>
+  <tabstop>mIVLenText</tabstop>
+  <tabstop>mInputTypeCombo</tabstop>
+  <tabstop>mInputClearBtn</tabstop>
+  <tabstop>mFindInputBtn</tabstop>
+  <tabstop>mInputLenText</tabstop>
+  <tabstop>mInputText</tabstop>
+  <tabstop>mSignClearBtn</tabstop>
+  <tabstop>mSignLenText</tabstop>
+  <tabstop>mSignText</tabstop>
+  <tabstop>mTypeCombo</tabstop>
+  <tabstop>mCmdCombo</tabstop>
+  <tabstop>mEncodeBtn</tabstop>
   <tabstop>mOutputClearBtn</tabstop>
+  <tabstop>mOutputDecodeBtn</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
+  <tabstop>mClearAllBtn</tabstop>
+  <tabstop>mOKBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
+  <tabstop>mAuthGroup</tabstop>
  </tabstops>
  <resources/>
  <connections/>

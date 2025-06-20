@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>570</width>
-    <height>652</height>
+    <height>621</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1000,11 +1000,38 @@
     <widget class="QPlainTextEdit" name="mOutputText"/>
    </item>
    <item>
-    <widget class="QLabel" name="mStatusLabel">
-     <property name="text">
-      <string>Status</string>
+    <layout class="QGridLayout" name="gridLayout_15">
+     <property name="topMargin">
+      <number>0</number>
      </property>
-    </widget>
+     <item row="0" column="0">
+      <widget class="QLabel" name="mStatusLabel">
+       <property name="text">
+        <string>Status</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mOutputClearBtn">
+       <property name="text">
+        <string>Clear</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="Line" name="line_2">
@@ -1018,22 +1045,15 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="5">
-      <widget class="QPushButton" name="mRunBtn">
+     <item row="0" column="10">
+      <widget class="QPushButton" name="mCloseBtn">
        <property name="text">
-        <string>Sign</string>
+        <string>Close</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="mOutputClearBtn">
-       <property name="text">
-        <string>Clear</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <spacer name="horizontalSpacer_4">
+     <item row="0" column="7">
+      <spacer name="horizontalSpacer_7">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -1045,7 +1065,21 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="4">
+     <item row="0" column="8">
+      <widget class="QPushButton" name="mRunBtn">
+       <property name="text">
+        <string>Sign</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="6">
+      <widget class="QPushButton" name="mClearDataAllBtn">
+       <property name="text">
+        <string>Clear Data All</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="9">
       <widget class="QPushButton" name="mDigestBtn">
        <property name="minimumSize">
         <size>
@@ -1061,47 +1095,6 @@
        </property>
        <property name="text">
         <string>Sign Digest</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="Line" name="line_4">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QGridLayout" name="gridLayout">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="mClearDataAllBtn">
-       <property name="text">
-        <string>Clear Data All</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <spacer name="horizontalSpacer_7">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mCloseBtn">
-       <property name="text">
-        <string>Close</string>
        </property>
       </widget>
      </item>
@@ -1165,9 +1158,9 @@
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
   <tabstop>mOutputClearBtn</tabstop>
-  <tabstop>mDigestBtn</tabstop>
-  <tabstop>mRunBtn</tabstop>
   <tabstop>mClearDataAllBtn</tabstop>
+  <tabstop>mRunBtn</tabstop>
+  <tabstop>mDigestBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>

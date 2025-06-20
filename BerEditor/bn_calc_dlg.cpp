@@ -119,7 +119,12 @@ BNCalcDlg::BNCalcDlg(QWidget *parent) :
     connect( mBSubOneBtn, SIGNAL(clicked()), this, SLOT(subOneB()));
     connect( mModSubOneBtn, SIGNAL(clicked()), this, SLOT(subOneMod()));
 
+    connect( mResTimeClearBtn, SIGNAL(clicked()), this, SLOT(clearTime()));
+    connect( mSumTimeClearBtn, SIGNAL(clicked()), this, SLOT(clearSum()));
+    connect( mAddSumBtn, SIGNAL(clicked()), this, SLOT(clickAddSum()));
+
     connect( mTestBtn, SIGNAL(clicked()), this, SLOT(clickTest()));
+
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -146,6 +151,9 @@ BNCalcDlg::BNCalcDlg(QWidget *parent) :
     mASubOneBtn->setFixedWidth(38);
     mBSubOneBtn->setFixedWidth(38);
     mModSubOneBtn->setFixedWidth(38);
+
+    mResTimeClearBtn->setFixedWidth(34);
+    mSumTimeClearBtn->setFixedWidth(34);
 
     resize(minimumSizeHint().width(), minimumSizeHint().height() - 70);
 #else
@@ -518,17 +526,17 @@ void BNCalcDlg::clickAGenPrime()
 
     timer.start();
     ret = JS_BN_genPrime( nBits, &binPrime );
-    mAText->setPlainText( getOutput( &binPrime ));
     us = timer.nsecsElapsed() / 1000;
 
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "GenPrime fail: %1").arg( JS_BN_lastError())), this);
-        mResTimeText->clear();
+        clearTime();
         goto end;
     }
 
-    mResTimeText->setText( QString("%1").arg( getMS( us )));
+    mAText->setPlainText( getOutput( &binPrime ));
+    setResTime( "A GenPrime", us );
     berApplet->log( QString( "Gen Prime Timer : %1 ms" ).arg( getMS( us ) ));
 
 end:
@@ -546,17 +554,17 @@ void BNCalcDlg::clickBGenPrime()
 
     timer.start();
     ret = JS_BN_genPrime( nBits, &binPrime );
-    mBText->setPlainText( getOutput( &binPrime ));
     us = timer.nsecsElapsed() / 1000;
 
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "GenPrime: %1").arg( JS_BN_lastError())), this);
-        mResTimeText->clear();
+        clearTime();
         goto end;
     }
 
-    mResTimeText->setText( QString("%1").arg( getMS( us )));
+    mBText->setPlainText( getOutput( &binPrime ));
+    setResTime( "B GenPrime", us );;
     berApplet->log( QString( "Gen Prime Timer : %1 ms" ).arg( getMS( us ) ));
 
 end:
@@ -574,17 +582,17 @@ void BNCalcDlg::clickModGenPrime()
 
     timer.start();
     ret = JS_BN_genPrime( nBits, &binPrime );
-    mModText->setPlainText( getOutput( &binPrime ));
     us = timer.nsecsElapsed() / 1000;
 
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "GenPrime: %1").arg( JS_BN_lastError())), this);
-        mResTimeText->clear();
+        clearTime();
         goto end;
     }
 
-    mResTimeText->setText( QString("%1").arg( getMS( us )));
+    mModText->setPlainText( getOutput( &binPrime ));
+    setResTime( "M GenPrime", us );
     berApplet->log( QString( "Gen Prime Timer : %1 ms" ).arg( getMS( us ) ));
 
 end:
@@ -595,6 +603,10 @@ void BNCalcDlg::clickAIsPrime()
 {
     int ret = 0;
     BIN binVal = {0,0};
+
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     QString strVal = mAText->toPlainText();
 
     if( strVal.length() < 1 )
@@ -611,12 +623,16 @@ void BNCalcDlg::clickAIsPrime()
         return;
     }
 
+    timer.start();
     ret = JS_BN_isPrime( &binVal );
+    us = timer.nsecsElapsed() / 1000;
+    setResTime( "A IsPrime", us );
 
     if( ret == 1 )
         berApplet->messageLog( tr( "The A value is prime"), this );
     else
         berApplet->warnLog( tr( "The A value is not prime" ), this );
+
 
     JS_BIN_reset( &binVal );
 }
@@ -625,6 +641,10 @@ void BNCalcDlg::clickBIsPrime()
 {
     int ret = 0;
     BIN binVal = {0,0};
+
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     QString strVal = mBText->toPlainText();
 
     if( strVal.length() < 1 )
@@ -641,7 +661,10 @@ void BNCalcDlg::clickBIsPrime()
         return;
     }
 
+    timer.start();
     ret = JS_BN_isPrime( &binVal );
+    us = timer.nsecsElapsed() / 1000;
+    setResTime( "B IsPrime", us );
 
     if( ret == 1 )
         berApplet->messageLog( tr( "The B value is prime"), this );
@@ -655,6 +678,10 @@ void BNCalcDlg::clickModIsPrime()
 {
     int ret = 0;
     BIN binVal = {0,0};
+
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     QString strVal = mModText->toPlainText();
 
     if( strVal.length() < 1 )
@@ -671,7 +698,10 @@ void BNCalcDlg::clickModIsPrime()
         return;
     }
 
+    timer.start();
     ret = JS_BN_isPrime( &binVal );
+    us = timer.nsecsElapsed() / 1000;
+    setResTime( "M IsPrime", us );
 
     if( ret == 1 )
         berApplet->messageLog( tr( "The M value is prime"), this );
@@ -716,12 +746,12 @@ void BNCalcDlg::clickAdd()
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
-        mResTimeText->clear();
+        clearTime();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
-    mResTimeText->setText( QString("%1").arg( getMS( us )));
+    setResTime( mADDBtn->text(), us );
 
     berApplet->logLine();
     berApplet->log( QString( mADDBtn->text() ));
@@ -792,7 +822,7 @@ void BNCalcDlg::clickSub()
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
-        mResTimeText->clear();
+        clearTime();
         goto end;
     }
 
@@ -800,7 +830,7 @@ void BNCalcDlg::clickSub()
     strOut += QString( "%1" ).arg( getOutput(&binR));
 
     mResText->setPlainText( strOut );
-    mResTimeText->setText( QString("%1").arg( getMS( us )));
+    setResTime( mSUBBtn->text(), us );
 
     berApplet->logLine();
     berApplet->log( QString( mSUBBtn->text() ));
@@ -859,12 +889,12 @@ void BNCalcDlg::clickMultiple()
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
-        mResTimeText->clear();
+        clearTime();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
-    mResTimeText->setText( QString("%1").arg( getMS( us )));
+    setResTime( mMULBtn->text(), us );
 
     berApplet->logLine();
     berApplet->log( QString( mMULBtn->text() ));
@@ -921,12 +951,12 @@ void BNCalcDlg::clickDiv()
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
-        mResTimeText->clear();
+        clearTime();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
-    mResTimeText->setText( QString("%1").arg( getMS( us )));
+    setResTime( mDIVBtn->text(), us );
 
     berApplet->logLine();
     berApplet->log( QString( mDIVBtn->text() ));
@@ -996,12 +1026,12 @@ void BNCalcDlg::clickExp()
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
-        mResTimeText->clear();
+        clearTime();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
-    mResTimeText->setText( QString("%1").arg( getMS( us )));
+    setResTime( mEXPBtn->text(), us );
 
     berApplet->logLine();
     berApplet->log( QString( mEXPBtn->text() ));
@@ -1059,12 +1089,12 @@ void BNCalcDlg::clickSqr()
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
-        mResTimeText->clear();
+        clearTime();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
-    mResTimeText->setText( QString("%1").arg( getMS( us )));
+    setResTime( mSQRBtn->text(), us );
 
     berApplet->logLine();
     berApplet->log( QString( mSQRBtn->text() ));
@@ -1117,12 +1147,12 @@ void BNCalcDlg::clickMod()
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
-        mResTimeText->clear();
+        clearTime();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
-    mResTimeText->setText( QString("%1").arg( getMS( us )));
+    setResTime( mMODBtn->text(), us );
 
     berApplet->logLine();
     berApplet->log( QString( mMODBtn->text() ));
@@ -1166,12 +1196,12 @@ void BNCalcDlg::clickGcd()
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
-        mResTimeText->clear();
+        clearTime();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
-    mResTimeText->setText( QString("%1").arg( getMS( us )));
+    setResTime( mGCDBtn->text(), us );
 
     berApplet->logLine();
     berApplet->log( QString( mGCDBtn->text() ));
@@ -1208,12 +1238,12 @@ void BNCalcDlg::clickOr()
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
-        mResTimeText->clear();
+        clearTime();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
-    mResTimeText->setText( QString("%1").arg( getMS( us )));
+    setResTime( mORBtn->text(), us );
 
     berApplet->logLine();
     berApplet->log( QString( mORBtn->text() ));
@@ -1250,12 +1280,12 @@ void BNCalcDlg::clickAnd()
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
-        mResTimeText->clear();
+        clearTime();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
-    mResTimeText->setText( QString("%1").arg( getMS( us )));
+    setResTime( mANDBtn->text(), us );
 
     berApplet->logLine();
     berApplet->log( QString( mANDBtn->text() ));
@@ -1292,12 +1322,12 @@ void BNCalcDlg::clickXor()
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
-        mResTimeText->clear();
+        clearTime();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
-    mResTimeText->setText( QString("%1").arg( getMS( us )));
+    setResTime( mXORBtn->text(), us );
 
     berApplet->logLine();
     berApplet->log( QString( mXORBtn->text() ));
@@ -1333,12 +1363,12 @@ void BNCalcDlg::clickComp()
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
-        mResTimeText->clear();
+        clearTime();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
-    mResTimeText->setText( QString("%1").arg( getMS( us )));
+    setResTime( mCOMPBtn->text(), us );
 
     berApplet->logLine();
     berApplet->log( QString( mCOMPBtn->text() ));
@@ -1378,12 +1408,12 @@ void BNCalcDlg::clickShr()
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
-        mResTimeText->clear();
+        clearTime();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
-    mResTimeText->setText( QString("%1").arg( getMS( us )));
+    setResTime( mSHRBtn->text(), us );
 
     berApplet->logLine();
     berApplet->log( QString( mSHRBtn->text() ));
@@ -1433,12 +1463,12 @@ void BNCalcDlg::clickShl()
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
-        mResTimeText->clear();
+        clearTime();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
-    mResTimeText->setText( QString("%1").arg( getMS( us )));
+    setResTime( mSHLBtn->text(), us );
 
     berApplet->logLine();
     berApplet->log( QString( mSHLBtn->text() ));
@@ -1491,12 +1521,12 @@ void BNCalcDlg::clickInv()
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
-        mResTimeText->clear();
+        clearTime();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
-    mResTimeText->setText( QString("%1").arg( getMS( us )));
+    setResTime( mINVBtn->text(), us );
 
     berApplet->logLine();
     berApplet->log( QString( mINVBtn->text() ));
@@ -1549,12 +1579,12 @@ void BNCalcDlg::clickSqrt()
     if( ret != 0 )
     {
         berApplet->warnLog( QString( tr( "Calc fail: %1").arg( JS_BN_lastError())), this);
-        mResTimeText->clear();
+        clearTime();
         goto end;
     }
 
     mResText->setPlainText( getOutput( &binR ) );
-    mResTimeText->setText( QString("%1").arg( getMS( us )));
+    setResTime( mSQRTBtn->text(), us );
 
     berApplet->logLine();
     berApplet->log( QString( mSQRTBtn->text() ));
@@ -1606,10 +1636,15 @@ void BNCalcDlg::addOneA()
     BIN binA = {0,0};
     BIN binR = {0,0};
 
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     if( getInput( &binA, NULL, NULL ) != 0 )
         goto end;
 
+    timer.start();
     ret = JS_BN_add1( &binR, &binA );
+    us = timer.nsecsElapsed() / 1000;
 
     if( ret != 0 )
     {
@@ -1618,6 +1653,7 @@ void BNCalcDlg::addOneA()
     }
 
     mAText->setPlainText( getOutput( &binR ) );
+    setResTime( "A+1", us );
 
     berApplet->logLine();
     berApplet->log( QString( "A+1 : %1").arg( getHexString(&binR)));
@@ -1634,10 +1670,15 @@ void BNCalcDlg::addOneB()
     BIN binB = {0,0};
     BIN binR = {0,0};
 
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     if( getInput( NULL, &binB, NULL ) != 0 )
         goto end;
 
+    timer.start();
     ret = JS_BN_add1( &binR, &binB );
+    us = timer.nsecsElapsed() / 1000;
 
     if( ret != 0 )
     {
@@ -1646,6 +1687,7 @@ void BNCalcDlg::addOneB()
     }
 
     mBText->setPlainText( getOutput( &binR ) );
+    setResTime( "B+1", us );
 
     berApplet->logLine();
     berApplet->log( QString( "B+1 : %1").arg( getHexString(&binR)));
@@ -1662,10 +1704,15 @@ void BNCalcDlg::addOneMod()
     BIN binMod = {0,0};
     BIN binR = {0,0};
 
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     if( getInput( NULL, NULL, &binMod ) != 0 )
         goto end;
 
+    timer.start();
     ret = JS_BN_add1( &binR, &binMod );
+    us = timer.nsecsElapsed() / 1000;
 
     if( ret != 0 )
     {
@@ -1674,6 +1721,7 @@ void BNCalcDlg::addOneMod()
     }
 
     mModText->setPlainText( getOutput( &binR ) );
+    setResTime( "M+1", us );
 
     berApplet->logLine();
     berApplet->log( QString( "M+1 : %1").arg( getHexString(&binR)));
@@ -1690,6 +1738,9 @@ void BNCalcDlg::subOneA()
     BIN binA = {0,0};
     BIN binR = {0,0};
 
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     if( getInput( &binA, NULL, NULL ) != 0 )
         goto end;
 
@@ -1699,7 +1750,9 @@ void BNCalcDlg::subOneA()
         goto end;
     }
 
+    timer.start();
     ret = JS_BN_sub1( &binR, &binA );
+    us = timer.nsecsElapsed() / 1000;
 
     if( ret != 0 )
     {
@@ -1708,6 +1761,7 @@ void BNCalcDlg::subOneA()
     }
 
     mAText->setPlainText( getOutput( &binR ) );
+    setResTime( "A-1", us );
 
     berApplet->logLine();
     berApplet->log( QString( "A-1 : %1").arg( getHexString(&binR)));
@@ -1724,6 +1778,9 @@ void BNCalcDlg::subOneB()
     BIN binB = {0,0};
     BIN binR = {0,0};
 
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     if( getInput( NULL, &binB, NULL ) != 0 )
         goto end;
 
@@ -1733,7 +1790,9 @@ void BNCalcDlg::subOneB()
         goto end;
     }
 
+    timer.start();
     ret = JS_BN_sub1( &binR, &binB );
+    us = timer.nsecsElapsed() / 1000;
 
     if( ret != 0 )
     {
@@ -1742,6 +1801,7 @@ void BNCalcDlg::subOneB()
     }
 
     mBText->setPlainText( getOutput( &binR ) );
+    setResTime( "B-1", us );
 
     berApplet->logLine();
     berApplet->log( QString( "B-1 : %1").arg( getHexString(&binR)));
@@ -1758,6 +1818,9 @@ void BNCalcDlg::subOneMod()
     BIN binMod = {0,0};
     BIN binR = {0,0};
 
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     if( getInput( NULL, NULL, &binMod ) != 0 )
         goto end;
 
@@ -1767,7 +1830,9 @@ void BNCalcDlg::subOneMod()
         goto end;
     }
 
+    timer.start();
     ret = JS_BN_sub1( &binR, &binMod );
+    us = timer.nsecsElapsed() / 1000;
 
     if( ret != 0 )
     {
@@ -1776,6 +1841,7 @@ void BNCalcDlg::subOneMod()
     }
 
     mModText->setPlainText( getOutput( &binR ) );
+    setResTime( "M-1", us );
 
     berApplet->logLine();
     berApplet->log( QString( "M-1 : %1").arg( getHexString(&binR)));
@@ -1928,4 +1994,33 @@ end :
     JS_BIN_reset( &binA );
     JS_BIN_reset( &binB );
     JS_BIN_reset( &binMod );
+}
+
+void BNCalcDlg::clearTime()
+{
+    mResTimeText->clear();
+    mCalcLabel->setText( tr("Calculation" ));
+
+    time_us_ = 0;
+}
+
+void BNCalcDlg::clearSum()
+{
+    mSumTimeText->clear();
+    sum_us_ = 0;
+}
+
+void BNCalcDlg::clickAddSum()
+{
+    sum_us_ += time_us_;
+    mSumTimeText->setText( QString( "%1" ).arg( getMS( sum_us_ )));
+}
+
+void BNCalcDlg::setResTime( const QString strCmd, qint64 time_us )
+{
+    time_us_ = time_us;
+    mCalcLabel->setText( strCmd );
+    mResTimeText->setText( QString( "%1" ).arg( getMS(time_us)));
+
+    if( mAutoSumCheck->isChecked() ) clickAddSum();
 }

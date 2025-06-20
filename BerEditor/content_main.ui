@@ -250,6 +250,12 @@
    </property>
   </action>
  </widget>
+ <tabstops>
+  <tabstop>mURIText</tabstop>
+  <tabstop>mOpenURIBtn</tabstop>
+  <tabstop>mMenuTree</tabstop>
+  <tabstop>mContentBroswer</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

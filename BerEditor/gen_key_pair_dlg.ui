@@ -235,10 +235,12 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>mNameText</tabstop>
   <tabstop>mRSARadio</tabstop>
   <tabstop>mECDSARadio</tabstop>
   <tabstop>mDSARadio</tabstop>
   <tabstop>mEdDSARadio</tabstop>
+  <tabstop>mSM2Radio</tabstop>
   <tabstop>mExponentText</tabstop>
   <tabstop>mOptionCombo</tabstop>
   <tabstop>mOKBtn</tabstop>

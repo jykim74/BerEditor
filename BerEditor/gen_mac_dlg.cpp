@@ -760,7 +760,7 @@ void GenMacDlg::clickClearDataAll()
     mInputText->clear();
     mKeyText->clear();
     mOutputText->clear();
-    mStatusLabel->clear();
+    mStatusLabel->setText( tr("Status" ));
 
     mSrcFileText->clear();
     mSrcFileInfoText->clear();

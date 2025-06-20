@@ -503,7 +503,19 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>mBitBtn</tabstop>
+  <tabstop>mDecimalBtn</tabstop>
+  <tabstop>mHexBtn</tabstop>
+  <tabstop>mInputClearBtn</tabstop>
+  <tabstop>mInputText</tabstop>
+  <tabstop>mBinChangeBtn</tabstop>
+  <tabstop>mBinOutputLenText</tabstop>
+  <tabstop>mBinOutputText</tabstop>
+  <tabstop>mDecChangeBtn</tabstop>
+  <tabstop>mDecOutputLenText</tabstop>
+  <tabstop>mDecOutputText</tabstop>
   <tabstop>mHexChangeBtn</tabstop>
+  <tabstop>mHexOutputLenText</tabstop>
   <tabstop>mHexOutputText</tabstop>
   <tabstop>mOutputClearBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>

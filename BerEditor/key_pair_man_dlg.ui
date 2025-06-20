@@ -125,7 +125,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tabList">
       <attribute name="title">
@@ -1015,14 +1015,19 @@
   <tabstop>tabWidget</tabstop>
   <tabstop>mKeyPairTable</tabstop>
   <tabstop>mLGenKeyPairBtn</tabstop>
+  <tabstop>mLDecodePubKeyBtn</tabstop>
   <tabstop>mLMakeCSRBtn</tabstop>
   <tabstop>mLEncryptBtn</tabstop>
   <tabstop>mLViewPubKeyBtn</tabstop>
   <tabstop>mLDecodePriKeyBtn</tabstop>
+  <tabstop>mLDeleteBtn</tabstop>
+  <tabstop>mLViewPriKeyBtn</tabstop>
   <tabstop>mLRunPubEncBtn</tabstop>
   <tabstop>mLRunPubDecBtn</tabstop>
   <tabstop>mImportBtn</tabstop>
   <tabstop>mExportBtn</tabstop>
+  <tabstop>mLRunSignBtn</tabstop>
+  <tabstop>mLRunVerifyBtn</tabstop>
   <tabstop>mSavePEMCheck</tabstop>
   <tabstop>mPriPathText</tabstop>
   <tabstop>mFindPriKeyBtn</tabstop>

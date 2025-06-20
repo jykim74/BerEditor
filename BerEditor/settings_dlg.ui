@@ -23,7 +23,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -491,6 +491,9 @@
   <tabstop>mCertPathText</tabstop>
   <tabstop>mFindCertPathBtn</tabstop>
   <tabstop>mHexAreaWidthCombo</tabstop>
+  <tabstop>mFileReadSizeText</tabstop>
+  <tabstop>mSupportKeyPairChangeCheck</tabstop>
+  <tabstop>mRestoreDefaultsBtn</tabstop>
   <tabstop>mOkBtn</tabstop>
   <tabstop>mCancelBtn</tabstop>
  </tabstops>
