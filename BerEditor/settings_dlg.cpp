@@ -233,8 +233,9 @@ void SettingsDlg::showEvent(QShowEvent *event)
 void SettingsDlg::initFontFamily()
 {
     SettingsMgr *mgr = berApplet->settingsMgr();
-
+/*
     QFontDatabase fontDB;
     QStringList fontList = fontDB.families();
     mFontFamilyCombo->addItems( fontList );
+*/
 }
