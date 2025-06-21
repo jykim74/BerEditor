@@ -42,10 +42,12 @@ int main(int argc, char *argv[])
     berApplet->start();
 
     static QFont font;
+
+
+
     QString strFont = berApplet->settingsMgr()->getFontFamily();
     font.setFamily( strFont );
     app.setFont(font);
-
 
     MainWindow *mw = berApplet->mainWindow();
     if( !parser.positionalArguments().isEmpty() )

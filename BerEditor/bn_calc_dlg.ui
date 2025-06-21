@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>651</width>
-    <height>694</height>
+    <width>704</width>
+    <height>876</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -158,7 +158,7 @@
         <item row="0" column="8">
          <widget class="QPushButton" name="mAIsPrimeBtn">
           <property name="text">
-           <string>Is P</string>
+           <string>IsPrime</string>
           </property>
          </widget>
         </item>
@@ -249,7 +249,7 @@
         <item row="0" column="6">
          <widget class="QPushButton" name="mAGenPrimeBtn">
           <property name="text">
-           <string>Gen P</string>
+           <string>GenPrime</string>
           </property>
          </widget>
         </item>
@@ -468,7 +468,7 @@
         <item row="0" column="8">
          <widget class="QPushButton" name="mBIsPrimeBtn">
           <property name="text">
-           <string>Is P</string>
+           <string>IsPrime</string>
           </property>
          </widget>
         </item>
@@ -513,7 +513,7 @@
         <item row="0" column="6">
          <widget class="QPushButton" name="mBGenPrimeBtn">
           <property name="text">
-           <string>Gen P</string>
+           <string>GenPrime</string>
           </property>
          </widget>
         </item>
@@ -647,7 +647,7 @@
         <item row="0" column="8">
          <widget class="QPushButton" name="mModChecPrimeBtn">
           <property name="text">
-           <string>Is P</string>
+           <string>IsPrime</string>
           </property>
          </widget>
         </item>
@@ -755,7 +755,7 @@
         <item row="0" column="6">
          <widget class="QPushButton" name="mModGenPrimeBtn">
           <property name="text">
-           <string>Gen P</string>
+           <string>GenPrime</string>
           </property>
          </widget>
         </item>
