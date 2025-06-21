@@ -109,7 +109,16 @@ void SettingsDlg::updateSettings()
     mgr->setUseLogTab( mUseLogTabCheck->checkState() == Qt::Checked );
     berApplet->mainWindow()->useLog( mUseLogTabCheck->checkState() == Qt::Checked );
 
-    mgr->setFontFamily( mFontFamilyCombo->currentText());
+    QString strFont = mFontFamilyCombo->currentText();
+    if( strFont == "Lantinghei TC" )
+    {
+        berApplet->warningBox( tr( "This font(%1) is not available" ).arg(strFont), this );
+    }
+    else
+    {
+        mgr->setFontFamily( mFontFamilyCombo->currentText());
+    }
+
     mgr->setHexAreaWidth( mHexAreaWidthCombo->currentText().toInt());
 }
 

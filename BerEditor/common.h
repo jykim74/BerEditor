@@ -157,7 +157,7 @@ static const int kServiceDefault = ACT_SERVICE_KEY_PAIR_MAN | ACT_SERVICE_CERT_M
 
 static const int kProtoDefault = 0;
 static const int kKMIPDefault = 0;
-static const int kHelpDefault = ACT_HELP_CLEAR_LOG | ACT_HELP_HALT_LOG | ACT_HELP_ABOUT;
+static const int kHelpDefault = ACT_HELP_ABOUT;
 
 
 const QStringList kECCParamList = {

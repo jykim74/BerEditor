@@ -1629,6 +1629,8 @@ void BNCalcDlg::clearAll()
     clearB();
     clearMod();
     clearRes();
+    clearTime();
+    clearSum();
 }
 
 void BNCalcDlg::addOneA()
