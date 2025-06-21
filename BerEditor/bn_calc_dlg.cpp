@@ -152,6 +152,7 @@ BNCalcDlg::BNCalcDlg(QWidget *parent) :
     mBSubOneBtn->setFixedWidth(38);
     mModSubOneBtn->setFixedWidth(38);
 
+    mAddSumBtn->setFixedWidth(60);
     mResTimeClearBtn->setFixedWidth(34);
     mSumTimeClearBtn->setFixedWidth(34);
 
