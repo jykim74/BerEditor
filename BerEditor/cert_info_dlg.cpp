@@ -19,6 +19,8 @@
 #include "settings_mgr.h"
 #include "cert_man_dlg.h"
 #include "common.h"
+#include "ocsp_client_dlg.h"
+#include "get_uri_dlg.h"
 
 enum {
     FIELD_ALL = 0,
@@ -92,6 +94,10 @@ CertInfoDlg::CertInfoDlg(QWidget *parent) :
     connect( mOCSPCheckBtn, SIGNAL(clicked()), this, SLOT(clickOCSPCheck()));
     connect( mCRLCheckBtn, SIGNAL(clicked()), this, SLOT(clickCRLCheck()));
 
+    connect( mOCSPClientBtn, SIGNAL(clicked()), this, SLOT(clickOCSPClient()));
+    connect( mGetCA_BERBtn, SIGNAL(clicked()), this, SLOT(clickGetCA_BER()));
+    connect( mGetCRL_BERBtn, SIGNAL(clicked()), this, SLOT(clickGetCRL_BER()));
+
     connect( mCertTree, SIGNAL(itemClicked(QTreeWidgetItem*,int)), this, SLOT(clickTreeItem(QTreeWidgetItem*,int)));
 
     initUI();
@@ -113,6 +119,9 @@ CertInfoDlg::CertInfoDlg(QWidget *parent) :
     mInfoTab->layout()->setMargin(5);
     mPathTab->layout()->setSpacing(5);
     mPathTab->layout()->setMargin(5);
+
+    mManGroup->layout()->setSpacing(5);
+    mManGroup->layout()->setMargin(5);
 #endif
 
 
@@ -171,27 +180,33 @@ void CertInfoDlg::showEvent(QShowEvent *event)
         mPathValidBtn->setEnabled( false );
         mMakeTreeBtn->setEnabled( false );
         mVerifyCertBtn->setEnabled( false );
+        mGetCA_BERBtn->setEnabled( false );
 
         mGetCABtn->setToolTip( tr( "There is no CA url" ));
         mOCSPCheckBtn->setToolTip( tr( "There is no CA url" ));
         mPathValidBtn->setToolTip( tr( "There is no CA url" ));
         mMakeTreeBtn->setToolTip( tr( "There is no CA url" ));
         mVerifyCertBtn->setToolTip( tr( "There is no CA url" ));
+        mGetCA_BERBtn->setToolTip( tr( "There is no CA url" ));
     }
 
     if( strCRL.length() < 4 )
     {
         mGetCRLBtn->setEnabled( false );
         mCRLCheckBtn->setEnabled( false );
+        mGetCRL_BERBtn->setEnabled( false );
 
         mGetCRLBtn->setToolTip( tr( "There is no CRL url" ) );
         mCRLCheckBtn->setToolTip( tr( "There is no CRL url" ) );
+        mGetCRL_BERBtn->setToolTip( tr( "There is no CRL url" ));
     }
 
     if( strOCSP.length() < 4 )
     {
         mOCSPCheckBtn->setEnabled( false );
         mOCSPCheckBtn->setToolTip( tr( "There is no OCSP url" ) );
+        mOCSPClientBtn->setEnabled( false );
+        mOCSPClientBtn->setToolTip( tr( "There is no OCSP url" ) );
     }
 
     if( berApplet->isLicense() == true )
@@ -848,6 +863,41 @@ void CertInfoDlg::clickTreeItem(QTreeWidgetItem* item, int index)
     QString strText = QString( "DN: %2\n").arg( item->text(0));
 
     mCertLogText->setPlainText( strText );
+}
+
+void CertInfoDlg::clickOCSPClient()
+{
+    QString strAIA = getValueFromExtList( kExtNameAIA );
+
+    QString strOCSP = getOCSP_URIFromExt( strAIA );
+    QString strCA = getCA_URIFromExt( strAIA );
+
+    OCSPClientDlg ocspClient;
+    ocspClient.setURI( strOCSP );
+    ocspClient.setCA( strCA );
+    ocspClient.setCert( cert_info_.pSubjectName, &cert_bin_ );
+    ocspClient.exec();
+}
+
+void CertInfoDlg::clickGetCA_BER()
+{
+    QString strAIA = getValueFromExtList( kExtNameAIA );
+    QString strCA = getCA_URIFromExt( strAIA );
+
+
+    GetURIDlg getURI;
+    getURI.setCA( strCA );
+    getURI.exec();
+}
+
+void CertInfoDlg::clickGetCRL_BER()
+{
+    QString strCRLDP = getValueFromExtList( kExtNameCRLDP );
+    QString strCRL = getCRL_URIFromExt( strCRLDP );
+
+    GetURIDlg getURI;
+    getURI.setCRL( strCRL );
+    getURI.exec();
 }
 
 const QString CertInfoDlg::getValueFromExtList( const QString strExtName )

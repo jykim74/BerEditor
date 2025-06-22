@@ -33,6 +33,7 @@ GetURIDlg::GetURIDlg(QWidget *parent) :
     connect( mGetBtn, SIGNAL(clicked()), this, SLOT(runGet()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mClearUsedURIBtn, SIGNAL(clicked()), this, SLOT(clickClearUsedURI()));
+    connect( mURICombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeURL()));
 
     initUI();
     mGetBtn->setDefault(true);
@@ -46,6 +47,20 @@ GetURIDlg::GetURIDlg(QWidget *parent) :
 GetURIDlg::~GetURIDlg()
 {
     JS_BIN_reset( &data_ );
+}
+
+void GetURIDlg::setCA( const QString strURL )
+{
+    mURICombo->setCurrentText( strURL );
+    mURICombo->setToolTip( strURL );
+    mTypeCombo->setCurrentText( "caCertificate" );
+}
+
+void GetURIDlg::setCRL( const QString strURL )
+{
+    mURICombo->setCurrentText(strURL);
+    mURICombo->setToolTip( strURL );
+    mTypeCombo->setCurrentText( "certificateRevocationList" );
 }
 
 QStringList GetURIDlg::getUsedURI()
@@ -253,6 +268,12 @@ void GetURIDlg::clickClearUsedURI()
     mURICombo->clear();
 
     berApplet->log( "clear used URLs" );
+}
+
+void GetURIDlg::changeURL()
+{
+    QString strURL = mURICombo->currentText();
+    mURICombo->setToolTip( strURL );
 }
 
 const QString GetURIDlg::getValidURL()

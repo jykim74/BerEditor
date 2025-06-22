@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>724</width>
-    <height>609</height>
+    <height>701</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -170,6 +170,13 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mCompareBtn">
+       <property name="text">
+        <string>Compare</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="2">
       <spacer name="horizontalSpacer_4">
        <property name="orientation">
@@ -206,13 +213,6 @@
        </property>
        <property name="flat">
         <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mCompareBtn">
-       <property name="text">
-        <string>Compare</string>
        </property>
       </widget>
      </item>

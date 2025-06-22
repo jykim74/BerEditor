@@ -23,10 +23,14 @@ public:
     ~GetURIDlg();
     BIN& getData() { return data_; };
 
+    void setCA( const QString strURL );
+    void setCRL( const QString strURL );
+
 private slots:
     void runGet();
     void clickUseLDAPHost();
     void clickClearUsedURI();
+    void changeURL();
 
 private:
     void initUI();

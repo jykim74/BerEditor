@@ -16,6 +16,9 @@ class OCSPClientDlg : public QDialog, public Ui::OCSPClientDlg
 public:
     explicit OCSPClientDlg(QWidget *parent = nullptr);
     ~OCSPClientDlg();
+    void setURI( const QString strURL );
+    void setCA( const QString strURL );
+    void setCert( const QString strDN, const BIN *pCert );
 
 private slots:
     void checkUseSign();
@@ -68,6 +71,8 @@ private:
     QStringList getUsedURL();
     void setUsedURL( const QString strURL );
     int readPrivateKey( BIN *pPriKey );
+
+    BIN cert_;
 };
 
 #endif // OCSP_CLIENT_DLG_H

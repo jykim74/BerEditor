@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>442</width>
+    <width>570</width>
     <height>373</height>
    </rect>
   </property>
@@ -41,7 +41,7 @@
         <widget class="QPlainTextEdit" name="mCRLDetailText">
          <property name="minimumSize">
           <size>
-           <width>400</width>
+           <width>500</width>
            <height>0</height>
           </size>
          </property>
@@ -121,7 +121,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="mValidGroup">
+        <widget class="QGroupBox" name="mManGroup">
          <property name="title">
           <string/>
          </property>

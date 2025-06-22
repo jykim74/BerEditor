@@ -88,6 +88,9 @@ CRLInfoDlg::CRLInfoDlg(QWidget *parent) :
     mCRLTab->layout()->setMargin(5);
     mRevokeTab->layout()->setSpacing(5);
     mRevokeTab->layout()->setMargin(5);
+
+    mManGroup->layout()->setSpacing(5);
+    mManGroup->layout()->setMargin(5);
 #endif
 
 
@@ -214,7 +217,7 @@ void CRLInfoDlg::initialize()
 
     tabWidget->setCurrentIndex(0);
 
-    if( berApplet->isLicense() == false ) mValidGroup->setEnabled( false );
+    if( berApplet->isLicense() == false ) mManGroup->setEnabled( false );
 
     JS_PKI_resetCRLInfo( &crl_info_ );
 

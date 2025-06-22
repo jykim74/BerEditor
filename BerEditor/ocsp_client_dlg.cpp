@@ -22,7 +22,7 @@ OCSPClientDlg::OCSPClientDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
-
+    memset( &cert_, 0x00, sizeof(BIN));
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mUseSignCheck, SIGNAL(clicked()), this, SLOT(checkUseSign()));
@@ -105,7 +105,30 @@ OCSPClientDlg::OCSPClientDlg(QWidget *parent) :
 
 OCSPClientDlg::~OCSPClientDlg()
 {
+    JS_BIN_reset( &cert_ );
+}
 
+void OCSPClientDlg::setURI( const QString strURL )
+{
+    if( strURL.length() > 0 )
+        mURLCombo->setCurrentText( strURL );
+}
+
+void OCSPClientDlg::setCA( const QString strURL )
+{
+    if( strURL.length() > 0 )
+        mCACertPathText->setText( strURL );
+}
+
+void OCSPClientDlg::setCert( const QString strDN, const BIN *pCert )
+{
+    mCertPathText->setText( strDN );
+    mCertPathText->setReadOnly(true);
+    mCertPathText->setStyleSheet( kReadOnlyStyle );
+    mFindCertBtn->setEnabled(false);
+
+    JS_BIN_reset( &cert_ );
+    JS_BIN_copy( &cert_, pCert );
 }
 
 void OCSPClientDlg::checkEncPriKey()
@@ -208,6 +231,11 @@ void OCSPClientDlg::clickClearOCSP()
     mURLCombo->setCurrentText("");
     mCACertPathText->clear();
     mCertPathText->clear();
+
+    mCertPathText->setStyleSheet( "" );
+    mFindCertBtn->setEnabled( true );
+
+    JS_BIN_reset( &cert_ );
 }
 
 void OCSPClientDlg::clickSetURL()
@@ -219,16 +247,24 @@ void OCSPClientDlg::clickSetURL()
 
     QString strAIAExt;
     QString strURL;
-    QString strFile = mCertPathText->text();
 
-    if( strFile.length() < 1 )
+    if( cert_.nLen > 0 )
     {
-        berApplet->warningBox( tr( "Find a certificate" ), this );
-        return;
+        JS_BIN_copy( &binData, &cert_ );
     }
+    else
+    {
+        QString strFile = mCertPathText->text();
 
-    memset( &sCertInfo, 0x00, sizeof(sCertInfo));
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+        if( strFile.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Find a certificate" ), this );
+            return;
+        }
+
+        memset( &sCertInfo, 0x00, sizeof(sCertInfo));
+        JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    }
 
     ret = JS_PKI_getCertInfo( &binData, &sCertInfo, &pExtList );
     if( ret != 0 )
@@ -267,17 +303,24 @@ void OCSPClientDlg::clickSetCACert()
     JExtensionInfoList *pExtList = NULL;
     QString strAIAExt;
     QString strCAPath;
-    QString strFile = mCACertPathText->text();
 
-
-    if( strFile.length() < 1 )
+    if( cert_.nLen > 0 )
     {
-        berApplet->warningBox( tr( "Find a certificate" ), this );
-        return;
+        JS_BIN_copy( &binData, &cert_ );
     }
+    else
+    {
+        QString strFile = mCACertPathText->text();
 
-    memset( &sCertInfo, 0x00, sizeof(sCertInfo));
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+        if( strFile.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Find a certificate" ), this );
+            return;
+        }
+
+        memset( &sCertInfo, 0x00, sizeof(sCertInfo));
+        JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    }
 
     ret = JS_PKI_getCertInfo( &binData, &sCertInfo, &pExtList );
     if( ret != 0 )
@@ -462,16 +505,25 @@ void OCSPClientDlg::typeCert()
     int nType = -1;
     BIN binData = {0,0};
     BIN binPubInfo = {0,0};
-    QString strFile = mCertPathText->text();
 
-    if( strFile.length() < 1 )
+    if( cert_.nLen > 0 )
     {
-        berApplet->warningBox( tr( "Find a certificate" ), this );
-        mCertPathText->setFocus();
-        return;
+        JS_BIN_copy( &binData, &cert_ );
+    }
+    else
+    {
+        QString strFile = mCertPathText->text();
+
+        if( strFile.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Find a certificate" ), this );
+            mCertPathText->setFocus();
+            return;
+        }
+
+        JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
     }
 
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
     JS_PKI_getPubKeyFromCert( &binData, &binPubInfo );
 
     nType = JS_PKI_getPubKeyType( &binPubInfo );
@@ -582,16 +634,24 @@ void OCSPClientDlg::viewCert()
     CertInfoDlg certInfo;
 
     BIN binData = {0,0};
-    QString strFile = mCertPathText->text();
 
-    if( strFile.length() < 1 )
+    if( cert_.nLen > 0 )
     {
-        berApplet->warningBox( tr( "Find a certificate" ), this );
-        mCertPathText->setFocus();
-        return;
+        JS_BIN_copy( &binData, &cert_ );
     }
+    else
+    {
+        QString strFile = mCertPathText->text();
 
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+        if( strFile.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Find a certificate" ), this );
+            mCertPathText->setFocus();
+            return;
+        }
+
+        JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    }
 
     certInfo.setCertBIN( &binData );
     certInfo.exec();
@@ -687,17 +747,26 @@ end :
 
 void OCSPClientDlg::decodeCert()
 {
+    QString strFile;
     BIN binData = {0,0};
-    QString strFile = mCertPathText->text();
 
-    if( strFile.length() < 1 )
+    if( cert_.nLen > 0 )
     {
-        berApplet->warningBox( tr( "Find a certificate" ), this );
-        mCertPathText->setFocus();
-        return;
+        JS_BIN_copy( &binData, &cert_ );
     }
+    else
+    {
+        strFile = mCertPathText->text();
 
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+        if( strFile.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Find a certificate" ), this );
+            mCertPathText->setFocus();
+            return;
+        }
+
+        JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    }
 
     berApplet->decodeData( &binData, strFile );
 
@@ -845,24 +914,31 @@ void OCSPClientDlg::clickEncode()
         }
     }
 
-    if( strCertPath.length() < 1 )
+    if( cert_.nLen > 0 )
     {
-        CertManDlg certMan;
-        certMan.setMode(ManModeSelCert);
-        certMan.setTitle( tr( "Select target certificate" ));
-        if( certMan.exec() != QDialog::Accepted )
-            goto end;
 
-        strCertPath = certMan.getSeletedCertPath();
-
+    }
+    else
+    {
         if( strCertPath.length() < 1 )
         {
-            berApplet->warningBox( tr( "Find a certificate" ), this );
-            return;
-        }
-        else
-        {
-            mCertPathText->setText( strCertPath );
+            CertManDlg certMan;
+            certMan.setMode(ManModeSelCert);
+            certMan.setTitle( tr( "Select target certificate" ));
+            if( certMan.exec() != QDialog::Accepted )
+                goto end;
+
+            strCertPath = certMan.getSeletedCertPath();
+
+            if( strCertPath.length() < 1 )
+            {
+                berApplet->warningBox( tr( "Find a certificate" ), this );
+                return;
+            }
+            else
+            {
+                mCertPathText->setText( strCertPath );
+            }
         }
     }
 
@@ -911,7 +987,10 @@ void OCSPClientDlg::clickEncode()
         goto end;
     }
 
-    JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    if( cert_.nLen > 0 )
+        JS_BIN_copy( &binCert, &cert_ );
+    else
+        JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
 
     if( mUseSignCheck->isChecked() )
         ret = JS_OCSP_encodeRequest( &binCert, &binCA, strHash.toStdString().c_str(), &binSignPriKey, &binSignCert, &binReq );
