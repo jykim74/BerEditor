@@ -1501,7 +1501,7 @@ int checkOCSP( const QString strURL, const BIN *pCA, const BIN *pCert, JCertStat
     JCertIDInfo sIDInfo;
     memset( &sIDInfo, 0x00, sizeof(sIDInfo));
 
-    ret = JS_OCSP_encodeRequest( (BIN *)pCert, (BIN *)pCA, "SHA256", NULL, NULL, &binReq );
+    ret = JS_OCSP_encodeRequest( (BIN *)pCert, (BIN *)pCA, NULL, "SHA256", NULL, NULL, &binReq );
     if( ret != 0 )
     {
         fprintf( stderr, "fail to encode OCSP request: %d\n", ret );

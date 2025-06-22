@@ -210,6 +210,7 @@ add_executable(${PROJECT_NAME}
     code_editor.h code_editor.cpp
     highlighter_xml.h highlighter_xml.cpp
     x509_compare_dlg.h x509_compare_dlg.cpp x509_compare_dlg.ui
+    cert_id_dlg.h cert_id_dlg.cpp cert_id_dlg.ui
 
 )
 

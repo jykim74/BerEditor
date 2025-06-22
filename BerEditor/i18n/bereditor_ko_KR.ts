@@ -3145,6 +3145,83 @@ mailto : jykim74@gmail.com</translation>
     </message>
 </context>
 <context>
+    <name>CertIDDlg</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="obsolete">대화창</translation>
+    </message>
+    <message>
+        <location filename="../cert_id_dlg.ui" line="14"/>
+        <source>Certificate ID and Status</source>
+        <translation>인증서 ID 및 상태</translation>
+    </message>
+    <message>
+        <location filename="../cert_id_dlg.ui" line="20"/>
+        <source>OCSP Response CertID</source>
+        <translation>OCSP 응답 인증서 ID</translation>
+    </message>
+    <message>
+        <location filename="../cert_id_dlg.ui" line="59"/>
+        <source>Certificate Status Information</source>
+        <translation>인증서 상태 정보</translation>
+    </message>
+    <message>
+        <location filename="../cert_id_dlg.ui" line="93"/>
+        <source>Close</source>
+        <translation>닫기</translation>
+    </message>
+    <message>
+        <location filename="../cert_id_dlg.cpp" line="53"/>
+        <source>Hash</source>
+        <translation>해시</translation>
+    </message>
+    <message>
+        <location filename="../cert_id_dlg.cpp" line="59"/>
+        <source>NameHash</source>
+        <translation>이름 해시</translation>
+    </message>
+    <message>
+        <location filename="../cert_id_dlg.cpp" line="65"/>
+        <source>KeyHash</source>
+        <translation>키 해시</translation>
+    </message>
+    <message>
+        <location filename="../cert_id_dlg.cpp" line="71"/>
+        <source>Serial</source>
+        <translation>일련번호</translation>
+    </message>
+    <message>
+        <location filename="../cert_id_dlg.cpp" line="78"/>
+        <source>Status</source>
+        <translation>상태</translation>
+    </message>
+    <message>
+        <location filename="../cert_id_dlg.cpp" line="86"/>
+        <source>Reason</source>
+        <translation>이유</translation>
+    </message>
+    <message>
+        <location filename="../cert_id_dlg.cpp" line="93"/>
+        <source>RevokedTime</source>
+        <translation>폐기된 시간</translation>
+    </message>
+    <message>
+        <location filename="../cert_id_dlg.cpp" line="101"/>
+        <source>HoldOID</source>
+        <translation>중지 OID</translation>
+    </message>
+    <message>
+        <location filename="../cert_id_dlg.cpp" line="115"/>
+        <source>Field</source>
+        <translation>필드</translation>
+    </message>
+    <message>
+        <location filename="../cert_id_dlg.cpp" line="115"/>
+        <source>Value</source>
+        <translation>값</translation>
+    </message>
+</context>
+<context>
     <name>CertInfoDlg</name>
     <message>
         <location filename="../cert_info_dlg.ui" line="14"/>
@@ -11444,70 +11521,70 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../ocsp_client_dlg.ui" line="65"/>
-        <location filename="../ocsp_client_dlg.ui" line="242"/>
+        <location filename="../ocsp_client_dlg.ui" line="106"/>
         <source>Clear</source>
         <translation>지우기</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.ui" line="76"/>
-        <location filename="../ocsp_client_dlg.ui" line="148"/>
-        <location filename="../ocsp_client_dlg.ui" line="290"/>
-        <location filename="../ocsp_client_dlg.ui" line="311"/>
-        <location filename="../ocsp_client_dlg.ui" line="757"/>
+        <location filename="../ocsp_client_dlg.ui" line="117"/>
+        <location filename="../ocsp_client_dlg.ui" line="189"/>
+        <location filename="../ocsp_client_dlg.ui" line="353"/>
+        <location filename="../ocsp_client_dlg.ui" line="374"/>
+        <location filename="../ocsp_client_dlg.ui" line="827"/>
         <source>Find</source>
         <translation>찾기</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.ui" line="89"/>
-        <location filename="../ocsp_client_dlg.ui" line="187"/>
-        <location filename="../ocsp_client_dlg.ui" line="356"/>
-        <location filename="../ocsp_client_dlg.ui" line="369"/>
-        <location filename="../ocsp_client_dlg.ui" line="783"/>
+        <location filename="../ocsp_client_dlg.ui" line="130"/>
+        <location filename="../ocsp_client_dlg.ui" line="228"/>
+        <location filename="../ocsp_client_dlg.ui" line="419"/>
+        <location filename="../ocsp_client_dlg.ui" line="432"/>
+        <location filename="../ocsp_client_dlg.ui" line="853"/>
         <source>T</source>
         <translation>T</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.ui" line="102"/>
-        <location filename="../ocsp_client_dlg.ui" line="161"/>
-        <location filename="../ocsp_client_dlg.ui" line="327"/>
-        <location filename="../ocsp_client_dlg.ui" line="382"/>
-        <location filename="../ocsp_client_dlg.ui" line="740"/>
+        <location filename="../ocsp_client_dlg.ui" line="143"/>
+        <location filename="../ocsp_client_dlg.ui" line="202"/>
+        <location filename="../ocsp_client_dlg.ui" line="390"/>
+        <location filename="../ocsp_client_dlg.ui" line="445"/>
+        <location filename="../ocsp_client_dlg.ui" line="810"/>
         <source>V</source>
         <translation>V</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.ui" line="115"/>
-        <location filename="../ocsp_client_dlg.ui" line="174"/>
-        <location filename="../ocsp_client_dlg.ui" line="283"/>
-        <location filename="../ocsp_client_dlg.ui" line="343"/>
-        <location filename="../ocsp_client_dlg.ui" line="512"/>
-        <location filename="../ocsp_client_dlg.ui" line="686"/>
-        <location filename="../ocsp_client_dlg.ui" line="770"/>
+        <location filename="../ocsp_client_dlg.ui" line="156"/>
+        <location filename="../ocsp_client_dlg.ui" line="215"/>
+        <location filename="../ocsp_client_dlg.ui" line="346"/>
+        <location filename="../ocsp_client_dlg.ui" line="406"/>
+        <location filename="../ocsp_client_dlg.ui" line="575"/>
+        <location filename="../ocsp_client_dlg.ui" line="756"/>
+        <location filename="../ocsp_client_dlg.ui" line="840"/>
         <source>D</source>
         <translation>D</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.ui" line="128"/>
+        <location filename="../ocsp_client_dlg.ui" line="169"/>
         <source>Certificate</source>
         <translation>인증서</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.ui" line="138"/>
+        <location filename="../ocsp_client_dlg.ui" line="179"/>
         <source>CA cert</source>
         <translation>CA 인증서</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.ui" line="235"/>
+        <location filename="../ocsp_client_dlg.ui" line="86"/>
         <source>Set OCSP URL from AIA</source>
         <translation>AIA로 부터 OCSP URL 설정</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.ui" line="208"/>
+        <location filename="../ocsp_client_dlg.ui" line="79"/>
         <source>Set CA from AIA</source>
         <translation>AIA로 부터 CA 경로 설정</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.ui" line="251"/>
+        <location filename="../ocsp_client_dlg.ui" line="314"/>
         <source>Select each certificate and private key</source>
         <translation>인증서와 개인키 각각 선택</translation>
     </message>
@@ -11520,22 +11597,22 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">OCSP 요청 서명자</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.ui" line="297"/>
+        <location filename="../ocsp_client_dlg.ui" line="360"/>
         <source>Sign PrivateKey</source>
         <translation>서명용 개인키</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.ui" line="304"/>
+        <location filename="../ocsp_client_dlg.ui" line="367"/>
         <source>Sign Certificate</source>
         <translation>서명용 인증서</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.ui" line="403"/>
+        <location filename="../ocsp_client_dlg.ui" line="466"/>
         <source>Enc PrivateKey</source>
         <translation>암호화 개인키</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.ui" line="410"/>
+        <location filename="../ocsp_client_dlg.ui" line="473"/>
         <source>Password</source>
         <translation>암호</translation>
     </message>
@@ -11544,238 +11621,248 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">암호화된 개인키</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.ui" line="427"/>
+        <location filename="../ocsp_client_dlg.ui" line="490"/>
         <source>Request</source>
         <translation>요청</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.ui" line="486"/>
-        <location filename="../ocsp_client_dlg.ui" line="627"/>
+        <location filename="../ocsp_client_dlg.ui" line="549"/>
+        <location filename="../ocsp_client_dlg.ui" line="697"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.ui" line="577"/>
+        <location filename="../ocsp_client_dlg.ui" line="629"/>
         <source>Send</source>
         <translation>보내기</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.ui" line="215"/>
+        <location filename="../ocsp_client_dlg.ui" line="259"/>
         <source>Use Sign</source>
         <translation>서명 사용</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.ui" line="570"/>
+        <location filename="../ocsp_client_dlg.ui" line="249"/>
+        <source>Use Nonce</source>
+        <translation>논스 사용</translation>
+    </message>
+    <message>
+        <location filename="../ocsp_client_dlg.ui" line="606"/>
         <source>Encode</source>
         <translation>인코딩</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.ui" line="543"/>
+        <location filename="../ocsp_client_dlg.ui" line="636"/>
         <source>Verify</source>
         <translation>검증</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.ui" line="550"/>
+        <location filename="../ocsp_client_dlg.ui" line="643"/>
         <source>Hash</source>
         <translation>해시</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.ui" line="601"/>
+        <location filename="../ocsp_client_dlg.ui" line="650"/>
+        <source>View CertID</source>
+        <translation>인증서ID 복기</translation>
+    </message>
+    <message>
+        <location filename="../ocsp_client_dlg.ui" line="671"/>
         <source>Response</source>
         <translation>응답</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.ui" line="750"/>
+        <location filename="../ocsp_client_dlg.ui" line="820"/>
         <source>OCSP Certificate</source>
         <translation>OCSP 인증서</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.ui" line="801"/>
+        <location filename="../ocsp_client_dlg.ui" line="871"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="249"/>
-        <location filename="../ocsp_client_dlg.cpp" line="298"/>
-        <location filename="../ocsp_client_dlg.cpp" line="499"/>
-        <location filename="../ocsp_client_dlg.cpp" line="628"/>
-        <location filename="../ocsp_client_dlg.cpp" line="743"/>
-        <location filename="../ocsp_client_dlg.cpp" line="915"/>
+        <location filename="../ocsp_client_dlg.cpp" line="273"/>
+        <location filename="../ocsp_client_dlg.cpp" line="329"/>
+        <location filename="../ocsp_client_dlg.cpp" line="531"/>
+        <location filename="../ocsp_client_dlg.cpp" line="660"/>
+        <location filename="../ocsp_client_dlg.cpp" line="775"/>
+        <location filename="../ocsp_client_dlg.cpp" line="948"/>
         <source>Find a certificate</source>
         <translation>인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="259"/>
-        <location filename="../ocsp_client_dlg.cpp" line="308"/>
+        <location filename="../ocsp_client_dlg.cpp" line="284"/>
+        <location filename="../ocsp_client_dlg.cpp" line="340"/>
         <source>invalid certificate: %1</source>
         <translation>잘못된 인증서 파일 : %1</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="266"/>
-        <location filename="../ocsp_client_dlg.cpp" line="315"/>
+        <location filename="../ocsp_client_dlg.cpp" line="291"/>
+        <location filename="../ocsp_client_dlg.cpp" line="347"/>
         <source>There is no AIA</source>
         <translation>AIA 가 없습니다</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="273"/>
+        <location filename="../ocsp_client_dlg.cpp" line="298"/>
         <source>There is no OCSP URL</source>
         <translation>OCSP URL 값이 없습니다</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="322"/>
+        <location filename="../ocsp_client_dlg.cpp" line="354"/>
         <source>There is no CA Path</source>
         <translation>CA 경로가 없습니다</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="344"/>
+        <location filename="../ocsp_client_dlg.cpp" line="376"/>
         <source>select a private key</source>
         <translation>개인키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="352"/>
+        <location filename="../ocsp_client_dlg.cpp" line="384"/>
         <source>failed to read a private key: %1</source>
         <translation>개인키 읽기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="362"/>
+        <location filename="../ocsp_client_dlg.cpp" line="394"/>
         <source>Enter a password</source>
         <translation>암호를 입력해야 합니다</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="371"/>
+        <location filename="../ocsp_client_dlg.cpp" line="403"/>
         <source>failed to decrypt private key:%1</source>
         <translation>개인키 복호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="460"/>
-        <location filename="../ocsp_client_dlg.cpp" line="592"/>
-        <location filename="../ocsp_client_dlg.cpp" line="709"/>
-        <location filename="../ocsp_client_dlg.cpp" line="888"/>
+        <location filename="../ocsp_client_dlg.cpp" line="492"/>
+        <location filename="../ocsp_client_dlg.cpp" line="624"/>
+        <location filename="../ocsp_client_dlg.cpp" line="741"/>
+        <location filename="../ocsp_client_dlg.cpp" line="921"/>
         <source>Find a CA certificate</source>
         <translation>CA 인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="469"/>
-        <location filename="../ocsp_client_dlg.cpp" line="601"/>
-        <location filename="../ocsp_client_dlg.cpp" line="718"/>
+        <location filename="../ocsp_client_dlg.cpp" line="501"/>
+        <location filename="../ocsp_client_dlg.cpp" line="633"/>
+        <location filename="../ocsp_client_dlg.cpp" line="750"/>
         <source>fail to get CA</source>
         <translation>CA 가져오기 실패</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="476"/>
-        <location filename="../ocsp_client_dlg.cpp" line="510"/>
-        <location filename="../ocsp_client_dlg.cpp" line="535"/>
-        <location filename="../ocsp_client_dlg.cpp" line="575"/>
+        <location filename="../ocsp_client_dlg.cpp" line="508"/>
+        <location filename="../ocsp_client_dlg.cpp" line="542"/>
+        <location filename="../ocsp_client_dlg.cpp" line="567"/>
+        <location filename="../ocsp_client_dlg.cpp" line="607"/>
         <source>The certificate type is %1</source>
         <translation>인증서 타입은 %1 입니다.</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="526"/>
-        <location filename="../ocsp_client_dlg.cpp" line="651"/>
-        <location filename="../ocsp_client_dlg.cpp" line="763"/>
-        <location filename="../ocsp_client_dlg.cpp" line="933"/>
+        <location filename="../ocsp_client_dlg.cpp" line="558"/>
+        <location filename="../ocsp_client_dlg.cpp" line="683"/>
+        <location filename="../ocsp_client_dlg.cpp" line="795"/>
+        <location filename="../ocsp_client_dlg.cpp" line="966"/>
         <source>Find a sign certificate</source>
         <translation>서명용 인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="782"/>
+        <location filename="../ocsp_client_dlg.cpp" line="814"/>
         <source>Find a sign private key</source>
         <translation>서명용 개인키를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="966"/>
+        <location filename="../ocsp_client_dlg.cpp" line="999"/>
         <source>fail to get CA: %1</source>
         <translation>CA 가져오기 실패 :%1</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="1096"/>
+        <location filename="../ocsp_client_dlg.cpp" line="1174"/>
         <source>OCSP Verify fail [status: %1(%2)]</source>
         <translation>OCSP 검증 실패 [상테: %1(%2)]</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="1102"/>
+        <location filename="../ocsp_client_dlg.cpp" line="1180"/>
         <source>OCSP Verify OK [status: %1(%2)]</source>
         <translation>OCSP 검증 성공 [상테: %1(%2)]</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="1108"/>
+        <location filename="../ocsp_client_dlg.cpp" line="1186"/>
         <source>failed to decode response: %1</source>
         <translation>응답 디코딩 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="551"/>
+        <location filename="../ocsp_client_dlg.cpp" line="583"/>
         <source>The private key type is %1</source>
         <translation>개인키 타입은 %1 입니다</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="157"/>
-        <location filename="../ocsp_client_dlg.cpp" line="158"/>
         <location filename="../ocsp_client_dlg.cpp" line="161"/>
-        <location filename="../ocsp_client_dlg.cpp" line="163"/>
+        <location filename="../ocsp_client_dlg.cpp" line="162"/>
+        <location filename="../ocsp_client_dlg.cpp" line="165"/>
+        <location filename="../ocsp_client_dlg.cpp" line="167"/>
         <source>Select CertMan certificate</source>
         <translation>인증서 관리자 인증서 선택</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="160"/>
+        <location filename="../ocsp_client_dlg.cpp" line="164"/>
         <source>Select CertMan private key</source>
         <translation>인증서 관리자 개인키 선택</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="566"/>
-        <location filename="../ocsp_client_dlg.cpp" line="688"/>
-        <location filename="../ocsp_client_dlg.cpp" line="801"/>
+        <location filename="../ocsp_client_dlg.cpp" line="598"/>
+        <location filename="../ocsp_client_dlg.cpp" line="720"/>
+        <location filename="../ocsp_client_dlg.cpp" line="833"/>
         <source>Find a server certificate</source>
         <translation>서버 인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="881"/>
+        <location filename="../ocsp_client_dlg.cpp" line="914"/>
         <source>Select CA certificate</source>
         <translation>CA 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="907"/>
+        <location filename="../ocsp_client_dlg.cpp" line="940"/>
         <source>Select target certificate</source>
         <translation>대상 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="949"/>
+        <location filename="../ocsp_client_dlg.cpp" line="982"/>
         <source>Select a certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="986"/>
+        <location filename="../ocsp_client_dlg.cpp" line="1022"/>
         <source>fail to encode request: %1</source>
         <translation>요청서 인코딩 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="1010"/>
+        <location filename="../ocsp_client_dlg.cpp" line="1047"/>
         <source>Insert OCSP URL</source>
         <translation>OCSP URL 을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="819"/>
-        <location filename="../ocsp_client_dlg.cpp" line="1017"/>
+        <location filename="../ocsp_client_dlg.cpp" line="851"/>
+        <location filename="../ocsp_client_dlg.cpp" line="1054"/>
         <source>There is no request</source>
         <translation>요청서가 없습니다</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="1038"/>
+        <location filename="../ocsp_client_dlg.cpp" line="1075"/>
         <source>fail to send a request to OCSP server: %1</source>
         <translation>OCSP 서버에 요청 보내기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="1067"/>
+        <location filename="../ocsp_client_dlg.cpp" line="1145"/>
         <source>Select OCSP server certificate</source>
         <translation>OCSP 서버 인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="1074"/>
+        <location filename="../ocsp_client_dlg.cpp" line="1152"/>
         <source>find a OCSP server certificate</source>
         <translation>OCSP 서버 인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../ocsp_client_dlg.cpp" line="838"/>
-        <location filename="../ocsp_client_dlg.cpp" line="1085"/>
+        <location filename="../ocsp_client_dlg.cpp" line="870"/>
+        <location filename="../ocsp_client_dlg.cpp" line="1163"/>
         <source>There is no response</source>
         <translation>응답이 없습니다</translation>
     </message>

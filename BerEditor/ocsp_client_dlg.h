@@ -22,6 +22,7 @@ public:
 
 private slots:
     void checkUseSign();
+    void checkUseNonce();
     void clickClearURL();
 
     void clickClearOCSP();
@@ -59,8 +60,10 @@ private slots:
 
     void clickEncode();
     void clickSend();
+    void clickViewCertID();
     void clickVerify();
 
+    void nonceChanged();
     void requestChanged();
     void responseChanged();
 

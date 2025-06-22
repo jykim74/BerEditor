@@ -7,6 +7,7 @@
 #include "settings_mgr.h"
 #include "cert_man_dlg.h"
 #include "pri_key_info_dlg.h"
+#include "cert_id_dlg.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -26,6 +27,7 @@ OCSPClientDlg::OCSPClientDlg(QWidget *parent) :
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mUseSignCheck, SIGNAL(clicked()), this, SLOT(checkUseSign()));
+    connect( mUseNonceCheck, SIGNAL(clicked()), this, SLOT(checkUseNonce()));
     connect( mURLClearBtn, SIGNAL(clicked()), this, SLOT(clickClearURL()));
 
     connect( mOCSPClearBtn, SIGNAL(clicked()), this, SLOT(clickClearOCSP()));
@@ -63,8 +65,10 @@ OCSPClientDlg::OCSPClientDlg(QWidget *parent) :
 
     connect( mEncodeBtn, SIGNAL(clicked()), this, SLOT(clickEncode()));
     connect( mSendBtn, SIGNAL(clicked()), this, SLOT(clickSend()));
+    connect( mViewCertIDBtn, SIGNAL(clicked()), this, SLOT(clickViewCertID()));
     connect( mVerifyBtn, SIGNAL(clicked()), this, SLOT(clickVerify()));
 
+    connect( mNonceText, SIGNAL(textChanged(QString)), this, SLOT(nonceChanged()));
     connect( mRequestText, SIGNAL(textChanged()), this, SLOT(requestChanged()));
     connect( mResponseText, SIGNAL(textChanged()), this, SLOT(responseChanged()));
 
@@ -211,6 +215,14 @@ void OCSPClientDlg::checkUseSign()
         mCertGroup->setEnabled( true );
     else
         mCertGroup->setEnabled( false );
+}
+
+void OCSPClientDlg::checkUseNonce()
+{
+    bool bVal = mUseNonceCheck->isChecked();
+
+    mNonceText->setEnabled(bVal);
+    mNonceLenText->setEnabled(bVal);
 }
 
 void OCSPClientDlg::clickClearURL()
@@ -889,6 +901,7 @@ void OCSPClientDlg::clickEncode()
     BIN binSignPriKey = {0,0};
 
     BIN binReq = {0,0};
+    BIN binNonce = {0,0};
 
     QString strHash = mHashCombo->currentText();
     QString strCAPath = mCACertPathText->text();
@@ -987,15 +1000,18 @@ void OCSPClientDlg::clickEncode()
         goto end;
     }
 
+    if( mUseNonceCheck->isChecked() )
+        getBINFromString( &binNonce, DATA_HEX, mNonceText->text() );
+
     if( cert_.nLen > 0 )
         JS_BIN_copy( &binCert, &cert_ );
     else
         JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
 
     if( mUseSignCheck->isChecked() )
-        ret = JS_OCSP_encodeRequest( &binCert, &binCA, strHash.toStdString().c_str(), &binSignPriKey, &binSignCert, &binReq );
+        ret = JS_OCSP_encodeRequest( &binCert, &binCA, &binNonce, strHash.toStdString().c_str(), &binSignPriKey, &binSignCert, &binReq );
     else
-        ret = JS_OCSP_encodeRequest( &binCert, &binCA, strHash.toStdString().c_str(), NULL, NULL, &binReq );
+        ret = JS_OCSP_encodeRequest( &binCert, &binCA, &binNonce, strHash.toStdString().c_str(), NULL, NULL, &binReq );
 
     if( ret == 0 )
     {
@@ -1012,6 +1028,7 @@ end :
     JS_BIN_reset( &binSignCert );
     JS_BIN_reset( &binSignPriKey );
     JS_BIN_reset( &binReq );
+    JS_BIN_reset( &binNonce );
 }
 
 void OCSPClientDlg::clickSend()
@@ -1061,6 +1078,47 @@ void OCSPClientDlg::clickSend()
 
 end :
     JS_BIN_reset( &binReq );
+    JS_BIN_reset( &binRsp );
+}
+
+void OCSPClientDlg::clickViewCertID()
+{
+    BIN binSrvCert = {0,0};
+    BIN binRsp = {0,0};
+
+    QString strSrvCertPath = mSrvCertPathText->text();
+    QString strRspHex = mResponseText->toPlainText();
+
+    CertIDDlg certID;
+/*
+    if( strSrvCertPath.length() < 1 )
+    {
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelCert);
+        certMan.setTitle( tr( "Select OCSP server certificate" ));
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
+
+        strSrvCertPath = certMan.getSeletedCertPath();
+        if( strSrvCertPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find a OCSP server certificate"), this );
+            goto end;
+        }
+        else
+        {
+            mSrvCertPathText->setText( strSrvCertPath );
+        }
+    }
+*/
+    JS_BIN_fileReadBER( strSrvCertPath.toLocal8Bit().toStdString().c_str(), &binSrvCert );
+    JS_BIN_decodeHex( strRspHex.toStdString().c_str(), &binRsp );
+
+    certID.setResponse( &binRsp );
+    certID.exec();
+
+end :
+    JS_BIN_reset( &binSrvCert );
     JS_BIN_reset( &binRsp );
 }
 
@@ -1133,6 +1191,12 @@ end :
     JS_BIN_reset( &binRsp );
     JS_OCSP_resetCertIDInfo( &sIDInfo );
     JS_OCSP_resetCertStatusInfo( &sStatusInfo );
+}
+
+void OCSPClientDlg::nonceChanged()
+{
+    QString strLen = getDataLenString( DATA_HEX, mNonceText->text() );
+    mNonceLenText->setText( QString("%1").arg( strLen ) );
 }
 
 void OCSPClientDlg::requestChanged()
