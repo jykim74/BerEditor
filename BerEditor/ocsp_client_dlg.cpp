@@ -168,6 +168,7 @@ void OCSPClientDlg::initUI()
 
     mSrvCertPathText->setPlaceholderText( tr("Select CertMan certificate") );
     mNonceText->setPlaceholderText( tr("Hex value" ));
+    mRequestText->setPlaceholderText( tr("Hex value" ));
 
     QRegExp regExp("^[0-9a-fA-F]*$");
     QRegExpValidator* regVal = new QRegExpValidator( regExp );

@@ -104,6 +104,7 @@ void TSPClientDlg::initialize()
 
     mCACertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
     mSrvCertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
+    mRequestText->setPlaceholderText( tr("Hex value" ));
 }
 
 QStringList TSPClientDlg::getUsedURL()

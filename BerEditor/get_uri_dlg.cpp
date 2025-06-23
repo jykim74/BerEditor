@@ -40,7 +40,17 @@ GetURIDlg::GetURIDlg(QWidget *parent) :
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+
+    mLDAPSearchGroup->layout()->setSpacing(5);
+    mLDAPSearchGroup->layout()->setMargin(5);
+
+    mURIGroup->layout()->setSpacing(5);
+    mURIGroup->layout()->setMargin(5);
+
+    mHostInfoGroup->layout()->setSpacing(5);
+    mHostInfoGroup->layout()->setMargin(5);
 #endif
+
     resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 

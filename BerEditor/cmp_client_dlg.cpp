@@ -124,6 +124,7 @@ void CMPClientDlg::initialize()
 
     mPriKeyPathText->setPlaceholderText( tr("Select CertMan private key") );
     mCertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
+    mRequestText->setPlaceholderText( tr("Hex value" ));
 }
 
 QStringList CMPClientDlg::getUsedURL()

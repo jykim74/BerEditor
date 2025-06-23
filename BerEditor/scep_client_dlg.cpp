@@ -126,6 +126,7 @@ void SCEPClientDlg::initialize()
 
     mPriKeyPathText->setPlaceholderText( tr("Select CertMan private key") );
     mCertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
+    mRequestText->setPlaceholderText( tr("Hex value" ));
 }
 
 QStringList SCEPClientDlg::getUsedURL()
