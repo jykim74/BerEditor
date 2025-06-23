@@ -371,21 +371,23 @@ void BNCalcDlg::getBIN( const QString strValue, BIN *pBin )
 
 void BNCalcDlg::clickBinary()
 {
-    QRegExp regExp("^[0-1]*$");
-    QRegExpValidator* regVal = new QRegExpValidator( regExp );
+    mAText->setPlaceholderText( tr("valid characters: %1").arg( kBinaryChars ));
+    mBText->setPlaceholderText( tr("valid characters: %1").arg( kBinaryChars ));
+    mModText->setPlaceholderText( tr("valid characters: %1").arg( kBinaryChars ));
 }
 
 void BNCalcDlg::clickDecimal()
 {
-    QRegExp regExp("^[0-9]*$");
-    QRegExpValidator* regVal = new QRegExpValidator( regExp );
-
+    mAText->setPlaceholderText( tr("valid characters: %1").arg( kDecimalChars ));
+    mBText->setPlaceholderText( tr("valid characters: %1").arg( kDecimalChars ));
+    mModText->setPlaceholderText( tr("valid characters: %1").arg( kDecimalChars ));
 }
 
 void BNCalcDlg::clickHex()
 {
-    QRegExp regExp("^[0-9.]*$");
-    QRegExpValidator* regVal = new QRegExpValidator( regExp );
+    mAText->setPlaceholderText( tr("valid characters: %1").arg( kHexChars ));
+    mBText->setPlaceholderText( tr("valid characters: %1").arg( kHexChars ));
+    mModText->setPlaceholderText( tr("valid characters: %1").arg( kHexChars ));
 }
 
 void BNCalcDlg::changeBaseGroup( int index )

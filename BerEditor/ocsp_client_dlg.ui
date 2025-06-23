@@ -899,6 +899,9 @@
  <tabstops>
   <tabstop>mURLCombo</tabstop>
   <tabstop>mURLClearBtn</tabstop>
+  <tabstop>mOCSPClearBtn</tabstop>
+  <tabstop>mSetURLBtn</tabstop>
+  <tabstop>mSetCACertBtn</tabstop>
   <tabstop>mCACertPathText</tabstop>
   <tabstop>mFindCACertBtn</tabstop>
   <tabstop>mCACertViewBtn</tabstop>
@@ -910,6 +913,9 @@
   <tabstop>mCertDecodeBtn</tabstop>
   <tabstop>mCertTypeBtn</tabstop>
   <tabstop>mUseSignCheck</tabstop>
+  <tabstop>mUseNonceCheck</tabstop>
+  <tabstop>mNonceText</tabstop>
+  <tabstop>mNonceLenText</tabstop>
   <tabstop>mCertGroup</tabstop>
   <tabstop>mSignCertPathText</tabstop>
   <tabstop>mFindSignCertBtn</tabstop>
@@ -930,6 +936,7 @@
   <tabstop>mHashCombo</tabstop>
   <tabstop>mEncodeBtn</tabstop>
   <tabstop>mSendBtn</tabstop>
+  <tabstop>mViewCertIDBtn</tabstop>
   <tabstop>mVerifyBtn</tabstop>
   <tabstop>mResponseClearBtn</tabstop>
   <tabstop>mResponseDecodeBtn</tabstop>

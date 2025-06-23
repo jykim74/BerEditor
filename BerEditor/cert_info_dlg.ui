@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>570</width>
+    <width>478</width>
     <height>516</height>
    </rect>
   </property>
@@ -16,8 +16,14 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QTabWidget" name="tabWidget">
+     <property name="minimumSize">
+      <size>
+       <width>460</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="mInfoTab">
       <attribute name="title">
@@ -227,17 +233,14 @@
             <property name="topMargin">
              <number>0</number>
             </property>
-            <item row="0" column="1">
-             <widget class="QPushButton" name="mVerifyCertBtn">
-              <property name="toolTip">
-               <string>Verify certificate signature</string>
-              </property>
+            <item row="3" column="0">
+             <widget class="QPushButton" name="mSaveToCABtn">
               <property name="text">
-               <string>Verify Cert</string>
+               <string>Save to CA</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="3">
+            <item row="1" column="2">
              <widget class="QPushButton" name="mCRLCheckBtn">
               <property name="toolTip">
                <string>Check revoked certificate with CRL</string>
@@ -257,43 +260,10 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
-             <widget class="QPushButton" name="mGetCRLBtn">
-              <property name="toolTip">
-               <string>Get CRL and View CRL Information</string>
-              </property>
+            <item row="2" column="3">
+             <widget class="QPushButton" name="mSaveToManBtn">
               <property name="text">
-               <string>Get CRL</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="2">
-             <widget class="QPushButton" name="mOCSPCheckBtn">
-              <property name="toolTip">
-               <string>Ceritificattion valid check with OCSP Server</string>
-              </property>
-              <property name="text">
-               <string>OCSP Check</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0">
-             <widget class="QPushButton" name="mMakeTreeBtn">
-              <property name="toolTip">
-               <string>Make certificate path tree</string>
-              </property>
-              <property name="text">
-               <string>Make Tree</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="2">
-             <widget class="QPushButton" name="mDecodeCertBtn">
-              <property name="toolTip">
-               <string>Decode certificate in editor</string>
-              </property>
-              <property name="text">
-               <string>Decode Cert</string>
+               <string>Save to Man</string>
               </property>
              </widget>
             </item>
@@ -307,38 +277,13 @@
               </property>
              </widget>
             </item>
-            <item row="2" column="0">
-             <widget class="QPushButton" name="mOCSPClientBtn">
-              <property name="text">
-               <string>OCSP Client</string>
+            <item row="0" column="0">
+             <widget class="QPushButton" name="mMakeTreeBtn">
+              <property name="toolTip">
+               <string>Make certificate path tree</string>
               </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QPushButton" name="mGetCA_BERBtn">
               <property name="text">
-               <string>Get CA BER</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="2">
-             <widget class="QPushButton" name="mGetCRL_BERBtn">
-              <property name="text">
-               <string>Get CRL BER</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="3">
-             <widget class="QPushButton" name="mSaveToManBtn">
-              <property name="text">
-               <string>Save to Man</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="0">
-             <widget class="QPushButton" name="mSaveToCABtn">
-              <property name="text">
-               <string>Save to CA</string>
+               <string>Make Tree</string>
               </property>
              </widget>
             </item>
@@ -346,6 +291,67 @@
              <widget class="QPushButton" name="mSaveTrustedCABtn">
               <property name="text">
                <string>Save To RCA</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="2">
+             <widget class="QPushButton" name="mOCSPClientBtn">
+              <property name="text">
+               <string>OCSP Client</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="mGetCA_BERBtn">
+              <property name="text">
+               <string>Get CA BER</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QPushButton" name="mDecodeCertBtn">
+              <property name="toolTip">
+               <string>Decode certificate in editor</string>
+              </property>
+              <property name="text">
+               <string>Decode Cert</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QPushButton" name="mVerifyCertBtn">
+              <property name="toolTip">
+               <string>Verify certificate signature</string>
+              </property>
+              <property name="text">
+               <string>Verify Cert</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QPushButton" name="mOCSPCheckBtn">
+              <property name="toolTip">
+               <string>Ceritificattion valid check with OCSP Server</string>
+              </property>
+              <property name="text">
+               <string>OCSP Check</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QPushButton" name="mGetCRL_BERBtn">
+              <property name="text">
+               <string>Get CRL BER</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="3">
+             <widget class="QPushButton" name="mGetCRLBtn">
+              <property name="toolTip">
+               <string>Get CRL and View CRL Information</string>
+              </property>
+              <property name="text">
+               <string>Get CRL</string>
               </property>
              </widget>
             </item>
@@ -409,9 +415,15 @@
   <tabstop>mDecodeCertBtn</tabstop>
   <tabstop>mPathValidBtn</tabstop>
   <tabstop>mGetCABtn</tabstop>
-  <tabstop>mGetCRLBtn</tabstop>
-  <tabstop>mOCSPCheckBtn</tabstop>
+  <tabstop>mGetCA_BERBtn</tabstop>
   <tabstop>mCRLCheckBtn</tabstop>
+  <tabstop>mGetCRLBtn</tabstop>
+  <tabstop>mGetCRL_BERBtn</tabstop>
+  <tabstop>mOCSPCheckBtn</tabstop>
+  <tabstop>mOCSPClientBtn</tabstop>
+  <tabstop>mSaveToManBtn</tabstop>
+  <tabstop>mSaveToCABtn</tabstop>
+  <tabstop>mSaveTrustedCABtn</tabstop>
   <tabstop>mSaveBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
