@@ -25,6 +25,8 @@ OCSPClientDlg::OCSPClientDlg(QWidget *parent) :
     setupUi(this);
     memset( &cert_, 0x00, sizeof(BIN));
 
+    initUI();
+
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mUseSignCheck, SIGNAL(clicked()), this, SLOT(checkUseSign()));
     connect( mUseNonceCheck, SIGNAL(clicked()), this, SLOT(checkUseNonce()));
@@ -143,7 +145,7 @@ void OCSPClientDlg::checkEncPriKey()
     mPasswdText->setEnabled(bVal);
 }
 
-void OCSPClientDlg::initialize()
+void OCSPClientDlg::initUI()
 {
     SettingsMgr *setMgr = berApplet->settingsMgr();
 
@@ -165,8 +167,19 @@ void OCSPClientDlg::initialize()
     mSignCertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
 
     mSrvCertPathText->setPlaceholderText( tr("Select CertMan certificate") );
+    mNonceText->setPlaceholderText( tr("Hex value" ));
+
+    QRegExp regExp("^[0-9a-fA-F]*$");
+    QRegExpValidator* regVal = new QRegExpValidator( regExp );
+    mNonceText->setValidator( regVal );
+}
+
+void OCSPClientDlg::initialize()
+{
+
 
     checkUseSign();
+    checkUseNonce();
     checkEncPriKey();
 }
 
@@ -1001,7 +1014,17 @@ void OCSPClientDlg::clickEncode()
     }
 
     if( mUseNonceCheck->isChecked() )
-        getBINFromString( &binNonce, DATA_HEX, mNonceText->text() );
+    {
+        QString strNonce = mNonceText->text();
+        if( strNonce.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a nonce" ), this );
+            mNonceText->setFocus();
+            goto end;
+        }
+
+        getBINFromString( &binNonce, DATA_HEX, strNonce );
+    }
 
     if( cert_.nLen > 0 )
         JS_BIN_copy( &binCert, &cert_ );

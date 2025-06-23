@@ -69,6 +69,7 @@ private slots:
 
     void checkEncPriKey();
 private:
+    void initUI();
     void initialize();
 
     QStringList getUsedURL();

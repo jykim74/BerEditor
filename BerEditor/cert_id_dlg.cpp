@@ -13,6 +13,8 @@ CertIDDlg::CertIDDlg(QWidget *parent)
 
     memset( &resp_, 0x00, sizeof(BIN));
 
+    connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+
     initUI();
 
 #if defined(Q_OS_MAC)
@@ -124,8 +126,8 @@ void CertIDDlg::initUI()
     mIDTable->setHorizontalHeaderLabels( sBaseLabels );
     mIDTable->verticalHeader()->setVisible(false);
     mIDTable->horizontalHeader()->setStyleSheet( kTableStyle );
-    mIDTable->setSelectionBehavior(QAbstractItemView::SelectRows);
-    mIDTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+//    mIDTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+//    mIDTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     mStatusTable->clear();
     mStatusTable->horizontalHeader()->setStretchLastSection(true);

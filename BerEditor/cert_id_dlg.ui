@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>424</width>
-    <height>389</height>
+    <width>478</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -33,7 +33,7 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>140</height>
+       <height>100</height>
       </size>
      </property>
      <attribute name="horizontalHeaderHighlightSections">
@@ -66,7 +66,7 @@
     <widget class="QTableWidget" name="mStatusTable">
      <property name="minimumSize">
       <size>
-       <width>400</width>
+       <width>460</width>
        <height>0</height>
       </size>
      </property>
