@@ -4997,66 +4997,81 @@ mailto : jykim74@gmail.com</translation>
         <translation>값</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="121"/>
+        <location filename="../cert_pvd_dlg.cpp" line="117"/>
+        <source>Trust anchor certificate file path</source>
+        <translation>신뢰 앵커 인증서 파일 경로</translation>
+    </message>
+    <message>
+        <location filename="../cert_pvd_dlg.cpp" line="118"/>
+        <source>Intermediate CA certificate file path</source>
+        <translation>중간 CA 인증서 파일 경로</translation>
+    </message>
+    <message>
+        <location filename="../cert_pvd_dlg.cpp" line="119"/>
+        <source>CRL file path</source>
+        <translation>CRL 파일 경로</translation>
+    </message>
+    <message>
+        <location filename="../cert_pvd_dlg.cpp" line="125"/>
         <source>Select CertMan certificate</source>
         <translation>인증서 관리자 인증서 선택</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="207"/>
+        <location filename="../cert_pvd_dlg.cpp" line="211"/>
         <source>Trust RootCA List</source>
         <translation>신뢰 CA 목록</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="250"/>
+        <location filename="../cert_pvd_dlg.cpp" line="254"/>
         <source>The certificate verification (byCA) successful</source>
         <translation>인증서 검증에 성공 하였습니다 (CA검증)</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="255"/>
+        <location filename="../cert_pvd_dlg.cpp" line="259"/>
         <source>The certificate verification (byCA) failed: %1</source>
         <translation>인증서 검증에 실패 하였습니다 (CA검증) : %1</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="392"/>
+        <location filename="../cert_pvd_dlg.cpp" line="396"/>
         <source>Select a target certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="545"/>
+        <location filename="../cert_pvd_dlg.cpp" line="549"/>
         <source>Select target certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="537"/>
+        <location filename="../cert_pvd_dlg.cpp" line="541"/>
         <source>Select a certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="656"/>
+        <location filename="../cert_pvd_dlg.cpp" line="660"/>
         <source>The certificate path verification is successful.</source>
         <translation>인증서 검증에 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="661"/>
+        <location filename="../cert_pvd_dlg.cpp" line="665"/>
         <source>The certificate path verification failed [%1]</source>
         <translation>인증서 검증에 실패 하였습니다 [%1]</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="745"/>
-        <location filename="../cert_pvd_dlg.cpp" line="779"/>
+        <location filename="../cert_pvd_dlg.cpp" line="749"/>
+        <location filename="../cert_pvd_dlg.cpp" line="783"/>
         <source>Select CA certificate</source>
         <translation>CA 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="812"/>
+        <location filename="../cert_pvd_dlg.cpp" line="816"/>
         <source>Select CRL</source>
         <translation>CRL 을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="910"/>
-        <location filename="../cert_pvd_dlg.cpp" line="935"/>
-        <location filename="../cert_pvd_dlg.cpp" line="960"/>
-        <location filename="../cert_pvd_dlg.cpp" line="985"/>
+        <location filename="../cert_pvd_dlg.cpp" line="914"/>
+        <location filename="../cert_pvd_dlg.cpp" line="939"/>
+        <location filename="../cert_pvd_dlg.cpp" line="964"/>
+        <location filename="../cert_pvd_dlg.cpp" line="989"/>
         <source>failed to read data</source>
         <translation></translation>
     </message>

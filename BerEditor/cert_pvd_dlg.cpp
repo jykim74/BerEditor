@@ -114,6 +114,10 @@ void CertPVDDlg::initialize()
 
     mParamCombo->addItems( kParamList );
 
+    mTrustPathText->setPlaceholderText( tr( "Trust anchor certificate file path") );
+    mUntrustPathText->setPlaceholderText( tr( "Intermediate CA certificate file path" ));
+    mCRLPathText->setPlaceholderText( tr("CRL file path" ));
+
     checkATTime();
     checkUseTrustList();
 
