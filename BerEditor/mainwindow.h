@@ -45,6 +45,7 @@ class OCSPClientDlg;
 class TSPClientDlg;
 class CMPClientDlg;
 class SCEPClientDlg;
+class ACMEClientDlg;
 class CertManDlg;
 class TTLVEncoderDlg;
 class TTLVClientDlg;
@@ -159,6 +160,7 @@ public:
     void viewProtoTSP( bool bChecked );
     void viewProtoCMP( bool bChecked );
     void viewProtoSCEP( bool bChecked );
+    void viewProtoACME( bool bChecked );
 
     void viewKMIPDecodeTTLV( bool bChecked );
     void viewKMIPMakeTTLV( bool bChecked );
@@ -226,6 +228,7 @@ private slots:
     void tspClient();
     void cmpClient();
     void scepClient();
+    void acmeClient();
     void certMan();
     void keyList();
     void runMakeBER();
@@ -323,6 +326,7 @@ private:
     TSPClientDlg    *tsp_client_dlg_;
     CMPClientDlg    *cmp_client_dlg_;
     SCEPClientDlg   *scep_client_dlg_;
+    ACMEClientDlg   *acme_client_dlg_;
     CertManDlg      *cert_man_dlg_;
     TTLVEncoderDlg  *ttlv_encoder_dlg_;
     TTLVClientDlg   *ttlv_client_dlg_;
@@ -392,6 +396,7 @@ private:
     QAction* tsp_act_;
     QAction* cmp_act_;
     QAction* scep_act_;
+    QAction* acme_act_;
 
     QToolBar* kmip_tool_;
     QAction* ttlv_decode_act_;

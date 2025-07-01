@@ -43,6 +43,7 @@
 #include "tsp_client_dlg.h"
 #include "cmp_client_dlg.h"
 #include "scep_client_dlg.h"
+#include "acme_client_dlg.h"
 #include "cert_man_dlg.h"
 #include "common.h"
 #include "decode_ttlv_dlg.h"
@@ -639,6 +640,13 @@ void MainWindow::createViewActions()
     connect( protoSCEPAct, &QAction::triggered, this, &MainWindow::viewProtoSCEP );
     protoMenu->addAction( protoSCEPAct );
 
+    QAction *protoACMEAct = new QAction( tr( "ACME client"), this );
+    bVal = isView( ACT_PROTO_ACME );
+    protoACMEAct->setCheckable(true);
+    protoACMEAct->setChecked(bVal);
+    connect( protoACMEAct, &QAction::triggered, this, &MainWindow::viewProtoACME );
+    protoMenu->addAction( protoACMEAct );
+
     QAction *kmipDecodeTTLVAct = new QAction( tr( "Decode TTLV"), this );
     bVal = isView( ACT_KMIP_DECODE_TTLV );
     kmipDecodeTTLVAct->setCheckable(true);
@@ -1204,12 +1212,21 @@ void MainWindow::createActions()
     protoMenu->addAction( scep_act_ );
     if( isView( ACT_PROTO_SCEP ) ) proto_tool_->addAction( scep_act_ );
 
+    const QIcon acmeIcon = QIcon::fromTheme( "acme_client", QIcon(":/images/acme.png"));
+    acme_act_ = new QAction( acmeIcon, tr( "&ACME client"), this );
+    acme_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_A));
+    acme_act_->setStatusTip( tr( "ACME Client Tool" ));
+    connect( acme_act_, &QAction::triggered, this, &MainWindow::acmeClient );
+    protoMenu->addAction( acme_act_ );
+    if( isView( ACT_PROTO_ACME ) ) proto_tool_->addAction( acme_act_ );
+
     if( berApplet->isLicense() == false )
     {
         ocsp_act_->setEnabled( false );
         tsp_act_->setEnabled( false );
         cmp_act_->setEnabled( false );
         scep_act_->setEnabled( false );
+        acme_act_->setEnabled( false );
     }
 
     QMenu *kmipMenu = menuBar()->addMenu( tr("&KMIP" ));
@@ -1360,6 +1377,7 @@ void MainWindow::createCryptoDlg()
     tsp_client_dlg_ = new TSPClientDlg;
     cmp_client_dlg_ = new CMPClientDlg;
     scep_client_dlg_ = new SCEPClientDlg;
+    acme_client_dlg_ = new ACMEClientDlg;
     cert_man_dlg_ = new CertManDlg;
     ttlv_encoder_dlg_ = new TTLVEncoderDlg;
     ttlv_encoder_dlg_->setManage();
@@ -2388,6 +2406,13 @@ void MainWindow::scepClient()
     scep_client_dlg_->activateWindow();
 }
 
+void MainWindow::acmeClient()
+{
+    acme_client_dlg_->show();
+    acme_client_dlg_->raise();
+    acme_client_dlg_->activateWindow();
+}
+
 void MainWindow::certMan()
 {
     cert_man_dlg_->setMode( ManModeBase );
@@ -3203,6 +3228,20 @@ void MainWindow::viewProtoSCEP( bool bChecked )
     {
         proto_tool_->removeAction( scep_act_ );
         unsetView( ACT_PROTO_SCEP );
+    }
+}
+
+void MainWindow::viewProtoACME( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        proto_tool_->addAction( acme_act_ );
+        setView( ACT_PROTO_ACME );
+    }
+    else
+    {
+        proto_tool_->removeAction( acme_act_ );
+        unsetView( ACT_PROTO_ACME );
     }
 }
 

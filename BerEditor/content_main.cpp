@@ -38,7 +38,7 @@ static const QString kPKIXHost = "https://www.rfc-editor.org/rfc";
 
 static const QStringList kASN1List = { "EXPLICIT", "IMPLICIT", "OCSP", "TSP", "PKCS1", "PKCS7", "PKCS10", "PKCS12",
                                       "CMP", "CRMF", "ECDSA", "ECDSA_PRI_KEY" };
-static const QStringList kRFCList = { "RFC5280", "RFC5480", "RFC4210", "RFC4211", "RFC2560", "RFC3161", "RFC8894" };
+static const QStringList kRFCList = { "RFC5280", "RFC5480", "RFC4210", "RFC4211", "RFC2560", "RFC3161", "RFC8894", "RFC8555" };
 static const QStringList kPKIXList = { "PKCS#1:RFC8017", "PKCS#3:RFC2631", "PKCS#5:RFC2898", "PKCS#7:RFC5652",
                                       "PKCS#8:RFC5208", "PKCS#10:RFC2986", "PKCS#12:RFC7292" };
 

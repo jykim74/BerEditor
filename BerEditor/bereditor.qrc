@@ -97,5 +97,6 @@
         <file>images/keylist.png</file>
         <file>images/enc_key.png</file>
         <file>images/compare.png</file>
+        <file>images/acme.png</file>
     </qresource>
 </RCC>

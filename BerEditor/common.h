@@ -127,6 +127,7 @@ const QString kDecimalChars = "[0-9]";
 #define ACT_PROTO_TSP               VIEW_PROTO | 0x00000002
 #define ACT_PROTO_CMP               VIEW_PROTO | 0x00000004
 #define ACT_PROTO_SCEP              VIEW_PROTO | 0x00000008
+#define ACT_PROTO_ACME              VIEW_PROTO | 0x00000010
 
 #define ACT_KMIP_DECODE_TTLV        VIEW_KMIP | 0x00000001
 #define ACT_KMIP_MAKE_TTLV          VIEW_KMIP | 0x00000002
@@ -155,7 +156,7 @@ static const int kCryptDefault = ACT_CRYPT_HASH | ACT_CRYPT_MAC | ACT_CRYPT_ENC_
 static const int kServiceDefault = ACT_SERVICE_KEY_PAIR_MAN | ACT_SERVICE_CERT_MAN | \
                                    ACT_SERVICE_KEY_LIST | ACT_SERVICE_SSL_CHECK | ACT_SERVICE_X509_COMP;
 
-static const int kProtoDefault = 0;
+static const int kProtoDefault = ACT_PROTO_ACME;
 static const int kKMIPDefault = 0;
 static const int kHelpDefault = ACT_HELP_ABOUT;
 

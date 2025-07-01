@@ -177,8 +177,6 @@ void OCSPClientDlg::initUI()
 
 void OCSPClientDlg::initialize()
 {
-
-
     checkUseSign();
     checkUseNonce();
     checkEncPriKey();
