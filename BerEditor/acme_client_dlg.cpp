@@ -21,6 +21,7 @@
 #include "js_error.h"
 
 const QString kACMEUsedURL = "ACMEUsedURL";
+const QStringList kCmdList = { "", "new-account", "new_order", "challenge", "finalize-order" };
 
 ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     : QDialog(parent)
@@ -33,6 +34,8 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     connect( mSendBtn, SIGNAL(clicked()), this, SLOT(clickSend()));
     connect( mClearRequestBtn, SIGNAL(clicked()), this, SLOT(clickClearRequest()));
     connect( mClearResponseBtn, SIGNAL(clicked()), this, SLOT(clickClearResponse()));
+    connect( mRequestText, SIGNAL(textChanged()), this, SLOT(changeRequest()));
+    connect( mResponseText, SIGNAL(textChanged()), this, SLOT(changeResponse()));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -48,6 +51,8 @@ ACMEClientDlg::~ACMEClientDlg()
 
 void ACMEClientDlg::initUI()
 {
+    mCmdCombo->addItems( kCmdList );
+
     SettingsMgr *setMgr = berApplet->settingsMgr();
 
     mURLCombo->setEditable( true );
@@ -126,6 +131,20 @@ void ACMEClientDlg::clickClearResponse()
     mResponseText->clear();
 }
 
+void ACMEClientDlg::changeRequest()
+{
+    QString strReq = mRequestText->toPlainText();
+    QString strLen = getDataLenString( DATA_STRING, strReq );
+    mRequestLenText->setText( strLen );
+}
+
+void ACMEClientDlg::changeResponse()
+{
+    QString strRsp = mResponseText->toPlainText();
+    QString strLen = getDataLenString( DATA_STRING, strRsp );
+    mResponseLenText->setText( strLen );
+}
+
 void ACMEClientDlg::clickSend()
 {
     int ret = 0;
@@ -136,6 +155,8 @@ void ACMEClientDlg::clickSend()
 
     QString strReq = mRequestText->toPlainText();
     QString strURL = mURLCombo->currentText();
+    QString strCmd = mCmdCombo->currentText();
+    QString strLink;
 
     if( strURL.length() < 1 )
     {
@@ -151,9 +172,17 @@ void ACMEClientDlg::clickSend()
         goto end;
     }
 
+    strLink = strURL;
+
+    if( strCmd.length() > 0 )
+    {
+        strLink += "/";
+        strLink += strCmd;
+    }
+
     getBINFromString( &binReq, DATA_STRING, strReq );
 
-    ret = JS_HTTP_requestPostBin( strURL.toStdString().c_str(), "application/acme-request", &binReq, &nStatus, &binRsp );
+    ret = JS_HTTP_requestPostBin( strLink.toStdString().c_str(), "application/jose+json", &binReq, &nStatus, &binRsp );
     if( ret != 0 )
     {
         fprintf( stderr, "fail to request : %d\n", ret );
@@ -162,7 +191,8 @@ void ACMEClientDlg::clickSend()
 
     if( ret == 0 )
     {
-        mResponseText->setPlainText( getHexString( &binRsp ));
+        QString strRsp = getStringFromBIN( &binRsp, DATA_STRING );
+        mResponseText->setPlainText( strRsp );
         setUsedURL( strURL );
     }
     else

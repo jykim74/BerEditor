@@ -21,6 +21,8 @@ private slots:
     void clickClearURL();
     void clickClearRequest();
     void clickClearResponse();
+    void changeRequest();
+    void changeResponse();
 
 private:
     void initUI();
