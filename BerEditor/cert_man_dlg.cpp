@@ -633,8 +633,8 @@ void CertManDlg::loadEEList()
             continue;
         }
 
-        JS_UTIL_getDate( sCertInfo.uNotBefore, sNotBefore );
-        JS_UTIL_getDate( sCertInfo.uNotAfter, sNotAfter );
+        JS_UTIL_getDate( sCertInfo.tNotBefore, sNotBefore );
+        JS_UTIL_getDate( sCertInfo.tNotAfter, sNotAfter );
 
         mEE_CertTable->insertRow( row );
         mEE_CertTable->setRowHeight( row, 10 );
@@ -642,7 +642,7 @@ void CertManDlg::loadEEList()
         QTableWidgetItem *item1 = new QTableWidgetItem( sNotAfter );
         QTableWidgetItem *item2 = new QTableWidgetItem( sCertInfo.pIssuerName );
 
-        if( now > sCertInfo.uNotAfter )
+        if( now > sCertInfo.tNotAfter )
             item->setIcon(QIcon(":/images/cert_revoked.png" ));
         else
             item->setIcon(QIcon(":/images/cert.png" ));
@@ -729,15 +729,15 @@ void CertManDlg::loadOtherList()
             continue;
         }
 
-        JS_UTIL_getDate( sCertInfo.uNotBefore, sNotBefore );
-        JS_UTIL_getDate( sCertInfo.uNotAfter, sNotAfter );
+        JS_UTIL_getDate( sCertInfo.tNotBefore, sNotBefore );
+        JS_UTIL_getDate( sCertInfo.tNotAfter, sNotAfter );
 
         mOther_CertTable->insertRow( row );
         mOther_CertTable->setRowHeight( row, 10 );
 
         QTableWidgetItem *item = new QTableWidgetItem( sCertInfo.pSubjectName );
 
-        if( now > sCertInfo.uNotAfter )
+        if( now > sCertInfo.tNotAfter )
             item->setIcon(QIcon(":/images/cert_revoked.png" ));
         else
             item->setIcon(QIcon(":/images/cert.png" ));
@@ -822,14 +822,14 @@ void CertManDlg::loadCAList()
             continue;
         }
 
-        JS_UTIL_getDate( sCertInfo.uNotBefore, sNotBefore );
-        JS_UTIL_getDate( sCertInfo.uNotAfter, sNotAfter );
+        JS_UTIL_getDate( sCertInfo.tNotBefore, sNotBefore );
+        JS_UTIL_getDate( sCertInfo.tNotAfter, sNotAfter );
 
         mCA_CertTable->insertRow( row );
         mCA_CertTable->setRowHeight( row, 10 );
         QTableWidgetItem *item = new QTableWidgetItem( sCertInfo.pSubjectName );
 
-        if( now > sCertInfo.uNotAfter )
+        if( now > sCertInfo.tNotAfter )
             item->setIcon(QIcon(":/images/cert_revoked.png" ));
         else
             item->setIcon(QIcon(":/images/cert.png" ));
@@ -886,14 +886,14 @@ void CertManDlg::loadCRLList()
             continue;
         }
 
-        JS_UTIL_getDate( sCRLInfo.uThisUpdate, sThisUpdate );
-        JS_UTIL_getDate( sCRLInfo.uNextUpdate, sNextUpdate );
+        JS_UTIL_getDate( sCRLInfo.tThisUpdate, sThisUpdate );
+        JS_UTIL_getDate( sCRLInfo.tNextUpdate, sNextUpdate );
 
         mCRL_Table->insertRow( row );
         mCRL_Table->setRowHeight( row, 10 );
         QTableWidgetItem *item = new QTableWidgetItem( sCRLInfo.pIssuerName );
 
-        if( now > sCRLInfo.uNextUpdate )
+        if( now > sCRLInfo.tNextUpdate )
             item->setIcon(QIcon(":/images/crl_expired.png" ));
         else
             item->setIcon(QIcon(":/images/crl.png" ));
@@ -978,14 +978,14 @@ void CertManDlg::loadTrustList()
             continue;
         }
 
-        JS_UTIL_getDate( sCertInfo.uNotBefore, sNotBefore );
-        JS_UTIL_getDate( sCertInfo.uNotAfter, sNotAfter );
+        JS_UTIL_getDate( sCertInfo.tNotBefore, sNotBefore );
+        JS_UTIL_getDate( sCertInfo.tNotAfter, sNotAfter );
 
         mRCA_CertTable->insertRow( row );
         mRCA_CertTable->setRowHeight( row, 10 );
         QTableWidgetItem *item = new QTableWidgetItem( strName );
 
-        if( now > sCertInfo.uNotAfter )
+        if( now > sCertInfo.tNotAfter )
             item->setIcon(QIcon(":/images/cert_revoked.png" ));
         else
             item->setIcon(QIcon(":/images/cert.png" ));

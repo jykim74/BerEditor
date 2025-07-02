@@ -257,14 +257,14 @@ void CRLInfoDlg::initialize()
     }
 
 
-    JS_UTIL_getDateTime( crl_info_.uThisUpdate, sThisUpdate );
+    JS_UTIL_getDateTime( crl_info_.tThisUpdate, sThisUpdate );
     mCRLListTable->insertRow(i);
     mCRLListTable->setRowHeight(i,10);
     mCRLListTable->setItem( i, 0, new QTableWidgetItem( tr("ThisUpdate")));
     mCRLListTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(sThisUpdate)));
     i++;
 
-    JS_UTIL_getDateTime( crl_info_.uNextUpdate, sNextUpdate );
+    JS_UTIL_getDateTime( crl_info_.tNextUpdate, sNextUpdate );
     mCRLListTable->insertRow(i);
     mCRLListTable->setRowHeight(i,10);
     mCRLListTable->setItem( i, 0, new QTableWidgetItem( tr("NextUpdate")));
