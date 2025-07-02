@@ -274,14 +274,14 @@ void CertInfoDlg::getFields()
             i++;
         }
 
-        JS_UTIL_getDateTime( cert_info_.uNotBefore, sNotBefore );
+        JS_UTIL_getDateTime( cert_info_.tNotBefore, sNotBefore );
         mFieldTable->insertRow(i);
         mFieldTable->setRowHeight(i,10);
         mFieldTable->setItem( i, 0, new QTableWidgetItem( tr("NotBefore")));
         mFieldTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(sNotBefore)));
         i++;
 
-        JS_UTIL_getDateTime( cert_info_.uNotAfter, sNotAfter );
+        JS_UTIL_getDateTime( cert_info_.tNotAfter, sNotAfter );
         mFieldTable->insertRow(i);
         mFieldTable->setRowHeight(i,10);
         mFieldTable->setItem( i, 0, new QTableWidgetItem( tr("NotAfter")));

@@ -500,14 +500,14 @@ void CMSInfoDlg::setSigned()
         ret = JS_PKI_getCertInfo( &sSignedData.pCertList[i], &sCertInfo, NULL );
         if( ret != 0 ) continue;
 
-        JS_UTIL_getDate( sCertInfo.uNotBefore, sNotBefore );
-        JS_UTIL_getDate( sCertInfo.uNotAfter, sNotAfter );
+        JS_UTIL_getDate( sCertInfo.tNotBefore, sNotBefore );
+        JS_UTIL_getDate( sCertInfo.tNotAfter, sNotAfter );
 
         mCertTable->insertRow( i );
         mCertTable->setRowHeight( i, 10 );
         QTableWidgetItem *item = new QTableWidgetItem( sCertInfo.pSubjectName );
 
-        if( now > sCertInfo.uNotAfter )
+        if( now > sCertInfo.tNotAfter )
             item->setIcon(QIcon(":/images/cert_revoked.png" ));
         else
             item->setIcon(QIcon(":/images/cert.png" ));
@@ -533,14 +533,14 @@ void CMSInfoDlg::setSigned()
         ret = JS_PKI_getCRLInfo( &sSignedData.pCRLList[i], &sCRLInfo, NULL, NULL );
         if( ret != 0 ) continue;
 
-        JS_UTIL_getDate( sCRLInfo.uThisUpdate, sThisUpdate );
-        JS_UTIL_getDate( sCRLInfo.uNextUpdate, sNextUpdate );
+        JS_UTIL_getDate( sCRLInfo.tThisUpdate, sThisUpdate );
+        JS_UTIL_getDate( sCRLInfo.tNextUpdate, sNextUpdate );
 
         mCRLTable->insertRow( i );
         mCRLTable->setRowHeight( i, 10 );
         QTableWidgetItem *item = new QTableWidgetItem( sCRLInfo.pIssuerName );
 
-        if( now > sCRLInfo.uNextUpdate )
+        if( now > sCRLInfo.tNextUpdate )
             item->setIcon(QIcon(":/images/crl_expired.png" ));
         else
             item->setIcon(QIcon(":/images/crl.png" ));
@@ -677,14 +677,14 @@ void CMSInfoDlg::setSignedAndEnveloped()
         ret = JS_PKI_getCertInfo( &sSignAndEnveloped.pCertList[i], &sCertInfo, NULL );
         if( ret != 0 ) continue;
 
-        JS_UTIL_getDate( sCertInfo.uNotBefore, sNotBefore );
-        JS_UTIL_getDate( sCertInfo.uNotAfter, sNotAfter );
+        JS_UTIL_getDate( sCertInfo.tNotBefore, sNotBefore );
+        JS_UTIL_getDate( sCertInfo.tNotAfter, sNotAfter );
 
         mCertTable->insertRow( i );
         mCertTable->setRowHeight( i, 10 );
         QTableWidgetItem *item = new QTableWidgetItem( sCertInfo.pSubjectName );
 
-        if( now > sCertInfo.uNotAfter )
+        if( now > sCertInfo.tNotAfter )
             item->setIcon(QIcon(":/images/cert_revoked.png" ));
         else
             item->setIcon(QIcon(":/images/cert.png" ));
@@ -710,14 +710,14 @@ void CMSInfoDlg::setSignedAndEnveloped()
         ret = JS_PKI_getCRLInfo( &sSignAndEnveloped.pCRLList[i], &sCRLInfo, NULL, NULL );
         if( ret != 0 ) continue;
 
-        JS_UTIL_getDate( sCRLInfo.uThisUpdate, sThisUpdate );
-        JS_UTIL_getDate( sCRLInfo.uNextUpdate, sNextUpdate );
+        JS_UTIL_getDate( sCRLInfo.tThisUpdate, sThisUpdate );
+        JS_UTIL_getDate( sCRLInfo.tNextUpdate, sNextUpdate );
 
         mCRLTable->insertRow( i );
         mCRLTable->setRowHeight( i, 10 );
         QTableWidgetItem *item = new QTableWidgetItem( sCRLInfo.pIssuerName );
 
-        if( now > sCRLInfo.uNextUpdate )
+        if( now > sCRLInfo.tNextUpdate )
             item->setIcon(QIcon(":/images/crl_expired.png" ));
         else
             item->setIcon(QIcon(":/images/crl.png" ));

@@ -625,9 +625,9 @@ int SSLCheckDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )
 
     log( QString( "Subject Name        : %1" ).arg( sCertInfo.pSubjectName ));
 
-    JS_UTIL_getDate( sCertInfo.uNotBefore, sNotBefore );
-    JS_UTIL_getDate( sCertInfo.uNotAfter, sNotAfter );
-    left_t = ( sCertInfo.uNotAfter - now_t );
+    JS_UTIL_getDate( sCertInfo.tNotBefore, sNotBefore );
+    JS_UTIL_getDate( sCertInfo.tNotAfter, sNotAfter );
+    left_t = ( sCertInfo.tNotAfter - now_t );
 
     if( left_t > 0 )
     {

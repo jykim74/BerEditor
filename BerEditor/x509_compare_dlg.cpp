@@ -436,8 +436,8 @@ int X509CompareDlg::compareCert()
         i++;
     }
 
-    JS_UTIL_getDateTime( ACertInfo.uNotBefore, sNotBeforeA );
-    JS_UTIL_getDateTime( BCertInfo.uNotBefore, sNotBeforeB );
+    JS_UTIL_getDateTime( ACertInfo.tNotBefore, sNotBeforeA );
+    JS_UTIL_getDateTime( BCertInfo.tNotBefore, sNotBeforeB );
 
     mCompareTable->insertRow(i);
     mCompareTable->setRowHeight(i,10);
@@ -459,8 +459,8 @@ int X509CompareDlg::compareCert()
     mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
     i++;
 
-    JS_UTIL_getDateTime( ACertInfo.uNotAfter, sNotAfterA );
-    JS_UTIL_getDateTime( BCertInfo.uNotAfter, sNotAfterB );
+    JS_UTIL_getDateTime( ACertInfo.tNotAfter, sNotAfterA );
+    JS_UTIL_getDateTime( BCertInfo.tNotAfter, sNotAfterB );
 
     mCompareTable->insertRow(i);
     mCompareTable->setRowHeight(i,10);
@@ -721,15 +721,15 @@ int X509CompareDlg::compareCRL()
     }
 
 
-    JS_UTIL_getDateTime( ACRLInfo.uThisUpdate, sThisUpdateA );
-    JS_UTIL_getDateTime( BCRLInfo.uThisUpdate, sThisUpdateB );
+    JS_UTIL_getDateTime( ACRLInfo.tThisUpdate, sThisUpdateA );
+    JS_UTIL_getDateTime( BCRLInfo.tThisUpdate, sThisUpdateB );
 
     mCompareTable->insertRow(i);
     mCompareTable->setRowHeight(i,10);
     mCompareTable->setItem( i, 0, new QTableWidgetItem( tr("ThisUpdate")));
     mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(sThisUpdateA)));
     mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(sThisUpdateB)));
-    if( ACRLInfo.uThisUpdate == BCRLInfo.uThisUpdate )
+    if( ACRLInfo.tThisUpdate == BCRLInfo.tThisUpdate )
     {
         mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
         strIcon = kValidIcon;
@@ -743,15 +743,15 @@ int X509CompareDlg::compareCRL()
     mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
     i++;
 
-    JS_UTIL_getDateTime( ACRLInfo.uNextUpdate, sNextUpdateA );
-    JS_UTIL_getDateTime( BCRLInfo.uNextUpdate, sNextUpdateB );
+    JS_UTIL_getDateTime( ACRLInfo.tNextUpdate, sNextUpdateA );
+    JS_UTIL_getDateTime( BCRLInfo.tNextUpdate, sNextUpdateB );
 
     mCompareTable->insertRow(i);
     mCompareTable->setRowHeight(i,10);
     mCompareTable->setItem( i, 0, new QTableWidgetItem( tr("NextUpdate")));
     mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(sNextUpdateA)));
     mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(sNextUpdateB)));
-    if( ACRLInfo.uNextUpdate == BCRLInfo.uNextUpdate )
+    if( ACRLInfo.tNextUpdate == BCRLInfo.tNextUpdate )
     {
         mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
         strIcon = kValidIcon;
