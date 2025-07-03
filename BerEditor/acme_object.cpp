@@ -54,6 +54,23 @@ void ACMEObject::setPayload( const QString strStatus,
     mPayload = jDoc.toJson();
 }
 
+void ACMEObject::setProtected( const QString strAlg,
+                  const QString strKid,
+                  const QString strNonce,
+                  const QString strURL )
+{
+    QJsonDocument jDoc;
+    QJsonObject jObj;
+
+    jObj["alg"] = strAlg;
+    jObj["kid"] = strKid;
+    jObj["nonce"] = strNonce;
+    jObj["url"] = strURL;
+
+    jDoc.setObject( jObj );
+    mProtected = jDoc.toJson();
+}
+
 const QString ACMEObject::getJson()
 {
     QJsonDocument jDoc;

@@ -23,6 +23,11 @@ public:
                     bool bTermsOfServiceAgreed,
                     const QString strOrders );
 
+    void setProtected( const QString strAlg,
+                      const QString strKid,
+                      const QString strNonce,
+                      const QString strURL );
+
     const QString getJson();
 
     static const QString getJWK( const BIN *pPub );
