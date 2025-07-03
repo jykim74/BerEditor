@@ -144,6 +144,8 @@ void KeyPairManDlg::setMode( int nMode )
         connect( mKeyPairTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickOK()));
 
         mModeLabel->setText( tr("Select") );
+        setGroupHide( true );
+        mTabWidget->setTabEnabled( 1, false );
         mOKBtn->show();
     }
     else
@@ -151,6 +153,8 @@ void KeyPairManDlg::setMode( int nMode )
         connect( mKeyPairTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickLViewPriKey()));
 
         mModeLabel->setText( tr("Manage") );
+        setGroupHide( false );
+        mTabWidget->setTabEnabled( 1, true );
         mOKBtn->hide();
     }
 }
@@ -209,7 +213,7 @@ void KeyPairManDlg::keyTypeChanged( int index )
 
 void KeyPairManDlg::initialize()
 {
-    tabWidget->setCurrentIndex(0);
+    mTabWidget->setCurrentIndex(0);
 
     QString strKeyPairPath = berApplet->settingsMgr()->keyPairPath();
     mSavePathText->setText( strKeyPairPath );
@@ -217,6 +221,14 @@ void KeyPairManDlg::initialize()
     mVersionCombo->addItems(kVersionList);
 
     loadKeyPairList();
+}
+
+void KeyPairManDlg::setGroupHide( bool bHide )
+{
+    if( bHide == true )
+        mListManGroup->hide();
+    else
+        mListManGroup->show();
 }
 
 const QString KeyPairManDlg::getSelectedPath()
