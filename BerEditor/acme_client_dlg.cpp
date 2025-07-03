@@ -177,16 +177,21 @@ void ACMEClientDlg::clickGetNonce()
     const char *pHeaderName = "Replay-Nonce";
 //    QString strURL = mURLCombo->currentText();
     QString strURL = "https://localhost:14000/nonce-plz";
+    char *pNonce = NULL;
 
     QUrl url( strURL );
 
-    QString strNonce = JS_HTTP_requestGetRspHeaderValue(
+    JS_HTTP_requestGetRspHeaderValue(
         strURL.toStdString().c_str(),
         NULL,
         NULL,
-        pHeaderName );
+        pHeaderName, &pNonce );
 
-    mNonceText->setText( strNonce );
+    if( pNonce )
+    {
+        mNonceText->setText( pNonce );
+        JS_free( pNonce );
+    }
 }
 
 void ACMEClientDlg::clickMake()
