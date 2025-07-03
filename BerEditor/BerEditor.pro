@@ -113,7 +113,8 @@ SOURCES += \
     cavp_dlg2.cpp \
     x509_compare_dlg.cpp \
     cert_id_dlg.cpp \
-    acme_client_dlg.cpp
+    acme_client_dlg.cpp \
+    acme_object.cpp
 
 HEADERS += \
     about_dlg.h \
@@ -194,7 +195,8 @@ HEADERS += \
     cavp_dlg.h \
     x509_compare_dlg.h \
     cert_id_dlg.h \
-    acme_client_dlg.h
+    acme_client_dlg.h \
+    acme_object.h
 
 
 

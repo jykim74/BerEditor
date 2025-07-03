@@ -17,12 +17,15 @@ public:
     ~ACMEClientDlg();
 
 private slots:
+    void clickGetNonce();
+    void clickMake();
     void clickSend();
     void clickClearURL();
     void clickClearRequest();
     void clickClearResponse();
     void changeRequest();
     void changeResponse();
+    void clickParse();
 
 private:
     void initUI();

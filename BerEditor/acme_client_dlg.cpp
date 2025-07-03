@@ -11,6 +11,8 @@
 #include "cert_man_dlg.h"
 #include "pri_key_info_dlg.h"
 #include "cert_id_dlg.h"
+#include "key_pair_man_dlg.h"
+#include "acme_object.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -21,7 +23,9 @@
 #include "js_error.h"
 
 const QString kACMEUsedURL = "ACMEUsedURL";
-const QStringList kCmdList = { "", "new-account", "new_order", "challenge", "finalize-order" };
+const QStringList kCmdList = { "", "newAccout", "newNonce", "newOrder", "renewalInfo", "revokeCert" };
+const QStringList kMethodList = { "POST", "GET" };
+const QStringList kParserList = { "dir", "error" };
 
 ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     : QDialog(parent)
@@ -31,11 +35,14 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mURLClearBtn, SIGNAL(clicked()), this, SLOT(clickClearURL()));
+    connect( mGetNonceBtn, SIGNAL(clicked()), this, SLOT(clickGetNonce()));
+    connect( mMakeBtn, SIGNAL(clicked()), this, SLOT(clickMake()));
     connect( mSendBtn, SIGNAL(clicked()), this, SLOT(clickSend()));
     connect( mClearRequestBtn, SIGNAL(clicked()), this, SLOT(clickClearRequest()));
     connect( mClearResponseBtn, SIGNAL(clicked()), this, SLOT(clickClearResponse()));
     connect( mRequestText, SIGNAL(textChanged()), this, SLOT(changeRequest()));
     connect( mResponseText, SIGNAL(textChanged()), this, SLOT(changeResponse()));
+    connect( mParserBtn, SIGNAL(clicked()), this, SLOT(clickParse()));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -52,6 +59,8 @@ ACMEClientDlg::~ACMEClientDlg()
 void ACMEClientDlg::initUI()
 {
     mCmdCombo->addItems( kCmdList );
+    mMethodCombo->addItems( kMethodList );
+    mRspCombo->addItems( kParserList );
 
     SettingsMgr *setMgr = berApplet->settingsMgr();
 
@@ -145,6 +154,71 @@ void ACMEClientDlg::changeResponse()
     mResponseLenText->setText( strLen );
 }
 
+void ACMEClientDlg::clickParse()
+{
+    QJsonDocument jsonDoc;
+
+    QString strRsp = mResponseText->toPlainText();
+    QString strParse = mRspCombo->currentText();
+
+    if( strRsp.length() < 1 )
+    {
+        berApplet->warningBox( tr( "There is no response"), this );
+        mResponseText->setFocus();
+        return;
+    }
+
+    jsonDoc = QJsonDocument::fromJson( strRsp.toLocal8Bit() );
+    berApplet->log( jsonDoc.toJson() );
+}
+
+void ACMEClientDlg::clickGetNonce()
+{
+    const char *pHeaderName = "Replay-Nonce";
+//    QString strURL = mURLCombo->currentText();
+    QString strURL = "https://localhost:14000/nonce-plz";
+
+    QUrl url( strURL );
+
+    QString strNonce = JS_HTTP_requestGetRspHeaderValue(
+        strURL.toStdString().c_str(),
+        NULL,
+        NULL,
+        pHeaderName );
+
+    mNonceText->setText( strNonce );
+}
+
+void ACMEClientDlg::clickMake()
+{
+    BIN binPub = {0,0};
+    BIN binPri = {0,0};
+    ACMEObject acmeObj;
+
+    KeyPairManDlg keyPairMan;
+    keyPairMan.setTitle( tr( "Select keypair" ));
+    keyPairMan.setMode( KeyPairModeSelect );
+
+    if( keyPairMan.exec() != QDialog::Accepted )
+        return;
+
+    QString strPubPath = keyPairMan.getPubPath();
+    QString strPriPath = keyPairMan.getPriPath();
+
+    JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPub );
+
+    acmeObj.setPayload( "Payload" );
+    acmeObj.setProtected( "protected" );
+    acmeObj.setSignature( "Signature" );
+
+    mRequestText->setPlainText( acmeObj.getJson() );
+
+end :
+    JS_BIN_reset( &binPub );
+    JS_BIN_reset( &binPri );
+}
+
 void ACMEClientDlg::clickSend()
 {
     int ret = 0;
@@ -156,6 +230,8 @@ void ACMEClientDlg::clickSend()
     QString strReq = mRequestText->toPlainText();
     QString strURL = mURLCombo->currentText();
     QString strCmd = mCmdCombo->currentText();
+    QString strMethod = mMethodCombo->currentText();
+
     QString strLink;
 
     if( strURL.length() < 1 )
@@ -165,7 +241,7 @@ void ACMEClientDlg::clickSend()
         goto end;
     }
 
-    if( strReq.length() < 1 )
+    if( strMethod == "POST" && strReq.length() < 1 )
     {
         berApplet->warningBox( tr("There is no request" ), this );
         mRequestText->setFocus();
@@ -182,7 +258,11 @@ void ACMEClientDlg::clickSend()
 
     getBINFromString( &binReq, DATA_STRING, strReq );
 
-    ret = JS_HTTP_requestPostBin( strLink.toStdString().c_str(), "application/jose+json", &binReq, &nStatus, &binRsp );
+    if( strMethod == "POST" )
+        ret = JS_HTTP_requestPostBin( strLink.toStdString().c_str(), "application/jose+json", &binReq, &nStatus, &binRsp );
+    else
+        ret = JS_HTTP_requestGetBin2( strLink.toStdString().c_str(), NULL, NULL, &nStatus, &binRsp );
+
     if( ret != 0 )
     {
         fprintf( stderr, "fail to request : %d\n", ret );

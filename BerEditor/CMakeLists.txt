@@ -212,6 +212,7 @@ add_executable(${PROJECT_NAME}
     x509_compare_dlg.h x509_compare_dlg.cpp x509_compare_dlg.ui
     cert_id_dlg.h cert_id_dlg.cpp cert_id_dlg.ui
     acme_client_dlg.h acme_client_dlg.cpp acme_client_dlg.ui
+    acme_object.h acme_object.cpp
 
 )
 
