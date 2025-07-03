@@ -123,9 +123,9 @@
     </widget>
    </item>
    <item>
-    <widget class="QTabWidget" name="tabWidget">
+    <widget class="QTabWidget" name="mTabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabList">
       <attribute name="title">
@@ -1012,7 +1012,7 @@
  <tabstops>
   <tabstop>mSavePathText</tabstop>
   <tabstop>mKeyTypeCombo</tabstop>
-  <tabstop>tabWidget</tabstop>
+  <tabstop>mTabWidget</tabstop>
   <tabstop>mKeyPairTable</tabstop>
   <tabstop>mLGenKeyPairBtn</tabstop>
   <tabstop>mLDecodePubKeyBtn</tabstop>

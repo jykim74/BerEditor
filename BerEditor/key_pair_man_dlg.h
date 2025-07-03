@@ -96,6 +96,9 @@ private slots:
 private:
     void initUI();
     void initialize();
+
+    void setGroupHide( bool bHide = true );
+
     const QString getTypePathName( qint64 now_t, DerType nType );
     int Save( qint64 tTime, DerType nType, const QString strHex );
     int Save( qint64 tTime, DerType nType, const BIN *pBin );
