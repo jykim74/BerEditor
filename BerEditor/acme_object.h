@@ -2,6 +2,7 @@
 #define ACME_OBJECT_H
 
 #include <QObject>
+#include "js_bin.h"
 
 class ACMEObject : public QObject
 {
@@ -17,7 +18,14 @@ public:
     void setPayload( const QString strPayload );
     void setSignature( const QString strSignature );
 
+    void setPayload( const QString strStatus,
+                    const QStringList listEmail,
+                    bool bTermsOfServiceAgreed,
+                    const QString strOrders );
+
     const QString getJson();
+
+    static const QString getJWK( const BIN *pPub );
 
 private:
     QString mProtected;

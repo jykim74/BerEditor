@@ -279,6 +279,22 @@ QString getHexView( const char *pName, const BIN *pBin )
     return strOut;
 }
 
+QString getBase64URL_FromHex( const QString strHex )
+{
+    BIN binData = {0,0};
+    char *pValue = NULL;
+    QString strValue;
+
+    JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
+    JS_BIN_encodeBase64URL( &binData, &pValue );
+    strValue = pValue;
+
+    if( pValue ) JS_free( pValue );
+    JS_BIN_reset( &binData );
+
+    return strValue;
+}
+
 const QString getHexStringArea( unsigned char *pData, int nDataLen, int nWidth  )
 {
     QString strMsg = getHexString( pData, nDataLen );

@@ -229,6 +229,7 @@ QString getHexString( unsigned char *pData, int nDataLen );
 QString getHexString( const BIN *pData );
 QString getHexString2( const BIN *pData );
 QString getHexView( const char *pName, const BIN *pBin );
+QString getBase64URL_FromHex( const QString strHex );
 
 const QString getHexStringArea( unsigned char *pData, int nDataLen, int nWidth = -1 );
 const QString getHexStringArea( const BIN *pData, int nWidth = -1 );
