@@ -113,11 +113,7 @@ void SCEPClientDlg::initialize()
 
     mURLCombo->setEditable( true );
     QStringList usedList = getUsedURL();
-    for( int i = 0; i < usedList.size(); i++ )
-    {
-        QString url = usedList.at(i);
-        if( url.length() > 4 ) mURLCombo->addItem( url );
-    }
+    mURLCombo->addItems( usedList );
 
     JS_SCEP_init();
     checkEncPriKey();

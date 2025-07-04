@@ -309,11 +309,7 @@ void SSLCheckDlg::initialize()
 
     mURLCombo->setEditable( true );
     QStringList usedList = getUsedURL();
-    for( int i = 0; i < usedList.size(); i++ )
-    {
-        QString url = usedList.at(i);
-        if( url.length() > 4 ) mURLCombo->addItem( url );
-    }
+    mURLCombo->addItems( usedList );
 
     mURLCombo->setCurrentText("");
 
@@ -840,14 +836,6 @@ void SSLCheckDlg::clickCheck()
     if( strHost.length() > 3 )
     {
         setUsedURL( strURL );
-        mURLCombo->clear();
-        QStringList urlList = getUsedURL();
-
-        for( int i = 0; i < urlList.size(); i++ )
-        {
-            QString url = urlList.at(i);
-            if( url.length() > 4 ) mURLCombo->addItem( url );
-        }
     }
 
     if( ret == JSR_VERIFY)
