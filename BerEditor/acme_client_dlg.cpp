@@ -36,6 +36,7 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mURLClearBtn, SIGNAL(clicked()), this, SLOT(clickClearURL()));
     connect( mGetNonceBtn, SIGNAL(clicked()), this, SLOT(clickGetNonce()));
+    connect( mGetDirBtn, SIGNAL(clicked()), this, SLOT(clickGetDirectory()));
     connect( mMakeBtn, SIGNAL(clicked()), this, SLOT(clickMake()));
     connect( mSendBtn, SIGNAL(clicked()), this, SLOT(clickSend()));
     connect( mClearRequestBtn, SIGNAL(clicked()), this, SLOT(clickClearRequest()));
@@ -43,6 +44,7 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     connect( mRequestText, SIGNAL(textChanged()), this, SLOT(changeRequest()));
     connect( mResponseText, SIGNAL(textChanged()), this, SLOT(changeResponse()));
     connect( mParserBtn, SIGNAL(clicked()), this, SLOT(clickParse()));
+    connect( mCmdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeCmd(int)));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -58,7 +60,6 @@ ACMEClientDlg::~ACMEClientDlg()
 
 void ACMEClientDlg::initUI()
 {
-    mCmdCombo->addItems( kCmdList );
     mMethodCombo->addItems( kMethodList );
     mRspCombo->addItems( kParserList );
 
@@ -93,12 +94,6 @@ QStringList ACMEClientDlg::getUsedURL()
 void ACMEClientDlg::setUsedURL( const QString strURL )
 {
     if( strURL.length() <= 4 ) return;
-
-    for( int i = 0; i < mURLCombo->count(); i++ )
-    {
-        QString strPosURL = mURLCombo->itemText(i);
-        if( strURL == strPosURL ) return;
-    }
 
     QSettings settings;
     settings.beginGroup( kSettingBer );
@@ -172,6 +167,12 @@ void ACMEClientDlg::clickParse()
     berApplet->log( jsonDoc.toJson() );
 }
 
+void ACMEClientDlg::changeCmd( int index )
+{
+    QString strURL = mCmdCombo->currentData().toString();
+    mCmdText->setText( strURL );
+}
+
 void ACMEClientDlg::clickGetNonce()
 {
     const char *pHeaderName = "Replay-Nonce";
@@ -192,6 +193,60 @@ void ACMEClientDlg::clickGetNonce()
         mNonceText->setText( pNonce );
         JS_free( pNonce );
     }
+}
+
+void ACMEClientDlg::clickGetDirectory()
+{
+    int ret = 0;
+    int nStatus = 0;
+    BIN binRsp = {0,0};
+    QJsonDocument   jDoc;
+    QJsonObject     jObj;
+    QString strRsp;
+    QStringList listKeys;
+
+    QString strURL = mURLCombo->currentText();
+
+    if( strURL.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Insert ACME URL"), this );
+        mURLCombo->setFocus();
+        goto end;
+    }
+
+    ret = JS_HTTP_requestGetBin2( strURL.toStdString().c_str(), NULL, NULL, &nStatus, &binRsp );
+
+    if( ret == 0 )
+    {
+        strRsp = getStringFromBIN( &binRsp, DATA_STRING );
+        mResponseText->setPlainText( strRsp );
+        setUsedURL( strURL );
+    }
+    else
+    {
+        berApplet->warnLog( tr( "fail to send a request to ACME server: %1").arg( ret), this );
+        goto end;
+    }
+
+    jDoc = QJsonDocument::fromJson( strRsp.toLocal8Bit() );
+    jObj = jDoc.object();
+
+    listKeys = jObj.keys();
+    mCmdCombo->clear();
+
+    for( int i = 0; i < listKeys.size(); i++ )
+    {
+        QString strCmd = listKeys.at(i);
+        berApplet->log( QString( "Key: %1").arg( listKeys.at(i)));
+        QString strValue = jObj[strCmd].toString();
+        berApplet->log( QString( "Value: %1" ).arg( strValue ));
+
+        if( strCmd != "meta" )
+            mCmdCombo->addItem( strCmd, strValue );
+    }
+
+end :
+    JS_BIN_reset( &binRsp );
 }
 
 void ACMEClientDlg::clickMake()
@@ -268,11 +323,6 @@ void ACMEClientDlg::clickSend()
     else
         ret = JS_HTTP_requestGetBin2( strLink.toStdString().c_str(), NULL, NULL, &nStatus, &binRsp );
 
-    if( ret != 0 )
-    {
-        fprintf( stderr, "fail to request : %d\n", ret );
-        goto end;
-    }
 
     if( ret == 0 )
     {

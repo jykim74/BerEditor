@@ -18,6 +18,7 @@ public:
 
 private slots:
     void clickGetNonce();
+    void clickGetDirectory();
     void clickMake();
     void clickSend();
     void clickClearURL();
@@ -26,6 +27,7 @@ private slots:
     void changeRequest();
     void changeResponse();
     void clickParse();
+    void changeCmd( int index );
 
 private:
     void initUI();
