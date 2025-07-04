@@ -380,6 +380,9 @@ void SSLCheckDlg::setUsedURL( const QString strURL )
     list.insert( 0, strURL );
     settings.setValue( kTLSUsedURL, list );
     settings.endGroup();
+
+    mURLCombo->clear();
+    mURLCombo->addItems( list );
 }
 
 int SSLCheckDlg::verifyURL( const QString strHost, int nPort, BIN *pCA )

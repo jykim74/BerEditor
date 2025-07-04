@@ -96,6 +96,9 @@ void GetURIDlg::saveUsedURI( const QString &strURL )
     list.insert( 0, strURL );
     settings.setValue( kGetUsedURL, list );
     settings.endGroup();
+
+    mURICombo->clear();
+    mURICombo->addItems( list );
 }
 
 void GetURIDlg::runGet()
