@@ -817,10 +817,14 @@ static int _getBC( const BIN *pBinExt, bool bShow, QString& strVal )
     if( bShow )
     {
         strVal = QString( "SubjectType=%1\n").arg(strType);
+
         if( nPathLen >= 0 )
             strVal += QString( "PathLengthConstraint=%1" ).arg(nPathLen);
         else
-            strVal += QString( "PathLengthConstraint=None" );
+        {
+            if( strType == "CA" )
+                strVal += QString( "PathLengthConstraint=None" );
+        }
     }
     else
     {
