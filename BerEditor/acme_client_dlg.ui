@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>518</width>
-    <height>623</height>
+    <width>564</width>
+    <height>804</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,6 +30,13 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_2">
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mURLClearBtn">
+       <property name="text">
+        <string>Clear</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
@@ -48,9 +55,9 @@
       </widget>
      </item>
      <item row="0" column="2">
-      <widget class="QPushButton" name="mURLClearBtn">
+      <widget class="QPushButton" name="mGetDirBtn">
        <property name="text">
-        <string>Clear</string>
+        <string>Directory</string>
        </property>
       </widget>
      </item>
@@ -162,18 +169,11 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="mGetDirBtn">
-       <property name="text">
-        <string>GetDirectory</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
       <widget class="QComboBox" name="mCmdCombo">
        <property name="minimumSize">
         <size>
-         <width>100</width>
+         <width>140</width>
          <height>0</height>
         </size>
        </property>
@@ -194,6 +194,13 @@
      </item>
      <item row="0" column="3">
       <widget class="QComboBox" name="mHashCombo"/>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_11">
+       <property name="text">
+        <string>Command</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -486,7 +493,7 @@
     <widget class="QPlainTextEdit" name="mResponseText">
      <property name="minimumSize">
       <size>
-       <width>500</width>
+       <width>540</width>
        <height>0</height>
       </size>
      </property>

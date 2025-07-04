@@ -8,23 +8,24 @@
 
 #include "js_bin.h"
 
+const QString kNameProtected = "protected";
+const QString kNamePayload = "payload";
+const QString kNameSignature = "signature";
+
 class ACMEObject : public QObject
 {
     Q_OBJECT
 public:
     explicit ACMEObject(QObject *parent = nullptr);
 
-    const QJsonObject getProtected() { return mProtected; };
-    const QJsonObject getPayload() { return mPayload; };
-    const QJsonObject getSignature() { return mSignature; };
+    void setObject( const QJsonObject object );
 
-    void setProtected( const QJsonObject strProtected );
-    void setPayload( const QJsonObject strPayload );
-    void setSignature( const QJsonObject strSignature );
+    void setPayload( const QJsonObject objPayload );
+    void setSignature( const QJsonObject objPayload, const BIN *pPri, const QString strHash );
 
-    void setSignature( const QString strPayload, const BIN *pPri, const QString strHash );
-
-
+    const QString getProtectedJSON();
+    const QString getPayloadJSON();
+    const QString getSignatureJSON();
 
     void setJWKProtected( const QString strAlg,
                          const QString strJWK,
@@ -43,22 +44,19 @@ public:
 
     const QString getJson();
 
-    static const QString getNewAccountPayload( const QString strStatus,
+    static const QJsonObject getNewAccountPayload( const QString strStatus,
                                               const QStringList listEmail,
                                               bool bTermsOfServiceAgreed,
                                               const QString strOrders );
 
-    static const QString getJWK( const BIN *pPub, const QString strHash, const QString strName );
-    static const QJsonObject getJWK2( const BIN *pPub, const QString strHash, const QString strName );
+    static const QJsonObject getJWK( const BIN *pPub, const QString strHash, const QString strName );
     static const QString getAlg( int nKeyType, const QString strHash );
     static const QString getCurve( const QString strOID );
     static const QString getEdDSA( const QString strName );
 
 
 private:
-    QJsonObject mProtected;
-    QJsonObject mPayload;
-    QJsonObject mSignature;
+    QJsonObject json_;
 };
 
 #endif // ACME_OBJECT_H
