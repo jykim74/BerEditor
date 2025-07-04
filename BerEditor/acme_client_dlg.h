@@ -40,12 +40,12 @@ private:
     void initUI();
     void initialize();
 
-    int makeKeyExchange();
-    int makeNewAccount();
-    int makeNewNonce();
-    int makeNewOrder();
-    int makeRenewalInfo();
-    int makeRevokeCert();
+    QString makeKeyExchange();
+    QString makeNewAccount();
+    QString makeNewNonce();
+    QString makeNewOrder();
+    QString makeRenewalInfo();
+    QString makeRevokeCert();
 
     QStringList getUsedURL();
     void setUsedURL( const QString strURL );

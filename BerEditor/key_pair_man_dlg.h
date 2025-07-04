@@ -33,6 +33,7 @@ public:
     void setTitle( const QString strTitle );
     const QString getPriPath();
     const QString getPubPath();
+    const QString getName();
 
 private slots:
     void showEvent(QShowEvent *event);

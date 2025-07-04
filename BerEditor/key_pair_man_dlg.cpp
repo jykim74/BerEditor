@@ -1515,6 +1515,18 @@ const QString KeyPairManDlg::getPubPath()
     return strPubPath;
 }
 
+const QString KeyPairManDlg::getName()
+{
+    QString strName;
+
+    QModelIndex idx = mKeyPairTable->currentIndex();
+    QTableWidgetItem* item = mKeyPairTable->item( idx.row(), 0 );
+
+    if( item ) strName = item->text();
+
+    return strName;
+}
+
 void KeyPairManDlg::clickOK()
 {
     if( mode_ == KeyPairModeBase )

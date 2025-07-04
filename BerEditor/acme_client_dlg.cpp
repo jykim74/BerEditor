@@ -170,11 +170,16 @@ void ACMEClientDlg::changeCmd( int index )
 void ACMEClientDlg::clickGetNonce()
 {
     const char *pHeaderName = "Replay-Nonce";
-//    QString strURL = mURLCombo->currentText();
-    QString strURL = "https://localhost:14000/nonce-plz";
+//    QString strURL = "https://localhost:14000/nonce-plz";
+    QString strURL = mNonceURLText->text();
     char *pNonce = NULL;
 
-    QUrl url( strURL );
+    if( strURL.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a Nonce URL" ), this );
+        mNonceURLText->setFocus();
+        return;
+    }
 
     JS_HTTP_requestGetRspHeaderValue(
         strURL.toStdString().c_str(),
@@ -235,6 +240,9 @@ void ACMEClientDlg::clickGetDirectory()
         QString strValue = jObj[strCmd].toString();
         berApplet->log( QString( "Value: %1" ).arg( strValue ));
 
+        if( strCmd.toUpper() == kCmdNewNonce.toUpper() )
+            mNonceURLText->setText( strValue );
+
         if( strCmd != "meta" )
             mCmdCombo->addItem( strCmd, strValue );
     }
@@ -243,42 +251,68 @@ end :
     JS_BIN_reset( &binRsp );
 }
 
-int ACMEClientDlg::makeKeyExchange()
+QString ACMEClientDlg::makeKeyExchange()
 {
-    return 0;
+    QString strPayload;
+
+    return strPayload;
 }
 
-int ACMEClientDlg::makeNewAccount()
+QString ACMEClientDlg::makeNewAccount()
 {
-    return 0;
+    QString strPayload;
+    QString strEmail = mEmailText->text();
+    bool bTermsOfServiceAgreed = true;
+    QString strStatus = "valid";
+    QString strOrders = "https://example.com/acme/orders/rzGoeA";
+
+    QStringList listEmail;
+    listEmail.append( strEmail );
+
+    strPayload = ACMEObject::getNewAccountPayload( strStatus, listEmail, bTermsOfServiceAgreed, strOrders );
+
+    return strPayload;
 }
 
-int ACMEClientDlg::makeNewNonce()
+QString ACMEClientDlg::makeNewNonce()
 {
-    return 0;
+    QString strPayload;
+
+    return strPayload;
 }
 
-int ACMEClientDlg::makeNewOrder()
+QString ACMEClientDlg::makeNewOrder()
 {
-    return 0;
+    QString strPayload;
+
+    return strPayload;
 }
 
-int ACMEClientDlg::makeRenewalInfo()
+QString ACMEClientDlg::makeRenewalInfo()
 {
-    return 0;
+    QString strPayload;
+
+    return strPayload;
 }
 
-int ACMEClientDlg::makeRevokeCert()
+QString ACMEClientDlg::makeRevokeCert()
 {
-    return 0;
+    QString strPayload;
+
+    return strPayload;
 }
 
 void ACMEClientDlg::clickMake()
 {
+    int nKeyType = -1;
     BIN binPub = {0,0};
     BIN binPri = {0,0};
     ACMEObject acmeObj;
     QString strCmd = mCmdCombo->currentText();
+    QString strHash = mHashCombo->currentText();
+    QString strJWK;
+    QJsonObject objJWK;
+    QString strPayload;
 
     KeyPairManDlg keyPairMan;
     keyPairMan.setTitle( tr( "Select keypair" ));
@@ -289,32 +323,47 @@ void ACMEClientDlg::clickMake()
 
     QString strPubPath = keyPairMan.getPubPath();
     QString strPriPath = keyPairMan.getPriPath();
+    QString strName = keyPairMan.getName();
+    QString strNonce = mNonceText->text();
+    QString strAlg;
+    QString strURL;
 
     JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
     JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPub );
 
+    nKeyType = JS_PKI_getPriKeyType( &binPri );
+    strAlg = ACMEObject::getAlg( nKeyType, strHash );
+//    strJWK = ACMEObject::getJWK( &binPub, strHash, strName );
+    objJWK = ACMEObject::getJWK2( &binPub, strHash, strName );
+//    berApplet->log( QString( "JWK : %1" ).arg( strJWK ));
+
     if( strCmd.toUpper() == kCmdKeyChange.toUpper() )
-        makeKeyExchange();
+        strPayload = makeKeyExchange();
     else if( strCmd.toUpper() == kCmdNewAccount.toUpper() )
-        makeNewAccount();
+        strPayload = makeNewAccount();
     else if( strCmd.toUpper() == kCmdNewNonce.toUpper() )
-        makeNewNonce();
+        strPayload = makeNewNonce();
     else if( strCmd.toUpper() == kCmdNewOrder.toUpper() )
-        makeNewOrder();
+        strPayload = makeNewOrder();
     else if( strCmd.toUpper() == kCmdRenewalInfo.toUpper() )
-        makeRenewalInfo();
+        strPayload = makeRenewalInfo();
     else if( strCmd.toUpper() == kCmdRevokeCert.toUpper() )
-        makeRevokeCert();
+        strPayload = makeRevokeCert();
     else
     {
         berApplet->warningBox( tr( "Invalid command: %1").arg( strCmd ), this );
         goto end;
     }
+/*
+    acmeObj.setPayload( strPayload );
+    berApplet->log( QString( "Payload: %1").arg( acmeObj.getPayload() ));
 
-    acmeObj.setPayload( "Payload" );
-    acmeObj.setProtected( "protected" );
-    acmeObj.setSignature( "Signature" );
+    acmeObj.setJWKProtected( strAlg, objJWK, strNonce, strURL );
+    berApplet->log( QString( "Protected: %1").arg(acmeObj.getProtected()));
 
+    acmeObj.setSignature( strPayload, &binPri, strHash );
+    berApplet->log( QString( "Signature: %1" ).arg( acmeObj.getSignature()));
+*/
     mRequestText->setPlainText( acmeObj.getJson() );
 
 end :
@@ -331,15 +380,14 @@ void ACMEClientDlg::clickSend()
     BIN binRsp = {0,0};
 
     QString strReq = mRequestText->toPlainText();
-    QString strURL = mURLCombo->currentText();
-    QString strCmd = mCmdCombo->currentText();
+    QString strCmd = mCmdText->text();
     QString strMethod = mMethodCombo->currentText();
 
     QString strLink;
 
-    if( strURL.length() < 1 )
+    if( strCmd.length() < 1 )
     {
-        berApplet->warningBox( tr( "Insert ACME URL"), this );
+        berApplet->warningBox( tr( "There is no command URL"), this );
         mURLCombo->setFocus();
         goto end;
     }
@@ -351,27 +399,18 @@ void ACMEClientDlg::clickSend()
         goto end;
     }
 
-    strLink = strURL;
-
-    if( strCmd.length() > 0 )
-    {
-        strLink += "/";
-        strLink += strCmd;
-    }
-
     getBINFromString( &binReq, DATA_STRING, strReq );
 
     if( strMethod == "POST" )
-        ret = JS_HTTP_requestPostBin( strLink.toStdString().c_str(), "application/jose+json", &binReq, &nStatus, &binRsp );
+        ret = JS_HTTP_requestPostBin( strCmd.toStdString().c_str(), "application/jose+json", &binReq, &nStatus, &binRsp );
     else
-        ret = JS_HTTP_requestGetBin2( strLink.toStdString().c_str(), NULL, NULL, &nStatus, &binRsp );
+        ret = JS_HTTP_requestGetBin2( strCmd.toStdString().c_str(), NULL, NULL, &nStatus, &binRsp );
 
 
     if( ret == 0 )
     {
         QString strRsp = getStringFromBIN( &binRsp, DATA_STRING );
         mResponseText->setPlainText( strRsp );
-        setUsedURL( strURL );
     }
     else
     {
