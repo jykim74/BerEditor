@@ -18,7 +18,7 @@ public:
     void setPayload( const QString strPayload );
     void setSignature( const QString strSignature );
 
-    void setPayload( const QString strStatus,
+    void setNewAccountPayload( const QString strStatus,
                     const QStringList listEmail,
                     bool bTermsOfServiceAgreed,
                     const QString strOrders );

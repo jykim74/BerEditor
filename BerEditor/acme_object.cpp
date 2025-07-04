@@ -30,7 +30,7 @@ void ACMEObject::setSignature( const QString strSignature )
     mSignature = strSignature;
 }
 
-void ACMEObject::setPayload( const QString strStatus,
+void ACMEObject::setNewAccountPayload( const QString strStatus,
                 const QStringList listEmail,
                 bool bTermsOfServiceAgreed,
                 const QString strOrders )
