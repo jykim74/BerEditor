@@ -62,16 +62,15 @@ void ACMEClientDlg::initUI()
 {
     mMethodCombo->addItems( kMethodList );
     mRspCombo->addItems( kParserList );
+    mHashCombo->addItems( kHashList );
+
+    mHashCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
 
     SettingsMgr *setMgr = berApplet->settingsMgr();
 
     mURLCombo->setEditable( true );
     QStringList usedList = getUsedURL();
-    for( int i = 0; i < usedList.size(); i++ )
-    {
-        QString url = usedList.at(i);
-        if( url.length() > 4 ) mURLCombo->addItem( url );
-    }
+    mURLCombo->addItems( usedList );
 }
 
 void ACMEClientDlg::initialize()
@@ -104,12 +103,7 @@ void ACMEClientDlg::setUsedURL( const QString strURL )
     settings.endGroup();
 
     mURLCombo->clear();
-    QStringList usedList = getUsedURL();
-    for( int i = 0; i < usedList.size(); i++ )
-    {
-        QString url = usedList.at(i);
-        if( url.length() > 4 ) mURLCombo->addItem( url );
-    }
+    mURLCombo->addItems( list );
 }
 
 void ACMEClientDlg::clickClearURL()
@@ -249,11 +243,42 @@ end :
     JS_BIN_reset( &binRsp );
 }
 
+int ACMEClientDlg::makeKeyExchange()
+{
+    return 0;
+}
+
+int ACMEClientDlg::makeNewAccount()
+{
+    return 0;
+}
+
+int ACMEClientDlg::makeNewNonce()
+{
+    return 0;
+}
+
+int ACMEClientDlg::makeNewOrder()
+{
+    return 0;
+}
+
+int ACMEClientDlg::makeRenewalInfo()
+{
+    return 0;
+}
+
+int ACMEClientDlg::makeRevokeCert()
+{
+    return 0;
+}
+
 void ACMEClientDlg::clickMake()
 {
     BIN binPub = {0,0};
     BIN binPri = {0,0};
     ACMEObject acmeObj;
+    QString strCmd = mCmdCombo->currentText();
 
     KeyPairManDlg keyPairMan;
     keyPairMan.setTitle( tr( "Select keypair" ));
@@ -267,6 +292,24 @@ void ACMEClientDlg::clickMake()
 
     JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
     JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPub );
+
+    if( strCmd.toUpper() == kCmdKeyChange.toUpper() )
+        makeKeyExchange();
+    else if( strCmd.toUpper() == kCmdNewAccount.toUpper() )
+        makeNewAccount();
+    else if( strCmd.toUpper() == kCmdNewNonce.toUpper() )
+        makeNewNonce();
+    else if( strCmd.toUpper() == kCmdNewOrder.toUpper() )
+        makeNewOrder();
+    else if( strCmd.toUpper() == kCmdRenewalInfo.toUpper() )
+        makeRenewalInfo();
+    else if( strCmd.toUpper() == kCmdRevokeCert.toUpper() )
+        makeRevokeCert();
+    else
+    {
+        berApplet->warningBox( tr( "Invalid command: %1").arg( strCmd ), this );
+        goto end;
+    }
 
     acmeObj.setPayload( "Payload" );
     acmeObj.setProtected( "protected" );
