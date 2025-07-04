@@ -251,59 +251,58 @@ end :
     JS_BIN_reset( &binRsp );
 }
 
-QJsonObject ACMEClientDlg::makeKeyExchange()
+int ACMEClientDlg::makeKeyExchange( QJsonObject& object )
 {
-    QJsonObject strPayload;
-
-    return strPayload;
+    return 0;
 }
 
-QJsonObject ACMEClientDlg::makeNewAccount()
+int ACMEClientDlg::makeNewAccount( QJsonObject& object )
 {
-    QJsonObject objPayload;
     QString strEmail = mEmailText->text();
     bool bTermsOfServiceAgreed = true;
     QString strStatus = "valid";
-    QString strOrders = "https://example.com/acme/orders/rzGoeA";
+//    QString strOrders = "https://example.com/acme/orders/rzGoeA";
+    QString strOrders;
 
     QStringList listEmail;
+
+    if( strEmail.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a email" ), this );
+        mEmailText->setFocus();
+        return -1;
+    }
+
     listEmail.append( strEmail );
 
-    objPayload = ACMEObject::getNewAccountPayload( strStatus, listEmail, bTermsOfServiceAgreed, strOrders );
+    object = ACMEObject::getNewAccountPayload( strStatus, listEmail, bTermsOfServiceAgreed, strOrders );
 
-    return objPayload;
+    return 0;
 }
 
-QJsonObject ACMEClientDlg::makeNewNonce()
+int ACMEClientDlg::makeNewNonce( QJsonObject& object )
 {
-    QJsonObject strPayload;
-
-    return strPayload;
+    return 0;
 }
 
-QJsonObject ACMEClientDlg::makeNewOrder()
+int ACMEClientDlg::makeNewOrder( QJsonObject& object )
 {
-    QJsonObject strPayload;
-
-    return strPayload;
+    return 0;
 }
 
-QJsonObject ACMEClientDlg::makeRenewalInfo()
+int ACMEClientDlg::makeRenewalInfo( QJsonObject& object )
 {
-    QJsonObject strPayload;
-
-    return strPayload;
+    return 0;
 }
 
-QJsonObject ACMEClientDlg::makeRevokeCert()
+int ACMEClientDlg::makeRevokeCert( QJsonObject& object )
 {
-    QJsonObject strPayload;
-
-    return strPayload;
+    return 0;
 }
 
 void ACMEClientDlg::clickMake()
 {
+    int ret = 0;
     int nKeyType = -1;
     BIN binPub = {0,0};
     BIN binPri = {0,0};
@@ -336,17 +335,17 @@ void ACMEClientDlg::clickMake()
     objJWK = ACMEObject::getJWK( &binPub, strHash, strName );
 
     if( strCmd.toUpper() == kCmdKeyChange.toUpper() )
-        objPayload = makeKeyExchange();
+        ret = makeKeyExchange(objPayload);
     else if( strCmd.toUpper() == kCmdNewAccount.toUpper() )
-        objPayload = makeNewAccount();
+        ret = makeNewAccount(objPayload);
     else if( strCmd.toUpper() == kCmdNewNonce.toUpper() )
-        objPayload = makeNewNonce();
+        ret = makeNewNonce(objPayload);
     else if( strCmd.toUpper() == kCmdNewOrder.toUpper() )
-        objPayload = makeNewOrder();
+        ret = makeNewOrder(objPayload);
     else if( strCmd.toUpper() == kCmdRenewalInfo.toUpper() )
-        objPayload = makeRenewalInfo();
+        ret = makeRenewalInfo(objPayload);
     else if( strCmd.toUpper() == kCmdRevokeCert.toUpper() )
-        objPayload = makeRevokeCert();
+        ret = makeRevokeCert(objPayload);
     else
     {
         berApplet->warningBox( tr( "Invalid command: %1").arg( strCmd ), this );
