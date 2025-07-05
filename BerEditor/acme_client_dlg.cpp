@@ -164,6 +164,8 @@ int ACMEClientDlg::parseNewOrderRsp( QJsonObject& object )
 
         mCmdCombo->addItem( kCmdAuthorization, strValue );
     }
+
+    return 0;
 }
 
 void ACMEClientDlg::clickParse()
@@ -443,6 +445,7 @@ void ACMEClientDlg::clickMake()
 
     mResponseText->clear();
     mRspCmdText->clear();
+    mStatusText->clear();
 
 end :
     JS_BIN_reset( &binPub );
@@ -487,6 +490,7 @@ void ACMEClientDlg::clickSend()
     else
         ret = JS_HTTP_requestGetBin3( strCmd.toStdString().c_str(), NULL, NULL, &nStatus, &pRspHeaderList, &binRsp );
 
+    mStatusText->setText( QString("%1").arg( nStatus ));
 
     if( ret == 0 )
     {
