@@ -75,7 +75,7 @@ void ACMEClientDlg::initUI()
     mURLCombo->addItems( usedList );
 
     mEmailText->setText( "jykim74@gmail.com" );
-    mDNSText->setText( "www.test.com" );
+    mDNSText->setText( "example.com" );
 }
 
 void ACMEClientDlg::initialize()
