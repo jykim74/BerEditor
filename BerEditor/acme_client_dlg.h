@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "ui_acme_client_dlg.h"
+#include "js_bin.h"
 
 namespace Ui {
 class ACMEClientDlg;
@@ -14,6 +15,14 @@ static QString kCmdNewNonce = "newNonce";
 static QString kCmdNewOrder = "newOrder";
 static QString kCmdRenewalInfo = "renewalInfo";
 static QString kCmdRevokeCert = "revokeCert";
+
+static QString kCmdNewAuthz = "NewAuthz";
+static QString kCmdFinalize = "Finalize";
+static QString kCmdCertificate = "Certificate";
+
+static QString kCmdAuthorization = "Authorization";
+static QString kCmdChallenge = "Challenge";
+static QString kCmdOrder = "Order";
 
 class ACMEClientDlg : public QDialog, public Ui::ACMEClientDlg
 {
@@ -46,6 +55,9 @@ private:
     int makeNewOrder( QJsonObject& object );
     int makeRenewalInfo( QJsonObject& object );
     int makeRevokeCert( QJsonObject& object );
+    int makeFinalize( QJsonObject& object, const BIN *pPri );
+
+    int parseNewOrderRsp( QJsonObject& object );;
 
     QStringList getUsedURL();
     void setUsedURL( const QString strURL );

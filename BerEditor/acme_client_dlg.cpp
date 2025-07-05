@@ -13,6 +13,7 @@
 #include "cert_id_dlg.h"
 #include "key_pair_man_dlg.h"
 #include "acme_object.h"
+#include "make_csr_dlg.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -63,7 +64,6 @@ ACMEClientDlg::~ACMEClientDlg()
 void ACMEClientDlg::initUI()
 {
     mMethodCombo->addItems( kMethodList );
-    mRspCombo->addItems( kParserList );
     mHashCombo->addItems( kHashList );
 
     mHashCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
@@ -148,12 +148,31 @@ void ACMEClientDlg::changeResponse()
     mResponseLenText->setText( strLen );
 }
 
+int ACMEClientDlg::parseNewOrderRsp( QJsonObject& object )
+{
+    QJsonArray jArr = object["authorizations"].toArray();
+    QString strFinalValue = object["finalize"].toString();
+
+    if( strFinalValue.length() > 0 )
+    {
+        mCmdCombo->addItem( kCmdFinalize, strFinalValue );
+    }
+
+    for( int i = 0; i < jArr.size(); i++ )
+    {
+        QString strValue = jArr.at(i).toString();
+
+        mCmdCombo->addItem( kCmdAuthorization, strValue );
+    }
+}
+
 void ACMEClientDlg::clickParse()
 {
+    int ret = 0;
     QJsonDocument jsonDoc;
 
     QString strRsp = mResponseText->toPlainText();
-    QString strParse = mRspCombo->currentText();
+    QString strCmd = mRspCmdText->text();
 
     if( strRsp.length() < 1 )
     {
@@ -164,6 +183,18 @@ void ACMEClientDlg::clickParse()
 
     jsonDoc = QJsonDocument::fromJson( strRsp.toLocal8Bit() );
     berApplet->log( jsonDoc.toJson() );
+
+    QJsonObject object = jsonDoc.object();
+
+    if( strCmd.toUpper() == kCmdNewOrder.toUpper() )
+    {
+        ret = parseNewOrderRsp( object );
+    }
+
+    if( ret == 0 )
+        berApplet->messageBox( tr( "Parsing is done" ), this );
+    else
+        berApplet->warningBox( tr( "fail to parse : %1").arg( ret ), this );
 }
 
 void ACMEClientDlg::changeCmd( int index )
@@ -287,6 +318,7 @@ int ACMEClientDlg::makeNewAccount( QJsonObject& object )
 
 int ACMEClientDlg::makeNewNonce( QJsonObject& object )
 {
+    clickGetNonce();
     return 0;
 }
 
@@ -312,6 +344,25 @@ int ACMEClientDlg::makeRenewalInfo( QJsonObject& object )
 
 int ACMEClientDlg::makeRevokeCert( QJsonObject& object )
 {
+    return 0;
+}
+
+int ACMEClientDlg::makeFinalize( QJsonObject& object, const BIN *pPri )
+{
+    QString strHex;
+    QString strDNS = mDNSText->text();
+
+    MakeCSRDlg makeCSR;
+    makeCSR.setInfo( "Make CSR" );
+    makeCSR.setPriKey( pPri );
+    makeCSR.mCNText->setText( strDNS );
+
+    if( makeCSR.exec() != QDialog::Accepted )
+        return -1;
+
+    strHex = makeCSR.getCSRHex();
+    object["csr"] = getBase64URL_FromHex( strHex );
+
     return 0;
 }
 
@@ -365,6 +416,8 @@ void ACMEClientDlg::clickMake()
         ret = makeRenewalInfo(objPayload);
     else if( strCmd.toUpper() == kCmdRevokeCert.toUpper() )
         ret = makeRevokeCert(objPayload);
+    else if( strCmd.toUpper() == kCmdFinalize.toUpper() )
+        ret = makeFinalize( objPayload, &binPri );
     else
     {
         berApplet->warningBox( tr( "Invalid command: %1").arg( strCmd ), this );
@@ -388,6 +441,9 @@ void ACMEClientDlg::clickMake()
     //mRequestText->setPlainText( acmeObj.getJson() );
     mRequestText->setPlainText( acmeObj.getPacketJson() );
 
+    mResponseText->clear();
+    mRspCmdText->clear();
+
 end :
     JS_BIN_reset( &binPub );
     JS_BIN_reset( &binPri );
@@ -404,6 +460,7 @@ void ACMEClientDlg::clickSend()
     QString strReq = mRequestText->toPlainText();
     QString strCmd = mCmdText->text();
     QString strMethod = mMethodCombo->currentText();
+    QString strKID = mKIDText->text();
 
     QString strLink;
     JNameValList *pRspHeaderList = NULL;
@@ -435,6 +492,8 @@ void ACMEClientDlg::clickSend()
     {
         QString strRsp = getStringFromBIN( &binRsp, DATA_STRING );
         mResponseText->setPlainText( strRsp );
+        mRspCmdText->setText( mCmdCombo->currentText() );
+        berApplet->log( QString( "Response: %1").arg( strRsp ));
     }
     else
     {
@@ -449,15 +508,19 @@ void ACMEClientDlg::clickSend()
 
         if( strcasecmp( pCurList->sNameVal.pName, "Replay-Nonce" ) == 0 )
         {
-            bVal = berApplet->yesOrNoBox( tr( "Change Nonce?" ), this, true );
+            bVal = berApplet->yesOrNoBox( tr( "Change Nonce as %1?" ).arg( pCurList->sNameVal.pValue ), this, true );
             if( bVal == true )
                 mNonceText->setText( pCurList->sNameVal.pValue );
         }
-        else if( strcasecmp( pCurList->sNameVal.pName, "Location" ) == 0 )
+
+        if( mKIDText->text().length() < 1 )
         {
-            bVal = berApplet->yesOrNoBox( tr( "Change KID?" ), this, true );
-            if( bVal == true )
-                mKIDText->setText( pCurList->sNameVal.pValue );
+            if( strcasecmp( pCurList->sNameVal.pName, "Location" ) == 0 )
+            {
+                bVal = berApplet->yesOrNoBox( tr( "Change KID as %1?" ).arg( pCurList->sNameVal.pValue ), this, true );
+                if( bVal == true )
+                    mKIDText->setText( pCurList->sNameVal.pValue );
+            }
         }
 
         pCurList = pCurList->pNext;
