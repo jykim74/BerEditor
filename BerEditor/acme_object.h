@@ -18,31 +18,33 @@ class ACMEObject : public QObject
 public:
     explicit ACMEObject(QObject *parent = nullptr);
 
-    void setObject( const QJsonObject object );
+    void setProtected( const QJsonObject object );
 
     void setPayload( const QJsonObject objPayload );
-    void setSignature( const QJsonObject objPayload, const BIN *pPri, const QString strHash );
+    void setSignature( const BIN *pPri, const QString strHash );
 
     const QString getProtectedJSON();
     const QString getPayloadJSON();
     const QString getSignatureJSON();
 
-    void setJWKProtected( const QString strAlg,
-                         const QString strJWK,
-                         const QString strNonce,
-                         const QString strURL );
+    const QString getPayloadPacket();
+    const QString getProtectedPacket();
 
-    void setJWKProtected( const QString strAlg,
+    const QString getJson();
+    const QString getPacketJson();
+
+
+    static const QJsonObject getJWKProtected( const QString strAlg,
                          const QJsonObject objJWK,
                          const QString strNonce,
                          const QString strURL );
 
-    void setKidProtected( const QString strAlg,
+    static const QJsonObject getKidProtected( const QString strAlg,
                       const QString strKid,
                       const QString strNonce,
                       const QString strURL );
 
-    const QString getJson();
+
 
     static const QJsonObject getNewAccountPayload( const QString strStatus,
                                               const QStringList listEmail,

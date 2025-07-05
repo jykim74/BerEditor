@@ -48,6 +48,8 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+    mClearRequestBtn->setFixedWidth(34);
+    mClearResponseBtn->setFixedWidth(34);
 #endif
     resize(minimumSizeHint().width(), minimumSizeHint().height());
     initialize();
@@ -312,6 +314,7 @@ void ACMEClientDlg::clickMake()
     QString strJWK;
     QJsonObject objJWK;
     QJsonObject objPayload;
+    QJsonObject objProtected;
 
     KeyPairManDlg keyPairMan;
     keyPairMan.setTitle( tr( "Select keypair" ));
@@ -325,7 +328,7 @@ void ACMEClientDlg::clickMake()
     QString strName = keyPairMan.getName();
     QString strNonce = mNonceText->text();
     QString strAlg;
-    QString strURL;
+    QString strURL = mCmdText->text();
 
     JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
     JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPub );
@@ -353,10 +356,13 @@ void ACMEClientDlg::clickMake()
     }
 
     acmeObj.setPayload( objPayload );
-    acmeObj.setJWKProtected( strAlg, objJWK, strNonce, strURL );
-    acmeObj.setSignature( objPayload, &binPri, strHash );
+    objProtected = acmeObj.getJWKProtected( strAlg, objJWK, strNonce, strURL );
+    acmeObj.setProtected( objProtected );
 
-    mRequestText->setPlainText( acmeObj.getJson() );
+    acmeObj.setSignature( &binPri, strHash );
+
+    //mRequestText->setPlainText( acmeObj.getJson() );
+    mRequestText->setPlainText( acmeObj.getPacketJson() );
 
 end :
     JS_BIN_reset( &binPub );

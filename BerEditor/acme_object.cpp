@@ -15,9 +15,9 @@ ACMEObject::ACMEObject(QObject *parent)
 
 }
 
-void ACMEObject::setObject( const QJsonObject object )
+void ACMEObject::setProtected( const QJsonObject object )
 {
-    json_ = object;
+    json_[kNameProtected] = object;
 }
 
 void ACMEObject::setPayload( const QJsonObject objPayload )
@@ -58,14 +58,60 @@ const QString ACMEObject::getSignatureJSON()
     return jDoc.toJson();
 }
 
-void ACMEObject::setSignature( const QJsonObject objPayload, const BIN *pPri, const QString strHash )
+const QString ACMEObject::getPayloadPacket()
+{
+    BIN binData = {0,0};
+    char *pValue = NULL;
+    QString strPacket;
+
+    QString strJson = getPayloadJSON();
+
+    JS_BIN_set( &binData, (unsigned char *)strJson.toStdString().c_str(), strJson.length() );
+    JS_BIN_encodeBase64URL( &binData, &pValue );
+
+    if( pValue )
+    {
+        strPacket = pValue;
+        JS_free( pValue );
+    }
+
+    return strPacket;
+}
+
+const QString ACMEObject::getProtectedPacket()
+{
+    BIN binData = {0,0};
+    char *pValue = NULL;
+    QString strPacket;
+
+    QString strJson = getProtectedJSON();
+
+    JS_BIN_set( &binData, (unsigned char *)strJson.toStdString().c_str(), strJson.length() );
+    JS_BIN_encodeBase64URL( &binData, &pValue );
+
+    if( pValue )
+    {
+        strPacket = pValue;
+        JS_free( pValue );
+    }
+
+    return strPacket;
+}
+
+void ACMEObject::setSignature( const BIN *pPri,const QString strHash )
 {
     int nKeyType = -1;
     BIN binSrc = {0,0};
     BIN binSign = {0,0};
     void *pCTX = NULL;
     char *pHexVal = NULL;
-    QJsonDocument jDoc;
+
+    QJsonObject objPayload = json_[kNamePayload].toObject();
+    QJsonObject objProtected = json_[kNameProtected].toObject();
+
+    QString strPayload;
+    QString strProtected;
+
     QString strJSON;
 
     if( pPri == NULL ) return;
@@ -73,8 +119,13 @@ void ACMEObject::setSignature( const QJsonObject objPayload, const BIN *pPri, co
     nKeyType = JS_PKI_getPriKeyType( pPri );
     if( nKeyType < 0 ) return;
 
-    jDoc.setObject( objPayload );
-    strJSON = jDoc.toJson();
+
+    strPayload = getPayloadPacket();
+    strProtected = getProtectedPacket();
+
+    strJSON = strProtected;
+    strJSON += ".";
+    strJSON += strPayload;
 
     JS_BIN_set( &binSrc, (unsigned char *)strJSON.toStdString().c_str(), strJSON.length() );
     JS_PKI_signInit( &pCTX, strHash.toStdString().c_str(), nKeyType, pPri );
@@ -114,21 +165,7 @@ const QJsonObject ACMEObject::getNewAccountPayload( const QString strStatus,
     return jObj;
 }
 
-void ACMEObject::setJWKProtected( const QString strAlg,
-                                 const QString strJWK,
-                                 const QString strNonce,
-                                 const QString strURL )
-{
-    QJsonObject objJWK;
-    objJWK["alg"] = strAlg;
-    objJWK["jwk"] = strJWK;
-    objJWK["nonce"] = strNonce;
-    objJWK["url"] = strURL;
-
-    json_[kNameProtected] = objJWK;
-}
-
-void ACMEObject::setJWKProtected( const QString strAlg,
+const QJsonObject ACMEObject::getJWKProtected( const QString strAlg,
                                  const QJsonObject objJWK,
                                  const QString strNonce,
                                  const QString strURL )
@@ -140,10 +177,10 @@ void ACMEObject::setJWKProtected( const QString strAlg,
     object["nonce"] = strNonce;
     object["url"] = strURL;
 
-    json_[kNameProtected] = object;
+    return object;
 }
 
-void ACMEObject::setKidProtected( const QString strAlg,
+const QJsonObject ACMEObject::getKidProtected( const QString strAlg,
                   const QString strKid,
                   const QString strNonce,
                   const QString strURL )
@@ -155,7 +192,7 @@ void ACMEObject::setKidProtected( const QString strAlg,
     object["nonce"] = strNonce;
     object["url"] = strURL;
 
-    json_[kNameProtected] = object;
+    return object;
 }
 
 const QString ACMEObject::getJson()
@@ -167,6 +204,49 @@ const QString ACMEObject::getJson()
     return jDoc.toJson();
 }
 
+const QString ACMEObject::getPacketJson()
+{
+    QJsonDocument jDoc;
+    QJsonObject objPayload;
+    QJsonObject objProtected;
+
+    QString strPayload;
+    QString strProtected;
+
+    BIN binPayload = {0,0};
+    BIN binProtected = {0,0};
+
+    char *pPayload = NULL;
+    char *pProtected = NULL;
+
+    objProtected = json_[kNameProtected].toObject();
+    objPayload = json_[kNamePayload].toObject();
+
+    jDoc.setObject( objPayload );
+    strPayload = jDoc.toJson();
+
+    jDoc.setObject( objProtected );
+    strProtected = jDoc.toJson();
+
+    JS_BIN_set( &binPayload, (unsigned char *)strPayload.toStdString().c_str(), strPayload.length() );
+    JS_BIN_set( &binProtected, (unsigned char *)strProtected.toStdString().c_str(), strProtected.length() );
+
+    JS_BIN_encodeBase64URL( &binPayload, &pPayload );
+    JS_BIN_encodeBase64URL( &binProtected, &pProtected );
+
+    json_[kNameProtected] = pProtected;
+    json_[kNamePayload] = pPayload;
+
+    jDoc.setObject( json_ );
+
+end :
+    JS_BIN_reset( &binPayload );
+    JS_BIN_reset( &binProtected );
+    if( pPayload ) JS_free( pPayload );
+    if( pProtected ) JS_free( pProtected );
+
+    return jDoc.toJson();
+}
 
 const QJsonObject ACMEObject::getJWK( const BIN *pPub, const QString strHash, const QString strName )
 {
