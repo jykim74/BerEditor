@@ -130,6 +130,7 @@ void ACMEObject::setSignature( const BIN *pPri,const QString strHash )
 
     JS_BIN_set( &binSrc, (unsigned char *)strJSON.toStdString().c_str(), strJSON.length() );
 
+#if 0
     if( nKeyType == JS_PKI_KEY_TYPE_ECC )
     {
         BIN binR = {0,0};
@@ -148,6 +149,23 @@ void ACMEObject::setSignature( const BIN *pPri,const QString strHash )
         JS_PKI_signInit( &pCTX, strHash.toStdString().c_str(), nKeyType, pPri );
         JS_PKI_sign( pCTX, &binSrc, &binSign );
     }
+#else
+    JS_PKI_signInit( &pCTX, strHash.toStdString().c_str(), nKeyType, pPri );
+    JS_PKI_sign( pCTX, &binSrc, &binSign );
+
+    if( nKeyType == JS_PKI_KEY_TYPE_ECC )
+    {
+        BIN binR = {0,0};
+        BIN binS = {0,0};
+
+        JS_PKI_decodeECCSign( &binSign, &binR, &binS );
+        JS_BIN_reset( &binSign );
+        JS_BIN_copy( &binSign, &binR );
+        JS_BIN_appendBin( &binSign, &binS );
+        JS_BIN_reset( &binR );
+        JS_BIN_reset( &binS );
+    }
+#endif
 
     JS_BIN_encodeBase64URL( &binSign, &pHexVal );
     json_[kNameSignature] = pHexVal;
