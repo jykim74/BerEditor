@@ -359,6 +359,8 @@ void ACMEClientDlg::clickMake()
     objProtected = acmeObj.getJWKProtected( strAlg, objJWK, strNonce, strURL );
     acmeObj.setProtected( objProtected );
 
+    berApplet->log( QString("Protected: %1").arg( acmeObj.getProtectedJSON() ));
+
     acmeObj.setSignature( &binPri, strHash );
 
     //mRequestText->setPlainText( acmeObj.getJson() );
