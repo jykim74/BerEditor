@@ -73,6 +73,9 @@ void ACMEClientDlg::initUI()
     mURLCombo->setEditable( true );
     QStringList usedList = getUsedURL();
     mURLCombo->addItems( usedList );
+
+    mEmailText->setText( "jykim74@gmail.com" );
+    mDNSText->setText( "www.test.com" );
 }
 
 void ACMEClientDlg::initialize()
@@ -289,6 +292,16 @@ int ACMEClientDlg::makeNewNonce( QJsonObject& object )
 
 int ACMEClientDlg::makeNewOrder( QJsonObject& object )
 {
+    QString strDNS = mDNSText->text();
+
+    if( strDNS.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a DNS" ), this );
+        mDNSText->setFocus();
+        return -1;
+    }
+
+    object = ACMEObject::getIdentifiers( "dns", strDNS );
     return 0;
 }
 
@@ -311,6 +324,8 @@ void ACMEClientDlg::clickMake()
     ACMEObject acmeObj;
     QString strCmd = mCmdCombo->currentText();
     QString strHash = mHashCombo->currentText();
+    QString strKID = mKIDText->text();
+
     QString strJWK;
     QJsonObject objJWK;
     QJsonObject objPayload;
@@ -337,6 +352,7 @@ void ACMEClientDlg::clickMake()
     strAlg = ACMEObject::getAlg( nKeyType, strHash );
     objJWK = ACMEObject::getJWK( &binPub, strHash, strName );
 
+
     if( strCmd.toUpper() == kCmdKeyChange.toUpper() )
         ret = makeKeyExchange(objPayload);
     else if( strCmd.toUpper() == kCmdNewAccount.toUpper() )
@@ -356,7 +372,13 @@ void ACMEClientDlg::clickMake()
     }
 
     acmeObj.setPayload( objPayload );
-    objProtected = acmeObj.getJWKProtected( strAlg, objJWK, strNonce, strURL );
+    berApplet->log( QString("Payload: %1").arg( acmeObj.getPayloadJSON() ));
+
+    if( strKID.length() > 0 )
+        objProtected = acmeObj.getKidProtected( strAlg, strKID, strNonce, strURL );
+    else
+        objProtected = acmeObj.getJWKProtected( strAlg, objJWK, strNonce, strURL );
+
     acmeObj.setProtected( objProtected );
 
     berApplet->log( QString("Protected: %1").arg( acmeObj.getProtectedJSON() ));
@@ -384,6 +406,8 @@ void ACMEClientDlg::clickSend()
     QString strMethod = mMethodCombo->currentText();
 
     QString strLink;
+    JNameValList *pRspHeaderList = NULL;
+    JNameValList *pCurList = NULL;
 
     if( strCmd.length() < 1 )
     {
@@ -402,9 +426,9 @@ void ACMEClientDlg::clickSend()
     getBINFromString( &binReq, DATA_STRING, strReq );
 
     if( strMethod == "POST" )
-        ret = JS_HTTP_requestPostBin( strCmd.toStdString().c_str(), "application/jose+json", &binReq, &nStatus, &binRsp );
+        ret = JS_HTTP_requestPostBin3( strCmd.toStdString().c_str(), NULL, NULL, "application/jose+json", &binReq, &nStatus, &pRspHeaderList, &binRsp );
     else
-        ret = JS_HTTP_requestGetBin2( strCmd.toStdString().c_str(), NULL, NULL, &nStatus, &binRsp );
+        ret = JS_HTTP_requestGetBin3( strCmd.toStdString().c_str(), NULL, NULL, &nStatus, &pRspHeaderList, &binRsp );
 
 
     if( ret == 0 )
@@ -418,7 +442,29 @@ void ACMEClientDlg::clickSend()
         goto end;
     }
 
+    pCurList = pRspHeaderList;
+    while( pCurList )
+    {
+        bool bVal = false;
+
+        if( strcasecmp( pCurList->sNameVal.pName, "Replay-Nonce" ) == 0 )
+        {
+            bVal = berApplet->yesOrNoBox( tr( "Change Nonce?" ), this, true );
+            if( bVal == true )
+                mNonceText->setText( pCurList->sNameVal.pValue );
+        }
+        else if( strcasecmp( pCurList->sNameVal.pName, "Location" ) == 0 )
+        {
+            bVal = berApplet->yesOrNoBox( tr( "Change KID?" ), this, true );
+            if( bVal == true )
+                mKIDText->setText( pCurList->sNameVal.pValue );
+        }
+
+        pCurList = pCurList->pNext;
+    }
+
 end :
+    if( pRspHeaderList ) JS_UTIL_resetNameValList( &pRspHeaderList );
     JS_BIN_reset( &binReq );
     JS_BIN_reset( &binRsp );
 }

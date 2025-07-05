@@ -51,6 +51,8 @@ public:
                                               bool bTermsOfServiceAgreed,
                                               const QString strOrders );
 
+    static const QJsonObject getIdentifiers( const QString strTaget, const QString strName );
+
     static const QJsonObject getJWK( const BIN *pPub, const QString strHash, const QString strName );
     static const QString getAlg( int nKeyType, const QString strHash );
     static const QString getCurve( const QString strOID );

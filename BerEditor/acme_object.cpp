@@ -201,6 +201,21 @@ const QJsonObject ACMEObject::getNewAccountPayload( const QString strStatus,
     return jObj;
 }
 
+const QJsonObject ACMEObject::getIdentifiers( const QString strType, const QString strName )
+{
+    QJsonObject jObj;
+    QJsonArray jArr;
+    QJsonObject jSubObj;
+
+    jSubObj["type"] = strType;
+    jSubObj["value"] = strName;
+
+    jArr.append( jSubObj );
+    jObj["identifiers"] = jArr;
+
+    return jObj;
+}
+
 const QJsonObject ACMEObject::getJWKProtected( const QString strAlg,
                                  const QJsonObject objJWK,
                                  const QString strNonce,
