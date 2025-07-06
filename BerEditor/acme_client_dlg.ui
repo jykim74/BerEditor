@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>564</width>
-    <height>835</height>
+    <height>874</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -112,8 +112,38 @@
      <property name="topMargin">
       <number>0</number>
      </property>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="mEmailText"/>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>Location</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="mKIDText"/>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_10">
+       <property name="text">
+        <string>Nonce</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QComboBox" name="mIdentCombo"/>
+     </item>
      <item row="2" column="1">
-      <widget class="QLineEdit" name="mDNSText"/>
+      <widget class="QLineEdit" name="mIdentText"/>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_12">
+       <property name="text">
+        <string>KID</string>
+       </property>
+      </widget>
      </item>
      <item row="0" column="1">
       <widget class="QLineEdit" name="mNonceText"/>
@@ -131,32 +161,8 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_9">
-       <property name="text">
-        <string>DNS</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_10">
-       <property name="text">
-        <string>Nonce</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="mEmailText"/>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_12">
-       <property name="text">
-        <string>KID</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QLineEdit" name="mKIDText"/>
+     <item row="4" column="1">
+      <widget class="QLineEdit" name="mLocationText"/>
      </item>
     </layout>
    </item>

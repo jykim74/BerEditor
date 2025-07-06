@@ -27,6 +27,7 @@ const QString kACMEUsedURL = "ACMEUsedURL";
 const QStringList kCmdList = { "", "newAccout", "newNonce", "newOrder", "renewalInfo", "revokeCert" };
 const QStringList kMethodList = { "POST", "GET" };
 const QStringList kParserList = { "dir", "error" };
+const QStringList kIdentifierList = { "dns", "http" };
 
 ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     : QDialog(parent)
@@ -75,7 +76,8 @@ void ACMEClientDlg::initUI()
     mURLCombo->addItems( usedList );
 
     mEmailText->setText( "jykim74@gmail.com" );
-    mDNSText->setText( "example.com" );
+    mIdentCombo->addItems( kIdentifierList );
+    mIdentText->setText( "example.com" );
 }
 
 void ACMEClientDlg::initialize()
@@ -326,16 +328,17 @@ int ACMEClientDlg::makeNewNonce( QJsonObject& object )
 
 int ACMEClientDlg::makeNewOrder( QJsonObject& object )
 {
-    QString strDNS = mDNSText->text();
+    QString strType = mIdentCombo->currentText();
+    QString strDNS = mIdentText->text();
 
     if( strDNS.length() < 1 )
     {
-        berApplet->warningBox( tr( "Enter a DNS" ), this );
-        mDNSText->setFocus();
+        berApplet->warningBox( tr( "Enter a identifier" ), this );
+        mIdentText->setFocus();
         return -1;
     }
 
-    object = ACMEObject::getIdentifiers( "dns", strDNS );
+    object = ACMEObject::getIdentifiers( strType, strDNS );
     return 0;
 }
 
@@ -352,7 +355,7 @@ int ACMEClientDlg::makeRevokeCert( QJsonObject& object )
 int ACMEClientDlg::makeFinalize( QJsonObject& object, const BIN *pPri )
 {
     QString strHex;
-    QString strDNS = mDNSText->text();
+    QString strDNS = mIdentText->text();
 
     MakeCSRDlg makeCSR;
     makeCSR.setInfo( "Make CSR" );
@@ -512,6 +515,7 @@ void ACMEClientDlg::clickSend()
 
         if( strcasecmp( pCurList->sNameVal.pName, "Replay-Nonce" ) == 0 )
         {
+            berApplet->log( QString( "Replay-Nonce: %1").arg( pCurList->sNameVal.pValue ));
             bVal = berApplet->yesOrNoBox( tr( "Change Nonce as %1?" ).arg( pCurList->sNameVal.pValue ), this, true );
             if( bVal == true )
                 mNonceText->setText( pCurList->sNameVal.pValue );
@@ -521,9 +525,12 @@ void ACMEClientDlg::clickSend()
         {
             if( strcasecmp( pCurList->sNameVal.pName, "Location" ) == 0 )
             {
+                berApplet->log( QString( "Location: %1" ).arg( pCurList->sNameVal.pValue ));
                 bVal = berApplet->yesOrNoBox( tr( "Change KID as %1?" ).arg( pCurList->sNameVal.pValue ), this, true );
                 if( bVal == true )
                     mKIDText->setText( pCurList->sNameVal.pValue );
+
+                mLocationText->setText( pCurList->sNameVal.pValue );
             }
         }
 
