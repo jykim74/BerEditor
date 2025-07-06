@@ -34,6 +34,7 @@ public:
 
 private slots:
     void clickGetNonce();
+    void clickGetLocation();
     void clickGetDirectory();
     void clickMake();
     void clickSend();

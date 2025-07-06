@@ -38,6 +38,7 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mURLClearBtn, SIGNAL(clicked()), this, SLOT(clickClearURL()));
     connect( mGetNonceBtn, SIGNAL(clicked()), this, SLOT(clickGetNonce()));
+    connect( mGetLocationBtn, SIGNAL(clicked()), this, SLOT(clickGetLocation()));
     connect( mGetDirBtn, SIGNAL(clicked()), this, SLOT(clickGetDirectory()));
     connect( mMakeBtn, SIGNAL(clicked()), this, SLOT(clickMake()));
     connect( mSendBtn, SIGNAL(clicked()), this, SLOT(clickSend()));
@@ -231,6 +232,40 @@ void ACMEClientDlg::clickGetNonce()
         mNonceText->setText( pNonce );
         JS_free( pNonce );
     }
+}
+
+void ACMEClientDlg::clickGetLocation()
+{
+    int ret = 0;
+    int nStatus = 0;
+    BIN binRsp = {0,0};
+
+    QString strLocation = mLocationText->text();
+
+    if( strLocation.length() < 1 )
+    {
+        berApplet->warningBox( tr( "There is no location URL"), this );
+        mLocationText->setFocus();
+        return;
+    }
+
+    ret = JS_HTTP_requestGetBin2( strLocation.toStdString().c_str(), NULL, NULL, &nStatus, &binRsp );
+
+    if( ret == 0 )
+    {
+        QString strRsp = getStringFromBIN( &binRsp, DATA_STRING );
+        mResponseText->setPlainText( strRsp );
+        mRspCmdText->setText( mCmdCombo->currentText() );
+        berApplet->log( QString( "Response: %1").arg( strRsp ));
+    }
+    else
+    {
+        berApplet->warnLog( tr( "fail to send a request to ACME server: %1").arg( ret), this );
+        goto end;
+    }
+
+end :
+    JS_BIN_reset( &binRsp );
 }
 
 void ACMEClientDlg::clickGetDirectory()
