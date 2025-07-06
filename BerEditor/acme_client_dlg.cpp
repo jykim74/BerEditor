@@ -76,8 +76,7 @@ void ACMEClientDlg::initUI()
     mURLCombo->addItems( usedList );
 
     mEmailText->setText( "jykim74@gmail.com" );
-    mIdentCombo->addItems( kIdentifierList );
-    mIdentText->setText( "example.com" );
+    mDNSText->setText( "example.com" );
 }
 
 void ACMEClientDlg::initialize()
@@ -328,17 +327,16 @@ int ACMEClientDlg::makeNewNonce( QJsonObject& object )
 
 int ACMEClientDlg::makeNewOrder( QJsonObject& object )
 {
-    QString strType = mIdentCombo->currentText();
-    QString strDNS = mIdentText->text();
+    QString strDNS = mDNSText->text();
 
     if( strDNS.length() < 1 )
     {
         berApplet->warningBox( tr( "Enter a identifier" ), this );
-        mIdentText->setFocus();
+        mDNSText->setFocus();
         return -1;
     }
 
-    object = ACMEObject::getIdentifiers( strType, strDNS );
+    object = ACMEObject::getIdentifiers( "dns", strDNS );
     return 0;
 }
 
@@ -355,7 +353,7 @@ int ACMEClientDlg::makeRevokeCert( QJsonObject& object )
 int ACMEClientDlg::makeFinalize( QJsonObject& object, const BIN *pPri )
 {
     QString strHex;
-    QString strDNS = mIdentText->text();
+    QString strDNS = mDNSText->text();
 
     MakeCSRDlg makeCSR;
     makeCSR.setInfo( "Make CSR" );
