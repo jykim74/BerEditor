@@ -46,6 +46,9 @@ private slots:
     void clickParse();
     void changeCmd( int index );
 
+    void clickAddDNS();
+    void clickClearDNS();
+
 private:
     void initUI();
     void initialize();

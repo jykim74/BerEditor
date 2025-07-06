@@ -48,6 +48,8 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     connect( mResponseText, SIGNAL(textChanged()), this, SLOT(changeResponse()));
     connect( mParserBtn, SIGNAL(clicked()), this, SLOT(clickParse()));
     connect( mCmdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeCmd(int)));
+    connect( mDNSAddBtn, SIGNAL(clicked()), this, SLOT(clickAddDNS()));
+    connect( mDNSClearBtn, SIGNAL(clicked()), this, SLOT(clickClearDNS()));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -207,6 +209,36 @@ void ACMEClientDlg::changeCmd( int index )
     mCmdText->setText( strURL );
 }
 
+void ACMEClientDlg::clickAddDNS()
+{
+    QString strDNS = mDNSText->text();
+    if( strDNS.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a DNS" ), this );
+        mDNSText->setFocus();
+        return;
+    }
+
+    for( int i = 0; i < mDNSList->count(); i++ )
+    {
+        QString strValue = mDNSList->item(i)->text();
+
+        if( strValue == strDNS )
+        {
+            berApplet->warningBox( tr("%1 is already existed" ).arg( strDNS), this );
+            return;
+        }
+    }
+
+    mDNSList->addItem( strDNS );
+    mDNSText->clear();
+}
+
+void ACMEClientDlg::clickClearDNS()
+{
+    mDNSList->clear();
+}
+
 void ACMEClientDlg::clickGetNonce()
 {
     const char *pHeaderName = "Replay-Nonce";
@@ -363,15 +395,22 @@ int ACMEClientDlg::makeNewNonce( QJsonObject& object )
 int ACMEClientDlg::makeNewOrder( QJsonObject& object )
 {
     QString strDNS = mDNSText->text();
+    QStringList strDNSList;
 
-    if( strDNS.length() < 1 )
+    if( mDNSList->count() < 1 )
     {
         berApplet->warningBox( tr( "Enter a identifier" ), this );
         mDNSText->setFocus();
         return -1;
     }
 
-    object = ACMEObject::getIdentifiers( "dns", strDNS );
+    for( int i = 0; i < mDNSList->count(); i++ )
+    {
+        QString strValue = mDNSList->item(i)->text();
+        strDNSList.append( strValue );
+    }
+
+    object = ACMEObject::getIdentifiers( strDNSList );
     return 0;
 }
 

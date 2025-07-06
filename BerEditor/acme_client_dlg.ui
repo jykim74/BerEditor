@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>564</width>
-    <height>874</height>
+    <height>1004</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -132,18 +132,12 @@
      <item row="1" column="1">
       <widget class="QLineEdit" name="mEmailText"/>
      </item>
-     <item row="3" column="1">
-      <widget class="QLineEdit" name="mKIDText"/>
-     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_10">
        <property name="text">
         <string>Nonce</string>
        </property>
       </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QLineEdit" name="mDNSText"/>
      </item>
      <item row="3" column="0">
       <widget class="QLabel" name="label_12">
@@ -168,14 +162,51 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="mKIDText"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_8">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_11">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="mDNSText"/>
+     </item>
+     <item row="0" column="0">
       <widget class="QLabel" name="label_13">
        <property name="text">
         <string>DNS</string>
        </property>
       </widget>
      </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mDNSAddBtn">
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mDNSClearBtn">
+       <property name="text">
+        <string>Clear</string>
+       </property>
+      </widget>
+     </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QListWidget" name="mDNSList"/>
    </item>
    <item>
     <widget class="Line" name="line_5">

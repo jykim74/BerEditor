@@ -201,16 +201,22 @@ const QJsonObject ACMEObject::getNewAccountPayload( const QString strStatus,
     return jObj;
 }
 
-const QJsonObject ACMEObject::getIdentifiers( const QString strType, const QString strName )
+const QJsonObject ACMEObject::getIdentifiers( const QStringList strNameList )
 {
     QJsonObject jObj;
     QJsonArray jArr;
     QJsonObject jSubObj;
 
-    jSubObj["type"] = strType;
-    jSubObj["value"] = strName;
+    for( int i = 0; i < strNameList.size(); i++ )
+    {
+        QString strName = strNameList.at(i);
 
-    jArr.append( jSubObj );
+        jSubObj["type"] = "dns";
+        jSubObj["value"] = strName;
+
+        jArr.append( jSubObj );
+    }
+
     jObj["identifiers"] = jArr;
 
     return jObj;
