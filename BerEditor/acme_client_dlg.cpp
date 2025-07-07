@@ -172,6 +172,24 @@ int ACMEClientDlg::parseNewOrderRsp( QJsonObject& object )
     return 0;
 }
 
+int ACMEClientDlg::parseAuthzRsp( QJsonObject& object )
+{
+    QJsonArray jArr = object["challenges"].toArray();
+
+    for( int i = 0; i < jArr.count(); i++ )
+    {
+        QJsonObject jObj = jArr.at(i).toObject();
+        QString strType = jObj["type"].toString();
+        QString strURL = jObj["url"].toString();
+        QString strToken = jObj["token"].toString();
+        QString strStatus = jObj["status"].toString();
+
+        mCmdCombo->addItem( kCmdChallenge, strURL );
+    }
+
+    return 0;
+}
+
 void ACMEClientDlg::clickParse()
 {
     int ret = 0;
@@ -196,6 +214,10 @@ void ACMEClientDlg::clickParse()
     {
         ret = parseNewOrderRsp( object );
     }
+    else if( strCmd.toUpper() == kCmdAuthorization.toUpper() )
+    {
+        ret = parseAuthzRsp( object );
+    }
 
     if( ret == 0 )
         berApplet->messageBox( tr( "Parsing is done" ), this );
@@ -205,8 +227,16 @@ void ACMEClientDlg::clickParse()
 
 void ACMEClientDlg::changeCmd( int index )
 {
-    QString strURL = mCmdCombo->currentData().toString();
-    mCmdText->setText( strURL );
+    QString strCmd = mCmdCombo->currentText();
+    if( strCmd == kCmdLocation)
+    {
+        mCmdText->setText( mLocationText->text() );
+    }
+    else
+    {
+        QString strURL = mCmdCombo->currentData().toString();
+        mCmdText->setText( strURL );
+    }
 }
 
 void ACMEClientDlg::clickAddDNS()
@@ -338,6 +368,8 @@ void ACMEClientDlg::clickGetDirectory()
 
     listKeys = jObj.keys();
     mCmdCombo->clear();
+    mCmdCombo->addItem( "" );
+    mCmdCombo->addItem( kCmdLocation );
 
     for( int i = 0; i < listKeys.size(); i++ )
     {
@@ -482,26 +514,50 @@ void ACMEClientDlg::clickMake()
 
 
     if( strCmd.toUpper() == kCmdKeyChange.toUpper() )
+    {
         ret = makeKeyExchange(objPayload);
+        acmeObj.setPayload( objPayload );
+    }
     else if( strCmd.toUpper() == kCmdNewAccount.toUpper() )
+    {
         ret = makeNewAccount(objPayload);
+        acmeObj.setPayload( objPayload );
+    }
     else if( strCmd.toUpper() == kCmdNewNonce.toUpper() )
+    {
         ret = makeNewNonce(objPayload);
+        acmeObj.setPayload( objPayload );
+    }
     else if( strCmd.toUpper() == kCmdNewOrder.toUpper() )
+    {
         ret = makeNewOrder(objPayload);
+        acmeObj.setPayload( objPayload );
+    }
     else if( strCmd.toUpper() == kCmdRenewalInfo.toUpper() )
+    {
         ret = makeRenewalInfo(objPayload);
+        acmeObj.setPayload( objPayload );
+    }
     else if( strCmd.toUpper() == kCmdRevokeCert.toUpper() )
+    {
         ret = makeRevokeCert(objPayload);
+        acmeObj.setPayload( objPayload );
+    }
     else if( strCmd.toUpper() == kCmdFinalize.toUpper() )
+    {
         ret = makeFinalize( objPayload, &binPri );
+        acmeObj.setPayload( objPayload );
+    }
+    else if( strCmd.toUpper() == kCmdChallenge.toUpper() )
+    {
+        acmeObj.setPayload( objPayload );
+    }
     else
     {
-        berApplet->warningBox( tr( "Invalid command: %1").arg( strCmd ), this );
-        goto end;
+
     }
 
-    acmeObj.setPayload( objPayload );
+//    acmeObj.setPayload( objPayload );
     berApplet->log( QString("Payload: %1").arg( acmeObj.getPayloadJSON() ));
 
     if( strKID.length() > 0 )
@@ -515,7 +571,6 @@ void ACMEClientDlg::clickMake()
 
     acmeObj.setSignature( &binPri, strHash );
 
-    //mRequestText->setPlainText( acmeObj.getJson() );
     mRequestText->setPlainText( acmeObj.getPacketJson() );
 
     mResponseText->clear();
@@ -593,16 +648,16 @@ void ACMEClientDlg::clickSend()
                 mNonceText->setText( pCurList->sNameVal.pValue );
         }
 
-        if( mKIDText->text().length() < 1 )
+        if( strcasecmp( pCurList->sNameVal.pName, "Location" ) == 0 )
         {
-            if( strcasecmp( pCurList->sNameVal.pName, "Location" ) == 0 )
+            berApplet->log( QString( "Location: %1" ).arg( pCurList->sNameVal.pValue ));
+            mLocationText->setText( pCurList->sNameVal.pValue );
+
+            if( mKIDText->text().length() < 1 )
             {
-                berApplet->log( QString( "Location: %1" ).arg( pCurList->sNameVal.pValue ));
                 bVal = berApplet->yesOrNoBox( tr( "Change KID as %1?" ).arg( pCurList->sNameVal.pValue ), this, true );
                 if( bVal == true )
                     mKIDText->setText( pCurList->sNameVal.pValue );
-
-                mLocationText->setText( pCurList->sNameVal.pValue );
             }
         }
 

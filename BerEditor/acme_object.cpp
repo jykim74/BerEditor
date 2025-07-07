@@ -31,10 +31,16 @@ const QString ACMEObject::getProtectedJSON()
     QJsonDocument jDoc;
     QJsonObject jObj;
 
-    jObj = json_[kNameProtected].toObject();
-    jDoc.setObject( jObj );
-
-    return jDoc.toJson();
+    if( json_[kNameProtected].isObject() == true )
+    {
+        jObj = json_[kNameProtected].toObject();
+        jDoc.setObject( jObj );
+        return jDoc.toJson();
+    }
+    else
+    {
+        return json_[kNameProtected].toString();
+    }
 }
 
 const QString ACMEObject::getPayloadJSON()
@@ -42,10 +48,16 @@ const QString ACMEObject::getPayloadJSON()
     QJsonDocument jDoc;
     QJsonObject jObj;
 
-    jObj = json_[kNamePayload].toObject();
-    jDoc.setObject( jObj );
-
-    return jDoc.toJson();
+    if( json_[kNamePayload].isObject() == true )
+    {
+        jObj = json_[kNamePayload].toObject();
+        jDoc.setObject( jObj );
+        return jDoc.toJson();
+    }
+    else
+    {
+        return json_[kNamePayload].toString();
+    }
 }
 
 const QString ACMEObject::getSignatureJSON()
@@ -53,10 +65,16 @@ const QString ACMEObject::getSignatureJSON()
     QJsonDocument jDoc;
     QJsonObject jObj;
 
-    jObj = json_[kNameSignature].toObject();
-    jDoc.setObject( jObj );
-
-    return jDoc.toJson();
+    if( json_[kNameSignature].isObject() == true )
+    {
+        jObj = json_[kNameSignature].toObject();
+        jDoc.setObject( jObj );
+        return jDoc.toJson();
+    }
+    else
+    {
+        return json_[kNameSignature].toString();
+    }
 }
 
 const QString ACMEObject::getPayloadPacket()
@@ -125,8 +143,10 @@ void ACMEObject::setSignature( const BIN *pPri,const QString strHash )
     strProtected = getProtectedPacket();
 
     strJSON = strProtected;
+
     strJSON += ".";
     strJSON += strPayload;
+
 
     JS_BIN_set( &binSrc, (unsigned char *)strJSON.toStdString().c_str(), strJSON.length() );
 
@@ -264,43 +284,13 @@ const QString ACMEObject::getJson()
 const QString ACMEObject::getPacketJson()
 {
     QJsonDocument jDoc;
-    QJsonObject objPayload;
-    QJsonObject objProtected;
 
-    QString strPayload;
-    QString strProtected;
-
-    BIN binPayload = {0,0};
-    BIN binProtected = {0,0};
-
-    char *pPayload = NULL;
-    char *pProtected = NULL;
-
-    objProtected = json_[kNameProtected].toObject();
-    objPayload = json_[kNamePayload].toObject();
-
-    jDoc.setObject( objPayload );
-    strPayload = jDoc.toJson();
-
-    jDoc.setObject( objProtected );
-    strProtected = jDoc.toJson();
-
-    JS_BIN_set( &binPayload, (unsigned char *)strPayload.toStdString().c_str(), strPayload.length() );
-    JS_BIN_set( &binProtected, (unsigned char *)strProtected.toStdString().c_str(), strProtected.length() );
-
-    JS_BIN_encodeBase64URL( &binPayload, &pPayload );
-    JS_BIN_encodeBase64URL( &binProtected, &pProtected );
-
-    json_[kNameProtected] = pProtected;
-    json_[kNamePayload] = pPayload;
+    json_[kNameProtected] = getProtectedPacket();
+    json_[kNamePayload] = getPayloadPacket();
 
     jDoc.setObject( json_ );
 
 end :
-    JS_BIN_reset( &binPayload );
-    JS_BIN_reset( &binProtected );
-    if( pPayload ) JS_free( pPayload );
-    if( pProtected ) JS_free( pProtected );
 
     return jDoc.toJson();
 }

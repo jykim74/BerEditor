@@ -9,6 +9,8 @@ namespace Ui {
 class ACMEClientDlg;
 }
 
+static QString kCmdLocation = "Location";
+
 static QString kCmdKeyChange = "keyChange";
 static QString kCmdNewAccount = "newAccount";
 static QString kCmdNewNonce = "newNonce";
@@ -62,6 +64,7 @@ private:
     int makeFinalize( QJsonObject& object, const BIN *pPri );
 
     int parseNewOrderRsp( QJsonObject& object );;
+    int parseAuthzRsp( QJsonObject& object );
 
     QStringList getUsedURL();
     void setUsedURL( const QString strURL );
