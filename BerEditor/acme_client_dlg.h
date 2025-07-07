@@ -54,6 +54,7 @@ private slots:
 
     void clickAddDNS();
     void clickClearDNS();
+    void clickClearAll();
 
 private:
     void initUI();

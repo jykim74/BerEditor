@@ -51,6 +51,8 @@ void DecodeDataDlg::viewData()
         nType = DATA_HEX;
     else if( mTypeBase64->isChecked() )
         nType = DATA_BASE64;
+    else if( mTypeBase64URL->isChecked() )
+        nType = DATA_BASE64URL;
 
     QString strData = mDataText->toPlainText();
 
@@ -93,6 +95,11 @@ void DecodeDataDlg::dataChanged()
     {
         nType = DATA_BASE64;
         mDataText->setPlaceholderText( tr( "Base64 or PEM value" ));
+    }
+    else if( mTypeBase64URL->isChecked() )
+    {
+        nType = DATA_BASE64URL;
+        mDataText->setPlaceholderText( tr( "Base64UL value" ));
     }
 
     QString strLen = getDataLenString( nType, mDataText->toPlainText() );

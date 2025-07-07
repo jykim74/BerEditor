@@ -55,6 +55,7 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     connect( mCmdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeCmd(int)));
     connect( mDNSAddBtn, SIGNAL(clicked()), this, SLOT(clickAddDNS()));
     connect( mDNSClearBtn, SIGNAL(clicked()), this, SLOT(clickClearDNS()));
+    connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clickClearAll()));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -301,6 +302,22 @@ void ACMEClientDlg::clickAddDNS()
 void ACMEClientDlg::clickClearDNS()
 {
     mDNSList->clear();
+}
+
+void ACMEClientDlg::clickClearAll()
+{
+    mNonceText->clear();
+    mNonceURLText->clear();
+    mDNSText->clear();
+    mDNSList->clear();
+    mCmdCombo->clear();
+    mCmdText->clear();
+    mRequestText->clear();
+    mResponseText->clear();
+    mRspCmdText->clear();
+    mLocationText->clear();
+    mKIDText->clear();
+    mStatusText->clear();
 }
 
 void ACMEClientDlg::clickGetNonce()
