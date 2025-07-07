@@ -32,6 +32,7 @@ public:
 
     const QString getJson();
     const QString getPacketJson();
+    const QJsonObject getObject() { return json_; };
 
 
     static const QJsonObject getJWKProtected( const QString strAlg,

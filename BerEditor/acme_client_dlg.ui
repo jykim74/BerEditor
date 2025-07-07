@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>564</width>
-    <height>1004</height>
+    <height>773</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -75,6 +75,13 @@
      <property name="topMargin">
       <number>0</number>
      </property>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="mGetLocationBtn">
+       <property name="text">
+        <string>GetLocation</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_7">
        <property name="minimumSize">
@@ -91,12 +98,8 @@
      <item row="0" column="1">
       <widget class="QLineEdit" name="mNonceURLText"/>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mGetNonceBtn">
-       <property name="text">
-        <string>Get Nonce</string>
-       </property>
-      </widget>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="mLocationText"/>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_9">
@@ -105,13 +108,33 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="mLocationText"/>
-     </item>
-     <item row="1" column="2">
-      <widget class="QPushButton" name="mGetLocationBtn">
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mGetNonceBtn">
        <property name="text">
-        <string>GetLocation</string>
+        <string>Get Nonce</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_12">
+       <property name="minimumSize">
+        <size>
+         <width>60</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>KID</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="mKIDText"/>
+     </item>
+     <item row="2" column="2">
+      <widget class="QPushButton" name="mKIDClearBtn">
+       <property name="text">
+        <string>Clear</string>
        </property>
       </widget>
      </item>
@@ -125,31 +148,11 @@
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout_8">
+    <layout class="QGridLayout" name="gridLayout_12">
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="mEmailText"/>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_10">
-       <property name="text">
-        <string>Nonce</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_12">
-       <property name="text">
-        <string>KID</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="mNonceText"/>
-     </item>
-     <item row="1" column="0">
+     <item row="0" column="2">
       <widget class="QLabel" name="label_8">
        <property name="minimumSize">
         <size>
@@ -162,8 +165,24 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
-      <widget class="QLineEdit" name="mKIDText"/>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_10">
+       <property name="minimumSize">
+        <size>
+         <width>60</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Nonce</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="mNonceText"/>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLineEdit" name="mEmailText"/>
      </item>
     </layout>
    </item>
@@ -184,6 +203,12 @@
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_13">
+       <property name="minimumSize">
+        <size>
+         <width>60</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="text">
         <string>DNS</string>
        </property>
@@ -221,6 +246,9 @@
       <number>0</number>
      </property>
      <item row="0" column="4">
+      <widget class="QComboBox" name="mHashCombo"/>
+     </item>
+     <item row="0" column="5">
       <widget class="QPushButton" name="mMakeBtn">
        <property name="text">
         <string>Make</string>
@@ -250,13 +278,17 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="3">
-      <widget class="QComboBox" name="mHashCombo"/>
-     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_11">
        <property name="text">
         <string>Command</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QCheckBox" name="mUseCertManCheck">
+       <property name="text">
+        <string>Use CertMan</string>
        </property>
       </widget>
      </item>

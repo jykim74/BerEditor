@@ -44,6 +44,7 @@ private slots:
     void clickMake();
     void clickSend();
     void clickClearURL();
+    void clickClearKID();
     void clickClearRequest();
     void clickClearResponse();
     void changeRequest();
@@ -62,7 +63,6 @@ private:
     int makeNewAccount( QJsonObject& object );
     int makeNewNonce( QJsonObject& object );
     int makeNewOrder( QJsonObject& object );
-    int makeRenewalInfo( QJsonObject& object );
     int makeRevokeCert( QJsonObject& object );
     int makeFinalize( QJsonObject& object );
 

@@ -14,6 +14,7 @@
 #include "key_pair_man_dlg.h"
 #include "acme_object.h"
 #include "make_csr_dlg.h"
+#include "cert_man_dlg.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -40,6 +41,7 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mURLClearBtn, SIGNAL(clicked()), this, SLOT(clickClearURL()));
+    connect( mKIDClearBtn, SIGNAL(clicked()), this, SLOT(clickClearKID()));
     connect( mGetNonceBtn, SIGNAL(clicked()), this, SLOT(clickGetNonce()));
     connect( mGetLocationBtn, SIGNAL(clicked()), this, SLOT(clickGetLocation()));
     connect( mGetDirBtn, SIGNAL(clicked()), this, SLOT(clickGetDirectory()));
@@ -132,6 +134,11 @@ void ACMEClientDlg::clickClearURL()
     berApplet->log( "clear used URLs" );
 }
 
+void ACMEClientDlg::clickClearKID()
+{
+    mKIDText->clear();
+}
+
 void ACMEClientDlg::clickClearRequest()
 {
     mRequestText->clear();
@@ -204,7 +211,7 @@ int ACMEClientDlg::parseOrder( QJsonObject& object )
 
 void ACMEClientDlg::addCmd( const QString strCmd, const QString strCmdURL )
 {
-    for( int i = 0; mCmdCombo->count(); i++ )
+    for( int i = 0; i < mCmdCombo->count(); i++ )
     {
         if( mCmdCombo->itemData( i ).toString().toUpper() == strCmdURL.toUpper() )
             return;
@@ -418,6 +425,70 @@ end :
 
 int ACMEClientDlg::makeKeyExchange( QJsonObject& object )
 {
+    BIN binPub = {0,0};
+    BIN binPri = {0,0};
+
+    QString strName;
+    QString strPubPath;
+    QString strPriPath;
+
+    int nKeyType = -1;
+    QString strHash = mHashCombo->currentText();
+    QString strNonce = mNonceText->text();
+    QString strAlg;
+    QString strURL = mCmdText->text();
+
+    ACMEObject acmeObj;
+    QJsonObject objJWK;
+    QJsonObject objPayload;
+    QJsonObject objProtected;
+
+    if( mUseCertManCheck->isChecked() == true )
+    {
+        BIN binCert = {0,0};
+        CertManDlg certMan;
+        certMan.setMode( ManModeSelBoth );
+        certMan.setTitle( tr( "Select a old certificate" ));
+
+        if( certMan.exec() != QDialog::Accepted )
+            return -1;
+
+        certMan.getPriKey( &binPri );
+        certMan.getCert( &binCert );
+        JS_PKI_getPubKeyFromCert( &binCert, &binPub );
+        JS_BIN_reset( &binCert );
+        strName = certMan.getSeletedCertPath();
+    }
+    else
+    {
+        KeyPairManDlg keyPairMan;
+        keyPairMan.setTitle( tr( "Select old keypair" ));
+        keyPairMan.setMode( KeyPairModeSelect );
+
+        if( keyPairMan.exec() != QDialog::Accepted )
+            return -1;
+
+        strPubPath = keyPairMan.getPubPath();
+        strPriPath = keyPairMan.getPriPath();
+        strName = keyPairMan.getName();
+
+        JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+        JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPub );
+    }
+
+    nKeyType = JS_PKI_getPriKeyType( &pri_key_ );
+    strAlg = ACMEObject::getAlg( nKeyType, strHash );
+    objJWK = ACMEObject::getJWK( &pub_key_, strHash, "Make JWK Key" );
+    objProtected = acmeObj.getJWKProtected( strAlg, objJWK, strNonce, strURL );
+    acmeObj.setProtected( objProtected );
+    acmeObj.setSignature( &binPri, strHash );
+
+    object = acmeObj.getObject();
+
+end :
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binPub );
+
     return 0;
 }
 
@@ -473,13 +544,27 @@ int ACMEClientDlg::makeNewOrder( QJsonObject& object )
     return 0;
 }
 
-int ACMEClientDlg::makeRenewalInfo( QJsonObject& object )
-{
-    return 0;
-}
-
 int ACMEClientDlg::makeRevokeCert( QJsonObject& object )
 {
+    BIN binCert = {0,0};
+    char *pValue;
+
+    CertManDlg certMan;
+    certMan.setMode( ManModeSelBoth );
+    certMan.setTitle( tr( "Select a sign certificate" ));
+
+    if( certMan.exec() != QDialog::Accepted )
+        return -1;
+
+    certMan.getCert( &binCert );
+    JS_BIN_encodeBase64URL( &binCert, &pValue );
+
+    object["reason"] = 1;
+    object["certificate"] = pValue;
+
+    JS_BIN_reset( &binCert );
+    if( pValue ) JS_free( pValue );
+
     return 0;
 }
 
@@ -549,23 +634,44 @@ void ACMEClientDlg::clickMake()
     QString strNonce = mNonceText->text();
     QString strAlg;
     QString strURL = mCmdText->text();
+    QString strName;
+    QString strPubPath;
+    QString strPriPath;
 
     if( pri_key_.nLen <= 0 )
     {
-        KeyPairManDlg keyPairMan;
-        keyPairMan.setTitle( tr( "Select keypair" ));
-        keyPairMan.setMode( KeyPairModeSelect );
+        if( mUseCertManCheck->isChecked() == true )
+        {
+            BIN binCert = {0,0};
+            CertManDlg certMan;
+            certMan.setMode( ManModeSelBoth );
+            certMan.setTitle( tr( "Select a sign certificate" ));
 
-        if( keyPairMan.exec() != QDialog::Accepted )
-            return;
+            if( certMan.exec() != QDialog::Accepted )
+                return;
 
-        QString strPubPath = keyPairMan.getPubPath();
-        QString strPriPath = keyPairMan.getPriPath();
-        QString strName = keyPairMan.getName();
+            certMan.getPriKey( &pri_key_ );
+            certMan.getCert( &binCert );
+            JS_PKI_getPubKeyFromCert( &binCert, &pub_key_ );
+            JS_BIN_reset( &binCert );
+            strName = certMan.getSeletedCertPath();
+        }
+        else
+        {
+            KeyPairManDlg keyPairMan;
+            keyPairMan.setTitle( tr( "Select keypair" ));
+            keyPairMan.setMode( KeyPairModeSelect );
 
+            if( keyPairMan.exec() != QDialog::Accepted )
+                return;
 
-        JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &pri_key_ );
-        JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &pub_key_ );
+            strPubPath = keyPairMan.getPubPath();
+            strPriPath = keyPairMan.getPriPath();
+            strName = keyPairMan.getName();
+
+            JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &pri_key_ );
+            JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &pub_key_ );
+        }
     }
 
     nKeyType = JS_PKI_getPriKeyType( &pri_key_ );
@@ -595,7 +701,6 @@ void ACMEClientDlg::clickMake()
     }
     else if( strCmd.toUpper() == kCmdRenewalInfo.toUpper() )
     {
-        ret = makeRenewalInfo(objPayload);
         acmeObj.setPayload( objPayload );
     }
     else if( strCmd.toUpper() == kCmdRevokeCert.toUpper() )
