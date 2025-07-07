@@ -35,6 +35,9 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     setupUi(this);
     initUI();
 
+    memset( &pri_key_, 0x00, sizeof(BIN));
+    memset( &pub_key_, 0x00, sizeof(BIN));
+
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mURLClearBtn, SIGNAL(clicked()), this, SLOT(clickClearURL()));
     connect( mGetNonceBtn, SIGNAL(clicked()), this, SLOT(clickGetNonce()));
@@ -62,7 +65,8 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
 
 ACMEClientDlg::~ACMEClientDlg()
 {
-
+    JS_BIN_reset( &pri_key_ );
+    JS_BIN_reset( &pub_key_ );
 }
 
 void ACMEClientDlg::initUI()
@@ -159,14 +163,14 @@ int ACMEClientDlg::parseNewOrderRsp( QJsonObject& object )
 
     if( strFinalValue.length() > 0 )
     {
-        mCmdCombo->addItem( kCmdFinalize, strFinalValue );
+        addCmd( kCmdFinalize, strFinalValue );
     }
 
     for( int i = 0; i < jArr.size(); i++ )
     {
         QString strValue = jArr.at(i).toString();
 
-        mCmdCombo->addItem( kCmdAuthorization, strValue );
+        addCmd( kCmdAuthorization, strValue );
     }
 
     return 0;
@@ -184,10 +188,29 @@ int ACMEClientDlg::parseAuthzRsp( QJsonObject& object )
         QString strToken = jObj["token"].toString();
         QString strStatus = jObj["status"].toString();
 
-        mCmdCombo->addItem( kCmdChallenge, strURL );
+        addCmd( kCmdChallenge, strURL );
     }
 
     return 0;
+}
+
+int ACMEClientDlg::parseOrder( QJsonObject& object )
+{
+    QString strCert = object["certificate"].toString();
+
+    if( strCert.length() > 0 )
+        addCmd( kCmdCertificate, strCert );
+}
+
+void ACMEClientDlg::addCmd( const QString strCmd, const QString strCmdURL )
+{
+    for( int i = 0; mCmdCombo->count(); i++ )
+    {
+        if( mCmdCombo->itemData( i ).toString().toUpper() == strCmdURL.toUpper() )
+            return;
+    }
+
+    mCmdCombo->addItem( strCmd, strCmdURL );
 }
 
 void ACMEClientDlg::clickParse()
@@ -217,6 +240,10 @@ void ACMEClientDlg::clickParse()
     else if( strCmd.toUpper() == kCmdAuthorization.toUpper() )
     {
         ret = parseAuthzRsp( object );
+    }
+    else if( strCmd.toUpper() == kCmdOrder.toUpper() )
+    {
+        ret = parseOrder( object );
     }
 
     if( ret == 0 )
@@ -381,8 +408,8 @@ void ACMEClientDlg::clickGetDirectory()
         if( strCmd.toUpper() == kCmdNewNonce.toUpper() )
             mNonceURLText->setText( strValue );
 
-        if( strCmd != "meta" )
-            mCmdCombo->addItem( strCmd, strValue );
+        if( strCmd.toLower() != "meta" )
+            addCmd( strCmd, strValue );
     }
 
 end :
@@ -456,31 +483,59 @@ int ACMEClientDlg::makeRevokeCert( QJsonObject& object )
     return 0;
 }
 
-int ACMEClientDlg::makeFinalize( QJsonObject& object, const BIN *pPri )
+int ACMEClientDlg::makeFinalize( QJsonObject& object )
 {
+    int ret = 0;
     QString strHex;
-    QString strDNS = mDNSText->text();
+    QStringList listSAN;
+    BIN binPri = {0,0};
 
     MakeCSRDlg makeCSR;
-    makeCSR.setInfo( "Make CSR" );
-    makeCSR.setPriKey( pPri );
-    makeCSR.mCNText->setText( strDNS );
+
+    KeyPairManDlg keyPairMan;
+    keyPairMan.setTitle( tr( "Select keypair for CSR" ));
+    keyPairMan.setMode( KeyPairModeSelect );
+
+    if( keyPairMan.exec() != QDialog::Accepted )
+        return -1;
+
+    QString strPriPath = keyPairMan.getPriPath();
+    JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+
+    makeCSR.setInfo( tr( "Make CSR" ) );
+    makeCSR.setPriKey( &binPri );
+
+    for( int i = 0; i < mDNSList->count(); i++ )
+    {
+        QString strDNS = mDNSList->item(i)->text();
+        if( i == 0 ) makeCSR.mCNText->setText( strDNS );
+
+        listSAN.append( strDNS );
+    }
+
+    if( listSAN.size() > 0 ) makeCSR.setSAN( listSAN );
 
     if( makeCSR.exec() != QDialog::Accepted )
-        return -1;
+    {
+        ret = -1;
+        goto end;
+    }
 
     strHex = makeCSR.getCSRHex();
     object["csr"] = getBase64URL_FromHex( strHex );
+    ret = 0;
 
-    return 0;
+end :
+    JS_BIN_reset( &binPri );
+
+    return ret;
 }
 
 void ACMEClientDlg::clickMake()
 {
     int ret = 0;
     int nKeyType = -1;
-    BIN binPub = {0,0};
-    BIN binPri = {0,0};
+
     ACMEObject acmeObj;
     QString strCmd = mCmdCombo->currentText();
     QString strHash = mHashCombo->currentText();
@@ -491,26 +546,31 @@ void ACMEClientDlg::clickMake()
     QJsonObject objPayload;
     QJsonObject objProtected;
 
-    KeyPairManDlg keyPairMan;
-    keyPairMan.setTitle( tr( "Select keypair" ));
-    keyPairMan.setMode( KeyPairModeSelect );
-
-    if( keyPairMan.exec() != QDialog::Accepted )
-        return;
-
-    QString strPubPath = keyPairMan.getPubPath();
-    QString strPriPath = keyPairMan.getPriPath();
-    QString strName = keyPairMan.getName();
     QString strNonce = mNonceText->text();
     QString strAlg;
     QString strURL = mCmdText->text();
 
-    JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
-    JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPub );
+    if( pri_key_.nLen <= 0 )
+    {
+        KeyPairManDlg keyPairMan;
+        keyPairMan.setTitle( tr( "Select keypair" ));
+        keyPairMan.setMode( KeyPairModeSelect );
 
-    nKeyType = JS_PKI_getPriKeyType( &binPri );
+        if( keyPairMan.exec() != QDialog::Accepted )
+            return;
+
+        QString strPubPath = keyPairMan.getPubPath();
+        QString strPriPath = keyPairMan.getPriPath();
+        QString strName = keyPairMan.getName();
+
+
+        JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &pri_key_ );
+        JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &pub_key_ );
+    }
+
+    nKeyType = JS_PKI_getPriKeyType( &pri_key_ );
     strAlg = ACMEObject::getAlg( nKeyType, strHash );
-    objJWK = ACMEObject::getJWK( &binPub, strHash, strName );
+    objJWK = ACMEObject::getJWK( &pub_key_, strHash, "Make JWK Key" );
 
 
     if( strCmd.toUpper() == kCmdKeyChange.toUpper() )
@@ -545,7 +605,7 @@ void ACMEClientDlg::clickMake()
     }
     else if( strCmd.toUpper() == kCmdFinalize.toUpper() )
     {
-        ret = makeFinalize( objPayload, &binPri );
+        ret = makeFinalize( objPayload );
         acmeObj.setPayload( objPayload );
     }
     else if( strCmd.toUpper() == kCmdChallenge.toUpper() )
@@ -569,7 +629,7 @@ void ACMEClientDlg::clickMake()
 
     berApplet->log( QString("Protected: %1").arg( acmeObj.getProtectedJSON() ));
 
-    acmeObj.setSignature( &binPri, strHash );
+    acmeObj.setSignature( &pri_key_, strHash );
 
     mRequestText->setPlainText( acmeObj.getPacketJson() );
 
@@ -577,9 +637,10 @@ void ACMEClientDlg::clickMake()
     mRspCmdText->clear();
     mStatusText->clear();
 
-end :
-    JS_BIN_reset( &binPub );
-    JS_BIN_reset( &binPri );
+//end :
+//    JS_BIN_reset( &binPub );
+//    JS_BIN_reset( &binPri );
+
 }
 
 void ACMEClientDlg::clickSend()
@@ -591,7 +652,7 @@ void ACMEClientDlg::clickSend()
     BIN binRsp = {0,0};
 
     QString strReq = mRequestText->toPlainText();
-    QString strCmd = mCmdText->text();
+    QString strCmdURL = mCmdText->text();
     QString strMethod = mMethodCombo->currentText();
     QString strKID = mKIDText->text();
 
@@ -599,7 +660,7 @@ void ACMEClientDlg::clickSend()
     JNameValList *pRspHeaderList = NULL;
     JNameValList *pCurList = NULL;
 
-    if( strCmd.length() < 1 )
+    if( strCmdURL.length() < 1 )
     {
         berApplet->warningBox( tr( "There is no command URL"), this );
         mURLCombo->setFocus();
@@ -616,9 +677,9 @@ void ACMEClientDlg::clickSend()
     getBINFromString( &binReq, DATA_STRING, strReq );
 
     if( strMethod == "POST" )
-        ret = JS_HTTP_requestPostBin3( strCmd.toStdString().c_str(), NULL, NULL, "application/jose+json", &binReq, &nStatus, &pRspHeaderList, &binRsp );
+        ret = JS_HTTP_requestPostBin3( strCmdURL.toStdString().c_str(), NULL, NULL, "application/jose+json", &binReq, &nStatus, &pRspHeaderList, &binRsp );
     else
-        ret = JS_HTTP_requestGetBin3( strCmd.toStdString().c_str(), NULL, NULL, &nStatus, &pRspHeaderList, &binRsp );
+        ret = JS_HTTP_requestGetBin3( strCmdURL.toStdString().c_str(), NULL, NULL, &nStatus, &pRspHeaderList, &binRsp );
 
     mStatusText->setText( QString("%1").arg( nStatus ));
 
@@ -658,6 +719,16 @@ void ACMEClientDlg::clickSend()
                 bVal = berApplet->yesOrNoBox( tr( "Change KID as %1?" ).arg( pCurList->sNameVal.pValue ), this, true );
                 if( bVal == true )
                     mKIDText->setText( pCurList->sNameVal.pValue );
+            }
+
+            QString strCmd = mCmdCombo->currentText();
+            if( strCmd.toUpper() == kCmdNewAccount.toUpper() )
+            {
+                addCmd( kCmdOrder, mLocationText->text() );
+            }
+            else if( strCmd.toUpper() == kCmdNewOrder.toUpper() )
+            {
+                addCmd( kCmdAccount, mLocationText->text() );
             }
         }
 

@@ -10,6 +10,9 @@ class ACMEClientDlg;
 }
 
 static QString kCmdLocation = "Location";
+static QString kCmdAccount = "Account";
+static QString kCmdOrder = "Order";
+
 
 static QString kCmdKeyChange = "keyChange";
 static QString kCmdNewAccount = "newAccount";
@@ -24,7 +27,7 @@ static QString kCmdCertificate = "Certificate";
 
 static QString kCmdAuthorization = "Authorization";
 static QString kCmdChallenge = "Challenge";
-static QString kCmdOrder = "Order";
+
 
 class ACMEClientDlg : public QDialog, public Ui::ACMEClientDlg
 {
@@ -61,13 +64,19 @@ private:
     int makeNewOrder( QJsonObject& object );
     int makeRenewalInfo( QJsonObject& object );
     int makeRevokeCert( QJsonObject& object );
-    int makeFinalize( QJsonObject& object, const BIN *pPri );
+    int makeFinalize( QJsonObject& object );
 
     int parseNewOrderRsp( QJsonObject& object );;
     int parseAuthzRsp( QJsonObject& object );
+    int parseOrder( QJsonObject& object );
+
+    void addCmd( const QString strCmd, const QString strCmdURL );
 
     QStringList getUsedURL();
     void setUsedURL( const QString strURL );
+
+    BIN pri_key_;
+    BIN pub_key_;
 };
 
 #endif // ACME_CLIENT_DLG_H

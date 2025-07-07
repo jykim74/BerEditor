@@ -66,6 +66,12 @@ void MakeCSRDlg::setInfo( const QString strInfo )
     mInfoLabel->setText( strInfo );
 }
 
+void MakeCSRDlg::setSAN( const QStringList listSAN )
+{
+    san_list_.clear();
+    san_list_ = listSAN;
+}
+
 const QString MakeCSRDlg::getDN()
 {
     QString strEmailAddress = mEMAILADDRESSText->text();
@@ -145,6 +151,7 @@ void MakeCSRDlg::clickOK()
     int ret = 0;
     QString strHash = mSignHashCombo->currentText();
     QString strDN = getDN();
+    JExtensionInfoList *pExtList = NULL;
 
     if( strDN.length() < 1 )
     {
@@ -155,13 +162,46 @@ void MakeCSRDlg::clickOK()
 
     JS_BIN_reset( &csr_ );
 
+    if( san_list_.size() > 0 )
+    {
+        JExtensionInfo sExtInfo;
+        JDB_ProfileExt sDBProfile;
+        QString strValue;
+        memset( &sDBProfile, 0x00, sizeof(sDBProfile));
+        memset( &sExtInfo, 0x00, sizeof(sExtInfo));
+
+        for( int i = 0; i < san_list_.size(); i++ )
+        {
+            if( i != 0 ) strValue += "#";
+            strValue += "DNS$";
+            strValue += san_list_.at(i);
+        }
+
+        sDBProfile.bCritical = 0;
+        sDBProfile.pSN = JS_strdup( JS_PKI_ExtNameSAN );
+        sDBProfile.pValue = JS_strdup( strValue.toStdString().c_str() );
+
+        ret = JS_PKI_transExtensionFromDBRec( &sExtInfo, &sDBProfile );
+        if( ret == 0 )
+        {
+            JS_PKI_addExtensionInfoList( &pExtList, &sExtInfo );
+        }
+
+        JS_PKI_resetExtensionInfo( &sExtInfo );
+        JS_DB_resetProfileExt( &sDBProfile );
+    }
+
     ret = JS_PKI_makeCSR(
         strHash.toStdString().c_str(),
         strDN.toStdString().c_str(),
-        NULL, NULL, &pri_key_, NULL, &csr_ );
+        NULL, NULL, &pri_key_, pExtList, &csr_ );
+
+    if( pExtList ) JS_PKI_resetExtensionInfoList( &pExtList );
 
     if( ret == 0 )
+    {
         return QDialog::accept();
+    }
     else
     {
         berApplet->warnLog( tr( "fail to make CSR: %1").arg( ret ), this);

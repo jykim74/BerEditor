@@ -22,6 +22,7 @@ public:
     const QString getCSRHex();
 
     void setInfo( const QString strInfo );
+    void setSAN( const QStringList listSAN );
 
 private slots:
     void clickOK();
@@ -33,6 +34,7 @@ private:
 
     BIN csr_;
     BIN pri_key_;
+    QStringList san_list_;
 };
 
 #endif // MAKE_CSR_DLG_H
