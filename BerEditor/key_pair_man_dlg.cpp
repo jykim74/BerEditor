@@ -579,7 +579,7 @@ void KeyPairManDlg::clickLMakeCSR()
         JS_BIN_decodeHex( strHexCSR.toStdString().c_str(), &binCSR );
 
         ExportDlg exportDlg;
-        exportDlg.setCRL( &binCSR );
+        exportDlg.setCSR( &binCSR );
         exportDlg.setName( strName );
         exportDlg.exec();
     }
