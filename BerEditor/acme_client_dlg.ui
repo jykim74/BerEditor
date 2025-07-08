@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>626</width>
+    <width>576</width>
     <height>878</height>
    </rect>
   </property>
@@ -289,7 +289,7 @@
       <widget class="QListWidget" name="mDNSList">
        <property name="minimumSize">
         <size>
-         <width>300</width>
+         <width>250</width>
          <height>0</height>
         </size>
        </property>
