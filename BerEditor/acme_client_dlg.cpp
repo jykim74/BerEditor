@@ -62,6 +62,7 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     connect( mDNSAddBtn, SIGNAL(clicked()), this, SLOT(clickAddDNS()));
     connect( mDNSClearBtn, SIGNAL(clicked()), this, SLOT(clickClearDNS()));
     connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clickClearAll()));
+    connect( mVerifyBtn, SIGNAL(clicked()), this, SLOT(clickVerify()));
     connect( mRequestViewBtn, SIGNAL(clicked()), this, SLOT(clickRequestView()));
     connect( mResponseViewBtn, SIGNAL(clicked()), this, SLOT(clickResponseView()));
 
@@ -405,6 +406,59 @@ void ACMEClientDlg::clickClearAll()
     mStatusText->clear();
 
     resetKey();
+}
+
+void ACMEClientDlg::clickVerify()
+{
+    BIN binPub = {0,0};
+    QString strRequest = mRequestText->toPlainText();
+
+    if( strRequest.length() < 1 )
+    {
+        berApplet->warningBox( tr("There is no request" ), this );
+        return;
+    }
+
+    if( mUseCertManCheck->isChecked() == true )
+    {
+        BIN binCert = {0,0};
+        CertManDlg certMan;
+
+        certMan.setMode( ManModeSelBoth );
+        certMan.setTitle( tr( "Select a sign certificate" ));
+
+        if( certMan.exec() != QDialog::Accepted )
+            return;
+
+        certMan.getCert( &binCert );
+        JS_PKI_getPubKeyFromCert( &binCert, &binPub );
+        JS_BIN_reset( &binCert );
+    }
+    else
+    {
+        KeyPairManDlg keyPairMan;
+        keyPairMan.setTitle( tr( "Select keypair" ));
+        keyPairMan.setMode( KeyPairModeSelect );
+
+        if( keyPairMan.exec() != QDialog::Accepted )
+            return;
+
+        QString strPubPath = keyPairMan.getPubPath();
+
+        JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPub );
+    }
+
+
+    ACMEObject acmeObj;
+    acmeObj.setObject( strRequest );
+
+    int ret = acmeObj.verifySignature( &binPub );
+    if( ret == JSR_VERIFY )
+        berApplet->messageBox( tr("Verify OK" ), this );
+    else
+        berApplet->warningBox( tr("Verify fail: %1").arg( ret ), this );
+
+    JS_BIN_reset( &binPub );
 }
 
 void ACMEClientDlg::clickRequestView()

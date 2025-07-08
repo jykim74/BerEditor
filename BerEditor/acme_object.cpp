@@ -16,6 +16,19 @@ ACMEObject::ACMEObject(QObject *parent)
 
 }
 
+void ACMEObject::setObject( const QString strJson )
+{
+    QJsonDocument jDoc = QJsonDocument::fromJson( strJson.toLocal8Bit() );
+    QJsonObject jObj = jDoc.object();
+
+    QString strProtected = jObj[kNameProtected].toString();
+    QString strPayload = jObj[kNamePayload].toString();
+    QString strSignature = jObj[kNameSignature].toString();
+
+    json_[kNameProtected] = QJsonDocument::fromJson( strProtected.toLocal8Bit() ).object();
+    json_[kNameProtected] = QJsonDocument::fromJson( strPayload.toLocal8Bit() ).object();
+    json_[kNameSignature] = strSignature;
+}
 void ACMEObject::setProtected( const QJsonObject object )
 {
     json_[kNameProtected] = object;
@@ -149,27 +162,6 @@ void ACMEObject::setSignature( const BIN *pPri,const QString strHash )
 
 
     JS_BIN_set( &binSrc, (unsigned char *)strJSON.toStdString().c_str(), strJSON.length() );
-
-#if 0
-    if( nKeyType == JS_PKI_KEY_TYPE_ECC )
-    {
-        BIN binR = {0,0};
-        BIN binS = {0,0};
-        JS_PKI_ECCMakeSign( strHash.toStdString().c_str(), &binSrc, pPri, &binSign );
-
-        JS_PKI_decodeECCSign( &binSign, &binR, &binS );
-        JS_BIN_reset( &binSign );
-        JS_BIN_copy( &binSign, &binR );
-        JS_BIN_appendBin( &binSign, &binS );
-        JS_BIN_reset( &binR );
-        JS_BIN_reset( &binS );
-    }
-    else
-    {
-        JS_PKI_signInit( &pCTX, strHash.toStdString().c_str(), nKeyType, pPri );
-        JS_PKI_sign( pCTX, &binSrc, &binSign );
-    }
-#else
     JS_PKI_signInit( &pCTX, strHash.toStdString().c_str(), nKeyType, pPri );
     JS_PKI_sign( pCTX, &binSrc, &binSign );
 
@@ -185,7 +177,7 @@ void ACMEObject::setSignature( const BIN *pPri,const QString strHash )
         JS_BIN_reset( &binR );
         JS_BIN_reset( &binS );
     }
-#endif
+
 
     JS_BIN_encodeBase64URL( &binSign, &pHexVal );
     json_[kNameSignature] = pHexVal;
@@ -195,6 +187,71 @@ end :
     JS_BIN_reset( &binSign );
     if( pHexVal ) JS_free( pHexVal );
     if( pCTX ) JS_PKI_signFree( &pCTX );
+}
+
+int ACMEObject::verifySignature( const BIN *pPub )
+{
+    int ret = 0;
+    int nKeyType = -1;
+    BIN binSrc = {0,0};
+    BIN binSign = {0,0};
+    void *pCTX = NULL;
+
+    QJsonObject objPayload = json_[kNamePayload].toObject();
+    QJsonObject objProtected = json_[kNameProtected].toObject();
+
+    QString strPayload;
+    QString strProtected;
+    QString strSignature = json_[kNameSignature].toString();
+
+    QString strJSON;
+    QString strAlg = objProtected["alg"].toString();
+    QString strHash = getHash( strAlg );
+
+    if( pPub == NULL ) return -1;
+
+    nKeyType = JS_PKI_getPubKeyType( pPub );
+    if( nKeyType < 0 ) return -1;
+
+    strPayload = getPayloadPacket();
+    strProtected = getProtectedPacket();
+
+    strJSON = strProtected;
+
+    strJSON += ".";
+    strJSON += strPayload;
+
+
+    JS_BIN_set( &binSrc, (unsigned char *)strJSON.toStdString().c_str(), strJSON.length() );
+    JS_BIN_decodeBase64URL( strSignature.toStdString().c_str(), &binSign );
+
+    if( nKeyType == JS_PKI_KEY_TYPE_ECC )
+    {
+        BIN binR = {0,0};
+        BIN binS = {0,0};
+
+        JS_BIN_set( &binR, binSign.pVal, binSign.nLen / 2 );
+        JS_BIN_set( &binS, &binSign.pVal[binR.nLen], binR.nLen );
+        JS_BIN_reset( &binSign );
+        JS_PKI_encodeECCSign( &binR, &binS, &binSign );
+        JS_BIN_reset( &binR );
+        JS_BIN_reset( &binS );
+    }
+
+    ret = JS_PKI_verifyInit( &pCTX, strHash.toStdString().c_str(), nKeyType, pPub );
+    if( ret != 0 )
+    {
+        ret = -1;
+        goto end;
+    }
+
+    ret = JS_PKI_verify( pCTX, &binSrc, &binSign );
+
+end :
+    JS_BIN_reset( &binSrc );
+    if( pCTX ) JS_PKI_verifyFree( &pCTX );
+
+    return ret;
 }
 
 const QJsonObject ACMEObject::getNewAccountPayload( const QString strStatus,
@@ -395,6 +452,24 @@ const QString ACMEObject::getAlg( int nKeyType, const QString strHash )
     }
 
     return strAlg;
+}
+
+const QString ACMEObject::getHash( const QString strAlg )
+{
+    QString strHash;
+
+    if( strAlg == "RS1" || strAlg == "ES1" )
+        strHash = "SHA1";
+    else if( strAlg == "RS224" || strAlg == "ES224" )
+        strHash = "SHA224";
+    else if( strAlg == "RS256" || strAlg == "ES256" )
+        strHash = "SHA256";
+    else if( strAlg == "RS384" || strAlg == "ES384" )
+        strHash = "SHA384";
+    else if( strAlg == "RS512" || strAlg == "ES512" )
+        strHash = "SHA512";
+
+    return strHash;
 }
 
 const QString ACMEObject::getCurve( const QString strOID )

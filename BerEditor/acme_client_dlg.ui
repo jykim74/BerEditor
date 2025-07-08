@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>576</width>
-    <height>878</height>
+    <width>590</width>
+    <height>885</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -425,13 +425,6 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="2">
-      <widget class="QLabel" name="label_6">
-       <property name="text">
-        <string>HTTP Status</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="3">
       <widget class="QLineEdit" name="mStatusText">
        <property name="maximumSize">
@@ -472,20 +465,7 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="minimumSize">
-        <size>
-         <width>60</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Request</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="8">
+     <item row="0" column="9">
       <widget class="QLineEdit" name="mRequestLenText">
        <property name="minimumSize">
         <size>
@@ -531,18 +511,32 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="6">
-      <spacer name="horizontalSpacer_3">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+     <item row="0" column="2">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>HTTP Status</string>
        </property>
-       <property name="sizeHint" stdset="0">
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="minimumSize">
         <size>
-         <width>40</width>
-         <height>20</height>
+         <width>60</width>
+         <height>0</height>
         </size>
        </property>
-      </spacer>
+       <property name="text">
+        <string>Request</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="8">
+      <widget class="QPushButton" name="mRequestViewBtn">
+       <property name="text">
+        <string>View</string>
+       </property>
+      </widget>
      </item>
      <item row="0" column="1">
       <widget class="QPushButton" name="mClearRequestBtn">
@@ -557,10 +551,23 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="6">
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
      <item row="0" column="7">
-      <widget class="QPushButton" name="mRequestViewBtn">
+      <widget class="QPushButton" name="mVerifyBtn">
        <property name="text">
-        <string>View</string>
+        <string>Verify</string>
        </property>
       </widget>
      </item>

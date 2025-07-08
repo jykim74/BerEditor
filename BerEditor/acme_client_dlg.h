@@ -56,6 +56,7 @@ private slots:
     void clickClearDNS();
     void clickClearAll();
 
+    void clickVerify();
     void clickRequestView();
     void clickResponseView();
 

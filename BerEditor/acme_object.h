@@ -22,6 +22,7 @@ public:
 
     void setPayload( const QJsonObject objPayload );
     void setSignature( const BIN *pPri, const QString strHash );
+    int verifySignature( const BIN *pPub );
 
     const QString getProtectedJSON();
     const QString getPayloadJSON();
@@ -33,6 +34,7 @@ public:
     const QString getJson();
     const QString getPacketJson();
     const QJsonObject getObject() { return json_; };
+    void setObject( const QString strJson );
 
 
     static const QJsonObject getJWKProtected( const QString strAlg,
@@ -56,6 +58,7 @@ public:
 
     static const QJsonObject getJWK( const BIN *pPub, const QString strHash, const QString strName );
     static const QString getAlg( int nKeyType, const QString strHash );
+    static const QString getHash( const QString strAlg );
     static const QString getCurve( const QString strOID );
     static const QString getEdDSA( const QString strName );
 
