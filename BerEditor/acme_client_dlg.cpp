@@ -15,6 +15,9 @@
 #include "acme_object.h"
 #include "make_csr_dlg.h"
 #include "cert_man_dlg.h"
+#include "csr_info_dlg.h"
+#include "export_dlg.h"
+#include "cert_info_dlg.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -38,6 +41,7 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
 
     memset( &pri_key_, 0x00, sizeof(BIN));
     memset( &pub_key_, 0x00, sizeof(BIN));
+    memset( &csr_pri_key_, 0x00, sizeof(BIN));
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mURLClearBtn, SIGNAL(clicked()), this, SLOT(clickClearURL()));
@@ -70,6 +74,7 @@ ACMEClientDlg::~ACMEClientDlg()
 {
     JS_BIN_reset( &pri_key_ );
     JS_BIN_reset( &pub_key_ );
+    JS_BIN_reset( &csr_pri_key_ );
 }
 
 void ACMEClientDlg::initUI()
@@ -164,6 +169,46 @@ void ACMEClientDlg::changeResponse()
     mResponseLenText->setText( strLen );
 }
 
+int ACMEClientDlg::parseNewAccountRsp( QJsonObject& object )
+{
+    QString strOrders = object["orders"].toString();
+
+    if( strOrders.length() > 0 )
+    {
+        addCmd( kCmdOrders, strOrders );
+    }
+
+    return 0;
+}
+
+int ACMEClientDlg::parseCertificateRsp( const QString strChain )
+{
+    int ret = -1;
+    BINList *pBinList = NULL;
+    BINList *pCurList = NULL;
+
+    int nCount = 0;
+
+    nCount = JS_BIN_decodePEMList( strChain.toStdString().c_str(), &pBinList );
+    if( nCount <= 0 ) goto end;
+
+    pCurList = pBinList;
+
+    while( pCurList )
+    {
+        CertInfoDlg certInfo;
+        certInfo.setCertBIN( &pCurList->Bin );
+        certInfo.exec();
+
+        pCurList = pCurList->pNext;
+    }
+
+end :
+    if( pBinList ) JS_BIN_resetList( &pBinList );
+
+    return ret;
+}
+
 int ACMEClientDlg::parseNewOrderRsp( QJsonObject& object )
 {
     QJsonArray jArr = object["authorizations"].toArray();
@@ -184,6 +229,17 @@ int ACMEClientDlg::parseNewOrderRsp( QJsonObject& object )
     return 0;
 }
 
+int ACMEClientDlg::parseOrdersRsp( QJsonObject& object )
+{
+    QJsonArray jArr = object["orders"].toArray();
+
+    for( int i = 0; i < jArr.size(); i++ )
+    {
+        QString strValue = jArr.at(i).toString();
+        addCmd( kCmdOrder, strValue );
+    }
+}
+
 int ACMEClientDlg::parseAuthzRsp( QJsonObject& object )
 {
     QJsonArray jArr = object["challenges"].toArray();
@@ -202,7 +258,7 @@ int ACMEClientDlg::parseAuthzRsp( QJsonObject& object )
     return 0;
 }
 
-int ACMEClientDlg::parseOrder( QJsonObject& object )
+int ACMEClientDlg::parseOrderRsp( QJsonObject& object )
 {
     QString strCert = object["certificate"].toString();
 
@@ -224,7 +280,7 @@ void ACMEClientDlg::addCmd( const QString strCmd, const QString strCmdURL )
 void ACMEClientDlg::clickParse()
 {
     int ret = 0;
-    QJsonDocument jsonDoc;
+
 
     QString strRsp = mResponseText->toPlainText();
     QString strCmd = mRspCmdText->text();
@@ -236,22 +292,38 @@ void ACMEClientDlg::clickParse()
         return;
     }
 
-    jsonDoc = QJsonDocument::fromJson( strRsp.toLocal8Bit() );
-    berApplet->log( jsonDoc.toJson() );
-
-    QJsonObject object = jsonDoc.object();
-
-    if( strCmd.toUpper() == kCmdNewOrder.toUpper() )
+    if( strCmd.toUpper() == kCmdCertificate.toUpper() )
     {
-        ret = parseNewOrderRsp( object );
+        ret = parseCertificateRsp( strRsp );
     }
-    else if( strCmd.toUpper() == kCmdAuthorization.toUpper() )
+    else
     {
-        ret = parseAuthzRsp( object );
-    }
-    else if( strCmd.toUpper() == kCmdOrder.toUpper() )
-    {
-        ret = parseOrder( object );
+        QJsonDocument jsonDoc;
+        jsonDoc = QJsonDocument::fromJson( strRsp.toLocal8Bit() );
+        berApplet->log( jsonDoc.toJson() );
+
+        QJsonObject object = jsonDoc.object();
+
+        if( strCmd.toUpper() == kCmdNewOrder.toUpper() )
+        {
+            ret = parseNewOrderRsp( object );
+        }
+        else if( strCmd.toUpper() == kCmdAuthorization.toUpper() )
+        {
+            ret = parseAuthzRsp( object );
+        }
+        else if( strCmd.toUpper() == kCmdOrder.toUpper() )
+        {
+            ret = parseOrderRsp( object );
+        }
+        else if( strCmd.toUpper() == kCmdOrders.toUpper() )
+        {
+            ret = parseOrdersRsp( object );
+        }
+        else if( strCmd.toUpper() == kCmdNewAccount.toUpper() )
+        {
+            ret = parseNewAccountRsp( object );
+        }
     }
 
     if( ret == 0 )
@@ -590,9 +662,11 @@ int ACMEClientDlg::makeFinalize( QJsonObject& object )
     int ret = 0;
     QString strHex;
     QStringList listSAN;
-    BIN binPri = {0,0};
+
+    BIN binCSR = {0,0};
 
     MakeCSRDlg makeCSR;
+    CSRInfoDlg csrInfo;
 
     KeyPairManDlg keyPairMan;
     keyPairMan.setTitle( tr( "Select keypair for CSR" ));
@@ -602,10 +676,13 @@ int ACMEClientDlg::makeFinalize( QJsonObject& object )
         return -1;
 
     QString strPriPath = keyPairMan.getPriPath();
-    JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+
+    JS_BIN_reset( &csr_pri_key_ );
+    JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &csr_pri_key_ );
+
 
     makeCSR.setInfo( tr( "Make CSR" ) );
-    makeCSR.setPriKey( &binPri );
+    makeCSR.setPriKey( &csr_pri_key_ );
 
     for( int i = 0; i < mDNSList->count(); i++ )
     {
@@ -623,12 +700,24 @@ int ACMEClientDlg::makeFinalize( QJsonObject& object )
         goto end;
     }
 
+
     strHex = makeCSR.getCSRHex();
+
+    JS_BIN_decodeHex( strHex.toStdString().c_str(), &binCSR );
+
     object["csr"] = getBase64URL_FromHex( strHex );
     ret = 0;
 
+    if( berApplet->yesOrNoBox( tr( "Would you like to save this CSR?" ), this ) == true )
+    {
+        ExportDlg exportDlg;
+        exportDlg.setCSR( &binCSR );
+        exportDlg.setName( makeCSR.getDN() );
+        exportDlg.exec();
+    }
+
 end :
-    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binCSR );
 
     return ret;
 }
@@ -856,6 +945,8 @@ void ACMEClientDlg::clickSend()
 
         pCurList = pCurList->pNext;
     }
+
+    if( mAutoParseCheck->isChecked() ) clickParse();
 
 end :
     if( pRspHeaderList ) JS_UTIL_resetNameValList( &pRspHeaderList );

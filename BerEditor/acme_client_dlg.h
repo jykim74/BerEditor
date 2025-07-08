@@ -12,7 +12,7 @@ class ACMEClientDlg;
 static QString kCmdLocation = "Location";
 static QString kCmdAccount = "Account";
 static QString kCmdOrder = "Order";
-
+static QString kCmdOrders = "Orders";
 
 static QString kCmdKeyChange = "keyChange";
 static QString kCmdNewAccount = "newAccount";
@@ -67,9 +67,12 @@ private:
     int makeRevokeCert( QJsonObject& object );
     int makeFinalize( QJsonObject& object );
 
+    int parseNewAccountRsp( QJsonObject& object );
     int parseNewOrderRsp( QJsonObject& object );;
     int parseAuthzRsp( QJsonObject& object );
-    int parseOrder( QJsonObject& object );
+    int parseOrderRsp( QJsonObject& object );
+    int parseCertificateRsp( const QString strChain );
+    int parseOrdersRsp( QJsonObject& object );
 
     void addCmd( const QString strCmd, const QString strCmdURL );
 
@@ -78,6 +81,7 @@ private:
 
     BIN pri_key_;
     BIN pub_key_;
+    BIN csr_pri_key_;
 };
 
 #endif // ACME_CLIENT_DLG_H
