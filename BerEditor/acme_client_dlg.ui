@@ -26,14 +26,14 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
+     <item row="0" column="4">
       <widget class="QCheckBox" name="mUseCertManCheck">
        <property name="text">
         <string>Use CertMan</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
+     <item row="0" column="2">
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -45,6 +45,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="mKeyNameLabel">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -236,14 +243,27 @@
        <property name="topMargin">
         <number>0</number>
        </property>
-       <item row="0" column="4">
+       <item row="1" column="3">
+        <spacer name="horizontalSpacer_5">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="4">
         <widget class="QPushButton" name="mDNSClearBtn">
          <property name="text">
           <string>Clear</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="2">
+       <item row="0" column="4">
         <widget class="QPushButton" name="mDNSAddBtn">
          <property name="text">
           <string>Add</string>
@@ -262,32 +282,6 @@
           <string>DNS</string>
          </property>
         </widget>
-       </item>
-       <item row="0" column="3">
-        <spacer name="horizontalSpacer_5">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="1" column="0">
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
        </item>
       </layout>
      </item>
@@ -369,6 +363,13 @@
     </layout>
    </item>
    <item>
+    <widget class="Line" name="line_9">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QGridLayout" name="gridLayout_10">
      <property name="topMargin">
       <number>0</number>
@@ -424,6 +425,53 @@
      <property name="topMargin">
       <number>0</number>
      </property>
+     <item row="0" column="2">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>HTTP Status</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLineEdit" name="mStatusText">
+       <property name="maximumSize">
+        <size>
+         <width>60</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled/>
+        </palette>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_3">
        <property name="minimumSize">
@@ -437,11 +485,17 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
-      <widget class="QLineEdit" name="mStatusText">
+     <item row="0" column="8">
+      <widget class="QLineEdit" name="mRequestLenText">
+       <property name="minimumSize">
+        <size>
+         <width>40</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="maximumSize">
         <size>
-         <width>60</width>
+         <width>40</width>
          <height>16777215</height>
         </size>
        </property>
@@ -490,13 +544,6 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="2">
-      <widget class="QLabel" name="label_6">
-       <property name="text">
-        <string>HTTP Status</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
       <widget class="QPushButton" name="mClearRequestBtn">
        <property name="maximumSize">
@@ -511,48 +558,9 @@
       </widget>
      </item>
      <item row="0" column="7">
-      <widget class="QLineEdit" name="mRequestLenText">
-       <property name="minimumSize">
-        <size>
-         <width>40</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="palette">
-        <palette>
-         <active>
-          <colorrole role="Base">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>221</red>
-             <green>221</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </active>
-         <inactive>
-          <colorrole role="Base">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>221</red>
-             <green>221</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </inactive>
-         <disabled/>
-        </palette>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
+      <widget class="QPushButton" name="mRequestViewBtn">
+       <property name="text">
+        <string>View</string>
        </property>
       </widget>
      </item>
@@ -633,7 +641,7 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="6">
+     <item row="0" column="7">
       <widget class="QLineEdit" name="mResponseLenText">
        <property name="minimumSize">
         <size>
@@ -705,6 +713,13 @@
        </property>
       </spacer>
      </item>
+     <item row="0" column="6">
+      <widget class="QPushButton" name="mResponseViewBtn">
+       <property name="text">
+        <string>View</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
@@ -714,6 +729,36 @@
        <width>540</width>
        <height>0</height>
       </size>
+     </property>
+     <property name="palette">
+      <palette>
+       <active>
+        <colorrole role="Base">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>221</red>
+           <green>221</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </active>
+       <inactive>
+        <colorrole role="Base">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>221</red>
+           <green>221</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </inactive>
+       <disabled/>
+      </palette>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
      </property>
     </widget>
    </item>

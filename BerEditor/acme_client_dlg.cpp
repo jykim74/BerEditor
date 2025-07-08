@@ -18,6 +18,8 @@
 #include "csr_info_dlg.h"
 #include "export_dlg.h"
 #include "cert_info_dlg.h"
+#include "new_passwd_dlg.h"
+#include "acme_tree_dlg.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -60,6 +62,8 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     connect( mDNSAddBtn, SIGNAL(clicked()), this, SLOT(clickAddDNS()));
     connect( mDNSClearBtn, SIGNAL(clicked()), this, SLOT(clickClearDNS()));
     connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clickClearAll()));
+    connect( mRequestViewBtn, SIGNAL(clicked()), this, SLOT(clickRequestView()));
+    connect( mResponseViewBtn, SIGNAL(clicked()), this, SLOT(clickResponseView()));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -72,9 +76,7 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
 
 ACMEClientDlg::~ACMEClientDlg()
 {
-    JS_BIN_reset( &pri_key_ );
-    JS_BIN_reset( &pub_key_ );
-    JS_BIN_reset( &csr_pri_key_ );
+    resetKey();
 }
 
 void ACMEClientDlg::initUI()
@@ -125,6 +127,15 @@ void ACMEClientDlg::setUsedURL( const QString strURL )
 
     mURLCombo->clear();
     mURLCombo->addItems( list );
+}
+
+void ACMEClientDlg::resetKey()
+{
+    JS_BIN_reset( &pri_key_ );
+    JS_BIN_reset( &pub_key_ );
+    JS_BIN_reset( &csr_pri_key_ );
+    key_name_.clear();
+    mKeyNameLabel->setText( key_name_ );
 }
 
 void ACMEClientDlg::clickClearURL()
@@ -191,6 +202,8 @@ int ACMEClientDlg::parseCertificateRsp( const QString strChain )
 
     nCount = JS_BIN_decodePEMList( strChain.toStdString().c_str(), &pBinList );
     if( nCount <= 0 ) goto end;
+
+    savePriKeyCert( &csr_pri_key_, &pBinList->Bin );
 
     pCurList = pBinList;
 
@@ -390,6 +403,26 @@ void ACMEClientDlg::clickClearAll()
     mLocationText->clear();
     mKIDText->clear();
     mStatusText->clear();
+
+    resetKey();
+}
+
+void ACMEClientDlg::clickRequestView()
+{
+    QString strRequest = mRequestText->toPlainText();
+
+    ACMETreeDlg acmeTree;
+    acmeTree.setJson( strRequest );
+    acmeTree.exec();
+}
+
+void ACMEClientDlg::clickResponseView()
+{
+    QString strResponse = mResponseText->toPlainText();
+
+    ACMETreeDlg acmeTree;
+    acmeTree.setJson( strResponse );
+    acmeTree.exec();
 }
 
 void ACMEClientDlg::clickGetNonce()
@@ -526,6 +559,7 @@ int ACMEClientDlg::makeKeyExchange( QJsonObject& object )
     QString strNonce = mNonceText->text();
     QString strAlg;
     QString strURL = mCmdText->text();
+    QString strAccount = mKIDText->text();
 
     ACMEObject acmeObj;
     QJsonObject objJWK;
@@ -565,14 +599,17 @@ int ACMEClientDlg::makeKeyExchange( QJsonObject& object )
         JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPub );
     }
 
-    nKeyType = JS_PKI_getPriKeyType( &pri_key_ );
+    nKeyType = JS_PKI_getPriKeyType( &binPri );
     strAlg = ACMEObject::getAlg( nKeyType, strHash );
-    objJWK = ACMEObject::getJWK( &pub_key_, strHash, "Make JWK Key" );
+    objJWK = ACMEObject::getJWK( &binPub, strHash, strName );
     objProtected = acmeObj.getJWKProtected( strAlg, objJWK, strNonce, strURL );
-    acmeObj.setProtected( objProtected );
-    acmeObj.setSignature( &binPri, strHash );
 
-    object = acmeObj.getObject();
+    acmeObj.setProtected( objProtected );
+    acmeObj.setPayload( objPayload );
+    acmeObj.setSignature( &pri_key_, strHash );
+
+    object["account"] = strAccount;
+    object["oldKey"] = acmeObj.getObject();
 
 end :
     JS_BIN_reset( &binPri );
@@ -740,7 +777,7 @@ void ACMEClientDlg::clickMake()
     QString strNonce = mNonceText->text();
     QString strAlg;
     QString strURL = mCmdText->text();
-    QString strName;
+
     QString strPubPath;
     QString strPriPath;
 
@@ -749,7 +786,11 @@ void ACMEClientDlg::clickMake()
         if( mUseCertManCheck->isChecked() == true )
         {
             BIN binCert = {0,0};
+            JCertInfo sCertInfo;
             CertManDlg certMan;
+
+            memset( &sCertInfo, 0x00, sizeof(sCertInfo));
+
             certMan.setMode( ManModeSelBoth );
             certMan.setTitle( tr( "Select a sign certificate" ));
 
@@ -758,9 +799,11 @@ void ACMEClientDlg::clickMake()
 
             certMan.getPriKey( &pri_key_ );
             certMan.getCert( &binCert );
+            JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
+            key_name_ = sCertInfo.pSubjectName;
             JS_PKI_getPubKeyFromCert( &binCert, &pub_key_ );
             JS_BIN_reset( &binCert );
-            strName = certMan.getSeletedCertPath();
+            JS_PKI_resetCertInfo( &sCertInfo );
         }
         else
         {
@@ -773,16 +816,18 @@ void ACMEClientDlg::clickMake()
 
             strPubPath = keyPairMan.getPubPath();
             strPriPath = keyPairMan.getPriPath();
-            strName = keyPairMan.getName();
+            key_name_ = keyPairMan.getName();
 
             JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &pri_key_ );
             JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &pub_key_ );
         }
+
+        mKeyNameLabel->setText( QString( " | KeyName: %1" ).arg( key_name_ ));
     }
 
     nKeyType = JS_PKI_getPriKeyType( &pri_key_ );
     strAlg = ACMEObject::getAlg( nKeyType, strHash );
-    objJWK = ACMEObject::getJWK( &pub_key_, strHash, "Make JWK Key" );
+    objJWK = ACMEObject::getJWK( &pub_key_, strHash, key_name_ );
 
 
     if( strCmd.toUpper() == kCmdKeyChange.toUpper() )
@@ -864,6 +909,7 @@ void ACMEClientDlg::clickSend()
 
     QString strReq = mRequestText->toPlainText();
     QString strCmdURL = mCmdText->text();
+    QString strRspCmd = mRspCmdText->text();
     QString strMethod = mMethodCombo->currentText();
     QString strKID = mKIDText->text();
 
@@ -925,7 +971,7 @@ void ACMEClientDlg::clickSend()
             berApplet->log( QString( "Location: %1" ).arg( pCurList->sNameVal.pValue ));
             mLocationText->setText( pCurList->sNameVal.pValue );
 
-            if( mKIDText->text().length() < 1 )
+            if( mCmdCombo->currentText().toUpper() == kCmdNewAccount.toUpper() )
             {
                 bVal = berApplet->yesOrNoBox( tr( "Change KID as %1?" ).arg( pCurList->sNameVal.pValue ), this, true );
                 if( bVal == true )
@@ -952,4 +998,37 @@ end :
     if( pRspHeaderList ) JS_UTIL_resetNameValList( &pRspHeaderList );
     JS_BIN_reset( &binReq );
     JS_BIN_reset( &binRsp );
+}
+
+void ACMEClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
+{
+    int ret = 0;
+
+    bool bVal = false;
+    bVal = berApplet->yesOrNoBox( tr( "Are you save the private key and certificate"), this, true );
+    if( bVal == true )
+    {
+        int nKeyType = -1;
+        BIN binEncPri = {0,0};
+        CertManDlg certMan;
+        NewPasswdDlg newPass;
+
+        if( newPass.exec() == QDialog::Accepted )
+        {
+            QString strPass = newPass.mPasswdText->text();
+            nKeyType = JS_PKI_getPriKeyType( pPriKey );
+
+            ret = JS_PKI_encryptPrivateKey( nKeyType, -1, strPass.toStdString().c_str(), pPriKey, NULL, &binEncPri );
+            if( ret == 0 )
+            {
+                ret = certMan.writePriKeyCert( &binEncPri, pCert );
+                if( ret == 0 )
+                    berApplet->messageLog( tr( "The private key and certificate are saved successfully" ), this );
+                else
+                    berApplet->warnLog( tr( "faied to save private key and certificate" ), this );
+            }
+        }
+
+        JS_BIN_reset( &binEncPri );
+    }
 }

@@ -56,6 +56,9 @@ private slots:
     void clickClearDNS();
     void clickClearAll();
 
+    void clickRequestView();
+    void clickResponseView();
+
 private:
     void initUI();
     void initialize();
@@ -78,10 +81,14 @@ private:
 
     QStringList getUsedURL();
     void setUsedURL( const QString strURL );
+    void savePriKeyCert( const BIN *pPriKey, const BIN *pCert );
+
+    void resetKey();
 
     BIN pri_key_;
     BIN pub_key_;
     BIN csr_pri_key_;
+    QString key_name_;
 };
 
 #endif // ACME_CLIENT_DLG_H

@@ -213,6 +213,7 @@ add_executable(${PROJECT_NAME}
     cert_id_dlg.h cert_id_dlg.cpp cert_id_dlg.ui
     acme_client_dlg.h acme_client_dlg.cpp acme_client_dlg.ui
     acme_object.h acme_object.cpp
+    acme_tree_dlg.h acme_tree_dlg.cpp acme_tree_dlg.ui
 
 )
 
