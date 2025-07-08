@@ -20,6 +20,7 @@
 #include "cert_info_dlg.h"
 #include "new_passwd_dlg.h"
 #include "acme_tree_dlg.h"
+#include "revoke_reason_dlg.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -729,6 +730,14 @@ int ACMEClientDlg::makeRevokeCert( QJsonObject& object )
     BIN binCert = {0,0};
     char *pValue;
 
+    int nReason = -1;
+
+    RevokeReasonDlg revokeReason;
+    if( revokeReason.exec() != QDialog::Accepted )
+        return -1;
+
+    nReason = revokeReason.mReasonText->text().toInt();
+
     CertManDlg certMan;
     certMan.setMode( ManModeSelBoth );
     certMan.setTitle( tr( "Select a sign certificate" ));
@@ -739,7 +748,7 @@ int ACMEClientDlg::makeRevokeCert( QJsonObject& object )
     certMan.getCert( &binCert );
     JS_BIN_encodeBase64URL( &binCert, &pValue );
 
-    object["reason"] = 1;
+    object["reason"] = nReason;
     object["certificate"] = pValue;
 
     JS_BIN_reset( &binCert );
