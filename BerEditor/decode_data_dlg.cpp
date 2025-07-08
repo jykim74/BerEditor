@@ -99,7 +99,7 @@ void DecodeDataDlg::dataChanged()
     else if( mTypeBase64URL->isChecked() )
     {
         nType = DATA_BASE64URL;
-        mDataText->setPlaceholderText( tr( "Base64UL value" ));
+        mDataText->setPlaceholderText( tr( "Base64URL value" ));
     }
 
     QString strLen = getDataLenString( nType, mDataText->toPlainText() );

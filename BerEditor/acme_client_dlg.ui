@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>603</width>
+    <width>626</width>
     <height>878</height>
    </rect>
   </property>
@@ -231,62 +231,62 @@
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout_8">
+    <layout class="QGridLayout" name="gridLayout_6">
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="1" rowspan="2">
-      <widget class="QListWidget" name="mDNSList"/>
-     </item>
-     <item row="1" column="0">
-      <layout class="QGridLayout" name="gridLayout_14">
-       <property name="topMargin">
-        <number>0</number>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mDNSAddBtn">
+       <property name="text">
+        <string>Add</string>
        </property>
-       <item row="1" column="3">
-        <spacer name="horizontalSpacer_5">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="1" column="4">
-        <widget class="QPushButton" name="mDNSClearBtn">
-         <property name="text">
-          <string>Clear</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="4">
-        <widget class="QPushButton" name="mDNSAddBtn">
-         <property name="text">
-          <string>Add</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_13">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>DNS</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="mDNSClearBtn">
+       <property name="text">
+        <string>Clear</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer_5">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
      </item>
      <item row="0" column="0">
+      <widget class="QLabel" name="label_13">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>DNS</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0" colspan="3">
       <widget class="QLineEdit" name="mDNSText">
+       <property name="minimumSize">
+        <size>
+         <width>300</width>
+         <height>0</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3" rowspan="3">
+      <widget class="QListWidget" name="mDNSList">
        <property name="minimumSize">
         <size>
          <width>300</width>
@@ -374,13 +374,6 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mSendBtn">
-       <property name="text">
-        <string>Send</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
       <spacer name="horizontalSpacer_6">
        <property name="orientation">
@@ -394,6 +387,13 @@
        </property>
       </spacer>
      </item>
+     <item row="0" column="2">
+      <widget class="QCheckBox" name="mAutoParseCheck">
+       <property name="text">
+        <string>Automatic parsing</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="0">
       <widget class="QPushButton" name="mMakeBtn">
        <property name="text">
@@ -404,10 +404,10 @@
      <item row="0" column="3">
       <widget class="QComboBox" name="mMethodCombo"/>
      </item>
-     <item row="0" column="2">
-      <widget class="QCheckBox" name="mAutoParseCheck">
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mSendBtn">
        <property name="text">
-        <string>Automatic parsing</string>
+        <string>Send</string>
        </property>
       </widget>
      </item>
