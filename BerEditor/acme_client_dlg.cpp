@@ -1111,59 +1111,90 @@ int ACMEClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
 
 void ACMEClientDlg::clickIssueCert()
 {
+    int ret = 0;
     mCmdCombo->setCurrentText( kCmdNewAccount );
-    clickMake();
+    ret = clickMake();
+    if( ret != 0 ) return;
 
-    if( berApplet->yesOrNoBox( tr("Continue?"), this) == false )
+    if( berApplet->yesOrNoBox( tr("Continue %1?").arg( mCmdCombo->currentText()), this) == false )
         return;
 
-    clickSend();
+    ret = clickSend();
+    if( ret != 0 ) return;
+
     mCmdCombo->setCurrentText( kCmdNewOrder );
-    clickMake();
+    ret = clickMake();
+    if( ret != 0 ) return;
 
-    if( berApplet->yesOrNoBox( tr("Continue?"), this) == false )
+    if( berApplet->yesOrNoBox( tr("Continue %1?").arg( mCmdCombo->currentText()), this) == false )
         return;
 
-    clickSend();
-    clickParse();
+    ret = clickSend();
+    if( ret != 0 ) return;
+
+    ret = clickParse();
+    if( ret != 0 ) return;
+
     mCmdCombo->setCurrentText( kCmdAuthorization );
-    clickMake();
+    ret = clickMake();
+    if( ret != 0 ) return;
 
-    if( berApplet->yesOrNoBox( tr("Continue?"), this) == false )
+    if( berApplet->yesOrNoBox( tr("Continue %1?").arg( mCmdCombo->currentText()), this) == false )
         return;
 
-    clickSend();
-    clickParse();
+    ret = clickSend();
+    if( ret != 0 ) return;
+
+    ret = clickParse();
+    if( ret != 0 ) return;
+
     mCmdCombo->setCurrentText( kCmdChallenge );
-    clickMake();
+    ret = clickMake();
+    if( ret != 0 ) return;
 
-    if( berApplet->yesOrNoBox( tr("Continue?"), this) == false )
+    if( berApplet->yesOrNoBox( tr("Continue %1?").arg( mCmdCombo->currentText()), this) == false )
         return;
 
-    clickSend();
+    ret = clickSend();
+    if( ret != 0 ) return;
+
     mCmdCombo->setCurrentText( kCmdFinalize );
-    clickMake();
+    ret = clickMake();
+    if( ret != 0 ) return;
 
-    if( berApplet->yesOrNoBox( tr("Continue?"), this) == false )
+    if( berApplet->yesOrNoBox( tr("Continue %1?").arg( mCmdCombo->currentText()), this) == false )
         return;
 
-    clickSend();
+    ret = clickSend();
+    if( ret != 0 ) return;
+
     mCmdCombo->setCurrentText( kCmdAccount );
-    clickMake();
+    ret = clickMake();
+    if( ret != 0 ) return;
 
-    if( berApplet->yesOrNoBox( tr("Continue?"), this) == false )
+    if( berApplet->yesOrNoBox( tr("Continue %1?").arg( mCmdCombo->currentText()), this) == false )
         return;
 
-    clickSend();
-    clickParse();
+    ret = clickSend();
+    if( ret != 0 ) return;
+
+    ret = clickParse();
+    if( ret != 0 ) return;
+
     mCmdCombo->setCurrentText( kCmdCertificate );
-    clickMake();
+    ret = clickMake();
+    if( ret != 0 ) return;
 
-    if( berApplet->yesOrNoBox( tr("Continue?"), this) == false )
+    if( berApplet->yesOrNoBox( tr("Continue %1?").arg( mCmdCombo->currentText()), this) == false )
         return;
 
-    clickSend();
-    clickParse();
+    ret = clickSend();
+    if( ret != 0 ) return;
+
+    ret = clickParse();
+    if( ret != 0 ) return;
+
+    berApplet->messageBox( tr( "Certificate issuance completed"), this );
 }
 
 void ACMEClientDlg::clickTest()
