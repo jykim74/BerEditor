@@ -451,7 +451,7 @@ void ACMEClientDlg::clickVerify()
 
 
     ACMEObject acmeObj;
-    acmeObj.setObject( strRequest );
+    acmeObj.setObjectFromJson( strRequest );
 
     int ret = acmeObj.verifySignature( &binPub );
     if( ret == JSR_VERIFY )

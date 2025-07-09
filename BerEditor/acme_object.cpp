@@ -4,11 +4,13 @@
 
 #include "acme_object.h"
 #include "common.h"
+#include "ber_applet.h"
 
 #include "js_pki.h"
 #include "js_pki_key.h"
 #include "js_pki_eddsa.h"
 #include "js_pki_tools.h"
+#include "js_bin.h"
 
 ACMEObject::ACMEObject(QObject *parent)
     : QObject{parent}
@@ -16,8 +18,13 @@ ACMEObject::ACMEObject(QObject *parent)
 
 }
 
-void ACMEObject::setObject( const QString strJson )
+void ACMEObject::setObjectFromJson( const QString strJson )
 {
+    BIN binProtected = {0,0};
+    BIN binPayload = {0,0};
+    char *pProtected = NULL;
+    char *pPayload = NULL;
+
     QJsonDocument jDoc = QJsonDocument::fromJson( strJson.toLocal8Bit() );
     QJsonObject jObj = jDoc.object();
 
@@ -25,9 +32,20 @@ void ACMEObject::setObject( const QString strJson )
     QString strPayload = jObj[kNamePayload].toString();
     QString strSignature = jObj[kNameSignature].toString();
 
-    json_[kNameProtected] = QJsonDocument::fromJson( strProtected.toLocal8Bit() ).object();
-    json_[kNameProtected] = QJsonDocument::fromJson( strPayload.toLocal8Bit() ).object();
+    JS_BIN_decodeBase64URL( strProtected.toStdString().c_str(), &binProtected );
+    JS_BIN_decodeBase64URL( strPayload.toStdString().c_str(), &binPayload );
+
+    JS_BIN_string( &binProtected, &pProtected );
+    JS_BIN_string( &binPayload, &pPayload );
+
+    json_[kNameProtected] = QJsonDocument::fromJson( pProtected ).object();
+    json_[kNamePayload] = QJsonDocument::fromJson( pPayload ).object();
     json_[kNameSignature] = strSignature;
+
+    JS_BIN_reset( &binProtected );
+    JS_BIN_reset( &binPayload );
+    if( pProtected ) JS_free( pProtected );
+    if( pPayload ) JS_free( pPayload );
 }
 void ACMEObject::setProtected( const QJsonObject object )
 {
@@ -178,6 +196,10 @@ void ACMEObject::setSignature( const BIN *pPri,const QString strHash )
         JS_BIN_reset( &binS );
     }
 
+    berApplet->log( QString( "== Compute Signature =="));
+    berApplet->log( QString( "JWS Hash      : %1").arg( strHash ));
+    berApplet->log( QString( "JWS Source    : %1").arg( getHexString( &binSrc )));
+    berApplet->log( QString( "JWS Signature : %1").arg( getHexString( &binSign )));
 
     JS_BIN_encodeBase64URL( &binSign, &pHexVal );
     json_[kNameSignature] = pHexVal;
@@ -224,6 +246,11 @@ int ACMEObject::verifySignature( const BIN *pPub )
 
     JS_BIN_set( &binSrc, (unsigned char *)strJSON.toStdString().c_str(), strJSON.length() );
     JS_BIN_decodeBase64URL( strSignature.toStdString().c_str(), &binSign );
+
+    berApplet->log( QString( "== Verify Signature =="));
+    berApplet->log( QString( "JWS Hash      : %1").arg( strHash ));
+    berApplet->log( QString( "JWS Source    : %1").arg( getHexString( &binSrc )));
+    berApplet->log( QString( "JWS Signature : %1").arg( getHexString( &binSign )));
 
     if( nKeyType == JS_PKI_KEY_TYPE_ECC )
     {

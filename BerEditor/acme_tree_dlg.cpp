@@ -47,6 +47,7 @@ void ACMETreeDlg::setObject( QTreeWidgetItem* pParentItem, QJsonObject& object )
             QString strValue = object[strKey].toString();
             pItem->setText( 0, QString( "%1 : \"%2\"").arg( strKey ).arg( strValue ) );
             pItem->setData( 0, Qt::UserRole, strValue );
+            pItem->setIcon( 0, QIcon(":/images/circle.png" ));
         }
         else if( object[strKey].isArray() == true )
         {
@@ -66,12 +67,14 @@ void ACMETreeDlg::setObject( QTreeWidgetItem* pParentItem, QJsonObject& object )
             bool bVal = object[strKey].toBool();
             pItem->setText( 0, QString( "%1 : %2").arg( strKey ).arg( bVal ? "true" : "false" ) );
             pItem->setData( 0, Qt::UserRole, bVal );
+            pItem->setIcon( 0, QIcon(":/images/bool.png" ));
         }
         else
         {
             int nVal = object[strKey].toInt();
             pItem->setText( 0, QString( "%1 : %2").arg( strKey ).arg( nVal ) );
             pItem->setData( 0, Qt::UserRole, nVal );
+            pItem->setIcon( 0, QIcon(":/images/nemo.png" ));
         }
 
         pParentItem->addChild( pItem );
@@ -93,6 +96,7 @@ void ACMETreeDlg::setArray( QTreeWidgetItem* pParentItem, QJsonArray& array )
             QString strValue = jVal.toString();
             pItem->setText( 0, QString( "\"%1\"").arg( strValue ) );
             pItem->setData( 0, Qt::UserRole, strValue );
+            pItem->setIcon( 0, QIcon(":/images/circle.png" ));
         }
         else if( jVal.isArray() == true )
         {
@@ -112,12 +116,14 @@ void ACMETreeDlg::setArray( QTreeWidgetItem* pParentItem, QJsonArray& array )
             bool bVal = jVal.toBool();
             pItem->setText( 0, QString( "%1").arg( bVal ? "true" : "false") );
             pItem->setData( 0, Qt::UserRole, bVal );
+            pItem->setIcon( 0, QIcon(":/images/bool.png" ));
         }
         else
         {
             int nVal = jVal.toInt();
             pItem->setText( 0, QString( "%1").arg( nVal ) );
             pItem->setData( 0, Qt::UserRole, nVal );
+            pItem->setIcon( 0, QIcon(":/images/nemo.png" ));
         }
 
         pParentItem->addChild( pItem );
@@ -196,5 +202,6 @@ void ACMETreeDlg::decodeTreeMenu()
         }
     }
 
+    mMsgTree->expandItem( item );
     JS_BIN_reset( &binData );
 }

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Revocation Reason Selection</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

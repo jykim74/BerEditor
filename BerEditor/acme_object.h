@@ -19,7 +19,6 @@ public:
     explicit ACMEObject(QObject *parent = nullptr);
 
     void setProtected( const QJsonObject object );
-
     void setPayload( const QJsonObject objPayload );
     void setSignature( const BIN *pPri, const QString strHash );
     int verifySignature( const BIN *pPub );
@@ -34,7 +33,7 @@ public:
     const QString getJson();
     const QString getPacketJson();
     const QJsonObject getObject() { return json_; };
-    void setObject( const QString strJson );
+    void setObjectFromJson( const QString strJson );
 
 
     static const QJsonObject getJWKProtected( const QString strAlg,

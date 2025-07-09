@@ -98,5 +98,8 @@
         <file>images/enc_key.png</file>
         <file>images/compare.png</file>
         <file>images/acme.png</file>
+        <file>images/bool.png</file>
+        <file>images/circle.png</file>
+        <file>images/nemo.png</file>
     </qresource>
 </RCC>
