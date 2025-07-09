@@ -2,6 +2,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QCompleter>
 
 #include "acme_client_dlg.h"
 #include "common.h"
@@ -66,6 +67,7 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     connect( mVerifyBtn, SIGNAL(clicked()), this, SLOT(clickVerify()));
     connect( mRequestViewBtn, SIGNAL(clicked()), this, SLOT(clickRequestView()));
     connect( mResponseViewBtn, SIGNAL(clicked()), this, SLOT(clickResponseView()));
+    connect( mIssueCertBtn, SIGNAL(clicked()), this, SLOT(clickIssueCert()));
     connect( mTestBtn, SIGNAL(clicked()), this, SLOT(clickTest()));
 
 #if defined(Q_OS_MAC)
@@ -296,13 +298,12 @@ void ACMEClientDlg::addCmd( const QString strCmd, const QString strCmdURL )
             return;
     }
 
-    mCmdCombo->addItem( strCmd, strCmdURL );
+    mCmdCombo->addItem( strCmd.toUpper(), strCmdURL );
 }
 
-void ACMEClientDlg::clickParse()
+int ACMEClientDlg::clickParse()
 {
     int ret = 0;
-
 
     QString strRsp = mResponseText->toPlainText();
     QString strCmd = mRspCmdText->text();
@@ -311,7 +312,7 @@ void ACMEClientDlg::clickParse()
     {
         berApplet->warningBox( tr( "There is no response"), this );
         mResponseText->setFocus();
-        return;
+        return -1;
     }
 
     if( strCmd.toUpper() == kCmdCertificate.toUpper() )
@@ -352,6 +353,8 @@ void ACMEClientDlg::clickParse()
         berApplet->messageBox( tr( "Parsing is done" ), this );
     else
         berApplet->warningBox( tr( "fail to parse : %1").arg( ret ), this );
+
+    return ret;
 }
 
 void ACMEClientDlg::changeCmd( int index )
@@ -829,7 +832,7 @@ end :
     return ret;
 }
 
-void ACMEClientDlg::clickMake()
+int ACMEClientDlg::clickMake()
 {
     int ret = 0;
     int nKeyType = -1;
@@ -865,7 +868,7 @@ void ACMEClientDlg::clickMake()
             certMan.setTitle( tr( "Select a sign certificate" ));
 
             if( certMan.exec() != QDialog::Accepted )
-                return;
+                return -1;
 
             certMan.getPriKey( &pri_key_ );
             certMan.getCert( &binCert );
@@ -882,7 +885,7 @@ void ACMEClientDlg::clickMake()
             keyPairMan.setMode( KeyPairModeSelect );
 
             if( keyPairMan.exec() != QDialog::Accepted )
-                return;
+                return -1;
 
             strPubPath = keyPairMan.getPubPath();
             strPriPath = keyPairMan.getPriPath();
@@ -963,13 +966,10 @@ void ACMEClientDlg::clickMake()
     mRspCmdText->clear();
     mStatusText->clear();
 
-//end :
-//    JS_BIN_reset( &binPub );
-//    JS_BIN_reset( &binPri );
-
+    return ret;
 }
 
-void ACMEClientDlg::clickSend()
+int ACMEClientDlg::clickSend()
 {
     int ret = 0;
     int nStatus = 0;
@@ -991,6 +991,7 @@ void ACMEClientDlg::clickSend()
     {
         berApplet->warningBox( tr( "There is no command URL"), this );
         mURLCombo->setFocus();
+        ret = -1;
         goto end;
     }
 
@@ -998,6 +999,7 @@ void ACMEClientDlg::clickSend()
     {
         berApplet->warningBox( tr("There is no request" ), this );
         mRequestText->setFocus();
+        ret = -2;
         goto end;
     }
 
@@ -1068,6 +1070,8 @@ end :
     if( pRspHeaderList ) JS_UTIL_resetNameValList( &pRspHeaderList );
     JS_BIN_reset( &binReq );
     JS_BIN_reset( &binRsp );
+
+    return ret;
 }
 
 int ACMEClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
@@ -1103,6 +1107,63 @@ int ACMEClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
     }
 
     return ret;
+}
+
+void ACMEClientDlg::clickIssueCert()
+{
+    mCmdCombo->setCurrentText( kCmdNewAccount );
+    clickMake();
+
+    if( berApplet->yesOrNoBox( tr("Continue?"), this) == false )
+        return;
+
+    clickSend();
+    mCmdCombo->setCurrentText( kCmdNewOrder );
+    clickMake();
+
+    if( berApplet->yesOrNoBox( tr("Continue?"), this) == false )
+        return;
+
+    clickSend();
+    clickParse();
+    mCmdCombo->setCurrentText( kCmdAuthorization );
+    clickMake();
+
+    if( berApplet->yesOrNoBox( tr("Continue?"), this) == false )
+        return;
+
+    clickSend();
+    clickParse();
+    mCmdCombo->setCurrentText( kCmdChallenge );
+    clickMake();
+
+    if( berApplet->yesOrNoBox( tr("Continue?"), this) == false )
+        return;
+
+    clickSend();
+    mCmdCombo->setCurrentText( kCmdFinalize );
+    clickMake();
+
+    if( berApplet->yesOrNoBox( tr("Continue?"), this) == false )
+        return;
+
+    clickSend();
+    mCmdCombo->setCurrentText( kCmdAccount );
+    clickMake();
+
+    if( berApplet->yesOrNoBox( tr("Continue?"), this) == false )
+        return;
+
+    clickSend();
+    clickParse();
+    mCmdCombo->setCurrentText( kCmdCertificate );
+    clickMake();
+
+    if( berApplet->yesOrNoBox( tr("Continue?"), this) == false )
+        return;
+
+    clickSend();
+    clickParse();
 }
 
 void ACMEClientDlg::clickTest()

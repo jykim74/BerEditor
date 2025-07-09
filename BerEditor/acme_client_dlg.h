@@ -9,6 +9,7 @@ namespace Ui {
 class ACMEClientDlg;
 }
 
+#if 0
 static QString kCmdLocation = "Location";
 static QString kCmdAccount = "Account";
 static QString kCmdOrder = "Order";
@@ -27,6 +28,26 @@ static QString kCmdCertificate = "Certificate";
 
 static QString kCmdAuthorization = "Authorization";
 static QString kCmdChallenge = "Challenge";
+#else
+static QString kCmdLocation = "LOCATION";
+static QString kCmdAccount = "ACCOUNT";
+static QString kCmdOrder = "ORDER";
+static QString kCmdOrders = "ORDERS";
+
+static QString kCmdKeyChange = "KEYCHANGE";
+static QString kCmdNewAccount = "NEWACCOUNT";
+static QString kCmdNewNonce = "NEWNONCE";
+static QString kCmdNewOrder = "NEWORDER";
+static QString kCmdRenewalInfo = "RENEWALINFO";
+static QString kCmdRevokeCert = "REVOKECERT";
+
+static QString kCmdNewAuthz = "NEWAUTHZ";
+static QString kCmdFinalize = "FINALIZE";
+static QString kCmdCertificate = "CERTIFICATE";
+
+static QString kCmdAuthorization = "AUTHORIZATION";
+static QString kCmdChallenge = "CHALLENGE";
+#endif
 
 
 class ACMEClientDlg : public QDialog, public Ui::ACMEClientDlg
@@ -41,16 +62,19 @@ private slots:
     void clickGetNonce();
     void clickGetLocation();
     void clickGetDirectory();
-    void clickMake();
-    void clickSend();
+
     void clickClearURL();
     void clickClearKID();
     void clickClearRequest();
     void clickClearResponse();
     void changeRequest();
     void changeResponse();
-    void clickParse();
+
     void changeCmd( int index );
+
+    int clickMake();
+    int clickParse();
+    int clickSend();
 
     void clickAddDNS();
     void clickClearDNS();
@@ -60,6 +84,7 @@ private slots:
     void clickRequestView();
     void clickResponseView();
 
+    void clickIssueCert();
     void clickTest();
 
 private:
