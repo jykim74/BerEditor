@@ -54,6 +54,8 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     connect( mGetLocationBtn, SIGNAL(clicked()), this, SLOT(clickGetLocation()));
     connect( mGetDirBtn, SIGNAL(clicked()), this, SLOT(clickGetDirectory()));
     connect( mMakeBtn, SIGNAL(clicked()), this, SLOT(clickMake()));
+    connect( mDeactivateBtn, SIGNAL(clicked()), this, SLOT(clickDeactivate()));
+    connect( mUpdateAccountBtn, SIGNAL(clicked()), this, SLOT(clickUpdateAccount()));
     connect( mSendBtn, SIGNAL(clicked()), this, SLOT(clickSend()));
     connect( mClearRequestBtn, SIGNAL(clicked()), this, SLOT(clickClearRequest()));
     connect( mClearResponseBtn, SIGNAL(clicked()), this, SLOT(clickClearResponse()));
@@ -316,6 +318,8 @@ int ACMEClientDlg::parseAccountRsp( QJsonObject& object )
                 mCertIDText->setText( strCertID );
         }
     }
+
+    return 0;
 }
 
 void ACMEClientDlg::addCmd( const QString strCmd, const QString strCmdURL )
@@ -359,10 +363,14 @@ int ACMEClientDlg::clickParse()
 
     if( strCmd.toUpper() == kCmdCertificate.toUpper() )
     {
+        mRspStatusText->setText( tr("Done") );
         ret = parseCertificateRsp( strRsp );
     }
     else
     {
+        QString strStatus = object["status"].toString();
+        mRspStatusText->setText( strStatus );
+
         if( strCmd.toUpper() == kCmdNewOrder.toUpper() )
         {
             ret = parseNewOrderRsp( object );
@@ -642,6 +650,8 @@ void ACMEClientDlg::clickGetDirectory()
             addCmd( strCmd, strValue );
     }
 
+    mCmdCombo->setCurrentText( kCmdLocation );
+
 end :
     JS_BIN_reset( &binRsp );
 }
@@ -899,6 +909,13 @@ int ACMEClientDlg::makeUpadateAccount( QJsonObject& object )
     QJsonValue jValue;
     QString strEmail = mEmailText->text();
 
+    if( strEmail.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a email" ), this );
+        mEmailText->setFocus();
+        return -1;
+    }
+
     jValue = QString( "mailto: %1").arg( strEmail );
     jArr.append( jValue );
 
@@ -926,9 +943,6 @@ int ACMEClientDlg::clickMake()
     QString strAlg;
     QString strURL = mCmdText->text();
 
-    QString strPubPath;
-    QString strPriPath;
-
     if( pri_key_.nLen <= 0 )
     {
         if( mUseCertManCheck->isChecked() == true )
@@ -955,6 +969,9 @@ int ACMEClientDlg::clickMake()
         }
         else
         {
+            QString strPubPath;
+            QString strPriPath;
+
             KeyPairManDlg keyPairMan;
             keyPairMan.setTitle( tr( "Select keypair" ));
             keyPairMan.setMode( KeyPairModeSelect );
@@ -1017,6 +1034,16 @@ int ACMEClientDlg::clickMake()
         ret = makeRenewalInfo( objPayload );
         acmeObj.setPayload( objPayload );
     }
+    else if( strCmd.toUpper() == kCmdDeactivate.toUpper() )
+    {
+        ret = makeDeactivate( objPayload );
+        acmeObj.setPayload( objPayload );
+    }
+    else if( strCmd.toUpper() == kCmdUpdateAccount.toUpper() )
+    {
+        ret = makeUpadateAccount( objPayload );
+        acmeObj.setPayload( objPayload );
+    }
     else if( strCmd.toUpper() == kCmdChallenge.toUpper() )
     {
         acmeObj.setPayload( objPayload );
@@ -1026,7 +1053,6 @@ int ACMEClientDlg::clickMake()
 
     }
 
-//    acmeObj.setPayload( objPayload );
     berApplet->log( QString("Payload: %1").arg( acmeObj.getPayloadJSON() ));
 
     if( strKID.length() > 0 )
@@ -1047,6 +1073,39 @@ int ACMEClientDlg::clickMake()
     mStatusText->clear();
 
     return ret;
+}
+
+int ACMEClientDlg::clickDeactivate()
+{
+    for( int i = 0; i < mCmdCombo->count(); i++ )
+    {
+        QString strCmd = mCmdCombo->itemText(i);
+        if( strCmd == kCmdDeactivate ) break;
+
+        if( (i + 1) == mCmdCombo->count() )
+            mCmdCombo->addItem( kCmdDeactivate, "" );
+    }
+
+    mCmdCombo->setCurrentText(kCmdDeactivate);
+
+    return clickMake();
+}
+
+int ACMEClientDlg::clickUpdateAccount()
+{
+    for( int i = 0; i < mCmdCombo->count(); i++ )
+    {
+        QString strCmd = mCmdCombo->itemText(i);
+        if( strCmd == kCmdUpdateAccount ) break;
+
+        if( (i + 1) == mCmdCombo->count() )
+            mCmdCombo->addItem( kCmdUpdateAccount, "" );
+    }
+
+    addCmd( kCmdUpdateAccount, "" );
+    mCmdCombo->setCurrentText(kCmdUpdateAccount);
+
+    return clickMake();
 }
 
 int ACMEClientDlg::clickSend()

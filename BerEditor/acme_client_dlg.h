@@ -47,6 +47,9 @@ static QString kCmdCertificate = "CERTIFICATE";
 
 static QString kCmdAuthorization = "AUTHORIZATION";
 static QString kCmdChallenge = "CHALLENGE";
+
+static QString kCmdDeactivate = "DEACTIVATE";
+static QString kCmdUpdateAccount = "UPDATEACCOUNT";
 #endif
 
 
@@ -73,6 +76,9 @@ private slots:
     void changeCmd( int index );
 
     int clickMake();
+    int clickDeactivate();
+    int clickUpdateAccount();
+
     int clickParse();
     int clickSend();
 
