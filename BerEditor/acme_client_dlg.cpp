@@ -886,6 +886,27 @@ int ACMEClientDlg::makeRenewalInfo( QJsonObject& object )
     return 0;
 }
 
+int ACMEClientDlg::makeDeactivate( QJsonObject& object )
+{
+    object["status"] = "deactivated";
+
+    return 0;
+}
+
+int ACMEClientDlg::makeUpadateAccount( QJsonObject& object )
+{
+    QJsonArray jArr;
+    QJsonValue jValue;
+    QString strEmail = mEmailText->text();
+
+    jValue = QString( "mailto: %1").arg( strEmail );
+    jArr.append( jValue );
+
+    object["contact"] = jArr;
+
+    return 0;
+}
+
 int ACMEClientDlg::clickMake()
 {
     int ret = 0;

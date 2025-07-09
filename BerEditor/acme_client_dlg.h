@@ -98,6 +98,8 @@ private:
     int makeRevokeCert( QJsonObject& object );
     int makeFinalize( QJsonObject& object );
     int makeRenewalInfo( QJsonObject& object );
+    int makeDeactivate( QJsonObject& object );
+    int makeUpadateAccount( QJsonObject& object );
 
     int parseNewAccountRsp( QJsonObject& object );
     int parseNewOrderRsp( QJsonObject& object );;
