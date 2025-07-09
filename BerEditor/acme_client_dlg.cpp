@@ -211,6 +211,19 @@ int ACMEClientDlg::parseCertificateRsp( const QString strChain )
 
     int nCount = 0;
 
+    /*
+    QString strURL = mCmdText->text();
+    QUrl url( strURL );
+    QString strPath = url.path();
+    QStringList listPath = strPath.split( "/" );
+
+    if( listPath.size() > 0 )
+    {
+        QString strCertID = listPath.at( listPath.size() - 1 );
+        mCertIDText->setText( strCertID );
+    }
+    */
+
     nCount = JS_BIN_decodePEMList( strChain.toStdString().c_str(), &pBinList );
     if( nCount <= 0 ) goto end;
 
@@ -287,7 +300,22 @@ int ACMEClientDlg::parseAccountRsp( QJsonObject& object )
     QString strCert = object["certificate"].toString();
 
     if( strCert.length() > 0 )
+    {
         addCmd( kCmdCertificate, strCert );
+
+        QUrl url( strCert );
+        QString strPath = url.path();
+        QStringList listPath = strPath.split( "/" );
+
+        if( listPath.size() > 0 )
+        {
+            QString strCertID = listPath.at( listPath.size() - 1 );
+
+            bool bVal = berApplet->yesOrNoBox( tr( "Change Cert ID as %1?" ).arg( strCertID ), this, true );
+            if( bVal == true )
+                mCertIDText->setText( strCertID );
+        }
+    }
 }
 
 void ACMEClientDlg::addCmd( const QString strCmd, const QString strCmdURL )
@@ -299,6 +327,7 @@ void ACMEClientDlg::addCmd( const QString strCmd, const QString strCmdURL )
     }
 
     mCmdCombo->addItem( strCmd.toUpper(), strCmdURL );
+    berApplet->log( QString( "Add command [%1 : %2]").arg( strCmd.toUpper() ).arg( strCmdURL ));
 }
 
 int ACMEClientDlg::clickParse()
@@ -307,11 +336,24 @@ int ACMEClientDlg::clickParse()
 
     QString strRsp = mResponseText->toPlainText();
     QString strCmd = mRspCmdText->text();
+    int nStatus = mStatusText->text().toInt();
 
     if( strRsp.length() < 1 )
     {
         berApplet->warningBox( tr( "There is no response"), this );
         mResponseText->setFocus();
+        return -1;
+    }
+
+    QJsonDocument jsonDoc;
+    jsonDoc = QJsonDocument::fromJson( strRsp.toLocal8Bit() );
+    berApplet->log( jsonDoc.toJson() );
+    QJsonObject object = jsonDoc.object();
+
+    if( nStatus >= 300 )
+    {
+        QString strDetail = object["detail"].toString();
+        berApplet->warningBox( tr("Error: %1 status: %2").arg( strDetail) .arg( nStatus ), this);
         return -1;
     }
 
@@ -321,12 +363,6 @@ int ACMEClientDlg::clickParse()
     }
     else
     {
-        QJsonDocument jsonDoc;
-        jsonDoc = QJsonDocument::fromJson( strRsp.toLocal8Bit() );
-        berApplet->log( jsonDoc.toJson() );
-
-        QJsonObject object = jsonDoc.object();
-
         if( strCmd.toUpper() == kCmdNewOrder.toUpper() )
         {
             ret = parseNewOrderRsp( object );
@@ -832,6 +868,24 @@ end :
     return ret;
 }
 
+int ACMEClientDlg::makeRenewalInfo( QJsonObject& object )
+{
+    int ret = 0;
+    QString strCertID = mCertIDText->text();
+
+    if( strCertID.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a certificate ID" ), this );
+        mCertIDText->setFocus();
+        return -1;
+    }
+
+    object["certID"] = "certificate ID";
+    object["replaced"] = true;
+
+    return 0;
+}
+
 int ACMEClientDlg::clickMake()
 {
     int ret = 0;
@@ -935,6 +989,11 @@ int ACMEClientDlg::clickMake()
     else if( strCmd.toUpper() == kCmdFinalize.toUpper() )
     {
         ret = makeFinalize( objPayload );
+        acmeObj.setPayload( objPayload );
+    }
+    else if( strCmd.toUpper() == kCmdRenewalInfo.toUpper() )
+    {
+        ret = makeRenewalInfo( objPayload );
         acmeObj.setPayload( objPayload );
     }
     else if( strCmd.toUpper() == kCmdChallenge.toUpper() )
@@ -1111,6 +1170,34 @@ int ACMEClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
 
 void ACMEClientDlg::clickIssueCert()
 {
+    if( mCmdCombo->count() < 1 )
+    {
+        berApplet->warningBox( tr( "Click on the directory"), this );
+        mGetDirBtn->setFocus();
+        return;
+    }
+
+    if( mNonceText->text().length() < 1 )
+    {
+        berApplet->warningBox( tr( "Click on the Get Nonce" ), this );
+        mGetNonceBtn->setFocus();
+        return;
+    }
+
+    if( mEmailText->text().length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a email" ), this );
+        mEmailText->setFocus();
+        return;
+    }
+
+    if( mDNSList->count() < 1 )
+    {
+        berApplet->warningBox( tr( "Add a DNS" ), this );
+        mDNSText->setFocus();
+        return;
+    }
+
     int ret = 0;
     mCmdCombo->setCurrentText( kCmdNewAccount );
     ret = clickMake();

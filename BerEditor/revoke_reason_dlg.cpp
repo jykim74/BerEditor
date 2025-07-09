@@ -24,6 +24,7 @@ RevokeReasonDlg::RevokeReasonDlg(QWidget *parent)
     initUI();
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mOKBtn, SIGNAL(clicked()), this, SLOT(clickOK()));
     connect( mReasonCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeReason(int)));
 
 #if defined(Q_OS_MAC)
