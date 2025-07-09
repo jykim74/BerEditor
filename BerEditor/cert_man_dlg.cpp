@@ -1,5 +1,6 @@
 #include <QDir>
 #include <QFileInfo>
+#include <QDateTime>
 
 #include "cert_man_dlg.h"
 #include "common.h"
@@ -1023,7 +1024,15 @@ int CertManDlg::writePriKeyCert( const BIN *pEncPriKey, const BIN *pCert )
     }
 
     strPath += "/";
-    strPath += sCertInfo.pSubjectName;
+
+    if( sCertInfo.pSubjectName )
+    {
+        strPath += sCertInfo.pSubjectName;
+    }
+    else
+    {
+        strPath += QDateTime::currentDateTime().toString( "yyyyMMddHHmmss" );
+    }
 
     if( dir.exists( strPath ) == true )
     {

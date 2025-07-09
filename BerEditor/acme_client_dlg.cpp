@@ -66,6 +66,7 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     connect( mVerifyBtn, SIGNAL(clicked()), this, SLOT(clickVerify()));
     connect( mRequestViewBtn, SIGNAL(clicked()), this, SLOT(clickRequestView()));
     connect( mResponseViewBtn, SIGNAL(clicked()), this, SLOT(clickResponseView()));
+    connect( mTestBtn, SIGNAL(clicked()), this, SLOT(clickTest()));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -96,6 +97,12 @@ void ACMEClientDlg::initUI()
 
     mEmailText->setText( "jykim74@gmail.com" );
     mDNSText->setText( "example.com" );
+
+#if defined(QT_DEBUG)
+    mTestBtn->show();
+#else
+    mTestBtn->hide();
+#endif
 }
 
 void ACMEClientDlg::initialize()
@@ -205,7 +212,7 @@ int ACMEClientDlg::parseCertificateRsp( const QString strChain )
     nCount = JS_BIN_decodePEMList( strChain.toStdString().c_str(), &pBinList );
     if( nCount <= 0 ) goto end;
 
-    savePriKeyCert( &csr_pri_key_, &pBinList->Bin );
+    ret = savePriKeyCert( &csr_pri_key_, &pBinList->Bin );
 
     pCurList = pBinList;
 
@@ -273,7 +280,7 @@ int ACMEClientDlg::parseAuthzRsp( QJsonObject& object )
     return 0;
 }
 
-int ACMEClientDlg::parseOrderRsp( QJsonObject& object )
+int ACMEClientDlg::parseAccountRsp( QJsonObject& object )
 {
     QString strCert = object["certificate"].toString();
 
@@ -327,9 +334,9 @@ void ACMEClientDlg::clickParse()
         {
             ret = parseAuthzRsp( object );
         }
-        else if( strCmd.toUpper() == kCmdOrder.toUpper() )
+        else if( strCmd.toUpper() == kCmdAccount.toUpper() )
         {
-            ret = parseOrderRsp( object );
+            ret = parseAccountRsp( object );
         }
         else if( strCmd.toUpper() == kCmdOrders.toUpper() )
         {
@@ -1063,7 +1070,7 @@ end :
     JS_BIN_reset( &binRsp );
 }
 
-void ACMEClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
+int ACMEClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
 {
     int ret = 0;
 
@@ -1094,4 +1101,72 @@ void ACMEClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
 
         JS_BIN_reset( &binEncPri );
     }
+
+    return ret;
+}
+
+void ACMEClientDlg::clickTest()
+{
+    int ret = 0;
+    BINList *pBinList = NULL;
+    BINList *pCurList = NULL;
+
+    const QString strPEM = "-----BEGIN CERTIFICATE-----\n"
+                            "MIICUDCCATigAwIBAgIIMBER/8WeHi8wDQYJKoZIhvcNAQELBQAwKDEmMCQGA1UE\n"
+                            "AxMdUGViYmxlIEludGVybWVkaWF0ZSBDQSAzMGFjYjUwHhcNMjUwNzA5MDQyNDM0\n"
+                            "WhcNMjUwNzE1MDQyNDMzWjAAMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEGPc4\n"
+                            "ZKJN9mJT4i4xZfgUeS/SuZoHktyUb0p00+5e3vW9vpdW0/DP8wH9aWe/2NvW3L4R\n"
+                            "UpwoxO9a3IkY5y5w+6NxMG8wDgYDVR0PAQH/BAQDAgeAMBMGA1UdJQQMMAoGCCsG\n"
+                            "AQUFBwMBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUKKSIMj6+XMau2IJvWZE8\n"
+                            "2p55XWQwGQYDVR0RAQH/BA8wDYILZXhhbXBsZS5jb20wDQYJKoZIhvcNAQELBQAD\n"
+                            "ggEBADpYjaFPfk3jaMri/1Mm9AxS+7z3O0RAlz/aK/P+BdVNkEMVoqkKK6X/FFQO\n"
+                            "1WhSLzKKFg/Vlzrs/vmLZDIsLUJhG4zAujMGJYvDhvJeLVXvkpC24vPBlQMRTQXd\n"
+                            "T/UZu/rhFT48ItK6/+HPuIn7kp1XbhZFkYlUx59xZ/KgAzHg41c1JiGzvxL9q9pK\n"
+                            "DZuxSlxfnaCUPCVLdfpeoH0EOzwtD22+YWF9cyk8vZavd6UJf+OuoEguR+zoIzqd\n"
+                            "lKJpDVHucC8tovNy85n/LzlW7jAq3Q+S4+yFuuXHjdnhwxVfVLnhOFFvpKxrx2G8\n"
+                            "j3uWzwJMUStCwKglEsZoVB9dWUY=\n"
+                            "-----END CERTIFICATE-----\n"
+                            "-----BEGIN CERTIFICATE-----\n"
+                            "MIIDRDCCAiygAwIBAgIIAtOnX9ZwjgowDQYJKoZIhvcNAQELBQAwIDEeMBwGA1UE\n"
+                            "AxMVUGViYmxlIFJvb3QgQ0EgNzkxYWRiMCAXDTI1MDcwOTAxMTgyOFoYDzIwNTUw\n"
+                            "NzA5MDExODI4WjAoMSYwJAYDVQQDEx1QZWJibGUgSW50ZXJtZWRpYXRlIENBIDMw\n"
+                            "YWNiNTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALJdNcxAWbXBynq7\n"
+                            "lH+w8IJI0YccCtl087dLcP5HkIUM3HQOFuG/ZvDanQlIZHvsVyigP9ZtqbxbmDpS\n"
+                            "l3adAUxV4PCWfVDjSCaglbigdf0yqA66E+tZH4sqor1yZxEsz02dFL5EVcX0WWKY\n"
+                            "y6RimOzVK6z54ntIMnKMoZ7wh4qw1BbjWVp6CGz0YDtMXwrQXXWCDkM0CZsKrdiq\n"
+                            "4oWeSPLfT3BN3/H8qKLYmytNmDx1rAm+60EV+zkhsa1gpI/wLwl5D2r6Z1jFJ/GG\n"
+                            "wuwotIEmUE8Tq7eOlU4Ds8N7IlimpU8++nJaHmRPKiPCWNa2mLlNveLLOBFDD5hw\n"
+                            "XWAM2LkCAwEAAaN4MHYwDgYDVR0PAQH/BAQDAgKEMBMGA1UdJQQMMAoGCCsGAQUF\n"
+                            "BwMBMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFCikiDI+vlzGrtiCb1mRPNqe\n"
+                            "eV1kMB8GA1UdIwQYMBaAFI3ACZiL36/ODHbWKFqWj7e6Po+xMA0GCSqGSIb3DQEB\n"
+                            "CwUAA4IBAQBhYxn58dCYTMW6vMAAgBrKrVR4SDR02V6uWDPogEKD6EzycfpG4DSS\n"
+                            "lgbKQiea34oqZ7aVNMqegW6FobqOqvje9hZRvbHox80zzHJXgDn7fHAnhWQw/oel\n"
+                            "22tBHywTxovyv57IZr6gsVve10VE33QrIZCuM7PCI1wFQcogA596r3IUHJd7Pe+z\n"
+                            "VgMn2CtjbngLmqeFXqkvHT/L+c8TmcQr8zm+Ye7h+LUnZH26uL491/M1HSf7w0qv\n"
+                            "i0wOAUctRfh+zxrkOIG7FWYRBvVNoaTtFSa2lUET6BWDwJP+59nK5udMcR3/vCLC\n"
+                            "56vm5ED/Aq+nnYXB8/Gvt7REp+VxvHgc\n"
+                            "-----END CERTIFICATE-----\n";
+
+    berApplet->log( QString( "PEM Length: %1").arg( strPEM.length() ));
+
+    ret = JS_BIN_decodePEMList( strPEM.toStdString().c_str(), &pBinList );
+    berApplet->log( QString( "decodePEMList ret: %1").arg( ret ));
+
+    pCurList = pBinList;
+
+    while( pCurList )
+    {
+        JCertInfo sCertInfo;
+        memset( &sCertInfo, 0x00, sizeof(sCertInfo));
+
+        ret = JS_PKI_getCertInfo( &pCurList->Bin, &sCertInfo, NULL );
+        berApplet->log( QString( "getCertInfo ret: %1").arg( ret ));
+
+        if( ret == 0 ) berApplet->log( QString( "SubjectDN : %1" ).arg( sCertInfo.pSubjectName ));
+
+        JS_PKI_resetCertInfo( &sCertInfo );
+        pCurList = pCurList->pNext;
+    }
+
+    if( pBinList ) JS_BIN_resetList( &pBinList );
 }

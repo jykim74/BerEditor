@@ -60,6 +60,8 @@ private slots:
     void clickRequestView();
     void clickResponseView();
 
+    void clickTest();
+
 private:
     void initUI();
     void initialize();
@@ -74,7 +76,7 @@ private:
     int parseNewAccountRsp( QJsonObject& object );
     int parseNewOrderRsp( QJsonObject& object );;
     int parseAuthzRsp( QJsonObject& object );
-    int parseOrderRsp( QJsonObject& object );
+    int parseAccountRsp( QJsonObject& object );
     int parseCertificateRsp( const QString strChain );
     int parseOrdersRsp( QJsonObject& object );
 
@@ -82,7 +84,7 @@ private:
 
     QStringList getUsedURL();
     void setUsedURL( const QString strURL );
-    void savePriKeyCert( const BIN *pPriKey, const BIN *pCert );
+    int savePriKeyCert( const BIN *pPriKey, const BIN *pCert );
 
     void resetKey();
 
