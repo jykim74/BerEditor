@@ -116,7 +116,8 @@ SOURCES += \
     acme_client_dlg.cpp \
     acme_object.cpp \
     acme_tree_dlg.cpp \
-    revoke_reason_dlg.cpp
+    revoke_reason_dlg.cpp \
+    chall_test_dlg.cpp
 
 HEADERS += \
     about_dlg.h \
@@ -200,7 +201,8 @@ HEADERS += \
     acme_client_dlg.h \
     acme_object.h \
     acme_tree_dlg.h \
-    revoke_reason_dlg.h
+    revoke_reason_dlg.h \
+    chall_test_dlg.h
 
 
 
@@ -351,7 +353,8 @@ FORMS += \
         cert_id_dlg.ui \
         acme_client_dlg.ui \
         acme_tree_dlg.ui \
-        revoke_reason_dlg.ui
+        revoke_reason_dlg.ui \
+        chall_test_dlg.ui
 
 RESOURCES += \
     bereditor.qrc

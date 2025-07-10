@@ -2,7 +2,6 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QCompleter>
 
 #include "acme_client_dlg.h"
 #include "common.h"
@@ -22,6 +21,7 @@
 #include "new_passwd_dlg.h"
 #include "acme_tree_dlg.h"
 #include "revoke_reason_dlg.h"
+#include "chall_test_dlg.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -53,6 +53,7 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     connect( mGetNonceBtn, SIGNAL(clicked()), this, SLOT(clickGetNonce()));
     connect( mGetLocationBtn, SIGNAL(clicked()), this, SLOT(clickGetLocation()));
     connect( mGetDirBtn, SIGNAL(clicked()), this, SLOT(clickGetDirectory()));
+    connect( mChallTestBtn, SIGNAL(clicked()), this, SLOT(clickChallTest()));
     connect( mMakeBtn, SIGNAL(clicked()), this, SLOT(clickMake()));
     connect( mDeactivateBtn, SIGNAL(clicked()), this, SLOT(clickDeactivate()));
     connect( mUpdateAccountBtn, SIGNAL(clicked()), this, SLOT(clickUpdateAccount()));
@@ -519,8 +520,13 @@ void ACMEClientDlg::clickVerify()
 void ACMEClientDlg::clickRequestView()
 {
     QString strRequest = mRequestText->toPlainText();
+    if( strRequest.length() < 1 )
+    {
+        berApplet->warningBox( tr( "There is no request" ), this );
+        return;
+    }
 
-    ACMETreeDlg acmeTree;
+    ACMETreeDlg acmeTree(nullptr);
     acmeTree.setJson( strRequest );
     acmeTree.exec();
 }
@@ -528,8 +534,13 @@ void ACMEClientDlg::clickRequestView()
 void ACMEClientDlg::clickResponseView()
 {
     QString strResponse = mResponseText->toPlainText();
+    if( strResponse.length() < 1 )
+    {
+        berApplet->warningBox( tr( "There is no response" ), this );
+        return;
+    }
 
-    ACMETreeDlg acmeTree;
+    ACMETreeDlg acmeTree(nullptr);
     acmeTree.setJson( strResponse );
     acmeTree.exec();
 }
@@ -654,6 +665,12 @@ void ACMEClientDlg::clickGetDirectory()
 
 end :
     JS_BIN_reset( &binRsp );
+}
+
+void ACMEClientDlg::clickChallTest()
+{
+    ChallTestDlg challTest;
+    challTest.exec();
 }
 
 int ACMEClientDlg::makeKeyExchange( QJsonObject& object )

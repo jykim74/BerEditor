@@ -15,6 +15,7 @@ class ACMETreeDlg : public QDialog, public Ui::ACMETreeDlg
 
 public:
     explicit ACMETreeDlg(QWidget *parent = nullptr);
+    explicit ACMETreeDlg(QWidget *parent, bool bDecode );
     ~ACMETreeDlg();
 
     void setJson( const QString strJson );

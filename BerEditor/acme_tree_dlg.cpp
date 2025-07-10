@@ -19,6 +19,21 @@ ACMETreeDlg::ACMETreeDlg(QWidget *parent)
     connect( mClearBtn, SIGNAL(clicked()), this, SLOT(clickClear()));
 }
 
+ACMETreeDlg::ACMETreeDlg(QWidget *parent, bool bDecode )
+    : QDialog(parent)
+{
+    setupUi(this);
+    initUI();
+
+    connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mMsgTree, SIGNAL(itemClicked(QTreeWidgetItem*,int)), this, SLOT(clickTreeItem(QTreeWidgetItem*,int)));
+
+    if( bDecode == true )
+        connect( mMsgTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotTreeMenuRequested(QPoint)));
+
+    connect( mClearBtn, SIGNAL(clicked()), this, SLOT(clickClear()));
+}
+
 ACMETreeDlg::~ACMETreeDlg()
 {
 

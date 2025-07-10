@@ -65,6 +65,7 @@ private slots:
     void clickGetNonce();
     void clickGetLocation();
     void clickGetDirectory();
+    void clickChallTest();
 
     void clickClearURL();
     void clickClearKID();
