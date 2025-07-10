@@ -17,10 +17,28 @@ const QStringList kCmdTypeList = {
 
 const QStringList kCmdPathList = {
     "/present-http-01",
-    "/present-tls-alpn-01",
     "/set-txt",
+    "/present-tls-alpn-01",
     "/cleanup",
     "/clear-txt"
+};
+
+const QStringList kManTypeList = {
+    kManSetDefaultIPV4, kManSetDefaultIPV6, kManAddA, kManClearA,
+    kManAddAAAA, kManClearAAAA, kManAddCAA, kManClearCAA,
+    kManSetCName, kManClearCName, kManServerFail, kManAddHTTP01,
+    kManDelHTTP01, kManDelRedirect, kManSetTxt, kManClearTxt,
+    kManAddTLS_ALPN01, kManDelTLS_ALPN01, kManHTTPRequestHistory, kManDNSRequestHistory,
+    kManClearRequestHistory
+};
+
+const QStringList kManPathList = {
+    kManSetDefaultIPV4Path, kManSetDefaultIPV6Path, kManAddAPath, kManClearAPath,
+    kManAddAAAAPath, kManClearAAAAPath, kManAddCAAPath, kManClearCAAPath,
+    kManSetCNamePath, kManClearCNamePath, kManServerFailPath, kManAddHTTP01Path,
+    kManDelHTTP01Path, kManDelRedirectPath, kManSetTxtPath, kManClearTxtPath,
+    kManAddTLS_ALPN01Path, kManDelTLS_ALPN01Path, kManHTTPRequestHistoryPath, kManDNSRequestHistoryPath,
+    kManClearRequestHistoryPath
 };
 
 ChallTestDlg::ChallTestDlg(QWidget *parent)
@@ -54,28 +72,40 @@ ChallTestDlg::~ChallTestDlg()
 void ChallTestDlg::initUI()
 {
     mServerText->setText( "127.0.0.1" );
-    mPortText->setText( "5002" );
+//    mPortText->setText( "5002" );
+    mPortText->setText( "8055" );
 
-    mCmdCombo->addItems( kCmdTypeList );
+//    mCmdCombo->addItems( kCmdTypeList );
+    for( int i = 0; i < kManTypeList.size(); i++ )
+    {
+        QString strMan = kManTypeList.at(i);
+        QString strPath = kManPathList.at(i);
+
+        mCmdCombo->addItem( strMan, strPath );
+    }
+
+    changeCmdType(0);
 }
 
 void ChallTestDlg::changeCmdType( int index )
 {
     QString strCmd = mCmdCombo->currentText();
+    QString strPath = mCmdCombo->currentData().toString();
+
+    mCmdPathText->setText( strPath );
 
     mValue1Label->setText( "value" );
     mValue2Label->setText( "value2" );
-    mValue1Text->setReadOnly(true);
-    mValue2Text->setReadOnly(true);
+    mValue1Text->setDisabled(true);
+    mValue2Text->setDisabled(true);
 
     if( strCmd == kCmdTLS_ALPN01 )
     {
         mUseTLSCheck->setEnabled(false);
         mValue1Label->setText( "cert" );
         mValue2Label->setText( "key" );
-
-        mValue1Text->setText( tr("PEM Certificate") );
-        mValue2Text->setText( tr("PEM Private Key") );
+//        mValue1Text->setText( tr("PEM Certificate") );
+//        mValue2Text->setText( tr("PEM Private Key") );
     }
     else
     {
@@ -86,16 +116,16 @@ void ChallTestDlg::changeCmdType( int index )
     {
         mValue1Label->setText( "token" );
         mValue2Label->setText( "keyAuth" );
-        mValue1Text->setReadOnly( false );
-        mValue2Text->setReadOnly( false );
+        mValue1Text->setDisabled( false );
+        mValue2Text->setDisabled( false );
     }
     else if( strCmd == kCmdDNS01 )
     {
         mValue1Label->setText( "value" );
-        mValue1Text->setReadOnly( false );
+        mValue1Text->setDisabled( false );
     }
 
-    mCmdPathText->setText( kCmdPathList.at(index ));
+//    mCmdPathText->setText( kCmdPathList.at(index ));
 }
 
 void ChallTestDlg::clearRequest()
@@ -186,7 +216,7 @@ int ChallTestDlg::makeHTTP01()
     jDoc.setObject( jObj );
     strRsp = jDoc.toJson();
 
-    mResponseText->setPlainText( strRsp );
+    mRequestText->setPlainText( strRsp );
 
     return 0;
 }
@@ -221,7 +251,7 @@ int ChallTestDlg::makeDNS01()
     jDoc.setObject( jObj );
     strRsp = jDoc.toJson();
 
-    mResponseText->setPlainText( strRsp );
+    mRequestText->setPlainText( strRsp );
 
     return 0;
 }
@@ -266,7 +296,7 @@ int ChallTestDlg::makeTLS_ALPN01()
     jDoc.setObject( jObj );
     strRsp = jDoc.toJson();
 
-    mResponseText->setPlainText( strRsp );
+    mRequestText->setPlainText( strRsp );
 
 end :
     JS_BIN_reset( &binCert );
@@ -297,7 +327,7 @@ int ChallTestDlg::makeCLEANUP()
     jDoc.setObject( jObj );
     strRsp = jDoc.toJson();
 
-    mResponseText->setPlainText( strRsp );
+    mRequestText->setPlainText( strRsp );
 
     return 0;
 }
@@ -322,7 +352,32 @@ int ChallTestDlg::makeCLEAR_TXT()
     jDoc.setObject( jObj );
     strRsp = jDoc.toJson();
 
-    mResponseText->setPlainText( strRsp );
+    mRequestText->setPlainText( strRsp );
+
+    return 0;
+}
+
+int ChallTestDlg::makeSetDefaultIPV4()
+{
+    QJsonObject jObj;
+    QJsonDocument jDoc;
+    QString strRsp;
+
+    QString strHost = mHostText->text();
+
+    if( strHost.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a host" ), this );
+        mHostText->setFocus();
+        return -1;
+    }
+
+    jObj["ip"] = strHost;
+
+    jDoc.setObject( jObj );
+    strRsp = jDoc.toJson();
+
+    mRequestText->setPlainText( strRsp );
 
     return 0;
 }
@@ -353,6 +408,8 @@ int ChallTestDlg::clickMake()
     {
         ret = makeCLEAR_TXT();
     }
+    else if( strCmd == kManSetDefaultIPV4 )
+        ret = makeSetDefaultIPV4();
     else
     {
         return -1;
@@ -386,6 +443,7 @@ int ChallTestDlg::clickSend()
         strURI = "https://";
 
     QString strURL = QString( "%1%2:%3%4" ).arg( strURI ).arg( strServer ).arg( strPort ).arg( strPath);
+    berApplet->log( QString( "ChallTest URL: %1" ).arg( strURL ));
 
     ret = JS_HTTP_requestPostBin2( strURL.toStdString().c_str(), NULL, NULL, "application/json", &binReq, &nStatus, &binRsp );
 

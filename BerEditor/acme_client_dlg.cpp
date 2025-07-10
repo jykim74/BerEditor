@@ -105,8 +105,10 @@ void ACMEClientDlg::initUI()
 
 #if defined(QT_DEBUG)
     mTestBtn->show();
+    mChallTestBtn->show();
 #else
     mTestBtn->hide();
+    mChallTestBtn->hide();
 #endif
 }
 
@@ -669,7 +671,10 @@ end :
 
 void ACMEClientDlg::clickChallTest()
 {
+    QString strHost = mDNSText->text();
+
     ChallTestDlg challTest;
+    challTest.mHostText->setText( strHost );
     challTest.exec();
 }
 
