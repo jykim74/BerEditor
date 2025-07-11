@@ -27,7 +27,7 @@ const QStringList kManTypeList = {
     kManSetDefaultIPV4, kManSetDefaultIPV6, kManAddA, kManClearA,
     kManAddAAAA, kManClearAAAA, kManAddCAA, kManClearCAA,
     kManSetCName, kManClearCName, kManServerFail, kManAddHTTP01,
-    kManDelHTTP01, kManDelRedirect, kManSetTxt, kManClearTxt,
+    kManDelHTTP01, kManAddRedirect, kManDelRedirect, kManSetTxt, kManClearTxt,
     kManAddTLS_ALPN01, kManDelTLS_ALPN01, kManHTTPRequestHistory, kManDNSRequestHistory,
     kManClearRequestHistory
 };
@@ -36,7 +36,7 @@ const QStringList kManPathList = {
     kManSetDefaultIPV4Path, kManSetDefaultIPV6Path, kManAddAPath, kManClearAPath,
     kManAddAAAAPath, kManClearAAAAPath, kManAddCAAPath, kManClearCAAPath,
     kManSetCNamePath, kManClearCNamePath, kManServerFailPath, kManAddHTTP01Path,
-    kManDelHTTP01Path, kManDelRedirectPath, kManSetTxtPath, kManClearTxtPath,
+    kManDelHTTP01Path, kManAddRedirectPath, kManDelRedirectPath, kManSetTxtPath, kManClearTxtPath,
     kManAddTLS_ALPN01Path, kManDelTLS_ALPN01Path, kManHTTPRequestHistoryPath, kManDNSRequestHistoryPath,
     kManClearRequestHistoryPath
 };
@@ -72,10 +72,8 @@ ChallTestDlg::~ChallTestDlg()
 void ChallTestDlg::initUI()
 {
     mServerText->setText( "127.0.0.1" );
-//    mPortText->setText( "5002" );
     mPortText->setText( "8055" );
 
-//    mCmdCombo->addItems( kCmdTypeList );
     for( int i = 0; i < kManTypeList.size(); i++ )
     {
         QString strMan = kManTypeList.at(i);
@@ -94,38 +92,98 @@ void ChallTestDlg::changeCmdType( int index )
 
     mCmdPathText->setText( strPath );
 
-    mValue1Label->setText( "value" );
-    mValue2Label->setText( "value2" );
-    mValue1Text->setDisabled(true);
-    mValue2Text->setDisabled(true);
+    setHost( "Host", false );
+    setValue( "Value", false );
+    setValue2( "Value2", false );
 
-    if( strCmd == kCmdTLS_ALPN01 )
+    if( strCmd == kManSetDefaultIPV4 || strCmd == kManSetDefaultIPV6 )
     {
-        mUseTLSCheck->setEnabled(false);
-        mValue1Label->setText( "cert" );
-        mValue2Label->setText( "key" );
-//        mValue1Text->setText( tr("PEM Certificate") );
-//        mValue2Text->setText( tr("PEM Private Key") );
+        setHost( "ip" );
     }
-    else
+    else if( strCmd == kManAddA || strCmd == kManAddAAAA )
     {
-        mUseTLSCheck->setEnabled(true);
+        setHost( "host" );
+        setValue( "addresses" );
     }
+    else if( strCmd == kManClearA || strCmd == kManClearAAAA )
+    {
+        setHost( "host" );
+    }
+    else if( strCmd == kManAddCAA )
+    {
+        setHost( "host" );
+        setValue( "policies" );
+    }
+    else if( strCmd == kManSetCName || strCmd == kManClearCName )
+    {
+        setHost( "host" );
+        setValue( "target" );
+    }
+    else if( strCmd == kManClearCAA || strCmd == kManServerFail )
+    {
+        setHost( "host" );
+    }
+    else if( strCmd == kManAddHTTP01 )
+    {
+        setHost( "token" );
+        setValue( "content" );
+    }
+    else if( strCmd == kManDelHTTP01 )
+    {
+        setHost( "token" );
+    }
+    else if( strCmd == kManAddRedirect )
+    {
+        setHost( "path" );
+        setValue( "targetURL" );
+    }
+    else if( strCmd == kManDelRedirect )
+    {
+        setHost( "path" );
+    }
+    else if( strCmd == kManSetTxt )
+    {
+        setHost( "host" );
+        setValue( "value" );
+    }
+    else if( strCmd == kManClearTxt )
+    {
+        setHost( "host" );
+    }
+    else if( strCmd == kManAddTLS_ALPN01 )
+    {
+        setHost( "host" );
+        setValue( "content" );
+    }
+    else if( strCmd == kManDelTLS_ALPN01 )
+    {
+        setHost( "host" );
+    }
+    else if( strCmd == kManHTTPRequestHistory || strCmd == kManDNSRequestHistory || strCmd == kManClearRequestHistory )
+    {
+        setHost( "host" );
+    }
+}
 
-    if( strCmd == kCmdHTTP01 )
-    {
-        mValue1Label->setText( "token" );
-        mValue2Label->setText( "keyAuth" );
-        mValue1Text->setDisabled( false );
-        mValue2Text->setDisabled( false );
-    }
-    else if( strCmd == kCmdDNS01 )
-    {
-        mValue1Label->setText( "value" );
-        mValue1Text->setDisabled( false );
-    }
+void ChallTestDlg::setHost( const QString strLabel, bool bEnable )
+{
+    mHostLabel->setText( strLabel );
+    mHostLabel->setEnabled( bEnable );
+    mHostText->setEnabled( bEnable );
+}
 
-//    mCmdPathText->setText( kCmdPathList.at(index ));
+void ChallTestDlg::setValue( const QString strLabel, bool bEnable )
+{
+    mValueLabel->setText( strLabel );
+    mValueLabel->setEnabled( bEnable );
+    mValueText->setEnabled( bEnable );
+}
+
+void ChallTestDlg::setValue2( const QString strLabel, bool bEnable )
+{
+    mValue2Label->setText( strLabel );
+    mValue2Label->setEnabled( bEnable );
+    mValue2Text->setEnabled( bEnable );
 }
 
 void ChallTestDlg::clearRequest()
@@ -178,201 +236,55 @@ void ChallTestDlg::clickResponseView()
     acmeTree.exec();
 }
 
-int ChallTestDlg::makeHTTP01()
+int ChallTestDlg::makeRequest()
 {
     QJsonObject jObj;
     QJsonDocument jDoc;
     QString strRsp;
 
     QString strHost = mHostText->text();
-    QString strValue1 = mValue1Text->text();
+    QString strValue = mValueText->text();
     QString strValue2 = mValue2Text->text();
 
-    if( strHost.length() < 1 )
+    QString strHostLabel = mHostLabel->text();
+    QString strValueLabel = mValueLabel->text();
+    QString strValue2Label = mValue2Label->text();
+
+    if( mHostLabel->isEnabled() == true )
     {
-        berApplet->warningBox( tr( "Enter a host" ), this );
-        mHostText->setFocus();
-        return -1;
+        if( strHost.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a %1" ).arg( strHostLabel ), this );
+            mHostText->setFocus();
+            return -1;
+        }
+
+        jObj[strHostLabel] = strHost;
     }
 
-    if( strValue1.length() < 1 )
+    if( mValueLabel->isEnabled() == true )
     {
-        berApplet->warningBox( tr( "Enter a token" ), this );
-        mValue1Text->setFocus();
-        return -1;
+        if( strValue.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a %1" ).arg( strValueLabel ), this );
+            mValueText->setFocus();
+            return -1;
+        }
+
+        jObj[strValueLabel] = strHost;
     }
 
-    if( strValue2.length() < 1 )
+    if( mValue2Label->isEnabled() == true )
     {
-        berApplet->warningBox( tr( "Enter a keyAuth" ), this );
-        mValue2Text->setFocus();
-        return -1;
+        if( strValue2.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a %1" ).arg( strValue2Label ), this );
+            mValue2Text->setFocus();
+            return -1;
+        }
+
+        jObj[strValue2Label] = strHost;
     }
-
-    jObj["host"] = strHost;
-    jObj["token"] = strValue1;
-    jObj["keyAuth"] = strValue2;
-
-    jDoc.setObject( jObj );
-    strRsp = jDoc.toJson();
-
-    mRequestText->setPlainText( strRsp );
-
-    return 0;
-}
-
-int ChallTestDlg::makeDNS01()
-{
-    QJsonObject jObj;
-    QJsonDocument jDoc;
-    QString strRsp;
-
-    QString strHost = mHostText->text();
-    QString strValue1 = mValue1Text->text();
-
-    if( strHost.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Enter a host" ), this );
-        mHostText->setFocus();
-        return -1;
-    }
-
-    if( strValue1.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Enter a value" ), this );
-        mValue1Text->setFocus();
-        return -1;
-    }
-
-
-    jObj["host"] = strHost;
-    jObj["value"] = strValue1;
-
-    jDoc.setObject( jObj );
-    strRsp = jDoc.toJson();
-
-    mRequestText->setPlainText( strRsp );
-
-    return 0;
-}
-
-int ChallTestDlg::makeTLS_ALPN01()
-{
-    int ret = 0;
-    BIN binCert = {0,0};
-    BIN binPri = {0,0};
-    char *pCertPEM = NULL;
-    char *pPriPEM = NULL;
-
-    QJsonObject jObj;
-    QJsonDocument jDoc;
-    QString strRsp;
-
-    QString strHost = mHostText->text();
-
-    if( strHost.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Enter a host" ), this );
-        mHostText->setFocus();
-        return -1;
-    }
-
-    CertManDlg certMan;
-    certMan.setMode( ManModeSelBoth );
-    certMan.setTitle( tr( "Select a sign certificate" ));
-    if( certMan.exec() != QDialog::Accepted )
-        return -1;
-
-    certMan.getPriKey( &binPri );
-    certMan.getCert( &binCert );
-
-    JS_BIN_encodePEM( JS_PEM_TYPE_CERTIFICATE, &binCert, &pCertPEM );
-    JS_BIN_encodePEM( JS_PEM_TYPE_PRIVATE_KEY, &binPri, &pPriPEM );
-
-    jObj["host"] = strHost;
-    jObj["cert"] = pCertPEM;
-    jObj["key"] = pPriPEM;
-
-    jDoc.setObject( jObj );
-    strRsp = jDoc.toJson();
-
-    mRequestText->setPlainText( strRsp );
-
-end :
-    JS_BIN_reset( &binCert );
-    JS_BIN_reset( &binPri );
-    if( pCertPEM ) JS_free( pCertPEM );
-    if( pPriPEM ) JS_free( pPriPEM );
-
-    return ret;
-}
-
-int ChallTestDlg::makeCLEANUP()
-{
-    QJsonObject jObj;
-    QJsonDocument jDoc;
-    QString strRsp;
-
-    QString strHost = mHostText->text();
-
-    if( strHost.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Enter a host" ), this );
-        mHostText->setFocus();
-        return -1;
-    }
-
-    jObj["host"] = strHost;
-
-    jDoc.setObject( jObj );
-    strRsp = jDoc.toJson();
-
-    mRequestText->setPlainText( strRsp );
-
-    return 0;
-}
-
-int ChallTestDlg::makeCLEAR_TXT()
-{
-    QJsonObject jObj;
-    QJsonDocument jDoc;
-    QString strRsp;
-/*
-    QString strHost = mHostText->text();
-
-    if( strHost.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Enter a host" ), this );
-        mHostText->setFocus();
-        return -1;
-    }
-
-    jObj["host"] = strHost;
-*/
-    jDoc.setObject( jObj );
-    strRsp = jDoc.toJson();
-
-    mRequestText->setPlainText( strRsp );
-
-    return 0;
-}
-
-int ChallTestDlg::makeSetDefaultIPV4()
-{
-    QJsonObject jObj;
-    QJsonDocument jDoc;
-    QString strRsp;
-
-    QString strHost = mHostText->text();
-
-    if( strHost.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Enter a host" ), this );
-        mHostText->setFocus();
-        return -1;
-    }
-
-    jObj["ip"] = strHost;
 
     jDoc.setObject( jObj );
     strRsp = jDoc.toJson();
@@ -387,33 +299,7 @@ int ChallTestDlg::clickMake()
     int ret = 0;
 
     QString strCmd = mCmdCombo->currentText();
-
-    if( strCmd == kCmdHTTP01 )
-    {
-        ret = makeHTTP01();
-    }
-    else if( strCmd == kCmdDNS01 )
-    {
-        ret = makeDNS01();
-    }
-    else if( strCmd == kCmdTLS_ALPN01 )
-    {
-        ret = makeTLS_ALPN01();
-    }
-    else if( strCmd == kCmdCLEARUP )
-    {
-        ret = makeCLEANUP();
-    }
-    else if( strCmd == kCmdCLEAR_TXT )
-    {
-        ret = makeCLEAR_TXT();
-    }
-    else if( strCmd == kManSetDefaultIPV4 )
-        ret = makeSetDefaultIPV4();
-    else
-    {
-        return -1;
-    }
+    ret = makeRequest();
 
     return ret;
 }
@@ -444,6 +330,8 @@ int ChallTestDlg::clickSend()
 
     QString strURL = QString( "%1%2:%3%4" ).arg( strURI ).arg( strServer ).arg( strPort ).arg( strPath);
     berApplet->log( QString( "ChallTest URL: %1" ).arg( strURL ));
+
+    getBINFromString( &binReq, DATA_STRING, strRequest );
 
     ret = JS_HTTP_requestPostBin2( strURL.toStdString().c_str(), NULL, NULL, "application/json", &binReq, &nStatus, &binRsp );
 

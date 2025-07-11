@@ -198,11 +198,16 @@ void ACMEClientDlg::changeResponse()
 
 int ACMEClientDlg::parseNewAccountRsp( QJsonObject& object )
 {
+    int ret = 0;
     QString strOrders = object["orders"].toString();
 
     if( strOrders.length() > 0 )
     {
-        addCmd( kCmdOrders, strOrders );
+        ret = addCmd( kCmdOrders, strOrders );
+        if( ret > 0 )
+        {
+            berApplet->messageBox( tr( "Added %1 command [%2]" ).arg( kCmdOrders ).arg( strOrders ), this);
+        }
     }
 
     return 0;
@@ -253,19 +258,28 @@ end :
 
 int ACMEClientDlg::parseNewOrderRsp( QJsonObject& object )
 {
+    int ret = 0;
     QJsonArray jArr = object["authorizations"].toArray();
     QString strFinalValue = object["finalize"].toString();
 
     if( strFinalValue.length() > 0 )
     {
-        addCmd( kCmdFinalize, strFinalValue );
+        ret = addCmd( kCmdFinalize, strFinalValue );
+        if( ret > 0 )
+        {
+            berApplet->messageBox( tr( "Added %1 command [%2]" ).arg( kCmdFinalize ).arg( strFinalValue ), this);
+        }
     }
 
     for( int i = 0; i < jArr.size(); i++ )
     {
         QString strValue = jArr.at(i).toString();
 
-        addCmd( kCmdAuthorization, strValue );
+        ret = addCmd( kCmdAuthorization, strValue );
+        if( ret > 0 )
+        {
+            berApplet->messageBox( tr( "Added %1 command [%2]" ).arg( kCmdAuthorization ).arg( strValue ), this);
+        }
     }
 
     return 0;
@@ -273,17 +287,23 @@ int ACMEClientDlg::parseNewOrderRsp( QJsonObject& object )
 
 int ACMEClientDlg::parseOrdersRsp( QJsonObject& object )
 {
+    int ret = 0;
     QJsonArray jArr = object["orders"].toArray();
 
     for( int i = 0; i < jArr.size(); i++ )
     {
         QString strValue = jArr.at(i).toString();
-        addCmd( kCmdOrder, strValue );
+        ret = addCmd( kCmdOrder, strValue );
+        if( ret > 0 )
+        {
+            berApplet->messageBox( tr( "Added %1 command [%2]" ).arg( kCmdOrder ).arg( strValue ), this);
+        }
     }
 }
 
 int ACMEClientDlg::parseAuthzRsp( QJsonObject& object )
 {
+    int ret = 0;
     QJsonArray jArr = object["challenges"].toArray();
 
     for( int i = 0; i < jArr.count(); i++ )
@@ -294,7 +314,11 @@ int ACMEClientDlg::parseAuthzRsp( QJsonObject& object )
         QString strToken = jObj["token"].toString();
         QString strStatus = jObj["status"].toString();
 
-        addCmd( kCmdChallenge, strURL );
+        ret = addCmd( kCmdChallenge, strURL );
+        if( ret > 0 )
+        {
+            berApplet->messageBox( tr( "Added %1 command [%2]" ).arg( kCmdChallenge ).arg( strURL ), this);
+        }
     }
 
     return 0;
@@ -302,11 +326,16 @@ int ACMEClientDlg::parseAuthzRsp( QJsonObject& object )
 
 int ACMEClientDlg::parseAccountRsp( QJsonObject& object )
 {
+    int ret = 0;
     QString strCert = object["certificate"].toString();
 
     if( strCert.length() > 0 )
     {
-        addCmd( kCmdCertificate, strCert );
+        ret = addCmd( kCmdCertificate, strCert );
+        if( ret > 0 )
+        {
+            berApplet->messageBox( tr( "Added %1 command [%2]" ).arg( kCmdCertificate ).arg( strCert ), this);
+        }
 
         QUrl url( strCert );
         QString strPath = url.path();
@@ -325,16 +354,17 @@ int ACMEClientDlg::parseAccountRsp( QJsonObject& object )
     return 0;
 }
 
-void ACMEClientDlg::addCmd( const QString strCmd, const QString strCmdURL )
+int ACMEClientDlg::addCmd( const QString strCmd, const QString strCmdURL )
 {
     for( int i = 0; i < mCmdCombo->count(); i++ )
     {
         if( mCmdCombo->itemData( i ).toString().toUpper() == strCmdURL.toUpper() )
-            return;
+            return 0;
     }
 
     mCmdCombo->addItem( strCmd.toUpper(), strCmdURL );
     berApplet->log( QString( "Add command [%1 : %2]").arg( strCmd.toUpper() ).arg( strCmdURL ));
+    return 1;
 }
 
 int ACMEClientDlg::clickParse()
@@ -674,7 +704,7 @@ void ACMEClientDlg::clickChallTest()
     QString strHost = mDNSText->text();
 
     ChallTestDlg challTest;
-    challTest.mHostText->setText( strHost );
+//    challTest.mHostText->setText( strHost );
     challTest.exec();
 }
 
@@ -695,7 +725,8 @@ int ACMEClientDlg::makeKeyExchange( QJsonObject& object )
     QString strAccount = mKIDText->text();
 
     ACMEObject acmeObj;
-    QJsonObject objJWK;
+    QJsonObject objNewJWK;
+    QJsonObject objOldJWK;
     QJsonObject objPayload;
     QJsonObject objProtected;
 
@@ -704,7 +735,7 @@ int ACMEClientDlg::makeKeyExchange( QJsonObject& object )
         BIN binCert = {0,0};
         CertManDlg certMan;
         certMan.setMode( ManModeSelBoth );
-        certMan.setTitle( tr( "Select a old certificate" ));
+        certMan.setTitle( tr( "Select a new certificate" ));
 
         if( certMan.exec() != QDialog::Accepted )
             return -1;
@@ -718,7 +749,7 @@ int ACMEClientDlg::makeKeyExchange( QJsonObject& object )
     else
     {
         KeyPairManDlg keyPairMan;
-        keyPairMan.setTitle( tr( "Select old keypair" ));
+        keyPairMan.setTitle( tr( "Select new keypair" ));
         keyPairMan.setMode( KeyPairModeSelect );
 
         if( keyPairMan.exec() != QDialog::Accepted )
@@ -734,15 +765,18 @@ int ACMEClientDlg::makeKeyExchange( QJsonObject& object )
 
     nKeyType = JS_PKI_getPriKeyType( &binPri );
     strAlg = ACMEObject::getAlg( nKeyType, strHash );
-    objJWK = ACMEObject::getJWK( &binPub, strHash, strName );
-    objProtected = acmeObj.getJWKProtected( strAlg, objJWK, strNonce, strURL );
+    objNewJWK = ACMEObject::getJWK( &binPub, strHash, strName );
+    objOldJWK = ACMEObject::getJWK( &pub_key_, strHash, key_name_ );
+    objProtected = acmeObj.getJWKProtected( strAlg, objNewJWK, "", strURL );
+
+    objPayload["account"] = strAccount;
+    objPayload["oldKey"] = objOldJWK;
 
     acmeObj.setProtected( objProtected );
     acmeObj.setPayload( objPayload );
-    acmeObj.setSignature( &pri_key_, strHash );
+    acmeObj.setSignature( &binPri, strHash );
 
-    object["account"] = strAccount;
-    object["oldKey"] = acmeObj.getObject();
+    object = acmeObj.getObject();
 
 end :
     JS_BIN_reset( &binPri );
@@ -1016,11 +1050,13 @@ int ACMEClientDlg::clickMake()
     strAlg = ACMEObject::getAlg( nKeyType, strHash );
     objJWK = ACMEObject::getJWK( &pub_key_, strHash, key_name_ );
 
-
     if( strCmd.toUpper() == kCmdKeyChange.toUpper() )
     {
         ret = makeKeyExchange(objPayload);
-        acmeObj.setPayload( objPayload );
+
+        ACMEObject payObj;
+        payObj.setObject( objPayload );
+        acmeObj.setPayload( payObj.getPacketJson() );
     }
     else if( strCmd.toUpper() == kCmdNewAccount.toUpper() )
     {
@@ -1143,6 +1179,7 @@ int ACMEClientDlg::clickSend()
     QString strRspCmd = mRspCmdText->text();
     QString strMethod = mMethodCombo->currentText();
     QString strKID = mKIDText->text();
+    QString strCmdType = mCmdCombo->currentText();
 
     QString strLink;
     JNameValList *pRspHeaderList = NULL;
@@ -1179,6 +1216,15 @@ int ACMEClientDlg::clickSend()
         mResponseText->setPlainText( strRsp );
         mRspCmdText->setText( mCmdCombo->currentText() );
         berApplet->log( QString( "Response: %1").arg( strRsp ));
+
+        if( strCmdType.toUpper() == kCmdKeyChange )
+        {
+            if( nStatus == 200 )
+            {
+                berApplet->messageBox( tr( "The key pair has been changed." ), this );
+                resetKey();
+            }
+        }
     }
     else
     {

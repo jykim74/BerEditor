@@ -18,6 +18,11 @@ ACMEObject::ACMEObject(QObject *parent)
 
 }
 
+void ACMEObject::setObject( const QJsonObject object )
+{
+    json_ = object;
+}
+
 void ACMEObject::setObjectFromJson( const QString strJson )
 {
     BIN binProtected = {0,0};
@@ -55,6 +60,16 @@ void ACMEObject::setProtected( const QJsonObject object )
 void ACMEObject::setPayload( const QJsonObject objPayload )
 {
     json_[kNamePayload] = objPayload;
+}
+
+void ACMEObject::setProtected( const QString strProtected )
+{
+    json_[kNameProtected] = strProtected;
+}
+
+void ACMEObject::setPayload( const QString strPayload )
+{
+    json_[kNamePayload] = strPayload;
 }
 
 const QString ACMEObject::getProtectedJSON()
@@ -125,6 +140,7 @@ const QString ACMEObject::getPayloadPacket()
         JS_free( pValue );
     }
 
+    JS_BIN_reset( &binData );
     return strPacket;
 }
 
@@ -145,6 +161,7 @@ const QString ACMEObject::getProtectedPacket()
         JS_free( pValue );
     }
 
+    JS_BIN_reset( &binData );
     return strPacket;
 }
 
@@ -335,7 +352,7 @@ const QJsonObject ACMEObject::getJWKProtected( const QString strAlg,
 
     object["alg"] = strAlg;
     object["jwk"] = objJWK;
-    object["nonce"] = strNonce;
+    if(strNonce.length() > 0 ) object["nonce"] = strNonce;
     object["url"] = strURL;
 
     return object;
@@ -377,6 +394,29 @@ const QString ACMEObject::getPacketJson()
 end :
 
     return jDoc.toJson();
+}
+
+const QString ACMEObject::getObjectPacket( const QJsonObject obj )
+{
+    BIN binData = {0,0};
+    char *pValue = NULL;
+    QString strPacket;
+
+    QJsonDocument jDoc;
+    jDoc.setObject( obj );
+    QString strJson = jDoc.toJson();
+
+    JS_BIN_set( &binData, (unsigned char *)strJson.toStdString().c_str(), strJson.length() );
+    JS_BIN_encodeBase64URL( &binData, &pValue );
+
+    if( pValue )
+    {
+        strPacket = pValue;
+        JS_free( pValue );
+    }
+
+    JS_BIN_reset( &binData );
+    return strPacket;
 }
 
 const QJsonObject ACMEObject::getJWK( const BIN *pPub, const QString strHash, const QString strName )

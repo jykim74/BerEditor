@@ -23,6 +23,7 @@ const QString kManClearCName = "ClearCName";
 const QString kManServerFail = "ServerFail";
 const QString kManAddHTTP01 = "AddHTTP01";
 const QString kManDelHTTP01 = "DelHTTP01";
+const QString kManAddRedirect = "AddRedirect";
 const QString kManDelRedirect = "DelRedirect";
 const QString kManSetTxt = "SetTxt";
 const QString kManClearTxt = "ClearTxt";
@@ -45,6 +46,7 @@ const QString kManClearCNamePath = "/clear-cname";
 const QString kManServerFailPath = "/set-servfail";
 const QString kManAddHTTP01Path = "/add-http01";
 const QString kManDelHTTP01Path = "/del-http01";
+const QString kManAddRedirectPath = "/add-redirect";
 const QString kManDelRedirectPath = "/del-redirect";
 const QString kManSetTxtPath = "/set-txt";
 const QString kManClearTxtPath = "/clear-txt";
@@ -83,13 +85,11 @@ private slots:
 private:
     void initUI();
 
-    int makeHTTP01();
-    int makeDNS01();
-    int makeTLS_ALPN01();
-    int makeCLEANUP();
-    int makeCLEAR_TXT();
+    int makeRequest();
 
-    int makeSetDefaultIPV4();
+    void setHost( const QString strLabel, bool bEnable = true );
+    void setValue( const QString strLabel, bool bEnable = true );
+    void setValue2( const QString strLabel, bool bEnable = true );
 };
 
 #endif // CHALL_TEST_DLG_H

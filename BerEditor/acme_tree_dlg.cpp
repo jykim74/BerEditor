@@ -15,6 +15,7 @@ ACMETreeDlg::ACMETreeDlg(QWidget *parent)
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mMsgTree, SIGNAL(itemClicked(QTreeWidgetItem*,int)), this, SLOT(clickTreeItem(QTreeWidgetItem*,int)));
+    connect( mMsgTree, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(decodeTreeMenu()));
     connect( mMsgTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotTreeMenuRequested(QPoint)));
     connect( mClearBtn, SIGNAL(clicked()), this, SLOT(clickClear()));
 }
@@ -29,7 +30,10 @@ ACMETreeDlg::ACMETreeDlg(QWidget *parent, bool bDecode )
     connect( mMsgTree, SIGNAL(itemClicked(QTreeWidgetItem*,int)), this, SLOT(clickTreeItem(QTreeWidgetItem*,int)));
 
     if( bDecode == true )
+    {
         connect( mMsgTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotTreeMenuRequested(QPoint)));
+        connect( mMsgTree, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(decodeTreeMenu()));
+    }
 
     connect( mClearBtn, SIGNAL(clicked()), this, SLOT(clickClear()));
 }
@@ -218,5 +222,6 @@ void ACMETreeDlg::decodeTreeMenu()
     }
 
     mMsgTree->expandItem( item );
+
     JS_BIN_reset( &binData );
 }
