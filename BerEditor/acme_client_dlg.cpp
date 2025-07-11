@@ -288,17 +288,47 @@ int ACMEClientDlg::parseNewOrderRsp( QJsonObject& object )
 int ACMEClientDlg::parseOrdersRsp( QJsonObject& object )
 {
     int ret = 0;
-    QJsonArray jArr = object["orders"].toArray();
+    QJsonValue jValue = object["orders"];
 
-    for( int i = 0; i < jArr.size(); i++ )
+    if( jValue.isArray() )
     {
-        QString strValue = jArr.at(i).toString();
+        QJsonArray jArr = object["orders"].toArray();
+        for( int i = 0; i < jArr.size(); i++ )
+        {
+            QString strValue = jArr.at(i).toString();
+            ret = addCmd( kCmdOrder, strValue );
+            if( ret > 0 )
+            {
+                berApplet->messageBox( tr( "Added %1 command [%2]" ).arg( kCmdOrder ).arg( strValue ), this);
+            }
+        }
+    }
+    else if( jValue.isString() )
+    {
+        QString strValue = jValue.toString();
         ret = addCmd( kCmdOrder, strValue );
         if( ret > 0 )
         {
             berApplet->messageBox( tr( "Added %1 command [%2]" ).arg( kCmdOrder ).arg( strValue ), this);
         }
     }
+
+    return 0;
+}
+
+int ACMEClientDlg::parseOrderRsp( QJsonObject& object )
+{
+    int ret = 0;
+    QJsonValue jValue = object["orders"];
+
+    QString strValue = jValue.toString();
+    ret = addCmd( kCmdOrder, strValue );
+    if( ret > 0 )
+    {
+        berApplet->messageBox( tr( "Added %1 command [%2]" ).arg( kCmdOrder ).arg( strValue ), this);
+    }
+
+    return 0;
 }
 
 int ACMEClientDlg::parseAuthzRsp( QJsonObject& object )
@@ -349,6 +379,10 @@ int ACMEClientDlg::parseAccountRsp( QJsonObject& object )
             if( bVal == true )
                 mCertIDText->setText( strCertID );
         }
+    }
+    else
+    {
+        return -1;
     }
 
     return 0;
@@ -419,6 +453,10 @@ int ACMEClientDlg::clickParse()
         else if( strCmd.toUpper() == kCmdOrders.toUpper() )
         {
             ret = parseOrdersRsp( object );
+        }
+        else if( strCmd.toUpper() == kCmdOrder.toUpper() )
+        {
+            ret = parseOrderRsp( object );
         }
         else if( strCmd.toUpper() == kCmdNewAccount.toUpper() )
         {
@@ -579,6 +617,7 @@ void ACMEClientDlg::clickResponseView()
 
 void ACMEClientDlg::clickGetNonce()
 {
+    int nStatus = 0;
     const char *pHeaderName = "Replay-Nonce";
 //    QString strURL = "https://localhost:14000/nonce-plz";
     QString strURL = mNonceURLText->text();
@@ -595,6 +634,7 @@ void ACMEClientDlg::clickGetNonce()
         strURL.toStdString().c_str(),
         NULL,
         NULL,
+        &nStatus,
         pHeaderName, &pNonce );
 
     if( pNonce )
@@ -602,6 +642,9 @@ void ACMEClientDlg::clickGetNonce()
         mNonceText->setText( pNonce );
         JS_free( pNonce );
     }
+
+    mRspCmdText->setText( kCmdNewNonce  );
+    mStatusText->setText( QString("%1").arg( nStatus ));
 }
 
 void ACMEClientDlg::clickGetLocation()
@@ -627,6 +670,9 @@ void ACMEClientDlg::clickGetLocation()
         mResponseText->setPlainText( strRsp );
         mRspCmdText->setText( mCmdCombo->currentText() );
         berApplet->log( QString( "Response: %1").arg( strRsp ));
+
+        mRspCmdText->setText( kCmdLocation );
+        mRspStatusText->setText( QString("%1").arg( nStatus ));
     }
     else
     {
@@ -694,6 +740,9 @@ void ACMEClientDlg::clickGetDirectory()
     }
 
     mCmdCombo->setCurrentText( kCmdLocation );
+
+    mRspCmdText->setText( kCmdDirectory  );
+    mStatusText->setText( QString("%1").arg( nStatus ));
 
 end :
     JS_BIN_reset( &binRsp );
@@ -1403,6 +1452,7 @@ void ACMEClientDlg::clickIssueCert()
     ret = clickSend();
     if( ret != 0 ) return;
 
+check :
     mCmdCombo->setCurrentText( kCmdAccount );
     ret = clickMake();
     if( ret != 0 ) return;
@@ -1414,11 +1464,23 @@ void ACMEClientDlg::clickIssueCert()
     if( ret != 0 ) return;
 
     ret = clickParse();
+    if( ret != 0 )
+    {
+        bool bVal = berApplet->yesOrNoBox( tr( "There is no certificate. Try account again?" ), this );
+        if( bVal == true )
+        {
+            goto check;
+        }
+        else
+            return;
+    }
+
     if( ret != 0 ) return;
 
     mCmdCombo->setCurrentText( kCmdCertificate );
     ret = clickMake();
     if( ret != 0 ) return;
+
 
     if( berApplet->yesOrNoBox( tr("Continue %1?").arg( mCmdCombo->currentText()), this) == false )
         return;

@@ -29,6 +29,8 @@ static QString kCmdCertificate = "Certificate";
 static QString kCmdAuthorization = "Authorization";
 static QString kCmdChallenge = "Challenge";
 #else
+
+static QString kCmdDirectory = "DIRECTORY";
 static QString kCmdLocation = "LOCATION";
 static QString kCmdAccount = "ACCOUNT";
 static QString kCmdOrder = "ORDER";
@@ -114,6 +116,7 @@ private:
     int parseAccountRsp( QJsonObject& object );
     int parseCertificateRsp( const QString strChain );
     int parseOrdersRsp( QJsonObject& object );
+    int parseOrderRsp( QJsonObject& object );
 
     int addCmd( const QString strCmd, const QString strCmdURL );
 

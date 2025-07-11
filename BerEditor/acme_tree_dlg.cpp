@@ -45,6 +45,11 @@ ACMETreeDlg::~ACMETreeDlg()
 
 void ACMETreeDlg::initUI()
 {
+    QFile qss(":/treewidget.qss");
+    qss.open( QFile::ReadOnly );
+    mMsgTree->setStyleSheet( qss.readAll() );
+    qss.close();
+
     mMsgTree->clear();
     mMsgTree->header()->setVisible( false );
     mMsgTree->setColumnCount(1);
