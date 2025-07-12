@@ -1193,6 +1193,7 @@ int ACMEClientDlg::clickDeactivate()
             mCmdCombo->addItem( kCmdDeactivate, "" );
     }
 
+    addCmd( kCmdDeactivate, "" );
     mCmdCombo->setCurrentText(kCmdDeactivate);
 
     return clickMake();

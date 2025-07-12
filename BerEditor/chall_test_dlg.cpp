@@ -8,6 +8,8 @@
 #include "ber_applet.h"
 #include "cert_man_dlg.h"
 #include "acme_tree_dlg.h"
+#include "one_list_dlg.h"
+#include "two_list_dlg.h"
 
 #include "js_http.h"
 #include "js_pki.h"
@@ -51,6 +53,7 @@ ChallTestDlg::ChallTestDlg(QWidget *parent)
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mMakeBtn, SIGNAL(clicked()), this, SLOT(clickMake()));
     connect( mSendBtn, SIGNAL(clicked()), this, SLOT(clickSend()));
+    connect( mValueListBtn, SIGNAL(clicked()), this, SLOT(clickValueList()));
     connect( mRequestClearBtn, SIGNAL(clicked()), this, SLOT(clearRequest()));
     connect( mResponseClearBtn, SIGNAL(clicked()), this, SLOT(clearResponse()));
     connect( mRequestText, SIGNAL(textChanged()), this, SLOT(changeRequest()));
@@ -94,7 +97,7 @@ void ChallTestDlg::changeCmdType( int index )
 
     setHost( "Host", false );
     setValue( "Value", false );
-    setValue2( "Value2", false );
+    mValueListBtn->hide();
 
     if( strCmd == kManSetDefaultIPV4 || strCmd == kManSetDefaultIPV6 )
     {
@@ -104,6 +107,7 @@ void ChallTestDlg::changeCmdType( int index )
     {
         setHost( "host" );
         setValue( "addresses" );
+        mValueListBtn->show();
     }
     else if( strCmd == kManClearA || strCmd == kManClearAAAA )
     {
@@ -113,6 +117,7 @@ void ChallTestDlg::changeCmdType( int index )
     {
         setHost( "host" );
         setValue( "policies" );
+        mValueListBtn->show();
     }
     else if( strCmd == kManSetCName || strCmd == kManClearCName )
     {
@@ -179,13 +184,6 @@ void ChallTestDlg::setValue( const QString strLabel, bool bEnable )
     mValueText->setEnabled( bEnable );
 }
 
-void ChallTestDlg::setValue2( const QString strLabel, bool bEnable )
-{
-    mValue2Label->setText( strLabel );
-    mValue2Label->setEnabled( bEnable );
-    mValue2Text->setEnabled( bEnable );
-}
-
 void ChallTestDlg::clearRequest()
 {
     mRequestText->clear();
@@ -244,11 +242,9 @@ int ChallTestDlg::makeRequest()
 
     QString strHost = mHostText->text();
     QString strValue = mValueText->text();
-    QString strValue2 = mValue2Text->text();
 
     QString strHostLabel = mHostLabel->text();
     QString strValueLabel = mValueLabel->text();
-    QString strValue2Label = mValue2Label->text();
 
     if( mHostLabel->isEnabled() == true )
     {
@@ -272,18 +268,6 @@ int ChallTestDlg::makeRequest()
         }
 
         jObj[strValueLabel] = strHost;
-    }
-
-    if( mValue2Label->isEnabled() == true )
-    {
-        if( strValue2.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Enter a %1" ).arg( strValue2Label ), this );
-            mValue2Text->setFocus();
-            return -1;
-        }
-
-        jObj[strValue2Label] = strHost;
     }
 
     jDoc.setObject( jObj );
@@ -351,4 +335,22 @@ end :
     JS_BIN_reset( &binRsp );
 
     return ret;
+}
+
+void ChallTestDlg::clickValueList()
+{
+    QString strValueLabel = mValueLabel->text();
+
+    if( strValueLabel == "policies" )
+    {
+        TwoListDlg twoList;
+        twoList.setNames( "tag", "value" );
+        twoList.exec();
+    }
+    else
+    {
+        OneListDlg oneList;
+        oneList.setName( mValueLabel->text() );
+        oneList.exec();
+    }
 }

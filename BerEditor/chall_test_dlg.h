@@ -74,6 +74,8 @@ private slots:
     int clickMake();
     int clickSend();
 
+    void clickValueList();
+
     void clearRequest();
     void clearResponse();
 
@@ -89,7 +91,6 @@ private:
 
     void setHost( const QString strLabel, bool bEnable = true );
     void setValue( const QString strLabel, bool bEnable = true );
-    void setValue2( const QString strLabel, bool bEnable = true );
 };
 
 #endif // CHALL_TEST_DLG_H
