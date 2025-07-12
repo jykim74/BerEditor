@@ -98,6 +98,7 @@ void ChallTestDlg::changeCmdType( int index )
     setHost( "Host", false );
     setValue( "Value", false );
     mValueListBtn->setEnabled( false );
+    mValueText->setReadOnly( false );
     mValueText->setStyleSheet( "" );
 
     if( strCmd == kManSetDefaultIPV4 || strCmd == kManSetDefaultIPV6 )

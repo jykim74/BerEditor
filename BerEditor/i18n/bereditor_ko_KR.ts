@@ -21,7 +21,7 @@
     <message>
         <location filename="../acme_client_dlg.ui" line="70"/>
         <location filename="../acme_client_dlg.ui" line="171"/>
-        <location filename="../acme_client_dlg.ui" line="278"/>
+        <location filename="../acme_client_dlg.ui" line="285"/>
         <source>Clear</source>
         <translation>지우기</translation>
     </message>
@@ -71,27 +71,27 @@
         <translation>Nonce</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.ui" line="240"/>
+        <location filename="../acme_client_dlg.ui" line="250"/>
         <source>Cert ID</source>
         <translation>인증서 ID</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.ui" line="250"/>
+        <location filename="../acme_client_dlg.ui" line="234"/>
         <source>Hash</source>
         <translation>해시</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.ui" line="271"/>
+        <location filename="../acme_client_dlg.ui" line="278"/>
         <source>Add</source>
         <translation>추가</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.ui" line="304"/>
+        <location filename="../acme_client_dlg.ui" line="311"/>
         <source>DNS</source>
         <translation>DNS</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.ui" line="331"/>
+        <location filename="../acme_client_dlg.ui" line="257"/>
         <source>ChallTest</source>
         <translation>ChallTest</translation>
     </message>
@@ -5632,19 +5632,19 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">PEM 개인키</translation>
     </message>
     <message>
-        <location filename="../chall_test_dlg.cpp" line="219"/>
-        <location filename="../chall_test_dlg.cpp" line="349"/>
+        <location filename="../chall_test_dlg.cpp" line="220"/>
+        <location filename="../chall_test_dlg.cpp" line="350"/>
         <source>There is no request</source>
         <translation>요청서가 없습니다</translation>
     </message>
     <message>
-        <location filename="../chall_test_dlg.cpp" line="233"/>
+        <location filename="../chall_test_dlg.cpp" line="234"/>
         <source>There is no response</source>
         <translation>응답이 없습니다</translation>
     </message>
     <message>
-        <location filename="../chall_test_dlg.cpp" line="258"/>
-        <location filename="../chall_test_dlg.cpp" line="270"/>
+        <location filename="../chall_test_dlg.cpp" line="259"/>
+        <location filename="../chall_test_dlg.cpp" line="271"/>
         <source>Enter a %1</source>
         <translation>%1을 입력하세요</translation>
     </message>
@@ -5669,7 +5669,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">서명용 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../chall_test_dlg.cpp" line="370"/>
+        <location filename="../chall_test_dlg.cpp" line="371"/>
         <source>fail to send a request to ACME server: %1</source>
         <translation>ACME 서버에 요쳥을 보내는데 실패하였습니다: %1</translation>
     </message>
