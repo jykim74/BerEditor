@@ -97,7 +97,8 @@ void ChallTestDlg::changeCmdType( int index )
 
     setHost( "Host", false );
     setValue( "Value", false );
-    mValueListBtn->hide();
+    mValueListBtn->setEnabled( false );
+    mValueText->setStyleSheet( "" );
 
     if( strCmd == kManSetDefaultIPV4 || strCmd == kManSetDefaultIPV6 )
     {
@@ -107,7 +108,9 @@ void ChallTestDlg::changeCmdType( int index )
     {
         setHost( "host" );
         setValue( "addresses" );
-        mValueListBtn->show();
+        mValueText->setReadOnly(true);
+        mValueText->setStyleSheet( kReadOnlyStyle );
+        mValueListBtn->setEnabled( true );
     }
     else if( strCmd == kManClearA || strCmd == kManClearAAAA )
     {
@@ -117,7 +120,9 @@ void ChallTestDlg::changeCmdType( int index )
     {
         setHost( "host" );
         setValue( "policies" );
-        mValueListBtn->show();
+        mValueText->setReadOnly(true);
+        mValueText->setStyleSheet( kReadOnlyStyle );
+        mValueListBtn->setEnabled(true);
     }
     else if( strCmd == kManSetCName || strCmd == kManClearCName )
     {
@@ -267,7 +272,43 @@ int ChallTestDlg::makeRequest()
             return -1;
         }
 
-        jObj[strValueLabel] = strHost;
+        if( strValueLabel == "policies" )
+        {
+            QJsonArray jSubArr;
+            QStringList listVal = strValue.split( "#" );
+
+            for( int i = 0; i < listVal.size(); i++ )
+            {
+                QString strOne = listVal.at(i);
+                QStringList nameVal = strOne.split("$");
+                if( nameVal.size() < 2 ) continue;
+
+                QJsonObject jSubObj;
+                jSubObj["tag"] = nameVal.at(0);
+                jSubObj["vallue"] = nameVal.at(1);
+
+                jSubArr.append( jObj );
+            }
+
+            jObj[strValueLabel] = jSubArr;
+        }
+        else if( strValueLabel == "addresses" )
+        {
+            QJsonArray jSubArr;
+            QStringList listVal = strValue.split( "#" );
+
+            for( int i = 0; i < listVal.size(); i++ )
+            {
+                QString strOne = listVal.at(i);
+                jSubArr.append( strOne );
+            }
+
+            jObj[strValueLabel] = jSubArr;
+        }
+        else
+        {
+            jObj[strValueLabel] = strValue;
+        }
     }
 
     jDoc.setObject( jObj );
@@ -344,38 +385,22 @@ void ChallTestDlg::clickValueList()
     if( strValueLabel == "policies" )
     {
         TwoListDlg twoList;
-        QStringList listValue;
+        QString listValue;
 
         twoList.setNames( "tag", "value" );
 
         if( twoList.exec() != QDialog::Accepted )
             return;
 
-        listValue = twoList.getList();
-        QJsonDocument jDoc;
-        QJsonArray jArr;
-
-        for( int i = 0; i < listValue.size(); i++ )
-        {
-            QJsonObject jObj;
-            QStringList nameVal = listValue.at(i).split("$");
-
-            if( nameVal.size() < 2 ) continue;
-            jObj["tag"] = nameVal.at(0);
-            jObj["value"] = nameVal.at(1);
-
-            jArr.append( jObj );
-        }
-
-        jDoc.setArray( jArr );
-        mValueText->setText( jDoc.toJson() );
+        listValue = twoList.getListString();
+        mValueText->setText( listValue );
     }
     else
     {
         QString strLabel = mValueLabel->text();
         QString strValue = mValueText->text();
 
-        QStringList strList;
+        QString strList;
 
         OneListDlg oneList;
         oneList.setName( strLabel );
@@ -385,17 +410,7 @@ void ChallTestDlg::clickValueList()
         if( oneList.exec() != QDialog::Accepted )
             return;
 
-        strList = oneList.getList();
-        QJsonDocument jDoc;
-        QJsonArray jArr;
-
-        for( int i = 0; i < strList.size(); i++ )
-        {
-            QString strOne = strList.at(i);
-            jArr.append( strOne );
-        }
-
-        jDoc.setArray( jArr );
-        mValueText->setText( jDoc.toJson());
+        strList = oneList.getListString();
+        mValueText->setText( strList );
     }
 }

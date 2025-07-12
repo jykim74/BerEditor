@@ -19,6 +19,7 @@ public:
     void setName( const QString strName );
     void addName( const QString strName );
     const QStringList getList();
+    const QString getListString();
 
 private slots:
     void clickOK();

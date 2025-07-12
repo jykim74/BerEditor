@@ -38,7 +38,13 @@ void OneListDlg::setName( const QString strName )
 
 void OneListDlg::addName( const QString strName )
 {
-    mNameList->addItem( strName );
+    QStringList listName = strName.split("#");
+
+    for( int i = 0; i < listName.size(); i++ )
+    {
+        QString strOne = listName.at(i);
+        mNameList->addItem( strOne );
+    }
 }
 
 void OneListDlg::clickOK()
@@ -55,6 +61,22 @@ const QStringList OneListDlg::getList()
     for( int i = 0; i < nCount; i++ )
     {
         strList.append( mNameList->item(i)->text() );
+    }
+
+    return strList;
+}
+
+const QString OneListDlg::getListString()
+{
+    QString strList;
+
+    int nCount = mNameList->count();
+
+    for( int i = 0; i < nCount; i++ )
+    {
+        if( i != 0 ) strList += "#";
+
+        strList += mNameList->item(i)->text();
     }
 
     return strList;

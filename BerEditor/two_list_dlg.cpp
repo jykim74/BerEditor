@@ -52,13 +52,23 @@ void TwoListDlg::setNames( const QString strName, const QString strName2 )
     mName2Label->setText( strName2 );
 }
 
-void TwoListDlg::addNames( const QString strName, const QString strName2 )
+void TwoListDlg::addNames( const QString strNames )
 {
-    int row = mNameTable->rowCount();
-    mNameTable->insertColumn( row );
-    mNameTable->setRowHeight(row, 10);
-    mNameTable->setItem(row,0, new QTableWidgetItem( strName ));
-    mNameTable->setItem(row, 1, new QTableWidgetItem( strName2 ));
+    QStringList listNames = strNames.split( "#" );
+
+    for( int i = 0; i < listNames.size(); i++ )
+    {
+        QString strOne = listNames.at(i);
+        QStringList nameVal = strOne.split( "$" );
+
+        if( nameVal.size() < 2 ) continue;
+
+        int row = mNameTable->rowCount();
+        mNameTable->insertColumn( row );
+        mNameTable->setRowHeight(row, 10);
+        mNameTable->setItem(row,0, new QTableWidgetItem( nameVal.at(0) ));
+        mNameTable->setItem(row, 1, new QTableWidgetItem( nameVal.at(1) ));
+    }
 }
 
 const QStringList TwoListDlg::getList()
@@ -75,6 +85,27 @@ const QStringList TwoListDlg::getList()
         strName2 = mNameTable->item( i, 1 )->text();
 
         strList.append( QString( "%1$%2" ).arg( strName ).arg( strName2 ) );
+    }
+
+    return strList;
+}
+
+const QString TwoListDlg::getListString()
+{
+    QString strList;
+    int nCount = mNameTable->rowCount();
+
+    for( int i = 0; i < nCount; i++ )
+    {
+        QString strName;
+        QString strName2;
+
+        if( i != 0 ) strList += "#";
+
+        strName = mNameTable->item( i, 0 )->text();
+        strName2 = mNameTable->item( i, 1 )->text();
+
+        strList += ( QString( "%1$%2" ).arg( strName ).arg( strName2 ) );
     }
 
     return strList;
