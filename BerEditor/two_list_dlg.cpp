@@ -52,6 +52,34 @@ void TwoListDlg::setNames( const QString strName, const QString strName2 )
     mName2Label->setText( strName2 );
 }
 
+void TwoListDlg::addNames( const QString strName, const QString strName2 )
+{
+    int row = mNameTable->rowCount();
+    mNameTable->insertColumn( row );
+    mNameTable->setRowHeight(row, 10);
+    mNameTable->setItem(row,0, new QTableWidgetItem( strName ));
+    mNameTable->setItem(row, 1, new QTableWidgetItem( strName2 ));
+}
+
+const QStringList TwoListDlg::getList()
+{
+    QStringList strList;
+    int nCount = mNameTable->rowCount();
+
+    for( int i = 0; i < nCount; i++ )
+    {
+        QString strName;
+        QString strName2;
+
+        strName = mNameTable->item( i, 0 )->text();
+        strName2 = mNameTable->item( i, 1 )->text();
+
+        strList.append( QString( "%1$%2" ).arg( strName ).arg( strName2 ) );
+    }
+
+    return strList;
+}
+
 void TwoListDlg::clickAdd()
 {
     QString strName = mNameText->text();
@@ -73,6 +101,15 @@ void TwoListDlg::clickAdd()
         mName2Text->setFocus();
         return;
     }
+
+    int row = mNameTable->rowCount();
+    mNameTable->insertColumn( row );
+    mNameTable->setRowHeight(row, 10);
+    mNameTable->setItem(row,0, new QTableWidgetItem( strName ));
+    mNameTable->setItem(row, 1, new QTableWidgetItem( strName2 ));
+
+    mNameText->clear();
+    mName2Text->clear();
 }
 
 void TwoListDlg::clickOK()

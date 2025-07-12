@@ -22,6 +22,7 @@
 #include "acme_tree_dlg.h"
 #include "revoke_reason_dlg.h"
 #include "chall_test_dlg.h"
+#include "one_list_dlg.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -839,19 +840,18 @@ int ACMEClientDlg::makeNewAccount( QJsonObject& object )
     QString strEmail = mEmailText->text();
     bool bTermsOfServiceAgreed = true;
     QString strStatus = "valid";
-//    QString strOrders = "https://example.com/acme/orders/rzGoeA";
     QString strOrders;
 
     QStringList listEmail;
 
-    if( strEmail.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Enter a email" ), this );
-        mEmailText->setFocus();
-        return -1;
-    }
+    OneListDlg oneList;
+    oneList.setName( "Email" );
+    if( strEmail.length() > 0 ) oneList.addName( strEmail );
 
-    listEmail.append( strEmail );
+    if( oneList.exec() != QDialog::Accepted )
+        return -1;
+
+    listEmail = oneList.getList();
 
     object = ACMEObject::getNewAccountPayload( strStatus, listEmail, bTermsOfServiceAgreed, strOrders );
 
@@ -1013,16 +1013,22 @@ int ACMEClientDlg::makeUpadateAccount( QJsonObject& object )
     QJsonArray jArr;
     QJsonValue jValue;
     QString strEmail = mEmailText->text();
+    QStringList listEmail;
 
-    if( strEmail.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Enter a email" ), this );
-        mEmailText->setFocus();
+    OneListDlg oneList;
+    oneList.setName( "Email" );
+    if( strEmail.length() > 0 ) oneList.addName( strEmail );
+
+    if( oneList.exec() != QDialog::Accepted )
         return -1;
-    }
 
-    jValue = QString( "mailto: %1").arg( strEmail );
-    jArr.append( jValue );
+    listEmail = oneList.getList();
+
+    for( int i = 0; i < listEmail.size(); i++ )
+    {
+        jValue = QString( "mailto: %1").arg( listEmail.at(i) );
+        jArr.append( jValue );
+    }
 
     object["contact"] = jArr;
 

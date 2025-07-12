@@ -17,6 +17,9 @@ public:
     ~TwoListDlg();
 
     void setNames( const QString strName, const QString strName2 );
+    void addNames( const QString strName, const QString strName2 );
+
+    const QStringList getList();
 
 private slots:
     void clickAdd();

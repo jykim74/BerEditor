@@ -17,6 +17,8 @@ public:
     ~OneListDlg();
 
     void setName( const QString strName );
+    void addName( const QString strName );
+    const QStringList getList();
 
 private slots:
     void clickOK();

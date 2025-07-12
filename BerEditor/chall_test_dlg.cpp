@@ -344,13 +344,58 @@ void ChallTestDlg::clickValueList()
     if( strValueLabel == "policies" )
     {
         TwoListDlg twoList;
+        QStringList listValue;
+
         twoList.setNames( "tag", "value" );
-        twoList.exec();
+
+        if( twoList.exec() != QDialog::Accepted )
+            return;
+
+        listValue = twoList.getList();
+        QJsonDocument jDoc;
+        QJsonArray jArr;
+
+        for( int i = 0; i < listValue.size(); i++ )
+        {
+            QJsonObject jObj;
+            QStringList nameVal = listValue.at(i).split("$");
+
+            if( nameVal.size() < 2 ) continue;
+            jObj["tag"] = nameVal.at(0);
+            jObj["value"] = nameVal.at(1);
+
+            jArr.append( jObj );
+        }
+
+        jDoc.setArray( jArr );
+        mValueText->setText( jDoc.toJson() );
     }
     else
     {
+        QString strLabel = mValueLabel->text();
+        QString strValue = mValueText->text();
+
+        QStringList strList;
+
         OneListDlg oneList;
-        oneList.setName( mValueLabel->text() );
-        oneList.exec();
+        oneList.setName( strLabel );
+
+        if( strValue.length() > 0 ) oneList.addName( strValue );
+
+        if( oneList.exec() != QDialog::Accepted )
+            return;
+
+        strList = oneList.getList();
+        QJsonDocument jDoc;
+        QJsonArray jArr;
+
+        for( int i = 0; i < strList.size(); i++ )
+        {
+            QString strOne = strList.at(i);
+            jArr.append( strOne );
+        }
+
+        jDoc.setArray( jArr );
+        mValueText->setText( jDoc.toJson());
     }
 }

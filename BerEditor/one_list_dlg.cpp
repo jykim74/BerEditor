@@ -36,9 +36,28 @@ void OneListDlg::setName( const QString strName )
     mNameLabel->setText( strName );
 }
 
+void OneListDlg::addName( const QString strName )
+{
+    mNameList->addItem( strName );
+}
+
 void OneListDlg::clickOK()
 {
     accept();
+}
+
+const QStringList OneListDlg::getList()
+{
+    QStringList strList;
+
+    int nCount = mNameList->count();
+
+    for( int i = 0; i < nCount; i++ )
+    {
+        strList.append( mNameList->item(i)->text() );
+    }
+
+    return strList;
 }
 
 void OneListDlg::clickAdd()
@@ -54,6 +73,7 @@ void OneListDlg::clickAdd()
     }
 
     mNameList->addItem( strName );
+    mNameText->clear();
 }
 
 void OneListDlg::clickClear()
