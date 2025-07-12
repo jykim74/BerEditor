@@ -226,7 +226,9 @@ void ACMETreeDlg::decodeTreeMenu()
         }
     }
 
-    mMsgTree->expandItem( item );
+
+    QModelIndex index = mMsgTree->currentIndex();
+    mMsgTree->expand( index );
 
     JS_BIN_reset( &binData );
 }

@@ -64,7 +64,7 @@ void TwoListDlg::addNames( const QString strNames )
         if( nameVal.size() < 2 ) continue;
 
         int row = mNameTable->rowCount();
-        mNameTable->insertColumn( row );
+        mNameTable->insertRow( row );
         mNameTable->setRowHeight(row, 10);
         mNameTable->setItem(row,0, new QTableWidgetItem( nameVal.at(0) ));
         mNameTable->setItem(row, 1, new QTableWidgetItem( nameVal.at(1) ));
@@ -134,7 +134,7 @@ void TwoListDlg::clickAdd()
     }
 
     int row = mNameTable->rowCount();
-    mNameTable->insertColumn( row );
+    mNameTable->insertRow( row );
     mNameTable->setRowHeight(row, 10);
     mNameTable->setItem(row,0, new QTableWidgetItem( strName ));
     mNameTable->setItem(row, 1, new QTableWidgetItem( strName2 ));
