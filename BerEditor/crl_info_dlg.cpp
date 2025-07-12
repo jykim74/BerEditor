@@ -332,7 +332,7 @@ void CRLInfoDlg::initialize()
             mRevokeListTable->insertRow(k);
             mRevokeListTable->setRowHeight(k,10);
             mRevokeListTable->setItem( k, 0, new QTableWidgetItem(QString("%1").arg( pCurRevList->sRevokeInfo.pSerial)));
-            mRevokeListTable->setItem( k, 1, new QTableWidgetItem(QString("%1").arg( pCurRevList->sRevokeInfo.uRevokeDate)));
+            mRevokeListTable->setItem( k, 1, new QTableWidgetItem(QString("%1").arg( pCurRevList->sRevokeInfo.tRevokeDate)));
 
             pCurRevList = pCurRevList->pNext;
             k++;
@@ -464,7 +464,7 @@ void CRLInfoDlg::clickRevokeField(QModelIndex index)
 
     char sRevokeDate[64];
 
-    JS_UTIL_getDateTime( pRevInfoList->sRevokeInfo.uRevokeDate, sRevokeDate );
+    JS_UTIL_getDateTime( pRevInfoList->sRevokeInfo.tRevokeDate, sRevokeDate );
 
     mRevokeDetailTable->insertRow(0);
     mRevokeDetailTable->setRowHeight(0,10);
