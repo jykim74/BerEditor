@@ -101,15 +101,13 @@ void ACMEClientDlg::initUI()
     QStringList usedList = getUsedURL();
     mURLCombo->addItems( usedList );
 
+#if defined(QT_DEBUG)
     mEmailText->setText( "jykim74@gmail.com" );
     mDNSText->setText( "example.com" );
 
-#if defined(QT_DEBUG)
     mTestBtn->show();
-    mChallTestBtn->show();
 #else
     mTestBtn->hide();
-    mChallTestBtn->hide();
 #endif
 }
 
