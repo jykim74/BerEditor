@@ -927,6 +927,52 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mUseCertManCheck</tabstop>
+  <tabstop>mURLCombo</tabstop>
+  <tabstop>mGetDirBtn</tabstop>
+  <tabstop>mURLClearBtn</tabstop>
+  <tabstop>mNonceURLText</tabstop>
+  <tabstop>mGetNonceBtn</tabstop>
+  <tabstop>mLocationText</tabstop>
+  <tabstop>mGetLocationBtn</tabstop>
+  <tabstop>mKIDText</tabstop>
+  <tabstop>mKIDClearBtn</tabstop>
+  <tabstop>mNonceText</tabstop>
+  <tabstop>mEmailText</tabstop>
+  <tabstop>mCertIDText</tabstop>
+  <tabstop>mHashCombo</tabstop>
+  <tabstop>mChallTestBtn</tabstop>
+  <tabstop>mDNSAddBtn</tabstop>
+  <tabstop>mDNSList</tabstop>
+  <tabstop>mDNSClearBtn</tabstop>
+  <tabstop>mDNSText</tabstop>
+  <tabstop>mCmdCombo</tabstop>
+  <tabstop>mCmdText</tabstop>
+  <tabstop>mMakeBtn</tabstop>
+  <tabstop>mDeactivateBtn</tabstop>
+  <tabstop>mUpdateAccountBtn</tabstop>
+  <tabstop>mAutoParseCheck</tabstop>
+  <tabstop>mMethodCombo</tabstop>
+  <tabstop>mSendBtn</tabstop>
+  <tabstop>mClearRequestBtn</tabstop>
+  <tabstop>mStatusText</tabstop>
+  <tabstop>mVerifyBtn</tabstop>
+  <tabstop>mRequestViewBtn</tabstop>
+  <tabstop>mRequestLenText</tabstop>
+  <tabstop>mRequestText</tabstop>
+  <tabstop>mClearResponseBtn</tabstop>
+  <tabstop>mRspCmdText</tabstop>
+  <tabstop>mParserBtn</tabstop>
+  <tabstop>mRspStatusText</tabstop>
+  <tabstop>mResponseViewBtn</tabstop>
+  <tabstop>mResponseLenText</tabstop>
+  <tabstop>mResponseText</tabstop>
+  <tabstop>mClearAllBtn</tabstop>
+  <tabstop>mIssueCertBtn</tabstop>
+  <tabstop>mTestBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

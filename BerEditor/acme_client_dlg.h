@@ -110,6 +110,7 @@ private:
     int makeDeactivate( QJsonObject& object );
     int makeUpadateAccount( QJsonObject& object );
 
+    int parseGetDirectory( QJsonObject& object );
     int parseNewAccountRsp( QJsonObject& object );
     int parseNewOrderRsp( QJsonObject& object );;
     int parseAuthzRsp( QJsonObject& object );

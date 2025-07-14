@@ -471,6 +471,28 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mServerText</tabstop>
+  <tabstop>mPortText</tabstop>
+  <tabstop>mHostText</tabstop>
+  <tabstop>mValueText</tabstop>
+  <tabstop>mValueClearBtn</tabstop>
+  <tabstop>mValueListBtn</tabstop>
+  <tabstop>mCmdCombo</tabstop>
+  <tabstop>mCmdPathText</tabstop>
+  <tabstop>mMakeBtn</tabstop>
+  <tabstop>mRequestClearBtn</tabstop>
+  <tabstop>mRequestViewBtn</tabstop>
+  <tabstop>mRequestLenText</tabstop>
+  <tabstop>mRequestText</tabstop>
+  <tabstop>mUseTLSCheck</tabstop>
+  <tabstop>mSendBtn</tabstop>
+  <tabstop>mResponseClearBtn</tabstop>
+  <tabstop>mResponseViewBtn</tabstop>
+  <tabstop>mResponseLenText</tabstop>
+  <tabstop>mResponseText</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -195,6 +195,33 @@ void ACMEClientDlg::changeResponse()
     mResponseLenText->setText( strLen );
 }
 
+int ACMEClientDlg::parseGetDirectory( QJsonObject& object )
+{
+    QStringList listKeys;
+
+    listKeys = object.keys();
+
+    mCmdCombo->clear();
+    mCmdCombo->addItem( "" );
+    mCmdCombo->addItem( kCmdLocation );
+
+    for( int i = 0; i < listKeys.size(); i++ )
+    {
+        QString strCmd = listKeys.at(i);
+        berApplet->log( QString( "Key: %1").arg( listKeys.at(i)));
+        QString strValue = object[strCmd].toString();
+        berApplet->log( QString( "Value: %1" ).arg( strValue ));
+
+        if( strCmd.toUpper() == kCmdNewNonce.toUpper() )
+            mNonceURLText->setText( strValue );
+
+        if( strCmd.toLower() != "meta" )
+            addCmd( strCmd, strValue );
+    }
+
+    return 0;
+}
+
 int ACMEClientDlg::parseNewAccountRsp( QJsonObject& object )
 {
     int ret = 0;
@@ -437,7 +464,11 @@ int ACMEClientDlg::clickParse()
         QString strStatus = object["status"].toString();
         mRspStatusText->setText( strStatus );
 
-        if( strCmd.toUpper() == kCmdNewOrder.toUpper() )
+        if( strCmd.toUpper() == kCmdDirectory.toUpper() )
+        {
+            ret = parseGetDirectory( object );
+        }
+        else if( strCmd.toUpper() == kCmdNewOrder.toUpper() )
         {
             ret = parseNewOrderRsp( object );
         }
@@ -609,9 +640,34 @@ void ACMEClientDlg::clickResponseView()
         return;
     }
 
-    ACMETreeDlg acmeTree(nullptr);
-    acmeTree.setJson( strResponse );
-    acmeTree.exec();
+    QString strRspCmd = mRspCmdText->text();
+
+    if( strRspCmd.toUpper() == kCmdCertificate )
+    {
+        BINList *pBinList = NULL;
+        BINList *pCurList = NULL;
+        int nCount = JS_BIN_decodePEMList( strResponse.toStdString().c_str(), &pBinList );
+
+        if( nCount <= 0 ) return;
+
+        pCurList = pBinList;
+        while( pCurList )
+        {
+            CertInfoDlg certInfo;
+            certInfo.setCertBIN( &pBinList->Bin );
+            certInfo.exec();
+
+            pCurList = pCurList->pNext;
+        }
+
+        if( pBinList ) JS_BIN_resetList( &pBinList );
+    }
+    else
+    {
+        ACMETreeDlg acmeTree(nullptr);
+        acmeTree.setJson( strResponse );
+        acmeTree.exec();
+    }
 }
 
 void ACMEClientDlg::clickGetNonce()
@@ -644,6 +700,7 @@ void ACMEClientDlg::clickGetNonce()
 
     mRspCmdText->setText( kCmdNewNonce  );
     mStatusText->setText( QString("%1").arg( nStatus ));
+    mResponseText->clear();
 }
 
 void ACMEClientDlg::clickGetLocation()

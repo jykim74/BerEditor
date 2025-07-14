@@ -65,6 +65,8 @@ ChallTestDlg::ChallTestDlg(QWidget *parent)
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
     mValueClearBtn->setFixedWidth(34);
+    mRequestClearBtn->setFixedWidth(34);
+    mResponseClearBtn->setFixedWidth(34);
 #endif
     resize(minimumSizeHint().width(), minimumSizeHint().height());
 }

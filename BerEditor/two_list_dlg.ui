@@ -126,6 +126,15 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mNameText</tabstop>
+  <tabstop>mName2Text</tabstop>
+  <tabstop>mAddBtn</tabstop>
+  <tabstop>mNameTable</tabstop>
+  <tabstop>mClearBtn</tabstop>
+  <tabstop>mOKBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
