@@ -168,16 +168,16 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
     berApplet->info( QString( "== BER Information [Depth:%1]\n" ).arg(pItem->GetLevel()) );
     berApplet->line();
     berApplet->info( QString( "Header      : %1\n").arg( getHexString(header.pVal, header.nLen)));
-    berApplet->info( QString( "[T]         : 0x%1 - 0b%2\n" ).arg(getHexString(bin.pVal,1), nFieldWidth ).arg(pBitString) );
-    berApplet->info( QString( "Class       : %1 - 0b%2\n").arg( pItem->GetClassString(), nFieldWidth -2).arg( sClassBit ));
-    berApplet->info( QString( "ID          : 0x%1 - 0b%2\n").arg( getHexString( &cID, 1), nFieldWidth ).arg( sIDBit ));
-    berApplet->info( QString( "P/C         : %1 - 0b%2\n").arg(strPC, nFieldWidth - 2).arg( sPCBit ));
-    berApplet->info( QString( "Tag         : %1 - 0b%2 (0x%3)\n")
+    berApplet->info( QString( "[T]         : 0x%1 = 0b%2\n" ).arg(getHexString(bin.pVal,1), nFieldWidth ).arg(pBitString) );
+    berApplet->info( QString( "Class       : %1 = 0b%2\n").arg( pItem->GetClassString(), nFieldWidth -2).arg( sClassBit ));
+    berApplet->info( QString( "ID          : 0x%1 = 0b%2\n").arg( getHexString( &cID, 1), nFieldWidth ).arg( sIDBit ));
+    berApplet->info( QString( "P/C         : %1 = 0b%2\n").arg(strPC, nFieldWidth - 2).arg( sPCBit ));
+    berApplet->info( QString( "Tag         : %1 = 0b%2 (0x%3)\n")
                         .arg( pItem->GetTagString(), nFieldWidth - 2 )
                         .arg( sTagBit )
                         .arg( strTagHex ) );
-    berApplet->info( QString( "Length      : 0x%1 - %2 Bytes\n" ).arg( getHexString(sLen, nLenSize), nFieldWidth ).arg(pItem->GetLength()));
-    berApplet->info( QString( "Offset      : 0x%1 - %2\n" ).arg( strOffset, nFieldWidth ).arg(pItem->GetOffset()));
+    berApplet->info( QString( "Length      : 0x%1 = %2 Bytes\n" ).arg( getHexString(sLen, nLenSize), nFieldWidth ).arg(pItem->GetLength()));
+    berApplet->info( QString( "Offset      : 0x%1 = %2\n" ).arg( strOffset, nFieldWidth ).arg(pItem->GetOffset()));
 
     QString strVal = pItem->GetValueString( &binBer, &nValueType, nWidth );
 
