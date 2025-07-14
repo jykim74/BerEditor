@@ -53,6 +53,7 @@ ChallTestDlg::ChallTestDlg(QWidget *parent)
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mMakeBtn, SIGNAL(clicked()), this, SLOT(clickMake()));
     connect( mSendBtn, SIGNAL(clicked()), this, SLOT(clickSend()));
+    connect( mValueClearBtn, SIGNAL(clicked()), this, SLOT(clickValueClear()));
     connect( mValueListBtn, SIGNAL(clicked()), this, SLOT(clickValueList()));
     connect( mRequestClearBtn, SIGNAL(clicked()), this, SLOT(clearRequest()));
     connect( mResponseClearBtn, SIGNAL(clicked()), this, SLOT(clearResponse()));
@@ -63,6 +64,7 @@ ChallTestDlg::ChallTestDlg(QWidget *parent)
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+    mValueClearBtn->setFixedWidth(34);
 #endif
     resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
@@ -98,6 +100,7 @@ void ChallTestDlg::changeCmdType( int index )
     setHost( "Host", false );
     setValue( "Value", false );
     mValueListBtn->setEnabled( false );
+    mValueClearBtn->setEnabled( false );
     mValueText->setReadOnly( false );
     mValueText->setStyleSheet( "" );
 
@@ -188,6 +191,7 @@ void ChallTestDlg::setValue( const QString strLabel, bool bEnable )
     mValueLabel->setText( strLabel );
     mValueLabel->setEnabled( bEnable );
     mValueText->setEnabled( bEnable );
+    mValueClearBtn->setEnabled( bEnable );
 }
 
 void ChallTestDlg::clearRequest()
@@ -414,4 +418,9 @@ void ChallTestDlg::clickValueList()
         strList = oneList.getListString();
         mValueText->setText( strList );
     }
+}
+
+void ChallTestDlg::clickValueClear()
+{
+    mValueText->clear();
 }

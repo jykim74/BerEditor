@@ -28,6 +28,7 @@ private slots:
     void clickOK();
     void clickClear();
     void changeDN();
+    void clickSANList();
 
 private:
     void initialize();

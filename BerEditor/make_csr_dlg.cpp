@@ -7,6 +7,7 @@
 #include "ber_applet.h"
 
 #include "settings_mgr.h"
+#include "one_list_dlg.h"
 
 MakeCSRDlg::MakeCSRDlg(QWidget *parent) :
     QDialog(parent)
@@ -26,6 +27,7 @@ MakeCSRDlg::MakeCSRDlg(QWidget *parent) :
     connect( mLText, SIGNAL(textChanged(QString)), this, SLOT(changeDN()));
     connect( mSTText, SIGNAL(textChanged(QString)), this, SLOT(changeDN()));
     connect( mCText, SIGNAL(textChanged(QString)), this, SLOT(changeDN()));
+    connect( mSANListBtn, SIGNAL(clicked()), this, SLOT(clickSANList()));
 
     initialize();
     mOKBtn->setDefault(true);
@@ -48,6 +50,7 @@ void MakeCSRDlg::initialize()
 
     mSignHashCombo->addItems( kHashList );
     mSignHashCombo->setCurrentText( setMgr->defaultHash() );
+    mSANListBtn->hide();
 }
 
 void MakeCSRDlg::setPriKey( const BIN *pPri )
@@ -70,6 +73,8 @@ void MakeCSRDlg::setSAN( const QStringList listSAN )
 {
     san_list_.clear();
     san_list_ = listSAN;
+
+    mSANListBtn->show();
 }
 
 const QString MakeCSRDlg::getDN()
@@ -144,6 +149,24 @@ void MakeCSRDlg::changeDN()
 {
     QString strDN = getDN();
     mDNText->setText( strDN );
+}
+
+void MakeCSRDlg::clickSANList()
+{
+    QString strName;
+    OneListDlg oneList;
+
+    for( int i = 0; i < san_list_.size(); i++ )
+    {
+        if( i != 0 ) strName += "#";
+        strName += san_list_.at(i);
+    }
+
+    oneList.addName( strName );
+    if( oneList.exec() == QDialog::Accepted )
+    {
+        san_list_ = oneList.getList();
+    }
 }
 
 void MakeCSRDlg::clickOK()

@@ -3275,12 +3275,12 @@ mailto : jykim74@gmail.com</translation>
         <translation>CRL 정보 읽기 실패 하였습니다.</translation>
     </message>
     <message>
-        <location filename="../crl_info_dlg.cpp" line="414"/>
+        <location filename="../crl_info_dlg.cpp" line="417"/>
         <source>CRL Files (*.crl);;PEM Files (*.pem);;All Files (*.*)</source>
         <translation>CRL 파일 (*.crl);;PEM 파일 (*.pem);;모든 파일들(*.*)</translation>
     </message>
     <message>
-        <location filename="../crl_info_dlg.cpp" line="429"/>
+        <location filename="../crl_info_dlg.cpp" line="432"/>
         <source>The CRL was saved in PEM format.</source>
         <translation>CRL 을 PEM 으로 저장</translation>
     </message>
@@ -3320,7 +3320,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">인증서 파일 (*.crt);;CRL 파일(*.crl);; PEM 파일 (*.pem);;모든 파일 (*.*)</translation>
     </message>
     <message>
-        <location filename="../crl_info_dlg.cpp" line="418"/>
+        <location filename="../crl_info_dlg.cpp" line="421"/>
         <source>Export Files</source>
         <translation>파일 내보내기</translation>
     </message>
@@ -3353,22 +3353,22 @@ mailto : jykim74@gmail.com</translation>
         <translation>지문</translation>
     </message>
     <message>
-        <location filename="../crl_info_dlg.cpp" line="351"/>
+        <location filename="../crl_info_dlg.cpp" line="354"/>
         <source>Field</source>
         <translation>필드</translation>
     </message>
     <message>
-        <location filename="../crl_info_dlg.cpp" line="351"/>
+        <location filename="../crl_info_dlg.cpp" line="354"/>
         <source>Value</source>
         <translation>값</translation>
     </message>
     <message>
-        <location filename="../crl_info_dlg.cpp" line="362"/>
+        <location filename="../crl_info_dlg.cpp" line="365"/>
         <source>Serial</source>
         <translation>일련번호</translation>
     </message>
     <message>
-        <location filename="../crl_info_dlg.cpp" line="362"/>
+        <location filename="../crl_info_dlg.cpp" line="365"/>
         <source>RevokedDate</source>
         <translation>폐기 날짜</translation>
     </message>
@@ -5559,7 +5559,7 @@ mailto : jykim74@gmail.com</translation>
         <translation>서버</translation>
     </message>
     <message>
-        <location filename="../chall_test_dlg.ui" line="96"/>
+        <location filename="../chall_test_dlg.ui" line="106"/>
         <source>Host</source>
         <translation>Host</translation>
     </message>
@@ -5568,7 +5568,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">Value1</translation>
     </message>
     <message>
-        <location filename="../chall_test_dlg.ui" line="83"/>
+        <location filename="../chall_test_dlg.ui" line="90"/>
         <source>Value</source>
         <translation>Value</translation>
     </message>
@@ -5577,49 +5577,50 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">Value2</translation>
     </message>
     <message>
-        <location filename="../chall_test_dlg.ui" line="103"/>
+        <location filename="../chall_test_dlg.ui" line="80"/>
         <source>ValueList</source>
         <translation>값 목록</translation>
     </message>
     <message>
-        <location filename="../chall_test_dlg.ui" line="127"/>
+        <location filename="../chall_test_dlg.ui" line="146"/>
         <source>Make</source>
         <translation>만들기</translation>
     </message>
     <message>
-        <location filename="../chall_test_dlg.ui" line="176"/>
-        <location filename="../chall_test_dlg.ui" line="303"/>
+        <location filename="../chall_test_dlg.ui" line="125"/>
+        <location filename="../chall_test_dlg.ui" line="195"/>
+        <location filename="../chall_test_dlg.ui" line="322"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="../chall_test_dlg.ui" line="229"/>
+        <location filename="../chall_test_dlg.ui" line="248"/>
         <source>Request</source>
         <translation>요청</translation>
     </message>
     <message>
-        <location filename="../chall_test_dlg.ui" line="236"/>
-        <location filename="../chall_test_dlg.ui" line="376"/>
+        <location filename="../chall_test_dlg.ui" line="255"/>
+        <location filename="../chall_test_dlg.ui" line="395"/>
         <source>View</source>
         <translation>보기</translation>
     </message>
     <message>
-        <location filename="../chall_test_dlg.ui" line="266"/>
+        <location filename="../chall_test_dlg.ui" line="285"/>
         <source>Send</source>
         <translation>보내기</translation>
     </message>
     <message>
-        <location filename="../chall_test_dlg.ui" line="273"/>
+        <location filename="../chall_test_dlg.ui" line="292"/>
         <source>Use TLS</source>
         <translation>TLS 사용</translation>
     </message>
     <message>
-        <location filename="../chall_test_dlg.ui" line="316"/>
+        <location filename="../chall_test_dlg.ui" line="335"/>
         <source>Response</source>
         <translation>응답</translation>
     </message>
     <message>
-        <location filename="../chall_test_dlg.ui" line="434"/>
+        <location filename="../chall_test_dlg.ui" line="453"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -5632,19 +5633,19 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">PEM 개인키</translation>
     </message>
     <message>
-        <location filename="../chall_test_dlg.cpp" line="220"/>
-        <location filename="../chall_test_dlg.cpp" line="350"/>
+        <location filename="../chall_test_dlg.cpp" line="224"/>
+        <location filename="../chall_test_dlg.cpp" line="354"/>
         <source>There is no request</source>
         <translation>요청서가 없습니다</translation>
     </message>
     <message>
-        <location filename="../chall_test_dlg.cpp" line="234"/>
+        <location filename="../chall_test_dlg.cpp" line="238"/>
         <source>There is no response</source>
         <translation>응답이 없습니다</translation>
     </message>
     <message>
-        <location filename="../chall_test_dlg.cpp" line="259"/>
-        <location filename="../chall_test_dlg.cpp" line="271"/>
+        <location filename="../chall_test_dlg.cpp" line="263"/>
+        <location filename="../chall_test_dlg.cpp" line="275"/>
         <source>Enter a %1</source>
         <translation>%1을 입력하세요</translation>
     </message>
@@ -5669,7 +5670,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">서명용 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../chall_test_dlg.cpp" line="371"/>
+        <location filename="../chall_test_dlg.cpp" line="375"/>
         <source>fail to send a request to ACME server: %1</source>
         <translation>ACME 서버에 요쳥을 보내는데 실패하였습니다: %1</translation>
     </message>
@@ -11774,32 +11775,37 @@ Do you want to delete the file and continue?</source>
         <translation>State/Province (ST)</translation>
     </message>
     <message>
-        <location filename="../make_csr_dlg.ui" line="182"/>
+        <location filename="../make_csr_dlg.ui" line="185"/>
         <source>Signature Hash</source>
         <translation>서명 해시</translation>
     </message>
     <message>
-        <location filename="../make_csr_dlg.ui" line="216"/>
+        <location filename="../make_csr_dlg.ui" line="205"/>
+        <source>SAN List</source>
+        <translation>SAN 목록</translation>
+    </message>
+    <message>
+        <location filename="../make_csr_dlg.ui" line="223"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
     <message>
-        <location filename="../make_csr_dlg.ui" line="223"/>
+        <location filename="../make_csr_dlg.ui" line="230"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
     <message>
-        <location filename="../make_csr_dlg.ui" line="230"/>
+        <location filename="../make_csr_dlg.ui" line="237"/>
         <source>Clear</source>
         <translation>지우기</translation>
     </message>
     <message>
-        <location filename="../make_csr_dlg.cpp" line="158"/>
+        <location filename="../make_csr_dlg.cpp" line="181"/>
         <source>Insert DN</source>
         <translation>DN 을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../make_csr_dlg.cpp" line="207"/>
+        <location filename="../make_csr_dlg.cpp" line="230"/>
         <source>fail to make CSR: %1</source>
         <translation>CSR 만들기 실패: %1</translation>
     </message>

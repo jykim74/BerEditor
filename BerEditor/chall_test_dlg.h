@@ -75,6 +75,7 @@ private slots:
     int clickSend();
 
     void clickValueList();
+    void clickValueClear();
 
     void clearRequest();
     void clearResponse();
