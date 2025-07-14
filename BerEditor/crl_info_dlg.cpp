@@ -326,13 +326,16 @@ void CRLInfoDlg::initialize()
     {
         int k = 0;
         JRevokeInfoList *pCurRevList = revoke_info_list_;
+        char sRevokeDate[64];
 
         while( pCurRevList )
         {
+            JS_UTIL_getDateTime( pCurRevList->sRevokeInfo.tRevokeDate, sRevokeDate );
+
             mRevokeListTable->insertRow(k);
             mRevokeListTable->setRowHeight(k,10);
             mRevokeListTable->setItem( k, 0, new QTableWidgetItem(QString("%1").arg( pCurRevList->sRevokeInfo.pSerial)));
-            mRevokeListTable->setItem( k, 1, new QTableWidgetItem(QString("%1").arg( pCurRevList->sRevokeInfo.tRevokeDate)));
+            mRevokeListTable->setItem( k, 1, new QTableWidgetItem(QString("%1").arg( sRevokeDate )));
 
             pCurRevList = pCurRevList->pNext;
             k++;
