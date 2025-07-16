@@ -20,7 +20,6 @@
     </message>
     <message>
         <location filename="../acme_client_dlg.ui" line="70"/>
-        <location filename="../acme_client_dlg.ui" line="171"/>
         <location filename="../acme_client_dlg.ui" line="285"/>
         <source>Clear</source>
         <translation>지우기</translation>
@@ -59,6 +58,11 @@
         <location filename="../acme_client_dlg.ui" line="161"/>
         <source>KID</source>
         <translation>KID</translation>
+    </message>
+    <message>
+        <location filename="../acme_client_dlg.ui" line="171"/>
+        <source>View PubKey</source>
+        <translation>공개키 보기</translation>
     </message>
     <message>
         <location filename="../acme_client_dlg.ui" line="201"/>
@@ -188,70 +192,70 @@
         <translation>전체 지우기</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="440"/>
-        <location filename="../acme_client_dlg.cpp" line="639"/>
+        <location filename="../acme_client_dlg.cpp" line="504"/>
+        <location filename="../acme_client_dlg.cpp" line="703"/>
         <source>There is no response</source>
         <translation>응답이 없습니다</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="453"/>
+        <location filename="../acme_client_dlg.cpp" line="517"/>
         <source>Error: %1 status: %2</source>
         <translation>에러: %1 상태: %2</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="459"/>
+        <location filename="../acme_client_dlg.cpp" line="523"/>
         <source>Done</source>
         <translation>Done</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="498"/>
+        <location filename="../acme_client_dlg.cpp" line="562"/>
         <source>Parsing is done</source>
         <translation>파싱 완료</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="500"/>
+        <location filename="../acme_client_dlg.cpp" line="564"/>
         <source>fail to parse : %1</source>
         <translation>파싱 실패: %1</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="524"/>
+        <location filename="../acme_client_dlg.cpp" line="588"/>
         <source>Enter a DNS</source>
         <translation>DNS을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="535"/>
+        <location filename="../acme_client_dlg.cpp" line="599"/>
         <source>%1 is already existed</source>
         <translation>%1이 이미 존재 합니다</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="613"/>
+        <location filename="../acme_client_dlg.cpp" line="677"/>
         <source>Verify OK</source>
         <translation>검증 성공</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="615"/>
+        <location filename="../acme_client_dlg.cpp" line="679"/>
         <source>Verify fail: %1</source>
         <translation>검증 실패 : %1</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="683"/>
+        <location filename="../acme_client_dlg.cpp" line="746"/>
         <source>Enter a Nonce URL</source>
         <translation>논스 URL을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="716"/>
+        <location filename="../acme_client_dlg.cpp" line="785"/>
         <source>There is no location URL</source>
         <translation>위치 URL이 없습니다</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="735"/>
-        <location filename="../acme_client_dlg.cpp" line="772"/>
-        <location filename="../acme_client_dlg.cpp" line="1342"/>
+        <location filename="../acme_client_dlg.cpp" line="804"/>
+        <location filename="../acme_client_dlg.cpp" line="841"/>
+        <location filename="../acme_client_dlg.cpp" line="1411"/>
         <source>fail to send a request to ACME server: %1</source>
         <translation>ACME 서버에 요쳥을 보내는데 실패하였습니다: %1</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="757"/>
+        <location filename="../acme_client_dlg.cpp" line="826"/>
         <source>Insert ACME URL</source>
         <translation>ACME URL을 입력하세요</translation>
     </message>
@@ -264,150 +268,171 @@
         <translation type="vanished">이전 키 쌍을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1448"/>
+        <location filename="../acme_client_dlg.cpp" line="1519"/>
         <source>Enter a email</source>
         <translation>메일을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="929"/>
+        <location filename="../acme_client_dlg.cpp" line="998"/>
         <source>Enter a identifier</source>
         <translation>구별 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1048"/>
+        <location filename="../acme_client_dlg.cpp" line="1117"/>
         <source>Enter a certificate ID</source>
         <translation>인증서 ID를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1434"/>
+        <location filename="../acme_client_dlg.cpp" line="1505"/>
         <source>Click on the directory</source>
         <translation>디렉토리를 클릭하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1441"/>
+        <location filename="../acme_client_dlg.cpp" line="1512"/>
         <source>Click on the Get Nonce</source>
         <translation>논스 가져오기 클릭하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1455"/>
+        <location filename="../acme_client_dlg.cpp" line="1526"/>
         <source>Add a DNS</source>
         <translation>DNS 추가</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1465"/>
-        <location filename="../acme_client_dlg.cpp" line="1475"/>
-        <location filename="../acme_client_dlg.cpp" line="1488"/>
-        <location filename="../acme_client_dlg.cpp" line="1501"/>
-        <location filename="../acme_client_dlg.cpp" line="1511"/>
-        <location filename="../acme_client_dlg.cpp" line="1522"/>
-        <location filename="../acme_client_dlg.cpp" line="1547"/>
+        <location filename="../acme_client_dlg.cpp" line="1536"/>
+        <location filename="../acme_client_dlg.cpp" line="1546"/>
+        <location filename="../acme_client_dlg.cpp" line="1559"/>
+        <location filename="../acme_client_dlg.cpp" line="1572"/>
+        <location filename="../acme_client_dlg.cpp" line="1582"/>
+        <location filename="../acme_client_dlg.cpp" line="1593"/>
+        <location filename="../acme_client_dlg.cpp" line="1618"/>
         <source>Continue %1?</source>
         <translation>%1 계속 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1531"/>
+        <location filename="../acme_client_dlg.cpp" line="1602"/>
         <source>There is no certificate. Try account again?</source>
         <translation>인증서가 없습니다. Account 를 다시 시도하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1556"/>
+        <location filename="../acme_client_dlg.cpp" line="1627"/>
         <source>Certificate issuance completed</source>
         <translation>인증서 발급 완료했습니다</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="584"/>
-        <location filename="../acme_client_dlg.cpp" line="959"/>
-        <location filename="../acme_client_dlg.cpp" line="1123"/>
+        <location filename="../acme_client_dlg.cpp" line="648"/>
+        <location filename="../acme_client_dlg.cpp" line="1028"/>
+        <location filename="../acme_client_dlg.cpp" line="1192"/>
         <source>Select a sign certificate</source>
         <translation>서명용 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="988"/>
+        <location filename="../acme_client_dlg.cpp" line="1057"/>
         <source>Select keypair for CSR</source>
         <translation>CSR을 위한 키 쌍을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1000"/>
+        <location filename="../acme_client_dlg.cpp" line="1069"/>
         <source>Make CSR</source>
         <translation>CSR 만들기</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1027"/>
+        <location filename="../acme_client_dlg.cpp" line="1096"/>
         <source>Would you like to save this CSR?</source>
         <translation>이 CSR을 저장 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="596"/>
-        <location filename="../acme_client_dlg.cpp" line="1142"/>
+        <location filename="../acme_client_dlg.cpp" line="660"/>
+        <location filename="../acme_client_dlg.cpp" line="1211"/>
         <source>Select keypair</source>
         <translation>키 쌍을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1301"/>
+        <location filename="../acme_client_dlg.cpp" line="1370"/>
         <source>There is no command URL</source>
         <translation>명령 URL이 없습니다</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="574"/>
-        <location filename="../acme_client_dlg.cpp" line="625"/>
-        <location filename="../acme_client_dlg.cpp" line="1309"/>
+        <location filename="../acme_client_dlg.cpp" line="638"/>
+        <location filename="../acme_client_dlg.cpp" line="689"/>
+        <location filename="../acme_client_dlg.cpp" line="1378"/>
         <source>There is no request</source>
         <translation>요청서가 없습니다</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="235"/>
-        <location filename="../acme_client_dlg.cpp" line="296"/>
-        <location filename="../acme_client_dlg.cpp" line="307"/>
-        <location filename="../acme_client_dlg.cpp" line="328"/>
-        <location filename="../acme_client_dlg.cpp" line="338"/>
-        <location filename="../acme_client_dlg.cpp" line="354"/>
-        <location filename="../acme_client_dlg.cpp" line="376"/>
-        <location filename="../acme_client_dlg.cpp" line="393"/>
+        <location filename="../acme_client_dlg.cpp" line="187"/>
+        <source>There is no KID</source>
+        <translation>KID가 없습니다</translation>
+    </message>
+    <message>
+        <location filename="../acme_client_dlg.cpp" line="196"/>
+        <source>KID and Account URL are different</source>
+        <translation>KID와 ACCOUNT URL이 다릅니다</translation>
+    </message>
+    <message>
+        <location filename="../acme_client_dlg.cpp" line="213"/>
+        <source>fail to get public key from response: %1</source>
+        <translation>응답에서 공개키 가져오기 실패 하였습니다: %1</translation>
+    </message>
+    <message>
+        <location filename="../acme_client_dlg.cpp" line="287"/>
+        <location filename="../acme_client_dlg.cpp" line="348"/>
+        <location filename="../acme_client_dlg.cpp" line="359"/>
+        <location filename="../acme_client_dlg.cpp" line="380"/>
+        <location filename="../acme_client_dlg.cpp" line="390"/>
+        <location filename="../acme_client_dlg.cpp" line="406"/>
+        <location filename="../acme_client_dlg.cpp" line="428"/>
+        <location filename="../acme_client_dlg.cpp" line="446"/>
+        <location filename="../acme_client_dlg.cpp" line="459"/>
         <source>Added %1 command [%2]</source>
         <translation>%1 명령을 추가하였습니다 [%2]</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="404"/>
+        <location filename="../acme_client_dlg.cpp" line="470"/>
         <source>Change Cert ID as %1?</source>
         <translation>인증서 ID를 %1로 바꾸겠습니까?</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="843"/>
+        <location filename="../acme_client_dlg.cpp" line="760"/>
+        <source>fail to get nonce: %1</source>
+        <translation>노스 가져오기 실패: %1</translation>
+    </message>
+    <message>
+        <location filename="../acme_client_dlg.cpp" line="912"/>
         <source>Select a new certificate</source>
         <translation>새 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="857"/>
+        <location filename="../acme_client_dlg.cpp" line="926"/>
         <source>Select new keypair</source>
         <translation>새로운 키 쌍을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1335"/>
+        <location filename="../acme_client_dlg.cpp" line="1404"/>
         <source>The key pair has been changed.</source>
         <translation>키 쌍이 변경 되었습니다</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1354"/>
+        <location filename="../acme_client_dlg.cpp" line="1423"/>
         <source>Change Nonce as %1?</source>
         <translation>논스를 %1로 바꾸겠습니까?</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1366"/>
+        <location filename="../acme_client_dlg.cpp" line="1435"/>
         <source>Change KID as %1?</source>
         <translation>KID를 %1로 바꾸겠습니까?</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1400"/>
+        <location filename="../acme_client_dlg.cpp" line="1471"/>
         <source>Are you save the private key and certificate</source>
         <translation>개인키와 인증서를 저장하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1418"/>
+        <location filename="../acme_client_dlg.cpp" line="1489"/>
         <source>The private key and certificate are saved successfully</source>
         <translation>개인키와 인증서가 성공적으로 저장하였습니다</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1420"/>
+        <location filename="../acme_client_dlg.cpp" line="1491"/>
         <source>faied to save private key and certificate</source>
         <translation>개인키와 인증서 저장에 실패 하였습니다</translation>
     </message>

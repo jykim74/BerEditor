@@ -11,6 +11,7 @@
 #include "js_pki_eddsa.h"
 #include "js_pki_tools.h"
 #include "js_bin.h"
+#include "js_error.h"
 
 ACMEObject::ACMEObject(QObject *parent)
     : QObject{parent}
@@ -353,7 +354,7 @@ const QJsonObject ACMEObject::getJWKProtected( const QString strAlg,
     object["alg"] = strAlg;
     object["jwk"] = objJWK;
     if(strNonce.length() > 0 ) object["nonce"] = strNonce;
-    object["url"] = strURL;
+    if( strURL.length() > 0 ) object["url"] = strURL;
 
     return object;
 }
@@ -486,6 +487,94 @@ const QJsonObject ACMEObject::getJWK( const BIN *pPub, const QString strHash, co
     return jObj;
 }
 
+int ACMEObject::getPubKey( QJsonObject objKey, BIN *pPub )
+{
+    QString strKTY = objKey["kty"].toString();
+
+    if( strKTY == "RSA" )
+    {
+        JRSAKeyVal sRSAVal;
+        QString strN = getHex_FromBase64URL( objKey["n"].toString() );
+        QString strE = getHex_FromBase64URL( objKey["e"].toString() );
+
+        memset( &sRSAVal, 0x00, sizeof(sRSAVal));
+
+        JS_PKI_setRSAKeyVal( &sRSAVal,
+                            strN.toStdString().c_str(),
+                            strE.toStdString().c_str(),
+                            NULL,
+                            NULL,
+                            NULL,
+                            NULL,
+                            NULL,
+                            NULL );
+
+        JS_PKI_encodeRSAPublicKey( &sRSAVal, pPub );
+        JS_PKI_resetRSAKeyVal( &sRSAVal );
+    }
+    else if( strKTY == "EC" )
+    {
+        JECKeyVal sECVal;
+
+        QString strOID = getCurveOID( objKey["crv"].toString() );
+        QString strX = getHex_FromBase64URL( objKey["x"].toString() );
+        QString strY = getHex_FromBase64URL( objKey["y"].toString() );
+
+        memset( &sECVal, 0x00, sizeof(sECVal));
+
+        JS_PKI_setECKeyVal( &sECVal,
+                            strOID.toStdString().c_str(),
+                            strX.toStdString().c_str(),
+                            strY.toStdString().c_str(),
+                            NULL );
+
+        JS_PKI_encodeECPublicKey( &sECVal, pPub );
+        JS_PKI_resetECKeyVal( &sECVal );
+    }
+    else if( strKTY == "DSA" )
+    {
+        JDSAKeyVal sDSAVal;
+        QString strP = getHex_FromBase64URL( objKey["p"].toString() );
+        QString strQ = getHex_FromBase64URL( objKey["q"].toString() );
+        QString strG = getHex_FromBase64URL( objKey["g"].toString() );
+        QString strY = getHex_FromBase64URL( objKey["y"].toString() );
+
+        memset( &sDSAVal, 0x00, sizeof(sDSAVal));
+
+        JS_PKI_setDSAKeyVal( &sDSAVal,
+                            strQ.toStdString().c_str(),
+                            strP.toStdString().c_str(),
+                            strQ.toStdString().c_str(),
+                            strY.toStdString().c_str(),
+                            NULL );
+
+        JS_PKI_encodeDSAPrivateKey( &sDSAVal, pPub );
+        JS_PKI_resetDSAKeyVal( &sDSAVal );
+    }
+    else if( strKTY == "OKP" )
+    {
+        JRawKeyVal sRawVal;
+        QString strCrv = objKey["crv"].toString();
+        QString strX = getHex_FromBase64URL( objKey["x"].toString() );
+
+        memset( &sRawVal, 0x00, sizeof(sRawVal));
+
+        JS_PKI_setRawKeyVal( &sRawVal,
+                            strX.toStdString().c_str(),
+                            NULL,
+                            strCrv.toUpper().toStdString().c_str());
+
+        JS_PKI_encodeRawPublicKey( &sRawVal, pPub );
+        JS_PKI_resetRawKeyVal( &sRawVal );
+    }
+    else
+    {
+        return JSR_ERR;
+    }
+
+    return 0;
+}
+
 
 const QString ACMEObject::getAlg( int nKeyType, const QString strHash )
 {
@@ -551,6 +640,20 @@ const QString ACMEObject::getCurve( const QString strOID )
         strCurve = "P-521";
 
     return strCurve;
+}
+
+const QString ACMEObject::getCurveOID( const QString strCurve )
+{
+    QString strOID;
+
+    if( strCurve == "P-256" ) // prime256v1
+        strOID = "1.2.840.10045.3.1.7";
+    else if( strCurve == "P-384" ) // secp384r1
+        strOID = "1.3.132.0.34";
+    else if( strOID == "P-521" ) // secp521r1"
+        strOID = "1.3.132.0.35";
+
+    return strOID;
 }
 
 const QString ACMEObject::getEdDSA( const QString strName )

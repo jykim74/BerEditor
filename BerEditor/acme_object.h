@@ -60,9 +60,11 @@ public:
     static const QJsonObject getIdentifiers( const QStringList strNameList );
 
     static const QJsonObject getJWK( const BIN *pPub, const QString strHash, const QString strName );
+    static int getPubKey( QJsonObject objKey, BIN *pPub );
     static const QString getAlg( int nKeyType, const QString strHash );
     static const QString getHash( const QString strAlg );
     static const QString getCurve( const QString strOID );
+    static const QString getCurveOID( const QString strCurve );
     static const QString getEdDSA( const QString strName );
 
 

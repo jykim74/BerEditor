@@ -70,7 +70,7 @@ private slots:
     void clickChallTest();
 
     void clickClearURL();
-    void clickClearKID();
+    void clickKIDViewPubKey();
     void clickClearRequest();
     void clickClearResponse();
     void changeRequest();

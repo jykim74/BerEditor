@@ -23,6 +23,7 @@
 #include "revoke_reason_dlg.h"
 #include "chall_test_dlg.h"
 #include "one_list_dlg.h"
+#include "pri_key_info_dlg.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -50,7 +51,7 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mURLClearBtn, SIGNAL(clicked()), this, SLOT(clickClearURL()));
-    connect( mKIDClearBtn, SIGNAL(clicked()), this, SLOT(clickClearKID()));
+    connect( mKIDViewPubBtn, SIGNAL(clicked()), this, SLOT(clickKIDViewPubKey()));
     connect( mGetNonceBtn, SIGNAL(clicked()), this, SLOT(clickGetNonce()));
     connect( mGetLocationBtn, SIGNAL(clicked()), this, SLOT(clickGetLocation()));
     connect( mGetDirBtn, SIGNAL(clicked()), this, SLOT(clickGetDirectory()));
@@ -166,9 +167,60 @@ void ACMEClientDlg::clickClearURL()
     berApplet->log( "clear used URLs" );
 }
 
-void ACMEClientDlg::clickClearKID()
+void ACMEClientDlg::clickKIDViewPubKey()
 {
-    mKIDText->clear();
+    int ret = 0;
+    BIN binReq = {0,0};
+    int nStatus = 0;
+
+    BIN binPub = {0,0};
+
+    QString strKID = mKIDText->text();
+    QString strURL;
+    QString strRsp;
+    QJsonObject objRsp;
+
+    PriKeyInfoDlg priKeyInfo;
+
+    if( strKID.length() < 1 )
+    {
+        berApplet->warningBox( tr( "There is no KID" ), this );
+        mKIDText->setFocus();
+        return;
+    }
+
+    mCmdCombo->setCurrentText( kCmdAccount );
+    strURL = mCmdText->text();
+    if( strURL != strKID )
+    {
+        berApplet->warningBox( tr( "KID and Account URL are different" ), this );
+        mKIDText->setFocus();
+        return;
+    }
+
+    ret = clickMake();
+    if( ret != 0 ) goto end;
+
+    ret = clickSend();
+    if( ret != 0 ) goto end;
+
+    strRsp = mResponseText->toPlainText();
+
+    objRsp = QJsonDocument::fromJson( strRsp.toLocal8Bit() ).object();
+    ret = ACMEObject::getPubKey( objRsp["key"].toObject(), &binPub );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "fail to get public key from response: %1").arg(ret), this );
+        goto end;
+    }
+
+    priKeyInfo.setPublicKey( &binPub );
+    priKeyInfo.exec();
+
+
+end :
+    JS_BIN_reset( &binReq );
+    JS_BIN_reset( &binPub );
 }
 
 void ACMEClientDlg::clickClearRequest()
@@ -382,7 +434,21 @@ int ACMEClientDlg::parseAuthzRsp( QJsonObject& object )
 
 int ACMEClientDlg::parseAccountRsp( QJsonObject& object )
 {
-    int ret = 0;
+    int ret = -1;
+
+    QString strOrders = object["orders"].toString();
+
+    if( strOrders.length() > 0 )
+    {
+        ret = addCmd( kCmdOrders, strOrders );
+        if( ret > 0 )
+        {
+            berApplet->messageBox( tr( "Added %1 command [%2]" ).arg( kCmdOrders ).arg( strOrders ), this);
+        }
+
+        ret = 0;
+    }
+
     QString strCert = object["certificate"].toString();
 
     if( strCert.length() > 0 )
@@ -405,13 +471,11 @@ int ACMEClientDlg::parseAccountRsp( QJsonObject& object )
             if( bVal == true )
                 mCertIDText->setText( strCertID );
         }
-    }
-    else
-    {
-        return -1;
+
+        ret = 0;
     }
 
-    return 0;
+    return ret;
 }
 
 int ACMEClientDlg::addCmd( const QString strCmd, const QString strCmdURL )
@@ -674,7 +738,6 @@ void ACMEClientDlg::clickGetNonce()
 {
     int nStatus = 0;
     const char *pHeaderName = "Replay-Nonce";
-//    QString strURL = "https://localhost:14000/nonce-plz";
     QString strURL = mNonceURLText->text();
     char *pNonce = NULL;
 
@@ -692,15 +755,21 @@ void ACMEClientDlg::clickGetNonce()
         &nStatus,
         pHeaderName, &pNonce );
 
+    if( nStatus >= 300 )
+    {
+        berApplet->warningBox( tr( "fail to get nonce: %1").arg( nStatus ), this );
+        return;
+    }
+
     if( pNonce )
     {
         mNonceText->setText( pNonce );
         JS_free( pNonce );
     }
 
-    mRspCmdText->setText( kCmdNewNonce  );
-    mStatusText->setText( QString("%1").arg( nStatus ));
-    mResponseText->clear();
+//    mRspCmdText->setText( kCmdNewNonce  );
+//    mStatusText->setText( QString("%1").arg( nStatus ));
+//    mResponseText->clear();
 }
 
 void ACMEClientDlg::clickGetLocation()
@@ -1366,6 +1435,8 @@ int ACMEClientDlg::clickSend()
                 bVal = berApplet->yesOrNoBox( tr( "Change KID as %1?" ).arg( pCurList->sNameVal.pValue ), this, true );
                 if( bVal == true )
                     mKIDText->setText( pCurList->sNameVal.pValue );
+
+                addCmd( kCmdAccount, pCurList->sNameVal.pValue );
             }
 
             QString strCmd = mCmdCombo->currentText();
