@@ -353,7 +353,7 @@ const QJsonObject ACMEObject::getJWKProtected( const QString strAlg,
     object["alg"] = strAlg;
     object["jwk"] = objJWK;
     if(strNonce.length() > 0 ) object["nonce"] = strNonce;
-    object["url"] = strURL;
+    if( strURL.length() > 0 ) object["url"] = strURL;
 
     return object;
 }

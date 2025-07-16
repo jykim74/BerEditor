@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "ui_doc_signer_dlg.h"
+#include "acme_object.h"
 
 namespace Ui {
 class DocSignerDlg;
@@ -22,12 +23,18 @@ private slots:
     void clickJSON_ComputeSignature();
     void clickJSON_VerifySignature();
     void clickJSON_PayloadClear();
-    void clickJSON_JWKClear();
+    void clickJSON_JWSClear();
     void clickJSON_PayloadView();
-    void clickJSON_JWKView();
+    void clickJSON_JWSView();
+
+    void changeJSON_Payload();
+    void changeJSON_JWS();
 
 private:
+    void initUI();
+    void initialize();
 
+    ACMEObject json_obj_;
 };
 
 #endif // DOC_SIGNER_DLG_H
