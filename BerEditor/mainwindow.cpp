@@ -56,6 +56,7 @@
 #include "find_dlg.h"
 #include "key_list_dlg.h"
 #include "x509_compare_dlg.h"
+#include "doc_signer_dlg.h"
 
 #include "js_pki_tools.h"
 #include "js_kms.h"
@@ -612,6 +613,13 @@ void MainWindow::createViewActions()
     connect( serviceX509CompAct, &QAction::triggered, this, &MainWindow::viewServiceX509Comp );
     serviceMenu->addAction( serviceX509CompAct );
 
+    QAction *serviceDocSignerAct = new QAction( tr( "Document Signer"), this );
+    bVal = isView( ACT_SERVICE_DOC_SIGNER );
+    serviceDocSignerAct->setCheckable(true);
+    serviceDocSignerAct->setChecked(bVal);
+    connect( serviceDocSignerAct, &QAction::triggered, this, &MainWindow::viewServiceDocSigner );
+    serviceMenu->addAction( serviceDocSignerAct );
+
     QAction *protoOCSPAct = new QAction( tr( "OCSP client"), this );
     bVal = isView( ACT_PROTO_OCSP );
     protoOCSPAct->setCheckable(true);
@@ -1148,6 +1156,14 @@ void MainWindow::createActions()
     serviceMenu->addAction( x509_comp_act_ );
     if( isView( ACT_SERVICE_X509_COMP ) ) service_tool_->addAction( x509_comp_act_ );
 
+    const QIcon signerIcon = QIcon::fromTheme( "document-signer", QIcon(":/images/doc_signer.png"));
+    doc_signer_act_ = new QAction(signerIcon, tr("&Docment Signer"), this);
+    doc_signer_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_D));
+    connect( doc_signer_act_, &QAction::triggered, this, &MainWindow::docSigner );
+    doc_signer_act_->setStatusTip(tr("Document Signer"));
+    serviceMenu->addAction( doc_signer_act_ );
+    if( isView( ACT_SERVICE_DOC_SIGNER ) ) service_tool_->addAction( doc_signer_act_ );
+
     if( berApplet->isLicense() == false )
     {
         open_pri_key_act_->setEnabled(false);
@@ -1172,6 +1188,7 @@ void MainWindow::createActions()
         cavp_act_->setEnabled( false );
         ssl_act_->setEnabled( false );
         x509_comp_act_->setEnabled( false );
+        doc_signer_act_->setEnabled( false );
     }
 
 
@@ -1387,6 +1404,7 @@ void MainWindow::createCryptoDlg()
     key_list_dlg_ = new KeyListDlg;
     key_list_dlg_->setManage( true );
     x509_comp_dlg_ = new X509CompareDlg;
+    doc_signer_dlg_ = new DocSignerDlg;
 }
 
 void MainWindow::newFile()
@@ -2350,6 +2368,13 @@ void MainWindow::x509Compare()
     x509_comp_dlg_->activateWindow();
 }
 
+void MainWindow::docSigner()
+{
+    doc_signer_dlg_->show();
+    doc_signer_dlg_->raise();
+    doc_signer_dlg_->activateWindow();
+}
+
 void MainWindow::genOTP()
 {
     gen_otp_dlg_->show();
@@ -3172,6 +3197,20 @@ void MainWindow::viewServiceX509Comp( bool bChecked )
     {
         service_tool_->removeAction( x509_comp_act_ );
         unsetView( ACT_SERVICE_X509_COMP );
+    }
+}
+
+void MainWindow::viewServiceDocSigner( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        service_tool_->addAction( doc_signer_act_ );
+        setView( ACT_SERVICE_DOC_SIGNER );
+    }
+    else
+    {
+        service_tool_->removeAction( doc_signer_act_ );
+        unsetView( ACT_SERVICE_DOC_SIGNER );
     }
 }
 

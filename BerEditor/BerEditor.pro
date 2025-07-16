@@ -119,7 +119,8 @@ SOURCES += \
     revoke_reason_dlg.cpp \
     chall_test_dlg.cpp \
     one_list_dlg.cpp \
-    two_list_dlg.cpp
+    two_list_dlg.cpp \
+    doc_signer_dlg.cpp
 
 
 HEADERS += \
@@ -207,7 +208,8 @@ HEADERS += \
     revoke_reason_dlg.h \
     chall_test_dlg.h \
     one_list_dlg.h \
-    two_list_dlg.h
+    two_list_dlg.h \
+    doc_signer_dlg.h
 
 
 
@@ -361,7 +363,8 @@ FORMS += \
         revoke_reason_dlg.ui \
         chall_test_dlg.ui \
         one_list_dlg.ui \
-        two_list_dlg.ui
+        two_list_dlg.ui \
+        doc_signer_dlg.ui
 
 RESOURCES += \
     bereditor.qrc
