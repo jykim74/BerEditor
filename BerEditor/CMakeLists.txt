@@ -22,6 +22,7 @@ find_package(Qt${QT_VERSION_MAJOR} OPTIONAL_COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} OPTIONAL_COMPONENTS PrintSupport Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Network)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Help)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Xml)
 
 if(APPLE)
     SET(platform_specific_sources ${platform_specific_sources} mac_sparkle_support.mm)

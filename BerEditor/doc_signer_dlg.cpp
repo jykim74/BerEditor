@@ -2,6 +2,8 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QXmlStreamReader>
+
 
 #include "doc_signer_dlg.h"
 #include "ber_applet.h"
@@ -37,7 +39,15 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+    mJSONPayloadClearBtn->setFixedWidth(34);
+    mJSONPayloadViewBtn->setFixedWidth(34);
+    mJSON_JWSClearBtn->setFixedWidth(34);
+    mJSON_JWSViewBtn->setFixedWidth(34);
+
+    mTabJSON->layout()->setSpacing(5);
+    mTabJSON->layout()->setMargin(5);
 #endif
+
     resize(minimumSizeHint().width(), minimumSizeHint().height());
     initialize();
 }
