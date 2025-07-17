@@ -288,6 +288,7 @@ elseif(APPLE)
 
     include_directories( ../../PKILib
         ../../lib/mac/openssl3/include
+        /usr/local/include/xmlsec1
         /usr/local/include )
 
     if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
@@ -307,7 +308,7 @@ elseif(APPLE)
         Qt${QT_VERSION_MAJOR}::Widgets
 	Qt${QT_VERSION_MAJOR}::PrintSupport
         Qt${QT_VERSION_MAJOR}::Network
-        PKILib crypto ssl ltdl ldap lber
+        PKILib crypto ssl ltdl ldap lber xmlsec1 xmlsec1-openssl xml2 xslt
         "-framework AppKit"
         "-framework Carbon"
         "-framework Foundation"

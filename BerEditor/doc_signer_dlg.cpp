@@ -302,6 +302,7 @@ void DocSignerDlg::clickXML_MakeSign()
     mXMLSignText->setPlainText( strSign );
 }
 
+#if 0
 int
 sign_file(const char* tmpl_file, const char* key_file) {
     xmlDocPtr doc = NULL;
@@ -369,9 +370,13 @@ done:
     }
     return(res);
 }
+#endif
 
 void DocSignerDlg::clickXML_Encrypt()
 {
+
+#if 0
+
 #ifndef XMLSEC_NO_XSLT
     xsltSecurityPrefsPtr xsltSecPrefs = NULL;
 #endif /* XMLSEC_NO_XSLT */
@@ -458,6 +463,8 @@ void DocSignerDlg::clickXML_Encrypt()
     xmlCleanupParser();
 
     return;
+#endif
+
 }
 
 void DocSignerDlg::clickXML_VerifySign()
