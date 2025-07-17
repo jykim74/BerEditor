@@ -264,39 +264,29 @@ win32 {
     DEFINES += _AUTO_UPDATE
     RC_ICONS = bereditor.ico
     INCLUDEPATH += "../../lib/win32/winsparkle/include"
-    INCLUDEPATH += "C:\msys64\mingw32\include"
+    INCLUDEPATH += "C:/msys64/mingw32/include"
 
-    contains(QT_ARCH, i386) {
-        message( "32bit" )
-        INCLUDEPATH += "../../PKILib/lib/win32/winsparkle/include"
-        INCLUDEPATH += "C:\msys64\mingw32\include"
+    message( "64bit" );
+    INCLUDEPATH += "../../PKILib/lib/win64/winsparkle/include"
+    INCLUDEPATH += "C:/msys64/mingw64/include"
+    INCLUDEPATH += "../../lib/win64/xmlsec1/libxml2/include/libxml2"
+    INCLUDEPATH += "../../lib/win64/xmlsec1/libxslt/include"
+    INCLUDEPATH += "../../lib/win64/xmlsec1/xmlsec/include"
 
-        Debug {
-            LIBS += -L"../../build-PKILib-Desktop_Qt_5_13_2_MinGW_32_bit-Debug/debug" -lPKILib
-            LIBS += -L"../../lib/win32/debug/openssl3/lib" -lcrypto -lssl
-        } else {
-            LIBS += -L"../../build-PKILib-Desktop_Qt_5_13_2_MinGW_32_bit-Release/release" -lPKILib
-            LIBS += -L"../../lib/win32/openssl3/lib" -lcrypto -lssl
-        }
-
-        LIBS += -L"../../lib/win32" -lltdl -lldap -llber
-        LIBS += -L"../../lib/win32/winsparkle/lib" -lWinSparkle -lws2_32
+    Debug {
+        LIBS += -L"../../PKILib/build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug -lPKILib"
+        LIBS += -L"../../lib/win64/debug/openssl3/lib64 -lcrypto -lssl"
     } else {
-        message( "64bit" );
-        INCLUDEPATH += "../../PKILib/lib/win64/winsparkle/include"
-        INCLUDEPATH += "C:\msys64\mingw64\include"
-
-        Debug {
-            LIBS += -L"../../build-PKILib-Desktop_Qt_5_13_2_MinGW_64_bit-Debug" -lPKILib
-            LIBS += -L"../../lib/win64/debug/openssl3/lib64" -lcrypto -lssl
-        } else {
-            LIBS += -L"../../build-PKILib-Desktop_Qt_5_13_2_MinGW_64_bit-Release" -lPKILib
-            LIBS += -L"../../lib/win64/openssl3/lib64" -lcrypto -lssl
-        }
-
-        LIBS += -L"../../lib/win64" -lltdl -lldap -llber
-        LIBS += -L"../../lib/win64/winsparkle/lib" -lWinSparkle -lws2_32
+        LIBS += -L"../../PKILib/build/Desktop_Qt_5_15_2_MinGW_64_bit-Release -lPKILib"
+        LIBS += -L"../../lib/win64/openssl3/lib64 -lcrypto -lssl"
     }
+
+    LIBS += -L"../../lib/win64/xmlsec1/xmlsec/bin -lxmlsec -lxmlsec-openssl"
+    LIBS += -L"../../lib/win64/xmlsec1/libxml2/bin -lxml2"
+    LIBS += -L"../../lib/win64/xmlsec1/libxslt/bin -lxslt"
+    LIBS += -L"../../lib/win64 -lltdl -lldap -llber"
+    LIBS += -L"../../lib/win64/winsparkle/lib -lWinSparkle"
+    LIBS += -lws2_32
 }
 
 FORMS += \
