@@ -22,7 +22,7 @@ find_package(Qt${QT_VERSION_MAJOR} OPTIONAL_COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} OPTIONAL_COMPONENTS PrintSupport Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Network)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Help)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Xml)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS xml)
 
 if(APPLE)
     SET(platform_specific_sources ${platform_specific_sources} mac_sparkle_support.mm)
@@ -231,7 +231,11 @@ target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )
 if(WIN32)
     include_directories( ../../PKILib
         "c:/msys64/mingw64/include"
-        ../../lib/win64/winsparkle/include )
+        ../../lib/win64/winsparkle/include
+        ../../lib/win64/xmlsec1/libxml2/include/libxml2
+        ../../lib/win64/xmlsec1/libxslt/include
+        ../../lib/win64/xmlsec1/xmlsec/include
+    )
 
     message( STATUS ${CMAKE_BUILD_TYPE} )
 
@@ -241,12 +245,18 @@ if(WIN32)
         ../../PKILib/build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug
         ../../lib/win64/debug/openssl3/lib64
         ../../lib/win64/winsparkle/lib
+        ../../lib/win64/xmlsec1/libxml2/bin
+        ../../lib/win64/xmlsec1/libxslt/bin
+        ../../lib/win64/xmlsec1/xmlsec/bin
         ../../lib/win64 )
     elseif( CMAKE_BUILD_TYPE STREQUAL "Release" )
         target_link_directories( ${PROJECT_NAME} PRIVATE
         ../../PKILib/build/Desktop_Qt_5_15_2_MinGW_64_bit-Release
         ../../lib/win64/openssl3/lib64
         ../../lib/win64/winsparkle/lib
+        ../../lib/win64/xmlsec1/libxml2/bin
+        ../../lib/win64/xmlsec1/libxslt/bin
+        ../../lib/win64/xmlsec1/xmlsec/bin
         ../../lib/win64 )
     endif()
 
@@ -255,7 +265,7 @@ if(WIN32)
 	Qt${QT_VERSION_MAJOR}::PrintSupport
         Qt${QT_VERSION_MAJOR}::Gui
         Qt${QT_VERSION_MAJOR}::Network
-        PKILib crypto ssl ltdl ldap lber ws2_32 WinSparkle )
+        PKILib crypto ssl ltdl ldap lber ws2_32 WinSparkle xmlsec xslt xml2 xmlsec-openssl )
 
     target_compile_definitions( ${PROJECT_NAME} PRIVATE _AUTO_UPDATE )
 

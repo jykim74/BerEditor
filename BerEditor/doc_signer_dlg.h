@@ -2,6 +2,7 @@
 #define DOC_SIGNER_DLG_H
 
 #include <QDialog>
+#include <QXmlStreamReader>
 #include "ui_doc_signer_dlg.h"
 #include "acme_object.h"
 
@@ -20,6 +21,9 @@ public:
 private slots:
     void clickClearAll();
 
+    void findSrcPath();
+    void findDstPath();
+
     void clickJSON_ComputeSignature();
     void clickJSON_VerifySignature();
     void clickJSON_PayloadClear();
@@ -30,11 +34,20 @@ private slots:
     void changeJSON_Payload();
     void changeJSON_JWS();
 
+    void clickXML_MakeSign();
+    void clickXML_Encrypt();
+    void clickXML_VerifySign();
+    void clickXML_Decrypt();
+
+    void changeXML_Body();
+    void changeXML_Sign();
+
 private:
     void initUI();
     void initialize();
 
     ACMEObject json_obj_;
+    QXmlStreamReader xml_;
 };
 
 #endif // DOC_SIGNER_DLG_H
