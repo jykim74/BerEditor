@@ -70,7 +70,7 @@ private slots:
     void clickChallTest();
 
     void clickClearURL();
-    void clickKIDViewPubKey();
+    void clickKIDGetPubKey();
     void clickClearRequest();
     void clickClearResponse();
     void changeRequest();
@@ -130,6 +130,7 @@ private:
     BIN pri_key_;
     BIN pub_key_;
     BIN csr_pri_key_;
+    BIN kid_pub_key_;
     QString key_name_;
 };
 

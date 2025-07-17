@@ -166,9 +166,9 @@
       <widget class="QLineEdit" name="mKIDText"/>
      </item>
      <item row="2" column="2">
-      <widget class="QPushButton" name="mKIDViewPubBtn">
+      <widget class="QPushButton" name="mKIDGetPubBtn">
        <property name="text">
-        <string>View PubKey</string>
+        <string>Get PubKey</string>
        </property>
       </widget>
      </item>
@@ -937,7 +937,7 @@
   <tabstop>mLocationText</tabstop>
   <tabstop>mGetLocationBtn</tabstop>
   <tabstop>mKIDText</tabstop>
-  <tabstop>mKIDViewPubBtn</tabstop>
+  <tabstop>mKIDGetPubBtn</tabstop>
   <tabstop>mNonceText</tabstop>
   <tabstop>mEmailText</tabstop>
   <tabstop>mCertIDText</tabstop>

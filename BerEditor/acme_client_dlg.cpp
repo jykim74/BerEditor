@@ -48,10 +48,11 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     memset( &pri_key_, 0x00, sizeof(BIN));
     memset( &pub_key_, 0x00, sizeof(BIN));
     memset( &csr_pri_key_, 0x00, sizeof(BIN));
+    memset( &kid_pub_key_, 0x00, sizeof(BIN));
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mURLClearBtn, SIGNAL(clicked()), this, SLOT(clickClearURL()));
-    connect( mKIDViewPubBtn, SIGNAL(clicked()), this, SLOT(clickKIDViewPubKey()));
+    connect( mKIDGetPubBtn, SIGNAL(clicked()), this, SLOT(clickKIDGetPubKey()));
     connect( mGetNonceBtn, SIGNAL(clicked()), this, SLOT(clickGetNonce()));
     connect( mGetLocationBtn, SIGNAL(clicked()), this, SLOT(clickGetLocation()));
     connect( mGetDirBtn, SIGNAL(clicked()), this, SLOT(clickGetDirectory()));
@@ -150,6 +151,7 @@ void ACMEClientDlg::resetKey()
     JS_BIN_reset( &pri_key_ );
     JS_BIN_reset( &pub_key_ );
     JS_BIN_reset( &csr_pri_key_ );
+    JS_BIN_reset( &kid_pub_key_ );
     key_name_.clear();
     mKeyNameLabel->setText( key_name_ );
 }
@@ -167,7 +169,7 @@ void ACMEClientDlg::clickClearURL()
     berApplet->log( "clear used URLs" );
 }
 
-void ACMEClientDlg::clickKIDViewPubKey()
+void ACMEClientDlg::clickKIDGetPubKey()
 {
     int ret = 0;
     BIN binReq = {0,0};
@@ -213,6 +215,9 @@ void ACMEClientDlg::clickKIDViewPubKey()
         berApplet->warningBox( tr( "fail to get public key from response: %1").arg(ret), this );
         goto end;
     }
+
+    JS_BIN_reset( &kid_pub_key_ );
+    JS_BIN_copy( &kid_pub_key_, &binPub );
 
     priKeyInfo.setPublicKey( &binPub );
     priKeyInfo.exec();
@@ -639,33 +644,40 @@ void ACMEClientDlg::clickVerify()
         return;
     }
 
-    if( mUseCertManCheck->isChecked() == true )
+    if( kid_pub_key_.nLen <= 0 )
     {
-        BIN binCert = {0,0};
-        CertManDlg certMan;
+        if( mUseCertManCheck->isChecked() == true )
+        {
+            BIN binCert = {0,0};
+            CertManDlg certMan;
 
-        certMan.setMode( ManModeSelBoth );
-        certMan.setTitle( tr( "Select a sign certificate" ));
+            certMan.setMode( ManModeSelBoth );
+            certMan.setTitle( tr( "Select a sign certificate" ));
 
-        if( certMan.exec() != QDialog::Accepted )
-            return;
+            if( certMan.exec() != QDialog::Accepted )
+                return;
 
-        certMan.getCert( &binCert );
-        JS_PKI_getPubKeyFromCert( &binCert, &binPub );
-        JS_BIN_reset( &binCert );
+            certMan.getCert( &binCert );
+            JS_PKI_getPubKeyFromCert( &binCert, &binPub );
+            JS_BIN_reset( &binCert );
+        }
+        else
+        {
+            KeyPairManDlg keyPairMan;
+            keyPairMan.setTitle( tr( "Select keypair" ));
+            keyPairMan.setMode( KeyPairModeSelect );
+
+            if( keyPairMan.exec() != QDialog::Accepted )
+                return;
+
+            QString strPubPath = keyPairMan.getPubPath();
+
+            JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPub );
+        }
     }
     else
     {
-        KeyPairManDlg keyPairMan;
-        keyPairMan.setTitle( tr( "Select keypair" ));
-        keyPairMan.setMode( KeyPairModeSelect );
-
-        if( keyPairMan.exec() != QDialog::Accepted )
-            return;
-
-        QString strPubPath = keyPairMan.getPubPath();
-
-        JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPub );
+        JS_BIN_copy( &binPub, &kid_pub_key_ );
     }
 
 
