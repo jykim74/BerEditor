@@ -75,11 +75,11 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     mTabXML->layout()->setSpacing(5);
     mTabXML->layout()->setMargin(5);
 
-    mTabPDF->layout()->setSpacing(5);
-    mTabPDF->layout()->setMargin(5);
+//    mTabPDF->layout()->setSpacing(5);
+//    mTabPDF->layout()->setMargin(5);
 
-    mTabDOC->layout()->setSpacing(5);
-    mTabDOC->layout()->setMargin(5);
+//    mTabDOC->layout()->setSpacing(5);
+//    mTabDOC->layout()->setMargin(5);
 #endif
 
 
@@ -302,7 +302,7 @@ void DocSignerDlg::clickXML_MakeSign()
     mXMLSignText->setPlainText( strSign );
 }
 
-#if 0
+#if 1
 int
 sign_file(const char* tmpl_file, const char* key_file) {
     xmlDocPtr doc = NULL;
@@ -375,7 +375,7 @@ done:
 void DocSignerDlg::clickXML_Encrypt()
 {
 
-#if 0
+#if 1
 
 #ifndef XMLSEC_NO_XSLT
     xsltSecurityPrefsPtr xsltSecPrefs = NULL;
