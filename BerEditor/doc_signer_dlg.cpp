@@ -75,11 +75,11 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     mTabXML->layout()->setSpacing(5);
     mTabXML->layout()->setMargin(5);
 
-//    mTabPDF->layout()->setSpacing(5);
-//    mTabPDF->layout()->setMargin(5);
+    mTabPDF->layout()->setSpacing(5);
+    mTabPDF->layout()->setMargin(5);
 
-//    mTabDOC->layout()->setSpacing(5);
-//    mTabDOC->layout()->setMargin(5);
+    mTabDOC->layout()->setSpacing(5);
+    mTabDOC->layout()->setMargin(5);
 #endif
 
 
