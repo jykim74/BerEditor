@@ -124,6 +124,16 @@ const QString ACMEObject::getSignatureJSON()
     }
 }
 
+const QJsonObject ACMEObject::getProtected()
+{
+    return json_[kNameProtected].toObject();
+}
+
+const QJsonObject ACMEObject::getPayload()
+{
+    return json_[kNamePayload].toObject();
+}
+
 const QString ACMEObject::getPayloadPacket()
 {
     BIN binData = {0,0};

@@ -29,6 +29,9 @@ public:
     const QString getPayloadJSON();
     const QString getSignatureJSON();
 
+    const QJsonObject getProtected();
+    const QJsonObject getPayload();
+
     const QString getPayloadPacket();
     const QString getProtectedPacket();
 

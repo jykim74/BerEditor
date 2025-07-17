@@ -644,6 +644,16 @@ void ACMEClientDlg::clickVerify()
         return;
     }
 
+    ACMEObject acmeObj;
+    acmeObj.setObjectFromJson( strRequest );
+    QJsonObject objProtected = acmeObj.getProtected();
+
+    if( objProtected["jwk"].isObject() == true )
+    {
+        JS_BIN_reset( &kid_pub_key_ );
+        ACMEObject::getPubKey( objProtected["jwk"].toObject(), &kid_pub_key_ );
+    }
+
     if( kid_pub_key_.nLen <= 0 )
     {
         if( mUseCertManCheck->isChecked() == true )
@@ -680,9 +690,6 @@ void ACMEClientDlg::clickVerify()
         JS_BIN_copy( &binPub, &kid_pub_key_ );
     }
 
-
-    ACMEObject acmeObj;
-    acmeObj.setObjectFromJson( strRequest );
 
     int ret = acmeObj.verifySignature( &binPub );
     if( ret == JSR_VERIFY )
