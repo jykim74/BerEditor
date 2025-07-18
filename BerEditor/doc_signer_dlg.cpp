@@ -294,10 +294,6 @@ void DocSignerDlg::changeJSON_JWS()
     mJSON_JWSLenText->setText( QString("%1").arg( strJWS.length() ));
 }
 
-
-
-
-
 void DocSignerDlg::clickXML_MakeSign()
 {
     int ret = 0;
@@ -334,9 +330,14 @@ void DocSignerDlg::clickXML_MakeSign()
     ret = JS_XML_signWithInfo( strSrcPath.toLocal8Bit().toStdString().c_str(),
                     &binPri,
                     strDstPath.toLocal8Bit().toStdString().c_str() );
+
     if( ret < 0 )
     {
-        goto end;
+        berApplet->warningBox( tr( "fail to make signature: %1").arg( ret ), this );
+    }
+    else
+    {
+        berApplet->messageBox( tr("XML Signature OK" ), this );
     }
 
 end :
@@ -382,11 +383,15 @@ void DocSignerDlg::clickXML_MakeSign2()
     ret = JS_XML_signDoc( strSrcPath.toLocal8Bit().toStdString().c_str(),
                               &binPri,
                               strDstPath.toLocal8Bit().toStdString().c_str() );
+
     if( ret < 0 )
     {
-        goto end;
+        berApplet->warningBox( tr( "fail to make signature: %1").arg( ret ), this );
     }
-
+    else
+    {
+        berApplet->messageBox( tr("XML Signature OK" ), this );
+    }
 
 end :
     JS_XML_final();
@@ -446,11 +451,15 @@ void DocSignerDlg::clickXML_Encrypt()
 
     if( ret < 0 )
     {
-        return;
+        berApplet->warningBox( tr( "fail to encrypt: %1").arg( ret ), this );
+    }
+    else
+    {
+        berApplet->messageBox( tr("XML Encrypt OK" ), this );
     }
 
-    JS_XML_final();
 end :
+    JS_XML_final();
     JS_BIN_reset( &binBody );
     JS_BIN_reset( &binKey );
 
@@ -496,11 +505,15 @@ void DocSignerDlg::clickXML_Encrypt2()
 
     if( ret < 0 )
     {
-        return;
+        berApplet->warningBox( tr( "fail to encrypt: %1").arg( ret ), this );
+    }
+    else
+    {
+        berApplet->messageBox( tr("XML Encrypt OK" ), this );
     }
 
-    JS_XML_final();
 end :
+    JS_XML_final();
     JS_BIN_reset( &binKey );
 
     return;
@@ -535,7 +548,11 @@ void DocSignerDlg::clickXML_VerifySign()
 
     if( ret < 0 )
     {
-        return;
+        berApplet->warningBox( tr( "fail to verify: %1").arg( ret ), this );
+    }
+    else
+    {
+        berApplet->messageBox( tr("XML Verify OK" ), this );
     }
 
 end :
@@ -584,13 +601,16 @@ void DocSignerDlg::clickXML_Decrypt()
 
     if( ret < 0 )
     {
-        return;
+        berApplet->warningBox( tr( "fail to decrypt: %1").arg( ret ), this );
+    }
+    else
+    {
+        berApplet->messageBox( tr("XML Decrypt OK" ), this );
     }
 
-    JS_XML_final();
 end :
+    JS_XML_final();
     JS_BIN_reset( &binKey );
-
 }
 
 void DocSignerDlg::changeXML_Body()
