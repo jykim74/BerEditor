@@ -351,6 +351,32 @@ void KeyListDlg::clickKeyView()
     return;
 }
 
+const QString KeyListDlg::getKey()
+{
+    QString strOut;
+
+    if( str_data_.length() > 0 )
+    {
+        QStringList listData = str_data_.split(":");
+        strOut = listData.at(0);
+    }
+
+    return strOut;
+}
+
+const QString KeyListDlg::getIV()
+{
+    QString strOut;
+
+    if( str_data_.length() > 0 )
+    {
+        QStringList listData = str_data_.split(":");
+        if( listData.size() > 1 ) strOut = listData.at(1);
+    }
+
+    return strOut;
+}
+
 void KeyListDlg::clickOK()
 {
     str_data_.clear();

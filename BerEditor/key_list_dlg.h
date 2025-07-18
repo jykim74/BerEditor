@@ -17,6 +17,8 @@ public:
     ~KeyListDlg();
     void setManage( bool bMan = true );
     const QString getData() { return str_data_; };
+    const QString getKey();
+    const QString getIV();
     void setTitle( const QString strTitle );
 
     static int getPlainKeyIV( const QString strData, QString& strKey, QString& strIV );
