@@ -1638,3 +1638,65 @@ const QString getMS( qint64 time )
 
     return strTime;
 }
+
+int writePriKeyPEM( const BIN *pPriKey, const QString strPath )
+{
+    int nKeyType = -1;
+    int nFileType = -1;
+
+    if( pPriKey == NULL ) return -1;
+
+    nKeyType = JS_PKI_getPriKeyType( pPriKey );
+    if( nKeyType < 0 ) return -2;
+
+    switch (nKeyType) {
+    case JS_PKI_KEY_TYPE_RSA:
+        nFileType = JS_PEM_TYPE_RSA_PRIVATE_KEY;
+        break;
+
+    case JS_PKI_KEY_TYPE_ECC:
+    case JS_PKI_KEY_TYPE_SM2:
+        nFileType = JS_PEM_TYPE_EC_PRIVATE_KEY;
+        break;
+
+    case JS_PKI_KEY_TYPE_DSA:
+        nFileType = JS_PEM_TYPE_DSA_PRIVATE_KEY;
+        break;
+    default:
+        nFileType = JS_PEM_TYPE_PRIVATE_KEY;
+        break;
+    }
+
+    return JS_BIN_writePEM( pPriKey, nFileType, strPath.toLocal8Bit().toStdString().c_str() );
+}
+
+int writePubKeyPEM( const BIN *pPubKey, const QString strPath )
+{
+    int nKeyType = -1;
+    int nFileType = -1;
+
+    if( pPubKey == NULL ) return -1;
+
+    nKeyType = JS_PKI_getPubKeyType( pPubKey );
+    if( nKeyType < 0 ) return -2;
+
+    switch (nKeyType) {
+    case JS_PKI_KEY_TYPE_RSA:
+        nFileType = JS_PEM_TYPE_RSA_PUBLIC_KEY;
+        break;
+
+    case JS_PKI_KEY_TYPE_ECC:
+    case JS_PKI_KEY_TYPE_SM2:
+        nFileType = JS_PEM_TYPE_EC_PUBLIC_KEY;
+        break;
+
+    case JS_PKI_KEY_TYPE_DSA:
+        nFileType = JS_PEM_TYPE_DSA_PUBLIC_KEY;
+        break;
+    default:
+        nFileType = JS_PEM_TYPE_PUBLIC_KEY;
+        break;
+    }
+
+    return JS_BIN_writePEM( pPubKey, nFileType, strPath.toLocal8Bit().toStdString().c_str() );
+}

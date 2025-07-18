@@ -494,8 +494,10 @@ void KeyPairManDlg::clickLGenKeyPair()
         JS_BIN_decodeHex( genKeyPair.getPriKeyHex().toStdString().c_str(), &binPri );
         JS_BIN_decodeHex( genKeyPair.getPubKeyHex().toStdString().c_str(), &binPub );
 
-        JS_BIN_writePEM( &binPri, JS_PEM_TYPE_PRIVATE_KEY, strPriPath.toLocal8Bit().toStdString().c_str() );
-        JS_BIN_writePEM( &binPub, JS_PEM_TYPE_PUBLIC_KEY, strPubPath.toLocal8Bit().toStdString().c_str() );
+//        JS_BIN_writePEM( &binPri, JS_PEM_TYPE_PRIVATE_KEY, strPriPath.toLocal8Bit().toStdString().c_str() );
+//        JS_BIN_writePEM( &binPub, JS_PEM_TYPE_PUBLIC_KEY, strPubPath.toLocal8Bit().toStdString().c_str() );
+        writePriKeyPEM( &binPri, strPriPath );
+        writePubKeyPEM( &binPub, strPubPath );
 
         JS_BIN_reset( &binPri );
         JS_BIN_reset( &binPub );

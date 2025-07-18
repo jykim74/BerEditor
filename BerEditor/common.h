@@ -271,4 +271,7 @@ int getDigestLength( const QString strHash );
 
 const QString getMS( qint64 time );
 
+int writePriKeyPEM( const BIN *pPriKey, const QString strPath );
+int writePubKeyPEM( const BIN *pPubKey, const QString strPath );
+
 #endif // COMMON_H
