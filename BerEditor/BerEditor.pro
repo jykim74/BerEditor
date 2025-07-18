@@ -263,11 +263,9 @@ linux {
 win32 {
     DEFINES += _AUTO_UPDATE
     RC_ICONS = bereditor.ico
-    INCLUDEPATH += "../../lib/win32/winsparkle/include"
-    INCLUDEPATH += "C:/msys64/mingw32/include"
 
     message( "64bit" );
-    INCLUDEPATH += "../../PKILib/lib/win64/winsparkle/include"
+    INCLUDEPATH += "../../lib/win64/winsparkle/include"
     INCLUDEPATH += "C:/msys64/mingw64/include"
     INCLUDEPATH += "../../lib/win64/xmlsec1/libxml2/include/libxml2"
     INCLUDEPATH += "../../lib/win64/xmlsec1/libxslt/include"
@@ -287,6 +285,8 @@ win32 {
     LIBS += -L"../../lib/win64 -lltdl -lldap -llber"
     LIBS += -L"../../lib/win64/winsparkle/lib -lWinSparkle"
     LIBS += -lws2_32
+
+
 }
 
 FORMS += \

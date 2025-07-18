@@ -3,6 +3,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QXmlStreamReader>
+#include <QFileInfo>
 
 #include <libxml/tree.h>
 #include <libxml/xmlmemory.h>
@@ -105,12 +106,25 @@ void DocSignerDlg::findSrcPath()
     if( strFileName.length() < 1 ) return;
 
     mSrcPathText->setText( strFileName );
+
+    if( mDstPathText->text().length() < 1 )
+    {
+        QFileInfo fileInfo( strFileName );
+        QString strDstPath;
+
+        strDstPath = QString( "%1/%2_dst.%3" )
+                         .arg( fileInfo.path() )
+                         .arg( fileInfo.baseName() )
+                         .arg( fileInfo.suffix() );
+
+        mDstPathText->setText( strDstPath );
+    }
 }
 
 void DocSignerDlg::findDstPath()
 {
     QString strPath = mDstPathText->text();
-    QString strFileName = berApplet->findFile( this, JS_FILE_TYPE_BIN, strPath );
+    QString strFileName = berApplet->findSaveFile( this, JS_FILE_TYPE_BIN, strPath );
 
     if( strFileName.length() < 1 ) return;
 
@@ -303,12 +317,13 @@ void DocSignerDlg::clickXML_MakeSign()
 }
 
 #if 1
-int
-sign_file(const char* tmpl_file, const char* key_file) {
+int sign_file(const char* tmpl_file, const char* key_file, const char* dst_file)
+{
     xmlDocPtr doc = NULL;
     xmlNodePtr node = NULL;
     xmlSecDSigCtxPtr dsigCtx = NULL;
     int res = -1;
+    FILE *pOut = NULL;
 
     assert(tmpl_file);
     assert(key_file);
@@ -353,8 +368,13 @@ sign_file(const char* tmpl_file, const char* key_file) {
         goto done;
     }
 
+    pOut = fopen( dst_file, "w+" );
     /* print signed document to stdout */
-    xmlDocDump(stdout, doc);
+    if( pOut )
+    {
+        xmlDocDump(pOut, doc);
+        fclose( pOut );
+    }
 
     /* success */
     res = 0;
@@ -374,8 +394,33 @@ done:
 
 void DocSignerDlg::clickXML_Encrypt()
 {
+    int ret = 0;
 
-#if 1
+    QString strSrcPath = mSrcPathText->text();
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a source xml" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    QString strDstPath = mDstPathText->text();
+    if( strDstPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a destination xml" ), this );
+        mDstPathText->setFocus();
+        return;
+    }
+
+    KeyPairManDlg keyPairMan;
+    keyPairMan.setTitle( tr( "Select keypair" ));
+    keyPairMan.setMode( KeyPairModeSelect );
+
+    if( keyPairMan.exec() != QDialog::Accepted )
+        return;
+
+    QString strPriPath = keyPairMan.getPriPath();
+
 
 #ifndef XMLSEC_NO_XSLT
     xsltSecurityPrefsPtr xsltSecPrefs = NULL;
@@ -414,20 +459,6 @@ void DocSignerDlg::clickXML_Encrypt()
         return;
     }
 
-    /* Load default crypto engine if we are supporting dynamic
-     * loading for xmlsec-crypto libraries. Use the crypto library
-     * name ("openssl", "nss", etc.) to load corresponding
-     * xmlsec-crypto library.
-     */
-#ifdef XMLSEC_CRYPTO_DYNAMIC_LOADING
-    if(xmlSecCryptoDLLoadLibrary(NULL) < 0) {
-        fprintf(stderr, "Error: unable to load default xmlsec-crypto library. Make sure\n"
-                        "that you have it installed and check shared libraries path\n"
-                        "(LD_LIBRARY_PATH and/or LTDL_LIBRARY_PATH) environment variables.\n");
-        return(-1);
-    }
-#endif /* XMLSEC_CRYPTO_DYNAMIC_LOADING */
-
 
     /* Init crypto library */
     if(xmlSecOpenSSLAppInit(NULL) < 0) {
@@ -441,7 +472,11 @@ void DocSignerDlg::clickXML_Encrypt()
         return;
     }
 
-    if(sign_file( "temp_file.xml", "temp_file.key") < 0) {
+    ret = sign_file( strSrcPath.toLocal8Bit().toStdString().c_str(),
+                    strPriPath.toLocal8Bit().toStdString().c_str(),
+                    strDstPath.toLocal8Bit().toStdString().c_str() );
+    if( ret < 0 )
+    {
         return;
     }
 
@@ -463,8 +498,6 @@ void DocSignerDlg::clickXML_Encrypt()
     xmlCleanupParser();
 
     return;
-#endif
-
 }
 
 void DocSignerDlg::clickXML_VerifySign()
