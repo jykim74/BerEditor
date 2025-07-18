@@ -5,22 +5,6 @@
 #include <QXmlStreamReader>
 #include <QFileInfo>
 
-#include <libxml/tree.h>
-#include <libxml/xmlmemory.h>
-#include <libxml/parser.h>
-
-#ifndef XMLSEC_NO_XSLT
-#include <libxslt/xslt.h>
-#include <libxslt/security.h>
-#endif /* XMLSEC_NO_XSLT */
-
-#include <xmlsec/xmlsec.h>
-#include <xmlsec/xmltree.h>
-#include <xmlsec/xmldsig.h>
-#include <xmlsec/openssl/app.h>
-#include <xmlsec/openssl/crypto.h>
-
-
 #include "doc_signer_dlg.h"
 #include "ber_applet.h"
 #include "mainwindow.h"
@@ -29,10 +13,12 @@
 #include "acme_object.h"
 #include "cert_man_dlg.h"
 #include "key_pair_man_dlg.h"
+#include "key_list_dlg.h"
 
 #include "js_pki.h"
 #include "js_pki_key.h"
 #include "js_error.h"
+#include "js_pki_xml.h"
 
 DocSignerDlg::DocSignerDlg(QWidget *parent)
     : QDialog(parent)
@@ -56,7 +42,9 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mJSON_JWSViewBtn, SIGNAL(clicked()), this, SLOT(clickJSON_JWSView()));
 
     connect( mXMLMakeSignBtn, SIGNAL(clicked()), this, SLOT(clickXML_MakeSign()));
+    connect( mXMLMakeSign2Btn, SIGNAL(clicked()), this, SLOT(clickXML_MakeSign2()));
     connect( mXMLEncryptBtn, SIGNAL(clicked()), this, SLOT(clickXML_Encrypt()));
+    connect( mXMLEncrypt2Btn, SIGNAL(clicked()), this, SLOT(clickXML_Encrypt2()));
     connect( mXMLVerifySignBtn, SIGNAL(clicked()), this, SLOT(clickXML_VerifySign()));
     connect( mXMLDecryptBtn, SIGNAL(clicked()), this, SLOT(clickXML_Decrypt()));
 
@@ -101,7 +89,7 @@ void DocSignerDlg::clickClearAll()
 void DocSignerDlg::findSrcPath()
 {
     QString strPath = mSrcPathText->text();
-    QString strFileName = berApplet->findFile( this, JS_FILE_TYPE_BIN, strPath );
+    QString strFileName = berApplet->findFile( this, JS_FILE_TYPE_XML, strPath );
 
     if( strFileName.length() < 1 ) return;
 
@@ -124,7 +112,7 @@ void DocSignerDlg::findSrcPath()
 void DocSignerDlg::findDstPath()
 {
     QString strPath = mDstPathText->text();
-    QString strFileName = berApplet->findSaveFile( this, JS_FILE_TYPE_BIN, strPath );
+    QString strFileName = berApplet->findSaveFile( this, JS_FILE_TYPE_XML, strPath );
 
     if( strFileName.length() < 1 ) return;
 
@@ -133,7 +121,7 @@ void DocSignerDlg::findDstPath()
 
 void DocSignerDlg::initUI()
 {
-    mHashCombo->addItems( kHashList );
+    mHashCombo->addItems( kSHAHashList );
     mTabSigner->setCurrentIndex(0);
 }
 
@@ -306,93 +294,11 @@ void DocSignerDlg::changeJSON_JWS()
     mJSON_JWSLenText->setText( QString("%1").arg( strJWS.length() ));
 }
 
+
+
+
+
 void DocSignerDlg::clickXML_MakeSign()
-{
-    QString strBody = mXMLBodyText->toPlainText();
-
-    xml_.addData( strBody );
-
-    QString strSign = xml_.text().toString();
-    mXMLSignText->setPlainText( strSign );
-}
-
-#if 1
-int sign_file(const char* tmpl_file, const char* key_file, const char* dst_file)
-{
-    xmlDocPtr doc = NULL;
-    xmlNodePtr node = NULL;
-    xmlSecDSigCtxPtr dsigCtx = NULL;
-    int res = -1;
-    FILE *pOut = NULL;
-
-    assert(tmpl_file);
-    assert(key_file);
-
-    /* load template */
-    doc = xmlReadFile(tmpl_file, NULL, XML_PARSE_PEDANTIC | XML_PARSE_NONET);
-    if ((doc == NULL) || (xmlDocGetRootElement(doc) == NULL)){
-        fprintf(stderr, "Error: unable to parse file \"%s\"\n", tmpl_file);
-        goto done;
-    }
-
-    /* find start node */
-    node = xmlSecFindNode(xmlDocGetRootElement(doc), xmlSecNodeSignature, xmlSecDSigNs);
-    if(node == NULL) {
-        fprintf(stderr, "Error: start node not found in \"%s\"\n", tmpl_file);
-        goto done;
-    }
-
-    /* create signature context, we don't need keys manager in this example */
-    dsigCtx = xmlSecDSigCtxCreate(NULL);
-    if(dsigCtx == NULL) {
-        fprintf(stderr,"Error: failed to create signature context\n");
-        goto done;
-    }
-
-    /* load private key, assuming that there is not password */
-    dsigCtx->signKey = xmlSecOpenSSLAppKeyLoadEx(key_file, xmlSecKeyDataTypePrivate, xmlSecKeyDataFormatPem, NULL, NULL, NULL);
-    if(dsigCtx->signKey == NULL) {
-        fprintf(stderr,"Error: failed to load private pem key from \"%s\"\n", key_file);
-        goto done;
-    }
-
-    /* set key name to the file name, this is just an example! */
-    if(xmlSecKeySetName(dsigCtx->signKey, BAD_CAST key_file) < 0) {
-        fprintf(stderr,"Error: failed to set key name for key from \"%s\"\n", key_file);
-        goto done;
-    }
-
-    /* sign the template */
-    if(xmlSecDSigCtxSign(dsigCtx, node) < 0) {
-        fprintf(stderr,"Error: signature failed\n");
-        goto done;
-    }
-
-    pOut = fopen( dst_file, "w+" );
-    /* print signed document to stdout */
-    if( pOut )
-    {
-        xmlDocDump(pOut, doc);
-        fclose( pOut );
-    }
-
-    /* success */
-    res = 0;
-
-done:
-    /* cleanup */
-    if(dsigCtx != NULL) {
-        xmlSecDSigCtxDestroy(dsigCtx);
-    }
-
-    if(doc != NULL) {
-        xmlFreeDoc(doc);
-    }
-    return(res);
-}
-#endif
-
-void DocSignerDlg::clickXML_Encrypt()
 {
     int ret = 0;
 
@@ -422,57 +328,9 @@ void DocSignerDlg::clickXML_Encrypt()
     QString strPriPath = keyPairMan.getPriPath();
 
 
-#ifndef XMLSEC_NO_XSLT
-    xsltSecurityPrefsPtr xsltSecPrefs = NULL;
-#endif /* XMLSEC_NO_XSLT */
+    JS_XML_init();
 
-    /* Init libxml and libxslt libraries */
-    xmlInitParser();
-    LIBXML_TEST_VERSION
-        xmlLoadExtDtdDefaultValue = XML_DETECT_IDS | XML_COMPLETE_ATTRS;
-    xmlSubstituteEntitiesDefault(1);
-#ifndef XMLSEC_NO_XSLT
-    xmlIndentTreeOutput = 1;
-#endif /* XMLSEC_NO_XSLT */
-
-    /* Init libxslt */
-#ifndef XMLSEC_NO_XSLT
-    /* disable everything */
-    xsltSecPrefs = xsltNewSecurityPrefs();
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_FILE,        xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_FILE,       xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_CREATE_DIRECTORY, xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_READ_NETWORK,     xsltSecurityForbid);
-    xsltSetSecurityPrefs(xsltSecPrefs,  XSLT_SECPREF_WRITE_NETWORK,    xsltSecurityForbid);
-    xsltSetDefaultSecurityPrefs(xsltSecPrefs);
-#endif /* XMLSEC_NO_XSLT */
-
-    /* Init xmlsec library */
-    if(xmlSecInit() < 0) {
-        fprintf(stderr, "Error: xmlsec initialization failed.\n");
-        return;
-    }
-
-    /* Check loaded library version */
-    if(xmlSecCheckVersion() != 1) {
-        fprintf(stderr, "Error: loaded xmlsec library version is not compatible.\n");
-        return;
-    }
-
-
-    /* Init crypto library */
-    if(xmlSecOpenSSLAppInit(NULL) < 0) {
-        fprintf(stderr, "Error: crypto initialization failed.\n");
-        return;
-    }
-
-    /* Init xmlsec-crypto library */
-    if(xmlSecOpenSSLInit() < 0) {
-        fprintf(stderr, "Error: xmlsec-crypto initialization failed.\n");
-        return;
-    }
-
-    ret = sign_file( strSrcPath.toLocal8Bit().toStdString().c_str(),
+    ret = JS_XML_signWithInfo( strSrcPath.toLocal8Bit().toStdString().c_str(),
                     strPriPath.toLocal8Bit().toStdString().c_str(),
                     strDstPath.toLocal8Bit().toStdString().c_str() );
     if( ret < 0 )
@@ -480,33 +338,259 @@ void DocSignerDlg::clickXML_Encrypt()
         return;
     }
 
+    JS_XML_final();
 
-    /* Shutdown xmlsec-crypto library */
-    xmlSecOpenSSLShutdown();
 
-    /* Shutdown crypto library */
-    xmlSecOpenSSLAppShutdown();
+    return;
+}
 
-    /* Shutdown xmlsec library */
-    xmlSecShutdown();
+void DocSignerDlg::clickXML_MakeSign2()
+{
+    int ret = 0;
 
-    /* Shutdown libxslt/libxml */
-#ifndef XMLSEC_NO_XSLT
-    xsltFreeSecurityPrefs(xsltSecPrefs);
-    xsltCleanupGlobals();
-#endif /* XMLSEC_NO_XSLT */
-    xmlCleanupParser();
+    QString strSrcPath = mSrcPathText->text();
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a source xml" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    QString strDstPath = mDstPathText->text();
+    if( strDstPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a destination xml" ), this );
+        mDstPathText->setFocus();
+        return;
+    }
+
+    KeyPairManDlg keyPairMan;
+    keyPairMan.setTitle( tr( "Select keypair" ));
+    keyPairMan.setMode( KeyPairModeSelect );
+
+    if( keyPairMan.exec() != QDialog::Accepted )
+        return;
+
+    QString strPriPath = keyPairMan.getPriPath();
+
+
+    JS_XML_init();
+
+    ret = JS_XML_signDoc( strSrcPath.toLocal8Bit().toStdString().c_str(),
+                              strPriPath.toLocal8Bit().toStdString().c_str(),
+                              strDstPath.toLocal8Bit().toStdString().c_str() );
+    if( ret < 0 )
+    {
+        return;
+    }
+
+    JS_XML_final();
+
+
+    return;
+}
+
+void DocSignerDlg::clickXML_Encrypt()
+{
+    int ret = 0;
+    BIN binBody = {0,0};
+    BIN binKey = {0,0};
+
+    QString strSrcPath = mSrcPathText->text();
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a source xml" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    QString strDstPath = mDstPathText->text();
+    if( strDstPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a destination xml" ), this );
+        mDstPathText->setFocus();
+        return;
+    }
+
+    QString strBody = mXMLBodyText->toPlainText();
+    if( strBody.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a body" ), this );
+        mXMLBodyText->setFocus();
+        return;
+    }
+
+    getBINFromString( &binBody, DATA_STRING, strBody );
+
+    KeyListDlg keyList;
+    keyList.setTitle( tr( "Select keypair" ));
+
+    if( keyList.exec() != QDialog::Accepted )
+        return;
+
+    QString strData = keyList.getData();
+    QStringList keyIV = strData.split(":");
+    if( keyIV.size() < 1 ) goto end;
+
+    JS_BIN_decodeHex( keyIV.at(0).toStdString().c_str(), &binKey );
+
+    JS_XML_init();
+
+    ret = JS_XML_encryptWithInfo(
+        strSrcPath.toLocal8Bit().toStdString().c_str(),
+        &binKey,
+        &binBody,
+        strDstPath.toLocal8Bit().toStdString().c_str() );
+
+    if( ret < 0 )
+    {
+        return;
+    }
+
+    JS_XML_final();
+end :
+    JS_BIN_reset( &binBody );
+    JS_BIN_reset( &binKey );
+
+    return;
+}
+
+void DocSignerDlg::clickXML_Encrypt2()
+{
+    int ret = 0;
+    BIN binKey = {0,0};
+
+    QString strSrcPath = mSrcPathText->text();
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a source xml" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    QString strDstPath = mDstPathText->text();
+    if( strDstPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a destination xml" ), this );
+        mDstPathText->setFocus();
+        return;
+    }
+
+    KeyListDlg keyList;
+    keyList.setTitle( tr( "Select keypair" ));
+
+    if( keyList.exec() != QDialog::Accepted )
+        return;
+
+    QString strData = keyList.getData();
+    QStringList keyIV = strData.split(":");
+    if( keyIV.size() < 1 ) goto end;
+
+    JS_BIN_decodeHex( keyIV.at(0).toStdString().c_str(), &binKey );
+
+    JS_XML_init();
+
+    ret = JS_XML_encrypt(
+        strSrcPath.toLocal8Bit().toStdString().c_str(),
+        &binKey,
+        strDstPath.toLocal8Bit().toStdString().c_str() );
+
+    if( ret < 0 )
+    {
+        return;
+    }
+
+    JS_XML_final();
+end :
+    JS_BIN_reset( &binKey );
 
     return;
 }
 
 void DocSignerDlg::clickXML_VerifySign()
 {
+    int ret = 0;
 
+    QString strSrcPath = mSrcPathText->text();
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a source xml" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    KeyPairManDlg keyPairMan;
+    keyPairMan.setTitle( tr( "Select keypair" ));
+    keyPairMan.setMode( KeyPairModeSelect );
+
+    if( keyPairMan.exec() != QDialog::Accepted )
+        return;
+
+    QString strPubPath = keyPairMan.getPubPath();
+
+    JS_XML_init();
+
+    ret = JS_XML_verify( strSrcPath.toLocal8Bit().toStdString().c_str(),
+                        strPubPath.toLocal8Bit().toStdString().c_str() );
+
+    if( ret < 0 )
+    {
+        return;
+    }
+
+    JS_XML_final();
+
+    return;
 }
 
 void DocSignerDlg::clickXML_Decrypt()
 {
+    int ret = 0;
+    BIN binKey = {0,0};
+
+    QString strSrcPath = mSrcPathText->text();
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a source xml" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    QString strDstPath = mDstPathText->text();
+    if( strDstPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a destination xml" ), this );
+        mDstPathText->setFocus();
+        return;
+    }
+
+    KeyListDlg keyList;
+    keyList.setTitle( tr( "Select keypair" ));
+
+    if( keyList.exec() != QDialog::Accepted )
+        return;
+
+    QString strData = keyList.getData();
+    QStringList keyIV = strData.split(":");
+    if( keyIV.size() < 1 ) goto end;
+
+    JS_BIN_decodeHex( keyIV.at(0).toStdString().c_str(), &binKey );
+
+    JS_XML_init();
+
+    ret = JS_XML_decrypt(
+        strSrcPath.toLocal8Bit().toStdString().c_str(),
+        &binKey,
+        strDstPath.toLocal8Bit().toStdString().c_str() );
+
+    if( ret < 0 )
+    {
+        return;
+    }
+
+    JS_XML_final();
+end :
+    JS_BIN_reset( &binKey );
 
 }
 

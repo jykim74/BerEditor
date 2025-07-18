@@ -35,7 +35,9 @@ private slots:
     void changeJSON_JWS();
 
     void clickXML_MakeSign();
+    void clickXML_MakeSign2();
     void clickXML_Encrypt();
+    void clickXML_Encrypt2();
     void clickXML_VerifySign();
     void clickXML_Decrypt();
 

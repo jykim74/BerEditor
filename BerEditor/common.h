@@ -42,6 +42,7 @@ enum {
     JS_FILE_TYPE_BIN,
     JS_FILE_TYPE_LCN,
     JS_FILE_TYPE_JSON,
+    JS_FILE_TYPE_XML,
     JS_FILE_TYPE_PKCS7,
     JS_FILE_TYPE_PKCS8,
     JS_FILE_TYPE_PRIKEY_PKCS8_PFX,
@@ -180,6 +181,14 @@ static QStringList kHashList = {
     "SHA384",
     "SHA512",
     "SM3"
+};
+
+static QStringList kSHAHashList = {
+    "SHA1",
+    "SHA224",
+    "SHA256",
+    "SHA384",
+    "SHA512",
 };
 
 

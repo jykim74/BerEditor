@@ -220,6 +220,8 @@ add_executable(${PROJECT_NAME}
     one_list_dlg.h one_list_dlg.cpp one_list_dlg.ui
     two_list_dlg.h two_list_dlg.cpp two_list_dlg.ui
     doc_signer_dlg.h doc_signer_dlg.cpp doc_signer_dlg.ui
+    js_pki_xml.h
+    js_pki_xml.cpp
 
 )
 

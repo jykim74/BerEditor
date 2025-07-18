@@ -475,6 +475,10 @@ static const QString _getFileExt( int nType )
     {
         strExt = "json";
     }
+    else if( nType == JS_FILE_TYPE_XML )
+    {
+        strExt = "xml";
+    }
     else if( nType == JS_FILE_TYPE_LCN )
     {
         strExt = "lcn";
@@ -554,6 +558,11 @@ static const QString _getFileFilter( int nType, QString& strFileType )
     {
         strFileType = QObject::tr("JSON Files");
         strFilter = QString("%1 (*.json *.txt)" ).arg( strFileType );
+    }
+    else if( nType == JS_FILE_TYPE_XML )
+    {
+        strFileType = QObject::tr("XML Files");
+        strFilter = QString("%1 (*.xml *.txt)" ).arg( strFileType );
     }
     else if( nType == JS_FILE_TYPE_LCN )
     {
