@@ -267,9 +267,6 @@ win32 {
     message( "64bit" );
     INCLUDEPATH += "../../lib/win64/winsparkle/include"
     INCLUDEPATH += "C:/msys64/mingw64/include"
-    INCLUDEPATH += "../../lib/win64/xmlsec1/libxml2/include/libxml2"
-    INCLUDEPATH += "../../lib/win64/xmlsec1/libxslt/include"
-    INCLUDEPATH += "../../lib/win64/xmlsec1/xmlsec/include"
 
     Debug {
         LIBS += -L"../../PKILib/build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug -lPKILib"

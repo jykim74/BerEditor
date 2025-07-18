@@ -420,19 +420,16 @@ void DocSignerDlg::clickXML_Encrypt()
         return;
     }
 
-    getBINFromString( &binBody, DATA_STRING, strBody );
-
     KeyListDlg keyList;
-    keyList.setTitle( tr( "Select keypair" ));
+    keyList.setTitle( tr( "Select key" ));
 
     if( keyList.exec() != QDialog::Accepted )
         return;
 
-    QString strData = keyList.getData();
-    QStringList keyIV = strData.split(":");
-    if( keyIV.size() < 1 ) goto end;
+    QString strKey = keyList.getKey();
+    JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey );
 
-    JS_BIN_decodeHex( keyIV.at(0).toStdString().c_str(), &binKey );
+    getBINFromString( &binBody, DATA_STRING, strBody );
 
     JS_XML_init();
 
@@ -477,16 +474,13 @@ void DocSignerDlg::clickXML_Encrypt2()
     }
 
     KeyListDlg keyList;
-    keyList.setTitle( tr( "Select keypair" ));
+    keyList.setTitle( tr( "Select key" ));
 
     if( keyList.exec() != QDialog::Accepted )
         return;
 
-    QString strData = keyList.getData();
-    QStringList keyIV = strData.split(":");
-    if( keyIV.size() < 1 ) goto end;
-
-    JS_BIN_decodeHex( keyIV.at(0).toStdString().c_str(), &binKey );
+    QString strKey = keyList.getKey();
+    JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey );
 
     JS_XML_init();
 
@@ -565,16 +559,13 @@ void DocSignerDlg::clickXML_Decrypt()
     }
 
     KeyListDlg keyList;
-    keyList.setTitle( tr( "Select keypair" ));
+    keyList.setTitle( tr( "Select key" ));
 
     if( keyList.exec() != QDialog::Accepted )
         return;
 
-    QString strData = keyList.getData();
-    QStringList keyIV = strData.split(":");
-    if( keyIV.size() < 1 ) goto end;
-
-    JS_BIN_decodeHex( keyIV.at(0).toStdString().c_str(), &binKey );
+    QString strKey = keyList.getKey();
+    JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey );
 
     JS_XML_init();
 

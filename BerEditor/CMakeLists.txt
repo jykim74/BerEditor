@@ -220,8 +220,8 @@ add_executable(${PROJECT_NAME}
     one_list_dlg.h one_list_dlg.cpp one_list_dlg.ui
     two_list_dlg.h two_list_dlg.cpp two_list_dlg.ui
     doc_signer_dlg.h doc_signer_dlg.cpp doc_signer_dlg.ui
-    js_pki_xml.h
-    js_pki_xml.cpp
+
+
 
 )
 
@@ -234,9 +234,6 @@ if(WIN32)
     include_directories( ../../PKILib
         "c:/msys64/mingw64/include"
         ../../lib/win64/winsparkle/include
-        ../../lib/win64/xmlsec1/libxml2/include/libxml2
-        ../../lib/win64/xmlsec1/libxslt/include
-        ../../lib/win64/xmlsec1/xmlsec/include
     )
 
     message( STATUS ${CMAKE_BUILD_TYPE} )
@@ -290,7 +287,6 @@ elseif(APPLE)
 
     include_directories( ../../PKILib
         ../../lib/mac/openssl3/include
-        /usr/local/include/xmlsec1
         /usr/local/include )
 
     if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
