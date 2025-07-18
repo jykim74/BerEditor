@@ -635,6 +635,8 @@ end :
 
     JS_BIN_reset( &binFingerA );
     JS_BIN_reset( &binFingerB );
+
+    return 0;
 }
 
 int X509CompareDlg::compareCRL()
@@ -844,6 +846,8 @@ end :
 
     JS_BIN_reset( &binFingerA );
     JS_BIN_reset( &binFingerB );
+
+    return 0;
 }
 
 int X509CompareDlg::compareCSR()
@@ -1077,6 +1081,8 @@ end :
 
     JS_BIN_reset( &binFingerA );
     JS_BIN_reset( &binFingerB );
+
+    return 0;
 }
 
 void X509CompareDlg::clickCompare()
