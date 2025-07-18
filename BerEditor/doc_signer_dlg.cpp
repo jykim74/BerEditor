@@ -83,7 +83,12 @@ DocSignerDlg::~DocSignerDlg()
 
 void DocSignerDlg::clickClearAll()
 {
-
+    mSrcPathText->clear();
+    mDstPathText->clear();
+    mJSONPayloadText->clear();
+    mJSON_JWSText->clear();
+    mXMLBodyText->clear();
+    mXMLSignText->clear();
 }
 
 void DocSignerDlg::findSrcPath()
@@ -546,13 +551,13 @@ void DocSignerDlg::clickXML_VerifySign()
 
     ret = JS_XML_verify( strSrcPath.toLocal8Bit().toStdString().c_str(), &binPub );
 
-    if( ret < 0 )
+    if( ret == JSR_VERIFY )
     {
-        berApplet->warningBox( tr( "fail to verify: %1").arg( ret ), this );
+        berApplet->messageBox( tr("XML Verify OK" ), this );
     }
     else
     {
-        berApplet->messageBox( tr("XML Verify OK" ), this );
+        berApplet->warningBox( tr( "fail to verify: %1").arg( ret ), this );
     }
 
 end :
