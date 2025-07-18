@@ -301,6 +301,7 @@ void DocSignerDlg::changeJSON_JWS()
 void DocSignerDlg::clickXML_MakeSign()
 {
     int ret = 0;
+    BIN binPri = {0,0};
 
     QString strSrcPath = mSrcPathText->text();
     if( strSrcPath.length() < 1 )
@@ -326,20 +327,21 @@ void DocSignerDlg::clickXML_MakeSign()
         return;
 
     QString strPriPath = keyPairMan.getPriPath();
-
+    JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
 
     JS_XML_init();
 
     ret = JS_XML_signWithInfo( strSrcPath.toLocal8Bit().toStdString().c_str(),
-                    strPriPath.toLocal8Bit().toStdString().c_str(),
+                    &binPri,
                     strDstPath.toLocal8Bit().toStdString().c_str() );
     if( ret < 0 )
     {
-        return;
+        goto end;
     }
 
+end :
     JS_XML_final();
-
+    JS_BIN_reset( &binPri );
 
     return;
 }
@@ -347,6 +349,7 @@ void DocSignerDlg::clickXML_MakeSign()
 void DocSignerDlg::clickXML_MakeSign2()
 {
     int ret = 0;
+    BIN binPri = {0,0};
 
     QString strSrcPath = mSrcPathText->text();
     if( strSrcPath.length() < 1 )
@@ -373,19 +376,21 @@ void DocSignerDlg::clickXML_MakeSign2()
 
     QString strPriPath = keyPairMan.getPriPath();
 
-
+    JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
     JS_XML_init();
 
     ret = JS_XML_signDoc( strSrcPath.toLocal8Bit().toStdString().c_str(),
-                              strPriPath.toLocal8Bit().toStdString().c_str(),
+                              &binPri,
                               strDstPath.toLocal8Bit().toStdString().c_str() );
     if( ret < 0 )
     {
-        return;
+        goto end;
     }
 
-    JS_XML_final();
 
+end :
+    JS_XML_final();
+    JS_BIN_reset( &binPri );
 
     return;
 }
@@ -504,6 +509,7 @@ end :
 void DocSignerDlg::clickXML_VerifySign()
 {
     int ret = 0;
+    BIN binPub = {0,0};
 
     QString strSrcPath = mSrcPathText->text();
     if( strSrcPath.length() < 1 )
@@ -521,18 +527,20 @@ void DocSignerDlg::clickXML_VerifySign()
         return;
 
     QString strPubPath = keyPairMan.getPubPath();
+    JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPub );
 
     JS_XML_init();
 
-    ret = JS_XML_verify( strSrcPath.toLocal8Bit().toStdString().c_str(),
-                        strPubPath.toLocal8Bit().toStdString().c_str() );
+    ret = JS_XML_verify( strSrcPath.toLocal8Bit().toStdString().c_str(), &binPub );
 
     if( ret < 0 )
     {
         return;
     }
 
+end :
     JS_XML_final();
+    JS_BIN_reset( &binPub );
 
     return;
 }
