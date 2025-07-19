@@ -83,7 +83,7 @@ void KeyListDlg::initialize()
     mSavePathText->setText( strPath );
     mKeyTypeCombo->addItems( kTypeList );
 
-    QStringList sTableLabels = { tr( "Name" ), tr( "Algorithm"), tr( "IV Len"), tr( "LastModified") };
+    QStringList sTableLabels = { tr( "Name" ), tr( "Algorithm"), tr("Len"), tr( "IV"), tr( "LastModified") };
 
     mKeyTable->clear();
     mKeyTable->horizontalHeader()->setStretchLastSection(true);
@@ -95,7 +95,7 @@ void KeyListDlg::initialize()
     mKeyTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     mKeyTable->setColumnWidth( 0, nWidth * 5/10 );
     mKeyTable->setColumnWidth( 1, nWidth * 2/10 );
-    mKeyTable->setColumnWidth( 2, nWidth * 2/10 );
+    mKeyTable->setColumnWidth( 3, 30 );
 }
 
 void KeyListDlg::showEvent(QShowEvent *event)
@@ -243,8 +243,9 @@ void KeyListDlg::loadKeyList()
 
         mKeyTable->setItem( row, 0, item );
         mKeyTable->setItem( row, 1, new QTableWidgetItem(QString("%1").arg( strAlg)));
-        mKeyTable->setItem( row, 2, new QTableWidgetItem(QString("%1 Bytes").arg( strIV.length() / 2 )));
-        mKeyTable->setItem( row, 3, new QTableWidgetItem(QString("%1").arg( date.toString("yy-MM-dd hh:mm") )));
+        mKeyTable->setItem( row, 2, new QTableWidgetItem(QString("%1 Bytes").arg( strKey.length() / 2 )));
+        mKeyTable->setItem( row, 3, new QTableWidgetItem(QString("%1").arg( strIV.length() > 0 ? "Y" : "N" )));
+        mKeyTable->setItem( row, 4, new QTableWidgetItem(QString("%1").arg( date.toString("yy-MM-dd hh:mm") )));
     }
 }
 
