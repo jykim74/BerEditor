@@ -437,6 +437,7 @@ void DocSignerDlg::clickXML_Encrypt()
 
     KeyListDlg keyList;
     keyList.setTitle( tr( "Select key" ));
+    keyList.setManage(false);
 
     if( keyList.exec() != QDialog::Accepted )
         return;
@@ -494,6 +495,7 @@ void DocSignerDlg::clickXML_Encrypt2()
 
     KeyListDlg keyList;
     keyList.setTitle( tr( "Select key" ));
+    keyList.setManage(false);
 
     if( keyList.exec() != QDialog::Accepted )
         return;
@@ -590,6 +592,7 @@ void DocSignerDlg::clickXML_Decrypt()
 
     KeyListDlg keyList;
     keyList.setTitle( tr( "Select key" ));
+    keyList.setManage(false);
 
     if( keyList.exec() != QDialog::Accepted )
         return;
