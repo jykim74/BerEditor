@@ -449,6 +449,7 @@ void DocSignerDlg::clickXML_Encrypt()
         return;
 
     QString strKey = keyList.getKey();
+
     JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey );
 
     getBINFromString( &binBody, DATA_STRING, strBody );
@@ -507,6 +508,7 @@ void DocSignerDlg::clickXML_Encrypt2()
         return;
 
     QString strKey = keyList.getKey();
+
     JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey );
 
     JS_XML_init();
@@ -604,6 +606,7 @@ void DocSignerDlg::clickXML_Decrypt()
         return;
 
     QString strKey = keyList.getKey();
+
     JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey );
 
     JS_XML_init();
