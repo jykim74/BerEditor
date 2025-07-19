@@ -20,6 +20,7 @@
 #include "js_error.h"
 #include "js_pki_xml.h"
 
+
 DocSignerDlg::DocSignerDlg(QWidget *parent)
     : QDialog(parent)
 {
@@ -50,6 +51,11 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
 
     connect( mXMLBodyText, SIGNAL(textChanged()), this, SLOT(changeXML_Body()));
     connect( mXMLSignText, SIGNAL(textChanged()), this, SLOT(changeXML_Sign()));
+
+    connect( mPDFMakeSignBtn, SIGNAL(clicked()), this, SLOT(clickPDF_MakeSign()));
+    connect( mPDFVerifySignBtn, SIGNAL(clicked()), this, SLOT(clickPDF_VerifySign()));
+    connect( mDocMakeSignBtn, SIGNAL(clicked()), this, SLOT(clickDoc_MakeSign()));
+    connect( mDocVerifySignBtn, SIGNAL(clicked()), this, SLOT(clickDoc_VerifySign()));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -631,4 +637,24 @@ void DocSignerDlg::changeXML_Sign()
 {
     QString strSign = mXMLSignText->toPlainText();
     mXMLSignLenText->setText( QString("%1").arg( strSign.length() ));
+}
+
+void DocSignerDlg::clickPDF_MakeSign()
+{
+
+}
+
+void DocSignerDlg::clickPDF_VerifySign()
+{
+
+}
+
+void DocSignerDlg::clickDoc_MakeSign()
+{
+
+}
+
+void DocSignerDlg::clickDoc_VerifySign()
+{
+
 }

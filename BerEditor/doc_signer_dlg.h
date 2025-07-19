@@ -44,6 +44,12 @@ private slots:
     void changeXML_Body();
     void changeXML_Sign();
 
+    void clickPDF_MakeSign();
+    void clickPDF_VerifySign();
+
+    void clickDoc_MakeSign();
+    void clickDoc_VerifySign();
+
 private:
     void initUI();
     void initialize();
