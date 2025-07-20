@@ -622,7 +622,7 @@ void DocSignerDlg::clickXML_Decrypt()
     }
     else
     {
-        berApplet->messageBox( tr("XML Decrypt OK" ), this );
+        berApplet->messageBox( tr("XML Decrypt OK [%1]" ).arg( strDstPath ), this );
     }
 
 end :
