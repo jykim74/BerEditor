@@ -15,6 +15,8 @@ TARGET = BerEditor
 TEMPLATE = app
 PROJECT_VERSION = "2.3.6"
 
+QMAKE_CXXFLAGS += -std=c++17
+
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -120,7 +122,8 @@ SOURCES += \
     chall_test_dlg.cpp \
     one_list_dlg.cpp \
     two_list_dlg.cpp \
-    doc_signer_dlg.cpp
+    doc_signer_dlg.cpp \
+    pdf_object.cpp
 
 
 HEADERS += \
@@ -209,7 +212,8 @@ HEADERS += \
     chall_test_dlg.h \
     one_list_dlg.h \
     two_list_dlg.h \
-    doc_signer_dlg.h
+    doc_signer_dlg.h \
+    pdf_object.h
 
 
 

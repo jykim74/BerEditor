@@ -7,6 +7,10 @@ project(BerEditor
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)  # -std=c++17 대신 -std=gnu++17 비활성화
+
 # Set up AUTOMOC and some sensible defaults for runtime execution
 # When using Qt 6.3, you can replace the code block below with
 # qt_standard_project_setup()
@@ -220,6 +224,7 @@ add_executable(${PROJECT_NAME}
     one_list_dlg.h one_list_dlg.cpp one_list_dlg.ui
     two_list_dlg.h two_list_dlg.cpp two_list_dlg.ui
     doc_signer_dlg.h doc_signer_dlg.cpp doc_signer_dlg.ui
+    pdf_object.h pdf_object.cpp
 
 
 
