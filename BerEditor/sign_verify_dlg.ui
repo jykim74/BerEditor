@@ -19,35 +19,25 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="6">
+     <item row="0" column="7">
       <widget class="QRadioButton" name="mVerifyRadio">
        <property name="text">
         <string>Verify</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="5">
+     <item row="0" column="3">
+      <widget class="QComboBox" name="mVersionCombo"/>
+     </item>
+     <item row="0" column="0">
+      <widget class="QComboBox" name="mAlgTypeCombo"/>
+     </item>
+     <item row="0" column="6">
       <widget class="QRadioButton" name="mSignRadio">
        <property name="text">
         <string>Sign</string>
        </property>
       </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QLabel" name="mVersionLabel">
-       <property name="text">
-        <string>RSA Version</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QComboBox" name="mAlgTypeCombo"/>
-     </item>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="mHashTypeCombo"/>
-     </item>
-     <item row="0" column="3">
-      <widget class="QComboBox" name="mVersionCombo"/>
      </item>
      <item row="0" column="4">
       <spacer name="horizontalSpacer_3">
@@ -62,6 +52,23 @@
        </property>
       </spacer>
      </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="mVersionLabel">
+       <property name="text">
+        <string>RSA Version</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="mHashTypeCombo"/>
+     </item>
+     <item row="0" column="5">
+      <widget class="QCheckBox" name="mUseCertManCheck">
+       <property name="text">
+        <string>Use CertMan</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
@@ -74,7 +81,7 @@
    <item>
     <widget class="QTabWidget" name="mInputTab">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="mDataTab">
       <attribute name="title">
