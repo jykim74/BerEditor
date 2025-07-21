@@ -270,6 +270,7 @@ win32 {
 
     message( "64bit" );
     INCLUDEPATH += "../../lib/win64/winsparkle/include"
+    INCLUDEPATH += "../../lib/win64/podofo/include"
     INCLUDEPATH += "C:/msys64/mingw64/include"
 
     Debug {
@@ -283,11 +284,10 @@ win32 {
     LIBS += -L"../../lib/win64/xmlsec1/xmlsec/bin -lxmlsec -lxmlsec-openssl"
     LIBS += -L"../../lib/win64/xmlsec1/libxml2/bin -lxml2"
     LIBS += -L"../../lib/win64/xmlsec1/libxslt/bin -lxslt"
+    LIBS += -L"../../lib/win64/podofo/bin" -lpodofo
     LIBS += -L"../../lib/win64 -lltdl -lldap -llber"
     LIBS += -L"../../lib/win64/winsparkle/lib -lWinSparkle"
     LIBS += -lws2_32
-
-
 }
 
 FORMS += \
