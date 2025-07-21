@@ -313,7 +313,7 @@ elseif(APPLE)
 	Qt${QT_VERSION_MAJOR}::PrintSupport
         Qt${QT_VERSION_MAJOR}::Network
         Qt${QT_VERSION_MAJOR}::Xml
-        PKILib crypto ssl ltdl ldap lber xmlsec1 xmlsec1-openssl xml2 xslt
+        PKILib crypto ssl ltdl ldap lber xmlsec1 xmlsec1-openssl xml2 xslt podofo
         "-framework AppKit"
         "-framework Carbon"
         "-framework Foundation"

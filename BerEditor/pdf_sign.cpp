@@ -12,8 +12,8 @@ PDFSign::PDFSign()
 
 int PDFSign::readFile( const QString strPath )
 {
-//    PdfMemDocument doc;
-//    doc.Load( strPath.toStdString().c_str() );
+    PdfMemDocument doc;
+    doc.Load( strPath.toStdString().c_str() );
 
 
     return 0;
