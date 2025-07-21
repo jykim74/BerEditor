@@ -239,6 +239,7 @@ if(WIN32)
     include_directories( ../../PKILib
         "c:/msys64/mingw64/include"
         ../../lib/win64/winsparkle/include
+        ../../lib/win64/podofo/include
     )
 
     message( STATUS ${CMAKE_BUILD_TYPE} )
@@ -252,6 +253,7 @@ if(WIN32)
         ../../lib/win64/xmlsec1/libxml2/bin
         ../../lib/win64/xmlsec1/libxslt/bin
         ../../lib/win64/xmlsec1/xmlsec/bin
+        ../../lib/win64/podofo/bin
         ../../lib/win64 )
     elseif( CMAKE_BUILD_TYPE STREQUAL "Release" )
         target_link_directories( ${PROJECT_NAME} PRIVATE
@@ -261,6 +263,7 @@ if(WIN32)
         ../../lib/win64/xmlsec1/libxml2/bin
         ../../lib/win64/xmlsec1/libxslt/bin
         ../../lib/win64/xmlsec1/xmlsec/bin
+        ../../lib/win64/podofo/bin
         ../../lib/win64 )
     endif()
 
