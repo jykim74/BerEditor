@@ -14,6 +14,7 @@
 #include "cert_man_dlg.h"
 #include "key_pair_man_dlg.h"
 #include "key_list_dlg.h"
+#include "pdf_sign.h"
 
 #include "js_pki.h"
 #include "js_pki_key.h"
@@ -644,7 +645,17 @@ void DocSignerDlg::changeXML_Sign()
 
 void DocSignerDlg::clickPDF_MakeSign()
 {
+    QString strSrcPath = mSrcPathText->text();
 
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr("Find a source file"), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    PDFSign pdfSign;
+    pdfSign.readFile( strSrcPath );
 }
 
 void DocSignerDlg::clickPDF_VerifySign()
