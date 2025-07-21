@@ -1115,6 +1115,7 @@ void SignVerifyDlg::digestRun()
     int nVersion = 0;
     char *pOut = NULL;
     int nAlgType = 0;
+    int nType = -1;
 
     int nDataType = DATA_STRING;
     int nDigestLen = 0;
@@ -1154,43 +1155,8 @@ void SignVerifyDlg::digestRun()
 
     if( mSignRadio->isChecked() )
     {
-        if( mCertGroup->isChecked() == true )
-        {
-            ret = readPrivateKey( &binPri );
-            if( ret != 0 ) goto end;
-        }
-        else
-        {
-            CertManDlg certMan;
-            QString strPriHex;
-            certMan.setMode(ManModeSelBoth );
-            certMan.setTitle( tr( "Select a sign certificate") );
-
-            if( certMan.exec() != QDialog::Accepted )
-                goto end;
-
-            strPriHex = certMan.getPriKeyHex();
-            JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binPri );
-        }
-
-        if( mUseKeyAlgCheck->isChecked() )
-        {
-            nAlgType = JS_PKI_getPriKeyType( &binPri );
-            berApplet->log( QString( "PriKey Type : %1").arg( getKeyTypeName( nAlgType )));
-
-            if( nAlgType == JS_PKI_KEY_TYPE_RSA )
-                mAlgTypeCombo->setCurrentText( "RSA" );
-            else if( nAlgType == JS_PKI_KEY_TYPE_ECC )
-                mAlgTypeCombo->setCurrentText( "ECDSA" );
-            else if( nAlgType == JS_PKI_KEY_TYPE_SM2 )
-                mAlgTypeCombo->setCurrentText( "SM2" );
-            else if( nAlgType == JS_PKI_KEY_TYPE_DSA )
-                mAlgTypeCombo->setCurrentText( "DSA" );
-            else if( nAlgType == JS_PKI_KEY_TYPE_ED25519 )
-                mAlgTypeCombo->setCurrentText( "Ed25519" );
-            else if( nAlgType == JS_PKI_KEY_TYPE_ED448 )
-                mAlgTypeCombo->setCurrentText( "Ed448" );
-        }
+        ret = getPrivateKey( &binPri, &nType );
+        if( ret != CKR_OK ) goto end;
 
         QString strAlg = mAlgTypeCombo->currentText();
 
@@ -1224,73 +1190,8 @@ void SignVerifyDlg::digestRun()
     }
     else
     {
-        if( mCertGroup->isChecked() == true )
-        {
-            if( mCertPath->text().isEmpty() )
-            {
-                berApplet->warningBox( tr( "Select a certificate"), this );
-                goto end;
-            }
-
-            JS_BIN_fileReadBER( mCertPath->text().toLocal8Bit().toStdString().c_str(), &binCert );
-        }
-        else
-        {
-            CertManDlg certMan;
-            QString strCertHex;
-
-            certMan.setMode(ManModeSelCert);
-            certMan.setTitle( tr( "Select a sign certificate") );
-
-            if( certMan.exec() != QDialog::Accepted )
-                goto end;
-
-            strCertHex = certMan.getCertHex();
-            JS_BIN_decodeHex( strCertHex.toStdString().c_str(), &binCert );
-        }
-
-        JS_BIN_decodeHex( mOutputText->toPlainText().toStdString().c_str(), &binOut );
-
-        if( mAutoCertPubKeyCheck->isChecked() )
-        {
-            if( JS_PKI_isCert( &binCert ) == 0 )
-            {
-                mPubKeyVerifyCheck->setChecked(true);
-                JS_BIN_copy( &binPubKey, &binCert );
-            }
-            else
-            {
-                mPubKeyVerifyCheck->setChecked(false);
-                JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
-            }
-        }
-        else
-        {
-            if( mPubKeyVerifyCheck->isChecked() == false )
-                JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
-            else
-                JS_BIN_copy( &binPubKey, &binCert );
-        }
-
-        if( mUseKeyAlgCheck->isChecked() )
-        {
-            int id = JS_PKI_getPubKeyType( &binPubKey );
-            berApplet->log( QString( "PubKey Type : %1").arg( getKeyTypeName( id )));
-
-            if( id == JS_PKI_KEY_TYPE_RSA )
-                mAlgTypeCombo->setCurrentText( "RSA" );
-            else if( id == JS_PKI_KEY_TYPE_SM2 )
-                mAlgTypeCombo->setCurrentText( "SM2" );
-            else if( id == JS_PKI_KEY_TYPE_ECC )
-                mAlgTypeCombo->setCurrentText( "ECDSA" );
-            else if( id == JS_PKI_KEY_TYPE_DSA )
-                mAlgTypeCombo->setCurrentText( "DSA" );
-            else if( id == JS_PKI_KEY_TYPE_ED25519 )
-                mAlgTypeCombo->setCurrentText( "Ed25519" );
-            else if( id == JS_PKI_KEY_TYPE_ED448 )
-                mAlgTypeCombo->setCurrentText( "Ed448" );
-        }
-
+        ret = getPublicKey( &binPubKey, &nType );
+        if( ret != CKR_OK ) goto end;
 
         QString strAlg = mAlgTypeCombo->currentText();
 
