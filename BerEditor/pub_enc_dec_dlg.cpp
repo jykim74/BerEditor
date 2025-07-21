@@ -11,6 +11,7 @@
 #include "cert_man_dlg.h"
 #include "pri_key_info_dlg.h"
 #include "settings_mgr.h"
+#include "key_pair_man_dlg.h"
 
 #include "js_bin.h"
 #include "js_pki.h"
@@ -130,8 +131,8 @@ void PubEncDecDlg::initialize()
 
     mEncryptRadio->click();
 
-    mPriKeyPath->setPlaceholderText( tr("Select CertMan private key") );
-    mCertPath->setPlaceholderText( tr( "Select CertMan certificate" ));
+    mPriKeyPath->setPlaceholderText( tr("Select a private key") );
+    mCertPath->setPlaceholderText( tr( "Select a certificate" ));
     mIVText->setPlaceholderText( tr( "Hex value" ));
     mTagText->setPlaceholderText( tr( "Hex value" ));
     mOtherPubText->setPlaceholderText( tr( "Hex value" ));
@@ -322,42 +323,61 @@ void PubEncDecDlg::Run()
             }
 
             JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
-        }
-        else
-        {
-            CertManDlg certMan;
-            QString strCertHex;
-
-            certMan.setMode(ManModeSelCert);
-            certMan.setTitle( tr( "Select a certificate") );
-
-            if( certMan.exec() != QDialog::Accepted )
-                goto end;
-
-            strCertHex = certMan.getCertHex();
-            JS_BIN_decodeHex( strCertHex.toStdString().c_str(), &binCert );
-        }
-
-        if( mAutoCertPubKeyCheck->isChecked() )
-        {
-            if( JS_PKI_isCert( &binCert ) == 0 )
+            if( mAutoCertPubKeyCheck->isChecked() )
             {
-                mPubKeyEncryptCheck->setChecked(true);
-                JS_BIN_copy( &binPubKey, &binCert );
+                if( JS_PKI_isCert( &binCert ) == 0 )
+                {
+                    mPubKeyEncryptCheck->setChecked(true);
+                    JS_BIN_copy( &binPubKey, &binCert );
+                }
+                else
+                {
+                    mPubKeyEncryptCheck->setChecked(false);
+                    JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
+                }
             }
             else
             {
-                mPubKeyEncryptCheck->setChecked(false);
-                JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
+                if( mPubKeyEncryptCheck->isChecked() == false )
+                    JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
+                else
+                    JS_BIN_copy( &binPubKey, &binCert );
             }
         }
         else
         {
-            if( mPubKeyEncryptCheck->isChecked() == false )
+            if( mUseCertManCheck->isChecked() == true )
+            {
+                CertManDlg certMan;
+                QString strCertHex;
+
+                certMan.setMode(ManModeSelCert);
+                certMan.setTitle( tr( "Select a certificate") );
+
+                if( certMan.exec() != QDialog::Accepted )
+                    goto end;
+
+                strCertHex = certMan.getCertHex();
+                JS_BIN_decodeHex( strCertHex.toStdString().c_str(), &binCert );
                 JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
+            }
             else
-                JS_BIN_copy( &binPubKey, &binCert );
+            {
+                QString strPubPath;
+
+                KeyPairManDlg keyPairMan;
+                keyPairMan.setTitle( tr( "Select keypair" ));
+                keyPairMan.setMode( KeyPairModeSelect );
+
+                if( keyPairMan.exec() != QDialog::Accepted )
+                    goto end;
+
+                strPubPath = keyPairMan.getPubPath();
+                JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPubKey );
+            }
         }
+
+
 
         int nAlgType = JS_PKI_getPubKeyType( &binPubKey );
         QString strKeyType = getKeyTypeName( nAlgType );
@@ -459,15 +479,33 @@ void PubEncDecDlg::Run()
         }
         else
         {
-            CertManDlg certMan;
-            QString strPriHex;
+            if( mUseCertManCheck->isChecked() == true )
+            {
+                CertManDlg certMan;
+                QString strPriHex;
 
-            certMan.setMode(ManModeSelBoth);
-            if( certMan.exec() != QDialog::Accepted )
-                goto end;
+                certMan.setMode(ManModeSelBoth);
+                if( certMan.exec() != QDialog::Accepted )
+                    goto end;
 
-            strPriHex = certMan.getPriKeyHex();
-            JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binPri );
+                strPriHex = certMan.getPriKeyHex();
+                JS_BIN_decodeHex( strPriHex.toStdString().c_str(), &binPri );
+            }
+            else
+            {
+                QString strPriPath;
+
+                KeyPairManDlg keyPairMan;
+                keyPairMan.setTitle( tr( "Select keypair" ));
+                keyPairMan.setMode( KeyPairModeSelect );
+
+                if( keyPairMan.exec() != QDialog::Accepted )
+                    goto end;
+
+                strPriPath = keyPairMan.getPriPath();
+
+                JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+            }
         }
 
         int nAlgType = JS_PKI_getPriKeyType( &binPri );

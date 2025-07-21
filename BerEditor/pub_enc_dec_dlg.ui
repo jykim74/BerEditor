@@ -19,33 +19,10 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="5">
+     <item row="0" column="6">
       <widget class="QRadioButton" name="mDecryptRadio">
        <property name="text">
         <string>Decrypt</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QRadioButton" name="mEncryptRadio">
-       <property name="text">
-        <string>Encrypt</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QComboBox" name="mAlgCombo">
-       <property name="minimumSize">
-        <size>
-         <width>80</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>80</width>
-         <height>16777215</height>
-        </size>
        </property>
       </widget>
      </item>
@@ -72,6 +49,13 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="5">
+      <widget class="QRadioButton" name="mEncryptRadio">
+       <property name="text">
+        <string>Encrypt</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="3">
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
@@ -84,6 +68,29 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="0">
+      <widget class="QComboBox" name="mAlgCombo">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>80</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QCheckBox" name="mUseCertManCheck">
+       <property name="text">
+        <string>Use CertMan</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
