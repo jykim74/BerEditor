@@ -224,9 +224,7 @@ add_executable(${PROJECT_NAME}
     one_list_dlg.h one_list_dlg.cpp one_list_dlg.ui
     two_list_dlg.h two_list_dlg.cpp two_list_dlg.ui
     doc_signer_dlg.h doc_signer_dlg.cpp doc_signer_dlg.ui
-    pdf_object.h pdf_object.cpp
-
-
+    pdf_sign.h pdf_sign.cpp
 
 )
 
@@ -253,7 +251,7 @@ if(WIN32)
         ../../lib/win64/xmlsec1/libxml2/bin
         ../../lib/win64/xmlsec1/libxslt/bin
         ../../lib/win64/xmlsec1/xmlsec/bin
-        ../../lib/win64/podofo/bin
+        ../../lib/win64/podofo/lib
         ../../lib/win64 )
     elseif( CMAKE_BUILD_TYPE STREQUAL "Release" )
         target_link_directories( ${PROJECT_NAME} PRIVATE
@@ -263,7 +261,7 @@ if(WIN32)
         ../../lib/win64/xmlsec1/libxml2/bin
         ../../lib/win64/xmlsec1/libxslt/bin
         ../../lib/win64/xmlsec1/xmlsec/bin
-        ../../lib/win64/podofo/bin
+        ../../lib/win64/podofo/lib
         ../../lib/win64 )
     endif()
 
