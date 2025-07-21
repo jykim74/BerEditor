@@ -97,6 +97,7 @@ void GenOTPDlg::clickGenOTP()
     {
         KeyListDlg keyList;
         keyList.setTitle( tr( "Select symmetric key" ));
+        keyList.setManage( false );
 
         if( keyList.exec() == QDialog::Accepted )
         {

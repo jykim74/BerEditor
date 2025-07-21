@@ -93,7 +93,7 @@ void KeyListDlg::initialize()
     mKeyTable->horizontalHeader()->setStyleSheet( kTableStyle );
     mKeyTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mKeyTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    mKeyTable->setColumnWidth( 0, nWidth * 5/10 );
+    mKeyTable->setColumnWidth( 0, nWidth * 4/10 );
     mKeyTable->setColumnWidth( 1, nWidth * 2/10 );
     mKeyTable->setColumnWidth( 3, 30 );
 }
