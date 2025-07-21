@@ -5872,8 +5872,8 @@ mailto : jykim74@gmail.com</translation>
         <translation>입력 데이타</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.ui" line="247"/>
-        <location filename="../data_converter_dlg.ui" line="381"/>
+        <location filename="../data_converter_dlg.ui" line="326"/>
+        <location filename="../data_converter_dlg.ui" line="388"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
@@ -5892,47 +5892,67 @@ mailto : jykim74@gmail.com</translation>
         <translation>변환</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.ui" line="310"/>
+        <location filename="../data_converter_dlg.ui" line="333"/>
         <source>Conversion Format</source>
         <translation>변환 형식</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.ui" line="333"/>
+        <location filename="../data_converter_dlg.ui" line="263"/>
         <source>Show printable text</source>
         <translation>인쇄 가능 문자 표시</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.ui" line="354"/>
+        <location filename="../data_converter_dlg.ui" line="340"/>
+        <source>Write Bin</source>
+        <translation>바이너리 쓰기</translation>
+    </message>
+    <message>
+        <location filename="../data_converter_dlg.ui" line="361"/>
         <source>Hex</source>
         <translation>16진수</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.ui" line="361"/>
+        <location filename="../data_converter_dlg.ui" line="368"/>
         <source>Base64</source>
         <translation>베이스64</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.ui" line="388"/>
+        <location filename="../data_converter_dlg.ui" line="395"/>
         <source>Find File</source>
         <translation>파일 찾기</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.ui" line="451"/>
+        <location filename="../data_converter_dlg.ui" line="458"/>
         <source>URL</source>
         <translation>URL</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.ui" line="458"/>
+        <location filename="../data_converter_dlg.ui" line="465"/>
         <source>String</source>
         <translation>문자열</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.ui" line="468"/>
+        <location filename="../data_converter_dlg.ui" line="475"/>
         <source>Base64URL</source>
         <translation>베이스64URL</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.cpp" line="106"/>
+        <location filename="../data_converter_dlg.cpp" line="109"/>
+        <source>There is no output</source>
+        <translation>결과 값이 없습니다</translation>
+    </message>
+    <message>
+        <location filename="../data_converter_dlg.cpp" line="121"/>
+        <source>Binary save success</source>
+        <translation>바이너리 저장 성공</translation>
+    </message>
+    <message>
+        <location filename="../data_converter_dlg.cpp" line="125"/>
+        <source>Binary save failed</source>
+        <translation>바이너리 저장 실패</translation>
+    </message>
+    <message>
+        <location filename="../data_converter_dlg.cpp" line="144"/>
         <source>Please enter input value</source>
         <translation>입력값을 입력하세요</translation>
     </message>

@@ -26,6 +26,8 @@ public:
 
 private slots:
     void clickFindFile();
+    void clickWriteBin();
+
     void onClickConvertBtn();
     void outTypeChanged( int index );
     void inputChanged();
