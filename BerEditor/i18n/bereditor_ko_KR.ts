@@ -8797,13 +8797,13 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">길이</translation>
     </message>
     <message>
-        <location filename="../key_list_dlg.cpp" line="86"/>
         <source>IV Len</source>
-        <translation>IV 길이</translation>
+        <translation type="vanished">IV 길이</translation>
     </message>
     <message>
+        <location filename="../key_list_dlg.cpp" line="86"/>
         <source>IV</source>
-        <translation type="vanished">IV</translation>
+        <translation>IV</translation>
     </message>
     <message>
         <location filename="../key_list_dlg.cpp" line="86"/>
@@ -8811,7 +8811,12 @@ Do you want to delete the file and continue?</source>
         <translation>변경시간</translation>
     </message>
     <message>
-        <location filename="../key_list_dlg.cpp" line="273"/>
+        <location filename="../key_list_dlg.cpp" line="86"/>
+        <source>Len</source>
+        <translation>길이</translation>
+    </message>
+    <message>
+        <location filename="../key_list_dlg.cpp" line="274"/>
         <source>The file(%1) is already existed</source>
         <translation>해당 파일(%1)이 이미 있습니다</translation>
     </message>
@@ -8825,12 +8830,12 @@ Do you want to delete the file and continue?</source>
         <translation>선택한 키가 없습니다</translation>
     </message>
     <message>
-        <location filename="../key_list_dlg.cpp" line="311"/>
+        <location filename="../key_list_dlg.cpp" line="312"/>
         <source>Are you sure to delete the key</source>
         <translation>정말로 해당 키를 삭제 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../key_list_dlg.cpp" line="336"/>
+        <location filename="../key_list_dlg.cpp" line="337"/>
         <source>Symmetric Key View</source>
         <translation>대칭키 보기</translation>
     </message>
