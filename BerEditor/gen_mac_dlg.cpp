@@ -162,6 +162,7 @@ int GenMacDlg::macInit()
     {
         KeyListDlg keyList;
         keyList.setTitle( tr( "Select symmetric key" ));
+        keyList.setManage( false );
 
         keyList.mKeyTypeCombo->setCurrentText( "HMAC" );
 
@@ -429,6 +430,7 @@ void GenMacDlg::clickMAC()
     {
         KeyListDlg keyList;
         keyList.setTitle( tr( "Select symmetric key" ));
+        keyList.setManage( false );
 
         keyList.mKeyTypeCombo->setCurrentText( "HMAC" );
 

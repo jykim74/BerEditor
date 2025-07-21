@@ -189,6 +189,7 @@ void EncDecDlg::dataRun()
     {
         KeyListDlg keyList;
         keyList.setTitle( tr( "Select symmetric key" ));
+        keyList.setManage( false );
 
         if( keyList.exec() == QDialog::Accepted )
         {
