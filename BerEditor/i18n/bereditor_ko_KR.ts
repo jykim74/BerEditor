@@ -8821,11 +8821,11 @@ Do you want to delete the file and continue?</source>
         <translation>해당 파일(%1)이 이미 있습니다</translation>
     </message>
     <message>
-        <location filename="../key_list_dlg.cpp" line="307"/>
-        <location filename="../key_list_dlg.cpp" line="330"/>
-        <location filename="../key_list_dlg.cpp" line="393"/>
-        <location filename="../key_list_dlg.cpp" line="427"/>
-        <location filename="../key_list_dlg.cpp" line="449"/>
+        <location filename="../key_list_dlg.cpp" line="308"/>
+        <location filename="../key_list_dlg.cpp" line="331"/>
+        <location filename="../key_list_dlg.cpp" line="394"/>
+        <location filename="../key_list_dlg.cpp" line="428"/>
+        <location filename="../key_list_dlg.cpp" line="450"/>
         <source>There is no key to select</source>
         <translation>선택한 키가 없습니다</translation>
     </message>
@@ -8840,8 +8840,8 @@ Do you want to delete the file and continue?</source>
         <translation>대칭키 보기</translation>
     </message>
     <message>
-        <location filename="../key_list_dlg.cpp" line="343"/>
-        <location filename="../key_list_dlg.cpp" line="405"/>
+        <location filename="../key_list_dlg.cpp" line="344"/>
+        <location filename="../key_list_dlg.cpp" line="406"/>
         <source>The password is incorrect</source>
         <translation>암호가 맞지 않습니다</translation>
     </message>
