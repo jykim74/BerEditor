@@ -26,6 +26,7 @@ DataConverterDlg::DataConverterDlg(QWidget *parent) :
     mOutputTypeCombo->addItems( enTypes );
 
     connect( mFindFileBtn, SIGNAL(clicked()), this, SLOT(clickFindFile()));
+    connect( mWriteBinBtn, SIGNAL(clicked()), this, SLOT(clickWriteBin()));
     connect( mConvertBtn, SIGNAL(clicked()), this, SLOT(onClickConvertBtn()));
     connect( mOutputTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(outTypeChanged(int)));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
@@ -89,6 +90,43 @@ void DataConverterDlg::clickFindFile()
         mInputText->setPlainText( getHexString( &binFile ));
         JS_BIN_reset( &binFile );
     }
+}
+
+void DataConverterDlg::clickWriteBin()
+{
+    int ret = 0;
+    BIN binOut = {0,0};
+
+    QString strOut = mOutputText->toPlainText();
+    QString strType = mOutputTypeCombo->currentText();
+    QString strFile;
+    QString strPath = berApplet->curPath();
+
+    int nOutLen = strOut.length();
+
+    if( nOutLen < 1 )
+    {
+        berApplet->warningBox( tr( "There is no output" ), this );
+        mOutputText->setFocus();
+        return;
+    }
+
+    getBINFromString( &binOut, strType, strOut );
+    strFile = berApplet->findSaveFile( this, JS_FILE_TYPE_BIN, strPath );
+    if( strFile.length() > 0 )
+    {
+        ret = JS_BIN_fileWrite( &binOut, strFile.toLocal8Bit().toStdString().c_str() );
+        if( ret > 0 )
+        {
+            berApplet->messageBox( tr( "Binary save success" ), this );
+        }
+        else
+        {
+            berApplet->warningBox( tr("Binary save failed"), this );
+        }
+    }
+
+    JS_BIN_reset( &binOut );
 }
 
 void DataConverterDlg::onClickConvertBtn()
