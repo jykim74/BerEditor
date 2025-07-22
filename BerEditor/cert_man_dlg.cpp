@@ -1837,7 +1837,7 @@ void CertManDlg::clickOK()
     JS_BIN_reset( &ca_cert_ );
     JS_BIN_reset( &crl_ );
 
-    if( mode_ != ManModeSelCert && mode_ != ManModeSelBoth && mode_ != ManModeSelCA )
+    if( mode_ == ManModeBase )
     {
         QDialog::accept();
         return;

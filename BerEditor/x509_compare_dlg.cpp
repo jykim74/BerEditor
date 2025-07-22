@@ -17,6 +17,12 @@
 const QString kValidIcon = ":/images/valid.png";
 const QString kInvalidIcon = ":/images/invalid.png";
 
+const QString kCertificate = "Certificate";
+const QString kCRL = "CRL";
+const QString kCSR = "CSR";
+
+QStringList sTypeList = { kCertificate, kCRL, kCSR };
+
 X509CompareDlg::X509CompareDlg(QWidget *parent)
     : QDialog(parent)
 {
@@ -76,7 +82,6 @@ void X509CompareDlg::changeType()
 
 void X509CompareDlg::initUI()
 {
-    QStringList sTypeList = { tr("Certificate" ), tr( "CRL" ), tr( "CSR" ) };
     QStringList sBaseLabels = { tr("Field"), tr("A Certificate value"), tr( "B Certificate value" ) };
 
     mCompareTable->clear();
@@ -1091,17 +1096,16 @@ void X509CompareDlg::clickCompare()
 
     QString strAPath = mAPathText->text();
     QString strBPath = mBPathText->text();
-
-
+    QString strType = mTypeCombo->currentText();
 
     if( strAPath.length() < 1 )
     {
-        if( mTypeCombo->currentIndex() == 0 || mTypeCombo->currentIndex() == 1 )
+        if( strType == kCertificate || strType == kCRL )
         {
             CertManDlg certMan;
-            QString strCertHex;
+            QString strHex;
 
-            if( mTypeCombo->currentIndex() == 0 )
+            if( strType == kCertificate )
                 certMan.setMode(ManModeSelCert);
             else
                 certMan.setMode(ManModeSelCRL );
@@ -1112,8 +1116,13 @@ void X509CompareDlg::clickCompare()
                 goto end;
 
             JS_BIN_reset( &A_bin_ );
-            strCertHex = certMan.getCertHex();
-            JS_BIN_decodeHex( strCertHex.toStdString().c_str(), &A_bin_ );
+
+            if( strType == kCertificate )
+                strHex = certMan.getCertHex();
+            else
+                strHex = certMan.getCRLHex();
+
+            JS_BIN_decodeHex( strHex.toStdString().c_str(), &A_bin_ );
         }
 
         if( A_bin_.nLen < 1 )
@@ -1130,12 +1139,12 @@ void X509CompareDlg::clickCompare()
 
     if( strBPath.length() < 1 )
     {
-        if( mTypeCombo->currentIndex() == 0 || mTypeCombo->currentIndex() == 1 )
+        if( strType == kCertificate || strType == kCRL )
         {
             CertManDlg certMan;
-            QString strCertHex;
+            QString strHex;
 
-            if( mTypeCombo->currentIndex() == 0 )
+            if( strType == kCertificate )
                 certMan.setMode(ManModeSelCert);
             else
                 certMan.setMode(ManModeSelCRL );
@@ -1146,8 +1155,13 @@ void X509CompareDlg::clickCompare()
                 goto end;
 
             JS_BIN_reset( &B_bin_ );
-            strCertHex = certMan.getCertHex();
-            JS_BIN_decodeHex( strCertHex.toStdString().c_str(), &B_bin_ );
+
+            if( strType == kCertificate )
+                strHex = certMan.getCertHex();
+            else
+                strHex = certMan.getCRLHex();
+
+            JS_BIN_decodeHex( strHex.toStdString().c_str(), &B_bin_ );
         }
 
         if( B_bin_.nLen < 1 )
