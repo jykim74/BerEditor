@@ -237,7 +237,6 @@ if(WIN32)
     include_directories( ../../PKILib
         "c:/msys64/mingw64/include"
         ../../lib/win64/winsparkle/include
-        ../../lib/win64/podofo/include
     )
 
     message( STATUS ${CMAKE_BUILD_TYPE} )
@@ -248,20 +247,16 @@ if(WIN32)
         ../../PKILib/build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug
         ../../lib/win64/debug/openssl3/lib64
         ../../lib/win64/winsparkle/lib
-        ../../lib/win64/xmlsec1/libxml2/bin
-        ../../lib/win64/xmlsec1/libxslt/bin
         ../../lib/win64/xmlsec1/xmlsec/bin
-        ../../lib/win64/podofo/lib
+        ../../lib/win64/xmlsec1/libxml2/bin
         ../../lib/win64 )
     elseif( CMAKE_BUILD_TYPE STREQUAL "Release" )
         target_link_directories( ${PROJECT_NAME} PRIVATE
         ../../PKILib/build/Desktop_Qt_5_15_2_MinGW_64_bit-Release
         ../../lib/win64/openssl3/lib64
         ../../lib/win64/winsparkle/lib
-        ../../lib/win64/xmlsec1/libxml2/bin
-        ../../lib/win64/xmlsec1/libxslt/bin
         ../../lib/win64/xmlsec1/xmlsec/bin
-        ../../lib/win64/podofo/lib
+        ../../lib/win64/xmlsec1/libxml2/bin
         ../../lib/win64 )
     endif()
 
@@ -270,7 +265,7 @@ if(WIN32)
 	Qt${QT_VERSION_MAJOR}::PrintSupport
         Qt${QT_VERSION_MAJOR}::Gui
         Qt${QT_VERSION_MAJOR}::Network
-        PKILib crypto ssl ltdl ldap lber ws2_32 WinSparkle xmlsec xslt xml2 xmlsec-openssl podofo )
+        PKILib crypto ssl ltdl ldap lber ws2_32 WinSparkle xmlsec-openssl xmlsec xml2 )
 
     target_compile_definitions( ${PROJECT_NAME} PRIVATE _AUTO_UPDATE )
 
