@@ -82,6 +82,7 @@ private slots:
     void clearTime();
     void clearSum();
     void clickAddSum();
+    void clickSubSum();
     void setResTime( const QString strCmd, qint64 time_us );
 
     void clickTest();
