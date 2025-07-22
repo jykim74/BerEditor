@@ -2116,7 +2116,7 @@ void MainWindow::updateRecentActionList()
 
     for( auto i = 0u; i < itEnd; ++i )
     {
-        QString strippedName = QString( "%1 ").arg(i);
+        QString strippedName = QString( "%1 ").arg(i + 1);
         strippedName += QFileInfo(recentFilePaths.at(i)).fileName();
 
         recent_file_list_.at(i)->setText(strippedName);
