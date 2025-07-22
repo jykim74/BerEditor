@@ -193,20 +193,18 @@ void EncDecDlg::dataRun()
 
         if( keyList.exec() == QDialog::Accepted )
         {
-            QString strData = keyList.getData();
-            QStringList keyIV = strData.split(":");
+            strKey = keyList.getKey();
+            strIV = keyList.getIV();
 
-            if( keyIV.size() > 0 )
+            if( strKey.length() > 0 )
             {
                 mKeyTypeCombo->setCurrentText( "Hex" );
-                strKey = keyIV.at(0);
                 mKeyText->setText( strKey );
             }
 
-            if( keyIV.size() > 1 )
+            if( strIV.length() > 0 )
             {
                 mIVTypeCombo->setCurrentText( "Hex" );
-                strIV = keyIV.at(1);
                 mIVText->setText( strIV );
             }
         }
@@ -657,23 +655,22 @@ int EncDecDlg::encDecInit()
     {
         KeyListDlg keyList;
         keyList.setTitle( tr( "Select symmetric key" ));
+        keyList.setManage(false);
 
         if( keyList.exec() == QDialog::Accepted )
         {
-            QString strData = keyList.getData();
-            QStringList keyIV = strData.split(":");
+            strKey = keyList.getKey();
+            strIV = keyList.getIV();
 
-            if( keyIV.size() > 0 )
+            if( strKey.length() > 0 )
             {
                 mKeyTypeCombo->setCurrentText( "Hex" );
-                strKey = keyIV.at(0);
                 mKeyText->setText( strKey );
             }
 
-            if( keyIV.size() > 1 )
+            if( strIV.length() > 0 )
             {
                 mIVTypeCombo->setCurrentText( "Hex" );
-                strIV = keyIV.at(1);
                 mIVText->setText( strIV );
             }
         }
