@@ -19,6 +19,7 @@ DecodeDataDlg::DecodeDataDlg(QWidget *parent) :
     connect( mDataText, SIGNAL(textChanged()), this, SLOT(dataChanged()));
     connect( mTypeHex, SIGNAL(clicked()), this, SLOT(dataChanged()));
     connect( mTypeBase64, SIGNAL(clicked()), this, SLOT(dataChanged()));
+    connect( mTypeBase64URL, SIGNAL(clicked()), this, SLOT(dataChanged()));
 
     connect( mFindBtn, SIGNAL(clicked()), this, SLOT(findData()));
     connect( mClearBtn, SIGNAL(clicked()), this, SLOT(clearData()));

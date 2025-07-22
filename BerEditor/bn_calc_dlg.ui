@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>704</width>
+    <width>758</width>
     <height>876</height>
    </rect>
   </property>
@@ -1018,6 +1018,20 @@
      <property name="topMargin">
       <number>0</number>
      </property>
+     <item row="0" column="7">
+      <widget class="QCheckBox" name="mAutoSumCheck">
+       <property name="text">
+        <string>Auto sum</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="15">
+      <widget class="QLabel" name="label_13">
+       <property name="text">
+        <string>ms</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="8">
       <widget class="QPushButton" name="mAddSumBtn">
        <property name="minimumSize">
@@ -1037,59 +1051,17 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="7">
-      <widget class="QCheckBox" name="mAutoSumCheck">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_11">
        <property name="text">
-        <string>Auto sum</string>
+        <string>Timer</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="14">
-      <widget class="QLineEdit" name="mSumTimeText">
-       <property name="minimumSize">
-        <size>
-         <width>90</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>90</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="palette">
-        <palette>
-         <active>
-          <colorrole role="Base">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>221</red>
-             <green>221</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </active>
-         <inactive>
-          <colorrole role="Base">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>221</red>
-             <green>221</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </inactive>
-         <disabled/>
-        </palette>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
+     <item row="0" column="12">
+      <widget class="Line" name="line_4">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
        </property>
       </widget>
      </item>
@@ -1142,32 +1114,22 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_11">
-       <property name="text">
-        <string>Timer</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QLabel" name="mCalcLabel">
+     <item row="0" column="9">
+      <widget class="QPushButton" name="mSubSumBtn">
        <property name="minimumSize">
         <size>
-         <width>90</width>
+         <width>40</width>
          <height>0</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>90</width>
+         <width>40</width>
          <height>16777215</height>
         </size>
        </property>
        <property name="text">
-        <string>Calculation</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <string>Sub</string>
        </property>
       </widget>
      </item>
@@ -1216,31 +1178,59 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="12">
-      <widget class="Line" name="line_4">
+     <item row="0" column="6">
+      <widget class="Line" name="line_6">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>
       </widget>
      </item>
-     <item row="0" column="15">
-      <widget class="QLabel" name="label_13">
-       <property name="text">
-        <string>ms</string>
+     <item row="0" column="14">
+      <widget class="QLineEdit" name="mSumTimeText">
+       <property name="minimumSize">
+        <size>
+         <width>90</width>
+         <height>0</height>
+        </size>
        </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>ms</string>
+       <property name="maximumSize">
+        <size>
+         <width>90</width>
+         <height>16777215</height>
+        </size>
        </property>
-      </widget>
-     </item>
-     <item row="0" column="13">
-      <widget class="QLabel" name="label_12">
-       <property name="text">
-        <string>Sum</string>
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled/>
+        </palette>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -1257,29 +1247,39 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="6">
-      <widget class="Line" name="line_6">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
+     <item row="0" column="13">
+      <widget class="QLabel" name="label_12">
+       <property name="text">
+        <string>Sum</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="9">
-      <widget class="QPushButton" name="mSubSumBtn">
+     <item row="0" column="4">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>ms</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="mCalcLabel">
        <property name="minimumSize">
         <size>
-         <width>40</width>
+         <width>90</width>
          <height>0</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>40</width>
+         <width>90</width>
          <height>16777215</height>
         </size>
        </property>
        <property name="text">
-        <string>Sub</string>
+        <string>Calculation</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
       </widget>
      </item>
