@@ -122,6 +122,7 @@ BNCalcDlg::BNCalcDlg(QWidget *parent) :
     connect( mResTimeClearBtn, SIGNAL(clicked()), this, SLOT(clearTime()));
     connect( mSumTimeClearBtn, SIGNAL(clicked()), this, SLOT(clearSum()));
     connect( mAddSumBtn, SIGNAL(clicked()), this, SLOT(clickAddSum()));
+    connect( mSubSumBtn, SIGNAL(clicked()), this, SLOT(clickSubSum()));
 
     connect( mTestBtn, SIGNAL(clicked()), this, SLOT(clickTest()));
 
@@ -153,6 +154,7 @@ BNCalcDlg::BNCalcDlg(QWidget *parent) :
     mModSubOneBtn->setFixedWidth(38);
 
     mAddSumBtn->setFixedWidth(60);
+    mSubSumBtn->setFixedWidth(60);
     mResTimeClearBtn->setFixedWidth(34);
     mSumTimeClearBtn->setFixedWidth(34);
 
@@ -2018,6 +2020,13 @@ void BNCalcDlg::clearSum()
 void BNCalcDlg::clickAddSum()
 {
     sum_us_ += time_us_;
+    mSumTimeText->setText( QString( "%1" ).arg( getMS( sum_us_ )));
+}
+
+void BNCalcDlg::clickSubSum()
+{
+    sum_us_ -= time_us_;
+    if( sum_us_ < 0 ) sum_us_ = 0;
     mSumTimeText->setText( QString( "%1" ).arg( getMS( sum_us_ )));
 }
 
