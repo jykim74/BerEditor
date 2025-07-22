@@ -16,7 +16,7 @@ public:
     explicit KeyListDlg(QWidget *parent = nullptr);
     ~KeyListDlg();
     void setManage( bool bMan = true );
-    const QString getData() { return str_data_; };
+//    const QString getData() { return str_data_; };
     const QString getKey();
     const QString getIV();
     void setTitle( const QString strTitle );

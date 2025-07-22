@@ -31,9 +31,13 @@ public:
     ~KeyPairManDlg();
     void setMode( int nMode );
     void setTitle( const QString strTitle );
+
     const QString getPriPath();
     const QString getPubPath();
     const QString getName();
+
+    int getPubKey( BIN *pPubKey );
+    int getPriKey( BIN *pPriKey );
 
 private slots:
     void showEvent(QShowEvent *event);

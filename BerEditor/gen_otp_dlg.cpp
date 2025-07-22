@@ -101,13 +101,11 @@ void GenOTPDlg::clickGenOTP()
 
         if( keyList.exec() == QDialog::Accepted )
         {
-            QString strData = keyList.getData();
-            QStringList keyIV = strData.split(":");
+            strKey = keyList.getKey();
 
-            if( keyIV.size() > 0 )
+            if( strKey.length() > 0 )
             {
                 mKeyTypeCombo->setCurrentText( "Hex" );
-                strKey = keyIV.at(0);
                 mKeyText->setText( strKey );
             }
         }

@@ -255,16 +255,16 @@ void KeyManDlg::clickWrap()
     {
         KeyListDlg keyList;
         keyList.setTitle( tr( "Select symmetric key for source" ));
+        keyList.setManage(false);
 
         if( keyList.exec() == QDialog::Accepted )
         {
-            QString strData = keyList.getData();
-            QStringList keyIV = strData.split(":");
+            QString strKey = keyList.getKey();
 
-            if( keyIV.size() > 0 )
+            if( strKey.length() > 0 )
             {
                 mSrcTypeCombo->setCurrentText( "Hex" );
-                strInput = keyIV.at(0);
+                strInput = strKey;
                 mSrcText->setPlainText( strInput );
             }
         }
@@ -281,17 +281,17 @@ void KeyManDlg::clickWrap()
     {
         KeyListDlg keyList;
         keyList.setTitle( tr( "Select symmetric key for KEK" ));
+        keyList.setManage(false);
         keyList.mKeyTypeCombo->setCurrentText( "AES" );
 
         if( keyList.exec() == QDialog::Accepted )
         {
-            QString strData = keyList.getData();
-            QStringList keyIV = strData.split(":");
+            QString strKey = keyList.getKey();
 
-            if( keyIV.size() > 0 )
+            if( strKey.length() > 0 )
             {
                 mKEKTypeCombo->setCurrentText( "Hex" );
-                strWrappingKey = keyIV.at(0);
+                strWrappingKey = strKey;
                 mKEKText->setText( strWrappingKey );
             }
         }
@@ -371,17 +371,17 @@ void KeyManDlg::clickUnwrap()
     {
         KeyListDlg keyList;
         keyList.setTitle( tr( "Select symmetric key for KEK" ));
+        keyList.setManage(false);
         keyList.mKeyTypeCombo->setCurrentText( "AES" );
 
         if( keyList.exec() == QDialog::Accepted )
         {
-            QString strData = keyList.getData();
-            QStringList keyIV = strData.split(":");
+            QString strKey = keyList.getKey();
 
-            if( keyIV.size() > 0 )
+            if( strKey.length() > 0 )
             {
                 mKEKTypeCombo->setCurrentText( "Hex" );
-                strWrappingKey = keyIV.at(0);
+                strWrappingKey = strKey;
                 mKEKText->setText( strWrappingKey );
             }
         }

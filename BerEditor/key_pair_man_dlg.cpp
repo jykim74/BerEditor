@@ -1529,6 +1529,38 @@ const QString KeyPairManDlg::getName()
     return strName;
 }
 
+int KeyPairManDlg::getPubKey( BIN *pPubKey )
+{
+    QString strPubPath;
+
+    QString strPath = getSelectedPath();
+    if( strPath.length() < 1 ) return -1;
+
+    if( pPubKey == NULL ) return -2;
+
+    strPubPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
+    JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), pPubKey );
+    if( pPubKey->nLen <= 0 ) return -3;
+
+    return 0;
+}
+
+int KeyPairManDlg::getPriKey( BIN *pPriKey )
+{
+    QString strPriPath;
+
+    QString strPath = getSelectedPath();
+    if( strPath.length() < 1 ) return -1;
+
+    if( pPriKey == NULL ) return -2;
+
+    strPriPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
+    JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), pPriKey );
+    if( pPriKey->nLen <= 0 ) return -3;
+
+    return 0;
+}
+
 void KeyPairManDlg::clickOK()
 {
     if( mode_ == KeyPairModeBase )
