@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>758</width>
-    <height>876</height>
+    <width>622</width>
+    <height>694</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1069,13 +1069,13 @@
       <widget class="QLineEdit" name="mResTimeText">
        <property name="minimumSize">
         <size>
-         <width>80</width>
+         <width>60</width>
          <height>0</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>80</width>
+         <width>60</width>
          <height>16777215</height>
         </size>
        </property>
@@ -1189,13 +1189,13 @@
       <widget class="QLineEdit" name="mSumTimeText">
        <property name="minimumSize">
         <size>
-         <width>90</width>
+         <width>70</width>
          <height>0</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>90</width>
+         <width>70</width>
          <height>16777215</height>
         </size>
        </property>
