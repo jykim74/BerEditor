@@ -126,6 +126,7 @@ private:
     int savePriKeyCert( const BIN *pPriKey, const BIN *pCert );
 
     void resetKey();
+    bool isCmd( const QString strName );
 
     BIN pri_key_;
     BIN pub_key_;

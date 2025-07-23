@@ -227,7 +227,7 @@ void X509CompareDlg::clickClear()
 
     JS_BIN_reset( &A_bin_ );
     JS_BIN_reset( &B_bin_ );
-    bin_type_ = -1;
+    cur_type_.clear();
 }
 
 int X509CompareDlg::compareExt( const JExtensionInfoList *pAExtList, const JExtensionInfoList *pBExtList )
@@ -1177,17 +1177,17 @@ void X509CompareDlg::clickCompare()
     }
 
     mCompareTable->setRowCount(0);
-    bin_type_ = mTypeCombo->currentIndex();
+    cur_type_ = strType;
 
-    if( mTypeCombo->currentIndex() == 0 ) // Certificate
+    if( strType == kCertificate ) // Certificate
     {
         compareCert();
     }
-    else if( mTypeCombo->currentIndex() == 1 ) // CRL
+    else if( strType == kCRL ) // CRL
     {
         compareCRL();
     }
-    else if( mTypeCombo->currentIndex() == 2 ) // CSR
+    else if( strType == kCSR ) // CSR
     {
         compareCSR();
     }
@@ -1282,24 +1282,25 @@ void X509CompareDlg::dblClickTable()
 {
     QTableWidgetItem* item = mCompareTable->currentItem();
 
-    if( item == NULL ) return;
+    if( item == NULL || cur_type_.length() < 1 ) return;
 
     int col = item->column();
 
     if( col == 1 )
     {
-        if( bin_type_ == 0 )
+        if( cur_type_ == kCertificate )
         {
             CertInfoDlg certInfo;
             certInfo.setCertBIN( &A_bin_ );
             certInfo.exec();
         }
-        else if( bin_type_ == 1 )
+        else if( cur_type_ == kCRL )
         {
             CRLInfoDlg crlInfo;
             crlInfo.setCRL_BIN( &A_bin_ );
+            crlInfo.exec();
         }
-        else if( bin_type_ == 2 )
+        else if( cur_type_ == kCSR )
         {
             CSRInfoDlg csrInfo;
             csrInfo.setReqBIN( &A_bin_ );
@@ -1308,18 +1309,19 @@ void X509CompareDlg::dblClickTable()
     }
     else if( col == 2 )
     {
-        if( bin_type_ == 0 )
+        if( cur_type_ == kCertificate )
         {
             CertInfoDlg certInfo;
             certInfo.setCertBIN( &B_bin_ );
             certInfo.exec();
         }
-        else if( bin_type_ == 1 )
+        else if( cur_type_ == kCRL )
         {
             CRLInfoDlg crlInfo;
             crlInfo.setCRL_BIN( &B_bin_ );
+            crlInfo.exec();
         }
-        else if( bin_type_ == 2 )
+        else if( cur_type_ == kCSR )
         {
             CSRInfoDlg csrInfo;
             csrInfo.setReqBIN( &B_bin_ );

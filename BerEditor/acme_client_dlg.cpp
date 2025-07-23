@@ -34,10 +34,18 @@
 #include "js_error.h"
 
 const QString kACMEUsedURL = "ACMEUsedURL";
-const QStringList kCmdList = { "", "newAccout", "newNonce", "newOrder", "renewalInfo", "revokeCert" };
+
 const QStringList kMethodList = { "POST", "GET" };
 const QStringList kParserList = { "dir", "error" };
 const QStringList kIdentifierList = { "dns", "http" };
+
+const QStringList kCmdList = {
+    kCmdDirectory, kCmdLocation, kCmdAccount, kCmdOrder,
+    kCmdOrders, kCmdKeyChange, kCmdNewAccount, kCmdNewNonce,
+    kCmdNewOrder, kCmdRenewalInfo, kCmdRevokeCert, kCmdNewAuthz,
+    kCmdFinalize, kCmdCertificate, kCmdAuthorization, kCmdChallenge,
+    kCmdDeactivate, kCmdUpdateAccount
+};
 
 ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     : QDialog(parent)
@@ -156,6 +164,19 @@ void ACMEClientDlg::resetKey()
     mKeyNameLabel->setText( key_name_ );
 
     mKIDGetPubBtn->setStyleSheet( "" );
+}
+
+bool ACMEClientDlg::isCmd( const QString strName )
+{
+    for( int i = 0; i < kCmdList.size(); i++ )
+    {
+        QString strCmd = kCmdList.at(i);
+
+        if( strCmd.toUpper() == strName.toUpper() )
+            return true;
+    }
+
+    return false;
 }
 
 void ACMEClientDlg::clickClearURL()
@@ -882,7 +903,7 @@ void ACMEClientDlg::clickGetDirectory()
         if( strCmd.toUpper() == kCmdNewNonce.toUpper() )
             mNonceURLText->setText( strValue );
 
-        if( strCmd.toLower() != "meta" )
+        if( isCmd( strCmd ) == true )
             addCmd( strCmd, strValue );
     }
 
