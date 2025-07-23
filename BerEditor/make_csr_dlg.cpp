@@ -51,6 +51,7 @@ void MakeCSRDlg::initialize()
     mSignHashCombo->addItems( kHashList );
     mSignHashCombo->setCurrentText( setMgr->defaultHash() );
     mSANListBtn->hide();
+    mCNText->setFocus();
 }
 
 void MakeCSRDlg::setPriKey( const BIN *pPri )
