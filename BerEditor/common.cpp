@@ -488,6 +488,12 @@ const QString getDataLenString( int nType, const QString strData )
     else if( nType == DATA_BASE64URL )
     {
         BIN bin = {0,0};
+        if( isBase64URL( strMsg ) == false )
+        {
+            strLen = QString( "-1" );
+            return strLen;
+        }
+
         JS_BIN_decodeBase64URL( strMsg.toStdString().c_str(), &bin );
         nLen = bin.nLen;
         JS_BIN_reset( &bin );
@@ -1444,7 +1450,7 @@ bool isBase64( const QString strBase64String )
 
 bool isBase64URL( const QString strBase64URLString )
 {
-    QRegExp base64REXURL("^[A-Za-z0-9_-]+$");
+    QRegExp base64REXURL("^[A-Za-z0-9_-]{2,}={0,2}$");
     base64REXURL.setCaseSensitivity(Qt::CaseInsensitive );
 
     return base64REXURL.exactMatch( strBase64URLString );
