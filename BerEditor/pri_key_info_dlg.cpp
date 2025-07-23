@@ -566,7 +566,8 @@ void PriKeyInfoDlg::clickSavePriKey()
 
     if( fileName.length() > 0 )
     {
-        int ret = JS_BIN_writePEM( &pri_key_, JS_PEM_TYPE_PRIVATE_KEY, fileName.toLocal8Bit().toStdString().c_str() );
+//        int ret = JS_BIN_writePEM( &pri_key_, JS_PEM_TYPE_PRIVATE_KEY, fileName.toLocal8Bit().toStdString().c_str() );
+        int ret = writePriKeyPEM( &pri_key_, fileName );
         if( ret > 0 )
         {
             berApplet->messageBox( tr( "Save a private key as a PEM file" ), this );
@@ -601,7 +602,8 @@ void PriKeyInfoDlg::clickSavePubKey()
 
     if( fileName.length() > 0 )
     {
-        int ret = JS_BIN_writePEM( &pri_key_, JS_PEM_TYPE_PUBLIC_KEY, fileName.toLocal8Bit().toStdString().c_str() );
+//        int ret = JS_BIN_writePEM( &pri_key_, JS_PEM_TYPE_PUBLIC_KEY, fileName.toLocal8Bit().toStdString().c_str() );
+        int ret = writePubKeyPEM( &binPub, fileName );
         if( ret > 0 )
         {
             berApplet->messageBox( tr( "Save a public key as a PEM file" ), this );

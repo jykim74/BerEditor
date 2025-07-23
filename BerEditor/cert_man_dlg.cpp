@@ -152,6 +152,9 @@ CertManDlg::CertManDlg(QWidget *parent) :
     mTLPriKeyDecodeBtn->setFixedWidth(34);
     mTLCertDecodeBtn->setFixedWidth(34);
     mTLPFXDecodeBtn->setFixedWidth(34);
+    mTLViewCertBtn->setFixedWidth(34);
+    mTLViewPriKeyBtn->setFixedWidth(34);
+
     mEE_ManGroup->layout()->setSpacing(5);
     mOther_ManGroup->layout()->setSpacing(5);
     mCA_ManGroup->layout()->setSpacing(5);
@@ -386,7 +389,7 @@ const QString CertManDlg::getModeName( int nMode )
     else if( nMode == ManModeTrust )
         strMode = tr( "TrustRootCA" );
     else
-        strMode = tr( "Certificate Management" );
+        strMode = tr( "Manage" );
 
     return strMode;
 }
@@ -404,6 +407,7 @@ void CertManDlg::changeTLVerison( int index )
 void CertManDlg::initUI()
 {
     mTLVersionCombo->addItems( kVersionList );
+    mTLVersionCombo->setCurrentIndex(1);
 
 #if defined(Q_OS_MAC)
     int nWidth = width() * 9/10;
