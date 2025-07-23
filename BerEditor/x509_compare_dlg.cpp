@@ -1333,6 +1333,8 @@ void X509CompareDlg::dblClickTable()
 void X509CompareDlg::clickViewA()
 {
     QString strPath = mAPathText->text();
+    QString strType = mTypeCombo->currentText();
+
     if( strPath.length() < 1 )
     {
         berApplet->warningBox( tr("Select a %1").arg( mTypeCombo->currentText()), this );
@@ -1340,23 +1342,23 @@ void X509CompareDlg::clickViewA()
         return;
     }
 
-    if( mTypeCombo->currentIndex() == 1 )
+    if( strType == kCertificate )
+    {
+        CertInfoDlg certInfoDlg;
+        certInfoDlg.setCertPath( strPath );
+        certInfoDlg.exec();
+    }
+    else if( strType == kCRL )
     {
         CRLInfoDlg crlInfo;
         crlInfo.setCRLPath( strPath );
         crlInfo.exec();
     }
-    else if( mTypeCombo->currentIndex() == 2 )
+    else if( strType == kCSR )
     {
         CSRInfoDlg csrInfo;
         csrInfo.setReqPath( strPath );
         csrInfo.exec();
-    }
-    else
-    {
-        CertInfoDlg certInfoDlg;
-        certInfoDlg.setCertPath( strPath );
-        certInfoDlg.exec();
     }
 }
 
@@ -1388,6 +1390,8 @@ void X509CompareDlg::clickDecodeA()
 void X509CompareDlg::clickViewB()
 {
     QString strPath = mBPathText->text();
+    QString strType = mTypeCombo->currentText();
+
     if( strPath.length() < 1 )
     {
         berApplet->warningBox( tr("Select a %1").arg( mTypeCombo->currentText()), this );
@@ -1395,23 +1399,23 @@ void X509CompareDlg::clickViewB()
         return;
     }
 
-    if( mTypeCombo->currentIndex() == 1 )
+    if( strType == kCertificate )
+    {
+        CertInfoDlg certInfoDlg;
+        certInfoDlg.setCertPath( strPath );
+        certInfoDlg.exec();
+    }
+    else if( strType == kCRL )
     {
         CRLInfoDlg crlInfo;
         crlInfo.setCRLPath( strPath );
         crlInfo.exec();
     }
-    else if( mTypeCombo->currentIndex() == 2 )
+    else if( strType == kCSR )
     {
         CSRInfoDlg csrInfo;
         csrInfo.setReqPath( strPath );
         csrInfo.exec();
-    }
-    else
-    {
-        CertInfoDlg certInfoDlg;
-        certInfoDlg.setCertPath( strPath );
-        certInfoDlg.exec();
     }
 }
 
