@@ -154,6 +154,8 @@ void ACMEClientDlg::resetKey()
     JS_BIN_reset( &kid_pub_key_ );
     key_name_.clear();
     mKeyNameLabel->setText( key_name_ );
+
+    mKIDGetPubBtn->setStyleSheet( "" );
 }
 
 void ACMEClientDlg::clickClearURL()
@@ -222,6 +224,7 @@ void ACMEClientDlg::clickKIDGetPubKey()
     priKeyInfo.setPublicKey( &binPub );
     priKeyInfo.exec();
 
+    mKIDGetPubBtn->setStyleSheet( "background-color: #CCFFEE;" );
 
 end :
     JS_BIN_reset( &binReq );
