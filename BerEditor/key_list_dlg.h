@@ -27,6 +27,8 @@ private slots:
     void showEvent(QShowEvent *event);
     void closeEvent(QCloseEvent *event );
 
+    void slotTableMenuRequested( QPoint pos );
+
     void clickKeyAdd();
     void clickKeyDel();
     void clickKeyView();

@@ -1,6 +1,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QDateTime>
+#include <QMenu>
 
 #include "cert_man_dlg.h"
 #include "common.h"
@@ -42,6 +43,12 @@ CertManDlg::CertManDlg(QWidget *parent) :
 
     connect( mCancelBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mOKBtn, SIGNAL(clicked()), this, SLOT(clickOK()));
+
+    connect( mEE_CertTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotTableMenuRequested(QPoint)));
+    connect( mOther_CertTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotOtherTableMenuRequested(QPoint)));
+    connect( mCA_CertTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotCATableMenuRequested(QPoint)));
+    connect( mCRL_Table, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotCRLTableMenuRequested(QPoint)));
+    connect( mRCA_CertTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotTrustTableMenuRequested(QPoint)));
 
     connect( mKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(keyTypeChanged(int)));
     connect( mOtherKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(otherKeyTypeChanged(int)));
@@ -207,6 +214,141 @@ void CertManDlg::closeEvent(QCloseEvent *event )
 {
     setGroupHide( false );
     setOKHide( false );
+}
+
+void CertManDlg::slotTableMenuRequested( QPoint pos )
+{
+    QMenu *menu = new QMenu(this);
+
+    QAction *viewCertAct = new QAction( tr( "View Cert" ), this );
+    QAction *deleteCertAct = new QAction( tr( "Delete Cert" ), this );
+    QAction *decodeCertAct = new QAction( tr( "Decode Cert" ), this );
+    QAction *changePwdAct = new QAction( tr( "Change Passwd" ), this );
+    QAction *exportPFXAct = new QAction( tr( "Export PFX" ), this );
+    QAction *checkKeyPairAct = new QAction( tr( "Check KeyPair" ), this );
+    QAction *decodePriKeyAct = new QAction( tr( "Decode PriKey" ), this );
+    QAction *viewPriKeyAct = new QAction( tr( "View PriKey" ), this );
+    QAction *viewPubKeyAct = new QAction( tr("View PubKey"), this );
+
+    connect( viewCertAct, SIGNAL(triggered()), this, SLOT(clickViewCert()));
+    connect( deleteCertAct, SIGNAL(triggered()), this, SLOT(clickDeleteCert()));
+    connect( decodeCertAct, SIGNAL(triggered()), this, SLOT(clickDecodeCert()));
+    connect( changePwdAct, SIGNAL(triggered()), this, SLOT(clickChangePasswd()));
+    connect( exportPFXAct, SIGNAL(triggered()), this, SLOT(clickExport()));
+    connect( checkKeyPairAct, SIGNAL(triggered()), this, SLOT(clickCheckKeyPair()));
+    connect( decodePriKeyAct, SIGNAL(triggered()), this, SLOT(clickDecodePriKey()));
+    connect( viewPriKeyAct, SIGNAL(triggered()), this, SLOT(clickViewPriKey()));
+    connect( viewPubKeyAct, SIGNAL(triggered()), this, SLOT(clickViewPubKey()));
+
+    menu->addAction( viewCertAct );
+    menu->addAction( deleteCertAct );
+    menu->addAction( decodeCertAct );
+    menu->addAction( changePwdAct );
+    menu->addAction( exportPFXAct );
+    menu->addAction( checkKeyPairAct );
+    menu->addAction( decodePriKeyAct );
+    menu->addAction( viewPriKeyAct );
+    menu->addAction( viewPubKeyAct );
+
+    menu->popup( mEE_CertTable->viewport()->mapToGlobal(pos));
+}
+
+void CertManDlg::slotOtherTableMenuRequested( QPoint pos )
+{
+    QMenu *menu = new QMenu(this);
+
+    QAction *removeCertAct = new QAction( tr( "Remove Cert" ), this );
+    QAction *viewCertAct = new QAction( tr( "View Cert" ), this );
+    QAction *decodeCertAct = new QAction( tr( "Decode Cert" ), this );
+    QAction *viewPubKeyAct = new QAction( tr( "View PubKey" ), this );
+    QAction *exportCertAct = new QAction( tr( "Export Cert" ), this );
+
+    connect( removeCertAct, SIGNAL(triggered()), this, SLOT(clickRemoveOther()));
+    connect( viewCertAct, SIGNAL(triggered()), this, SLOT(clickViewOther()));
+    connect( decodeCertAct, SIGNAL(triggered()), this, SLOT(clickDecodeOther()));
+    connect( viewPubKeyAct, SIGNAL(triggered()), this, SLOT(clickViewPubKeyOther()));
+    connect( exportCertAct, SIGNAL(triggered()), this, SLOT(clickExportOther()));
+
+    menu->addAction( removeCertAct );
+    menu->addAction( viewCertAct );
+    menu->addAction( decodeCertAct );
+    menu->addAction( viewPubKeyAct );
+    menu->addAction( exportCertAct );
+
+
+    menu->popup( mOther_CertTable->viewport()->mapToGlobal(pos));
+}
+
+void CertManDlg::slotCATableMenuRequested( QPoint pos )
+{
+    QMenu *menu = new QMenu(this);
+
+    QAction *removeCAAct = new QAction( tr( "Remove CA" ), this );
+    QAction *viewCAAct = new QAction( tr( "View CA" ), this );
+    QAction *decodeCAAct = new QAction( tr( "Decode CA" ), this );
+    QAction *viewPubKeyAct = new QAction( tr( "View PubKey" ), this );
+    QAction *exportCAAct = new QAction( tr( "Export CA" ), this );
+
+    connect( removeCAAct, SIGNAL(triggered()), this, SLOT(clickRemoveCA()));
+    connect( viewCAAct, SIGNAL(triggered()), this, SLOT(clickViewCA()));
+    connect( decodeCAAct, SIGNAL(triggered()), this, SLOT(clickDecodeCA()));
+    connect( viewPubKeyAct, SIGNAL(triggered()), this, SLOT(clickViewPubKeyCA()));
+    connect( exportCAAct, SIGNAL(triggered()), this, SLOT(clickExportCA()));
+
+    menu->addAction( removeCAAct );
+    menu->addAction( viewCAAct );
+    menu->addAction( decodeCAAct );
+    menu->addAction( viewPubKeyAct );
+    menu->addAction( exportCAAct );
+
+    menu->popup( mCA_CertTable->viewport()->mapToGlobal(pos));
+}
+
+void CertManDlg::slotCRLTableMenuRequested( QPoint pos )
+{
+    QMenu *menu = new QMenu(this);
+
+    QAction *removeCRLAct = new QAction( tr( "Remove CRL" ), this );
+    QAction *viewCRLAct = new QAction( tr( "View CRL" ), this );
+    QAction *decodeCRLAct = new QAction( tr( "Decode CRL" ), this );
+    QAction *exportCRLAct = new QAction( tr( "Export CRL" ), this );
+
+    connect( removeCRLAct, SIGNAL(triggered()), this, SLOT(clickRemoveCRL()));
+    connect( viewCRLAct, SIGNAL(triggered()), this, SLOT(clickViewCRL()));
+    connect( decodeCRLAct, SIGNAL(triggered()), this, SLOT(clickDecodeCRL()));
+    connect( exportCRLAct, SIGNAL(triggered()), this, SLOT(clickExportCRL()));
+
+    menu->addAction( removeCRLAct );
+    menu->addAction( viewCRLAct );
+    menu->addAction( decodeCRLAct );
+    menu->addAction( exportCRLAct );
+
+    menu->popup( mCRL_Table->viewport()->mapToGlobal(pos));
+}
+
+void CertManDlg::slotTrustTableMenuRequested( QPoint pos )
+{
+    QMenu *menu = new QMenu(this);
+
+    QAction *removeTrustAct = new QAction( tr( "Remove Trust" ), this );
+    QAction *viewTrustAct = new QAction( tr( "View Trust" ), this );
+    QAction *decodeTrustAct = new QAction( tr( "Decode Trust" ), this );
+    QAction *viewPubKeyAct = new QAction( tr( "View PubKey" ), this );
+    QAction *exportTrustAct = new QAction( tr( "Export Trust" ), this );
+
+    connect( removeTrustAct, SIGNAL(triggered()), this, SLOT(clickRemoveTrust()));
+    connect( viewTrustAct, SIGNAL(triggered()), this, SLOT(clickViewTrust()));
+    connect( decodeTrustAct, SIGNAL(triggered()), this, SLOT(clickDecodeTrust()));
+    connect( viewPubKeyAct, SIGNAL(triggered()), this, SLOT(clickViewPubKeyTrust()));
+    connect( exportTrustAct, SIGNAL(triggered()), this, SLOT(clickExportTrust()));
+
+    menu->addAction( removeTrustAct );
+    menu->addAction( viewTrustAct );
+    menu->addAction( decodeTrustAct );
+    menu->addAction( viewPubKeyAct );
+    menu->addAction( exportTrustAct );
+
+    menu->popup( mRCA_CertTable->viewport()->mapToGlobal(pos));
 }
 
 void CertManDlg::keyTypeChanged( int index )

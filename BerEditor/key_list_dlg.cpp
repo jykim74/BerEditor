@@ -2,6 +2,7 @@
 #include <QDir>
 #include <QTextStream>
 #include <QDateTime>
+#include <QMenu>
 
 #include "key_list_dlg.h"
 #include "ui_key_list_dlg.h"
@@ -22,6 +23,8 @@ KeyListDlg::KeyListDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
+
+    connect( mKeyTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotTableMenuRequested(QPoint)));
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mKeyAddBtn, SIGNAL(clicked()), this, SLOT(clickKeyAdd()));
@@ -106,6 +109,22 @@ void KeyListDlg::showEvent(QShowEvent *event)
 void KeyListDlg::closeEvent(QCloseEvent *event )
 {
 
+}
+
+void KeyListDlg::slotTableMenuRequested( QPoint pos )
+{
+    QMenu *menu = new QMenu(this);
+
+    QAction* deleteAct = new QAction( tr( "Key Delete" ), this );
+    QAction* viewAct = new QAction( tr( "Key View" ), this );
+
+    connect( deleteAct, SIGNAL(triggered()), this, SLOT(clickKeyDel()));
+    connect( viewAct, SIGNAL(triggered()), this, SLOT(clickKeyView()));
+
+    menu->addAction( deleteAct );
+    menu->addAction( viewAct );
+
+    menu->popup( mKeyTable->viewport()->mapToGlobal(pos));
 }
 
 int KeyListDlg::getPlainKeyIV( const QString strData, QString& strKey, QString& strIV )

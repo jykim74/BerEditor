@@ -64,6 +64,12 @@ private slots:
     void showEvent(QShowEvent *event);
     void closeEvent(QCloseEvent *event );
 
+    void slotTableMenuRequested( QPoint pos );
+    void slotOtherTableMenuRequested( QPoint pos );
+    void slotCATableMenuRequested( QPoint pos );
+    void slotCRLTableMenuRequested( QPoint pos );
+    void slotTrustTableMenuRequested( QPoint pos );
+
     void keyTypeChanged( int index );
     void otherKeyTypeChanged( int index );
     void CAKeyTypeChanged( int index );
