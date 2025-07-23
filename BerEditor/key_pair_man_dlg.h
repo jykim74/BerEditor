@@ -44,12 +44,12 @@ private slots:
     void closeEvent(QCloseEvent *event );
 
     void keyTypeChanged( int index );
+    void slotTableMenuRequested( QPoint pos );
 
 
     void clickLGenKeyPair();
     void clickLDelete();
     void clickLMakeCSR();
-    void clickLEncrypt();
     void clickLViewPriKey();
     void clickLViewPubKey();
     void clickLDecodePriKey();

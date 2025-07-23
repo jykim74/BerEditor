@@ -1,5 +1,6 @@
 #include <QDir>
 #include <QDateTime>
+#include <QMenu>
 
 #include "key_pair_man_dlg.h"
 #include "gen_key_pair_dlg.h"
@@ -41,11 +42,12 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
     connect( mKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(keyTypeChanged(int)));
     connect( mOKBtn, SIGNAL(clicked()), this, SLOT(clickOK()));
 
+    connect( mKeyPairTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotTableMenuRequested(QPoint)));
+
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mLGenKeyPairBtn, SIGNAL(clicked()), this, SLOT(clickLGenKeyPair()));
     connect( mLDeleteBtn, SIGNAL(clicked()), this, SLOT(clickLDelete()));
     connect( mLMakeCSRBtn, SIGNAL(clicked()), this, SLOT(clickLMakeCSR()));
-    connect( mLEncryptBtn, SIGNAL(clicked()), this, SLOT(clickLEncrypt()));
     connect( mLViewPriKeyBtn, SIGNAL(clicked()), this, SLOT(clickLViewPriKey()));
     connect( mLViewPubKeyBtn, SIGNAL(clicked()), this, SLOT(clickLViewPubKey()));
     connect( mLDecodePriKeyBtn, SIGNAL(clicked()), this, SLOT(clickLDecodePriKey()));
@@ -193,6 +195,7 @@ void KeyPairManDlg::initUI()
     mPriInfoPathText->setPlaceholderText( tr( "Private key information file path") );
     mCSRPathText->setPlaceholderText( tr( "CSR file path") );
 
+
     mOKBtn->hide();
 }
 
@@ -209,6 +212,37 @@ void KeyPairManDlg::closeEvent(QCloseEvent *event )
 void KeyPairManDlg::keyTypeChanged( int index )
 {
     loadKeyPairList();
+}
+
+void KeyPairManDlg::slotTableMenuRequested( QPoint pos )
+{
+    QMenu *menu = new QMenu(this);
+
+    QAction *decodePubKeyAct = new QAction( tr( "Decode PubKey" ), this );
+    QAction *makeCSRAct = new QAction( tr( "Make CSR" ), this );
+    QAction *viewPubKeyAct = new QAction( tr( "View PubKey" ), this );
+    QAction *decodePriKeyAct = new QAction( tr( "Decode PriKey" ), this );
+    QAction *deleteAct = new QAction( tr( "Delete" ), this );
+    QAction *viewPriKeyAct = new QAction( tr( "View PriKey" ), this );
+    QAction *exportAct = new QAction( tr("Export"), this );
+
+    connect( decodePubKeyAct, SIGNAL(triggered()), this, SLOT(clickLDecodePubKey()));
+    connect( makeCSRAct, SIGNAL(triggered()), this, SLOT(clickLMakeCSR()));
+    connect( viewPubKeyAct, SIGNAL(triggered()), this, SLOT(clickLViewPubKey()));
+    connect( decodePriKeyAct, SIGNAL(triggered()), this, SLOT(clickLDecodePriKey()));
+    connect( deleteAct, SIGNAL(triggered()), this, SLOT(clickLDelete()));
+    connect( viewPriKeyAct, SIGNAL(triggered()), this, SLOT(clickLViewPriKey()));
+    connect( exportAct, SIGNAL(triggered()), this, SLOT(clickExport()));
+
+    menu->addAction( decodePubKeyAct );
+    menu->addAction( makeCSRAct );
+    menu->addAction( viewPubKeyAct );
+    menu->addAction( decodePriKeyAct );
+    menu->addAction( deleteAct );
+    menu->addAction( viewPriKeyAct );
+    menu->addAction( exportAct );
+
+    menu->popup( mKeyPairTable->viewport()->mapToGlobal(pos));
 }
 
 void KeyPairManDlg::initialize()
@@ -589,59 +623,6 @@ void KeyPairManDlg::clickLMakeCSR()
 end :
     JS_BIN_reset( &binCSR );
     JS_BIN_reset( &binPri );
-}
-
-void KeyPairManDlg::clickLEncrypt()
-{
-    int ret = 0;
-    QDir dir;
-
-    QString strPubKeyPath;
-    QString strPriKeyPath;
-    QString strPath = getSelectedPath();
-
-    if( strPath.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Please select keypair" ), this );
-        return;
-    }
-
-    strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
-    strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
-
-    BIN binPri = {0,0};
-    BIN binEncPri = {0,0};
-    QString fileName;
-
-    JS_BIN_fileReadBER( strPriKeyPath.toLocal8Bit().toStdString().c_str(), &binPri );
-
-    QString strCurFolder;
-
-    NewPasswdDlg newPass;
-    QString strPass;
-    newPass.setTitle( tr( "Enter a new private key password" ));
-
-    if( newPass.exec() != QDialog::Accepted )
-        goto end;
-
-    strPass = newPass.mPasswdText->text();
-    ret = JS_PKI_encryptPrivateKey2( -1, strPass.toStdString().c_str(), &binPri, NULL, &binEncPri );
-    if( ret != 0 )
-    {
-        berApplet->warnLog( tr( "fail to encrypt private key: %1").arg( ret ), this);
-        goto end;
-    }
-
-    fileName = berApplet->findSaveFile( this, JS_FILE_TYPE_PRIKEY, strCurFolder );
-    if( fileName.length() > 1 )
-    {
-        JS_BIN_writePEM( &binPri, JS_PEM_TYPE_PRIVATE_KEY, fileName.toLocal8Bit().toStdString().c_str() );
-        berApplet->messageLog(tr("The Enc PrivateKey(%1) is saved successfully").arg( fileName ), this );
-    }
-
-end :
-    JS_BIN_reset( &binPri );
-    JS_BIN_reset( &binEncPri );
 }
 
 void KeyPairManDlg::clickLViewPriKey()

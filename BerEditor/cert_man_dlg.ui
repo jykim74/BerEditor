@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>573</width>
-    <height>610</height>
+    <height>510</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -50,8 +50,11 @@
    </item>
    <item>
     <widget class="QTabWidget" name="mTabWidget">
+     <property name="contextMenuPolicy">
+      <enum>Qt::CustomContextMenu</enum>
+     </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mEETab">
       <attribute name="title">
@@ -136,6 +139,9 @@
            <width>500</width>
            <height>160</height>
           </size>
+         </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
          </property>
          <attribute name="horizontalHeaderHighlightSections">
           <bool>false</bool>
@@ -369,6 +375,9 @@
        </item>
        <item>
         <widget class="QTableWidget" name="mOther_CertTable">
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
+         </property>
          <attribute name="horizontalHeaderHighlightSections">
           <bool>false</bool>
          </attribute>
@@ -532,6 +541,9 @@
        </item>
        <item>
         <widget class="QTableWidget" name="mCA_CertTable">
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
+         </property>
          <property name="horizontalScrollBarPolicy">
           <enum>Qt::ScrollBarAsNeeded</enum>
          </property>
@@ -684,6 +696,9 @@
        </item>
        <item>
         <widget class="QTableWidget" name="mCRL_Table">
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
+         </property>
          <attribute name="horizontalHeaderHighlightSections">
           <bool>false</bool>
          </attribute>
@@ -829,6 +844,9 @@
        </item>
        <item>
         <widget class="QTableWidget" name="mRCA_CertTable">
+         <property name="contextMenuPolicy">
+          <enum>Qt::CustomContextMenu</enum>
+         </property>
          <attribute name="horizontalHeaderHighlightSections">
           <bool>false</bool>
          </attribute>
