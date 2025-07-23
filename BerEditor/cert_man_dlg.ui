@@ -444,21 +444,21 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
-             <widget class="QPushButton" name="mRunOtherVerifyBtn">
-              <property name="text">
-               <string>Run Verify</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="2">
+            <item row="1" column="3">
              <widget class="QPushButton" name="mRunOtherPubEncBtn">
               <property name="text">
                <string>Run Encrypt</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="3">
+            <item row="1" column="2">
+             <widget class="QPushButton" name="mRunOtherVerifyBtn">
+              <property name="text">
+               <string>Run Verify</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
              <widget class="QPushButton" name="mExportOtherBtn">
               <property name="text">
                <string>Export Cert</string>
@@ -1418,9 +1418,6 @@
   <tabstop>mViewOtherBtn</tabstop>
   <tabstop>mDecodeOtherBtn</tabstop>
   <tabstop>mViewPubKeyOtherBtn</tabstop>
-  <tabstop>mRunOtherVerifyBtn</tabstop>
-  <tabstop>mRunOtherPubEncBtn</tabstop>
-  <tabstop>mExportOtherBtn</tabstop>
   <tabstop>mCAPathText</tabstop>
   <tabstop>mCAKeyTypeCombo</tabstop>
   <tabstop>mCA_CertTable</tabstop>
