@@ -253,6 +253,7 @@ void KeyPairManDlg::initialize()
     mSavePathText->setText( strKeyPairPath );
 
     mVersionCombo->addItems(kVersionList);
+    mVersionCombo->setCurrentIndex(1);
 
     loadKeyPairList();
 }
@@ -406,12 +407,7 @@ const QString KeyPairManDlg::getTypePathName( qint64 now_t, DerType nType )
     else if( nType == TypeCSR )
         strName = QString( "csr_%1" ).arg( priKeyInfo.baseName() );
 
-
-    if( mSavePathText->text().length() > 0 )
-        strFullName = mSavePathText->text();
-    else
-        strFullName = ".";
-
+    strFullName = berApplet->curPath();
     strFullName += QString( "/%1_%2.%3" ).arg( strName ).arg( strDateTime ).arg(strExt);
 
     return strFullName;
@@ -909,8 +905,11 @@ void KeyPairManDlg::clickSaveToList()
         QString strPriSavePath = QString( "%1/%2" ).arg( fullPath ).arg( kPrivateFile );
         QString strPubSavePath = QString( "%1/%2" ).arg( fullPath ).arg( kPublicFile );
 
-        JS_BIN_writePEM( &binPri, JS_PEM_TYPE_PRIVATE_KEY, strPriSavePath.toLocal8Bit().toStdString().c_str() );
-        JS_BIN_writePEM( &binPub, JS_PEM_TYPE_PUBLIC_KEY, strPubSavePath.toLocal8Bit().toStdString().c_str() );
+//        JS_BIN_writePEM( &binPri, JS_PEM_TYPE_PRIVATE_KEY, strPriSavePath.toLocal8Bit().toStdString().c_str() );
+//        JS_BIN_writePEM( &binPub, JS_PEM_TYPE_PUBLIC_KEY, strPubSavePath.toLocal8Bit().toStdString().c_str() );
+
+        writePriKeyPEM( &binPri, strPriSavePath );
+        writePubKeyPEM( &binPub, strPubSavePath );
 
         loadKeyPairList();
 
