@@ -164,7 +164,7 @@ int GenMacDlg::macInit()
         keyList.setTitle( tr( "Select symmetric key" ));
         keyList.setManage( false );
 
-        keyList.mKeyTypeCombo->setCurrentText( "HMAC" );
+//        keyList.mKeyTypeCombo->setCurrentText( "HMAC" );
 
         if( keyList.exec() == QDialog::Accepted )
         {
@@ -430,7 +430,7 @@ void GenMacDlg::clickMAC()
         keyList.setTitle( tr( "Select symmetric key" ));
         keyList.setManage( false );
 
-        keyList.mKeyTypeCombo->setCurrentText( "HMAC" );
+//        keyList.mKeyTypeCombo->setCurrentText( "HMAC" );
 
         if( keyList.exec() == QDialog::Accepted )
         {
@@ -757,6 +757,7 @@ void GenMacDlg::clickClearDataAll()
 {
     mInputText->clear();
     mKeyText->clear();
+    mIVText->clear();
     mOutputText->clear();
     mStatusLabel->setText( tr("Status" ));
 

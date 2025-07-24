@@ -580,7 +580,7 @@ void PriKeyInfoDlg::clickSavePubKey()
 
     ExportDlg exportDlg;
     exportDlg.setName( "PublicKey" );
-    exportDlg.setPrivateKey( &binPub );
+    exportDlg.setPublicKey( &binPub );
     exportDlg.exec();
 
     JS_BIN_reset( &binPub );
