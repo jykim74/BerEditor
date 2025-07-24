@@ -18,6 +18,7 @@
 #include "js_pkcs11.h"
 #include "js_error.h"
 #include "common.h"
+#include "export_dlg.h"
 
 
 PriKeyInfoDlg::PriKeyInfoDlg(QWidget *parent) :
@@ -556,23 +557,10 @@ void PriKeyInfoDlg::clickSavePriKey()
         return;
     }
 
-    QString strPath;
-    QString strAlg = JS_PKI_getKeyTypeName( key_type_ );
-
-    if( strPath.length() > 0 ) strPath += "/";
-    strPath = QString( "%1%2_private_key.pem" ).arg( strPath ).arg(strAlg);
-
-    QString fileName = berApplet->findSaveFile( this, JS_FILE_TYPE_BER, strPath );
-
-    if( fileName.length() > 0 )
-    {
-//        int ret = JS_BIN_writePEM( &pri_key_, JS_PEM_TYPE_PRIVATE_KEY, fileName.toLocal8Bit().toStdString().c_str() );
-        int ret = writePriKeyPEM( &pri_key_, fileName );
-        if( ret > 0 )
-        {
-            berApplet->messageBox( tr( "Save a private key as a PEM file" ), this );
-        }
-    }
+    ExportDlg exportDlg;
+    exportDlg.setName( "PrivateKey" );
+    exportDlg.setPrivateKey( &pri_key_ );
+    exportDlg.exec();
 }
 
 void PriKeyInfoDlg::clickSavePubKey()
@@ -590,25 +578,10 @@ void PriKeyInfoDlg::clickSavePubKey()
     else
         JS_BIN_copy( &binPub, &pub_key_ );
 
-    QString strPath;
-    QString strAlg = JS_PKI_getKeyTypeName( key_type_ );
-
-    if( strPath.length() > 0 ) strPath += "/";
-    strPath = QString( "%1%2_public_key.pem" ).arg( strPath ).arg(strAlg);
-
-    QString fileName = berApplet->findSaveFile( this, JS_FILE_TYPE_BER, strPath );
-
-
-
-    if( fileName.length() > 0 )
-    {
-//        int ret = JS_BIN_writePEM( &pri_key_, JS_PEM_TYPE_PUBLIC_KEY, fileName.toLocal8Bit().toStdString().c_str() );
-        int ret = writePubKeyPEM( &binPub, fileName );
-        if( ret > 0 )
-        {
-            berApplet->messageBox( tr( "Save a public key as a PEM file" ), this );
-        }
-    }
+    ExportDlg exportDlg;
+    exportDlg.setName( "PublicKey" );
+    exportDlg.setPrivateKey( &binPub );
+    exportDlg.exec();
 
     JS_BIN_reset( &binPub );
 }
