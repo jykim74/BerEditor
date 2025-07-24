@@ -13,7 +13,7 @@ qtHaveModule(printsupport): QT += printsupport
 
 TARGET = BerEditor
 TEMPLATE = app
-PROJECT_VERSION = "2.3.6"
+PROJECT_VERSION = "2.3.8"
 
 QMAKE_CXXFLAGS += -std=c++17
 
