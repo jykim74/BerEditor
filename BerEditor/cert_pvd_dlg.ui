@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>556</width>
-    <height>675</height>
+    <height>663</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Path Validation List</string>
+      <string>Certificate Path Valication</string>
      </property>
     </widget>
    </item>
@@ -352,7 +352,7 @@
      <item row="0" column="4">
       <widget class="QPushButton" name="mListClearBtn">
        <property name="text">
-        <string>List Clear</string>
+        <string>Clear</string>
        </property>
       </widget>
      </item>
@@ -404,20 +404,23 @@
       </size>
      </property>
      <property name="title">
-      <string>Flags Option</string>
+      <string>Flag Options</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_7">
       <property name="leftMargin">
-       <number>6</number>
+       <number>4</number>
       </property>
       <property name="topMargin">
-       <number>6</number>
+       <number>4</number>
       </property>
       <property name="rightMargin">
-       <number>6</number>
+       <number>4</number>
       </property>
       <property name="bottomMargin">
-       <number>6</number>
+       <number>4</number>
+      </property>
+      <property name="spacing">
+       <number>4</number>
       </property>
       <item row="0" column="2">
        <widget class="QCheckBox" name="mCRLCheckAllCheck">
@@ -576,7 +579,7 @@
      <item row="0" column="4">
       <widget class="QPushButton" name="mParamListClearBtn">
        <property name="text">
-        <string>List Clear</string>
+        <string>Clear</string>
        </property>
       </widget>
      </item>

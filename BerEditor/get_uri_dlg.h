@@ -42,6 +42,11 @@ private:
 
     const QString getValidURL();
 
+    void setEnvLdapHost( const QString strHost );
+    void setEnvLdapPort( int nPort );
+    const QString getEnvLdapHost();
+    int getEnvLdapPort();
+
     BIN data_;
 };
 

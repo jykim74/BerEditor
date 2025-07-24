@@ -505,8 +505,8 @@ void LCNInfoDlg::clickRemove()
     bool bVal = berApplet->yesOrNoBox( strMsg, this );
     if( bVal == false ) return;
 
-    berApplet->settingsMgr()->removeSet( "Misc", "email" );
-    berApplet->settingsMgr()->removeSet( "Misc", "license" );
+    berApplet->settingsMgr()->removeSet( kEnvMiscGroup, "email" );
+    berApplet->settingsMgr()->removeSet( kEnvMiscGroup, "license" );
     berApplet->messageBox( tr( "Remove invalid license settings" ), this );
 }
 

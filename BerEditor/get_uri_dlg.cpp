@@ -14,6 +14,10 @@
 #include "js_bin.h"
 #include "js_http.h"
 
+
+const QString kLdapHost = "LdapHost";
+const QString kLdapPort = "LdapPort";
+
 const QString kGetUsedURL = "GetUsedURL";
 
 static QStringList sScopeList = { "BASE" };
@@ -57,6 +61,15 @@ GetURIDlg::GetURIDlg(QWidget *parent) :
 GetURIDlg::~GetURIDlg()
 {
     JS_BIN_reset( &data_ );
+
+    QString strHost = mHostText->text();
+    int nPort = mPortText->text().toInt();
+
+    if( strHost != getEnvLdapHost() )
+        setEnvLdapHost( strHost );
+
+    if( nPort != getEnvLdapPort() )
+        setEnvLdapPort( nPort );
 }
 
 void GetURIDlg::setCA( const QString strURL )
@@ -256,8 +269,8 @@ void GetURIDlg::initUI()
 {
     mScopeCombo->addItems(sScopeList);
     mTypeCombo->addItems(sTypeList);
-    mHostText->setText( "127.0.0.1" );
-    mPortText->setText( "389" );
+    mHostText->setText( getEnvLdapHost() );
+    mPortText->setText( QString("%1").arg( getEnvLdapPort()) );
     mFilterText->setText( "(objectClass=*)" );
 
     clickUseLDAPHost();
@@ -313,4 +326,44 @@ const QString GetURIDlg::getValidURL()
     }
 
     return strLink.simplified();
+}
+
+void GetURIDlg::setEnvLdapHost( const QString strHost )
+{
+    QSettings settings;
+    settings.beginGroup( kEnvTempGroup );
+    settings.setValue( kLdapHost, strHost );
+    settings.endGroup();
+}
+
+void GetURIDlg::setEnvLdapPort( int nPort )
+{
+    QSettings settings;
+    settings.beginGroup( kEnvTempGroup );
+    settings.setValue( kLdapPort, nPort );
+    settings.endGroup();
+}
+
+const QString GetURIDlg::getEnvLdapHost()
+{
+    QString strHost;
+
+    QSettings settings;
+    settings.beginGroup( kEnvTempGroup );
+    strHost = settings.value( kLdapHost, "127.0.0.1" ).toString();
+    settings.endGroup();
+
+    return strHost;
+}
+
+int GetURIDlg::getEnvLdapPort()
+{
+    int nPort = -1;
+
+    QSettings settings;
+    settings.beginGroup( kEnvTempGroup );
+    nPort = settings.value( kLdapPort, "389" ).toInt();
+    settings.endGroup();
+
+    return nPort;
 }

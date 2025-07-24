@@ -111,6 +111,9 @@ void ACMEClientDlg::initUI()
     QStringList usedList = getUsedURL();
     mURLCombo->addItems( usedList );
 
+    mEmailText->setPlaceholderText( tr( "Email address" ));
+    mDNSText->setPlaceholderText( tr( "Domain name system" ));
+
 #if defined(QT_DEBUG)
     mEmailText->setText( "jykim74@gmail.com" );
     mDNSText->setText( "example.com" );

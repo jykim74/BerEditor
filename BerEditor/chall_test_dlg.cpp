@@ -15,7 +15,6 @@
 #include "js_http.h"
 #include "js_pki.h"
 
-const QString kChallTestGroup = "ChallTest";
 const QString kChallTestServer = "ChallTestServer";
 const QString kChallTestPort = "ChallTestPort";
 
@@ -445,7 +444,7 @@ void ChallTestDlg::clickValueClear()
 void ChallTestDlg::setEnvServer( const QString strServer )
 {
     QSettings settings;
-    settings.beginGroup( kChallTestGroup );
+    settings.beginGroup( kEnvTempGroup );
     settings.setValue( kChallTestServer, strServer );
     settings.endGroup();
 }
@@ -453,7 +452,7 @@ void ChallTestDlg::setEnvServer( const QString strServer )
 void ChallTestDlg::setEnvPort( int nPort )
 {
     QSettings settings;
-    settings.beginGroup( kChallTestGroup );
+    settings.beginGroup( kEnvTempGroup );
     settings.setValue( kChallTestPort, nPort );
     settings.endGroup();
 }
@@ -463,7 +462,7 @@ const QString ChallTestDlg::getEnvServer()
     QString strServer;
 
     QSettings settings;
-    settings.beginGroup( kChallTestGroup );
+    settings.beginGroup( kEnvTempGroup );
     strServer = settings.value( kChallTestServer, "127.0.0.1" ).toString();
     settings.endGroup();
 
@@ -475,7 +474,7 @@ int ChallTestDlg::getEnvPort()
     int nPort = -1;
 
     QSettings settings;
-    settings.beginGroup( kChallTestGroup );
+    settings.beginGroup( kEnvTempGroup );
     nPort = settings.value( kChallTestPort, "8055" ).toInt();
     settings.endGroup();
 

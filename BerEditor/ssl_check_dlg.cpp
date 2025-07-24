@@ -228,6 +228,12 @@ SSLCheckDlg::SSLCheckDlg(QWidget *parent) :
 
     initialize();
     mCheckBtn->setDefault(true);
+
+    mTreeTab->layout()->setSpacing(0);
+    mTreeTab->layout()->setMargin(0);
+    mLogTab->layout()->setSpacing(0);
+    mLogTab->layout()->setMargin(0);
+
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
 
@@ -235,10 +241,6 @@ SSLCheckDlg::SSLCheckDlg(QWidget *parent) :
     mServerTab->layout()->setMargin(5);
     mMutualTab->layout()->setSpacing(5);
     mMutualTab->layout()->setMargin(5);
-    mTreeTab->layout()->setSpacing(5);
-    mTreeTab->layout()->setMargin(5);
-    mLogTab->layout()->setSpacing(5);
-    mLogTab->layout()->setMargin(5);
 
     mTrustCAViewBtn->setFixedWidth(34);
     mTrustCADecodeBtn->setFixedWidth(34);
