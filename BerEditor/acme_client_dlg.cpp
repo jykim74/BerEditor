@@ -119,6 +119,9 @@ void ACMEClientDlg::initUI()
 #else
     mTestBtn->hide();
 #endif
+
+    mRequestText->setPlaceholderText( tr("JSON String" ));
+    mResponseText->setPlaceholderText( tr("JSON or Base64 value") );
 }
 
 void ACMEClientDlg::initialize()

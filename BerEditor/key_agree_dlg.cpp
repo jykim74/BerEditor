@@ -347,6 +347,8 @@ void KeyAgreeDlg::initialize()
     mECDHParamCombo->setCurrentText( "prime256v1" );
 
     mPText->setPlaceholderText( tr( "Hex value" ) );
+    mSecretKeyText->setPlaceholderText( tr( "Hex value" ));
+
     mAPrivateKeyText->setPlaceholderText( tr("Hex value") );
     mAPublicKeyText->setPlaceholderText( tr( "Hex value" ) );
     mBPrivateKeyText->setPlaceholderText( tr("Hex value") );

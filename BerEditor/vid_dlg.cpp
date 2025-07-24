@@ -63,6 +63,7 @@ void VIDDlg::initialize()
     mSSNText->setPlaceholderText( tr( "Enter a identity value") );
     mRandText->setPlaceholderText( tr( "Enter a random value" ) );
     mVIDText->setPlaceholderText( tr( "Hex value" ));
+    mHashContentText->setPlaceholderText( tr( "Hex value" ));
 }
 
 void VIDDlg::changeSSN( const QString& text )
@@ -236,7 +237,7 @@ void VIDDlg::clickDecodeVID()
     }
 
     JS_BIN_decodeHex( strVID.toStdString().c_str(), &binData );
-    berApplet->decodeData( &binData, "" );
+    berApplet->decodeData( &binData, "VID" );
     JS_BIN_reset( &binData );
 }
 
@@ -251,7 +252,7 @@ void VIDDlg::clickDecodeHashContent()
     }
 
     JS_BIN_decodeHex( strHashContent.toStdString().c_str(), &binData );
-    berApplet->decodeData( &binData, "" );
+    berApplet->decodeData( &binData, "Hash Content" );
     JS_BIN_reset( &binData );
 }
 

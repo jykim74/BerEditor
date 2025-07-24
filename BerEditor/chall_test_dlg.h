@@ -92,6 +92,11 @@ private:
 
     void setHost( const QString strLabel, bool bEnable = true );
     void setValue( const QString strLabel, bool bEnable = true );
+
+    void setEnvServer( const QString strServer );
+    void setEnvPort( int nPort );
+    const QString getEnvServer();
+    int getEnvPort();
 };
 
 #endif // CHALL_TEST_DLG_H

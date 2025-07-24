@@ -161,14 +161,14 @@ QString BerApplet::curPath( const QString strPath )
     return folder.path();
 }
 
-void BerApplet::decodeData( const BIN *pData, const QString strPath )
+int BerApplet::decodeData( const BIN *pData, const QString strPath )
 {
-    main_win_->decodeData( pData, strPath );
+    return main_win_->decodeData( pData, strPath );
 }
 
-void BerApplet::decodeTTLV( const BIN *pData )
+int BerApplet::decodeTTLV( const BIN *pData )
 {
-    main_win_->decodeTTLV( pData );
+    return main_win_->decodeTTLV( pData );
 }
 
 const BIN& BerApplet::getBER()

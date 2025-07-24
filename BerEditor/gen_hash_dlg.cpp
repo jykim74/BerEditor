@@ -71,6 +71,8 @@ void GenHashDlg::initialize()
 {
     SettingsMgr *setMgr = berApplet->settingsMgr();
 
+    mOutputText->setPlaceholderText( tr("Hex value" ));
+
     mOutputHashCombo->addItems( kHashList );
     mOutputHashCombo->setCurrentText( setMgr->defaultHash() );
 

@@ -101,6 +101,7 @@ void TSPClientDlg::initialize()
     mCACertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
     mSrvCertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
     mRequestText->setPlaceholderText( tr("Hex value" ));
+    mResponseText->setPlaceholderText( tr("Hex value" ));
 }
 
 QStringList TSPClientDlg::getUsedURL()
@@ -177,7 +178,7 @@ void TSPClientDlg::decodeRequest()
 
     JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
 
-    berApplet->decodeData( &binData, NULL );
+    berApplet->decodeData( &binData, "TSP Request" );
 
     JS_BIN_reset( &binData );
 }
@@ -196,7 +197,7 @@ void TSPClientDlg::decodeResponse()
 
     JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
 
-    berApplet->decodeData( &binData, NULL );
+    berApplet->decodeData( &binData, "TSP Response" );
 
     JS_BIN_reset( &binData );
 }

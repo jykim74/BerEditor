@@ -107,6 +107,7 @@ void GenMacDlg::initialize()
 
     mInputTab->setCurrentIndex(0);
 
+    mOutputText->setPlaceholderText( tr("Hex value" ));
     mKeyText->setPlaceholderText( tr( "Select KeyList key"));
     mSrcFileText->setPlaceholderText( tr( "Find the target file" ));
 

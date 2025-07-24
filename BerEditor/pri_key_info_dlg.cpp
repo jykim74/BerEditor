@@ -517,9 +517,9 @@ void PriKeyInfoDlg::clickDecode()
     }
 
     if( pri_key_.nLen > 0 )
-        berApplet->decodeData( &pri_key_, NULL );
+        berApplet->decodeData( &pri_key_, "Private Key" );
     else
-        berApplet->decodeData( &pub_key_, NULL );
+        berApplet->decodeData( &pub_key_, "Public Key" );
 }
 
 void PriKeyInfoDlg::clickCheckPubKey()
