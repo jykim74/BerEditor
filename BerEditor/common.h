@@ -48,6 +48,10 @@ enum {
     JS_FILE_TYPE_DH_PARAM,
     JS_FILE_TYPE_ALL };
 
+
+const QString kEnvMiscGroup = "Misc";
+const QString kEnvTempGroup = "Temp";
+
 const QColor kAddrColor( 220, 220, 250 );
 const QColor kTextColor( 225, 225, 225 );
 const QColor kValueColor( 245, 245, 203 );

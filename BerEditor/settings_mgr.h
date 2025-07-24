@@ -17,7 +17,6 @@ const char *kUseLogTab = "useLogTab";
 const char *kDefaultHash = "defaultHash";
 const char *kFileReadSize = "fileReadSize";
 const char *kFontFamily = "fontFamily";
-const char *kMisc = "Misc";
 const char *kEmail = "email";
 const char *kLicense = "license";
 const char *kStopMessage = "stopMessage";

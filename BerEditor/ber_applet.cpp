@@ -77,7 +77,7 @@ QString BerApplet::getBERPath()
     QString strPath = QDir::currentPath();
 
     QSettings settings;
-    settings.beginGroup( "mainwindow" );
+    settings.beginGroup( kEnvTempGroup );
     strPath = settings.value( "berPath", "" ).toString();
     settings.endGroup();
 
@@ -87,7 +87,7 @@ QString BerApplet::getBERPath()
 void BerApplet::setBERPath( const QString strPath )
 {
     QSettings settings;
-    settings.beginGroup( "mainwindow" );
+    settings.beginGroup( kEnvTempGroup );
     settings.setValue( "berPath", strPath );
     settings.endGroup();
 }

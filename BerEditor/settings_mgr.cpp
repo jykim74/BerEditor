@@ -190,7 +190,7 @@ QString SettingsMgr::getFontFamily()
 void SettingsMgr::setEmail( const QString strEmail )
 {
     QSettings sets;
-    sets.beginGroup( kMisc );
+    sets.beginGroup( kEnvMiscGroup );
     sets.setValue( kEmail, strEmail );
     sets.endGroup();
 }
@@ -199,7 +199,7 @@ QString SettingsMgr::getEmail()
 {
     QSettings sets;
 
-    sets.beginGroup( kMisc );
+    sets.beginGroup( kEnvMiscGroup );
     QString strEmail = sets.value( kEmail, "" ).toString();
     sets.endGroup();
 
@@ -209,7 +209,7 @@ QString SettingsMgr::getEmail()
 void SettingsMgr::setLicense( const QString strLicense )
 {
     QSettings sets;
-    sets.beginGroup( kMisc );
+    sets.beginGroup( kEnvMiscGroup );
     sets.setValue( kLicense, strLicense );
     sets.endGroup();
 }
@@ -218,7 +218,7 @@ QString SettingsMgr::getLicense()
 {
     QSettings sets;
 
-    sets.beginGroup( kMisc );
+    sets.beginGroup( kEnvMiscGroup );
     QString strLicense = sets.value( kLicense, "" ).toString();
     sets.endGroup();
 
@@ -230,7 +230,7 @@ void SettingsMgr::setStopMessage( time_t tLastTime )
     QSettings sets;
     qint64 uLastTime = tLastTime;
 
-    sets.beginGroup( kMisc );
+    sets.beginGroup( kEnvMiscGroup );
     sets.setValue( kStopMessage, uLastTime );
     sets.endGroup();
 }
@@ -239,7 +239,7 @@ time_t SettingsMgr::getStopMessage()
 {
     QSettings sets;
 
-    sets.beginGroup( kMisc );
+    sets.beginGroup( kEnvMiscGroup );
     time_t tLastTime = sets.value( kStopMessage, -1 ).toInt();
     sets.endGroup();
 

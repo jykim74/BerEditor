@@ -104,162 +104,167 @@
         <translation>공개키 가져오기</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.ui" line="358"/>
+        <location filename="../acme_client_dlg.ui" line="344"/>
+        <source>ex) example.com</source>
+        <translation>예) example.com</translation>
+    </message>
+    <message>
+        <location filename="../acme_client_dlg.ui" line="365"/>
         <source>Command</source>
         <translation>명령</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.ui" line="440"/>
+        <location filename="../acme_client_dlg.ui" line="447"/>
         <source>Send</source>
         <translation>보내기</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.ui" line="460"/>
+        <location filename="../acme_client_dlg.ui" line="467"/>
         <source>Deactivate</source>
         <translation>Deactivate</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.ui" line="467"/>
+        <location filename="../acme_client_dlg.ui" line="474"/>
         <source>UpdateAccount</source>
         <translation>UpdateAccount</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.ui" line="836"/>
+        <location filename="../acme_client_dlg.ui" line="843"/>
         <source>Rsp Status</source>
         <translation>Rsp Status</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.ui" line="921"/>
+        <location filename="../acme_client_dlg.ui" line="928"/>
         <source>Test</source>
         <translation>Test</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.ui" line="928"/>
+        <location filename="../acme_client_dlg.ui" line="935"/>
         <source>Issue Certificate</source>
         <translation>인증서 발급</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.ui" line="409"/>
+        <location filename="../acme_client_dlg.ui" line="416"/>
         <source>Make</source>
         <translation>만들기</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.ui" line="433"/>
+        <location filename="../acme_client_dlg.ui" line="440"/>
         <source>Automatic parsing</source>
         <translation>자동 파싱</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.ui" line="574"/>
+        <location filename="../acme_client_dlg.ui" line="581"/>
         <source>HTTP Status</source>
         <translation>HTTP 상태</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.ui" line="587"/>
+        <location filename="../acme_client_dlg.ui" line="594"/>
         <source>Request</source>
         <translation>요청</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.ui" line="607"/>
-        <location filename="../acme_client_dlg.ui" line="710"/>
+        <location filename="../acme_client_dlg.ui" line="614"/>
+        <location filename="../acme_client_dlg.ui" line="717"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.ui" line="594"/>
-        <location filename="../acme_client_dlg.ui" line="816"/>
+        <location filename="../acme_client_dlg.ui" line="601"/>
+        <location filename="../acme_client_dlg.ui" line="823"/>
         <source>View</source>
         <translation>보기</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.ui" line="627"/>
+        <location filename="../acme_client_dlg.ui" line="634"/>
         <source>Verify</source>
         <translation>검증</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.ui" line="717"/>
+        <location filename="../acme_client_dlg.ui" line="724"/>
         <source>Parser</source>
         <translation>파서</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.ui" line="829"/>
+        <location filename="../acme_client_dlg.ui" line="836"/>
         <source>Response</source>
         <translation>응답</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.ui" line="894"/>
+        <location filename="../acme_client_dlg.ui" line="901"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.ui" line="914"/>
+        <location filename="../acme_client_dlg.ui" line="921"/>
         <source>Clear All</source>
         <translation>전체 지우기</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="536"/>
-        <location filename="../acme_client_dlg.cpp" line="749"/>
+        <location filename="../acme_client_dlg.cpp" line="539"/>
+        <location filename="../acme_client_dlg.cpp" line="752"/>
         <source>There is no response</source>
         <translation>응답이 없습니다</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="549"/>
+        <location filename="../acme_client_dlg.cpp" line="552"/>
         <source>Error: %1 status: %2</source>
         <translation>에러: %1 상태: %2</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="555"/>
+        <location filename="../acme_client_dlg.cpp" line="558"/>
         <source>Done</source>
         <translation>Done</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="594"/>
+        <location filename="../acme_client_dlg.cpp" line="597"/>
         <source>Parsing is done</source>
         <translation>파싱 완료</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="596"/>
+        <location filename="../acme_client_dlg.cpp" line="599"/>
         <source>fail to parse : %1</source>
         <translation>파싱 실패: %1</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="620"/>
+        <location filename="../acme_client_dlg.cpp" line="623"/>
         <source>Enter a DNS</source>
         <translation>DNS을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="631"/>
+        <location filename="../acme_client_dlg.cpp" line="634"/>
         <source>%1 is already existed</source>
         <translation>%1이 이미 존재 합니다</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="723"/>
+        <location filename="../acme_client_dlg.cpp" line="726"/>
         <source>Verify OK</source>
         <translation>검증 성공</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="725"/>
+        <location filename="../acme_client_dlg.cpp" line="728"/>
         <source>Verify fail: %1</source>
         <translation>검증 실패 : %1</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="792"/>
+        <location filename="../acme_client_dlg.cpp" line="795"/>
         <source>Enter a Nonce URL</source>
         <translation>논스 URL을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="831"/>
+        <location filename="../acme_client_dlg.cpp" line="834"/>
         <source>There is no location URL</source>
         <translation>위치 URL이 없습니다</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="850"/>
-        <location filename="../acme_client_dlg.cpp" line="887"/>
-        <location filename="../acme_client_dlg.cpp" line="1457"/>
+        <location filename="../acme_client_dlg.cpp" line="853"/>
+        <location filename="../acme_client_dlg.cpp" line="890"/>
+        <location filename="../acme_client_dlg.cpp" line="1460"/>
         <source>fail to send a request to ACME server: %1</source>
         <translation>ACME 서버에 요쳥을 보내는데 실패하였습니다: %1</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="872"/>
+        <location filename="../acme_client_dlg.cpp" line="875"/>
         <source>Insert ACME URL</source>
         <translation>ACME URL을 입력하세요</translation>
     </message>
@@ -272,181 +277,191 @@
         <translation type="vanished">이전 키 쌍을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1565"/>
+        <location filename="../acme_client_dlg.cpp" line="1568"/>
         <source>Enter a email</source>
         <translation>메일을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1044"/>
+        <location filename="../acme_client_dlg.cpp" line="1047"/>
         <source>Enter a identifier</source>
         <translation>구별 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1163"/>
+        <location filename="../acme_client_dlg.cpp" line="1166"/>
         <source>Enter a certificate ID</source>
         <translation>인증서 ID를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1551"/>
+        <location filename="../acme_client_dlg.cpp" line="1554"/>
         <source>Click on the directory</source>
         <translation>디렉토리를 클릭하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1558"/>
+        <location filename="../acme_client_dlg.cpp" line="1561"/>
         <source>Click on the Get Nonce</source>
         <translation>논스 가져오기 클릭하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1572"/>
+        <location filename="../acme_client_dlg.cpp" line="1575"/>
         <source>Add a DNS</source>
         <translation>DNS 추가</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1582"/>
-        <location filename="../acme_client_dlg.cpp" line="1592"/>
-        <location filename="../acme_client_dlg.cpp" line="1605"/>
-        <location filename="../acme_client_dlg.cpp" line="1618"/>
-        <location filename="../acme_client_dlg.cpp" line="1628"/>
-        <location filename="../acme_client_dlg.cpp" line="1639"/>
-        <location filename="../acme_client_dlg.cpp" line="1664"/>
+        <location filename="../acme_client_dlg.cpp" line="1585"/>
+        <location filename="../acme_client_dlg.cpp" line="1595"/>
+        <location filename="../acme_client_dlg.cpp" line="1608"/>
+        <location filename="../acme_client_dlg.cpp" line="1621"/>
+        <location filename="../acme_client_dlg.cpp" line="1631"/>
+        <location filename="../acme_client_dlg.cpp" line="1642"/>
+        <location filename="../acme_client_dlg.cpp" line="1667"/>
         <source>Continue %1?</source>
         <translation>%1 계속 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1648"/>
+        <location filename="../acme_client_dlg.cpp" line="1651"/>
         <source>There is no certificate. Try account again?</source>
         <translation>인증서가 없습니다. Account 를 다시 시도하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1673"/>
+        <location filename="../acme_client_dlg.cpp" line="1676"/>
         <source>Certificate issuance completed</source>
         <translation>인증서 발급 완료했습니다</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="692"/>
-        <location filename="../acme_client_dlg.cpp" line="1074"/>
-        <location filename="../acme_client_dlg.cpp" line="1238"/>
+        <location filename="../acme_client_dlg.cpp" line="695"/>
+        <location filename="../acme_client_dlg.cpp" line="1077"/>
+        <location filename="../acme_client_dlg.cpp" line="1241"/>
         <source>Select a sign certificate</source>
         <translation>서명용 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1103"/>
+        <location filename="../acme_client_dlg.cpp" line="1106"/>
         <source>Select keypair for CSR</source>
         <translation>CSR을 위한 키 쌍을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1115"/>
+        <location filename="../acme_client_dlg.cpp" line="1118"/>
         <source>Make CSR</source>
         <translation>CSR 만들기</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1142"/>
+        <location filename="../acme_client_dlg.cpp" line="1145"/>
         <source>Would you like to save this CSR?</source>
         <translation>이 CSR을 저장 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="704"/>
-        <location filename="../acme_client_dlg.cpp" line="1257"/>
+        <location filename="../acme_client_dlg.cpp" line="707"/>
+        <location filename="../acme_client_dlg.cpp" line="1260"/>
         <source>Select keypair</source>
         <translation>키 쌍을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1416"/>
+        <location filename="../acme_client_dlg.cpp" line="1419"/>
         <source>There is no command URL</source>
         <translation>명령 URL이 없습니다</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="670"/>
-        <location filename="../acme_client_dlg.cpp" line="735"/>
-        <location filename="../acme_client_dlg.cpp" line="1424"/>
+        <location filename="../acme_client_dlg.cpp" line="673"/>
+        <location filename="../acme_client_dlg.cpp" line="738"/>
+        <location filename="../acme_client_dlg.cpp" line="1427"/>
         <source>There is no request</source>
         <translation>요청서가 없습니다</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="123"/>
+        <location filename="../acme_client_dlg.cpp" line="114"/>
+        <source>Email address</source>
+        <translation>이메일 주소</translation>
+    </message>
+    <message>
+        <location filename="../acme_client_dlg.cpp" line="115"/>
+        <source>Domain name system</source>
+        <translation>Domain name system</translation>
+    </message>
+    <message>
+        <location filename="../acme_client_dlg.cpp" line="126"/>
         <source>JSON String</source>
         <translation>JSON 문자</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="124"/>
+        <location filename="../acme_client_dlg.cpp" line="127"/>
         <source>JSON or Base64 value</source>
         <translation>JSON 또는 Base64</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="215"/>
+        <location filename="../acme_client_dlg.cpp" line="218"/>
         <source>There is no KID</source>
         <translation>KID가 없습니다</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="224"/>
+        <location filename="../acme_client_dlg.cpp" line="227"/>
         <source>KID and Account URL are different</source>
         <translation>KID와 ACCOUNT URL이 다릅니다</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="241"/>
+        <location filename="../acme_client_dlg.cpp" line="244"/>
         <source>fail to get public key from response: %1</source>
         <translation>응답에서 공개키 가져오기 실패 하였습니다: %1</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="319"/>
-        <location filename="../acme_client_dlg.cpp" line="380"/>
-        <location filename="../acme_client_dlg.cpp" line="391"/>
-        <location filename="../acme_client_dlg.cpp" line="412"/>
-        <location filename="../acme_client_dlg.cpp" line="422"/>
-        <location filename="../acme_client_dlg.cpp" line="438"/>
-        <location filename="../acme_client_dlg.cpp" line="460"/>
-        <location filename="../acme_client_dlg.cpp" line="478"/>
-        <location filename="../acme_client_dlg.cpp" line="491"/>
+        <location filename="../acme_client_dlg.cpp" line="322"/>
+        <location filename="../acme_client_dlg.cpp" line="383"/>
+        <location filename="../acme_client_dlg.cpp" line="394"/>
+        <location filename="../acme_client_dlg.cpp" line="415"/>
+        <location filename="../acme_client_dlg.cpp" line="425"/>
+        <location filename="../acme_client_dlg.cpp" line="441"/>
+        <location filename="../acme_client_dlg.cpp" line="463"/>
+        <location filename="../acme_client_dlg.cpp" line="481"/>
+        <location filename="../acme_client_dlg.cpp" line="494"/>
         <source>Added %1 command [%2]</source>
         <translation>%1 명령을 추가하였습니다 [%2]</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="502"/>
+        <location filename="../acme_client_dlg.cpp" line="505"/>
         <source>Change Cert ID as %1?</source>
         <translation>인증서 ID를 %1로 바꾸겠습니까?</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="806"/>
+        <location filename="../acme_client_dlg.cpp" line="809"/>
         <source>fail to get nonce: %1</source>
         <translation>노스 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="958"/>
+        <location filename="../acme_client_dlg.cpp" line="961"/>
         <source>Select a new certificate</source>
         <translation>새 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="972"/>
+        <location filename="../acme_client_dlg.cpp" line="975"/>
         <source>Select new keypair</source>
         <translation>새로운 키 쌍을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1450"/>
+        <location filename="../acme_client_dlg.cpp" line="1453"/>
         <source>The key pair has been changed.</source>
         <translation>키 쌍이 변경 되었습니다</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1469"/>
+        <location filename="../acme_client_dlg.cpp" line="1472"/>
         <source>Change Nonce as %1?</source>
         <translation>논스를 %1로 바꾸겠습니까?</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1481"/>
+        <location filename="../acme_client_dlg.cpp" line="1484"/>
         <source>Change KID as %1?</source>
         <translation>KID를 %1로 바꾸겠습니까?</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1517"/>
+        <location filename="../acme_client_dlg.cpp" line="1520"/>
         <source>Are you save the private key and certificate</source>
         <translation>개인키와 인증서를 저장하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1535"/>
+        <location filename="../acme_client_dlg.cpp" line="1538"/>
         <source>The private key and certificate are saved successfully</source>
         <translation>개인키와 인증서가 성공적으로 저장하였습니다</translation>
     </message>
     <message>
-        <location filename="../acme_client_dlg.cpp" line="1537"/>
+        <location filename="../acme_client_dlg.cpp" line="1540"/>
         <source>faied to save private key and certificate</source>
         <translation>개인키와 인증서 저장에 실패 하였습니다</translation>
     </message>
@@ -5245,9 +5260,8 @@ mailto : jykim74@gmail.com</translation>
         <translation>인증서 경로 검증</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="20"/>
         <source>Path Validation List</source>
-        <translation>경로 검증 목록</translation>
+        <translation type="vanished">경로 검증 목록</translation>
     </message>
     <message>
         <source>C</source>
@@ -5265,7 +5279,7 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../cert_pvd_dlg.ui" line="138"/>
         <location filename="../cert_pvd_dlg.ui" line="151"/>
         <location filename="../cert_pvd_dlg.ui" line="215"/>
-        <location filename="../cert_pvd_dlg.ui" line="625"/>
+        <location filename="../cert_pvd_dlg.ui" line="628"/>
         <source>Find</source>
         <translation>찾기</translation>
     </message>
@@ -5273,7 +5287,7 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../cert_pvd_dlg.ui" line="45"/>
         <location filename="../cert_pvd_dlg.ui" line="90"/>
         <location filename="../cert_pvd_dlg.ui" line="228"/>
-        <location filename="../cert_pvd_dlg.ui" line="566"/>
+        <location filename="../cert_pvd_dlg.ui" line="569"/>
         <source>Add</source>
         <translation>추가</translation>
     </message>
@@ -5301,7 +5315,7 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../cert_pvd_dlg.ui" line="77"/>
         <location filename="../cert_pvd_dlg.ui" line="177"/>
         <location filename="../cert_pvd_dlg.ui" line="254"/>
-        <location filename="../cert_pvd_dlg.ui" line="654"/>
+        <location filename="../cert_pvd_dlg.ui" line="657"/>
         <source>D</source>
         <translation>D</translation>
     </message>
@@ -5313,7 +5327,7 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../cert_pvd_dlg.ui" line="122"/>
         <location filename="../cert_pvd_dlg.ui" line="164"/>
         <location filename="../cert_pvd_dlg.ui" line="241"/>
-        <location filename="../cert_pvd_dlg.ui" line="612"/>
+        <location filename="../cert_pvd_dlg.ui" line="615"/>
         <source>V</source>
         <translation>V</translation>
     </message>
@@ -5343,10 +5357,8 @@ mailto : jykim74@gmail.com</translation>
         <translation>신뢰 목록</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="355"/>
-        <location filename="../cert_pvd_dlg.ui" line="579"/>
         <source>List Clear</source>
-        <translation>목록 지우기</translation>
+        <translation type="vanished">목록 지우기</translation>
     </message>
     <message>
         <location filename="../cert_pvd_dlg.ui" line="365"/>
@@ -5359,12 +5371,11 @@ mailto : jykim74@gmail.com</translation>
         <translation>시간 설정</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="407"/>
         <source>Flags Option</source>
-        <translation>플래그 옵션</translation>
+        <translation type="vanished">플래그 옵션</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="453"/>
+        <location filename="../cert_pvd_dlg.ui" line="456"/>
         <source>X509Strict</source>
         <translation>X509Strict</translation>
     </message>
@@ -5377,17 +5388,17 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">경로 검증 대상 인증서</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="641"/>
+        <location filename="../cert_pvd_dlg.ui" line="644"/>
         <source>Certificate</source>
         <translation>인증서</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="460"/>
+        <location filename="../cert_pvd_dlg.ui" line="463"/>
         <source>AllowProxyCerts</source>
         <translation>AllowProxyCerts</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="467"/>
+        <location filename="../cert_pvd_dlg.ui" line="470"/>
         <source>PolicyCheck</source>
         <translation>PolicyCheck</translation>
     </message>
@@ -5396,7 +5407,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">SuiteB128LosOnly</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="474"/>
+        <location filename="../cert_pvd_dlg.ui" line="477"/>
         <source>ExplicitPolicy</source>
         <translation>ExplicitPolicy</translation>
     </message>
@@ -5405,29 +5416,34 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">비 신뢰 인증서</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="432"/>
+        <location filename="../cert_pvd_dlg.ui" line="435"/>
         <source>IgnoreCritical</source>
         <translation>IgnoreCritical</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="488"/>
+        <location filename="../cert_pvd_dlg.ui" line="491"/>
         <source>InhibitMap</source>
         <translation>InhibitMap</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="495"/>
+        <location filename="../cert_pvd_dlg.ui" line="498"/>
         <source>NotifyPolicy</source>
         <translation>NotifyPolicy</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="502"/>
+        <location filename="../cert_pvd_dlg.ui" line="505"/>
         <source>ExtendedCRLSupport</source>
         <translation>ExtendedCRLSupport</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="481"/>
+        <location filename="../cert_pvd_dlg.ui" line="484"/>
         <source>InhibitAny</source>
         <translation>InhibitAny</translation>
+    </message>
+    <message>
+        <location filename="../cert_pvd_dlg.ui" line="20"/>
+        <source>Certificate Path Valication</source>
+        <translation>인증서 경로 검증</translation>
     </message>
     <message>
         <location filename="../cert_pvd_dlg.ui" line="64"/>
@@ -5440,7 +5456,18 @@ mailto : jykim74@gmail.com</translation>
         <translation>신뢰 인증서</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="425"/>
+        <location filename="../cert_pvd_dlg.ui" line="355"/>
+        <location filename="../cert_pvd_dlg.ui" line="582"/>
+        <source>Clear</source>
+        <translation>지우기</translation>
+    </message>
+    <message>
+        <location filename="../cert_pvd_dlg.ui" line="407"/>
+        <source>Flag Options</source>
+        <translation>플래그 옵션</translation>
+    </message>
+    <message>
+        <location filename="../cert_pvd_dlg.ui" line="428"/>
         <source>CRLCheckAll</source>
         <translation>CRLCheckAll</translation>
     </message>
@@ -5457,37 +5484,37 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">SuiteB128LOS</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="544"/>
+        <location filename="../cert_pvd_dlg.ui" line="547"/>
         <source>NoALTChains</source>
         <translation>NoALTChains</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="523"/>
+        <location filename="../cert_pvd_dlg.ui" line="526"/>
         <source>TrustedFirst</source>
         <translation>TrustedFirst</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="439"/>
+        <location filename="../cert_pvd_dlg.ui" line="442"/>
         <source>CRLCheck</source>
         <translation>CRLCheck</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="537"/>
+        <location filename="../cert_pvd_dlg.ui" line="540"/>
         <source>PartialChain</source>
         <translation>PartialChain</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="516"/>
+        <location filename="../cert_pvd_dlg.ui" line="519"/>
         <source>CheckSSSignature</source>
         <translation>CheckSSSignature</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="446"/>
+        <location filename="../cert_pvd_dlg.ui" line="449"/>
         <source>UseCheckTime</source>
         <translation>UseCheckTime</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="509"/>
+        <location filename="../cert_pvd_dlg.ui" line="512"/>
         <source>UseDeltas</source>
         <translation>UseDeltas</translation>
     </message>
@@ -5496,12 +5523,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">SuiteB192Los</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="530"/>
+        <location filename="../cert_pvd_dlg.ui" line="533"/>
         <source>NoCheckTime</source>
         <translation>NoCheckTime</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="559"/>
+        <location filename="../cert_pvd_dlg.ui" line="562"/>
         <location filename="../cert_pvd_dlg.cpp" line="101"/>
         <source>Param</source>
         <translation>파라미터</translation>
@@ -5515,12 +5542,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">타겟 정보</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="701"/>
+        <location filename="../cert_pvd_dlg.ui" line="704"/>
         <source>Policy Check</source>
         <translation>정책 체크</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="688"/>
+        <location filename="../cert_pvd_dlg.ui" line="691"/>
         <source>Clear Data All</source>
         <translation>전체 데이타 지우기</translation>
     </message>
@@ -5529,12 +5556,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">타겟</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="681"/>
+        <location filename="../cert_pvd_dlg.ui" line="684"/>
         <source>Path Validation</source>
         <translation>경로 검증</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="741"/>
+        <location filename="../cert_pvd_dlg.ui" line="744"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -5755,19 +5782,19 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">PEM 개인키</translation>
     </message>
     <message>
-        <location filename="../chall_test_dlg.cpp" line="226"/>
-        <location filename="../chall_test_dlg.cpp" line="356"/>
+        <location filename="../chall_test_dlg.cpp" line="241"/>
+        <location filename="../chall_test_dlg.cpp" line="371"/>
         <source>There is no request</source>
         <translation>요청서가 없습니다</translation>
     </message>
     <message>
-        <location filename="../chall_test_dlg.cpp" line="240"/>
+        <location filename="../chall_test_dlg.cpp" line="255"/>
         <source>There is no response</source>
         <translation>응답이 없습니다</translation>
     </message>
     <message>
-        <location filename="../chall_test_dlg.cpp" line="265"/>
-        <location filename="../chall_test_dlg.cpp" line="277"/>
+        <location filename="../chall_test_dlg.cpp" line="280"/>
+        <location filename="../chall_test_dlg.cpp" line="292"/>
         <source>Enter a %1</source>
         <translation>%1을 입력하세요</translation>
     </message>
@@ -5792,7 +5819,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">서명용 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../chall_test_dlg.cpp" line="377"/>
+        <location filename="../chall_test_dlg.cpp" line="392"/>
         <source>fail to send a request to ACME server: %1</source>
         <translation>ACME 서버에 요쳥을 보내는데 실패하였습니다: %1</translation>
     </message>
@@ -5930,13 +5957,13 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">데이타 변환기 창</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.ui" line="25"/>
-        <location filename="../data_converter_dlg.ui" line="92"/>
+        <location filename="../data_converter_dlg.ui" line="290"/>
+        <location filename="../data_converter_dlg.ui" line="464"/>
         <source>Clear</source>
         <translation>지우기</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.ui" line="51"/>
+        <location filename="../data_converter_dlg.ui" line="316"/>
         <source>⬆</source>
         <translation>⬆</translation>
     </message>
@@ -5945,28 +5972,28 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">인코딩</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.ui" line="72"/>
+        <location filename="../data_converter_dlg.ui" line="444"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.ui" line="114"/>
+        <location filename="../data_converter_dlg.ui" line="47"/>
         <source>Output</source>
         <translation>결과</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.ui" line="165"/>
+        <location filename="../data_converter_dlg.ui" line="98"/>
         <source>Hex Dump</source>
         <translation>16진수 덤프</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.ui" line="225"/>
+        <location filename="../data_converter_dlg.ui" line="490"/>
         <source>Input Data</source>
         <translation>입력 데이타</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.ui" line="326"/>
-        <location filename="../data_converter_dlg.ui" line="388"/>
+        <location filename="../data_converter_dlg.ui" line="189"/>
+        <location filename="../data_converter_dlg.ui" line="416"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
@@ -5980,72 +6007,72 @@ mailto : jykim74@gmail.com</translation>
         <translation>데이타 변환기</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.ui" line="58"/>
+        <location filename="../data_converter_dlg.ui" line="323"/>
         <source>Conversion</source>
         <translation>변환</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.ui" line="333"/>
+        <location filename="../data_converter_dlg.ui" line="423"/>
         <source>Conversion Format</source>
         <translation>변환 형식</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.ui" line="263"/>
+        <location filename="../data_converter_dlg.ui" line="353"/>
         <source>Show printable text</source>
         <translation>인쇄 가능 문자 표시</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.ui" line="340"/>
+        <location filename="../data_converter_dlg.ui" line="430"/>
         <source>Write Bin</source>
         <translation>바이너리 쓰기</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.ui" line="361"/>
+        <location filename="../data_converter_dlg.ui" line="162"/>
         <source>Hex</source>
         <translation>16진수</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.ui" line="368"/>
+        <location filename="../data_converter_dlg.ui" line="169"/>
         <source>Base64</source>
         <translation>베이스64</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.ui" line="395"/>
+        <location filename="../data_converter_dlg.ui" line="196"/>
         <source>Find File</source>
         <translation>파일 찾기</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.ui" line="458"/>
+        <location filename="../data_converter_dlg.ui" line="259"/>
         <source>URL</source>
         <translation>URL</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.ui" line="465"/>
+        <location filename="../data_converter_dlg.ui" line="266"/>
         <source>String</source>
         <translation>문자열</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.ui" line="475"/>
+        <location filename="../data_converter_dlg.ui" line="276"/>
         <source>Base64URL</source>
         <translation>베이스64URL</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.cpp" line="109"/>
+        <location filename="../data_converter_dlg.cpp" line="116"/>
         <source>There is no output</source>
         <translation>결과 값이 없습니다</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.cpp" line="121"/>
+        <location filename="../data_converter_dlg.cpp" line="128"/>
         <source>Binary save success</source>
         <translation>바이너리 저장 성공</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.cpp" line="125"/>
+        <location filename="../data_converter_dlg.cpp" line="132"/>
         <source>Binary save failed</source>
         <translation>바이너리 저장 실패</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.cpp" line="144"/>
+        <location filename="../data_converter_dlg.cpp" line="151"/>
         <source>Please enter input value</source>
         <translation>입력값을 입력하세요</translation>
     </message>
@@ -14774,7 +14801,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../ssl_check_dlg.ui" line="621"/>
-        <location filename="../ssl_check_dlg.cpp" line="295"/>
+        <location filename="../ssl_check_dlg.cpp" line="297"/>
         <source>URL</source>
         <translation>URL</translation>
     </message>
@@ -14799,12 +14826,12 @@ Do you want to delete the file and continue?</source>
         <translation>다시 읽기</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.ui" line="716"/>
+        <location filename="../ssl_check_dlg.ui" line="722"/>
         <source>SSL Tree and Log</source>
         <translation>SSL 트리 및 로그</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.ui" line="849"/>
+        <location filename="../ssl_check_dlg.ui" line="855"/>
         <source>Show Information</source>
         <translation>정보 보이기</translation>
     </message>
@@ -14813,237 +14840,237 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">SSL 트리 및 로그 정보</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.ui" line="733"/>
+        <location filename="../ssl_check_dlg.ui" line="739"/>
         <source>Tree</source>
         <translation>트리</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.ui" line="758"/>
+        <location filename="../ssl_check_dlg.ui" line="764"/>
         <source>Log</source>
         <translation>로그</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.ui" line="815"/>
+        <location filename="../ssl_check_dlg.ui" line="821"/>
         <source>Clear Log</source>
         <translation>로그 지우기</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.ui" line="822"/>
+        <location filename="../ssl_check_dlg.ui" line="828"/>
         <source>Clear Result</source>
         <translation>결과 지우기</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.ui" line="829"/>
+        <location filename="../ssl_check_dlg.ui" line="835"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="295"/>
+        <location filename="../ssl_check_dlg.cpp" line="297"/>
         <source>Port</source>
         <translation>포트</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="295"/>
+        <location filename="../ssl_check_dlg.cpp" line="297"/>
         <source>DN</source>
         <translation>DN</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="295"/>
+        <location filename="../ssl_check_dlg.cpp" line="297"/>
         <source>To</source>
         <translation>만료일</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="348"/>
+        <location filename="../ssl_check_dlg.cpp" line="350"/>
         <source>Select CertMan CA certificate</source>
         <translation>인증서 관리자 CA 인증서 선택</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="349"/>
+        <location filename="../ssl_check_dlg.cpp" line="351"/>
         <source>Select CertMan certificate</source>
         <translation>인증서 관리자 인증서 선택</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="350"/>
+        <location filename="../ssl_check_dlg.cpp" line="352"/>
         <source>Select CertMan private key</source>
         <translation>인증서 관리자 개인키 선택</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="352"/>
+        <location filename="../ssl_check_dlg.cpp" line="354"/>
         <source>Find a trusted CA certificate</source>
         <translation>신뢰 하는 CA 인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="353"/>
+        <location filename="../ssl_check_dlg.cpp" line="355"/>
         <source>Enter a URL (ex https://www.google.com, www.naver.com)</source>
         <translation>URL을 입력하세요(예 https://www.google.com, www.naver.com)</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="462"/>
+        <location filename="../ssl_check_dlg.cpp" line="464"/>
         <source>Select client CA certificate</source>
         <translation>클라이언트 CA 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="491"/>
+        <location filename="../ssl_check_dlg.cpp" line="493"/>
         <source>Select a client certificate</source>
         <translation>클라이언트 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="808"/>
+        <location filename="../ssl_check_dlg.cpp" line="810"/>
         <source>Insert URL</source>
         <translation>URL 을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="826"/>
+        <location filename="../ssl_check_dlg.cpp" line="828"/>
         <source>Invalid URL: %1</source>
         <translation>유효하지 않은 URL: %1</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="843"/>
-        <location filename="../ssl_check_dlg.cpp" line="957"/>
-        <location filename="../ssl_check_dlg.cpp" line="990"/>
+        <location filename="../ssl_check_dlg.cpp" line="845"/>
+        <location filename="../ssl_check_dlg.cpp" line="959"/>
+        <location filename="../ssl_check_dlg.cpp" line="992"/>
         <source>Verify successful : %1</source>
         <translation>검증 성공 : %1</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="847"/>
-        <location filename="../ssl_check_dlg.cpp" line="961"/>
-        <location filename="../ssl_check_dlg.cpp" line="992"/>
+        <location filename="../ssl_check_dlg.cpp" line="849"/>
+        <location filename="../ssl_check_dlg.cpp" line="963"/>
+        <location filename="../ssl_check_dlg.cpp" line="994"/>
         <source>Verify failed : %1</source>
         <translation>검증 실패 : %1</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="883"/>
-        <location filename="../ssl_check_dlg.cpp" line="911"/>
+        <location filename="../ssl_check_dlg.cpp" line="885"/>
+        <location filename="../ssl_check_dlg.cpp" line="913"/>
         <source>Invalid certificate : %1</source>
         <translation>잘못된 인증서 파일 : %1</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="890"/>
+        <location filename="../ssl_check_dlg.cpp" line="892"/>
         <source>There is no root certificate in SSL. Would you like to retrieve the root certificate from certificate information?</source>
         <translation>SSL 메세지에 루트 인증서가 없습니다. 인증서 정보로 부터 루트 인증서를 가져오겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="901"/>
+        <location filename="../ssl_check_dlg.cpp" line="903"/>
         <source>fail to get RootCA : %1</source>
         <translation>루트CA 가져오기 실패 : %1</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="922"/>
+        <location filename="../ssl_check_dlg.cpp" line="924"/>
         <source>This ceriticate is not root( DN: %1)</source>
         <translation>이 인증서는 루트가 아닙니다(DN: %1)</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="931"/>
+        <location filename="../ssl_check_dlg.cpp" line="933"/>
         <source>Would you like to add that root certificate to the trust list and verify it again?</source>
         <translation>루트 인증서를 신뢰 목록에 추가 후 다시 검증 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="943"/>
-        <location filename="../ssl_check_dlg.cpp" line="1258"/>
+        <location filename="../ssl_check_dlg.cpp" line="945"/>
+        <location filename="../ssl_check_dlg.cpp" line="1260"/>
         <source>The file(%1) is already existed</source>
         <translation>해당 파일(%1) 은 이미 존재 합니다</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="950"/>
+        <location filename="../ssl_check_dlg.cpp" line="952"/>
         <source>The Certificate failed to save to trustedCA folder:%1</source>
         <translation>인증서가 신뢰 CA목록 저장에 실패함 : %1</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1067"/>
+        <location filename="../ssl_check_dlg.cpp" line="1069"/>
         <source>Trust RootCA List</source>
         <translation>신뢰 최상위CA목록</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1105"/>
+        <location filename="../ssl_check_dlg.cpp" line="1107"/>
         <source>Verify</source>
         <translation>검증</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1106"/>
+        <location filename="../ssl_check_dlg.cpp" line="1108"/>
         <source>Delete</source>
         <translation>삭제</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1107"/>
-        <location filename="../ssl_check_dlg.cpp" line="1184"/>
+        <location filename="../ssl_check_dlg.cpp" line="1109"/>
+        <location filename="../ssl_check_dlg.cpp" line="1186"/>
         <source>View Cert</source>
         <translation>인증서 보기</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1108"/>
-        <location filename="../ssl_check_dlg.cpp" line="1185"/>
+        <location filename="../ssl_check_dlg.cpp" line="1110"/>
+        <location filename="../ssl_check_dlg.cpp" line="1187"/>
         <source>Decode Cert</source>
         <translation>인증서 디코딩</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1186"/>
+        <location filename="../ssl_check_dlg.cpp" line="1188"/>
         <source>Save to trustedCA</source>
         <translation>신뢰CA에 저장</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1239"/>
+        <location filename="../ssl_check_dlg.cpp" line="1241"/>
         <source>This certificate is not self-signed</source>
         <translation>인증서가 자체 서명이 아닙니다</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1247"/>
+        <location filename="../ssl_check_dlg.cpp" line="1249"/>
         <source>fail to mkdir:%1</source>
         <translation>경로 만들기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1264"/>
+        <location filename="../ssl_check_dlg.cpp" line="1266"/>
         <source>The Certificate saved to trusted CA directory</source>
         <translation>인증서가 신뢰CA목록에 저장 되었습니다</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1266"/>
+        <location filename="../ssl_check_dlg.cpp" line="1268"/>
         <source>The Certificate failed to save to trusted CA directory [%1]</source>
         <translation>인증서가 신뢰 CA목록 저장에 실패함 [%1]</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1304"/>
+        <location filename="../ssl_check_dlg.cpp" line="1306"/>
         <source>select a private key</source>
         <translation>개인키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1312"/>
+        <location filename="../ssl_check_dlg.cpp" line="1314"/>
         <source>failed to read private key: %1</source>
         <translation>개인키 읽기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1322"/>
+        <location filename="../ssl_check_dlg.cpp" line="1324"/>
         <source>Enter a password</source>
         <translation>암호를 입력해야 합니다</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1331"/>
+        <location filename="../ssl_check_dlg.cpp" line="1333"/>
         <source>failed to decrypt private key:%1</source>
         <translation>개인키 복호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1385"/>
-        <location filename="../ssl_check_dlg.cpp" line="1460"/>
-        <location filename="../ssl_check_dlg.cpp" line="1535"/>
-        <location filename="../ssl_check_dlg.cpp" line="1595"/>
+        <location filename="../ssl_check_dlg.cpp" line="1387"/>
+        <location filename="../ssl_check_dlg.cpp" line="1462"/>
+        <location filename="../ssl_check_dlg.cpp" line="1537"/>
+        <location filename="../ssl_check_dlg.cpp" line="1597"/>
         <source>failed to read data</source>
         <translation>데이타 읽기 실패</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1404"/>
-        <location filename="../ssl_check_dlg.cpp" line="1479"/>
-        <location filename="../ssl_check_dlg.cpp" line="1554"/>
+        <location filename="../ssl_check_dlg.cpp" line="1406"/>
+        <location filename="../ssl_check_dlg.cpp" line="1481"/>
+        <location filename="../ssl_check_dlg.cpp" line="1556"/>
         <source>Select a certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1414"/>
-        <location filename="../ssl_check_dlg.cpp" line="1489"/>
-        <location filename="../ssl_check_dlg.cpp" line="1564"/>
+        <location filename="../ssl_check_dlg.cpp" line="1416"/>
+        <location filename="../ssl_check_dlg.cpp" line="1491"/>
+        <location filename="../ssl_check_dlg.cpp" line="1566"/>
         <source>Certificate Type is %1</source>
         <translation>인증서 타입은 %1 이다</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1630"/>
+        <location filename="../ssl_check_dlg.cpp" line="1632"/>
         <source>KM Private Key Type is %1</source>
         <translation>KM용 개인키 타입은 %1 이다</translation>
     </message>
@@ -16868,96 +16895,97 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../ttlv_client_dlg.cpp" line="156"/>
+        <location filename="../ttlv_client_dlg.cpp" line="157"/>
         <source>Hex value</source>
         <translation>16진수 값</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="199"/>
+        <location filename="../ttlv_client_dlg.cpp" line="200"/>
         <source>select a private key</source>
         <translation>개인키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="207"/>
+        <location filename="../ttlv_client_dlg.cpp" line="208"/>
         <source>failed to read a private key: %1</source>
         <translation>개인키 읽기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="217"/>
+        <location filename="../ttlv_client_dlg.cpp" line="218"/>
         <source>Enter a password</source>
         <translation>암호를 입력해야 합니다</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="226"/>
+        <location filename="../ttlv_client_dlg.cpp" line="227"/>
         <source>failed to decrypt private key:%1</source>
         <translation>개인키 복호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="271"/>
+        <location filename="../ttlv_client_dlg.cpp" line="272"/>
         <source>Insert KMIP URL</source>
         <translation>KMIP URL 을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="278"/>
-        <location filename="../ttlv_client_dlg.cpp" line="645"/>
+        <location filename="../ttlv_client_dlg.cpp" line="279"/>
+        <location filename="../ttlv_client_dlg.cpp" line="646"/>
         <source>There is no request</source>
         <translation>요청서가 없습니다</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="308"/>
+        <location filename="../ttlv_client_dlg.cpp" line="309"/>
         <source>fail to connect TTLV: %1</source>
         <translation>TTLV 연결 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="318"/>
+        <location filename="../ttlv_client_dlg.cpp" line="319"/>
         <source>Select CA certificate</source>
         <translation>CA 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="325"/>
-        <location filename="../ttlv_client_dlg.cpp" line="464"/>
-        <location filename="../ttlv_client_dlg.cpp" line="588"/>
+        <location filename="../ttlv_client_dlg.cpp" line="326"/>
+        <location filename="../ttlv_client_dlg.cpp" line="465"/>
+        <location filename="../ttlv_client_dlg.cpp" line="589"/>
         <source>Find a CA certificate</source>
         <translation>CA 인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="340"/>
-        <location filename="../ttlv_client_dlg.cpp" line="489"/>
-        <location filename="../ttlv_client_dlg.cpp" line="529"/>
-        <location filename="../ttlv_client_dlg.cpp" line="551"/>
-        <location filename="../ttlv_client_dlg.cpp" line="607"/>
+        <location filename="../ttlv_client_dlg.cpp" line="341"/>
+        <location filename="../ttlv_client_dlg.cpp" line="490"/>
+        <location filename="../ttlv_client_dlg.cpp" line="530"/>
+        <location filename="../ttlv_client_dlg.cpp" line="552"/>
+        <location filename="../ttlv_client_dlg.cpp" line="608"/>
         <source>Find a certificate</source>
         <translation>인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="356"/>
+        <location filename="../ttlv_client_dlg.cpp" line="357"/>
         <source>Select a certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="382"/>
-        <location filename="../ttlv_client_dlg.cpp" line="398"/>
+        <location filename="../ttlv_client_dlg.cpp" line="383"/>
+        <location filename="../ttlv_client_dlg.cpp" line="399"/>
         <source>fail to send TTLV: %1</source>
         <translation>TTLV 보내기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="389"/>
-        <location filename="../ttlv_client_dlg.cpp" line="405"/>
+        <location filename="../ttlv_client_dlg.cpp" line="390"/>
+        <location filename="../ttlv_client_dlg.cpp" line="406"/>
         <source>fail to recv TTLV: %1</source>
         <translation>TTLV 받기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="473"/>
-        <location filename="../ttlv_client_dlg.cpp" line="498"/>
+        <location filename="../ttlv_client_dlg.cpp" line="474"/>
+        <location filename="../ttlv_client_dlg.cpp" line="499"/>
         <source>The certificate type is %1</source>
         <translation>인증서 타입은 %1 입니다.</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="664"/>
+        <location filename="../ttlv_client_dlg.cpp" line="665"/>
         <source>There is no response</source>
         <translation>응답이 없습니다</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="708"/>
+        <location filename="../ttlv_client_dlg.cpp" line="709"/>
         <source>There is no TTLV data</source>
         <translation>TTLV 데이타가 없습니다</translation>
     </message>
@@ -16966,12 +16994,12 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">서명용 개인키를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="514"/>
+        <location filename="../ttlv_client_dlg.cpp" line="515"/>
         <source>The private key type is %1</source>
         <translation>개인키 타입은 %1 입니다</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.cpp" line="626"/>
+        <location filename="../ttlv_client_dlg.cpp" line="627"/>
         <source>Find a private key</source>
         <translation>개인키를 찾으세요</translation>
     </message>

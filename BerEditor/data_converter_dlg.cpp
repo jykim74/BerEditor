@@ -25,6 +25,7 @@ DataConverterDlg::DataConverterDlg(QWidget *parent) :
 
     mOutputTypeCombo->addItems( enTypes );
 
+
     connect( mFindFileBtn, SIGNAL(clicked()), this, SLOT(clickFindFile()));
     connect( mWriteBinBtn, SIGNAL(clicked()), this, SLOT(clickWriteBin()));
     connect( mConvertBtn, SIGNAL(clicked()), this, SLOT(onClickConvertBtn()));
@@ -46,12 +47,18 @@ DataConverterDlg::DataConverterDlg(QWidget *parent) :
 
     mConvertBtn->setDefault(true);
 
+    mFirstTab->layout()->setSpacing(0);
+    mFirstTab->layout()->setMargin(0);
+    mSecondTab->layout()->setSpacing(0);
+    mSecondTab->layout()->setMargin(0);
+
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
     resize(minimumSizeHint().width() + 40, minimumSizeHint().height());
 #else
     resize(minimumSizeHint().width(), minimumSizeHint().height());
 #endif
+
 
 }
 
@@ -63,7 +70,7 @@ DataConverterDlg::~DataConverterDlg()
 void DataConverterDlg::initialize()
 {
     mOutputTab->setCurrentIndex(0);
-    mOutputTypeCombo->setCurrentIndex(1);
+    mOutputTypeCombo->setCurrentText( "Base64" );
 }
 
 static char getch( unsigned char c )

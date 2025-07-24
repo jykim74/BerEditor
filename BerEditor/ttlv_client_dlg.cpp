@@ -154,6 +154,7 @@ void TTLVClientDlg::initialize()
     mClientPriKeyPathText->setPlaceholderText( tr("Select CertMan private key") );
     mClientCertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
     mRequestText->setPlaceholderText( tr("Hex value" ));
+    mResponseText->setPlaceholderText( tr( "Hex value" ));
 }
 
 void TTLVClientDlg::findCA()
