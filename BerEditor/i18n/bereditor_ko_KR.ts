@@ -832,19 +832,16 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">소수 생성</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="943"/>
         <source>SendB</source>
-        <translation>B보내기</translation>
+        <translation type="vanished">B보내기</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="852"/>
         <source>SendM</source>
-        <translation>M보내기</translation>
+        <translation type="vanished">M보내기</translation>
     </message>
     <message>
-        <location filename="../bn_calc_dlg.ui" line="950"/>
         <source>SendA</source>
-        <translation>A보내기</translation>
+        <translation type="vanished">A보내기</translation>
     </message>
     <message>
         <location filename="../bn_calc_dlg.ui" line="1279"/>
@@ -857,6 +854,21 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../bn_calc_dlg.ui" line="1260"/>
         <source>ms</source>
         <translation>ms</translation>
+    </message>
+    <message>
+        <location filename="../bn_calc_dlg.ui" line="852"/>
+        <source>Send to M</source>
+        <translation>M보내기</translation>
+    </message>
+    <message>
+        <location filename="../bn_calc_dlg.ui" line="943"/>
+        <source>Send to B</source>
+        <translation>B보내기</translation>
+    </message>
+    <message>
+        <location filename="../bn_calc_dlg.ui" line="950"/>
+        <source>Send to A</source>
+        <translation>A보내기</translation>
     </message>
     <message>
         <location filename="../bn_calc_dlg.ui" line="1132"/>
@@ -7001,67 +7013,67 @@ Do you want to delete the file and continue?</source>
         <translation>DH 파라미터 내보내기</translation>
     </message>
     <message>
-        <location filename="../export_dlg.cpp" line="425"/>
+        <location filename="../export_dlg.cpp" line="427"/>
         <source>Certificate and Private Key Export</source>
         <translation>인증서 개인키 내보내기</translation>
     </message>
     <message>
-        <location filename="../export_dlg.cpp" line="476"/>
+        <location filename="../export_dlg.cpp" line="478"/>
         <source>invalid service: %1</source>
         <translation>유효하지 않는 서비스: %1</translation>
     </message>
     <message>
-        <location filename="../export_dlg.cpp" line="495"/>
+        <location filename="../export_dlg.cpp" line="497"/>
         <source>Public Key export successfully</source>
         <translation>공개키 내보내기 성공</translation>
     </message>
     <message>
-        <location filename="../export_dlg.cpp" line="529"/>
+        <location filename="../export_dlg.cpp" line="531"/>
         <source>Private Key export successfully</source>
         <translation>개인키 내보내기 성공</translation>
     </message>
     <message>
-        <location filename="../export_dlg.cpp" line="560"/>
+        <location filename="../export_dlg.cpp" line="562"/>
         <source>Certificate export successfully</source>
         <translation>인증서 내보내기 성공</translation>
     </message>
     <message>
-        <location filename="../export_dlg.cpp" line="588"/>
+        <location filename="../export_dlg.cpp" line="590"/>
         <source>CRL export successfully</source>
         <translation>CRL 내보내기 성공</translation>
     </message>
     <message>
-        <location filename="../export_dlg.cpp" line="616"/>
+        <location filename="../export_dlg.cpp" line="618"/>
         <source>CSR export successfully</source>
         <translation>CSR 내보내기 성공</translation>
     </message>
     <message>
-        <location filename="../export_dlg.cpp" line="645"/>
+        <location filename="../export_dlg.cpp" line="647"/>
         <source>fail to encrypt PFX: %1</source>
         <translation>PFX 암호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../export_dlg.cpp" line="652"/>
+        <location filename="../export_dlg.cpp" line="654"/>
         <source>PFX export successfully</source>
         <translation>PFX 내보내기 성공</translation>
     </message>
     <message>
-        <location filename="../export_dlg.cpp" line="684"/>
+        <location filename="../export_dlg.cpp" line="686"/>
         <source>fail to encrypt private key: %1</source>
         <translation>개인키 암호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../export_dlg.cpp" line="695"/>
+        <location filename="../export_dlg.cpp" line="697"/>
         <source>Encrypted privateKey export successfully</source>
         <translation>암호화된 개인키 내보내기 성공</translation>
     </message>
     <message>
-        <location filename="../export_dlg.cpp" line="731"/>
+        <location filename="../export_dlg.cpp" line="733"/>
         <source>PKCS8 Info export successfully</source>
         <translation>PKCS8 정보 내보내기 성공</translation>
     </message>
     <message>
-        <location filename="../export_dlg.cpp" line="761"/>
+        <location filename="../export_dlg.cpp" line="763"/>
         <source>DH Parameter export successfully</source>
         <translation>DH 파라미터 내보내기 성공</translation>
     </message>
@@ -7698,7 +7710,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../gen_mac_dlg.ui" line="867"/>
-        <location filename="../gen_mac_dlg.cpp" line="761"/>
+        <location filename="../gen_mac_dlg.cpp" line="762"/>
         <source>Status</source>
         <translation>상태</translation>
     </message>
@@ -7762,7 +7774,7 @@ Do you want to delete the file and continue?</source>
         <translation>파일 읽기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="792"/>
+        <location filename="../gen_mac_dlg.cpp" line="793"/>
         <source>Find source file</source>
         <translation>소스 파일을 찾으세요</translation>
     </message>
@@ -8307,7 +8319,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">계산</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="99"/>
+        <location filename="../key_agree_dlg.ui" line="49"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -8316,47 +8328,47 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">알고리즘</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="290"/>
-        <location filename="../key_agree_dlg.ui" line="671"/>
+        <location filename="../key_agree_dlg.ui" line="452"/>
+        <location filename="../key_agree_dlg.ui" line="841"/>
         <source>A PublicKey</source>
         <translation>A 공개키</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="317"/>
-        <location filename="../key_agree_dlg.ui" line="737"/>
+        <location filename="../key_agree_dlg.ui" line="618"/>
+        <location filename="../key_agree_dlg.ui" line="1050"/>
         <source>B PublicKey</source>
         <translation>B 공개키</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="577"/>
-        <location filename="../key_agree_dlg.ui" line="750"/>
+        <location filename="../key_agree_dlg.ui" line="382"/>
+        <location filename="../key_agree_dlg.ui" line="775"/>
         <source>A PrivateKey</source>
         <translation>A 개인키</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="190"/>
-        <location filename="../key_agree_dlg.ui" line="605"/>
+        <location filename="../key_agree_dlg.ui" line="604"/>
+        <location filename="../key_agree_dlg.ui" line="1040"/>
         <source>B PrivateKey</source>
         <translation>B 개인키</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="310"/>
+        <location filename="../key_agree_dlg.ui" line="684"/>
         <source>B GenDHKey</source>
         <translation>B DH 키생성</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="303"/>
+        <location filename="../key_agree_dlg.ui" line="524"/>
         <source>A GenDHKey</source>
         <translation>A DH 키생성</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="215"/>
-        <location filename="../key_agree_dlg.ui" line="1163"/>
+        <location filename="../key_agree_dlg.ui" line="180"/>
+        <location filename="../key_agree_dlg.ui" line="285"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="79"/>
+        <location filename="../key_agree_dlg.ui" line="29"/>
         <source>Clear Data All</source>
         <translation>전체 데이타 지우기</translation>
     </message>
@@ -8366,7 +8378,7 @@ Do you want to delete the file and continue?</source>
         <translation>키 동의</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="380"/>
+        <location filename="../key_agree_dlg.ui" line="445"/>
         <source>A GenDHPri</source>
         <translation>A DH 개인키</translation>
     </message>
@@ -8375,19 +8387,19 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">파라미터 길이</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="570"/>
+        <location filename="../key_agree_dlg.ui" line="611"/>
         <source>B GenDHPri</source>
         <translation>B DH 개인키</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="951"/>
-        <location filename="../key_agree_dlg.ui" line="1007"/>
+        <location filename="../key_agree_dlg.ui" line="921"/>
+        <location filename="../key_agree_dlg.ui" line="1123"/>
         <source>GenKeyPair</source>
         <translation>키 쌍 생성</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="944"/>
-        <location filename="../key_agree_dlg.ui" line="1028"/>
+        <location filename="../key_agree_dlg.ui" line="914"/>
+        <location filename="../key_agree_dlg.ui" line="1144"/>
         <source>GenPriKey</source>
         <translation>개인키 생성</translation>
     </message>
@@ -8396,52 +8408,52 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">파라미터 길이 (비트)</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="468"/>
+        <location filename="../key_agree_dlg.ui" line="224"/>
         <source>Export</source>
         <translation>내보내기</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="475"/>
+        <location filename="../key_agree_dlg.ui" line="231"/>
         <source>Parameter Len</source>
         <translation>파라미터 길이</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="485"/>
+        <location filename="../key_agree_dlg.ui" line="241"/>
         <source>Import</source>
         <translation>가져오기</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="986"/>
-        <location filename="../key_agree_dlg.ui" line="1049"/>
+        <location filename="../key_agree_dlg.ui" line="956"/>
+        <location filename="../key_agree_dlg.ui" line="1165"/>
         <source>GetFromCertMan</source>
         <translation>관리자 가져오기</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="993"/>
-        <location filename="../key_agree_dlg.ui" line="1056"/>
+        <location filename="../key_agree_dlg.ui" line="963"/>
+        <location filename="../key_agree_dlg.ui" line="1172"/>
         <source>GetFromKeyPair</source>
         <translation>키쌍 가져오기</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="1184"/>
+        <location filename="../key_agree_dlg.ui" line="70"/>
         <source>Clear</source>
         <translation>지우기</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="972"/>
-        <location filename="../key_agree_dlg.ui" line="1021"/>
+        <location filename="../key_agree_dlg.ui" line="942"/>
+        <location filename="../key_agree_dlg.ui" line="1137"/>
         <source>CheckPubKey</source>
         <translation>공개키 체크</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="965"/>
-        <location filename="../key_agree_dlg.ui" line="1014"/>
+        <location filename="../key_agree_dlg.ui" line="935"/>
+        <location filename="../key_agree_dlg.ui" line="1130"/>
         <source>GenPubKey</source>
         <translation>공개키 생성</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="958"/>
-        <location filename="../key_agree_dlg.ui" line="1042"/>
+        <location filename="../key_agree_dlg.ui" line="928"/>
+        <location filename="../key_agree_dlg.ui" line="1158"/>
         <source>CheckKeyPair</source>
         <translation>키 쌍 체크</translation>
     </message>
@@ -8450,7 +8462,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">매니저에서 가져오기</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="827"/>
+        <location filename="../key_agree_dlg.ui" line="711"/>
         <source>Parameter</source>
         <translation>파라미터</translation>
     </message>
@@ -8483,22 +8495,22 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">비밀값 지우기</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="1191"/>
+        <location filename="../key_agree_dlg.ui" line="77"/>
         <source>A Calculate</source>
         <translation>A 비밀값 계산</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="1177"/>
+        <location filename="../key_agree_dlg.ui" line="63"/>
         <source>B Calculate</source>
         <translation>B 비밀값 계산</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="1156"/>
+        <location filename="../key_agree_dlg.ui" line="173"/>
         <source>Secret Key</source>
         <translation>비밀키</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="592"/>
+        <location filename="../key_agree_dlg.ui" line="694"/>
         <source>ECDH</source>
         <translation>ECDH</translation>
     </message>
@@ -8515,18 +8527,18 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">인증서 찾기</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="979"/>
-        <location filename="../key_agree_dlg.ui" line="1035"/>
+        <location filename="../key_agree_dlg.ui" line="949"/>
+        <location filename="../key_agree_dlg.ui" line="1151"/>
         <source>FindPriKey</source>
         <translation>개인키 찾기</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="112"/>
+        <location filename="../key_agree_dlg.ui" line="193"/>
         <source>DH</source>
         <translation>DH</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="461"/>
+        <location filename="../key_agree_dlg.ui" line="217"/>
         <source>g value</source>
         <translation>g 값</translation>
     </message>
@@ -8535,12 +8547,12 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">길이</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="492"/>
+        <location filename="../key_agree_dlg.ui" line="248"/>
         <source>GenParam</source>
         <translation>파라미터 생성</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.ui" line="278"/>
+        <location filename="../key_agree_dlg.ui" line="348"/>
         <source>p value</source>
         <translation>p 값</translation>
     </message>
@@ -9313,7 +9325,7 @@ Do you want to delete the file and continue?</source>
         <translation>개인키 복호화</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="1000"/>
+        <location filename="../key_pair_man_dlg.ui" line="980"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
@@ -9356,7 +9368,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">PrivateKey Info</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="878"/>
+        <location filename="../key_pair_man_dlg.ui" line="913"/>
         <source>Password</source>
         <translation>암호</translation>
     </message>
@@ -9381,7 +9393,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">PFX 암호화</translation>
     </message>
     <message>
-        <location filename="../key_pair_man_dlg.ui" line="993"/>
+        <location filename="../key_pair_man_dlg.ui" line="1000"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -10726,9 +10738,8 @@ Do you want to delete the file and continue?</source>
         <translation>공개키를 이용해 데이타 암/복호화 하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1045"/>
         <source>Agree to key</source>
-        <translation>키 동의 하기</translation>
+        <translation type="vanished">키 동의 하기</translation>
     </message>
     <message>
         <source>&amp;Cryptography Message Syntax</source>
@@ -10981,6 +10992,16 @@ Do you want to delete the file and continue?</source>
         <location filename="../mainwindow.cpp" line="1637"/>
         <source>This file is CRL. Open it as CRL information?</source>
         <translation>이파일은 CRL 입니다. CRL 정보를 여시겠습니까?</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1042"/>
+        <source>Key &amp;Agreement</source>
+        <translation>키 동의(&amp;A)</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1045"/>
+        <source>DH or ECDH key agreement</source>
+        <translation>DH 또는 ECDH 키 동의</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1051"/>
@@ -11276,8 +11297,9 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">키 동의(&amp;K)</translation>
     </message>
     <message>
+        <location filename="../mainwindow.cpp" line="524"/>
         <source>Key Agreement</source>
-        <translation type="vanished">키 동의</translation>
+        <translation>키 동의</translation>
     </message>
     <message>
         <source>&amp;CMS</source>
@@ -11425,9 +11447,8 @@ Do you want to delete the file and continue?</source>
         <translation>메세지 인증 코드</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="524"/>
         <source>KeyAgree</source>
-        <translation>키 동의</translation>
+        <translation type="vanished">키 동의</translation>
     </message>
     <message>
         <source>Cryptography Message Syntax</source>
@@ -11539,9 +11560,8 @@ Do you want to delete the file and continue?</source>
         <translation>공개키 암/복호화(&amp;R)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1042"/>
         <source>Key&amp;Agreement</source>
-        <translation>키 동의(&amp;A)</translation>
+        <translation type="vanished">키 동의(&amp;A)</translation>
     </message>
     <message>
         <source>&amp;SSS</source>
@@ -12865,7 +12885,7 @@ Do you want to delete the file and continue?</source>
     <message>
         <location filename="../pri_key_info_dlg.ui" line="14"/>
         <location filename="../pri_key_info_dlg.ui" line="20"/>
-        <location filename="../pri_key_info_dlg.cpp" line="892"/>
+        <location filename="../pri_key_info_dlg.cpp" line="867"/>
         <source>Private Key Information</source>
         <translation>개인키 정보</translation>
     </message>
@@ -13030,76 +13050,74 @@ Do you want to delete the file and continue?</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../pri_key_info_dlg.cpp" line="514"/>
-        <location filename="../pri_key_info_dlg.cpp" line="528"/>
-        <location filename="../pri_key_info_dlg.cpp" line="555"/>
-        <location filename="../pri_key_info_dlg.cpp" line="581"/>
-        <location filename="../pri_key_info_dlg.cpp" line="618"/>
+        <location filename="../pri_key_info_dlg.cpp" line="515"/>
+        <location filename="../pri_key_info_dlg.cpp" line="529"/>
+        <location filename="../pri_key_info_dlg.cpp" line="556"/>
+        <location filename="../pri_key_info_dlg.cpp" line="570"/>
+        <location filename="../pri_key_info_dlg.cpp" line="593"/>
         <source>Not available in edit mode</source>
         <translation>편집모드에서는 사용 할 수 없습니다</translation>
     </message>
     <message>
-        <location filename="../pri_key_info_dlg.cpp" line="546"/>
+        <location filename="../pri_key_info_dlg.cpp" line="547"/>
         <source>PublicKey is valid</source>
         <translation>유효한 공개키 입니다</translation>
     </message>
     <message>
-        <location filename="../pri_key_info_dlg.cpp" line="548"/>
+        <location filename="../pri_key_info_dlg.cpp" line="549"/>
         <source>PublicKey is invalid</source>
         <translation>유효한 공개키가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../pri_key_info_dlg.cpp" line="572"/>
         <source>Save a private key as a PEM file</source>
-        <translation>개인키를 PEM으로 저장하였습니다</translation>
+        <translation type="vanished">개인키를 PEM으로 저장하였습니다</translation>
     </message>
     <message>
-        <location filename="../pri_key_info_dlg.cpp" line="607"/>
         <source>Save a public key as a PEM file</source>
-        <translation>공개키를 PEM으로 저장하였습니다</translation>
+        <translation type="vanished">공개키를 PEM으로 저장하였습니다</translation>
     </message>
     <message>
-        <location filename="../pri_key_info_dlg.cpp" line="633"/>
+        <location filename="../pri_key_info_dlg.cpp" line="608"/>
         <source>KeyPair is matched</source>
         <translation>키 쌍이 맞습니다</translation>
     </message>
     <message>
-        <location filename="../pri_key_info_dlg.cpp" line="635"/>
+        <location filename="../pri_key_info_dlg.cpp" line="610"/>
         <source>KeyPais is not matched</source>
         <translation>키 쌍이 맞지 않습니다</translation>
     </message>
     <message>
-        <location filename="../pri_key_info_dlg.cpp" line="645"/>
+        <location filename="../pri_key_info_dlg.cpp" line="620"/>
         <source>Do you want to save the key value?</source>
         <translation>정말로 키 값을 저장 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../pri_key_info_dlg.cpp" line="747"/>
+        <location filename="../pri_key_info_dlg.cpp" line="722"/>
         <source>Key value change was successful</source>
         <translation>키 값 변경에 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../pri_key_info_dlg.cpp" line="765"/>
+        <location filename="../pri_key_info_dlg.cpp" line="740"/>
         <source>fail to apply change: %1</source>
         <translation>변경 적용 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pri_key_info_dlg.cpp" line="862"/>
+        <location filename="../pri_key_info_dlg.cpp" line="837"/>
         <source>Would you like to revert to the state before editing?</source>
         <translation>편집 전으로 돌아 가겠습니까?</translation>
     </message>
     <message>
-        <location filename="../pri_key_info_dlg.cpp" line="934"/>
+        <location filename="../pri_key_info_dlg.cpp" line="909"/>
         <source>Private key algorithm(%1) not supported</source>
         <translation>지원하지 않는 개인키 알고리즘(%1) 입니다</translation>
     </message>
     <message>
-        <location filename="../pri_key_info_dlg.cpp" line="942"/>
+        <location filename="../pri_key_info_dlg.cpp" line="917"/>
         <source>Public Key Information</source>
         <translation>공개키 정보</translation>
     </message>
     <message>
-        <location filename="../pri_key_info_dlg.cpp" line="982"/>
+        <location filename="../pri_key_info_dlg.cpp" line="957"/>
         <source>Public key algorithm(%1) not supported</source>
         <translation>지원하지 않는 공개키 알고리즘(%1) 입니다</translation>
     </message>

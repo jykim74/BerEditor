@@ -849,7 +849,7 @@
      <item row="0" column="8">
       <widget class="QPushButton" name="mResSendModBtn">
        <property name="text">
-        <string>SendM</string>
+        <string>Send to M</string>
        </property>
       </widget>
      </item>
@@ -940,14 +940,14 @@
      <item row="0" column="7">
       <widget class="QPushButton" name="mResSendBBtn">
        <property name="text">
-        <string>SendB</string>
+        <string>Send to B</string>
        </property>
       </widget>
      </item>
      <item row="0" column="6">
       <widget class="QPushButton" name="mResSendABtn">
        <property name="text">
-        <string>SendA</string>
+        <string>Send to A</string>
        </property>
       </widget>
      </item>

@@ -414,6 +414,8 @@ void ExportDlg::setDHParam( const BIN *pParam )
 
     mFormatCombo->addItem( getFormatName( ExportDH_PEM ), ExportDH_PEM );
     mFormatCombo->addItem( getFormatName( ExportDH_DER ), ExportDH_DER );
+
+    mViewBtn->hide();
 }
 
 void ExportDlg::setPriKeyAndCert( const BIN *pPriKey, const BIN *pCert )

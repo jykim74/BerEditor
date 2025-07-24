@@ -259,7 +259,7 @@ void DataConverterDlg::makeDump( const BIN *pData )
 
         JS_BIN_dumpString( &binPart, &pDump );
 
-        mDumpText->appendPlainText( QString( "%1: %2|%3")
+        mDumpText->appendPlainText( QString( "%1: %2 | %3")
                                        .arg( nPos, 6, 16, QLatin1Char('0') )
                                        .arg( getHexString2( &binPart ), -48, QLatin1Char(' '))
                                        .arg( pDump) );

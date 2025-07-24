@@ -522,7 +522,7 @@ void MainWindow::createViewActions()
     connect( cryptPubEncAct, &QAction::triggered, this, &MainWindow::viewCryptPubEnc );
     cryptMenu->addAction( cryptPubEncAct );
 
-    QAction *cryptKeyAgreeAct = new QAction( tr( "KeyAgree"), this );
+    QAction *cryptKeyAgreeAct = new QAction( tr( "Key Agreement"), this );
     bVal = isView( ACT_CRYPT_KEY_AGREE );
     cryptKeyAgreeAct->setCheckable(true);
     cryptKeyAgreeAct->setChecked(bVal);
@@ -1047,10 +1047,10 @@ void MainWindow::createActions()
     if( isView( ACT_CRYPT_PUB_ENC ) ) crypt_tool_->addAction( pub_enc_dec_act_ );
 
     const QIcon agreeIcon = QIcon::fromTheme("Key Agreement", QIcon(":/images/agree.png"));
-    key_agree_act_ = new QAction( agreeIcon, tr("Key&Agreement"), this );
+    key_agree_act_ = new QAction( agreeIcon, tr("Key &Agreement"), this );
     key_agree_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_A));
     connect( key_agree_act_, &QAction::triggered, this, &MainWindow::keyAgree );
-    key_agree_act_->setStatusTip(tr("Agree to key" ));
+    key_agree_act_->setStatusTip(tr("DH or ECDH key agreement" ));
     cryptMenu->addAction( key_agree_act_ );
     if( isView( ACT_CRYPT_KEY_AGREE ) ) crypt_tool_->addAction( key_agree_act_ );
 
