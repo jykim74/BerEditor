@@ -126,6 +126,8 @@ int KeyAddDlg::readFile( const QString strName )
             ret = JSR_PASSWORD_WRONG;
             return ret;
         }
+
+        mEncCheck->setChecked(true);
     }
 
     mTypeCombo->clear();
@@ -143,6 +145,7 @@ int KeyAddDlg::readFile( const QString strName )
     mNameText->setText( strName );
     mKeyText->setText( strKey );
     mIVText->setText( strIV );
+    mEncCheck->setEnabled( false );
 
     return 0;
 }

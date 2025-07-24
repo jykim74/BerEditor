@@ -93,7 +93,7 @@ public:
     int tableCurrentIndex();
 
     void showWindow();
-    void openBer( const BIN *pBer );
+    int openBer( const BIN *pBer );
     bool isChanged();
 
     void log( const QString strLog, QColor cr = QColor(0x00, 0x00, 0x00) );
@@ -104,8 +104,8 @@ public:
     QString getInfo();
     void useLog( bool bEnable = true );
 
-    void decodeData( const BIN *pData, const QString strPath = "" );
-    void decodeTTLV( const BIN *pData );
+    int decodeData( const BIN *pData, const QString strPath = "" );
+    int decodeTTLV( const BIN *pData );
     bool isTTLV();
 
     void runSignVerify( bool bSign, bool bEncPri, const QString strPriPath, const QString strCertPath );

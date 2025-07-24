@@ -1168,7 +1168,7 @@ void SSLCheckDlg::decodeCertTableMenu()
     QString strData = item->data(Qt::UserRole).toString();
     JS_BIN_decodeHex( strData.toStdString().c_str(), &binCert );
 
-    berApplet->decodeData( &binCert, "" );
+    berApplet->decodeData( &binCert, "SSL Certificate" );
     JS_BIN_reset( &binCert );
 }
 
@@ -1287,7 +1287,7 @@ void SSLCheckDlg::decodeCertTreeMenu()
 
     JS_BIN_decodeHex( strData.toStdString().c_str(), &binCert );
 
-    berApplet->decodeData( &binCert, "" );
+    berApplet->decodeData( &binCert, "SSL Certificate" );
     JS_BIN_reset( &binCert );
 }
 

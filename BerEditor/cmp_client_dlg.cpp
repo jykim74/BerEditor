@@ -121,6 +121,7 @@ void CMPClientDlg::initialize()
     mPriKeyPathText->setPlaceholderText( tr("Select CertMan private key") );
     mCertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
     mRequestText->setPlaceholderText( tr("Hex value" ));
+    mResponseText->setPlaceholderText( tr("Hex value" ));
 }
 
 QStringList CMPClientDlg::getUsedURL()
@@ -438,7 +439,7 @@ void CMPClientDlg::decodeRequest()
 
     JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
 
-    berApplet->decodeData( &binData, NULL );
+    berApplet->decodeData( &binData, "CMP Request" );
 
     JS_BIN_reset( &binData );
 }
@@ -463,7 +464,7 @@ void CMPClientDlg::decodeResponse()
 
     JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
 
-    berApplet->decodeData( &binData, NULL );
+    berApplet->decodeData( &binData, "CMP Response" );
 
     JS_BIN_reset( &binData );
 }

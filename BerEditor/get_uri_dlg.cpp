@@ -104,6 +104,7 @@ void GetURIDlg::saveUsedURI( const QString &strURL )
 void GetURIDlg::runGet()
 {
     int ret = -1;
+    QString strTitle;
 
     if( mUseLDAPHostCheck->isChecked() )
     {
@@ -115,6 +116,10 @@ void GetURIDlg::runGet()
             return;
         }
 
+        QString strHost = mHostText->text();
+        QString strPort = mPortText->text();
+
+        strTitle = QString( "ldap://%1:%2/%3" ).arg( strHost ).arg( strPort ).arg( strDN );
         ret = getLDAP();
     }
     else
@@ -132,6 +137,8 @@ void GetURIDlg::runGet()
         url.setUrl( strURI );
         QString strScheme = url.scheme();
 
+        strTitle = strURI;
+
         if( strScheme.toLower() == "ldap" )
             ret = getLDAP();
         else if( strScheme.toLower() == "http" || strScheme.toLower() == "https" )
@@ -147,8 +154,8 @@ end :
 
     if( ret == 0 )
     {
-        berApplet->decodeData( &data_, "Unknown" );
-        QDialog::accept();
+        ret = berApplet->decodeData( &data_, strTitle );
+        if( ret == 0 ) QDialog::accept();
     }
     else
     {

@@ -123,6 +123,7 @@ void SCEPClientDlg::initialize()
     mPriKeyPathText->setPlaceholderText( tr("Select CertMan private key") );
     mCertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
     mRequestText->setPlaceholderText( tr("Hex value" ));
+    mResponseText->setPlaceholderText( tr("Hex value" ));
 }
 
 QStringList SCEPClientDlg::getUsedURL()
@@ -505,7 +506,7 @@ void SCEPClientDlg::decodeRequest()
 
     JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
 
-    berApplet->decodeData( &binData, NULL );
+    berApplet->decodeData( &binData, "SCEP Request" );
 
     JS_BIN_reset( &binData );
 }
@@ -524,7 +525,7 @@ void SCEPClientDlg::decodeResponse()
 
     JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
 
-    berApplet->decodeData( &binData, NULL );
+    berApplet->decodeData( &binData, "SCEP Response" );
 
     JS_BIN_reset( &binData );
 }

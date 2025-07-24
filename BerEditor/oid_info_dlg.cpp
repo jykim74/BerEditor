@@ -54,7 +54,7 @@ void OIDInfoDlg::initialize()
 {
     mInputTypeCombo->addItems( oidTypes );
     mInputText->setFocus();
-    mInputText->setPlaceholderText( "1.2" );
+    mInputText->setPlaceholderText( "1.2.3.4" );
 }
 
 int OIDInfoDlg::writeOIDConfig( const QString& strMsg )

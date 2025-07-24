@@ -155,7 +155,7 @@ void TSTInfoDlg::clickField( QModelIndex index )
 
 void TSTInfoDlg::clickDataDecode()
 {
-    berApplet->decodeData( &tst_, NULL );
+    berApplet->decodeData( &tst_, "TST" );
 }
 
 void TSTInfoDlg::setTST( const BIN *pTST )

@@ -406,6 +406,12 @@ void CertManDlg::changeTLVerison( int index )
 
 void CertManDlg::initUI()
 {
+    mTLCheckKeyPairBtn->setToolTip( tr( "Check if the private key and public key in the certificate match" ) );
+    mTLEncryptPFXBtn->setToolTip( tr( "Create a PFX of a private key and certificate" ));
+    mTLDecryptPFXBtn->setToolTip( tr( "Extract private key and certificate files from PFX file" ));
+    mTLViewPubKeyBtn->setToolTip( tr( "View certificate public key" ));
+    mTLSavePFXBtn->setToolTip( tr( "Store PFX certificate and private key in End Entity list" ) );
+
     mTLVersionCombo->addItems( kVersionList );
     mTLVersionCombo->setCurrentIndex(1);
 

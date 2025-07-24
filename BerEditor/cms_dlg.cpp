@@ -270,7 +270,7 @@ void CMSDlg::clickCMSDecode()
 
     getBINFromString( &binOutput, strType, strOutput );
 
-    berApplet->decodeData( &binOutput, "" );
+    berApplet->decodeData( &binOutput, "CMS Message" );
 
     JS_BIN_reset( &binOutput );
 }

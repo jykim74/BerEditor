@@ -1925,8 +1925,10 @@ void MainWindow::findNode()
     find_dlg_->activateWindow();
 }
 
-void MainWindow::openBer( const BIN *pBer )
+int MainWindow::openBer( const BIN *pBer )
 {
+    int ret = 0;
+
     if( JS_KMS_isTTLV( pBer ) == 1 )
     {
         if( berApplet->isLicense() == true )
@@ -1934,21 +1936,21 @@ void MainWindow::openBer( const BIN *pBer )
             bool bVal = berApplet->yesOrNoBox( tr("The BER is TTLV format. Do you open as TTLV format?" ), this );
             if( bVal == true )
             {
-                decodeTTLV( pBer );
-                return;
+                ret = decodeTTLV( pBer );
+                return ret;
             }
         }
         else
         {
             berApplet->warningBox( tr( "TTLV decoding requires a license."), this );
-            return;
+            return -1;
         }
     }
 
     if( JS_PKI_isBER( pBer ) == 0 )
     {
         berApplet->warningBox( tr( "The data is not BER format"), this );
-        return;
+        return -2;
     }
 
     ber_model_->setBER( pBer );
@@ -1958,15 +1960,11 @@ void MainWindow::openBer( const BIN *pBer )
     left_tree_->viewRoot();
     QModelIndex ri = ber_model_->index(0,0);
     left_tree_->expand(ri);
-/*
-    if( berApplet->isLicense() )
-    {
-        left_tree_->showTextView();
-        left_tree_->showXMLView();
-    }
-*/
+
     if( hsplitter_->widget(0) != left_tree_ )
         hsplitter_->replaceWidget(0, left_tree_ );
+
+    return 0;
 }
 
 bool MainWindow::isChanged()
@@ -3481,31 +3479,34 @@ void MainWindow::useLog( bool bEnable )
     text_tab_->setTabEnabled( 1, bEnable );
 }
 
-void MainWindow::decodeData( const BIN *pData, const QString strPath )
+int MainWindow::decodeData( const BIN *pData, const QString strPath )
 {
+    int ret = 0;
     if( pData == NULL || pData->nLen <= 0 )
     {
         berApplet->warningBox( tr( "There is no data"), this );
-        return;
+        return -1;
     }
 
-    openBer( pData );
+    ret = openBer( pData );
     file_path_ = strPath;
     setTitle( QString( strPath ));
+
+    return ret;
 }
 
-void MainWindow::decodeTTLV( const BIN *pData )
+int MainWindow::decodeTTLV( const BIN *pData )
 {
     if( pData == NULL || pData->nLen <= 0 )
     {
         berApplet->warningBox( tr( "There is no data"), this );
-        return;
+        return -1;
     }
 
     if( JS_KMS_isTTLV( pData ) == 0 )
     {
         berApplet->warningBox( tr( "The data is not TTLV format" ), this );
-        return;
+        return -2;
     }
 
     ttlv_model_->setTTLV( pData );
@@ -3515,17 +3516,12 @@ void MainWindow::decodeTTLV( const BIN *pData )
     ttlv_tree_->viewRoot();
     QModelIndex ri = ttlv_model_->index(0,0);
     ttlv_tree_->expand(ri);
-/*
-    if( berApplet->isLicense() )
-    {
-        ttlv_tree_->showTextView();
-        ttlv_tree_->showXMLView();
-    }
-*/
+
     if( hsplitter_->widget(0) != ttlv_tree_ )
         hsplitter_->replaceWidget(0, ttlv_tree_ );
 
     setTitle( "TTLV" );
+    return 0;
 }
 
 void MainWindow::print()

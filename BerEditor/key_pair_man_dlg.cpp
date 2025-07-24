@@ -175,6 +175,12 @@ void KeyPairManDlg::initUI()
 #endif
     mKeyTypeCombo->addItems( kKeyTypeList );
 
+    mCheckKeyPairBtn->setToolTip( tr( "Check if the private key and public key pair are correct" ) );
+    mSaveToListBtn->setToolTip( tr( "Store private and public keys in the key pair list" ));
+    mMakeCSRBtn->setToolTip( tr( "Create a CSR for your private key file" ) );
+    mEncryptBtn->setToolTip( tr( "Encrypt your private key file" ));
+    mDecryptBtn->setToolTip( tr( "Decrypting an encrypted private key" ));
+
     QStringList sTableLabels = { tr( "FolderName" ), tr( "ALG"), tr("Option"), tr("LastModified") };
 
     mKeyPairTable->clear();

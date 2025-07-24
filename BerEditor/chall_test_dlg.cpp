@@ -2,6 +2,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QSettings>
 
 #include "chall_test_dlg.h"
 #include "common.h"
@@ -13,6 +14,10 @@
 
 #include "js_http.h"
 #include "js_pki.h"
+
+const QString kChallTestGroup = "ChallTest";
+const QString kChallTestServer = "ChallTestServer";
+const QString kChallTestPort = "ChallTestPort";
 
 const QStringList kCmdTypeList = {
     kCmdHTTP01, kCmdDNS01, kCmdTLS_ALPN01, kCmdCLEARUP, kCmdCLEAR_TXT };
@@ -73,13 +78,23 @@ ChallTestDlg::ChallTestDlg(QWidget *parent)
 
 ChallTestDlg::~ChallTestDlg()
 {
+    QString strServer = mServerText->text();
+    int nPort = mPortText->text().toInt();
 
+    if( strServer != getEnvServer() )
+        setEnvServer( strServer );
+
+    if( nPort != getEnvPort() )
+        setEnvPort( nPort );
 }
 
 void ChallTestDlg::initUI()
 {
-    mServerText->setText( "127.0.0.1" );
-    mPortText->setText( "8055" );
+    QString strServer = getEnvServer();
+    int nPort = getEnvPort();
+
+    mServerText->setText( strServer );
+    mPortText->setText( QString("%1").arg( nPort ));
 
     for( int i = 0; i < kManTypeList.size(); i++ )
     {
@@ -425,4 +440,44 @@ void ChallTestDlg::clickValueList()
 void ChallTestDlg::clickValueClear()
 {
     mValueText->clear();
+}
+
+void ChallTestDlg::setEnvServer( const QString strServer )
+{
+    QSettings settings;
+    settings.beginGroup( kChallTestGroup );
+    settings.setValue( kChallTestServer, strServer );
+    settings.endGroup();
+}
+
+void ChallTestDlg::setEnvPort( int nPort )
+{
+    QSettings settings;
+    settings.beginGroup( kChallTestGroup );
+    settings.setValue( kChallTestPort, nPort );
+    settings.endGroup();
+}
+
+const QString ChallTestDlg::getEnvServer()
+{
+    QString strServer;
+
+    QSettings settings;
+    settings.beginGroup( kChallTestGroup );
+    strServer = settings.value( kChallTestServer, "127.0.0.1" ).toString();
+    settings.endGroup();
+
+    return strServer;
+}
+
+int ChallTestDlg::getEnvPort()
+{
+    int nPort = -1;
+
+    QSettings settings;
+    settings.beginGroup( kChallTestGroup );
+    nPort = settings.value( kChallTestPort, "8055" ).toInt();
+    settings.endGroup();
+
+    return nPort;
 }

@@ -166,6 +166,8 @@ void OCSPClientDlg::initUI()
     mNonceText->setPlaceholderText( tr("Hex value" ));
     mRequestText->setPlaceholderText( tr("Hex value" ));
 
+    mResponseText->setPlaceholderText( tr("Hex value" ));
+
     QRegExp regExp("^[0-9a-fA-F]*$");
     QRegExpValidator* regVal = new QRegExpValidator( regExp );
     mNonceText->setValidator( regVal );
@@ -852,7 +854,7 @@ void OCSPClientDlg::decodeRequest()
 
     JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
 
-    berApplet->decodeData( &binData, NULL );
+    berApplet->decodeData( &binData, "OCSP Request" );
 
     JS_BIN_reset( &binData );
 }
@@ -871,7 +873,7 @@ void OCSPClientDlg::decodeResponse()
 
     JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
 
-    berApplet->decodeData( &binData, NULL );
+    berApplet->decodeData( &binData, "OCSP Response" );
 
     JS_BIN_reset( &binData );
 }
