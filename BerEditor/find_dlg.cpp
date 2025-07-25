@@ -47,7 +47,17 @@ FindDlg::FindDlg(QWidget *parent) :
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+    mBERGroup->layout()->setSpacing(5);
+    mBERGroup->layout()->setMargin(5);
+    mTTLVGroup->layout()->setSpacing(5);
+    mTTLVGroup->layout()->setMargin(5);
+
+    mBERTab->layout()->setSpacing(5);
+    mBERTab->layout()->setMargin(5);
+    mTTLVTab->layout()->setSpacing(5);
+    mTTLVTab->layout()->setMargin(5);
 #endif
+
     resize(minimumSizeHint().width(), minimumSizeHint().height());
 
     mNextBtn->setDefault(true);
