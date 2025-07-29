@@ -2,7 +2,7 @@
 #include <cstdio>
 #include <fstream>
 
-// #include "qpdf/qpdf-c.h"
+#include "qpdf/qpdf-c.h"
 
 #include "pdf_sign.h"
 
@@ -24,14 +24,15 @@ void PDFSign::test()
 
 }
 
-#if 0
+#if 1
 static char const* whoami = 0;
-
+/*
 int
 numPages(std::shared_ptr<QPDF> qpdf)
 {
     return qpdf->getRoot().getKey("/Pages").getKey("/Count").getIntValueAsInt();
 }
+
 
 // Now we define the glue that makes our function callable using the C API.
 
@@ -43,7 +44,7 @@ num_pages(qpdf_data qc, int* npages)
     // and attach it to the qpdf_data object in the same way as other functions in the C API.
     return qpdf_c_wrap(qc, [&qc, &npages]() { *npages = numPages(qpdf_c_get_qpdf(qc)); });
 }
-
+*/
 
 int test( int argc, char* argv[] )
 {
@@ -65,9 +66,11 @@ int test( int argc, char* argv[] )
 
     if ((qpdf_read(qpdf, infile, NULL) & QPDF_ERRORS) == 0) {
         int npages;
+        /*
         if ((num_pages(qpdf, &npages) & QPDF_ERRORS) == 0) {
             printf("num pages = %d\n", npages);
         }
+        */
     }
     if (qpdf_more_warnings(qpdf)) {
         warnings = 1;

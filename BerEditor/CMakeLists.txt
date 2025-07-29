@@ -5,11 +5,9 @@ project(BerEditor
     DESCRIPTION "BerEditor Application"
     LANGUAGES CXX )
 
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)  # -std=c++17 대신 -std=gnu++17 비활성화
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Set up AUTOMOC and some sensible defaults for runtime execution
 # When using Qt 6.3, you can replace the code block below with
@@ -26,7 +24,6 @@ find_package(Qt${QT_VERSION_MAJOR} OPTIONAL_COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} OPTIONAL_COMPONENTS PrintSupport Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Network)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Help)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS xml)
 
 if(APPLE)
     SET(platform_specific_sources ${platform_specific_sources} mac_sparkle_support.mm)
@@ -225,7 +222,6 @@ add_executable(${PROJECT_NAME}
     two_list_dlg.h two_list_dlg.cpp two_list_dlg.ui
     doc_signer_dlg.h doc_signer_dlg.cpp doc_signer_dlg.ui
     pdf_sign.h pdf_sign.cpp
-
 )
 
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )
@@ -236,8 +232,7 @@ target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )
 if(WIN32)
     include_directories( ../../PKILib
         "c:/msys64/mingw64/include"
-        ../../lib/win64/winsparkle/include
-    )
+        ../../lib/win64/winsparkle/include )
 
     message( STATUS ${CMAKE_BUILD_TYPE} )
 
@@ -255,8 +250,6 @@ if(WIN32)
         ../../PKILib/build/Desktop_Qt_5_15_2_MinGW_64_bit-Release
         ../../lib/win64/openssl3/lib64
         ../../lib/win64/winsparkle/lib
-        ../../lib/win64/xmlsec1/xmlsec/bin
-        ../../lib/win64/xmlsec1/libxml2/bin
         ../../lib/win64 )
     endif()
 
@@ -265,7 +258,7 @@ if(WIN32)
 	Qt${QT_VERSION_MAJOR}::PrintSupport
         Qt${QT_VERSION_MAJOR}::Gui
         Qt${QT_VERSION_MAJOR}::Network
-        PKILib crypto ssl ltdl ldap lber ws2_32 WinSparkle xmlsec-openssl xmlsec xml2 )
+        PKILib crypto ssl ltdl ldap lber ws2_32 WinSparkle xmlsec xmlsec-openssl xml2 qpdf )
 
     target_compile_definitions( ${PROJECT_NAME} PRIVATE _AUTO_UPDATE )
 
@@ -307,8 +300,7 @@ elseif(APPLE)
         Qt${QT_VERSION_MAJOR}::Widgets
 	Qt${QT_VERSION_MAJOR}::PrintSupport
         Qt${QT_VERSION_MAJOR}::Network
-        Qt${QT_VERSION_MAJOR}::Xml
-        PKILib crypto ssl ltdl ldap lber xmlsec1 xmlsec1-openssl xml2 xslt podofo
+        PKILib crypto ssl ltdl ldap lber
         "-framework AppKit"
         "-framework Carbon"
         "-framework Foundation"
