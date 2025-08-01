@@ -402,6 +402,7 @@ void TSPClientDlg::clickEncode()
     QString strInput = mInputText->toPlainText();
     QString strPolicy = mPolicyText->text();
     const char *pPolicy = NULL;
+    int nUseNonce = 0;
 
     if( strInput.length() < 1 )
     {
@@ -421,7 +422,10 @@ void TSPClientDlg::clickEncode()
 
     if( strPolicy.length() > 0 ) pPolicy = strPolicy.toStdString().c_str();
 
-    ret = JS_TSP_encodeRequest( &binInput, strHash.toStdString().c_str(), pPolicy, &binReq );
+    if( mUseNonceCheck->isChecked() == true )
+        nUseNonce = 1;
+
+    ret = JS_TSP_encodeRequest( &binInput, strHash.toStdString().c_str(), pPolicy, nUseNonce, &binReq );
     if( ret != 0 )
     {
         berApplet->elog( QString("failed to encode TSP request [%1]").arg( ret ));
