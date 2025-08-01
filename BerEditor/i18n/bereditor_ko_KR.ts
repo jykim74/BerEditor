@@ -5782,19 +5782,19 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">PEM 개인키</translation>
     </message>
     <message>
-        <location filename="../chall_test_dlg.cpp" line="241"/>
-        <location filename="../chall_test_dlg.cpp" line="371"/>
+        <location filename="../chall_test_dlg.cpp" line="240"/>
+        <location filename="../chall_test_dlg.cpp" line="370"/>
         <source>There is no request</source>
         <translation>요청서가 없습니다</translation>
     </message>
     <message>
-        <location filename="../chall_test_dlg.cpp" line="255"/>
+        <location filename="../chall_test_dlg.cpp" line="254"/>
         <source>There is no response</source>
         <translation>응답이 없습니다</translation>
     </message>
     <message>
-        <location filename="../chall_test_dlg.cpp" line="280"/>
-        <location filename="../chall_test_dlg.cpp" line="292"/>
+        <location filename="../chall_test_dlg.cpp" line="279"/>
+        <location filename="../chall_test_dlg.cpp" line="291"/>
         <source>Enter a %1</source>
         <translation>%1을 입력하세요</translation>
     </message>
@@ -5819,7 +5819,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">서명용 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../chall_test_dlg.cpp" line="392"/>
+        <location filename="../chall_test_dlg.cpp" line="391"/>
         <source>fail to send a request to ACME server: %1</source>
         <translation>ACME 서버에 요쳥을 보내는데 실패하였습니다: %1</translation>
     </message>
@@ -7164,108 +7164,108 @@ Do you want to delete the file and continue?</source>
         <translation>BER</translation>
     </message>
     <message>
-        <location filename="../find_dlg.ui" line="85"/>
+        <location filename="../find_dlg.ui" line="97"/>
         <source>Class</source>
         <translation>클래스</translation>
     </message>
     <message>
-        <location filename="../find_dlg.ui" line="108"/>
-        <location filename="../find_dlg.ui" line="282"/>
+        <location filename="../find_dlg.ui" line="120"/>
+        <location filename="../find_dlg.ui" line="306"/>
         <source>Tag</source>
         <translation>태그</translation>
     </message>
     <message>
-        <location filename="../find_dlg.ui" line="129"/>
+        <location filename="../find_dlg.ui" line="141"/>
         <source>Constructed</source>
         <translation>Constructed</translation>
     </message>
     <message>
-        <location filename="../find_dlg.ui" line="136"/>
-        <location filename="../find_dlg.ui" line="396"/>
+        <location filename="../find_dlg.ui" line="148"/>
+        <location filename="../find_dlg.ui" line="420"/>
         <source>Header</source>
         <translation>헤더</translation>
     </message>
     <message>
-        <location filename="../find_dlg.ui" line="149"/>
+        <location filename="../find_dlg.ui" line="161"/>
         <source>Tag ID</source>
         <translation>태그 ID</translation>
     </message>
     <message>
-        <location filename="../find_dlg.ui" line="237"/>
+        <location filename="../find_dlg.ui" line="249"/>
         <source>TTLV</source>
         <translation>TTLV</translation>
     </message>
     <message>
-        <location filename="../find_dlg.ui" line="379"/>
+        <location filename="../find_dlg.ui" line="403"/>
         <source>Type</source>
         <translation>타입</translation>
     </message>
     <message>
-        <location filename="../find_dlg.ui" line="433"/>
+        <location filename="../find_dlg.ui" line="457"/>
         <source>Value</source>
         <translation>값</translation>
     </message>
     <message>
-        <location filename="../find_dlg.ui" line="467"/>
+        <location filename="../find_dlg.ui" line="491"/>
         <source>Level</source>
         <translation>레벨</translation>
     </message>
     <message>
-        <location filename="../find_dlg.ui" line="474"/>
+        <location filename="../find_dlg.ui" line="498"/>
         <source>Previous</source>
         <translation>이전</translation>
     </message>
     <message>
-        <location filename="../find_dlg.ui" line="494"/>
+        <location filename="../find_dlg.ui" line="518"/>
         <source>Next</source>
         <translation>다음</translation>
     </message>
     <message>
-        <location filename="../find_dlg.ui" line="522"/>
+        <location filename="../find_dlg.ui" line="546"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../find_dlg.ui" line="542"/>
+        <location filename="../find_dlg.ui" line="566"/>
         <source>Edit</source>
         <translation>편집</translation>
     </message>
     <message>
-        <location filename="../find_dlg.cpp" line="98"/>
+        <location filename="../find_dlg.cpp" line="108"/>
         <source>Find TTLV</source>
         <translation>TTLV 찾기</translation>
     </message>
     <message>
-        <location filename="../find_dlg.cpp" line="107"/>
+        <location filename="../find_dlg.cpp" line="117"/>
         <source>Find BER</source>
         <translation>BER 찾기</translation>
     </message>
     <message>
-        <location filename="../find_dlg.cpp" line="360"/>
+        <location filename="../find_dlg.cpp" line="370"/>
         <source>Invalid Number: %1</source>
         <translation>유효하지 않는 번호: %1</translation>
     </message>
     <message>
-        <location filename="../find_dlg.cpp" line="422"/>
-        <location filename="../find_dlg.cpp" line="447"/>
-        <location filename="../find_dlg.cpp" line="463"/>
-        <location filename="../find_dlg.cpp" line="490"/>
-        <location filename="../find_dlg.cpp" line="606"/>
-        <location filename="../find_dlg.cpp" line="630"/>
-        <location filename="../find_dlg.cpp" line="646"/>
-        <location filename="../find_dlg.cpp" line="673"/>
-        <location filename="../find_dlg.cpp" line="713"/>
+        <location filename="../find_dlg.cpp" line="432"/>
+        <location filename="../find_dlg.cpp" line="457"/>
+        <location filename="../find_dlg.cpp" line="473"/>
+        <location filename="../find_dlg.cpp" line="500"/>
+        <location filename="../find_dlg.cpp" line="616"/>
+        <location filename="../find_dlg.cpp" line="640"/>
+        <location filename="../find_dlg.cpp" line="656"/>
+        <location filename="../find_dlg.cpp" line="683"/>
+        <location filename="../find_dlg.cpp" line="723"/>
         <source>There is no node to find</source>
         <translation>찾은 노드가 없습니다</translation>
     </message>
     <message>
-        <location filename="../find_dlg.cpp" line="557"/>
-        <location filename="../find_dlg.cpp" line="569"/>
+        <location filename="../find_dlg.cpp" line="567"/>
+        <location filename="../find_dlg.cpp" line="579"/>
         <source>valid characters: %1</source>
         <translation>유효한 문자: %1</translation>
     </message>
     <message>
-        <location filename="../find_dlg.cpp" line="562"/>
+        <location filename="../find_dlg.cpp" line="572"/>
         <source>all characters</source>
         <translation>모든 문자</translation>
     </message>
@@ -8165,42 +8165,42 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">LDAP 서버로 부터 데이타 가져오기 실패</translation>
     </message>
     <message>
-        <location filename="../get_uri_dlg.cpp" line="114"/>
+        <location filename="../get_uri_dlg.cpp" line="127"/>
         <source>Enter a DN value</source>
         <translation>DN 을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../get_uri_dlg.cpp" line="130"/>
+        <location filename="../get_uri_dlg.cpp" line="143"/>
         <source>Enter a URI value</source>
         <translation>URI 을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../get_uri_dlg.cpp" line="148"/>
+        <location filename="../get_uri_dlg.cpp" line="161"/>
         <source>Invalid Scheme : %1</source>
         <translation>유효하지 않는 Scheme: %1</translation>
     </message>
     <message>
-        <location filename="../get_uri_dlg.cpp" line="162"/>
+        <location filename="../get_uri_dlg.cpp" line="175"/>
         <source>failed to get data : %1</source>
         <translation>데이타 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../get_uri_dlg.cpp" line="216"/>
+        <location filename="../get_uri_dlg.cpp" line="229"/>
         <source>failed to connnect LDAP server</source>
         <translation>LDAP 서버 연결 실패</translation>
     </message>
     <message>
-        <location filename="../get_uri_dlg.cpp" line="223"/>
+        <location filename="../get_uri_dlg.cpp" line="236"/>
         <source>failed to bind LDAP server</source>
         <translation>LDAP 서버 바인드 실패</translation>
     </message>
     <message>
-        <location filename="../get_uri_dlg.cpp" line="230"/>
+        <location filename="../get_uri_dlg.cpp" line="243"/>
         <source>failed to get data from LDAP server</source>
         <translation>LDAP 서버로 부터 데이타 가져오기 실패</translation>
     </message>
     <message>
-        <location filename="../get_uri_dlg.cpp" line="267"/>
+        <location filename="../get_uri_dlg.cpp" line="280"/>
         <source>ex) http://i.pki.goog/we2.crt</source>
         <translation>예제) http://i.pki.goog/we2.crt</translation>
     </message>
@@ -16488,7 +16488,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../tsp_client_dlg.ui" line="263"/>
-        <location filename="../tsp_client_dlg.ui" line="575"/>
+        <location filename="../tsp_client_dlg.ui" line="582"/>
         <source>C</source>
         <translation>C</translation>
     </message>
@@ -16499,9 +16499,9 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../tsp_client_dlg.ui" line="296"/>
-        <location filename="../tsp_client_dlg.ui" line="429"/>
-        <location filename="../tsp_client_dlg.ui" line="442"/>
-        <location filename="../tsp_client_dlg.ui" line="562"/>
+        <location filename="../tsp_client_dlg.ui" line="436"/>
+        <location filename="../tsp_client_dlg.ui" line="449"/>
+        <location filename="../tsp_client_dlg.ui" line="569"/>
         <source>D</source>
         <translation>D</translation>
     </message>
@@ -16511,80 +16511,85 @@ Do you want to delete the file and continue?</source>
         <translation>인코딩</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="388"/>
+        <location filename="../tsp_client_dlg.ui" line="395"/>
         <source>Hash</source>
         <translation>해쉬</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="374"/>
+        <location filename="../tsp_client_dlg.ui" line="371"/>
         <source>Send</source>
         <translation>보내기</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="367"/>
+        <location filename="../tsp_client_dlg.ui" line="364"/>
         <source>Verify</source>
         <translation>검증</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="395"/>
+        <location filename="../tsp_client_dlg.ui" line="388"/>
         <source>VerifySigned</source>
         <translation>VerifySigned</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="416"/>
+        <location filename="../tsp_client_dlg.ui" line="402"/>
+        <source>Use Nonce</source>
+        <translation>논스 사용</translation>
+    </message>
+    <message>
+        <location filename="../tsp_client_dlg.ui" line="423"/>
         <source>CA Certificate</source>
         <translation>CA 인증서</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="455"/>
-        <location filename="../tsp_client_dlg.ui" line="484"/>
+        <location filename="../tsp_client_dlg.ui" line="462"/>
+        <location filename="../tsp_client_dlg.ui" line="491"/>
         <source>V</source>
         <translation>V</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="491"/>
+        <location filename="../tsp_client_dlg.ui" line="498"/>
         <source>TSP Certificate</source>
         <translation>TSP 인증서</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="511"/>
-        <location filename="../tsp_client_dlg.ui" line="521"/>
+        <location filename="../tsp_client_dlg.ui" line="518"/>
+        <location filename="../tsp_client_dlg.ui" line="528"/>
         <source>Find</source>
         <translation>찾기</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="468"/>
-        <location filename="../tsp_client_dlg.ui" line="504"/>
+        <location filename="../tsp_client_dlg.ui" line="475"/>
+        <location filename="../tsp_client_dlg.ui" line="511"/>
         <source>T</source>
         <translation>T</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="528"/>
+        <location filename="../tsp_client_dlg.ui" line="535"/>
         <source>Select</source>
         <translation>선택</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="595"/>
+        <location filename="../tsp_client_dlg.ui" line="602"/>
         <source>Response</source>
         <translation>응답</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="549"/>
+        <location filename="../tsp_client_dlg.ui" line="556"/>
         <source>TST Information</source>
         <translation>TST 정보</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="648"/>
+        <location filename="../tsp_client_dlg.ui" line="655"/>
         <source>View CMS</source>
         <translation>CMS 보기</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="713"/>
+        <location filename="../tsp_client_dlg.ui" line="720"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="720"/>
+        <location filename="../tsp_client_dlg.ui" line="727"/>
         <source>Clear All</source>
         <translation>전체 지우기</translation>
     </message>
@@ -16605,12 +16610,12 @@ Do you want to delete the file and continue?</source>
         <location filename="../tsp_client_dlg.cpp" line="339"/>
         <location filename="../tsp_client_dlg.cpp" line="359"/>
         <location filename="../tsp_client_dlg.cpp" line="380"/>
-        <location filename="../tsp_client_dlg.cpp" line="508"/>
+        <location filename="../tsp_client_dlg.cpp" line="512"/>
         <source>Find a CA certificate</source>
         <translation>CA 인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="408"/>
+        <location filename="../tsp_client_dlg.cpp" line="409"/>
         <source>There is no input</source>
         <translation>입력 값이 없습니다</translation>
     </message>
@@ -16619,13 +16624,13 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">정책 OID를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="451"/>
+        <location filename="../tsp_client_dlg.cpp" line="455"/>
         <source>Insert TSP URL</source>
         <translation>TSP URL 을 입력하세요</translation>
     </message>
     <message>
         <location filename="../tsp_client_dlg.cpp" line="174"/>
-        <location filename="../tsp_client_dlg.cpp" line="457"/>
+        <location filename="../tsp_client_dlg.cpp" line="461"/>
         <source>There is no request</source>
         <translation>요청서가 없습니다</translation>
     </message>
@@ -16642,26 +16647,26 @@ Do you want to delete the file and continue?</source>
         <translation>16진수 값</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="471"/>
+        <location filename="../tsp_client_dlg.cpp" line="475"/>
         <source>fail to send a request to TSP server: %1</source>
         <translation>TSP 서버에 요청 보내기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="522"/>
-        <location filename="../tsp_client_dlg.cpp" line="600"/>
+        <location filename="../tsp_client_dlg.cpp" line="526"/>
+        <location filename="../tsp_client_dlg.cpp" line="604"/>
         <source>Select TSP server certificate</source>
         <translation>TSP 서버 인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="529"/>
-        <location filename="../tsp_client_dlg.cpp" line="607"/>
+        <location filename="../tsp_client_dlg.cpp" line="533"/>
+        <location filename="../tsp_client_dlg.cpp" line="611"/>
         <source>find a TSP server certificate</source>
         <translation>TSP 서버 인증서를 찾으세요</translation>
     </message>
     <message>
         <location filename="../tsp_client_dlg.cpp" line="193"/>
-        <location filename="../tsp_client_dlg.cpp" line="547"/>
-        <location filename="../tsp_client_dlg.cpp" line="621"/>
+        <location filename="../tsp_client_dlg.cpp" line="551"/>
+        <location filename="../tsp_client_dlg.cpp" line="625"/>
         <source>There is no response</source>
         <translation>응답이 없습니다</translation>
     </message>
@@ -16671,7 +16676,7 @@ Do you want to delete the file and continue?</source>
         <translation>TSP 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="502"/>
+        <location filename="../tsp_client_dlg.cpp" line="506"/>
         <source>Select CA certificate</source>
         <translation>CA 인증서를 선택하세요</translation>
     </message>
@@ -16684,27 +16689,27 @@ Do you want to delete the file and continue?</source>
         <translation type="obsolete">OCSP 서버 인증서를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="562"/>
-        <location filename="../tsp_client_dlg.cpp" line="639"/>
+        <location filename="../tsp_client_dlg.cpp" line="566"/>
+        <location filename="../tsp_client_dlg.cpp" line="643"/>
         <source>verify reponse successfully</source>
         <translation>검증에 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="566"/>
-        <location filename="../tsp_client_dlg.cpp" line="643"/>
+        <location filename="../tsp_client_dlg.cpp" line="570"/>
+        <location filename="../tsp_client_dlg.cpp" line="647"/>
         <source>failed to verify signature</source>
         <translation>서명 검증에 실패 하였습니다</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="670"/>
-        <location filename="../tsp_client_dlg.cpp" line="704"/>
+        <location filename="../tsp_client_dlg.cpp" line="674"/>
+        <location filename="../tsp_client_dlg.cpp" line="708"/>
         <source>There is no TSP response</source>
         <translation>TSP 응답이 없습니다</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.cpp" line="631"/>
-        <location filename="../tsp_client_dlg.cpp" line="679"/>
-        <location filename="../tsp_client_dlg.cpp" line="713"/>
+        <location filename="../tsp_client_dlg.cpp" line="635"/>
+        <location filename="../tsp_client_dlg.cpp" line="683"/>
+        <location filename="../tsp_client_dlg.cpp" line="717"/>
         <source>failed to decode TSP response</source>
         <translation>TST 메세지 디코딩 실패</translation>
     </message>

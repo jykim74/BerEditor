@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>535</width>
+    <width>540</width>
     <height>610</height>
    </rect>
   </property>
@@ -345,7 +345,7 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="2">
+     <item row="0" column="3">
       <spacer name="horizontalSpacer_4">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -358,27 +358,34 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="mHashCombo"/>
-     </item>
-     <item row="0" column="5">
+     <item row="0" column="7">
       <widget class="QPushButton" name="mVerifyBtn">
        <property name="text">
         <string>Verify</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="4">
+     <item row="0" column="6">
       <widget class="QPushButton" name="mSendBtn">
        <property name="text">
         <string>Send</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
+     <item row="0" column="1">
+      <widget class="QComboBox" name="mHashCombo"/>
+     </item>
+     <item row="0" column="5">
       <widget class="QPushButton" name="mEncodeBtn">
        <property name="text">
         <string>Encode</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="8">
+      <widget class="QPushButton" name="mVerifySignedBtn">
+       <property name="text">
+        <string>VerifySigned</string>
        </property>
       </widget>
      </item>
@@ -389,10 +396,10 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="6">
-      <widget class="QPushButton" name="mVerifySignedBtn">
+     <item row="0" column="4">
+      <widget class="QCheckBox" name="mUseNonceCheck">
        <property name="text">
-        <string>VerifySigned</string>
+        <string>Use Nonce</string>
        </property>
       </widget>
      </item>
