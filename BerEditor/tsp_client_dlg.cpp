@@ -491,8 +491,8 @@ void TSPClientDlg::clickSend()
 
         strUP = QString( "%1:%2" ).arg( strUser ).arg( strPass );
         JS_BIN_set( &bin, (unsigned char *)strUP.toStdString().c_str(), strUP.length() );
-        JS_BIN_encodeHex( &bin, &pBase64 );
-        strAuth = QString( "Basic %1").arg( strUP );
+        JS_BIN_encodeBase64( &bin, &pBase64 );
+        strAuth = QString( "Basic %1").arg( pBase64 );
 
         JS_BIN_reset( &bin );
         if( pBase64 ) JS_free( pBase64 );
