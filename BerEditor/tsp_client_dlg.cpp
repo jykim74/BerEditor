@@ -404,12 +404,15 @@ void TSPClientDlg::clickEncode()
     const char *pPolicy = NULL;
     int nUseNonce = 0;
 
+
     if( strInput.length() < 1 )
     {
         berApplet->warningBox( tr( "There is no input" ), this );
         mInputText->setFocus();
         return;
     }
+
+
 /*
     if( strPolicy.length() < 1 )
     {
@@ -450,6 +453,8 @@ void TSPClientDlg::clickSend()
     QString strReq = mRequestText->toPlainText();
     QString strURL = mURLCombo->currentText();
 
+    QString strAuth;
+
     if( strURL.length() < 1 )
     {
         berApplet->warningBox( tr( "Insert TSP URL"), this );
@@ -462,9 +467,44 @@ void TSPClientDlg::clickSend()
         goto end;
     }
 
+    if( mAuthGroup->isChecked() == true )
+    {
+        QString strUser = mUserText->text();
+        QString strPass = mPassText->text();
+        QString strUP;
+        BIN bin = {0,0};
+        char *pBase64 = NULL;
+
+        if( strUser.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a username" ), this );
+            mUserText->setFocus();
+            return;
+        }
+
+        if( strPass.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a password" ), this );
+            mPassText->setFocus();
+            return;
+        }
+
+        strUP = QString( "%1:%2" ).arg( strUser ).arg( strPass );
+        JS_BIN_set( &bin, (unsigned char *)strUP.toStdString().c_str(), strUP.length() );
+        JS_BIN_encodeHex( &bin, &pBase64 );
+        strAuth = QString( "Basic %1").arg( strUP );
+
+        JS_BIN_reset( &bin );
+        if( pBase64 ) JS_free( pBase64 );
+    }
+
     getBINFromString( &binReq, DATA_HEX, strReq );
 
-    ret = JS_HTTP_requestPostBin( strURL.toStdString().c_str(), "application/tsp-request", &binReq, &nStatus, &binRsp );
+    if( mAuthGroup->isChecked() == true )
+        ret = JS_HTTP_requestAuthPostBin( strURL.toStdString().c_str(), "application/tsp-request", strAuth.toStdString().c_str(), &binReq, &nStatus, &binRsp );
+    else
+        ret = JS_HTTP_requestPostBin( strURL.toStdString().c_str(), "application/tsp-request", &binReq, &nStatus, &binRsp );
+
     if( ret == 0 )
     {
         mResponseText->setPlainText( getHexString( &binRsp ));
