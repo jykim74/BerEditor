@@ -9,6 +9,8 @@
 #include "js_pki.h"
 #include "js_pkcs7.h"
 #include "js_util.h"
+#include "js_pki_tools.h"
+#include "js_ber.h"
 
 #include "common.h"
 
@@ -346,9 +348,10 @@ void CMSInfoDlg::setSignerInfo( const JP7SignerInfoList *pSignerList )
             {
                 if( pCurValList->sNumVal.pValue )
                 {
+                    QString strSN = JS_PKI_getSNFromNid( pCurValList->sNumVal.nNum );
                     mSignerTable->insertRow( srow );
                     mSignerTable->setRowHeight(srow, 10);
-                    mSignerTable->setItem( srow, 0, new QTableWidgetItem("AuthAttr"));
+                    mSignerTable->setItem( srow, 0, new QTableWidgetItem( QString( "[A]%1" ).arg( strSN )) );
                     mSignerTable->setItem( srow, 1, new QTableWidgetItem( QString("%1").arg( pCurValList->sNumVal.pValue )));
                     srow++;
                 }
@@ -365,9 +368,11 @@ void CMSInfoDlg::setSignerInfo( const JP7SignerInfoList *pSignerList )
             {
                 if( pCurValList->sNumVal.pValue )
                 {
+                    QString strSN = JS_PKI_getSNFromNid( pCurValList->sNumVal.nNum );
+
                     mSignerTable->insertRow( srow );
                     mSignerTable->setRowHeight(srow, 10);
-                    mSignerTable->setItem( srow, 0, new QTableWidgetItem("UnauthAttr"));
+                    mSignerTable->setItem( srow, 0, new QTableWidgetItem( QString("[U]%1").arg( strSN )));
                     mSignerTable->setItem( srow, 1, new QTableWidgetItem( QString("%1").arg( pCurValList->sNumVal.pValue )));
                     srow++;
                 }
