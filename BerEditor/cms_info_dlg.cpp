@@ -21,6 +21,7 @@ CMSInfoDlg::CMSInfoDlg(QWidget *parent) :
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mDataText, SIGNAL(textChanged()), this, SLOT(dataChanged()));
+    connect( mDecodeBtn, SIGNAL(clicked()), this, SLOT(clickDecode()));
     connect( mDecodeDataBtn, SIGNAL(clicked()), this, SLOT(clickDecodeData()));
 
     connect( mDataTable, SIGNAL(clicked(QModelIndex)), this, SLOT(clickDataField(QModelIndex)));
@@ -35,6 +36,7 @@ CMSInfoDlg::CMSInfoDlg(QWidget *parent) :
     layout()->setSpacing(5);
 
     mDecodeDataBtn->setFixedWidth(34);
+    mDecodeBtn->setFixedWidth(34);
 
     mDataTab->layout()->setSpacing(5);
     mDataTab->layout()->setMargin(5);
@@ -191,12 +193,17 @@ void CMSInfoDlg::dataChanged()
     mDataLenText->setText( QString("%1").arg( strLen ));
 }
 
+void CMSInfoDlg::clickDecode()
+{
+    berApplet->decodeData( &cms_bin_, "CMS Message" );
+}
+
 void CMSInfoDlg::clickDecodeData()
 {
     BIN binData = {0,0};
     QString strData = mDataText->toPlainText();
     getBINFromString( &binData, DATA_HEX, strData );
-    berApplet->decodeData( &binData, "CMS Message" );
+    berApplet->decodeData( &binData, "CMS Data Message" );
     JS_BIN_reset( &binData );
 }
 
