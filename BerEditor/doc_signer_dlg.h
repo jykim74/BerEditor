@@ -24,6 +24,12 @@ private slots:
     void findSrcPath();
     void findDstPath();
 
+    void checkCMSAuth();
+    void changeCMSData();
+
+    void clickCMSMakeSign();
+    void clickCMSVerifySign();
+
     void clickJSON_ComputeSignature();
     void clickJSON_VerifySignature();
     void clickJSON_PayloadClear();
@@ -47,6 +53,9 @@ private slots:
 private:
     void initUI();
     void initialize();
+
+    QStringList getUsedURL();
+    void setUsedURL( const QString strURL );
 
     ACMEObject json_obj_;
     QXmlStreamReader xml_;

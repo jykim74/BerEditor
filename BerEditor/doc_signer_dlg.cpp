@@ -20,7 +20,9 @@
 #include "js_pki_key.h"
 #include "js_error.h"
 #include "js_pki_xml.h"
+#include "js_pkcs7.h"
 
+const QString kTSPUsedURL = "TSPUsedURL";
 
 DocSignerDlg::DocSignerDlg(QWidget *parent)
     : QDialog(parent)
@@ -32,6 +34,11 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clickClearAll()));
     connect( mFindSrcPathBtn, SIGNAL(clicked()), this, SLOT(findSrcPath()));
     connect( mFindDstPathBtn, SIGNAL(clicked()), this, SLOT(findDstPath()));
+
+    connect( mCMSDataText, SIGNAL(textChanged()), this, SLOT(changeCMSData()));
+    connect( mCMSAuthCheck, SIGNAL(clicked()), this, SLOT(checkCMSAuth()));
+    connect( mCMSMakeSignBtn, SIGNAL(clicked()), this, SLOT(clickCMSMakeSign()));
+    connect( mCMSVerifySignBtn, SIGNAL(clicked()), this, SLOT(clickCMSVerifySign()));
 
     connect( mJSONPayloadText, SIGNAL(textChanged()), this, SLOT(changeJSON_Payload()));
     connect( mJSON_JWSText, SIGNAL(textChanged()), this, SLOT(changeJSON_JWS()));
@@ -126,6 +133,23 @@ void DocSignerDlg::findDstPath()
     mDstPathText->setText( strFileName );
 }
 
+void DocSignerDlg::checkCMSAuth()
+{
+    bool bVal = mCMSAuthCheck->isChecked();
+
+    mCMSUserLabel->setEnabled( bVal );
+    mCMSUserText->setEnabled( bVal );
+    mCMSPasswdLabel->setEnabled( bVal );
+    mCMSPasswdText->setEnabled( bVal );
+}
+
+void DocSignerDlg::changeCMSData()
+{
+    QString strData = mCMSDataText->toPlainText();
+    QString strLen = getDataLenString( DATA_HEX, strData );
+    mCMSDataLenText->setText( strLen );
+}
+
 void DocSignerDlg::initUI()
 {
     mHashCombo->addItems( kSHAHashList );
@@ -133,6 +157,100 @@ void DocSignerDlg::initUI()
 }
 
 void DocSignerDlg::initialize()
+{
+    mCMS_URLCombo->setEditable( true );
+    QStringList usedList = getUsedURL();
+    mCMS_URLCombo->addItems( usedList );
+
+    mCMSPolicyText->setPlaceholderText( "1.2.3.4" );
+
+    checkCMSAuth();
+}
+
+QStringList DocSignerDlg::getUsedURL()
+{
+    QSettings settings;
+    QStringList retList;
+
+    settings.beginGroup( kSettingBer );
+    retList = settings.value( kTSPUsedURL ).toStringList();
+    settings.endGroup();
+
+    return retList;
+}
+
+void DocSignerDlg::setUsedURL( const QString strURL )
+{
+    if( strURL.length() <= 4 ) return;
+
+    QSettings settings;
+    settings.beginGroup( kSettingBer );
+    QStringList list = settings.value( kTSPUsedURL ).toStringList();
+    list.removeAll( strURL );
+    list.insert( 0, strURL );
+    settings.setValue( kTSPUsedURL, list );
+    settings.endGroup();
+
+    mCMS_URLCombo->clear();
+    mCMS_URLCombo->addItems( list );
+}
+
+void DocSignerDlg::clickCMSMakeSign()
+{
+    BIN binSrc = {0,0};
+    BIN binPri = {0,0};
+    BIN binPub = {0,0};
+    QString strName;
+
+    if( mUseCertManCheck->isChecked() == true )
+    {
+        BIN binCert = {0,0};
+        JCertInfo sCertInfo;
+        CertManDlg certMan;
+
+        memset( &sCertInfo, 0x00, sizeof(sCertInfo));
+
+        certMan.setMode( ManModeSelBoth );
+        certMan.setTitle( tr( "Select a sign certificate" ));
+
+        if( certMan.exec() != QDialog::Accepted )
+            return;
+
+        certMan.getPriKey( &binPri );
+        certMan.getCert( &binCert );
+        JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
+        strName = sCertInfo.pSubjectName;
+        JS_PKI_getPubKeyFromCert( &binCert, &binPub );
+        JS_BIN_reset( &binCert );
+        JS_PKI_resetCertInfo( &sCertInfo );
+    }
+    else
+    {
+        QString strPubPath;
+        QString strPriPath;
+
+        KeyPairManDlg keyPairMan;
+        keyPairMan.setTitle( tr( "Select keypair" ));
+        keyPairMan.setMode( KeyPairModeSelect );
+
+        if( keyPairMan.exec() != QDialog::Accepted )
+            return;
+
+        strPubPath = keyPairMan.getPubPath();
+        strPriPath = keyPairMan.getPriPath();
+        strName = keyPairMan.getName();
+
+        JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+        JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPub );
+    }
+
+end:
+    JS_BIN_reset( &binSrc );
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binPub );
+}
+
+void DocSignerDlg::clickCMSVerifySign()
 {
 
 }
