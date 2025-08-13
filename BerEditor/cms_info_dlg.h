@@ -28,6 +28,7 @@ public:
 
 private slots:
     void dataChanged();
+    void clickDecode();
     void clickDecodeData();
 
     void clickDataField(QModelIndex index);

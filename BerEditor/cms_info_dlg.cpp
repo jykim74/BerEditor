@@ -9,6 +9,8 @@
 #include "js_pki.h"
 #include "js_pkcs7.h"
 #include "js_util.h"
+#include "js_pki_tools.h"
+#include "js_ber.h"
 
 #include "common.h"
 
@@ -21,6 +23,7 @@ CMSInfoDlg::CMSInfoDlg(QWidget *parent) :
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mDataText, SIGNAL(textChanged()), this, SLOT(dataChanged()));
+    connect( mDecodeBtn, SIGNAL(clicked()), this, SLOT(clickDecode()));
     connect( mDecodeDataBtn, SIGNAL(clicked()), this, SLOT(clickDecodeData()));
 
     connect( mDataTable, SIGNAL(clicked(QModelIndex)), this, SLOT(clickDataField(QModelIndex)));
@@ -35,6 +38,7 @@ CMSInfoDlg::CMSInfoDlg(QWidget *parent) :
     layout()->setSpacing(5);
 
     mDecodeDataBtn->setFixedWidth(34);
+    mDecodeBtn->setFixedWidth(34);
 
     mDataTab->layout()->setSpacing(5);
     mDataTab->layout()->setMargin(5);
@@ -191,12 +195,17 @@ void CMSInfoDlg::dataChanged()
     mDataLenText->setText( QString("%1").arg( strLen ));
 }
 
+void CMSInfoDlg::clickDecode()
+{
+    berApplet->decodeData( &cms_bin_, "CMS Message" );
+}
+
 void CMSInfoDlg::clickDecodeData()
 {
     BIN binData = {0,0};
     QString strData = mDataText->toPlainText();
     getBINFromString( &binData, DATA_HEX, strData );
-    berApplet->decodeData( &binData, "CMS Message" );
+    berApplet->decodeData( &binData, "CMS Data Message" );
     JS_BIN_reset( &binData );
 }
 
@@ -339,9 +348,10 @@ void CMSInfoDlg::setSignerInfo( const JP7SignerInfoList *pSignerList )
             {
                 if( pCurValList->sNumVal.pValue )
                 {
+                    QString strSN = JS_PKI_getSNFromNid( pCurValList->sNumVal.nNum );
                     mSignerTable->insertRow( srow );
                     mSignerTable->setRowHeight(srow, 10);
-                    mSignerTable->setItem( srow, 0, new QTableWidgetItem("AuthAttr"));
+                    mSignerTable->setItem( srow, 0, new QTableWidgetItem( QString( "[A]%1" ).arg( strSN )) );
                     mSignerTable->setItem( srow, 1, new QTableWidgetItem( QString("%1").arg( pCurValList->sNumVal.pValue )));
                     srow++;
                 }
@@ -358,9 +368,11 @@ void CMSInfoDlg::setSignerInfo( const JP7SignerInfoList *pSignerList )
             {
                 if( pCurValList->sNumVal.pValue )
                 {
+                    QString strSN = JS_PKI_getSNFromNid( pCurValList->sNumVal.nNum );
+
                     mSignerTable->insertRow( srow );
                     mSignerTable->setRowHeight(srow, 10);
-                    mSignerTable->setItem( srow, 0, new QTableWidgetItem("UnauthAttr"));
+                    mSignerTable->setItem( srow, 0, new QTableWidgetItem( QString("[U]%1").arg( strSN )));
                     mSignerTable->setItem( srow, 1, new QTableWidgetItem( QString("%1").arg( pCurValList->sNumVal.pValue )));
                     srow++;
                 }

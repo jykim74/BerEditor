@@ -3064,114 +3064,115 @@ mailto : jykim74@gmail.com</translation>
         <translation>Cryptographic Message Syntax</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.ui" line="39"/>
+        <location filename="../cms_info_dlg.ui" line="52"/>
         <source>CMS Type</source>
         <translation>CMS 타입</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.ui" line="52"/>
+        <location filename="../cms_info_dlg.ui" line="45"/>
         <source>Version</source>
         <translation>버젼</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.ui" line="218"/>
-        <location filename="../cms_info_dlg.ui" line="310"/>
+        <location filename="../cms_info_dlg.ui" line="237"/>
+        <location filename="../cms_info_dlg.ui" line="329"/>
         <source>Data</source>
         <translation>데이타</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.ui" line="244"/>
+        <location filename="../cms_info_dlg.ui" line="164"/>
+        <location filename="../cms_info_dlg.ui" line="263"/>
         <source>D</source>
         <translation>D</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.ui" line="316"/>
+        <location filename="../cms_info_dlg.ui" line="335"/>
         <source>Data Information</source>
         <translation>데이타 정보</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.ui" line="331"/>
+        <location filename="../cms_info_dlg.ui" line="350"/>
         <source>Certficate</source>
         <translation>인증서</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.ui" line="337"/>
+        <location filename="../cms_info_dlg.ui" line="356"/>
         <source>Certficate List</source>
         <translation>인증서 목록</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.ui" line="352"/>
+        <location filename="../cms_info_dlg.ui" line="371"/>
         <source>CRL</source>
         <translation>CRL</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.ui" line="358"/>
+        <location filename="../cms_info_dlg.ui" line="377"/>
         <source>CRL List</source>
         <translation>CRL 목록</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.ui" line="373"/>
+        <location filename="../cms_info_dlg.ui" line="392"/>
         <source>Signer</source>
         <translation>서명자</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.ui" line="379"/>
+        <location filename="../cms_info_dlg.ui" line="398"/>
         <source>Signer Information</source>
         <translation>서명자 정보</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.ui" line="394"/>
+        <location filename="../cms_info_dlg.ui" line="413"/>
         <source>Recip</source>
         <translation>수신자</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.ui" line="400"/>
+        <location filename="../cms_info_dlg.ui" line="419"/>
         <source>Recip Information</source>
         <translation>수신자 정보</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.ui" line="461"/>
+        <location filename="../cms_info_dlg.ui" line="480"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="67"/>
+        <location filename="../cms_info_dlg.cpp" line="69"/>
         <source>Name</source>
         <translation>이름</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="67"/>
+        <location filename="../cms_info_dlg.cpp" line="69"/>
         <source>Value</source>
         <translation>값</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="78"/>
+        <location filename="../cms_info_dlg.cpp" line="80"/>
         <source>Subject DN</source>
         <translation>주체자 DN</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="78"/>
+        <location filename="../cms_info_dlg.cpp" line="80"/>
         <source>Expire</source>
         <translation>만료 일자</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="78"/>
-        <location filename="../cms_info_dlg.cpp" line="92"/>
+        <location filename="../cms_info_dlg.cpp" line="80"/>
+        <location filename="../cms_info_dlg.cpp" line="94"/>
         <source>Issuer DN</source>
         <translation>발급자 이름</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="92"/>
+        <location filename="../cms_info_dlg.cpp" line="94"/>
         <source>This Update</source>
         <translation>이번 업데이트</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="92"/>
+        <location filename="../cms_info_dlg.cpp" line="94"/>
         <source>Next Update</source>
         <translation>다음 업데이트</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="180"/>
+        <location filename="../cms_info_dlg.cpp" line="182"/>
         <source>This type is not supported.</source>
         <translation>이 타입은 지원 하지 않습니다</translation>
     </message>
@@ -16487,33 +16488,33 @@ Do you want to delete the file and continue?</source>
         <translation>입력값</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="205"/>
+        <location filename="../tsp_client_dlg.ui" line="352"/>
         <source>TSP Server requires authorization</source>
         <translation>TSP 서버 인증 요구</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="219"/>
+        <location filename="../tsp_client_dlg.ui" line="366"/>
         <source>Password</source>
         <translation>암호</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="229"/>
+        <location filename="../tsp_client_dlg.ui" line="376"/>
         <source>Username</source>
         <translation>유저명</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="312"/>
+        <location filename="../tsp_client_dlg.ui" line="263"/>
         <location filename="../tsp_client_dlg.ui" line="631"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="332"/>
+        <location filename="../tsp_client_dlg.ui" line="283"/>
         <source>Request</source>
         <translation>요청</translation>
     </message>
     <message>
-        <location filename="../tsp_client_dlg.ui" line="345"/>
+        <location filename="../tsp_client_dlg.ui" line="296"/>
         <location filename="../tsp_client_dlg.ui" line="485"/>
         <location filename="../tsp_client_dlg.ui" line="498"/>
         <location filename="../tsp_client_dlg.ui" line="618"/>
