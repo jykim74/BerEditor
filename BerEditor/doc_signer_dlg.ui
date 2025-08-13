@@ -149,8 +149,13 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
+     <widget class="QWidget" name="mTabCMS">
+      <attribute name="title">
+       <string>CMS</string>
+      </attribute>
+     </widget>
      <widget class="QWidget" name="mTabJSON">
       <attribute name="title">
        <string>JSON</string>
@@ -662,96 +667,6 @@
          </item>
          <item row="0" column="0">
           <spacer name="horizontalSpacer_11">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="mTabPDF">
-      <attribute name="title">
-       <string>PDF</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_4">
-       <item>
-        <widget class="QLabel" name="label_9">
-         <property name="text">
-          <string>PDF Signer</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QGridLayout" name="gridLayout_13">
-         <item row="0" column="2">
-          <widget class="QPushButton" name="mPDFVerifySignBtn">
-           <property name="text">
-            <string>Verify Sign</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QPushButton" name="mPDFMakeSignBtn">
-           <property name="text">
-            <string>Make Sign</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <spacer name="horizontalSpacer_12">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="mTabDOC">
-      <attribute name="title">
-       <string>Doc</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_5">
-       <item>
-        <widget class="QLabel" name="label_10">
-         <property name="text">
-          <string>Doc Signer</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QGridLayout" name="gridLayout_14">
-         <item row="0" column="1">
-          <widget class="QPushButton" name="mDocMakeSignBtn">
-           <property name="text">
-            <string>Make Sign</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QPushButton" name="mDocVerifySignBtn">
-           <property name="text">
-            <string>Verify Sign</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <spacer name="horizontalSpacer_13">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>

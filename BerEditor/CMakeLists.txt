@@ -258,7 +258,7 @@ if(WIN32)
 	Qt${QT_VERSION_MAJOR}::PrintSupport
         Qt${QT_VERSION_MAJOR}::Gui
         Qt${QT_VERSION_MAJOR}::Network
-        PKILib crypto ssl ltdl ldap lber ws2_32 WinSparkle xmlsec xmlsec-openssl xml2 qpdf )
+        PKILib crypto ssl ltdl ldap lber ws2_32 WinSparkle xmlsec xmlsec-openssl xml2 )
 
     target_compile_definitions( ${PROJECT_NAME} PRIVATE _AUTO_UPDATE )
 

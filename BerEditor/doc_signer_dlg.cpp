@@ -53,11 +53,6 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mXMLBodyText, SIGNAL(textChanged()), this, SLOT(changeXML_Body()));
     connect( mXMLSignText, SIGNAL(textChanged()), this, SLOT(changeXML_Sign()));
 
-    connect( mPDFMakeSignBtn, SIGNAL(clicked()), this, SLOT(clickPDF_MakeSign()));
-    connect( mPDFVerifySignBtn, SIGNAL(clicked()), this, SLOT(clickPDF_VerifySign()));
-    connect( mDocMakeSignBtn, SIGNAL(clicked()), this, SLOT(clickDoc_MakeSign()));
-    connect( mDocVerifySignBtn, SIGNAL(clicked()), this, SLOT(clickDoc_VerifySign()));
-
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
     mJSONPayloadClearBtn->setFixedWidth(34);
@@ -641,34 +636,4 @@ void DocSignerDlg::changeXML_Sign()
 {
     QString strSign = mXMLSignText->toPlainText();
     mXMLSignLenText->setText( QString("%1").arg( strSign.length() ));
-}
-
-void DocSignerDlg::clickPDF_MakeSign()
-{
-    QString strSrcPath = mSrcPathText->text();
-
-    if( strSrcPath.length() < 1 )
-    {
-        berApplet->warningBox( tr("Find a source file"), this );
-        mSrcPathText->setFocus();
-        return;
-    }
-
-    PDFSign pdfSign;
-    pdfSign.readFile( strSrcPath );
-}
-
-void DocSignerDlg::clickPDF_VerifySign()
-{
-
-}
-
-void DocSignerDlg::clickDoc_MakeSign()
-{
-
-}
-
-void DocSignerDlg::clickDoc_VerifySign()
-{
-
 }
