@@ -300,7 +300,7 @@ elseif(APPLE)
         Qt${QT_VERSION_MAJOR}::Widgets
 	Qt${QT_VERSION_MAJOR}::PrintSupport
         Qt${QT_VERSION_MAJOR}::Network
-        PKILib crypto ssl ltdl ldap lber
+        PKILib crypto ssl ltdl ldap lber xmlsec1 xmlsec1-openssl xml2
         "-framework AppKit"
         "-framework Carbon"
         "-framework Foundation"
@@ -333,7 +333,7 @@ elseif(LINUX)
         Qt${QT_VERSION_MAJOR}::Widgets
 	Qt${QT_VERSION_MAJOR}::PrintSupport
         Qt${QT_VERSION_MAJOR}::Network
-        PKILib crypto ssl ltdl ldap lber )
+        PKILib crypto ssl ltdl ldap lber xmlsec xmlsec-openssl xml2 )
 endif()
 
 target_compile_definitions( ${PROJECT_NAME} PRIVATE

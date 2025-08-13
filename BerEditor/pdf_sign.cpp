@@ -2,8 +2,6 @@
 #include <cstdio>
 #include <fstream>
 
-#include "qpdf/qpdf-c.h"
-
 #include "pdf_sign.h"
 
 PDFSign::PDFSign()

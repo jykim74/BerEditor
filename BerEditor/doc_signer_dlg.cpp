@@ -8,6 +8,7 @@
 #include "doc_signer_dlg.h"
 #include "ber_applet.h"
 #include "mainwindow.h"
+#include "settings_mgr.h"
 #include "common.h"
 #include "acme_tree_dlg.h"
 #include "acme_object.h"
@@ -62,6 +63,10 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+
+    mCMSClearBtn->setFixedWidth(34);
+    mCMSViewBtn->setFixedWidth(34);
+
     mJSONPayloadClearBtn->setFixedWidth(34);
     mJSONPayloadViewBtn->setFixedWidth(34);
     mJSON_JWSClearBtn->setFixedWidth(34);
@@ -73,11 +78,8 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     mTabXML->layout()->setSpacing(5);
     mTabXML->layout()->setMargin(5);
 
-    mTabPDF->layout()->setSpacing(5);
-    mTabPDF->layout()->setMargin(5);
-
-    mTabDOC->layout()->setSpacing(5);
-    mTabDOC->layout()->setMargin(5);
+    mTabCMS->layout()->setSpacing(5);
+    mTabCMS->layout()->setMargin(5);
 #endif
 
 
@@ -153,6 +155,8 @@ void DocSignerDlg::changeCMSData()
 void DocSignerDlg::initUI()
 {
     mHashCombo->addItems( kSHAHashList );
+    mHashCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
+
     mTabSigner->setCurrentIndex(0);
 }
 
@@ -195,11 +199,86 @@ void DocSignerDlg::setUsedURL( const QString strURL )
     mCMS_URLCombo->addItems( list );
 }
 
-void DocSignerDlg::clickCMSMakeSign()
+int DocSignerDlg::getPubKey( BIN *pPubKey )
 {
-    BIN binSrc = {0,0};
-    BIN binPri = {0,0};
-    BIN binPub = {0,0};
+    if( mUseCertManCheck->isChecked() == true )
+    {
+        BIN binCert = {0,0};
+        JCertInfo sCertInfo;
+        CertManDlg certMan;
+
+        memset( &sCertInfo, 0x00, sizeof(sCertInfo));
+
+        certMan.setMode( ManModeSelBoth );
+        certMan.setTitle( tr( "Select a sign certificate" ));
+
+        if( certMan.exec() != QDialog::Accepted )
+            return -1;
+
+        certMan.getCert( &binCert );
+        JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
+        JS_PKI_getPubKeyFromCert( &binCert, pPubKey );
+        JS_BIN_reset( &binCert );
+        JS_PKI_resetCertInfo( &sCertInfo );
+    }
+    else
+    {
+        QString strPubPath;
+        QString strPriPath;
+
+        KeyPairManDlg keyPairMan;
+        keyPairMan.setTitle( tr( "Select keypair" ));
+        keyPairMan.setMode( KeyPairModeSelect );
+
+        if( keyPairMan.exec() != QDialog::Accepted )
+            return -1;
+
+        strPubPath = keyPairMan.getPubPath();
+        strPriPath = keyPairMan.getPriPath();
+
+        JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), pPubKey );
+    }
+
+    return 0;
+}
+
+int DocSignerDlg::getPriKey( BIN *pPriKey )
+{
+    if( mUseCertManCheck->isChecked() == true )
+    {
+        CertManDlg certMan;
+
+        certMan.setMode( ManModeSelBoth );
+        certMan.setTitle( tr( "Select a sign certificate" ));
+
+        if( certMan.exec() != QDialog::Accepted )
+            return -1;
+
+        certMan.getPriKey( pPriKey );
+    }
+    else
+    {
+        QString strPubPath;
+        QString strPriPath;
+
+        KeyPairManDlg keyPairMan;
+        keyPairMan.setTitle( tr( "Select keypair" ));
+        keyPairMan.setMode( KeyPairModeSelect );
+
+        if( keyPairMan.exec() != QDialog::Accepted )
+            return -1;
+
+        strPubPath = keyPairMan.getPubPath();
+        strPriPath = keyPairMan.getPriPath();
+
+        JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), pPriKey );
+    }
+
+    return 0;
+}
+
+int DocSignerDlg::getKeyPair( BIN *pPubKey, BIN *pPriKey )
+{
     QString strName;
 
     if( mUseCertManCheck->isChecked() == true )
@@ -214,13 +293,13 @@ void DocSignerDlg::clickCMSMakeSign()
         certMan.setTitle( tr( "Select a sign certificate" ));
 
         if( certMan.exec() != QDialog::Accepted )
-            return;
+            return -1;
 
-        certMan.getPriKey( &binPri );
+        certMan.getPriKey( pPriKey );
         certMan.getCert( &binCert );
         JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
         strName = sCertInfo.pSubjectName;
-        JS_PKI_getPubKeyFromCert( &binCert, &binPub );
+        JS_PKI_getPubKeyFromCert( &binCert, pPubKey );
         JS_BIN_reset( &binCert );
         JS_PKI_resetCertInfo( &sCertInfo );
     }
@@ -234,20 +313,30 @@ void DocSignerDlg::clickCMSMakeSign()
         keyPairMan.setMode( KeyPairModeSelect );
 
         if( keyPairMan.exec() != QDialog::Accepted )
-            return;
+            return -1;
 
         strPubPath = keyPairMan.getPubPath();
         strPriPath = keyPairMan.getPriPath();
         strName = keyPairMan.getName();
 
-        JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
-        JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPub );
+        JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), pPriKey );
+        JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), pPubKey );
     }
+
+    return 0;
+}
+
+void DocSignerDlg::clickCMSMakeSign()
+{
+    int ret = 0;
+    BIN binSrc = {0,0};
+    BIN binPri = {0,0};
+
+    ret = getPriKey( &binPri );
 
 end:
     JS_BIN_reset( &binSrc );
     JS_BIN_reset( &binPri );
-    JS_BIN_reset( &binPub );
 }
 
 void DocSignerDlg::clickCMSVerifySign()
@@ -257,6 +346,8 @@ void DocSignerDlg::clickCMSVerifySign()
 
 void DocSignerDlg::clickJSON_ComputeSignature()
 {
+    int ret = 0;
+
     BIN binPri = {0,0};
     BIN binPub = {0,0};
     QString strName;
@@ -278,47 +369,7 @@ void DocSignerDlg::clickJSON_ComputeSignature()
         return;
     }
 
-    if( mUseCertManCheck->isChecked() == true )
-    {
-        BIN binCert = {0,0};
-        JCertInfo sCertInfo;
-        CertManDlg certMan;
-
-        memset( &sCertInfo, 0x00, sizeof(sCertInfo));
-
-        certMan.setMode( ManModeSelBoth );
-        certMan.setTitle( tr( "Select a sign certificate" ));
-
-        if( certMan.exec() != QDialog::Accepted )
-            return;
-
-        certMan.getPriKey( &binPri );
-        certMan.getCert( &binCert );
-        JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
-        strName = sCertInfo.pSubjectName;
-        JS_PKI_getPubKeyFromCert( &binCert, &binPub );
-        JS_BIN_reset( &binCert );
-        JS_PKI_resetCertInfo( &sCertInfo );
-    }
-    else
-    {
-        QString strPubPath;
-        QString strPriPath;
-
-        KeyPairManDlg keyPairMan;
-        keyPairMan.setTitle( tr( "Select keypair" ));
-        keyPairMan.setMode( KeyPairModeSelect );
-
-        if( keyPairMan.exec() != QDialog::Accepted )
-            return;
-
-        strPubPath = keyPairMan.getPubPath();
-        strPriPath = keyPairMan.getPriPath();
-        strName = keyPairMan.getName();
-
-        JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
-        JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPub );
-    }
+    ret = getKeyPair( &binPub, &binPri );
 
     objJson.setPayload( strPayload );
     nKeyType = JS_PKI_getPriKeyType( &binPri );
@@ -336,6 +387,7 @@ void DocSignerDlg::clickJSON_ComputeSignature()
 
 void DocSignerDlg::clickJSON_VerifySignature()
 {
+    int ret = 0;
     BIN binPub = {0,0};
     QString strJWS = mJSON_JWSText->toPlainText();
 
@@ -345,40 +397,12 @@ void DocSignerDlg::clickJSON_VerifySignature()
         return;
     }
 
-    if( mUseCertManCheck->isChecked() == true )
-    {
-        BIN binCert = {0,0};
-        CertManDlg certMan;
-
-        certMan.setMode( ManModeSelBoth );
-        certMan.setTitle( tr( "Select a sign certificate" ));
-
-        if( certMan.exec() != QDialog::Accepted )
-            return;
-
-        certMan.getCert( &binCert );
-        JS_PKI_getPubKeyFromCert( &binCert, &binPub );
-        JS_BIN_reset( &binCert );
-    }
-    else
-    {
-        KeyPairManDlg keyPairMan;
-        keyPairMan.setTitle( tr( "Select keypair" ));
-        keyPairMan.setMode( KeyPairModeSelect );
-
-        if( keyPairMan.exec() != QDialog::Accepted )
-            return;
-
-        QString strPubPath = keyPairMan.getPubPath();
-
-        JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPub );
-    }
-
+    ret = getPubKey( &binPub );
 
     ACMEObject acmeObj;
     acmeObj.setObjectFromJson( strJWS );
 
-    int ret = acmeObj.verifySignature( &binPub );
+    ret = acmeObj.verifySignature( &binPub );
     if( ret == JSR_VERIFY )
         berApplet->messageBox( tr("Verify OK" ), this );
     else
@@ -440,15 +464,7 @@ void DocSignerDlg::clickXML_MakeSign()
         return;
     }
 
-    KeyPairManDlg keyPairMan;
-    keyPairMan.setTitle( tr( "Select keypair" ));
-    keyPairMan.setMode( KeyPairModeSelect );
-
-    if( keyPairMan.exec() != QDialog::Accepted )
-        return;
-
-    QString strPriPath = keyPairMan.getPriPath();
-    JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    ret = getPriKey( &binPri );
 
     JS_XML_init();
 

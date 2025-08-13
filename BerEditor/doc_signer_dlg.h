@@ -53,6 +53,9 @@ private slots:
 private:
     void initUI();
     void initialize();
+    int getPubKey( BIN *pPubKey );
+    int getPriKey( BIN *pPriKey );
+    int getKeyPair( BIN *pPubKey, BIN *pPriKey );
 
     QStringList getUsedURL();
     void setUsedURL( const QString strURL );
