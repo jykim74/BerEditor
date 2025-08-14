@@ -32,7 +32,7 @@ const QString kTSPUsedURL = "TSPUsedURL";
 DocSignerDlg::DocSignerDlg(QWidget *parent)
     : QDialog(parent)
 {
-    JS_BIN_reset( &cms_ );
+    memset( &cms_, 0x00, sizeof(BIN));
 
     setupUi(this);
     initUI();
@@ -118,18 +118,6 @@ void DocSignerDlg::findSrcPath()
 
     mSrcPathText->setText( strFileName );
 
-    if( mDstPathText->text().length() < 1 )
-    {
-        QFileInfo fileInfo( strFileName );
-        QString strDstPath;
-
-        strDstPath = QString( "%1/%2_dst.%3" )
-                         .arg( fileInfo.path() )
-                         .arg( fileInfo.baseName() )
-                         .arg( fileInfo.suffix() );
-
-        mDstPathText->setText( strDstPath );
-    }
 }
 
 void DocSignerDlg::findDstPath()
@@ -166,7 +154,9 @@ void DocSignerDlg::clickCMSClear()
 
 void DocSignerDlg::clickCMSView()
 {
+    int ret = 0;
     BIN binSrc = {0,0};
+    CMSInfoDlg cmsInfo;
 
     if( cms_.nLen > 0 )
         JS_BIN_copy( &binSrc, &cms_ );
@@ -183,10 +173,17 @@ void DocSignerDlg::clickCMSView()
         JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
     }
 
-    CMSInfoDlg cmsInfo;
+    ret = JS_PKCS7_getType( &binSrc );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "This is not a CMS message" ), this );
+        goto end;
+    }
+
     cmsInfo.setCMS( &binSrc );
     cmsInfo.exec();
 
+end :
     JS_BIN_reset( &binSrc );
 }
 
@@ -508,14 +505,6 @@ void DocSignerDlg::clickCMSMakeSign()
         return;
     }
 
-    QString strDstPath = mDstPathText->text();
-    if( strDstPath.length() < 1 )
-    {
-        berApplet->warningBox( tr( "find a destination xml" ), this );
-        mDstPathText->setFocus();
-        return;
-    }
-
     ret = getPriKeyCert( &binPri, &binCert );
     if( ret != 0 ) goto end;
 
@@ -539,9 +528,26 @@ void DocSignerDlg::clickCMSMakeSign()
     {
         JS_BIN_reset( &cms_ );
         JS_BIN_copy( &cms_, &binSigned );
+
+        QString strDstPath = mDstPathText->text();
+
+        if( strDstPath.length() < 1 )
+        {
+            QFileInfo fileInfo( strSrcPath );
+            QString strDstPath;
+
+            strDstPath = QString( "%1/%2_dst.%3" )
+                             .arg( fileInfo.path() )
+                             .arg( fileInfo.baseName() )
+                             .arg( "cms" );
+
+            mDstPathText->setText( strDstPath );
+        }
+
         JS_BIN_fileWrite( &binSigned, strDstPath.toLocal8Bit().toStdString().c_str() );
         berApplet->messageBox( tr( "The CMS file[%1] has been saved." ).arg( strDstPath ), this );
     }
+
 end:
     JS_BIN_reset( &binSrc );
     JS_BIN_reset( &binPri );
@@ -569,6 +575,14 @@ void DocSignerDlg::clickCMSVerifySign()
     if( ret != 0 ) goto end;
 
     JS_BIN_fileReadBER( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+
+    ret = JS_PKCS7_getType( &binSrc );
+    if( ret != JS_PKCS7_TYPE_SIGNED )
+    {
+        berApplet->warningBox( tr("This is not a Signed Data CMS message:%1").arg(ret), this );
+        goto end;
+    }
+
     ret = JS_PKCS7_verifySignedData( &binSrc, &binCert, &binData );
 
     mCMSDataText->setPlainText( getHexString( &binData ));
@@ -703,9 +717,15 @@ void DocSignerDlg::clickXML_MakeSign()
     QString strDstPath = mDstPathText->text();
     if( strDstPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "find a destination xml" ), this );
-        mDstPathText->setFocus();
-        return;
+        QFileInfo fileInfo( strSrcPath );
+        QString strDstPath;
+
+        strDstPath = QString( "%1/%2_dst.%3" )
+                         .arg( fileInfo.path() )
+                         .arg( fileInfo.baseName() )
+                         .arg( "xml" );
+
+        mDstPathText->setText( strDstPath );
     }
 
     ret = getPriKey( &binPri );
@@ -748,9 +768,15 @@ void DocSignerDlg::clickXML_MakeSign2()
     QString strDstPath = mDstPathText->text();
     if( strDstPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "find a destination xml" ), this );
-        mDstPathText->setFocus();
-        return;
+        QFileInfo fileInfo( strSrcPath );
+        QString strDstPath;
+
+        strDstPath = QString( "%1/%2_dst.%3" )
+                         .arg( fileInfo.path() )
+                         .arg( fileInfo.baseName() )
+                         .arg( "xml" );
+
+        mDstPathText->setText( strDstPath );
     }
 
     ret = getPriKey( &binPri );
