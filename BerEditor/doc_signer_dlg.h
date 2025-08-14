@@ -6,6 +6,8 @@
 #include "ui_doc_signer_dlg.h"
 #include "acme_object.h"
 
+#include "js_bin.h"
+
 namespace Ui {
 class DocSignerDlg;
 }
@@ -26,6 +28,9 @@ private slots:
 
     void checkCMSAuth();
     void changeCMSData();
+
+    void clickCMSClear();
+    void clickCMSView();
 
     void clickCMSMakeSign();
     void clickCMSVerifySign();
@@ -54,15 +59,19 @@ private:
     void initUI();
     void initialize();
     int getPubKey( BIN *pPubKey );
+    int getCert( BIN *pCert );
     int getPriKey( BIN *pPriKey );
     int getKeyPair( BIN *pPubKey, BIN *pPriKey );
     int getPriKeyCert( BIN *pPriKey, BIN *pCert );
+
+    int getTSP( const BIN *pSrc, BIN *pTSP );
 
     QStringList getUsedURL();
     void setUsedURL( const QString strURL );
 
     ACMEObject json_obj_;
     QXmlStreamReader xml_;
+    BIN cms_;
 };
 
 #endif // DOC_SIGNER_DLG_H
