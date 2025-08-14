@@ -326,17 +326,80 @@ int DocSignerDlg::getKeyPair( BIN *pPubKey, BIN *pPriKey )
     return 0;
 }
 
+int DocSignerDlg::getPriKeyCert( BIN *pPriKey, BIN *pCert )
+{
+    QString strName;
+    JCertInfo sCertInfo;
+    CertManDlg certMan;
+
+    memset( &sCertInfo, 0x00, sizeof(sCertInfo));
+
+    certMan.setMode( ManModeSelBoth );
+    certMan.setTitle( tr( "Select a sign certificate" ));
+
+    if( certMan.exec() != QDialog::Accepted )
+        return -1;
+
+    certMan.getPriKey( pPriKey );
+    certMan.getCert( pCert );
+    strName = sCertInfo.pSubjectName;
+
+    JS_PKI_resetCertInfo( &sCertInfo );
+
+    return 0;
+}
+
 void DocSignerDlg::clickCMSMakeSign()
 {
     int ret = 0;
     BIN binSrc = {0,0};
     BIN binPri = {0,0};
+    BIN binCert = {0,0};
+    BIN binTSP = {0,0};
+    BIN binSigned = {0,0};
 
-    ret = getPriKey( &binPri );
+    QString strHash = mHashCombo->currentText();
 
+    QString strSrcPath = mSrcPathText->text();
+    if( strSrcPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a source xml" ), this );
+        mSrcPathText->setFocus();
+        return;
+    }
+
+    QString strDstPath = mDstPathText->text();
+    if( strDstPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "find a destination xml" ), this );
+        mDstPathText->setFocus();
+        return;
+    }
+
+    ret = getPriKeyCert( &binPri, &binCert );
+    if( ret != 0 ) goto end;
+
+    JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+
+    ret = JS_PKCS7_makeSignedDataWithTSP( strHash.toStdString().c_str(),
+                                         &binSrc,
+                                         &binPri,
+                                         &binCert,
+                                         &binTSP,
+                                         &binSigned );
+
+
+    if( ret == 0 )
+    {
+        JS_BIN_fileWrite( &binSigned, strDstPath.toLocal8Bit().toStdString().c_str() );
+        berApplet->messageBox( tr( "The CMS file[%1] has been saved." ).arg( strDstPath ), this );
+    }
 end:
     JS_BIN_reset( &binSrc );
     JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binTSP );
+    JS_BIN_reset( &binSigned );
 }
 
 void DocSignerDlg::clickCMSVerifySign()
@@ -509,16 +572,8 @@ void DocSignerDlg::clickXML_MakeSign2()
         return;
     }
 
-    KeyPairManDlg keyPairMan;
-    keyPairMan.setTitle( tr( "Select keypair" ));
-    keyPairMan.setMode( KeyPairModeSelect );
+    ret = getPriKey( &binPri );
 
-    if( keyPairMan.exec() != QDialog::Accepted )
-        return;
-
-    QString strPriPath = keyPairMan.getPriPath();
-
-    JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
     JS_XML_init();
 
     ret = JS_XML_signDoc( strSrcPath.toLocal8Bit().toStdString().c_str(),
@@ -677,15 +732,8 @@ void DocSignerDlg::clickXML_VerifySign()
         return;
     }
 
-    KeyPairManDlg keyPairMan;
-    keyPairMan.setTitle( tr( "Select keypair" ));
-    keyPairMan.setMode( KeyPairModeSelect );
-
-    if( keyPairMan.exec() != QDialog::Accepted )
-        return;
-
-    QString strPubPath = keyPairMan.getPubPath();
-    JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPub );
+    ret = getPubKey( &binPub );
+    if( ret != 0 ) goto end;
 
     JS_XML_init();
 

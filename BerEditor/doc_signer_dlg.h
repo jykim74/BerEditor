@@ -56,6 +56,7 @@ private:
     int getPubKey( BIN *pPubKey );
     int getPriKey( BIN *pPriKey );
     int getKeyPair( BIN *pPubKey, BIN *pPriKey );
+    int getPriKeyCert( BIN *pPriKey, BIN *pCert );
 
     QStringList getUsedURL();
     void setUsedURL( const QString strURL );
