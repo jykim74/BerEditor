@@ -42,6 +42,8 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mFindSrcPathBtn, SIGNAL(clicked()), this, SLOT(findSrcPath()));
     connect( mFindDstPathBtn, SIGNAL(clicked()), this, SLOT(findDstPath()));
 
+    connect( mTabSigner, SIGNAL(currentChanged(int)), this, SLOT(changeSignerTab()));
+
     connect( mCMSDataText, SIGNAL(textChanged()), this, SLOT(changeCMSData()));
     connect( mCMSAuthCheck, SIGNAL(clicked()), this, SLOT(checkCMSAuth()));
     connect( mCMSMakeSignBtn, SIGNAL(clicked()), this, SLOT(clickCMSMakeSign()));
@@ -64,6 +66,9 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mXMLVerifySignBtn, SIGNAL(clicked()), this, SLOT(clickXML_VerifySign()));
     connect( mXMLDecryptBtn, SIGNAL(clicked()), this, SLOT(clickXML_Decrypt()));
 
+    connect( mXMLBodyClearBtn, SIGNAL(clicked()), this, SLOT(clickXML_BodyClear()));
+    connect( mXMLSignClearBtn, SIGNAL(clicked()), this, SLOT(clickXML_SignClear()));
+
     connect( mXMLBodyText, SIGNAL(textChanged()), this, SLOT(changeXML_Body()));
     connect( mXMLSignText, SIGNAL(textChanged()), this, SLOT(changeXML_Sign()));
 
@@ -71,11 +76,16 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     layout()->setSpacing(5);
 
     mCMSClearBtn->setFixedWidth(34);
+    mCMS_TSPGroup->layout()->setMargin(5);
+    mCMS_TSPGroup->layout()->setSpacing(5);
 
     mJSONPayloadClearBtn->setFixedWidth(34);
     mJSONPayloadViewBtn->setFixedWidth(34);
     mJSON_JWSClearBtn->setFixedWidth(34);
     mJSON_JWSViewBtn->setFixedWidth(34);
+
+    mXMLBodyClearBtn->setFixedWidth(34);
+    mXMLSignClearBtn->setFixedWidth(34);
 
     mTabJSON->layout()->setSpacing(5);
     mTabJSON->layout()->setMargin(5);
@@ -105,6 +115,16 @@ void DocSignerDlg::clickClearAll()
     mJSON_JWSText->clear();
     mXMLBodyText->clear();
     mXMLSignText->clear();
+}
+
+void DocSignerDlg::changeSignerTab()
+{
+    int index = mTabSigner->currentIndex();
+
+    if( index == 0 )
+        mUseCertManCheck->setEnabled( false );
+    else
+        mUseCertManCheck->setEnabled( true );
 }
 
 void DocSignerDlg::findSrcPath()
@@ -204,6 +224,7 @@ void DocSignerDlg::initialize()
     mCMSPolicyText->setPlaceholderText( "1.2.3.4" );
 
     checkCMSAuth();
+    changeSignerTab();
 }
 
 QStringList DocSignerDlg::getUsedURL()
@@ -534,7 +555,6 @@ void DocSignerDlg::clickCMSMakeSign()
         if( strDstPath.length() < 1 )
         {
             QFileInfo fileInfo( strSrcPath );
-            QString strDstPath;
 
             strDstPath = QString( "%1/%2_dst.%3" )
                              .arg( fileInfo.path() )
@@ -701,6 +721,16 @@ void DocSignerDlg::changeJSON_JWS()
     mJSON_JWSLenText->setText( QString("%1").arg( strJWS.length() ));
 }
 
+void DocSignerDlg::clickXML_BodyClear()
+{
+    mXMLBodyText->clear();
+}
+
+void DocSignerDlg::clickXML_SignClear()
+{
+    mXMLSignText->clear();
+}
+
 void DocSignerDlg::clickXML_MakeSign()
 {
     int ret = 0;
@@ -718,7 +748,6 @@ void DocSignerDlg::clickXML_MakeSign()
     if( strDstPath.length() < 1 )
     {
         QFileInfo fileInfo( strSrcPath );
-        QString strDstPath;
 
         strDstPath = QString( "%1/%2_dst.%3" )
                          .arg( fileInfo.path() )
@@ -769,7 +798,6 @@ void DocSignerDlg::clickXML_MakeSign2()
     if( strDstPath.length() < 1 )
     {
         QFileInfo fileInfo( strSrcPath );
-        QString strDstPath;
 
         strDstPath = QString( "%1/%2_dst.%3" )
                          .arg( fileInfo.path() )

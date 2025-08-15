@@ -22,6 +22,7 @@ public:
 
 private slots:
     void clickClearAll();
+    void changeSignerTab();
 
     void findSrcPath();
     void findDstPath();
@@ -44,6 +45,9 @@ private slots:
 
     void changeJSON_Payload();
     void changeJSON_JWS();
+
+    void clickXML_BodyClear();
+    void clickXML_SignClear();
 
     void clickXML_MakeSign();
     void clickXML_MakeSign2();
