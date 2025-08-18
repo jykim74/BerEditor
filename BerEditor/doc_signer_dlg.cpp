@@ -48,6 +48,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mCMSAuthCheck, SIGNAL(clicked()), this, SLOT(checkCMSAuth()));
     connect( mCMSMakeSignBtn, SIGNAL(clicked()), this, SLOT(clickCMSMakeSign()));
     connect( mCMSVerifySignBtn, SIGNAL(clicked()), this, SLOT(clickCMSVerifySign()));
+    connect( mCMSViewBtn, SIGNAL(clicked()), this, SLOT(clickCMSView()));
 
     connect( mJSONPayloadText, SIGNAL(textChanged()), this, SLOT(changeJSON_Payload()));
     connect( mJSON_JWSText, SIGNAL(textChanged()), this, SLOT(changeJSON_JWS()));
@@ -129,21 +130,36 @@ void DocSignerDlg::changeSignerTab()
 
 void DocSignerDlg::findSrcPath()
 {
+    int index = mTabSigner->currentIndex();
+    int nType = JS_FILE_TYPE_PKCS7;
+
+    if( index == 1 )
+        nType = JS_FILE_TYPE_JSON;
+    else if( index == 2 )
+        nType = JS_FILE_TYPE_XML;
+
     QString strPath = mSrcPathText->text();
-    QString strFileName = berApplet->findFile( this, JS_FILE_TYPE_XML, strPath );
+    QString strFileName = berApplet->findFile( this, nType, strPath );
 
     if( strFileName.length() < 1 ) return;
 
     JS_BIN_reset( &cms_ );
 
     mSrcPathText->setText( strFileName );
-
 }
 
 void DocSignerDlg::findDstPath()
 {
+    int index = mTabSigner->currentIndex();
+    int nType = JS_FILE_TYPE_PKCS7;
+
+    if( index == 1 )
+        nType = JS_FILE_TYPE_JSON;
+    else if( index == 2 )
+        nType = JS_FILE_TYPE_XML;
+
     QString strPath = mDstPathText->text();
-    QString strFileName = berApplet->findSaveFile( this, JS_FILE_TYPE_XML, strPath );
+    QString strFileName = berApplet->findSaveFile( this, nType, strPath );
 
     if( strFileName.length() < 1 ) return;
 
