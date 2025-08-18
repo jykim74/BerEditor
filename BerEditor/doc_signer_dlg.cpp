@@ -201,7 +201,7 @@ void DocSignerDlg::clickCMSView()
         QString strSrcPath = mSrcPathText->text();
         if( strSrcPath.length() < 1 )
         {
-            berApplet->warningBox( tr( "find a source xml" ), this );
+            berApplet->warningBox( tr( "find a source cms" ), this );
             mSrcPathText->setFocus();
             return;
         }
