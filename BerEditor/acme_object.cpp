@@ -44,15 +44,22 @@ void ACMEObject::setObjectFromJson( const QString strJson )
     JS_BIN_string( &binProtected, &pProtected );
     JS_BIN_string( &binPayload, &pPayload );
 
-    json_[kNameProtected] = QJsonDocument::fromJson( pProtected ).object();
-    json_[kNamePayload] = QJsonDocument::fromJson( pPayload ).object();
+    setProtected( QJsonDocument::fromJson( pProtected ).object() );
+    setPayload( QJsonDocument::fromJson( pPayload ).object() );
+
+//    json_[kNameProtected] = QJsonDocument::fromJson( pProtected ).object();
+//    json_[kNamePayload] = QJsonDocument::fromJson( pPayload ).object();
     json_[kNameSignature] = strSignature;
 
     JS_BIN_reset( &binProtected );
     JS_BIN_reset( &binPayload );
     if( pProtected ) JS_free( pProtected );
     if( pPayload ) JS_free( pPayload );
+
+    berApplet->log( QString( "JWS: %1" ).arg( getPacketJson() ));
 }
+
+
 void ACMEObject::setProtected( const QJsonObject object )
 {
     json_[kNameProtected] = object;

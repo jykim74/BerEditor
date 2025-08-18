@@ -281,7 +281,7 @@ int DocSignerDlg::getPubKey( BIN *pPubKey )
 
         memset( &sCertInfo, 0x00, sizeof(sCertInfo));
 
-        certMan.setMode( ManModeSelBoth );
+        certMan.setMode( ManModeSelCert );
         certMan.setTitle( tr( "Select a sign certificate" ));
 
         if( certMan.exec() != QDialog::Accepted )
@@ -321,7 +321,7 @@ int DocSignerDlg::getCert( BIN *pCert )
 
     memset( &sCertInfo, 0x00, sizeof(sCertInfo));
 
-    certMan.setMode( ManModeSelBoth );
+    certMan.setMode( ManModeSelCert );
     certMan.setTitle( tr( "Select a sign certificate" ));
 
     if( certMan.exec() != QDialog::Accepted )
@@ -663,9 +663,19 @@ void DocSignerDlg::clickJSON_ComputeSignature()
         return;
     }
 
+    QJsonDocument jDoc = QJsonDocument::fromJson( strPayload.toLocal8Bit() );
+    if( jDoc.isObject() == false )
+    {
+        berApplet->warningBox( tr( "Payload is not object" ), this );
+        mJSONPayloadText->setFocus();
+        return;
+    }
+
     ret = getKeyPair( &binPub, &binPri );
 
-    objJson.setPayload( strPayload );
+//    objJson.setPayload( strPayload );
+    objJson.setPayload( jDoc.object() );
+
     nKeyType = JS_PKI_getPriKeyType( &binPri );
     strAlg = ACMEObject::getAlg( nKeyType, strHash );
     objJWK = ACMEObject::getJWK( &binPub, strHash, strName );
@@ -717,12 +727,32 @@ void DocSignerDlg::clickJSON_JWSClear()
 
 void DocSignerDlg::clickJSON_PayloadView()
 {
+    QString strPayload = mJSONPayloadText->toPlainText();
+    if( strPayload.length() < 1 )
+    {
+        berApplet->warningBox( tr( "There is no payload" ), this );
+        mJSONPayloadText->setFocus();
+        return;
+    }
 
+    ACMETreeDlg acmeTree(nullptr);
+    acmeTree.setJson( strPayload );
+    acmeTree.exec();
 }
 
 void DocSignerDlg::clickJSON_JWSView()
 {
+    QString strJWS = mJSON_JWSText->toPlainText();
+    if( strJWS.length() < 1 )
+    {
+        berApplet->warningBox( tr( "There is no JWS" ), this );
+        mJSON_JWSText->setFocus();
+        return;
+    }
 
+    ACMETreeDlg acmeTree(nullptr);
+    acmeTree.setJson( strJWS );
+    acmeTree.exec();
 }
 
 void DocSignerDlg::changeJSON_Payload()
