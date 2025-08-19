@@ -56,7 +56,7 @@ void ACMEObject::setObjectFromJson( const QString strJson )
     if( pProtected ) JS_free( pProtected );
     if( pPayload ) JS_free( pPayload );
 
-    berApplet->log( QString( "JWS: %1" ).arg( getPacketJson() ));
+//    berApplet->log( QString( "JWS: %1" ).arg( getPacketJson() ));
 }
 
 
