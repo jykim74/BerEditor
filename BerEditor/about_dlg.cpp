@@ -183,20 +183,18 @@ void AboutDlg::showCopyright()
     strCopyRight += "<br><br><b>jsmn</b>";
     strCopyRight += "<br>- https://zserge.com/jsmn";
     strCopyRight += "<br>- <a href=https://github.com/zserge/jsmn/blob/master/LICENSE>MIT License</a>";
-/*
-    strCopyRight += "<br><br><b>shamir-secret</b>";
-    strCopyRight += "<br>- https://github.com/KPN-CISO/shamir-secret";
-    strCopyRight += "<br>- <a href=https://github.com/KPN-CISO/shamir-secret/blob/master/LICENSE>MIT License</a>";
-*/
 
     strCopyRight += "<br><br><b>sscep</b>";
     strCopyRight += "<br>- https://github.com/certnanny/sscep";
     strCopyRight += "<br>- <a href=https://github.com/certnanny/sscep/blob/master/COPYING>OpenSSL License</a>";
 
-
     strCopyRight += "<br><br><b>OpenKMIP</b>";
     strCopyRight += "<br>- https://github.com/OpenKMIP/libkmip";
     strCopyRight += "<br>- <a href=https://github.com/OpenKMIP/libkmip/blob/master/LICENSE>Apache 2.0 License</a>";
+
+    strCopyRight += "<br><br><b>XMLSec</b>";
+    strCopyRight += "<br>- https://www.aleksey.com/xmlsec";
+    strCopyRight += "<br>- <a href=https://github.com/lsh123/xmlsec/blob/master/Copyright>XMLSec Copyright</a>";
 
     mCopyRightText->setText( strCopyRight );
 }
