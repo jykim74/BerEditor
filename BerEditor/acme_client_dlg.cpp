@@ -691,7 +691,7 @@ void ACMEClientDlg::clickVerify()
             BIN binCert = {0,0};
             CertManDlg certMan;
 
-            certMan.setMode( ManModeSelBoth );
+            certMan.setMode( ManModeSelCert );
             certMan.setTitle( tr( "Select a sign certificate" ));
 
             if( certMan.exec() != QDialog::Accepted )

@@ -548,7 +548,7 @@ static const QString _getFileFilter( int nType, QString& strFileType )
     else if( nType == JS_FILE_TYPE_PKCS7 )
     {
         strFileType = QObject::tr("PKCS7 Files");
-        strFilter = QString("%1 (*.p7b *.pkcs7 *.der *.pem)" ).arg( strFileType );
+        strFilter = QString("%1 (*.p7b *.pkcs7 *.cms *.der *.pem)" ).arg( strFileType );
     }
     else if( nType == JS_FILE_TYPE_JSON )
     {
