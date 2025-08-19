@@ -403,11 +403,13 @@ const QString ACMEObject::getJson()
 const QString ACMEObject::getPacketJson()
 {
     QJsonDocument jDoc;
+    QJsonObject jObj;
 
-    json_[kNameProtected] = getProtectedPacket();
-    json_[kNamePayload] = getPayloadPacket();
+    jObj[kNameProtected] = getProtectedPacket();
+    jObj[kNamePayload] = getPayloadPacket();
+    jObj[kNameSignature] = json_[kNameSignature].toString();
 
-    jDoc.setObject( json_ );
+    jDoc.setObject( jObj );
 
 end :
 
