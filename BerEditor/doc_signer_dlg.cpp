@@ -68,10 +68,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mXMLDecryptBtn, SIGNAL(clicked()), this, SLOT(clickXML_Decrypt()));
 
     connect( mXMLBodyClearBtn, SIGNAL(clicked()), this, SLOT(clickXML_BodyClear()));
-    connect( mXMLSignClearBtn, SIGNAL(clicked()), this, SLOT(clickXML_SignClear()));
-
     connect( mXMLBodyText, SIGNAL(textChanged()), this, SLOT(changeXML_Body()));
-    connect( mXMLSignText, SIGNAL(textChanged()), this, SLOT(changeXML_Sign()));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -115,7 +112,6 @@ void DocSignerDlg::clickClearAll()
     mJSONPayloadText->clear();
     mJSON_JWSText->clear();
     mXMLBodyText->clear();
-    mXMLSignText->clear();
 }
 
 void DocSignerDlg::changeSignerTab()
@@ -792,11 +788,6 @@ void DocSignerDlg::clickXML_BodyClear()
     mXMLBodyText->clear();
 }
 
-void DocSignerDlg::clickXML_SignClear()
-{
-    mXMLSignText->clear();
-}
-
 void DocSignerDlg::clickXML_MakeSign()
 {
     int ret = 0;
@@ -1152,10 +1143,4 @@ void DocSignerDlg::changeXML_Body()
 {
     QString strBody = mXMLBodyText->toPlainText();
     mXMLBodyLenText->setText( QString("%1").arg( strBody.length() ));
-}
-
-void DocSignerDlg::changeXML_Sign()
-{
-    QString strSign = mXMLSignText->toPlainText();
-    mXMLSignLenText->setText( QString("%1").arg( strSign.length() ));
 }

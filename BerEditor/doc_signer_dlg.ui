@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>527</width>
-    <height>714</height>
+    <height>542</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -779,9 +779,33 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <layout class="QGridLayout" name="gridLayout_8">
+        <layout class="QGridLayout" name="gridLayout_11">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="mXMLMakeSign2Btn">
+           <property name="text">
+            <string>Make Sign2</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="mXMLMakeSignBtn">
+           <property name="text">
+            <string>Make Sign</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QPushButton" name="mXMLVerifySignBtn">
+           <property name="text">
+            <string>Verify Sign</string>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="2">
-          <spacer name="horizontalSpacer_8">
+          <spacer name="horizontalSpacer_9">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -793,19 +817,17 @@
            </property>
           </spacer>
          </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_5">
-           <property name="minimumSize">
-            <size>
-             <width>60</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Body</string>
-           </property>
-          </widget>
-         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="Line" name="line_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QGridLayout" name="gridLayout_8">
          <item row="0" column="3">
           <widget class="QLineEdit" name="mXMLBodyLenText">
            <property name="minimumSize">
@@ -871,6 +893,32 @@
            </property>
           </widget>
          </item>
+         <item row="0" column="2">
+          <spacer name="horizontalSpacer_8">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_5">
+           <property name="minimumSize">
+            <size>
+             <width>60</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Body</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
@@ -878,21 +926,21 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_10">
-         <item row="0" column="1">
-          <widget class="QPushButton" name="mXMLMakeSignBtn">
+         <item row="0" column="4">
+          <widget class="QPushButton" name="mXMLEncrypt2Btn">
            <property name="text">
-            <string>Make Sign</string>
+            <string>Encrypt2</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
-          <widget class="QPushButton" name="mXMLMakeSign2Btn">
+         <item row="0" column="3">
+          <widget class="QPushButton" name="mXMLEncryptBtn">
            <property name="text">
-            <string>Make Sign2</string>
+            <string>Encrypt</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
+         <item row="0" column="5">
           <spacer name="horizontalSpacer_10">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -905,155 +953,12 @@
            </property>
           </spacer>
          </item>
-         <item row="0" column="3">
-          <widget class="QPushButton" name="mXMLEncryptBtn">
-           <property name="text">
-            <string>Encrypt</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="4">
-          <widget class="QPushButton" name="mXMLEncrypt2Btn">
-           <property name="text">
-            <string>Encrypt2</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="Line" name="line_4">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QGridLayout" name="gridLayout_9">
-         <item row="0" column="3">
-          <widget class="QLineEdit" name="mXMLSignLenText">
-           <property name="minimumSize">
-            <size>
-             <width>40</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>40</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="palette">
-            <palette>
-             <active>
-              <colorrole role="Base">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>221</red>
-                 <green>221</green>
-                 <blue>255</blue>
-                </color>
-               </brush>
-              </colorrole>
-             </active>
-             <inactive>
-              <colorrole role="Base">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>221</red>
-                 <green>221</green>
-                 <blue>255</blue>
-                </color>
-               </brush>
-              </colorrole>
-             </inactive>
-             <disabled/>
-            </palette>
-           </property>
-           <property name="readOnly">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_6">
-           <property name="minimumSize">
-            <size>
-             <width>60</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Signature</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <spacer name="horizontalSpacer_9">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="0" column="1">
-          <widget class="QPushButton" name="mXMLSignClearBtn">
-           <property name="minimumSize">
-            <size>
-             <width>20</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>20</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>C</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="QPlainTextEdit" name="mXMLSignText"/>
-       </item>
-       <item>
-        <layout class="QGridLayout" name="gridLayout_11">
-         <item row="0" column="1">
-          <widget class="QPushButton" name="mXMLVerifySignBtn">
-           <property name="text">
-            <string>Verify Sign</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
+         <item row="0" column="7">
           <widget class="QPushButton" name="mXMLDecryptBtn">
            <property name="text">
             <string>Decrypt</string>
            </property>
           </widget>
-         </item>
-         <item row="0" column="0">
-          <spacer name="horizontalSpacer_11">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
          </item>
         </layout>
        </item>

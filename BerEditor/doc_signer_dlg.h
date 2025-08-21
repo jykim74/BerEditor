@@ -47,7 +47,6 @@ private slots:
     void changeJSON_JWS();
 
     void clickXML_BodyClear();
-    void clickXML_SignClear();
 
     void clickXML_MakeSign();
     void clickXML_MakeSign2();
@@ -57,7 +56,6 @@ private slots:
     void clickXML_Decrypt();
 
     void changeXML_Body();
-    void changeXML_Sign();
 
 private:
     void initUI();
