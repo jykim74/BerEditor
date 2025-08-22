@@ -38,6 +38,9 @@ private slots:
     void clickViewCert();
     void clickViewCRL();
 
+    void clickViewTSP();
+    void clickViewTST();
+
 private:
     void initUI();
 
@@ -53,6 +56,7 @@ private:
 
     BIN cms_bin_;
     int cms_type_;
+    BIN tsp_bin_;
 };
 
 #endif // CMS_INFO_DLG_H
