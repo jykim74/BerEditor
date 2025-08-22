@@ -25,7 +25,7 @@ public:
     ~CertInfoDlg();
 
     int setCertPath( const QString strPath );
-    void setCertBIN( const BIN *pCert );
+    void setCertBIN( const BIN *pCert, const QString strTitle = "" );
 
     static QTableWidgetItem* getExtNameItem( const QString strSN );
 
@@ -61,7 +61,7 @@ private slots:
     void clickGetCA_BER();
     void clickGetCRL_BER();
 private:
-
+    void setTitle( const QString strName );
     int saveAsPEM( const BIN *pData );
     const QString getValueFromExtList( const QString strExtName );
 

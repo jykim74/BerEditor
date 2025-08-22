@@ -133,22 +133,35 @@ CertInfoDlg::~CertInfoDlg()
     resetData();
 }
 
+void CertInfoDlg::setTitle( const QString strName )
+{
+    QString strTitle = tr("Certificate");
+
+    if( strName.length() >= 1 )
+        strTitle += QString( " - %1" ).arg( strName );
+
+    setWindowTitle( strTitle );
+}
+
+
 int CertInfoDlg::setCertPath(const QString strPath)
 {
     int ret = 0;
     resetData();
 
     cert_path_ = strPath;
+    setTitle( strPath );
 
     ret = JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &cert_bin_ );
 
     return ret;
 }
 
-void CertInfoDlg::setCertBIN( const BIN *pCert )
+void CertInfoDlg::setCertBIN( const BIN *pCert, const QString strTitle )
 {
     resetData();
     JS_BIN_copy( &cert_bin_, pCert );
+    setTitle( strTitle );
 }
 
 void CertInfoDlg::showEvent(QShowEvent *event)

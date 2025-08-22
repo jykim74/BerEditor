@@ -148,6 +148,7 @@ MainWindow::~MainWindow()
     delete content_;
     delete find_dlg_;
     delete key_list_dlg_;
+    delete x509_comp_dlg_;
 
     delete ttlv_encoder_dlg_;
     delete ttlv_client_dlg_;
@@ -1532,7 +1533,6 @@ void MainWindow::openCert()
     if( JS_PKI_isCert( &binCert ) == 1 )
     {
         CertInfoDlg certInfo;
-//        certInfo.setCertBIN( &binCert );
         certInfo.setCertPath( fileName );
         certInfo.exec();
     }
@@ -1545,7 +1545,6 @@ void MainWindow::openCert()
             if( bVal == true )
             {
                 CRLInfoDlg crlInfo;
- //               crlInfo.setCRL_BIN( &binCert );
                 crlInfo.setCRLPath( fileName );
                 crlInfo.exec();
             }
@@ -1556,7 +1555,6 @@ void MainWindow::openCert()
             if( bVal == true )
             {
                 CSRInfoDlg csrInfo;
-//                csrInfo.setReqBIN( &binCert );
                 csrInfo.setReqPath( fileName );
                 csrInfo.exec();
             }
@@ -1585,7 +1583,7 @@ void MainWindow::openCRL()
     if( JS_PKI_isCRL( &binCRL ) == 1 )
     {
         CRLInfoDlg crlInfo;
-        crlInfo.setCRL_BIN( &binCRL );
+        crlInfo.setCRLPath( fileName );
         crlInfo.exec();
     }
     else
@@ -1597,7 +1595,7 @@ void MainWindow::openCRL()
             if( bVal == true )
             {
                 CertInfoDlg certInfo;
-                certInfo.setCertBIN( &binCRL );
+                certInfo.setCertPath( fileName );
                 certInfo.exec();
             }
         }
@@ -1607,7 +1605,7 @@ void MainWindow::openCRL()
             if( bVal == true )
             {
                 CSRInfoDlg csrInfo;
-                csrInfo.setReqBIN( &binCRL );
+                csrInfo.setReqPath( fileName );
                 csrInfo.exec();
             }
         }
@@ -1634,7 +1632,7 @@ void MainWindow::openCSR()
     if( JS_PKI_isCSR( &binCSR ) == 1 )
     {
         CSRInfoDlg csrInfo;
-        csrInfo.setReqBIN( &binCSR );
+        csrInfo.setReqPath( fileName );
         csrInfo.exec();
     }
     else
@@ -1646,7 +1644,7 @@ void MainWindow::openCSR()
             if( bVal == true )
             {
                 CertInfoDlg certInfo;
-                certInfo.setCertBIN( &binCSR );
+                certInfo.setCertPath( fileName );
                 certInfo.exec();
             }
         }
@@ -1656,7 +1654,7 @@ void MainWindow::openCSR()
             if( bVal == true )
             {
                 CRLInfoDlg crlInfo;
-                crlInfo.setCRL_BIN( &binCSR );
+                crlInfo.setCRLPath( fileName );
                 crlInfo.exec();
             }
         }
@@ -1691,7 +1689,7 @@ void MainWindow::openPriKey()
             if( bVal == true )
             {
                 PriKeyInfoDlg priKeyInfo;
-                priKeyInfo.setPublicKey( &binKey );
+                priKeyInfo.setPublicKeyPath( fileName );
                 priKeyInfo.exec();
 
                 if( berApplet->settingsMgr()->supportKeyPairChange() == true )
@@ -1721,7 +1719,7 @@ void MainWindow::openPriKey()
     else
     {
         PriKeyInfoDlg priKeyInfo;
-        priKeyInfo.setPrivateKey( &binKey );
+        priKeyInfo.setPrivateKeyPath( fileName );
         priKeyInfo.exec();
 
         if( berApplet->settingsMgr()->supportKeyPairChange() == true )
@@ -1768,7 +1766,7 @@ void MainWindow::openPubKey()
             if( bVal == true )
             {
                 PriKeyInfoDlg priKeyInfo;
-                priKeyInfo.setPrivateKey( &binKey );
+                priKeyInfo.setPrivateKeyPath( fileName );
                 priKeyInfo.exec();
 
                 if( berApplet->settingsMgr()->getSupportKeyPairChange() == true )
@@ -1798,7 +1796,7 @@ void MainWindow::openPubKey()
     else
     {
         PriKeyInfoDlg priKeyInfo;
-        priKeyInfo.setPublicKey( &binKey );
+        priKeyInfo.setPublicKeyPath( fileName );
         priKeyInfo.exec();
 
         if( berApplet->settingsMgr()->supportKeyPairChange() == true )
@@ -1846,7 +1844,7 @@ void MainWindow::openCMS()
     }
 
     CMSInfoDlg cmsInfo;
-    cmsInfo.setCMS( &binCMS );
+    cmsInfo.setCMS( fileName );
     cmsInfo.exec();
 
     JS_BIN_reset( &binCMS );

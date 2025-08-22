@@ -673,8 +673,6 @@ void OCSPClientDlg::viewCert()
 void OCSPClientDlg::viewSignCert()
 {
     CertInfoDlg certInfo;
-
-    BIN binData = {0,0};
     QString strFile = mSignCertPathText->text();
 
     if( strFile.length() < 1 )
@@ -684,12 +682,8 @@ void OCSPClientDlg::viewSignCert()
         return;
     }
 
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
-
-    certInfo.setCertBIN( &binData );
+    certInfo.setCertPath( strFile );
     certInfo.exec();
-
-    JS_BIN_reset( &binData );
 }
 
 void OCSPClientDlg::viewSignPriKey()
@@ -710,8 +704,6 @@ end :
 void OCSPClientDlg::viewSrvCert()
 {
     CertInfoDlg certInfo;
-
-    BIN binData = {0,0};
     QString strFile = mSrvCertPathText->text();
 
     if( strFile.length() < 1 )
@@ -721,12 +713,8 @@ void OCSPClientDlg::viewSrvCert()
         return;
     }
 
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
-
-    certInfo.setCertBIN( &binData );
+    certInfo.setCertPath( strFile );
     certInfo.exec();
-
-    JS_BIN_reset( &binData );
 }
 
 void OCSPClientDlg::decodeCACert()

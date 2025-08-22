@@ -194,15 +194,27 @@ int CRLInfoDlg::setCRLPath(const QString strPath )
     resetData();
 
     crl_path_ = strPath;
+    setTitle( strPath );
     ret = JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &crl_bin_ );
 
     return ret;
 }
 
-void CRLInfoDlg::setCRL_BIN( const BIN *pCRL )
+void CRLInfoDlg::setCRL_BIN( const BIN *pCRL, const QString strTitle )
 {
     resetData();
     JS_BIN_copy( &crl_bin_, pCRL );
+    setTitle( strTitle );
+}
+
+void CRLInfoDlg::setTitle( const QString strName )
+{
+    QString strTitle = tr("CRL");
+
+    if( strName.length() >= 1 )
+        strTitle += QString( " - %1" ).arg( strName );
+
+    setWindowTitle( strTitle );
 }
 
 void CRLInfoDlg::initialize()
