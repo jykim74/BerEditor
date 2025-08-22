@@ -253,8 +253,6 @@ void TSPClientDlg::selectSrvCert()
 void TSPClientDlg::viewSrvCert()
 {
     CertInfoDlg certInfo;
-
-    BIN binData = {0,0};
     QString strFile = mSrvCertPathText->text();
 
     if( strFile.length() < 1 )
@@ -264,12 +262,8 @@ void TSPClientDlg::viewSrvCert()
         return;
     }
 
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
-
-    certInfo.setCertBIN( &binData );
+    certInfo.setCertPath( strFile );
     certInfo.exec();
-
-    JS_BIN_reset( &binData );
 }
 
 void TSPClientDlg::decodeSrvCert()
@@ -331,7 +325,6 @@ void TSPClientDlg::viewCACert()
 {
     CertInfoDlg certInfo;
 
-    BIN binData = {0,0};
     QString strFile = mCACertPathText->text();
 
     if( strFile.length() < 1 )
@@ -341,12 +334,8 @@ void TSPClientDlg::viewCACert()
         return;
     }
 
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
-
-    certInfo.setCertBIN( &binData );
+    certInfo.setCertPath( strFile );
     certInfo.exec();
-
-    JS_BIN_reset( &binData );
 }
 
 void TSPClientDlg::decodeCACert()
@@ -362,7 +351,6 @@ void TSPClientDlg::decodeCACert()
     }
 
     JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
-
     berApplet->decodeData( &binData, strFile );
 
     JS_BIN_reset( &binData );

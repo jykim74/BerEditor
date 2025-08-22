@@ -398,8 +398,6 @@ void SCEPClientDlg::viewCACert()
 void SCEPClientDlg::viewCert()
 {
     CertInfoDlg certInfo;
-
-    BIN binData = {0,0};
     QString strFile = mCertPathText->text();
 
     if( strFile.length() < 1 )
@@ -409,12 +407,8 @@ void SCEPClientDlg::viewCert()
         return;
     }
 
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
-
-    certInfo.setCertBIN( &binData );
+    certInfo.setCertPath( strFile );
     certInfo.exec();
-
-    JS_BIN_reset( &binData );
 }
 
 void SCEPClientDlg::viewPriKey()

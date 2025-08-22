@@ -532,9 +532,9 @@ void PriKeyInfoDlg::clickDecode()
     }
 
     if( pri_key_.nLen > 0 )
-        berApplet->decodeData( &pri_key_, "Private Key" );
+        berApplet->decodeData( &pri_key_, key_path_ );
     else
-        berApplet->decodeData( &pub_key_, "Public Key" );
+        berApplet->decodeData( &pub_key_, key_path_ );
 }
 
 void PriKeyInfoDlg::clickCheckPubKey()
@@ -974,6 +974,26 @@ void PriKeyInfoDlg::setPublicKey( const BIN *pPubKey, const QString strTitle )
 
     mCheckKeyPairBtn->setEnabled(false);
     mSavePriKeyBtn->setEnabled(false);
+}
+
+void PriKeyInfoDlg::setPrivateKeyPath( const QString strPath )
+{
+    BIN binPri = {0,0};
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    setPrivateKey( &binPri, strPath );
+    key_path_ = strPath;
+    JS_BIN_reset( &binPri );
+}
+
+void PriKeyInfoDlg::setPublicKeyPath( const QString strPath )
+{
+    BIN binPub = {0,0};
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binPub );
+    setPublicKey( &binPub, strPath );
+    key_path_ = strPath;
+    JS_BIN_reset( &binPub );
 }
 
 void PriKeyInfoDlg::readPrivateKey( BIN *pPriKey )

@@ -1671,7 +1671,7 @@ void MainWindow::openPriKey()
             if( bVal == true )
             {
                 PriKeyInfoDlg priKeyInfo;
-                priKeyInfo.setPublicKey( &binKey, fileName );
+                priKeyInfo.setPublicKeyPath( fileName );
                 priKeyInfo.exec();
 
                 if( berApplet->settingsMgr()->supportKeyPairChange() == true )
@@ -1701,7 +1701,7 @@ void MainWindow::openPriKey()
     else
     {
         PriKeyInfoDlg priKeyInfo;
-        priKeyInfo.setPrivateKey( &binKey, fileName );
+        priKeyInfo.setPrivateKeyPath( fileName );
         priKeyInfo.exec();
 
         if( berApplet->settingsMgr()->supportKeyPairChange() == true )
@@ -1748,7 +1748,7 @@ void MainWindow::openPubKey()
             if( bVal == true )
             {
                 PriKeyInfoDlg priKeyInfo;
-                priKeyInfo.setPrivateKey( &binKey, fileName );
+                priKeyInfo.setPrivateKeyPath( fileName );
                 priKeyInfo.exec();
 
                 if( berApplet->settingsMgr()->getSupportKeyPairChange() == true )
@@ -1778,7 +1778,7 @@ void MainWindow::openPubKey()
     else
     {
         PriKeyInfoDlg priKeyInfo;
-        priKeyInfo.setPublicKey( &binKey, fileName );
+        priKeyInfo.setPublicKeyPath( fileName );
         priKeyInfo.exec();
 
         if( berApplet->settingsMgr()->supportKeyPairChange() == true )
