@@ -57,13 +57,16 @@ int CSRInfoDlg::setReqPath( const QString strPath )
     resetData();
 
     ret = JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &req_bin_ );
+    setTitle( strPath );
+    req_path_ = strPath;
 
     return ret;
 }
 
-void CSRInfoDlg::setReqBIN( const BIN *pReq )
+void CSRInfoDlg::setReqBIN( const BIN *pReq, const QString strTitle )
 {
     JS_BIN_copy( &req_bin_, pReq );
+    setTitle( strTitle );
 }
 
 void CSRInfoDlg::showEvent(QShowEvent *event)
@@ -71,6 +74,17 @@ void CSRInfoDlg::showEvent(QShowEvent *event)
     initUI();
     initialize();
 }
+
+void CSRInfoDlg::setTitle( const QString strName )
+{
+    QString strTitle = tr("CSR");
+
+    if( strName.length() >= 1 )
+        strTitle += QString( " - %1" ).arg( strName );
+
+    setWindowTitle( strTitle );
+}
+
 
 void CSRInfoDlg::initUI()
 {

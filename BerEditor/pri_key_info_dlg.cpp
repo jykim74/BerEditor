@@ -85,6 +85,21 @@ PriKeyInfoDlg::~PriKeyInfoDlg()
     JS_BIN_reset( &pub_key_ );
 }
 
+void PriKeyInfoDlg::setTitle( bool bPri, const QString strName )
+{
+    QString strTitle;
+
+    if( bPri == true )
+        strTitle = tr("PrivateKey" );
+    else
+        strTitle = tr( "PublicKey" );
+
+    if( strName.length() >= 1 )
+        strTitle += QString( " - %1" ).arg( strName );
+
+    setWindowTitle( strTitle );
+}
+
 void PriKeyInfoDlg::initialize()
 {
     mKeyTab->setTabEnabled(0, false);
@@ -860,14 +875,14 @@ void PriKeyInfoDlg::checkEditMode()
     setModeUI( bVal );
 }
 
-void PriKeyInfoDlg::setPrivateKey( const BIN *pPriKey )
+void PriKeyInfoDlg::setPrivateKey( const BIN *pPriKey, const QString strTitle )
 {
     clearAll();
 
-    QString strTitle = tr( "Private Key Information" );
+    QString strLabel = tr( "Private Key Information" );
+    mTitleLabel->setText( strLabel );
 
-    mTitleLabel->setText( strTitle );
-    setWindowTitle( strTitle );
+    setTitle( true, strTitle );
 
     JS_BIN_reset( &pri_key_ );
     JS_BIN_reset( &pub_key_ );
@@ -910,14 +925,14 @@ void PriKeyInfoDlg::setPrivateKey( const BIN *pPriKey )
     }
 }
 
-void PriKeyInfoDlg::setPublicKey( const BIN *pPubKey )
+void PriKeyInfoDlg::setPublicKey( const BIN *pPubKey, const QString strTitle )
 {
     clearAll();
 
-    QString strTitle = tr( "Public Key Information" );
+    QString strLabel = tr( "Public Key Information" );
 
-    mTitleLabel->setText( strTitle );
-    setWindowTitle( strTitle );
+    mTitleLabel->setText( strLabel );
+    setTitle( false, strTitle );
 
     JS_BIN_reset( &pri_key_ );
     JS_BIN_reset( &pub_key_ );

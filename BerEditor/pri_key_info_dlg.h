@@ -22,8 +22,8 @@ public:
     explicit PriKeyInfoDlg(QWidget *parent = nullptr);
     ~PriKeyInfoDlg();
 
-    void setPrivateKey( const BIN *pPriKey );
-    void setPublicKey( const BIN *pPubKey );
+    void setPrivateKey( const BIN *pPriKey, const QString strTitle = "" );
+    void setPublicKey( const BIN *pPubKey, const QString strTitle = "" );
 
     void readPrivateKey( BIN *pPriKey );
     void readPublicKey( BIN *pPubKey );
@@ -64,6 +64,8 @@ private slots:
     void checkEditMode();
 
 private:
+    void setTitle( bool bPri, const QString strName = "" );
+
     void initialize();
     bool isChanged();
 

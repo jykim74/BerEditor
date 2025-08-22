@@ -24,7 +24,7 @@ public:
     ~CSRInfoDlg();
 
     int setReqPath( const QString strPath );
-    void setReqBIN( const BIN *pReq );
+    void setReqBIN( const BIN *pReq, const QString strTitle = "" );
 
     static QTableWidgetItem* getExtNameItem( const QString strSN );
 
@@ -37,6 +37,7 @@ private slots:
     void clickDecodeCSR();
 
 private:
+    void setTitle( const QString strName );
     void initUI();
     void initialize();
     int saveAsPEM( const BIN *pData );

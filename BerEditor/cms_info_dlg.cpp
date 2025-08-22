@@ -144,7 +144,29 @@ void CMSInfoDlg::initUI()
     mViewTSTBtn->setEnabled( false );
 }
 
-void CMSInfoDlg::setCMS( const BIN *pCMS )
+void CMSInfoDlg::setTitle( const QString strName )
+{
+    QString strTitle = "CMS";
+
+    if( strName.length() >= 1 )
+        strTitle += QString( " - %1" ).arg( strName );
+
+    setWindowTitle( strTitle );
+}
+
+void CMSInfoDlg::setCMS( const QString strPath )
+{
+    BIN binCMS = {0,0};
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCMS );
+
+    if( binCMS.nLen > 0 ) setCMS( &binCMS, strPath );
+
+    cms_path_ = strPath;
+
+    JS_BIN_reset( &binCMS );
+}
+
+void CMSInfoDlg::setCMS( const BIN *pCMS, const QString strTitle )
 {
     QString strType;
     cms_type_ = JS_PKCS7_getType( pCMS );
@@ -193,6 +215,7 @@ void CMSInfoDlg::setCMS( const BIN *pCMS )
         berApplet->warningBox( tr( "This type is not supported." ).arg( cms_type_ ), this );
     }
 
+    setTitle( strTitle );
     mTypeText->setText( strType );
     if( tsp_bin_.nLen > 0 )
     {
@@ -211,7 +234,7 @@ void CMSInfoDlg::dataChanged()
 
 void CMSInfoDlg::clickDecode()
 {
-    berApplet->decodeData( &cms_bin_, "CMS Message" );
+    berApplet->decodeData( &cms_bin_, cms_path_ );
 }
 
 void CMSInfoDlg::clickDecodeData()
@@ -300,7 +323,7 @@ void CMSInfoDlg::clickViewTSP()
     if( tsp_bin_.nLen <= 0 ) return;
 
     CMSInfoDlg cmsInfo;
-    cmsInfo.setCMS( &tsp_bin_ );
+    cmsInfo.setCMS( &tsp_bin_, "Time Stamp" );
     cmsInfo.exec();
 }
 

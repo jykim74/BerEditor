@@ -26,7 +26,7 @@ public:
     int setCRLPath( const QString strPath );
     static QTableWidgetItem* getExtNameItem( const QString strSN );
 
-    void setCRL_BIN( const BIN *pCRL );
+    void setCRL_BIN( const BIN *pCRL, const QString strTitle = "" );
 
 private slots:
     void clickCRLField( QModelIndex index );
@@ -39,7 +39,7 @@ private slots:
     void clickVerifyCRL();
 
 private:
-
+    void setTitle( const QString strName );
     void initialize();
     void initUI();
     void clearTable();

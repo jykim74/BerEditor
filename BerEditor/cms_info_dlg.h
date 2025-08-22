@@ -24,7 +24,8 @@ public:
     explicit CMSInfoDlg(QWidget *parent = nullptr);
     ~CMSInfoDlg();
 
-    void setCMS( const BIN *pCMS );
+    void setCMS( const QString strPath );
+    void setCMS( const BIN *pCMS, const QString strTitle = "" );
 
 private slots:
     void dataChanged();
@@ -43,6 +44,7 @@ private slots:
 
 private:
     void initUI();
+    void setTitle( const QString strName );
 
     void setSignerInfo( const JP7SignerInfoList *pSignerList );
     void setRecipInfo( const JP7RecipInfoList *pRecipList );
@@ -57,6 +59,7 @@ private:
     BIN cms_bin_;
     int cms_type_;
     BIN tsp_bin_;
+    QString cms_path_;
 };
 
 #endif // CMS_INFO_DLG_H
