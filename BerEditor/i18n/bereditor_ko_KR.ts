@@ -3131,48 +3131,58 @@ mailto : jykim74@gmail.com</translation>
         <translation>수신자 정보</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.ui" line="480"/>
+        <location filename="../cms_info_dlg.ui" line="493"/>
+        <source>View TSP</source>
+        <translation>TSP 보기</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.ui" line="500"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="69"/>
+        <location filename="../cms_info_dlg.ui" line="507"/>
+        <source>View TST</source>
+        <translation>TST 보기</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.cpp" line="77"/>
         <source>Name</source>
         <translation>이름</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="69"/>
+        <location filename="../cms_info_dlg.cpp" line="77"/>
         <source>Value</source>
         <translation>값</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="80"/>
+        <location filename="../cms_info_dlg.cpp" line="88"/>
         <source>Subject DN</source>
         <translation>주체자 DN</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="80"/>
+        <location filename="../cms_info_dlg.cpp" line="88"/>
         <source>Expire</source>
         <translation>만료 일자</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="80"/>
-        <location filename="../cms_info_dlg.cpp" line="94"/>
+        <location filename="../cms_info_dlg.cpp" line="88"/>
+        <location filename="../cms_info_dlg.cpp" line="102"/>
         <source>Issuer DN</source>
         <translation>발급자 이름</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="94"/>
+        <location filename="../cms_info_dlg.cpp" line="102"/>
         <source>This Update</source>
         <translation>이번 업데이트</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="94"/>
+        <location filename="../cms_info_dlg.cpp" line="102"/>
         <source>Next Update</source>
         <translation>다음 업데이트</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="182"/>
+        <location filename="../cms_info_dlg.cpp" line="193"/>
         <source>This type is not supported.</source>
         <translation>이 타입은 지원 하지 않습니다</translation>
     </message>

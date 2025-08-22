@@ -5,12 +5,14 @@
 #include "cert_info_dlg.h"
 #include "crl_info_dlg.h"
 #include "settings_mgr.h"
+#include "tst_info_dlg.h"
 
 #include "js_pki.h"
 #include "js_pkcs7.h"
 #include "js_util.h"
 #include "js_pki_tools.h"
 #include "js_ber.h"
+#include "js_tsp.h"
 
 #include "common.h"
 
@@ -18,9 +20,12 @@ CMSInfoDlg::CMSInfoDlg(QWidget *parent) :
     QDialog(parent)
 {
     memset( &cms_bin_, 0x00, sizeof(BIN));
+    memset( &tsp_bin_, 0x00, sizeof(BIN));
 
     setupUi(this);
 
+    connect( mViewTSPBtn, SIGNAL(clicked()), this, SLOT(clickViewTSP()));
+    connect( mViewTSTBtn, SIGNAL(clicked()), this, SLOT(clickViewTST()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mDataText, SIGNAL(textChanged()), this, SLOT(dataChanged()));
     connect( mDecodeBtn, SIGNAL(clicked()), this, SLOT(clickDecode()));
@@ -59,6 +64,7 @@ CMSInfoDlg::CMSInfoDlg(QWidget *parent) :
 CMSInfoDlg::~CMSInfoDlg()
 {
     JS_BIN_reset( &cms_bin_ );
+    JS_BIN_reset( &tsp_bin_ );
 }
 
 void CMSInfoDlg::initUI()
@@ -133,6 +139,9 @@ void CMSInfoDlg::initUI()
     mInfoTab->setTabEnabled( JS_CMS_CRL_IDX, false );
     mInfoTab->setTabEnabled( JS_CMS_SIGNER_IDX, false );
     mInfoTab->setTabEnabled( JS_CMS_RECIP_IDX, false );
+
+    mViewTSPBtn->setEnabled( false );
+    mViewTSTBtn->setEnabled( false );
 }
 
 void CMSInfoDlg::setCMS( const BIN *pCMS )
@@ -185,6 +194,11 @@ void CMSInfoDlg::setCMS( const BIN *pCMS )
     }
 
     mTypeText->setText( strType );
+    if( tsp_bin_.nLen > 0 )
+    {
+        mViewTSPBtn->setEnabled( true );
+        mViewTSTBtn->setEnabled( true );
+    }
 }
 
 void CMSInfoDlg::dataChanged()
@@ -279,6 +293,34 @@ void CMSInfoDlg::clickViewCRL()
     crlInfo.exec();
 
     JS_BIN_reset( &binCRL );
+}
+
+void CMSInfoDlg::clickViewTSP()
+{
+    if( tsp_bin_.nLen <= 0 ) return;
+
+    CMSInfoDlg cmsInfo;
+    cmsInfo.setCMS( &tsp_bin_ );
+    cmsInfo.exec();
+}
+
+void CMSInfoDlg::clickViewTST()
+{
+    int ret = 0;
+    BIN binTST = {0,0};
+
+    if( tsp_bin_.nLen <= 0 ) return;
+
+    ret = JS_TSP_getTST( &tsp_bin_, &binTST );
+
+    if( binTST.nLen > 0 )
+    {
+        TSTInfoDlg tstInfo;
+        tstInfo.setTST( &binTST );
+        tstInfo.exec();
+
+        JS_BIN_reset( &binTST );
+    }
 }
 
 void CMSInfoDlg::setSignerInfo( const JP7SignerInfoList *pSignerList )
@@ -456,8 +498,9 @@ void CMSInfoDlg::setSigned()
     QString strCAPath = berApplet->settingsMgr()->CACertPath();
 
     memset( &sSignedData, 0x00, sizeof(sSignedData));
+    JS_BIN_reset( &tsp_bin_ );
 
-    ret = JS_PKCS7_getSignedData( &cms_bin_, strCAPath.toStdString().c_str(), &sSignedData, &pInfoList );
+    ret = JS_PKCS7_getSignedData( &cms_bin_, strCAPath.toStdString().c_str(), &sSignedData, &pInfoList, &tsp_bin_ );
 
     mVersionText->setText( QString("%1").arg( sSignedData.nVersion ));
     mDataText->setPlainText( getHexString( &sSignedData.binContent ));
@@ -637,8 +680,9 @@ void CMSInfoDlg::setSignedAndEnveloped()
     QString strCAPath = berApplet->settingsMgr()->CACertPath();
 
     memset( &sSignAndEnveloped, 0x00, sizeof(sSignAndEnveloped));
+    JS_BIN_reset( &tsp_bin_ );
 
-    ret = JS_PKCS7_getSignedAndEnvelopedData( &cms_bin_, strCAPath.toStdString().c_str(), &sSignAndEnveloped, &pSignerList, &pRecipList );
+    ret = JS_PKCS7_getSignedAndEnvelopedData( &cms_bin_, strCAPath.toStdString().c_str(), &sSignAndEnveloped, &pSignerList, &pRecipList, &tsp_bin_ );
     if( ret != 0 ) goto end;
 
     mVersionText->setText( QString("%1").arg( sSignAndEnveloped.nVersion ));
