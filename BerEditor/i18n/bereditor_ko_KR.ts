@@ -3069,6 +3069,8 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../cms_info_dlg.ui" line="45"/>
+        <location filename="../cms_info_dlg.cpp" line="366"/>
+        <location filename="../cms_info_dlg.cpp" line="478"/>
         <source>Version</source>
         <translation>버젼</translation>
     </message>
@@ -3197,6 +3199,48 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../cms_info_dlg.cpp" line="215"/>
         <source>This type is not supported.</source>
         <translation>이 타입은 지원 하지 않습니다</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.cpp" line="372"/>
+        <location filename="../cms_info_dlg.cpp" line="484"/>
+        <source>Issuer</source>
+        <translation>발급자</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.cpp" line="378"/>
+        <location filename="../cms_info_dlg.cpp" line="490"/>
+        <source>Serial</source>
+        <translation>일련번호</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.cpp" line="386"/>
+        <source>SignTime</source>
+        <translation>서명시간</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.cpp" line="392"/>
+        <source>DigestAlg</source>
+        <translation>해시 알고리즘</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.cpp" line="398"/>
+        <source>DigestEncAlg</source>
+        <translation>해시 암호 알고리즘</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.cpp" line="404"/>
+        <source>EncDigest</source>
+        <translation>암호 해시</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.cpp" line="496"/>
+        <source>KeyEncAlg</source>
+        <translation>키 암호 알고리즘</translation>
+    </message>
+    <message>
+        <location filename="../cms_info_dlg.cpp" line="502"/>
+        <source>EncKey</source>
+        <translation>암호 키</translation>
     </message>
 </context>
 <context>
@@ -16809,6 +16853,56 @@ Do you want to delete the file and continue?</source>
         <location filename="../tst_info_dlg.cpp" line="55"/>
         <source>Failed to decode TST message [%1]</source>
         <translation>TST 메세지 디코딩 실패: [%1]</translation>
+    </message>
+    <message>
+        <location filename="../tst_info_dlg.cpp" line="63"/>
+        <source>Version</source>
+        <translation>버젼</translation>
+    </message>
+    <message>
+        <location filename="../tst_info_dlg.cpp" line="69"/>
+        <source>Order</source>
+        <translation>정렬</translation>
+    </message>
+    <message>
+        <location filename="../tst_info_dlg.cpp" line="75"/>
+        <source>Serial</source>
+        <translation>일련번호</translation>
+    </message>
+    <message>
+        <location filename="../tst_info_dlg.cpp" line="83"/>
+        <source>GenTime</source>
+        <translation>생성시간</translation>
+    </message>
+    <message>
+        <location filename="../tst_info_dlg.cpp" line="91"/>
+        <source>Policy</source>
+        <translation>정책 OID</translation>
+    </message>
+    <message>
+        <location filename="../tst_info_dlg.cpp" line="100"/>
+        <source>GenName</source>
+        <translation>생성이름</translation>
+    </message>
+    <message>
+        <location filename="../tst_info_dlg.cpp" line="109"/>
+        <source>Nonce</source>
+        <translation>Nonce</translation>
+    </message>
+    <message>
+        <location filename="../tst_info_dlg.cpp" line="115"/>
+        <source>Sec:%1 millis:%2 micro:%3</source>
+        <translation>초:%1 밀리:%2 마이크로:%3</translation>
+    </message>
+    <message>
+        <location filename="../tst_info_dlg.cpp" line="122"/>
+        <source>Accuracy</source>
+        <translation>정확도</translation>
+    </message>
+    <message>
+        <location filename="../tst_info_dlg.cpp" line="133"/>
+        <source>MsgImprint</source>
+        <translation>MsgImprint</translation>
     </message>
     <message>
         <location filename="../tst_info_dlg.cpp" line="172"/>

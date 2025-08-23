@@ -363,19 +363,19 @@ void CMSInfoDlg::setSignerInfo( const JP7SignerInfoList *pSignerList )
 
         mSignerTable->insertRow(srow);
         mSignerTable->setRowHeight(srow, 10);
-        mSignerTable->setItem( srow, 0, new QTableWidgetItem("Version"));
-        mSignerTable->setItem( srow, 1, new QTableWidgetItem( QString( "%1").arg( pCurList->sSignerInfo.nVersion )));
+        mSignerTable->setItem( srow, 0, new QTableWidgetItem( tr("Version") ));
+        mSignerTable->setItem( srow, 1, new QTableWidgetItem( QString( "%1").arg( pCurList->sSignerInfo.nVersion + 1)));
         srow++;
 
         mSignerTable->insertRow( srow );
         mSignerTable->setRowHeight(srow, 10);
-        mSignerTable->setItem( srow, 0, new QTableWidgetItem("Issuer"));
+        mSignerTable->setItem( srow, 0, new QTableWidgetItem( tr("Issuer") ));
         mSignerTable->setItem( srow, 1, new QTableWidgetItem( QString( "%1").arg( pCurList->sSignerInfo.pIssuer )));
         srow++;
 
         mSignerTable->insertRow( srow );
         mSignerTable->setRowHeight(srow, 10);
-        mSignerTable->setItem( srow, 0, new QTableWidgetItem("Serial"));
+        mSignerTable->setItem( srow, 0, new QTableWidgetItem( tr("Serial") ));
         mSignerTable->setItem( srow, 1, new QTableWidgetItem( QString( "%1").arg( pCurList->sSignerInfo.pSerial )));
         srow++;
 
@@ -383,25 +383,25 @@ void CMSInfoDlg::setSignerInfo( const JP7SignerInfoList *pSignerList )
 
         mSignerTable->insertRow( srow );
         mSignerTable->setRowHeight(srow, 10);
-        mSignerTable->setItem( srow, 0, new QTableWidgetItem("SignTime"));
+        mSignerTable->setItem( srow, 0, new QTableWidgetItem( tr("SignTime") ));
         mSignerTable->setItem( srow, 1, new QTableWidgetItem( QString( "%1").arg( sSignTime )));
         srow++;
 
         mSignerTable->insertRow( srow );
         mSignerTable->setRowHeight(srow, 10);
-        mSignerTable->setItem( srow, 0, new QTableWidgetItem("DigestAlg"));
+        mSignerTable->setItem( srow, 0, new QTableWidgetItem( tr("DigestAlg") ));
         mSignerTable->setItem( srow, 1, new QTableWidgetItem( QString( "%1").arg( pCurList->sSignerInfo.pDigestAlg )));
         srow++;
 
         mSignerTable->insertRow( srow );
         mSignerTable->setRowHeight(srow, 10);
-        mSignerTable->setItem( srow, 0, new QTableWidgetItem("DigestEncAlg"));
+        mSignerTable->setItem( srow, 0, new QTableWidgetItem( tr("DigestEncAlg") ));
         mSignerTable->setItem( srow, 1, new QTableWidgetItem( QString( "%1").arg( pCurList->sSignerInfo.pDigestEncAlg )));
         srow++;
 
         mSignerTable->insertRow( srow );
         mSignerTable->setRowHeight(srow, 10);
-        mSignerTable->setItem( srow, 0, new QTableWidgetItem("EncDigest"));
+        mSignerTable->setItem( srow, 0, new QTableWidgetItem( tr("EncDigest") ));
         mSignerTable->setItem( srow, 1, new QTableWidgetItem( QString( "%1").arg( pCurList->sSignerInfo.pEncDigest )));
         srow++;
 
@@ -475,31 +475,31 @@ void CMSInfoDlg::setRecipInfo( const JP7RecipInfoList *pRecipList )
     {
         mRecipTable->insertRow(rrow);
         mRecipTable->setRowHeight(rrow, 10);
-        mRecipTable->setItem( rrow, 0, new QTableWidgetItem("Version"));
-        mRecipTable->setItem( rrow, 1, new QTableWidgetItem( QString( "%1").arg( pCurList->sRecipInfo.nVersion )));
+        mRecipTable->setItem( rrow, 0, new QTableWidgetItem( tr("Version") ));
+        mRecipTable->setItem( rrow, 1, new QTableWidgetItem( QString( "%1").arg( pCurList->sRecipInfo.nVersion + 1 )));
         rrow++;
 
         mRecipTable->insertRow( rrow );
         mRecipTable->setRowHeight(rrow, 10);
-        mRecipTable->setItem( rrow, 0, new QTableWidgetItem("Issuer"));
+        mRecipTable->setItem( rrow, 0, new QTableWidgetItem( tr("Issuer") ));
         mRecipTable->setItem( rrow, 1, new QTableWidgetItem( QString( "%1").arg( pCurList->sRecipInfo.pIssuer )));
         rrow++;
 
         mRecipTable->insertRow( rrow );
         mRecipTable->setRowHeight(rrow, 10);
-        mRecipTable->setItem( rrow, 0, new QTableWidgetItem("Serial"));
+        mRecipTable->setItem( rrow, 0, new QTableWidgetItem( tr( "Serial" ) ));
         mRecipTable->setItem( rrow, 1, new QTableWidgetItem( QString( "%1").arg( pCurList->sRecipInfo.pSerial )));
         rrow++;
 
         mRecipTable->insertRow( rrow );
         mRecipTable->setRowHeight(rrow, 10);
-        mRecipTable->setItem( rrow, 0, new QTableWidgetItem("KeyEncAlg"));
+        mRecipTable->setItem( rrow, 0, new QTableWidgetItem( tr( "KeyEncAlg" )));
         mRecipTable->setItem( rrow, 1, new QTableWidgetItem( QString( "%1").arg( pCurList->sRecipInfo.pKeyEncAlg )));
         rrow++;
 
         mRecipTable->insertRow( rrow );
         mRecipTable->setRowHeight(rrow, 10);
-        mRecipTable->setItem( rrow, 0, new QTableWidgetItem("EncKey"));
+        mRecipTable->setItem( rrow, 0, new QTableWidgetItem( tr( "EncKey" )));
         mRecipTable->setItem( rrow, 1, new QTableWidgetItem( QString( "%1").arg( pCurList->sRecipInfo.pEncKey )));
         rrow++;
 
