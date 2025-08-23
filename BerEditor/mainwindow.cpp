@@ -1423,7 +1423,7 @@ void MainWindow::runMakeBER()
         QString strData = makeBer.getData();
 
         JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
-        decodeData( &binData, "Unknown" );
+        decodeData( &binData );
         JS_BIN_reset( &binData );
     }
 }
@@ -3389,13 +3389,16 @@ void MainWindow::viewSetDefault()
 
 void MainWindow::save()
 {
-    if( file_path_.isEmpty() )
+    if( file_path_.isEmpty() || file_path_ == "" )
+    {
         saveAs();
+    }
     else
     {
         if( hsplitter_->widget(0) == ttlv_tree_ )
         {
-            ttlv_tree_->saveItem();
+            QString strFileName = ttlv_tree_->saveItem();
+            if( strFileName.length() > 0 ) file_path_ = strFileName;
         }
         else
         {

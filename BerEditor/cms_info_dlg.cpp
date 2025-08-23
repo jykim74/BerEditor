@@ -418,6 +418,8 @@ void CMSInfoDlg::setSignerInfo( const JP7SignerInfoList *pSignerList )
                     mSignerTable->setRowHeight(srow, 10);
                     mSignerTable->setItem( srow, 0, new QTableWidgetItem( QString( "[A]%1" ).arg( strSN )) );
                     mSignerTable->setItem( srow, 1, new QTableWidgetItem( QString("%1").arg( pCurValList->sNumVal.pValue )));
+
+                    berApplet->log( QString("%1:%2").arg( strSN ).arg( pCurValList->sNumVal.pValue ));
                     srow++;
                 }
 
@@ -439,6 +441,8 @@ void CMSInfoDlg::setSignerInfo( const JP7SignerInfoList *pSignerList )
                     mSignerTable->setRowHeight(srow, 10);
                     mSignerTable->setItem( srow, 0, new QTableWidgetItem( QString("[U]%1").arg( strSN )));
                     mSignerTable->setItem( srow, 1, new QTableWidgetItem( QString("%1").arg( pCurValList->sNumVal.pValue )));
+
+                    berApplet->log( QString("%1:%2").arg( strSN ).arg( pCurValList->sNumVal.pValue ));
                     srow++;
                 }
 
@@ -447,6 +451,7 @@ void CMSInfoDlg::setSignerInfo( const JP7SignerInfoList *pSignerList )
         }
 
         pCurList = pCurList->pNext;
+
         if( pCurList )
         {
             mSignerTable->insertRow( srow );
