@@ -7,6 +7,7 @@
 
 #include "js_bin.h"
 #include "js_tsp.h"
+#include "js_util.h"
 
 
 TSTInfoDlg::TSTInfoDlg(QWidget *parent) :
@@ -42,6 +43,7 @@ void TSTInfoDlg::initialize()
     JTSTInfo    sTSTInfo;
     QString strAccuracy;
     QString strMsgImprint;
+    char    sGenTime[32];
 
     memset( &sTSTInfo, 0x00, sizeof(sTSTInfo));
 
@@ -74,6 +76,14 @@ void TSTInfoDlg::initialize()
     mInfoTable->setItem( i, 1, new QTableWidgetItem(QString("%1").arg(sTSTInfo.nSerial)));
     i++;
 
+    JS_UTIL_getDateTime( sTSTInfo.tGenTime, sGenTime );
+
+    mInfoTable->insertRow(i);
+    mInfoTable->setRowHeight( i, 10 );
+    mInfoTable->setItem( i, 0, new QTableWidgetItem(QString("GenTime")));
+    mInfoTable->setItem( i, 1, new QTableWidgetItem(QString("%1").arg(sGenTime)));
+    i++;
+
     if( sTSTInfo.pPolicy )
     {
         mInfoTable->insertRow(i);
@@ -89,15 +99,6 @@ void TSTInfoDlg::initialize()
         mInfoTable->setRowHeight( i, 10 );
         mInfoTable->setItem( i, 0, new QTableWidgetItem(QString("GenName")));
         mInfoTable->setItem( i, 1, new QTableWidgetItem(QString("%1").arg(sTSTInfo.pGenName)));
-        i++;
-    }
-
-    if( sTSTInfo.pGenTime )
-    {
-        mInfoTable->insertRow(i);
-        mInfoTable->setRowHeight( i, 10 );
-        mInfoTable->setItem( i, 0, new QTableWidgetItem(QString("GenTime")));
-        mInfoTable->setItem( i, 1, new QTableWidgetItem(QString("%1").arg(sTSTInfo.pGenTime)));
         i++;
     }
 
