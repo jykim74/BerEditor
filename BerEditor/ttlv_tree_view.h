@@ -38,7 +38,7 @@ public slots:
     void AddTTLV();
 
     void editItem();
-    void saveItem();
+    const QString saveItem();
     void saveItemValue();
 
 private slots:

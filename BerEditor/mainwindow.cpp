@@ -3412,14 +3412,18 @@ void MainWindow::save()
 
 void MainWindow::saveAs()
 {
+    QString strFileName;
+
     if( hsplitter_->widget(0) == ttlv_tree_ )
     {
-        ttlv_tree_->saveItem();
+        strFileName = ttlv_tree_->saveItem();
     }
     else
     {
-        left_tree_->SaveNode();
+        strFileName = left_tree_->SaveNode();
     }
+
+    if( strFileName.length() > 0 ) file_path_ = strFileName;
 }
 
 void MainWindow::clearLog()
