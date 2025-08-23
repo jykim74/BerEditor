@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>524</width>
-    <height>526</height>
+    <height>610</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -389,7 +389,7 @@
      </widget>
      <widget class="QWidget" name="mSignerTab">
       <attribute name="title">
-       <string>Signer</string>
+       <string>Signer Info</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
@@ -410,7 +410,7 @@
      </widget>
      <widget class="QWidget" name="mRecipTab">
       <attribute name="title">
-       <string>Recip</string>
+       <string>Recip Info</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
