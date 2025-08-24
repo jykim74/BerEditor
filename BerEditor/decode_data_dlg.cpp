@@ -72,7 +72,7 @@ void DecodeDataDlg::viewData()
         return;
     }
 
-    berApplet->decodeData( &binData, "Unknown" );
+    berApplet->decodeData( &binData );
     JS_BIN_reset( &binData );
     QDialog::accept();
 }

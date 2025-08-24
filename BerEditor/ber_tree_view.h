@@ -34,7 +34,7 @@ public slots:
     void CopyAsBase64();
     void copy();
 
-    void SaveNode();
+    const QString SaveNode();
     void SaveNodeValue();
     void EditValue();
     void InsertBER();

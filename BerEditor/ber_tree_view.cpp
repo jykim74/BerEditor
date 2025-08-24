@@ -779,11 +779,11 @@ void BerTreeView::ExpandValue()
     expand( index );
 }
 
-void BerTreeView::SaveNode()
+const QString BerTreeView::SaveNode()
 {
     QString strPath;
     QString fileName = berApplet->findSaveFile( this, JS_FILE_TYPE_BER, strPath );
-    if( fileName.length() < 1 ) return;
+    if( fileName.length() < 1 ) return "";
 
     QModelIndex index = currentIndex();
 
@@ -795,6 +795,8 @@ void BerTreeView::SaveNode()
     JS_BIN_set( &binData, binBer.pVal + item->GetOffset(), item->GetHeaderSize() + item->GetLength() );
     JS_BIN_fileWrite( &binData, fileName.toLocal8Bit().toStdString().c_str());
     JS_BIN_reset( &binData );
+
+    return fileName;
 }
 
 void BerTreeView::SaveNodeValue()

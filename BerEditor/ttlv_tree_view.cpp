@@ -733,14 +733,14 @@ void TTLVTreeView::editItem()
     }
 }
 
-void TTLVTreeView::saveItem()
+const QString TTLVTreeView::saveItem()
 {
     QString strPath;
     QString fileName = berApplet->findSaveFile( this, JS_FILE_TYPE_BIN, strPath );
-    if( fileName.length() < 1 ) return;
+    if( fileName.length() < 1 ) return "";
 
     TTLVTreeItem *pItem = currentItem();
-    if( pItem == NULL ) return;
+    if( pItem == NULL ) return "";
 
     BIN binData = {0,0};
     BIN binTTLV = berApplet->getTTLV();
@@ -748,6 +748,8 @@ void TTLVTreeView::saveItem()
     pItem->getDataAll( &binTTLV, &binData );
     JS_BIN_fileWrite( &binData, fileName.toLocal8Bit().toStdString().c_str() );
     JS_BIN_reset( &binData );
+
+    return fileName;
 }
 
 void TTLVTreeView::saveItemValue()
