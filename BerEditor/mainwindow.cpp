@@ -1985,14 +1985,14 @@ int MainWindow::openBer( const BIN *pBer )
 
 bool MainWindow::isChanged()
 {
+    if( file_path_.length() < 1 || file_path_ == "" )
+        return false;
+
     const BIN& binBer = ber_model_->getBER();
 
     if( binBer.nLen > 0 )
     {
         BIN binFile = {0,0};
-
-        if( file_path_.length() < 1 )
-            return true;
 
         JS_BIN_fileReadBER( file_path_.toLocal8Bit().toStdString().c_str(), &binFile );
         if( JS_BIN_cmp( &binBer, &binFile ) != 0 )
@@ -2480,7 +2480,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 {
     if( isChanged() )
     {
-        QString strMsg = tr("Do you want to save the file in DER format?\n[The Source is PEM or The Source DER changed]");
+        QString strMsg = tr("The current data has been changed. Do you want to save the changed data?");
         bool bVal = berApplet->yesOrNoBox( strMsg, this, false );
         if( bVal ) saveAs();
     }
@@ -3437,7 +3437,11 @@ void MainWindow::save()
         if( hsplitter_->widget(0) == ttlv_tree_ )
         {
             QString strFileName = ttlv_tree_->saveItem();
-            if( strFileName.length() > 0 ) file_path_ = strFileName;
+            if( strFileName.length() > 0 )
+            {
+                file_path_ = strFileName;
+                setTitle( file_path_ );
+            }
         }
         else
         {
@@ -3448,6 +3452,7 @@ void MainWindow::save()
 
             const BIN& binBer = ber_model_->getBER();
             JS_BIN_fileWrite( &binBer, file_path_.toLocal8Bit().toStdString().c_str() );
+            setTitle( file_path_ );
         }
     }
 }
@@ -3465,7 +3470,11 @@ void MainWindow::saveAs()
         strFileName = left_tree_->SaveNode();
     }
 
-    if( strFileName.length() > 0 ) file_path_ = strFileName;
+    if( strFileName.length() > 0 )
+    {
+        file_path_ = strFileName;
+        setTitle( file_path_ );
+    }
 }
 
 void MainWindow::clearLog()
