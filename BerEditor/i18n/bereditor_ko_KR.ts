@@ -469,29 +469,24 @@
 <context>
     <name>ACMETreeDlg</name>
     <message>
-        <location filename="../acme_tree_dlg.ui" line="14"/>
         <source>ACME Json Tree View</source>
-        <translation>ACME JSON 트리 보기</translation>
+        <translation type="vanished">ACME JSON 트리 보기</translation>
     </message>
     <message>
-        <location filename="../acme_tree_dlg.ui" line="20"/>
         <source>ACME Json Tree</source>
-        <translation>ACME JSON 트리</translation>
+        <translation type="vanished">ACME JSON 트리</translation>
     </message>
     <message>
-        <location filename="../acme_tree_dlg.ui" line="108"/>
         <source>Close</source>
-        <translation>닫기</translation>
+        <translation type="vanished">닫기</translation>
     </message>
     <message>
-        <location filename="../acme_tree_dlg.ui" line="115"/>
         <source>Clear</source>
-        <translation>지우기</translation>
+        <translation type="vanished">지우기</translation>
     </message>
     <message>
-        <location filename="../acme_tree_dlg.cpp" line="188"/>
         <source>Decode</source>
-        <translation>디코딩</translation>
+        <translation type="vanished">디코딩</translation>
     </message>
 </context>
 <context>
@@ -8383,6 +8378,34 @@ Do you want to delete the file and continue?</source>
     <message>
         <source>Please enter your data</source>
         <translation type="vanished">데이타를 입력하세요</translation>
+    </message>
+</context>
+<context>
+    <name>JSONTreeDlg</name>
+    <message>
+        <location filename="../json_tree_dlg.ui" line="14"/>
+        <source>JSON Tree View</source>
+        <translation>JSON 트리 보기</translation>
+    </message>
+    <message>
+        <location filename="../json_tree_dlg.ui" line="20"/>
+        <source>JSON Tree</source>
+        <translation>JSON 트리</translation>
+    </message>
+    <message>
+        <location filename="../json_tree_dlg.ui" line="108"/>
+        <source>Close</source>
+        <translation>닫기</translation>
+    </message>
+    <message>
+        <location filename="../json_tree_dlg.ui" line="115"/>
+        <source>Clear</source>
+        <translation>지우기</translation>
+    </message>
+    <message>
+        <location filename="../json_tree_dlg.cpp" line="188"/>
+        <source>Decode</source>
+        <translation>디코딩</translation>
     </message>
 </context>
 <context>

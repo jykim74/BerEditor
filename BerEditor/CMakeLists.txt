@@ -213,7 +213,7 @@ add_executable(${PROJECT_NAME}
     cert_id_dlg.h cert_id_dlg.cpp cert_id_dlg.ui
     acme_client_dlg.h acme_client_dlg.cpp acme_client_dlg.ui
     acme_object.h acme_object.cpp
-    acme_tree_dlg.h acme_tree_dlg.cpp acme_tree_dlg.ui
+    json_tree_dlg.h json_tree_dlg.cpp json_tree_dlg.ui
     revoke_reason_dlg.h revoke_reason_dlg.cpp revoke_reason_dlg.ui
     chall_test_dlg.h chall_test_dlg.cpp chall_test_dlg.ui
     one_list_dlg.h one_list_dlg.cpp one_list_dlg.ui
