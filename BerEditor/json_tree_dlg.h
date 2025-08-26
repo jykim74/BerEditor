@@ -3,20 +3,20 @@
 
 #include <QDialog>
 #include <QJsonObject>
-#include "ui_acme_tree_dlg.h"
+#include "ui_json_tree_dlg.h"
 
 namespace Ui {
-class ACMETreeDlg;
+class JSONTreeDlg;
 }
 
-class ACMETreeDlg : public QDialog, public Ui::ACMETreeDlg
+class JSONTreeDlg : public QDialog, public Ui::JSONTreeDlg
 {
     Q_OBJECT
 
 public:
-    explicit ACMETreeDlg(QWidget *parent = nullptr);
-    explicit ACMETreeDlg(QWidget *parent, bool bDecode );
-    ~ACMETreeDlg();
+    explicit JSONTreeDlg(QWidget *parent = nullptr);
+    explicit JSONTreeDlg(QWidget *parent, bool bDecode );
+    ~JSONTreeDlg();
 
     void setJson( const QString strJson );
 

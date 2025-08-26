@@ -4,10 +4,10 @@
 #include <QJsonObject>
 #include <qmenu.h>
 
-#include "acme_tree_dlg.h"
+#include "json_tree_dlg.h"
 #include "js_bin.h"
 
-ACMETreeDlg::ACMETreeDlg(QWidget *parent)
+JSONTreeDlg::JSONTreeDlg(QWidget *parent)
     : QDialog(parent)
 {
     setupUi(this);
@@ -20,7 +20,7 @@ ACMETreeDlg::ACMETreeDlg(QWidget *parent)
     connect( mClearBtn, SIGNAL(clicked()), this, SLOT(clickClear()));
 }
 
-ACMETreeDlg::ACMETreeDlg(QWidget *parent, bool bDecode )
+JSONTreeDlg::JSONTreeDlg(QWidget *parent, bool bDecode )
     : QDialog(parent)
 {
     setupUi(this);
@@ -38,12 +38,12 @@ ACMETreeDlg::ACMETreeDlg(QWidget *parent, bool bDecode )
     connect( mClearBtn, SIGNAL(clicked()), this, SLOT(clickClear()));
 }
 
-ACMETreeDlg::~ACMETreeDlg()
+JSONTreeDlg::~JSONTreeDlg()
 {
 
 }
 
-void ACMETreeDlg::initUI()
+void JSONTreeDlg::initUI()
 {
     QFile qss(":/treewidget.qss");
     qss.open( QFile::ReadOnly );
@@ -55,7 +55,7 @@ void ACMETreeDlg::initUI()
     mMsgTree->setColumnCount(1);
 }
 
-void ACMETreeDlg::setObject( QTreeWidgetItem* pParentItem, QJsonObject& object )
+void JSONTreeDlg::setObject( QTreeWidgetItem* pParentItem, QJsonObject& object )
 {
     int nCount = object.count();
     QStringList listKeys = object.keys();
@@ -105,7 +105,7 @@ void ACMETreeDlg::setObject( QTreeWidgetItem* pParentItem, QJsonObject& object )
     }
 }
 
-void ACMETreeDlg::setArray( QTreeWidgetItem* pParentItem, QJsonArray& array )
+void JSONTreeDlg::setArray( QTreeWidgetItem* pParentItem, QJsonArray& array )
 {
     int nCount = array.count();
 
@@ -154,7 +154,7 @@ void ACMETreeDlg::setArray( QTreeWidgetItem* pParentItem, QJsonArray& array )
     }
 }
 
-void ACMETreeDlg::setJson( const QString strJson )
+void JSONTreeDlg::setJson( const QString strJson )
 {
     QJsonDocument jsonDoc;
     jsonDoc = QJsonDocument::fromJson( strJson.toLocal8Bit() );
@@ -168,7 +168,7 @@ void ACMETreeDlg::setJson( const QString strJson )
     mMsgTree->expandAll();
 }
 
-void ACMETreeDlg::clickTreeItem( QTreeWidgetItem* item, int index )
+void JSONTreeDlg::clickTreeItem( QTreeWidgetItem* item, int index )
 {
     if( item == NULL ) return;
 
@@ -176,7 +176,7 @@ void ACMETreeDlg::clickTreeItem( QTreeWidgetItem* item, int index )
     mMsgText->setPlainText( strValue );
 }
 
-void ACMETreeDlg::slotTreeMenuRequested( QPoint pos )
+void JSONTreeDlg::slotTreeMenuRequested( QPoint pos )
 {
     QTreeWidgetItem* item = mMsgTree->currentItem();
     if( item == NULL ) return;
@@ -192,15 +192,17 @@ void ACMETreeDlg::slotTreeMenuRequested( QPoint pos )
     menu->popup( mMsgTree->viewport()->mapToGlobal(pos));
 }
 
-void ACMETreeDlg::clickClear()
+void JSONTreeDlg::clickClear()
 {
     mMsgText->clear();
 }
 
-void ACMETreeDlg::decodeTreeMenu()
+void JSONTreeDlg::decodeTreeMenu()
 {
     QTreeWidgetItem* item = mMsgTree->currentItem();
     if( item == NULL ) return;
+
+    if( item->childCount() > 0 ) return;
 
     BIN binData = {0,0};
     int nType = item->data(0, 100).toInt();

@@ -8,7 +8,7 @@
 #include "common.h"
 #include "ber_applet.h"
 #include "cert_man_dlg.h"
-#include "acme_tree_dlg.h"
+#include "json_tree_dlg.h"
 #include "one_list_dlg.h"
 #include "two_list_dlg.h"
 
@@ -241,9 +241,9 @@ void ChallTestDlg::clickRequestView()
         return;
     }
 
-    ACMETreeDlg acmeTree( nullptr, false );
-    acmeTree.setJson( strRequest );
-    acmeTree.exec();
+    JSONTreeDlg jsonTree( nullptr, false );
+    jsonTree.setJson( strRequest );
+    jsonTree.exec();
 }
 
 void ChallTestDlg::clickResponseView()
@@ -255,9 +255,9 @@ void ChallTestDlg::clickResponseView()
         return;
     }
 
-    ACMETreeDlg acmeTree( nullptr, false );
-    acmeTree.setJson( strResponse );
-    acmeTree.exec();
+    JSONTreeDlg jsonTree( nullptr, false );
+    jsonTree.setJson( strResponse );
+    jsonTree.exec();
 }
 
 int ChallTestDlg::makeRequest()

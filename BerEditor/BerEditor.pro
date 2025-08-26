@@ -117,7 +117,7 @@ SOURCES += \
     cert_id_dlg.cpp \
     acme_client_dlg.cpp \
     acme_object.cpp \
-    acme_tree_dlg.cpp \
+    json_tree_dlg.cpp \
     revoke_reason_dlg.cpp \
     chall_test_dlg.cpp \
     one_list_dlg.cpp \
@@ -207,7 +207,7 @@ HEADERS += \
     cert_id_dlg.h \
     acme_client_dlg.h \
     acme_object.h \
-    acme_tree_dlg.h \
+    json_tree_dlg.h \
     revoke_reason_dlg.h \
     chall_test_dlg.h \
     one_list_dlg.h \
@@ -350,7 +350,7 @@ FORMS += \
         x509_compare_dlg.ui \
         cert_id_dlg.ui \
         acme_client_dlg.ui \
-        acme_tree_dlg.ui \
+        json_tree_dlg.ui \
         revoke_reason_dlg.ui \
         chall_test_dlg.ui \
         one_list_dlg.ui \

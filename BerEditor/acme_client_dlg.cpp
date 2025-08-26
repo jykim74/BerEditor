@@ -19,7 +19,7 @@
 #include "export_dlg.h"
 #include "cert_info_dlg.h"
 #include "new_passwd_dlg.h"
-#include "acme_tree_dlg.h"
+#include "json_tree_dlg.h"
 #include "revoke_reason_dlg.h"
 #include "chall_test_dlg.h"
 #include "one_list_dlg.h"
@@ -739,9 +739,9 @@ void ACMEClientDlg::clickRequestView()
         return;
     }
 
-    ACMETreeDlg acmeTree(nullptr);
-    acmeTree.setJson( strRequest );
-    acmeTree.exec();
+    JSONTreeDlg jsonTree(nullptr);
+    jsonTree.setJson( strRequest );
+    jsonTree.exec();
 }
 
 void ACMEClientDlg::clickResponseView()
@@ -777,9 +777,9 @@ void ACMEClientDlg::clickResponseView()
     }
     else
     {
-        ACMETreeDlg acmeTree(nullptr);
-        acmeTree.setJson( strResponse );
-        acmeTree.exec();
+        JSONTreeDlg jsonTree(nullptr);
+        jsonTree.setJson( strResponse );
+        jsonTree.exec();
     }
 }
 
