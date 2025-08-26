@@ -10,7 +10,7 @@
 #include "mainwindow.h"
 #include "settings_mgr.h"
 #include "common.h"
-#include "acme_tree_dlg.h"
+#include "json_tree_dlg.h"
 #include "acme_object.h"
 #include "cert_man_dlg.h"
 #include "key_pair_man_dlg.h"
@@ -751,9 +751,9 @@ void DocSignerDlg::clickJSON_PayloadView()
         return;
     }
 
-    ACMETreeDlg acmeTree(nullptr);
-    acmeTree.setJson( strPayload );
-    acmeTree.exec();
+    JSONTreeDlg jsonTree(nullptr);
+    jsonTree.setJson( strPayload );
+    jsonTree.exec();
 }
 
 void DocSignerDlg::clickJSON_JWSView()
@@ -766,9 +766,9 @@ void DocSignerDlg::clickJSON_JWSView()
         return;
     }
 
-    ACMETreeDlg acmeTree(nullptr);
-    acmeTree.setJson( strJWS );
-    acmeTree.exec();
+    JSONTreeDlg jsonTree(nullptr);
+    jsonTree.setJson( strJWS );
+    jsonTree.exec();
 }
 
 void DocSignerDlg::changeJSON_Payload()
