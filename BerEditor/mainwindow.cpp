@@ -1397,6 +1397,7 @@ void MainWindow::createCryptoDlg()
     scep_client_dlg_ = new SCEPClientDlg;
     acme_client_dlg_ = new ACMEClientDlg;
     cert_man_dlg_ = new CertManDlg;
+    cert_man_dlg_->setMode( ManModeBase );
     ttlv_encoder_dlg_ = new TTLVEncoderDlg;
     ttlv_encoder_dlg_->setManage();
     ttlv_client_dlg_ = new TTLVClientDlg;
@@ -2436,7 +2437,7 @@ void MainWindow::acmeClient()
 
 void MainWindow::certMan()
 {
-    cert_man_dlg_->setMode( ManModeBase );
+
     cert_man_dlg_->setTitle( tr( "Certificate Management" ));
     cert_man_dlg_->show();
     cert_man_dlg_->raise();
