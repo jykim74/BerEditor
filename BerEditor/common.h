@@ -63,6 +63,12 @@ const QString kBinaryChars = "[0-1]";
 const QString kHexChars = "[A-Za-f0-9]";
 const QString kDecimalChars = "[0-9]";
 
+const QString kAlgRSA = "RSA";
+const QString kAlgECDSA = "ECDSA";
+const QString kAlgSM2 = "SM2";
+const QString kAlgDSA = "DSA";
+const QString kAlgEdDSA = "EdDSA";
+
 #define TOOL_BAR_WIDTH      24
 #define TOOL_BAR_HEIGHT     24
 
