@@ -5352,7 +5352,7 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../cert_pvd_dlg.ui" line="138"/>
         <location filename="../cert_pvd_dlg.ui" line="151"/>
         <location filename="../cert_pvd_dlg.ui" line="215"/>
-        <location filename="../cert_pvd_dlg.ui" line="628"/>
+        <location filename="../cert_pvd_dlg.ui" line="634"/>
         <source>Find</source>
         <translation>찾기</translation>
     </message>
@@ -5360,7 +5360,7 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../cert_pvd_dlg.ui" line="45"/>
         <location filename="../cert_pvd_dlg.ui" line="90"/>
         <location filename="../cert_pvd_dlg.ui" line="228"/>
-        <location filename="../cert_pvd_dlg.ui" line="569"/>
+        <location filename="../cert_pvd_dlg.ui" line="572"/>
         <source>Add</source>
         <translation>추가</translation>
     </message>
@@ -5388,7 +5388,7 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../cert_pvd_dlg.ui" line="77"/>
         <location filename="../cert_pvd_dlg.ui" line="177"/>
         <location filename="../cert_pvd_dlg.ui" line="254"/>
-        <location filename="../cert_pvd_dlg.ui" line="657"/>
+        <location filename="../cert_pvd_dlg.ui" line="663"/>
         <source>D</source>
         <translation>D</translation>
     </message>
@@ -5400,7 +5400,7 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../cert_pvd_dlg.ui" line="122"/>
         <location filename="../cert_pvd_dlg.ui" line="164"/>
         <location filename="../cert_pvd_dlg.ui" line="241"/>
-        <location filename="../cert_pvd_dlg.ui" line="615"/>
+        <location filename="../cert_pvd_dlg.ui" line="621"/>
         <source>V</source>
         <translation>V</translation>
     </message>
@@ -5448,7 +5448,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">플래그 옵션</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="456"/>
+        <location filename="../cert_pvd_dlg.ui" line="459"/>
         <source>X509Strict</source>
         <translation>X509Strict</translation>
     </message>
@@ -5461,17 +5461,17 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">경로 검증 대상 인증서</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="644"/>
+        <location filename="../cert_pvd_dlg.ui" line="650"/>
         <source>Certificate</source>
         <translation>인증서</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="463"/>
+        <location filename="../cert_pvd_dlg.ui" line="466"/>
         <source>AllowProxyCerts</source>
         <translation>AllowProxyCerts</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="470"/>
+        <location filename="../cert_pvd_dlg.ui" line="473"/>
         <source>PolicyCheck</source>
         <translation>PolicyCheck</translation>
     </message>
@@ -5480,7 +5480,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">SuiteB128LosOnly</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="477"/>
+        <location filename="../cert_pvd_dlg.ui" line="480"/>
         <source>ExplicitPolicy</source>
         <translation>ExplicitPolicy</translation>
     </message>
@@ -5489,27 +5489,27 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">비 신뢰 인증서</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="435"/>
+        <location filename="../cert_pvd_dlg.ui" line="438"/>
         <source>IgnoreCritical</source>
         <translation>IgnoreCritical</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="491"/>
+        <location filename="../cert_pvd_dlg.ui" line="494"/>
         <source>InhibitMap</source>
         <translation>InhibitMap</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="498"/>
+        <location filename="../cert_pvd_dlg.ui" line="501"/>
         <source>NotifyPolicy</source>
         <translation>NotifyPolicy</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="505"/>
+        <location filename="../cert_pvd_dlg.ui" line="508"/>
         <source>ExtendedCRLSupport</source>
         <translation>ExtendedCRLSupport</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="484"/>
+        <location filename="../cert_pvd_dlg.ui" line="487"/>
         <source>InhibitAny</source>
         <translation>InhibitAny</translation>
     </message>
@@ -5530,17 +5530,17 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../cert_pvd_dlg.ui" line="355"/>
-        <location filename="../cert_pvd_dlg.ui" line="582"/>
+        <location filename="../cert_pvd_dlg.ui" line="585"/>
         <source>Clear</source>
         <translation>지우기</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="407"/>
+        <location filename="../cert_pvd_dlg.ui" line="410"/>
         <source>Flag Options</source>
         <translation>플래그 옵션</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="428"/>
+        <location filename="../cert_pvd_dlg.ui" line="431"/>
         <source>CRLCheckAll</source>
         <translation>CRLCheckAll</translation>
     </message>
@@ -5557,37 +5557,37 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">SuiteB128LOS</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="547"/>
+        <location filename="../cert_pvd_dlg.ui" line="550"/>
         <source>NoALTChains</source>
         <translation>NoALTChains</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="526"/>
+        <location filename="../cert_pvd_dlg.ui" line="529"/>
         <source>TrustedFirst</source>
         <translation>TrustedFirst</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="442"/>
+        <location filename="../cert_pvd_dlg.ui" line="445"/>
         <source>CRLCheck</source>
         <translation>CRLCheck</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="540"/>
+        <location filename="../cert_pvd_dlg.ui" line="543"/>
         <source>PartialChain</source>
         <translation>PartialChain</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="519"/>
+        <location filename="../cert_pvd_dlg.ui" line="522"/>
         <source>CheckSSSignature</source>
         <translation>CheckSSSignature</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="449"/>
+        <location filename="../cert_pvd_dlg.ui" line="452"/>
         <source>UseCheckTime</source>
         <translation>UseCheckTime</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="512"/>
+        <location filename="../cert_pvd_dlg.ui" line="515"/>
         <source>UseDeltas</source>
         <translation>UseDeltas</translation>
     </message>
@@ -5596,13 +5596,13 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">SuiteB192Los</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="533"/>
+        <location filename="../cert_pvd_dlg.ui" line="536"/>
         <source>NoCheckTime</source>
         <translation>NoCheckTime</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="562"/>
-        <location filename="../cert_pvd_dlg.cpp" line="101"/>
+        <location filename="../cert_pvd_dlg.ui" line="565"/>
+        <location filename="../cert_pvd_dlg.cpp" line="107"/>
         <source>Param</source>
         <translation>파라미터</translation>
     </message>
@@ -5615,12 +5615,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">타겟 정보</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="704"/>
+        <location filename="../cert_pvd_dlg.ui" line="710"/>
         <source>Policy Check</source>
         <translation>정책 체크</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="691"/>
+        <location filename="../cert_pvd_dlg.ui" line="697"/>
         <source>Clear Data All</source>
         <translation>전체 데이타 지우기</translation>
     </message>
@@ -5629,12 +5629,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">타겟</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="684"/>
+        <location filename="../cert_pvd_dlg.ui" line="690"/>
         <source>Path Validation</source>
         <translation>경로 검증</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="744"/>
+        <location filename="../cert_pvd_dlg.ui" line="750"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -5643,96 +5643,107 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">경로 지우기</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="90"/>
+        <location filename="../cert_pvd_dlg.cpp" line="96"/>
         <source>Type</source>
         <translation>타입</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="90"/>
+        <location filename="../cert_pvd_dlg.cpp" line="96"/>
         <source>Path</source>
         <translation>경로</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="101"/>
+        <location filename="../cert_pvd_dlg.cpp" line="107"/>
         <source>Value</source>
         <translation>값</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="117"/>
+        <location filename="../cert_pvd_dlg.cpp" line="123"/>
         <source>Trust anchor certificate file path</source>
         <translation>신뢰 앵커 인증서 파일 경로</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="118"/>
+        <location filename="../cert_pvd_dlg.cpp" line="124"/>
         <source>Intermediate CA certificate file path</source>
         <translation>중간 CA 인증서 파일 경로</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="119"/>
+        <location filename="../cert_pvd_dlg.cpp" line="125"/>
         <source>CRL file path</source>
         <translation>CRL 파일 경로</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="125"/>
+        <location filename="../cert_pvd_dlg.cpp" line="131"/>
         <source>Select CertMan certificate</source>
         <translation>인증서 관리자 인증서 선택</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="211"/>
+        <location filename="../cert_pvd_dlg.cpp" line="137"/>
+        <location filename="../cert_pvd_dlg.cpp" line="148"/>
+        <source>Delete</source>
+        <translation>삭제</translation>
+    </message>
+    <message>
+        <location filename="../cert_pvd_dlg.cpp" line="266"/>
         <source>Trust RootCA List</source>
         <translation>신뢰 CA 목록</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="254"/>
+        <location filename="../cert_pvd_dlg.cpp" line="326"/>
         <source>The certificate verification (byCA) successful</source>
         <translation>인증서 검증에 성공 하였습니다 (CA검증)</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="259"/>
+        <location filename="../cert_pvd_dlg.cpp" line="331"/>
         <source>The certificate verification (byCA) failed: %1</source>
         <translation>인증서 검증에 실패 하였습니다 (CA검증) : %1</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="396"/>
+        <location filename="../cert_pvd_dlg.cpp" line="468"/>
         <source>Select a target certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="549"/>
+        <location filename="../cert_pvd_dlg.cpp" line="624"/>
         <source>Select target certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="541"/>
+        <location filename="../cert_pvd_dlg.cpp" line="616"/>
         <source>Select a certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="660"/>
+        <location filename="../cert_pvd_dlg.cpp" line="662"/>
+        <source>Trust values ​​are not supported when using a trust list: %1</source>
+        <translation>신뢰 목록 사용 시 신뢰 값은 지원하지 않습니다: %1</translation>
+    </message>
+    <message>
+        <location filename="../cert_pvd_dlg.cpp" line="742"/>
         <source>The certificate path verification is successful.</source>
         <translation>인증서 검증에 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="665"/>
+        <location filename="../cert_pvd_dlg.cpp" line="747"/>
         <source>The certificate path verification failed [%1]</source>
         <translation>인증서 검증에 실패 하였습니다 [%1]</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="749"/>
-        <location filename="../cert_pvd_dlg.cpp" line="783"/>
+        <location filename="../cert_pvd_dlg.cpp" line="831"/>
+        <location filename="../cert_pvd_dlg.cpp" line="865"/>
         <source>Select CA certificate</source>
         <translation>CA 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="816"/>
+        <location filename="../cert_pvd_dlg.cpp" line="898"/>
         <source>Select CRL</source>
         <translation>CRL 을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.cpp" line="914"/>
-        <location filename="../cert_pvd_dlg.cpp" line="939"/>
-        <location filename="../cert_pvd_dlg.cpp" line="964"/>
-        <location filename="../cert_pvd_dlg.cpp" line="989"/>
+        <location filename="../cert_pvd_dlg.cpp" line="996"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1021"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1046"/>
+        <location filename="../cert_pvd_dlg.cpp" line="1071"/>
         <source>failed to read data</source>
         <translation></translation>
     </message>
@@ -11014,63 +11025,63 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">SSL 주소 체크</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1670"/>
+        <location filename="../mainwindow.cpp" line="1671"/>
         <source>This file is Public Key. Open it as Public Key?</source>
         <translation>이 파일은 공개키 입니다. 공개키로 열겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1684"/>
-        <location filename="../mainwindow.cpp" line="1714"/>
-        <location filename="../mainwindow.cpp" line="1761"/>
-        <location filename="../mainwindow.cpp" line="1791"/>
+        <location filename="../mainwindow.cpp" line="1685"/>
+        <location filename="../mainwindow.cpp" line="1715"/>
+        <location filename="../mainwindow.cpp" line="1762"/>
+        <location filename="../mainwindow.cpp" line="1792"/>
         <source>Do you want to change the original key to the changed key?</source>
         <translation>원래키를 변경된 키로 바꾸겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1688"/>
-        <location filename="../mainwindow.cpp" line="1718"/>
-        <location filename="../mainwindow.cpp" line="1765"/>
-        <location filename="../mainwindow.cpp" line="1795"/>
+        <location filename="../mainwindow.cpp" line="1689"/>
+        <location filename="../mainwindow.cpp" line="1719"/>
+        <location filename="../mainwindow.cpp" line="1766"/>
+        <location filename="../mainwindow.cpp" line="1796"/>
         <source>Key change saved.</source>
         <translation>키 변경이 저장 되었습니다</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1698"/>
+        <location filename="../mainwindow.cpp" line="1699"/>
         <source>Invalid Private Key</source>
         <translation>유효하지 않는 개인키</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1747"/>
+        <location filename="../mainwindow.cpp" line="1748"/>
         <source>This file is Private Key. Open it as Private Key?</source>
         <translation>이 파일은 개인키 입니다. 개인키로 열겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1775"/>
+        <location filename="../mainwindow.cpp" line="1776"/>
         <source>Invalid Public Key</source>
         <translation>유효하지 않는 개인키</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1823"/>
+        <location filename="../mainwindow.cpp" line="1824"/>
         <source>This CMS type is not supported.</source>
         <translation>이 CMS 타입은 지원 하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2458"/>
+        <location filename="../mainwindow.cpp" line="2459"/>
         <source>The current data has been changed. Do you want to save the changed data?</source>
         <translation>현재  데이타가 변경 되었습니다. 변경된 데이타을 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3372"/>
+        <location filename="../mainwindow.cpp" line="3373"/>
         <source>Would you like to change to the initial toolbar view?</source>
         <translation>초기 툴바 상태로 변경 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3384"/>
+        <location filename="../mainwindow.cpp" line="3385"/>
         <source>You have changed toolbar settings. Restart to apply it?</source>
         <translation>툴바 설정을 변경 하였습니다. 다시 시작 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3522"/>
+        <location filename="../mainwindow.cpp" line="3523"/>
         <source>The data is not TTLV format</source>
         <translation>이 데이타는 TTLV 포맷이 아닙니다</translation>
     </message>
@@ -11149,22 +11160,22 @@ Do you want to delete the file and continue?</source>
         <translation>질문과 답변하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1934"/>
+        <location filename="../mainwindow.cpp" line="1935"/>
         <source>The BER is TTLV format. Do you open as TTLV format?</source>
         <translation>해당 BER은 TTLV 형식입니다. TTLV 형식으로 열겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1943"/>
+        <location filename="../mainwindow.cpp" line="1944"/>
         <source>TTLV decoding requires a license.</source>
         <translation>TTLV 디코딩은 라이선스가 필요합니다</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1950"/>
+        <location filename="../mainwindow.cpp" line="1951"/>
         <source>The data is not BER format</source>
         <translation>이 데이타는 잘못된 BER 포맷입니다</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2415"/>
+        <location filename="../mainwindow.cpp" line="2416"/>
         <source>Certificate Management</source>
         <translation>인증서 관리</translation>
     </message>
@@ -11173,13 +11184,13 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">이파일은 CRL 파일 입니다. CRL 정보를 여시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1536"/>
-        <location filename="../mainwindow.cpp" line="1586"/>
+        <location filename="../mainwindow.cpp" line="1537"/>
+        <location filename="../mainwindow.cpp" line="1587"/>
         <source>This file is CSR. Open it as CSR information?</source>
         <translation>이파일은 CSR 파일입니다. CSR 정보를 여시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1546"/>
+        <location filename="../mainwindow.cpp" line="1547"/>
         <source>Invalid certificate file</source>
         <translation>잘못된 인증서 파일</translation>
     </message>
@@ -11188,13 +11199,13 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">이 파일은 인증서 입니다. 인증서 정보로 열겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1596"/>
+        <location filename="../mainwindow.cpp" line="1597"/>
         <source>Invalid CRL file</source>
         <translation>잘못된 CRL 파일입니다</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1526"/>
-        <location filename="../mainwindow.cpp" line="1635"/>
+        <location filename="../mainwindow.cpp" line="1527"/>
+        <location filename="../mainwindow.cpp" line="1636"/>
         <source>This file is CRL. Open it as CRL information?</source>
         <translation>이파일은 CRL 입니다. CRL 정보를 여시겠습니까?</translation>
     </message>
@@ -11349,13 +11360,13 @@ Do you want to delete the file and continue?</source>
         <translation>BerEditor 대해</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1576"/>
-        <location filename="../mainwindow.cpp" line="1625"/>
+        <location filename="../mainwindow.cpp" line="1577"/>
+        <location filename="../mainwindow.cpp" line="1626"/>
         <source>This file is certificate. Open it as certificate information?</source>
         <translation>이 파일은 인증서 입니다. 인증서 정보로 열겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1645"/>
+        <location filename="../mainwindow.cpp" line="1646"/>
         <source>Invalid CSR file</source>
         <translation>잘못된 CSR 파일</translation>
     </message>
@@ -11369,17 +11380,17 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">[소스가 PEM 형식인 경우 또는 소스 DER 파일이 변경 됨] DER 형식으로 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2470"/>
+        <location filename="../mainwindow.cpp" line="2471"/>
         <source>Copy</source>
         <translation>복사</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2473"/>
+        <location filename="../mainwindow.cpp" line="2474"/>
         <source>Select All</source>
         <translation>전체 선택</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2476"/>
+        <location filename="../mainwindow.cpp" line="2477"/>
         <source>Unselect All</source>
         <translation>선택 해제</translation>
     </message>
@@ -11388,8 +11399,8 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">라이선스가 변경 되었습니다.적용을 위해 다시 시작 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3501"/>
-        <location filename="../mainwindow.cpp" line="3516"/>
+        <location filename="../mainwindow.cpp" line="3502"/>
+        <location filename="../mainwindow.cpp" line="3517"/>
         <source>There is no data</source>
         <translation>데이타가 없습니다</translation>
     </message>
@@ -11587,7 +11598,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">변경 데이타를 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3409"/>
+        <location filename="../mainwindow.cpp" line="3410"/>
         <source>Do you want to overwrite %1 as BER file?</source>
         <translation>파일(%1)을 BER로 덮어 쓰겠습니까?</translation>
     </message>
@@ -11596,7 +11607,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">다른 이름으로 저장...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3554"/>
+        <location filename="../mainwindow.cpp" line="3555"/>
         <source>Print Document</source>
         <translation>문서 인쇄</translation>
     </message>

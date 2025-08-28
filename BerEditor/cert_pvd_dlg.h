@@ -22,6 +22,12 @@ public:
     ~CertPVDDlg();
 
 private slots:
+    void slotPathMenu( QPoint pos );
+    void slotParamMenu( QPoint pos );
+
+    void delPath();
+    void delParam();
+
     void clickViewCertCRL();
 
     void clickTrustFind();

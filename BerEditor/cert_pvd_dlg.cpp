@@ -3,6 +3,8 @@
  *
  * All rights reserved.
  */
+#include <QMenu>
+
 #include "cert_pvd_dlg.h"
 #include "js_pki.h"
 #include "js_pki_pvd.h"
@@ -24,6 +26,10 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
+
+    connect( mPathTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotPathMenu(QPoint)));
+    connect( mParamTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotParamMenu(QPoint)));
+
 
     connect( mTrustFindBtn, SIGNAL(clicked()), this, SLOT(clickTrustFind()));
     connect( mUntrustFindBtn, SIGNAL(clicked()), this, SLOT(clickUntrustFind()));
@@ -125,6 +131,47 @@ void CertPVDDlg::initialize()
     mTargetPathText->setPlaceholderText( tr( "Select CertMan certificate" ) );
 }
 
+void CertPVDDlg::slotPathMenu( QPoint pos )
+{
+    QMenu *menu = new QMenu(this);
+    QAction* delAct = new QAction( tr("Delete" ), this );
+
+    connect( delAct, SIGNAL(triggered(bool)), this, SLOT(delPath()));
+
+    menu->addAction( delAct );
+    menu->popup( mPathTable->viewport()->mapToGlobal(pos));
+}
+
+void CertPVDDlg::slotParamMenu( QPoint pos )
+{
+    QMenu *menu = new QMenu(this);
+    QAction* delAct = new QAction( tr("Delete" ), this );
+
+    connect( delAct, SIGNAL(triggered(bool)), this, SLOT(delParam()));
+
+    menu->addAction( delAct );
+    menu->popup( mParamTable->viewport()->mapToGlobal(pos));
+}
+
+void CertPVDDlg::delPath()
+{
+    QModelIndex idx = mPathTable->currentIndex();
+    QTableWidgetItem* item = mPathTable->item( idx.row(), 0 );
+    if( item == NULL ) return;
+
+    mPathTable->removeRow( idx.row() );
+}
+
+void CertPVDDlg::delParam()
+{
+    QModelIndex idx = mParamTable->currentIndex();
+    QTableWidgetItem* item = mParamTable->item( idx.row(), 0 );
+    if( item == NULL ) return;
+
+    mParamTable->removeRow( idx.row() );
+}
+
+
 void CertPVDDlg::clickViewCertCRL()
 {
     QString strPath;
@@ -199,6 +246,14 @@ void CertPVDDlg::clickTargetFind()
 void CertPVDDlg::checkUseTrustList()
 {
     bool bVal = mUseTrustListCheck->isChecked();
+
+    mTrustLabel->setEnabled( !bVal );
+    mTrustPathText->setEnabled( !bVal );
+    mTrustFindBtn->setEnabled( !bVal );
+    mTrustAddBtn->setEnabled( !bVal );
+    mTrustInfoBtn->setEnabled( !bVal );
+    mTrustDecodeBtn->setEnabled( !bVal );
+
     mTrustListBtn->setEnabled( bVal );
 }
 
@@ -225,9 +280,18 @@ void CertPVDDlg::clickVerifyCert()
     QString strUntrustPath = mUntrustPathText->text();
     QString strCLRPath = mCRLPathText->text();
 
-    if( strTrustPath.length() > 1 )
+    if( mUseTrustListCheck->isChecked() == false )
     {
-        JS_BIN_fileReadBER( strTrustPath.toLocal8Bit().toStdString().c_str(), &binTrust );
+        if( strTrustPath.length() > 1 )
+        {
+            JS_BIN_fileReadBER( strTrustPath.toLocal8Bit().toStdString().c_str(), &binTrust );
+        }
+        else
+        {
+            berApplet->warningBox( "Select trust certificate", this );
+            mTrustPathText->setFocus();
+            goto end;
+        }
     }
 
     if( strUntrustPath.length() > 1 )
@@ -246,7 +310,15 @@ void CertPVDDlg::clickVerifyCert()
         JS_BIN_fileReadBER( strCLRPath.toLocal8Bit().toStdString().c_str(), &binCRL );
     }
 
-    ret = JS_PKI_CertVerifyByCA( &binTrust, &binCRL, &binUntrust, sMsg );
+    if( mUseTrustListCheck->isChecked() == true )
+    {
+        QString strTrustPath = berApplet->settingsMgr()->trustCertPath();
+        ret = JS_PKI_CertVerifyByCAPath( strTrustPath.toLocal8Bit().toStdString().c_str(), &binCRL, &binUntrust, sMsg );
+    }
+    else
+    {
+        ret = JS_PKI_CertVerifyByCA( &binTrust, &binCRL, &binUntrust, sMsg );
+    }
     berApplet->log( QString( "Certificate verification result by CA : %1").arg(ret));
 
     if( ret == 1 )
@@ -512,17 +584,20 @@ void CertPVDDlg::clickPathValidation()
     int nCount = 0;
     int nSelfVerify = 0;
 
-    if( strTrustPath.length() > 1 )
+    if( mUseTrustListCheck->isChecked() == false )
     {
-        JS_BIN_fileReadBER( strTrustPath.toLocal8Bit().toStdString().c_str(), &binTrust );
-        JS_BIN_addList( &pTrustList, &binTrust );
-        JS_BIN_reset( &binTrust );
+        if( strTrustPath.length() > 1 )
+        {
+            JS_BIN_fileReadBER( strTrustPath.toLocal8Bit().toStdString().c_str(), &binTrust );
+            JS_BIN_addList( &pTrustList, &binTrust );
+            JS_BIN_reset( &binTrust );
+        }
     }
 
     if( strUntrustPath.length() > 1 )
     {
         JS_BIN_fileReadBER( strUntrustPath.toLocal8Bit().toStdString().c_str(), &binUntrust );
-        JS_BIN_addList( &pTrustList, &binUntrust );
+        JS_BIN_addList( &pUntrustList, &binUntrust );
         JS_BIN_reset( &binUntrust );
     }
 
@@ -578,7 +653,14 @@ void CertPVDDlg::clickPathValidation()
 
         if( strType == "Trust" )
         {
-            JS_BIN_addList( &pTrustList, &binData );
+            if( mUseTrustListCheck->isChecked() == false )
+            {
+                JS_BIN_addList( &pTrustList, &binData );
+            }
+            else
+            {
+                berApplet->warnLog( tr( "Trust values ​​are not supported when using a trust list: %1").arg( strPath ), this );
+            }
         }
         else if( strType == "Untrust" )
         {
@@ -647,7 +729,7 @@ void CertPVDDlg::clickPathValidation()
     if( mUseTrustListCheck->isChecked() )
     {
         QString strTrustPath = berApplet->settingsMgr()->trustCertPath();
-        ret = JS_PKI_CertPVD2( pTrustList, pUntrustList, pCRLList, pParamList, &binTarget, strTrustPath.toLocal8Bit().toStdString().c_str(), sMsg );
+        ret = JS_PKI_CertPVD2( strTrustPath.toLocal8Bit().toStdString().c_str(), pUntrustList, pCRLList, pParamList, &binTarget, sMsg );
     }
     else
     {
