@@ -755,25 +755,25 @@ void CertManDlg::loadEEList()
         nKeyType = JS_PKI_getCertKeyType( &binCert );
         if( nKeyType < 0 ) continue;
 
-        if( strKeyType == "RSA" )
+        if( strKeyType == kAlgRSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_RSA ) continue;
         }
-        else if( strKeyType == "ECDSA" )
+        else if( strKeyType == kAlgECDSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_ECC )
                 continue;
         }
-        else if( strKeyType == "SM2" )
+        else if( strKeyType == kAlgSM2 )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_SM2 )
                 continue;
         }
-        else if( strKeyType == "DSA" )
+        else if( strKeyType == kAlgDSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_DSA ) continue;
         }
-        else if( strKeyType == "EdDSA" )
+        else if( strKeyType == kAlgEdDSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_ED25519 && nKeyType != JS_PKI_KEY_TYPE_ED448 )
                 continue;
@@ -851,25 +851,25 @@ void CertManDlg::loadOtherList()
         nKeyType = JS_PKI_getCertKeyType( &binCert );
         if( nKeyType < 0 ) continue;
 
-        if( strKeyType == "RSA" )
+        if( strKeyType == kAlgRSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_RSA ) continue;
         }
-        else if( strKeyType == "ECDSA" )
+        else if( strKeyType == kAlgECDSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_ECC )
                 continue;
         }
-        else if( strKeyType == "SM2" )
+        else if( strKeyType == kAlgSM2 )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_SM2 )
                 continue;
         }
-        else if( strKeyType == "DSA" )
+        else if( strKeyType == kAlgDSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_DSA ) continue;
         }
-        else if( strKeyType == "EdDSA" )
+        else if( strKeyType == kAlgEdDSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_ED25519 && nKeyType != JS_PKI_KEY_TYPE_ED448 )
                 continue;
@@ -944,25 +944,25 @@ void CertManDlg::loadCAList()
         nKeyType = JS_PKI_getCertKeyType( &binCert );
         if( nKeyType < 0 ) continue;
 
-        if( strKeyType == "RSA" )
+        if( strKeyType == kAlgRSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_RSA ) continue;
         }
-        else if( strKeyType == "ECDSA" )
+        else if( strKeyType == kAlgECDSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_ECC )
                 continue;
         }
-        else if( strKeyType == "SM2" )
+        else if( strKeyType == kAlgSM2 )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_SM2 )
                 continue;
         }
-        else if( strKeyType == "DSA" )
+        else if( strKeyType == kAlgDSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_DSA ) continue;
         }
-        else if( strKeyType == "EdDSA" )
+        else if( strKeyType == kAlgEdDSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_ED25519 && nKeyType != JS_PKI_KEY_TYPE_ED448 )
                 continue;
@@ -1100,25 +1100,25 @@ void CertManDlg::loadTrustList()
         nKeyType = JS_PKI_getCertKeyType( &binCert );
         if( nKeyType < 0 ) continue;
 
-        if( strKeyType == "RSA" )
+        if( strKeyType == kAlgRSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_RSA ) continue;
         }
-        else if( strKeyType == "ECDSA" )
+        else if( strKeyType == kAlgECDSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_ECC )
                 continue;
         }
-        else if( strKeyType == "SM2" )
+        else if( strKeyType == kAlgSM2 )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_SM2 )
                 continue;
         }
-        else if( strKeyType == "DSA" )
+        else if( strKeyType == kAlgDSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_DSA ) continue;
         }
-        else if( strKeyType == "EdDSA" )
+        else if( strKeyType == kAlgEdDSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_ED25519 && nKeyType != JS_PKI_KEY_TYPE_ED448 )
                 continue;
@@ -1338,12 +1338,14 @@ int CertManDlg::readCA( const QString strCertPath, const BIN* pCert, BIN *pCA )
 
 int CertManDlg::writeNameHash( const QString strPath, const BIN *pCert )
 {
+    int i = 0;
     int ret = 0;
     unsigned long uHash = 0;
     if( pCert == NULL ) return JSR_ERR;
 
     QString strFilePath;
     QDir dir;
+    int num = 0;
 
     if( dir.exists( strPath ) == false )
         dir.mkdir( strPath );
@@ -1351,13 +1353,13 @@ int CertManDlg::writeNameHash( const QString strPath, const BIN *pCert )
     ret = JS_PKI_getSubjectNameHash( pCert, &uHash );
     if( ret != 0 ) return ret;
 
-    strFilePath = QString( "%1/%2.0").arg( strPath ).arg( uHash, 8, 16, QLatin1Char('0') );
-
-    if( QFileInfo::exists( strFilePath ) == true )
+    for( i = 0; i < 100; i++ )
     {
-        berApplet->elog( tr( "The file(%1) is already existed").arg( strFilePath ) );
-        return -1;
+        strFilePath = QString( "%1/%2.%3").arg( strPath ).arg( uHash, 8, 16, QLatin1Char('0') ).arg( num + i );
+        if( QFileInfo::exists( strFilePath ) == false ) break;
     }
+
+    if( i >= 99 ) return -1;
 
     ret = JS_BIN_writePEM( pCert, JS_PEM_TYPE_CERTIFICATE, strFilePath.toLocal8Bit().toStdString().c_str() );
 
