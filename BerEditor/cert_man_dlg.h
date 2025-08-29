@@ -36,6 +36,7 @@ public:
     ~CertManDlg();
 
     void setMode( int nMode );
+    void setTab( int index );
     void setTitle( const QString strTitle );
 
     const QString getPriKeyHex();
@@ -63,6 +64,7 @@ public:
 private slots:
     void showEvent(QShowEvent *event);
     void closeEvent(QCloseEvent *event );
+    void changeTab( int index );
 
     void slotTableMenuRequested( QPoint pos );
     void slotOtherTableMenuRequested( QPoint pos );
@@ -178,6 +180,12 @@ private:
     BIN ca_cert_;
     BIN crl_;
     int mode_;
+
+    bool load_ee_;
+    bool load_other_;
+    bool load_ca_;
+    bool load_crl_;
+    bool load_trust_;
 };
 
 #endif // CERT_MAN_DLG_H

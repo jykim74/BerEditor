@@ -19,6 +19,9 @@
 #include "settings_mgr.h"
 #include "cert_man_dlg.h"
 
+const QString kTypeTCert = "TrustCert";
+const QString kTypeUCert = "UntrustCert";
+const QString kTypeCRL = "CRL";
 
 const QStringList kParamList = { "Policy", "Purpose", "Name", "Depth", "AuthLevel", "HostName", "Email", "IP" };
 
@@ -185,7 +188,7 @@ void CertPVDDlg::clickViewCertCRL()
 
     strPath = item1->text();
 
-    if( item->text().toUpper() == "CRL" )
+    if( item->text() == kTypeCRL )
     {
         CRLInfoDlg crlInfo;
         crlInfo.setCRLPath( item1->text() );
@@ -438,7 +441,7 @@ void CertPVDDlg::clickPolicyCheck()
     BIN binCert = {0,0};
     BINList *pCertList = NULL;
 
-    time_t tCheckTime = 0;
+//    time_t tCheckTime = 0;
 
     QString strTrustPath = mTrustPathText->text();
     QString strUntrustPath = mUntrustPathText->text();
@@ -449,11 +452,14 @@ void CertPVDDlg::clickPolicyCheck()
     int nCount = 0;
     int nExpPolicy = 0;
 
-    if( strTrustPath.length() > 1 )
+    if( mUseTrustListCheck->isChecked() == false )
     {
-        JS_BIN_fileReadBER( strTrustPath.toLocal8Bit().toStdString().c_str(), &binCert );
-        JS_BIN_addList( &pCertList, &binCert );
-        JS_BIN_reset( &binCert );
+        if( strTrustPath.length() > 1 )
+        {
+            JS_BIN_fileReadBER( strTrustPath.toLocal8Bit().toStdString().c_str(), &binCert );
+            JS_BIN_addList( &pCertList, &binCert );
+            JS_BIN_reset( &binCert );
+        }
     }
 
     if( strUntrustPath.length() > 1 )
@@ -465,8 +471,23 @@ void CertPVDDlg::clickPolicyCheck()
 
     if( strTargetPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "Select a target certificate" ), this );
-        goto end;
+        CertManDlg certMan;
+        certMan.setMode(ManModeSelCert);
+        certMan.setTitle( tr( "Select a certificate") );
+
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
+
+        strTargetPath = certMan.getSeletedCertPath();
+        if( strTargetPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Select target certificate" ), this );
+            goto end;
+        }
+        else
+        {
+            mTargetPathText->setText( strTargetPath );
+        }
     }
 
     JS_BIN_fileReadBER( strTargetPath.toLocal8Bit().toStdString().c_str(), &binCert );
@@ -480,7 +501,7 @@ void CertPVDDlg::clickPolicyCheck()
 
         JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
 
-        if( strType == "Trust" || strType == "Untrust" )
+        if( strType == kTypeTCert || strType == kTypeUCert )
         {
             JS_BIN_addList( &pCertList, &binData );
         }
@@ -538,19 +559,27 @@ void CertPVDDlg::clickPolicyCheck()
         _addParamValue( &pParamList, nID, strValue.toStdString().c_str() );
     }
 
-    tCheckTime = mVerifyDateTime->dateTime().toSecsSinceEpoch();
+//    tCheckTime = mVerifyDateTime->dateTime().toSecsSinceEpoch();
     ret = JS_PKI_CheckPolicy( pCertList, pParamList, &nExpPolicy );
 
     berApplet->log( QString( "Check policy results: Ret %1 ExpPolicy: %2").arg(ret).arg( nExpPolicy));
-    if( ret == 1 )
+    if( ret == JSR_VALID )
     {
-        QString strOK = "Policy check successful";
+        QString strOK = tr( "Policy check successful [Explicit Policy: %1]" ).arg( nExpPolicy );
         berApplet->messageLog( strOK, this );
     }
     else
     {
-        QString strErr = QString( "Policy check failed [%1]" ).arg(ret);
-        berApplet->warnLog( strErr, this );
+        QString strErr;
+
+        if( ret == -2 )
+            strErr = tr( "Validation Fail because X509_V_FLAG_EXPLICIT_POLICY was requested But policy_oids is empty" );
+        else if( ret == -1 )
+            strErr = tr( "At least one of the certs contains invalid or inconsistent extensions" );
+        else if( ret == 0 )
+            strErr = tr( "Internal Error" );
+
+        berApplet->warnLog( QString( "%1 [Explicit Policy:%2 Ret:%3]" ).arg( strErr ).arg( nExpPolicy ).arg( ret ), this );
     }
 
 end :
@@ -571,7 +600,7 @@ void CertPVDDlg::clickPathValidation()
     BINList *pTrustList = NULL;
     BINList *pUntrustList = NULL;
     BINList *pCRLList = NULL;
-    time_t tCheckTime = 0;
+//    time_t tCheckTime = 0;
 
     QString strTrustPath = mTrustPathText->text();
     QString strUntrustPath = mUntrustPathText->text();
@@ -651,7 +680,7 @@ void CertPVDDlg::clickPathValidation()
 
         JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
 
-        if( strType == "Trust" )
+        if( strType == kTypeTCert )
         {
             if( mUseTrustListCheck->isChecked() == false )
             {
@@ -662,11 +691,11 @@ void CertPVDDlg::clickPathValidation()
                 berApplet->warnLog( tr( "Trust values ​​are not supported when using a trust list: %1").arg( strPath ), this );
             }
         }
-        else if( strType == "Untrust" )
+        else if( strType == kTypeUCert )
         {
             JS_BIN_addList( &pUntrustList, &binData );
         }
-        else if( strType == "CRL" )
+        else if( strType == kTypeCRL )
         {
             JS_BIN_addList( &pCRLList, &binData );
         }
@@ -724,7 +753,7 @@ void CertPVDDlg::clickPathValidation()
         _addParamValue( &pParamList, nID, strValue.toStdString().c_str() );
     }
 
-    tCheckTime = mVerifyDateTime->dateTime().toSecsSinceEpoch();
+//    tCheckTime = mVerifyDateTime->dateTime().toSecsSinceEpoch();
 
     if( mUseTrustListCheck->isChecked() )
     {
@@ -828,7 +857,7 @@ void CertPVDDlg::clickTrustAdd()
     {
         CertManDlg certMan;
         certMan.setMode(ManModeSelCA);
-        certMan.setTitle( tr( "Select CA certificate" ));
+        certMan.setTitle( tr( "Select trust CA certificate" ));
 
         if( certMan.exec() != QDialog::Accepted )
             return;
@@ -836,7 +865,7 @@ void CertPVDDlg::clickTrustAdd()
         strPath = certMan.getSeletedCAPath();
         if( strPath.length() < 1 )
         {
-            berApplet->warningBox( "Select trust certificate", this );
+            berApplet->warningBox( "Select trust CA certificate", this );
             return;
         }
         else
@@ -848,7 +877,7 @@ void CertPVDDlg::clickTrustAdd()
     int row = mPathTable->rowCount();
     mPathTable->insertRow( row );
     mPathTable->setRowHeight(row, 10 );
-    mPathTable->setItem( row, 0, new QTableWidgetItem( "Trust" ));
+    mPathTable->setItem( row, 0, new QTableWidgetItem( kTypeTCert ));
     mPathTable->setItem( row, 1, new QTableWidgetItem( strPath ));
 
     mTrustPathText->clear();
@@ -862,14 +891,14 @@ void CertPVDDlg::clickUntrustAdd()
     {
         CertManDlg certMan;
         certMan.setMode(ManModeSelCA);
-        certMan.setTitle( tr( "Select CA certificate" ));
+        certMan.setTitle( tr( "Select untrust CA certificate" ));
         if( certMan.exec() != QDialog::Accepted )
             return;
 
         strPath = certMan.getSeletedCAPath();
         if( strPath.length() < 1 )
         {
-            berApplet->warningBox( "Select untrust certificate", this );
+            berApplet->warningBox( "Select untrust CA certificate", this );
             return;
         }
         else
@@ -881,7 +910,7 @@ void CertPVDDlg::clickUntrustAdd()
     int row = mPathTable->rowCount();
     mPathTable->insertRow( row );
     mPathTable->setRowHeight(row, 10 );
-    mPathTable->setItem( row, 0, new QTableWidgetItem( "Untrust" ));
+    mPathTable->setItem( row, 0, new QTableWidgetItem( kTypeUCert ));
     mPathTable->setItem( row, 1, new QTableWidgetItem( strPath ));
 
     mUntrustPathText->clear();
@@ -914,20 +943,15 @@ void CertPVDDlg::clickCRLAdd()
     int row = mPathTable->rowCount();
     mPathTable->insertRow( row );
     mPathTable->setRowHeight(row, 10 );
-    mPathTable->setItem( row, 0, new QTableWidgetItem( "CRL" ));
+    mPathTable->setItem( row, 0, new QTableWidgetItem( kTypeCRL ));
     mPathTable->setItem( row, 1, new QTableWidgetItem( strPath ));
 
     mCRLPathText->clear();
 }
 
 void CertPVDDlg::clickListClear()
-{
-    int count = mPathTable->rowCount();
-
-    for( int i = 0; i < count; i++ )
-    {
-        mPathTable->removeRow(0);
-    }
+{   
+    mPathTable->setRowCount( 0 );
 }
 
 void CertPVDDlg::clickPathClear()
@@ -968,13 +992,8 @@ void CertPVDDlg::clickParamAdd()
 }
 
 void CertPVDDlg::clickParamListClear()
-{
-    int count = mParamTable->rowCount();
-
-    for( int i = 0; i < count; i++ )
-    {
-        mParamTable->removeRow(0);
-    }
+{    
+    mParamTable->setRowCount(0);
 }
 
 void CertPVDDlg::clickTrustDecode()
@@ -1081,6 +1100,7 @@ void CertPVDDlg::clickClearDataAll()
 {
     clickListClear();
     clickPathClear();
+    clickParamListClear();
 
     mTrustPathText->clear();
     mUntrustPathText->clear();

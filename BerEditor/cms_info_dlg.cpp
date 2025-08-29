@@ -364,7 +364,7 @@ void CMSInfoDlg::setSignerInfo( const JP7SignerInfoList *pSignerList )
         mSignerTable->insertRow(srow);
         mSignerTable->setRowHeight(srow, 10);
         mSignerTable->setItem( srow, 0, new QTableWidgetItem( tr("Version") ));
-        mSignerTable->setItem( srow, 1, new QTableWidgetItem( QString( "%1").arg( pCurList->sSignerInfo.nVersion + 1)));
+        mSignerTable->setItem( srow, 1, new QTableWidgetItem( QString( "V%1").arg( pCurList->sSignerInfo.nVersion + 1)));
         srow++;
 
         mSignerTable->insertRow( srow );
@@ -476,7 +476,7 @@ void CMSInfoDlg::setRecipInfo( const JP7RecipInfoList *pRecipList )
         mRecipTable->insertRow(rrow);
         mRecipTable->setRowHeight(rrow, 10);
         mRecipTable->setItem( rrow, 0, new QTableWidgetItem( tr("Version") ));
-        mRecipTable->setItem( rrow, 1, new QTableWidgetItem( QString( "%1").arg( pCurList->sRecipInfo.nVersion + 1 )));
+        mRecipTable->setItem( rrow, 1, new QTableWidgetItem( QString( "V%1").arg( pCurList->sRecipInfo.nVersion + 1 )));
         rrow++;
 
         mRecipTable->insertRow( rrow );
@@ -530,7 +530,7 @@ void CMSInfoDlg::setSigned()
 
     ret = JS_PKCS7_getSignedData( &cms_bin_, strCAPath.toStdString().c_str(), &sSignedData, &pInfoList, &tsp_bin_ );
 
-    mVersionText->setText( QString("%1").arg( sSignedData.nVersion ));
+    mVersionText->setText( QString("V%1").arg( sSignedData.nVersion + 1 ));
     mDataText->setPlainText( getHexString( &sSignedData.binContent ));
 
     mDataTable->insertRow(row);
@@ -662,7 +662,7 @@ void CMSInfoDlg::setEnveloped()
     ret = JS_PKCS7_getEnvelopedData( &cms_bin_, &sEnvelopedData, &pInfoList );
     if( ret != 0 ) goto end;
 
-    mVersionText->setText( QString("%1").arg( sEnvelopedData.nVersion ));
+    mVersionText->setText( QString("V%1").arg( sEnvelopedData.nVersion + 1));
     mDataText->setPlainText( getHexString( &sEnvelopedData.binEncData ));
 
     mDataTable->insertRow(row);
@@ -713,7 +713,7 @@ void CMSInfoDlg::setSignedAndEnveloped()
     ret = JS_PKCS7_getSignedAndEnvelopedData( &cms_bin_, strCAPath.toStdString().c_str(), &sSignAndEnveloped, &pSignerList, &pRecipList, &tsp_bin_ );
     if( ret != 0 ) goto end;
 
-    mVersionText->setText( QString("%1").arg( sSignAndEnveloped.nVersion ));
+    mVersionText->setText( QString("V%1").arg( sSignAndEnveloped.nVersion + 1));
     mDataText->setPlainText( getHexString( &sSignAndEnveloped.binEncData ));
 
     mDataTable->insertRow(row);
@@ -887,7 +887,7 @@ void CMSInfoDlg::setDigest()
     ret = JS_PKCS7_getDigestData( &cms_bin_, &sDigestData );
     if( ret != 0 ) return;
 
-    mVersionText->setText( QString("%1").arg( sDigestData.nVersion ));
+    mVersionText->setText( QString("V%1").arg( sDigestData.nVersion + 1 ));
     mDataText->setPlainText( getHexString( &sDigestData.binContent ));
 
     mDataTable->insertRow(row);
@@ -923,7 +923,7 @@ void CMSInfoDlg::setEncrypted()
     ret = JS_PKCS7_getEncryptedData( &cms_bin_, &sEncryptData );
     if( ret != 0 ) goto end;
 
-    mVersionText->setText( QString("%1").arg( sEncryptData.nVersion ));
+    mVersionText->setText( QString("V%1").arg( sEncryptData.nVersion + 1 ));
     mDataText->setPlainText( getHexString( &sEncryptData.binEncData ));
 
     mDataTable->insertRow(row);
