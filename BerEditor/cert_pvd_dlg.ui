@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>556</width>
-    <height>663</height>
+    <height>681</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -61,7 +61,7 @@
         </size>
        </property>
        <property name="text">
-        <string>UntrustedCert</string>
+        <string>UntrustCert</string>
        </property>
       </widget>
      </item>
@@ -106,7 +106,7 @@
         </size>
        </property>
        <property name="text">
-        <string>TrustedCert</string>
+        <string>TrustCert</string>
        </property>
       </widget>
      </item>
@@ -390,6 +390,12 @@
    </item>
    <item>
     <widget class="QTableWidget" name="mPathTable">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>80</height>
+      </size>
+     </property>
      <property name="contextMenuPolicy">
       <enum>Qt::CustomContextMenu</enum>
      </property>
@@ -590,6 +596,12 @@
    </item>
    <item>
     <widget class="QTableWidget" name="mParamTable">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>80</height>
+      </size>
+     </property>
      <property name="contextMenuPolicy">
       <enum>Qt::CustomContextMenu</enum>
      </property>

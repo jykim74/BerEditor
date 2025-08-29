@@ -34,13 +34,21 @@ CertManDlg::CertManDlg(QWidget *parent) :
     QDialog(parent)
 {
     mode_ = ManModeBase;
+    load_ee_ = false;
+    load_other_ = false;
+    load_ca_ = false;
+    load_crl_ = false;
+    load_trust_ = false;
+
     memset( &pri_key_, 0x00, sizeof(BIN));
     memset( &cert_, 0x00, sizeof(BIN));
     memset( &ca_cert_, 0x00, sizeof(BIN));
     memset( &crl_, 0x00, sizeof(BIN));
 
     setupUi(this);
+    initUI();
 
+    connect( mTabWidget, SIGNAL(currentChanged(int)), this, SLOT(changeTab(int)));
     connect( mCancelBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mOKBtn, SIGNAL(clicked()), this, SLOT(clickOK()));
 
@@ -122,10 +130,6 @@ CertManDlg::CertManDlg(QWidget *parent) :
     connect( mTLViewPriKeyBtn, SIGNAL(clicked()), this, SLOT(clickTLViewPriKey()));
     connect( mTLViewPubKeyBtn, SIGNAL(clicked()), this, SLOT(clickTLViewPubKey()));
 
-
-
-    initUI();
-
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
     mEETab->layout()->setSpacing(5);
@@ -179,11 +183,14 @@ CertManDlg::~CertManDlg()
     JS_BIN_reset( &crl_ );
 }
 
+void CertManDlg::setTab( int index )
+{
+    mTabWidget->setCurrentIndex( index );
+}
+
 void CertManDlg::setMode( int nMode )
 {
     mode_ = nMode;
-
-    connect( mRCA_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewTrust()));
 
     if( mode_ == ManModeBase )
     {
@@ -191,6 +198,7 @@ void CertManDlg::setMode( int nMode )
         connect( mOther_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewOther()));
         connect( mCA_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewCA()));
         connect( mCRL_Table, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewCRL()));
+        connect( mRCA_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewTrust()));
 
         mOKBtn->hide();
     }
@@ -200,6 +208,7 @@ void CertManDlg::setMode( int nMode )
         connect( mOther_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickOK()));
         connect( mCA_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickOK()));
         connect( mCRL_Table, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickOK()));
+        connect( mRCA_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickOK()));
     }
 }
 
@@ -217,6 +226,35 @@ void CertManDlg::closeEvent(QCloseEvent *event )
 {
     setGroupHide( false );
     setOKHide( false );
+}
+
+void CertManDlg::changeTab( int index )
+{
+    if( index == TAB_EE_IDX )
+    {
+        if( load_ee_ == false )
+            loadEEList();
+    }
+    else if( index == TAB_OTHER_IDX )
+    {
+        if( load_other_ == false )
+            loadOtherList();
+    }
+    else if( index == TAB_CA_IDX )
+    {
+        if( load_ca_ == false )
+            loadCAList();
+    }
+    else if( index == TAB_CRL_IDX )
+    {
+        if( load_crl_ == false )
+            loadCRLList();
+    }
+    else if( index == TAB_TRUST_IDX )
+    {
+        if( load_trust_ == false )
+            loadTrustList();
+    }
 }
 
 void CertManDlg::slotTableMenuRequested( QPoint pos )
@@ -414,6 +452,7 @@ void CertManDlg::initUI()
 
     mTLVersionCombo->addItems( kVersionList );
     mTLVersionCombo->setCurrentIndex(1);
+    changeTLVerison( 1 );
 
 #if defined(Q_OS_MAC)
     int nWidth = width() * 9/10;
@@ -508,10 +547,6 @@ void CertManDlg::initUI()
 
 void CertManDlg::initialize()
 {
-    loadCAList();
-    loadCRLList();
-    loadTrustList();
-
     mCertPathText->setText( berApplet->settingsMgr()->EECertPath() );
     mOtherCertPathText->setText( berApplet->settingsMgr()->otherCertPath());
     mCAPathText->setText( berApplet->settingsMgr()->CACertPath() );
@@ -537,7 +572,6 @@ void CertManDlg::initialize()
     }
     else if( mode_ == ManModeSelBoth || mode_ == ManModeSelCert )
     {
-        loadEEList();
         setGroupHide(true);
         mTabWidget->setTabEnabled( TAB_EE_IDX, true );
 
@@ -548,7 +582,6 @@ void CertManDlg::initialize()
         }
         else
         {
-            loadOtherList();
             mTabWidget->setCurrentIndex(TAB_OTHER_IDX);
             mTabWidget->setTabEnabled( TAB_OTHER_IDX, true );
         }
@@ -567,7 +600,7 @@ void CertManDlg::initialize()
         mTabWidget->setTabEnabled( TAB_OTHER_IDX, false );
         mTabWidget->setTabEnabled( TAB_CA_IDX, true );
         mTabWidget->setTabEnabled( TAB_CRL_IDX, false );
-        mTabWidget->setTabEnabled( TAB_TRUST_IDX, false );
+        mTabWidget->setTabEnabled( TAB_TRUST_IDX, true );
         mTabWidget->setTabEnabled( TAB_TOOL_IDX, false );
         mOKBtn->setDefault(true);
     }
@@ -586,10 +619,8 @@ void CertManDlg::initialize()
     else
     {
         mTabWidget->setCurrentIndex(TAB_EE_IDX);
-        loadEEList();
-        loadOtherList();
+        changeTab( TAB_EE_IDX );
         setGroupHide( false );
-//        mTabWidget->setTabEnabled( 3, true );
     }
 
     mModeLabel->setText( getModeName(mode_));
@@ -689,26 +720,31 @@ int CertManDlg::getCRL( BIN *pCRL )
 void CertManDlg::clearCAList()
 {
     mCA_CertTable->setRowCount(0);
+//    load_ca_ = false;
 }
 
 void CertManDlg::clearCRLList()
 {
     mCRL_Table->setRowCount(0);
+//    load_crl_ = false;
 }
 
 void CertManDlg::clearTrustList()
 {
     mRCA_CertTable->setRowCount(0);
+//    load_trust_ = false;
 }
 
 void CertManDlg::clearEEList()
 {
     mEE_CertTable->setRowCount(0);
+//    load_ee_ = false;
 }
 
 void CertManDlg::clearOtherList()
 {
     mOther_CertTable->setRowCount(0);
+//    load_other_ = false;
 }
 
 void CertManDlg::loadEEList()
@@ -812,6 +848,8 @@ void CertManDlg::loadEEList()
 
         row++;
     }
+
+    load_ee_ = true;
 }
 
 void CertManDlg::loadOtherList()
@@ -906,6 +944,8 @@ void CertManDlg::loadOtherList()
 
         row++;
     }
+
+    load_other_ = true;
 }
 
 void CertManDlg::loadCAList()
@@ -998,6 +1038,8 @@ void CertManDlg::loadCAList()
 
         row++;
     }
+
+    load_ca_ = true;
 }
 
 void CertManDlg::loadCRLList()
@@ -1062,6 +1104,8 @@ void CertManDlg::loadCRLList()
 
         row++;
     }
+
+    load_crl_ = true;
 }
 
 void CertManDlg::loadTrustList()
@@ -1154,6 +1198,8 @@ void CertManDlg::loadTrustList()
 
         row++;
     }
+
+    load_trust_ = true;
 }
 
 int CertManDlg::writePriKeyCert( const BIN *pEncPriKey, const BIN *pCert )
@@ -1293,11 +1339,22 @@ const QString CertManDlg::getSelectedPriPath()
 const QString CertManDlg::getSeletedCAPath()
 {
     QString strPath;
+    int nTabIdx = mTabWidget->currentIndex();
 
-    QModelIndex idx = mCA_CertTable->currentIndex();
-    QTableWidgetItem* item = mCA_CertTable->item( idx.row(), 0 );
+    if( nTabIdx == TAB_CA_IDX )
+    {
+        QModelIndex idx = mCA_CertTable->currentIndex();
+        QTableWidgetItem* item = mCA_CertTable->item( idx.row(), 0 );
 
-    if( item ) strPath = item->data(Qt::UserRole).toString();
+        if( item ) strPath = item->data(Qt::UserRole).toString();
+    }
+    else if( nTabIdx == TAB_TRUST_IDX )
+    {
+        QModelIndex idx = mRCA_CertTable->currentIndex();
+        QTableWidgetItem* item = mRCA_CertTable->item( idx.row(), 0 );
+
+        if( item ) strPath = item->data(Qt::UserRole).toString();
+    }
 
     return strPath;
 }
@@ -2021,7 +2078,7 @@ void CertManDlg::clickOK()
     }
     else if( mode_ == ManModeSelCA )
     {
-        if( mCA_CertTable->rowCount() < 1 )
+        if( mCA_CertTable->rowCount() < 1 && mRCA_CertTable->rowCount() < 1 )
         {
             QDialog::reject();
             return;

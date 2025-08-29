@@ -61,7 +61,7 @@ void TSTInfoDlg::initialize()
     mInfoTable->insertRow(i);
     mInfoTable->setRowHeight( i, 10 );
     mInfoTable->setItem( i, 0, new QTableWidgetItem(QString( tr("Version") )));
-    mInfoTable->setItem( i, 1, new QTableWidgetItem(QString("%1").arg(sTSTInfo.nVersion + 1)));
+    mInfoTable->setItem( i, 1, new QTableWidgetItem(QString("V%1").arg(sTSTInfo.nVersion + 1)));
     i++;
 
     mInfoTable->insertRow(i);
