@@ -83,7 +83,6 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     mJSON_JWSViewBtn->setFixedWidth(34);
 
     mXMLBodyClearBtn->setFixedWidth(34);
-    mXMLSignClearBtn->setFixedWidth(34);
 
     mTabJSON->layout()->setSpacing(5);
     mTabJSON->layout()->setMargin(5);
