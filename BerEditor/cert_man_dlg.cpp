@@ -562,13 +562,15 @@ void CertManDlg::initialize()
     {
         setTrustOnly();
         setGroupHide( false );
-        mTabWidget->setCurrentIndex(TAB_TRUST_IDX);
+        mTabWidget->setCurrentIndex(TAB_OTHER_IDX);
         mTabWidget->setTabEnabled( TAB_EE_IDX, false );
         mTabWidget->setTabEnabled( TAB_OTHER_IDX, false );
         mTabWidget->setTabEnabled( TAB_CA_IDX, false );
         mTabWidget->setTabEnabled( TAB_CRL_IDX, false );
         mTabWidget->setTabEnabled( TAB_TRUST_IDX, true );
         mTabWidget->setTabEnabled( TAB_TOOL_IDX, false );
+
+        changeTab(TAB_OTHER_IDX);
     }
     else if( mode_ == ManModeSelBoth || mode_ == ManModeSelCert )
     {
@@ -579,11 +581,13 @@ void CertManDlg::initialize()
         {
             mTabWidget->setCurrentIndex(TAB_EE_IDX);
             mTabWidget->setTabEnabled( TAB_OTHER_IDX, false );
+            changeTab(TAB_EE_IDX);
         }
         else
         {
             mTabWidget->setCurrentIndex(TAB_OTHER_IDX);
             mTabWidget->setTabEnabled( TAB_OTHER_IDX, true );
+            changeTab( TAB_OTHER_IDX );
         }
 
         mTabWidget->setTabEnabled( TAB_CA_IDX, false );
@@ -603,11 +607,12 @@ void CertManDlg::initialize()
         mTabWidget->setTabEnabled( TAB_TRUST_IDX, true );
         mTabWidget->setTabEnabled( TAB_TOOL_IDX, false );
         mOKBtn->setDefault(true);
+        changeTab( TAB_CA_IDX );
     }
     else if( mode_ == ManModeSelCRL )
     {
         setGroupHide(true);
-        mTabWidget->setCurrentIndex(TAB_CA_IDX);
+        mTabWidget->setCurrentIndex(TAB_CRL_IDX);
         mTabWidget->setTabEnabled( TAB_EE_IDX, false );
         mTabWidget->setTabEnabled( TAB_OTHER_IDX, false );
         mTabWidget->setTabEnabled( TAB_CA_IDX, false );
@@ -615,6 +620,7 @@ void CertManDlg::initialize()
         mTabWidget->setTabEnabled( TAB_TRUST_IDX, false );
         mTabWidget->setTabEnabled( TAB_TOOL_IDX, false );
         mOKBtn->setDefault(true);
+        changeTab( TAB_CRL_IDX );
     }
     else
     {
