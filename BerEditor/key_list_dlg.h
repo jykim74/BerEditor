@@ -38,12 +38,11 @@ private slots:
     void clickEncDec();
 
 private:
-    void initialize();
+    void initUI();
     void loadKeyList();
 
-
-
     QString str_data_;
+    bool load_keylist_;
 };
 
 #endif // KEY_LIST_DLG_H

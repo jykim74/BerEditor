@@ -36,7 +36,9 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
+    initUI();
     mode_ = 0;
+    load_keypair_ = false;
 
     connect( mVersionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeVerison(int)));
     connect( mKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(keyTypeChanged(int)));
@@ -126,7 +128,7 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
     mCSRClearBtn->setFixedWidth(34);
     mCSRDecodeBtn->setFixedWidth(34);
 #endif
-    initUI();
+
 
     resize(minimumSizeHint().width(), minimumSizeHint().height());
     mLGenKeyPairBtn->setDefault(true);
@@ -261,7 +263,8 @@ void KeyPairManDlg::initialize()
     mVersionCombo->addItems(kVersionList);
     mVersionCombo->setCurrentIndex(1);
 
-    loadKeyPairList();
+    if( load_keypair_ == false )
+        loadKeyPairList();
 }
 
 void KeyPairManDlg::setGroupHide( bool bHide )
@@ -382,6 +385,8 @@ void KeyPairManDlg::loadKeyPairList()
 
         row++;
     }
+
+    load_keypair_ = true;
 }
 
 const QString KeyPairManDlg::getTypePathName( qint64 now_t, DerType nType )

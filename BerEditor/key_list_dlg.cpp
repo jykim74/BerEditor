@@ -23,6 +23,9 @@ KeyListDlg::KeyListDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
+    load_keylist_ = false;
+
+    initUI();
 
     connect( mKeyTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotTableMenuRequested(QPoint)));
 
@@ -41,7 +44,6 @@ KeyListDlg::KeyListDlg(QWidget *parent) :
     mManGroup->layout()->setSpacing(5);
     mManGroup->layout()->setMargin(5);
 #endif
-    initialize();
 
     resize(minimumSizeHint().width(), minimumSizeHint().height());
     mOKBtn->setDefault(true);
@@ -73,7 +75,7 @@ void KeyListDlg::setTitle( const QString strTitle )
     mTitleLabel->setText( strTitle );
 }
 
-void KeyListDlg::initialize()
+void KeyListDlg::initUI()
 {
 #if defined(Q_OS_MAC)
     int nWidth = width() * 8/10;
@@ -103,7 +105,8 @@ void KeyListDlg::initialize()
 
 void KeyListDlg::showEvent(QShowEvent *event)
 {
-    loadKeyList();
+    if( load_keylist_ == false )
+        loadKeyList();
 }
 
 void KeyListDlg::closeEvent(QCloseEvent *event )
@@ -266,6 +269,8 @@ void KeyListDlg::loadKeyList()
         mKeyTable->setItem( row, 3, new QTableWidgetItem(QString("%1").arg( strIV.length() > 0 ? "Y" : "N" )));
         mKeyTable->setItem( row, 4, new QTableWidgetItem(QString("%1").arg( date.toString("yy-MM-dd hh:mm") )));
     }
+
+    load_keylist_ = true;
 }
 
 void KeyListDlg::clickKeyAdd()

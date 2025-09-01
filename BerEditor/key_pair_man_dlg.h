@@ -111,6 +111,7 @@ private:
     void loadKeyPairList();
     const QString getSelectedPath();
     int mode_;
+    bool load_keypair_;
 };
 
 #endif // KEY_PAIR_MAN_DLG_H
