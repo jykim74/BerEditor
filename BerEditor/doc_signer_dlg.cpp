@@ -791,6 +791,8 @@ void DocSignerDlg::clickXML_MakeSign()
 {
     int ret = 0;
     BIN binPri = {0,0};
+    BIN binSrc = {0,0};
+    BIN binDst = {0,0};
 
     QString strSrcPath = mSrcPathText->text();
     if( strSrcPath.length() < 1 )
@@ -813,13 +815,19 @@ void DocSignerDlg::clickXML_MakeSign()
         mDstPathText->setText( strDstPath );
     }
 
+    JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
     ret = getPriKey( &binPri );
 
     JS_XML_init();
 
+#if 0
     ret = JS_XML_signWithInfo( strSrcPath.toLocal8Bit().toStdString().c_str(),
                     &binPri,
                     strDstPath.toLocal8Bit().toStdString().c_str() );
+#else
+    ret = JS_XML_signWithInfoBIN( &binSrc, &binPri, &binDst );
+    if( ret == 0 ) JS_BIN_fileWrite( &binDst, strDstPath.toLocal8Bit().toStdString().c_str() );
+#endif
 
     if( ret < 0 )
     {
@@ -833,6 +841,8 @@ void DocSignerDlg::clickXML_MakeSign()
 end :
     JS_XML_final();
     JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binSrc );
+    JS_BIN_reset( &binDst );
 
     return;
 }
@@ -841,6 +851,8 @@ void DocSignerDlg::clickXML_MakeSign2()
 {
     int ret = 0;
     BIN binPri = {0,0};
+    BIN binSrc = {0,0};
+    BIN binDst = {0,0};
 
     QString strSrcPath = mSrcPathText->text();
     if( strSrcPath.length() < 1 )
@@ -863,13 +875,18 @@ void DocSignerDlg::clickXML_MakeSign2()
         mDstPathText->setText( strDstPath );
     }
 
+    JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
     ret = getPriKey( &binPri );
 
     JS_XML_init();
-
+#if 0
     ret = JS_XML_signDoc( strSrcPath.toLocal8Bit().toStdString().c_str(),
                               &binPri,
                               strDstPath.toLocal8Bit().toStdString().c_str() );
+#else
+    ret = JS_XML_signDocBIN( &binSrc, &binPri, &binDst );
+    if( ret == 0 ) JS_BIN_fileWrite( &binDst, strDstPath.toLocal8Bit().toStdString().c_str() );
+#endif
 
     if( ret < 0 )
     {
@@ -883,6 +900,8 @@ void DocSignerDlg::clickXML_MakeSign2()
 end :
     JS_XML_final();
     JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binSrc );
+    JS_BIN_reset( &binDst );
 
     return;
 }
@@ -892,6 +911,8 @@ void DocSignerDlg::clickXML_Encrypt()
     int ret = 0;
     BIN binBody = {0,0};
     BIN binKey = {0,0};
+    BIN binSrc = {0,0};
+    BIN binDst = {0,0};
 
     QString strSrcPath = mSrcPathText->text();
     if( strSrcPath.length() < 1 )
@@ -900,15 +921,7 @@ void DocSignerDlg::clickXML_Encrypt()
         mSrcPathText->setFocus();
         return;
     }
-/*
-    QString strDstPath = mDstPathText->text();
-    if( strDstPath.length() < 1 )
-    {
-        berApplet->warningBox( tr( "find a destination xml" ), this );
-        mDstPathText->setFocus();
-        return;
-    }
-*/
+
     QString strBody = mXMLBodyText->toPlainText();
     if( strBody.length() < 1 )
     {
@@ -945,11 +958,18 @@ void DocSignerDlg::clickXML_Encrypt()
         mDstPathText->setText( strDstPath );
     }
 
+    JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+
+#if 0
     ret = JS_XML_encryptWithInfo(
         strSrcPath.toLocal8Bit().toStdString().c_str(),
         &binKey,
         &binBody,
         strDstPath.toLocal8Bit().toStdString().c_str() );
+#else
+    ret = JS_XML_encryptWithInfoBIN( &binSrc, &binKey, &binBody, &binDst );
+    if( ret == 0 ) JS_BIN_fileWrite( &binDst, strDstPath.toLocal8Bit().toStdString().c_str() );
+#endif
 
     if( ret < 0 )
     {
@@ -964,6 +984,8 @@ end :
     JS_XML_final();
     JS_BIN_reset( &binBody );
     JS_BIN_reset( &binKey );
+    JS_BIN_reset( &binDst );
+    JS_BIN_reset( &binSrc );
 
     return;
 }
@@ -972,6 +994,8 @@ void DocSignerDlg::clickXML_Encrypt2()
 {
     int ret = 0;
     BIN binKey = {0,0};
+    BIN binSrc = {0,0};
+    BIN binDst = {0,0};
 
     QString strSrcPath = mSrcPathText->text();
     if( strSrcPath.length() < 1 )
@@ -980,15 +1004,7 @@ void DocSignerDlg::clickXML_Encrypt2()
         mSrcPathText->setFocus();
         return;
     }
-/*
-    QString strDstPath = mDstPathText->text();
-    if( strDstPath.length() < 1 )
-    {
-        berApplet->warningBox( tr( "find a destination xml" ), this );
-        mDstPathText->setFocus();
-        return;
-    }
-*/
+
     KeyListDlg keyList;
     keyList.setTitle( tr( "Select key" ));
     keyList.setManage(false);
@@ -1015,10 +1031,17 @@ void DocSignerDlg::clickXML_Encrypt2()
         mDstPathText->setText( strDstPath );
     }
 
+    JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+
+#if 0
     ret = JS_XML_encrypt(
         strSrcPath.toLocal8Bit().toStdString().c_str(),
         &binKey,
         strDstPath.toLocal8Bit().toStdString().c_str() );
+#else
+    ret = JS_XML_encryptBIN( &binSrc, &binKey, &binDst );
+    if( ret == 0 ) JS_BIN_fileWrite( &binDst, strDstPath.toLocal8Bit().toStdString().c_str() );
+#endif
 
     if( ret < 0 )
     {
@@ -1032,6 +1055,8 @@ void DocSignerDlg::clickXML_Encrypt2()
 end :
     JS_XML_final();
     JS_BIN_reset( &binKey );
+    JS_BIN_reset( &binSrc );
+    JS_BIN_reset( &binDst );
 
     return;
 }
@@ -1040,6 +1065,7 @@ void DocSignerDlg::clickXML_VerifySign()
 {
     int ret = 0;
     BIN binPub = {0,0};
+    BIN binSrc = {0,0};
 
     QString strSrcPath = mSrcPathText->text();
     if( strSrcPath.length() < 1 )
@@ -1049,12 +1075,18 @@ void DocSignerDlg::clickXML_VerifySign()
         return;
     }
 
+    JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+
     ret = getPubKey( &binPub );
     if( ret != 0 ) goto end;
 
     JS_XML_init();
 
+#if 0
     ret = JS_XML_verify( strSrcPath.toLocal8Bit().toStdString().c_str(), &binPub );
+#else
+    ret = JS_XML_verifyBIN( &binSrc, &binPub );
+#endif
 
     if( ret == JSR_VERIFY )
     {
@@ -1068,6 +1100,7 @@ void DocSignerDlg::clickXML_VerifySign()
 end :
     JS_XML_final();
     JS_BIN_reset( &binPub );
+    JS_BIN_reset( &binSrc );
 
     return;
 }
@@ -1076,6 +1109,8 @@ void DocSignerDlg::clickXML_Decrypt()
 {
     int ret = 0;
     BIN binKey = {0,0};
+    BIN binSrc = {0,0};
+    BIN binDst = {0,0};
 
     QString strSrcPath = mSrcPathText->text();
     if( strSrcPath.length() < 1 )
@@ -1084,15 +1119,7 @@ void DocSignerDlg::clickXML_Decrypt()
         mSrcPathText->setFocus();
         return;
     }
-/*
-    QString strDstPath = mDstPathText->text();
-    if( strDstPath.length() < 1 )
-    {
-        berApplet->warningBox( tr( "find a destination xml" ), this );
-        mDstPathText->setFocus();
-        return;
-    }
-*/
+
     KeyListDlg keyList;
     keyList.setTitle( tr( "Select key" ));
     keyList.setManage(false);
@@ -1119,10 +1146,17 @@ void DocSignerDlg::clickXML_Decrypt()
         mDstPathText->setText( strDstPath );
     }
 
+    JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+
+#if 0
     ret = JS_XML_decrypt(
         strSrcPath.toLocal8Bit().toStdString().c_str(),
         &binKey,
         strDstPath.toLocal8Bit().toStdString().c_str() );
+#else
+    ret = JS_XML_decryptBIN( &binSrc, &binKey, &binDst );
+    if( ret == 0 ) JS_BIN_fileWrite( &binDst, strDstPath.toLocal8Bit().toStdString().c_str() );
+#endif
 
     if( ret < 0 )
     {
@@ -1136,6 +1170,8 @@ void DocSignerDlg::clickXML_Decrypt()
 end :
     JS_XML_final();
     JS_BIN_reset( &binKey );
+    JS_BIN_reset( &binSrc );
+    JS_BIN_reset( &binDst );
 }
 
 void DocSignerDlg::changeXML_Body()
