@@ -973,7 +973,15 @@ void DocSignerDlg::clickXML_MakeSign()
     }
     else
     {
+        QString strBody = mXMLBodyText->toPlainText();
+        if( strBody.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a XML body" ), this );
+            mXMLBodyText->setFocus();
+            return;
+        }
 
+        JS_BIN_set( &binSrc, (unsigned char *)strBody.toStdString().c_str(), strBody.length() );
     }
 
     QString strDstPath = mDstPathText->text();
@@ -1012,6 +1020,19 @@ void DocSignerDlg::clickXML_MakeSign()
         berApplet->messageBox( tr("XML Signature OK" ), this );
     }
 
+    if( ret == 0 )
+    {
+        mXMLResText->setPlainText( getHexString( &binDst ));
+
+        if( mDstFileCheck->isChecked() == true )
+        {
+            setDstFile();
+            QString strDstPath = mDstPathText->text();
+            JS_BIN_fileWrite( &binDst, strDstPath.toLocal8Bit().toStdString().c_str() );
+            berApplet->messageBox( tr( "The XML file[%1] has been saved." ).arg( strDstPath ), this );
+        }
+    }
+
 end :
     JS_XML_final();
     JS_BIN_reset( &binPri );
@@ -1028,12 +1049,31 @@ void DocSignerDlg::clickXML_MakeSign2()
     BIN binSrc = {0,0};
     BIN binDst = {0,0};
 
-    QString strSrcPath = mSrcPathText->text();
-    if( strSrcPath.length() < 1 )
+    QString strSrcPath;
+
+    if( mSrcFileCheck->isChecked() == true )
     {
-        berApplet->warningBox( tr( "find a source xml" ), this );
-        mSrcPathText->setFocus();
-        return;
+        strSrcPath = mSrcPathText->text();
+        if( strSrcPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find a source xml" ), this );
+            mSrcPathText->setFocus();
+            return;
+        }
+
+        JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+    }
+    else
+    {
+        QString strBody = mXMLBodyText->toPlainText();
+        if( strBody.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a XML body" ), this );
+            mXMLBodyText->setFocus();
+            return;
+        }
+
+        JS_BIN_set( &binSrc, (unsigned char *)strBody.toStdString().c_str(), strBody.length() );
     }
 
     QString strDstPath = mDstPathText->text();
@@ -1069,6 +1109,19 @@ void DocSignerDlg::clickXML_MakeSign2()
     else
     {
         berApplet->messageBox( tr("XML Signature OK" ), this );
+    }
+
+    if( ret == 0 )
+    {
+        mXMLResText->setPlainText( getHexString( &binDst ));
+
+        if( mDstFileCheck->isChecked() == true )
+        {
+            setDstFile();
+            QString strDstPath = mDstPathText->text();
+            JS_BIN_fileWrite( &binDst, strDstPath.toLocal8Bit().toStdString().c_str() );
+            berApplet->messageBox( tr( "The XML file[%1] has been saved." ).arg( strDstPath ), this );
+        }
     }
 
 end :
@@ -1241,12 +1294,31 @@ void DocSignerDlg::clickXML_VerifySign()
     BIN binPub = {0,0};
     BIN binSrc = {0,0};
 
-    QString strSrcPath = mSrcPathText->text();
-    if( strSrcPath.length() < 1 )
+    QString strSrcPath;
+
+    if( mSrcFileCheck->isChecked() == true )
     {
-        berApplet->warningBox( tr( "find a source xml" ), this );
-        mSrcPathText->setFocus();
-        return;
+        strSrcPath = mSrcPathText->text();
+        if( strSrcPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find a source xml" ), this );
+            mSrcPathText->setFocus();
+            return;
+        }
+
+        JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+    }
+    else
+    {
+        QString strBody = mXMLBodyText->toPlainText();
+        if( strBody.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a XML body" ), this );
+            mXMLBodyText->setFocus();
+            return;
+        }
+
+        JS_BIN_set( &binSrc, (unsigned char *)strBody.toStdString().c_str(), strBody.length() );
     }
 
     JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
