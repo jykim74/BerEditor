@@ -49,6 +49,7 @@ enum {
     JS_FILE_TYPE_DH_PARAM,
     JS_FILE_TYPE_ALL };
 
+const QStringList kDataTypeList = { "String", "Hex", "Base64" };
 
 const QString kEnvMiscGroup = "Misc";
 const QString kEnvTempGroup = "Temp";

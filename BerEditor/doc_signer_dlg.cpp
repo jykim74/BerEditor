@@ -4,6 +4,7 @@
 #include <QJsonObject>
 #include <QXmlStreamReader>
 #include <QFileInfo>
+#include <QDateTime>
 
 #include "doc_signer_dlg.h"
 #include "ber_applet.h"
@@ -15,8 +16,8 @@
 #include "cert_man_dlg.h"
 #include "key_pair_man_dlg.h"
 #include "key_list_dlg.h"
-#include "pdf_sign.h"
 #include "cms_info_dlg.h"
+#include "time_stamp_dlg.h"
 
 #include "js_pki.h"
 #include "js_pki_key.h"
@@ -42,13 +43,18 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mFindSrcPathBtn, SIGNAL(clicked()), this, SLOT(findSrcPath()));
     connect( mFindDstPathBtn, SIGNAL(clicked()), this, SLOT(findDstPath()));
 
+    connect( mSrcFileCheck, SIGNAL(clicked()), this, SLOT(checkSrcFile()));
+    connect( mDstFileCheck, SIGNAL(clicked()), this, SLOT(checkDstFile()));
+
     connect( mTabSigner, SIGNAL(currentChanged(int)), this, SLOT(changeSignerTab()));
+    connect( mTSPBtn, SIGNAL(clicked()), this, SLOT(clickTSP()));
 
     connect( mCMSDataText, SIGNAL(textChanged()), this, SLOT(changeCMSData()));
-    connect( mCMSAuthCheck, SIGNAL(clicked()), this, SLOT(checkCMSAuth()));
     connect( mCMSMakeSignBtn, SIGNAL(clicked()), this, SLOT(clickCMSMakeSign()));
     connect( mCMSVerifySignBtn, SIGNAL(clicked()), this, SLOT(clickCMSVerifySign()));
     connect( mCMSViewBtn, SIGNAL(clicked()), this, SLOT(clickCMSView()));
+    connect( mCMSOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputClear()));
+    connect( mCMSOutputDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputDecode()));
 
     connect( mJSONPayloadText, SIGNAL(textChanged()), this, SLOT(changeJSON_Payload()));
     connect( mJSON_JWSText, SIGNAL(textChanged()), this, SLOT(changeJSON_JWS()));
@@ -69,6 +75,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
 
     connect( mXMLBodyClearBtn, SIGNAL(clicked()), this, SLOT(clickXML_BodyClear()));
     connect( mXMLBodyText, SIGNAL(textChanged()), this, SLOT(changeXML_Body()));
+    connect( mXMLResClearBtn, SIGNAL(clicked()), this, SLOT(clickXML_ResClear()));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -123,6 +130,31 @@ void DocSignerDlg::changeSignerTab()
         mUseCertManCheck->setEnabled( true );
 }
 
+void DocSignerDlg::checkSrcFile()
+{
+    bool bVal = mSrcFileCheck->isChecked();
+
+    mSrcPathText->setEnabled( bVal );
+    mFindSrcPathBtn->setEnabled( bVal );
+
+    mCMSDataText->setEnabled( !bVal );
+    mCMSDataLenText->setEnabled( !bVal );
+
+    mJSONPayloadText->setEnabled( !bVal );
+    mJSONPayloadLenText->setEnabled( !bVal );
+
+    mXMLBodyText->setEnabled( !bVal );
+    mXMLBodyLenText->setEnabled( !bVal );
+}
+
+void DocSignerDlg::checkDstFile()
+{
+    bool bVal = mDstFileCheck->isChecked();
+
+    mDstPathText->setEnabled( bVal );
+    mFindDstPathBtn->setEnabled( bVal );
+}
+
 void DocSignerDlg::findSrcPath()
 {
     int index = mTabSigner->currentIndex();
@@ -161,20 +193,17 @@ void DocSignerDlg::findDstPath()
     mDstPathText->setText( strFileName );
 }
 
-void DocSignerDlg::checkCMSAuth()
+void DocSignerDlg::clickTSP()
 {
-    bool bVal = mCMSAuthCheck->isChecked();
-
-    mCMSUserLabel->setEnabled( bVal );
-    mCMSUserText->setEnabled( bVal );
-    mCMSPasswdLabel->setEnabled( bVal );
-    mCMSPasswdText->setEnabled( bVal );
+    TimeStampDlg tspDlg;
+    tspDlg.exec();
 }
 
 void DocSignerDlg::changeCMSData()
 {
+    QString strType = mCMSDataTypeCombo->currentText();
     QString strData = mCMSDataText->toPlainText();
-    QString strLen = getDataLenString( DATA_HEX, strData );
+    QString strLen = getDataLenString( strType, strData );
     mCMSDataLenText->setText( strLen );
 }
 
@@ -218,23 +247,38 @@ end :
     JS_BIN_reset( &binSrc );
 }
 
+void DocSignerDlg::clickCMSOutputClear()
+{
+    mCMSOutputText->clear();
+}
+
+void DocSignerDlg::clickCMSOutputDecode()
+{
+    BIN binOut = {0,0};
+
+    QString strOutput = mCMSOutputText->toPlainText();
+    getBINFromString( &binOut, DATA_HEX, strOutput );
+
+    berApplet->decodeData( &binOut );
+    JS_BIN_reset( &binOut );
+}
+
 void DocSignerDlg::initUI()
 {
     mHashCombo->addItems( kSHAHashList );
     mHashCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
 
     mTabSigner->setCurrentIndex(0);
+    mCMSDataTypeCombo->addItems( kDataTypeList );
+
+    checkSrcFile();
+    checkDstFile();
 }
 
 void DocSignerDlg::initialize()
 {
-    mCMS_URLCombo->setEditable( true );
     QStringList usedList = getUsedURL();
-    mCMS_URLCombo->addItems( usedList );
 
-    mCMSPolicyText->setPlaceholderText( "1.2.3.4" );
-
-    checkCMSAuth();
     changeSignerTab();
 }
 
@@ -261,9 +305,43 @@ void DocSignerDlg::setUsedURL( const QString strURL )
     list.insert( 0, strURL );
     settings.setValue( kTSPUsedURL, list );
     settings.endGroup();
+}
 
-    mCMS_URLCombo->clear();
-    mCMS_URLCombo->addItems( list );
+void DocSignerDlg::setDstFile()
+{
+    QString strExt = "der";
+    QString strSrcPath = mSrcPathText->text();
+    QString strDstPath = mDstPathText->text();
+
+    if( strSrcPath.length() < 1 )
+    {
+        QDateTime dateTime;
+        dateTime.setSecsSinceEpoch( time(NULL) );
+        QString strDateTime = dateTime.toString( "yyyyMMddHHmmss" );
+
+        strSrcPath = berApplet->curPath();
+        strSrcPath += "/";
+        strSrcPath += QString( "signer_%1.bin" ).arg( strDateTime );
+    }
+
+    if( strDstPath.length() < 1 )
+    {
+        QFileInfo fileInfo( strSrcPath );
+
+        if( mTabSigner->currentIndex() == 1 )
+            strExt = "json";
+        else if( mTabSigner->currentIndex() == 2 )
+            strExt = "xml";
+        else
+            strExt = "der";
+
+        strDstPath = QString( "%1/%2_dst.%3" )
+                         .arg( fileInfo.path() )
+                         .arg( fileInfo.baseName() )
+                         .arg( strExt );
+
+        mDstPathText->setText( strDstPath );
+    }
 }
 
 int DocSignerDlg::getPubKey( BIN *pPubKey )
@@ -440,10 +518,12 @@ int DocSignerDlg::getTSP( const BIN *pSrc, BIN *pTSP )
 {
     int ret = 0;
     int nUseNonce = 0;
+
+
     QString strHash = mHashCombo->currentText();
-    QString strPolicy = mCMSPolicyText->text();
+    QString strPolicy;
     const char *pPolicy = NULL;
-    QString strURL = mCMS_URLCombo->currentText();
+    QString strURL;
 
     BIN binReq = {0,0};
     BIN binRsp = {0,0};
@@ -452,37 +532,22 @@ int DocSignerDlg::getTSP( const BIN *pSrc, BIN *pTSP )
     int nStatus = -1;
     BIN binTST = {0,0};
 
-    if( strURL.length() < 1 )
-    {
-        berApplet->warningBox( tr( "Insert TSP URL"), this );
-        mCMS_URLCombo->setFocus();
-        ret = -1;
-        goto end;
-    }
+    TimeStampDlg tspDlg;
 
-    if( mCMSAuthCheck->isChecked() == true )
+    if( tspDlg.exec() != QDialog::Accepted )
+        return -1;
+
+    strURL = tspDlg.mURLCombo->currentText();
+    strPolicy = tspDlg.mPolicyText->text();
+
+    if( tspDlg.mAuthCheck->isChecked() == true )
     {
-        QString strUser = mCMSUserText->text();
-        QString strPass = mCMSPasswdText->text();
+        QString strUser = tspDlg.mUserNameText->text();
+        QString strPass = tspDlg.mPasswdText->text();
         QString strUP;
         BIN bin = {0,0};
         char *pBase64 = NULL;
 
-        if( strUser.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Enter a username" ), this );
-            mCMSUserText->setFocus();
-            ret = -1;
-            goto end;
-        }
-
-        if( strPass.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Enter a password" ), this );
-            mCMSPasswdText->setFocus();
-            ret = -1;
-            goto end;
-        }
 
         strUP = QString( "%1:%2" ).arg( strUser ).arg( strPass );
         JS_BIN_set( &bin, (unsigned char *)strUP.toStdString().c_str(), strUP.length() );
@@ -493,7 +558,7 @@ int DocSignerDlg::getTSP( const BIN *pSrc, BIN *pTSP )
         if( pBase64 ) JS_free( pBase64 );
     }
 
-    if( mCMSUseNonceCheck->isChecked() == true )
+    if( tspDlg.mUseNonceCheck->isChecked() == true )
         nUseNonce = 1;
 
     if( strPolicy.length() > 0 ) pPolicy = strPolicy.toStdString().c_str();
@@ -501,7 +566,7 @@ int DocSignerDlg::getTSP( const BIN *pSrc, BIN *pTSP )
     ret = JS_TSP_encodeRequest( pSrc, strHash.toStdString().c_str(), pPolicy, nUseNonce, &binReq );
     if( ret != 0 ) goto end;
 
-    if( mCMSAuthCheck->isChecked() == true )
+    if( tspDlg.mAuthCheck->isChecked() == true )
         ret = JS_HTTP_requestAuthPostBin( strURL.toStdString().c_str(), "application/tsp-request", strAuth.toStdString().c_str(), &binReq, &nStatus, &binRsp );
     else
         ret = JS_HTTP_requestPostBin( strURL.toStdString().c_str(), "application/tsp-request", &binReq, &nStatus, &binRsp );
@@ -530,19 +595,37 @@ void DocSignerDlg::clickCMSMakeSign()
     QString strHash = mHashCombo->currentText();
 
     QString strSrcPath = mSrcPathText->text();
-    if( strSrcPath.length() < 1 )
+
+    if( mSrcFileCheck->isChecked() == true )
     {
-        berApplet->warningBox( tr( "find a source xml" ), this );
-        mSrcPathText->setFocus();
-        return;
+        if( strSrcPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find a source xml" ), this );
+            mSrcPathText->setFocus();
+            return;
+        }
+
+        JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+    }
+    else
+    {
+        QString strData = mCMSDataText->toPlainText();
+        QString strType = mCMSDataTypeCombo->currentText();
+
+        if( strData.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a data" ), this );
+            mCMSDataText->setFocus();
+            return;
+        }
+
+        getBINFromString( &binSrc, strType, strData );
     }
 
     ret = getPriKeyCert( &binPri, &binCert );
     if( ret != 0 ) goto end;
 
-    JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
-
-    if( mCMS_TSPGroup->isChecked() == true )
+    if( mUseTSPCheck->isChecked() == true )
     {
         ret = getTSP( &binSrc, &binTSP );
         if( ret != 0 ) goto end;
@@ -561,22 +644,19 @@ void DocSignerDlg::clickCMSMakeSign()
         JS_BIN_reset( &cms_ );
         JS_BIN_copy( &cms_, &binSigned );
 
-        QString strDstPath = mDstPathText->text();
+        mCMSDataText->setPlainText( getHexString( &binSigned ));
 
-        if( strDstPath.length() < 1 )
+        if( mDstFileCheck->isChecked() == true )
         {
-            QFileInfo fileInfo( strSrcPath );
-
-            strDstPath = QString( "%1/%2_dst.%3" )
-                             .arg( fileInfo.path() )
-                             .arg( fileInfo.baseName() )
-                             .arg( "cms" );
-
-            mDstPathText->setText( strDstPath );
+            setDstFile();
+            QString strDstPath = mDstPathText->text();
+            JS_BIN_fileWrite( &binSigned, strDstPath.toLocal8Bit().toStdString().c_str() );
+            berApplet->messageBox( tr( "The CMS file[%1] has been saved." ).arg( strDstPath ), this );
         }
-
-        JS_BIN_fileWrite( &binSigned, strDstPath.toLocal8Bit().toStdString().c_str() );
-        berApplet->messageBox( tr( "The CMS file[%1] has been saved." ).arg( strDstPath ), this );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to make singed data: %1").arg( ret ), this );
     }
 
 end:
@@ -595,11 +675,29 @@ void DocSignerDlg::clickCMSVerifySign()
     BIN binData = {0,0};
 
     QString strSrcPath = mSrcPathText->text();
-    if( strSrcPath.length() < 1 )
+    if( mSrcFileCheck->isChecked() == true )
     {
-        berApplet->warningBox( tr( "find a source xml" ), this );
-        mSrcPathText->setFocus();
-        return;
+        if( strSrcPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find a source xml" ), this );
+            mSrcPathText->setFocus();
+            return;
+        }
+
+        JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+    }
+    else
+    {
+        QString strData = mCMSOutputText->toPlainText();
+
+        if( strData.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a data" ), this );
+            mCMSOutputText->setFocus();
+            return;
+        }
+
+        getBINFromString( &binSrc, DATA_HEX, strData );
     }
 
     ret = getCert( &binCert );
@@ -629,22 +727,15 @@ void DocSignerDlg::clickCMSVerifySign()
 
     if( binData.nLen > 0 )
     {
-        QString strDstPath = mDstPathText->text();
+        mCMSDataText->setPlainText( getHexString( &binData ));
 
-        if( strDstPath.length() < 1 )
+        if( mDstFileCheck->isChecked() == true )
         {
-            QFileInfo fileInfo( strSrcPath );
-
-            strDstPath = QString( "%1/%2_dst.%3" )
-                             .arg( fileInfo.path() )
-                             .arg( fileInfo.baseName() )
-                             .arg( "bin" );
-
-            mDstPathText->setText( strDstPath );
+            setDstFile();
+            QString strDstPath = mDstPathText->text();
+            JS_BIN_fileWrite( &binData, strDstPath.toLocal8Bit().toStdString().c_str() );
+            berApplet->messageBox( tr( "The data file[%1] has been saved." ).arg( strDstPath ), this );
         }
-
-        JS_BIN_fileWrite( &binData, strDstPath.toLocal8Bit().toStdString().c_str() );
-        berApplet->messageBox( tr( "The source has been saved to file[%1]" ).arg( strDstPath ), this );
     }
 
 end:
@@ -669,13 +760,40 @@ void DocSignerDlg::clickJSON_ComputeSignature()
 
     QString strAlg;
     QString strHash = mHashCombo->currentText();
-    QString strPayload = mJSONPayloadText->toPlainText();
+    QString strPayload;
 
-    if( strPayload.length() < 1 )
+    if( mSrcFileCheck->isChecked() == true )
     {
-        berApplet->warningBox( tr( "Enter a payload" ), this );
-        mJSONPayloadText->setFocus();
-        return;
+        BIN binSrc = {0,0};
+        QString strSrcPath = mSrcPathText->text();
+        char *pString = NULL;
+
+        if( strSrcPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find a source json" ), this );
+            mSrcPathText->setFocus();
+            return;
+        }
+
+        JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+        JS_BIN_string( &binSrc, &pString );
+
+        if( pString )
+        {
+            strPayload = pString;
+            JS_free( pString );
+        }
+    }
+    else
+    {
+        strPayload = mJSONPayloadText->toPlainText();
+
+        if( strPayload.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a payload" ), this );
+            mJSONPayloadText->setFocus();
+            return;
+        }
     }
 
     QJsonDocument jDoc = QJsonDocument::fromJson( strPayload.toLocal8Bit() );
@@ -700,6 +818,20 @@ void DocSignerDlg::clickJSON_ComputeSignature()
 
     mJSON_JWSText->setPlainText( objJson.getPacketJson() );
 
+    if( mDstFileCheck->isChecked() == true )
+    {
+        BIN binDst = {0,0};
+        QString strJWS = mJSON_JWSText->toPlainText();
+
+        JS_BIN_set( &binDst, (unsigned char *)strJWS.toStdString().c_str(), strJWS.length() );
+        setDstFile();
+
+        QString strDstPath = mDstPathText->text();
+        JS_BIN_fileWrite( &binDst, strDstPath.toLocal8Bit().toStdString().c_str() );
+        berApplet->messageBox( tr( "The json file[%1] has been saved." ).arg( strDstPath ), this );
+        JS_BIN_reset( &binDst );
+    }
+
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binPub );
 }
@@ -708,12 +840,38 @@ void DocSignerDlg::clickJSON_VerifySignature()
 {
     int ret = 0;
     BIN binPub = {0,0};
-    QString strJWS = mJSON_JWSText->toPlainText();
+    QString strJWS;
 
-    if( strJWS.length() < 1 )
+    if( mSrcFileCheck->isChecked() == true )
     {
-        berApplet->warningBox( tr("There is no JWS" ), this );
-        return;
+        BIN binSrc = {0,0};
+        QString strSrcPath = mSrcPathText->text();
+        char *pString = NULL;
+
+        if( strSrcPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find a source json" ), this );
+            mSrcPathText->setFocus();
+            return;
+        }
+
+        JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+        JS_BIN_string( &binSrc, &pString );
+
+        if( pString )
+        {
+            strJWS = pString;
+            JS_free( pString );
+        }
+    }
+    else
+    {
+        strJWS = mJSON_JWSText->toPlainText();
+        if( strJWS.length() < 1 )
+        {
+            berApplet->warningBox( tr("There is no JWS" ), this );
+            return;
+        }
     }
 
     ret = getPubKey( &binPub );
@@ -787,19 +945,35 @@ void DocSignerDlg::clickXML_BodyClear()
     mXMLBodyText->clear();
 }
 
+void DocSignerDlg::clickXML_ResClear()
+{
+    mXMLResText->clear();
+}
+
 void DocSignerDlg::clickXML_MakeSign()
 {
     int ret = 0;
+    QString strSrcPath;
+
     BIN binPri = {0,0};
     BIN binSrc = {0,0};
     BIN binDst = {0,0};
 
-    QString strSrcPath = mSrcPathText->text();
-    if( strSrcPath.length() < 1 )
+    if( mSrcFileCheck->isChecked() == true )
     {
-        berApplet->warningBox( tr( "find a source xml" ), this );
-        mSrcPathText->setFocus();
-        return;
+        strSrcPath = mSrcPathText->text();
+        if( strSrcPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find a source xml" ), this );
+            mSrcPathText->setFocus();
+            return;
+        }
+
+        JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+    }
+    else
+    {
+
     }
 
     QString strDstPath = mDstPathText->text();
@@ -815,7 +989,7 @@ void DocSignerDlg::clickXML_MakeSign()
         mDstPathText->setText( strDstPath );
     }
 
-    JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+
     ret = getPriKey( &binPri );
 
     JS_XML_init();

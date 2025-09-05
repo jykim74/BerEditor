@@ -24,14 +24,21 @@ private slots:
     void clickClearAll();
     void changeSignerTab();
 
+    void checkSrcFile();
+    void checkDstFile();
+
     void findSrcPath();
     void findDstPath();
 
-    void checkCMSAuth();
+    void clickTSP();
+
     void changeCMSData();
 
     void clickCMSClear();
     void clickCMSView();
+
+    void clickCMSOutputClear();
+    void clickCMSOutputDecode();
 
     void clickCMSMakeSign();
     void clickCMSVerifySign();
@@ -47,6 +54,7 @@ private slots:
     void changeJSON_JWS();
 
     void clickXML_BodyClear();
+    void clickXML_ResClear();
 
     void clickXML_MakeSign();
     void clickXML_MakeSign2();
@@ -70,6 +78,7 @@ private:
 
     QStringList getUsedURL();
     void setUsedURL( const QString strURL );
+    void setDstFile();
 
     ACMEObject json_obj_;
     QXmlStreamReader xml_;

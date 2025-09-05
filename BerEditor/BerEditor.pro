@@ -123,7 +123,7 @@ SOURCES += \
     one_list_dlg.cpp \
     two_list_dlg.cpp \
     doc_signer_dlg.cpp \
-    pdf_object.cpp
+    time_stamp_dlg.cpp
 
 
 HEADERS += \
@@ -213,7 +213,7 @@ HEADERS += \
     one_list_dlg.h \
     two_list_dlg.h \
     doc_signer_dlg.h \
-    pdf_object.h
+    time_stamp_dlg.h
 
 
 
@@ -355,7 +355,8 @@ FORMS += \
         chall_test_dlg.ui \
         one_list_dlg.ui \
         two_list_dlg.ui \
-        doc_signer_dlg.ui
+        doc_signer_dlg.ui \
+        time_stamp_dlg.ui
 
 RESOURCES += \
     bereditor.qrc
