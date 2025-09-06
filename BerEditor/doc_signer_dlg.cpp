@@ -1110,24 +1110,44 @@ end :
 void DocSignerDlg::clickXML_Encrypt()
 {
     int ret = 0;
-    BIN binBody = {0,0};
+
+    BIN binData = {0,0};
     BIN binKey = {0,0};
     BIN binSrc = {0,0};
     BIN binDst = {0,0};
 
-    QString strSrcPath = mSrcPathText->text();
-    if( strSrcPath.length() < 1 )
+    QString strSrcPath;
+
+    if( mSrcFileCheck->isChecked() == true )
     {
-        berApplet->warningBox( tr( "find a source xml" ), this );
-        mSrcPathText->setFocus();
-        return;
+        strSrcPath = mSrcPathText->text();
+        if( strSrcPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find a source xml" ), this );
+            mSrcPathText->setFocus();
+            return;
+        }
+
+        JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+    }
+    else
+    {
+        QString strBody = mXMLBodyText->toPlainText();
+        if( strBody.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a XML body" ), this );
+            mXMLBodyText->setFocus();
+            return;
+        }
+
+        JS_BIN_set( &binSrc, (unsigned char *)strBody.toStdString().c_str(), strBody.length() );
     }
 
-    QString strBody = mXMLBodyText->toPlainText();
-    if( strBody.length() < 1 )
+    QString strData = mXMLDataText->text();
+    if( strData.length() < 1 )
     {
-        berApplet->warningBox( tr( "Enter a body" ), this );
-        mXMLBodyText->setFocus();
+        berApplet->warningBox( tr( "Enter a data" ), this );
+        mXMLDataText->setFocus();
         return;
     }
 
@@ -1142,24 +1162,9 @@ void DocSignerDlg::clickXML_Encrypt()
 
     JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey );
 
-    getBINFromString( &binBody, DATA_STRING, strBody );
+    getBINFromString( &binData, DATA_STRING, strData );
 
     JS_XML_init();
-
-    QString strDstPath = mDstPathText->text();
-    if( strDstPath.length() < 1 )
-    {
-        QFileInfo fileInfo( strSrcPath );
-
-        strDstPath = QString( "%1/%2_dst.%3" )
-                         .arg( fileInfo.path() )
-                         .arg( fileInfo.baseName() )
-                         .arg( "xml" );
-
-        mDstPathText->setText( strDstPath );
-    }
-
-    JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
 
 #if 0
     ret = JS_XML_encryptWithInfo(
@@ -1168,8 +1173,7 @@ void DocSignerDlg::clickXML_Encrypt()
         &binBody,
         strDstPath.toLocal8Bit().toStdString().c_str() );
 #else
-    ret = JS_XML_encryptWithInfoBIN( &binSrc, &binKey, &binBody, &binDst );
-    if( ret == 0 ) JS_BIN_fileWrite( &binDst, strDstPath.toLocal8Bit().toStdString().c_str() );
+    ret = JS_XML_encryptWithInfoBIN( &binSrc, &binKey, &binData, &binDst );
 #endif
 
     if( ret < 0 )
@@ -1181,9 +1185,23 @@ void DocSignerDlg::clickXML_Encrypt()
         berApplet->messageBox( tr("XML Encrypt OK" ), this );
     }
 
+    if( ret == 0 )
+    {
+        mXMLResText->setPlainText( getHexString( &binDst ));
+
+        if( mDstFileCheck->isChecked() == true )
+        {
+            setDstFile();
+            QString strDstPath = mDstPathText->text();
+            JS_BIN_fileWrite( &binDst, strDstPath.toLocal8Bit().toStdString().c_str() );
+            berApplet->messageBox( tr( "The XML file[%1] has been saved." ).arg( strDstPath ), this );
+        }
+    }
+
 end :
     JS_XML_final();
-    JS_BIN_reset( &binBody );
+
+    JS_BIN_reset( &binData );
     JS_BIN_reset( &binKey );
     JS_BIN_reset( &binDst );
     JS_BIN_reset( &binSrc );
@@ -1198,12 +1216,31 @@ void DocSignerDlg::clickXML_Encrypt2()
     BIN binSrc = {0,0};
     BIN binDst = {0,0};
 
-    QString strSrcPath = mSrcPathText->text();
-    if( strSrcPath.length() < 1 )
+    QString strSrcPath;
+
+    if( mSrcFileCheck->isChecked() == true )
     {
-        berApplet->warningBox( tr( "find a source xml" ), this );
-        mSrcPathText->setFocus();
-        return;
+        strSrcPath = mSrcPathText->text();
+        if( strSrcPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find a source xml" ), this );
+            mSrcPathText->setFocus();
+            return;
+        }
+
+        JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+    }
+    else
+    {
+        QString strBody = mXMLBodyText->toPlainText();
+        if( strBody.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a XML body" ), this );
+            mXMLBodyText->setFocus();
+            return;
+        }
+
+        JS_BIN_set( &binSrc, (unsigned char *)strBody.toStdString().c_str(), strBody.length() );
     }
 
     KeyListDlg keyList;
@@ -1219,21 +1256,6 @@ void DocSignerDlg::clickXML_Encrypt2()
 
     JS_XML_init();
 
-    QString strDstPath = mDstPathText->text();
-    if( strDstPath.length() < 1 )
-    {
-        QFileInfo fileInfo( strSrcPath );
-
-        strDstPath = QString( "%1/%2_dst.%3" )
-                         .arg( fileInfo.path() )
-                         .arg( fileInfo.baseName() )
-                         .arg( "xml" );
-
-        mDstPathText->setText( strDstPath );
-    }
-
-    JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
-
 #if 0
     ret = JS_XML_encrypt(
         strSrcPath.toLocal8Bit().toStdString().c_str(),
@@ -1241,7 +1263,6 @@ void DocSignerDlg::clickXML_Encrypt2()
         strDstPath.toLocal8Bit().toStdString().c_str() );
 #else
     ret = JS_XML_encryptBIN( &binSrc, &binKey, &binDst );
-    if( ret == 0 ) JS_BIN_fileWrite( &binDst, strDstPath.toLocal8Bit().toStdString().c_str() );
 #endif
 
     if( ret < 0 )
@@ -1251,6 +1272,19 @@ void DocSignerDlg::clickXML_Encrypt2()
     else
     {
         berApplet->messageBox( tr("XML Encrypt OK" ), this );
+    }
+
+    if( ret == 0 )
+    {
+        mXMLResText->setPlainText( getHexString( &binDst ));
+
+        if( mDstFileCheck->isChecked() == true )
+        {
+            setDstFile();
+            QString strDstPath = mDstPathText->text();
+            JS_BIN_fileWrite( &binDst, strDstPath.toLocal8Bit().toStdString().c_str() );
+            berApplet->messageBox( tr( "The XML file[%1] has been saved." ).arg( strDstPath ), this );
+        }
     }
 
 end :
@@ -1332,12 +1366,31 @@ void DocSignerDlg::clickXML_Decrypt()
     BIN binSrc = {0,0};
     BIN binDst = {0,0};
 
-    QString strSrcPath = mSrcPathText->text();
-    if( strSrcPath.length() < 1 )
+    QString strSrcPath;
+
+    if( mSrcFileCheck->isChecked() == true )
     {
-        berApplet->warningBox( tr( "find a source xml" ), this );
-        mSrcPathText->setFocus();
-        return;
+        strSrcPath = mSrcPathText->text();
+        if( strSrcPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find a source xml" ), this );
+            mSrcPathText->setFocus();
+            return;
+        }
+
+        JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+    }
+    else
+    {
+        QString strBody = mXMLBodyText->toPlainText();
+        if( strBody.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a XML body" ), this );
+            mXMLBodyText->setFocus();
+            return;
+        }
+
+        JS_BIN_set( &binSrc, (unsigned char *)strBody.toStdString().c_str(), strBody.length() );
     }
 
     KeyListDlg keyList;
@@ -1375,7 +1428,6 @@ void DocSignerDlg::clickXML_Decrypt()
         strDstPath.toLocal8Bit().toStdString().c_str() );
 #else
     ret = JS_XML_decryptBIN( &binSrc, &binKey, &binDst );
-    if( ret == 0 ) JS_BIN_fileWrite( &binDst, strDstPath.toLocal8Bit().toStdString().c_str() );
 #endif
 
     if( ret < 0 )
@@ -1385,6 +1437,19 @@ void DocSignerDlg::clickXML_Decrypt()
     else
     {
         berApplet->messageBox( tr("XML Decrypt OK [%1]" ).arg( strDstPath ), this );
+    }
+
+    if( ret == 0 )
+    {
+        mXMLResText->setPlainText( getHexString( &binDst ));
+
+        if( mDstFileCheck->isChecked() == true )
+        {
+            setDstFile();
+            QString strDstPath = mDstPathText->text();
+            JS_BIN_fileWrite( &binDst, strDstPath.toLocal8Bit().toStdString().c_str() );
+            berApplet->messageBox( tr( "The XML file[%1] has been saved." ).arg( strDstPath ), this );
+        }
     }
 
 end :
