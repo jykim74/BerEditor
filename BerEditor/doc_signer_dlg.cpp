@@ -49,6 +49,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mTabSigner, SIGNAL(currentChanged(int)), this, SLOT(changeSignerTab()));
     connect( mTSPBtn, SIGNAL(clicked()), this, SLOT(clickTSP()));
 
+    connect( mCMSClearBtn, SIGNAL(clicked()), this, SLOT(clickCMSClear()));
     connect( mCMSDataText, SIGNAL(textChanged()), this, SLOT(changeCMSData()));
     connect( mCMSMakeSignBtn, SIGNAL(clicked()), this, SLOT(clickCMSMakeSign()));
     connect( mCMSVerifySignBtn, SIGNAL(clicked()), this, SLOT(clickCMSVerifySign()));
@@ -81,8 +82,8 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     layout()->setSpacing(5);
 
     mCMSClearBtn->setFixedWidth(34);
-    mCMS_TSPGroup->layout()->setMargin(5);
-    mCMS_TSPGroup->layout()->setSpacing(5);
+    mCMSOutputClearBtn->setFixedWidth(34);
+    mCMSOutputDecodeBtn->setFixedWidth(34);
 
     mJSONPayloadClearBtn->setFixedWidth(34);
     mJSONPayloadViewBtn->setFixedWidth(34);
@@ -90,6 +91,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     mJSON_JWSViewBtn->setFixedWidth(34);
 
     mXMLBodyClearBtn->setFixedWidth(34);
+    mXMLResClearBtn->setFixedWidth(34);
 
     mTabJSON->layout()->setSpacing(5);
     mTabJSON->layout()->setMargin(5);
@@ -644,7 +646,7 @@ void DocSignerDlg::clickCMSMakeSign()
         JS_BIN_reset( &cms_ );
         JS_BIN_copy( &cms_, &binSigned );
 
-        mCMSDataText->setPlainText( getHexString( &binSigned ));
+        mCMSOutputText->setPlainText( getHexString( &binSigned ));
 
         if( mDstFileCheck->isChecked() == true )
         {
@@ -984,19 +986,6 @@ void DocSignerDlg::clickXML_MakeSign()
         JS_BIN_set( &binSrc, (unsigned char *)strBody.toStdString().c_str(), strBody.length() );
     }
 
-    QString strDstPath = mDstPathText->text();
-    if( strDstPath.length() < 1 )
-    {
-        QFileInfo fileInfo( strSrcPath );
-
-        strDstPath = QString( "%1/%2_dst.%3" )
-                         .arg( fileInfo.path() )
-                         .arg( fileInfo.baseName() )
-                         .arg( "xml" );
-
-        mDstPathText->setText( strDstPath );
-    }
-
 
     ret = getPriKey( &binPri );
 
@@ -1008,7 +997,6 @@ void DocSignerDlg::clickXML_MakeSign()
                     strDstPath.toLocal8Bit().toStdString().c_str() );
 #else
     ret = JS_XML_signWithInfoBIN( &binSrc, &binPri, &binDst );
-    if( ret == 0 ) JS_BIN_fileWrite( &binDst, strDstPath.toLocal8Bit().toStdString().c_str() );
 #endif
 
     if( ret < 0 )
@@ -1076,19 +1064,6 @@ void DocSignerDlg::clickXML_MakeSign2()
         JS_BIN_set( &binSrc, (unsigned char *)strBody.toStdString().c_str(), strBody.length() );
     }
 
-    QString strDstPath = mDstPathText->text();
-    if( strDstPath.length() < 1 )
-    {
-        QFileInfo fileInfo( strSrcPath );
-
-        strDstPath = QString( "%1/%2_dst.%3" )
-                         .arg( fileInfo.path() )
-                         .arg( fileInfo.baseName() )
-                         .arg( "xml" );
-
-        mDstPathText->setText( strDstPath );
-    }
-
     JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
     ret = getPriKey( &binPri );
 
@@ -1099,7 +1074,6 @@ void DocSignerDlg::clickXML_MakeSign2()
                               strDstPath.toLocal8Bit().toStdString().c_str() );
 #else
     ret = JS_XML_signDocBIN( &binSrc, &binPri, &binDst );
-    if( ret == 0 ) JS_BIN_fileWrite( &binDst, strDstPath.toLocal8Bit().toStdString().c_str() );
 #endif
 
     if( ret < 0 )
