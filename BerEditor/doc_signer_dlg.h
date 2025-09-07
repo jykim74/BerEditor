@@ -64,6 +64,7 @@ private slots:
     void clickXML_Decrypt();
 
     void changeXML_Body();
+    void changeXML_Data();
 
 private:
     void initUI();

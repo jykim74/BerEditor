@@ -76,6 +76,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
 
     connect( mXMLBodyClearBtn, SIGNAL(clicked()), this, SLOT(clickXML_BodyClear()));
     connect( mXMLBodyText, SIGNAL(textChanged()), this, SLOT(changeXML_Body()));
+    connect( mXMLDataText, SIGNAL(textChanged(QString)), this, SLOT(changeXML_Data()));
     connect( mXMLResClearBtn, SIGNAL(clicked()), this, SLOT(clickXML_ResClear()));
 
 #if defined(Q_OS_MAC)
@@ -633,13 +634,21 @@ void DocSignerDlg::clickCMSMakeSign()
         if( ret != 0 ) goto end;
     }
 
+#if 0
     ret = JS_PKCS7_makeSignedDataWithTSP( strHash.toStdString().c_str(),
                                          &binSrc,
                                          &binPri,
                                          &binCert,
                                          &binTSP,
                                          &binSigned );
-
+#else
+    ret = JS_CMS_makeSignedDataWithTSP( strHash.toStdString().c_str(),
+                                         &binSrc,
+                                         &binPri,
+                                         &binCert,
+                                         &binTSP,
+                                         &binSigned );
+#endif
 
     if( ret == 0 )
     {
@@ -729,7 +738,30 @@ void DocSignerDlg::clickCMSVerifySign()
 
     if( binData.nLen > 0 )
     {
-        mCMSDataText->setPlainText( getHexString( &binData ));
+        if( mCMSDataTypeCombo->currentText() == "String" )
+        {
+            char *pString = NULL;
+            JS_BIN_string( &binData, &pString );
+            if( pString )
+            {
+                mCMSDataText->setPlainText( pString );
+                JS_free( pString );
+            }
+        }
+        else if( mCMSDataTypeCombo->currentText() == "Base64" )
+        {
+            char *pBase64 = NULL;
+            JS_BIN_encodeBase64( &binData, &pBase64 );
+            if( pBase64 )
+            {
+                mCMSDataText->setPlainText( pBase64 );
+                JS_free( pBase64 );
+            }
+        }
+        else
+        {
+            mCMSDataText->setPlainText( getHexString( &binData ));
+        }
 
         if( mDstFileCheck->isChecked() == true )
         {
@@ -1463,4 +1495,10 @@ void DocSignerDlg::changeXML_Body()
 {
     QString strBody = mXMLBodyText->toPlainText();
     mXMLBodyLenText->setText( QString("%1").arg( strBody.length() ));
+}
+
+void DocSignerDlg::changeXML_Data()
+{
+    int nLen = mXMLDataText->text().length();
+    mXMLDataLenText->setText( QString("%1").arg( nLen ));
 }
