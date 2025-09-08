@@ -56,6 +56,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mCMSVerifySignBtn, SIGNAL(clicked()), this, SLOT(clickCMSVerifySign()));
     connect( mCMSViewBtn, SIGNAL(clicked()), this, SLOT(clickCMSView()));
     connect( mCMSOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputClear()));
+    connect( mCMSOutputUpBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputUp()));
     connect( mCMSOutputDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputDecode()));
 
     connect( mJSONPayloadText, SIGNAL(textChanged()), this, SLOT(changeJSON_Payload()));
@@ -79,6 +80,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mXMLBodyText, SIGNAL(textChanged()), this, SLOT(changeXML_Body()));
     connect( mXMLDataText, SIGNAL(textChanged(QString)), this, SLOT(changeXML_Data()));
     connect( mXMLResClearBtn, SIGNAL(clicked()), this, SLOT(clickXML_ResClear()));
+    connect( mXMLResUpBtn, SIGNAL(clicked()), this, SLOT(clickXML_ResUp()));
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -220,6 +222,15 @@ void DocSignerDlg::changeCMSData()
 void DocSignerDlg::clickCMSClear()
 {
     mCMSDataText->clear();
+}
+
+void DocSignerDlg::clickCMSOutputUp()
+{
+    QString strOutput = mCMSOutputText->toPlainText();
+    mCMSDataTypeCombo->setCurrentText( "Hex" );
+    mCMSDataText->setPlainText( strOutput );
+
+    mCMSOutputText->clear();
 }
 
 void DocSignerDlg::clickCMSView()
@@ -708,12 +719,12 @@ void DocSignerDlg::clickCMSVerifySign()
     }
     else
     {
-        QString strData = mCMSOutputText->toPlainText();
+        QString strData = mCMSDataText->toPlainText();
 
         if( strData.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a data" ), this );
-            mCMSOutputText->setFocus();
+            mCMSDataText->setFocus();
             return;
         }
 
@@ -993,6 +1004,13 @@ void DocSignerDlg::clickXML_ResClear()
     mXMLResText->clear();
 }
 
+void DocSignerDlg::clickXML_ResUp()
+{
+    QString strRes = mXMLResText->toPlainText();
+    mXMLBodyText->setPlainText( strRes );
+    mXMLResText->clear();
+}
+
 void DocSignerDlg::clickXML_MakeSign()
 {
     int ret = 0;
@@ -1051,7 +1069,10 @@ void DocSignerDlg::clickXML_MakeSign()
 
     if( ret == JSR_OK )
     {
-        mXMLResText->setPlainText( getHexString( &binDst ));
+        char *pString = NULL;
+        JS_BIN_string( &binDst, &pString );
+        mXMLResText->setPlainText( pString );
+        if( pString ) JS_free( pString );
 
         if( mDstFileCheck->isChecked() == true )
         {
@@ -1128,7 +1149,10 @@ void DocSignerDlg::clickXML_MakeSign2()
 
     if( ret == JSR_OK )
     {
-        mXMLResText->setPlainText( getHexString( &binDst ));
+        char *pString = NULL;
+        JS_BIN_string( &binDst, &pString );
+        mXMLResText->setPlainText( pString );
+        if( pString ) JS_free( pString );
 
         if( mDstFileCheck->isChecked() == true )
         {

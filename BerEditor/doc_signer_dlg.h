@@ -36,6 +36,7 @@ private slots:
     void changeCMSData();
 
     void clickCMSClear();
+    void clickCMSOutputUp();
     void clickCMSView();
 
     void clickCMSOutputClear();
@@ -56,6 +57,7 @@ private slots:
 
     void clickXML_BodyClear();
     void clickXML_ResClear();
+    void clickXML_ResUp();
 
     void clickXML_MakeSign();
     void clickXML_MakeSign2();
