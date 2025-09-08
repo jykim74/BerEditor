@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>506</width>
-    <height>183</height>
+    <width>518</width>
+    <height>210</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -33,16 +33,22 @@
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout_3">
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="mPolicyText"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Policy</string>
+    <layout class="QGridLayout" name="gridLayout_4">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="mURLCombo">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
        </property>
       </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="mPolicyText"/>
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_2">
@@ -57,6 +63,13 @@
        </property>
       </widget>
      </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Policy</string>
+       </property>
+      </widget>
+     </item>
      <item row="1" column="2">
       <widget class="QCheckBox" name="mUseNonceCheck">
        <property name="text">
@@ -64,62 +77,59 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1" colspan="2">
-      <widget class="QComboBox" name="mURLCombo">
-       <property name="minimumSize">
-        <size>
-         <width>400</width>
-         <height>0</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="Line" name="line_3">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QGridLayout" name="gridLayout_4">
-     <item row="0" column="3">
-      <widget class="QLineEdit" name="mUserNameText"/>
-     </item>
      <item row="0" column="2">
-      <widget class="QLabel" name="mUserNameLabel">
-       <property name="text">
-        <string>Username</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QLabel" name="mPasswdLabel">
-       <property name="text">
-        <string>Password</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QCheckBox" name="mAuthCheck">
-       <property name="text">
-        <string>Authorization</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="5">
-      <widget class="QLineEdit" name="mPasswdText"/>
-     </item>
-     <item row="0" column="1">
-      <widget class="Line" name="line_4">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
+      <widget class="QComboBox" name="mHashCombo"/>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="mAuthGroup">
+     <property name="minimumSize">
+      <size>
+       <width>500</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Authorization</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QGridLayout" name="gridLayout_5">
+        <item row="0" column="2">
+         <widget class="QLabel" name="mPasswdLabel">
+          <property name="text">
+           <string>Password</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="mUserNameLabel">
+          <property name="text">
+           <string>Username</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="mUserNameText"/>
+        </item>
+        <item row="0" column="3">
+         <widget class="QLineEdit" name="mPasswdText">
+          <property name="echoMode">
+           <enum>QLineEdit::Password</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
     <widget class="Line" name="line">

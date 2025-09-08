@@ -18,7 +18,6 @@ public:
 
 private slots:
     void clickOK();
-    void checkAuth();
 
 private:
     void initUI();
@@ -26,6 +25,9 @@ private:
 
     QStringList getUsedURL();
     void setUsedURL( const QString strURL );
+
+    QString getTSPConfig();
+    void setTSPConfig( const QString strConfig );
 };
 
 #endif // TIME_STAMP_DLG_H

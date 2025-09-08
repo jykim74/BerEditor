@@ -523,7 +523,7 @@ int DocSignerDlg::getTSP( const BIN *pSrc, BIN *pTSP )
     int nUseNonce = 0;
 
 
-    QString strHash = mHashCombo->currentText();
+    QString strHash;
     QString strPolicy;
     const char *pPolicy = NULL;
     QString strURL;
@@ -542,8 +542,9 @@ int DocSignerDlg::getTSP( const BIN *pSrc, BIN *pTSP )
 
     strURL = tspDlg.mURLCombo->currentText();
     strPolicy = tspDlg.mPolicyText->text();
+    strHash = tspDlg.mHashCombo->currentText();
 
-    if( tspDlg.mAuthCheck->isChecked() == true )
+    if( tspDlg.mAuthGroup->isChecked() == true )
     {
         QString strUser = tspDlg.mUserNameText->text();
         QString strPass = tspDlg.mPasswdText->text();
@@ -569,7 +570,7 @@ int DocSignerDlg::getTSP( const BIN *pSrc, BIN *pTSP )
     ret = JS_TSP_encodeRequest( pSrc, strHash.toStdString().c_str(), pPolicy, nUseNonce, &binReq );
     if( ret != 0 ) goto end;
 
-    if( tspDlg.mAuthCheck->isChecked() == true )
+    if( tspDlg.mAuthGroup->isChecked() == true )
         ret = JS_HTTP_requestAuthPostBin( strURL.toStdString().c_str(), "application/tsp-request", strAuth.toStdString().c_str(), &binReq, &nStatus, &binRsp );
     else
         ret = JS_HTTP_requestPostBin( strURL.toStdString().c_str(), "application/tsp-request", &binReq, &nStatus, &binRsp );
