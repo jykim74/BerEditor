@@ -30,6 +30,7 @@ private slots:
     void findSrcPath();
     void findDstPath();
 
+    void checkUseTSP();
     void clickTSP();
 
     void changeCMSData();

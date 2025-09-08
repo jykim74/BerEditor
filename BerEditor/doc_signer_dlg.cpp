@@ -47,6 +47,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mDstFileCheck, SIGNAL(clicked()), this, SLOT(checkDstFile()));
 
     connect( mTabSigner, SIGNAL(currentChanged(int)), this, SLOT(changeSignerTab()));
+    connect( mUseTSPCheck, SIGNAL(clicked()), this, SLOT(checkUseTSP()));
     connect( mTSPBtn, SIGNAL(clicked()), this, SLOT(clickTSP()));
 
     connect( mCMSClearBtn, SIGNAL(clicked()), this, SLOT(clickCMSClear()));
@@ -196,6 +197,12 @@ void DocSignerDlg::findDstPath()
     mDstPathText->setText( strFileName );
 }
 
+void DocSignerDlg::checkUseTSP()
+{
+    bool bVal = mUseTSPCheck->isChecked();
+    mTSPBtn->setEnabled( bVal );
+}
+
 void DocSignerDlg::clickTSP()
 {
     TimeStampDlg tspDlg;
@@ -276,6 +283,7 @@ void DocSignerDlg::initUI()
 
     checkSrcFile();
     checkDstFile();
+    checkUseTSP();
 }
 
 void DocSignerDlg::initialize()
