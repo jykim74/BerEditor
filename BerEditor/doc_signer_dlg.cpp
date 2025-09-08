@@ -1032,7 +1032,7 @@ void DocSignerDlg::clickXML_MakeSign()
     ret = JS_XML_signWithInfoBIN( &binSrc, &binPri, &binDst );
 #endif
 
-    if( ret < 0 )
+    if( ret != JSR_OK )
     {
         berApplet->warningBox( tr( "fail to make signature: %1").arg( ret ), this );
     }
@@ -1041,7 +1041,7 @@ void DocSignerDlg::clickXML_MakeSign()
         berApplet->messageBox( tr("XML Signature OK" ), this );
     }
 
-    if( ret == 0 )
+    if( ret == JSR_OK )
     {
         mXMLResText->setPlainText( getHexString( &binDst ));
 
@@ -1109,7 +1109,7 @@ void DocSignerDlg::clickXML_MakeSign2()
     ret = JS_XML_signDocBIN( &binSrc, &binPri, &binDst );
 #endif
 
-    if( ret < 0 )
+    if( ret != JSR_OK )
     {
         berApplet->warningBox( tr( "fail to make signature: %1").arg( ret ), this );
     }
@@ -1118,7 +1118,7 @@ void DocSignerDlg::clickXML_MakeSign2()
         berApplet->messageBox( tr("XML Signature OK" ), this );
     }
 
-    if( ret == 0 )
+    if( ret == JSR_OK )
     {
         mXMLResText->setPlainText( getHexString( &binDst ));
 
@@ -1209,7 +1209,7 @@ void DocSignerDlg::clickXML_Encrypt()
     ret = JS_XML_encryptWithInfoBIN( &binSrc, &binKey, &binData, &binDst );
 #endif
 
-    if( ret < 0 )
+    if( ret != JSR_OK )
     {
         berApplet->warningBox( tr( "fail to encrypt: %1").arg( ret ), this );
     }
@@ -1218,7 +1218,7 @@ void DocSignerDlg::clickXML_Encrypt()
         berApplet->messageBox( tr("XML Encrypt OK" ), this );
     }
 
-    if( ret == 0 )
+    if( ret == JSR_OK )
     {
         mXMLResText->setPlainText( getHexString( &binDst ));
 
@@ -1298,7 +1298,7 @@ void DocSignerDlg::clickXML_Encrypt2()
     ret = JS_XML_encryptBIN( &binSrc, &binKey, &binDst );
 #endif
 
-    if( ret < 0 )
+    if( ret != JSR_OK )
     {
         berApplet->warningBox( tr( "fail to encrypt: %1").arg( ret ), this );
     }
@@ -1307,7 +1307,7 @@ void DocSignerDlg::clickXML_Encrypt2()
         berApplet->messageBox( tr("XML Encrypt OK" ), this );
     }
 
-    if( ret == 0 )
+    if( ret == JSR_OK )
     {
         mXMLResText->setPlainText( getHexString( &binDst ));
 
@@ -1354,7 +1354,7 @@ void DocSignerDlg::clickXML_VerifySign()
         QString strBody = mXMLBodyText->toPlainText();
         if( strBody.length() < 1 )
         {
-            berApplet->warningBox( tr( "Enter a XML body" ), this );
+            berApplet->warningBox( tr( "Enter a XML signature to body" ), this );
             mXMLBodyText->setFocus();
             return;
         }
@@ -1463,7 +1463,7 @@ void DocSignerDlg::clickXML_Decrypt()
     ret = JS_XML_decryptBIN( &binSrc, &binKey, &binDst );
 #endif
 
-    if( ret < 0 )
+    if( ret != JSR_OK )
     {
         berApplet->warningBox( tr( "fail to decrypt: %1").arg( ret ), this );
     }
@@ -1472,7 +1472,7 @@ void DocSignerDlg::clickXML_Decrypt()
         berApplet->messageBox( tr("XML Decrypt OK [%1]" ).arg( strDstPath ), this );
     }
 
-    if( ret == 0 )
+    if( ret == JSR_OK )
     {
         mXMLResText->setPlainText( getHexString( &binDst ));
 
