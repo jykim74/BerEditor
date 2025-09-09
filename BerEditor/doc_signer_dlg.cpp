@@ -1086,6 +1086,9 @@ void DocSignerDlg::clickJSON_VerifySignature()
     acmeObj.setObjectFromJson( strJWS );
 
     ret = acmeObj.verifySignature( &binPub );
+
+    mJSON_JWSText->setPlainText( acmeObj.getPayloadJSON() );
+
     if( ret == JSR_VERIFY )
         berApplet->messageBox( tr("Verify OK" ), this );
     else

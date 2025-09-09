@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>527</width>
-    <height>539</height>
+    <width>624</width>
+    <height>690</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -120,7 +120,7 @@
     <widget class="QTabWidget" name="mTabSigner">
      <property name="minimumSize">
       <size>
-       <width>500</width>
+       <width>600</width>
        <height>0</height>
       </size>
      </property>
