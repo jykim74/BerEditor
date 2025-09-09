@@ -694,7 +694,7 @@ void DocSignerDlg::clickCMSMakeSign()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to make singed data: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "fail to make singed data: %1").arg( JERR( ret ) ), this );
     }
 
 end:
@@ -760,7 +760,7 @@ void DocSignerDlg::clickCMSVerifySign()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to verify: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "fail to verify: %1").arg( JERR( ret ) ), this );
     }
 
     if( binData.nLen > 0 )
@@ -944,7 +944,7 @@ void DocSignerDlg::clickJSON_VerifySignature()
     if( ret == JSR_VERIFY )
         berApplet->messageBox( tr("Verify OK" ), this );
     else
-        berApplet->warningBox( tr("Verify fail: %1").arg( ret ), this );
+        berApplet->warningBox( tr("Verify fail: %1").arg( JERR( ret ) ), this );
 
     JS_BIN_reset( &binPub );
 }
@@ -1080,7 +1080,7 @@ void DocSignerDlg::clickXML_MakeSign()
 
     if( ret != JSR_OK )
     {
-        berApplet->warningBox( tr( "fail to make signature: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "fail to make signature: %1").arg( JERR( ret ) ), this );
     }
     else
     {
@@ -1190,7 +1190,7 @@ void DocSignerDlg::clickXML_Encrypt()
 
     if( ret != JSR_OK )
     {
-        berApplet->warningBox( tr( "fail to encrypt: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "fail to encrypt: %1").arg( JERR( ret ) ), this );
     }
     else
     {
@@ -1274,7 +1274,7 @@ void DocSignerDlg::clickXML_VerifySign()
     }
     else
     {
-        berApplet->warningBox( tr( "fail to verify: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "fail to verify: %1").arg( JERR( ret ) ), this );
     }
 
 end :
@@ -1358,7 +1358,7 @@ void DocSignerDlg::clickXML_Decrypt()
 
     if( ret != JSR_OK )
     {
-        berApplet->warningBox( tr( "fail to decrypt: %1").arg( ret ), this );
+        berApplet->warningBox( tr( "fail to decrypt: %1").arg( JERR( ret ) ), this );
     }
     else
     {
