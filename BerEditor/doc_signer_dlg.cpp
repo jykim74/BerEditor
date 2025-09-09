@@ -693,7 +693,7 @@ void DocSignerDlg::clickCMSMakeSign()
                                          &binSigned );
 #endif
 
-    if( ret == 0 )
+    if( ret == JSR_OK )
     {
         JS_BIN_reset( &cms_ );
         JS_BIN_copy( &cms_, &binSigned );
@@ -707,6 +707,8 @@ void DocSignerDlg::clickCMSMakeSign()
             JS_BIN_fileWrite( &binSigned, strDstPath.toLocal8Bit().toStdString().c_str() );
             berApplet->messageBox( tr( "The CMS file[%1] has been saved." ).arg( strDstPath ), this );
         }
+
+        berApplet->messageBox( tr( "Signed data creation success" ), this );
     }
     else
     {
@@ -767,15 +769,6 @@ void DocSignerDlg::clickCMSVerifySign()
 
     ret = JS_PKCS7_verifySignedData( &binSrc, &binCert, &binData );
 
-    if( ret == JSR_VERIFY )
-    {
-        berApplet->messageBox( tr( "Verify OK" ), this );
-    }
-    else
-    {
-        berApplet->warningBox( tr( "fail to verify: %1").arg( JERR( ret ) ), this );
-    }
-
     if( binData.nLen > 0 )
     {
         mCMSOutputText->setPlainText( getHexString( &binData ));
@@ -787,6 +780,15 @@ void DocSignerDlg::clickCMSVerifySign()
             JS_BIN_fileWrite( &binData, strDstPath.toLocal8Bit().toStdString().c_str() );
             berApplet->messageBox( tr( "The data file[%1] has been saved." ).arg( strDstPath ), this );
         }
+    }
+
+    if( ret == JSR_VERIFY )
+    {
+        berApplet->messageBox( tr( "Verify OK" ), this );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to verify: %1").arg( JERR( ret ) ), this );
     }
 
 end:
@@ -912,14 +914,6 @@ void DocSignerDlg::clickCMSDevelopedData()
     }
 
     ret = JS_PKCS7_makeDevelopedData( &binSrc, &binPri, &binCert, &binData );
-    if( ret == JSR_OK )
-    {
-        berApplet->messageBox( tr( "Developed data OK" ), this );
-    }
-    else
-    {
-        berApplet->warningBox( tr( "fail to develop data: %1").arg( JERR( ret ) ), this );
-    }
 
     if( binData.nLen > 0 )
     {
@@ -936,6 +930,17 @@ void DocSignerDlg::clickCMSDevelopedData()
             berApplet->messageBox( tr( "The data file[%1] has been saved." ).arg( strDstPath ), this );
         }
     }
+
+    if( ret == JSR_OK )
+    {
+        berApplet->messageBox( tr( "Developed data OK" ), this );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to develop data: %1").arg( JERR( ret ) ), this );
+    }
+
+
 
 end:
     JS_BIN_reset( &binPri );
@@ -1225,15 +1230,6 @@ void DocSignerDlg::clickXML_MakeSign()
         ret = JS_XML_signDocBIN( &binSrc, &binPri, &binCert, &binDst );
 #endif
 
-    if( ret != JSR_OK )
-    {
-        berApplet->warningBox( tr( "fail to make signature: %1").arg( JERR( ret ) ), this );
-    }
-    else
-    {
-        berApplet->messageBox( tr("XML Signature OK" ), this );
-    }
-
     if( ret == JSR_OK )
     {
         char *pString = NULL;
@@ -1248,6 +1244,12 @@ void DocSignerDlg::clickXML_MakeSign()
             JS_BIN_fileWrite( &binDst, strDstPath.toLocal8Bit().toStdString().c_str() );
             berApplet->messageBox( tr( "The XML file[%1] has been saved." ).arg( strDstPath ), this );
         }
+
+        berApplet->messageBox( tr("XML Signature OK" ), this );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to make signature: %1").arg( JERR( ret ) ), this );
     }
 
 end :
@@ -1335,15 +1337,6 @@ void DocSignerDlg::clickXML_Encrypt()
         ret = JS_XML_encryptBIN( &binSrc, &binKey, &binDst );
 #endif
 
-    if( ret != JSR_OK )
-    {
-        berApplet->warningBox( tr( "fail to encrypt: %1").arg( JERR( ret ) ), this );
-    }
-    else
-    {
-        berApplet->messageBox( tr("XML Encrypt OK" ), this );
-    }
-
     if( ret == JSR_OK )
     {
         mXMLResText->setPlainText( getHexString( &binDst ));
@@ -1355,7 +1348,14 @@ void DocSignerDlg::clickXML_Encrypt()
             JS_BIN_fileWrite( &binDst, strDstPath.toLocal8Bit().toStdString().c_str() );
             berApplet->messageBox( tr( "The XML file[%1] has been saved." ).arg( strDstPath ), this );
         }
+
+        berApplet->messageBox( tr("XML Encrypt OK" ), this );
     }
+    else
+    {
+        berApplet->warningBox( tr( "fail to encrypt: %1").arg( JERR( ret ) ), this );
+    }
+
 
 end :
     JS_XML_final();
@@ -1503,15 +1503,6 @@ void DocSignerDlg::clickXML_Decrypt()
     ret = JS_XML_decryptBIN( &binSrc, &binKey, &binDst );
 #endif
 
-    if( ret != JSR_OK )
-    {
-        berApplet->warningBox( tr( "fail to decrypt: %1").arg( JERR( ret ) ), this );
-    }
-    else
-    {
-        berApplet->messageBox( tr("XML Decrypt OK [%1]" ).arg( strDstPath ), this );
-    }
-
     if( ret == JSR_OK )
     {
         mXMLResText->setPlainText( getHexString( &binDst ));
@@ -1523,6 +1514,12 @@ void DocSignerDlg::clickXML_Decrypt()
             JS_BIN_fileWrite( &binDst, strDstPath.toLocal8Bit().toStdString().c_str() );
             berApplet->messageBox( tr( "The XML file[%1] has been saved." ).arg( strDstPath ), this );
         }
+
+        berApplet->messageBox( tr("XML Decrypt OK [%1]" ).arg( strDstPath ), this );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to decrypt: %1").arg( JERR( ret ) ), this );
     }
 
 end :

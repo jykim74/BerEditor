@@ -6629,58 +6629,58 @@ mailto : jykim74@gmail.com</translation>
         <translation>전체 지우기</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="258"/>
+        <location filename="../doc_signer_dlg.cpp" line="266"/>
         <source>find a source cms</source>
         <translation>소스 CMS를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="269"/>
+        <location filename="../doc_signer_dlg.cpp" line="277"/>
         <source>This is not a CMS message</source>
         <translation>CMS 메세지가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="306"/>
+        <location filename="../doc_signer_dlg.cpp" line="314"/>
         <source>data for encryption</source>
         <translation>암호용 데이타</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="394"/>
-        <location filename="../doc_signer_dlg.cpp" line="434"/>
-        <location filename="../doc_signer_dlg.cpp" line="453"/>
-        <location filename="../doc_signer_dlg.cpp" line="495"/>
-        <location filename="../doc_signer_dlg.cpp" line="540"/>
+        <location filename="../doc_signer_dlg.cpp" line="402"/>
+        <location filename="../doc_signer_dlg.cpp" line="442"/>
+        <location filename="../doc_signer_dlg.cpp" line="461"/>
+        <location filename="../doc_signer_dlg.cpp" line="503"/>
+        <location filename="../doc_signer_dlg.cpp" line="548"/>
         <source>Select a sign certificate</source>
         <translation>서명용 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="411"/>
-        <location filename="../doc_signer_dlg.cpp" line="467"/>
-        <location filename="../doc_signer_dlg.cpp" line="514"/>
+        <location filename="../doc_signer_dlg.cpp" line="419"/>
+        <location filename="../doc_signer_dlg.cpp" line="475"/>
+        <location filename="../doc_signer_dlg.cpp" line="522"/>
         <source>Select keypair</source>
         <translation>키 쌍을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1256"/>
-        <location filename="../doc_signer_dlg.cpp" line="1343"/>
+        <location filename="../doc_signer_dlg.cpp" line="1197"/>
+        <location filename="../doc_signer_dlg.cpp" line="1281"/>
+        <location filename="../doc_signer_dlg.cpp" line="1385"/>
         <location filename="../doc_signer_dlg.cpp" line="1449"/>
-        <location filename="../doc_signer_dlg.cpp" line="1513"/>
         <source>find a source xml</source>
         <translation>소스 XML을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="655"/>
-        <location filename="../doc_signer_dlg.cpp" line="841"/>
-        <location filename="../doc_signer_dlg.cpp" line="1368"/>
+        <location filename="../doc_signer_dlg.cpp" line="663"/>
+        <location filename="../doc_signer_dlg.cpp" line="828"/>
+        <location filename="../doc_signer_dlg.cpp" line="1306"/>
         <source>Enter a data</source>
         <translation>데이타를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="700"/>
+        <location filename="../doc_signer_dlg.cpp" line="708"/>
         <source>The CMS file[%1] has been saved.</source>
         <translation>CMS 파일[%1] 이 저장 되었습니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="705"/>
+        <location filename="../doc_signer_dlg.cpp" line="715"/>
         <source>fail to make singed data: %1</source>
         <translation>서명 데이타 생성 실패: %1</translation>
     </message>
@@ -6689,174 +6689,179 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">서명된 데이타 CMS 메세지가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="765"/>
-        <location filename="../doc_signer_dlg.cpp" line="1149"/>
+        <location filename="../doc_signer_dlg.cpp" line="787"/>
+        <location filename="../doc_signer_dlg.cpp" line="1090"/>
         <source>Verify OK</source>
         <translation>검증 성공</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="769"/>
-        <location filename="../doc_signer_dlg.cpp" line="1488"/>
+        <location filename="../doc_signer_dlg.cpp" line="791"/>
+        <location filename="../doc_signer_dlg.cpp" line="1424"/>
         <source>fail to verify: %1</source>
         <translation>검증 실패: %1</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="804"/>
-        <location filename="../doc_signer_dlg.cpp" line="898"/>
-        <location filename="../doc_signer_dlg.cpp" line="1000"/>
+        <location filename="../doc_signer_dlg.cpp" line="781"/>
+        <location filename="../doc_signer_dlg.cpp" line="861"/>
+        <location filename="../doc_signer_dlg.cpp" line="930"/>
         <source>The data file[%1] has been saved.</source>
         <translation>데이타 파일[%1]이 저장 되었습니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1037"/>
-        <location filename="../doc_signer_dlg.cpp" line="1117"/>
+        <location filename="../doc_signer_dlg.cpp" line="978"/>
+        <location filename="../doc_signer_dlg.cpp" line="1058"/>
         <source>find a source json</source>
         <translation>소스 JSON 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1057"/>
+        <location filename="../doc_signer_dlg.cpp" line="998"/>
         <source>Enter a payload</source>
         <translation>페이로드를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1066"/>
+        <location filename="../doc_signer_dlg.cpp" line="1007"/>
         <source>Payload is not object</source>
         <translation>페이로드가 오브젝트가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1095"/>
+        <location filename="../doc_signer_dlg.cpp" line="1036"/>
         <source>The json file[%1] has been saved.</source>
         <translation>JSON 파일[%1]이 저장 되었습니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1193"/>
+        <location filename="../doc_signer_dlg.cpp" line="1134"/>
         <source>There is no JWS</source>
         <translation>JWS가 없습니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1151"/>
+        <location filename="../doc_signer_dlg.cpp" line="1092"/>
         <source>Verify fail: %1</source>
         <translation>검증 실패 : %1</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="641"/>
+        <location filename="../doc_signer_dlg.cpp" line="649"/>
         <source>find a source</source>
         <translation>소스를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="728"/>
-        <location filename="../doc_signer_dlg.cpp" line="921"/>
+        <location filename="../doc_signer_dlg.cpp" line="711"/>
+        <source>Signed data creation success</source>
+        <translation>SignedData 생성 성공</translation>
+    </message>
+    <message>
+        <location filename="../doc_signer_dlg.cpp" line="738"/>
+        <location filename="../doc_signer_dlg.cpp" line="884"/>
         <source>find a source CMS</source>
         <translation>소스 CMS를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="741"/>
-        <location filename="../doc_signer_dlg.cpp" line="934"/>
+        <location filename="../doc_signer_dlg.cpp" line="752"/>
+        <location filename="../doc_signer_dlg.cpp" line="898"/>
         <source>Enter a CMS</source>
         <translation>CMS을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="755"/>
+        <location filename="../doc_signer_dlg.cpp" line="766"/>
         <source>This is not a signed data message:%1</source>
         <translation>서명된 데이타 메세지가 아닙니다: %1</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="828"/>
+        <location filename="../doc_signer_dlg.cpp" line="814"/>
         <source>Find a source file</source>
         <translation>소스 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="859"/>
+        <location filename="../doc_signer_dlg.cpp" line="842"/>
         <source>Enveloped Data OK</source>
         <translation>복화화된 데이타 성공</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="863"/>
+        <location filename="../doc_signer_dlg.cpp" line="846"/>
         <source>fail to envelop data: %1</source>
         <translation>암호화 데이타 실패: %1</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="951"/>
+        <location filename="../doc_signer_dlg.cpp" line="912"/>
         <source>This is not a enveloped data message:%1</source>
         <translation>암호화된 데이타가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="961"/>
+        <location filename="../doc_signer_dlg.cpp" line="936"/>
         <source>Developed data OK</source>
         <translation>복호화 데이타 성공</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="965"/>
+        <location filename="../doc_signer_dlg.cpp" line="940"/>
         <source>fail to develop data: %1</source>
         <translation>DevelopData 실패: %1</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1136"/>
+        <location filename="../doc_signer_dlg.cpp" line="1077"/>
         <source>There is no JWS payload</source>
         <translation>JWS 페이로드가 없습니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1178"/>
+        <location filename="../doc_signer_dlg.cpp" line="1119"/>
         <source>There is no payload</source>
         <translation>페이로드가 없습니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1268"/>
-        <location filename="../doc_signer_dlg.cpp" line="1355"/>
-        <location filename="../doc_signer_dlg.cpp" line="1525"/>
+        <location filename="../doc_signer_dlg.cpp" line="1209"/>
+        <location filename="../doc_signer_dlg.cpp" line="1293"/>
+        <location filename="../doc_signer_dlg.cpp" line="1461"/>
         <source>Enter a XML body</source>
         <translation>XML 본문을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1294"/>
+        <location filename="../doc_signer_dlg.cpp" line="1252"/>
         <source>fail to make signature: %1</source>
         <translation>서명 생성 실패: %1</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1298"/>
+        <location filename="../doc_signer_dlg.cpp" line="1248"/>
         <source>XML Signature OK</source>
         <translation>XML 서명 성공</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1313"/>
-        <location filename="../doc_signer_dlg.cpp" line="1420"/>
-        <location filename="../doc_signer_dlg.cpp" line="1588"/>
+        <location filename="../doc_signer_dlg.cpp" line="1245"/>
+        <location filename="../doc_signer_dlg.cpp" line="1349"/>
+        <location filename="../doc_signer_dlg.cpp" line="1515"/>
         <source>The XML file[%1] has been saved.</source>
         <translation>XML 파일[%1]이 저장 되었습니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1377"/>
-        <location filename="../doc_signer_dlg.cpp" line="1534"/>
+        <location filename="../doc_signer_dlg.cpp" line="1315"/>
+        <location filename="../doc_signer_dlg.cpp" line="1470"/>
         <source>Select key</source>
         <translation>키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1404"/>
+        <location filename="../doc_signer_dlg.cpp" line="1356"/>
         <source>fail to encrypt: %1</source>
         <translation>암호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1408"/>
+        <location filename="../doc_signer_dlg.cpp" line="1352"/>
         <source>XML Encrypt OK</source>
         <translation>XML 암호화 성공</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1461"/>
+        <location filename="../doc_signer_dlg.cpp" line="1397"/>
         <source>Enter a XML signature to body</source>
         <translation>본문에 XML 서명 데이타를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1484"/>
+        <location filename="../doc_signer_dlg.cpp" line="1420"/>
         <source>XML Verify OK</source>
         <translation>XML 검증 성공</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1572"/>
+        <location filename="../doc_signer_dlg.cpp" line="1522"/>
         <source>fail to decrypt: %1</source>
         <translation>복호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1576"/>
+        <location filename="../doc_signer_dlg.cpp" line="1518"/>
         <source>XML Decrypt OK [%1]</source>
         <translation>XML 복호화 성공 [%1]</translation>
     </message>
