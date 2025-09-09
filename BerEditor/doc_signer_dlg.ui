@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>527</width>
-    <height>717</height>
+    <height>539</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -84,13 +84,6 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="0">
-      <widget class="QCheckBox" name="mUseCertManCheck">
-       <property name="text">
-        <string>Use CertMan</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="3">
       <widget class="QComboBox" name="mHashCombo"/>
      </item>
@@ -98,6 +91,13 @@
       <widget class="QLabel" name="label_4">
        <property name="text">
         <string>Hash</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QCheckBox" name="mUseCertManCheck">
+       <property name="text">
+        <string>Use CertMan</string>
        </property>
       </widget>
      </item>
@@ -272,27 +272,6 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="1">
-          <widget class="QPushButton" name="mTSPBtn">
-           <property name="text">
-            <string>TSP</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
-          <widget class="QPushButton" name="mCMSMakeSignBtn">
-           <property name="text">
-            <string>Make Sign</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QCheckBox" name="mUseTSPCheck">
-           <property name="text">
-            <string>Use TimeStamp</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="2">
           <spacer name="horizontalSpacer_15">
            <property name="orientation">
@@ -305,6 +284,34 @@
             </size>
            </property>
           </spacer>
+         </item>
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="mUseTSPCheck">
+           <property name="text">
+            <string>Use TimeStamp</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QPushButton" name="mCMSMakeSignBtn">
+           <property name="text">
+            <string>Make Sign</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="mTSPBtn">
+           <property name="text">
+            <string>TSP</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QPushButton" name="mCMSVerifySignBtn">
+           <property name="text">
+            <string>Verify Sign</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -320,58 +327,7 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="2">
-          <widget class="QPushButton" name="mCMSOutputDecodeBtn">
-           <property name="minimumSize">
-            <size>
-             <width>20</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>20</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>D</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_6">
-           <property name="minimumSize">
-            <size>
-             <width>60</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>CMS</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QPushButton" name="mCMSOutputClearBtn">
-           <property name="minimumSize">
-            <size>
-             <width>20</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>20</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>C</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="5">
+         <item row="0" column="6">
           <widget class="QLineEdit" name="mCMSOutputLenText">
            <property name="minimumSize">
             <size>
@@ -417,7 +373,7 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="3">
+         <item row="0" column="4">
           <spacer name="horizontalSpacer_11">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -430,7 +386,26 @@
            </property>
           </spacer>
          </item>
-         <item row="0" column="4">
+         <item row="0" column="2">
+          <widget class="QPushButton" name="mCMSOutputDecodeBtn">
+           <property name="minimumSize">
+            <size>
+             <width>20</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>D</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="5">
           <widget class="QPushButton" name="mCMSOutputUpBtn">
            <property name="minimumSize">
             <size>
@@ -446,6 +421,57 @@
            </property>
            <property name="text">
             <string>⬆</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_6">
+           <property name="minimumSize">
+            <size>
+             <width>60</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>CMS</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="mCMSOutputClearBtn">
+           <property name="minimumSize">
+            <size>
+             <width>20</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>C</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QPushButton" name="mCMSViewBtn">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>CMS View</string>
            </property>
           </widget>
          </item>
@@ -484,49 +510,6 @@
           <bool>true</bool>
          </property>
         </widget>
-       </item>
-       <item>
-        <layout class="QGridLayout" name="gridLayout_13">
-         <item row="0" column="3">
-          <widget class="QPushButton" name="mCMSVerifySignBtn">
-           <property name="text">
-            <string>Verify Sign</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <spacer name="horizontalSpacer_12">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="0" column="0">
-          <widget class="QPushButton" name="mCMSViewBtn">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>CMS View</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
        </item>
       </layout>
      </widget>
@@ -651,14 +634,14 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="1">
-          <widget class="QPushButton" name="mJSONComputeSignatureBtn">
+         <item row="0" column="3">
+          <widget class="QPushButton" name="mJSONVerifySignatureBtn">
            <property name="text">
-            <string>Compute Signature</string>
+            <string>Verify Signature</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
+         <item row="0" column="1">
           <spacer name="horizontalSpacer_4">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -670,6 +653,13 @@
             </size>
            </property>
           </spacer>
+         </item>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="mJSONComputeSignatureBtn">
+           <property name="text">
+            <string>Compute Signature</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -822,13 +812,49 @@
          </property>
         </widget>
        </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="mTabXML">
+      <attribute name="title">
+       <string>XML</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <layout class="QGridLayout" name="gridLayout_5">
-         <property name="topMargin">
-          <number>0</number>
-         </property>
+        <layout class="QGridLayout" name="gridLayout_8">
+         <item row="0" column="1">
+          <widget class="QPushButton" name="mXMLBodyClearBtn">
+           <property name="minimumSize">
+            <size>
+             <width>20</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>C</string>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="0">
-          <spacer name="horizontalSpacer_5">
+          <widget class="QLabel" name="label_5">
+           <property name="minimumSize">
+            <size>
+             <width>60</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Body</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <spacer name="horizontalSpacer_8">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -840,25 +866,7 @@
            </property>
           </spacer>
          </item>
-         <item row="0" column="1">
-          <widget class="QPushButton" name="mJSONVerifySignatureBtn">
-           <property name="text">
-            <string>Verify Signature</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="mTabXML">
-      <attribute name="title">
-       <string>XML</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <item>
-        <layout class="QGridLayout" name="gridLayout_8">
-         <item row="0" column="3">
+         <item row="0" column="4">
           <widget class="QLineEdit" name="mXMLBodyLenText">
            <property name="minimumSize">
             <size>
@@ -904,48 +912,10 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QPushButton" name="mXMLBodyClearBtn">
-           <property name="minimumSize">
-            <size>
-             <width>20</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>20</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>C</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="2">
-          <spacer name="horizontalSpacer_8">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_5">
-           <property name="minimumSize">
-            <size>
-             <width>60</width>
-             <height>0</height>
-            </size>
-           </property>
+          <widget class="QCheckBox" name="mXMLTemplateCheck">
            <property name="text">
-            <string>Body</string>
+            <string>Use as a template</string>
            </property>
           </widget>
          </item>
@@ -960,7 +930,13 @@
           <number>0</number>
          </property>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_8">
+          <widget class="QLabel" name="mXMLDataLabel">
+           <property name="minimumSize">
+            <size>
+             <width>60</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
             <string>Data</string>
            </property>
@@ -1018,21 +994,28 @@
         </layout>
        </item>
        <item>
+        <widget class="Line" name="line_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
         <layout class="QGridLayout" name="gridLayout_17">
          <property name="topMargin">
           <number>0</number>
          </property>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="mXMLVerifySignBtn">
+           <property name="text">
+            <string>Verify Sign</string>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="3">
           <widget class="QPushButton" name="mXMLEncryptBtn">
            <property name="text">
             <string>Encrypt</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="4">
-          <widget class="QPushButton" name="mXMLEncrypt2Btn">
-           <property name="text">
-            <string>Encrypt2</string>
            </property>
           </widget>
          </item>
@@ -1043,10 +1026,10 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QPushButton" name="mXMLMakeSign2Btn">
+         <item row="0" column="4">
+          <widget class="QPushButton" name="mXMLDecryptBtn">
            <property name="text">
-            <string>Make Sign2</string>
+            <string>Decrypt</string>
            </property>
           </widget>
          </item>
@@ -1217,37 +1200,6 @@
          </property>
         </widget>
        </item>
-       <item>
-        <layout class="QGridLayout" name="gridLayout_10">
-         <item row="0" column="5">
-          <spacer name="horizontalSpacer_10">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="0" column="7">
-          <widget class="QPushButton" name="mXMLDecryptBtn">
-           <property name="text">
-            <string>Decrypt</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="4">
-          <widget class="QPushButton" name="mXMLVerifySignBtn">
-           <property name="text">
-            <string>Verify Sign</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
       </layout>
      </widget>
     </widget>
@@ -1257,15 +1209,15 @@
      <property name="topMargin">
       <number>0</number>
      </property>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="mDstPathText"/>
+     </item>
      <item row="0" column="2">
       <widget class="QPushButton" name="mFindDstPathBtn">
        <property name="text">
         <string>Find</string>
        </property>
       </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="mDstPathText"/>
      </item>
      <item row="0" column="0">
       <widget class="QCheckBox" name="mDstFileCheck">

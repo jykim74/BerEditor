@@ -69,10 +69,9 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mJSON_JWSClearBtn, SIGNAL(clicked()), this, SLOT(clickJSON_JWSClear()));
     connect( mJSON_JWSViewBtn, SIGNAL(clicked()), this, SLOT(clickJSON_JWSView()));
 
+    connect( mXMLTemplateCheck, SIGNAL(clicked()), this, SLOT(checkXML_UseTemplate()));
     connect( mXMLMakeSignBtn, SIGNAL(clicked()), this, SLOT(clickXML_MakeSign()));
-    connect( mXMLMakeSign2Btn, SIGNAL(clicked()), this, SLOT(clickXML_MakeSign2()));
     connect( mXMLEncryptBtn, SIGNAL(clicked()), this, SLOT(clickXML_Encrypt()));
-    connect( mXMLEncrypt2Btn, SIGNAL(clicked()), this, SLOT(clickXML_Encrypt2()));
     connect( mXMLVerifySignBtn, SIGNAL(clicked()), this, SLOT(clickXML_VerifySign()));
     connect( mXMLDecryptBtn, SIGNAL(clicked()), this, SLOT(clickXML_Decrypt()));
 
@@ -292,9 +291,12 @@ void DocSignerDlg::initUI()
     mTabSigner->setCurrentIndex(0);
     mCMSDataTypeCombo->addItems( kDataTypeList );
 
+    mXMLDataText->setPlaceholderText( tr("data for encryption" ));
+
     checkSrcFile();
     checkDstFile();
     checkUseTSP();
+    checkXML_UseTemplate();
 }
 
 void DocSignerDlg::initialize()
@@ -429,7 +431,7 @@ int DocSignerDlg::getCert( BIN *pCert )
     return 0;
 }
 
-int DocSignerDlg::getPriKey( BIN *pPriKey )
+int DocSignerDlg::getPriKey( BIN *pPriKey, BIN *pCert )
 {
     if( mUseCertManCheck->isChecked() == true )
     {
@@ -442,6 +444,7 @@ int DocSignerDlg::getPriKey( BIN *pPriKey )
             return -1;
 
         certMan.getPriKey( pPriKey );
+        if( pCert ) certMan.getCert( pCert );
     }
     else
     {
@@ -994,6 +997,15 @@ void DocSignerDlg::changeJSON_JWS()
     mJSON_JWSLenText->setText( QString("%1").arg( strJWS.length() ));
 }
 
+void DocSignerDlg::checkXML_UseTemplate()
+{
+    bool bVal = mXMLTemplateCheck->isChecked();
+
+    mXMLDataLabel->setEnabled( bVal );
+    mXMLDataText->setEnabled( bVal );
+    mXMLDataLenText->setEnabled( bVal );
+}
+
 void DocSignerDlg::clickXML_BodyClear()
 {
     mXMLBodyText->clear();
@@ -1019,6 +1031,7 @@ void DocSignerDlg::clickXML_MakeSign()
     BIN binPri = {0,0};
     BIN binSrc = {0,0};
     BIN binDst = {0,0};
+    BIN binCert = {0,0};
 
     if( mSrcFileCheck->isChecked() == true )
     {
@@ -1046,7 +1059,7 @@ void DocSignerDlg::clickXML_MakeSign()
     }
 
 
-    ret = getPriKey( &binPri );
+    ret = getPriKey( &binPri, &binCert );
 
     JS_XML_init();
 
@@ -1055,7 +1068,10 @@ void DocSignerDlg::clickXML_MakeSign()
                     &binPri,
                     strDstPath.toLocal8Bit().toStdString().c_str() );
 #else
-    ret = JS_XML_signWithInfoBIN( &binSrc, &binPri, &binDst );
+    if( mXMLTemplateCheck->isChecked() == true )
+        ret = JS_XML_signWithInfoBIN( &binSrc, &binPri, &binDst );
+    else
+        ret = JS_XML_signDocBIN( &binSrc, &binPri, &binCert, &binDst );
 #endif
 
     if( ret != JSR_OK )
@@ -1088,86 +1104,7 @@ end :
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binSrc );
     JS_BIN_reset( &binDst );
-
-    return;
-}
-
-void DocSignerDlg::clickXML_MakeSign2()
-{
-    int ret = 0;
-    BIN binPri = {0,0};
-    BIN binSrc = {0,0};
-    BIN binDst = {0,0};
-
-    QString strSrcPath;
-
-    if( mSrcFileCheck->isChecked() == true )
-    {
-        strSrcPath = mSrcPathText->text();
-        if( strSrcPath.length() < 1 )
-        {
-            berApplet->warningBox( tr( "find a source xml" ), this );
-            mSrcPathText->setFocus();
-            return;
-        }
-
-        JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
-    }
-    else
-    {
-        QString strBody = mXMLBodyText->toPlainText();
-        if( strBody.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Enter a XML body" ), this );
-            mXMLBodyText->setFocus();
-            return;
-        }
-
-        JS_BIN_set( &binSrc, (unsigned char *)strBody.toStdString().c_str(), strBody.length() );
-    }
-
-    JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
-    ret = getPriKey( &binPri );
-
-    JS_XML_init();
-#if 0
-    ret = JS_XML_signDoc( strSrcPath.toLocal8Bit().toStdString().c_str(),
-                              &binPri,
-                              strDstPath.toLocal8Bit().toStdString().c_str() );
-#else
-    ret = JS_XML_signDocBIN( &binSrc, &binPri, &binDst );
-#endif
-
-    if( ret != JSR_OK )
-    {
-        berApplet->warningBox( tr( "fail to make signature: %1").arg( ret ), this );
-    }
-    else
-    {
-        berApplet->messageBox( tr("XML Signature OK" ), this );
-    }
-
-    if( ret == JSR_OK )
-    {
-        char *pString = NULL;
-        JS_BIN_string( &binDst, &pString );
-        mXMLResText->setPlainText( pString );
-        if( pString ) JS_free( pString );
-
-        if( mDstFileCheck->isChecked() == true )
-        {
-            setDstFile();
-            QString strDstPath = mDstPathText->text();
-            JS_BIN_fileWrite( &binDst, strDstPath.toLocal8Bit().toStdString().c_str() );
-            berApplet->messageBox( tr( "The XML file[%1] has been saved." ).arg( strDstPath ), this );
-        }
-    }
-
-end :
-    JS_XML_final();
-    JS_BIN_reset( &binPri );
-    JS_BIN_reset( &binSrc );
-    JS_BIN_reset( &binDst );
+    JS_BIN_reset( &binCert );
 
     return;
 }
@@ -1208,12 +1145,17 @@ void DocSignerDlg::clickXML_Encrypt()
         JS_BIN_set( &binSrc, (unsigned char *)strBody.toStdString().c_str(), strBody.length() );
     }
 
-    QString strData = mXMLDataText->text();
-    if( strData.length() < 1 )
+    if( mXMLTemplateCheck->isChecked() == true )
     {
-        berApplet->warningBox( tr( "Enter a data" ), this );
-        mXMLDataText->setFocus();
-        return;
+        QString strData = mXMLDataText->text();
+        if( strData.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a data" ), this );
+            mXMLDataText->setFocus();
+            return;
+        }
+
+        getBINFromString( &binData, DATA_STRING, strData );
     }
 
     KeyListDlg keyList;
@@ -1227,8 +1169,6 @@ void DocSignerDlg::clickXML_Encrypt()
 
     JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey );
 
-    getBINFromString( &binData, DATA_STRING, strData );
-
     JS_XML_init();
 
 #if 0
@@ -1238,7 +1178,10 @@ void DocSignerDlg::clickXML_Encrypt()
         &binBody,
         strDstPath.toLocal8Bit().toStdString().c_str() );
 #else
-    ret = JS_XML_encryptWithInfoBIN( &binSrc, &binKey, &binData, &binDst );
+    if( mXMLTemplateCheck->isChecked() == true )
+        ret = JS_XML_encryptWithInfoBIN( &binSrc, &binKey, &binData, &binDst );
+    else
+        ret = JS_XML_encryptBIN( &binSrc, &binKey, &binDst );
 #endif
 
     if( ret != JSR_OK )
@@ -1274,92 +1217,6 @@ end :
     return;
 }
 
-void DocSignerDlg::clickXML_Encrypt2()
-{
-    int ret = 0;
-    BIN binKey = {0,0};
-    BIN binSrc = {0,0};
-    BIN binDst = {0,0};
-
-    QString strSrcPath;
-
-    if( mSrcFileCheck->isChecked() == true )
-    {
-        strSrcPath = mSrcPathText->text();
-        if( strSrcPath.length() < 1 )
-        {
-            berApplet->warningBox( tr( "find a source xml" ), this );
-            mSrcPathText->setFocus();
-            return;
-        }
-
-        JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
-    }
-    else
-    {
-        QString strBody = mXMLBodyText->toPlainText();
-        if( strBody.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Enter a XML body" ), this );
-            mXMLBodyText->setFocus();
-            return;
-        }
-
-        JS_BIN_set( &binSrc, (unsigned char *)strBody.toStdString().c_str(), strBody.length() );
-    }
-
-    KeyListDlg keyList;
-    keyList.setTitle( tr( "Select key" ));
-    keyList.setManage(false);
-
-    if( keyList.exec() != QDialog::Accepted )
-        return;
-
-    QString strKey = keyList.getKey();
-
-    JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey );
-
-    JS_XML_init();
-
-#if 0
-    ret = JS_XML_encrypt(
-        strSrcPath.toLocal8Bit().toStdString().c_str(),
-        &binKey,
-        strDstPath.toLocal8Bit().toStdString().c_str() );
-#else
-    ret = JS_XML_encryptBIN( &binSrc, &binKey, &binDst );
-#endif
-
-    if( ret != JSR_OK )
-    {
-        berApplet->warningBox( tr( "fail to encrypt: %1").arg( ret ), this );
-    }
-    else
-    {
-        berApplet->messageBox( tr("XML Encrypt OK" ), this );
-    }
-
-    if( ret == JSR_OK )
-    {
-        mXMLResText->setPlainText( getHexString( &binDst ));
-
-        if( mDstFileCheck->isChecked() == true )
-        {
-            setDstFile();
-            QString strDstPath = mDstPathText->text();
-            JS_BIN_fileWrite( &binDst, strDstPath.toLocal8Bit().toStdString().c_str() );
-            berApplet->messageBox( tr( "The XML file[%1] has been saved." ).arg( strDstPath ), this );
-        }
-    }
-
-end :
-    JS_XML_final();
-    JS_BIN_reset( &binKey );
-    JS_BIN_reset( &binSrc );
-    JS_BIN_reset( &binDst );
-
-    return;
-}
 
 void DocSignerDlg::clickXML_VerifySign()
 {

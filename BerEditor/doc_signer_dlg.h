@@ -55,14 +55,13 @@ private slots:
     void changeJSON_Payload();
     void changeJSON_JWS();
 
+    void checkXML_UseTemplate();
     void clickXML_BodyClear();
     void clickXML_ResClear();
     void clickXML_ResUp();
 
     void clickXML_MakeSign();
-    void clickXML_MakeSign2();
     void clickXML_Encrypt();
-    void clickXML_Encrypt2();
     void clickXML_VerifySign();
     void clickXML_Decrypt();
 
@@ -74,7 +73,7 @@ private:
     void initialize();
     int getPubKey( BIN *pPubKey );
     int getCert( BIN *pCert );
-    int getPriKey( BIN *pPriKey );
+    int getPriKey( BIN *pPriKey, BIN *pCert = NULL );
     int getKeyPair( BIN *pPubKey, BIN *pPriKey );
     int getPriKeyCert( BIN *pPriKey, BIN *pCert );
 
