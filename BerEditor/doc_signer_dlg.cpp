@@ -30,6 +30,9 @@
 
 const QString kTSPUsedURL = "TSPUsedURL";
 
+static const QStringList kCipherList = { "aes-128-cbc", "aes-192-cbc", "aes-256-cbc" };
+
+
 DocSignerDlg::DocSignerDlg(QWidget *parent)
     : QDialog(parent)
 {
@@ -54,6 +57,8 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mCMSDataText, SIGNAL(textChanged()), this, SLOT(changeCMSData()));
     connect( mCMSMakeSignBtn, SIGNAL(clicked()), this, SLOT(clickCMSMakeSign()));
     connect( mCMSVerifySignBtn, SIGNAL(clicked()), this, SLOT(clickCMSVerifySign()));
+    connect( mCMSEnvelopBtn, SIGNAL(clicked()), this, SLOT(clickCMSEnvelopedData()));
+    connect( mCMSDevelopBtn, SIGNAL(clicked()), this, SLOT(clickCMSDevelopedData()));
     connect( mCMSViewBtn, SIGNAL(clicked()), this, SLOT(clickCMSView()));
     connect( mCMSOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputClear()));
     connect( mCMSOutputUpBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputUp()));
@@ -61,6 +66,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
 
     connect( mJSONPayloadText, SIGNAL(textChanged()), this, SLOT(changeJSON_Payload()));
     connect( mJSON_JWSText, SIGNAL(textChanged()), this, SLOT(changeJSON_JWS()));
+    connect( mJSON_JWSUpBtn, SIGNAL(clicked()), this, SLOT(clickJSON_JWSUp()));
 
     connect( mJSONComputeSignatureBtn, SIGNAL(clicked()), this, SLOT(clickJSON_ComputeSignature()));
     connect( mJSONVerifySignatureBtn, SIGNAL(clicked()), this, SLOT(clickJSON_VerifySignature()));
@@ -293,6 +299,8 @@ void DocSignerDlg::initUI()
     mHashCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
 
     mTabSigner->setCurrentIndex(0);
+
+    mCMSCipherCombo->addItems( kCipherList );
     mCMSDataTypeCombo->addItems( kDataTypeList );
 
     mXMLDataText->setPlaceholderText( tr("data for encryption" ));
@@ -630,7 +638,7 @@ void DocSignerDlg::clickCMSMakeSign()
     {
         if( strSrcPath.length() < 1 )
         {
-            berApplet->warningBox( tr( "find a source xml" ), this );
+            berApplet->warningBox( tr( "find a source" ), this );
             mSrcPathText->setFocus();
             return;
         }
@@ -717,12 +725,12 @@ void DocSignerDlg::clickCMSVerifySign()
     {
         if( strSrcPath.length() < 1 )
         {
-            berApplet->warningBox( tr( "find a source xml" ), this );
+            berApplet->warningBox( tr( "find a source CMS" ), this );
             mSrcPathText->setFocus();
             return;
         }
 
-        JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+        JS_BIN_fileReadBER( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
     }
     else
     {
@@ -730,7 +738,7 @@ void DocSignerDlg::clickCMSVerifySign()
 
         if( strData.length() < 1 )
         {
-            berApplet->warningBox( tr( "Enter a data" ), this );
+            berApplet->warningBox( tr( "Enter a CMS" ), this );
             mCMSDataText->setFocus();
             return;
         }
@@ -741,12 +749,10 @@ void DocSignerDlg::clickCMSVerifySign()
     ret = getCert( &binCert );
     if( ret != 0 ) goto end;
 
-    JS_BIN_fileReadBER( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
-
     ret = JS_PKCS7_getType( &binSrc );
     if( ret != JS_PKCS7_TYPE_SIGNED )
     {
-        berApplet->warningBox( tr("This is not a Signed Data CMS message:%1").arg(ret), this );
+        berApplet->warningBox( tr("This is not a signed data message:%1").arg(ret), this );
         goto end;
     }
 
@@ -801,6 +807,203 @@ void DocSignerDlg::clickCMSVerifySign()
 
 end:
     JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binSrc );
+    JS_BIN_reset( &binData );
+}
+
+void DocSignerDlg::clickCMSEnvelopedData()
+{
+    int ret = 0;
+    BIN binCert = {0,0};
+    BIN binSrc = {0,0};
+    BIN binData = {0,0};
+
+    QString strSrcPath = mSrcPathText->text();
+    QString strCipher = mCMSCipherCombo->currentText();
+
+    if( mSrcFileCheck->isChecked() == true )
+    {
+        if( strSrcPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Find a source file" ), this );
+            mSrcPathText->setFocus();
+            return;
+        }
+
+        JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+    }
+    else
+    {
+        QString strData = mCMSDataText->toPlainText();
+
+        if( strData.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a data" ), this );
+            mCMSDataText->setFocus();
+            return;
+        }
+
+        getBINFromString( &binSrc, DATA_HEX, strData );
+    }
+
+    ret = getCert( &binCert );
+    if( ret != 0 ) goto end;
+
+    JS_BIN_fileReadBER( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+    ret = JS_CMS_makeEnvelopedData( strCipher.toStdString().c_str(), &binSrc, &binCert, &binData );
+
+    mCMSDataText->setPlainText( getHexString( &binData ));
+
+    if( ret == JSR_OK )
+    {
+        berApplet->messageBox( tr( "Enveloped Data OK" ), this );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to envelop data: %1").arg( JERR( ret ) ), this );
+    }
+
+    if( binData.nLen > 0 )
+    {
+        if( mCMSDataTypeCombo->currentText() == "String" )
+        {
+            char *pString = NULL;
+            JS_BIN_string( &binData, &pString );
+            if( pString )
+            {
+                mCMSDataText->setPlainText( pString );
+                JS_free( pString );
+            }
+        }
+        else if( mCMSDataTypeCombo->currentText() == "Base64" )
+        {
+            char *pBase64 = NULL;
+            JS_BIN_encodeBase64( &binData, &pBase64 );
+            if( pBase64 )
+            {
+                mCMSDataText->setPlainText( pBase64 );
+                JS_free( pBase64 );
+            }
+        }
+        else
+        {
+            mCMSDataText->setPlainText( getHexString( &binData ));
+        }
+
+        if( mDstFileCheck->isChecked() == true )
+        {
+            setDstFile();
+            QString strDstPath = mDstPathText->text();
+            JS_BIN_fileWrite( &binData, strDstPath.toLocal8Bit().toStdString().c_str() );
+            berApplet->messageBox( tr( "The data file[%1] has been saved." ).arg( strDstPath ), this );
+        }
+    }
+
+end:
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binSrc );
+    JS_BIN_reset( &binData );
+}
+
+void DocSignerDlg::clickCMSDevelopedData()
+{
+    int ret = 0;
+    BIN binPri = {0,0};
+    BIN binKMCert = {0,0};
+    BIN binSrc = {0,0};
+    BIN binData = {0,0};
+
+    QString strSrcPath = mSrcPathText->text();
+    if( mSrcFileCheck->isChecked() == true )
+    {
+        if( strSrcPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find a source CMS" ), this );
+            mSrcPathText->setFocus();
+            return;
+        }
+
+        JS_BIN_fileReadBER( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+    }
+    else
+    {
+        QString strData = mCMSDataText->toPlainText();
+
+        if( strData.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a CMS" ), this );
+            mCMSDataText->setFocus();
+            return;
+        }
+
+        getBINFromString( &binSrc, DATA_HEX, strData );
+    }
+
+    ret = getPriKey( &binPri );
+    if( ret != 0 ) goto end;
+
+    ret = getCert( &binKMCert );
+    if( ret != 0 ) goto end;
+
+    ret = JS_PKCS7_getType( &binSrc );
+    if( ret != JS_PKCS7_TYPE_ENVELOED )
+    {
+        berApplet->warningBox( tr("This is not a enveloped data message:%1").arg(ret), this );
+        goto end;
+    }
+
+    ret = JS_PKCS7_makeDevelopedData( &binSrc, &binPri, &binKMCert, &binData );
+
+    mCMSDataText->setPlainText( getHexString( &binData ));
+
+    if( ret == JSR_OK )
+    {
+        berApplet->messageBox( tr( "Developed data OK" ), this );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to develop data: %1").arg( JERR( ret ) ), this );
+    }
+
+    if( binData.nLen > 0 )
+    {
+        if( mCMSDataTypeCombo->currentText() == "String" )
+        {
+            char *pString = NULL;
+            JS_BIN_string( &binData, &pString );
+            if( pString )
+            {
+                mCMSDataText->setPlainText( pString );
+                JS_free( pString );
+            }
+        }
+        else if( mCMSDataTypeCombo->currentText() == "Base64" )
+        {
+            char *pBase64 = NULL;
+            JS_BIN_encodeBase64( &binData, &pBase64 );
+            if( pBase64 )
+            {
+                mCMSDataText->setPlainText( pBase64 );
+                JS_free( pBase64 );
+            }
+        }
+        else
+        {
+            mCMSDataText->setPlainText( getHexString( &binData ));
+        }
+
+        if( mDstFileCheck->isChecked() == true )
+        {
+            setDstFile();
+            QString strDstPath = mDstPathText->text();
+            JS_BIN_fileWrite( &binData, strDstPath.toLocal8Bit().toStdString().c_str() );
+            berApplet->messageBox( tr( "The data file[%1] has been saved." ).arg( strDstPath ), this );
+        }
+    }
+
+end:
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binKMCert );
     JS_BIN_reset( &binSrc );
     JS_BIN_reset( &binData );
 }
@@ -927,10 +1130,11 @@ void DocSignerDlg::clickJSON_VerifySignature()
     }
     else
     {
-        strJWS = mJSON_JWSText->toPlainText();
+        strJWS = mJSONPayloadText->toPlainText();
         if( strJWS.length() < 1 )
         {
-            berApplet->warningBox( tr("There is no JWS" ), this );
+            berApplet->warningBox( tr("There is no JWS payload" ), this );
+            mJSONPayloadText->setFocus();
             return;
         }
     }
@@ -956,6 +1160,13 @@ void DocSignerDlg::clickJSON_PayloadClear()
 
 void DocSignerDlg::clickJSON_JWSClear()
 {
+    mJSON_JWSText->clear();
+}
+
+void DocSignerDlg::clickJSON_JWSUp()
+{
+    QString strJWS = mJSON_JWSText->toPlainText();
+    mJSONPayloadText->setPlainText( strJWS );
     mJSON_JWSText->clear();
 }
 

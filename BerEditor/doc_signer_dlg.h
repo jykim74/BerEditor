@@ -44,11 +44,14 @@ private slots:
 
     void clickCMSMakeSign();
     void clickCMSVerifySign();
+    void clickCMSEnvelopedData();
+    void clickCMSDevelopedData();
 
     void clickJSON_ComputeSignature();
     void clickJSON_VerifySignature();
     void clickJSON_PayloadClear();
     void clickJSON_JWSClear();
+    void clickJSON_JWSUp();
     void clickJSON_PayloadView();
     void clickJSON_JWSView();
 

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>482</width>
+    <width>505</width>
     <height>625</height>
    </rect>
   </property>
@@ -592,7 +592,14 @@
       <widget class="QComboBox" name="mHashCombo"/>
      </item>
      <item row="0" column="1">
-      <widget class="QComboBox" name="mCipherCombo"/>
+      <widget class="QComboBox" name="mCipherCombo">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>0</height>
+        </size>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
