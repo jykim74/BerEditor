@@ -34,6 +34,7 @@ private slots:
     void clickTSP();
 
     void changeCMSData();
+    void changeCMSOutput();
 
     void clickCMSClear();
     void clickCMSOutputUp();

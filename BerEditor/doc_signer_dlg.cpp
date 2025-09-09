@@ -55,6 +55,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
 
     connect( mCMSClearBtn, SIGNAL(clicked()), this, SLOT(clickCMSClear()));
     connect( mCMSDataText, SIGNAL(textChanged()), this, SLOT(changeCMSData()));
+    connect( mCMSOutputText, SIGNAL(textChanged()), this, SLOT(changeCMSOutput()));
     connect( mCMSMakeSignBtn, SIGNAL(clicked()), this, SLOT(clickCMSMakeSign()));
     connect( mCMSVerifySignBtn, SIGNAL(clicked()), this, SLOT(clickCMSVerifySign()));
     connect( mCMSEnvelopBtn, SIGNAL(clicked()), this, SLOT(clickCMSEnvelopedData()));
@@ -226,6 +227,13 @@ void DocSignerDlg::changeCMSData()
     QString strData = mCMSDataText->toPlainText();
     QString strLen = getDataLenString( strType, strData );
     mCMSDataLenText->setText( strLen );
+}
+
+void DocSignerDlg::changeCMSOutput()
+{
+    QString strOutput = mCMSOutputText->toPlainText();
+    QString strLen = getDataLenString( DATA_HEX, strOutput );
+    mCMSOutputLenText->setText( strLen );
 }
 
 void DocSignerDlg::clickCMSClear()
@@ -735,6 +743,7 @@ void DocSignerDlg::clickCMSVerifySign()
     else
     {
         QString strData = mCMSDataText->toPlainText();
+        QString strType = mCMSDataTypeCombo->currentText();
 
         if( strData.length() < 1 )
         {
@@ -743,7 +752,7 @@ void DocSignerDlg::clickCMSVerifySign()
             return;
         }
 
-        getBINFromString( &binSrc, DATA_HEX, strData );
+        getBINFromString( &binSrc, strType, strData );
     }
 
     ret = getCert( &binCert );
@@ -758,8 +767,6 @@ void DocSignerDlg::clickCMSVerifySign()
 
     ret = JS_PKCS7_verifySignedData( &binSrc, &binCert, &binData );
 
-    mCMSDataText->setPlainText( getHexString( &binData ));
-
     if( ret == JSR_VERIFY )
     {
         berApplet->messageBox( tr( "Verify OK" ), this );
@@ -771,30 +778,7 @@ void DocSignerDlg::clickCMSVerifySign()
 
     if( binData.nLen > 0 )
     {
-        if( mCMSDataTypeCombo->currentText() == "String" )
-        {
-            char *pString = NULL;
-            JS_BIN_string( &binData, &pString );
-            if( pString )
-            {
-                mCMSDataText->setPlainText( pString );
-                JS_free( pString );
-            }
-        }
-        else if( mCMSDataTypeCombo->currentText() == "Base64" )
-        {
-            char *pBase64 = NULL;
-            JS_BIN_encodeBase64( &binData, &pBase64 );
-            if( pBase64 )
-            {
-                mCMSDataText->setPlainText( pBase64 );
-                JS_free( pBase64 );
-            }
-        }
-        else
-        {
-            mCMSDataText->setPlainText( getHexString( &binData ));
-        }
+        mCMSOutputText->setPlainText( getHexString( &binData ));
 
         if( mDstFileCheck->isChecked() == true )
         {
@@ -835,6 +819,7 @@ void DocSignerDlg::clickCMSEnvelopedData()
     else
     {
         QString strData = mCMSDataText->toPlainText();
+        QString strType = mCMSDataTypeCombo->currentText();
 
         if( strData.length() < 1 )
         {
@@ -843,17 +828,13 @@ void DocSignerDlg::clickCMSEnvelopedData()
             return;
         }
 
-        getBINFromString( &binSrc, DATA_HEX, strData );
+        getBINFromString( &binSrc, strType, strData );
     }
 
     ret = getCert( &binCert );
     if( ret != 0 ) goto end;
 
-    JS_BIN_fileReadBER( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
     ret = JS_CMS_makeEnvelopedData( strCipher.toStdString().c_str(), &binSrc, &binCert, &binData );
-
-    mCMSDataText->setPlainText( getHexString( &binData ));
-
     if( ret == JSR_OK )
     {
         berApplet->messageBox( tr( "Enveloped Data OK" ), this );
@@ -865,30 +846,10 @@ void DocSignerDlg::clickCMSEnvelopedData()
 
     if( binData.nLen > 0 )
     {
-        if( mCMSDataTypeCombo->currentText() == "String" )
-        {
-            char *pString = NULL;
-            JS_BIN_string( &binData, &pString );
-            if( pString )
-            {
-                mCMSDataText->setPlainText( pString );
-                JS_free( pString );
-            }
-        }
-        else if( mCMSDataTypeCombo->currentText() == "Base64" )
-        {
-            char *pBase64 = NULL;
-            JS_BIN_encodeBase64( &binData, &pBase64 );
-            if( pBase64 )
-            {
-                mCMSDataText->setPlainText( pBase64 );
-                JS_free( pBase64 );
-            }
-        }
-        else
-        {
-            mCMSDataText->setPlainText( getHexString( &binData ));
-        }
+        JS_BIN_reset( &cms_ );
+        JS_BIN_copy( &cms_, &binData );
+
+        mCMSOutputText->setPlainText( getHexString( &binData ));
 
         if( mDstFileCheck->isChecked() == true )
         {
@@ -909,7 +870,7 @@ void DocSignerDlg::clickCMSDevelopedData()
 {
     int ret = 0;
     BIN binPri = {0,0};
-    BIN binKMCert = {0,0};
+    BIN binCert = {0,0};
     BIN binSrc = {0,0};
     BIN binData = {0,0};
 
@@ -928,6 +889,7 @@ void DocSignerDlg::clickCMSDevelopedData()
     else
     {
         QString strData = mCMSDataText->toPlainText();
+        QString strType = mCMSDataTypeCombo->currentText();
 
         if( strData.length() < 1 )
         {
@@ -936,13 +898,10 @@ void DocSignerDlg::clickCMSDevelopedData()
             return;
         }
 
-        getBINFromString( &binSrc, DATA_HEX, strData );
+        getBINFromString( &binSrc, strType, strData );
     }
 
-    ret = getPriKey( &binPri );
-    if( ret != 0 ) goto end;
-
-    ret = getCert( &binKMCert );
+    ret = getPriKeyCert( &binPri, &binCert );
     if( ret != 0 ) goto end;
 
     ret = JS_PKCS7_getType( &binSrc );
@@ -952,10 +911,7 @@ void DocSignerDlg::clickCMSDevelopedData()
         goto end;
     }
 
-    ret = JS_PKCS7_makeDevelopedData( &binSrc, &binPri, &binKMCert, &binData );
-
-    mCMSDataText->setPlainText( getHexString( &binData ));
-
+    ret = JS_PKCS7_makeDevelopedData( &binSrc, &binPri, &binCert, &binData );
     if( ret == JSR_OK )
     {
         berApplet->messageBox( tr( "Developed data OK" ), this );
@@ -967,30 +923,10 @@ void DocSignerDlg::clickCMSDevelopedData()
 
     if( binData.nLen > 0 )
     {
-        if( mCMSDataTypeCombo->currentText() == "String" )
-        {
-            char *pString = NULL;
-            JS_BIN_string( &binData, &pString );
-            if( pString )
-            {
-                mCMSDataText->setPlainText( pString );
-                JS_free( pString );
-            }
-        }
-        else if( mCMSDataTypeCombo->currentText() == "Base64" )
-        {
-            char *pBase64 = NULL;
-            JS_BIN_encodeBase64( &binData, &pBase64 );
-            if( pBase64 )
-            {
-                mCMSDataText->setPlainText( pBase64 );
-                JS_free( pBase64 );
-            }
-        }
-        else
-        {
-            mCMSDataText->setPlainText( getHexString( &binData ));
-        }
+        JS_BIN_reset( &cms_ );
+        JS_BIN_copy( &cms_, &binData );
+
+        mCMSOutputText->setPlainText( getHexString( &binData ));
 
         if( mDstFileCheck->isChecked() == true )
         {
@@ -1003,7 +939,7 @@ void DocSignerDlg::clickCMSDevelopedData()
 
 end:
     JS_BIN_reset( &binPri );
-    JS_BIN_reset( &binKMCert );
+    JS_BIN_reset( &binCert );
     JS_BIN_reset( &binSrc );
     JS_BIN_reset( &binData );
 }
