@@ -120,9 +120,13 @@ void DocSignerDlg::clickClearAll()
 {
     mSrcPathText->clear();
     mDstPathText->clear();
+    mCMSDataText->clear();
+    mCMSOutputText->clear();
     mJSONPayloadText->clear();
     mJSON_JWSText->clear();
     mXMLBodyText->clear();
+    mXMLDataText->clear();
+    mXMLResText->clear();
 }
 
 void DocSignerDlg::changeSignerTab()

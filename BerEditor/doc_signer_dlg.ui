@@ -1268,6 +1268,57 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mSrcFileCheck</tabstop>
+  <tabstop>mSrcPathText</tabstop>
+  <tabstop>mFindSrcPathBtn</tabstop>
+  <tabstop>mUseCertManCheck</tabstop>
+  <tabstop>mHashCombo</tabstop>
+  <tabstop>mTabSigner</tabstop>
+  <tabstop>mCMSDataTypeCombo</tabstop>
+  <tabstop>mCMSClearBtn</tabstop>
+  <tabstop>mCMSDataLenText</tabstop>
+  <tabstop>mCMSDataText</tabstop>
+  <tabstop>mUseTSPCheck</tabstop>
+  <tabstop>mTSPBtn</tabstop>
+  <tabstop>mCMSMakeSignBtn</tabstop>
+  <tabstop>mCMSVerifySignBtn</tabstop>
+  <tabstop>mCMSOutputClearBtn</tabstop>
+  <tabstop>mCMSOutputDecodeBtn</tabstop>
+  <tabstop>mCMSViewBtn</tabstop>
+  <tabstop>mCMSOutputUpBtn</tabstop>
+  <tabstop>mCMSOutputLenText</tabstop>
+  <tabstop>mCMSOutputText</tabstop>
+  <tabstop>mJSONPayloadClearBtn</tabstop>
+  <tabstop>mJSONPayloadViewBtn</tabstop>
+  <tabstop>mJSONPayloadLenText</tabstop>
+  <tabstop>mJSONPayloadText</tabstop>
+  <tabstop>mJSONComputeSignatureBtn</tabstop>
+  <tabstop>mJSONVerifySignatureBtn</tabstop>
+  <tabstop>mJSON_JWSClearBtn</tabstop>
+  <tabstop>mJSON_JWSViewBtn</tabstop>
+  <tabstop>mJSON_JWSLenText</tabstop>
+  <tabstop>mJSON_JWSText</tabstop>
+  <tabstop>mXMLBodyClearBtn</tabstop>
+  <tabstop>mXMLTemplateCheck</tabstop>
+  <tabstop>mXMLBodyLenText</tabstop>
+  <tabstop>mXMLBodyText</tabstop>
+  <tabstop>mXMLDataText</tabstop>
+  <tabstop>mXMLDataLenText</tabstop>
+  <tabstop>mXMLMakeSignBtn</tabstop>
+  <tabstop>mXMLVerifySignBtn</tabstop>
+  <tabstop>mXMLEncryptBtn</tabstop>
+  <tabstop>mXMLDecryptBtn</tabstop>
+  <tabstop>mXMLResClearBtn</tabstop>
+  <tabstop>mXMLResUpBtn</tabstop>
+  <tabstop>mXMLResLenText</tabstop>
+  <tabstop>mXMLResText</tabstop>
+  <tabstop>mDstFileCheck</tabstop>
+  <tabstop>mDstPathText</tabstop>
+  <tabstop>mFindDstPathBtn</tabstop>
+  <tabstop>mClearAllBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
