@@ -262,7 +262,7 @@ linux {
     }
 
     LIBS += -lltdl -lldap -llber
-    LIBS += -L"/usr/lib/x86_64-linux-gnu" -lxmlsec1 -lxmlsec1-openssl -lxml2
+    LIBS += -lxmlsec1 -lxmlsec1-openssl -lxml2
 }
 
 win32 {
