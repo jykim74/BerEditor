@@ -141,9 +141,20 @@ void DocSignerDlg::changeSignerTab()
     int index = mTabSigner->currentIndex();
 
     if( index == 0 )
+    {
         mUseCertManCheck->setEnabled( false );
-    else
+        mXMLTemplateCheck->setEnabled( false );
+    }
+    else if( index == 1 )
+    {
         mUseCertManCheck->setEnabled( true );
+        mXMLTemplateCheck->setEnabled( false );
+    }
+    else
+    {
+        mUseCertManCheck->setEnabled( true );
+        mXMLTemplateCheck->setEnabled( true );
+    }
 }
 
 void DocSignerDlg::checkSrcFile()

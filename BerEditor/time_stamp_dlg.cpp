@@ -40,7 +40,7 @@ void TimeStampDlg::initUI()
     QStringList usedList = getUsedURL();
     mURLCombo->addItems( usedList );
 
-    mPolicyText->setPlaceholderText( "1.2.3.4" );
+    mPolicyText->setPlaceholderText( tr("Object Identifier") );
 }
 
 void TimeStampDlg::initialize()

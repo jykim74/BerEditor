@@ -84,6 +84,13 @@
      <property name="topMargin">
       <number>0</number>
      </property>
+     <item row="0" column="3">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Hash</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="0">
       <widget class="QCheckBox" name="mUseCertManCheck">
        <property name="text">
@@ -91,10 +98,7 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
-      <widget class="QComboBox" name="mHashCombo"/>
-     </item>
-     <item row="0" column="1">
+     <item row="0" column="2">
       <spacer name="horizontalSpacer_7">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -107,10 +111,13 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="2">
-      <widget class="QLabel" name="label_4">
+     <item row="0" column="4">
+      <widget class="QComboBox" name="mHashCombo"/>
+     </item>
+     <item row="0" column="1">
+      <widget class="QCheckBox" name="mXMLTemplateCheck">
        <property name="text">
-        <string>Hash</string>
+        <string>Use as a template</string>
        </property>
       </widget>
      </item>
@@ -125,7 +132,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="mTabCMS">
       <attribute name="title">
@@ -949,13 +956,6 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
-          <widget class="QCheckBox" name="mXMLTemplateCheck">
-           <property name="text">
-            <string>Use as a template</string>
-           </property>
-          </widget>
-         </item>
         </layout>
        </item>
        <item>
@@ -1056,6 +1056,19 @@
            </property>
           </widget>
          </item>
+         <item row="0" column="2">
+          <spacer name="horizontalSpacer_9">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
          <item row="0" column="0">
           <widget class="QPushButton" name="mXMLMakeSignBtn">
            <property name="text">
@@ -1069,19 +1082,6 @@
             <string>Decrypt</string>
            </property>
           </widget>
-         </item>
-         <item row="0" column="2">
-          <spacer name="horizontalSpacer_9">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
          </item>
         </layout>
        </item>
@@ -1333,7 +1333,6 @@
   <tabstop>mJSON_JWSLenText</tabstop>
   <tabstop>mJSON_JWSText</tabstop>
   <tabstop>mXMLBodyClearBtn</tabstop>
-  <tabstop>mXMLTemplateCheck</tabstop>
   <tabstop>mXMLBodyLenText</tabstop>
   <tabstop>mXMLBodyText</tabstop>
   <tabstop>mXMLDataText</tabstop>
