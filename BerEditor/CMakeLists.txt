@@ -250,6 +250,8 @@ if(WIN32)
         ../../PKILib/build/Desktop_Qt_5_15_2_MinGW_64_bit-Release
         ../../lib/win64/openssl3/lib64
         ../../lib/win64/winsparkle/lib
+        ../../lib/win64/xmlsec1/xmlsec/bin
+        ../../lib/win64/xmlsec1/libxml2/bin
         ../../lib/win64 )
     endif()
 
