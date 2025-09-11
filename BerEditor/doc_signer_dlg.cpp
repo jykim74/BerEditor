@@ -24,6 +24,7 @@
 #include "js_error.h"
 #include "js_pki_xml.h"
 #include "js_pkcs7.h"
+#include "js_cms.h"
 #include "js_error.h"
 #include "js_tsp.h"
 #include "js_http.h"
@@ -282,7 +283,7 @@ void DocSignerDlg::clickCMSView()
         JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
     }
 
-    ret = JS_PKCS7_getType( &binSrc );
+    ret = JS_CMS_getType( &binSrc );
     if( ret < 0 )
     {
         berApplet->warningBox( tr( "This is not a CMS message" ), this );
@@ -771,14 +772,18 @@ void DocSignerDlg::clickCMSVerifySign()
     ret = getCert( &binCert );
     if( ret != 0 ) goto end;
 
-    ret = JS_PKCS7_getType( &binSrc );
+    ret = JS_CMS_getType( &binSrc );
     if( ret != JS_PKCS7_TYPE_SIGNED )
     {
         berApplet->warningBox( tr("This is not a signed data message:%1").arg(ret), this );
         goto end;
     }
 
+#if 0
     ret = JS_PKCS7_verifySignedData( &binSrc, &binCert, &binData );
+#else
+    ret = JS_CMS_verifySignedData( &binSrc, &binCert, &binData );
+#endif
 
     if( binData.nLen > 0 )
     {
@@ -917,14 +922,18 @@ void DocSignerDlg::clickCMSDevelopedData()
     ret = getPriKeyCert( &binPri, &binCert );
     if( ret != 0 ) goto end;
 
-    ret = JS_PKCS7_getType( &binSrc );
+    ret = JS_CMS_getType( &binSrc );
     if( ret != JS_PKCS7_TYPE_ENVELOED )
     {
         berApplet->warningBox( tr("This is not a enveloped data message:%1").arg(ret), this );
         goto end;
     }
 
+#if 0
     ret = JS_PKCS7_makeDevelopedData( &binSrc, &binPri, &binCert, &binData );
+#else
+    ret = JS_CMS_makeDevelopedData( &binSrc, &binPri, &binCert, &binData );
+#endif
 
     if( binData.nLen > 0 )
     {

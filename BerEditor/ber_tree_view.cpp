@@ -751,28 +751,61 @@ BerItem* BerTreeView::currentItem()
 
 void BerTreeView::ExpandValue()
 {
+    int ret = 0;
+    BIN binBER = {0,0};
     QModelIndex index = currentIndex();
 
     BerModel *tree_model = (BerModel *)model();
+    if( tree_model == NULL ) return;
+
     BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
+    if( item == NULL ) return;
 
     // 기존에 열었던 아이템 먼저 제거
     item->removeRow(0);
 
     int offset = item->GetOffset();
+    int len = item->GetLength();
+    int start = 0;
+    binBER = tree_model->getBER();
+
+    if( len <= 0 ) return;
+
     if( item->GetTag() == JS_BITSTRING )
     {
         offset += 1; // skip unused bits
+        len -= 1;
     }
 
+    start = offset;
+    start += item->GetHeaderSize();
+
+    if( JS_BER_isExpandable( &binBER.pVal[start], len ) != 1 )
+    {
+        ret = -1;
+        goto end;
+    }
+
+#if 0
     if( item->GetIndefinite() )
     {
-        tree_model->parseIndefiniteConstruct( offset + item->GetHeaderSize(), item );
+        ret = tree_model->parseIndefiniteConstruct( start, item );
     }
     else
     {
         if( item->GetLength() > 0 )
-            tree_model->parseConstruct( offset + item->GetHeaderSize(), item );
+            ret = tree_model->parseConstruct( start, item );
+    }
+#else
+    // Expand case (BitString or OctetString )  definite value only
+    ret = tree_model->parseConstruct( start, item );
+#endif
+
+end :
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr("This is not BER encoded data"), this );
+        return;
     }
 
     onItemClicked( index );

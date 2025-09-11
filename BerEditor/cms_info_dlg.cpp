@@ -170,6 +170,7 @@ void CMSInfoDlg::setCMS( const BIN *pCMS, const QString strTitle )
 {
     QString strType;
     cms_type_ = JS_PKCS7_getType( pCMS );
+//    cms_type_ = JS_CMS_getType( pCMS );
 
     JS_BIN_reset( &cms_bin_ );
     JS_BIN_copy( &cms_bin_, pCMS );
@@ -212,7 +213,7 @@ void CMSInfoDlg::setCMS( const BIN *pCMS, const QString strTitle )
     }
     else
     {
-        berApplet->warningBox( tr( "This type is not supported." ).arg( cms_type_ ), this );
+        berApplet->warningBox( tr( "This type(%1) is not supported" ).arg( cms_type_ ), this );
     }
 
     setTitle( strTitle );
