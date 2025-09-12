@@ -2128,6 +2128,7 @@ void CertManDlg::clickOK()
         if( strPass.length() < 1 )
         {
             berApplet->warningBox( tr( "Enter a password" ), this );
+            mEE_PasswdText->setFocus();
             return;
         }
 
