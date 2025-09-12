@@ -744,6 +744,18 @@ void CMSInfoDlg::setSigned()
     mDataTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( sSignedData.nVerify )));
     row++;
 
+    mDataTable->insertRow(row);
+    mDataTable->setRowHeight( row, 10 );
+    mDataTable->setItem( row, 0, new QTableWidgetItem( "Cert Count" ));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( sSignedData.nCertCnt )));
+    row++;
+
+    mDataTable->insertRow(row);
+    mDataTable->setRowHeight( row, 10 );
+    mDataTable->setItem( row, 0, new QTableWidgetItem( "CRL Count" ));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( sSignedData.nCRLCnt )));
+    row++;
+
     if( sSignedData.nCertCnt > 0 ) mInfoTab->setTabEnabled( JS_CMS_CERT_IDX, true );
     if( sSignedData.nCRLCnt > 0 ) mInfoTab->setTabEnabled( JS_CMS_CRL_IDX, true );
 

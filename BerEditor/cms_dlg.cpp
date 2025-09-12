@@ -1341,7 +1341,7 @@ void CMSDlg::clickCMSView()
     int nCMSType = -1;
     QString strCMS = mCMSText->toPlainText();
 
-    CMSInfoDlg cmsInfo;
+    CMSInfoDlg cmsInfo = CMSInfoDlg( nullptr, true );
 
     if( strCMS.isEmpty() )
     {
