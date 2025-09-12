@@ -5,6 +5,7 @@
 #include "ui_cms_info_dlg.h"
 #include "js_bin.h"
 #include "js_pkcs7.h"
+#include "js_cms.h"
 
 #define JS_CMS_DATA_IDX     0
 #define JS_CMS_CERT_IDX     1
@@ -21,7 +22,7 @@ class CMSInfoDlg : public QDialog, public Ui::CMSInfoDlg
     Q_OBJECT
 
 public:
-    explicit CMSInfoDlg(QWidget *parent = nullptr);
+    explicit CMSInfoDlg(QWidget *parent = nullptr, bool bCMS = false );
     ~CMSInfoDlg();
 
     void setCMS( const QString strPath );
@@ -49,8 +50,13 @@ private:
     void setSignerInfo( const JP7SignerInfoList *pSignerList );
     void setRecipInfo( const JP7RecipInfoList *pRecipList );
 
+    void setSignerInfoCMS( const JSignerInfoList *pSignerList );
+    void setRecipInfoCMS( const JRecipInfoList *pRecipList );
+
     void setSigned();
     void setEnveloped();
+    void setSignedCMS();
+    void setEnvelopedCMS();
     void setSignedAndEnveloped();
     void setData();
     void setDigest();
@@ -60,6 +66,7 @@ private:
     int cms_type_;
     BIN tsp_bin_;
     QString cms_path_;
+    bool is_cms_;
 };
 
 #endif // CMS_INFO_DLG_H

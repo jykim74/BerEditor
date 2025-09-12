@@ -266,7 +266,7 @@ void DocSignerDlg::clickCMSView()
 {
     int ret = 0;
     BIN binSrc = {0,0};
-    CMSInfoDlg cmsInfo;
+    CMSInfoDlg cmsInfo = CMSInfoDlg(nullptr, true);
 
     if( cms_.nLen > 0 )
         JS_BIN_copy( &binSrc, &cms_ );
