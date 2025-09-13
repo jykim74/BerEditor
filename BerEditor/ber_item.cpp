@@ -197,7 +197,7 @@ QString BerItem::GetValueString( const BIN *pBer, int *pnType, int nWidth )
             pSN = JS_PKI_getSNFromOID( sOID );
 
             strVal = sOID;
-            if( pSN ) strVal += QString( " | %1").arg( pSN );
+            if( pSN ) strVal += QString( " [%1]").arg( pSN );
 
             if( pnType ) *pnType = JS_VALUE_OID;
         }
