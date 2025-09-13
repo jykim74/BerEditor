@@ -132,7 +132,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="mTabCMS">
       <attribute name="title">
@@ -293,6 +293,20 @@
          <property name="topMargin">
           <number>0</number>
          </property>
+         <item row="0" column="5">
+          <widget class="QPushButton" name="mCMSEnvelopBtn">
+           <property name="text">
+            <string>Enveloped Data</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="mCMSVerifySignBtn">
+           <property name="text">
+            <string>Verify Sign</string>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="2">
           <spacer name="horizontalSpacer_15">
            <property name="orientation">
@@ -305,13 +319,6 @@
             </size>
            </property>
           </spacer>
-         </item>
-         <item row="0" column="5">
-          <widget class="QPushButton" name="mCMSEnvelopBtn">
-           <property name="text">
-            <string>Enveloped Data</string>
-           </property>
-          </widget>
          </item>
          <item row="0" column="6">
           <widget class="QPushButton" name="mCMSDevelopBtn">
@@ -327,13 +334,6 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QPushButton" name="mCMSVerifySignBtn">
-           <property name="text">
-            <string>Verify Sign</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="3">
           <widget class="QComboBox" name="mCMSCipherCombo">
            <property name="minimumSize">
@@ -341,6 +341,27 @@
              <width>100</width>
              <height>0</height>
             </size>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QPushButton" name="mCMSMakeDataBtn">
+           <property name="text">
+            <string>Make Data</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QPushButton" name="mCMSMakeDigestBtn">
+           <property name="text">
+            <string>Make Digest</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="6">
+          <widget class="QPushButton" name="mCMSAddSignBtn">
+           <property name="text">
+            <string>Add Sign</string>
            </property>
           </widget>
          </item>

@@ -22,7 +22,7 @@ class CMSInfoDlg : public QDialog, public Ui::CMSInfoDlg
     Q_OBJECT
 
 public:
-    explicit CMSInfoDlg(QWidget *parent = nullptr, bool bCMS = false );
+    explicit CMSInfoDlg(QWidget *parent = nullptr, bool bCMS = true );
     ~CMSInfoDlg();
 
     void setCMS( const QString strPath );

@@ -48,6 +48,10 @@ private slots:
     void clickCMSEnvelopedData();
     void clickCMSDevelopedData();
 
+    void clickCMSMakeData();
+    void clickCMSMakeDigest();
+    void clickCMSAddSign();
+
     void clickJSON_ComputeSignature();
     void clickJSON_VerifySignature();
     void clickJSON_PayloadClear();

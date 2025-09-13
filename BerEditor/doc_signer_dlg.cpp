@@ -61,6 +61,9 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mCMSVerifySignBtn, SIGNAL(clicked()), this, SLOT(clickCMSVerifySign()));
     connect( mCMSEnvelopBtn, SIGNAL(clicked()), this, SLOT(clickCMSEnvelopedData()));
     connect( mCMSDevelopBtn, SIGNAL(clicked()), this, SLOT(clickCMSDevelopedData()));
+    connect( mCMSMakeDataBtn, SIGNAL(clicked()), this, SLOT(clickCMSMakeData()));
+    connect( mCMSMakeDigestBtn, SIGNAL(clicked()), this, SLOT(clickCMSMakeDigest()));
+    connect( mCMSAddSignBtn, SIGNAL(clicked()), this, SLOT(clickCMSAddSign()));
     connect( mCMSViewBtn, SIGNAL(clicked()), this, SLOT(clickCMSView()));
     connect( mCMSOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputClear()));
     connect( mCMSOutputUpBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputUp()));
@@ -967,6 +970,208 @@ end:
     JS_BIN_reset( &binCert );
     JS_BIN_reset( &binSrc );
     JS_BIN_reset( &binData );
+}
+
+void DocSignerDlg::clickCMSMakeData()
+{
+    int ret = 0;
+    BIN binSrc = {0,0};
+    BIN binCMS = {0,0};
+
+
+    QString strSrcPath = mSrcPathText->text();
+
+    if( mSrcFileCheck->isChecked() == true )
+    {
+        if( strSrcPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find a source" ), this );
+            mSrcPathText->setFocus();
+            return;
+        }
+
+        JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+    }
+    else
+    {
+        QString strData = mCMSDataText->toPlainText();
+        QString strType = mCMSDataTypeCombo->currentText();
+
+        if( strData.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a data" ), this );
+            mCMSDataText->setFocus();
+            return;
+        }
+
+        getBINFromString( &binSrc, strType, strData );
+    }
+
+
+    ret = JS_CMS_makeData( &binSrc, &binCMS );
+
+    if( ret == JSR_OK )
+    {
+        JS_BIN_reset( &cms_ );
+        JS_BIN_copy( &cms_, &binCMS );
+
+        mCMSOutputText->setPlainText( getHexString( &binCMS ));
+
+        if( mDstFileCheck->isChecked() == true )
+        {
+            setDstFile();
+            QString strDstPath = mDstPathText->text();
+            JS_BIN_fileWrite( &binCMS, strDstPath.toLocal8Bit().toStdString().c_str() );
+            berApplet->messageBox( tr( "The CMS file[%1] has been saved." ).arg( strDstPath ), this );
+        }
+
+        berApplet->messageBox( tr( "CMS data creation success" ), this );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to make data: %1").arg( JERR( ret ) ), this );
+    }
+
+end:
+    JS_BIN_reset( &binSrc );
+    JS_BIN_reset( &binCMS );
+}
+
+void DocSignerDlg::clickCMSMakeDigest()
+{
+    int ret = 0;
+    BIN binSrc = {0,0};
+    BIN binCMS = {0,0};
+
+    QString strHash = mHashCombo->currentText();
+    QString strSrcPath = mSrcPathText->text();
+
+    if( mSrcFileCheck->isChecked() == true )
+    {
+        if( strSrcPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find a source" ), this );
+            mSrcPathText->setFocus();
+            return;
+        }
+
+        JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+    }
+    else
+    {
+        QString strData = mCMSDataText->toPlainText();
+        QString strType = mCMSDataTypeCombo->currentText();
+
+        if( strData.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a data" ), this );
+            mCMSDataText->setFocus();
+            return;
+        }
+
+        getBINFromString( &binSrc, strType, strData );
+    }
+
+
+    ret = JS_CMS_makeDigest( &binSrc, strHash.toStdString().c_str(), &binCMS );
+
+    if( ret == JSR_OK )
+    {
+        JS_BIN_reset( &cms_ );
+        JS_BIN_copy( &cms_, &binCMS );
+
+        mCMSOutputText->setPlainText( getHexString( &binCMS ));
+
+        if( mDstFileCheck->isChecked() == true )
+        {
+            setDstFile();
+            QString strDstPath = mDstPathText->text();
+            JS_BIN_fileWrite( &binCMS, strDstPath.toLocal8Bit().toStdString().c_str() );
+            berApplet->messageBox( tr( "The CMS file[%1] has been saved." ).arg( strDstPath ), this );
+        }
+
+        berApplet->messageBox( tr( "CMS digest creation success" ), this );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to make data: %1").arg( JERR( ret ) ), this );
+    }
+
+end:
+    JS_BIN_reset( &binSrc );
+    JS_BIN_reset( &binCMS );
+}
+
+void DocSignerDlg::clickCMSAddSign()
+{
+    int ret = 0;
+    BIN binSrc = {0,0};
+    BIN binPri = {0,0};
+    BIN binCert = {0,0};
+    BIN binSigned = {0,0};
+
+    QString strHash = mHashCombo->currentText();
+
+    QString strSrcPath = mSrcPathText->text();
+
+    if( mSrcFileCheck->isChecked() == true )
+    {
+        if( strSrcPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find a source" ), this );
+            mSrcPathText->setFocus();
+            return;
+        }
+
+        JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+    }
+    else
+    {
+        QString strData = mCMSDataText->toPlainText();
+        QString strType = mCMSDataTypeCombo->currentText();
+
+        if( strData.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a data" ), this );
+            mCMSDataText->setFocus();
+            return;
+        }
+
+        getBINFromString( &binSrc, strType, strData );
+    }
+
+    ret = getPriKeyCert( &binPri, &binCert );
+    if( ret != 0 ) goto end;
+
+    ret = JS_CMS_addSigner( &binSrc, strHash.toStdString().c_str(), &binPri, &binCert, &binSigned );
+
+    if( ret == JSR_OK )
+    {
+        JS_BIN_reset( &cms_ );
+        JS_BIN_copy( &cms_, &binSigned );
+
+        mCMSOutputText->setPlainText( getHexString( &binSigned ));
+
+        if( mDstFileCheck->isChecked() == true )
+        {
+            setDstFile();
+            QString strDstPath = mDstPathText->text();
+            JS_BIN_fileWrite( &binSigned, strDstPath.toLocal8Bit().toStdString().c_str() );
+            berApplet->messageBox( tr( "The CMS file[%1] has been saved." ).arg( strDstPath ), this );
+        }
+
+        berApplet->messageBox( tr( "Signed data creation success" ), this );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to make singed data: %1").arg( JERR( ret ) ), this );
+    }
+
+end:
+    JS_BIN_reset( &binSrc );
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binCert );
+    JS_BIN_reset( &binSigned );
 }
 
 void DocSignerDlg::clickJSON_ComputeSignature()
