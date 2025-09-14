@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>505</width>
-    <height>625</height>
+    <width>635</width>
+    <height>756</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -563,35 +563,40 @@
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout_10">
+    <layout class="QGridLayout" name="gridLayout_8">
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mEnvelopedDataBtn">
-       <property name="text">
-        <string>EnvelopedData</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mSignedDataBtn">
-       <property name="text">
-        <string>SignedData</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="4">
-      <widget class="QPushButton" name="mSignAndEnvelopedBtn">
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="mCmdCombo"/>
+     </item>
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mRunBtn">
        <property name="text">
-        <string>SignAndEnveloped</string>
+        <string>Run</string>
        </property>
       </widget>
      </item>
      <item row="0" column="0">
+      <widget class="QComboBox" name="mTypeCombo"/>
+     </item>
+     <item row="0" column="2">
       <widget class="QComboBox" name="mHashCombo"/>
      </item>
-     <item row="0" column="1">
+     <item row="0" column="3">
       <widget class="QComboBox" name="mCipherCombo">
        <property name="minimumSize">
         <size>
@@ -761,6 +766,19 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="6">
+      <widget class="QPushButton" name="mCMSUpBtn">
+       <property name="maximumSize">
+        <size>
+         <width>34</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>⬆</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
@@ -771,8 +789,8 @@
         <colorrole role="Base">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>255</red>
-           <green>255</green>
+           <red>221</red>
+           <green>221</green>
            <blue>255</blue>
           </color>
          </brush>
@@ -782,8 +800,8 @@
         <colorrole role="Base">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>255</red>
-           <green>255</green>
+           <red>221</red>
+           <green>221</green>
            <blue>255</blue>
           </color>
          </brush>
@@ -793,44 +811,9 @@
       </palette>
      </property>
      <property name="readOnly">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
     </widget>
-   </item>
-   <item>
-    <layout class="QGridLayout" name="gridLayout_4">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <item row="1" column="2">
-      <widget class="QPushButton" name="mDevelopedDataBtn">
-       <property name="text">
-        <string>DevelopedData</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="3">
-      <widget class="QPushButton" name="mDevelopedAndVerifyBtn">
-       <property name="text">
-        <string>DevelopedAndVerify</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="mVerifyDataBtn">
-       <property name="text">
-        <string>VerifyData</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="mAddSignerBtn">
-       <property name="text">
-        <string>Add Signer</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </item>
    <item>
     <widget class="Line" name="line">
@@ -909,11 +892,6 @@
   <tabstop>mKMCertTypeBtn</tabstop>
   <tabstop>mKMEncPriKeyCheck</tabstop>
   <tabstop>mKMPasswdText</tabstop>
-  <tabstop>mHashCombo</tabstop>
-  <tabstop>mCipherCombo</tabstop>
-  <tabstop>mSignedDataBtn</tabstop>
-  <tabstop>mEnvelopedDataBtn</tabstop>
-  <tabstop>mSignAndEnvelopedBtn</tabstop>
   <tabstop>mCMSTypeCombo</tabstop>
   <tabstop>mCMSClearBtn</tabstop>
   <tabstop>mCMSDecodeBtn</tabstop>
@@ -921,10 +899,6 @@
   <tabstop>mCMSViewBtn</tabstop>
   <tabstop>mCMSLenText</tabstop>
   <tabstop>mCMSText</tabstop>
-  <tabstop>mAddSignerBtn</tabstop>
-  <tabstop>mVerifyDataBtn</tabstop>
-  <tabstop>mDevelopedDataBtn</tabstop>
-  <tabstop>mDevelopedAndVerifyBtn</tabstop>
   <tabstop>mClearDataAllBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>

@@ -8,6 +8,24 @@
 
 #include "js_bin.h"
 
+const QString kCMSCmdData = "Data";
+const QString kCMSCmdDigest = "Digest";
+const QString kCMSCmdSignedData = "Signed";
+const QString kCMSCmdEnvelopedData = "Enveloped";
+const QString kCMSCmdAddSigned = "Add Signed";
+const QString kCMSCmdGetData = "GetData";
+const QString kCMSCmdGetDigest = "GetDigest";
+const QString kCMSCmdVerifyData = "Verify";
+const QString kCMSCmdDevelopedData = "Developed";
+
+const QStringList kCMSEncodeList = {
+    kCMSCmdData, kCMSCmdDigest, kCMSCmdSignedData, kCMSCmdEnvelopedData, kCMSCmdAddSigned
+};
+
+const QStringList kCMSDecodeList = {
+    kCMSCmdGetData, kCMSCmdGetDigest, kCMSCmdVerifyData, kCMSCmdDevelopedData
+};
+
 namespace Ui {
 class DocSignerDlg;
 }
@@ -43,6 +61,10 @@ private slots:
     void clickCMSOutputClear();
     void clickCMSOutputDecode();
 
+    void changeCMSType();
+    void changeCMSCmd();
+    void clickCMSRun();
+
     void clickCMSMakeSign();
     void clickCMSVerifySign();
     void clickCMSEnvelopedData();
@@ -51,6 +73,9 @@ private slots:
     void clickCMSMakeData();
     void clickCMSMakeDigest();
     void clickCMSAddSign();
+
+    void clickCMSGetData();
+    void clickCMSGetDigest();
 
     void clickJSON_ComputeSignature();
     void clickJSON_VerifySignature();

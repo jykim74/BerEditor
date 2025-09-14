@@ -22,13 +22,21 @@
 
 static const QStringList kCipherList = { "aes-128-cbc", "aes-192-cbc", "aes-256-cbc" };
 
+static const QStringList kTypeList = { "encode", "decode" };
+
 CMSDlg::CMSDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
+    initUI();
 
     connect( mSrcClearBtn, SIGNAL(clicked()), this, SLOT(clearSrc()));
     connect( mCMSClearBtn, SIGNAL(clicked()), this, SLOT(clearCMS()));
+    connect( mCMSUpBtn, SIGNAL(clicked()), this, SLOT(clickCMSUp()));
+
+    connect( mTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeType()));
+    connect( mCmdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeCmd()));
+    connect( mRunBtn, SIGNAL(clicked()), this, SLOT(clickRun()));
 
     connect( mCMSDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCMSDecode()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(clickClose()));
@@ -36,14 +44,6 @@ CMSDlg::CMSDlg(QWidget *parent) :
     connect( mSignCertFindBtn, SIGNAL(clicked()), this, SLOT(clickSignCertFind()));
     connect( mKMPriKeyFindBtn, SIGNAL(clicked()), this, SLOT(clickKMPriFind()));
     connect( mKMCertFindBtn, SIGNAL(clicked()), this, SLOT(clickKMCertFind()));
-    connect( mSignedDataBtn, SIGNAL(clicked()), this, SLOT(clickSignedData()));
-    connect( mEnvelopedDataBtn, SIGNAL(clicked()), this, SLOT(clickEnvelopedData()));
-    connect( mSignAndEnvelopedBtn, SIGNAL(clicked()), this, SLOT(clickSignAndEnvloped()));
-    connect( mVerifyDataBtn, SIGNAL(clicked()), this, SLOT(clickVerifyData()));
-    connect( mDevelopedDataBtn, SIGNAL(clicked()), this, SLOT(clickDevelopedData()));
-    connect( mDevelopedAndVerifyBtn, SIGNAL(clicked()), this, SLOT(clickDevelopedAndVerify()));
-
-    connect( mAddSignerBtn, SIGNAL(clicked()), this, SLOT(clickAddSigner()));
 
     connect( mSrcText, SIGNAL(textChanged()), this, SLOT(srcChanged()));
     connect( mCMSText, SIGNAL(textChanged()), this, SLOT(CMSChanged()));
@@ -76,13 +76,14 @@ CMSDlg::CMSDlg(QWidget *parent) :
 
     initialize();
 
-    mSignedDataBtn->setDefault(true);
     mSrcText->setFocus();
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
     mSignCertGroup->layout()->setSpacing(5);
+    mSignCertGroup->layout()->setMargin(5);
     mKMCertGroup->layout()->setSpacing(5);
+    mKMCertGroup->layout()->setMargin(5);
 
     mSignPriKeyViewBtn->setFixedWidth(34);
     mSignPriKeyTypeBtn->setFixedWidth(34);
@@ -111,6 +112,12 @@ CMSDlg::CMSDlg(QWidget *parent) :
 CMSDlg::~CMSDlg()
 {
 
+}
+
+void CMSDlg::initUI()
+{
+    mTypeCombo->addItems( kTypeList );
+    mCmdCombo->addItems( kEncodeList );
 }
 
 void CMSDlg::initialize()
@@ -1415,4 +1422,109 @@ void CMSDlg::checkKMEncPriKey()
 
     mKMPasswdLabel->setEnabled(bVal);
     mKMPasswdText->setEnabled(bVal);
+}
+
+void CMSDlg::clickData()
+{
+
+}
+
+void CMSDlg::clickDigest()
+{
+
+}
+
+void CMSDlg::clickGetData()
+{
+
+}
+
+void CMSDlg::clickGetDigest()
+{
+
+}
+
+void CMSDlg::clickCMSUp()
+{
+    QString strCMS = mCMSText->toPlainText();
+    mSrcHexRadio->setChecked(true);
+
+    mSrcText->setPlainText( strCMS );
+    mCMSText->clear();
+}
+
+void CMSDlg::changeType()
+{
+    QString strType = mTypeCombo->currentText();
+
+    mCmdCombo->clear();
+
+    if( strType == "encode" )
+        mCmdCombo->addItems( kEncodeList );
+    else
+        mCmdCombo->addItems( kDecodeList );
+}
+
+void CMSDlg::changeCmd()
+{
+    QString strCmd = mCmdCombo->currentText();
+
+    if( strCmd == kCmdEnvelopedData || strCmd == kCmdSignedAndEnveloped )
+    {
+        mCipherCombo->setEnabled( true );
+    }
+    else
+    {
+        mCipherCombo->setEnabled( false );
+    }
+}
+
+void CMSDlg::clickRun()
+{
+    QString strCmd = mCmdCombo->currentText();
+
+    if( strCmd == kCmdData )
+    {
+        clickData();
+    }
+    else if( strCmd == kCmdDigest )
+    {
+        clickDigest();
+    }
+    else if( strCmd == kCmdSignedData )
+    {
+        clickSignedData();
+    }
+    else if( strCmd == kCmdEnvelopedData )
+    {
+        clickEnvelopedData();
+    }
+    else if( strCmd == kCmdSignedAndEnveloped )
+    {
+        clickSignAndEnvloped();
+    }
+    else if( strCmd == kCmdAddSigned )
+    {
+        clickAddSigner();
+    }
+    else if( strCmd == kCmdGetData )
+    {
+        clickGetData();
+    }
+    else if( strCmd == kCmdGetDigest )
+    {
+        clickGetDigest();
+    }
+    else if( strCmd == kCmdVerifyData )
+    {
+        clickVerifyData();
+    }
+    else if( strCmd == kCmdDevelopedData )
+    {
+        clickDevelopedData();
+    }
+    else if( strCmd == kCmdDevelopedAndVerify )
+    {
+        clickDevelopedAndVerify();
+    }
 }

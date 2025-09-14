@@ -32,6 +32,7 @@
 const QString kTSPUsedURL = "TSPUsedURL";
 
 static const QStringList kCipherList = { "aes-128-cbc", "aes-192-cbc", "aes-256-cbc" };
+static const QStringList kCMSTypeList = { "Encode", "Decode" };
 
 
 DocSignerDlg::DocSignerDlg(QWidget *parent)
@@ -54,16 +55,14 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mUseTSPCheck, SIGNAL(clicked()), this, SLOT(checkUseTSP()));
     connect( mTSPBtn, SIGNAL(clicked()), this, SLOT(clickTSP()));
 
+    connect( mCMSTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeCMSType()));
+    connect( mCMSCmdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeCMSCmd()));
+    connect( mCMSRunBtn, SIGNAL(clicked(bool)), this, SLOT(clickCMSRun()));
+
     connect( mCMSClearBtn, SIGNAL(clicked()), this, SLOT(clickCMSClear()));
     connect( mCMSDataText, SIGNAL(textChanged()), this, SLOT(changeCMSData()));
     connect( mCMSOutputText, SIGNAL(textChanged()), this, SLOT(changeCMSOutput()));
-    connect( mCMSMakeSignBtn, SIGNAL(clicked()), this, SLOT(clickCMSMakeSign()));
-    connect( mCMSVerifySignBtn, SIGNAL(clicked()), this, SLOT(clickCMSVerifySign()));
-    connect( mCMSEnvelopBtn, SIGNAL(clicked()), this, SLOT(clickCMSEnvelopedData()));
-    connect( mCMSDevelopBtn, SIGNAL(clicked()), this, SLOT(clickCMSDevelopedData()));
-    connect( mCMSMakeDataBtn, SIGNAL(clicked()), this, SLOT(clickCMSMakeData()));
-    connect( mCMSMakeDigestBtn, SIGNAL(clicked()), this, SLOT(clickCMSMakeDigest()));
-    connect( mCMSAddSignBtn, SIGNAL(clicked()), this, SLOT(clickCMSAddSign()));
+
     connect( mCMSViewBtn, SIGNAL(clicked()), this, SLOT(clickCMSView()));
     connect( mCMSOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputClear()));
     connect( mCMSOutputUpBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputUp()));
@@ -318,6 +317,9 @@ void DocSignerDlg::clickCMSOutputDecode()
 
 void DocSignerDlg::initUI()
 {
+    mCMSTypeCombo->addItems( kCMSTypeList );
+    mCMSCmdCombo->addItems( kCMSEncodeList );
+
     mHashCombo->addItems( kSHAHashList );
     mHashCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
 
@@ -365,6 +367,81 @@ void DocSignerDlg::setUsedURL( const QString strURL )
     list.insert( 0, strURL );
     settings.setValue( kTSPUsedURL, list );
     settings.endGroup();
+}
+
+void DocSignerDlg::changeCMSType()
+{
+    QString strType = mCMSTypeCombo->currentText();
+
+    mCMSCmdCombo->clear();
+
+    if( strType == "Encode" )
+        mCMSCmdCombo->addItems( kCMSEncodeList );
+    else
+        mCMSCmdCombo->addItems( kCMSDecodeList );
+}
+
+void DocSignerDlg::changeCMSCmd()
+{
+    QString strCmd = mCMSCmdCombo->currentText();
+
+    if( strCmd == kCMSCmdEnvelopedData )
+        mCMSCipherCombo->setEnabled( true );
+    else
+        mCMSCipherCombo->setEnabled( false );
+
+    if( strCmd == kCMSCmdSignedData )
+    {
+        mUseTSPCheck->setEnabled( true );
+        mTSPBtn->setEnabled( true );
+    }
+    else
+    {
+        mUseTSPCheck->setEnabled( false );
+        mTSPBtn->setEnabled( false );
+    }
+}
+
+void DocSignerDlg::clickCMSRun()
+{
+    QString strCmd = mCMSCmdCombo->currentText();
+
+    if( strCmd == kCMSCmdData )
+    {
+        clickCMSMakeData();
+    }
+    else if( strCmd == kCMSCmdDigest )
+    {
+        clickCMSMakeDigest();
+    }
+    else if( strCmd == kCMSCmdSignedData )
+    {
+        clickCMSMakeSign();
+    }
+    else if( strCmd == kCMSCmdEnvelopedData )
+    {
+        clickCMSEnvelopedData();
+    }
+    else if( strCmd == kCMSCmdAddSigned )
+    {
+        clickCMSAddSign();
+    }
+    else if( strCmd == kCMSCmdGetData )
+    {
+        clickCMSGetData();
+    }
+    else if( strCmd == kCMSCmdGetDigest )
+    {
+        clickCMSGetDigest();
+    }
+    else if( strCmd == kCMSCmdVerifyData )
+    {
+        clickCMSVerifySign();
+    }
+    else if( strCmd == kCMSCmdDevelopedData )
+    {
+        clickCMSDevelopedData();
+    }
 }
 
 void DocSignerDlg::setDstFile()
@@ -1173,6 +1250,150 @@ end:
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binCert );
     JS_BIN_reset( &binSigned );
+}
+
+void DocSignerDlg::clickCMSGetData()
+{
+    int ret = 0;
+
+    BIN binSrc = {0,0};
+    JCMSInfo sCMSInfo;
+
+    memset( &sCMSInfo, 0x00, sizeof(sCMSInfo));
+
+    QString strSrcPath = mSrcPathText->text();
+    if( mSrcFileCheck->isChecked() == true )
+    {
+        if( strSrcPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find a source CMS" ), this );
+            mSrcPathText->setFocus();
+            return;
+        }
+
+        JS_BIN_fileReadBER( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+    }
+    else
+    {
+        QString strData = mCMSDataText->toPlainText();
+        QString strType = mCMSDataTypeCombo->currentText();
+
+        if( strData.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a CMS" ), this );
+            mCMSDataText->setFocus();
+            return;
+        }
+
+        getBINFromString( &binSrc, strType, strData );
+    }
+
+    ret = JS_CMS_getType( &binSrc );
+    if( ret != JS_PKCS7_TYPE_DATA )
+    {
+        berApplet->warningBox( tr("This is not a data message:%1").arg(ret), this );
+        goto end;
+    }
+
+    ret = JS_CMS_getData( &binSrc, &sCMSInfo );
+
+    if( sCMSInfo.binContent.nLen > 0 )
+    {
+        mCMSOutputText->setPlainText( getHexString( &sCMSInfo.binContent ));
+
+        if( mDstFileCheck->isChecked() == true )
+        {
+            setDstFile();
+            QString strDstPath = mDstPathText->text();
+            JS_BIN_fileWrite( &sCMSInfo.binContent, strDstPath.toLocal8Bit().toStdString().c_str() );
+            berApplet->messageBox( tr( "The data file[%1] has been saved." ).arg( strDstPath ), this );
+        }
+    }
+
+    if( ret == JSR_VERIFY )
+    {
+        berApplet->messageBox( tr( "Get OK" ), this );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to get data: %1").arg( JERR( ret ) ), this );
+    }
+
+end:
+    JS_BIN_reset( &binSrc );
+    JS_CMS_resetCMSInfo( &sCMSInfo );
+}
+
+void DocSignerDlg::clickCMSGetDigest()
+{
+    int ret = 0;
+
+    BIN binSrc = {0,0};
+    JCMSInfo sCMSInfo;
+
+    memset( &sCMSInfo, 0x00, sizeof(sCMSInfo));
+
+    QString strSrcPath = mSrcPathText->text();
+    if( mSrcFileCheck->isChecked() == true )
+    {
+        if( strSrcPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find a source CMS" ), this );
+            mSrcPathText->setFocus();
+            return;
+        }
+
+        JS_BIN_fileReadBER( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+    }
+    else
+    {
+        QString strData = mCMSDataText->toPlainText();
+        QString strType = mCMSDataTypeCombo->currentText();
+
+        if( strData.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a CMS" ), this );
+            mCMSDataText->setFocus();
+            return;
+        }
+
+        getBINFromString( &binSrc, strType, strData );
+    }
+
+    ret = JS_CMS_getType( &binSrc );
+    if( ret != JS_PKCS7_TYPE_DIGEST )
+    {
+        berApplet->warningBox( tr("This is not a digest message:%1").arg(ret), this );
+        goto end;
+    }
+
+    ret = JS_CMS_getDigest( &binSrc, &sCMSInfo );
+
+    if( sCMSInfo.binContent.nLen > 0 )
+    {
+        mCMSOutputText->setPlainText( getHexString( &sCMSInfo.binContent ));
+
+        if( mDstFileCheck->isChecked() == true )
+        {
+            setDstFile();
+            QString strDstPath = mDstPathText->text();
+            JS_BIN_fileWrite( &sCMSInfo.binContent, strDstPath.toLocal8Bit().toStdString().c_str() );
+            berApplet->messageBox( tr( "The data file[%1] has been saved." ).arg( strDstPath ), this );
+        }
+    }
+
+    if( ret == JSR_VERIFY )
+    {
+        berApplet->messageBox( tr( "Get digest OK" ), this );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to get digest: %1").arg( JERR( ret ) ), this );
+    }
+
+end:
+    JS_BIN_reset( &binSrc );
+    JS_CMS_resetCMSInfo( &sCMSInfo );
 }
 
 void DocSignerDlg::clickJSON_ComputeSignature()
