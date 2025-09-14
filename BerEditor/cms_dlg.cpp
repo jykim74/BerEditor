@@ -1424,24 +1424,235 @@ void CMSDlg::checkKMEncPriKey()
     mKMPasswdText->setEnabled(bVal);
 }
 
-void CMSDlg::clickData()
-{
-
-}
-
 void CMSDlg::clickDigest()
 {
+    int ret = 0;
+    int nType = DATA_HEX;
 
+    BIN binSrc = {0,0};
+    BIN binOutput = {0,0};
+
+    QString strInput = mSrcText->toPlainText();
+    QString strHash = mHashCombo->currentText();
+    QString strOutput;
+
+    if( strInput.isEmpty() )
+    {
+        berApplet->warningBox( tr( "Please enter input value" ), this );
+        mSrcText->setFocus();
+        return;
+    }
+
+    if( mSrcStringRadio->isChecked() )
+        nType = DATA_STRING;
+    else if( mSrcHexRadio->isChecked() )
+        nType = DATA_HEX;
+    else if( mSrcBase64Radio->isChecked() )
+        nType = DATA_STRING;
+
+    getBINFromString( &binSrc, nType, strInput.toStdString().c_str() );
+
+
+    ret = JS_PKCS7_makeDigest( &binSrc, strHash.toStdString().c_str(), &binOutput );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "Failed to create digest [%1]").arg( ret ), this );
+        goto end;
+    }
+
+    if( ret == 0 )
+    {
+        mCMSTypeText->setText( "Digest" );
+
+        berApplet->logLine();
+        berApplet->log( "-- Digest" );
+        berApplet->logLine2();
+        berApplet->log( QString( "Hash        : SHA256" ));
+        berApplet->log( QString( "Src         : %1" ).arg( getHexString( &binSrc )));
+        berApplet->log( QString( "Output      : %1" ).arg( getHexString( &binOutput )));
+        berApplet->logLine();
+    }
+
+    strOutput = getStringFromBIN( &binOutput, mCMSTypeCombo->currentText() );
+    mCMSText->setPlainText( strOutput );
+
+end :
+    JS_BIN_reset( &binSrc );
+    JS_BIN_reset( &binOutput );
+}
+
+void CMSDlg::clickData()
+{
+    int ret = 0;
+    int nType = DATA_HEX;
+
+    BIN binSrc = {0,0};
+    BIN binOutput = {0,0};
+
+    QString strInput = mSrcText->toPlainText();
+    QString strHash = mHashCombo->currentText();
+    QString strOutput;
+
+    if( strInput.isEmpty() )
+    {
+        berApplet->warningBox( tr( "Please enter input value" ), this );
+        mSrcText->setFocus();
+        return;
+    }
+
+
+    if( mSrcStringRadio->isChecked() )
+        nType = DATA_STRING;
+    else if( mSrcHexRadio->isChecked() )
+        nType = DATA_HEX;
+    else if( mSrcBase64Radio->isChecked() )
+        nType = DATA_STRING;
+
+    getBINFromString( &binSrc, nType, strInput.toStdString().c_str() );
+
+
+    ret = JS_PKCS7_makeData( &binSrc, &binOutput );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "Failed to create data [%1]").arg( ret ), this );
+        goto end;
+    }
+
+    if( ret == 0 )
+    {
+        mCMSTypeText->setText( "Data" );
+
+        berApplet->logLine();
+        berApplet->log( "-- Data" );
+        berApplet->logLine2();
+        berApplet->log( QString( "Output      : %1" ).arg( getHexString( &binOutput )));
+        berApplet->logLine();
+    }
+
+    strOutput = getStringFromBIN( &binOutput, mCMSTypeCombo->currentText() );
+    mCMSText->setPlainText( strOutput );
+
+end :
+    JS_BIN_reset( &binSrc );
+    JS_BIN_reset( &binOutput );
 }
 
 void CMSDlg::clickGetData()
 {
+    int ret = 0;
+    int nType = DATA_HEX;
 
+    BIN binSrc = {0,0};
+
+    QString strInput = mSrcText->toPlainText();
+    QString strHash = mHashCombo->currentText();
+    QString strOutput;
+
+    JP7Data sData;
+
+    memset( &sData, 0x00, sizeof(sData));
+
+    if( strInput.isEmpty() )
+    {
+        berApplet->warningBox( tr( "Please enter input value" ), this );
+        mSrcText->setFocus();
+        return;
+    }
+
+
+    if( mSrcStringRadio->isChecked() )
+        nType = DATA_STRING;
+    else if( mSrcHexRadio->isChecked() )
+        nType = DATA_HEX;
+    else if( mSrcBase64Radio->isChecked() )
+        nType = DATA_STRING;
+
+    getBINFromString( &binSrc, nType, strInput.toStdString().c_str() );
+
+
+    ret = JS_PKCS7_getData( &binSrc, &sData );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "Failed to create data [%1]").arg( ret ), this );
+        goto end;
+    }
+
+    if( ret == 0 )
+    {
+        mCMSTypeText->setText( "Data" );
+
+        berApplet->logLine();
+        berApplet->log( "-- Data" );
+        berApplet->logLine2();
+        berApplet->log( QString( "Output      : %1" ).arg( getHexString( &sData.binData )));
+        berApplet->logLine();
+    }
+
+    strOutput = getStringFromBIN( &sData.binData, mCMSTypeCombo->currentText() );
+    mCMSText->setPlainText( strOutput );
+
+end :
+    JS_BIN_reset( &binSrc );
+    JS_PKCS7_resetData( &sData );
 }
 
 void CMSDlg::clickGetDigest()
 {
+    int ret = 0;
+    int nType = DATA_HEX;
 
+    BIN binSrc = {0,0};
+
+    QString strInput = mSrcText->toPlainText();
+    QString strHash = mHashCombo->currentText();
+    QString strOutput;
+
+    JP7DigestData sData;
+
+    memset( &sData, 0x00, sizeof(sData));
+
+    if( strInput.isEmpty() )
+    {
+        berApplet->warningBox( tr( "Please enter input value" ), this );
+        mSrcText->setFocus();
+        return;
+    }
+
+
+    if( mSrcStringRadio->isChecked() )
+        nType = DATA_STRING;
+    else if( mSrcHexRadio->isChecked() )
+        nType = DATA_HEX;
+    else if( mSrcBase64Radio->isChecked() )
+        nType = DATA_STRING;
+
+    getBINFromString( &binSrc, nType, strInput.toStdString().c_str() );
+
+
+    ret = JS_PKCS7_getDigestData( &binSrc, &sData );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "Failed to create data [%1]").arg( ret ), this );
+        goto end;
+    }
+
+    if( ret == 0 )
+    {
+        mCMSTypeText->setText( "Data" );
+
+        berApplet->logLine();
+        berApplet->log( "-- Data" );
+        berApplet->logLine2();
+        berApplet->log( QString( "Output      : %1" ).arg( getHexString( &sData.binContent )));
+        berApplet->logLine();
+    }
+
+    strOutput = getStringFromBIN( &sData.binContent, mCMSTypeCombo->currentText() );
+    mCMSText->setPlainText( strOutput );
+
+end :
+    JS_BIN_reset( &binSrc );
+    JS_PKCS7_resetDigestData( &sData );
 }
 
 void CMSDlg::clickCMSUp()
