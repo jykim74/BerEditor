@@ -325,6 +325,7 @@ void DocSignerDlg::initUI()
 
     mCMSCipherCombo->addItems( kCipherList );
     mCMSDataTypeCombo->addItems( kDataTypeList );
+    mCMSDataTypeCombo->setCurrentText( "Hex" );
 
     mXMLDataText->setPlaceholderText( tr("data for encryption" ));
 
