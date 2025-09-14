@@ -647,7 +647,7 @@ void CMSDlg::clickVerifyData()
     BIN binCMS = {0,0};
     BIN binSrc = {0,0};
 
-    QString strCMS = mCMSText->toPlainText();
+    QString strCMS = mSrcText->toPlainText();
     QString strSrc;
 
     if( strCMS.isEmpty() )
@@ -714,7 +714,7 @@ void CMSDlg::clickVerifyData()
             nDataType = DATA_STRING;
 
         strSrc = getStringFromBIN( &binSrc, nDataType );
-        mSrcText->setPlainText( strSrc );
+        mCMSText->setPlainText( strSrc );
 
         berApplet->messageBox( tr( "VerifyData Success" ), this );
     }
@@ -740,7 +740,7 @@ void CMSDlg::clickDevelopedData()
     BIN binSrc = {0,0};
     BIN binCMS = {0,0};
 
-    QString strCMS = mCMSText->toPlainText();
+    QString strCMS = mSrcText->toPlainText();
 
     if( strCMS.isEmpty() )
     {
@@ -818,7 +818,7 @@ void CMSDlg::clickDevelopedData()
             nDataType = DATA_STRING;
 
         strSrc = getStringFromBIN( &binSrc, nDataType );
-        mSrcText->setPlainText( strSrc );
+        mCMSText->setPlainText( strSrc );
 
         berApplet->messageBox( tr( "DevelopedData Success" ), this );
     }
@@ -846,7 +846,7 @@ void CMSDlg::clickDevelopedAndVerify()
     BIN binSrc = {0,0};
     BIN binCMS = {0,0};
 
-    QString strCMS = mCMSText->toPlainText();
+    QString strCMS = mSrcText->toPlainText();
 
     if( strCMS.isEmpty() )
     {
@@ -949,7 +949,7 @@ void CMSDlg::clickDevelopedAndVerify()
             nDataType = DATA_STRING;
 
         strSrc = getStringFromBIN( &binSrc, nDataType );
-        mSrcText->setPlainText( strSrc );
+        mCMSText->setPlainText( strSrc );
 
         berApplet->messageBox( tr( "verify and develop data successfully"), this );
     }
@@ -977,7 +977,7 @@ void CMSDlg::clickAddSigner()
     BIN binCMS = {0,0};
     BIN binOutput = {0,0};
 
-    QString strCMS = mCMSText->toPlainText();
+    QString strCMS = mSrcText->toPlainText();
     QString strHash = mHashCombo->currentText();
     QString strOutput;
 
