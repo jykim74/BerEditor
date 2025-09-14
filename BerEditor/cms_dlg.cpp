@@ -277,7 +277,7 @@ void CMSDlg::clickCMSDecode()
 
     getBINFromString( &binOutput, strType, strOutput );
 
-    berApplet->decodeData( &binOutput, "CMS Message" );
+    berApplet->decodeData( &binOutput );
 
     JS_BIN_reset( &binOutput );
 }
@@ -393,7 +393,7 @@ void CMSDlg::clickSignedData()
         berApplet->logLine();
         berApplet->log( "-- Signed Data" );
         berApplet->logLine2();
-        berApplet->log( QString( "Hash        : SHA256" ));
+        berApplet->log( QString( "Hash        : %1" ).arg( strHash ));
         berApplet->log( QString( "Src         : %1" ).arg( getHexString( &binSrc )));
         berApplet->log( QString( "Private Key : [hidden]" ));
         berApplet->log( QString( "Certificate : %1" ).arg( getHexString( &binCert )));
@@ -1467,13 +1467,12 @@ void CMSDlg::clickDigest()
         berApplet->logLine();
         berApplet->log( "-- Digest" );
         berApplet->logLine2();
-        berApplet->log( QString( "Hash        : SHA256" ));
+        berApplet->log( QString( "Hash        : %1" ).arg( strHash ));
         berApplet->log( QString( "Src         : %1" ).arg( getHexString( &binSrc )));
         berApplet->log( QString( "Output      : %1" ).arg( getHexString( &binOutput )));
         berApplet->logLine();
     }
 
-    strOutput = getStringFromBIN( &binOutput, mCMSTypeCombo->currentText() );
     mCMSText->setPlainText( strOutput );
 
 end :
@@ -1520,16 +1519,16 @@ void CMSDlg::clickData()
 
     if( ret == 0 )
     {
+        strOutput = getHexString( &binOutput );
         mCMSTypeText->setText( "Data" );
 
         berApplet->logLine();
         berApplet->log( "-- Data" );
         berApplet->logLine2();
-        berApplet->log( QString( "Output      : %1" ).arg( getHexString( &binOutput )));
+        berApplet->log( QString( "Output      : %1" ).arg( strOutput ));
         berApplet->logLine();
     }
 
-    strOutput = getStringFromBIN( &binOutput, mCMSTypeCombo->currentText() );
     mCMSText->setPlainText( strOutput );
 
 end :
