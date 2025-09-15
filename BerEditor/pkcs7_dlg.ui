@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>482</width>
-    <height>593</height>
+    <width>598</width>
+    <height>807</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,55 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="4">
+     <item row="0" column="2">
+      <widget class="QRadioButton" name="mEncodeRadio">
+       <property name="text">
+        <string>Encode</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QRadioButton" name="mDecodeRadio">
+       <property name="text">
+        <string>Decode</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>PKCS7 Message Encode Decode</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer_5">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_6">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_4">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="2">
       <widget class="QPushButton" name="mSrcClearBtn">
        <property name="maximumSize">
         <size>
@@ -51,7 +99,56 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="9">
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mReadFileBtn">
+       <property name="text">
+        <string>Read File</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="mSrcTypeCombo"/>
+     </item>
+     <item row="0" column="4">
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mSrcViewBtn">
+       <property name="minimumSize">
+        <size>
+         <width>20</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>V</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="6">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>Len</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="7">
       <widget class="QLineEdit" name="mSrcLenText">
        <property name="minimumSize">
         <size>
@@ -104,76 +201,6 @@
        </property>
        <property name="readOnly">
         <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="7">
-      <widget class="QPushButton" name="mReadFileBtn">
-       <property name="text">
-        <string>Read File</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="8">
-      <widget class="QLabel" name="label_6">
-       <property name="text">
-        <string>Len</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QRadioButton" name="mSrcBase64Radio">
-       <property name="text">
-        <string>Base64</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QRadioButton" name="mSrcHexRadio">
-       <property name="text">
-        <string>Hex</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QRadioButton" name="mSrcStringRadio">
-       <property name="text">
-        <string>String</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="6">
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="5">
-      <widget class="QPushButton" name="mSrcViewBtn">
-       <property name="minimumSize">
-        <size>
-         <width>20</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>V</string>
        </property>
       </widget>
      </item>
@@ -586,6 +613,19 @@
      <property name="topMargin">
       <number>0</number>
      </property>
+     <item row="0" column="0">
+      <widget class="QComboBox" name="mCmdCombo"/>
+     </item>
+     <item row="0" column="3">
+      <widget class="QComboBox" name="mCipherCombo">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>0</height>
+        </size>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="4">
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
@@ -599,8 +639,8 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="mCmdCombo"/>
+     <item row="0" column="2">
+      <widget class="QComboBox" name="mHashCombo"/>
      </item>
      <item row="0" column="5">
       <widget class="QPushButton" name="mRunBtn">
@@ -609,19 +649,10 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QComboBox" name="mTypeCombo"/>
-     </item>
-     <item row="0" column="2">
-      <widget class="QComboBox" name="mHashCombo"/>
-     </item>
-     <item row="0" column="3">
-      <widget class="QComboBox" name="mCipherCombo">
-       <property name="minimumSize">
-        <size>
-         <width>100</width>
-         <height>0</height>
-        </size>
+     <item row="0" column="1">
+      <widget class="QCheckBox" name="mAutoDetectCheck">
+       <property name="text">
+        <string>Auto Detect</string>
        </property>
       </widget>
      </item>
@@ -900,12 +931,6 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>mSrcStringRadio</tabstop>
-  <tabstop>mSrcHexRadio</tabstop>
-  <tabstop>mSrcBase64Radio</tabstop>
-  <tabstop>mSrcClearBtn</tabstop>
-  <tabstop>mReadFileBtn</tabstop>
-  <tabstop>mSrcLenText</tabstop>
   <tabstop>mSrcText</tabstop>
   <tabstop>mSignCertGroup</tabstop>
   <tabstop>mSignPriKeyPathText</tabstop>

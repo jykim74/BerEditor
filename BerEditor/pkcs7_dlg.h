@@ -43,6 +43,10 @@ public:
     ~PKCS7Dlg();
 
 private slots:
+    void checkEncode();
+    void checkDecode();
+    void checkAutoDetect();
+
     void clickClose();
     void clickCMSDecode();
     void clickSignPriFind();
@@ -95,7 +99,6 @@ private slots:
 
     void clickCMSUp();
 
-    void changeType();
     void changeCmd();
     void clickRun();
 

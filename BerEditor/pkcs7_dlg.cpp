@@ -22,8 +22,6 @@
 
 static const QStringList kCipherList = { "aes-128-cbc", "aes-192-cbc", "aes-256-cbc" };
 
-static const QStringList kTypeList = { "encode", "decode" };
-
 PKCS7Dlg::PKCS7Dlg(QWidget *parent) :
     QDialog(parent)
 {
@@ -34,7 +32,9 @@ PKCS7Dlg::PKCS7Dlg(QWidget *parent) :
     connect( mCMSClearBtn, SIGNAL(clicked()), this, SLOT(clearCMS()));
     connect( mCMSUpBtn, SIGNAL(clicked()), this, SLOT(clickCMSUp()));
 
-    connect( mTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeType()));
+    connect( mEncodeRadio, SIGNAL(clicked()), this, SLOT(checkEncode()));
+    connect( mDecodeRadio, SIGNAL(clicked()), this, SLOT(checkDecode()));
+    connect( mAutoDetectCheck, SIGNAL(clicked()), this, SLOT(checkAutoDetect()));
     connect( mCmdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeCmd()));
     connect( mRunBtn, SIGNAL(clicked()), this, SLOT(clickRun()));
 
@@ -47,9 +47,7 @@ PKCS7Dlg::PKCS7Dlg(QWidget *parent) :
 
     connect( mSrcText, SIGNAL(textChanged()), this, SLOT(srcChanged()));
     connect( mCMSText, SIGNAL(textChanged()), this, SLOT(CMSChanged()));
-    connect( mSrcStringRadio, SIGNAL(clicked()), this, SLOT(srcChanged()));
-    connect( mSrcHexRadio, SIGNAL(clicked()), this, SLOT(srcChanged()));
-    connect( mSrcBase64Radio, SIGNAL(clicked()), this, SLOT(srcChanged()));
+    connect( mSrcTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(srcChanged()));
 
     connect( mSignPriKeyViewBtn, SIGNAL(clicked()), this, SLOT(clickSignPriKeyView()));
     connect( mSignPriKeyDecodeBtn, SIGNAL(clicked()), this, SLOT(clickSignPriKeyDecode()));
@@ -121,16 +119,19 @@ PKCS7Dlg::~PKCS7Dlg()
 
 void PKCS7Dlg::initUI()
 {
-    mTypeCombo->addItems( kTypeList );
+    mSrcTypeCombo->addItems( kDataTypeList );
     mCmdCombo->addItems( kEncodeList );
     mCmdCombo->setCurrentText( kCmdSignedData );
 
+    mSrcTypeCombo->setCurrentText( kDataHex );
+    mEncodeRadio->setChecked(true);
+    mAutoDetectCheck->setChecked(true);
+    checkEncode();
     changeCmd();
 }
 
 void PKCS7Dlg::initialize()
 {
-    mSrcHexRadio->setChecked(true);
     mHashCombo->addItems( kHashList );
     mHashCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
 
@@ -268,6 +269,35 @@ end :
     return ret;
 }
 
+void PKCS7Dlg::checkEncode()
+{
+    mCmdCombo->clear();
+    mCmdCombo->addItems( kEncodeList );
+
+
+    mAutoDetectCheck->setEnabled(false);
+    mRunBtn->setText( tr("Encode" ));
+}
+
+void PKCS7Dlg::checkDecode()
+{
+    mCmdCombo->clear();
+    mCmdCombo->addItems( kDecodeList );
+    mAutoDetectCheck->setEnabled(true);
+
+    bool bVal = mAutoDetectCheck->isChecked();
+    mCmdCombo->setEnabled(!bVal);
+
+    mRunBtn->setText( tr("Decode"));
+}
+
+void PKCS7Dlg::checkAutoDetect()
+{
+    bool bVal = mAutoDetectCheck->isChecked();
+
+    mCmdCombo->setEnabled(!bVal);
+}
+
 void PKCS7Dlg::clickClose()
 {
     close();
@@ -327,7 +357,6 @@ void PKCS7Dlg::clickKMCertFind()
 void PKCS7Dlg::clickSignedData()
 {
     int ret = 0;
-    int nType = DATA_HEX;
 
     BIN binPri = {0,0};
     BIN binCert = {0,0};
@@ -336,6 +365,7 @@ void PKCS7Dlg::clickSignedData()
 
     QString strInput = mSrcText->toPlainText();
     QString strHash = mHashCombo->currentText();
+    QString strSrcType = mSrcTypeCombo->currentText();
     QString strOutput;
 
     if( strInput.isEmpty() )
@@ -372,14 +402,7 @@ void PKCS7Dlg::clickSignedData()
         certMan.getPriKey( &binPri );
     }
 
-    if( mSrcStringRadio->isChecked() )
-        nType = DATA_STRING;
-    else if( mSrcHexRadio->isChecked() )
-        nType = DATA_HEX;
-    else if( mSrcBase64Radio->isChecked() )
-        nType = DATA_STRING;
-
-    getBINFromString( &binSrc, nType, strInput.toStdString().c_str() );
+    getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
 
 
     ret = JS_PKCS7_makeSignedData( strHash.toStdString().c_str(), &binSrc, &binPri, &binCert, &binOutput );
@@ -426,6 +449,7 @@ void PKCS7Dlg::clickEnvelopedData()
 
     QString strInput = mSrcText->toPlainText();
     QString strCipher = mCipherCombo->currentText();
+    QString strSrcType = mSrcTypeCombo->currentText();
     QString strOutput;
 
     if( strInput.isEmpty() )
@@ -468,14 +492,7 @@ void PKCS7Dlg::clickEnvelopedData()
         goto end;
     }
 
-    if( mSrcStringRadio->isChecked() )
-        nType = DATA_STRING;
-    else if( mSrcHexRadio->isChecked() )
-        nType = DATA_HEX;
-    else if( mSrcBase64Radio->isChecked() )
-        nType = DATA_STRING;
-
-    getBINFromString( &binSrc, nType, strInput.toStdString().c_str() );
+    getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
 
     ret = JS_PKCS7_makeEnvelopedData( strCipher.toStdString().c_str(), &binSrc, &binCert, &binOutput );
     if( ret != 0 )
@@ -522,6 +539,7 @@ void PKCS7Dlg::clickSignAndEnvloped()
     QString strInput = mSrcText->toPlainText();
     QString strHash = mHashCombo->currentText();
     QString strCipher = mCipherCombo->currentText();
+    QString strSrcType = mSrcTypeCombo->currentText();
     QString strOutput;
 
     if( strInput.isEmpty() )
@@ -591,14 +609,7 @@ void PKCS7Dlg::clickSignAndEnvloped()
         goto end;
     }
 
-    if( mSrcStringRadio->isChecked() )
-        nType = DATA_STRING;
-    else if( mSrcHexRadio->isChecked() )
-        nType = DATA_HEX;
-    else if( mSrcBase64Radio->isChecked() )
-        nType = DATA_STRING;
-
-    getBINFromString( &binSrc, nType, strInput.toStdString().c_str() );
+    getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
 
     nType = JS_PKI_getPriKeyType( &binSignPri );
     if( nType != JS_PKI_KEY_TYPE_RSA )
@@ -652,6 +663,7 @@ void PKCS7Dlg::clickVerifyData()
     BIN binSrc = {0,0};
 
     QString strCMS = mSrcText->toPlainText();
+    QString strSrcType = mSrcTypeCombo->currentText();
     QString strSrc;
 
     if( strCMS.isEmpty() )
@@ -661,14 +673,7 @@ void PKCS7Dlg::clickVerifyData()
         return;
     }
 
-    if( mSrcStringRadio->isChecked() )
-        nType = DATA_STRING;
-    else if( mSrcHexRadio->isChecked() )
-        nType = DATA_HEX;
-    else if( mSrcBase64Radio->isChecked() )
-        nType = DATA_STRING;
-
-    getBINFromString( &binCMS, nType, strCMS.toStdString().c_str() );
+    getBINFromString( &binCMS, strSrcType, strCMS.toStdString().c_str() );
 
     nCMSType = JS_PKCS7_getType( &binCMS );
     if( nCMSType != JS_PKCS7_TYPE_SIGNED )
@@ -746,6 +751,7 @@ void PKCS7Dlg::clickDevelopedData()
     BIN binCMS = {0,0};
 
     QString strCMS = mSrcText->toPlainText();
+    QString strSrcType = mSrcTypeCombo->currentText();
 
     if( strCMS.isEmpty() )
     {
@@ -754,7 +760,7 @@ void PKCS7Dlg::clickDevelopedData()
         return;
     }
 
-    getBINFromString( &binCMS, nType, strCMS.toStdString().c_str() );
+    getBINFromString( &binCMS, strSrcType, strCMS.toStdString().c_str() );
 
     nCMSType = JS_PKCS7_getType( &binCMS );
     if( nCMSType != JS_PKCS7_TYPE_ENVELOED )
@@ -790,13 +796,6 @@ void PKCS7Dlg::clickDevelopedData()
         certMan.getCert( &binCert );
         certMan.getPriKey( &binPri );
     }
-
-    if( mSrcStringRadio->isChecked() )
-        nType = DATA_STRING;
-    else if( mSrcHexRadio->isChecked() )
-        nType = DATA_HEX;
-    else if( mSrcBase64Radio->isChecked() )
-        nType = DATA_STRING;
 
 
     nType = JS_PKI_getPriKeyType( &binPri );
@@ -853,6 +852,7 @@ void PKCS7Dlg::clickDevelopedAndVerify()
     BIN binCMS = {0,0};
 
     QString strCMS = mSrcText->toPlainText();
+    QString strSrcType = mSrcTypeCombo->currentText();
 
     if( strCMS.isEmpty() )
     {
@@ -861,7 +861,7 @@ void PKCS7Dlg::clickDevelopedAndVerify()
         return;
     }
 
-    getBINFromString( &binCMS, nType, strCMS.toStdString().c_str() );
+    getBINFromString( &binCMS, strSrcType, strCMS.toStdString().c_str() );
 
     nCMSType = JS_PKCS7_getType( &binCMS );
     if( nCMSType != JS_PKCS7_TYPE_SIGNED_AND_ENVELOPED )
@@ -922,14 +922,6 @@ void PKCS7Dlg::clickDevelopedAndVerify()
         certMan.getPriKey( &binKMPri );
     }
 
-    if( mSrcStringRadio->isChecked() )
-        nType = DATA_STRING;
-    else if( mSrcHexRadio->isChecked() )
-        nType = DATA_HEX;
-    else if( mSrcBase64Radio->isChecked() )
-        nType = DATA_STRING;
-
-
 
     nType = JS_PKI_getPriKeyType( &binKMPri );
     if( nType < 0 )
@@ -988,6 +980,7 @@ void PKCS7Dlg::clickAddSigner()
 
     QString strCMS = mSrcText->toPlainText();
     QString strHash = mHashCombo->currentText();
+    QString strSrcType = mSrcTypeCombo->currentText();
     QString strOutput;
 
     if( strCMS.isEmpty() )
@@ -1024,14 +1017,7 @@ void PKCS7Dlg::clickAddSigner()
         certMan.getPriKey( &binPri );
     }
 
-    if( mSrcStringRadio->isChecked() )
-        nType = DATA_STRING;
-    else if( mSrcHexRadio->isChecked() )
-        nType = DATA_HEX;
-    else if( mSrcBase64Radio->isChecked() )
-        nType = DATA_STRING;
-
-    getBINFromString( &binCMS, nType, strCMS.toStdString().c_str() );
+    getBINFromString( &binCMS, strSrcType, strCMS.toStdString().c_str() );
 
     nCMSType = JS_PKCS7_getType( &binCMS );
     if( nCMSType != JS_PKCS7_TYPE_SIGNED )
@@ -1074,15 +1060,10 @@ end :
 }
 
 void PKCS7Dlg::srcChanged()
-{
-    int nType = DATA_STRING;
+{   
+    QString strType = mSrcTypeCombo->currentText();
 
-    if( mSrcHexRadio->isChecked() )
-        nType = DATA_HEX;
-    else if( mSrcBase64Radio->isChecked() )
-        nType = DATA_BASE64;
-
-    QString strLen = getDataLenString( nType, mSrcText->toPlainText() );
+    QString strLen = getDataLenString( strType, mSrcText->toPlainText() );
     mSrcLenText->setText( QString("%1").arg(strLen));
 }
 
@@ -1445,7 +1426,7 @@ void PKCS7Dlg::clickReadFile()
 
         JS_BIN_fileRead( strFile.toLocal8Bit().toStdString().c_str(), &binData );
 
-        mSrcHexRadio->setChecked(true);
+        mSrcTypeCombo->setCurrentText(kDataHex);
         mSrcText->setPlainText( getHexString( &binData ));
         JS_BIN_reset( &binData );
     }
@@ -1470,13 +1451,13 @@ void PKCS7Dlg::checkKMEncPriKey()
 void PKCS7Dlg::clickDigest()
 {
     int ret = 0;
-    int nType = DATA_HEX;
 
     BIN binSrc = {0,0};
     BIN binOutput = {0,0};
 
     QString strInput = mSrcText->toPlainText();
     QString strHash = mHashCombo->currentText();
+    QString strSrcType = mSrcTypeCombo->currentText();
     QString strOutput;
 
     if( strInput.isEmpty() )
@@ -1486,14 +1467,8 @@ void PKCS7Dlg::clickDigest()
         return;
     }
 
-    if( mSrcStringRadio->isChecked() )
-        nType = DATA_STRING;
-    else if( mSrcHexRadio->isChecked() )
-        nType = DATA_HEX;
-    else if( mSrcBase64Radio->isChecked() )
-        nType = DATA_STRING;
 
-    getBINFromString( &binSrc, nType, strInput.toStdString().c_str() );
+    getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
 
 
     ret = JS_PKCS7_makeDigest( &binSrc, strHash.toStdString().c_str(), &binOutput );
@@ -1527,13 +1502,13 @@ end :
 void PKCS7Dlg::clickData()
 {
     int ret = 0;
-    int nType = DATA_HEX;
 
     BIN binSrc = {0,0};
     BIN binOutput = {0,0};
 
     QString strInput = mSrcText->toPlainText();
     QString strHash = mHashCombo->currentText();
+    QString strSrcType = mSrcTypeCombo->currentText();
     QString strOutput;
 
     if( strInput.isEmpty() )
@@ -1543,15 +1518,7 @@ void PKCS7Dlg::clickData()
         return;
     }
 
-
-    if( mSrcStringRadio->isChecked() )
-        nType = DATA_STRING;
-    else if( mSrcHexRadio->isChecked() )
-        nType = DATA_HEX;
-    else if( mSrcBase64Radio->isChecked() )
-        nType = DATA_STRING;
-
-    getBINFromString( &binSrc, nType, strInput.toStdString().c_str() );
+    getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
 
 
     ret = JS_PKCS7_makeData( &binSrc, &binOutput );
@@ -1583,13 +1550,14 @@ end :
 void PKCS7Dlg::clickGetData()
 {
     int ret = 0;
-    int nType = DATA_HEX;
+
     int nCMSType = -1;
 
     BIN binSrc = {0,0};
 
     QString strInput = mSrcText->toPlainText();
     QString strHash = mHashCombo->currentText();
+    QString strSrcType = mSrcTypeCombo->currentText();
     QString strOutput;
 
     JP7Data sData;
@@ -1603,15 +1571,7 @@ void PKCS7Dlg::clickGetData()
         return;
     }
 
-
-    if( mSrcStringRadio->isChecked() )
-        nType = DATA_STRING;
-    else if( mSrcHexRadio->isChecked() )
-        nType = DATA_HEX;
-    else if( mSrcBase64Radio->isChecked() )
-        nType = DATA_STRING;
-
-    getBINFromString( &binSrc, nType, strInput.toStdString().c_str() );
+    getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
 
     nCMSType = JS_PKCS7_getType( &binSrc );
     if( nCMSType != JS_PKCS7_TYPE_DATA )
@@ -1649,13 +1609,13 @@ end :
 void PKCS7Dlg::clickGetDigest()
 {
     int ret = 0;
-    int nType = DATA_HEX;
     int nCMSType = -1;
 
     BIN binSrc = {0,0};
 
     QString strInput = mSrcText->toPlainText();
     QString strHash = mHashCombo->currentText();
+    QString strSrcType = mSrcTypeCombo->currentText();
     QString strOutput;
 
     JP7DigestData sData;
@@ -1669,15 +1629,7 @@ void PKCS7Dlg::clickGetDigest()
         return;
     }
 
-
-    if( mSrcStringRadio->isChecked() )
-        nType = DATA_STRING;
-    else if( mSrcHexRadio->isChecked() )
-        nType = DATA_HEX;
-    else if( mSrcBase64Radio->isChecked() )
-        nType = DATA_STRING;
-
-    getBINFromString( &binSrc, nType, strInput.toStdString().c_str() );
+    getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
 
     nCMSType = JS_PKCS7_getType( &binSrc );
     if( nCMSType != JS_PKCS7_TYPE_DIGEST )
@@ -1717,22 +1669,10 @@ end :
 void PKCS7Dlg::clickCMSUp()
 {
     QString strCMS = mCMSText->toPlainText();
-    mSrcHexRadio->setChecked(true);
 
+    mSrcTypeCombo->setCurrentText(kDataHex);
     mSrcText->setPlainText( strCMS );
     mCMSText->clear();
-}
-
-void PKCS7Dlg::changeType()
-{
-    QString strType = mTypeCombo->currentText();
-
-    mCmdCombo->clear();
-
-    if( strType == "encode" )
-        mCmdCombo->addItems( kEncodeList );
-    else
-        mCmdCombo->addItems( kDecodeList );
 }
 
 void PKCS7Dlg::changeCmd()
@@ -1762,48 +1702,90 @@ void PKCS7Dlg::clickRun()
 {
     QString strCmd = mCmdCombo->currentText();
 
-    if( strCmd == kCmdData )
+    if( mEncodeRadio->isChecked() == true )
     {
-        clickData();
-    }
-    else if( strCmd == kCmdDigest )
-    {
-        clickDigest();
-    }
-    else if( strCmd == kCmdSignedData )
-    {
-        clickSignedData();
-    }
-    else if( strCmd == kCmdEnvelopedData )
-    {
-        clickEnvelopedData();
-    }
-    else if( strCmd == kCmdSignedAndEnveloped )
-    {
-        clickSignAndEnvloped();
-    }
-    else if( strCmd == kCmdAddSigned )
-    {
+        if( strCmd == kCmdData )
+        {
+            clickData();
+        }
+        else if( strCmd == kCmdDigest )
+        {
+            clickDigest();
+        }
+        else if( strCmd == kCmdSignedData )
+        {
+            clickSignedData();
+        }
+        else if( strCmd == kCmdEnvelopedData )
+        {
+            clickEnvelopedData();
+        }
+        else if( strCmd == kCmdSignedAndEnveloped )
+        {
+            clickSignAndEnvloped();
+        }
+        else if( strCmd == kCmdAddSigned )
+        {
         clickAddSigner();
+        }
     }
-    else if( strCmd == kCmdGetData )
+    else
     {
-        clickGetData();
-    }
-    else if( strCmd == kCmdGetDigest )
-    {
-        clickGetDigest();
-    }
-    else if( strCmd == kCmdVerifyData )
-    {
-        clickVerifyData();
-    }
-    else if( strCmd == kCmdDevelopedData )
-    {
-        clickDevelopedData();
-    }
-    else if( strCmd == kCmdDevelopedAndVerify )
-    {
-        clickDevelopedAndVerify();
+        if( mAutoDetectCheck->isChecked() )
+        {
+            int nCMSType = -1;
+            BIN binSrc = {0,0};
+
+            QString strInput = mSrcText->toPlainText();
+            QString strSrcType = mSrcTypeCombo->currentText();
+
+            if( strInput.isEmpty() )
+            {
+                berApplet->warningBox( tr( "Please enter input value" ), this );
+                mSrcText->setFocus();
+                return;
+            }
+
+            getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
+            nCMSType = JS_PKCS7_getType( &binSrc );
+            JS_BIN_reset( &binSrc );
+
+            if( nCMSType == JS_PKCS7_TYPE_DATA )
+                clickGetData();
+            else if( nCMSType == JS_PKCS7_TYPE_DIGEST )
+                clickGetDigest();
+            else if( nCMSType == JS_PKCS7_TYPE_SIGNED )
+                clickVerifyData();
+            else if( nCMSType == JS_PKCS7_TYPE_ENVELOED )
+                clickDevelopedData();
+            else
+            {
+                berApplet->warningBox( tr( "not supported CMS type[%1]").arg( nCMSType ), this );
+                return;
+            }
+        }
+        else
+        {
+            if( strCmd == kCmdGetData )
+            {
+                clickGetData();
+            }
+            else if( strCmd == kCmdGetDigest )
+            {
+                clickGetDigest();
+            }
+            else if( strCmd == kCmdVerifyData )
+            {
+                clickVerifyData();
+            }
+            else if( strCmd == kCmdDevelopedData )
+            {
+            clickDevelopedData();
+            }
+            else if( strCmd == kCmdDevelopedAndVerify )
+            {
+                clickDevelopedAndVerify();
+            }
+        }
     }
 }
