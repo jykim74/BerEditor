@@ -118,6 +118,7 @@ void CMSDlg::initUI()
 {
     mTypeCombo->addItems( kTypeList );
     mCmdCombo->addItems( kEncodeList );
+    mCmdCombo->setCurrentText( kCmdSignedData );
 }
 
 void CMSDlg::initialize()
@@ -1463,13 +1464,14 @@ void CMSDlg::clickDigest()
     if( ret == 0 )
     {
         mCMSTypeText->setText( "Digest" );
+        strOutput = getHexString( &binOutput );
 
         berApplet->logLine();
         berApplet->log( "-- Digest" );
         berApplet->logLine2();
         berApplet->log( QString( "Hash        : %1" ).arg( strHash ));
         berApplet->log( QString( "Src         : %1" ).arg( getHexString( &binSrc )));
-        berApplet->log( QString( "Output      : %1" ).arg( getHexString( &binOutput )));
+        berApplet->log( QString( "Output      : %1" ).arg( strOutput ));
         berApplet->logLine();
     }
 
@@ -1631,22 +1633,22 @@ void CMSDlg::clickGetDigest()
     ret = JS_PKCS7_getDigestData( &binSrc, &sData );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "Failed to create data [%1]").arg( ret ), this );
+        berApplet->warningBox( tr( "Failed to get digest [%1]").arg( ret ), this );
         goto end;
     }
 
     if( ret == 0 )
     {
         mCMSTypeText->setText( "Data" );
+        strOutput = getHexString( &sData.binContent );
 
         berApplet->logLine();
         berApplet->log( "-- Data" );
         berApplet->logLine2();
-        berApplet->log( QString( "Output      : %1" ).arg( getHexString( &sData.binContent )));
+        berApplet->log( QString( "Output      : %1" ).arg( strOutput ));
         berApplet->logLine();
     }
 
-    strOutput = getStringFromBIN( &sData.binContent, mCMSTypeCombo->currentText() );
     mCMSText->setPlainText( strOutput );
 
 end :
@@ -1686,6 +1688,15 @@ void CMSDlg::changeCmd()
     else
     {
         mCipherCombo->setEnabled( false );
+    }
+
+    if( strCmd == kCmdSignedData || strCmd == kCmdSignedAndEnveloped || strCmd == kCmdAddSigned )
+    {
+        mHashCombo->setEnabled( true );
+    }
+    else
+    {
+        mHashCombo->setEnabled( false );
     }
 }
 

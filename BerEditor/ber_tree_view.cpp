@@ -203,6 +203,13 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
         berApplet->line();
         berApplet->info( "-- Print Value\n" );
         berApplet->line2();
+
+        if( nValueType == JS_VALUE_OID )
+        {
+            const char *pSN = JS_PKI_getSNFromOID( strVal.toStdString().c_str());
+            if( pSN ) berApplet->info( QString("[%1] ").arg( pSN ));
+        }
+
         berApplet->info( strVal );
         berApplet->info( "\n" );
 
