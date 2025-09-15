@@ -19,11 +19,11 @@ const QString kCMSCmdVerifyData = "Verify";
 const QString kCMSCmdDevelopedData = "Developed";
 
 const QStringList kCMSEncodeList = {
-    kCMSCmdData, kCMSCmdDigest, kCMSCmdSignedData, kCMSCmdEnvelopedData, kCMSCmdAddSigned
+    kCMSCmdSignedData, kCMSCmdEnvelopedData, kCMSCmdAddSigned, kCMSCmdData, kCMSCmdDigest
 };
 
 const QStringList kCMSDecodeList = {
-    kCMSCmdGetData, kCMSCmdGetDigest, kCMSCmdVerifyData, kCMSCmdDevelopedData
+    kCMSCmdVerifyData, kCMSCmdDevelopedData, kCMSCmdGetData, kCMSCmdGetDigest
 };
 
 namespace Ui {

@@ -23,11 +23,11 @@ const QString kCmdDevelopedData = "Developed";
 const QString kCmdDevelopedAndVerify = "Developed and Verify";
 
 const QStringList kEncodeList = {
-    kCmdData, kCmdDigest, kCmdSignedData, kCmdEnvelopedData, kCmdSignedAndEnveloped, kCmdAddSigned
+    kCmdSignedData, kCmdEnvelopedData, kCmdSignedAndEnveloped, kCmdAddSigned, kCmdData, kCmdDigest
 };
 
 const QStringList kDecodeList = {
-    kCmdGetData, kCmdGetDigest, kCmdVerifyData, kCmdDevelopedData, kCmdDevelopedAndVerify
+    kCmdVerifyData, kCmdDevelopedData, kCmdDevelopedAndVerify, kCmdGetData, kCmdGetDigest
 };
 
 namespace Ui {

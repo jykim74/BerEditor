@@ -406,6 +406,7 @@ void DocSignerDlg::initUI()
     mCMSAutoDetectCheck->setChecked(true);
     mCMSCmdCombo->addItems( kCMSEncodeList );
 
+
     mHashCombo->addItems( kSHAHashList );
     mHashCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
 
@@ -413,7 +414,7 @@ void DocSignerDlg::initUI()
 
     mCMSCipherCombo->addItems( kCipherList );
     mCMSDataTypeCombo->addItems( kDataTypeList );
-    mCMSDataTypeCombo->setCurrentText( "Hex" );
+    mCMSDataTypeCombo->setCurrentText( kDataHex );
 
     mXMLDataText->setPlaceholderText( tr("data for encryption" ));
 

@@ -121,7 +121,6 @@ void PKCS7Dlg::initUI()
 {
     mSrcTypeCombo->addItems( kDataTypeList );
     mCmdCombo->addItems( kEncodeList );
-    mCmdCombo->setCurrentText( kCmdSignedData );
 
     mSrcTypeCombo->setCurrentText( kDataHex );
     mEncodeRadio->setChecked(true);
