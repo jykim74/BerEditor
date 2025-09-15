@@ -32,7 +32,7 @@ class EncDecDlg;
 class SignVerifyDlg;
 class PubEncDecDlg;
 class KeyAgreeDlg;
-class CMSDlg;
+class PKCS7Dlg;
 class SSSDlg;
 class CertPVDDlg;
 class GenOTPDlg;
@@ -143,7 +143,7 @@ public:
     void viewCryptSignVerify( bool bChecked );
     void viewCryptPubEnc( bool bChecked );
     void viewCryptKeyAgree( bool bChecked );
-    void viewCryptCMS( bool bChecked );
+    void viewCryptPKCS7( bool bChecked );
     void viewCryptSSS( bool bChecked );
     void viewCryptCertPVD( bool bChecked );
     void viewCryptOTPGen( bool bChecked );
@@ -216,7 +216,7 @@ private slots:
 
     void signVerify();
     void pubEncDec();
-    void cms();
+    void pkcs7();
     void sss();
     void certPVD();
     void CAVP();
@@ -316,7 +316,7 @@ private:
     SignVerifyDlg   *sign_verify_dlg_;
     PubEncDecDlg    *pub_enc_dec_dlg_;
     KeyAgreeDlg     *key_agree_dlg_;
-    CMSDlg          *cms_dlg_;
+    PKCS7Dlg        *pkcs7_dlg_;
     SSSDlg          *sss_dlg_;
     CertPVDDlg      *cert_pvd_dlg_;
     GenOTPDlg       *gen_otp_dlg_;
@@ -380,7 +380,7 @@ private:
     QAction* sign_verify_act_;
     QAction* pub_enc_dec_act_;
     QAction* key_agree_act_;
-    QAction* cms_act_;
+    QAction* pkcs7_act_;
     QAction* sss_act_;
     QAction* cert_pvd_act_;
     QAction* gen_otp_act_;

@@ -7,7 +7,7 @@
 #define CMS_DLG_H
 
 #include <QDialog>
-#include "ui_cms_dlg.h"
+#include "ui_pkcs7_dlg.h"
 #include "js_bin.h"
 
 const QString kCmdData = "Data";
@@ -31,16 +31,16 @@ const QStringList kDecodeList = {
 };
 
 namespace Ui {
-class CMSDlg;
+class PKCS7Dlg;
 }
 
-class CMSDlg : public QDialog, public Ui::CMSDlg
+class PKCS7Dlg : public QDialog, public Ui::PKCS7Dlg
 {
     Q_OBJECT
 
 public:
-    explicit CMSDlg(QWidget *parent = nullptr);
-    ~CMSDlg();
+    explicit PKCS7Dlg(QWidget *parent = nullptr);
+    ~PKCS7Dlg();
 
 private slots:
     void clickClose();
@@ -80,7 +80,7 @@ private slots:
     void clearSrc();
     void clearCMS();
 
-    void clickCMSView();
+    void clickPKCS7View();
     void clickClearDataAll();
     void clickReadFile();
 

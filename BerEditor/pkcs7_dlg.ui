@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CMSDlg</class>
- <widget class="QDialog" name="CMSDlg">
+ <class>PKCS7Dlg</class>
+ <widget class="QDialog" name="PKCS7Dlg">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Cryptographic Message Syntax</string>
+   <string>PKCS7</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -620,6 +620,52 @@
      <property name="topMargin">
       <number>0</number>
      </property>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mCMSDecodeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>D</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="8">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>Len</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="6">
+      <widget class="QPushButton" name="mCMSUpBtn">
+       <property name="maximumSize">
+        <size>
+         <width>34</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>⬆</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="9">
       <widget class="QLineEdit" name="mCMSLenText">
        <property name="minimumSize">
@@ -676,30 +722,16 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="8">
-      <widget class="QLabel" name="label_8">
-       <property name="text">
-        <string>Len</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mCMSClearBtn">
-       <property name="maximumSize">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_7">
+       <property name="minimumSize">
         <size>
-         <width>20</width>
-         <height>16777215</height>
+         <width>100</width>
+         <height>0</height>
         </size>
        </property>
        <property name="text">
-        <string>C</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mCMSViewBtn">
-       <property name="text">
-        <string>CMS View</string>
+        <string>Output Data</string>
        </property>
       </widget>
      </item>
@@ -737,24 +769,15 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QComboBox" name="mCMSTypeCombo"/>
-     </item>
-     <item row="0" column="5">
-      <spacer name="horizontalSpacer_4">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mPKCS7ViewBtn">
+       <property name="text">
+        <string>PKCS7 View</string>
        </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
+      </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mCMSDecodeBtn">
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mCMSClearBtn">
        <property name="maximumSize">
         <size>
          <width>20</width>
@@ -762,20 +785,7 @@
         </size>
        </property>
        <property name="text">
-        <string>D</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="6">
-      <widget class="QPushButton" name="mCMSUpBtn">
-       <property name="maximumSize">
-        <size>
-         <width>34</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>⬆</string>
+        <string>C</string>
        </property>
       </widget>
      </item>
@@ -892,11 +902,10 @@
   <tabstop>mKMCertTypeBtn</tabstop>
   <tabstop>mKMEncPriKeyCheck</tabstop>
   <tabstop>mKMPasswdText</tabstop>
-  <tabstop>mCMSTypeCombo</tabstop>
   <tabstop>mCMSClearBtn</tabstop>
   <tabstop>mCMSDecodeBtn</tabstop>
   <tabstop>mCMSTypeText</tabstop>
-  <tabstop>mCMSViewBtn</tabstop>
+  <tabstop>mPKCS7ViewBtn</tabstop>
   <tabstop>mCMSLenText</tabstop>
   <tabstop>mCMSText</tabstop>
   <tabstop>mClearDataAllBtn</tabstop>

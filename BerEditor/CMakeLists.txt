@@ -44,7 +44,7 @@ set(PROJECT_SRC
     cavp_dlg.cpp
     cert_info_dlg.cpp
     cert_pvd_dlg.cpp
-    cms_dlg.cpp
+    pkcs7_dlg.cpp
     common.cpp
     crl_info_dlg.cpp
     data_converter_dlg.cpp
@@ -90,7 +90,7 @@ set( PROJECT_HEADER
     cavp_dlg.h
     cert_info_dlg.h
     cert_pvd_dlg.h
-    cms_dlg.h
+    pkcs7_dlg.h
     common.h
     crl_info_dlg.h
     data_converter_dlg.h
@@ -128,7 +128,7 @@ set( PROJECT_FORM
     cavp_dlg.ui
     cert_info_dlg.ui
     cert_pvd_dlg.ui
-    cms_dlg.ui
+    pkcs7_dlg.ui
     crl_info_dlg.ui
     data_converter_dlg.ui
     edit_value_dlg.ui

@@ -26,7 +26,7 @@
 #include "key_man_dlg.h"
 #include "num_converter_dlg.h"
 #include "about_dlg.h"
-#include "cms_dlg.h"
+#include "pkcs7_dlg.h"
 #include "sss_dlg.h"
 #include "cavp_dlg.h"
 #include "make_ber_dlg.h"
@@ -131,7 +131,7 @@ MainWindow::~MainWindow()
     delete sign_verify_dlg_;
     delete pub_enc_dec_dlg_;
     delete key_agree_dlg_;
-    delete cms_dlg_;
+    delete pkcs7_dlg_;
     delete sss_dlg_;
     delete cert_pvd_dlg_;
     delete gen_otp_dlg_;
@@ -530,12 +530,12 @@ void MainWindow::createViewActions()
     connect( cryptKeyAgreeAct, &QAction::triggered, this, &MainWindow::viewCryptKeyAgree );
     cryptMenu->addAction( cryptKeyAgreeAct );
 
-    QAction *cryptCMSAct = new QAction( tr( "Cryptographic Message Syntax"), this );
-    bVal = isView( ACT_CRYPT_CMS );
-    cryptCMSAct->setCheckable(true);
-    cryptCMSAct->setChecked(bVal);
-    connect( cryptCMSAct, &QAction::triggered, this, &MainWindow::viewCryptCMS );
-    cryptMenu->addAction( cryptCMSAct );
+    QAction *cryptPKCS7Act = new QAction( tr( "PKCS7"), this );
+    bVal = isView( ACT_CRYPT_PKCS7 );
+    cryptPKCS7Act->setCheckable(true);
+    cryptPKCS7Act->setChecked(bVal);
+    connect( cryptPKCS7Act, &QAction::triggered, this, &MainWindow::viewCryptPKCS7 );
+    cryptMenu->addAction( cryptPKCS7Act );
 
     QAction *cryptSSSAct = new QAction( tr( "Shamir Secret Sharing"), this );
     bVal = isView( ACT_CRYPT_SSS );
@@ -1056,13 +1056,13 @@ void MainWindow::createActions()
     if( isView( ACT_CRYPT_KEY_AGREE ) ) crypt_tool_->addAction( key_agree_act_ );
 
 
-    const QIcon cmsIcon = QIcon::fromTheme("CMS", QIcon(":/images/cms.png"));
-    cms_act_ = new QAction( cmsIcon, tr("&Cryptographic Message Syntax"), this );
-    cms_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_G));
-    connect( cms_act_, &QAction::triggered, this, &MainWindow::cms );
-    cms_act_->setStatusTip(tr("Creating and validating CMS messages" ));
-    cryptMenu->addAction( cms_act_ );
-    if( isView( ACT_CRYPT_CMS ) ) crypt_tool_->addAction( cms_act_ );
+    const QIcon cmsIcon = QIcon::fromTheme("PKCS7", QIcon(":/images/cms.png"));
+    pkcs7_act_ = new QAction( cmsIcon, tr("&PKCS7"), this );
+    pkcs7_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_G));
+    connect( pkcs7_act_, &QAction::triggered, this, &MainWindow::pkcs7 );
+    pkcs7_act_->setStatusTip(tr("Creating and validating PKCS7 messages" ));
+    cryptMenu->addAction( pkcs7_act_ );
+    if( isView( ACT_CRYPT_PKCS7 ) ) crypt_tool_->addAction( pkcs7_act_ );
 
     const QIcon sssIcon = QIcon::fromTheme("SSS", QIcon(":/images/sss.png"));
     sss_act_ = new QAction( sssIcon, tr("&Shamir Secret Sharing"), this );
@@ -1177,7 +1177,7 @@ void MainWindow::createActions()
         sign_verify_act_->setEnabled( false );
         pub_enc_dec_act_->setEnabled( false );
         key_agree_act_->setEnabled( false );
-        cms_act_->setEnabled( false );
+        pkcs7_act_->setEnabled( false );
         sss_act_->setEnabled( false );
         cert_pvd_act_->setEnabled( false );
         gen_otp_act_->setEnabled( false );
@@ -1381,7 +1381,7 @@ void MainWindow::createCryptoDlg()
     sign_verify_dlg_ = new SignVerifyDlg;
     pub_enc_dec_dlg_ = new PubEncDecDlg;
     key_agree_dlg_ = new KeyAgreeDlg;
-    cms_dlg_ = new CMSDlg;
+    pkcs7_dlg_ = new PKCS7Dlg;
     sss_dlg_ = new SSSDlg;
     cert_pvd_dlg_ = new CertPVDDlg;
     gen_otp_dlg_ = new GenOTPDlg;
@@ -2323,11 +2323,11 @@ void MainWindow::pubEncDec()
     pub_enc_dec_dlg_->activateWindow();
 }
 
-void MainWindow::cms()
+void MainWindow::pkcs7()
 {
-    cms_dlg_->show();
-    cms_dlg_->raise();
-    cms_dlg_->activateWindow();
+    pkcs7_dlg_->show();
+    pkcs7_dlg_->raise();
+    pkcs7_dlg_->activateWindow();
 }
 
 void MainWindow::sss()
@@ -3029,17 +3029,17 @@ void MainWindow::viewCryptKeyAgree( bool bChecked )
     }
 }
 
-void MainWindow::viewCryptCMS( bool bChecked )
+void MainWindow::viewCryptPKCS7( bool bChecked )
 {
     if( bChecked == true )
     {
-        crypt_tool_->addAction( cms_act_ );
-        setView( ACT_CRYPT_CMS );
+        crypt_tool_->addAction( pkcs7_act_ );
+        setView( ACT_CRYPT_PKCS7 );
     }
     else
     {
-        crypt_tool_->removeAction( cms_act_ );
-        unsetView( ACT_CRYPT_CMS );
+        crypt_tool_->removeAction( pkcs7_act_ );
+        unsetView( ACT_CRYPT_PKCS7 );
     }
 }
 
