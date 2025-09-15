@@ -583,7 +583,7 @@ void FindDlg::changeValueType()
         QRegExp regExp("^[0-9.]*$");
         QRegExpValidator* regVal = new QRegExpValidator( regExp );
         mValueText->setValidator( regVal );
-        mValueText->setPlaceholderText( "1.2" );
+        mValueText->setPlaceholderText( tr("Object Identifier") );
     }
 }
 

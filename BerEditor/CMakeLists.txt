@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 3.5)
 
 project(BerEditor
-    VERSION 2.4.2
+    VERSION 2.4.3
     DESCRIPTION "BerEditor Application"
     LANGUAGES CXX )
+
+set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -42,7 +44,7 @@ set(PROJECT_SRC
     cavp_dlg.cpp
     cert_info_dlg.cpp
     cert_pvd_dlg.cpp
-    cms_dlg.cpp
+    pkcs7_dlg.cpp
     common.cpp
     crl_info_dlg.cpp
     data_converter_dlg.cpp
@@ -88,7 +90,7 @@ set( PROJECT_HEADER
     cavp_dlg.h
     cert_info_dlg.h
     cert_pvd_dlg.h
-    cms_dlg.h
+    pkcs7_dlg.h
     common.h
     crl_info_dlg.h
     data_converter_dlg.h
@@ -126,7 +128,7 @@ set( PROJECT_FORM
     cavp_dlg.ui
     cert_info_dlg.ui
     cert_pvd_dlg.ui
-    cms_dlg.ui
+    pkcs7_dlg.ui
     crl_info_dlg.ui
     data_converter_dlg.ui
     edit_value_dlg.ui
@@ -218,7 +220,8 @@ add_executable(${PROJECT_NAME}
     chall_test_dlg.h chall_test_dlg.cpp chall_test_dlg.ui
     one_list_dlg.h one_list_dlg.cpp one_list_dlg.ui
     two_list_dlg.h two_list_dlg.cpp two_list_dlg.ui
-
+    doc_signer_dlg.h doc_signer_dlg.cpp doc_signer_dlg.ui
+    time_stamp_dlg.h time_stamp_dlg.cpp time_stamp_dlg.ui
 )
 
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )
@@ -239,12 +242,16 @@ if(WIN32)
         ../../PKILib/build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug
         ../../lib/win64/debug/openssl3/lib64
         ../../lib/win64/winsparkle/lib
+        ../../lib/win64/xmlsec1/xmlsec/bin
+        ../../lib/win64/xmlsec1/libxml2/bin
         ../../lib/win64 )
     elseif( CMAKE_BUILD_TYPE STREQUAL "Release" )
         target_link_directories( ${PROJECT_NAME} PRIVATE
         ../../PKILib/build/Desktop_Qt_5_15_2_MinGW_64_bit-Release
         ../../lib/win64/openssl3/lib64
         ../../lib/win64/winsparkle/lib
+        ../../lib/win64/xmlsec1/xmlsec/bin
+        ../../lib/win64/xmlsec1/libxml2/bin
         ../../lib/win64 )
     endif()
 
@@ -253,7 +260,7 @@ if(WIN32)
 	Qt${QT_VERSION_MAJOR}::PrintSupport
         Qt${QT_VERSION_MAJOR}::Gui
         Qt${QT_VERSION_MAJOR}::Network
-        PKILib crypto ssl ltdl ldap lber ws2_32 WinSparkle )
+        PKILib crypto ssl ltdl ldap lber ws2_32 WinSparkle xmlsec xmlsec-openssl xml2 )
 
     target_compile_definitions( ${PROJECT_NAME} PRIVATE _AUTO_UPDATE )
 
@@ -295,7 +302,7 @@ elseif(APPLE)
         Qt${QT_VERSION_MAJOR}::Widgets
 	Qt${QT_VERSION_MAJOR}::PrintSupport
         Qt${QT_VERSION_MAJOR}::Network
-        PKILib crypto ssl ltdl ldap lber
+        PKILib crypto ssl ltdl ldap lber xmlsec1 xmlsec1-openssl xml2
         "-framework AppKit"
         "-framework Carbon"
         "-framework Foundation"
@@ -328,7 +335,7 @@ elseif(LINUX)
         Qt${QT_VERSION_MAJOR}::Widgets
 	Qt${QT_VERSION_MAJOR}::PrintSupport
         Qt${QT_VERSION_MAJOR}::Network
-        PKILib crypto ssl ltdl ldap lber )
+        PKILib crypto ssl ltdl ldap lber xmlsec xmlsec-openssl xml2 )
 endif()
 
 target_compile_definitions( ${PROJECT_NAME} PRIVATE

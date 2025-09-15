@@ -1706,3 +1706,20 @@ int writePubKeyPEM( const BIN *pPubKey, const QString strPath )
 
     return JS_BIN_writePEM( pPubKey, nFileType, strPath.toLocal8Bit().toStdString().c_str() );
 }
+
+const QString encodeBase64( const QString strString )
+{
+    QString strBase64;
+
+    strBase64 = strString.toUtf8().toBase64().toStdString().c_str();
+
+    return strBase64;
+}
+
+const QString decodeBase64( const QString strBase64 )
+{
+    QByteArray encodeBytes = strBase64.toUtf8();
+    QByteArray decodeBytes = QByteArray::fromBase64( encodeBytes );
+
+    return QString::fromUtf8( decodeBytes );
+}

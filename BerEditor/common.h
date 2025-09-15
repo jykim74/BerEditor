@@ -42,12 +42,14 @@ enum {
     JS_FILE_TYPE_BIN,
     JS_FILE_TYPE_LCN,
     JS_FILE_TYPE_JSON,
+    JS_FILE_TYPE_XML,
     JS_FILE_TYPE_PKCS7,
     JS_FILE_TYPE_PKCS8,
     JS_FILE_TYPE_PRIKEY_PKCS8_PFX,
     JS_FILE_TYPE_DH_PARAM,
     JS_FILE_TYPE_ALL };
 
+const QStringList kDataTypeList = { "String", "Hex", "Base64" };
 
 const QString kEnvMiscGroup = "Misc";
 const QString kEnvTempGroup = "Temp";
@@ -119,7 +121,7 @@ const QString kAlgEdDSA = "EdDSA";
 #define ACT_CRYPT_SIGN_VERIFY       VIEW_CRYPT | 0x00000010
 #define ACT_CRYPT_PUB_ENC           VIEW_CRYPT | 0x00000020
 #define ACT_CRYPT_KEY_AGREE         VIEW_CRYPT | 0x00000040
-#define ACT_CRYPT_CMS               VIEW_CRYPT | 0x00000080
+#define ACT_CRYPT_PKCS7             VIEW_CRYPT | 0x00000080
 #define ACT_CRYPT_SSS               VIEW_CRYPT | 0x00000100
 #define ACT_CRYPT_CERT_PVD          VIEW_CRYPT | 0x00000200
 #define ACT_CRYPT_OTP_GEN           VIEW_CRYPT | 0x00000400
@@ -132,6 +134,7 @@ const QString kAlgEdDSA = "EdDSA";
 #define ACT_SERVICE_SSL_CHECK       VIEW_SERVICE | 0x00000008
 #define ACT_SERVICE_KEY_LIST        VIEW_SERVICE | 0x00000010
 #define ACT_SERVICE_X509_COMP       VIEW_SERVICE | 0x00000020
+#define ACT_SERVICE_DOC_SIGNER      VIEW_SERVICE | 0x00000040
 
 #define ACT_PROTO_OCSP              VIEW_PROTO | 0x00000001
 #define ACT_PROTO_TSP               VIEW_PROTO | 0x00000002
@@ -189,6 +192,14 @@ static QStringList kHashList = {
     "SHA384",
     "SHA512",
     "SM3"
+};
+
+static QStringList kSHAHashList = {
+    "SHA1",
+    "SHA224",
+    "SHA256",
+    "SHA384",
+    "SHA512",
 };
 
 
@@ -283,5 +294,8 @@ const QString getMS( qint64 time );
 
 int writePriKeyPEM( const BIN *pPriKey, const QString strPath );
 int writePubKeyPEM( const BIN *pPubKey, const QString strPath );
+
+const QString encodeBase64( const QString strString );
+const QString decodeBase64( const QString strBase64 );
 
 #endif // COMMON_H

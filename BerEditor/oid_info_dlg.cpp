@@ -22,7 +22,8 @@ static QStringList oidTypes = {
     "OIDValueHex",
     "OIDHex",
     "ShortName",
-    "LongName"
+    "LongName",
+    "Nid"
 };
 
 OIDInfoDlg::OIDInfoDlg(QWidget *parent) :
@@ -35,6 +36,7 @@ OIDInfoDlg::OIDInfoDlg(QWidget *parent) :
     connect( mInputText, SIGNAL(textChanged(const QString&)), this, SLOT(findOID()));
     connect( mCreateBtn, SIGNAL(clicked()), this, SLOT(createOID()));
     connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickOutputClear()));
+    connect( mInputTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeInputType()));
 
     mInputText->setFocus();
     mCreateBtn->hide();
@@ -54,7 +56,14 @@ void OIDInfoDlg::initialize()
 {
     mInputTypeCombo->addItems( oidTypes );
     mInputText->setFocus();
-    mInputText->setPlaceholderText( "1.2.3.4" );
+    mInputText->setPlaceholderText( tr("Object Identifier") );
+
+    mOIDText->setPlaceholderText( tr( "Object Identifier" ) );
+    mOIDValHexText->setPlaceholderText( tr("OID hex value") );
+    mOIDHexText->setPlaceholderText( tr("OID BER hex value") );
+    mSNText->setPlaceholderText( tr("Short Name") );
+    mLNText->setPlaceholderText( tr("Long Name") );
+    mNidText->setPlaceholderText( tr("Numeric Identifier") );
 }
 
 int OIDInfoDlg::writeOIDConfig( const QString& strMsg )
@@ -130,6 +139,10 @@ void OIDInfoDlg::findOID()
     else if(mInputTypeCombo->currentText() == "LongName" )
     {
        JS_PKI_getOIDFromLN( strInput.toStdString().c_str(), sOID );
+    }
+    else if( mInputTypeCombo->currentText() == "Nid" )
+    {
+        JS_PKI_getOIDFromNid( strInput.toInt(), sOID );
     }
 
     mOIDText->setText( sOID );
@@ -224,4 +237,18 @@ void OIDInfoDlg::clickOutputClear()
     mSNText->clear();
     mLNText->clear();
     mNidText->clear();
+}
+
+void OIDInfoDlg::changeInputType()
+{
+    QString strType = mInputTypeCombo->currentText();
+
+    if( strType == "OID" )
+        mInputText->setPlaceholderText( tr("Object Identifier") );
+    else if( strType == "OIDValueHex" || strType == "OIDHex"  )
+        mInputText->setPlaceholderText( tr("Hex value") );
+    else if( strType == "ShortName" || strType == "LongName" )
+        mInputText->setPlaceholderText( tr("String value" ));
+    else if( strType == "Nid" )
+        mInputText->setPlaceholderText( "Number" );
 }

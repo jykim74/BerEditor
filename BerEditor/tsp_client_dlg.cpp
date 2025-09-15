@@ -96,7 +96,7 @@ void TSPClientDlg::initialize()
     mHashCombo->addItems( kHashList );
     mHashCombo->setCurrentText( setMgr->defaultHash() );
 
-    mPolicyText->setPlaceholderText( "1.2.3.4" );
+    mPolicyText->setPlaceholderText( tr("Object Identifier") );
 
     mCACertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
     mSrvCertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));

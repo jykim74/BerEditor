@@ -28,6 +28,7 @@ private slots:
     void createOID();
 
     void clickOutputClear();
+    void changeInputType();
 
 private:
     void initialize();

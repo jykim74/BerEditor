@@ -104,6 +104,6 @@ void MakeValueDlg::typeChanged()
         QRegExp regExp("^[0-9.]*$");
         QRegExpValidator* regVal = new QRegExpValidator( regExp );
         mInputText->setValidator( regVal );
-        mInputText->setPlaceholderText( "1.2" );
+        mInputText->setPlaceholderText( tr("Object Identifier") );
     }
 }

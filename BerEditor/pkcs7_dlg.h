@@ -7,20 +7,40 @@
 #define CMS_DLG_H
 
 #include <QDialog>
-#include "ui_cms_dlg.h"
+#include "ui_pkcs7_dlg.h"
 #include "js_bin.h"
 
+const QString kCmdData = "Data";
+const QString kCmdDigest = "Digest";
+const QString kCmdSignedData = "Signed";
+const QString kCmdEnvelopedData = "Enveloped";
+const QString kCmdSignedAndEnveloped = "SignedAndEnveloped";
+const QString kCmdAddSigned = "Add Signed";
+const QString kCmdGetData = "GetData";
+const QString kCmdGetDigest = "GetDigest";
+const QString kCmdVerifyData = "Verify";
+const QString kCmdDevelopedData = "Developed";
+const QString kCmdDevelopedAndVerify = "DevelopedAndVerify";
+
+const QStringList kEncodeList = {
+    kCmdData, kCmdDigest, kCmdSignedData, kCmdEnvelopedData, kCmdSignedAndEnveloped, kCmdAddSigned
+};
+
+const QStringList kDecodeList = {
+    kCmdGetData, kCmdGetDigest, kCmdVerifyData, kCmdDevelopedData, kCmdDevelopedAndVerify
+};
+
 namespace Ui {
-class CMSDlg;
+class PKCS7Dlg;
 }
 
-class CMSDlg : public QDialog, public Ui::CMSDlg
+class PKCS7Dlg : public QDialog, public Ui::PKCS7Dlg
 {
     Q_OBJECT
 
 public:
-    explicit CMSDlg(QWidget *parent = nullptr);
-    ~CMSDlg();
+    explicit PKCS7Dlg(QWidget *parent = nullptr);
+    ~PKCS7Dlg();
 
 private slots:
     void clickClose();
@@ -60,14 +80,26 @@ private slots:
     void clearSrc();
     void clearCMS();
 
-    void clickCMSView();
+    void clickPKCS7View();
     void clickClearDataAll();
     void clickReadFile();
 
     void checkSignEncPriKey();
     void checkKMEncPriKey();
 
+    void clickData();
+    void clickDigest();
+    void clickGetData();
+    void clickGetDigest();
+
+    void clickCMSUp();
+
+    void changeType();
+    void changeCmd();
+    void clickRun();
+
 private:
+    void initUI();
     void initialize();
     int readSignPrivateKey( BIN *pPriKey );
     int readKMPrivateKey( BIN *pPriKey );

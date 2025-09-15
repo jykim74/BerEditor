@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network
+QT       += core gui network xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -13,7 +13,9 @@ qtHaveModule(printsupport): QT += printsupport
 
 TARGET = BerEditor
 TEMPLATE = app
-PROJECT_VERSION = "2.4.2"
+PROJECT_VERSION = "2.4.3"
+
+QMAKE_CXXFLAGS += -std=c++17
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -44,7 +46,7 @@ SOURCES += \
     ber_tree_view.cpp \
     cert_info_dlg.cpp \
     cert_pvd_dlg.cpp \
-    cms_dlg.cpp \
+    pkcs7_dlg.cpp \
     common.cpp \
     crl_info_dlg.cpp \
     data_converter_dlg.cpp \
@@ -119,7 +121,9 @@ SOURCES += \
     revoke_reason_dlg.cpp \
     chall_test_dlg.cpp \
     one_list_dlg.cpp \
-    two_list_dlg.cpp
+    two_list_dlg.cpp \
+    doc_signer_dlg.cpp \
+    time_stamp_dlg.cpp
 
 
 HEADERS += \
@@ -134,7 +138,7 @@ HEADERS += \
     cavp_dlg.h \
     cert_info_dlg.h \
     cert_pvd_dlg.h \
-    cms_dlg.h \
+    pkcs7_dlg.h \
     common.h \
     crl_info_dlg.h \
     data_converter_dlg.h \
@@ -207,7 +211,9 @@ HEADERS += \
     revoke_reason_dlg.h \
     chall_test_dlg.h \
     one_list_dlg.h \
-    two_list_dlg.h
+    two_list_dlg.h \
+    doc_signer_dlg.h \
+    time_stamp_dlg.h
 
 
 
@@ -256,45 +262,33 @@ linux {
     }
 
     LIBS += -lltdl -lldap -llber
+    LIBS += -lxmlsec1 -lxmlsec1-openssl -lxml2
 }
 
 win32 {
     DEFINES += _AUTO_UPDATE
     RC_ICONS = bereditor.ico
-    INCLUDEPATH += "../../lib/win32/winsparkle/include"
-    INCLUDEPATH += "C:\msys64\mingw32\include"
 
-    contains(QT_ARCH, i386) {
-        message( "32bit" )
-        INCLUDEPATH += "../../PKILib/lib/win32/winsparkle/include"
-        INCLUDEPATH += "C:\msys64\mingw32\include"
+    message( "64bit" );
+    INCLUDEPATH += "../../lib/win64/winsparkle/include"
+    INCLUDEPATH += "../../lib/win64/podofo/include"
+    INCLUDEPATH += "C:/msys64/mingw64/include"
 
-        Debug {
-            LIBS += -L"../../build-PKILib-Desktop_Qt_5_13_2_MinGW_32_bit-Debug/debug" -lPKILib
-            LIBS += -L"../../lib/win32/debug/openssl3/lib" -lcrypto -lssl
-        } else {
-            LIBS += -L"../../build-PKILib-Desktop_Qt_5_13_2_MinGW_32_bit-Release/release" -lPKILib
-            LIBS += -L"../../lib/win32/openssl3/lib" -lcrypto -lssl
-        }
-
-        LIBS += -L"../../lib/win32" -lltdl -lldap -llber
-        LIBS += -L"../../lib/win32/winsparkle/lib" -lWinSparkle -lws2_32
+    Debug {
+        LIBS += -L"../../PKILib/build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug -lPKILib"
+        LIBS += -L"../../lib/win64/debug/openssl3/lib64 -lcrypto -lssl"
     } else {
-        message( "64bit" );
-        INCLUDEPATH += "../../PKILib/lib/win64/winsparkle/include"
-        INCLUDEPATH += "C:\msys64\mingw64\include"
-
-        Debug {
-            LIBS += -L"../../build-PKILib-Desktop_Qt_5_13_2_MinGW_64_bit-Debug" -lPKILib
-            LIBS += -L"../../lib/win64/debug/openssl3/lib64" -lcrypto -lssl
-        } else {
-            LIBS += -L"../../build-PKILib-Desktop_Qt_5_13_2_MinGW_64_bit-Release" -lPKILib
-            LIBS += -L"../../lib/win64/openssl3/lib64" -lcrypto -lssl
-        }
-
-        LIBS += -L"../../lib/win64" -lltdl -lldap -llber
-        LIBS += -L"../../lib/win64/winsparkle/lib" -lWinSparkle -lws2_32
+        LIBS += -L"../../PKILib/build/Desktop_Qt_5_15_2_MinGW_64_bit-Release -lPKILib"
+        LIBS += -L"../../lib/win64/openssl3/lib64 -lcrypto -lssl"
     }
+
+    LIBS += -L"../../lib/win64/xmlsec1/xmlsec/bin -lxmlsec -lxmlsec-openssl"
+    LIBS += -L"../../lib/win64/xmlsec1/libxml2/bin -lxml2"
+    LIBS += -L"../../lib/win64/xmlsec1/libxslt/bin -lxslt"
+    LIBS += -L"../../lib/win64/podofo/bin" -lpodofo
+    LIBS += -L"../../lib/win64 -lltdl -lldap -llber"
+    LIBS += -L"../../lib/win64/winsparkle/lib -lWinSparkle"
+    LIBS += -lws2_32
 }
 
 FORMS += \
@@ -302,7 +296,7 @@ FORMS += \
         cavp_dlg.ui \
         cert_info_dlg.ui \
         cert_pvd_dlg.ui \
-        cms_dlg.ui \
+        pkcs7_dlg.ui \
         crl_info_dlg.ui \
         data_converter_dlg.ui \
         edit_value_dlg.ui \
@@ -361,7 +355,9 @@ FORMS += \
         revoke_reason_dlg.ui \
         chall_test_dlg.ui \
         one_list_dlg.ui \
-        two_list_dlg.ui
+        two_list_dlg.ui \
+        doc_signer_dlg.ui \
+        time_stamp_dlg.ui
 
 RESOURCES += \
     bereditor.qrc
