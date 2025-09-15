@@ -139,6 +139,7 @@ void DocSignerDlg::clickClearAll()
     mSrcPathText->clear();
     mDstPathText->clear();
     mCMSDataText->clear();
+    mCMSCmdNameText->clear();
     mCMSOutputText->clear();
     mJSONPayloadText->clear();
     mJSON_JWSText->clear();
@@ -925,6 +926,7 @@ void DocSignerDlg::clickCMSMakeSign()
         JS_BIN_reset( &cms_ );
         JS_BIN_copy( &cms_, &binSigned );
 
+        mCMSCmdNameText->setText( kCMSCmdSignedData );
         mCMSOutputText->setPlainText( getHexString( &binSigned ));
 
         if( mDstFileCheck->isChecked() == true )
@@ -1002,6 +1004,7 @@ void DocSignerDlg::clickCMSVerifySign()
 
     if( binData.nLen > 0 )
     {
+        mCMSCmdNameText->setText( kCMSCmdVerifyData );
         mCMSOutputText->setPlainText( getHexString( &binData ));
 
         if( mDstFileCheck->isChecked() == true )
@@ -1082,6 +1085,7 @@ void DocSignerDlg::clickCMSEnvelopedData()
         JS_BIN_reset( &cms_ );
         JS_BIN_copy( &cms_, &binData );
 
+        mCMSCmdNameText->setText( kCMSCmdEnvelopedData );
         mCMSOutputText->setPlainText( getHexString( &binData ));
 
         if( mDstFileCheck->isChecked() == true )
@@ -1155,6 +1159,7 @@ void DocSignerDlg::clickCMSDevelopedData()
         JS_BIN_reset( &cms_ );
         JS_BIN_copy( &cms_, &binData );
 
+        mCMSCmdNameText->setText( kCMSCmdDevelopedData );
         mCMSOutputText->setPlainText( getHexString( &binData ));
 
         if( mDstFileCheck->isChecked() == true )
@@ -1227,6 +1232,7 @@ void DocSignerDlg::clickCMSMakeData()
         JS_BIN_reset( &cms_ );
         JS_BIN_copy( &cms_, &binCMS );
 
+        mCMSCmdNameText->setText( kCMSCmdData );
         mCMSOutputText->setPlainText( getHexString( &binCMS ));
 
         if( mDstFileCheck->isChecked() == true )
@@ -1292,6 +1298,7 @@ void DocSignerDlg::clickCMSMakeDigest()
         JS_BIN_reset( &cms_ );
         JS_BIN_copy( &cms_, &binCMS );
 
+        mCMSCmdNameText->setText( kCMSCmdDigest );
         mCMSOutputText->setPlainText( getHexString( &binCMS ));
 
         if( mDstFileCheck->isChecked() == true )
@@ -1362,6 +1369,7 @@ void DocSignerDlg::clickCMSAddSign()
         JS_BIN_reset( &cms_ );
         JS_BIN_copy( &cms_, &binSigned );
 
+        mCMSCmdNameText->setText( kCMSCmdAddSigned );
         mCMSOutputText->setPlainText( getHexString( &binSigned ));
 
         if( mDstFileCheck->isChecked() == true )
@@ -1433,6 +1441,7 @@ void DocSignerDlg::clickCMSGetData()
 
     if( sCMSInfo.binContent.nLen > 0 )
     {
+        mCMSCmdNameText->setText( kCMSCmdGetData );
         mCMSOutputText->setPlainText( getHexString( &sCMSInfo.binContent ));
 
         if( mDstFileCheck->isChecked() == true )
@@ -1505,6 +1514,7 @@ void DocSignerDlg::clickCMSGetDigest()
 
     if( sCMSInfo.binContent.nLen > 0 )
     {
+        mCMSCmdNameText->setText( kCMSCmdGetDigest );
         mCMSOutputText->setPlainText( getHexString( &sCMSInfo.binContent ));
 
         if( mDstFileCheck->isChecked() == true )
