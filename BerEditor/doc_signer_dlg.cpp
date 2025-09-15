@@ -63,6 +63,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mCMSDataText, SIGNAL(textChanged()), this, SLOT(changeCMSData()));
     connect( mCMSOutputText, SIGNAL(textChanged()), this, SLOT(changeCMSOutput()));
 
+    connect( mCMSDataViewBtn, SIGNAL(clicked()), this, SLOT(clickCMSDataView()));
     connect( mCMSViewBtn, SIGNAL(clicked()), this, SLOT(clickCMSView()));
     connect( mCMSOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputClear()));
     connect( mCMSOutputUpBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputUp()));
@@ -91,8 +92,13 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mXMLResClearBtn, SIGNAL(clicked()), this, SLOT(clickXML_ResClear()));
     connect( mXMLResUpBtn, SIGNAL(clicked()), this, SLOT(clickXML_ResUp()));
 
+
+
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+
+    mCMSDataViewBtn->setFixedWidth(34);
+    mCMSViewBtn->setFixedWidth(34);
 
     mCMSClearBtn->setFixedWidth(34);
     mCMSOutputClearBtn->setFixedWidth(34);
@@ -283,6 +289,54 @@ void DocSignerDlg::clickCMSView()
         }
 
         JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+    }
+
+    ret = JS_CMS_getType( &binSrc );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "This is not a CMS message" ), this );
+        goto end;
+    }
+
+    cmsInfo.setCMS( &binSrc );
+    cmsInfo.exec();
+
+end :
+    JS_BIN_reset( &binSrc );
+}
+
+void DocSignerDlg::clickCMSDataView()
+{
+    int ret = 0;
+    BIN binSrc = {0,0};
+    CMSInfoDlg cmsInfo = CMSInfoDlg(nullptr, true);
+
+    QString strSrcPath = mSrcPathText->text();
+
+    if( mSrcFileCheck->isChecked() == true )
+    {
+        if( strSrcPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find a source" ), this );
+            mSrcPathText->setFocus();
+            return;
+        }
+
+        JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+    }
+    else
+    {
+        QString strData = mCMSDataText->toPlainText();
+        QString strType = mCMSDataTypeCombo->currentText();
+
+        if( strData.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a data" ), this );
+            mCMSDataText->setFocus();
+            return;
+        }
+
+        getBINFromString( &binSrc, strType, strData );
     }
 
     ret = JS_CMS_getType( &binSrc );

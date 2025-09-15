@@ -66,6 +66,7 @@ PKCS7Dlg::PKCS7Dlg(QWidget *parent) :
     connect( mKMPriKeyTypeBtn, SIGNAL(clicked()), this, SLOT(clickKMPriKeyType()));
     connect( mKMCertTypeBtn, SIGNAL(clicked()), this, SLOT(clickKMCertType()));
 
+    connect( mSrcViewBtn, SIGNAL(clicked()), this, SLOT(clickSrcView()));
     connect( mPKCS7ViewBtn, SIGNAL(clicked()), this, SLOT(clickPKCS7View()));
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
     connect( mReadFileBtn, SIGNAL(clicked()), this, SLOT(clickReadFile()));
@@ -76,6 +77,8 @@ PKCS7Dlg::PKCS7Dlg(QWidget *parent) :
     initialize();
 
     mSrcText->setFocus();
+
+
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -97,6 +100,9 @@ PKCS7Dlg::PKCS7Dlg(QWidget *parent) :
     mKMCertDecodeBtn->setFixedWidth(34);
     mKMCertTypeBtn->setFixedWidth(34);
     mKMCertViewBtn->setFixedWidth(34);
+
+    mPKCS7ViewBtn->setFixedWidth(34);
+    mSrcViewBtn->setFixedWidth(34);
 
     mSrcClearBtn->setFixedWidth(34);
     mCMSClearBtn->setFixedWidth(34);
@@ -651,7 +657,7 @@ void PKCS7Dlg::clickVerifyData()
     if( strCMS.isEmpty() )
     {
         berApplet->warningBox( tr( "Please enter CMS value" ), this );
-        mCMSText->setFocus();
+        mSrcText->setFocus();
         return;
     }
 
@@ -663,6 +669,13 @@ void PKCS7Dlg::clickVerifyData()
         nType = DATA_STRING;
 
     getBINFromString( &binCMS, nType, strCMS.toStdString().c_str() );
+
+    nCMSType = JS_PKCS7_getType( &binCMS );
+    if( nCMSType != JS_PKCS7_TYPE_SIGNED )
+    {
+        berApplet->warningBox( tr( "Not a SignedData type[Type:%1]").arg( nCMSType ), this);
+        goto end;
+    }
 
     if( mSignCertGroup->isChecked() == true )
     {
@@ -688,12 +701,7 @@ void PKCS7Dlg::clickVerifyData()
         certMan.getCert( &binCert );
     }
 
-    nCMSType = JS_PKCS7_getType( &binCMS );
-    if( nCMSType != JS_PKCS7_TYPE_SIGNED )
-    {
-        berApplet->warningBox( tr( "Not a SignedData type[Type:%1]").arg( nCMSType ), this);
-        goto end;
-    }
+
 
     ret = JS_PKCS7_verifySignedData( &binCMS, &binCert, &binSrc );
     if( ret == JSR_VERIFY )
@@ -741,8 +749,17 @@ void PKCS7Dlg::clickDevelopedData()
     if( strCMS.isEmpty() )
     {
         berApplet->warningBox( tr( "Please enter CMS value" ), this );
-        mCMSText->setFocus();
+        mSrcText->setFocus();
         return;
+    }
+
+    getBINFromString( &binCMS, nType, strCMS.toStdString().c_str() );
+
+    nCMSType = JS_PKCS7_getType( &binCMS );
+    if( nCMSType != JS_PKCS7_TYPE_ENVELOED )
+    {
+        berApplet->warningBox( tr( "Not a EnvelopedData type[Type:%1]").arg( nCMSType ), this);
+        goto end;
     }
 
     if( mKMCertGroup->isChecked() == true )
@@ -780,19 +797,11 @@ void PKCS7Dlg::clickDevelopedData()
     else if( mSrcBase64Radio->isChecked() )
         nType = DATA_STRING;
 
-    getBINFromString( &binCMS, nType, strCMS.toStdString().c_str() );
 
     nType = JS_PKI_getPriKeyType( &binPri );
     if( nType < 0 )
     {
         berApplet->warningBox( tr( "Invalid private key" ), this );
-        goto end;
-    }
-
-    nCMSType = JS_PKCS7_getType( &binCMS );
-    if( nCMSType != JS_PKCS7_TYPE_ENVELOED )
-    {
-        berApplet->warningBox( tr( "Not a EnvelopedData type[Type:%1]").arg( nCMSType ), this);
         goto end;
     }
 
@@ -846,8 +855,17 @@ void PKCS7Dlg::clickDevelopedAndVerify()
     if( strCMS.isEmpty() )
     {
         berApplet->warningBox( tr( "Please enter CMS value" ), this );
-        mCMSText->setFocus();
+        mSrcText->setFocus();
         return;
+    }
+
+    getBINFromString( &binCMS, nType, strCMS.toStdString().c_str() );
+
+    nCMSType = JS_PKCS7_getType( &binCMS );
+    if( nCMSType != JS_PKCS7_TYPE_SIGNED_AND_ENVELOPED )
+    {
+        berApplet->warningBox( tr( "Not a SignedAndEnvelopedData type[Type:%1]").arg( nCMSType ), this);
+        goto end;
     }
 
     if( mSignCertGroup->isChecked() == true )
@@ -909,19 +927,12 @@ void PKCS7Dlg::clickDevelopedAndVerify()
     else if( mSrcBase64Radio->isChecked() )
         nType = DATA_STRING;
 
-    getBINFromString( &binCMS, nType, strCMS.toStdString().c_str() );
+
 
     nType = JS_PKI_getPriKeyType( &binKMPri );
     if( nType < 0 )
     {
         berApplet->warningBox( tr( "Invalid private key" ), this );
-        goto end;
-    }
-
-    nCMSType = JS_PKCS7_getType( &binCMS );
-    if( nCMSType != JS_PKCS7_TYPE_SIGNED_AND_ENVELOPED )
-    {
-        berApplet->warningBox( tr( "Not a SignedAndEnvelopedData type[Type:%1]").arg( nCMSType ), this);
         goto end;
     }
 
@@ -1341,13 +1352,43 @@ end :
     JS_BIN_reset( &binPubKey );
 }
 
+void PKCS7Dlg::clickSrcView()
+{
+    BIN binCMS = {0,0};
+
+    int nCMSType = -1;
+    QString strCMS = mSrcText->toPlainText();
+    CMSInfoDlg cmsInfo = CMSInfoDlg( nullptr, false );
+
+    if( strCMS.isEmpty() )
+    {
+        berApplet->warningBox( tr( "Please enter CMS value" ), this );
+        mSrcText->setFocus();
+        return;
+    }
+
+    getBINFromString( &binCMS, DATA_HEX, strCMS );
+
+    nCMSType = JS_PKCS7_getType( &binCMS );
+    if( nCMSType < 0 )
+    {
+        berApplet->warningBox( tr( "This CMS type is not supported.").arg( nCMSType ), this );
+        JS_BIN_reset( &binCMS );
+        return;
+    }
+
+    cmsInfo.setCMS( &binCMS );
+    cmsInfo.exec();
+
+    JS_BIN_reset( &binCMS );
+}
+
 void PKCS7Dlg::clickPKCS7View()
 {
     BIN binCMS = {0,0};
 
     int nCMSType = -1;
     QString strCMS = mCMSText->toPlainText();
-
     CMSInfoDlg cmsInfo = CMSInfoDlg( nullptr, false );
 
     if( strCMS.isEmpty() )
@@ -1366,7 +1407,6 @@ void PKCS7Dlg::clickPKCS7View()
         JS_BIN_reset( &binCMS );
         return;
     }
-
 
     cmsInfo.setCMS( &binCMS );
     cmsInfo.exec();
@@ -1541,6 +1581,7 @@ void PKCS7Dlg::clickGetData()
 {
     int ret = 0;
     int nType = DATA_HEX;
+    int nCMSType = -1;
 
     BIN binSrc = {0,0};
 
@@ -1569,6 +1610,12 @@ void PKCS7Dlg::clickGetData()
 
     getBINFromString( &binSrc, nType, strInput.toStdString().c_str() );
 
+    nCMSType = JS_PKCS7_getType( &binSrc );
+    if( nCMSType != JS_PKCS7_TYPE_DATA )
+    {
+        berApplet->warningBox( tr( "Not a SignedAndEnvelopedData type[Type:%1]").arg( nCMSType ), this);
+        goto end;
+    }
 
     ret = JS_PKCS7_getData( &binSrc, &sData );
     if( ret != 0 )
@@ -1600,6 +1647,7 @@ void PKCS7Dlg::clickGetDigest()
 {
     int ret = 0;
     int nType = DATA_HEX;
+    int nCMSType = -1;
 
     BIN binSrc = {0,0};
 
@@ -1628,6 +1676,12 @@ void PKCS7Dlg::clickGetDigest()
 
     getBINFromString( &binSrc, nType, strInput.toStdString().c_str() );
 
+    nCMSType = JS_PKCS7_getType( &binSrc );
+    if( nCMSType != JS_PKCS7_TYPE_DIGEST )
+    {
+        berApplet->warningBox( tr( "Not a SignedAndEnvelopedData type[Type:%1]").arg( nCMSType ), this);
+        goto end;
+    }
 
     ret = JS_PKCS7_getDigestData( &binSrc, &sData );
     if( ret != 0 )

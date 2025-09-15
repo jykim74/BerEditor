@@ -57,6 +57,7 @@ private slots:
     void clickCMSClear();
     void clickCMSOutputUp();
     void clickCMSView();
+    void clickCMSDataView();
 
     void clickCMSOutputClear();
     void clickCMSOutputDecode();

@@ -14,13 +14,13 @@ const QString kCmdData = "Data";
 const QString kCmdDigest = "Digest";
 const QString kCmdSignedData = "Signed";
 const QString kCmdEnvelopedData = "Enveloped";
-const QString kCmdSignedAndEnveloped = "SignedAndEnveloped";
+const QString kCmdSignedAndEnveloped = "Signed and Enveloped";
 const QString kCmdAddSigned = "Add Signed";
 const QString kCmdGetData = "GetData";
 const QString kCmdGetDigest = "GetDigest";
 const QString kCmdVerifyData = "Verify";
 const QString kCmdDevelopedData = "Developed";
-const QString kCmdDevelopedAndVerify = "DevelopedAndVerify";
+const QString kCmdDevelopedAndVerify = "Developed and Verify";
 
 const QStringList kEncodeList = {
     kCmdData, kCmdDigest, kCmdSignedData, kCmdEnvelopedData, kCmdSignedAndEnveloped, kCmdAddSigned
@@ -80,6 +80,7 @@ private slots:
     void clearSrc();
     void clearCMS();
 
+    void clickSrcView();
     void clickPKCS7View();
     void clickClearDataAll();
     void clickReadFile();

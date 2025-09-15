@@ -256,7 +256,7 @@ void CMSInfoDlg::clickDecodeData()
     BIN binData = {0,0};
     QString strData = mDataText->toPlainText();
     getBINFromString( &binData, DATA_HEX, strData );
-    berApplet->decodeData( &binData, "CMS Data Message" );
+    berApplet->decodeData( &binData );
     JS_BIN_reset( &binData );
 }
 
