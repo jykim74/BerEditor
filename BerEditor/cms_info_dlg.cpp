@@ -895,6 +895,9 @@ void CMSInfoDlg::setSignedCMS()
     int nCRLCnt = 0;
     int nInfoCnt = 0;
 
+    mVersionLabel->setEnabled(false);
+    mVersionText->setEnabled( false );
+
     memset( &sCMS, 0x00, sizeof(sCMS));
     JS_BIN_reset( &tsp_bin_ );
 
@@ -1033,6 +1036,9 @@ void CMSInfoDlg::setEnvelopedCMS()
     int nCertCnt = 0;
     int nCRLCnt = 0;
     int nInfoCnt = 0;
+
+    mVersionLabel->setEnabled(false);
+    mVersionText->setEnabled( false );
 
     memset( &sCMS, 0x00, sizeof(sCMS));
     JS_BIN_reset( &tsp_bin_ );

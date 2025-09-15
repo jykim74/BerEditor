@@ -391,7 +391,7 @@ void PKCS7Dlg::clickSignedData()
 
     if( ret == 0 )
     {
-        mCMSTypeText->setText( "SignedData" );
+        mCMSTypeText->setText( kCmdSignedAndEnveloped );
         strOutput = getHexString( &binOutput );
 
         berApplet->logLine();
@@ -486,7 +486,7 @@ void PKCS7Dlg::clickEnvelopedData()
 
     if( ret == 0 )
     {
-        mCMSTypeText->setText( "EnvelopedData" );
+        mCMSTypeText->setText( kCmdEnvelopedData );
         strOutput = getHexString( &binOutput );
 
         berApplet->logLine();
@@ -616,7 +616,7 @@ void PKCS7Dlg::clickSignAndEnvloped()
 
     if( ret == 0 )
     {
-        mCMSTypeText->setText( "SignedAndEnveloped" );
+        mCMSTypeText->setText( kCmdSignedAndEnveloped );
         strOutput = getHexString( &binOutput );
 
         berApplet->logLine();
@@ -708,6 +708,7 @@ void PKCS7Dlg::clickVerifyData()
     {
         int nDataType = DATA_HEX;
         QString strSrc = getHexString( &binSrc );
+        mCMSTypeText->setText( kCmdVerifyData );
 
         berApplet->log( QString("SignedData verification result: %1").arg( ret ));
         berApplet->logLine();
@@ -812,9 +813,10 @@ void PKCS7Dlg::clickDevelopedData()
     {
         int nDataType = DATA_HEX;
         QString strSrc = getHexString( &binSrc );
+        mCMSTypeText->setText( kCmdDevelopedData );
 
         berApplet->logLine();
-        berApplet->log( "-- Verify Data" );
+        berApplet->log( "-- Developed Data" );
         berApplet->logLine2();
         berApplet->log( QString( "CMS        : %1" ).arg( getHexString( &binCMS )));
         berApplet->log( QString( "Cert       : %1" ).arg( getHexString( &binCert )));
@@ -943,6 +945,7 @@ void PKCS7Dlg::clickDevelopedAndVerify()
     {
         int nDataType = DATA_HEX;
         QString strSrc = getHexString( &binSrc );
+        mCMSTypeText->setText( kCmdDevelopedAndVerify );
 
         berApplet->logLine();
         berApplet->log( "-- Developed And Verify" );
@@ -1502,7 +1505,7 @@ void PKCS7Dlg::clickDigest()
 
     if( ret == 0 )
     {
-        mCMSTypeText->setText( "Digest" );
+        mCMSTypeText->setText( kCmdDigest );
         strOutput = getHexString( &binOutput );
 
         berApplet->logLine();
@@ -1561,7 +1564,7 @@ void PKCS7Dlg::clickData()
     if( ret == 0 )
     {
         strOutput = getHexString( &binOutput );
-        mCMSTypeText->setText( "Data" );
+        mCMSTypeText->setText( kCmdData );
 
         berApplet->logLine();
         berApplet->log( "-- Data" );
@@ -1626,7 +1629,7 @@ void PKCS7Dlg::clickGetData()
 
     if( ret == 0 )
     {
-        mCMSTypeText->setText( "Data" );
+        mCMSTypeText->setText( kCmdGetData );
         strOutput = getHexString( &sData.binData );
 
         berApplet->logLine();
@@ -1692,7 +1695,7 @@ void PKCS7Dlg::clickGetDigest()
 
     if( ret == JSR_VERIFY )
     {
-        mCMSTypeText->setText( "Data" );
+        mCMSTypeText->setText( kCmdGetDigest );
         strOutput = getHexString( &sData.binContent );
 
         berApplet->logLine();
