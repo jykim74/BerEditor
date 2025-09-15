@@ -32,7 +32,6 @@
 const QString kTSPUsedURL = "TSPUsedURL";
 
 static const QStringList kCipherList = { "aes-128-cbc", "aes-192-cbc", "aes-256-cbc" };
-static const QStringList kCMSTypeList = { "Encode", "Decode" };
 
 
 DocSignerDlg::DocSignerDlg(QWidget *parent)
@@ -55,7 +54,10 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mUseTSPCheck, SIGNAL(clicked()), this, SLOT(checkUseTSP()));
     connect( mTSPBtn, SIGNAL(clicked()), this, SLOT(clickTSP()));
 
-    connect( mCMSTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeCMSType()));
+    connect( mCMSEncodeRadio, SIGNAL(clicked()), this, SLOT(checkCMSEncode()));
+    connect( mCMSDecodeRadio, SIGNAL(clicked()), this, SLOT(checkCMSDecode()));
+    connect( mCMSAutoDetectCheck, SIGNAL(clicked()), this, SLOT(checkCMSAutoDetect()));
+
     connect( mCMSCmdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeCMSCmd()));
     connect( mCMSRunBtn, SIGNAL(clicked(bool)), this, SLOT(clickCMSRun()));
 
@@ -143,6 +145,35 @@ void DocSignerDlg::clickClearAll()
     mXMLBodyText->clear();
     mXMLDataText->clear();
     mXMLResText->clear();
+}
+
+void DocSignerDlg::checkCMSEncode()
+{
+    mCMSCmdCombo->clear();
+
+    mCMSCmdCombo->addItems( kCMSEncodeList );
+
+    mCMSAutoDetectCheck->setEnabled(false);
+    mCMSRunBtn->setText( tr( "Encode" ));
+}
+
+void DocSignerDlg::checkCMSDecode()
+{
+    mCMSCmdCombo->clear();
+
+    mCMSCmdCombo->addItems( kCMSDecodeList );
+    mCMSAutoDetectCheck->setEnabled( true );
+    bool bVal = mCMSAutoDetectCheck->isChecked();
+
+    mCMSCmdCombo->setEnabled( !bVal );
+    mCMSRunBtn->setText( tr("Decode" ));
+}
+
+void DocSignerDlg::checkCMSAutoDetect()
+{
+    bool bVal = mCMSAutoDetectCheck->isChecked();
+
+    mCMSCmdCombo->setEnabled( !bVal );
 }
 
 void DocSignerDlg::changeSignerTab()
@@ -371,7 +402,8 @@ void DocSignerDlg::clickCMSOutputDecode()
 
 void DocSignerDlg::initUI()
 {
-    mCMSTypeCombo->addItems( kCMSTypeList );
+    mCMSEncodeRadio->setChecked(true);
+    mCMSAutoDetectCheck->setChecked(true);
     mCMSCmdCombo->addItems( kCMSEncodeList );
 
     mHashCombo->addItems( kSHAHashList );
@@ -385,6 +417,7 @@ void DocSignerDlg::initUI()
 
     mXMLDataText->setPlaceholderText( tr("data for encryption" ));
 
+    checkCMSEncode();
     checkSrcFile();
     checkDstFile();
     checkUseTSP();
@@ -423,18 +456,6 @@ void DocSignerDlg::setUsedURL( const QString strURL )
     settings.endGroup();
 }
 
-void DocSignerDlg::changeCMSType()
-{
-    QString strType = mCMSTypeCombo->currentText();
-
-    mCMSCmdCombo->clear();
-
-    if( strType == "Encode" )
-        mCMSCmdCombo->addItems( kCMSEncodeList );
-    else
-        mCMSCmdCombo->addItems( kCMSDecodeList );
-}
-
 void DocSignerDlg::changeCMSCmd()
 {
     QString strCmd = mCMSCmdCombo->currentText();
@@ -460,41 +481,99 @@ void DocSignerDlg::clickCMSRun()
 {
     QString strCmd = mCMSCmdCombo->currentText();
 
-    if( strCmd == kCMSCmdData )
+    if( mCMSEncodeRadio->isChecked() == true )
     {
-        clickCMSMakeData();
+        if( strCmd == kCMSCmdData )
+        {
+            clickCMSMakeData();
+        }
+        else if( strCmd == kCMSCmdDigest )
+        {
+            clickCMSMakeDigest();
+        }
+        else if( strCmd == kCMSCmdSignedData )
+        {
+            clickCMSMakeSign();
+        }
+        else if( strCmd == kCMSCmdEnvelopedData )
+        {
+            clickCMSEnvelopedData();
+        }
+        else if( strCmd == kCMSCmdAddSigned )
+        {
+            clickCMSAddSign();
+        }
     }
-    else if( strCmd == kCMSCmdDigest )
+    else
     {
-        clickCMSMakeDigest();
-    }
-    else if( strCmd == kCMSCmdSignedData )
-    {
-        clickCMSMakeSign();
-    }
-    else if( strCmd == kCMSCmdEnvelopedData )
-    {
-        clickCMSEnvelopedData();
-    }
-    else if( strCmd == kCMSCmdAddSigned )
-    {
-        clickCMSAddSign();
-    }
-    else if( strCmd == kCMSCmdGetData )
-    {
-        clickCMSGetData();
-    }
-    else if( strCmd == kCMSCmdGetDigest )
-    {
-        clickCMSGetDigest();
-    }
-    else if( strCmd == kCMSCmdVerifyData )
-    {
-        clickCMSVerifySign();
-    }
-    else if( strCmd == kCMSCmdDevelopedData )
-    {
-        clickCMSDevelopedData();
+        if( mCMSAutoDetectCheck->isChecked() == true )
+        {
+            int type = -1;
+            BIN binSrc = {0,0};
+
+            QString strSrcPath = mSrcPathText->text();
+            if( mSrcFileCheck->isChecked() == true )
+            {
+                if( strSrcPath.length() < 1 )
+                {
+                    berApplet->warningBox( tr( "find a source CMS" ), this );
+                    mSrcPathText->setFocus();
+                    return;
+                }
+
+                JS_BIN_fileReadBER( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+            }
+            else
+            {
+                QString strData = mCMSDataText->toPlainText();
+                QString strType = mCMSDataTypeCombo->currentText();
+
+                if( strData.length() < 1 )
+                {
+                    berApplet->warningBox( tr( "Enter a CMS" ), this );
+                    mCMSDataText->setFocus();
+                    return;
+                }
+
+                getBINFromString( &binSrc, strType, strData );
+            }
+
+            type = JS_CMS_getType( &binSrc );
+            JS_BIN_reset( &binSrc );
+
+            if( type == JS_PKCS7_TYPE_DATA )
+                clickCMSGetData();
+            else if( type == JS_PKCS7_TYPE_DIGEST )
+                clickCMSGetDigest();
+            else if( type == JS_PKCS7_TYPE_SIGNED )
+                clickCMSVerifySign();
+            else if( type == JS_PKCS7_TYPE_ENVELOED )
+                clickCMSDevelopedData();
+            else
+            {
+                berApplet->warningBox( tr( "not supported CMS type[%1]").arg( type ), this );
+                return;
+            }
+        }
+        else
+        {
+            if( strCmd == kCMSCmdGetData )
+            {
+                clickCMSGetData();
+            }
+            else if( strCmd == kCMSCmdGetDigest )
+            {
+                clickCMSGetDigest();
+            }
+            else if( strCmd == kCMSCmdVerifyData )
+            {
+                clickCMSVerifySign();
+            }
+            else if( strCmd == kCMSCmdDevelopedData )
+            {
+                clickCMSDevelopedData();
+            }
+        }
     }
 }
 

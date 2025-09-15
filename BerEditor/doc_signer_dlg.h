@@ -42,6 +42,10 @@ private slots:
     void clickClearAll();
     void changeSignerTab();
 
+    void checkCMSEncode();
+    void checkCMSDecode();
+    void checkCMSAutoDetect();
+
     void checkSrcFile();
     void checkDstFile();
 
@@ -62,7 +66,6 @@ private slots:
     void clickCMSOutputClear();
     void clickCMSOutputDecode();
 
-    void changeCMSType();
     void changeCMSCmd();
     void clickCMSRun();
 

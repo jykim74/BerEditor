@@ -1758,6 +1758,8 @@ void PKCS7Dlg::clickRun()
                 clickVerifyData();
             else if( nCMSType == JS_PKCS7_TYPE_ENVELOED )
                 clickDevelopedData();
+            else if( nCMSType == JS_PKCS7_TYPE_SIGNED_AND_ENVELOPED )
+                clickDevelopedAndVerify();
             else
             {
                 berApplet->warningBox( tr( "not supported CMS type[%1]").arg( nCMSType ), this );
