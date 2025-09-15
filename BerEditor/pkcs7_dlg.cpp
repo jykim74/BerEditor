@@ -656,7 +656,7 @@ void PKCS7Dlg::clickVerifyData()
 
     if( strCMS.isEmpty() )
     {
-        berApplet->warningBox( tr( "Please enter CMS value" ), this );
+        berApplet->warningBox( tr( "Please enter input value" ), this );
         mSrcText->setFocus();
         return;
     }
@@ -748,7 +748,7 @@ void PKCS7Dlg::clickDevelopedData()
 
     if( strCMS.isEmpty() )
     {
-        berApplet->warningBox( tr( "Please enter CMS value" ), this );
+        berApplet->warningBox( tr( "Please enter input value" ), this );
         mSrcText->setFocus();
         return;
     }
@@ -854,7 +854,7 @@ void PKCS7Dlg::clickDevelopedAndVerify()
 
     if( strCMS.isEmpty() )
     {
-        berApplet->warningBox( tr( "Please enter CMS value" ), this );
+        berApplet->warningBox( tr( "Please enter input value" ), this );
         mSrcText->setFocus();
         return;
     }
@@ -1684,13 +1684,13 @@ void PKCS7Dlg::clickGetDigest()
     }
 
     ret = JS_PKCS7_getDigestData( &binSrc, &sData );
-    if( ret != 0 )
+    if( ret != JSR_VERIFY )
     {
         berApplet->warningBox( tr( "Failed to get digest [%1]").arg( ret ), this );
         goto end;
     }
 
-    if( ret == 0 )
+    if( ret == JSR_VERIFY )
     {
         mCMSTypeText->setText( "Data" );
         strOutput = getHexString( &sData.binContent );
@@ -1698,6 +1698,8 @@ void PKCS7Dlg::clickGetDigest()
         berApplet->logLine();
         berApplet->log( "-- Data" );
         berApplet->logLine2();
+        berApplet->log( QString( "Alg         : %1" ).arg( sData.pAlg ));
+        berApplet->log( QString( "Digest      : %1" ).arg( sData.pDigest ));
         berApplet->log( QString( "Output      : %1" ).arg( strOutput ));
         berApplet->logLine();
     }
