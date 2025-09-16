@@ -102,5 +102,6 @@
         <file>images/circle.png</file>
         <file>images/nemo.png</file>
         <file>images/doc_signer.png</file>
+        <file>images/p7.png</file>
     </qresource>
 </RCC>

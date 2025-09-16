@@ -1056,8 +1056,8 @@ void MainWindow::createActions()
     if( isView( ACT_CRYPT_KEY_AGREE ) ) crypt_tool_->addAction( key_agree_act_ );
 
 
-    const QIcon cmsIcon = QIcon::fromTheme("PKCS7", QIcon(":/images/cms.png"));
-    pkcs7_act_ = new QAction( cmsIcon, tr("&PKCS7"), this );
+    const QIcon p7Icon = QIcon::fromTheme("PKCS7", QIcon(":/images/p7.png"));
+    pkcs7_act_ = new QAction( p7Icon, tr("&PKCS7"), this );
     pkcs7_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_G));
     connect( pkcs7_act_, &QAction::triggered, this, &MainWindow::pkcs7 );
     pkcs7_act_->setStatusTip(tr("Creating and validating PKCS7 messages" ));

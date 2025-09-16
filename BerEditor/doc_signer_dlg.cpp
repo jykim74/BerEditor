@@ -69,6 +69,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mCMSViewBtn, SIGNAL(clicked()), this, SLOT(clickCMSView()));
     connect( mCMSOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputClear()));
     connect( mCMSOutputUpBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputUp()));
+    connect( mCMSDataDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCMSDataDecode()));
     connect( mCMSOutputDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputDecode()));
 
     connect( mJSONPayloadText, SIGNAL(textChanged()), this, SLOT(changeJSON_Payload()));
@@ -99,6 +100,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
 
+    mCMSDataDecodeBtn->setFixedWidth(34);
     mCMSDataViewBtn->setFixedWidth(34);
     mCMSViewBtn->setFixedWidth(34);
 
@@ -157,6 +159,15 @@ void DocSignerDlg::checkCMSEncode()
 
     mCMSAutoDetectCheck->setEnabled(false);
     mCMSRunBtn->setText( tr( "Encode" ));
+
+    mCMSDataLabel->setText( tr("Data") );
+    mCMSOutputLabel->setText( tr("CMS") );
+
+    mCMSDataViewBtn->setEnabled( false );
+    mCMSDataDecodeBtn->setEnabled( false );
+
+    mCMSOutputDecodeBtn->setEnabled( true );
+    mCMSViewBtn->setEnabled( true );
 }
 
 void DocSignerDlg::checkCMSDecode()
@@ -169,6 +180,15 @@ void DocSignerDlg::checkCMSDecode()
 
     mCMSCmdCombo->setEnabled( !bVal );
     mCMSRunBtn->setText( tr("Decode" ));
+
+    mCMSDataLabel->setText( tr("CMS") );
+    mCMSOutputLabel->setText( tr("Data") );
+
+    mCMSDataViewBtn->setEnabled( true );
+    mCMSDataDecodeBtn->setEnabled( true );
+
+    mCMSOutputDecodeBtn->setEnabled( false );
+    mCMSViewBtn->setEnabled( false );
 }
 
 void DocSignerDlg::checkCMSAutoDetect()
@@ -391,6 +411,19 @@ void DocSignerDlg::clickCMSOutputClear()
     mCMSOutputText->clear();
 }
 
+void DocSignerDlg::clickCMSDataDecode()
+{
+    BIN binData = {0,0};
+
+    QString strData = mCMSDataText->toPlainText();
+    QString strType = mCMSDataTypeCombo->currentText();
+
+    getBINFromString( &binData, strType, strData );
+
+    berApplet->decodeData( &binData );
+    JS_BIN_reset( &binData );
+}
+
 void DocSignerDlg::clickCMSOutputDecode()
 {
     BIN binOut = {0,0};
@@ -407,7 +440,9 @@ void DocSignerDlg::initUI()
     mCMSEncodeRadio->setChecked(true);
     mCMSAutoDetectCheck->setChecked(true);
     mCMSCmdCombo->addItems( kCMSEncodeList );
-
+    mCMSOutputText->setPlaceholderText( tr( "Hex value" ));
+    mJSON_JWSText->setPlaceholderText( tr( "String value" ));
+    mXMLResText->setPlaceholderText( tr( "String value" ) );
 
     mHashCombo->addItems( kSHAHashList );
     mHashCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );

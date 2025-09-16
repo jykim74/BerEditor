@@ -38,6 +38,7 @@ PKCS7Dlg::PKCS7Dlg(QWidget *parent) :
     connect( mCmdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeCmd()));
     connect( mRunBtn, SIGNAL(clicked()), this, SLOT(clickRun()));
 
+    connect( mSrcDecodeBtn, SIGNAL(clicked()), this, SLOT(clickSrcDecode()));
     connect( mCMSDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCMSDecode()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(clickClose()));
     connect( mSignPriKeyFindBtn, SIGNAL(clicked()), this, SLOT(clickSignPriFind()));
@@ -76,8 +77,6 @@ PKCS7Dlg::PKCS7Dlg(QWidget *parent) :
 
     mSrcText->setFocus();
 
-
-
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
     mSignCertGroup->layout()->setSpacing(5);
@@ -99,6 +98,7 @@ PKCS7Dlg::PKCS7Dlg(QWidget *parent) :
     mKMCertTypeBtn->setFixedWidth(34);
     mKMCertViewBtn->setFixedWidth(34);
 
+    mSrcDecodeBtn->setFixedWidth(34);
     mPKCS7ViewBtn->setFixedWidth(34);
     mSrcViewBtn->setFixedWidth(34);
 
@@ -121,6 +121,7 @@ void PKCS7Dlg::initUI()
 {
     mSrcTypeCombo->addItems( kDataTypeList );
     mCmdCombo->addItems( kEncodeList );
+    mCMSText->setPlaceholderText( tr( "Hex value") );
 
     mSrcTypeCombo->setCurrentText( kDataHex );
     mEncodeRadio->setChecked(true);
@@ -275,6 +276,11 @@ void PKCS7Dlg::checkEncode()
     mCmdCombo->addItems( kEncodeList );
     mAutoDetectCheck->setEnabled(false);
     mRunBtn->setText( tr("Encode" ));
+
+    mSrcViewBtn->setEnabled( false );
+    mSrcDecodeBtn->setEnabled( false );
+    mPKCS7ViewBtn->setEnabled( true );
+    mCMSDecodeBtn->setEnabled( true );
 }
 
 void PKCS7Dlg::checkDecode()
@@ -287,6 +293,11 @@ void PKCS7Dlg::checkDecode()
     mCmdCombo->setEnabled(!bVal);
 
     mRunBtn->setText( tr("Decode"));
+
+    mSrcViewBtn->setEnabled( true );
+    mSrcDecodeBtn->setEnabled( true );
+    mPKCS7ViewBtn->setEnabled( false );
+    mCMSDecodeBtn->setEnabled( false );
 }
 
 void PKCS7Dlg::checkAutoDetect()
@@ -406,7 +417,7 @@ void PKCS7Dlg::clickSignedData()
     ret = JS_PKCS7_makeSignedData( strHash.toStdString().c_str(), &binSrc, &binPri, &binCert, &binOutput );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "Failed to create SignedData [%1]").arg( ret ), this );
+        berApplet->warningBox( tr( "Failed to create SignedData [%1]").arg( JERR(ret) ), this );
         goto end;
     }
 
@@ -495,7 +506,7 @@ void PKCS7Dlg::clickEnvelopedData()
     ret = JS_PKCS7_makeEnvelopedData( strCipher.toStdString().c_str(), &binSrc, &binCert, &binOutput );
     if( ret != 0 )
     {
-        berApplet->warningBox(tr( "Failed to create EnvelopedData [%1]").arg(ret), this );
+        berApplet->warningBox(tr( "Failed to create EnvelopedData [%1]").arg(JERR(ret)), this );
         goto end;
     }
 
@@ -619,7 +630,7 @@ void PKCS7Dlg::clickSignAndEnvloped()
     ret = JS_PKCS7_makeSignedAndEnveloped( strHash.toStdString().c_str(), strCipher.toStdString().c_str(), &binSrc, &binSignCert, &binSignPri, &binKMCert, &binOutput );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "Signed And Enveloped data creation failed [%1]").arg(ret), this );
+        berApplet->warningBox( tr( "Signed And Enveloped data creation failed [%1]").arg(JERR(ret)), this );
         goto end;
     }
 
@@ -728,7 +739,7 @@ void PKCS7Dlg::clickVerifyData()
     }
     else
     {
-        berApplet->warnLog( tr( "fail to verify signedData: %1").arg( ret ), this );
+        berApplet->warnLog( tr( "fail to verify signedData: %1").arg( JERR(ret) ), this );
     }
 
 end :
@@ -827,7 +838,7 @@ void PKCS7Dlg::clickDevelopedData()
     }
     else
     {
-        berApplet->warnLog( tr( "fail to develop data: %1").arg(ret), this );
+        berApplet->warnLog( tr( "fail to develop data: %1").arg(JERR(ret)), this );
     }
 
 end :
@@ -953,7 +964,7 @@ void PKCS7Dlg::clickDevelopedAndVerify()
     }
     else
     {
-        berApplet->warnLog( tr( "fail to verify and develop data: %1").arg( ret ), this );
+        berApplet->warnLog( tr( "fail to verify and develop data: %1").arg( JERR(ret) ), this );
     }
 
 end :
@@ -1027,7 +1038,7 @@ void PKCS7Dlg::clickAddSigner()
     ret = JS_PKCS7_addSigner( &binCMS, strHash.toStdString().c_str(), &binPri, &binCert, &binOutput );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "Failed to add signer [%1]").arg( ret ), this );
+        berApplet->warningBox( tr( "Failed to add signer [%1]").arg( JERR(ret) ), this );
         goto end;
     }
 
@@ -1365,6 +1376,20 @@ void PKCS7Dlg::clickSrcView()
     JS_BIN_reset( &binCMS );
 }
 
+void PKCS7Dlg::clickSrcDecode()
+{
+    BIN binSrc = {0,0};
+
+    QString strSrc = mSrcText->toPlainText();
+    QString strType = mSrcTypeCombo->currentText();
+
+    getBINFromString( &binSrc, strType, strSrc );
+
+    berApplet->decodeData( &binSrc );
+
+    JS_BIN_reset( &binSrc );
+}
+
 void PKCS7Dlg::clickPKCS7View()
 {
     BIN binCMS = {0,0};
@@ -1472,7 +1497,7 @@ void PKCS7Dlg::clickDigest()
     ret = JS_PKCS7_makeDigest( &binSrc, strHash.toStdString().c_str(), &binOutput );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "Failed to create digest [%1]").arg( ret ), this );
+        berApplet->warningBox( tr( "Failed to create digest [%1]").arg( JERR(ret) ), this );
         goto end;
     }
 
@@ -1522,7 +1547,7 @@ void PKCS7Dlg::clickData()
     ret = JS_PKCS7_makeData( &binSrc, &binOutput );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "Failed to create data [%1]").arg( ret ), this );
+        berApplet->warningBox( tr( "Failed to create data [%1]").arg( JERR(ret) ), this );
         goto end;
     }
 
@@ -1581,7 +1606,7 @@ void PKCS7Dlg::clickGetData()
     ret = JS_PKCS7_getData( &binSrc, &sData );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "Failed to create data [%1]").arg( ret ), this );
+        berApplet->warningBox( tr( "Failed to create data [%1]").arg( JERR(ret) ), this );
         goto end;
     }
 
@@ -1637,9 +1662,9 @@ void PKCS7Dlg::clickGetDigest()
     }
 
     ret = JS_PKCS7_getDigestData( &binSrc, &sData );
-    if( ret != JSR_VERIFY )
+    if( ret != JSR_OK )
     {
-        berApplet->warningBox( tr( "Failed to get digest [%1]").arg( ret ), this );
+        berApplet->warningBox( tr( "Failed to get digest [%1]").arg( JERR(ret) ), this );
         goto end;
     }
 
