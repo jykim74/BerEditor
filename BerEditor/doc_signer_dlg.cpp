@@ -152,6 +152,7 @@ void DocSignerDlg::checkCMSEncode()
 {
     mCMSCmdCombo->clear();
 
+    mCMSCmdCombo->setEnabled( true );
     mCMSCmdCombo->addItems( kCMSEncodeList );
 
     mCMSAutoDetectCheck->setEnabled(false);
@@ -424,6 +425,7 @@ void DocSignerDlg::initUI()
     checkDstFile();
     checkUseTSP();
     checkXML_UseTemplate();
+    changeCMSCmd();
 }
 
 void DocSignerDlg::initialize()
@@ -1526,9 +1528,9 @@ void DocSignerDlg::clickCMSGetDigest()
         }
     }
 
-    if( ret == JSR_VERIFY )
+    if( ret == JSR_OK )
     {
-        berApplet->messageBox( tr( "Get digest OK" ), this );
+        berApplet->messageBox( tr( "Get digest OK [Verify: %1]" ).arg( sCMSInfo.nVerify ), this );
     }
     else
     {

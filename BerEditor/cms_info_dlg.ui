@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>524</width>
-    <height>610</height>
+    <height>524</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -179,7 +179,20 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="3">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="minimumSize">
+        <size>
+         <width>60</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Data</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
       <widget class="QLineEdit" name="mDataLenText">
        <property name="minimumSize">
         <size>
@@ -225,20 +238,7 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="minimumSize">
-        <size>
-         <width>60</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Data</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
+     <item row="0" column="1">
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -250,19 +250,6 @@
         </size>
        </property>
       </spacer>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mDecodeDataBtn">
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>D</string>
-       </property>
-      </widget>
      </item>
     </layout>
    </item>
@@ -515,7 +502,6 @@
  <tabstops>
   <tabstop>mVersionText</tabstop>
   <tabstop>mTypeText</tabstop>
-  <tabstop>mDecodeDataBtn</tabstop>
   <tabstop>mDataLenText</tabstop>
   <tabstop>mDataText</tabstop>
   <tabstop>mInfoTab</tabstop>

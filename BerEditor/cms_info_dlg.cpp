@@ -14,6 +14,7 @@
 #include "js_ber.h"
 #include "js_tsp.h"
 #include "js_cms.h"
+#include "js_error.h"
 
 #include "common.h"
 
@@ -31,7 +32,6 @@ CMSInfoDlg::CMSInfoDlg(QWidget *parent, bool bCMS ) :
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mDataText, SIGNAL(textChanged()), this, SLOT(dataChanged()));
     connect( mDecodeBtn, SIGNAL(clicked()), this, SLOT(clickDecode()));
-    connect( mDecodeDataBtn, SIGNAL(clicked()), this, SLOT(clickDecodeData()));
 
     connect( mDataTable, SIGNAL(clicked(QModelIndex)), this, SLOT(clickDataField(QModelIndex)));
     connect( mSignerTable, SIGNAL(clicked(QModelIndex)), this, SLOT(clickSignerField(QModelIndex)));
@@ -187,7 +187,6 @@ void CMSInfoDlg::setCMS( const BIN *pCMS, const QString strTitle )
         else
             setSigned();
 
-        mDecodeDataBtn->setEnabled(true);
         strType = "Signed";
     }
     else if( cms_type_ == JS_PKCS7_TYPE_ENVELOED )
@@ -197,31 +196,26 @@ void CMSInfoDlg::setCMS( const BIN *pCMS, const QString strTitle )
         else
             setEnveloped();
 
-        mDecodeDataBtn->setEnabled(false);
         strType = "Enveloped";
     }
     else if( cms_type_ == JS_PKCS7_TYPE_SIGNED_AND_ENVELOPED )
     {
         setSignedAndEnveloped();
-        mDecodeDataBtn->setEnabled(false);
         strType = "SignedAndEnveloped";
     }
     else if( cms_type_ == JS_PKCS7_TYPE_DATA )
     {
         setData();
-        mDecodeDataBtn->setEnabled(false);
         strType = "Data";
     }
     else if( cms_type_ == JS_PKCS7_TYPE_DIGEST )
     {
         setDigest();
-        mDecodeDataBtn->setEnabled( true );
         strType = "Digest";
     }
     else if( cms_type_ == JS_PKCS7_TYPE_ENCRYPTED )
     {
         setEncrypted();
-        mDecodeDataBtn->setEnabled( false );
         strType = "Encrypted";
     }
     else
@@ -249,15 +243,6 @@ void CMSInfoDlg::dataChanged()
 void CMSInfoDlg::clickDecode()
 {
     berApplet->decodeData( &cms_bin_, cms_path_ );
-}
-
-void CMSInfoDlg::clickDecodeData()
-{
-    BIN binData = {0,0};
-    QString strData = mDataText->toPlainText();
-    getBINFromString( &binData, DATA_HEX, strData );
-    berApplet->decodeData( &binData );
-    JS_BIN_reset( &binData );
 }
 
 void CMSInfoDlg::clickDataField(QModelIndex index)
@@ -1346,12 +1331,13 @@ void CMSInfoDlg::setDigest()
 {
     int ret = 0;
     int row = 0;
+
     JP7DigestData sDigestData;
 
     memset( &sDigestData, 0x00, sizeof(sDigestData));
 
     ret = JS_PKCS7_getDigestData( &cms_bin_, &sDigestData );
-    if( ret != 0 ) return;
+    if( ret != JSR_OK ) return;
 
     mVersionText->setText( QString("V%1").arg( sDigestData.nVersion + 1 ));
     mDataText->setPlainText( getHexString( &sDigestData.binContent ));
@@ -1372,6 +1358,12 @@ void CMSInfoDlg::setDigest()
     mDataTable->setRowHeight(row, 10);
     mDataTable->setItem( row, 0, new QTableWidgetItem("Alg"));
     mDataTable->setItem( row, 1, new QTableWidgetItem( sDigestData.pAlg ));
+    row++;
+
+    mDataTable->insertRow(row);
+    mDataTable->setRowHeight(row, 10);
+    mDataTable->setItem( row, 0, new QTableWidgetItem("Verify"));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( sDigestData.nVerify ) ));
     row++;
 
 end :

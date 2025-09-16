@@ -271,9 +271,8 @@ end :
 void PKCS7Dlg::checkEncode()
 {
     mCmdCombo->clear();
+    mCmdCombo->setEnabled( true );
     mCmdCombo->addItems( kEncodeList );
-
-
     mAutoDetectCheck->setEnabled(false);
     mRunBtn->setText( tr("Encode" ));
 }
@@ -413,7 +412,7 @@ void PKCS7Dlg::clickSignedData()
 
     if( ret == 0 )
     {
-        mCMSTypeText->setText( kCmdSignedAndEnveloped );
+        mCMSTypeText->setText( kCmdSignedData );
         strOutput = getHexString( &binOutput );
 
         berApplet->logLine();
@@ -1644,15 +1643,16 @@ void PKCS7Dlg::clickGetDigest()
         goto end;
     }
 
-    if( ret == JSR_VERIFY )
+    if( ret == JSR_OK )
     {
         mCMSTypeText->setText( kCmdGetDigest );
         strOutput = getHexString( &sData.binContent );
 
         berApplet->logLine();
-        berApplet->log( "-- Data" );
+        berApplet->log( "-- Digest" );
         berApplet->logLine2();
         berApplet->log( QString( "Alg         : %1" ).arg( sData.pAlg ));
+        berApplet->log( QString( "Verify      : %1").arg( sData.nVerify));
         berApplet->log( QString( "Digest      : %1" ).arg( sData.pDigest ));
         berApplet->log( QString( "Output      : %1" ).arg( strOutput ));
         berApplet->logLine();
@@ -1687,7 +1687,10 @@ void PKCS7Dlg::changeCmd()
         mCipherCombo->setEnabled( false );
     }
 
-    if( strCmd == kCmdSignedData || strCmd == kCmdSignedAndEnveloped || strCmd == kCmdAddSigned )
+    if( strCmd == kCmdSignedData
+        || strCmd == kCmdSignedAndEnveloped
+        || strCmd == kCmdAddSigned
+        || strCmd == kCmdDigest )
     {
         mHashCombo->setEnabled( true );
     }

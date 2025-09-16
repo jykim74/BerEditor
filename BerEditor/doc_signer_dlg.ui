@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>624</width>
-    <height>690</height>
+    <height>539</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -312,10 +312,30 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="5">
-          <widget class="QPushButton" name="mCMSRunBtn">
+         <item row="0" column="1">
+          <widget class="QRadioButton" name="mCMSDecodeRadio">
            <property name="text">
-            <string>Run</string>
+            <string>Decode</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QComboBox" name="mCMSCmdCombo"/>
+         </item>
+         <item row="0" column="3">
+          <widget class="QCheckBox" name="mCMSAutoDetectCheck">
+           <property name="text">
+            <string>Auto Detect</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="5">
+          <widget class="QComboBox" name="mCMSCipherCombo">
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>0</height>
+            </size>
            </property>
           </widget>
          </item>
@@ -326,32 +346,25 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
-          <widget class="QComboBox" name="mCMSCmdCombo"/>
-         </item>
-         <item row="0" column="1">
-          <widget class="QRadioButton" name="mCMSDecodeRadio">
+         <item row="0" column="6">
+          <widget class="QPushButton" name="mCMSRunBtn">
            <property name="text">
-            <string>Decode</string>
+            <string>Run</string>
            </property>
           </widget>
          </item>
          <item row="0" column="4">
-          <widget class="QComboBox" name="mCMSCipherCombo">
-           <property name="minimumSize">
+          <spacer name="horizontalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
             <size>
-             <width>100</width>
-             <height>0</height>
+             <width>40</width>
+             <height>20</height>
             </size>
            </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
-          <widget class="QCheckBox" name="mCMSAutoDetectCheck">
-           <property name="text">
-            <string>Auto Detect</string>
-           </property>
-          </widget>
+          </spacer>
          </item>
         </layout>
        </item>
