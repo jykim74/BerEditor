@@ -39,6 +39,8 @@ PKCS7Dlg::PKCS7Dlg(QWidget *parent) :
     connect( mRunBtn, SIGNAL(clicked()), this, SLOT(clickRun()));
 
     connect( mSrcDecodeBtn, SIGNAL(clicked()), this, SLOT(clickSrcDecode()));
+    connect( mSrcTypeBtn, SIGNAL(clicked()), this, SLOT(clickSrcType()));
+    connect( mPKCS7TypeBtn, SIGNAL(clicked()), this, SLOT(clickPKCS7Type()));
     connect( mCMSDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCMSDecode()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(clickClose()));
     connect( mSignPriKeyFindBtn, SIGNAL(clicked()), this, SLOT(clickSignPriFind()));
@@ -101,6 +103,8 @@ PKCS7Dlg::PKCS7Dlg(QWidget *parent) :
     mSrcDecodeBtn->setFixedWidth(34);
     mPKCS7ViewBtn->setFixedWidth(34);
     mSrcViewBtn->setFixedWidth(34);
+    mSrcTypeBtn->setFixedWidth(34);
+    mPKCS7TypeBtn->setFixedWidth(34);
 
     mSrcClearBtn->setFixedWidth(34);
     mCMSClearBtn->setFixedWidth(34);
@@ -279,7 +283,9 @@ void PKCS7Dlg::checkEncode()
 
     mSrcViewBtn->setEnabled( false );
     mSrcDecodeBtn->setEnabled( false );
+    mSrcTypeBtn->setEnabled( false );
     mPKCS7ViewBtn->setEnabled( true );
+    mPKCS7TypeBtn->setEnabled( true );
     mCMSDecodeBtn->setEnabled( true );
 }
 
@@ -296,7 +302,10 @@ void PKCS7Dlg::checkDecode()
 
     mSrcViewBtn->setEnabled( true );
     mSrcDecodeBtn->setEnabled( true );
+    mSrcTypeBtn->setEnabled( true );
+
     mPKCS7ViewBtn->setEnabled( false );
+    mPKCS7TypeBtn->setEnabled( false );
     mCMSDecodeBtn->setEnabled( false );
 }
 
@@ -772,7 +781,7 @@ void PKCS7Dlg::clickDevelopedData()
     getBINFromString( &binCMS, strSrcType, strCMS.toStdString().c_str() );
 
     nCMSType = JS_PKCS7_getType( &binCMS );
-    if( nCMSType != JS_PKCS7_TYPE_ENVELOED )
+    if( nCMSType != JS_PKCS7_TYPE_ENVELOPED )
     {
         berApplet->warningBox( tr( "Not a EnvelopedData type[Type:%1]").arg( nCMSType ), this);
         goto end;
@@ -1390,6 +1399,62 @@ void PKCS7Dlg::clickSrcDecode()
     JS_BIN_reset( &binSrc );
 }
 
+void PKCS7Dlg::clickSrcType()
+{
+    BIN binCMS = {0,0};
+
+    int nCMSType = -1;
+    QString strCMS = mSrcText->toPlainText();
+
+    if( strCMS.isEmpty() )
+    {
+        berApplet->warningBox( tr( "Please enter CMS value" ), this );
+        mSrcText->setFocus();
+        return;
+    }
+
+    getBINFromString( &binCMS, DATA_HEX, strCMS );
+
+    nCMSType = JS_PKCS7_getType( &binCMS );
+    if( nCMSType < 0 )
+    {
+        berApplet->warningBox( tr( "This CMS type is not supported.").arg( nCMSType ), this );
+        JS_BIN_reset( &binCMS );
+        return;
+    }
+
+    berApplet->messageBox( tr( "This CMS type is %1" ).arg( JS_PKCS7_getTypeName( nCMSType )), this );
+    JS_BIN_reset( &binCMS );
+}
+
+void PKCS7Dlg::clickPKCS7Type()
+{
+    BIN binCMS = {0,0};
+
+    int nCMSType = -1;
+    QString strCMS = mCMSText->toPlainText();
+
+    if( strCMS.isEmpty() )
+    {
+        berApplet->warningBox( tr( "Please enter CMS value" ), this );
+        mCMSText->setFocus();
+        return;
+    }
+
+    getBINFromString( &binCMS, DATA_HEX, strCMS );
+
+    nCMSType = JS_PKCS7_getType( &binCMS );
+    if( nCMSType < 0 )
+    {
+        berApplet->warningBox( tr( "This CMS type is not supported.").arg( nCMSType ), this );
+        JS_BIN_reset( &binCMS );
+        return;
+    }
+
+    berApplet->messageBox( tr( "This CMS type is %1" ).arg( JS_PKCS7_getTypeName( nCMSType )), this );
+    JS_BIN_reset( &binCMS );
+}
+
 void PKCS7Dlg::clickPKCS7View()
 {
     BIN binCMS = {0,0};
@@ -1783,7 +1848,7 @@ void PKCS7Dlg::clickRun()
                 clickGetDigest();
             else if( nCMSType == JS_PKCS7_TYPE_SIGNED )
                 clickVerifyData();
-            else if( nCMSType == JS_PKCS7_TYPE_ENVELOED )
+            else if( nCMSType == JS_PKCS7_TYPE_ENVELOPED )
                 clickDevelopedData();
             else if( nCMSType == JS_PKCS7_TYPE_SIGNED_AND_ENVELOPED )
                 clickDevelopedAndVerify();

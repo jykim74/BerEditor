@@ -2951,8 +2951,8 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../cms_info_dlg.ui" line="45"/>
-        <location filename="../cms_info_dlg.cpp" line="365"/>
-        <location filename="../cms_info_dlg.cpp" line="477"/>
+        <location filename="../cms_info_dlg.cpp" line="364"/>
+        <location filename="../cms_info_dlg.cpp" line="476"/>
         <source>Version</source>
         <translation>버젼</translation>
     </message>
@@ -3041,38 +3041,38 @@ mailto : jykim74@gmail.com</translation>
         <translation>TST 보기</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="79"/>
+        <location filename="../cms_info_dlg.cpp" line="78"/>
         <source>Name</source>
         <translation>이름</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="79"/>
+        <location filename="../cms_info_dlg.cpp" line="78"/>
         <source>Value</source>
         <translation>값</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="90"/>
+        <location filename="../cms_info_dlg.cpp" line="89"/>
         <source>Subject DN</source>
         <translation>주체자 DN</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="90"/>
+        <location filename="../cms_info_dlg.cpp" line="89"/>
         <source>Expire</source>
         <translation>만료 일자</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="90"/>
-        <location filename="../cms_info_dlg.cpp" line="104"/>
+        <location filename="../cms_info_dlg.cpp" line="89"/>
+        <location filename="../cms_info_dlg.cpp" line="103"/>
         <source>Issuer DN</source>
         <translation>발급자 이름</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="104"/>
+        <location filename="../cms_info_dlg.cpp" line="103"/>
         <source>This Update</source>
         <translation>이번 업데이트</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="104"/>
+        <location filename="../cms_info_dlg.cpp" line="103"/>
         <source>Next Update</source>
         <translation>다음 업데이트</translation>
     </message>
@@ -3081,73 +3081,73 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">이 타입은 지원 하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="223"/>
+        <location filename="../cms_info_dlg.cpp" line="222"/>
         <source>This type(%1) is not supported</source>
         <translation>이 타입(%1)은 지원 하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="371"/>
-        <location filename="../cms_info_dlg.cpp" line="483"/>
-        <location filename="../cms_info_dlg.cpp" line="644"/>
+        <location filename="../cms_info_dlg.cpp" line="370"/>
+        <location filename="../cms_info_dlg.cpp" line="482"/>
+        <location filename="../cms_info_dlg.cpp" line="643"/>
         <source>Issuer</source>
         <translation>발급자</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="377"/>
-        <location filename="../cms_info_dlg.cpp" line="489"/>
-        <location filename="../cms_info_dlg.cpp" line="653"/>
+        <location filename="../cms_info_dlg.cpp" line="376"/>
+        <location filename="../cms_info_dlg.cpp" line="488"/>
+        <location filename="../cms_info_dlg.cpp" line="652"/>
         <source>Serial</source>
         <translation>일련번호</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="385"/>
+        <location filename="../cms_info_dlg.cpp" line="384"/>
         <source>SignTime</source>
         <translation>서명시간</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="391"/>
+        <location filename="../cms_info_dlg.cpp" line="390"/>
         <source>DigestAlg</source>
         <translation>해시 알고리즘</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="397"/>
+        <location filename="../cms_info_dlg.cpp" line="396"/>
         <source>DigestEncAlg</source>
         <translation>해시 암호 알고리즘</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="403"/>
+        <location filename="../cms_info_dlg.cpp" line="402"/>
         <source>EncDigest</source>
         <translation>암호 해시</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="495"/>
+        <location filename="../cms_info_dlg.cpp" line="494"/>
         <source>KeyEncAlg</source>
         <translation>키 암호 알고리즘</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="501"/>
+        <location filename="../cms_info_dlg.cpp" line="500"/>
         <source>EncKey</source>
         <translation>암호 키</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="509"/>
-        <location filename="../cms_info_dlg.cpp" line="662"/>
+        <location filename="../cms_info_dlg.cpp" line="508"/>
+        <location filename="../cms_info_dlg.cpp" line="661"/>
         <source>Certificate</source>
         <translation>인증서</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="540"/>
-        <location filename="../cms_info_dlg.cpp" line="635"/>
+        <location filename="../cms_info_dlg.cpp" line="539"/>
+        <location filename="../cms_info_dlg.cpp" line="634"/>
         <source>Alg</source>
         <translation>알고리즘</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="549"/>
+        <location filename="../cms_info_dlg.cpp" line="548"/>
         <source>Hash</source>
         <translation>해시</translation>
     </message>
     <message>
-        <location filename="../cms_info_dlg.cpp" line="558"/>
+        <location filename="../cms_info_dlg.cpp" line="557"/>
         <source>Signature</source>
         <translation>서명</translation>
     </message>
@@ -6376,7 +6376,7 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../doc_signer_dlg.ui" line="59"/>
-        <location filename="../doc_signer_dlg.ui" line="1342"/>
+        <location filename="../doc_signer_dlg.ui" line="1380"/>
         <source>Find</source>
         <translation>찾기</translation>
     </message>
@@ -6397,64 +6397,70 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../doc_signer_dlg.ui" line="139"/>
-        <location filename="../doc_signer_dlg.ui" line="476"/>
-        <location filename="../doc_signer_dlg.cpp" line="164"/>
-        <location filename="../doc_signer_dlg.cpp" line="184"/>
+        <location filename="../doc_signer_dlg.ui" line="592"/>
+        <location filename="../doc_signer_dlg.cpp" line="168"/>
+        <location filename="../doc_signer_dlg.cpp" line="190"/>
         <source>CMS</source>
         <translation>CMS</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.ui" line="234"/>
-        <location filename="../doc_signer_dlg.ui" line="1065"/>
-        <location filename="../doc_signer_dlg.cpp" line="163"/>
-        <location filename="../doc_signer_dlg.cpp" line="185"/>
+        <location filename="../doc_signer_dlg.ui" line="159"/>
+        <location filename="../doc_signer_dlg.ui" line="1103"/>
+        <location filename="../doc_signer_dlg.cpp" line="167"/>
+        <location filename="../doc_signer_dlg.cpp" line="191"/>
         <source>Data</source>
         <translation>데이타</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.ui" line="270"/>
-        <location filename="../doc_signer_dlg.ui" line="541"/>
-        <location filename="../doc_signer_dlg.ui" line="650"/>
-        <location filename="../doc_signer_dlg.ui" line="880"/>
-        <location filename="../doc_signer_dlg.ui" line="970"/>
-        <location filename="../doc_signer_dlg.ui" line="1261"/>
+        <location filename="../doc_signer_dlg.ui" line="178"/>
+        <location filename="../doc_signer_dlg.ui" line="436"/>
+        <location filename="../doc_signer_dlg.ui" line="688"/>
+        <location filename="../doc_signer_dlg.ui" line="918"/>
+        <location filename="../doc_signer_dlg.ui" line="1008"/>
+        <location filename="../doc_signer_dlg.ui" line="1299"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.ui" line="244"/>
+        <location filename="../doc_signer_dlg.ui" line="289"/>
         <source>Use TimeStamp</source>
         <translation>타임스탬프 사용</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.ui" line="371"/>
+        <location filename="../doc_signer_dlg.ui" line="308"/>
+        <location filename="../doc_signer_dlg.ui" line="630"/>
+        <source>T</source>
+        <translation>T</translation>
+    </message>
+    <message>
+        <location filename="../doc_signer_dlg.ui" line="390"/>
         <source>Run</source>
         <translation>실행</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.ui" line="364"/>
-        <location filename="../doc_signer_dlg.cpp" line="161"/>
+        <location filename="../doc_signer_dlg.ui" line="383"/>
+        <location filename="../doc_signer_dlg.cpp" line="165"/>
         <source>Encode</source>
         <translation>인코딩</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.ui" line="337"/>
-        <location filename="../doc_signer_dlg.cpp" line="182"/>
+        <location filename="../doc_signer_dlg.ui" line="356"/>
+        <location filename="../doc_signer_dlg.cpp" line="188"/>
         <source>Decode</source>
         <translation>디코딩</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.ui" line="347"/>
+        <location filename="../doc_signer_dlg.ui" line="366"/>
         <source>Auto Detect</source>
         <translation>자동 인지</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.ui" line="1162"/>
+        <location filename="../doc_signer_dlg.ui" line="1200"/>
         <source>Make Sign</source>
         <translation>서명 생성</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.ui" line="251"/>
+        <location filename="../doc_signer_dlg.ui" line="236"/>
         <source>TSP</source>
         <translation>TSP</translation>
     </message>
@@ -6467,20 +6473,20 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">복호화된 데이타</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.ui" line="1135"/>
+        <location filename="../doc_signer_dlg.ui" line="1173"/>
         <source>Verify Sign</source>
         <translation>서명 검증</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.ui" line="289"/>
-        <location filename="../doc_signer_dlg.ui" line="560"/>
+        <location filename="../doc_signer_dlg.ui" line="216"/>
+        <location filename="../doc_signer_dlg.ui" line="579"/>
         <source>D</source>
         <translation>D</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.ui" line="579"/>
-        <location filename="../doc_signer_dlg.ui" line="906"/>
-        <location filename="../doc_signer_dlg.ui" line="1287"/>
+        <location filename="../doc_signer_dlg.ui" line="501"/>
+        <location filename="../doc_signer_dlg.ui" line="944"/>
+        <location filename="../doc_signer_dlg.ui" line="1325"/>
         <source>⬆</source>
         <translation>⬆</translation>
     </message>
@@ -6489,45 +6495,45 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">CMS 보기</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.ui" line="636"/>
+        <location filename="../doc_signer_dlg.ui" line="674"/>
         <source>JSON</source>
         <translation>JSON</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.ui" line="663"/>
+        <location filename="../doc_signer_dlg.ui" line="701"/>
         <source>Payload</source>
         <translation>페이로드</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.ui" line="221"/>
-        <location filename="../doc_signer_dlg.ui" line="463"/>
-        <location filename="../doc_signer_dlg.ui" line="741"/>
-        <location filename="../doc_signer_dlg.ui" line="808"/>
+        <location filename="../doc_signer_dlg.ui" line="197"/>
+        <location filename="../doc_signer_dlg.ui" line="611"/>
+        <location filename="../doc_signer_dlg.ui" line="779"/>
+        <location filename="../doc_signer_dlg.ui" line="846"/>
         <source>V</source>
         <translation>V</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.ui" line="758"/>
+        <location filename="../doc_signer_dlg.ui" line="796"/>
         <source>Verify Signature</source>
         <translation>서명 검증</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.ui" line="778"/>
+        <location filename="../doc_signer_dlg.ui" line="816"/>
         <source>Compute Signature</source>
         <translation>서명 생성</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.ui" line="893"/>
+        <location filename="../doc_signer_dlg.ui" line="931"/>
         <source>JWS</source>
         <translation>JWS</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.ui" line="950"/>
+        <location filename="../doc_signer_dlg.ui" line="988"/>
         <source>XML</source>
         <translation>XML</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.ui" line="983"/>
+        <location filename="../doc_signer_dlg.ui" line="1021"/>
         <source>Body</source>
         <translation>본문</translation>
     </message>
@@ -6537,102 +6543,105 @@ mailto : jykim74@gmail.com</translation>
         <translation>템플릿으로 사용</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.ui" line="1142"/>
+        <location filename="../doc_signer_dlg.ui" line="1180"/>
         <source>Encrypt</source>
         <translation>암호화</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.ui" line="1169"/>
+        <location filename="../doc_signer_dlg.ui" line="1207"/>
         <source>Decrypt</source>
         <translation>복호화</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.ui" line="1242"/>
+        <location filename="../doc_signer_dlg.ui" line="1280"/>
         <source>Result</source>
         <translation>결과</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.ui" line="1349"/>
+        <location filename="../doc_signer_dlg.ui" line="1387"/>
         <source>Destination file</source>
         <translation>대상 파일</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.ui" line="1380"/>
+        <location filename="../doc_signer_dlg.ui" line="1418"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.ui" line="1387"/>
+        <location filename="../doc_signer_dlg.ui" line="1425"/>
         <source>Clear All</source>
         <translation>전체 지우기</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="339"/>
+        <location filename="../doc_signer_dlg.cpp" line="347"/>
         <source>find a source cms</source>
         <translation>소스 CMS를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="350"/>
-        <location filename="../doc_signer_dlg.cpp" line="398"/>
+        <location filename="../doc_signer_dlg.cpp" line="358"/>
+        <location filename="../doc_signer_dlg.cpp" line="406"/>
+        <location filename="../doc_signer_dlg.cpp" line="453"/>
+        <location filename="../doc_signer_dlg.cpp" line="476"/>
         <source>This is not a CMS message</source>
         <translation>CMS 메세지가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="456"/>
+        <location filename="../doc_signer_dlg.cpp" line="534"/>
         <source>data for encryption</source>
         <translation>암호용 데이타</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="667"/>
-        <location filename="../doc_signer_dlg.cpp" line="707"/>
-        <location filename="../doc_signer_dlg.cpp" line="726"/>
-        <location filename="../doc_signer_dlg.cpp" line="768"/>
-        <location filename="../doc_signer_dlg.cpp" line="813"/>
+        <location filename="../doc_signer_dlg.cpp" line="745"/>
+        <location filename="../doc_signer_dlg.cpp" line="785"/>
+        <location filename="../doc_signer_dlg.cpp" line="804"/>
+        <location filename="../doc_signer_dlg.cpp" line="846"/>
+        <location filename="../doc_signer_dlg.cpp" line="891"/>
         <source>Select a sign certificate</source>
         <translation>서명용 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="684"/>
-        <location filename="../doc_signer_dlg.cpp" line="740"/>
-        <location filename="../doc_signer_dlg.cpp" line="787"/>
+        <location filename="../doc_signer_dlg.cpp" line="762"/>
+        <location filename="../doc_signer_dlg.cpp" line="818"/>
+        <location filename="../doc_signer_dlg.cpp" line="865"/>
         <source>Select keypair</source>
         <translation>키 쌍을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1568"/>
+        <location filename="../doc_signer_dlg.cpp" line="1646"/>
         <source>Get digest OK [Verify: %1]</source>
         <translation>다이제스트 얻기 성공 [검증:%1]</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1828"/>
-        <location filename="../doc_signer_dlg.cpp" line="1912"/>
-        <location filename="../doc_signer_dlg.cpp" line="2016"/>
-        <location filename="../doc_signer_dlg.cpp" line="2080"/>
+        <location filename="../doc_signer_dlg.cpp" line="1906"/>
+        <location filename="../doc_signer_dlg.cpp" line="1990"/>
+        <location filename="../doc_signer_dlg.cpp" line="2094"/>
+        <location filename="../doc_signer_dlg.cpp" line="2158"/>
         <source>find a source xml</source>
         <translation>소스 XML을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="387"/>
-        <location filename="../doc_signer_dlg.cpp" line="928"/>
-        <location filename="../doc_signer_dlg.cpp" line="1099"/>
-        <location filename="../doc_signer_dlg.cpp" line="1256"/>
-        <location filename="../doc_signer_dlg.cpp" line="1322"/>
-        <location filename="../doc_signer_dlg.cpp" line="1391"/>
-        <location filename="../doc_signer_dlg.cpp" line="1937"/>
+        <location filename="../doc_signer_dlg.cpp" line="395"/>
+        <location filename="../doc_signer_dlg.cpp" line="442"/>
+        <location filename="../doc_signer_dlg.cpp" line="1006"/>
+        <location filename="../doc_signer_dlg.cpp" line="1177"/>
+        <location filename="../doc_signer_dlg.cpp" line="1334"/>
+        <location filename="../doc_signer_dlg.cpp" line="1400"/>
+        <location filename="../doc_signer_dlg.cpp" line="1469"/>
+        <location filename="../doc_signer_dlg.cpp" line="2015"/>
         <source>Enter a data</source>
         <translation>데이타를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="974"/>
-        <location filename="../doc_signer_dlg.cpp" line="1280"/>
-        <location filename="../doc_signer_dlg.cpp" line="1346"/>
-        <location filename="../doc_signer_dlg.cpp" line="1417"/>
+        <location filename="../doc_signer_dlg.cpp" line="1052"/>
+        <location filename="../doc_signer_dlg.cpp" line="1358"/>
+        <location filename="../doc_signer_dlg.cpp" line="1424"/>
+        <location filename="../doc_signer_dlg.cpp" line="1495"/>
         <source>The CMS file[%1] has been saved.</source>
         <translation>CMS 파일[%1] 이 저장 되었습니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="981"/>
-        <location filename="../doc_signer_dlg.cpp" line="1424"/>
+        <location filename="../doc_signer_dlg.cpp" line="1059"/>
+        <location filename="../doc_signer_dlg.cpp" line="1502"/>
         <source>fail to make singed data: %1</source>
         <translation>서명 데이타 생성 실패: %1</translation>
     </message>
@@ -6641,174 +6650,181 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">서명된 데이타 CMS 메세지가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1058"/>
-        <location filename="../doc_signer_dlg.cpp" line="1721"/>
+        <location filename="../doc_signer_dlg.cpp" line="1136"/>
+        <location filename="../doc_signer_dlg.cpp" line="1799"/>
         <source>Verify OK</source>
         <translation>검증 성공</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1062"/>
-        <location filename="../doc_signer_dlg.cpp" line="2055"/>
+        <location filename="../doc_signer_dlg.cpp" line="1140"/>
+        <location filename="../doc_signer_dlg.cpp" line="2133"/>
         <source>fail to verify: %1</source>
         <translation>검증 실패: %1</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1052"/>
-        <location filename="../doc_signer_dlg.cpp" line="1133"/>
-        <location filename="../doc_signer_dlg.cpp" line="1207"/>
-        <location filename="../doc_signer_dlg.cpp" line="1489"/>
-        <location filename="../doc_signer_dlg.cpp" line="1562"/>
+        <location filename="../doc_signer_dlg.cpp" line="1130"/>
+        <location filename="../doc_signer_dlg.cpp" line="1211"/>
+        <location filename="../doc_signer_dlg.cpp" line="1285"/>
+        <location filename="../doc_signer_dlg.cpp" line="1567"/>
+        <location filename="../doc_signer_dlg.cpp" line="1640"/>
         <source>The data file[%1] has been saved.</source>
         <translation>데이타 파일[%1]이 저장 되었습니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1606"/>
-        <location filename="../doc_signer_dlg.cpp" line="1686"/>
+        <location filename="../doc_signer_dlg.cpp" line="1684"/>
+        <location filename="../doc_signer_dlg.cpp" line="1764"/>
         <source>find a source json</source>
         <translation>소스 JSON 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1626"/>
+        <location filename="../doc_signer_dlg.cpp" line="1704"/>
         <source>Enter a payload</source>
         <translation>페이로드를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1635"/>
+        <location filename="../doc_signer_dlg.cpp" line="1713"/>
         <source>Payload is not object</source>
         <translation>페이로드가 오브젝트가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1664"/>
+        <location filename="../doc_signer_dlg.cpp" line="1742"/>
         <source>The json file[%1] has been saved.</source>
         <translation>JSON 파일[%1]이 저장 되었습니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1765"/>
+        <location filename="../doc_signer_dlg.cpp" line="1843"/>
         <source>There is no JWS</source>
         <translation>JWS가 없습니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1723"/>
+        <location filename="../doc_signer_dlg.cpp" line="1801"/>
         <source>Verify fail: %1</source>
         <translation>검증 실패 : %1</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="373"/>
-        <location filename="../doc_signer_dlg.cpp" line="914"/>
-        <location filename="../doc_signer_dlg.cpp" line="1242"/>
-        <location filename="../doc_signer_dlg.cpp" line="1308"/>
-        <location filename="../doc_signer_dlg.cpp" line="1377"/>
+        <location filename="../doc_signer_dlg.cpp" line="381"/>
+        <location filename="../doc_signer_dlg.cpp" line="428"/>
+        <location filename="../doc_signer_dlg.cpp" line="992"/>
+        <location filename="../doc_signer_dlg.cpp" line="1320"/>
+        <location filename="../doc_signer_dlg.cpp" line="1386"/>
+        <location filename="../doc_signer_dlg.cpp" line="1455"/>
         <source>find a source</source>
         <translation>소스를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="977"/>
-        <location filename="../doc_signer_dlg.cpp" line="1420"/>
+        <location filename="../doc_signer_dlg.cpp" line="1055"/>
+        <location filename="../doc_signer_dlg.cpp" line="1498"/>
         <source>Signed data creation success</source>
         <translation>SignedData 생성 성공</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="558"/>
-        <location filename="../doc_signer_dlg.cpp" line="1004"/>
-        <location filename="../doc_signer_dlg.cpp" line="1156"/>
-        <location filename="../doc_signer_dlg.cpp" line="1448"/>
-        <location filename="../doc_signer_dlg.cpp" line="1521"/>
+        <location filename="../doc_signer_dlg.cpp" line="636"/>
+        <location filename="../doc_signer_dlg.cpp" line="1082"/>
+        <location filename="../doc_signer_dlg.cpp" line="1234"/>
+        <location filename="../doc_signer_dlg.cpp" line="1526"/>
+        <location filename="../doc_signer_dlg.cpp" line="1599"/>
         <source>find a source CMS</source>
         <translation>소스 CMS를 찾으세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="443"/>
+        <location filename="../doc_signer_dlg.cpp" line="457"/>
+        <location filename="../doc_signer_dlg.cpp" line="480"/>
+        <source>This message is %1 data</source>
+        <translation>이 메세지는 %1 데이타 입니다</translation>
+    </message>
+    <message>
+        <location filename="../doc_signer_dlg.cpp" line="521"/>
         <source>Hex value</source>
         <translation>16진수 값</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="444"/>
-        <location filename="../doc_signer_dlg.cpp" line="445"/>
+        <location filename="../doc_signer_dlg.cpp" line="522"/>
+        <location filename="../doc_signer_dlg.cpp" line="523"/>
         <source>String value</source>
         <translation>문자 값</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="572"/>
-        <location filename="../doc_signer_dlg.cpp" line="1018"/>
-        <location filename="../doc_signer_dlg.cpp" line="1170"/>
-        <location filename="../doc_signer_dlg.cpp" line="1462"/>
-        <location filename="../doc_signer_dlg.cpp" line="1535"/>
+        <location filename="../doc_signer_dlg.cpp" line="650"/>
+        <location filename="../doc_signer_dlg.cpp" line="1096"/>
+        <location filename="../doc_signer_dlg.cpp" line="1248"/>
+        <location filename="../doc_signer_dlg.cpp" line="1540"/>
+        <location filename="../doc_signer_dlg.cpp" line="1613"/>
         <source>Enter a CMS</source>
         <translation>CMS을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="593"/>
+        <location filename="../doc_signer_dlg.cpp" line="671"/>
         <source>not supported CMS type[%1]</source>
         <translation>지원 하지 않는 CMS 타입[%1]</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1032"/>
+        <location filename="../doc_signer_dlg.cpp" line="1110"/>
         <source>This is not a signed data message:%1</source>
         <translation>서명된 데이타 메세지가 아닙니다: %1</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1085"/>
+        <location filename="../doc_signer_dlg.cpp" line="1163"/>
         <source>Find a source file</source>
         <translation>소스 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1113"/>
+        <location filename="../doc_signer_dlg.cpp" line="1191"/>
         <source>Enveloped Data OK</source>
         <translation>복화화된 데이타 성공</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1117"/>
+        <location filename="../doc_signer_dlg.cpp" line="1195"/>
         <source>fail to envelop data: %1</source>
         <translation>암호화 데이타 실패: %1</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1184"/>
+        <location filename="../doc_signer_dlg.cpp" line="1262"/>
         <source>This is not a enveloped data message:%1</source>
         <translation>암호화된 데이타가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1213"/>
+        <location filename="../doc_signer_dlg.cpp" line="1291"/>
         <source>Developed data OK</source>
         <translation>복호화 데이타 성공</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1217"/>
+        <location filename="../doc_signer_dlg.cpp" line="1295"/>
         <source>fail to develop data: %1</source>
         <translation>DevelopData 실패: %1</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1283"/>
+        <location filename="../doc_signer_dlg.cpp" line="1361"/>
         <source>CMS data creation success</source>
         <translation>CMS 데이타 생성 성공</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1287"/>
-        <location filename="../doc_signer_dlg.cpp" line="1353"/>
+        <location filename="../doc_signer_dlg.cpp" line="1365"/>
+        <location filename="../doc_signer_dlg.cpp" line="1431"/>
         <source>fail to make data: %1</source>
         <translation>데이타 만들기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1349"/>
+        <location filename="../doc_signer_dlg.cpp" line="1427"/>
         <source>CMS digest creation success</source>
         <translation>CMS 다이제스트 생성 성공</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1473"/>
+        <location filename="../doc_signer_dlg.cpp" line="1551"/>
         <source>This is not a data message:%1</source>
         <translation>이것은 데이타 메세지가 아닙니다: %1</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1495"/>
+        <location filename="../doc_signer_dlg.cpp" line="1573"/>
         <source>Get OK</source>
         <translation>가져오기 성공</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1499"/>
+        <location filename="../doc_signer_dlg.cpp" line="1577"/>
         <source>fail to get data: %1</source>
         <translation>데이타 얻기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1546"/>
+        <location filename="../doc_signer_dlg.cpp" line="1624"/>
         <source>This is not a digest message:%1</source>
         <translation>이것은 다이제스트 메세지가 아닙니다: %1</translation>
     </message>
@@ -6817,77 +6833,77 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">다이제스트 얻기 성공</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1572"/>
+        <location filename="../doc_signer_dlg.cpp" line="1650"/>
         <source>fail to get digest: %1</source>
         <translation>다이제스트 얻기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1705"/>
+        <location filename="../doc_signer_dlg.cpp" line="1783"/>
         <source>There is no JWS payload</source>
         <translation>JWS 페이로드가 없습니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1750"/>
+        <location filename="../doc_signer_dlg.cpp" line="1828"/>
         <source>There is no payload</source>
         <translation>페이로드가 없습니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1840"/>
-        <location filename="../doc_signer_dlg.cpp" line="1924"/>
-        <location filename="../doc_signer_dlg.cpp" line="2092"/>
+        <location filename="../doc_signer_dlg.cpp" line="1918"/>
+        <location filename="../doc_signer_dlg.cpp" line="2002"/>
+        <location filename="../doc_signer_dlg.cpp" line="2170"/>
         <source>Enter a XML body</source>
         <translation>XML 본문을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1883"/>
+        <location filename="../doc_signer_dlg.cpp" line="1961"/>
         <source>fail to make signature: %1</source>
         <translation>서명 생성 실패: %1</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1879"/>
+        <location filename="../doc_signer_dlg.cpp" line="1957"/>
         <source>XML Signature OK</source>
         <translation>XML 서명 성공</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1876"/>
-        <location filename="../doc_signer_dlg.cpp" line="1980"/>
-        <location filename="../doc_signer_dlg.cpp" line="2146"/>
+        <location filename="../doc_signer_dlg.cpp" line="1954"/>
+        <location filename="../doc_signer_dlg.cpp" line="2058"/>
+        <location filename="../doc_signer_dlg.cpp" line="2224"/>
         <source>The XML file[%1] has been saved.</source>
         <translation>XML 파일[%1]이 저장 되었습니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1946"/>
-        <location filename="../doc_signer_dlg.cpp" line="2101"/>
+        <location filename="../doc_signer_dlg.cpp" line="2024"/>
+        <location filename="../doc_signer_dlg.cpp" line="2179"/>
         <source>Select key</source>
         <translation>키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1987"/>
+        <location filename="../doc_signer_dlg.cpp" line="2065"/>
         <source>fail to encrypt: %1</source>
         <translation>암호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="1983"/>
+        <location filename="../doc_signer_dlg.cpp" line="2061"/>
         <source>XML Encrypt OK</source>
         <translation>XML 암호화 성공</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="2028"/>
+        <location filename="../doc_signer_dlg.cpp" line="2106"/>
         <source>Enter a XML signature to body</source>
         <translation>본문에 XML 서명 데이타를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="2051"/>
+        <location filename="../doc_signer_dlg.cpp" line="2129"/>
         <source>XML Verify OK</source>
         <translation>XML 검증 성공</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="2153"/>
+        <location filename="../doc_signer_dlg.cpp" line="2231"/>
         <source>fail to decrypt: %1</source>
         <translation>복호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="2149"/>
+        <location filename="../doc_signer_dlg.cpp" line="2227"/>
         <source>XML Decrypt OK [%1]</source>
         <translation>XML 복호화 성공 [%1]</translation>
     </message>
@@ -11551,27 +11567,26 @@ Do you want to delete the file and continue?</source>
         <translation>유효하지 않는 개인키</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1842"/>
         <source>This CMS type is not supported.</source>
-        <translation>이 CMS 타입은 지원 하지 않습니다</translation>
+        <translation type="vanished">이 CMS 타입은 지원 하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2484"/>
+        <location filename="../mainwindow.cpp" line="2483"/>
         <source>The current data has been changed. Do you want to save the changed data?</source>
         <translation>현재  데이타가 변경 되었습니다. 변경된 데이타을 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3412"/>
+        <location filename="../mainwindow.cpp" line="3411"/>
         <source>Would you like to change to the initial toolbar view?</source>
         <translation>초기 툴바 상태로 변경 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3424"/>
+        <location filename="../mainwindow.cpp" line="3423"/>
         <source>You have changed toolbar settings. Restart to apply it?</source>
         <translation>툴바 설정을 변경 하였습니다. 다시 시작 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3562"/>
+        <location filename="../mainwindow.cpp" line="3561"/>
         <source>The data is not TTLV format</source>
         <translation>이 데이타는 TTLV 포맷이 아닙니다</translation>
     </message>
@@ -11650,22 +11665,27 @@ Do you want to delete the file and continue?</source>
         <translation>질문과 답변하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1953"/>
+        <location filename="../mainwindow.cpp" line="1841"/>
+        <source>This message is not CMS.</source>
+        <translation>이 메세지는 CMS가 아닙니다</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1952"/>
         <source>The BER is TTLV format. Do you open as TTLV format?</source>
         <translation>해당 BER은 TTLV 형식입니다. TTLV 형식으로 열겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1962"/>
+        <location filename="../mainwindow.cpp" line="1961"/>
         <source>TTLV decoding requires a license.</source>
         <translation>TTLV 디코딩은 라이선스가 필요합니다</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1969"/>
+        <location filename="../mainwindow.cpp" line="1968"/>
         <source>The data is not BER format</source>
         <translation>이 데이타는 잘못된 BER 포맷입니다</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2441"/>
+        <location filename="../mainwindow.cpp" line="2440"/>
         <source>Certificate Management</source>
         <translation>인증서 관리</translation>
     </message>
@@ -11878,17 +11898,17 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">[소스가 PEM 형식인 경우 또는 소스 DER 파일이 변경 됨] DER 형식으로 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2496"/>
+        <location filename="../mainwindow.cpp" line="2495"/>
         <source>Copy</source>
         <translation>복사</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2499"/>
+        <location filename="../mainwindow.cpp" line="2498"/>
         <source>Select All</source>
         <translation>전체 선택</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2502"/>
+        <location filename="../mainwindow.cpp" line="2501"/>
         <source>Unselect All</source>
         <translation>선택 해제</translation>
     </message>
@@ -11897,8 +11917,8 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">라이선스가 변경 되었습니다.적용을 위해 다시 시작 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3541"/>
-        <location filename="../mainwindow.cpp" line="3556"/>
+        <location filename="../mainwindow.cpp" line="3540"/>
+        <location filename="../mainwindow.cpp" line="3555"/>
         <source>There is no data</source>
         <translation>데이타가 없습니다</translation>
     </message>
@@ -12096,7 +12116,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">변경 데이타를 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3449"/>
+        <location filename="../mainwindow.cpp" line="3448"/>
         <source>Do you want to overwrite %1 as BER file?</source>
         <translation>파일(%1)을 BER로 덮어 쓰겠습니까?</translation>
     </message>
@@ -12105,7 +12125,7 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">다른 이름으로 저장...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3594"/>
+        <location filename="../mainwindow.cpp" line="3593"/>
         <source>Print Document</source>
         <translation>문서 인쇄</translation>
     </message>
@@ -13619,13 +13639,13 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../pkcs7_dlg.ui" line="25"/>
-        <location filename="../pkcs7_dlg.cpp" line="278"/>
+        <location filename="../pkcs7_dlg.cpp" line="282"/>
         <source>Encode</source>
         <translation>인코딩</translation>
     </message>
     <message>
         <location filename="../pkcs7_dlg.ui" line="32"/>
-        <location filename="../pkcs7_dlg.cpp" line="295"/>
+        <location filename="../pkcs7_dlg.cpp" line="301"/>
         <source>Decode</source>
         <translation>디코딩</translation>
     </message>
@@ -13635,24 +13655,24 @@ Do you want to delete the file and continue?</source>
         <translation>PKCS7 메세지 인코딩 디코딩</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="121"/>
-        <location filename="../pkcs7_dlg.ui" line="708"/>
+        <location filename="../pkcs7_dlg.ui" line="134"/>
+        <location filename="../pkcs7_dlg.ui" line="776"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="140"/>
+        <location filename="../pkcs7_dlg.ui" line="166"/>
         <source>Source Data</source>
         <translation>소스 데이타</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="147"/>
+        <location filename="../pkcs7_dlg.ui" line="73"/>
         <source>Read File</source>
         <translation>파일 읽기</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="89"/>
-        <location filename="../pkcs7_dlg.ui" line="695"/>
+        <location filename="../pkcs7_dlg.ui" line="121"/>
+        <location filename="../pkcs7_dlg.ui" line="862"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
@@ -13669,364 +13689,376 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">문자열</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="108"/>
-        <location filename="../pkcs7_dlg.ui" line="300"/>
-        <location filename="../pkcs7_dlg.ui" line="381"/>
-        <location filename="../pkcs7_dlg.ui" line="518"/>
-        <location filename="../pkcs7_dlg.ui" line="577"/>
-        <location filename="../pkcs7_dlg.ui" line="869"/>
+        <location filename="../pkcs7_dlg.ui" line="95"/>
+        <location filename="../pkcs7_dlg.ui" line="319"/>
+        <location filename="../pkcs7_dlg.ui" line="400"/>
+        <location filename="../pkcs7_dlg.ui" line="537"/>
+        <location filename="../pkcs7_dlg.ui" line="596"/>
+        <location filename="../pkcs7_dlg.ui" line="855"/>
         <source>V</source>
         <translation>V</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="247"/>
+        <location filename="../pkcs7_dlg.ui" line="266"/>
         <source>Select each certificate and private key for signature</source>
         <translation>서명용 인증서와 개인키 각각 선택</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="264"/>
-        <location filename="../pkcs7_dlg.ui" line="307"/>
-        <location filename="../pkcs7_dlg.ui" line="473"/>
-        <location filename="../pkcs7_dlg.ui" line="538"/>
+        <location filename="../pkcs7_dlg.ui" line="283"/>
+        <location filename="../pkcs7_dlg.ui" line="326"/>
+        <location filename="../pkcs7_dlg.ui" line="492"/>
+        <location filename="../pkcs7_dlg.ui" line="557"/>
         <source>Find</source>
         <translation>찾기</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="222"/>
-        <location filename="../pkcs7_dlg.ui" line="277"/>
-        <location filename="../pkcs7_dlg.ui" line="355"/>
-        <location filename="../pkcs7_dlg.ui" line="466"/>
-        <location filename="../pkcs7_dlg.ui" line="551"/>
-        <location filename="../pkcs7_dlg.ui" line="721"/>
+        <location filename="../pkcs7_dlg.ui" line="114"/>
+        <location filename="../pkcs7_dlg.ui" line="296"/>
+        <location filename="../pkcs7_dlg.ui" line="374"/>
+        <location filename="../pkcs7_dlg.ui" line="485"/>
+        <location filename="../pkcs7_dlg.ui" line="570"/>
+        <location filename="../pkcs7_dlg.ui" line="836"/>
         <source>D</source>
         <translation>D</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="287"/>
+        <location filename="../pkcs7_dlg.ui" line="306"/>
         <source>Sign Certificate</source>
         <translation>서명용 인증서</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="326"/>
+        <location filename="../pkcs7_dlg.ui" line="345"/>
         <source>Sign PrivateKey</source>
         <translation>서명용 개인키</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="342"/>
-        <location filename="../pkcs7_dlg.ui" line="368"/>
-        <location filename="../pkcs7_dlg.ui" line="531"/>
-        <location filename="../pkcs7_dlg.ui" line="564"/>
+        <location filename="../pkcs7_dlg.ui" line="241"/>
+        <location filename="../pkcs7_dlg.ui" line="361"/>
+        <location filename="../pkcs7_dlg.ui" line="387"/>
+        <location filename="../pkcs7_dlg.ui" line="550"/>
+        <location filename="../pkcs7_dlg.ui" line="583"/>
+        <location filename="../pkcs7_dlg.ui" line="907"/>
         <source>T</source>
         <translation>T</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="392"/>
-        <location filename="../pkcs7_dlg.ui" line="607"/>
+        <location filename="../pkcs7_dlg.ui" line="411"/>
+        <location filename="../pkcs7_dlg.ui" line="626"/>
         <source>Password</source>
         <translation>암호</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="411"/>
-        <location filename="../pkcs7_dlg.ui" line="600"/>
+        <location filename="../pkcs7_dlg.ui" line="430"/>
+        <location filename="../pkcs7_dlg.ui" line="619"/>
         <source>Encrypted PrivateKey</source>
         <translation>암호화된 개인키</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="443"/>
+        <location filename="../pkcs7_dlg.ui" line="462"/>
         <source>Select each certificate and private key for KM</source>
         <translation>KM용 인증서와 개인키 각각 선택</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="495"/>
+        <location filename="../pkcs7_dlg.ui" line="514"/>
         <source>KM PrivateKey</source>
         <translation>KM 개인키</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="505"/>
+        <location filename="../pkcs7_dlg.ui" line="524"/>
         <source>KM Certificate</source>
         <translation>KM 인증서</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="667"/>
+        <location filename="../pkcs7_dlg.ui" line="686"/>
         <source>Run</source>
         <translation>실행</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="674"/>
+        <location filename="../pkcs7_dlg.ui" line="693"/>
         <source>Auto Detect</source>
         <translation>자동 인지</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="734"/>
+        <location filename="../pkcs7_dlg.ui" line="888"/>
         <source>Output Data</source>
         <translation>결과 데이타</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="794"/>
+        <location filename="../pkcs7_dlg.ui" line="875"/>
         <source>⬆</source>
         <translation>⬆</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="937"/>
+        <location filename="../pkcs7_dlg.ui" line="975"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.ui" line="944"/>
+        <location filename="../pkcs7_dlg.ui" line="982"/>
         <source>Clear Data All</source>
         <translation>전체 데이타 지우기</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="124"/>
+        <location filename="../pkcs7_dlg.cpp" line="128"/>
         <source>Hex value</source>
         <translation>16진수 값</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="143"/>
-        <location filename="../pkcs7_dlg.cpp" line="146"/>
+        <location filename="../pkcs7_dlg.cpp" line="147"/>
+        <location filename="../pkcs7_dlg.cpp" line="150"/>
         <source>Select CertMan private key</source>
         <translation>인증서 관리자 개인키 선택</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="144"/>
-        <location filename="../pkcs7_dlg.cpp" line="147"/>
+        <location filename="../pkcs7_dlg.cpp" line="148"/>
+        <location filename="../pkcs7_dlg.cpp" line="151"/>
         <source>Select CertMan certificate</source>
         <translation>인증서 관리자 인증서 선택</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="161"/>
-        <location filename="../pkcs7_dlg.cpp" line="1102"/>
+        <location filename="../pkcs7_dlg.cpp" line="165"/>
+        <location filename="../pkcs7_dlg.cpp" line="1111"/>
         <source>Select a private key for sign</source>
         <translation>서명용 개인키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="169"/>
+        <location filename="../pkcs7_dlg.cpp" line="173"/>
         <source>failed to read private key: %1</source>
         <translation>개인키 읽기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="179"/>
-        <location filename="../pkcs7_dlg.cpp" line="240"/>
+        <location filename="../pkcs7_dlg.cpp" line="183"/>
+        <location filename="../pkcs7_dlg.cpp" line="244"/>
         <source>Please enter a password</source>
         <translation>암호를 입력해야 합니다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="188"/>
-        <location filename="../pkcs7_dlg.cpp" line="230"/>
-        <location filename="../pkcs7_dlg.cpp" line="249"/>
+        <location filename="../pkcs7_dlg.cpp" line="192"/>
+        <location filename="../pkcs7_dlg.cpp" line="234"/>
+        <location filename="../pkcs7_dlg.cpp" line="253"/>
         <source>Private key decryption failed [%1]</source>
         <translation>개인키 복호화 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="222"/>
-        <location filename="../pkcs7_dlg.cpp" line="1168"/>
+        <location filename="../pkcs7_dlg.cpp" line="226"/>
+        <location filename="../pkcs7_dlg.cpp" line="1177"/>
         <source>Select a private key for KM</source>
         <translation>KM용 개인키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="382"/>
-        <location filename="../pkcs7_dlg.cpp" line="466"/>
-        <location filename="../pkcs7_dlg.cpp" line="556"/>
-        <location filename="../pkcs7_dlg.cpp" line="680"/>
-        <location filename="../pkcs7_dlg.cpp" line="767"/>
-        <location filename="../pkcs7_dlg.cpp" line="868"/>
-        <location filename="../pkcs7_dlg.cpp" line="1488"/>
-        <location filename="../pkcs7_dlg.cpp" line="1539"/>
-        <location filename="../pkcs7_dlg.cpp" line="1592"/>
-        <location filename="../pkcs7_dlg.cpp" line="1650"/>
-        <location filename="../pkcs7_dlg.cpp" line="1771"/>
+        <location filename="../pkcs7_dlg.cpp" line="391"/>
+        <location filename="../pkcs7_dlg.cpp" line="475"/>
+        <location filename="../pkcs7_dlg.cpp" line="565"/>
+        <location filename="../pkcs7_dlg.cpp" line="689"/>
+        <location filename="../pkcs7_dlg.cpp" line="776"/>
+        <location filename="../pkcs7_dlg.cpp" line="877"/>
+        <location filename="../pkcs7_dlg.cpp" line="1553"/>
+        <location filename="../pkcs7_dlg.cpp" line="1604"/>
+        <location filename="../pkcs7_dlg.cpp" line="1657"/>
+        <location filename="../pkcs7_dlg.cpp" line="1715"/>
+        <location filename="../pkcs7_dlg.cpp" line="1836"/>
         <source>Please enter input value</source>
         <translation>입력값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="395"/>
-        <location filename="../pkcs7_dlg.cpp" line="569"/>
-        <location filename="../pkcs7_dlg.cpp" line="699"/>
-        <location filename="../pkcs7_dlg.cpp" line="887"/>
-        <location filename="../pkcs7_dlg.cpp" line="1010"/>
+        <location filename="../pkcs7_dlg.cpp" line="404"/>
+        <location filename="../pkcs7_dlg.cpp" line="578"/>
+        <location filename="../pkcs7_dlg.cpp" line="708"/>
+        <location filename="../pkcs7_dlg.cpp" line="896"/>
+        <location filename="../pkcs7_dlg.cpp" line="1019"/>
         <source>Select a certificate for signing</source>
         <translation>서명용 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="405"/>
-        <location filename="../pkcs7_dlg.cpp" line="580"/>
-        <location filename="../pkcs7_dlg.cpp" line="710"/>
-        <location filename="../pkcs7_dlg.cpp" line="898"/>
-        <location filename="../pkcs7_dlg.cpp" line="1020"/>
+        <location filename="../pkcs7_dlg.cpp" line="414"/>
+        <location filename="../pkcs7_dlg.cpp" line="589"/>
+        <location filename="../pkcs7_dlg.cpp" line="719"/>
+        <location filename="../pkcs7_dlg.cpp" line="907"/>
+        <location filename="../pkcs7_dlg.cpp" line="1029"/>
         <source>Select a sign certificate</source>
         <translation>서명용 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="420"/>
+        <location filename="../pkcs7_dlg.cpp" line="429"/>
         <source>Failed to create SignedData [%1]</source>
         <translation>SignedData 생성 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="476"/>
-        <location filename="../pkcs7_dlg.cpp" line="594"/>
-        <location filename="../pkcs7_dlg.cpp" line="789"/>
-        <location filename="../pkcs7_dlg.cpp" line="911"/>
-        <location filename="../pkcs7_dlg.cpp" line="1331"/>
+        <location filename="../pkcs7_dlg.cpp" line="485"/>
+        <location filename="../pkcs7_dlg.cpp" line="603"/>
+        <location filename="../pkcs7_dlg.cpp" line="798"/>
+        <location filename="../pkcs7_dlg.cpp" line="920"/>
+        <location filename="../pkcs7_dlg.cpp" line="1340"/>
         <source>Select a certificate for KM</source>
         <translation>암호용 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="487"/>
-        <location filename="../pkcs7_dlg.cpp" line="605"/>
-        <location filename="../pkcs7_dlg.cpp" line="800"/>
-        <location filename="../pkcs7_dlg.cpp" line="925"/>
+        <location filename="../pkcs7_dlg.cpp" line="496"/>
+        <location filename="../pkcs7_dlg.cpp" line="614"/>
+        <location filename="../pkcs7_dlg.cpp" line="809"/>
+        <location filename="../pkcs7_dlg.cpp" line="934"/>
         <source>Select a KM certificate</source>
         <translation>KM용 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="500"/>
-        <location filename="../pkcs7_dlg.cpp" line="617"/>
+        <location filename="../pkcs7_dlg.cpp" line="509"/>
+        <location filename="../pkcs7_dlg.cpp" line="626"/>
         <source>It is not an RSA certificate</source>
         <translation>RSA 인증서가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="509"/>
+        <location filename="../pkcs7_dlg.cpp" line="518"/>
         <source>Failed to create EnvelopedData [%1]</source>
         <translation>EnvelopedData 생성 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="626"/>
+        <location filename="../pkcs7_dlg.cpp" line="635"/>
         <source>It is not a private key for RSA.</source>
         <translation>RSA용 개인키가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="633"/>
+        <location filename="../pkcs7_dlg.cpp" line="642"/>
         <source>Signed And Enveloped data creation failed [%1]</source>
         <translation>서명 및 암호화 데이타(Signed And Enveloped Data) 만들기 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="690"/>
-        <location filename="../pkcs7_dlg.cpp" line="1034"/>
+        <location filename="../pkcs7_dlg.cpp" line="699"/>
+        <location filename="../pkcs7_dlg.cpp" line="1043"/>
         <source>Not a SignedData type[Type:%1]</source>
         <translation>SignedData 타입이 아닙니다 [타입:%1]</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="738"/>
+        <location filename="../pkcs7_dlg.cpp" line="747"/>
         <source>VerifyData Success</source>
         <translation>VerifyData 성공</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="742"/>
+        <location filename="../pkcs7_dlg.cpp" line="751"/>
         <source>fail to verify signedData: %1</source>
         <translation>SignedData 검증 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="777"/>
+        <location filename="../pkcs7_dlg.cpp" line="786"/>
         <source>Not a EnvelopedData type[Type:%1]</source>
         <translation>EnvelopedData 타입이 아닙니다 [타입:%1]</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="813"/>
-        <location filename="../pkcs7_dlg.cpp" line="938"/>
+        <location filename="../pkcs7_dlg.cpp" line="822"/>
+        <location filename="../pkcs7_dlg.cpp" line="947"/>
         <source>Invalid private key</source>
         <translation>잘못 된 개인키 입니다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="837"/>
+        <location filename="../pkcs7_dlg.cpp" line="846"/>
         <source>DevelopedData Success</source>
         <translation>DevelopedData 성공</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="841"/>
+        <location filename="../pkcs7_dlg.cpp" line="850"/>
         <source>fail to develop data: %1</source>
         <translation>DevelopData 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="878"/>
-        <location filename="../pkcs7_dlg.cpp" line="1602"/>
-        <location filename="../pkcs7_dlg.cpp" line="1660"/>
+        <location filename="../pkcs7_dlg.cpp" line="887"/>
+        <location filename="../pkcs7_dlg.cpp" line="1667"/>
+        <location filename="../pkcs7_dlg.cpp" line="1725"/>
         <source>Not a SignedAndEnvelopedData type[Type:%1]</source>
         <translation>SignedAndEnvelopedData 타입이 아닙니다 [타입:%1]</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="963"/>
+        <location filename="../pkcs7_dlg.cpp" line="972"/>
         <source>verify and develop data successfully</source>
         <translation>검증 및 Develop 성공</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="967"/>
+        <location filename="../pkcs7_dlg.cpp" line="976"/>
         <source>fail to verify and develop data: %1</source>
         <translation>검증 및 Develop 데이타 실패: %1</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="997"/>
-        <location filename="../pkcs7_dlg.cpp" line="1358"/>
-        <location filename="../pkcs7_dlg.cpp" line="1403"/>
+        <location filename="../pkcs7_dlg.cpp" line="1006"/>
+        <location filename="../pkcs7_dlg.cpp" line="1367"/>
+        <location filename="../pkcs7_dlg.cpp" line="1411"/>
+        <location filename="../pkcs7_dlg.cpp" line="1439"/>
+        <location filename="../pkcs7_dlg.cpp" line="1468"/>
         <source>Please enter CMS value</source>
         <translation>CMS 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1041"/>
+        <location filename="../pkcs7_dlg.cpp" line="1050"/>
         <source>Failed to add signer [%1]</source>
         <translation>서명자 추가 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1061"/>
+        <location filename="../pkcs7_dlg.cpp" line="1070"/>
         <source>Signer is added successfully</source>
         <translation>서명자 추가에 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1111"/>
-        <location filename="../pkcs7_dlg.cpp" line="1152"/>
-        <location filename="../pkcs7_dlg.cpp" line="1177"/>
-        <location filename="../pkcs7_dlg.cpp" line="1217"/>
+        <location filename="../pkcs7_dlg.cpp" line="1120"/>
+        <location filename="../pkcs7_dlg.cpp" line="1161"/>
+        <location filename="../pkcs7_dlg.cpp" line="1186"/>
+        <location filename="../pkcs7_dlg.cpp" line="1226"/>
         <source>failed to read data</source>
         <translation>데이타 읽기 실패</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1254"/>
+        <location filename="../pkcs7_dlg.cpp" line="1263"/>
         <source>Private key type for signing is %1</source>
         <translation>서명용 개인키 타입은 %1 이다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1270"/>
+        <location filename="../pkcs7_dlg.cpp" line="1279"/>
         <source>Select a certificate for sign</source>
         <translation>서명용 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1280"/>
+        <location filename="../pkcs7_dlg.cpp" line="1289"/>
         <source>Certificate type for sign is %1</source>
         <translation>서명용 인증서 타입은 %1 이다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1315"/>
+        <location filename="../pkcs7_dlg.cpp" line="1324"/>
         <source>Private key type for KM is %1</source>
         <translation>암호용 개인키 타입은 %1 이다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1341"/>
+        <location filename="../pkcs7_dlg.cpp" line="1350"/>
         <source>Certificate type for KM is %1</source>
         <translation>암호용 인증서 타입은 %1 이다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1368"/>
-        <location filename="../pkcs7_dlg.cpp" line="1413"/>
+        <location filename="../pkcs7_dlg.cpp" line="1377"/>
+        <location filename="../pkcs7_dlg.cpp" line="1421"/>
+        <location filename="../pkcs7_dlg.cpp" line="1449"/>
+        <location filename="../pkcs7_dlg.cpp" line="1478"/>
         <source>This CMS type is not supported.</source>
         <translation>이 CMS 타입은 지원 하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1500"/>
+        <location filename="../pkcs7_dlg.cpp" line="1426"/>
+        <location filename="../pkcs7_dlg.cpp" line="1454"/>
+        <source>This CMS type is %1</source>
+        <translation>이 CMS 타입은 %1 입니다</translation>
+    </message>
+    <message>
+        <location filename="../pkcs7_dlg.cpp" line="1565"/>
         <source>Failed to create digest [%1]</source>
         <translation>다이제스트 생성 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1550"/>
-        <location filename="../pkcs7_dlg.cpp" line="1609"/>
+        <location filename="../pkcs7_dlg.cpp" line="1615"/>
+        <location filename="../pkcs7_dlg.cpp" line="1674"/>
         <source>Failed to create data [%1]</source>
         <translation>데이타 생성 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1667"/>
+        <location filename="../pkcs7_dlg.cpp" line="1732"/>
         <source>Failed to get digest [%1]</source>
         <translation>다이제스트 얻기 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1792"/>
+        <location filename="../pkcs7_dlg.cpp" line="1857"/>
         <source>not supported CMS type[%1]</source>
         <translation>지원 하지 않는 CMS 타입[%1]</translation>
     </message>

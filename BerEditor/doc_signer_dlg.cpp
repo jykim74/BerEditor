@@ -71,6 +71,8 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mCMSOutputUpBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputUp()));
     connect( mCMSDataDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCMSDataDecode()));
     connect( mCMSOutputDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputDecode()));
+    connect( mCMSDataTypeBtn, SIGNAL(clicked()), this, SLOT(clickCMSDataType()));
+    connect( mCMSOutputTypeBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputType()));
 
     connect( mJSONPayloadText, SIGNAL(textChanged()), this, SLOT(changeJSON_Payload()));
     connect( mJSON_JWSText, SIGNAL(textChanged()), this, SLOT(changeJSON_JWS()));
@@ -103,6 +105,8 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     mCMSDataDecodeBtn->setFixedWidth(34);
     mCMSDataViewBtn->setFixedWidth(34);
     mCMSViewBtn->setFixedWidth(34);
+    mCMSDataTypeBtn->setFixedWidth(34);
+    mCMSOutputTypeBtn->setFixedWidth(34);
 
     mCMSClearBtn->setFixedWidth(34);
     mCMSOutputClearBtn->setFixedWidth(34);
@@ -165,9 +169,11 @@ void DocSignerDlg::checkCMSEncode()
 
     mCMSDataViewBtn->setEnabled( false );
     mCMSDataDecodeBtn->setEnabled( false );
+    mCMSDataTypeBtn->setEnabled( false );
 
     mCMSOutputDecodeBtn->setEnabled( true );
     mCMSViewBtn->setEnabled( true );
+    mCMSOutputTypeBtn->setEnabled( true );
 }
 
 void DocSignerDlg::checkCMSDecode()
@@ -186,9 +192,11 @@ void DocSignerDlg::checkCMSDecode()
 
     mCMSDataViewBtn->setEnabled( true );
     mCMSDataDecodeBtn->setEnabled( true );
+    mCMSDataTypeBtn->setEnabled( true );
 
     mCMSOutputDecodeBtn->setEnabled( false );
     mCMSViewBtn->setEnabled( false );
+    mCMSOutputTypeBtn->setEnabled( false );
 }
 
 void DocSignerDlg::checkCMSAutoDetect()
@@ -406,6 +414,76 @@ end :
     JS_BIN_reset( &binSrc );
 }
 
+void DocSignerDlg::clickCMSDataType()
+{
+    int ret = 0;
+    BIN binSrc = {0,0};
+
+    QString strSrcPath = mSrcPathText->text();
+
+    if( mSrcFileCheck->isChecked() == true )
+    {
+        if( strSrcPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find a source" ), this );
+            mSrcPathText->setFocus();
+            return;
+        }
+
+        JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+    }
+    else
+    {
+        QString strData = mCMSDataText->toPlainText();
+        QString strType = mCMSDataTypeCombo->currentText();
+
+        if( strData.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a data" ), this );
+            mCMSDataText->setFocus();
+            return;
+        }
+
+        getBINFromString( &binSrc, strType, strData );
+    }
+
+    ret = JS_CMS_getType( &binSrc );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "This is not a CMS message" ), this );
+        goto end;
+    }
+
+    berApplet->messageBox( tr( "This message is %1 data" ).arg( JS_PKCS7_getTypeName(ret)), this );
+
+end :
+    JS_BIN_reset( &binSrc );
+}
+
+void DocSignerDlg::clickCMSOutputType()
+{
+    int nType = -1;
+    BIN binData = {0,0};
+
+    QString strData = mCMSDataText->toPlainText();
+    QString strType = mCMSDataTypeCombo->currentText();
+
+    getBINFromString( &binData, strType, strData );
+
+    nType = JS_CMS_getType( &binData );
+    if( nType < 0 )
+    {
+        berApplet->warningBox( tr( "This is not a CMS message" ), this );
+        goto end;
+    }
+
+    berApplet->messageBox( tr( "This message is %1 data" ).arg( JS_PKCS7_getTypeName(nType)), this );
+
+
+end :
+    JS_BIN_reset( &binData );
+}
+
 void DocSignerDlg::clickCMSOutputClear()
 {
     mCMSOutputText->clear();
@@ -586,7 +664,7 @@ void DocSignerDlg::clickCMSRun()
                 clickCMSGetDigest();
             else if( type == JS_PKCS7_TYPE_SIGNED )
                 clickCMSVerifySign();
-            else if( type == JS_PKCS7_TYPE_ENVELOED )
+            else if( type == JS_PKCS7_TYPE_ENVELOPED )
                 clickCMSDevelopedData();
             else
             {
@@ -1179,7 +1257,7 @@ void DocSignerDlg::clickCMSDevelopedData()
     if( ret != 0 ) goto end;
 
     ret = JS_CMS_getType( &binSrc );
-    if( ret != JS_PKCS7_TYPE_ENVELOED )
+    if( ret != JS_PKCS7_TYPE_ENVELOPED )
     {
         berApplet->warningBox( tr("This is not a enveloped data message:%1").arg(ret), this );
         goto end;

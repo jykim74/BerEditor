@@ -44,7 +44,6 @@ CMSInfoDlg::CMSInfoDlg(QWidget *parent, bool bCMS ) :
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
 
-    mDecodeDataBtn->setFixedWidth(34);
     mDecodeBtn->setFixedWidth(34);
 
     mDataTab->layout()->setSpacing(5);
@@ -189,7 +188,7 @@ void CMSInfoDlg::setCMS( const BIN *pCMS, const QString strTitle )
 
         strType = "Signed";
     }
-    else if( cms_type_ == JS_PKCS7_TYPE_ENVELOED )
+    else if( cms_type_ == JS_PKCS7_TYPE_ENVELOPED )
     {
         if( is_cms_ )
             setEnvelopedCMS();

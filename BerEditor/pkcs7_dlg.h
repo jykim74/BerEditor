@@ -86,6 +86,8 @@ private slots:
 
     void clickSrcView();
     void clickSrcDecode();
+    void clickSrcType();
+    void clickPKCS7Type();
     void clickPKCS7View();
     void clickClearDataAll();
     void clickReadFile();

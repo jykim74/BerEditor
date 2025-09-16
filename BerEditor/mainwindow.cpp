@@ -1835,11 +1835,10 @@ void MainWindow::openCMS()
 
     JS_BIN_fileReadBER( fileName.toLocal8Bit().toStdString().c_str(), &binCMS );
 
-    nCMSType = JS_PKCS7_getType( &binCMS );
-
-    if( nCMSType != JS_PKCS7_TYPE_SIGNED && nCMSType != JS_PKCS7_TYPE_ENVELOED && nCMSType != JS_PKCS7_TYPE_SIGNED_AND_ENVELOPED )
+    nCMSType = JS_CMS_getType( &binCMS );
+    if( nCMSType < 0 )
     {
-        berApplet->warningBox( tr( "This CMS type is not supported.").arg( nCMSType ), this );
+        berApplet->warningBox( tr( "This message is not CMS.").arg( nCMSType ), this );
         JS_BIN_reset( &binCMS );
         return;
     }
