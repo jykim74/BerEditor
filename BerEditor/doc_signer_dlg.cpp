@@ -335,7 +335,7 @@ void DocSignerDlg::clickCMSOutputView()
 {
     int nType = -1;
     BIN binData = {0,0};
-    CMSInfoDlg cmsInfo = CMSInfoDlg(nullptr, true);
+    CMSInfoDlg cmsInfo;
 
     int ret = readCMSOutput( &binData );
     if( ret != 0 ) goto end;
@@ -359,7 +359,7 @@ void DocSignerDlg::clickCMSDataView()
 {
     int ret = 0;
     BIN binSrc = {0,0};
-    CMSInfoDlg cmsInfo = CMSInfoDlg(nullptr, true);
+    CMSInfoDlg cmsInfo;
 
     ret = readCMSSrc( &binSrc );
     if( ret != 0 ) goto end;

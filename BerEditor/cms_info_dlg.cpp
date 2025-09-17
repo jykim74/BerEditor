@@ -18,10 +18,10 @@
 
 #include "common.h"
 
-CMSInfoDlg::CMSInfoDlg(QWidget *parent, bool bCMS ) :
+CMSInfoDlg::CMSInfoDlg( QWidget *parent ) :
     QDialog(parent)
 {
-    is_cms_ = bCMS;
+    is_cms_ = true;
     memset( &cms_bin_, 0x00, sizeof(BIN));
     memset( &tsp_bin_, 0x00, sizeof(BIN));
 
@@ -66,6 +66,11 @@ CMSInfoDlg::~CMSInfoDlg()
 {
     JS_BIN_reset( &cms_bin_ );
     JS_BIN_reset( &tsp_bin_ );
+}
+
+void CMSInfoDlg::setPKCS7()
+{
+    is_cms_ = false;
 }
 
 void CMSInfoDlg::initUI()
@@ -1314,12 +1319,14 @@ void CMSInfoDlg::setData()
     int row = 0;
     JP7Data sData;
 
+    mVersionLabel->setEnabled(false);
+    mVersionText->setEnabled( false );
+
     memset( &sData, 0x00, sizeof(sData));
 
     ret = JS_PKCS7_getData( &cms_bin_, &sData );
     if( ret != 0 ) return;
 
-    mVersionText->clear();
     mDataText->setPlainText( getHexString( &sData.binData ));
 
     mDataTable->insertRow(row);

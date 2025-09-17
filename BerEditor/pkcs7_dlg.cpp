@@ -1366,7 +1366,8 @@ void PKCS7Dlg::clickSrcView()
 
     int nCMSType = -1;
     QString strCMS = mSrcText->toPlainText();
-    CMSInfoDlg cmsInfo = CMSInfoDlg( nullptr, false );
+    CMSInfoDlg cmsInfo;
+    cmsInfo.setPKCS7();
 
     if( strCMS.isEmpty() )
     {
@@ -1467,7 +1468,8 @@ void PKCS7Dlg::clickPKCS7View()
 
     int nCMSType = -1;
     QString strCMS = mCMSText->toPlainText();
-    CMSInfoDlg cmsInfo = CMSInfoDlg( nullptr, false );
+    CMSInfoDlg cmsInfo;
+    cmsInfo.setPKCS7();
 
     if( strCMS.isEmpty() )
     {
