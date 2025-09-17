@@ -350,6 +350,9 @@
        <property name="font">
         <font/>
        </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
      <item>
@@ -415,6 +418,9 @@
        </property>
        <property name="font">
         <font/>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
        </property>
       </widget>
      </item>

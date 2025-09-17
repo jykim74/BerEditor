@@ -82,6 +82,7 @@ void CMSInfoDlg::initUI()
     mDataTable->setHorizontalHeaderLabels( sDataLabels );
     mDataTable->verticalHeader()->setVisible(false);
     mDataTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mDataTable->setSelectionMode(QAbstractItemView::SingleSelection);
     mDataTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mDataTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     mDataTable->setColumnWidth( 0, nWidth * 3/10 );
@@ -94,6 +95,7 @@ void CMSInfoDlg::initUI()
     mCertTable->setHorizontalHeaderLabels( sTableLabels );
     mCertTable->verticalHeader()->setVisible(false);
     mCertTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mCertTable->setSelectionMode(QAbstractItemView::SingleSelection);
     mCertTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mCertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     mCertTable->setColumnWidth( 0, nWidth * 5/10 );
@@ -108,6 +110,7 @@ void CMSInfoDlg::initUI()
     mCRLTable->setHorizontalHeaderLabels( sCRLTableLabels );
     mCRLTable->verticalHeader()->setVisible(false);
     mCRLTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mCRLTable->setSelectionMode(QAbstractItemView::SingleSelection);
     mCRLTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mCRLTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
@@ -121,6 +124,7 @@ void CMSInfoDlg::initUI()
     mSignerTable->setHorizontalHeaderLabels( sDataLabels );
     mSignerTable->verticalHeader()->setVisible(false);
     mSignerTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mSignerTable->setSelectionMode(QAbstractItemView::SingleSelection);
     mSignerTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mSignerTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     mSignerTable->setColumnWidth( 0, nWidth * 3/10 );
@@ -131,6 +135,7 @@ void CMSInfoDlg::initUI()
     mRecipTable->setHorizontalHeaderLabels( sDataLabels );
     mRecipTable->verticalHeader()->setVisible(false);
     mRecipTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mRecipTable->setSelectionMode(QAbstractItemView::SingleSelection);
     mRecipTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mRecipTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     mRecipTable->setColumnWidth( 0, nWidth * 3/10 );

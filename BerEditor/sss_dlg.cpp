@@ -93,8 +93,9 @@ void SSSDlg::initialize()
     mShareTable->setColumnCount(headerList.size());
     mShareTable->setHorizontalHeaderLabels( headerList );
     mShareTable->verticalHeader()->setVisible(false);
-//    mShareTable->setSelectionBehavior(QAbstractItemView::SelectRows);
-//    mShareTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    mShareTable->setSelectionMode(QAbstractItemView::SingleSelection);
+    mShareTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mShareTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     mShareTable->setColumnWidth(0, 40);
 
     QRegExp regExp("^[0-9a-fA-F]*$");

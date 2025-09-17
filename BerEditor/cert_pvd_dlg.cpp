@@ -104,6 +104,7 @@ void CertPVDDlg::initialize()
     mPathTable->setHorizontalHeaderLabels( sPathLabels );
     mPathTable->verticalHeader()->setVisible(false);
     mPathTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mPathTable->setSelectionMode(QAbstractItemView::SingleSelection);
     mPathTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mPathTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
@@ -115,6 +116,7 @@ void CertPVDDlg::initialize()
     mParamTable->setHorizontalHeaderLabels( sParamLabels );
     mParamTable->verticalHeader()->setVisible(false);
     mParamTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mParamTable->setSelectionMode(QAbstractItemView::SingleSelection);
     mParamTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mParamTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 

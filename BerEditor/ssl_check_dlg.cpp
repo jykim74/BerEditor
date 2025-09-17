@@ -302,6 +302,7 @@ void SSLCheckDlg::initialize()
     mURLTable->setHorizontalHeaderLabels( sURLLabels );
     mURLTable->verticalHeader()->setVisible(false);
     mURLTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mURLTable->setSelectionMode(QAbstractItemView::SingleSelection);
     mURLTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mURLTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
