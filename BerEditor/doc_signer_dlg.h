@@ -58,14 +58,16 @@ private slots:
     void changeCMSData();
     void changeCMSOutput();
 
-    void clickCMSClear();
     void clickCMSOutputUp();
-    void clickCMSView();
+
+    void clickCMSClear();
     void clickCMSDataView();
     void clickCMSDataType();
+    void clickCMSDataDecode();
+
     void clickCMSOutputType();
     void clickCMSOutputClear();
-    void clickCMSDataDecode();
+    void clickCMSOutputView();
     void clickCMSOutputDecode();
 
     void changeCMSCmd();
@@ -110,6 +112,10 @@ private slots:
 private:
     void initUI();
     void initialize();
+
+    int readCMSSrc( BIN *pData );
+    int readCMSOutput( BIN *pData );
+
     int getPubKey( BIN *pPubKey );
     int getCert( BIN *pCert );
     int getPriKey( BIN *pPriKey, BIN *pCert = NULL );

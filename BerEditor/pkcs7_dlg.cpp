@@ -130,6 +130,8 @@ void PKCS7Dlg::initUI()
     mSrcTypeCombo->setCurrentText( kDataHex );
     mEncodeRadio->setChecked(true);
     mAutoDetectCheck->setChecked(true);
+
+    mCMSTypeText->setPlaceholderText( tr("Command Name") );
     checkEncode();
     changeCmd();
 }
@@ -528,6 +530,7 @@ void PKCS7Dlg::clickEnvelopedData()
         berApplet->log( "-- Enveloped Data" );
         berApplet->logLine2();
         berApplet->log( QString( "Src         : %1" ).arg( getHexString( &binSrc )));
+        berApplet->log( QString( "Cipher      : %1").arg( strCipher ));
         berApplet->log( QString( "Certificate : %1" ).arg( getHexString( &binCert )));
         berApplet->log( QString( "Output      : %1" ).arg( strOutput ));
         berApplet->logLine();
@@ -651,6 +654,8 @@ void PKCS7Dlg::clickSignAndEnvloped()
         berApplet->logLine();
         berApplet->log( "-- SignedAndEnveloped Data" );
         berApplet->logLine2();
+        berApplet->log( QString( "Hash            : %1").arg( strHash ));
+        berApplet->log( QString( "Cipher          : %1").arg( strCipher ));
         berApplet->log( QString( "Src             : %1" ).arg( getHexString( &binSrc )));
         berApplet->log( QString( "Sign Cert       : %1" ).arg( getHexString( &binSignCert )));
         berApplet->log( QString( "Sign PrivateKey : [hidden]" ));
@@ -1058,7 +1063,7 @@ void PKCS7Dlg::clickAddSigner()
         berApplet->logLine();
         berApplet->log( "-- Added SignedData" );
         berApplet->logLine2();
-        berApplet->log( QString( "Hash        : SHA256" ));
+        berApplet->log( QString( "Hash        : %1" ).arg( strHash));
         berApplet->log( QString( "CMS         : %1" ).arg( getHexString( &binCMS )));
         berApplet->log( QString( "Private Key : [hidden]" ));
         berApplet->log( QString( "Certificate : %1" ).arg( getHexString( &binCert )));

@@ -60,8 +60,11 @@ private slots:
     void clickVerifyData();
     void clickDevelopedData();
     void clickDevelopedAndVerify();
-
     void clickAddSigner();
+    void clickData();
+    void clickDigest();
+    void clickGetData();
+    void clickGetDigest();
 
     void clickSignPriKeyView();
     void clickSignPriKeyDecode();
@@ -95,10 +98,7 @@ private slots:
     void checkSignEncPriKey();
     void checkKMEncPriKey();
 
-    void clickData();
-    void clickDigest();
-    void clickGetData();
-    void clickGetDigest();
+
 
     void clickCMSUp();
 

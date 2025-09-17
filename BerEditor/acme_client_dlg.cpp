@@ -123,6 +123,7 @@ void ACMEClientDlg::initUI()
     mTestBtn->hide();
 #endif
 
+    mRspCmdText->setPlaceholderText( tr( "Command" ));
     mRequestText->setPlaceholderText( tr("JSON String" ));
     mResponseText->setPlaceholderText( tr("JSON or Base64 value") );
 }
