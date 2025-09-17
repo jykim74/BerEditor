@@ -90,6 +90,7 @@ void X509CompareDlg::initUI()
     mCompareTable->setHorizontalHeaderLabels( sBaseLabels );
     mCompareTable->verticalHeader()->setVisible(false);
     mCompareTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mCompareTable->setSelectionMode(QAbstractItemView::SingleSelection);
     mCompareTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mCompareTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 

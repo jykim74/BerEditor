@@ -75,6 +75,12 @@ const QString kAlgSM2 = "SM2";
 const QString kAlgDSA = "DSA";
 const QString kAlgEdDSA = "EdDSA";
 
+static QString kSelectStyle =
+    "QTableWidget::item:selected { "
+    "background-color: #9370db; "
+    "color: white; "
+    "} ";
+
 #define TOOL_BAR_WIDTH      24
 #define TOOL_BAR_HEIGHT     24
 

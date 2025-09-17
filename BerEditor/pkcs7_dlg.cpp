@@ -76,8 +76,8 @@ PKCS7Dlg::PKCS7Dlg(QWidget *parent) :
     connect( mKMEncPriKeyCheck, SIGNAL(clicked()), this, SLOT(checkKMEncPriKey()));
 
     initialize();
-
     mSrcText->setFocus();
+    mRunBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -225,7 +225,7 @@ int PKCS7Dlg::readKMPrivateKey( BIN *pPriKey )
 
     if( strPriPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "Select a private key for KM"), this );
+        berApplet->warningBox( tr( "Select a private key for recipient"), this );
         mSignPriKeyPathText->setFocus();
         return -1;
     }
@@ -438,7 +438,7 @@ void PKCS7Dlg::clickSignedData()
         strOutput = getHexString( &binOutput );
 
         berApplet->logLine();
-        berApplet->log( "-- Signed Data" );
+        berApplet->log( QString( "-- PKCS7 %1 command" ).arg( kCmdSignedData ) );
         berApplet->logLine2();
         berApplet->log( QString( "Hash        : %1" ).arg( strHash ));
         berApplet->log( QString( "Src         : %1" ).arg( getHexString( &binSrc )));
@@ -484,7 +484,7 @@ void PKCS7Dlg::clickEnvelopedData()
         QString strKMCertPath = mKMCertPathText->text();
         if( strKMCertPath.isEmpty() )
         {
-            berApplet->warningBox(tr("Select a certificate for KM" ), this );
+            berApplet->warningBox(tr("Select a certificate for recipient" ), this );
             mKMCertPathText->setFocus();
             return;
         }
@@ -495,7 +495,7 @@ void PKCS7Dlg::clickEnvelopedData()
     {
         CertManDlg certMan;
         certMan.setMode(ManModeSelCert);
-        certMan.setTitle( tr( "Select a KM certificate") );
+        certMan.setTitle( tr( "Select a recipient certificate") );
 
         if( certMan.exec() != QDialog::Accepted )
             goto end;
@@ -527,7 +527,7 @@ void PKCS7Dlg::clickEnvelopedData()
         strOutput = getHexString( &binOutput );
 
         berApplet->logLine();
-        berApplet->log( "-- Enveloped Data" );
+        berApplet->log( QString( "-- PKCS7 %1 command" ).arg( kCmdEnvelopedData ) );
         berApplet->logLine2();
         berApplet->log( QString( "Src         : %1" ).arg( getHexString( &binSrc )));
         berApplet->log( QString( "Cipher      : %1").arg( strCipher ));
@@ -603,7 +603,7 @@ void PKCS7Dlg::clickSignAndEnvloped()
         QString strKMCertPath = mKMCertPathText->text();
         if( strKMCertPath.isEmpty() )
         {
-            berApplet->warningBox(tr("Select a certificate for KM" ), this );
+            berApplet->warningBox(tr("Select a certificate for recipient" ), this );
             mKMCertPathText->setFocus();
             return;
         }
@@ -614,7 +614,7 @@ void PKCS7Dlg::clickSignAndEnvloped()
     {
         CertManDlg certMan;
         certMan.setMode(ManModeSelCert);
-        certMan.setTitle( tr( "Select a KM certificate") );
+        certMan.setTitle( tr( "Select a recipient certificate") );
 
         if( certMan.exec() != QDialog::Accepted )
             goto end;
@@ -652,7 +652,7 @@ void PKCS7Dlg::clickSignAndEnvloped()
         strOutput = getHexString( &binOutput );
 
         berApplet->logLine();
-        berApplet->log( "-- SignedAndEnveloped Data" );
+        berApplet->log( QString( "-- PKCS7 %1 command" ).arg( kCmdSignedAndEnveloped ) );
         berApplet->logLine2();
         berApplet->log( QString( "Hash            : %1").arg( strHash ));
         berApplet->log( QString( "Cipher          : %1").arg( strCipher ));
@@ -701,7 +701,7 @@ void PKCS7Dlg::clickVerifyData()
     nCMSType = JS_PKCS7_getType( &binCMS );
     if( nCMSType != JS_PKCS7_TYPE_SIGNED )
     {
-        berApplet->warningBox( tr( "Not a SignedData type[Type:%1]").arg( nCMSType ), this);
+        berApplet->warningBox( tr( "This message is not signed data type[Type:%1]").arg( nCMSType ), this);
         goto end;
     }
 
@@ -740,7 +740,7 @@ void PKCS7Dlg::clickVerifyData()
 
         berApplet->log( QString("SignedData verification result: %1").arg( ret ));
         berApplet->logLine();
-        berApplet->log( "-- Verify Data" );
+        berApplet->log( QString( "-- PKCS7 %1 command" ).arg( kCmdVerifyData ) );
         berApplet->logLine2();
         berApplet->log( QString( "CMS    : %1" ).arg( getHexString( &binCMS )));
         berApplet->log( QString( "Cert   : %1" ).arg( getHexString( &binCert )));
@@ -788,7 +788,7 @@ void PKCS7Dlg::clickDevelopedData()
     nCMSType = JS_PKCS7_getType( &binCMS );
     if( nCMSType != JS_PKCS7_TYPE_ENVELOPED )
     {
-        berApplet->warningBox( tr( "Not a EnvelopedData type[Type:%1]").arg( nCMSType ), this);
+        berApplet->warningBox( tr( "This message is not enveloped data type[Type:%1]").arg( nCMSType ), this);
         goto end;
     }
 
@@ -800,7 +800,7 @@ void PKCS7Dlg::clickDevelopedData()
         QString strKMCertPath = mKMCertPathText->text();
         if( strKMCertPath.isEmpty() )
         {
-            berApplet->warningBox(tr("Select a certificate for KM" ), this );
+            berApplet->warningBox(tr("Select a certificate for recipient" ), this );
             mKMCertPathText->setFocus();
             return;
         }
@@ -811,7 +811,7 @@ void PKCS7Dlg::clickDevelopedData()
     {
         CertManDlg certMan;
         certMan.setMode(ManModeSelBoth);
-        certMan.setTitle( tr( "Select a KM certificate") );
+        certMan.setTitle( tr( "Select a recipient certificate") );
 
         if( certMan.exec() != QDialog::Accepted )
             return;
@@ -838,7 +838,7 @@ void PKCS7Dlg::clickDevelopedData()
         mCMSTypeText->setText( kCmdDevelopedData );
 
         berApplet->logLine();
-        berApplet->log( "-- Developed Data" );
+        berApplet->log( QString( "-- PKCS7 %1 command" ).arg( kCmdDevelopedData ) );
         berApplet->logLine2();
         berApplet->log( QString( "CMS        : %1" ).arg( getHexString( &binCMS )));
         berApplet->log( QString( "Cert       : %1" ).arg( getHexString( &binCert )));
@@ -889,7 +889,7 @@ void PKCS7Dlg::clickDevelopedAndVerify()
     nCMSType = JS_PKCS7_getType( &binCMS );
     if( nCMSType != JS_PKCS7_TYPE_SIGNED_AND_ENVELOPED )
     {
-        berApplet->warningBox( tr( "Not a SignedAndEnvelopedData type[Type:%1]").arg( nCMSType ), this);
+        berApplet->warningBox( tr( "This message is not signed and enveloped data type[Type:%1]").arg( nCMSType ), this);
         goto end;
     }
 
@@ -922,7 +922,7 @@ void PKCS7Dlg::clickDevelopedAndVerify()
         QString strKMCertPath = mKMCertPathText->text();
         if( strKMCertPath.isEmpty() )
         {
-            berApplet->warningBox(tr("Select a certificate for KM" ), this );
+            berApplet->warningBox(tr("Select a certificate for recipient" ), this );
             mKMCertPathText->setFocus();
             goto end;
         }
@@ -936,7 +936,7 @@ void PKCS7Dlg::clickDevelopedAndVerify()
     {
         CertManDlg certMan;
         certMan.setMode(ManModeSelBoth);
-        certMan.setTitle( tr( "Select a KM certificate") );
+        certMan.setTitle( tr( "Select a recipient certificate") );
 
         if( certMan.exec() != QDialog::Accepted )
             goto end;
@@ -963,7 +963,7 @@ void PKCS7Dlg::clickDevelopedAndVerify()
         mCMSTypeText->setText( kCmdDevelopedAndVerify );
 
         berApplet->logLine();
-        berApplet->log( "-- Developed And Verify" );
+        berApplet->log( QString( "-- PKCS7 %1 command" ).arg( kCmdDevelopedAndVerify ) );
         berApplet->logLine2();
         berApplet->log( QString( "CMS           : %1" ).arg( getHexString( &binCMS )));
         berApplet->log( QString( "Sign Cert     : %1" ).arg( getHexString( &binSignCert )));
@@ -1045,7 +1045,7 @@ void PKCS7Dlg::clickAddSigner()
     nCMSType = JS_PKCS7_getType( &binCMS );
     if( nCMSType != JS_PKCS7_TYPE_SIGNED )
     {
-        berApplet->warningBox( tr( "Not a SignedData type[Type:%1]").arg( nCMSType ), this);
+        berApplet->warningBox( tr( "The source is not signed data[Type:%1]").arg( nCMSType ), this);
         goto end;
     }
 
@@ -1059,9 +1059,10 @@ void PKCS7Dlg::clickAddSigner()
     if( ret == 0 )
     {
         strOutput = getHexString( &binOutput );
+        mCMSTypeText->setText( kCmdAddSigned );
 
         berApplet->logLine();
-        berApplet->log( "-- Added SignedData" );
+        berApplet->log( QString( "-- PKCS7 %1 command" ).arg( kCmdAddSigned ) );
         berApplet->logLine2();
         berApplet->log( QString( "Hash        : %1" ).arg( strHash));
         berApplet->log( QString( "CMS         : %1" ).arg( getHexString( &binCMS )));
@@ -1179,7 +1180,7 @@ void PKCS7Dlg::clickKMPriKeyDecode()
 
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "Select a private key for KM"), this );
+        berApplet->warningBox( tr( "Select a private key for recipient"), this );
         mSignPriKeyPathText->setFocus();
         return;
     }
@@ -1326,7 +1327,7 @@ void PKCS7Dlg::clickKMPriKeyType()
     if( ret != 0 ) return;
     nType = JS_PKI_getPriKeyType( &binPri );
 
-    berApplet->messageBox( tr( "Private key type for KM is %1").arg( getKeyTypeName( nType )), this);
+    berApplet->messageBox( tr( "Private key type for recipient is %1").arg( getKeyTypeName( nType )), this);
 
 end :
     JS_BIN_reset( &binPri );
@@ -1342,7 +1343,7 @@ void PKCS7Dlg::clickKMCertType()
 
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "Select a certificate for KM"), this );
+        berApplet->warningBox( tr( "Select a certificate for recipient"), this );
         mKMCertPathText->setFocus();
         return;
     }
@@ -1352,7 +1353,7 @@ void PKCS7Dlg::clickKMCertType()
 
     nType = JS_PKI_getPubKeyType( &binPubKey );
 
-    berApplet->messageBox( tr( "Certificate type for KM is %1" ).arg( getKeyTypeName(nType)), this);
+    berApplet->messageBox( tr( "Certificate type for recipient is %1" ).arg( getKeyTypeName(nType)), this);
 
 end :
     JS_BIN_reset( &binCert );
@@ -1577,7 +1578,7 @@ void PKCS7Dlg::clickDigest()
         strOutput = getHexString( &binOutput );
 
         berApplet->logLine();
-        berApplet->log( "-- Digest" );
+        berApplet->log( QString( "-- PKCS7 %1 command" ).arg( kCmdDigest ) );
         berApplet->logLine2();
         berApplet->log( QString( "Hash        : %1" ).arg( strHash ));
         berApplet->log( QString( "Src         : %1" ).arg( getHexString( &binSrc )));
@@ -1627,7 +1628,7 @@ void PKCS7Dlg::clickData()
         mCMSTypeText->setText( kCmdData );
 
         berApplet->logLine();
-        berApplet->log( "-- Data" );
+        berApplet->log( QString( "-- PKCS7 %1 command" ).arg( kCmdData ) );
         berApplet->logLine2();
         berApplet->log( QString( "Output      : %1" ).arg( strOutput ));
         berApplet->logLine();
@@ -1669,7 +1670,7 @@ void PKCS7Dlg::clickGetData()
     nCMSType = JS_PKCS7_getType( &binSrc );
     if( nCMSType != JS_PKCS7_TYPE_DATA )
     {
-        berApplet->warningBox( tr( "Not a SignedAndEnvelopedData type[Type:%1]").arg( nCMSType ), this);
+        berApplet->warningBox( tr( "This message is not data type[Type:%1]").arg( nCMSType ), this);
         goto end;
     }
 
@@ -1686,7 +1687,7 @@ void PKCS7Dlg::clickGetData()
         strOutput = getHexString( &sData.binData );
 
         berApplet->logLine();
-        berApplet->log( "-- Data" );
+        berApplet->log( QString( "-- PKCS7 %1 command" ).arg( kCmdGetData ) );
         berApplet->logLine2();
         berApplet->log( QString( "Output      : %1" ).arg( strOutput ));
         berApplet->logLine();
@@ -1727,7 +1728,7 @@ void PKCS7Dlg::clickGetDigest()
     nCMSType = JS_PKCS7_getType( &binSrc );
     if( nCMSType != JS_PKCS7_TYPE_DIGEST )
     {
-        berApplet->warningBox( tr( "Not a SignedAndEnvelopedData type[Type:%1]").arg( nCMSType ), this);
+        berApplet->warningBox( tr( "This message is not digest type[Type:%1]").arg( nCMSType ), this);
         goto end;
     }
 
@@ -1744,7 +1745,7 @@ void PKCS7Dlg::clickGetDigest()
         strOutput = getHexString( &sData.binContent );
 
         berApplet->logLine();
-        berApplet->log( "-- Digest" );
+        berApplet->log( QString( "-- PKCS7 %1 command" ).arg( kCmdGetDigest ) );
         berApplet->logLine2();
         berApplet->log( QString( "Alg         : %1" ).arg( sData.pAlg ));
         berApplet->log( QString( "Verify      : %1").arg( sData.nVerify));

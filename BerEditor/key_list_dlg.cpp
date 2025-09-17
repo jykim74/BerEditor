@@ -95,7 +95,9 @@ void KeyListDlg::initUI()
     mKeyTable->setColumnCount( sTableLabels.size() );
     mKeyTable->setHorizontalHeaderLabels( sTableLabels );
     mKeyTable->verticalHeader()->setVisible(false);
+    mKeyTable->setStyleSheet( kSelectStyle );
     mKeyTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mKeyTable->setSelectionMode(QAbstractItemView::SingleSelection);
     mKeyTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mKeyTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     mKeyTable->setColumnWidth( 0, nWidth * 4/10 );

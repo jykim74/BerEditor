@@ -30,6 +30,8 @@ static QStringList kPBEv2List = { "AES-128-CBC", "AES-256-CBC", "ARIA-128-CBC", 
 
 static QStringList kKeyTypeList = { "ALL", "RSA", "ECDSA", "DSA", "EdDSA", "SM2" };
 
+
+
 CertManDlg::CertManDlg(QWidget *parent) :
     QDialog(parent)
 {
@@ -471,7 +473,9 @@ void CertManDlg::initUI()
     mEE_CertTable->setColumnCount( sTableLabels.size() );
     mEE_CertTable->setHorizontalHeaderLabels( sTableLabels );
     mEE_CertTable->verticalHeader()->setVisible(false);
+    mEE_CertTable->setStyleSheet( kSelectStyle );
     mEE_CertTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mEE_CertTable->setSelectionMode(QAbstractItemView::SingleSelection);
     mEE_CertTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mEE_CertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     mEE_CertTable->setColumnWidth( 0, nWidth * 8/20 );
@@ -486,7 +490,9 @@ void CertManDlg::initUI()
     mOther_CertTable->setColumnCount( sOtherTableLabels.size() );
     mOther_CertTable->setHorizontalHeaderLabels( sOtherTableLabels );
     mOther_CertTable->verticalHeader()->setVisible(false);
+    mOther_CertTable->setStyleSheet( kSelectStyle );
     mOther_CertTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mOther_CertTable->setSelectionMode(QAbstractItemView::SingleSelection);
     mOther_CertTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mOther_CertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
@@ -502,7 +508,9 @@ void CertManDlg::initUI()
     mCA_CertTable->setColumnCount( sCATableLabels.size() );
     mCA_CertTable->setHorizontalHeaderLabels( sCATableLabels );
     mCA_CertTable->verticalHeader()->setVisible(false);
+    mCA_CertTable->setStyleSheet( kSelectStyle );
     mCA_CertTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mCA_CertTable->setSelectionMode(QAbstractItemView::SingleSelection);
     mCA_CertTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mCA_CertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
@@ -517,7 +525,9 @@ void CertManDlg::initUI()
     mCRL_Table->setColumnCount( sCRLTableLabels.size() );
     mCRL_Table->setHorizontalHeaderLabels( sCRLTableLabels );
     mCRL_Table->verticalHeader()->setVisible(false);
+    mCRL_Table->setStyleSheet( kSelectStyle );
     mCRL_Table->horizontalHeader()->setStyleSheet( kTableStyle );
+    mCRL_Table->setSelectionMode(QAbstractItemView::SingleSelection);
     mCRL_Table->setSelectionBehavior(QAbstractItemView::SelectRows);
     mCRL_Table->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
@@ -532,7 +542,9 @@ void CertManDlg::initUI()
     mRCA_CertTable->setColumnCount( sRCATableLabels.size() );
     mRCA_CertTable->setHorizontalHeaderLabels( sRCATableLabels );
     mRCA_CertTable->verticalHeader()->setVisible(false);
+    mRCA_CertTable->setStyleSheet( kSelectStyle );
     mRCA_CertTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mRCA_CertTable->setSelectionMode(QAbstractItemView::SingleSelection);
     mRCA_CertTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mRCA_CertTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 

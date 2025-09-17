@@ -972,33 +972,8 @@ void DocSignerDlg::clickCMSMakeSign()
 
     QString strHash = mHashCombo->currentText();
 
-    QString strSrcPath = mSrcPathText->text();
-
-    if( mSrcFileCheck->isChecked() == true )
-    {
-        if( strSrcPath.length() < 1 )
-        {
-            berApplet->warningBox( tr( "find a source" ), this );
-            mSrcPathText->setFocus();
-            return;
-        }
-
-        JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
-    }
-    else
-    {
-        QString strData = mCMSDataText->toPlainText();
-        QString strType = mCMSDataTypeCombo->currentText();
-
-        if( strData.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Enter a data" ), this );
-            mCMSDataText->setFocus();
-            return;
-        }
-
-        getBINFromString( &binSrc, strType, strData );
-    }
+    ret = readCMSSrc( &binSrc );
+    if( ret != 0 ) goto end;
 
     ret = getPriKeyCert( &binPri, &binCert );
     if( ret != 0 ) goto end;
@@ -1063,32 +1038,8 @@ void DocSignerDlg::clickCMSVerifySign()
     BIN binSrc = {0,0};
     BIN binData = {0,0};
 
-    QString strSrcPath = mSrcPathText->text();
-    if( mSrcFileCheck->isChecked() == true )
-    {
-        if( strSrcPath.length() < 1 )
-        {
-            berApplet->warningBox( tr( "find a source CMS" ), this );
-            mSrcPathText->setFocus();
-            return;
-        }
-
-        JS_BIN_fileReadBER( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
-    }
-    else
-    {
-        QString strData = mCMSDataText->toPlainText();
-        QString strType = mCMSDataTypeCombo->currentText();
-
-        if( strData.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Enter a CMS" ), this );
-            mCMSDataText->setFocus();
-            return;
-        }
-
-        getBINFromString( &binSrc, strType, strData );
-    }
+    ret = readCMSSrc( &binSrc );
+    if( ret != 0 ) goto end;
 
     ret = getCert( &binCert );
     if( ret != 0 ) goto end;
@@ -1142,34 +1093,10 @@ void DocSignerDlg::clickCMSEnvelopedData()
     BIN binSrc = {0,0};
     BIN binData = {0,0};
 
-    QString strSrcPath = mSrcPathText->text();
     QString strCipher = mCMSCipherCombo->currentText();
 
-    if( mSrcFileCheck->isChecked() == true )
-    {
-        if( strSrcPath.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Find a source file" ), this );
-            mSrcPathText->setFocus();
-            return;
-        }
-
-        JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
-    }
-    else
-    {
-        QString strData = mCMSDataText->toPlainText();
-        QString strType = mCMSDataTypeCombo->currentText();
-
-        if( strData.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Enter a data" ), this );
-            mCMSDataText->setFocus();
-            return;
-        }
-
-        getBINFromString( &binSrc, strType, strData );
-    }
+    ret = readCMSSrc( &binSrc );
+    if( ret != 0 ) goto end;
 
     ret = getCert( &binCert );
     if( ret != 0 ) goto end;
@@ -1215,32 +1142,8 @@ void DocSignerDlg::clickCMSDevelopedData()
     BIN binSrc = {0,0};
     BIN binData = {0,0};
 
-    QString strSrcPath = mSrcPathText->text();
-    if( mSrcFileCheck->isChecked() == true )
-    {
-        if( strSrcPath.length() < 1 )
-        {
-            berApplet->warningBox( tr( "find a source CMS" ), this );
-            mSrcPathText->setFocus();
-            return;
-        }
-
-        JS_BIN_fileReadBER( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
-    }
-    else
-    {
-        QString strData = mCMSDataText->toPlainText();
-        QString strType = mCMSDataTypeCombo->currentText();
-
-        if( strData.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Enter a CMS" ), this );
-            mCMSDataText->setFocus();
-            return;
-        }
-
-        getBINFromString( &binSrc, strType, strData );
-    }
+    ret = readCMSSrc( &binSrc );
+    if( ret != 0 ) goto end;
 
     ret = getPriKeyCert( &binPri, &binCert );
     if( ret != 0 ) goto end;
@@ -1299,34 +1202,8 @@ void DocSignerDlg::clickCMSMakeData()
     BIN binSrc = {0,0};
     BIN binCMS = {0,0};
 
-
-    QString strSrcPath = mSrcPathText->text();
-
-    if( mSrcFileCheck->isChecked() == true )
-    {
-        if( strSrcPath.length() < 1 )
-        {
-            berApplet->warningBox( tr( "find a source" ), this );
-            mSrcPathText->setFocus();
-            return;
-        }
-
-        JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
-    }
-    else
-    {
-        QString strData = mCMSDataText->toPlainText();
-        QString strType = mCMSDataTypeCombo->currentText();
-
-        if( strData.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Enter a data" ), this );
-            mCMSDataText->setFocus();
-            return;
-        }
-
-        getBINFromString( &binSrc, strType, strData );
-    }
+    ret = readCMSSrc( &binSrc );
+    if( ret != 0 ) goto end;
 
 
     ret = JS_CMS_makeData( &binSrc, &binCMS );
@@ -1366,34 +1243,9 @@ void DocSignerDlg::clickCMSMakeDigest()
     BIN binCMS = {0,0};
 
     QString strHash = mHashCombo->currentText();
-    QString strSrcPath = mSrcPathText->text();
 
-    if( mSrcFileCheck->isChecked() == true )
-    {
-        if( strSrcPath.length() < 1 )
-        {
-            berApplet->warningBox( tr( "find a source" ), this );
-            mSrcPathText->setFocus();
-            return;
-        }
-
-        JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
-    }
-    else
-    {
-        QString strData = mCMSDataText->toPlainText();
-        QString strType = mCMSDataTypeCombo->currentText();
-
-        if( strData.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Enter a data" ), this );
-            mCMSDataText->setFocus();
-            return;
-        }
-
-        getBINFromString( &binSrc, strType, strData );
-    }
-
+    ret = readCMSSrc( &binSrc );
+    if( ret != 0 ) goto end;
 
     ret = JS_CMS_makeDigest( &binSrc, strHash.toStdString().c_str(), &binCMS );
 
@@ -1428,6 +1280,7 @@ end:
 void DocSignerDlg::clickCMSAddSign()
 {
     int ret = 0;
+    int type = -1;
     BIN binSrc = {0,0};
     BIN binPri = {0,0};
     BIN binCert = {0,0};
@@ -1435,32 +1288,14 @@ void DocSignerDlg::clickCMSAddSign()
 
     QString strHash = mHashCombo->currentText();
 
-    QString strSrcPath = mSrcPathText->text();
+    ret = readCMSSrc( &binSrc );
+    if( ret != 0 ) goto end;
 
-    if( mSrcFileCheck->isChecked() == true )
+    type = JS_CMS_getType( &binSrc );
+    if( type != JS_PKCS7_TYPE_SIGNED )
     {
-        if( strSrcPath.length() < 1 )
-        {
-            berApplet->warningBox( tr( "find a source" ), this );
-            mSrcPathText->setFocus();
-            return;
-        }
-
-        JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
-    }
-    else
-    {
-        QString strData = mCMSDataText->toPlainText();
-        QString strType = mCMSDataTypeCombo->currentText();
-
-        if( strData.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Enter a data" ), this );
-            mCMSDataText->setFocus();
-            return;
-        }
-
-        getBINFromString( &binSrc, strType, strData );
+        berApplet->warningBox( tr("The source is not signed data[Type:%1]").arg( type ), this );
+        goto end;
     }
 
     ret = getPriKeyCert( &binPri, &binCert );
@@ -1507,32 +1342,8 @@ void DocSignerDlg::clickCMSGetData()
 
     memset( &sCMSInfo, 0x00, sizeof(sCMSInfo));
 
-    QString strSrcPath = mSrcPathText->text();
-    if( mSrcFileCheck->isChecked() == true )
-    {
-        if( strSrcPath.length() < 1 )
-        {
-            berApplet->warningBox( tr( "find a source CMS" ), this );
-            mSrcPathText->setFocus();
-            return;
-        }
-
-        JS_BIN_fileReadBER( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
-    }
-    else
-    {
-        QString strData = mCMSDataText->toPlainText();
-        QString strType = mCMSDataTypeCombo->currentText();
-
-        if( strData.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Enter a CMS" ), this );
-            mCMSDataText->setFocus();
-            return;
-        }
-
-        getBINFromString( &binSrc, strType, strData );
-    }
+    ret = readCMSSrc( &binSrc );
+    if( ret != 0 ) goto end;
 
     ret = JS_CMS_getType( &binSrc );
     if( ret != JS_PKCS7_TYPE_DATA )
@@ -1580,32 +1391,8 @@ void DocSignerDlg::clickCMSGetDigest()
 
     memset( &sCMSInfo, 0x00, sizeof(sCMSInfo));
 
-    QString strSrcPath = mSrcPathText->text();
-    if( mSrcFileCheck->isChecked() == true )
-    {
-        if( strSrcPath.length() < 1 )
-        {
-            berApplet->warningBox( tr( "find a source CMS" ), this );
-            mSrcPathText->setFocus();
-            return;
-        }
-
-        JS_BIN_fileReadBER( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
-    }
-    else
-    {
-        QString strData = mCMSDataText->toPlainText();
-        QString strType = mCMSDataTypeCombo->currentText();
-
-        if( strData.length() < 1 )
-        {
-            berApplet->warningBox( tr( "Enter a CMS" ), this );
-            mCMSDataText->setFocus();
-            return;
-        }
-
-        getBINFromString( &binSrc, strType, strData );
-    }
+    ret = readCMSSrc( &binSrc );
+    if( ret != 0 ) goto end;
 
     ret = JS_CMS_getType( &binSrc );
     if( ret != JS_PKCS7_TYPE_DIGEST )

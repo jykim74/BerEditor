@@ -459,7 +459,7 @@
       </size>
      </property>
      <property name="title">
-      <string>Select each certificate and private key for KM</string>
+      <string>Select each certificate and private key for recipient</string>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -511,7 +511,7 @@
            </size>
           </property>
           <property name="text">
-           <string>KM PrivateKey</string>
+           <string>Recipient PrivateKey</string>
           </property>
          </widget>
         </item>
@@ -521,7 +521,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="label_4">
           <property name="text">
-           <string>KM Certificate</string>
+           <string>Recipient Certificate</string>
           </property>
          </widget>
         </item>

@@ -371,6 +371,7 @@ void CRLInfoDlg::initUI()
     mCRLListTable->setHorizontalHeaderLabels( sCRLLabels );
     mCRLListTable->verticalHeader()->setVisible(false);
     mCRLListTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mCRLListTable->setSelectionMode(QAbstractItemView::SingleSelection);
     mCRLListTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mCRLListTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
@@ -381,6 +382,7 @@ void CRLInfoDlg::initUI()
     mRevokeListTable->setHorizontalHeaderLabels( sRevokeLabels );
     mRevokeListTable->verticalHeader()->setVisible(false);
     mRevokeListTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mRevokeListTable->setSelectionMode(QAbstractItemView::SingleSelection);
     mRevokeListTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mRevokeListTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
@@ -390,6 +392,7 @@ void CRLInfoDlg::initUI()
     mRevokeDetailTable->setHorizontalHeaderLabels(sCRLLabels);
     mRevokeDetailTable->verticalHeader()->setVisible(false);
     mRevokeDetailTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mRevokeDetailTable->setSelectionMode(QAbstractItemView::SingleSelection);
     mRevokeDetailTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mRevokeDetailTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 

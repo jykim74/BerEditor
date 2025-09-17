@@ -190,7 +190,9 @@ void KeyPairManDlg::initUI()
     mKeyPairTable->setColumnCount( sTableLabels.size() );
     mKeyPairTable->setHorizontalHeaderLabels( sTableLabels );
     mKeyPairTable->verticalHeader()->setVisible(false);
+    mKeyPairTable->setStyleSheet( kSelectStyle );
     mKeyPairTable->horizontalHeader()->setStyleSheet( kTableStyle );
+    mKeyPairTable->setSelectionMode(QAbstractItemView::SingleSelection);
     mKeyPairTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     mKeyPairTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     mKeyPairTable->setColumnWidth( 0, nWidth * 4/10 );
