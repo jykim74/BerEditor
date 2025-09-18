@@ -5,6 +5,8 @@
 #include "js_pki.h"
 #include "js_pki_eddsa.h"
 #include "js_pki_tools.h"
+#include "js_pqc.h"
+
 #include "ber_applet.h"
 
 static QStringList kRSAOptionList = { "1024", "2048", "3072", "4096" };
@@ -216,6 +218,18 @@ void GenKeyPairDlg::clickOK()
             nParam = JS_PKI_KEY_TYPE_ED448;
 
         ret = JS_PKI_EdDSA_GenKeyPair( nParam, &pub_key_, &pri_key_ );
+    }
+    else if( mML_KEMRadio->isChecked() )
+    {
+        JS_ML_KEM_genKeyPair( &pub_key_, &pri_key_ );
+    }
+    else if( mML_DSARadio->isChecked() )
+    {
+        JS_ML_DSA_genKeyPair( &pub_key_, &pri_key_ );
+    }
+    else if( mSLH_DSARadio->isChecked() )
+    {
+        JS_SLH_DSA_genKeyPair( &pub_key_, &pri_key_ );
     }
 
     if( ret == 0 )

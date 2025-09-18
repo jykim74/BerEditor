@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>445</width>
-    <height>234</height>
+    <width>550</width>
+    <height>273</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -66,6 +66,20 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="1">
+      <widget class="QRadioButton" name="mRSARadio">
+       <property name="text">
+        <string>RSA</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QRadioButton" name="mDSARadio">
+       <property name="text">
+        <string>DSA</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="2">
       <widget class="QRadioButton" name="mECDSARadio">
        <property name="text">
@@ -99,20 +113,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QRadioButton" name="mRSARadio">
-       <property name="text">
-        <string>RSA</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QRadioButton" name="mDSARadio">
-       <property name="text">
-        <string>DSA</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="5">
       <widget class="QRadioButton" name="mSM2Radio">
        <property name="text">
@@ -120,7 +120,35 @@
        </property>
       </widget>
      </item>
+     <item row="1" column="1">
+      <widget class="QRadioButton" name="mML_KEMRadio">
+       <property name="text">
+        <string>ML KEM</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QRadioButton" name="mSLH_DSARadio">
+       <property name="text">
+        <string>SLH DSA</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QRadioButton" name="mML_DSARadio">
+       <property name="text">
+        <string>ML DSA</string>
+       </property>
+      </widget>
+     </item>
     </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_4">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_3">
