@@ -150,8 +150,11 @@ void AboutDlg::showCopyright()
     QString strCopyRight;
 
     strCopyRight = tr("Third party software that may be contained in this application.");
-
+#ifdef PQC
+    strCopyRight += QString( "<br><br><b>%1</b>" ).arg( JS_GEN_openSSLVersion());
+#else
     strCopyRight += "<br><br><b>OpenSSL 3.0.8</b>";
+#endif
     strCopyRight += "<br>- https://www.openssl.org";
     strCopyRight += "<br>- <a href=https://github.com/openssl/openssl/blob/master/LICENSE.txt>Apache 2.0 License</a>";
 

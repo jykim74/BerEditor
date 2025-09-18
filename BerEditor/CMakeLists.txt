@@ -18,6 +18,17 @@ set(CMAKE_AUTORCC ON)
 
 add_definitions( -D_USE_LCN_SRV )
 
+set( PQC "TRUE" )
+
+if( ${PQC} )
+    message( "PQC ON" )
+    add_definitions( -DPQC )
+    set( OPENSSL "openssl35" )
+else()
+    message( "PQC OFF" )
+    set( OPENSSL "openssl3" )
+endif()
+
 find_package(QT NAMES Qt5 Qt6 REQUIRED COMPONENTS Core)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Gui)
 find_package(Qt${QT_VERSION_MAJOR} OPTIONAL_COMPONENTS Widgets)
@@ -240,7 +251,7 @@ if(WIN32)
    if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
         target_link_directories( ${PROJECT_NAME} PRIVATE
         ../../PKILib/build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug
-        ../../lib/win64/debug/openssl3/lib64
+        ../../lib/win64/debug/${OPENSSL}/lib64
         ../../lib/win64/winsparkle/lib
         ../../lib/win64/xmlsec1/xmlsec/bin
         ../../lib/win64/xmlsec1/libxml2/bin
@@ -248,7 +259,7 @@ if(WIN32)
     elseif( CMAKE_BUILD_TYPE STREQUAL "Release" )
         target_link_directories( ${PROJECT_NAME} PRIVATE
         ../../PKILib/build/Desktop_Qt_5_15_2_MinGW_64_bit-Release
-        ../../lib/win64/openssl3/lib64
+        ../../lib/win64/${OPENSSL}/lib64
         ../../lib/win64/winsparkle/lib
         ../../lib/win64/xmlsec1/xmlsec/bin
         ../../lib/win64/xmlsec1/libxml2/bin
@@ -282,18 +293,18 @@ elseif(APPLE)
         MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/Info.plist )
 
     include_directories( ../../PKILib
-        ../../lib/mac/openssl3/include
+        ../../lib/mac/${OPENSSL}/include
         /usr/local/include )
 
     if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
         target_link_directories( ${PROJECT_NAME} PRIVATE
         ../../build-PKILib-Desktop_Qt_5_15_2_clang_64bit-Debug
-        ../../lib/mac/debug/openssl3/lib
+        ../../lib/mac/debug/${OPENSSL}/lib
         /usr/local/lib )
     elseif( CMAKE_BUILD_TYPE STREQUAL "Release" )
         target_link_directories( ${PROJECT_NAME} PRIVATE
         ../../build-PKILib-Desktop_Qt_5_15_2_clang_64bit-Release
-        ../../lib/mac/openssl3/lib
+        ../../lib/mac/${OPENSSL}/lib
         /usr/local/lib )
     endif()
 
@@ -319,14 +330,14 @@ elseif(LINUX)
     if(Debug)
         target_link_directories( ${PROJECT_NAME} PRIVATE
         ../../build-PKILib-Desktop_Qt_5_13_2_GCC_64bit-Debug
-        ../../lib/win64/debug/openssl3/lib64
+        ../../lib/win64/debug/${OPENSSL}/lib64
         "/usr/local/lib" )
     endif()
 
     if(NOT Debug)
         target_link_directories( ${PROJECT_NAME} PRIVATE
         ../../build-PKILib-Desktop_Qt_5_13_2_GCC_64bit-Release
-        ../../PKILib/lib/win64/openssl3/lib64
+        ../../PKILib/lib/win64/${OPENSSL}/lib64
         "/usr/local/lib" )
     endif()
 
