@@ -23,6 +23,7 @@
 #include "js_pki_x509.h"
 #include "js_pki_tools.h"
 #include "js_error.h"
+#include "js_pqc.h"
 
 static QStringList kVersionList = { "V1", "V2" };
 static QStringList kPBEv1List = { "PBE-SHA1-3DES", "PBE-SHA1-2DES" };
@@ -365,8 +366,11 @@ void KeyPairManDlg:: loadKeyPairList()
         }
         else if( nAlg == JS_PKI_KEY_TYPE_EDDSA )
         {
-            strOption = strAlg;
-            strAlg = "EdDSA";
+            strOption = JS_EDDSA_getParamName( nOption );
+        }
+        else if( nAlg == JS_PKI_KEY_TYPE_ML_KEM || nAlg == JS_PKI_KEY_TYPE_ML_DSA || nAlg == JS_PKI_KEY_TYPE_SLH_DSA )
+        {
+            strOption = JS_PQC_paramName( nOption );
         }
         else
         {

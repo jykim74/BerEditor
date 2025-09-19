@@ -715,7 +715,7 @@ void PriKeyInfoDlg::clickApplyChange()
         JRawKeyVal sRawKey;
 
         QString strAlg = mEdDSA_NameText->text();
-        QString strParam;
+        QString strParam = mEdDSA_ParamText->text();
 
         memset( &sRawKey, 0x00, sizeof(sRawKey));
 
