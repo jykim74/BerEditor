@@ -1414,7 +1414,7 @@ void SSLCheckDlg::clickTrustCAType()
 
     nType = JS_PKI_getPubKeyType( &binPubKey );
 
-    berApplet->messageBox( tr( "Certificate Type is %1" ).arg( getKeyTypeName(nType)), this);
+    berApplet->messageBox( tr( "Certificate Type is %1" ).arg( JS_PKI_getKeyAlgName(nType)), this);
 
 end :
     JS_BIN_reset( &binCert );
@@ -1489,7 +1489,7 @@ void SSLCheckDlg::clickClientCAType()
 
     nType = JS_PKI_getPubKeyType( &binPubKey );
 
-    berApplet->messageBox( tr( "Certificate Type is %1" ).arg( getKeyTypeName(nType)), this);
+    berApplet->messageBox( tr( "Certificate Type is %1" ).arg( JS_PKI_getKeyAlgName(nType)), this);
 
 end :
     JS_BIN_reset( &binCert );
@@ -1564,7 +1564,7 @@ void SSLCheckDlg::clickClientCertType()
 
     nType = JS_PKI_getPubKeyType( &binPubKey );
 
-    berApplet->messageBox( tr( "Certificate Type is %1" ).arg( getKeyTypeName(nType)), this);
+    berApplet->messageBox( tr( "Certificate Type is %1" ).arg( JS_PKI_getKeyAlgName(nType)), this);
 
 end :
     JS_BIN_reset( &binCert );
@@ -1630,7 +1630,7 @@ void SSLCheckDlg::clickClientPriKeyType()
     if( ret != 0 ) return;
     nType = JS_PKI_getPriKeyType( &binPri );
 
-    berApplet->messageBox( tr( "KM Private Key Type is %1").arg( getKeyTypeName( nType )), this);
+    berApplet->messageBox( tr( "KM Private Key Type is %1").arg( JS_PKI_getKeyAlgName( nType )), this);
 
 end :
     JS_BIN_reset( &binPri );

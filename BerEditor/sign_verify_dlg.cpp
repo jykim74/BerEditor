@@ -28,8 +28,7 @@ static QStringList algTypes = {
     "RSA",
     "ECDSA",
     "SM2",
-    "Ed25519",
-    "Ed448",
+    "EdDSA",
     "DSA"
 };
 
@@ -255,20 +254,18 @@ int SignVerifyDlg::getPrivateKey( BIN *pPriKey, int *pnType )
     if( mUseKeyAlgCheck->isChecked() )
     {
         nType = JS_PKI_getPriKeyType( pPriKey );
-        berApplet->log( QString( "PriKey Type : %1").arg( getKeyTypeName( nType )));
+        berApplet->log( QString( "PriKey Type : %1").arg( JS_PKI_getKeyAlgName( nType )));
 
         if( nType == JS_PKI_KEY_TYPE_RSA )
             mAlgTypeCombo->setCurrentText( "RSA" );
-        else if( nType == JS_PKI_KEY_TYPE_ECC )
+        else if( nType == JS_PKI_KEY_TYPE_ECDSA )
             mAlgTypeCombo->setCurrentText( "ECDSA" );
         else if( nType == JS_PKI_KEY_TYPE_SM2 )
             mAlgTypeCombo->setCurrentText( "SM2" );
         else if( nType == JS_PKI_KEY_TYPE_DSA )
             mAlgTypeCombo->setCurrentText( "DSA" );
-        else if( nType == JS_PKI_KEY_TYPE_ED25519 )
-            mAlgTypeCombo->setCurrentText( "Ed25519" );
-        else if( nType == JS_PKI_KEY_TYPE_ED448 )
-            mAlgTypeCombo->setCurrentText( "Ed448" );
+        else if( nType == JS_PKI_KEY_TYPE_EDDSA )
+            mAlgTypeCombo->setCurrentText( "EdDSA" );
     }
     else
     {
@@ -278,16 +275,12 @@ int SignVerifyDlg::getPrivateKey( BIN *pPriKey, int *pnType )
             nType = JS_PKI_KEY_TYPE_SM2;
         else if( mAlgTypeCombo->currentText() == "DSA" )
             nType = JS_PKI_KEY_TYPE_DSA;
-        else if( mAlgTypeCombo->currentText() == "Ed25519" )
+        else if( mAlgTypeCombo->currentText() == "EdDSA" )
         {
-            nType = JS_PKI_KEY_TYPE_ED25519;
-        }
-        else if( mAlgTypeCombo->currentText() == "Ed448" )
-        {
-            nType = JS_PKI_KEY_TYPE_ED448;
+            nType = JS_PKI_KEY_TYPE_EDDSA;
         }
         else
-            nType = JS_PKI_KEY_TYPE_ECC;
+            nType = JS_PKI_KEY_TYPE_ECDSA;
     }
 
     if( nType == JS_PKI_KEY_TYPE_SM2 )
@@ -394,20 +387,18 @@ int SignVerifyDlg::getPublicKey( BIN *pPubKey, int *pnType )
     if( mUseKeyAlgCheck->isChecked() )
     {
         nType = JS_PKI_getPubKeyType( pPubKey );
-        berApplet->log( QString( "PubKey Type : %1").arg( getKeyTypeName( nType )));
+        berApplet->log( QString( "PubKey Type : %1").arg( JS_PKI_getKeyAlgName( nType )));
 
         if( nType == JS_PKI_KEY_TYPE_RSA )
             mAlgTypeCombo->setCurrentText( "RSA" );
         else if( nType == JS_PKI_KEY_TYPE_SM2 )
             mAlgTypeCombo->setCurrentText( "SM2" );
-        else if( nType == JS_PKI_KEY_TYPE_ECC )
+        else if( nType == JS_PKI_KEY_TYPE_ECDSA )
             mAlgTypeCombo->setCurrentText( "ECDSA" );
         else if( nType == JS_PKI_KEY_TYPE_DSA )
             mAlgTypeCombo->setCurrentText( "DSA" );
-        else if( nType == JS_PKI_KEY_TYPE_ED25519 )
-            mAlgTypeCombo->setCurrentText( "Ed25519" );
-        else if( nType == JS_PKI_KEY_TYPE_ED448 )
-            mAlgTypeCombo->setCurrentText( "Ed448" );
+        else if( nType == JS_PKI_KEY_TYPE_EDDSA )
+            mAlgTypeCombo->setCurrentText( "EdDSA" );
     }
     else
     {
@@ -417,16 +408,12 @@ int SignVerifyDlg::getPublicKey( BIN *pPubKey, int *pnType )
             nType = JS_PKI_KEY_TYPE_SM2;
         else if( mAlgTypeCombo->currentText() == "DSA" )
             nType = JS_PKI_KEY_TYPE_DSA;
-        else if( mAlgTypeCombo->currentText() == "Ed25519" )
+        else if( mAlgTypeCombo->currentText() == "EdDSA" )
         {
-            nType = JS_PKI_KEY_TYPE_ED25519;
-        }
-        else if( mAlgTypeCombo->currentText() == "Ed448" )
-        {
-            nType = JS_PKI_KEY_TYPE_ED448;
+            nType = JS_PKI_KEY_TYPE_EDDSA;
         }
         else
-            nType = JS_PKI_KEY_TYPE_ECC;
+            nType = JS_PKI_KEY_TYPE_ECDSA;
     }
 
     if( nType == JS_PKI_KEY_TYPE_SM2 )
@@ -596,7 +583,7 @@ void SignVerifyDlg::algChanged(int index)
         mHashTypeCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
     }
 
-    if( strAlg == "Ed25519" || strAlg == "Ed448" )
+    if( strAlg == "EdDSA" )
     {
         mDigestBtn->setEnabled(false);
         mHashTypeCombo->setDisabled(true);
@@ -635,7 +622,7 @@ int SignVerifyDlg::signVerifyInit()
         if( ret != CKR_OK ) goto end;
     }
 
-    if( nType == JS_PKI_KEY_TYPE_ED25519 || nType == JS_PKI_KEY_TYPE_ED448 )
+    if( nType == JS_PKI_KEY_TYPE_EDDSA )
     {
         berApplet->warningBox(tr( "EdDSA does not support this feature."), this );
         ret = JSR_UNSUPPORTED_ALGORITHM;
@@ -654,7 +641,7 @@ int SignVerifyDlg::signVerifyInit()
             berApplet->log( "-- Make signature init" );
             berApplet->log( QString( "Algorithm        : %1" ).arg( mAlgTypeCombo->currentText() ));
 
-            if( nType != JS_PKI_KEY_TYPE_ED25519 && nType != JS_PKI_KEY_TYPE_ED448 )
+            if( nType != JS_PKI_KEY_TYPE_EDDSA )
                 berApplet->log( QString( "Hash             : %1" ).arg( strHash ));
 
             berApplet->log( QString( "Init Private Key : %1" ).arg( getHexString( &binPri )));
@@ -669,7 +656,7 @@ int SignVerifyDlg::signVerifyInit()
             berApplet->log( "-- Verify signature init" );
             berApplet->log( QString( "Algorithm       : %1" ).arg( mAlgTypeCombo->currentText() ));
 
-            if( nType != JS_PKI_KEY_TYPE_ED25519 && nType != JS_PKI_KEY_TYPE_ED448 )
+            if( nType != JS_PKI_KEY_TYPE_EDDSA )
                 berApplet->log( QString( "Hash            : %1" ).arg( strHash ));
 
             berApplet->log( QString( "Init Public Key : %1" ).arg(getHexString(&binPubKey)));
@@ -898,10 +885,9 @@ void SignVerifyDlg::dataRun()
         {
             ret = JS_PKI_DSA_Sign( strHash.toStdString().c_str(), &binSrc, &binPri, &binOut );
         }
-        else if( strAlg == "Ed25519" || strAlg == "Ed448" )
+        else if( strAlg == "EdDSA" )
         {
-            int nParam = JS_PKI_KEY_TYPE_ED25519;
-            if( strAlg == "Ed448" ) nParam = JS_PKI_KEY_TYPE_ED448;
+            int nParam = JS_PKI_KEY_TYPE_EDDSA;
 
             ret = JS_PKI_EdDSA_Sign( nParam, &binSrc, &binPri, &binOut );
         }
@@ -916,7 +902,7 @@ void SignVerifyDlg::dataRun()
             berApplet->logLine2();
             berApplet->log( QString( "Algorithm        : %1" ).arg( mAlgTypeCombo->currentText() ));
 
-            if( nType != JS_PKI_KEY_TYPE_ED25519 && nType != JS_PKI_KEY_TYPE_ED448 )
+            if( nType != JS_PKI_KEY_TYPE_EDDSA )
                 berApplet->log( QString( "Hash             : %1").arg( strHash ));
 
             berApplet->log( QString( "Sign Src         : %1" ).arg(getHexString(&binSrc)));
@@ -1163,16 +1149,14 @@ void SignVerifyDlg::digestRun()
         if( strAlg == "RSA" )
             nAlgType = JS_PKI_KEY_TYPE_RSA;
         else if( strAlg == "ECDSA" )
-            nAlgType = JS_PKI_KEY_TYPE_ECC;
+            nAlgType = JS_PKI_KEY_TYPE_ECDSA;
         else if( strAlg == "SM2" )
             nAlgType = JS_PKI_KEY_TYPE_SM2;
         else if( strAlg == "DSA" )
             nAlgType = JS_PKI_KEY_TYPE_DSA;
-        else if( strAlg == "Ed25519" || strAlg == "Ed448" )
+        else if( strAlg == "EdDSA" )
         {
-            nAlgType = JS_PKI_KEY_TYPE_ED25519;
-
-            if( strAlg == "Ed448" ) nAlgType = JS_PKI_KEY_TYPE_ED448;
+            nAlgType = JS_PKI_KEY_TYPE_EDDSA;
         }
 
         ret = JS_PKI_SignDigest( nAlgType, strHash.toStdString().c_str(), &binSrc, &binPri, &binOut );
@@ -1198,16 +1182,14 @@ void SignVerifyDlg::digestRun()
         if( strAlg == "RSA" )
             nAlgType = JS_PKI_KEY_TYPE_RSA;
         else if( strAlg == "ECDSA" )
-            nAlgType = JS_PKI_KEY_TYPE_ECC;
+            nAlgType = JS_PKI_KEY_TYPE_ECDSA;
         else if( strAlg == "SM2" )
             nAlgType = JS_PKI_KEY_TYPE_SM2;
         else if( strAlg == "DSA" )
             nAlgType = JS_PKI_KEY_TYPE_DSA;
-        else if( strAlg == "Ed25519" || strAlg == "Ed448" )
+        else if( strAlg == "EdDSA" )
         {
-            nAlgType = JS_PKI_KEY_TYPE_ED25519;
-
-            if( strAlg == "Ed448" ) nAlgType = JS_PKI_KEY_TYPE_ED448;
+            nAlgType = JS_PKI_KEY_TYPE_EDDSA;
         }
 
         ret = JS_PKI_VerifyDigest( nAlgType, strHash.toStdString().c_str(), &binSrc, &binPubKey, &binOut );
@@ -1409,7 +1391,7 @@ void SignVerifyDlg::clickPriKeyType()
 
     nType = JS_PKI_getPriKeyType( &binPri );
 
-    berApplet->messageBox( tr( "Private Key Type is %1").arg( getKeyTypeName( nType )), this);
+    berApplet->messageBox( tr( "Private Key Type is %1").arg( JS_PKI_getKeyAlgName( nType )), this);
 
 end :
     JS_BIN_reset( &binPri );
@@ -1446,7 +1428,7 @@ void SignVerifyDlg::clickCertType()
 
     nType = JS_PKI_getPubKeyType( &binPubKey );
 
-    berApplet->messageBox( tr( "%1 Type is %2").arg( strKind).arg( getKeyTypeName(nType)), this);
+    berApplet->messageBox( tr( "%1 Type is %2").arg( strKind).arg( JS_PKI_getKeyAlgName(nType)), this);
 
 end :
     JS_BIN_reset( &binCert );

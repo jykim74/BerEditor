@@ -1266,7 +1266,7 @@ void PKCS7Dlg::clickSignPriKeyType()
     if( ret != 0) return;
     nType = JS_PKI_getPriKeyType( &binPri );
 
-    berApplet->messageBox( tr( "Private key type for signing is %1").arg( getKeyTypeName( nType )), this);
+    berApplet->messageBox( tr( "Private key type for signing is %1").arg( JS_PKI_getKeyAlgName( nType )), this);
 
 end :
     JS_BIN_reset( &binPri );
@@ -1292,7 +1292,7 @@ void PKCS7Dlg::clickSignCertType()
 
     nType = JS_PKI_getPubKeyType( &binPubKey );
 
-    berApplet->messageBox( tr( "Certificate type for sign is %1" ).arg( getKeyTypeName(nType)), this);
+    berApplet->messageBox( tr( "Certificate type for sign is %1" ).arg( JS_PKI_getKeyAlgName(nType)), this);
 
 end :
     JS_BIN_reset( &binCert );
@@ -1327,7 +1327,7 @@ void PKCS7Dlg::clickKMPriKeyType()
     if( ret != 0 ) return;
     nType = JS_PKI_getPriKeyType( &binPri );
 
-    berApplet->messageBox( tr( "Private key type for recipient is %1").arg( getKeyTypeName( nType )), this);
+    berApplet->messageBox( tr( "Private key type for recipient is %1").arg( JS_PKI_getKeyAlgName( nType )), this);
 
 end :
     JS_BIN_reset( &binPri );
@@ -1353,7 +1353,7 @@ void PKCS7Dlg::clickKMCertType()
 
     nType = JS_PKI_getPubKeyType( &binPubKey );
 
-    berApplet->messageBox( tr( "Certificate type for recipient is %1" ).arg( getKeyTypeName(nType)), this);
+    berApplet->messageBox( tr( "Certificate type for recipient is %1" ).arg( JS_PKI_getKeyAlgName(nType)), this);
 
 end :
     JS_BIN_reset( &binCert );

@@ -303,7 +303,7 @@ void TSPClientDlg::typeSrvCert()
     JS_PKI_getPubKeyFromCert( &binData, &binPubInfo );
 
     nType = JS_PKI_getPubKeyType( &binPubInfo );
-    berApplet->messageBox( tr( "The certificate type is %1").arg( getKeyTypeName( nType )), this);
+    berApplet->messageBox( tr( "The certificate type is %1").arg( JS_PKI_getKeyAlgName( nType )), this);
 
 
     JS_BIN_reset( &binData );
@@ -374,7 +374,7 @@ void TSPClientDlg::typeCACert()
     JS_PKI_getPubKeyFromCert( &binData, &binPubInfo );
 
     nType = JS_PKI_getPubKeyType( &binPubInfo );
-    berApplet->messageBox( tr( "The certificate type is %1").arg( getKeyTypeName( nType )), this);
+    berApplet->messageBox( tr( "The certificate type is %1").arg( JS_PKI_getKeyAlgName( nType )), this);
 
 
     JS_BIN_reset( &binData );

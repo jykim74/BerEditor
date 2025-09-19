@@ -194,7 +194,7 @@ void CSRInfoDlg::initialize()
 
         strAlg = JS_PKI_getKeyAlgName( nKeyType );
 
-        if( nKeyType == JS_PKI_KEY_TYPE_ECC )
+        if( nKeyType == JS_PKI_KEY_TYPE_ECDSA )
         {
             strParam = JS_PKI_getSNFromNid( nOption );
         }

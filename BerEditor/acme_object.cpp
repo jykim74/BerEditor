@@ -218,7 +218,7 @@ void ACMEObject::setSignature( const BIN *pPri,const QString strHash )
     JS_PKI_signInit( &pCTX, strHash.toStdString().c_str(), nKeyType, pPri );
     JS_PKI_sign( pCTX, &binSrc, &binSign );
 
-    if( nKeyType == JS_PKI_KEY_TYPE_ECC )
+    if( nKeyType == JS_PKI_KEY_TYPE_ECDSA )
     {
         BIN binR = {0,0};
         BIN binS = {0,0};
@@ -287,7 +287,7 @@ int ACMEObject::verifySignature( const BIN *pPub )
     berApplet->log( QString( "JWS Source    : %1").arg( getHexString( &binSrc )));
     berApplet->log( QString( "JWS Signature : %1").arg( getHexString( &binSign )));
 
-    if( nKeyType == JS_PKI_KEY_TYPE_ECC )
+    if( nKeyType == JS_PKI_KEY_TYPE_ECDSA )
     {
         BIN binR = {0,0};
         BIN binS = {0,0};
@@ -461,7 +461,7 @@ const QJsonObject ACMEObject::getJWK( const BIN *pPub, const QString strHash, co
 
         JS_PKI_resetRSAKeyVal( &sRSAVal );
     }
-    else if( nKeyType == JS_PKI_KEY_TYPE_ECC )
+    else if( nKeyType == JS_PKI_KEY_TYPE_ECDSA )
     {
         JECKeyVal sECVal;
         memset( &sECVal, 0x00, sizeof(JECKeyVal));
@@ -490,14 +490,14 @@ const QJsonObject ACMEObject::getJWK( const BIN *pPub, const QString strHash, co
 
         JS_PKI_resetDSAKeyVal( &sDSAVal );
     }
-    else if( nKeyType == JS_PKI_KEY_TYPE_ED25519 || nKeyType == JS_PKI_KEY_TYPE_ED448 )
+    else if( nKeyType == JS_PKI_KEY_TYPE_EDDSA )
     {
         JRawKeyVal sRawVal;
         memset( &sRawVal, 0x00, sizeof(JRawKeyVal));
-        JS_PKI_getRawKeyValFromPub( nKeyType, pPub, &sRawVal );
+        JS_PKI_getRawKeyValFromPub( pPub, &sRawVal );
 
         jObj["kty"] = "OKP";
-        jObj["crv"] = getEdDSA( sRawVal.pName );
+        jObj["crv"] = getEdDSA( sRawVal.pParam );
         jObj["x"] = getBase64URL_FromHex( sRawVal.pPub );
 
         JS_PKI_resetRawKeyVal( &sRawVal );
@@ -579,9 +579,10 @@ int ACMEObject::getPubKey( QJsonObject objKey, BIN *pPub )
         memset( &sRawVal, 0x00, sizeof(sRawVal));
 
         JS_PKI_setRawKeyVal( &sRawVal,
+                            "EDDSA",
+                            strCrv.toUpper().toStdString().c_str(),
                             strX.toStdString().c_str(),
-                            NULL,
-                            strCrv.toUpper().toStdString().c_str());
+                            NULL );
 
         JS_PKI_encodeRawPublicKey( &sRawVal, pPub );
         JS_PKI_resetRawKeyVal( &sRawVal );
@@ -612,7 +613,7 @@ const QString ACMEObject::getAlg( int nKeyType, const QString strHash )
         else if( strHash.toUpper() == "SHA512" )
             strAlg = "RS512";
     }
-    else if( nKeyType == JS_PKI_KEY_TYPE_ECC )
+    else if( nKeyType == JS_PKI_KEY_TYPE_ECDSA )
     {
         if( strHash.toUpper() == "SHA1" )
             strAlg = "ES1";

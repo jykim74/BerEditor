@@ -815,7 +815,7 @@ void CertManDlg::loadEEList()
         }
         else if( strKeyType == kAlgECDSA )
         {
-            if( nKeyType != JS_PKI_KEY_TYPE_ECC )
+            if( nKeyType != JS_PKI_KEY_TYPE_ECDSA )
                 continue;
         }
         else if( strKeyType == kAlgSM2 )
@@ -829,7 +829,7 @@ void CertManDlg::loadEEList()
         }
         else if( strKeyType == kAlgEdDSA )
         {
-            if( nKeyType != JS_PKI_KEY_TYPE_ED25519 && nKeyType != JS_PKI_KEY_TYPE_ED448 )
+            if( nKeyType != JS_PKI_KEY_TYPE_EDDSA )
                 continue;
         }
 
@@ -913,7 +913,7 @@ void CertManDlg::loadOtherList()
         }
         else if( strKeyType == kAlgECDSA )
         {
-            if( nKeyType != JS_PKI_KEY_TYPE_ECC )
+            if( nKeyType != JS_PKI_KEY_TYPE_ECDSA )
                 continue;
         }
         else if( strKeyType == kAlgSM2 )
@@ -927,7 +927,7 @@ void CertManDlg::loadOtherList()
         }
         else if( strKeyType == kAlgEdDSA )
         {
-            if( nKeyType != JS_PKI_KEY_TYPE_ED25519 && nKeyType != JS_PKI_KEY_TYPE_ED448 )
+            if( nKeyType != JS_PKI_KEY_TYPE_EDDSA )
                 continue;
         }
 
@@ -1008,7 +1008,7 @@ void CertManDlg::loadCAList()
         }
         else if( strKeyType == kAlgECDSA )
         {
-            if( nKeyType != JS_PKI_KEY_TYPE_ECC )
+            if( nKeyType != JS_PKI_KEY_TYPE_ECDSA )
                 continue;
         }
         else if( strKeyType == kAlgSM2 )
@@ -1022,7 +1022,7 @@ void CertManDlg::loadCAList()
         }
         else if( strKeyType == kAlgEdDSA )
         {
-            if( nKeyType != JS_PKI_KEY_TYPE_ED25519 && nKeyType != JS_PKI_KEY_TYPE_ED448 )
+            if( nKeyType != JS_PKI_KEY_TYPE_EDDSA )
                 continue;
         }
 
@@ -1168,7 +1168,7 @@ void CertManDlg::loadTrustList()
         }
         else if( strKeyType == kAlgECDSA )
         {
-            if( nKeyType != JS_PKI_KEY_TYPE_ECC )
+            if( nKeyType != JS_PKI_KEY_TYPE_ECDSA )
                 continue;
         }
         else if( strKeyType == kAlgSM2 )
@@ -1182,7 +1182,7 @@ void CertManDlg::loadTrustList()
         }
         else if( strKeyType == kAlgEdDSA )
         {
-            if( nKeyType != JS_PKI_KEY_TYPE_ED25519 && nKeyType != JS_PKI_KEY_TYPE_ED448 )
+            if( nKeyType != JS_PKI_KEY_TYPE_EDDSA )
                 continue;
         }
 
@@ -1729,7 +1729,7 @@ void CertManDlg::clickImport()
 
     nKeyType = JS_PKI_getPriKeyType( &binPri );
 
-    ret = JS_PKI_encryptPrivateKey( nKeyType, -1, strPass.toStdString().c_str(), &binPri, NULL, &binEncPri );
+    ret = JS_PKI_encryptPrivateKey( -1, strPass.toStdString().c_str(), &binPri, NULL, &binEncPri );
     if( ret != 0 )
     {
         berApplet->warnLog( tr( "fail to encrypt private key: %1").arg( ret ), this );
@@ -1854,7 +1854,7 @@ void CertManDlg::clickChangePasswd()
     {
         QString strNewPass = newPasswd.mPasswdText->text();
 
-        ret = JS_PKI_encryptPrivateKey( nKeyType, -1, strNewPass.toStdString().c_str(), &binPriKey, NULL, &binNewEncPriKey );
+        ret = JS_PKI_encryptPrivateKey( -1, strNewPass.toStdString().c_str(), &binPriKey, NULL, &binNewEncPriKey );
         if( ret != 0 )
         {
             berApplet->warnLog( tr( "fail to encrypt private key: %1").arg( ret ), this );
@@ -2020,7 +2020,7 @@ void CertManDlg::clickRunPubEnc()
     nKeyType = JS_PKI_getCertKeyType( &binCert );
     JS_BIN_reset( &binCert );
 
-    if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+    if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_ECDSA && nKeyType != JS_PKI_KEY_TYPE_SM2 )
     {
         berApplet->warningBox( tr( "This key does not support public key encryption" ), this );
         return;
@@ -2048,7 +2048,7 @@ void CertManDlg::clickRunPubDec()
     nKeyType = JS_PKI_getCertKeyType( &binCert );
     JS_BIN_reset( &binCert );
 
-    if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+    if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_ECDSA && nKeyType != JS_PKI_KEY_TYPE_SM2 )
     {
         berApplet->warningBox( tr( "This key does not support public key encryption" ), this );
         return;
@@ -2594,7 +2594,7 @@ void CertManDlg::clickRunPubEncOther()
     nKeyType = JS_PKI_getCertKeyType( &binCert );
     JS_BIN_reset( &binCert );
 
-    if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+    if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_ECDSA && nKeyType != JS_PKI_KEY_TYPE_SM2 )
     {
         berApplet->warningBox( tr( "This key does not support public key encryption" ), this );
         return;
@@ -3216,7 +3216,7 @@ void CertManDlg::clickTLEncryptPFX()
     nPBE = JS_PKI_getNidFromSN( strSN.toStdString().c_str() );
     nKeyType = JS_PKI_getPriKeyType( &binPri );
 
-    ret = JS_PKI_encodePFX( &binPFX, nKeyType, strPFXPasswd.toStdString().c_str(), nPBE, &binPri, &binCert );
+    ret = JS_PKI_encodePFX( &binPFX, strPFXPasswd.toStdString().c_str(), nPBE, &binPri, &binCert );
     if( ret != 0 )
     {
         berApplet->warnLog( tr( "fail to make PFX: %1").arg(ret), this);
@@ -3287,7 +3287,7 @@ void CertManDlg::clickTLDecryptPFX()
         nKeyType = JS_PKI_getPriKeyType( &binPri );
 
         strPass = newPass.mPasswdText->text();
-        ret = JS_PKI_encryptPrivateKey( nKeyType, -1, strPass.toStdString().c_str(), &binPri, NULL, &binEncPri );
+        ret = JS_PKI_encryptPrivateKey( -1, strPass.toStdString().c_str(), &binPri, NULL, &binEncPri );
         if( ret != 0 )
         {
             berApplet->warnLog( tr( "fail to encrypt private key: %1").arg( ret ), this);
@@ -3358,7 +3358,7 @@ void CertManDlg::clickTLSavePFX()
 
     nKeyType = JS_PKI_getPriKeyType( &binPri );
 
-    ret = JS_PKI_encryptPrivateKey( nKeyType, -1, strPasswd.toStdString().c_str(), &binPri, NULL, &binEncPri );
+    ret = JS_PKI_encryptPrivateKey( -1, strPasswd.toStdString().c_str(), &binPri, NULL, &binEncPri );
     if( ret != 0 )
     {
         berApplet->warnLog( tr( "fail to encrypt private key: %1").arg( ret ), this );

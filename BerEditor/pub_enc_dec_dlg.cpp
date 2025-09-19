@@ -380,7 +380,7 @@ void PubEncDecDlg::Run()
 
 
         int nAlgType = JS_PKI_getPubKeyType( &binPubKey );
-        QString strKeyType = getKeyTypeName( nAlgType );
+        QString strKeyType = JS_PKI_getKeyAlgName( nAlgType );
 
         if( mUseKeyAlgCheck->isChecked() )
         {
@@ -390,7 +390,7 @@ void PubEncDecDlg::Run()
                 mAlgCombo->setCurrentText( "RSA" );
             else if( nAlgType == JS_PKI_KEY_TYPE_SM2 )
                 mAlgCombo->setCurrentText( "SM2" );
-            else if( nAlgType == JS_PKI_KEY_TYPE_ECC )
+            else if( nAlgType == JS_PKI_KEY_TYPE_ECDSA )
                 mAlgCombo->setCurrentText( "ECIES" );
             else
             {
@@ -425,7 +425,7 @@ void PubEncDecDlg::Run()
             BIN binIV = {0,0};
             BIN binTag = {0,0};
 
-            if( nAlgType != JS_PKI_KEY_TYPE_ECC )
+            if( nAlgType != JS_PKI_KEY_TYPE_ECDSA )
             {
                 berApplet->warningBox( tr( "Invalid public key algorithm:%1").arg( strKeyType ), this );
                 goto end;
@@ -509,7 +509,7 @@ void PubEncDecDlg::Run()
         }
 
         int nAlgType = JS_PKI_getPriKeyType( &binPri );
-        QString strKeyType = getKeyTypeName( nAlgType );
+        QString strKeyType = JS_PKI_getKeyAlgName( nAlgType );
 
         if( mUseKeyAlgCheck->isChecked() )
         {
@@ -519,7 +519,7 @@ void PubEncDecDlg::Run()
                 mAlgCombo->setCurrentText( "RSA" );
             else if( nAlgType == JS_PKI_KEY_TYPE_SM2 )
                 mAlgCombo->setCurrentText( "SM2" );
-            else if( nAlgType == JS_PKI_KEY_TYPE_ECC )
+            else if( nAlgType == JS_PKI_KEY_TYPE_ECDSA )
                 mAlgCombo->setCurrentText( "ECIES" );
             else
             {
@@ -814,7 +814,7 @@ void PubEncDecDlg::clickPriKeyType()
 
     nType = JS_PKI_getPriKeyType( &binPri );
 
-    berApplet->messageBox( tr( "Private Key Type is %1").arg( getKeyTypeName( nType )), this);
+    berApplet->messageBox( tr( "Private Key Type is %1").arg( JS_PKI_getKeyAlgName( nType )), this);
 
 end :
     JS_BIN_reset( &binPri );
@@ -851,7 +851,7 @@ void PubEncDecDlg::clickCertType()
 
     nType = JS_PKI_getPubKeyType( &binPubKey );
 
-    berApplet->messageBox( tr( "%1 Type is %2").arg( strKind).arg( getKeyTypeName(nType)), this);
+    berApplet->messageBox( tr( "%1 Type is %2").arg( strKind).arg( JS_PKI_getKeyAlgName(nType)), this);
 
 end :
     JS_BIN_reset( &binCert );

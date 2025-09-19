@@ -105,9 +105,9 @@ static QString _getECCurveName( const QString strACVPCurve )
 static int _getEdDSAType( const QString strACVPCurve )
 {
     if( strACVPCurve == "ED-25519" )
-        return JS_PKI_KEY_TYPE_ED25519;
+        return JS_EDDSA_PARAM_25519;
     else if( strACVPCurve == "ED-448" )
-        return JS_PKI_KEY_TYPE_ED448;
+        return JS_EDDSA_PARAM_448;
 
     return -1;
 }
@@ -957,7 +957,7 @@ int CAVPDlg::eddsaJsonWork( const QString strMode, const QJsonObject jObject, QJ
             {
                 bool bRes = false;
 
-                ret = JS_PKI_encodeRawPublicKeyValue( nEdDSA_Type, &binQ, &binPub );
+                ret = JS_PKI_encodeRawPublicKeyValue( JS_PKI_KEY_TYPE_EDDSA, nEdDSA_Type, &binQ, &binPub );
                 if( ret != 0 ) goto end;
 
                 ret = JS_PKI_EdDSA_Verify( &binMsg, &binSign, &binPub );

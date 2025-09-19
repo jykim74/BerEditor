@@ -504,7 +504,7 @@ void OCSPClientDlg::typeCACert()
     JS_PKI_getPubKeyFromCert( &binData, &binPubInfo );
 
     nType = JS_PKI_getPubKeyType( &binPubInfo );
-    berApplet->messageBox( tr( "The certificate type is %1").arg( getKeyTypeName( nType )), this);
+    berApplet->messageBox( tr( "The certificate type is %1").arg( JS_PKI_getKeyAlgName( nType )), this);
 
 end :
     JS_BIN_reset( &binData );
@@ -538,7 +538,7 @@ void OCSPClientDlg::typeCert()
     JS_PKI_getPubKeyFromCert( &binData, &binPubInfo );
 
     nType = JS_PKI_getPubKeyType( &binPubInfo );
-    berApplet->messageBox( tr( "The certificate type is %1").arg( getKeyTypeName( nType )), this);
+    berApplet->messageBox( tr( "The certificate type is %1").arg( JS_PKI_getKeyAlgName( nType )), this);
 
 
     JS_BIN_reset( &binData );
@@ -563,7 +563,7 @@ void OCSPClientDlg::typeSignCert()
     JS_PKI_getPubKeyFromCert( &binData, &binPubInfo );
 
     nType = JS_PKI_getPubKeyType( &binPubInfo );
-    berApplet->messageBox( tr( "The certificate type is %1").arg( getKeyTypeName( nType )), this);
+    berApplet->messageBox( tr( "The certificate type is %1").arg( JS_PKI_getKeyAlgName( nType )), this);
 
 
     JS_BIN_reset( &binData );
@@ -579,7 +579,7 @@ void OCSPClientDlg::typeSignPriKey()
     if( ret != 0 ) goto end;
 
     nType = JS_PKI_getPriKeyType( &binPri );
-    berApplet->messageBox( tr( "The private key type is %1").arg( getKeyTypeName( nType )), this);
+    berApplet->messageBox( tr( "The private key type is %1").arg( JS_PKI_getKeyAlgName( nType )), this);
 
 end :
     JS_BIN_reset( &binPri );
@@ -603,7 +603,7 @@ void OCSPClientDlg::typeSrvCert()
     JS_PKI_getPubKeyFromCert( &binData, &binPubInfo );
 
     nType = JS_PKI_getPubKeyType( &binPubInfo );
-    berApplet->messageBox( tr( "The certificate type is %1").arg( getKeyTypeName( nType )), this);
+    berApplet->messageBox( tr( "The certificate type is %1").arg( JS_PKI_getKeyAlgName( nType )), this);
 
 
     JS_BIN_reset( &binData );

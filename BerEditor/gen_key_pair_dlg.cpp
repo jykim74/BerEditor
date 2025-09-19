@@ -23,6 +23,33 @@ static QStringList kECCOptionList = { "prime256v1",
 static QStringList kEdDSAOptionList = { "Ed25519", "Ed448" };
 static QStringList kDSAOptionList = { "1024", "2048", "3072", "4096" };
 
+static QStringList kML_KEMList = {
+    JS_PQC_PARAM_ML_KEM_512_NAME,
+    JS_PQC_PARAM_ML_KEM_768_NAME,
+    JS_PQC_PARAM_ML_KEM_1024_NAME
+};
+
+static QStringList kML_DSAList = {
+    JS_PQC_PARAM_ML_DSA_44_NAME,
+    JS_PQC_PARAM_ML_DSA_65_NAME,
+    JS_PQC_PARAM_ML_DSA_87_NAME
+};
+
+static QStringList kSLH_DSAList = {
+    JS_PQC_PARAM_SLH_DSA_SHA2_128S_NAME,
+    JS_PQC_PARAM_SLH_DSA_SHA2_128F_NAME,
+    JS_PQC_PARAM_SLH_DSA_SHA2_192S_NAME,
+    JS_PQC_PARAM_SLH_DSA_SHA2_192F_NAME,
+    JS_PQC_PARAM_SLH_DSA_SHA2_256S_NAME,
+    JS_PQC_PARAM_SLH_DSA_SHA2_256F_NAME,
+    JS_PQC_PARAM_SLH_DSA_SHAKE_128S_NAME,
+    JS_PQC_PARAM_SLH_DSA_SHAKE_128F_NAME,
+    JS_PQC_PARAM_SLH_DSA_SHAKE_192S_NAME,
+    JS_PQC_PARAM_SLH_DSA_SHAKE_192F_NAME,
+    JS_PQC_PARAM_SLH_DSA_SHAKE_256S_NAME,
+    JS_PQC_PARAM_SLH_DSA_SHAKE_256F_NAME
+};
+
 
 GenKeyPairDlg::GenKeyPairDlg(QWidget *parent) :
     QDialog(parent)
@@ -38,6 +65,9 @@ GenKeyPairDlg::GenKeyPairDlg(QWidget *parent) :
     connect( mDSARadio, SIGNAL(clicked()), this, SLOT(clickDSA()));
     connect( mEdDSARadio, SIGNAL(clicked()), this, SLOT(clickEdDSA()));
     connect( mSM2Radio, SIGNAL(clicked()), this, SLOT(clickSM2()));
+    connect( mML_KEMRadio, SIGNAL(clicked()), this, SLOT(clickML_KEM()));
+    connect( mML_DSARadio, SIGNAL(clicked()), this, SLOT(clickML_DSA()));
+    connect( mSLH_DSARadio, SIGNAL(clicked()), this, SLOT(clickSLH_DSA()));
     connect( mOKBtn, SIGNAL(clicked()), this, SLOT(clickOK()));
 
     initialize();
@@ -96,6 +126,12 @@ void GenKeyPairDlg::setRegInfo( const QString strRegInfo )
         mEdDSARadio->click();
     else if( strAlg.toUpper() == "SM2" )
         mSM2Radio->click();
+    else if( strAlg.toUpper() == "ML_KEM" )
+        mML_KEMRadio->click();
+    else if( strAlg.toUpper() == "ML_DSA" )
+        mML_DSARadio->click();
+    else if( strAlg.toUpper() == "SLH_DSA" )
+        mSLH_DSARadio->click();
 
     if( strOption.length() > 0 ) mOptionCombo->setCurrentText( strOption );
 }
@@ -164,6 +200,33 @@ void GenKeyPairDlg::clickSM2()
     mOptionLabel->setText( tr("Named Curve" ));
 }
 
+void GenKeyPairDlg::clickML_KEM()
+{
+    mOptionCombo->clear();
+    mOptionCombo->addItems( kML_KEMList );
+    mExponentLabel->setEnabled( false );
+    mExponentText->setEnabled( false );
+    mOptionLabel->setText( tr("Key Length" ));
+}
+
+void GenKeyPairDlg::clickML_DSA()
+{
+    mOptionCombo->clear();
+    mOptionCombo->addItems( kML_DSAList );
+    mExponentLabel->setEnabled( false );
+    mExponentText->setEnabled( false );
+    mOptionLabel->setText( tr("Key Length" ));
+}
+
+void GenKeyPairDlg::clickSLH_DSA()
+{
+    mOptionCombo->clear();
+    mOptionCombo->addItems( kSLH_DSAList );
+    mExponentLabel->setEnabled( false );
+    mExponentText->setEnabled( false );
+    mOptionLabel->setText( tr("Key Length" ));
+}
+
 void GenKeyPairDlg::clickOK()
 {
     int ret = 0;
@@ -213,26 +276,32 @@ void GenKeyPairDlg::clickOK()
         QString strCurve = mOptionCombo->currentText();
 
         if( strCurve == "Ed25519" )
-            nParam = JS_PKI_KEY_TYPE_ED25519;
+            nParam = JS_EDDSA_PARAM_25519;
         else
-            nParam = JS_PKI_KEY_TYPE_ED448;
+            nParam = JS_EDDSA_PARAM_448;
 
         ret = JS_PKI_EdDSA_GenKeyPair( nParam, &pub_key_, &pri_key_ );
     }
     else if( mML_KEMRadio->isChecked() )
     {
-        JS_ML_KEM_genKeyPair( &pub_key_, &pri_key_ );
+        QString strParam = mOptionCombo->currentText();
+        int nParam = JS_PQC_param( strParam.toStdString().c_str() );
+        ret = JS_ML_KEM_genKeyPair( nParam, &pub_key_, &pri_key_ );
     }
     else if( mML_DSARadio->isChecked() )
     {
-        JS_ML_DSA_genKeyPair( &pub_key_, &pri_key_ );
+        QString strParam = mOptionCombo->currentText();
+        int nParam = JS_PQC_param( strParam.toStdString().c_str() );
+        ret = JS_ML_DSA_genKeyPair( nParam, &pub_key_, &pri_key_ );
     }
     else if( mSLH_DSARadio->isChecked() )
     {
-        JS_SLH_DSA_genKeyPair( &pub_key_, &pri_key_ );
+        QString strParam = mOptionCombo->currentText();
+        int nParam = JS_PQC_param( strParam.toStdString().c_str() );
+        ret = JS_SLH_DSA_genKeyPair( nParam, &pub_key_, &pri_key_ );
     }
 
-    if( ret == 0 )
+    if( ret == JSR_OK )
         return QDialog::accept();
     else
     {

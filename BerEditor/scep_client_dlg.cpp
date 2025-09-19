@@ -258,7 +258,7 @@ void SCEPClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
             QString strPass = newPass.mPasswdText->text();
             nKeyType = JS_PKI_getPriKeyType( pPriKey );
 
-            ret = JS_PKI_encryptPrivateKey( nKeyType, -1, strPass.toStdString().c_str(), pPriKey, NULL, &binEncPri );
+            ret = JS_PKI_encryptPrivateKey( -1, strPass.toStdString().c_str(), pPriKey, NULL, &binEncPri );
             if( ret == 0 )
             {
                 ret = certMan.writePriKeyCert( &binEncPri, pCert );
@@ -325,7 +325,7 @@ void SCEPClientDlg::typeCACert()
     JS_PKI_getPubKeyFromCert( &binData, &binPubInfo );
 
     nType = JS_PKI_getPubKeyType( &binPubInfo );
-    berApplet->messageBox( tr( "The certificate type is %1").arg( getKeyTypeName( nType )), this);
+    berApplet->messageBox( tr( "The certificate type is %1").arg( JS_PKI_getKeyAlgName( nType )), this);
 
 
     JS_BIN_reset( &binData );
@@ -350,7 +350,7 @@ void SCEPClientDlg::typeCert()
     JS_PKI_getPubKeyFromCert( &binData, &binPubInfo );
 
     nType = JS_PKI_getPubKeyType( &binPubInfo );
-    berApplet->messageBox( tr( "The certificate type is %1").arg( getKeyTypeName( nType )), this);
+    berApplet->messageBox( tr( "The certificate type is %1").arg( JS_PKI_getKeyAlgName( nType )), this);
 
 
     JS_BIN_reset( &binData );
@@ -366,7 +366,7 @@ void SCEPClientDlg::typePriKey()
     if( ret != 0 ) goto end;
 
     nType = JS_PKI_getPriKeyType( &binPri );
-    berApplet->messageBox( tr( "The private key type is %1").arg( getKeyTypeName( nType )), this);
+    berApplet->messageBox( tr( "The private key type is %1").arg( JS_PKI_getKeyAlgName( nType )), this);
 
 end :
     JS_BIN_reset( &binPri );

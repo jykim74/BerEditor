@@ -858,7 +858,7 @@ void KeyAgreeDlg::findAECDHPriKey()
     JS_BIN_fileRead( fileName.toLocal8Bit().toStdString().c_str(), &binECKey );
     nKeyType = JS_PKI_getPriKeyType( &binECKey );
 
-    if( nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+    if( nKeyType != JS_PKI_KEY_TYPE_ECDSA && nKeyType != JS_PKI_KEY_TYPE_SM2 )
     {
         berApplet->warningBox( tr("Invalid PrivateKey Type: %1").arg( nKeyType ), this);
         goto end;
@@ -902,7 +902,7 @@ void KeyAgreeDlg::getAFromCertMan()
 
     nKeyType = JS_PKI_getPriKeyType( &binPri );
 
-    if( nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+    if( nKeyType != JS_PKI_KEY_TYPE_ECDSA && nKeyType != JS_PKI_KEY_TYPE_SM2 )
     {
         berApplet->warningBox( tr("Invalid PrivateKey Type: %1").arg( nKeyType ), this);
         goto end;
@@ -948,7 +948,7 @@ void KeyAgreeDlg::getAFromKeyPair()
     JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binPri );
     nKeyType = JS_PKI_getPriKeyType( &binPri );
 
-    if( nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+    if( nKeyType != JS_PKI_KEY_TYPE_ECDSA && nKeyType != JS_PKI_KEY_TYPE_SM2 )
     {
         berApplet->warningBox( tr("Invalid PrivateKey Type: %1").arg( nKeyType ), this);
         goto end;
@@ -1039,7 +1039,7 @@ void KeyAgreeDlg::findBECDHPriKey()
     JS_BIN_fileRead( fileName.toLocal8Bit().toStdString().c_str(), &binECKey );
     nKeyType = JS_PKI_getPriKeyType( &binECKey );
 
-    if( nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+    if( nKeyType != JS_PKI_KEY_TYPE_ECDSA && nKeyType != JS_PKI_KEY_TYPE_SM2 )
     {
         berApplet->warningBox( tr("Invalid PrivateKey Type: %1").arg( nKeyType ), this);
         goto end;
@@ -1083,7 +1083,7 @@ void KeyAgreeDlg::getBFromCertMan()
 
     nKeyType = JS_PKI_getPriKeyType( &binPri );
 
-    if( nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+    if( nKeyType != JS_PKI_KEY_TYPE_ECDSA && nKeyType != JS_PKI_KEY_TYPE_SM2 )
     {
         berApplet->warningBox( tr("Invalid PrivateKey Type: %1").arg( nKeyType ), this);
         goto end;
@@ -1129,7 +1129,7 @@ void KeyAgreeDlg::getBFromKeyPair()
     JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binPri );
     nKeyType = JS_PKI_getPriKeyType( &binPri );
 
-    if( nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+    if( nKeyType != JS_PKI_KEY_TYPE_ECDSA && nKeyType != JS_PKI_KEY_TYPE_SM2 )
     {
         berApplet->warningBox( tr("Invalid PrivateKey Type: %1").arg( nKeyType ), this);
         goto end;

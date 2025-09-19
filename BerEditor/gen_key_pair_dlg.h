@@ -30,6 +30,10 @@ private slots:
     void clickEdDSA();
     void clickSM2();
 
+    void clickML_KEM();
+    void clickML_DSA();
+    void clickSLH_DSA();
+
     void clickOK();
 
 private:

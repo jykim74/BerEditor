@@ -333,7 +333,7 @@ void ExportDlg::setPrivateKey( const BIN *pPriKey )
     data_type_ = DataPriKey;
     JS_BIN_copy( &pri_key_, pPriKey );
     key_type_ = JS_PKI_getPriKeyType( &pri_key_ );
-    mAlgText->setText( JS_PKI_getKeyTypeName( key_type_ ));
+    mAlgText->setText( JS_PKI_getKeyAlgName( key_type_ ));
 
     mTitleLabel->setText( tr( "Private Key Export" ));
 
@@ -352,7 +352,7 @@ void ExportDlg::setPublicKey( const BIN *pPubKey )
     data_type_ = DataPubKey;
     JS_BIN_copy( &pub_key_, pPubKey );
     key_type_ = JS_PKI_getPubKeyType( &pub_key_ );
-    mAlgText->setText( JS_PKI_getKeyTypeName( key_type_ ));
+    mAlgText->setText( JS_PKI_getKeyAlgName( key_type_ ));
 
     mTitleLabel->setText( tr( "Public Key Export" ));
 
@@ -365,7 +365,7 @@ void ExportDlg::setCert( const BIN *pCert )
     data_type_ = DataCert;
     JS_BIN_copy( &cert_, pCert );
     key_type_ = JS_PKI_getCertKeyType( &cert_ );
-    mAlgText->setText( JS_PKI_getKeyTypeName( key_type_ ));
+    mAlgText->setText( JS_PKI_getKeyAlgName( key_type_ ));
 
     mTitleLabel->setText( tr( "Certificate Export" ));
 
@@ -393,7 +393,7 @@ void ExportDlg::setCSR( const BIN *pCSR )
     data_type_ = DataCSR;
     JS_BIN_copy( &csr_, pCSR );
     key_type_ = JS_PKI_getCSRKeyType( pCSR );
-    mAlgText->setText( JS_PKI_getKeyTypeName( key_type_ ));
+    mAlgText->setText( JS_PKI_getKeyAlgName( key_type_ ));
 
     mTitleLabel->setText( tr( "CSR Export" ));
 
@@ -427,7 +427,7 @@ void ExportDlg::setPriKeyAndCert( const BIN *pPriKey, const BIN *pCert )
     mTitleLabel->setText( tr( "Certificate and Private Key Export" ));
 
     key_type_ = JS_PKI_getCertKeyType( &cert_ );
-    mAlgText->setText( JS_PKI_getKeyTypeName( key_type_ ));
+    mAlgText->setText( JS_PKI_getKeyAlgName( key_type_ ));
 
     mFormatCombo->addItem( getFormatName( ExportPFX ), ExportPFX );
 
@@ -641,7 +641,7 @@ int ExportDlg::exportPFX()
 
     strPass = newPass.mPasswdText->text();
 
-    ret = JS_PKI_encodePFX( &binPFX, key_type_, strPass.toStdString().c_str(), -1, &pri_key_, &cert_ );
+    ret = JS_PKI_encodePFX( &binPFX, strPass.toStdString().c_str(), -1, &pri_key_, &cert_ );
     if( ret != 0 )
     {
         berApplet->warningBox( tr( "fail to encrypt PFX: %1").arg(ret), this);
@@ -680,7 +680,7 @@ int ExportDlg::exportP8Enc()
 
     strPass = newPass.mPasswdText->text();
 
-    ret = JS_PKI_encryptPrivateKey( key_type_, -1, strPass.toStdString().c_str(), &pri_key_, NULL, &binEncPri );
+    ret = JS_PKI_encryptPrivateKey( -1, strPass.toStdString().c_str(), &pri_key_, NULL, &binEncPri );
     if( ret != 0 )
     {
         berApplet->warningBox( tr( "fail to encrypt private key: %1").arg(ret), this);
@@ -713,7 +713,7 @@ int ExportDlg::exportP8Info()
     if( data_type_ != DataPriKey && data_type_ != DataPriKeyCert )
         return -1;
 
-    ret = JS_PKI_encodePrivateKeyInfo( key_type_, &pri_key_, &binP8 );
+    ret = JS_PKI_encodePrivateKeyInfo( &pri_key_, &binP8 );
     if( ret != 0 )
     {
         goto end;

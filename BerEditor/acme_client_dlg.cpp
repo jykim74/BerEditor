@@ -1531,7 +1531,7 @@ int ACMEClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
             QString strPass = newPass.mPasswdText->text();
             nKeyType = JS_PKI_getPriKeyType( pPriKey );
 
-            ret = JS_PKI_encryptPrivateKey( nKeyType, -1, strPass.toStdString().c_str(), pPriKey, NULL, &binEncPri );
+            ret = JS_PKI_encryptPrivateKey( -1, strPass.toStdString().c_str(), pPriKey, NULL, &binEncPri );
             if( ret == 0 )
             {
                 ret = certMan.writePriKeyCert( &binEncPri, pCert );

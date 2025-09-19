@@ -27,7 +27,11 @@
 static QStringList kVersionList = { "V1", "V2" };
 static QStringList kPBEv1List = { "PBE-SHA1-3DES", "PBE-SHA1-2DES" };
 static QStringList kPBEv2List = { "AES-128-CBC", "AES-256-CBC", "ARIA-128-CBC", "ARIA-256-CBC" };
-static QStringList kKeyTypeList = { "ALL", "RSA", "ECDSA", "DSA", "EdDSA", "SM2" };
+static QStringList kKeyTypeList = {
+    "ALL", JS_PKI_KEY_NAME_RSA, JS_PKI_KEY_NAME_ECDSA, JS_PKI_KEY_NAME_DSA,
+    JS_PKI_KEY_NAME_SM2, JS_PKI_KEY_NAME_EDDSA,
+    JS_PKI_KEY_NAME_ML_KEM, JS_PKI_KEY_NAME_ML_DSA, JS_PKI_KEY_NAME_SLH_DSA
+};
 
 static QString kPrivateFile = "private.pem";
 static QString kPublicFile = "public.pem";
@@ -289,7 +293,7 @@ const QString KeyPairManDlg::getSelectedPath()
     return strPath;
 }
 
-void KeyPairManDlg::loadKeyPairList()
+void KeyPairManDlg:: loadKeyPairList()
 {
     int ret = 0;
     int row = 0;
@@ -328,38 +332,38 @@ void KeyPairManDlg::loadKeyPairList()
         JS_BIN_fileReadBER( strPubKeyPath.toLocal8Bit().toStdString().c_str(), &binPub );
 
         JS_PKI_getPubKeyInfo( &binPub, &nAlg, &nOption );
-        if( strKeyType == "RSA" )
+        if( strKeyType == JS_PKI_KEY_NAME_RSA )
         {
             if( nAlg != JS_PKI_KEY_TYPE_RSA ) continue;
         }
-        else if( strKeyType == "ECDSA" )
+        else if( strKeyType == JS_PKI_KEY_NAME_ECDSA )
         {
-            if( nAlg != JS_PKI_KEY_TYPE_ECC )
+            if( nAlg != JS_PKI_KEY_TYPE_ECDSA )
                 continue;
         }
-        else if( strKeyType == "SM2" )
+        else if( strKeyType == JS_PKI_KEY_NAME_SM2 )
         {
             if( nAlg != JS_PKI_KEY_TYPE_SM2 )
                 continue;
         }
-        else if( strKeyType == "DSA" )
+        else if( strKeyType == JS_PKI_KEY_NAME_DSA )
         {
             if( nAlg != JS_PKI_KEY_TYPE_DSA ) continue;
         }
-        else if( strKeyType == "EdDSA" )
+        else if( strKeyType == JS_PKI_KEY_NAME_EDDSA )
         {
-            if( nAlg != JS_PKI_KEY_TYPE_ED25519 && nAlg != JS_PKI_KEY_TYPE_ED448 )
+            if( nAlg != JS_PKI_KEY_TYPE_EDDSA )
                 continue;
         }
 
         strAlg = JS_PKI_getKeyAlgName( nAlg );
 
-        if( nAlg == JS_PKI_KEY_TYPE_ECC || nAlg == JS_PKI_KEY_TYPE_SM2 )
+        if( nAlg == JS_PKI_KEY_TYPE_ECDSA || nAlg == JS_PKI_KEY_TYPE_SM2 )
         {
             pGroup = JS_PKI_getSNFromNid( nOption );
             strOption = pGroup;
         }
-        else if( nAlg == JS_PKI_KEY_TYPE_ED25519 || nAlg == JS_PKI_KEY_TYPE_ED448 )
+        else if( nAlg == JS_PKI_KEY_TYPE_EDDSA )
         {
             strOption = strAlg;
             strAlg = "EdDSA";
@@ -509,14 +513,17 @@ int KeyPairManDlg::Save( qint64 tTime, DerType nType, const BIN *pBin )
 
 void KeyPairManDlg::clickLGenKeyPair()
 {
+    int ret = 0;
     QDir dir;
     QString strKeyPairPath = berApplet->settingsMgr()->keyPairPath();
     GenKeyPairDlg genKeyPair;
 
+    BIN binPri = {0,0};
+    BIN binPub = {0,0};
+
+
     if( genKeyPair.exec() == QDialog::Accepted )
     {
-        BIN binPri = {0,0};
-        BIN binPub = {0,0};
 
         QString strName = genKeyPair.mNameText->text();
 
@@ -537,18 +544,31 @@ void KeyPairManDlg::clickLGenKeyPair()
         JS_BIN_decodeHex( genKeyPair.getPriKeyHex().toStdString().c_str(), &binPri );
         JS_BIN_decodeHex( genKeyPair.getPubKeyHex().toStdString().c_str(), &binPub );
 
-//        JS_BIN_writePEM( &binPri, JS_PEM_TYPE_PRIVATE_KEY, strPriPath.toLocal8Bit().toStdString().c_str() );
-//        JS_BIN_writePEM( &binPub, JS_PEM_TYPE_PUBLIC_KEY, strPubPath.toLocal8Bit().toStdString().c_str() );
-        writePriKeyPEM( &binPri, strPriPath );
-        writePubKeyPEM( &binPub, strPubPath );
+        ret = writePubKeyPEM( &binPub, strPubPath );
+        if( ret < 0 )
+        {
+            berApplet->warningBox( tr( "fail to write public key: %1" ).arg(ret), this );
+            dir.rmpath( fullPath );
+            goto end;
+        }
 
-        JS_BIN_reset( &binPri );
-        JS_BIN_reset( &binPub );
+        ret = writePriKeyPEM( &binPri, strPriPath );
+        if( ret < 0 )
+        {
+            berApplet->warningBox( tr( "fail to write private key: %1" ).arg(ret), this );
+            dir.rmpath( fullPath );
+            goto end;
+        }
+
+
 
         loadKeyPairList();
-
         berApplet->messageLog( tr( "Key pair generation was successful"), this );
     }
+
+end :
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binPub );
 }
 
 void KeyPairManDlg::clickLDelete()
@@ -832,7 +852,7 @@ void KeyPairManDlg::clickLRunPubEnc()
     nKeyType = JS_PKI_getPubKeyType( &binPub );
     JS_BIN_reset( &binPub );
 
-    if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+    if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_ECDSA && nKeyType != JS_PKI_KEY_TYPE_SM2 )
     {
         berApplet->warningBox( tr( "This key does not support public key encryption" ), this );
         return;
@@ -863,7 +883,7 @@ void KeyPairManDlg::clickLRunPubDec()
     nKeyType = JS_PKI_getPubKeyType( &binPub );
     JS_BIN_reset( &binPub );
 
-    if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_ECC && nKeyType != JS_PKI_KEY_TYPE_SM2 )
+    if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_ECDSA && nKeyType != JS_PKI_KEY_TYPE_SM2 )
     {
         berApplet->warningBox( tr( "This key does not support public key encryption" ), this );
         return;
@@ -1028,7 +1048,7 @@ void KeyPairManDlg::clickEncrypt()
     nPBE = JS_PKI_getNidFromSN( strSN.toStdString().c_str() );
     nKeyType = JS_PKI_getPriKeyType( &binData );
 
-    ret = JS_PKI_encryptPrivateKey( nKeyType, nPBE, strPasswd.toStdString().c_str(), &binData, &binInfo, &binEnc );
+    ret = JS_PKI_encryptPrivateKey( nPBE, strPasswd.toStdString().c_str(), &binData, &binInfo, &binEnc );
     if( ret != 0 )
     {
         berApplet->warnLog( tr( "fail to encrypt private key: %1").arg(ret), this);
@@ -1313,7 +1333,7 @@ void KeyPairManDlg::typePriKey()
     JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
 
     nType = JS_PKI_getPriKeyType( &binData );
-    berApplet->messageBox( tr( "The private key type is %1").arg( getKeyTypeName( nType )), this);
+    berApplet->messageBox( tr( "The private key type is %1").arg( JS_PKI_getKeyAlgName( nType )), this);
 
     JS_BIN_reset( &binData );
 }
@@ -1333,7 +1353,7 @@ void KeyPairManDlg::typePubKey()
     JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
 
     nType = JS_PKI_getPubKeyType( &binData );
-    berApplet->messageBox( tr( "The public key type is %1").arg( getKeyTypeName( nType )), this);
+    berApplet->messageBox( tr( "The public key type is %1").arg( JS_PKI_getKeyAlgName( nType )), this);
 
     JS_BIN_reset( &binData );
 }

@@ -95,7 +95,7 @@ static int _getMech( int nAlg, QString strHash, QString strMode )
                 return -1;
         }
     }
-    else if( nAlg == JS_PKI_KEY_TYPE_ECC )
+    else if( nAlg == JS_PKI_KEY_TYPE_ECDSA )
     {
         if( strHash == "None" )
             return CKM_ECDSA;
@@ -1056,7 +1056,7 @@ int TTLVEncoderDlg::runSign()
     if( strAlg == kALG_RSA )
         nAlg = JS_PKI_KEY_TYPE_RSA;
     else if( strAlg == kALG_ECDSA )
-        nAlg = JS_PKI_KEY_TYPE_ECC;
+        nAlg = JS_PKI_KEY_TYPE_ECDSA;
     else if( strAlg == kALG_AES )
         nAlg = JS_PKI_KEY_TYPE_AES;
 
@@ -1152,7 +1152,7 @@ int TTLVEncoderDlg::runVerify()
     if( strAlg == kALG_RSA )
         nAlg = JS_PKI_KEY_TYPE_RSA;
     else if( strAlg == kALG_ECDSA )
-        nAlg = JS_PKI_KEY_TYPE_ECC;
+        nAlg = JS_PKI_KEY_TYPE_ECDSA;
     else if( strAlg == kALG_AES )
         nAlg = JS_PKI_KEY_TYPE_AES;
 
@@ -1259,7 +1259,7 @@ int TTLVEncoderDlg::runRegister()
     }
     else if( strAlg == kALG_ECDSA )
     {
-        nAlg = JS_PKI_KEY_TYPE_ECC;
+        nAlg = JS_PKI_KEY_TYPE_ECDSA;
 
         if( strOption == "P-256")
             nParam = KMIP_CURVE_P_256;
@@ -1346,7 +1346,7 @@ int TTLVEncoderDlg::runCreateKeyPair()
     else if( strAlg == kALG_ECDSA )
     {
         QString strOption = mAlgCombo->currentText();
-        nAlg = JS_PKI_KEY_TYPE_ECC;
+        nAlg = JS_PKI_KEY_TYPE_ECDSA;
 
         if( strOption == "P-256")
             nParam = KMIP_CURVE_P_256;
@@ -1729,7 +1729,7 @@ int TTLVEncoderDlg::runLocate()
     }
     else if( strAlg == kALG_ECDSA )
     {
-        nAlg = JS_PKI_KEY_TYPE_ECC;
+        nAlg = JS_PKI_KEY_TYPE_ECDSA;
     }
     else if( strAlg == kALG_AES )
     {

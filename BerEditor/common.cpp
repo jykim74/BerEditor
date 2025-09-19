@@ -19,6 +19,8 @@
 #include "js_http.h"
 #include "js_ldap.h"
 #include "js_scep.h"
+#include "js_pqc.h"
+#include "js_error.h"
 
 const QString GetSystemID()
 {
@@ -1394,29 +1396,6 @@ QString getStringFromBIN( const BIN *pBin, int nType, bool bSeenOnly )
     return strOut;
 }
 
-QString getKeyTypeName( int nKeyType )
-{
-    if( nKeyType == JS_PKI_KEY_TYPE_RSA )
-        return "RSA";
-    else if( nKeyType == JS_PKI_KEY_TYPE_ECC )
-        return "ECC";
-    else if( nKeyType == JS_PKI_KEY_TYPE_SM2 )
-        return "SM2";
-    else if( nKeyType == JS_PKI_KEY_TYPE_DSA )
-        return "DSA";
-    else if( nKeyType == JS_PKI_KEY_TYPE_ED25519 )
-        return "Ed25519";
-    else if( nKeyType == JS_PKI_KEY_TYPE_ED448 )
-        return "Ed448";
-    else if( nKeyType == JS_PKI_KEY_TYPE_AES )
-        return "AES";
-    else if( nKeyType == JS_PKI_KEY_TYPE_ARIA )
-        return "ARIA";
-
-
-    return QString( "Unknown[%1]").arg( nKeyType );
-}
-
 bool isEmail( const QString strEmail )
 {
     QRegExp mailREX("\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b");
@@ -1650,7 +1629,7 @@ int writePriKeyPEM( const BIN *pPriKey, const QString strPath )
     int nKeyType = -1;
     int nFileType = -1;
 
-    if( pPriKey == NULL ) return -1;
+    if( pPriKey == NULL ) return JSR_ERR;
 
     nKeyType = JS_PKI_getPriKeyType( pPriKey );
     if( nKeyType < 0 ) return -2;
@@ -1660,7 +1639,7 @@ int writePriKeyPEM( const BIN *pPriKey, const QString strPath )
         nFileType = JS_PEM_TYPE_RSA_PRIVATE_KEY;
         break;
 
-    case JS_PKI_KEY_TYPE_ECC:
+    case JS_PKI_KEY_TYPE_ECDSA:
     case JS_PKI_KEY_TYPE_SM2:
         nFileType = JS_PEM_TYPE_EC_PRIVATE_KEY;
         break;
@@ -1681,17 +1660,17 @@ int writePubKeyPEM( const BIN *pPubKey, const QString strPath )
     int nKeyType = -1;
     int nFileType = -1;
 
-    if( pPubKey == NULL ) return -1;
+    if( pPubKey == NULL ) return JSR_ERR;
 
     nKeyType = JS_PKI_getPubKeyType( pPubKey );
-    if( nKeyType < 0 ) return -2;
+    if( nKeyType < 0 ) return JSR_ERR2;
 
     switch (nKeyType) {
     case JS_PKI_KEY_TYPE_RSA:
         nFileType = JS_PEM_TYPE_RSA_PUBLIC_KEY;
         break;
 
-    case JS_PKI_KEY_TYPE_ECC:
+    case JS_PKI_KEY_TYPE_ECDSA:
     case JS_PKI_KEY_TYPE_SM2:
         nFileType = JS_PEM_TYPE_EC_PUBLIC_KEY;
         break;
