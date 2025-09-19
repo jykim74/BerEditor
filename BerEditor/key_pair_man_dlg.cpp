@@ -356,6 +356,21 @@ void KeyPairManDlg:: loadKeyPairList()
             if( nAlg != JS_PKI_KEY_TYPE_EDDSA )
                 continue;
         }
+        else if( strKeyType == JS_PKI_KEY_NAME_ML_KEM )
+        {
+            if( nAlg != JS_PKI_KEY_TYPE_ML_KEM )
+                continue;
+        }
+        else if( strKeyType == JS_PKI_KEY_NAME_ML_DSA )
+        {
+            if( nAlg != JS_PKI_KEY_TYPE_ML_DSA )
+                continue;
+        }
+        else if( strKeyType == JS_PKI_KEY_NAME_SLH_DSA )
+        {
+            if( nAlg != JS_PKI_KEY_TYPE_SLH_DSA )
+                continue;
+        }
 
         strAlg = JS_PKI_getKeyAlgName( nAlg );
 
@@ -632,6 +647,12 @@ void KeyPairManDlg::clickLMakeCSR()
     QString strName = item->text();
     QString strAlg = item1->text();
     QString strOpt = item2->text();
+
+    if( strAlg == JS_PKI_KEY_NAME_ML_KEM )
+    {
+        berApplet->warningBox( tr( "%1 algorithm is not supported" ).arg( strAlg ), this );
+        return;
+    }
 
     strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
     strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );

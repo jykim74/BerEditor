@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>542</width>
-    <height>489</height>
+    <width>570</width>
+    <height>654</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -125,7 +125,7 @@
    <item>
     <widget class="QTabWidget" name="mTabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabList">
       <attribute name="title">
@@ -181,13 +181,6 @@
           </property>
           <item>
            <layout class="QGridLayout" name="gridLayout_3">
-            <item row="0" column="1">
-             <widget class="QPushButton" name="mLDecodePubKeyBtn">
-              <property name="text">
-               <string>Decode PubKey</string>
-              </property>
-             </widget>
-            </item>
             <item row="1" column="3">
              <widget class="QPushButton" name="mImportBtn">
               <property name="text">
@@ -209,38 +202,10 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
-             <widget class="QPushButton" name="mLDecodePriKeyBtn">
-              <property name="text">
-               <string>Decode PriKey</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0">
-             <widget class="QPushButton" name="mLGenKeyPairBtn">
-              <property name="text">
-               <string>Gen KeyPair</string>
-              </property>
-             </widget>
-            </item>
             <item row="2" column="0">
              <widget class="QPushButton" name="mLRunPubEncBtn">
               <property name="text">
                <string>Run Encrypt</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="3">
-             <widget class="QPushButton" name="mLDeleteBtn">
-              <property name="text">
-               <string>Delete</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="2">
-             <widget class="QPushButton" name="mLViewPriKeyBtn">
-              <property name="text">
-               <string>View PriKey</string>
               </property>
              </widget>
             </item>
@@ -265,10 +230,45 @@
               </property>
              </widget>
             </item>
-            <item row="3" column="0">
+            <item row="1" column="1">
+             <widget class="QPushButton" name="mLViewPriKeyBtn">
+              <property name="text">
+               <string>View PriKey</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
              <widget class="QPushButton" name="mExportBtn">
               <property name="text">
                <string>Export</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QPushButton" name="mLDecodePubKeyBtn">
+              <property name="text">
+               <string>Decode PubKey</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QPushButton" name="mLDecodePriKeyBtn">
+              <property name="text">
+               <string>Decode PriKey</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
+             <widget class="QPushButton" name="mLGenKeyPairBtn">
+              <property name="text">
+               <string>Gen KeyPair</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QPushButton" name="mLDeleteBtn">
+              <property name="text">
+               <string>Delete</string>
               </property>
              </widget>
             </item>
@@ -974,13 +974,6 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mOKBtn">
-       <property name="text">
-        <string>OK</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -1001,6 +994,13 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mOKBtn">
+       <property name="text">
+        <string>OK</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
   </layout>
@@ -1010,11 +1010,8 @@
   <tabstop>mKeyTypeCombo</tabstop>
   <tabstop>mTabWidget</tabstop>
   <tabstop>mKeyPairTable</tabstop>
-  <tabstop>mLGenKeyPairBtn</tabstop>
-  <tabstop>mLDecodePubKeyBtn</tabstop>
   <tabstop>mLMakeCSRBtn</tabstop>
   <tabstop>mLViewPubKeyBtn</tabstop>
-  <tabstop>mLDecodePriKeyBtn</tabstop>
   <tabstop>mLRunPubEncBtn</tabstop>
   <tabstop>mLRunPubDecBtn</tabstop>
   <tabstop>mSavePEMCheck</tabstop>

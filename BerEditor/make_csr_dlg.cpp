@@ -4,6 +4,8 @@
 #include "js_pki.h"
 #include "js_pki_x509.h"
 #include "js_pki_ext.h"
+#include "js_error.h"
+
 #include "ber_applet.h"
 
 #include "settings_mgr.h"
@@ -228,7 +230,7 @@ void MakeCSRDlg::clickOK()
     }
     else
     {
-        berApplet->warnLog( tr( "fail to make CSR: %1").arg( ret ), this);
+        berApplet->warnLog( tr( "fail to make CSR: %1").arg( JERR(ret) ), this);
         return QDialog::reject();
     }
 }

@@ -948,7 +948,7 @@ int CAVPDlg::eddsaJsonWork( const QString strMode, const QJsonObject jObject, QJ
             }
             else if( strMode == "sigGen" )
             {
-                ret = JS_PKI_EdDSA_Sign( nEdDSA_Type, &binMsg, &binPri, &binSign );
+                ret = JS_PKI_EdDSA_Sign( &binMsg, &binPri, &binSign );
                 if( ret != 0 ) goto end;
 
                 jRspTestObj["signature"] = getHexString( &binSign );

@@ -23,13 +23,16 @@
 #include "sign_verify_thread.h"
 #include "pri_key_info_dlg.h"
 #include "key_pair_man_dlg.h"
+#include "js_pqc.h"
 
 static QStringList algTypes = {
-    "RSA",
-    "ECDSA",
-    "SM2",
-    "EdDSA",
-    "DSA"
+    JS_PKI_KEY_NAME_RSA,
+    JS_PKI_KEY_NAME_ECDSA,
+    JS_PKI_KEY_NAME_SM2,
+    JS_PKI_KEY_NAME_EDDSA,
+    JS_PKI_KEY_NAME_DSA,
+    JS_PKI_KEY_NAME_ML_DSA,
+    JS_PKI_KEY_NAME_SLH_DSA
 };
 
 static QStringList versionTypes = {
@@ -255,32 +258,13 @@ int SignVerifyDlg::getPrivateKey( BIN *pPriKey, int *pnType )
     {
         nType = JS_PKI_getPriKeyType( pPriKey );
         berApplet->log( QString( "PriKey Type : %1").arg( JS_PKI_getKeyAlgName( nType )));
-
-        if( nType == JS_PKI_KEY_TYPE_RSA )
-            mAlgTypeCombo->setCurrentText( "RSA" );
-        else if( nType == JS_PKI_KEY_TYPE_ECDSA )
-            mAlgTypeCombo->setCurrentText( "ECDSA" );
-        else if( nType == JS_PKI_KEY_TYPE_SM2 )
-            mAlgTypeCombo->setCurrentText( "SM2" );
-        else if( nType == JS_PKI_KEY_TYPE_DSA )
-            mAlgTypeCombo->setCurrentText( "DSA" );
-        else if( nType == JS_PKI_KEY_TYPE_EDDSA )
-            mAlgTypeCombo->setCurrentText( "EdDSA" );
+        QString strAlg = JS_PKI_getKeyAlgName( nType );
+        mAlgTypeCombo->setCurrentText( strAlg );
     }
     else
     {
-        if( mAlgTypeCombo->currentText() == "RSA" )
-            nType = JS_PKI_KEY_TYPE_RSA;
-        else if( mAlgTypeCombo->currentText() == "SM2" )
-            nType = JS_PKI_KEY_TYPE_SM2;
-        else if( mAlgTypeCombo->currentText() == "DSA" )
-            nType = JS_PKI_KEY_TYPE_DSA;
-        else if( mAlgTypeCombo->currentText() == "EdDSA" )
-        {
-            nType = JS_PKI_KEY_TYPE_EDDSA;
-        }
-        else
-            nType = JS_PKI_KEY_TYPE_ECDSA;
+        QString strAlg = mAlgTypeCombo->currentText();
+        nType = JS_PKI_getKeyAlg( strAlg.toStdString().c_str() );
     }
 
     if( nType == JS_PKI_KEY_TYPE_SM2 )
@@ -388,32 +372,13 @@ int SignVerifyDlg::getPublicKey( BIN *pPubKey, int *pnType )
     {
         nType = JS_PKI_getPubKeyType( pPubKey );
         berApplet->log( QString( "PubKey Type : %1").arg( JS_PKI_getKeyAlgName( nType )));
-
-        if( nType == JS_PKI_KEY_TYPE_RSA )
-            mAlgTypeCombo->setCurrentText( "RSA" );
-        else if( nType == JS_PKI_KEY_TYPE_SM2 )
-            mAlgTypeCombo->setCurrentText( "SM2" );
-        else if( nType == JS_PKI_KEY_TYPE_ECDSA )
-            mAlgTypeCombo->setCurrentText( "ECDSA" );
-        else if( nType == JS_PKI_KEY_TYPE_DSA )
-            mAlgTypeCombo->setCurrentText( "DSA" );
-        else if( nType == JS_PKI_KEY_TYPE_EDDSA )
-            mAlgTypeCombo->setCurrentText( "EdDSA" );
+        QString strAlg = JS_PKI_getKeyAlgName( nType );
+        mAlgTypeCombo->setCurrentText( strAlg );
     }
     else
     {
-        if( mAlgTypeCombo->currentText() == "RSA" )
-            nType = JS_PKI_KEY_TYPE_RSA;
-        else if( mAlgTypeCombo->currentText() == "SM2" )
-            nType = JS_PKI_KEY_TYPE_SM2;
-        else if( mAlgTypeCombo->currentText() == "DSA" )
-            nType = JS_PKI_KEY_TYPE_DSA;
-        else if( mAlgTypeCombo->currentText() == "EdDSA" )
-        {
-            nType = JS_PKI_KEY_TYPE_EDDSA;
-        }
-        else
-            nType = JS_PKI_KEY_TYPE_ECDSA;
+        QString strAlg = mAlgTypeCombo->currentText();
+        nType = JS_PKI_getKeyAlg( strAlg.toStdString().c_str() );
     }
 
     if( nType == JS_PKI_KEY_TYPE_SM2 )
@@ -558,7 +523,7 @@ void SignVerifyDlg::algChanged(int index)
 
     if( mUseKeyAlgCheck->isChecked() == false )
     {
-        if( strAlg == "RSA" )
+        if( strAlg == JS_PKI_KEY_NAME_RSA )
         {
             mVersionCombo->setEnabled(true);
             mVersionLabel->setEnabled(true);
@@ -574,7 +539,7 @@ void SignVerifyDlg::algChanged(int index)
         mVersionCombo->setEnabled(true);
     }
 
-    if( strAlg == "SM2" )
+    if( strAlg == JS_PKI_KEY_NAME_SM2 )
     {
         mHashTypeCombo->setCurrentText( "SM3" );
     }
@@ -583,7 +548,7 @@ void SignVerifyDlg::algChanged(int index)
         mHashTypeCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
     }
 
-    if( strAlg == "EdDSA" )
+    if( strAlg == JS_PKI_KEY_NAME_EDDSA || strAlg == JS_PKI_KEY_NAME_ML_DSA || strAlg == JS_PKI_KEY_NAME_SLH_DSA )
     {
         mDigestBtn->setEnabled(false);
         mHashTypeCombo->setDisabled(true);
@@ -873,23 +838,29 @@ void SignVerifyDlg::dataRun()
 
     if( mSignRadio->isChecked() )
     {
-        if( strAlg == "RSA" )
+        if( strAlg == JS_PKI_KEY_NAME_RSA )
         {
             ret = JS_PKI_RSAMakeSign( strHash.toStdString().c_str(), nVersion, &binSrc, &binPri, &binOut );
         }
-        else if( strAlg == "SM2" || strAlg == "ECDSA" )
+        else if( strAlg == JS_PKI_KEY_NAME_SM2 || strAlg == JS_PKI_KEY_NAME_ECDSA )
         {
             ret = JS_PKI_ECCMakeSign( strHash.toStdString().c_str(), &binSrc, &binPri, &binOut );
         }
-        else if( strAlg == "DSA" )
+        else if( strAlg == JS_PKI_KEY_NAME_DSA )
         {
             ret = JS_PKI_DSA_Sign( strHash.toStdString().c_str(), &binSrc, &binPri, &binOut );
         }
-        else if( strAlg == "EdDSA" )
+        else if( strAlg == JS_PKI_KEY_NAME_EDDSA )
         {
-            int nParam = JS_PKI_KEY_TYPE_EDDSA;
-
-            ret = JS_PKI_EdDSA_Sign( nParam, &binSrc, &binPri, &binOut );
+            ret = JS_PKI_EdDSA_Sign( &binSrc, &binPri, &binOut );
+        }
+        else if( strAlg == JS_PKI_KEY_NAME_ML_DSA )
+        {
+            ret = JS_ML_DSA_sign( &binSrc, &binPri, &binOut );
+        }
+        else if( strAlg == JS_PKI_KEY_NAME_SLH_DSA )
+        {
+            ret = JS_SLH_DSA_sign( &binSrc, &binPri, &binOut );
         }
 
         JS_BIN_encodeHex( &binOut, &pOut );
@@ -924,21 +895,29 @@ void SignVerifyDlg::dataRun()
     {
         getBINFromString( &binOut, DATA_HEX, strOutput.toStdString().c_str() );
 
-        if( strAlg == "RSA" )
+        if( strAlg == JS_PKI_KEY_NAME_RSA )
         {
             ret = JS_PKI_RSAVerifySign( strHash.toStdString().c_str(), nVersion, &binSrc, &binOut, &binPubKey );
         }
-        else if( strAlg == "ECDSA" || strAlg == "SM2" )
+        else if( strAlg == JS_PKI_KEY_NAME_ECDSA || strAlg == JS_PKI_KEY_NAME_SM2 )
         {
             ret = JS_PKI_ECCVerifySign( strHash.toStdString().c_str(), &binSrc, &binOut, &binPubKey );
         }
-        else if( strAlg == "DSA" )
+        else if( strAlg == JS_PKI_KEY_NAME_DSA )
         {
             ret = JS_PKI_DSA_Verify( strHash.toStdString().c_str(), &binSrc, &binOut, &binPubKey );
         }
-        else if( strAlg == "Ed25519" || strAlg == "Ed448" )
+        else if( strAlg == JS_PKI_KEY_NAME_EDDSA )
         {
             ret = JS_PKI_EdDSA_Verify( &binSrc, &binOut, &binPubKey );
+        }
+        else if( strAlg == JS_PKI_KEY_NAME_ML_DSA )
+        {
+            ret = JS_ML_DSA_verify( &binSrc, &binOut, &binPubKey );
+        }
+        else if( strAlg == JS_PKI_KEY_NAME_SLH_DSA )
+        {
+            ret = JS_SLH_DSA_verify( &binSrc, &binOut, &binPubKey );
         }
 
         if( ret == 0 )

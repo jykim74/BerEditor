@@ -75,7 +75,7 @@ private:
     void setRSAKey( const BIN *pKey, bool bPri = true );
     void setECCKey( const BIN *pKey, bool bPri = true );
     void setDSAKey( const BIN *pKey, bool bPri = true );
-    void setEdDSAKey( int nKeyType, const BIN *pKey, bool bPri = true );
+    void setEdDSAKey( const BIN *pKey, bool bPri = true );
 
     void setModeUI( bool bVal );
 

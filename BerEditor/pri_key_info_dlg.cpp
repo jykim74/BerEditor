@@ -354,7 +354,7 @@ void PriKeyInfoDlg::setDSAKey( const BIN *pKey, bool bPri )
     JS_PKI_resetDSAKeyVal( &sDSAKey );
 }
 
-void PriKeyInfoDlg::setEdDSAKey( int nKeyType, const BIN *pKey, bool bPri )
+void PriKeyInfoDlg::setEdDSAKey( const BIN *pKey, bool bPri )
 {
     int ret = 0;
     JRawKeyVal sRawKeyVal;
@@ -918,11 +918,16 @@ void PriKeyInfoDlg::setPrivateKey( const BIN *pPriKey, const QString strTitle )
         mKeyTab->setTabEnabled(2, true);
         setDSAKey( pPriKey );
     }
-    else if( key_type_ == JS_PKI_KEY_TYPE_EDDSA )
+    else if( key_type_ == JS_PKI_KEY_TYPE_EDDSA
+               || key_type_ == JS_PKI_KEY_TYPE_ML_KEM
+               || key_type_ == JS_PKI_KEY_TYPE_ML_DSA
+               || key_type_ == JS_PKI_KEY_TYPE_SLH_DSA )
     {
+        QString strAlg = JS_PKI_getKeyAlgName( key_type_ );
         mKeyTab->setCurrentIndex( 3 );
+        mKeyTab->setTabText( 3, strAlg );
         mKeyTab->setTabEnabled(3, true);
-        setEdDSAKey( key_type_, pPriKey );
+        setEdDSAKey( pPriKey );
     }
     else
     {
@@ -966,11 +971,16 @@ void PriKeyInfoDlg::setPublicKey( const BIN *pPubKey, const QString strTitle )
         mKeyTab->setTabEnabled(2, true);
         setDSAKey( pPubKey, false );
     }
-    else if( key_type_ == JS_PKI_KEY_TYPE_EDDSA  )
+    else if( key_type_ == JS_PKI_KEY_TYPE_EDDSA
+             || key_type_ == JS_PKI_KEY_TYPE_ML_KEM
+             || key_type_ == JS_PKI_KEY_TYPE_ML_DSA
+             || key_type_ == JS_PKI_KEY_TYPE_SLH_DSA )
     {
+        QString strAlg = JS_PKI_getKeyAlgName( key_type_ );
         mKeyTab->setCurrentIndex( 3 );
+        mKeyTab->setTabText( 3, strAlg );
         mKeyTab->setTabEnabled(3, true);
-        setEdDSAKey( key_type_, pPubKey, false );
+        setEdDSAKey( pPubKey, false );
     }
     else
     {
