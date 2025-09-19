@@ -28,9 +28,11 @@ static QStringList kVersionList = { "V1", "V2" };
 static QStringList kPBEv1List = { "PBE-SHA1-3DES", "PBE-SHA1-2DES" };
 static QStringList kPBEv2List = { "AES-128-CBC", "AES-256-CBC", "ARIA-128-CBC", "ARIA-256-CBC" };
 
-static QStringList kKeyTypeList = { "ALL", "RSA", "ECDSA", "DSA", "EdDSA", "SM2" };
-
-
+static QStringList kKeyTypeList = {
+    "ALL", JS_PKI_KEY_NAME_RSA, JS_PKI_KEY_NAME_ECDSA, JS_PKI_KEY_NAME_DSA,
+    JS_PKI_KEY_NAME_SM2, JS_PKI_KEY_NAME_EDDSA,
+    JS_PKI_KEY_NAME_ML_DSA, JS_PKI_KEY_NAME_SLH_DSA
+};
 
 CertManDlg::CertManDlg(QWidget *parent) :
     QDialog(parent)
@@ -809,27 +811,37 @@ void CertManDlg::loadEEList()
         nKeyType = JS_PKI_getCertKeyType( &binCert );
         if( nKeyType < 0 ) continue;
 
-        if( strKeyType == kAlgRSA )
+        if( strKeyType == JS_PKI_KEY_NAME_RSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_RSA ) continue;
         }
-        else if( strKeyType == kAlgECDSA )
+        else if( strKeyType == JS_PKI_KEY_NAME_ECDSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_ECDSA )
                 continue;
         }
-        else if( strKeyType == kAlgSM2 )
+        else if( strKeyType == JS_PKI_KEY_NAME_SM2 )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_SM2 )
                 continue;
         }
-        else if( strKeyType == kAlgDSA )
+        else if( strKeyType == JS_PKI_KEY_NAME_DSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_DSA ) continue;
         }
-        else if( strKeyType == kAlgEdDSA )
+        else if( strKeyType == JS_PKI_KEY_NAME_EDDSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_EDDSA )
+                continue;
+        }
+        else if( strKeyType == JS_PKI_KEY_NAME_ML_DSA )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_ML_DSA )
+                continue;
+        }
+        else if( strKeyType == JS_PKI_KEY_NAME_SLH_DSA )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_SLH_DSA )
                 continue;
         }
 
@@ -907,27 +919,37 @@ void CertManDlg::loadOtherList()
         nKeyType = JS_PKI_getCertKeyType( &binCert );
         if( nKeyType < 0 ) continue;
 
-        if( strKeyType == kAlgRSA )
+        if( strKeyType == JS_PKI_KEY_NAME_RSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_RSA ) continue;
         }
-        else if( strKeyType == kAlgECDSA )
+        else if( strKeyType == JS_PKI_KEY_NAME_ECDSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_ECDSA )
                 continue;
         }
-        else if( strKeyType == kAlgSM2 )
+        else if( strKeyType == JS_PKI_KEY_NAME_SM2 )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_SM2 )
                 continue;
         }
-        else if( strKeyType == kAlgDSA )
+        else if( strKeyType == JS_PKI_KEY_NAME_DSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_DSA ) continue;
         }
-        else if( strKeyType == kAlgEdDSA )
+        else if( strKeyType == JS_PKI_KEY_NAME_EDDSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_EDDSA )
+                continue;
+        }
+        else if( strKeyType == JS_PKI_KEY_NAME_ML_DSA )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_ML_DSA )
+                continue;
+        }
+        else if( strKeyType == JS_PKI_KEY_NAME_SLH_DSA )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_SLH_DSA )
                 continue;
         }
 
@@ -1002,27 +1024,37 @@ void CertManDlg::loadCAList()
         nKeyType = JS_PKI_getCertKeyType( &binCert );
         if( nKeyType < 0 ) continue;
 
-        if( strKeyType == kAlgRSA )
+        if( strKeyType == JS_PKI_KEY_NAME_RSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_RSA ) continue;
         }
-        else if( strKeyType == kAlgECDSA )
+        else if( strKeyType == JS_PKI_KEY_NAME_ECDSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_ECDSA )
                 continue;
         }
-        else if( strKeyType == kAlgSM2 )
+        else if( strKeyType == JS_PKI_KEY_NAME_SM2 )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_SM2 )
                 continue;
         }
-        else if( strKeyType == kAlgDSA )
+        else if( strKeyType == JS_PKI_KEY_NAME_DSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_DSA ) continue;
         }
-        else if( strKeyType == kAlgEdDSA )
+        else if( strKeyType == JS_PKI_KEY_NAME_EDDSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_EDDSA )
+                continue;
+        }
+        else if( strKeyType == JS_PKI_KEY_NAME_ML_DSA )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_ML_DSA )
+                continue;
+        }
+        else if( strKeyType == JS_PKI_KEY_NAME_SLH_DSA )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_SLH_DSA )
                 continue;
         }
 
@@ -1162,27 +1194,37 @@ void CertManDlg::loadTrustList()
         nKeyType = JS_PKI_getCertKeyType( &binCert );
         if( nKeyType < 0 ) continue;
 
-        if( strKeyType == kAlgRSA )
+        if( strKeyType == JS_PKI_KEY_NAME_RSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_RSA ) continue;
         }
-        else if( strKeyType == kAlgECDSA )
+        else if( strKeyType == JS_PKI_KEY_NAME_ECDSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_ECDSA )
                 continue;
         }
-        else if( strKeyType == kAlgSM2 )
+        else if( strKeyType == JS_PKI_KEY_NAME_SM2 )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_SM2 )
                 continue;
         }
-        else if( strKeyType == kAlgDSA )
+        else if( strKeyType == JS_PKI_KEY_NAME_DSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_DSA ) continue;
         }
-        else if( strKeyType == kAlgEdDSA )
+        else if( strKeyType == JS_PKI_KEY_NAME_EDDSA )
         {
             if( nKeyType != JS_PKI_KEY_TYPE_EDDSA )
+                continue;
+        }
+        else if( strKeyType == JS_PKI_KEY_NAME_ML_DSA )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_ML_DSA )
+                continue;
+        }
+        else if( strKeyType == JS_PKI_KEY_NAME_SLH_DSA )
+        {
+            if( nKeyType != JS_PKI_KEY_TYPE_SLH_DSA )
                 continue;
         }
 
