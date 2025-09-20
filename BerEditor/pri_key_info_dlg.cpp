@@ -825,7 +825,10 @@ void PriKeyInfoDlg::setModeUI( bool bVal )
             mDSA_PrivateText->setReadOnly( !bVal );
         }
     }
-    else if( key_type_ == JS_PKI_KEY_TYPE_EDDSA )
+    else if( key_type_ == JS_PKI_KEY_TYPE_EDDSA
+               || key_type_ == JS_PKI_KEY_TYPE_ML_DSA
+               || key_type_ == JS_PKI_KEY_TYPE_SLH_DSA
+               || key_type_ == JS_PKI_KEY_TYPE_ML_KEM )
     {
         mEdDSA_RawPublicText->setStyleSheet( strStyle );
         mEdDSA_RawPublicText->setReadOnly( !bVal );

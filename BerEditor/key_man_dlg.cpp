@@ -12,13 +12,9 @@
 #include "settings_mgr.h"
 #include "common.h"
 #include "key_list_dlg.h"
-
-static QStringList dataTypes = {
-    "String",
-    "Hex",
-    "Base64"
-};
-
+#include "js_pqc.h"
+#include "key_pair_man_dlg.h"
+#include "js_error.h"
 
 KeyManDlg::KeyManDlg(QWidget *parent) :
     QDialog(parent)
@@ -57,6 +53,14 @@ KeyManDlg::KeyManDlg(QWidget *parent) :
 
     connect( mGenKEKBtn, SIGNAL(clicked()), this, SLOT(clickKeyWrapGenKEK()));
 
+    connect( mKEMClearAllBtn, SIGNAL(clicked()), this, SLOT(clickKEMClearAll()));
+    connect( mKEMEncapBtn, SIGNAL(clicked(bool)), this, SLOT(clickKEMDecap()));
+    connect( mKEMDecapBtn, SIGNAL(clicked()), this, SLOT(clickKEMDecap()));
+
+    connect( mKEMKeyText, SIGNAL(textChanged()), this, SLOT(changeKEMKey()));
+    connect( mKEMEncKeyText, SIGNAL(textChanged()), this, SLOT(changeKEMEncKey()));
+    connect( mKEMDecKeyText, SIGNAL(textChanged()), this, SLOT(changeKEMDecKey()));
+
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT( clickClearDataAll()));
 
     initialize();
@@ -69,7 +73,11 @@ KeyManDlg::KeyManDlg(QWidget *parent) :
 
     mWrapTab->layout()->setSpacing(5);
     mWrapTab->layout()->setMargin(5);
+
+    mKeyEncapTab->layout()->setSpacing(5);
+    mKeyEncapTab->layout()->setMargin(5);
 #endif
+
     resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 
@@ -86,9 +94,9 @@ void KeyManDlg::initialize()
     mHashCombo->setCurrentText( setMgr->defaultHash() );
 
 
-    mSecretTypeCombo->addItems( dataTypes );
-    mInfoTypeCombo->addItems( dataTypes );
-    mSaltTypeCombo->addItems( dataTypes );
+    mSecretTypeCombo->addItems( kDataTypeList );
+    mInfoTypeCombo->addItems( kDataTypeList );
+    mSaltTypeCombo->addItems( kDataTypeList );
 
     mKeyLenText->setText( "32" );
     mIterCntText->setText( "1024" );
@@ -475,7 +483,7 @@ void KeyManDlg::checkPBKDF()
 void KeyManDlg::checkHKDF()
 {
     mSecretTypeCombo->clear();
-    mSecretTypeCombo->addItems( dataTypes );
+    mSecretTypeCombo->addItems( kDataTypeList );
 
     mSecretLabel->setText( tr("Secret"));
 
@@ -494,7 +502,7 @@ void KeyManDlg::checkHKDF()
 void KeyManDlg::checkX963()
 {
     mSecretTypeCombo->clear();
-    mSecretTypeCombo->addItems( dataTypes );
+    mSecretTypeCombo->addItems( kDataTypeList );
 
     mSecretLabel->setText( tr("Secret"));
 
@@ -567,4 +575,111 @@ void KeyManDlg::clickClearDataAll()
     mSrcText->clear();
     mKEKText->clear();
     mDstText->clear();
+
+    clickKEMClearAll();
+}
+
+void KeyManDlg::clickKEMClearAll()
+{
+    mKEMKeyText->clear();
+    mKEMEncKeyText->clear();
+    mKEMDecKeyText->clear();
+}
+
+void KeyManDlg::clickKEMEncap()
+{
+    int ret = -1;
+    QString strPubPath;
+
+    BIN binPub = {0,0};
+    BIN binKey = {0,0};
+    BIN binEncKey = {0,0};
+
+    KeyPairManDlg keyPairMan;
+    keyPairMan.setTitle( tr( "Select keypair" ));
+    keyPairMan.setMode( KeyPairModeSelect );
+
+    if( keyPairMan.exec() != QDialog::Accepted )
+    {
+        ret = -1;
+        goto end;
+    }
+
+    strPubPath = keyPairMan.getPubPath();
+    JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPub );
+
+    ret = JS_ML_KEM_encapsulate( &binPub, &binKey, &binEncKey );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "fail to encapsulate: %1" ).arg( JERR(ret) ), this );
+        goto end;
+    }
+
+    mKEMKeyText->setPlainText( getHexString( &binKey ));
+
+end :
+    JS_BIN_reset( &binPub );
+    JS_BIN_reset( &binKey );
+    JS_BIN_reset( &binEncKey );
+}
+
+void KeyManDlg::clickKEMDecap()
+{
+    int ret = -1;
+
+    BIN binPri = {0,0};
+    BIN binEncKey = {0,0};
+    BIN binDecKey = {0,0};
+
+    QString strEncKey = mKEMEncKeyText->toPlainText();
+
+    QString strPriPath;
+
+    KeyPairManDlg keyPairMan;
+    keyPairMan.setTitle( tr( "Select keypair" ));
+    keyPairMan.setMode( KeyPairModeSelect );
+
+    if( keyPairMan.exec() != QDialog::Accepted )
+        goto end;
+
+    strPriPath = keyPairMan.getPriPath();
+
+    JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+
+    JS_BIN_decodeHex( strEncKey.toStdString().c_str(), &binEncKey );
+
+    ret = JS_ML_KEM_decapsulate( &binPri, &binEncKey, &binDecKey );
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "fail to decapsulate: %1" ).arg( JERR(ret) ), this );
+        goto end;
+    }
+
+    mKEMDecKeyText->setPlainText( getHexString( &binDecKey ));
+
+end :
+    JS_BIN_reset( &binPri );
+    JS_BIN_reset( &binEncKey );
+    JS_BIN_reset( &binDecKey );
+}
+
+void KeyManDlg::changeKEMKey()
+{
+    QString strKey = mKEMKeyText->toPlainText();
+    QString strLen = getDataLenString( DATA_HEX, strKey );
+    mKEMKeyLenText->setText( QString("%1").arg(strLen));
+}
+
+void KeyManDlg::changeKEMEncKey()
+{
+    QString strKey = mKEMEncKeyText->toPlainText();
+    QString strLen = getDataLenString( DATA_HEX, strKey );
+    mKEMEncKeyLenText->setText( QString("%1").arg(strLen));
+}
+
+void KeyManDlg::changeKEMDecKey()
+{
+    QString strKey = mKEMDecKeyText->toPlainText();
+    QString strLen = getDataLenString( DATA_HEX, strKey );
+    mKEMDecKeyLenText->setText( QString("%1").arg(strLen));
 }

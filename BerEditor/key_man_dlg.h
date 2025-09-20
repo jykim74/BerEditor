@@ -47,6 +47,13 @@ private slots:
     void kekChanged();
     void clickClearDataAll();
 
+    void clickKEMClearAll();
+    void clickKEMEncap();
+    void clickKEMDecap();
+
+    void changeKEMKey();
+    void changeKEMEncKey();
+    void changeKEMDecKey();
 private:
     void initialize();
 };
