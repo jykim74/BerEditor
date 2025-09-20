@@ -54,7 +54,7 @@ KeyManDlg::KeyManDlg(QWidget *parent) :
     connect( mGenKEKBtn, SIGNAL(clicked()), this, SLOT(clickKeyWrapGenKEK()));
 
     connect( mKEMClearAllBtn, SIGNAL(clicked()), this, SLOT(clickKEMClearAll()));
-    connect( mKEMEncapBtn, SIGNAL(clicked(bool)), this, SLOT(clickKEMDecap()));
+    connect( mKEMEncapBtn, SIGNAL(clicked(bool)), this, SLOT(clickKEMEncap()));
     connect( mKEMDecapBtn, SIGNAL(clicked()), this, SLOT(clickKEMDecap()));
 
     connect( mKEMKeyText, SIGNAL(textChanged()), this, SLOT(changeKEMKey()));
@@ -616,6 +616,7 @@ void KeyManDlg::clickKEMEncap()
     }
 
     mKEMKeyText->setPlainText( getHexString( &binKey ));
+    mKEMEncKeyText->setPlainText( getHexString( &binEncKey ));
 
 end :
     JS_BIN_reset( &binPub );
@@ -631,6 +632,7 @@ void KeyManDlg::clickKEMDecap()
     BIN binEncKey = {0,0};
     BIN binDecKey = {0,0};
 
+    QString strKey = mKEMKeyText->toPlainText();
     QString strEncKey = mKEMEncKeyText->toPlainText();
 
     QString strPriPath;
@@ -646,7 +648,8 @@ void KeyManDlg::clickKEMDecap()
 
     JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
 
-    JS_BIN_decodeHex( strEncKey.toStdString().c_str(), &binEncKey );
+//    JS_BIN_decodeHex( strEncKey.toStdString().c_str(), &binEncKey );
+    JS_BIN_decodeHex( strKey.toStdString().c_str(), &binEncKey );
 
     ret = JS_ML_KEM_decapsulate( &binPri, &binEncKey, &binDecKey );
     if( ret != 0 )
