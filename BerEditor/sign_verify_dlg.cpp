@@ -587,9 +587,10 @@ int SignVerifyDlg::signVerifyInit()
         if( ret != CKR_OK ) goto end;
     }
 
-    if( nType == JS_PKI_KEY_TYPE_EDDSA )
+    if( nType == JS_PKI_KEY_TYPE_EDDSA || nType == JS_PKI_KEY_TYPE_ML_DSA || nType == JS_PKI_KEY_TYPE_SLH_DSA || nType == JS_PKI_KEY_TYPE_ML_KEM )
     {
-        berApplet->warningBox(tr( "EdDSA does not support this feature."), this );
+        QString strAlg = JS_PKI_getKeyAlgName( nType );
+        berApplet->warningBox(tr( "%1 does not support this feature.").arg( strAlg ), this );
         ret = JSR_UNSUPPORTED_ALGORITHM;
         goto end;
     }
