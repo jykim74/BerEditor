@@ -33,6 +33,8 @@ private slots:
     void inputChanged();
     void outputChanged();
 
+    void changeOutputHash();
+
     void clickClearDataAll();
 
     void clickFindSrcFile();
@@ -46,6 +48,7 @@ private slots:
     void onTaskUpdate( int nUpdate );
 
 private:
+    void initUI();
     void initialize();
     void appendStatusLabel( const QString& strLabel );
     void updateStatusLabel();

@@ -13,11 +13,14 @@
 #include "settings_mgr.h"
 #include "common.h"
 #include "hash_thread.h"
+#include "js_error.h"
 
 #include <QDialogButtonBox>
 #include <QFileInfo>
 #include <QDateTime>
 
+static const QString kSHAKE128 = "SHAKE128";
+static const QString kSHAKE256 = "SHAKE256";
 
 GenHashDlg::GenHashDlg(QWidget *parent) :
     QDialog(parent)
@@ -27,6 +30,7 @@ GenHashDlg::GenHashDlg(QWidget *parent) :
     update_cnt_ = 0;
     thread_ = NULL;
 
+    initUI();
 
     connect( mInitBtn, SIGNAL(clicked()), this, SLOT(hashInit()));
     connect( mUpdateBtn, SIGNAL(clicked()), this, SLOT(hashUpdate()));
@@ -43,6 +47,7 @@ GenHashDlg::GenHashDlg(QWidget *parent) :
     connect( mInputHexRadio, SIGNAL(clicked()), this, SLOT(inputChanged()));
     connect( mInputBase64Radio, SIGNAL(clicked()), this, SLOT(inputChanged()));
 
+    connect( mOutputHashCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeOutputHash()));
     connect( mFindSrcFileBtn, SIGNAL(clicked()), this, SLOT(clickFindSrcFile()));
 
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
@@ -67,17 +72,25 @@ GenHashDlg::~GenHashDlg()
     if( thread_ ) delete thread_;
 }
 
+void GenHashDlg::initUI()
+{
+    mOutputHashCombo->addItems( kHashList );
+    mOutputHashCombo->addItem( kSHAKE128 );
+    mOutputHashCombo->addItem( kSHAKE256 );
+
+    changeOutputHash();
+}
+
 void GenHashDlg::initialize()
 {
     SettingsMgr *setMgr = berApplet->settingsMgr();
 
     mOutputText->setPlaceholderText( tr("Hex value" ));
-
-    mOutputHashCombo->addItems( kHashList );
-
     mOutputHashCombo->setCurrentText( setMgr->defaultHash() );
 
     mSrcFileText->setPlaceholderText( tr( "Find the target file" ));
+
+    mReqLenText->setText( QString("32"));
     mInputTab->setCurrentIndex(0);
 }
 
@@ -116,7 +129,7 @@ int GenHashDlg::hashInit()
         berApplet->log( QString( "initialization algorithm : %1" ).arg( strAlg ));
     }
     else
-        mStatusLabel->setText( QString("Initialization failed [%1]").arg(ret) );
+        mStatusLabel->setText( QString("Initialization failed [%1]").arg(JERR(ret)) );
 
     update();
     return 0;
@@ -159,7 +172,7 @@ void GenHashDlg::hashUpdate()
         updateStatusLabel();
     }
     else
-        mStatusLabel->setText( QString("Update failed [%1]").arg(ret) );
+        mStatusLabel->setText( QString("Update failed [%1]").arg(JERR(ret)) );
 
     JS_BIN_reset( &binSrc );
     update();
@@ -169,8 +182,14 @@ void GenHashDlg::hashFinal()
 {
     int ret = 0;
     BIN binMD = {0,0};
+    QString strHash = mOutputHashCombo->currentText();
+    int nLen = mReqLenText->text().toInt();
 
-    ret = JS_PKI_hashFinal( pctx_, &binMD );
+    if( strHash == kSHAKE128 || strHash == kSHAKE256 )
+        ret = JS_PKI_hashFinalXOR( pctx_, nLen, &binMD );
+    else
+        ret = JS_PKI_hashFinal( pctx_, &binMD );
+
     if( ret == 0 )
     {
         mOutputText->setPlainText( getHexString( &binMD) );
@@ -180,7 +199,7 @@ void GenHashDlg::hashFinal()
     }
     else
     {
-        appendStatusLabel( QString("|Final failed [%1]").arg(ret) );
+        appendStatusLabel( QString("|Final failed [%1]").arg(JERR(ret)) );
     }
 
     JS_PKI_hashFree( &pctx_ );
@@ -235,8 +254,13 @@ void GenHashDlg::clickDigest()
     }
 
     QString strHash = mOutputHashCombo->currentText();
+    int nLen = mReqLenText->text().toInt();
 
-    ret = JS_PKI_genHash( strHash.toStdString().c_str(), &binSrc, &binHash );
+    if( strHash == kSHAKE128 || strHash == kSHAKE256 )
+        ret = JS_PKI_genHashXOR( strHash.toStdString().c_str(), &binSrc, nLen, &binHash );
+    else
+        ret = JS_PKI_genHash( strHash.toStdString().c_str(), &binSrc, &binHash );
+
     if( ret == 0 )
     {
         char *pHex = NULL;
@@ -256,7 +280,7 @@ void GenHashDlg::clickDigest()
     }
     else
     {
-        mStatusLabel->setText( QString("Digest failed [%1]").arg(ret) );
+        mStatusLabel->setText( QString("Digest failed [%1]").arg(JERR(ret)) );
     }
 
     JS_BIN_reset(&binSrc);
@@ -294,6 +318,22 @@ void GenHashDlg::outputChanged()
 {
     QString strLen = getDataLenString( DATA_HEX, mOutputText->toPlainText() );
     mOutputLenText->setText( QString("%1").arg(strLen));
+}
+
+void GenHashDlg::changeOutputHash()
+{
+    QString strHash = mOutputHashCombo->currentText();
+
+    if( strHash == kSHAKE128 || strHash == kSHAKE256 )
+    {
+        mReqLenLabel->setEnabled(true);
+        mReqLenText->setEnabled(true);
+    }
+    else
+    {
+        mReqLenLabel->setEnabled(false);
+        mReqLenText->setEnabled(false);
+    }
 }
 
 void GenHashDlg::clickClearDataAll()
