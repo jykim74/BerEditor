@@ -58,7 +58,7 @@ KeyManDlg::KeyManDlg(QWidget *parent) :
     connect( mKEMDecapBtn, SIGNAL(clicked()), this, SLOT(clickKEMDecap()));
 
     connect( mKEMKeyText, SIGNAL(textChanged()), this, SLOT(changeKEMKey()));
-    connect( mKEMEncKeyText, SIGNAL(textChanged()), this, SLOT(changeKEMEncKey()));
+    connect( mKEMWrappedKeyText, SIGNAL(textChanged()), this, SLOT(changeKEMWrappedKey()));
     connect( mKEMDecKeyText, SIGNAL(textChanged()), this, SLOT(changeKEMDecKey()));
 
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT( clickClearDataAll()));
@@ -582,7 +582,7 @@ void KeyManDlg::clickClearDataAll()
 void KeyManDlg::clickKEMClearAll()
 {
     mKEMKeyText->clear();
-    mKEMEncKeyText->clear();
+    mKEMWrappedKeyText->clear();
     mKEMDecKeyText->clear();
 }
 
@@ -592,8 +592,8 @@ void KeyManDlg::clickKEMEncap()
     QString strPubPath;
 
     BIN binPub = {0,0};
+    BIN binWrappedKey = {0,0};
     BIN binKey = {0,0};
-    BIN binEncKey = {0,0};
 
     KeyPairManDlg keyPairMan;
     keyPairMan.setTitle( tr( "Select keypair" ));
@@ -608,7 +608,7 @@ void KeyManDlg::clickKEMEncap()
     strPubPath = keyPairMan.getPubPath();
     JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPub );
 
-    ret = JS_ML_KEM_encapsulate( &binPub, &binKey, &binEncKey );
+    ret = JS_ML_KEM_encapsulate( &binPub, &binWrappedKey, &binKey );
     if( ret != 0 )
     {
         berApplet->warningBox( tr( "fail to encapsulate: %1" ).arg( JERR(ret) ), this );
@@ -616,12 +616,12 @@ void KeyManDlg::clickKEMEncap()
     }
 
     mKEMKeyText->setPlainText( getHexString( &binKey ));
-    mKEMEncKeyText->setPlainText( getHexString( &binEncKey ));
+    mKEMWrappedKeyText->setPlainText( getHexString( &binWrappedKey ));
 
 end :
     JS_BIN_reset( &binPub );
     JS_BIN_reset( &binKey );
-    JS_BIN_reset( &binEncKey );
+    JS_BIN_reset( &binWrappedKey );
 }
 
 void KeyManDlg::clickKEMDecap()
@@ -629,11 +629,16 @@ void KeyManDlg::clickKEMDecap()
     int ret = -1;
 
     BIN binPri = {0,0};
-    BIN binEncKey = {0,0};
+    BIN binWrappedKey = {0,0};
     BIN binDecKey = {0,0};
 
-    QString strKey = mKEMKeyText->toPlainText();
-    QString strEncKey = mKEMEncKeyText->toPlainText();
+    QString strWrappedKey = mKEMWrappedKeyText->toPlainText();
+    if( strWrappedKey.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a wrapped key" ), this );
+        mKEMWrappedKeyText->setFocus();
+        return;
+    }
 
     QString strPriPath;
 
@@ -649,9 +654,9 @@ void KeyManDlg::clickKEMDecap()
     JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
 
 //    JS_BIN_decodeHex( strEncKey.toStdString().c_str(), &binEncKey );
-    JS_BIN_decodeHex( strKey.toStdString().c_str(), &binEncKey );
+    JS_BIN_decodeHex( strWrappedKey.toStdString().c_str(), &binWrappedKey );
 
-    ret = JS_ML_KEM_decapsulate( &binPri, &binEncKey, &binDecKey );
+    ret = JS_ML_KEM_decapsulate( &binPri, &binWrappedKey, &binDecKey );
     if( ret != 0 )
     {
         berApplet->warningBox( tr( "fail to decapsulate: %1" ).arg( JERR(ret) ), this );
@@ -662,7 +667,7 @@ void KeyManDlg::clickKEMDecap()
 
 end :
     JS_BIN_reset( &binPri );
-    JS_BIN_reset( &binEncKey );
+    JS_BIN_reset( &binWrappedKey );
     JS_BIN_reset( &binDecKey );
 }
 
@@ -673,11 +678,11 @@ void KeyManDlg::changeKEMKey()
     mKEMKeyLenText->setText( QString("%1").arg(strLen));
 }
 
-void KeyManDlg::changeKEMEncKey()
+void KeyManDlg::changeKEMWrappedKey()
 {
-    QString strKey = mKEMEncKeyText->toPlainText();
+    QString strKey = mKEMWrappedKeyText->toPlainText();
     QString strLen = getDataLenString( DATA_HEX, strKey );
-    mKEMEncKeyLenText->setText( QString("%1").arg(strLen));
+    mKEMWrappedKeyLenText->setText( QString("%1").arg(strLen));
 }
 
 void KeyManDlg::changeKEMDecKey()

@@ -52,7 +52,7 @@ private slots:
     void clickKEMDecap();
 
     void changeKEMKey();
-    void changeKEMEncKey();
+    void changeKEMWrappedKey();
     void changeKEMDecKey();
 private:
     void initialize();
