@@ -1338,9 +1338,7 @@ void DocSignerDlg::clickCMSGetData()
     int ret = 0;
 
     BIN binSrc = {0,0};
-    JCMSInfo sCMSInfo;
-
-    memset( &sCMSInfo, 0x00, sizeof(sCMSInfo));
+    BIN binData = {0,0};
 
     ret = readCMSSrc( &binSrc );
     if( ret != 0 ) goto end;
@@ -1352,23 +1350,23 @@ void DocSignerDlg::clickCMSGetData()
         goto end;
     }
 
-    ret = JS_CMS_getData( &binSrc, &sCMSInfo );
+    ret = JS_CMS_getData( &binSrc, &binData );
 
-    if( sCMSInfo.binContent.nLen > 0 )
+    if( binData.nLen > 0 )
     {
         mCMSCmdNameText->setText( kCMSCmdGetData );
-        mCMSOutputText->setPlainText( getHexString( &sCMSInfo.binContent ));
+        mCMSOutputText->setPlainText( getHexString( &binData ));
 
         if( mDstFileCheck->isChecked() == true )
         {
             setDstFile();
             QString strDstPath = mDstPathText->text();
-            JS_BIN_fileWrite( &sCMSInfo.binContent, strDstPath.toLocal8Bit().toStdString().c_str() );
+            JS_BIN_fileWrite( &binData, strDstPath.toLocal8Bit().toStdString().c_str() );
             berApplet->messageBox( tr( "The data file[%1] has been saved." ).arg( strDstPath ), this );
         }
     }
 
-    if( ret == JSR_VERIFY )
+    if( ret == JSR_OK )
     {
         berApplet->messageBox( tr( "Get OK" ), this );
     }
@@ -1379,7 +1377,7 @@ void DocSignerDlg::clickCMSGetData()
 
 end:
     JS_BIN_reset( &binSrc );
-    JS_CMS_resetCMSInfo( &sCMSInfo );
+    JS_BIN_reset( &binData );
 }
 
 void DocSignerDlg::clickCMSGetDigest()
@@ -1387,9 +1385,9 @@ void DocSignerDlg::clickCMSGetDigest()
     int ret = 0;
 
     BIN binSrc = {0,0};
-    JCMSInfo sCMSInfo;
+    JCMSDigest  sDigestInfo;
 
-    memset( &sCMSInfo, 0x00, sizeof(sCMSInfo));
+    memset( &sDigestInfo, 0x00, sizeof(sDigestInfo));
 
     ret = readCMSSrc( &binSrc );
     if( ret != 0 ) goto end;
@@ -1401,25 +1399,25 @@ void DocSignerDlg::clickCMSGetDigest()
         goto end;
     }
 
-    ret = JS_CMS_getDigest( &binSrc, &sCMSInfo );
+    ret = JS_CMS_getDigest( &binSrc, &sDigestInfo );
 
-    if( sCMSInfo.binContent.nLen > 0 )
+    if( sDigestInfo.binContent.nLen > 0 )
     {
         mCMSCmdNameText->setText( kCMSCmdGetDigest );
-        mCMSOutputText->setPlainText( getHexString( &sCMSInfo.binContent ));
+        mCMSOutputText->setPlainText( getHexString( &sDigestInfo.binContent ));
 
         if( mDstFileCheck->isChecked() == true )
         {
             setDstFile();
             QString strDstPath = mDstPathText->text();
-            JS_BIN_fileWrite( &sCMSInfo.binContent, strDstPath.toLocal8Bit().toStdString().c_str() );
+            JS_BIN_fileWrite( &sDigestInfo.binContent, strDstPath.toLocal8Bit().toStdString().c_str() );
             berApplet->messageBox( tr( "The data file[%1] has been saved." ).arg( strDstPath ), this );
         }
     }
 
     if( ret == JSR_OK )
     {
-        berApplet->messageBox( tr( "Get digest OK [Verify: %1]" ).arg( sCMSInfo.nVerify ), this );
+        berApplet->messageBox( tr( "Get digest OK [Verify: %1]" ).arg( sDigestInfo.nVerify ), this );
     }
     else
     {
@@ -1428,7 +1426,7 @@ void DocSignerDlg::clickCMSGetDigest()
 
 end:
     JS_BIN_reset( &binSrc );
-    JS_CMS_resetCMSInfo( &sCMSInfo );
+    JS_CMS_resetDigest( &sDigestInfo );
 }
 
 void DocSignerDlg::clickJSON_ComputeSignature()

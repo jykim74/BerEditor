@@ -883,36 +883,44 @@ void CMSInfoDlg::setSignedCMS()
     int row = 0;
     time_t now = time(NULL);
 
-    JCMSInfo sCMS;
+    JCMSSigned sSigned;
     JSignerInfoList *pInfoList = NULL;
     int nCertCnt = 0;
     int nCRLCnt = 0;
     int nInfoCnt = 0;
+    int nMDCnt = 0;
 
     mVersionLabel->setEnabled(false);
     mVersionText->setEnabled( false );
 
-    memset( &sCMS, 0x00, sizeof(sCMS));
+    memset( &sSigned, 0x00, sizeof(sSigned));
     JS_BIN_reset( &tsp_bin_ );
 
-    ret = JS_CMS_getSignedData( &cms_bin_, &sCMS, &pInfoList, &tsp_bin_ );
+    ret = JS_CMS_getSignedData( &cms_bin_, &sSigned, &pInfoList, &tsp_bin_ );
 
-    nCertCnt = JS_BIN_countList( sCMS.pCertList );
-    nCRLCnt = JS_BIN_countList( sCMS.pCRLList );
+    nCertCnt = JS_BIN_countList( sSigned.pCertList );
+    nCRLCnt = JS_BIN_countList( sSigned.pCRLList );
+    nMDCnt = JS_UTIL_countStrList( sSigned.pMDList );
     nInfoCnt = JS_CMS_SginerInfo_countList( pInfoList );
 
-    mDataText->setPlainText( getHexString( &sCMS.binContent ));
+    mDataText->setPlainText( getHexString( &sSigned.binContent ));
 
     mDataTable->insertRow(row);
     mDataTable->setRowHeight( row, 10 );
     mDataTable->setItem( row, 0, new QTableWidgetItem("Type"));
-    mDataTable->setItem( row, 1, new QTableWidgetItem( JS_CMS_getTypeName( sCMS.nType ) ));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( JS_CMS_getTypeName( JS_PKCS7_TYPE_SIGNED ) ));
+    row++;
+
+    mDataTable->insertRow(row);
+    mDataTable->setRowHeight( row, 10 );
+    mDataTable->setItem( row, 0, new QTableWidgetItem( "Version" ));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( QString("V%1").arg( sSigned.nVersion + 1 )));
     row++;
 
     mDataTable->insertRow(row);
     mDataTable->setRowHeight( row, 10 );
     mDataTable->setItem( row, 0, new QTableWidgetItem( "Verify" ));
-    mDataTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( sCMS.nVerify )));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( sSigned.nVerify )));
     row++;
 
     mDataTable->insertRow(row);
@@ -925,6 +933,12 @@ void CMSInfoDlg::setSignedCMS()
     mDataTable->setRowHeight( row, 10 );
     mDataTable->setItem( row, 0, new QTableWidgetItem( "CRL Count" ));
     mDataTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( nCRLCnt )));
+    row++;
+
+    mDataTable->insertRow(row);
+    mDataTable->setRowHeight( row, 10 );
+    mDataTable->setItem( row, 0, new QTableWidgetItem( "MD Count" ));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( nMDCnt )));
     row++;
 
     mDataTable->insertRow(row);
@@ -946,7 +960,7 @@ void CMSInfoDlg::setSignedCMS()
 
         memset( &sCertInfo, 0x00, sizeof(sCertInfo));
 
-        pCertList = JS_BIN_getListAt( i, sCMS.pCertList );
+        pCertList = JS_BIN_getListAt( i, sSigned.pCertList );
 
         ret = JS_PKI_getCertInfo( &pCertList->Bin, &sCertInfo, NULL );
         if( ret != 0 ) continue;
@@ -982,7 +996,7 @@ void CMSInfoDlg::setSignedCMS()
 
         memset( &sCRLInfo, 0x00, sizeof(sCRLInfo));
 
-        pCRLList = JS_BIN_getListAt( i, sCMS.pCRLList );
+        pCRLList = JS_BIN_getListAt( i, sSigned.pCRLList );
 
         ret = JS_PKI_getCRLInfo( &pCRLList->Bin, &sCRLInfo, NULL, NULL );
         if( ret != 0 ) continue;
@@ -1015,7 +1029,7 @@ void CMSInfoDlg::setSignedCMS()
         setSignerInfoCMS( pInfoList );
     }
 
-    JS_CMS_resetCMSInfo( &sCMS );
+    JS_CMS_resetSigned( &sSigned );
     if( pInfoList ) JS_CMS_resetSignerInfoList( &pInfoList );
 }
 
@@ -1025,42 +1039,45 @@ void CMSInfoDlg::setEnvelopedCMS()
     int row = 0;
     time_t now = time(NULL);
 
-    JCMSInfo sCMS;
+    JCMSEnveloped sEnvelopedInfo;
     JRecipInfoList *pInfoList = NULL;
-    int nCertCnt = 0;
-    int nCRLCnt = 0;
+
     int nInfoCnt = 0;
 
     mVersionLabel->setEnabled(false);
     mVersionText->setEnabled( false );
 
-    memset( &sCMS, 0x00, sizeof(sCMS));
+    memset( &sEnvelopedInfo, 0x00, sizeof(sEnvelopedInfo));
     JS_BIN_reset( &tsp_bin_ );
 
-    ret = JS_CMS_getEnvelopedData( &cms_bin_, &sCMS, &pInfoList );
+    ret = JS_CMS_getEnvelopedData( &cms_bin_, &sEnvelopedInfo, &pInfoList );
 
-    nCertCnt = JS_BIN_countList( sCMS.pCertList );
-    nCRLCnt = JS_BIN_countList( sCMS.pCRLList );
     nInfoCnt = JS_CMS_RecipInfo_countList( pInfoList );
 
-    mDataText->setPlainText( getHexString( &sCMS.binContent ));
+    mDataText->setPlainText( getHexString( &sEnvelopedInfo.binEncData ));
 
     mDataTable->insertRow(row);
     mDataTable->setRowHeight( row, 10 );
     mDataTable->setItem( row, 0, new QTableWidgetItem("Type"));
-    mDataTable->setItem( row, 1, new QTableWidgetItem( JS_CMS_getTypeName( sCMS.nType ) ));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( JS_CMS_getTypeName( JS_PKCS7_TYPE_ENVELOPED ) ));
     row++;
 
     mDataTable->insertRow(row);
     mDataTable->setRowHeight( row, 10 );
-    mDataTable->setItem( row, 0, new QTableWidgetItem( "Cert Count" ));
-    mDataTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( nCertCnt )));
+    mDataTable->setItem( row, 0, new QTableWidgetItem("Version"));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( QString("V%1").arg( sEnvelopedInfo.nVersion + 1 ) ));
     row++;
 
     mDataTable->insertRow(row);
     mDataTable->setRowHeight( row, 10 );
-    mDataTable->setItem( row, 0, new QTableWidgetItem( "CRL Count" ));
-    mDataTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( nCRLCnt )));
+    mDataTable->setItem( row, 0, new QTableWidgetItem("Enc Algorithm"));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( sEnvelopedInfo.pAlg ) ));
+    row++;
+
+    mDataTable->insertRow(row);
+    mDataTable->setRowHeight( row, 10 );
+    mDataTable->setItem( row, 0, new QTableWidgetItem("Enc ContentType"));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( sEnvelopedInfo.pContentType ) ));
     row++;
 
     mDataTable->insertRow(row);
@@ -1069,89 +1086,13 @@ void CMSInfoDlg::setEnvelopedCMS()
     mDataTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( nInfoCnt )));
     row++;
 
-    if( nCertCnt > 0 ) mInfoTab->setTabEnabled( JS_CMS_CERT_IDX, true );
-    if( nCRLCnt > 0 ) mInfoTab->setTabEnabled( JS_CMS_CRL_IDX, true );
-
-    for( int i = 0; i < nCertCnt; i++ )
-    {
-        const BINList *pCertList = NULL;
-        JCertInfo sCertInfo;
-
-        char    sNotBefore[64];
-        char    sNotAfter[64];
-
-        memset( &sCertInfo, 0x00, sizeof(sCertInfo));
-
-        pCertList = JS_BIN_getListAt( i, sCMS.pCertList );
-
-        ret = JS_PKI_getCertInfo( &pCertList->Bin, &sCertInfo, NULL );
-        if( ret != 0 ) continue;
-
-        JS_UTIL_getDate( sCertInfo.tNotBefore, sNotBefore );
-        JS_UTIL_getDate( sCertInfo.tNotAfter, sNotAfter );
-
-        mCertTable->insertRow( i );
-        mCertTable->setRowHeight( i, 10 );
-        QTableWidgetItem *item = new QTableWidgetItem( sCertInfo.pSubjectName );
-
-        if( now > sCertInfo.tNotAfter )
-            item->setIcon(QIcon(":/images/cert_revoked.png" ));
-        else
-            item->setIcon(QIcon(":/images/cert.png" ));
-
-        item->setData(Qt::UserRole, getHexString( &pCertList->Bin ));
-
-        mCertTable->setItem( i, 0, item );
-        mCertTable->setItem( i, 1, new QTableWidgetItem( sNotAfter ));
-        mCertTable->setItem( i, 2, new QTableWidgetItem( sCertInfo.pIssuerName ));
-
-        JS_PKI_resetCertInfo( &sCertInfo );
-    }
-
-    for( int i = 0; i < nCRLCnt; i++ )
-    {
-        JCRLInfo sCRLInfo;
-        const BINList *pCRLList = NULL;
-
-        char    sThisUpdate[64];
-        char    sNextUpdate[64];
-
-        memset( &sCRLInfo, 0x00, sizeof(sCRLInfo));
-
-        pCRLList = JS_BIN_getListAt( i, sCMS.pCRLList );
-
-        ret = JS_PKI_getCRLInfo( &pCRLList->Bin, &sCRLInfo, NULL, NULL );
-        if( ret != 0 ) continue;
-
-        JS_UTIL_getDate( sCRLInfo.tThisUpdate, sThisUpdate );
-        JS_UTIL_getDate( sCRLInfo.tNextUpdate, sNextUpdate );
-
-        mCRLTable->insertRow( i );
-        mCRLTable->setRowHeight( i, 10 );
-        QTableWidgetItem *item = new QTableWidgetItem( sCRLInfo.pIssuerName );
-
-        if( now > sCRLInfo.tNextUpdate )
-            item->setIcon(QIcon(":/images/crl_expired.png" ));
-        else
-            item->setIcon(QIcon(":/images/crl.png" ));
-
-        item->setData( Qt::UserRole, getHexString( &pCRLList->Bin ));
-
-        mCRLTable->setItem( i, 0, item );
-        mCRLTable->setItem( i, 1, new QTableWidgetItem( sThisUpdate ));
-        mCRLTable->setItem( i, 2, new QTableWidgetItem( sNextUpdate ));
-
-
-        JS_PKI_resetCRLInfo( &sCRLInfo );
-    }
-
     if( pInfoList )
     {
         mInfoTab->setTabEnabled( JS_CMS_RECIP_IDX, true );
         setRecipInfoCMS( pInfoList );
     }
 
-    JS_CMS_resetCMSInfo( &sCMS );
+    JS_CMS_resetEnveloped( &sEnvelopedInfo );
     if( pInfoList ) JS_CMS_resetRecipInfoList( &pInfoList );
 }
 
