@@ -57,9 +57,13 @@ KeyManDlg::KeyManDlg(QWidget *parent) :
     connect( mKEMEncapBtn, SIGNAL(clicked(bool)), this, SLOT(clickKEMEncap()));
     connect( mKEMDecapBtn, SIGNAL(clicked()), this, SLOT(clickKEMDecap()));
 
-    connect( mKEMKeyText, SIGNAL(textChanged()), this, SLOT(changeKEMKey()));
+    connect( mKEMKeyText, SIGNAL(textChanged(QString)), this, SLOT(changeKEMKey()));
     connect( mKEMWrappedKeyText, SIGNAL(textChanged()), this, SLOT(changeKEMWrappedKey()));
-    connect( mKEMDecKeyText, SIGNAL(textChanged()), this, SLOT(changeKEMDecKey()));
+    connect( mKEMDecKeyText, SIGNAL(textChanged(QString)), this, SLOT(changeKEMDecKey()));
+
+    connect( mKEMWrappedKeyClearBtn, SIGNAL(clicked()), this, SLOT(clickKEMWrappedKeyClear()));
+    connect( mKEMKeyClearBtn, SIGNAL(clicked()), this, SLOT(clickKEMKeyClear()));
+    connect( mKEMDecKeyClearBtn, SIGNAL(clicked()), this, SLOT(clickKEMDecKeyClear()));
 
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT( clickClearDataAll()));
 
@@ -68,6 +72,11 @@ KeyManDlg::KeyManDlg(QWidget *parent) :
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+
+    mKEMWrappedKeyClearBtn->setFixedWidth(34);
+    mKEMKeyClearBtn->setFixedWidth(34);
+    mKEMDecKeyClearBtn->setFixedWidth(34);
+
     mDeriveTab->layout()->setSpacing(5);
     mDeriveTab->layout()->setMargin(5);
 
@@ -616,7 +625,7 @@ void KeyManDlg::clickKEMEncap()
         goto end;
     }
 
-    mKEMKeyText->setPlainText( getHexString( &binKey ));
+    mKEMKeyText->setText( getHexString( &binKey ));
     mKEMWrappedKeyText->setPlainText( getHexString( &binWrappedKey ));
 
 end :
@@ -665,7 +674,7 @@ void KeyManDlg::clickKEMDecap()
         goto end;
     }
 
-    mKEMDecKeyText->setPlainText( getHexString( &binDecKey ));
+    mKEMDecKeyText->setText( getHexString( &binDecKey ));
 
 end :
     JS_BIN_reset( &binPri );
@@ -675,7 +684,7 @@ end :
 
 void KeyManDlg::changeKEMKey()
 {
-    QString strKey = mKEMKeyText->toPlainText();
+    QString strKey = mKEMKeyText->text();
     QString strLen = getDataLenString( DATA_HEX, strKey );
     mKEMKeyLenText->setText( QString("%1").arg(strLen));
 }
@@ -689,7 +698,22 @@ void KeyManDlg::changeKEMWrappedKey()
 
 void KeyManDlg::changeKEMDecKey()
 {
-    QString strKey = mKEMDecKeyText->toPlainText();
+    QString strKey = mKEMDecKeyText->text();
     QString strLen = getDataLenString( DATA_HEX, strKey );
     mKEMDecKeyLenText->setText( QString("%1").arg(strLen));
+}
+
+void KeyManDlg::clickKEMWrappedKeyClear()
+{
+    mKEMWrappedKeyText->clear();
+}
+
+void KeyManDlg::clickKEMKeyClear()
+{
+    mKEMKeyText->clear();
+}
+
+void KeyManDlg::clickKEMDecKeyClear()
+{
+    mKEMDecKeyText->clear();
 }

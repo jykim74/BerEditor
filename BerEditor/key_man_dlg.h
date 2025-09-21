@@ -54,6 +54,11 @@ private slots:
     void changeKEMKey();
     void changeKEMWrappedKey();
     void changeKEMDecKey();
+
+    void clickKEMWrappedKeyClear();
+    void clickKEMKeyClear();
+    void clickKEMDecKeyClear();
+
 private:
     void initialize();
 };

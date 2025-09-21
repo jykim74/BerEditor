@@ -195,13 +195,6 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="2">
-             <widget class="QPushButton" name="mLMakeCSRBtn">
-              <property name="text">
-               <string>Make CSR</string>
-              </property>
-             </widget>
-            </item>
             <item row="2" column="0">
              <widget class="QPushButton" name="mLRunPubEncBtn">
               <property name="text">
@@ -244,31 +237,38 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="0">
-             <widget class="QPushButton" name="mLDecodePubKeyBtn">
+            <item row="3" column="0">
+             <widget class="QPushButton" name="mLDeleteBtn">
               <property name="text">
-               <string>Decode PubKey</string>
+               <string>Delete</string>
               </property>
              </widget>
             </item>
-            <item row="0" column="1">
+            <item row="0" column="3">
              <widget class="QPushButton" name="mLDecodePriKeyBtn">
               <property name="text">
                <string>Decode PriKey</string>
               </property>
              </widget>
             </item>
-            <item row="0" column="3">
-             <widget class="QPushButton" name="mLGenKeyPairBtn">
+            <item row="0" column="1">
+             <widget class="QPushButton" name="mLMakeCSRBtn">
               <property name="text">
-               <string>Gen KeyPair</string>
+               <string>Make CSR</string>
               </property>
              </widget>
             </item>
-            <item row="3" column="0">
-             <widget class="QPushButton" name="mLDeleteBtn">
+            <item row="0" column="2">
+             <widget class="QPushButton" name="mLDecodePubKeyBtn">
               <property name="text">
-               <string>Delete</string>
+               <string>Decode PubKey</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QPushButton" name="mLGenKeyPairBtn">
+              <property name="text">
+               <string>Gen KeyPair</string>
               </property>
              </widget>
             </item>
@@ -1010,7 +1010,6 @@
   <tabstop>mKeyTypeCombo</tabstop>
   <tabstop>mTabWidget</tabstop>
   <tabstop>mKeyPairTable</tabstop>
-  <tabstop>mLMakeCSRBtn</tabstop>
   <tabstop>mLViewPubKeyBtn</tabstop>
   <tabstop>mLRunPubEncBtn</tabstop>
   <tabstop>mLRunPubDecBtn</tabstop>

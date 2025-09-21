@@ -55,12 +55,14 @@ private:
 
     void setSigned();
     void setEnveloped();
-    void setSignedCMS();
-    void setEnvelopedCMS();
     void setSignedAndEnveloped();
     void setData();
     void setDigest();
     void setEncrypted();
+
+    void setDigestCMS();
+    void setSignedCMS();
+    void setEnvelopedCMS();
 
     BIN cms_bin_;
     int cms_type_;

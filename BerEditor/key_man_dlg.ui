@@ -1093,7 +1093,7 @@
      </widget>
      <widget class="QWidget" name="mKeyEncapTab">
       <attribute name="title">
-       <string>KeyEncapsulate</string>
+       <string>KEM</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_6">
        <item>
@@ -1143,6 +1143,19 @@
           </widget>
          </item>
          <item row="0" column="2">
+          <spacer name="horizontalSpacer_13">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="3">
           <widget class="QLineEdit" name="mKEMWrappedKeyLenText">
            <property name="minimumSize">
             <size>
@@ -1189,22 +1202,35 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <spacer name="horizontalSpacer_13">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
+          <widget class="QPushButton" name="mKEMWrappedKeyClearBtn">
+           <property name="minimumSize">
             <size>
-             <width>40</width>
-             <height>20</height>
+             <width>20</width>
+             <height>0</height>
             </size>
            </property>
-          </spacer>
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>C</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
        <item>
         <widget class="QPlainTextEdit" name="mKEMWrappedKeyText"/>
+       </item>
+       <item>
+        <widget class="Line" name="line_7">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_17">
@@ -1221,7 +1247,7 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
+         <item row="0" column="3">
           <widget class="QLineEdit" name="mKEMKeyLenText">
            <property name="minimumSize">
             <size>
@@ -1267,7 +1293,7 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
+         <item row="0" column="2">
           <spacer name="horizontalSpacer_14">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -1280,10 +1306,29 @@
            </property>
           </spacer>
          </item>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="mKEMKeyClearBtn">
+           <property name="minimumSize">
+            <size>
+             <width>20</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>C</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
-        <widget class="QPlainTextEdit" name="mKEMKeyText">
+        <widget class="QLineEdit" name="mKEMKeyText">
          <property name="palette">
           <palette>
            <active>
@@ -1313,6 +1358,13 @@
          </property>
          <property name="readOnly">
           <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="Line" name="line_8">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </item>
@@ -1358,8 +1410,28 @@
         </layout>
        </item>
        <item>
+        <widget class="Line" name="line_9">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
         <layout class="QGridLayout" name="gridLayout_18">
          <item row="0" column="2">
+          <spacer name="horizontalSpacer_15">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="3">
           <widget class="QLineEdit" name="mKEMDecKeyLenText">
            <property name="minimumSize">
             <size>
@@ -1419,22 +1491,28 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <spacer name="horizontalSpacer_15">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
+          <widget class="QPushButton" name="mKEMDecKeyClearBtn">
+           <property name="minimumSize">
             <size>
-             <width>40</width>
-             <height>20</height>
+             <width>20</width>
+             <height>0</height>
             </size>
            </property>
-          </spacer>
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>C</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
        <item>
-        <widget class="QPlainTextEdit" name="mKEMDecKeyText">
+        <widget class="QLineEdit" name="mKEMDecKeyText">
          <property name="palette">
           <palette>
            <active>

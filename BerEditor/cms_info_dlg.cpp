@@ -219,7 +219,11 @@ void CMSInfoDlg::setCMS( const BIN *pCMS, const QString strTitle )
     }
     else if( cms_type_ == JS_PKCS7_TYPE_DIGEST )
     {
-        setDigest();
+        if( is_cms_ )
+            setDigestCMS();
+        else
+            setDigest();
+
         strType = "Digest";
     }
     else if( cms_type_ == JS_PKCS7_TYPE_ENCRYPTED )
@@ -875,6 +879,49 @@ void CMSInfoDlg::setEnveloped()
 end :
     JS_PKCS7_resetEnvelopedData( &sEnvelopedData );
     if( pInfoList ) JS_PKCS7_resetRecipInfoList( &pInfoList );
+}
+
+void CMSInfoDlg::setDigestCMS()
+{
+    int ret = 0;
+    int row = 0;
+
+    JCMSDigest sDigestInfo;
+
+    memset( &sDigestInfo, 0x00, sizeof(sDigestInfo));
+
+    ret = JS_CMS_getDigest( &cms_bin_, &sDigestInfo );
+    if( ret != JSR_OK ) return;
+
+    mVersionText->setText( QString("V%1").arg( sDigestInfo.nVersion + 1 ));
+    mDataText->setPlainText( getHexString( &sDigestInfo.binContent ));
+
+    mDataTable->insertRow(row);
+    mDataTable->setRowHeight( row, 10 );
+    mDataTable->setItem( row, 0, new QTableWidgetItem("Type"));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( JS_PKCS7_getTypeName( JS_PKCS7_TYPE_DIGEST ) ));
+    row++;
+
+    mDataTable->insertRow(row);
+    mDataTable->setRowHeight(row, 10);
+    mDataTable->setItem( row, 0, new QTableWidgetItem("Digest"));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( getHexString( &sDigestInfo.binDigest ) ));
+    row++;
+
+    mDataTable->insertRow(row);
+    mDataTable->setRowHeight(row, 10);
+    mDataTable->setItem( row, 0, new QTableWidgetItem("Alg"));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( sDigestInfo.pAlg ));
+    row++;
+
+    mDataTable->insertRow(row);
+    mDataTable->setRowHeight(row, 10);
+    mDataTable->setItem( row, 0, new QTableWidgetItem("Verify"));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( sDigestInfo.nVerify ) ));
+    row++;
+
+end :
+    JS_CMS_resetDigest( &sDigestInfo );
 }
 
 void CMSInfoDlg::setSignedCMS()
