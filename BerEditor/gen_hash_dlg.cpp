@@ -74,6 +74,7 @@ void GenHashDlg::initialize()
     mOutputText->setPlaceholderText( tr("Hex value" ));
 
     mOutputHashCombo->addItems( kHashList );
+
     mOutputHashCombo->setCurrentText( setMgr->defaultHash() );
 
     mSrcFileText->setPlaceholderText( tr( "Find the target file" ));
