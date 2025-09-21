@@ -596,8 +596,9 @@ void KeyManDlg::clickKEMEncap()
     BIN binKey = {0,0};
 
     KeyPairManDlg keyPairMan;
-    keyPairMan.setTitle( tr( "Select keypair" ));
+    keyPairMan.setTitle( tr( "Select public key" ));
     keyPairMan.setMode( KeyPairModeSelect );
+    keyPairMan.mKeyTypeCombo->setCurrentText( JS_PKI_KEY_NAME_ML_KEM );
 
     if( keyPairMan.exec() != QDialog::Accepted )
     {
@@ -643,8 +644,9 @@ void KeyManDlg::clickKEMDecap()
     QString strPriPath;
 
     KeyPairManDlg keyPairMan;
-    keyPairMan.setTitle( tr( "Select keypair" ));
+    keyPairMan.setTitle( tr( "Select private key" ));
     keyPairMan.setMode( KeyPairModeSelect );
+    keyPairMan.mKeyTypeCombo->setCurrentText( JS_PKI_KEY_NAME_ML_KEM );
 
     if( keyPairMan.exec() != QDialog::Accepted )
         goto end;
