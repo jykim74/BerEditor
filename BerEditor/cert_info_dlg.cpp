@@ -243,6 +243,7 @@ void CertInfoDlg::getFields()
 
     BIN binFinger = {0,0};
     BIN binPub = {0,0};
+    BIN binKID = {0,0};
 
     char    sNotBefore[64];
     char    sNotAfter[64];
@@ -265,6 +266,10 @@ void CertInfoDlg::getFields()
         this->hide();
         return;
     }
+
+    JS_PKI_getPubKeyFromCert( &cert_bin_, &binPub );
+    JS_PKI_getKeyIdentifier( &binPub, &binKID );
+    mKIDText->setText( getHexString( &binKID ));
 
     if( self_sign_ == true ) mGetCABtn->setEnabled( false );
 
@@ -320,7 +325,7 @@ void CertInfoDlg::getFields()
             QString strAlg;
             QString strParam;
 
-            JS_BIN_decodeHex( cert_info_.pPublicKey, &binPub );
+//            JS_BIN_decodeHex( cert_info_.pPublicKey, &binPub );
             JS_PKI_getPubKeyInfo( &binPub, &nKeyType, &nOption );
 
             strAlg = JS_PKI_getKeyAlgName( nKeyType );
@@ -422,6 +427,7 @@ void CertInfoDlg::getFields()
 
     JS_BIN_reset( &binFinger );
     JS_BIN_reset( &binPub );
+    JS_BIN_reset( &binKID );
 }
 
 

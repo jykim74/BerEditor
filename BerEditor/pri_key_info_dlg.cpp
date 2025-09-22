@@ -887,6 +887,8 @@ void PriKeyInfoDlg::setPrivateKey( const BIN *pPriKey, const QString strTitle )
 {
     clearAll();
 
+    BIN binPub = {0,0};
+    BIN binKID = {0,0};
     QString strLabel = tr( "Private Key Information" );
     mTitleLabel->setText( strLabel );
 
@@ -899,6 +901,13 @@ void PriKeyInfoDlg::setPrivateKey( const BIN *pPriKey, const QString strTitle )
 
     if( pPriKey == NULL || pPriKey->nLen <= 0 )
         return;
+
+    JS_PKI_getPubKeyFromPriKey( &pri_key_, &binPub );
+    JS_PKI_getKeyIdentifier( &binPub, &binKID );
+
+    mKIDText->setText( getHexString( &binKID ));
+    JS_BIN_reset( &binKID );
+    JS_BIN_reset( &binPub );
 
     key_type_ = JS_PKI_getPriKeyType( pPriKey );
     if( key_type_ < 0 ) return;
@@ -942,6 +951,8 @@ void PriKeyInfoDlg::setPublicKey( const BIN *pPubKey, const QString strTitle )
 {
     clearAll();
 
+    BIN binKID = {0,0};
+
     QString strLabel = tr( "Public Key Information" );
 
     mTitleLabel->setText( strLabel );
@@ -953,6 +964,10 @@ void PriKeyInfoDlg::setPublicKey( const BIN *pPubKey, const QString strTitle )
 
     if( pPubKey == NULL || pPubKey->nLen <= 0 )
         return;
+
+    JS_PKI_getKeyIdentifier( &pub_key_, &binKID );
+    mKIDText->setText( getHexString( &binKID ));
+    JS_BIN_reset( &binKID );
 
     key_type_ = JS_PKI_getPubKeyType( pPubKey );
 
