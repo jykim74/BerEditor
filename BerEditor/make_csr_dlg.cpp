@@ -58,6 +58,23 @@ void MakeCSRDlg::initialize()
 
 void MakeCSRDlg::setPriKey( const BIN *pPri )
 {
+    int nKeyType = JS_PKI_getPriKeyType( pPri );
+
+    if( nKeyType < 0 ) return;
+
+    if( nKeyType == JS_PKI_KEY_TYPE_EDDSA ||
+        nKeyType == JS_PKI_KEY_TYPE_ML_DSA ||
+        nKeyType == JS_PKI_KEY_TYPE_SLH_DSA )
+    {
+        mSignHashCombo->setEnabled( false );
+        mSignHashLabel->setEnabled( false );
+    }
+    else if( nKeyType == JS_PKI_KEY_TYPE_SM2 )
+    {
+        mSignHashCombo->clear();
+        mSignHashCombo->addItem( "SM3" );
+    }
+
     JS_BIN_reset( &pri_key_ );
     JS_BIN_copy( &pri_key_, pPri );
 }

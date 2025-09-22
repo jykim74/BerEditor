@@ -1386,7 +1386,6 @@ void KeyPairManDlg::typePubKey()
 void KeyPairManDlg::clickImport()
 {
     int ret = 0;
-    int nKeyType = 0;
 
     BIN binPri = {0,0};
     BIN binPub = {0,0};
@@ -1454,14 +1453,7 @@ void KeyPairManDlg::clickImport()
         JS_BIN_fileReadBER( fileName.toLocal8Bit().toStdString().c_str(), &binPri );
     }
 
-    nKeyType = JS_PKI_getPriKeyType( &binPri );
-    if( nKeyType < 0 )
-    {
-        berApplet->warningBox( tr( "invalid private key" ), this );
-        goto end;
-    }
-
-    ret = JS_PKI_getPubKeyFromPriKey( nKeyType, &binPri, &binPub );
+    ret = JS_PKI_getPubKeyFromPriKey( &binPri, &binPub );
     if( ret != 0 )
     {
         goto end;

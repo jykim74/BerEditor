@@ -34,6 +34,14 @@ DEFINES += _USE_LCN_SRV
 
 CONFIG += c++11
 
+PQC = TRUE
+
+isEqual( PQC, TRUE ) {
+    DEFINES += PQC
+    OPENSSL = "openssl35"
+} else {
+    OPENSSL = "openssl3"
+}
 
 SOURCES += \
     about_dlg.cpp \
@@ -239,13 +247,13 @@ mac {
     CONFIG( debug, debug | release ) {
         message( "BerEditor Debug" );
         LIBS += -L"../../build-PKILib-Desktop_Qt_5_15_2_clang_64bit-Debug" -lPKILib
-        LIBS += -L"../../lib/mac/debug/openssl3/lib" -lcrypto -lssl
-        INCLUDEPATH += "../../lib/mac/debug/openssl3/include"
+        LIBS += -L"../../lib/mac/debug/$$OPENSSL/lib" -lcrypto -lssl
+        INCLUDEPATH += "../../lib/mac/debug/$$OPENSSL/include"
     } else {
         message( "BerEditor Release" );
         LIBS += -L"../../build-PKILib-Desktop_Qt_5_15_2_clang_64bit-Release" -lPKILib
-        LIBS += -L"../../lib/mac/openssl3/lib" -lcrypto -lssl
-        INCLUDEPATH += "../../lib/mac/openssl3/include"
+        LIBS += -L"../../lib/mac/$$OPENSSL/lib" -lcrypto -lssl
+        INCLUDEPATH += "../../lib/mac/$$OPENSSL/include"
     }
 
     LIBS += -lldap -llber
@@ -255,10 +263,10 @@ mac {
 linux {
     CONFIG( debug, debug | release ) {
         LIBS += -L"../../build-PKILib-Desktop_Qt_5_13_2_GCC_64bit-Debug" -lPKILib
-        LIBS += -L"../../lib/linux/debug/openssl3/lib64" -lcrypto -lssl
+        LIBS += -L"../../lib/linux/debug/$$OPENSSL/lib64" -lcrypto -lssl
     } else {
         LIBS += -L"../../build-PKILib-Desktop_Qt_5_13_2_GCC_64bit-Release" -lPKILib
-        LIBS += -L"../../lib/linux/openssl3/lib64" -lcrypto -lssl
+        LIBS += -L"../../lib/linux/$$OPENSSL/lib64" -lcrypto -lssl
     }
 
     LIBS += -lltdl -lldap -llber
@@ -276,10 +284,10 @@ win32 {
 
     Debug {
         LIBS += -L"../../PKILib/build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug -lPKILib"
-        LIBS += -L"../../lib/win64/debug/openssl3/lib64 -lcrypto -lssl"
+        LIBS += -L"../../lib/win64/debug/$$OPENSSL/lib64 -lcrypto -lssl"
     } else {
         LIBS += -L"../../PKILib/build/Desktop_Qt_5_15_2_MinGW_64_bit-Release -lPKILib"
-        LIBS += -L"../../lib/win64/openssl3/lib64 -lcrypto -lssl"
+        LIBS += -L"../../lib/win64/$$OPENSSL/lib64 -lcrypto -lssl"
     }
 
     LIBS += -L"../../lib/win64/xmlsec1/xmlsec/bin -lxmlsec -lxmlsec-openssl"

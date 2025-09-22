@@ -228,7 +228,11 @@ void CMSInfoDlg::setCMS( const BIN *pCMS, const QString strTitle )
     }
     else if( cms_type_ == JS_PKCS7_TYPE_ENCRYPTED )
     {
-        setEncrypted();
+        if( is_cms_ )
+            setEncryptedCMS();
+        else
+            setEncrypted();
+
         strType = "Encrypted";
     }
     else
@@ -407,14 +411,14 @@ void CMSInfoDlg::setSignerInfo( const JP7SignerInfoList *pSignerList )
 
         mSignerTable->insertRow( srow );
         mSignerTable->setRowHeight(srow, 10);
-        mSignerTable->setItem( srow, 0, new QTableWidgetItem( tr("DigestEncAlg") ));
-        mSignerTable->setItem( srow, 1, new QTableWidgetItem( QString( "%1").arg( pCurList->sSignerInfo.pDigestEncAlg )));
+        mSignerTable->setItem( srow, 0, new QTableWidgetItem( tr("SignAlg") ));
+        mSignerTable->setItem( srow, 1, new QTableWidgetItem( QString( "%1").arg( pCurList->sSignerInfo.pSignAlg )));
         srow++;
 
         mSignerTable->insertRow( srow );
         mSignerTable->setRowHeight(srow, 10);
-        mSignerTable->setItem( srow, 0, new QTableWidgetItem( tr("EncDigest") ));
-        mSignerTable->setItem( srow, 1, new QTableWidgetItem( QString( "%1").arg( pCurList->sSignerInfo.pEncDigest )));
+        mSignerTable->setItem( srow, 0, new QTableWidgetItem( tr( "Signature") ));
+        mSignerTable->setItem( srow, 1, new QTableWidgetItem( QString( "%1").arg( pCurList->sSignerInfo.pSign )));
         srow++;
 
         if( pCurList->sSignerInfo.pAuthAttr )
@@ -546,6 +550,30 @@ void CMSInfoDlg::setSignerInfoCMS( const JSignerInfoList *pSignerList )
 
     while( pCurList )
     {
+        mSignerTable->insertRow(srow);
+        mSignerTable->setRowHeight(srow, 10);
+        mSignerTable->setItem( srow, 0, new QTableWidgetItem( tr("Version") ));
+        mSignerTable->setItem( srow, 1, new QTableWidgetItem( QString( "V%1").arg( pCurList->sInfo.nVersion + 1 )));
+        srow++;
+
+        if( pCurList->sInfo.pIssuer )
+        {
+            mSignerTable->insertRow(srow);
+            mSignerTable->setRowHeight(srow, 10);
+            mSignerTable->setItem( srow, 0, new QTableWidgetItem( tr("Issuer") ));
+            mSignerTable->setItem( srow, 1, new QTableWidgetItem( QString( "%1").arg( pCurList->sInfo.pIssuer )));
+            srow++;
+        }
+
+        if( pCurList->sInfo.pSerial )
+        {
+            mSignerTable->insertRow(srow);
+            mSignerTable->setRowHeight(srow, 10);
+            mSignerTable->setItem( srow, 0, new QTableWidgetItem( tr("Serial") ));
+            mSignerTable->setItem( srow, 1, new QTableWidgetItem( QString( "%1").arg( pCurList->sInfo.pSerial )));
+            srow++;
+        }
+
         if( pCurList->sInfo.pAlg )
         {
             mSignerTable->insertRow(srow);
@@ -555,12 +583,12 @@ void CMSInfoDlg::setSignerInfoCMS( const JSignerInfoList *pSignerList )
             srow++;
         }
 
-        if( pCurList->sInfo.pHash )
+        if( pCurList->sInfo.pDigestAlg )
         {
             mSignerTable->insertRow( srow );
             mSignerTable->setRowHeight(srow, 10);
-            mSignerTable->setItem( srow, 0, new QTableWidgetItem( tr("Hash") ));
-            mSignerTable->setItem( srow, 1, new QTableWidgetItem( QString( "%1").arg( pCurList->sInfo.pHash )));
+            mSignerTable->setItem( srow, 0, new QTableWidgetItem( tr("DigestAlg") ));
+            mSignerTable->setItem( srow, 1, new QTableWidgetItem( QString( "%1").arg( pCurList->sInfo.pDigestAlg )));
             srow++;
         }
 
@@ -641,6 +669,12 @@ void CMSInfoDlg::setRecipInfoCMS( const JRecipInfoList *pRecipList )
 
     while( pCurList )
     {
+        mRecipTable->insertRow(rrow);
+        mRecipTable->setRowHeight(rrow, 10);
+        mRecipTable->setItem( rrow, 0, new QTableWidgetItem( tr("Version") ));
+        mRecipTable->setItem( rrow, 1, new QTableWidgetItem( QString( "V%1").arg( pCurList->sInfo.nVersion + 1 )));
+        rrow++;
+
         if( pCurList->sInfo.pAlg )
         {
             mRecipTable->insertRow(rrow);
@@ -728,7 +762,6 @@ void CMSInfoDlg::setSigned()
             pCurList = pCurList->pNext;
         }
 
-    //    mDigestAlgText->setText( strAlg );
         mDataTable->insertRow(row);
         mDataTable->setRowHeight( row, 10 );
         mDataTable->setItem( row, 0, new QTableWidgetItem("Digest Alg"));
@@ -937,9 +970,6 @@ void CMSInfoDlg::setSignedCMS()
     int nInfoCnt = 0;
     int nMDCnt = 0;
 
-    mVersionLabel->setEnabled(false);
-    mVersionText->setEnabled( false );
-
     memset( &sSigned, 0x00, sizeof(sSigned));
     JS_BIN_reset( &tsp_bin_ );
 
@@ -951,6 +981,7 @@ void CMSInfoDlg::setSignedCMS()
     nInfoCnt = JS_CMS_SginerInfo_countList( pInfoList );
 
     mDataText->setPlainText( getHexString( &sSigned.binContent ));
+    mVersionText->setText( QString("V%1").arg( sSigned.nVersion + 1 ));
 
     mDataTable->insertRow(row);
     mDataTable->setRowHeight( row, 10 );
@@ -987,6 +1018,28 @@ void CMSInfoDlg::setSignedCMS()
     mDataTable->setItem( row, 0, new QTableWidgetItem( "MD Count" ));
     mDataTable->setItem( row, 1, new QTableWidgetItem( QString("%1").arg( nMDCnt )));
     row++;
+
+    if( nMDCnt > 0 )
+    {
+        QString strAlg;
+        JStrList *pCurList = sSigned.pMDList;
+
+        while( pCurList )
+        {
+            if( strAlg.length() < 1 )
+                strAlg = pCurList->pStr;
+            else
+                strAlg = QString( ";%1" ).arg( pCurList->pStr );
+
+            pCurList = pCurList->pNext;
+        }
+
+        mDataTable->insertRow(row);
+        mDataTable->setRowHeight( row, 10 );
+        mDataTable->setItem( row, 0, new QTableWidgetItem("Digest Alg"));
+        mDataTable->setItem( row, 1, new QTableWidgetItem( strAlg));
+        row++;
+    }
 
     mDataTable->insertRow(row);
     mDataTable->setRowHeight( row, 10 );
@@ -1091,9 +1144,6 @@ void CMSInfoDlg::setEnvelopedCMS()
 
     int nInfoCnt = 0;
 
-    mVersionLabel->setEnabled(false);
-    mVersionText->setEnabled( false );
-
     memset( &sEnvelopedInfo, 0x00, sizeof(sEnvelopedInfo));
     JS_BIN_reset( &tsp_bin_ );
 
@@ -1102,6 +1152,7 @@ void CMSInfoDlg::setEnvelopedCMS()
     nInfoCnt = JS_CMS_RecipInfo_countList( pInfoList );
 
     mDataText->setPlainText( getHexString( &sEnvelopedInfo.binEncData ));
+    mVersionText->setText( QString("V%1").arg( sEnvelopedInfo.nVersion + 1 ));
 
     mDataTable->insertRow(row);
     mDataTable->setRowHeight( row, 10 );
@@ -1141,6 +1192,42 @@ void CMSInfoDlg::setEnvelopedCMS()
 
     JS_CMS_resetEnveloped( &sEnvelopedInfo );
     if( pInfoList ) JS_CMS_resetRecipInfoList( &pInfoList );
+}
+
+void CMSInfoDlg::setEncryptedCMS()
+{
+    int ret = 0;
+    int row = 0;
+    JCMSEncrypted sEncryptedInfo;
+
+    memset( &sEncryptedInfo, 0x00, sizeof(sEncryptedInfo));
+
+    ret = JS_CMS_getEncryptedData( &cms_bin_, &sEncryptedInfo );
+    if( ret != 0 ) goto end;
+
+    mVersionText->setText( QString("V%1").arg( sEncryptedInfo.nVersion + 1 ));
+    mDataText->setPlainText( getHexString( &sEncryptedInfo.binEncData ));
+
+    mDataTable->insertRow(row);
+    mDataTable->setRowHeight(row, 10);
+    mDataTable->setItem( row, 0, new QTableWidgetItem("Type"));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( JS_PKCS7_getTypeName( JS_PKCS7_TYPE_ENCRYPTED) ));
+    row++;
+
+    mDataTable->insertRow(row);
+    mDataTable->setRowHeight(row, 10);
+    mDataTable->setItem( row, 0, new QTableWidgetItem("ContentType"));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( sEncryptedInfo.pContentType ));
+    row++;
+
+    mDataTable->insertRow(row);
+    mDataTable->setRowHeight(row, 10);
+    mDataTable->setItem( row, 0, new QTableWidgetItem("Alg"));
+    mDataTable->setItem( row, 1, new QTableWidgetItem( sEncryptedInfo.pAlg ));
+    row++;
+
+end :
+    JS_CMS_resetEncrypted( &sEncryptedInfo );
 }
 
 void CMSInfoDlg::setSignedAndEnveloped()

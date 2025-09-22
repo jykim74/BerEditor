@@ -301,6 +301,7 @@ int SignVerifyDlg::getPublicKey( BIN *pPubKey, int *pnType )
         if( mCertPath->text().isEmpty() )
         {
             berApplet->warningBox( tr( "Select a certificate"), this );
+            mCertPath->setFocus();
             ret = -1;
             goto end;
         }

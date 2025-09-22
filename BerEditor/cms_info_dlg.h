@@ -63,6 +63,7 @@ private:
     void setDigestCMS();
     void setSignedCMS();
     void setEnvelopedCMS();
+    void setEncryptedCMS();
 
     BIN cms_bin_;
     int cms_type_;

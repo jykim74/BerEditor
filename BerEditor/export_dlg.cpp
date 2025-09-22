@@ -459,7 +459,7 @@ int ExportDlg::exportPublic()
 
     if( data_type_ == DataPriKey )
     {
-        JS_PKI_getPubKeyFromPri( key_type_, &pri_key_, &binPub );
+        JS_PKI_getPubKeyFromPri( &pri_key_, &binPub );
     }
     else if( data_type_ == DataPubKey )
     {

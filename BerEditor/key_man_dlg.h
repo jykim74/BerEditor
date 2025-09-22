@@ -8,6 +8,7 @@
 
 #include <QDialog>
 #include "ui_key_man_dlg.h"
+#include "js_bin.h"
 
 namespace Ui {
 class KeyManDlg;
@@ -51,6 +52,8 @@ private slots:
     void clickKEMEncap();
     void clickKEMDecap();
 
+    void checkKEMPriKeyEncrypted();
+
     void changeKEMKey();
     void changeKEMWrappedKey();
     void changeKEMDecKey();
@@ -59,8 +62,23 @@ private slots:
     void clickKEMKeyClear();
     void clickKEMDecKeyClear();
 
+    void clickKEMPriKeyFind();
+    void clickKEMPriKeyView();
+    void clickKEMPriKeyDecode();
+    void clickKEMPriKeyType();
+
+    void clickKEMPubKeyFind();
+    void clickKEMPubKeyView();
+    void clickKEMPubKeyDecode();
+    void clickKEMPubKeyType();
+
 private:
+    void initUI();
     void initialize();
+
+    int readKEMPrivateKey( BIN *pPriKey );
+    int getKEMPrivateKey( BIN *pPriKey );
+    int getKEMPublicKey( BIN *pPubKey );
 };
 
 #endif // KEY_MAN_DLG_H

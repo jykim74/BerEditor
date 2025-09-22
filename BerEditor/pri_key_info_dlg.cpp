@@ -554,7 +554,7 @@ void PriKeyInfoDlg::clickCheckPubKey()
     else
     {
         BIN binPub = {0,0};
-        JS_PKI_getPubKeyFromPriKey( key_type_, &pri_key_, &binPub );
+        JS_PKI_getPubKeyFromPriKey( &pri_key_, &binPub );
         ret = JS_PKI_checkPublicKey( &binPub );
         JS_BIN_reset( &binPub );
     }
@@ -590,7 +590,7 @@ void PriKeyInfoDlg::clickSavePubKey()
     BIN binPub = {0,0};
 
     if( pri_key_.nLen > 0 )
-        JS_PKI_getPubKeyFromPriKey( key_type_, &pri_key_, &binPub );
+        JS_PKI_getPubKeyFromPriKey( &pri_key_, &binPub );
     else
         JS_BIN_copy( &binPub, &pub_key_ );
 
@@ -612,7 +612,7 @@ void PriKeyInfoDlg::clickCheckKeyPair()
 
     BIN binPub = {0,0};
 
-    int ret = JS_PKI_getPubKeyFromPriKey( key_type_, &pri_key_, &binPub );
+    int ret = JS_PKI_getPubKeyFromPriKey( &pri_key_, &binPub );
     if( ret != 0 ) goto end;
 
     ret = JS_PKI_IsValidKeyPair( &pri_key_, &binPub );

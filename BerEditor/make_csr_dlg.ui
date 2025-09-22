@@ -180,7 +180,7 @@
       <widget class="QComboBox" name="mSignHashCombo"/>
      </item>
      <item row="0" column="2">
-      <widget class="QLabel" name="label_9">
+      <widget class="QLabel" name="mSignHashLabel">
        <property name="text">
         <string>Signature Hash</string>
        </property>
