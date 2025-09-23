@@ -34,14 +34,7 @@ DEFINES += _USE_LCN_SRV
 
 CONFIG += c++11
 
-PQC = TRUE
-
-isEqual( PQC, TRUE ) {
-    DEFINES += PQC
-    OPENSSL = "openssl35"
-} else {
-    OPENSSL = "openssl3"
-}
+OPENSSL = openssl35
 
 SOURCES += \
     about_dlg.cpp \

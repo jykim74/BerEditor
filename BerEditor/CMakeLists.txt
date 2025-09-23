@@ -18,16 +18,7 @@ set(CMAKE_AUTORCC ON)
 
 add_definitions( -D_USE_LCN_SRV )
 
-set( PQC "TRUE" )
-
-if( ${PQC} )
-    message( "PQC ON" )
-    add_definitions( -DPQC )
-    set( OPENSSL "openssl35" )
-else()
-    message( "PQC OFF" )
-    set( OPENSSL "openssl3" )
-endif()
+set( OPENSSL "openssl35" )
 
 find_package(QT NAMES Qt5 Qt6 REQUIRED COMPONENTS Core)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Gui)
