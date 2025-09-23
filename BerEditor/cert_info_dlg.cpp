@@ -21,6 +21,7 @@
 #include "common.h"
 #include "ocsp_client_dlg.h"
 #include "get_uri_dlg.h"
+#include "pri_key_info_dlg.h"
 
 enum {
     FIELD_ALL = 0,
@@ -81,6 +82,7 @@ CertInfoDlg::CertInfoDlg(QWidget *parent) :
     setupUi(this);
 
     connect( mSaveBtn, SIGNAL(clicked()), this, SLOT(clickSave()));
+    connect( mViewPubKeyBtn, SIGNAL(clicked()), this, SLOT(clickViewPubKey()));
     connect( mSaveToManBtn, SIGNAL(clicked()), this, SLOT(clickSaveToMan()));
     connect( mSaveToCABtn, SIGNAL(clicked()), this, SLOT(clickSaveToCA()));
     connect( mSaveTrustedCABtn, SIGNAL(clicked()), SLOT(clickSaveTrustedCA()));
@@ -269,7 +271,9 @@ void CertInfoDlg::getFields()
 
     JS_PKI_getPubKeyFromCert( &cert_bin_, &binPub );
     JS_PKI_getKeyIdentifier( &binPub, &binKID );
-    mKIDText->setText( getHexString( &binKID ));
+
+//    mKIDText->setText( getHexString( &binKID ));
+    setFixedLineText( mKIDText, getHexString( &binKID ));
 
     if( self_sign_ == true ) mGetCABtn->setEnabled( false );
 
@@ -533,6 +537,21 @@ void CertInfoDlg::changeFieldType( int index )
 void CertInfoDlg::clickSave()
 {   
     saveAsPEM( &cert_bin_ );
+}
+
+void CertInfoDlg::clickViewPubKey()
+{
+    BIN binPub = {0,0};
+    JS_PKI_getPubKeyFromCert( &cert_bin_, &binPub );
+
+    if( binPub.nLen > 0 )
+    {
+        PriKeyInfoDlg priKeyInfo;
+        priKeyInfo.setPublicKey( &binPub );
+        priKeyInfo.exec();
+    }
+
+    JS_BIN_reset( &binPub );
 }
 
 void CertInfoDlg::clickSaveToMan()

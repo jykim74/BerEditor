@@ -8,6 +8,8 @@
 
 #include <QString>
 #include <QWidget>
+#include <QLineEdit>
+
 #include "js_bin.h"
 #include "js_pki_x509.h"
 #include "js_ocsp.h"
@@ -306,5 +308,7 @@ int writePubKeyPEM( const BIN *pPubKey, const QString strPath );
 
 const QString encodeBase64( const QString strString );
 const QString decodeBase64( const QString strBase64 );
+
+void setFixedLineText( QLineEdit *pEdit, const QString strText );
 
 #endif // COMMON_H

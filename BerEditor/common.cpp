@@ -1702,3 +1702,11 @@ const QString decodeBase64( const QString strBase64 )
 
     return QString::fromUtf8( decodeBytes );
 }
+
+void setFixedLineText( QLineEdit *pEdit, const QString strText )
+{
+    pEdit->setText( strText );
+    QFontMetrics fm( pEdit->font() );
+    int width = fm.horizontalAdvance( strText ) + 10;
+    pEdit->setFixedWidth(width);
+}

@@ -33,6 +33,8 @@ private slots:
     void clickField(QModelIndex index);
 
     void clickSave();
+    void clickViewPubKey();
+
     void clickVerifyCSR();
     void clickDecodeCSR();
 

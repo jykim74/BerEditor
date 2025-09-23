@@ -42,6 +42,8 @@ private slots:
     void clickField( QModelIndex index );
     void changeFieldType( int index );
     void clickSave();
+    void clickViewPubKey();
+
     void clickSaveToMan();
     void clickSaveToCA();
     void clickSaveTrustedCA();

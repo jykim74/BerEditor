@@ -1102,14 +1102,6 @@ void DocSignerDlg::clickCMSEnvelopedData()
     if( ret != 0 ) goto end;
 
     ret = JS_CMS_makeEnvelopedData( strCipher.toStdString().c_str(), &binSrc, &binCert, &binData );
-    if( ret == JSR_OK )
-    {
-        berApplet->messageBox( tr( "Enveloped Data OK" ), this );
-    }
-    else
-    {
-        berApplet->warningBox( tr( "fail to envelop data: %1").arg( JERR( ret ) ), this );
-    }
 
     if( binData.nLen > 0 )
     {
@@ -1126,6 +1118,15 @@ void DocSignerDlg::clickCMSEnvelopedData()
             JS_BIN_fileWrite( &binData, strDstPath.toLocal8Bit().toStdString().c_str() );
             berApplet->messageBox( tr( "The data file[%1] has been saved." ).arg( strDstPath ), this );
         }
+    }
+
+    if( ret == JSR_OK )
+    {
+        berApplet->messageBox( tr( "Enveloped Data OK" ), this );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to envelop data: %1").arg( JERR( ret ) ), this );
     }
 
 end:

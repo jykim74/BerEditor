@@ -905,7 +905,9 @@ void PriKeyInfoDlg::setPrivateKey( const BIN *pPriKey, const QString strTitle )
     JS_PKI_getPubKeyFromPriKey( &pri_key_, &binPub );
     JS_PKI_getKeyIdentifier( &binPub, &binKID );
 
-    mKIDText->setText( getHexString( &binKID ));
+//    mKIDText->setText( getHexString( &binKID ));
+    setFixedLineText( mKIDText, getHexString( &binKID ));
+
     JS_BIN_reset( &binKID );
     JS_BIN_reset( &binPub );
 
@@ -966,7 +968,9 @@ void PriKeyInfoDlg::setPublicKey( const BIN *pPubKey, const QString strTitle )
         return;
 
     JS_PKI_getKeyIdentifier( &pub_key_, &binKID );
-    mKIDText->setText( getHexString( &binKID ));
+//    mKIDText->setText( getHexString( &binKID ));
+    setFixedLineText( mKIDText, getHexString( &binKID ));
+
     JS_BIN_reset( &binKID );
 
     key_type_ = JS_PKI_getPubKeyType( pPubKey );
