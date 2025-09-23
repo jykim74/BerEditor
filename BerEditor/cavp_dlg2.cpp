@@ -957,7 +957,7 @@ int CAVPDlg::eddsaJsonWork( const QString strMode, const QJsonObject jObject, QJ
             {
                 bool bRes = false;
 
-                ret = JS_PKI_encodeRawPublicKeyValue( JS_PKI_KEY_TYPE_EDDSA, nEdDSA_Type, &binQ, &binPub );
+                ret = JS_PKI_encodeRawPublicKeyValue( nEdDSA_Type, &binQ, &binPub );
                 if( ret != 0 ) goto end;
 
                 ret = JS_PKI_EdDSA_Verify( &binMsg, &binSign, &binPub );

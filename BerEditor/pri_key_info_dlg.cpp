@@ -26,6 +26,7 @@ PriKeyInfoDlg::PriKeyInfoDlg(QWidget *parent) :
 {
     setupUi(this);
     key_type_ = -1;
+    mApplyChangeBtn->setEnabled( false );
 
     memset( &pri_key_, 0x00, sizeof(BIN));
     memset( &pub_key_, 0x00, sizeof(BIN));
@@ -235,7 +236,10 @@ bool PriKeyInfoDlg::isChanged()
 
         JS_PKI_resetDSAKeyVal( &sDSAKey );
     }
-    else if( key_type_ == JS_PKI_KEY_TYPE_EDDSA )
+    else if( key_type_ == JS_PKI_KEY_TYPE_EDDSA
+               || key_type_ == JS_PKI_KEY_TYPE_ML_KEM
+               || key_type_ == JS_PKI_KEY_TYPE_ML_DSA
+               || key_type_ == JS_PKI_KEY_TYPE_SLH_DSA )
     {
         JRawKeyVal sRawKey;
         memset( &sRawKey, 0x00, sizeof(sRawKey));
@@ -710,7 +714,10 @@ void PriKeyInfoDlg::clickApplyChange()
 
         JS_PKI_resetDSAKeyVal( &sDSAKey );
     }
-    else if( key_type_ == JS_PKI_KEY_TYPE_EDDSA )
+    else if( key_type_ == JS_PKI_KEY_TYPE_EDDSA
+               || key_type_ == JS_PKI_KEY_TYPE_ML_KEM
+               || key_type_ == JS_PKI_KEY_TYPE_ML_DSA
+               || key_type_ == JS_PKI_KEY_TYPE_SLH_DSA )
     {
         JRawKeyVal sRawKey;
 
@@ -735,6 +742,11 @@ void PriKeyInfoDlg::clickApplyChange()
         }
 
         JS_PKI_resetRawKeyVal( &sRawKey );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "Invalid keytype [%1]" ).arg( key_type_ ), this );
+        return;
     }
 
     if( ret == 0 )

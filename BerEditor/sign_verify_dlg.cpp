@@ -588,10 +588,15 @@ int SignVerifyDlg::signVerifyInit()
         if( ret != CKR_OK ) goto end;
     }
 
-    if( nType == JS_PKI_KEY_TYPE_EDDSA || nType == JS_PKI_KEY_TYPE_ML_DSA || nType == JS_PKI_KEY_TYPE_SLH_DSA || nType == JS_PKI_KEY_TYPE_ML_KEM )
+    if( nType == JS_PKI_KEY_TYPE_EDDSA
+        || nType == JS_PKI_KEY_TYPE_ML_DSA
+        || nType == JS_PKI_KEY_TYPE_SLH_DSA
+        || nType == JS_PKI_KEY_TYPE_ML_KEM )
     {
         QString strAlg = JS_PKI_getKeyAlgName( nType );
-        berApplet->warningBox(tr( "%1 does not support this feature.").arg( strAlg ), this );
+        QString strMode = mRunBtn->text();
+        berApplet->warningBox(tr( "%1 does not support this feature[Init-Update-Final]\nUse %2")
+                                  .arg( strAlg ).arg( strMode ), this );
         ret = JSR_UNSUPPORTED_ALGORITHM;
         goto end;
     }
@@ -632,7 +637,7 @@ int SignVerifyDlg::signVerifyInit()
 
     if( ret == 0 )
     {
-        mStatusLabel->setText( "Initialization successful" );
+        mStatusLabel->setText( "Init OK" );
     }
     else
     {
