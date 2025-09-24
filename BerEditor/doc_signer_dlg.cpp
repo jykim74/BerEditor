@@ -544,6 +544,12 @@ int DocSignerDlg::readCMSSrc( BIN *pData )
         getBINFromString( pData, strType, strData );
     }
 
+    if( pData->nLen <= 0 )
+    {
+        berApplet->warningBox( tr( "There is no input value or the input type is incorrect." ), this );
+        return -3;
+    }
+
     return 0;
 }
 

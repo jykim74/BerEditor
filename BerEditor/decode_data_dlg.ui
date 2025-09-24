@@ -50,9 +50,9 @@
       </spacer>
      </item>
      <item row="0" column="2">
-      <widget class="QPushButton" name="mViewBtn">
+      <widget class="QPushButton" name="mDecodeBtn">
        <property name="text">
-        <string>View</string>
+        <string>Decode</string>
        </property>
       </widget>
      </item>
@@ -206,7 +206,7 @@
   <tabstop>mDataLenText</tabstop>
   <tabstop>mDataText</tabstop>
   <tabstop>mClearBtn</tabstop>
-  <tabstop>mViewBtn</tabstop>
+  <tabstop>mDecodeBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>

@@ -86,6 +86,7 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+
     mClearRequestBtn->setFixedWidth(34);
     mClearResponseBtn->setFixedWidth(34);
 #endif

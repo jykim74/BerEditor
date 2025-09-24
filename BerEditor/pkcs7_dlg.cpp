@@ -432,6 +432,11 @@ void PKCS7Dlg::clickSignedData()
     }
 
     getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
+    if( binSrc.nLen <= 0 )
+    {
+        berApplet->warningBox( tr( "There is no input value or the input type is incorrect." ), this );
+        goto end;
+    }
 
 
     ret = JS_PKCS7_makeSignedData( strHash.toStdString().c_str(), &binSrc, &binPri, &binCert, &binOutput );
@@ -523,6 +528,11 @@ void PKCS7Dlg::clickEnvelopedData()
     }
 
     getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
+    if( binSrc.nLen <= 0 )
+    {
+        berApplet->warningBox( tr( "There is no input value or the input type is incorrect." ), this );
+        goto end;
+    }
 
     ret = JS_PKCS7_makeEnvelopedData( strCipher.toStdString().c_str(), &binSrc, &binCert, &binOutput );
     if( ret != 0 )
@@ -642,6 +652,11 @@ void PKCS7Dlg::clickSignAndEnvloped()
     }
 
     getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
+    if( binSrc.nLen <= 0 )
+    {
+        berApplet->warningBox( tr( "There is no input value or the input type is incorrect." ), this );
+        goto end;
+    }
 
     nType = JS_PKI_getPriKeyType( &binSignPri );
     if( nType != JS_PKI_KEY_TYPE_RSA )
@@ -1061,6 +1076,11 @@ void PKCS7Dlg::clickAddSigner()
     }
 
     getBINFromString( &binCMS, strSrcType, strCMS.toStdString().c_str() );
+    if( binCMS.nLen <= 0 )
+    {
+        berApplet->warningBox( tr( "There is no input value or the input type is incorrect." ), this );
+        goto end;
+    }
 
     nCMSType = JS_PKCS7_getType( &binCMS );
     if( nCMSType != JS_PKCS7_TYPE_SIGNED )
@@ -1585,7 +1605,11 @@ void PKCS7Dlg::clickDigest()
 
 
     getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
-
+    if( binSrc.nLen <= 0 )
+    {
+        berApplet->warningBox( tr( "There is no input value or the input type is incorrect." ), this );
+        goto end;
+    }
 
     ret = JS_PKCS7_makeDigest( &binSrc, strHash.toStdString().c_str(), &binOutput );
     if( ret != 0 )
@@ -1635,6 +1659,11 @@ void PKCS7Dlg::clickData()
     }
 
     getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
+    if( binSrc.nLen <= 0 )
+    {
+        berApplet->warningBox( tr( "There is no input value or the input type is incorrect." ), this );
+        goto end;
+    }
 
 
     ret = JS_PKCS7_makeData( &binSrc, &binOutput );

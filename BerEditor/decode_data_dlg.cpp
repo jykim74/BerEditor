@@ -15,7 +15,7 @@ DecodeDataDlg::DecodeDataDlg(QWidget *parent) :
     initUI();
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
-    connect( mViewBtn, SIGNAL(clicked()), this, SLOT(viewData()));
+    connect( mDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeData()));
     connect( mDataText, SIGNAL(textChanged()), this, SLOT(dataChanged()));
     connect( mTypeHex, SIGNAL(clicked()), this, SLOT(dataChanged()));
     connect( mTypeBase64, SIGNAL(clicked()), this, SLOT(dataChanged()));
@@ -25,7 +25,7 @@ DecodeDataDlg::DecodeDataDlg(QWidget *parent) :
     connect( mClearBtn, SIGNAL(clicked()), this, SLOT(clearData()));
 
     mTypeHex->setChecked(true);
-    mViewBtn->setDefault(true);
+    mDecodeBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -43,7 +43,7 @@ void DecodeDataDlg::initUI()
     mDataText->setPlaceholderText( tr( "Hex value" ));
 }
 
-void DecodeDataDlg::viewData()
+void DecodeDataDlg::decodeData()
 {
     int nType = 0;
     BIN binData = {0,0};

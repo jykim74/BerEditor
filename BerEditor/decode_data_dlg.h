@@ -24,7 +24,7 @@ public:
     QString getTextData();
 
 private slots :
-    void viewData();
+    void decodeData();
     void dataChanged();
     void clearData();
     void findData();

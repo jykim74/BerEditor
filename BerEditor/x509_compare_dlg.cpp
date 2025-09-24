@@ -370,6 +370,12 @@ int X509CompareDlg::compareCert()
     BIN binFingerA = {0,0};
     BIN binFingerB = {0,0};
 
+    BIN binPubA = {0,0};
+    BIN binPubB = {0,0};
+
+    BIN binKID_A = {0,0};
+    BIN binKID_B = {0,0};
+
     char    sNotBeforeA[64];
     char    sNotAfterA[64];
 
@@ -395,8 +401,34 @@ int X509CompareDlg::compareCert()
         goto end;
     }
 
+    JS_BIN_decodeHex( ACertInfo.pPublicKey, &binPubA );
+    JS_BIN_decodeHex( BCertInfo.pPublicKey, &binPubB );
+
+    JS_PKI_getKeyIdentifier( &binPubA, &binKID_A );
+    JS_PKI_getKeyIdentifier( &binPubB, &binKID_B );
+
     JS_PKI_genHash( "SHA1", &A_bin_, &binFingerA );
     JS_PKI_genHash( "SHA1", &B_bin_, &binFingerB );
+
+    mCompareTable->insertRow(i);
+    mCompareTable->setRowHeight(i,10);
+    mCompareTable->setItem( i, 0, new QTableWidgetItem( tr("KID")));
+    mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg( getHexString( &binKID_A ))));
+    mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg( getHexString( &binKID_B ))));
+
+    if( JS_BIN_cmp( &binKID_A, &binKID_B ) == 0 )
+    {
+        mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
+        strIcon = kValidIcon;
+    }
+    else
+    {
+        mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
+        strIcon = kInvalidIcon;
+    }
+
+    mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
+    i++;
 
     mCompareTable->insertRow(i);
     mCompareTable->setRowHeight(i,10);
@@ -416,7 +448,6 @@ int X509CompareDlg::compareCert()
     }
 
     mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
-
     i++;
 
     if( ACertInfo.pSerial )
@@ -488,6 +519,29 @@ int X509CompareDlg::compareCert()
     mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
     i++;
 
+    if( ACertInfo.pIssuerName )
+    {
+        mCompareTable->insertRow(i);
+        mCompareTable->setRowHeight(i,10);
+        mCompareTable->setItem(i, 0, new QTableWidgetItem(tr("IssuerName")));
+        mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(ACertInfo.pIssuerName)));
+        mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(BCertInfo.pIssuerName)));
+
+        if( QString( ACertInfo.pIssuerName ) == QString( BCertInfo.pIssuerName ) )
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
+            strIcon = kValidIcon;
+        }
+        else
+        {
+            mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
+            strIcon = kInvalidIcon;
+        }
+
+        mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
+        i++;
+    }
+
     if( ACertInfo.pSubjectName )
     {
         QString nameA = QString::fromUtf8( ACertInfo.pSubjectName );
@@ -514,6 +568,8 @@ int X509CompareDlg::compareCert()
         i++;
     }
 
+
+
     if( ACertInfo.pPublicKey )
     {
         mCompareTable->insertRow(i);
@@ -538,28 +594,7 @@ int X509CompareDlg::compareCert()
         i++;
     }
 
-    if( ACertInfo.pIssuerName )
-    {
-        mCompareTable->insertRow(i);
-        mCompareTable->setRowHeight(i,10);
-        mCompareTable->setItem(i, 0, new QTableWidgetItem(tr("IssuerName")));
-        mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg(ACertInfo.pIssuerName)));
-        mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg(BCertInfo.pIssuerName)));
 
-        if( QString( ACertInfo.pIssuerName ) == QString( BCertInfo.pIssuerName ) )
-        {
-            mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
-            strIcon = kValidIcon;
-        }
-        else
-        {
-            mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
-            strIcon = kInvalidIcon;
-        }
-
-        mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
-        i++;
-    }
 
     if( ACertInfo.pSignAlgorithm )
     {
@@ -641,6 +676,12 @@ end :
 
     JS_BIN_reset( &binFingerA );
     JS_BIN_reset( &binFingerB );
+
+    JS_BIN_reset( &binKID_A );
+    JS_BIN_reset( &binKID_B );
+
+    JS_BIN_reset( &binKID_A );
+    JS_BIN_reset( &binKID_B );
 
     return 0;
 }
@@ -864,6 +905,12 @@ int X509CompareDlg::compareCSR()
     BIN binFingerA = {0,0};
     BIN binFingerB = {0,0};
 
+    BIN binPubA = {0,0};
+    BIN binPubB = {0,0};
+
+    BIN binKID_A = {0,0};
+    BIN binKID_B = {0,0};
+
     JReqInfo AReqInfo;
     JReqInfo BReqInfo;
 
@@ -889,8 +936,34 @@ int X509CompareDlg::compareCSR()
         goto end;
     }
 
+    JS_BIN_decodeHex( AReqInfo.pPublicKey, &binPubA );
+    JS_BIN_decodeHex( BReqInfo.pPublicKey, &binPubB );
+
+    JS_PKI_getKeyIdentifier( &binPubA, &binKID_A );
+    JS_PKI_getKeyIdentifier( &binPubB, &binKID_B );
+
     JS_PKI_genHash( "SHA1", &A_bin_, &binFingerA );
     JS_PKI_genHash( "SHA1", &B_bin_, &binFingerB );
+
+    mCompareTable->insertRow(i);
+    mCompareTable->setRowHeight(i,10);
+    mCompareTable->setItem( i, 0, new QTableWidgetItem( tr("KID")));
+    mCompareTable->setItem(i, 1, new QTableWidgetItem(QString("%1").arg( getHexString( &binKID_A ))));
+    mCompareTable->setItem(i, 2, new QTableWidgetItem(QString("%1").arg( getHexString( &binKID_B ))));
+
+    if( JS_BIN_cmp( &binKID_A, &binKID_B ) == 0 )
+    {
+        mCompareTable->item(i,0)->setData(Qt::UserRole, 0);
+        strIcon = kValidIcon;
+    }
+    else
+    {
+        mCompareTable->item(i,0)->setData(Qt::UserRole, 1);
+        strIcon = kInvalidIcon;
+    }
+
+    mCompareTable->item( i, 0 )->setIcon( QIcon( strIcon ));
+    i++;
 
     mCompareTable->insertRow(i);
     mCompareTable->setRowHeight(i,10);
@@ -1088,6 +1161,12 @@ end :
     JS_BIN_reset( &binFingerA );
     JS_BIN_reset( &binFingerB );
 
+    JS_BIN_reset( &binPubA );
+    JS_BIN_reset( &binPubB );
+
+    JS_BIN_reset( &binKID_A );
+    JS_BIN_reset( &binKID_B );
+
     return 0;
 }
 
@@ -1192,6 +1271,9 @@ void X509CompareDlg::clickCompare()
     {
         compareCSR();
     }
+
+    mAInfoText->clear();
+    mBInfoText->clear();
 
 end :
     return;
