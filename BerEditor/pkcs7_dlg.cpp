@@ -377,6 +377,7 @@ void PKCS7Dlg::clickKMCertFind()
 void PKCS7Dlg::clickSignedData()
 {
     int ret = 0;
+    int nKeyType = 0;
 
     BIN binPri = {0,0};
     BIN binCert = {0,0};
@@ -422,6 +423,14 @@ void PKCS7Dlg::clickSignedData()
         certMan.getPriKey( &binPri );
     }
 
+    nKeyType = JS_PKI_getPriKeyType( &binPri );
+    if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_ECDSA && nKeyType != JS_PKI_KEY_TYPE_DSA )
+    {
+        ret = JSR_INVALID_ALG;
+        berApplet->warningBox( tr("This key algorithm(%1) is not supported").arg( JS_PKI_getKeyAlgName( nKeyType )), this );
+        goto end;
+    }
+
     getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
 
 
@@ -432,7 +441,7 @@ void PKCS7Dlg::clickSignedData()
         goto end;
     }
 
-    if( ret == 0 )
+    if( ret == JSR_OK )
     {
         mCMSTypeText->setText( kCmdSignedData );
         strOutput = getHexString( &binOutput );
@@ -508,7 +517,8 @@ void PKCS7Dlg::clickEnvelopedData()
     nType = JS_PKI_getPubKeyType( &binPubKey );
     if( nType != JS_PKI_KEY_TYPE_RSA )
     {
-        berApplet->warningBox(tr( "It is not an RSA certificate"), this );
+        berApplet->warningBox(tr( "This key algorithm(%1) is not supported\nOnly RSA is supported.")
+                                  .arg( JS_PKI_getKeyAlgName( nType )), this );
         goto end;
     }
 
@@ -626,7 +636,8 @@ void PKCS7Dlg::clickSignAndEnvloped()
     nType = JS_PKI_getPubKeyType( &binKMPubKey );
     if( nType != JS_PKI_KEY_TYPE_RSA )
     {
-        berApplet->warningBox( tr("It is not an RSA certificate"), this );
+        berApplet->warningBox(tr( "This key algorithm(%1) is not supported for recipient encryption\nOnly RSA is supported.")
+                                  .arg( JS_PKI_getKeyAlgName( nType )), this );
         goto end;
     }
 
@@ -635,11 +646,20 @@ void PKCS7Dlg::clickSignAndEnvloped()
     nType = JS_PKI_getPriKeyType( &binSignPri );
     if( nType != JS_PKI_KEY_TYPE_RSA )
     {
-        berApplet->warningBox( tr( "It is not a private key for RSA." ), this );
+        berApplet->warningBox( tr("This key algorithm(%1) is not supported for signing.")
+                                  .arg( JS_PKI_getKeyAlgName( nType )), this );
         goto end;
     }
 
-    ret = JS_PKCS7_makeSignedAndEnveloped( strHash.toStdString().c_str(), strCipher.toStdString().c_str(), &binSrc, &binSignCert, &binSignPri, &binKMCert, &binOutput );
+    ret = JS_PKCS7_makeSignedAndEnveloped(
+        strHash.toStdString().c_str(),
+        strCipher.toStdString().c_str(),
+        &binSrc,
+        &binSignCert,
+        &binSignPri,
+        &binKMCert,
+        &binOutput );
+
     if( ret != 0 )
     {
         berApplet->warningBox( tr( "Signed And Enveloped data creation failed [%1]").arg(JERR(ret)), this );

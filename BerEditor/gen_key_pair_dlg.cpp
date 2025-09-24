@@ -3,7 +3,7 @@
 #include "common.h"
 #include "js_error.h"
 #include "js_pki.h"
-#include "js_pki_eddsa.h"
+#include "js_pki_raw.h"
 #include "js_pki_tools.h"
 #include "js_pqc.h"
 
