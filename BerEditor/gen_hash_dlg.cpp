@@ -230,6 +230,10 @@ void GenHashDlg::clickDigest()
 
     BIN binSrc = {0,0};
     BIN binHash = {0,0};
+
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     QString inputStr = mInputText->toPlainText();
 
     if( inputStr.isEmpty() )
@@ -257,9 +261,17 @@ void GenHashDlg::clickDigest()
     int nLen = mReqLenText->text().toInt();
 
     if( strHash == kSHAKE128 || strHash == kSHAKE256 )
+    {
+        timer.start();
         ret = JS_PKI_genHashXOR( strHash.toStdString().c_str(), &binSrc, nLen, &binHash );
+        us = timer.nsecsElapsed() / 1000;
+    }
     else
+    {
+        timer.start();
         ret = JS_PKI_genHash( strHash.toStdString().c_str(), &binSrc, &binHash );
+        us = timer.nsecsElapsed() / 1000;
+    }
 
     if( ret == 0 )
     {
@@ -271,11 +283,15 @@ void GenHashDlg::clickDigest()
         mStatusLabel->setText( "Digest OK" );
 
         berApplet->logLine();
-        berApplet->log( "-- Hash" );
+        berApplet->log( QString( "-- Hash [time: %1 ms]" ).arg( getMS( us )) );
         berApplet->logLine2();
         berApplet->log( QString( "Algorithm : %1" ).arg( strHash ));
         berApplet->log( QString( "Input     : %1" ).arg( getHexString( &binSrc) ));
         berApplet->log( QString( "Digest    : %1" ).arg(getHexString(&binHash)));
+
+        if( strHash == kSHAKE128 || strHash == kSHAKE256 )
+            berApplet->log( QString( "ReqLen    : %1" ).arg( nLen ));
+
         berApplet->logLine();
     }
     else

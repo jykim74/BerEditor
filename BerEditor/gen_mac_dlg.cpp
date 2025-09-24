@@ -402,6 +402,9 @@ void GenMacDlg::clickMAC()
     BIN binMAC = {0,0};
     BIN binIV = {0,0};
 
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     int nDataType = DATA_STRING;
 
     QString strInput = mInputText->toPlainText();
@@ -473,11 +476,16 @@ void GenMacDlg::clickMAC()
    if( mCMACRadio->isChecked() )
    {
        QString strSymAlg = getSymAlg( strAlg, "CBC", binKey.nLen );
+
+       timer.start();
        ret = JS_PKI_genCMAC( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binMAC );
+       us = timer.nsecsElapsed() / 1000;
    }
    else if( mHMACRadio->isChecked() )
    {
+       timer.start();
        ret = JS_PKI_genHMAC( strAlg.toStdString().c_str(), &binSrc, &binKey, &binMAC );
+       us = timer.nsecsElapsed() / 1000;
    }
    else if( mGMACRadio->isChecked() )
    {
@@ -491,7 +499,9 @@ void GenMacDlg::clickMAC()
             goto end;
        }
 
+       timer.start();
        ret = JS_PKI_genGMAC( strAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binMAC );
+       us = timer.nsecsElapsed() / 1000;
    }
 
    if( ret == 0 )
@@ -503,7 +513,7 @@ void GenMacDlg::clickMAC()
        if( pHex ) JS_free(pHex);
 
        berApplet->logLine();
-       berApplet->log( "-- MAC" );
+       berApplet->log( QString( "-- MAC [time: %1 ms]" ).arg( getMS( us )) );
        berApplet->logLine2();
        berApplet->log( QString( "Algorithm : %1" ).arg( strAlg ));
        berApplet->log( QString( "Input : %1" ).arg(getHexString(&binSrc)));

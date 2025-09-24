@@ -845,29 +845,44 @@ void SignVerifyDlg::dataRun()
 
     if( mSignRadio->isChecked() )
     {
+        qint64 us = 0;
+        QElapsedTimer timer;
+
         if( strAlg == JS_PKI_KEY_NAME_RSA )
         {
+            timer.start();
             ret = JS_PKI_RSAMakeSign( strHash.toStdString().c_str(), nVersion, &binSrc, &binPri, &binOut );
+            us = timer.nsecsElapsed() / 1000;
         }
         else if( strAlg == JS_PKI_KEY_NAME_SM2 || strAlg == JS_PKI_KEY_NAME_ECDSA )
         {
+            timer.start();
             ret = JS_PKI_ECCMakeSign( strHash.toStdString().c_str(), &binSrc, &binPri, &binOut );
+            us = timer.nsecsElapsed() / 1000;
         }
         else if( strAlg == JS_PKI_KEY_NAME_DSA )
         {
+            timer.start();
             ret = JS_PKI_DSA_Sign( strHash.toStdString().c_str(), &binSrc, &binPri, &binOut );
+            us = timer.nsecsElapsed() / 1000;
         }
         else if( strAlg == JS_PKI_KEY_NAME_EDDSA )
         {
+            timer.start();
             ret = JS_PKI_EdDSA_Sign( &binSrc, &binPri, &binOut );
+            us = timer.nsecsElapsed() / 1000;
         }
         else if( strAlg == JS_PKI_KEY_NAME_ML_DSA )
         {
+            timer.start();
             ret = JS_ML_DSA_sign( &binSrc, &binPri, &binOut );
+            us = timer.nsecsElapsed() / 1000;
         }
         else if( strAlg == JS_PKI_KEY_NAME_SLH_DSA )
         {
+            timer.start();
             ret = JS_SLH_DSA_sign( &binSrc, &binPri, &binOut );
+            us = timer.nsecsElapsed() / 1000;
         }
 
         JS_BIN_encodeHex( &binOut, &pOut );
@@ -876,7 +891,7 @@ void SignVerifyDlg::dataRun()
         if( ret == 0 )
         {
             berApplet->logLine();
-            berApplet->log("-- Compute Signature" );
+            berApplet->log( QString( "-- Compute Signature [time: %1 ms]" ).arg( getMS( us )));
             berApplet->logLine2();
             berApplet->log( QString( "Algorithm        : %1" ).arg( mAlgTypeCombo->currentText() ));
 
@@ -900,37 +915,52 @@ void SignVerifyDlg::dataRun()
     }
     else
     {
+        qint64 us = 0;
+        QElapsedTimer timer;
+
         getBINFromString( &binOut, DATA_HEX, strOutput.toStdString().c_str() );
 
         if( strAlg == JS_PKI_KEY_NAME_RSA )
         {
+            timer.start();
             ret = JS_PKI_RSAVerifySign( strHash.toStdString().c_str(), nVersion, &binSrc, &binOut, &binPubKey );
+            us = timer.nsecsElapsed() / 1000;
         }
         else if( strAlg == JS_PKI_KEY_NAME_ECDSA || strAlg == JS_PKI_KEY_NAME_SM2 )
         {
+            timer.start();
             ret = JS_PKI_ECCVerifySign( strHash.toStdString().c_str(), &binSrc, &binOut, &binPubKey );
+            us = timer.nsecsElapsed() / 1000;
         }
         else if( strAlg == JS_PKI_KEY_NAME_DSA )
         {
+            timer.start();
             ret = JS_PKI_DSA_Verify( strHash.toStdString().c_str(), &binSrc, &binOut, &binPubKey );
+            us = timer.nsecsElapsed() / 1000;
         }
         else if( strAlg == JS_PKI_KEY_NAME_EDDSA )
         {
+            timer.start();
             ret = JS_PKI_EdDSA_Verify( &binSrc, &binOut, &binPubKey );
+            us = timer.nsecsElapsed() / 1000;
         }
         else if( strAlg == JS_PKI_KEY_NAME_ML_DSA )
         {
+            timer.start();
             ret = JS_ML_DSA_verify( &binSrc, &binOut, &binPubKey );
+            us = timer.nsecsElapsed() / 1000;
         }
         else if( strAlg == JS_PKI_KEY_NAME_SLH_DSA )
         {
+            timer.start();
             ret = JS_SLH_DSA_verify( &binSrc, &binOut, &binPubKey );
+            us = timer.nsecsElapsed() / 1000;
         }
 
         if( ret == 0 )
         {
             berApplet->logLine();
-            berApplet->log( "-- Verify Signature" );
+            berApplet->log( QString( "-- Verify Signature [time: %1 ms]" ).arg( getMS( us )) );
             berApplet->logLine2();
             berApplet->log( QString( "Algorithm         : %1" ).arg( mAlgTypeCombo->currentText() ));
             berApplet->log( QString( "Verify Src        : %1" ).arg(getHexString(&binSrc)));

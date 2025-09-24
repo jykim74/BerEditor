@@ -1,4 +1,6 @@
 #include <QStringList>
+#include <QElapsedTimer>
+
 #include "gen_key_pair_dlg.h"
 #include "common.h"
 #include "js_error.h"
@@ -230,11 +232,15 @@ void GenKeyPairDlg::clickSLH_DSA()
 void GenKeyPairDlg::clickOK()
 {
     int ret = 0;
+    QString strKeyType;
+
+    qint64 us = 0;
+    QElapsedTimer timer;
+
+    QString strName = mNameText->text();
 
     JS_BIN_reset( &pri_key_ );
     JS_BIN_reset( &pub_key_ );
-
-    QString strName = mNameText->text();
 
     if( strName.length() < 1 )
     {
@@ -247,62 +253,106 @@ void GenKeyPairDlg::clickOK()
     {
         int nKeySize = mOptionCombo->currentText().toInt();
         int nExponent = mExponentText->text().toInt();
+        strKeyType = JS_PKI_KEY_NAME_RSA;
+
         if( nExponent <= 0 )
         {
             berApplet->warningBox( tr( "Enter exponent" ), this );
             return;
         }
 
+        timer.start();
         ret = JS_PKI_RSAGenKeyPair( nKeySize, nExponent, &pub_key_, &pri_key_ );
+        us = timer.nsecsElapsed() / 1000;
     }
     else if( mECDSARadio->isChecked() )
     {
         QString strCurve = mOptionCombo->currentText();
+
+        strKeyType = JS_PKI_KEY_NAME_ECDSA;
+
+        timer.start();
         ret = JS_PKI_ECCGenKeyPair( strCurve.toStdString().c_str(), &pub_key_, &pri_key_ );
+        us = timer.nsecsElapsed() / 1000;
     }
     else if( mSM2Radio->isChecked() )
     {
         QString strCurve = mOptionCombo->currentText();
+
+        strKeyType = JS_PKI_KEY_NAME_SM2;
+
+        timer.start();
         ret = JS_PKI_ECCGenKeyPair( strCurve.toStdString().c_str(), &pub_key_, &pri_key_ );
+        us = timer.nsecsElapsed() / 1000;
     }
     else if( mDSARadio->isChecked() )
     {
         int nKeySize = mOptionCombo->currentText().toInt();
+
+        strKeyType = JS_PKI_KEY_NAME_DSA;
+
+        timer.start();
         ret = JS_PKI_DSA_GenKeyPair( nKeySize, &pub_key_, &pri_key_ );
+        us = timer.nsecsElapsed() / 1000;
     }
     else if( mEdDSARadio->isChecked() )
     {
         int nParam = -1;
         QString strCurve = mOptionCombo->currentText();
+        strKeyType = JS_PKI_KEY_NAME_EDDSA;
 
         if( strCurve == "Ed25519" )
             nParam = JS_EDDSA_PARAM_25519;
         else
             nParam = JS_EDDSA_PARAM_448;
 
+        timer.start();
         ret = JS_PKI_EdDSA_GenKeyPair( nParam, &pub_key_, &pri_key_ );
+        us = timer.nsecsElapsed() / 1000;
     }
     else if( mML_KEMRadio->isChecked() )
     {
         QString strParam = mOptionCombo->currentText();
         int nParam = JS_PQC_param( strParam.toStdString().c_str() );
+
+        strKeyType = JS_PKI_KEY_NAME_ML_KEM;
+
+        timer.start();
         ret = JS_ML_KEM_genKeyPair( nParam, &pub_key_, &pri_key_ );
+        us = timer.nsecsElapsed() / 1000;
     }
     else if( mML_DSARadio->isChecked() )
     {
         QString strParam = mOptionCombo->currentText();
         int nParam = JS_PQC_param( strParam.toStdString().c_str() );
+
+        strKeyType = JS_PKI_KEY_NAME_ML_DSA;
+
+        timer.start();
         ret = JS_ML_DSA_genKeyPair( nParam, &pub_key_, &pri_key_ );
+        us = timer.nsecsElapsed() / 1000;
     }
     else if( mSLH_DSARadio->isChecked() )
     {
         QString strParam = mOptionCombo->currentText();
         int nParam = JS_PQC_param( strParam.toStdString().c_str() );
+
+        strKeyType = JS_PKI_KEY_NAME_SLH_DSA;
+
+        timer.start();
         ret = JS_SLH_DSA_genKeyPair( nParam, &pub_key_, &pri_key_ );
+        us = timer.nsecsElapsed() / 1000;
     }
 
     if( ret == JSR_OK )
+    {
+        berApplet->log( QString( "%1(%2) Key generation time : %3 ms")
+                           .arg( strKeyType )
+                           .arg( mOptionCombo->currentText() )
+                           .arg( getMS( us )));
+
         return QDialog::accept();
+    }
     else
     {
         berApplet->warnLog( tr( "fail to generate keypair: %1").arg( ret ), this);

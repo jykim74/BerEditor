@@ -5,6 +5,7 @@
  */
 #include <QFileDialog>
 #include <QButtonGroup>
+#include <QElapsedTimer>
 
 #include "pub_enc_dec_dlg.h"
 #include "cert_info_dlg.h"
@@ -285,6 +286,9 @@ void PubEncDecDlg::Run()
     BIN binPubKey = {0,0};
     char *pOut = NULL;
 
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     QString strAlg = mAlgCombo->currentText();
     QString strInput = mInputText->toPlainText();
     if( strInput.isEmpty() )
@@ -407,7 +411,9 @@ void PubEncDecDlg::Run()
                 goto end;
             }
 
+            timer.start();
             ret = JS_PKI_RSAEncryptWithPub( nVersion, &binSrc, &binPubKey, &binOut );
+            us = timer.nsecsElapsed() / 1000;
         }
         else if( mAlgCombo->currentText() == "SM2" )
         {
@@ -417,7 +423,9 @@ void PubEncDecDlg::Run()
                 goto end;
             }
 
+            timer.start();
             ret = JS_PKI_SM2EncryptWithPub( &binSrc, &binPubKey, &binOut );
+            us = timer.nsecsElapsed() / 1000;
         }
         else if( mAlgCombo->currentText() == "ECIES" )
         {
@@ -431,7 +439,10 @@ void PubEncDecDlg::Run()
                 goto end;
             }
 
+            timer.start();
             ret = JS_ECIES_Encrypt( &binSrc, &binPubKey, &binOtherPub, &binIV, &binTag, &binOut );
+            us = timer.nsecsElapsed() / 1000;
+
             if( ret == 0 )
             {
                 mOtherPubText->setPlainText( getHexString( &binOtherPub ));
@@ -455,7 +466,7 @@ void PubEncDecDlg::Run()
         if( ret == 0 )
         {
             berApplet->logLine();
-            berApplet->log( "-- Public Encrypt" );
+            berApplet->log( QString( "-- Public Encrypt [time: %1 ms]" ).arg( getMS( us )) );
             berApplet->logLine2();
             berApplet->log( QString( "Algorithm     : %1").arg( mAlgCombo->currentText() ));
             berApplet->log( QString( "Enc Src       : %1").arg( getHexString(&binSrc)));
@@ -536,7 +547,9 @@ void PubEncDecDlg::Run()
                 goto end;
             }
 
+            timer.start();
             ret = JS_PKI_RSADecryptWithPri( nVersion, &binSrc, &binPri, &binOut );
+            us = timer.nsecsElapsed() / 1000;
         }
         else if( mAlgCombo->currentText() == "SM2" )
         {
@@ -546,7 +559,9 @@ void PubEncDecDlg::Run()
                 goto end;
             }
 
+            timer.start();
             ret = JS_PKI_SM2DecryptWithPri( &binSrc, &binPri, &binOut );
+            us = timer.nsecsElapsed() / 1000;
         }
         else if( mAlgCombo->currentText() == "ECIES" )
         {
@@ -562,12 +577,14 @@ void PubEncDecDlg::Run()
             JS_BIN_decodeHex( strIV.toStdString().c_str(), &binIV );
             JS_BIN_decodeHex( strTag.toStdString().c_str(), &binTag );
 
+            timer.start();
             ret = JS_ECIES_Decrypt( &binSrc, &binPri, &binOtherPub, &binIV, &binTag, &binOut );
+            us = timer.nsecsElapsed() / 1000;
 
             if( ret == 0 )
             {
                 berApplet->logLine();
-                berApplet->log( "-- ECIES Decrypt" );
+                berApplet->log( QString( "-- ECIES Decrypt" ) );
                 berApplet->logLine2();
                 berApplet->log( QString( "ECIES OtherPub : %1").arg( getHexString(&binOtherPub)));
                 berApplet->log( QString( "ECIES IV       : %1").arg( getHexString(&binIV)));
@@ -583,7 +600,7 @@ void PubEncDecDlg::Run()
         if( ret == 0 )
         {
             berApplet->logLine();
-            berApplet->log( "-- Private Decrypt" );
+            berApplet->log( QString( "-- Private Decrypt [time: %1 ms]" ).arg( getMS( us )) );
             berApplet->logLine2();
             berApplet->log( QString( "Algorithm      : %1").arg( mAlgCombo->currentText() ));
             berApplet->log( QString( "Dec Src        : %1").arg( getHexString(&binSrc)));

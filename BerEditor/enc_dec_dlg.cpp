@@ -178,6 +178,9 @@ void EncDecDlg::dataRun()
     QString strAlg = mAlgCombo->currentText();
     QString strMode = mModeCombo->currentText();
 
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     mOutputText->clear();
 
     if( strInput.isEmpty() )
@@ -280,9 +283,17 @@ void EncDecDlg::dataRun()
             strMethod = "AE Encrypt";
 
             if( isCCM(strMode) )
+            {
+                timer.start();
                 ret = JS_PKI_encryptCCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, nReqTagLen, &binTag, &binOut );
+                us = timer.nsecsElapsed() / 1000;
+            }
             else
+            {
+                timer.start();
                 ret = JS_PKI_encryptGCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, nReqTagLen, &binTag, &binOut );
+                us = timer.nsecsElapsed() / 1000;
+            }
 
             mTagTypeCombo->setCurrentIndex( DATA_HEX );
             JS_BIN_encodeHex( &binTag, &pTag );
@@ -295,7 +306,7 @@ void EncDecDlg::dataRun()
             if( ret == 0 )
             {
                 berApplet->logLine();
-                berApplet->log( "-- AE Encrypt" );
+                berApplet->log( QString( "-- AE Encrypt [time: %1 ms]" ).arg( getMS( us )) );
                 berApplet->logLine2();
                 berApplet->log( QString( "SymAlg     : %1").arg( strSymAlg ));
                 berApplet->log( QString( "Enc Src    : %1" ).arg( getHexString( &binSrc )));
@@ -315,14 +326,22 @@ void EncDecDlg::dataRun()
             getBINFromString( &binTag, mTagTypeCombo->currentText(), strTag );
 
             if( isCCM( strMode ) )
+            {
+                timer.start();
                 ret = JS_PKI_decryptCCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
+                us = timer.nsecsElapsed() / 1000;
+            }
             else
+            {
+                timer.start();
                 ret = JS_PKI_decryptGCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
+                us = timer.nsecsElapsed() / 1000;
+            }
 
             if( ret == 0 )
             {
                 berApplet->logLine();
-                berApplet->log("-- AE Decrypt" );
+                berApplet->log( QString( "-- AE Decrypt [time: %1 ms]" ).arg( getMS( us )) );
                 berApplet->logLine2();
                 berApplet->log( QString( "SymAlg     : %1").arg( strSymAlg ));
                 berApplet->log( QString( "Dec Src    : %1" ).arg( getHexString( &binSrc )));
@@ -342,14 +361,22 @@ void EncDecDlg::dataRun()
             strMethod = "Encrypt";
 
             if( strAlg == "SEED" )
+            {
+                timer.start();
                 ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
+                us = timer.nsecsElapsed() / 1000;
+            }
             else
+            {
+                timer.start();
                 ret = JS_PKI_encryptData( strSymAlg.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
+                us = timer.nsecsElapsed() / 1000;
+            }
 
             if( ret == 0 )
             {
                 berApplet->logLine();
-                berApplet->log( "-- Encrypt" );
+                berApplet->log( QString( "-- Encrypt [time: %1 ms]" ).arg( getMS( us )) );
                 berApplet->logLine();
                 berApplet->log( QString( "SymAlg     : %1").arg( strSymAlg ));
                 berApplet->log( QString( "Enc Src    : %1" ).arg( getHexString( &binSrc )));
@@ -364,14 +391,22 @@ void EncDecDlg::dataRun()
             strMethod = "Decrypt";
 
             if( strAlg == "SEED" )
+            {
+                timer.start();
                 ret = JS_PKI_decryptSEED( strMode.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
+                us = timer.nsecsElapsed() / 1000;
+            }
             else
+            {
+                timer.start();
                 ret = JS_PKI_decryptData( strSymAlg.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
+                us = timer.nsecsElapsed() / 1000;
+            }
 
             if( ret == 0 )
             {
                 berApplet->logLine();
-                berApplet->log( "-- Decrypt" );
+                berApplet->log( QString( "-- Decrypt [time: %1 ms]" ).arg( getMS( us ) ) );
                 berApplet->logLine();
                 berApplet->log( QString( "SymAlg     : %1").arg( strSymAlg ));
                 berApplet->log( QString( "Dec Src    : %1" ).arg( getHexString( &binSrc )));
