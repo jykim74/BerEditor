@@ -53,8 +53,8 @@ private slots:
     void changeDSA_Public();
     void changeDSA_Private( const QString& text );
 
-    void changeEdDSA_RawPublic();
-    void changeEdDSA_RawPrivate();
+    void changeRawPublic();
+    void changeRawPrivate();
 
     void clearAll();
     void clickDecode();
@@ -75,7 +75,7 @@ private:
     void setRSAKey( const BIN *pKey, bool bPri = true );
     void setECCKey( const BIN *pKey, bool bPri = true );
     void setDSAKey( const BIN *pKey, bool bPri = true );
-    void setEdDSAKey( const BIN *pKey, bool bPri = true );
+    void setRawKey( const BIN *pKey, bool bPri = true );
 
     void setEnableRSA_N( bool bVal );
     void setEnableRSA_E( bool bVal );
@@ -96,8 +96,8 @@ private:
     void setEnableDSA_Private( bool bVal );
     void setEnableDSA_Public( bool bVal );
 
-    void setEnableEdDSA_RawPublic( bool bVal );
-    void setEnableEdDSA_RawPrivate( bool bVal );
+    void setEnableRawPublic( bool bVal );
+    void setEnableRawPrivate( bool bVal );
 
     void setModeUI( bool bVal );
 
