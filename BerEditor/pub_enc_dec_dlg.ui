@@ -111,9 +111,9 @@
       </widget>
      </item>
      <item>
-      <widget class="QRadioButton" name="mInputStringRadio">
+      <widget class="QRadioButton" name="mInputHexRadio">
        <property name="text">
-        <string>String</string>
+        <string>Hex</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -121,9 +121,12 @@
       </widget>
      </item>
      <item>
-      <widget class="QRadioButton" name="mInputHexRadio">
+      <widget class="QRadioButton" name="mInputStringRadio">
        <property name="text">
-        <string>Hex</string>
+        <string>String</string>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -972,7 +975,6 @@
   <tabstop>mEncryptRadio</tabstop>
   <tabstop>mDecryptRadio</tabstop>
   <tabstop>mInputStringRadio</tabstop>
-  <tabstop>mInputHexRadio</tabstop>
   <tabstop>mInputBase64Radio</tabstop>
   <tabstop>mInputClearBtn</tabstop>
   <tabstop>mInputLenText</tabstop>

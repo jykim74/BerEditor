@@ -87,7 +87,7 @@ void TSPClientDlg::initialize()
 {
     SettingsMgr *setMgr = berApplet->settingsMgr();
 
-    mInputTypeCombo->addItems( kValueTypeList );
+    mInputTypeCombo->addItems( kDataTypeList );
 
     mURLCombo->setEditable( true );
     QStringList usedList = getUsedURL();

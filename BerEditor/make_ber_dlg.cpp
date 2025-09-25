@@ -110,7 +110,7 @@ void MakeBerDlg::initialize()
     }
 
     mPrimitiveCombo->setEditable( true );
-    mValueTypeCombo->addItems( kValueTypeList );
+    mValueTypeCombo->addItems( kDataTypeList );
     mValueTypeCombo->setCurrentIndex(1);
 }
 

@@ -7,11 +7,6 @@
 #include "ber_applet.h"
 #include "mainwindow.h"
 
-static QStringList dataTypes = {
-    "String",
-    "Hex",
-    "Base64"
-};
 
 VIDDlg::VIDDlg(QWidget *parent)
     : QDialog(parent)
@@ -55,7 +50,7 @@ VIDDlg::~VIDDlg()
 
 void VIDDlg::initialize()
 {
-    mRandCombo->addItems( dataTypes );
+    mRandCombo->addItems( kDataTypeList );
     mHashCombo->addItems( kHashList );
 
     mHashCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );

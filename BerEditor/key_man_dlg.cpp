@@ -142,13 +142,13 @@ void KeyManDlg::initialize()
 
 
 
-    mSrcTypeCombo->addItems( kValueTypeList );
+    mSrcTypeCombo->addItems( kDataTypeList );
     mSrcTypeCombo->setCurrentIndex(1);
 
-    mKEKTypeCombo->addItems( kValueTypeList );
+    mKEKTypeCombo->addItems( kDataTypeList );
     mKEKTypeCombo->setCurrentIndex(1);
 
-    mDstTypeCombo->addItems( kValueTypeList );
+    mDstTypeCombo->addItems( kDataTypeList );
     mDstTypeCombo->setCurrentIndex(1);
 
     mPBKDF2Radio->click();

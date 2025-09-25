@@ -175,8 +175,8 @@ void KeyAddDlg::initUI()
 {
     mTypeCombo->addItems( kTypeList );
 
-    mKeyTypeCombo->addItems( kValueTypeList );
-    mIVTypeCombo->addItems( kValueTypeList );
+    mKeyTypeCombo->addItems( kDataTypeList );
+    mIVTypeCombo->addItems( kDataTypeList );
 
     mNameText->setPlaceholderText( tr("Enter a name") );
 }

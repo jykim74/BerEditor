@@ -29,12 +29,6 @@ static QStringList algTypes = {
     "ECIES"
 };
 
-static QStringList dataTypes = {
-    "String",
-    "Hex",
-    "Base64"
-};
-
 
 static QStringList versionTypes = {
     "V15",
@@ -115,7 +109,7 @@ void PubEncDecDlg::initialize()
 {
     mAlgCombo->addItems( algTypes );
 
-    mOutputTypeCombo->addItems(dataTypes);
+    mOutputTypeCombo->addItems( kDataTypeList );
     mOutputTypeCombo->setCurrentIndex(1);
 
     mVersionTypeCombo->addItems(versionTypes);

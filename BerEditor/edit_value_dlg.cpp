@@ -42,8 +42,8 @@ EditValueDlg::~EditValueDlg()
 
 void EditValueDlg::initialize()
 {
-    mValueTypeCombo->addItems( kValueTypeList );
-    mValueTypeCombo->setCurrentIndex(1);
+    mValueTypeCombo->addItems( kDataTypeList );
+    mValueTypeCombo->setCurrentText( kDataHex );
 }
 
 void EditValueDlg::makeHeader()

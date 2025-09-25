@@ -51,7 +51,7 @@ void MakeTTLVDlg::initialize()
     mTagText->setPlaceholderText( "4200XX" );
     mTypeCombo->addItems( kTTLVTypeList );
     mTypeCombo->setCurrentIndex(1);
-    mValueCombo->addItems( kValueTypeList );
+    mValueCombo->addItems( kDataTypeList );
     mValueCombo->setCurrentIndex(1);
 }
 

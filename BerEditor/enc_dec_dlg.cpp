@@ -19,12 +19,6 @@
 #include "enc_dec_thread.h"
 #include "key_list_dlg.h"
 
-static QStringList dataTypes = {
-    "String",
-    "Hex",
-    "Base64"
-};
-
 static QStringList algList = {
     "AES",
     "ARIA",
@@ -108,11 +102,11 @@ EncDecDlg::~EncDecDlg()
 
 void EncDecDlg::initialize()
 {
-    mIVTypeCombo->addItems( dataTypes );
-    mKeyTypeCombo->addItems( dataTypes );
-    mAADTypeCombo->addItems( dataTypes );
-    mTagTypeCombo->addItems( dataTypes );
-    mOutputTypeCombo->addItems( dataTypes );
+    mIVTypeCombo->addItems( kDataTypeList );
+    mKeyTypeCombo->addItems( kDataTypeList );
+    mAADTypeCombo->addItems( kDataTypeList );
+    mTagTypeCombo->addItems( kDataTypeList );
+    mOutputTypeCombo->addItems( kDataTypeList );
     mOutputTypeCombo->setCurrentIndex(1);
 
     mAlgCombo->addItems( algList );

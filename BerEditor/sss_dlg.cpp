@@ -16,12 +16,6 @@
 #include "mainwindow.h"
 #include "ber_applet.h"
 
-static QStringList dataTypes = {
-    "String",
-    "Hex",
-    "Base64"
-};
-
 static QStringList primeBits = {
     "8", "16", "32", "64", "128", "256"
 };
@@ -82,8 +76,8 @@ void SSSDlg::initialize()
 
     QStringList headerList = { tr( "Num"), tr( "X||Y Value") };
 
-    mSrcTypeCombo->addItems( dataTypes );
-    mJoinedTypeCombo->addItems( dataTypes );
+    mSrcTypeCombo->addItems( kDataTypeList );
+    mJoinedTypeCombo->addItems( kDataTypeList );
     mJoinedTypeCombo->setCurrentIndex(1);
 
     mShareTable->horizontalHeader()->setStretchLastSection(true);

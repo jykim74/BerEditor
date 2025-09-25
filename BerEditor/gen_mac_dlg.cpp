@@ -32,12 +32,6 @@ static QStringList gmacList = {
     "ARIA"
 };
 
-static QStringList keyTypes = {
-    "String",
-    "Hex",
-    "Base64"
-};
-
 GenMacDlg::GenMacDlg(QWidget *parent) :
     QDialog(parent)
 {
@@ -98,8 +92,8 @@ GenMacDlg::~GenMacDlg()
 
 void GenMacDlg::initialize()
 {
-    mKeyTypeCombo->addItems( keyTypes );
-    mIVTypeCombo->addItems( keyTypes );
+    mKeyTypeCombo->addItems( kDataTypeList );
+    mIVTypeCombo->addItems( kDataTypeList );
 
     group_->addButton( mHMACRadio );
     group_->addButton( mCMACRadio );

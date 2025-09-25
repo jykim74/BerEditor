@@ -14,12 +14,6 @@
 #include "settings_mgr.h"
 #include "key_list_dlg.h"
 
-static QStringList dataTypes = {
-    "String",
-    "Hex",
-    "Base64"
-};
-
 
 GenOTPDlg::GenOTPDlg(QWidget *parent) :
     QDialog(parent)
@@ -61,7 +55,7 @@ void GenOTPDlg::initialize()
 
     mHashTypeCombo->addItems(kHashList);
     mHashTypeCombo->setCurrentText( setMgr->defaultHash() );
-    mKeyTypeCombo->addItems(dataTypes);
+    mKeyTypeCombo->addItems( kDataTypeList );
     mIntervalSpin->setValue(60);
     mLengthSpin->setValue(6);
 

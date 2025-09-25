@@ -78,7 +78,7 @@
    <item>
     <widget class="QTabWidget" name="mInputTab">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="mDataTab">
       <attribute name="title">
@@ -90,38 +90,27 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="3">
+         <item row="0" column="5">
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="4">
           <widget class="QRadioButton" name="mInputBase64Radio">
            <property name="text">
             <string>Base64</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>Input Data</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QRadioButton" name="mInputStringRadio">
-           <property name="text">
-            <string>String</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="5">
-          <widget class="QLabel" name="label_10">
-           <property name="text">
-            <string>Len</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="6">
+         <item row="0" column="7">
           <widget class="QLineEdit" name="mInputLenText">
            <property name="minimumSize">
             <size>
@@ -178,24 +167,38 @@
           </widget>
          </item>
          <item row="0" column="2">
+          <widget class="QRadioButton" name="mInputStringRadio">
+           <property name="text">
+            <string>String</string>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Input Data</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="6">
+          <widget class="QLabel" name="label_10">
+           <property name="text">
+            <string>Len</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
           <widget class="QRadioButton" name="mInputHexRadio">
            <property name="text">
             <string>Hex</string>
            </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
           </widget>
-         </item>
-         <item row="0" column="4">
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
          </item>
         </layout>
        </item>
@@ -822,18 +825,67 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label">
+     <item row="0" column="1">
+      <widget class="QComboBox" name="mKeyTypeCombo"/>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLineEdit" name="mKeyLenText">
        <property name="minimumSize">
         <size>
-         <width>30</width>
+         <width>40</width>
          <height>0</height>
         </size>
        </property>
-       <property name="text">
-        <string>IV</string>
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>240</red>
+             <green>240</green>
+             <blue>240</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </disabled>
+        </palette>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
        </property>
       </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLineEdit" name="mKeyText"/>
      </item>
      <item row="1" column="1">
       <widget class="QComboBox" name="mIVTypeCombo"/>
@@ -894,9 +946,6 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="2">
-      <widget class="QLineEdit" name="mIVText"/>
-     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_2">
        <property name="minimumSize">
@@ -910,67 +959,21 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="mKeyTypeCombo"/>
-     </item>
-     <item row="0" column="2">
-      <widget class="QLineEdit" name="mKeyText"/>
-     </item>
-     <item row="0" column="3">
-      <widget class="QLineEdit" name="mKeyLenText">
+     <item row="1" column="0">
+      <widget class="QLabel" name="label">
        <property name="minimumSize">
         <size>
-         <width>40</width>
+         <width>30</width>
          <height>0</height>
         </size>
        </property>
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="palette">
-        <palette>
-         <active>
-          <colorrole role="Base">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>221</red>
-             <green>221</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </active>
-         <inactive>
-          <colorrole role="Base">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>221</red>
-             <green>221</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </inactive>
-         <disabled>
-          <colorrole role="Base">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>240</red>
-             <green>240</green>
-             <blue>240</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </disabled>
-        </palette>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
+       <property name="text">
+        <string>IV</string>
        </property>
       </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QLineEdit" name="mIVText"/>
      </item>
     </layout>
    </item>
@@ -1489,7 +1492,6 @@
   <tabstop>mDecryptRadio</tabstop>
   <tabstop>mInputTab</tabstop>
   <tabstop>mInputStringRadio</tabstop>
-  <tabstop>mInputHexRadio</tabstop>
   <tabstop>mInputBase64Radio</tabstop>
   <tabstop>mInputLenText</tabstop>
   <tabstop>mInputText</tabstop>

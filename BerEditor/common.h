@@ -15,8 +15,8 @@
 #include "js_ocsp.h"
 
 enum {
-    DATA_STRING,
     DATA_HEX,
+    DATA_STRING,
     DATA_BASE64,
     DATA_BASE64URL,
     DATA_URL
@@ -51,11 +51,14 @@ enum {
     JS_FILE_TYPE_DH_PARAM,
     JS_FILE_TYPE_ALL };
 
-const QString kDataString = "String";
 const QString kDataHex = "Hex";
+const QString kDataString = "String";
 const QString kDataBase64 = "Base64";
+const QString kDataURL = "URL";
+const QString kDataBase64URL = "Base64URL";
 
-const QStringList kDataTypeList = { kDataString, kDataHex, kDataBase64 };
+const QStringList kDataTypeList = { kDataHex, kDataString, kDataBase64 };
+const QStringList kDataTypeList2 = { kDataHex, kDataString, kDataBase64, kDataURL, kDataBase64URL };
 
 const QString kEnvMiscGroup = "Misc";
 const QString kEnvTempGroup = "Temp";
@@ -219,8 +222,6 @@ static int kIterCnt = 1024;
 static QString kSalt = "BerEditor";
 
 static const QString kSettingBer = "SettingBer";
-
-static QStringList kValueTypeList = { "String", "Hex", "Base64" };
 
 const QString kExtNameAIA = "authorityInfoAccess";
 const QString kExtNameAKI = "authorityKeyIdentifier";

@@ -10,20 +10,12 @@
 #include "ber_applet.h"
 #include "common.h"
 
-static QStringList enTypes = {
-    "String",
-    "Hex",
-    "Base64",
-    "URL",
-    "Base64URL"
-};
-
 DataConverterDlg::DataConverterDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
 
-    mOutputTypeCombo->addItems( enTypes );
+    mOutputTypeCombo->addItems( kDataTypeList2 );
 
 
     connect( mFindFileBtn, SIGNAL(clicked()), this, SLOT(clickFindFile()));
@@ -70,7 +62,7 @@ DataConverterDlg::~DataConverterDlg()
 void DataConverterDlg::initialize()
 {
     mOutputTab->setCurrentIndex(0);
-    mOutputTypeCombo->setCurrentText( "Base64" );
+    mOutputTypeCombo->setCurrentText( kDataBase64 );
 }
 
 static char getch( unsigned char c )
