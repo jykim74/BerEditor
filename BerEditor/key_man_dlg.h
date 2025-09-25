@@ -49,8 +49,10 @@ private slots:
     void clickClearDataAll();
 
     void clickKEMClearAll();
-    void clickKEMEncap();
-    void clickKEMDecap();
+    void runKEMEncap();
+    void runKEMDecap();
+
+    void clickKEMRun();
 
     void checkKEMPriKeyEncrypted();
 
@@ -72,6 +74,8 @@ private slots:
     void clickKEMCertDecode();
     void clickKEMCertType();
 
+    void checkKEMEncap();
+    void checkKEMDecap();
 private:
     void initUI();
     void initialize();
@@ -79,6 +83,12 @@ private:
     int readKEMPrivateKey( BIN *pPriKey );
     int getKEMPrivateKey( BIN *pPriKey );
     int getKEMPublicKey( BIN *pPubKey );
+
+    void setKEMEnableWrappedKey( bool bVal );
+    void setKEMEnableKey( bool bVal );
+    void setKEMEnableDecKey( bool bVal );
+    void setKEMEnableCert( bool bVal );
+    void setKEMEnablePriKey( bool bVal );
 };
 
 #endif // KEY_MAN_DLG_H

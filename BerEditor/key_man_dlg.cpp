@@ -58,9 +58,9 @@ KeyManDlg::KeyManDlg(QWidget *parent) :
 
     connect( mGenKEKBtn, SIGNAL(clicked()), this, SLOT(clickKeyWrapGenKEK()));
 
-    connect( mKEMClearAllBtn, SIGNAL(clicked()), this, SLOT(clickKEMClearAll()));
-    connect( mKEMEncapBtn, SIGNAL(clicked(bool)), this, SLOT(clickKEMEncap()));
-    connect( mKEMDecapBtn, SIGNAL(clicked()), this, SLOT(clickKEMDecap()));
+    connect( mKEMEncapRadio, SIGNAL(clicked()), this, SLOT(checkKEMEncap()));
+    connect( mKEMDecapRadio, SIGNAL(clicked()), this, SLOT(checkKEMDecap()));
+    connect( mKEMRunBtn, SIGNAL(clicked()), this, SLOT(clickKEMRun()));
 
     connect( mKEMKeyText, SIGNAL(textChanged(QString)), this, SLOT(changeKEMKey()));
     connect( mKEMWrappedKeyText, SIGNAL(textChanged()), this, SLOT(changeKEMWrappedKey()));
@@ -101,6 +101,14 @@ KeyManDlg::KeyManDlg(QWidget *parent) :
 
     mKeyEncapTab->layout()->setSpacing(5);
     mKeyEncapTab->layout()->setMargin(5);
+
+    mKEMPriKeyDecodeBtn->setFixedWidth(34);
+    mKEMPriKeyTypeBtn->setFixedWidth(34);
+    mKEMPriKeyViewBtn->setFixedWidth(34);
+
+    mKEMCertDecodeBtn->setFixedWidth(34);
+    mKEMCertTypeBtn->setFixedWidth(34);
+    mKEMCertViewBtn->setFixedWidth(34);
 #endif
 
     resize(minimumSizeHint().width(), minimumSizeHint().height());
@@ -155,7 +163,7 @@ void KeyManDlg::initialize()
     mDstTypeCombo->setCurrentIndex(1);
 
     mPBKDF2Radio->click();
-
+    mKEMEncapRadio->click();
     tabWidget->setCurrentIndex(0);
 }
 
@@ -233,7 +241,7 @@ int KeyManDlg::getKEMPrivateKey( BIN *pPriKey )
             CertManDlg certMan;
             QString strPriHex;
             certMan.setMode(ManModeSelBoth );
-            certMan.setTitle( tr( "Select a sign certificate") );
+            certMan.setTitle( tr( "Select a private key") );
 
             if( certMan.exec() != QDialog::Accepted )
                 goto end;
@@ -246,7 +254,7 @@ int KeyManDlg::getKEMPrivateKey( BIN *pPriKey )
             QString strPriPath;
 
             KeyPairManDlg keyPairMan;
-            keyPairMan.setTitle( tr( "Select keypair" ));
+            keyPairMan.setTitle( tr( "Select a private key" ));
             keyPairMan.setMode( KeyPairModeSelect );
 
             if( keyPairMan.exec() != QDialog::Accepted )
@@ -298,7 +306,7 @@ int KeyManDlg::getKEMPublicKey( BIN *pPubKey )
             QString strCertHex;
 
             certMan.setMode(ManModeSelCert);
-            certMan.setTitle( tr( "Select a sign certificate") );
+            certMan.setTitle( tr( "Select a certificate") );
 
             if( certMan.exec() != QDialog::Accepted )
             {
@@ -315,7 +323,7 @@ int KeyManDlg::getKEMPublicKey( BIN *pPubKey )
             QString strPubPath;
 
             KeyPairManDlg keyPairMan;
-            keyPairMan.setTitle( tr( "Select keypair" ));
+            keyPairMan.setTitle( tr( "Select a public key" ));
             keyPairMan.setMode( KeyPairModeSelect );
 
             if( keyPairMan.exec() != QDialog::Accepted )
@@ -802,7 +810,7 @@ void KeyManDlg::clickKEMClearAll()
     mKEMDecKeyText->clear();
 }
 
-void KeyManDlg::clickKEMEncap()
+void KeyManDlg::runKEMEncap()
 {
     int ret = -1;
     int nKeyType = -1;
@@ -841,7 +849,7 @@ end :
     JS_BIN_reset( &binWrappedKey );
 }
 
-void KeyManDlg::clickKEMDecap()
+void KeyManDlg::runKEMDecap()
 {
     int ret = -1;
     int nKeyType = -1;
@@ -886,6 +894,14 @@ end :
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binWrappedKey );
     JS_BIN_reset( &binDecKey );
+}
+
+void KeyManDlg::clickKEMRun()
+{
+    if( mKEMEncapRadio->isChecked() == true )
+        runKEMEncap();
+    else
+        runKEMDecap();
 }
 
 void KeyManDlg::checkKEMPriKeyEncrypted()
@@ -1111,4 +1127,74 @@ void KeyManDlg::clickKEMCertType()
     berApplet->messageBox( tr( "%1 type is %2").arg( strType ).arg( JS_PKI_getKeyAlgName( nType )), this);
 
     JS_BIN_reset( &binData );
+}
+
+void KeyManDlg::checkKEMEncap()
+{
+    if( mKEMGroup->isChecked() == true )
+    {
+        setKEMEnableCert(true);
+        setKEMEnablePriKey(false);
+    }
+
+    setKEMEnableKey(true);
+    setKEMEnableDecKey(false);
+}
+
+void KeyManDlg::checkKEMDecap()
+{
+    if( mKEMGroup->isChecked() == true )
+    {
+        setKEMEnableCert(false);
+        setKEMEnablePriKey(true);
+    }
+
+    setKEMEnableKey(false);
+    setKEMEnableDecKey(true);
+}
+
+void KeyManDlg::setKEMEnableWrappedKey( bool bVal )
+{
+    mKEMWrappedKeyClearBtn->setEnabled(bVal);
+    mKEMWrappedKeyLabel->setEnabled(bVal);
+    mKEMWrappedKeyLenText->setEnabled(bVal);
+    mKEMWrappedKeyText->setEnabled(bVal);
+}
+
+void KeyManDlg::setKEMEnableKey( bool bVal )
+{
+    mKEMKeyClearBtn->setEnabled(bVal);
+    mKEMKeyLabel->setEnabled(bVal);
+    mKEMKeyLenText->setEnabled(bVal);
+    mKEMKeyText->setEnabled(bVal);
+}
+
+void KeyManDlg::setKEMEnableDecKey( bool bVal )
+{
+    mKEMDecKeyClearBtn->setEnabled(bVal);
+    mKEMDecKeyLabel->setEnabled(bVal);
+    mKEMDecKeyLenText->setEnabled(bVal);
+    mKEMDecKeyText->setEnabled(bVal);
+}
+
+void KeyManDlg::setKEMEnableCert( bool bVal )
+{
+    mKEMCertDecodeBtn->setEnabled(bVal);
+    mKEMCertFindBtn->setEnabled(bVal);
+    mKEMCertLabel->setEnabled(bVal);
+    mKEMCertPathText->setEnabled(bVal);
+    mKEMCertTypeBtn->setEnabled(bVal);
+    mKEMCertViewBtn->setEnabled(bVal);
+}
+
+void KeyManDlg::setKEMEnablePriKey( bool bVal )
+{
+    mKEMPriKeyDecodeBtn->setEnabled(bVal);
+    mKEMPriKeyEncryptedCheck->setEnabled(bVal);
+    mKEMPriKeyFindBtn->setEnabled(bVal);
+    mKEMPriKeyLabel->setEnabled(bVal);
+    mKEMPriKeyPasswdText->setEnabled(bVal);
+    mKEMPriKeyPathText->setEnabled(bVal);
+    mKEMPriKeyTypeBtn->setEnabled(bVal);
+    mKEMPriKeyViewBtn->setEnabled(bVal);
 }

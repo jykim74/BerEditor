@@ -226,7 +226,7 @@ int SignVerifyDlg::getPrivateKey( BIN *pPriKey, int *pnType )
             CertManDlg certMan;
             QString strPriHex;
             certMan.setMode(ManModeSelBoth );
-            certMan.setTitle( tr( "Select a sign certificate") );
+            certMan.setTitle( tr( "Select a private key") );
 
             if( certMan.exec() != QDialog::Accepted )
                 goto end;
@@ -239,7 +239,7 @@ int SignVerifyDlg::getPrivateKey( BIN *pPriKey, int *pnType )
             QString strPriPath;
 
             KeyPairManDlg keyPairMan;
-            keyPairMan.setTitle( tr( "Select keypair" ));
+            keyPairMan.setTitle( tr( "Select a private key" ));
             keyPairMan.setMode( KeyPairModeSelect );
 
             if( keyPairMan.exec() != QDialog::Accepted )
@@ -297,7 +297,7 @@ int SignVerifyDlg::getPublicKey( BIN *pPubKey, int *pnType )
     {
         if( mCertPath->text().isEmpty() )
         {
-            berApplet->warningBox( tr( "Select a certificate"), this );
+            berApplet->warningBox( tr( "Select a certificate or public key"), this );
             mCertPath->setFocus();
             ret = -1;
             goto end;
@@ -321,7 +321,7 @@ int SignVerifyDlg::getPublicKey( BIN *pPubKey, int *pnType )
             QString strCertHex;
 
             certMan.setMode(ManModeSelCert);
-            certMan.setTitle( tr( "Select a sign certificate") );
+            certMan.setTitle( tr( "Select a certificate") );
 
             if( certMan.exec() != QDialog::Accepted )
             {
@@ -338,7 +338,7 @@ int SignVerifyDlg::getPublicKey( BIN *pPubKey, int *pnType )
             QString strPubPath;
 
             KeyPairManDlg keyPairMan;
-            keyPairMan.setTitle( tr( "Select keypair" ));
+            keyPairMan.setTitle( tr( "Select a public key" ));
             keyPairMan.setMode( KeyPairModeSelect );
 
             if( keyPairMan.exec() != QDialog::Accepted )

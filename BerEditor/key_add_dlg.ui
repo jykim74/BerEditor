@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>441</width>
+    <width>524</width>
     <height>310</height>
    </rect>
   </property>
@@ -253,6 +253,12 @@
    </item>
    <item>
     <widget class="Line" name="line">
+     <property name="minimumSize">
+      <size>
+       <width>500</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>

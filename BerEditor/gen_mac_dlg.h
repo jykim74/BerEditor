@@ -58,6 +58,7 @@ private slots:
 private:
         void freeCTX();
 
+        void initUI();
         void initialize();
         void appendStatusLabel( const QString strLabel );
         void updateStatusLabel();

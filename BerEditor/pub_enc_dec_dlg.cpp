@@ -233,7 +233,7 @@ void PubEncDecDlg::Run()
 
             if( strCertPath.length() < 1 )
             {
-                berApplet->warningBox( tr( "Select a certificate"), this );
+                berApplet->warningBox( tr( "Select a certificate or public key"), this );
                 mCertPath->setFocus();
                 goto end;
             }
@@ -270,7 +270,7 @@ void PubEncDecDlg::Run()
                 QString strPubPath;
 
                 KeyPairManDlg keyPairMan;
-                keyPairMan.setTitle( tr( "Select keypair" ));
+                keyPairMan.setTitle( tr( "Select a public key" ));
                 keyPairMan.setMode( KeyPairModeSelect );
 
                 if( keyPairMan.exec() != QDialog::Accepted )

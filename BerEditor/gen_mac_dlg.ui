@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>518</width>
-    <height>496</height>
+    <width>524</width>
+    <height>625</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,51 +29,20 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="5">
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="0" column="6">
-          <widget class="QLabel" name="label_5">
-           <property name="text">
-            <string>Len</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QRadioButton" name="mInputHexRadio">
-           <property name="text">
-            <string>Hex</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
             <string>Input Data</string>
            </property>
           </widget>
          </item>
          <item row="0" column="4">
-          <widget class="QRadioButton" name="mInputBase64Radio">
-           <property name="text">
-            <string>Base64</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="7">
           <widget class="QLineEdit" name="mInputLenText">
            <property name="minimumSize">
             <size>
@@ -130,14 +99,27 @@
           </widget>
          </item>
          <item row="0" column="3">
-          <widget class="QRadioButton" name="mInputStringRadio">
+          <widget class="QLabel" name="label_5">
            <property name="text">
-            <string>String</string>
-           </property>
-           <property name="checked">
-            <bool>false</bool>
+            <string>Len</string>
            </property>
           </widget>
+         </item>
+         <item row="0" column="2">
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="mInputTypeCombo"/>
          </item>
         </layout>
        </item>
@@ -996,8 +978,6 @@
  </widget>
  <tabstops>
   <tabstop>mInputTab</tabstop>
-  <tabstop>mInputHexRadio</tabstop>
-  <tabstop>mInputBase64Radio</tabstop>
   <tabstop>mInputLenText</tabstop>
   <tabstop>mInputText</tabstop>
   <tabstop>mInitBtn</tabstop>

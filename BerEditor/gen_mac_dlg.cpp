@@ -42,6 +42,7 @@ GenMacDlg::GenMacDlg(QWidget *parent) :
     update_cnt_ = 0;
 
     setupUi(this);
+    initUI();
 
     connect( mInitBtn, SIGNAL(clicked()), this, SLOT(macInit()));
     connect( mUpdateBtn, SIGNAL(clicked()), this, SLOT(macUpdate()));
@@ -54,9 +55,7 @@ GenMacDlg::GenMacDlg(QWidget *parent) :
 
     connect( mInputText, SIGNAL(textChanged()), this, SLOT(inputChanged()));
     connect( mOutputText, SIGNAL(textChanged()), this, SLOT(outputChanged()));
-    connect( mInputStringRadio, SIGNAL(clicked()), this, SLOT(inputChanged()));
-    connect( mInputHexRadio, SIGNAL(clicked()), this, SLOT(inputChanged()));
-    connect( mInputBase64Radio, SIGNAL(clicked()), this, SLOT(inputChanged()));
+    connect( mInputTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(inputChanged()));
 
     connect( mKeyText, SIGNAL(textChanged(const QString&)), this, SLOT(keyChanged()));
     connect( mIVText, SIGNAL(textChanged(const QString&)), this, SLOT(ivChanged()));
@@ -90,21 +89,24 @@ GenMacDlg::~GenMacDlg()
     freeCTX();
 }
 
-void GenMacDlg::initialize()
+void GenMacDlg::initUI()
 {
+    mInputTypeCombo->addItems( kDataTypeList );
     mKeyTypeCombo->addItems( kDataTypeList );
     mIVTypeCombo->addItems( kDataTypeList );
 
+    mOutputText->setPlaceholderText( tr("Hex value" ));
+    mKeyText->setPlaceholderText( tr( "Select KeyList key"));
+    mSrcFileText->setPlaceholderText( tr( "Find the target file" ));
+}
+
+void GenMacDlg::initialize()
+{
     group_->addButton( mHMACRadio );
     group_->addButton( mCMACRadio );
     group_->addButton( mGMACRadio );
 
     mInputTab->setCurrentIndex(0);
-
-    mOutputText->setPlaceholderText( tr("Hex value" ));
-    mKeyText->setPlaceholderText( tr( "Select KeyList key"));
-    mSrcFileText->setPlaceholderText( tr( "Find the target file" ));
-
     checkHMAC();
 }
 
@@ -253,24 +255,13 @@ void GenMacDlg::macUpdate()
 {
     int ret = 0;
     BIN binSrc = {0,0};
-    int nDataType = DATA_STRING;
 
     QString strInput = mInputText->toPlainText();
+    QString strType = mInputTypeCombo->currentText();
 
     if( strInput.length() > 0 )
     {
-        if( mInputStringRadio->isChecked() )
-            nDataType = DATA_STRING;
-        else if( mInputHexRadio->isChecked() )
-        {
-            nDataType = DATA_HEX;
-        }
-        else if( mInputBase64Radio->isChecked() )
-        {
-            nDataType = DATA_BASE64;
-        }
-
-        getBINFromString( &binSrc, nDataType, strInput );
+        getBINFromString( &binSrc, strType, strInput );
     }
 
     if( mCMACRadio->isChecked() )
@@ -402,21 +393,11 @@ void GenMacDlg::clickMAC()
     int nDataType = DATA_STRING;
 
     QString strInput = mInputText->toPlainText();
+    QString strType = mInputTypeCombo->currentText();
 
     if( strInput.length() > 0 )
     {
-        if( mInputStringRadio->isChecked() )
-            nDataType = DATA_STRING;
-        else if( mInputHexRadio->isChecked() )
-        {
-            nDataType = DATA_HEX;
-        }
-        else if( mInputBase64Radio->isChecked() )
-        {
-            nDataType = DATA_BASE64;
-        }
-
-        getBINFromString( &binSrc, nDataType, strInput );
+        getBINFromString( &binSrc, strType, strInput );
     }
 
     QString strKey = mKeyText->text();
@@ -683,14 +664,8 @@ void GenMacDlg::outputClear()
 
 void GenMacDlg::inputChanged()
 {
-    int nType = DATA_STRING;
-
-    if( mInputHexRadio->isChecked() )
-        nType = DATA_HEX;
-    else if( mInputBase64Radio->isChecked() )
-        nType = DATA_BASE64;
-
-    QString strLen = getDataLenString( nType, mInputText->toPlainText() );
+    QString strType = mInputTypeCombo->currentText();
+    QString strLen = getDataLenString( strType, mInputText->toPlainText() );
     mInputLenText->setText( QString("%1").arg(strLen));
 }
 

@@ -74,7 +74,7 @@ TTLVClientDlg::TTLVClientDlg(QWidget *parent) :
     mCertTypeBtn->setFixedWidth(34);
 
     mPriKeyDecodeBtn->setFixedWidth(34);
-    mPriKeyTypeBtn->setFixedWidth(34);
+    mPriKeyViewBtn->setFixedWidth(34);
     mPriKeyTypeBtn->setFixedWidth(34);
 
     mRequestClearBtn->setFixedWidth(34);

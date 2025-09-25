@@ -84,17 +84,33 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="3">
-      <widget class="QLabel" name="label_4">
+     <item row="0" column="1">
+      <widget class="QCheckBox" name="mXMLTemplateCheck">
        <property name="text">
-        <string>Hash</string>
+        <string>Use as a template</string>
        </property>
       </widget>
      </item>
      <item row="0" column="0">
       <widget class="QCheckBox" name="mUseCertManCheck">
+       <property name="minimumSize">
+        <size>
+         <width>120</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="text">
         <string>Use CertMan</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QComboBox" name="mHashCombo"/>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Hash</string>
        </property>
       </widget>
      </item>
@@ -111,16 +127,6 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="4">
-      <widget class="QComboBox" name="mHashCombo"/>
-     </item>
-     <item row="0" column="1">
-      <widget class="QCheckBox" name="mXMLTemplateCheck">
-       <property name="text">
-        <string>Use as a template</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
    <item>
@@ -132,7 +138,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="mTabCMS">
       <attribute name="title">

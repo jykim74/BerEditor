@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>542</width>
-    <height>589</height>
+    <width>667</width>
+    <height>747</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -671,18 +671,28 @@
         <item row="1" column="1">
          <widget class="QLineEdit" name="mCertPath"/>
         </item>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="mPriKeyPath"/>
-        </item>
-        <item row="1" column="2">
-         <widget class="QPushButton" name="mFindCertBtn">
+        <item row="1" column="5">
+         <widget class="QPushButton" name="mCertTypeBtn">
+          <property name="maximumSize">
+           <size>
+            <width>20</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="text">
-           <string>Find</string>
+           <string>T</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="2">
-         <widget class="QPushButton" name="mFindPriKeyBtn">
+        <item row="1" column="0">
+         <widget class="QLabel" name="mCertLabel">
+          <property name="text">
+           <string>Cert or PubKey</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QPushButton" name="mFindCertBtn">
           <property name="text">
            <string>Find</string>
           </property>
@@ -701,13 +711,6 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="mCertLabel">
-          <property name="text">
-           <string>Cert or PubKey</string>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="3">
          <widget class="QPushButton" name="mCertViewBtn">
           <property name="maximumSize">
@@ -721,7 +724,7 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="0">
+        <item row="2" column="0">
          <widget class="QLabel" name="mPriKeyLabel">
           <property name="minimumSize">
            <size>
@@ -734,8 +737,18 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="5">
-         <widget class="QPushButton" name="mCertTypeBtn">
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="mPriKeyPath"/>
+        </item>
+        <item row="2" column="2">
+         <widget class="QPushButton" name="mFindPriKeyBtn">
+          <property name="text">
+           <string>Find</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="3">
+         <widget class="QPushButton" name="mPriKeyViewBtn">
           <property name="maximumSize">
            <size>
             <width>20</width>
@@ -743,11 +756,11 @@
            </size>
           </property>
           <property name="text">
-           <string>T</string>
+           <string>V</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="4">
+        <item row="2" column="4">
          <widget class="QPushButton" name="mPriKeyDecodeBtn">
           <property name="maximumSize">
            <size>
@@ -760,7 +773,7 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="5">
+        <item row="2" column="5">
          <widget class="QPushButton" name="mPriKeyTypeBtn">
           <property name="maximumSize">
            <size>
@@ -770,19 +783,6 @@
           </property>
           <property name="text">
            <string>T</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="3">
-         <widget class="QPushButton" name="mPriKeyViewBtn">
-          <property name="maximumSize">
-           <size>
-            <width>20</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>V</string>
           </property>
          </widget>
         </item>
@@ -1102,11 +1102,6 @@
   <tabstop>mFileReadSizeText</tabstop>
   <tabstop>mRunThreadCheck</tabstop>
   <tabstop>mCertGroup</tabstop>
-  <tabstop>mPriKeyPath</tabstop>
-  <tabstop>mFindPriKeyBtn</tabstop>
-  <tabstop>mPriKeyViewBtn</tabstop>
-  <tabstop>mPriKeyDecodeBtn</tabstop>
-  <tabstop>mPriKeyTypeBtn</tabstop>
   <tabstop>mCertPath</tabstop>
   <tabstop>mFindCertBtn</tabstop>
   <tabstop>mCertViewBtn</tabstop>

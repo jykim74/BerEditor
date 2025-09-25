@@ -158,42 +158,10 @@
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <layout class="QGridLayout" name="gridLayout_8">
-        <item row="1" column="1">
-         <widget class="QLineEdit" name="mCertPathText"/>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="mPriKeyPathText"/>
-        </item>
-        <item row="1" column="4">
-         <widget class="QPushButton" name="mCertDecodeBtn">
-          <property name="maximumSize">
-           <size>
-            <width>20</width>
-            <height>16777215</height>
-           </size>
-          </property>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>D</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QPushButton" name="mFindPriKeyBtn">
-          <property name="text">
-           <string>Find</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="3">
-         <widget class="QPushButton" name="mCertViewBtn">
-          <property name="maximumSize">
-           <size>
-            <width>20</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>V</string>
+           <string>Certificate</string>
           </property>
          </widget>
         </item>
@@ -201,20 +169,6 @@
          <widget class="QPushButton" name="mFindCertBtn">
           <property name="text">
            <string>Find</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string>Private Key</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>Certificate</string>
           </property>
          </widget>
         </item>
@@ -231,7 +185,66 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="4">
+        <item row="1" column="3">
+         <widget class="QPushButton" name="mCertViewBtn">
+          <property name="maximumSize">
+           <size>
+            <width>20</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>V</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="4">
+         <widget class="QPushButton" name="mCertDecodeBtn">
+          <property name="maximumSize">
+           <size>
+            <width>20</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>D</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="mCertPathText"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Private Key</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="mPriKeyPathText"/>
+        </item>
+        <item row="2" column="2">
+         <widget class="QPushButton" name="mFindPriKeyBtn">
+          <property name="text">
+           <string>Find</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="3">
+         <widget class="QPushButton" name="mPriKeyViewBtn">
+          <property name="maximumSize">
+           <size>
+            <width>20</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>V</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="4">
          <widget class="QPushButton" name="mPriKeyDecodeBtn">
           <property name="maximumSize">
            <size>
@@ -244,7 +257,7 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="5">
+        <item row="2" column="5">
          <widget class="QPushButton" name="mPriKeyTypeBtn">
           <property name="maximumSize">
            <size>
@@ -254,19 +267,6 @@
           </property>
           <property name="text">
            <string>T</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="3">
-         <widget class="QPushButton" name="mPriKeyViewBtn">
-          <property name="maximumSize">
-           <size>
-            <width>20</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>V</string>
           </property>
          </widget>
         </item>
@@ -792,11 +792,6 @@
   <tabstop>mCACertDecodeBtn</tabstop>
   <tabstop>mCACertTypeBtn</tabstop>
   <tabstop>mCertGroup</tabstop>
-  <tabstop>mPriKeyPathText</tabstop>
-  <tabstop>mFindPriKeyBtn</tabstop>
-  <tabstop>mPriKeyViewBtn</tabstop>
-  <tabstop>mPriKeyDecodeBtn</tabstop>
-  <tabstop>mPriKeyTypeBtn</tabstop>
   <tabstop>mCertPathText</tabstop>
   <tabstop>mFindCertBtn</tabstop>
   <tabstop>mCertViewBtn</tabstop>

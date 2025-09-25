@@ -43,9 +43,7 @@ GenHashDlg::GenHashDlg(QWidget *parent) :
 
     connect( mInputText, SIGNAL(textChanged()), this, SLOT(inputChanged()));
     connect( mOutputText, SIGNAL(textChanged()), this, SLOT(outputChanged()));
-    connect( mInputStringRadio, SIGNAL(clicked()), this, SLOT(inputChanged()));
-    connect( mInputHexRadio, SIGNAL(clicked()), this, SLOT(inputChanged()));
-    connect( mInputBase64Radio, SIGNAL(clicked()), this, SLOT(inputChanged()));
+    connect( mInputTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(inputChanged()));
 
     connect( mOutputHashCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeOutputHash()));
     connect( mFindSrcFileBtn, SIGNAL(clicked()), this, SLOT(clickFindSrcFile()));
@@ -74,6 +72,8 @@ GenHashDlg::~GenHashDlg()
 
 void GenHashDlg::initUI()
 {
+    mInputTypeCombo->addItems( kDataTypeList );
+
     mOutputHashCombo->addItems( kHashList );
     mOutputHashCombo->addItem( kSHAKE128 );
     mOutputHashCombo->addItem( kSHAKE256 );
@@ -138,11 +138,11 @@ int GenHashDlg::hashInit()
 void GenHashDlg::hashUpdate()
 {
     int ret = 0;
-    int nDataType = DATA_STRING;
 
     BIN binSrc = {0,0};
 
     QString inputStr = mInputText->toPlainText();
+    QString strType = mInputTypeCombo->currentText();
 
     if( inputStr.isEmpty() )
     {
@@ -150,18 +150,7 @@ void GenHashDlg::hashUpdate()
     }
     else
     {
-        if( mInputStringRadio->isChecked() )
-            nDataType = DATA_STRING;
-        else if( mInputHexRadio->isChecked() )
-        {
-            nDataType = DATA_HEX;
-        }
-        else if( mInputBase64Radio->isChecked() )
-        {
-            nDataType = DATA_BASE64;
-        }
-
-        getBINFromString( &binSrc, nDataType, inputStr );
+        getBINFromString( &binSrc, strType, inputStr );
     }
 
     ret = JS_PKI_hashUpdate( pctx_, &binSrc );
@@ -235,6 +224,7 @@ void GenHashDlg::clickDigest()
     QElapsedTimer timer;
 
     QString inputStr = mInputText->toPlainText();
+    QString strType = mInputTypeCombo->currentText();
 
     if( inputStr.isEmpty() )
     {
@@ -242,19 +232,7 @@ void GenHashDlg::clickDigest()
     }
     else
     {
-        int nDataType = DATA_STRING;
-        if( mInputStringRadio->isChecked() )
-            nDataType = DATA_STRING;
-        else if( mInputHexRadio->isChecked() )
-        {
-            nDataType = DATA_HEX;
-        }
-        else if( mInputBase64Radio->isChecked() )
-        {
-            nDataType = DATA_BASE64;
-        }
-
-        getBINFromString( &binSrc, nDataType, inputStr );
+        getBINFromString( &binSrc, strType, inputStr );
     }
 
     QString strHash = mOutputHashCombo->currentText();
@@ -318,15 +296,9 @@ void GenHashDlg::clearOutput()
 }
 
 void GenHashDlg::inputChanged()
-{
-    int nType = DATA_STRING;
-
-    if( mInputHexRadio->isChecked() )
-        nType = DATA_HEX;
-    else if( mInputBase64Radio->isChecked() )
-        nType = DATA_BASE64;
-
-    QString strLen = getDataLenString( nType, mInputText->toPlainText() );
+{   
+    QString strType = mInputTypeCombo->currentText();
+    QString strLen = getDataLenString( strType, mInputText->toPlainText() );
     mInputLenText->setText( QString("%1").arg(strLen));
 }
 
