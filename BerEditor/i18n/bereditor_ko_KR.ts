@@ -8284,7 +8284,12 @@ Do you want to delete the file and continue?</source>
         <translation>ML DSA</translation>
     </message>
     <message>
-        <location filename="../gen_key_pair_dlg.ui" line="177"/>
+        <location filename="../gen_key_pair_dlg.ui" line="147"/>
+        <source>PQC</source>
+        <translation>PQC</translation>
+    </message>
+    <message>
+        <location filename="../gen_key_pair_dlg.ui" line="184"/>
         <location filename="../gen_key_pair_dlg.cpp" line="165"/>
         <location filename="../gen_key_pair_dlg.cpp" line="184"/>
         <location filename="../gen_key_pair_dlg.cpp" line="211"/>
@@ -8294,17 +8299,17 @@ Do you want to delete the file and continue?</source>
         <translation>키 길이</translation>
     </message>
     <message>
-        <location filename="../gen_key_pair_dlg.ui" line="206"/>
+        <location filename="../gen_key_pair_dlg.ui" line="213"/>
         <source>Exponent</source>
         <translation>Exponent</translation>
     </message>
     <message>
-        <location filename="../gen_key_pair_dlg.ui" line="237"/>
+        <location filename="../gen_key_pair_dlg.ui" line="244"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
     <message>
-        <location filename="../gen_key_pair_dlg.ui" line="244"/>
+        <location filename="../gen_key_pair_dlg.ui" line="251"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
