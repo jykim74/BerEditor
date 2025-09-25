@@ -285,9 +285,20 @@ void PriKeyInfoDlg::setRSAKey( const BIN *pKey, bool bPri )
     memset( &sRSAKey, 0x00, sizeof(sRSAKey));
 
     if( bPri == true )
+    {
         ret = JS_PKI_getRSAKeyVal( pKey, &sRSAKey );
+    }
     else
+    {
+        setEnableRSA_D( false );
+        setEnableRSA_P( false );
+        setEnableRSA_Q( false );
+        setEnableRSA_DMP1( false );
+        setEnableRSA_DMQ1( false );
+        setEnableRSA_IQMP( false );
+
         ret = JS_PKI_getRSAKeyValFromPub( pKey, &sRSAKey );
+    }
 
     if( ret == 0 )
     {
@@ -314,9 +325,14 @@ void PriKeyInfoDlg::setECCKey( const BIN *pKey, bool bPri )
     memset( &sECKey, 0x00, sizeof(sECKey));
 
     if( bPri == true )
+    {
         ret = JS_PKI_getECKeyVal( pKey, &sECKey );
+    }
     else
+    {
+        setEnableECC_Private( false );
         ret = JS_PKI_getECKeyValFromPub( pKey, &sECKey );
+    }
 
     if( ret == 0 )
     {
@@ -342,9 +358,14 @@ void PriKeyInfoDlg::setDSAKey( const BIN *pKey, bool bPri )
     memset( &sDSAKey, 0x00, sizeof(sDSAKey));
 
     if( bPri == true )
+    {
         ret = JS_PKI_getDSAKeyVal( pKey, &sDSAKey );
+    }
     else
+    {
+        setEnableDSA_Private( false );
         ret = JS_PKI_getDSAKeyValFromPub( pKey, &sDSAKey );
+    }
 
     if( ret == 0 )
     {
@@ -368,9 +389,15 @@ void PriKeyInfoDlg::setEdDSAKey( const BIN *pKey, bool bPri )
     memset( &sRawKeyVal, 0x00, sizeof(sRawKeyVal));
 
     if( bPri == true )
+    {
+        setEnableEdDSA_RawPublic( false );
         ret = JS_PKI_getRawKeyVal( pKey, &sRawKeyVal );
+    }
     else
+    {
+        setEnableEdDSA_RawPrivate( false );
         ret = JS_PKI_getRawKeyValFromPub( pKey, &sRawKeyVal );
+    }
 
     if( ret == 0 )
     {
@@ -1057,4 +1084,256 @@ void PriKeyInfoDlg::readPublicKey( BIN *pPubKey )
     if( pPubKey == NULL ) return;
 
     JS_BIN_copy( pPubKey, &pub_key_ );
+}
+
+void PriKeyInfoDlg::setEnableRSA_N( bool bVal )
+{
+    QString strStyle = kReadOnlyStyle;
+
+    if( bVal == false ) strStyle = kDisableStyle;
+
+    mRSA_NLabel->setEnabled( bVal );
+    mRSA_NText->setEnabled( bVal );
+    mRSA_NLenText->setEnabled( bVal );
+
+    mRSA_NText->setStyleSheet( strStyle );
+    mRSA_NLenText->setStyleSheet( strStyle );
+}
+
+void PriKeyInfoDlg::setEnableRSA_E( bool bVal )
+{
+    QString strStyle = kReadOnlyStyle;
+
+    if( bVal == false ) strStyle = kDisableStyle;
+
+    mRSA_ELabel->setEnabled( bVal );
+    mRSA_EText->setEnabled( bVal );
+    mRSA_ELenText->setEnabled( bVal );
+
+    mRSA_EText->setStyleSheet( strStyle );
+    mRSA_ELenText->setStyleSheet( strStyle );
+}
+
+void PriKeyInfoDlg::setEnableRSA_D( bool bVal )
+{
+    QString strStyle = kReadOnlyStyle;
+
+    if( bVal == false ) strStyle = kDisableStyle;
+
+    mRSA_DLabel->setEnabled( bVal );
+    mRSA_DText->setEnabled( bVal );
+    mRSA_DLenText->setEnabled( bVal );
+
+    mRSA_DText->setStyleSheet( strStyle );
+    mRSA_DLenText->setStyleSheet( strStyle );
+}
+
+void PriKeyInfoDlg::setEnableRSA_P( bool bVal )
+{
+    QString strStyle = kReadOnlyStyle;
+
+    if( bVal == false ) strStyle = kDisableStyle;
+
+    mRSA_PLabel->setEnabled( bVal );
+    mRSA_PText->setEnabled( bVal );
+    mRSA_PLenText->setEnabled( bVal );
+
+    mRSA_PText->setStyleSheet( strStyle );
+    mRSA_PLenText->setStyleSheet( strStyle );
+}
+
+void PriKeyInfoDlg::setEnableRSA_Q( bool bVal )
+{
+    QString strStyle = kReadOnlyStyle;
+
+    if( bVal == false ) strStyle = kDisableStyle;
+
+    mRSA_QLabel->setEnabled( bVal );
+    mRSA_QText->setEnabled( bVal );
+    mRSA_QLenText->setEnabled( bVal );
+
+    mRSA_QText->setStyleSheet( strStyle );
+    mRSA_QLenText->setStyleSheet( strStyle );
+}
+
+void PriKeyInfoDlg::setEnableRSA_DMP1( bool bVal )
+{
+    QString strStyle = kReadOnlyStyle;
+
+    if( bVal == false ) strStyle = kDisableStyle;
+
+    mRSA_DMP1Label->setEnabled( bVal );
+    mRSA_DMP1Text->setEnabled( bVal );
+    mRSA_DMP1LenText->setEnabled( bVal );
+
+    mRSA_DMP1Text->setStyleSheet( strStyle );
+    mRSA_DMP1LenText->setStyleSheet( strStyle );
+}
+
+void PriKeyInfoDlg::setEnableRSA_DMQ1( bool bVal )
+{
+    QString strStyle = kReadOnlyStyle;
+
+    if( bVal == false ) strStyle = kDisableStyle;
+
+    mRSA_DMQ1Label->setEnabled( bVal );
+    mRSA_DMQ1Text->setEnabled( bVal );
+    mRSA_DMQ1LenText->setEnabled( bVal );
+
+    mRSA_DMQ1Text->setStyleSheet( strStyle );
+    mRSA_DMQ1LenText->setStyleSheet( strStyle );
+}
+
+void PriKeyInfoDlg::setEnableRSA_IQMP( bool bVal )
+{
+    QString strStyle = kReadOnlyStyle;
+
+    if( bVal == false ) strStyle = kDisableStyle;
+
+    mRSA_IQMPLabel->setEnabled( bVal );
+    mRSA_IQMPText->setEnabled( bVal );
+    mRSA_IQMPLenText->setEnabled( bVal );
+
+    mRSA_IQMPText->setStyleSheet( strStyle );
+    mRSA_IQMPLenText->setStyleSheet( strStyle );
+}
+
+void PriKeyInfoDlg::setEnableECC_Private( bool bVal )
+{
+    QString strStyle = kReadOnlyStyle;
+
+    if( bVal == false ) strStyle = kDisableStyle;
+
+    mECC_PrivateLabel->setEnabled( bVal );
+    mECC_PrivateText->setEnabled( bVal );
+    mECC_PrivateLenText->setEnabled( bVal );
+
+    mECC_PrivateText->setStyleSheet( strStyle );
+    mECC_PrivateLenText->setStyleSheet( strStyle );
+}
+
+void PriKeyInfoDlg::setEnableECC_PubX( bool bVal )
+{
+    QString strStyle = kReadOnlyStyle;
+
+    if( bVal == false ) strStyle = kDisableStyle;
+
+    mECC_PubXLabel->setEnabled( bVal );
+    mECC_PubXText->setEnabled( bVal );
+    mECC_PubXLenText->setEnabled( bVal );
+
+    mECC_PubXText->setStyleSheet( strStyle );
+    mECC_PubXLenText->setStyleSheet( strStyle );
+}
+
+void PriKeyInfoDlg::setEnableECC_PubY( bool bVal )
+{
+    QString strStyle = kReadOnlyStyle;
+
+    if( bVal == false ) strStyle = kDisableStyle;
+
+    mECC_PubYLabel->setEnabled( bVal );
+    mECC_PubYText->setEnabled( bVal );
+    mECC_PubYLenText->setEnabled( bVal );
+
+    mECC_PubYText->setStyleSheet( strStyle );
+    mECC_PubYLenText->setStyleSheet( strStyle );
+}
+
+void PriKeyInfoDlg::setEnableDSA_P( bool bVal )
+{
+    QString strStyle = kReadOnlyStyle;
+
+    if( bVal == false ) strStyle = kDisableStyle;
+
+    mDSA_PLabel->setEnabled( bVal );
+    mDSA_PText->setEnabled( bVal );
+    mDSA_PLenText->setEnabled( bVal );
+
+    mDSA_PText->setStyleSheet( strStyle );
+    mDSA_PLenText->setStyleSheet( strStyle );
+}
+
+void PriKeyInfoDlg::setEnableDSA_Q( bool bVal )
+{
+    QString strStyle = kReadOnlyStyle;
+
+    if( bVal == false ) strStyle = kDisableStyle;
+
+    mDSA_QLabel->setEnabled( bVal );
+    mDSA_QText->setEnabled( bVal );
+    mDSA_QLenText->setEnabled( bVal );
+
+    mDSA_QText->setStyleSheet( strStyle );
+    mDSA_QLenText->setStyleSheet( strStyle );
+}
+
+void PriKeyInfoDlg::setEnableDSA_G( bool bVal )
+{
+    QString strStyle = kReadOnlyStyle;
+
+    if( bVal == false ) strStyle = kDisableStyle;
+
+    mDSA_GLabel->setEnabled( bVal );
+    mDSA_GText->setEnabled( bVal );
+    mDSA_GLenText->setEnabled( bVal );
+
+    mDSA_GText->setStyleSheet( strStyle );
+    mDSA_GLenText->setStyleSheet( strStyle );
+}
+
+void PriKeyInfoDlg::setEnableDSA_Private( bool bVal )
+{
+    QString strStyle = kReadOnlyStyle;
+
+    if( bVal == false ) strStyle = kDisableStyle;
+
+    mDSA_PrivateLabel->setEnabled( bVal );
+    mDSA_PrivateText->setEnabled( bVal );
+    mDSA_PrivateLenText->setEnabled( bVal );
+
+    mDSA_PrivateText->setStyleSheet( strStyle );
+    mDSA_PrivateLenText->setStyleSheet( strStyle );
+}
+
+void PriKeyInfoDlg::setEnableDSA_Public( bool bVal )
+{
+    QString strStyle = kReadOnlyStyle;
+
+    if( bVal == false ) strStyle = kDisableStyle;
+
+    mDSA_PublicLabel->setEnabled( bVal );
+    mDSA_PublicText->setEnabled( bVal );
+    mDSA_PLenText->setEnabled( bVal );
+
+    mDSA_PublicText->setStyleSheet( strStyle );
+    mDSA_PublicLenText->setStyleSheet( strStyle );
+}
+
+void PriKeyInfoDlg::setEnableEdDSA_RawPublic( bool bVal )
+{
+    QString strStyle = kReadOnlyStyle;
+
+    if( bVal == false ) strStyle = kDisableStyle;
+
+    mEdDSA_RawPublicLabel->setEnabled( bVal );
+    mEdDSA_RawPublicText->setEnabled( bVal );
+    mEdDSA_RawPublicLenText->setEnabled( bVal );
+
+    mEdDSA_RawPublicText->setStyleSheet( strStyle );
+    mEdDSA_RawPublicLenText->setStyleSheet( strStyle );
+}
+
+void PriKeyInfoDlg::setEnableEdDSA_RawPrivate( bool bVal )
+{
+    QString strStyle = kReadOnlyStyle;
+
+    if( bVal == false ) strStyle = kDisableStyle;
+
+    mEdDSA_RawPrivateLabel->setEnabled( bVal );
+    mEdDSA_RawPrivateText->setEnabled( bVal );
+    mEdDSA_RawPrivateLenText->setEnabled( bVal );
+
+    mEdDSA_RawPrivateText->setStyleSheet( strStyle );
+    mEdDSA_RawPrivateLenText->setStyleSheet( strStyle );
 }

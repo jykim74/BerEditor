@@ -77,6 +77,28 @@ private:
     void setDSAKey( const BIN *pKey, bool bPri = true );
     void setEdDSAKey( const BIN *pKey, bool bPri = true );
 
+    void setEnableRSA_N( bool bVal );
+    void setEnableRSA_E( bool bVal );
+    void setEnableRSA_D( bool bVal );
+    void setEnableRSA_P( bool bVal );
+    void setEnableRSA_Q( bool bVal );
+    void setEnableRSA_DMP1( bool bVal );
+    void setEnableRSA_DMQ1( bool bVal );
+    void setEnableRSA_IQMP( bool bVal );
+
+    void setEnableECC_Private( bool bVal );
+    void setEnableECC_PubX( bool bVal );
+    void setEnableECC_PubY( bool bVal );
+
+    void setEnableDSA_P( bool bVal );
+    void setEnableDSA_Q( bool bVal );
+    void setEnableDSA_G( bool bVal );
+    void setEnableDSA_Private( bool bVal );
+    void setEnableDSA_Public( bool bVal );
+
+    void setEnableEdDSA_RawPublic( bool bVal );
+    void setEnableEdDSA_RawPrivate( bool bVal );
+
     void setModeUI( bool bVal );
 
     BIN pri_key_;

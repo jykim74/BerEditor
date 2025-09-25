@@ -113,7 +113,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tabRSA">
       <attribute name="title">
@@ -123,7 +123,7 @@
        <item>
         <layout class="QGridLayout" name="gridLayout_2">
          <item row="4" column="0">
-          <widget class="QLabel" name="label_8">
+          <widget class="QLabel" name="mRSA_DMQ1Label">
            <property name="text">
             <string>Exponent2(DMQ1)</string>
            </property>
@@ -418,14 +418,14 @@
           </widget>
          </item>
          <item row="3" column="0">
-          <widget class="QLabel" name="label_7">
+          <widget class="QLabel" name="mRSA_DMP1Label">
            <property name="text">
             <string>Exponent1(DMP1)</string>
            </property>
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_3">
+          <widget class="QLabel" name="mRSA_ELabel">
            <property name="text">
             <string>PublicExponent(E)</string>
            </property>
@@ -688,14 +688,14 @@
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QLabel" name="label_5">
+          <widget class="QLabel" name="mRSA_PLabel">
            <property name="text">
             <string>Prime1(P)</string>
            </property>
           </widget>
          </item>
          <item row="2" column="0">
-          <widget class="QLabel" name="label_6">
+          <widget class="QLabel" name="mRSA_QLabel">
            <property name="text">
             <string>Prime2(Q)</string>
            </property>
@@ -758,7 +758,7 @@
           </widget>
          </item>
          <item row="5" column="0">
-          <widget class="QLabel" name="label_9">
+          <widget class="QLabel" name="mRSA_IQMPLabel">
            <property name="text">
             <string>Coefficient(IQMP)</string>
            </property>
@@ -776,7 +776,7 @@
        <item>
         <layout class="QGridLayout" name="gridLayout_6">
          <item row="0" column="0">
-          <widget class="QLabel" name="label_2">
+          <widget class="QLabel" name="mRSA_NLabel">
            <property name="text">
             <string>Modules(N)</string>
            </property>
@@ -963,7 +963,7 @@
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_4">
+          <widget class="QLabel" name="mRSA_DLabel">
            <property name="text">
             <string>PrivateExponent(D)</string>
            </property>
@@ -1038,7 +1038,7 @@
        <item>
         <layout class="QGridLayout" name="gridLayout_4">
          <item row="0" column="0">
-          <widget class="QLabel" name="label_10">
+          <widget class="QLabel" name="mECC_CurveLabel">
            <property name="minimumSize">
             <size>
              <width>80</width>
@@ -1152,7 +1152,7 @@
        <item>
         <layout class="QGridLayout" name="gridLayout_12">
          <item row="0" column="0">
-          <widget class="QLabel" name="label_13">
+          <widget class="QLabel" name="mECC_PrivateLabel">
            <property name="minimumSize">
             <size>
              <width>80</width>
@@ -1298,7 +1298,7 @@
           <number>0</number>
          </property>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_11">
+          <widget class="QLabel" name="mECC_PubXLabel">
            <property name="text">
             <string>PubX</string>
            </property>
@@ -1432,7 +1432,7 @@
           <number>0</number>
          </property>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_12">
+          <widget class="QLabel" name="mECC_PubYLabel">
            <property name="text">
             <string>PubY</string>
            </property>
@@ -1619,7 +1619,7 @@
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QLabel" name="label_17">
+          <widget class="QLabel" name="mDSA_PrivateLabel">
            <property name="text">
             <string>PrivateKey</string>
            </property>
@@ -1770,7 +1770,7 @@
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_16">
+          <widget class="QLabel" name="mDSA_QLabel">
            <property name="text">
             <string>Subprime (Q)</string>
            </property>
@@ -1847,7 +1847,7 @@
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_14">
+          <widget class="QLabel" name="mDSA_GLabel">
            <property name="text">
             <string>Generator (G)</string>
            </property>
@@ -1925,7 +1925,7 @@
           <number>0</number>
          </property>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_15">
+          <widget class="QLabel" name="mDSA_PLabel">
            <property name="text">
             <string>Prime (P)</string>
            </property>
@@ -2056,7 +2056,7 @@
        <item>
         <layout class="QGridLayout" name="gridLayout_8">
          <item row="0" column="0">
-          <widget class="QLabel" name="label_18">
+          <widget class="QLabel" name="mDSA_PublicLabel">
            <property name="text">
             <string>PublicKey</string>
            </property>
@@ -2187,7 +2187,7 @@
        <item>
         <layout class="QGridLayout" name="gridLayout_5">
          <item row="0" column="4">
-          <widget class="QLabel" name="label">
+          <widget class="QLabel" name="mEdDSA_ParamLabel">
            <property name="text">
             <string>Param</string>
            </property>
@@ -2284,7 +2284,7 @@
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_19">
+          <widget class="QLabel" name="mEdDSA_NameLabel">
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -2383,7 +2383,7 @@
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_20">
+          <widget class="QLabel" name="mEdDSA_RawPrivateLabel">
            <property name="text">
             <string>Raw PrivateKey</string>
            </property>
@@ -2517,7 +2517,7 @@
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_21">
+          <widget class="QLabel" name="mEdDSA_RawPublicLabel">
            <property name="text">
             <string>Raw PublicKey</string>
            </property>

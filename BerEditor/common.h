@@ -59,6 +59,7 @@ const QString kDataBase64URL = "Base64URL";
 
 const QStringList kDataTypeList = { kDataHex, kDataString, kDataBase64 };
 const QStringList kDataTypeList2 = { kDataHex, kDataString, kDataBase64, kDataURL, kDataBase64URL };
+const QStringList kDataBinTypeList = { kDataHex, kDataBase64 };
 
 const QString kEnvMiscGroup = "Misc";
 const QString kEnvTempGroup = "Temp";
@@ -246,6 +247,7 @@ const QString kTableStyle = "QHeaderView::section {background-color:#404040;colo
                             "QHeaderView::section:pressed {background-color:#404040;}";
 
 const QString kReadOnlyStyle = "background-color:#ddddff";
+const QString kDisableStyle = "background-color:#cccccc";
 
 const QString GetSystemID();
 
