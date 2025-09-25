@@ -39,14 +39,13 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
-    initialize();
+    initUI();
+
+
 
     connect( mFindPriKeyBtn, SIGNAL(clicked()), this, SLOT(findPrivateKey()));
     connect( mFindCertBtn, SIGNAL(clicked()), this, SLOT(findCert()));
     connect( mChangeBtn, SIGNAL(clicked()), this, SLOT(changeValue()));
-    connect( mAutoCertPubKeyCheck, SIGNAL(clicked()), this, SLOT(checkAutoCertOrPubKey()));
-    connect( mPubKeyEncryptCheck, SIGNAL(clicked()), this, SLOT(checkPubKeyEncrypt()));
-    connect( mCheckKeyPairBtn, SIGNAL(clicked()), this, SLOT(clickCheckKeyPair()));
     connect( mRunBtn, SIGNAL(clicked()), this, SLOT(Run()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
@@ -56,9 +55,7 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
     connect( mEncryptRadio, SIGNAL(clicked()), this, SLOT(clickEncrypt()));
     connect( mDecryptRadio, SIGNAL(clicked()), this, SLOT(clickDecrypt()));
 
-    connect( mInputStringRadio, SIGNAL(clicked()), this, SLOT(inputChanged()));
-    connect( mInputHexRadio, SIGNAL(clicked()), this, SLOT(inputChanged()));
-    connect( mInputBase64Radio, SIGNAL(clicked()), this, SLOT(inputChanged()));
+    connect( mInputTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(inputChanged()));
 
     connect( mOutputTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(outputChanged()));
     connect( mAlgCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(algChanged()));
@@ -85,6 +82,7 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
     connect( mCertGroup, SIGNAL(clicked()), this, SLOT(checkCertGroup()));
 
     mRunBtn->setDefault(true);
+    initialize();
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -105,32 +103,32 @@ PubEncDecDlg::~PubEncDecDlg()
 
 }
 
-void PubEncDecDlg::initialize()
+void PubEncDecDlg::initUI()
 {
+    mInputTypeCombo->addItems( kDataTypeList );
     mAlgCombo->addItems( algTypes );
-
     mOutputTypeCombo->addItems( kDataTypeList );
-    mOutputTypeCombo->setCurrentIndex(1);
-
-    mVersionTypeCombo->addItems(versionTypes);
-    QButtonGroup *runGroup = new QButtonGroup;
-    runGroup->addButton( mEncryptRadio );
-    runGroup->addButton( mDecryptRadio );
-
-    mAutoCertPubKeyCheck->setChecked(true);
-    mUseKeyAlgCheck->setChecked(true);
-
-    checkAutoCertOrPubKey();
-    checkUseKeyAlg();
-    checkEncPriKey();
-
-    mEncryptRadio->click();
 
     mPriKeyPath->setPlaceholderText( tr("Select a private key") );
     mCertPath->setPlaceholderText( tr( "Select a certificate" ));
     mIVText->setPlaceholderText( tr( "Hex value" ));
     mTagText->setPlaceholderText( tr( "Hex value" ));
     mOtherPubText->setPlaceholderText( tr( "Hex value" ));
+}
+
+void PubEncDecDlg::initialize()
+{
+    mVersionTypeCombo->addItems(versionTypes);
+    QButtonGroup *runGroup = new QButtonGroup;
+    runGroup->addButton( mEncryptRadio );
+    runGroup->addButton( mDecryptRadio );
+
+    mUseKeyAlgCheck->setChecked(true);
+
+    checkUseKeyAlg();
+    checkEncPriKey();
+
+    mEncryptRadio->click();
 }
 
 int PubEncDecDlg::readPrivateKey( BIN *pPriKey )
@@ -193,86 +191,11 @@ end :
     return ret;
 }
 
-void PubEncDecDlg::checkPubKeyEncrypt()
-{
-    bool bVal = mPubKeyEncryptCheck->isChecked();
-    mCertViewBtn->setEnabled( !bVal );
-
-    if( bVal )
-    {
-        mCertLabel->setText(tr("PublicKey"));
-        mCertGroup->setTitle( tr("Private key and Public key" ));
-    }
-    else
-    {
-        mCertLabel->setText(tr("Certificate"));
-        mCertGroup->setTitle( tr("Private key and Certificate"));
-    }
-}
-
-void PubEncDecDlg::checkAutoCertOrPubKey()
-{
-    bool bVal = mAutoCertPubKeyCheck->isChecked();
-
-    mPubKeyEncryptCheck->setEnabled( !bVal );
-}
-
-void PubEncDecDlg::clickCheckKeyPair()
-{
-    int ret = 0;
-
-    BIN binPri = {0,0};
-    BIN binPub = {0,0};
-    BIN binCert = {0,0};
-    QString strCertPath = mCertPath->text();
-
-    ret = readPrivateKey( &binPri );
-    if( ret != 0 ) return;
-
-    if( strCertPath.length() < 1 )
-    {
-        berApplet->elog( "Select a publick key" );
-        return;
-    }
-
-    JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
-
-    if( mAutoCertPubKeyCheck->isChecked() )
-    {
-        if( JS_PKI_isCert( &binCert ) == 0 )
-            mPubKeyEncryptCheck->setChecked( true );
-        else
-            mPubKeyEncryptCheck->setChecked( false );
-    }
-
-    if( mPubKeyEncryptCheck->isChecked() )
-    {
-        JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binPub );
-    }
-    else
-    {
-        ret = JS_PKI_getPubKeyFromCert( &binCert, &binPub );
-        if( ret != 0 ) goto end;
-    }
-
-    ret = JS_PKI_IsValidKeyPair( &binPri, &binPub );
-
-    if( ret == JSR_VALID )
-        berApplet->messageBox( tr("The keypair is correct"), this );
-    else
-        berApplet->warningBox( QString( tr("The keypair is incorrect [%1]")).arg(ret), this );
-
-end :
-    JS_BIN_reset( &binPri );
-    JS_BIN_reset( &binPub );
-    JS_BIN_reset( &binCert );
-}
-
 void PubEncDecDlg::Run()
 {
     int ret = 0;
     int nVersion = 0;
-    int nDataType = DATA_HEX;
+
     BIN binSrc = {0,0};
     BIN binPri = {0,0};
     BIN binCert = {0,0};
@@ -285,6 +208,8 @@ void PubEncDecDlg::Run()
 
     QString strAlg = mAlgCombo->currentText();
     QString strInput = mInputText->toPlainText();
+    QString strType = mInputTypeCombo->currentText();
+
     if( strInput.isEmpty() )
     {
         berApplet->warningBox( tr( "Enter your data"), this );
@@ -292,14 +217,7 @@ void PubEncDecDlg::Run()
         return;
     }
 
-    if( mInputStringRadio->isChecked() )
-        nDataType = DATA_STRING;
-    else if( mInputBase64Radio->isChecked() )
-        nDataType = DATA_BASE64;
-    else
-        nDataType = DATA_HEX;
-
-    getBINFromString( &binSrc, nDataType, strInput );
+    getBINFromString( &binSrc, strType, strInput );
 
     if( mVersionTypeCombo->currentIndex() == 0 )
         nVersion = JS_PKI_RSA_PADDING_V15;
@@ -321,25 +239,13 @@ void PubEncDecDlg::Run()
             }
 
             JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
-            if( mAutoCertPubKeyCheck->isChecked() )
+            if( JS_PKI_isCert( &binCert ) == 0 )
             {
-                if( JS_PKI_isCert( &binCert ) == 0 )
-                {
-                    mPubKeyEncryptCheck->setChecked(true);
-                    JS_BIN_copy( &binPubKey, &binCert );
-                }
-                else
-                {
-                    mPubKeyEncryptCheck->setChecked(false);
-                    JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
-                }
+                JS_BIN_copy( &binPubKey, &binCert );
             }
             else
             {
-                if( mPubKeyEncryptCheck->isChecked() == false )
-                    JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
-                else
-                    JS_BIN_copy( &binPubKey, &binCert );
+                JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
             }
         }
         else
@@ -658,13 +564,9 @@ void PubEncDecDlg::findPrivateKey()
 void PubEncDecDlg::changeValue()
 {
     QString strOutput = mOutputText->toPlainText();
+    QString strOutputType = mOutputTypeCombo->currentText();
 
-    if( mOutputTypeCombo->currentIndex() == 0 )
-        mInputStringRadio->setChecked(true);
-    else if( mOutputTypeCombo->currentIndex() == 1 )
-        mInputHexRadio->setChecked(true);
-    else if( mOutputTypeCombo->currentIndex() == 2 )
-        mInputBase64Radio->setChecked(true);
+    mInputTypeCombo->setCurrentText( strOutputType );
 
     mOutputText->clear();
     mInputText->setPlainText( strOutput );
@@ -673,15 +575,9 @@ void PubEncDecDlg::changeValue()
 }
 
 void PubEncDecDlg::inputChanged()
-{
-    int nType = DATA_STRING;
-
-    if( mInputHexRadio->isChecked() )
-        nType = DATA_HEX;
-    else if( mInputBase64Radio->isChecked() )
-        nType = DATA_BASE64;
-
-    QString strLen = getDataLenString( nType, mInputText->toPlainText() );
+{    
+    QString strType = mInputTypeCombo->currentText();
+    QString strLen = getDataLenString( strType, mInputText->toPlainText() );
     mInputLenText->setText( QString("%1").arg(strLen));
 }
 
@@ -775,19 +671,27 @@ void PubEncDecDlg::clickCertView()
     }
 
     JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
-    if( JS_PKI_isCert( &binCert ) != 1 )
+    if( binCert.nLen < 1 )
     {
-        berApplet->warningBox( tr( "It is not a certificate"), this );
+        berApplet->warningBox( tr("failed to read data"), this );
         mCertPath->setFocus();
-        JS_BIN_reset( &binCert );
         return;
     }
 
-    JS_BIN_reset( &binCert );
+    if( JS_PKI_isCert( &binCert ) == 0 )
+    {
+        PriKeyInfoDlg priKeyInfo;
+        priKeyInfo.setPublicKey( &binCert, strPath );
+        priKeyInfo.exec();
+    }
+    else
+    {
+        CertInfoDlg certInfo;
+        certInfo.setCertBIN( &binCert, strPath );
+        certInfo.exec();
+    }
 
-    CertInfoDlg certInfoDlg;
-    certInfoDlg.setCertPath( strPath );
-    certInfoDlg.exec();
+    JS_BIN_reset( &binCert );
 }
 
 void PubEncDecDlg::clickCertDecode()
@@ -834,8 +738,8 @@ end :
 void PubEncDecDlg::clickCertType()
 {
     BIN binCert = {0,0};
-    BIN binPubKey = {0,0};
-    QString strKind;
+
+    QString strType;
     int nType = -1;
 
     QString strPath = mCertPath->text();
@@ -849,24 +753,21 @@ void PubEncDecDlg::clickCertType()
 
     JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
 
-    if( JS_PKI_isCert( &binCert ) )
+    if( JS_PKI_isCert( &binCert ) == 1 )
     {
-        JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
-        strKind = tr("Certificate");
+        strType = tr( "Certificate" );
+        nType = JS_PKI_getCertKeyType( &binCert );
     }
     else
     {
-        JS_BIN_copy( &binPubKey, &binCert );
-        strKind = tr( "Public Key" );
+        strType = tr( "Public key" );
+        nType = JS_PKI_getPubKeyType( &binCert );
     }
 
-    nType = JS_PKI_getPubKeyType( &binPubKey );
-
-    berApplet->messageBox( tr( "%1 Type is %2").arg( strKind).arg( JS_PKI_getKeyAlgName(nType)), this);
+    berApplet->messageBox( tr( "%1 type is %2").arg( strType ).arg( JS_PKI_getKeyAlgName( nType )), this);
 
 end :
     JS_BIN_reset( &binCert );
-    JS_BIN_reset( &binPubKey );
 }
 
 

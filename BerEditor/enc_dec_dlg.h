@@ -59,6 +59,7 @@ private slots:
     void onTaskUpdate( int nUpdate );
 
 private:
+    void initUI();
     void initialize();
     void appendStatusLabel( const QString& strLabel );
     void updateStatusLabel();

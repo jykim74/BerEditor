@@ -2570,7 +2570,6 @@ bool MainWindow::isTTLV()
 void MainWindow::runSignVerify( bool bSign, bool bEncPri, const QString strPriPath, const QString strCertPath )
 {
     sign_verify_dlg_->clickClearDataAll();
-    sign_verify_dlg_->mAutoCertPubKeyCheck->setChecked(true);
     sign_verify_dlg_->mCertGroup->setChecked(true);
     sign_verify_dlg_->mUseKeyAlgCheck->setChecked(true);
     sign_verify_dlg_->mEncPrikeyCheck->setChecked( bEncPri );
@@ -2601,7 +2600,6 @@ void MainWindow::runPubEncDec( bool bEnc, bool bEncPri, const QString strPriPath
 {
     pub_enc_dec_dlg_->clickClearDataAll();
     pub_enc_dec_dlg_->mCertGroup->setChecked(true);
-    pub_enc_dec_dlg_->mAutoCertPubKeyCheck->setChecked(true);
     pub_enc_dec_dlg_->mUseKeyAlgCheck->setChecked(true);
     pub_enc_dec_dlg_->mEncPrikeyCheck->setChecked( bEncPri );
 

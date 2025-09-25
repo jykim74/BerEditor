@@ -49,7 +49,7 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     update_cnt_ = 0;
 
     setupUi(this);
-    initialize();
+    initUI();
 
     connect( mFindPriKeyBtn, SIGNAL(clicked()), this, SLOT(findPrivateKey()));
     connect( mFindCertBtn, SIGNAL(clicked()), this, SLOT(findCert()));
@@ -62,17 +62,12 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     connect( mUpdateBtn, SIGNAL(clicked()), this, SLOT(signVerifyUpdate()));
     connect( mFinalBtn, SIGNAL(clicked()), this, SLOT(signVerifyFinal()));
 
-    connect( mAutoCertPubKeyCheck, SIGNAL(clicked()), this, SLOT(checkAutoCertOrPubKey()));
-    connect( mPubKeyVerifyCheck, SIGNAL(clicked()), this, SLOT(checkPubKeyVerify()));
-    connect( mCheckKeyPairBtn, SIGNAL(clicked()), this, SLOT(clickCheckKeyPair()));
     connect( mRunBtn, SIGNAL(clicked()), this, SLOT(Run()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
     connect( mInputText, SIGNAL(textChanged()), this, SLOT(inputChanged()));
     connect( mOutputText, SIGNAL(textChanged()), this, SLOT(outputChanged()));
-    connect( mInputStringRadio, SIGNAL(clicked()), this, SLOT(inputChanged()));
-    connect( mInputHexRadio, SIGNAL(clicked()), this, SLOT(inputChanged()));
-    connect( mInputBase64Radio, SIGNAL(clicked()), this, SLOT(inputChanged()));
+    connect( mInputTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(inputChanged()));
 
     connect( mPriKeyViewBtn, SIGNAL(clicked()), this, SLOT(clickPriKeyView()));
     connect( mPriKeyDecodeBtn, SIGNAL(clicked()), this, SLOT(clickPriKeyDecode()));
@@ -96,6 +91,7 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     connect( mCertGroup, SIGNAL(clicked(bool)), this, SLOT(checkCertGroup()));
 
     mRunBtn->setDefault(true);
+    initialize();
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -123,31 +119,32 @@ SignVerifyDlg::~SignVerifyDlg()
     if( thread_ ) delete thread_;
 }
 
-void SignVerifyDlg::initialize()
+void SignVerifyDlg::initUI()
 {
+    mInputTypeCombo->addItems( kDataTypeList );
     mAlgTypeCombo->addItems(algTypes);
     mHashTypeCombo->addItems(kHashList);
     mHashTypeCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
 
     mVersionCombo->addItems(versionTypes);
 
+    mPriKeyPath->setPlaceholderText( tr("Select a private key") );
+    mCertPath->setPlaceholderText( tr( "Select a certificate" ));
+    mSrcFileText->setPlaceholderText( tr( "Find the target file" ));
+}
+
+void SignVerifyDlg::initialize()
+{
     QButtonGroup *runGroup = new QButtonGroup;
     runGroup->addButton( mSignRadio );
     runGroup->addButton( mVerifyRadio );
 
-    mAutoCertPubKeyCheck->setChecked(true);
     mUseKeyAlgCheck->setChecked(true);
-
     mInputTab->setCurrentIndex(0);
 
-    checkAutoCertOrPubKey();
     checkUseKeyAlg();
     checkEncPriKey();
     mSignRadio->click();
-
-    mPriKeyPath->setPlaceholderText( tr("Select a private key") );
-    mCertPath->setPlaceholderText( tr( "Select a certificate" ));
-    mSrcFileText->setPlaceholderText( tr( "Find the target file" ));
 }
 
 int SignVerifyDlg::readPrivateKey( BIN *pPriKey )
@@ -307,26 +304,13 @@ int SignVerifyDlg::getPublicKey( BIN *pPubKey, int *pnType )
         }
 
         JS_BIN_fileReadBER( mCertPath->text().toLocal8Bit().toStdString().c_str(), &binCert );
-
-        if( mAutoCertPubKeyCheck->isChecked() )
+        if( JS_PKI_isCert( &binCert ) == 0 )
         {
-            if( JS_PKI_isCert( &binCert ) == 0 )
-            {
-                mPubKeyVerifyCheck->setChecked(true);
-                JS_BIN_copy( pPubKey, &binCert );
-            }
-            else
-            {
-                mPubKeyVerifyCheck->setChecked(false);
-                JS_PKI_getPubKeyFromCert( &binCert, pPubKey );
-            }
+            JS_BIN_copy( pPubKey, &binCert );
         }
         else
         {
-            if( mPubKeyVerifyCheck->isChecked() == false )
-                JS_PKI_getPubKeyFromCert( &binCert, pPubKey );
-            else
-                JS_BIN_copy( pPubKey, &binCert );
+            JS_PKI_getPubKeyFromCert( &binCert, pPubKey );
         }
     }
     else
@@ -416,82 +400,6 @@ void SignVerifyDlg::appendStatusLabel( const QString& strLabel )
 void SignVerifyDlg::updateStatusLabel()
 {
     mStatusLabel->setText( QString( "Init|Update X %1").arg( update_cnt_));
-}
-
-void SignVerifyDlg::checkPubKeyVerify()
-{
-    bool bVal = mPubKeyVerifyCheck->isChecked();
-
-    if( bVal )
-    {
-        mCertLabel->setText( tr("PublicKey" ) );
-        mCertGroup->setTitle( tr("Private key and Public key" ));
-        mCertViewBtn->setEnabled(false);
-    }
-    else
-    {
-        mCertLabel->setText( tr("Certificate") );
-        mCertGroup->setTitle( tr( "Private key and Certificate" ));
-        mCertViewBtn->setEnabled(true);
-    }
-}
-
-void SignVerifyDlg::checkAutoCertOrPubKey()
-{
-    bool bVal = mAutoCertPubKeyCheck->isChecked();
-
-    mPubKeyVerifyCheck->setEnabled( !bVal );
-}
-
-void SignVerifyDlg::clickCheckKeyPair()
-{
-    int ret = 0;
-    BIN binPri = {0,0};
-    BIN binPub = {0,0};
-    BIN binCert = {0,0};
-
-    QString strCertPath = mCertPath->text();
-
-    ret = readPrivateKey( &binPri );
-    if( ret != 0 ) return;
-
-    if( strCertPath.length() < 1 )
-    {
-        berApplet->elog( "Select a certificate" );
-        return;
-    }
-
-    JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
-
-    if( mAutoCertPubKeyCheck->isChecked() )
-    {
-        if( JS_PKI_isCert( &binCert ) == 0 )
-            mPubKeyVerifyCheck->setChecked( true );
-        else
-            mPubKeyVerifyCheck->setChecked( false );
-    }
-
-    if( mPubKeyVerifyCheck->isChecked() )
-    {
-        JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binPub );
-    }
-    else
-    {
-        ret = JS_PKI_getPubKeyFromCert( &binCert, &binPub );
-        if( ret != 0 ) goto end;
-    }
-
-    ret = JS_PKI_IsValidKeyPair( &binPri, &binPub );
-
-    if( ret == JSR_VALID )
-        berApplet->messageBox( tr("The keypair is correct"), this );
-    else
-        berApplet->warningBox( QString( tr("The keypair is incorrect [%1]").arg(ret)), this );
-
-end :
-    JS_BIN_reset( &binPri );
-    JS_BIN_reset( &binPub );
-    JS_BIN_reset( &binCert );
 }
 
 void SignVerifyDlg::findPrivateKey()
@@ -659,15 +567,10 @@ void SignVerifyDlg::signVerifyUpdate()
     int ret = 0;
     BIN binSrc = {0,0};
 
-    int nDataType = DATA_HEX;
     QString strInput = mInputText->toPlainText();
+    QString strType = mInputTypeCombo->currentText();
 
-    if( mInputStringRadio->isChecked() )
-        nDataType = DATA_STRING;
-    else if( mInputBase64Radio->isChecked() )
-        nDataType = DATA_BASE64;
-
-    getBINFromString( &binSrc, nDataType, strInput );
+    getBINFromString( &binSrc, strType, strInput );
 
     if( mSignRadio->isChecked() )
     {
@@ -802,10 +705,10 @@ void SignVerifyDlg::dataRun()
     int nVersion = 0;
     char *pOut = NULL;
 
-    int nDataType = DATA_HEX;
     QString strAlg;
     QString strHash;
     QString strInput = mInputText->toPlainText();
+    QString strType = mInputTypeCombo->currentText();
     QString strOutput = mOutputText->toPlainText();
 
     if( sctx_ )
@@ -814,14 +717,7 @@ void SignVerifyDlg::dataRun()
         sctx_ = NULL;
     }
 
-    if( mInputStringRadio->isChecked() )
-        nDataType = DATA_STRING;
-    else if( mInputHexRadio->isChecked() )
-        nDataType = DATA_HEX;
-    else if( mInputBase64Radio->isChecked() )
-        nDataType = DATA_BASE64;
-
-    getBINFromString( &binSrc, nDataType, strInput );
+    getBINFromString( &binSrc, strType, strInput );
 
     if( mVersionCombo->currentIndex() == 0 )
         nVersion = JS_PKI_RSA_PADDING_V15;
@@ -1119,11 +1015,11 @@ void SignVerifyDlg::digestRun()
     int nAlgType = 0;
     int nType = -1;
 
-    int nDataType = DATA_STRING;
     int nDigestLen = 0;
 
     QString strHash = mHashTypeCombo->currentText();
     QString strInput = mInputText->toPlainText();
+    QString strType = mInputTypeCombo->currentText();
 
     if( strInput.isEmpty() )
     {
@@ -1131,19 +1027,8 @@ void SignVerifyDlg::digestRun()
         return;
     }
 
-    if( mInputStringRadio->isChecked() )
-        nDataType = DATA_STRING;
-    else if( mInputHexRadio->isChecked() )
-    {
-        nDataType = DATA_HEX;
-    }
-    else if( mInputBase64Radio->isChecked() )
-    {
-        nDataType = DATA_BASE64;
-    }
-
     nDigestLen = getDigestLength( strHash );
-    getBINFromString( &binSrc, nDataType, strInput );
+    getBINFromString( &binSrc, strType, strInput );
 
     if( binSrc.nLen != nDigestLen )
     {
@@ -1242,13 +1127,8 @@ end :
 
 void SignVerifyDlg::inputChanged()
 {
-    int nType = DATA_STRING;
-    if( mInputHexRadio->isChecked() )
-        nType = DATA_HEX;
-    else if( mInputBase64Radio->isChecked() )
-        nType = DATA_BASE64;
-
-    QString strLen = getDataLenString( nType, mInputText->toPlainText() );
+    QString strType = mInputTypeCombo->currentText();
+    QString strLen = getDataLenString( strType, mInputText->toPlainText() );
     mInputLenText->setText( QString("%1").arg(strLen));
 }
 
@@ -1352,25 +1232,33 @@ void SignVerifyDlg::clickCertView()
     QString strPath = mCertPath->text();
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( tr("Select a certificate"), this );
+        berApplet->warningBox( tr("Select a certificate or public key"), this );
         mCertPath->setFocus();
         return;
     }
 
     JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
-    if( JS_PKI_isCert( &binCert ) != 1 )
+    if( binCert.nLen < 1 )
     {
-        berApplet->warningBox( tr( "It is not a certificate"), this );
+        berApplet->warningBox( tr("failed to read data"), this );
         mCertPath->setFocus();
-        JS_BIN_reset( &binCert );
         return;
     }
 
-    JS_BIN_reset( &binCert );
+    if( JS_PKI_isCert( &binCert ) == 0 )
+    {
+        PriKeyInfoDlg priKeyInfo;
+        priKeyInfo.setPublicKey( &binCert, strPath );
+        priKeyInfo.exec();
+    }
+    else
+    {
+        CertInfoDlg certInfo;
+        certInfo.setCertBIN( &binCert, strPath );
+        certInfo.exec();
+    }
 
-    CertInfoDlg certInfoDlg;
-    certInfoDlg.setCertPath( strPath );
-    certInfoDlg.exec();
+    JS_BIN_reset( &binCert );
 }
 
 void SignVerifyDlg::clickCertDecode()
@@ -1416,8 +1304,8 @@ end :
 void SignVerifyDlg::clickCertType()
 {
     BIN binCert = {0,0};
-    BIN binPubKey = {0,0};
-    QString strKind;
+
+    QString strType;
     int nType = -1;
 
     QString strPath = mCertPath->text();
@@ -1431,24 +1319,28 @@ void SignVerifyDlg::clickCertType()
 
     JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
 
-    if( JS_PKI_isCert( &binCert ) )
+    if( binCert.nLen < 1 )
     {
-        JS_PKI_getPubKeyFromCert( &binCert, &binPubKey );
-        strKind = tr("Certificate");
+        berApplet->warningBox( tr("failed to read data"), this );
+        mCertPath->setFocus();
+        return;
+    }
+
+    if( JS_PKI_isCert( &binCert ) == 1 )
+    {
+        strType = tr( "Certificate" );
+        nType = JS_PKI_getCertKeyType( &binCert );
     }
     else
     {
-        JS_BIN_copy( &binPubKey, &binCert );
-        strKind = tr( "Public Key" );
+        strType = tr( "Public key" );
+        nType = JS_PKI_getPubKeyType( &binCert );
     }
 
-    nType = JS_PKI_getPubKeyType( &binPubKey );
-
-    berApplet->messageBox( tr( "%1 Type is %2").arg( strKind).arg( JS_PKI_getKeyAlgName(nType)), this);
+    berApplet->messageBox( tr( "%1 type is %2").arg( strType ).arg( JS_PKI_getKeyAlgName( nType )), this);
 
 end :
     JS_BIN_reset( &binCert );
-    JS_BIN_reset( &binPubKey );
 }
 
 void SignVerifyDlg::checkUseKeyAlg()

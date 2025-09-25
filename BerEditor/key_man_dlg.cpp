@@ -14,8 +14,11 @@
 #include "key_list_dlg.h"
 #include "js_pqc.h"
 #include "key_pair_man_dlg.h"
+#include "cert_man_dlg.h"
 #include "js_error.h"
 #include "pri_key_info_dlg.h"
+#include "js_pki_tools.h"
+#include "cert_info_dlg.h"
 
 KeyManDlg::KeyManDlg(QWidget *parent) :
     QDialog(parent)
@@ -73,10 +76,10 @@ KeyManDlg::KeyManDlg(QWidget *parent) :
     connect( mKEMPriKeyDecodeBtn, SIGNAL(clicked()), this, SLOT(clickKEMPriKeyDecode()));
     connect( mKEMPriKeyTypeBtn, SIGNAL(clicked()), this, SLOT(clickKEMPriKeyType()));
 
-    connect( mKEMPubKeyFindBtn, SIGNAL(clicked()), this, SLOT(clickKEMPubKeyFind()));
-    connect( mKEMPubKeyViewBtn, SIGNAL(clicked()), this, SLOT(clickKEMPubKeyView()));
-    connect( mKEMPubKeyDecodeBtn, SIGNAL(clicked()), this, SLOT(clickKEMPubKeyDecode()));
-    connect( mKEMPubKeyTypeBtn, SIGNAL(clicked()), this, SLOT(clickKEMPubKeyType()));
+    connect( mKEMCertFindBtn, SIGNAL(clicked()), this, SLOT(clickKEMCertFind()));
+    connect( mKEMCertViewBtn, SIGNAL(clicked()), this, SLOT(clickKEMCertView()));
+    connect( mKEMCertDecodeBtn, SIGNAL(clicked()), this, SLOT(clickKEMCertDecode()));
+    connect( mKEMCertTypeBtn, SIGNAL(clicked()), this, SLOT(clickKEMCertType()));
 
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT( clickClearDataAll()));
 
@@ -124,7 +127,7 @@ void KeyManDlg::initUI()
     mSecretText->setPlaceholderText( tr( "Enter a password" ));
 
     mKEMPriKeyPathText->setPlaceholderText( tr("Select a private key" ));
-    mKEMPubKeyPathText->setPlaceholderText( tr("Select a public key") );
+    mKEMCertPathText->setPlaceholderText( tr("Select a certificate or public key") );
 
     mKEMWrappedKeyText->setPlaceholderText( tr("Hex value" ));
     mKEMKeyText->setPlaceholderText( tr( "Hex value" ));
@@ -216,33 +219,46 @@ end :
 
 int KeyManDlg::getKEMPrivateKey( BIN *pPriKey )
 {
-    int ret = 0;
+    int ret = -1;
 
     if( mKEMGroup->isChecked() == true )
     {
         ret = readKEMPrivateKey( pPriKey );
+        if( ret != 0 ) goto end;
     }
     else
     {
-        QString strPriPath;
-
-        KeyPairManDlg keyPairMan;
-        keyPairMan.setTitle( tr( "Select private key" ));
-        keyPairMan.setMode( KeyPairModeSelect );
-//        keyPairMan.mKeyTypeCombo->setCurrentText( JS_PKI_KEY_NAME_ML_KEM );
-
-        if( keyPairMan.exec() != QDialog::Accepted )
+        if( mUseCertManCheck->isChecked() == true )
         {
-            ret = -1;
-            goto end;
-        }
+            CertManDlg certMan;
+            QString strPriHex;
+            certMan.setMode(ManModeSelBoth );
+            certMan.setTitle( tr( "Select a sign certificate") );
 
-        strPriPath = keyPairMan.getPriPath();
-        JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), pPriKey );
+            if( certMan.exec() != QDialog::Accepted )
+                goto end;
+
+            strPriHex = certMan.getPriKeyHex();
+            JS_BIN_decodeHex( strPriHex.toStdString().c_str(), pPriKey );
+        }
+        else
+        {
+            QString strPriPath;
+
+            KeyPairManDlg keyPairMan;
+            keyPairMan.setTitle( tr( "Select keypair" ));
+            keyPairMan.setMode( KeyPairModeSelect );
+
+            if( keyPairMan.exec() != QDialog::Accepted )
+                goto end;
+
+            strPriPath = keyPairMan.getPriPath();
+
+            JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), pPriKey );
+        }
     }
 
     ret = JSR_OK;
-
 end :
 
     return ret;
@@ -250,42 +266,77 @@ end :
 
 int KeyManDlg::getKEMPublicKey( BIN *pPubKey )
 {
-    int ret = 0;
-    QString strPubPath;
+    int ret = -1;
+    BIN binCert = {0,0};
+    int nType = -1;
 
     if( mKEMGroup->isChecked() == true )
     {
-        strPubPath = mKEMPubKeyPathText->text();
-
-        if( strPubPath.isEmpty() )
+        if( mKEMCertPathText->text().isEmpty() )
         {
             berApplet->warningBox( tr( "Select a certificate"), this );
-            mKEMPubKeyPathText->setFocus();
+            mKEMCertPathText->setFocus();
             ret = -1;
             goto end;
         }
 
-        JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), pPubKey );
+        JS_BIN_fileReadBER( mKEMCertPathText->text().toLocal8Bit().toStdString().c_str(), &binCert );
+        if( JS_PKI_isCert( &binCert ) == 0 )
+        {
+            JS_BIN_copy( pPubKey, &binCert );
+        }
+        else
+        {
+            JS_PKI_getPubKeyFromCert( &binCert, pPubKey );
+        }
     }
     else
     {
-        KeyPairManDlg keyPairMan;
-        keyPairMan.setTitle( tr( "Select public key" ));
-        keyPairMan.setMode( KeyPairModeSelect );
-//        keyPairMan.mKeyTypeCombo->setCurrentText( JS_PKI_KEY_NAME_ML_KEM );
-
-        if( keyPairMan.exec() != QDialog::Accepted )
+        if( mUseCertManCheck->isChecked() == true )
         {
-            return -1;
-        }
+            CertManDlg certMan;
+            QString strCertHex;
 
-        strPubPath = keyPairMan.getPubPath();
-        JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), pPubKey );
+            certMan.setMode(ManModeSelCert);
+            certMan.setTitle( tr( "Select a sign certificate") );
+
+            if( certMan.exec() != QDialog::Accepted )
+            {
+                ret = -1;
+                goto end;
+            }
+
+            strCertHex = certMan.getCertHex();
+            JS_BIN_decodeHex( strCertHex.toStdString().c_str(), &binCert );
+            JS_PKI_getPubKeyFromCert( &binCert, pPubKey );
+        }
+        else
+        {
+            QString strPubPath;
+
+            KeyPairManDlg keyPairMan;
+            keyPairMan.setTitle( tr( "Select keypair" ));
+            keyPairMan.setMode( KeyPairModeSelect );
+
+            if( keyPairMan.exec() != QDialog::Accepted )
+            {
+                ret = -1;
+                goto end;
+            }
+
+            strPubPath = keyPairMan.getPubPath();
+            JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), pPubKey );
+        }
     }
 
+    ret = JSR_OK;
+
 end :
+    JS_BIN_reset( &binCert );
+
     return ret;
 }
+
 
 void KeyManDlg::clickMakeKey()
 {
@@ -764,6 +815,16 @@ void KeyManDlg::clickKEMEncap()
     ret = getKEMPublicKey( &binPub );
     if( ret != JSR_OK ) goto end;
 
+    nKeyType = JS_PKI_getPubKeyType( &binPub );
+
+    if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_ECDSA && nKeyType != JS_PKI_KEY_TYPE_ML_KEM )
+    {
+        berApplet->warningBox(tr( "This key algorithm(%1) is not supported.")
+                                  .arg( JS_PKI_getKeyAlgName( nKeyType )), this );
+
+        goto end;
+    }
+
     ret = JS_PKI_encapsulate( &binPub, &binWrappedKey, &binKey );
     if( ret != 0 )
     {
@@ -799,6 +860,16 @@ void KeyManDlg::clickKEMDecap()
 
     ret = getKEMPrivateKey( &binPri );
     if( ret != 0 ) goto end;
+
+    nKeyType = JS_PKI_getPriKeyType( &binPri );
+
+    if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_ECDSA && nKeyType != JS_PKI_KEY_TYPE_ML_KEM )
+    {
+        berApplet->warningBox(tr( "This key algorithm(%1) is not supported.")
+                                  .arg( JS_PKI_getKeyAlgName( nKeyType )), this );
+
+        goto end;
+    }
 
     JS_BIN_decodeHex( strWrappedKey.toStdString().c_str(), &binWrappedKey );
 
@@ -929,25 +1000,62 @@ end :
 }
 
 
-void KeyManDlg::clickKEMPubKeyFind()
+void KeyManDlg::clickKEMCertFind()
 {
-    QString strPath = mKEMPubKeyPathText->text();
+    QString strPath = mKEMCertPathText->text();
 
     QString fileName = berApplet->findFile( this, JS_FILE_TYPE_BER, strPath );
     if( fileName.isEmpty() ) return;
 
-    mKEMPubKeyPathText->setText(fileName);
+    mKEMCertPathText->setText(fileName);
 }
 
-void KeyManDlg::clickKEMPubKeyView()
+void KeyManDlg::clickKEMCertView()
+{
+    BIN binCert = {0,0};
+    QString strPath = mKEMCertPathText->text();
+
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Select a certificate or public key"), this );
+        mKEMCertPathText->setFocus();
+        return;
+    }
+
+    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    if( binCert.nLen < 1 )
+    {
+        berApplet->warningBox( tr("failed to read data"), this );
+        mKEMCertPathText->setFocus();
+        return;
+    }
+
+    if( JS_PKI_isCert( &binCert ) == 0 )
+    {
+        PriKeyInfoDlg priKeyInfo;
+        priKeyInfo.setPublicKey( &binCert, strPath );
+        priKeyInfo.exec();
+    }
+    else
+    {
+        CertInfoDlg certInfo;
+        certInfo.setCertBIN( &binCert, strPath );
+        certInfo.exec();
+    }
+
+    JS_BIN_reset( &binCert );
+}
+
+void KeyManDlg::clickKEMCertDecode()
 {
     BIN binData = {0,0};
-    QString strPath = mKEMPubKeyPathText->text();
+    QString strPath = mKEMCertPathText->text();
 
     if( strPath.length() < 1 )
     {
         berApplet->warningBox( tr( "select a public key"), this );
-        mKEMPubKeyPathText->setFocus();
+        mKEMCertPathText->setFocus();
         return;
     }
 
@@ -956,35 +1064,7 @@ void KeyManDlg::clickKEMPubKeyView()
     if( binData.nLen < 1 )
     {
         berApplet->warningBox( tr("failed to read data"), this );
-        mKEMPubKeyPathText->setFocus();
-        return;
-    }
-
-    PriKeyInfoDlg priKeyInfo;
-    priKeyInfo.setPublicKey( &binData, strPath );
-    priKeyInfo.exec();
-
-    JS_BIN_reset( &binData );
-}
-
-void KeyManDlg::clickKEMPubKeyDecode()
-{
-    BIN binData = {0,0};
-    QString strPath = mKEMPubKeyPathText->text();
-
-    if( strPath.length() < 1 )
-    {
-        berApplet->warningBox( tr( "select a public key"), this );
-        mKEMPubKeyPathText->setFocus();
-        return;
-    }
-
-    JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
-
-    if( binData.nLen < 1 )
-    {
-        berApplet->warningBox( tr("failed to read data"), this );
-        mKEMPubKeyPathText->setFocus();
+        mKEMCertPathText->setFocus();
         return;
     }
 
@@ -993,16 +1073,18 @@ void KeyManDlg::clickKEMPubKeyDecode()
     JS_BIN_reset( &binData );
 }
 
-void KeyManDlg::clickKEMPubKeyType()
+void KeyManDlg::clickKEMCertType()
 {
     int nType = -1;
     BIN binData = {0,0};
-    QString strPath = mKEMPubKeyPathText->text();
+    QString strType;
+
+    QString strPath = mKEMCertPathText->text();
 
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "select a public key"), this );
-        mKEMPubKeyPathText->setFocus();
+        berApplet->warningBox( tr( "select a certificate or public key"), this );
+        mKEMCertPathText->setFocus();
         return;
     }
 
@@ -1011,13 +1093,22 @@ void KeyManDlg::clickKEMPubKeyType()
     if( binData.nLen < 1 )
     {
         berApplet->warningBox( tr("failed to read data"), this );
-        mKEMPubKeyPathText->setFocus();
+        mKEMCertPathText->setFocus();
         return;
     }
 
-    nType = JS_PKI_getPubKeyType( &binData );
+    if( JS_PKI_isCert( &binData ) == 1 )
+    {
+        strType = tr( "Certificate" );
+        nType = JS_PKI_getCertKeyType( &binData );
+    }
+    else
+    {
+        strType = tr( "Public key" );
+        nType = JS_PKI_getPubKeyType( &binData );
+    }
 
-    berApplet->messageBox( tr( "Public Key Type is %1").arg( JS_PKI_getKeyAlgName( nType )), this);
+    berApplet->messageBox( tr( "%1 type is %2").arg( strType ).arg( JS_PKI_getKeyAlgName( nType )), this);
 
     JS_BIN_reset( &binData );
 }

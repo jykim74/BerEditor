@@ -43,7 +43,7 @@ EncDecDlg::EncDecDlg(QWidget *parent) :
     update_cnt_ = 0;
 
     setupUi(this);
-    initialize();
+    initUI();
 
     connect( mAEADGroup, SIGNAL(clicked()), this, SLOT(clickUseAEAD()));
     connect( mInitBtn, SIGNAL(clicked()), this, SLOT(encDecInit()));
@@ -63,9 +63,7 @@ EncDecDlg::EncDecDlg(QWidget *parent) :
     connect( mAADText, SIGNAL(textChanged(const QString&)), this, SLOT(aadChanged()));
     connect( mTagText, SIGNAL(textChanged(const QString&)), this, SLOT(tagChanged()));
 
-    connect( mInputStringRadio, SIGNAL(clicked()), this, SLOT(inputChanged()));
-    connect( mInputHexRadio, SIGNAL(clicked()), this, SLOT(inputChanged()));
-    connect( mInputBase64Radio, SIGNAL(clicked()), this, SLOT(inputChanged()));
+    connect( mInputTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(inputChanged()));;
 
     connect( mKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(keyChanged()));
     connect( mIVTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(ivChanged()));
@@ -91,6 +89,8 @@ EncDecDlg::EncDecDlg(QWidget *parent) :
     mFileTab->layout()->setSpacing(5);
     mFileTab->layout()->setMargin(5);
 #endif
+
+    initialize();
     resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 
@@ -100,26 +100,29 @@ EncDecDlg::~EncDecDlg()
     if( thread_ ) delete thread_;
 }
 
-void EncDecDlg::initialize()
+void EncDecDlg::initUI()
 {
+    mInputTypeCombo->addItems( kDataTypeList );
     mIVTypeCombo->addItems( kDataTypeList );
     mKeyTypeCombo->addItems( kDataTypeList );
     mAADTypeCombo->addItems( kDataTypeList );
     mTagTypeCombo->addItems( kDataTypeList );
     mOutputTypeCombo->addItems( kDataTypeList );
-    mOutputTypeCombo->setCurrentIndex(1);
 
     mAlgCombo->addItems( algList );
 
+    mKeyText->setPlaceholderText( tr( "Select KeyList key" ));
+    mSrcFileText->setPlaceholderText( tr( "Find the target file" ));
+}
+
+void EncDecDlg::initialize()
+{
     QButtonGroup *runGroup = new QButtonGroup;
     runGroup->addButton( mEncryptRadio );
     runGroup->addButton( mDecryptRadio );
 
     mReqTagLenText->setText( "16" );
     mInputTab->setCurrentIndex(0);
-
-    mKeyText->setPlaceholderText( tr( "Select KeyList key" ));
-    mSrcFileText->setPlaceholderText( tr( "Find the target file" ));
 }
 
 void EncDecDlg::appendStatusLabel( const QString& strLabel )
@@ -167,6 +170,8 @@ void EncDecDlg::dataRun()
     int nDataType = DATA_STRING;
 
     QString strInput = mInputText->toPlainText();
+    QString strInputType = mInputTypeCombo->currentText();
+
     QString strKey = mKeyText->text();
     QString strIV = mIVText->text();
     QString strAlg = mAlgCombo->currentText();
@@ -224,18 +229,7 @@ void EncDecDlg::dataRun()
         }
     }
 
-    if( mInputStringRadio->isChecked() )
-        nDataType = DATA_STRING;
-    else if( mInputHexRadio->isChecked() )
-    {
-        nDataType = DATA_HEX;
-    }
-    else if( mInputBase64Radio->isChecked() )
-    {
-        nDataType = DATA_BASE64;
-    }
-
-    getBINFromString( &binSrc, nDataType, strInput );
+    getBINFromString( &binSrc, strInputType, strInput );
     getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
 
     if( binKey.nLen < 16 )
@@ -726,19 +720,9 @@ int EncDecDlg::encDecInit()
     mOutputText->clear();
 
     QString strInput = mInputText->toPlainText();
+    QString strInputType = mInputTypeCombo->currentText();
 
-    if( mInputStringRadio->isChecked() )
-        nDataType = DATA_STRING;
-    else if( mInputHexRadio->isChecked() )
-    {
-        nDataType = DATA_HEX;
-    }
-    else if( mInputBase64Radio->isChecked() )
-    {
-        nDataType = DATA_BASE64;
-    }
-
-    getBINFromString( &binSrc, nDataType, strInput );
+    getBINFromString( &binSrc, strInputType, strInput );
     getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
     getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
 
@@ -882,24 +866,14 @@ int EncDecDlg::encDecUpdate()
     int nDataType = DATA_STRING;
 
     QString strInput = mInputText->toPlainText();
+    QString strInputType = mInputTypeCombo->currentText();
 
     if( strInput.isEmpty() )
     {
 
     }
 
-    if( mInputStringRadio->isChecked() )
-        nDataType = DATA_STRING;
-    else if( mInputHexRadio->isChecked() )
-    {
-        nDataType = DATA_HEX;
-    }
-    else if( mInputBase64Radio->isChecked() )
-    {
-        nDataType = DATA_BASE64;
-    }
-
-    getBINFromString( &binSrc, nDataType, strInput );
+    getBINFromString( &binSrc, strInputType, strInput );
 
     QString strOut = mOutputText->toPlainText();
 
@@ -1160,13 +1134,9 @@ int EncDecDlg::encDecFinal()
 void EncDecDlg::dataChange()
 {
     QString strOutput = mOutputText->toPlainText();
+    QString strOutputType = mOutputTypeCombo->currentText();
 
-    if( mOutputTypeCombo->currentIndex() == 0 )
-        mInputStringRadio->setChecked(true);
-    else if( mOutputTypeCombo->currentIndex() == 1 )
-        mInputHexRadio->setChecked(true);
-    else if( mOutputTypeCombo->currentIndex() == 2 )
-        mInputBase64Radio->setChecked(true);
+    mInputTypeCombo->setCurrentText( strOutputType );
 
     mOutputText->clear();
     mInputText->setPlainText( strOutput );
@@ -1183,15 +1153,10 @@ bool EncDecDlg::isCCM( const QString strMode )
 }
 
 void EncDecDlg::inputChanged()
-{
-    int nType = DATA_STRING;
+{    
+    QString strType = mInputTypeCombo->currentText();
 
-    if( mInputHexRadio->isChecked() )
-        nType = DATA_HEX;
-    else if( mInputBase64Radio->isChecked() )
-        nType = DATA_BASE64;
-
-    QString strLen = getDataLenString( nType, mInputText->toPlainText() );
+    QString strLen = getDataLenString( strType, mInputText->toPlainText() );
     mInputLenText->setText( QString("%1").arg(strLen));
 }
 

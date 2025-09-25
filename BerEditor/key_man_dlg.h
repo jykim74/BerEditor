@@ -67,10 +67,10 @@ private slots:
     void clickKEMPriKeyDecode();
     void clickKEMPriKeyType();
 
-    void clickKEMPubKeyFind();
-    void clickKEMPubKeyView();
-    void clickKEMPubKeyDecode();
-    void clickKEMPubKeyType();
+    void clickKEMCertFind();
+    void clickKEMCertView();
+    void clickKEMCertDecode();
+    void clickKEMCertType();
 
 private:
     void initUI();

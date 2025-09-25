@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>667</width>
-    <height>784</height>
+    <width>542</width>
+    <height>589</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -95,29 +95,25 @@
          </property>
          <item row="0" column="0">
           <widget class="QLabel" name="label">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
             <string>Input Data</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="6">
+         <item row="0" column="3">
           <widget class="QLabel" name="label_5">
            <property name="text">
             <string>Len</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
-          <widget class="QRadioButton" name="mInputStringRadio">
-           <property name="text">
-            <string>String</string>
-           </property>
-           <property name="checked">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="7">
+         <item row="0" column="4">
           <widget class="QLineEdit" name="mInputLenText">
            <property name="minimumSize">
             <size>
@@ -173,14 +169,7 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="4">
-          <widget class="QRadioButton" name="mInputBase64Radio">
-           <property name="text">
-            <string>Base64</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="5">
+         <item row="0" column="2">
           <spacer name="horizontalSpacer">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -194,14 +183,7 @@
           </spacer>
          </item>
          <item row="0" column="1">
-          <widget class="QRadioButton" name="mInputHexRadio">
-           <property name="text">
-            <string>Hex</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
+          <widget class="QComboBox" name="mInputTypeCombo"/>
          </item>
         </layout>
        </item>
@@ -685,44 +667,6 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <item>
-       <layout class="QGridLayout" name="gridLayout_13">
-        <item row="0" column="1">
-         <widget class="QCheckBox" name="mAutoCertPubKeyCheck">
-          <property name="text">
-           <string>Cert or PubKey Auto</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="4">
-         <widget class="QPushButton" name="mCheckKeyPairBtn">
-          <property name="text">
-           <string>Check KeyPair</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QCheckBox" name="mPubKeyVerifyCheck">
-          <property name="text">
-           <string>Verify with public key</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="3">
-         <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
-      </item>
-      <item>
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="1" column="1">
          <widget class="QLineEdit" name="mCertPath"/>
@@ -760,7 +704,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="mCertLabel">
           <property name="text">
-           <string>Certificate</string>
+           <string>Cert or PubKey</string>
           </property>
          </widget>
         </item>
@@ -992,6 +936,12 @@
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_2">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="text">
         <string>Signature</string>
        </property>
@@ -1138,8 +1088,6 @@
   <tabstop>mSignRadio</tabstop>
   <tabstop>mVerifyRadio</tabstop>
   <tabstop>mInputTab</tabstop>
-  <tabstop>mInputStringRadio</tabstop>
-  <tabstop>mInputBase64Radio</tabstop>
   <tabstop>mInputLenText</tabstop>
   <tabstop>mInputText</tabstop>
   <tabstop>mInitBtn</tabstop>
@@ -1154,9 +1102,6 @@
   <tabstop>mFileReadSizeText</tabstop>
   <tabstop>mRunThreadCheck</tabstop>
   <tabstop>mCertGroup</tabstop>
-  <tabstop>mAutoCertPubKeyCheck</tabstop>
-  <tabstop>mPubKeyVerifyCheck</tabstop>
-  <tabstop>mCheckKeyPairBtn</tabstop>
   <tabstop>mPriKeyPath</tabstop>
   <tabstop>mFindPriKeyBtn</tabstop>
   <tabstop>mPriKeyViewBtn</tabstop>

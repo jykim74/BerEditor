@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>570</width>
-    <height>863</height>
+    <height>671</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -90,27 +90,10 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="5">
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="mInputTypeCombo"/>
          </item>
          <item row="0" column="4">
-          <widget class="QRadioButton" name="mInputBase64Radio">
-           <property name="text">
-            <string>Base64</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="7">
           <widget class="QLineEdit" name="mInputLenText">
            <property name="minimumSize">
             <size>
@@ -166,39 +149,38 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
-          <widget class="QRadioButton" name="mInputStringRadio">
-           <property name="text">
-            <string>String</string>
-           </property>
-           <property name="checked">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>Input Data</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="6">
+         <item row="0" column="3">
           <widget class="QLabel" name="label_10">
            <property name="text">
             <string>Len</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QRadioButton" name="mInputHexRadio">
-           <property name="text">
-            <string>Hex</string>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_3">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
            </property>
-           <property name="checked">
-            <bool>true</bool>
+           <property name="text">
+            <string>Input Data</string>
            </property>
           </widget>
+         </item>
+         <item row="0" column="2">
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
          </item>
         </layout>
        </item>
@@ -1259,16 +1241,6 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="mOutputTypeCombo"/>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_9">
-       <property name="text">
-        <string>Output Data</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="5">
       <widget class="QLabel" name="label_11">
        <property name="text">
@@ -1288,6 +1260,32 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mChangeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>34</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>⬆</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_9">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Output Data</string>
+       </property>
+      </widget>
      </item>
      <item row="0" column="6">
       <widget class="QLineEdit" name="mOutputLenText">
@@ -1345,18 +1343,8 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mChangeBtn">
-       <property name="maximumSize">
-        <size>
-         <width>34</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>⬆</string>
-       </property>
-      </widget>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="mOutputTypeCombo"/>
      </item>
     </layout>
    </item>
@@ -1491,8 +1479,6 @@
   <tabstop>mEncryptRadio</tabstop>
   <tabstop>mDecryptRadio</tabstop>
   <tabstop>mInputTab</tabstop>
-  <tabstop>mInputStringRadio</tabstop>
-  <tabstop>mInputBase64Radio</tabstop>
   <tabstop>mInputLenText</tabstop>
   <tabstop>mInputText</tabstop>
   <tabstop>mInitBtn</tabstop>

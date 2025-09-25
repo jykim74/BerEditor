@@ -25,9 +25,6 @@ public:
     ~SignVerifyDlg();
 
 private slots:
-    void checkPubKeyVerify();
-    void checkAutoCertOrPubKey();
-    void clickCheckKeyPair();
     void findPrivateKey();
     void findCert();
     void algChanged(int index);
@@ -74,6 +71,7 @@ public slots:
     void clickClearDataAll();
 
 private:
+    void initUI();
     void initialize();
     void appendStatusLabel( const QString& strLabel );
     void updateStatusLabel();

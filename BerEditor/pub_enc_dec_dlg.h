@@ -24,9 +24,6 @@ public:
 
 private slots:
     void Run();
-    void checkPubKeyEncrypt();
-    void checkAutoCertOrPubKey();
-    void clickCheckKeyPair();
     void findCert();
     void findPrivateKey();
     void changeValue();
@@ -60,6 +57,7 @@ public slots:
     void clickClearDataAll();
 
 private:
+    void initUI();
     void initialize();
     int readPrivateKey( BIN *pPriKey );
 

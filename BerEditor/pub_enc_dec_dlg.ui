@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>524</width>
-    <height>666</height>
+    <height>634</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -105,35 +105,24 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QLabel" name="label">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="text">
         <string>Input Data</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QRadioButton" name="mInputHexRadio">
-       <property name="text">
-        <string>Hex</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
+      <widget class="QComboBox" name="mInputTypeCombo"/>
      </item>
      <item>
-      <widget class="QRadioButton" name="mInputStringRadio">
+      <widget class="QPushButton" name="mInputClearBtn">
        <property name="text">
-        <string>String</string>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QRadioButton" name="mInputBase64Radio">
-       <property name="text">
-        <string>Base64</string>
+        <string>Clear</string>
        </property>
       </widget>
      </item>
@@ -149,13 +138,6 @@
         </size>
        </property>
       </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="mInputClearBtn">
-       <property name="text">
-        <string>Clear</string>
-       </property>
-      </widget>
      </item>
      <item>
       <widget class="QLabel" name="label_5">
@@ -251,56 +233,6 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <layout class="QGridLayout" name="gridLayout_9">
-        <item row="0" column="2">
-         <widget class="QCheckBox" name="mPubKeyEncryptCheck">
-          <property name="text">
-           <string>Encrypt with public key</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QCheckBox" name="mAutoCertPubKeyCheck">
-          <property name="text">
-           <string>Cert or PubKey Auto</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="4">
-         <widget class="QPushButton" name="mCheckKeyPairBtn">
-          <property name="minimumSize">
-           <size>
-            <width>100</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>100</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Check KeyPair</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="3">
-         <spacer name="horizontalSpacer_3">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
-      </item>
-      <item>
        <layout class="QGridLayout" name="gridLayout_5">
         <item row="1" column="3">
          <widget class="QPushButton" name="mCertViewBtn">
@@ -354,7 +286,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="mCertLabel">
           <property name="text">
-           <string>Certificate</string>
+           <string>Cert or PubKey</string>
           </property>
          </widget>
         </item>
@@ -842,6 +774,12 @@
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_2">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="text">
         <string>Output Data</string>
        </property>
@@ -974,15 +912,9 @@
   <tabstop>mVersionTypeCombo</tabstop>
   <tabstop>mEncryptRadio</tabstop>
   <tabstop>mDecryptRadio</tabstop>
-  <tabstop>mInputStringRadio</tabstop>
-  <tabstop>mInputBase64Radio</tabstop>
-  <tabstop>mInputClearBtn</tabstop>
   <tabstop>mInputLenText</tabstop>
   <tabstop>mInputText</tabstop>
   <tabstop>mCertGroup</tabstop>
-  <tabstop>mAutoCertPubKeyCheck</tabstop>
-  <tabstop>mPubKeyEncryptCheck</tabstop>
-  <tabstop>mCheckKeyPairBtn</tabstop>
   <tabstop>mPriKeyPath</tabstop>
   <tabstop>mFindPriKeyBtn</tabstop>
   <tabstop>mPriKeyViewBtn</tabstop>
