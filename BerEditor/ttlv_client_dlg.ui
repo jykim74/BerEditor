@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>KMIP Information</string>
+      <string>TTLV client</string>
      </property>
     </widget>
    </item>

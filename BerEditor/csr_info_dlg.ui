@@ -282,11 +282,13 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>mKIDText</tabstop>
   <tabstop>mFieldTable</tabstop>
   <tabstop>mDetailText</tabstop>
   <tabstop>mVerifyCSRBtn</tabstop>
   <tabstop>mDecodeCSRBtn</tabstop>
   <tabstop>mSaveBtn</tabstop>
+  <tabstop>mViewPubKeyBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>

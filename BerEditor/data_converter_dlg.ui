@@ -505,8 +505,10 @@
  </widget>
  <tabstops>
   <tabstop>mInputTypeHexCheck</tabstop>
+  <tabstop>mInputTypeStringCheck</tabstop>
   <tabstop>mInputTypeBase64Check</tabstop>
   <tabstop>mInputTypeURLCheck</tabstop>
+  <tabstop>mInputTypeBase64URLCheck</tabstop>
   <tabstop>mReadFileBtn</tabstop>
   <tabstop>mInputLenText</tabstop>
   <tabstop>mInputText</tabstop>
@@ -515,6 +517,7 @@
   <tabstop>mConvertBtn</tabstop>
   <tabstop>mOutputTypeCombo</tabstop>
   <tabstop>mShowPrintTextCheck</tabstop>
+  <tabstop>mWriteBinBtn</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputTab</tabstop>
   <tabstop>mOutputText</tabstop>

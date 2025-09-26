@@ -186,7 +186,7 @@
    <item row="0" column="0" colspan="2">
     <widget class="QTabWidget" name="mTabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mDHTab">
       <attribute name="title">
@@ -1254,8 +1254,24 @@
   <tabstop>mExportParamBtn</tabstop>
   <tabstop>mPLenText</tabstop>
   <tabstop>mPText</tabstop>
+  <tabstop>mAPrivateKeyText</tabstop>
+  <tabstop>mAPrivateKeyLenText</tabstop>
+  <tabstop>mADHPriBtn</tabstop>
+  <tabstop>mAPublicKeyText</tabstop>
+  <tabstop>mAPublicKeyLenText</tabstop>
+  <tabstop>mAGenDHKeyBtn</tabstop>
+  <tabstop>mBPrivateKeyText</tabstop>
+  <tabstop>mBPrivateKeyLenText</tabstop>
+  <tabstop>mBDHPriBtn</tabstop>
+  <tabstop>mBPublicKeyText</tabstop>
+  <tabstop>mBPublicKeyLenText</tabstop>
+  <tabstop>mBGenDHKeyBtn</tabstop>
   <tabstop>mECDHParamCombo</tabstop>
   <tabstop>mECDHParamText</tabstop>
+  <tabstop>mAECDHPriKeyText</tabstop>
+  <tabstop>mAECDHPriKeyLenText</tabstop>
+  <tabstop>mAECDHPubKeyText</tabstop>
+  <tabstop>mAECDHPubKeyLenText</tabstop>
   <tabstop>mAGenKeyPairBtn</tabstop>
   <tabstop>mAGenPriKeyBtn</tabstop>
   <tabstop>mAGenPubKeyBtn</tabstop>
@@ -1264,6 +1280,10 @@
   <tabstop>mACheckPubKeyBtn</tabstop>
   <tabstop>mAGetFromCertManBtn</tabstop>
   <tabstop>mAGetFromKeyPairMan</tabstop>
+  <tabstop>mBECDHPriKeyText</tabstop>
+  <tabstop>mBECDHPriKeyLenText</tabstop>
+  <tabstop>mBECDHPubKeyText</tabstop>
+  <tabstop>mBECDHPubKeyLenText</tabstop>
   <tabstop>mBGenKeyPairBtn</tabstop>
   <tabstop>mBGenPriKeyBtn</tabstop>
   <tabstop>mBGenPubKeyBtn</tabstop>

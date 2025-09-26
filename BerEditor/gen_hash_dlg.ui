@@ -17,7 +17,7 @@
    <item>
     <widget class="QTabWidget" name="mInputTab">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mDataTab">
       <attribute name="title">
@@ -832,6 +832,7 @@
  </widget>
  <tabstops>
   <tabstop>mInputTab</tabstop>
+  <tabstop>mInputTypeCombo</tabstop>
   <tabstop>mInputLenText</tabstop>
   <tabstop>mInputText</tabstop>
   <tabstop>mInitBtn</tabstop>
@@ -845,6 +846,9 @@
   <tabstop>mFileSizeText</tabstop>
   <tabstop>mFileReadSizeText</tabstop>
   <tabstop>mRunThreadCheck</tabstop>
+  <tabstop>mOutputHashCombo</tabstop>
+  <tabstop>mReqLenText</tabstop>
+  <tabstop>mDigestBtn</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
   <tabstop>mOutputClearBtn</tabstop>

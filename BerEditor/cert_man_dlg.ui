@@ -54,7 +54,7 @@
       <enum>Qt::CustomContextMenu</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="mEETab">
       <attribute name="title">
@@ -1430,6 +1430,9 @@
   <tabstop>mViewOtherBtn</tabstop>
   <tabstop>mDecodeOtherBtn</tabstop>
   <tabstop>mViewPubKeyOtherBtn</tabstop>
+  <tabstop>mExportOtherBtn</tabstop>
+  <tabstop>mRunOtherVerifyBtn</tabstop>
+  <tabstop>mRunOtherPubEncBtn</tabstop>
   <tabstop>mCAPathText</tabstop>
   <tabstop>mCAKeyTypeCombo</tabstop>
   <tabstop>mCA_CertTable</tabstop>
@@ -1455,13 +1458,14 @@
   <tabstop>mDecodeTrustBtn</tabstop>
   <tabstop>mViewPubKeyTrustBtn</tabstop>
   <tabstop>mExportTrustBtn</tabstop>
-  <tabstop>mTLEncPriKeyCheck</tabstop>
   <tabstop>mTLPriKeyPathText</tabstop>
   <tabstop>mFindTLPriKeyBtn</tabstop>
+  <tabstop>mTLViewPriKeyBtn</tabstop>
   <tabstop>mTLPriKeyClearBtn</tabstop>
   <tabstop>mTLPriKeyDecodeBtn</tabstop>
   <tabstop>mTLCertPathText</tabstop>
   <tabstop>mFindTLCertBtn</tabstop>
+  <tabstop>mTLViewCertBtn</tabstop>
   <tabstop>mTLCertClearBtn</tabstop>
   <tabstop>mTLCertDecodeBtn</tabstop>
   <tabstop>mTLPFXPathText</tabstop>
@@ -1471,10 +1475,14 @@
   <tabstop>mTLVersionCombo</tabstop>
   <tabstop>mTLModeCombo</tabstop>
   <tabstop>mTLPasswdText</tabstop>
+  <tabstop>mTLCheckKeyPairBtn</tabstop>
   <tabstop>mTLEncryptPFXBtn</tabstop>
   <tabstop>mTLDecryptPFXBtn</tabstop>
+  <tabstop>mTLViewPubKeyBtn</tabstop>
+  <tabstop>mTLSavePFXBtn</tabstop>
   <tabstop>mOKBtn</tabstop>
   <tabstop>mCancelBtn</tabstop>
+  <tabstop>mTLEncPriKeyCheck</tabstop>
  </tabstops>
  <resources/>
  <connections/>

@@ -183,6 +183,17 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mURLCombo</tabstop>
+  <tabstop>mHashCombo</tabstop>
+  <tabstop>mPolicyText</tabstop>
+  <tabstop>mUseNonceCheck</tabstop>
+  <tabstop>mAuthGroup</tabstop>
+  <tabstop>mUserNameText</tabstop>
+  <tabstop>mPasswdText</tabstop>
+  <tabstop>mOKBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

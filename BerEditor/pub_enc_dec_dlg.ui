@@ -953,6 +953,10 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>mUseKeyAlgCheck</tabstop>
+  <tabstop>mUseCertManCheck</tabstop>
+  <tabstop>mInputTypeCombo</tabstop>
+  <tabstop>mInputClearBtn</tabstop>
   <tabstop>mInputLenText</tabstop>
   <tabstop>mInputText</tabstop>
   <tabstop>mCertGroup</tabstop>
@@ -961,6 +965,11 @@
   <tabstop>mCertViewBtn</tabstop>
   <tabstop>mCertDecodeBtn</tabstop>
   <tabstop>mCertTypeBtn</tabstop>
+  <tabstop>mPriKeyPath</tabstop>
+  <tabstop>mFindPriKeyBtn</tabstop>
+  <tabstop>mPriKeyViewBtn</tabstop>
+  <tabstop>mPriKeyDecodeBtn</tabstop>
+  <tabstop>mPriKeyTypeBtn</tabstop>
   <tabstop>mEncPrikeyCheck</tabstop>
   <tabstop>mPasswdText</tabstop>
   <tabstop>mIVText</tabstop>
@@ -969,6 +978,11 @@
   <tabstop>mTagLenText</tabstop>
   <tabstop>mOtherPubLenText</tabstop>
   <tabstop>mOtherPubText</tabstop>
+  <tabstop>mEncryptRadio</tabstop>
+  <tabstop>mDecryptRadio</tabstop>
+  <tabstop>mAlgCombo</tabstop>
+  <tabstop>mVersionTypeCombo</tabstop>
+  <tabstop>mRunBtn</tabstop>
   <tabstop>mOutputTypeCombo</tabstop>
   <tabstop>mOutputClearBtn</tabstop>
   <tabstop>mChangeBtn</tabstop>

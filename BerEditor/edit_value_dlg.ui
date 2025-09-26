@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label_7">
      <property name="text">
-      <string>Type information</string>
+      <string>Editing BER data</string>
      </property>
     </widget>
    </item>

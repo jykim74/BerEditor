@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>TTLV Inforamtion</string>
+      <string>Editing TTLV data</string>
      </property>
     </widget>
    </item>

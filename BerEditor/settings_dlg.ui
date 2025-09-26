@@ -23,7 +23,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -486,6 +486,7 @@
   <tabstop>mCheckBoxLatestVersion</tabstop>
   <tabstop>mCheckShowPartOnly</tabstop>
   <tabstop>mUseLogTabCheck</tabstop>
+  <tabstop>mFontFamilyCombo</tabstop>
   <tabstop>mDefaultHashCombo</tabstop>
   <tabstop>mLangComboBox</tabstop>
   <tabstop>mOIDConfigPathText</tabstop>

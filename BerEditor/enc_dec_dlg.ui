@@ -51,7 +51,7 @@
    <item>
     <widget class="QTabWidget" name="mInputTab">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mDataTab">
       <attribute name="title">
@@ -1533,6 +1533,7 @@
  </widget>
  <tabstops>
   <tabstop>mInputTab</tabstop>
+  <tabstop>mInputTypeCombo</tabstop>
   <tabstop>mInputLenText</tabstop>
   <tabstop>mInputText</tabstop>
   <tabstop>mInitBtn</tabstop>
@@ -1565,10 +1566,17 @@
   <tabstop>mTagTypeCombo</tabstop>
   <tabstop>mTagText</tabstop>
   <tabstop>mTagLenText</tabstop>
+  <tabstop>mEncryptRadio</tabstop>
+  <tabstop>mDecryptRadio</tabstop>
+  <tabstop>mAlgCombo</tabstop>
+  <tabstop>mModeCombo</tabstop>
+  <tabstop>mPadCheck</tabstop>
+  <tabstop>mRunBtn</tabstop>
   <tabstop>mOutputTypeCombo</tabstop>
   <tabstop>mChangeBtn</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
+  <tabstop>mOutputClearBtn</tabstop>
   <tabstop>mClearDataAllBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>

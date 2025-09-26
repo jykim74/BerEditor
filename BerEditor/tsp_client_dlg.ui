@@ -792,7 +792,11 @@
   <tabstop>mRequestDecodeBtn</tabstop>
   <tabstop>mRequestLenText</tabstop>
   <tabstop>mRequestText</tabstop>
+  <tabstop>mAuthGroup</tabstop>
+  <tabstop>mUserText</tabstop>
+  <tabstop>mPassText</tabstop>
   <tabstop>mHashCombo</tabstop>
+  <tabstop>mUseNonceCheck</tabstop>
   <tabstop>mEncodeBtn</tabstop>
   <tabstop>mSendBtn</tabstop>
   <tabstop>mVerifyBtn</tabstop>

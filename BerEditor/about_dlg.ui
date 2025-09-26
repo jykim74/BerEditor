@@ -25,7 +25,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="bereditor.qrc">
          <normaloff>:/images/bereditor.png</normaloff>:/images/bereditor.png</iconset>
        </property>
        <property name="iconSize">
@@ -199,6 +199,8 @@
   <tabstop>mCheckUpdatBtn</tabstop>
   <tabstop>mOKBtn</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="bereditor.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>624</width>
-    <height>888</height>
+    <height>724</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -74,7 +74,7 @@
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mServerTab">
       <attribute name="title">
@@ -763,7 +763,7 @@
           <enum>QTabWidget::North</enum>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <property name="elideMode">
           <enum>Qt::ElideNone</enum>
@@ -925,6 +925,16 @@
   <tabstop>mClientCADecodeBtn</tabstop>
   <tabstop>mClientCATypeBtn</tabstop>
   <tabstop>mCertGroup</tabstop>
+  <tabstop>mClientCertPathText</tabstop>
+  <tabstop>mFindClientCertBtn</tabstop>
+  <tabstop>mClientCertViewBtn</tabstop>
+  <tabstop>mClientCertDecodeBtn</tabstop>
+  <tabstop>mClientCertTypeBtn</tabstop>
+  <tabstop>mClientPriKeyPathText</tabstop>
+  <tabstop>mFindClientPriKeyBtn</tabstop>
+  <tabstop>mClientPriKeyViewBtn</tabstop>
+  <tabstop>mClientPriKeyDecodeBtn</tabstop>
+  <tabstop>mClientPriKeyTypeBtn</tabstop>
   <tabstop>mEncPriKeyCheck</tabstop>
   <tabstop>mPasswordText</tabstop>
   <tabstop>mURLCombo</tabstop>

@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="mHeadLabel">
      <property name="minimumSize">
       <size>
        <width>400</width>
@@ -23,7 +23,7 @@
       </size>
      </property>
      <property name="text">
-      <string>KeyPair Information</string>
+      <string>Generate a key pair</string>
      </property>
     </widget>
    </item>
@@ -276,6 +276,9 @@
   <tabstop>mDSARadio</tabstop>
   <tabstop>mEdDSARadio</tabstop>
   <tabstop>mSM2Radio</tabstop>
+  <tabstop>mML_KEMRadio</tabstop>
+  <tabstop>mML_DSARadio</tabstop>
+  <tabstop>mSLH_DSARadio</tabstop>
   <tabstop>mExponentText</tabstop>
   <tabstop>mOptionCombo</tabstop>
   <tabstop>mOKBtn</tabstop>

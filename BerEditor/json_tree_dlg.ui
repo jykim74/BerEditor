@@ -120,6 +120,12 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mMsgTree</tabstop>
+  <tabstop>mMsgText</tabstop>
+  <tabstop>mClearBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

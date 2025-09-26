@@ -143,6 +143,7 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>mDataDecodeBtn</tabstop>
   <tabstop>mInfoTable</tabstop>
   <tabstop>mDataText</tabstop>
   <tabstop>mCloseBtn</tabstop>

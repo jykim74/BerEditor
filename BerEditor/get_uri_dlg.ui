@@ -322,6 +322,12 @@
   <tabstop>mURICombo</tabstop>
   <tabstop>mClearUsedURIBtn</tabstop>
   <tabstop>mUseLDAPHostCheck</tabstop>
+  <tabstop>mHostText</tabstop>
+  <tabstop>mPortText</tabstop>
+  <tabstop>mDNText</tabstop>
+  <tabstop>mScopeCombo</tabstop>
+  <tabstop>mTypeCombo</tabstop>
+  <tabstop>mFilterText</tabstop>
   <tabstop>mGetBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>

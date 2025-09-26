@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>618</width>
-    <height>894</height>
+    <width>558</width>
+    <height>687</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label_11">
      <property name="text">
-      <string>TTLV command encoder</string>
+      <string>TTLV data encoder</string>
      </property>
     </widget>
    </item>
@@ -838,10 +838,12 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>mAuthGroup</tabstop>
   <tabstop>mUserIDText</tabstop>
   <tabstop>mPasswdText</tabstop>
   <tabstop>mUUIDText</tabstop>
   <tabstop>mLenText</tabstop>
+  <tabstop>mHashCombo</tabstop>
   <tabstop>mAttributeCombo</tabstop>
   <tabstop>mObjectTypeCombo</tabstop>
   <tabstop>mAlgCombo</tabstop>
@@ -868,7 +870,6 @@
   <tabstop>mClearAllBtn</tabstop>
   <tabstop>mOKBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
-  <tabstop>mAuthGroup</tabstop>
  </tabstops>
  <resources/>
  <connections/>

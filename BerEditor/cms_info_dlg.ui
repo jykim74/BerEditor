@@ -502,6 +502,7 @@
  <tabstops>
   <tabstop>mVersionText</tabstop>
   <tabstop>mTypeText</tabstop>
+  <tabstop>mDecodeBtn</tabstop>
   <tabstop>mDataLenText</tabstop>
   <tabstop>mDataText</tabstop>
   <tabstop>mInfoTab</tabstop>
@@ -511,6 +512,8 @@
   <tabstop>mSignerTable</tabstop>
   <tabstop>mRecipTable</tabstop>
   <tabstop>mValueText</tabstop>
+  <tabstop>mViewTSPBtn</tabstop>
+  <tabstop>mViewTSTBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>

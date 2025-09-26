@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>598</width>
-    <height>807</height>
+    <height>630</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1012,6 +1012,15 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>mEncodeRadio</tabstop>
+  <tabstop>mDecodeRadio</tabstop>
+  <tabstop>mSrcTypeCombo</tabstop>
+  <tabstop>mSrcClearBtn</tabstop>
+  <tabstop>mSrcDecodeBtn</tabstop>
+  <tabstop>mSrcViewBtn</tabstop>
+  <tabstop>mSrcTypeBtn</tabstop>
+  <tabstop>mReadFileBtn</tabstop>
+  <tabstop>mSrcLenText</tabstop>
   <tabstop>mSrcText</tabstop>
   <tabstop>mSignCertGroup</tabstop>
   <tabstop>mSignCertPathText</tabstop>
@@ -1019,6 +1028,11 @@
   <tabstop>mSignCertViewBtn</tabstop>
   <tabstop>mSignCertDecodeBtn</tabstop>
   <tabstop>mSignCertTypeBtn</tabstop>
+  <tabstop>mSignPriKeyPathText</tabstop>
+  <tabstop>mSignPriKeyFindBtn</tabstop>
+  <tabstop>mSignPriKeyViewBtn</tabstop>
+  <tabstop>mSignPriKeyDecodeBtn</tabstop>
+  <tabstop>mSignPriKeyTypeBtn</tabstop>
   <tabstop>mSignEncPriKeyCheck</tabstop>
   <tabstop>mSignPasswdText</tabstop>
   <tabstop>mKMCertGroup</tabstop>
@@ -1027,11 +1041,24 @@
   <tabstop>mKMCertViewBtn</tabstop>
   <tabstop>mKMCertDecodeBtn</tabstop>
   <tabstop>mKMCertTypeBtn</tabstop>
+  <tabstop>mKMPriKeyPathText</tabstop>
+  <tabstop>mKMPriKeyFindBtn</tabstop>
+  <tabstop>mKMPriKeyViewBtn</tabstop>
+  <tabstop>mKMPriKeyDecodeBtn</tabstop>
+  <tabstop>mKMPriKeyTypeBtn</tabstop>
   <tabstop>mKMEncPriKeyCheck</tabstop>
   <tabstop>mKMPasswdText</tabstop>
+  <tabstop>mCmdCombo</tabstop>
+  <tabstop>mAutoDetectCheck</tabstop>
+  <tabstop>mHashCombo</tabstop>
+  <tabstop>mCipherCombo</tabstop>
+  <tabstop>mRunBtn</tabstop>
   <tabstop>mOutputClearBtn</tabstop>
   <tabstop>mOutputDecodeBtn</tabstop>
+  <tabstop>mOutputViewBtn</tabstop>
+  <tabstop>mOutputTypeBtn</tabstop>
   <tabstop>mOutputCmdText</tabstop>
+  <tabstop>mOutputUpBtn</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
   <tabstop>mClearDataAllBtn</tabstop>

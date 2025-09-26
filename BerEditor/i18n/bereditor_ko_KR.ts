@@ -7099,9 +7099,13 @@ mailto : jykim74@gmail.com</translation>
         <translation>TTLV 값 편집</translation>
     </message>
     <message>
-        <location filename="../edit_ttlv_dlg.ui" line="20"/>
         <source>TTLV Inforamtion</source>
-        <translation>TTLV 정보</translation>
+        <translation type="vanished">TTLV 정보</translation>
+    </message>
+    <message>
+        <location filename="../edit_ttlv_dlg.ui" line="20"/>
+        <source>Editing TTLV data</source>
+        <translation>TTLV 데이타 편집하기</translation>
     </message>
     <message>
         <location filename="../edit_ttlv_dlg.ui" line="45"/>
@@ -7194,9 +7198,8 @@ mailto : jykim74@gmail.com</translation>
         <translation>값 수정</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="20"/>
         <source>Type information</source>
-        <translation>타입 정보</translation>
+        <translation type="vanished">타입 정보</translation>
     </message>
     <message>
         <location filename="../edit_value_dlg.ui" line="42"/>
@@ -7226,6 +7229,11 @@ mailto : jykim74@gmail.com</translation>
         <location filename="../edit_value_dlg.ui" line="112"/>
         <source>P/C</source>
         <translation>P/C</translation>
+    </message>
+    <message>
+        <location filename="../edit_value_dlg.ui" line="20"/>
+        <source>Editing BER data</source>
+        <translation>BER 데이타 편집하기</translation>
     </message>
     <message>
         <location filename="../edit_value_dlg.ui" line="375"/>
@@ -8305,9 +8313,8 @@ Do you want to delete the file and continue?</source>
         <translation>키 쌍 생성 창</translation>
     </message>
     <message>
-        <location filename="../gen_key_pair_dlg.ui" line="26"/>
         <source>KeyPair Information</source>
-        <translation>키 쌍 정보</translation>
+        <translation type="vanished">키 쌍 정보</translation>
     </message>
     <message>
         <location filename="../gen_key_pair_dlg.ui" line="51"/>
@@ -8333,6 +8340,11 @@ Do you want to delete the file and continue?</source>
         <location filename="../gen_key_pair_dlg.ui" line="79"/>
         <source>DSA</source>
         <translation></translation>
+    </message>
+    <message>
+        <location filename="../gen_key_pair_dlg.ui" line="26"/>
+        <source>Generate a key pair</source>
+        <translation>키 쌍 생성하기</translation>
     </message>
     <message>
         <location filename="../gen_key_pair_dlg.ui" line="105"/>
@@ -18825,9 +18837,13 @@ Use %2</source>
         <translation type="vanished">메세지 보내기</translation>
     </message>
     <message>
-        <location filename="../ttlv_client_dlg.ui" line="20"/>
         <source>KMIP Information</source>
-        <translation>KMIP 정보</translation>
+        <translation type="vanished">KMIP 정보</translation>
+    </message>
+    <message>
+        <location filename="../ttlv_client_dlg.ui" line="20"/>
+        <source>TTLV client</source>
+        <translation>TTLV 클라이언트</translation>
     </message>
     <message>
         <location filename="../ttlv_client_dlg.ui" line="45"/>
@@ -19098,9 +19114,8 @@ Use %2</source>
         <translation>길이</translation>
     </message>
     <message>
-        <location filename="../ttlv_encoder_dlg.ui" line="20"/>
         <source>TTLV command encoder</source>
-        <translation>TTLV 명령 인코더</translation>
+        <translation type="vanished">TTLV 명령 인코더</translation>
     </message>
     <message>
         <location filename="../ttlv_encoder_dlg.ui" line="177"/>
@@ -19183,6 +19198,11 @@ Use %2</source>
         <location filename="../ttlv_encoder_dlg.ui" line="124"/>
         <source>Hash</source>
         <translation>Hash</translation>
+    </message>
+    <message>
+        <location filename="../ttlv_encoder_dlg.ui" line="20"/>
+        <source>TTLV data encoder</source>
+        <translation>TTLV 데이타 인코더</translation>
     </message>
     <message>
         <location filename="../ttlv_encoder_dlg.ui" line="247"/>

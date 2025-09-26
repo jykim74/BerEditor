@@ -17,7 +17,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="mDeriveTab">
       <attribute name="title">
@@ -1798,23 +1798,58 @@
   <tabstop>mKD_InfoText</tabstop>
   <tabstop>mKD_InfoLenText</tabstop>
   <tabstop>mKD_SaltTypeCombo</tabstop>
+  <tabstop>mKD_SaltClearBtn</tabstop>
   <tabstop>mKD_SaltLenText</tabstop>
   <tabstop>mKD_SaltText</tabstop>
   <tabstop>mKD_IterCntText</tabstop>
+  <tabstop>mKD_NText</tabstop>
   <tabstop>mKD_RText</tabstop>
   <tabstop>mKD_PText</tabstop>
   <tabstop>mKD_HashCombo</tabstop>
+  <tabstop>mKD_DeriveKeyBtn</tabstop>
+  <tabstop>mKD_OutputClearBtn</tabstop>
   <tabstop>mKD_OutputLenText</tabstop>
   <tabstop>mKD_OutputText</tabstop>
+  <tabstop>mKW_MethodCombo</tabstop>
   <tabstop>mKW_SrcTypeCombo</tabstop>
+  <tabstop>mKW_SrcClearBtn</tabstop>
   <tabstop>mKW_SrcLenText</tabstop>
   <tabstop>mKW_SrcText</tabstop>
   <tabstop>mKW_KEKTypeCombo</tabstop>
+  <tabstop>mKW_KEKClearBtn</tabstop>
   <tabstop>mKW_GenKEKBtn</tabstop>
   <tabstop>mKW_KEKText</tabstop>
   <tabstop>mKW_KEKLenText</tabstop>
+  <tabstop>mKW_KeyWrapRadio</tabstop>
+  <tabstop>mKW_KeyUnwrapRadio</tabstop>
+  <tabstop>mKW_RunBtn</tabstop>
+  <tabstop>mKW_DstClearBtn</tabstop>
+  <tabstop>mKW_ChangeBtn</tabstop>
   <tabstop>mKW_DstLenText</tabstop>
   <tabstop>mKW_DstText</tabstop>
+  <tabstop>mKEMUseCertManCheck</tabstop>
+  <tabstop>mKEMGroup</tabstop>
+  <tabstop>mKEMCertPathText</tabstop>
+  <tabstop>mKEMCertFindBtn</tabstop>
+  <tabstop>mKEMCertViewBtn</tabstop>
+  <tabstop>mKEMCertDecodeBtn</tabstop>
+  <tabstop>mKEMCertTypeBtn</tabstop>
+  <tabstop>mKEMPriKeyPathText</tabstop>
+  <tabstop>mKEMPriKeyFindBtn</tabstop>
+  <tabstop>mKEMPriKeyViewBtn</tabstop>
+  <tabstop>mKEMPriKeyDecodeBtn</tabstop>
+  <tabstop>mKEMPriKeyTypeBtn</tabstop>
+  <tabstop>mKEMPriKeyEncryptedCheck</tabstop>
+  <tabstop>mKEMPriKeyPasswdText</tabstop>
+  <tabstop>mKEMWrappedKeyClearBtn</tabstop>
+  <tabstop>mKEMWrappedKeyLenText</tabstop>
+  <tabstop>mKEMWrappedKeyText</tabstop>
+  <tabstop>mKEMEncapRadio</tabstop>
+  <tabstop>mKEMDecapRadio</tabstop>
+  <tabstop>mKEMRunBtn</tabstop>
+  <tabstop>mKEMKeyClearBtn</tabstop>
+  <tabstop>mKEMKeyLenText</tabstop>
+  <tabstop>mKEMKeyText</tabstop>
   <tabstop>mClearDataAllBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>

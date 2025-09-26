@@ -138,7 +138,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="mTabCMS">
       <attribute name="title">
@@ -1441,15 +1441,29 @@
   <tabstop>mSrcPathText</tabstop>
   <tabstop>mFindSrcPathBtn</tabstop>
   <tabstop>mUseCertManCheck</tabstop>
+  <tabstop>mXMLTemplateCheck</tabstop>
   <tabstop>mHashCombo</tabstop>
   <tabstop>mTabSigner</tabstop>
   <tabstop>mCMSSrcTypeCombo</tabstop>
   <tabstop>mCMSSrcClearBtn</tabstop>
+  <tabstop>mCMSSrcDecodeBtn</tabstop>
+  <tabstop>mCMSSrcViewBtn</tabstop>
+  <tabstop>mCMSSrcTypeBtn</tabstop>
+  <tabstop>mUseTSPCheck</tabstop>
+  <tabstop>mTSPBtn</tabstop>
   <tabstop>mCMSSrcLenText</tabstop>
   <tabstop>mCMSSrcText</tabstop>
+  <tabstop>mCMSEncodeRadio</tabstop>
+  <tabstop>mCMSDecodeRadio</tabstop>
+  <tabstop>mCMSCmdCombo</tabstop>
+  <tabstop>mCMSAutoDetectCheck</tabstop>
+  <tabstop>mCMSCipherCombo</tabstop>
+  <tabstop>mCMSRunBtn</tabstop>
   <tabstop>mCMSOutputClearBtn</tabstop>
   <tabstop>mCMSOutputDecodeBtn</tabstop>
   <tabstop>mCMSOutputViewBtn</tabstop>
+  <tabstop>mCMSOutputTypeBtn</tabstop>
+  <tabstop>mCMSCmdNameText</tabstop>
   <tabstop>mCMSOutputUpBtn</tabstop>
   <tabstop>mCMSOutputLenText</tabstop>
   <tabstop>mCMSOutputText</tabstop>
@@ -1461,6 +1475,7 @@
   <tabstop>mJSONVerifySignatureBtn</tabstop>
   <tabstop>mJSON_JWSClearBtn</tabstop>
   <tabstop>mJSON_JWSViewBtn</tabstop>
+  <tabstop>mJSON_JWSUpBtn</tabstop>
   <tabstop>mJSON_JWSLenText</tabstop>
   <tabstop>mJSON_JWSText</tabstop>
   <tabstop>mXMLBodyClearBtn</tabstop>

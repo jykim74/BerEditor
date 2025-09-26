@@ -202,6 +202,7 @@
  <tabstops>
   <tabstop>mTypeHex</tabstop>
   <tabstop>mTypeBase64</tabstop>
+  <tabstop>mTypeBase64URL</tabstop>
   <tabstop>mFindBtn</tabstop>
   <tabstop>mDataLenText</tabstop>
   <tabstop>mDataText</tabstop>

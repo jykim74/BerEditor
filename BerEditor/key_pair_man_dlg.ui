@@ -1010,9 +1010,19 @@
   <tabstop>mKeyTypeCombo</tabstop>
   <tabstop>mTabWidget</tabstop>
   <tabstop>mKeyPairTable</tabstop>
+  <tabstop>mLGenKeyPairBtn</tabstop>
+  <tabstop>mLMakeCSRBtn</tabstop>
+  <tabstop>mLDecodePubKeyBtn</tabstop>
+  <tabstop>mLDecodePriKeyBtn</tabstop>
   <tabstop>mLViewPubKeyBtn</tabstop>
+  <tabstop>mLViewPriKeyBtn</tabstop>
+  <tabstop>mExportBtn</tabstop>
+  <tabstop>mImportBtn</tabstop>
   <tabstop>mLRunPubEncBtn</tabstop>
   <tabstop>mLRunPubDecBtn</tabstop>
+  <tabstop>mLRunSignBtn</tabstop>
+  <tabstop>mLRunVerifyBtn</tabstop>
+  <tabstop>mLDeleteBtn</tabstop>
   <tabstop>mSaveDERCheck</tabstop>
   <tabstop>mPriPathText</tabstop>
   <tabstop>mFindPriKeyBtn</tabstop>

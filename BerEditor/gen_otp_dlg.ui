@@ -487,6 +487,8 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>mDateTime</tabstop>
+  <tabstop>mSetNowBtn</tabstop>
   <tabstop>mEpochText</tabstop>
   <tabstop>mHashTypeCombo</tabstop>
   <tabstop>mIntervalSpin</tabstop>
