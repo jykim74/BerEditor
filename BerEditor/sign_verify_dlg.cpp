@@ -55,8 +55,8 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     connect( mFindCertBtn, SIGNAL(clicked()), this, SLOT(findCert()));
     connect( mAlgTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(algChanged(int)));
 
-    connect( mSignRadio, SIGNAL(clicked()), this, SLOT(clickSign()));
-    connect( mVerifyRadio, SIGNAL(clicked()), this, SLOT(clickVerify()));
+    connect( mSignRadio, SIGNAL(clicked()), this, SLOT(checkSign()));
+    connect( mVerifyRadio, SIGNAL(clicked()), this, SLOT(checkVerify()));
 
     connect( mInitBtn, SIGNAL(clicked()), this, SLOT(signVerifyInit()));
     connect( mUpdateBtn, SIGNAL(clicked()), this, SLOT(signVerifyUpdate()));
@@ -127,6 +127,7 @@ void SignVerifyDlg::initUI()
     mHashTypeCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
 
     mVersionCombo->addItems(versionTypes);
+    mOutputText->setPlaceholderText( tr("Hex value" ) );
 
     mPriKeyPath->setPlaceholderText( tr("Select a private key") );
     mCertPath->setPlaceholderText( tr( "Select a certificate" ));
@@ -1138,8 +1139,14 @@ void SignVerifyDlg::outputChanged()
     mOutputLenText->setText( QString("%1").arg(strLen));
 }
 
-void SignVerifyDlg::clickSign()
+void SignVerifyDlg::checkSign()
 {
+    mHeadLabel->setText( tr( "Asymmetric Signature" ) );
+
+    mInitBtn->setText( "Sign Init" );
+    mUpdateBtn->setText( "Sign Update" );
+    mFinalBtn->setText( "Sign Final" );
+
     mRunBtn->setText( tr( "Sign" ));
     mDigestBtn->setText( tr( "SignDigest" ));
 
@@ -1155,8 +1162,14 @@ void SignVerifyDlg::clickSign()
     }
 }
 
-void SignVerifyDlg::clickVerify()
+void SignVerifyDlg::checkVerify()
 {
+    mHeadLabel->setText( tr( "Asymmetric Verification" ) );
+
+    mInitBtn->setText( "Verify Init" );
+    mUpdateBtn->setText( "Verify Update" );
+    mFinalBtn->setText( "Verify Final" );
+
     mRunBtn->setText( tr( "Verify"));
     mDigestBtn->setText( tr( "VerifyDigest" ));
 
@@ -1484,8 +1497,8 @@ void SignVerifyDlg::checkCertGroup()
     if( mCertGroup->isChecked() == true )
     {
         if( mSignRadio->isChecked() == true )
-            clickSign();
+            checkSign();
         else
-            clickVerify();
+            checkVerify();
     }
 }

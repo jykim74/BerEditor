@@ -18,7 +18,7 @@ DataConverterDlg::DataConverterDlg(QWidget *parent) :
     mOutputTypeCombo->addItems( kDataTypeList2 );
 
 
-    connect( mFindFileBtn, SIGNAL(clicked()), this, SLOT(clickFindFile()));
+    connect( mReadFileBtn, SIGNAL(clicked()), this, SLOT(clickReadFile()));
     connect( mWriteBinBtn, SIGNAL(clicked()), this, SLOT(clickWriteBin()));
     connect( mConvertBtn, SIGNAL(clicked()), this, SLOT(onClickConvertBtn()));
     connect( mOutputTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(outTypeChanged(int)));
@@ -74,7 +74,7 @@ static char getch( unsigned char c )
     }
 }
 
-void DataConverterDlg::clickFindFile()
+void DataConverterDlg::clickReadFile()
 {
     QString strPath;
 

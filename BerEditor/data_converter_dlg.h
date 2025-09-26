@@ -25,7 +25,7 @@ public:
     ~DataConverterDlg();
 
 private slots:
-    void clickFindFile();
+    void clickReadFile();
     void clickWriteBin();
 
     void onClickConvertBtn();

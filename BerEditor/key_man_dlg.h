@@ -23,30 +23,42 @@ public:
     ~KeyManDlg();
 
 private slots:
-    void clickMakeKey();
-    void secretChanged();
-    void saltChanged();
-    void infoChanged();
-    void keyValueChanged();
-
-    void clickWrap();
-    void clickUnwrap();
-    void clickClear();
-    void clickChange();
-
-    void checkPBKDF();
-    void checkHKDF();
-    void checkX963();
-    void checkScrypt();
-
-    void clickOutputClear();
-
-    void clickKeyWrapGenKEK();
-
-    void srcChanged();
-    void dstChanged();
-    void kekChanged();
     void clickClearDataAll();
+
+    void clickKD_DeriveKey();
+
+    void changeKD_Secret();
+    void changeKD_Salt();
+    void changeKD_Info();
+    void changeKD_Output();
+
+    void checkKD_PBKDF();
+    void checkKD_HKDF();
+    void checkKD_X963();
+    void checkKD_Scrypt();
+
+    void clickKD_SaltClear();
+    void clickKD_OutputClear();
+
+    void runKW_Wrap();
+    void runKW_Unwrap();
+
+    void checkKW_KeyWrap();
+    void checkKW_KeyUnwrap();
+
+    void clickKW_Run();
+    void clickKW_Change();
+
+    void clickKW_SrcClear();
+    void clickKW_KEKClear();
+    void clickKW_DstClear();
+
+    void clickKW_GenKEK();
+
+    void chageKW_Src();
+    void chageKW_Dst();
+    void changeKW_KEK();
+
 
     void clickKEMClearAll();
     void runKEMEncap();
@@ -58,11 +70,9 @@ private slots:
 
     void changeKEMKey();
     void changeKEMWrappedKey();
-    void changeKEMDecKey();
 
     void clickKEMWrappedKeyClear();
     void clickKEMKeyClear();
-    void clickKEMDecKeyClear();
 
     void clickKEMPriKeyFind();
     void clickKEMPriKeyView();
@@ -86,7 +96,6 @@ private:
 
     void setKEMEnableWrappedKey( bool bVal );
     void setKEMEnableKey( bool bVal );
-    void setKEMEnableDecKey( bool bVal );
     void setKEMEnableCert( bool bVal );
     void setKEMEnablePriKey( bool bVal );
 };

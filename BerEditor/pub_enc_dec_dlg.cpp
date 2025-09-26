@@ -52,8 +52,8 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
     connect( mInputText, SIGNAL(textChanged()), this, SLOT(inputChanged()));
     connect( mOutputText, SIGNAL(textChanged()), this, SLOT(outputChanged()));
 
-    connect( mEncryptRadio, SIGNAL(clicked()), this, SLOT(clickEncrypt()));
-    connect( mDecryptRadio, SIGNAL(clicked()), this, SLOT(clickDecrypt()));
+    connect( mEncryptRadio, SIGNAL(clicked()), this, SLOT(checkEncrypt()));
+    connect( mDecryptRadio, SIGNAL(clicked()), this, SLOT(checkDecrypt()));
 
     connect( mInputTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(inputChanged()));
 
@@ -817,8 +817,12 @@ void PubEncDecDlg::changeTag( const QString& text )
     mTagLenText->setText( QString( "%1" ).arg(strLen) );
 }
 
-void PubEncDecDlg::clickEncrypt()
+void PubEncDecDlg::checkEncrypt()
 {
+    mHeadLabel->setText( tr( "Public key encryption" ) );
+    mInputLabel->setText( tr( "Source data" ) );
+    mOutputLabel->setText( tr( "Encrypted data" ) );
+
     mRunBtn->setText( tr("Encrypt" ));
 
     if( mCertGroup->isChecked() )
@@ -833,8 +837,12 @@ void PubEncDecDlg::clickEncrypt()
     }
 }
 
-void PubEncDecDlg::clickDecrypt()
+void PubEncDecDlg::checkDecrypt()
 {
+    mHeadLabel->setText( tr( "Private key decryption" ) );
+    mInputLabel->setText( tr( "Encrypted data" ) );
+    mOutputLabel->setText( tr( "Decrypted data" ) );
+
     mRunBtn->setText( tr("Decrypt" ) );
 
     if( mCertGroup->isChecked() == true )
@@ -864,8 +872,8 @@ void PubEncDecDlg::checkCertGroup()
     if( mCertGroup->isChecked() == true )
     {
         if( mEncryptRadio->isChecked() == true )
-            clickEncrypt();
+            checkEncrypt();
         else
-            clickDecrypt();
+            checkDecrypt();
     }
 }

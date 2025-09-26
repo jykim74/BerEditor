@@ -88,9 +88,9 @@
       </spacer>
      </item>
      <item row="0" column="7">
-      <widget class="QPushButton" name="mFindFileBtn">
+      <widget class="QPushButton" name="mReadFileBtn">
        <property name="text">
-        <string>Find File</string>
+        <string>Read File</string>
        </property>
       </widget>
      </item>
@@ -507,7 +507,7 @@
   <tabstop>mInputTypeHexCheck</tabstop>
   <tabstop>mInputTypeBase64Check</tabstop>
   <tabstop>mInputTypeURLCheck</tabstop>
-  <tabstop>mFindFileBtn</tabstop>
+  <tabstop>mReadFileBtn</tabstop>
   <tabstop>mInputLenText</tabstop>
   <tabstop>mInputText</tabstop>
   <tabstop>mInputClearBtn</tabstop>

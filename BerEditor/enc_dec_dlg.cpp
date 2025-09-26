@@ -53,8 +53,8 @@ EncDecDlg::EncDecDlg(QWidget *parent) :
     connect( mRunBtn, SIGNAL(clicked()), this, SLOT(Run()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
-    connect( mEncryptRadio, SIGNAL(clicked()), this, SLOT(clickEncrypt()));
-    connect( mDecryptRadio, SIGNAL(clicked()), this, SLOT(clickDecrypt()));
+    connect( mEncryptRadio, SIGNAL(clicked()), this, SLOT(checkEncrypt()));
+    connect( mDecryptRadio, SIGNAL(clicked()), this, SLOT(checkDecrypt()));
 
     connect( mInputText, SIGNAL(textChanged()), this, SLOT(inputChanged()));
     connect( mOutputText, SIGNAL(textChanged()), this, SLOT(outputChanged()));
@@ -1279,14 +1279,32 @@ void EncDecDlg::clickFindDstFile()
     if( fileName.length() > 0 ) mDstFileText->setText( fileName );
 }
 
-void EncDecDlg::clickEncrypt()
+void EncDecDlg::checkEncrypt()
 {
+    mHeadLabel->setText( tr( "Symmetric Encryption" ));
+
+    mInputLabel->setText( tr("Source data") );
+    mOutputLabel->setText( tr("Encrypted data" ) );
+
+    mInitBtn->setText( "Encrypt Init" );
+    mUpdateBtn->setText( "Encrypt Update" );
+    mFinalBtn->setText( "Encrypt Final" );
+
     mRunBtn->setText( tr("Encrypt" ) );
     mAEADLabel->setText( tr( "Authenticated Encryption" ));
 }
 
-void EncDecDlg::clickDecrypt()
+void EncDecDlg::checkDecrypt()
 {
+    mHeadLabel->setText( tr( "Symmetric Decryption" ));
+
+    mInputLabel->setText( tr("Encrypted data") );
+    mOutputLabel->setText( tr("Decrypted data" ) );
+
+    mInitBtn->setText( "Decrypt Init" );
+    mUpdateBtn->setText( "Decrypt Update" );
+    mFinalBtn->setText( "Decrypt Final" );
+
     mRunBtn->setText( tr("Decrypt" ));
     mAEADLabel->setText( tr( "Authenticated Decryption" ));
 }

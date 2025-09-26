@@ -55,15 +55,15 @@ private slots:
     void checkUseTSP();
     void clickTSP();
 
-    void changeCMSData();
+    void changeCMSSrc();
     void changeCMSOutput();
 
     void clickCMSOutputUp();
 
-    void clickCMSClear();
-    void clickCMSDataView();
-    void clickCMSDataType();
-    void clickCMSDataDecode();
+    void clickCMSSrcClear();
+    void clickCMSSrcView();
+    void clickCMSSrcType();
+    void clickCMSSrcDecode();
 
     void clickCMSOutputType();
     void clickCMSOutputClear();

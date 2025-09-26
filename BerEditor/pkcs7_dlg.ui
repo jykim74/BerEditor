@@ -34,7 +34,7 @@
       </widget>
      </item>
      <item row="0" column="0">
-      <widget class="QLabel" name="label_9">
+      <widget class="QLabel" name="mHeadLabel">
        <property name="text">
         <string>PKCS7 Message Encode Decode</string>
        </property>
@@ -149,7 +149,7 @@
       </spacer>
      </item>
      <item row="0" column="0">
-      <widget class="QLabel" name="label_5">
+      <widget class="QLabel" name="mSrcLabel">
        <property name="minimumSize">
         <size>
          <width>100</width>
@@ -733,7 +733,7 @@
       <number>0</number>
      </property>
      <item row="0" column="11">
-      <widget class="QLineEdit" name="mCMSLenText">
+      <widget class="QLineEdit" name="mOutputLenText">
        <property name="minimumSize">
         <size>
          <width>40</width>
@@ -789,7 +789,7 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QPushButton" name="mCMSClearBtn">
+      <widget class="QPushButton" name="mOutputClearBtn">
        <property name="maximumSize">
         <size>
          <width>20</width>
@@ -802,7 +802,7 @@
       </widget>
      </item>
      <item row="0" column="5">
-      <widget class="QLineEdit" name="mCMSTypeText">
+      <widget class="QLineEdit" name="mOutputCmdText">
        <property name="palette">
         <palette>
          <active>
@@ -849,7 +849,7 @@
       </spacer>
      </item>
      <item row="0" column="2">
-      <widget class="QPushButton" name="mCMSDecodeBtn">
+      <widget class="QPushButton" name="mOutputDecodeBtn">
        <property name="maximumSize">
         <size>
          <width>20</width>
@@ -862,7 +862,7 @@
       </widget>
      </item>
      <item row="0" column="3">
-      <widget class="QPushButton" name="mPKCS7ViewBtn">
+      <widget class="QPushButton" name="mOutputViewBtn">
        <property name="minimumSize">
         <size>
          <width>20</width>
@@ -888,7 +888,7 @@
       </widget>
      </item>
      <item row="0" column="8">
-      <widget class="QPushButton" name="mCMSUpBtn">
+      <widget class="QPushButton" name="mOutputUpBtn">
        <property name="maximumSize">
         <size>
          <width>34</width>
@@ -901,7 +901,7 @@
       </widget>
      </item>
      <item row="0" column="0">
-      <widget class="QLabel" name="label_7">
+      <widget class="QLabel" name="mOutputLabel">
        <property name="minimumSize">
         <size>
          <width>100</width>
@@ -914,7 +914,7 @@
       </widget>
      </item>
      <item row="0" column="4">
-      <widget class="QPushButton" name="mPKCS7TypeBtn">
+      <widget class="QPushButton" name="mOutputTypeBtn">
        <property name="minimumSize">
         <size>
          <width>20</width>
@@ -935,7 +935,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QPlainTextEdit" name="mCMSText">
+    <widget class="QPlainTextEdit" name="mOutputText">
      <property name="palette">
       <palette>
        <active>
@@ -1029,11 +1029,11 @@
   <tabstop>mKMCertTypeBtn</tabstop>
   <tabstop>mKMEncPriKeyCheck</tabstop>
   <tabstop>mKMPasswdText</tabstop>
-  <tabstop>mCMSClearBtn</tabstop>
-  <tabstop>mCMSDecodeBtn</tabstop>
-  <tabstop>mCMSTypeText</tabstop>
-  <tabstop>mCMSLenText</tabstop>
-  <tabstop>mCMSText</tabstop>
+  <tabstop>mOutputClearBtn</tabstop>
+  <tabstop>mOutputDecodeBtn</tabstop>
+  <tabstop>mOutputCmdText</tabstop>
+  <tabstop>mOutputLenText</tabstop>
+  <tabstop>mOutputText</tabstop>
   <tabstop>mClearDataAllBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>

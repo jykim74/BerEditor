@@ -1309,11 +1309,26 @@ int CertManDlg::writePriKeyCert( const BIN *pEncPriKey, const BIN *pCert )
     strPriPath = QString("%1/%2").arg( strPath ).arg( kPriKeyFile );
     strCertPath = QString("%1/%2").arg( strPath ).arg( kCertFile );
 
-    JS_BIN_writePEM( pCert, JS_PEM_TYPE_CERTIFICATE, strCertPath.toLocal8Bit().toStdString().c_str() );
-    JS_BIN_writePEM( pEncPriKey, JS_PEM_TYPE_ENCRYPTED_PRIVATE_KEY, strPriPath.toLocal8Bit().toStdString().c_str() );
+    ret = JS_BIN_writePEM( pCert, JS_PEM_TYPE_CERTIFICATE, strCertPath.toLocal8Bit().toStdString().c_str() );
+    if( ret <= 0 )
+    {
+        berApplet->elog( QString( "fail to write certificate:%1" ).arg( strCertPath) );
+        dir.rmdir( strPath );
+        ret = JSR_FILE_WRITE_FAIL;
+        goto end;
+    }
+
+    ret = JS_BIN_writePEM( pEncPriKey, JS_PEM_TYPE_ENCRYPTED_PRIVATE_KEY, strPriPath.toLocal8Bit().toStdString().c_str() );
+    if( ret <= 0 )
+    {
+        berApplet->elog( QString( "fail to write encrypted private key:%1" ).arg( strPriPath) );
+        dir.rmpath( strPath );
+        ret = JSR_FILE_WRITE_FAIL;
+        goto end;
+    }
 
 
-    ret = 0;
+    ret = JSR_OK;
 
 end :
     JS_PKI_resetCertInfo( &sCertInfo );
@@ -1322,6 +1337,7 @@ end :
 
 int CertManDlg::changePriKey( const BIN *pNewEncPriKey )
 {
+    int ret = -1;
     QDir dir;
     QString strPath = getSeletedPath();
 
@@ -1332,9 +1348,15 @@ int CertManDlg::changePriKey( const BIN *pNewEncPriKey )
     strPath += kPriKeyFile;
 
     dir.remove( strPath );
-    JS_BIN_fileWrite( pNewEncPriKey, strPath.toLocal8Bit().toStdString().c_str() );
+    ret = JS_BIN_fileWrite( pNewEncPriKey, strPath.toLocal8Bit().toStdString().c_str() );
+    if( ret <= 0 )
+    {
+        berApplet->elog( QString( "fail to write encrypted private key:%1" ).arg( strPath) );
+        return JSR_FILE_WRITE_FAIL;
+    }
 
-    return 0;
+    ret = JSR_OK;
+    return ret;
 }
 
 const QString CertManDlg::getSeletedPath()
@@ -3267,7 +3289,13 @@ void CertManDlg::clickTLEncryptPFX()
 
     strPFXPath = QString( "%1/%2_p12.pfx" ).arg( certInfo.path() ).arg( certInfo.baseName() );
 
-    JS_BIN_fileWrite( &binPFX, strPFXPath.toLocal8Bit().toStdString().c_str() );
+    ret = JS_BIN_fileWrite( &binPFX, strPFXPath.toLocal8Bit().toStdString().c_str() );
+    if( ret <= 0 )
+    {
+        berApplet->warningBox( tr( "fail to write pfx: %1" ).arg(ret ), this );
+        goto end;
+    }
+
     berApplet->messageLog( tr( "PFX encrypt successfully(%1)" ).arg( strPFXPath ), this );
     mTLPFXPathText->setText( strPFXPath );
 
@@ -3337,16 +3365,31 @@ void CertManDlg::clickTLDecryptPFX()
         }
 
         strPriKeyPath = QString( "%1/%2_prikey.key" ).arg( pfxInfo.path() ).arg( pfxInfo.baseName() );
-        JS_BIN_fileWrite( &binEncPri, strPriKeyPath.toLocal8Bit().toStdString().c_str() );
+        ret = JS_BIN_fileWrite( &binEncPri, strPriKeyPath.toLocal8Bit().toStdString().c_str() );
+        if( ret <= 0 )
+        {
+            berApplet->warningBox( tr( "fail to write encrypted private key: %1").arg(ret), this );
+            goto end;
+        }
     }
     else
     {
         strPriKeyPath = QString( "%1/%2_prikey.der" ).arg( pfxInfo.path() ).arg( pfxInfo.baseName() );
-        JS_BIN_fileWrite( &binPri, strPriKeyPath.toLocal8Bit().toStdString().c_str() );
+        ret = JS_BIN_fileWrite( &binPri, strPriKeyPath.toLocal8Bit().toStdString().c_str() );
+        if( ret <= 0 )
+        {
+            berApplet->warningBox( tr( "fail to write private key: %1").arg(ret), this );
+            goto end;
+        }
     }
 
     strCertPath = QString( "%1/%2_cert.der" ).arg( pfxInfo.path() ).arg( pfxInfo.baseName() );
-    JS_BIN_fileWrite( &binCert, strCertPath.toLocal8Bit().toStdString().c_str() );
+    ret = JS_BIN_fileWrite( &binCert, strCertPath.toLocal8Bit().toStdString().c_str() );
+    if( ret <= 0 )
+    {
+        berApplet->warningBox( tr( "fail to write certificate: %1").arg(ret), this );
+        goto end;
+    }
 
 
     mTLPriKeyPathText->setText( strPriKeyPath );

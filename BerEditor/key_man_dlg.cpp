@@ -20,6 +20,8 @@
 #include "js_pki_tools.h"
 #include "cert_info_dlg.h"
 
+static const QStringList kKW_Methods = { "KW", "KWP" };
+
 KeyManDlg::KeyManDlg(QWidget *parent) :
     QDialog(parent)
 {
@@ -28,48 +30,50 @@ KeyManDlg::KeyManDlg(QWidget *parent) :
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
-    connect( mPBKDF2Radio, SIGNAL(clicked()), this, SLOT(checkPBKDF()));
-    connect( mHKDFRadio, SIGNAL(clicked()), this, SLOT(checkHKDF()));
-    connect( mANSX963Radio, SIGNAL(clicked()), this, SLOT(checkX963()));
-    connect( mScryptRadio, SIGNAL(clicked()), this, SLOT(checkScrypt()));
+    connect( mKD_PBKDF2Radio, SIGNAL(clicked()), this, SLOT(checkKD_PBKDF()));
+    connect( mKD_HKDFRadio, SIGNAL(clicked()), this, SLOT(checkKD_HKDF()));
+    connect( mKD_ANSX963Radio, SIGNAL(clicked()), this, SLOT(checkKD_X963()));
+    connect( mKD_ScryptRadio, SIGNAL(clicked()), this, SLOT(checkKD_Scrypt()));
 
-    connect( mMakeKeyBtn, SIGNAL(clicked()), this, SLOT(clickMakeKey()));
-    connect( mOutputText, SIGNAL(textChanged()), this, SLOT(keyValueChanged()));
+    connect( mKD_DeriveKeyBtn, SIGNAL(clicked()), this, SLOT(clickKD_DeriveKey()));
+    connect( mKD_OutputText, SIGNAL(textChanged()), this, SLOT(changeKD_Output()));
 
-    connect( mSecretText, SIGNAL(textChanged(const QString&)), this, SLOT(secretChanged()));
-    connect( mSecretTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(secretChanged()));
-    connect( mInfoText, SIGNAL(textChanged(QString)), this, SLOT(infoChanged()));
-    connect( mInfoTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(infoChanged()));
-    connect( mSaltText, SIGNAL(textChanged()), this, SLOT(saltChanged()));
-    connect( mSaltTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(saltChanged()));
+    connect( mKD_SecretText, SIGNAL(textChanged(const QString&)), this, SLOT(changeKD_Secret()));
+    connect( mKD_SecretTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeKD_Secret()));
+    connect( mKD_InfoText, SIGNAL(textChanged(QString)), this, SLOT(changeKD_Info()));
+    connect( mKD_InfoTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeKD_Info()));
+    connect( mKD_SaltText, SIGNAL(textChanged()), this, SLOT(changeKD_Salt()));
+    connect( mKD_SaltTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeKD_Salt()));
 
-    connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickOutputClear()));
+    connect( mKD_SaltClearBtn, SIGNAL(clicked()), this, SLOT(clickKD_SaltClear()));
+    connect( mKD_OutputClearBtn, SIGNAL(clicked()), this, SLOT(clickKD_OutputClear()));
 
-    connect( mWrapBtn, SIGNAL(clicked()), this, SLOT(clickWrap()));
-    connect( mUnwrapBtn, SIGNAL(clicked()), this, SLOT(clickUnwrap()));
-    connect( mClearBtn, SIGNAL(clicked()), this, SLOT(clickClear()));
-    connect( mChangeBtn, SIGNAL(clicked()), this, SLOT(clickChange()));
+    connect( mKW_KeyWrapRadio, SIGNAL(clicked()), this, SLOT(checkKW_KeyWrap()));
+    connect( mKW_KeyUnwrapRadio, SIGNAL(clicked()), this, SLOT(checkKW_KeyUnwrap()));
+    connect( mKW_RunBtn, SIGNAL(clicked()), this, SLOT(clickKW_Run()));
+    connect( mKW_SrcClearBtn, SIGNAL(clicked()), this, SLOT(clickKW_SrcClear()));
+    connect( mKW_KEKClearBtn, SIGNAL(clicked()), this, SLOT(clickKW_KEKClear()));
+    connect( mKW_DstClearBtn, SIGNAL(clicked()), this, SLOT(clickKW_DstClear()));
+    connect( mKW_ChangeBtn, SIGNAL(clicked()), this, SLOT(clickKW_Change()));
 
-    connect( mSrcTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(srcChanged()));
-    connect( mSrcText, SIGNAL(textChanged()), this, SLOT(srcChanged()));
-    connect( mDstText, SIGNAL(textChanged()), this, SLOT(dstChanged()));
-    connect( mKEKTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(kekChanged()));
-    connect( mKEKText, SIGNAL(textChanged(const QString&)), this, SLOT(kekChanged()));
+    connect( mKW_SrcTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(chageKW_Src()));
+    connect( mKW_SrcText, SIGNAL(textChanged()), this, SLOT(chageKW_Src()));
+    connect( mKW_DstText, SIGNAL(textChanged()), this, SLOT(chageKW_Dst()));
+    connect( mKW_KEKTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeKW_KEK()));
+    connect( mKW_KEKText, SIGNAL(textChanged(const QString&)), this, SLOT(changeKW_KEK()));
 
-    connect( mGenKEKBtn, SIGNAL(clicked()), this, SLOT(clickKeyWrapGenKEK()));
+    connect( mKW_GenKEKBtn, SIGNAL(clicked()), this, SLOT(clickKW_GenKEK()));
 
     connect( mKEMEncapRadio, SIGNAL(clicked()), this, SLOT(checkKEMEncap()));
     connect( mKEMDecapRadio, SIGNAL(clicked()), this, SLOT(checkKEMDecap()));
     connect( mKEMRunBtn, SIGNAL(clicked()), this, SLOT(clickKEMRun()));
 
-    connect( mKEMKeyText, SIGNAL(textChanged(QString)), this, SLOT(changeKEMKey()));
+    connect( mKEMKeyText, SIGNAL(textChanged()), this, SLOT(changeKEMKey()));
     connect( mKEMWrappedKeyText, SIGNAL(textChanged()), this, SLOT(changeKEMWrappedKey()));
-    connect( mKEMDecKeyText, SIGNAL(textChanged(QString)), this, SLOT(changeKEMDecKey()));
     connect( mKEMPriKeyEncryptedCheck, SIGNAL(clicked()), this, SLOT(checkKEMPriKeyEncrypted()));
 
     connect( mKEMWrappedKeyClearBtn, SIGNAL(clicked()), this, SLOT(clickKEMWrappedKeyClear()));
     connect( mKEMKeyClearBtn, SIGNAL(clicked()), this, SLOT(clickKEMKeyClear()));
-    connect( mKEMDecKeyClearBtn, SIGNAL(clicked()), this, SLOT(clickKEMDecKeyClear()));
 
     connect( mKEMPriKeyFindBtn, SIGNAL(clicked()), this, SLOT(clickKEMPriKeyFind()));
     connect( mKEMPriKeyViewBtn, SIGNAL(clicked()), this, SLOT(clickKEMPriKeyView()));
@@ -84,7 +88,7 @@ KeyManDlg::KeyManDlg(QWidget *parent) :
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT( clickClearDataAll()));
 
     initialize();
-    mMakeKeyBtn->setDefault(true);
+    mKD_DeriveKeyBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -121,25 +125,31 @@ KeyManDlg::~KeyManDlg()
 
 void KeyManDlg::initUI()
 {
-    mSecretTypeCombo->addItems( kDataTypeList );
-    mInfoTypeCombo->addItems( kDataTypeList );
-    mSaltTypeCombo->addItems( kDataTypeList );
+    mKD_SecretTypeCombo->addItems( kDataTypeList );
+    mKD_InfoTypeCombo->addItems( kDataTypeList );
+    mKD_SaltTypeCombo->addItems( kDataTypeList );
 
-    mKeyLenText->setText( "32" );
-    mIterCntText->setText( "1024" );
-    mRText->setText( "8" );
-    mPText->setText( "16" );
+    mKW_MethodCombo->addItems( kKW_Methods );
+    mKW_SrcTypeCombo->addItems( kDataTypeList );
+    mKW_KEKTypeCombo->addItems( kDataTypeList );
 
-    mSrcText->setPlaceholderText( tr("Select KeyList key" ));
-    mKEKText->setPlaceholderText( tr("Select KeyList key") );
-    mSecretText->setPlaceholderText( tr( "Enter a password" ));
+    mKD_KeyLenText->setText( "32" );
+    mKD_IterCntText->setText( "1024" );
+    mKD_NText->setText( "1024" );
+    mKD_RText->setText( "8" );
+    mKD_PText->setText( "16" );
+
+    mKW_SrcText->setPlaceholderText( tr("Source key hex value" ));
+    mKW_KEKText->setPlaceholderText( tr("Select KeyList key") );
+    mKW_DstText->setPlaceholderText( tr( "Hex value" ) );
+    mKD_SecretText->setPlaceholderText( tr( "Enter a password" ));
+    mKD_OutputText->setPlaceholderText( tr( "Hex value" ));
 
     mKEMPriKeyPathText->setPlaceholderText( tr("Select a private key" ));
     mKEMCertPathText->setPlaceholderText( tr("Select a certificate or public key") );
 
     mKEMWrappedKeyText->setPlaceholderText( tr("Hex value" ));
     mKEMKeyText->setPlaceholderText( tr( "Hex value" ));
-    mKEMDecKeyText->setPlaceholderText( tr( "Hex value" ));
 
     checkKEMPriKeyEncrypted();
 }
@@ -148,22 +158,12 @@ void KeyManDlg::initialize()
 {
     SettingsMgr *setMgr = berApplet->settingsMgr();
 
-    mHashCombo->addItems( kHashList );
-    mHashCombo->setCurrentText( setMgr->defaultHash() );
+    mKD_HashCombo->addItems( kHashList );
+    mKD_HashCombo->setCurrentText( setMgr->defaultHash() );
 
-
-
-    mSrcTypeCombo->addItems( kDataTypeList );
-    mSrcTypeCombo->setCurrentIndex(1);
-
-    mKEKTypeCombo->addItems( kDataTypeList );
-    mKEKTypeCombo->setCurrentIndex(1);
-
-    mDstTypeCombo->addItems( kDataTypeList );
-    mDstTypeCombo->setCurrentIndex(1);
-
-    mPBKDF2Radio->click();
+    mKD_PBKDF2Radio->click();
     mKEMEncapRadio->click();
+
     tabWidget->setCurrentIndex(0);
 }
 
@@ -236,7 +236,7 @@ int KeyManDlg::getKEMPrivateKey( BIN *pPriKey )
     }
     else
     {
-        if( mUseCertManCheck->isChecked() == true )
+        if( mKEMUseCertManCheck->isChecked() == true )
         {
             CertManDlg certMan;
             QString strPriHex;
@@ -300,7 +300,7 @@ int KeyManDlg::getKEMPublicKey( BIN *pPubKey )
     }
     else
     {
-        if( mUseCertManCheck->isChecked() == true )
+        if( mKEMUseCertManCheck->isChecked() == true )
         {
             CertManDlg certMan;
             QString strCertHex;
@@ -346,7 +346,7 @@ end :
 }
 
 
-void KeyManDlg::clickMakeKey()
+void KeyManDlg::clickKD_DeriveKey()
 {
     int ret = 0;
     BIN binSecret = {0,0};
@@ -355,10 +355,11 @@ void KeyManDlg::clickMakeKey()
     BIN binKey = { 0, 0 };
     int nIter = 0;
     int nKeySize = 0;
+    int nN = 0;
     int nR = 0;
     int nP = 0;
 
-    QString strSecret = mSecretText->text();
+    QString strSecret = mKD_SecretText->text();
 
     if( strSecret.length() <= 0 )
     {
@@ -366,25 +367,27 @@ void KeyManDlg::clickMakeKey()
         return;
     }
 
-    QString strHash = mHashCombo->currentText();
-    nIter = mIterCntText->text().toInt();
-    nKeySize = mKeyLenText->text().toInt();
-    nR = mRText->text().toInt();
-    nP = mPText->text().toInt();
+    QString strHash = mKD_HashCombo->currentText();
+    nIter = mKD_IterCntText->text().toInt();
+    nKeySize = mKD_KeyLenText->text().toInt();
 
-    getBINFromString( &binSecret, mSecretTypeCombo->currentText(), strSecret );
+    nN = mKD_NText->text().toInt();
+    nR = mKD_RText->text().toInt();
+    nP = mKD_PText->text().toInt();
 
-    QString strSalt = mSaltText->toPlainText();
-    getBINFromString( &binSalt, mSaltTypeCombo->currentText(), strSalt );
+    getBINFromString( &binSecret, mKD_SecretTypeCombo->currentText(), strSecret );
 
-    QString strInfo = mInfoText->text();
-    getBINFromString( &binInfo, mInfoTypeCombo->currentText(), strInfo );
+    QString strSalt = mKD_SaltText->toPlainText();
+    getBINFromString( &binSalt, mKD_SaltTypeCombo->currentText(), strSalt );
+
+    QString strInfo = mKD_InfoText->text();
+    getBINFromString( &binInfo, mKD_InfoTypeCombo->currentText(), strInfo );
 
     berApplet->logLine();
 
-    mOutputText->clear();
+    mKD_OutputText->clear();
 
-    if( mPBKDF2Radio->isChecked() )
+    if( mKD_PBKDF2Radio->isChecked() )
     {
         ret = JS_PKI_PBKDF2( strSecret.toStdString().c_str(), &binSalt, nIter, strHash.toStdString().c_str(), nKeySize, &binKey );
         berApplet->log( QString( "-- PBKDF2" ));
@@ -392,7 +395,7 @@ void KeyManDlg::clickMakeKey()
         berApplet->log( QString( "Iter Cnt : %1" ).arg( nIter ));
         berApplet->log( QString( "Salt     : %1" ).arg(getHexString(&binSalt)));
     }
-    else if( mHKDFRadio->isChecked() )
+    else if( mKD_HKDFRadio->isChecked() )
     {
         ret = JS_PKI_KDF_HKDF( &binSecret, &binSalt, &binInfo, strHash.toStdString().c_str(), nKeySize, &binKey );
         berApplet->log( QString( "-- HKDF" ));
@@ -400,16 +403,16 @@ void KeyManDlg::clickMakeKey()
         berApplet->log( QString( "Salt     : %1" ).arg(getHexString(&binSalt)));
         berApplet->log( QString( "Info     : %1" ).arg(getHexString(&binInfo)));
     }
-    else if( mANSX963Radio->isChecked() )
+    else if( mKD_ANSX963Radio->isChecked() )
     {
         ret = JS_PKI_KDF_X963( &binSecret, &binInfo, strHash.toStdString().c_str(), nKeySize, &binKey );
         berApplet->log( QString( "-- ANS X963" ));
         berApplet->logLine2();
         berApplet->log( QString( "Info     : %1" ).arg(getHexString(&binInfo)));
     }
-    else if( mScryptRadio->isChecked() )
+    else if( mKD_ScryptRadio->isChecked() )
     {
-        ret = JS_PKI_Scrypt( strSecret.toStdString().c_str(), &binSalt, nIter, nP, nR, nKeySize, &binKey );
+        ret = JS_PKI_Scrypt( strSecret.toStdString().c_str(), &binSalt, nN, nP, nR, nKeySize, &binKey );
         berApplet->log( QString( "-- Scrypt" ));
         berApplet->logLine2();
         berApplet->log( QString( "N        : %1" ).arg( nIter ));
@@ -422,7 +425,7 @@ void KeyManDlg::clickMakeKey()
     {
         char *pHex = NULL;
         JS_BIN_encodeHex( &binKey, &pHex );
-        mOutputText->setPlainText( pHex );
+        mKD_OutputText->setPlainText( pHex );
         if( pHex ) JS_free( pHex );
 
         berApplet->log( QString( "Secret   : %1").arg( getHexString( &binSecret) ));
@@ -432,7 +435,7 @@ void KeyManDlg::clickMakeKey()
     }
     else
     {
-        berApplet->warnLog( tr( "fail to make key: %1").arg(ret), this );
+        berApplet->warnLog( tr( "fail to make key: %1").arg(JERR(ret)), this );
     }
 
     JS_BIN_reset( &binSecret );
@@ -443,35 +446,35 @@ void KeyManDlg::clickMakeKey()
     update();
 }
 
-void KeyManDlg::secretChanged()
+void KeyManDlg::changeKD_Secret()
 {
-    QString strSecret = mSecretText->text();
-    QString strLen = getDataLenString( mSecretTypeCombo->currentText(), strSecret );
-    mSecretLenText->setText(QString("%1").arg(strLen));
+    QString strSecret = mKD_SecretText->text();
+    QString strLen = getDataLenString( mKD_SecretTypeCombo->currentText(), strSecret );
+    mKD_SecretLenText->setText(QString("%1").arg(strLen));
 }
 
-void KeyManDlg::saltChanged()
+void KeyManDlg::changeKD_Salt()
 {
-    QString strSalt = mSaltText->toPlainText();
-    QString strLen = getDataLenString( mSaltTypeCombo->currentText(), strSalt );
-    mSaltLenText->setText( QString("%1").arg(strLen));
+    QString strSalt = mKD_SaltText->toPlainText();
+    QString strLen = getDataLenString( mKD_SaltTypeCombo->currentText(), strSalt );
+    mKD_SaltLenText->setText( QString("%1").arg(strLen));
 }
 
-void KeyManDlg::infoChanged()
+void KeyManDlg::changeKD_Info()
 {
-    QString strInfo = mInfoText->text();
-    QString strLen = getDataLenString( mInfoTypeCombo->currentText(), strInfo );
-    mInfoLenText->setText( QString("%1").arg(strLen));
+    QString strInfo = mKD_InfoText->text();
+    QString strLen = getDataLenString( mKD_InfoTypeCombo->currentText(), strInfo );
+    mKD_InfoLenText->setText( QString("%1").arg(strLen));
 }
 
-void KeyManDlg::keyValueChanged()
+void KeyManDlg::changeKD_Output()
 {
-    QString strLen = getDataLenString( DATA_HEX, mOutputText->toPlainText() );
-    mOutputLenText->setText( QString("%1").arg(strLen));
+    QString strLen = getDataLenString( DATA_HEX, mKD_OutputText->toPlainText() );
+    mKD_OutputLenText->setText( QString("%1").arg(strLen));
 }
 
 
-void KeyManDlg::clickWrap()
+void KeyManDlg::runKW_Wrap()
 {
     int ret = 0;
     BIN binInput = {0,0};
@@ -479,8 +482,8 @@ void KeyManDlg::clickWrap()
     BIN binOutput = {0,0};
     int nPad = 0;
 
-    QString strInput = mSrcText->toPlainText();
-    QString strWrappingKey = mKEKText->text();
+    QString strInput = mKW_SrcText->toPlainText();
+    QString strWrappingKey = mKW_KEKText->text();
     QString strOutput;
 
     if( strInput.length() < 1 )
@@ -495,16 +498,16 @@ void KeyManDlg::clickWrap()
 
             if( strKey.length() > 0 )
             {
-                mSrcTypeCombo->setCurrentText( "Hex" );
+                mKW_SrcTypeCombo->setCurrentText( "Hex" );
                 strInput = strKey;
-                mSrcText->setPlainText( strInput );
+                mKW_SrcText->setPlainText( strInput );
             }
         }
 
         if( strInput.length() < 1 )
         {
             berApplet->warningBox( "Enter input data", this );
-            mSrcText->setFocus();
+            mKW_SrcText->setFocus();
             goto end;
         }
     }
@@ -514,7 +517,7 @@ void KeyManDlg::clickWrap()
         KeyListDlg keyList;
         keyList.setTitle( tr( "Select symmetric key for KEK" ));
         keyList.setManage(false);
-        keyList.mKeyTypeCombo->setCurrentText( "AES" );
+        keyList.mKeyTypeCombo->setCurrentText( JS_PKI_KEY_NAME_AES );
 
         if( keyList.exec() == QDialog::Accepted )
         {
@@ -522,51 +525,51 @@ void KeyManDlg::clickWrap()
 
             if( strKey.length() > 0 )
             {
-                mKEKTypeCombo->setCurrentText( "Hex" );
+                mKW_KEKTypeCombo->setCurrentText( "Hex" );
                 strWrappingKey = strKey;
-                mKEKText->setText( strWrappingKey );
+                mKW_KEKText->setText( strWrappingKey );
             }
         }
 
         if( strWrappingKey.length() < 1 )
         {
             berApplet->warningBox( "Enter KEK", this );
-            mKEKText->setFocus();
+            mKW_KEKText->setFocus();
             goto end;
         }
     }
 
-    if( mKWPRadio->isChecked() )
+    if( mKW_MethodCombo->currentText() == "KWP" )
         nPad = 1;
     else
         nPad = 0;
 
-    getBINFromString( &binInput, mSrcTypeCombo->currentText(), strInput );
+    getBINFromString( &binInput, mKW_SrcTypeCombo->currentText(), strInput );
     if( nPad == 0 )
     {
         if( binInput.nLen < 16 )
         {
             berApplet->warningBox( tr("Must be 16 bytes or more in KW mode"), this );
-            mInfoText->setFocus();
+            mKW_SrcText->setFocus();
             goto end;
         }
     }
 
-    getBINFromString( &binWrappingKey, mKEKTypeCombo->currentText(), strWrappingKey );
+    getBINFromString( &binWrappingKey, mKW_KEKTypeCombo->currentText(), strWrappingKey );
 
     berApplet->logLine();
-    berApplet->log( QString( "-- Wrap Key (%1)" ).arg( mKWRadio->isChecked() ? "KW" : "KWP" ) );
+    berApplet->log( QString( "-- Wrap Key (%1)" ).arg( mKW_MethodCombo->currentText() ));
 
     ret = JS_PKI_WrapKey( nPad, &binWrappingKey, &binInput, &binOutput );
 
     if( ret != 0 )
     {
-        berApplet->warningBox( QString( "failed to wrap key: %1").arg(ret), this );
+        berApplet->warningBox( QString( "failed to wrap key: %1").arg(JERR(ret)), this );
         goto end;
     }
 
-    strOutput = getStringFromBIN( &binOutput, mDstTypeCombo->currentText() );
-    mDstText->setPlainText( strOutput );
+    strOutput = getStringFromBIN( &binOutput, DATA_HEX );
+    mKW_DstText->setPlainText( strOutput );
 
     berApplet->logLine2();
     berApplet->log( QString( "Input Key   : %1" ).arg(getHexString(&binInput)));
@@ -580,7 +583,7 @@ end :
     JS_BIN_reset( &binOutput );
 }
 
-void KeyManDlg::clickUnwrap()
+void KeyManDlg::runKW_Unwrap()
 {
     int ret = 0;
     BIN binInput = {0,0};
@@ -588,14 +591,14 @@ void KeyManDlg::clickUnwrap()
     BIN binOutput = {0,0};
     int nPad = 0;
 
-    QString strInput = mSrcText->toPlainText();
-    QString strWrappingKey = mKEKText->text();
+    QString strInput = mKW_SrcText->toPlainText();
+    QString strWrappingKey = mKW_KEKText->text();
     QString strOutput;
 
     if( strInput.length() < 1 )
     {
         berApplet->warningBox( "Enter input data", this );
-        mSrcText->setFocus();
+        mKW_SrcText->setFocus();
         goto end;
     }
 
@@ -604,7 +607,7 @@ void KeyManDlg::clickUnwrap()
         KeyListDlg keyList;
         keyList.setTitle( tr( "Select symmetric key for KEK" ));
         keyList.setManage(false);
-        keyList.mKeyTypeCombo->setCurrentText( "AES" );
+        keyList.mKeyTypeCombo->setCurrentText( JS_PKI_KEY_NAME_AES );
 
         if( keyList.exec() == QDialog::Accepted )
         {
@@ -612,41 +615,41 @@ void KeyManDlg::clickUnwrap()
 
             if( strKey.length() > 0 )
             {
-                mKEKTypeCombo->setCurrentText( "Hex" );
+                mKW_KEKTypeCombo->setCurrentText( "Hex" );
                 strWrappingKey = strKey;
-                mKEKText->setText( strWrappingKey );
+                mKW_KEKText->setText( strWrappingKey );
             }
         }
 
         if( strWrappingKey.length() < 1 )
         {
             berApplet->warningBox( "Enter KEK", this );
-            mKEKText->setFocus();
+            mKW_KEKText->setFocus();
             goto end;
         }
     }
 
-    if( mKWPRadio->isChecked() )
+    if( mKW_MethodCombo->currentText() == "KWP" )
         nPad = 1;
     else
         nPad = 0;
 
-    getBINFromString( &binInput, mSrcTypeCombo->currentText(), strInput );
-    getBINFromString( &binWrappingKey, mKEKTypeCombo->currentText(), strWrappingKey );
+    getBINFromString( &binInput, mKW_SrcTypeCombo->currentText(), strInput );
+    getBINFromString( &binWrappingKey, mKW_KEKTypeCombo->currentText(), strWrappingKey );
 
     berApplet->logLine();
-    berApplet->log( QString( "-- Unwrap Key (%1)" ).arg( mKWRadio->isChecked() ? "KW" : "KWP" ) );
+    berApplet->log( QString( "-- Unwrap Key (%1)" ).arg( mKW_MethodCombo->currentText() ) );
 
 
     ret = JS_PKI_UnwrapKey( nPad, &binWrappingKey, &binInput, &binOutput );
     if( ret != 0 )
     {
-        berApplet->warningBox( QString( "failed to unwrap key: %1").arg(ret), this );
+        berApplet->warningBox( QString( "failed to unwrap key: %1").arg(JERR(ret)), this );
         goto end;
     }
 
-    strOutput = getStringFromBIN( &binOutput, mDstTypeCombo->currentText() );
-    mDstText->setPlainText( strOutput );
+    strOutput = getStringFromBIN( &binOutput, DATA_HEX );
+    mKW_DstText->setPlainText( strOutput );
 
     berApplet->logLine2();
     berApplet->log( QString( "Input Key      : %1" ).arg(getHexString(&binInput)));
@@ -660,145 +663,197 @@ end :
     JS_BIN_reset( &binOutput );
 }
 
-void KeyManDlg::clickClear()
+void KeyManDlg::checkKW_KeyWrap()
 {
-    mSrcText->clear();
-    mDstText->clear();
-    mKEKText->clear();
+    mKW_HeadLabel->setText( tr("Key Wrap" ) );
+
+    mKW_SrcText->setPlaceholderText( tr("Source key hex value") );
+    mKW_SrcLabel->setText( tr( "Source key" ) );
+    mKW_OutputLabel->setText( tr( "Wrapped key" ));
 }
 
- void KeyManDlg::clickKeyWrapGenKEK()
+void KeyManDlg::checkKW_KeyUnwrap()
+{
+    mKW_HeadLabel->setText( tr("Key Unwrap" ) );
+
+    mKW_SrcText->setPlaceholderText( tr("Wrapped key hex value") );
+    mKW_SrcLabel->setText( tr( "Wrapped key" ) );
+    mKW_OutputLabel->setText( tr( "Source key" ) );
+}
+
+void KeyManDlg::clickKW_Run()
+{
+    QString strMethod = mKW_MethodCombo->currentText();
+
+    if( mKW_KeyWrapRadio->isChecked() == true )
+        runKW_Wrap();
+    else
+        runKW_Unwrap();
+}
+
+void KeyManDlg::clickKW_SrcClear()
+{
+    mKW_SrcText->clear();
+}
+
+void KeyManDlg::clickKW_KEKClear()
+{
+    mKW_KEKText->clear();
+}
+
+void KeyManDlg::clickKW_DstClear()
+{
+    mKW_DstText->clear();
+}
+
+ void KeyManDlg::clickKW_GenKEK()
  {
      BIN binKEK = {0,0};
-     mKEKTypeCombo->setCurrentIndex(1);
+     mKW_KEKTypeCombo->setCurrentIndex(1);
      JS_PKI_genRandom( 16, &binKEK );
-     mKEKText->setText( getHexString( &binKEK ) );
+     mKW_KEKText->setText( getHexString( &binKEK ) );
      JS_BIN_reset( &binKEK );
  }
 
-void KeyManDlg::clickChange()
+void KeyManDlg::clickKW_Change()
 {
-    QString strDst = mDstText->toPlainText();
-    mSrcTypeCombo->setCurrentText( mDstTypeCombo->currentText() );
+    QString strDst = mKW_DstText->toPlainText();
+    mKW_SrcTypeCombo->setCurrentText( kDataHex );
 
-    mSrcText->setPlainText( strDst );
-    mDstText->clear();
+    mKW_SrcText->setPlainText( strDst );
+    mKW_DstText->clear();
 }
 
-void KeyManDlg::checkPBKDF()
+void KeyManDlg::checkKD_PBKDF()
 {
-    mSecretTypeCombo->clear();
-    mSecretTypeCombo->addItem( "String" );
+    mKD_SecretTypeCombo->clear();
+    mKD_SecretTypeCombo->addItem( "String" );
 
-    mSecretLabel->setText( tr("Password"));
+    mKD_SecretLabel->setText( tr("Password"));
 
-    mInfoGroup->setEnabled(false);
-    mSaltGroup->setEnabled(true);
-    mHashLabel->setEnabled(true);
-    mHashCombo->setEnabled( true );
-    mIterCntLabel->setEnabled(true);
-    mIterCntText->setEnabled(true);
-    mRLabel->setEnabled(false);
-    mRText->setEnabled(false);
-    mPLabel->setEnabled(false);
-    mPText->setEnabled(false);
+    mKD_InfoGroup->setEnabled(false);
+    mKD_SaltGroup->setEnabled(true);
+    mKD_HashLabel->setEnabled(true);
+    mKD_HashCombo->setEnabled( true );
+    mKD_IterCntLabel->setEnabled(true);
+    mKD_IterCntText->setEnabled(true);
+
+    mKD_NLabel->setEnabled(false);
+    mKD_NText->setEnabled(false);
+    mKD_RLabel->setEnabled(false);
+    mKD_RText->setEnabled(false);
+    mKD_PLabel->setEnabled(false);
+    mKD_PText->setEnabled(false);
 }
 
-void KeyManDlg::checkHKDF()
+void KeyManDlg::checkKD_HKDF()
 {
-    mSecretTypeCombo->clear();
-    mSecretTypeCombo->addItems( kDataTypeList );
+    mKD_SecretTypeCombo->clear();
+    mKD_SecretTypeCombo->addItems( kDataTypeList );
 
-    mSecretLabel->setText( tr("Secret"));
+    mKD_SecretLabel->setText( tr("Secret"));
 
-    mInfoGroup->setEnabled(true);
-    mSaltGroup->setEnabled(true);
-    mHashLabel->setEnabled(true);
-    mHashCombo->setEnabled( true );
-    mIterCntLabel->setEnabled(false);
-    mIterCntText->setEnabled(false);
-    mRLabel->setEnabled(false);
-    mRText->setEnabled(false);
-    mPLabel->setEnabled(false);
-    mPText->setEnabled(false);
+    mKD_InfoGroup->setEnabled(true);
+    mKD_SaltGroup->setEnabled(true);
+    mKD_HashLabel->setEnabled(true);
+    mKD_HashCombo->setEnabled( true );
+    mKD_IterCntLabel->setEnabled(false);
+    mKD_IterCntText->setEnabled(false);
+
+    mKD_NLabel->setEnabled(false);
+    mKD_NText->setEnabled(false);
+    mKD_RLabel->setEnabled(false);
+    mKD_RText->setEnabled(false);
+    mKD_PLabel->setEnabled(false);
+    mKD_PText->setEnabled(false);
 }
 
-void KeyManDlg::checkX963()
+void KeyManDlg::checkKD_X963()
 {
-    mSecretTypeCombo->clear();
-    mSecretTypeCombo->addItems( kDataTypeList );
+    mKD_SecretTypeCombo->clear();
+    mKD_SecretTypeCombo->addItems( kDataTypeList );
 
-    mSecretLabel->setText( tr("Secret"));
+    mKD_SecretLabel->setText( tr("Secret"));
 
-    mInfoGroup->setEnabled(true);
-    mSaltGroup->setEnabled(false);
-    mHashLabel->setEnabled(true);
-    mHashCombo->setEnabled( true );
-    mIterCntLabel->setEnabled(false);
-    mIterCntText->setEnabled(false);
-    mRLabel->setEnabled(false);
-    mRText->setEnabled(false);
-    mPLabel->setEnabled(false);
-    mPText->setEnabled(false);
+    mKD_InfoGroup->setEnabled(true);
+    mKD_SaltGroup->setEnabled(false);
+    mKD_HashLabel->setEnabled(true);
+    mKD_HashCombo->setEnabled( true );
+    mKD_IterCntLabel->setEnabled(false);
+    mKD_IterCntText->setEnabled(false);
+    mKD_NLabel->setEnabled(false);
+    mKD_NText->setEnabled(false);
+    mKD_RLabel->setEnabled(false);
+    mKD_RText->setEnabled(false);
+    mKD_PLabel->setEnabled(false);
+    mKD_PText->setEnabled(false);
 }
 
-void KeyManDlg::checkScrypt()
+void KeyManDlg::checkKD_Scrypt()
 {
-    mSecretTypeCombo->clear();
-    mSecretTypeCombo->addItem( "String" );
+    mKD_SecretTypeCombo->clear();
+    mKD_SecretTypeCombo->addItem( "String" );
 
-    mSecretLabel->setText( tr("Password"));
+    mKD_SecretLabel->setText( tr("Password"));
 
-    mInfoGroup->setEnabled(false);
-    mSaltGroup->setEnabled(true);
-    mHashLabel->setEnabled(false);
-    mHashCombo->setEnabled( false );
-    mIterCntLabel->setEnabled(true);
-    mIterCntText->setEnabled(true);
-    mRLabel->setEnabled(true);
-    mRText->setEnabled(true);
-    mPLabel->setEnabled(true);
-    mPText->setEnabled(true);
+    mKD_InfoGroup->setEnabled(false);
+    mKD_SaltGroup->setEnabled(true);
+    mKD_HashLabel->setEnabled(false);
+    mKD_HashCombo->setEnabled( false );
+    mKD_IterCntLabel->setEnabled(false);
+    mKD_IterCntText->setEnabled(false);
+
+    mKD_NLabel->setEnabled(true);
+    mKD_NText->setEnabled(true);
+    mKD_RLabel->setEnabled(true);
+    mKD_RText->setEnabled(true);
+    mKD_PLabel->setEnabled(true);
+    mKD_PText->setEnabled(true);
 }
 
-void KeyManDlg::clickOutputClear()
+void KeyManDlg::clickKD_SaltClear()
 {
-    mOutputText->clear();
+    mKD_SaltText->clear();
 }
 
-void KeyManDlg::srcChanged()
+void KeyManDlg::clickKD_OutputClear()
 {
-    QString strSrc = mSrcText->toPlainText();
-    QString strLen = getDataLenString( mSrcTypeCombo->currentText(), strSrc );
-    mSrcLenText->setText( QString("%1").arg(strLen));
+    mKD_OutputText->clear();
 }
 
-void KeyManDlg::dstChanged()
+void KeyManDlg::chageKW_Src()
 {
-    QString strDst = mDstText->toPlainText();
-    QString strLen = getDataLenString( mDstTypeCombo->currentText(), strDst );
-    mDstLenText->setText( QString("%1").arg(strLen));
+    QString strSrc = mKW_SrcText->toPlainText();
+    QString strLen = getDataLenString( mKW_SrcTypeCombo->currentText(), strSrc );
+    mKW_SrcLenText->setText( QString("%1").arg(strLen));
 }
 
-void KeyManDlg::kekChanged()
+void KeyManDlg::chageKW_Dst()
 {
-    QString strKEK = mKEKText->text();
-    QString strLen = getDataLenString( mKEKTypeCombo->currentText(), strKEK );
-    mKEKLenText->setText( QString("%1").arg(strLen));
+    QString strDst = mKW_DstText->toPlainText();
+    QString strLen = getDataLenString( DATA_HEX, strDst );
+    mKW_DstLenText->setText( QString("%1").arg(strLen));
+}
+
+void KeyManDlg::changeKW_KEK()
+{
+    QString strKEK = mKW_KEKText->text();
+    QString strLen = getDataLenString( mKW_KEKTypeCombo->currentText(), strKEK );
+    mKW_KEKLenText->setText( QString("%1").arg(strLen));
 }
 
 void KeyManDlg::clickClearDataAll()
 {
-    mSecretText->clear();
-    mInfoText->clear();
-    mSaltText->clear();
-    mIterCntText->clear();
-    mKeyLenText->clear();
-    mOutputText->clear();
+    mKD_SecretText->clear();
+    mKD_InfoText->clear();
+    mKD_SaltText->clear();
+    mKD_IterCntText->clear();
+    mKD_KeyLenText->clear();
+    mKD_OutputText->clear();
 
-    mSrcText->clear();
-    mKEKText->clear();
-    mDstText->clear();
+    mKW_SrcText->clear();
+    mKW_KEKText->clear();
+    mKW_DstText->clear();
 
     clickKEMClearAll();
 }
@@ -807,7 +862,6 @@ void KeyManDlg::clickKEMClearAll()
 {
     mKEMKeyText->clear();
     mKEMWrappedKeyText->clear();
-    mKEMDecKeyText->clear();
 }
 
 void KeyManDlg::runKEMEncap()
@@ -840,7 +894,7 @@ void KeyManDlg::runKEMEncap()
         goto end;
     }
 
-    mKEMKeyText->setText( getHexString( &binKey ));
+    mKEMKeyText->setPlainText( getHexString( &binKey ));
     mKEMWrappedKeyText->setPlainText( getHexString( &binWrappedKey ));
 
 end :
@@ -888,7 +942,7 @@ void KeyManDlg::runKEMDecap()
         goto end;
     }
 
-    mKEMDecKeyText->setText( getHexString( &binDecKey ));
+    mKEMKeyText->setPlainText( getHexString( &binDecKey ));
 
 end :
     JS_BIN_reset( &binPri );
@@ -913,7 +967,7 @@ void KeyManDlg::checkKEMPriKeyEncrypted()
 
 void KeyManDlg::changeKEMKey()
 {
-    QString strKey = mKEMKeyText->text();
+    QString strKey = mKEMKeyText->toPlainText();
     QString strLen = getDataLenString( DATA_HEX, strKey );
     mKEMKeyLenText->setText( QString("%1").arg(strLen));
 }
@@ -925,13 +979,6 @@ void KeyManDlg::changeKEMWrappedKey()
     mKEMWrappedKeyLenText->setText( QString("%1").arg(strLen));
 }
 
-void KeyManDlg::changeKEMDecKey()
-{
-    QString strKey = mKEMDecKeyText->text();
-    QString strLen = getDataLenString( DATA_HEX, strKey );
-    mKEMDecKeyLenText->setText( QString("%1").arg(strLen));
-}
-
 void KeyManDlg::clickKEMWrappedKeyClear()
 {
     mKEMWrappedKeyText->clear();
@@ -940,11 +987,6 @@ void KeyManDlg::clickKEMWrappedKeyClear()
 void KeyManDlg::clickKEMKeyClear()
 {
     mKEMKeyText->clear();
-}
-
-void KeyManDlg::clickKEMDecKeyClear()
-{
-    mKEMDecKeyText->clear();
 }
 
 void KeyManDlg::clickKEMPriKeyFind()
@@ -1131,26 +1173,30 @@ void KeyManDlg::clickKEMCertType()
 
 void KeyManDlg::checkKEMEncap()
 {
+    mHeadLabel->setText( tr( "Key encapsulate" ) );
+    mKEMKeyLabel->setText( tr( "Generated Key" ) );
+
     if( mKEMGroup->isChecked() == true )
     {
         setKEMEnableCert(true);
         setKEMEnablePriKey(false);
     }
 
-    setKEMEnableKey(true);
-    setKEMEnableDecKey(false);
+    mKEMWrappedKeyText->setPlaceholderText( tr( "Generated at runtime" ));
 }
 
 void KeyManDlg::checkKEMDecap()
 {
+    mHeadLabel->setText( tr( "Key decapsulate" ) );
+    mKEMKeyLabel->setText( tr( "Decrypted Key" ) );
+
     if( mKEMGroup->isChecked() == true )
     {
         setKEMEnableCert(false);
         setKEMEnablePriKey(true);
     }
 
-    setKEMEnableKey(false);
-    setKEMEnableDecKey(true);
+    mKEMWrappedKeyText->setPlaceholderText( tr("Enter the wrapped key hex value") );
 }
 
 void KeyManDlg::setKEMEnableWrappedKey( bool bVal )
@@ -1167,14 +1213,6 @@ void KeyManDlg::setKEMEnableKey( bool bVal )
     mKEMKeyLabel->setEnabled(bVal);
     mKEMKeyLenText->setEnabled(bVal);
     mKEMKeyText->setEnabled(bVal);
-}
-
-void KeyManDlg::setKEMEnableDecKey( bool bVal )
-{
-    mKEMDecKeyClearBtn->setEnabled(bVal);
-    mKEMDecKeyLabel->setEnabled(bVal);
-    mKEMDecKeyLenText->setEnabled(bVal);
-    mKEMDecKeyText->setEnabled(bVal);
 }
 
 void KeyManDlg::setKEMEnableCert( bool bVal )

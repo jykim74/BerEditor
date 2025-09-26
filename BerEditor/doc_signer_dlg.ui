@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>624</width>
+    <width>618</width>
     <height>690</height>
    </rect>
   </property>
@@ -138,7 +138,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="mTabCMS">
       <attribute name="title">
@@ -151,23 +151,23 @@
           <number>0</number>
          </property>
          <item row="0" column="1">
-          <widget class="QComboBox" name="mCMSDataTypeCombo"/>
+          <widget class="QComboBox" name="mCMSSrcTypeCombo"/>
          </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="mCMSDataLabel">
+          <widget class="QLabel" name="mCMSSrcLabel">
            <property name="minimumSize">
             <size>
-             <width>60</width>
+             <width>100</width>
              <height>0</height>
             </size>
            </property>
            <property name="text">
-            <string>Data</string>
+            <string>Source data</string>
            </property>
           </widget>
          </item>
          <item row="0" column="2">
-          <widget class="QPushButton" name="mCMSClearBtn">
+          <widget class="QPushButton" name="mCMSSrcClearBtn">
            <property name="minimumSize">
             <size>
              <width>20</width>
@@ -186,7 +186,7 @@
           </widget>
          </item>
          <item row="0" column="4">
-          <widget class="QPushButton" name="mCMSDataViewBtn">
+          <widget class="QPushButton" name="mCMSSrcViewBtn">
            <property name="minimumSize">
             <size>
              <width>20</width>
@@ -205,7 +205,7 @@
           </widget>
          </item>
          <item row="0" column="3">
-          <widget class="QPushButton" name="mCMSDataDecodeBtn">
+          <widget class="QPushButton" name="mCMSSrcDecodeBtn">
            <property name="minimumSize">
             <size>
              <width>20</width>
@@ -244,7 +244,7 @@
           </widget>
          </item>
          <item row="0" column="12">
-          <widget class="QLineEdit" name="mCMSDataLenText">
+          <widget class="QLineEdit" name="mCMSSrcLenText">
            <property name="minimumSize">
             <size>
              <width>40</width>
@@ -297,7 +297,7 @@
           </widget>
          </item>
          <item row="0" column="5">
-          <widget class="QPushButton" name="mCMSDataTypeBtn">
+          <widget class="QPushButton" name="mCMSSrcTypeBtn">
            <property name="minimumSize">
             <size>
              <width>20</width>
@@ -318,7 +318,7 @@
         </layout>
        </item>
        <item>
-        <widget class="QPlainTextEdit" name="mCMSDataText">
+        <widget class="QPlainTextEdit" name="mCMSSrcText">
          <property name="palette">
           <palette>
            <active>
@@ -590,17 +590,17 @@
           <widget class="QLabel" name="mCMSOutputLabel">
            <property name="minimumSize">
             <size>
-             <width>60</width>
+             <width>100</width>
              <height>0</height>
             </size>
            </property>
            <property name="text">
-            <string>CMS</string>
+            <string>Output data</string>
            </property>
           </widget>
          </item>
          <item row="0" column="3">
-          <widget class="QPushButton" name="mCMSViewBtn">
+          <widget class="QPushButton" name="mCMSOutputViewBtn">
            <property name="minimumSize">
             <size>
              <width>20</width>
@@ -1443,13 +1443,13 @@
   <tabstop>mUseCertManCheck</tabstop>
   <tabstop>mHashCombo</tabstop>
   <tabstop>mTabSigner</tabstop>
-  <tabstop>mCMSDataTypeCombo</tabstop>
-  <tabstop>mCMSClearBtn</tabstop>
-  <tabstop>mCMSDataLenText</tabstop>
-  <tabstop>mCMSDataText</tabstop>
+  <tabstop>mCMSSrcTypeCombo</tabstop>
+  <tabstop>mCMSSrcClearBtn</tabstop>
+  <tabstop>mCMSSrcLenText</tabstop>
+  <tabstop>mCMSSrcText</tabstop>
   <tabstop>mCMSOutputClearBtn</tabstop>
   <tabstop>mCMSOutputDecodeBtn</tabstop>
-  <tabstop>mCMSViewBtn</tabstop>
+  <tabstop>mCMSOutputViewBtn</tabstop>
   <tabstop>mCMSOutputUpBtn</tabstop>
   <tabstop>mCMSOutputLenText</tabstop>
   <tabstop>mCMSOutputText</tabstop>

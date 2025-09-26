@@ -66,8 +66,8 @@ private slots:
 public slots:
     void checkEncPriKey();
     void checkUseKeyAlg();
-    void clickSign();
-    void clickVerify();
+    void checkSign();
+    void checkVerify();
     void clickClearDataAll();
 
 private:

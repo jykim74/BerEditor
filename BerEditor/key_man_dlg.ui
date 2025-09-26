@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>570</width>
-    <height>706</height>
+    <height>554</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mDeriveTab">
       <attribute name="title">
@@ -32,19 +32,19 @@
          <item row="0" column="5">
           <widget class="QLabel" name="label_6">
            <property name="text">
-            <string>Key Len</string>
+            <string>Derived Key Len</string>
            </property>
           </widget>
          </item>
          <item row="0" column="2">
-          <widget class="QRadioButton" name="mANSX963Radio">
+          <widget class="QRadioButton" name="mKD_ANSX963Radio">
            <property name="text">
             <string>ANS.X963</string>
            </property>
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QRadioButton" name="mPBKDF2Radio">
+          <widget class="QRadioButton" name="mKD_PBKDF2Radio">
            <property name="text">
             <string>PBKDF2</string>
            </property>
@@ -64,21 +64,21 @@
           </spacer>
          </item>
          <item row="0" column="3">
-          <widget class="QRadioButton" name="mScryptRadio">
+          <widget class="QRadioButton" name="mKD_ScryptRadio">
            <property name="text">
             <string>Scrypt</string>
            </property>
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QRadioButton" name="mHKDFRadio">
+          <widget class="QRadioButton" name="mKD_HKDFRadio">
            <property name="text">
             <string>HKDF</string>
            </property>
           </widget>
          </item>
          <item row="0" column="6">
-          <widget class="QLineEdit" name="mKeyLenText">
+          <widget class="QLineEdit" name="mKD_KeyLenText">
            <property name="maximumSize">
             <size>
              <width>40</width>
@@ -102,13 +102,13 @@
           <number>0</number>
          </property>
          <item row="0" column="2">
-          <widget class="QLineEdit" name="mSecretText"/>
+          <widget class="QLineEdit" name="mKD_SecretText"/>
          </item>
          <item row="0" column="1">
-          <widget class="QComboBox" name="mSecretTypeCombo"/>
+          <widget class="QComboBox" name="mKD_SecretTypeCombo"/>
          </item>
          <item row="0" column="3">
-          <widget class="QLineEdit" name="mSecretLenText">
+          <widget class="QLineEdit" name="mKD_SecretLenText">
            <property name="maximumSize">
             <size>
              <width>40</width>
@@ -158,7 +158,7 @@
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="mSecretLabel">
+          <widget class="QLabel" name="mKD_SecretLabel">
            <property name="minimumSize">
             <size>
              <width>60</width>
@@ -173,7 +173,7 @@
         </layout>
        </item>
        <item>
-        <widget class="QGroupBox" name="mInfoGroup">
+        <widget class="QGroupBox" name="mKD_InfoGroup">
          <property name="title">
           <string/>
          </property>
@@ -199,10 +199,10 @@
              <number>0</number>
             </property>
             <item row="0" column="1">
-             <widget class="QComboBox" name="mInfoTypeCombo"/>
+             <widget class="QComboBox" name="mKD_InfoTypeCombo"/>
             </item>
             <item row="0" column="0">
-             <widget class="QLabel" name="mInfoLabel">
+             <widget class="QLabel" name="mKD_InfoLabel">
               <property name="minimumSize">
                <size>
                 <width>60</width>
@@ -215,10 +215,10 @@
              </widget>
             </item>
             <item row="0" column="2">
-             <widget class="QLineEdit" name="mInfoText"/>
+             <widget class="QLineEdit" name="mKD_InfoText"/>
             </item>
             <item row="0" column="3">
-             <widget class="QLineEdit" name="mInfoLenText">
+             <widget class="QLineEdit" name="mKD_InfoLenText">
               <property name="minimumSize">
                <size>
                 <width>40</width>
@@ -269,7 +269,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="mSaltGroup">
+        <widget class="QGroupBox" name="mKD_SaltGroup">
          <property name="title">
           <string/>
          </property>
@@ -294,24 +294,8 @@
             <property name="topMargin">
              <number>0</number>
             </property>
-            <item row="0" column="1">
-             <widget class="QComboBox" name="mSaltTypeCombo"/>
-            </item>
-            <item row="0" column="0">
-             <widget class="QLabel" name="mSaltLabel">
-              <property name="minimumSize">
-               <size>
-                <width>60</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Salt</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="3">
-             <widget class="QLineEdit" name="mSaltLenText">
+            <item row="0" column="4">
+             <widget class="QLineEdit" name="mKD_SaltLenText">
               <property name="maximumSize">
                <size>
                 <width>40</width>
@@ -360,7 +344,20 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="2">
+            <item row="0" column="0">
+             <widget class="QLabel" name="mKD_SaltLabel">
+              <property name="minimumSize">
+               <size>
+                <width>60</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Salt</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
              <spacer name="horizontalSpacer_9">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
@@ -373,38 +370,63 @@
               </property>
              </spacer>
             </item>
+            <item row="0" column="1">
+             <widget class="QComboBox" name="mKD_SaltTypeCombo"/>
+            </item>
+            <item row="0" column="2">
+             <widget class="QPushButton" name="mKD_SaltClearBtn">
+              <property name="minimumSize">
+               <size>
+                <width>20</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>20</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>C</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
           <item>
-           <widget class="QPlainTextEdit" name="mSaltText"/>
+           <widget class="QPlainTextEdit" name="mKD_SaltText"/>
           </item>
          </layout>
         </widget>
        </item>
        <item>
+        <widget class="Line" name="line_12">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
         <layout class="QGridLayout" name="gridLayout_3">
-         <item row="0" column="0">
-          <widget class="QLabel" name="mIterCntLabel">
+         <item row="0" column="4">
+          <widget class="QLineEdit" name="mKD_NText">
            <property name="minimumSize">
             <size>
-             <width>0</width>
+             <width>40</width>
              <height>0</height>
             </size>
            </property>
-           <property name="text">
-            <string>Iteration Count</string>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>16777215</height>
+            </size>
            </property>
           </widget>
          </item>
-         <item row="0" column="4">
-          <widget class="QLabel" name="mPLabel">
-           <property name="text">
-            <string>P</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
-          <widget class="QLineEdit" name="mRText">
+         <item row="0" column="6">
+          <widget class="QLineEdit" name="mKD_RText">
            <property name="minimumSize">
             <size>
              <width>20</width>
@@ -422,48 +444,21 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
-          <widget class="QLabel" name="mRLabel">
-           <property name="text">
-            <string>R</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLineEdit" name="mIterCntText">
-           <property name="maximumSize">
+         <item row="0" column="0">
+          <widget class="QLabel" name="mKD_IterCntLabel">
+           <property name="minimumSize">
             <size>
-             <width>60</width>
-             <height>16777215</height>
+             <width>0</width>
+             <height>0</height>
             </size>
+           </property>
+           <property name="text">
+            <string>Iteration Count</string>
            </property>
           </widget>
          </item>
          <item row="0" column="8">
-          <widget class="QComboBox" name="mHashCombo"/>
-         </item>
-         <item row="0" column="6">
-          <spacer name="horizontalSpacer_6">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="0" column="7">
-          <widget class="QLabel" name="mHashLabel">
-           <property name="text">
-            <string>Hash</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="5">
-          <widget class="QLineEdit" name="mPText">
+          <widget class="QLineEdit" name="mKD_PText">
            <property name="minimumSize">
             <size>
              <width>40</width>
@@ -478,6 +473,99 @@
            </property>
            <property name="maxLength">
             <number>4</number>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="mKD_IterCntText">
+           <property name="maximumSize">
+            <size>
+             <width>60</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QLabel" name="mKD_NLabel">
+           <property name="text">
+            <string>N</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="13">
+          <widget class="QPushButton" name="mKD_DeriveKeyBtn">
+           <property name="text">
+            <string>Derive Key</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="12">
+          <spacer name="horizontalSpacer_6">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="10">
+          <widget class="QLabel" name="mKD_HashLabel">
+           <property name="text">
+            <string>Hash</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="11">
+          <widget class="QComboBox" name="mKD_HashCombo"/>
+         </item>
+         <item row="0" column="7">
+          <widget class="QLabel" name="mKD_PLabel">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>p</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="5">
+          <widget class="QLabel" name="mKD_RLabel">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>r</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="Line" name="line_8">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="9">
+          <widget class="Line" name="line_13">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
            </property>
           </widget>
          </item>
@@ -509,7 +597,7 @@
           </spacer>
          </item>
          <item row="0" column="3">
-          <widget class="QLineEdit" name="mOutputLenText">
+          <widget class="QLineEdit" name="mKD_OutputLenText">
            <property name="maximumSize">
             <size>
              <width>40</width>
@@ -558,10 +646,42 @@
            </property>
           </widget>
          </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_2">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Derived Key</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="mKD_OutputClearBtn">
+           <property name="minimumSize">
+            <size>
+             <width>20</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>C</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
-        <widget class="QPlainTextEdit" name="mOutputText">
+        <widget class="QPlainTextEdit" name="mKD_OutputText">
          <property name="minimumSize">
           <size>
            <width>500</width>
@@ -610,40 +730,6 @@
          </property>
         </widget>
        </item>
-       <item>
-        <layout class="QGridLayout" name="gridLayout_4">
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <item row="0" column="1">
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="0" column="2">
-          <widget class="QPushButton" name="mMakeKeyBtn">
-           <property name="text">
-            <string>Make Key</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QPushButton" name="mOutputClearBtn">
-           <property name="text">
-            <string>Clear</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="mWrapTab">
@@ -656,27 +742,10 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="3">
-          <widget class="QRadioButton" name="mKWPRadio">
-           <property name="text">
-            <string>KWP</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_9">
+          <widget class="QLabel" name="mKW_HeadLabel">
            <property name="text">
-            <string>Wrap Method</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QRadioButton" name="mKWRadio">
-           <property name="text">
-            <string>KW</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
+            <string>Key Wrap</string>
            </property>
           </widget>
          </item>
@@ -693,6 +762,16 @@
            </property>
           </spacer>
          </item>
+         <item row="0" column="2">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Method</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QComboBox" name="mKW_MethodCombo"/>
+         </item>
         </layout>
        </item>
        <item>
@@ -704,21 +783,8 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_7">
-         <item row="0" column="2">
-          <spacer name="horizontalSpacer_4">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="0" column="3">
-          <widget class="QLineEdit" name="mSrcLenText">
+         <item row="0" column="4">
+          <widget class="QLineEdit" name="mKW_SrcLenText">
            <property name="maximumSize">
             <size>
              <width>40</width>
@@ -768,25 +834,57 @@
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_10">
+          <widget class="QLabel" name="mKW_SrcLabel">
            <property name="minimumSize">
             <size>
-             <width>60</width>
+             <width>80</width>
              <height>0</height>
             </size>
            </property>
            <property name="text">
-            <string>Source</string>
+            <string>Source Key</string>
            </property>
           </widget>
          </item>
+         <item row="0" column="3">
+          <spacer name="horizontalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
          <item row="0" column="1">
-          <widget class="QComboBox" name="mSrcTypeCombo"/>
+          <widget class="QComboBox" name="mKW_SrcTypeCombo"/>
+         </item>
+         <item row="0" column="2">
+          <widget class="QPushButton" name="mKW_SrcClearBtn">
+           <property name="minimumSize">
+            <size>
+             <width>20</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>C</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
        <item>
-        <widget class="QPlainTextEdit" name="mSrcText"/>
+        <widget class="QPlainTextEdit" name="mKW_SrcText"/>
        </item>
        <item>
         <widget class="Line" name="line_5">
@@ -804,7 +902,7 @@
           <widget class="QLabel" name="label_7">
            <property name="minimumSize">
             <size>
-             <width>60</width>
+             <width>80</width>
              <height>0</height>
             </size>
            </property>
@@ -814,13 +912,6 @@
           </widget>
          </item>
          <item row="0" column="3">
-          <widget class="QPushButton" name="mGenKEKBtn">
-           <property name="text">
-            <string>Gen KEK</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
           <spacer name="horizontalSpacer_8">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -833,8 +924,34 @@
            </property>
           </spacer>
          </item>
+         <item row="0" column="4">
+          <widget class="QPushButton" name="mKW_GenKEKBtn">
+           <property name="text">
+            <string>Gen KEK</string>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="1">
-          <widget class="QComboBox" name="mKEKTypeCombo"/>
+          <widget class="QComboBox" name="mKW_KEKTypeCombo"/>
+         </item>
+         <item row="0" column="2">
+          <widget class="QPushButton" name="mKW_KEKClearBtn">
+           <property name="minimumSize">
+            <size>
+             <width>20</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>C</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -844,10 +961,10 @@
           <number>0</number>
          </property>
          <item row="0" column="1">
-          <widget class="QLineEdit" name="mKEKText"/>
+          <widget class="QLineEdit" name="mKW_KEKText"/>
          </item>
          <item row="0" column="2">
-          <widget class="QLineEdit" name="mKEKLenText">
+          <widget class="QLineEdit" name="mKW_KEKLenText">
            <property name="maximumSize">
             <size>
              <width>40</width>
@@ -892,6 +1009,57 @@
             </palette>
            </property>
            <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="Line" name="line_11">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QGridLayout" name="gridLayout_22">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <item row="0" column="2">
+          <spacer name="horizontalSpacer_17">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="1">
+          <widget class="QRadioButton" name="mKW_KeyUnwrapRadio">
+           <property name="text">
+            <string>KeyUnwrap</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QPushButton" name="mKW_RunBtn">
+           <property name="text">
+            <string>Run</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QRadioButton" name="mKW_KeyWrapRadio">
+           <property name="text">
+            <string>KeyWrap</string>
+           </property>
+           <property name="checked">
             <bool>true</bool>
            </property>
           </widget>
@@ -910,11 +1078,47 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="1">
-          <widget class="QComboBox" name="mDstTypeCombo"/>
+         <item row="0" column="2">
+          <spacer name="horizontalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="mKW_OutputLabel">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Wrapped Key</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QPushButton" name="mKW_ChangeBtn">
+           <property name="maximumSize">
+            <size>
+             <width>34</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>⬆</string>
+           </property>
+          </widget>
          </item>
          <item row="0" column="4">
-          <widget class="QLineEdit" name="mDstLenText">
+          <widget class="QLineEdit" name="mKW_DstLenText">
            <property name="maximumSize">
             <size>
              <width>40</width>
@@ -963,49 +1167,23 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_8">
-           <property name="minimumSize">
-            <size>
-             <width>60</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Output </string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
-          <spacer name="horizontalSpacer_5">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="0" column="2">
-          <widget class="QPushButton" name="mChangeBtn">
+         <item row="0" column="1">
+          <widget class="QPushButton" name="mKW_DstClearBtn">
            <property name="maximumSize">
             <size>
-             <width>34</width>
+             <width>20</width>
              <height>16777215</height>
             </size>
            </property>
            <property name="text">
-            <string>⬆</string>
+            <string>C</string>
            </property>
           </widget>
          </item>
         </layout>
        </item>
        <item>
-        <widget class="QPlainTextEdit" name="mDstText">
+        <widget class="QPlainTextEdit" name="mKW_DstText">
          <property name="palette">
           <palette>
            <active>
@@ -1048,47 +1226,6 @@
          </property>
         </widget>
        </item>
-       <item>
-        <layout class="QGridLayout" name="gridLayout_9">
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <item row="0" column="3">
-          <widget class="QPushButton" name="mWrapBtn">
-           <property name="text">
-            <string>Wrap</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QPushButton" name="mClearBtn">
-           <property name="text">
-            <string>Clear</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="4">
-          <widget class="QPushButton" name="mUnwrapBtn">
-           <property name="text">
-            <string>Unwrap</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <spacer name="horizontalSpacer_10">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="mKeyEncapTab">
@@ -1098,6 +1235,13 @@
       <layout class="QVBoxLayout" name="verticalLayout_6">
        <item>
         <layout class="QGridLayout" name="gridLayout_2">
+         <item row="0" column="3">
+          <widget class="QCheckBox" name="mKEMUseCertManCheck">
+           <property name="text">
+            <string>Use CertMan</string>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="1">
           <spacer name="horizontalSpacer_12">
            <property name="orientation">
@@ -1112,16 +1256,9 @@
           </spacer>
          </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="label">
+          <widget class="QLabel" name="mHeadLabel">
            <property name="text">
-            <string>Key Encapsulate Decapsulate</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QCheckBox" name="mUseCertManCheck">
-           <property name="text">
-            <string>Use CertMan</string>
+            <string>Key Encapsulate</string>
            </property>
           </widget>
          </item>
@@ -1324,7 +1461,7 @@
           <widget class="QLabel" name="mKEMWrappedKeyLabel">
            <property name="minimumSize">
             <size>
-             <width>100</width>
+             <width>80</width>
              <height>0</height>
             </size>
            </property>
@@ -1424,19 +1561,74 @@
         </widget>
        </item>
        <item>
-        <layout class="QGridLayout" name="gridLayout_17">
+        <layout class="QGridLayout" name="gridLayout_19">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
          <item row="0" column="0">
-          <widget class="QLabel" name="mKEMKeyLabel">
-           <property name="minimumSize">
-            <size>
-             <width>100</width>
-             <height>0</height>
-            </size>
-           </property>
+          <widget class="QRadioButton" name="mKEMEncapRadio">
            <property name="text">
-            <string>Key</string>
+            <string>Encapsulate</string>
            </property>
           </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QRadioButton" name="mKEMDecapRadio">
+           <property name="text">
+            <string>Decapsulate</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QPushButton" name="mKEMRunBtn">
+           <property name="text">
+            <string>Run</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <spacer name="horizontalSpacer_16">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="3">
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>[ Support : RSA ECDSA ML-KEM ]</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="Line" name="line_9">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QGridLayout" name="gridLayout_18">
+         <item row="0" column="2">
+          <spacer name="horizontalSpacer_15">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
          </item>
          <item row="0" column="3">
           <widget class="QLineEdit" name="mKEMKeyLenText">
@@ -1484,18 +1676,18 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
-          <spacer name="horizontalSpacer_14">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
+         <item row="0" column="0">
+          <widget class="QLabel" name="mKEMKeyLabel">
+           <property name="minimumSize">
             <size>
-             <width>40</width>
-             <height>20</height>
+             <width>80</width>
+             <height>0</height>
             </size>
            </property>
-          </spacer>
+           <property name="text">
+            <string>Decrypted Key</string>
+           </property>
+          </widget>
          </item>
          <item row="0" column="1">
           <widget class="QPushButton" name="mKEMKeyClearBtn">
@@ -1519,191 +1711,7 @@
         </layout>
        </item>
        <item>
-        <widget class="QLineEdit" name="mKEMKeyText">
-         <property name="palette">
-          <palette>
-           <active>
-            <colorrole role="Base">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>221</red>
-               <green>221</green>
-               <blue>255</blue>
-              </color>
-             </brush>
-            </colorrole>
-           </active>
-           <inactive>
-            <colorrole role="Base">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>221</red>
-               <green>221</green>
-               <blue>255</blue>
-              </color>
-             </brush>
-            </colorrole>
-           </inactive>
-           <disabled/>
-          </palette>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="Line" name="line_8">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QGridLayout" name="gridLayout_19">
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <item row="0" column="3">
-          <widget class="QPushButton" name="mKEMRunBtn">
-           <property name="text">
-            <string>Run</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <spacer name="horizontalSpacer_16">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="0" column="0">
-          <widget class="QRadioButton" name="mKEMEncapRadio">
-           <property name="text">
-            <string>Encapsulate</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QRadioButton" name="mKEMDecapRadio">
-           <property name="text">
-            <string>Decapsulate</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="Line" name="line_9">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QGridLayout" name="gridLayout_18">
-         <item row="0" column="2">
-          <spacer name="horizontalSpacer_15">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="0" column="3">
-          <widget class="QLineEdit" name="mKEMDecKeyLenText">
-           <property name="minimumSize">
-            <size>
-             <width>40</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>40</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="palette">
-            <palette>
-             <active>
-              <colorrole role="Base">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>221</red>
-                 <green>221</green>
-                 <blue>255</blue>
-                </color>
-               </brush>
-              </colorrole>
-             </active>
-             <inactive>
-              <colorrole role="Base">
-               <brush brushstyle="SolidPattern">
-                <color alpha="255">
-                 <red>221</red>
-                 <green>221</green>
-                 <blue>255</blue>
-                </color>
-               </brush>
-              </colorrole>
-             </inactive>
-             <disabled/>
-            </palette>
-           </property>
-           <property name="readOnly">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="mKEMDecKeyLabel">
-           <property name="minimumSize">
-            <size>
-             <width>100</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Decrypted Key</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QPushButton" name="mKEMDecKeyClearBtn">
-           <property name="minimumSize">
-            <size>
-             <width>20</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>20</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>C</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="mKEMDecKeyText">
+        <widget class="QPlainTextEdit" name="mKEMKeyText">
          <property name="palette">
           <palette>
            <active>
@@ -1778,44 +1786,35 @@
  </widget>
  <tabstops>
   <tabstop>tabWidget</tabstop>
-  <tabstop>mPBKDF2Radio</tabstop>
-  <tabstop>mHKDFRadio</tabstop>
-  <tabstop>mANSX963Radio</tabstop>
-  <tabstop>mScryptRadio</tabstop>
-  <tabstop>mKeyLenText</tabstop>
-  <tabstop>mSecretTypeCombo</tabstop>
-  <tabstop>mSecretText</tabstop>
-  <tabstop>mSecretLenText</tabstop>
-  <tabstop>mInfoTypeCombo</tabstop>
-  <tabstop>mInfoText</tabstop>
-  <tabstop>mInfoLenText</tabstop>
-  <tabstop>mSaltTypeCombo</tabstop>
-  <tabstop>mSaltLenText</tabstop>
-  <tabstop>mSaltText</tabstop>
-  <tabstop>mIterCntText</tabstop>
-  <tabstop>mRText</tabstop>
-  <tabstop>mPText</tabstop>
-  <tabstop>mHashCombo</tabstop>
-  <tabstop>mOutputLenText</tabstop>
-  <tabstop>mOutputText</tabstop>
-  <tabstop>mOutputClearBtn</tabstop>
-  <tabstop>mMakeKeyBtn</tabstop>
-  <tabstop>mKWRadio</tabstop>
-  <tabstop>mKWPRadio</tabstop>
-  <tabstop>mSrcTypeCombo</tabstop>
-  <tabstop>mSrcLenText</tabstop>
-  <tabstop>mSrcText</tabstop>
-  <tabstop>mKEKTypeCombo</tabstop>
-  <tabstop>mGenKEKBtn</tabstop>
-  <tabstop>mKEKText</tabstop>
-  <tabstop>mKEKLenText</tabstop>
-  <tabstop>mDstTypeCombo</tabstop>
-  <tabstop>mChangeBtn</tabstop>
-  <tabstop>mDstLenText</tabstop>
-  <tabstop>mDstText</tabstop>
-  <tabstop>mClearBtn</tabstop>
-  <tabstop>mWrapBtn</tabstop>
-  <tabstop>mUnwrapBtn</tabstop>
+  <tabstop>mKD_PBKDF2Radio</tabstop>
+  <tabstop>mKD_HKDFRadio</tabstop>
+  <tabstop>mKD_ANSX963Radio</tabstop>
+  <tabstop>mKD_ScryptRadio</tabstop>
+  <tabstop>mKD_KeyLenText</tabstop>
+  <tabstop>mKD_SecretTypeCombo</tabstop>
+  <tabstop>mKD_SecretText</tabstop>
+  <tabstop>mKD_SecretLenText</tabstop>
+  <tabstop>mKD_InfoTypeCombo</tabstop>
+  <tabstop>mKD_InfoText</tabstop>
+  <tabstop>mKD_InfoLenText</tabstop>
+  <tabstop>mKD_SaltTypeCombo</tabstop>
+  <tabstop>mKD_SaltLenText</tabstop>
+  <tabstop>mKD_SaltText</tabstop>
+  <tabstop>mKD_IterCntText</tabstop>
+  <tabstop>mKD_RText</tabstop>
+  <tabstop>mKD_PText</tabstop>
+  <tabstop>mKD_HashCombo</tabstop>
+  <tabstop>mKD_OutputLenText</tabstop>
+  <tabstop>mKD_OutputText</tabstop>
+  <tabstop>mKW_SrcTypeCombo</tabstop>
+  <tabstop>mKW_SrcLenText</tabstop>
+  <tabstop>mKW_SrcText</tabstop>
+  <tabstop>mKW_KEKTypeCombo</tabstop>
+  <tabstop>mKW_GenKEKBtn</tabstop>
+  <tabstop>mKW_KEKText</tabstop>
+  <tabstop>mKW_KEKLenText</tabstop>
+  <tabstop>mKW_DstLenText</tabstop>
+  <tabstop>mKW_DstText</tabstop>
   <tabstop>mClearDataAllBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>

@@ -198,8 +198,32 @@
          <property name="topMargin">
           <number>0</number>
          </property>
+         <item row="0" column="6">
+          <widget class="QPushButton" name="mImportParamBtn">
+           <property name="text">
+            <string>Import</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="mParamLenCombo">
+           <property name="maximumSize">
+            <size>
+             <width>60</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="2">
-          <spacer name="horizontalSpacer_7">
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>g value</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <spacer name="horizontalSpacer_4">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -212,16 +236,12 @@
           </spacer>
          </item>
          <item row="0" column="3">
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>g value</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="7">
-          <widget class="QPushButton" name="mExportParamBtn">
-           <property name="text">
-            <string>Export</string>
+          <widget class="QComboBox" name="mGCombo">
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>16777215</height>
+            </size>
            </property>
           </widget>
          </item>
@@ -232,13 +252,10 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="4">
-          <widget class="QComboBox" name="mGCombo"/>
-         </item>
-         <item row="0" column="6">
-          <widget class="QPushButton" name="mImportParamBtn">
+         <item row="0" column="7">
+          <widget class="QPushButton" name="mExportParamBtn">
            <property name="text">
-            <string>Import</string>
+            <string>Export</string>
            </property>
           </widget>
          </item>
@@ -248,9 +265,6 @@
             <string>GenParam</string>
            </property>
           </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QComboBox" name="mParamLenCombo"/>
          </item>
         </layout>
        </item>

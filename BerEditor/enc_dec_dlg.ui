@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>570</width>
-    <height>671</height>
+    <height>710</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,40 +19,6 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="0">
-      <widget class="QComboBox" name="mAlgCombo">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>0</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="mModeCombo"/>
-     </item>
-     <item row="0" column="4">
-      <widget class="QRadioButton" name="mEncryptRadio">
-       <property name="text">
-        <string>Encrypt</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QCheckBox" name="mPadCheck">
-       <property name="text">
-        <string>Pad</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="5">
-      <widget class="QRadioButton" name="mDecryptRadio">
-       <property name="text">
-        <string>Decrypt</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="3">
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
@@ -65,6 +31,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="mHeadLabel">
+       <property name="text">
+        <string>Symmetric Encryption Decryption</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -157,10 +130,10 @@
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_3">
+          <widget class="QLabel" name="mInputLabel">
            <property name="minimumSize">
             <size>
-             <width>80</width>
+             <width>100</width>
              <height>0</height>
             </size>
            </property>
@@ -201,6 +174,12 @@
          </property>
          <item row="0" column="0">
           <widget class="QPushButton" name="mInitBtn">
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
             <string>Init</string>
            </property>
@@ -208,6 +187,12 @@
          </item>
          <item row="0" column="1">
           <widget class="QPushButton" name="mUpdateBtn">
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
             <string>Update</string>
            </property>
@@ -222,6 +207,12 @@
          </item>
          <item row="0" column="2">
           <widget class="QPushButton" name="mFinalBtn">
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
             <string>Final</string>
            </property>
@@ -1224,6 +1215,81 @@
     </widget>
    </item>
    <item>
+    <widget class="Line" name="line_6">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_15">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="1">
+      <widget class="QRadioButton" name="mDecryptRadio">
+       <property name="text">
+        <string>Decrypt</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
+      <widget class="QCheckBox" name="mPadCheck">
+       <property name="text">
+        <string>Pad</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QRadioButton" name="mEncryptRadio">
+       <property name="text">
+        <string>Encrypt</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QComboBox" name="mModeCombo"/>
+     </item>
+     <item row="0" column="7">
+      <widget class="QPushButton" name="mRunBtn">
+       <property name="text">
+        <string>Encrypt</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QComboBox" name="mAlgCombo">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="6">
+      <spacer name="horizontalSpacer_8">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="2">
+      <widget class="Line" name="line_4">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <widget class="Line" name="line">
      <property name="maximumSize">
       <size>
@@ -1275,10 +1341,10 @@
       </widget>
      </item>
      <item row="0" column="0">
-      <widget class="QLabel" name="label_9">
+      <widget class="QLabel" name="mOutputLabel">
        <property name="minimumSize">
         <size>
-         <width>80</width>
+         <width>100</width>
          <height>0</height>
         </size>
        </property>
@@ -1455,13 +1521,6 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="mRunBtn">
-       <property name="text">
-        <string>Encrypt</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QPushButton" name="mCloseBtn">
        <property name="text">
         <string>Close</string>
@@ -1473,11 +1532,6 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>mAlgCombo</tabstop>
-  <tabstop>mModeCombo</tabstop>
-  <tabstop>mPadCheck</tabstop>
-  <tabstop>mEncryptRadio</tabstop>
-  <tabstop>mDecryptRadio</tabstop>
   <tabstop>mInputTab</tabstop>
   <tabstop>mInputLenText</tabstop>
   <tabstop>mInputText</tabstop>
@@ -1516,7 +1570,6 @@
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
   <tabstop>mClearDataAllBtn</tabstop>
-  <tabstop>mRunBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>

@@ -50,8 +50,8 @@ private slots:
     void clickFindSrcFile();
     void clickFindDstFile();
 
-    void clickEncrypt();
-    void clickDecrypt();
+    void checkEncrypt();
+    void checkDecrypt();
 
     void fileRunThread();
     void startTask();

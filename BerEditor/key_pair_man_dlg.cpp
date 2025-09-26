@@ -427,10 +427,10 @@ const QString KeyPairManDlg::getTypePathName( qint64 now_t, DerType nType )
 
     QFileInfo priKeyInfo( mPriPathText->text() );
 
-    if( mSavePEMCheck->isChecked() )
-        strExt = "pem";
-    else
+    if( mSaveDERCheck->isChecked() )
         strExt = "der";
+    else
+        strExt = "pem";
 
     if( nType == TypePriKey )
         strName = "private_key";
@@ -472,62 +472,71 @@ int KeyPairManDlg::Save( qint64 tTime, DerType nType, const QString strHex )
 
 int KeyPairManDlg::Save( qint64 tTime, DerType nType, const BIN *pBin )
 {
+    int ret = -1;
     QString strPath = getTypePathName( tTime, nType );
 
-    if( mSavePEMCheck->isChecked() == true )
+    if( mSaveDERCheck->isChecked() == true )
+    {
+        if( nType == TypePriKey )
+        {
+            mPriPathText->setText( strPath );
+        }
+        else if( nType == TypePubKey )
+        {
+            mPubPathText->setText( strPath );
+        }
+        else if( nType == TypeEncPri )
+        {
+            mEncPriPathText->setText( strPath );
+        }
+        else if( nType == TypePriInfo )
+        {
+            mPriInfoPathText->setText( strPath );
+        }
+        else if( nType == TypeCSR )
+        {
+            mCSRPathText->setText( strPath );
+        }
+
+        ret = JS_BIN_fileWrite( pBin, strPath.toLocal8Bit().toStdString().c_str() );
+    }
+    else
     {
         int nPEMType = 0;
 
         if( nType == TypePriKey )
         {
             nPEMType = JS_PEM_TYPE_PRIVATE_KEY;
+            ret = writePriKeyPEM( pBin, strPath );
+            mPriPathText->setText( strPath );
         }
         else if( nType == TypePubKey )
         {
             nPEMType = JS_PEM_TYPE_PUBLIC_KEY;
+            ret = writePubKeyPEM( pBin, strPath );
+            mPubPathText->setText( strPath );
         }
         else if( nType == TypeEncPri )
         {
             nPEMType = JS_PEM_TYPE_ENCRYPTED_PRIVATE_KEY;
+            mEncPriPathText->setText( strPath );
+            ret = JS_BIN_writePEM( pBin, nPEMType, strPath.toLocal8Bit().toStdString().c_str() );
         }
         else if( nType == TypePriInfo )
         {
             nPEMType = JS_PEM_TYPE_PRIVATE_KEY;
+            mPriInfoPathText->setText( strPath );
+            ret = JS_BIN_writePEM( pBin, nPEMType, strPath.toLocal8Bit().toStdString().c_str() );
         }
         else if( nType == TypeCSR )
         {
             nPEMType = JS_PEM_TYPE_CSR;
+            mCSRPathText->setText( strPath );
+            ret = JS_BIN_writePEM( pBin, nPEMType, strPath.toLocal8Bit().toStdString().c_str() );
         }
-
-        JS_BIN_writePEM( pBin, nPEMType, strPath.toLocal8Bit().toStdString().c_str() );
-    }
-    else
-    {
-        JS_BIN_fileWrite( pBin, strPath.toLocal8Bit().toStdString().c_str() );
     }
 
-    if( nType == TypePriKey )
-    {
-        mPriPathText->setText( strPath );
-    }
-    else if( nType == TypePubKey )
-    {
-        mPubPathText->setText( strPath );
-    }
-    else if( nType == TypeEncPri )
-    {
-        mEncPriPathText->setText( strPath );
-    }
-    else if( nType == TypePriInfo )
-    {
-        mPriInfoPathText->setText( strPath );
-    }
-    else if( nType == TypeCSR )
-    {
-        mCSRPathText->setText( strPath );
-    }
-
-    return 0;
+    return ret;
 }
 
 void KeyPairManDlg::clickLGenKeyPair()
@@ -919,6 +928,7 @@ void KeyPairManDlg::clickLRunPubDec()
 
 void KeyPairManDlg::clickSaveToList()
 {
+    int ret = 0;
     BIN binPri = {0,0};
     BIN binPub = {0,0};
 
@@ -953,7 +963,7 @@ void KeyPairManDlg::clickSaveToList()
         if( dir.exists( fullPath ) )
         {
             berApplet->warningBox( tr( "The folder(%1) is already existed" ).arg( strName ), this );
-            return;
+            goto end;
         }
         else
         {
@@ -963,11 +973,21 @@ void KeyPairManDlg::clickSaveToList()
         QString strPriSavePath = QString( "%1/%2" ).arg( fullPath ).arg( kPrivateFile );
         QString strPubSavePath = QString( "%1/%2" ).arg( fullPath ).arg( kPublicFile );
 
-//        JS_BIN_writePEM( &binPri, JS_PEM_TYPE_PRIVATE_KEY, strPriSavePath.toLocal8Bit().toStdString().c_str() );
-//        JS_BIN_writePEM( &binPub, JS_PEM_TYPE_PUBLIC_KEY, strPubSavePath.toLocal8Bit().toStdString().c_str() );
+        ret = writePriKeyPEM( &binPri, strPriSavePath );
+        if( ret <= 0 )
+        {
+            berApplet->warningBox( tr( "fail to write private key"), this );
+            dir.rmdir( fullPath );
+            goto end;
+        }
 
-        writePriKeyPEM( &binPri, strPriSavePath );
-        writePubKeyPEM( &binPub, strPubSavePath );
+        ret = writePubKeyPEM( &binPub, strPubSavePath );
+        if( ret <= 0 )
+        {
+            berApplet->warningBox( tr( "fail to write public key"), this );
+            dir.rmdir( fullPath );
+            goto end;
+        }
 
         loadKeyPairList();
 
@@ -982,6 +1002,7 @@ end :
 
 void KeyPairManDlg::clickMakeCSR()
 {
+    int ret = 0;
     BIN binData = {0,0};
     QString strFile = mPriPathText->text();
 
@@ -1001,9 +1022,15 @@ void KeyPairManDlg::clickMakeCSR()
         time_t now_t = time(NULL);
 
         QString strCSRHex = makeCSR.getCSRHex();
-        Save( now_t, TypeCSR, strCSRHex );
+        ret = Save( now_t, TypeCSR, strCSRHex );
+        if( ret <= 0 )
+        {
+            berApplet->warningBox( tr( "fail to write: %1" ).arg(ret), this );
+            goto end;
+        }
     }
 
+end :
     JS_BIN_reset( &binData );
 }
 
@@ -1080,8 +1107,19 @@ void KeyPairManDlg::clickEncrypt()
         goto end;
     }
 
-    Save( now_t, TypePriInfo, &binInfo );
-    Save( now_t, TypeEncPri, &binEnc );
+    ret = Save( now_t, TypePriInfo, &binInfo );
+    if( ret <= 0 )
+    {
+        berApplet->warningBox( tr( "fail to write: %1" ).arg(ret), this );
+        goto end;
+    }
+
+    ret = Save( now_t, TypeEncPri, &binEnc );
+    if( ret <= 0 )
+    {
+        berApplet->warningBox( tr( "fail to write: %1" ).arg(ret), this );
+        goto end;
+    }
 
 end :
     JS_BIN_reset( &binData );
@@ -1144,7 +1182,12 @@ void KeyPairManDlg::clickDecrypt()
         goto end;
     }
 
-    Save( now_t, TypePriKey, &binDec );
+    ret = Save( now_t, TypePriKey, &binDec );
+    if( ret <= 0 )
+    {
+        berApplet->warningBox( tr( "fail to write: %1" ).arg(ret), this );
+        goto end;
+    }
 
 end :
     JS_BIN_reset( &binData );
@@ -1470,7 +1513,7 @@ void KeyPairManDlg::clickImport()
         if( dir.exists( fullPath ) )
         {
             berApplet->warningBox( tr( "The folder(%1) is already existed" ).arg( strName ), this );
-            return;
+            goto end;
         }
         else
         {

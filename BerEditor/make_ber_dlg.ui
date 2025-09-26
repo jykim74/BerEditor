@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Basic Encoding Rules</string>
+      <string>Basic Encoding Rule Encode</string>
      </property>
     </widget>
    </item>
@@ -352,6 +352,12 @@
      </property>
      <item row="0" column="0">
       <widget class="QLabel" name="label_7">
+       <property name="minimumSize">
+        <size>
+         <width>50</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="text">
         <string>BER</string>
        </property>

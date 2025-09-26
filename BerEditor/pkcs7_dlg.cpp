@@ -29,8 +29,8 @@ PKCS7Dlg::PKCS7Dlg(QWidget *parent) :
     initUI();
 
     connect( mSrcClearBtn, SIGNAL(clicked()), this, SLOT(clearSrc()));
-    connect( mCMSClearBtn, SIGNAL(clicked()), this, SLOT(clearCMS()));
-    connect( mCMSUpBtn, SIGNAL(clicked()), this, SLOT(clickCMSUp()));
+    connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clearOutput()));
+    connect( mOutputUpBtn, SIGNAL(clicked()), this, SLOT(clickOutputUp()));
 
     connect( mEncodeRadio, SIGNAL(clicked()), this, SLOT(checkEncode()));
     connect( mDecodeRadio, SIGNAL(clicked()), this, SLOT(checkDecode()));
@@ -40,8 +40,8 @@ PKCS7Dlg::PKCS7Dlg(QWidget *parent) :
 
     connect( mSrcDecodeBtn, SIGNAL(clicked()), this, SLOT(clickSrcDecode()));
     connect( mSrcTypeBtn, SIGNAL(clicked()), this, SLOT(clickSrcType()));
-    connect( mPKCS7TypeBtn, SIGNAL(clicked()), this, SLOT(clickPKCS7Type()));
-    connect( mCMSDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCMSDecode()));
+    connect( mOutputTypeBtn, SIGNAL(clicked()), this, SLOT(clickOutputType()));
+    connect( mOutputDecodeBtn, SIGNAL(clicked()), this, SLOT(clickOutputDecode()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(clickClose()));
     connect( mSignPriKeyFindBtn, SIGNAL(clicked()), this, SLOT(clickSignPriFind()));
     connect( mSignCertFindBtn, SIGNAL(clicked()), this, SLOT(clickSignCertFind()));
@@ -49,7 +49,7 @@ PKCS7Dlg::PKCS7Dlg(QWidget *parent) :
     connect( mKMCertFindBtn, SIGNAL(clicked()), this, SLOT(clickKMCertFind()));
 
     connect( mSrcText, SIGNAL(textChanged()), this, SLOT(srcChanged()));
-    connect( mCMSText, SIGNAL(textChanged()), this, SLOT(CMSChanged()));
+    connect( mOutputText, SIGNAL(textChanged()), this, SLOT(outputChanged()));
     connect( mSrcTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(srcChanged()));
 
     connect( mSignPriKeyViewBtn, SIGNAL(clicked()), this, SLOT(clickSignPriKeyView()));
@@ -68,7 +68,7 @@ PKCS7Dlg::PKCS7Dlg(QWidget *parent) :
     connect( mKMCertTypeBtn, SIGNAL(clicked()), this, SLOT(clickKMCertType()));
 
     connect( mSrcViewBtn, SIGNAL(clicked()), this, SLOT(clickSrcView()));
-    connect( mPKCS7ViewBtn, SIGNAL(clicked()), this, SLOT(clickPKCS7View()));
+    connect( mOutputViewBtn, SIGNAL(clicked()), this, SLOT(clickOutputView()));
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
     connect( mReadFileBtn, SIGNAL(clicked()), this, SLOT(clickReadFile()));
 
@@ -101,14 +101,14 @@ PKCS7Dlg::PKCS7Dlg(QWidget *parent) :
     mKMCertViewBtn->setFixedWidth(34);
 
     mSrcDecodeBtn->setFixedWidth(34);
-    mPKCS7ViewBtn->setFixedWidth(34);
+    mOutputViewBtn->setFixedWidth(34);
     mSrcViewBtn->setFixedWidth(34);
     mSrcTypeBtn->setFixedWidth(34);
-    mPKCS7TypeBtn->setFixedWidth(34);
+    mOutputTypeBtn->setFixedWidth(34);
 
     mSrcClearBtn->setFixedWidth(34);
-    mCMSClearBtn->setFixedWidth(34);
-    mCMSDecodeBtn->setFixedWidth(34);
+    mOutputClearBtn->setFixedWidth(34);
+    mOutputDecodeBtn->setFixedWidth(34);
 #endif    
 
     resize(minimumSizeHint().width(), minimumSizeHint().height());
@@ -125,13 +125,13 @@ void PKCS7Dlg::initUI()
 {
     mSrcTypeCombo->addItems( kDataTypeList );
     mCmdCombo->addItems( kEncodeList );
-    mCMSText->setPlaceholderText( tr( "Hex value") );
+    mOutputText->setPlaceholderText( tr( "Hex value") );
 
     mSrcTypeCombo->setCurrentText( kDataHex );
     mEncodeRadio->setChecked(true);
     mAutoDetectCheck->setChecked(true);
 
-    mCMSTypeText->setPlaceholderText( tr("Command Name") );
+    mOutputCmdText->setPlaceholderText( tr("Command Name") );
     checkEncode();
     changeCmd();
 }
@@ -277,6 +277,10 @@ end :
 
 void PKCS7Dlg::checkEncode()
 {
+    mHeadLabel->setText( tr( "PKCS7 message encode" ) );
+    mSrcLabel->setText( tr( "Source data" ));
+    mOutputLabel->setText( tr( "CMS data" ) );
+
     mCmdCombo->clear();
     mCmdCombo->setEnabled( true );
     mCmdCombo->addItems( kEncodeList );
@@ -286,13 +290,18 @@ void PKCS7Dlg::checkEncode()
     mSrcViewBtn->setEnabled( false );
     mSrcDecodeBtn->setEnabled( false );
     mSrcTypeBtn->setEnabled( false );
-    mPKCS7ViewBtn->setEnabled( true );
-    mPKCS7TypeBtn->setEnabled( true );
-    mCMSDecodeBtn->setEnabled( true );
+
+    mOutputViewBtn->setEnabled( true );
+    mOutputTypeBtn->setEnabled( true );
+    mOutputDecodeBtn->setEnabled( true );
 }
 
 void PKCS7Dlg::checkDecode()
 {
+    mHeadLabel->setText( tr( "PKCS7 message decode" ) );
+    mSrcLabel->setText( tr( "CMS data" ));
+    mOutputLabel->setText( tr( "Source data" ) );
+
     mCmdCombo->clear();
     mCmdCombo->addItems( kDecodeList );
     mAutoDetectCheck->setEnabled(true);
@@ -306,9 +315,9 @@ void PKCS7Dlg::checkDecode()
     mSrcDecodeBtn->setEnabled( true );
     mSrcTypeBtn->setEnabled( true );
 
-    mPKCS7ViewBtn->setEnabled( false );
-    mPKCS7TypeBtn->setEnabled( false );
-    mCMSDecodeBtn->setEnabled( false );
+    mOutputViewBtn->setEnabled( false );
+    mOutputTypeBtn->setEnabled( false );
+    mOutputDecodeBtn->setEnabled( false );
 }
 
 void PKCS7Dlg::checkAutoDetect()
@@ -323,11 +332,11 @@ void PKCS7Dlg::clickClose()
     close();
 }
 
-void PKCS7Dlg::clickCMSDecode()
+void PKCS7Dlg::clickOutputDecode()
 {
     BIN binOutput = {0,0};
 
-    QString strOutput = mCMSText->toPlainText();
+    QString strOutput = mOutputText->toPlainText();
     getBINFromString( &binOutput, DATA_HEX, strOutput );
 
     berApplet->decodeData( &binOutput );
@@ -448,7 +457,7 @@ void PKCS7Dlg::clickSignedData()
 
     if( ret == JSR_OK )
     {
-        mCMSTypeText->setText( kCmdSignedData );
+        mOutputCmdText->setText( kCmdSignedData );
         strOutput = getHexString( &binOutput );
 
         berApplet->logLine();
@@ -462,7 +471,7 @@ void PKCS7Dlg::clickSignedData()
         berApplet->logLine();
     }
 
-    mCMSText->setPlainText( strOutput );
+    mOutputText->setPlainText( strOutput );
 
 end :
     JS_BIN_reset( &binSrc );
@@ -543,7 +552,7 @@ void PKCS7Dlg::clickEnvelopedData()
 
     if( ret == 0 )
     {
-        mCMSTypeText->setText( kCmdEnvelopedData );
+        mOutputCmdText->setText( kCmdEnvelopedData );
         strOutput = getHexString( &binOutput );
 
         berApplet->logLine();
@@ -556,7 +565,7 @@ void PKCS7Dlg::clickEnvelopedData()
         berApplet->logLine();
     }
 
-    mCMSText->setPlainText( strOutput );
+    mOutputText->setPlainText( strOutput );
 
 end :
     JS_BIN_reset( &binSrc );
@@ -683,7 +692,7 @@ void PKCS7Dlg::clickSignAndEnvloped()
 
     if( ret == 0 )
     {
-        mCMSTypeText->setText( kCmdSignedAndEnveloped );
+        mOutputCmdText->setText( kCmdSignedAndEnveloped );
         strOutput = getHexString( &binOutput );
 
         berApplet->logLine();
@@ -699,7 +708,7 @@ void PKCS7Dlg::clickSignAndEnvloped()
         berApplet->logLine();
     }
 
-    mCMSText->setPlainText( strOutput );
+    mOutputText->setPlainText( strOutput );
 
 end :
     JS_BIN_reset( &binSrc );
@@ -771,7 +780,7 @@ void PKCS7Dlg::clickVerifyData()
     {
         int nDataType = DATA_HEX;
         QString strSrc = getHexString( &binSrc );
-        mCMSTypeText->setText( kCmdVerifyData );
+        mOutputCmdText->setText( kCmdVerifyData );
 
         berApplet->log( QString("SignedData verification result: %1").arg( ret ));
         berApplet->logLine();
@@ -782,7 +791,7 @@ void PKCS7Dlg::clickVerifyData()
         berApplet->log( QString( "Src    : %1" ).arg( strSrc));
         berApplet->logLine();
 
-        mCMSText->setPlainText( strSrc );
+        mOutputText->setPlainText( strSrc );
 
         berApplet->messageBox( tr( "VerifyData Success" ), this );
     }
@@ -870,7 +879,7 @@ void PKCS7Dlg::clickDevelopedData()
     {
         int nDataType = DATA_HEX;
         QString strSrc = getHexString( &binSrc );
-        mCMSTypeText->setText( kCmdDevelopedData );
+        mOutputCmdText->setText( kCmdDevelopedData );
 
         berApplet->logLine();
         berApplet->log( QString( "-- PKCS7 %1 command" ).arg( kCmdDevelopedData ) );
@@ -881,7 +890,7 @@ void PKCS7Dlg::clickDevelopedData()
         berApplet->log( QString( "Src        : %1" ).arg( strSrc ));
         berApplet->logLine();
 
-        mCMSText->setPlainText( strSrc );
+        mOutputText->setPlainText( strSrc );
 
         berApplet->messageBox( tr( "DevelopedData Success" ), this );
     }
@@ -995,7 +1004,7 @@ void PKCS7Dlg::clickDevelopedAndVerify()
     {
         int nDataType = DATA_HEX;
         QString strSrc = getHexString( &binSrc );
-        mCMSTypeText->setText( kCmdDevelopedAndVerify );
+        mOutputCmdText->setText( kCmdDevelopedAndVerify );
 
         berApplet->logLine();
         berApplet->log( QString( "-- PKCS7 %1 command" ).arg( kCmdDevelopedAndVerify ) );
@@ -1007,7 +1016,7 @@ void PKCS7Dlg::clickDevelopedAndVerify()
         berApplet->log( QString( "Src           : %1" ).arg( strSrc ));
         berApplet->logLine();
 
-        mCMSText->setPlainText( strSrc );
+        mOutputText->setPlainText( strSrc );
 
         berApplet->messageBox( tr( "verify and develop data successfully"), this );
     }
@@ -1044,7 +1053,7 @@ void PKCS7Dlg::clickAddSigner()
     if( strCMS.isEmpty() )
     {
         berApplet->warningBox( tr( "Please enter CMS value" ), this );
-        mCMSText->setFocus();
+        mOutputText->setFocus();
         return;
     }
 
@@ -1099,7 +1108,7 @@ void PKCS7Dlg::clickAddSigner()
     if( ret == 0 )
     {
         strOutput = getHexString( &binOutput );
-        mCMSTypeText->setText( kCmdAddSigned );
+        mOutputCmdText->setText( kCmdAddSigned );
 
         berApplet->logLine();
         berApplet->log( QString( "-- PKCS7 %1 command" ).arg( kCmdAddSigned ) );
@@ -1111,7 +1120,7 @@ void PKCS7Dlg::clickAddSigner()
         berApplet->log( QString( "Output      : %1" ).arg( strOutput ));
         berApplet->logLine();
 
-        mCMSText->setPlainText( strOutput );
+        mOutputText->setPlainText( strOutput );
 
         berApplet->messageBox( tr( "Signer is added successfully"), this );
     }
@@ -1131,10 +1140,10 @@ void PKCS7Dlg::srcChanged()
     mSrcLenText->setText( QString("%1").arg(strLen));
 }
 
-void PKCS7Dlg::CMSChanged()
+void PKCS7Dlg::outputChanged()
 {
-    QString strLen = getDataLenString( DATA_HEX, mCMSText->toPlainText() );
-    mCMSLenText->setText( QString("%1").arg(strLen));
+    QString strLen = getDataLenString( DATA_HEX, mOutputText->toPlainText() );
+    mOutputLenText->setText( QString("%1").arg(strLen));
 }
 
 void PKCS7Dlg::clearSrc()
@@ -1142,9 +1151,9 @@ void PKCS7Dlg::clearSrc()
     mSrcText->clear();
 }
 
-void PKCS7Dlg::clearCMS()
+void PKCS7Dlg::clearOutput()
 {
-    mCMSText->clear();
+    mOutputText->clear();
 }
 
 void PKCS7Dlg::clickSignPriKeyDecode()
@@ -1474,17 +1483,17 @@ void PKCS7Dlg::clickSrcType()
     JS_BIN_reset( &binCMS );
 }
 
-void PKCS7Dlg::clickPKCS7Type()
+void PKCS7Dlg::clickOutputType()
 {
     BIN binCMS = {0,0};
 
     int nCMSType = -1;
-    QString strCMS = mCMSText->toPlainText();
+    QString strCMS = mOutputText->toPlainText();
 
     if( strCMS.isEmpty() )
     {
         berApplet->warningBox( tr( "Please enter CMS value" ), this );
-        mCMSText->setFocus();
+        mOutputText->setFocus();
         return;
     }
 
@@ -1502,19 +1511,19 @@ void PKCS7Dlg::clickPKCS7Type()
     JS_BIN_reset( &binCMS );
 }
 
-void PKCS7Dlg::clickPKCS7View()
+void PKCS7Dlg::clickOutputView()
 {
     BIN binCMS = {0,0};
 
     int nCMSType = -1;
-    QString strCMS = mCMSText->toPlainText();
+    QString strCMS = mOutputText->toPlainText();
     CMSInfoDlg cmsInfo;
 //    cmsInfo.setPKCS7();
 
     if( strCMS.isEmpty() )
     {
         berApplet->warningBox( tr( "Please enter CMS value" ), this );
-        mCMSText->setFocus();
+        mOutputText->setFocus();
         return;
     }
 
@@ -1537,9 +1546,9 @@ void PKCS7Dlg::clickPKCS7View()
 void PKCS7Dlg::clickClearDataAll()
 {
     mSrcText->clear();
-    mCMSText->clear();
+    mOutputText->clear();
 
-    mCMSTypeText->clear();
+    mOutputCmdText->clear();
 
     mSignPriKeyPathText->clear();
     mSignCertPathText->clear();
@@ -1620,7 +1629,7 @@ void PKCS7Dlg::clickDigest()
 
     if( ret == 0 )
     {
-        mCMSTypeText->setText( kCmdDigest );
+        mOutputCmdText->setText( kCmdDigest );
         strOutput = getHexString( &binOutput );
 
         berApplet->logLine();
@@ -1632,7 +1641,7 @@ void PKCS7Dlg::clickDigest()
         berApplet->logLine();
     }
 
-    mCMSText->setPlainText( strOutput );
+    mOutputText->setPlainText( strOutput );
 
 end :
     JS_BIN_reset( &binSrc );
@@ -1676,7 +1685,7 @@ void PKCS7Dlg::clickData()
     if( ret == 0 )
     {
         strOutput = getHexString( &binOutput );
-        mCMSTypeText->setText( kCmdData );
+        mOutputCmdText->setText( kCmdData );
 
         berApplet->logLine();
         berApplet->log( QString( "-- PKCS7 %1 command" ).arg( kCmdData ) );
@@ -1685,7 +1694,7 @@ void PKCS7Dlg::clickData()
         berApplet->logLine();
     }
 
-    mCMSText->setPlainText( strOutput );
+    mOutputText->setPlainText( strOutput );
 
 end :
     JS_BIN_reset( &binSrc );
@@ -1734,7 +1743,7 @@ void PKCS7Dlg::clickGetData()
 
     if( ret == 0 )
     {
-        mCMSTypeText->setText( kCmdGetData );
+        mOutputCmdText->setText( kCmdGetData );
         strOutput = getHexString( &sData.binData );
 
         berApplet->logLine();
@@ -1744,7 +1753,7 @@ void PKCS7Dlg::clickGetData()
         berApplet->logLine();
     }
 
-    mCMSText->setPlainText( strOutput );
+    mOutputText->setPlainText( strOutput );
 
 end :
     JS_BIN_reset( &binSrc );
@@ -1792,7 +1801,7 @@ void PKCS7Dlg::clickGetDigest()
 
     if( ret == JSR_OK )
     {
-        mCMSTypeText->setText( kCmdGetDigest );
+        mOutputCmdText->setText( kCmdGetDigest );
         strOutput = getHexString( &sData.binContent );
 
         berApplet->logLine();
@@ -1805,20 +1814,20 @@ void PKCS7Dlg::clickGetDigest()
         berApplet->logLine();
     }
 
-    mCMSText->setPlainText( strOutput );
+    mOutputText->setPlainText( strOutput );
 
 end :
     JS_BIN_reset( &binSrc );
     JS_PKCS7_resetDigestData( &sData );
 }
 
-void PKCS7Dlg::clickCMSUp()
+void PKCS7Dlg::clickOutputUp()
 {
-    QString strCMS = mCMSText->toPlainText();
+    QString strOutput = mOutputText->toPlainText();
 
     mSrcTypeCombo->setCurrentText(kDataHex);
-    mSrcText->setPlainText( strCMS );
-    mCMSText->clear();
+    mSrcText->setPlainText( strOutput );
+    mOutputText->clear();
 }
 
 void PKCS7Dlg::changeCmd()
@@ -1875,7 +1884,7 @@ void PKCS7Dlg::clickRun()
         }
         else if( strCmd == kCmdAddSigned )
         {
-        clickAddSigner();
+            clickAddSigner();
         }
     }
     else

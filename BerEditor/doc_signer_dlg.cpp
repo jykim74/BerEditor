@@ -61,17 +61,17 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mCMSCmdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeCMSCmd()));
     connect( mCMSRunBtn, SIGNAL(clicked(bool)), this, SLOT(clickCMSRun()));
 
-    connect( mCMSClearBtn, SIGNAL(clicked()), this, SLOT(clickCMSClear()));
-    connect( mCMSDataText, SIGNAL(textChanged()), this, SLOT(changeCMSData()));
+    connect( mCMSSrcClearBtn, SIGNAL(clicked()), this, SLOT(clickCMSSrcClear()));
+    connect( mCMSSrcText, SIGNAL(textChanged()), this, SLOT(changeCMSSrc()));
     connect( mCMSOutputText, SIGNAL(textChanged()), this, SLOT(changeCMSOutput()));
 
-    connect( mCMSDataViewBtn, SIGNAL(clicked()), this, SLOT(clickCMSDataView()));
-    connect( mCMSViewBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputView()));
+    connect( mCMSSrcViewBtn, SIGNAL(clicked()), this, SLOT(clickCMSSrcView()));
+    connect( mCMSOutputViewBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputView()));
     connect( mCMSOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputClear()));
     connect( mCMSOutputUpBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputUp()));
-    connect( mCMSDataDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCMSDataDecode()));
+    connect( mCMSSrcDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCMSSrcDecode()));
     connect( mCMSOutputDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputDecode()));
-    connect( mCMSDataTypeBtn, SIGNAL(clicked()), this, SLOT(clickCMSDataType()));
+    connect( mCMSSrcTypeBtn, SIGNAL(clicked()), this, SLOT(clickCMSSrcType()));
     connect( mCMSOutputTypeBtn, SIGNAL(clicked()), this, SLOT(clickCMSOutputType()));
 
     connect( mJSONPayloadText, SIGNAL(textChanged()), this, SLOT(changeJSON_Payload()));
@@ -102,10 +102,10 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
 
-    mCMSDataDecodeBtn->setFixedWidth(34);
-    mCMSDataViewBtn->setFixedWidth(34);
-    mCMSViewBtn->setFixedWidth(34);
-    mCMSDataTypeBtn->setFixedWidth(34);
+    mCMSSrcDecodeBtn->setFixedWidth(34);
+    mCMSSrcViewBtn->setFixedWidth(34);
+    mCMSOutputViewBtn->setFixedWidth(34);
+    mCMSSrcTypeBtn->setFixedWidth(34);
     mCMSOutputTypeBtn->setFixedWidth(34);
 
     mCMSClearBtn->setFixedWidth(34);
@@ -144,7 +144,7 @@ void DocSignerDlg::clickClearAll()
 {
     mSrcPathText->clear();
     mDstPathText->clear();
-    mCMSDataText->clear();
+    mCMSSrcText->clear();
     mCMSCmdNameText->clear();
     mCMSOutputText->clear();
     mJSONPayloadText->clear();
@@ -164,15 +164,15 @@ void DocSignerDlg::checkCMSEncode()
     mCMSAutoDetectCheck->setEnabled(false);
     mCMSRunBtn->setText( tr( "Encode" ));
 
-    mCMSDataLabel->setText( tr("Data") );
-    mCMSOutputLabel->setText( tr("CMS") );
+    mCMSSrcLabel->setText( tr("Source data") );
+    mCMSOutputLabel->setText( tr("CMS data") );
 
-    mCMSDataViewBtn->setEnabled( false );
-    mCMSDataDecodeBtn->setEnabled( false );
-    mCMSDataTypeBtn->setEnabled( false );
+    mCMSSrcViewBtn->setEnabled( false );
+    mCMSSrcDecodeBtn->setEnabled( false );
+    mCMSSrcTypeBtn->setEnabled( false );
 
     mCMSOutputDecodeBtn->setEnabled( true );
-    mCMSViewBtn->setEnabled( true );
+    mCMSOutputViewBtn->setEnabled( true );
     mCMSOutputTypeBtn->setEnabled( true );
 }
 
@@ -187,15 +187,15 @@ void DocSignerDlg::checkCMSDecode()
     mCMSCmdCombo->setEnabled( !bVal );
     mCMSRunBtn->setText( tr("Decode" ));
 
-    mCMSDataLabel->setText( tr("CMS") );
-    mCMSOutputLabel->setText( tr("Data") );
+    mCMSSrcLabel->setText( tr("CMS data") );
+    mCMSOutputLabel->setText( tr("Source data") );
 
-    mCMSDataViewBtn->setEnabled( true );
-    mCMSDataDecodeBtn->setEnabled( true );
-    mCMSDataTypeBtn->setEnabled( true );
+    mCMSSrcViewBtn->setEnabled( true );
+    mCMSSrcDecodeBtn->setEnabled( true );
+    mCMSSrcTypeBtn->setEnabled( true );
 
     mCMSOutputDecodeBtn->setEnabled( false );
-    mCMSViewBtn->setEnabled( false );
+    mCMSOutputViewBtn->setEnabled( false );
     mCMSOutputTypeBtn->setEnabled( false );
 }
 
@@ -234,8 +234,8 @@ void DocSignerDlg::checkSrcFile()
     mSrcPathText->setEnabled( bVal );
     mFindSrcPathBtn->setEnabled( bVal );
 
-    mCMSDataText->setEnabled( !bVal );
-    mCMSDataLenText->setEnabled( !bVal );
+    mCMSSrcText->setEnabled( !bVal );
+    mCMSSrcLenText->setEnabled( !bVal );
 
     mJSONPayloadText->setEnabled( !bVal );
     mJSONPayloadLenText->setEnabled( !bVal );
@@ -302,12 +302,12 @@ void DocSignerDlg::clickTSP()
     tspDlg.exec();
 }
 
-void DocSignerDlg::changeCMSData()
+void DocSignerDlg::changeCMSSrc()
 {
-    QString strType = mCMSDataTypeCombo->currentText();
-    QString strData = mCMSDataText->toPlainText();
+    QString strType = mCMSSrcTypeCombo->currentText();
+    QString strData = mCMSSrcText->toPlainText();
     QString strLen = getDataLenString( strType, strData );
-    mCMSDataLenText->setText( strLen );
+    mCMSSrcLenText->setText( strLen );
 }
 
 void DocSignerDlg::changeCMSOutput()
@@ -317,16 +317,16 @@ void DocSignerDlg::changeCMSOutput()
     mCMSOutputLenText->setText( strLen );
 }
 
-void DocSignerDlg::clickCMSClear()
+void DocSignerDlg::clickCMSSrcClear()
 {
-    mCMSDataText->clear();
+    mCMSSrcText->clear();
 }
 
 void DocSignerDlg::clickCMSOutputUp()
 {
     QString strOutput = mCMSOutputText->toPlainText();
-    mCMSDataTypeCombo->setCurrentText( "Hex" );
-    mCMSDataText->setPlainText( strOutput );
+    mCMSSrcTypeCombo->setCurrentText( kDataHex );
+    mCMSSrcText->setPlainText( strOutput );
 
     mCMSOutputText->clear();
 }
@@ -355,7 +355,7 @@ end :
     JS_BIN_reset( &binData );
 }
 
-void DocSignerDlg::clickCMSDataView()
+void DocSignerDlg::clickCMSSrcView()
 {
     int ret = 0;
     BIN binSrc = {0,0};
@@ -378,7 +378,7 @@ end :
     JS_BIN_reset( &binSrc );
 }
 
-void DocSignerDlg::clickCMSDataType()
+void DocSignerDlg::clickCMSSrcType()
 {
     int ret = 0;
     BIN binSrc = {0,0};
@@ -426,7 +426,7 @@ void DocSignerDlg::clickCMSOutputClear()
     mCMSOutputText->clear();
 }
 
-void DocSignerDlg::clickCMSDataDecode()
+void DocSignerDlg::clickCMSSrcDecode()
 {
     BIN binSrc = {0,0};
 
@@ -469,8 +469,8 @@ void DocSignerDlg::initUI()
     mTabSigner->setCurrentIndex(0);
 
     mCMSCipherCombo->addItems( kCipherList );
-    mCMSDataTypeCombo->addItems( kDataTypeList );
-    mCMSDataTypeCombo->setCurrentText( kDataHex );
+    mCMSSrcTypeCombo->addItems( kDataTypeList );
+    mCMSSrcTypeCombo->setCurrentText( kDataHex );
 
     mXMLDataText->setPlaceholderText( tr("data for encryption" ));
 
@@ -531,13 +531,13 @@ int DocSignerDlg::readCMSSrc( BIN *pData )
     }
     else
     {
-        QString strData = mCMSDataText->toPlainText();
-        QString strType = mCMSDataTypeCombo->currentText();
+        QString strData = mCMSSrcText->toPlainText();
+        QString strType = mCMSSrcTypeCombo->currentText();
 
         if( strData.length() < 1 )
         {
-            berApplet->warningBox( tr( "Enter a data" ), this );
-            mCMSDataText->setFocus();
+            berApplet->warningBox( tr( "Enter a source data" ), this );
+            mCMSSrcText->setFocus();
             return -2;
         }
 
@@ -637,13 +637,13 @@ void DocSignerDlg::clickCMSRun()
             }
             else
             {
-                QString strData = mCMSDataText->toPlainText();
-                QString strType = mCMSDataTypeCombo->currentText();
+                QString strData = mCMSSrcText->toPlainText();
+                QString strType = mCMSSrcTypeCombo->currentText();
 
                 if( strData.length() < 1 )
                 {
-                    berApplet->warningBox( tr( "Enter a CMS" ), this );
-                    mCMSDataText->setFocus();
+                    berApplet->warningBox( tr( "Enter a CMS data" ), this );
+                    mCMSSrcText->setFocus();
                     return;
                 }
 

@@ -48,7 +48,7 @@ private slots:
     void checkAutoDetect();
 
     void clickClose();
-    void clickCMSDecode();
+    void clickOutputDecode();
     void clickSignPriFind();
     void clickSignCertFind();
     void clickKMPriFind();
@@ -82,16 +82,16 @@ private slots:
     void clickKMCertType();
 
     void srcChanged();
-    void CMSChanged();
+    void outputChanged();
 
     void clearSrc();
-    void clearCMS();
+    void clearOutput();
 
     void clickSrcView();
     void clickSrcDecode();
     void clickSrcType();
-    void clickPKCS7Type();
-    void clickPKCS7View();
+    void clickOutputType();
+    void clickOutputView();
     void clickClearDataAll();
     void clickReadFile();
 
@@ -100,7 +100,7 @@ private slots:
 
 
 
-    void clickCMSUp();
+    void clickOutputUp();
 
     void changeCmd();
     void clickRun();

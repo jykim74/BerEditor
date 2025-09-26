@@ -2583,12 +2583,12 @@ void MainWindow::runSignVerify( bool bSign, bool bEncPri, const QString strPriPa
     if( bSign == true )
     {
         sign_verify_dlg_->mSignRadio->setChecked(true);
-        sign_verify_dlg_->clickSign();
+        sign_verify_dlg_->checkSign();
     }
     else
     {
         sign_verify_dlg_->mVerifyRadio->setChecked(true);
-        sign_verify_dlg_->clickVerify();
+        sign_verify_dlg_->checkVerify();
     }
 
     sign_verify_dlg_->show();
@@ -2613,13 +2613,13 @@ void MainWindow::runPubEncDec( bool bEnc, bool bEncPri, const QString strPriPath
     {
         pub_enc_dec_dlg_->mEncryptRadio->setChecked(true);
 
-        pub_enc_dec_dlg_->clickEncrypt();
+        pub_enc_dec_dlg_->checkEncrypt();
     }
     else
     {
         pub_enc_dec_dlg_->mDecryptRadio->setChecked(true);
 
-        pub_enc_dec_dlg_->clickDecrypt();
+        pub_enc_dec_dlg_->checkDecrypt();
     }
 
     pub_enc_dec_dlg_->show();

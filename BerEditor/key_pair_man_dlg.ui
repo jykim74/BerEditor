@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>570</width>
-    <height>654</height>
+    <height>489</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -125,7 +125,7 @@
    <item>
     <widget class="QTabWidget" name="mTabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tabList">
       <attribute name="title">
@@ -290,9 +290,9 @@
           <number>0</number>
          </property>
          <item row="0" column="2">
-          <widget class="QCheckBox" name="mSavePEMCheck">
+          <widget class="QCheckBox" name="mSaveDERCheck">
            <property name="text">
-            <string>Save as PEM</string>
+            <string>Save as DER</string>
            </property>
           </widget>
          </item>
@@ -1013,7 +1013,7 @@
   <tabstop>mLViewPubKeyBtn</tabstop>
   <tabstop>mLRunPubEncBtn</tabstop>
   <tabstop>mLRunPubDecBtn</tabstop>
-  <tabstop>mSavePEMCheck</tabstop>
+  <tabstop>mSaveDERCheck</tabstop>
   <tabstop>mPriPathText</tabstop>
   <tabstop>mFindPriKeyBtn</tabstop>
   <tabstop>mPriClearBtn</tabstop>

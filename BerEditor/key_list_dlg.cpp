@@ -277,6 +277,7 @@ void KeyListDlg::loadKeyList()
 
 void KeyListDlg::clickKeyAdd()
 {
+    int ret = -1;
     QString strPath = berApplet->settingsMgr()->keyListPath();
 
     KeyAddDlg keyAdd;
@@ -310,7 +311,12 @@ void KeyListDlg::clickKeyAdd()
         strInfo += QString( "IV: %1\n" ).arg( getHexString( &binIV ));
 
         JS_BIN_set( &binData, (unsigned char *)strInfo.toStdString().c_str(), strInfo.length() );
-        JS_BIN_fileWrite( &binData, fullPath.toLocal8Bit().toStdString().c_str() );
+        ret = JS_BIN_fileWrite( &binData, fullPath.toLocal8Bit().toStdString().c_str() );
+
+        if( ret <= 0 )
+        {
+            berApplet->warningBox( tr( "fail to write key: %1" ).arg(ret), this );
+        }
 
         JS_BIN_reset( &binIV );
         JS_BIN_reset( &binData );
