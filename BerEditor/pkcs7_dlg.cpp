@@ -339,7 +339,7 @@ void PKCS7Dlg::clickOutputDecode()
     QString strOutput = mOutputText->toPlainText();
     getBINFromString( &binOutput, DATA_HEX, strOutput );
 
-    berApplet->decodeData( &binOutput );
+    berApplet->decodeTitle( &binOutput, "PKCS#7 Message" );
 
     JS_BIN_reset( &binOutput );
 }
@@ -1450,7 +1450,7 @@ void PKCS7Dlg::clickSrcDecode()
 
     getBINFromString( &binSrc, strType, strSrc );
 
-    berApplet->decodeData( &binSrc );
+    berApplet->decodeTitle( &binSrc, "PKCS#7 Message" );
 
     JS_BIN_reset( &binSrc );
 }

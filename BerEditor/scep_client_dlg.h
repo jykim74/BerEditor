@@ -19,6 +19,7 @@ public:
 
 private slots:
     void clickClearURL();
+    void clickMake();
 
     void findCACert();
     void findCert();
@@ -58,6 +59,7 @@ private slots:
 
     void checkEncPriKey();
 private:
+    void initUI();
     void initialize();
 
     QStringList getUsedURL();

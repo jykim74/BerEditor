@@ -19,21 +19,30 @@
 
 const QString kCMPUsedURL = "CMPUsedURL";
 
+const QString kCMP_GENM = "GENM";
+const QString kCMP_IR = "IR";
+const QString kCMP_CR = "CR";
+const QString kCMP_P10CR = "P10CR";
+const QString kCMP_SignGENM = "SignGENM";
+const QString kCMP_KUR = "KUR";
+const QString kCMP_RR = "RR";
+
+const QStringList kCMPCmdList = {
+    kCMP_GENM, kCMP_IR, kCMP_CR, kCMP_P10CR,
+    kCMP_SignGENM, kCMP_KUR, kCMP_RR
+};
+
 CMPClientDlg::CMPClientDlg(QWidget *parent)
     : QDialog(parent)
 {
     setupUi(this);
+    initUI();
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mURLClearBtn, SIGNAL(clicked()), this, SLOT(clickClearURL()));
+    connect( mRunBtn, SIGNAL(clicked(bool)), this, SLOT(clickRun()));
+    connect( mCmdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeCmd()));
 
-    connect( mGENMBtn, SIGNAL(clicked()), this, SLOT(clickGENM()));
-    connect( mIRBtn, SIGNAL(clicked()), this, SLOT(clickIR()));
-    connect( mCRBtn, SIGNAL(clicked()), this, SLOT(clickCR()));
-    connect( mP10CRBtn, SIGNAL(clicked()), this, SLOT(clickP10CR()));
-    connect( mSignGENMBtn, SIGNAL(clicked()), this, SLOT(clickSignGENM()));
-    connect( mKURBtn, SIGNAL(clicked()), this, SLOT(clickKUR()));
-    connect( mRRBtn, SIGNAL(clicked()), this, SLOT(clickRR()));
     connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clickClearAll()));
 
     connect( mFindCACertBtn, SIGNAL(clicked()), this, SLOT(findCACert()));
@@ -89,7 +98,7 @@ CMPClientDlg::CMPClientDlg(QWidget *parent)
 #endif
     resize(minimumSizeHint().width(), minimumSizeHint().height());
     initialize();
-    mGENMBtn->setDefault(true);
+    mRunBtn->setDefault(true);
 }
 
 CMPClientDlg::~CMPClientDlg()
@@ -103,6 +112,11 @@ void CMPClientDlg::checkEncPriKey()
 
     mPasswdLabel->setEnabled(bVal);
     mPasswdText->setEnabled(bVal);
+}
+
+void CMPClientDlg::initUI()
+{
+    mCmdCombo->addItems( kCMPCmdList );
 }
 
 void CMPClientDlg::initialize()
@@ -163,6 +177,57 @@ void CMPClientDlg::clickClearURL()
     mURLCombo->clear();
 
     berApplet->log( "clear used URLs" );
+}
+
+void CMPClientDlg::changeCmd()
+{
+    QString strCmd = mCmdCombo->currentText();
+
+    if( strCmd == kCMP_SignGENM || strCmd == kCMP_KUR || strCmd == kCMP_RR )
+    {
+        mRefNumLabel->setEnabled(false);
+        mRefNumText->setEnabled(false);
+        mAuthCodeText->setEnabled(false);
+        mAuthCodeLabel->setEnabled(false);
+    }
+    else
+    {
+        mRefNumLabel->setEnabled(true);
+        mRefNumText->setEnabled(true);
+        mAuthCodeText->setEnabled(true);
+        mAuthCodeLabel->setEnabled(true);
+    }
+
+    if( strCmd == kCMP_IR || strCmd == kCMP_CR )
+    {
+        mSubjectDNLabel->setEnabled( true );
+        mSubjectDNText->setEnabled( true );
+    }
+    else
+    {
+        mSubjectDNLabel->setEnabled( false );
+        mSubjectDNText->setEnabled( false );
+    }
+}
+
+void CMPClientDlg::clickRun()
+{
+    QString strCmd = mCmdCombo->currentText();
+
+    if( strCmd == kCMP_GENM )
+        clickGENM();
+    else if( strCmd == kCMP_IR )
+        clickIR();
+    else if( strCmd == kCMP_CR )
+        clickCR();
+    else if( strCmd == kCMP_P10CR )
+        clickP10CR();
+    else if( strCmd == kCMP_SignGENM )
+        clickSignGENM();
+    else if( strCmd == kCMP_KUR )
+        clickKUR();
+    else if( strCmd == kCMP_RR )
+        clickRR();
 }
 
 void CMPClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
@@ -433,7 +498,7 @@ void CMPClientDlg::decodeRequest()
 
     JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
 
-    berApplet->decodeData( &binData, "CMP Request" );
+    berApplet->decodeTitle( &binData, "CMP Request" );
 
     JS_BIN_reset( &binData );
 }
@@ -458,7 +523,7 @@ void CMPClientDlg::decodeResponse()
 
     JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
 
-    berApplet->decodeData( &binData, "CMP Response" );
+    berApplet->decodeTitle( &binData, "CMP Response" );
 
     JS_BIN_reset( &binData );
 }

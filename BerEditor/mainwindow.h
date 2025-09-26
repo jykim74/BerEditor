@@ -106,6 +106,8 @@ public:
     void useLog( bool bEnable = true );
 
     int decodeData( const BIN *pData, const QString strPath = "" );
+    int decodeTitle( const BIN *pData, const QString strTitle = "" );
+
     int decodeTTLV( const BIN *pData );
     bool isTTLV();
 

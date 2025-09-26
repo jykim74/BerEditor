@@ -177,8 +177,7 @@ void TSPClientDlg::decodeRequest()
     }
 
     JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
-
-    berApplet->decodeData( &binData, "TSP Request" );
+    berApplet->decodeTitle( &binData, "TSP Request"  );
 
     JS_BIN_reset( &binData );
 }
@@ -196,8 +195,7 @@ void TSPClientDlg::decodeResponse()
     }
 
     JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
-
-    berApplet->decodeData( &binData, "TSP Response" );
+    berApplet->decodeTitle( &binData, "TSP Response" );
 
     JS_BIN_reset( &binData );
 }

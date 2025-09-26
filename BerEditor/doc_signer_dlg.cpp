@@ -434,7 +434,7 @@ void DocSignerDlg::clickCMSSrcDecode()
     ret = readCMSSrc( &binSrc );
     if( ret != 0 ) goto end;
 
-    berApplet->decodeData( &binSrc );
+    berApplet->decodeTitle( &binSrc, "CMS Message" );
 
 end :
     JS_BIN_reset( &binSrc );
@@ -447,7 +447,7 @@ void DocSignerDlg::clickCMSOutputDecode()
     int ret = readCMSOutput( &binOut );
     if( ret != 0 ) goto end;
 
-    berApplet->decodeData( &binOut );
+    berApplet->decodeTitle( &binOut, "CMS Message" );
 
 end :
     JS_BIN_reset( &binOut );

@@ -842,7 +842,7 @@ void OCSPClientDlg::decodeRequest()
 
     JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
 
-    berApplet->decodeData( &binData, "OCSP Request" );
+    berApplet->decodeTitle( &binData, "OCSP Request" );
 
     JS_BIN_reset( &binData );
 }
@@ -861,7 +861,7 @@ void OCSPClientDlg::decodeResponse()
 
     JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
 
-    berApplet->decodeData( &binData, "OCSP Response" );
+    berApplet->decodeTitle( &binData, "OCSP Response" );
 
     JS_BIN_reset( &binData );
 }

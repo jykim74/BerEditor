@@ -3546,6 +3546,21 @@ int MainWindow::decodeData( const BIN *pData, const QString strPath )
     return ret;
 }
 
+int MainWindow::decodeTitle( const BIN *pData, const QString strTitle )
+{
+    int ret = 0;
+    if( pData == NULL || pData->nLen <= 0 )
+    {
+        berApplet->warningBox( tr( "There is no data"), this );
+        return -1;
+    }
+
+    ret = openBer( pData );
+    setTitle( QString( strTitle ));
+
+    return ret;
+}
+
 int MainWindow::decodeTTLV( const BIN *pData )
 {
     if( pData == NULL || pData->nLen <= 0 )

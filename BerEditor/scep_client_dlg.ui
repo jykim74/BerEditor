@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>614</width>
-    <height>808</height>
+    <height>811</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -156,6 +156,18 @@
       <bool>false</bool>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="leftMargin">
+       <number>6</number>
+      </property>
+      <property name="topMargin">
+       <number>6</number>
+      </property>
+      <property name="rightMargin">
+       <number>6</number>
+      </property>
+      <property name="bottomMargin">
+       <number>6</number>
+      </property>
       <item>
        <layout class="QGridLayout" name="gridLayout_9">
         <item row="0" column="2">
@@ -434,11 +446,88 @@
     </widget>
    </item>
    <item>
+    <layout class="QGridLayout" name="gridLayout_7">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="2">
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>Command</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QComboBox" name="mCmdCombo"/>
+     </item>
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mMakeBtn">
+       <property name="text">
+        <string>Make</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mGetCABtn">
+       <property name="text">
+        <string>GetCA</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer_5">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_8">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QGridLayout" name="gridLayout_3">
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="4">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Request</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="5">
       <widget class="QLineEdit" name="mRequestLenText">
        <property name="minimumSize">
         <size>
@@ -497,32 +586,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="minimumSize">
-        <size>
-         <width>80</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Request</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
      <item row="0" column="2">
       <widget class="QPushButton" name="mRequestDecodeBtn">
        <property name="maximumSize">
@@ -533,6 +596,13 @@
        </property>
        <property name="text">
         <string>D</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mSendBtn">
+       <property name="text">
+        <string>Send</string>
        </property>
       </widget>
      </item>
@@ -586,68 +656,6 @@
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout_5">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="mGetCABtn">
-       <property name="text">
-        <string>GetCA</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <spacer name="horizontalSpacer_4">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mMakeUpdateBtn">
-       <property name="text">
-        <string>MakeUpdate</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mMakeIssueBtn">
-       <property name="text">
-        <string>MakeIssue</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="5">
-      <widget class="QPushButton" name="mSendBtn">
-       <property name="text">
-        <string>Send</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mMakeGetCRLBtn">
-       <property name="text">
-        <string>MakeGetCRL</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="6">
-      <widget class="QPushButton" name="mVerifyBtn">
-       <property name="text">
-        <string>Verify</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
     <widget class="Line" name="line_6">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -659,7 +667,7 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="4">
+     <item row="0" column="5">
       <widget class="QLineEdit" name="mResponseLenText">
        <property name="minimumSize">
         <size>
@@ -705,21 +713,8 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
-      <spacer name="horizontalSpacer_3">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mResponseClearBtn">
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mResponseDecodeBtn">
        <property name="maximumSize">
         <size>
          <width>20</width>
@@ -727,7 +722,7 @@
         </size>
        </property>
        <property name="text">
-        <string>C</string>
+        <string>D</string>
        </property>
       </widget>
      </item>
@@ -744,8 +739,8 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mResponseDecodeBtn">
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mResponseClearBtn">
        <property name="maximumSize">
         <size>
          <width>20</width>
@@ -753,7 +748,27 @@
         </size>
        </property>
        <property name="text">
-        <string>D</string>
+        <string>C</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mVerifyBtn">
+       <property name="text">
+        <string>Verify</string>
        </property>
       </widget>
      </item>
@@ -862,12 +877,6 @@
   <tabstop>mRequestDecodeBtn</tabstop>
   <tabstop>mRequestLenText</tabstop>
   <tabstop>mRequestText</tabstop>
-  <tabstop>mGetCABtn</tabstop>
-  <tabstop>mMakeIssueBtn</tabstop>
-  <tabstop>mMakeUpdateBtn</tabstop>
-  <tabstop>mMakeGetCRLBtn</tabstop>
-  <tabstop>mSendBtn</tabstop>
-  <tabstop>mVerifyBtn</tabstop>
   <tabstop>mResponseClearBtn</tabstop>
   <tabstop>mResponseDecodeBtn</tabstop>
   <tabstop>mResponseLenText</tabstop>

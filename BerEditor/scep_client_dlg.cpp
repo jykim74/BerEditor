@@ -19,14 +19,22 @@
 
 const QString kSCEPUsedURL = "SCEPUsedURL";
 
+const QString kSCEP_GET_CA = "GetCA";
+const QString kSCEP_ISSUE = "Issue";
+const QString kSCEP_UPDATE = "Update";
+const QString kSCEP_GET_CRL = "GetCRL";
+
+const QStringList kSCEPCmdList = { kSCEP_ISSUE, kSCEP_UPDATE, kSCEP_GET_CRL };
+
 SCEPClientDlg::SCEPClientDlg(QWidget *parent)
     : QDialog(parent)
 {
     setupUi(this);
-
+    initUI();
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clickClearAll()));
+    connect( mMakeBtn, SIGNAL(clicked()), this, SLOT(clickMake()));
 
     connect( mFindCACertBtn, SIGNAL(clicked()), this, SLOT(findCACert()));
     connect( mCACertViewBtn, SIGNAL(clicked()), this, SLOT(viewCACert()));
@@ -50,9 +58,6 @@ SCEPClientDlg::SCEPClientDlg(QWidget *parent)
     connect( mResponseDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeResponse()));
 
     connect( mGetCABtn, SIGNAL(clicked()), this, SLOT(clickGetCA()));
-    connect( mMakeIssueBtn, SIGNAL(clicked()), this, SLOT(clickMakeIssue()));
-    connect( mMakeUpdateBtn, SIGNAL(clicked()), this, SLOT(clickMakeUpdate()));
-    connect( mMakeGetCRLBtn, SIGNAL(clicked()), this, SLOT(clickMakeGetCRL()));
     connect( mSendBtn, SIGNAL(clicked()), this, SLOT(clickSend()));
     connect( mVerifyBtn, SIGNAL(clicked()), this, SLOT(clickVerify()));
 
@@ -105,6 +110,11 @@ void SCEPClientDlg::checkEncPriKey()
 
     mPasswdLabel->setEnabled(bVal);
     mPasswdText->setEnabled(bVal);
+}
+
+void SCEPClientDlg::initUI()
+{
+    mCmdCombo->addItems( kSCEPCmdList );
 }
 
 void SCEPClientDlg::initialize()
@@ -238,6 +248,18 @@ void SCEPClientDlg::clickClearURL()
     mURLCombo->clear();
 
     berApplet->log( "clear used URLs" );
+}
+
+void SCEPClientDlg::clickMake()
+{
+    QString strCmd = mCmdCombo->currentText();
+
+    if( strCmd == kSCEP_ISSUE )
+        clickMakeIssue();
+    else if( strCmd == kSCEP_UPDATE )
+        clickMakeUpdate();
+    else if( strCmd == kSCEP_GET_CRL )
+        clickMakeGetCRL();
 }
 
 void SCEPClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
@@ -500,8 +522,7 @@ void SCEPClientDlg::decodeRequest()
 
     JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
 
-    berApplet->decodeData( &binData, "SCEP Request" );
-
+    berApplet->decodeTitle( &binData, "SCEP Request" );
     JS_BIN_reset( &binData );
 }
 
@@ -519,8 +540,7 @@ void SCEPClientDlg::decodeResponse()
 
     JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
 
-    berApplet->decodeData( &binData, "SCEP Response" );
-
+    berApplet->decodeTitle( &binData, "SCEP Response" );
     JS_BIN_reset( &binData );
 }
 

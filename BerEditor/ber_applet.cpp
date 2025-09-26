@@ -166,6 +166,11 @@ int BerApplet::decodeData( const BIN *pData, const QString strPath )
     return main_win_->decodeData( pData, strPath );
 }
 
+int BerApplet::decodeTitle( const BIN *pData, const QString strTitle )
+{
+    return main_win_->decodeTitle( pData, strTitle );
+}
+
 int BerApplet::decodeTTLV( const BIN *pData )
 {
     return main_win_->decodeTTLV( pData );

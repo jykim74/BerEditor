@@ -19,6 +19,8 @@ public:
 
 private slots:
     void clickClearURL();
+    void changeCmd();
+    void clickRun();
 
     void clickGENM();
     void clickIR();
@@ -57,7 +59,9 @@ private slots:
     void responseChanged();
 
     void checkEncPriKey();
+
 private:
+    void initUI();
     void initialize();
 
     QStringList getUsedURL();
