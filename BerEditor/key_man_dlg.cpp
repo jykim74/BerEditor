@@ -93,9 +93,15 @@ KeyManDlg::KeyManDlg(QWidget *parent) :
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
 
+    mKD_SaltClearBtn->setFixedWidth(34);
+    mKD_OutputClearBtn->setFixedWidth(34);
+
+    mKW_SrcClearBtn->setFixedWidth(34);
+    mKW_KEKClearBtn->setFixedWidth(34);
+    mKW_DstClearBtn->setFixedWidth(34);
+
     mKEMWrappedKeyClearBtn->setFixedWidth(34);
     mKEMKeyClearBtn->setFixedWidth(34);
-    mKEMDecKeyClearBtn->setFixedWidth(34);
 
     mDeriveTab->layout()->setSpacing(5);
     mDeriveTab->layout()->setMargin(5);

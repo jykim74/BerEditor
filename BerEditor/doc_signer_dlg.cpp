@@ -108,7 +108,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     mCMSSrcTypeBtn->setFixedWidth(34);
     mCMSOutputTypeBtn->setFixedWidth(34);
 
-    mCMSClearBtn->setFixedWidth(34);
+    mCMSSrcClearBtn->setFixedWidth(34);
     mCMSOutputClearBtn->setFixedWidth(34);
     mCMSOutputDecodeBtn->setFixedWidth(34);
 
@@ -460,6 +460,7 @@ void DocSignerDlg::initUI()
     mCMSCmdCombo->addItems( kCMSEncodeList );
     mCMSOutputText->setPlaceholderText( tr( "Hex value" ));
     mCMSCmdNameText->setPlaceholderText( tr("Command Name" ));
+
     mJSON_JWSText->setPlaceholderText( tr( "String value" ));
     mXMLResText->setPlaceholderText( tr( "String value" ) );
 

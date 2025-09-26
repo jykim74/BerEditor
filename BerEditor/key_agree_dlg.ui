@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>565</width>
-    <height>530</height>
+    <width>629</width>
+    <height>674</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -186,7 +186,7 @@
    <item row="0" column="0" colspan="2">
     <widget class="QTabWidget" name="mTabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="mDHTab">
       <attribute name="title">
@@ -207,18 +207,17 @@
          </item>
          <item row="0" column="1">
           <widget class="QComboBox" name="mParamLenCombo">
-           <property name="maximumSize">
+           <property name="minimumSize">
             <size>
              <width>60</width>
-             <height>16777215</height>
+             <height>0</height>
             </size>
            </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>g value</string>
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>16777215</height>
+            </size>
            </property>
           </widget>
          </item>
@@ -235,16 +234,6 @@
            </property>
           </spacer>
          </item>
-         <item row="0" column="3">
-          <widget class="QComboBox" name="mGCombo">
-           <property name="maximumSize">
-            <size>
-             <width>40</width>
-             <height>16777215</height>
-            </size>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="0">
           <widget class="QLabel" name="label">
            <property name="text">
@@ -256,13 +245,6 @@
           <widget class="QPushButton" name="mExportParamBtn">
            <property name="text">
             <string>Export</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="5">
-          <widget class="QPushButton" name="mGenParamBtn">
-           <property name="text">
-            <string>GenParam</string>
            </property>
           </widget>
          </item>
@@ -280,6 +262,20 @@
          <property name="topMargin">
           <number>0</number>
          </property>
+         <item row="0" column="2">
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>g value</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="5">
+          <widget class="QLabel" name="label_15">
+           <property name="text">
+            <string>Len</string>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="1">
           <spacer name="horizontalSpacer_3">
            <property name="orientation">
@@ -293,14 +289,30 @@
            </property>
           </spacer>
          </item>
-         <item row="0" column="2">
-          <widget class="QLabel" name="label_15">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_5">
            <property name="text">
-            <string>Len</string>
+            <string>p value</string>
            </property>
           </widget>
          </item>
          <item row="0" column="3">
+          <widget class="QComboBox" name="mGCombo">
+           <property name="minimumSize">
+            <size>
+             <width>40</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>60</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="6">
           <widget class="QLineEdit" name="mPLenText">
            <property name="minimumSize">
             <size>
@@ -356,10 +368,10 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_5">
+         <item row="0" column="4">
+          <widget class="QPushButton" name="mGenParamBtn">
            <property name="text">
-            <string>p value</string>
+            <string>GenParam</string>
            </property>
           </widget>
          </item>
@@ -1248,10 +1260,10 @@
  <tabstops>
   <tabstop>mTabWidget</tabstop>
   <tabstop>mParamLenCombo</tabstop>
-  <tabstop>mGCombo</tabstop>
-  <tabstop>mGenParamBtn</tabstop>
   <tabstop>mImportParamBtn</tabstop>
   <tabstop>mExportParamBtn</tabstop>
+  <tabstop>mGCombo</tabstop>
+  <tabstop>mGenParamBtn</tabstop>
   <tabstop>mPLenText</tabstop>
   <tabstop>mPText</tabstop>
   <tabstop>mAPrivateKeyText</tabstop>
