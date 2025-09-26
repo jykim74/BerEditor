@@ -1561,6 +1561,7 @@ void PKCS7Dlg::clickClearDataAll()
 
 void PKCS7Dlg::clickReadFile()
 {
+    int ret = 0;
     QString strPath;
 
     QString strFile = berApplet->findFile( this, JS_FILE_TYPE_BER, strPath);
@@ -1569,10 +1570,24 @@ void PKCS7Dlg::clickReadFile()
     {
         BIN binData = {0,0};
 
-        JS_BIN_fileRead( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+        ret = JS_BIN_fileRead( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+        if( ret <= 0 ) return;
+
+        if( mDecodeRadio->isChecked() == true )
+        {
+            int nType = JS_PKCS7_getType( &binData );
+            if( nType < 0 )
+            {
+                berApplet->warningBox( tr( "This file is not in PKCS7 format" ), this );
+                JS_BIN_reset( &binData );
+                return;
+            }
+        }
 
         mSrcTypeCombo->setCurrentText(kDataHex);
         mSrcText->setPlainText( getHexString( &binData ));
+
+
         JS_BIN_reset( &binData );
     }
 }

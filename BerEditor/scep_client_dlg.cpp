@@ -34,6 +34,7 @@ SCEPClientDlg::SCEPClientDlg(QWidget *parent)
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clickClearAll()));
+    connect( mCmdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeCmd()));
     connect( mMakeBtn, SIGNAL(clicked()), this, SLOT(clickMake()));
 
     connect( mFindCACertBtn, SIGNAL(clicked()), this, SLOT(findCACert()));
@@ -248,6 +249,11 @@ void SCEPClientDlg::clickClearURL()
     mURLCombo->clear();
 
     berApplet->log( "clear used URLs" );
+}
+
+void SCEPClientDlg::changeCmd()
+{
+
 }
 
 void SCEPClientDlg::clickMake()

@@ -222,7 +222,7 @@ void CAVPDlg::initialize()
     mPBKDFAlgCombo->addItems( kHashAlgList );
     mPBKDFAlgCombo->setCurrentText( setMgr->defaultHash() );
 
-    mECCParamCombo->addItems( kECCParamList );
+    mECCParamCombo->addItems( kECDSAOptionList );
     mECCParamCombo->setCurrentText( "prime256v1" );
     mECCHashCombo->addItems( kHashAlgList );
     mECCHashCombo->setCurrentText( setMgr->defaultHash() );

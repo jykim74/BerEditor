@@ -19,6 +19,7 @@ public:
 
 private slots:
     void clickClearURL();
+    void changeCmd();
     void clickMake();
 
     void findCACert();

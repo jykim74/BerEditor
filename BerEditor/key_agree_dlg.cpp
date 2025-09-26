@@ -343,7 +343,7 @@ void KeyAgreeDlg::secretClear()
 void KeyAgreeDlg::initialize()
 {
     mGCombo->addItems( sGList );
-    mECDHParamCombo->addItems( kECCParamList );
+    mECDHParamCombo->addItems( kECDSAOptionList );
     mECDHParamCombo->setCurrentText( "prime256v1" );
 
     mPText->setPlaceholderText( tr( "Hex value" ) );

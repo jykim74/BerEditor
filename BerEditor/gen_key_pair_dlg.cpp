@@ -11,46 +11,8 @@
 
 #include "ber_applet.h"
 
-static QStringList kRSAOptionList = { "1024", "2048", "3072", "4096" };
-static QStringList kECCOptionList = { "prime256v1",
-    "secp112r1", "secp112r2", "secp128r1", "secp128r2", "secp160k1",
-    "secp160r1", "secp160r2", "secp192r1", "secp192k1", "secp224k1",
-    "secp224r1", "secp256k1", "secp384r1", "secp521r1",
-    "sect113r1", "sect113r2", "sect131r1", "sect131r2", "sect163k1",
-    "sect163r1", "sect163r2", "sect193r1", "sect193r2", "sect233k1",
-    "sect233r1", "sect239k1", "sect283k1", "sect283r1", "sect409k1",
-    "sect409r1", "sect571k1", "sect571r1"
-};
 
-static QStringList kEdDSAOptionList = { "Ed25519", "Ed448" };
-static QStringList kDSAOptionList = { "1024", "2048", "3072", "4096" };
 
-static QStringList kML_KEMList = {
-    JS_PQC_PARAM_ML_KEM_512_NAME,
-    JS_PQC_PARAM_ML_KEM_768_NAME,
-    JS_PQC_PARAM_ML_KEM_1024_NAME
-};
-
-static QStringList kML_DSAList = {
-    JS_PQC_PARAM_ML_DSA_44_NAME,
-    JS_PQC_PARAM_ML_DSA_65_NAME,
-    JS_PQC_PARAM_ML_DSA_87_NAME
-};
-
-static QStringList kSLH_DSAList = {
-    JS_PQC_PARAM_SLH_DSA_SHA2_128S_NAME,
-    JS_PQC_PARAM_SLH_DSA_SHA2_128F_NAME,
-    JS_PQC_PARAM_SLH_DSA_SHA2_192S_NAME,
-    JS_PQC_PARAM_SLH_DSA_SHA2_192F_NAME,
-    JS_PQC_PARAM_SLH_DSA_SHA2_256S_NAME,
-    JS_PQC_PARAM_SLH_DSA_SHA2_256F_NAME,
-    JS_PQC_PARAM_SLH_DSA_SHAKE_128S_NAME,
-    JS_PQC_PARAM_SLH_DSA_SHAKE_128F_NAME,
-    JS_PQC_PARAM_SLH_DSA_SHAKE_192S_NAME,
-    JS_PQC_PARAM_SLH_DSA_SHAKE_192F_NAME,
-    JS_PQC_PARAM_SLH_DSA_SHAKE_256S_NAME,
-    JS_PQC_PARAM_SLH_DSA_SHAKE_256F_NAME
-};
 
 
 GenKeyPairDlg::GenKeyPairDlg(QWidget *parent) :
@@ -168,7 +130,7 @@ void GenKeyPairDlg::clickRSA()
 void GenKeyPairDlg::clickECDSA()
 {
     mOptionCombo->clear();
-    mOptionCombo->addItems( kECCOptionList );
+    mOptionCombo->addItems( kECDSAOptionList );
     mExponentLabel->setEnabled( false );
     mExponentText->setEnabled( false );
     mOptionLabel->setText( tr("Named Curve" ));
@@ -205,7 +167,7 @@ void GenKeyPairDlg::clickSM2()
 void GenKeyPairDlg::clickML_KEM()
 {
     mOptionCombo->clear();
-    mOptionCombo->addItems( kML_KEMList );
+    mOptionCombo->addItems( kML_KEMOptionList );
     mExponentLabel->setEnabled( false );
     mExponentText->setEnabled( false );
     mOptionLabel->setText( tr("Key Length" ));
@@ -214,7 +176,7 @@ void GenKeyPairDlg::clickML_KEM()
 void GenKeyPairDlg::clickML_DSA()
 {
     mOptionCombo->clear();
-    mOptionCombo->addItems( kML_DSAList );
+    mOptionCombo->addItems( kML_DSAOptionList );
     mExponentLabel->setEnabled( false );
     mExponentText->setEnabled( false );
     mOptionLabel->setText( tr("Key Length" ));
@@ -223,7 +185,7 @@ void GenKeyPairDlg::clickML_DSA()
 void GenKeyPairDlg::clickSLH_DSA()
 {
     mOptionCombo->clear();
-    mOptionCombo->addItems( kSLH_DSAList );
+    mOptionCombo->addItems( kSLH_DSAOptionList );
     mExponentLabel->setEnabled( false );
     mExponentText->setEnabled( false );
     mOptionLabel->setText( tr("Key Length" ));

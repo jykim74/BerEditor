@@ -20,8 +20,8 @@ const QStringList kCmdAttribute =
 
 const QStringList kObjetType = { kOBJ_SECRET_KEY, kOBJ_PRIVATE_KEY, kOBJ_PUBLIC_KEY, kOBJ_CERTIFICATE };
 const QStringList kAlgList = { kALG_RSA, kALG_ECDSA, kALG_AES };
-const QStringList kRSAOptionList = { "1024", "2048", "3072", "4096" };
-const QStringList kECDSAOptionList = { "P-256", "P-384", "P-521" };
+
+const QStringList kKMIP_ECDSAOptionList = { "P-256", "P-384", "P-521" };
 const QStringList kSymOptionList = { "16", "24", "32" };
 const QStringList kSymModeList = { "ECB", "CBC", "CBC_PAD", "CTR", "CFB", "OFB" };
 const QStringList kRSAModeList = { "V15", "V21" };
@@ -539,7 +539,7 @@ void TTLVEncoderDlg::algChanged( int index )
     else if( strAlg == kALG_ECDSA )
     {
         mOptionLabel->setText( tr("NamedCurve" ) );
-        mOptionCombo->addItems(kECDSAOptionList);
+        mOptionCombo->addItems(kKMIP_ECDSAOptionList);
     }
     else if( strAlg == kALG_AES )
     {
