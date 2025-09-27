@@ -116,6 +116,7 @@ void SCEPClientDlg::checkEncPriKey()
 void SCEPClientDlg::initUI()
 {
     mCmdCombo->addItems( kSCEPCmdList );
+    changeCmd();
 }
 
 void SCEPClientDlg::initialize()
@@ -253,7 +254,16 @@ void SCEPClientDlg::clickClearURL()
 
 void SCEPClientDlg::changeCmd()
 {
+    QString strCmd = mCmdCombo->currentText();
 
+    if( strCmd == kSCEP_ISSUE )
+    {
+        mCertGroup->setEnabled(false);
+    }
+    else
+    {
+        mCertGroup->setEnabled(true);
+    }
 }
 
 void SCEPClientDlg::clickMake()

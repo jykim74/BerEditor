@@ -86,7 +86,6 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
-    mCertGroup->layout()->setSpacing(5);
 
     mPriKeyViewBtn->setFixedWidth(34);
     mPriKeyTypeBtn->setFixedWidth(34);

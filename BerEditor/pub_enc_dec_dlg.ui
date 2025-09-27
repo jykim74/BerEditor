@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>550</width>
-    <height>705</height>
+    <width>624</width>
+    <height>790</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,19 +15,19 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
-    <number>5</number>
+    <number>-1</number>
    </property>
    <property name="leftMargin">
-    <number>9</number>
+    <number>12</number>
    </property>
    <property name="topMargin">
-    <number>9</number>
+    <number>12</number>
    </property>
    <property name="rightMargin">
-    <number>9</number>
+    <number>12</number>
    </property>
    <property name="bottomMargin">
-    <number>9</number>
+    <number>12</number>
    </property>
    <item>
     <layout class="QGridLayout" name="gridLayout_6">
@@ -897,6 +897,12 @@
    </item>
    <item>
     <widget class="QPlainTextEdit" name="mOutputText">
+     <property name="minimumSize">
+      <size>
+       <width>600</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="palette">
       <palette>
        <active>

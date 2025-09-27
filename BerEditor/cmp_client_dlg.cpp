@@ -117,6 +117,7 @@ void CMPClientDlg::checkEncPriKey()
 void CMPClientDlg::initUI()
 {
     mCmdCombo->addItems( kCMPCmdList );
+    changeCmd();
 }
 
 void CMPClientDlg::initialize()
@@ -185,6 +186,8 @@ void CMPClientDlg::changeCmd()
 
     if( strCmd == kCMP_SignGENM || strCmd == kCMP_KUR || strCmd == kCMP_RR )
     {
+        mCertGroup->setEnabled( true );
+
         mRefNumLabel->setEnabled(false);
         mRefNumText->setEnabled(false);
         mAuthCodeText->setEnabled(false);
@@ -192,6 +195,8 @@ void CMPClientDlg::changeCmd()
     }
     else
     {
+        mCertGroup->setEnabled( false );
+
         mRefNumLabel->setEnabled(true);
         mRefNumText->setEnabled(true);
         mAuthCodeText->setEnabled(true);
