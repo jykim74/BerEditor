@@ -68,6 +68,9 @@ PriKeyInfoDlg::PriKeyInfoDlg(QWidget *parent) :
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+
+    mDecodeBtn->setFixedWidth(34);
+
     tabRSA->layout()->setSpacing(5);
     tabRSA->layout()->setMargin(5);
     tabECC->layout()->setSpacing(5);

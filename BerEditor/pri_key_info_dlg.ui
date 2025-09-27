@@ -2634,8 +2634,20 @@
      </item>
      <item row="0" column="2">
       <widget class="QPushButton" name="mDecodeBtn">
+       <property name="minimumSize">
+        <size>
+         <width>20</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="text">
-        <string>Decode</string>
+        <string>D</string>
        </property>
       </widget>
      </item>

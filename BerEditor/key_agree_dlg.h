@@ -24,6 +24,7 @@ public:
 private slots:
     void calcualteA();
     void calcualteB();
+    void PClear();
     void secretClear();
     void genDHParam();
     void exportDHParam();

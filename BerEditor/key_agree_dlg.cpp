@@ -49,6 +49,7 @@ KeyAgreeDlg::KeyAgreeDlg(QWidget *parent) :
     connect( mACheckKeyPairBtn, SIGNAL(clicked()), this, SLOT(checkAKeyPair()));
     connect( mBCheckKeyPairBtn, SIGNAL(clicked()), this, SLOT(checkBKeyPair()));
 
+    connect( mPClearBtn, SIGNAL(clicked()), this, SLOT(PClear()));
     connect( mSecretClearBtn, SIGNAL(clicked()), this, SLOT(secretClear()));
     connect( mACalcBtn, SIGNAL(clicked()), this, SLOT(calcualteA()));
     connect( mBCalcBtn, SIGNAL(clicked()), this, SLOT(calcualteB()));
@@ -71,6 +72,10 @@ KeyAgreeDlg::KeyAgreeDlg(QWidget *parent) :
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+
+    mPClearBtn->setFixedWidth(34);
+    mSecretClearBtn->setFixedWidth(34);
+
     mDHTab->layout()->setSpacing(5);
     mDHTab->layout()->setMargin(5);
     mECDHTab->layout()->setSpacing(5);
@@ -331,6 +336,11 @@ void KeyAgreeDlg::calcualteB()
     JS_BIN_reset( &binPub );
     JS_BIN_reset( &binSecX );
     JS_BIN_reset( &binSecY );
+}
+
+void KeyAgreeDlg::PClear()
+{
+    mPText->clear();
 }
 
 void KeyAgreeDlg::secretClear()

@@ -1869,6 +1869,26 @@ void PKCS7Dlg::changeCmd()
     {
         mHashCombo->setEnabled( false );
     }
+
+    mSignCertGroup->setEnabled(false);
+    mKMCertGroup->setEnabled(false);
+
+    if( strCmd == kCmdSignedData
+        || strCmd == kCmdVerifyData
+        || strCmd == kCmdSignedAndEnveloped
+        || strCmd == kCmdDevelopedAndVerify
+        || strCmd == kCmdAddSigned )
+    {
+        mSignCertGroup->setEnabled( true );
+    }
+
+    if( strCmd == kCmdEnvelopedData
+        || strCmd == kCmdDevelopedData
+        || strCmd == kCmdSignedAndEnveloped
+        || strCmd == kCmdDevelopedAndVerify )
+    {
+        mKMCertGroup->setEnabled( true );
+    }
 }
 
 void PKCS7Dlg::clickRun()
