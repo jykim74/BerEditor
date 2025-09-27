@@ -24,6 +24,9 @@ KeyAgreeDlg::KeyAgreeDlg(QWidget *parent) :
     setupUi(this);
 
     connect( mECDHParamCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeECDHParam(int)));
+    connect( mACalcRadio, SIGNAL(clicked()), this, SLOT(checkACalc()));
+    connect( mBCalcRadio, SIGNAL(clicked()), this, SLOT(checkBCalc()));
+    connect( mRunBtn, SIGNAL(clicked()), this, SLOT(clickRun()));
 
     connect( mGenParamBtn, SIGNAL(clicked()), this, SLOT(genDHParam()));
     connect( mExportParamBtn, SIGNAL(clicked()), this, SLOT(exportDHParam()));
@@ -89,6 +92,24 @@ KeyAgreeDlg::KeyAgreeDlg(QWidget *parent) :
 KeyAgreeDlg::~KeyAgreeDlg()
 {
 
+}
+
+void KeyAgreeDlg::checkACalc()
+{
+
+}
+
+void KeyAgreeDlg::checkBCalc()
+{
+
+}
+
+void KeyAgreeDlg::clickRun()
+{
+    if( mACalcRadio->isChecked() )
+        calcualteA();
+    else
+        calcualteB();
 }
 
 void KeyAgreeDlg::calcualteA()

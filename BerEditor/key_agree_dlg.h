@@ -22,6 +22,11 @@ public:
     ~KeyAgreeDlg();
 
 private slots:
+    void checkACalc();
+    void checkBCalc();
+
+    void clickRun();
+
     void calcualteA();
     void calcualteB();
     void PClear();

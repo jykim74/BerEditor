@@ -14,6 +14,56 @@
    <string>KeyAgreement</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="3" column="0">
+    <widget class="QPlainTextEdit" name="mSecretKeyText">
+     <property name="minimumSize">
+      <size>
+       <width>500</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="palette">
+      <palette>
+       <active>
+        <colorrole role="Base">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>221</red>
+           <green>221</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </active>
+       <inactive>
+        <colorrole role="Base">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>221</red>
+           <green>221</green>
+           <blue>255</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </inactive>
+       <disabled>
+        <colorrole role="Base">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>240</red>
+           <green>240</green>
+           <blue>240</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </disabled>
+      </palette>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
    <item row="4" column="0" colspan="2">
     <widget class="Line" name="line_5">
      <property name="orientation">
@@ -23,6 +73,13 @@
    </item>
    <item row="5" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="mClearDataAllBtn">
+       <property name="text">
+        <string>Clear Data All</string>
+       </property>
+      </widget>
+     </item>
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -45,166 +102,10 @@
      </item>
     </layout>
    </item>
-   <item row="3" column="0">
-    <layout class="QGridLayout" name="gridLayout_2">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mBCalcBtn">
-       <property name="text">
-        <string>B Calculate</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mACalcBtn">
-       <property name="text">
-        <string>A Calculate</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <spacer name="horizontalSpacer_8">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="mClearDataAllBtn">
-       <property name="text">
-        <string>Clear Data All</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="1" column="0">
-    <layout class="QGridLayout" name="gridLayout_4">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <item row="0" column="3">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Len</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QLineEdit" name="mSecretKeyLenText">
-       <property name="minimumSize">
-        <size>
-         <width>40</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="palette">
-        <palette>
-         <active>
-          <colorrole role="Base">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>221</red>
-             <green>221</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </active>
-         <inactive>
-          <colorrole role="Base">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>221</red>
-             <green>221</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </inactive>
-         <disabled>
-          <colorrole role="Base">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>240</red>
-             <green>240</green>
-             <blue>240</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </disabled>
-        </palette>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="minimumSize">
-        <size>
-         <width>80</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Secret Key</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mSecretClearBtn">
-       <property name="minimumSize">
-        <size>
-         <width>20</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>C</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
    <item row="0" column="0" colspan="2">
     <widget class="QTabWidget" name="mTabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mDHTab">
       <attribute name="title">
@@ -446,7 +347,7 @@
           <widget class="QLineEdit" name="mAPrivateKeyText"/>
          </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_8">
+          <widget class="QLabel" name="mAPrivateKeyLabel">
            <property name="text">
             <string>A PrivateKey</string>
            </property>
@@ -516,7 +417,7 @@
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QLabel" name="label_9">
+          <widget class="QLabel" name="mAPublicKeyLabel">
            <property name="text">
             <string>A PublicKey</string>
            </property>
@@ -668,7 +569,7 @@
           <widget class="QLineEdit" name="mBPrivateKeyText"/>
          </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_10">
+          <widget class="QLabel" name="mBPrivateKeyLabel">
            <property name="text">
             <string>B PrivateKey</string>
            </property>
@@ -682,7 +583,7 @@
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QLabel" name="label_11">
+          <widget class="QLabel" name="mBPublicKeyLabel">
            <property name="text">
             <string>B PublicKey</string>
            </property>
@@ -833,7 +734,7 @@
           <number>0</number>
          </property>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_6">
+          <widget class="QLabel" name="mAECDHPriKeyLabell">
            <property name="minimumSize">
             <size>
              <width>80</width>
@@ -905,7 +806,7 @@
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QLabel" name="label_7">
+          <widget class="QLabel" name="mAECDHPubKeyLabel">
            <property name="text">
             <string>A PublicKey</string>
            </property>
@@ -1104,7 +1005,7 @@
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_13">
+          <widget class="QLabel" name="mBECDHPriKeyLabel">
            <property name="text">
             <string>B PrivateKey</string>
            </property>
@@ -1114,7 +1015,7 @@
           <widget class="QLineEdit" name="mBECDHPriKeyText"/>
          </item>
          <item row="1" column="0">
-          <widget class="QLabel" name="label_14">
+          <widget class="QLabel" name="mBECDHPubKeyLabel">
            <property name="text">
             <string>B PublicKey</string>
            </property>
@@ -1248,55 +1149,178 @@
      </widget>
     </widget>
    </item>
+   <item row="1" column="0">
+    <layout class="QGridLayout" name="gridLayout_5">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="2">
+      <spacer name="horizontalSpacer_5">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="0">
+      <widget class="QRadioButton" name="mACalcRadio">
+       <property name="text">
+        <string>A Calculate</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mBCalcBtn">
+       <property name="text">
+        <string>B Calculate</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QRadioButton" name="mBCalcRadio">
+       <property name="text">
+        <string>B Calculate</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mACalcBtn">
+       <property name="text">
+        <string>A Calculate</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mRunBtn">
+       <property name="text">
+        <string>Run</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
    <item row="2" column="0">
-    <widget class="QPlainTextEdit" name="mSecretKeyText">
-     <property name="minimumSize">
-      <size>
-       <width>500</width>
-       <height>0</height>
-      </size>
+    <layout class="QGridLayout" name="gridLayout_4">
+     <property name="topMargin">
+      <number>0</number>
      </property>
-     <property name="palette">
-      <palette>
-       <active>
-        <colorrole role="Base">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>221</red>
-           <green>221</green>
-           <blue>255</blue>
-          </color>
-         </brush>
-        </colorrole>
-       </active>
-       <inactive>
-        <colorrole role="Base">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>221</red>
-           <green>221</green>
-           <blue>255</blue>
-          </color>
-         </brush>
-        </colorrole>
-       </inactive>
-       <disabled>
-        <colorrole role="Base">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>240</red>
-           <green>240</green>
-           <blue>240</blue>
-          </color>
-         </brush>
-        </colorrole>
-       </disabled>
-      </palette>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
+     <item row="0" column="3">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Len</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QLineEdit" name="mSecretKeyLenText">
+       <property name="minimumSize">
+        <size>
+         <width>40</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>240</red>
+             <green>240</green>
+             <blue>240</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </disabled>
+        </palette>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Secret Key</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mSecretClearBtn">
+       <property name="minimumSize">
+        <size>
+         <width>20</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>C</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
@@ -1349,8 +1373,6 @@
   <tabstop>mBGetFromKeyPairBtn</tabstop>
   <tabstop>mSecretKeyLenText</tabstop>
   <tabstop>mSecretKeyText</tabstop>
-  <tabstop>mACalcBtn</tabstop>
-  <tabstop>mBCalcBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>
