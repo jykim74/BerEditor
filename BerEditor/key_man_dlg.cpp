@@ -853,19 +853,12 @@ void KeyManDlg::clickClearDataAll()
     mKD_SecretText->clear();
     mKD_InfoText->clear();
     mKD_SaltText->clear();
-    mKD_IterCntText->clear();
-    mKD_KeyLenText->clear();
     mKD_OutputText->clear();
 
     mKW_SrcText->clear();
     mKW_KEKText->clear();
     mKW_DstText->clear();
 
-    clickKEMClearAll();
-}
-
-void KeyManDlg::clickKEMClearAll()
-{
     mKEMKeyText->clear();
     mKEMWrappedKeyText->clear();
 }

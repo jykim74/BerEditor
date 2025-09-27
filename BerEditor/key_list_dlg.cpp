@@ -75,6 +75,11 @@ void KeyListDlg::setTitle( const QString strTitle )
     mTitleLabel->setText( strTitle );
 }
 
+void KeyListDlg::setKeyAlg( const QString strKeyAlg )
+{
+    mKeyTypeCombo->setCurrentText( strKeyAlg );
+}
+
 void KeyListDlg::initUI()
 {
 #if defined(Q_OS_MAC)

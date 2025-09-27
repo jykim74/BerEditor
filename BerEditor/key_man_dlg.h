@@ -59,8 +59,6 @@ private slots:
     void chageKW_Dst();
     void changeKW_KEK();
 
-
-    void clickKEMClearAll();
     void runKEMEncap();
     void runKEMDecap();
 

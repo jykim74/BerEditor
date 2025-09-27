@@ -54,7 +54,7 @@
       <enum>Qt::CustomContextMenu</enum>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="mEETab">
       <attribute name="title">
@@ -154,7 +154,7 @@
           <number>0</number>
          </property>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_5">
+          <widget class="QLabel" name="mEE_PasswdLabel">
            <property name="minimumSize">
             <size>
              <width>80</width>

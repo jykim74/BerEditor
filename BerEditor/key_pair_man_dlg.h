@@ -31,6 +31,7 @@ public:
     ~KeyPairManDlg();
     void setMode( int nMode );
     void setTitle( const QString strTitle );
+    void setKeyAlg( const QString strKeyAlg );
 
     const QString getPriPath();
     const QString getPubPath();

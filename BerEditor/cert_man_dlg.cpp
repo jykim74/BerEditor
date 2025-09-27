@@ -221,6 +221,14 @@ void CertManDlg::setTitle( const QString strTitle )
     mTitleLabel->setText( strTitle );
 }
 
+void CertManDlg::setKeyAlg( const QString strKeyAlg )
+{
+    mKeyTypeCombo->setCurrentText( strKeyAlg );
+    mOtherKeyTypeCombo->setCurrentText( strKeyAlg );
+    mCAKeyTypeCombo->setCurrentText( strKeyAlg );
+    mRCAKeyTypeCombo->setCurrentText( strKeyAlg );
+}
+
 void CertManDlg::showEvent(QShowEvent *event)
 {
     initialize();
@@ -568,9 +576,15 @@ void CertManDlg::initialize()
     mTrustRCAPathText->setText( berApplet->settingsMgr()->trustCertPath() );
 
     if( mode_ == ManModeSelCert )
+    {
+        mEE_PasswdLabel->setEnabled(false);
         mEE_PasswdText->setEnabled(false);
+    }
     else
+    {
+        mEE_PasswdLabel->setEnabled(true);
         mEE_PasswdText->setEnabled(true);
+    }
 
     if( mode_ == ManModeTrust )
     {

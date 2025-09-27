@@ -38,6 +38,7 @@ public:
     void setMode( int nMode );
     void setTab( int index );
     void setTitle( const QString strTitle );
+    void setKeyAlg( const QString strKeyAlg );
 
     const QString getPriKeyHex();
     const QString getCertHex();

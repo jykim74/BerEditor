@@ -519,6 +519,7 @@ void PKCS7Dlg::clickEnvelopedData()
         CertManDlg certMan;
         certMan.setMode(ManModeSelCert);
         certMan.setTitle( tr( "Select a recipient certificate") );
+        certMan.setKeyAlg( JS_PKI_KEY_NAME_RSA );
 
         if( certMan.exec() != QDialog::Accepted )
             goto end;
@@ -644,6 +645,7 @@ void PKCS7Dlg::clickSignAndEnvloped()
         CertManDlg certMan;
         certMan.setMode(ManModeSelCert);
         certMan.setTitle( tr( "Select a recipient certificate") );
+        certMan.setKeyAlg( JS_PKI_KEY_NAME_RSA );
 
         if( certMan.exec() != QDialog::Accepted )
             goto end;
@@ -856,6 +858,7 @@ void PKCS7Dlg::clickDevelopedData()
         CertManDlg certMan;
         certMan.setMode(ManModeSelBoth);
         certMan.setTitle( tr( "Select a recipient certificate") );
+        certMan.setKeyAlg( JS_PKI_KEY_NAME_RSA );
 
         if( certMan.exec() != QDialog::Accepted )
             return;
@@ -981,6 +984,7 @@ void PKCS7Dlg::clickDevelopedAndVerify()
         CertManDlg certMan;
         certMan.setMode(ManModeSelBoth);
         certMan.setTitle( tr( "Select a recipient certificate") );
+        certMan.setKeyAlg( JS_PKI_KEY_NAME_RSA );
 
         if( certMan.exec() != QDialog::Accepted )
             goto end;

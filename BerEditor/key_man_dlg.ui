@@ -17,7 +17,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mDeriveTab">
       <attribute name="title">
@@ -1049,7 +1049,7 @@
          <item row="0" column="1">
           <widget class="QRadioButton" name="mKW_KeyUnwrapRadio">
            <property name="text">
-            <string>KeyUnwrap</string>
+            <string>Unwrap</string>
            </property>
           </widget>
          </item>
@@ -1063,7 +1063,7 @@
          <item row="0" column="0">
           <widget class="QRadioButton" name="mKW_KeyWrapRadio">
            <property name="text">
-            <string>KeyWrap</string>
+            <string>Wrap</string>
            </property>
            <property name="checked">
             <bool>true</bool>

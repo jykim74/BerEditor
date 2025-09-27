@@ -402,6 +402,7 @@ void KeyAgreeDlg::initialize()
 {
     mGCombo->addItems( sGList );
     mECDHParamCombo->addItems( kECDSAOptionList );
+    mECDHParamCombo->addItem( JS_PKI_KEY_NAME_SM2 );
     mECDHParamCombo->setCurrentText( "prime256v1" );
 
     mPText->setPlaceholderText( tr( "Hex value" ) );
@@ -1003,11 +1004,17 @@ void KeyAgreeDlg::getAFromCertMan()
     JECKeyVal sECKeyVal;
     const char  *pSN = NULL;
     QString strPub;
+    QString strParam = mECDHParamCombo->currentText();
 
     CertManDlg certMan;
     certMan.setMode( ManModeSelBoth );
     certMan.setTitle( tr( "Select a certificate") );
-    certMan.mKeyTypeCombo->setCurrentText( "ECDSA" );
+
+    if( strParam == JS_PKI_KEY_NAME_SM2 )
+        certMan.setKeyAlg( JS_PKI_KEY_NAME_SM2 );
+    else
+        certMan.setKeyAlg( JS_PKI_KEY_NAME_ECDSA );
+
 
     if( certMan.exec() != QDialog::Accepted )
         return;
@@ -1020,7 +1027,7 @@ void KeyAgreeDlg::getAFromCertMan()
 
     if( nKeyType != JS_PKI_KEY_TYPE_ECDSA && nKeyType != JS_PKI_KEY_TYPE_SM2 )
     {
-        berApplet->warningBox( tr("Invalid PrivateKey Type: %1").arg( nKeyType ), this);
+        berApplet->warningBox( tr("This key algorithm (%1) is not supported").arg( JS_PKI_getKeyAlgName( nKeyType )), this);
         goto end;
     }
 
@@ -1047,12 +1054,17 @@ void KeyAgreeDlg::getAFromKeyPair()
     const char  *pSN = NULL;
     QString strPath;
     QString strPub;
+    QString strParam = mECDHParamCombo->currentText();
 
 
     KeyPairManDlg keyPairMan;
     keyPairMan.setMode( KeyPairModeSelect );
     keyPairMan.setTitle( tr( "Select keypair") );
-    keyPairMan.mKeyTypeCombo->setCurrentText( "ECDSA" );
+
+    if( strParam == JS_PKI_KEY_NAME_SM2 )
+        keyPairMan.setKeyAlg( JS_PKI_KEY_NAME_SM2 );
+    else
+        keyPairMan.setKeyAlg( JS_PKI_KEY_NAME_ECDSA );
 
     if( keyPairMan.exec() != QDialog::Accepted )
         return;
@@ -1066,7 +1078,7 @@ void KeyAgreeDlg::getAFromKeyPair()
 
     if( nKeyType != JS_PKI_KEY_TYPE_ECDSA && nKeyType != JS_PKI_KEY_TYPE_SM2 )
     {
-        berApplet->warningBox( tr("Invalid PrivateKey Type: %1").arg( nKeyType ), this);
+        berApplet->warningBox( tr("This key algorithm (%1) is not supported").arg( JS_PKI_getKeyAlgName( nKeyType )), this);
         goto end;
     }
 
@@ -1184,11 +1196,17 @@ void KeyAgreeDlg::getBFromCertMan()
     JECKeyVal sECKeyVal;
     const char  *pSN = NULL;
     QString strPub;
+    QString strParam = mECDHParamCombo->currentText();
+
 
     CertManDlg certMan;
     certMan.setMode( ManModeSelBoth );
     certMan.setTitle( tr( "Select a certificate") );
-    certMan.mKeyTypeCombo->setCurrentText( "ECDSA" );
+
+    if( strParam == JS_PKI_KEY_NAME_SM2 )
+        certMan.setKeyAlg( JS_PKI_KEY_NAME_SM2 );
+    else
+        certMan.setKeyAlg( JS_PKI_KEY_NAME_ECDSA );
 
     if( certMan.exec() != QDialog::Accepted )
         return;
@@ -1201,7 +1219,7 @@ void KeyAgreeDlg::getBFromCertMan()
 
     if( nKeyType != JS_PKI_KEY_TYPE_ECDSA && nKeyType != JS_PKI_KEY_TYPE_SM2 )
     {
-        berApplet->warningBox( tr("Invalid PrivateKey Type: %1").arg( nKeyType ), this);
+        berApplet->warningBox( tr("This key algorithm (%1) is not supported").arg( JS_PKI_getKeyAlgName( nKeyType )), this);
         goto end;
     }
 
@@ -1228,12 +1246,18 @@ void KeyAgreeDlg::getBFromKeyPair()
     const char  *pSN = NULL;
     QString strPath;
     QString strPub;
+    QString strParam = mECDHParamCombo->currentText();
 
 
     KeyPairManDlg keyPairMan;
     keyPairMan.setMode( KeyPairModeSelect );
     keyPairMan.setTitle( tr( "Select keypair") );
-    keyPairMan.mKeyTypeCombo->setCurrentText( "ECDSA" );
+
+    if( strParam == JS_PKI_KEY_NAME_SM2 )
+        keyPairMan.setKeyAlg( JS_PKI_KEY_NAME_SM2 );
+    else
+        keyPairMan.setKeyAlg( JS_PKI_KEY_NAME_ECDSA );
+
 
     if( keyPairMan.exec() != QDialog::Accepted )
         return;
@@ -1247,7 +1271,7 @@ void KeyAgreeDlg::getBFromKeyPair()
 
     if( nKeyType != JS_PKI_KEY_TYPE_ECDSA && nKeyType != JS_PKI_KEY_TYPE_SM2 )
     {
-        berApplet->warningBox( tr("Invalid PrivateKey Type: %1").arg( nKeyType ), this);
+        berApplet->warningBox( tr("This key algorithm (%1) is not supported").arg( JS_PKI_getKeyAlgName( nKeyType )), this);
         goto end;
     }
 

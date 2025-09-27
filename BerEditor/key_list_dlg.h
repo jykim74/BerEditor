@@ -20,6 +20,7 @@ public:
     const QString getKey();
     const QString getIV();
     void setTitle( const QString strTitle );
+    void setKeyAlg( const QString strKeyAlg );
 
     static int getPlainKeyIV( const QString strData, QString& strKey, QString& strIV );
 

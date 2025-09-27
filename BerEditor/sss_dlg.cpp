@@ -78,7 +78,7 @@ void SSSDlg::initialize()
 
     mSrcTypeCombo->addItems( kDataTypeList );
     mJoinedTypeCombo->addItems( kDataTypeList );
-    mJoinedTypeCombo->setCurrentIndex(1);
+
 
     mShareTable->horizontalHeader()->setStretchLastSection(true);
     QString style = "QHeaderView::section {background-color:#404040;color:#FFFFFF;}";
@@ -98,6 +98,7 @@ void SSSDlg::initialize()
 
     mPrimeBitsCombo->addItems( primeBits );
     mPrimeBitsCombo->setEditable( true );
+    mPrimeBitsCombo->setCurrentText( "16" );
 
     mShareText->setValidator( regVal );
 

@@ -173,6 +173,11 @@ void KeyPairManDlg::setTitle( const QString strTitle )
     mTitleLabel->setText( strTitle );
 }
 
+void KeyPairManDlg::setKeyAlg( const QString strKeyAlg )
+{
+    mKeyTypeCombo->setCurrentText( strKeyAlg );
+}
+
 void KeyPairManDlg::initUI()
 {
 #if defined(Q_OS_MAC)
