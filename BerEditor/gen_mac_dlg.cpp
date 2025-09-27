@@ -243,7 +243,7 @@ int GenMacDlg::macInit()
        mStatusLabel->setText( "Init OK" );
    }
    else
-       mStatusLabel->setText( QString("Init fail [%1]").arg( ret ) );
+       mStatusLabel->setText( QString("Init fail [%1]").arg( JERR(ret) ) );
 
 end :
    JS_BIN_reset( &binKey );
@@ -303,7 +303,7 @@ void GenMacDlg::macUpdate()
         updateStatusLabel();
     }
     else
-        mStatusLabel->setText( QString("Update failure [%1]").arg(ret) );
+        mStatusLabel->setText( QString("Update failure [%1]").arg(JERR(ret)) );
 
     JS_BIN_reset( &binSrc );
     update();
@@ -355,7 +355,7 @@ void GenMacDlg::macFinal()
         berApplet->log( QString( "Final Digest : %1" ).arg( getHexString( &binMAC )) );
     }
     else
-        appendStatusLabel( QString("|Final failure [%1]").arg(ret) );
+        appendStatusLabel( QString("|Final failure [%1]").arg(JERR(ret)) );
 
     freeCTX();
 
@@ -498,7 +498,7 @@ void GenMacDlg::clickMAC()
    }
    else
    {
-       mStatusLabel->setText( QString("MAC failure [%1]").arg(ret) );
+       mStatusLabel->setText( QString("MAC failure [%1]").arg(JERR(ret)) );
    }
 
 end :

@@ -13,6 +13,7 @@
 #include "js_ldap.h"
 #include "js_bin.h"
 #include "js_http.h"
+#include "js_error.h"
 
 
 const QString kLdapHost = "LdapHost";
@@ -172,7 +173,7 @@ end :
     }
     else
     {
-        berApplet->warnLog( tr( "failed to get data : %1").arg(ret), this);
+        berApplet->warnLog( tr( "failed to get data : %1").arg(JERR(ret)), this);
     }
 }
 

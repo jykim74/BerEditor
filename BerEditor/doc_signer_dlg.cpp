@@ -478,7 +478,7 @@ void DocSignerDlg::initUI()
     checkCMSEncode();
     checkSrcFile();
     checkDstFile();
-    checkUseTSP();
+
     checkXML_UseTemplate();
 }
 
@@ -488,6 +488,7 @@ void DocSignerDlg::initialize()
 
     changeSignerTab();
     changeCMSCmd();
+    checkUseTSP();
 }
 
 QStringList DocSignerDlg::getUsedURL()

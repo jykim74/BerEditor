@@ -13,6 +13,7 @@
 #include "common.h"
 #include "settings_mgr.h"
 #include "key_list_dlg.h"
+#include "js_error.h"
 
 
 GenOTPDlg::GenOTPDlg(QWidget *parent) :
@@ -148,7 +149,7 @@ void GenOTPDlg::clickGenOTP()
     }
     else
     {
-        berApplet->warnLog( tr( "fail to generate OTP: %1").arg(ret), this );
+        berApplet->warnLog( tr( "fail to generate OTP: %1").arg(JERR(ret)), this );
     }
 
     JS_BIN_reset(&binKey);
