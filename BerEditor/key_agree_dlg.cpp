@@ -16,7 +16,6 @@
 #include "export_dlg.h"
 
 const QStringList sGList = { "02", "05" };
-const QStringList sParamList = { "512", "1024", "2048", "3072", "4096" };
 
 
 KeyAgreeDlg::KeyAgreeDlg(QWidget *parent) :
@@ -359,8 +358,8 @@ void KeyAgreeDlg::initialize()
     mBECDHPubKeyText->setPlaceholderText( tr("Hex value") );
 
 
-    mParamLenCombo->addItems( sParamList );
-    mParamLenCombo->setCurrentIndex(2);
+    mParamLenCombo->addItems( kDHOptionList );
+    mParamLenCombo->setCurrentText("2048");
     mTabWidget->setCurrentIndex(0);
 }
 

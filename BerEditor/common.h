@@ -192,9 +192,9 @@ static const int kProtoDefault = ACT_PROTO_ACME;
 static const int kKMIPDefault = 0;
 static const int kHelpDefault = ACT_HELP_ABOUT;
 
-static QStringList kRSAOptionList = { "1024", "2048", "3072", "4096", "8192" };
+const QStringList kRSAOptionList = { "1024", "2048", "3072", "4096", "8192" };
 
-static QStringList kECDSAOptionList = { "prime256v1",
+const QStringList kECDSAOptionList = { "prime256v1",
     "secp112r1", "secp112r2", "secp128r1", "secp128r2", "secp160k1",
     "secp160r1", "secp160r2", "secp192r1", "secp192k1", "secp224k1",
     "secp224r1", "secp256k1", "secp384r1", "secp521r1",
@@ -206,7 +206,8 @@ static QStringList kECDSAOptionList = { "prime256v1",
 
 const QStringList kEdDSAOptionList = { JS_EDDSA_PARAM_NAME_25519, JS_EDDSA_PARAM_NAME_448 };
 
-const QStringList kDSAOptionList = { "1024", "2048", "3072", "4096", "8192" };
+const QStringList kDSAOptionList = { "1024", "2048", "3072" };
+const QStringList kDHOptionList = { "1024", "2048", "3072", "4096" };
 
 const QStringList kML_KEMOptionList = {
     JS_PQC_PARAM_ML_KEM_512_NAME,
