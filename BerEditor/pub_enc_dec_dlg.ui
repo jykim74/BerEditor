@@ -7,13 +7,28 @@
     <x>0</x>
     <y>0</y>
     <width>550</width>
-    <height>654</height>
+    <height>705</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>PubKey Encrypt/Decrypt</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>5</number>
+   </property>
+   <property name="leftMargin">
+    <number>9</number>
+   </property>
+   <property name="topMargin">
+    <number>9</number>
+   </property>
+   <property name="rightMargin">
+    <number>9</number>
+   </property>
+   <property name="bottomMargin">
+    <number>9</number>
+   </property>
    <item>
     <layout class="QGridLayout" name="gridLayout_6">
      <property name="topMargin">
@@ -205,6 +220,21 @@
       <bool>false</bool>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <property name="spacing">
+       <number>5</number>
+      </property>
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
+       <number>9</number>
+      </property>
       <item>
        <layout class="QGridLayout" name="gridLayout_5">
         <item row="1" column="2">
