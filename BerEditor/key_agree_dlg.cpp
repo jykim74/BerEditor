@@ -27,6 +27,7 @@ KeyAgreeDlg::KeyAgreeDlg(QWidget *parent) :
     connect( mACalcRadio, SIGNAL(clicked()), this, SLOT(checkACalc()));
     connect( mBCalcRadio, SIGNAL(clicked()), this, SLOT(checkBCalc()));
     connect( mRunBtn, SIGNAL(clicked()), this, SLOT(clickRun()));
+    connect( mEditModeBtn, SIGNAL(clicked()), this, SLOT(clickEditMode()));
 
     connect( mGenParamBtn, SIGNAL(clicked()), this, SLOT(genDHParam()));
     connect( mExportParamBtn, SIGNAL(clicked()), this, SLOT(exportDHParam()));
@@ -54,8 +55,6 @@ KeyAgreeDlg::KeyAgreeDlg(QWidget *parent) :
 
     connect( mPClearBtn, SIGNAL(clicked()), this, SLOT(PClear()));
     connect( mSecretClearBtn, SIGNAL(clicked()), this, SLOT(secretClear()));
-    connect( mACalcBtn, SIGNAL(clicked()), this, SLOT(calcualteA()));
-    connect( mBCalcBtn, SIGNAL(clicked()), this, SLOT(calcualteB()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
     connect( mPText, SIGNAL(textChanged()), this, SLOT(pChanged()));
@@ -86,7 +85,7 @@ KeyAgreeDlg::KeyAgreeDlg(QWidget *parent) :
 #endif
     resize(minimumSizeHint().width(), minimumSizeHint().height());
 
-    mACalcBtn->setDefault(true);
+    mRunBtn->setDefault(true);
 }
 
 KeyAgreeDlg::~KeyAgreeDlg()
@@ -94,14 +93,43 @@ KeyAgreeDlg::~KeyAgreeDlg()
 
 }
 
+void KeyAgreeDlg::clickEditMode()
+{
+    setEnableAPriKey(true);
+    setEnableAPubKey(true);
+    setEnableBPriKey(true);
+    setEnableBPubKey(true);
+
+    setEnableAECDHPriKey(true);
+    setEnableAECDHPubKey(true);
+    setEnableBECDHPriKey(true);
+    setEnableBECDHPubKey(true);
+}
+
 void KeyAgreeDlg::checkACalc()
 {
+    setEnableAPriKey(true);
+    setEnableAPubKey(false);
+    setEnableBPriKey(false);
+    setEnableBPubKey(true);
 
+    setEnableAECDHPriKey(true);
+    setEnableAECDHPubKey(false);
+    setEnableBECDHPriKey(false);
+    setEnableBECDHPubKey(true);
 }
 
 void KeyAgreeDlg::checkBCalc()
 {
+    setEnableAPriKey(false);
+    setEnableAPubKey(true);
+    setEnableBPriKey(true);
+    setEnableBPubKey(false);
 
+    setEnableAECDHPriKey(false);
+    setEnableAECDHPubKey(true);
+    setEnableBECDHPriKey(true);
+    setEnableBECDHPubKey(false);
 }
 
 void KeyAgreeDlg::clickRun()
@@ -391,7 +419,65 @@ void KeyAgreeDlg::initialize()
 
     mParamLenCombo->addItems( kDHOptionList );
     mParamLenCombo->setCurrentText("2048");
+
+    mACalcRadio->click();
     mTabWidget->setCurrentIndex(0);
+}
+
+void KeyAgreeDlg::setEnableAPriKey( bool bVal )
+{
+    mAPrivateKeyLabel->setEnabled( bVal );
+    mAPrivateKeyText->setEnabled( bVal );
+    mAPrivateKeyLenText->setEnabled( bVal );
+}
+
+void KeyAgreeDlg::setEnableAPubKey( bool bVal )
+{
+    mAPublicKeyLabel->setEnabled(bVal);
+    mAPublicKeyText->setEnabled(bVal);
+    mAPublicKeyLenText->setEnabled(bVal);
+}
+
+void KeyAgreeDlg::setEnableAECDHPriKey( bool bVal )
+{
+    mAECDHPriKeyLabel->setEnabled(bVal);
+    mAECDHPriKeyText->setEnabled(bVal);
+    mAECDHPriKeyLenText->setEnabled(bVal);
+}
+
+void KeyAgreeDlg::setEnableAECDHPubKey( bool bVal )
+{
+    mAECDHPubKeyLabel->setEnabled(bVal);
+    mAECDHPubKeyText->setEnabled(bVal);
+    mAECDHPubKeyLenText->setEnabled(bVal);
+}
+
+void KeyAgreeDlg::setEnableBPriKey( bool bVal )
+{
+    mBPrivateKeyLabel->setEnabled( bVal );
+    mBPrivateKeyText->setEnabled( bVal );
+    mBPrivateKeyLenText->setEnabled( bVal );
+}
+
+void KeyAgreeDlg::setEnableBPubKey( bool bVal )
+{
+    mBPublicKeyLabel->setEnabled(bVal);
+    mBPublicKeyText->setEnabled(bVal);
+    mBPublicKeyLenText->setEnabled(bVal);
+}
+
+void KeyAgreeDlg::setEnableBECDHPriKey( bool bVal )
+{
+    mBECDHPriKeyLabel->setEnabled(bVal);
+    mBECDHPriKeyText->setEnabled(bVal);
+    mBECDHPriKeyLenText->setEnabled(bVal);
+}
+
+void KeyAgreeDlg::setEnableBECDHPubKey( bool bVal )
+{
+    mBECDHPubKeyLabel->setEnabled(bVal);
+    mBECDHPubKeyText->setEnabled(bVal);
+    mBECDHPubKeyLenText->setEnabled(bVal);
 }
 
 void KeyAgreeDlg::genDHParam()

@@ -22,9 +22,9 @@ public:
     ~KeyAgreeDlg();
 
 private slots:
+    void clickEditMode();
     void checkACalc();
     void checkBCalc();
-
     void clickRun();
 
     void calcualteA();
@@ -77,6 +77,16 @@ private slots:
 
 private:
     void initialize();
+
+    void setEnableAPriKey( bool bVal );
+    void setEnableAPubKey( bool bVal );
+    void setEnableAECDHPriKey( bool bVal );
+    void setEnableAECDHPubKey( bool bVal );
+
+    void setEnableBPriKey( bool bVal );
+    void setEnableBPubKey( bool bVal );
+    void setEnableBECDHPriKey( bool bVal );
+    void setEnableBECDHPubKey( bool bVal );
 };
 
 #endif // KEY_AGREE_DLG_H
