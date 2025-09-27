@@ -54,7 +54,7 @@
       <enum>Qt::CustomContextMenu</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="mEETab">
       <attribute name="title">
@@ -201,55 +201,6 @@
           </property>
           <item>
            <layout class="QGridLayout" name="gridLayout_4">
-            <item row="1" column="1">
-             <widget class="QPushButton" name="mExportBtn">
-              <property name="text">
-               <string>Export PFX</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="3">
-             <widget class="QPushButton" name="mDecodePriKeyBtn">
-              <property name="text">
-               <string>Decode PriKey</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="3">
-             <widget class="QPushButton" name="mChangePasswdBtn">
-              <property name="text">
-               <string>Change Passwd</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QPushButton" name="mDelCertBtn">
-              <property name="text">
-               <string>Delete Cert</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QPushButton" name="mImportBtn">
-              <property name="text">
-               <string>Import PFX</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="2">
-             <widget class="QPushButton" name="mCheckKeyPairBtn">
-              <property name="text">
-               <string>Check KeyPair</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QPushButton" name="mViewPriKeyBtn">
-              <property name="text">
-               <string>View PriKey</string>
-              </property>
-             </widget>
-            </item>
             <item row="2" column="2">
              <widget class="QPushButton" name="mRunSignBtn">
               <property name="text">
@@ -271,20 +222,6 @@
               </property>
              </widget>
             </item>
-            <item row="2" column="1">
-             <widget class="QPushButton" name="mViewPubKeyBtn">
-              <property name="text">
-               <string>View PubKey</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="2">
-             <widget class="QPushButton" name="mDecodeCertBtn">
-              <property name="text">
-               <string>Decode Cert</string>
-              </property>
-             </widget>
-            </item>
             <item row="3" column="0">
              <widget class="QPushButton" name="mRunPubEncBtn">
               <property name="text">
@@ -296,6 +233,69 @@
              <widget class="QPushButton" name="mRunPubDecBtn">
               <property name="text">
                <string>Run Decrypt</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QPushButton" name="mViewPriKeyBtn">
+              <property name="text">
+               <string>View PriKey</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QPushButton" name="mViewPubKeyBtn">
+              <property name="text">
+               <string>View PubKey</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QPushButton" name="mDecodeCertBtn">
+              <property name="text">
+               <string>Decode Cert</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="mDecodePriKeyBtn">
+              <property name="text">
+               <string>Decode PriKey</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QPushButton" name="mCheckKeyPairBtn">
+              <property name="text">
+               <string>Check KeyPair</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
+             <widget class="QPushButton" name="mChangePasswdBtn">
+              <property name="text">
+               <string>Change Passwd</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QPushButton" name="mImportBtn">
+              <property name="text">
+               <string>Import PFX</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="3">
+             <widget class="QPushButton" name="mExportBtn">
+              <property name="text">
+               <string>Export PFX</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QPushButton" name="mDelCertBtn">
+              <property name="text">
+               <string>Delete Cert</string>
               </property>
              </widget>
             </item>
@@ -409,41 +409,6 @@
           </property>
           <item>
            <layout class="QGridLayout" name="gridLayout_17">
-            <item row="0" column="1">
-             <widget class="QPushButton" name="mRemoveOtherBtn">
-              <property name="text">
-               <string>Remove Cert</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="3">
-             <widget class="QPushButton" name="mDecodeOtherBtn">
-              <property name="text">
-               <string>Decode Cert</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="2">
-             <widget class="QPushButton" name="mViewOtherBtn">
-              <property name="text">
-               <string>View Cert</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0">
-             <widget class="QPushButton" name="mAddOtherBtn">
-              <property name="text">
-               <string>Add Cert</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QPushButton" name="mViewPubKeyOtherBtn">
-              <property name="text">
-               <string>View PubKey</string>
-              </property>
-             </widget>
-            </item>
             <item row="1" column="3">
              <widget class="QPushButton" name="mRunOtherPubEncBtn">
               <property name="text">
@@ -462,6 +427,41 @@
              <widget class="QPushButton" name="mExportOtherBtn">
               <property name="text">
                <string>Export Cert</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QPushButton" name="mViewOtherBtn">
+              <property name="text">
+               <string>View Cert</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QPushButton" name="mAddOtherBtn">
+              <property name="text">
+               <string>Add Cert</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QPushButton" name="mViewPubKeyOtherBtn">
+              <property name="text">
+               <string>View PubKey</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QPushButton" name="mRemoveOtherBtn">
+              <property name="text">
+               <string>Remove Cert</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
+             <widget class="QPushButton" name="mDecodeOtherBtn">
+              <property name="text">
+               <string>Decode Cert</string>
               </property>
              </widget>
             </item>
@@ -578,13 +578,6 @@
           </property>
           <item>
            <layout class="QGridLayout" name="gridLayout_13">
-            <item row="0" column="0">
-             <widget class="QPushButton" name="mAddCABtn">
-              <property name="text">
-               <string>Add CA</string>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="3">
              <widget class="QPushButton" name="mDecodeCABtn">
               <property name="text">
@@ -592,31 +585,38 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="1">
-             <widget class="QPushButton" name="mRemoveCABtn">
+            <item row="1" column="1">
+             <widget class="QPushButton" name="mExportCABtn">
               <property name="text">
-               <string>Remove CA</string>
+               <string>Export CA</string>
               </property>
              </widget>
             </item>
-            <item row="0" column="2">
+            <item row="0" column="0">
              <widget class="QPushButton" name="mViewCABtn">
               <property name="text">
                <string>View CA</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="0">
+            <item row="0" column="1">
              <widget class="QPushButton" name="mViewPubKeyCABtn">
               <property name="text">
                <string>View PubKey</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
-             <widget class="QPushButton" name="mExportCABtn">
+            <item row="0" column="2">
+             <widget class="QPushButton" name="mAddCABtn">
               <property name="text">
-               <string>Export CA</string>
+               <string>Add CA</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QPushButton" name="mRemoveCABtn">
+              <property name="text">
+               <string>Remove CA</string>
               </property>
              </widget>
             </item>
@@ -730,28 +730,28 @@
           </property>
           <item>
            <layout class="QGridLayout" name="gridLayout_14">
-            <item row="0" column="2">
+            <item row="0" column="0">
              <widget class="QPushButton" name="mViewCRLBtn">
               <property name="text">
                <string>View CRL</string>
               </property>
              </widget>
             </item>
-            <item row="0" column="3">
-             <widget class="QPushButton" name="mDecodeCRLBtn">
-              <property name="text">
-               <string>Decode CRL</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0">
+            <item row="0" column="1">
              <widget class="QPushButton" name="mAddCRLBtn">
               <property name="text">
                <string>Add CRL</string>
               </property>
              </widget>
             </item>
-            <item row="0" column="1">
+            <item row="0" column="2">
+             <widget class="QPushButton" name="mDecodeCRLBtn">
+              <property name="text">
+               <string>Decode CRL</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="4">
              <widget class="QPushButton" name="mRemoveCRLBtn">
               <property name="text">
                <string>Remove CRL</string>
@@ -878,20 +878,6 @@
           </property>
           <item>
            <layout class="QGridLayout" name="gridLayout_5">
-            <item row="0" column="0">
-             <widget class="QPushButton" name="mAddTrustBtn">
-              <property name="text">
-               <string>Add Trust</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QPushButton" name="mRemoveTrustBtn">
-              <property name="text">
-               <string>Remove Trust</string>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="3">
              <widget class="QPushButton" name="mDecodeTrustBtn">
               <property name="text">
@@ -899,17 +885,24 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="2">
+            <item row="0" column="0">
              <widget class="QPushButton" name="mViewTrustBtn">
               <property name="text">
                <string>View Trust</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="0">
+            <item row="0" column="1">
              <widget class="QPushButton" name="mViewPubKeyTrustBtn">
               <property name="text">
                <string>View PubKey</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QPushButton" name="mRemoveTrustBtn">
+              <property name="text">
+               <string>Remove Trust</string>
               </property>
              </widget>
             </item>
@@ -917,6 +910,13 @@
              <widget class="QPushButton" name="mExportTrustBtn">
               <property name="text">
                <string>Export Trust</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QPushButton" name="mAddTrustBtn">
+              <property name="text">
+               <string>Add Trust</string>
               </property>
              </widget>
             </item>
@@ -1409,15 +1409,6 @@
   <tabstop>mEE_CertTable</tabstop>
   <tabstop>mEE_PasswdText</tabstop>
   <tabstop>mViewCertBtn</tabstop>
-  <tabstop>mDelCertBtn</tabstop>
-  <tabstop>mDecodeCertBtn</tabstop>
-  <tabstop>mChangePasswdBtn</tabstop>
-  <tabstop>mImportBtn</tabstop>
-  <tabstop>mExportBtn</tabstop>
-  <tabstop>mCheckKeyPairBtn</tabstop>
-  <tabstop>mDecodePriKeyBtn</tabstop>
-  <tabstop>mViewPriKeyBtn</tabstop>
-  <tabstop>mViewPubKeyBtn</tabstop>
   <tabstop>mRunSignBtn</tabstop>
   <tabstop>mRunVerifyBtn</tabstop>
   <tabstop>mRunPubEncBtn</tabstop>
@@ -1425,38 +1416,20 @@
   <tabstop>mOtherCertPathText</tabstop>
   <tabstop>mOtherKeyTypeCombo</tabstop>
   <tabstop>mOther_CertTable</tabstop>
-  <tabstop>mAddOtherBtn</tabstop>
-  <tabstop>mRemoveOtherBtn</tabstop>
-  <tabstop>mViewOtherBtn</tabstop>
-  <tabstop>mDecodeOtherBtn</tabstop>
-  <tabstop>mViewPubKeyOtherBtn</tabstop>
   <tabstop>mExportOtherBtn</tabstop>
   <tabstop>mRunOtherVerifyBtn</tabstop>
   <tabstop>mRunOtherPubEncBtn</tabstop>
   <tabstop>mCAPathText</tabstop>
   <tabstop>mCAKeyTypeCombo</tabstop>
   <tabstop>mCA_CertTable</tabstop>
-  <tabstop>mAddCABtn</tabstop>
-  <tabstop>mRemoveCABtn</tabstop>
-  <tabstop>mViewCABtn</tabstop>
   <tabstop>mDecodeCABtn</tabstop>
-  <tabstop>mViewPubKeyCABtn</tabstop>
   <tabstop>mExportCABtn</tabstop>
   <tabstop>mCRLPathText</tabstop>
   <tabstop>mCRL_Table</tabstop>
-  <tabstop>mAddCRLBtn</tabstop>
-  <tabstop>mRemoveCRLBtn</tabstop>
-  <tabstop>mViewCRLBtn</tabstop>
-  <tabstop>mDecodeCRLBtn</tabstop>
-  <tabstop>mExportCRLBtn</tabstop>
   <tabstop>mTrustRCAPathText</tabstop>
   <tabstop>mRCAKeyTypeCombo</tabstop>
   <tabstop>mRCA_CertTable</tabstop>
-  <tabstop>mAddTrustBtn</tabstop>
-  <tabstop>mRemoveTrustBtn</tabstop>
-  <tabstop>mViewTrustBtn</tabstop>
   <tabstop>mDecodeTrustBtn</tabstop>
-  <tabstop>mViewPubKeyTrustBtn</tabstop>
   <tabstop>mExportTrustBtn</tabstop>
   <tabstop>mTLPriKeyPathText</tabstop>
   <tabstop>mFindTLPriKeyBtn</tabstop>

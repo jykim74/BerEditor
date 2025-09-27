@@ -19,14 +19,6 @@
 #include "enc_dec_thread.h"
 #include "key_list_dlg.h"
 
-static QStringList algList = {
-    "AES",
-    "ARIA",
-    "DES3",
-    "SEED",
-    "SM4"
-};
-
 static QStringList modeList = {
   "ECB", "CBC", "CTR", "CFB", "OFB"
 };
@@ -109,7 +101,7 @@ void EncDecDlg::initUI()
     mTagTypeCombo->addItems( kDataTypeList );
     mOutputTypeCombo->addItems( kDataTypeList );
 
-    mAlgCombo->addItems( algList );
+    mAlgCombo->addItems( kSymAlgList );
 
     mKeyText->setPlaceholderText( tr( "Select KeyList key" ));
     mSrcFileText->setPlaceholderText( tr( "Find the target file" ));

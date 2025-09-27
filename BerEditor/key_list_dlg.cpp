@@ -16,8 +16,6 @@
 
 #include "js_error.h"
 
-static const QStringList kTypeList = { "ALL", "AES", "ARIA", "SEED", "TDES", "HMAC" };
-
 
 KeyListDlg::KeyListDlg(QWidget *parent) :
     QDialog(parent)
@@ -91,7 +89,11 @@ void KeyListDlg::initUI()
     QString strPath = berApplet->settingsMgr()->keyListPath();
 
     mSavePathText->setText( strPath );
-    mKeyTypeCombo->addItems( kTypeList );
+
+    mKeyTypeCombo->addItem( "ALL" );
+    mKeyTypeCombo->addItem( kSymGeneric );
+    mKeyTypeCombo->addItems( kSymAlgList );
+    mKeyTypeCombo->addItem( JS_PKI_KEY_NAME_HMAC );
 
     QStringList sTableLabels = { tr( "Name" ), tr( "Algorithm"), tr("Len"), tr( "IV"), tr( "LastModified") };
 

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>524</width>
-    <height>310</height>
+    <height>321</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,11 +15,38 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="mTitleLabel">
-     <property name="text">
-      <string>Symmetric Key Add</string>
+    <layout class="QGridLayout" name="gridLayout_5">
+     <property name="topMargin">
+      <number>0</number>
      </property>
-    </widget>
+     <item row="0" column="2">
+      <widget class="QCheckBox" name="mEncCheck">
+       <property name="text">
+        <string>Encrypt</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="mTitleLabel">
+       <property name="text">
+        <string>Symmetric Key Add</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="Line" name="line_2">
@@ -104,13 +131,6 @@
       <widget class="QLabel" name="label_5">
        <property name="text">
         <string>Key Length</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QCheckBox" name="mEncCheck">
-       <property name="text">
-        <string>Encrypt</string>
        </property>
       </widget>
      </item>
@@ -308,7 +328,6 @@
   <tabstop>mNameText</tabstop>
   <tabstop>mTypeCombo</tabstop>
   <tabstop>mKeyLenCombo</tabstop>
-  <tabstop>mEncCheck</tabstop>
   <tabstop>mRandKeyBtn</tabstop>
   <tabstop>mKeyTypeCombo</tabstop>
   <tabstop>mKeyText</tabstop>

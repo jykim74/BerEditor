@@ -12,8 +12,6 @@
 #include "js_error.h"
 #include "js_pki.h"
 
-static const QStringList kTypeList = { "AES", "ARIA", "SEED", "TDES", "HMAC" };
-
 KeyAddDlg::KeyAddDlg(QWidget *parent) :
     QDialog(parent)
 {
@@ -173,7 +171,9 @@ void KeyAddDlg::setTitle( const QString strTitle )
 
 void KeyAddDlg::initUI()
 {
-    mTypeCombo->addItems( kTypeList );
+    mTypeCombo->addItem( kSymGeneric );
+    mTypeCombo->addItems( kSymAlgList );
+    mTypeCombo->addItem( JS_PKI_KEY_NAME_HMAC );
 
     mKeyTypeCombo->addItems( kDataTypeList );
     mIVTypeCombo->addItems( kDataTypeList );
@@ -299,12 +299,12 @@ void KeyAddDlg::changeType()
     mKeyLenCombo->clear();
     mRandKeyBtn->setEnabled(true);
 
-    if( strType == "AES" || strType == "ARIA" )
+    if( strType == JS_PKI_KEY_NAME_AES || strType == JS_PKI_KEY_NAME_ARIA || strType == kSymGeneric )
     {
         QStringList sLenList = { "16", "24", "32" };
         mKeyLenCombo->addItems( sLenList );
     }
-    else if( strType == "SEED" || strType == "TDES" )
+    else if( strType == JS_PKI_KEY_NAME_SEED || strType == JS_PKI_KEY_NAME_TDES || strType == JS_PKI_KEY_NAME_SM4 )
     {
         mKeyLenCombo->addItem( "16" );
     }

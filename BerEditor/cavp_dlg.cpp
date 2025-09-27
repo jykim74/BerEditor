@@ -23,7 +23,6 @@
 #include "common.h"
 #include "settings_mgr.h"
 
-const QStringList kSymAlgList = { "AES", "ARIA", "SEED", "SM4" };
 const QStringList kSymModeList = { "ECB", "CBC", "CTR", "CFB", "OFB" };
 const QStringList kAEAlgList = { "AES", "ARIA" };
 const QStringList kAEModeList = { "GCM", "CCM" };
