@@ -401,38 +401,10 @@ void BERCheckDlg::clickDecode()
         return;
     }
 
-    if( strFormat == JS_PKI_BER_NAME_CERTIFICATE )
-        ret = JS_PKI_checkCertFormat( &binSrc, sError );
-    else if( strFormat == JS_PKI_BER_NAME_CRL )
-        ret = JS_PKI_checkCRLFormat( &binSrc, sError );
-    else if( strFormat == JS_PKI_BER_NAME_CSR )
-        ret = JS_PKI_checkCSRFormat( &binSrc, sError );
-    else if( strFormat == JS_PKI_BER_NAME_PUB_KEY )
-        ret = JS_PKI_checkPubKeyFormat( &binSrc, sError );
-    else if( strFormat == JS_PKI_BER_NAME_PRI_KEY )
-        ret = JS_PKI_checkPriKeyFormat( &binSrc, sError );
-    else if( strFormat == JS_PKI_BER_NAME_PRI_KEY_INFO )
-        ret = JS_PKI_checkPriKeyInfoFormat( &binSrc, sError );
-    else if( strFormat == JS_PKI_BER_TYPE_ENC_PRI_KEY )
-        ret = JS_PKI_checkEncPriKeyFormat( &binSrc, sError );
-    else if( strFormat == JS_PKI_BER_NAME_CMS )
-        ret = JS_PKI_checkCMSFormat( &binSrc, sError );
-    else if( strFormat == JS_PKI_BER_NAME_PKCS7 )
-        ret = JS_PKI_checkPKCS7Format( &binSrc, sError );
-
-
-    if( ret == JSR_OK )
-    {
-        berApplet->messageBox( tr( "This source is in the correct %1 format" ).arg( strFormat ), this );
-    }
-    else
-    {
-        berApplet->warningBox( tr( "This source is not in %1 format: [%2:%3]" ).arg( strFormat ).arg( sError ).arg(ret), this );
-    }
-
     berApplet->decodeTitle( &binSrc, strFormat );
 
 end :
+
     JS_BIN_reset( &binSrc );
 }
 
@@ -483,53 +455,112 @@ void BERCheckDlg::clickType()
 
     if( ret == JSR_OK )
     {
+        int nAlg = -1;
+        int nOption = -1;
+
         QString strMsg;
 
         if( strFormat == JS_PKI_BER_NAME_CERTIFICATE )
         {
+            BIN binPub = {0,0};
+            JS_PKI_getPubKeyFromCert( &binSrc, &binPub );
+            JS_PKI_getPubKeyAlgParam( &binPub, &nAlg, &nOption );
 
+            strMsg = QString( "This %1 is %2 and %3 ")
+                         .arg( strFormat )
+                         .arg( JS_PKI_getKeyAlgName( nAlg ))
+                         .arg( JS_PKI_getKeyParamName( nAlg, nOption));
+
+            JS_BIN_reset( &binPub );
         }
         else if( strFormat == JS_PKI_BER_NAME_CRL )
         {
-
+            strMsg = QString( "This CRL is valid" );
         }
         else if( strFormat == JS_PKI_BER_NAME_CSR )
         {
+            BIN binPub = {0,0};
+            JS_PKI_getPubKeyFromCSR( &binSrc, &binPub );
+            JS_PKI_getPubKeyAlgParam( &binPub, &nAlg, &nOption );
 
+            strMsg = QString( "This %1 is %2 and %3 ")
+                         .arg( strFormat )
+                         .arg( JS_PKI_getKeyAlgName( nAlg ))
+                         .arg( JS_PKI_getKeyParamName( nAlg, nOption));
+
+            JS_BIN_reset( &binPub );
         }
         else if( strFormat == JS_PKI_BER_NAME_PUB_KEY )
         {
+            JS_PKI_getPubKeyAlgParam( &binSrc, &nAlg, &nOption );
 
+            strMsg = QString( "This %1 is %2 and %3 ")
+                         .arg( strFormat )
+                         .arg( JS_PKI_getKeyAlgName( nAlg ))
+                         .arg( JS_PKI_getKeyParamName( nAlg, nOption));
         }
         else if( strFormat == JS_PKI_BER_NAME_PRI_KEY )
         {
+            JS_PKI_getPriKeyAlgParam( &binSrc, &nAlg, &nOption );
 
+            strMsg = QString( "This %1 is %2 and %3 ")
+                         .arg( strFormat )
+                         .arg( JS_PKI_getKeyAlgName( nAlg ))
+                         .arg( JS_PKI_getKeyParamName( nAlg, nOption));
         }
         else if( strFormat == JS_PKI_BER_NAME_PRI_KEY_INFO )
         {
+            BIN binPri = {0,0};
+            JS_PKI_decodePrivateKeyInfo( &binSrc, &binPri );
 
+            JS_PKI_getPriKeyAlgParam( &binPri, &nAlg, &nOption );
+
+            strMsg = QString( "This %1 is %2 and %3 ")
+                         .arg( strFormat )
+                         .arg( JS_PKI_getKeyAlgName( nAlg ))
+                         .arg( JS_PKI_getKeyParamName( nAlg, nOption));
+
+            JS_BIN_reset( &binPri );
         }
         else if( strFormat == JS_PKI_BER_TYPE_ENC_PRI_KEY )
         {
+            PasswdDlg passDlg;
+            QString strPass;
+            BIN binPri = {0,0};
 
+            if( passDlg.exec() != QDialog::Accepted )
+                goto end;
+
+            strPass = passDlg.mPasswdText->text();
+
+            ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binSrc, NULL, &binPri );
+            if( ret != 0 )
+            {
+                berApplet->warningBox( tr( "fail to decrypt private key: %1").arg(ret), this);
+                goto end;
+            }
+
+            JS_PKI_getPriKeyAlgParam( &binPri, &nAlg, &nOption );
+
+            strMsg = QString( "This %1 is %2 and %3 ")
+                         .arg( strFormat )
+                         .arg( JS_PKI_getKeyAlgName( nAlg ))
+                         .arg( JS_PKI_getKeyParamName( nAlg, nOption));
+
+            JS_BIN_reset( &binPri );
         }
-        else if( strFormat == JS_PKI_BER_NAME_CMS )
+        else if( strFormat == JS_PKI_BER_NAME_CMS || strFormat == JS_PKI_BER_NAME_PKCS7 )
         {
-
-        }
-        else if( strFormat == JS_PKI_BER_NAME_PKCS7 )
-        {
-
+            nOption = JS_CMS_getType( &binSrc );
+            strMsg = QString( "This %1 is %2" ).arg( strFormat ).arg( JS_CMS_getTypeName( nOption ));
         }
 
-        berApplet->messageBox( tr( "This source is in the correct %1 format" ).arg( strFormat ), this );
+        berApplet->messageBox( strMsg, this );
     }
     else
     {
         berApplet->warningBox( tr( "This source is not in %1 format: [%2:%3]" ).arg( strFormat ).arg( sError ).arg(ret), this );
     }
-
-    berApplet->decodeTitle( &binSrc, strFormat );
 
 end :
     JS_BIN_reset( &binSrc );
