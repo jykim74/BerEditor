@@ -25,7 +25,7 @@ private slots:
 
     void clickView();
     void clickDecode();
-    void clickType();
+
 
     void checkFile();
     void changeSrcType();
