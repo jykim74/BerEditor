@@ -533,7 +533,10 @@ int DocSignerDlg::readCMSSrc( BIN *pData )
             return -1;
         }
 
-        JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), pData );
+        if( mCMSDecodeRadio->isChecked() == true )
+            JS_BIN_fileReadBER( strSrcPath.toLocal8Bit().toStdString().c_str(), pData );
+        else
+            JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), pData );
     }
     else
     {

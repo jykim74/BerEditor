@@ -125,7 +125,7 @@ SOURCES += \
     two_list_dlg.cpp \
     doc_signer_dlg.cpp \
     time_stamp_dlg.cpp \
-    ber_format_dlg.cpp
+    ber_check_dlg.cpp
 
 
 HEADERS += \
@@ -216,7 +216,7 @@ HEADERS += \
     two_list_dlg.h \
     doc_signer_dlg.h \
     time_stamp_dlg.h \
-    ber_format_dlg.cpp
+    ber_check_dlg.h
 
 
 
@@ -361,7 +361,7 @@ FORMS += \
         two_list_dlg.ui \
         doc_signer_dlg.ui \
         time_stamp_dlg.ui \
-        ber_format_dlg.ui
+        ber_check_dlg.ui
 
 RESOURCES += \
     bereditor.qrc

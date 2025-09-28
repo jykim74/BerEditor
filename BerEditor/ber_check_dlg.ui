@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>591</width>
-    <height>431</height>
+    <height>428</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="mHeadLabel">
      <property name="text">
-      <string>BER check</string>
+      <string>List of BER formats to check</string>
      </property>
     </widget>
    </item>
@@ -37,7 +37,7 @@
       </size>
      </property>
      <property name="title">
-      <string>List of BER formats to check</string>
+      <string/>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <property name="spacing">

@@ -91,7 +91,7 @@ int BERCheckDlg::readSrc( BIN *pSrc )
             return -1;
         }
 
-        JS_BIN_fileRead( strPath.toLocal8Bit().toStdString().c_str(), pSrc );
+        JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), pSrc );
     }
     else
     {
@@ -172,9 +172,10 @@ void BERCheckDlg::clickCheckFormat()
 
     memset( sError, 0x00, sizeof(sError));
 
-    readSrc( &binSrc );
+    ret = readSrc( &binSrc );
+    if( ret != 0 ) return;
 
-    if( binSrc.nLen <= 0 )
+    if( ret == 0 && binSrc.nLen <= 0 )
     {
         berApplet->warningBox( tr( "There is no input value or the input type is incorrect." ), this );
         return;
@@ -264,9 +265,10 @@ void BERCheckDlg::clickView()
 
     memset( sError, 0x00, sizeof(sError));
 
-    readSrc( &binSrc );
+    ret = readSrc( &binSrc );
+    if( ret != 0 ) return;
 
-    if( binSrc.nLen <= 0 )
+    if( ret == 0 && binSrc.nLen <= 0 )
     {
         berApplet->warningBox( tr( "There is no input value or the input type is incorrect." ), this );
         return;
@@ -368,8 +370,6 @@ void BERCheckDlg::clickView()
         berApplet->warningBox( tr( "This source is not in %1 format: [%2:%3]" ).arg( strFormat ).arg( sError ).arg(ret), this );
     }
 
-    berApplet->decodeTitle( &binSrc, strFormat );
-
 end :
     JS_BIN_reset( &binSrc );
 }
@@ -391,9 +391,10 @@ void BERCheckDlg::clickDecode()
 
     memset( sError, 0x00, sizeof(sError));
 
-    readSrc( &binSrc );
+    ret = readSrc( &binSrc );
+    if( ret != 0 ) return;
 
-    if( binSrc.nLen <= 0 )
+    if( ret == 0 && binSrc.nLen <= 0 )
     {
         berApplet->warningBox( tr( "There is no input value or the input type is incorrect." ), this );
         return;
