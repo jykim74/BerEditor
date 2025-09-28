@@ -135,6 +135,7 @@ public:
     void viewToolNumConverter( bool bChecked );
     void viewToolOIDInfo( bool bChecked );
     void viewToolMakeBER( bool bChecked );
+    void viewToolBERCheck( bool bChecked );
     void viewToolDecodeData( bool bChecked );
     void viewToolGetURI( bool bChecked );
 

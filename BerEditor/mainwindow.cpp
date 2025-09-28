@@ -467,6 +467,13 @@ void MainWindow::createViewActions()
     connect( toolMakeBERAct, &QAction::triggered, this, &MainWindow::viewToolMakeBER );
     toolMenu->addAction( toolMakeBERAct );
 
+    QAction *toolBERCheckAct = new QAction( tr( "BER Check"), this );
+    bVal = isView( ACT_TOOL_BER_CHECK );
+    toolBERCheckAct->setCheckable(true);
+    toolBERCheckAct->setChecked(bVal);
+    connect( toolBERCheckAct, &QAction::triggered, this, &MainWindow::viewToolBERCheck );
+    toolMenu->addAction( toolBERCheckAct );
+
     QAction *toolDecodeDataAct = new QAction( tr( "Decode BER"), this );
     bVal = isView( ACT_TOOL_DECODE_DATA );
     toolDecodeDataAct->setCheckable(true);
@@ -972,16 +979,18 @@ void MainWindow::createActions()
     toolMenu->addAction( make_ber_act_ );
     if( isView( ACT_TOOL_MAKE_BER ) ) tool_tool_->addAction( make_ber_act_ );
 
-    ber_check_act_ = new QAction(berIcon, tr("&Check BER"), this);
+    const QIcon typeIcon = QIcon::fromTheme("ber-insert", QIcon(":/images/type_check.png"));
+    ber_check_act_ = new QAction(typeIcon, tr("&Check BER"), this);
     ber_check_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_C));
     connect( ber_check_act_, &QAction::triggered, this, &MainWindow::runBERCheck );
     ber_check_act_->setStatusTip(tr("Check BER data"));
     toolMenu->addAction( ber_check_act_ );
-//    if( isView( ACT_TOOL_MAKE_BER ) ) tool_tool_->addAction( make_ber_act_ );
+    if( isView( ACT_TOOL_BER_CHECK ) ) tool_tool_->addAction( ber_check_act_ );
 
     if( berApplet->isLicense() == false )
     {
         make_ber_act_->setEnabled( false );
+        ber_check_act_->setEnabled( false );
     }
 
     const QIcon decodeIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/decode.png"));
@@ -2912,6 +2921,20 @@ void MainWindow::viewToolMakeBER( bool bChecked )
     {
         tool_tool_->removeAction( make_ber_act_ );
         unsetView( ACT_TOOL_MAKE_BER );
+    }
+}
+
+void MainWindow::viewToolBERCheck( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        tool_tool_->addAction( ber_check_act_ );
+        setView( ACT_TOOL_BER_CHECK );
+    }
+    else
+    {
+        tool_tool_->removeAction( ber_check_act_ );
+        unsetView( ACT_TOOL_BER_CHECK );
     }
 }
 

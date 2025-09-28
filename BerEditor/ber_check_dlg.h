@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "ui_ber_check_dlg.h"
+#include "js_bin.h"
 
 namespace Ui {
 class BERCheckDlg;
@@ -22,9 +23,19 @@ private slots:
     void clickCheckFormat();
     void clickCheckType();
 
+    void clickView();
+    void clickDecode();
+    void clickType();
+
+    void checkFile();
+    void changeSrcType();
+    void changeSrc();
+
 private:
     void initUI();
     void initialize();
+
+    int readSrc( BIN *pSrc );
 };
 
 #endif // BER_CHECK_DLG_H

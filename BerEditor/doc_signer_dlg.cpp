@@ -234,12 +234,16 @@ void DocSignerDlg::checkSrcFile()
     mSrcPathText->setEnabled( bVal );
     mFindSrcPathBtn->setEnabled( bVal );
 
+    mCMSSrcLabel->setEnabled( !bVal );
+    mCMSSrcTypeCombo->setEnabled( !bVal );
     mCMSSrcText->setEnabled( !bVal );
     mCMSSrcLenText->setEnabled( !bVal );
 
+    mJSONPayloadLabel->setEnabled( !bVal );
     mJSONPayloadText->setEnabled( !bVal );
     mJSONPayloadLenText->setEnabled( !bVal );
 
+    mXMLBodyLabel->setEnabled( !bVal );
     mXMLBodyText->setEnabled( !bVal );
     mXMLBodyLenText->setEnabled( !bVal );
 }

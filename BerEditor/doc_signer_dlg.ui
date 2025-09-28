@@ -696,7 +696,7 @@
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_2">
+          <widget class="QLabel" name="mJSONPayloadLabel">
            <property name="minimumSize">
             <size>
              <width>60</width>
@@ -926,7 +926,7 @@
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_3">
+          <widget class="QLabel" name="mJSON_JWSLabel">
            <property name="minimumSize">
             <size>
              <width>60</width>
@@ -1016,7 +1016,7 @@
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_5">
+          <widget class="QLabel" name="mXMLBodyLabel">
            <property name="minimumSize">
             <size>
              <width>60</width>
@@ -1275,7 +1275,7 @@
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_7">
+          <widget class="QLabel" name="mXMLResLabel">
            <property name="minimumSize">
             <size>
              <width>60</width>

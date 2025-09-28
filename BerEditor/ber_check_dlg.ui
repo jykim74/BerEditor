@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>524</width>
-    <height>394</height>
+    <width>591</width>
+    <height>431</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>BER check</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -23,6 +23,54 @@
    </item>
    <item>
     <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="mCheckGroup">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>List of BER formats to check</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <property name="leftMargin">
+       <number>6</number>
+      </property>
+      <property name="topMargin">
+       <number>6</number>
+      </property>
+      <property name="rightMargin">
+       <number>6</number>
+      </property>
+      <property name="bottomMargin">
+       <number>6</number>
+      </property>
+      <item>
+       <layout class="QGridLayout" name="gridLayout_7">
+        <item row="0" column="0">
+         <widget class="QLabel" name="mCheckListLabel">
+          <property name="text">
+           <string>Check format List</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line_5">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -53,7 +101,7 @@
       </widget>
      </item>
      <item row="0" column="2">
-      <widget class="QPushButton" name="mFilleFindBtn">
+      <widget class="QPushButton" name="mFileFindBtn">
        <property name="text">
         <string>Find</string>
        </property>
@@ -169,17 +217,81 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="3">
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mViewBtn">
+       <property name="minimumSize">
+        <size>
+         <width>20</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>V</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
       <widget class="QPushButton" name="mTypeCheckBtn">
        <property name="text">
         <string>BER Type Check</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
+     <item row="0" column="2">
       <widget class="QComboBox" name="mFormatCombo"/>
      </item>
-     <item row="0" column="2">
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mFormatCheckBtn">
+       <property name="text">
+        <string>Format Check</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mDecodeBtn">
+       <property name="minimumSize">
+        <size>
+         <width>20</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>D</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="6">
+      <widget class="QPushButton" name="mTypeBtn">
+       <property name="minimumSize">
+        <size>
+         <width>20</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>T</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
       <spacer name="horizontalSpacer_3">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -191,13 +303,6 @@
         </size>
        </property>
       </spacer>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mFormatCheckBtn">
-       <property name="text">
-        <string>Format Check</string>
-       </property>
-      </widget>
      </item>
     </layout>
    </item>

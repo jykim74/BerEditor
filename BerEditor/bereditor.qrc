@@ -103,5 +103,6 @@
         <file>images/nemo.png</file>
         <file>images/doc_signer.png</file>
         <file>images/p7.png</file>
+        <file>images/type_check.png</file>
     </qresource>
 </RCC>
