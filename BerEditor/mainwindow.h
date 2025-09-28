@@ -240,6 +240,7 @@ private slots:
     void runDecodeData();
     void runDecodeTTLV();
     void runMakeTTLV();
+    void runBERCheck();
     void ttlvClient();
     void ttlvEncoder();
     void numConverter();
@@ -371,6 +372,7 @@ private:
     QAction* num_converter_act_;
     QAction* oid_act_;
     QAction* make_ber_act_;
+    QAction* ber_check_act_;
     QAction* decode_data_act_;
     QAction* get_uri_act_;
 

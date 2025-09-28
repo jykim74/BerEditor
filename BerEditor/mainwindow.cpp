@@ -57,6 +57,7 @@
 #include "key_list_dlg.h"
 #include "x509_compare_dlg.h"
 #include "doc_signer_dlg.h"
+#include "ber_check_dlg.h"
 
 #include "js_pki_tools.h"
 #include "js_kms.h"
@@ -971,6 +972,13 @@ void MainWindow::createActions()
     toolMenu->addAction( make_ber_act_ );
     if( isView( ACT_TOOL_MAKE_BER ) ) tool_tool_->addAction( make_ber_act_ );
 
+    ber_check_act_ = new QAction(berIcon, tr("&Check BER"), this);
+    ber_check_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_C));
+    connect( ber_check_act_, &QAction::triggered, this, &MainWindow::runBERCheck );
+    ber_check_act_->setStatusTip(tr("Check BER data"));
+    toolMenu->addAction( ber_check_act_ );
+//    if( isView( ACT_TOOL_MAKE_BER ) ) tool_tool_->addAction( make_ber_act_ );
+
     if( berApplet->isLicense() == false )
     {
         make_ber_act_->setEnabled( false );
@@ -1474,6 +1482,12 @@ void MainWindow::runMakeTTLV()
     }
 }
 
+void MainWindow::runBERCheck()
+{
+    BERCheckDlg berCheck;
+    berCheck.exec();
+}
+
 void MainWindow::ttlvClient()
 {
     ttlv_client_dlg_->show();
@@ -1540,6 +1554,7 @@ void MainWindow::openCert()
     else
     {
         bool bVal = true;
+
         if( JS_PKI_isCRL( &binCert ) == 1 )
         {
             bVal = berApplet->yesOrCancelBox( tr( "This file is CRL. Open it as CRL information?"), this, true );

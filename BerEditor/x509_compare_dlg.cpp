@@ -1199,6 +1199,12 @@ void X509CompareDlg::clickCompare()
 
     if( mFileGroup->isChecked() == true )
     {
+        if( strAPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find a A file" ), this );
+            return;
+        }
+
         JS_BIN_reset( &A_bin_ );
         JS_BIN_fileReadBER( strAPath.toLocal8Bit().toStdString().c_str(), &A_bin_ );
 
