@@ -21,6 +21,9 @@ public:
 private slots:
     void changeType();
 
+    void checkAutoDetect();
+    void checkFileGroup();
+
     void clickAFind();
     void clickBFind();
     void clickClear();

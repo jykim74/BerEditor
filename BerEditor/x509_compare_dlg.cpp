@@ -17,11 +17,7 @@
 const QString kValidIcon = ":/images/valid.png";
 const QString kInvalidIcon = ":/images/invalid.png";
 
-const QString kCertificate = "Certificate";
-const QString kCRL = "CRL";
-const QString kCSR = "CSR";
-
-QStringList sTypeList = { kCertificate, kCRL, kCSR };
+QStringList sTypeList = { JS_PKI_BER_NAME_CERTIFICATE, JS_PKI_BER_NAME_CRL, JS_PKI_BER_NAME_CSR };
 
 X509CompareDlg::X509CompareDlg(QWidget *parent)
     : QDialog(parent)
@@ -34,6 +30,8 @@ X509CompareDlg::X509CompareDlg(QWidget *parent)
     initUI();
 
     connect( mTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeType()));
+    connect( mFileGroup, SIGNAL(clicked(bool)), this, SLOT(checkFileGroup()));
+    connect( mAutoDetectCheck, SIGNAL(clicked()), this, SLOT(checkAutoDetect()));
 
     connect( mShowInfoBtn, SIGNAL(clicked()), this, SLOT(clickShowInfo()));
     connect( mCompareTable, SIGNAL(clicked(QModelIndex)), this, SLOT(clickCompareTable(QModelIndex)));
@@ -78,6 +76,27 @@ void X509CompareDlg::changeType()
 
     mCompareTable->horizontalHeaderItem(1)->setText( tr("A %1 value").arg( strType ));
     mCompareTable->horizontalHeaderItem(2)->setText( tr("B %1 value").arg( strType ));
+}
+
+void X509CompareDlg::checkAutoDetect()
+{
+    bool bVal = mAutoDetectCheck->isChecked();
+
+    mTypeCombo->setEnabled( !bVal );
+}
+
+void X509CompareDlg::checkFileGroup()
+{
+    bool bVal = mFileGroup->isChecked();
+
+    if( bVal == true )
+    {
+        checkAutoDetect();
+    }
+    else
+    {
+        mTypeCombo->setEnabled( true );
+    }
 }
 
 void X509CompareDlg::initUI()
@@ -1178,14 +1197,33 @@ void X509CompareDlg::clickCompare()
     QString strBPath = mBPathText->text();
     QString strType = mTypeCombo->currentText();
 
-    if( strAPath.length() < 1 )
+    if( mFileGroup->isChecked() == true )
     {
-        if( strType == kCertificate || strType == kCRL )
+        JS_BIN_reset( &A_bin_ );
+        JS_BIN_fileReadBER( strAPath.toLocal8Bit().toStdString().c_str(), &A_bin_ );
+
+        if( mAutoDetectCheck->isChecked() == true )
+        {
+            int nX509Type = JS_PKI_getX509Type( &A_bin_ );
+
+            if( nX509Type < 0 )
+            {
+                berApplet->warningBox( tr( "This file is not X509 format" ).arg(strAPath), this );
+                goto end;
+            }
+
+            mTypeCombo->setCurrentText( JS_PKI_getBERName( nX509Type ) );
+            strType = mTypeCombo->currentText();
+        }
+    }
+    else
+    {
+        if( strType == JS_PKI_BER_TYPE_CERTIFICATE || strType == JS_PKI_BER_TYPE_CRL )
         {
             CertManDlg certMan;
             QString strHex;
 
-            if( strType == kCertificate )
+            if( strType == JS_PKI_BER_TYPE_CERTIFICATE )
                 certMan.setMode(ManModeSelCert);
             else
                 certMan.setMode(ManModeSelCRL );
@@ -1197,7 +1235,7 @@ void X509CompareDlg::clickCompare()
 
             JS_BIN_reset( &A_bin_ );
 
-            if( strType == kCertificate )
+            if( strType == JS_PKI_BER_TYPE_CERTIFICATE )
                 strHex = certMan.getCertHex();
             else
                 strHex = certMan.getCRLHex();
@@ -1211,20 +1249,15 @@ void X509CompareDlg::clickCompare()
             return;
         }
     }
-    else
-    {
-        JS_BIN_reset( &B_bin_ );
-        JS_BIN_fileReadBER( strAPath.toLocal8Bit().toStdString().c_str(), &A_bin_ );
-    }
 
     if( strBPath.length() < 1 )
     {
-        if( strType == kCertificate || strType == kCRL )
+        if( strType == JS_PKI_BER_TYPE_CERTIFICATE || strType == JS_PKI_BER_TYPE_CRL )
         {
             CertManDlg certMan;
             QString strHex;
 
-            if( strType == kCertificate )
+            if( strType == JS_PKI_BER_TYPE_CERTIFICATE )
                 certMan.setMode(ManModeSelCert);
             else
                 certMan.setMode(ManModeSelCRL );
@@ -1236,7 +1269,7 @@ void X509CompareDlg::clickCompare()
 
             JS_BIN_reset( &B_bin_ );
 
-            if( strType == kCertificate )
+            if( strType == JS_PKI_BER_TYPE_CERTIFICATE )
                 strHex = certMan.getCertHex();
             else
                 strHex = certMan.getCRLHex();
@@ -1259,15 +1292,15 @@ void X509CompareDlg::clickCompare()
     mCompareTable->setRowCount(0);
     cur_type_ = strType;
 
-    if( strType == kCertificate ) // Certificate
+    if( strType == JS_PKI_BER_TYPE_CERTIFICATE ) // Certificate
     {
         compareCert();
     }
-    else if( strType == kCRL ) // CRL
+    else if( strType == JS_PKI_BER_TYPE_CRL ) // CRL
     {
         compareCRL();
     }
-    else if( strType == kCSR ) // CSR
+    else if( strType == JS_PKI_BER_TYPE_CSR ) // CSR
     {
         compareCSR();
     }
@@ -1371,19 +1404,19 @@ void X509CompareDlg::dblClickTable()
 
     if( col == 1 )
     {
-        if( cur_type_ == kCertificate )
+        if( cur_type_ == JS_PKI_BER_TYPE_CERTIFICATE )
         {
             CertInfoDlg certInfo;
             certInfo.setCertBIN( &A_bin_ );
             certInfo.exec();
         }
-        else if( cur_type_ == kCRL )
+        else if( cur_type_ == JS_PKI_BER_TYPE_CRL )
         {
             CRLInfoDlg crlInfo;
             crlInfo.setCRL_BIN( &A_bin_ );
             crlInfo.exec();
         }
-        else if( cur_type_ == kCSR )
+        else if( cur_type_ == JS_PKI_BER_TYPE_CSR )
         {
             CSRInfoDlg csrInfo;
             csrInfo.setReqBIN( &A_bin_ );
@@ -1392,19 +1425,19 @@ void X509CompareDlg::dblClickTable()
     }
     else if( col == 2 )
     {
-        if( cur_type_ == kCertificate )
+        if( cur_type_ == JS_PKI_BER_TYPE_CERTIFICATE )
         {
             CertInfoDlg certInfo;
             certInfo.setCertBIN( &B_bin_ );
             certInfo.exec();
         }
-        else if( cur_type_ == kCRL )
+        else if( cur_type_ == JS_PKI_BER_TYPE_CRL )
         {
             CRLInfoDlg crlInfo;
             crlInfo.setCRL_BIN( &B_bin_ );
             crlInfo.exec();
         }
-        else if( cur_type_ == kCSR )
+        else if( cur_type_ == JS_PKI_BER_TYPE_CSR )
         {
             CSRInfoDlg csrInfo;
             csrInfo.setReqBIN( &B_bin_ );
@@ -1425,19 +1458,19 @@ void X509CompareDlg::clickViewA()
         return;
     }
 
-    if( strType == kCertificate )
+    if( strType == JS_PKI_BER_TYPE_CERTIFICATE )
     {
         CertInfoDlg certInfoDlg;
         certInfoDlg.setCertPath( strPath );
         certInfoDlg.exec();
     }
-    else if( strType == kCRL )
+    else if( strType == JS_PKI_BER_TYPE_CRL )
     {
         CRLInfoDlg crlInfo;
         crlInfo.setCRLPath( strPath );
         crlInfo.exec();
     }
-    else if( strType == kCSR )
+    else if( strType == JS_PKI_BER_TYPE_CSR )
     {
         CSRInfoDlg csrInfo;
         csrInfo.setReqPath( strPath );
@@ -1482,19 +1515,19 @@ void X509CompareDlg::clickViewB()
         return;
     }
 
-    if( strType == kCertificate )
+    if( strType == JS_PKI_BER_TYPE_CERTIFICATE )
     {
         CertInfoDlg certInfoDlg;
         certInfoDlg.setCertPath( strPath );
         certInfoDlg.exec();
     }
-    else if( strType == kCRL )
+    else if( strType == JS_PKI_BER_TYPE_CRL )
     {
         CRLInfoDlg crlInfo;
         crlInfo.setCRLPath( strPath );
         crlInfo.exec();
     }
-    else if( strType == kCSR )
+    else if( strType == JS_PKI_BER_TYPE_CSR )
     {
         CSRInfoDlg csrInfo;
         csrInfo.setReqPath( strPath );
