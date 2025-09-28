@@ -144,7 +144,7 @@ void VIDDlg::clickVerifyVID()
     }
     else
     {
-        berApplet->warnLog( tr( "VID verification failed: %1" ).arg( ret ), this );
+        berApplet->warnLog( tr( "VID verification failed: %1" ).arg( JERR(ret) ), this );
     }
 
     JS_BIN_reset( &binRand );

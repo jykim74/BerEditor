@@ -273,10 +273,18 @@ void ExportDlg::clickOK()
         break;
 
     default:
+        ret = JSR_INVALID_TYPE;
         break;
     }
 
-    if( ret == 0 ) QDialog::accept();
+    if( ret == JSR_OK )
+    {
+        QDialog::accept();
+    }
+    else
+    {
+        berApplet->warningBox( tr( "failed to export: %1" ).arg( JERR(ret)), this);
+    }
 }
 
 void ExportDlg::clickFindFilename()

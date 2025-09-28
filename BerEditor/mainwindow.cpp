@@ -1324,7 +1324,7 @@ void MainWindow::createActions()
     QIcon infoIcon = QIcon::fromTheme( "content", QIcon(":/images/info.png"));
     content_act_ = new QAction( infoIcon, tr( "Content" ), this );
     connect( content_act_, &QAction::triggered, this, &MainWindow::content );
-    content_act_->setShortcut( QKeySequence(Qt::CTRL | Qt::Key_H ));
+    content_act_->setShortcut( QKeySequence(Qt::Key_F11 ));
     content_act_->setStatusTip( tr("PKI related information content" ));
     helpMenu->addAction( content_act_ );
     if( isView( ACT_HELP_CONTENT ) ) help_tool_->addAction( content_act_ );
