@@ -425,6 +425,16 @@
  </widget>
  <tabstops>
   <tabstop>mTypeCombo</tabstop>
+  <tabstop>mFileGroup</tabstop>
+  <tabstop>mAutoDetectCheck</tabstop>
+  <tabstop>mAPathText</tabstop>
+  <tabstop>mAFindBtn</tabstop>
+  <tabstop>mAViewBtn</tabstop>
+  <tabstop>mADecodeBtn</tabstop>
+  <tabstop>mBPathText</tabstop>
+  <tabstop>mBFindBtn</tabstop>
+  <tabstop>mBViewBtn</tabstop>
+  <tabstop>mBDecodeBtn</tabstop>
   <tabstop>mResBtn</tabstop>
   <tabstop>mCompareBtn</tabstop>
   <tabstop>mCompareTable</tabstop>

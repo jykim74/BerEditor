@@ -54,7 +54,7 @@
       <enum>Qt::CustomContextMenu</enum>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="mEETab">
       <attribute name="title">
@@ -1409,6 +1409,15 @@
   <tabstop>mEE_CertTable</tabstop>
   <tabstop>mEE_PasswdText</tabstop>
   <tabstop>mViewCertBtn</tabstop>
+  <tabstop>mViewPriKeyBtn</tabstop>
+  <tabstop>mViewPubKeyBtn</tabstop>
+  <tabstop>mChangePasswdBtn</tabstop>
+  <tabstop>mDecodeCertBtn</tabstop>
+  <tabstop>mDecodePriKeyBtn</tabstop>
+  <tabstop>mImportBtn</tabstop>
+  <tabstop>mExportBtn</tabstop>
+  <tabstop>mCheckKeyPairBtn</tabstop>
+  <tabstop>mDelCertBtn</tabstop>
   <tabstop>mRunSignBtn</tabstop>
   <tabstop>mRunVerifyBtn</tabstop>
   <tabstop>mRunPubEncBtn</tabstop>
@@ -1416,20 +1425,38 @@
   <tabstop>mOtherCertPathText</tabstop>
   <tabstop>mOtherKeyTypeCombo</tabstop>
   <tabstop>mOther_CertTable</tabstop>
+  <tabstop>mViewOtherBtn</tabstop>
+  <tabstop>mViewPubKeyOtherBtn</tabstop>
+  <tabstop>mAddOtherBtn</tabstop>
+  <tabstop>mDecodeOtherBtn</tabstop>
+  <tabstop>mRemoveOtherBtn</tabstop>
   <tabstop>mExportOtherBtn</tabstop>
   <tabstop>mRunOtherVerifyBtn</tabstop>
   <tabstop>mRunOtherPubEncBtn</tabstop>
   <tabstop>mCAPathText</tabstop>
   <tabstop>mCAKeyTypeCombo</tabstop>
   <tabstop>mCA_CertTable</tabstop>
+  <tabstop>mViewCABtn</tabstop>
+  <tabstop>mViewPubKeyCABtn</tabstop>
+  <tabstop>mAddCABtn</tabstop>
   <tabstop>mDecodeCABtn</tabstop>
+  <tabstop>mRemoveCABtn</tabstop>
   <tabstop>mExportCABtn</tabstop>
   <tabstop>mCRLPathText</tabstop>
   <tabstop>mCRL_Table</tabstop>
+  <tabstop>mViewCRLBtn</tabstop>
+  <tabstop>mAddCRLBtn</tabstop>
+  <tabstop>mDecodeCRLBtn</tabstop>
+  <tabstop>mRemoveCRLBtn</tabstop>
+  <tabstop>mExportCRLBtn</tabstop>
   <tabstop>mTrustRCAPathText</tabstop>
   <tabstop>mRCAKeyTypeCombo</tabstop>
   <tabstop>mRCA_CertTable</tabstop>
+  <tabstop>mViewTrustBtn</tabstop>
+  <tabstop>mViewPubKeyTrustBtn</tabstop>
+  <tabstop>mAddTrustBtn</tabstop>
   <tabstop>mDecodeTrustBtn</tabstop>
+  <tabstop>mRemoveTrustBtn</tabstop>
   <tabstop>mExportTrustBtn</tabstop>
   <tabstop>mTLPriKeyPathText</tabstop>
   <tabstop>mFindTLPriKeyBtn</tabstop>

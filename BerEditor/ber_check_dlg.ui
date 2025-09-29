@@ -327,6 +327,21 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mFileCheck</tabstop>
+  <tabstop>mFilePathText</tabstop>
+  <tabstop>mFileFindBtn</tabstop>
+  <tabstop>mSrcTypeCombo</tabstop>
+  <tabstop>mSrcLenText</tabstop>
+  <tabstop>mSrcText</tabstop>
+  <tabstop>mTypeCheckBtn</tabstop>
+  <tabstop>mFormatCombo</tabstop>
+  <tabstop>mFormatCheckBtn</tabstop>
+  <tabstop>mViewBtn</tabstop>
+  <tabstop>mDecodeBtn</tabstop>
+  <tabstop>mClearBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

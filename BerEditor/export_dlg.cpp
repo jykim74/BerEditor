@@ -462,7 +462,7 @@ void ExportDlg::setPriKeyAndCert( const BIN *pPriKey, const BIN *pCert )
 
     mTitleLabel->setText( tr( "Certificate and Private Key Export" ));
 
-    key_type_ = JS_PKI_getPriKeyType( &data2_ );
+    key_type_ = JS_PKI_getPriKeyType( &data_ );
     mAlgText->setText( JS_PKI_getKeyAlgName( key_type_ ));
 
     mFormatCombo->addItem( getFormatName( ExportPFX ), ExportPFX );

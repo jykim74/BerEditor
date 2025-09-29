@@ -17,7 +17,7 @@
    <item row="0" column="0" colspan="2">
     <widget class="QTabWidget" name="mTabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mDHTab">
       <attribute name="title">
@@ -1336,6 +1336,7 @@
   <tabstop>mParamLenCombo</tabstop>
   <tabstop>mImportParamBtn</tabstop>
   <tabstop>mExportParamBtn</tabstop>
+  <tabstop>mPClearBtn</tabstop>
   <tabstop>mGCombo</tabstop>
   <tabstop>mGenParamBtn</tabstop>
   <tabstop>mPLenText</tabstop>
@@ -1378,8 +1379,14 @@
   <tabstop>mBCheckKeyPairBtn</tabstop>
   <tabstop>mBGetFromCertManBtn</tabstop>
   <tabstop>mBGetFromKeyPairBtn</tabstop>
+  <tabstop>mEditModeBtn</tabstop>
+  <tabstop>mACalcRadio</tabstop>
+  <tabstop>mBCalcRadio</tabstop>
+  <tabstop>mRunBtn</tabstop>
+  <tabstop>mSecretClearBtn</tabstop>
   <tabstop>mSecretKeyLenText</tabstop>
   <tabstop>mSecretKeyText</tabstop>
+  <tabstop>mClearDataAllBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>

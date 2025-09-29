@@ -229,6 +229,8 @@
   <tabstop>mKeyTypeCombo</tabstop>
   <tabstop>mKeyTable</tabstop>
   <tabstop>mKeyViewBtn</tabstop>
+  <tabstop>mKeyAddBtn</tabstop>
+  <tabstop>mKeyDelBtn</tabstop>
   <tabstop>mGenMACBtn</tabstop>
   <tabstop>mEncDecBtn</tabstop>
   <tabstop>mOKBtn</tabstop>

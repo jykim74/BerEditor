@@ -873,12 +873,17 @@
   <tabstop>mNonceLenText</tabstop>
   <tabstop>mTransIDText</tabstop>
   <tabstop>mTransIDLenText</tabstop>
+  <tabstop>mGetCABtn</tabstop>
+  <tabstop>mCmdCombo</tabstop>
+  <tabstop>mMakeBtn</tabstop>
   <tabstop>mRequestClearBtn</tabstop>
   <tabstop>mRequestDecodeBtn</tabstop>
+  <tabstop>mSendBtn</tabstop>
   <tabstop>mRequestLenText</tabstop>
   <tabstop>mRequestText</tabstop>
   <tabstop>mResponseClearBtn</tabstop>
   <tabstop>mResponseDecodeBtn</tabstop>
+  <tabstop>mVerifyBtn</tabstop>
   <tabstop>mResponseLenText</tabstop>
   <tabstop>mResponseText</tabstop>
   <tabstop>mClearAllBtn</tabstop>

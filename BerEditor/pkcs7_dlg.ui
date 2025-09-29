@@ -1077,6 +1077,7 @@
   <tabstop>mOutputViewBtn</tabstop>
   <tabstop>mOutputTypeBtn</tabstop>
   <tabstop>mOutputCmdText</tabstop>
+  <tabstop>mWriteFileBtn</tabstop>
   <tabstop>mOutputUpBtn</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>

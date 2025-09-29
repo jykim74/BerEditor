@@ -809,8 +809,11 @@
   <tabstop>mSubjectDNText</tabstop>
   <tabstop>mRegInfoText</tabstop>
   <tabstop>mRegInfoClearBtn</tabstop>
+  <tabstop>mCmdCombo</tabstop>
+  <tabstop>mRunBtn</tabstop>
   <tabstop>mRequestClearBtn</tabstop>
   <tabstop>mRequestDecodeBtn</tabstop>
+  <tabstop>mSendBtn</tabstop>
   <tabstop>mRequestLenText</tabstop>
   <tabstop>mRequestText</tabstop>
   <tabstop>mResponseClearBtn</tabstop>
