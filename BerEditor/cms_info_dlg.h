@@ -40,6 +40,7 @@ private slots:
     void clickViewCert();
     void clickViewCRL();
 
+    void clickExport();
     void clickViewTSP();
     void clickViewTST();
 

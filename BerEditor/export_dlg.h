@@ -17,6 +17,7 @@ enum {
     DataCSR,
     DataPriKeyCert,
     DataDHParam,
+    DataPKCS7
 };
 
 enum {
@@ -37,6 +38,8 @@ enum {
     ExportCRL_DER,      // DER CRL (*.der)
     ExportDH_PEM,       // PEM DH Param (*.pem)
     ExportDH_DER,       // DER DH Param (*.der)
+    ExportPKCS7_PEM,    // PEM PKCS7 (*.p7b)
+    ExportPKCS7_DER,    // DER PKCS7 (*.der)
 };
 
 class ExportDlg : public QDialog, public Ui::ExportDlg
@@ -56,6 +59,7 @@ public:
     void setCSR( const BIN *pCSR );
     void setPriKeyAndCert( const BIN *pPriKey, const BIN *pCert );
     void setDHParam( const BIN *pParam );
+    void setPKCS7( const BIN *pPKCS7 );
 
 private slots:
     void changeFormatType( int index );
@@ -75,13 +79,10 @@ private:
     int exportP8Enc();
     int exportP8Info();
     int exportDHParam();
+    int exportPKCS7();
 
-    BIN pri_key_;
-    BIN pub_key_;
-    BIN cert_;
-    BIN csr_;
-    BIN crl_;
-    BIN param_;
+    BIN data_;
+    BIN data2_;
 
     int data_type_;
     int key_type_;

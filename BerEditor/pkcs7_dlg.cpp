@@ -19,6 +19,7 @@
 #include "cms_info_dlg.h"
 #include "common.h"
 #include "settings_mgr.h"
+#include "export_dlg.h"
 
 static const QStringList kCipherList = { "aes-128-cbc", "aes-192-cbc", "aes-256-cbc" };
 
@@ -71,6 +72,7 @@ PKCS7Dlg::PKCS7Dlg(QWidget *parent) :
     connect( mOutputViewBtn, SIGNAL(clicked()), this, SLOT(clickOutputView()));
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
     connect( mReadFileBtn, SIGNAL(clicked()), this, SLOT(clickReadFile()));
+    connect( mWriteFileBtn, SIGNAL(clicked()), this, SLOT(clickWriteFile()));
 
     connect( mSignEncPriKeyCheck, SIGNAL(clicked()), this, SLOT(checkSignEncPriKey()));
     connect( mKMEncPriKeyCheck, SIGNAL(clicked()), this, SLOT(checkKMEncPriKey()));
@@ -1574,7 +1576,11 @@ void PKCS7Dlg::clickReadFile()
     {
         BIN binData = {0,0};
 
-        ret = JS_BIN_fileRead( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+        if( mDecodeRadio->isChecked() == true )
+            ret = JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+        else
+            ret = JS_BIN_fileRead( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+
         if( ret <= 0 ) return;
 
         if( mDecodeRadio->isChecked() == true )
@@ -1594,6 +1600,49 @@ void PKCS7Dlg::clickReadFile()
 
         JS_BIN_reset( &binData );
     }
+}
+
+void PKCS7Dlg::clickWriteFile()
+{
+    int ret = 0;
+    BIN binData = {0,0};
+    QString strOutput = mOutputText->toPlainText();
+
+    if( strOutput.length() < 1 )
+    {
+        berApplet->warningBox( tr( "There is no data" ), this );
+        mOutputText->setFocus();
+        return;
+    }
+
+    getBINFromString( &binData, DATA_HEX, strOutput );
+
+    if( mEncodeRadio->isChecked() == true )
+    {
+        ExportDlg exportDlg;
+        exportDlg.setName( "PKCS7" );
+        exportDlg.setPKCS7( &binData );
+        exportDlg.exec();
+    }
+    else
+    {
+        QString strFile;
+        strFile = berApplet->findSaveFile( this, JS_FILE_TYPE_BIN, strFile );
+        if( strFile.length() > 0 )
+        {
+            ret = JS_BIN_fileWrite( &binData, strFile.toLocal8Bit().toStdString().c_str() );
+            if( ret <= 0 )
+            {
+                berApplet->warningBox( tr( "fail to write file: %1").arg( ret ), this );
+                goto end;
+            }
+
+            berApplet->messageBox( tr( "The data file[%1] has been saved." ).arg( strFile ), this );
+        }
+    }
+
+end :
+    JS_BIN_reset( &binData );
 }
 
 void PKCS7Dlg::checkSignEncPriKey()

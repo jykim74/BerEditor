@@ -119,6 +119,8 @@ void X509CompareDlg::initUI()
     mTypeCombo->addItems( sTypeList );
     mResBtn->setIcon( QIcon( ":/images/compare.png" ));
 
+    mAutoDetectCheck->setChecked(true);
+
     mAPathText->setPlaceholderText( tr("Find file A") );
     mBPathText->setPlaceholderText( tr("Find file B") );
     mAInfoText->setPlaceholderText( tr( "A field value" ));
@@ -1196,6 +1198,8 @@ void X509CompareDlg::clickCompare()
     QString strAPath = mAPathText->text();
     QString strBPath = mBPathText->text();
     QString strType = mTypeCombo->currentText();
+    int nAType = JS_PKI_getBERType( strType.toStdString().c_str() );
+    int nBType = JS_PKI_getBERType( strType.toStdString().c_str() );
 
     if( mFileGroup->isChecked() == true )
     {
@@ -1210,15 +1214,15 @@ void X509CompareDlg::clickCompare()
 
         if( mAutoDetectCheck->isChecked() == true )
         {
-            int nX509Type = JS_PKI_getX509Type( &A_bin_ );
+            nAType = JS_PKI_getX509Type( &A_bin_ );
 
-            if( nX509Type < 0 )
+            if( nAType < 0 )
             {
-                berApplet->warningBox( tr( "This file is not X509 format" ).arg(strAPath), this );
+                berApplet->warningBox( tr( "This A file(%1) is not X509 format" ).arg(strAPath), this );
                 goto end;
             }
 
-            mTypeCombo->setCurrentText( JS_PKI_getBERName( nX509Type ) );
+            mTypeCombo->setCurrentText( JS_PKI_getBERName( nAType ) );
             strType = mTypeCombo->currentText();
         }
     }
@@ -1293,7 +1297,26 @@ void X509CompareDlg::clickCompare()
     {
         JS_BIN_reset( &B_bin_ );
         JS_BIN_fileReadBER( strBPath.toLocal8Bit().toStdString().c_str(), &B_bin_ );
+
+        nBType = JS_PKI_getX509Type( &B_bin_ );
+        if( nBType < 0 )
+        {
+            berApplet->warningBox( tr( "This B file(%1) is not X509 format" ).arg(strAPath), this );
+            goto end;
+        }
+
+        mTypeCombo->setCurrentText( JS_PKI_getBERName( nAType ) );
+        strType = mTypeCombo->currentText();
     }
+
+    if( nAType != nBType )
+    {
+        berApplet->warningBox( tr("The X509 types of files A(%1) and B(%2) are different")
+                                  .arg( JS_PKI_getBERName( nAType ) )
+                                  .arg( JS_PKI_getBERName( nBType ) ), this );
+        goto end;
+    }
+
 
     mCompareTable->setRowCount(0);
     cur_type_ = strType;

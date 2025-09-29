@@ -6,6 +6,7 @@
 #include "crl_info_dlg.h"
 #include "settings_mgr.h"
 #include "tst_info_dlg.h"
+#include "export_dlg.h"
 
 #include "js_pki.h"
 #include "js_pkcs7.h"
@@ -27,6 +28,7 @@ CMSInfoDlg::CMSInfoDlg( QWidget *parent ) :
 
     setupUi(this);
 
+    connect( mExportBtn, SIGNAL(clicked()), this, SLOT(clickExport()));
     connect( mViewTSPBtn, SIGNAL(clicked()), this, SLOT(clickViewTSP()));
     connect( mViewTSTBtn, SIGNAL(clicked()), this, SLOT(clickViewTST()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
@@ -321,6 +323,14 @@ void CMSInfoDlg::clickViewCRL()
     crlInfo.exec();
 
     JS_BIN_reset( &binCRL );
+}
+
+void CMSInfoDlg::clickExport()
+{
+    ExportDlg exportDlg;
+    exportDlg.setName( "CMS_info" );
+    exportDlg.setPKCS7( &cms_bin_ );
+    exportDlg.exec();
 }
 
 void CMSInfoDlg::clickViewTSP()

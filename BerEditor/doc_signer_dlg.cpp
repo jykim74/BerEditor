@@ -1027,8 +1027,14 @@ void DocSignerDlg::clickCMSMakeSign()
         {
             setDstFile();
             QString strDstPath = mDstPathText->text();
-            JS_BIN_fileWrite( &binSigned, strDstPath.toLocal8Bit().toStdString().c_str() );
-            berApplet->messageBox( tr( "The CMS file[%1] has been saved." ).arg( strDstPath ), this );
+            ret = JS_BIN_writePEM( &binSigned, JS_PEM_TYPE_PKCS7,strDstPath.toLocal8Bit().toStdString().c_str()  );
+            if( ret <= 0 )
+            {
+                berApplet->warningBox( tr( "fail to write file: %1").arg( ret ), this );
+                goto end;
+            }
+
+            berApplet->messageBox( tr( "The file[%1] was saved in CMS PEM format" ).arg( strDstPath ), this );
         }
 
         berApplet->messageBox( tr( "Signed data creation success" ), this );
@@ -1081,7 +1087,13 @@ void DocSignerDlg::clickCMSVerifySign()
         {
             setDstFile();
             QString strDstPath = mDstPathText->text();
-            JS_BIN_fileWrite( &binData, strDstPath.toLocal8Bit().toStdString().c_str() );
+            ret = JS_BIN_fileWrite( &binData, strDstPath.toLocal8Bit().toStdString().c_str() );
+            if( ret <= 0 )
+            {
+                berApplet->warningBox( tr( "fail to write file: %1").arg( ret ), this );
+                goto end;
+            }
+
             berApplet->messageBox( tr( "The data file[%1] has been saved." ).arg( strDstPath ), this );
         }
     }
@@ -1130,8 +1142,14 @@ void DocSignerDlg::clickCMSEnvelopedData()
         {
             setDstFile();
             QString strDstPath = mDstPathText->text();
-            JS_BIN_fileWrite( &binData, strDstPath.toLocal8Bit().toStdString().c_str() );
-            berApplet->messageBox( tr( "The data file[%1] has been saved." ).arg( strDstPath ), this );
+            ret = JS_BIN_writePEM( &binData, JS_PEM_TYPE_PKCS7,strDstPath.toLocal8Bit().toStdString().c_str()  );
+            if( ret <= 0 )
+            {
+                berApplet->warningBox( tr( "fail to write file: %1").arg( ret ), this );
+                goto end;
+            }
+
+            berApplet->messageBox( tr( "The file[%1] was saved in CMS PEM format" ).arg( strDstPath ), this );
         }
     }
 
@@ -1189,7 +1207,13 @@ void DocSignerDlg::clickCMSDevelopedData()
         {
             setDstFile();
             QString strDstPath = mDstPathText->text();
-            JS_BIN_fileWrite( &binData, strDstPath.toLocal8Bit().toStdString().c_str() );
+            ret = JS_BIN_fileWrite( &binData, strDstPath.toLocal8Bit().toStdString().c_str() );
+            if( ret <= 0 )
+            {
+                berApplet->warningBox( tr( "fail to write file: %1").arg( ret ), this );
+                goto end;
+            }
+
             berApplet->messageBox( tr( "The data file[%1] has been saved." ).arg( strDstPath ), this );
         }
     }
@@ -1236,8 +1260,14 @@ void DocSignerDlg::clickCMSMakeData()
         {
             setDstFile();
             QString strDstPath = mDstPathText->text();
-            JS_BIN_fileWrite( &binCMS, strDstPath.toLocal8Bit().toStdString().c_str() );
-            berApplet->messageBox( tr( "The CMS file[%1] has been saved." ).arg( strDstPath ), this );
+            ret = JS_BIN_writePEM( &binCMS, JS_PEM_TYPE_PKCS7,strDstPath.toLocal8Bit().toStdString().c_str()  );
+            if( ret <= 0 )
+            {
+                berApplet->warningBox( tr( "fail to write file: %1").arg( ret ), this );
+                goto end;
+            }
+
+            berApplet->messageBox( tr( "The file[%1] was saved in CMS PEM format" ).arg( strDstPath ), this );
         }
 
         berApplet->messageBox( tr( "CMS data creation success" ), this );
@@ -1277,8 +1307,14 @@ void DocSignerDlg::clickCMSMakeDigest()
         {
             setDstFile();
             QString strDstPath = mDstPathText->text();
-            JS_BIN_fileWrite( &binCMS, strDstPath.toLocal8Bit().toStdString().c_str() );
-            berApplet->messageBox( tr( "The CMS file[%1] has been saved." ).arg( strDstPath ), this );
+            ret = JS_BIN_writePEM( &binCMS, JS_PEM_TYPE_PKCS7,strDstPath.toLocal8Bit().toStdString().c_str()  );
+            if( ret <= 0 )
+            {
+                berApplet->warningBox( tr( "fail to write file: %1").arg( ret ), this );
+                goto end;
+            }
+
+            berApplet->messageBox( tr( "The file[%1] was saved in CMS PEM format" ).arg( strDstPath ), this );
         }
 
         berApplet->messageBox( tr( "CMS digest creation success" ), this );
@@ -1331,8 +1367,14 @@ void DocSignerDlg::clickCMSAddSign()
         {
             setDstFile();
             QString strDstPath = mDstPathText->text();
-            JS_BIN_fileWrite( &binSigned, strDstPath.toLocal8Bit().toStdString().c_str() );
-            berApplet->messageBox( tr( "The CMS file[%1] has been saved." ).arg( strDstPath ), this );
+            ret = JS_BIN_writePEM( &binSigned, JS_PEM_TYPE_PKCS7,strDstPath.toLocal8Bit().toStdString().c_str()  );
+            if( ret <= 0 )
+            {
+                berApplet->warningBox( tr( "fail to write file: %1").arg( ret ), this );
+                goto end;
+            }
+
+            berApplet->messageBox( tr( "The file[%1] was saved in CMS PEM format" ).arg( strDstPath ), this );
         }
 
         berApplet->messageBox( tr( "Signed data creation success" ), this );
@@ -1377,7 +1419,13 @@ void DocSignerDlg::clickCMSGetData()
         {
             setDstFile();
             QString strDstPath = mDstPathText->text();
-            JS_BIN_fileWrite( &binData, strDstPath.toLocal8Bit().toStdString().c_str() );
+            ret = JS_BIN_fileWrite( &binData, strDstPath.toLocal8Bit().toStdString().c_str() );
+            if( ret <= 0 )
+            {
+                berApplet->warningBox( tr( "fail to write file: %1").arg( ret ), this );
+                goto end;
+            }
+
             berApplet->messageBox( tr( "The data file[%1] has been saved." ).arg( strDstPath ), this );
         }
     }
@@ -1426,7 +1474,13 @@ void DocSignerDlg::clickCMSGetDigest()
         {
             setDstFile();
             QString strDstPath = mDstPathText->text();
-            JS_BIN_fileWrite( &sDigestInfo.binContent, strDstPath.toLocal8Bit().toStdString().c_str() );
+            ret = JS_BIN_fileWrite( &sDigestInfo.binContent, strDstPath.toLocal8Bit().toStdString().c_str() );
+            if( ret <= 0 )
+            {
+                berApplet->warningBox( tr( "fail to write file: %1").arg( ret ), this );
+                goto end;
+            }
+
             berApplet->messageBox( tr( "The data file[%1] has been saved." ).arg( strDstPath ), this );
         }
     }
