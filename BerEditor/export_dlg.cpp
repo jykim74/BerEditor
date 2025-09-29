@@ -182,6 +182,7 @@ ExportDlg::ExportDlg(QWidget *parent) :
     resize(minimumSizeHint().width(), minimumSizeHint().height());
 
     initialize();
+    mOKBtn->setDefault(true);
 }
 
 ExportDlg::~ExportDlg()

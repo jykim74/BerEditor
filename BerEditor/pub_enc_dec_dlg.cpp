@@ -41,8 +41,6 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
     setupUi(this);
     initUI();
 
-
-
     connect( mFindPriKeyBtn, SIGNAL(clicked()), this, SLOT(findPrivateKey()));
     connect( mFindCertBtn, SIGNAL(clicked()), this, SLOT(findCert()));
     connect( mChangeBtn, SIGNAL(clicked()), this, SLOT(changeValue()));
@@ -81,8 +79,11 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
 
     connect( mCertGroup, SIGNAL(clicked()), this, SLOT(checkCertGroup()));
 
-    mRunBtn->setDefault(true);
+
     initialize();
+
+    mRunBtn->setDefault(true);
+    mInputText->setFocus();
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);

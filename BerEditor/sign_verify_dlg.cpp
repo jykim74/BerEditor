@@ -93,6 +93,7 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
 
     initialize();
     mRunBtn->setDefault(true);
+    mInputText->setFocus();
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);

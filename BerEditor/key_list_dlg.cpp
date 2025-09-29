@@ -43,8 +43,8 @@ KeyListDlg::KeyListDlg(QWidget *parent) :
     mManGroup->layout()->setMargin(5);
 #endif
 
+    mCloseBtn->setDefault(true);
     resize(minimumSizeHint().width(), minimumSizeHint().height());
-    mOKBtn->setDefault(true);
 }
 
 KeyListDlg::~KeyListDlg()

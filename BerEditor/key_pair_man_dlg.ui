@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>570</width>
-    <height>489</height>
+    <width>630</width>
+    <height>654</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -125,7 +125,7 @@
    <item>
     <widget class="QTabWidget" name="mTabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabList">
       <attribute name="title">
@@ -143,7 +143,7 @@
         <widget class="QTableWidget" name="mKeyPairTable">
          <property name="minimumSize">
           <size>
-           <width>500</width>
+           <width>560</width>
            <height>0</height>
           </size>
          </property>

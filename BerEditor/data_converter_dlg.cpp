@@ -38,6 +38,7 @@ DataConverterDlg::DataConverterDlg(QWidget *parent) :
     initialize();
 
     mConvertBtn->setDefault(true);
+    mInputText->setFocus();
 
     mFirstTab->layout()->setSpacing(0);
     mFirstTab->layout()->setMargin(0);

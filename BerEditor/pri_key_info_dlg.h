@@ -60,8 +60,7 @@ private slots:
     void clickDecode();
     void clickCheckPubKey();
 
-    void clickSavePriKey();
-    void clickSavePubKey();
+    void clickExport();
     void clickCheckKeyPair();
     void clickApplyChange();
     void checkEditMode();

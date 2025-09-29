@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>601</width>
+    <width>589</width>
     <height>421</height>
    </rect>
   </property>
@@ -87,7 +87,7 @@
     <widget class="QTableWidget" name="mKeyTable">
      <property name="minimumSize">
       <size>
-       <width>500</width>
+       <width>560</width>
        <height>160</height>
       </size>
      </property>

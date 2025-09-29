@@ -209,14 +209,17 @@ void DocSignerDlg::checkCMSAutoDetect()
 void DocSignerDlg::changeSignerTab()
 {
     int index = mTabSigner->currentIndex();
+    mHashCombo->clear();
 
     if( index == 0 )
     {
+        mHashCombo->addItems( kHashList );
         mUseCertManCheck->setEnabled( false );
         mXMLTemplateCheck->setEnabled( false );
     }
     else if( index == 1 )
     {
+        mHashCombo->addItems( kSHA12HashList );
         mUseCertManCheck->setEnabled( true );
         mXMLTemplateCheck->setEnabled( false );
     }
@@ -224,7 +227,10 @@ void DocSignerDlg::changeSignerTab()
     {
         mUseCertManCheck->setEnabled( true );
         mXMLTemplateCheck->setEnabled( true );
+        mHashCombo->addItems( kSHA12HashList );
     }
+
+    mHashCombo->setCurrentText( berApplet->settingsMgr()->defaultHash());
 }
 
 void DocSignerDlg::checkSrcFile()
@@ -468,7 +474,7 @@ void DocSignerDlg::initUI()
     mJSON_JWSText->setPlaceholderText( tr( "String value" ));
     mXMLResText->setPlaceholderText( tr( "String value" ) );
 
-    mHashCombo->addItems( kSHAHashList );
+    mHashCombo->addItems( kHashList );
     mHashCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
 
     mTabSigner->setCurrentIndex(0);

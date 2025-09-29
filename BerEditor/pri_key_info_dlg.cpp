@@ -59,8 +59,7 @@ PriKeyInfoDlg::PriKeyInfoDlg(QWidget *parent) :
 
     connect( mCheckKeyPairBtn, SIGNAL(clicked()), this, SLOT(clickCheckKeyPair()));
     connect( mApplyChangeBtn, SIGNAL(clicked()), this, SLOT(clickApplyChange()));
-    connect( mSavePriKeyBtn, SIGNAL(clicked()), this, SLOT(clickSavePriKey()));
-    connect( mSavePubKeyBtn, SIGNAL(clicked()), this, SLOT(clickSavePubKey()));
+    connect( mExportBtn, SIGNAL(clicked()), this, SLOT(clickExport()));
     connect( mEditModeCheck, SIGNAL(clicked()), this, SLOT(checkEditMode()));
 
     initialize();
@@ -610,7 +609,7 @@ void PriKeyInfoDlg::clickCheckPubKey()
         berApplet->warningBox( tr( "PublicKey is invalid" ), this );
 }
 
-void PriKeyInfoDlg::clickSavePriKey()
+void PriKeyInfoDlg::clickExport()
 {
     if( mEditModeCheck->isChecked() == true )
     {
@@ -619,32 +618,19 @@ void PriKeyInfoDlg::clickSavePriKey()
     }
 
     ExportDlg exportDlg;
-    exportDlg.setName( "PrivateKey" );
-    exportDlg.setPrivateKey( &pri_key_ );
-    exportDlg.exec();
-}
-
-void PriKeyInfoDlg::clickSavePubKey()
-{
-    if( mEditModeCheck->isChecked() == true )
-    {
-        berApplet->warningBox( tr( "Not available in edit mode" ), this );
-        return;
-    }
-
-    BIN binPub = {0,0};
 
     if( pri_key_.nLen > 0 )
-        JS_PKI_getPubKeyFromPriKey( &pri_key_, &binPub );
-    else
-        JS_BIN_copy( &binPub, &pub_key_ );
-
-    ExportDlg exportDlg;
-    exportDlg.setName( "PublicKey" );
-    exportDlg.setPublicKey( &binPub );
-    exportDlg.exec();
-
-    JS_BIN_reset( &binPub );
+    {
+        exportDlg.setName( "PrivateKey" );
+        exportDlg.setPrivateKey( &pri_key_ );
+        exportDlg.exec();
+    }
+    else if( pub_key_.nLen > 0 )
+    {
+        exportDlg.setName( "PublicKey" );
+        exportDlg.setPublicKey( &pub_key_ );
+        exportDlg.exec();
+    }
 }
 
 void PriKeyInfoDlg::clickCheckKeyPair()
@@ -1063,7 +1049,6 @@ void PriKeyInfoDlg::setPublicKey( const BIN *pPubKey, const QString strTitle )
     }
 
     mCheckKeyPairBtn->setEnabled(false);
-    mSavePriKeyBtn->setEnabled(false);
 }
 
 void PriKeyInfoDlg::setPrivateKeyPath( const QString strPath )

@@ -53,7 +53,7 @@ CertManDlg::CertManDlg(QWidget *parent) :
     initUI();
 
     connect( mTabWidget, SIGNAL(currentChanged(int)), this, SLOT(changeTab(int)));
-    connect( mCancelBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mOKBtn, SIGNAL(clicked()), this, SLOT(clickOK()));
 
     connect( mEE_CertTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotTableMenuRequested(QPoint)));
@@ -176,7 +176,7 @@ CertManDlg::CertManDlg(QWidget *parent) :
     mRCA_ManGroup->layout()->setMargin(5);
     mTL_ManGroup->layout()->setMargin(5);
 #endif
-    mCancelBtn->setDefault(true);
+    mCloseBtn->setDefault(true);
     resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 
@@ -238,7 +238,6 @@ void CertManDlg::showEvent(QShowEvent *event)
 void CertManDlg::closeEvent(QCloseEvent *event )
 {
     setGroupHide( false );
-    setOKHide( false );
 }
 
 void CertManDlg::changeTab( int index )
@@ -623,7 +622,6 @@ void CertManDlg::initialize()
         mTabWidget->setTabEnabled( TAB_CRL_IDX, false );
         mTabWidget->setTabEnabled( TAB_TRUST_IDX, false );
         mTabWidget->setTabEnabled( TAB_TOOL_IDX, false );
-        mOKBtn->setDefault(true);
     }
     else if( mode_ == ManModeSelCA )
     {
@@ -635,7 +633,7 @@ void CertManDlg::initialize()
         mTabWidget->setTabEnabled( TAB_CRL_IDX, false );
         mTabWidget->setTabEnabled( TAB_TRUST_IDX, true );
         mTabWidget->setTabEnabled( TAB_TOOL_IDX, false );
-        mOKBtn->setDefault(true);
+
         changeTab( TAB_CA_IDX );
     }
     else if( mode_ == ManModeSelCRL )
@@ -648,7 +646,7 @@ void CertManDlg::initialize()
         mTabWidget->setTabEnabled( TAB_CRL_IDX, true );
         mTabWidget->setTabEnabled( TAB_TRUST_IDX, false );
         mTabWidget->setTabEnabled( TAB_TOOL_IDX, false );
-        mOKBtn->setDefault(true);
+
         changeTab( TAB_CRL_IDX );
     }
     else
@@ -659,7 +657,7 @@ void CertManDlg::initialize()
     }
 
     mModeLabel->setText( getModeName(mode_));
-    mOKBtn->setDefault(true);
+    if( mode_ != ManModeBase ) mOKBtn->setDefault(true);
 }
 
 void CertManDlg::setGroupHide( bool bHide )
@@ -694,7 +692,7 @@ void CertManDlg::setTrustOnly()
 {
     setOKHide(true);
     setGroupHide( false );
-    mCancelBtn->setText(tr("Close"));
+
     mTabWidget->setTabEnabled(0,false);
     mTabWidget->setTabEnabled(1,false);
     mTabWidget->setCurrentIndex(2);

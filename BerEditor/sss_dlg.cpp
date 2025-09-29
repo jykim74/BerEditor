@@ -49,6 +49,7 @@ SSSDlg::SSSDlg(QWidget *parent) :
 
     initialize();
     mSplitBtn->setDefault(true);
+    mSrcText->setFocus();
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);

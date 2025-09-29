@@ -163,6 +163,7 @@ BNCalcDlg::BNCalcDlg(QWidget *parent) :
     resize(minimumSizeHint().width(), minimumSizeHint().height());
 #endif
     intialize();
+    mAText->setFocus();
 }
 
 BNCalcDlg::~BNCalcDlg()

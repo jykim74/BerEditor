@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>573</width>
+    <width>630</width>
     <height>610</height>
    </rect>
   </property>
@@ -54,7 +54,7 @@
       <enum>Qt::CustomContextMenu</enum>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="mEETab">
       <attribute name="title">
@@ -136,7 +136,7 @@
         <widget class="QTableWidget" name="mEE_CertTable">
          <property name="minimumSize">
           <size>
-           <width>500</width>
+           <width>560</width>
            <height>160</height>
           </size>
          </property>
@@ -1372,9 +1372,9 @@
    <item>
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="2">
-      <widget class="QPushButton" name="mCancelBtn">
+      <widget class="QPushButton" name="mCloseBtn">
        <property name="text">
-        <string>Cancel</string>
+        <string>Close</string>
        </property>
       </widget>
      </item>
@@ -1481,7 +1481,7 @@
   <tabstop>mTLViewPubKeyBtn</tabstop>
   <tabstop>mTLSavePFXBtn</tabstop>
   <tabstop>mOKBtn</tabstop>
-  <tabstop>mCancelBtn</tabstop>
+  <tabstop>mCloseBtn</tabstop>
   <tabstop>mTLEncPriKeyCheck</tabstop>
  </tabstops>
  <resources/>

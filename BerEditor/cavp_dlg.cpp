@@ -28,7 +28,7 @@ const QStringList kAEAlgList = { "AES", "ARIA" };
 const QStringList kAEModeList = { "GCM", "CCM" };
 const QStringList kAETypeList = { "AE", "AD" };
 const QStringList kSymTypeList = { "KAT", "MCT", "MMT" };
-const QStringList kHashAlgList = { "MD5", "SHA1", "SHA224", "SHA256", "SHA384", "SHA512", "SM3" };
+const QStringList kHashAlgList = { "SHA1", "SHA224", "SHA256", "SHA384", "SHA512", "SM3" };
 const QStringList kHashTypeList = { "Short", "Long", "Monte" };
 
 const QStringList kECDHType = { "KAKAT", "PKV", "KPG" };

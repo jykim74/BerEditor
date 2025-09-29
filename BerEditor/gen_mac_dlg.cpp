@@ -70,6 +70,7 @@ GenMacDlg::GenMacDlg(QWidget *parent) :
 
     initialize();
     mMACBtn->setDefault(true);
+    mInputText->setFocus();
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);

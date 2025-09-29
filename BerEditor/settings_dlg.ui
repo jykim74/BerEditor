@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>480</width>
-    <height>302</height>
+    <width>545</width>
+    <height>422</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -109,7 +109,14 @@
            </spacer>
           </item>
           <item row="0" column="1">
-           <widget class="QComboBox" name="mDefaultHashCombo"/>
+           <widget class="QComboBox" name="mDefaultHashCombo">
+            <property name="minimumSize">
+             <size>
+              <width>120</width>
+              <height>0</height>
+             </size>
+            </property>
+           </widget>
           </item>
           <item row="0" column="0">
            <widget class="QLabel" name="label_3">

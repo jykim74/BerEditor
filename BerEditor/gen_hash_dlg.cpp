@@ -52,6 +52,7 @@ GenHashDlg::GenHashDlg(QWidget *parent) :
 
     initialize();
     mDigestBtn->setDefault(true);
+    mInputText->setFocus();
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);

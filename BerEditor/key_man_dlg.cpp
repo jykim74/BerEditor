@@ -89,6 +89,7 @@ KeyManDlg::KeyManDlg(QWidget *parent) :
 
     initialize();
     mKD_DeriveKeyBtn->setDefault(true);
+    mKD_SecretText->setFocus();
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -370,10 +371,13 @@ void KeyManDlg::clickKD_DeriveKey()
     if( strSecret.length() <= 0 )
     {
         berApplet->warningBox( tr( "Enter a secret or password"), this );
+        mKD_SecretText->setFocus();
         return;
     }
 
     QString strHash = mKD_HashCombo->currentText();
+    QString strInfo;
+
     nIter = mKD_IterCntText->text().toInt();
     nKeySize = mKD_KeyLenText->text().toInt();
 
@@ -384,9 +388,19 @@ void KeyManDlg::clickKD_DeriveKey()
     getBINFromString( &binSecret, mKD_SecretTypeCombo->currentText(), strSecret );
 
     QString strSalt = mKD_SaltText->toPlainText();
-    getBINFromString( &binSalt, mKD_SaltTypeCombo->currentText(), strSalt );
 
-    QString strInfo = mKD_InfoText->text();
+    getBINFromString( &binSalt, mKD_SaltTypeCombo->currentText(), strSalt );
+    if( mKD_HKDFRadio->isChecked() == true )
+    {
+        if( binSalt.nLen <= 0 )
+        {
+            berApplet->warningBox( tr( "Enter a salt" ), this );
+            mKD_SaltText->setFocus();
+            goto end;
+        }
+    }
+
+    strInfo = mKD_InfoText->text();
     getBINFromString( &binInfo, mKD_InfoTypeCombo->currentText(), strInfo );
 
     berApplet->logLine();
@@ -444,12 +458,11 @@ void KeyManDlg::clickKD_DeriveKey()
         berApplet->warnLog( tr( "fail to make key: %1").arg(JERR(ret)), this );
     }
 
+end :
     JS_BIN_reset( &binSecret );
     JS_BIN_reset( &binSalt );
     JS_BIN_reset( &binInfo );
     JS_BIN_reset( &binKey );
-
-    update();
 }
 
 void KeyManDlg::changeKD_Secret()

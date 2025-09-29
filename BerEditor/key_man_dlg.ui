@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>680</width>
+    <width>697</width>
     <height>670</height>
    </rect>
   </property>
@@ -17,7 +17,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="mDeriveTab">
       <attribute name="title">
@@ -527,7 +527,14 @@
           </widget>
          </item>
          <item row="0" column="11">
-          <widget class="QComboBox" name="mKD_HashCombo"/>
+          <widget class="QComboBox" name="mKD_HashCombo">
+           <property name="minimumSize">
+            <size>
+             <width>120</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item row="0" column="7">
           <widget class="QLabel" name="mKD_PLabel">
