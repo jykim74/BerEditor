@@ -22,6 +22,7 @@
 #include "ocsp_client_dlg.h"
 #include "get_uri_dlg.h"
 #include "pri_key_info_dlg.h"
+#include "export_dlg.h"
 
 enum {
     FIELD_ALL = 0,
@@ -81,7 +82,7 @@ CertInfoDlg::CertInfoDlg(QWidget *parent) :
 {
     setupUi(this);
 
-    connect( mSaveBtn, SIGNAL(clicked()), this, SLOT(clickSave()));
+    connect( mExportBtn, SIGNAL(clicked()), this, SLOT(clickExport()));
     connect( mViewPubKeyBtn, SIGNAL(clicked()), this, SLOT(clickViewPubKey()));
     connect( mSaveToManBtn, SIGNAL(clicked()), this, SLOT(clickSaveToMan()));
     connect( mSaveToCABtn, SIGNAL(clicked()), this, SLOT(clickSaveToCA()));
@@ -528,9 +529,12 @@ void CertInfoDlg::changeFieldType( int index )
     getFields();
 }
 
-void CertInfoDlg::clickSave()
-{   
-    saveAsPEM( &cert_bin_ );
+void CertInfoDlg::clickExport()
+{
+    ExportDlg exportDlg;
+    exportDlg.setName( cert_info_.pSubjectName );
+    exportDlg.setCert( &cert_bin_ );
+    exportDlg.exec();
 }
 
 void CertInfoDlg::clickViewPubKey()

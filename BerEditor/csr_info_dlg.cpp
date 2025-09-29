@@ -14,6 +14,7 @@
 #include "js_pki_ext.h"
 #include "js_pki_tools.h"
 #include "pri_key_info_dlg.h"
+#include "export_dlg.h"
 
 CSRInfoDlg::CSRInfoDlg(QWidget *parent) :
     QDialog(parent)
@@ -28,7 +29,7 @@ CSRInfoDlg::CSRInfoDlg(QWidget *parent) :
     connect( mFieldTable, SIGNAL(clicked(QModelIndex)), this, SLOT(clickField(QModelIndex)));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
-    connect( mSaveBtn, SIGNAL(clicked()), this, SLOT(clickSave()));
+    connect( mExportBtn, SIGNAL(clicked()), this, SLOT(clickExport()));
     connect( mViewPubKeyBtn, SIGNAL(clicked()), this, SLOT(clickViewPubKey()));
     connect( mVerifyCSRBtn, SIGNAL(clicked()), this, SLOT(clickVerifyCSR()));
     connect( mDecodeCSRBtn, SIGNAL(clicked()), this, SLOT(clickDecodeCSR()));
@@ -363,9 +364,13 @@ void CSRInfoDlg::clickField(QModelIndex index)
     }
 }
 
-void CSRInfoDlg::clickSave()
+void CSRInfoDlg::clickExport()
 {
-    saveAsPEM( &req_bin_ );
+    ExportDlg exportDlg;
+    exportDlg.setName( req_info_.pSubjectDN );
+    exportDlg.setCSR( &req_bin_ );
+    exportDlg.exec();
+//    saveAsPEM( &req_bin_ );
 }
 
 void CSRInfoDlg::clickViewPubKey()

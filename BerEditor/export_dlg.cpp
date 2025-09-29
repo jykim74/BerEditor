@@ -825,7 +825,7 @@ int ExportDlg::exportPKCS7()
 
     if( nExportType == ExportPKCS7_PEM )
     {
-        ret = JS_BIN_writePEM( &data_, JS_PEM_TYPE_PKCS7, strFilename.toLocal8Bit().toStdString().c_str() );
+        ret = JS_BIN_writePEM( &data_, JS_PEM_TYPE_CMS, strFilename.toLocal8Bit().toStdString().c_str() );
     }
     else if( nExportType == ExportPKCS7_DER )
     {

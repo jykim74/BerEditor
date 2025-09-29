@@ -41,7 +41,7 @@ private slots:
     void showEvent(QShowEvent *event);
     void clickField( QModelIndex index );
     void changeFieldType( int index );
-    void clickSave();
+    void clickExport();
     void clickViewPubKey();
 
     void clickSaveToMan();

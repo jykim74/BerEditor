@@ -192,9 +192,9 @@
       <number>0</number>
      </property>
      <item row="0" column="0">
-      <widget class="QPushButton" name="mSaveBtn">
+      <widget class="QPushButton" name="mExportBtn">
        <property name="text">
-        <string>Save</string>
+        <string>Export</string>
        </property>
       </widget>
      </item>
@@ -231,7 +231,7 @@
   <tabstop>mVerifyCRLBtn</tabstop>
   <tabstop>mDecodeCRLBtn</tabstop>
   <tabstop>mSaveToManBtn</tabstop>
-  <tabstop>mSaveBtn</tabstop>
+  <tabstop>mExportBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>

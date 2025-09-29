@@ -1222,7 +1222,7 @@ void X509CompareDlg::clickCompare()
                 goto end;
             }
 
-            mTypeCombo->setCurrentText( JS_PKI_getBERName( nAType ) );
+            mTypeCombo->setCurrentText( JS_PKI_getX509TypeName( nAType ) );
             strType = mTypeCombo->currentText();
         }
     }
@@ -1305,15 +1305,15 @@ void X509CompareDlg::clickCompare()
             goto end;
         }
 
-        mTypeCombo->setCurrentText( JS_PKI_getBERName( nAType ) );
+        mTypeCombo->setCurrentText( JS_PKI_getX509TypeName( nAType ) );
         strType = mTypeCombo->currentText();
     }
 
     if( nAType != nBType )
     {
         berApplet->warningBox( tr("The X509 types of files A(%1) and B(%2) are different")
-                                  .arg( JS_PKI_getBERName( nAType ) )
-                                  .arg( JS_PKI_getBERName( nBType ) ), this );
+                                  .arg( JS_PKI_getX509TypeName( nAType ) )
+                                  .arg( JS_PKI_getX509TypeName( nBType ) ), this );
         goto end;
     }
 
@@ -1497,7 +1497,7 @@ void X509CompareDlg::clickViewA()
         goto end;
     }
 
-    mTypeCombo->setCurrentText( JS_PKI_getBERName( nX509Type ) );
+    mTypeCombo->setCurrentText( JS_PKI_getX509TypeName( nX509Type ) );
     strType = mTypeCombo->currentText();
 
     if( strType == JS_PKI_BER_NAME_CERTIFICATE )
@@ -1571,7 +1571,7 @@ void X509CompareDlg::clickViewB()
         goto end;
     }
 
-    mTypeCombo->setCurrentText( JS_PKI_getBERName( nX509Type ) );
+    mTypeCombo->setCurrentText( JS_PKI_getX509TypeName( nX509Type ) );
     strType = mTypeCombo->currentText();
 
     if( strType == JS_PKI_BER_NAME_CERTIFICATE )

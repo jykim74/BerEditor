@@ -15,7 +15,7 @@
 #include "common.h"
 #include "cert_man_dlg.h"
 #include "settings_mgr.h"
-
+#include "export_dlg.h"
 
 QTableWidgetItem* CRLInfoDlg::getExtNameItem( const QString strSN )
 {
@@ -73,7 +73,7 @@ CRLInfoDlg::CRLInfoDlg(QWidget *parent) :
     memset( &crl_bin_, 0x00, sizeof(crl_bin_));
     memset( &crl_info_, 0x00, sizeof(crl_info_));
 
-    connect( mSaveBtn, SIGNAL(clicked()), this, SLOT(clickSave()));
+    connect( mExportBtn, SIGNAL(clicked()), this, SLOT(clickExport()));
     connect( mSaveToManBtn, SIGNAL(clicked()), this, SLOT(clickSaveToMan()));
     connect( mDecodeCRLBtn, SIGNAL(clicked()), this, SLOT(clickDecodeCRL()));
     connect( mVerifyCRLBtn, SIGNAL(clicked()), this, SLOT(clickVerifyCRL()));
@@ -115,9 +115,13 @@ void CRLInfoDlg::showEvent(QShowEvent *event)
     initialize();
 }
 
-void CRLInfoDlg::clickSave()
+void CRLInfoDlg::clickExport()
 {
-    saveAsPEM( &crl_bin_ );
+    ExportDlg exportDlg;
+    exportDlg.setName( crl_info_.pIssuerName );
+    exportDlg.setCRL( &crl_bin_ );
+    exportDlg.exec();
+//    saveAsPEM( &crl_bin_ );
 }
 
 void CRLInfoDlg::clickSaveToMan()

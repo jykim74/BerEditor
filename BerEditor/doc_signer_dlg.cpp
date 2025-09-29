@@ -523,6 +523,7 @@ void DocSignerDlg::setUsedURL( const QString strURL )
 int DocSignerDlg::readCMSSrc( BIN *pData )
 {
     QString strSrcPath = mSrcPathText->text();
+    if( pData == NULL ) return JSR_ERR;
 
     if( mSrcFileCheck->isChecked() == true )
     {
@@ -534,9 +535,24 @@ int DocSignerDlg::readCMSSrc( BIN *pData )
         }
 
         if( mCMSDecodeRadio->isChecked() == true )
-            JS_BIN_fileReadBER( strSrcPath.toLocal8Bit().toStdString().c_str(), pData );
+        {
+            BIN binData = {0,0};
+            JS_BIN_fileReadBER( strSrcPath.toLocal8Bit().toStdString().c_str(), &binData );
+
+            int nType = JS_CMS_getType( &binData );
+            if( nType < 0 )
+            {
+                berApplet->warningBox( tr( "This file is not in CMS format" ), this );
+                JS_BIN_reset( &binData );
+                return JSR_INVALID_VALUE;
+            }
+
+            JS_BIN_copy( pData, &binData );
+        }
         else
+        {
             JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), pData );
+        }
     }
     else
     {
@@ -1025,9 +1041,16 @@ void DocSignerDlg::clickCMSMakeSign()
 
         if( mDstFileCheck->isChecked() == true )
         {
+            int nType = JS_CMS_getType( &binSigned );
+            if( nType < 0 )
+            {
+                berApplet->warningBox( tr( "This file is not in CMS format" ), this );
+                goto end;
+            }
+
             setDstFile();
             QString strDstPath = mDstPathText->text();
-            ret = JS_BIN_writePEM( &binSigned, JS_PEM_TYPE_PKCS7,strDstPath.toLocal8Bit().toStdString().c_str()  );
+            ret = JS_BIN_writePEM( &binSigned, JS_PEM_TYPE_CMS,strDstPath.toLocal8Bit().toStdString().c_str()  );
             if( ret <= 0 )
             {
                 berApplet->warningBox( tr( "fail to write file: %1").arg( ret ), this );
@@ -1140,9 +1163,16 @@ void DocSignerDlg::clickCMSEnvelopedData()
 
         if( mDstFileCheck->isChecked() == true )
         {
+            int nType = JS_CMS_getType( &binData );
+            if( nType < 0 )
+            {
+                berApplet->warningBox( tr( "This file is not in CMS format" ), this );
+                goto end;
+            }
+
             setDstFile();
             QString strDstPath = mDstPathText->text();
-            ret = JS_BIN_writePEM( &binData, JS_PEM_TYPE_PKCS7,strDstPath.toLocal8Bit().toStdString().c_str()  );
+            ret = JS_BIN_writePEM( &binData, JS_PEM_TYPE_CMS,strDstPath.toLocal8Bit().toStdString().c_str()  );
             if( ret <= 0 )
             {
                 berApplet->warningBox( tr( "fail to write file: %1").arg( ret ), this );
@@ -1260,7 +1290,7 @@ void DocSignerDlg::clickCMSMakeData()
         {
             setDstFile();
             QString strDstPath = mDstPathText->text();
-            ret = JS_BIN_writePEM( &binCMS, JS_PEM_TYPE_PKCS7,strDstPath.toLocal8Bit().toStdString().c_str()  );
+            ret = JS_BIN_writePEM( &binCMS, JS_PEM_TYPE_CMS,strDstPath.toLocal8Bit().toStdString().c_str()  );
             if( ret <= 0 )
             {
                 berApplet->warningBox( tr( "fail to write file: %1").arg( ret ), this );
@@ -1305,9 +1335,16 @@ void DocSignerDlg::clickCMSMakeDigest()
 
         if( mDstFileCheck->isChecked() == true )
         {
+            int nType = JS_CMS_getType( &binCMS );
+            if( nType < 0 )
+            {
+                berApplet->warningBox( tr( "This file is not in CMS format" ), this );
+                goto end;
+            }
+
             setDstFile();
             QString strDstPath = mDstPathText->text();
-            ret = JS_BIN_writePEM( &binCMS, JS_PEM_TYPE_PKCS7,strDstPath.toLocal8Bit().toStdString().c_str()  );
+            ret = JS_BIN_writePEM( &binCMS, JS_PEM_TYPE_CMS,strDstPath.toLocal8Bit().toStdString().c_str()  );
             if( ret <= 0 )
             {
                 berApplet->warningBox( tr( "fail to write file: %1").arg( ret ), this );
@@ -1365,9 +1402,16 @@ void DocSignerDlg::clickCMSAddSign()
 
         if( mDstFileCheck->isChecked() == true )
         {
+            int nType = JS_CMS_getType( &binSigned );
+            if( nType < 0 )
+            {
+                berApplet->warningBox( tr( "This file is not in CMS format" ), this );
+                goto end;
+            }
+
             setDstFile();
             QString strDstPath = mDstPathText->text();
-            ret = JS_BIN_writePEM( &binSigned, JS_PEM_TYPE_PKCS7,strDstPath.toLocal8Bit().toStdString().c_str()  );
+            ret = JS_BIN_writePEM( &binSigned, JS_PEM_TYPE_CMS,strDstPath.toLocal8Bit().toStdString().c_str()  );
             if( ret <= 0 )
             {
                 berApplet->warningBox( tr( "fail to write file: %1").arg( ret ), this );

@@ -1619,6 +1619,13 @@ void PKCS7Dlg::clickWriteFile()
 
     if( mEncodeRadio->isChecked() == true )
     {
+        int nType = JS_PKCS7_getType( &binData );
+        if( nType < 0 )
+        {
+            berApplet->warningBox( tr( "This file is not in PKCS7 format" ), this );
+            goto end;
+        }
+
         ExportDlg exportDlg;
         exportDlg.setName( "PKCS7" );
         exportDlg.setPKCS7( &binData );

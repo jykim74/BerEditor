@@ -33,7 +33,7 @@ private slots:
     void clickRevokeField( QModelIndex index );
     void showEvent(QShowEvent *event);
 
-    void clickSave();
+    void clickExport();
     void clickSaveToMan();
     void clickDecodeCRL();
     void clickVerifyCRL();
