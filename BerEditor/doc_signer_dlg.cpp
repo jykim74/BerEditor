@@ -129,10 +129,10 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     mTabCMS->layout()->setSpacing(5);
     mTabCMS->layout()->setMargin(5);
 #endif
-
+    initialize();
+    mCMSRunBtn->setDefault(true);
 
     resize(minimumSizeHint().width(), minimumSizeHint().height());
-    initialize();
 }
 
 DocSignerDlg::~DocSignerDlg()

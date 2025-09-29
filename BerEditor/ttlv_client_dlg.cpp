@@ -60,7 +60,7 @@ TTLVClientDlg::TTLVClientDlg(QWidget *parent) :
     connect( mReadMainBtn, SIGNAL(clicked()), this, SLOT(clickReadMain()));
 
     initialize();
-    mSendBtn->setDefault(true);
+    mEncodeBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);

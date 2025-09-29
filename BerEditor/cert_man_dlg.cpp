@@ -176,6 +176,7 @@ CertManDlg::CertManDlg(QWidget *parent) :
     mRCA_ManGroup->layout()->setMargin(5);
     mTL_ManGroup->layout()->setMargin(5);
 #endif
+    mCancelBtn->setDefault(true);
     resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 

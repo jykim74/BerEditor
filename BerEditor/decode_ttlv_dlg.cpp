@@ -9,7 +9,7 @@ DecodeTTLVDlg::DecodeTTLVDlg(QWidget *parent) :
 {
     setupUi(this);
 
-    connect( mViewBtn, SIGNAL(clicked()), this, SLOT(clickView()));
+    connect( mDecodeBtn, SIGNAL(clicked()), this, SLOT(clickDecode()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mHexRadio, SIGNAL(clicked()), this, SLOT(changeData()));
     connect( mBase64Radio, SIGNAL(clicked()), this, SLOT(changeData()));
@@ -19,7 +19,7 @@ DecodeTTLVDlg::DecodeTTLVDlg(QWidget *parent) :
     connect( mClearBtn, SIGNAL(clicked()), this, SLOT(clearData()));
 
     initialize();
-    mViewBtn->setDefault(true);
+    mDecodeBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -37,7 +37,7 @@ void DecodeTTLVDlg::initialize()
     mHexRadio->setChecked(true);
 }
 
-void DecodeTTLVDlg::clickView()
+void DecodeTTLVDlg::clickDecode()
 {
     int nType = 0;
     BIN binData = {0,0};

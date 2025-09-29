@@ -46,6 +46,7 @@ BERCheckDlg::BERCheckDlg(QWidget *parent)
 #endif
 
     initialize();
+    mTypeCheckBtn->setDefault(true);
     resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 

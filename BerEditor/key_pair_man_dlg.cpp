@@ -134,9 +134,8 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
     mCSRDecodeBtn->setFixedWidth(34);
 #endif
 
-
     resize(minimumSizeHint().width(), minimumSizeHint().height());
-    mLGenKeyPairBtn->setDefault(true);
+    mCloseBtn->setDefault(true);
 }
 
 KeyPairManDlg::~KeyPairManDlg()

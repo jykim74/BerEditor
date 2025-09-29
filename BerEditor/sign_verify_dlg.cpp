@@ -90,8 +90,9 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     connect( mEncPrikeyCheck, SIGNAL(clicked()), this, SLOT(checkEncPriKey()));
     connect( mCertGroup, SIGNAL(clicked(bool)), this, SLOT(checkCertGroup()));
 
-    mRunBtn->setDefault(true);
+
     initialize();
+    mRunBtn->setDefault(true);
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);

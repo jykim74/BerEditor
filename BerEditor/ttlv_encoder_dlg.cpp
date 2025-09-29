@@ -211,6 +211,7 @@ TTLVEncoderDlg::TTLVEncoderDlg(QWidget *parent) :
     mSignGroup->layout()->setMargin(5);
     mSignGroup->layout()->setSpacing(5);
 #endif
+    mEncodeBtn->setDefault(true);
     resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 

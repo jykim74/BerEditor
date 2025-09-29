@@ -17,7 +17,7 @@ public:
     ~DecodeTTLVDlg();
 
 private slots:
-    void clickView();
+    void clickDecode();
     void changeData();
     void clearData();
     void findData();

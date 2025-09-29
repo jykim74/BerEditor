@@ -92,6 +92,7 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
 #endif
     resize(minimumSizeHint().width(), minimumSizeHint().height());
     initialize();
+    mMakeBtn->setDefault(true);
 }
 
 ACMEClientDlg::~ACMEClientDlg()
