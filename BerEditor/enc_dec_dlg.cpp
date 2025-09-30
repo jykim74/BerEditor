@@ -78,6 +78,10 @@ EncDecDlg::EncDecDlg(QWidget *parent) :
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+
+    mInputClearBtn->setFixedWidth(34);
+    mOutputClearBtn->setFixedWidth(34);
+
     mDataTab->layout()->setSpacing(5);
     mDataTab->layout()->setMargin(5);
     mFileTab->layout()->setSpacing(5);
@@ -104,6 +108,7 @@ void EncDecDlg::initUI()
     mOutputTypeCombo->addItems( kDataTypeList );
 
     mAlgCombo->addItems( kSymAlgList );
+    mReqTagLenText->setText( "16" );
 
     mKeyText->setPlaceholderText( tr( "Select KeyList key" ));
     mSrcFileText->setPlaceholderText( tr( "Find the target file" ));
@@ -237,12 +242,12 @@ void EncDecDlg::dataRun()
 
 
     QString strMethod;
+    QString strOut;
 
     getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
 
     bool bPad = mPadCheck->isChecked();
 
-    char *pOut = NULL;
 
     QString strSymAlg = getSymAlg( strAlg, strMode, binKey.nLen );
 
@@ -285,7 +290,7 @@ void EncDecDlg::dataRun()
                 JS_free( pTag );
             }
 
-            if( ret == 0 )
+            if( ret == JSR_OK )
             {
                 berApplet->logLine();
                 berApplet->log( QString( "-- AE Encrypt [time: %1 ms]" ).arg( getMS( us )) );
@@ -298,6 +303,12 @@ void EncDecDlg::dataRun()
                 berApplet->log( QString( "Enc Tag    : %1" ).arg( getHexString( &binTag )));
                 berApplet->log( QString( "Enc Output : %1" ).arg(getHexString( &binOut )));
                 berApplet->logLine();
+
+                berApplet->messageLog( tr( "AE success" ), this );
+            }
+            else
+            {
+                berApplet->warnLog( tr( "AE encryption error: %1").arg( JERR(ret) ), this );
             }
         }
         else
@@ -320,7 +331,7 @@ void EncDecDlg::dataRun()
                 us = timer.nsecsElapsed() / 1000;
             }
 
-            if( ret == 0 )
+            if( ret == JSR_OK )
             {
                 berApplet->logLine();
                 berApplet->log( QString( "-- AE Decrypt [time: %1 ms]" ).arg( getMS( us )) );
@@ -333,6 +344,12 @@ void EncDecDlg::dataRun()
                 berApplet->log( QString( "Dec Tag    : %1" ).arg( getHexString( &binTag )));
                 berApplet->log( QString( "Dec Output : %1" ).arg(getHexString( &binOut )));
                 berApplet->logLine();
+
+                berApplet->messageLog( tr( "AD success" ), this );
+            }
+            else
+            {
+                berApplet->warnLog( tr( "AD decryption error: %1").arg( JERR(ret) ), this );
             }
         }
     }
@@ -355,7 +372,7 @@ void EncDecDlg::dataRun()
                 us = timer.nsecsElapsed() / 1000;
             }
 
-            if( ret == 0 )
+            if( ret == JSR_OK )
             {
                 berApplet->logLine();
                 berApplet->log( QString( "-- Encrypt [time: %1 ms]" ).arg( getMS( us )) );
@@ -366,6 +383,12 @@ void EncDecDlg::dataRun()
                 berApplet->log( QString( "Enc IV     : %1" ).arg( getHexString( &binIV )));
                 berApplet->log( QString( "Enc Output : %1" ).arg(getHexString( &binOut )));
                 berApplet->logLine();
+
+                berApplet->messageLog( tr( "Encryption success" ), this );
+            }
+            else
+            {
+                berApplet->warnLog( tr( "Encryption error: %1").arg( JERR(ret) ), this );
             }
         }
         else
@@ -385,7 +408,7 @@ void EncDecDlg::dataRun()
                 us = timer.nsecsElapsed() / 1000;
             }
 
-            if( ret == 0 )
+            if( ret == JSR_OK )
             {
                 berApplet->logLine();
                 berApplet->log( QString( "-- Decrypt [time: %1 ms]" ).arg( getMS( us ) ) );
@@ -396,24 +419,18 @@ void EncDecDlg::dataRun()
                 berApplet->log( QString( "Dec IV     : %1" ).arg( getHexString( &binIV )));
                 berApplet->log( QString( "Dec Output : %1" ).arg(getHexString( &binOut )));
                 berApplet->logLine();
+
+                berApplet->messageLog( tr( "Decryption success" ), this );
+            }
+            else
+            {
+                berApplet->warnLog( tr( "Decryption error: %1").arg( JERR(ret) ), this );
             }
         }
     }
 
-    if( mOutputTypeCombo->currentIndex() == DATA_STRING )
-    {
-        JS_BIN_string( &binOut, &pOut );
-    }
-    else if( mOutputTypeCombo->currentIndex() == DATA_HEX )
-    {
-        JS_BIN_encodeHex( &binOut, &pOut );
-    }
-    else if( mOutputTypeCombo->currentIndex() == DATA_BASE64 )
-    {
-        JS_BIN_encodeBase64( &binOut, &pOut );
-    }
-
-    mOutputText->setPlainText( pOut );
+    strOut = getStringFromBIN( &binOut, mOutputTypeCombo->currentText() );
+    mOutputText->setPlainText( strOut );
 
     if( ret == 0 )
     {
@@ -423,13 +440,12 @@ void EncDecDlg::dataRun()
     }
     else
     {
-        QString strMsg = QString("%1 failed:%2").arg( strMethod ).arg( ret );
+        QString strMsg = QString("%1 failed:%2").arg( strMethod ).arg( JERR(ret) );
         mStatusLabel->setText( strMsg );
         berApplet->elog( strMsg );
     }
 
 end :
-    if( pOut ) JS_free(pOut);
     JS_BIN_reset( &binIV );
     JS_BIN_reset( &binKey );
     JS_BIN_reset( &binSrc );
@@ -625,14 +641,17 @@ void EncDecDlg::clickUseAEAD()
 {
     bool bStatus = mAEADGroup->isChecked();
 
+    mAlgCombo->clear();
     mModeCombo->clear();
 
     if( bStatus )
     {
+        mAlgCombo->addItems( kBaseSymList );
         mModeCombo->addItems( modeAEList );
     }
     else
     {
+        mAlgCombo->addItems( kSymAlgList );
         mModeCombo->addItems( modeList );
     }
 
@@ -830,12 +849,12 @@ int EncDecDlg::encDecInit()
 
     if( ret == 0 )
     {
-        mStatusLabel->setText( "Initialization successful" );
+        mStatusLabel->setText( "Init OK" );
         mOutputText->clear();
     }
     else
     {
-        QString strFail = QString("Initialization failed [%1]").arg(ret);
+        QString strFail = QString("Init Error: %1").arg(JERR(ret));
         mStatusLabel->setText( strFail );
         berApplet->elog( strFail );
     }
@@ -956,7 +975,7 @@ int EncDecDlg::encDecUpdate()
     }
     else
     {
-        QString strFail = QString("Update failed [%1]").arg(ret);
+        QString strFail = QString("Update error: %1").arg(JERR(ret));
         mStatusLabel->setText( strFail );
         berApplet->elog( strFail );
     }
@@ -1112,7 +1131,7 @@ int EncDecDlg::encDecFinal()
         appendStatusLabel( "|Final OK" );
     else
     {
-        QString strFail = QString("|Final failure [%1]").arg(ret);
+        QString strFail = QString("|Final error: %1").arg(JERR(ret));
         appendStatusLabel( strFail );
         berApplet->elog( strFail );
     }

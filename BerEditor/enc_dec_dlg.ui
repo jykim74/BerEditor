@@ -66,7 +66,27 @@
          <item row="0" column="1">
           <widget class="QComboBox" name="mInputTypeCombo"/>
          </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="mInputLabel">
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Input Data</string>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="4">
+          <widget class="QLabel" name="label_10">
+           <property name="text">
+            <string>Len</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="5">
           <widget class="QLineEdit" name="mInputLenText">
            <property name="minimumSize">
             <size>
@@ -123,26 +143,6 @@
           </widget>
          </item>
          <item row="0" column="3">
-          <widget class="QLabel" name="label_10">
-           <property name="text">
-            <string>Len</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="mInputLabel">
-           <property name="minimumSize">
-            <size>
-             <width>100</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Input Data</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
           <spacer name="horizontalSpacer">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -154,6 +154,25 @@
             </size>
            </property>
           </spacer>
+         </item>
+         <item row="0" column="2">
+          <widget class="QPushButton" name="mInputClearBtn">
+           <property name="minimumSize">
+            <size>
+             <width>20</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>C</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -172,7 +191,7 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="0">
+         <item row="0" column="1">
           <widget class="QPushButton" name="mInitBtn">
            <property name="minimumSize">
             <size>
@@ -185,27 +204,7 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QPushButton" name="mUpdateBtn">
-           <property name="minimumSize">
-            <size>
-             <width>100</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Update</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="4">
-          <widget class="QPushButton" name="mInputClearBtn">
-           <property name="text">
-            <string>Clear</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
+         <item row="0" column="3">
           <widget class="QPushButton" name="mFinalBtn">
            <property name="minimumSize">
             <size>
@@ -218,7 +217,20 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="3">
+         <item row="0" column="2">
+          <widget class="QPushButton" name="mUpdateBtn">
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Update</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
           <spacer name="horizontalSpacer_7">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -1062,14 +1074,83 @@
       </item>
       <item>
        <layout class="QGridLayout" name="gridLayout_12">
-        <item row="0" column="1">
-         <widget class="QComboBox" name="mAADTypeCombo"/>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_7">
+          <property name="minimumSize">
+           <size>
+            <width>30</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Tag</string>
+          </property>
+         </widget>
         </item>
         <item row="0" column="2">
          <widget class="QLineEdit" name="mAADText"/>
         </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="mAADTypeCombo"/>
+        </item>
         <item row="0" column="3">
          <widget class="QLineEdit" name="mAADLenText">
+          <property name="minimumSize">
+           <size>
+            <width>40</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>40</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="palette">
+           <palette>
+            <active>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>221</red>
+                <green>221</green>
+                <blue>255</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </active>
+            <inactive>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>221</red>
+                <green>221</green>
+                <blue>255</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </inactive>
+            <disabled>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>240</red>
+                <green>240</green>
+                <blue>240</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </disabled>
+           </palette>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="3">
+         <widget class="QLineEdit" name="mTagLenText">
           <property name="minimumSize">
            <size>
             <width>40</width>
@@ -1137,80 +1218,11 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_7">
-          <property name="minimumSize">
-           <size>
-            <width>30</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Tag</string>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="1">
          <widget class="QComboBox" name="mTagTypeCombo"/>
         </item>
         <item row="1" column="2">
          <widget class="QLineEdit" name="mTagText"/>
-        </item>
-        <item row="1" column="3">
-         <widget class="QLineEdit" name="mTagLenText">
-          <property name="minimumSize">
-           <size>
-            <width>40</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>40</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="palette">
-           <palette>
-            <active>
-             <colorrole role="Base">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>221</red>
-                <green>221</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </active>
-            <inactive>
-             <colorrole role="Base">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>221</red>
-                <green>221</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </inactive>
-            <disabled>
-             <colorrole role="Base">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>240</red>
-                <green>240</green>
-                <blue>240</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </disabled>
-           </palette>
-          </property>
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-         </widget>
         </item>
        </layout>
       </item>
@@ -1415,6 +1427,25 @@
      <item row="0" column="1">
       <widget class="QComboBox" name="mOutputTypeCombo"/>
      </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mOutputClearBtn">
+       <property name="minimumSize">
+        <size>
+         <width>20</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>C</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
@@ -1460,13 +1491,6 @@
       <widget class="QLabel" name="mStatusLabel">
        <property name="text">
         <string>Status</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mOutputClearBtn">
-       <property name="text">
-        <string>Clear</string>
        </property>
       </widget>
      </item>
@@ -1537,12 +1561,12 @@
  <tabstops>
   <tabstop>mInputTab</tabstop>
   <tabstop>mInputTypeCombo</tabstop>
+  <tabstop>mInputClearBtn</tabstop>
   <tabstop>mInputLenText</tabstop>
   <tabstop>mInputText</tabstop>
   <tabstop>mInitBtn</tabstop>
   <tabstop>mUpdateBtn</tabstop>
   <tabstop>mFinalBtn</tabstop>
-  <tabstop>mInputClearBtn</tabstop>
   <tabstop>mSrcFileText</tabstop>
   <tabstop>mFindSrcFileBtn</tabstop>
   <tabstop>mSrcFileInfoText</tabstop>
@@ -1576,10 +1600,10 @@
   <tabstop>mPadCheck</tabstop>
   <tabstop>mRunBtn</tabstop>
   <tabstop>mOutputTypeCombo</tabstop>
+  <tabstop>mOutputClearBtn</tabstop>
   <tabstop>mChangeBtn</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
-  <tabstop>mOutputClearBtn</tabstop>
   <tabstop>mClearDataAllBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>

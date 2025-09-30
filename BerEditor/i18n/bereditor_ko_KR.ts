@@ -7542,12 +7542,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">교환</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="998"/>
+        <location filename="../enc_dec_dlg.ui" line="1010"/>
         <source>CCM Data Len</source>
         <translation>CCM 데이타 길이</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1005"/>
+        <location filename="../enc_dec_dlg.ui" line="1017"/>
         <source>ReqTag Len</source>
         <translation>요청 태그 길이</translation>
     </message>
@@ -7568,39 +7568,37 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">베이스64</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="184"/>
+        <location filename="../enc_dec_dlg.ui" line="203"/>
         <source>Init</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="204"/>
-        <location filename="../enc_dec_dlg.ui" line="1469"/>
         <source>Clear</source>
-        <translation>지우기</translation>
+        <translation type="vanished">지우기</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="969"/>
+        <location filename="../enc_dec_dlg.ui" line="981"/>
         <source>AEAD (Authenticated Encryption with Associated Data )</source>
         <translation>AEAD (관련 데이터로 인증된 암호화)</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1057"/>
-        <location filename="../enc_dec_dlg.cpp" line="1287"/>
+        <location filename="../enc_dec_dlg.ui" line="1069"/>
+        <location filename="../enc_dec_dlg.cpp" line="1319"/>
         <source>Authenticated Encryption</source>
         <translation>인증 암호화</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1242"/>
+        <location filename="../enc_dec_dlg.ui" line="1254"/>
         <source>Pad</source>
         <translation>패딩</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="197"/>
+        <location filename="../enc_dec_dlg.ui" line="229"/>
         <source>Update</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="217"/>
+        <location filename="../enc_dec_dlg.ui" line="216"/>
         <source>Final</source>
         <translation></translation>
     </message>
@@ -7609,7 +7607,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">실행</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1529"/>
+        <location filename="../enc_dec_dlg.ui" line="1553"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -7619,13 +7617,13 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../enc_dec_dlg.ui" line="58"/>
-        <location filename="../enc_dec_dlg.ui" line="141"/>
+        <location filename="../enc_dec_dlg.ui" line="78"/>
         <source>Input Data</source>
         <translation>입력 데이타</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="128"/>
-        <location filename="../enc_dec_dlg.ui" line="1316"/>
+        <location filename="../enc_dec_dlg.ui" line="85"/>
+        <location filename="../enc_dec_dlg.ui" line="1328"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
@@ -7634,28 +7632,28 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">입력 지움</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="240"/>
+        <location filename="../enc_dec_dlg.ui" line="252"/>
         <source>Input File</source>
         <translation>입력 파일</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="260"/>
+        <location filename="../enc_dec_dlg.ui" line="272"/>
         <source>Src File Path</source>
         <translation>소스 파일 경로</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="286"/>
-        <location filename="../enc_dec_dlg.ui" line="641"/>
+        <location filename="../enc_dec_dlg.ui" line="298"/>
+        <location filename="../enc_dec_dlg.ui" line="653"/>
         <source>Find</source>
         <translation>찾기</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="353"/>
+        <location filename="../enc_dec_dlg.ui" line="365"/>
         <source>File Information</source>
         <translation>파일 정보</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="432"/>
+        <location filename="../enc_dec_dlg.ui" line="444"/>
         <source>File Status</source>
         <translation>파일 상태</translation>
     </message>
@@ -7668,7 +7666,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">전체 파일 크기</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="597"/>
+        <location filename="../enc_dec_dlg.ui" line="609"/>
         <source>Run Status</source>
         <translation>진행 상태</translation>
     </message>
@@ -7677,12 +7675,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">로그 기록</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="634"/>
+        <location filename="../enc_dec_dlg.ui" line="646"/>
         <source>Dst File Path</source>
         <translation>대상 파일 경로</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="667"/>
+        <location filename="../enc_dec_dlg.ui" line="679"/>
         <source>Dst Information</source>
         <translation>대상 정보</translation>
     </message>
@@ -7695,18 +7693,18 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">키 와 IV</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1355"/>
+        <location filename="../enc_dec_dlg.ui" line="1367"/>
         <source>Output Data</source>
         <translation>결과 데이타</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1342"/>
+        <location filename="../enc_dec_dlg.ui" line="1354"/>
         <source>⬆</source>
         <translation>⬆</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1462"/>
-        <location filename="../enc_dec_dlg.cpp" line="1204"/>
+        <location filename="../enc_dec_dlg.ui" line="1493"/>
+        <location filename="../enc_dec_dlg.cpp" line="1236"/>
         <source>Status</source>
         <translation>상태</translation>
     </message>
@@ -7719,19 +7717,19 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">Test</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1249"/>
-        <location filename="../enc_dec_dlg.ui" line="1259"/>
-        <location filename="../enc_dec_dlg.cpp" line="1286"/>
+        <location filename="../enc_dec_dlg.ui" line="1261"/>
+        <location filename="../enc_dec_dlg.ui" line="1271"/>
+        <location filename="../enc_dec_dlg.cpp" line="1318"/>
         <source>Encrypt</source>
         <translation>암호화</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1509"/>
+        <location filename="../enc_dec_dlg.ui" line="1533"/>
         <source>Clear Data All</source>
         <translation>전체 데이타 지우기</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="495"/>
+        <location filename="../enc_dec_dlg.ui" line="507"/>
         <source>Read Size</source>
         <translation>읽은 크기</translation>
     </message>
@@ -7741,17 +7739,23 @@ mailto : jykim74@gmail.com</translation>
         <translation>대칭키 암호화 복호화</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="505"/>
+        <location filename="../enc_dec_dlg.ui" line="173"/>
+        <location filename="../enc_dec_dlg.ui" line="1445"/>
+        <source>C</source>
+        <translation>C</translation>
+    </message>
+    <message>
+        <location filename="../enc_dec_dlg.ui" line="517"/>
         <source>Total Size</source>
         <translation>전체 크기</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="604"/>
+        <location filename="../enc_dec_dlg.ui" line="616"/>
         <source>RunThread</source>
         <translation>쓰레드 실행</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="931"/>
+        <location filename="../enc_dec_dlg.ui" line="943"/>
         <source>Key</source>
         <translation>키</translation>
     </message>
@@ -7760,12 +7764,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">AE(Authenticated Encryption) 사용</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1136"/>
+        <location filename="../enc_dec_dlg.ui" line="1217"/>
         <source>AAD</source>
         <translation>AAD</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1149"/>
+        <location filename="../enc_dec_dlg.ui" line="1086"/>
         <source>Tag</source>
         <translation>태그</translation>
     </message>
@@ -7774,7 +7778,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">패딩</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="944"/>
+        <location filename="../enc_dec_dlg.ui" line="956"/>
         <source>IV</source>
         <translation>IV</translation>
     </message>
@@ -7813,100 +7817,140 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">대상 파일 [%1] 이 이미 존재 합니다. 대상 파일을 지우고 계속 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="107"/>
+        <location filename="../enc_dec_dlg.cpp" line="112"/>
         <source>Select KeyList key</source>
         <translation>키목록 키 선택</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="108"/>
+        <location filename="../enc_dec_dlg.cpp" line="113"/>
         <source>Find the target file</source>
         <translation>대상 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="186"/>
-        <location filename="../enc_dec_dlg.cpp" line="673"/>
+        <location filename="../enc_dec_dlg.cpp" line="191"/>
+        <location filename="../enc_dec_dlg.cpp" line="705"/>
         <source>Select symmetric key</source>
         <translation>대칭키를 선택 하세요</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="209"/>
+        <location filename="../enc_dec_dlg.cpp" line="214"/>
         <source>Please enter key value</source>
         <translation>키 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="219"/>
-        <location filename="../enc_dec_dlg.cpp" line="706"/>
+        <location filename="../enc_dec_dlg.cpp" line="224"/>
+        <location filename="../enc_dec_dlg.cpp" line="738"/>
         <source>Please enter a IV</source>
         <translation>IV를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="230"/>
-        <location filename="../enc_dec_dlg.cpp" line="727"/>
+        <location filename="../enc_dec_dlg.cpp" line="235"/>
+        <location filename="../enc_dec_dlg.cpp" line="759"/>
         <source>Key length(%1) is incorrect</source>
         <translation>키 길이(%1)이 맞지 않습니다</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="458"/>
+        <location filename="../enc_dec_dlg.cpp" line="306"/>
+        <source>AE success</source>
+        <translation>AE 성공</translation>
+    </message>
+    <message>
+        <location filename="../enc_dec_dlg.cpp" line="310"/>
+        <source>AE encryption error: %1</source>
+        <translation>AE 암호화 에러: %1</translation>
+    </message>
+    <message>
+        <location filename="../enc_dec_dlg.cpp" line="347"/>
+        <source>AD success</source>
+        <translation>AD 성공</translation>
+    </message>
+    <message>
+        <location filename="../enc_dec_dlg.cpp" line="351"/>
+        <source>AD decryption error: %1</source>
+        <translation>AD 복호화 에러: %1</translation>
+    </message>
+    <message>
+        <location filename="../enc_dec_dlg.cpp" line="386"/>
+        <source>Encryption success</source>
+        <translation>암호화 성공</translation>
+    </message>
+    <message>
+        <location filename="../enc_dec_dlg.cpp" line="390"/>
+        <source>Encryption error: %1</source>
+        <translation>암호화 에러: %1</translation>
+    </message>
+    <message>
+        <location filename="../enc_dec_dlg.cpp" line="422"/>
+        <source>Decryption success</source>
+        <translation>복호화 성공</translation>
+    </message>
+    <message>
+        <location filename="../enc_dec_dlg.cpp" line="426"/>
+        <source>Decryption error: %1</source>
+        <translation>복호화 에러: %1</translation>
+    </message>
+    <message>
+        <location filename="../enc_dec_dlg.cpp" line="487"/>
         <source>Select a input file</source>
         <translation>입력 파일을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="478"/>
-        <location filename="../enc_dec_dlg.cpp" line="1333"/>
+        <location filename="../enc_dec_dlg.cpp" line="507"/>
+        <location filename="../enc_dec_dlg.cpp" line="1365"/>
         <source>Find destination file</source>
         <translation>대상 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="485"/>
-        <location filename="../enc_dec_dlg.cpp" line="1340"/>
+        <location filename="../enc_dec_dlg.cpp" line="514"/>
+        <location filename="../enc_dec_dlg.cpp" line="1372"/>
         <source>The target file[%1] is already exist.
 Do you want to delete the file and continue?</source>
         <translation>대상 파일 [%1] 이 이미 존재 합니다. 대상 파일을 지우고 계속 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="519"/>
+        <location filename="../enc_dec_dlg.cpp" line="548"/>
         <source>fail to read file: %1</source>
         <translation>파일 읽기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="557"/>
+        <location filename="../enc_dec_dlg.cpp" line="586"/>
         <source>Encryption/decryption update failed [%1]</source>
         <translation>암호화/복호화 업데이트 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="568"/>
+        <location filename="../enc_dec_dlg.cpp" line="597"/>
         <source>fail to append file: %1</source>
         <translation>파일에 추가 하기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="604"/>
-        <location filename="../enc_dec_dlg.cpp" line="1385"/>
+        <location filename="../enc_dec_dlg.cpp" line="633"/>
+        <location filename="../enc_dec_dlg.cpp" line="1417"/>
         <source>File(%1) save was successful</source>
         <translation>파일(%1) 저장에 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="1277"/>
+        <location filename="../enc_dec_dlg.cpp" line="1309"/>
         <source>Symmetric Encryption</source>
         <translation>대칭키 암호</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="1279"/>
+        <location filename="../enc_dec_dlg.cpp" line="1311"/>
         <source>Source data</source>
         <translation>소스 데이타</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="1280"/>
-        <location filename="../enc_dec_dlg.cpp" line="1294"/>
+        <location filename="../enc_dec_dlg.cpp" line="1312"/>
+        <location filename="../enc_dec_dlg.cpp" line="1326"/>
         <source>Encrypted data</source>
         <translation>암호화된 데이타</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="1292"/>
+        <location filename="../enc_dec_dlg.cpp" line="1324"/>
         <source>Symmetric Decryption</source>
         <translation>대칭키 복호화</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="1295"/>
+        <location filename="../enc_dec_dlg.cpp" line="1327"/>
         <source>Decrypted data</source>
         <translation>복호화된 데이타</translation>
     </message>
@@ -7915,23 +7959,23 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">파일 쓰기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="696"/>
+        <location filename="../enc_dec_dlg.cpp" line="728"/>
         <source>Please enter a key value</source>
         <translation>키 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="754"/>
+        <location filename="../enc_dec_dlg.cpp" line="786"/>
         <source>Please enter request tag length</source>
         <translation>요청 태그 길이를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="782"/>
+        <location filename="../enc_dec_dlg.cpp" line="814"/>
         <source>Please enter tag</source>
         <translation>태그를 입력 하세요</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1235"/>
-        <location filename="../enc_dec_dlg.cpp" line="1301"/>
+        <location filename="../enc_dec_dlg.ui" line="1247"/>
+        <location filename="../enc_dec_dlg.cpp" line="1333"/>
         <source>Decrypt</source>
         <translation>복호화</translation>
     </message>
@@ -7940,12 +7984,12 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">암호화 또는 복호화 파일</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="1302"/>
+        <location filename="../enc_dec_dlg.cpp" line="1334"/>
         <source>Authenticated Decryption</source>
         <translation>인증 복호화</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="1325"/>
+        <location filename="../enc_dec_dlg.cpp" line="1357"/>
         <source>Find source file</source>
         <translation>소스 파일을 찾으세요</translation>
     </message>
@@ -8381,7 +8425,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../gen_hash_dlg.ui" line="795"/>
-        <location filename="../gen_hash_dlg.cpp" line="337"/>
+        <location filename="../gen_hash_dlg.cpp" line="338"/>
         <source>Status</source>
         <translation>상태</translation>
     </message>
@@ -8462,37 +8506,37 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">소스 파일을 선택 하세요</translation>
     </message>
     <message>
-        <location filename="../gen_hash_dlg.cpp" line="92"/>
+        <location filename="../gen_hash_dlg.cpp" line="93"/>
         <source>Hex value</source>
         <translation>16진수 값</translation>
     </message>
     <message>
-        <location filename="../gen_hash_dlg.cpp" line="95"/>
+        <location filename="../gen_hash_dlg.cpp" line="96"/>
         <source>Find the target file</source>
         <translation>대상 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../gen_hash_dlg.cpp" line="278"/>
+        <location filename="../gen_hash_dlg.cpp" line="279"/>
         <source>Digest value creation succeeded</source>
         <translation>다이제스트 생성 성공</translation>
     </message>
     <message>
-        <location filename="../gen_hash_dlg.cpp" line="283"/>
+        <location filename="../gen_hash_dlg.cpp" line="284"/>
         <source>Failed to generate Digest value : %1</source>
         <translation>다이제스트 값 생성 실패: %1</translation>
     </message>
     <message>
-        <location filename="../gen_hash_dlg.cpp" line="389"/>
+        <location filename="../gen_hash_dlg.cpp" line="390"/>
         <source>Select input file</source>
         <translation>입력 파일을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../gen_hash_dlg.cpp" line="425"/>
+        <location filename="../gen_hash_dlg.cpp" line="426"/>
         <source>fail to read file: %1</source>
         <translation>파일 읽기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../gen_hash_dlg.cpp" line="484"/>
+        <location filename="../gen_hash_dlg.cpp" line="485"/>
         <source>Find source file</source>
         <translation>소스 파일을 찾으세요</translation>
     </message>
@@ -8711,7 +8755,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../gen_mac_dlg.ui" line="757"/>
-        <location filename="../gen_mac_dlg.cpp" line="807"/>
+        <location filename="../gen_mac_dlg.cpp" line="805"/>
         <source>MAC</source>
         <translation>MAC</translation>
     </message>
@@ -8823,7 +8867,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../gen_mac_dlg.ui" line="750"/>
-        <location filename="../gen_mac_dlg.cpp" line="815"/>
+        <location filename="../gen_mac_dlg.cpp" line="813"/>
         <source>Verify</source>
         <translation>검증</translation>
     </message>
@@ -8834,7 +8878,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../gen_mac_dlg.ui" line="950"/>
-        <location filename="../gen_mac_dlg.cpp" line="864"/>
+        <location filename="../gen_mac_dlg.cpp" line="862"/>
         <source>Status</source>
         <translation>상태</translation>
     </message>
@@ -8851,91 +8895,91 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">소스 파일을 선택 하세요</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="104"/>
+        <location filename="../gen_mac_dlg.cpp" line="102"/>
         <source>Hex value</source>
         <translation>16진수 값</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="105"/>
+        <location filename="../gen_mac_dlg.cpp" line="103"/>
         <source>Select KeyList key</source>
         <translation>키목록 키 선택</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="106"/>
+        <location filename="../gen_mac_dlg.cpp" line="104"/>
         <source>Find the target file</source>
         <translation>대상 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="164"/>
-        <location filename="../gen_mac_dlg.cpp" line="502"/>
+        <location filename="../gen_mac_dlg.cpp" line="162"/>
+        <location filename="../gen_mac_dlg.cpp" line="500"/>
         <source>Select symmetric key</source>
         <translation>대칭키를 선택 하세요</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="187"/>
+        <location filename="../gen_mac_dlg.cpp" line="185"/>
         <source>Enter a key value</source>
         <translation>키 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="196"/>
+        <location filename="../gen_mac_dlg.cpp" line="194"/>
         <source>There is an invalid character</source>
         <translation>잘못된 문자가 있습니다</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="230"/>
-        <location filename="../gen_mac_dlg.cpp" line="557"/>
+        <location filename="../gen_mac_dlg.cpp" line="228"/>
+        <location filename="../gen_mac_dlg.cpp" line="555"/>
         <source>Enter a IV value</source>
         <translation>IV 를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="329"/>
-        <location filename="../gen_mac_dlg.cpp" line="486"/>
+        <location filename="../gen_mac_dlg.cpp" line="327"/>
+        <location filename="../gen_mac_dlg.cpp" line="484"/>
         <source>Enter MAC value</source>
         <translation>MAC 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="383"/>
-        <location filename="../gen_mac_dlg.cpp" line="591"/>
+        <location filename="../gen_mac_dlg.cpp" line="381"/>
+        <location filename="../gen_mac_dlg.cpp" line="589"/>
         <source>MAC verification successful</source>
         <translation>MAC 검증에 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="388"/>
-        <location filename="../gen_mac_dlg.cpp" line="401"/>
-        <location filename="../gen_mac_dlg.cpp" line="596"/>
-        <location filename="../gen_mac_dlg.cpp" line="610"/>
+        <location filename="../gen_mac_dlg.cpp" line="386"/>
+        <location filename="../gen_mac_dlg.cpp" line="399"/>
+        <location filename="../gen_mac_dlg.cpp" line="594"/>
+        <location filename="../gen_mac_dlg.cpp" line="608"/>
         <source>Failed to verify MAC value: %1</source>
         <translation>MAC 검증에 실패 하였습니다: %1</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="393"/>
-        <location filename="../gen_mac_dlg.cpp" line="602"/>
+        <location filename="../gen_mac_dlg.cpp" line="391"/>
+        <location filename="../gen_mac_dlg.cpp" line="600"/>
         <source>MAC value generation succeeded</source>
         <translation>MAC 생성 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="405"/>
-        <location filename="../gen_mac_dlg.cpp" line="615"/>
+        <location filename="../gen_mac_dlg.cpp" line="403"/>
+        <location filename="../gen_mac_dlg.cpp" line="613"/>
         <source>Failed to generate MAC value: %1</source>
         <translation>MAC 값 생성에 실패 하였습니다: %1</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="525"/>
+        <location filename="../gen_mac_dlg.cpp" line="523"/>
         <source>Please Enter a key value</source>
         <translation>키 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="670"/>
+        <location filename="../gen_mac_dlg.cpp" line="668"/>
         <source>Select a input file</source>
         <translation>입력 파일을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="710"/>
+        <location filename="../gen_mac_dlg.cpp" line="708"/>
         <source>fail to read file: %1</source>
         <translation>파일 읽기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="895"/>
+        <location filename="../gen_mac_dlg.cpp" line="893"/>
         <source>Find source file</source>
         <translation>소스 파일을 찾으세요</translation>
     </message>
@@ -11957,12 +12001,12 @@ Do you want to delete the file and continue?</source>
         <translation>키 목록</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="604"/>
+        <location filename="../mainwindow.cpp" line="625"/>
         <source>CAVP</source>
         <translation>CAVP</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="611"/>
+        <location filename="../mainwindow.cpp" line="604"/>
         <source>SSL Check</source>
         <translation>SSL 체크</translation>
     </message>
@@ -12196,13 +12240,13 @@ Do you want to delete the file and continue?</source>
         <translation>OTP 생성기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="618"/>
+        <location filename="../mainwindow.cpp" line="611"/>
         <source>X509 Compare</source>
         <translation>X509 비교</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="625"/>
-        <location filename="../mainwindow.cpp" line="1181"/>
+        <location filename="../mainwindow.cpp" line="618"/>
+        <location filename="../mainwindow.cpp" line="1173"/>
         <source>Document Signer</source>
         <translation>문서 서명자</translation>
     </message>
@@ -12434,12 +12478,12 @@ Do you want to delete the file and continue?</source>
         <translation>대칭키 목록 및 관리</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1157"/>
+        <location filename="../mainwindow.cpp" line="1181"/>
         <source>Cryptography Algorithm Valication Program</source>
         <translation>Cryptography Algorithm Valication Program</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1162"/>
+        <location filename="../mainwindow.cpp" line="1154"/>
         <source>&amp;SSL Check</source>
         <translation>SSL 체크(&amp;S)</translation>
     </message>
@@ -12685,22 +12729,22 @@ Do you want to delete the file and continue?</source>
         <translation>키 목록(&amp;K)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1165"/>
+        <location filename="../mainwindow.cpp" line="1157"/>
         <source>Check SSL and TLS protocols</source>
         <translation>SSL 및 TLS 프로토콜 체크하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1170"/>
+        <location filename="../mainwindow.cpp" line="1162"/>
         <source>&amp;X509 Compare</source>
         <translation>X509 비교(&amp;X)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1173"/>
+        <location filename="../mainwindow.cpp" line="1165"/>
         <source>Compare X509</source>
         <translation>X509 비교</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1178"/>
+        <location filename="../mainwindow.cpp" line="1170"/>
         <source>&amp;Docment Signer</source>
         <translation>문서 서명자(&amp;D)</translation>
     </message>
@@ -13285,7 +13329,7 @@ Do you want to delete the file and continue?</source>
         <translation>키 쌍 관리</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1154"/>
+        <location filename="../mainwindow.cpp" line="1178"/>
         <source>&amp;CAVP</source>
         <translation>CAVP(&amp;V)</translation>
     </message>
@@ -18346,7 +18390,7 @@ Only RSA is supported.</source>
     </message>
     <message>
         <location filename="../sign_verify_dlg.ui" line="1090"/>
-        <location filename="../sign_verify_dlg.cpp" line="1300"/>
+        <location filename="../sign_verify_dlg.cpp" line="1301"/>
         <source>Status</source>
         <translation>상태</translation>
     </message>
@@ -18452,7 +18496,7 @@ Only RSA is supported.</source>
     <message>
         <location filename="../sign_verify_dlg.ui" line="906"/>
         <location filename="../sign_verify_dlg.ui" line="919"/>
-        <location filename="../sign_verify_dlg.cpp" line="1085"/>
+        <location filename="../sign_verify_dlg.cpp" line="1086"/>
         <source>Sign</source>
         <translation>서명</translation>
     </message>
@@ -18479,7 +18523,7 @@ Only RSA is supported.</source>
         <translation type="vanished">개인키 및 인증서</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1279"/>
+        <location filename="../sign_verify_dlg.cpp" line="1280"/>
         <source>Certificate</source>
         <translation>인증서</translation>
     </message>
@@ -18572,7 +18616,7 @@ Only RSA is supported.</source>
         <translation type="vanished">공개키</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="255"/>
+        <location filename="../sign_verify_dlg.cpp" line="256"/>
         <source>SM2 Key have to use SM3 hash for signature. do you change hash as SM3?</source>
         <translation>SM2 키는 서명용 SM3 해시를 사용해야 합니다. SM3로 해시로 변경 하시겠습니까?</translation>
     </message>
@@ -18581,23 +18625,23 @@ Only RSA is supported.</source>
         <translation type="vanished">인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="153"/>
-        <location filename="../sign_verify_dlg.cpp" line="1157"/>
+        <location filename="../sign_verify_dlg.cpp" line="154"/>
+        <location filename="../sign_verify_dlg.cpp" line="1158"/>
         <source>select a private key</source>
         <translation>개인키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="161"/>
+        <location filename="../sign_verify_dlg.cpp" line="162"/>
         <source>failed to read private key: %1</source>
         <translation>개인키 읽기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="171"/>
+        <location filename="../sign_verify_dlg.cpp" line="172"/>
         <source>Enter a password</source>
         <translation>암호를 입력해야 합니다</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="180"/>
+        <location filename="../sign_verify_dlg.cpp" line="181"/>
         <source>failed to decrypt private key:%1</source>
         <translation>개인키 복호화 실패: %1</translation>
     </message>
@@ -18614,9 +18658,9 @@ Only RSA is supported.</source>
         <translation type="vanished">서명용 인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="126"/>
-        <location filename="../sign_verify_dlg.cpp" line="222"/>
-        <location filename="../sign_verify_dlg.cpp" line="235"/>
+        <location filename="../sign_verify_dlg.cpp" line="127"/>
+        <location filename="../sign_verify_dlg.cpp" line="223"/>
+        <location filename="../sign_verify_dlg.cpp" line="236"/>
         <source>Select a private key</source>
         <translation>개인키를 선택하세요</translation>
     </message>
@@ -18625,9 +18669,9 @@ Only RSA is supported.</source>
         <translation type="vanished">EdDSA 는 이 기능을 지원 하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="127"/>
-        <location filename="../sign_verify_dlg.cpp" line="308"/>
-        <location filename="../sign_verify_dlg.cpp" line="1219"/>
+        <location filename="../sign_verify_dlg.cpp" line="128"/>
+        <location filename="../sign_verify_dlg.cpp" line="309"/>
+        <location filename="../sign_verify_dlg.cpp" line="1220"/>
         <source>Select a certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
@@ -18640,7 +18684,7 @@ Only RSA is supported.</source>
         <translation type="vanished">인증서 관리자 인증서 선택</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="128"/>
+        <location filename="../sign_verify_dlg.cpp" line="129"/>
         <source>Find the target file</source>
         <translation>대상 파일을 찾으세요</translation>
     </message>
@@ -18649,7 +18693,7 @@ Only RSA is supported.</source>
         <translation type="vanished">키 쌍을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="346"/>
+        <location filename="../sign_verify_dlg.cpp" line="347"/>
         <source>SM2 Key have to use SM3 hash for verifing. do you change hash as SM3?</source>
         <translation>SM2 키는 검증용 SM3 해시를 사용해야 합니다. SM3로 해시로 변경 하시겠습니까?</translation>
     </message>
@@ -18658,28 +18702,28 @@ Only RSA is supported.</source>
         <translation type="vanished">%1 은 지원하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="124"/>
+        <location filename="../sign_verify_dlg.cpp" line="125"/>
         <source>Hex value</source>
         <translation>16진수 값</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="325"/>
+        <location filename="../sign_verify_dlg.cpp" line="326"/>
         <source>Select a public key</source>
         <translation>공개키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="439"/>
+        <location filename="../sign_verify_dlg.cpp" line="440"/>
         <source>%1 does not support this feature[Init-Update-Final]
 Use %2</source>
         <translation>%1 은 [Init-Update-Final] 형식을 지원하지 않습니다\n%2를 사용하세요</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="588"/>
+        <location filename="../sign_verify_dlg.cpp" line="589"/>
         <source>Verification successful</source>
         <translation>검증 성공</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="590"/>
+        <location filename="../sign_verify_dlg.cpp" line="591"/>
         <source>Verification failed [%1]</source>
         <translation>검증 실패 [%1]</translation>
     </message>
@@ -18688,99 +18732,99 @@ Use %2</source>
         <translation type="vanished">검증 실패</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="739"/>
+        <location filename="../sign_verify_dlg.cpp" line="740"/>
         <source>Signature value creation succeeded</source>
         <translation>서명값 생성에 성공 하였습니다</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="745"/>
+        <location filename="../sign_verify_dlg.cpp" line="746"/>
         <source>Failed to generate Signature value : %1</source>
         <translation>서명값 생성에 실패 하였습니다: %1</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="804"/>
+        <location filename="../sign_verify_dlg.cpp" line="805"/>
         <source>Verification was successful</source>
         <translation>검증에 성공 하였습니다</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="810"/>
+        <location filename="../sign_verify_dlg.cpp" line="811"/>
         <source>Verification failed : %1</source>
         <translation>검증에 실패 하였습니다: %1</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="841"/>
+        <location filename="../sign_verify_dlg.cpp" line="842"/>
         <source>You have to find src file</source>
         <translation>소스 파일을 선택 하세요</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="881"/>
+        <location filename="../sign_verify_dlg.cpp" line="882"/>
         <source>fail to read file: %1</source>
         <translation>파일 읽기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="958"/>
+        <location filename="../sign_verify_dlg.cpp" line="959"/>
         <source>Enter your data</source>
         <translation>데이타를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="968"/>
+        <location filename="../sign_verify_dlg.cpp" line="969"/>
         <source>The input length(%1) and digest length(%2) do not match. Do you want to continue?</source>
         <translation>입력 길이(%1)과 다이제스트 길이(%2)가 맞지 않습니다. 계속 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="985"/>
-        <location filename="../sign_verify_dlg.cpp" line="1023"/>
+        <location filename="../sign_verify_dlg.cpp" line="986"/>
+        <location filename="../sign_verify_dlg.cpp" line="1024"/>
         <source>This key algorithm (%1) is not supported</source>
         <translation>이 키 알고리즘은(%1)은 지원하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1046"/>
+        <location filename="../sign_verify_dlg.cpp" line="1047"/>
         <source>VerifyDigest successful</source>
         <translation>VerifyDigest 성공</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1048"/>
+        <location filename="../sign_verify_dlg.cpp" line="1049"/>
         <source>VerifyDigest failure</source>
         <translation>VerifyDigest 실패</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1079"/>
+        <location filename="../sign_verify_dlg.cpp" line="1080"/>
         <source>Asymmetric Signature</source>
         <translation>비 대칭키 서명</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1102"/>
+        <location filename="../sign_verify_dlg.cpp" line="1103"/>
         <source>Asymmetric Verification</source>
         <translation>비 대칭키 검증</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="284"/>
-        <location filename="../sign_verify_dlg.cpp" line="1183"/>
+        <location filename="../sign_verify_dlg.cpp" line="285"/>
+        <location filename="../sign_verify_dlg.cpp" line="1184"/>
         <source>Select a certificate or public key</source>
         <translation>인증서 또는 공개키를 선택하세요</translation>
     </message>
     <message>
         <location filename="../sign_verify_dlg.ui" line="1041"/>
-        <location filename="../sign_verify_dlg.cpp" line="1086"/>
+        <location filename="../sign_verify_dlg.cpp" line="1087"/>
         <source>SignDigest</source>
         <translation>SignDigest</translation>
     </message>
     <message>
         <location filename="../sign_verify_dlg.ui" line="862"/>
-        <location filename="../sign_verify_dlg.cpp" line="1108"/>
+        <location filename="../sign_verify_dlg.cpp" line="1109"/>
         <source>Verify</source>
         <translation>검증</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1109"/>
+        <location filename="../sign_verify_dlg.cpp" line="1110"/>
         <source>VerifyDigest</source>
         <translation>VerifyDigest</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1166"/>
-        <location filename="../sign_verify_dlg.cpp" line="1191"/>
-        <location filename="../sign_verify_dlg.cpp" line="1228"/>
-        <location filename="../sign_verify_dlg.cpp" line="1272"/>
+        <location filename="../sign_verify_dlg.cpp" line="1167"/>
+        <location filename="../sign_verify_dlg.cpp" line="1192"/>
+        <location filename="../sign_verify_dlg.cpp" line="1229"/>
+        <location filename="../sign_verify_dlg.cpp" line="1273"/>
         <source>failed to read data</source>
         <translation>데이타 읽기 실패</translation>
     </message>
@@ -18789,22 +18833,22 @@ Use %2</source>
         <translation type="vanished">인증서가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1263"/>
+        <location filename="../sign_verify_dlg.cpp" line="1264"/>
         <source>Select certificate or public key</source>
         <translation>인증서 또는 공개키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1284"/>
+        <location filename="../sign_verify_dlg.cpp" line="1285"/>
         <source>Public key</source>
         <translation>공개 키</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1288"/>
+        <location filename="../sign_verify_dlg.cpp" line="1289"/>
         <source>%1 type is %2</source>
         <translation>%1 타입은 %2 이다</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1373"/>
+        <location filename="../sign_verify_dlg.cpp" line="1374"/>
         <source>Find source file</source>
         <translation>소스 파일을 찾으세요</translation>
     </message>
@@ -18813,7 +18857,7 @@ Use %2</source>
         <translation type="vanished">데이타 읽기 실패</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1246"/>
+        <location filename="../sign_verify_dlg.cpp" line="1247"/>
         <source>Private Key Type is %1</source>
         <translation>개인키 타입은 %1 이다</translation>
     </message>

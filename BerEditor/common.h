@@ -195,6 +195,11 @@ static const int kHelpDefault = ACT_HELP_ABOUT;
 
 // const QStringList kSymAlgList = { JS_PKI_KEY_NAME_AES, JS_PKI_KEY_NAME_ARIA, JS_PKI_KEY_NAME_SEED, JS_PKI_KEY_NAME_SM4, JS_PKI_KEY_NAME_TDES };
 
+const QStringList kBaseSymList = {
+    "AES",
+    "ARIA"
+};
+
 const QStringList kSymAlgList = {
     JS_PKI_KEY_NAME_AES,
     JS_PKI_KEY_NAME_ARIA,

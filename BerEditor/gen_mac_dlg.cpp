@@ -21,10 +21,7 @@
 #include "key_list_dlg.h"
 
 
-static QStringList sBaseCrypt = {
-    "AES",
-    "ARIA"
-};
+
 
 static QString sMethodHMAC = "HMAC";
 static QString sMethodCMAC = "CMAC";
@@ -842,7 +839,7 @@ void GenMacDlg::changeMethod()
         mIVLenText->setEnabled( false );
 
         mAlgTypeCombo->clear();
-        mAlgTypeCombo->addItems( sBaseCrypt );
+        mAlgTypeCombo->addItems( kBaseSymList );
     }
     else if( strMethod == sMethodGMAC )
     {
@@ -852,7 +849,7 @@ void GenMacDlg::changeMethod()
         mIVLenText->setEnabled(true);
 
         mAlgTypeCombo->clear();
-        mAlgTypeCombo->addItems( sBaseCrypt );
+        mAlgTypeCombo->addItems( kBaseSymList );
     }
 }
 
