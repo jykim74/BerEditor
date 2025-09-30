@@ -7,6 +7,7 @@
 #include <QButtonGroup>
 #include <QFileInfo>
 #include <QDateTime>
+#include <QElapsedTimer>
 
 #include "js_ber.h"
 #include "gen_mac_dlg.h"

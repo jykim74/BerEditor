@@ -7,6 +7,7 @@
 #include <QDateTime>
 #include <QFileDialog>
 #include <QButtonGroup>
+#include <QElapsedTimer>
 
 #include "enc_dec_dlg.h"
 #include "ui_enc_dec_dlg.h"

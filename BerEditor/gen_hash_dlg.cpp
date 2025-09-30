@@ -18,6 +18,7 @@
 #include <QDialogButtonBox>
 #include <QFileInfo>
 #include <QDateTime>
+#include <QElapsedTimer>
 
 static const QString kSHAKE128 = "SHAKE128";
 static const QString kSHAKE256 = "SHAKE256";

@@ -7,6 +7,7 @@
 #include <QFileInfo>
 #include <QDateTime>
 #include <QButtonGroup>
+#include <QElapsedTimer>
 
 #include "sign_verify_dlg.h"
 #include "js_ber.h"
