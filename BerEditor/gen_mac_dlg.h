@@ -9,6 +9,7 @@
 #include <QDialog>
 #include <QButtonGroup>
 #include "ui_gen_mac_dlg.h"
+#include "js_bin.h"
 
 #define JS_TYPE_HMAC    0
 #define JS_TYPE_CMAC    1
@@ -46,6 +47,10 @@ private slots:
         void checkCMAC();
         void checkGMAC();
 
+        void checkGenerate();
+        void checkVerify();
+        void changeMethod();
+
         void clickClearDataAll();
         void clickMAC();
         void clickFindSrcFile();
@@ -63,10 +68,12 @@ private:
         void appendStatusLabel( const QString strLabel );
         void updateStatusLabel();
 
+        int verifyMAC( const BIN *pMAC, const BIN *pInMAC );
+
         void *hctx_;
         int type_;
         int update_cnt_;
-        QButtonGroup* group_;
+
         MacThread *thread_;
 };
 

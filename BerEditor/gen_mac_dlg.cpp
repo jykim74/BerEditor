@@ -25,12 +25,18 @@ static QStringList sBaseCrypt = {
     "ARIA"
 };
 
+static QString sMethodHMAC = "HMAC";
+static QString sMethodCMAC = "CMAC";
+static QString sMethodGMAC = "GMAC";
+
+static QStringList sMethodList = { sMethodHMAC, sMethodCMAC, sMethodGMAC };
+
 GenMacDlg::GenMacDlg(QWidget *parent) :
     QDialog(parent)
 {
     hctx_ = NULL;
     type_ = 0;
-    group_ = new QButtonGroup;
+
     thread_ = NULL;
     update_cnt_ = 0;
 
@@ -41,10 +47,14 @@ GenMacDlg::GenMacDlg(QWidget *parent) :
     connect( mUpdateBtn, SIGNAL(clicked()), this, SLOT(macUpdate()));
     connect( mFinalBtn, SIGNAL(clicked()), this, SLOT(macFinal()));
 
-    connect( mMACBtn, SIGNAL(clicked()), this, SLOT(mac()));
+    connect( mRunBtn, SIGNAL(clicked()), this, SLOT(mac()));
     connect( mInputClearBtn, SIGNAL(clicked()), this, SLOT(inputClear()));
     connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(outputClear()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+
+    connect( mGenerateRadio, SIGNAL(clicked()), this, SLOT(checkGenerate()));
+    connect( mVerifyRadio, SIGNAL(clicked()), this, SLOT(checkVerify()));
+    connect( mMethodCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeMethod()));
 
     connect( mInputText, SIGNAL(textChanged()), this, SLOT(inputChanged()));
     connect( mOutputText, SIGNAL(textChanged()), this, SLOT(outputChanged()));
@@ -53,16 +63,13 @@ GenMacDlg::GenMacDlg(QWidget *parent) :
     connect( mKeyText, SIGNAL(textChanged(const QString&)), this, SLOT(keyChanged()));
     connect( mIVText, SIGNAL(textChanged(const QString&)), this, SLOT(ivChanged()));
     connect( mKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(keyChanged()));
-    connect( mHMACRadio, SIGNAL(clicked()), this, SLOT(checkHMAC()));
-    connect( mCMACRadio, SIGNAL(clicked()), this, SLOT(checkCMAC()));
-    connect( mGMACRadio, SIGNAL(clicked()), this, SLOT(checkGMAC()));
 
     connect( mFindSrcFileBtn, SIGNAL(clicked()), this, SLOT(clickFindSrcFile()));
 
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
 
     initialize();
-    mMACBtn->setDefault(true);
+    mRunBtn->setDefault(true);
     mInputText->setFocus();
 
 #if defined(Q_OS_MAC)
@@ -81,7 +88,6 @@ GenMacDlg::GenMacDlg(QWidget *parent) :
 
 GenMacDlg::~GenMacDlg()
 {
-    if( group_ ) delete group_;
     if( thread_ ) delete thread_;
 
     freeCTX();
@@ -93,6 +99,8 @@ void GenMacDlg::initUI()
     mKeyTypeCombo->addItems( kDataTypeList );
     mIVTypeCombo->addItems( kDataTypeList );
 
+    mMethodCombo->addItems( sMethodList );
+
     mOutputText->setPlaceholderText( tr("Hex value" ));
     mKeyText->setPlaceholderText( tr( "Select KeyList key"));
     mSrcFileText->setPlaceholderText( tr( "Find the target file" ));
@@ -100,12 +108,9 @@ void GenMacDlg::initUI()
 
 void GenMacDlg::initialize()
 {
-    group_->addButton( mHMACRadio );
-    group_->addButton( mCMACRadio );
-    group_->addButton( mGMACRadio );
-
     mInputTab->setCurrentIndex(0);
-    checkHMAC();
+    mGenerateRadio->click();
+    changeMethod();
 }
 
 void GenMacDlg::appendStatusLabel( const QString strLabel )
@@ -159,8 +164,6 @@ int GenMacDlg::macInit()
         keyList.setTitle( tr( "Select symmetric key" ));
         keyList.setManage( false );
 
-//        keyList.mKeyTypeCombo->setCurrentText( "HMAC" );
-
         if( keyList.exec() == QDialog::Accepted )
         {
             strKey = keyList.getKey();
@@ -196,57 +199,60 @@ int GenMacDlg::macInit()
     }
 
 
-   QString strAlg = mAlgTypeCombo->currentText();
-   mOutputText->clear();
+    QString strAlg = mAlgTypeCombo->currentText();
+    QString strMethod = mMethodCombo->currentText();
 
-   if( mCMACRadio->isChecked() )
-   {
-        QString strSymAlg = getSymAlg( strAlg, "CBC", binKey.nLen );
+    if( mGenerateRadio->isChecked() == true )
+        mOutputText->clear();
 
-        ret = JS_PKI_cmacInit( &hctx_, strSymAlg.toStdString().c_str(), &binKey );
-        if( ret == 0 ) type_ = JS_TYPE_CMAC;
-   }
-   else if( mHMACRadio->isChecked() )
-   {
-        ret = JS_PKI_hmacInit( &hctx_, strAlg.toStdString().c_str(), &binKey );
-        if( ret == 0 ) type_ = JS_TYPE_HMAC;
-   }
-   else if( mGMACRadio->isChecked() )
-   {
-       BIN binIV = {0,0};
-       QString strSymAlg = getSymAlg( strAlg, "gcm", binKey.nLen );
-       QString strIV = mIVText->text();
+    if( strMethod == sMethodCMAC )
+    {
+         QString strSymAlg = getSymAlg( strAlg, "CBC", binKey.nLen );
 
-       getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
+         ret = JS_PKI_cmacInit( &hctx_, strSymAlg.toStdString().c_str(), &binKey );
+         if( ret == 0 ) type_ = JS_TYPE_CMAC;
+    }
+    else if( strMethod == sMethodHMAC )
+    {
+         ret = JS_PKI_hmacInit( &hctx_, strAlg.toStdString().c_str(), &binKey );
+         if( ret == 0 ) type_ = JS_TYPE_HMAC;
+    }
+    else if( strMethod == sMethodGMAC )
+    {
+        BIN binIV = {0,0};
+        QString strSymAlg = getSymAlg( strAlg, "gcm", binKey.nLen );
+        QString strIV = mIVText->text();
 
-       if( strIV.length() < 1 )
-       {
+        getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
+
+        if( strIV.length() < 1 )
+        {
             berApplet->warningBox( tr("Enter a IV value"), this );
             mIVText->setFocus();
             ret = JSR_ERR;
             goto end;
-       }
+        }
 
 
-       ret = JS_PKI_encryptGCMInit( &hctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, NULL );
-       if( ret == 0 ) type_ = JS_TYPE_GMAC;
-   }
+        ret = JS_PKI_encryptGCMInit( &hctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, NULL );
+        if( ret == 0 ) type_ = JS_TYPE_GMAC;
+    }
 
-   berApplet->log( QString( "Init" ));
-   berApplet->log( QString( "Algorithm : %1" ).arg( strAlg ));
-   berApplet->log( QString( "Key       : %1" ).arg( getHexString( &binKey )));
+    berApplet->log( QString( "Init" ));
+    berApplet->log( QString( "Algorithm : %1" ).arg( strAlg ));
+    berApplet->log( QString( "Key       : %1" ).arg( getHexString( &binKey )));
 
-   if( ret == 0 )
-   {
-       mStatusLabel->setText( "Init OK" );
-   }
-   else
-       mStatusLabel->setText( QString("Init fail [%1]").arg( JERR(ret) ) );
+    if( ret == 0 )
+    {
+        mStatusLabel->setText( "Init OK" );
+    }
+    else
+        mStatusLabel->setText( QString("Init fail [%1]").arg( JERR(ret) ) );
 
 end :
-   JS_BIN_reset( &binKey );
-   update();
-   return ret;
+    JS_BIN_reset( &binKey );
+    update();
+    return ret;
 }
 
 void GenMacDlg::macUpdate()
@@ -256,13 +262,14 @@ void GenMacDlg::macUpdate()
 
     QString strInput = mInputText->toPlainText();
     QString strType = mInputTypeCombo->currentText();
+    QString strMethod = mMethodCombo->currentText();
 
     if( strInput.length() > 0 )
     {
         getBINFromString( &binSrc, strType, strInput );
     }
 
-    if( mCMACRadio->isChecked() )
+    if( strMethod == sMethodCMAC )
     {
         if( type_ != JS_TYPE_CMAC )
         {
@@ -272,7 +279,7 @@ void GenMacDlg::macUpdate()
 
         ret = JS_PKI_cmacUpdate( hctx_, &binSrc );
     }
-    else if( mHMACRadio->isChecked() )
+    else if( strMethod == sMethodHMAC )
     {
         if( type_ != JS_TYPE_HMAC )
         {
@@ -282,7 +289,7 @@ void GenMacDlg::macUpdate()
 
         ret = JS_PKI_hmacUpdate( hctx_, &binSrc );
     }
-    else if( mGMACRadio->isChecked() )
+    else if( strMethod == sMethodGMAC )
     {
         if( type_ != JS_TYPE_GMAC )
         {
@@ -311,55 +318,98 @@ void GenMacDlg::macFinal()
 {
     int ret = 0;
     BIN binMAC = {0,0};
+    BIN binInMAC = {0,0};
+    QString strMethod = mMethodCombo->currentText();
+    QString strOutput = mOutputText->toPlainText();
 
-    if( mCMACRadio->isChecked() )
+    if( mVerifyRadio->isChecked() == true )
+    {
+        if( strOutput.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter MAC value" ), this );
+            mOutputText->setFocus();
+            return;
+        }
+
+        getBINFromString( &binInMAC, DATA_HEX, strOutput );
+    }
+
+    if( strMethod == sMethodCMAC )
     {
         if( type_ != JS_TYPE_CMAC )
         {
             berApplet->elog( "Invalid type" );
-            return;
+            goto end;
         }
 
         ret = JS_PKI_cmacFinal( hctx_, &binMAC );
     }
-    else if( mHMACRadio->isChecked() )
+    else if( strMethod == sMethodHMAC )
     {
         if( type_ != JS_TYPE_HMAC )
         {
             berApplet->elog( "Invalid type" );
-            return;
+            goto end;
         }
 
         ret = JS_PKI_hmacFinal( hctx_, &binMAC );
     }
-    else if( mGMACRadio->isChecked() )
+    else if( strMethod == sMethodGMAC )
     {
         BIN binEnc = {0,0};
         if( type_ != JS_TYPE_GMAC )
         {
             berApplet->elog( "Invalid type" );
-            return;
+            goto end;
         }
 
         ret = JS_PKI_encryptGCMFinal( hctx_, &binEnc, 16, &binMAC );
         JS_BIN_reset( &binEnc );
     }
 
-    if( ret == 0 )
-    {   
-        mOutputText->setPlainText( getHexString( &binMAC) );
+    if( ret == JSR_OK )
+    {
+        if( mGenerateRadio->isChecked() == true )
+            mOutputText->setPlainText( getHexString( &binMAC) );
+
         appendStatusLabel( "|Final OK" );
 
         berApplet->log( QString( "Final Digest : %1" ).arg( getHexString( &binMAC )) );
+        if( mVerifyRadio->isChecked() == true )
+        {
+            if( verifyMAC( &binMAC, &binInMAC ) == JSR_VERIFY )
+            {
+                berApplet->messageBox( tr("MAC verification successful"), this );
+            }
+            else
+            {
+                appendStatusLabel( QString("MAC verification failed: %1").arg(JERR( JSR_INVALID_VALUE )));
+                berApplet->warningBox( tr( "Failed to verify MAC value: %1" ).arg(JERR( JSR_INVALID_VALUE )), this );
+            }
+        }
+        else
+        {
+            berApplet->messageBox( tr("MAC value generation succeeded"), this );
+        }
     }
     else
+    {
         appendStatusLabel( QString("|Final failure [%1]").arg(JERR(ret)) );
+        if( mVerifyRadio->isChecked() == true )
+        {
+            berApplet->warningBox( tr( "Failed to verify MAC value: %1" ).arg(JERR(ret)), this );
+        }
+        else
+        {
+            berApplet->warningBox( tr( "Failed to generate MAC value: %1" ).arg(JERR(ret)), this );
+        }
+    }
 
+end :
     freeCTX();
 
     JS_BIN_reset( &binMAC );
-
-    update();
+    JS_BIN_reset( &binInMAC );
 }
 
 void GenMacDlg::mac()
@@ -377,12 +427,43 @@ void GenMacDlg::mac()
     }
 }
 
+int GenMacDlg::verifyMAC( const BIN *pMAC, const BIN *pInMAC )
+{
+    bool bSame = false;
+    QString strMethod = mMethodCombo->currentText();
+
+    if( pMAC == NULL || pInMAC == NULL ) return JSR_INVALID;
+
+    if( strMethod == sMethodGMAC )
+    {
+        if( pMAC->nLen >= pInMAC->nLen )
+        {
+            if( pInMAC->nLen >= 4 && pInMAC->nLen <= 16 )
+            {
+                if( memcmp( pInMAC->pVal, pInMAC->pVal, pInMAC->nLen ) == 0 )
+                    bSame = true;
+            }
+        }
+    }
+    else
+    {
+        if( JS_BIN_cmp( pMAC, pInMAC ) == 0 )
+            bSame = true;
+    }
+
+    if( bSame == true )
+        return JSR_VERIFY;
+    else
+        return JSR_INVALID;
+}
+
 void GenMacDlg::clickMAC()
 {
     int ret = 0;
     BIN binSrc = {0,0};
     BIN binKey = {0,0};
     BIN binMAC = {0,0};
+    BIN binInMAC = {0,0};
     BIN binIV = {0,0};
 
     qint64 us = 0;
@@ -392,22 +473,33 @@ void GenMacDlg::clickMAC()
 
     QString strInput = mInputText->toPlainText();
     QString strType = mInputTypeCombo->currentText();
+    QString strOutput = mOutputText->toPlainText();
+
+    QString strKey = mKeyText->text();
+    QString strIV = mIVText->text();
+
+    if( mVerifyRadio->isChecked() == true )
+    {
+        if( strOutput.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter MAC value" ), this );
+            mOutputText->setFocus();
+            return;
+        }
+
+        getBINFromString( &binInMAC, DATA_HEX, strOutput );
+    }
 
     if( strInput.length() > 0 )
     {
         getBINFromString( &binSrc, strType, strInput );
     }
 
-    QString strKey = mKeyText->text();
-    QString strIV = mIVText->text();
-
     if( strKey.isEmpty() )
     {
         KeyListDlg keyList;
         keyList.setTitle( tr( "Select symmetric key" ));
         keyList.setManage( false );
-
-//        keyList.mKeyTypeCombo->setCurrentText( "HMAC" );
 
         if( keyList.exec() == QDialog::Accepted )
         {
@@ -436,76 +528,98 @@ void GenMacDlg::clickMAC()
         }
     }
 
-    if( mKeyTypeCombo->currentIndex() == 0 )
-        JS_BIN_set( &binKey, (unsigned char *)strKey.toStdString().c_str(), strKey.length() );
-    else if( mKeyTypeCombo->currentIndex() == 1 )
-        JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey );
-    else if( mKeyTypeCombo->currentIndex() == 2 )
-        JS_BIN_decodeBase64( strKey.toStdString().c_str(), &binKey );
+    getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
 
+    QString strAlg = mAlgTypeCombo->currentText();
+    QString strMethod = mMethodCombo->currentText();
 
-   QString strAlg = mAlgTypeCombo->currentText();
+    if( strMethod == sMethodCMAC )
+    {
+        QString strSymAlg = getSymAlg( strAlg, "CBC", binKey.nLen );
 
-   if( mCMACRadio->isChecked() )
-   {
-       QString strSymAlg = getSymAlg( strAlg, "CBC", binKey.nLen );
+        timer.start();
+        ret = JS_PKI_genCMAC( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binMAC );
+        us = timer.nsecsElapsed() / 1000;
+    }
+    else if( strMethod == sMethodHMAC )
+    {
+        timer.start();
+        ret = JS_PKI_genHMAC( strAlg.toStdString().c_str(), &binSrc, &binKey, &binMAC );
+        us = timer.nsecsElapsed() / 1000;
+    }
+    else if( strMethod == sMethodGMAC )
+    {
+        QString strIV = mIVText->text();
+        getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
+        if( strIV.length() < 1 )
+        {
+             berApplet->warningBox( tr("Enter a IV value"), this );
+             mIVText->setFocus();
+             ret = JSR_ERR;
+             goto end;
+        }
 
-       timer.start();
-       ret = JS_PKI_genCMAC( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binMAC );
-       us = timer.nsecsElapsed() / 1000;
-   }
-   else if( mHMACRadio->isChecked() )
-   {
-       timer.start();
-       ret = JS_PKI_genHMAC( strAlg.toStdString().c_str(), &binSrc, &binKey, &binMAC );
-       us = timer.nsecsElapsed() / 1000;
-   }
-   else if( mGMACRadio->isChecked() )
-   {
-       QString strIV = mIVText->text();
-       getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
-       if( strIV.length() < 1 )
-       {
-            berApplet->warningBox( tr("Enter a IV value"), this );
-            mIVText->setFocus();
-            ret = JSR_ERR;
-            goto end;
-       }
+        timer.start();
+        ret = JS_PKI_genGMAC( strAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binMAC );
+        us = timer.nsecsElapsed() / 1000;
+    }
 
-       timer.start();
-       ret = JS_PKI_genGMAC( strAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binMAC );
-       us = timer.nsecsElapsed() / 1000;
-   }
+    if( ret == JSR_OK )
+    {
+        char *pHex = NULL;
+        JS_BIN_encodeHex( &binMAC, &pHex );
 
-   if( ret == 0 )
-   {
-       char *pHex = NULL;
-       JS_BIN_encodeHex( &binMAC, &pHex );
-       mOutputText->setPlainText( pHex );
-       mStatusLabel->setText( "MAC success" );
-       if( pHex ) JS_free(pHex);
+        if( mGenerateRadio->isChecked() == true ) mOutputText->setPlainText( pHex );
 
-       berApplet->logLine();
-       berApplet->log( QString( "-- MAC [time: %1 ms]" ).arg( getMS( us )) );
-       berApplet->logLine2();
-       berApplet->log( QString( "Algorithm : %1" ).arg( strAlg ));
-       berApplet->log( QString( "Input : %1" ).arg(getHexString(&binSrc)));
-       berApplet->log( QString( "Key   : %1" ).arg( getHexString(&binKey)));
-       berApplet->log( QString( "MAC   : %1" ).arg( getHexString(&binMAC)));
-       berApplet->logLine();
-   }
-   else
-   {
-       mStatusLabel->setText( QString("MAC failure [%1]").arg(JERR(ret)) );
-   }
+        mStatusLabel->setText( "MAC success" );
+        if( pHex ) JS_free(pHex);
+
+        berApplet->logLine();
+        berApplet->log( QString( "-- MAC [time: %1 ms]" ).arg( getMS( us )) );
+        berApplet->logLine2();
+        berApplet->log( QString( "Algorithm : %1" ).arg( strAlg ));
+        berApplet->log( QString( "Input : %1" ).arg(getHexString(&binSrc)));
+        berApplet->log( QString( "Key   : %1" ).arg( getHexString(&binKey)));
+        berApplet->log( QString( "MAC   : %1" ).arg( getHexString(&binMAC)));
+        berApplet->logLine();
+
+        if( mVerifyRadio->isChecked() == true )
+        {
+            if( verifyMAC( &binMAC, &binInMAC ) == JSR_VERIFY )
+            {
+                berApplet->messageBox( tr("MAC verification successful"), this );
+            }
+            else
+            {
+                mStatusLabel->setText( QString("MAC verification failed: %1").arg(JERR( JSR_INVALID_VALUE )));
+                berApplet->warningBox( tr( "Failed to verify MAC value: %1" ).arg(JERR( JSR_INVALID_VALUE )), this );
+            }
+        }
+        else
+        {
+            berApplet->messageBox( tr("MAC value generation succeeded"), this );
+        }
+    }
+    else
+    {
+        if( mVerifyRadio->isChecked() == true )
+        {
+            mStatusLabel->setText( QString("MAC verification failed: %1").arg(JERR(ret)) );
+            berApplet->warningBox( tr( "Failed to verify MAC value: %1" ).arg(JERR(ret)), this );
+        }
+        else
+        {
+            mStatusLabel->setText( QString("MAC failure [%1]").arg(JERR(ret)) );
+            berApplet->warningBox( tr( "Failed to generate MAC value: %1" ).arg(JERR(ret)), this );
+        }
+    }
 
 end :
-   JS_BIN_reset(&binSrc);
-   JS_BIN_reset(&binKey);
-   JS_BIN_reset(&binMAC);
-   JS_BIN_reset(&binIV);
-
-   update();
+    JS_BIN_reset(&binSrc);
+    JS_BIN_reset(&binKey);
+    JS_BIN_reset(&binMAC);
+    JS_BIN_reset(&binIV);
+    JS_BIN_reset( &binInMAC );
 }
 
 void GenMacDlg::clickFindSrcFile()
@@ -546,6 +660,7 @@ void GenMacDlg::clickMACSrcFile()
 
     QString strSrcFile = mSrcFileText->text();
     BIN binPart = {0,0};
+    QString strMethod = mMethodCombo->currentText();
 
 
     if( strSrcFile.length() < 1 )
@@ -594,15 +709,15 @@ void GenMacDlg::clickMACSrcFile()
             goto end;
         }
 
-        if( mCMACRadio->isChecked() )
+        if( strMethod == sMethodCMAC )
         {
             ret = JS_PKI_cmacUpdate( hctx_, &binPart );
         }
-        else if( mHMACRadio->isChecked() )
+        else if( strMethod == sMethodHMAC )
         {
             ret = JS_PKI_hmacUpdate( hctx_, &binPart );
         }
-        else if( mGMACRadio->isChecked() )
+        else if( strMethod == sMethodGMAC )
         {
             ret = JS_PKI_encryptGCMUpdateAAD( hctx_, &binPart );
         }
@@ -685,50 +800,57 @@ void GenMacDlg::ivChanged()
     mIVLenText->setText( QString("%1").arg(strLen));
 }
 
-void GenMacDlg::checkHMAC()
+void GenMacDlg::checkGenerate()
 {
-    bool bVal = false;
+    mRunBtn->setText( tr("MAC"));
 
-    mIVLabel->setEnabled(bVal);
-    mIVTypeCombo->setEnabled(bVal);
-    mIVText->setEnabled(bVal);
-    mIVLenText->setEnabled(bVal );
-
-    mHMACRadio->setChecked(true);
-
-    mAlgTypeCombo->clear();
-
-    mAlgTypeCombo->addItems( kHashList );
-    mAlgTypeCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
+    mOutputText->setReadOnly(true);
+    mOutputText->setStyleSheet( kReadOnlyStyle );
 }
 
-void GenMacDlg::checkCMAC()
+void GenMacDlg::checkVerify()
 {
-    bool bVal = false;
+    mRunBtn->setText( tr("Verify"));
 
-    mIVLabel->setEnabled(bVal);
-    mIVTypeCombo->setEnabled(bVal);
-    mIVText->setEnabled(bVal);
-    mIVLenText->setEnabled(bVal );
-
-    mCMACRadio->setChecked(true);
-
-    mAlgTypeCombo->clear();
-    mAlgTypeCombo->addItems( sBaseCrypt );
+    mOutputText->setReadOnly(false);
+    mOutputText->setStyleSheet( "" );
 }
 
-void GenMacDlg::checkGMAC()
+void GenMacDlg::changeMethod()
 {
-    bool bVal = true;
+    QString strMethod = mMethodCombo->currentText();
 
-    mIVLabel->setEnabled(bVal);
-    mIVTypeCombo->setEnabled(bVal);
-    mIVText->setEnabled(bVal);
-    mIVLenText->setEnabled(bVal );
+    if( strMethod == sMethodHMAC )
+    {
+        mIVLabel->setEnabled( false );
+        mIVTypeCombo->setEnabled( false );
+        mIVText->setEnabled( false );
+        mIVLenText->setEnabled( false );
 
-    mGMACRadio->setChecked(true);
-    mAlgTypeCombo->clear();
-    mAlgTypeCombo->addItems( sBaseCrypt );
+        mAlgTypeCombo->clear();
+        mAlgTypeCombo->addItems( kHashList );
+        mAlgTypeCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
+    }
+    else if( strMethod == sMethodCMAC )
+    {
+        mIVLabel->setEnabled(false);
+        mIVTypeCombo->setEnabled(false);
+        mIVText->setEnabled(false);
+        mIVLenText->setEnabled( false );
+
+        mAlgTypeCombo->clear();
+        mAlgTypeCombo->addItems( sBaseCrypt );
+    }
+    else if( strMethod == sMethodGMAC )
+    {
+        mIVLabel->setEnabled(true);
+        mIVTypeCombo->setEnabled(true);
+        mIVText->setEnabled(true);
+        mIVLenText->setEnabled(true);
+
+        mAlgTypeCombo->clear();
+        mAlgTypeCombo->addItems( sBaseCrypt );
+    }
 }
 
 void GenMacDlg::clickClearDataAll()

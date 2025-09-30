@@ -734,12 +734,15 @@ void SignVerifyDlg::dataRun()
         }
 
         if( ret == 0 )
+        {
             mStatusLabel->setText( "Signature Success" );
+            berApplet->messageBox( tr("Signature value creation succeeded"), this );
+        }
         else
         {
             QString strFail = QString("Signature failure [%1]").arg(ret);
             mStatusLabel->setText( strFail );
-            berApplet->elog( strFail );
+            berApplet->warningBox( tr("Failed to generate Signature value : %1").arg( JERR(ret)), this );
         }
     }
     else
@@ -786,32 +789,25 @@ void SignVerifyDlg::dataRun()
             us = timer.nsecsElapsed() / 1000;
         }
 
-        if( ret == 0 )
-        {
-            berApplet->logLine();
-            berApplet->log( QString( "-- Verify Signature [time: %1 ms]" ).arg( getMS( us )) );
-            berApplet->logLine2();
-            berApplet->log( QString( "Algorithm         : %1" ).arg( strAlg ));
-            berApplet->log( QString( "Verify Src        : %1" ).arg(getHexString(&binSrc)));
-            berApplet->log( QString( "Verify Public Key : %1" ).arg(getHexString( &binPubKey )));
-            berApplet->logLine();
-        }
+        berApplet->logLine();
+        berApplet->log( QString( "-- Verify Signature [time: %1 ms]" ).arg( getMS( us )) );
+        berApplet->logLine2();
+        berApplet->log( QString( "Verify            : %1").arg( ret ));
+        berApplet->log( QString( "Algorithm         : %1" ).arg( strAlg ));
+        berApplet->log( QString( "Verify Src        : %1" ).arg(getHexString(&binSrc)));
+        berApplet->log( QString( "Verify Public Key : %1" ).arg(getHexString( &binPubKey )));
+        berApplet->logLine();
 
         if( ret == JSR_VERIFY )
         {
             mStatusLabel->setText( "Verification successful" );
+            berApplet->messageBox( tr( "Verification was successful" ), this );
         }
         else
         {
             QString strFail = QString("Verification failure [%1]").arg(ret);
             mStatusLabel->setText( strFail );
-            berApplet->elog( strFail );
-        }
-
-        if( ret == JSR_VERIFY )
-            berApplet->messageBox( tr("Verification successful"), this );
-        else {
-            berApplet->warningBox( tr("Verification failure"), this );
+            berApplet->warningBox( tr("Verification failed : %1" ).arg( JERR(ret)), this );
         }
     }
 

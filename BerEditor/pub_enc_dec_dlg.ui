@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>558</width>
-    <height>696</height>
+    <height>611</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -32,6 +32,20 @@
        </property>
       </spacer>
      </item>
+     <item row="0" column="4">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Supported algorithms: RSA SM2 ECDSA</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="6">
+      <widget class="QCheckBox" name="mUseCertManCheck">
+       <property name="text">
+        <string>Use CertMan</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="mHeadLabel">
        <property name="text">
@@ -40,16 +54,9 @@
       </widget>
      </item>
      <item row="0" column="5">
-      <widget class="QCheckBox" name="mUseCertManCheck">
-       <property name="text">
-        <string>Use CertMan</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Supported algorithms: RSA SM2 ECDSA</string>
+      <widget class="Line" name="line_8">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
        </property>
       </widget>
      </item>
@@ -422,10 +429,62 @@
       </property>
       <item>
        <layout class="QGridLayout" name="gridLayout_7">
-        <item row="1" column="0">
-         <widget class="QLabel" name="mTagLabel">
-          <property name="text">
-           <string>Tag</string>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="mTagText"/>
+        </item>
+        <item row="2" column="2">
+         <widget class="QLineEdit" name="mOtherPubLenText">
+          <property name="minimumSize">
+           <size>
+            <width>40</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>40</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="palette">
+           <palette>
+            <active>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>221</red>
+                <green>221</green>
+                <blue>255</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </active>
+            <inactive>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>221</red>
+                <green>221</green>
+                <blue>255</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </inactive>
+            <disabled>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>240</red>
+                <green>240</green>
+                <blue>240</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </disabled>
+           </palette>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -442,8 +501,12 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="mIVText"/>
+        <item row="2" column="0">
+         <widget class="QLabel" name="mOtherPubLabel">
+          <property name="text">
+           <string>PublicKey</string>
+          </property>
+         </widget>
         </item>
         <item row="0" column="2">
          <widget class="QLineEdit" name="mIVLenText">
@@ -498,6 +561,13 @@
           </property>
           <property name="readOnly">
            <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="mTagLabel">
+          <property name="text">
+           <string>Tag</string>
           </property>
          </widget>
         </item>
@@ -557,110 +627,13 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
-         <widget class="QLineEdit" name="mTagText"/>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="Line" name="line_8">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <layout class="QGridLayout" name="gridLayout_8">
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <item row="0" column="0">
-         <widget class="QLabel" name="mOtherPubLabel">
-          <property name="text">
-           <string>Other Public Key</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QLineEdit" name="mOtherPubLenText">
-          <property name="minimumSize">
-           <size>
-            <width>40</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>40</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="palette">
-           <palette>
-            <active>
-             <colorrole role="Base">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>221</red>
-                <green>221</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </active>
-            <inactive>
-             <colorrole role="Base">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>221</red>
-                <green>221</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </inactive>
-            <disabled>
-             <colorrole role="Base">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>240</red>
-                <green>240</green>
-                <blue>240</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </disabled>
-           </palette>
-          </property>
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="1">
-         <spacer name="horizontalSpacer_7">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
+         <widget class="QLineEdit" name="mIVText"/>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="mOtherPubText"/>
         </item>
        </layout>
-      </item>
-      <item>
-       <widget class="QPlainTextEdit" name="mOtherPubText">
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-       </widget>
       </item>
      </layout>
     </widget>
@@ -1016,8 +989,6 @@
   <tabstop>mIVLenText</tabstop>
   <tabstop>mTagText</tabstop>
   <tabstop>mTagLenText</tabstop>
-  <tabstop>mOtherPubLenText</tabstop>
-  <tabstop>mOtherPubText</tabstop>
   <tabstop>mEncryptRadio</tabstop>
   <tabstop>mDecryptRadio</tabstop>
   <tabstop>mVersionTypeCombo</tabstop>

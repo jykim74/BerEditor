@@ -718,38 +718,20 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="2">
-      <widget class="QRadioButton" name="mGMACRadio">
-       <property name="text">
-        <string>GMAC</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QRadioButton" name="mHMACRadio">
-       <property name="text">
-        <string>HMAC</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QRadioButton" name="mCMACRadio">
-       <property name="text">
-        <string>CMAC</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="5">
-      <widget class="QPushButton" name="mMACBtn">
-       <property name="text">
-        <string>MAC</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
       <widget class="QComboBox" name="mAlgTypeCombo"/>
      </item>
+     <item row="0" column="0">
+      <widget class="QRadioButton" name="mGenerateRadio">
+       <property name="text">
+        <string>Generate</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="4">
+      <widget class="QComboBox" name="mMethodCombo"/>
+     </item>
+     <item row="0" column="2">
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -761,6 +743,27 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="1">
+      <widget class="QRadioButton" name="mVerifyRadio">
+       <property name="text">
+        <string>Verify</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="7">
+      <widget class="QPushButton" name="mRunBtn">
+       <property name="text">
+        <string>MAC</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLabel" name="label_12">
+       <property name="text">
+        <string>Method</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -900,8 +903,8 @@
         <colorrole role="Base">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>221</red>
-           <green>221</green>
+           <red>255</red>
+           <green>255</green>
            <blue>255</blue>
           </color>
          </brush>
@@ -911,8 +914,8 @@
         <colorrole role="Base">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>221</red>
-           <green>221</green>
+           <red>255</red>
+           <green>255</green>
            <blue>255</blue>
           </color>
          </brush>
@@ -932,7 +935,7 @@
       </palette>
      </property>
      <property name="readOnly">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
     </widget>
    </item>
@@ -1028,11 +1031,11 @@
   <tabstop>mIVTypeCombo</tabstop>
   <tabstop>mIVText</tabstop>
   <tabstop>mIVLenText</tabstop>
-  <tabstop>mHMACRadio</tabstop>
-  <tabstop>mCMACRadio</tabstop>
-  <tabstop>mGMACRadio</tabstop>
+  <tabstop>mGenerateRadio</tabstop>
+  <tabstop>mVerifyRadio</tabstop>
+  <tabstop>mMethodCombo</tabstop>
   <tabstop>mAlgTypeCombo</tabstop>
-  <tabstop>mMACBtn</tabstop>
+  <tabstop>mRunBtn</tabstop>
   <tabstop>mOutputClearBtn</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>

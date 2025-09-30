@@ -275,10 +275,12 @@ void GenHashDlg::clickDigest()
             berApplet->log( QString( "ReqLen    : %1" ).arg( nLen ));
 
         berApplet->logLine();
+        berApplet->messageBox( tr("Digest value creation succeeded"), this );
     }
     else
     {
         mStatusLabel->setText( QString("Digest failed [%1]").arg(JERR(ret)) );
+        berApplet->warningBox( tr("Failed to generate Digest value : %1").arg( JERR(ret)), this );
     }
 
     JS_BIN_reset(&binSrc);

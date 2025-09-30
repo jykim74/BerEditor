@@ -61,7 +61,7 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
     connect( mCertTypeBtn, SIGNAL(clicked()), this, SLOT(clickCertType()));
     connect( mEncPrikeyCheck, SIGNAL(clicked()), this, SLOT(checkEncPriKey()));
 
-    connect( mOtherPubText, SIGNAL(textChanged()), this, SLOT(changeOtherPub()));
+    connect( mOtherPubText, SIGNAL(textChanged(const QString&)), this, SLOT(changeOtherPub()));
     connect( mIVText, SIGNAL(textChanged(const QString&)), this, SLOT(changeIV(const QString&)));
     connect( mTagText, SIGNAL(textChanged(const QString&)), this, SLOT(changeTag(const QString&)));
 
@@ -323,7 +323,7 @@ void PubEncDecDlg::Run()
 
             if( ret == JSR_OK )
             {
-                mOtherPubText->setPlainText( getHexString( &binOtherPub ));
+                mOtherPubText->setText( getHexString( &binOtherPub ));
                 mIVText->setText( getHexString( &binIV ));
                 mTagText->setText( getHexString( &binTag ));
 
@@ -359,7 +359,7 @@ void PubEncDecDlg::Run()
         }
         else
         {
-            berApplet->warnLog( tr( "Public key encryption failed: %1").arg( ret ), this );
+            berApplet->warnLog( tr( "Public key encryption failed: %1").arg( JERR(ret) ), this );
         }
     }
     else {
@@ -427,7 +427,7 @@ void PubEncDecDlg::Run()
             BIN binIV = {0,0};
             BIN binTag = {0,0};
 
-            QString strOtherPub = mOtherPubText->toPlainText();
+            QString strOtherPub = mOtherPubText->text();
             QString strIV = mIVText->text();
             QString strTag = mTagText->text();
 
@@ -475,7 +475,7 @@ void PubEncDecDlg::Run()
         }
         else
         {
-            berApplet->warnLog( tr( "Private key decryption failed: %1").arg( ret ), this );
+            berApplet->warnLog( tr( "Private key decryption failed: %1").arg( JERR(ret) ), this );
         }
     }
 
@@ -715,7 +715,7 @@ void PubEncDecDlg::checkEncPriKey()
 
 void PubEncDecDlg::changeOtherPub()
 {
-    QString strLen = getDataLenString( DATA_HEX, mOtherPubText->toPlainText() );
+    QString strLen = getDataLenString( DATA_HEX, mOtherPubText->text() );
     mOtherPubLenText->setText( QString( "%1" ).arg(strLen) );
 }
 
