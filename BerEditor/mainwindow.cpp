@@ -601,13 +601,6 @@ void MainWindow::createViewActions()
     connect( serviceKeyListAct, &QAction::triggered, this, &MainWindow::viewServiceKeyList );
     serviceMenu->addAction( serviceKeyListAct );
 
-    QAction *serviceCAVPAct = new QAction( tr( "CAVP"), this );
-    bVal = isView( ACT_SERVICE_CAVP );
-    serviceCAVPAct->setCheckable(true);
-    serviceCAVPAct->setChecked(bVal);
-    connect( serviceCAVPAct, &QAction::triggered, this, &MainWindow::viewServiceCAVP );
-    serviceMenu->addAction( serviceCAVPAct );
-
     QAction *serviceSSLVerifyAct = new QAction( tr( "SSL Check"), this );
     bVal = isView( ACT_SERVICE_SSL_CHECK );
     serviceSSLVerifyAct->setCheckable(true);
@@ -628,6 +621,13 @@ void MainWindow::createViewActions()
     serviceDocSignerAct->setChecked(bVal);
     connect( serviceDocSignerAct, &QAction::triggered, this, &MainWindow::viewServiceDocSigner );
     serviceMenu->addAction( serviceDocSignerAct );
+
+    QAction *serviceCAVPAct = new QAction( tr( "CAVP"), this );
+    bVal = isView( ACT_SERVICE_CAVP );
+    serviceCAVPAct->setCheckable(true);
+    serviceCAVPAct->setChecked(bVal);
+    connect( serviceCAVPAct, &QAction::triggered, this, &MainWindow::viewServiceCAVP );
+    serviceMenu->addAction( serviceCAVPAct );
 
     QAction *protoOCSPAct = new QAction( tr( "OCSP client"), this );
     bVal = isView( ACT_PROTO_OCSP );
@@ -1150,14 +1150,6 @@ void MainWindow::createActions()
     serviceMenu->addAction( key_list_act_ );
     if( isView( ACT_SERVICE_KEY_LIST ) ) service_tool_->addAction( key_list_act_ );
 
-    const QIcon cavpIcon = QIcon::fromTheme( "tool-cavp", QIcon(":/images/cavp.png"));
-    cavp_act_ = new QAction(cavpIcon, tr("&CAVP"), this);
-    cavp_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_F));
-    connect( cavp_act_, &QAction::triggered, this, &MainWindow::CAVP );
-    cavp_act_->setStatusTip(tr("Cryptography Algorithm Valication Program"));
-    serviceMenu->addAction( cavp_act_ );
-    if( isView( ACT_SERVICE_CAVP ) ) service_tool_->addAction( cavp_act_ );
-
     const QIcon sslIcon = QIcon::fromTheme( "service-ssl", QIcon(":/images/ssl.png"));
     ssl_act_ = new QAction(sslIcon, tr("&SSL Check"), this);
     ssl_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_V));
@@ -1181,6 +1173,14 @@ void MainWindow::createActions()
     doc_signer_act_->setStatusTip(tr("Document Signer"));
     serviceMenu->addAction( doc_signer_act_ );
     if( isView( ACT_SERVICE_DOC_SIGNER ) ) service_tool_->addAction( doc_signer_act_ );
+
+    const QIcon cavpIcon = QIcon::fromTheme( "tool-cavp", QIcon(":/images/cavp.png"));
+    cavp_act_ = new QAction(cavpIcon, tr("&CAVP"), this);
+    cavp_act_->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_F));
+    connect( cavp_act_, &QAction::triggered, this, &MainWindow::CAVP );
+    cavp_act_->setStatusTip(tr("Cryptography Algorithm Valication Program"));
+    serviceMenu->addAction( cavp_act_ );
+    if( isView( ACT_SERVICE_CAVP ) ) service_tool_->addAction( cavp_act_ );
 
     if( berApplet->isLicense() == false )
     {

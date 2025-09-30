@@ -37,6 +37,7 @@ MakeBerDlg::MakeBerDlg(QWidget *parent) :
 
     initialize();
     mMakeBtn->setDefault(true);
+    mValueText->setFocus();
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
@@ -111,7 +112,6 @@ void MakeBerDlg::initialize()
 
     mPrimitiveCombo->setEditable( true );
     mValueTypeCombo->addItems( kDataTypeList );
-    mValueTypeCombo->setCurrentIndex(1);
 }
 
 void MakeBerDlg::makeHeader()

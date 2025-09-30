@@ -379,11 +379,12 @@ void GenMacDlg::macFinal()
         {
             if( verifyMAC( &binMAC, &binInMAC ) == JSR_VERIFY )
             {
+                appendStatusLabel( QString( "| MAC good" ));
                 berApplet->messageBox( tr("MAC verification successful"), this );
             }
             else
             {
-                appendStatusLabel( QString("MAC verification failed: %1").arg(JERR( JSR_INVALID_VALUE )));
+                appendStatusLabel( QString("| MAC bad: %1").arg(JERR( JSR_INVALID_VALUE )));
                 berApplet->warningBox( tr( "Failed to verify MAC value: %1" ).arg(JERR( JSR_INVALID_VALUE )), this );
             }
         }
@@ -571,7 +572,6 @@ void GenMacDlg::clickMAC()
 
         if( mGenerateRadio->isChecked() == true ) mOutputText->setPlainText( pHex );
 
-        mStatusLabel->setText( "MAC success" );
         if( pHex ) JS_free(pHex);
 
         berApplet->logLine();
@@ -587,6 +587,7 @@ void GenMacDlg::clickMAC()
         {
             if( verifyMAC( &binMAC, &binInMAC ) == JSR_VERIFY )
             {
+                mStatusLabel->setText( "MAC verification OK" );
                 berApplet->messageBox( tr("MAC verification successful"), this );
             }
             else
@@ -597,6 +598,7 @@ void GenMacDlg::clickMAC()
         }
         else
         {
+            mStatusLabel->setText( "MAC generation OK" );
             berApplet->messageBox( tr("MAC value generation succeeded"), this );
         }
     }

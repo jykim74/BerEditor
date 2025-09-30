@@ -43,10 +43,6 @@ private slots:
         void keyChanged();
         void ivChanged();
 
-        void checkHMAC();
-        void checkCMAC();
-        void checkGMAC();
-
         void checkGenerate();
         void checkVerify();
         void changeMethod();

@@ -8711,7 +8711,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../gen_mac_dlg.ui" line="757"/>
-        <location filename="../gen_mac_dlg.cpp" line="805"/>
+        <location filename="../gen_mac_dlg.cpp" line="807"/>
         <source>MAC</source>
         <translation>MAC</translation>
     </message>
@@ -8823,7 +8823,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../gen_mac_dlg.ui" line="750"/>
-        <location filename="../gen_mac_dlg.cpp" line="813"/>
+        <location filename="../gen_mac_dlg.cpp" line="815"/>
         <source>Verify</source>
         <translation>검증</translation>
     </message>
@@ -8834,7 +8834,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../gen_mac_dlg.ui" line="950"/>
-        <location filename="../gen_mac_dlg.cpp" line="862"/>
+        <location filename="../gen_mac_dlg.cpp" line="864"/>
         <source>Status</source>
         <translation>상태</translation>
     </message>
@@ -8867,7 +8867,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../gen_mac_dlg.cpp" line="164"/>
-        <location filename="../gen_mac_dlg.cpp" line="501"/>
+        <location filename="../gen_mac_dlg.cpp" line="502"/>
         <source>Select symmetric key</source>
         <translation>대칭키를 선택 하세요</translation>
     </message>
@@ -8883,59 +8883,59 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../gen_mac_dlg.cpp" line="230"/>
-        <location filename="../gen_mac_dlg.cpp" line="556"/>
+        <location filename="../gen_mac_dlg.cpp" line="557"/>
         <source>Enter a IV value</source>
         <translation>IV 를 입력하세요</translation>
     </message>
     <message>
         <location filename="../gen_mac_dlg.cpp" line="329"/>
-        <location filename="../gen_mac_dlg.cpp" line="485"/>
+        <location filename="../gen_mac_dlg.cpp" line="486"/>
         <source>Enter MAC value</source>
         <translation>MAC 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="382"/>
-        <location filename="../gen_mac_dlg.cpp" line="590"/>
+        <location filename="../gen_mac_dlg.cpp" line="383"/>
+        <location filename="../gen_mac_dlg.cpp" line="591"/>
         <source>MAC verification successful</source>
         <translation>MAC 검증에 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="387"/>
-        <location filename="../gen_mac_dlg.cpp" line="400"/>
-        <location filename="../gen_mac_dlg.cpp" line="595"/>
-        <location filename="../gen_mac_dlg.cpp" line="608"/>
+        <location filename="../gen_mac_dlg.cpp" line="388"/>
+        <location filename="../gen_mac_dlg.cpp" line="401"/>
+        <location filename="../gen_mac_dlg.cpp" line="596"/>
+        <location filename="../gen_mac_dlg.cpp" line="610"/>
         <source>Failed to verify MAC value: %1</source>
         <translation>MAC 검증에 실패 하였습니다: %1</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="392"/>
-        <location filename="../gen_mac_dlg.cpp" line="600"/>
+        <location filename="../gen_mac_dlg.cpp" line="393"/>
+        <location filename="../gen_mac_dlg.cpp" line="602"/>
         <source>MAC value generation succeeded</source>
         <translation>MAC 생성 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="404"/>
-        <location filename="../gen_mac_dlg.cpp" line="613"/>
+        <location filename="../gen_mac_dlg.cpp" line="405"/>
+        <location filename="../gen_mac_dlg.cpp" line="615"/>
         <source>Failed to generate MAC value: %1</source>
         <translation>MAC 값 생성에 실패 하였습니다: %1</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="524"/>
+        <location filename="../gen_mac_dlg.cpp" line="525"/>
         <source>Please Enter a key value</source>
         <translation>키 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="668"/>
+        <location filename="../gen_mac_dlg.cpp" line="670"/>
         <source>Select a input file</source>
         <translation>입력 파일을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="708"/>
+        <location filename="../gen_mac_dlg.cpp" line="710"/>
         <source>fail to read file: %1</source>
         <translation>파일 읽기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../gen_mac_dlg.cpp" line="893"/>
+        <location filename="../gen_mac_dlg.cpp" line="895"/>
         <source>Find source file</source>
         <translation>소스 파일을 찾으세요</translation>
     </message>
