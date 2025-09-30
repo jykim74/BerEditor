@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>636</width>
-    <height>840</height>
+    <width>558</width>
+    <height>696</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -32,6 +32,13 @@
        </property>
       </spacer>
      </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="mHeadLabel">
+       <property name="text">
+        <string>Public Key Encrypt Decrypt</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="5">
       <widget class="QCheckBox" name="mUseCertManCheck">
        <property name="text">
@@ -40,16 +47,9 @@
       </widget>
      </item>
      <item row="0" column="4">
-      <widget class="QCheckBox" name="mUseKeyAlgCheck">
+      <widget class="QLabel" name="label">
        <property name="text">
-        <string>Use Key Algorithm</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="mHeadLabel">
-       <property name="text">
-        <string>Public Key Encrypt Decrypt</string>
+        <string>Supported algorithms: RSA SM2 ECDSA</string>
        </property>
       </widget>
      </item>
@@ -67,27 +67,7 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="4">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Len</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="mInputLabel">
-       <property name="minimumSize">
-        <size>
-         <width>100</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Input Data</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="5">
+     <item row="0" column="6">
       <widget class="QLineEdit" name="mInputLenText">
        <property name="minimumSize">
         <size>
@@ -143,7 +123,43 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="mInputLabel">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Input Data</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="mInputTypeCombo"/>
+     </item>
+     <item row="0" column="5">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Len</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="3">
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="2">
       <widget class="QPushButton" name="mInputClearBtn">
        <property name="minimumSize">
         <size>
@@ -162,29 +178,13 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="mInputTypeCombo"/>
-     </item>
-     <item row="0" column="2">
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
     </layout>
    </item>
    <item>
     <widget class="QPlainTextEdit" name="mInputText">
      <property name="minimumSize">
       <size>
-       <width>500</width>
+       <width>540</width>
        <height>0</height>
       </size>
      </property>
@@ -402,7 +402,7 @@
       </size>
      </property>
      <property name="title">
-      <string>ECIES Information</string>
+      <string>ECIES parameters for ECDSA</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <property name="spacing">
@@ -423,14 +423,14 @@
       <item>
        <layout class="QGridLayout" name="gridLayout_7">
         <item row="1" column="0">
-         <widget class="QLabel" name="label_9">
+         <widget class="QLabel" name="mTagLabel">
           <property name="text">
            <string>Tag</string>
           </property>
          </widget>
         </item>
         <item row="0" column="0">
-         <widget class="QLabel" name="label_7">
+         <widget class="QLabel" name="mIVLabel">
           <property name="minimumSize">
            <size>
             <width>60</width>
@@ -563,12 +563,19 @@
        </layout>
       </item>
       <item>
+       <widget class="Line" name="line_8">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
        <layout class="QGridLayout" name="gridLayout_8">
         <property name="topMargin">
          <number>0</number>
         </property>
         <item row="0" column="0">
-         <widget class="QLabel" name="label_8">
+         <widget class="QLabel" name="mOtherPubLabel">
           <property name="text">
            <string>Other Public Key</string>
           </property>
@@ -670,29 +677,6 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="4">
-      <widget class="QLabel" name="mVersionLabel">
-       <property name="text">
-        <string>For RSA</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QComboBox" name="mAlgCombo">
-       <property name="minimumSize">
-        <size>
-         <width>80</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>80</width>
-         <height>16777215</height>
-        </size>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
       <widget class="QRadioButton" name="mDecryptRadio">
        <property name="text">
@@ -700,14 +684,28 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="7">
-      <widget class="QPushButton" name="mRunBtn">
+     <item row="0" column="0">
+      <widget class="QRadioButton" name="mEncryptRadio">
        <property name="text">
         <string>Encrypt</string>
        </property>
       </widget>
      </item>
      <item row="0" column="6">
+      <widget class="QPushButton" name="mRunBtn">
+       <property name="text">
+        <string>Encrypt</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLabel" name="mVersionLabel">
+       <property name="text">
+        <string>For RSA</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
       <spacer name="horizontalSpacer_3">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -720,14 +718,14 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="0">
-      <widget class="QRadioButton" name="mEncryptRadio">
-       <property name="text">
-        <string>Encrypt</string>
+     <item row="0" column="2">
+      <widget class="Line" name="line_3">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
        </property>
       </widget>
      </item>
-     <item row="0" column="5">
+     <item row="0" column="4">
       <widget class="QComboBox" name="mVersionTypeCombo">
        <property name="minimumSize">
         <size>
@@ -740,13 +738,6 @@
          <width>80</width>
          <height>16777215</height>
         </size>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="Line" name="line_3">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
        </property>
       </widget>
      </item>
@@ -913,7 +904,7 @@
     <widget class="QPlainTextEdit" name="mOutputText">
      <property name="minimumSize">
       <size>
-       <width>600</width>
+       <width>0</width>
        <height>0</height>
       </size>
      </property>
@@ -1003,7 +994,6 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>mUseKeyAlgCheck</tabstop>
   <tabstop>mUseCertManCheck</tabstop>
   <tabstop>mInputTypeCombo</tabstop>
   <tabstop>mInputClearBtn</tabstop>
@@ -1030,7 +1020,6 @@
   <tabstop>mOtherPubText</tabstop>
   <tabstop>mEncryptRadio</tabstop>
   <tabstop>mDecryptRadio</tabstop>
-  <tabstop>mAlgCombo</tabstop>
   <tabstop>mVersionTypeCombo</tabstop>
   <tabstop>mRunBtn</tabstop>
   <tabstop>mOutputTypeCombo</tabstop>

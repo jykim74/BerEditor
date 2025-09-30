@@ -2595,13 +2595,11 @@ void MainWindow::runSignVerify( bool bSign, bool bEncPri, const QString strPriPa
 {
     sign_verify_dlg_->clickClearDataAll();
     sign_verify_dlg_->mCertGroup->setChecked(true);
-    sign_verify_dlg_->mUseKeyAlgCheck->setChecked(true);
     sign_verify_dlg_->mEncPrikeyCheck->setChecked( bEncPri );
 
     sign_verify_dlg_->mPriKeyPath->setText( strPriPath );
     sign_verify_dlg_->mCertPath->setText( strCertPath );
 
-    sign_verify_dlg_->checkUseKeyAlg();
     sign_verify_dlg_->checkEncPriKey();
 
     if( bSign == true )
@@ -2624,13 +2622,11 @@ void MainWindow::runPubEncDec( bool bEnc, bool bEncPri, const QString strPriPath
 {
     pub_enc_dec_dlg_->clickClearDataAll();
     pub_enc_dec_dlg_->mCertGroup->setChecked(true);
-    pub_enc_dec_dlg_->mUseKeyAlgCheck->setChecked(true);
     pub_enc_dec_dlg_->mEncPrikeyCheck->setChecked( bEncPri );
 
     pub_enc_dec_dlg_->mCertPath->setText( strCertPath );
     pub_enc_dec_dlg_->mPriKeyPath->setText( strPriPath );
 
-    pub_enc_dec_dlg_->checkUseKeyAlg();
     pub_enc_dec_dlg_->checkEncPriKey();
 
     if( bEnc == true )

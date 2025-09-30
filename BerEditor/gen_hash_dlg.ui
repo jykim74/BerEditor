@@ -29,17 +29,23 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="3">
-          <widget class="QLabel" name="label_4">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_2">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
-            <string>Len</string>
+            <string>Input Type</string>
            </property>
           </widget>
          </item>
          <item row="0" column="1">
           <widget class="QComboBox" name="mInputTypeCombo"/>
          </item>
-         <item row="0" column="2">
+         <item row="0" column="3">
           <spacer name="horizontalSpacer">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -52,7 +58,7 @@
            </property>
           </spacer>
          </item>
-         <item row="0" column="4">
+         <item row="0" column="5">
           <widget class="QLineEdit" name="mInputLenText">
            <property name="minimumSize">
             <size>
@@ -98,16 +104,29 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_2">
+         <item row="0" column="4">
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Len</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QPushButton" name="mInputClearBtn">
            <property name="minimumSize">
             <size>
-             <width>80</width>
+             <width>20</width>
              <height>0</height>
             </size>
            </property>
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
-            <string>Input Type</string>
+            <string>C</string>
            </property>
           </widget>
          </item>
@@ -121,28 +140,14 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="1">
+         <item row="0" column="2">
           <widget class="QPushButton" name="mUpdateBtn">
            <property name="text">
             <string>Update</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
-          <widget class="QPushButton" name="mFinalBtn">
-           <property name="text">
-            <string>Final</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="4">
-          <widget class="QPushButton" name="mInputClearBtn">
-           <property name="text">
-            <string>Clear</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
+         <item row="0" column="1">
           <widget class="QPushButton" name="mInitBtn">
            <property name="text">
             <string>Init</string>
@@ -150,6 +155,13 @@
           </widget>
          </item>
          <item row="0" column="3">
+          <widget class="QPushButton" name="mFinalBtn">
+           <property name="text">
+            <string>Final</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
           <spacer name="horizontalSpacer_7">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -612,13 +624,6 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="2">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Len</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_3">
        <property name="minimumSize">
@@ -633,6 +638,13 @@
       </widget>
      </item>
      <item row="0" column="3">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Len</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
       <widget class="QLineEdit" name="mOutputLenText">
        <property name="minimumSize">
         <size>
@@ -688,7 +700,7 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
+     <item row="0" column="2">
       <spacer name="horizontalSpacer_4">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -700,6 +712,25 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mOutputClearBtn">
+       <property name="minimumSize">
+        <size>
+         <width>20</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>C</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -778,13 +809,6 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mOutputClearBtn">
-       <property name="text">
-        <string>Clear</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
    <item>
@@ -833,12 +857,12 @@
  <tabstops>
   <tabstop>mInputTab</tabstop>
   <tabstop>mInputTypeCombo</tabstop>
+  <tabstop>mInputClearBtn</tabstop>
   <tabstop>mInputLenText</tabstop>
   <tabstop>mInputText</tabstop>
   <tabstop>mInitBtn</tabstop>
   <tabstop>mUpdateBtn</tabstop>
   <tabstop>mFinalBtn</tabstop>
-  <tabstop>mInputClearBtn</tabstop>
   <tabstop>mSrcFileText</tabstop>
   <tabstop>mFindSrcFileBtn</tabstop>
   <tabstop>mSrcFileInfoText</tabstop>
@@ -849,9 +873,9 @@
   <tabstop>mOutputHashCombo</tabstop>
   <tabstop>mReqLenText</tabstop>
   <tabstop>mDigestBtn</tabstop>
+  <tabstop>mOutputClearBtn</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
-  <tabstop>mOutputClearBtn</tabstop>
   <tabstop>mClearDataAllBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>

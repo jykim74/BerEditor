@@ -30,7 +30,6 @@ private slots:
 
     void inputChanged();
     void outputChanged();
-    void algChanged();
 
     void clickPriKeyView();
     void clickPriKeyDecode();
@@ -52,7 +51,6 @@ private slots:
 public slots:
     void checkEncrypt();
     void checkDecrypt();
-    void checkUseKeyAlg();
     void checkEncPriKey();
     void clickClearDataAll();
 
@@ -60,6 +58,7 @@ private:
     void initUI();
     void initialize();
     int readPrivateKey( BIN *pPriKey );
+    void setReadOnlyECIES( bool bVal );
 
 };
 

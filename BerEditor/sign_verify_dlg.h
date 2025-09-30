@@ -27,7 +27,6 @@ public:
 private slots:
     void findPrivateKey();
     void findCert();
-    void algChanged(int index);
     void Run();
 
     void dataRun();
@@ -65,7 +64,6 @@ private slots:
 
 public slots:
     void checkEncPriKey();
-    void checkUseKeyAlg();
     void checkSign();
     void checkVerify();
     void clickClearDataAll();

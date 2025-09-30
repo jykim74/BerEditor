@@ -195,7 +195,12 @@ static const int kHelpDefault = ACT_HELP_ABOUT;
 
 // const QStringList kSymAlgList = { JS_PKI_KEY_NAME_AES, JS_PKI_KEY_NAME_ARIA, JS_PKI_KEY_NAME_SEED, JS_PKI_KEY_NAME_SM4, JS_PKI_KEY_NAME_TDES };
 
-const QStringList kSymAlgList = { JS_PKI_KEY_NAME_AES, JS_PKI_KEY_NAME_ARIA, JS_PKI_KEY_NAME_SEED, JS_PKI_KEY_NAME_SM4 };
+const QStringList kSymAlgList = {
+    JS_PKI_KEY_NAME_AES,
+    JS_PKI_KEY_NAME_ARIA,
+    JS_PKI_KEY_NAME_SM4,
+    JS_PKI_KEY_NAME_SEED
+};
 
 const QString kSymGeneric = "Generic";
 
@@ -244,7 +249,6 @@ const QStringList kSLH_DSAOptionList = {
 };
 
 static QStringList kHashList = {
-    "MD5",
     "SHA1",
     "SHA224",
     "SHA256",
@@ -254,7 +258,8 @@ static QStringList kHashList = {
     "SHA3-224",
     "SHA3-256",
     "SHA3-384",
-    "SHA3-512"
+    "SHA3-512",
+    "MD5"
 };
 
 static QStringList kSHAHashList = {

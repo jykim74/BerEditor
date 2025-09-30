@@ -23,13 +23,6 @@
 #include "js_ecies.h"
 #include "js_error.h"
 
-static QStringList algTypes = {
-    "RSA",
-    "SM2",
-    "ECIES"
-};
-
-
 static QStringList versionTypes = {
     "V15",
     "V21"
@@ -56,14 +49,12 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
     connect( mInputTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(inputChanged()));
 
     connect( mOutputTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(outputChanged()));
-    connect( mAlgCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(algChanged()));
 
     connect( mPriKeyViewBtn, SIGNAL(clicked()), this, SLOT(clickPriKeyView()));
     connect( mPriKeyDecodeBtn, SIGNAL(clicked()), this, SLOT(clickPriKeyDecode()));
     connect( mCertViewBtn, SIGNAL(clicked()), this, SLOT(clickCertView()));
     connect( mCertDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCertDecode()));
 
-    connect( mUseKeyAlgCheck, SIGNAL(clicked()), this, SLOT(checkUseKeyAlg()));
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
 
     connect( mPriKeyTypeBtn, SIGNAL(clicked()), this, SLOT(clickPriKeyType()));
@@ -106,7 +97,6 @@ PubEncDecDlg::~PubEncDecDlg()
 void PubEncDecDlg::initUI()
 {
     mInputTypeCombo->addItems( kDataTypeList );
-    mAlgCombo->addItems( algTypes );
     mOutputTypeCombo->addItems( kDataTypeList );
 
     mPriKeyPath->setPlaceholderText( tr("Select a private key") );
@@ -123,9 +113,6 @@ void PubEncDecDlg::initialize()
     runGroup->addButton( mEncryptRadio );
     runGroup->addButton( mDecryptRadio );
 
-    mUseKeyAlgCheck->setChecked(true);
-
-    checkUseKeyAlg();
     checkEncPriKey();
 
     mEncryptRadio->click();
@@ -191,6 +178,26 @@ end :
     return ret;
 }
 
+void PubEncDecDlg::setReadOnlyECIES( bool bVal )
+{
+    mIVText->setReadOnly( bVal );
+    mTagText->setReadOnly( bVal );
+    mOtherPubText->setReadOnly( bVal );
+
+    if( bVal == true )
+    {
+        mIVText->setStyleSheet( kReadOnlyStyle );
+        mTagText->setStyleSheet( kReadOnlyStyle );
+        mOtherPubText->setStyleSheet( kReadOnlyStyle );
+    }
+    else
+    {
+        mIVText->setStyleSheet( "" );
+        mTagText->setStyleSheet( "" );
+        mOtherPubText->setStyleSheet( "" );
+    }
+}
+
 void PubEncDecDlg::Run()
 {
     int ret = 0;
@@ -201,14 +208,14 @@ void PubEncDecDlg::Run()
     BIN binCert = {0,0};
     BIN binOut = {0,0};
     BIN binPubKey = {0,0};
-    char *pOut = NULL;
 
     qint64 us = 0;
     QElapsedTimer timer;
 
-    QString strAlg = mAlgCombo->currentText();
+    QString strAlg;
     QString strInput = mInputText->toPlainText();
     QString strType = mInputTypeCombo->currentText();
+    QString strOut;
 
     if( strInput.isEmpty() )
     {
@@ -281,69 +288,40 @@ void PubEncDecDlg::Run()
             }
         }
 
+        int nKeyType = JS_PKI_getPubKeyType( &binPubKey );
+        QString strKeyAlg = JS_PKI_getKeyAlgName( nKeyType );
 
-
-        int nAlgType = JS_PKI_getPubKeyType( &binPubKey );
-        QString strKeyType = JS_PKI_getKeyAlgName( nAlgType );
-
-        if( mUseKeyAlgCheck->isChecked() )
+        if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_SM2 && nKeyType != JS_PKI_KEY_TYPE_ECDSA )
         {
-            berApplet->log( QString( "PubKey Type : %1").arg( strKeyType));
-
-            if( nAlgType == JS_PKI_KEY_TYPE_RSA )
-                mAlgCombo->setCurrentText( "RSA" );
-            else if( nAlgType == JS_PKI_KEY_TYPE_SM2 )
-                mAlgCombo->setCurrentText( "SM2" );
-            else if( nAlgType == JS_PKI_KEY_TYPE_ECDSA )
-                mAlgCombo->setCurrentText( "ECIES" );
-            else
-            {
-                berApplet->warningBox( tr( "Invalid public key algorithm:%1").arg( strKeyType ), this );
-                goto end;
-            }
+            berApplet->warningBox( tr( "This key algorithm (%1) is not supported" ).arg(strKeyAlg), this );
+            goto end;
         }
 
-        if( mAlgCombo->currentText() == "RSA" )
+        if( nKeyType == JS_PKI_KEY_TYPE_RSA )
         {
-            if( nAlgType != JS_PKI_KEY_TYPE_RSA )
-            {
-                berApplet->warningBox( tr( "Invalid public key algorithm:%1").arg( strKeyType ), this );
-                goto end;
-            }
-
             timer.start();
             ret = JS_PKI_RSAEncryptWithPub( nVersion, &binSrc, &binPubKey, &binOut );
             us = timer.nsecsElapsed() / 1000;
         }
-        else if( mAlgCombo->currentText() == "SM2" )
+        else if( nKeyType == JS_PKI_KEY_TYPE_SM2 )
         {
-            if( nAlgType != JS_PKI_KEY_TYPE_SM2 )
-            {
-                berApplet->warningBox( tr( "Invalid public key algorithm:%1").arg( strKeyType ), this );
-                goto end;
-            }
-
             timer.start();
             ret = JS_PKI_SM2EncryptWithPub( &binSrc, &binPubKey, &binOut );
             us = timer.nsecsElapsed() / 1000;
         }
-        else if( mAlgCombo->currentText() == "ECIES" )
+        else if( nKeyType == JS_PKI_KEY_TYPE_ECDSA )
         {
             BIN binOtherPub = {0,0};
             BIN binIV = {0,0};
             BIN binTag = {0,0};
 
-            if( nAlgType != JS_PKI_KEY_TYPE_ECDSA )
-            {
-                berApplet->warningBox( tr( "Invalid public key algorithm:%1").arg( strKeyType ), this );
-                goto end;
-            }
+            strKeyAlg = "ECIES";
 
             timer.start();
             ret = JS_ECIES_Encrypt( &binSrc, &binPubKey, &binOtherPub, &binIV, &binTag, &binOut );
             us = timer.nsecsElapsed() / 1000;
 
-            if( ret == 0 )
+            if( ret == JSR_OK )
             {
                 mOtherPubText->setPlainText( getHexString( &binOtherPub ));
                 mIVText->setText( getHexString( &binIV ));
@@ -363,16 +341,19 @@ void PubEncDecDlg::Run()
             JS_BIN_reset( &binTag );
         }
 
-        if( ret == 0 )
+        if( ret == JSR_OK )
         {
             berApplet->logLine();
             berApplet->log( QString( "-- Public Encrypt [time: %1 ms]" ).arg( getMS( us )) );
             berApplet->logLine2();
-            berApplet->log( QString( "Algorithm     : %1").arg( mAlgCombo->currentText() ));
+            berApplet->log( QString( "Algorithm     : %1").arg( strKeyAlg ));
             berApplet->log( QString( "Enc Src       : %1").arg( getHexString(&binSrc)));
             berApplet->log( QString( "Enc PublicKey : %1").arg(getHexString(&binPubKey)));
             berApplet->log( QString( "Enc Output    : %1" ).arg( getHexString( &binOut )));
             berApplet->logLine();
+
+            strOut = getStringFromBIN( &binOut, mOutputTypeCombo->currentText() );
+            mOutputText->setPlainText( strOut );
 
             berApplet->messageLog( tr( "Public key encryption success" ), this );
         }
@@ -419,51 +400,28 @@ void PubEncDecDlg::Run()
             }
         }
 
-        int nAlgType = JS_PKI_getPriKeyType( &binPri );
-        QString strKeyType = JS_PKI_getKeyAlgName( nAlgType );
+        int nKeyType = JS_PKI_getPriKeyType( &binPri );
+        QString strKeyAlg = JS_PKI_getKeyAlgName( nKeyType );
 
-        if( mUseKeyAlgCheck->isChecked() )
+        if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_SM2 && nKeyType != JS_PKI_KEY_TYPE_ECDSA )
         {
-            berApplet->log( QString( "PriKey Type : %1").arg( strKeyType ));
-
-            if( nAlgType == JS_PKI_KEY_TYPE_RSA )
-                mAlgCombo->setCurrentText( "RSA" );
-            else if( nAlgType == JS_PKI_KEY_TYPE_SM2 )
-                mAlgCombo->setCurrentText( "SM2" );
-            else if( nAlgType == JS_PKI_KEY_TYPE_ECDSA )
-                mAlgCombo->setCurrentText( "ECIES" );
-            else
-            {
-                berApplet->warningBox( tr( "Invalid private key algorithm: %1").arg( strKeyType ), this );
-                goto end;
-            }
+            berApplet->warningBox( tr( "This key algorithm (%1) is not supported" ).arg(strKeyAlg), this );
+            goto end;
         }
 
-        if( mAlgCombo->currentText() == "RSA" )
+        if( nKeyType == JS_PKI_KEY_TYPE_RSA )
         {
-            if( nAlgType != JS_PKI_KEY_TYPE_RSA )
-            {
-                berApplet->warningBox( tr( "Invalid private key algorithm:%1").arg( strKeyType ), this );
-                goto end;
-            }
-
             timer.start();
             ret = JS_PKI_RSADecryptWithPri( nVersion, &binSrc, &binPri, &binOut );
             us = timer.nsecsElapsed() / 1000;
         }
-        else if( mAlgCombo->currentText() == "SM2" )
+        else if( nKeyType == JS_PKI_KEY_TYPE_SM2 )
         {
-            if( nAlgType != JS_PKI_KEY_TYPE_SM2 )
-            {
-                berApplet->warningBox( tr( "Invalid private key algorithm:%1").arg( strKeyType ), this );
-                goto end;
-            }
-
             timer.start();
             ret = JS_PKI_SM2DecryptWithPri( &binSrc, &binPri, &binOut );
             us = timer.nsecsElapsed() / 1000;
         }
-        else if( mAlgCombo->currentText() == "ECIES" )
+        else if( nKeyType == JS_PKI_KEY_TYPE_ECDSA )
         {
             BIN binOtherPub = {0,0};
             BIN binIV = {0,0};
@@ -473,6 +431,8 @@ void PubEncDecDlg::Run()
             QString strIV = mIVText->text();
             QString strTag = mTagText->text();
 
+            strKeyAlg = "ECIES";
+
             JS_BIN_decodeHex( strOtherPub.toStdString().c_str(), &binOtherPub );
             JS_BIN_decodeHex( strIV.toStdString().c_str(), &binIV );
             JS_BIN_decodeHex( strTag.toStdString().c_str(), &binTag );
@@ -481,7 +441,7 @@ void PubEncDecDlg::Run()
             ret = JS_ECIES_Decrypt( &binSrc, &binPri, &binOtherPub, &binIV, &binTag, &binOut );
             us = timer.nsecsElapsed() / 1000;
 
-            if( ret == 0 )
+            if( ret == JSR_OK )
             {
                 berApplet->logLine();
                 berApplet->log( QString( "-- ECIES Decrypt" ) );
@@ -497,16 +457,19 @@ void PubEncDecDlg::Run()
             JS_BIN_reset( &binTag );
         }
 
-        if( ret == 0 )
+        if( ret == JSR_OK )
         {
             berApplet->logLine();
             berApplet->log( QString( "-- Private Decrypt [time: %1 ms]" ).arg( getMS( us )) );
             berApplet->logLine2();
-            berApplet->log( QString( "Algorithm      : %1").arg( mAlgCombo->currentText() ));
+            berApplet->log( QString( "Algorithm      : %1").arg( strKeyAlg ));
             berApplet->log( QString( "Dec Src        : %1").arg( getHexString(&binSrc)));
             berApplet->log( QString( "Dec PrivateKey : [hidden]"));
             berApplet->log( QString( "Dec Output     : %1" ).arg( getHexString( &binOut )));
             berApplet->logLine();
+
+            strOut = getStringFromBIN( &binOut, mOutputTypeCombo->currentText() );
+            mOutputText->setPlainText( strOut );
 
             berApplet->messageLog( tr( "Private key decryption success" ), this );
         }
@@ -516,25 +479,12 @@ void PubEncDecDlg::Run()
         }
     }
 
-    if( mOutputTypeCombo->currentIndex() == DATA_STRING )
-        JS_BIN_string( &binOut, &pOut );
-    else if( mOutputTypeCombo->currentIndex() == DATA_HEX )
-        JS_BIN_encodeHex( &binOut, &pOut );
-    else if( mOutputTypeCombo->currentIndex() == DATA_BASE64 )
-        JS_BIN_encodeBase64( &binOut, &pOut );
-
-    mOutputText->setPlainText(pOut);
-
 end :
-    update();
-
     JS_BIN_reset(&binSrc);
     JS_BIN_reset(&binPri);
     JS_BIN_reset(&binCert);
     JS_BIN_reset(&binOut);
     JS_BIN_reset( &binPubKey );
-
-    if( pOut ) JS_free(pOut);
 }
 
 void PubEncDecDlg::findCert()
@@ -585,34 +535,6 @@ void PubEncDecDlg::outputChanged()
 {
     QString strLen = getDataLenString( mOutputTypeCombo->currentText(), mOutputText->toPlainText() );
     mOutputLenText->setText( QString("%1").arg(strLen));
-}
-
-void PubEncDecDlg::algChanged()
-{
-    QString strAlg = mAlgCombo->currentText();
-
-    if( mUseKeyAlgCheck->isChecked() == false )
-    {
-        if( strAlg == "RSA" )
-        {
-            mVersionLabel->setEnabled( true );
-            mVersionTypeCombo->setEnabled( true );
-        }
-        else
-        {
-            mVersionLabel->setEnabled( false );
-            mVersionTypeCombo->setEnabled( false );
-        }
-
-        if( strAlg == "ECIES" )
-            mECIESGroup->setEnabled( true );
-        else
-            mECIESGroup->setEnabled( false );
-    }
-    else
-    {
-        mVersionTypeCombo->setEnabled( true );
-    }
 }
 
 void PubEncDecDlg::clickPriKeyView()
@@ -771,14 +693,6 @@ end :
 }
 
 
-void PubEncDecDlg::checkUseKeyAlg()
-{
-    bool bVal = mUseKeyAlgCheck->isChecked();
-
-    mAlgCombo->setEnabled( !bVal );
-    algChanged();
-}
-
 void PubEncDecDlg::clickClearDataAll()
 {
     mInputText->clear();
@@ -823,6 +737,12 @@ void PubEncDecDlg::checkEncrypt()
     mInputLabel->setText( tr( "Source data" ) );
     mOutputLabel->setText( tr( "Encrypted data" ) );
 
+    mOtherPubText->setPlaceholderText( tr("Hex value generated during encryption") );
+    mIVText->setPlaceholderText( tr("Hex value generated during encryption") );
+    mTagText->setPlaceholderText( tr("Hex value generated during encryption") );
+
+    setReadOnlyECIES( true );
+
     mRunBtn->setText( tr("Encrypt" ));
 
     if( mCertGroup->isChecked() )
@@ -842,6 +762,12 @@ void PubEncDecDlg::checkDecrypt()
     mHeadLabel->setText( tr( "Private key decryption" ) );
     mInputLabel->setText( tr( "Encrypted data" ) );
     mOutputLabel->setText( tr( "Decrypted data" ) );
+
+    mOtherPubText->setPlaceholderText( tr("Hex value") );
+    mIVText->setPlaceholderText( tr("Hex value") );
+    mTagText->setPlaceholderText( tr("Hex value") );
+
+    setReadOnlyECIES( false );
 
     mRunBtn->setText( tr("Decrypt" ) );
 

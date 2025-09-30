@@ -20,14 +20,7 @@
 #include "key_list_dlg.h"
 
 
-static QStringList cryptList = {
-    "AES",
-    "ARIA",
-    "DES3",
-    "SM4"
-};
-
-static QStringList gmacList = {
+static QStringList sBaseCrypt = {
     "AES",
     "ARIA"
 };
@@ -78,7 +71,11 @@ GenMacDlg::GenMacDlg(QWidget *parent) :
     mDataTab->layout()->setMargin(5);
     mFileTab->layout()->setSpacing(5);
     mFileTab->layout()->setMargin(5);
+
+    mInputClearBtn->setFixedWidth(34);
+    mOutputClearBtn->setFixedWidth(34);
 #endif
+
     resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 
@@ -717,7 +714,7 @@ void GenMacDlg::checkCMAC()
     mCMACRadio->setChecked(true);
 
     mAlgTypeCombo->clear();
-    mAlgTypeCombo->addItems( cryptList );
+    mAlgTypeCombo->addItems( sBaseCrypt );
 }
 
 void GenMacDlg::checkGMAC()
@@ -731,7 +728,7 @@ void GenMacDlg::checkGMAC()
 
     mGMACRadio->setChecked(true);
     mAlgTypeCombo->clear();
-    mAlgTypeCombo->addItems( gmacList );
+    mAlgTypeCombo->addItems( sBaseCrypt );
 }
 
 void GenMacDlg::clickClearDataAll()

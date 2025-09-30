@@ -25,15 +25,6 @@
 #include "key_pair_man_dlg.h"
 #include "js_pqc.h"
 
-static QStringList algTypes = {
-    JS_PKI_KEY_NAME_RSA,
-    JS_PKI_KEY_NAME_ECDSA,
-    JS_PKI_KEY_NAME_SM2,
-    JS_PKI_KEY_NAME_EDDSA,
-    JS_PKI_KEY_NAME_DSA,
-    JS_PKI_KEY_NAME_ML_DSA,
-    JS_PKI_KEY_NAME_SLH_DSA
-};
 
 static QStringList versionTypes = {
     "V15",
@@ -53,7 +44,6 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
 
     connect( mFindPriKeyBtn, SIGNAL(clicked()), this, SLOT(findPrivateKey()));
     connect( mFindCertBtn, SIGNAL(clicked()), this, SLOT(findCert()));
-    connect( mAlgTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(algChanged(int)));
 
     connect( mSignRadio, SIGNAL(clicked()), this, SLOT(checkSign()));
     connect( mVerifyRadio, SIGNAL(clicked()), this, SLOT(checkVerify()));
@@ -74,7 +64,6 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     connect( mCertViewBtn, SIGNAL(clicked()), this, SLOT(clickCertView()));
     connect( mCertDecodeBtn, SIGNAL(clicked()), this, SLOT(clickCertDecode()));
 
-    connect( mUseKeyAlgCheck, SIGNAL(clicked()), this, SLOT(checkUseKeyAlg()));
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
 
     connect( mPriKeyTypeBtn, SIGNAL(clicked()), this, SLOT(clickPriKeyType()));
@@ -95,6 +84,7 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     mRunBtn->setDefault(true);
     mInputText->setFocus();
 
+
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
     mDataTab->layout()->setSpacing(5);
@@ -111,6 +101,9 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     mCertDecodeBtn->setFixedWidth(34);
     mCertTypeBtn->setFixedWidth(34);
     mCertViewBtn->setFixedWidth(34);
+
+    mInputClearBtn->setFixedWidth(34);
+    mOutputClearBtn->setFixedWidth(34);
 #endif
     resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
@@ -124,7 +117,6 @@ SignVerifyDlg::~SignVerifyDlg()
 void SignVerifyDlg::initUI()
 {
     mInputTypeCombo->addItems( kDataTypeList );
-    mAlgTypeCombo->addItems(algTypes);
     mHashTypeCombo->addItems(kHashList);
     mHashTypeCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
 
@@ -142,10 +134,8 @@ void SignVerifyDlg::initialize()
     runGroup->addButton( mSignRadio );
     runGroup->addButton( mVerifyRadio );
 
-    mUseKeyAlgCheck->setChecked(true);
     mInputTab->setCurrentIndex(0);
 
-    checkUseKeyAlg();
     checkEncPriKey();
     mSignRadio->click();
 }
@@ -254,18 +244,9 @@ int SignVerifyDlg::getPrivateKey( BIN *pPriKey, int *pnType )
         }
     }
 
-    if( mUseKeyAlgCheck->isChecked() )
-    {
-        nType = JS_PKI_getPriKeyType( pPriKey );
-        berApplet->log( QString( "PriKey Type : %1").arg( JS_PKI_getKeyAlgName( nType )));
-        QString strAlg = JS_PKI_getKeyAlgName( nType );
-        mAlgTypeCombo->setCurrentText( strAlg );
-    }
-    else
-    {
-        QString strAlg = mAlgTypeCombo->currentText();
-        nType = JS_PKI_getKeyAlg( strAlg.toStdString().c_str() );
-    }
+    nType = JS_PKI_getPriKeyType( pPriKey );
+    berApplet->log( QString( "PriKey Type : %1").arg( JS_PKI_getKeyAlgName( nType )));
+
 
     if( nType == JS_PKI_KEY_TYPE_SM2 )
     {
@@ -355,19 +336,8 @@ int SignVerifyDlg::getPublicKey( BIN *pPubKey, int *pnType )
         }
     }
 
-
-    if( mUseKeyAlgCheck->isChecked() )
-    {
-        nType = JS_PKI_getPubKeyType( pPubKey );
-        berApplet->log( QString( "PubKey Type : %1").arg( JS_PKI_getKeyAlgName( nType )));
-        QString strAlg = JS_PKI_getKeyAlgName( nType );
-        mAlgTypeCombo->setCurrentText( strAlg );
-    }
-    else
-    {
-        QString strAlg = mAlgTypeCombo->currentText();
-        nType = JS_PKI_getKeyAlg( strAlg.toStdString().c_str() );
-    }
+    nType = JS_PKI_getPubKeyType( pPubKey );
+    berApplet->log( QString( "PubKey Type : %1").arg( JS_PKI_getKeyAlgName( nType )));
 
     if( nType == JS_PKI_KEY_TYPE_SM2 )
     {
@@ -429,49 +399,6 @@ void SignVerifyDlg::findCert()
     update();
 }
 
-void SignVerifyDlg::algChanged(int index)
-{
-    QString strAlg = mAlgTypeCombo->currentText();
-
-    if( mUseKeyAlgCheck->isChecked() == false )
-    {
-        if( strAlg == JS_PKI_KEY_NAME_RSA )
-        {
-            mVersionCombo->setEnabled(true);
-            mVersionLabel->setEnabled(true);
-        }
-        else
-        {
-            mVersionCombo->setEnabled( false );
-            mVersionLabel->setEnabled( false );
-        }
-    }
-    else
-    {
-        mVersionCombo->setEnabled(true);
-    }
-
-    if( strAlg == JS_PKI_KEY_NAME_SM2 )
-    {
-        mHashTypeCombo->setCurrentText( "SM3" );
-    }
-    else
-    {
-        mHashTypeCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
-    }
-
-    if( strAlg == JS_PKI_KEY_NAME_EDDSA || strAlg == JS_PKI_KEY_NAME_ML_DSA || strAlg == JS_PKI_KEY_NAME_SLH_DSA )
-    {
-        mDigestBtn->setEnabled(false);
-        mHashTypeCombo->setDisabled(true);
-    }
-    else
-    {
-        mDigestBtn->setEnabled(true);
-        mHashTypeCombo->setDisabled(false);
-    }
-}
-
 int SignVerifyDlg::signVerifyInit()
 {
     int ret = 0;
@@ -479,6 +406,7 @@ int SignVerifyDlg::signVerifyInit()
     BIN binPri = {0,0};
     BIN binPubKey = {0,0};
     QString strHash;
+    QString strAlg;
 
     update_cnt_ = 0;
 
@@ -499,12 +427,14 @@ int SignVerifyDlg::signVerifyInit()
         if( ret != CKR_OK ) goto end;
     }
 
+    strAlg = JS_PKI_getKeyAlgName( nType );
+
     if( nType == JS_PKI_KEY_TYPE_EDDSA
         || nType == JS_PKI_KEY_TYPE_ML_DSA
         || nType == JS_PKI_KEY_TYPE_SLH_DSA
         || nType == JS_PKI_KEY_TYPE_ML_KEM )
     {
-        QString strAlg = JS_PKI_getKeyAlgName( nType );
+
         QString strMode = mRunBtn->text();
         berApplet->warningBox(tr( "%1 does not support this feature[Init-Update-Final]\nUse %2")
                                   .arg( strAlg ).arg( strMode ), this );
@@ -522,7 +452,7 @@ int SignVerifyDlg::signVerifyInit()
         if( ret == 0 )
         {
             berApplet->log( "-- Make signature init" );
-            berApplet->log( QString( "Algorithm        : %1" ).arg( mAlgTypeCombo->currentText() ));
+            berApplet->log( QString( "Algorithm        : %1" ).arg( strAlg ));
 
             if( nType != JS_PKI_KEY_TYPE_EDDSA )
                 berApplet->log( QString( "Hash             : %1" ).arg( strHash ));
@@ -537,7 +467,7 @@ int SignVerifyDlg::signVerifyInit()
         if( ret == 0 )
         {
             berApplet->log( "-- Verify signature init" );
-            berApplet->log( QString( "Algorithm       : %1" ).arg( mAlgTypeCombo->currentText() ));
+            berApplet->log( QString( "Algorithm       : %1" ).arg( strAlg ));
 
             if( nType != JS_PKI_KEY_TYPE_EDDSA )
                 berApplet->log( QString( "Hash            : %1" ).arg( strHash ));
@@ -740,7 +670,7 @@ void SignVerifyDlg::dataRun()
     }
 
     strHash = mHashTypeCombo->currentText();
-    strAlg = mAlgTypeCombo->currentText();
+    strAlg = JS_PKI_getKeyAlgName( nType );
 
     if( mSignRadio->isChecked() )
     {
@@ -792,7 +722,7 @@ void SignVerifyDlg::dataRun()
             berApplet->logLine();
             berApplet->log( QString( "-- Compute Signature [time: %1 ms]" ).arg( getMS( us )));
             berApplet->logLine2();
-            berApplet->log( QString( "Algorithm        : %1" ).arg( mAlgTypeCombo->currentText() ));
+            berApplet->log( QString( "Algorithm        : %1" ).arg( strAlg ));
 
             if( nType != JS_PKI_KEY_TYPE_EDDSA )
                 berApplet->log( QString( "Hash             : %1").arg( strHash ));
@@ -861,7 +791,7 @@ void SignVerifyDlg::dataRun()
             berApplet->logLine();
             berApplet->log( QString( "-- Verify Signature [time: %1 ms]" ).arg( getMS( us )) );
             berApplet->logLine2();
-            berApplet->log( QString( "Algorithm         : %1" ).arg( mAlgTypeCombo->currentText() ));
+            berApplet->log( QString( "Algorithm         : %1" ).arg( strAlg ));
             berApplet->log( QString( "Verify Src        : %1" ).arg(getHexString(&binSrc)));
             berApplet->log( QString( "Verify Public Key : %1" ).arg(getHexString( &binPubKey )));
             berApplet->logLine();
@@ -1020,6 +950,9 @@ void SignVerifyDlg::digestRun()
 
     int nDigestLen = 0;
 
+    qint64 us = 0;
+    QElapsedTimer timer;
+
     QString strHash = mHashTypeCombo->currentText();
     QString strInput = mInputText->toPlainText();
     QString strType = mInputTypeCombo->currentText();
@@ -1041,64 +974,68 @@ void SignVerifyDlg::digestRun()
         if( bVal == false ) goto end;
     }
 
-    berApplet->log( QString( "Algorithm : %1 Hash %2").arg( mAlgTypeCombo->currentText()).arg( strHash ));
-
     if( mSignRadio->isChecked() )
     {
-        ret = getPrivateKey( &binPri, &nType );
+        ret = getPrivateKey( &binPri, &nAlgType );
         if( ret != CKR_OK ) goto end;
 
-        QString strAlg = mAlgTypeCombo->currentText();
+        QString strAlg = JS_PKI_getKeyAlgName( nAlgType );
 
-        if( strAlg == "RSA" )
-            nAlgType = JS_PKI_KEY_TYPE_RSA;
-        else if( strAlg == "ECDSA" )
-            nAlgType = JS_PKI_KEY_TYPE_ECDSA;
-        else if( strAlg == "SM2" )
-            nAlgType = JS_PKI_KEY_TYPE_SM2;
-        else if( strAlg == "DSA" )
-            nAlgType = JS_PKI_KEY_TYPE_DSA;
-        else if( strAlg == "EdDSA" )
+        if( nAlgType != JS_PKI_KEY_TYPE_RSA
+            && nAlgType != JS_PKI_KEY_TYPE_ECDSA
+            && nAlgType != JS_PKI_KEY_TYPE_SM2
+            && nAlgType != JS_PKI_KEY_TYPE_DSA )
         {
-            nAlgType = JS_PKI_KEY_TYPE_EDDSA;
+            berApplet->warningBox( tr( "This key algorithm (%1) is not supported" ).arg(strAlg), this );
+            ret = JSR_UNSUPPORTED_ALGORITHM;
+            goto end;
         }
 
+        timer.start();
         ret = JS_PKI_SignDigest( nAlgType, strHash.toStdString().c_str(), &binSrc, &binPri, &binOut );
-        mOutputText->setPlainText( getHexString( &binOut ));
+        us = timer.nsecsElapsed() / 1000;
 
-        berApplet->log( QString( "Algorithm        : %1" ).arg( mAlgTypeCombo->currentText() ));
-        berApplet->log( QString( "Sign Digest Src  : %1" ).arg(getHexString(&binSrc)));
-        berApplet->log( QString( "Sign Private Key : %1" ).arg(getHexString( &binPri )));
-        berApplet->log( QString( "Signature        : %1" ).arg( getHexString( &binOut )));
+        if( ret == JSR_OK )
+        {
+            mOutputText->setPlainText( getHexString( &binOut ));
 
-        if( ret == 0 )
+            berApplet->log( QString( "-- Sign Digest [time: %1 ms]" ).arg( getMS(us)));
+            berApplet->log( QString( "Algorithm        : %1" ).arg( strAlg ));
+            berApplet->log( QString( "Sign Digest Src  : %1" ).arg(getHexString(&binSrc)));
+            berApplet->log( QString( "Sign Private Key : %1" ).arg(getHexString( &binPri )));
+            berApplet->log( QString( "Signature        : %1" ).arg( getHexString( &binOut )));
+
             mStatusLabel->setText( "SignDigest successful" );
+        }
         else
-            mStatusLabel->setText( QString("SignDigest failure [%1]").arg(ret));
+        {
+            mStatusLabel->setText( QString("SignDigest failure [%1]").arg(JERR(ret)));
+        }
     }
     else
     {
-        ret = getPublicKey( &binPubKey, &nType );
+        ret = getPublicKey( &binPubKey, &nAlgType );
         if( ret != CKR_OK ) goto end;
 
-        QString strAlg = mAlgTypeCombo->currentText();
+        QString strAlg = JS_PKI_getKeyAlgName( nAlgType );
 
-        if( strAlg == "RSA" )
-            nAlgType = JS_PKI_KEY_TYPE_RSA;
-        else if( strAlg == "ECDSA" )
-            nAlgType = JS_PKI_KEY_TYPE_ECDSA;
-        else if( strAlg == "SM2" )
-            nAlgType = JS_PKI_KEY_TYPE_SM2;
-        else if( strAlg == "DSA" )
-            nAlgType = JS_PKI_KEY_TYPE_DSA;
-        else if( strAlg == "EdDSA" )
+        if( nAlgType != JS_PKI_KEY_TYPE_RSA
+            && nAlgType != JS_PKI_KEY_TYPE_ECDSA
+            && nAlgType != JS_PKI_KEY_TYPE_SM2
+            && nAlgType != JS_PKI_KEY_TYPE_DSA )
         {
-            nAlgType = JS_PKI_KEY_TYPE_EDDSA;
+            berApplet->warningBox( tr( "This key algorithm (%1) is not supported" ).arg(strAlg), this );
+            ret = JSR_UNSUPPORTED_ALGORITHM;
+            goto end;
         }
 
+        timer.start();
         ret = JS_PKI_VerifyDigest( nAlgType, strHash.toStdString().c_str(), &binSrc, &binPubKey, &binOut );
+        us = timer.nsecsElapsed() / 1000;
 
-        berApplet->log( QString( "Algorithm         : %1" ).arg( mAlgTypeCombo->currentText() ));
+        berApplet->log( QString( "-- Verify Digest [time: %1 ms]" ).arg( getMS(us)));
+        berApplet->log( QString( "Verify            : %1").arg( ret ));
+        berApplet->log( QString( "Algorithm         : %1" ).arg( strAlg ));
         berApplet->log( QString( "Verify Digest Src : %1" ).arg(getHexString(&binSrc)));
         berApplet->log( QString( "Verify Public Key : %1" ).arg(getHexString( &binPubKey )));
 
@@ -1356,13 +1293,6 @@ void SignVerifyDlg::clickCertType()
 
 end :
     JS_BIN_reset( &binCert );
-}
-
-void SignVerifyDlg::checkUseKeyAlg()
-{
-    bool bVal = mUseKeyAlgCheck->isChecked();
-
-    mAlgTypeCombo->setEnabled( !bVal );
 }
 
 void SignVerifyDlg::clickClearDataAll()
