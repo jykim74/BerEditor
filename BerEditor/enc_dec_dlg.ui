@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>570</width>
-    <height>909</height>
+    <height>700</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -51,7 +51,7 @@
    <item>
     <widget class="QTabWidget" name="mInputTab">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="mDataTab">
       <attribute name="title">
@@ -191,33 +191,20 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="1">
-          <widget class="QPushButton" name="mInitBtn">
-           <property name="minimumSize">
-            <size>
-             <width>100</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Init</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
-          <widget class="QPushButton" name="mFinalBtn">
-           <property name="minimumSize">
-            <size>
-             <width>100</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Final</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="2">
+          <spacer name="horizontalSpacer_7">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="4">
           <widget class="QPushButton" name="mUpdateBtn">
            <property name="minimumSize">
             <size>
@@ -230,18 +217,54 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
-          <spacer name="horizontalSpacer_7">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
+         <item row="0" column="3">
+          <widget class="QPushButton" name="mInitBtn">
+           <property name="minimumSize">
             <size>
-             <width>40</width>
-             <height>20</height>
+             <width>100</width>
+             <height>0</height>
             </size>
            </property>
-          </spacer>
+           <property name="text">
+            <string>Init</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="5">
+          <widget class="QPushButton" name="mFinalBtn">
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Final</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="mCCMDataLenLabel">
+           <property name="text">
+            <string>CCM Data Len</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="mCCMDataLenText">
+           <property name="minimumSize">
+            <size>
+             <width>60</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>60</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -1004,33 +1027,10 @@
       </property>
       <item>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="2">
-         <widget class="QLabel" name="label_8">
-          <property name="text">
-           <string>CCM Data Len</string>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="4">
          <widget class="QLabel" name="label_12">
           <property name="text">
            <string>ReqTag Len</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="3">
-         <widget class="QLineEdit" name="mCCMDataLength">
-          <property name="minimumSize">
-           <size>
-            <width>40</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>40</width>
-            <height>16777215</height>
-           </size>
           </property>
          </widget>
         </item>
@@ -1564,6 +1564,7 @@
   <tabstop>mInputClearBtn</tabstop>
   <tabstop>mInputLenText</tabstop>
   <tabstop>mInputText</tabstop>
+  <tabstop>mCCMDataLenText</tabstop>
   <tabstop>mInitBtn</tabstop>
   <tabstop>mUpdateBtn</tabstop>
   <tabstop>mFinalBtn</tabstop>
@@ -1585,7 +1586,6 @@
   <tabstop>mIVText</tabstop>
   <tabstop>mIVLenText</tabstop>
   <tabstop>mAEADGroup</tabstop>
-  <tabstop>mCCMDataLength</tabstop>
   <tabstop>mReqTagLenText</tabstop>
   <tabstop>mAADTypeCombo</tabstop>
   <tabstop>mAADText</tabstop>

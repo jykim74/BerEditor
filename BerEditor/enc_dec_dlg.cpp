@@ -149,6 +149,16 @@ void EncDecDlg::Run()
         dataRun();
     else
     {
+        if( mAEADGroup->isChecked() == true )
+        {
+            if( isCCM( mModeCombo->currentText() ) == true )
+            {
+                QString strSrcFile = mSrcFileText->text();
+                QFileInfo fileInfo( strSrcFile );
+                mCCMDataLenText->setText( QString( "%1" ).arg( fileInfo.size() ));
+            }
+        }
+
         if( mRunThreadCheck->isChecked() )
             fileRunThread();
         else
@@ -290,6 +300,12 @@ void EncDecDlg::dataRun()
                 JS_free( pTag );
             }
 
+            if( binOut.nLen > 0 )
+            {
+                strOut = getStringFromBIN( &binOut, mOutputTypeCombo->currentText() );
+                mOutputText->setPlainText( strOut );
+            }
+
             if( ret == JSR_OK )
             {
                 berApplet->logLine();
@@ -304,11 +320,11 @@ void EncDecDlg::dataRun()
                 berApplet->log( QString( "Enc Output : %1" ).arg(getHexString( &binOut )));
                 berApplet->logLine();
 
-                berApplet->messageLog( tr( "AE success" ), this );
+                berApplet->messageLog( tr( "AE %1 success" ).arg( strSymAlg ), this );
             }
             else
             {
-                berApplet->warnLog( tr( "AE encryption error: %1").arg( JERR(ret) ), this );
+                berApplet->warnLog( tr( "AE %1 encryption error: %2").arg( strSymAlg ).arg( JERR(ret) ), this );
             }
         }
         else
@@ -331,6 +347,12 @@ void EncDecDlg::dataRun()
                 us = timer.nsecsElapsed() / 1000;
             }
 
+            if( binOut.nLen > 0 )
+            {
+                strOut = getStringFromBIN( &binOut, mOutputTypeCombo->currentText() );
+                mOutputText->setPlainText( strOut );
+            }
+
             if( ret == JSR_OK )
             {
                 berApplet->logLine();
@@ -345,11 +367,11 @@ void EncDecDlg::dataRun()
                 berApplet->log( QString( "Dec Output : %1" ).arg(getHexString( &binOut )));
                 berApplet->logLine();
 
-                berApplet->messageLog( tr( "AD success" ), this );
+                berApplet->messageLog( tr( "AD %1 success" ).arg( strSymAlg ), this );
             }
             else
             {
-                berApplet->warnLog( tr( "AD decryption error: %1").arg( JERR(ret) ), this );
+                berApplet->warnLog( tr( "AD %1 decryption error: %2").arg( strSymAlg ).arg( JERR(ret) ), this );
             }
         }
     }
@@ -372,6 +394,12 @@ void EncDecDlg::dataRun()
                 us = timer.nsecsElapsed() / 1000;
             }
 
+            if( binOut.nLen > 0 )
+            {
+                strOut = getStringFromBIN( &binOut, mOutputTypeCombo->currentText() );
+                mOutputText->setPlainText( strOut );
+            }
+
             if( ret == JSR_OK )
             {
                 berApplet->logLine();
@@ -384,11 +412,11 @@ void EncDecDlg::dataRun()
                 berApplet->log( QString( "Enc Output : %1" ).arg(getHexString( &binOut )));
                 berApplet->logLine();
 
-                berApplet->messageLog( tr( "Encryption success" ), this );
+                berApplet->messageLog( tr( "%1 Encryption success" ).arg( strSymAlg ), this );
             }
             else
             {
-                berApplet->warnLog( tr( "Encryption error: %1").arg( JERR(ret) ), this );
+                berApplet->warnLog( tr( "%1 Encryption error: %2").arg( strSymAlg ).arg( JERR(ret) ), this );
             }
         }
         else
@@ -408,6 +436,12 @@ void EncDecDlg::dataRun()
                 us = timer.nsecsElapsed() / 1000;
             }
 
+            if( binOut.nLen > 0 )
+            {
+                strOut = getStringFromBIN( &binOut, mOutputTypeCombo->currentText() );
+                mOutputText->setPlainText( strOut );
+            }
+
             if( ret == JSR_OK )
             {
                 berApplet->logLine();
@@ -420,27 +454,24 @@ void EncDecDlg::dataRun()
                 berApplet->log( QString( "Dec Output : %1" ).arg(getHexString( &binOut )));
                 berApplet->logLine();
 
-                berApplet->messageLog( tr( "Decryption success" ), this );
+                berApplet->messageLog( tr( "%1 Decryption success" ).arg( strSymAlg ), this );
             }
             else
             {
-                berApplet->warnLog( tr( "Decryption error: %1").arg( JERR(ret) ), this );
+                berApplet->warnLog( tr( "%1 Decryption error: %1").arg( strSymAlg ).arg( JERR(ret) ), this );
             }
         }
     }
 
-    strOut = getStringFromBIN( &binOut, mOutputTypeCombo->currentText() );
-    mOutputText->setPlainText( strOut );
-
     if( ret == 0 )
     {
         update_cnt_++;
-        QString strMsg = QString( "%1 OK" ).arg( strMethod );
+        QString strMsg = QString( "%1 %2 OK" ).arg( strMethod ).arg( strSymAlg );
         mStatusLabel->setText( strMsg );
     }
     else
     {
-        QString strMsg = QString("%1 failed:%2").arg( strMethod ).arg( JERR(ret) );
+        QString strMsg = QString("%1 %2 failed:%3").arg( strMethod ).arg( strSymAlg ).arg( JERR(ret) );
         mStatusLabel->setText( strMsg );
         berApplet->elog( strMsg );
     }
@@ -753,14 +784,37 @@ int EncDecDlg::encDecInit()
     if( mAEADGroup->isChecked() )
     {
         QString strAAD = mAADText->text();
+        int nDataLen = 0;
 
         getBINFromString( &binAAD, mAADTypeCombo->currentText(), strAAD );
 
-        int nDataLen = mCCMDataLength->text().toInt();
-        if( nDataLen <= 0 )
+        if( isCCM( strMode ) )
         {
-            nDataLen = binSrc.nLen;
-            mCCMDataLength->setText( QString("%1").arg( nDataLen ));
+            nDataLen = mCCMDataLenText->text().toInt();
+            if( nDataLen <= 0 )
+            {
+                if( binSrc.nLen > 0 )
+                {
+                    QString strMsg = tr( "Do you want the entire length of the data to be the length of the input value(%1)?" ).arg(binSrc.nLen);
+
+                    bool bVal = berApplet->yesOrNoBox( strMsg, this );
+                    if( bVal == false )
+                    {
+                        berApplet->warningBox( tr( "Enter the data length"), this );
+                        mCCMDataLenText->setFocus();
+                        goto end;
+                    }
+
+                    nDataLen = binSrc.nLen;
+                    mCCMDataLenText->setText( QString("%1").arg( nDataLen ));
+                }
+                else
+                {
+                    berApplet->warningBox( tr( "Enter the data length"), this );
+                    mCCMDataLenText->setFocus();
+                    goto end;
+                }
+            }
         }
 
         if( mEncryptRadio->isChecked() )
@@ -1208,9 +1262,15 @@ void EncDecDlg::modeChanged()
     QString strMode = mModeCombo->currentText();
 
     if( strMode.toUpper() == "CCM" )
-        mCCMDataLength->setEnabled( true );
+    {
+        mCCMDataLenLabel->setEnabled( true );
+        mCCMDataLenText->setEnabled( true );
+    }
     else
-        mCCMDataLength->setEnabled( false );
+    {
+        mCCMDataLenLabel->setEnabled( false );
+        mCCMDataLenText->setEnabled( false );
+    }
 }
 
 void EncDecDlg::clickClearDataAll()
