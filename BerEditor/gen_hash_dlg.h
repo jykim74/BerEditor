@@ -45,7 +45,7 @@ private slots:
 
     void startTask();
     void onTaskFinished();
-    void onTaskUpdate( int nUpdate );
+    void onTaskUpdate( qint64 nUpdate );
 
 private:
     void initUI();

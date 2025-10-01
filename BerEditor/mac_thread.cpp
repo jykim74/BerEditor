@@ -38,7 +38,7 @@ void MacThread::run()
     int ret = 0;
     int nRead = 0;
     int nPartSize = berApplet->settingsMgr()->fileReadSize();
-    int nReadSize = 0;
+    qint64 nReadSize = 0;
     int nLeft = 0;
     int nOffset = 0;
 

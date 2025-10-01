@@ -828,7 +828,7 @@ void SignVerifyDlg::fileRun()
     int ret = 0;
     int nRead = 0;
     int nPartSize = berApplet->settingsMgr()->fileReadSize();
-    int nReadSize = 0;
+    qint64 nReadSize = 0;
     int nLeft = 0;
     int nOffset = 0;
     int nPercent = 0;
@@ -900,7 +900,7 @@ void SignVerifyDlg::fileRun()
 
         update_cnt_++;
         nReadSize += nRead;
-        nPercent = ( nReadSize * 100 ) / fileSize;
+        nPercent = int( ( nReadSize * 100 ) / fileSize );
 
         mFileReadSizeText->setText( QString("%1").arg( nReadSize ));
         mSignProgBar->setValue( nPercent );
@@ -1402,11 +1402,11 @@ void SignVerifyDlg::onTaskFinished()
     thread_ = nullptr;
 }
 
-void SignVerifyDlg::onTaskUpdate( int nUpdate )
+void SignVerifyDlg::onTaskUpdate( qint64 nUpdate )
 {
     berApplet->log( QString("Update: %1").arg( nUpdate ));
-    int nFileSize = mFileTotalSizeText->text().toInt();
-    int nPercent = (nUpdate * 100) / nFileSize;
+    qint64 nFileSize = mFileTotalSizeText->text().toLongLong();
+    int nPercent = int( (nUpdate * 100) / nFileSize );
     update_cnt_++;
 
     mFileReadSizeText->setText( QString("%1").arg( nUpdate ));

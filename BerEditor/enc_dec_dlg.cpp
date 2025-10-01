@@ -492,7 +492,7 @@ void EncDecDlg::fileRun()
     int ret = 0;
     int nRead = 0;
     int nPartSize = berApplet->settingsMgr()->fileReadSize();
-    int nReadSize = 0;
+    qint64 nReadSize = 0;
     int nLeft = 0;
     int nOffset = 0;
     int nPercent = 0;
@@ -630,7 +630,7 @@ void EncDecDlg::fileRun()
         }
 
         nReadSize += nRead;
-        nPercent = ( nReadSize * 100 ) / fileSize;
+        nPercent = int( ( nReadSize * 100 ) / fileSize );
 
         mFileReadSizeText->setText( QString("%1").arg( nReadSize ));
         mEncProgBar->setValue( nPercent );
@@ -1068,12 +1068,7 @@ int EncDecDlg::encDecFinal()
 
     if( mInputTab->currentIndex() == 0 && strOut.length() > 0 )
     {
-        if( mOutputTypeCombo->currentIndex() == DATA_STRING )
-            JS_BIN_set( &binOut, (unsigned char *)strOut.toStdString().c_str(), strOut.length() );
-        else if( mOutputTypeCombo->currentIndex() == DATA_HEX )
-            JS_BIN_decodeHex( strOut.toStdString().c_str(), &binOut );
-        else if( mOutputTypeCombo->currentIndex() == DATA_BASE64 )
-            JS_BIN_decodeBase64( strOut.toStdString().c_str(), &binOut );
+        getBINFromString( &binOut, mOutputTypeCombo->currentText(), strOut );
     }
 
     QString strAlg = mAlgCombo->currentText();
@@ -1112,13 +1107,7 @@ int EncDecDlg::encDecFinal()
         else
         {
             QString strTag = mTagText->text();
-
-            if( mTagTypeCombo->currentIndex() == DATA_STRING )
-                JS_BIN_set( &binTag, (unsigned char *)strTag.toStdString().c_str(), strTag.length() );
-            else if( mTagTypeCombo->currentIndex() == DATA_HEX )
-                JS_BIN_decodeHex( strTag.toStdString().c_str(), &binTag );
-            else if( mTagTypeCombo->currentIndex() == DATA_BASE64 )
-                JS_BIN_decodeBase64( strTag.toStdString().c_str(), &binTag );
+            getBINFromString( &binTag, mTagTypeCombo->currentText(), strTag );
 
             if( isCCM(strMode) )
                 ret = JS_PKI_decryptCCMFinal( ctx_, &binDst );
@@ -1170,24 +1159,8 @@ int EncDecDlg::encDecFinal()
         if( mInputTab->currentIndex() == 0 )
         {
             JS_BIN_appendBin( &binOut, &binDst );
-            char *pOut = NULL;
-
-            if( mOutputTypeCombo->currentIndex() == DATA_STRING )
-            {
-                JS_BIN_string( &binOut, &pOut );
-            }
-            else if( mOutputTypeCombo->currentIndex() == DATA_HEX )
-            {
-                JS_BIN_encodeHex( &binOut, &pOut );
-            }
-            else if( mOutputTypeCombo->currentIndex() == DATA_BASE64 )
-            {
-                JS_BIN_encodeBase64( &binOut, &pOut );
-            }
-
-            mOutputText->setPlainText( pOut );
-
-            if( pOut ) JS_free(pOut);
+            QString strLast = getStringFromBIN( &binOut, mOutputTypeCombo->currentText() );
+            mOutputText->setPlainText( strLast );
         }
         else
         {
@@ -1492,11 +1465,16 @@ void EncDecDlg::onTaskFinished()
     thread_ = nullptr;
 }
 
-void EncDecDlg::onTaskUpdate( int nUpdate )
+void EncDecDlg::onTaskUpdate( qint64 nUpdate )
 {
     berApplet->log( QString("Update: %1").arg( nUpdate ));
-    int nFileSize = mFileTotalSizeText->text().toInt();
-    int nPercent = (nUpdate * 100) / nFileSize;
+    qint64 nFileSize = mFileTotalSizeText->text().toLongLong();
+    int nPercent = int( (nUpdate * 100) / nFileSize );
+
+#ifdef QT_DEBUG
+//    berApplet->elog( QString( "== Update: %1 Filesize: %2 Percent: %3" ).arg( nUpdate ).arg(nFileSize).arg(nPercent));
+#endif
+
     update_cnt_++;
 
     mFileReadSizeText->setText( QString("%1").arg( nUpdate ));

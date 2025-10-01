@@ -377,7 +377,7 @@ void GenHashDlg::clickDigestSrcFile()
     int ret = 0;
     int nRead = 0;
     int nPartSize = berApplet->settingsMgr()->fileReadSize();
-    int nReadSize = 0;
+    qint64 nReadSize = 0;
     int nLeft = 0;
     int nOffset = 0;
     int nPercent = 0;
@@ -436,7 +436,7 @@ void GenHashDlg::clickDigestSrcFile()
 
         update_cnt_++;
         nReadSize += nRead;
-        nPercent = ( nReadSize * 100 ) / fileSize;
+        nPercent = int( ( nReadSize * 100 ) / fileSize );
 
         mFileReadSizeText->setText( QString("%1").arg( nReadSize ));
         mHashProgBar->setValue( nPercent );
@@ -519,10 +519,10 @@ void GenHashDlg::onTaskFinished() {
     thread_ = nullptr;
 }
 
-void GenHashDlg::onTaskUpdate( int nUpdate )
+void GenHashDlg::onTaskUpdate( qint64 nUpdate )
 {
     berApplet->log( QString("Update: %1").arg( nUpdate ));
-    int nFileSize = mFileSizeText->text().toInt();
+    qint64 nFileSize = mFileSizeText->text().toLongLong();
     int nPercent = (nUpdate * 100) / nFileSize;
     update_cnt_++;
 

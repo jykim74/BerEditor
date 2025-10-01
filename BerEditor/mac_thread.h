@@ -16,7 +16,7 @@ public:
 
 signals:
     void taskFinished();
-    void taskUpdate( int nUpdate );
+    void taskUpdate( qint64 nUpdate );
 
 protected:
     void run() override;

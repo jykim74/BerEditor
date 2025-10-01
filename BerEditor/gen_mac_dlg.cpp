@@ -653,7 +653,7 @@ void GenMacDlg::clickMACSrcFile()
     int ret = 0;
     int nRead = 0;
     int nPartSize = berApplet->settingsMgr()->fileReadSize();
-    int nReadSize = 0;
+    qint64 nReadSize = 0;
     int nLeft = 0;
     int nOffset = 0;
     int nPercent = 0;
@@ -730,7 +730,7 @@ void GenMacDlg::clickMACSrcFile()
 
         update_cnt_++;
         nReadSize += nRead;
-        nPercent = ( nReadSize * 100 ) / fileSize;
+        nPercent = int( ( nReadSize * 100 ) / fileSize );
 
         mFileReadSizeText->setText( QString("%1").arg( nReadSize ));
         mMACProgBar->setValue( nPercent );
@@ -930,11 +930,11 @@ void GenMacDlg::onTaskFinished()
     thread_ = nullptr;
 }
 
-void GenMacDlg::onTaskUpdate( int nUpdate )
+void GenMacDlg::onTaskUpdate( qint64 nUpdate )
 {
     berApplet->log( QString("Update: %1").arg( nUpdate ));
-    int nFileSize = mFileTotalSizeText->text().toInt();
-    int nPercent = (nUpdate * 100) / nFileSize;
+    qint64 nFileSize = mFileTotalSizeText->text().toLongLong();
+    int nPercent = int( (nUpdate * 100) / nFileSize );
     update_cnt_++;
 
     mFileReadSizeText->setText( QString("%1").arg( nUpdate ));
