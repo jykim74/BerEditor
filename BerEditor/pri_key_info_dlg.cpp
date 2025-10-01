@@ -578,7 +578,7 @@ void PriKeyInfoDlg::clickDecode()
         if( key_path_.length() > 0 )
             berApplet->decodeData( &pub_key_, key_path_ );
         else
-            berApplet->decodeData( &pub_key_, tr( "Public Key" ));
+            berApplet->decodeTitle( &pub_key_, tr( "Public Key" ));
     }
 }
 
