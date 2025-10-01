@@ -93,6 +93,7 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     resize(minimumSizeHint().width(), minimumSizeHint().height());
     initialize();
     mMakeBtn->setDefault(true);
+    mURLCombo->setFocus();
 }
 
 ACMEClientDlg::~ACMEClientDlg()

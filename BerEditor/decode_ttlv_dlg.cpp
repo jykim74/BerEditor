@@ -20,6 +20,7 @@ DecodeTTLVDlg::DecodeTTLVDlg(QWidget *parent) :
 
     initialize();
     mDecodeBtn->setDefault(true);
+    mDataText->setFocus();
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);

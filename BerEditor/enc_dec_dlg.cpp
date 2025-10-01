@@ -523,9 +523,18 @@ void EncDecDlg::fileRun()
     QString strDstFile = mDstFileText->text();
     if( strDstFile.length() < 1 )
     {
-        berApplet->warningBox( tr( "Find destination file"), this );
-        mDstFileText->setFocus();
-        return;
+        QString strAppend;
+        if( mEncryptRadio->isChecked() == true )
+            strAppend = "enc";
+        else
+            strAppend = "dec";
+
+        strDstFile = QString( "%1/%2_%3.bin" )
+                         .arg( fileInfo.absolutePath() )
+                         .arg( fileInfo.baseName() )
+                         .arg( strAppend );
+
+        mDstFileText->setText( strDstFile );
     }
 
     if( QFile::exists( strDstFile ) )
@@ -646,12 +655,6 @@ void EncDecDlg::fileRun()
             QString strStatus = QString( "|Update X %1").arg( nUpdateCnt );
             appendStatusLabel( strStatus );
 
-            ret = encDecFinal();
-            if( ret == 0 )
-            {
-                berApplet->messageLog( tr( "File(%1) save was successful" ).arg( strDstFile ), this );
-            }
-
             QFileInfo fileInfo;
             fileInfo.setFile( strDstFile );
             qint64 fileSize = fileInfo.size();
@@ -660,6 +663,12 @@ void EncDecDlg::fileRun()
             QString strInfo = QString("LastModified Time: %1").arg( cTime.toString( "yyyy-MM-dd HH:mm:ss" ));
             mDstFileSizeText->setText( QString("%1").arg( fileSize ));
             mDstFileInfoText->setText( strInfo );
+
+            ret = encDecFinal();
+            if( ret == JSR_OK )
+            {
+                berApplet->messageLog( tr( "File(%1) save was successful" ).arg( strDstFile ), this );
+            }
         }
     }
 
@@ -686,9 +695,8 @@ void EncDecDlg::clickUseAEAD()
         mModeCombo->addItems( modeList );
     }
 
-    mPadCheck->setEnabled( !bStatus );
-
-    modeChanged();
+//    mPadCheck->setEnabled( !bStatus );
+//    modeChanged();
 }
 
 int EncDecDlg::encDecInit()
@@ -717,6 +725,13 @@ int EncDecDlg::encDecInit()
     QString strTag = mTagText->text();
     QString strIV = mIVText->text();
 
+    if( strAlg == JS_PKI_KEY_NAME_SEED )
+    {
+        QString strMode = mRunBtn->text();
+        berApplet->warningBox(tr( "%1 does not support this feature[Init-Update-Final]\nUse %2")
+                                  .arg( strAlg ).arg( strMode ), this );
+        return JSR_UNSUPPORTED_ALGORITHM;
+    }
 
     if( strKey.isEmpty() )
     {
@@ -1194,7 +1209,6 @@ int EncDecDlg::encDecFinal()
     JS_BIN_reset( &binDst );
     JS_BIN_reset( &binTag );
 
-    update();
     return ret;
 }
 
@@ -1207,13 +1221,11 @@ void EncDecDlg::dataChange()
 
     mOutputText->clear();
     mInputText->setPlainText( strOutput );
-
-    update();
 }
 
 bool EncDecDlg::isCCM( const QString strMode )
 {
-    if( strMode == "ccm" || strMode == "CCM" )
+    if( strMode.toUpper() == "CCM" )
         return true;
 
     return false;
@@ -1271,6 +1283,11 @@ void EncDecDlg::modeChanged()
         mCCMDataLenLabel->setEnabled( false );
         mCCMDataLenText->setEnabled( false );
     }
+
+    if( strMode == "ECB" || strMode == "CBC" )
+        mPadCheck->setEnabled( true );
+    else
+        mPadCheck->setEnabled( false );
 }
 
 void EncDecDlg::clickClearDataAll()
@@ -1329,12 +1346,6 @@ void EncDecDlg::clickFindSrcFile()
         mSrcFileInfoText->setText( strInfo );
         mEncProgBar->setValue(0);
 
-
-
-        QString strDstName = QString( "%1/%2_%3.bin" ).arg( fileInfo.absolutePath() ).arg( fileInfo.baseName() ).arg( strMode );
-
-        mDstFileText->setText( strDstName );
-
         mFileReadSizeText->clear();
         mFileTotalSizeText->clear();
         mDstFileInfoText->clear();
@@ -1359,10 +1370,6 @@ void EncDecDlg::checkEncrypt()
     mInputLabel->setText( tr("Source data") );
     mOutputLabel->setText( tr("Encrypted data" ) );
 
-    mInitBtn->setText( "Encrypt Init" );
-    mUpdateBtn->setText( "Encrypt Update" );
-    mFinalBtn->setText( "Encrypt Final" );
-
     mRunBtn->setText( tr("Encrypt" ) );
     mAEADLabel->setText( tr( "Authenticated Encryption" ));
 }
@@ -1373,10 +1380,6 @@ void EncDecDlg::checkDecrypt()
 
     mInputLabel->setText( tr("Encrypted data") );
     mOutputLabel->setText( tr("Decrypted data" ) );
-
-    mInitBtn->setText( "Decrypt Init" );
-    mUpdateBtn->setText( "Decrypt Update" );
-    mFinalBtn->setText( "Decrypt Final" );
 
     mRunBtn->setText( tr("Decrypt" ));
     mAEADLabel->setText( tr( "Authenticated Decryption" ));
@@ -1399,6 +1402,8 @@ void EncDecDlg::startTask()
 
     thread_ = new EncDecThread;
     QString strSrcFile = mSrcFileText->text();
+    QFileInfo fileInfo;
+    fileInfo.setFile( strSrcFile );
 
     if( strSrcFile.length() < 1)
     {
@@ -1410,9 +1415,18 @@ void EncDecDlg::startTask()
     QString strDstFile = mDstFileText->text();
     if( strDstFile.length() < 1 )
     {
-        berApplet->warningBox( tr( "Find destination file"), this );
-        mDstFileText->setFocus();
-        return;
+        QString strAppend;
+        if( mEncryptRadio->isChecked() == true )
+            strAppend = "enc";
+        else
+            strAppend = "dec";
+
+        strDstFile = QString( "%1/%2_%3.bin" )
+                         .arg( fileInfo.absolutePath() )
+                         .arg( fileInfo.baseName() )
+                         .arg( strAppend );
+
+        mDstFileText->setText( strDstFile );
     }
 
     if( QFile::exists( strDstFile ) )
@@ -1427,9 +1441,6 @@ void EncDecDlg::startTask()
         else
             return;
     }
-
-    QFileInfo fileInfo;
-    fileInfo.setFile( strSrcFile );
 
     qint64 fileSize = fileInfo.size();
 
@@ -1460,6 +1471,16 @@ void EncDecDlg::onTaskFinished()
     appendStatusLabel( strStatus );
 
     ret = encDecFinal();
+
+    QFileInfo fileInfo;
+    fileInfo.setFile( strDstFile );
+    qint64 fileSize = fileInfo.size();
+    QDateTime cTime = fileInfo.lastModified();
+
+    QString strInfo = QString("LastModified Time: %1").arg( cTime.toString( "yyyy-MM-dd HH:mm:ss" ));
+    mDstFileSizeText->setText( QString("%1").arg( fileSize ));
+    mDstFileInfoText->setText( strInfo );
+
     if( ret == 0 )
     {
         berApplet->messageLog( tr( "File(%1) save was successful" ).arg( strDstFile ), this );

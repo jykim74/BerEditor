@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>540</width>
-    <height>676</height>
+    <height>685</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -100,6 +100,13 @@
       <widget class="QLineEdit" name="mPolicyText"/>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_8">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_8">

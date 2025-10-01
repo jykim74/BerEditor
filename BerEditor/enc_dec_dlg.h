@@ -28,6 +28,8 @@ private slots:
     void Run();
     void dataRun();
     void fileRun();
+    void fileRunThread();
+
     void clickUseAEAD();
     int encDecInit();
     int encDecUpdate();
@@ -53,7 +55,7 @@ private slots:
     void checkEncrypt();
     void checkDecrypt();
 
-    void fileRunThread();
+
     void startTask();
     void onTaskFinished();
     void onTaskUpdate( int nUpdate );

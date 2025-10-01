@@ -1079,10 +1079,6 @@ void SignVerifyDlg::checkSign()
 {
     mHeadLabel->setText( tr( "Asymmetric Signature" ) );
 
-    mInitBtn->setText( "Sign Init" );
-    mUpdateBtn->setText( "Sign Update" );
-    mFinalBtn->setText( "Sign Final" );
-
     mRunBtn->setText( tr( "Sign" ));
     mDigestBtn->setText( tr( "SignDigest" ));
 
@@ -1101,10 +1097,6 @@ void SignVerifyDlg::checkSign()
 void SignVerifyDlg::checkVerify()
 {
     mHeadLabel->setText( tr( "Asymmetric Verification" ) );
-
-    mInitBtn->setText( "Verify Init" );
-    mUpdateBtn->setText( "Verify Update" );
-    mFinalBtn->setText( "Verify Final" );
 
     mRunBtn->setText( tr( "Verify"));
     mDigestBtn->setText( tr( "VerifyDigest" ));

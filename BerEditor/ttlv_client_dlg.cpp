@@ -61,6 +61,7 @@ TTLVClientDlg::TTLVClientDlg(QWidget *parent) :
 
     initialize();
     mEncodeBtn->setDefault(true);
+    mURLCombo->setFocus();
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);

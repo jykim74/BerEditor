@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>558</width>
-    <height>687</height>
+    <height>714</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -355,6 +355,13 @@
     </layout>
    </item>
    <item>
+    <widget class="Line" name="line_3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="mInputGroup">
      <property name="minimumSize">
       <size>
@@ -479,6 +486,13 @@
     </widget>
    </item>
    <item>
+    <widget class="Line" name="line_6">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="mSignGroup">
      <property name="title">
       <string/>
@@ -586,6 +600,13 @@
        <widget class="QPlainTextEdit" name="mSignText"/>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line_7">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
     </widget>
    </item>
    <item>
