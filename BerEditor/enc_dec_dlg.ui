@@ -1245,7 +1245,7 @@
      <item row="0" column="5">
       <widget class="QCheckBox" name="mPadCheck">
        <property name="text">
-        <string>Pad</string>
+        <string>Padding</string>
        </property>
       </widget>
      </item>

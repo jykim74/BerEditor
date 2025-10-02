@@ -506,7 +506,6 @@ void KeyAgreeDlg::genDHParam()
     JS_BIN_reset( &binP );
     JS_BIN_reset( &binG );
     JS_BIN_reset( &binQ );
-    update();
 }
 
 void KeyAgreeDlg::exportDHParam()

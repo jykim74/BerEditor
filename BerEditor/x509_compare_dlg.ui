@@ -93,12 +93,25 @@
         <property name="topMargin">
          <number>0</number>
         </property>
-        <item row="0" column="0">
+        <item row="0" column="1">
          <widget class="QCheckBox" name="mAutoDetectCheck">
           <property name="text">
            <string>Auto dectection X509 type( Certificate, CRL, CSR )</string>
           </property>
          </widget>
+        </item>
+        <item row="0" column="0">
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </item>

@@ -37,7 +37,10 @@ private slots:
     void clickOK();
 
 private:
+    void initUI();
     void initialize();
+    void setDefault( const QString strDefault );
+    const QString getDefault();
 
     BIN pri_key_;
     BIN pub_key_;

@@ -98,6 +98,7 @@ void GenMacDlg::initUI()
     mIVTypeCombo->addItems( kDataTypeList );
 
     mMethodCombo->addItems( sMethodList );
+    mRunThreadCheck->setChecked(true);
 
     mOutputText->setPlaceholderText( tr("Hex value" ));
     mKeyText->setPlaceholderText( tr( "Select KeyList key"));

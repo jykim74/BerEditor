@@ -50,6 +50,7 @@ private slots:
 
     void clickLGenKeyPair();
     void clickLDelete();
+    void clickLRename();
     void clickLMakeCSR();
     void clickLViewPriKey();
     void clickLViewPubKey();

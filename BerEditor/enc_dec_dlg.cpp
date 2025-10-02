@@ -21,11 +21,12 @@
 #include "key_list_dlg.h"
 
 static QStringList modeList = {
-  "ECB", "CBC", "CTR", "CFB", "OFB"
+    JS_PKI_SYM_MODE_CBC, JS_PKI_SYM_MODE_ECB, JS_PKI_SYM_MODE_CTR, JS_PKI_SYM_MODE_CFB,
+    JS_PKI_SYM_MODE_OFB
 };
 
 static QStringList modeAEList = {
-    "GCM", "CCM"
+    JS_PKI_SYM_MODE_GCM, JS_PKI_SYM_MODE_CCM
 };
 
 EncDecDlg::EncDecDlg(QWidget *parent) :
@@ -112,6 +113,11 @@ void EncDecDlg::initUI()
 
     mKeyText->setPlaceholderText( tr( "Select KeyList key" ));
     mSrcFileText->setPlaceholderText( tr( "Find the target file" ));
+
+    mPadCheck->setChecked(true);
+    mRunThreadCheck->setChecked(true);
+
+    mReqTagLenText->setText( "16" );
 }
 
 void EncDecDlg::initialize()
@@ -120,7 +126,6 @@ void EncDecDlg::initialize()
     runGroup->addButton( mEncryptRadio );
     runGroup->addButton( mDecryptRadio );
 
-    mReqTagLenText->setText( "16" );
     mInputTab->setCurrentIndex(0);
 }
 
@@ -209,13 +214,13 @@ void EncDecDlg::dataRun()
 
             if( strKey.length() > 0 )
             {
-                mKeyTypeCombo->setCurrentText( "Hex" );
+                mKeyTypeCombo->setCurrentText( kDataHex );
                 mKeyText->setText( strKey );
             }
 
             if( strIV.length() > 0 )
             {
-                mIVTypeCombo->setCurrentText( "Hex" );
+                mIVTypeCombo->setCurrentText( kDataHex );
                 mIVText->setText( strIV );
             }
         }
@@ -228,7 +233,7 @@ void EncDecDlg::dataRun()
         }
     }
 
-    if( strMode != "ECB" )
+    if( strMode != JS_PKI_SYM_MODE_ECB )
     {
         if( strIV.length() < 1 )
         {
@@ -381,7 +386,7 @@ void EncDecDlg::dataRun()
         {
             strMethod = "Encrypt";
 
-            if( strAlg == "SEED" )
+            if( strAlg == JS_PKI_KEY_NAME_SEED )
             {
                 timer.start();
                 ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
@@ -423,7 +428,7 @@ void EncDecDlg::dataRun()
         {
             strMethod = "Decrypt";
 
-            if( strAlg == "SEED" )
+            if( strAlg == JS_PKI_KEY_NAME_SEED )
             {
                 timer.start();
                 ret = JS_PKI_decryptSEED( strMode.toStdString().c_str(), bPad, &binSrc, &binIV, &binKey, &binOut );
@@ -694,9 +699,6 @@ void EncDecDlg::clickUseAEAD()
         mAlgCombo->addItems( kSymAlgList );
         mModeCombo->addItems( modeList );
     }
-
-//    mPadCheck->setEnabled( !bStatus );
-//    modeChanged();
 }
 
 int EncDecDlg::encDecInit()
@@ -746,13 +748,13 @@ int EncDecDlg::encDecInit()
 
             if( strKey.length() > 0 )
             {
-                mKeyTypeCombo->setCurrentText( "Hex" );
+                mKeyTypeCombo->setCurrentText( kDataHex );
                 mKeyText->setText( strKey );
             }
 
             if( strIV.length() > 0 )
             {
-                mIVTypeCombo->setCurrentText( "Hex" );
+                mIVTypeCombo->setCurrentText( kDataHex );
                 mIVText->setText( strIV );
             }
         }
@@ -961,12 +963,7 @@ int EncDecDlg::encDecUpdate()
 
     if( strOut.length() > 0 )
     {
-        if( mOutputTypeCombo->currentIndex() == DATA_STRING )
-            JS_BIN_set( &binOut, (unsigned char *)strOut.toStdString().c_str(), strOut.length() );
-        else if( mOutputTypeCombo->currentIndex() == DATA_HEX )
-            JS_BIN_decodeHex( strOut.toStdString().c_str(), &binOut );
-        else if( mOutputTypeCombo->currentIndex() == DATA_BASE64 )
-            JS_BIN_decodeBase64( strOut.toStdString().c_str(), &binOut );
+        getBINFromString( &binOut, mOutputTypeCombo->currentText(), strOut );
     }
 
     QString strAlg = mAlgCombo->currentText();
@@ -1198,7 +1195,7 @@ void EncDecDlg::dataChange()
 
 bool EncDecDlg::isCCM( const QString strMode )
 {
-    if( strMode.toUpper() == "CCM" )
+    if( strMode.toUpper() == JS_PKI_SYM_MODE_CCM )
         return true;
 
     return false;
@@ -1246,7 +1243,7 @@ void EncDecDlg::modeChanged()
 {
     QString strMode = mModeCombo->currentText();
 
-    if( strMode.toUpper() == "CCM" )
+    if( strMode.toUpper() == JS_PKI_SYM_MODE_CCM )
     {
         mCCMDataLenLabel->setEnabled( true );
         mCCMDataLenText->setEnabled( true );
@@ -1257,7 +1254,7 @@ void EncDecDlg::modeChanged()
         mCCMDataLenText->setEnabled( false );
     }
 
-    if( strMode == "ECB" || strMode == "CBC" )
+    if( strMode == JS_PKI_SYM_MODE_ECB || strMode == JS_PKI_SYM_MODE_CBC )
         mPadCheck->setEnabled( true );
     else
         mPadCheck->setEnabled( false );

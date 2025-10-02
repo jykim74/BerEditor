@@ -1777,7 +1777,7 @@ end :
 void CertManDlg::clickImport()
 {
     int ret = 0;
-    int nKeyType = -1;
+
     QString strPass;
     PasswdDlg passwdDlg;
     QString strPFXFile;
@@ -1803,8 +1803,6 @@ void CertManDlg::clickImport()
         berApplet->warnLog( tr( "fail to decrypt PFX: %1").arg( ret ), this);
         goto end;
     }
-
-    nKeyType = JS_PKI_getPriKeyType( &binPri );
 
     ret = JS_PKI_encryptPrivateKey( -1, strPass.toStdString().c_str(), &binPri, NULL, &binEncPri );
     if( ret != 0 )
@@ -2268,7 +2266,7 @@ void CertManDlg::clickAddCA()
     {
         if( dir.mkdir( strCAPath ) == false )
         {
-            berApplet->warningBox( tr( "fail to make CA folder: %1").arg( strCAPath ), this );
+            berApplet->warningBox( tr( "fail to make other folder: %1").arg( strCAPath ), this );
             return;
         }
     }

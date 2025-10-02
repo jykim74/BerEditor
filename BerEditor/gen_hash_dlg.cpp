@@ -83,6 +83,8 @@ void GenHashDlg::initUI()
     mOutputHashCombo->addItem( kSHAKE128 );
     mOutputHashCombo->addItem( kSHAKE256 );
 
+    mRunThreadCheck->setChecked(true);
+
     changeOutputHash();
 }
 

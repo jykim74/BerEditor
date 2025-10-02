@@ -122,6 +122,8 @@ void SignVerifyDlg::initUI()
     mHashTypeCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
 
     mVersionCombo->addItems(versionTypes);
+    mRunThreadCheck->setChecked(true);
+
     mOutputText->setPlaceholderText( tr("Hex value" ) );
 
     mPriKeyPath->setPlaceholderText( tr("Select a private key") );

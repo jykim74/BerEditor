@@ -125,7 +125,7 @@
    <item>
     <widget class="QTabWidget" name="mTabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tabList">
       <attribute name="title">
@@ -269,6 +269,13 @@
              <widget class="QPushButton" name="mLGenKeyPairBtn">
               <property name="text">
                <string>Gen KeyPair</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QPushButton" name="mLRenameBtn">
+              <property name="text">
+               <string>Rename</string>
               </property>
              </widget>
             </item>
@@ -1023,6 +1030,7 @@
   <tabstop>mLRunSignBtn</tabstop>
   <tabstop>mLRunVerifyBtn</tabstop>
   <tabstop>mLDeleteBtn</tabstop>
+  <tabstop>mLRenameBtn</tabstop>
   <tabstop>mSaveDERCheck</tabstop>
   <tabstop>mPriPathText</tabstop>
   <tabstop>mFindPriKeyBtn</tabstop>

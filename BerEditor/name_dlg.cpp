@@ -21,6 +21,17 @@ NameDlg::~NameDlg()
 
 }
 
+void NameDlg::setHeadLabel( const QString strHead )
+{
+    mHeadLabel->setText( strHead );
+}
+
+void NameDlg::setName( const QString strName )
+{
+    mNameText->setText( strName );
+    mNameText->setSelection( 0, strName.length() );
+}
+
 void NameDlg::clickOK()
 {
     QString strName = mNameText->text();

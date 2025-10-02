@@ -54,6 +54,7 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mLGenKeyPairBtn, SIGNAL(clicked()), this, SLOT(clickLGenKeyPair()));
     connect( mLDeleteBtn, SIGNAL(clicked()), this, SLOT(clickLDelete()));
+    connect( mLRenameBtn, SIGNAL(clicked()), this, SLOT(clickLRename()));
     connect( mLMakeCSRBtn, SIGNAL(clicked()), this, SLOT(clickLMakeCSR()));
     connect( mLViewPriKeyBtn, SIGNAL(clicked()), this, SLOT(clickLViewPriKey()));
     connect( mLViewPubKeyBtn, SIGNAL(clicked()), this, SLOT(clickLViewPubKey()));
@@ -242,6 +243,7 @@ void KeyPairManDlg::slotTableMenuRequested( QPoint pos )
     QAction *viewPubKeyAct = new QAction( tr( "View PubKey" ), this );
     QAction *decodePriKeyAct = new QAction( tr( "Decode PriKey" ), this );
     QAction *deleteAct = new QAction( tr( "Delete" ), this );
+    QAction *renameAct = new QAction( tr("Rename" ), this );
     QAction *viewPriKeyAct = new QAction( tr( "View PriKey" ), this );
     QAction *exportAct = new QAction( tr("Export"), this );
 
@@ -250,6 +252,7 @@ void KeyPairManDlg::slotTableMenuRequested( QPoint pos )
     connect( viewPubKeyAct, SIGNAL(triggered()), this, SLOT(clickLViewPubKey()));
     connect( decodePriKeyAct, SIGNAL(triggered()), this, SLOT(clickLDecodePriKey()));
     connect( deleteAct, SIGNAL(triggered()), this, SLOT(clickLDelete()));
+    connect( renameAct, SIGNAL(triggered(bool)), this, SLOT(clickLRename()));
     connect( viewPriKeyAct, SIGNAL(triggered()), this, SLOT(clickLViewPriKey()));
     connect( exportAct, SIGNAL(triggered()), this, SLOT(clickExport()));
 
@@ -258,6 +261,7 @@ void KeyPairManDlg::slotTableMenuRequested( QPoint pos )
     menu->addAction( viewPubKeyAct );
     menu->addAction( decodePriKeyAct );
     menu->addAction( deleteAct );
+    menu->addAction( renameAct );
     menu->addAction( viewPriKeyAct );
     menu->addAction( exportAct );
 
@@ -549,6 +553,8 @@ void KeyPairManDlg::clickLGenKeyPair()
     QDir dir;
     QString strKeyPairPath = berApplet->settingsMgr()->keyPairPath();
     GenKeyPairDlg genKeyPair;
+    QString strName;
+    QString fullPath;
 
     BIN binPri = {0,0};
     BIN binPub = {0,0};
@@ -556,18 +562,37 @@ void KeyPairManDlg::clickLGenKeyPair()
 
     if( genKeyPair.exec() == QDialog::Accepted )
     {
+        strName = genKeyPair.mNameText->text();
 
-        QString strName = genKeyPair.mNameText->text();
 
-        QString fullPath = QString( "%1/%2" ).arg( strKeyPairPath ).arg( strName );
-        if( dir.exists( fullPath ) )
+        if( dir.exists( QString( "%1/%2" ).arg( strKeyPairPath ).arg( strName ) ) )
         {
-            berApplet->warningBox( tr( "The folder(%1) is already existed" ).arg( strName ), this );
-            return;
+            for( int i = 2; i < 100; i++ )
+            {
+                if( dir.exists( QString( "%1/%2 (%3)").arg( strKeyPairPath ).arg( strName ).arg(i) ) )
+                {
+                    continue;
+                }
+                else
+                {
+                    strName = QString( "%1 (%2)" ).arg( strName ).arg( i );
+                    break;
+                }
+            }
+
+            if( dir.exists( QString( "%1/%2" ).arg( strKeyPairPath ).arg( strName ) ))
+            {
+                berApplet->warningBox( tr( "The folder(%1) is already existed" ).arg( strName ), this );
+                return;
+            }
         }
-        else
+
+        fullPath = QString( "%1/%2" ).arg( strKeyPairPath ).arg( strName );
+
+        if( dir.mkdir( fullPath ) == false )
         {
-            dir.mkdir( fullPath );
+            berApplet->warningBox( tr( "failed to make a folder" ), this );
+            return;
         }
 
         QString strPriPath = QString( "%1/%2" ).arg( fullPath ).arg( kPrivateFile );
@@ -579,7 +604,7 @@ void KeyPairManDlg::clickLGenKeyPair()
         ret = writePubKeyPEM( &binPub, strPubPath );
         if( ret < 0 )
         {
-            berApplet->warningBox( tr( "fail to write public key: %1" ).arg(ret), this );
+            berApplet->warningBox( tr( "failed to write public key: %1" ).arg(ret), this );
             dir.rmpath( fullPath );
             goto end;
         }
@@ -587,15 +612,14 @@ void KeyPairManDlg::clickLGenKeyPair()
         ret = writePriKeyPEM( &binPri, strPriPath );
         if( ret < 0 )
         {
-            berApplet->warningBox( tr( "fail to write private key: %1" ).arg(ret), this );
+            berApplet->warningBox( tr( "failed to write private key: %1" ).arg(ret), this );
+            dir.remove( strPriPath );
             dir.rmpath( fullPath );
             goto end;
         }
 
-
-
         loadKeyPairList();
-        berApplet->messageLog( tr( "Key pair generation was successful"), this );
+        berApplet->messageLog( tr( "%1 key pair was successfully generated").arg( strName ), this );
     }
 
 end :
@@ -606,11 +630,12 @@ end :
 void KeyPairManDlg::clickLDelete()
 {
     int ret = 0;
-    QDir dir;
+
 
     QString strPubKeyPath;
     QString strPriKeyPath;
     QString strPath = getSelectedPath();
+    QDir dir;
 
     if( strPath.length() < 1 )
     {
@@ -624,9 +649,55 @@ void KeyPairManDlg::clickLDelete()
     strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
     strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
 
-    dir.remove( strPubKeyPath );
-    dir.remove( strPriKeyPath );
-    dir.rmdir( strPath );
+    bool bPub = dir.remove( strPubKeyPath );
+    bool bPri = dir.remove( strPriKeyPath );
+
+    if( dir.rmdir( strPath ) == false )
+    {
+        berApplet->warningBox( tr( "fail to delete[%1:%2]" ).arg( bPub ).arg( bPri ), this );
+        return;
+    }
+
+    loadKeyPairList();
+}
+
+void KeyPairManDlg::clickLRename()
+{
+    int ret = 0;
+
+    QString strPath = getSelectedPath();
+    QString strNewPath;
+
+    QDir dir;
+
+    if( strPath.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Please select keypair" ), this );
+        return;
+    }
+
+    QFileInfo pathInfo(strPath);
+    QString strBaseName = pathInfo.baseName();
+
+    NameDlg nameDlg;
+
+    nameDlg.setHeadLabel( tr("Enter the name you want to change") );
+    nameDlg.setName( strBaseName );
+
+    if( nameDlg.exec() != QDialog::Accepted )
+    {
+        return;
+    }
+
+    strNewPath = QString( "%1/%2")
+                     .arg( berApplet->settingsMgr()->keyPairPath() )
+                     .arg( nameDlg.mNameText->text() );
+
+    if( dir.rename( strPath, strNewPath ) == false )
+    {
+        berApplet->warningBox( tr( "fail to rename" ), this );
+        return;
+    }
 
     loadKeyPairList();
 }
@@ -1527,8 +1598,22 @@ void KeyPairManDlg::clickImport()
         QString strPriSavePath = QString( "%1/%2" ).arg( fullPath ).arg( kPrivateFile );
         QString strPubSavePath = QString( "%1/%2" ).arg( fullPath ).arg( kPublicFile );
 
-        JS_BIN_writePEM( &binPri, JS_PEM_TYPE_PRIVATE_KEY, strPriSavePath.toLocal8Bit().toStdString().c_str() );
-        JS_BIN_writePEM( &binPub, JS_PEM_TYPE_PUBLIC_KEY, strPubSavePath.toLocal8Bit().toStdString().c_str() );
+        ret = writePubKeyPEM( &binPub, strPubSavePath );
+        if( ret < 0 )
+        {
+            berApplet->warningBox( tr( "failed to write public key: %1" ).arg(ret), this );
+            dir.rmpath( fullPath );
+            goto end;
+        }
+
+        ret = writePriKeyPEM( &binPri, strPriSavePath );
+        if( ret < 0 )
+        {
+            berApplet->warningBox( tr( "failed to write private key: %1" ).arg(ret), this );
+            dir.remove( strPriSavePath );
+            dir.rmpath( fullPath );
+            goto end;
+        }
 
         loadKeyPairList();
 

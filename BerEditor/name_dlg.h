@@ -16,6 +16,9 @@ public:
     explicit NameDlg(QWidget *parent = nullptr);
     ~NameDlg();
 
+    void setHeadLabel( const QString strHead );
+    void setName( const QString strName );
+
 private slots:
     void clickOK();
 
