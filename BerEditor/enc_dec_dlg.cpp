@@ -801,13 +801,13 @@ int EncDecDlg::encDecInit()
     if( mAEADGroup->isChecked() )
     {
         QString strAAD = mAADText->text();
-        int nDataLen = 0;
+        qint64 nDataLen = 0;
 
         getBINFromString( &binAAD, mAADTypeCombo->currentText(), strAAD );
 
         if( isCCM( strMode ) )
         {
-            nDataLen = mCCMDataLenText->text().toInt();
+            nDataLen = mCCMDataLenText->text().toLongLong();
             if( nDataLen <= 0 )
             {
                 if( binSrc.nLen > 0 )
