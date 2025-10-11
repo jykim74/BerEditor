@@ -621,6 +621,7 @@ void ACMEClientDlg::changeCmd( int index )
 
 void ACMEClientDlg::clickAddDNS()
 {
+    int i = 0;
     QString strDNS = mDNSText->text();
     if( strDNS.length() < 1 )
     {
@@ -629,7 +630,7 @@ void ACMEClientDlg::clickAddDNS()
         return;
     }
 
-    for( int i = 0; i < mDNSList->count(); i++ )
+    for( i = 0; i < mDNSList->count(); i++ )
     {
         QString strValue = mDNSList->item(i)->text();
 
@@ -641,6 +642,7 @@ void ACMEClientDlg::clickAddDNS()
     }
 
     mDNSList->addItem( strDNS );
+    mDNSList->setCurrentRow(i);
     mDNSText->clear();
 }
 
