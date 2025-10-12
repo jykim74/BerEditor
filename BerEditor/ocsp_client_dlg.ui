@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>530</width>
-    <height>678</height>
+    <height>903</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -316,6 +316,13 @@
     </layout>
    </item>
    <item>
+    <widget class="Line" name="line_7">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="mCertGroup">
      <property name="title">
       <string>Select each certificate and private key</string>
@@ -484,6 +491,13 @@
        </layout>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line_8">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
     </widget>
    </item>
    <item>

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>524</width>
-    <height>256</height>
+    <height>269</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -81,6 +81,13 @@
       <widget class="QComboBox" name="mHashCombo"/>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QGroupBox" name="mAuthGroup">

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>630</width>
-    <height>610</height>
+    <height>623</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -49,12 +49,19 @@
     </layout>
    </item>
    <item>
+    <widget class="Line" name="line_10">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QTabWidget" name="mTabWidget">
      <property name="contextMenuPolicy">
       <enum>Qt::CustomContextMenu</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="mEETab">
       <attribute name="title">
@@ -187,17 +194,20 @@
           <string/>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
+          <property name="spacing">
+           <number>6</number>
+          </property>
           <property name="leftMargin">
-           <number>0</number>
+           <number>6</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>6</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>6</number>
           </property>
           <property name="bottomMargin">
-           <number>0</number>
+           <number>6</number>
           </property>
           <item>
            <layout class="QGridLayout" name="gridLayout_4">
@@ -395,17 +405,20 @@
           <string/>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_13">
+          <property name="spacing">
+           <number>6</number>
+          </property>
           <property name="leftMargin">
-           <number>0</number>
+           <number>6</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>6</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>6</number>
           </property>
           <property name="bottomMargin">
-           <number>0</number>
+           <number>6</number>
           </property>
           <item>
            <layout class="QGridLayout" name="gridLayout_17">
@@ -564,17 +577,20 @@
           <string/>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_9">
+          <property name="spacing">
+           <number>6</number>
+          </property>
           <property name="leftMargin">
-           <number>0</number>
+           <number>6</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>6</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>6</number>
           </property>
           <property name="bottomMargin">
-           <number>0</number>
+           <number>6</number>
           </property>
           <item>
            <layout class="QGridLayout" name="gridLayout_13">
@@ -716,17 +732,20 @@
           <string/>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_11">
+          <property name="spacing">
+           <number>6</number>
+          </property>
           <property name="leftMargin">
-           <number>0</number>
+           <number>6</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>6</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>6</number>
           </property>
           <property name="bottomMargin">
-           <number>0</number>
+           <number>6</number>
           </property>
           <item>
            <layout class="QGridLayout" name="gridLayout_14">
@@ -864,17 +883,20 @@
           <string/>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_5">
+          <property name="spacing">
+           <number>6</number>
+          </property>
           <property name="leftMargin">
-           <number>0</number>
+           <number>6</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>6</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>6</number>
           </property>
           <property name="bottomMargin">
-           <number>0</number>
+           <number>6</number>
           </property>
           <item>
            <layout class="QGridLayout" name="gridLayout_5">
@@ -1291,17 +1313,20 @@
           <string/>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_7">
+          <property name="spacing">
+           <number>6</number>
+          </property>
           <property name="leftMargin">
-           <number>0</number>
+           <number>6</number>
           </property>
           <property name="topMargin">
-           <number>0</number>
+           <number>6</number>
           </property>
           <property name="rightMargin">
-           <number>0</number>
+           <number>6</number>
           </property>
           <property name="bottomMargin">
-           <number>0</number>
+           <number>6</number>
           </property>
           <item>
            <layout class="QGridLayout" name="gridLayout_10">

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>556</width>
-    <height>681</height>
+    <height>827</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -405,6 +405,13 @@
     </widget>
    </item>
    <item>
+    <widget class="Line" name="line_6">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="mFlagGroup">
      <property name="minimumSize">
       <size>
@@ -561,6 +568,13 @@
     </widget>
    </item>
    <item>
+    <widget class="Line" name="line_7">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QGridLayout" name="gridLayout_9">
      <property name="topMargin">
       <number>0</number>
@@ -608,6 +622,13 @@
      <attribute name="horizontalHeaderHighlightSections">
       <bool>false</bool>
      </attribute>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line_8">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
     </widget>
    </item>
    <item>

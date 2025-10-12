@@ -6,15 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>648</width>
-    <height>638</height>
+    <width>749</width>
+    <height>804</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>CAVP</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="0">
+   <item row="3" column="0">
     <layout class="QGridLayout" name="gridLayout_10">
      <property name="topMargin">
       <number>0</number>
@@ -41,49 +41,7 @@
      </item>
     </layout>
    </item>
-   <item row="0" column="0">
-    <widget class="QGroupBox" name="mRspGroup">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="title">
-      <string>Response Information</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_4">
-      <item>
-       <layout class="QGridLayout" name="gridLayout_20">
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="mRspPathText"/>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_62">
-          <property name="minimumSize">
-           <size>
-            <width>80</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Rsp Path</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QPushButton" name="mRspPathFindBtn">
-          <property name="text">
-           <string>Find</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="1" column="0">
+   <item row="2" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
       <number>4</number>
@@ -3400,16 +3358,10 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_68">
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>0</height>
-            </size>
-           </property>
+         <item row="0" column="3">
+          <widget class="QLabel" name="label_69">
            <property name="text">
-            <string>Hash</string>
+            <string>Full Length Bits</string>
            </property>
           </widget>
          </item>
@@ -3429,16 +3381,6 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="3">
-          <widget class="QLabel" name="label_69">
-           <property name="text">
-            <string>Full Length Bits</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QComboBox" name="mACVP_LDTHashCombo"/>
-         </item>
          <item row="0" column="2">
           <spacer name="horizontalSpacer_18">
            <property name="orientation">
@@ -3452,7 +3394,30 @@
            </property>
           </spacer>
          </item>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="mACVP_LDTHashCombo"/>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_68">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Hash</string>
+           </property>
+          </widget>
+         </item>
         </layout>
+       </item>
+       <item>
+        <widget class="Line" name="line_24">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_28">
@@ -3678,6 +3643,13 @@
         </layout>
        </item>
        <item>
+        <widget class="Line" name="line_23">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
         <layout class="QGridLayout" name="gridLayout_30">
          <property name="topMargin">
           <number>0</number>
@@ -3747,6 +3719,55 @@
        </item>
       </layout>
      </widget>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="mRspGroup">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Response Information</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <item>
+       <layout class="QGridLayout" name="gridLayout_20">
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="mRspPathText"/>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_62">
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Rsp Path</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QPushButton" name="mRspPathFindBtn">
+          <property name="text">
+           <string>Find</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="Line" name="line_22">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
     </widget>
    </item>
   </layout>

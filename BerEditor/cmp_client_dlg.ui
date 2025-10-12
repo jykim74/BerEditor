@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>524</width>
-    <height>682</height>
+    <height>869</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -601,13 +601,6 @@
        <width>500</width>
        <height>0</height>
       </size>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="Line" name="line_4">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </item>

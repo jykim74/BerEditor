@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>524</width>
-    <height>620</height>
+    <height>635</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -260,6 +260,13 @@
    </item>
    <item>
     <widget class="QPlainTextEdit" name="mRequestText"/>
+   </item>
+   <item>
+    <widget class="Line" name="line_7">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_7">

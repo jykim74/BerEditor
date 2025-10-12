@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>548</width>
-    <height>400</height>
+    <height>475</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -225,6 +225,9 @@
       <string>LDAP Search Condition</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="spacing">
+       <number>6</number>
+      </property>
       <property name="leftMargin">
        <number>6</number>
       </property>

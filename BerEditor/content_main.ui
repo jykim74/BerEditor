@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>817</width>
-    <height>595</height>
+    <width>820</width>
+    <height>632</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -83,6 +83,13 @@
      </layout>
     </item>
     <item>
+     <widget class="Line" name="line">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
      <layout class="QGridLayout" name="gridLayout_2">
       <property name="topMargin">
        <number>0</number>
@@ -133,8 +140,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>817</width>
-     <height>22</height>
+     <width>820</width>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
