@@ -178,10 +178,10 @@ void SSSDlg::clickAdd()
         }
     }
 
-    mShareTable->insertRow(row);
-    mShareTable->setRowHeight( row, 10 );
-    mShareTable->setItem( row, 0, new QTableWidgetItem( QString( "%1").arg(row + 1)));
-    mShareTable->setItem( row, 1, new QTableWidgetItem( strValue ));
+    mShareTable->insertRow(0);
+    mShareTable->setRowHeight( 0, 10 );
+    mShareTable->setItem( 0, 0, new QTableWidgetItem( QString( "%1").arg(row + 1)));
+    mShareTable->setItem( 0, 1, new QTableWidgetItem( strValue ));
 
     mShareText->clear();
 }

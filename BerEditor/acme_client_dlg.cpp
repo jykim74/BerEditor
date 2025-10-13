@@ -641,8 +641,7 @@ void ACMEClientDlg::clickAddDNS()
         }
     }
 
-    mDNSList->addItem( strDNS );
-    mDNSList->setCurrentRow(i);
+    mDNSList->insertItem( 0, strDNS );
     mDNSText->clear();
 }
 

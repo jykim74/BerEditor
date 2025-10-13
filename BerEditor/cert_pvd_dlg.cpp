@@ -877,10 +877,10 @@ void CertPVDDlg::clickTrustAdd()
     }
 
     int row = mPathTable->rowCount();
-    mPathTable->insertRow( row );
-    mPathTable->setRowHeight(row, 10 );
-    mPathTable->setItem( row, 0, new QTableWidgetItem( kTypeTCert ));
-    mPathTable->setItem( row, 1, new QTableWidgetItem( strPath ));
+    mPathTable->insertRow( 0 );
+    mPathTable->setRowHeight( 0, 10 );
+    mPathTable->setItem( 0, 0, new QTableWidgetItem( kTypeTCert ));
+    mPathTable->setItem( 0, 1, new QTableWidgetItem( strPath ));
 
     mTrustPathText->clear();
 }
@@ -910,10 +910,10 @@ void CertPVDDlg::clickUntrustAdd()
     }
 
     int row = mPathTable->rowCount();
-    mPathTable->insertRow( row );
-    mPathTable->setRowHeight(row, 10 );
-    mPathTable->setItem( row, 0, new QTableWidgetItem( kTypeUCert ));
-    mPathTable->setItem( row, 1, new QTableWidgetItem( strPath ));
+    mPathTable->insertRow( 0 );
+    mPathTable->setRowHeight( 0, 10 );
+    mPathTable->setItem( 0, 0, new QTableWidgetItem( kTypeUCert ));
+    mPathTable->setItem( 0, 1, new QTableWidgetItem( strPath ));
 
     mUntrustPathText->clear();
 }
@@ -943,10 +943,10 @@ void CertPVDDlg::clickCRLAdd()
     }
 
     int row = mPathTable->rowCount();
-    mPathTable->insertRow( row );
-    mPathTable->setRowHeight(row, 10 );
-    mPathTable->setItem( row, 0, new QTableWidgetItem( kTypeCRL ));
-    mPathTable->setItem( row, 1, new QTableWidgetItem( strPath ));
+    mPathTable->insertRow( 0 );
+    mPathTable->setRowHeight( 0, 10 );
+    mPathTable->setItem( 0, 0, new QTableWidgetItem( kTypeCRL ));
+    mPathTable->setItem( 0, 1, new QTableWidgetItem( strPath ));
 
     mCRLPathText->clear();
 }
@@ -985,10 +985,10 @@ void CertPVDDlg::clickParamAdd()
     }
 
     int row = mParamTable->rowCount();
-    mParamTable->insertRow( row );
-    mParamTable->setRowHeight(row, 10 );
-    mParamTable->setItem( row, 0, new QTableWidgetItem( strName ));
-    mParamTable->setItem( row, 1, new QTableWidgetItem( strValue ));
+    mParamTable->insertRow( 0 );
+    mParamTable->setRowHeight( 0, 10 );
+    mParamTable->setItem( 0, 0, new QTableWidgetItem( strName ));
+    mParamTable->setItem( 0, 1, new QTableWidgetItem( strValue ));
 
     mParamValueText->clear();
 }
