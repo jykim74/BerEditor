@@ -183,8 +183,9 @@ const QString ACMEObject::getProtectedPacket()
     return strPacket;
 }
 
-void ACMEObject::setSignature( const BIN *pPri,const QString strHash )
+int ACMEObject::setSignature( const BIN *pPri,const QString strHash )
 {
+    int ret = -1;
     int nKeyType = -1;
     BIN binSrc = {0,0};
     BIN binSign = {0,0};
@@ -199,11 +200,13 @@ void ACMEObject::setSignature( const BIN *pPri,const QString strHash )
 
     QString strJSON;
 
-    if( pPri == NULL ) return;
+    if( pPri == NULL ) return JSR_ERR;
 
     nKeyType = JS_PKI_getPriKeyType( pPri );
-    if( nKeyType < 0 ) return;
+    if( nKeyType < 0 ) return JSR_INVALID_ALG;
 
+    if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_ECDSA && nKeyType != JS_PKI_KEY_TYPE_EDDSA )
+        return JSR_INVALID_ALG;
 
     strPayload = getPayloadPacket();
     strProtected = getProtectedPacket();
@@ -215,8 +218,11 @@ void ACMEObject::setSignature( const BIN *pPri,const QString strHash )
 
 
     JS_BIN_set( &binSrc, (unsigned char *)strJSON.toStdString().c_str(), strJSON.length() );
-    JS_PKI_signInit( &pCTX, strHash.toStdString().c_str(), nKeyType, pPri );
-    JS_PKI_sign( pCTX, &binSrc, &binSign );
+    ret = JS_PKI_signInit( &pCTX, strHash.toStdString().c_str(), nKeyType, pPri );
+    if( ret != JSR_OK ) goto end;
+
+    ret = JS_PKI_sign( pCTX, &binSrc, &binSign );
+    if( ret != JSR_OK ) goto end;
 
     if( nKeyType == JS_PKI_KEY_TYPE_ECDSA )
     {
@@ -231,19 +237,23 @@ void ACMEObject::setSignature( const BIN *pPri,const QString strHash )
         JS_BIN_reset( &binS );
     }
 
-    berApplet->log( QString( "== Compute Signature =="));
-    berApplet->log( QString( "JWS Hash      : %1").arg( strHash ));
-    berApplet->log( QString( "JWS Source    : %1").arg( getHexString( &binSrc )));
-    berApplet->log( QString( "JWS Signature : %1").arg( getHexString( &binSign )));
+    if( ret == JSR_OK )
+    {
+        berApplet->log( QString( "== Compute Signature =="));
+        berApplet->log( QString( "JWS Hash      : %1").arg( strHash ));
+        berApplet->log( QString( "JWS Source    : %1").arg( getHexString( &binSrc )));
+        berApplet->log( QString( "JWS Signature : %1").arg( getHexString( &binSign )));
 
-    JS_BIN_encodeBase64URL( &binSign, &pHexVal );
-    json_[kNameSignature] = pHexVal;
+        JS_BIN_encodeBase64URL( &binSign, &pHexVal );
+        json_[kNameSignature] = pHexVal;
+    }
 
 end :
     JS_BIN_reset( &binSrc );
     JS_BIN_reset( &binSign );
     if( pHexVal ) JS_free( pHexVal );
     if( pCTX ) JS_PKI_signFree( &pCTX );
+    return ret;
 }
 
 int ACMEObject::verifySignature( const BIN *pPub )

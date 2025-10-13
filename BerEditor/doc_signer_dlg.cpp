@@ -1610,33 +1610,61 @@ void DocSignerDlg::clickJSON_ComputeSignature()
     }
 
     ret = getKeyPair( &binPub, &binPri );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr( "failed to get keypair: %1" ).arg(ret), this );
+        goto end;
+    }
 
 //    objJson.setPayload( strPayload );
     objJson.setPayload( jDoc.object() );
 
     nKeyType = JS_PKI_getPriKeyType( &binPri );
+
+    if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_ECDSA && nKeyType != JS_PKI_KEY_TYPE_EDDSA )
+    {
+        berApplet->warningBox(
+            tr( "Only RSA ECDSA EDDSA algorithms are supported [Current key algorithm %1]")
+                .arg( JS_PKI_getKeyAlgName( nKeyType)),  this );
+        goto end;
+    }
+
     strAlg = ACMEObject::getAlg( nKeyType, strHash );
     objJWK = ACMEObject::getJWK( &binPub, strHash, strName );
     objProtected = ACMEObject::getJWKProtected( strAlg, objJWK, "", "" );
     objJson.setProtected( objProtected );
-    objJson.setSignature( &binPri, strHash );
+    ret = objJson.setSignature( &binPri, strHash );
 
-    mJSON_JWSText->setPlainText( objJson.getPacketJson() );
-
-    if( mDstFileCheck->isChecked() == true )
+    if( ret == JSR_OK )
     {
-        BIN binDst = {0,0};
-        QString strJWS = mJSON_JWSText->toPlainText();
+        mJSON_JWSText->setPlainText( objJson.getPacketJson() );
 
-        JS_BIN_set( &binDst, (unsigned char *)strJWS.toStdString().c_str(), strJWS.length() );
-        setDstFile();
+        if( mDstFileCheck->isChecked() == true )
+        {
+            BIN binDst = {0,0};
+            QString strJWS = mJSON_JWSText->toPlainText();
 
-        QString strDstPath = mDstPathText->text();
-        JS_BIN_fileWrite( &binDst, strDstPath.toLocal8Bit().toStdString().c_str() );
-        berApplet->messageBox( tr( "The json file[%1] has been saved." ).arg( strDstPath ), this );
-        JS_BIN_reset( &binDst );
+            JS_BIN_set( &binDst, (unsigned char *)strJWS.toStdString().c_str(), strJWS.length() );
+            setDstFile();
+
+            QString strDstPath = mDstPathText->text();
+            ret = JS_BIN_fileWrite( &binDst, strDstPath.toLocal8Bit().toStdString().c_str() );
+            if( ret <= 0 )
+            {
+                berApplet->warningBox( tr( "Failed to save JSON file[%1]" ).arg( strDstPath ), this );
+            }
+
+            JS_BIN_reset( &binDst );
+        }
+
+        berApplet->messageBox( tr( "JSON signing succeeded" ), this );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "JSON signing failed: %1" ).arg( JERR(ret) ), this );
     }
 
+end :
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binPub );
 }
@@ -1680,11 +1708,27 @@ void DocSignerDlg::clickJSON_VerifySignature()
         }
     }
 
-    ret = getPubKey( &binPub );
-
     ACMEObject acmeObj;
-    acmeObj.setObjectFromJson( strJWS );
+    int nKeyType = -1;
 
+    ret = getPubKey( &binPub );
+    if( ret != JSR_OK )
+    {
+        berApplet->warningBox( tr( "failed to get public key: %1" ).arg(ret), this );
+        goto end;
+    }
+
+    nKeyType = JS_PKI_getPubKeyType( &binPub );
+
+    if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_ECDSA && nKeyType != JS_PKI_KEY_TYPE_EDDSA )
+    {
+        berApplet->warningBox(
+            tr( "Only RSA ECDSA EDDSA algorithms are supported [Current key algorithm %1]")
+                .arg( JS_PKI_getKeyAlgName( nKeyType)),  this );
+        goto end;
+    }
+
+    acmeObj.setObjectFromJson( strJWS );
     ret = acmeObj.verifySignature( &binPub );
 
     mJSON_JWSText->setPlainText( acmeObj.getPayloadJSON() );
@@ -1693,7 +1737,7 @@ void DocSignerDlg::clickJSON_VerifySignature()
         berApplet->messageBox( tr("Verify OK" ), this );
     else
         berApplet->warningBox( tr("Verify fail: %1").arg( JERR( ret ) ), this );
-
+end :
     JS_BIN_reset( &binPub );
 }
 

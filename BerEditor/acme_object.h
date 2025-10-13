@@ -22,7 +22,7 @@ public:
     void setProtected( const QString strProtected );
     void setPayload( const QJsonObject objPayload );
     void setPayload( const QString strPayload );
-    void setSignature( const BIN *pPri, const QString strHash );
+    int setSignature( const BIN *pPri, const QString strHash );
     int verifySignature( const BIN *pPub );
 
     const QString getProtectedJSON();
