@@ -992,6 +992,14 @@ int ACMEClientDlg::makeKeyExchange( QJsonObject& object )
     }
 
     nKeyType = JS_PKI_getPriKeyType( &binPri );
+    if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_ECDSA && nKeyType != JS_PKI_KEY_TYPE_EDDSA )
+    {
+        berApplet->warningBox(
+            tr( "Only RSA ECDSA EDDSA algorithms are supported [Current key algorithm %1]")
+                .arg( JS_PKI_getKeyAlgName( nKeyType)),  this );
+        goto end;
+    }
+
     strAlg = ACMEObject::getAlg( nKeyType, strHash );
     objNewJWK = ACMEObject::getJWK( &binPub, strHash, strName );
     objOldJWK = ACMEObject::getJWK( &pub_key_, strHash, key_name_ );
@@ -1280,6 +1288,14 @@ int ACMEClientDlg::clickMake()
     }
 
     nKeyType = JS_PKI_getPriKeyType( &pri_key_ );
+    if( nKeyType != JS_PKI_KEY_TYPE_RSA && nKeyType != JS_PKI_KEY_TYPE_ECDSA && nKeyType != JS_PKI_KEY_TYPE_EDDSA )
+    {
+        berApplet->warningBox(
+            tr( "Only RSA ECDSA EDDSA algorithms are supported [Current key algorithm %1]")
+                .arg( JS_PKI_getKeyAlgName( nKeyType)),  this );
+        return JSR_INVALID_ALG;
+    }
+
     strAlg = ACMEObject::getAlg( nKeyType, strHash );
     objJWK = ACMEObject::getJWK( &pub_key_, strHash, key_name_ );
 
@@ -1355,9 +1371,12 @@ int ACMEClientDlg::clickMake()
 
     berApplet->log( QString("Protected: %1").arg( acmeObj.getProtectedJSON() ));
 
-    acmeObj.setSignature( &pri_key_, strHash );
+    ret = acmeObj.setSignature( &pri_key_, strHash );
 
-    mRequestText->setPlainText( acmeObj.getPacketJson() );
+    if( ret == JSR_OK )
+    {
+        mRequestText->setPlainText( acmeObj.getPacketJson() );
+    }
 
     mResponseText->clear();
     mRspCmdText->clear();
