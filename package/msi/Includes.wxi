@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Include Id="BerEditorInclude">
-  <?define CurrentBerEditorVersion="2.5.0" ?>
+  <?define CurrentBerEditorVersion="2.5.2" ?>
 
   <!-- BerEditor Product Guid  -->
-  <?define ProductGuid="f8caf234-fb8d-41aa-af08-6df285cf0b3a" ?> <!-- Version 2.5.0 -->
+  <?define ProductGuid="c04ae5bd-aa9d-4e0f-85d6-ded75ff732ab" ?> <!-- Version 2.5.2 -->
+  <!-- ?define ProductGuid="f8caf234-fb8d-41aa-af08-6df285cf0b3a" ? --> <!-- Version 2.5.0 -->
   <!-- ?define ProductGuid="3d37fa25-5af9-4b5e-b2a1-879720f73900" ? --> <!-- Version 2.4.4 -->
   <!-- ?define ProductGuid="4a014996-2dac-4223-8007-6d951666f3cf" ? --> <!-- Version 2.4.3 -->
   <!-- ?define ProductGuid="db1d86f8-2517-4760-abeb-be833c1d58bd" ? --> <!-- Version 2.4.2 -->
