@@ -36,6 +36,7 @@ private slots:
     void clickShowInfo();
 
     void clickAddCipher();
+    void changeCipherVersion();
     void checkFixCipherName();
     void clickClearCipher();
     void clickViewTrustList();
@@ -76,6 +77,7 @@ private slots:
     void clickClientPriKeyType();
 
 private:
+    void initUI();
     void initialize();
     int verifyURL( const QString strHost, int nPort, BIN *pCA = NULL );
     const QTreeWidgetItem* createTree( const QString strHost, int nPort, const BINList *pCertList, bool bGood );

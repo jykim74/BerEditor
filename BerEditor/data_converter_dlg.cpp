@@ -168,7 +168,9 @@ void DataConverterDlg::onClickConvertBtn()
 
 void DataConverterDlg::outTypeChanged(int index)
 {
-    if( index == 0 )
+    QString strType = mOutputTypeCombo->currentText();
+
+    if( strType == kDataString )
     {
         mShowPrintTextCheck->setEnabled(true);
     }

@@ -32,6 +32,7 @@
 
 const QString kTLSUsedURL = "TLSUsedURL";
 const QStringList kModeLists = { "SSL_VERIFY_NONE", "SSL_VERIFY_PEER" };
+const QStringList sCipherVersions = { "TLSv1.3", "TLSv1.2", "TLSv1.0", "SSLv3" };
 
 void print_cn_name(const char* label, X509_NAME* const name)
 {
@@ -183,6 +184,7 @@ SSLCheckDlg::SSLCheckDlg(QWidget *parent) :
 {
     setupUi(this);
     url_tree_root_ = NULL;
+    initUI();
 
     connect( mCheckBtn, SIGNAL(clicked()), this, SLOT(clickCheck()));
     connect( mRefreshBtn, SIGNAL(clicked()), this, SLOT(clickRefresh()));
@@ -192,6 +194,7 @@ SSLCheckDlg::SSLCheckDlg(QWidget *parent) :
     connect( mClearSaveURLBtn, SIGNAL(clicked()), this, SLOT(clickClearSaveURL()));
     connect( mClearURLBtn, SIGNAL(clicked()), this, SLOT(clickClearURL()));
     connect( mClearResultBtn, SIGNAL(clicked()), this, SLOT(clickClearResult()));
+    connect( mCipherVersionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeCipherVersion()));
     connect( mCipherAddBtn, SIGNAL(clicked()), this, SLOT(clickAddCipher()));
     connect( mFixCipherNameCheck, SIGNAL(clicked()), this, SLOT(checkFixCipherName()));
     connect( mCipherClearBtn, SIGNAL(clicked()), this, SLOT(clickClearCipher()));
@@ -289,8 +292,10 @@ void SSLCheckDlg::elog( const QString strLog )
     log( strLog, QColor(0xFF,0x00,0x00));
 }
 
-void SSLCheckDlg::initialize()
+void SSLCheckDlg::initUI()
 {
+    mCipherVersionCombo->addItems( sCipherVersions );
+
     mModeCombo->addItems( kModeLists );
     mVerifyDepthText->setText( QString("%1").arg( 4 ));
 
@@ -320,23 +325,6 @@ void SSLCheckDlg::initialize()
     mURLTree->header()->setVisible(false);
     mURLTree->setColumnCount(1);
 
-    SSL_CTX *pCTX = NULL;
-    JS_SSL_initClient( &pCTX );
-    JStrList *pCipherList = NULL;
-    JS_SSL_getCiphersList(  pCTX, &pCipherList );
-    JStrList *pCurList = pCipherList;
-
-    while( pCurList )
-    {
-        mCipherListCombo->addItem( pCurList->pStr );
-        pCurList = pCurList->pNext;
-    }
-
-    if( pCTX ) JS_SSL_finish( &pCTX );
-
-    if( pCipherList ) JS_UTIL_resetStrList( &pCipherList );
-    checkFixCipherName();
-
     mHostNameCheck->click();
     checkUseMutual();
     mAuthTab->setCurrentIndex(0);
@@ -354,6 +342,38 @@ void SSLCheckDlg::initialize()
 
     mTrustCAPathText->setPlaceholderText( tr("Find a trusted CA certificate") );
     mURLLabel->setText( tr( "Enter a URL (ex https://www.google.com, www.naver.com)") );
+}
+
+void SSLCheckDlg::changeCipherVersion()
+{
+    SSL_CTX *pCTX = NULL;
+    JS_SSL_initClient( &pCTX );
+    JStrList *pCipherList = NULL;
+    QString strVersion = mCipherVersionCombo->currentText();
+
+    mCipherListCombo->clear();
+
+    if( strVersion == "ALL" )
+        JS_SSL_getCiphersList(  pCTX, NULL, &pCipherList );
+    else
+        JS_SSL_getCiphersList( pCTX, strVersion.toStdString().c_str(), &pCipherList );
+
+    JStrList *pCurList = pCipherList;
+
+    while( pCurList )
+    {
+        mCipherListCombo->addItem( pCurList->pStr );
+        pCurList = pCurList->pNext;
+    }
+
+    if( pCTX ) JS_SSL_finish( &pCTX );
+
+    if( pCipherList ) JS_UTIL_resetStrList( &pCipherList );
+}
+
+void SSLCheckDlg::initialize()
+{
+    checkFixCipherName();
 }
 
 QStringList SSLCheckDlg::getUsedURL()
@@ -1049,10 +1069,13 @@ void SSLCheckDlg::checkFixCipherName()
 {
     bool bVal = mFixCipherNameCheck->isChecked();
 
+    mCipherVersionCombo->setEnabled( bVal );
     mCipherListCombo->setEnabled( bVal );
     mCipherAddBtn->setEnabled( bVal );
     mCipherListText->setEnabled( bVal );
     mCipherClearBtn->setEnabled( bVal );
+
+    if( bVal == true ) changeCipherVersion();
 }
 
 

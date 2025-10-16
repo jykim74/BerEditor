@@ -1861,6 +1861,11 @@ void DocSignerDlg::clickXML_MakeSign()
         JS_BIN_set( &binSrc, (unsigned char *)strBody.toStdString().c_str(), strBody.length() );
     }
 
+    if( JS_XML_isValidXML( &binSrc ) != 1 )
+    {
+        berApplet->warningBox( tr( "The input Body value is not a valid XML value."), this );
+        goto end;
+    }
 
     ret = getPriKey( &binPri, &binCert );
 
@@ -1919,6 +1924,8 @@ void DocSignerDlg::clickXML_Encrypt()
     BIN binDst = {0,0};
 
     QString strSrcPath;
+    KeyListDlg keyList;
+    QString strKey;
 
     if( mSrcFileCheck->isChecked() == true )
     {
@@ -1945,6 +1952,12 @@ void DocSignerDlg::clickXML_Encrypt()
         JS_BIN_set( &binSrc, (unsigned char *)strBody.toStdString().c_str(), strBody.length() );
     }
 
+    if( JS_XML_isValidXML( &binSrc ) != 1 )
+    {
+        berApplet->warningBox( tr( "The input Body value is not a valid XML value."), this );
+        goto end;
+    }
+
     if( mXMLTemplateCheck->isChecked() == true )
     {
         QString strData = mXMLDataText->text();
@@ -1958,14 +1971,14 @@ void DocSignerDlg::clickXML_Encrypt()
         getBINFromString( &binData, DATA_STRING, strData );
     }
 
-    KeyListDlg keyList;
+
     keyList.setTitle( tr( "Select key" ));
     keyList.setManage(false);
 
     if( keyList.exec() != QDialog::Accepted )
         return;
 
-    QString strKey = keyList.getKey();
+    strKey = keyList.getKey();
 
     JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey );
 
@@ -2049,7 +2062,11 @@ void DocSignerDlg::clickXML_VerifySign()
         JS_BIN_set( &binSrc, (unsigned char *)strBody.toStdString().c_str(), strBody.length() );
     }
 
-    JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+    if( JS_XML_isValidXML( &binSrc ) != 1 )
+    {
+        berApplet->warningBox( tr( "The input Body value is not a valid XML value."), this );
+        goto end;
+    }
 
     ret = getPubKey( &binPub );
     if( ret != 0 ) goto end;
@@ -2087,6 +2104,9 @@ void DocSignerDlg::clickXML_Decrypt()
     BIN binDst = {0,0};
 
     QString strSrcPath;
+    QString strDstPath;
+    KeyListDlg keyList;
+    QString strKey;
 
     if( mSrcFileCheck->isChecked() == true )
     {
@@ -2113,20 +2133,26 @@ void DocSignerDlg::clickXML_Decrypt()
         JS_BIN_set( &binSrc, (unsigned char *)strBody.toStdString().c_str(), strBody.length() );
     }
 
-    KeyListDlg keyList;
+    if( JS_XML_isValidXML( &binSrc ) != 1 )
+    {
+        berApplet->warningBox( tr( "The input Body value is not a valid XML value."), this );
+        goto end;
+    }
+
+
     keyList.setTitle( tr( "Select key" ));
     keyList.setManage(false);
 
     if( keyList.exec() != QDialog::Accepted )
         return;
 
-    QString strKey = keyList.getKey();
+    strKey = keyList.getKey();
 
     JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey );
 
     JS_XML_init();
 
-    QString strDstPath = mDstPathText->text();
+    strDstPath = mDstPathText->text();
     if( strDstPath.length() < 1 )
     {
         QFileInfo fileInfo( strSrcPath );
