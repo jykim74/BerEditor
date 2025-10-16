@@ -98,6 +98,7 @@ QString MakeBerDlg::getData()
 
 void MakeBerDlg::initialize()
 {
+    mValueText->setAcceptDrops(false);
     mClassCombo->addItems( kClassList );
 
     int nPrimitiveCnt = JS_BER_getPrimitiveCount();

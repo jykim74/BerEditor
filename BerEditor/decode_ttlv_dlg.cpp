@@ -1,3 +1,7 @@
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QMimeData>
+
 #include "decode_ttlv_dlg.h"
 #include "common.h"
 #include "ber_applet.h"
@@ -8,6 +12,7 @@ DecodeTTLVDlg::DecodeTTLVDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
+    setAcceptDrops( true );
 
     connect( mDecodeBtn, SIGNAL(clicked()), this, SLOT(clickDecode()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
@@ -33,8 +38,52 @@ DecodeTTLVDlg::~DecodeTTLVDlg()
 
 }
 
+void DecodeTTLVDlg::dragEnterEvent(QDragEnterEvent *event)
+{
+    if (event->mimeData()->hasUrls() || event->mimeData()->hasText()) {
+        event->acceptProposedAction();  // 드랍 허용
+    }
+}
+
+void DecodeTTLVDlg::dropEvent(QDropEvent *event)
+{
+    BIN binData = {0,0};
+    char *pOut = NULL;
+
+    if (event->mimeData()->hasUrls()) {
+        QList<QUrl> urls = event->mimeData()->urls();
+
+        for (const QUrl &url : urls)
+        {
+            berApplet->log( QString( "url: %1").arg( url.toLocalFile() ));
+            JS_BIN_fileReadBER( url.toLocalFile().toLocal8Bit().toStdString().c_str(), &binData );
+            break;
+        }
+    } else if (event->mimeData()->hasText()) {
+
+    }
+
+    if( mHexRadio->isChecked() )
+    {
+        mDataText->setPlainText( getHexString( &binData ));
+    }
+    else if( mBase64Radio->isChecked() )
+    {
+        JS_BIN_encodeBase64( &binData, &pOut );
+    }
+
+    if( pOut )
+    {
+        mDataText->setPlainText( pOut );
+        JS_free( pOut );
+    }
+
+    JS_BIN_reset( &binData );
+}
+
 void DecodeTTLVDlg::initialize()
 {
+    mDataText->setAcceptDrops(false);
     mHexRadio->setChecked(true);
 }
 

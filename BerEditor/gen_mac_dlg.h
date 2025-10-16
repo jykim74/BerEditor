@@ -30,47 +30,51 @@ public:
     ~GenMacDlg();
 
 private slots:
-        void mac();
-        int macInit();
-        void macUpdate();
-        void macFinal();
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
 
-        void inputClear();
-        void outputClear();
+    void mac();
+    int macInit();
+    void macUpdate();
+    void macFinal();
 
-        void inputChanged();
-        void outputChanged();
-        void keyChanged();
-        void ivChanged();
+    void inputClear();
+    void outputClear();
 
-        void checkGenerate();
-        void checkVerify();
-        void changeMethod();
+    void inputChanged();
+    void outputChanged();
+    void keyChanged();
+    void ivChanged();
 
-        void clickClearDataAll();
-        void clickMAC();
-        void clickFindSrcFile();
-        void clickMACSrcFile();
+    void checkGenerate();
+    void checkVerify();
+    void changeMethod();
 
-        void clickMacSrcFileThread();
-        void startTask();
-        void onTaskFinished();
-        void onTaskUpdate( qint64 nUpdate );
+    void clickClearDataAll();
+    void clickMAC();
+    void clickFindSrcFile();
+    void clickMACSrcFile();
+
+    void clickMacSrcFileThread();
+    void startTask();
+    void onTaskFinished();
+    void onTaskUpdate( qint64 nUpdate );
 private:
-        void freeCTX();
+    void freeCTX();
 
-        void initUI();
-        void initialize();
-        void appendStatusLabel( const QString strLabel );
-        void updateStatusLabel();
+    void initUI();
+    void initialize();
+    void appendStatusLabel( const QString strLabel );
+    void updateStatusLabel();
 
-        int verifyMAC( const BIN *pMAC, const BIN *pInMAC );
+    int verifyMAC( const BIN *pMAC, const BIN *pInMAC );
+    void setSrcFileInfo( const QString strFile );
 
-        void *hctx_;
-        int type_;
-        int update_cnt_;
+    void *hctx_;
+    int type_;
+    int update_cnt_;
 
-        MacThread *thread_;
+    MacThread *thread_;
 };
 
 #endif // GEN_MAC_DLG_H

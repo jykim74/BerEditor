@@ -25,6 +25,9 @@ public:
     ~SignVerifyDlg();
 
 private slots:
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
+
     void findPrivateKey();
     void findCert();
     void Run();
@@ -74,6 +77,7 @@ private:
     void appendStatusLabel( const QString& strLabel );
     void updateStatusLabel();
     int readPrivateKey( BIN *pPriKey );
+    void setSrcFileInfo( const QString strFile );
 
     int getPrivateKey( BIN *pPriKey, int *pnType );
     int getPublicKey( BIN *pPubKey, int *pnType );

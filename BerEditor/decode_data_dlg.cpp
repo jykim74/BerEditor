@@ -3,6 +3,10 @@
  *
  * All rights reserved.
  */
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QMimeData>
+
 #include "decode_data_dlg.h"
 #include "ber_applet.h"
 #include "common.h"
@@ -11,6 +15,7 @@ DecodeDataDlg::DecodeDataDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
+    setAcceptDrops(true);
 
     initUI();
 
@@ -38,8 +43,56 @@ DecodeDataDlg::~DecodeDataDlg()
 
 }
 
+void DecodeDataDlg::dragEnterEvent(QDragEnterEvent *event)
+{
+    if (event->mimeData()->hasUrls() || event->mimeData()->hasText()) {
+        event->acceptProposedAction();  // 드랍 허용
+    }
+}
+
+void DecodeDataDlg::dropEvent(QDropEvent *event)
+{
+    BIN binData = {0,0};
+    char *pOut = NULL;
+
+    if (event->mimeData()->hasUrls()) {
+        QList<QUrl> urls = event->mimeData()->urls();
+
+        for (const QUrl &url : urls)
+        {
+            berApplet->log( QString( "url: %1").arg( url.toLocalFile() ));
+            JS_BIN_fileReadBER( url.toLocalFile().toLocal8Bit().toStdString().c_str(), &binData );
+            break;
+        }
+    } else if (event->mimeData()->hasText()) {
+
+    }
+
+    if( mTypeHex->isChecked() )
+    {
+        mDataText->setPlainText( getHexString( &binData ));
+    }
+    else if( mTypeBase64->isChecked() )
+    {
+        JS_BIN_encodeBase64( &binData, &pOut );
+    }
+    else if( mTypeBase64URL->isChecked() )
+    {
+        JS_BIN_encodeBase64URL( &binData, &pOut );
+    }
+
+    if( pOut )
+    {
+        mDataText->setPlainText( pOut );
+        JS_free( pOut );
+    }
+
+    JS_BIN_reset( &binData );
+}
+
 void DecodeDataDlg::initUI()
 {
+    mDataText->setAcceptDrops(false);
     mDataText->setPlaceholderText( tr( "Hex value" ));
 }
 
@@ -116,6 +169,7 @@ void DecodeDataDlg::findData()
 {
     BIN binData = {0,0};
     QString strPath;
+    char *pOut = NULL;
 
     QString strFileName = berApplet->findFile( this, JS_FILE_TYPE_BER, strPath );
     if( strFileName.length() < 1 ) return;
@@ -126,16 +180,19 @@ void DecodeDataDlg::findData()
     {
         mDataText->setPlainText( getHexString( &binData ));
     }
-    else
+    else if( mTypeBase64->isChecked() )
     {
-        char *pBase64 = NULL;
-        JS_BIN_encodeBase64( &binData, &pBase64 );
+        JS_BIN_encodeBase64( &binData, &pOut );
+    }
+    else if( mTypeBase64URL->isChecked() )
+    {
+        JS_BIN_encodeBase64URL( &binData, &pOut );
+    }
 
-        if( pBase64 )
-        {
-            mDataText->setPlainText( pBase64 );
-            JS_free( pBase64 );
-        }
+    if( pOut )
+    {
+        mDataText->setPlainText( pOut );
+        JS_free( pOut );
     }
 
     JS_BIN_reset( &binData );

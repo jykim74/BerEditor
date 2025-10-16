@@ -9,6 +9,10 @@
 #include <QButtonGroup>
 #include <QElapsedTimer>
 
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QMimeData>
+
 #include "sign_verify_dlg.h"
 #include "js_ber.h"
 #include "ber_applet.h"
@@ -42,6 +46,7 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
 
     setupUi(this);
     initUI();
+    setAcceptDrops( true );
 
     connect( mFindPriKeyBtn, SIGNAL(clicked()), this, SLOT(findPrivateKey()));
     connect( mFindCertBtn, SIGNAL(clicked()), this, SLOT(findCert()));
@@ -113,6 +118,30 @@ SignVerifyDlg::~SignVerifyDlg()
 {
     if( sctx_ ) JS_PKI_signFree( &sctx_ );
     if( thread_ ) delete thread_;
+}
+
+void SignVerifyDlg::dragEnterEvent(QDragEnterEvent *event)
+{
+    if (event->mimeData()->hasUrls() || event->mimeData()->hasText()) {
+        event->acceptProposedAction();  // 드랍 허용
+    }
+}
+
+void SignVerifyDlg::dropEvent(QDropEvent *event)
+{
+    if (event->mimeData()->hasUrls()) {
+        QList<QUrl> urls = event->mimeData()->urls();
+
+        for (const QUrl &url : urls)
+        {
+            berApplet->log( QString( "url: %1").arg( url.toLocalFile() ));
+            mInputTab->setCurrentIndex(1);
+            setSrcFileInfo( url.toLocalFile() );
+            break;
+        }
+    } else if (event->mimeData()->hasText()) {
+
+    }
 }
 
 void SignVerifyDlg::initUI()
@@ -1303,23 +1332,19 @@ void SignVerifyDlg::clickClearDataAll()
     mSignProgBar->setValue(0);
 }
 
-void SignVerifyDlg::clickFindSrcFile()
+void SignVerifyDlg::setSrcFileInfo( const QString strFile )
 {
-    QString strPath = mSrcFileText->text();
-
-    QString strSrcFile = berApplet->findFile( this, JS_FILE_TYPE_ALL, strPath );
-
-    if( strSrcFile.length() > 0 )
+    if( strFile.length() > 0 )
     {
         QFileInfo fileInfo;
-        fileInfo.setFile( strSrcFile );
+        fileInfo.setFile( strFile );
 
         qint64 fileSize = fileInfo.size();
         QDateTime cTime = fileInfo.lastModified();
 
         QString strInfo = QString("LastModified Time: %1").arg( cTime.toString( "yyyy-MM-dd HH:mm:ss" ));
 
-        mSrcFileText->setText( strSrcFile );
+        mSrcFileText->setText( strFile );
         mSrcFileSizeText->setText( QString("%1").arg( fileSize ));
         mSrcFileInfoText->setText( strInfo );
         mSignProgBar->setValue(0);
@@ -1327,6 +1352,14 @@ void SignVerifyDlg::clickFindSrcFile()
         mFileReadSizeText->clear();
         mFileTotalSizeText->clear();
     }
+}
+
+void SignVerifyDlg::clickFindSrcFile()
+{
+    QString strPath = mSrcFileText->text();
+
+    QString strSrcFile = berApplet->findFile( this, JS_FILE_TYPE_ALL, strPath );
+    setSrcFileInfo( strSrcFile );
 }
 
 void SignVerifyDlg::changeInputTab( int index )

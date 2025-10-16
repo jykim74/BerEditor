@@ -1,3 +1,7 @@
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QMimeData>
+
 #include "ber_check_dlg.h"
 #include "mainwindow.h"
 #include "ber_applet.h"
@@ -23,6 +27,8 @@ BERCheckDlg::BERCheckDlg(QWidget *parent)
     : QDialog(parent)
 {
     setupUi(this);
+    setAcceptDrops(true);
+
     initUI();
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
@@ -57,8 +63,45 @@ BERCheckDlg::~BERCheckDlg()
 
 }
 
+void BERCheckDlg::dragEnterEvent(QDragEnterEvent *event)
+{
+    if (event->mimeData()->hasUrls() || event->mimeData()->hasText()) {
+        event->acceptProposedAction();  // 드랍 허용
+    }
+}
+
+void BERCheckDlg::dropEvent(QDropEvent *event)
+{
+    char *pOut = NULL;
+
+    if (event->mimeData()->hasUrls()) {
+        QList<QUrl> urls = event->mimeData()->urls();
+
+        for (const QUrl &url : urls)
+        {
+            berApplet->log( QString( "url: %1").arg( url.toLocalFile() ));
+
+            if( mFileCheck->isChecked() == true )
+                mFilePathText->setText( url.toLocalFile() );
+            else
+            {
+                BIN binData = {0,0};
+                JS_BIN_fileReadBER( url.toLocalFile().toLocal8Bit().toStdString().c_str(), &binData );
+                mSrcTypeCombo->setCurrentText( kDataHex );
+                mSrcText->setPlainText( getHexString( &binData ) );
+                JS_BIN_reset( &binData );
+            }
+
+            break;
+        }
+    } else if (event->mimeData()->hasText()) {
+
+    }
+}
+
 void BERCheckDlg::initUI()
 {
+    mSrcText->setAcceptDrops(false);
     mFormatCombo->addItem( "" );
     mFormatCombo->addItems( sTypeList );
     mSrcTypeCombo->addItems( kDataBinTypeList );

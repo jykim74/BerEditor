@@ -18,6 +18,9 @@ public:
     ~BERCheckDlg();
 
 private slots:
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
+
     void clickClear();
     void clickFileFind();
     void clickCheckFormat();

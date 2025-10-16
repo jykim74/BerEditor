@@ -17,6 +17,9 @@ public:
     ~DecodeTTLVDlg();
 
 private slots:
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
+
     void clickDecode();
     void changeData();
     void clearData();

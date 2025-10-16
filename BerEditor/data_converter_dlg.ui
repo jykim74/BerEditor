@@ -376,6 +376,9 @@
        <height>80</height>
       </size>
      </property>
+     <property name="acceptDrops">
+      <bool>false</bool>
+     </property>
     </widget>
    </item>
    <item row="9" column="0">
@@ -387,7 +390,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="tabBarAutoHide">
       <bool>false</bool>
@@ -435,6 +438,9 @@
             </colorrole>
            </disabled>
           </palette>
+         </property>
+         <property name="acceptDrops">
+          <bool>false</bool>
          </property>
          <property name="readOnly">
           <bool>true</bool>
@@ -488,6 +494,9 @@
            </inactive>
            <disabled/>
           </palette>
+         </property>
+         <property name="acceptDrops">
+          <bool>false</bool>
          </property>
          <property name="lineWrapMode">
           <enum>QPlainTextEdit::NoWrap</enum>

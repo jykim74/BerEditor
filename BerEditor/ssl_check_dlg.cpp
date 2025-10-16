@@ -789,17 +789,17 @@ long SSLCheckDlg::getFlags()
 {
     long uFlags = 0;
 
-    if( mNoSSL2Check->isChecked() )
-        uFlags |= SSL_OP_NO_SSLv2;
+//    if( mNoSSL2Check->isChecked() )
+//        uFlags |= SSL_OP_NO_SSLv2;
 
     if( mNoSSL3Check->isChecked() )
         uFlags |= SSL_OP_NO_SSLv3;
 
-    if( mNoCompCheck->isChecked() )
-        uFlags |= SSL_OP_NO_COMPRESSION;
+//    if( mNoCompCheck->isChecked() )
+//        uFlags |= SSL_OP_NO_COMPRESSION;
 
-    if( mNoTicketCheck->isChecked() )
-        uFlags |= SSL_OP_NO_TICKET;
+//    if( mNoTicketCheck->isChecked() )
+//        uFlags |= SSL_OP_NO_TICKET;
 
     if( mNoTLS1Check->isChecked() )
         uFlags |= SSL_OP_NO_TLSv1;

@@ -3,6 +3,10 @@
  *
  * All rights reserved.
  */
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QMimeData>
+
 #include <QStringList>
 #include <QButtonGroup>
 #include <QFileInfo>
@@ -21,8 +25,6 @@
 #include "key_list_dlg.h"
 
 
-
-
 static QString sMethodHMAC = "HMAC";
 static QString sMethodCMAC = "CMAC";
 static QString sMethodGMAC = "GMAC";
@@ -39,6 +41,8 @@ GenMacDlg::GenMacDlg(QWidget *parent) :
     update_cnt_ = 0;
 
     setupUi(this);
+    setAcceptDrops(true);
+
     initUI();
 
     connect( mInitBtn, SIGNAL(clicked()), this, SLOT(macInit()));
@@ -91,6 +95,30 @@ GenMacDlg::~GenMacDlg()
     freeCTX();
 }
 
+void GenMacDlg::dragEnterEvent(QDragEnterEvent *event)
+{
+    if (event->mimeData()->hasUrls() || event->mimeData()->hasText()) {
+        event->acceptProposedAction();  // 드랍 허용
+    }
+}
+
+void GenMacDlg::dropEvent(QDropEvent *event)
+{
+    if (event->mimeData()->hasUrls()) {
+        QList<QUrl> urls = event->mimeData()->urls();
+
+        for (const QUrl &url : urls)
+        {
+            berApplet->log( QString( "url: %1").arg( url.toLocalFile() ));
+            mInputTab->setCurrentIndex(1);
+            setSrcFileInfo( url.toLocalFile() );
+            break;
+        }
+    } else if (event->mimeData()->hasText()) {
+
+    }
+}
+
 void GenMacDlg::initUI()
 {
     mInputTypeCombo->addItems( kDataTypeList );
@@ -110,6 +138,28 @@ void GenMacDlg::initialize()
     mInputTab->setCurrentIndex(0);
     mGenerateRadio->click();
     changeMethod();
+}
+
+void GenMacDlg::setSrcFileInfo( const QString strFile )
+{
+    if( strFile.length() > 0 )
+    {
+        QFileInfo fileInfo;
+        fileInfo.setFile( strFile );
+
+        qint64 fileSize = fileInfo.size();
+        QDateTime cTime = fileInfo.lastModified();
+
+        QString strInfo = QString("LastModified Time: %1").arg( cTime.toString( "yyyy-MM-dd HH:mm:ss" ));
+
+        mSrcFileText->setText( strFile );
+        mSrcFileSizeText->setText( QString("%1").arg( fileSize ));
+        mSrcFileInfoText->setText( strInfo );
+        mMACProgBar->setValue(0);
+
+        mFileReadSizeText->clear();
+        mFileTotalSizeText->clear();
+    }
 }
 
 void GenMacDlg::appendStatusLabel( const QString strLabel )
@@ -628,25 +678,7 @@ void GenMacDlg::clickFindSrcFile()
     QString strPath = mSrcFileText->text();
 
     QString strSrcFile = berApplet->findFile( this, JS_FILE_TYPE_ALL, strPath );
-
-    if( strSrcFile.length() > 0 )
-    {
-        QFileInfo fileInfo;
-        fileInfo.setFile( strSrcFile );
-
-        qint64 fileSize = fileInfo.size();
-        QDateTime cTime = fileInfo.lastModified();
-
-        QString strInfo = QString("LastModified Time: %1").arg( cTime.toString( "yyyy-MM-dd HH:mm:ss" ));
-
-        mSrcFileText->setText( strSrcFile );
-        mSrcFileSizeText->setText( QString("%1").arg( fileSize ));
-        mSrcFileInfoText->setText( strInfo );
-        mMACProgBar->setValue(0);
-
-        mFileReadSizeText->clear();
-        mFileTotalSizeText->clear();
-    }
+    setSrcFileInfo( strSrcFile );
 }
 
 void GenMacDlg::clickMACSrcFile()

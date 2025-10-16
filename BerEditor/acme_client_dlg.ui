@@ -638,7 +638,11 @@
     </layout>
    </item>
    <item>
-    <widget class="QPlainTextEdit" name="mRequestText"/>
+    <widget class="QPlainTextEdit" name="mRequestText">
+     <property name="acceptDrops">
+      <bool>false</bool>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="Line" name="line_4">

@@ -1,3 +1,7 @@
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QMimeData>
+
 #include "x509_compare_dlg.h"
 #include "common.h"
 #include "ber_applet.h"
@@ -23,6 +27,7 @@ X509CompareDlg::X509CompareDlg(QWidget *parent)
     : QDialog(parent)
 {
     setupUi(this);
+    setAcceptDrops( true );
 
     memset( &A_bin_, 0x00, sizeof(BIN));
     memset( &B_bin_, 0x00, sizeof(BIN));
@@ -30,7 +35,6 @@ X509CompareDlg::X509CompareDlg(QWidget *parent)
     initUI();
 
     connect( mTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeType()));
-    connect( mFileGroup, SIGNAL(clicked(bool)), this, SLOT(checkFileGroup()));
     connect( mAutoDetectCheck, SIGNAL(clicked()), this, SLOT(checkAutoDetect()));
 
     connect( mShowInfoBtn, SIGNAL(clicked()), this, SLOT(clickShowInfo()));
@@ -67,6 +71,41 @@ X509CompareDlg::~X509CompareDlg()
     JS_BIN_reset( &B_bin_ );
 }
 
+void X509CompareDlg::dragEnterEvent(QDragEnterEvent *event)
+{
+    if (event->mimeData()->hasUrls() || event->mimeData()->hasText()) {
+        event->acceptProposedAction();  // 드랍 허용
+    }
+}
+
+void X509CompareDlg::dropEvent(QDropEvent *event)
+{
+    if (event->mimeData()->hasUrls()) {
+        QList<QUrl> urls = event->mimeData()->urls();
+
+        for (const QUrl &url : urls)
+        {
+            berApplet->log( QString( "url: %1").arg( url.toLocalFile() ));
+            if( mAPathText->text().length() < 1 )
+            {
+                mAPathText->setText( url.toLocalFile() );
+                break;
+            }
+
+            if( mBPathText->text().length() < 1 )
+            {
+                mBPathText->setText( url.toLocalFile() );
+                break;
+            }
+
+            break;
+        }
+    } else if (event->mimeData()->hasText()) {
+
+    }
+}
+
+
 void X509CompareDlg::changeType()
 {
     QString strType = mTypeCombo->currentText();
@@ -83,20 +122,6 @@ void X509CompareDlg::checkAutoDetect()
     bool bVal = mAutoDetectCheck->isChecked();
 
     mTypeCombo->setEnabled( !bVal );
-}
-
-void X509CompareDlg::checkFileGroup()
-{
-    bool bVal = mFileGroup->isChecked();
-
-    if( bVal == true )
-    {
-        checkAutoDetect();
-    }
-    else
-    {
-        mTypeCombo->setEnabled( true );
-    }
 }
 
 void X509CompareDlg::initUI()
@@ -119,7 +144,7 @@ void X509CompareDlg::initUI()
     mTypeCombo->addItems( sTypeList );
     mResBtn->setIcon( QIcon( ":/images/compare.png" ));
 
-    mAutoDetectCheck->setChecked(true);
+//    mAutoDetectCheck->setChecked(true);
 
     mAPathText->setPlaceholderText( tr("Find file A") );
     mBPathText->setPlaceholderText( tr("Find file B") );
@@ -1194,28 +1219,58 @@ end :
 void X509CompareDlg::clickCompare()
 {
     int ret = 0;
+    CertManDlg certMan;
 
     QString strAPath = mAPathText->text();
     QString strBPath = mBPathText->text();
     QString strType = mTypeCombo->currentText();
     int nAType = JS_PKI_getBERType( strType.toStdString().c_str() );
     int nBType = JS_PKI_getBERType( strType.toStdString().c_str() );
+    QString strHex;
 
-    if( mFileGroup->isChecked() == true )
+    JS_BIN_reset( &A_bin_ );
+    JS_BIN_reset( &B_bin_ );
+    mAPathText->setPlaceholderText( "" );
+    mBPathText->setPlaceholderText( "" );
+
+    if( strAPath.length() < 1 )
     {
-        if( strAPath.length() < 1 )
+        if( mAutoDetectCheck->isChecked() == true )
         {
             berApplet->warningBox( tr( "find a A file" ), this );
             return;
         }
 
-        JS_BIN_reset( &A_bin_ );
+        if( strType == JS_PKI_BER_NAME_CERTIFICATE )
+            certMan.setMode(ManModeSelCert);
+        else if( strType == JS_PKI_BER_NAME_CRL )
+            certMan.setMode(ManModeSelCRL );
+        else
+        {
+            berApplet->warningBox( tr( "find a A file" ), this );
+            return;
+        }
+
+        certMan.setTitle( tr( "Select a A %1").arg( mTypeCombo->currentText()) );
+
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
+
+        if( strType == JS_PKI_BER_NAME_CERTIFICATE )
+            strHex = certMan.getCertHex();
+        else
+            strHex = certMan.getCRLHex();
+
+        JS_BIN_decodeHex( strHex.toStdString().c_str(), &A_bin_ );
+        mAPathText->setPlaceholderText( tr( "Selected in CertMan" ) );
+    }
+    else
+    {
         JS_BIN_fileReadBER( strAPath.toLocal8Bit().toStdString().c_str(), &A_bin_ );
+        nAType = JS_PKI_getX509Type( &A_bin_ );
 
         if( mAutoDetectCheck->isChecked() == true )
         {
-            nAType = JS_PKI_getX509Type( &A_bin_ );
-
             if( nAType < 0 )
             {
                 berApplet->warningBox( tr( "This A file(%1) is not X509 format" ).arg(strAPath), this );
@@ -1226,87 +1281,41 @@ void X509CompareDlg::clickCompare()
             strType = mTypeCombo->currentText();
         }
     }
-    else
-    {
-        if( strType == JS_PKI_BER_NAME_CERTIFICATE || strType == JS_PKI_BER_NAME_CRL )
-        {
-            CertManDlg certMan;
-            QString strHex;
-
-            if( strType == JS_PKI_BER_NAME_CERTIFICATE )
-                certMan.setMode(ManModeSelCert);
-            else
-                certMan.setMode(ManModeSelCRL );
-
-            certMan.setTitle( tr( "Select a A %1").arg( mTypeCombo->currentText()) );
-
-            if( certMan.exec() != QDialog::Accepted )
-                goto end;
-
-            JS_BIN_reset( &A_bin_ );
-
-            if( strType == JS_PKI_BER_NAME_CERTIFICATE )
-                strHex = certMan.getCertHex();
-            else
-                strHex = certMan.getCRLHex();
-
-            JS_BIN_decodeHex( strHex.toStdString().c_str(), &A_bin_ );
-        }
-
-        if( A_bin_.nLen < 1 )
-        {
-            berApplet->warningBox( tr( "Find a A file" ), this );
-            return;
-        }
-    }
 
     if( strBPath.length() < 1 )
     {
-        if( strType == JS_PKI_BER_NAME_CERTIFICATE || strType == JS_PKI_BER_NAME_CRL )
+        if( strType == JS_PKI_BER_NAME_CERTIFICATE )
+            certMan.setMode(ManModeSelCert);
+        else if( strType == JS_PKI_BER_NAME_CRL )
+            certMan.setMode(ManModeSelCRL );
+        else
         {
-            CertManDlg certMan;
-            QString strHex;
-
-            if( strType == JS_PKI_BER_NAME_CERTIFICATE )
-                certMan.setMode(ManModeSelCert);
-            else
-                certMan.setMode(ManModeSelCRL );
-
-            certMan.setTitle( tr( "Select a B %1").arg( mTypeCombo->currentText()) );
-
-            if( certMan.exec() != QDialog::Accepted )
-                goto end;
-
-            JS_BIN_reset( &B_bin_ );
-
-            if( strType == JS_PKI_BER_NAME_CERTIFICATE )
-                strHex = certMan.getCertHex();
-            else
-                strHex = certMan.getCRLHex();
-
-            JS_BIN_decodeHex( strHex.toStdString().c_str(), &B_bin_ );
-        }
-
-        if( B_bin_.nLen < 1 )
-        {
-            berApplet->warningBox( tr( "Find a B file" ), this );
+            berApplet->warningBox( tr( "find a B file" ), this );
             return;
         }
+
+        certMan.setTitle( tr( "Select a B %1").arg( mTypeCombo->currentText()) );
+
+        if( certMan.exec() != QDialog::Accepted )
+            goto end;
+
+        if( strType == JS_PKI_BER_NAME_CERTIFICATE )
+            strHex = certMan.getCertHex();
+        else
+            strHex = certMan.getCRLHex();
+
+        JS_BIN_decodeHex( strHex.toStdString().c_str(), &B_bin_ );
+        mBPathText->setPlaceholderText( tr( "Selected in CertMan" ) );
     }
     else
     {
-        JS_BIN_reset( &B_bin_ );
         JS_BIN_fileReadBER( strBPath.toLocal8Bit().toStdString().c_str(), &B_bin_ );
-
         nBType = JS_PKI_getX509Type( &B_bin_ );
         if( nBType < 0 )
         {
-            berApplet->warningBox( tr( "This B file(%1) is not X509 format" ).arg(strAPath), this );
+            berApplet->warningBox( tr( "This B file(%1) is not X509 format" ).arg(strBPath), this );
             goto end;
         }
-
-        mTypeCombo->setCurrentText( JS_PKI_getX509TypeName( nAType ) );
-        strType = mTypeCombo->currentText();
     }
 
     if( nAType != nBType )

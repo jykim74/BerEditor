@@ -9,6 +9,10 @@
 #include <QButtonGroup>
 #include <QElapsedTimer>
 
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QMimeData>
+
 #include "enc_dec_dlg.h"
 #include "ui_enc_dec_dlg.h"
 #include "js_ber.h"
@@ -38,6 +42,7 @@ EncDecDlg::EncDecDlg(QWidget *parent) :
 
     setupUi(this);
     initUI();
+    setAcceptDrops( true );
 
     connect( mAEADGroup, SIGNAL(clicked()), this, SLOT(clickUseAEAD()));
     connect( mInitBtn, SIGNAL(clicked()), this, SLOT(encDecInit()));
@@ -97,6 +102,30 @@ EncDecDlg::~EncDecDlg()
 {
     if( ctx_ ) JS_PKI_encryptFree( &ctx_ );
     if( thread_ ) delete thread_;
+}
+
+void EncDecDlg::dragEnterEvent(QDragEnterEvent *event)
+{
+    if (event->mimeData()->hasUrls() || event->mimeData()->hasText()) {
+        event->acceptProposedAction();  // 드랍 허용
+    }
+}
+
+void EncDecDlg::dropEvent(QDropEvent *event)
+{
+    if (event->mimeData()->hasUrls()) {
+        QList<QUrl> urls = event->mimeData()->urls();
+
+        for (const QUrl &url : urls)
+        {
+            berApplet->log( QString( "url: %1").arg( url.toLocalFile() ));
+            mInputTab->setCurrentIndex(1);
+            setSrcFileInfo( url.toLocalFile() );
+            break;
+        }
+    } else if (event->mimeData()->hasText()) {
+
+    }
 }
 
 void EncDecDlg::initUI()
@@ -1289,16 +1318,12 @@ void EncDecDlg::clickOutputClear()
     mOutputText->clear();
 }
 
-void EncDecDlg::clickFindSrcFile()
+void EncDecDlg::setSrcFileInfo( const QString strFile )
 {
-    QString strPath = mSrcFileText->text();
-
-    QString strSrcFile = berApplet->findFile( this, JS_FILE_TYPE_ALL, strPath );
-
-    if( strSrcFile.length() > 0 )
+    if( strFile.length() > 0 )
     {
         QFileInfo fileInfo;
-        fileInfo.setFile( strSrcFile );
+        fileInfo.setFile( strFile );
         QString strMode;
 
         if( mEncryptRadio->isChecked() == true )
@@ -1311,7 +1336,7 @@ void EncDecDlg::clickFindSrcFile()
 
         QString strInfo = QString("LastModified Time: %1").arg( cTime.toString( "yyyy-MM-dd HH:mm:ss" ));
 
-        mSrcFileText->setText( strSrcFile );
+        mSrcFileText->setText( strFile );
         mSrcFileSizeText->setText( QString("%1").arg( fileSize ));
         mSrcFileInfoText->setText( strInfo );
         mEncProgBar->setValue(0);
@@ -1321,6 +1346,14 @@ void EncDecDlg::clickFindSrcFile()
         mDstFileInfoText->clear();
         mDstFileSizeText->clear();
     }
+}
+
+void EncDecDlg::clickFindSrcFile()
+{
+    QString strPath = mSrcFileText->text();
+
+    QString strSrcFile = berApplet->findFile( this, JS_FILE_TYPE_ALL, strPath );
+    setSrcFileInfo( strSrcFile );
 }
 
 void EncDecDlg::clickFindDstFile()

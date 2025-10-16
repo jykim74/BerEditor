@@ -39,6 +39,9 @@ public:
     ~DocSignerDlg();
 
 private slots:
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
+
     void clickClearAll();
     void changeSignerTab();
 

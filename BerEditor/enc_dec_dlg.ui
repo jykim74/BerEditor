@@ -51,7 +51,7 @@
    <item>
     <widget class="QTabWidget" name="mInputTab">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="mDataTab">
       <attribute name="title">
@@ -183,6 +183,9 @@
            <width>500</width>
            <height>0</height>
           </size>
+         </property>
+         <property name="acceptDrops">
+          <bool>false</bool>
          </property>
         </widget>
        </item>
@@ -1470,6 +1473,9 @@
        </inactive>
        <disabled/>
       </palette>
+     </property>
+     <property name="acceptDrops">
+      <bool>false</bool>
      </property>
      <property name="readOnly">
       <bool>true</bool>

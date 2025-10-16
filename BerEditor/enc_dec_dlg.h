@@ -24,7 +24,10 @@ public:
     ~EncDecDlg();
 
 private slots:
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
     void showEvent(QShowEvent *event );
+
     void Run();
     void dataRun();
     void fileRun();
@@ -65,6 +68,7 @@ private:
     void initialize();
     void appendStatusLabel( const QString& strLabel );
     void updateStatusLabel();
+    void setSrcFileInfo( const QString strFile );
 
     bool isCCM( const QString strAlg );
     void *ctx_;

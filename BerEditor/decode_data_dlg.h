@@ -23,6 +23,10 @@ public:
 
     QString getTextData();
 
+private slots:
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
+
 private slots :
     void decodeData();
     void dataChanged();

@@ -510,6 +510,9 @@
           <height>0</height>
          </size>
         </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
        </widget>
       </item>
      </layout>
@@ -642,7 +645,11 @@
        </layout>
       </item>
       <item>
-       <widget class="QPlainTextEdit" name="mSignText"/>
+       <widget class="QPlainTextEdit" name="mSignText">
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

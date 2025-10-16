@@ -6,6 +6,10 @@
 #include <QFileInfo>
 #include <QDateTime>
 
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QMimeData>
+
 #include "doc_signer_dlg.h"
 #include "ber_applet.h"
 #include "mainwindow.h"
@@ -41,6 +45,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
 
     setupUi(this);
     initUI();
+    setAcceptDrops( true );
 
     connect( mCloseBtn, SIGNAL(clicked(bool)), this, SLOT(close()));
     connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clickClearAll()));
@@ -138,6 +143,93 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
 DocSignerDlg::~DocSignerDlg()
 {
     JS_BIN_reset( &cms_ );
+}
+
+void DocSignerDlg::dragEnterEvent(QDragEnterEvent *event)
+{
+    if (event->mimeData()->hasUrls() || event->mimeData()->hasText()) {
+        event->acceptProposedAction();  // 드랍 허용
+    }
+}
+
+void DocSignerDlg::dropEvent(QDropEvent *event)
+{
+    BIN binData = {0,0};
+    char *pString = NULL;
+
+    if (event->mimeData()->hasUrls()) {
+        QList<QUrl> urls = event->mimeData()->urls();
+
+        for (const QUrl &url : urls)
+        {
+            berApplet->log( QString( "url: %1").arg( url.toLocalFile() ));
+
+            if( mSrcFileCheck->isChecked() == true )
+            {
+                mSrcPathText->setText( url.toLocalFile() );
+            }
+            else
+            {
+                int index = mTabSigner->currentIndex();
+
+                if( index == 0 ) // For CMS
+                {
+                    if( mCMSDecodeRadio->isChecked() == true )
+                    {
+                        JS_BIN_fileReadBER( url.toLocalFile().toLocal8Bit().toStdString().c_str(), &binData );
+
+                        int nType = JS_CMS_getType( &binData );
+                        if( nType < 0 )
+                        {
+                            berApplet->warningBox( tr( "This file is not in CMS format" ), this );
+                            goto end;
+                        }
+                    }
+                    else
+                    {
+                        JS_BIN_fileRead( url.toLocalFile().toLocal8Bit().toStdString().c_str(), &binData );
+                    }
+
+                    mCMSSrcTypeCombo->setCurrentText( kDataHex );
+                    mCMSSrcText->setPlainText( getHexString( &binData) );
+                }
+                else if( index == 1 ) // For JWS
+                {
+                    JS_BIN_fileRead( url.toLocalFile().toLocal8Bit().toStdString().c_str(), &binData );
+                    JS_BIN_string( &binData, &pString );
+
+                    QJsonDocument jDoc = QJsonDocument::fromJson( pString );
+                    if( jDoc.isObject() == false )
+                    {
+                        berApplet->warningBox( tr( "This file is not object" ), this );
+                        goto end;
+                    }
+
+                    mJSONPayloadText->setPlainText( pString );
+                }
+                else if( index == 2 ) // For XML
+                {
+                    JS_BIN_fileRead( url.toLocalFile().toLocal8Bit().toStdString().c_str(), &binData );
+                    if( JS_XML_isValidXML( &binData ) != 1 )
+                    {
+                        berApplet->warningBox( tr( "This file is not a valid XML value."), this );
+                        goto end;
+                    }
+
+                    JS_BIN_string( &binData, &pString );
+                    mXMLBodyText->setPlainText( pString );
+                }
+            }
+
+            break;
+        }
+    } else if (event->mimeData()->hasText()) {
+
+    }
+
+end :
+    JS_BIN_reset( &binData );
+    if( pString ) JS_free( pString );
 }
 
 void DocSignerDlg::clickClearAll()

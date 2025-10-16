@@ -197,7 +197,7 @@ void CertManDlg::setMode( int nMode )
 {
     mode_ = nMode;
 
-    if( mode_ == ManModeBase )
+    if( mode_ == ManModeBase || mode_ == ManModeTrust )
     {
         connect( mEE_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewCert()));
         connect( mOther_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickViewOther()));

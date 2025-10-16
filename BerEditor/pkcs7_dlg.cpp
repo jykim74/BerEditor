@@ -6,6 +6,10 @@
 #include <QFileDialog>
 #include <QButtonGroup>
 
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QMimeData>
+
 #include "pkcs7_dlg.h"
 #include "js_pki.h"
 #include "js_pkcs7.h"
@@ -28,6 +32,7 @@ PKCS7Dlg::PKCS7Dlg(QWidget *parent) :
 {
     setupUi(this);
     initUI();
+    setAcceptDrops( true );
 
     connect( mSrcClearBtn, SIGNAL(clicked()), this, SLOT(clearSrc()));
     connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clearOutput()));
@@ -122,6 +127,54 @@ PKCS7Dlg::~PKCS7Dlg()
 {
 
 }
+
+void PKCS7Dlg::dragEnterEvent(QDragEnterEvent *event)
+{
+    if (event->mimeData()->hasUrls() || event->mimeData()->hasText()) {
+        event->acceptProposedAction();  // 드랍 허용
+    }
+}
+
+void PKCS7Dlg::dropEvent(QDropEvent *event)
+{
+    if (event->mimeData()->hasUrls()) {
+        QList<QUrl> urls = event->mimeData()->urls();
+
+        for (const QUrl &url : urls)
+        {
+            berApplet->log( QString( "url: %1").arg( url.toLocalFile() ));
+            BIN binData = {0,0};
+            int ret = 0;
+
+            if( mDecodeRadio->isChecked() == true )
+                ret = JS_BIN_fileReadBER( url.toLocalFile().toLocal8Bit().toStdString().c_str(), &binData );
+            else
+                ret = JS_BIN_fileRead( url.toLocalFile().toLocal8Bit().toStdString().c_str(), &binData );
+
+            if( ret <= 0 ) return;
+
+            if( mDecodeRadio->isChecked() == true )
+            {
+                int nType = JS_PKCS7_getType( &binData );
+                if( nType < 0 )
+                {
+                    berApplet->warningBox( tr( "This file is not in PKCS7 format" ), this );
+                    JS_BIN_reset( &binData );
+                    return;
+                }
+            }
+
+            mSrcTypeCombo->setCurrentText(kDataHex);
+            mSrcText->setPlainText( getHexString( &binData ));
+
+            JS_BIN_reset( &binData );
+            break;
+        }
+    } else if (event->mimeData()->hasText()) {
+
+    }
+}
+
 
 void PKCS7Dlg::initUI()
 {

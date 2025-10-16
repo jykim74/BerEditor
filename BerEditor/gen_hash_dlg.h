@@ -24,6 +24,9 @@ public:
     ~GenHashDlg();
 
 private slots:
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
+
     void digest();
     int hashInit();
     void hashUpdate();
@@ -52,6 +55,8 @@ private:
     void initialize();
     void appendStatusLabel( const QString& strLabel );
     void updateStatusLabel();
+
+    void setSrcFileInfo( const QString strFile );
 
     int update_cnt_;
     void *pctx_;

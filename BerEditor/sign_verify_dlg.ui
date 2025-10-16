@@ -191,6 +191,9 @@
            <height>0</height>
           </size>
          </property>
+         <property name="acceptDrops">
+          <bool>false</bool>
+         </property>
         </widget>
        </item>
        <item>
@@ -1071,7 +1074,11 @@
     </layout>
    </item>
    <item>
-    <widget class="QPlainTextEdit" name="mOutputText"/>
+    <widget class="QPlainTextEdit" name="mOutputText">
+     <property name="acceptDrops">
+      <bool>false</bool>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="Line" name="line_8">

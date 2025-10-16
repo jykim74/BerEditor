@@ -25,8 +25,12 @@ public:
     ~DataConverterDlg();
 
 private slots:
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
+
     void clickReadFile();
     void clickWriteBin();
+    void checkShowPrintable();
 
     void onClickConvertBtn();
     void outTypeChanged( int index );

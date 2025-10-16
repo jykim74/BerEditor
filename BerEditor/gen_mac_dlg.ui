@@ -143,7 +143,11 @@
         </layout>
        </item>
        <item>
-        <widget class="QPlainTextEdit" name="mInputText"/>
+        <widget class="QPlainTextEdit" name="mInputText">
+         <property name="acceptDrops">
+          <bool>false</bool>
+         </property>
+        </widget>
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_7">
@@ -933,6 +937,9 @@
         </colorrole>
        </disabled>
       </palette>
+     </property>
+     <property name="acceptDrops">
+      <bool>false</bool>
      </property>
      <property name="readOnly">
       <bool>false</bool>

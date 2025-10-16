@@ -19,10 +19,12 @@ public:
     ~X509CompareDlg();
 
 private slots:
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
+
     void changeType();
 
     void checkAutoDetect();
-    void checkFileGroup();
 
     void clickAFind();
     void clickBFind();

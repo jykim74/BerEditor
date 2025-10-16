@@ -3,6 +3,11 @@
  *
  * All rights reserved.
  */
+
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QMimeData>
+
 #include "data_converter_dlg.h"
 #include "js_bin.h"
 #include "js_util.h"
@@ -14,10 +19,12 @@ DataConverterDlg::DataConverterDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
+    setAcceptDrops(true);
 
     mOutputTypeCombo->addItems( kDataTypeList2 );
 
 
+    connect( mShowPrintTextCheck, SIGNAL(clicked()), this, SLOT(checkShowPrintable()));
     connect( mReadFileBtn, SIGNAL(clicked()), this, SLOT(clickReadFile()));
     connect( mWriteBinBtn, SIGNAL(clicked()), this, SLOT(clickWriteBin()));
     connect( mConvertBtn, SIGNAL(clicked()), this, SLOT(onClickConvertBtn()));
@@ -60,8 +67,39 @@ DataConverterDlg::~DataConverterDlg()
 
 }
 
+void DataConverterDlg::dragEnterEvent(QDragEnterEvent *event)
+{
+    if (event->mimeData()->hasUrls() || event->mimeData()->hasText()) {
+        event->acceptProposedAction();  // 드랍 허용
+    }
+}
+
+void DataConverterDlg::dropEvent(QDropEvent *event)
+{
+    BIN binData = {0,0};
+    char *pOut = NULL;
+
+    if (event->mimeData()->hasUrls()) {
+        QList<QUrl> urls = event->mimeData()->urls();
+
+        for (const QUrl &url : urls)
+        {
+            berApplet->log( QString( "url: %1").arg( url.toLocalFile() ));
+            JS_BIN_fileReadBER( url.toLocalFile().toLocal8Bit().toStdString().c_str(), &binData );
+            break;
+        }
+    } else if (event->mimeData()->hasText()) {
+
+    }
+
+    mInputTypeHexCheck->setChecked(true);
+    mInputText->setPlainText( getHexString( &binData ));
+    JS_BIN_reset( &binData );
+}
+
 void DataConverterDlg::initialize()
 {
+    mInputText->setAcceptDrops(false);
     mOutputTab->setCurrentIndex(0);
     mOutputTypeCombo->setCurrentText( kDataBase64 );
 }
@@ -178,6 +216,13 @@ void DataConverterDlg::outTypeChanged(int index)
     {
         mShowPrintTextCheck->setEnabled(false);
     }
+}
+
+void DataConverterDlg::checkShowPrintable()
+{
+    bool bVal = mShowPrintTextCheck->isChecked();
+
+    mChangeBtn->setEnabled( !bVal );
 }
 
 void DataConverterDlg::inputChanged()

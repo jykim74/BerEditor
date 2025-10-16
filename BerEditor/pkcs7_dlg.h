@@ -43,6 +43,9 @@ public:
     ~PKCS7Dlg();
 
 private slots:
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
+
     void checkEncode();
     void checkDecode();
     void checkAutoDetect();
@@ -98,8 +101,6 @@ private slots:
 
     void checkSignEncPriKey();
     void checkKMEncPriKey();
-
-
 
     void clickOutputUp();
 
