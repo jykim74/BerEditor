@@ -20801,33 +20801,38 @@ Use %2</source>
     </message>
     <message>
         <location filename="../x509_compare_dlg.cpp" line="1281"/>
-        <location filename="../x509_compare_dlg.cpp" line="1324"/>
+        <location filename="../x509_compare_dlg.cpp" line="1332"/>
         <source>Selected in CertMan</source>
         <translation>CertMan에서 선택 됨</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1292"/>
+        <location filename="../x509_compare_dlg.cpp" line="1291"/>
         <source>This A file(%1) is not X509 format</source>
         <translation>이 A파일은(%1) X509 형식이 아닙니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1309"/>
+        <location filename="../x509_compare_dlg.cpp" line="1304"/>
+        <source>This A file is not %1</source>
+        <translation>이 A 파일은 %1이 아닙니다</translation>
+    </message>
+    <message>
+        <location filename="../x509_compare_dlg.cpp" line="1317"/>
         <source>find a B file</source>
         <translation>B 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1332"/>
+        <location filename="../x509_compare_dlg.cpp" line="1340"/>
         <source>This B file(%1) is not X509 format</source>
         <translation>이 B파일은(%1) X509 형식이 아닙니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1339"/>
+        <location filename="../x509_compare_dlg.cpp" line="1347"/>
         <source>The X509 types of files A(%1) and B(%2) are different</source>
         <translation>X509 파일 A(%1)와 B(%2)가 다릅니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1521"/>
-        <location filename="../x509_compare_dlg.cpp" line="1595"/>
+        <location filename="../x509_compare_dlg.cpp" line="1529"/>
+        <location filename="../x509_compare_dlg.cpp" line="1603"/>
         <source>This file is not X509 format</source>
         <translation>이 파일은 X509 형식이 아닙니다</translation>
     </message>
@@ -20841,7 +20846,7 @@ Use %2</source>
         <translation type="vanished">A 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1313"/>
+        <location filename="../x509_compare_dlg.cpp" line="1321"/>
         <source>Select a B %1</source>
         <translation>B %1을 선택 하세요</translation>
     </message>
@@ -20850,16 +20855,16 @@ Use %2</source>
         <translation type="vanished">B 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1511"/>
-        <location filename="../x509_compare_dlg.cpp" line="1558"/>
-        <location filename="../x509_compare_dlg.cpp" line="1585"/>
-        <location filename="../x509_compare_dlg.cpp" line="1632"/>
+        <location filename="../x509_compare_dlg.cpp" line="1519"/>
+        <location filename="../x509_compare_dlg.cpp" line="1566"/>
+        <location filename="../x509_compare_dlg.cpp" line="1593"/>
+        <location filename="../x509_compare_dlg.cpp" line="1640"/>
         <source>Select a %1</source>
         <translation>%1을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1567"/>
-        <location filename="../x509_compare_dlg.cpp" line="1641"/>
+        <location filename="../x509_compare_dlg.cpp" line="1575"/>
+        <location filename="../x509_compare_dlg.cpp" line="1649"/>
         <source>failed to read data</source>
         <translation>데이타 읽기 실패</translation>
     </message>

@@ -1283,18 +1283,26 @@ void X509CompareDlg::clickCompare()
     else
     {
         JS_BIN_fileReadBER( strAPath.toLocal8Bit().toStdString().c_str(), &A_bin_ );
-        nAType = JS_PKI_getX509Type( &A_bin_ );
+    }
 
-        if( mAutoDetectCheck->isChecked() == true )
+    nAType = JS_PKI_getX509Type( &A_bin_ );
+    if( nAType < 0 )
+    {
+        berApplet->warningBox( tr( "This A file(%1) is not X509 format" ).arg(strAPath), this );
+        goto end;
+    }
+
+    if( mAutoDetectCheck->isChecked() == true )
+    {
+        mTypeCombo->setCurrentText( JS_PKI_getX509TypeName( nAType ) );
+        strType = mTypeCombo->currentText();
+    }
+    else
+    {
+        if( strType != JS_PKI_getX509TypeName( nAType ) )
         {
-            if( nAType < 0 )
-            {
-                berApplet->warningBox( tr( "This A file(%1) is not X509 format" ).arg(strAPath), this );
-                goto end;
-            }
-
-            mTypeCombo->setCurrentText( JS_PKI_getX509TypeName( nAType ) );
-            strType = mTypeCombo->currentText();
+            berApplet->warningBox( tr( "This A file is not %1" ).arg( strType ), this );
+            goto end;
         }
     }
 
