@@ -875,7 +875,6 @@ void SSLCheckDlg::clickCheck()
         }
     }
 
-    mURLCombo->setCurrentText("");
     JS_BIN_reset( &binCA );
 }
 

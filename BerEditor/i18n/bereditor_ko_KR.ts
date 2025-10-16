@@ -17442,151 +17442,151 @@ Only RSA is supported.</source>
     </message>
     <message>
         <location filename="../ssl_check_dlg.cpp" line="866"/>
-        <location filename="../ssl_check_dlg.cpp" line="980"/>
-        <location filename="../ssl_check_dlg.cpp" line="1013"/>
+        <location filename="../ssl_check_dlg.cpp" line="979"/>
+        <location filename="../ssl_check_dlg.cpp" line="1012"/>
         <source>Verify successful : %1</source>
         <translation>검증 성공 : %1</translation>
     </message>
     <message>
         <location filename="../ssl_check_dlg.cpp" line="870"/>
-        <location filename="../ssl_check_dlg.cpp" line="984"/>
-        <location filename="../ssl_check_dlg.cpp" line="1015"/>
+        <location filename="../ssl_check_dlg.cpp" line="983"/>
+        <location filename="../ssl_check_dlg.cpp" line="1014"/>
         <source>Verify failed : %1</source>
         <translation>검증 실패 : %1</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="906"/>
-        <location filename="../ssl_check_dlg.cpp" line="934"/>
+        <location filename="../ssl_check_dlg.cpp" line="905"/>
+        <location filename="../ssl_check_dlg.cpp" line="933"/>
         <source>Invalid certificate : %1</source>
         <translation>잘못된 인증서 파일 : %1</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="913"/>
+        <location filename="../ssl_check_dlg.cpp" line="912"/>
         <source>There is no root certificate in SSL. Would you like to retrieve the root certificate from certificate information?</source>
         <translation>SSL 메세지에 루트 인증서가 없습니다. 인증서 정보로 부터 루트 인증서를 가져오겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="924"/>
+        <location filename="../ssl_check_dlg.cpp" line="923"/>
         <source>fail to get RootCA : %1</source>
         <translation>루트CA 가져오기 실패 : %1</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="945"/>
+        <location filename="../ssl_check_dlg.cpp" line="944"/>
         <source>This ceriticate is not root( DN: %1)</source>
         <translation>이 인증서는 루트가 아닙니다(DN: %1)</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="954"/>
+        <location filename="../ssl_check_dlg.cpp" line="953"/>
         <source>Would you like to add that root certificate to the trust list and verify it again?</source>
         <translation>루트 인증서를 신뢰 목록에 추가 후 다시 검증 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="966"/>
-        <location filename="../ssl_check_dlg.cpp" line="1284"/>
+        <location filename="../ssl_check_dlg.cpp" line="965"/>
+        <location filename="../ssl_check_dlg.cpp" line="1283"/>
         <source>The file(%1) is already existed</source>
         <translation>해당 파일(%1) 은 이미 존재 합니다</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="973"/>
+        <location filename="../ssl_check_dlg.cpp" line="972"/>
         <source>The Certificate failed to save to trustedCA folder:%1</source>
         <translation>인증서가 신뢰 CA목록 저장에 실패함 : %1</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1093"/>
+        <location filename="../ssl_check_dlg.cpp" line="1092"/>
         <source>Trust RootCA List</source>
         <translation>신뢰 최상위CA목록</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1131"/>
+        <location filename="../ssl_check_dlg.cpp" line="1130"/>
         <source>Verify</source>
         <translation>검증</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1132"/>
+        <location filename="../ssl_check_dlg.cpp" line="1131"/>
         <source>Delete</source>
         <translation>삭제</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1133"/>
-        <location filename="../ssl_check_dlg.cpp" line="1210"/>
+        <location filename="../ssl_check_dlg.cpp" line="1132"/>
+        <location filename="../ssl_check_dlg.cpp" line="1209"/>
         <source>View Cert</source>
         <translation>인증서 보기</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1134"/>
-        <location filename="../ssl_check_dlg.cpp" line="1211"/>
+        <location filename="../ssl_check_dlg.cpp" line="1133"/>
+        <location filename="../ssl_check_dlg.cpp" line="1210"/>
         <source>Decode Cert</source>
         <translation>인증서 디코딩</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1212"/>
+        <location filename="../ssl_check_dlg.cpp" line="1211"/>
         <source>Save to trustedCA</source>
         <translation>신뢰CA에 저장</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1265"/>
+        <location filename="../ssl_check_dlg.cpp" line="1264"/>
         <source>This certificate is not self-signed</source>
         <translation>인증서가 자체 서명이 아닙니다</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1273"/>
+        <location filename="../ssl_check_dlg.cpp" line="1272"/>
         <source>fail to mkdir:%1</source>
         <translation>경로 만들기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1290"/>
+        <location filename="../ssl_check_dlg.cpp" line="1289"/>
         <source>The Certificate saved to trusted CA directory</source>
         <translation>인증서가 신뢰CA목록에 저장 되었습니다</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1292"/>
+        <location filename="../ssl_check_dlg.cpp" line="1291"/>
         <source>The Certificate failed to save to trusted CA directory [%1]</source>
         <translation>인증서가 신뢰 CA목록 저장에 실패함 [%1]</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1330"/>
+        <location filename="../ssl_check_dlg.cpp" line="1329"/>
         <source>select a private key</source>
         <translation>개인키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1338"/>
+        <location filename="../ssl_check_dlg.cpp" line="1337"/>
         <source>failed to read private key: %1</source>
         <translation>개인키 읽기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1348"/>
+        <location filename="../ssl_check_dlg.cpp" line="1347"/>
         <source>Enter a password</source>
         <translation>암호를 입력해야 합니다</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1357"/>
+        <location filename="../ssl_check_dlg.cpp" line="1356"/>
         <source>failed to decrypt private key:%1</source>
         <translation>개인키 복호화 실패: %1</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1411"/>
-        <location filename="../ssl_check_dlg.cpp" line="1486"/>
-        <location filename="../ssl_check_dlg.cpp" line="1561"/>
-        <location filename="../ssl_check_dlg.cpp" line="1621"/>
+        <location filename="../ssl_check_dlg.cpp" line="1410"/>
+        <location filename="../ssl_check_dlg.cpp" line="1485"/>
+        <location filename="../ssl_check_dlg.cpp" line="1560"/>
+        <location filename="../ssl_check_dlg.cpp" line="1620"/>
         <source>failed to read data</source>
         <translation>데이타 읽기 실패</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1430"/>
-        <location filename="../ssl_check_dlg.cpp" line="1505"/>
-        <location filename="../ssl_check_dlg.cpp" line="1580"/>
+        <location filename="../ssl_check_dlg.cpp" line="1429"/>
+        <location filename="../ssl_check_dlg.cpp" line="1504"/>
+        <location filename="../ssl_check_dlg.cpp" line="1579"/>
         <source>Select a certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1440"/>
-        <location filename="../ssl_check_dlg.cpp" line="1515"/>
-        <location filename="../ssl_check_dlg.cpp" line="1590"/>
+        <location filename="../ssl_check_dlg.cpp" line="1439"/>
+        <location filename="../ssl_check_dlg.cpp" line="1514"/>
+        <location filename="../ssl_check_dlg.cpp" line="1589"/>
         <source>Certificate Type is %1</source>
         <translation>인증서 타입은 %1 이다</translation>
     </message>
     <message>
-        <location filename="../ssl_check_dlg.cpp" line="1656"/>
+        <location filename="../ssl_check_dlg.cpp" line="1655"/>
         <source>KM Private Key Type is %1</source>
         <translation>KM용 개인키 타입은 %1 이다</translation>
     </message>
@@ -20526,7 +20526,7 @@ Use %2</source>
     </message>
     <message>
         <location filename="../x509_compare_dlg.ui" line="172"/>
-        <location filename="../x509_compare_dlg.cpp" line="272"/>
+        <location filename="../x509_compare_dlg.cpp" line="277"/>
         <source>Not Compared</source>
         <translation>비교 안됨</translation>
     </message>
@@ -20578,27 +20578,27 @@ Use %2</source>
         <translation>지우기</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="112"/>
+        <location filename="../x509_compare_dlg.cpp" line="113"/>
         <source>%1 comparision</source>
         <translation>%1 비교</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="113"/>
+        <location filename="../x509_compare_dlg.cpp" line="114"/>
         <source>A %1 Path</source>
         <translation>A %1 경로</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="114"/>
+        <location filename="../x509_compare_dlg.cpp" line="115"/>
         <source>B %1 Path</source>
         <translation>B %1 경로</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="116"/>
+        <location filename="../x509_compare_dlg.cpp" line="117"/>
         <source>A %1 value</source>
         <translation>A %1 값</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="117"/>
+        <location filename="../x509_compare_dlg.cpp" line="118"/>
         <source>B %1 value</source>
         <translation>B %1 값</translation>
     </message>
@@ -20619,215 +20619,220 @@ Use %2</source>
         <translation type="vanished">CSR</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="129"/>
+        <location filename="../x509_compare_dlg.cpp" line="130"/>
         <source>Field</source>
         <translation>필드</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="129"/>
+        <location filename="../x509_compare_dlg.cpp" line="130"/>
         <source>A Certificate value</source>
         <translation>A 인증서 값</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="129"/>
+        <location filename="../x509_compare_dlg.cpp" line="130"/>
         <source>B Certificate value</source>
         <translation>B 인증서 값</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="149"/>
+        <location filename="../x509_compare_dlg.cpp" line="150"/>
         <source>Find file A</source>
         <translation>A 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="150"/>
+        <location filename="../x509_compare_dlg.cpp" line="151"/>
         <source>Find file B</source>
         <translation>B 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="151"/>
+        <location filename="../x509_compare_dlg.cpp" line="152"/>
         <source>A field value</source>
         <translation>A 필드 값</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="152"/>
+        <location filename="../x509_compare_dlg.cpp" line="153"/>
         <source>B field value</source>
         <translation>B 필드 값</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="439"/>
+        <location filename="../x509_compare_dlg.cpp" line="444"/>
         <source>File A is not a certificate</source>
         <translation>A 파일은 인증서가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="446"/>
+        <location filename="../x509_compare_dlg.cpp" line="451"/>
         <source>File B is not a certificate</source>
         <translation>B 파일은 인증서가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="481"/>
-        <location filename="../x509_compare_dlg.cpp" line="778"/>
-        <location filename="../x509_compare_dlg.cpp" line="1016"/>
+        <location filename="../x509_compare_dlg.cpp" line="486"/>
+        <location filename="../x509_compare_dlg.cpp" line="783"/>
+        <location filename="../x509_compare_dlg.cpp" line="1021"/>
         <source>Version</source>
         <translation>버젼</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="503"/>
+        <location filename="../x509_compare_dlg.cpp" line="508"/>
         <source>Serial</source>
         <translation>일련번호</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="527"/>
+        <location filename="../x509_compare_dlg.cpp" line="532"/>
         <source>NotBefore</source>
         <translation>유효 시작 기간</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="550"/>
+        <location filename="../x509_compare_dlg.cpp" line="555"/>
         <source>NotAfter</source>
         <translation>유효 끝 기간</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="598"/>
-        <location filename="../x509_compare_dlg.cpp" line="1041"/>
+        <location filename="../x509_compare_dlg.cpp" line="603"/>
+        <location filename="../x509_compare_dlg.cpp" line="1046"/>
         <source>SubjectName</source>
         <translation>주체자 이름</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="623"/>
-        <location filename="../x509_compare_dlg.cpp" line="1064"/>
+        <location filename="../x509_compare_dlg.cpp" line="628"/>
+        <location filename="../x509_compare_dlg.cpp" line="1069"/>
         <source>PublicKey</source>
         <translation>공개키</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="572"/>
-        <location filename="../x509_compare_dlg.cpp" line="800"/>
+        <location filename="../x509_compare_dlg.cpp" line="577"/>
+        <location filename="../x509_compare_dlg.cpp" line="805"/>
         <source>IssuerName</source>
         <translation>발급자 이름</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="461"/>
-        <location filename="../x509_compare_dlg.cpp" line="996"/>
+        <location filename="../x509_compare_dlg.cpp" line="101"/>
+        <source>Both files A and B already exist</source>
+        <translation>A 파일과 B파일이 이미 존재 합니다</translation>
+    </message>
+    <message>
+        <location filename="../x509_compare_dlg.cpp" line="466"/>
+        <location filename="../x509_compare_dlg.cpp" line="1001"/>
         <source>KID</source>
         <translation>KID</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="649"/>
-        <location filename="../x509_compare_dlg.cpp" line="1087"/>
+        <location filename="../x509_compare_dlg.cpp" line="654"/>
+        <location filename="../x509_compare_dlg.cpp" line="1092"/>
         <source>SigAlgorithm</source>
         <translation>서명 알고리즘</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="672"/>
-        <location filename="../x509_compare_dlg.cpp" line="889"/>
-        <location filename="../x509_compare_dlg.cpp" line="1110"/>
+        <location filename="../x509_compare_dlg.cpp" line="677"/>
+        <location filename="../x509_compare_dlg.cpp" line="894"/>
+        <location filename="../x509_compare_dlg.cpp" line="1115"/>
         <source>Signature</source>
         <translation>서명</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="693"/>
-        <location filename="../x509_compare_dlg.cpp" line="910"/>
-        <location filename="../x509_compare_dlg.cpp" line="1177"/>
+        <location filename="../x509_compare_dlg.cpp" line="698"/>
+        <location filename="../x509_compare_dlg.cpp" line="915"/>
+        <location filename="../x509_compare_dlg.cpp" line="1182"/>
         <source>FingerPrint</source>
         <translation>지문</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="701"/>
-        <location filename="../x509_compare_dlg.cpp" line="918"/>
-        <location filename="../x509_compare_dlg.cpp" line="1185"/>
+        <location filename="../x509_compare_dlg.cpp" line="706"/>
+        <location filename="../x509_compare_dlg.cpp" line="923"/>
+        <location filename="../x509_compare_dlg.cpp" line="1190"/>
         <source>A and B %1 are the same</source>
         <translation>A 와 B %1 은 같습니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="707"/>
-        <location filename="../x509_compare_dlg.cpp" line="924"/>
-        <location filename="../x509_compare_dlg.cpp" line="1191"/>
+        <location filename="../x509_compare_dlg.cpp" line="712"/>
+        <location filename="../x509_compare_dlg.cpp" line="929"/>
+        <location filename="../x509_compare_dlg.cpp" line="1196"/>
         <source>A and B %1 are different</source>
         <translation>A 와 B %1 은 다릅니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="762"/>
+        <location filename="../x509_compare_dlg.cpp" line="767"/>
         <source>File A is not a CRL</source>
         <translation>A 파일은 CRL이 아닙니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="769"/>
+        <location filename="../x509_compare_dlg.cpp" line="774"/>
         <source>File B is not a CRL</source>
         <translation>B 파일은 CRL이 아닙니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="824"/>
+        <location filename="../x509_compare_dlg.cpp" line="829"/>
         <source>ThisUpdate</source>
         <translation>이번 업데이트</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="846"/>
+        <location filename="../x509_compare_dlg.cpp" line="851"/>
         <source>NextUpdate</source>
         <translation>다음 업데이트</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="867"/>
+        <location filename="../x509_compare_dlg.cpp" line="872"/>
         <source>SignAlgorithm</source>
         <translation>서명 알고리즘</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="974"/>
+        <location filename="../x509_compare_dlg.cpp" line="979"/>
         <source>File A is not a CSR</source>
         <translation>A 파일은 CSR이 아닙니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="981"/>
+        <location filename="../x509_compare_dlg.cpp" line="986"/>
         <source>File B is not a CSR</source>
         <translation>B 파일은 CSR이 아닙니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1133"/>
+        <location filename="../x509_compare_dlg.cpp" line="1138"/>
         <source>Challenge</source>
         <translation>Challenge</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1156"/>
+        <location filename="../x509_compare_dlg.cpp" line="1161"/>
         <source>UnstructuredName</source>
         <translation>UnstructuredName</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1240"/>
-        <location filename="../x509_compare_dlg.cpp" line="1250"/>
+        <location filename="../x509_compare_dlg.cpp" line="1256"/>
+        <location filename="../x509_compare_dlg.cpp" line="1266"/>
         <source>find a A file</source>
         <translation>A 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1265"/>
-        <location filename="../x509_compare_dlg.cpp" line="1308"/>
+        <location filename="../x509_compare_dlg.cpp" line="1281"/>
+        <location filename="../x509_compare_dlg.cpp" line="1324"/>
         <source>Selected in CertMan</source>
         <translation>CertMan에서 선택 됨</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1276"/>
+        <location filename="../x509_compare_dlg.cpp" line="1292"/>
         <source>This A file(%1) is not X509 format</source>
         <translation>이 A파일은(%1) X509 형식이 아닙니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1293"/>
+        <location filename="../x509_compare_dlg.cpp" line="1309"/>
         <source>find a B file</source>
         <translation>B 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1316"/>
+        <location filename="../x509_compare_dlg.cpp" line="1332"/>
         <source>This B file(%1) is not X509 format</source>
         <translation>이 B파일은(%1) X509 형식이 아닙니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1323"/>
+        <location filename="../x509_compare_dlg.cpp" line="1339"/>
         <source>The X509 types of files A(%1) and B(%2) are different</source>
         <translation>X509 파일 A(%1)와 B(%2)가 다릅니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1505"/>
-        <location filename="../x509_compare_dlg.cpp" line="1579"/>
+        <location filename="../x509_compare_dlg.cpp" line="1521"/>
+        <location filename="../x509_compare_dlg.cpp" line="1595"/>
         <source>This file is not X509 format</source>
         <translation>이 파일은 X509 형식이 아닙니다</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1254"/>
+        <location filename="../x509_compare_dlg.cpp" line="1270"/>
         <source>Select a A %1</source>
         <translation>A %1을 선택 하세요</translation>
     </message>
@@ -20836,7 +20841,7 @@ Use %2</source>
         <translation type="vanished">A 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1297"/>
+        <location filename="../x509_compare_dlg.cpp" line="1313"/>
         <source>Select a B %1</source>
         <translation>B %1을 선택 하세요</translation>
     </message>
@@ -20845,16 +20850,16 @@ Use %2</source>
         <translation type="vanished">B 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1495"/>
-        <location filename="../x509_compare_dlg.cpp" line="1542"/>
-        <location filename="../x509_compare_dlg.cpp" line="1569"/>
-        <location filename="../x509_compare_dlg.cpp" line="1616"/>
+        <location filename="../x509_compare_dlg.cpp" line="1511"/>
+        <location filename="../x509_compare_dlg.cpp" line="1558"/>
+        <location filename="../x509_compare_dlg.cpp" line="1585"/>
+        <location filename="../x509_compare_dlg.cpp" line="1632"/>
         <source>Select a %1</source>
         <translation>%1을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../x509_compare_dlg.cpp" line="1551"/>
-        <location filename="../x509_compare_dlg.cpp" line="1625"/>
+        <location filename="../x509_compare_dlg.cpp" line="1567"/>
+        <location filename="../x509_compare_dlg.cpp" line="1641"/>
         <source>failed to read data</source>
         <translation>데이타 읽기 실패</translation>
     </message>

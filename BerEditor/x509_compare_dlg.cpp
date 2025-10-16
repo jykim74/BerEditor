@@ -98,6 +98,7 @@ void X509CompareDlg::dropEvent(QDropEvent *event)
                 break;
             }
 
+            berApplet->warningBox( tr( "Both files A and B already exist"), this );
             break;
         }
     } else if (event->mimeData()->hasText()) {
@@ -267,8 +268,12 @@ void X509CompareDlg::clickBFind()
 void X509CompareDlg::clickClear()
 {
     mCompareTable->setRowCount(0);
+
+    mAPathText->clear();
+    mBPathText->clear();
     mAInfoText->clear();
     mBInfoText->clear();
+
     mCompareLabel->setText( tr( "Not Compared" ));
     mResBtn->setIcon( QIcon( ":/images/compare.png" ));
 
@@ -1232,6 +1237,17 @@ void X509CompareDlg::clickCompare()
     JS_BIN_reset( &B_bin_ );
     mAPathText->setPlaceholderText( "" );
     mBPathText->setPlaceholderText( "" );
+
+    /*
+    if( strAPath.length() > 0 && strBPath.length() > 0 )
+    {
+        if( strAPath == strBPath )
+        {
+            berApplet->warningBox( tr( "File paths A and B are the same" ), this );
+            return;
+        }
+    }
+    */
 
     if( strAPath.length() < 1 )
     {
