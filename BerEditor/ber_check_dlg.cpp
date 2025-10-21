@@ -239,7 +239,7 @@ void BERCheckDlg::clickCheckFormat()
         ret = JS_PKI_checkPriKeyFormat( &binSrc, sError );
     else if( strFormat == JS_PKI_BER_NAME_PRI_KEY_INFO )
         ret = JS_PKI_checkPriKeyInfoFormat( &binSrc, sError );
-    else if( strFormat == JS_PKI_BER_TYPE_ENC_PRI_KEY )
+    else if( strFormat == JS_PKI_BER_NAME_ENC_PRI_KEY )
         ret = JS_PKI_checkEncPriKeyFormat( &binSrc, sError );
     else if( strFormat == JS_PKI_BER_NAME_CMS )
         ret = JS_PKI_checkCMSFormat( &binSrc, sError );
@@ -332,7 +332,7 @@ void BERCheckDlg::clickView()
         ret = JS_PKI_checkPriKeyFormat( &binSrc, sError );
     else if( strFormat == JS_PKI_BER_NAME_PRI_KEY_INFO )
         ret = JS_PKI_checkPriKeyInfoFormat( &binSrc, sError );
-    else if( strFormat == JS_PKI_BER_TYPE_ENC_PRI_KEY )
+    else if( strFormat == JS_PKI_BER_NAME_ENC_PRI_KEY )
         ret = JS_PKI_checkEncPriKeyFormat( &binSrc, sError );
     else if( strFormat == JS_PKI_BER_NAME_CMS )
         ret = JS_PKI_checkCMSFormat( &binSrc, sError );
@@ -382,7 +382,7 @@ void BERCheckDlg::clickView()
             priKeyInfo.exec();
             JS_BIN_reset( &binPri );
         }
-        else if( strFormat == JS_PKI_BER_TYPE_ENC_PRI_KEY )
+        else if( strFormat == JS_PKI_BER_NAME_ENC_PRI_KEY )
         {
             PasswdDlg passDlg;
             QString strPass;
