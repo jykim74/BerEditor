@@ -511,7 +511,11 @@ void TTLVEncoderDlg::clickEncode()
         return;
     }
 
-    if( ret == 0 ) mOKBtn->setEnabled(true);
+    if( ret == CKR_OK )
+    {
+        mOKBtn->setEnabled(true);
+        berApplet->messageBox( tr("TTLV encoding success"), this );
+    }
 }
 
 void TTLVEncoderDlg::clickOK()

@@ -452,6 +452,8 @@ void KeyManDlg::clickKD_DeriveKey()
         berApplet->log( QString( "Hash     : %1").arg( strHash ));
         berApplet->log( QString( "Key      : %1" ).arg(getHexString(&binKey)));
         berApplet->logLine();
+
+        berApplet->messageBox( tr("Key is derived"), this );
     }
     else
     {
@@ -595,6 +597,7 @@ void KeyManDlg::runKW_Wrap()
     berApplet->log( QString( "KEK         : %1" ).arg( getHexString( &binWrappingKey)));
     berApplet->log( QString( "Wrapped Key : %1" ).arg( getHexString(&binOutput)));
     berApplet->logLine();
+    berApplet->messageBox( tr("The key is wrapped"), this );
 
 end :
     JS_BIN_reset( &binInput );
@@ -675,6 +678,7 @@ void KeyManDlg::runKW_Unwrap()
     berApplet->log( QString( "KEK            : %1" ).arg( getHexString( &binWrappingKey)));
     berApplet->log( QString( "Unwrapped Key  : %1" ).arg( getHexString(&binOutput)));
     berApplet->logLine();
+    berApplet->messageBox( tr("The key is unwrapped"), this );
 
 end :
     JS_BIN_reset( &binInput );
@@ -908,6 +912,7 @@ void KeyManDlg::runKEMEncap()
 
     mKEMKeyText->setPlainText( getHexString( &binKey ));
     mKEMWrappedKeyText->setPlainText( getHexString( &binWrappedKey ));
+    berApplet->messageBox( tr("The key is encapsulated"), this );
 
 end :
     JS_BIN_reset( &binPub );
@@ -955,6 +960,7 @@ void KeyManDlg::runKEMDecap()
     }
 
     mKEMKeyText->setPlainText( getHexString( &binDecKey ));
+    berApplet->messageBox( tr("The key is decapsulated"), this );
 
 end :
     JS_BIN_reset( &binPri );

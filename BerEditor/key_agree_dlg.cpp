@@ -193,6 +193,8 @@ void KeyAgreeDlg::calcualteA()
             berApplet->log( QString ( "PublicKey  : %1" ).arg( getHexString(&binPub)));
             berApplet->log( QString ( "Secret     : %1" ).arg( getHexString(&binSecX)));
             berApplet->logLine();
+
+            berApplet->messageBox( tr("Key has been generated"), this );
         }
         else
         {
@@ -240,6 +242,8 @@ void KeyAgreeDlg::calcualteA()
             berApplet->log( QString( "SecretX    : %1").arg( getHexString( &binSecX )));
             berApplet->log( QString( "SecretY    : %1").arg( getHexString( &binSecY )));
             berApplet->logLine();
+
+            berApplet->messageBox( tr("Key has been generated"), this );
         }
         else
         {
@@ -317,6 +321,8 @@ void KeyAgreeDlg::calcualteB()
             berApplet->log( QString ( "PublicKey  : %1" ).arg( getHexString(&binPub)));
             berApplet->log( QString ( "Secret     : %1" ).arg( getHexString(&binSecX)));
             berApplet->logLine();
+
+            berApplet->messageBox( tr("Key has been generated"), this );
         }
         else
         {
@@ -364,6 +370,8 @@ void KeyAgreeDlg::calcualteB()
             berApplet->log( QString( "SecretX    : %1").arg( getHexString( &binSecX )));
             berApplet->log( QString( "SecretY    : %1").arg( getHexString( &binSecY )));
             berApplet->logLine();
+
+            berApplet->messageBox( tr("Key has been generated"), this );
         }
         else
         {

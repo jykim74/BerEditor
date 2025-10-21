@@ -258,7 +258,7 @@ void SSSDlg::clickSplit()
     }
 
     berApplet->logLine();
- //   OpenSSL_SSS_Test();
+    berApplet->messageBox( tr("Key splitting was successful"), this );
 
 end :
     JS_BIN_reset( &binSrc );
@@ -275,7 +275,7 @@ void SSSDlg::clickJoin()
     BINList *pShareList = NULL;
     BIN binKey = {0,0};
     BIN binPrime = {0,0};
-    char *pKeyVal = NULL;
+    QString strKeyValue;
 
     if( nRow < 2 )
     {
@@ -324,26 +324,18 @@ void SSSDlg::clickJoin()
         goto end;
     }
 
-
-    if( mJoinedTypeCombo->currentText() == "String" )
-    {
-        JS_BIN_string( &binKey, &pKeyVal );
-    }
-    else if( mJoinedTypeCombo->currentText() == "Hex" )
-        JS_BIN_encodeHex( &binKey, &pKeyVal );
-    else if( mJoinedTypeCombo->currentText() == "Base64" )
-        JS_BIN_encodeBase64( &binKey, &pKeyVal );
+    strKeyValue = getStringFromBIN( &binKey, mJoinedTypeCombo->currentText() );
 
     berApplet->log( QString( "Combined Key     : %1").arg( getHexString( &binKey )));
     berApplet->logLine();
 
-    mJoinedText->setText( pKeyVal );
+    mJoinedText->setText( strKeyValue );
+    berApplet->messageBox( tr("Key join was successful"), this );
 
 end :
     JS_BIN_reset( &binKey );
     JS_BIN_reset( &binPrime );
     if( pShareList ) JS_BIN_resetList( &pShareList );
-    if( pKeyVal ) JS_free( pKeyVal );
 }
 
 void SSSDlg::clickMakePrime()

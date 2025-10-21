@@ -524,6 +524,8 @@ void PKCS7Dlg::clickSignedData()
         berApplet->log( QString( "Certificate : %1" ).arg( getHexString( &binCert )));
         berApplet->log( QString( "Output      : %1" ).arg( strOutput ));
         berApplet->logLine();
+
+        berApplet->messageBox( tr( "%1 message created" ).arg( mOutputCmdText->text() ), this );
     }
 
     mOutputText->setPlainText( strOutput );
@@ -619,6 +621,8 @@ void PKCS7Dlg::clickEnvelopedData()
         berApplet->log( QString( "Certificate : %1" ).arg( getHexString( &binCert )));
         berApplet->log( QString( "Output      : %1" ).arg( strOutput ));
         berApplet->logLine();
+
+        berApplet->messageBox( tr( "%1 message created" ).arg( mOutputCmdText->text() ), this );
     }
 
     mOutputText->setPlainText( strOutput );
@@ -763,6 +767,8 @@ void PKCS7Dlg::clickSignAndEnvloped()
         berApplet->log( QString( "KM Cert         : %1" ).arg( getHexString( &binKMCert )));
         berApplet->log( QString( "Output          : %1" ).arg( strOutput ));
         berApplet->logLine();
+
+        berApplet->messageBox( tr( "%1 message created" ).arg( mOutputCmdText->text() ), this );
     }
 
     mOutputText->setPlainText( strOutput );
@@ -1767,6 +1773,8 @@ void PKCS7Dlg::clickDigest()
         berApplet->log( QString( "Src         : %1" ).arg( getHexString( &binSrc )));
         berApplet->log( QString( "Output      : %1" ).arg( strOutput ));
         berApplet->logLine();
+
+        berApplet->messageBox( tr( "%1 message created" ).arg( mOutputCmdText->text() ), this );
     }
 
     mOutputText->setPlainText( strOutput );
@@ -1820,6 +1828,8 @@ void PKCS7Dlg::clickData()
         berApplet->logLine2();
         berApplet->log( QString( "Output      : %1" ).arg( strOutput ));
         berApplet->logLine();
+
+        berApplet->messageBox( tr( "%1 message created" ).arg( mOutputCmdText->text() ), this );
     }
 
     mOutputText->setPlainText( strOutput );
@@ -1879,6 +1889,8 @@ void PKCS7Dlg::clickGetData()
         berApplet->logLine2();
         berApplet->log( QString( "Output      : %1" ).arg( strOutput ));
         berApplet->logLine();
+
+        berApplet->messageBox( tr( "%1 success" ).arg( mOutputCmdText->text() ), this );
     }
 
     mOutputText->setPlainText( strOutput );
@@ -1940,6 +1952,8 @@ void PKCS7Dlg::clickGetDigest()
         berApplet->log( QString( "Digest      : %1" ).arg( sData.pDigest ));
         berApplet->log( QString( "Output      : %1" ).arg( strOutput ));
         berApplet->logLine();
+
+        berApplet->messageBox( tr( "%1 success" ).arg( mOutputCmdText->text() ), this );
     }
 
     mOutputText->setPlainText( strOutput );

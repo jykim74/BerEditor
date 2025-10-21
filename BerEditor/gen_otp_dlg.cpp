@@ -146,6 +146,8 @@ void GenOTPDlg::clickGenOTP()
         berApplet->log( QString( "T        : %1" ).arg( getHexString(&binT)));
         berApplet->log( QString( "OTP      : %1").arg( sOTP ));
         berApplet->logLine();
+
+        berApplet->messageBox( tr( "OTP has been created" ), this );
     }
     else
     {

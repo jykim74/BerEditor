@@ -169,7 +169,7 @@ end :
     if( ret == 0 )
     {
         ret = berApplet->decodeData( &data_, strTitle );
-        if( ret == 0 ) QDialog::accept();
+        if( ret == CKR_OK ) berApplet->messageBox( tr("Data decoding success"), this );
     }
     else
     {
