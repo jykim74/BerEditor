@@ -83,7 +83,7 @@ void CertIDDlg::setResponse( const BIN *pResp )
                                                          .arg( sStatusInfo.nStatus )));
     i++;
 
-    if( sStatusInfo.nStatus != JS_OCSP_STATUS_GOOD )
+    if( sStatusInfo.nStatus != JS_OCSP_CERT_STATUS_GOOD )
     {
         mStatusTable->insertRow(i);
         mStatusTable->setRowHeight(i, 10);
