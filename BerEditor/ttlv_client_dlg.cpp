@@ -418,6 +418,7 @@ void TTLVClientDlg::clickSend()
     }
 
     setUsedURL( strURL );
+    berApplet->messageBox( tr("TTLV message sent"), this );
 
 end :
     JS_BIN_reset( &binTTLV );

@@ -431,6 +431,13 @@ void DocSignerDlg::clickCMSOutputUp()
     mCMSSrcText->setPlainText( strOutput );
 
     mCMSOutputText->clear();
+
+    if( mSrcFileCheck->isChecked() == true )
+    {
+        bool bVal = berApplet->yesOrNoBox( tr("The source is checked as a file. Do you want to change it?"), this );
+        if( bVal == true )
+            mSrcFileCheck->click();
+    }
 }
 
 void DocSignerDlg::clickCMSOutputView()
@@ -1848,6 +1855,13 @@ void DocSignerDlg::clickJSON_JWSUp()
     QString strJWS = mJSON_JWSText->toPlainText();
     mJSONPayloadText->setPlainText( strJWS );
     mJSON_JWSText->clear();
+
+    if( mSrcFileCheck->isChecked() == true )
+    {
+        bool bVal = berApplet->yesOrNoBox( tr("The source is checked as a file. Do you want to change it?"), this );
+        if( bVal == true )
+            mSrcFileCheck->click();
+    }
 }
 
 void DocSignerDlg::clickJSON_PayloadView()
@@ -1916,6 +1930,13 @@ void DocSignerDlg::clickXML_ResUp()
     QString strRes = mXMLResText->toPlainText();
     mXMLBodyText->setPlainText( strRes );
     mXMLResText->clear();
+
+    if( mSrcFileCheck->isChecked() == true )
+    {
+        bool bVal = berApplet->yesOrNoBox( tr("The source is checked as a file. Do you want to change it?"), this );
+        if( bVal == true )
+            mSrcFileCheck->click();
+    }
 }
 
 void DocSignerDlg::clickXML_MakeSign()

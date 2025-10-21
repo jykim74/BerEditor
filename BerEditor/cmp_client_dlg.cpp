@@ -630,7 +630,6 @@ void CMPClientDlg::clickGENM()
     if( ret == 0 )
     {
         QString strRegInfo;
-        berApplet->messageLog( tr( "GENM success" ), this );
         pCurList = pNameValList;
 
         while( pCurList )
@@ -642,6 +641,7 @@ void CMPClientDlg::clickGENM()
         }
 
         mRegInfoText->setText( strRegInfo );
+        berApplet->messageLog( tr( "GENM success" ), this );
     }
     else
     {
@@ -1162,8 +1162,6 @@ void CMPClientDlg::clickSignGENM()
     else
     {
         QString strRegInfo;
-        berApplet->messageLog( tr( "GENM success" ), this );
-
         pCurList = pNameValList;
 
         while( pCurList )
@@ -1175,6 +1173,7 @@ void CMPClientDlg::clickSignGENM()
         }
 
         mRegInfoText->setText( strRegInfo );
+        berApplet->messageLog( tr( "GENM success" ), this );
     }
 
 end :
@@ -1425,12 +1424,6 @@ void CMPClientDlg::clickRR()
     }
 
 end :
-
-    if( ret != 0 )
-    {
-        berApplet->warnLog( tr( "RR fail: %1").arg(ret), this );
-    }
-
     JS_BIN_reset(&binCA);
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binCert );
@@ -1487,6 +1480,7 @@ void CMPClientDlg::clickSend()
 
     mResponseText->setPlainText( getHexString( &binRsp ));
     setUsedURL( strURL );
+    berApplet->messageBox( tr("CMP message sent"), this );
 
 end :
     JS_BIN_reset( &binReq );

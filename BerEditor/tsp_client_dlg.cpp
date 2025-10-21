@@ -422,6 +422,7 @@ void TSPClientDlg::clickEncode()
     }
 
     mRequestText->setPlainText( getHexString( &binReq ));
+    berApplet->messageBox( tr("TSP message encoded" ), this );
 
 end :
     JS_BIN_reset( &binReq );
@@ -495,6 +496,7 @@ void TSPClientDlg::clickSend()
     {
         mResponseText->setPlainText( getHexString( &binRsp ));
         setUsedURL( strURL );
+        berApplet->messageBox( tr("TSP message sent"), this );
     }
     else
     {

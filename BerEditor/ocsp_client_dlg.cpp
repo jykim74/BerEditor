@@ -1013,6 +1013,7 @@ void OCSPClientDlg::clickEncode()
     if( ret == 0 )
     {
         mRequestText->setPlainText( getHexString( &binReq ));
+        berApplet->messageBox( tr("OCSP message encoded" ), this );
     }
     else
     {
@@ -1066,6 +1067,7 @@ void OCSPClientDlg::clickSend()
     {
         mResponseText->setPlainText( getHexString( &binRsp ));
         setUsedURL( strURL );
+        berApplet->messageBox( tr("OCSP message sent"), this );
     }
     else
     {
@@ -1087,29 +1089,16 @@ void OCSPClientDlg::clickViewCertID()
     QString strRspHex = mResponseText->toPlainText();
 
     CertIDDlg certID;
-/*
-    if( strSrvCertPath.length() < 1 )
-    {
-        CertManDlg certMan;
-        certMan.setMode(ManModeSelCert);
-        certMan.setTitle( tr( "Select OCSP server certificate" ));
-        if( certMan.exec() != QDialog::Accepted )
-            goto end;
 
-        strSrvCertPath = certMan.getSeletedCertPath();
-        if( strSrvCertPath.length() < 1 )
-        {
-            berApplet->warningBox( tr( "find a OCSP server certificate"), this );
-            goto end;
-        }
-        else
-        {
-            mSrvCertPathText->setText( strSrvCertPath );
-        }
-    }
-*/
     JS_BIN_fileReadBER( strSrvCertPath.toLocal8Bit().toStdString().c_str(), &binSrvCert );
     JS_BIN_decodeHex( strRspHex.toStdString().c_str(), &binRsp );
+
+    int nStatus = JS_OCSP_statusResponse( &binRsp );
+    if( nStatus != JS_OCSP_RESPONSE_STATUS_SUCCESSFUL )
+    {
+        berApplet->warningBox( tr("This is not a successful OCSP response message."), this );
+        goto end;
+    }
 
     certID.setResponse( &binRsp );
     certID.exec();

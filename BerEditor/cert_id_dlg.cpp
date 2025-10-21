@@ -36,8 +36,8 @@ void CertIDDlg::setResponse( const BIN *pResp )
     JCertIDInfo sIDInfo;
     JCertStatusInfo sStatusInfo;
     BIN binSignCert = {0,0};
-    char sRevokedTime[64]
-        ;
+    char sRevokedTime[64];
+
     memset( &sIDInfo, 0x00, sizeof(sIDInfo));
     memset( &sStatusInfo, 0x00, sizeof(sStatusInfo));
 

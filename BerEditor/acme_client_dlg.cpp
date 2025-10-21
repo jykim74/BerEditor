@@ -819,6 +819,7 @@ void ACMEClientDlg::clickGetNonce()
     {
         mNonceText->setText( pNonce );
         JS_free( pNonce );
+        berApplet->messageBox( tr( "Nonce fetch success" ), this );
     }
 
 //    mRspCmdText->setText( kCmdNewNonce  );
@@ -852,6 +853,7 @@ void ACMEClientDlg::clickGetLocation()
 
         mRspCmdText->setText( kCmdLocation );
         mRspStatusText->setText( QString("%1").arg( nStatus ));
+        berApplet->messageBox( tr("Location get success"), this );
     }
     else
     {
@@ -922,6 +924,7 @@ void ACMEClientDlg::clickGetDirectory()
 
     mRspCmdText->setText( kCmdDirectory  );
     mStatusText->setText( QString("%1").arg( nStatus ));
+    berApplet->messageBox( tr("Successfully retrieved directory message"), this );
 
 end :
     JS_BIN_reset( &binRsp );
@@ -1376,6 +1379,7 @@ int ACMEClientDlg::clickMake()
     if( ret == JSR_OK )
     {
         mRequestText->setPlainText( acmeObj.getPacketJson() );
+        berApplet->messageBox( tr("Successfully created message"), this );
     }
 
     mResponseText->clear();
@@ -1527,6 +1531,8 @@ int ACMEClientDlg::clickSend()
     }
 
     if( mAutoParseCheck->isChecked() ) clickParse();
+
+    berApplet->messageBox( tr( "ACME message sent" ), this );
 
 end :
     if( pRspHeaderList ) JS_UTIL_resetNameValList( &pRspHeaderList );

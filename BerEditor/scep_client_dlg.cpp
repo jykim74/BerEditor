@@ -1195,6 +1195,7 @@ void SCEPClientDlg::clickSend()
 
     mResponseText->setPlainText( getHexString( &binRsp ));
     setUsedURL( strURL );
+    berApplet->messageBox( tr("SCEP message sent"), this );
 
 end :
     JS_BIN_reset( &binReq );
