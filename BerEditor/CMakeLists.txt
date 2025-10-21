@@ -225,6 +225,7 @@ add_executable(${PROJECT_NAME}
     doc_signer_dlg.h doc_signer_dlg.cpp doc_signer_dlg.ui
     time_stamp_dlg.h time_stamp_dlg.cpp time_stamp_dlg.ui
     ber_check_dlg.h ber_check_dlg.cpp ber_check_dlg.ui
+    thread_work_dlg.h thread_work_dlg.cpp thread_work_dlg.ui
 )
 
 target_link_options( ${PROJECT_NAME} PRIVATE -mwindows -MD )

@@ -14,6 +14,7 @@
 #include "cert_man_dlg.h"
 #include "key_pair_man_dlg.h"
 #include "export_dlg.h"
+#include "thread_work_dlg.h"
 
 const QStringList sGList = { "02", "05" };
 
