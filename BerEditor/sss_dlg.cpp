@@ -211,6 +211,13 @@ void SSSDlg::clickSplit()
     getBINFromString( &binSrc, mSrcTypeCombo->currentText(), strSrc );
     JS_BIN_decodeHex( mPrimeText->text().toStdString().c_str(), &binPrime );
 
+    if( binSrc.nLen <= 0 )
+    {
+        berApplet->warningBox( tr("There is no input value or the input type is incorrect."), this );
+        mSrcText->setFocus();
+        goto end;
+    }
+
     berApplet->logLine();
     berApplet->log( "-- Split Key" );
     berApplet->logLine2();
@@ -238,11 +245,11 @@ void SSSDlg::clickSplit()
     while( pCurList )
     {
         QString strVal = getHexString( pCurList->Bin.pVal, pCurList->Bin.nLen );
-        mShareTable->insertRow(i);
+        mShareTable->insertRow(0);
 
-        mShareTable->setRowHeight( i, 10 );
-        mShareTable->setItem( i, 0, new QTableWidgetItem( QString( "%1").arg(i+1)));
-        mShareTable->setItem( i, 1, new QTableWidgetItem( strVal ));
+        mShareTable->setRowHeight( 0, 10 );
+        mShareTable->setItem( 0, 0, new QTableWidgetItem( QString( "%1").arg(i+1)));
+        mShareTable->setItem( 0, 1, new QTableWidgetItem( strVal ));
 
         berApplet->log( QString( "Split Key Value : %1").arg( getHexString(&pCurList->Bin)));
 
