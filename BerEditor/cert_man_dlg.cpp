@@ -30,7 +30,10 @@ static QStringList kPBEv2List = { "AES-128-CBC", "AES-256-CBC", "ARIA-128-CBC", 
 
 static QStringList kKeyTypeList = {
     "ALL", JS_PKI_KEY_NAME_RSA, JS_PKI_KEY_NAME_ECDSA, JS_PKI_KEY_NAME_DSA,
-    JS_PKI_KEY_NAME_SM2, JS_PKI_KEY_NAME_EDDSA,
+    JS_PKI_KEY_NAME_SM2, JS_PKI_KEY_NAME_EDDSA
+};
+
+static QStringList kPQCKeyTypeList = {
     JS_PKI_KEY_NAME_ML_DSA, JS_PKI_KEY_NAME_SLH_DSA
 };
 
@@ -38,6 +41,8 @@ CertManDlg::CertManDlg(QWidget *parent) :
     QDialog(parent)
 {
     mode_ = ManModeBase;
+    is_pqc_ = true;
+
     load_ee_ = false;
     load_other_ = false;
     load_ca_ = false;
@@ -214,6 +219,29 @@ void CertManDlg::setMode( int nMode )
         connect( mCA_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickOK()));
         connect( mCRL_Table, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickOK()));
         connect( mRCA_CertTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(clickOK()));
+    }
+}
+
+void CertManDlg::setPQCEnable( bool bVal )
+{
+    is_pqc_ = bVal;
+
+    mKeyTypeCombo->clear();
+    mOtherKeyTypeCombo->clear();
+    mCAKeyTypeCombo->clear();
+    mRCAKeyTypeCombo->clear();
+
+    mKeyTypeCombo->addItems( kKeyTypeList );
+    mOtherKeyTypeCombo->addItems( kKeyTypeList );
+    mCAKeyTypeCombo->addItems( kKeyTypeList );
+    mRCAKeyTypeCombo->addItems( kKeyTypeList );
+
+    if( bVal == true )
+    {
+        mKeyTypeCombo->addItems( kPQCKeyTypeList );
+        mOtherKeyTypeCombo->addItems( kPQCKeyTypeList );
+        mCAKeyTypeCombo->addItems( kPQCKeyTypeList );
+        mRCAKeyTypeCombo->addItems( kPQCKeyTypeList );
     }
 }
 
@@ -472,9 +500,16 @@ void CertManDlg::initUI()
     int nWidth = width() * 8/10;
 #endif
     mKeyTypeCombo->addItems( kKeyTypeList );
+    mKeyTypeCombo->addItems( kPQCKeyTypeList );
+
     mOtherKeyTypeCombo->addItems( kKeyTypeList );
+    mOtherKeyTypeCombo->addItems( kPQCKeyTypeList );
+
     mCAKeyTypeCombo->addItems( kKeyTypeList );
+    mCAKeyTypeCombo->addItems( kPQCKeyTypeList );
+
     mRCAKeyTypeCombo->addItems( kKeyTypeList );
+    mRCAKeyTypeCombo->addItems( kPQCKeyTypeList );
 
     QStringList sTableLabels = { tr( "Subject DN" ), tr( "Expire" ), tr( "Issuer DN" ) };
 
@@ -857,6 +892,14 @@ void CertManDlg::loadEEList()
             if( nKeyType != JS_PKI_KEY_TYPE_SLH_DSA )
                 continue;
         }
+        else
+        {
+            if( is_pqc_ == false )
+            {
+                if( nKeyType == JS_PKI_KEY_TYPE_ML_DSA || nKeyType == JS_PKI_KEY_TYPE_SLH_DSA )
+                    continue;
+            }
+        }
 
         ret = JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
         if( ret != 0 )
@@ -965,6 +1008,14 @@ void CertManDlg::loadOtherList()
             if( nKeyType != JS_PKI_KEY_TYPE_SLH_DSA )
                 continue;
         }
+        else
+        {
+            if( is_pqc_ == false )
+            {
+                if( nKeyType == JS_PKI_KEY_TYPE_ML_DSA || nKeyType == JS_PKI_KEY_TYPE_SLH_DSA )
+                    continue;
+            }
+        }
 
         ret = JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
         if( ret != 0 )
@@ -1069,6 +1120,14 @@ void CertManDlg::loadCAList()
         {
             if( nKeyType != JS_PKI_KEY_TYPE_SLH_DSA )
                 continue;
+        }
+        else
+        {
+            if( is_pqc_ == false )
+            {
+                if( nKeyType == JS_PKI_KEY_TYPE_ML_DSA || nKeyType == JS_PKI_KEY_TYPE_SLH_DSA )
+                    continue;
+            }
         }
 
         ret = JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );
@@ -1239,6 +1298,14 @@ void CertManDlg::loadTrustList()
         {
             if( nKeyType != JS_PKI_KEY_TYPE_SLH_DSA )
                 continue;
+        }
+        else
+        {
+            if( is_pqc_ == false )
+            {
+                if( nKeyType == JS_PKI_KEY_TYPE_ML_DSA || nKeyType == JS_PKI_KEY_TYPE_SLH_DSA )
+                    continue;
+            }
         }
 
         ret = JS_PKI_getCertInfo( &binCert, &sCertInfo, NULL );

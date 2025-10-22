@@ -139,6 +139,8 @@ private:
     void setUsedURL( const QString strURL );
     void setDstFile();
 
+    void setEnableXMLData( bool bVal );
+
     ACMEObject json_obj_;
     QXmlStreamReader xml_;
     BIN cms_;

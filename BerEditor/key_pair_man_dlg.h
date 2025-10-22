@@ -30,6 +30,7 @@ public:
     explicit KeyPairManDlg(QWidget *parent = nullptr);
     ~KeyPairManDlg();
     void setMode( int nMode );
+    void setPQCEnable( bool bVal );
     void setTitle( const QString strTitle );
     void setKeyAlg( const QString strKeyAlg );
 
@@ -114,6 +115,7 @@ private:
     const QString getSelectedPath();
     int mode_;
     bool load_keypair_;
+    bool is_pqc_;
 };
 
 #endif // KEY_PAIR_MAN_DLG_H

@@ -36,6 +36,7 @@ public:
     ~CertManDlg();
 
     void setMode( int nMode );
+    void setPQCEnable( bool bVal );
     void setTab( int index );
     void setTitle( const QString strTitle );
     void setKeyAlg( const QString strKeyAlg );
@@ -181,6 +182,7 @@ private:
     BIN ca_cert_;
     BIN crl_;
     int mode_;
+    bool is_pqc_;
 
     bool load_ee_;
     bool load_other_;

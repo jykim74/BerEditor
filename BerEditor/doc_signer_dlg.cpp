@@ -861,6 +861,13 @@ void DocSignerDlg::setDstFile()
     }
 }
 
+void DocSignerDlg::setEnableXMLData( bool bVal )
+{
+    mXMLDataLabel->setEnabled( bVal );
+    mXMLDataText->setEnabled( bVal );
+    mXMLDataLenText->setEnabled( bVal );
+}
+
 int DocSignerDlg::getPubKey( BIN *pPubKey )
 {
     if( mUseCertManCheck->isChecked() == true )
@@ -873,6 +880,9 @@ int DocSignerDlg::getPubKey( BIN *pPubKey )
 
         certMan.setMode( ManModeSelCert );
         certMan.setTitle( tr( "Select a sign certificate" ));
+
+        if( mTabSigner->currentIndex() != 0 )
+            certMan.setPQCEnable( false );
 
         if( certMan.exec() != QDialog::Accepted )
             return -1;
@@ -891,6 +901,9 @@ int DocSignerDlg::getPubKey( BIN *pPubKey )
         KeyPairManDlg keyPairMan;
         keyPairMan.setTitle( tr( "Select keypair" ));
         keyPairMan.setMode( KeyPairModeSelect );
+
+        if( mTabSigner->currentIndex() != 0 )
+            keyPairMan.setPQCEnable( false );
 
         if( keyPairMan.exec() != QDialog::Accepted )
             return -1;
@@ -914,6 +927,9 @@ int DocSignerDlg::getCert( BIN *pCert )
     certMan.setMode( ManModeSelCert );
     certMan.setTitle( tr( "Select a sign certificate" ));
 
+    if( mTabSigner->currentIndex() != 0 )
+        certMan.setPQCEnable( false );
+
     if( certMan.exec() != QDialog::Accepted )
         return -1;
 
@@ -932,6 +948,8 @@ int DocSignerDlg::getPriKey( BIN *pPriKey, BIN *pCert )
 
         certMan.setMode( ManModeSelBoth );
         certMan.setTitle( tr( "Select a sign certificate" ));
+        if( mTabSigner->currentIndex() != 0 )
+            certMan.setPQCEnable( false );
 
         if( certMan.exec() != QDialog::Accepted )
             return -1;
@@ -947,6 +965,8 @@ int DocSignerDlg::getPriKey( BIN *pPriKey, BIN *pCert )
         KeyPairManDlg keyPairMan;
         keyPairMan.setTitle( tr( "Select keypair" ));
         keyPairMan.setMode( KeyPairModeSelect );
+        if( mTabSigner->currentIndex() != 0 )
+            keyPairMan.setPQCEnable( false );
 
         if( keyPairMan.exec() != QDialog::Accepted )
             return -1;
@@ -974,6 +994,8 @@ int DocSignerDlg::getKeyPair( BIN *pPubKey, BIN *pPriKey )
 
         certMan.setMode( ManModeSelBoth );
         certMan.setTitle( tr( "Select a sign certificate" ));
+        if( mTabSigner->currentIndex() != 0 )
+            certMan.setPQCEnable( false );
 
         if( certMan.exec() != QDialog::Accepted )
             return -1;
@@ -994,6 +1016,8 @@ int DocSignerDlg::getKeyPair( BIN *pPubKey, BIN *pPriKey )
         KeyPairManDlg keyPairMan;
         keyPairMan.setTitle( tr( "Select keypair" ));
         keyPairMan.setMode( KeyPairModeSelect );
+        if( mTabSigner->currentIndex() != 0 )
+            keyPairMan.setPQCEnable( false );
 
         if( keyPairMan.exec() != QDialog::Accepted )
             return -1;
@@ -1019,6 +1043,8 @@ int DocSignerDlg::getPriKeyCert( BIN *pPriKey, BIN *pCert )
 
     certMan.setMode( ManModeSelBoth );
     certMan.setTitle( tr( "Select a sign certificate" ));
+    if( mTabSigner->currentIndex() != 0 )
+        certMan.setPQCEnable( false );
 
     if( certMan.exec() != QDialog::Accepted )
         return -1;
@@ -1966,9 +1992,14 @@ void DocSignerDlg::checkXML_UseTemplate()
 {
     bool bVal = mXMLTemplateCheck->isChecked();
 
-    mXMLDataLabel->setEnabled( bVal );
-    mXMLDataText->setEnabled( bVal );
-    mXMLDataLenText->setEnabled( bVal );
+    if( mXMLEncryptCheck->isChecked() == true )
+    {
+        setEnableXMLData( bVal );
+    }
+    else
+    {
+        setEnableXMLData( !bVal );
+    }
 }
 
 void DocSignerDlg::clickXML_BodyClear()
@@ -2045,12 +2076,23 @@ void DocSignerDlg::checkXML_Sign()
 {
     mXMLMakeBtn->setText( tr("Make Sign") );
     mXMLVerifyBtn->setText( tr("Verify Sign" ));
+
+    setEnableXMLData( false );
 }
 
 void DocSignerDlg::checkXML_Encrypt()
 {
     mXMLMakeBtn->setText( tr("Encrypt") );
     mXMLVerifyBtn->setText( tr("Decrypt") );
+
+    if( mXMLTemplateCheck->isChecked() == true )
+    {
+        setEnableXMLData( true );
+    }
+    else
+    {
+        setEnableXMLData( false );
+    }
 }
 
 void DocSignerDlg::clickXML_Make()

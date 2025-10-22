@@ -25,12 +25,16 @@
 #include "js_error.h"
 #include "js_pqc.h"
 
+static QString sKeyTypeAll = "ALL";
 static QStringList kVersionList = { "V1", "V2" };
 static QStringList kPBEv1List = { "PBE-SHA1-3DES", "PBE-SHA1-2DES" };
 static QStringList kPBEv2List = { "AES-128-CBC", "AES-256-CBC", "ARIA-128-CBC", "ARIA-256-CBC" };
 static QStringList kKeyTypeList = {
-    "ALL", JS_PKI_KEY_NAME_RSA, JS_PKI_KEY_NAME_ECDSA, JS_PKI_KEY_NAME_DSA,
-    JS_PKI_KEY_NAME_SM2, JS_PKI_KEY_NAME_EDDSA,
+    sKeyTypeAll, JS_PKI_KEY_NAME_RSA, JS_PKI_KEY_NAME_ECDSA, JS_PKI_KEY_NAME_DSA,
+    JS_PKI_KEY_NAME_SM2, JS_PKI_KEY_NAME_EDDSA
+};
+
+static QStringList kPQCKeyTypeList = {
     JS_PKI_KEY_NAME_ML_KEM, JS_PKI_KEY_NAME_ML_DSA, JS_PKI_KEY_NAME_SLH_DSA
 };
 
@@ -44,6 +48,7 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
     initUI();
     mode_ = 0;
     load_keypair_ = false;
+    is_pqc_ = true;
 
     connect( mVersionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeVerison(int)));
     connect( mKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(keyTypeChanged(int)));
@@ -168,6 +173,16 @@ void KeyPairManDlg::setMode( int nMode )
     }
 }
 
+void KeyPairManDlg::setPQCEnable( bool bVal )
+{
+    is_pqc_ = bVal;
+
+    mKeyTypeCombo->clear();
+    mKeyTypeCombo->addItems( kKeyTypeList );
+
+    if( bVal == true ) mKeyTypeCombo->addItems( kPQCKeyTypeList );
+}
+
 void KeyPairManDlg::setTitle( const QString strTitle )
 {
     mTitleLabel->setText( strTitle );
@@ -186,6 +201,7 @@ void KeyPairManDlg::initUI()
     int nWidth = width() * 8/10;
 #endif
     mKeyTypeCombo->addItems( kKeyTypeList );
+    mKeyTypeCombo->addItems( kPQCKeyTypeList );
 
     mCheckKeyPairBtn->setToolTip( tr( "Check if the private key and public key pair are correct" ) );
     mSaveToListBtn->setToolTip( tr( "Store private and public keys in the key pair list" ));
@@ -378,6 +394,14 @@ void KeyPairManDlg:: loadKeyPairList()
         {
             if( nAlg != JS_PKI_KEY_TYPE_SLH_DSA )
                 continue;
+        }
+        else // ALL case
+        {
+            if( is_pqc_ == false )
+            {
+                if( nAlg == JS_PKI_KEY_TYPE_ML_DSA || nAlg == JS_PKI_KEY_TYPE_SLH_DSA || nAlg == JS_PKI_KEY_TYPE_ML_KEM )
+                    continue;
+            }
         }
 
         strAlg = JS_PKI_getKeyAlgName( nAlg );
