@@ -194,8 +194,6 @@ void KeyAgreeDlg::calcualteA()
             berApplet->log( QString ( "PublicKey  : %1" ).arg( getHexString(&binPub)));
             berApplet->log( QString ( "Secret     : %1" ).arg( getHexString(&binSecX)));
             berApplet->logLine();
-
-            berApplet->messageBox( tr("Key has been generated"), this );
         }
         else
         {
@@ -242,9 +240,7 @@ void KeyAgreeDlg::calcualteA()
             berApplet->log( QString( "Y          : %1").arg( getHexString( &binY )));
             berApplet->log( QString( "SecretX    : %1").arg( getHexString( &binSecX )));
             berApplet->log( QString( "SecretY    : %1").arg( getHexString( &binSecY )));
-            berApplet->logLine();
-
-            berApplet->messageBox( tr("Key has been generated"), this );
+            berApplet->logLine();            
         }
         else
         {
@@ -258,7 +254,14 @@ void KeyAgreeDlg::calcualteA()
     if( ret == 0 )
     {
         mSecretKeyText->setPlainText(getHexString(binSecX.pVal, binSecX.nLen));
-        if( binSecY.nLen > 0 ) mSecretKeyText->appendPlainText(getHexString(binSecY.pVal, binSecY.nLen));
+
+        if( mECDHDisplaySecretYCheck->isChecked() )
+        {
+            if( binSecY.nLen > 0 )
+                mSecretKeyText->appendPlainText(getHexString(binSecY.pVal, binSecY.nLen));
+        }
+
+        berApplet->messageBox( tr("Key has been generated"), this );
     }
 
     update();
@@ -322,8 +325,6 @@ void KeyAgreeDlg::calcualteB()
             berApplet->log( QString ( "PublicKey  : %1" ).arg( getHexString(&binPub)));
             berApplet->log( QString ( "Secret     : %1" ).arg( getHexString(&binSecX)));
             berApplet->logLine();
-
-            berApplet->messageBox( tr("Key has been generated"), this );
         }
         else
         {
@@ -371,8 +372,6 @@ void KeyAgreeDlg::calcualteB()
             berApplet->log( QString( "SecretX    : %1").arg( getHexString( &binSecX )));
             berApplet->log( QString( "SecretY    : %1").arg( getHexString( &binSecY )));
             berApplet->logLine();
-
-            berApplet->messageBox( tr("Key has been generated"), this );
         }
         else
         {
@@ -386,7 +385,14 @@ void KeyAgreeDlg::calcualteB()
     if( ret == 0 )
     {
         mSecretKeyText->setPlainText(getHexString( binSecX.pVal, binSecX.nLen ));
-        if( binSecY.nLen > 0 ) mSecretKeyText->appendPlainText(getHexString(binSecY.pVal, binSecY.nLen));
+
+        if( mECDHDisplaySecretYCheck->isChecked() == true )
+        {
+            if( binSecY.nLen > 0 )
+                mSecretKeyText->appendPlainText(getHexString(binSecY.pVal, binSecY.nLen));
+        }
+
+        berApplet->messageBox( tr("Key has been generated"), this );
     }
 
     update();

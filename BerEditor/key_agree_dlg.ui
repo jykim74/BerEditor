@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>616</width>
-    <height>722</height>
+    <height>589</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -106,7 +106,7 @@
    <item row="0" column="0" colspan="2">
     <widget class="QTabWidget" name="mTabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mDHTab">
       <attribute name="title">
@@ -1161,6 +1161,20 @@
           </widget>
          </item>
         </layout>
+       </item>
+       <item>
+        <widget class="Line" name="line_9">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="mECDHDisplaySecretYCheck">
+         <property name="text">
+          <string>Display shared key Y value</string>
+         </property>
+        </widget>
        </item>
        <item>
         <spacer name="verticalSpacer">

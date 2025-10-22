@@ -145,7 +145,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="mTabCMS">
       <attribute name="title">
@@ -833,10 +833,17 @@
            </property>
           </spacer>
          </item>
-         <item row="0" column="0">
+         <item row="0" column="2">
           <widget class="QPushButton" name="mJSONComputeSignatureBtn">
            <property name="text">
             <string>Compute Signature</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="mJSONCheckObjectBtn">
+           <property name="text">
+            <string>Check Object</string>
            </property>
           </widget>
          </item>
@@ -1197,21 +1204,42 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="1">
-          <widget class="QPushButton" name="mXMLVerifySignBtn">
+         <item row="0" column="2">
+          <widget class="QRadioButton" name="mXMLEncryptCheck">
            <property name="text">
-            <string>Verify Sign</string>
+            <string>Encryption</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="3">
-          <widget class="QPushButton" name="mXMLEncryptBtn">
+         <item row="0" column="1">
+          <widget class="QRadioButton" name="mXMLSignCheck">
+           <property name="text">
+            <string>Digital Signature</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="mXMLCheckBodyBtn">
+           <property name="text">
+            <string>Check Body</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QPushButton" name="mXMLMakeBtn">
            <property name="text">
             <string>Encrypt</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
+         <item row="0" column="5">
+          <widget class="QPushButton" name="mXMLVerifyBtn">
+           <property name="text">
+            <string>Decrypt</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
           <spacer name="horizontalSpacer_9">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -1223,20 +1251,6 @@
             </size>
            </property>
           </spacer>
-         </item>
-         <item row="0" column="0">
-          <widget class="QPushButton" name="mXMLMakeSignBtn">
-           <property name="text">
-            <string>Make Sign</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="4">
-          <widget class="QPushButton" name="mXMLDecryptBtn">
-           <property name="text">
-            <string>Decrypt</string>
-           </property>
-          </widget>
          </item>
         </layout>
        </item>
@@ -1505,6 +1519,7 @@
   <tabstop>mJSONPayloadViewBtn</tabstop>
   <tabstop>mJSONPayloadLenText</tabstop>
   <tabstop>mJSONPayloadText</tabstop>
+  <tabstop>mJSONCheckObjectBtn</tabstop>
   <tabstop>mJSONComputeSignatureBtn</tabstop>
   <tabstop>mJSONVerifySignatureBtn</tabstop>
   <tabstop>mJSON_JWSClearBtn</tabstop>
@@ -1517,10 +1532,11 @@
   <tabstop>mXMLBodyText</tabstop>
   <tabstop>mXMLDataText</tabstop>
   <tabstop>mXMLDataLenText</tabstop>
-  <tabstop>mXMLMakeSignBtn</tabstop>
-  <tabstop>mXMLVerifySignBtn</tabstop>
-  <tabstop>mXMLEncryptBtn</tabstop>
-  <tabstop>mXMLDecryptBtn</tabstop>
+  <tabstop>mXMLCheckBodyBtn</tabstop>
+  <tabstop>mXMLSignCheck</tabstop>
+  <tabstop>mXMLEncryptCheck</tabstop>
+  <tabstop>mXMLMakeBtn</tabstop>
+  <tabstop>mXMLVerifyBtn</tabstop>
   <tabstop>mXMLResClearBtn</tabstop>
   <tabstop>mXMLResUpBtn</tabstop>
   <tabstop>mXMLResLenText</tabstop>

@@ -88,6 +88,7 @@ private slots:
     void clickCMSGetData();
     void clickCMSGetDigest();
 
+    void clickJSON_CheckObject();
     void clickJSON_ComputeSignature();
     void clickJSON_VerifySignature();
     void clickJSON_PayloadClear();
@@ -108,6 +109,12 @@ private slots:
     void clickXML_Encrypt();
     void clickXML_VerifySign();
     void clickXML_Decrypt();
+
+    void clickXML_Check();
+    void checkXML_Sign();
+    void checkXML_Encrypt();
+    void clickXML_Make();
+    void clickXML_Verify();
 
     void changeXML_Body();
     void changeXML_Data();

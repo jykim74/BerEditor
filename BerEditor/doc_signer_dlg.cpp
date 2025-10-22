@@ -83,6 +83,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mJSON_JWSText, SIGNAL(textChanged()), this, SLOT(changeJSON_JWS()));
     connect( mJSON_JWSUpBtn, SIGNAL(clicked()), this, SLOT(clickJSON_JWSUp()));
 
+    connect( mJSONCheckObjectBtn, SIGNAL(clicked()), this, SLOT(clickJSON_CheckObject()));
     connect( mJSONComputeSignatureBtn, SIGNAL(clicked()), this, SLOT(clickJSON_ComputeSignature()));
     connect( mJSONVerifySignatureBtn, SIGNAL(clicked()), this, SLOT(clickJSON_VerifySignature()));
     connect( mJSONPayloadClearBtn, SIGNAL(clicked()), this, SLOT(clickJSON_PayloadClear()));
@@ -91,10 +92,11 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mJSON_JWSViewBtn, SIGNAL(clicked()), this, SLOT(clickJSON_JWSView()));
 
     connect( mXMLTemplateCheck, SIGNAL(clicked()), this, SLOT(checkXML_UseTemplate()));
-    connect( mXMLMakeSignBtn, SIGNAL(clicked()), this, SLOT(clickXML_MakeSign()));
-    connect( mXMLEncryptBtn, SIGNAL(clicked()), this, SLOT(clickXML_Encrypt()));
-    connect( mXMLVerifySignBtn, SIGNAL(clicked()), this, SLOT(clickXML_VerifySign()));
-    connect( mXMLDecryptBtn, SIGNAL(clicked()), this, SLOT(clickXML_Decrypt()));
+    connect( mXMLCheckBodyBtn, SIGNAL(clicked()), this, SLOT(clickXML_Check()));
+    connect( mXMLSignCheck, SIGNAL(clicked()), this, SLOT(checkXML_Sign()));
+    connect( mXMLEncryptCheck, SIGNAL(clicked()), this, SLOT(checkXML_Encrypt()));
+    connect( mXMLMakeBtn, SIGNAL(clicked()), this, SLOT(clickXML_Make()));
+    connect( mXMLVerifyBtn, SIGNAL(clicked()), this, SLOT(clickXML_Verify()));
 
     connect( mXMLBodyClearBtn, SIGNAL(clicked()), this, SLOT(clickXML_BodyClear()));
     connect( mXMLBodyText, SIGNAL(textChanged()), this, SLOT(changeXML_Body()));
@@ -589,6 +591,8 @@ void DocSignerDlg::initUI()
     checkDstFile();
 
     checkXML_UseTemplate();
+    mXMLSignCheck->setChecked(true);
+    checkXML_Sign();
 }
 
 void DocSignerDlg::initialize()
@@ -1648,6 +1652,57 @@ end:
     JS_CMS_resetDigest( &sDigestInfo );
 }
 
+void DocSignerDlg::clickJSON_CheckObject()
+{
+    int ret = 0;
+
+    QString strPayload;
+
+    if( mSrcFileCheck->isChecked() == true )
+    {
+        BIN binSrc = {0,0};
+        QString strSrcPath = mSrcPathText->text();
+        char *pString = NULL;
+
+        if( strSrcPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find a source json" ), this );
+            mSrcPathText->setFocus();
+            return;
+        }
+
+        JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+        JS_BIN_string( &binSrc, &pString );
+
+        if( pString )
+        {
+            strPayload = pString;
+            JS_free( pString );
+        }
+    }
+    else
+    {
+        strPayload = mJSONPayloadText->toPlainText();
+
+        if( strPayload.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a payload" ), this );
+            mJSONPayloadText->setFocus();
+            return;
+        }
+    }
+
+    QJsonDocument jDoc = QJsonDocument::fromJson( strPayload.toLocal8Bit() );
+    if( jDoc.isObject() == false )
+    {
+        berApplet->warningBox( tr( "Payload is not object" ), this );
+        mJSONPayloadText->setFocus();
+        return;
+    }
+
+    berApplet->messageBox( tr( "Payload is object" ), this );
+}
+
 void DocSignerDlg::clickJSON_ComputeSignature()
 {
     int ret = 0;
@@ -1937,6 +1992,80 @@ void DocSignerDlg::clickXML_ResUp()
         if( bVal == true )
             mSrcFileCheck->click();
     }
+}
+
+void DocSignerDlg::clickXML_Check()
+{
+    int ret = 0;
+    QString strSrcPath;
+    BIN binSrc = {0,0};
+
+    if( mSrcFileCheck->isChecked() == true )
+    {
+        strSrcPath = mSrcPathText->text();
+        if( strSrcPath.length() < 1 )
+        {
+            berApplet->warningBox( tr( "find a source xml" ), this );
+            mSrcPathText->setFocus();
+            return;
+        }
+
+        JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
+    }
+    else
+    {
+        QString strBody = mXMLBodyText->toPlainText();
+        if( strBody.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Enter a XML body" ), this );
+            mXMLBodyText->setFocus();
+            return;
+        }
+
+        JS_BIN_set( &binSrc, (unsigned char *)strBody.toStdString().c_str(), strBody.length() );
+    }
+
+    if( JS_XML_isValidXML( &binSrc ) != 1 )
+    {
+        berApplet->warningBox( tr( "The input Body value is not a valid XML value."), this );
+        goto end;
+    }
+
+    berApplet->messageBox( tr( "The input Body value is a valid XML value." ), this );
+
+end :
+    JS_XML_final();
+    JS_BIN_reset( &binSrc );
+
+    return;
+}
+
+void DocSignerDlg::checkXML_Sign()
+{
+    mXMLMakeBtn->setText( tr("Make Sign") );
+    mXMLVerifyBtn->setText( tr("Verify Sign" ));
+}
+
+void DocSignerDlg::checkXML_Encrypt()
+{
+    mXMLMakeBtn->setText( tr("Encrypt") );
+    mXMLVerifyBtn->setText( tr("Decrypt") );
+}
+
+void DocSignerDlg::clickXML_Make()
+{
+    if( mXMLSignCheck->isChecked() == true )
+        clickXML_MakeSign();
+    else
+        clickXML_Encrypt();
+}
+
+void DocSignerDlg::clickXML_Verify()
+{
+    if( mXMLSignCheck->isChecked() == true )
+        clickXML_VerifySign();
+    else
+        clickXML_Decrypt();
 }
 
 void DocSignerDlg::clickXML_MakeSign()
