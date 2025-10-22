@@ -17,7 +17,7 @@
    <item>
     <widget class="QTabWidget" name="mInputTab">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mDataTab">
       <attribute name="title">
@@ -528,6 +528,13 @@
           </widget>
          </item>
         </layout>
+       </item>
+       <item>
+        <widget class="Line" name="line_5">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
        </item>
        <item>
         <spacer name="verticalSpacer">
