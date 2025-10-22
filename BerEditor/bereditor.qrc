@@ -104,5 +104,6 @@
         <file>images/doc_signer.png</file>
         <file>images/p7.png</file>
         <file>images/type_check.png</file>
+        <file>images/loading.gif</file>
     </qresource>
 </RCC>

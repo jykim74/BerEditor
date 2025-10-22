@@ -492,13 +492,15 @@ void KeyAgreeDlg::setEnableBECDHPubKey( bool bVal )
 
 void KeyAgreeDlg::genDHParam()
 {
+    int nLen = mParamLenCombo->currentText().toInt();
+    int nG = mGCombo->currentText().toInt();
+#if 0
     int ret = 0;
     BIN binP = {0,0};
     BIN binG = {0,0};
     BIN binQ = {0,0};
 
-    int nLen = mParamLenCombo->currentText().toInt();
-    int nG = mGCombo->currentText().toInt();
+
 
     ret = JS_PKI_genDHParam( nLen, nG, &binP, &binG, &binQ );
     if( ret == 0 )
@@ -515,6 +517,12 @@ void KeyAgreeDlg::genDHParam()
     JS_BIN_reset( &binP );
     JS_BIN_reset( &binG );
     JS_BIN_reset( &binQ );
+#else
+    ThreadWorkDlg thWork;
+    thWork.runWork( nLen, nG );
+    thWork.exec();
+    mPText->setPlainText( thWork.getP() );
+#endif
 }
 
 void KeyAgreeDlg::exportDHParam()

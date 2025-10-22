@@ -9994,71 +9994,70 @@ Use %2</source>
         <translation type="vanished">잘못된 ECC 키 쌍입니다.</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="158"/>
-        <location filename="../key_agree_dlg.cpp" line="291"/>
+        <location filename="../key_agree_dlg.cpp" line="159"/>
+        <location filename="../key_agree_dlg.cpp" line="292"/>
         <source>Enter P value</source>
         <translation>P를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="165"/>
+        <location filename="../key_agree_dlg.cpp" line="166"/>
         <source>Enter A Private Key</source>
         <translation>A 개인키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="172"/>
+        <location filename="../key_agree_dlg.cpp" line="173"/>
         <source>Enter B Public Key</source>
         <translation>B 공개키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="197"/>
-        <location filename="../key_agree_dlg.cpp" line="246"/>
-        <location filename="../key_agree_dlg.cpp" line="325"/>
-        <location filename="../key_agree_dlg.cpp" line="374"/>
+        <location filename="../key_agree_dlg.cpp" line="198"/>
+        <location filename="../key_agree_dlg.cpp" line="247"/>
+        <location filename="../key_agree_dlg.cpp" line="326"/>
+        <location filename="../key_agree_dlg.cpp" line="375"/>
         <source>Key has been generated</source>
         <translation>키가 생성 되었습니다</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="201"/>
-        <location filename="../key_agree_dlg.cpp" line="250"/>
-        <location filename="../key_agree_dlg.cpp" line="329"/>
-        <location filename="../key_agree_dlg.cpp" line="378"/>
+        <location filename="../key_agree_dlg.cpp" line="202"/>
+        <location filename="../key_agree_dlg.cpp" line="251"/>
+        <location filename="../key_agree_dlg.cpp" line="330"/>
+        <location filename="../key_agree_dlg.cpp" line="379"/>
         <source>fail to calculate Secret: %1</source>
         <translation>비밀키 계산 실패: %1</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="214"/>
+        <location filename="../key_agree_dlg.cpp" line="215"/>
         <source>Enter ECDH A Private Key</source>
         <translation>ECDH A의 개인키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="221"/>
+        <location filename="../key_agree_dlg.cpp" line="222"/>
         <source>Enter ECDH B Public Key</source>
         <translation>ECDH B의 공개키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="298"/>
+        <location filename="../key_agree_dlg.cpp" line="299"/>
         <source>Enter B Private Key</source>
         <translation>B 개인키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="305"/>
+        <location filename="../key_agree_dlg.cpp" line="306"/>
         <source>Enter A Public Key</source>
         <translation>A 공개키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="342"/>
+        <location filename="../key_agree_dlg.cpp" line="343"/>
         <source>Enter ECDH B Private Key</source>
         <translation>ECDH B의 개인키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="349"/>
+        <location filename="../key_agree_dlg.cpp" line="350"/>
         <source>Enter ECDH A Public Key</source>
         <translation>ECDH A의 공개키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="416"/>
         <location filename="../key_agree_dlg.cpp" line="417"/>
-        <location filename="../key_agree_dlg.cpp" line="419"/>
+        <location filename="../key_agree_dlg.cpp" line="418"/>
         <location filename="../key_agree_dlg.cpp" line="420"/>
         <location filename="../key_agree_dlg.cpp" line="421"/>
         <location filename="../key_agree_dlg.cpp" line="422"/>
@@ -10066,78 +10065,79 @@ Use %2</source>
         <location filename="../key_agree_dlg.cpp" line="424"/>
         <location filename="../key_agree_dlg.cpp" line="425"/>
         <location filename="../key_agree_dlg.cpp" line="426"/>
+        <location filename="../key_agree_dlg.cpp" line="427"/>
         <source>Hex value</source>
         <translation>16진수 값</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="530"/>
-        <location filename="../key_agree_dlg.cpp" line="635"/>
-        <location filename="../key_agree_dlg.cpp" line="692"/>
+        <location filename="../key_agree_dlg.cpp" line="539"/>
+        <location filename="../key_agree_dlg.cpp" line="644"/>
+        <location filename="../key_agree_dlg.cpp" line="701"/>
         <source>Parameter value is required</source>
         <translation>파라미터 값이 요구 됩니다</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="576"/>
+        <location filename="../key_agree_dlg.cpp" line="585"/>
         <source>fail to decode DH parameters: %1</source>
         <translation>DH 파라미터 디코딩 실패: %1</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="823"/>
-        <location filename="../key_agree_dlg.cpp" line="848"/>
+        <location filename="../key_agree_dlg.cpp" line="832"/>
+        <location filename="../key_agree_dlg.cpp" line="857"/>
         <source>The public key is correct</source>
         <translation>공개키가 맞습니다</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="825"/>
-        <location filename="../key_agree_dlg.cpp" line="850"/>
+        <location filename="../key_agree_dlg.cpp" line="834"/>
+        <location filename="../key_agree_dlg.cpp" line="859"/>
         <source>The public key is incorrect</source>
         <translation>공개키가 틀립니다</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="876"/>
-        <location filename="../key_agree_dlg.cpp" line="905"/>
+        <location filename="../key_agree_dlg.cpp" line="885"/>
+        <location filename="../key_agree_dlg.cpp" line="914"/>
         <source>The key pair is correct</source>
         <translation>키 쌍이 맞습니다</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="878"/>
-        <location filename="../key_agree_dlg.cpp" line="907"/>
+        <location filename="../key_agree_dlg.cpp" line="887"/>
+        <location filename="../key_agree_dlg.cpp" line="916"/>
         <source>The key pair is incorrect</source>
         <translation>키 쌍이 틀립니다</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="943"/>
+        <location filename="../key_agree_dlg.cpp" line="952"/>
         <source>A private key value is required</source>
         <translation>A 개인키 값이 요구 됩니다</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="987"/>
-        <location filename="../key_agree_dlg.cpp" line="1179"/>
+        <location filename="../key_agree_dlg.cpp" line="996"/>
+        <location filename="../key_agree_dlg.cpp" line="1188"/>
         <source>Invalid PrivateKey Type: %1</source>
         <translation>잘못된 개인키 타입입니다:%1</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="1018"/>
-        <location filename="../key_agree_dlg.cpp" line="1211"/>
+        <location filename="../key_agree_dlg.cpp" line="1027"/>
+        <location filename="../key_agree_dlg.cpp" line="1220"/>
         <source>Select a certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="1037"/>
-        <location filename="../key_agree_dlg.cpp" line="1088"/>
-        <location filename="../key_agree_dlg.cpp" line="1229"/>
-        <location filename="../key_agree_dlg.cpp" line="1281"/>
+        <location filename="../key_agree_dlg.cpp" line="1046"/>
+        <location filename="../key_agree_dlg.cpp" line="1097"/>
+        <location filename="../key_agree_dlg.cpp" line="1238"/>
+        <location filename="../key_agree_dlg.cpp" line="1290"/>
         <source>This key algorithm (%1) is not supported</source>
         <translation>이 키 알고리즘은(%1)은 지원하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="1069"/>
-        <location filename="../key_agree_dlg.cpp" line="1261"/>
+        <location filename="../key_agree_dlg.cpp" line="1078"/>
+        <location filename="../key_agree_dlg.cpp" line="1270"/>
         <source>Select keypair</source>
         <translation>키 쌍을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../key_agree_dlg.cpp" line="1135"/>
+        <location filename="../key_agree_dlg.cpp" line="1144"/>
         <source>B private key value is required</source>
         <translation>B 개인키 값이 요구 됩니다</translation>
     </message>
@@ -20269,6 +20269,24 @@ Use %2</source>
     <message>
         <source>Save as...</source>
         <translation type="vanished">다른 이름으로 저장</translation>
+    </message>
+</context>
+<context>
+    <name>ThreadWorkDlg</name>
+    <message>
+        <location filename="../thread_work_dlg.ui" line="20"/>
+        <source>DH Parameter creating</source>
+        <translation>DH 파라미터 생성 중 ...</translation>
+    </message>
+    <message>
+        <location filename="../thread_work_dlg.ui" line="28"/>
+        <source>Image</source>
+        <translation>Image</translation>
+    </message>
+    <message>
+        <location filename="../thread_work_dlg.ui" line="35"/>
+        <source>DH Parameter creating ...</source>
+        <translation>DH 파라미터 생성 중 ...</translation>
     </message>
 </context>
 <context>

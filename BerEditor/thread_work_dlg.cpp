@@ -1,60 +1,101 @@
 #include <QThread>
 #include <QTimer>
 #include <QPainter>
+#include <QMovie>
+
+#include "common.h"
 #include "thread_work_dlg.h"
 
+Worker::Worker()
+{
 
+}
+
+Worker::~Worker()
+{
+
+}
+
+void Worker::setLenP( int nLen, int nG )
+{
+    len_ = nLen;
+    g_ = nG;
+}
+
+void Worker::run()
+{
+#if 0
+    // 예: 5초 동안 계산
+    for (int i = 0; i < 5; ++i) {
+        QThread::sleep(1);
+        emit progress(i + 1);
+    }
+#else
+    int ret = 0;
+    BIN binP = {0,0};
+    BIN binG = {0,0};
+    BIN binQ = {0,0};
+
+
+
+    ret = JS_PKI_genDHParam( len_, g_, &binP, &binG, &binQ );
+    if( ret == 0 )
+    {
+
+    }
+
+    emit finished( getHexString( &binP ) );
+
+    JS_BIN_reset( &binP );
+    JS_BIN_reset( &binG );
+    JS_BIN_reset( &binQ );
+
+#endif
+
+
+}
 
 ThreadWorkDlg::ThreadWorkDlg(QWidget *parent)
     : QDialog(parent)
 {
     setupUi(this);
 
+    setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
     // 스크롤할 이미지 로드
-    pixmap = QPixmap(":/images/sample.jpg");
-    if (pixmap.isNull()) {
-        pixmap = QPixmap(600, 200);
-        pixmap.fill(Qt::darkGray);
-    }
 
-    // 타이머로 스크롤 애니메이션
-    timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, &ThreadWorkDlg::scrollImage );
-    timer->start(30); // 30ms마다 스크롤 (약 33fps)
+    QMovie *loadGif = new QMovie( ":/images/loading.gif" );
+    mLoadLabel->setMovie( loadGif );
+    loadGif->start();
 
-    // 백그라운드 작업 시작
-    worker = new Worker();
-    connect(worker, &Worker::progress, this, &ThreadWorkDlg::onProgress);
-    connect(worker, &Worker::finished, this, &ThreadWorkDlg::onFinished);
-    worker->start();
+    resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
 
 ThreadWorkDlg::~ThreadWorkDlg()
 {
     worker->quit();
     worker->wait();
+
+    qDebug("destory..");
 }
 
-void ThreadWorkDlg::paintEvent(QPaintEvent *) {
-    QPainter p(this);
-    int w = pixmap.width();
-    int x = -offset % w;
-    p.drawPixmap(x, 0, pixmap);
-    p.drawPixmap(x + w, 0, pixmap);
-}
+void ThreadWorkDlg::runWork( int nLen, int nG )
+{
+    // 백그라운드 작업 시작
+    worker = new Worker();
+    worker->setLenP( nLen, nG );
 
-void ThreadWorkDlg::scrollImage() {
-    offset += 2; // 스크롤 속도
-    if (offset > pixmap.width())
-        offset = 0;
-    update();
+    connect(worker, &Worker::progress, this, &ThreadWorkDlg::onProgress);
+    connect(worker, &Worker::finished, this, &ThreadWorkDlg::onFinished);
+    worker->start();
 }
 
 void ThreadWorkDlg::onProgress(int step) {
     qDebug("Background progress: %d", step);
 }
 
-void ThreadWorkDlg::onFinished() {
+void ThreadWorkDlg::onFinished( const QString strP ) {
     qDebug("Background work finished!");
-    timer->stop();
+    str_p_ = strP;
+    close();
 }
+
