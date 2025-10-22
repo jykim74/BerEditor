@@ -1204,17 +1204,10 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="2">
+         <item row="0" column="3">
           <widget class="QRadioButton" name="mXMLEncryptCheck">
            <property name="text">
             <string>Encryption</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QRadioButton" name="mXMLSignCheck">
-           <property name="text">
-            <string>Digital Signature</string>
            </property>
           </widget>
          </item>
@@ -1225,21 +1218,28 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="4">
-          <widget class="QPushButton" name="mXMLMakeBtn">
-           <property name="text">
-            <string>Encrypt</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="5">
+         <item row="0" column="6">
           <widget class="QPushButton" name="mXMLVerifyBtn">
            <property name="text">
             <string>Decrypt</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="3">
+         <item row="0" column="2">
+          <widget class="QRadioButton" name="mXMLSignCheck">
+           <property name="text">
+            <string>Digital Signature</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="5">
+          <widget class="QPushButton" name="mXMLMakeBtn">
+           <property name="text">
+            <string>Encrypt</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
           <spacer name="horizontalSpacer_9">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>

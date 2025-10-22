@@ -118,6 +118,7 @@ private slots:
 
     void changeXML_Body();
     void changeXML_Data();
+    void changeXML_Res();
 
 private:
     void initUI();

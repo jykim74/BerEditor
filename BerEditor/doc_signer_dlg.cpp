@@ -101,6 +101,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mXMLBodyClearBtn, SIGNAL(clicked()), this, SLOT(clickXML_BodyClear()));
     connect( mXMLBodyText, SIGNAL(textChanged()), this, SLOT(changeXML_Body()));
     connect( mXMLDataText, SIGNAL(textChanged(QString)), this, SLOT(changeXML_Data()));
+    connect( mXMLResText, SIGNAL(textChanged()), this, SLOT(changeXML_Res()));
     connect( mXMLResClearBtn, SIGNAL(clicked()), this, SLOT(clickXML_ResClear()));
     connect( mXMLResUpBtn, SIGNAL(clicked()), this, SLOT(clickXML_ResUp()));
 
@@ -2241,7 +2242,8 @@ void DocSignerDlg::clickXML_Encrypt()
 
     if( ret == JSR_OK )
     {
-        mXMLResText->setPlainText( getHexString( &binDst ));
+        QString strRes = getStringFromBIN( &binDst, DATA_STRING );
+        mXMLResText->setPlainText( strRes );
 
         if( mDstFileCheck->isChecked() == true )
         {
@@ -2393,20 +2395,6 @@ void DocSignerDlg::clickXML_Decrypt()
     JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey );
 
     JS_XML_init();
-
-    strDstPath = mDstPathText->text();
-    if( strDstPath.length() < 1 )
-    {
-        QFileInfo fileInfo( strSrcPath );
-
-        strDstPath = QString( "%1/%2_dst.%3" )
-                         .arg( fileInfo.path() )
-                         .arg( fileInfo.baseName() )
-                         .arg( "xml" );
-
-        mDstPathText->setText( strDstPath );
-    }
-
     JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
 
 #if 0
@@ -2420,7 +2408,8 @@ void DocSignerDlg::clickXML_Decrypt()
 
     if( ret == JSR_OK )
     {
-        mXMLResText->setPlainText( getHexString( &binDst ));
+        QString strRes = getStringFromBIN( &binDst, DATA_STRING );
+        mXMLResText->setPlainText( strRes );
 
         if( mDstFileCheck->isChecked() == true )
         {
@@ -2430,7 +2419,7 @@ void DocSignerDlg::clickXML_Decrypt()
             berApplet->messageBox( tr( "The XML file[%1] has been saved." ).arg( strDstPath ), this );
         }
 
-        berApplet->messageBox( tr("XML Decrypt OK [%1]" ).arg( strDstPath ), this );
+        berApplet->messageBox( tr("XML Decrypt OK" ), this );
     }
     else
     {
@@ -2454,4 +2443,10 @@ void DocSignerDlg::changeXML_Data()
 {
     int nLen = mXMLDataText->text().length();
     mXMLDataLenText->setText( QString("%1").arg( nLen ));
+}
+
+void DocSignerDlg::changeXML_Res()
+{
+    QString strRes = mXMLResText->toPlainText();
+    mXMLResLenText->setText( QString("%1").arg( strRes.length() ));
 }
