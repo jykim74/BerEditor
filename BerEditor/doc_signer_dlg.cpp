@@ -2074,8 +2074,8 @@ end :
 
 void DocSignerDlg::checkXML_Sign()
 {
-    mXMLMakeBtn->setText( tr("Make Sign") );
-    mXMLVerifyBtn->setText( tr("Verify Sign" ));
+    mXMLMakeBtn->setText( tr("Make") );
+    mXMLVerifyBtn->setText( tr("Verify" ));
 
     setEnableXMLData( false );
 }
