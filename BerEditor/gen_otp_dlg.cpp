@@ -113,7 +113,9 @@ void GenOTPDlg::clickGenOTP()
         }
     }
 
-    getBINFromString( &binKey, mKeyTypeCombo->currentIndex(), strKey );
+    ret = getBINFromString( &binKey, mKeyTypeCombo->currentIndex(), strKey );
+    FORMAT_WARN_GO(ret);
+
     if( binKey.nLen <= 0 )
     {
         berApplet->warnLog( tr( "Invalid key value" ), this );
@@ -153,7 +155,7 @@ void GenOTPDlg::clickGenOTP()
     {
         berApplet->warnLog( tr( "fail to generate OTP: %1").arg(JERR(ret)), this );
     }
-
+end :
     JS_BIN_reset(&binKey);
     JS_BIN_reset(&binT);
     update();

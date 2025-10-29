@@ -1458,7 +1458,8 @@ int ACMEClientDlg::clickSend()
         goto end;
     }
 
-    getBINFromString( &binReq, DATA_STRING, strReq );
+    ret = getBINFromString( &binReq, DATA_STRING, strReq );
+    FORMAT_WARN_GO(ret);
 
     if( strMethod == "POST" )
         ret = JS_HTTP_requestPostBin3( strCmdURL.toStdString().c_str(), NULL, NULL, "application/jose+json", &binReq, &nStatus, &pRspHeaderList, &binRsp );

@@ -223,6 +223,13 @@ void EncDecDlg::dataRun()
     qint64 us = 0;
     QElapsedTimer timer;
 
+    QString strMethod;
+    QString strOut;
+    QString strSymAlg;
+
+    bool bPad = mPadCheck->isChecked();
+
+
     mOutputText->clear();
 
     if( strInput.isEmpty() )
@@ -272,8 +279,11 @@ void EncDecDlg::dataRun()
         }
     }
 
-    getBINFromString( &binSrc, strInputType, strInput );
-    getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
+    ret = getBINFromString( &binSrc, strInputType, strInput );
+    FORMAT_WARN_GO(ret);
+
+    ret = getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
+    FORMAT_WARN_GO(ret);
 
     if( binKey.nLen < 16 )
     {
@@ -284,16 +294,10 @@ void EncDecDlg::dataRun()
         return;
     }
 
+    ret = getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
+    FORMAT_WARN_GO(ret);
 
-    QString strMethod;
-    QString strOut;
-
-    getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
-
-    bool bPad = mPadCheck->isChecked();
-
-
-    QString strSymAlg = getSymAlg( strAlg, strMode, binKey.nLen );
+    strSymAlg = getSymAlg( strAlg, strMode, binKey.nLen );
 
     if( strSymAlg.isEmpty() || strSymAlg.isNull() )
     {
@@ -306,7 +310,8 @@ void EncDecDlg::dataRun()
         int nReqTagLen = mReqTagLenText->text().toInt();
         QString strAAD = mAADText->text();
 
-        getBINFromString( &binAAD, mAADTypeCombo->currentText(), strAAD );
+        ret = getBINFromString( &binAAD, mAADTypeCombo->currentText(), strAAD );
+        FORMAT_WARN_GO(ret);
 
         if( mEncryptRadio->isChecked() )
         {
@@ -366,7 +371,8 @@ void EncDecDlg::dataRun()
             QString strTag = mTagText->text();
             strMethod = "AE Decrypt";
 
-            getBINFromString( &binTag, mTagTypeCombo->currentText(), strTag );
+            ret = getBINFromString( &binTag, mTagTypeCombo->currentText(), strTag );
+            FORMAT_WARN_GO(ret);
 
             if( isCCM( strMode ) )
             {
@@ -811,13 +817,18 @@ int EncDecDlg::encDecInit()
 
     QString strInput = mInputText->toPlainText();
     QString strInputType = mInputTypeCombo->currentText();
-
-    getBINFromString( &binSrc, strInputType, strInput );
-    getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
-    getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
-
     bool bPad = mPadCheck->isChecked();
-    QString strSymAlg = getSymAlg( strAlg, strMode, binKey.nLen );
+    QString strSymAlg;
+
+    ret = getBINFromString( &binSrc, strInputType, strInput );
+    FORMAT_WARN_GO(ret);
+    ret = getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
+    FORMAT_WARN_GO(ret);
+    ret = getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
+    FORMAT_WARN_GO(ret);
+
+
+    strSymAlg = getSymAlg( strAlg, strMode, binKey.nLen );
 
     if( binKey.nLen < 16 )
     {
@@ -832,7 +843,8 @@ int EncDecDlg::encDecInit()
         QString strAAD = mAADText->text();
         qint64 nDataLen = 0;
 
-        getBINFromString( &binAAD, mAADTypeCombo->currentText(), strAAD );
+        ret = getBINFromString( &binAAD, mAADTypeCombo->currentText(), strAAD );
+        FORMAT_WARN_GO(ret);
 
         if( isCCM( strMode ) )
         {
@@ -980,23 +992,23 @@ int EncDecDlg::encDecUpdate()
 
     QString strInput = mInputText->toPlainText();
     QString strInputType = mInputTypeCombo->currentText();
+    QString strOut = mOutputText->toPlainText();
+    QString strAlg = mAlgCombo->currentText();
+    QString strMode = mModeCombo->currentText();
 
     if( strInput.isEmpty() )
     {
 
     }
 
-    getBINFromString( &binSrc, strInputType, strInput );
-
-    QString strOut = mOutputText->toPlainText();
+    ret = getBINFromString( &binSrc, strInputType, strInput );
+    FORMAT_WARN_GO(ret);
 
     if( strOut.length() > 0 )
     {
-        getBINFromString( &binOut, mOutputTypeCombo->currentText(), strOut );
+        ret = getBINFromString( &binOut, mOutputTypeCombo->currentText(), strOut );
+        FORMAT_WARN_GO(ret);
     }
-
-    QString strAlg = mAlgCombo->currentText();
-    QString strMode = mModeCombo->currentText();
 
     if( mAEADGroup->isChecked() )
     {
@@ -1075,6 +1087,7 @@ int EncDecDlg::encDecUpdate()
         berApplet->elog( strFail );
     }
 
+end :
     JS_BIN_reset( &binSrc );
     JS_BIN_reset( &binDst );
     JS_BIN_reset( &binOut );
@@ -1091,14 +1104,14 @@ int EncDecDlg::encDecFinal()
     BIN binTag = {0,0};
 
     QString strOut = mOutputText->toPlainText();
+    QString strAlg = mAlgCombo->currentText();
+    QString strMode = mModeCombo->currentText();
 
     if( mInputTab->currentIndex() == 0 && strOut.length() > 0 )
     {
-        getBINFromString( &binOut, mOutputTypeCombo->currentText(), strOut );
+        ret = getBINFromString( &binOut, mOutputTypeCombo->currentText(), strOut );
+        FORMAT_WARN_GO(ret);
     }
-
-    QString strAlg = mAlgCombo->currentText();
-    QString strMode = mModeCombo->currentText();
 
     if( mAEADGroup->isChecked() )
     {
@@ -1133,7 +1146,8 @@ int EncDecDlg::encDecFinal()
         else
         {
             QString strTag = mTagText->text();
-            getBINFromString( &binTag, mTagTypeCombo->currentText(), strTag );
+            ret = getBINFromString( &binTag, mTagTypeCombo->currentText(), strTag );
+            FORMAT_WARN_GO(ret);
 
             if( isCCM(strMode) )
                 ret = JS_PKI_decryptCCMFinal( ctx_, &binDst );
@@ -1204,6 +1218,7 @@ int EncDecDlg::encDecFinal()
         berApplet->elog( strFail );
     }
 
+end:
     JS_BIN_reset( &binOut );
     JS_BIN_reset( &binDst );
     JS_BIN_reset( &binTag );

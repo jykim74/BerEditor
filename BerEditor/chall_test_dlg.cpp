@@ -377,7 +377,8 @@ int ChallTestDlg::clickSend()
     QString strURL = QString( "%1%2:%3%4" ).arg( strURI ).arg( strServer ).arg( strPort ).arg( strPath);
     berApplet->log( QString( "ChallTest URL: %1" ).arg( strURL ));
 
-    getBINFromString( &binReq, DATA_STRING, strRequest );
+    ret = getBINFromString( &binReq, DATA_STRING, strRequest );
+    FORMAT_WARN_GO(ret);
 
     ret = JS_HTTP_requestPostBin2( strURL.toStdString().c_str(), NULL, NULL, "application/json", &binReq, &nStatus, &binRsp );
 

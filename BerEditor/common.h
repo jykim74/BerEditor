@@ -176,6 +176,18 @@ static QString kSelectStyle =
 #define ACT_HELP_QNA                VIEW_HELP | 0x00000040
 #define ACT_HELP_ABOUT              VIEW_HELP | 0x00000080
 
+#define FORMAT_WARN_GO(x) if( x < 0 ) \
+{ \
+    berApplet->formatWarn( x, this ); \
+    goto end; \
+}
+
+#define FORMAT_WARN_RET(x) if( x < 0 ) \
+{ \
+    berApplet->formatWarn( x, this ); \
+    return x; \
+}
+
 static const int kFileDefault = ACT_FILE_NEW | ACT_FILE_OPEN;
 
 static const int kEditDefault = ACT_EDIT_EXPAND_ALL | ACT_EDIT_EXPAND_NODE | ACT_EDIT_FIND_NODE;
@@ -320,14 +332,6 @@ const QString kDisableStyle = "background-color:#cccccc";
 
 const QString GetSystemID();
 
-/*
-QString findFile( QWidget *parent, int nType, const QString strPath );
-QString findFile( QWidget *parent, int nType, const QString strPath, QString& strSelected );
-QString findSaveFile( QWidget *parent, int nType, const QString strPath );
-QString findSaveFile( QWidget *parent, const QString strFilter, const QString strPath );
-QString findFolder( QWidget *parent, const QString strPath );
-*/
-
 int setOIDList( const QString& strOIDPath );
 QString getHexString( const QString& strVal );
 QString getHexString( unsigned char *pData, int nDataLen );
@@ -352,8 +356,8 @@ int getNameValue( const QString strLine, QString& name, QString& value );
 void getInfoValue( const JExtensionInfo *pExtInfo, QString& strVal, bool bShow = true );
 const QString getExtValue( const QString strName, const QString strHexValue, bool bShow = true );
 
-void getBINFromString( BIN *pBin, const QString& strType, const QString& strString );
-void getBINFromString( BIN *pBin, int nType, const QString& strString );
+int getBINFromString( BIN *pBin, const QString& strType, const QString& strString );
+int getBINFromString( BIN *pBin, int nType, const QString& strString );
 QString getStringFromBIN( const BIN *pBin, const QString& strType, bool bSeenOnly = false );
 QString getStringFromBIN( const BIN *pBin, int nType, bool bSeenOnly = false );
 

@@ -126,6 +126,7 @@ void BERCheckDlg::initialize()
 
 int BERCheckDlg::readSrc( BIN *pSrc )
 {
+    int ret = 0;
     QString strPath = mFilePathText->text();
 
     if( mFileCheck->isChecked() == true )
@@ -151,7 +152,8 @@ int BERCheckDlg::readSrc( BIN *pSrc )
             return -2;
         }
 
-        getBINFromString( pSrc, strType, strData );
+        ret = getBINFromString( pSrc, strType, strData );
+        FORMAT_WARN_RET(ret);
     }
 
     return 0;

@@ -187,7 +187,8 @@ void GenHashDlg::hashUpdate()
     }
     else
     {
-        getBINFromString( &binSrc, strType, inputStr );
+        ret = getBINFromString( &binSrc, strType, inputStr );
+        FORMAT_WARN_GO(ret);
     }
 
     ret = JS_PKI_hashUpdate( pctx_, &binSrc );
@@ -200,6 +201,7 @@ void GenHashDlg::hashUpdate()
     else
         mStatusLabel->setText( QString("Update failed [%1]").arg(JERR(ret)) );
 
+end :
     JS_BIN_reset( &binSrc );
     update();
 }
@@ -263,17 +265,18 @@ void GenHashDlg::clickDigest()
     QString inputStr = mInputText->toPlainText();
     QString strType = mInputTypeCombo->currentText();
 
+    QString strHash = mOutputHashCombo->currentText();
+    int nLen = mReqLenText->text().toInt();
+
     if( inputStr.isEmpty() )
     {
 
     }
     else
     {
-        getBINFromString( &binSrc, strType, inputStr );
+        ret = getBINFromString( &binSrc, strType, inputStr );
+        FORMAT_WARN_GO(ret);
     }
-
-    QString strHash = mOutputHashCombo->currentText();
-    int nLen = mReqLenText->text().toInt();
 
     if( strHash == kSHAKE128 || strHash == kSHAKE256 )
     {
@@ -316,6 +319,7 @@ void GenHashDlg::clickDigest()
         berApplet->warningBox( tr("Failed to generate Digest value : %1").arg( JERR(ret)), this );
     }
 
+end :
     JS_BIN_reset(&binSrc);
     JS_BIN_reset(&binHash);
 

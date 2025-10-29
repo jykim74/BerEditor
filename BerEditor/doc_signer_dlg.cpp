@@ -679,7 +679,8 @@ int DocSignerDlg::readCMSSrc( BIN *pData )
             return -2;
         }
 
-        getBINFromString( pData, strType, strData );
+        int ret = getBINFromString( pData, strType, strData );
+        FORMAT_WARN_RET(ret);
     }
 
     if( pData->nLen <= 0 )
@@ -693,6 +694,7 @@ int DocSignerDlg::readCMSSrc( BIN *pData )
 
 int DocSignerDlg::readCMSOutput( BIN *pData )
 {
+    int ret = -1;
     QString strData = mCMSOutputText->toPlainText();
 
     if( strData.length() < 1 )
@@ -701,7 +703,8 @@ int DocSignerDlg::readCMSOutput( BIN *pData )
         return -1;
     }
 
-    getBINFromString( pData, DATA_HEX, strData );
+    ret = getBINFromString( pData, DATA_HEX, strData );
+    FORMAT_WARN_RET(ret);
 
     return 0;
 }
@@ -785,7 +788,12 @@ void DocSignerDlg::clickCMSRun()
                     return;
                 }
 
-                getBINFromString( &binSrc, strType, strData );
+                int ret = getBINFromString( &binSrc, strType, strData );
+                if( ret < 0 )
+                {
+                    berApplet->formatWarn( ret, this );
+                    return;
+                }
             }
 
             type = JS_CMS_getType( &binSrc );
@@ -2256,7 +2264,8 @@ void DocSignerDlg::clickXML_Encrypt()
             return;
         }
 
-        getBINFromString( &binData, DATA_STRING, strData );
+        ret = getBINFromString( &binData, DATA_STRING, strData );
+        FORMAT_WARN_GO(ret);
     }
 
 
@@ -2543,7 +2552,8 @@ void DocSignerDlg::clickJSON_WriteFile()
         goto end;
     }
 
-    getBINFromString( &binJWS, DATA_STRING, strJWS );
+    ret = getBINFromString( &binJWS, DATA_STRING, strJWS );
+    FORMAT_WARN_GO(ret);
 
     strFileName = berApplet->findSaveFile( this, nType, strPath );
     if( strFileName.length() < 1 ) goto end;
@@ -2577,7 +2587,8 @@ void DocSignerDlg::clickXML_WriteFile()
         goto end;
     }
 
-    getBINFromString( &binXML, DATA_STRING, strXML );
+    ret = getBINFromString( &binXML, DATA_STRING, strXML );
+    FORMAT_WARN_GO(ret);
 
     strFileName = berApplet->findSaveFile( this, nType, strPath );
     if( strFileName.length() < 1 ) goto end;

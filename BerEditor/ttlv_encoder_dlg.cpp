@@ -865,8 +865,11 @@ int TTLVEncoderDlg::runEncrypt()
 
     strAlg = mAlgCombo->currentText();
 
-    getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
-    getBINFromString( &binPlain, mInputTypeCombo->currentText(), strInput );
+    ret = getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
+    FORMAT_WARN_GO(ret);
+
+    ret = getBINFromString( &binPlain, mInputTypeCombo->currentText(), strInput );
+    FORMAT_WARN_GO(ret);
 
     if( strAlg == kALG_AES )
     {
@@ -962,8 +965,11 @@ int TTLVEncoderDlg::runDecrypt()
         goto end;
     }
 
-    getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
-    getBINFromString( &binEncrypt, mInputTypeCombo->currentText(), strInput );
+    ret = getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
+    FORMAT_WARN_GO(ret);
+
+    ret = getBINFromString( &binEncrypt, mInputTypeCombo->currentText(), strInput );
+    FORMAT_WARN_GO(ret);
 
     if( strAlg == kALG_AES )
     {
@@ -1067,7 +1073,8 @@ int TTLVEncoderDlg::runSign()
 
     nMech = _getMech( nAlg, strHash, strMode );
 
-    getBINFromString( &binPlain, mInputTypeCombo->currentText(), strInput );
+   ret = getBINFromString( &binPlain, mInputTypeCombo->currentText(), strInput );
+   FORMAT_WARN_GO(ret);
 
     ret = JS_KMS_encodeSignReq( mAuthGroup->isChecked() ? &sAuth : NULL, strUUID.toStdString().c_str(), nMech, &binPlain, &binData );
 
@@ -1163,8 +1170,11 @@ int TTLVEncoderDlg::runVerify()
 
     nMech = _getMech( nAlg, strHash, strMode );
 
-    getBINFromString( &binPlain, mInputTypeCombo->currentText(), strInput );
-    JS_BIN_decodeHex( strSign.toStdString().c_str(), &binSign );
+    ret = getBINFromString( &binPlain, mInputTypeCombo->currentText(), strInput );
+    FORMAT_WARN_GO(ret);
+
+    ret = getBINFromString( &binSign, DATA_HEX, strSign );
+    FORMAT_WARN_GO(ret);
 
     ret = JS_KMS_encodeVerifyReq( mAuthGroup->isChecked() ? &sAuth : NULL, strUUID.toStdString().c_str(), nMech, &binPlain, &binSign, &binData );
 
@@ -1249,7 +1259,8 @@ int TTLVEncoderDlg::runRegister()
         nType = JS_KMS_OBJECT_TYPE_CERT;
     }
 
-    getBINFromString( &binInput, mInputTypeCombo->currentText(), strInput );
+    ret = getBINFromString( &binInput, mInputTypeCombo->currentText(), strInput );
+    FORMAT_WARN_GO(ret);
 
     if( strAlg == kALG_RSA )
     {
@@ -1850,7 +1861,8 @@ int TTLVEncoderDlg::runRNGSeed()
         goto end;
     }
 
-    getBINFromString( &binSrc, mInputTypeCombo->currentText(), strInput );
+    ret = getBINFromString( &binSrc, mInputTypeCombo->currentText(), strInput );
+    FORMAT_WARN_GO(ret);
 
     ret = JS_KMS_encodeRNGSeedReq( mAuthGroup->isChecked() ? &sAuth : NULL, &binSrc, &binData );
 
@@ -1911,7 +1923,8 @@ int TTLVEncoderDlg::runHash()
 
     nMech = _getMechHash( strHash );
 
-    getBINFromString( &binSrc, mInputTypeCombo->currentText(), strInput );
+    ret = getBINFromString( &binSrc, mInputTypeCombo->currentText(), strInput );
+    FORMAT_WARN_GO(ret);
 
     ret = JS_KMS_encodeHashReq( mAuthGroup->isChecked() ? &sAuth : NULL, nMech, &binSrc, &binData );
     if( ret == 0 )
@@ -1977,8 +1990,12 @@ void TTLVEncoderDlg::decodeOutput()
     BIN binData = {0,0};
     QString strOutput = mOutputText->toPlainText();
 
-    getBINFromString( &binData, DATA_HEX, strOutput );
+    int ret = getBINFromString( &binData, DATA_HEX, strOutput );
+    FORMAT_WARN_GO(ret);
+
     berApplet->decodeTTLV( &binData );
+
+end :
     JS_BIN_reset( &binData );
 }
 

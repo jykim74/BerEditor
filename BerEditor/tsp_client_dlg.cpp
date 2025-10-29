@@ -407,7 +407,8 @@ void TSPClientDlg::clickEncode()
         return;
     }
 */
-    getBINFromString( &binInput, mInputTypeCombo->currentText(), strInput );
+    ret = getBINFromString( &binInput, mInputTypeCombo->currentText(), strInput );
+    FORMAT_WARN_GO(ret);
 
     if( strPolicy.length() > 0 ) pPolicy = strPolicy.toStdString().c_str();
 
@@ -485,7 +486,8 @@ void TSPClientDlg::clickSend()
         if( pBase64 ) JS_free( pBase64 );
     }
 
-    getBINFromString( &binReq, DATA_HEX, strReq );
+    ret = getBINFromString( &binReq, DATA_HEX, strReq );
+    FORMAT_WARN_GO(ret);
 
     if( mAuthGroup->isChecked() == true )
         ret = JS_HTTP_requestAuthPostBin( strURL.toStdString().c_str(), "application/tsp-request", strAuth.toStdString().c_str(), &binReq, &nStatus, &binRsp );

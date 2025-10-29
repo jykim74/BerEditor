@@ -149,7 +149,9 @@ void DataConverterDlg::clickWriteBin()
         return;
     }
 
-    getBINFromString( &binOut, strType, strOut );
+    ret = getBINFromString( &binOut, strType, strOut );
+    FORMAT_WARN_GO(ret);
+
     strFile = berApplet->findSaveFile( this, JS_FILE_TYPE_BIN, strPath );
     if( strFile.length() > 0 )
     {
@@ -164,11 +166,13 @@ void DataConverterDlg::clickWriteBin()
         }
     }
 
+end :
     JS_BIN_reset( &binOut );
 }
 
 void DataConverterDlg::onClickConvertBtn()
 {
+    int ret = -1;
     int input_type = 0;
     BIN binSrc = {0,0};
 
@@ -195,13 +199,23 @@ void DataConverterDlg::onClickConvertBtn()
     else if( mInputTypeURLCheck->isChecked() )
         input_type = DATA_URL;
 
-    getBINFromString( &binSrc, input_type, inputStr );
+    ret = getBINFromString( &binSrc, input_type, inputStr );
+    FORMAT_WARN_GO(ret);
+
+    /*
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr("There is an invalid format character: %1").arg(JERR(ret)), this );
+        goto end;
+    }
+    */
+
     outputStr = getStringFromBIN( &binSrc, mOutputTypeCombo->currentText(), mShowPrintTextCheck->isChecked() );
     mOutputText->setPlainText( outputStr );
     makeDump( &binSrc );
 
+end :
     JS_BIN_reset(&binSrc);
-    update();
 }
 
 void DataConverterDlg::outTypeChanged(int index)

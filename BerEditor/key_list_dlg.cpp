@@ -311,7 +311,8 @@ void KeyListDlg::clickKeyAdd()
 
         QString strInfo;
 
-        getBINFromString( &binIV, keyAdd.mIVTypeCombo->currentText(), strIV );
+        ret = getBINFromString( &binIV, keyAdd.mIVTypeCombo->currentText(), strIV );
+        FORMAT_WARN_GO(ret);
 
         strInfo += QString( "ALG: %1\n" ).arg( strAlg );
         strInfo += QString( "Key: %1\n" ).arg( strKey);
@@ -324,7 +325,7 @@ void KeyListDlg::clickKeyAdd()
         {
             berApplet->warningBox( tr( "fail to write key: %1" ).arg(ret), this );
         }
-
+end :
         JS_BIN_reset( &binIV );
         JS_BIN_reset( &binData );
 

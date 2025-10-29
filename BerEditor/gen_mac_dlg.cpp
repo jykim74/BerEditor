@@ -207,6 +207,10 @@ int GenMacDlg::macInit()
     QString strKey = mKeyText->text();
     QString strIV = mIVText->text();
 
+    QString strAlg = mAlgTypeCombo->currentText();
+    QString strMethod = mMethodCombo->currentText();
+
+
     if( strKey.length() < 1 )
     {
         KeyListDlg keyList;
@@ -239,17 +243,9 @@ int GenMacDlg::macInit()
         }
     }
 
-    getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
-    if( binKey.nLen <= 0 )
-    {
-        berApplet->warningBox( tr( "There is an invalid character"), this );
-        mKeyText->setFocus();
-        return JSR_ERR2;
-    }
+    ret = getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
+    FORMAT_WARN_GO( ret );
 
-
-    QString strAlg = mAlgTypeCombo->currentText();
-    QString strMethod = mMethodCombo->currentText();
 
     if( mGenerateRadio->isChecked() == true )
         mOutputText->clear();
@@ -272,8 +268,6 @@ int GenMacDlg::macInit()
         QString strSymAlg = getSymAlg( strAlg, "gcm", binKey.nLen );
         QString strIV = mIVText->text();
 
-        getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
-
         if( strIV.length() < 1 )
         {
             berApplet->warningBox( tr("Enter a IV value"), this );
@@ -281,6 +275,9 @@ int GenMacDlg::macInit()
             ret = JSR_ERR;
             goto end;
         }
+
+        ret = getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
+        FORMAT_WARN_GO( ret );
 
 
         ret = JS_PKI_encryptGCMInit( &hctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, NULL );
@@ -315,7 +312,8 @@ void GenMacDlg::macUpdate()
 
     if( strInput.length() > 0 )
     {
-        getBINFromString( &binSrc, strType, strInput );
+        ret = getBINFromString( &binSrc, strType, strInput );
+        FORMAT_WARN_GO(ret);
     }
 
     if( strMethod == sMethodCMAC )
@@ -359,6 +357,7 @@ void GenMacDlg::macUpdate()
     else
         mStatusLabel->setText( QString("Update failure [%1]").arg(JERR(ret)) );
 
+end :
     JS_BIN_reset( &binSrc );
     update();
 }
@@ -380,7 +379,8 @@ void GenMacDlg::macFinal()
             return;
         }
 
-        getBINFromString( &binInMAC, DATA_HEX, strOutput );
+        ret = getBINFromString( &binInMAC, DATA_HEX, strOutput );
+        FORMAT_WARN_GO( ret );
     }
 
     if( strMethod == sMethodCMAC )
@@ -528,6 +528,9 @@ void GenMacDlg::clickMAC()
     QString strKey = mKeyText->text();
     QString strIV = mIVText->text();
 
+    QString strAlg = mAlgTypeCombo->currentText();
+    QString strMethod = mMethodCombo->currentText();
+
     if( mVerifyRadio->isChecked() == true )
     {
         if( strOutput.length() < 1 )
@@ -537,12 +540,14 @@ void GenMacDlg::clickMAC()
             return;
         }
 
-        getBINFromString( &binInMAC, DATA_HEX, strOutput );
+        ret = getBINFromString( &binInMAC, DATA_HEX, strOutput );
+        FORMAT_WARN_GO(ret);
     }
 
     if( strInput.length() > 0 )
     {
-        getBINFromString( &binSrc, strType, strInput );
+        ret = getBINFromString( &binSrc, strType, strInput );
+        FORMAT_WARN_GO( ret );
     }
 
     if( strKey.isEmpty() )
@@ -578,10 +583,8 @@ void GenMacDlg::clickMAC()
         }
     }
 
-    getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
-
-    QString strAlg = mAlgTypeCombo->currentText();
-    QString strMethod = mMethodCombo->currentText();
+    ret = getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
+    FORMAT_WARN_GO( ret );
 
     if( strMethod == sMethodCMAC )
     {
@@ -600,7 +603,7 @@ void GenMacDlg::clickMAC()
     else if( strMethod == sMethodGMAC )
     {
         QString strIV = mIVText->text();
-        getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
+
         if( strIV.length() < 1 )
         {
              berApplet->warningBox( tr("Enter a IV value"), this );
@@ -608,6 +611,9 @@ void GenMacDlg::clickMAC()
              ret = JSR_ERR;
              goto end;
         }
+
+        ret = getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
+        FORMAT_WARN_GO( ret );
 
         timer.start();
         ret = JS_PKI_genGMAC( strAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binMAC );

@@ -1173,7 +1173,8 @@ void SCEPClientDlg::clickSend()
         goto end;
     }
 
-    getBINFromString( &binReq, DATA_HEX, strReq );
+    ret = getBINFromString( &binReq, DATA_HEX, strReq );
+    FORMAT_WARN_GO(ret);
 
     strLink = strURL;
     strLink += "/pkiclient.exe?operation=PKIOperation";
@@ -1241,8 +1242,11 @@ void SCEPClientDlg::clickVerify()
         certMan.getPriKey( &binPriKey );
     }
 
-    getBINFromString( &binRsp, DATA_HEX, strRsp );
-    getBINFromString( &binNonce, DATA_HEX, strNonce );
+    ret = getBINFromString( &binRsp, DATA_HEX, strRsp );
+    FORMAT_WARN_GO(ret);
+
+    ret = getBINFromString( &binNonce, DATA_HEX, strNonce );
+    FORMAT_WARN_GO(ret);
 
 
     ret = getCA( &binCA );

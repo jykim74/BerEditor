@@ -221,8 +221,11 @@ void KeyAddDlg::clickOK()
         return;
     }
 
-    getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
-    getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
+    ret = getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
+    FORMAT_WARN_GO(ret);
+
+    ret = getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
+    FORMAT_WARN_GO(ret);
 
     if( nLen > 0 && nLen != binKey.nLen )
     {

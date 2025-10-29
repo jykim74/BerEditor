@@ -997,7 +997,8 @@ void OCSPClientDlg::clickEncode()
             goto end;
         }
 
-        getBINFromString( &binNonce, DATA_HEX, strNonce );
+        ret = getBINFromString( &binNonce, DATA_HEX, strNonce );
+        FORMAT_WARN_GO(ret);
     }
 
     if( cert_.nLen > 0 )
@@ -1054,7 +1055,8 @@ void OCSPClientDlg::clickSend()
         goto end;
     }
 
-    getBINFromString( &binReq, DATA_HEX, strReq );
+    ret = getBINFromString( &binReq, DATA_HEX, strReq );
+    FORMAT_WARN_GO(ret);
 
     ret = JS_HTTP_requestPostBin( strURL.toStdString().c_str(), "application/ocsp-request", &binReq, &nStatus, &binRsp );
     if( ret != 0 )

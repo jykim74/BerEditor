@@ -98,6 +98,7 @@ void DecodeDataDlg::initUI()
 
 void DecodeDataDlg::decodeData()
 {
+    int ret = -1;
     int nType = 0;
     BIN binData = {0,0};
 
@@ -117,11 +118,10 @@ void DecodeDataDlg::decodeData()
         return;
     }
 
-    getBINFromString( &binData, nType, strData );
-    if( binData.nLen <= 0 )
+    ret = getBINFromString( &binData, nType, strData );
+    if( ret < 0 )
     {
-        berApplet->warningBox( tr( "There is an invalid character" ), this);
-        mDataText->setFocus();
+        berApplet->formatWarn( ret, this );
         return;
     }
 

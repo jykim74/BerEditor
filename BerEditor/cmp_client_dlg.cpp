@@ -1459,7 +1459,8 @@ void CMPClientDlg::clickSend()
         goto end;
     }
 
-    getBINFromString( &binReq, DATA_HEX, strReq );
+    ret = getBINFromString( &binReq, DATA_HEX, strReq );
+    FORMAT_WARN_GO(ret);
 
     strURL += "/pkiclient.exe?operation=PKIOperation";
 

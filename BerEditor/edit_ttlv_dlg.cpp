@@ -91,7 +91,12 @@ QString EditTTLVDlg::getData()
     QString strValue = mValueText->toPlainText();
     BIN binData = {0,0};
 
-    getBINFromString( &binData, DATA_HEX, strValue );
+    int ret = getBINFromString( &binData, DATA_HEX, strValue );
+    if( ret < 0 )
+    {
+        berApplet->formatWarn( ret, this);
+        return "";
+    }
 
     int nAppend = 8 - binData.nLen % 8;
     if( nAppend > 0 && nAppend != 8 ) JS_BIN_appendCh( &binData, 0x00, nAppend );

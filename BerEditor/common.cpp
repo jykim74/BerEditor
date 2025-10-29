@@ -1246,7 +1246,7 @@ void getInfoValue( const JExtensionInfo *pExtInfo, QString& strVal, bool bShow )
     JS_BIN_reset( &binExt );
 }
 
-void getBINFromString( BIN *pBin, const QString& strType, const QString& strString )
+int getBINFromString( BIN *pBin, const QString& strType, const QString& strString )
 {
     int nType = 0;
 
@@ -1261,43 +1261,45 @@ void getBINFromString( BIN *pBin, const QString& strType, const QString& strStri
     else
         nType = DATA_STRING;
 
-    getBINFromString( pBin, nType, strString );
+    return getBINFromString( pBin, nType, strString );
 }
 
-void getBINFromString( BIN *pBin, int nType, const QString& strString )
+int getBINFromString( BIN *pBin, int nType, const QString& strString )
 {
+    int ret = -1;
     QString srcString = strString;
 
-    if( pBin == NULL ) return;
+    if( pBin == NULL ) return JSR_ERR;
 
     if( nType == DATA_HEX )
     {
         srcString.remove( QRegularExpression("[\t\r\n\\s]") );
-        if( isHex( srcString ) == false ) return;
+        if( isHex( srcString ) == false ) return JSR_BAD_HEX;
 
-        JS_BIN_decodeHex( srcString.toStdString().c_str(), pBin );
+        ret = JS_BIN_decodeHex( srcString.toStdString().c_str(), pBin );
     }
     else if( nType == DATA_BASE64 )
     {
         srcString.remove( QRegularExpression( "-----BEGIN [^-]+-----") );
         srcString.remove( QRegularExpression("-----END [^-]+-----") );
         srcString.remove( QRegularExpression("[\t\r\n\\s]") );
-        if( isBase64( srcString ) == false ) return;
+        if( isBase64( srcString ) == false ) return JSR_BAD_BASE64;
 
-        JS_BIN_decodeBase64( srcString.toStdString().c_str(), pBin );
+        ret = JS_BIN_decodeBase64( srcString.toStdString().c_str(), pBin );
     }
     else if( nType == DATA_BASE64URL )
     {
         srcString.remove( QRegularExpression("[\t\r\n\\s]") );
-        if( isBase64URL( srcString ) == false ) return;
-        JS_BIN_decodeBase64URL( srcString.toStdString().c_str(), pBin );
+        if( isBase64URL( srcString ) == false ) return JSR_BAD_BASE64URL;
+
+        ret = JS_BIN_decodeBase64URL( srcString.toStdString().c_str(), pBin );
     }
     else if( nType == DATA_URL )
     {
         char *pStr = NULL;
-        if( isURLEncode( srcString ) == false ) return;
+        if( isURLEncode( srcString ) == false ) return JSR_BAD_URL;
 
-        JS_BIN_decodeURL( srcString.toLocal8Bit().toStdString().c_str(), &pStr );
+        ret = JS_BIN_decodeURL( srcString.toLocal8Bit().toStdString().c_str(), &pStr );
 
         if( pStr )
         {
@@ -1308,7 +1310,10 @@ void getBINFromString( BIN *pBin, int nType, const QString& strString )
     else
     {
         JS_BIN_set( pBin, (unsigned char *)srcString.toStdString().c_str(), srcString.toUtf8().length() );
+        ret = srcString.toUtf8().length();
     }
+
+    return ret;
 }
 
 QString getStringFromBIN( const BIN *pBin, const QString& strType, bool bSeenOnly )

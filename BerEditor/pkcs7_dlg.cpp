@@ -392,10 +392,11 @@ void PKCS7Dlg::clickOutputDecode()
     BIN binOutput = {0,0};
 
     QString strOutput = mOutputText->toPlainText();
-    getBINFromString( &binOutput, DATA_HEX, strOutput );
+    int ret = getBINFromString( &binOutput, DATA_HEX, strOutput );
+    FORMAT_WARN_GO(ret);
 
     berApplet->decodeTitle( &binOutput, "PKCS#7 Message" );
-
+end :
     JS_BIN_reset( &binOutput );
 }
 
@@ -495,7 +496,9 @@ void PKCS7Dlg::clickSignedData()
         goto end;
     }
 
-    getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
+    ret = getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
+    FORMAT_WARN_GO(ret);
+
     if( binSrc.nLen <= 0 )
     {
         berApplet->warningBox( tr( "There is no input value or the input type is incorrect." ), this );
@@ -594,7 +597,9 @@ void PKCS7Dlg::clickEnvelopedData()
         goto end;
     }
 
-    getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
+    ret = getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
+    FORMAT_WARN_GO(ret);
+
     if( binSrc.nLen <= 0 )
     {
         berApplet->warningBox( tr( "There is no input value or the input type is incorrect." ), this );
@@ -721,7 +726,9 @@ void PKCS7Dlg::clickSignAndEnvloped()
         goto end;
     }
 
-    getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
+    ret = getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
+    FORMAT_WARN_GO(ret);
+
     if( binSrc.nLen <= 0 )
     {
         berApplet->warningBox( tr( "There is no input value or the input type is incorrect." ), this );
@@ -803,7 +810,8 @@ void PKCS7Dlg::clickVerifyData()
         return;
     }
 
-    getBINFromString( &binCMS, strSrcType, strCMS.toStdString().c_str() );
+    ret = getBINFromString( &binCMS, strSrcType, strCMS.toStdString().c_str() );
+    FORMAT_WARN_GO(ret);
 
     nCMSType = JS_PKCS7_getType( &binCMS );
     if( nCMSType != JS_PKCS7_TYPE_SIGNED )
@@ -890,7 +898,8 @@ void PKCS7Dlg::clickDevelopedData()
         return;
     }
 
-    getBINFromString( &binCMS, strSrcType, strCMS.toStdString().c_str() );
+    ret = getBINFromString( &binCMS, strSrcType, strCMS.toStdString().c_str() );
+    FORMAT_WARN_GO(ret);
 
     nCMSType = JS_PKCS7_getType( &binCMS );
     if( nCMSType != JS_PKCS7_TYPE_ENVELOPED )
@@ -992,7 +1001,8 @@ void PKCS7Dlg::clickDevelopedAndVerify()
         return;
     }
 
-    getBINFromString( &binCMS, strSrcType, strCMS.toStdString().c_str() );
+    ret = getBINFromString( &binCMS, strSrcType, strCMS.toStdString().c_str() );
+    FORMAT_WARN_GO(ret);
 
     nCMSType = JS_PKCS7_getType( &binCMS );
     if( nCMSType != JS_PKCS7_TYPE_SIGNED_AND_ENVELOPED )
@@ -1149,7 +1159,9 @@ void PKCS7Dlg::clickAddSigner()
         certMan.getPriKey( &binPri );
     }
 
-    getBINFromString( &binCMS, strSrcType, strCMS.toStdString().c_str() );
+    ret = getBINFromString( &binCMS, strSrcType, strCMS.toStdString().c_str() );
+    FORMAT_WARN_GO(ret);
+
     if( binCMS.nLen <= 0 )
     {
         berApplet->warningBox( tr( "There is no input value or the input type is incorrect." ), this );
@@ -1476,6 +1488,7 @@ end :
 
 void PKCS7Dlg::clickSrcView()
 {
+    int ret = -1;
     BIN binCMS = {0,0};
 
     int nCMSType = -1;
@@ -1490,7 +1503,8 @@ void PKCS7Dlg::clickSrcView()
         return;
     }
 
-    getBINFromString( &binCMS, DATA_HEX, strCMS );
+    ret = getBINFromString( &binCMS, DATA_HEX, strCMS );
+    FORMAT_WARN_GO(ret);
 
     nCMSType = JS_PKCS7_getType( &binCMS );
     if( nCMSType < 0 )
@@ -1503,6 +1517,7 @@ void PKCS7Dlg::clickSrcView()
     cmsInfo.setCMS( &binCMS );
     cmsInfo.exec();
 
+end :
     JS_BIN_reset( &binCMS );
 }
 
@@ -1513,15 +1528,17 @@ void PKCS7Dlg::clickSrcDecode()
     QString strSrc = mSrcText->toPlainText();
     QString strType = mSrcTypeCombo->currentText();
 
-    getBINFromString( &binSrc, strType, strSrc );
+    int ret = getBINFromString( &binSrc, strType, strSrc );
+    FORMAT_WARN_GO(ret);
 
     berApplet->decodeTitle( &binSrc, "PKCS#7 Message" );
-
+end:
     JS_BIN_reset( &binSrc );
 }
 
 void PKCS7Dlg::clickSrcType()
 {
+    int ret = -1;
     BIN binCMS = {0,0};
 
     int nCMSType = -1;
@@ -1534,7 +1551,8 @@ void PKCS7Dlg::clickSrcType()
         return;
     }
 
-    getBINFromString( &binCMS, DATA_HEX, strCMS );
+    ret = getBINFromString( &binCMS, DATA_HEX, strCMS );
+    FORMAT_WARN_GO(ret);
 
     nCMSType = JS_PKCS7_getType( &binCMS );
     if( nCMSType < 0 )
@@ -1545,11 +1563,14 @@ void PKCS7Dlg::clickSrcType()
     }
 
     berApplet->messageBox( tr( "This CMS type is %1" ).arg( JS_PKCS7_getTypeName( nCMSType )), this );
+
+end :
     JS_BIN_reset( &binCMS );
 }
 
 void PKCS7Dlg::clickOutputType()
 {
+    int ret = -1;
     BIN binCMS = {0,0};
 
     int nCMSType = -1;
@@ -1562,7 +1583,8 @@ void PKCS7Dlg::clickOutputType()
         return;
     }
 
-    getBINFromString( &binCMS, DATA_HEX, strCMS );
+    ret = getBINFromString( &binCMS, DATA_HEX, strCMS );
+    FORMAT_WARN_GO(ret);
 
     nCMSType = JS_PKCS7_getType( &binCMS );
     if( nCMSType < 0 )
@@ -1573,11 +1595,14 @@ void PKCS7Dlg::clickOutputType()
     }
 
     berApplet->messageBox( tr( "This CMS type is %1" ).arg( JS_PKCS7_getTypeName( nCMSType )), this );
+
+end :
     JS_BIN_reset( &binCMS );
 }
 
 void PKCS7Dlg::clickOutputView()
 {
+    int ret = -1;
     BIN binCMS = {0,0};
 
     int nCMSType = -1;
@@ -1592,7 +1617,8 @@ void PKCS7Dlg::clickOutputView()
         return;
     }
 
-    getBINFromString( &binCMS, DATA_HEX, strCMS );
+    ret = getBINFromString( &binCMS, DATA_HEX, strCMS );
+    FORMAT_WARN_GO(ret);
 
     nCMSType = JS_PKCS7_getType( &binCMS );
     if( nCMSType < 0 )
@@ -1605,6 +1631,7 @@ void PKCS7Dlg::clickOutputView()
     cmsInfo.setCMS( &binCMS );
     cmsInfo.exec();
 
+end :
     JS_BIN_reset( &binCMS );
 }
 
@@ -1674,7 +1701,8 @@ void PKCS7Dlg::clickWriteFile()
         return;
     }
 
-    getBINFromString( &binData, DATA_HEX, strOutput );
+    ret = getBINFromString( &binData, DATA_HEX, strOutput );
+    FORMAT_WARN_GO(ret);
 
     if( mEncodeRadio->isChecked() == true )
     {
@@ -1747,7 +1775,9 @@ void PKCS7Dlg::clickDigest()
     }
 
 
-    getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
+    ret = getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
+    FORMAT_WARN_GO(ret);
+
     if( binSrc.nLen <= 0 )
     {
         berApplet->warningBox( tr( "There is no input value or the input type is incorrect." ), this );
@@ -1803,7 +1833,9 @@ void PKCS7Dlg::clickData()
         return;
     }
 
-    getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
+    ret = getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
+    FORMAT_WARN_GO(ret);
+
     if( binSrc.nLen <= 0 )
     {
         berApplet->warningBox( tr( "There is no input value or the input type is incorrect." ), this );
@@ -1863,7 +1895,8 @@ void PKCS7Dlg::clickGetData()
         return;
     }
 
-    getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
+    ret = getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
+    FORMAT_WARN_GO(ret);
 
     nCMSType = JS_PKCS7_getType( &binSrc );
     if( nCMSType != JS_PKCS7_TYPE_DATA )
@@ -1923,7 +1956,8 @@ void PKCS7Dlg::clickGetDigest()
         return;
     }
 
-    getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
+    ret = getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
+    FORMAT_WARN_GO(ret);
 
     nCMSType = JS_PKCS7_getType( &binSrc );
     if( nCMSType != JS_PKCS7_TYPE_DIGEST )
@@ -2020,6 +2054,7 @@ void PKCS7Dlg::changeCmd()
 
 void PKCS7Dlg::clickRun()
 {
+    int ret = 0;
     QString strCmd = mCmdCombo->currentText();
 
     if( mEncodeRadio->isChecked() == true )
@@ -2066,7 +2101,13 @@ void PKCS7Dlg::clickRun()
                 return;
             }
 
-            getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
+            ret = getBINFromString( &binSrc, strSrcType, strInput.toStdString().c_str() );
+            if( ret < 0 )
+            {
+                berApplet->formatWarn( ret, this );
+                return;
+            }
+
             nCMSType = JS_PKCS7_getType( &binSrc );
             JS_BIN_reset( &binSrc );
 

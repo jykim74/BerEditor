@@ -86,11 +86,13 @@ QString MakeBerDlg::getData()
     QString strValue = mValueText->toPlainText();
     BIN binData = {0,0};
 
-    getBINFromString( &binData, mValueTypeCombo->currentText(), strValue );
+    int ret = getBINFromString( &binData, mValueTypeCombo->currentText(), strValue );
+    FORMAT_WARN_GO(ret);
 
     strData = mHeaderText->text();
     strData += getHexString( &binData );
 
+end:
     JS_BIN_reset( &binData );
 
     return strData;
@@ -117,6 +119,7 @@ void MakeBerDlg::initialize()
 
 void MakeBerDlg::makeHeader()
 {
+    int ret = -1;
     unsigned char cTag = 0x00;
     unsigned char cPrimitive = 0x00;
     BIN binLen = {0,0};
@@ -162,7 +165,9 @@ void MakeBerDlg::makeHeader()
     JS_BIN_set( &binHeader, &cTag, 1 );
     JS_BIN_bitString( &binHeader, &pBitString );
 
-    getBINFromString( &binValue, mValueTypeCombo->currentText(), strValue );
+    ret = getBINFromString( &binValue, mValueTypeCombo->currentText(), strValue );
+    FORMAT_WARN_GO(ret);
+
     JS_BER_getHeaderLength( binValue.nLen, &binLen );
 
     JS_BIN_appendBin( &binHeader, &binLen );

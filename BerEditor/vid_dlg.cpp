@@ -120,10 +120,11 @@ void VIDDlg::clickVerifyVID()
         return;
     }
 
-    getBINFromString( &binRand, mRandCombo->currentText(), strRand );
-    getBINFromString( &binVID, DATA_HEX, strVID );
+    ret = getBINFromString( &binRand, mRandCombo->currentText(), strRand );
+    FORMAT_WARN_GO(ret);
 
-
+    ret = getBINFromString( &binVID, DATA_HEX, strVID );
+    FORMAT_WARN_GO(ret);
 
     ret = JS_PKI_verifyVID( strSSN.toStdString().c_str(), &binRand, &binVID, &binHashContent );
 
@@ -147,6 +148,7 @@ void VIDDlg::clickVerifyVID()
         berApplet->warnLog( tr( "VID verification failed: %1" ).arg( JERR(ret) ), this );
     }
 
+end :
     JS_BIN_reset( &binRand );
     JS_BIN_reset( &binVID );
     JS_BIN_reset( &binHashContent );
@@ -177,7 +179,8 @@ void VIDDlg::clickMakeVID()
         return;
     }
 
-    getBINFromString( &binRand, mRandCombo->currentText(), strRand );
+    ret = getBINFromString( &binRand, mRandCombo->currentText(), strRand );
+    FORMAT_WARN_GO(ret);
 
     ret = JS_PKI_makeVID( mHashCombo->currentText().toStdString().c_str(),
                          strSSN.toStdString().c_str(),
@@ -207,6 +210,7 @@ void VIDDlg::clickMakeVID()
         berApplet->warnLog( tr( "failed to make VID: %1").arg( ret ), this );
     }
 
+end :
     JS_BIN_reset( &binRand );
     JS_BIN_reset( &binVID );
     JS_BIN_reset( &binHashContent );

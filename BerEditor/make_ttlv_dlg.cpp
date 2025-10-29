@@ -125,15 +125,18 @@ QString MakeTTLVDlg::getData()
     QString strData;
     QString strValue = mValueText->toPlainText();
     BIN binData = {0,0};
+    int nAppend = -1;
 
-    getBINFromString( &binData, mValueCombo->currentText(), strValue );
+    int ret = getBINFromString( &binData, mValueCombo->currentText(), strValue );
+    FORMAT_WARN_GO(ret);
 
-    int nAppend = 8 - binData.nLen % 8;
+    nAppend = 8 - binData.nLen % 8;
     if( nAppend > 0 && nAppend != 8 ) JS_BIN_appendCh( &binData, 0x00, nAppend );
 
     strData = mHeaderText->text();
     strData += getHexString( &binData );
 
+end :
     JS_BIN_reset( &binData );
 
     return strData.toUpper();

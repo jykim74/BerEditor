@@ -224,7 +224,8 @@ void PubEncDecDlg::Run()
         return;
     }
 
-    getBINFromString( &binSrc, strType, strInput );
+    ret = getBINFromString( &binSrc, strType, strInput );
+    FORMAT_WARN_GO(ret);
 
     if( mVersionTypeCombo->currentIndex() == 0 )
         nVersion = JS_PKI_RSA_PADDING_V15;

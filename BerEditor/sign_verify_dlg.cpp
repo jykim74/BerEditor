@@ -535,7 +535,8 @@ void SignVerifyDlg::signVerifyUpdate()
     QString strInput = mInputText->toPlainText();
     QString strType = mInputTypeCombo->currentText();
 
-    getBINFromString( &binSrc, strType, strInput );
+    ret = getBINFromString( &binSrc, strType, strInput );
+    FORMAT_WARN_GO(ret);
 
     if( mSignRadio->isChecked() )
     {
@@ -571,7 +572,7 @@ void SignVerifyDlg::signVerifyUpdate()
         berApplet->elog( strFail );
     }
 
-    update();
+end :
     JS_BIN_reset( &binSrc );
 }
 
@@ -682,7 +683,8 @@ void SignVerifyDlg::dataRun()
         sctx_ = NULL;
     }
 
-    getBINFromString( &binSrc, strType, strInput );
+    ret = getBINFromString( &binSrc, strType, strInput );
+    FORMAT_WARN_GO(ret);
 
     if( mVersionCombo->currentIndex() == 0 )
         nVersion = JS_PKI_RSA_PADDING_V15;
@@ -782,7 +784,8 @@ void SignVerifyDlg::dataRun()
         qint64 us = 0;
         QElapsedTimer timer;
 
-        getBINFromString( &binOut, DATA_HEX, strOutput.toStdString().c_str() );
+        ret = getBINFromString( &binOut, DATA_HEX, strOutput.toStdString().c_str() );
+        FORMAT_WARN_GO(ret);
 
         if( strAlg == JS_PKI_KEY_NAME_RSA )
         {
@@ -992,7 +995,8 @@ void SignVerifyDlg::digestRun()
     }
 
     nDigestLen = getDigestLength( strHash );
-    getBINFromString( &binSrc, strType, strInput );
+    ret = getBINFromString( &binSrc, strType, strInput );
+    FORMAT_WARN_GO(ret);
 
     if( binSrc.nLen != nDigestLen )
     {

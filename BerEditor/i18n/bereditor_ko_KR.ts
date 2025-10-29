@@ -1404,23 +1404,28 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <location filename="../ber_applet.cpp" line="332"/>
         <location filename="../ber_applet.cpp" line="346"/>
-        <location filename="../ber_applet.cpp" line="374"/>
-        <location filename="../ber_applet.cpp" line="398"/>
+        <location filename="../ber_applet.cpp" line="378"/>
+        <location filename="../ber_applet.cpp" line="402"/>
         <source>Yes</source>
         <translation>예</translation>
     </message>
     <message>
         <location filename="../ber_applet.cpp" line="333"/>
-        <location filename="../ber_applet.cpp" line="375"/>
-        <location filename="../ber_applet.cpp" line="399"/>
+        <location filename="../ber_applet.cpp" line="379"/>
+        <location filename="../ber_applet.cpp" line="403"/>
         <source>No</source>
         <translation>아니오</translation>
     </message>
     <message>
         <location filename="../ber_applet.cpp" line="347"/>
-        <location filename="../ber_applet.cpp" line="376"/>
+        <location filename="../ber_applet.cpp" line="380"/>
         <source>Cancel</source>
         <translation>취소</translation>
+    </message>
+    <message>
+        <location filename="../ber_applet.cpp" line="368"/>
+        <source>There is an invalid format character: %1</source>
+        <translation>형식에 맞지 않는 문자가 있습니다: %1</translation>
     </message>
 </context>
 <context>
@@ -5722,7 +5727,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">비 신뢰 인증서</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="451"/>
+        <location filename="../cert_pvd_dlg.ui" line="444"/>
         <source>IgnoreCritical</source>
         <translation>IgnoreCritical</translation>
     </message>
@@ -5771,7 +5776,7 @@ mailto : jykim74@gmail.com</translation>
         <translation>플래그 옵션</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="444"/>
+        <location filename="../cert_pvd_dlg.ui" line="458"/>
         <source>CRLCheckAll</source>
         <translation>CRLCheckAll</translation>
     </message>
@@ -5808,7 +5813,7 @@ mailto : jykim74@gmail.com</translation>
         <translation>신뢰 인증서</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="458"/>
+        <location filename="../cert_pvd_dlg.ui" line="465"/>
         <source>CRLCheck</source>
         <translation>CRLCheck</translation>
     </message>
@@ -5823,7 +5828,7 @@ mailto : jykim74@gmail.com</translation>
         <translation>CheckSSSignature</translation>
     </message>
     <message>
-        <location filename="../cert_pvd_dlg.ui" line="465"/>
+        <location filename="../cert_pvd_dlg.ui" line="451"/>
         <source>UseCheckTime</source>
         <translation>UseCheckTime</translation>
     </message>
@@ -6430,7 +6435,7 @@ mailto : jykim74@gmail.com</translation>
         <translation>바이너리 저장 실패</translation>
     </message>
     <message>
-        <location filename="../data_converter_dlg.cpp" line="182"/>
+        <location filename="../data_converter_dlg.cpp" line="183"/>
         <source>Please enter input value</source>
         <translation>입력값을 입력하세요</translation>
     </message>
@@ -16417,102 +16422,102 @@ Only RSA is supported.</source>
         <translation type="vanished">파일 저장</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="509"/>
+        <location filename="../ber_applet.cpp" line="513"/>
         <source>Cert Files</source>
         <translation>인증서 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="514"/>
+        <location filename="../ber_applet.cpp" line="518"/>
         <source>CRL Files</source>
         <translation>CRL 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="519"/>
+        <location filename="../ber_applet.cpp" line="523"/>
         <source>CSR Files</source>
         <translation>요청서 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="524"/>
-        <location filename="../ber_applet.cpp" line="584"/>
+        <location filename="../ber_applet.cpp" line="528"/>
+        <location filename="../ber_applet.cpp" line="588"/>
         <source>PrivateKey Files</source>
         <translation>개인키 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="529"/>
-        <location filename="../ber_applet.cpp" line="588"/>
+        <location filename="../ber_applet.cpp" line="533"/>
+        <location filename="../ber_applet.cpp" line="592"/>
         <source>PKCS8 Files</source>
         <translation>PKCS8 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="534"/>
+        <location filename="../ber_applet.cpp" line="538"/>
         <source>Text Files</source>
         <translation>텍스트 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="539"/>
+        <location filename="../ber_applet.cpp" line="543"/>
         <source>BER Files</source>
         <translation>BER 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="544"/>
+        <location filename="../ber_applet.cpp" line="548"/>
         <source>Config Files</source>
         <translation>설정 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="549"/>
-        <location filename="../ber_applet.cpp" line="592"/>
+        <location filename="../ber_applet.cpp" line="553"/>
+        <location filename="../ber_applet.cpp" line="596"/>
         <source>PFX Files</source>
         <translation>PFX 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="554"/>
+        <location filename="../ber_applet.cpp" line="558"/>
         <source>Binary Files</source>
         <translation>바이너리 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="559"/>
+        <location filename="../ber_applet.cpp" line="563"/>
         <source>PKCS7 Files</source>
         <translation>PKCS7 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="564"/>
+        <location filename="../ber_applet.cpp" line="568"/>
         <source>JSON Files</source>
         <translation>JSON 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="569"/>
+        <location filename="../ber_applet.cpp" line="573"/>
         <source>XML Files</source>
         <translation>XML 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="574"/>
+        <location filename="../ber_applet.cpp" line="578"/>
         <source>License Files</source>
         <translation>라이선스 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="579"/>
+        <location filename="../ber_applet.cpp" line="583"/>
         <source>DH Parameter Files</source>
         <translation>DH 파라미터 파일들</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="597"/>
+        <location filename="../ber_applet.cpp" line="601"/>
         <source>All Files (*.*)</source>
         <translation>모든 파일들 (*.*)</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="616"/>
-        <location filename="../ber_applet.cpp" line="640"/>
+        <location filename="../ber_applet.cpp" line="620"/>
+        <location filename="../ber_applet.cpp" line="644"/>
         <source>Open %1</source>
         <translation>%1 열기</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="665"/>
-        <location filename="../ber_applet.cpp" line="694"/>
+        <location filename="../ber_applet.cpp" line="669"/>
+        <location filename="../ber_applet.cpp" line="698"/>
         <source>Save %1</source>
         <translation>%1 저장 하기</translation>
     </message>
     <message>
-        <location filename="../ber_applet.cpp" line="715"/>
+        <location filename="../ber_applet.cpp" line="719"/>
         <source>Open Directory</source>
         <translation>디렉토리 열기</translation>
     </message>
@@ -16705,6 +16710,10 @@ Only RSA is supported.</source>
         <location filename="../export_dlg.cpp" line="108"/>
         <source>PKCS7 DER format file</source>
         <translation>PKCS7 DER 포맷 파일</translation>
+    </message>
+    <message>
+        <source>There is an invalid format character</source>
+        <translation type="vanished">형식에 맞지 않는 문자가 있습니다</translation>
     </message>
 </context>
 <context>

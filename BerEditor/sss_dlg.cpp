@@ -208,8 +208,11 @@ void SSSDlg::clickSplit()
     }
 
     clearShareTable();
-    getBINFromString( &binSrc, mSrcTypeCombo->currentText(), strSrc );
-    JS_BIN_decodeHex( mPrimeText->text().toStdString().c_str(), &binPrime );
+    ret = getBINFromString( &binSrc, mSrcTypeCombo->currentText(), strSrc );
+    FORMAT_WARN_GO(ret);
+
+    ret = getBINFromString( &binPrime, DATA_HEX, mPrimeText->text() );
+    FORMAT_WARN_GO(ret);
 
     if( binSrc.nLen <= 0 )
     {

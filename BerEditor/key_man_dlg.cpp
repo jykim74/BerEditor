@@ -379,6 +379,7 @@ void KeyManDlg::clickKD_DeriveKey()
 
     QString strHash = mKD_HashCombo->currentText();
     QString strInfo;
+    QString strSalt = mKD_SaltText->toPlainText();
 
     nIter = mKD_IterCntText->text().toInt();
     nKeySize = mKD_KeyLenText->text().toInt();
@@ -387,11 +388,12 @@ void KeyManDlg::clickKD_DeriveKey()
     nR = mKD_RText->text().toInt();
     nP = mKD_PText->text().toInt();
 
-    getBINFromString( &binSecret, mKD_SecretTypeCombo->currentText(), strSecret );
+    ret = getBINFromString( &binSecret, mKD_SecretTypeCombo->currentText(), strSecret );
+    FORMAT_WARN_GO(ret);
 
-    QString strSalt = mKD_SaltText->toPlainText();
+    ret = getBINFromString( &binSalt, mKD_SaltTypeCombo->currentText(), strSalt );
+    FORMAT_WARN_GO(ret);
 
-    getBINFromString( &binSalt, mKD_SaltTypeCombo->currentText(), strSalt );
     if( mKD_HKDFRadio->isChecked() == true )
     {
         if( binSalt.nLen <= 0 )
@@ -403,7 +405,8 @@ void KeyManDlg::clickKD_DeriveKey()
     }
 
     strInfo = mKD_InfoText->text();
-    getBINFromString( &binInfo, mKD_InfoTypeCombo->currentText(), strInfo );
+    ret = getBINFromString( &binInfo, mKD_InfoTypeCombo->currentText(), strInfo );
+    FORMAT_WARN_GO(ret);
 
     berApplet->logLine();
 
@@ -567,7 +570,9 @@ void KeyManDlg::runKW_Wrap()
     else
         nPad = 0;
 
-    getBINFromString( &binInput, mKW_SrcTypeCombo->currentText(), strInput );
+    ret = getBINFromString( &binInput, mKW_SrcTypeCombo->currentText(), strInput );
+    FORMAT_WARN_GO(ret);
+
     if( nPad == 0 )
     {
         if( binInput.nLen < 16 )
@@ -578,7 +583,8 @@ void KeyManDlg::runKW_Wrap()
         }
     }
 
-    getBINFromString( &binWrappingKey, mKW_KEKTypeCombo->currentText(), strWrappingKey );
+    ret = getBINFromString( &binWrappingKey, mKW_KEKTypeCombo->currentText(), strWrappingKey );
+    FORMAT_WARN_GO(ret);
 
     berApplet->logLine();
     berApplet->log( QString( "-- Wrap Key (%1)" ).arg( mKW_MethodCombo->currentText() ));
@@ -658,8 +664,11 @@ void KeyManDlg::runKW_Unwrap()
     else
         nPad = 0;
 
-    getBINFromString( &binInput, mKW_SrcTypeCombo->currentText(), strInput );
-    getBINFromString( &binWrappingKey, mKW_KEKTypeCombo->currentText(), strWrappingKey );
+    ret = getBINFromString( &binInput, mKW_SrcTypeCombo->currentText(), strInput );
+    FORMAT_WARN_GO(ret);
+
+    ret = getBINFromString( &binWrappingKey, mKW_KEKTypeCombo->currentText(), strWrappingKey );
+    FORMAT_WARN_GO(ret);
 
     berApplet->logLine();
     berApplet->log( QString( "-- Unwrap Key (%1)" ).arg( mKW_MethodCombo->currentText() ) );
