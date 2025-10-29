@@ -21,6 +21,7 @@
 #include "cert_info_dlg.h"
 
 static const QStringList kKW_Methods = { "KW", "KWP" };
+static const QStringList kKW_KeyLens = { "16", "24", "32" };
 
 KeyManDlg::KeyManDlg(QWidget *parent) :
     QDialog(parent)
@@ -139,6 +140,7 @@ void KeyManDlg::initUI()
     mKW_MethodCombo->addItems( kKW_Methods );
     mKW_SrcTypeCombo->addItems( kDataTypeList );
     mKW_KEKTypeCombo->addItems( kDataTypeList );
+    mKW_KeyLenCombo->addItems( kKW_KeyLens );
 
     mKD_KeyLenText->setText( "32" );
     mKD_IterCntText->setText( "1024" );
@@ -732,8 +734,10 @@ void KeyManDlg::clickKW_DstClear()
  void KeyManDlg::clickKW_GenKEK()
  {
      BIN binKEK = {0,0};
-     mKW_KEKTypeCombo->setCurrentIndex(1);
-     JS_PKI_genRandom( 16, &binKEK );
+     int nLen = mKW_KeyLenCombo->currentText().toInt();
+
+     JS_PKI_genRandom( nLen, &binKEK );
+     mKW_KEKTypeCombo->setCurrentText( kDataHex );
      mKW_KEKText->setText( getHexString( &binKEK ) );
      JS_BIN_reset( &binKEK );
  }

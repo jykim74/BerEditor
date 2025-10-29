@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>610</width>
-    <height>670</height>
+    <height>528</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -918,41 +918,15 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_7">
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>KEK</string>
-           </property>
-          </widget>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="mKW_KEKTypeCombo"/>
          </item>
-         <item row="0" column="3">
-          <spacer name="horizontalSpacer_8">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="0" column="4">
+         <item row="0" column="6">
           <widget class="QPushButton" name="mKW_GenKEKBtn">
            <property name="text">
             <string>Gen KEK</string>
            </property>
           </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QComboBox" name="mKW_KEKTypeCombo"/>
          </item>
          <item row="0" column="2">
           <widget class="QPushButton" name="mKW_KEKClearBtn">
@@ -970,6 +944,42 @@
            </property>
            <property name="text">
             <string>C</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <spacer name="horizontalSpacer_8">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="5">
+          <widget class="QComboBox" name="mKW_KeyLenCombo"/>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_7">
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>KEK</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Key Length</string>
            </property>
           </widget>
          </item>
@@ -1847,6 +1857,7 @@
   <tabstop>mKW_SrcText</tabstop>
   <tabstop>mKW_KEKTypeCombo</tabstop>
   <tabstop>mKW_KEKClearBtn</tabstop>
+  <tabstop>mKW_KeyLenCombo</tabstop>
   <tabstop>mKW_GenKEKBtn</tabstop>
   <tabstop>mKW_KEKText</tabstop>
   <tabstop>mKW_KEKLenText</tabstop>
