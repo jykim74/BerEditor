@@ -1274,6 +1274,8 @@ int getBINFromString( BIN *pBin, int nType, const QString& strString )
     if( nType == DATA_HEX )
     {
         srcString.remove( QRegularExpression("[\t\r\n\\s]") );
+
+        if( srcString.length() % 2 ) return JSR_NOT_EVEN_HEX;
         if( isHex( srcString ) == false ) return JSR_BAD_HEX;
 
         ret = JS_BIN_decodeHex( srcString.toStdString().c_str(), pBin );

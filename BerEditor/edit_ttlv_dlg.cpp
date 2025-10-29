@@ -147,7 +147,13 @@ void EditTTLVDlg::clickModify()
 
     TTLVTreeModel *pModel = (TTLVTreeModel *)pItem->model();
 
-    JS_BIN_decodeHex( mValueText->toPlainText().toStdString().c_str(), &binValue );
+    ret = getBINFromString( &binValue, DATA_HEX, mValueText->toPlainText() );
+    if( ret < 0 )
+    {
+        berApplet->formatWarn( ret, this );
+        return;
+    }
+
     ret = pModel->modifyItem( pItem, &binValue );
     JS_BIN_reset( &binValue );
 
