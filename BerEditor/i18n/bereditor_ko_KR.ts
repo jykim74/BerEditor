@@ -7097,24 +7097,28 @@ mailto : jykim74@gmail.com</translation>
         <translation>데이타를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="2518"/>
+        <location filename="../doc_signer_dlg.cpp" line="2521"/>
+        <location filename="../doc_signer_dlg.cpp" line="2555"/>
+        <location filename="../doc_signer_dlg.cpp" line="2589"/>
+        <source>The file(%1) has been saved</source>
+        <translation>파일(%1) 이 저장 되었습니다</translation>
+    </message>
+    <message>
         <source>CMS file has been saved</source>
-        <translation>CMS 파일이 저장 되었습니다</translation>
+        <translation type="vanished">CMS 파일이 저장 되었습니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="2552"/>
         <source>JWS file has been saved</source>
-        <translation>JWS 파일이 저장 되었습니다</translation>
+        <translation type="vanished">JWS 파일이 저장 되었습니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="2572"/>
+        <location filename="../doc_signer_dlg.cpp" line="2575"/>
         <source>There is no XML</source>
         <translation>XML가 없습니다</translation>
     </message>
     <message>
-        <location filename="../doc_signer_dlg.cpp" line="2586"/>
         <source>XML file has been saved</source>
-        <translation>XML 파일이 저장 되었습니다</translation>
+        <translation type="vanished">XML 파일이 저장 되었습니다</translation>
     </message>
     <message>
         <source>The CMS file[%1] has been saved.</source>
@@ -7175,7 +7179,7 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../doc_signer_dlg.cpp" line="1972"/>
-        <location filename="../doc_signer_dlg.cpp" line="2538"/>
+        <location filename="../doc_signer_dlg.cpp" line="2541"/>
         <source>There is no JWS</source>
         <translation>JWS가 없습니다</translation>
     </message>

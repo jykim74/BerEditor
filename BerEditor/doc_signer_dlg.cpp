@@ -2509,13 +2509,16 @@ void DocSignerDlg::clickCMSWriteFile()
     ret = readCMSOutput( &binCMS );
     if( ret != 0 ) goto end;
 
+    if( JS_CMS_getType( &binCMS ) < 0 )
+        nType = JS_FILE_TYPE_BIN;
+
     strFileName = berApplet->findSaveFile( this, nType, strPath );
     if( strFileName.length() < 1 ) goto end;
 
     ret = JS_BIN_fileWrite( &binCMS, strFileName.toLocal8Bit().toStdString().c_str() );
     if( ret > 0 )
     {
-        berApplet->messageBox( tr( "CMS file has been saved" ), this );
+        berApplet->messageBox( tr( "The file(%1) has been saved" ).arg( strFileName ), this );
     }
 
 end :
@@ -2549,7 +2552,7 @@ void DocSignerDlg::clickJSON_WriteFile()
     ret = JS_BIN_fileWrite( &binJWS, strFileName.toLocal8Bit().toStdString().c_str() );
     if( ret > 0 )
     {
-        berApplet->messageBox( tr( "JWS file has been saved" ), this );
+        berApplet->messageBox( tr( "The file(%1) has been saved" ).arg( strFileName ), this );
     }
 
 end :
@@ -2583,7 +2586,7 @@ void DocSignerDlg::clickXML_WriteFile()
     ret = JS_BIN_fileWrite( &binXML, strFileName.toLocal8Bit().toStdString().c_str() );
     if( ret > 0 )
     {
-        berApplet->messageBox( tr( "XML file has been saved" ), this );
+        berApplet->messageBox( tr( "The file(%1) has been saved" ).arg( strFileName ), this );
     }
 
 end :
