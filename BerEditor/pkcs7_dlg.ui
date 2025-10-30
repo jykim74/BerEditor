@@ -949,9 +949,9 @@
       </widget>
      </item>
      <item row="0" column="8">
-      <widget class="QPushButton" name="mWriteFileBtn">
+      <widget class="QPushButton" name="mExportBtn">
        <property name="text">
-        <string>Write File</string>
+        <string>Export</string>
        </property>
       </widget>
      </item>
@@ -1084,7 +1084,7 @@
   <tabstop>mOutputViewBtn</tabstop>
   <tabstop>mOutputTypeBtn</tabstop>
   <tabstop>mOutputCmdText</tabstop>
-  <tabstop>mWriteFileBtn</tabstop>
+  <tabstop>mExportBtn</tabstop>
   <tabstop>mOutputUpBtn</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>

@@ -648,9 +648,9 @@
           </widget>
          </item>
          <item row="0" column="8">
-          <widget class="QPushButton" name="mCMSWriteFileBtn">
+          <widget class="QPushButton" name="mCMSExportBtn">
            <property name="text">
-            <string>Write File</string>
+            <string>Export</string>
            </property>
           </widget>
          </item>
@@ -983,9 +983,9 @@
           </widget>
          </item>
          <item row="0" column="4">
-          <widget class="QPushButton" name="mJSON_WriteFileBtn">
+          <widget class="QPushButton" name="mJSON_ExportBtn">
            <property name="text">
-            <string>Write File</string>
+            <string>Export</string>
            </property>
           </widget>
          </item>
@@ -1409,9 +1409,9 @@
           </widget>
          </item>
          <item row="0" column="3">
-          <widget class="QPushButton" name="mXMLWriteFileBtn">
+          <widget class="QPushButton" name="mXMLExportBtn">
            <property name="text">
-            <string>Write File</string>
+            <string>Export</string>
            </property>
           </widget>
          </item>
@@ -1557,7 +1557,7 @@
   <tabstop>mCMSOutputViewBtn</tabstop>
   <tabstop>mCMSOutputTypeBtn</tabstop>
   <tabstop>mCMSCmdNameText</tabstop>
-  <tabstop>mCMSWriteFileBtn</tabstop>
+  <tabstop>mCMSExportBtn</tabstop>
   <tabstop>mCMSOutputUpBtn</tabstop>
   <tabstop>mCMSOutputLenText</tabstop>
   <tabstop>mCMSOutputText</tabstop>
@@ -1570,7 +1570,7 @@
   <tabstop>mJSONVerifySignatureBtn</tabstop>
   <tabstop>mJSON_JWSClearBtn</tabstop>
   <tabstop>mJSON_JWSViewBtn</tabstop>
-  <tabstop>mJSON_WriteFileBtn</tabstop>
+  <tabstop>mJSON_ExportBtn</tabstop>
   <tabstop>mJSON_JWSUpBtn</tabstop>
   <tabstop>mJSON_JWSLenText</tabstop>
   <tabstop>mJSON_JWSText</tabstop>
@@ -1585,7 +1585,7 @@
   <tabstop>mXMLMakeBtn</tabstop>
   <tabstop>mXMLVerifyBtn</tabstop>
   <tabstop>mXMLResClearBtn</tabstop>
-  <tabstop>mXMLWriteFileBtn</tabstop>
+  <tabstop>mXMLExportBtn</tabstop>
   <tabstop>mXMLResUpBtn</tabstop>
   <tabstop>mXMLResLenText</tabstop>
   <tabstop>mXMLResText</tabstop>

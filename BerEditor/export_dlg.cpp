@@ -14,6 +14,7 @@
 #include "csr_info_dlg.h"
 #include "pri_key_info_dlg.h"
 #include "cms_info_dlg.h"
+#include "json_tree_dlg.h"
 
 static const QString getFormatName( int nFormatType )
 {
@@ -56,7 +57,12 @@ static const QString getFormatName( int nFormatType )
         return QObject::tr( "PEM PKCS7 (*.p7b)" );
     case ExportPKCS7_DER:
         return QObject::tr( "DER PKCS7 (*.der)" );
-
+    case ExportJSON:
+        return QObject::tr( "JSON (*.json)");
+    case ExportXML:
+        return QObject::tr( "XML (*.xml)" );
+    case ExportBIN:
+        return QObject::tr( "Binary (*.bin)" );
 
     default:
         break;
@@ -106,6 +112,12 @@ static const QString getFormatDesc( int nFormatType )
         return QObject::tr( "PKCS7 PEM format file" );
     case ExportPKCS7_DER:
         return QObject::tr( "PKCS7 DER format file" );
+    case ExportJSON:
+        return QObject::tr( "JSON file" );
+    case ExportXML:
+        return QObject::tr( "XML file" );
+    case ExportBIN:
+        return QObject::tr( "Binary file" );
 
     default:
         break;
@@ -151,6 +163,12 @@ static const QString getFormatExtend( int nFormatType )
         return "der";
     case ExportPKCS7_PEM:
         return "p7b";
+    case ExportJSON:
+        return "json";
+    case ExportXML:
+        return "xml";
+    case ExportBIN:
+        return "bin";
 
     default:
         break;
@@ -282,6 +300,18 @@ void ExportDlg::clickOK()
         ret = exportPKCS7();
         break;
 
+    case ExportJSON:
+        ret = exportJSON();
+        break;
+
+    case ExportXML:
+        ret = exportXML();
+        break;
+
+    case ExportBIN:
+        ret = exportBIN();
+        break;
+
     default:
         ret = JSR_INVALID_TYPE;
         break;
@@ -345,6 +375,19 @@ void ExportDlg::clickView()
         CMSInfoDlg cmsInfo;
         cmsInfo.setCMS( &data_ );
         cmsInfo.exec();
+    }
+    else if( data_type_ == DataJSON )
+    {
+        char *pJson = NULL;
+        JS_BIN_string( &data_, &pJson );
+
+        if( pJson )
+        {
+            JSONTreeDlg jsonTree;
+            jsonTree.setJson( pJson );
+            jsonTree.exec();
+            JS_free( pJson );
+        }
     }
     else
     {
@@ -484,6 +527,43 @@ void ExportDlg::setPriKeyAndCert( const BIN *pPriKey, const BIN *pCert )
     mFormatCombo->addItem( getFormatName( ExportP8InfoDER ), ExportP8InfoDER);
 }
 
+void ExportDlg::setJSON( const BIN *pJSON )
+{
+    data_type_ = DataJSON;
+    key_type_ = -1;
+
+    mAlgText->setText( "JSON" );
+    JS_BIN_copy( &data_, pJSON );
+    mTitleLabel->setText( tr( "JSON Export") );
+
+    mFormatCombo->addItem( getFormatName( ExportJSON ), ExportJSON );
+}
+
+void ExportDlg::setXML( const BIN *pXML )
+{
+    data_type_ = DataXML;
+    key_type_ = -1;
+
+    mAlgText->setText( "XML" );
+    JS_BIN_copy( &data_, pXML );
+    mTitleLabel->setText( tr( "XML Export") );
+
+    mFormatCombo->addItem( getFormatName( ExportXML ), ExportXML );
+    mViewBtn->hide();
+}
+
+void ExportDlg::setBIN( const BIN *pBIN )
+{
+    data_type_ = DataBIN;
+    key_type_ = -1;
+
+    mAlgText->setText( "Binary" );
+    JS_BIN_copy( &data_, pBIN );
+    mTitleLabel->setText( tr( "Binary Export") );
+
+    mFormatCombo->addItem( getFormatName( ExportBIN ), ExportBIN );
+    mViewBtn->hide();
+}
 
 int ExportDlg::exportPublic()
 {
@@ -836,6 +916,57 @@ int ExportDlg::exportPKCS7()
     if( ret > 0 )
     {
         berApplet->messageBox( tr( "PKCS7 export successfully" ), this );
+        ret = JSR_OK;
+    }
+
+    return ret;
+}
+
+int ExportDlg::exportJSON()
+{
+    int ret = -1;
+    QString strFilename = mFilenameText->text();
+
+    if( data_type_ != DataJSON ) return -1;
+
+    ret = JS_BIN_fileWrite( &data_, strFilename.toLocal8Bit().toStdString().c_str() );
+    if( ret > 0 )
+    {
+        berApplet->messageBox( tr( "JSON export successfully" ), this );
+        ret = JSR_OK;
+    }
+
+    return ret;
+}
+
+int ExportDlg::exportXML()
+{
+    int ret = -1;
+    QString strFilename = mFilenameText->text();
+
+    if( data_type_ != DataXML ) return -1;
+
+    ret = JS_BIN_fileWrite( &data_, strFilename.toLocal8Bit().toStdString().c_str() );
+    if( ret > 0 )
+    {
+        berApplet->messageBox( tr( "XML export successfully" ), this );
+        ret = JSR_OK;
+    }
+
+    return ret;
+}
+
+int ExportDlg::exportBIN()
+{
+    int ret = -1;
+    QString strFilename = mFilenameText->text();
+
+    if( data_type_ != DataBIN ) return -1;
+
+    ret = JS_BIN_fileWrite( &data_, strFilename.toLocal8Bit().toStdString().c_str() );
+    if( ret > 0 )
+    {
+        berApplet->messageBox( tr( "Binary export successfully" ), this );
         ret = JSR_OK;
     }
 

@@ -269,9 +269,9 @@
       </widget>
      </item>
      <item row="0" column="4">
-      <widget class="QPushButton" name="mWriteBinBtn">
+      <widget class="QPushButton" name="mExportBtn">
        <property name="text">
-        <string>Write Bin</string>
+        <string>Export</string>
        </property>
       </widget>
      </item>
@@ -525,7 +525,7 @@
   <tabstop>mConvertBtn</tabstop>
   <tabstop>mOutputTypeCombo</tabstop>
   <tabstop>mShowPrintTextCheck</tabstop>
-  <tabstop>mWriteBinBtn</tabstop>
+  <tabstop>mExportBtn</tabstop>
   <tabstop>mChangeBtn</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputTab</tabstop>

@@ -17,7 +17,10 @@ enum {
     DataCSR,
     DataPriKeyCert,
     DataDHParam,
-    DataPKCS7
+    DataPKCS7,
+    DataJSON,
+    DataXML,
+    DataBIN
 };
 
 enum {
@@ -40,6 +43,9 @@ enum {
     ExportDH_DER,       // DER DH Param (*.der)
     ExportPKCS7_PEM,    // PEM PKCS7 (*.p7b)
     ExportPKCS7_DER,    // DER PKCS7 (*.der)
+    ExportJSON,         // JSON (*.json)
+    ExportXML,          // XML (*.xml)
+    ExportBIN,          // Binary (*.bin)
 };
 
 class ExportDlg : public QDialog, public Ui::ExportDlg
@@ -60,6 +66,9 @@ public:
     void setPriKeyAndCert( const BIN *pPriKey, const BIN *pCert );
     void setDHParam( const BIN *pParam );
     void setPKCS7( const BIN *pPKCS7 );
+    void setJSON( const BIN *pJSON );
+    void setXML( const BIN *pXML );
+    void setBIN( const BIN *pBIN );
 
 private slots:
     void changeFormatType( int index );
@@ -80,6 +89,9 @@ private:
     int exportP8Info();
     int exportDHParam();
     int exportPKCS7();
+    int exportJSON();
+    int exportXML();
+    int exportBIN();
 
     BIN data_;
     BIN data2_;

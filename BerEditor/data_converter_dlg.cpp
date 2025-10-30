@@ -14,6 +14,7 @@
 #include "js_ber.h"
 #include "ber_applet.h"
 #include "common.h"
+#include "export_dlg.h"
 
 DataConverterDlg::DataConverterDlg(QWidget *parent) :
     QDialog(parent)
@@ -26,7 +27,7 @@ DataConverterDlg::DataConverterDlg(QWidget *parent) :
 
     connect( mShowPrintTextCheck, SIGNAL(clicked()), this, SLOT(checkShowPrintable()));
     connect( mReadFileBtn, SIGNAL(clicked()), this, SLOT(clickReadFile()));
-    connect( mWriteBinBtn, SIGNAL(clicked()), this, SLOT(clickWriteBin()));
+    connect( mExportBtn, SIGNAL(clicked()), this, SLOT(clickExport()));
     connect( mConvertBtn, SIGNAL(clicked()), this, SLOT(onClickConvertBtn()));
     connect( mOutputTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(outTypeChanged(int)));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
@@ -130,7 +131,7 @@ void DataConverterDlg::clickReadFile()
     }
 }
 
-void DataConverterDlg::clickWriteBin()
+void DataConverterDlg::clickExport()
 {
     int ret = 0;
     BIN binOut = {0,0};
@@ -139,6 +140,7 @@ void DataConverterDlg::clickWriteBin()
     QString strType = mOutputTypeCombo->currentText();
     QString strFile;
     QString strPath = berApplet->curPath();
+    ExportDlg exportDlg;
 
     int nOutLen = strOut.length();
 
@@ -152,19 +154,9 @@ void DataConverterDlg::clickWriteBin()
     ret = getBINFromString( &binOut, strType, strOut );
     FORMAT_WARN_GO(ret);
 
-    strFile = berApplet->findSaveFile( this, JS_FILE_TYPE_BIN, strPath );
-    if( strFile.length() > 0 )
-    {
-        ret = JS_BIN_fileWrite( &binOut, strFile.toLocal8Bit().toStdString().c_str() );
-        if( ret > 0 )
-        {
-            berApplet->messageBox( tr( "Binary save success" ), this );
-        }
-        else
-        {
-            berApplet->warningBox( tr("Binary save failed"), this );
-        }
-    }
+    exportDlg.setBIN( &binOut );
+    exportDlg.setName( "DataConvert" );
+    exportDlg.exec();
 
 end :
     JS_BIN_reset( &binOut );

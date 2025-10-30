@@ -97,7 +97,7 @@ private slots:
     void clickOutputView();
     void clickClearDataAll();
     void clickReadFile();
-    void clickWriteFile();
+    void clickExport();
 
     void checkSignEncPriKey();
     void checkKMEncPriKey();

@@ -29,7 +29,7 @@ private slots:
     void dropEvent(QDropEvent *event);
 
     void clickReadFile();
-    void clickWriteBin();
+    void clickExport();
     void checkShowPrintable();
 
     void onClickConvertBtn();

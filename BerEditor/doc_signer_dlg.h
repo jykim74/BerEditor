@@ -75,7 +75,7 @@ private slots:
 
     void changeCMSCmd();
     void clickCMSRun();
-    void clickCMSWriteFile();
+    void clickCMSExport();
 
     void clickCMSMakeSign();
     void clickCMSVerifySign();
@@ -98,7 +98,7 @@ private slots:
     void clickJSON_JWSUp();
     void clickJSON_PayloadView();
     void clickJSON_JWSView();
-    void clickJSON_WriteFile();
+    void clickJSON_Export();
 
     void changeJSON_Payload();
     void changeJSON_JWS();
@@ -119,7 +119,7 @@ private slots:
     void clickXML_Make();
     void clickXML_Verify();
 
-    void clickXML_WriteFile();
+    void clickXML_Export();
 
     void changeXML_Body();
     void changeXML_Data();

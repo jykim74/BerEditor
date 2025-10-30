@@ -22,6 +22,7 @@
 #include "key_list_dlg.h"
 #include "cms_info_dlg.h"
 #include "time_stamp_dlg.h"
+#include "export_dlg.h"
 
 #include "js_pki.h"
 #include "js_pki_key.h"
@@ -65,7 +66,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
 
     connect( mCMSCmdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeCMSCmd()));
     connect( mCMSRunBtn, SIGNAL(clicked(bool)), this, SLOT(clickCMSRun()));
-    connect( mCMSWriteFileBtn, SIGNAL(clicked()), this, SLOT(clickCMSWriteFile()));
+    connect( mCMSExportBtn, SIGNAL(clicked()), this, SLOT(clickCMSExport()));
 
     connect( mCMSSrcClearBtn, SIGNAL(clicked()), this, SLOT(clickCMSSrcClear()));
     connect( mCMSSrcText, SIGNAL(textChanged()), this, SLOT(changeCMSSrc()));
@@ -91,7 +92,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mJSONPayloadViewBtn, SIGNAL(clicked()), this, SLOT(clickJSON_PayloadView()));
     connect( mJSON_JWSClearBtn, SIGNAL(clicked()), this, SLOT(clickJSON_JWSClear()));
     connect( mJSON_JWSViewBtn, SIGNAL(clicked()), this, SLOT(clickJSON_JWSView()));
-    connect( mJSON_WriteFileBtn, SIGNAL(clicked()), this, SLOT(clickJSON_WriteFile()));
+    connect( mJSON_ExportBtn, SIGNAL(clicked()), this, SLOT(clickJSON_Export()));
 
     connect( mXMLTemplateCheck, SIGNAL(clicked()), this, SLOT(checkXML_UseTemplate()));
     connect( mXMLCheckBodyBtn, SIGNAL(clicked()), this, SLOT(clickXML_Check()));
@@ -99,7 +100,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mXMLEncryptCheck, SIGNAL(clicked()), this, SLOT(checkXML_Encrypt()));
     connect( mXMLMakeBtn, SIGNAL(clicked()), this, SLOT(clickXML_Make()));
     connect( mXMLVerifyBtn, SIGNAL(clicked()), this, SLOT(clickXML_Verify()));
-    connect( mXMLWriteFileBtn, SIGNAL(clicked()), this, SLOT(clickXML_WriteFile()));
+    connect( mXMLExportBtn, SIGNAL(clicked()), this, SLOT(clickXML_Export()));
 
     connect( mXMLBodyClearBtn, SIGNAL(clicked()), this, SLOT(clickXML_BodyClear()));
     connect( mXMLBodyText, SIGNAL(textChanged()), this, SLOT(changeXML_Body()));
@@ -2505,36 +2506,36 @@ void DocSignerDlg::changeXML_Res()
     mXMLResLenText->setText( QString("%1").arg( strRes.length() ));
 }
 
-void DocSignerDlg::clickCMSWriteFile()
+void DocSignerDlg::clickCMSExport()
 {
     int ret = 0;
-    int nType = JS_FILE_TYPE_PKCS7;
-
     BIN binCMS = {0,0};
 
     QString strPath = mDstPathText->text();
     QString strFileName;
+    ExportDlg exportDlg;
 
     ret = readCMSOutput( &binCMS );
     if( ret != 0 ) goto end;
 
     if( JS_CMS_getType( &binCMS ) < 0 )
-        nType = JS_FILE_TYPE_BIN;
-
-    strFileName = berApplet->findSaveFile( this, nType, strPath );
-    if( strFileName.length() < 1 ) goto end;
-
-    ret = JS_BIN_fileWrite( &binCMS, strFileName.toLocal8Bit().toStdString().c_str() );
-    if( ret > 0 )
     {
-        berApplet->messageBox( tr( "The file(%1) has been saved" ).arg( strFileName ), this );
+        exportDlg.setName( "Binary" );
+        exportDlg.setBIN( &binCMS );
     }
+    else
+    {
+        exportDlg.setName( "CMS" );
+        exportDlg.setPKCS7( &binCMS );
+    }
+
+    exportDlg.exec();
 
 end :
     JS_BIN_reset( &binCMS );
 }
 
-void DocSignerDlg::clickJSON_WriteFile()
+void DocSignerDlg::clickJSON_Export()
 {
     int ret = 0;
     int nType = JS_FILE_TYPE_JSON;
@@ -2543,6 +2544,7 @@ void DocSignerDlg::clickJSON_WriteFile()
 
     QString strPath = mDstPathText->text();
     QString strFileName;
+    ExportDlg exportDlg;
 
     QString strJWS = mJSON_JWSText->toPlainText();
     if( strJWS.length() < 1 )
@@ -2555,21 +2557,15 @@ void DocSignerDlg::clickJSON_WriteFile()
     ret = getBINFromString( &binJWS, DATA_STRING, strJWS );
     FORMAT_WARN_GO(ret);
 
-    strFileName = berApplet->findSaveFile( this, nType, strPath );
-    if( strFileName.length() < 1 ) goto end;
-
-
-    ret = JS_BIN_fileWrite( &binJWS, strFileName.toLocal8Bit().toStdString().c_str() );
-    if( ret > 0 )
-    {
-        berApplet->messageBox( tr( "The file(%1) has been saved" ).arg( strFileName ), this );
-    }
+    exportDlg.setName( "JWS" );
+    exportDlg.setJSON( &binJWS );
+    exportDlg.exec();
 
 end :
     JS_BIN_reset( &binJWS );
 }
 
-void DocSignerDlg::clickXML_WriteFile()
+void DocSignerDlg::clickXML_Export()
 {
     int ret = 0;
     int nType = JS_FILE_TYPE_XML;
@@ -2578,6 +2574,7 @@ void DocSignerDlg::clickXML_WriteFile()
 
     QString strPath = mDstPathText->text();
     QString strFileName;
+    ExportDlg exportDlg;
 
     QString strXML = mXMLResText->toPlainText();
     if( strXML.length() < 1 )
@@ -2590,15 +2587,9 @@ void DocSignerDlg::clickXML_WriteFile()
     ret = getBINFromString( &binXML, DATA_STRING, strXML );
     FORMAT_WARN_GO(ret);
 
-    strFileName = berApplet->findSaveFile( this, nType, strPath );
-    if( strFileName.length() < 1 ) goto end;
-
-
-    ret = JS_BIN_fileWrite( &binXML, strFileName.toLocal8Bit().toStdString().c_str() );
-    if( ret > 0 )
-    {
-        berApplet->messageBox( tr( "The file(%1) has been saved" ).arg( strFileName ), this );
-    }
+    exportDlg.setName( "xml_result" );
+    exportDlg.setXML( &binXML );
+    exportDlg.exec();
 
 end :
     JS_BIN_reset( &binXML );

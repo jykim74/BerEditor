@@ -77,7 +77,7 @@ PKCS7Dlg::PKCS7Dlg(QWidget *parent) :
     connect( mOutputViewBtn, SIGNAL(clicked()), this, SLOT(clickOutputView()));
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
     connect( mReadFileBtn, SIGNAL(clicked()), this, SLOT(clickReadFile()));
-    connect( mWriteFileBtn, SIGNAL(clicked()), this, SLOT(clickWriteFile()));
+    connect( mExportBtn, SIGNAL(clicked()), this, SLOT(clickExport()));
 
     connect( mSignEncPriKeyCheck, SIGNAL(clicked()), this, SLOT(checkSignEncPriKey()));
     connect( mKMEncPriKeyCheck, SIGNAL(clicked()), this, SLOT(checkKMEncPriKey()));
@@ -1688,7 +1688,7 @@ void PKCS7Dlg::clickReadFile()
     }
 }
 
-void PKCS7Dlg::clickWriteFile()
+void PKCS7Dlg::clickExport()
 {
     int ret = 0;
     BIN binData = {0,0};
@@ -1720,19 +1720,10 @@ void PKCS7Dlg::clickWriteFile()
     }
     else
     {
-        QString strFile;
-        strFile = berApplet->findSaveFile( this, JS_FILE_TYPE_BIN, strFile );
-        if( strFile.length() > 0 )
-        {
-            ret = JS_BIN_fileWrite( &binData, strFile.toLocal8Bit().toStdString().c_str() );
-            if( ret <= 0 )
-            {
-                berApplet->warningBox( tr( "fail to write file: %1").arg( ret ), this );
-                goto end;
-            }
-
-            berApplet->messageBox( tr( "The data file[%1] has been saved." ).arg( strFile ), this );
-        }
+        ExportDlg exportDlg;
+        exportDlg.setName( "Binary" );
+        exportDlg.setBIN( &binData );
+        exportDlg.exec();
     }
 
 end :
