@@ -607,6 +607,8 @@ void DocSignerDlg::initialize()
     changeSignerTab();
     changeCMSCmd();
     checkUseTSP();
+
+    mUseCertManCheck->setChecked( berApplet->settingsMgr()->useCertMan() );
 }
 
 QStringList DocSignerDlg::getUsedURL()

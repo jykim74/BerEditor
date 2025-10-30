@@ -116,6 +116,7 @@ void PubEncDecDlg::initialize()
     checkEncPriKey();
 
     mEncryptRadio->click();
+    mUseCertManCheck->setChecked( berApplet->settingsMgr()->useCertMan() );
 }
 
 int PubEncDecDlg::readPrivateKey( BIN *pPriKey )

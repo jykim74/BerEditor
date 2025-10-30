@@ -170,6 +170,7 @@ void SignVerifyDlg::initialize()
 
     checkEncPriKey();
     mSignRadio->click();
+    mUseCertManCheck->setChecked( berApplet->settingsMgr()->useCertMan() );
 }
 
 int SignVerifyDlg::readPrivateKey( BIN *pPriKey )
