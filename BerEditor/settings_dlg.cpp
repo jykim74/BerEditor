@@ -60,6 +60,7 @@ void SettingsDlg::initialize()
         mUseLogTabCheck->setEnabled( false );
         mCertPathGroup->setEnabled( false );
         mSupportKeyPairChangeCheck->setEnabled( false );
+        mUseCertManCheck->setEnabled( false );
     }
 
     initFontFamily();
@@ -75,6 +76,8 @@ void SettingsDlg::updateSettings()
     {
         mgr->setUseLogTab( mUseLogTabCheck->checkState() == Qt::Checked );
         berApplet->mainWindow()->useLog( mUseLogTabCheck->checkState() == Qt::Checked );
+
+        mgr->setUseCertMan( mUseCertManCheck->checkState() == Qt::Checked );
     }
 
 #ifdef _AUTO_UPDATE
@@ -139,6 +142,7 @@ void SettingsDlg::clickRestoreDefaults()
 
     mgr->removeSet( "Language", "current" );
     mgr->removeSet( kBehaviorGroup, kShowPartOnly );
+    mgr->removeSet( kBehaviorGroup, kUseCertMan );
     mgr->removeSet( kBehaviorGroup, kOIDConfigPath );
     mgr->removeSet( kBehaviorGroup, kUseLogTab );
     mgr->removeSet( kBehaviorGroup, kDefaultHash );
@@ -202,6 +206,9 @@ void SettingsDlg::showEvent(QShowEvent *event)
 
     state = mgr->getShowPartOnly() ? Qt::Checked : Qt::Unchecked;
     mCheckShowPartOnly->setCheckState(state);
+
+    state = mgr->getUseCertMan() ? Qt::Checked : Qt::Unchecked;
+    mUseCertManCheck->setCheckState( state );
 
     mOIDConfigPathText->setText( mgr->OIDConfigPath() );
 

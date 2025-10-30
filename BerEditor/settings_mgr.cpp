@@ -23,6 +23,8 @@ SettingsMgr::SettingsMgr(QObject *parent) : QObject(parent)
 void SettingsMgr::initialize()
 {
     getShowPartOnly();
+    getUseCertMan();
+
     getDefaultHash();
     getFileReadSize();
     getHexAreaWidth();
@@ -52,7 +54,6 @@ void SettingsMgr::removeSet( const QString& group, const QString& name )
 
 void SettingsMgr::setShowPartOnly(bool val)
 {
-//    QSettings settings( "myapp.plist", QSettings::NativeFormat );
     QSettings settings;
     show_part_ = val;
 
@@ -63,7 +64,6 @@ void SettingsMgr::setShowPartOnly(bool val)
 
 bool SettingsMgr::getShowPartOnly()
 {
-//    QSettings settings( "myapp.plist", QSettings::NativeFormat );
     QSettings settings;
 
     settings.beginGroup(kBehaviorGroup);
@@ -71,6 +71,27 @@ bool SettingsMgr::getShowPartOnly()
     settings.endGroup();
 
     return show_part_;
+}
+
+void SettingsMgr::setUseCertMan( bool val )
+{
+    QSettings settings;
+    use_certman_ = val;
+
+    settings.beginGroup(kBehaviorGroup);
+    settings.setValue( kUseCertMan, use_certman_ );
+    settings.endGroup();
+}
+
+bool SettingsMgr::getUseCertMan()
+{
+    QSettings settings;
+
+    settings.beginGroup(kBehaviorGroup);
+    use_certman_ = settings.value(kUseCertMan, false).toBool();
+    settings.endGroup();
+
+    return use_certman_;
 }
 
 void SettingsMgr::setOIDConfigPath( const QString& strPath )
