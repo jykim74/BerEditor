@@ -90,20 +90,18 @@ QString EditTTLVDlg::getData()
     QString strData;
     QString strValue = mValueText->toPlainText();
     BIN binData = {0,0};
+    int nAppend = 0;
 
     int ret = getBINFromString( &binData, DATA_HEX, strValue );
-    if( ret < 0 )
-    {
-        berApplet->formatWarn( ret, this);
-        return "";
-    }
+    if( ret < 0 ) goto end;
 
-    int nAppend = 8 - binData.nLen % 8;
+    nAppend = 8 - binData.nLen % 8;
     if( nAppend > 0 && nAppend != 8 ) JS_BIN_appendCh( &binData, 0x00, nAppend );
 
     strData = mHeaderText->text();
     strData += getHexString( &binData );
 
+end :
     JS_BIN_reset( &binData );
 
     return strData.toUpper();

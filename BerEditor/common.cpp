@@ -8,6 +8,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QRegularExpression>
+#include <QRegExpValidator>
 #include <QRegExp>
 #include <QProcess>
 #include <QNetworkInterface>
@@ -1271,6 +1272,8 @@ int getBINFromString( BIN *pBin, int nType, const QString& strString )
 
     if( pBin == NULL ) return JSR_ERR;
 
+    if( srcString.length() < 1 ) return 0;
+
     if( nType == DATA_HEX )
     {
         srcString.remove( QRegularExpression("[\t\r\n\\s]") );
@@ -1716,4 +1719,15 @@ void setFixedLineText( QLineEdit *pEdit, const QString strText )
     QFontMetrics fm( pEdit->font() );
     int width = fm.horizontalAdvance( strText ) + 10;
     pEdit->setFixedWidth(width);
+}
+
+void setLineEditHexOnly( QLineEdit *pEdit, const QString strPlaceHolder )
+{
+    if( pEdit == nullptr ) return;
+
+    if( strPlaceHolder.length() > 0 ) pEdit->setPlaceholderText( strPlaceHolder );
+
+    QRegExp regExp("^[0-9a-fA-F]*$");
+    QRegExpValidator* regVal = new QRegExpValidator( regExp );
+    pEdit->setValidator( regVal );
 }

@@ -386,5 +386,6 @@ const QString encodeBase64( const QString strString );
 const QString decodeBase64( const QString strBase64 );
 
 void setFixedLineText( QLineEdit *pEdit, const QString strText );
+void setLineEditHexOnly( QLineEdit *pEdit, const QString strPlaceHolder = "" );
 
 #endif // COMMON_H

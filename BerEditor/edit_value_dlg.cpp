@@ -95,7 +95,7 @@ void EditValueDlg::makeHeader()
     JS_BIN_bitString( &binHeader, &pBitString );
 
     ret = getBINFromString( &binValue, mValueTypeCombo->currentText(), strValue );
-    FORMAT_WARN_GO(ret);
+    if( ret < 0 ) goto end;
 
     JS_BER_getHeaderLength( binValue.nLen, &binLen );
 
@@ -194,15 +194,12 @@ QString EditValueDlg::getData()
     BIN binData = {0,0};
 
     int ret = getBINFromString( &binData, mValueTypeCombo->currentText(), strValue );
-    if( ret < 0 )
-    {
-        berApplet->formatWarn( ret, this );
-        return "";
-    }
+    if( ret < 0 ) goto end;
 
     strData = mHeaderText->text();
     strData += getHexString( &binData );
 
+end :
     JS_BIN_reset( &binData );
 
     return strData;

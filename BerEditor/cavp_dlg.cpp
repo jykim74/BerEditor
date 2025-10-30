@@ -46,6 +46,7 @@ CAVPDlg::CAVPDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
+    initUI();
 
     ldt_hash_ = NULL;
 
@@ -189,6 +190,52 @@ bool CAVPDlg::isSkipTestType( const QString strTestType )
         if( strTestType == "MCT" ) return true;
 
     return false;
+}
+
+void CAVPDlg::initUI()
+{
+    QString strText = tr( "Hex value" );
+    QString strFind = tr( "Find a file" );
+
+    mRspPathText->setPlaceholderText( tr( "Result storage directory" ) );
+
+    mSymReqFileText->setPlaceholderText( strFind );
+    mAEReqFileText->setPlaceholderText( strFind );
+    mHashReqFileText->setPlaceholderText( strFind );
+    mHMACReqFileText->setPlaceholderText( strFind );
+    mECCReqFileText->setPlaceholderText( strFind );
+    mRSAReqFileText->setPlaceholderText( strFind );
+    mRSA_DETPriPathText->setPlaceholderText( tr( "Find a private key file" ) );
+    mDRBGReqFileText->setPlaceholderText( strFind );
+    mPBKDFReqFileText->setPlaceholderText( strFind );
+
+    setLineEditHexOnly( mSymMCTKeyText, strText );
+    setLineEditHexOnly( mSymMCTIVText, strText );
+    setLineEditHexOnly( mSymMCTPTText, strText );
+    setLineEditHexOnly( mSymMCTCTText, strText );
+    setLineEditHexOnly( mSymMCTLastKeyText, strText );
+    setLineEditHexOnly( mSymMCTLastIVText, strText );
+    setLineEditHexOnly( mSymMCTLastPTText, strText );
+    setLineEditHexOnly( mSymMCTLastCTText, strText );
+
+    setLineEditHexOnly( mHashMCTSeedText, strText );
+    setLineEditHexOnly( mHashMCTFirstMDText, strText );
+    setLineEditHexOnly( mHashMCTLastMDText, strText );
+
+    setLineEditHexOnly( mDRBG2EntropyInputText, strText );
+    setLineEditHexOnly( mDRBG2NonceText, strText );
+    setLineEditHexOnly( mDRBG2PersonalStringText, strText );
+    setLineEditHexOnly( mDRBG2EntropyInputReseedText, strText );
+    setLineEditHexOnly( mDRBG2AdditionalInputReseedText, strText );
+    setLineEditHexOnly( mDRBG2AdditionalInputText, strText );
+    setLineEditHexOnly( mDRBG2AdditionalInput2Text, strText );
+
+    mDRBG2ReturnedBitsText->setPlaceholderText( strText );
+
+    mACVP_ReqPathText->setPlaceholderText( tr( "Find a JSON file" ) );
+    mACVP_LDTFullLengthText->setPlaceholderText( tr("Decimal value") );
+    setLineEditHexOnly( mACVP_LDTContentText, strText );
+    mACVP_LDT_MDText->setPlaceholderText( strText );
 }
 
 void CAVPDlg::initialize()
@@ -2038,7 +2085,9 @@ void CAVPDlg::clickSymMCTRun()
         }
     }
 
-    rsp_name_ = QString( "%1/%2_%3_%4_%5_MCT.rsp")
+    if( strRspPath.length() > 0 ) strRspPath += "/";
+
+    rsp_name_ = QString( "%1%2_%3_%4_%5_MCT.rsp")
             .arg( strRspPath )
             .arg( mSymMCTAlgCombo->currentText() )
             .arg( mSymMCTModeCombo->currentText() )
@@ -2130,7 +2179,9 @@ void CAVPDlg::clickHashMCTRun()
         return;
     }
 
-    rsp_name_ = QString( "%1/SHA256_MCT.rsp" ).arg(strRspPath);
+    if( strRspPath.length() > 0 ) strRspPath += "/";
+
+    rsp_name_ = QString( "%1SHA256_MCT.rsp" ).arg(strRspPath);
 
     logRsp( QString( "# HASH MCT-%1 Response")
             .arg( mHashMCTAlgCombo->currentText() ));

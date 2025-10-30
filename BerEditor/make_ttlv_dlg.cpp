@@ -52,7 +52,6 @@ void MakeTTLVDlg::initialize()
     mTypeCombo->addItems( kTTLVTypeList );
     mTypeCombo->setCurrentIndex(1);
     mValueCombo->addItems( kDataTypeList );
-    mValueCombo->setCurrentIndex(1);
 }
 
 void MakeTTLVDlg::changeType( int index )
@@ -128,7 +127,7 @@ QString MakeTTLVDlg::getData()
     int nAppend = -1;
 
     int ret = getBINFromString( &binData, mValueCombo->currentText(), strValue );
-    FORMAT_WARN_GO(ret);
+    if( ret < 0 ) goto end;
 
     nAppend = 8 - binData.nLen % 8;
     if( nAppend > 0 && nAppend != 8 ) JS_BIN_appendCh( &binData, 0x00, nAppend );
