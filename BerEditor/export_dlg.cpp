@@ -229,10 +229,16 @@ void ExportDlg::changeFormatType( int index )
     QString strDesc = getFormatDesc( nFormatType );
     mFormatInfoText->setText( strDesc );
     QString strFileName = mFilenameText->text();
+
+    if( strFileName.length() < 1 )
+    {
+        setName( "export" );
+        strFileName = mFilenameText->text();
+    }
+
     QString strExt = getFormatExtend( mFormatCombo->currentData().toInt());
 
     QFileInfo fileInfo( strFileName );
-
     QString strNewName = QString( "%1/%2.%3" ).arg( fileInfo.path() ).arg( fileInfo.baseName() ).arg( strExt );
     mFilenameText->setText( strNewName );
 }
