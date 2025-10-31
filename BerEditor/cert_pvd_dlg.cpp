@@ -124,6 +124,7 @@ void CertPVDDlg::initialize()
     mVerifyDateTime->setDateTime(dateTime);
 
     mParamCombo->addItems( kParamList );
+    mParamValueText->setPlaceholderText( tr("String value" ));
 
     mTrustPathText->setPlaceholderText( tr( "Trust anchor certificate file path") );
     mUntrustPathText->setPlaceholderText( tr( "Intermediate CA certificate file path" ));

@@ -501,10 +501,11 @@ void CMPClientDlg::decodeRequest()
         return;
     }
 
-    JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
+    int ret = getBINFromString( &binData, DATA_HEX, strHex );
+    FORMAT_WARN_GO(ret);
 
     berApplet->decodeTitle( &binData, "CMP Request" );
-
+end :
     JS_BIN_reset( &binData );
 }
 
@@ -627,7 +628,7 @@ void CMPClientDlg::clickGENM()
     mRequestText->setPlainText( getHexString( &binReq ) );
     mResponseText->setPlainText( getHexString( &binRsp ));
 
-    if( ret == 0 )
+    if( ret == JSR_OK )
     {
         QString strRegInfo;
         pCurList = pNameValList;
@@ -642,11 +643,6 @@ void CMPClientDlg::clickGENM()
 
         mRegInfoText->setText( strRegInfo );
         berApplet->messageLog( tr( "GENM success" ), this );
-    }
-    else
-    {
-        berApplet->elog( QString( "CMP exec GENM fail: %1").arg(ret ));
-        goto end;
     }
 
 end :
@@ -756,7 +752,7 @@ void CMPClientDlg::clickIR()
     ret = JS_CMP_init( strURL.toStdString().c_str(), &binCA, &pCTX );
     if( ret != 0 )
     {
-        berApplet->elog( QString( "CMP init fail: %1").arg(ret ));
+        berApplet->elog( QString( "CMP init fail: %1").arg(JERR(ret) ));
         goto end;
     }
 
@@ -767,15 +763,10 @@ void CMPClientDlg::clickIR()
     mRequestText->setPlainText( getHexString( &binReq ) );
     mResponseText->setPlainText( getHexString( &binRsp ));
 
-    if( ret == 0 )
+    if( ret == JSR_OK )
     {
         savePriKeyCert( &binNewPri, &binNewCert );
         berApplet->messageLog( tr( "IR success" ), this );
-    }
-    else
-    {
-        berApplet->elog( QString( "CMP exec IR fail: %1").arg(ret ));
-        goto end;
     }
 
 end :
@@ -885,7 +876,7 @@ void CMPClientDlg::clickCR()
     ret = JS_CMP_init( strURL.toStdString().c_str(), &binCA, &pCTX );
     if( ret != 0 )
     {
-        berApplet->elog( QString( "CMP init fail: %1").arg(ret ));
+        berApplet->elog( QString( "CMP init fail: %1").arg(JERR(ret) ));
         goto end;
     }
 
@@ -897,15 +888,10 @@ void CMPClientDlg::clickCR()
     mRequestText->setPlainText( getHexString( &binReq ) );
     mResponseText->setPlainText( getHexString( &binRsp ));
 
-    if( ret == 0 )
+    if( ret == JSR_OK )
     {
         savePriKeyCert( &binNewPri, &binNewCert );
         berApplet->messageLog( tr( "CR success" ), this );
-    }
-    else
-    {
-        berApplet->elog( QString( "CMP exec CR fail: %1").arg(ret ));
-        goto end;
     }
 
 end :
@@ -1020,7 +1006,7 @@ void CMPClientDlg::clickP10CR()
     ret = JS_CMP_init( strURL.toStdString().c_str(), &binCA, &pCTX );
     if( ret != 0 )
     {
-        berApplet->elog( QString( "CMP init fail: %1").arg(ret ));
+        berApplet->elog( QString( "CMP init fail: %1").arg(JERR(ret) ));
         goto end;
     }
 
@@ -1032,15 +1018,10 @@ void CMPClientDlg::clickP10CR()
     mRequestText->setPlainText( getHexString( &binReq ) );
     mResponseText->setPlainText( getHexString( &binRsp ));
 
-    if( ret == 0 )
+    if( ret == JSR_OK )
     {
         savePriKeyCert( &binNewPri, &binNewCert );
         berApplet->messageLog( tr( "P10CSR success" ), this );
-    }
-    else
-    {
-        berApplet->elog( QString( "CMP exec P10CSR fail: %1").arg(ret ));
-        goto end;
     }
 
 end :
@@ -1142,7 +1123,7 @@ void CMPClientDlg::clickSignGENM()
     ret = JS_CMP_init( strURL.toStdString().c_str(), &binCA, &pCTX );
     if( ret != 0 )
     {
-        berApplet->elog( QString( "CMP init fail: %1").arg(ret ));
+        berApplet->elog( QString( "CMP init fail: %1").arg(JERR(ret) ));
         goto end;
     }
 
@@ -1154,12 +1135,8 @@ void CMPClientDlg::clickSignGENM()
     mRequestText->setPlainText( getHexString( &binReq ) );
     mResponseText->setPlainText( getHexString( &binRsp ));
 
-    if( ret != 0 )
-    {
-        berApplet->elog( QString( "CMP exec GENM fail: %1").arg(ret ));
-        goto end;
-    }
-    else
+
+    if( ret == JSR_OK )
     {
         QString strRegInfo;
         pCurList = pNameValList;
@@ -1180,7 +1157,7 @@ end :
 
     if( ret != 0 )
     {
-        berApplet->warnLog( tr( "GENM fail: %1").arg(ret), this );
+        berApplet->warnLog( tr( "GENM fail: %1").arg(JERR(ret)), this );
     }
 
     JS_BIN_reset(&binCA);
@@ -1284,7 +1261,7 @@ void CMPClientDlg::clickKUR()
     ret = JS_CMP_init( strURL.toStdString().c_str(), &binCA, &pCTX );
     if( ret != 0 )
     {
-        berApplet->elog( QString( "CMP init fail: %1").arg(ret ));
+        berApplet->elog( QString( "CMP init fail: %1").arg(JERR(ret) ));
         goto end;
     }
 
@@ -1296,12 +1273,7 @@ void CMPClientDlg::clickKUR()
     mRequestText->setPlainText( getHexString( &binReq ) );
     mResponseText->setPlainText( getHexString( &binRsp ));
 
-    if( ret != 0 )
-    {
-        berApplet->elog( QString( "CMP exec KUR fail: %1").arg(ret ));
-        goto end;
-    }
-    else
+    if( ret == JSR_OK )
     {
         savePriKeyCert( &binNewPri, &binNewCert );
         berApplet->messageLog( tr( "KUR success" ), this );
@@ -1311,7 +1283,7 @@ end :
 
     if( ret != 0 )
     {
-        berApplet->warnLog( tr( "KUR fail: %1").arg(ret), this );
+        berApplet->warnLog( tr( "KUR fail: %1").arg(JERR(ret)), this );
     }
 
     JS_BIN_reset(&binCA);
@@ -1401,7 +1373,7 @@ void CMPClientDlg::clickRR()
     ret = JS_CMP_init( strURL.toStdString().c_str(), &binCA, &pCTX );
     if( ret != 0 )
     {
-        berApplet->elog( QString( "CMP init fail: %1").arg(ret ));
+        berApplet->elog( QString( "CMP init fail: %1").arg(JERR(ret) ));
         goto end;
     }
 
@@ -1415,7 +1387,7 @@ void CMPClientDlg::clickRR()
 
     if( ret != 0 )
     {
-        berApplet->elog( QString( "CMP exec RR fail: %1").arg(ret ));
+        berApplet->elog( QString( "CMP exec RR fail: %1").arg(JERR(ret) ));
         goto end;
     }
     else

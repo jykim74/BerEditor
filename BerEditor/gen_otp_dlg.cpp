@@ -61,6 +61,8 @@ void GenOTPDlg::initialize()
     mLengthSpin->setValue(6);
 
     mKeyText->setPlaceholderText( tr( "Select KeyList key" ) );
+    mTValueText->setPlaceholderText( tr("Hex value" ));
+    mOTPValueText->setPlaceholderText( tr("Decimal value" ));
 
     setNow();
 }

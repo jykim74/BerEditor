@@ -177,8 +177,11 @@ void TSPClientDlg::decodeRequest()
     }
 
     JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
-    berApplet->decodeTitle( &binData, "TSP Request"  );
+    int ret = getBINFromString( &binData, DATA_HEX, strHex );
+    FORMAT_WARN_GO(ret);
 
+    berApplet->decodeTitle( &binData, "TSP Request"  );
+end:
     JS_BIN_reset( &binData );
 }
 
@@ -418,7 +421,7 @@ void TSPClientDlg::clickEncode()
     ret = JS_TSP_encodeRequest( &binInput, strHash.toStdString().c_str(), pPolicy, nUseNonce, &binReq );
     if( ret != 0 )
     {
-        berApplet->elog( QString("failed to encode TSP request [%1]").arg( ret ));
+        berApplet->warningBox( tr("failed to encode TSP request: %1").arg( JERR(ret) ), this);
         goto end;
     }
 
@@ -502,7 +505,7 @@ void TSPClientDlg::clickSend()
     }
     else
     {
-        berApplet->warnLog( tr( "fail to send a request to TSP server: %1").arg( ret), this );
+        berApplet->warnLog( tr( "fail to send a request to TSP server: %1").arg(JERR(ret)), this );
         goto end;
     }
 
@@ -601,7 +604,7 @@ void TSPClientDlg::clickVerify()
     }
     else
     {
-        berApplet->warnLog( QString( "failed to verify response message [%1]").arg(ret), this );
+        berApplet->warnLog( QString( "failed to verify response message: %1").arg(JERR(ret)), this );
     }
 
 end :
@@ -678,7 +681,7 @@ void TSPClientDlg::clickVerifySigned()
     }
     else
     {
-        berApplet->warnLog( QString( "failed to verify response message [%1]").arg(ret), this );
+        berApplet->warnLog( QString( "failed to verify response message: %1").arg(JERR(ret)), this );
     }
 
 end :

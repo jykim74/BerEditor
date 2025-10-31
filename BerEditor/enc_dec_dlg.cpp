@@ -134,7 +134,7 @@ void EncDecDlg::initUI()
     mIVTypeCombo->addItems( kDataTypeList );
     mKeyTypeCombo->addItems( kDataTypeList );
     mAADTypeCombo->addItems( kDataTypeList );
-    mTagTypeCombo->addItems( kDataTypeList );
+    mTagTypeCombo->addItem( kDataHex );
     mOutputTypeCombo->addItems( kDataTypeList );
 
     mAlgCombo->addItems( kSymAlgList );
@@ -145,8 +145,6 @@ void EncDecDlg::initUI()
 
     mPadCheck->setChecked(true);
     mRunThreadCheck->setChecked(true);
-
-    mReqTagLenText->setText( "16" );
 }
 
 void EncDecDlg::initialize()

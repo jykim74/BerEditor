@@ -69,6 +69,7 @@ OCSPClientDlg::OCSPClientDlg(QWidget *parent) :
     connect( mSendBtn, SIGNAL(clicked()), this, SLOT(clickSend()));
     connect( mViewCertIDBtn, SIGNAL(clicked()), this, SLOT(clickViewCertID()));
     connect( mVerifyBtn, SIGNAL(clicked()), this, SLOT(clickVerify()));
+    connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clickClearAll()));
 
     connect( mNonceText, SIGNAL(textChanged(QString)), this, SLOT(nonceChanged()));
     connect( mRequestText, SIGNAL(textChanged()), this, SLOT(requestChanged()));
@@ -840,10 +841,12 @@ void OCSPClientDlg::decodeRequest()
         return;
     }
 
-    JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
+    int ret = getBINFromString( &binData, DATA_HEX, strHex );
+    FORMAT_WARN_GO(ret);
 
     berApplet->decodeTitle( &binData, "OCSP Request" );
 
+end :
     JS_BIN_reset( &binData );
 }
 
@@ -1018,7 +1021,7 @@ void OCSPClientDlg::clickEncode()
     }
     else
     {
-        berApplet->warnLog( tr( "fail to encode request: %1").arg(ret), this );
+        berApplet->warnLog( tr( "fail to encode request: %1").arg(JERR(ret)), this );
     }
 
 end :
@@ -1073,7 +1076,7 @@ void OCSPClientDlg::clickSend()
     }
     else
     {
-        berApplet->warnLog( tr( "fail to send a request to OCSP server: %1").arg( ret), this );
+        berApplet->warnLog( tr( "fail to send a request to OCSP server: %1").arg(JERR(ret)), this );
         goto end;
     }
 
@@ -1171,7 +1174,7 @@ void OCSPClientDlg::clickVerify()
     }
     else
     {
-        berApplet->warningBox( tr( "failed to decode response: %1").arg( ret ), this);
+        berApplet->warningBox( tr( "failed to decode response: %1").arg( JERR(ret) ), this);
     }
 
 end :
@@ -1179,6 +1182,19 @@ end :
     JS_BIN_reset( &binRsp );
     JS_OCSP_resetCertIDInfo( &sIDInfo );
     JS_OCSP_resetCertStatusInfo( &sStatusInfo );
+}
+
+void OCSPClientDlg::clickClearAll()
+{
+    mRequestText->clear();
+    mResponseText->clear();
+    mCACertPathText->clear();
+    mCertPathText->clear();
+    mNonceText->clear();
+    mSignCertPathText->clear();
+    mSignPriKeyPathText->clear();
+    mPasswdText->clear();
+    mSrvCertPathText->clear();
 }
 
 void OCSPClientDlg::nonceChanged()

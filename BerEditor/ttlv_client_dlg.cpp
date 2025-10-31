@@ -58,6 +58,7 @@ TTLVClientDlg::TTLVClientDlg(QWidget *parent) :
 
     connect( mEncodeBtn, SIGNAL(clicked()), this, SLOT(clickTTLVEncode()));
     connect( mReadMainBtn, SIGNAL(clicked()), this, SLOT(clickReadMain()));
+    connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clickClearAll()));
 
     initialize();
     mEncodeBtn->setDefault(true);
@@ -282,7 +283,12 @@ void TTLVClientDlg::clickSend()
         return;
     }
 
-    JS_BIN_decodeHex( strRequest.toStdString().c_str(), &binTTLV );
+    ret = getBINFromString( &binTTLV, DATA_HEX, strRequest );
+    if( ret < 0 )
+    {
+        berApplet->formatWarn( ret, this );
+        return;
+    }
 
     QString strCACertPath = mCACertPathText->text();
     QString strCertPath = mClientCertPathText->text();
@@ -650,10 +656,11 @@ void TTLVClientDlg::decodeRequest()
         return;
     }
 
-    JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
+    int ret = getBINFromString( &binData, DATA_HEX, strHex );
+    FORMAT_WARN_GO(ret);
 
     berApplet->decodeTTLV( &binData );
-
+end :
     JS_BIN_reset( &binData );
 }
 
@@ -713,4 +720,14 @@ void TTLVClientDlg::clickReadMain()
     }
 
     mRequestText->setPlainText( getHexString( &binTTLV ));
+}
+
+void TTLVClientDlg::clickClearAll()
+{
+    mRequestText->clear();
+    mResponseText->clear();
+    mCACertPathText->clear();
+    mClientCertPathText->clear();
+    mClientPriKeyPathText->clear();
+    mPasswdText->clear();
 }

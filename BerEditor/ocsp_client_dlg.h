@@ -62,6 +62,7 @@ private slots:
     void clickSend();
     void clickViewCertID();
     void clickVerify();
+    void clickClearAll();
 
     void nonceChanged();
     void requestChanged();

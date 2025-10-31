@@ -536,9 +536,11 @@ void SCEPClientDlg::decodeRequest()
         return;
     }
 
-    JS_BIN_decodeHex( strHex.toStdString().c_str(), &binData );
+    int ret = getBINFromString( &binData, DATA_HEX, strHex );
+    FORMAT_WARN_GO(ret);
 
     berApplet->decodeTitle( &binData, "SCEP Request" );
+end :
     JS_BIN_reset( &binData );
 }
 

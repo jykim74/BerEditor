@@ -50,6 +50,7 @@ private slots:
 
     void clickTTLVEncode();
     void clickReadMain();
+    void clickClearAll();
 private:
     void initialize();
     int readPrivateKey( BIN *pPriKey );
