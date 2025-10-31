@@ -628,7 +628,7 @@ void KeyPairManDlg::clickLGenKeyPair()
         ret = writePubKeyPEM( &binPub, strPubPath );
         if( ret < 0 )
         {
-            berApplet->warningBox( tr( "failed to write public key: %1" ).arg(ret), this );
+            berApplet->warningBox( tr( "failed to write public key: %1" ).arg(JERR(ret)), this );
             dir.rmpath( fullPath );
             goto end;
         }
@@ -636,7 +636,7 @@ void KeyPairManDlg::clickLGenKeyPair()
         ret = writePriKeyPEM( &binPri, strPriPath );
         if( ret < 0 )
         {
-            berApplet->warningBox( tr( "failed to write private key: %1" ).arg(ret), this );
+            berApplet->warningBox( tr( "failed to write private key: %1" ).arg(JERR(ret)), this );
             dir.remove( strPriPath );
             dir.rmpath( fullPath );
             goto end;
@@ -1124,7 +1124,7 @@ void KeyPairManDlg::clickMakeCSR()
         ret = Save( now_t, TypeCSR, strCSRHex );
         if( ret <= 0 )
         {
-            berApplet->warningBox( tr( "fail to write: %1" ).arg(ret), this );
+            berApplet->warningBox( tr( "fail to write: %1" ).arg(JERR(ret)), this );
             goto end;
         }
     }
@@ -1202,21 +1202,21 @@ void KeyPairManDlg::clickEncrypt()
     ret = JS_PKI_encryptPrivateKey( nPBE, strPasswd.toStdString().c_str(), &binData, &binInfo, &binEnc );
     if( ret != 0 )
     {
-        berApplet->warnLog( tr( "fail to encrypt private key: %1").arg(ret), this);
+        berApplet->warnLog( tr( "fail to encrypt private key: %1").arg(JERR(ret)), this);
         goto end;
     }
 
     ret = Save( now_t, TypePriInfo, &binInfo );
     if( ret <= 0 )
     {
-        berApplet->warningBox( tr( "fail to write: %1" ).arg(ret), this );
+        berApplet->warningBox( tr( "fail to write: %1" ).arg(JERR(ret)), this );
         goto end;
     }
 
     ret = Save( now_t, TypeEncPri, &binEnc );
     if( ret <= 0 )
     {
-        berApplet->warningBox( tr( "fail to write: %1" ).arg(ret), this );
+        berApplet->warningBox( tr( "fail to write: %1" ).arg(JERR(ret)), this );
         goto end;
     }
 
@@ -1277,14 +1277,14 @@ void KeyPairManDlg::clickDecrypt()
     ret = JS_PKI_decryptPrivateKey( strPasswd.toStdString().c_str(), &binData, &binInfo, &binDec );
     if( ret != 0 )
     {
-        berApplet->warnLog( tr( "fail to decrypt private key: %1").arg(ret), this);
+        berApplet->warnLog( tr( "fail to decrypt private key: %1").arg(JERR(ret)), this);
         goto end;
     }
 
     ret = Save( now_t, TypePriKey, &binDec );
     if( ret <= 0 )
     {
-        berApplet->warningBox( tr( "fail to write: %1" ).arg(ret), this );
+        berApplet->warningBox( tr( "fail to write: %1" ).arg(JERR(ret)), this );
         goto end;
     }
 
@@ -1569,7 +1569,7 @@ void KeyPairManDlg::clickImport()
             ret = JS_PKI_decryptPrivateKey( strPasswd.toStdString().c_str(), &binP8, NULL, &binPri );
             if( ret != 0 )
             {
-                berApplet->warningBox( tr( "fail to decrypt private key: %1" ).arg(ret), this );
+                berApplet->warningBox( tr( "fail to decrypt private key: %1" ).arg(JERR(ret)), this );
                 goto end;
             }
         }
@@ -1586,7 +1586,7 @@ void KeyPairManDlg::clickImport()
         ret = JS_PKI_decodePFX( &binPFX, strPasswd.toStdString().c_str(), &binPri, &binCert );
         if( ret != 0 )
         {
-            berApplet->warningBox( tr( "fail to decrypt PFX: %1" ).arg(ret), this );
+            berApplet->warningBox( tr( "fail to decrypt PFX: %1" ).arg(JERR(ret)), this );
             goto end;
         }
     }
@@ -1625,7 +1625,7 @@ void KeyPairManDlg::clickImport()
         ret = writePubKeyPEM( &binPub, strPubSavePath );
         if( ret < 0 )
         {
-            berApplet->warningBox( tr( "failed to write public key: %1" ).arg(ret), this );
+            berApplet->warningBox( tr( "failed to write public key: %1" ).arg(JERR(ret)), this );
             dir.rmpath( fullPath );
             goto end;
         }
@@ -1633,7 +1633,7 @@ void KeyPairManDlg::clickImport()
         ret = writePriKeyPEM( &binPri, strPriSavePath );
         if( ret < 0 )
         {
-            berApplet->warningBox( tr( "failed to write private key: %1" ).arg(ret), this );
+            berApplet->warningBox( tr( "failed to write private key: %1" ).arg(JERR(ret)), this );
             dir.remove( strPriSavePath );
             dir.rmpath( fullPath );
             goto end;

@@ -1867,14 +1867,14 @@ void CertManDlg::clickImport()
     ret = JS_PKI_decodePFX( &binPFX, strPass.toStdString().c_str(), &binPri, &binCert );
     if( ret != 0 )
     {
-        berApplet->warnLog( tr( "fail to decrypt PFX: %1").arg( ret ), this);
+        berApplet->warnLog( tr( "fail to decrypt PFX: %1").arg( JERR(ret) ), this);
         goto end;
     }
 
     ret = JS_PKI_encryptPrivateKey( -1, strPass.toStdString().c_str(), &binPri, NULL, &binEncPri );
     if( ret != 0 )
     {
-        berApplet->warnLog( tr( "fail to encrypt private key: %1").arg( ret ), this );
+        berApplet->warnLog( tr( "fail to encrypt private key: %1").arg( JERR(ret) ), this );
         goto end;
     }
 
@@ -1886,7 +1886,7 @@ void CertManDlg::clickImport()
     }
     else
     {
-        berApplet->warnLog( tr( "fail to write private key and certificate: %1").arg(ret), this );
+        berApplet->warnLog( tr( "fail to write private key and certificate: %1").arg(JERR(ret)), this );
     }
 
 end :
@@ -1936,7 +1936,7 @@ void CertManDlg::clickExport()
     ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEncPri, NULL, &binPri );
     if( ret != 0 )
     {
-        berApplet->warnLog( tr( "fail to decrypt private key: %1").arg( ret ), this );
+        berApplet->warnLog( tr( "fail to decrypt private key: %1").arg( JERR(ret) ), this );
         goto end;
     }
 
@@ -1986,7 +1986,7 @@ void CertManDlg::clickChangePasswd()
     ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEncPriKey, NULL, &binPriKey );
     if( ret != 0 )
     {
-        berApplet->warnLog( tr( "fail to decrypt private key: %1").arg( ret ), this );
+        berApplet->warnLog( tr( "fail to decrypt private key: %1").arg( JERR(ret) ), this );
         goto end;
     }
 
@@ -1999,14 +1999,14 @@ void CertManDlg::clickChangePasswd()
         ret = JS_PKI_encryptPrivateKey( -1, strNewPass.toStdString().c_str(), &binPriKey, NULL, &binNewEncPriKey );
         if( ret != 0 )
         {
-            berApplet->warnLog( tr( "fail to encrypt private key: %1").arg( ret ), this );
+            berApplet->warnLog( tr( "fail to encrypt private key: %1").arg( JERR(ret) ), this );
             goto end;
         }
 
         ret = changePriKey( &binNewEncPriKey );
         if( ret != 0 )
         {
-            berApplet->warnLog( tr( "fail to change private key: %1").arg(ret ), this );
+            berApplet->warnLog( tr( "fail to change private key: %1").arg(JERR(ret) ), this );
             goto end;
         }
 
@@ -2049,7 +2049,7 @@ void CertManDlg::clickViewPriKey()
     ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEncPriKey, NULL, &binPriKey );
     if( ret != 0 )
     {
-        berApplet->warnLog( tr( "fail to decrypt private key: %1").arg( ret ), this );
+        berApplet->warnLog( tr( "fail to decrypt private key: %1").arg( JERR(ret) ), this );
         goto end;
     }
 
@@ -2296,7 +2296,7 @@ void CertManDlg::clickOK()
         ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEncPriKey, NULL, &binPriKey );
         if( ret != 0 )
         {
-            berApplet->warningBox( tr( "fail to decrypt the private key: %1" ).arg( ret ), this );
+            berApplet->warningBox( tr( "fail to decrypt the private key: %1" ).arg( JERR(ret) ), this );
             goto end;
         }
 
@@ -2373,7 +2373,7 @@ void CertManDlg::clickAddCA()
         }
         else
         {
-            berApplet->warningBox( tr( "The Certificate failed to save to CA folder:%1" ).arg(ret), this );
+            berApplet->warningBox( tr( "The Certificate failed to save to CA folder:%1" ).arg(JERR(ret)), this );
         }
     }
 
@@ -2563,7 +2563,7 @@ void CertManDlg::clickAddOther()
         }
         else
         {
-            berApplet->warningBox( tr( "The Certificate failed to save to other folder:%1" ).arg(ret), this );
+            berApplet->warningBox( tr( "The Certificate failed to save to other folder:%1" ).arg(JERR(ret)), this );
         }
     }
 
@@ -2785,7 +2785,7 @@ void CertManDlg::clickAddCRL()
         }
         else
         {
-            berApplet->warningBox( tr( "The CRL failed to save to CRL folder:%1" ).arg(ret), this );
+            berApplet->warningBox( tr( "The CRL failed to save to CRL folder:%1" ).arg(JERR(ret)), this );
         }
     }
 
@@ -2949,7 +2949,7 @@ void CertManDlg::clickAddTrust()
         }
         else
         {
-            berApplet->warningBox( tr( "The Certificate failed to save to trustedCA folder:%1" ).arg(ret), this );
+            berApplet->warningBox( tr( "The Certificate failed to save to trustedCA folder:%1" ).arg(JERR(ret)), this );
         }
     }
 
@@ -3243,7 +3243,7 @@ void CertManDlg::clickTLCheckKeyPair()
         ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEncPri, NULL, &binPri );
         if( ret != 0 )
         {
-            berApplet->warningBox( tr( "fail to decrypt the private key: %1").arg( ret ), this );
+            berApplet->warningBox( tr( "fail to decrypt the private key: %1").arg( JERR(ret) ), this );
             goto end;
         }
     }
@@ -3344,7 +3344,7 @@ void CertManDlg::clickTLEncryptPFX()
         ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEncPri, NULL, &binPri );
         if( ret != 0 )
         {
-            berApplet->warningBox( tr( "fail to decrypt the private key: %1").arg( ret ), this );
+            berApplet->warningBox( tr( "fail to decrypt the private key: %1").arg( JERR(ret) ), this );
             goto end;
         }
     }
@@ -3419,7 +3419,7 @@ void CertManDlg::clickTLDecryptPFX()
     ret = JS_PKI_decodePFX( &binData, strPasswd.toStdString().c_str(), &binPri, &binCert );
     if( ret != 0 )
     {
-        berApplet->warnLog( tr( "fail to decrypt PFX: %1").arg(ret), this);
+        berApplet->warnLog( tr( "fail to decrypt PFX: %1").arg(JERR(ret)), this);
         goto end;
     }
 
@@ -3438,7 +3438,7 @@ void CertManDlg::clickTLDecryptPFX()
         ret = JS_PKI_encryptPrivateKey( -1, strPass.toStdString().c_str(), &binPri, NULL, &binEncPri );
         if( ret != 0 )
         {
-            berApplet->warnLog( tr( "fail to encrypt private key: %1").arg( ret ), this);
+            berApplet->warnLog( tr( "fail to encrypt private key: %1").arg( JERR(ret) ), this);
             goto end;
         }
 
@@ -3446,7 +3446,7 @@ void CertManDlg::clickTLDecryptPFX()
         ret = JS_BIN_fileWrite( &binEncPri, strPriKeyPath.toLocal8Bit().toStdString().c_str() );
         if( ret <= 0 )
         {
-            berApplet->warningBox( tr( "fail to write encrypted private key: %1").arg(ret), this );
+            berApplet->warningBox( tr( "fail to write encrypted private key: %1").arg(JERR(ret)), this );
             goto end;
         }
     }
@@ -3456,7 +3456,7 @@ void CertManDlg::clickTLDecryptPFX()
         ret = JS_BIN_fileWrite( &binPri, strPriKeyPath.toLocal8Bit().toStdString().c_str() );
         if( ret <= 0 )
         {
-            berApplet->warningBox( tr( "fail to write private key: %1").arg(ret), this );
+            berApplet->warningBox( tr( "fail to write private key: %1").arg(JERR(ret)), this );
             goto end;
         }
     }
@@ -3465,7 +3465,7 @@ void CertManDlg::clickTLDecryptPFX()
     ret = JS_BIN_fileWrite( &binCert, strCertPath.toLocal8Bit().toStdString().c_str() );
     if( ret <= 0 )
     {
-        berApplet->warningBox( tr( "fail to write certificate: %1").arg(ret), this );
+        berApplet->warningBox( tr( "fail to write certificate: %1").arg(JERR(ret)), this );
         goto end;
     }
 
@@ -3515,7 +3515,7 @@ void CertManDlg::clickTLSavePFX()
     ret = JS_PKI_decodePFX( &binPFX, strPasswd.toStdString().c_str(), &binPri, &binCert );
     if( ret != 0 )
     {
-        berApplet->warnLog( tr( "fail to decrypt PFX: %1").arg(ret), this);
+        berApplet->warnLog( tr( "fail to decrypt PFX: %1").arg(JERR(ret)), this);
         goto end;
     }
 
@@ -3524,7 +3524,7 @@ void CertManDlg::clickTLSavePFX()
     ret = JS_PKI_encryptPrivateKey( -1, strPasswd.toStdString().c_str(), &binPri, NULL, &binEncPri );
     if( ret != 0 )
     {
-        berApplet->warnLog( tr( "fail to encrypt private key: %1").arg( ret ), this );
+        berApplet->warnLog( tr( "fail to encrypt private key: %1").arg( JERR(ret) ), this );
         goto end;
     }
 

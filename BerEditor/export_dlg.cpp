@@ -218,8 +218,9 @@ void ExportDlg::setName( const QString strName )
 {
     mNameText->setText( strName );
     QString strFolder = berApplet->curPath();
+    QString strExt = getFormatExtend( mFormatCombo->currentData().toInt());
 
-    QString strFilename = QString( "%1/%2.pem" ).arg( strFolder ).arg( strName );
+    QString strFilename = QString( "%1/%2.%3" ).arg( strFolder ).arg( strName ).arg( strExt );
     mFilenameText->setText( strFilename );
 }
 
