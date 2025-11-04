@@ -2280,7 +2280,8 @@ int CAVPDlg::makeSymData( const QString strKey, const QString strIV, const QStri
     JS_BIN_decodeHex( strIV.toStdString().c_str(), &binIV );
     JS_BIN_decodeHex( strPT.toStdString().c_str(), &binPT );
 
-    QString strSymAlg = getSymAlg( strAlg, strMode, binKey.nLen );
+    QString strSymAlg;
+    getSymAlg( strAlg, strMode, binKey.nLen, strSymAlg );
 
     if( strAlg == "SEED" )
         ret = JS_PKI_encryptSEED( strMode.toStdString().c_str(), 0, &binPT, &binIV, &binKey, &binEnc );
@@ -2331,7 +2332,8 @@ int CAVPDlg::makeSymCBC_MCT( const QString strAlg, const QString strKey, const Q
     if( strPT.length() > 0 )
         JS_BIN_decodeHex( strPT.toStdString().c_str(), &binPT[0] );
 
-    QString strSymAlg = getSymAlg( strAlg, "ECB", binKey[0].nLen );
+    QString strSymAlg;
+    getSymAlg( strAlg, "ECB", binKey[0].nLen, strSymAlg );
     berApplet->log( QString("Symmetric Alg: %1-%2-cbc").arg( strAlg ).arg( binKey[0].nLen ));
 
     for( i = 0; i < 100; i++ )
@@ -2488,7 +2490,8 @@ int CAVPDlg::makeSymDecCBC_MCT( const QString strAlg, const QString strKey, cons
     if( strCT.length() > 0 )
         JS_BIN_decodeHex( strCT.toStdString().c_str(), &binCT[0] );
 
-    QString strSymAlg = getSymAlg( strAlg, "ECB", binKey[0].nLen );
+    QString strSymAlg;
+    getSymAlg( strAlg, "ECB", binKey[0].nLen, strSymAlg );
     berApplet->log( QString("Symmetric Alg: %1-%2-cbc").arg( strAlg ).arg( binKey[0].nLen ));
 
     for( i = 0; i < 100; i++ )
@@ -2637,7 +2640,8 @@ int CAVPDlg::makeSymECB_MCT( const QString strAlg, const QString strKey, const Q
     JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey[0] );
     JS_BIN_decodeHex( strPT.toStdString().c_str(), &binPT[0] );
 
-    QString strSymAlg = getSymAlg( strAlg, "ECB", binKey[0].nLen );
+    QString strSymAlg;
+    getSymAlg( strAlg, "ECB", binKey[0].nLen, strSymAlg );
     berApplet->log( QString("Symmetric Alg: %1").arg( strSymAlg ));
 
 
@@ -2765,7 +2769,8 @@ int CAVPDlg::makeSymECB_MCT( const QString strAlg, const QString strKey, const Q
     JS_BIN_decodeHex( strKey.toStdString().c_str(), &binKey[0] );
     JS_BIN_decodeHex( strCT.toStdString().c_str(), &binCT[0] );
 
-    QString strSymAlg = getSymAlg( strAlg, "ECB", binKey[0].nLen );
+    QString strSymAlg;
+    getSymAlg( strAlg, "ECB", binKey[0].nLen, strSymAlg );
     berApplet->log( QString("Symmetric Alg: %1").arg( strSymAlg ));
 
 
@@ -2895,7 +2900,8 @@ int CAVPDlg::makeSymCTR_MCT( const QString strAlg, const QString strKey, const Q
     JS_BIN_decodeHex( strIV.toStdString().c_str(), &binCTR );
     JS_BIN_decodeHex( strPT.toStdString().c_str(), &binPT[0] );
 
-    QString strSymAlg = getSymAlg( strAlg, "ECB", binKey[0].nLen );
+    QString strSymAlg;
+    getSymAlg( strAlg, "ECB", binKey[0].nLen, strSymAlg );
     berApplet->log( QString("Symmetric Alg: %1-%2-ctr").arg( strAlg ).arg( binKey[0].nLen ));
 
 
@@ -3037,7 +3043,8 @@ int CAVPDlg::makeSymCTR_MCT( const QString strAlg, const QString strKey, const Q
     JS_BIN_decodeHex( strIV.toStdString().c_str(), &binCTR );
     JS_BIN_decodeHex( strCT.toStdString().c_str(), &binCT[0] );
 
-    QString strSymAlg = getSymAlg( strAlg, "ECB", binKey[0].nLen );
+    QString strSymAlg;
+    getSymAlg( strAlg, "ECB", binKey[0].nLen, strSymAlg );
     berApplet->log( QString("Symmetric Alg: %1-%2-ctr").arg( strAlg ).arg( binKey[0].nLen ));
 
     for( i = 0; i < 100; i++ )
@@ -3183,7 +3190,8 @@ int CAVPDlg::makeSymCFB_MCT( const QString strAlg, const QString strKey, const Q
     if( strPT.length() > 0 )
         JS_BIN_decodeHex( strPT.toStdString().c_str(), &binPT[0] );
 
-    QString strSymAlg = getSymAlg( strAlg, "ECB", binKey[0].nLen );
+    QString strSymAlg;
+    getSymAlg( strAlg, "ECB", binKey[0].nLen, strSymAlg );
     berApplet->log( QString("Symmetric Alg: %1-%2-cfb").arg( strAlg ).arg( binKey[0].nLen ));
 
 
@@ -3347,7 +3355,8 @@ int CAVPDlg::makeSymDecCFB_MCT( const QString strAlg, const QString strKey, cons
     if( strCT.length() > 0 )
         JS_BIN_decodeHex( strCT.toStdString().c_str(), &binCT[0] );
 
-    QString strSymAlg = getSymAlg( strAlg, "ECB", binKey[0].nLen );
+    QString strSymAlg;
+    getSymAlg( strAlg, "ECB", binKey[0].nLen, strSymAlg );
     berApplet->log( QString("Symmetric Alg: %1-%2-cfb").arg( strAlg ).arg( binKey[0].nLen ));
 
     for( i = 0; i < 100; i++ )
@@ -3512,7 +3521,8 @@ int CAVPDlg::makeSymOFB_MCT( const QString strAlg, const QString strKey, const Q
     if( strPT.length() > 0 )
         JS_BIN_decodeHex( strPT.toStdString().c_str(), &binPT[0] );
 
-    QString strSymAlg = getSymAlg( strAlg, "ECB", binKey[0].nLen );
+    QString strSymAlg;
+    getSymAlg( strAlg, "ECB", binKey[0].nLen, strSymAlg );
     berApplet->log( QString("Symmetric Alg: %1-%2-ofb").arg( strAlg ).arg( binKey[0].nLen ));
 
 
@@ -3680,7 +3690,8 @@ int CAVPDlg::makeSymDecOFB_MCT( const QString strAlg, const QString strKey, cons
     if( strCT.length() > 0 )
         JS_BIN_decodeHex( strCT.toStdString().c_str(), &binCT[0] );
 
-    QString strSymAlg = getSymAlg( strAlg, "ECB", binKey[0].nLen );
+    QString strSymAlg;
+    getSymAlg( strAlg, "ECB", binKey[0].nLen, strSymAlg );
     berApplet->log( QString("Symmetric Alg: %1-%2-ofb").arg( strAlg ).arg( binKey[0].nLen ));
 
 
@@ -3844,7 +3855,8 @@ int CAVPDlg::makeAEData( const QString strKey, const QString strIV, const QStrin
     logRsp( QString( "PT = %1").arg(strPT));
     logRsp( QString( "Adata = %1").arg(strAAD));
 
-    strEncAlg = getSymAlg( strAlg, strMode, binKey.nLen );
+    strEncAlg;
+    getSymAlg( strAlg, strMode, binKey.nLen, strEncAlg );
 
     if( strMode == "GCM" )
     {
@@ -3898,7 +3910,8 @@ int CAVPDlg::makeADData( const QString strKey, const QString strIV, const QStrin
     logRsp( QString( "CT = %1").arg(strCT));
     logRsp( QString( "Adata = %1").arg(strAAD));
 
-    strEncAlg = getSymAlg( strAlg, strMode, binKey.nLen );
+    strEncAlg;
+    getSymAlg( strAlg, strMode, binKey.nLen, strEncAlg );
 
     if( strMode == "GCM" )
     {

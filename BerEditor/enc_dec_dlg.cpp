@@ -283,23 +283,14 @@ void EncDecDlg::dataRun()
     ret = getBINFromString( &binKey, mKeyTypeCombo->currentText(), strKey );
     FORMAT_WARN_GO(ret);
 
-    if( binKey.nLen < 16 )
-    {
-        berApplet->warningBox( tr( "Key length(%1) is incorrect" ).arg( binKey.nLen), this );
-        JS_BIN_reset( &binSrc );
-        JS_BIN_reset( &binKey );
-        mKeyText->setFocus();
-        return;
-    }
-
     ret = getBINFromString( &binIV, mIVTypeCombo->currentText(), strIV );
     FORMAT_WARN_GO(ret);
 
-    strSymAlg = getSymAlg( strAlg, strMode, binKey.nLen );
+    ret = getSymAlg( strAlg, strMode, binKey.nLen, strSymAlg );
 
-    if( strSymAlg.isEmpty() || strSymAlg.isNull() )
+    if( ret != JSR_OK )
     {
-        berApplet->elog( QString("There is no symmetric key algorithm" ));
+        berApplet->warningBox( tr("failed to get cipher name: %1" ).arg( JERR(ret)), this );
         goto end;
     }
 
@@ -826,13 +817,11 @@ int EncDecDlg::encDecInit()
     FORMAT_WARN_GO(ret);
 
 
-    strSymAlg = getSymAlg( strAlg, strMode, binKey.nLen );
+    ret = getSymAlg( strAlg, strMode, binKey.nLen, strSymAlg );
 
-    if( binKey.nLen < 16 )
+    if( ret != JSR_OK )
     {
-        berApplet->warningBox( tr( "Key length(%1) is incorrect" ).arg( binKey.nLen), this );
-        mKeyText->setFocus();
-        ret = -1;
+        berApplet->warningBox( tr( "failed to get cipher name: %1").arg( JERR(ret)), this );
         goto end;
     }
 

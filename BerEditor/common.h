@@ -350,7 +350,7 @@ int getDataLen( const QString strType, const QString strData );
 const QString getDataLenString( int nType, const QString strData );
 const QString getDataLenString( const QString strType, const QString strData );
 
-QString getSymAlg( const QString strAlg, const QString strMode, int nKeyLen );
+int getSymAlg( const QString strAlg, const QString strMode, int nKeyLen, QString& strCipher );
 int getNameValue( const QString strLine, QString& name, QString& value );
 
 void getInfoValue( const JExtensionInfo *pExtInfo, QString& strVal, bool bShow = true );

@@ -252,7 +252,13 @@ int GenMacDlg::macInit()
 
     if( strMethod == sMethodCMAC )
     {
-         QString strSymAlg = getSymAlg( strAlg, "CBC", binKey.nLen );
+        QString strSymAlg;
+        ret = getSymAlg( strAlg, "CBC", binKey.nLen, strSymAlg );
+        if( ret != JSR_OK )
+        {
+            berApplet->warningBox( tr( "failed to get cipher name: %1").arg( JERR(ret)), this );
+            goto end;
+        }
 
          ret = JS_PKI_cmacInit( &hctx_, strSymAlg.toStdString().c_str(), &binKey );
          if( ret == 0 ) type_ = JS_TYPE_CMAC;
@@ -265,8 +271,16 @@ int GenMacDlg::macInit()
     else if( strMethod == sMethodGMAC )
     {
         BIN binIV = {0,0};
-        QString strSymAlg = getSymAlg( strAlg, "gcm", binKey.nLen );
+        QString strSymAlg;
+
         QString strIV = mIVText->text();
+
+        ret = getSymAlg( strAlg, "gcm", binKey.nLen, strSymAlg );
+        if( ret != JSR_OK )
+        {
+            berApplet->warningBox( tr( "failed to get cipher name: %1").arg( JERR(ret)), this );
+            goto end;
+        }
 
         if( strIV.length() < 1 )
         {
@@ -588,7 +602,13 @@ void GenMacDlg::clickMAC()
 
     if( strMethod == sMethodCMAC )
     {
-        QString strSymAlg = getSymAlg( strAlg, "CBC", binKey.nLen );
+        QString strSymAlg;
+        ret = getSymAlg( strAlg, "CBC", binKey.nLen, strSymAlg );
+        if( ret != JSR_OK )
+        {
+            berApplet->warningBox( tr( "failed to get cipher name: %1").arg( JERR(ret)), this );
+            goto end;
+        }
 
         timer.start();
         ret = JS_PKI_genCMAC( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binMAC );

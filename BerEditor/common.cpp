@@ -547,29 +547,51 @@ const QString getDataLenString( const QString strType, const QString strData )
     return getDataLenString( nType, strData );
 }
 
-QString getSymAlg( const QString strAlg, const QString strMode, int nKeyLen )
+int getSymAlg( const QString strAlg, const QString strMode, int nKeyLen, QString& strCipher )
 {
-    QString strRes;
-    strRes.clear();
-
     QString strLAlg = strAlg.toLower();
     QString strLMode = strMode.toLower();
 
-    if( (nKeyLen % 8) != 0 ) return strRes;
-    if( nKeyLen > 32 ) return strRes;
+    if( strAlg.isEmpty() || strMode.isEmpty() ) return JSR_BAD_ARG;
+    if( (nKeyLen % 8) != 0 || nKeyLen > 32 ) return JSR_CRYPT_BAD_KEY_LEN;
 
-    if( strAlg.isEmpty() || strMode.isEmpty() ) return strRes;
 
     if( strLMode == "cfb128" ) strLMode = "cfb";
 
-    if( strLAlg.toLower() == "des" || strLAlg.toLower() == "seed" || strLAlg.toLower() == "sm4" )
-        strRes = QString( "%1-%2").arg(strLAlg).arg(strLMode );
-    else if( strLAlg.toLower() == "des3" || strAlg == "tdes" )
-        strRes = QString( "des-ede-%1").arg(strLMode);
+    if( strLAlg == "des" )
+    {
+        if( nKeyLen != 8 ) return JSR_CRYPT_BAD_KEY_LEN;
+    }
+    else if( strLAlg == "seed" || strLAlg == "sm4" )
+    {
+        if( nKeyLen != 16 ) return JSR_CRYPT_BAD_KEY_LEN;
+    }
     else
-        strRes = QString( "%1-%2-%3" ).arg( strLAlg ).arg( nKeyLen * 8 ).arg( strLMode);
+    {
+        if( nKeyLen != 16 && nKeyLen != 24 && nKeyLen != 32 )
+            return JSR_CRYPT_BAD_KEY_LEN;
+    }
 
-    return strRes;
+    if( strLMode == "gcm" || strLMode == "ccm" )
+    {
+        if( strLAlg != "aes" && strLAlg != "aria" )
+            return JSR_INVALID_ALG;
+    }
+
+    if( strLAlg == "des" || strLAlg == "seed" || strLAlg == "sm4" )
+    {
+        strCipher = QString( "%1-%2").arg(strLAlg).arg(strLMode );
+    }
+    else if( strLAlg == "des3" || strLAlg == "tdes" )
+    {
+        strCipher = QString( "des-ede-%1").arg(strLMode);
+    }
+    else
+    {
+        strCipher = QString( "%1-%2-%3" ).arg( strLAlg ).arg( nKeyLen * 8 ).arg( strLMode);
+    }
+
+    return JSR_OK;
 }
 
 int getNameValue( const QString strLine, QString& name, QString& value )

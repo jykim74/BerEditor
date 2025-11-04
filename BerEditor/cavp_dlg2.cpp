@@ -1489,7 +1489,10 @@ int CAVPDlg::macJsonWork( const QString strAlg, const QJsonObject jObject, QJson
                 }
                 else if( strMode == "AES" && strSymAlg == "CMAC" )
                 {
-                    QString strMACAlg = getSymAlg( strMode, "CBC", binKey.nLen );
+                    QString strMACAlg;
+                    ret = getSymAlg( strMode, "CBC", binKey.nLen, strMACAlg );
+                    if( ret != JSR_OK ) goto end;
+
                     ret = JS_PKI_genCMAC( strMACAlg.toStdString().c_str(), &binMsg, &binKey, &binGenMAC );
                     if( ret != 0 ) goto end;
                 }
@@ -1518,7 +1521,10 @@ int CAVPDlg::macJsonWork( const QString strAlg, const QJsonObject jObject, QJson
                 }
                 else if( strMode == "AES" && strSymAlg == "CMAC" )
                 {
-                    QString strMACAlg = getSymAlg( strMode, "CBC", binKey.nLen );
+                    QString strMACAlg;
+                    ret = getSymAlg( strMode, "CBC", binKey.nLen, strMACAlg );
+                    if( ret != JSR_OK ) goto end;
+
                     ret = JS_PKI_genCMAC( strMACAlg.toStdString().c_str(), &binMsg, &binKey, &binMAC );
                     if( ret != 0 ) goto end;
                     jRspTestObj["mac"] = getHexString( &binMAC );
@@ -1680,7 +1686,9 @@ int CAVPDlg::blockCipherJsonWork( const QString strAlg, const QJsonObject jObjec
             BIN binPart = {0,0};
             BIN binRes = {0,0};
 
-            QString strCipher = getSymAlg( strSymAlg, strMode, nKeyLen/8 );
+            QString strCipher;
+            ret = getSymAlg( strSymAlg, strMode, nKeyLen/8, strCipher );
+            if( ret != JSR_OK ) return ret;
 
             if( strMode.toUpper() != "CTR" )
                 return -2;
@@ -1736,7 +1744,9 @@ int CAVPDlg::blockCipherJsonWork( const QString strAlg, const QJsonObject jObjec
         }
         else // AFT
         {
-            QString strCipher = getSymAlg( strSymAlg, strMode, nKeyLen/8 );
+            QString strCipher;
+            ret = getSymAlg( strSymAlg, strMode, nKeyLen/8, strCipher );
+            if( ret != JSR_OK ) goto end;
 
             if( strDirection == "encrypt" )
             {

@@ -318,6 +318,7 @@ void SSLCheckDlg::initUI()
     mURLCombo->setEditable( true );
     QStringList usedList = getUsedURL();
     mURLCombo->addItems( usedList );
+    mURLCombo->setFocus();
 
     mURLTree->clear();
     mURLTree->header()->setVisible(false);
