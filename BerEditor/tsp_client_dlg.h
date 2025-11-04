@@ -48,6 +48,7 @@ private slots:
     void clickTSTInfo();
     void clickViewCMS();
 private:
+    void initUI();
     void initialize();
 
     QStringList getUsedURL();

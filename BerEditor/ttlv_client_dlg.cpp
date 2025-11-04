@@ -148,6 +148,7 @@ void TTLVClientDlg::initialize()
 
     QStringList usedList = getUsedURL();
     mURLCombo->addItems( usedList );
+    mURLCombo->setFocus();
 
     checkEncPriKey();
 

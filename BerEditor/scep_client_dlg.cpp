@@ -115,6 +115,11 @@ void SCEPClientDlg::checkEncPriKey()
 
 void SCEPClientDlg::initUI()
 {
+    mURLCombo->setEditable( true );
+    QStringList usedList = getUsedURL();
+    mURLCombo->addItems( usedList );
+    mURLCombo->setFocus();
+
     mCmdCombo->addItems( kSCEPCmdList );
     changeCmd();
 }
@@ -122,10 +127,6 @@ void SCEPClientDlg::initUI()
 void SCEPClientDlg::initialize()
 {
     SettingsMgr *setMgr = berApplet->settingsMgr();
-
-    mURLCombo->setEditable( true );
-    QStringList usedList = getUsedURL();
-    mURLCombo->addItems( usedList );
 
     JS_SCEP_init();
     checkEncPriKey();

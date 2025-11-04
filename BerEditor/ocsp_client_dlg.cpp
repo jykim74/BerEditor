@@ -153,6 +153,7 @@ void OCSPClientDlg::initUI()
     mURLCombo->setEditable( true );
     QStringList usedList = getUsedURL();
     mURLCombo->addItems( usedList );
+    mURLCombo->setFocus();
 
     mHashCombo->addItems( kHashList );
     mHashCombo->setCurrentText( setMgr->defaultHash() );

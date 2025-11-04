@@ -93,7 +93,6 @@ ACMEClientDlg::ACMEClientDlg(QWidget *parent)
     resize(minimumSizeHint().width(), minimumSizeHint().height());
     initialize();
     mMakeBtn->setDefault(true);
-    mURLCombo->setFocus();
 }
 
 ACMEClientDlg::~ACMEClientDlg()
@@ -113,6 +112,7 @@ void ACMEClientDlg::initUI()
     mURLCombo->setEditable( true );
     QStringList usedList = getUsedURL();
     mURLCombo->addItems( usedList );
+    mURLCombo->setFocus();
 
     mEmailText->setPlaceholderText( tr( "Email address" ));
     mDNSText->setPlaceholderText( tr( "Domain name system" ));
@@ -880,7 +880,6 @@ void ACMEClientDlg::clickGetDirectory()
     if( strURL.length() < 1 )
     {
         berApplet->warningBox( tr( "Insert ACME URL"), this );
-        mURLCombo->setFocus();
         goto end;
     }
 
@@ -1445,7 +1444,6 @@ int ACMEClientDlg::clickSend()
     if( strCmdURL.length() < 1 )
     {
         berApplet->warningBox( tr( "There is no command URL"), this );
-        mURLCombo->setFocus();
         ret = -1;
         goto end;
     }

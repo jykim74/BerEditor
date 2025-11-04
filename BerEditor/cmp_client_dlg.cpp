@@ -116,6 +116,11 @@ void CMPClientDlg::checkEncPriKey()
 
 void CMPClientDlg::initUI()
 {
+    mURLCombo->setEditable( true );
+    QStringList usedList = getUsedURL();
+    mURLCombo->addItems( usedList );
+    mURLCombo->setFocus();
+
     mCmdCombo->addItems( kCMPCmdList );
     changeCmd();
 }
@@ -124,11 +129,6 @@ void CMPClientDlg::initialize()
 {
     SettingsMgr *setMgr = berApplet->settingsMgr();
 
-    mURLCombo->setEditable( true );
-    QStringList usedList = getUsedURL();
-    mURLCombo->addItems( usedList );
-
-    mURLCombo->setEditable(true);
     checkEncPriKey();
 
     mCACertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));

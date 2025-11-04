@@ -23,6 +23,7 @@ TSPClientDlg::TSPClientDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
+    initUI();
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mURLClearBtn, SIGNAL(clicked()), this, SLOT(clickClearURL()));
@@ -83,15 +84,19 @@ TSPClientDlg::~TSPClientDlg()
 
 }
 
+void TSPClientDlg::initUI()
+{
+    mURLCombo->setEditable( true );
+    QStringList usedList = getUsedURL();
+    mURLCombo->addItems( usedList );
+    mURLCombo->setFocus();
+}
+
 void TSPClientDlg::initialize()
 {
     SettingsMgr *setMgr = berApplet->settingsMgr();
 
     mInputTypeCombo->addItems( kDataTypeList );
-
-    mURLCombo->setEditable( true );
-    QStringList usedList = getUsedURL();
-    mURLCombo->addItems( usedList );
 
     mHashCombo->addItems( kHashList );
     mHashCombo->setCurrentText( setMgr->defaultHash() );
