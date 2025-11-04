@@ -25,12 +25,17 @@ public:
     void setSAN( const QStringList listSAN );
 
 private slots:
+    void slotTableMenuRequested( QPoint pos );
+
     void clickOK();
     void clickClear();
     void changeDN();
     void clickSANList();
+    void clickRDNAdd();
+    void deleteRDN();
 
 private:
+    void initUI();
     void initialize();
 
     BIN csr_;
