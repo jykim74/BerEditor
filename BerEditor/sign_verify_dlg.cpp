@@ -146,6 +146,7 @@ void SignVerifyDlg::dropEvent(QDropEvent *event)
 void SignVerifyDlg::initUI()
 {
     mInputTypeCombo->addItems( kDataTypeList );
+    mHashTypeCombo->addItem("");
     mHashTypeCombo->addItems(kHashList);
     mHashTypeCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
     mHashTypeCombo->setToolTip( tr("This combo is for RSA, ECDSA, and DSA") );
@@ -680,6 +681,8 @@ void SignVerifyDlg::dataRun()
 
     if( nType == JS_PKI_KEY_TYPE_SM2 )
         mHashTypeCombo->setCurrentText( "SM3" );
+    else if( nType == JS_PKI_KEY_TYPE_EDDSA || nType == JS_PKI_KEY_TYPE_ML_DSA || nType == JS_PKI_KEY_TYPE_SLH_DSA )
+        mHashTypeCombo->setCurrentText( "" );
 
     strHash = mHashTypeCombo->currentText();
 
@@ -736,10 +739,7 @@ void SignVerifyDlg::dataRun()
             berApplet->log( QString( "-- Compute Signature [time: %1 ms]" ).arg( getMS( us )));
             berApplet->logLine2();
             berApplet->log( QString( "Algorithm        : %1" ).arg( strAlg ));
-
-            if( nType != JS_PKI_KEY_TYPE_EDDSA )
-                berApplet->log( QString( "Hash             : %1").arg( strHash ));
-
+            berApplet->log( QString( "Hash             : %1").arg( strHash ));
             berApplet->log( QString( "Sign Src         : %1" ).arg(getHexString(&binSrc)));
             berApplet->log( QString( "Sign Private Key : [hidden]" ));
             berApplet->log( QString( "Signature        : %1" ).arg( getHexString( &binOut )));
