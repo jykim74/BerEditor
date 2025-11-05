@@ -28,6 +28,8 @@ private slots:
     void dropEvent(QDropEvent *event);
 
     void digest();
+
+    void clickReset();
     int hashInit();
     void hashUpdate();
     void hashFinal();
@@ -53,12 +55,9 @@ private slots:
 private:
     void initUI();
     void initialize();
-    void appendStatusLabel( const QString& strLabel );
-    void updateStatusLabel();
 
     void setSrcFileInfo( const QString strFile );
 
-    int update_cnt_;
     void *pctx_;
     HashThread *thread_;
 };

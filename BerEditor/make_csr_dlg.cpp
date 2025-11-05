@@ -63,6 +63,14 @@ void MakeCSRDlg::initUI()
     mRDNNameCombo->setEditable(true);
     mRDNNameCombo->addItems( kRDNList );
 
+    mEMAILADDRESSText->setPlaceholderText( "Email" );
+    mCNText->setPlaceholderText( "Common Name" );
+    mOUText->setPlaceholderText( "Organization Unit" );
+    mOText->setPlaceholderText( "Organization" );
+    mLText->setPlaceholderText( "Locality" );
+    mSTText->setPlaceholderText( "State/Province" );
+    mCText->setPlaceholderText( "Country" );
+
     QStringList sBaseLabels = { tr("Name"), tr("Value") };
 
     mRDNTable->clear();

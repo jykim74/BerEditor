@@ -258,7 +258,7 @@ void BERCheckDlg::clickCheckFormat()
     }
     else
     {
-        berApplet->warningBox( tr( "This source is not in %1 format: [%2:%3]" ).arg( strFormat ).arg( sError ).arg(ret), this );
+        berApplet->warningBox( tr( "This source is not in %1 format: %2:%3" ).arg( strFormat ).arg( sError ).arg(JERR(ret)), this );
     }
 
 end :
@@ -289,7 +289,7 @@ void BERCheckDlg::clickCheckType()
     else
     {
         mFormatCombo->setCurrentText( "" );
-        berApplet->warningBox( tr( "The data is not in the format to be checked or is incorrect: %1" ).arg(ret), this );
+        berApplet->warningBox( tr( "The data is not in the format to be checked or is incorrect: %1" ).arg(JERR(ret)), this );
     }
 
 end :
@@ -415,7 +415,7 @@ void BERCheckDlg::clickView()
     }
     else
     {
-        berApplet->warningBox( tr( "This source is not in %1 format: [%2:%3]" ).arg( strFormat ).arg( sError ).arg(ret), this );
+        berApplet->warningBox( tr( "This source is not in %1 format: %2:%3" ).arg( strFormat ).arg( sError ).arg(JERR(ret)), this );
     }
 
 end :

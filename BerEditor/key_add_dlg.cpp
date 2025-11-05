@@ -121,7 +121,7 @@ int KeyAddDlg::readFile( const QString strName )
 
         if( ret != 0 )
         {
-            ret = JSR_PASSWORD_WRONG;
+            ret = JSR_PASSWORD_INCORRECT;
             return ret;
         }
 

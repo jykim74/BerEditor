@@ -38,7 +38,6 @@ EncDecDlg::EncDecDlg(QWidget *parent) :
 {
     ctx_ = NULL;
     thread_ = NULL;
-    update_cnt_ = 0;
 
     setupUi(this);
     initUI();
@@ -51,6 +50,7 @@ EncDecDlg::EncDecDlg(QWidget *parent) :
     connect( mChangeBtn, SIGNAL(clicked()), this, SLOT(dataChange()));
     connect( mRunBtn, SIGNAL(clicked()), this, SLOT(Run()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect( mResetBtn, SIGNAL(clicked()), this, SLOT(clickReset()));
 
     connect( mEncryptRadio, SIGNAL(clicked()), this, SLOT(checkEncrypt()));
     connect( mDecryptRadio, SIGNAL(clicked()), this, SLOT(checkDecrypt()));
@@ -67,7 +67,6 @@ EncDecDlg::EncDecDlg(QWidget *parent) :
     connect( mKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(keyChanged()));
     connect( mIVTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(ivChanged()));
     connect( mAADTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(aadChanged()));
-    connect( mTagTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(tagChanged()));
     connect( mModeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(modeChanged()));
 
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
@@ -134,8 +133,9 @@ void EncDecDlg::initUI()
     mIVTypeCombo->addItems( kDataTypeList );
     mKeyTypeCombo->addItems( kDataTypeList );
     mAADTypeCombo->addItems( kDataTypeList );
-    mTagTypeCombo->addItem( kDataHex );
     mOutputTypeCombo->addItems( kDataTypeList );
+
+    mTagText->setPlaceholderText( tr("Hex value") );
 
     mAlgCombo->addItems( kSymAlgList );
     mReqTagLenText->setText( "16" );
@@ -154,18 +154,6 @@ void EncDecDlg::initialize()
     runGroup->addButton( mDecryptRadio );
 
     mInputTab->setCurrentIndex(0);
-}
-
-void EncDecDlg::appendStatusLabel( const QString& strLabel )
-{
-    QString strStatus = mStatusLabel->text();
-    strStatus += strLabel;
-    mStatusLabel->setText( strStatus );
-}
-
-void EncDecDlg::updateStatusLabel()
-{
-    mStatusLabel->setText( QString( "Init|Update X %1").arg( update_cnt_));
 }
 
 void EncDecDlg::showEvent( QShowEvent *event )
@@ -320,7 +308,6 @@ void EncDecDlg::dataRun()
                 us = timer.nsecsElapsed() / 1000;
             }
 
-            mTagTypeCombo->setCurrentIndex( DATA_HEX );
             JS_BIN_encodeHex( &binTag, &pTag );
             if( pTag )
             {
@@ -360,7 +347,7 @@ void EncDecDlg::dataRun()
             QString strTag = mTagText->text();
             strMethod = "AE Decrypt";
 
-            ret = getBINFromString( &binTag, mTagTypeCombo->currentText(), strTag );
+            ret = getBINFromString( &binTag, DATA_HEX, strTag );
             FORMAT_WARN_GO(ret);
 
             if( isCCM( strMode ) )
@@ -494,7 +481,6 @@ void EncDecDlg::dataRun()
 
     if( ret == 0 )
     {
-        update_cnt_++;
         QString strMsg = QString( "%1 %2 OK" ).arg( strMethod ).arg( strSymAlg );
         mStatusLabel->setText( strMsg );
     }
@@ -681,9 +667,6 @@ void EncDecDlg::fileRun()
 
         if( ret == 0 )
         {
-            QString strStatus = QString( "|Update X %1").arg( nUpdateCnt );
-            appendStatusLabel( strStatus );
-
             QFileInfo fileInfo;
             fileInfo.setFile( strDstFile );
             qint64 fileSize = fileInfo.size();
@@ -735,14 +718,6 @@ int EncDecDlg::encDecInit()
     BIN binTag = {0,0};
     int nDataType = DATA_STRING;
 
-    if( ctx_ )
-    {
-        JS_PKI_encryptFree( &ctx_ );
-        ctx_ = NULL;
-    }
-
-    update_cnt_ = 0;
-
     QString strKey = mKeyText->text();
     QString strAlg = mAlgCombo->currentText();
     QString strMode = mModeCombo->currentText();
@@ -750,6 +725,8 @@ int EncDecDlg::encDecInit()
     QString strReqTagLen = mReqTagLenText->text();
     QString strTag = mTagText->text();
     QString strIV = mIVText->text();
+
+    clickReset();
 
     if( strAlg == JS_PKI_KEY_NAME_SEED )
     {
@@ -949,12 +926,14 @@ int EncDecDlg::encDecInit()
     if( ret == 0 )
     {
         mStatusLabel->setText( "Init OK" );
+        mInitText->setText( "OK" );
         mOutputText->clear();
     }
     else
     {
         QString strFail = QString("Init Error: %1").arg(JERR(ret));
-        mStatusLabel->setText( strFail );
+        mStatusLabel->setText( QString("%1").arg( JERR(ret)) );
+        mInitText->setText( QString("%1").arg(ret));
         berApplet->elog( strFail );
     }
 
@@ -1059,18 +1038,22 @@ int EncDecDlg::encDecUpdate()
 
     if( ret == 0 )
     {
+        int nUpdate = mUpdateText->text().toInt();
+        if( nUpdate >= 0 )
+        {
+            nUpdate++;
+            mUpdateText->setText( QString("%1").arg(nUpdate));
+        }
+        mStatusLabel->setText( "Update OK" );
         JS_BIN_appendBin( &binOut, &binDst );
 
         QString strOut = getStringFromBIN( &binOut, mOutputTypeCombo->currentText() );
         mOutputText->setPlainText( strOut );
-
-        update_cnt_++;
-        updateStatusLabel();
     }
     else
     {
         QString strFail = QString("Update error: %1").arg(JERR(ret));
-        mStatusLabel->setText( strFail );
+        mStatusLabel->setText( QString("%1").arg( JERR(ret) ) );
         berApplet->elog( strFail );
     }
 
@@ -1133,7 +1116,7 @@ int EncDecDlg::encDecFinal()
         else
         {
             QString strTag = mTagText->text();
-            ret = getBINFromString( &binTag, mTagTypeCombo->currentText(), strTag );
+            ret = getBINFromString( &binTag, DATA_HEX, strTag );
             FORMAT_WARN_GO(ret);
 
             if( isCCM(strMode) )
@@ -1197,11 +1180,15 @@ int EncDecDlg::encDecFinal()
     }
 
     if( ret == 0 )
-        appendStatusLabel( "|Final OK" );
+    {
+        mStatusLabel->setText( "Final OK" );
+        mFinalText->setText( "OK" );
+    }
     else
     {
-        QString strFail = QString("|Final error: %1").arg(JERR(ret));
-        appendStatusLabel( strFail );
+        QString strFail = QString("Final error: %1").arg(JERR(ret));
+        mStatusLabel->setText( QString("%1").arg( JERR(ret)));
+        mFinalText->setText( QString("%1").arg(ret));
         berApplet->elog( strFail );
     }
 
@@ -1211,6 +1198,20 @@ end:
     JS_BIN_reset( &binTag );
 
     return ret;
+}
+
+void EncDecDlg::clickReset()
+{
+    mStatusLabel->setText( "Status" );
+    mInitText->clear();
+    mUpdateText->clear();
+    mFinalText->clear();
+
+    if( ctx_ )
+    {
+        JS_PKI_encryptFree( &ctx_ );
+        ctx_ = NULL;
+    }
 }
 
 void EncDecDlg::dataChange()
@@ -1266,7 +1267,7 @@ void EncDecDlg::aadChanged()
 
 void EncDecDlg::tagChanged()
 {
-    QString strLen = getDataLenString( mTagTypeCombo->currentText(), mTagText->text() );
+    QString strLen = getDataLenString( DATA_HEX, mTagText->text() );
     mTagLenText->setText( QString("%1").arg(strLen));
 }
 
@@ -1472,9 +1473,6 @@ void EncDecDlg::onTaskFinished()
     berApplet->log("Task finished");
     QString strDstFile = mDstFileText->text();
 
-    QString strStatus = QString( "|Update X %1").arg( update_cnt_ );
-    appendStatusLabel( strStatus );
-
     ret = encDecFinal();
 
     QFileInfo fileInfo;
@@ -1499,6 +1497,13 @@ void EncDecDlg::onTaskFinished()
 
 void EncDecDlg::onTaskUpdate( qint64 nUpdate )
 {
+    int nCount = mUpdateText->text().toInt();
+    if( nCount >= 0 )
+    {
+        nCount++;
+        mUpdateText->setText( QString("%1").arg(nCount));
+    }
+
     berApplet->log( QString("Update: %1").arg( nUpdate ));
     qint64 nFileSize = mFileTotalSizeText->text().toLongLong();
     int nPercent = int( (nUpdate * 100) / nFileSize );
@@ -1506,8 +1511,6 @@ void EncDecDlg::onTaskUpdate( qint64 nUpdate )
 #ifdef QT_DEBUG
 //    berApplet->elog( QString( "== Update: %1 Filesize: %2 Percent: %3" ).arg( nUpdate ).arg(nFileSize).arg(nPercent));
 #endif
-
-    update_cnt_++;
 
     mFileReadSizeText->setText( QString("%1").arg( nUpdate ));
     mEncProgBar->setValue( nPercent );

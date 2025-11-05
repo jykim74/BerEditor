@@ -40,6 +40,7 @@ private slots:
     int signVerifyInit();
     void signVerifyUpdate();
     void signVerifyFinal();
+    void clickReset();
 
     void inputChanged();
     void outputChanged();
@@ -74,8 +75,6 @@ public slots:
 private:
     void initUI();
     void initialize();
-    void appendStatusLabel( const QString& strLabel );
-    void updateStatusLabel();
     int readPrivateKey( BIN *pPriKey );
     void setSrcFileInfo( const QString strFile );
 
@@ -84,7 +83,6 @@ private:
 
     void *sctx_;
 
-    int update_cnt_;
     SignVerifyThread *thread_;
 };
 

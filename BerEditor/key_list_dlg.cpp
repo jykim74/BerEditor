@@ -171,7 +171,7 @@ int KeyListDlg::getPlainKeyIV( const QString strData, QString& strKey, QString& 
 
         if( ret != 0 )
         {
-            ret = JSR_PASSWORD_WRONG;
+            ret = JSR_PASSWORD_INCORRECT;
             return ret;
         }
     }
@@ -378,8 +378,8 @@ void KeyListDlg::clickKeyView()
     int ret = keyDlg.readFile( item->text() );
     if( ret != 0 )
     {
-        berApplet->elog( QString( "fail to get symmetric key: %1").arg( ret ) );
-        if( ret == JSR_PASSWORD_WRONG )
+        berApplet->elog( QString( "fail to get symmetric key: %1").arg( JERR(ret) ) );
+        if( ret == JSR_PASSWORD_INCORRECT )
         {
             berApplet->warningBox( tr( "The password is incorrect" ), this );
         }
@@ -441,7 +441,7 @@ void KeyListDlg::clickOK()
     if( ret != 0 )
     {
         berApplet->elog( QString( "fail to get symmetric key: %1").arg( ret ) );
-        if( ret == JSR_PASSWORD_WRONG )
+        if( ret == JSR_PASSWORD_INCORRECT )
         {
             berApplet->warningBox( tr( "The password is incorrect" ), this );
         }

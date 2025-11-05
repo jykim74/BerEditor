@@ -34,9 +34,12 @@ private slots:
     void dropEvent(QDropEvent *event);
 
     void mac();
+
     int macInit();
     void macUpdate();
     void macFinal();
+
+    void clickReset();
 
     void inputClear();
     void outputClear();
@@ -64,15 +67,12 @@ private:
 
     void initUI();
     void initialize();
-    void appendStatusLabel( const QString strLabel );
-    void updateStatusLabel();
 
     int verifyMAC( const BIN *pMAC, const BIN *pInMAC );
     void setSrcFileInfo( const QString strFile );
 
     void *hctx_;
     int type_;
-    int update_cnt_;
 
     MacThread *thread_;
 };

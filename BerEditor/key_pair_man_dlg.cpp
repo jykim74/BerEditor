@@ -1155,8 +1155,19 @@ void KeyPairManDlg::clickCheckKeyPair()
         return;
     }
 
-    JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPub );
-    JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    ret = JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPub );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "failed to read public key: %1" ).arg( JERR(ret)), this );
+        goto end;
+    }
+
+    ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "failed to read private key: %1" ).arg( JERR(ret)), this );
+        goto end;
+    }
 
     ret = JS_PKI_IsValidKeyPair( &binPri, &binPub );
     if( ret == JSR_VALID )
@@ -1164,6 +1175,7 @@ void KeyPairManDlg::clickCheckKeyPair()
     else
         berApplet->warningBox( QString( tr("The private key and the public key are incorrect [%1]")).arg(ret), this );
 
+end :
     JS_BIN_reset( &binPri );
     JS_BIN_reset( &binPub );
 }
@@ -1194,7 +1206,12 @@ void KeyPairManDlg::clickEncrypt()
         return;
     }
 
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    ret = JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "failed to read : %1" ).arg( JERR(ret)), this );
+        goto end;
+    }
 
     nPBE = JS_PKI_getNidFromSN( strSN.toStdString().c_str() );
     nKeyType = JS_PKI_getPriKeyType( &binData );
@@ -1229,6 +1246,7 @@ end :
 
 void KeyPairManDlg::clickViewCSR()
 {
+    int ret = -1;
     CSRInfoDlg csrInfo;
 
     BIN binData = {0,0};
@@ -1240,7 +1258,12 @@ void KeyPairManDlg::clickViewCSR()
         return;
     }
 
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    ret = JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "failed to read : %1" ).arg( JERR(ret)), this );
+        return;
+    }
 
     csrInfo.setReqBIN( &binData );
     csrInfo.exec();
@@ -1272,7 +1295,12 @@ void KeyPairManDlg::clickDecrypt()
         return;
     }
 
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    ret = JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "failed to read : %1" ).arg( JERR(ret)), this );
+        goto end;
+    }
 
     ret = JS_PKI_decryptPrivateKey( strPasswd.toStdString().c_str(), &binData, &binInfo, &binDec );
     if( ret != 0 )
@@ -1305,6 +1333,7 @@ void KeyPairManDlg::clickClearAll()
 
 void KeyPairManDlg::viewPriKey()
 {
+    int ret = 0;
     BIN binPriKey = { 0,0 };
     PriKeyInfoDlg priKeyInfo;
     QString strPriPath = mPriPathText->text();
@@ -1315,7 +1344,12 @@ void KeyPairManDlg::viewPriKey()
         return;
     }
 
-    JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPriKey );
+    ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPriKey );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "failed to read : %1" ).arg( JERR(ret)), this );
+        return;
+    }
 
     priKeyInfo.setPrivateKey( &binPriKey );
     priKeyInfo.exec();
@@ -1325,6 +1359,7 @@ void KeyPairManDlg::viewPriKey()
 
 void KeyPairManDlg::viewPubKey()
 {
+    int ret = -1;
     BIN binPubKey = {0,0};
     PriKeyInfoDlg priKeyInfo;
     QString strPubPath = mPubPathText->text();
@@ -1335,7 +1370,12 @@ void KeyPairManDlg::viewPubKey()
         return;
     }
 
-    JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPubKey );
+    ret = JS_BIN_fileReadBER( strPubPath.toLocal8Bit().toStdString().c_str(), &binPubKey );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "failed to read : %1" ).arg( JERR(ret)), this );
+        return;
+    }
 
     priKeyInfo.setPublicKey( &binPubKey );
     priKeyInfo.exec();
@@ -1397,6 +1437,7 @@ void KeyPairManDlg::clearCSR()
 
 void KeyPairManDlg::decodePriKey()
 {
+    int ret = -1;
     BIN binData = {0,0};
     QString strFile = mPriPathText->text();
 
@@ -1406,7 +1447,12 @@ void KeyPairManDlg::decodePriKey()
         return;
     }
 
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    ret = JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "failed to read : %1" ).arg( JERR(ret)), this );
+        return;
+    }
 
     berApplet->decodeData( &binData, strFile );
 
@@ -1415,6 +1461,7 @@ void KeyPairManDlg::decodePriKey()
 
 void KeyPairManDlg::decodePubKey()
 {
+    int ret = -1;
     BIN binData = {0,0};
     QString strFile = mPubPathText->text();
 
@@ -1424,7 +1471,12 @@ void KeyPairManDlg::decodePubKey()
         return;
     }
 
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    ret = JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "failed to read : %1" ).arg( JERR(ret)), this );
+        return;
+    }
 
     berApplet->decodeData( &binData, strFile );
 
@@ -1433,6 +1485,7 @@ void KeyPairManDlg::decodePubKey()
 
 void KeyPairManDlg::decodeEncPriKey()
 {
+    int ret = -1;
     BIN binData = {0,0};
     QString strFile = mEncPriPathText->text();
 
@@ -1442,7 +1495,12 @@ void KeyPairManDlg::decodeEncPriKey()
         return;
     }
 
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    ret = JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "failed to read : %1" ).arg( JERR(ret)), this );
+        return;
+    }
 
     berApplet->decodeData( &binData, strFile );
 
@@ -1451,6 +1509,7 @@ void KeyPairManDlg::decodeEncPriKey()
 
 void KeyPairManDlg::decodePriInfo()
 {
+    int ret = -1;
     BIN binData = {0,0};
     QString strFile = mPriInfoPathText->text();
 
@@ -1460,7 +1519,12 @@ void KeyPairManDlg::decodePriInfo()
         return;
     }
 
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    ret = JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "failed to read : %1" ).arg( JERR(ret)), this );
+        return;
+    }
 
     berApplet->decodeData( &binData, strFile );
 
@@ -1469,6 +1533,7 @@ void KeyPairManDlg::decodePriInfo()
 
 void KeyPairManDlg::decodeCSR()
 {
+    int ret = -1;
     BIN binData = {0,0};
     QString strFile = mCSRPathText->text();
 
@@ -1478,7 +1543,12 @@ void KeyPairManDlg::decodeCSR()
         return;
     }
 
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    ret = JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "failed to read : %1" ).arg( JERR(ret)), this );
+        return;
+    }
 
     berApplet->decodeData( &binData, strFile );
 
@@ -1487,6 +1557,7 @@ void KeyPairManDlg::decodeCSR()
 
 void KeyPairManDlg::typePriKey()
 {
+    int ret = -1;
     int nType = -1;
     BIN binData = {0,0};
     QString strFile = mPriPathText->text();
@@ -1497,7 +1568,12 @@ void KeyPairManDlg::typePriKey()
         return;
     }
 
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    ret = JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "failed to read : %1" ).arg( JERR(ret)), this );
+        return;
+    }
 
     nType = JS_PKI_getPriKeyType( &binData );
     berApplet->messageBox( tr( "The private key type is %1").arg( JS_PKI_getKeyAlgName( nType )), this);
@@ -1507,6 +1583,7 @@ void KeyPairManDlg::typePriKey()
 
 void KeyPairManDlg::typePubKey()
 {
+    int ret = -1;
     int nType = -1;
     BIN binData = {0,0};
     QString strFile = mPubPathText->text();
@@ -1517,7 +1594,12 @@ void KeyPairManDlg::typePubKey()
         return;
     }
 
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    ret = JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "failed to read : %1" ).arg( JERR(ret)), this );
+        return;
+    }
 
     nType = JS_PKI_getPubKeyType( &binData );
     berApplet->messageBox( tr( "The public key type is %1").arg( JS_PKI_getKeyAlgName( nType )), this);
@@ -1655,6 +1737,7 @@ end :
 
 void KeyPairManDlg::clickExport()
 {
+    int ret = -1;
     BIN binPri = {0,0};
 
     QString strPath;
@@ -1672,7 +1755,12 @@ void KeyPairManDlg::clickExport()
     if( item ) strPath = item->data(Qt::UserRole).toString();
     strPriPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
 
-    JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "failed to read : %1" ).arg( JERR(ret)), this );
+        return;
+    }
 
     ExportDlg exportDlg;
     exportDlg.setName( item->text() );

@@ -1375,14 +1375,14 @@ int CertManDlg::writePriKeyCert( const BIN *pEncPriKey, const BIN *pCert )
     if( dir.exists( strPath ) == true )
     {
         berApplet->elog( QString( "the path(%1) is already exist").arg( strPath ) );
-        ret = JSR_ERR;
+        ret = JSR_FILE_ALREADY_EXIST;
         goto end;
     }
 
     if( dir.mkdir( strPath ) == false )
     {
         berApplet->elog( QString( "fail to make path: %1").arg( strPath ) );
-        ret = JSR_ERR2;
+        ret = JSR_MAKE_DIR_FAIL;
         goto end;
     }
 
@@ -3239,7 +3239,13 @@ void CertManDlg::clickTLCheckKeyPair()
 
         strPass = passDlg.mPasswdText->text();
 
-        JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binEncPri );
+        ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binEncPri );
+        if( ret < 0 )
+        {
+            berApplet->warningBox( tr( "fail to read encrypted private key: %1").arg( JERR(ret)), this );
+            goto end;
+        }
+
         ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEncPri, NULL, &binPri );
         if( ret != 0 )
         {
@@ -3249,10 +3255,20 @@ void CertManDlg::clickTLCheckKeyPair()
     }
     else
     {
-        JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+        ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+        if( ret < 0 )
+        {
+            berApplet->warningBox( tr( "fail to read private key: %1").arg( JERR(ret)), this );
+            goto end;
+        }
     }
 
-    JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    ret = JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "fail to read certificate: %1").arg( JERR(ret)), this );
+        goto end;
+    }
 
     ret = JS_PKI_IsValidPriKeyCert( &binPri, &binCert );
 
@@ -3269,6 +3285,7 @@ end :
 
 void CertManDlg::clickTLViewCert()
 {
+    int ret = -1;
     CertInfoDlg certInfo;
 
     BIN binData = {0,0};
@@ -3280,7 +3297,12 @@ void CertManDlg::clickTLViewCert()
         return;
     }
 
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    ret = JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "failed to read : %1" ).arg( JERR(ret)), this );
+        return;
+    }
 
     certInfo.setCertBIN( &binData );
     certInfo.exec();
@@ -3340,7 +3362,13 @@ void CertManDlg::clickTLEncryptPFX()
 
         strPass = passDlg.mPasswdText->text();
 
-        JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binEncPri );
+        ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binEncPri );
+        if( ret < 0 )
+        {
+            berApplet->warningBox( tr( "failed to read encrypted private key: %1" ).arg( JERR(ret)), this );
+            goto end;
+        }
+
         ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEncPri, NULL, &binPri );
         if( ret != 0 )
         {
@@ -3350,10 +3378,20 @@ void CertManDlg::clickTLEncryptPFX()
     }
     else
     {
-        JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+        ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+        if( ret < 0 )
+        {
+            berApplet->warningBox( tr( "failed to read private key: %1" ).arg( JERR(ret)), this );
+            goto end;
+        }
     }
 
-    JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    ret = JS_BIN_fileReadBER( strCertPath.toLocal8Bit().toStdString().c_str(), &binCert );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "failed to read certificate: %1" ).arg( JERR(ret)), this );
+        goto end;
+    }
 
     nPBE = JS_PKI_getNidFromSN( strSN.toStdString().c_str() );
     nKeyType = JS_PKI_getPriKeyType( &binPri );
@@ -3414,7 +3452,12 @@ void CertManDlg::clickTLDecryptPFX()
         return;
     }
 
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    ret = JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "failed to read : %1" ).arg( JERR(ret)), this );
+        goto end;
+    }
 
     ret = JS_PKI_decodePFX( &binData, strPasswd.toStdString().c_str(), &binPri, &binCert );
     if( ret != 0 )
@@ -3510,7 +3553,12 @@ void CertManDlg::clickTLSavePFX()
         return;
     }
 
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binPFX );
+    ret = JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binPFX );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "failed to read PFX: %1" ).arg( JERR(ret)), this );
+        goto end;
+    }
 
     ret = JS_PKI_decodePFX( &binPFX, strPasswd.toStdString().c_str(), &binPri, &binCert );
     if( ret != 0 )
@@ -3529,10 +3577,14 @@ void CertManDlg::clickTLSavePFX()
     }
 
     ret = writePriKeyCert( &binEncPri, &binCert );
-    if( ret == 0 )
+    if( ret == JSR_OK )
     {
         loadEEList();
         berApplet->messageLog( tr( "The private key and certificate are saved successfully"), this );
+    }
+    else
+    {
+        berApplet->warningBox( tr( "fail to write private and certificate: %1" ).arg( JERR(ret)), this );
     }
 
 end :
@@ -3571,7 +3623,13 @@ void CertManDlg::clickTLViewPriKey()
 
         strPass = passDlg.mPasswdText->text();
 
-        JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binEncPri );
+        ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binEncPri );
+        if( ret < 0 )
+        {
+            berApplet->warningBox( tr( "failed to read : %1" ).arg( JERR(ret)), this );
+            goto end;
+        }
+
         ret = JS_PKI_decryptPrivateKey( strPass.toStdString().c_str(), &binEncPri, NULL, &binPri );
         if( ret != 0 )
         {
@@ -3581,7 +3639,12 @@ void CertManDlg::clickTLViewPriKey()
     }
     else
     {
-        JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+        ret = JS_BIN_fileReadBER( strPriPath.toLocal8Bit().toStdString().c_str(), &binPri );
+        if( ret < 0 )
+        {
+            berApplet->warningBox( tr( "failed to read : %1" ).arg( JERR(ret)), this );
+            goto end;
+        }
     }
 
     priKeyInfo.setPrivateKey( &binPri );
@@ -3595,6 +3658,7 @@ end :
 
 void CertManDlg::clickTLViewPubKey()
 {
+    int ret = -1;
     PriKeyInfoDlg priKeyInfo;
     BIN binData = {0,0};
     QString strFile = mTLCertPathText->text();
@@ -3605,7 +3669,12 @@ void CertManDlg::clickTLViewPubKey()
         return;
     }
 
-    JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    ret = JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr( "failed to read : %1" ).arg( JERR(ret)), this );
+        return;
+    }
 
     priKeyInfo.setPublicKey( &binData );
     priKeyInfo.exec();

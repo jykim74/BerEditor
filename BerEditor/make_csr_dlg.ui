@@ -111,7 +111,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Email(emailAddress)</string>
+        <string>emailAddress</string>
        </property>
       </widget>
      </item>
@@ -121,14 +121,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>Organization Unit(OU)</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="Line" name="line_7">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
+        <string>OU</string>
        </property>
       </widget>
      </item>
@@ -137,34 +130,40 @@
      </item>
      <item row="0" column="3">
       <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Common Name(CN)</string>
+       <property name="minimumSize">
+        <size>
+         <width>60</width>
+         <height>0</height>
+        </size>
        </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="Line" name="line_6">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
+       <property name="text">
+        <string>CN</string>
        </property>
       </widget>
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="label_6">
        <property name="text">
-        <string>Locality(L)</string>
+        <string>L</string>
        </property>
       </widget>
      </item>
      <item row="1" column="3">
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>Organization(O)</string>
+        <string>O</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QLineEdit" name="mEMAILADDRESSText"/>
+      <widget class="QLineEdit" name="mEMAILADDRESSText">
+       <property name="minimumSize">
+        <size>
+         <width>60</width>
+         <height>0</height>
+        </size>
+       </property>
+      </widget>
      </item>
      <item row="2" column="1">
       <widget class="QLineEdit" name="mLText"/>
@@ -172,22 +171,22 @@
      <item row="2" column="3">
       <widget class="QLabel" name="label_7">
        <property name="text">
-        <string>State/Province(ST)</string>
+        <string>ST</string>
        </property>
       </widget>
      </item>
      <item row="3" column="0">
       <widget class="QLabel" name="label_8">
        <property name="text">
-        <string>Country(C)</string>
+        <string>C</string>
        </property>
       </widget>
      </item>
      <item row="3" column="1">
       <widget class="QLineEdit" name="mCText"/>
      </item>
-     <item row="2" column="2">
-      <widget class="Line" name="line_8">
+     <item row="0" column="2" rowspan="4">
+      <widget class="Line" name="line_6">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>

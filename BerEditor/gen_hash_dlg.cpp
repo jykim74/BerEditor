@@ -34,11 +34,11 @@ GenHashDlg::GenHashDlg(QWidget *parent) :
     setAcceptDrops(true);
 
     pctx_ = NULL;
-    update_cnt_ = 0;
     thread_ = NULL;
 
     initUI();
 
+    connect( mResetBtn, SIGNAL(clicked()), this, SLOT(clickReset()));
     connect( mInitBtn, SIGNAL(clicked()), this, SLOT(hashInit()));
     connect( mUpdateBtn, SIGNAL(clicked()), this, SLOT(hashUpdate()));
     connect( mFinalBtn, SIGNAL(clicked()), this, SLOT(hashFinal()));
@@ -131,29 +131,11 @@ void GenHashDlg::initialize()
     mInputTab->setCurrentIndex(0);
 }
 
-void GenHashDlg::appendStatusLabel( const QString& strLabel )
-{
-    QString strStatus = mStatusLabel->text();
-    strStatus += strLabel;
-    mStatusLabel->setText( strStatus );
-}
-
-void GenHashDlg::updateStatusLabel()
-{
-    mStatusLabel->setText( QString( "Init|Update X %1").arg( update_cnt_));
-}
-
-
 int GenHashDlg::hashInit()
 {
     int ret = 0;
 
-    if( pctx_ )
-    {
-        JS_PKI_hashFree( &pctx_ );
-        pctx_ = NULL;
-    }
-    update_cnt_ = 0;
+    clickReset();
 
     QString strAlg = mOutputHashCombo->currentText();
     mOutputText->clear();
@@ -161,12 +143,17 @@ int GenHashDlg::hashInit()
     ret = JS_PKI_hashInit( &pctx_, strAlg.toStdString().c_str() );
     if( ret == 0 )
     {
-        mStatusLabel->setText( "Initialization successful" );
-
+        mStatusLabel->setText( "Init OK" );
+        mInitText->setText( "OK" );
+        mUpdateText->clear();
+        mFinalText->clear();
         berApplet->log( QString( "initialization algorithm : %1" ).arg( strAlg ));
     }
     else
-        mStatusLabel->setText( QString("Initialization failed [%1]").arg(JERR(ret)) );
+    {
+        mInitText->setText( QString("%1").arg(ret));
+        mStatusLabel->setText( QString("%1").arg(JERR(ret)) );
+    }
 
     update();
     return 0;
@@ -194,12 +181,22 @@ void GenHashDlg::hashUpdate()
     ret = JS_PKI_hashUpdate( pctx_, &binSrc );
     if( ret == 0 )
     {
-        update_cnt_++;
         berApplet->log( QString( "Update input : %1" ).arg( getHexString(&binSrc)));
-        updateStatusLabel();
+        mStatusLabel->setText( "Update OK" );
+
+        int nUpdate = mUpdateText->text().toInt();
+
+        if( nUpdate >= 0 )
+        {
+            nUpdate++;
+            mUpdateText->setText( QString("%1").arg( nUpdate ));
+        }
     }
     else
-        mStatusLabel->setText( QString("Update failed [%1]").arg(JERR(ret)) );
+    {
+        mStatusLabel->setText( QString("%1").arg(JERR(ret)) );
+        mUpdateText->setText( QString("%1").arg( ret ));
+    }
 
 end :
     JS_BIN_reset( &binSrc );
@@ -221,13 +218,14 @@ void GenHashDlg::hashFinal()
     if( ret == 0 )
     {
         mOutputText->setPlainText( getHexString( &binMD) );
-        appendStatusLabel( "|Final OK" );
-
+        mStatusLabel->setText( "Final OK" );
+        mFinalText->setText( "OK" );
         berApplet->log( QString("Final Digest : %1").arg( getHexString(&binMD)));
     }
     else
     {
-        appendStatusLabel( QString("|Final failed [%1]").arg(JERR(ret)) );
+        mStatusLabel->setText( QString("%1").arg(JERR(ret)) );
+        mFinalText->setText( QString("%1").arg(ret) );
     }
 
     JS_PKI_hashFree( &pctx_ );
@@ -249,6 +247,20 @@ void GenHashDlg::digest()
             clickDigestSrcFileThread();
         else
             clickDigestSrcFile();
+    }
+}
+
+void GenHashDlg::clickReset()
+{
+    mStatusLabel->setText( tr("Status") );
+    mInitText->clear();
+    mUpdateText->clear();
+    mFinalText->clear();
+
+    if( pctx_ )
+    {
+        JS_PKI_hashFree( &pctx_ );
+        pctx_ = NULL;
     }
 }
 
@@ -436,11 +448,15 @@ void GenHashDlg::clickDigestSrcFile()
     fileInfo.setFile( strSrcFile );
 
     qint64 fileSize = fileInfo.size();
+    if( fileSize <= 0 )
+    {
+        berApplet->warningBox( tr( "file is empty" ), this);
+        return;
+    }
 
     mHashProgBar->setValue( 0 );
     mFileSizeText->setText( QString("%1").arg( fileSize ));
     mFileReadSizeText->setText( "0" );
-
 
     nLeft = fileSize;
 
@@ -449,7 +465,7 @@ void GenHashDlg::clickDigestSrcFile()
 
     if( fp == NULL )
     {
-        berApplet->elog( QString( "failed to read file:%1").arg( strSrcFile ));
+        berApplet->warningBox(tr( "failed to read file:%1").arg( strSrcFile ), this);
         goto end;
     }
 
@@ -474,7 +490,6 @@ void GenHashDlg::clickDigestSrcFile()
             break;
         }
 
-        update_cnt_++;
         nReadSize += nRead;
         nPercent = int( ( nReadSize * 100 ) / fileSize );
 
@@ -497,8 +512,6 @@ void GenHashDlg::clickDigestSrcFile()
 
         if( ret == 0 )
         {
-            QString strStatus = QString( "|Update X %1").arg( update_cnt_ );
-            appendStatusLabel( strStatus );
             hashFinal();
         }
     }
@@ -531,6 +544,11 @@ void GenHashDlg::startTask()
     fileInfo.setFile( strSrcFile );
 
     qint64 fileSize = fileInfo.size();
+    if( fileSize <= 0 )
+    {
+        berApplet->warningBox( tr( "file is empty" ), this);
+        return;
+    }
 
     mFileSizeText->setText( QString("%1").arg( fileSize ));
     mFileReadSizeText->setText( "0" );
@@ -547,9 +565,7 @@ void GenHashDlg::startTask()
 
 void GenHashDlg::onTaskFinished() {
     berApplet->log("Task finished");
-
-    QString strStatus = QString( "|Update X %1").arg( update_cnt_ );
-    appendStatusLabel( strStatus );
+    mFinalText->setText( "OK" );
 
     hashFinal();
 
@@ -561,10 +577,17 @@ void GenHashDlg::onTaskFinished() {
 
 void GenHashDlg::onTaskUpdate( qint64 nUpdate )
 {
+    int nCount = mUpdateText->text().toInt();
+
+    if( nCount >= 0 )
+    {
+        nCount++;
+        mUpdateText->setText( QString("%1").arg( nCount ));
+    }
+
     berApplet->log( QString("Update: %1").arg( nUpdate ));
     qint64 nFileSize = mFileSizeText->text().toLongLong();
     int nPercent = (nUpdate * 100) / nFileSize;
-    update_cnt_++;
 
     mFileReadSizeText->setText( QString("%1").arg( nUpdate ));
     mHashProgBar->setValue( nPercent );

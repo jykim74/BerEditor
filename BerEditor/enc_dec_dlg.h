@@ -37,6 +37,8 @@ private slots:
     int encDecInit();
     int encDecUpdate();
     int encDecFinal();
+    void clickReset();
+
     void dataChange();
 
     void inputChanged();
@@ -66,13 +68,11 @@ private slots:
 private:
     void initUI();
     void initialize();
-    void appendStatusLabel( const QString& strLabel );
-    void updateStatusLabel();
     void setSrcFileInfo( const QString strFile );
 
     bool isCCM( const QString strAlg );
     void *ctx_;
-    int update_cnt_;
+
     EncDecThread *thread_;
 };
 

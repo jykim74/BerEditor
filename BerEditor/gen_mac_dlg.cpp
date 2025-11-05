@@ -38,7 +38,6 @@ GenMacDlg::GenMacDlg(QWidget *parent) :
     type_ = 0;
 
     thread_ = NULL;
-    update_cnt_ = 0;
 
     setupUi(this);
     setAcceptDrops(true);
@@ -48,6 +47,7 @@ GenMacDlg::GenMacDlg(QWidget *parent) :
     connect( mInitBtn, SIGNAL(clicked()), this, SLOT(macInit()));
     connect( mUpdateBtn, SIGNAL(clicked()), this, SLOT(macUpdate()));
     connect( mFinalBtn, SIGNAL(clicked()), this, SLOT(macFinal()));
+    connect( mResetBtn, SIGNAL(clicked()), this, SLOT(clickReset()));
 
     connect( mRunBtn, SIGNAL(clicked()), this, SLOT(mac()));
     connect( mInputClearBtn, SIGNAL(clicked()), this, SLOT(inputClear()));
@@ -162,18 +162,6 @@ void GenMacDlg::setSrcFileInfo( const QString strFile )
     }
 }
 
-void GenMacDlg::appendStatusLabel( const QString strLabel )
-{
-    QString strStatus = mStatusLabel->text();
-    strStatus += strLabel;
-    mStatusLabel->setText( strStatus );
-}
-
-void GenMacDlg::updateStatusLabel()
-{
-    mStatusLabel->setText( QString( "Init|Update X %1").arg( update_cnt_));
-}
-
 void GenMacDlg::freeCTX()
 {
     if( hctx_ )
@@ -194,13 +182,6 @@ void GenMacDlg::freeCTX()
 int GenMacDlg::macInit()
 {
     int ret = 0;
-    update_cnt_ = 0;
-
-    if( hctx_ )
-    {
-        freeCTX();
-        hctx_ = NULL;
-    }
 
     BIN binKey = {0,0};
 
@@ -210,6 +191,7 @@ int GenMacDlg::macInit()
     QString strAlg = mAlgTypeCombo->currentText();
     QString strMethod = mMethodCombo->currentText();
 
+    clickReset();
 
     if( strKey.length() < 1 )
     {
@@ -305,9 +287,13 @@ int GenMacDlg::macInit()
     if( ret == 0 )
     {
         mStatusLabel->setText( "Init OK" );
+        mInitText->setText( "OK" );
     }
     else
-        mStatusLabel->setText( QString("Init fail [%1]").arg( JERR(ret) ) );
+    {
+        mStatusLabel->setText( QString("%1").arg(JERR(ret)) );
+        mInitText->setText( QString("%1").arg(ret));
+    }
 
 end :
     JS_BIN_reset( &binKey );
@@ -365,11 +351,19 @@ void GenMacDlg::macUpdate()
 
     if( ret == 0 )
     {
-        update_cnt_++;
-        updateStatusLabel();
+        mStatusLabel->setText( QString("Update OK") );
+        int nCount = mUpdateText->text().toInt();
+        if( nCount >= 0 )
+        {
+            nCount++;
+            mUpdateText->setText( QString("%1").arg(nCount));
+        }
     }
     else
-        mStatusLabel->setText( QString("Update failure [%1]").arg(JERR(ret)) );
+    {
+        mStatusLabel->setText( QString("%1").arg(JERR(ret)) );
+        mUpdateText->setText( QString("%1").arg(ret));
+    }
 
 end :
     JS_BIN_reset( &binSrc );
@@ -435,30 +429,33 @@ void GenMacDlg::macFinal()
         if( mGenerateRadio->isChecked() == true )
             mOutputText->setPlainText( getHexString( &binMAC) );
 
-        appendStatusLabel( "|Final OK" );
+        mFinalText->setText( "OK" );
 
         berApplet->log( QString( "Final Digest : %1" ).arg( getHexString( &binMAC )) );
         if( mVerifyRadio->isChecked() == true )
         {
             if( verifyMAC( &binMAC, &binInMAC ) == JSR_VERIFY )
             {
-                appendStatusLabel( QString( "| MAC good" ));
+                mStatusLabel->setText( QString( "MAC good" ));
                 berApplet->messageBox( tr("MAC verification successful"), this );
             }
             else
             {
-                appendStatusLabel( QString("| MAC bad: %1").arg(JERR( JSR_INVALID_VALUE )));
+                mStatusLabel->setText( QString("MAC %1").arg(JERR( JSR_INVALID_VALUE )));
                 berApplet->warningBox( tr( "Failed to verify MAC value: %1" ).arg(JERR( JSR_INVALID_VALUE )), this );
             }
         }
         else
         {
+            mStatusLabel->setText( "Final OK" );
             berApplet->messageBox( tr("MAC value generation succeeded"), this );
         }
     }
     else
     {
-        appendStatusLabel( QString("|Final failure [%1]").arg(JERR(ret)) );
+        mStatusLabel->setText( QString("%1").arg(JERR(ret)) );
+        mFinalText->setText( QString("%1").arg(ret));
+
         if( mVerifyRadio->isChecked() == true )
         {
             berApplet->warningBox( tr( "Failed to verify MAC value: %1" ).arg(JERR(ret)), this );
@@ -474,6 +471,17 @@ end :
 
     JS_BIN_reset( &binMAC );
     JS_BIN_reset( &binInMAC );
+}
+
+void GenMacDlg::clickReset()
+{
+    mStatusLabel->setText( tr("Status") );
+
+    mInitText->clear();
+    mUpdateText->clear();
+    mFinalText->clear();
+
+    freeCTX();
 }
 
 void GenMacDlg::mac()
@@ -662,18 +670,18 @@ void GenMacDlg::clickMAC()
         {
             if( verifyMAC( &binMAC, &binInMAC ) == JSR_VERIFY )
             {
-                mStatusLabel->setText( "MAC verification OK" );
+                mStatusLabel->setText( "Verify OK" );
                 berApplet->messageBox( tr("MAC verification successful"), this );
             }
             else
             {
-                mStatusLabel->setText( QString("MAC verification failed: %1").arg(JERR( JSR_INVALID_VALUE )));
+                mStatusLabel->setText( QString("Verify failed: %1").arg(JERR( JSR_INVALID_VALUE )));
                 berApplet->warningBox( tr( "Failed to verify MAC value: %1" ).arg(JERR( JSR_INVALID_VALUE )), this );
             }
         }
         else
         {
-            mStatusLabel->setText( "MAC generation OK" );
+            mStatusLabel->setText( "MAC OK" );
             berApplet->messageBox( tr("MAC value generation succeeded"), this );
         }
     }
@@ -787,7 +795,6 @@ void GenMacDlg::clickMACSrcFile()
             break;
         }
 
-        update_cnt_++;
         nReadSize += nRead;
         nPercent = int( ( nReadSize * 100 ) / fileSize );
 
@@ -810,9 +817,6 @@ void GenMacDlg::clickMACSrcFile()
 
         if( ret == 0 )
         {
-            QString strStatus = QString( "|Update X %1").arg( update_cnt_ );
-            appendStatusLabel( strStatus );
-
             macFinal();
         }
     }
@@ -977,9 +981,6 @@ void GenMacDlg::onTaskFinished()
 {
     berApplet->log("Task finished");
 
-    QString strStatus = QString( "|Update X %1").arg( update_cnt_ );
-    appendStatusLabel( strStatus );
-
     macFinal();
     freeCTX();
 
@@ -991,10 +992,16 @@ void GenMacDlg::onTaskFinished()
 
 void GenMacDlg::onTaskUpdate( qint64 nUpdate )
 {
+    int nCount = mUpdateText->text().toInt();
+    if( nCount >= 0 )
+    {
+        nCount++;
+        mUpdateText->setText( QString("%1").arg(nCount));
+    }
+
     berApplet->log( QString("Update: %1").arg( nUpdate ));
     qint64 nFileSize = mFileTotalSizeText->text().toLongLong();
     int nPercent = int( (nUpdate * 100) / nFileSize );
-    update_cnt_++;
 
     mFileReadSizeText->setText( QString("%1").arg( nUpdate ));
     mMACProgBar->setValue( nPercent );

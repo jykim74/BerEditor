@@ -40,9 +40,7 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     QDialog(parent)
 {
     sctx_ = NULL;
-
     thread_ = NULL;
-    update_cnt_ = 0;
 
     setupUi(this);
     initUI();
@@ -57,6 +55,7 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     connect( mInitBtn, SIGNAL(clicked()), this, SLOT(signVerifyInit()));
     connect( mUpdateBtn, SIGNAL(clicked()), this, SLOT(signVerifyUpdate()));
     connect( mFinalBtn, SIGNAL(clicked()), this, SLOT(signVerifyFinal()));
+    connect( mResetBtn, SIGNAL(clicked()), this, SLOT(clickReset()));
 
     connect( mRunBtn, SIGNAL(clicked()), this, SLOT(Run()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
@@ -396,18 +395,6 @@ end :
     return ret;
 }
 
-void SignVerifyDlg::appendStatusLabel( const QString& strLabel )
-{
-    QString strStatus = mStatusLabel->text();
-    strStatus += strLabel;
-    mStatusLabel->setText( strStatus );
-}
-
-void SignVerifyDlg::updateStatusLabel()
-{
-    mStatusLabel->setText( QString( "Init|Update X %1").arg( update_cnt_));
-}
-
 void SignVerifyDlg::findPrivateKey()
 {
     QString strPath = mPriKeyPath->text();
@@ -441,13 +428,7 @@ int SignVerifyDlg::signVerifyInit()
     QString strHash;
     QString strAlg;
 
-    update_cnt_ = 0;
-
-    if( sctx_ )
-    {
-        JS_PKI_signFree( &sctx_ );
-        sctx_ = NULL;
-    }
+    clickReset();
 
     if( mSignRadio->isChecked() )
     {
@@ -512,11 +493,13 @@ int SignVerifyDlg::signVerifyInit()
     if( ret == 0 )
     {
         mStatusLabel->setText( "Init OK" );
+        mInitText->setText( "OK" );
     }
     else
     {
         QString strFail = QString("Initialization failed [%1]").arg(ret);
-        mStatusLabel->setText( strFail );
+        mStatusLabel->setText( QString("%1").arg(JERR(ret)) );
+        mInitText->setText( QString("%1").arg(ret));
         berApplet->elog( strFail );
     }
 
@@ -563,13 +546,20 @@ void SignVerifyDlg::signVerifyUpdate()
 
     if( ret == 0 )
     {
-        update_cnt_++;
-        updateStatusLabel();
+        int nUpdate = mUpdateText->text().toInt();
+        if( nUpdate >= 0 )
+        {
+            nUpdate++;
+            mUpdateText->setText( QString("%1").arg(nUpdate));
+        }
+
+        mStatusLabel->setText( "Update OK" );
     }
     else
     {
         QString strFail = QString("Update failure [%1]").arg( ret);
-        mStatusLabel->setText( strFail );
+        mStatusLabel->setText( QString("%1").arg(JERR(ret)) );
+        mUpdateText->setText( QString("%1").arg(ret));
         berApplet->elog( strFail );
     }
 
@@ -602,12 +592,14 @@ void SignVerifyDlg::signVerifyFinal()
 
         if( ret == 0 )
         {
-            appendStatusLabel( "|Final OK" );
+            mStatusLabel->setText( "Final OK" );
+            mFinalText->setText( "OK" );
         }
         else
         {
             QString strFail = QString("|Final failure [%1]").arg(ret);
-            appendStatusLabel( strFail );
+            mStatusLabel->setText( QString("%1").arg(JERR(ret)));
+            mUpdateText->setText( QString("%1").arg(ret));
             berApplet->elog( strFail );
         }
     }
@@ -626,12 +618,14 @@ void SignVerifyDlg::signVerifyFinal()
 
         if( ret == JSR_VERIFY )
         {
-            appendStatusLabel( "|Final OK" );
+            mStatusLabel->setText( "Final OK" );
+            mFinalText->setText( "OK" );
         }
         else
         {
             QString strFail = QString("Final failure [%1]").arg(ret);
-            mStatusLabel->setText( strFail );
+            mStatusLabel->setText( QString("%1").arg(JERR(ret)));
+            mUpdateText->setText( QString("%1").arg(ret));
             berApplet->elog( strFail );
         }
     }
@@ -641,9 +635,21 @@ end :
     JS_BIN_reset( &binSign );
 
     if( sctx_ ) JS_PKI_signFree( &sctx_ );
+}
 
+void SignVerifyDlg::clickReset()
+{
+    mStatusLabel->setText( "Status" );
 
-    update();
+    mInitText->clear();
+    mUpdateText->clear();
+    mFinalText->clear();
+
+    if( sctx_ )
+    {
+        JS_PKI_signFree( &sctx_ );
+        sctx_ = NULL;
+    }
 }
 
 void SignVerifyDlg::Run()
@@ -933,7 +939,6 @@ void SignVerifyDlg::fileRun()
             break;
         }
 
-        update_cnt_++;
         nReadSize += nRead;
         nPercent = int( ( nReadSize * 100 ) / fileSize );
 
@@ -956,9 +961,6 @@ void SignVerifyDlg::fileRun()
 
         if( ret == 0 )
         {
-            QString strStatus = QString( "|Update X %1").arg( update_cnt_ );
-            appendStatusLabel( strStatus );
-
             signVerifyFinal();
         }
     }
@@ -1431,9 +1433,6 @@ void SignVerifyDlg::onTaskFinished()
 {
     berApplet->log("Task finished");
 
-    QString strStatus = QString( "|Update X %1").arg( update_cnt_ );
-    appendStatusLabel( strStatus );
-
     signVerifyFinal();
 
     thread_->quit();
@@ -1444,10 +1443,16 @@ void SignVerifyDlg::onTaskFinished()
 
 void SignVerifyDlg::onTaskUpdate( qint64 nUpdate )
 {
+    int nCount = mUpdateText->text().toInt();
+    if( nCount >= 0 )
+    {
+        nCount++;
+        mUpdateText->setText( QString("%1").arg( nCount ));
+    }
+
     berApplet->log( QString("Update: %1").arg( nUpdate ));
     qint64 nFileSize = mFileTotalSizeText->text().toLongLong();
     int nPercent = int( (nUpdate * 100) / nFileSize );
-    update_cnt_++;
 
     mFileReadSizeText->setText( QString("%1").arg( nUpdate ));
     mSignProgBar->setValue( nPercent );
