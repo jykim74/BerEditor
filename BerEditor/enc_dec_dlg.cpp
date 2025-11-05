@@ -627,10 +627,14 @@ void EncDecDlg::fileRun()
         if( ret != 0 )
         {
             berApplet->warnLog( tr( "Encryption/decryption update failed [%1]").arg(ret), this );
+            mStatusLabel->setText( QString("%1").arg(JERR(ret)));
+            mUpdateText->setText( QString("%1").arg(ret));
             goto end;
         }
 
         nUpdateCnt++;
+        mStatusLabel->setText( "Update OK" );
+        mUpdateText->setText( QString("%1").arg(nUpdateCnt));
 
         if( binDst.nLen > 0 )
         {

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>585</width>
-    <height>714</height>
+    <height>709</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -51,7 +51,7 @@
    <item>
     <widget class="QTabWidget" name="mInputTab">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mDataTab">
       <attribute name="title">
@@ -800,10 +800,17 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="4">
+     <item row="0" column="5">
       <widget class="QLabel" name="label_4">
        <property name="text">
         <string>Update</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="Line" name="line_8">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
        </property>
       </widget>
      </item>
@@ -820,8 +827,22 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="7">
-      <widget class="QLineEdit" name="mFinalText">
+     <item row="0" column="8">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Final</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Init</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="6">
+      <widget class="QLineEdit" name="mUpdateText">
        <property name="minimumSize">
         <size>
          <width>40</width>
@@ -873,17 +894,49 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="6">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Final</string>
+     <item row="0" column="9">
+      <widget class="QLineEdit" name="mFinalText">
+       <property name="minimumSize">
+        <size>
+         <width>40</width>
+         <height>0</height>
+        </size>
        </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Init</string>
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>221</red>
+             <green>221</green>
+             <blue>255</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled/>
+        </palette>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -933,56 +986,17 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="5">
-      <widget class="QLineEdit" name="mUpdateText">
-       <property name="minimumSize">
-        <size>
-         <width>40</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>40</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="palette">
-        <palette>
-         <active>
-          <colorrole role="Base">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>221</red>
-             <green>221</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </active>
-         <inactive>
-          <colorrole role="Base">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>221</red>
-             <green>221</green>
-             <blue>255</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </inactive>
-         <disabled/>
-        </palette>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="8">
+     <item row="0" column="10">
       <widget class="QPushButton" name="mResetBtn">
        <property name="text">
         <string>Reset</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="7">
+      <widget class="Line" name="line_10">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
        </property>
       </widget>
      </item>
@@ -1758,6 +1772,10 @@
   <tabstop>mFindDstFileBtn</tabstop>
   <tabstop>mDstFileInfoText</tabstop>
   <tabstop>mDstFileSizeText</tabstop>
+  <tabstop>mInitText</tabstop>
+  <tabstop>mUpdateText</tabstop>
+  <tabstop>mFinalText</tabstop>
+  <tabstop>mResetBtn</tabstop>
   <tabstop>mKeyTypeCombo</tabstop>
   <tabstop>mKeyText</tabstop>
   <tabstop>mKeyLenText</tabstop>
@@ -1766,6 +1784,12 @@
   <tabstop>mIVLenText</tabstop>
   <tabstop>mAEADGroup</tabstop>
   <tabstop>mReqTagLenText</tabstop>
+  <tabstop>mAADTypeCombo</tabstop>
+  <tabstop>mAADText</tabstop>
+  <tabstop>mAADLenText</tabstop>
+  <tabstop>mTagText</tabstop>
+  <tabstop>mTagLenText</tabstop>
+  <tabstop>mCCMDataLenText</tabstop>
   <tabstop>mEncryptRadio</tabstop>
   <tabstop>mDecryptRadio</tabstop>
   <tabstop>mAlgCombo</tabstop>

@@ -148,6 +148,7 @@ void SignVerifyDlg::initUI()
     mInputTypeCombo->addItems( kDataTypeList );
     mHashTypeCombo->addItems(kHashList);
     mHashTypeCombo->setCurrentText( berApplet->settingsMgr()->defaultHash() );
+    mHashTypeCombo->setToolTip( tr("This combo is for RSA, ECDSA, and DSA") );
 
     mVersionCombo->addItems(versionTypes);
     mRunThreadCheck->setChecked(true);
@@ -279,22 +280,6 @@ int SignVerifyDlg::getPrivateKey( BIN *pPriKey, int *pnType )
     nType = JS_PKI_getPriKeyType( pPriKey );
     berApplet->log( QString( "PriKey Type : %1").arg( JS_PKI_getKeyAlgName( nType )));
 
-
-    if( nType == JS_PKI_KEY_TYPE_SM2 )
-    {
-        if( strHash != "SM3" )
-        {
-            QString strMsg = tr("SM2 Key have to use SM3 hash for signature. do you change hash as SM3?");
-            bool bVal = berApplet->yesOrNoBox( strMsg, this, true );
-
-            if( bVal == true )
-            {
-                strHash = "SM3";
-                mHashTypeCombo->setCurrentText( strHash );
-            }
-        }
-    }
-
     *pnType = nType;
     ret = JSR_OK;
 end :
@@ -371,21 +356,6 @@ int SignVerifyDlg::getPublicKey( BIN *pPubKey, int *pnType )
     nType = JS_PKI_getPubKeyType( pPubKey );
     berApplet->log( QString( "PubKey Type : %1").arg( JS_PKI_getKeyAlgName( nType )));
 
-    if( nType == JS_PKI_KEY_TYPE_SM2 )
-    {
-        if( strHash != "SM3" )
-        {
-            QString strMsg = tr("SM2 Key have to use SM3 hash for verifing. do you change hash as SM3?");
-            bool bVal = berApplet->yesOrNoBox( strMsg, this, true );
-
-            if( bVal == true )
-            {
-                strHash = "SM3";
-                mHashTypeCombo->setCurrentText( strHash );
-            }
-        }
-    }
-
     *pnType = nType;
     ret = JSR_OK;
 
@@ -456,6 +426,9 @@ int SignVerifyDlg::signVerifyInit()
         goto end;
     }
 
+    if( nType == JS_PKI_KEY_TYPE_SM2 )
+        mHashTypeCombo->setCurrentText( "SM3" );
+
     strHash = mHashTypeCombo->currentText();
 
     if( mSignRadio->isChecked() )
@@ -463,14 +436,12 @@ int SignVerifyDlg::signVerifyInit()
         mOutputText->clear();
         ret = JS_PKI_signInit( &sctx_, strHash.toStdString().c_str(), nType, &binPri );
 
+
         if( ret == 0 )
         {
             berApplet->log( "-- Make signature init" );
             berApplet->log( QString( "Algorithm        : %1" ).arg( strAlg ));
-
-            if( nType != JS_PKI_KEY_TYPE_EDDSA )
-                berApplet->log( QString( "Hash             : %1" ).arg( strHash ));
-
+            berApplet->log( QString( "Hash             : %1" ).arg( strHash ));
             berApplet->log( QString( "Init Private Key : %1" ).arg( getHexString( &binPri )));
         }
     }
@@ -482,10 +453,7 @@ int SignVerifyDlg::signVerifyInit()
         {
             berApplet->log( "-- Verify signature init" );
             berApplet->log( QString( "Algorithm       : %1" ).arg( strAlg ));
-
-            if( nType != JS_PKI_KEY_TYPE_EDDSA )
-                berApplet->log( QString( "Hash            : %1" ).arg( strHash ));
-
+            berApplet->log( QString( "Hash            : %1" ).arg( strHash ));
             berApplet->log( QString( "Init Public Key : %1" ).arg(getHexString(&binPubKey)));
         }
     }
@@ -710,7 +678,11 @@ void SignVerifyDlg::dataRun()
         if( ret != CKR_OK ) goto end;
     }
 
+    if( nType == JS_PKI_KEY_TYPE_SM2 )
+        mHashTypeCombo->setCurrentText( "SM3" );
+
     strHash = mHashTypeCombo->currentText();
+
     strAlg = JS_PKI_getKeyAlgName( nType );
 
     if( mSignRadio->isChecked() )
@@ -914,6 +886,8 @@ void SignVerifyDlg::fileRun()
 
     while( nLeft > 0 )
     {
+        int nUpdate = mUpdateText->text().toInt();
+
         if( nLeft < nPartSize )
             nPartSize = nLeft;
 
@@ -936,7 +910,16 @@ void SignVerifyDlg::fileRun()
         if( ret != 0 )
         {
             berApplet->elog( QString( "failed to update [%1]").arg(ret));
+            mStatusLabel->setText( QString("%1").arg(JERR(ret)));
+            mUpdateText->setText( QString("%1").arg(ret));
             break;
+        }
+
+        if( nUpdate >= 0 )
+        {
+            nUpdate++;
+            mStatusLabel->setText( "Update OK" );
+            mUpdateText->setText( QString("%1").arg(nUpdate));
         }
 
         nReadSize += nRead;

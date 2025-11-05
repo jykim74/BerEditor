@@ -473,6 +473,8 @@ void GenHashDlg::clickDigestSrcFile()
 
     while( nLeft > 0 )
     {
+        int nUpdate = mUpdateText->text().toInt();
+
         if( nLeft < nPartSize )
             nPartSize = nLeft;
 
@@ -487,7 +489,16 @@ void GenHashDlg::clickDigestSrcFile()
         if( ret != 0 )
         {
             berApplet->elog( QString( "failed to update : %1").arg(ret));
+            mStatusLabel->setText( QString("%1").arg(JERR(ret)));
+            mUpdateText->setText( QString("%1").arg(ret));
             break;
+        }
+
+        if( nUpdate >= 0 )
+        {
+            nUpdate++;
+            mStatusLabel->setText( "Update OK" );
+            mUpdateText->setText( QString("%1").arg(nUpdate));
         }
 
         nReadSize += nRead;
