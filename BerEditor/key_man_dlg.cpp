@@ -160,6 +160,9 @@ void KeyManDlg::initUI()
     mKEMWrappedKeyText->setPlaceholderText( tr("Hex value" ));
     mKEMKeyText->setPlaceholderText( tr( "Hex value" ));
 
+    mKW_RunBtn->setText( "Wrap" );
+    mKEMRunBtn->setText( "Encapsulate" );
+
     checkKEMPriKeyEncrypted();
 }
 
@@ -704,6 +707,8 @@ void KeyManDlg::checkKW_KeyWrap()
     mKW_SrcText->setPlaceholderText( tr("Source key hex value") );
     mKW_SrcLabel->setText( tr( "Source key" ) );
     mKW_OutputLabel->setText( tr( "Wrapped key" ));
+
+    mKW_RunBtn->setText( tr("Wrap") );
 }
 
 void KeyManDlg::checkKW_KeyUnwrap()
@@ -713,6 +718,7 @@ void KeyManDlg::checkKW_KeyUnwrap()
     mKW_SrcText->setPlaceholderText( tr("Wrapped key hex value") );
     mKW_SrcLabel->setText( tr( "Wrapped key" ) );
     mKW_OutputLabel->setText( tr( "Source key" ) );
+    mKW_RunBtn->setText( "Unwrap" );
 }
 
 void KeyManDlg::clickKW_Run()
@@ -1214,6 +1220,7 @@ void KeyManDlg::checkKEMEncap()
     }
 
     mKEMWrappedKeyText->setPlaceholderText( tr( "Generated at runtime" ));
+    mKEMRunBtn->setText( "Encapsulate" );
 }
 
 void KeyManDlg::checkKEMDecap()
@@ -1228,6 +1235,7 @@ void KeyManDlg::checkKEMDecap()
     }
 
     mKEMWrappedKeyText->setPlaceholderText( tr("Enter the wrapped key hex value") );
+    mKEMRunBtn->setText( "Decapsulate" );
 }
 
 void KeyManDlg::setKEMEnableWrappedKey( bool bVal )

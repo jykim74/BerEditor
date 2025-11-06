@@ -23,6 +23,7 @@ KeyAgreeDlg::KeyAgreeDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
+    initUI();
 
     connect( mECDHParamCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeECDHParam(int)));
     connect( mACalcRadio, SIGNAL(clicked()), this, SLOT(checkACalc()));
@@ -118,6 +119,8 @@ void KeyAgreeDlg::checkACalc()
     setEnableAECDHPubKey(false);
     setEnableBECDHPriKey(false);
     setEnableBECDHPubKey(true);
+
+    mRunBtn->setText( tr("A Calculate" ));
 }
 
 void KeyAgreeDlg::checkBCalc()
@@ -131,6 +134,8 @@ void KeyAgreeDlg::checkBCalc()
     setEnableAECDHPubKey(true);
     setEnableBECDHPriKey(true);
     setEnableBECDHPubKey(false);
+
+    mRunBtn->setText( tr("B Calculate" ));
 }
 
 void KeyAgreeDlg::clickRun()
@@ -411,6 +416,11 @@ void KeyAgreeDlg::secretClear()
 {
     mSecretKeyText->clear();
     update();
+}
+
+void KeyAgreeDlg::initUI()
+{
+    mRunBtn->setText( tr("A Calculate" ));
 }
 
 void KeyAgreeDlg::initialize()

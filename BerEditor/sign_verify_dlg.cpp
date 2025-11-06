@@ -33,7 +33,7 @@
 
 static QStringList versionTypes = {
     "V15",
-    "V21"
+    "PSS"
 };
 
 SignVerifyDlg::SignVerifyDlg(QWidget *parent) :

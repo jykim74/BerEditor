@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>576</width>
-    <height>605</height>
+    <height>639</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1073,18 +1073,58 @@
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout">
+    <layout class="QGridLayout" name="gridLayout_13">
      <property name="topMargin">
       <number>0</number>
      </property>
      <item row="0" column="0">
-      <widget class="QRadioButton" name="mSignRadio">
+      <widget class="QLabel" name="label_14">
        <property name="text">
-        <string>Sign</string>
+        <string>RSA ECDSA DSA signing hash</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="7">
+     <item row="0" column="3">
+      <widget class="QLabel" name="mVersionLabel">
+       <property name="text">
+        <string>RSA Signature schemes</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="mHashTypeCombo"/>
+     </item>
+     <item row="0" column="4">
+      <widget class="QComboBox" name="mVersionCombo"/>
+     </item>
+     <item row="0" column="2">
+      <spacer name="horizontalSpacer_6">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line_10">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="6">
       <widget class="QPushButton" name="mRunBtn">
        <property name="minimumSize">
         <size>
@@ -1097,27 +1137,14 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="5">
-      <widget class="QComboBox" name="mVersionCombo"/>
-     </item>
-     <item row="0" column="2">
-      <widget class="Line" name="line_4">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QLabel" name="mVersionLabel">
+     <item row="0" column="1">
+      <widget class="QRadioButton" name="mVerifyRadio">
        <property name="text">
-        <string>RSA Version</string>
+        <string>Verify</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
-      <widget class="QComboBox" name="mHashTypeCombo"/>
-     </item>
-     <item row="0" column="6">
+     <item row="0" column="5">
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -1130,10 +1157,10 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="1">
-      <widget class="QRadioButton" name="mVerifyRadio">
+     <item row="0" column="0">
+      <widget class="QRadioButton" name="mSignRadio">
        <property name="text">
-        <string>Verify</string>
+        <string>Sign</string>
        </property>
       </widget>
      </item>
@@ -1364,10 +1391,10 @@
   <tabstop>mPriKeyTypeBtn</tabstop>
   <tabstop>mEncPrikeyCheck</tabstop>
   <tabstop>mPasswdText</tabstop>
-  <tabstop>mSignRadio</tabstop>
-  <tabstop>mVerifyRadio</tabstop>
   <tabstop>mHashTypeCombo</tabstop>
   <tabstop>mVersionCombo</tabstop>
+  <tabstop>mSignRadio</tabstop>
+  <tabstop>mVerifyRadio</tabstop>
   <tabstop>mRunBtn</tabstop>
   <tabstop>mOutputClearBtn</tabstop>
   <tabstop>mDigestBtn</tabstop>

@@ -76,6 +76,7 @@ private slots:
 
 
 private:
+    void initUI();
     void initialize();
 
     void setEnableAPriKey( bool bVal );

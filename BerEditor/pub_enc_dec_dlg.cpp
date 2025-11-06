@@ -25,7 +25,7 @@
 
 static QStringList versionTypes = {
     "V15",
-    "V21"
+    "OAEP"
 };
 
 PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
