@@ -36,6 +36,21 @@ static QStringList versionTypes = {
     "PSS"
 };
 
+static bool _isUseHash( int nKeyAlg )
+{
+    switch ( nKeyAlg ) {
+    case JS_PKI_KEY_TYPE_RSA :
+    case JS_PKI_KEY_TYPE_DSA :
+    case JS_PKI_KEY_TYPE_ECDSA :
+    case JS_PKI_KEY_TYPE_SM2 :
+        return true;
+    default:
+        return false;
+    }
+
+    return false;
+}
+
 SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     QDialog(parent)
 {
@@ -305,7 +320,14 @@ int SignVerifyDlg::getPublicKey( BIN *pPubKey, int *pnType )
             goto end;
         }
 
-        JS_BIN_fileReadBER( mCertPath->text().toLocal8Bit().toStdString().c_str(), &binCert );
+        ret = JS_BIN_fileReadBER( mCertPath->text().toLocal8Bit().toStdString().c_str(), &binCert );
+        if( ret <= 0 )
+        {
+            berApplet->warningBox( tr( "failed to read a certificate or public key: %1").arg( ret ), this );
+            mPriKeyPath->setFocus();
+            return  -1;
+        }
+
         if( JS_PKI_isCert( &binCert ) == 0 )
         {
             JS_BIN_copy( pPubKey, &binCert );
@@ -396,7 +418,7 @@ int SignVerifyDlg::signVerifyInit()
     int nType = 0;
     BIN binPri = {0,0};
     BIN binPubKey = {0,0};
-    QString strHash;
+    QString strHash = mHashTypeCombo->currentText();
     QString strAlg;
 
     clickReset();
@@ -414,12 +436,8 @@ int SignVerifyDlg::signVerifyInit()
 
     strAlg = JS_PKI_getKeyAlgName( nType );
 
-    if( nType == JS_PKI_KEY_TYPE_EDDSA
-        || nType == JS_PKI_KEY_TYPE_ML_DSA
-        || nType == JS_PKI_KEY_TYPE_SLH_DSA
-        || nType == JS_PKI_KEY_TYPE_ML_KEM )
+    if( _isUseHash( nType ) == false )
     {
-
         QString strMode = mRunBtn->text();
         berApplet->warningBox(tr( "%1 does not support this feature[Init-Update-Final]\nUse %2")
                                   .arg( strAlg ).arg( strMode ), this );
@@ -428,9 +446,23 @@ int SignVerifyDlg::signVerifyInit()
     }
 
     if( nType == JS_PKI_KEY_TYPE_SM2 )
-        mHashTypeCombo->setCurrentText( "SM3" );
+    {
+        if( strHash != "SM3" )
+        {
+            bool bVal = berApplet->yesOrNoBox( tr("SM2 must use SM3 hash. Would you like to change the hash to SM3?"), this );
+            if( bVal == false ) goto end;
+
+            mHashTypeCombo->setCurrentText( "SM3" );
+        }
+    }
 
     strHash = mHashTypeCombo->currentText();
+    if( strHash.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Please specify a hash" ), this );
+        mHashTypeCombo->setFocus();
+        goto end;
+    }
 
     if( mSignRadio->isChecked() )
     {
@@ -648,7 +680,7 @@ void SignVerifyDlg::dataRun()
     char *pOut = NULL;
 
     QString strAlg;
-    QString strHash;
+    QString strHash = mHashTypeCombo->currentText();
     QString strInput = mInputText->toPlainText();
     QString strType = mInputTypeCombo->currentText();
     QString strOutput = mOutputText->toPlainText();
@@ -679,10 +711,28 @@ void SignVerifyDlg::dataRun()
         if( ret != CKR_OK ) goto end;
     }
 
-    if( nType == JS_PKI_KEY_TYPE_SM2 )
-        mHashTypeCombo->setCurrentText( "SM3" );
-    else if( nType == JS_PKI_KEY_TYPE_EDDSA || nType == JS_PKI_KEY_TYPE_ML_DSA || nType == JS_PKI_KEY_TYPE_SLH_DSA )
+    if( _isUseHash( nType ) == false  )
         mHashTypeCombo->setCurrentText( "" );
+    else
+    {
+        if( strHash.length() < 1 )
+        {
+            berApplet->warningBox( tr( "Please specify a hash" ), this );
+            mHashTypeCombo->setFocus();
+            goto end;
+        }
+    }
+
+    if( nType == JS_PKI_KEY_TYPE_SM2 )
+    {
+        if( strHash != "SM3" )
+        {
+            bool bVal = berApplet->yesOrNoBox( tr("SM2 must use SM3 hash. Would you like to change the hash to SM3?"), this );
+            if( bVal == false ) goto end;
+
+            mHashTypeCombo->setCurrentText( "SM3" );
+        }
+    }
 
     strHash = mHashTypeCombo->currentText();
 
@@ -999,10 +1049,7 @@ void SignVerifyDlg::digestRun()
 
         QString strAlg = JS_PKI_getKeyAlgName( nAlgType );
 
-        if( nAlgType != JS_PKI_KEY_TYPE_RSA
-            && nAlgType != JS_PKI_KEY_TYPE_ECDSA
-            && nAlgType != JS_PKI_KEY_TYPE_SM2
-            && nAlgType != JS_PKI_KEY_TYPE_DSA )
+        if( _isUseHash( nAlgType ) == false )
         {
             berApplet->warningBox( tr( "This key algorithm (%1) is not supported" ).arg(strAlg), this );
             ret = JSR_UNSUPPORTED_ALGORITHM;

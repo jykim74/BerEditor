@@ -707,6 +707,8 @@ void TTLVClientDlg::clickTTLVEncode()
         if( strRequest.length() > 0 )
         {
             mRequestText->setPlainText( strRequest );
+            if( mAutoSendCheck->isChecked() == true )
+                clickSend();
         }
     }
 }

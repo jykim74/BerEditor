@@ -1019,6 +1019,8 @@ void OCSPClientDlg::clickEncode()
     {
         mRequestText->setPlainText( getHexString( &binReq ));
         berApplet->messageBox( tr("OCSP message encoded" ), this );
+        if( mAutoSendCheck->isChecked() == true )
+            clickSend();
     }
     else
     {
@@ -1096,6 +1098,12 @@ void OCSPClientDlg::clickViewCertID()
 
     CertIDDlg certID;
 
+    if( strRspHex.length() < 1 )
+    {
+        berApplet->warningBox( tr("There is no response" ), this );
+        return;
+    }
+
     JS_BIN_fileReadBER( strSrvCertPath.toLocal8Bit().toStdString().c_str(), &binSrvCert );
     JS_BIN_decodeHex( strRspHex.toStdString().c_str(), &binRsp );
 
@@ -1130,6 +1138,12 @@ void OCSPClientDlg::clickVerify()
     memset( &sIDInfo, 0x00, sizeof(sIDInfo));
     memset( &sStatusInfo, 0x00, sizeof(sStatusInfo));
 
+    if( strRspHex.length() < 1 )
+    {
+        berApplet->warningBox( tr("There is no response" ), this );
+        goto end;
+    }
+
     if( strSrvCertPath.length() < 1 )
     {
         CertManDlg certMan;
@@ -1148,12 +1162,6 @@ void OCSPClientDlg::clickVerify()
         {
             mSrvCertPathText->setText( strSrvCertPath );
         }
-    }
-
-    if( strRspHex.length() < 1 )
-    {
-        berApplet->warningBox( tr("There is no response" ), this );
-        goto end;
     }
 
     JS_BIN_fileReadBER( strSrvCertPath.toLocal8Bit().toStdString().c_str(), &binSrvCert );

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>564</width>
-    <height>523</height>
+    <height>555</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -425,13 +425,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="5">
-      <widget class="QPushButton" name="mReadMainBtn">
-       <property name="text">
-        <string>Read Main</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_8">
        <property name="minimumSize">
@@ -442,20 +435,6 @@
        </property>
        <property name="text">
         <string>Request</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mEncodeBtn">
-       <property name="text">
-        <string>TTLV Encoder</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="6">
-      <widget class="QPushButton" name="mSendBtn">
-       <property name="text">
-        <string>Send</string>
        </property>
       </widget>
      </item>
@@ -473,6 +452,54 @@
       <bool>false</bool>
      </property>
     </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_3">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="3">
+      <widget class="QCheckBox" name="mAutoSendCheck">
+       <property name="text">
+        <string>Auto send</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="mEncodeBtn">
+       <property name="text">
+        <string>TTLV Encoder</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mSendBtn">
+       <property name="text">
+        <string>Send</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mReadMainBtn">
+       <property name="text">
+        <string>Read Main</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="Line" name="line_4">
@@ -689,11 +716,12 @@
   <tabstop>mPasswdText</tabstop>
   <tabstop>mRequestClearBtn</tabstop>
   <tabstop>mRequestDecodeBtn</tabstop>
-  <tabstop>mEncodeBtn</tabstop>
-  <tabstop>mReadMainBtn</tabstop>
-  <tabstop>mSendBtn</tabstop>
   <tabstop>mRequestLenText</tabstop>
   <tabstop>mRequestText</tabstop>
+  <tabstop>mEncodeBtn</tabstop>
+  <tabstop>mReadMainBtn</tabstop>
+  <tabstop>mAutoSendCheck</tabstop>
+  <tabstop>mSendBtn</tabstop>
   <tabstop>mResponseClearBtn</tabstop>
   <tabstop>mResponseDecodeBtn</tabstop>
   <tabstop>mResponseLenText</tabstop>

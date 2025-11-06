@@ -1080,7 +1080,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_14">
        <property name="text">
-        <string>RSA ECDSA DSA signing hash</string>
+        <string>RSA ECDSA DSA SM2 Hash</string>
        </property>
       </widget>
      </item>
@@ -1124,19 +1124,6 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="6">
-      <widget class="QPushButton" name="mRunBtn">
-       <property name="minimumSize">
-        <size>
-         <width>80</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Sign</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
       <widget class="QRadioButton" name="mVerifyRadio">
        <property name="text">
@@ -1157,10 +1144,30 @@
        </property>
       </spacer>
      </item>
+     <item row="0" column="7">
+      <widget class="QPushButton" name="mRunBtn">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Sign</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="0">
       <widget class="QRadioButton" name="mSignRadio">
        <property name="text">
         <string>Sign</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="6">
+      <widget class="QPushButton" name="mDigestBtn">
+       <property name="text">
+        <string>SignDigest</string>
        </property>
       </widget>
      </item>
@@ -1178,14 +1185,59 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="5">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Signature</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
       <widget class="QLabel" name="label_4">
        <property name="text">
         <string>Len</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="6">
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mOutputClearBtn">
+       <property name="minimumSize">
+        <size>
+         <width>20</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>C</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <spacer name="horizontalSpacer_5">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="5">
       <widget class="QLineEdit" name="mOutputLenText">
        <property name="minimumSize">
         <size>
@@ -1238,70 +1290,6 @@
        </property>
        <property name="readOnly">
         <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <spacer name="horizontalSpacer_5">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="minimumSize">
-        <size>
-         <width>80</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Signature</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mDigestBtn">
-       <property name="minimumSize">
-        <size>
-         <width>120</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777125</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>SignDigest</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mOutputClearBtn">
-       <property name="minimumSize">
-        <size>
-         <width>20</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>C</string>
        </property>
       </widget>
      </item>
@@ -1395,9 +1383,9 @@
   <tabstop>mVersionCombo</tabstop>
   <tabstop>mSignRadio</tabstop>
   <tabstop>mVerifyRadio</tabstop>
+  <tabstop>mDigestBtn</tabstop>
   <tabstop>mRunBtn</tabstop>
   <tabstop>mOutputClearBtn</tabstop>
-  <tabstop>mDigestBtn</tabstop>
   <tabstop>mOutputLenText</tabstop>
   <tabstop>mOutputText</tabstop>
   <tabstop>mClearDataAllBtn</tabstop>
