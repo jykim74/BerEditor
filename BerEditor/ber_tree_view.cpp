@@ -696,7 +696,10 @@ void BerTreeView::ShowContextMenu(QPoint point)
         }
 
         if( item->GetTag() == JS_OCTETSTRING || item->GetTag() == JS_BITSTRING )
-            menu.addAction( tr("Expand value"), this, SLOT(ExpandValue()));
+        {
+            if( item->hasChildren() == false )
+                menu.addAction( tr("Expand value"), this, SLOT(ExpandValue()));
+        }
     }
 
     menu.exec(QCursor::pos());
@@ -793,20 +796,8 @@ void BerTreeView::ExpandValue()
         goto end;
     }
 
-#if 0
-    if( item->GetIndefinite() )
-    {
-        ret = tree_model->parseIndefiniteConstruct( start, item );
-    }
-    else
-    {
-        if( item->GetLength() > 0 )
-            ret = tree_model->parseConstruct( start, item );
-    }
-#else
     // Expand case (BitString or OctetString )  definite value only
-    ret = tree_model->parseConstruct( start, item );
-#endif
+    ret = tree_model->parseConstruct( start, item, false );
 
 end :
     if( ret < 0 )
@@ -877,7 +868,7 @@ void BerTreeView::EditValue()
 
     if( ret == QDialog::Accepted )
     {
-        tree_model->parseTree();
+        tree_model->parseTree( berApplet->settingsMgr()->autoExpand() );
         viewRoot();
         QModelIndex ri = tree_model->index(0,0);
         expand(ri);
@@ -914,7 +905,7 @@ void BerTreeView::InsertBER()
         ret = tree_model->addItem( item, &binData );
         if( ret != 0 ) goto end;
 
-        tree_model->parseTree();
+        tree_model->parseTree( berApplet->settingsMgr()->autoExpand() );
 
         viewRoot();
         QModelIndex ri = tree_model->index(0,0);

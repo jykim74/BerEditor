@@ -34,6 +34,7 @@ const char *kViewHelp = "viewHelp";
 const char *kLinkList = "linkList";
 const char *kRunTime = "runTime";
 const char *kUseCertMan = "useCertMan";
+const char *kAutoExpand = "autoExpand";
 }
 
 class SettingsMgr : public QObject
@@ -52,6 +53,10 @@ public:
     void setUseCertMan( bool val );
     bool getUseCertMan();
     bool useCertMan() { return use_certman_; };
+
+    void setAutoExpand( bool val );
+    bool getAutoExpand();
+    bool autoExpand() { return auto_expand_; };
 
     void setOIDConfigPath( const QString& strPath );
     QString OIDConfigPath();
@@ -127,6 +132,7 @@ private:
     int hex_area_width_;
     bool support_keypair_change_;
     bool use_certman_;
+    bool auto_expand_;
 
     int view_file_;
     int view_edit_;

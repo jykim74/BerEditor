@@ -71,6 +71,7 @@ void SettingsDlg::updateSettings()
     SettingsMgr *mgr = berApplet->settingsMgr();
 
     mgr->setShowPartOnly( mCheckShowPartOnly->checkState() == Qt::Checked );
+    mgr->setAutoExpand( mAutoExpandCheck->checkState() == Qt::Checked );
 
     if( berApplet->isLicense() )
     {
@@ -143,6 +144,7 @@ void SettingsDlg::clickRestoreDefaults()
     mgr->removeSet( "Language", "current" );
     mgr->removeSet( kBehaviorGroup, kShowPartOnly );
     mgr->removeSet( kBehaviorGroup, kUseCertMan );
+    mgr->removeSet( kBehaviorGroup, kAutoExpand );
     mgr->removeSet( kBehaviorGroup, kOIDConfigPath );
     mgr->removeSet( kBehaviorGroup, kUseLogTab );
     mgr->removeSet( kBehaviorGroup, kDefaultHash );
@@ -207,13 +209,16 @@ void SettingsDlg::showEvent(QShowEvent *event)
     state = mgr->getShowPartOnly() ? Qt::Checked : Qt::Unchecked;
     mCheckShowPartOnly->setCheckState(state);
 
-    state = mgr->getUseCertMan() ? Qt::Checked : Qt::Unchecked;
-    mUseCertManCheck->setCheckState( state );
+    state = mgr->getAutoExpand() ? Qt::Checked : Qt::Unchecked;
+    mAutoExpandCheck->setCheckState( state );
 
     mOIDConfigPathText->setText( mgr->OIDConfigPath() );
 
     if( berApplet->isLicense() )
     {
+        state = mgr->getUseCertMan() ? Qt::Checked : Qt::Unchecked;
+        mUseCertManCheck->setCheckState( state );
+
         state = mgr->getUseLogTab() ? Qt::Checked : Qt::Unchecked;
         mUseLogTabCheck->setCheckState(state);
 

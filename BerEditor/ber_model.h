@@ -18,9 +18,9 @@ public:
 
     void setBER( const BIN *pBer );
 
-    int parseTree();
-    int parseConstruct( int offset, BerItem *pParentItem );
-    int parseIndefiniteConstruct( int offset, BerItem *pParentItem );
+    int parseTree( bool bExpand );
+    int parseConstruct( int offset, BerItem *pParentItem, bool bExpand );
+    int parseIndefiniteConstruct( int offset, BerItem *pParentItem, bool bExpand );
 
     const BIN& getBER() { return binBer_; };
     int getItem( int offset, BerItem *pItem );

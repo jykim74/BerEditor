@@ -34,7 +34,7 @@ void BerModel::setBER(const BIN *pBer )
     if( pBer != NULL ) JS_BIN_copy( &binBer_, pBer );
 }
 
-int BerModel::parseTree()
+int BerModel::parseTree( bool bExpand )
 {
     int ret = 0;
     int offset = 0;
@@ -58,15 +58,42 @@ int BerModel::parseTree()
     if( (pRootItem->GetId() & JS_FORM_MASK) == JS_CONSTRUCTED )
     {
         if( pRootItem->GetIndefinite() )
-            ret = parseIndefiniteConstruct( pRootItem->GetHeaderSize(), pRootItem );
+            ret = parseIndefiniteConstruct( pRootItem->GetHeaderSize(), pRootItem, bExpand );
         else
-            ret = parseConstruct( pRootItem->GetHeaderSize(), pRootItem );
+            ret = parseConstruct( pRootItem->GetHeaderSize(), pRootItem, bExpand );
+    }
+    else
+    {
+        if( bExpand == true )
+        {
+            int start = -1;
+            int len = -1;
+
+            if( pRootItem->GetTag() == JS_OCTETSTRING )
+            {
+                start = pRootItem->GetHeaderSize();
+                len = pRootItem->GetLength();
+                if( JS_BER_isExpandable( &binBer_.pVal[start], len ) == 1 )
+                {
+                    ret = parseConstruct( start, pRootItem, bExpand );
+                }
+            }
+            else if( pRootItem->GetTag() == JS_BITSTRING )
+            {
+                start = pRootItem->GetHeaderSize() + 1;
+                len = pRootItem->GetLength() - 1;
+                if( JS_BER_isExpandable( &binBer_.pVal[start], len ) == 1 )
+                {
+                    ret = parseConstruct( start, pRootItem, bExpand );
+                }
+            }
+        }
     }
 
     return 0;
 }
 
-int BerModel::parseConstruct(int offset, BerItem *pParentItem)
+int BerModel::parseConstruct(int offset, BerItem *pParentItem, bool bExpand )
 {
     int     ret = 0;
     int     next_offset = 0;
@@ -98,18 +125,47 @@ int BerModel::parseConstruct(int offset, BerItem *pParentItem)
         {
             if( pItem->GetIndefinite() )
             {
-                ret = parseIndefiniteConstruct( offset + pItem->GetHeaderSize(), pItem );
+                ret = parseIndefiniteConstruct( offset + pItem->GetHeaderSize(), pItem, bExpand );
                 if( ret <= 0 ) return -1;
                 next_offset += ret;
             }
             else
             {
-                if( pItem->length_ > 0 ) parseConstruct( offset + pItem->GetHeaderSize(), pItem );
+                if( pItem->length_ > 0 ) parseConstruct( offset + pItem->GetHeaderSize(), pItem, bExpand );
 
                 int end = start_offset + pParentItem->GetLength();
                 if( pParentItem->GetTag() == JS_BITSTRING ) end--;
 
                 if( next_offset >= end ) break;
+            }
+        }
+        else
+        {
+            if( bExpand == true )
+            {
+                int start = -1;
+                int len = -1;
+
+                if( pItem->GetTag() == JS_OCTETSTRING )
+                {
+                    start = offset + pItem->GetHeaderSize();
+                    len = pItem->GetLength();
+
+                    if( JS_BER_isExpandable( &binBer_.pVal[start], len ) == 1 )
+                    {
+                        ret = parseConstruct( start, pItem, bExpand );
+                    }
+                }
+                else if( pItem->GetTag() == JS_BITSTRING )
+                {
+                    start = offset + pItem->GetHeaderSize() + 1;
+                    len = pItem->GetLength() - 1;
+
+                    if( JS_BER_isExpandable( &binBer_.pVal[start], len ) == 1 )
+                    {
+                        ret = parseConstruct( start, pItem, bExpand );
+                    }
+                }
             }
         }
 
@@ -120,7 +176,7 @@ int BerModel::parseConstruct(int offset, BerItem *pParentItem)
     return 0;
 }
 
-int BerModel::parseIndefiniteConstruct( int offset, BerItem *pParentItem )
+int BerModel::parseIndefiniteConstruct( int offset, BerItem *pParentItem, bool bExpand )
 {
     int     ret = 0;
     int     next_offset = 0;
@@ -152,12 +208,41 @@ int BerModel::parseIndefiniteConstruct( int offset, BerItem *pParentItem )
         {
             if( pItem->GetIndefinite() )
             {
-                ret = parseIndefiniteConstruct( offset + pItem->GetHeaderSize(), pItem );
+                ret = parseIndefiniteConstruct( offset + pItem->GetHeaderSize(), pItem, bExpand );
                 if( ret <= 0 ) return -1;
                 next_offset += ret;
             }
             else
-                parseConstruct( offset + pItem->GetHeaderSize(), pItem );
+                parseConstruct( offset + pItem->GetHeaderSize(), pItem, bExpand );
+        }
+        else
+        {
+            if( bExpand == true )
+            {
+                int start = -1;
+                int len = -1;
+
+                if( pItem->GetTag() == JS_OCTETSTRING )
+                {
+                    start = offset + pItem->GetHeaderSize();
+                    len = pItem->GetLength();
+
+                    if( JS_BER_isExpandable( &binBer_.pVal[start], len ) == 1 )
+                    {
+                        ret = parseConstruct( start, pItem, bExpand );
+                    }
+                }
+                else if( pItem->GetTag() == JS_BITSTRING )
+                {
+                    start = offset + pItem->GetHeaderSize() + 1;
+                    len = pItem->GetLength() - 1;
+
+                    if( JS_BER_isExpandable( &binBer_.pVal[start], len ) == 1 )
+                    {
+                        ret = parseConstruct( start, pItem, bExpand );
+                    }
+                }
+            }
         }
 
         if( pItem->GetId() == 0 && pItem->GetLength() == 0 && pItem->GetTag() == 0 )

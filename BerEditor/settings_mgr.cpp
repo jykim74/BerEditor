@@ -16,6 +16,8 @@ SettingsMgr::SettingsMgr(QObject *parent) : QObject(parent)
     cert_path_ = "";
     hex_area_width_ = -1;
     support_keypair_change_ = false;
+    use_certman_ = false;
+    auto_expand_ = false;
 
     initialize();
 }
@@ -24,6 +26,7 @@ void SettingsMgr::initialize()
 {
     getShowPartOnly();
     getUseCertMan();
+    getAutoExpand();
 
     getDefaultHash();
     getFileReadSize();
@@ -92,6 +95,27 @@ bool SettingsMgr::getUseCertMan()
     settings.endGroup();
 
     return use_certman_;
+}
+
+void SettingsMgr::setAutoExpand( bool val )
+{
+    QSettings settings;
+    auto_expand_ = val;
+
+    settings.beginGroup(kBehaviorGroup);
+    settings.setValue( kAutoExpand, auto_expand_ );
+    settings.endGroup();
+}
+
+bool SettingsMgr::getAutoExpand()
+{
+    QSettings settings;
+
+    settings.beginGroup(kBehaviorGroup);
+    auto_expand_ = settings.value(kAutoExpand, false).toBool();
+    settings.endGroup();
+
+    return auto_expand_;
 }
 
 void SettingsMgr::setOIDConfigPath( const QString& strPath )

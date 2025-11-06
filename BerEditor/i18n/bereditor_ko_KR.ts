@@ -1448,8 +1448,8 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <location filename="../ber_tree_view.cpp" line="254"/>
         <location filename="../ber_tree_view.cpp" line="623"/>
-        <location filename="../ber_tree_view.cpp" line="711"/>
-        <location filename="../ber_tree_view.cpp" line="733"/>
+        <location filename="../ber_tree_view.cpp" line="714"/>
+        <location filename="../ber_tree_view.cpp" line="736"/>
         <source>There are no items selected.</source>
         <translation>선택한 아이템이 없습니다</translation>
     </message>
@@ -1484,22 +1484,22 @@ mailto : jykim74@gmail.com</translation>
         <translation>값 수정</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="699"/>
+        <location filename="../ber_tree_view.cpp" line="701"/>
         <source>Expand value</source>
         <translation>확장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="814"/>
+        <location filename="../ber_tree_view.cpp" line="805"/>
         <source>This is not BER encoded data</source>
         <translation>BER 인코딩 데이타가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="870"/>
+        <location filename="../ber_tree_view.cpp" line="861"/>
         <source>There is no item to select</source>
         <translation>선택한 아이템이 없습니다.</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="908"/>
+        <location filename="../ber_tree_view.cpp" line="899"/>
         <source>Are you sure you want to add it?</source>
         <translation>정말로 추가 하겠습니까?</translation>
     </message>
@@ -18860,7 +18860,7 @@ Only RSA is supported.</source>
         <translation>기본</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="123"/>
+        <location filename="../settings_dlg.ui" line="106"/>
         <source>Check for updates automatically</source>
         <translation>자동 업데이트 확인</translation>
     </message>
@@ -18873,7 +18873,7 @@ Only RSA is supported.</source>
         <translation type="vanished">열기 폴더 저장하기</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="130"/>
+        <location filename="../settings_dlg.ui" line="113"/>
         <source>Show selected data only in body</source>
         <translation>선택 한 데이타 부분 만 보여주기</translation>
     </message>
@@ -18882,38 +18882,38 @@ Only RSA is supported.</source>
         <translation type="vanished">시작 시 로그 탭 보여주기</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="105"/>
+        <location filename="../settings_dlg.ui" line="189"/>
         <source>Default Hash</source>
         <translation>초기 해쉬</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="170"/>
+        <location filename="../settings_dlg.ui" line="63"/>
         <source>Font Family</source>
         <translation>폰트 패밀리</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="151"/>
+        <location filename="../settings_dlg.ui" line="44"/>
         <source>Need to restart</source>
         <translation>재 실행 필요함</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="137"/>
+        <location filename="../settings_dlg.ui" line="120"/>
         <source>Use log tab at startup</source>
         <translation>시작시 로그탭 사용</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="200"/>
+        <location filename="../settings_dlg.ui" line="207"/>
         <source>Advanced</source>
         <translation>고급</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="330"/>
+        <location filename="../settings_dlg.ui" line="337"/>
         <source>OID Config File</source>
         <translation>OID 설정 파일</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="340"/>
-        <location filename="../settings_dlg.ui" line="379"/>
+        <location filename="../settings_dlg.ui" line="347"/>
+        <location filename="../settings_dlg.ui" line="386"/>
         <source>Find</source>
         <translation>찾기</translation>
     </message>
@@ -18922,77 +18922,82 @@ Only RSA is supported.</source>
         <translation type="vanished">신뢰 CA 경로</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="372"/>
+        <location filename="../settings_dlg.ui" line="379"/>
         <source>Certificate Path</source>
         <translation>인증서 경로</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="440"/>
+        <location filename="../settings_dlg.ui" line="447"/>
         <source>Language (need restart)</source>
         <translation>언어(재시동 필요함)</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="270"/>
+        <location filename="../settings_dlg.ui" line="277"/>
         <source>The size of the file to be read at one time</source>
         <translation>한 번에 읽을 수 있는 파일의 크기</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="192"/>
+        <location filename="../settings_dlg.ui" line="129"/>
         <source>Use CertMan initial check</source>
         <translation>CertMan 사용 초기 체크</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="263"/>
+        <location filename="../settings_dlg.ui" line="199"/>
+        <source>OCTET STRING and BIT STRING automatic expansion</source>
+        <translation>OCTET STRING 과 BIT STRING 자동 확장하기</translation>
+    </message>
+    <message>
+        <location filename="../settings_dlg.ui" line="270"/>
         <source>File Read Size</source>
         <translation>파일 읽기 크기</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="290"/>
+        <location filename="../settings_dlg.ui" line="297"/>
         <source>Use fixed hex  and bit value area</source>
         <translation>헥사 및 비트 스트링 정보 넓이 고정</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="297"/>
+        <location filename="../settings_dlg.ui" line="304"/>
         <source>Characters</source>
         <translation>문자</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="457"/>
+        <location filename="../settings_dlg.ui" line="464"/>
         <source>Support for changing original keypair</source>
         <translation>원본 키쌍 변경 지원</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="475"/>
+        <location filename="../settings_dlg.ui" line="482"/>
         <source>Restore defaults</source>
         <translation>기본값 복원</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="502"/>
+        <location filename="../settings_dlg.ui" line="509"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.ui" line="495"/>
+        <location filename="../settings_dlg.ui" line="502"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.cpp" line="107"/>
+        <location filename="../settings_dlg.cpp" line="108"/>
         <source>You have changed language. Restart to apply it?</source>
         <translation>언어를 변경 하였습니다. 적용을 위해 다시 시작 할까요?</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.cpp" line="118"/>
+        <location filename="../settings_dlg.cpp" line="119"/>
         <source>This font(%1) is not available</source>
         <translation>이 폰트(%1)은 유용하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.cpp" line="132"/>
+        <location filename="../settings_dlg.cpp" line="133"/>
         <source>Are you sure you want to clear all the saved settings?</source>
         <translation>정말로 저장 된 설정 값을 지우겠습니까?</translation>
     </message>
     <message>
-        <location filename="../settings_dlg.cpp" line="155"/>
+        <location filename="../settings_dlg.cpp" line="157"/>
         <source>Restored to default settings. Restart to apply it?</source>
         <translation>초기 설정 복구 되었습니다. 적용을 위해 다시 시작 하겠습니까?</translation>
     </message>

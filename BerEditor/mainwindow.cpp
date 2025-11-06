@@ -1994,7 +1994,7 @@ int MainWindow::openBer( const BIN *pBer )
     }
 
     ber_model_->setBER( pBer );
-    ber_model_->parseTree();
+    ber_model_->parseTree( berApplet->settingsMgr()->autoExpand() );
 
     left_tree_->header()->setVisible(false);
     left_tree_->viewRoot();
