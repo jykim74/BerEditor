@@ -7855,7 +7855,7 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../enc_dec_dlg.ui" line="1254"/>
-        <location filename="../enc_dec_dlg.cpp" line="1384"/>
+        <location filename="../enc_dec_dlg.cpp" line="1401"/>
         <source>Authenticated Encryption</source>
         <translation>인증 암호화</translation>
     </message>
@@ -7977,7 +7977,7 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../enc_dec_dlg.ui" line="893"/>
-        <location filename="../enc_dec_dlg.cpp" line="1307"/>
+        <location filename="../enc_dec_dlg.cpp" line="1324"/>
         <source>Status</source>
         <translation>상태</translation>
     </message>
@@ -7992,7 +7992,7 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <location filename="../enc_dec_dlg.ui" line="1506"/>
         <location filename="../enc_dec_dlg.ui" line="1516"/>
-        <location filename="../enc_dec_dlg.cpp" line="1383"/>
+        <location filename="../enc_dec_dlg.cpp" line="1400"/>
         <source>Encrypt</source>
         <translation>암호화</translation>
     </message>
@@ -8039,8 +8039,12 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../enc_dec_dlg.ui" line="1177"/>
+        <source>if IV is less than 16 bytes, the rest are set to 0</source>
+        <translation>IV가 16바이트보다 작으면 나머지 0 설정 됨</translation>
+    </message>
+    <message>
         <source>In CBC CTR CFB OFB mode if IV is less than 16 bytes, the rest are set to 0</source>
-        <translation>CBC CTR CFB OFB 모드에서 IV가 16보다 작으면 나머지 0으로 설정 됨</translation>
+        <translation type="vanished">CBC CTR CFB OFB 모드에서 IV가 16보다 작으면 나머지 0으로 설정 됨</translation>
     </message>
     <message>
         <source>Use AE(Authenticated Encryption)</source>
@@ -8225,7 +8229,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../enc_dec_dlg.cpp" line="557"/>
-        <location filename="../enc_dec_dlg.cpp" line="1444"/>
+        <location filename="../enc_dec_dlg.cpp" line="1461"/>
         <source>The target file[%1] is already exist.
 Do you want to delete the file and continue?</source>
         <translation>대상 파일 [%1] 이 이미 존재 합니다. 대상 파일을 지우고 계속 하시겠습니까?</translation>
@@ -8247,7 +8251,7 @@ Do you want to delete the file and continue?</source>
     </message>
     <message>
         <location filename="../enc_dec_dlg.cpp" line="686"/>
-        <location filename="../enc_dec_dlg.cpp" line="1493"/>
+        <location filename="../enc_dec_dlg.cpp" line="1510"/>
         <source>File(%1) save was successful</source>
         <translation>파일(%1) 저장에 성공하였습니다</translation>
     </message>
@@ -8269,28 +8273,52 @@ Use %2</source>
         <translation>데이타 길이를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="1378"/>
+        <location filename="../enc_dec_dlg.cpp" line="1300"/>
+        <source>No IV required</source>
+        <translation>IV 필요 없음</translation>
+    </message>
+    <message>
+        <location filename="../enc_dec_dlg.cpp" line="1304"/>
+        <source>If IV is less than 16 bytes, the rest are set to 0</source>
+        <translation>IV가 16바이트보다 작으면 나머지 0 설정 됨</translation>
+    </message>
+    <message>
+        <source>* if IV is less than 16 bytes, the rest are set to 0</source>
+        <translation type="vanished">IV가 16바이트보다 작으면 나머지 0 설정 됨</translation>
+    </message>
+    <message>
+        <location filename="../enc_dec_dlg.cpp" line="1308"/>
+        <source>IV length is arbitrary</source>
+        <translation>IV 길이 임의적</translation>
+    </message>
+    <message>
+        <location filename="../enc_dec_dlg.cpp" line="1312"/>
+        <source>IV length ranges from 7 to 13 bytes</source>
+        <translation>IV 길이가 7부터 13바이트 까지 임</translation>
+    </message>
+    <message>
+        <location filename="../enc_dec_dlg.cpp" line="1395"/>
         <source>Symmetric Encryption</source>
         <translation>대칭키 암호</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="1380"/>
+        <location filename="../enc_dec_dlg.cpp" line="1397"/>
         <source>Source data</source>
         <translation>소스 데이타</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="1381"/>
-        <location filename="../enc_dec_dlg.cpp" line="1391"/>
+        <location filename="../enc_dec_dlg.cpp" line="1398"/>
+        <location filename="../enc_dec_dlg.cpp" line="1408"/>
         <source>Encrypted data</source>
         <translation>암호화된 데이타</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="1389"/>
+        <location filename="../enc_dec_dlg.cpp" line="1406"/>
         <source>Symmetric Decryption</source>
         <translation>대칭키 복호화</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="1392"/>
+        <location filename="../enc_dec_dlg.cpp" line="1409"/>
         <source>Decrypted data</source>
         <translation>복호화된 데이타</translation>
     </message>
@@ -8315,7 +8343,7 @@ Use %2</source>
     </message>
     <message>
         <location filename="../enc_dec_dlg.ui" line="1492"/>
-        <location filename="../enc_dec_dlg.cpp" line="1394"/>
+        <location filename="../enc_dec_dlg.cpp" line="1411"/>
         <source>Decrypt</source>
         <translation>복호화</translation>
     </message>
@@ -8324,12 +8352,12 @@ Use %2</source>
         <translation type="vanished">암호화 또는 복호화 파일</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="1395"/>
+        <location filename="../enc_dec_dlg.cpp" line="1412"/>
         <source>Authenticated Decryption</source>
         <translation>인증 복호화</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="1420"/>
+        <location filename="../enc_dec_dlg.cpp" line="1437"/>
         <source>Find source file</source>
         <translation>소스 파일을 찾으세요</translation>
     </message>
