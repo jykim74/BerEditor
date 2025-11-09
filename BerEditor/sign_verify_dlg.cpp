@@ -115,6 +115,9 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
     mCertGroup->layout()->setSpacing(5);
     mCertGroup->layout()->setMargin(10);
 
+    mRunBtn->setMinimumWidth(100);
+    mDigestBtn->setMinimumWidth(160);
+
     mPriKeyViewBtn->setFixedWidth(34);
     mPriKeyTypeBtn->setFixedWidth(34);
     mPriKeyDecodeBtn->setFixedWidth(34);

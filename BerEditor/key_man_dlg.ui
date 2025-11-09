@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>610</width>
-    <height>528</height>
+    <height>665</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -861,8 +861,11 @@
              <height>0</height>
             </size>
            </property>
+           <property name="frameShadow">
+            <enum>QFrame::Sunken</enum>
+           </property>
            <property name="text">
-            <string>Source Key</string>
+            <string>Source key</string>
            </property>
           </widget>
          </item>

@@ -150,11 +150,6 @@ void OCSPClientDlg::initUI()
 {
     SettingsMgr *setMgr = berApplet->settingsMgr();
 
-    mURLCombo->setEditable( true );
-    QStringList usedList = getUsedURL();
-    mURLCombo->addItems( usedList );
-    mURLCombo->setFocus();
-
     mHashCombo->addItems( kHashList );
     mHashCombo->setCurrentText( setMgr->defaultHash() );
 
@@ -173,6 +168,7 @@ void OCSPClientDlg::initUI()
     QRegExp regExp("^[0-9a-fA-F]*$");
     QRegExpValidator* regVal = new QRegExpValidator( regExp );
     mNonceText->setValidator( regVal );
+
 }
 
 void OCSPClientDlg::initialize()
@@ -180,6 +176,11 @@ void OCSPClientDlg::initialize()
     checkUseSign();
     checkUseNonce();
     checkEncPriKey();
+
+    mURLCombo->setEditable( true );
+    QStringList usedList = getUsedURL();
+    mURLCombo->addItems( usedList );
+    mURLCombo->setFocus();
 }
 
 QStringList OCSPClientDlg::getUsedURL()

@@ -102,6 +102,9 @@ KeyManDlg::KeyManDlg(QWidget *parent) :
     mKW_KEKClearBtn->setFixedWidth(34);
     mKW_DstClearBtn->setFixedWidth(34);
 
+    mKW_SrcLabel->setMinimumWidth(100);
+    mKW_RunBtn->setMinimumWidth(100);
+
     mKEMWrappedKeyClearBtn->setFixedWidth(34);
     mKEMKeyClearBtn->setFixedWidth(34);
 
