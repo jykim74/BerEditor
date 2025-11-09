@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>585</width>
-    <height>709</height>
+    <height>921</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1014,9 +1014,6 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="mKeyTypeCombo"/>
-     </item>
      <item row="0" column="3">
       <widget class="QLineEdit" name="mKeyLenText">
        <property name="minimumSize">
@@ -1073,11 +1070,43 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QLineEdit" name="mKeyText"/>
+     <item row="1" column="2">
+      <widget class="QLineEdit" name="mIVText"/>
      </item>
      <item row="1" column="1">
       <widget class="QComboBox" name="mIVTypeCombo"/>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="minimumSize">
+        <size>
+         <width>30</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Key</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLineEdit" name="mKeyText"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label">
+       <property name="minimumSize">
+        <size>
+         <width>30</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>IV</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="mKeyTypeCombo"/>
      </item>
      <item row="1" column="3">
       <widget class="QLineEdit" name="mIVLenText">
@@ -1135,34 +1164,32 @@
        </property>
       </widget>
      </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_14">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
      <item row="0" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="minimumSize">
-        <size>
-         <width>30</width>
-         <height>0</height>
-        </size>
-       </property>
+      <widget class="QLabel" name="label_8">
        <property name="text">
-        <string>Key</string>
+        <string>In CBC CTR CFB OFB mode if IV is less than 16 bytes, the rest are set to 0</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label">
-       <property name="minimumSize">
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer_9">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
         <size>
-         <width>30</width>
-         <height>0</height>
+         <width>40</width>
+         <height>20</height>
         </size>
        </property>
-       <property name="text">
-        <string>IV</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QLineEdit" name="mIVText"/>
+      </spacer>
      </item>
     </layout>
    </item>
