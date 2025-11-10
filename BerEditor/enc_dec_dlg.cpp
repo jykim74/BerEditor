@@ -1297,19 +1297,19 @@ void EncDecDlg::modeChanged()
 
     if( strMode == "ECB" )
     {
-        mIVLabel->setText( tr("No IV required") );
+        mIVLabel->setText( tr("No IV required in %1").arg( strMode ) );
     }
     else if( strMode == "CBC" || strMode == "CTR" || strMode == "OFB" || strMode == "CFB" )
     {
-        mIVLabel->setText( tr("If IV is less than 16 bytes, the rest are set to 0") );
+        mIVLabel->setText( tr("If IV is less than 16 bytes in %1, the rest are set to 0").arg( strMode) );
     }
     else if( strMode == "GCM" )
     {
-        mIVLabel->setText( tr( "IV length is arbitrary" ));
+        mIVLabel->setText( tr( "IV length is arbitrary in %1" ).arg( strMode ));
     }
     else if( strMode == "CCM" )
     {
-        mIVLabel->setText( tr( "IV length ranges from 7 to 13 bytes" ));
+        mIVLabel->setText( tr( "IV length ranges from 7 to 13 bytes in %1" ).arg( strMode ));
     }
 }
 

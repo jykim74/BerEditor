@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>585</width>
-    <height>930</height>
+    <height>737</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1171,14 +1171,14 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="0">
+     <item row="0" column="1">
       <widget class="QLabel" name="mIVLabel">
        <property name="text">
         <string>if IV is less than 16 bytes, the rest are set to 0</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
+     <item row="0" column="0">
       <spacer name="horizontalSpacer_9">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>

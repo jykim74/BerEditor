@@ -8274,27 +8274,43 @@ Use %2</source>
     </message>
     <message>
         <location filename="../enc_dec_dlg.cpp" line="1300"/>
-        <source>No IV required</source>
-        <translation>IV 필요 없음</translation>
+        <source>No IV required in %1</source>
+        <translation>%1에서 IV 필요 없음</translation>
     </message>
     <message>
         <location filename="../enc_dec_dlg.cpp" line="1304"/>
+        <source>If IV is less than 16 bytes in %1, the rest are set to 0</source>
+        <translation>%1에서 IV가 16바이트보다 작으면 나머지 0 설정 됨</translation>
+    </message>
+    <message>
+        <location filename="../enc_dec_dlg.cpp" line="1308"/>
+        <source>IV length is arbitrary in %1</source>
+        <translation>%1에서 IV 길이 임의적</translation>
+    </message>
+    <message>
+        <location filename="../enc_dec_dlg.cpp" line="1312"/>
+        <source>IV length ranges from 7 to 13 bytes in %1</source>
+        <translation>%1에서 IV 길이가 7부터 13바이트 까지 임</translation>
+    </message>
+    <message>
+        <source>No IV required</source>
+        <translation type="vanished">IV 필요 없음</translation>
+    </message>
+    <message>
         <source>If IV is less than 16 bytes, the rest are set to 0</source>
-        <translation>IV가 16바이트보다 작으면 나머지 0 설정 됨</translation>
+        <translation type="vanished">IV가 16바이트보다 작으면 나머지 0 설정 됨</translation>
     </message>
     <message>
         <source>* if IV is less than 16 bytes, the rest are set to 0</source>
         <translation type="vanished">IV가 16바이트보다 작으면 나머지 0 설정 됨</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="1308"/>
         <source>IV length is arbitrary</source>
-        <translation>IV 길이 임의적</translation>
+        <translation type="vanished">IV 길이 임의적</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="1312"/>
         <source>IV length ranges from 7 to 13 bytes</source>
-        <translation>IV 길이가 7부터 13바이트 까지 임</translation>
+        <translation type="vanished">IV 길이가 7부터 13바이트 까지 임</translation>
     </message>
     <message>
         <location filename="../enc_dec_dlg.cpp" line="1395"/>
