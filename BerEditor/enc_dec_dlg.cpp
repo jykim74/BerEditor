@@ -1336,9 +1336,17 @@ void EncDecDlg::algChanged()
     QString strAlg = mAlgCombo->currentText();
 
     if( strAlg == JS_PKI_KEY_NAME_CHACHA20 || strAlg == JS_PKI_KEY_NAME_CHACHA20_POLY1305 )
+    {
         mModeCombo->setEnabled( false );
+        mPadCheck->setEnabled( false );
+    }
     else
+    {
         mModeCombo->setEnabled( true );
+        mPadCheck->setEnabled( true );
+    }
+
+    modeChanged();
 }
 
 void EncDecDlg::aadChanged()
@@ -1356,6 +1364,7 @@ void EncDecDlg::tagChanged()
 void EncDecDlg::modeChanged()
 {
     QString strMode = mModeCombo->currentText();
+    QString strAlg = mAlgCombo->currentText();
 
     if( strMode.toUpper() == JS_PKI_SYM_MODE_CCM )
     {
@@ -1373,21 +1382,35 @@ void EncDecDlg::modeChanged()
     else
         mPadCheck->setEnabled( false );
 
-    if( strMode == "ECB" )
+    if( strAlg == JS_PKI_KEY_NAME_CHACHA20 || strAlg == JS_PKI_KEY_NAME_CHACHA20_POLY1305 )
     {
-        mIVLabel->setText( tr("No IV required in %1").arg( strMode ) );
+        if( strAlg == JS_PKI_KEY_NAME_CHACHA20_POLY1305 )
+        {
+            mIVLabel->setText( tr("IV length is 12 bytes" ));
+        }
+        else
+        {
+            mIVLabel->setText( tr("If IV is less than 16 bytes in %1, the rest are set to 0").arg( strAlg ) );
+        }
     }
-    else if( strMode == "CBC" || strMode == "CTR" || strMode == "OFB" || strMode == "CFB" )
+    else
     {
-        mIVLabel->setText( tr("If IV is less than 16 bytes in %1, the rest are set to 0").arg( strMode) );
-    }
-    else if( strMode == "GCM" )
-    {
-        mIVLabel->setText( tr( "IV length is arbitrary in %1" ).arg( strMode ));
-    }
-    else if( strMode == "CCM" )
-    {
-        mIVLabel->setText( tr( "IV length ranges from 7 to 13 bytes in %1" ).arg( strMode ));
+        if( strMode == "ECB" )
+        {
+            mIVLabel->setText( tr("No IV required in %1").arg( strMode ) );
+        }
+        else if( strMode == "CBC" || strMode == "CTR" || strMode == "OFB" || strMode == "CFB" )
+        {
+            mIVLabel->setText( tr("If IV is less than 16 bytes in %1, the rest are set to 0").arg( strMode) );
+        }
+        else if( strMode == "GCM" )
+        {
+            mIVLabel->setText( tr( "IV length is arbitrary in %1" ).arg( strMode ));
+        }
+        else if( strMode == "CCM" )
+        {
+            mIVLabel->setText( tr( "IV length ranges from 7 to 13 bytes in %1" ).arg( strMode ));
+        }
     }
 }
 
