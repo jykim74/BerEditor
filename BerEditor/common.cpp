@@ -566,16 +566,14 @@ int getSymAlg( const QString strAlg, const QString strMode, int nKeyLen, QString
     {
         if( nKeyLen != 16 ) return JSR_CRYPT_BAD_KEY_LEN;
     }
+    else if( strLAlg == "chacha20" || strLAlg == "chacha20-poly1305" )
+    {
+        if( nKeyLen != 32 ) return JSR_CRYPT_BAD_KEY_LEN;
+    }
     else
     {
         if( nKeyLen != 16 && nKeyLen != 24 && nKeyLen != 32 )
             return JSR_CRYPT_BAD_KEY_LEN;
-    }
-
-    if( strLMode == "gcm" || strLMode == "ccm" )
-    {
-        if( strLAlg != "aes" && strLAlg != "aria" )
-            return JSR_INVALID_ALG;
     }
 
     if( strLAlg == "des" || strLAlg == "seed" || strLAlg == "sm4" )
@@ -585,6 +583,10 @@ int getSymAlg( const QString strAlg, const QString strMode, int nKeyLen, QString
     else if( strLAlg == "des3" || strLAlg == "tdes" )
     {
         strCipher = QString( "des-ede-%1").arg(strLMode);
+    }
+    else if( strLAlg == "chacha20" || strLAlg == "chacha20-poly1305" )
+    {
+        strCipher = strLAlg;
     }
     else
     {

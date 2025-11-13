@@ -45,6 +45,7 @@ private slots:
     void outputChanged();
     void keyChanged();
     void ivChanged();
+    void algChanged();
     void aadChanged();
     void tagChanged();
     void modeChanged();

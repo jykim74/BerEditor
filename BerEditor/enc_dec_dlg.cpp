@@ -67,6 +67,7 @@ EncDecDlg::EncDecDlg(QWidget *parent) :
     connect( mKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(keyChanged()));
     connect( mIVTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(ivChanged()));
     connect( mAADTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(aadChanged()));
+    connect( mAlgCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(algChanged()));
     connect( mModeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(modeChanged()));
 
     connect( mClearDataAllBtn, SIGNAL(clicked()), this, SLOT(clickClearDataAll()));
@@ -138,6 +139,8 @@ void EncDecDlg::initUI()
     mTagText->setPlaceholderText( tr("Hex value") );
 
     mAlgCombo->addItems( kSymAlgList );
+    mAlgCombo->addItem( JS_PKI_KEY_NAME_CHACHA20  );
+
     mReqTagLenText->setText( "16" );
 
     mKeyText->setPlaceholderText( tr( "Select KeyList key" ));
@@ -295,17 +298,26 @@ void EncDecDlg::dataRun()
             char *pTag = NULL;
             strMethod = "AE Encrypt";
 
-            if( isCCM(strMode) )
+            if( strAlg == JS_PKI_KEY_NAME_CHACHA20_POLY1305 )
             {
                 timer.start();
-                ret = JS_PKI_encryptCCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, nReqTagLen, &binTag, &binOut );
+                ret = JS_PKI_encryptChaCha20Poly1305( &binSrc, &binKey, &binIV, &binAAD, nReqTagLen, &binTag, &binOut );
                 us = timer.nsecsElapsed() / 1000;
             }
             else
             {
-                timer.start();
-                ret = JS_PKI_encryptGCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, nReqTagLen, &binTag, &binOut );
-                us = timer.nsecsElapsed() / 1000;
+                if( isCCM(strMode) )
+                {
+                    timer.start();
+                    ret = JS_PKI_encryptCCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, nReqTagLen, &binTag, &binOut );
+                    us = timer.nsecsElapsed() / 1000;
+                }
+                else
+                {
+                    timer.start();
+                    ret = JS_PKI_encryptGCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, nReqTagLen, &binTag, &binOut );
+                    us = timer.nsecsElapsed() / 1000;
+                }
             }
 
             JS_BIN_encodeHex( &binTag, &pTag );
@@ -350,17 +362,26 @@ void EncDecDlg::dataRun()
             ret = getBINFromString( &binTag, DATA_HEX, strTag );
             FORMAT_WARN_GO(ret);
 
-            if( isCCM( strMode ) )
+            if( strAlg == JS_PKI_KEY_NAME_CHACHA20_POLY1305 )
             {
                 timer.start();
-                ret = JS_PKI_decryptCCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
+                ret = JS_PKI_decryptChaCha20Poly1305( &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
                 us = timer.nsecsElapsed() / 1000;
             }
             else
             {
-                timer.start();
-                ret = JS_PKI_decryptGCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
-                us = timer.nsecsElapsed() / 1000;
+                if( isCCM( strMode ) )
+                {
+                    timer.start();
+                    ret = JS_PKI_decryptCCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
+                    us = timer.nsecsElapsed() / 1000;
+                }
+                else
+                {
+                    timer.start();
+                    ret = JS_PKI_decryptGCM( strSymAlg.toStdString().c_str(), &binSrc, &binKey, &binIV, &binAAD, &binTag, &binOut );
+                    us = timer.nsecsElapsed() / 1000;
+                }
             }
 
             if( binOut.nLen > 0 )
@@ -703,11 +724,13 @@ void EncDecDlg::clickUseAEAD()
     if( bStatus )
     {
         mAlgCombo->addItems( kBaseSymList );
+        mAlgCombo->addItem( JS_PKI_KEY_NAME_CHACHA20_POLY1305 );
         mModeCombo->addItems( modeAEList );
     }
     else
     {
         mAlgCombo->addItems( kSymAlgList );
+        mAlgCombo->addItem( JS_PKI_KEY_NAME_CHACHA20 );
         mModeCombo->addItems( modeList );
     }
 }
@@ -749,7 +772,6 @@ int EncDecDlg::encDecInit()
         if( keyList.exec() == QDialog::Accepted )
         {
             strKey = keyList.getKey();
-            strIV = keyList.getIV();
 
             if( strKey.length() > 0 )
             {
@@ -757,8 +779,9 @@ int EncDecDlg::encDecInit()
                 mKeyText->setText( strKey );
             }
 
-            if( strIV.length() > 0 )
+            if( keyList.getIV().length() > 0 )
             {
+                strIV = keyList.getIV();
                 mIVTypeCombo->setCurrentText( kDataHex );
                 mIVText->setText( strIV );
             }
@@ -814,54 +837,64 @@ int EncDecDlg::encDecInit()
         ret = getBINFromString( &binAAD, mAADTypeCombo->currentText(), strAAD );
         FORMAT_WARN_GO(ret);
 
-        if( isCCM( strMode ) )
+        if( strAlg != JS_PKI_KEY_NAME_CHACHA20_POLY1305 )
         {
-            nDataLen = mCCMDataLenText->text().toLongLong();
-            if( nDataLen <= 0 )
+            if( isCCM( strMode ) )
             {
-                if( binSrc.nLen > 0 )
+                nDataLen = mCCMDataLenText->text().toLongLong();
+                if( nDataLen <= 0 )
                 {
-                    QString strMsg = tr( "Do you want the entire length of the data to be the length of the input value(%1)?" ).arg(binSrc.nLen);
+                    if( binSrc.nLen > 0 )
+                    {
+                        QString strMsg = tr( "Do you want the entire length of the data to be the length of the input value(%1)?" ).arg(binSrc.nLen);
 
-                    bool bVal = berApplet->yesOrNoBox( strMsg, this );
-                    if( bVal == false )
+                        bool bVal = berApplet->yesOrNoBox( strMsg, this );
+                        if( bVal == false )
+                        {
+                            berApplet->warningBox( tr( "Enter the data length"), this );
+                            mCCMDataLenText->setFocus();
+                            goto end;
+                        }
+
+                        nDataLen = binSrc.nLen;
+                        mCCMDataLenText->setText( QString("%1").arg( nDataLen ));
+                    }
+                    else
                     {
                         berApplet->warningBox( tr( "Enter the data length"), this );
                         mCCMDataLenText->setFocus();
                         goto end;
                     }
-
-                    nDataLen = binSrc.nLen;
-                    mCCMDataLenText->setText( QString("%1").arg( nDataLen ));
-                }
-                else
-                {
-                    berApplet->warningBox( tr( "Enter the data length"), this );
-                    mCCMDataLenText->setFocus();
-                    goto end;
                 }
             }
         }
 
         if( mEncryptRadio->isChecked() )
         {
-            if( isCCM( strMode) )
+            if( strAlg == JS_PKI_KEY_NAME_CHACHA20_POLY1305 )
             {
-                int nReqTagLen = 0;
-
-                if( strReqTagLen.length() < 1 )
-                {
-                    berApplet->warnLog( tr("Please enter request tag length" ), this );
-                    goto end;
-                }
-
-                nReqTagLen = strReqTagLen.toInt();
-
-                ret = JS_PKI_encryptCCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD, nReqTagLen, nDataLen );
+                ret = JS_PKI_encryptChaCha20Poly1305Init( &ctx_, &binIV, &binKey, &binAAD );
             }
             else
             {
-                ret = JS_PKI_encryptGCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD );
+                if( isCCM( strMode) )
+                {
+                    int nReqTagLen = 0;
+
+                    if( strReqTagLen.length() < 1 )
+                    {
+                        berApplet->warnLog( tr("Please enter request tag length" ), this );
+                        goto end;
+                    }
+
+                    nReqTagLen = strReqTagLen.toInt();
+
+                    ret = JS_PKI_encryptCCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD, nReqTagLen, nDataLen );
+                }
+                else
+                {
+                    ret = JS_PKI_encryptGCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD );
+                }
             }
 
             if( ret == 0 )
@@ -875,20 +908,27 @@ int EncDecDlg::encDecInit()
         }
         else
         {
-            if( isCCM( strMode ) )
+            if( strAlg == JS_PKI_KEY_NAME_CHACHA20_POLY1305 )
             {
-                if( strTag.length() < 1 )
-                {
-                    berApplet->warnLog( tr( "Please enter tag"), this );
-                    ret = -1;
-                    goto end;
-                }
-
-                JS_BIN_decodeHex( strTag.toStdString().c_str(), &binTag );
-                ret = JS_PKI_decryptCCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD, &binTag, nDataLen );
+                ret = JS_PKI_decryptChaCha20Poly1305Init( &ctx_, &binIV, &binKey, &binAAD );
             }
             else
-                ret = JS_PKI_decryptGCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD );
+            {
+                if( isCCM( strMode ) )
+                {
+                    if( strTag.length() < 1 )
+                    {
+                        berApplet->warnLog( tr( "Please enter tag"), this );
+                        ret = -1;
+                        goto end;
+                    }
+
+                    JS_BIN_decodeHex( strTag.toStdString().c_str(), &binTag );
+                    ret = JS_PKI_decryptCCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD, &binTag, nDataLen );
+                }
+                else
+                    ret = JS_PKI_decryptGCMInit( &ctx_, strSymAlg.toStdString().c_str(), &binIV, &binKey, &binAAD );
+            }
 
             if( ret == 0 )
             {
@@ -984,10 +1024,17 @@ int EncDecDlg::encDecUpdate()
     {
         if( mEncryptRadio->isChecked() )
         {
-            if( isCCM(strMode) )
-                ret = JS_PKI_encryptCCMUpdate( ctx_, &binSrc, &binDst );
+            if( strAlg == JS_PKI_KEY_NAME_CHACHA20_POLY1305 )
+            {
+                ret = JS_PKI_encryptChaCha20Poly1305Update( ctx_, &binSrc, &binDst );
+            }
             else
-                ret = JS_PKI_encryptGCMUpdate( ctx_, &binSrc, &binDst );
+            {
+                if( isCCM(strMode) )
+                    ret = JS_PKI_encryptCCMUpdate( ctx_, &binSrc, &binDst );
+                else
+                    ret = JS_PKI_encryptGCMUpdate( ctx_, &binSrc, &binDst );
+            }
 
             if( ret == 0 )
             {
@@ -998,10 +1045,17 @@ int EncDecDlg::encDecUpdate()
         }
         else
         {
-            if( isCCM(strMode))
-                ret = JS_PKI_decryptCCMUpdate( ctx_, &binSrc, &binDst );
+            if( strAlg == JS_PKI_KEY_NAME_CHACHA20_POLY1305 )
+            {
+                ret = JS_PKI_decryptChaCha20Poly1305Update( ctx_, &binSrc, &binDst );
+            }
             else
-                ret = JS_PKI_decryptGCMUpdate( ctx_, &binSrc, &binDst );
+            {
+                if( isCCM(strMode))
+                    ret = JS_PKI_decryptCCMUpdate( ctx_, &binSrc, &binDst );
+                else
+                    ret = JS_PKI_decryptGCMUpdate( ctx_, &binSrc, &binDst );
+            }
 
             if( ret == 0 )
             {
@@ -1093,10 +1147,17 @@ int EncDecDlg::encDecFinal()
 
         if( mEncryptRadio->isChecked() )
         {
-            if( isCCM(strMode) )
-                ret = JS_PKI_encryptCCMFinal( ctx_, &binDst, nReqTagLen, &binTag );
+            if( strAlg == JS_PKI_KEY_NAME_CHACHA20_POLY1305 )
+            {
+                ret = JS_PKI_encryptChaCha20Poly1305Final( ctx_, &binDst, nReqTagLen, &binTag );
+            }
             else
-                ret = JS_PKI_encryptGCMFinal( ctx_, &binDst, nReqTagLen, &binTag );
+            {
+                if( isCCM(strMode) )
+                    ret = JS_PKI_encryptCCMFinal( ctx_, &binDst, nReqTagLen, &binTag );
+                else
+                    ret = JS_PKI_encryptGCMFinal( ctx_, &binDst, nReqTagLen, &binTag );
+            }
 
             if( binTag.nLen > 0 )
             {
@@ -1123,10 +1184,17 @@ int EncDecDlg::encDecFinal()
             ret = getBINFromString( &binTag, DATA_HEX, strTag );
             FORMAT_WARN_GO(ret);
 
-            if( isCCM(strMode) )
-                ret = JS_PKI_decryptCCMFinal( ctx_, &binDst );
+            if( strAlg == JS_PKI_KEY_NAME_CHACHA20_POLY1305 )
+            {
+                ret = JS_PKI_decryptChaCha20Poly1305Final( ctx_, &binTag, &binDst );
+            }
             else
-                ret = JS_PKI_decryptGCMFinal( ctx_, &binTag, &binDst );
+            {
+                if( isCCM(strMode) )
+                    ret = JS_PKI_decryptCCMFinal( ctx_, &binDst );
+                else
+                    ret = JS_PKI_decryptGCMFinal( ctx_, &binTag, &binDst );
+            }
 
             if( ret == 0 )
             {
@@ -1261,6 +1329,16 @@ void EncDecDlg::ivChanged()
 {
     QString strLen = getDataLenString( mIVTypeCombo->currentText(), mIVText->text() );
     mIVLenText->setText( QString("%1").arg(strLen));
+}
+
+void EncDecDlg::algChanged()
+{
+    QString strAlg = mAlgCombo->currentText();
+
+    if( strAlg == JS_PKI_KEY_NAME_CHACHA20 || strAlg == JS_PKI_KEY_NAME_CHACHA20_POLY1305 )
+        mModeCombo->setEnabled( false );
+    else
+        mModeCombo->setEnabled( true );
 }
 
 void EncDecDlg::aadChanged()
