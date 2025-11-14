@@ -502,13 +502,13 @@ void EncDecDlg::dataRun()
 
     if( ret == 0 )
     {
-        QString strMsg = QString( "%1 %2 OK" ).arg( strMethod ).arg( strSymAlg );
+        QString strMsg = QString( "%1 OK" ).arg( strMethod );
         mStatusLabel->setText( strMsg );
     }
     else
     {
         QString strMsg = QString("%1 %2 failed:%3").arg( strMethod ).arg( strSymAlg ).arg( JERR(ret) );
-        mStatusLabel->setText( strMsg );
+        mStatusLabel->setText( QString( "%1" ).arg(JERR(ret)) );
         berApplet->elog( strMsg );
     }
 
