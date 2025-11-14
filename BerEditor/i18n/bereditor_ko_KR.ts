@@ -7855,7 +7855,7 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../enc_dec_dlg.ui" line="1254"/>
-        <location filename="../enc_dec_dlg.cpp" line="1401"/>
+        <location filename="../enc_dec_dlg.cpp" line="1503"/>
         <source>Authenticated Encryption</source>
         <translation>인증 암호화</translation>
     </message>
@@ -7880,7 +7880,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">실행</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1774"/>
+        <location filename="../enc_dec_dlg.ui" line="1767"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -7896,7 +7896,7 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../enc_dec_dlg.ui" line="85"/>
-        <location filename="../enc_dec_dlg.ui" line="1573"/>
+        <location filename="../enc_dec_dlg.ui" line="1566"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
@@ -7966,18 +7966,18 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">키 와 IV</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1612"/>
+        <location filename="../enc_dec_dlg.ui" line="1605"/>
         <source>Output Data</source>
         <translation>결과 데이타</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1599"/>
+        <location filename="../enc_dec_dlg.ui" line="1592"/>
         <source>⬆</source>
         <translation>⬆</translation>
     </message>
     <message>
         <location filename="../enc_dec_dlg.ui" line="893"/>
-        <location filename="../enc_dec_dlg.cpp" line="1324"/>
+        <location filename="../enc_dec_dlg.cpp" line="1426"/>
         <source>Status</source>
         <translation>상태</translation>
     </message>
@@ -7990,14 +7990,14 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">Test</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1506"/>
-        <location filename="../enc_dec_dlg.ui" line="1516"/>
-        <location filename="../enc_dec_dlg.cpp" line="1400"/>
+        <location filename="../enc_dec_dlg.ui" line="1492"/>
+        <location filename="../enc_dec_dlg.ui" line="1529"/>
+        <location filename="../enc_dec_dlg.cpp" line="1502"/>
         <source>Encrypt</source>
         <translation>암호화</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1754"/>
+        <location filename="../enc_dec_dlg.ui" line="1747"/>
         <source>Clear Data All</source>
         <translation>전체 데이타 지우기</translation>
     </message>
@@ -8013,7 +8013,7 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../enc_dec_dlg.ui" line="173"/>
-        <location filename="../enc_dec_dlg.ui" line="1690"/>
+        <location filename="../enc_dec_dlg.ui" line="1683"/>
         <source>C</source>
         <translation>C</translation>
     </message>
@@ -8061,7 +8061,7 @@ mailto : jykim74@gmail.com</translation>
         <translation>태그</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1499"/>
+        <location filename="../enc_dec_dlg.ui" line="1539"/>
         <source>Padding</source>
         <translation>패딩</translation>
     </message>
@@ -8105,29 +8105,29 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">대상 파일 [%1] 이 이미 존재 합니다. 대상 파일을 지우고 계속 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="143"/>
+        <location filename="../enc_dec_dlg.cpp" line="146"/>
         <source>Select KeyList key</source>
         <translation>키목록 키 선택</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="144"/>
+        <location filename="../enc_dec_dlg.cpp" line="147"/>
         <source>Find the target file</source>
         <translation>대상 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="229"/>
-        <location filename="../enc_dec_dlg.cpp" line="746"/>
+        <location filename="../enc_dec_dlg.cpp" line="232"/>
+        <location filename="../enc_dec_dlg.cpp" line="769"/>
         <source>Select symmetric key</source>
         <translation>대칭키를 선택 하세요</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="252"/>
+        <location filename="../enc_dec_dlg.cpp" line="255"/>
         <source>Please enter key value</source>
         <translation>키 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="262"/>
-        <location filename="../enc_dec_dlg.cpp" line="779"/>
+        <location filename="../enc_dec_dlg.cpp" line="265"/>
+        <location filename="../enc_dec_dlg.cpp" line="802"/>
         <source>Please enter a IV</source>
         <translation>IV를 입력하세요</translation>
     </message>
@@ -8168,47 +8168,47 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">복호화 에러: %1</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="338"/>
+        <location filename="../enc_dec_dlg.cpp" line="350"/>
         <source>AE %1 success</source>
         <translation>AE %1 성공</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="342"/>
+        <location filename="../enc_dec_dlg.cpp" line="354"/>
         <source>AE %1 encryption error: %2</source>
         <translation>AE %1 암호화 에러: %2</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="386"/>
+        <location filename="../enc_dec_dlg.cpp" line="407"/>
         <source>AD %1 success</source>
         <translation>AD %1 성공</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="390"/>
+        <location filename="../enc_dec_dlg.cpp" line="411"/>
         <source>AD %1 decryption error: %2</source>
         <translation>AD %1 복호화 에러: %2</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="431"/>
+        <location filename="../enc_dec_dlg.cpp" line="452"/>
         <source>%1 Encryption success</source>
         <translation>%1 암호화 성공</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="435"/>
+        <location filename="../enc_dec_dlg.cpp" line="456"/>
         <source>%1 Encryption error: %2</source>
         <translation>%1 암호화 에러: %2</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="473"/>
+        <location filename="../enc_dec_dlg.cpp" line="494"/>
         <source>%1 Decryption success</source>
         <translation>%1 복호화 성공</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="477"/>
+        <location filename="../enc_dec_dlg.cpp" line="498"/>
         <source>%1 Decryption error: %1</source>
         <translation>%1 AD 복호화 에러: %2</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="521"/>
+        <location filename="../enc_dec_dlg.cpp" line="542"/>
         <source>Select a input file</source>
         <translation>입력 파일을 선택하세요</translation>
     </message>
@@ -8217,78 +8217,88 @@ Do you want to delete the file and continue?</source>
         <translation type="vanished">대상 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="138"/>
+        <location filename="../enc_dec_dlg.cpp" line="139"/>
         <source>Hex value</source>
         <translation>16진수 값</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="281"/>
-        <location filename="../enc_dec_dlg.cpp" line="805"/>
+        <location filename="../enc_dec_dlg.cpp" line="284"/>
+        <location filename="../enc_dec_dlg.cpp" line="828"/>
         <source>failed to get cipher name: %1</source>
         <translation>Cipher 이름 가져오기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="557"/>
-        <location filename="../enc_dec_dlg.cpp" line="1461"/>
+        <location filename="../enc_dec_dlg.cpp" line="578"/>
+        <location filename="../enc_dec_dlg.cpp" line="1563"/>
         <source>The target file[%1] is already exist.
 Do you want to delete the file and continue?</source>
         <translation>대상 파일 [%1] 이 이미 존재 합니다. 대상 파일을 지우고 계속 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="591"/>
+        <location filename="../enc_dec_dlg.cpp" line="612"/>
         <source>fail to read file: %1</source>
         <translation>파일 읽기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="629"/>
+        <location filename="../enc_dec_dlg.cpp" line="650"/>
         <source>Encryption/decryption update failed [%1]</source>
         <translation>암호화/복호화 업데이트 실패 [%1]</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="644"/>
+        <location filename="../enc_dec_dlg.cpp" line="665"/>
         <source>fail to append file: %1</source>
         <translation>파일에 추가 하기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="686"/>
-        <location filename="../enc_dec_dlg.cpp" line="1510"/>
+        <location filename="../enc_dec_dlg.cpp" line="707"/>
+        <location filename="../enc_dec_dlg.cpp" line="1612"/>
         <source>File(%1) save was successful</source>
         <translation>파일(%1) 저장에 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="738"/>
+        <location filename="../enc_dec_dlg.cpp" line="761"/>
         <source>%1 does not support this feature[Init-Update-Final]
 Use %2</source>
         <translation>%1 은 [Init-Update-Final] 형식을 지원하지 않습니다\n%2를 사용하세요</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="824"/>
+        <location filename="../enc_dec_dlg.cpp" line="849"/>
         <source>Do you want the entire length of the data to be the length of the input value(%1)?</source>
         <translation>전체 길이 값을 현재 입력 값의 길이 값(%1)으로 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="829"/>
-        <location filename="../enc_dec_dlg.cpp" line="839"/>
+        <location filename="../enc_dec_dlg.cpp" line="854"/>
+        <location filename="../enc_dec_dlg.cpp" line="864"/>
         <source>Enter the data length</source>
         <translation>데이타 길이를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="1300"/>
+        <location filename="../enc_dec_dlg.cpp" line="1390"/>
+        <source>IV length is 12 bytes</source>
+        <translation>IV 길이는 12바이트 입니다</translation>
+    </message>
+    <message>
+        <location filename="../enc_dec_dlg.cpp" line="1394"/>
+        <source>If IV is less than 12 bytes in %1, the rest are set to 0</source>
+        <translation>%1에서 IV가 12바이트보다 작으면 나머지 0 설정 됨</translation>
+    </message>
+    <message>
+        <location filename="../enc_dec_dlg.cpp" line="1401"/>
         <source>No IV required in %1</source>
         <translation>%1에서 IV 필요 없음</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="1304"/>
+        <location filename="../enc_dec_dlg.cpp" line="1405"/>
         <source>If IV is less than 16 bytes in %1, the rest are set to 0</source>
         <translation>%1에서 IV가 16바이트보다 작으면 나머지 0 설정 됨</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="1308"/>
+        <location filename="../enc_dec_dlg.cpp" line="1409"/>
         <source>IV length is arbitrary in %1</source>
         <translation>%1에서 IV 길이 임의적</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="1312"/>
+        <location filename="../enc_dec_dlg.cpp" line="1413"/>
         <source>IV length ranges from 7 to 13 bytes in %1</source>
         <translation>%1에서 IV 길이가 7부터 13바이트 까지 임</translation>
     </message>
@@ -8313,28 +8323,28 @@ Use %2</source>
         <translation type="vanished">IV 길이가 7부터 13바이트 까지 임</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="1395"/>
+        <location filename="../enc_dec_dlg.cpp" line="1497"/>
         <source>Symmetric Encryption</source>
         <translation>대칭키 암호</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="1397"/>
+        <location filename="../enc_dec_dlg.cpp" line="1499"/>
         <source>Source data</source>
         <translation>소스 데이타</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="1398"/>
-        <location filename="../enc_dec_dlg.cpp" line="1408"/>
+        <location filename="../enc_dec_dlg.cpp" line="1500"/>
+        <location filename="../enc_dec_dlg.cpp" line="1510"/>
         <source>Encrypted data</source>
         <translation>암호화된 데이타</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="1406"/>
+        <location filename="../enc_dec_dlg.cpp" line="1508"/>
         <source>Symmetric Decryption</source>
         <translation>대칭키 복호화</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="1409"/>
+        <location filename="../enc_dec_dlg.cpp" line="1511"/>
         <source>Decrypted data</source>
         <translation>복호화된 데이타</translation>
     </message>
@@ -8343,23 +8353,23 @@ Use %2</source>
         <translation type="vanished">파일 쓰기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="769"/>
+        <location filename="../enc_dec_dlg.cpp" line="792"/>
         <source>Please enter a key value</source>
         <translation>키 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="854"/>
+        <location filename="../enc_dec_dlg.cpp" line="886"/>
         <source>Please enter request tag length</source>
         <translation>요청 태그 길이를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="882"/>
+        <location filename="../enc_dec_dlg.cpp" line="921"/>
         <source>Please enter tag</source>
         <translation>태그를 입력 하세요</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1492"/>
-        <location filename="../enc_dec_dlg.cpp" line="1411"/>
+        <location filename="../enc_dec_dlg.ui" line="1499"/>
+        <location filename="../enc_dec_dlg.cpp" line="1513"/>
         <source>Decrypt</source>
         <translation>복호화</translation>
     </message>
@@ -8368,12 +8378,12 @@ Use %2</source>
         <translation type="vanished">암호화 또는 복호화 파일</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="1412"/>
+        <location filename="../enc_dec_dlg.cpp" line="1514"/>
         <source>Authenticated Decryption</source>
         <translation>인증 복호화</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.cpp" line="1437"/>
+        <location filename="../enc_dec_dlg.cpp" line="1539"/>
         <source>Find source file</source>
         <translation>소스 파일을 찾으세요</translation>
     </message>

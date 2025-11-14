@@ -1251,17 +1251,18 @@ int EncDecDlg::encDecFinal()
         }
     }
 
-    if( ret == 0 )
+    if( ret == JSR_OK )
     {
         mStatusLabel->setText( "Final OK" );
         mFinalText->setText( "OK" );
+        berApplet->messageBox( "Final OK", this );
     }
     else
     {
         QString strFail = QString("Final error: %1").arg(JERR(ret));
         mStatusLabel->setText( QString("%1").arg( JERR(ret)));
         mFinalText->setText( QString("%1").arg(ret));
-        berApplet->elog( strFail );
+        berApplet->warningBox( strFail, this );
     }
 
 end:
@@ -1390,7 +1391,7 @@ void EncDecDlg::modeChanged()
         }
         else
         {
-            mIVLabel->setText( tr("If IV is less than 16 bytes in %1, the rest are set to 0").arg( strAlg ) );
+            mIVLabel->setText( tr("If IV is less than 12 bytes in %1, the rest are set to 0").arg( strAlg ) );
         }
     }
     else
