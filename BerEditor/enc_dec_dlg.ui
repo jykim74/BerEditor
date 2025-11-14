@@ -1171,14 +1171,14 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="1">
-      <widget class="QLabel" name="mIVLabel">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_8">
        <property name="text">
-        <string>if IV is less than 16 bytes, the rest are set to 0</string>
+        <string>cf) </string>
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
+     <item row="0" column="2">
       <spacer name="horizontalSpacer_9">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -1190,6 +1190,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="mIVLabel">
+       <property name="text">
+        <string>If IV is less than 16 bytes, the rest are set to 0</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

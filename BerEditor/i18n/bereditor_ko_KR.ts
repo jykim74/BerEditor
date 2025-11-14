@@ -7813,12 +7813,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">교환</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1373"/>
+        <location filename="../enc_dec_dlg.ui" line="1380"/>
         <source>CCM Data Len</source>
         <translation>CCM 데이타 길이</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1277"/>
+        <location filename="../enc_dec_dlg.ui" line="1284"/>
         <source>ReqTag Len</source>
         <translation>요청 태그 길이</translation>
     </message>
@@ -7849,12 +7849,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">지우기</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1212"/>
+        <location filename="../enc_dec_dlg.ui" line="1219"/>
         <source>AEAD (Authenticated Encryption with Associated Data )</source>
         <translation>AEAD (관련 데이터로 인증된 암호화)</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1254"/>
+        <location filename="../enc_dec_dlg.ui" line="1261"/>
         <location filename="../enc_dec_dlg.cpp" line="1503"/>
         <source>Authenticated Encryption</source>
         <translation>인증 암호화</translation>
@@ -7880,7 +7880,7 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">실행</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1767"/>
+        <location filename="../enc_dec_dlg.ui" line="1774"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -7896,7 +7896,7 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../enc_dec_dlg.ui" line="85"/>
-        <location filename="../enc_dec_dlg.ui" line="1566"/>
+        <location filename="../enc_dec_dlg.ui" line="1573"/>
         <source>Len</source>
         <translation>길이</translation>
     </message>
@@ -7966,12 +7966,12 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">키 와 IV</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1605"/>
+        <location filename="../enc_dec_dlg.ui" line="1612"/>
         <source>Output Data</source>
         <translation>결과 데이타</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1592"/>
+        <location filename="../enc_dec_dlg.ui" line="1599"/>
         <source>⬆</source>
         <translation>⬆</translation>
     </message>
@@ -7990,14 +7990,14 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">Test</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1492"/>
-        <location filename="../enc_dec_dlg.ui" line="1529"/>
+        <location filename="../enc_dec_dlg.ui" line="1499"/>
+        <location filename="../enc_dec_dlg.ui" line="1536"/>
         <location filename="../enc_dec_dlg.cpp" line="1502"/>
         <source>Encrypt</source>
         <translation>암호화</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1747"/>
+        <location filename="../enc_dec_dlg.ui" line="1754"/>
         <source>Clear Data All</source>
         <translation>전체 데이타 지우기</translation>
     </message>
@@ -8013,7 +8013,7 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../enc_dec_dlg.ui" line="173"/>
-        <location filename="../enc_dec_dlg.ui" line="1683"/>
+        <location filename="../enc_dec_dlg.ui" line="1690"/>
         <source>C</source>
         <translation>C</translation>
     </message>
@@ -8039,8 +8039,12 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../enc_dec_dlg.ui" line="1177"/>
+        <source>cf) </source>
+        <translation>참고)</translation>
+    </message>
+    <message>
         <source>if IV is less than 16 bytes, the rest are set to 0</source>
-        <translation>IV가 16바이트보다 작으면 나머지 0 설정 됨</translation>
+        <translation type="vanished">IV가 16바이트보다 작으면 나머지 0 설정 됨</translation>
     </message>
     <message>
         <source>In CBC CTR CFB OFB mode if IV is less than 16 bytes, the rest are set to 0</source>
@@ -8051,17 +8055,17 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">AE(Authenticated Encryption) 사용</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1297"/>
+        <location filename="../enc_dec_dlg.ui" line="1304"/>
         <source>AAD</source>
         <translation>AAD</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1386"/>
+        <location filename="../enc_dec_dlg.ui" line="1393"/>
         <source>Tag</source>
         <translation>태그</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1539"/>
+        <location filename="../enc_dec_dlg.ui" line="1546"/>
         <source>Padding</source>
         <translation>패딩</translation>
     </message>
@@ -8307,8 +8311,9 @@ Use %2</source>
         <translation type="vanished">IV 필요 없음</translation>
     </message>
     <message>
+        <location filename="../enc_dec_dlg.ui" line="1197"/>
         <source>If IV is less than 16 bytes, the rest are set to 0</source>
-        <translation type="vanished">IV가 16바이트보다 작으면 나머지 0 설정 됨</translation>
+        <translation>IV가 16바이트보다 작으면 나머지 0 설정 됨</translation>
     </message>
     <message>
         <source>* if IV is less than 16 bytes, the rest are set to 0</source>
@@ -8368,7 +8373,7 @@ Use %2</source>
         <translation>태그를 입력 하세요</translation>
     </message>
     <message>
-        <location filename="../enc_dec_dlg.ui" line="1499"/>
+        <location filename="../enc_dec_dlg.ui" line="1506"/>
         <location filename="../enc_dec_dlg.cpp" line="1513"/>
         <source>Decrypt</source>
         <translation>복호화</translation>
