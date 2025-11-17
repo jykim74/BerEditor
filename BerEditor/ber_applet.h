@@ -87,8 +87,8 @@ public slots:
 private:
     Q_DISABLE_COPY(BerApplet)
 
-    MainWindow* main_win_;
-    SettingsMgr* settings_mgr_;
+    MainWindow* main_win_ = nullptr;
+    SettingsMgr* settings_mgr_ = nullptr;
 
     bool is_pro_;
     bool is_license_;

@@ -38,7 +38,6 @@ BerApplet *berApplet;
 
 BerApplet::BerApplet(QObject *parent) : QObject(parent)
 {
-    main_win_ = nullptr;
     settings_mgr_ = new SettingsMgr;
 
 #ifdef JS_PRO

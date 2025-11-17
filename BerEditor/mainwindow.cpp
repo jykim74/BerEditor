@@ -98,7 +98,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     log_halt_ = false;
 
-    createCryptoDlg();
+//    createCryptoDlg();
     createActions();
     createStatusBar();
 
@@ -145,14 +145,15 @@ MainWindow::~MainWindow()
     delete tsp_client_dlg_;
     delete cmp_client_dlg_;
     delete scep_client_dlg_;
+    delete acme_client_dlg_;
     delete cert_man_dlg_;
+    delete ttlv_encoder_dlg_;
+    delete ttlv_client_dlg_;
     delete content_;
     delete find_dlg_;
     delete key_list_dlg_;
     delete x509_comp_dlg_;
-
-    delete ttlv_encoder_dlg_;
-    delete ttlv_client_dlg_;
+    delete doc_signer_dlg_;
 
     delete table_tab_;
     delete text_tab_;
@@ -1391,39 +1392,39 @@ void MainWindow::createStatusBar()
 
 void MainWindow::createCryptoDlg()
 {
-    key_man_dlg_ = new KeyManDlg;
-    gen_hash_dlg_ = new GenHashDlg;
-    gen_mac_dlg_ = new GenMacDlg;
-    enc_dec_dlg_ = new EncDecDlg;
-    sign_verify_dlg_ = new SignVerifyDlg;
-    pub_enc_dec_dlg_ = new PubEncDecDlg;
-    key_agree_dlg_ = new KeyAgreeDlg;
-    pkcs7_dlg_ = new PKCS7Dlg;
-    sss_dlg_ = new SSSDlg;
-    cert_pvd_dlg_ = new CertPVDDlg;
-    gen_otp_dlg_ = new GenOTPDlg;
-    cavp_dlg_ = new CAVPDlg;
-    ssl_check_dlg_ = new SSLCheckDlg;
-    vid_dlg_ = new VIDDlg;
-    bn_calc_dlg_ = new BNCalcDlg;
-    key_pair_man_dlg_ = new KeyPairManDlg;
-    key_pair_man_dlg_->setMode( KeyPairModeBase );
-    ocsp_client_dlg_ = new OCSPClientDlg;
-    tsp_client_dlg_ = new TSPClientDlg;
-    cmp_client_dlg_ = new CMPClientDlg;
-    scep_client_dlg_ = new SCEPClientDlg;
-    acme_client_dlg_ = new ACMEClientDlg;
-    cert_man_dlg_ = new CertManDlg;
-    cert_man_dlg_->setMode( ManModeBase );
-    ttlv_encoder_dlg_ = new TTLVEncoderDlg;
-    ttlv_encoder_dlg_->setManage();
-    ttlv_client_dlg_ = new TTLVClientDlg;
-    content_ = new ContentMain;
-    find_dlg_ = new FindDlg;
-    key_list_dlg_ = new KeyListDlg;
-    key_list_dlg_->setManage( true );
-    x509_comp_dlg_ = new X509CompareDlg;
-    doc_signer_dlg_ = new DocSignerDlg;
+//    key_man_dlg_ = new KeyManDlg;
+//    gen_hash_dlg_ = new GenHashDlg;
+//    gen_mac_dlg_ = new GenMacDlg;
+//    enc_dec_dlg_ = new EncDecDlg;
+//    sign_verify_dlg_ = new SignVerifyDlg;
+//    pub_enc_dec_dlg_ = new PubEncDecDlg;
+//    key_agree_dlg_ = new KeyAgreeDlg;
+//    pkcs7_dlg_ = new PKCS7Dlg;
+//    sss_dlg_ = new SSSDlg;
+//    cert_pvd_dlg_ = new CertPVDDlg;
+//    gen_otp_dlg_ = new GenOTPDlg;
+//    cavp_dlg_ = new CAVPDlg;
+//    ssl_check_dlg_ = new SSLCheckDlg;
+//    vid_dlg_ = new VIDDlg;
+//    bn_calc_dlg_ = new BNCalcDlg;
+//    key_pair_man_dlg_ = new KeyPairManDlg;
+//    key_pair_man_dlg_->setMode( KeyPairModeBase );
+//    ocsp_client_dlg_ = new OCSPClientDlg;
+//    tsp_client_dlg_ = new TSPClientDlg;
+//    cmp_client_dlg_ = new CMPClientDlg;
+//    scep_client_dlg_ = new SCEPClientDlg;
+//    acme_client_dlg_ = new ACMEClientDlg;
+//    cert_man_dlg_ = new CertManDlg;
+//    cert_man_dlg_->setMode( ManModeBase );
+//    ttlv_encoder_dlg_ = new TTLVEncoderDlg;
+//    ttlv_encoder_dlg_->setManage();
+//    ttlv_client_dlg_ = new TTLVClientDlg;
+//    content_ = new ContentMain;
+//    find_dlg_ = new FindDlg;
+//    key_list_dlg_ = new KeyListDlg;
+//    key_list_dlg_->setManage( true );
+//    x509_comp_dlg_ = new X509CompareDlg;
+//    doc_signer_dlg_ = new DocSignerDlg;
 }
 
 void MainWindow::newFile()
@@ -1499,6 +1500,11 @@ void MainWindow::runBERCheck()
 
 void MainWindow::ttlvClient()
 {
+    if( ttlv_client_dlg_ == nullptr )
+    {
+        ttlv_client_dlg_ = new TTLVClientDlg;
+    }
+
     ttlv_client_dlg_->show();
     ttlv_client_dlg_->raise();
     ttlv_client_dlg_->activateWindow();
@@ -1506,6 +1512,12 @@ void MainWindow::ttlvClient()
 
 void MainWindow::ttlvEncoder()
 {
+    if( ttlv_encoder_dlg_ == nullptr )
+    {
+        ttlv_encoder_dlg_ = new TTLVEncoderDlg;
+        ttlv_encoder_dlg_->setManage();
+    }
+
     ttlv_encoder_dlg_->show();
     ttlv_encoder_dlg_->raise();
     ttlv_encoder_dlg_->activateWindow();
@@ -1960,6 +1972,9 @@ void MainWindow::treeCollapseNode()
 
 void MainWindow::findNode()
 {
+    if( find_dlg_ == nullptr )
+        find_dlg_ = new FindDlg;
+
     find_dlg_->show();
     find_dlg_->raise();
     find_dlg_->activateWindow();
@@ -2267,6 +2282,11 @@ void MainWindow::dataConvert()
 
 void MainWindow::keyManage()
 {
+    if( key_man_dlg_ == nullptr )
+    {
+        key_man_dlg_ = new KeyManDlg;
+    }
+
     key_man_dlg_->show();
     key_man_dlg_->raise();
     key_man_dlg_->activateWindow();
@@ -2274,13 +2294,19 @@ void MainWindow::keyManage()
 
 void MainWindow::hash()
 {
+    if( gen_hash_dlg_ == nullptr )
+        gen_hash_dlg_ = new GenHashDlg;
+
     gen_hash_dlg_->show();
     gen_hash_dlg_->raise();
     gen_hash_dlg_->activateWindow();
 }
 
 void MainWindow::mac()
-{    
+{
+    if( gen_mac_dlg_ == nullptr )
+        gen_mac_dlg_ = new GenMacDlg;
+
     gen_mac_dlg_->show();
     gen_mac_dlg_->raise();
     gen_mac_dlg_->activateWindow();
@@ -2288,6 +2314,9 @@ void MainWindow::mac()
 
 void MainWindow::mac2( const QString strKey, const QString strIV )
 {
+    if( gen_mac_dlg_ == nullptr )
+        gen_mac_dlg_ = new GenMacDlg;
+
     gen_mac_dlg_->mKeyTypeCombo->setCurrentText( "Hex" );
     gen_mac_dlg_->mKeyText->setText( strKey );
 
@@ -2301,6 +2330,9 @@ void MainWindow::mac2( const QString strKey, const QString strIV )
 
 void MainWindow::keyAgree()
 {
+    if( key_agree_dlg_ == nullptr )
+        key_agree_dlg_ = new KeyAgreeDlg;
+
     key_agree_dlg_->show();
     key_agree_dlg_->raise();
     key_agree_dlg_->activateWindow();
@@ -2314,6 +2346,9 @@ void MainWindow::oidInfo()
 
 void MainWindow::encDec()
 {
+    if( enc_dec_dlg_ == nullptr )
+        enc_dec_dlg_ = new EncDecDlg;
+
     enc_dec_dlg_->show();
     enc_dec_dlg_->raise();
     enc_dec_dlg_->activateWindow();
@@ -2321,6 +2356,9 @@ void MainWindow::encDec()
 
 void MainWindow::encDec2( const QString strKey, const QString strIV )
 {
+    if( enc_dec_dlg_ == nullptr )
+        enc_dec_dlg_ = new EncDecDlg;
+
     enc_dec_dlg_->mKeyTypeCombo->setCurrentText( "Hex" );
     enc_dec_dlg_->mKeyText->setText( strKey );
 
@@ -2334,6 +2372,9 @@ void MainWindow::encDec2( const QString strKey, const QString strIV )
 
 void MainWindow::signVerify()
 {
+    if( sign_verify_dlg_ == nullptr )
+        sign_verify_dlg_ = new SignVerifyDlg;
+
     sign_verify_dlg_->show();
     sign_verify_dlg_->raise();
     sign_verify_dlg_->activateWindow();
@@ -2341,6 +2382,9 @@ void MainWindow::signVerify()
 
 void MainWindow::pubEncDec()
 {
+    if( pub_enc_dec_dlg_ == nullptr )
+        pub_enc_dec_dlg_ = new PubEncDecDlg;
+
     pub_enc_dec_dlg_->show();
     pub_enc_dec_dlg_->raise();
     pub_enc_dec_dlg_->activateWindow();
@@ -2348,6 +2392,9 @@ void MainWindow::pubEncDec()
 
 void MainWindow::pkcs7()
 {
+    if( pkcs7_dlg_ == nullptr )
+        pkcs7_dlg_ = new PKCS7Dlg;
+
     pkcs7_dlg_->show();
     pkcs7_dlg_->raise();
     pkcs7_dlg_->activateWindow();
@@ -2355,6 +2402,9 @@ void MainWindow::pkcs7()
 
 void MainWindow::sss()
 {
+    if( sss_dlg_ == nullptr )
+        sss_dlg_ = new SSSDlg;
+
     sss_dlg_->show();
     sss_dlg_->raise();
     sss_dlg_->activateWindow();
@@ -2362,6 +2412,9 @@ void MainWindow::sss()
 
 void MainWindow::certPVD()
 {
+    if( cert_pvd_dlg_ == nullptr )
+        cert_pvd_dlg_ = new CertPVDDlg;
+
     cert_pvd_dlg_->show();
     cert_pvd_dlg_->raise();
     cert_pvd_dlg_->activateWindow();
@@ -2369,6 +2422,9 @@ void MainWindow::certPVD()
 
 void MainWindow::CAVP()
 {
+    if( cavp_dlg_ == nullptr )
+        cavp_dlg_ = new CAVPDlg;
+
     cavp_dlg_->show();
     cavp_dlg_->raise();
     cavp_dlg_->activateWindow();
@@ -2376,6 +2432,9 @@ void MainWindow::CAVP()
 
 void MainWindow::sslCheck()
 {
+    if( ssl_check_dlg_ == nullptr )
+        ssl_check_dlg_ = new SSLCheckDlg;
+
     ssl_check_dlg_->show();
     ssl_check_dlg_->raise();
     ssl_check_dlg_->activateWindow();
@@ -2383,6 +2442,9 @@ void MainWindow::sslCheck()
 
 void MainWindow::x509Compare()
 {
+    if( x509_comp_dlg_ == nullptr )
+        x509_comp_dlg_ = new X509CompareDlg;
+
     x509_comp_dlg_->show();
     x509_comp_dlg_->raise();
     x509_comp_dlg_->activateWindow();
@@ -2390,6 +2452,9 @@ void MainWindow::x509Compare()
 
 void MainWindow::docSigner()
 {
+    if( doc_signer_dlg_ == nullptr )
+        doc_signer_dlg_ = new DocSignerDlg;
+
     doc_signer_dlg_->show();
     doc_signer_dlg_->raise();
     doc_signer_dlg_->activateWindow();
@@ -2397,6 +2462,9 @@ void MainWindow::docSigner()
 
 void MainWindow::genOTP()
 {
+    if( gen_otp_dlg_ == nullptr )
+        gen_otp_dlg_ = new GenOTPDlg;
+
     gen_otp_dlg_->show();
     gen_otp_dlg_->raise();
     gen_otp_dlg_->activateWindow();
@@ -2404,6 +2472,9 @@ void MainWindow::genOTP()
 
 void MainWindow::VID()
 {
+    if( vid_dlg_ == nullptr )
+        vid_dlg_ = new VIDDlg;
+
     vid_dlg_->show();
     vid_dlg_->raise();
     vid_dlg_->activateWindow();
@@ -2411,6 +2482,9 @@ void MainWindow::VID()
 
 void MainWindow::BNCalc()
 {
+    if( bn_calc_dlg_ == nullptr )
+        bn_calc_dlg_ = new BNCalcDlg;
+
     bn_calc_dlg_->show();
     bn_calc_dlg_->raise();
     bn_calc_dlg_->activateWindow();
@@ -2418,6 +2492,12 @@ void MainWindow::BNCalc()
 
 void MainWindow::keyPairMan()
 {
+    if( key_pair_man_dlg_ == nullptr )
+    {
+        key_pair_man_dlg_ = new KeyPairManDlg;
+        key_pair_man_dlg_->setMode( KeyPairModeBase );
+    }
+
     key_pair_man_dlg_->show();
     key_pair_man_dlg_->raise();
     key_pair_man_dlg_->activateWindow();
@@ -2425,6 +2505,9 @@ void MainWindow::keyPairMan()
 
 void MainWindow::ocspClient()
 {
+    if( ocsp_client_dlg_ == nullptr )
+        ocsp_client_dlg_ = new OCSPClientDlg;
+
     ocsp_client_dlg_->show();
     ocsp_client_dlg_->raise();
     ocsp_client_dlg_->activateWindow();
@@ -2432,6 +2515,9 @@ void MainWindow::ocspClient()
 
 void MainWindow::tspClient()
 {
+    if( tsp_client_dlg_ == nullptr )
+        tsp_client_dlg_ = new TSPClientDlg;
+
     tsp_client_dlg_->show();
     tsp_client_dlg_->raise();
     tsp_client_dlg_->activateWindow();
@@ -2439,6 +2525,9 @@ void MainWindow::tspClient()
 
 void MainWindow::cmpClient()
 {
+    if( cmp_client_dlg_ == nullptr )
+        cmp_client_dlg_ = new CMPClientDlg;
+
     cmp_client_dlg_->show();
     cmp_client_dlg_->raise();
     cmp_client_dlg_->activateWindow();
@@ -2446,6 +2535,9 @@ void MainWindow::cmpClient()
 
 void MainWindow::scepClient()
 {
+    if( scep_client_dlg_ == nullptr )
+        scep_client_dlg_ = new SCEPClientDlg;
+
     scep_client_dlg_->show();
     scep_client_dlg_->raise();
     scep_client_dlg_->activateWindow();
@@ -2453,6 +2545,9 @@ void MainWindow::scepClient()
 
 void MainWindow::acmeClient()
 {
+    if( acme_client_dlg_ == nullptr )
+        acme_client_dlg_ = new ACMEClientDlg;
+
     acme_client_dlg_->show();
     acme_client_dlg_->raise();
     acme_client_dlg_->activateWindow();
@@ -2460,8 +2555,13 @@ void MainWindow::acmeClient()
 
 void MainWindow::certMan()
 {
+    if( cert_man_dlg_ == nullptr )
+    {
+        cert_man_dlg_ = new CertManDlg;
+        cert_man_dlg_->setMode( ManModeBase );
+        cert_man_dlg_->setTitle( tr( "Certificate Management" ));
+    }
 
-    cert_man_dlg_->setTitle( tr( "Certificate Management" ));
     cert_man_dlg_->show();
     cert_man_dlg_->raise();
     cert_man_dlg_->activateWindow();
@@ -2469,6 +2569,12 @@ void MainWindow::certMan()
 
 void MainWindow::keyList()
 {
+    if( key_list_dlg_ == nullptr )
+    {
+        key_list_dlg_ = new KeyListDlg;
+        key_list_dlg_->setManage( true );
+    }
+
     key_list_dlg_->show();
     key_list_dlg_->raise();
     key_list_dlg_->activateWindow();
@@ -2593,6 +2699,9 @@ bool MainWindow::isTTLV()
 
 void MainWindow::runSignVerify( bool bSign, bool bEncPri, const QString strPriPath, const QString strCertPath )
 {
+    if( sign_verify_dlg_ == nullptr )
+        sign_verify_dlg_ = new SignVerifyDlg;
+
     sign_verify_dlg_->clickClearDataAll();
     sign_verify_dlg_->mCertGroup->setChecked(true);
     sign_verify_dlg_->mEncPrikeyCheck->setChecked( bEncPri );
@@ -2620,6 +2729,11 @@ void MainWindow::runSignVerify( bool bSign, bool bEncPri, const QString strPriPa
 
 void MainWindow::runPubEncDec( bool bEnc, bool bEncPri, const QString strPriPath, const QString strCertPath )
 {
+    if( pub_enc_dec_dlg_ == nullptr )
+    {
+        pub_enc_dec_dlg_ = new PubEncDecDlg;
+    }
+
     pub_enc_dec_dlg_->clickClearDataAll();
     pub_enc_dec_dlg_->mCertGroup->setChecked(true);
     pub_enc_dec_dlg_->mEncPrikeyCheck->setChecked( bEncPri );
@@ -3531,6 +3645,9 @@ void MainWindow::toggleLog()
 
 void MainWindow::content()
 {
+    if( content_ == nullptr )
+        content_ = new ContentMain;
+
     content_->show();
     content_->raise();
     content_->activateWindow();
