@@ -15,9 +15,6 @@
 #include "common.h"
 #include "mainwindow.h"
 
-static QStringList kPBEv1List = { "PBE-SHA1-3DES", "PBE-SHA1-2DES" };
-static QStringList kPBEv2List = { "AES-128-CBC", "AES-256-CBC", "ARIA-128-CBC", "ARIA-256-CBC" };
-
 SettingsDlg::SettingsDlg(QWidget *parent) :
     QDialog(parent)
 {
@@ -57,8 +54,7 @@ void SettingsDlg::initUI()
     mFileReadSizeText->setValidator( intVal );
     mHexAreaWidthCombo->addItems( sHexWidthList );
 
-    mPriEncMethodCombo->addItems( kPBEv1List );
-    mPriEncMethodCombo->addItems( kPBEv2List );
+    mPriEncMethodCombo->addItems( kPBEList );
 }
 
 void SettingsDlg::initialize()

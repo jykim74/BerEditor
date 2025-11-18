@@ -24,10 +24,6 @@
 static const QString kCertFile = "js_cert.crt";
 static const QString kPriKeyFile = "js_private.key";
 
-static QStringList kVersionList = { "V1", "V2" };
-static QStringList kPBEv1List = { "PBE-SHA1-3DES", "PBE-SHA1-2DES" };
-static QStringList kPBEv2List = { "AES-128-CBC", "AES-256-CBC", "ARIA-128-CBC", "ARIA-256-CBC" };
-
 static QStringList kKeyTypeList = {
     "ALL", JS_PKI_KEY_NAME_RSA, JS_PKI_KEY_NAME_ECDSA, JS_PKI_KEY_NAME_DSA,
     JS_PKI_KEY_NAME_SM2, JS_PKI_KEY_NAME_EDDSA
@@ -71,8 +67,6 @@ CertManDlg::CertManDlg(QWidget *parent) :
     connect( mOtherKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(otherKeyTypeChanged(int)));
     connect( mCAKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(CAKeyTypeChanged(int)));
     connect( mRCAKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(RCAKeyTypeChanged(int)));
-
-    connect( mTLVersionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeTLVerison(int)));
 
     connect( mViewCertBtn, SIGNAL(clicked()), this, SLOT(clickViewCert()));
     connect( mDelCertBtn, SIGNAL(clicked()), this, SLOT(clickDeleteCert()));
@@ -472,15 +466,6 @@ const QString CertManDlg::getModeName( int nMode )
     return strMode;
 }
 
-void CertManDlg::changeTLVerison( int index )
-{
-    mTLModeCombo->clear();
-
-    if( index == 0 )
-        mTLModeCombo->addItems( kPBEv1List );
-    else
-        mTLModeCombo->addItems( kPBEv2List );
-}
 
 void CertManDlg::initUI()
 {
@@ -490,9 +475,8 @@ void CertManDlg::initUI()
     mTLViewPubKeyBtn->setToolTip( tr( "View certificate public key" ));
     mTLSavePFXBtn->setToolTip( tr( "Store PFX certificate and private key in End Entity list" ) );
 
-    mTLVersionCombo->addItems( kVersionList );
-    mTLVersionCombo->setCurrentIndex(1);
-    changeTLVerison( 1 );
+    mTLModeCombo->addItems( kPBEList );
+    mTLModeCombo->setCurrentText( berApplet->settingsMgr()->priEncMethod());
 
 #if defined(Q_OS_MAC)
     int nWidth = width() * 9/10;
@@ -2066,6 +2050,8 @@ void CertManDlg::clickViewPriKey()
     {
         BIN binRead = {0,0};
         BIN binEnc = {0,0};
+        int nPBE = JS_PKI_getNidFromSN( berApplet->settingsMgr()->priEncMethod().toStdString().c_str() );
+
         priKeyInfo.readPrivateKey( &binRead );
 
         if( JS_BIN_cmp( &binRead, &binPriKey ) != 0 )
@@ -2073,7 +2059,7 @@ void CertManDlg::clickViewPriKey()
             bool bVal = berApplet->yesOrCancelBox( tr( "Do you want to change the original key to the changed key?" ), this, false );
             if( bVal == true )
             {
-                ret = JS_PKI_encryptPrivateKey2( -1, strPass.toStdString().c_str(), &binRead, NULL, &binEnc );
+                ret = JS_PKI_encryptPrivateKey2( nPBE, strPass.toStdString().c_str(), &binRead, NULL, &binEnc );
                 if( ret == 0 )
                 {
                     ret = writePriKeyCert( &binEnc, &binCert );
@@ -3476,6 +3462,8 @@ void CertManDlg::clickTLDecryptPFX()
     {
         NewPasswdDlg newPass;
         QString strPass;
+        int nPBE = JS_PKI_getNidFromSN( berApplet->settingsMgr()->priEncMethod().toStdString().c_str() );
+
         newPass.setTitle( tr( "Enter a new private key password" ));
 
         if( newPass.exec() != QDialog::Accepted )
@@ -3484,7 +3472,7 @@ void CertManDlg::clickTLDecryptPFX()
         nKeyType = JS_PKI_getPriKeyType( &binPri );
 
         strPass = newPass.mPasswdText->text();
-        ret = JS_PKI_encryptPrivateKey( -1, strPass.toStdString().c_str(), &binPri, NULL, &binEncPri );
+        ret = JS_PKI_encryptPrivateKey( nPBE, strPass.toStdString().c_str(), &binPri, NULL, &binEncPri );
         if( ret != 0 )
         {
             berApplet->warnLog( tr( "fail to encrypt private key: %1").arg( JERR(ret) ), this);
@@ -3535,6 +3523,7 @@ void CertManDlg::clickTLSavePFX()
 {
     int ret = 0;
     int nKeyType = -1;
+    int nPBE = -1;
 
     BIN binPFX = {0,0};
     BIN binPri = {0,0};
@@ -3543,6 +3532,7 @@ void CertManDlg::clickTLSavePFX()
 
     QString strFile = mTLPFXPathText->text();
     QString strPasswd = mTLPasswdText->text();
+    QString strEncMethod = mTLModeCombo->currentText();
 
     if( strFile.length() < 1 )
     {
@@ -3574,8 +3564,9 @@ void CertManDlg::clickTLSavePFX()
     }
 
     nKeyType = JS_PKI_getPriKeyType( &binPri );
+    nPBE = JS_PKI_getNidFromSN( strEncMethod.toStdString().c_str() );
 
-    ret = JS_PKI_encryptPrivateKey( -1, strPasswd.toStdString().c_str(), &binPri, NULL, &binEncPri );
+    ret = JS_PKI_encryptPrivateKey( nPBE, strPasswd.toStdString().c_str(), &binPri, NULL, &binEncPri );
     if( ret != 0 )
     {
         berApplet->warnLog( tr( "fail to encrypt private key: %1").arg( JERR(ret) ), this );

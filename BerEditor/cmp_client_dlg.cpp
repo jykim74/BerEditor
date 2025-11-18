@@ -16,6 +16,7 @@
 #include "js_pki.h"
 #include "js_cmp.h"
 #include "js_http.h"
+#include "js_pki_tools.h"
 
 const QString kCMPUsedURL = "CMPUsedURL";
 
@@ -251,9 +252,11 @@ void CMPClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
         if( newPass.exec() == QDialog::Accepted )
         {
             QString strPass = newPass.mPasswdText->text();
+            int nPBE = JS_PKI_getNidFromSN( berApplet->settingsMgr()->priEncMethod().toStdString().c_str() );
+
             nKeyType = JS_PKI_getPriKeyType( pPriKey );
 
-            ret = JS_PKI_encryptPrivateKey( -1, strPass.toStdString().c_str(), pPriKey, NULL, &binEncPri );
+            ret = JS_PKI_encryptPrivateKey( nPBE, strPass.toStdString().c_str(), pPriKey, NULL, &binEncPri );
             if( ret == 0 )
             {
                 ret = certMan.writePriKeyCert( &binEncPri, pCert );

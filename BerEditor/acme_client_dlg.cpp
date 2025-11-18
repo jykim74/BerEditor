@@ -32,6 +32,7 @@
 #include "js_pki_x509.h"
 #include "js_pki_ext.h"
 #include "js_error.h"
+#include "js_pki_tools.h"
 
 const QString kACMEUsedURL = "ACMEUsedURL";
 
@@ -1553,13 +1554,15 @@ int ACMEClientDlg::savePriKeyCert( const BIN *pPriKey, const BIN *pCert )
         BIN binEncPri = {0,0};
         CertManDlg certMan;
         NewPasswdDlg newPass;
+        int nPBE = -1;
+        nPBE = JS_PKI_getNidFromSN( berApplet->settingsMgr()->priEncMethod().toStdString().c_str() );
 
         if( newPass.exec() == QDialog::Accepted )
         {
             QString strPass = newPass.mPasswdText->text();
             nKeyType = JS_PKI_getPriKeyType( pPriKey );
 
-            ret = JS_PKI_encryptPrivateKey( -1, strPass.toStdString().c_str(), pPriKey, NULL, &binEncPri );
+            ret = JS_PKI_encryptPrivateKey( nPBE, strPass.toStdString().c_str(), pPriKey, NULL, &binEncPri );
             if( ret == 0 )
             {
                 ret = certMan.writePriKeyCert( &binEncPri, pCert );

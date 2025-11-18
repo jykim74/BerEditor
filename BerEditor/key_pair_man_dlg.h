@@ -63,7 +63,6 @@ private slots:
     void clickLRunPubEnc();
     void clickLRunPubDec();
 
-    void changeVerison( int index );
     void clickSaveToList();
     void clickMakeCSR();
 

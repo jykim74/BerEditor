@@ -26,9 +26,7 @@
 #include "js_pqc.h"
 
 static QString sKeyTypeAll = "ALL";
-static QStringList kVersionList = { "V1", "V2" };
-static QStringList kPBEv1List = { "PBE-SHA1-3DES", "PBE-SHA1-2DES" };
-static QStringList kPBEv2List = { "AES-128-CBC", "AES-256-CBC", "ARIA-128-CBC", "ARIA-256-CBC" };
+
 static QStringList kKeyTypeList = {
     sKeyTypeAll, JS_PKI_KEY_NAME_RSA, JS_PKI_KEY_NAME_ECDSA, JS_PKI_KEY_NAME_DSA,
     JS_PKI_KEY_NAME_SM2, JS_PKI_KEY_NAME_EDDSA
@@ -50,7 +48,6 @@ KeyPairManDlg::KeyPairManDlg(QWidget *parent) :
     load_keypair_ = false;
     is_pqc_ = true;
 
-    connect( mVersionCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeVerison(int)));
     connect( mKeyTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(keyTypeChanged(int)));
     connect( mOKBtn, SIGNAL(clicked()), this, SLOT(clickOK()));
 
@@ -291,8 +288,8 @@ void KeyPairManDlg::initialize()
     QString strKeyPairPath = berApplet->settingsMgr()->keyPairPath();
     mSavePathText->setText( strKeyPairPath );
 
-    mVersionCombo->addItems(kVersionList);
-    mVersionCombo->setCurrentIndex(1);
+    mModeCombo->addItems( kPBEList );
+    mModeCombo->setCurrentText( berApplet->settingsMgr()->priEncMethod());
 
     if( load_keypair_ == false )
         loadKeyPairList();
@@ -479,16 +476,6 @@ const QString KeyPairManDlg::getTypePathName( qint64 now_t, DerType nType )
     strFullName += QString( "/%1_%2.%3" ).arg( strName ).arg( strDateTime ).arg(strExt);
 
     return strFullName;
-}
-
-void KeyPairManDlg::changeVerison( int index )
-{
-    mModeCombo->clear();
-
-    if( index == 0 )
-        mModeCombo->addItems( kPBEv1List );
-    else
-        mModeCombo->addItems( kPBEv2List );
 }
 
 int KeyPairManDlg::Save( qint64 tTime, DerType nType, const QString strHex )

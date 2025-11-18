@@ -79,8 +79,6 @@ private slots:
     void CAKeyTypeChanged( int index );
     void RCAKeyTypeChanged( int index );
 
-    void changeTLVerison( int index );
-
     void clickViewCert();
     void clickDeleteCert();
     void clickDecodeCert();

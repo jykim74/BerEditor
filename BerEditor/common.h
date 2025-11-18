@@ -299,6 +299,10 @@ static QStringList kSHA12HashList = {
     "SHA512",
 };
 
+static QStringList kPBEList = {
+    "AES-128-CBC", "AES-256-CBC", "ARIA-128-CBC", "ARIA-256-CBC",   // Version2
+    "PBE-SHA1-3DES", "PBE-SHA1-2DES"                                // Version1
+};
 
 static int kIterCnt = 1024;
 static QString kSalt = "BerEditor";
