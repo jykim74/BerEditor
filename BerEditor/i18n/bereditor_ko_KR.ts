@@ -18856,47 +18856,47 @@ Only RSA is supported.</source>
         <translation>모든 입력값의 길이는 같아야 합니다</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="205"/>
+        <location filename="../sss_dlg.cpp" line="213"/>
         <source>Enter source value</source>
         <translation>소스 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="219"/>
+        <location filename="../sss_dlg.cpp" line="227"/>
         <source>There is no input value or the input type is incorrect.</source>
         <translation>입력 값이 없거나 또는 입력 타입이 맞지 않습니다</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="231"/>
+        <location filename="../sss_dlg.cpp" line="239"/>
         <source>Prime value ​​must be greater to the source value</source>
         <translation>소수는 입력 값 보다 커야 합니다</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="264"/>
+        <location filename="../sss_dlg.cpp" line="272"/>
         <source>Key splitting was successful</source>
         <translation>키 나누기 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="336"/>
+        <location filename="../sss_dlg.cpp" line="344"/>
         <source>Key join was successful</source>
         <translation>키 조인에 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="374"/>
+        <location filename="../sss_dlg.cpp" line="382"/>
         <source>Copy</source>
         <translation>복사</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="440"/>
+        <location filename="../sss_dlg.cpp" line="448"/>
         <source>Insert a prime value</source>
         <translation>소수를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="456"/>
+        <location filename="../sss_dlg.cpp" line="464"/>
         <source>The value is prime</source>
         <translation>이 값은 소수 입니다.</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="458"/>
+        <location filename="../sss_dlg.cpp" line="466"/>
         <source>The value is not prime</source>
         <translation>이 값은 소수가 아닙니다.</translation>
     </message>
@@ -18909,22 +18909,23 @@ Only RSA is supported.</source>
         <translation type="vanished">소수는 입력 소스 길이보다 같거나 커야 합니다</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="239"/>
+        <location filename="../sss_dlg.cpp" line="247"/>
         <source>fail to split key: %1</source>
         <translation>키 나누기 실패 : %1</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="285"/>
+        <location filename="../sss_dlg.cpp" line="300"/>
         <source>Two or more shared values ​​are required</source>
         <translation>2개 이상의 공유된 값이 요구 됩니다</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="292"/>
+        <location filename="../sss_dlg.cpp" line="206"/>
+        <location filename="../sss_dlg.cpp" line="293"/>
         <source>Enter a prime number</source>
         <translation>소수 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="326"/>
+        <location filename="../sss_dlg.cpp" line="334"/>
         <source>fail to join key: %1</source>
         <translation>키 합치기 실패 : %1</translation>
     </message>
@@ -18946,7 +18947,7 @@ Only RSA is supported.</source>
         <translation type="vanished">소스 값은 8바이트 이상이어야 합니다.</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="371"/>
+        <location filename="../sss_dlg.cpp" line="379"/>
         <source>Delete</source>
         <translation>삭제</translation>
     </message>

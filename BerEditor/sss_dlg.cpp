@@ -194,11 +194,19 @@ void SSSDlg::clickSplit()
     int nThreshold = mThresholdText->text().toInt();
 
     QString strSrc = mSrcText->text();
+    QString strPrime = mPrimeText->text();
 
     BIN binSrc = {0,0};
     BINList *pShareList = NULL;
     BINList *pCurList = NULL;
     BIN binPrime = {0,0};
+
+    if( strPrime.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a prime number" ), this );
+        mPrimeText->setFocus();
+        return;
+    }
 
     if( strSrc.length() < 1 )
     {
@@ -280,17 +288,17 @@ void SSSDlg::clickJoin()
     BIN binPrime = {0,0};
     QString strKeyValue;
 
-    if( nRow < 2 )
-    {
-        berApplet->warningBox( tr( "Two or more shared values ​​are required" ), this );
-        mShareText->setFocus();
-        return;
-    }
-
     if( strPrime.length() < 1 )
     {
         berApplet->warningBox(tr("Enter a prime number" ), this );
         mPrimeText->setFocus();
+        return;
+    }
+
+    if( nRow < 2 )
+    {
+        berApplet->warningBox( tr( "Two or more shared values ​​are required" ), this );
+        mShareText->setFocus();
         return;
     }
 
