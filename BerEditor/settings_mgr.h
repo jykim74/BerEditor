@@ -35,6 +35,7 @@ const char *kLinkList = "linkList";
 const char *kRunTime = "runTime";
 const char *kUseCertMan = "useCertMan";
 const char *kAutoExpand = "autoExpand";
+const char *kPriEncMethod = "priEncMethod";
 }
 
 class SettingsMgr : public QObject
@@ -116,6 +117,10 @@ public:
     QString getLinkList();
     QString linkList() { return link_list_; };
 
+    void setPriEncMethod( const QString strMethod );
+    QString getPriEncMethod();
+    QString priEncMethod() { return pri_enc_method_; };
+
     void setRunTime( time_t tRun );
     time_t getRunTime();
 
@@ -144,6 +149,7 @@ private:
     int view_help_;
 
     QString link_list_;
+    QString pri_enc_method_;
 
 private:
     Q_DISABLE_COPY(SettingsMgr)

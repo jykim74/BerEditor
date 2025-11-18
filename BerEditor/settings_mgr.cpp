@@ -44,6 +44,7 @@ void SettingsMgr::initialize()
     getViewValue( VIEW_HELP );
 
     getLinkList();
+    getPriEncMethod();
 }
 
 void SettingsMgr::removeSet( const QString& group, const QString& name )
@@ -622,6 +623,27 @@ QString SettingsMgr::getLinkList()
     sets.endGroup();
 
     return link_list_;
+}
+
+void SettingsMgr::setPriEncMethod( const QString strMethod )
+{
+    QSettings sets;
+    sets.beginGroup( kBehaviorGroup );
+    sets.setValue( kPriEncMethod, strMethod );
+    sets.endGroup();
+
+    pri_enc_method_ = strMethod;
+}
+
+QString SettingsMgr::getPriEncMethod()
+{
+    QSettings sets;
+
+    sets.beginGroup( kBehaviorGroup );
+    pri_enc_method_ = sets.value( kPriEncMethod, "AES-128-CBC" ).toString();
+    sets.endGroup();
+
+    return pri_enc_method_;
 }
 
 void SettingsMgr::setRunTime( time_t tRun )

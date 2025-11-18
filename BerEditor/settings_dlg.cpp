@@ -15,10 +15,14 @@
 #include "common.h"
 #include "mainwindow.h"
 
+static QStringList kPBEv1List = { "PBE-SHA1-3DES", "PBE-SHA1-2DES" };
+static QStringList kPBEv2List = { "AES-128-CBC", "AES-256-CBC", "ARIA-128-CBC", "ARIA-256-CBC" };
+
 SettingsDlg::SettingsDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
+    initUI();
 
     mLangComboBox->addItems(I18NHelper::getInstance()->getLanguages());
 
@@ -45,7 +49,7 @@ SettingsDlg::~SettingsDlg()
 
 }
 
-void SettingsDlg::initialize()
+void SettingsDlg::initUI()
 {
     const QStringList sHexWidthList = { "", "8", "16", "32", "64", "80" };
 
@@ -53,6 +57,12 @@ void SettingsDlg::initialize()
     mFileReadSizeText->setValidator( intVal );
     mHexAreaWidthCombo->addItems( sHexWidthList );
 
+    mPriEncMethodCombo->addItems( kPBEv1List );
+    mPriEncMethodCombo->addItems( kPBEv2List );
+}
+
+void SettingsDlg::initialize()
+{
     if( berApplet->isLicense() == false )
     {
         mDefaultHashGroup->setEnabled( false );
@@ -61,6 +71,7 @@ void SettingsDlg::initialize()
         mCertPathGroup->setEnabled( false );
         mSupportKeyPairChangeCheck->setEnabled( false );
         mUseCertManCheck->setEnabled( false );
+        mPriEncGroup->setEnabled( false );
     }
 
     initFontFamily();
@@ -95,6 +106,7 @@ void SettingsDlg::updateSettings()
         mgr->setCertPath( mCertPathText->text() );
         mgr->makeCertPath();
         mgr->setSupportKeyPairChagne( mSupportKeyPairChangeCheck->checkState() == Qt::Checked );
+        mgr->setPriEncMethod( mPriEncMethodCombo->currentText() );
     }
 
     bool language_changed = false;
@@ -153,6 +165,7 @@ void SettingsDlg::clickRestoreDefaults()
     mgr->removeSet( kBehaviorGroup, kHexAreaWidth );
     mgr->removeSet( kBehaviorGroup, kSupportKeyPairChange );
     mgr->removeSet( kBehaviorGroup, kCertPath );
+    mgr->removeSet( kBehaviorGroup, kPriEncMethod );
 
     if( berApplet->yesOrNoBox(tr("Restored to default settings. Restart to apply it?"), this, true))
         berApplet->restartApp();
@@ -245,8 +258,7 @@ void SettingsDlg::showEvent(QShowEvent *event)
     mLangComboBox->setCurrentIndex(I18NHelper::getInstance()->preferredLanguage());
     mFontFamilyCombo->setCurrentText( mgr->getFontFamily() );
     mHexAreaWidthCombo->setCurrentText( QString( "%1" ).arg( berApplet->settingsMgr()->getHexAreaWidth()));
-
-
+    mPriEncMethodCombo->setCurrentText( mgr->getPriEncMethod() );
 
     QDialog::showEvent(event);
 }

@@ -35,6 +35,7 @@ private slots:
     void clickRestoreDefaults();
 
 private:
+    void initUI();
     void initialize();
     void initFontFamily();
 //    Ui::SettingsDlg *ui;

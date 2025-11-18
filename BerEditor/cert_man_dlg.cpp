@@ -1854,6 +1854,8 @@ void CertManDlg::clickImport()
     BIN binEncPri = {0,0};
     BIN binCert = {0,0};
 
+    int nPBE = -1;
+
     strPFXFile = berApplet->findFile( this, JS_FILE_TYPE_PFX, strPFXFile );
     if( strPFXFile.length() < 1 ) return;
 
@@ -1871,7 +1873,9 @@ void CertManDlg::clickImport()
         goto end;
     }
 
-    ret = JS_PKI_encryptPrivateKey( -1, strPass.toStdString().c_str(), &binPri, NULL, &binEncPri );
+    nPBE = JS_PKI_getNidFromSN( berApplet->settingsMgr()->priEncMethod().toStdString().c_str() );
+
+    ret = JS_PKI_encryptPrivateKey( nPBE, strPass.toStdString().c_str(), &binPri, NULL, &binEncPri );
     if( ret != 0 )
     {
         berApplet->warnLog( tr( "fail to encrypt private key: %1").arg( JERR(ret) ), this );
@@ -1960,6 +1964,7 @@ void CertManDlg::clickChangePasswd()
 {
     int ret = 0;
     int nKeyType = -1;
+    int nPBE = -1;
 
     BIN binPriKey = {0,0};
     BIN binEncPriKey = {0,0};
@@ -1991,12 +1996,13 @@ void CertManDlg::clickChangePasswd()
     }
 
     nKeyType = JS_PKI_getPriKeyType( &binPriKey );
+    nPBE = JS_PKI_getNidFromSN( berApplet->settingsMgr()->priEncMethod().toStdString().c_str() );
 
     if( newPasswd.exec() == QDialog::Accepted )
     {
         QString strNewPass = newPasswd.mPasswdText->text();
 
-        ret = JS_PKI_encryptPrivateKey( -1, strNewPass.toStdString().c_str(), &binPriKey, NULL, &binNewEncPriKey );
+        ret = JS_PKI_encryptPrivateKey( nPBE, strNewPass.toStdString().c_str(), &binPriKey, NULL, &binNewEncPriKey );
         if( ret != 0 )
         {
             berApplet->warnLog( tr( "fail to encrypt private key: %1").arg( JERR(ret) ), this );

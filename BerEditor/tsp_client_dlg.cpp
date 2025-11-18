@@ -41,7 +41,6 @@ TSPClientDlg::TSPClientDlg(QWidget *parent) :
     connect( mResponseClearBtn, SIGNAL(clicked()), this, SLOT(clearResponse()));
 
     connect( mFindSrvCertBtn, SIGNAL(clicked()), this, SLOT(findSrvCert()));
-    connect( mSelectSrvCertBtn, SIGNAL(clicked()), this, SLOT(selectSrvCert()));
     connect( mSrvCertViewBtn, SIGNAL(clicked()), this, SLOT(viewSrvCert()));
     connect( mSrvCertDecodeBtn, SIGNAL(clicked()), this, SLOT(decodeSrvCert()));
     connect( mSrvCertTypeBtn, SIGNAL(clicked()), this, SLOT(typeSrvCert()));
@@ -227,32 +226,6 @@ void TSPClientDlg::findSrvCert()
     if( filePath.length() > 0 )
     {
         mSrvCertPathText->setText( filePath );
-    }
-}
-
-void TSPClientDlg::selectSrvCert()
-{
-    QString strPath = mSrvCertPathText->text();
-
-    if( strPath.length() < 1 )
-    {
-        CertManDlg certMan;
-        certMan.setMode(ManModeSelCert);
-        certMan.setTitle( tr( "Select TSP certificate" ));
-
-        if( certMan.exec() != QDialog::Accepted )
-            return;
-
-        strPath = certMan.getSeletedCertPath();
-        if( strPath.length() < 1 )
-        {
-            berApplet->warningBox( "Select TSP certificate", this );
-            return;
-        }
-        else
-        {
-            mSrvCertPathText->setText( strPath );
-        }
     }
 }
 
