@@ -98,6 +98,7 @@ SignVerifyDlg::SignVerifyDlg(QWidget *parent) :
 
     connect( mEncPrikeyCheck, SIGNAL(clicked()), this, SLOT(checkEncPriKey()));
     connect( mCertGroup, SIGNAL(clicked(bool)), this, SLOT(checkCertGroup()));
+    connect( mUseCertManCheck, SIGNAL(clicked()), this, SLOT(checkUseCertMan()));
 
 
     initialize();
@@ -190,6 +191,7 @@ void SignVerifyDlg::initialize()
     checkEncPriKey();
     mSignRadio->click();
     mUseCertManCheck->setChecked( berApplet->settingsMgr()->useCertMan() );
+    checkUseCertMan();
 }
 
 int SignVerifyDlg::readPrivateKey( BIN *pPriKey )
@@ -1491,13 +1493,29 @@ void SignVerifyDlg::onTaskUpdate( qint64 nUpdate )
     mSignProgBar->setValue( nPercent );
 }
 
+void SignVerifyDlg::checkUseCertMan()
+{
+    if( mUseCertManCheck->isChecked() == true )
+        mKeyLabel->setText( tr("Use CertMan key") );
+    else
+        mKeyLabel->setText( tr( "Use KeyPairMan key" ));
+}
+
 void SignVerifyDlg::checkCertGroup()
 {
     if( mCertGroup->isChecked() == true )
     {
+        mKeyLabel->setText( tr("Use file key") );
+        mUseCertManCheck->setEnabled( false );
+
         if( mSignRadio->isChecked() == true )
             checkSign();
         else
             checkVerify();
+    }
+    else
+    {
+        mUseCertManCheck->setEnabled( true );
+        checkUseCertMan();
     }
 }

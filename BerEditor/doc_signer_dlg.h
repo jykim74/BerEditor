@@ -44,6 +44,7 @@ private slots:
 
     void clickClearAll();
     void changeSignerTab();
+    void checkUseCertMan();
 
     void checkCMSEncode();
     void checkCMSDecode();

@@ -64,6 +64,7 @@ private slots:
     void onTaskFinished();
     void onTaskUpdate( qint64 nUpdate );
 
+    void checkUseCertMan();
     void checkCertGroup();
 
 public slots:

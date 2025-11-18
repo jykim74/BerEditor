@@ -39,6 +39,13 @@
        </property>
       </spacer>
      </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="mKeyLabel">
+       <property name="text">
+        <string>Use CertMan key</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>

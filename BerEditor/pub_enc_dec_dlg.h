@@ -46,6 +46,7 @@ private slots:
     void clickInputClear();
     void clickOutputClear();
 
+    void checkUseCertMan();
     void checkCertGroup();
 
 public slots:

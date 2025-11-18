@@ -69,6 +69,7 @@ PubEncDecDlg::PubEncDecDlg(QWidget *parent) :
     connect( mOutputClearBtn, SIGNAL(clicked()), this, SLOT(clickOutputClear()));
 
     connect( mCertGroup, SIGNAL(clicked()), this, SLOT(checkCertGroup()));
+    connect( mUseCertManCheck, SIGNAL(clicked()), this, SLOT(checkUseCertMan()));
 
 
     initialize();
@@ -117,6 +118,7 @@ void PubEncDecDlg::initialize()
 
     mEncryptRadio->click();
     mUseCertManCheck->setChecked( berApplet->settingsMgr()->useCertMan() );
+    checkUseCertMan();
 }
 
 int PubEncDecDlg::readPrivateKey( BIN *pPriKey )
@@ -795,13 +797,29 @@ void PubEncDecDlg::clickOutputClear()
     mOutputText->clear();
 }
 
+void PubEncDecDlg::checkUseCertMan()
+{
+    if( mUseCertManCheck->isChecked() == true )
+        mKeyLabel->setText( tr("Use CertMan key") );
+    else
+        mKeyLabel->setText( tr( "Use KeyPairMan key" ));
+}
+
 void PubEncDecDlg::checkCertGroup()
 {
     if( mCertGroup->isChecked() == true )
     {
+        mKeyLabel->setText( tr("Use file key") );
+        mUseCertManCheck->setEnabled( false );
+
         if( mEncryptRadio->isChecked() == true )
             checkEncrypt();
         else
             checkDecrypt();
+    }
+    else
+    {
+        mUseCertManCheck->setEnabled( true );
+        checkUseCertMan();
     }
 }

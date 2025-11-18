@@ -52,6 +52,7 @@ DocSignerDlg::DocSignerDlg(QWidget *parent)
     connect( mClearAllBtn, SIGNAL(clicked()), this, SLOT(clickClearAll()));
     connect( mFindSrcPathBtn, SIGNAL(clicked()), this, SLOT(findSrcPath()));
     connect( mFindDstPathBtn, SIGNAL(clicked()), this, SLOT(findDstPath()));
+    connect( mUseCertManCheck, SIGNAL(clicked()), this, SLOT(checkUseCertMan()));
 
     connect( mSrcFileCheck, SIGNAL(clicked()), this, SLOT(checkSrcFile()));
     connect( mDstFileCheck, SIGNAL(clicked()), this, SLOT(checkDstFile()));
@@ -305,10 +306,31 @@ void DocSignerDlg::checkCMSAutoDetect()
     mCMSCmdCombo->setEnabled( !bVal );
 }
 
+void DocSignerDlg::checkUseCertMan()
+{
+    int index = mTabSigner->currentIndex();
+
+    if( index == 0 )
+    {
+        mKeyLabel->setText( tr("Use CertMan key" ));
+    }
+    else
+    {
+        bool bVal = mUseCertManCheck->isChecked();
+
+        if( bVal == true )
+            mKeyLabel->setText( tr("Use CertMan key" ));
+        else
+            mKeyLabel->setText( tr("Use KeyPairMan key" ) );
+    }
+}
+
 void DocSignerDlg::changeSignerTab()
 {
     int index = mTabSigner->currentIndex();
     mHashCombo->clear();
+
+    checkUseCertMan();
 
     if( index == 0 )
     {
@@ -609,6 +631,7 @@ void DocSignerDlg::initialize()
     checkUseTSP();
 
     mUseCertManCheck->setChecked( berApplet->settingsMgr()->useCertMan() );
+    checkUseCertMan();
 }
 
 QStringList DocSignerDlg::getUsedURL()

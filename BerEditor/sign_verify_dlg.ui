@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>576</width>
-    <height>825</height>
+    <height>639</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,6 +19,20 @@
      <property name="topMargin">
       <number>0</number>
      </property>
+     <item row="0" column="7">
+      <widget class="QCheckBox" name="mUseCertManCheck">
+       <property name="text">
+        <string>Use CertMan</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="5">
+      <widget class="QLabel" name="mKeyLabel">
+       <property name="text">
+        <string>Use KeyPairMan key</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="mHeadLabel">
        <property name="text">
@@ -39,10 +53,10 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="5">
-      <widget class="QCheckBox" name="mUseCertManCheck">
-       <property name="text">
-        <string>Use CertMan</string>
+     <item row="0" column="6">
+      <widget class="Line" name="line_4">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
        </property>
       </widget>
      </item>
