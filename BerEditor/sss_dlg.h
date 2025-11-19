@@ -45,6 +45,7 @@ private slots:
     void clickIsPrime();
 
 private:
+    void initUI();
     void initialize();
 };
 

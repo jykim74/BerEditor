@@ -24,6 +24,7 @@ SSSDlg::SSSDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
+    initUI();
 
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mAddBtn, SIGNAL(clicked()), this, SLOT(clickAdd()));
@@ -70,12 +71,22 @@ SSSDlg::~SSSDlg()
 
 }
 
+void SSSDlg::initUI()
+{
+    QRegExp regExp("^[0-9-]*$");
+    QRegExpValidator* regVal = new QRegExpValidator( regExp );
+    QRegExpValidator* regThres = new QRegExpValidator( regExp );
+
+    mSharesText->setValidator( regVal );
+    mThresholdText->setValidator( regVal );
+}
+
 void SSSDlg::initialize()
 {
     mSharesText->setText( "5" );
     mThresholdText->setText( "3" );
 
-    QStringList headerList = { tr( "Num"), tr( "X||Y Value") };
+    QStringList headerList = { tr( "Shared value") };
 
     mSrcTypeCombo->addItems( kDataTypeList );
     mJoinedTypeCombo->addItems( kDataTypeList );
@@ -164,7 +175,7 @@ void SSSDlg::clickAdd()
 
     for( int i = 0; i < row; i++ )
     {
-        QTableWidgetItem *item = mShareTable->item( i, 1 );
+        QTableWidgetItem *item = mShareTable->item( i, 0 );
         if( item->text() == strValue )
         {
             berApplet->warningBox( tr( "%1 is already added").arg( strValue ), this );
@@ -180,8 +191,7 @@ void SSSDlg::clickAdd()
 
     mShareTable->insertRow(0);
     mShareTable->setRowHeight( 0, 10 );
-    mShareTable->setItem( 0, 0, new QTableWidgetItem( QString( "%1").arg(row + 1)));
-    mShareTable->setItem( 0, 1, new QTableWidgetItem( strValue ));
+    mShareTable->setItem( 0, 0, new QTableWidgetItem( strValue ));
 
     mShareText->clear();
 }
@@ -200,6 +210,20 @@ void SSSDlg::clickSplit()
     BINList *pShareList = NULL;
     BINList *pCurList = NULL;
     BIN binPrime = {0,0};
+
+    if( mSharesText->text().length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a shared number" ), this );
+        mSharesText->setFocus();
+        return;
+    }
+
+    if( mThresholdText->text().length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a threshold" ), this );
+        mThresholdText->setFocus();
+        return;
+    }
 
     if( strPrime.length() < 1 )
     {
@@ -241,10 +265,10 @@ void SSSDlg::clickSplit()
         goto end;
     }
 
-    ret = JS_PKI_splitKey( nShares, nThreshold, &binPrime, &binSrc, &pShareList );
+    ret = JS_PKI_splitKeyGF256( nShares, nThreshold, &binPrime, &binSrc, &pShareList );
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to split key: %1").arg(ret), this );
+        berApplet->warningBox( tr( "fail to split key: %1").arg(JERR(ret)), this );
         goto end;
     }
 
@@ -259,8 +283,7 @@ void SSSDlg::clickSplit()
         mShareTable->insertRow(0);
 
         mShareTable->setRowHeight( 0, 10 );
-        mShareTable->setItem( 0, 0, new QTableWidgetItem( QString( "%1").arg(i+1)));
-        mShareTable->setItem( 0, 1, new QTableWidgetItem( strVal ));
+        mShareTable->setItem( 0, 0, new QTableWidgetItem( strVal ));
 
         berApplet->log( QString( "Split Key Value : %1").arg( getHexString(&pCurList->Bin)));
 
@@ -282,11 +305,19 @@ void SSSDlg::clickJoin()
     int ret = 0;
     int nRow = mShareTable->rowCount();
     QString strPrime = mPrimeText->text();
+    QString strThresHold = mThresholdText->text();
 
     BINList *pShareList = NULL;
     BIN binKey = {0,0};
     BIN binPrime = {0,0};
     QString strKeyValue;
+
+    if( strThresHold.length() < 1 )
+    {
+        berApplet->warningBox( tr( "Enter a threshold" ), this );
+        mThresholdText->setFocus();
+        return;
+    }
 
     if( strPrime.length() < 1 )
     {
@@ -302,6 +333,13 @@ void SSSDlg::clickJoin()
         return;
     }
 
+    if( nRow < strThresHold.toInt() )
+    {
+        berApplet->warningBox( tr("%1 data are required").arg( strThresHold ), this );
+        mShareText->setFocus();
+        return;
+    }
+
     berApplet->logLine();
     berApplet->log( "-- Join Key" );
     berApplet->logLine2();
@@ -312,7 +350,7 @@ void SSSDlg::clickJoin()
     for( int i = 0; i < nRow; i++ )
     {
         BIN binVal = {0,0};
-        QTableWidgetItem *item = mShareTable->item( i, 1 );
+        QTableWidgetItem *item = mShareTable->item( i, 0 );
         if( item == NULL ) continue;
 
         QString strVal = item->text();
@@ -326,12 +364,11 @@ void SSSDlg::clickJoin()
 
     berApplet->logLine();
 
-//    ret = JS_PKI_joinKey( nRow, pShareList, &binKey );
-    ret = JS_PKI_joinKey( nRow, &binPrime, pShareList, &binKey );
+    ret = JS_PKI_joinKeyGF256( strThresHold.toInt(), &binPrime, pShareList, &binKey );
 
     if( ret != 0 )
     {
-        berApplet->warningBox( tr( "fail to join key: %1").arg(ret), this );
+        berApplet->warningBox( tr( "fail to join key: %1").arg(JERR(ret)), this );
         goto end;
     }
 
@@ -397,7 +434,7 @@ void SSSDlg::delShare()
 void SSSDlg::copyShare()
 {
     QModelIndex idx = mShareTable->currentIndex();
-    QTableWidgetItem* item = mShareTable->item( idx.row(), 1 );
+    QTableWidgetItem* item = mShareTable->item( idx.row(), 0 );
     if( item == NULL ) return;
 
     QClipboard *clipboard = QGuiApplication::clipboard();

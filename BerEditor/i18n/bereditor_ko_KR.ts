@@ -18707,14 +18707,14 @@ Only RSA is supported.</source>
         <translation>Shamir Secret Sharing Scheme</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="232"/>
+        <location filename="../sss_dlg.ui" line="239"/>
         <source>Source Data</source>
         <translation>소스 데이타</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="135"/>
-        <location filename="../sss_dlg.ui" line="261"/>
-        <location filename="../sss_dlg.ui" line="562"/>
+        <location filename="../sss_dlg.ui" line="142"/>
+        <location filename="../sss_dlg.ui" line="268"/>
+        <location filename="../sss_dlg.ui" line="569"/>
         <source>C</source>
         <translation>C</translation>
     </message>
@@ -18723,17 +18723,17 @@ Only RSA is supported.</source>
         <translation type="vanished">Shamir Secret Sharing</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="75"/>
+        <location filename="../sss_dlg.ui" line="82"/>
         <source>Threshold</source>
         <translation>분계점</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="102"/>
+        <location filename="../sss_dlg.ui" line="109"/>
         <source>Prime</source>
         <translation>소수</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="122"/>
+        <location filename="../sss_dlg.ui" line="129"/>
         <source>Shares</source>
         <translation>공유</translation>
     </message>
@@ -18751,12 +18751,12 @@ Only RSA is supported.</source>
         <translation type="vanished">비트</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="412"/>
+        <location filename="../sss_dlg.ui" line="419"/>
         <source>Add</source>
         <translation>추가</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="356"/>
+        <location filename="../sss_dlg.ui" line="363"/>
         <source>Share Data</source>
         <translation>공유 데이타</translation>
     </message>
@@ -18765,17 +18765,17 @@ Only RSA is supported.</source>
         <translation type="vanished">결과 지우기</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="546"/>
+        <location filename="../sss_dlg.ui" line="553"/>
         <source>Joined Data</source>
         <translation>결합 데이타</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="647"/>
+        <location filename="../sss_dlg.ui" line="654"/>
         <source>Clear Data All</source>
         <translation>전체 데이타 지우기</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="442"/>
+        <location filename="../sss_dlg.ui" line="449"/>
         <source>Clear</source>
         <translation>지우기</translation>
     </message>
@@ -18788,27 +18788,27 @@ Only RSA is supported.</source>
         <translation type="vanished">K</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="449"/>
+        <location filename="../sss_dlg.ui" line="456"/>
         <source>Join</source>
         <translation>합치기</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="268"/>
+        <location filename="../sss_dlg.ui" line="275"/>
         <source>Split</source>
         <translation>나누기</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="82"/>
+        <location filename="../sss_dlg.ui" line="89"/>
         <source>Bytes</source>
         <translation>바이트</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="211"/>
+        <location filename="../sss_dlg.ui" line="218"/>
         <source>IsPrime</source>
         <translation>소수유무</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="640"/>
+        <location filename="../sss_dlg.ui" line="647"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
@@ -18821,82 +18821,96 @@ Only RSA is supported.</source>
         <translation type="vanished">값</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="78"/>
         <source>Num</source>
-        <translation>번호</translation>
+        <translation type="vanished">번호</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="78"/>
         <source>X||Y Value</source>
-        <translation>X||Y 값</translation>
+        <translation type="vanished">X||Y 값</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="106"/>
+        <location filename="../sss_dlg.cpp" line="117"/>
         <source>Enter the prime number to use for SSS</source>
         <translation>SSS에 사용할 소수를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="107"/>
+        <location filename="../sss_dlg.cpp" line="118"/>
         <source>Enter the values ​​to combine</source>
         <translation>결합 할 값을 입력 하세요</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="108"/>
+        <location filename="../sss_dlg.cpp" line="119"/>
         <source>Enter the key value to split</source>
         <translation>분할 할 키 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="158"/>
+        <location filename="../sss_dlg.cpp" line="169"/>
         <source>Enter shared value</source>
         <translation>공유키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="176"/>
+        <location filename="../sss_dlg.cpp" line="187"/>
         <source>All inputs must have the same length.</source>
         <translation>모든 입력값의 길이는 같아야 합니다</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="213"/>
+        <location filename="../sss_dlg.cpp" line="216"/>
+        <source>Enter a shared number</source>
+        <translation>분할 수를 입력하세요</translation>
+    </message>
+    <message>
+        <location filename="../sss_dlg.cpp" line="223"/>
+        <location filename="../sss_dlg.cpp" line="317"/>
+        <source>Enter a threshold</source>
+        <translation>임계값을 입력하세요</translation>
+    </message>
+    <message>
+        <location filename="../sss_dlg.cpp" line="237"/>
         <source>Enter source value</source>
         <translation>소스 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="227"/>
+        <location filename="../sss_dlg.cpp" line="251"/>
         <source>There is no input value or the input type is incorrect.</source>
         <translation>입력 값이 없거나 또는 입력 타입이 맞지 않습니다</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="239"/>
+        <location filename="../sss_dlg.cpp" line="263"/>
         <source>Prime value ​​must be greater to the source value</source>
         <translation>소수는 입력 값 보다 커야 합니다</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="272"/>
+        <location filename="../sss_dlg.cpp" line="295"/>
         <source>Key splitting was successful</source>
         <translation>키 나누기 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="344"/>
+        <location filename="../sss_dlg.cpp" line="338"/>
+        <source>%1 data are required</source>
+        <translation>%1 데이타가 요구 됩니다</translation>
+    </message>
+    <message>
+        <location filename="../sss_dlg.cpp" line="381"/>
         <source>Key join was successful</source>
         <translation>키 조인에 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="382"/>
+        <location filename="../sss_dlg.cpp" line="419"/>
         <source>Copy</source>
         <translation>복사</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="448"/>
+        <location filename="../sss_dlg.cpp" line="485"/>
         <source>Insert a prime value</source>
         <translation>소수를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="464"/>
+        <location filename="../sss_dlg.cpp" line="501"/>
         <source>The value is prime</source>
         <translation>이 값은 소수 입니다.</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="466"/>
+        <location filename="../sss_dlg.cpp" line="503"/>
         <source>The value is not prime</source>
         <translation>이 값은 소수가 아닙니다.</translation>
     </message>
@@ -18909,23 +18923,28 @@ Only RSA is supported.</source>
         <translation type="vanished">소수는 입력 소스 길이보다 같거나 커야 합니다</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="247"/>
+        <location filename="../sss_dlg.cpp" line="271"/>
         <source>fail to split key: %1</source>
         <translation>키 나누기 실패 : %1</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="300"/>
+        <location filename="../sss_dlg.cpp" line="331"/>
         <source>Two or more shared values ​​are required</source>
         <translation>2개 이상의 공유된 값이 요구 됩니다</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="206"/>
-        <location filename="../sss_dlg.cpp" line="293"/>
+        <location filename="../sss_dlg.cpp" line="230"/>
+        <location filename="../sss_dlg.cpp" line="324"/>
         <source>Enter a prime number</source>
         <translation>소수 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="334"/>
+        <location filename="../sss_dlg.cpp" line="89"/>
+        <source>Shared value</source>
+        <translation>공유 값</translation>
+    </message>
+    <message>
+        <location filename="../sss_dlg.cpp" line="371"/>
         <source>fail to join key: %1</source>
         <translation>키 합치기 실패 : %1</translation>
     </message>
@@ -18934,7 +18953,7 @@ Only RSA is supported.</source>
         <translation type="vanished">공유키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="170"/>
+        <location filename="../sss_dlg.cpp" line="181"/>
         <source>%1 is already added</source>
         <translation>%1 은 이미 추가 되었습니다</translation>
     </message>
@@ -18947,7 +18966,7 @@ Only RSA is supported.</source>
         <translation type="vanished">소스 값은 8바이트 이상이어야 합니다.</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="379"/>
+        <location filename="../sss_dlg.cpp" line="416"/>
         <source>Delete</source>
         <translation>삭제</translation>
     </message>
