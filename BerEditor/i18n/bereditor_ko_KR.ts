@@ -18707,14 +18707,13 @@ Only RSA is supported.</source>
         <translation>Shamir Secret Sharing Scheme</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="239"/>
         <source>Source Data</source>
-        <translation>소스 데이타</translation>
+        <translation type="vanished">소스 데이타</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="142"/>
-        <location filename="../sss_dlg.ui" line="268"/>
-        <location filename="../sss_dlg.ui" line="569"/>
+        <location filename="../sss_dlg.ui" line="156"/>
+        <location filename="../sss_dlg.ui" line="288"/>
+        <location filename="../sss_dlg.ui" line="601"/>
         <source>C</source>
         <translation>C</translation>
     </message>
@@ -18723,22 +18722,22 @@ Only RSA is supported.</source>
         <translation type="vanished">Shamir Secret Sharing</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="82"/>
+        <location filename="../sss_dlg.ui" line="96"/>
         <source>Threshold</source>
         <translation>분계점</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="109"/>
+        <location filename="../sss_dlg.ui" line="123"/>
         <source>Prime</source>
         <translation>소수</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="129"/>
+        <location filename="../sss_dlg.ui" line="143"/>
         <source>Shares</source>
         <translation>공유</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="52"/>
+        <location filename="../sss_dlg.ui" line="66"/>
         <source>Make Prime</source>
         <translation>소수 만들기</translation>
     </message>
@@ -18751,31 +18750,29 @@ Only RSA is supported.</source>
         <translation type="vanished">비트</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="419"/>
+        <location filename="../sss_dlg.ui" line="445"/>
         <source>Add</source>
         <translation>추가</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="363"/>
         <source>Share Data</source>
-        <translation>공유 데이타</translation>
+        <translation type="vanished">공유 데이타</translation>
     </message>
     <message>
         <source>Clear Result</source>
         <translation type="vanished">결과 지우기</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="553"/>
         <source>Joined Data</source>
-        <translation>결합 데이타</translation>
+        <translation type="vanished">결합 데이타</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="654"/>
+        <location filename="../sss_dlg.ui" line="686"/>
         <source>Clear Data All</source>
         <translation>전체 데이타 지우기</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="449"/>
+        <location filename="../sss_dlg.ui" line="475"/>
         <source>Clear</source>
         <translation>지우기</translation>
     </message>
@@ -18788,27 +18785,47 @@ Only RSA is supported.</source>
         <translation type="vanished">K</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="456"/>
+        <location filename="../sss_dlg.ui" line="482"/>
         <source>Join</source>
         <translation>합치기</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="275"/>
+        <location filename="../sss_dlg.ui" line="295"/>
         <source>Split</source>
         <translation>나누기</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="89"/>
+        <location filename="../sss_dlg.ui" line="23"/>
+        <source>Shamir Secret Sharing [ GF(256) ]</source>
+        <translation>Shamir Secret Sharing [ GF(256) ]</translation>
+    </message>
+    <message>
+        <location filename="../sss_dlg.ui" line="103"/>
         <source>Bytes</source>
         <translation>바이트</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="218"/>
+        <location filename="../sss_dlg.ui" line="232"/>
         <source>IsPrime</source>
         <translation>소수유무</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.ui" line="647"/>
+        <location filename="../sss_dlg.ui" line="259"/>
+        <source>Source</source>
+        <translation>소스</translation>
+    </message>
+    <message>
+        <location filename="../sss_dlg.ui" line="389"/>
+        <source>Shared</source>
+        <translation>공유</translation>
+    </message>
+    <message>
+        <location filename="../sss_dlg.ui" line="585"/>
+        <source>Joined</source>
+        <translation>합치기</translation>
+    </message>
+    <message>
+        <location filename="../sss_dlg.ui" line="679"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
