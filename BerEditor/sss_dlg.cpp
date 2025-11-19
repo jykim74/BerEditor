@@ -171,6 +171,13 @@ void SSSDlg::clickAdd()
         return;
     }
 
+    if( strValue.length() < 4 )
+    {
+        berApplet->warningBox( tr( "You must enter at least 2 bytes (4 characters)" ), this );
+        mShareText->setFocus();
+        return;
+    }
+
     int row = mShareTable->rowCount();
 
     for( int i = 0; i < row; i++ )
@@ -179,12 +186,6 @@ void SSSDlg::clickAdd()
         if( item->text() == strValue )
         {
             berApplet->warningBox( tr( "%1 is already added").arg( strValue ), this );
-            return;
-        }
-
-        if( item->text().length() != strValue.length() )
-        {
-            berApplet->warningBox( tr( "All inputs must have the same length."), this );
             return;
         }
     }

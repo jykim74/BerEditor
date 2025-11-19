@@ -18866,68 +18866,67 @@ Only RSA is supported.</source>
         <translation>공유키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="187"/>
         <source>All inputs must have the same length.</source>
-        <translation>모든 입력값의 길이는 같아야 합니다</translation>
+        <translation type="vanished">모든 입력값의 길이는 같아야 합니다</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="216"/>
+        <location filename="../sss_dlg.cpp" line="217"/>
         <source>Enter a shared number</source>
         <translation>분할 수를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="223"/>
-        <location filename="../sss_dlg.cpp" line="317"/>
+        <location filename="../sss_dlg.cpp" line="224"/>
+        <location filename="../sss_dlg.cpp" line="318"/>
         <source>Enter a threshold</source>
         <translation>임계값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="237"/>
+        <location filename="../sss_dlg.cpp" line="238"/>
         <source>Enter source value</source>
         <translation>소스 값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="251"/>
+        <location filename="../sss_dlg.cpp" line="252"/>
         <source>There is no input value or the input type is incorrect.</source>
         <translation>입력 값이 없거나 또는 입력 타입이 맞지 않습니다</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="263"/>
+        <location filename="../sss_dlg.cpp" line="264"/>
         <source>Prime value ​​must be greater to the source value</source>
         <translation>소수는 입력 값 보다 커야 합니다</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="295"/>
+        <location filename="../sss_dlg.cpp" line="296"/>
         <source>Key splitting was successful</source>
         <translation>키 나누기 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="338"/>
+        <location filename="../sss_dlg.cpp" line="339"/>
         <source>%1 data are required</source>
         <translation>%1 데이타가 요구 됩니다</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="381"/>
+        <location filename="../sss_dlg.cpp" line="382"/>
         <source>Key join was successful</source>
         <translation>키 조인에 성공하였습니다</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="419"/>
+        <location filename="../sss_dlg.cpp" line="420"/>
         <source>Copy</source>
         <translation>복사</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="485"/>
+        <location filename="../sss_dlg.cpp" line="486"/>
         <source>Insert a prime value</source>
         <translation>소수를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="501"/>
+        <location filename="../sss_dlg.cpp" line="502"/>
         <source>The value is prime</source>
         <translation>이 값은 소수 입니다.</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="503"/>
+        <location filename="../sss_dlg.cpp" line="504"/>
         <source>The value is not prime</source>
         <translation>이 값은 소수가 아닙니다.</translation>
     </message>
@@ -18940,18 +18939,18 @@ Only RSA is supported.</source>
         <translation type="vanished">소수는 입력 소스 길이보다 같거나 커야 합니다</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="271"/>
+        <location filename="../sss_dlg.cpp" line="272"/>
         <source>fail to split key: %1</source>
         <translation>키 나누기 실패 : %1</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="331"/>
+        <location filename="../sss_dlg.cpp" line="332"/>
         <source>Two or more shared values ​​are required</source>
         <translation>2개 이상의 공유된 값이 요구 됩니다</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="230"/>
-        <location filename="../sss_dlg.cpp" line="324"/>
+        <location filename="../sss_dlg.cpp" line="231"/>
+        <location filename="../sss_dlg.cpp" line="325"/>
         <source>Enter a prime number</source>
         <translation>소수 값을 입력하세요</translation>
     </message>
@@ -18961,7 +18960,12 @@ Only RSA is supported.</source>
         <translation>공유 값</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="371"/>
+        <location filename="../sss_dlg.cpp" line="176"/>
+        <source>You must enter at least 2 bytes (4 characters)</source>
+        <translation>2바이트(4개문자) 이상 입력하여야 합니다</translation>
+    </message>
+    <message>
+        <location filename="../sss_dlg.cpp" line="372"/>
         <source>fail to join key: %1</source>
         <translation>키 합치기 실패 : %1</translation>
     </message>
@@ -18970,7 +18974,7 @@ Only RSA is supported.</source>
         <translation type="vanished">공유키를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="181"/>
+        <location filename="../sss_dlg.cpp" line="188"/>
         <source>%1 is already added</source>
         <translation>%1 은 이미 추가 되었습니다</translation>
     </message>
@@ -18983,7 +18987,7 @@ Only RSA is supported.</source>
         <translation type="vanished">소스 값은 8바이트 이상이어야 합니다.</translation>
     </message>
     <message>
-        <location filename="../sss_dlg.cpp" line="416"/>
+        <location filename="../sss_dlg.cpp" line="417"/>
         <source>Delete</source>
         <translation>삭제</translation>
     </message>
