@@ -156,8 +156,18 @@ void EditValueDlg::setItem(BerItem *pItem)
     else
     {
         mConstructedLabel->setText( "Primitive" );
-        mValueText->setReadOnly( false );
-        mModifyBtn->show();
+
+        if( ber_item_->tag_ == JS_NULLTAG )
+        {
+            mValueText->setReadOnly( true );
+            mValueText->setStyleSheet( kReadOnlyStyle );
+            mModifyBtn->hide();
+        }
+        else
+        {
+            mValueText->setReadOnly( false );
+            mModifyBtn->show();
+        }
     }
 
     QString strOffset;
