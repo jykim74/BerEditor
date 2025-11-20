@@ -33,6 +33,31 @@ void MakeValueDlg::initialize()
     mTypeCombo->addItems( kTypeList );
 }
 
+void MakeValueDlg::setValue( const QString strType, const BIN *pValue )
+{
+    mTypeCombo->clear();
+    mTypeCombo->addItem( strType );
+    char *pData = NULL;
+
+    if( strType == "Integer" )
+    {
+        JS_PKI_binToDecimal( pValue, &pData );
+    }
+    else if( strType == "Bit" )
+    {
+        JS_PKI_binToBit( pValue, &pData );
+    }
+    else if( strType == "OID" )
+    {
+        pData = (char *)JS_calloc(1, 512);
+        JS_PKI_getStringFromOIDValue( pValue, pData );
+    }
+
+    mInputText->setText( pData );
+
+    if( pData ) JS_free( pData );
+}
+
 void MakeValueDlg::clickOK()
 {
     value_ = mHexText->toPlainText();

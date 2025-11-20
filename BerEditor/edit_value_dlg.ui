@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>518</width>
-    <height>451</height>
+    <width>524</width>
+    <height>457</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -495,10 +495,17 @@
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout_3">
+    <layout class="QGridLayout" name="gridLayout_4">
      <property name="topMargin">
       <number>0</number>
      </property>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mMakeValueBtn">
+       <property name="text">
+        <string>Make Value</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_9">
        <property name="minimumSize">
@@ -512,14 +519,7 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="9">
-      <widget class="QLabel" name="label_8">
-       <property name="text">
-        <string>Len</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="10">
+     <item row="0" column="5">
       <widget class="QLineEdit" name="mValueLenText">
        <property name="maximumSize">
         <size>
@@ -569,10 +569,17 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="4">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>Len</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="1">
       <widget class="QComboBox" name="mValueTypeCombo"/>
      </item>
-     <item row="0" column="4">
+     <item row="0" column="3">
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -851,8 +858,6 @@
   <tabstop>mTagText</tabstop>
   <tabstop>mTagBitText</tabstop>
   <tabstop>mLenText</tabstop>
-  <tabstop>mValueTypeCombo</tabstop>
-  <tabstop>mValueLenText</tabstop>
   <tabstop>mValueText</tabstop>
   <tabstop>mHeaderText</tabstop>
   <tabstop>mBERLenText</tabstop>

@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "ui_make_value_dlg.h"
+#include "js_bin.h"
 
 namespace Ui {
 class MakeValueDlg;
@@ -16,6 +17,7 @@ public:
     explicit MakeValueDlg(QWidget *parent = nullptr);
     ~MakeValueDlg();
     const QString getValue() { return value_; };
+    void setValue( const QString strType, const BIN *pValue );
 
 private slots:
     void clickOK();

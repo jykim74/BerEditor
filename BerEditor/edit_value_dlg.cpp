@@ -9,6 +9,7 @@
 #include "ber_model.h"
 #include "ber_applet.h"
 #include "common.h"
+#include "make_value_dlg.h"
 
 
 EditValueDlg::EditValueDlg(QWidget *parent) :
@@ -24,6 +25,7 @@ EditValueDlg::EditValueDlg(QWidget *parent) :
     connect( mValueText, SIGNAL(textChanged()), this, SLOT(changeValueText()));
     connect( mBERText, SIGNAL(textChanged()), this, SLOT(changeBER()));
     connect( mValueTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeValueType(int)));
+    connect( mMakeValueBtn, SIGNAL(clicked()), this, SLOT(clickMakeValue()));
 
     initialize();
 
@@ -44,6 +46,7 @@ void EditValueDlg::initialize()
 {
     mValueTypeCombo->addItems( kDataTypeList );
     mValueTypeCombo->setCurrentText( kDataHex );
+    mMakeValueBtn->hide();
 }
 
 void EditValueDlg::makeHeader()
@@ -168,6 +171,9 @@ void EditValueDlg::setItem(BerItem *pItem)
             mValueText->setReadOnly( false );
             mModifyBtn->show();
         }
+
+        if( ber_item_->tag_ == JS_INTEGER || ber_item_->tag_ == JS_BITSTRING || ber_item_->tag_ == JS_OID )
+            mMakeValueBtn->show();
     }
 
     QString strOffset;
@@ -320,4 +326,33 @@ void EditValueDlg::changeBER()
 void EditValueDlg::changeValueType(int index)
 {
     changeValueText();
+}
+
+void EditValueDlg::clickMakeValue()
+{
+    BIN binVal = {0,0};
+    MakeValueDlg makeValue;
+    QString strValue = mValueText->toPlainText();
+    QString strType;
+
+    getBINFromString( &binVal, mValueTypeCombo->currentText(), strValue );
+
+    if( ber_item_->tag_ == JS_BITSTRING )
+        strType = "Bit";
+    else if( ber_item_->tag_ == JS_INTEGER )
+        strType = "Integer";
+    else if( ber_item_->tag_ == JS_OID )
+        strType = "OID";
+    else
+        return;
+
+    makeValue.setValue( strType, &binVal );
+
+    if( makeValue.exec() == QDialog::Accepted )
+    {
+        mValueTypeCombo->setCurrentText( "Hex" );
+        mValueText->setPlainText( makeValue.getValue() );
+    }
+
+    JS_BIN_reset( &binVal );
 }

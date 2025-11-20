@@ -34,6 +34,8 @@ private slots:
     void changeBER();
     void changeValueType(int index);
 
+    void clickMakeValue();
+
 private:
     void initialize();
     BerItem *ber_item_;
