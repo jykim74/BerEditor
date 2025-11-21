@@ -34,6 +34,7 @@ private slots:
     void changeValueType( int index );
     void clickMakeValue();
     void makeHeader();
+    void clearValue();
 
 private:
     void initUI();

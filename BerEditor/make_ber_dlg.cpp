@@ -26,6 +26,7 @@ MakeBerDlg::MakeBerDlg(QWidget *parent) :
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mConstructedCheck, SIGNAL(clicked()), this, SLOT(checkConstructed()));
     connect( mIndefiniteCheck, SIGNAL(clicked()), this, SLOT(checkIndefinite()));
+    connect( mValueClearBtn, SIGNAL(clicked()), this, SLOT(clearValue()));
 
     connect( mValueText, SIGNAL(textChanged()), this, SLOT(valueChanged()));
     connect( mBERText, SIGNAL(textChanged()), this, SLOT(berChanged()));
@@ -41,6 +42,7 @@ MakeBerDlg::MakeBerDlg(QWidget *parent) :
 
 #if defined(Q_OS_MAC)
     layout()->setSpacing(5);
+    mValueClearBtn->setFixedWidth(34);
 #endif
     resize(minimumSizeHint().width(), minimumSizeHint().height());
 }
@@ -95,7 +97,12 @@ void MakeBerDlg::initUI()
 
 void MakeBerDlg::initialize()
 {
-    primitiveChanged(0);
+    classChanged(0);
+}
+
+void MakeBerDlg::clearValue()
+{
+    mValueText->clear();
 }
 
 void MakeBerDlg::makeHeader()
