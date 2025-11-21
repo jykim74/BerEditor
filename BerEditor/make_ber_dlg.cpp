@@ -317,7 +317,7 @@ void MakeBerDlg::primitiveChanged(int index )
 void MakeBerDlg::changeValueType( int index )
 {
     QString strType = mValueTypeCombo->currentText();
-    if( strType == "Hex" )
+    if( strType == kDataHex )
         mMakeValueBtn->setEnabled( true );
     else
         mMakeValueBtn->setEnabled( false );

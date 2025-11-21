@@ -349,7 +349,7 @@ void EditValueDlg::clickMakeValue()
 
     if( makeValue.exec() == QDialog::Accepted )
     {
-        mValueTypeCombo->setCurrentText( "Hex" );
+        mValueTypeCombo->setCurrentText( kDataHex );
         mValueText->setPlainText( makeValue.getValue() );
     }
 
