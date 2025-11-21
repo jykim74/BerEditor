@@ -1459,6 +1459,13 @@ void MainWindow::runMakeBER()
         BIN binData = {0,0};
         QString strData = makeBer.getData();
 
+        BIN binBer = ber_model_->getBER();
+        if( binBer.nLen > 0 )
+        {
+            bool bVal = berApplet->yesOrCancelBox( tr("Existing data already exists. Would you like to change it?"), this, true );
+            if( bVal == false ) return;
+        }
+
         JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
         decodeData( &binData );
         JS_BIN_reset( &binData );

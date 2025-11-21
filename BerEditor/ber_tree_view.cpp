@@ -371,7 +371,7 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
             {
                 rightTable->item( line, 1)->setBackground(kTagColor);
             }
-            else if( i== 1 )
+            else if( i == 1 )
             {
                 if( binPart.pVal[i] & JS_LEN_XTND )
                 {
@@ -388,6 +388,12 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
                 rightTable->item( line, i + 1 )->setBackground(kLenColor);
             }
 
+            if( pItem->GetIndefinite() == true )
+            {
+                int nEnd = pItem->GetHeaderSize() + pItem->GetLength();
+                if( i == (nEnd - 1) || i == (nEnd - 2) )
+                    rightTable->item( line, i + 1 )->setBackground( kEOCColor );
+            }
 
             text += getch( binPart.pVal[i]);
 
@@ -587,6 +593,13 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
                 rightTable->item(line, pos )->setBackground(kValueColor);
             }
 
+            if( pItem->GetIndefinite() == true )
+            {
+                int nEnd = pItem->GetOffset() + pItem->GetHeaderSize() + pItem->GetLength();
+                if( i == (nEnd - 1) || i == (nEnd - 2) )
+                    rightTable->item( line, pos )->setBackground( kEOCColor );
+            }
+
             text += getch( pBer->pVal[i]);
 
             if( i % 16 - 15 == 0 )
@@ -682,11 +695,13 @@ void BerTreeView::ShowContextMenu(QPoint point)
         QAction *pInsertAct = NULL;
         QAction *pEditAct = NULL;
 
-        pEditAct = menu.addAction(tr("Edit value"), this, SLOT(EditValue()));
-
         if( item->isConstructed() )
         {
             pInsertAct = menu.addAction( tr( "Insert BER" ), this, SLOT(InsertBER()));
+        }
+        else
+        {
+            pEditAct = menu.addAction(tr("Edit value"), this, SLOT(EditValue()));
         }
 
         if( berApplet->isLicense() == false )

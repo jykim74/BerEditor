@@ -451,27 +451,37 @@ int BerModel::addItem( BerItem* pParentItem, const BIN *pData )
 
     JS_BIN_copy( &binMod, &binBer_ );
 
-    nOrgLen = pParentItem->GetLength();
-    nOrgHeaderLen = pParentItem->GetHeaderSize();
-
-    JS_BIN_insertBin( pParentItem->GetOffset() + nOrgHeaderLen + nOrgLen, pData, &binMod );
-
-    ret = pParentItem->changeLength( nOrgLen + pData->nLen, &nDiffLen );
-
-    if( nDiffLen <= 0 || ret != 0 )
+    if( pParentItem->GetIndefinite() == true )
     {
-        ret = JSR_ERR;
-        goto end;
+        int nPos = pParentItem->GetOffset() + pParentItem->GetHeaderSize() + pParentItem->GetLength() - 2;
+        ret = JS_BIN_insertBin( nPos, pData, &binMod );
+        if( ret != 0 ) goto end;
+    }
+    else
+    {
+        nOrgLen = pParentItem->GetLength();
+        nOrgHeaderLen = pParentItem->GetHeaderSize();
+
+        JS_BIN_insertBin( pParentItem->GetOffset() + nOrgHeaderLen + nOrgLen, pData, &binMod );
+
+        ret = pParentItem->changeLength( nOrgLen + pData->nLen, &nDiffLen );
+
+        if( nDiffLen <= 0 || ret != 0 )
+        {
+            ret = JSR_ERR;
+            goto end;
+        }
+
+        pParentItem->getHeaderBin( &binHeader );
+        JS_BIN_changeBin( pParentItem->GetOffset(), nOrgHeaderLen, &binHeader, &binMod );
     }
 
-    pParentItem->getHeaderBin( &binHeader );
-    JS_BIN_changeBin( pParentItem->GetOffset(), nOrgHeaderLen, &binHeader, &binMod );
     ret = resizeParentHeader( nDiffLen, pParentItem, &binMod );
     if( ret != 0 ) goto end;
-
     setBER( &binMod );
 
 end :
+    // 실패시 원래대로 길이를 원복함
     if( ret != 0 ) pParentItem->changeLength( nOrgLen, &nDiffLen );
 
     JS_BIN_reset( &binMod );

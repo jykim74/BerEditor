@@ -338,9 +338,10 @@ int BerItem::changeLength( int nNewLen, int *pnDiffLen )
     int nDiff = 0;
     int nCurHeaderSize = header_size_;
 
-    if( length_ == nNewLen )
+    if( length_ == nNewLen || indefinite_ == true )
     {
         *pnDiffLen = 0;
+        length_ = nNewLen;
         return 0;
     }
 

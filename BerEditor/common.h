@@ -73,6 +73,7 @@ const QColor kValueColor( 245, 245, 203 );
 const QColor kTagColor( 102, 255, 102 );
 const QColor kLenColor( 240, 214, 255 );
 const QColor kLenTypeColor( Qt::cyan );
+const QColor kEOCColor( 177, 188, 199 );
 
 const QString kBinaryChars = "[0-1]";
 const QString kHexChars = "[A-Za-f0-9]";

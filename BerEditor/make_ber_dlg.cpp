@@ -25,6 +25,7 @@ MakeBerDlg::MakeBerDlg(QWidget *parent) :
     connect( mMakeBtn, SIGNAL(clicked()), this, SLOT(runMake()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mConstructedCheck, SIGNAL(clicked()), this, SLOT(checkConstructed()));
+    connect( mIndefiniteCheck, SIGNAL(clicked()), this, SLOT(checkIndefinite()));
 
     connect( mValueText, SIGNAL(textChanged()), this, SLOT(valueChanged()));
     connect( mBERText, SIGNAL(textChanged()), this, SLOT(berChanged()));
@@ -64,6 +65,9 @@ QString MakeBerDlg::getData()
     strData = mHeaderText->text();
     strData += getHexString( &binData );
 
+    if( mConstructedCheck->isChecked() == true && mIndefiniteCheck->isChecked() == true )
+        strData += "0000";
+
 end:
     JS_BIN_reset( &binData );
 
@@ -74,6 +78,7 @@ void MakeBerDlg::initUI()
 {
     mValueText->setAcceptDrops(false);
     mClassCombo->addItems( kClassList );
+    mIndefiniteCheck->setEnabled( false );
 
     int nPrimitiveCnt = JS_BER_getPrimitiveCount();
 
@@ -149,9 +154,15 @@ void MakeBerDlg::makeHeader()
     ret = getBINFromString( &binValue, mValueTypeCombo->currentText(), strValue );
     if( ret < 0 ) goto end;
 
-    JS_BER_getHeaderLength( binValue.nLen, &binLen );
-
-    JS_BIN_appendBin( &binHeader, &binLen );
+    if( mConstructedCheck->isChecked() == true && mIndefiniteCheck->isChecked() == true )
+    {
+        JS_BIN_appendCh( &binHeader, 0x80, 1 );
+    }
+    else
+    {
+        JS_BER_getHeaderLength( binValue.nLen, &binLen );
+        JS_BIN_appendBin( &binHeader, &binLen );
+    }
 
     JS_BIN_encodeHex( &binHeader, &pHex );
     mLenText->setText( getHexString(&binLen));
@@ -182,6 +193,38 @@ void MakeBerDlg::checkConstructed()
 {
     bool bVal = mConstructedCheck->isChecked();
 
+
+    if( mPrimitiveCombo->isEnabled() == true )
+    {
+        unsigned char cPrimitive = 0x00;
+        cPrimitive = JS_BER_getPrimitiveTag( mPrimitiveCombo->currentText().toStdString().c_str() );
+
+        if( cPrimitive == JS_SET || cPrimitive == JS_SEQUENCE )
+        {
+            if( bVal == false )
+            {
+                mConstructedCheck->setChecked( true );
+                berApplet->warningBox( tr("SET and SEQUENCE cannot be changed"), this );
+                return;
+            }
+        }
+        else
+        {
+            if( bVal == true )
+            {
+                mConstructedCheck->setChecked( false );
+                berApplet->warningBox( tr("Only SET and SEQUENCE are supported"), this );
+                return;
+            }
+        }
+    }
+
+    mIndefiniteCheck->setEnabled( bVal );
+    makeHeader();
+}
+
+void MakeBerDlg::checkIndefinite()
+{
     makeHeader();
 }
 
@@ -237,8 +280,24 @@ void MakeBerDlg::primitiveChanged(int index )
     unsigned char cPrimitive = 0x00;
     cPrimitive = JS_BER_getPrimitiveTag( mPrimitiveCombo->currentText().toStdString().c_str() );
 
+    if( cPrimitive == JS_NULLTAG )
+    {
+        mValueText->clear();
+        mValueText->setReadOnly( true );
+        mValueText->setStyleSheet( kReadOnlyStyle );
+    }
+    else
+    {
+        mValueText->setReadOnly( false );
+        mValueText->setStyleSheet( "" );
+    }
+
     if( cPrimitive == JS_SET || cPrimitive == JS_SEQUENCE )
         mConstructedCheck->setChecked( true );
+    else
+        mConstructedCheck->setChecked( false );
+
+    checkConstructed();
 
     if( cPrimitive == JS_BITSTRING || cPrimitive == JS_INTEGER || cPrimitive == JS_OID )
         mMakeValueBtn->setEnabled( true );
