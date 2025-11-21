@@ -20,6 +20,7 @@ MakeBerDlg::MakeBerDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
+    initUI();
 
     connect( mMakeBtn, SIGNAL(clicked()), this, SLOT(runMake()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
@@ -33,8 +34,6 @@ MakeBerDlg::MakeBerDlg(QWidget *parent) :
     connect( mValueTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeValueType(int)));
     connect( mMakeValueBtn, SIGNAL(clicked()), this, SLOT(clickMakeValue()));
 
-//    connectSig();
-
     initialize();
     mMakeBtn->setDefault(true);
     mValueText->setFocus();
@@ -43,36 +42,6 @@ MakeBerDlg::MakeBerDlg(QWidget *parent) :
     layout()->setSpacing(5);
 #endif
     resize(minimumSizeHint().width(), minimumSizeHint().height());
-}
-
-void MakeBerDlg::connectSig()
-{
-    connect( mMakeBtn, SIGNAL(clicked()), this, SLOT(runMake()));
-    connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
-    connect( mConstructedCheck, SIGNAL(clicked()), this, SLOT(checkConstructed()));
-
-    connect( mValueText, SIGNAL(textChanged()), this, SLOT(valueChanged()));
-    connect( mBERText, SIGNAL(textChanged()), this, SLOT(berChanged()), Qt::UniqueConnection);
-    connect( mNumText, SIGNAL(textChanged(QString)), this, SLOT(numChanged()));
-    connect( mClassCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(classChanged(int)));
-    connect( mPrimitiveCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(primitiveChanged(int)));
-    connect( mValueTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeValueType(int)));
-    connect( mMakeValueBtn, SIGNAL(clicked()), this, SLOT(clickMakeValue()));
-}
-
-void MakeBerDlg::disconectSig()
-{
-    disconnect( mMakeBtn, SIGNAL(clicked()), this, SLOT(runMake()));
-    disconnect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
-    disconnect( mConstructedCheck, SIGNAL(clicked()), this, SLOT(checkConstructed()));
-
-    disconnect( mValueText, SIGNAL(textChanged()), this, SLOT(valueChanged()));
-    //    disconnect( mBERText, SIGNAL(textChanged()), this, SLOT(berChanged()));
-    disconnect( mNumText, SIGNAL(textChanged(QString)), this, SLOT(numChanged()));
-    disconnect( mClassCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(classChanged(int)));
-    disconnect( mPrimitiveCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(primitiveChanged(int)));
-    disconnect( mValueTypeCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(changeValueType(int)));
-    disconnect( mMakeValueBtn, SIGNAL(clicked()), this, SLOT(clickMakeValue()));
 }
 
 MakeBerDlg::~MakeBerDlg()
@@ -86,8 +55,11 @@ QString MakeBerDlg::getData()
     QString strValue = mValueText->toPlainText();
     BIN binData = {0,0};
 
-    int ret = getBINFromString( &binData, mValueTypeCombo->currentText(), strValue );
-    if( ret <= 0 ) goto end;
+    if( strValue.length() > 0 )
+    {
+        int ret = getBINFromString( &binData, mValueTypeCombo->currentText(), strValue );
+        if( ret <= 0 ) goto end;
+    }
 
     strData = mHeaderText->text();
     strData += getHexString( &binData );
@@ -98,7 +70,7 @@ end:
     return strData;
 }
 
-void MakeBerDlg::initialize()
+void MakeBerDlg::initUI()
 {
     mValueText->setAcceptDrops(false);
     mClassCombo->addItems( kClassList );
@@ -113,8 +85,12 @@ void MakeBerDlg::initialize()
         mPrimitiveCombo->addItem( pName );
     }
 
-    mPrimitiveCombo->setEditable( true );
     mValueTypeCombo->addItems( kDataTypeList );
+}
+
+void MakeBerDlg::initialize()
+{
+    primitiveChanged(0);
 }
 
 void MakeBerDlg::makeHeader()
@@ -156,10 +132,15 @@ void MakeBerDlg::makeHeader()
 
         cTag |= cNum;
     }
-    else
+    else if( cTag & JS_UNIVERSAL )
     {
         cPrimitive = JS_BER_getPrimitiveTag( mPrimitiveCombo->currentText().toStdString().c_str() );
         cTag |= cPrimitive;
+    }
+    else
+    {
+        unsigned char cNum = mNumText->text().toInt( nullptr, 16 );
+        cTag |= cNum;
     }
 
     JS_BIN_set( &binHeader, &cTag, 1 );
@@ -228,18 +209,24 @@ void MakeBerDlg::numChanged()
 
 void MakeBerDlg::classChanged(int index)
 {
-    if( index == 2 )
+    mNumText->clear();
+
+    if( index == 0 )
     {
-        mPrimitiveCombo->setEnabled( false );
-        mNumText->setReadOnly( false );
-        mNumText->clear();
-        mTagLabel->setText(tr("Number"));
+        mPrimitiveCombo->setEnabled(true);
+        mNumText->setStyleSheet( kReadOnlyStyle );
+        mNumText->setReadOnly( true );
+        mTagLabel->setText(tr("Tag"));
+        primitiveChanged( index );
+        mMakeValueBtn->show();
     }
     else
     {
-        mPrimitiveCombo->setEnabled(true);
-        mNumText->setReadOnly( true );
-        mTagLabel->setText(tr("Tag"));
+        mPrimitiveCombo->setEnabled( false );
+        mNumText->setStyleSheet( "" );
+        mNumText->setReadOnly( false );
+        mTagLabel->setText(tr("Number"));
+        mMakeValueBtn->hide();
     }
 
     makeHeader();
@@ -252,6 +239,11 @@ void MakeBerDlg::primitiveChanged(int index )
 
     if( cPrimitive == JS_SET || cPrimitive == JS_SEQUENCE )
         mConstructedCheck->setChecked( true );
+
+    if( cPrimitive == JS_BITSTRING || cPrimitive == JS_INTEGER || cPrimitive == JS_OID )
+        mMakeValueBtn->setEnabled( true );
+    else
+        mMakeValueBtn->setEnabled( false );
 
     mNumText->setText( QString( "%1" ).arg( cPrimitive, 2, 16, QLatin1Char('0')));
 }
@@ -269,11 +261,27 @@ void MakeBerDlg::changeValueType( int index )
 
 void MakeBerDlg::clickMakeValue()
 {
+    QString strPrimitive = mPrimitiveCombo->currentText();
     MakeValueDlg makeValue;
-    mValueTypeCombo->setCurrentText( "Hex" );
+    QString strType;
+    BIN binVal = {0,0};
+    QString strValue = mValueText->toPlainText();
+
+    if( strPrimitive == "BitString" )
+        strType = "Bit";
+    else if( strPrimitive == "Integer" )
+        strType = "Integer";
+    else if( strPrimitive == "ObjectIdentifier" )
+        strType = "OID";
+    else
+        return;
+
+    getBINFromString( &binVal, mValueTypeCombo->currentText(), strValue );
+    makeValue.setValue( strType, &binVal );
 
     if( makeValue.exec() == QDialog::Accepted )
     {
+        mValueTypeCombo->setCurrentText( "Hex" );
         mValueText->setPlainText( makeValue.getValue() );
     }
 }

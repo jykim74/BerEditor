@@ -335,8 +335,6 @@ void EditValueDlg::clickMakeValue()
     QString strValue = mValueText->toPlainText();
     QString strType;
 
-    getBINFromString( &binVal, mValueTypeCombo->currentText(), strValue );
-
     if( ber_item_->tag_ == JS_BITSTRING )
         strType = "Bit";
     else if( ber_item_->tag_ == JS_INTEGER )
@@ -346,6 +344,7 @@ void EditValueDlg::clickMakeValue()
     else
         return;
 
+    getBINFromString( &binVal, mValueTypeCombo->currentText(), strValue );
     makeValue.setValue( strType, &binVal );
 
     if( makeValue.exec() == QDialog::Accepted )

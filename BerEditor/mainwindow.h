@@ -270,8 +270,6 @@ private slots:
     void rightTableSelectAll();
     void rightTableUnselectAll();
 
-
-
 private:
     void createActions();
     void createViewActions();

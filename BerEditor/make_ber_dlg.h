@@ -35,11 +35,8 @@ private slots:
     void makeHeader();
 
 private:
+    void initUI();
     void initialize();
-
-
-    void connectSig();
-    void disconectSig();
 };
 
 #endif // MAKE_BER_DLG_H
