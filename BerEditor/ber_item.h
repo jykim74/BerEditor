@@ -40,11 +40,13 @@ public:
     int GetTag() { return tag_; };
     int GetIndefinite() { return indefinite_; };
     int GetLength() { return length_; };
+    int GetValLength();
     int GetNonCanonical() { return non_canonical_; };
     BYTE* GetHeader() { return header_; };
     int GetHeaderSize() { return header_size_; };
     int GetOffset() { return offset_; };
     int GetLevel() { return level_; };
+    int GetItemSize() { return (header_size_ + length_); };
 
 
     QString GetTagString();

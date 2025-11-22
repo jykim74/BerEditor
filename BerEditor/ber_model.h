@@ -31,7 +31,11 @@ public:
     int modifyItem( BerItem *pItem, const BIN *pValue );
 
 private:
-    int resizeParentHeader( int nDiffLen, const BerItem *pItem, BIN *pBER );
+//    int resizeParentHeader( int nDiffLen, const BerItem *pItem, BIN *pBER );
+
+    int resizeItemHead( BIN *pBER, BerItem *pItem, int nModItemLen );
+    int resizeHeadToTop( BIN *pBER, BerItem *pItem, int nModItemLen );
+
     void initialize();
 
     BIN     binBer_;

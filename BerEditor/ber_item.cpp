@@ -77,6 +77,14 @@ void BerItem::SetLevel(int level)
     level_ = level;
 }
 
+int BerItem::GetValLength()
+{
+    if( indefinite_ == true )
+        return (length_ - 2 );
+    else
+        return length_;
+}
+
 QString BerItem::GetTagString()
 {
     QString strRes;
