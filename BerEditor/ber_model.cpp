@@ -607,10 +607,11 @@ int BerModel::removeItem( BerItem *pItem )
     if( ret != 0 ) goto end;
 
     pParent = (BerItem *)pItem->parent();
-    ret = resizeHeadToTop( &binMod, pParent, nDiffLen );
-
-//    ret = resizeParentHeader( -nDiffLen, pItem, &binMod );
-    if( ret != 0 ) goto end;
+    if( pParent )
+    {
+        ret = resizeHeadToTop( &binMod, pParent, nDiffLen );
+        if( ret != 0 ) goto end;
+    }
 
     setBER( &binMod );
 
@@ -628,8 +629,7 @@ int BerModel::modifyItem( BerItem *pItem, const BIN *pValue )
 
     int nDiffLen = 0;
     int nOrgLen = 0;
-    int nNewLen = 0;
-    int nModLen = 0;
+
     BerItem *pParent = NULL;
 
     if( pItem == NULL ) return -1;
@@ -644,9 +644,6 @@ int BerModel::modifyItem( BerItem *pItem, const BIN *pValue )
         goto end;
     }
 
-    nNewLen = pItem->GetItemSize();
-    nModLen = nNewLen - nOrgLen;
-
     pItem->getHeaderBin( &binHeader );
     JS_BIN_copy( &binChange, &binHeader );
     JS_BIN_appendBin( &binChange, pValue );
@@ -655,8 +652,12 @@ int BerModel::modifyItem( BerItem *pItem, const BIN *pValue )
     if( ret != 0 ) goto end;
 
     pParent = (BerItem *)pItem->parent();
-    ret = resizeHeadToTop( &binMod, pParent, nModLen );
-    if( ret != 0 ) goto end;
+    if( pParent )
+    {
+        int nModLen = binChange.nLen - nOrgLen;
+        ret = resizeHeadToTop( &binMod, pParent, nModLen );
+        if( ret != 0 ) goto end;
+    }
 
     setBER( &binMod );
 end :
