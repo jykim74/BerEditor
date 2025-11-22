@@ -559,10 +559,6 @@ int BerModel::addItem( BerItem* pParentItem, const BIN *pData )
 {
     int ret = 0;
     BIN binMod = {0,0};
-    BIN binHeader = {0,0};
-    int nOrgLen = 0;
-    int nOrgHeaderLen = 0;
-    int nDiffLen = 0;
 
     if( pParentItem == NULL ) return -1;
 
@@ -576,21 +572,10 @@ int BerModel::addItem( BerItem* pParentItem, const BIN *pData )
     }
     else
     {
-        nOrgLen = pParentItem->GetLength();
-        nOrgHeaderLen = pParentItem->GetHeaderSize();
+        int nPos = pParentItem->GetOffset() + pParentItem->GetItemSize();
 
-        JS_BIN_insertBin( &binMod, pParentItem->GetOffset() + nOrgHeaderLen + nOrgLen, pData );
-
-        ret = pParentItem->changeLength( nOrgLen + pData->nLen, &nDiffLen );
-
-        if( nDiffLen <= 0 || ret != 0 )
-        {
-            ret = JSR_ERR;
-            goto end;
-        }
-
-        pParentItem->getHeaderBin( &binHeader );
-        JS_BIN_changeBin( &binMod, pParentItem->GetOffset(), nOrgHeaderLen, &binHeader );
+        ret = JS_BIN_insertBin( &binMod, nPos, pData );
+        if( ret != 0 ) goto end;
     }
 
 //    ret = resizeParentHeader( nDiffLen, pParentItem, &binMod );
@@ -599,11 +584,7 @@ int BerModel::addItem( BerItem* pParentItem, const BIN *pData )
     setBER( &binMod );
 
 end :
-    // 실패시 원래대로 길이를 원복함
-    if( ret != 0 ) pParentItem->changeLength( nOrgLen, &nDiffLen );
-
     JS_BIN_reset( &binMod );
-    JS_BIN_reset( &binHeader );
 
     return ret;
 }
@@ -626,7 +607,7 @@ int BerModel::removeItem( BerItem *pItem )
     if( ret != 0 ) goto end;
 
     pParent = (BerItem *)pItem->parent();
-    ret = resizeHeadToTop( &binMod, pParent, -1 );
+    ret = resizeHeadToTop( &binMod, pParent, nDiffLen );
 
 //    ret = resizeParentHeader( -nDiffLen, pItem, &binMod );
     if( ret != 0 ) goto end;
@@ -649,6 +630,7 @@ int BerModel::modifyItem( BerItem *pItem, const BIN *pValue )
     int nOrgLen = 0;
     int nNewLen = 0;
     int nModLen = 0;
+    BerItem *pParent = NULL;
 
     if( pItem == NULL ) return -1;
     JS_BIN_copy( &binMod, &binBer_ );
@@ -672,13 +654,12 @@ int BerModel::modifyItem( BerItem *pItem, const BIN *pValue )
     ret = JS_BIN_changeBin( &binMod, pItem->GetOffset(), nOrgLen, &binChange );
     if( ret != 0 ) goto end;
 
-    ret = resizeHeadToTop( &binMod, pItem, nModLen );
+    pParent = (BerItem *)pItem->parent();
+    ret = resizeHeadToTop( &binMod, pParent, nModLen );
     if( ret != 0 ) goto end;
 
     setBER( &binMod );
-
 end :
-    if( ret != 0 ) pItem->changeLength( nOrgLen, &nDiffLen );
 
     JS_BIN_reset( &binMod );
     JS_BIN_reset( &binHeader );

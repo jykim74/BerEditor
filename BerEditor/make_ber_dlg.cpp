@@ -15,6 +15,11 @@
 #include "make_value_dlg.h"
 
 const QStringList kClassList = { "Universal", "Application", "Content-Specific", "Private" };
+const QStringList kPrimitiveList = {
+    JS_NAME_BOOLEAN, JS_NAME_INTEGER, JS_NAME_BITSTRING, JS_NAME_OCTETSTRING,
+    JS_NAME_NULLTAG, JS_NAME_OID, JS_NAME_UTF8STRING, JS_NAME_SEQUENCE,
+    JS_NAME_SET, JS_NAME_PRINTABLESTRING, JS_NAME_UTCTIME, JS_NAME_GENERALIZEDTIME
+};
 
 MakeBerDlg::MakeBerDlg(QWidget *parent) :
     QDialog(parent)
@@ -87,18 +92,8 @@ void MakeBerDlg::initUI()
     mClassCombo->addItems( kClassList );
     mIndefiniteCheck->setEnabled( false );
 
-    int nPrimitiveCnt = JS_BER_getPrimitiveCount();
-
     mPrimitiveCombo->addItem( "None" );
-
-    for( int i = 0; i < nPrimitiveCnt; i++ )
-    {
-        const char *pName = JS_BER_getPrimitiveNameAt( i );
-        if( strcasecmp( pName, JS_NAME_EOC ) == 0 )
-            continue;
-
-        mPrimitiveCombo->addItem( pName );
-    }
+    mPrimitiveCombo->addItems( kPrimitiveList );
 
     mValueTypeCombo->addItems( kDataTypeList );
 }

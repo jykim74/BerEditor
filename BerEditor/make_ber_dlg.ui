@@ -30,6 +30,23 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="5">
+      <widget class="QCheckBox" name="mIndefiniteCheck">
+       <property name="text">
+        <string>Indefinite</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="mClassCombo"/>
+     </item>
+     <item row="0" column="3">
+      <widget class="QCheckBox" name="mConstructedCheck">
+       <property name="text">
+        <string>Constructed</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="2">
       <spacer name="horizontalSpacer_3">
        <property name="orientation">
@@ -42,16 +59,6 @@
         </size>
        </property>
       </spacer>
-     </item>
-     <item row="0" column="4">
-      <widget class="QCheckBox" name="mIndefiniteCheck">
-       <property name="text">
-        <string>Indefinite</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="mClassCombo"/>
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_2">
@@ -66,10 +73,10 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
-      <widget class="QCheckBox" name="mConstructedCheck">
-       <property name="text">
-        <string>Constructed</string>
+     <item row="0" column="4">
+      <widget class="Line" name="line_6">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
        </property>
       </widget>
      </item>
