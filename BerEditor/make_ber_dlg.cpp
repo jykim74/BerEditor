@@ -52,6 +52,11 @@ MakeBerDlg::~MakeBerDlg()
 
 }
 
+void MakeBerDlg::setHeadLabel( const QString strHead )
+{
+    mHeadLabel->setText( strHead );
+}
+
 QString MakeBerDlg::getData()
 {
     QString strData;
@@ -89,6 +94,9 @@ void MakeBerDlg::initUI()
     for( int i = 0; i < nPrimitiveCnt; i++ )
     {
         const char *pName = JS_BER_getPrimitiveNameAt( i );
+        if( strcasecmp( pName, JS_NAME_EOC ) == 0 )
+            continue;
+
         mPrimitiveCombo->addItem( pName );
     }
 

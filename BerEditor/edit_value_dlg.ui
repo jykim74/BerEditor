@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>524</width>
-    <height>387</height>
+    <height>472</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="label_7">
+    <widget class="QLabel" name="mHeadLabel">
      <property name="text">
       <string>Editing BER data</string>
      </property>

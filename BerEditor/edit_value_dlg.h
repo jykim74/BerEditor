@@ -25,6 +25,7 @@ public:
 
     void setItem( BerItem *pItem );
     QString getData();
+    void setHeadLabel( const QString strHead );
 
 private slots:
     void runChange();

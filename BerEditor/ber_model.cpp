@@ -426,7 +426,9 @@ int BerModel::resizeParentHeader( int nDiffLen, const BerItem *pItem, BIN *pBER 
         nOldHeaderLen = pParent->GetHeaderSize();
 
         pParent->changeLength( nOldLen + nResizeLen, &nResizeLen );
-        if( nResizeLen == 0 ) break;
+
+        /* Indefinte 경우가 있어서 항상 끝까지 체크 햬야 함 */
+        if( nResizeLen == 0 ) continue;
 
         pParent->getHeaderBin( &binHeader );
         JS_BIN_changeBin( pParent->GetOffset(), nOldHeaderLen, &binHeader, pBER );

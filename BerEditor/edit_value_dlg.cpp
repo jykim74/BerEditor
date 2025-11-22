@@ -42,6 +42,11 @@ EditValueDlg::~EditValueDlg()
 
 }
 
+void EditValueDlg::setHeadLabel( const QString strHead )
+{
+    mHeadLabel->setText( strHead );
+}
+
 void EditValueDlg::initialize()
 {
     mValueTypeCombo->addItems( kDataTypeList );

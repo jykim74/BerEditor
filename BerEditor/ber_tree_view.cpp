@@ -176,7 +176,16 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
                         .arg( pItem->GetTagString(), nFieldWidth - 2 )
                         .arg( sTagBit )
                         .arg( strTagHex ) );
-    berApplet->info( QString( "Length      : 0x%1 = %2 Bytes\n" ).arg( getHexString(sLen, nLenSize), nFieldWidth ).arg(pItem->GetLength()));
+
+    if( pItem->GetIndefinite() == true )
+    {
+        berApplet->info( QString( "Length      : %1 = %2 Bytes\n" ).arg( "Indefinite", nFieldWidth - 2 ).arg(pItem->GetLength() - 2));
+    }
+    else
+    {
+        berApplet->info( QString( "Length      : 0x%1 = %2 Bytes\n" ).arg( getHexString(sLen, nLenSize), nFieldWidth ).arg(pItem->GetLength()));
+    }
+
     berApplet->info( QString( "Offset      : 0x%1 = %2\n" ).arg( strOffset, nFieldWidth ).arg(pItem->GetOffset()));
 
     QString strVal = pItem->GetValueString( &binBer, &nValueType, nWidth );
@@ -878,6 +887,7 @@ void BerTreeView::EditValue()
     }
 
     EditValueDlg editValueDlg;
+    editValueDlg.setHeadLabel( tr("Edit BER") );
     editValueDlg.setItem( item );
     ret = editValueDlg.exec();
 
@@ -907,6 +917,8 @@ void BerTreeView::InsertBER()
     if( item->isConstructed() == false ) return;
 
     MakeBerDlg makeBer;
+    makeBer.setHeadLabel( tr( "Insert BER" ));
+
     ret = makeBer.exec();
 
     if( ret == QDialog::Accepted )

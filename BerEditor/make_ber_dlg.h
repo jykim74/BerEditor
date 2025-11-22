@@ -21,6 +21,7 @@ public:
     explicit MakeBerDlg(QWidget *parent = nullptr);
     ~MakeBerDlg();
     QString getData();
+    void setHeadLabel( const QString strHead );
 
 private slots:
     void runMake();

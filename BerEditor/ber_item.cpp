@@ -115,7 +115,8 @@ QString BerItem::GetTagXMLString()
     }
     else
     {
-        if( tag_ == JS_BOOLEAN ) return "BOOLEAN";
+        if( tag_ == JS_EOC ) return "EOC";
+        else if( tag_ == JS_BOOLEAN ) return "BOOLEAN";
         else if( tag_ == JS_INTEGER ) return "INTEGER";
         else if( tag_ == JS_BITSTRING ) return "BIT_STRING";
         else if( tag_ == JS_OCTETSTRING ) return "OCTET_STRING";
