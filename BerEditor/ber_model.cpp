@@ -517,7 +517,7 @@ int BerModel::resizeItemHead( BIN *pBER, BerItem *pItem, int nModItemLen )
     berApplet->log( QString( "New Header[%1] : %2" ).arg( nLevel ).arg( getHexString( &binNewHead)));
 #endif
 
-    ret = JS_BIN_changeBin( pBER, pItem->GetOffset(), nOrgLen, &binNewHead );
+    ret = JS_BIN_changeBin( pBER, pItem->GetOffset(), nOrgHeadLen, &binNewHead );
 
 end :
     JS_BIN_reset( &binNewHead );
@@ -609,7 +609,7 @@ int BerModel::removeItem( BerItem *pItem )
     pParent = (BerItem *)pItem->parent();
     if( pParent )
     {
-        ret = resizeHeadToTop( &binMod, pParent, nDiffLen );
+        ret = resizeHeadToTop( &binMod, pParent, -nDiffLen );
         if( ret != 0 ) goto end;
     }
 
