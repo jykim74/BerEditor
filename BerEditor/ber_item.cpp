@@ -356,8 +356,6 @@ int BerItem::changeLength( int nNewLen, int *pnDiffLen )
 
     nDiff = nNewLen - length_;
 
-    if( indefinite_ == true ) return nDiff;
-
     if( nNewLen <= 127 )
     {
         header_size_ = 2;
@@ -398,6 +396,7 @@ int BerItem::changeLength( int nNewLen, int *pnDiffLen )
         return -1;
     }
 
+    length_ = nNewLen;
     nDiff += (header_size_ - nCurHeaderSize);
     *pnDiffLen = nDiff;
 

@@ -29,7 +29,6 @@ public:
 
 private slots:
     void runChange();
-    void runDelete();
     void runAdd();
     void changeValueText();
     void changeBER();

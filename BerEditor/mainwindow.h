@@ -107,6 +107,7 @@ public:
 
     int decodeData( const BIN *pData, const QString strPath = "" );
     int decodeTitle( const BIN *pData, const QString strTitle = "" );
+    int reloadData();
 
     int decodeTTLV( const BIN *pData );
     bool isTTLV();

@@ -38,6 +38,7 @@ public slots:
     void SaveNodeValue();
     void EditValue();
     void InsertBER();
+    void DeleteBER();
 
     void treeExpandAll();
     void treeExpandNode();

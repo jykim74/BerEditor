@@ -55,7 +55,7 @@ int BerModel::parseTree( bool bExpand )
 
     insertRow( 0, pRootItem );
 
-    pRootItem->setText( pRootItem->GetInfoString( &binBer_) );
+//    pRootItem->setText( pRootItem->GetInfoString( &binBer_) );
 
     if( (pRootItem->GetId() & JS_FORM_MASK) == JS_CONSTRUCTED )
     {
@@ -113,7 +113,7 @@ int BerModel::parseConstruct(int offset, BerItem *pParentItem, bool bExpand )
 
         if( next_offset <= 0 ) return -1;
 
-        pItem->setText( pItem->GetInfoString( &binBer_));
+//        pItem->setText( pItem->GetInfoString( &binBer_));
 
         pParentItem->appendRow( pItem );
 
@@ -197,7 +197,7 @@ int BerModel::parseIndefiniteConstruct( int offset, BerItem *pParentItem, bool b
         pItem->SetLevel(level );
         next_offset = getItem( offset, pItem );
 
-        pItem->setText( pItem->GetInfoString( &binBer_));
+//        pItem->setText( pItem->GetInfoString( &binBer_));
         pParentItem->appendRow( pItem );
 
         if( (pItem->GetId() & JS_FORM_MASK) == JS_CONSTRUCTED )
@@ -260,17 +260,22 @@ int BerModel::parseIndefiniteConstruct( int offset, BerItem *pParentItem, bool b
     return -1;
 }
 
-int BerModel::getItem(int offset, BerItem *pItem)
+int BerModel::getItem(const BIN *pBer, int offset, BerItem *pItem)
 {
     int next_offset = 0;
     int position = 0;
     int length = 0;
 
-    int tag = binBer_.pVal[offset + position];
+    if( pBer == NULL || pBer->nLen < 2 || pItem == NULL )
+        return JSR_ERR;
+
+    int tag = pBer->pVal[offset + position];
 
     pItem->SetId( tag & ~JS_TAG_MASK );
-    pItem->SetHeaderByte( binBer_.pVal[offset + position], position );
+    pItem->SetHeaderByte( pBer->pVal[offset + position], position );
     pItem->SetIndefinite(0);
+    pItem->SetOffset( offset );
+
 
     tag &= JS_TAG_MASK;
     position++;
@@ -282,21 +287,21 @@ int BerModel::getItem(int offset, BerItem *pItem)
         tag = 0;
 
         do {
-            value = binBer_.pVal[offset + position];
+            value = pBer->pVal[offset + position];
             tag = (tag << 7) | (value & 0x7F);
             pItem->SetHeaderByte( value, position );
             position++;
-        } while ( value & JS_LEN_XTND && position < 5 && (offset + position + 1) < binBer_.nLen );
+        } while ( value & JS_LEN_XTND && position < 5 && (offset + position + 1) < pBer->nLen );
 
         if( position >= 5 ) return -1;
     }
 
     pItem->SetTag(tag);
 
-    if( (offset + position) > binBer_.nLen ) return -1;
+    if( (offset + position) > pBer->nLen ) return -1;
 
-    length = binBer_.pVal[offset + position];
-    pItem->SetHeaderByte( binBer_.pVal[offset + position], position );
+    length = pBer->pVal[offset + position];
+    pItem->SetHeaderByte( pBer->pVal[offset + position], position );
     position++;
 
     pItem->SetHeaderSize( position );
@@ -314,9 +319,9 @@ int BerModel::getItem(int offset, BerItem *pItem)
 
         for( i = 0; i < length; i++ )
         {
-            int ch = binBer_.pVal[offset + position];
+            int ch = pBer->pVal[offset + position];
             pItem->SetLength( (pItem->length_ << 8) | ch );
-            pItem->SetHeaderByte( binBer_.pVal[offset + position], position );
+            pItem->SetHeaderByte( pBer->pVal[offset + position], position );
             position++;
         }
 
@@ -331,80 +336,16 @@ int BerModel::getItem(int offset, BerItem *pItem)
         }
     }
 
+    pItem->setText( pItem->GetInfoString( pBer ) );
     next_offset = offset + position + pItem->length_;
 
     return next_offset;
 }
 
-#if 0
-int getItemA( const BIN *pBer, BerItem *pItem )
+int BerModel::getItem( int offset, BerItem *pItem )
 {
-    int position = 0;
-    int length = 0;
-
-    int tag = pBer->pVal[position];
-
-    pItem->SetId( tag & ~JS_TAG_MASK );
-    pItem->SetHeaderByte( pBer->pVal[position], position );
-    pItem->SetIndefinite(0);
-
-    tag &= JS_TAG_MASK;
-    position++;
-
-    if( tag == JS_TAG_MASK )
-    {
-        int value;
-
-        tag = 0;
-
-        do {
-            value = pBer->pVal[position];
-            tag = (tag << 7) | (value & 0x7F);
-            pItem->SetHeaderByte( value, position );
-            position++;
-        } while ( value & JS_LEN_XTND && position < 5 && (position + 1) < pBer->nLen );
-
-        if( position >= 5 ) return -1;
-    }
-
-    pItem->SetTag(tag);
-
-    if( (position) > pBer->nLen ) return -1;
-
-    length = pBer->pVal[position];
-    pItem->SetHeaderByte( pBer->pVal[position], position );
-    position++;
-
-    pItem->SetHeaderSize( position );
-
-    if( length & JS_LEN_XTND )
-    {
-        int i;
-
-        length &= JS_LEN_MASK;
-
-        if( length > 4 ) return -2;
-
-        pItem->SetHeaderSize( pItem->header_size_ + length );
-        pItem->SetLength(0);
-
-        for( i = 0; i < length; i++ )
-        {
-            int ch = pBer->pVal[position];
-            pItem->SetLength( (pItem->length_ << 8) | ch );
-            pItem->SetHeaderByte( pBer->pVal[position], position );
-            position++;
-        }
-
-        if( !length ) pItem->SetIndefinite(1);
-    }
-    else {
-        pItem->SetLength(length);
-    }
-
-    return 0;
+    return getItem( &binBer_, offset, pItem );
 }
-#endif
 
 #if 0
 int BerModel::resizeParentHeader( int nDiffLen, const BerItem *pItem, BIN *pBER )
@@ -537,7 +478,7 @@ int BerModel::resizeHeadToTop( BIN *pBER, BerItem *pItem, int nModItemLen )
     if( ret != 0 ) return ret;
     nNewLen = pItem->GetItemSize();
 
-    pParent = pItem;
+    pParent = (BerItem *)pItem->parent();
     nModLen = nNewLen - nOrgLen;
 
     while( pParent )
@@ -555,38 +496,49 @@ int BerModel::resizeHeadToTop( BIN *pBER, BerItem *pItem, int nModItemLen )
     return ret;
 }
 
-int BerModel::addItem( BerItem* pParentItem, const BIN *pData )
+const BerItem* BerModel::addItem( BerItem* pParentItem, const BIN *pData )
 {
     int ret = 0;
     BIN binMod = {0,0};
+    int nPos = 0;
+    BerItem *pNewItem = new BerItem;
 
-    if( pParentItem == NULL ) return -1;
+    if( pParentItem == NULL ) return nullptr;
 
     JS_BIN_copy( &binMod, &binBer_ );
 
     if( pParentItem->GetIndefinite() == true )
     {
-        int nPos = pParentItem->GetOffset() + pParentItem->GetHeaderSize() + pParentItem->GetValLength();
+        nPos = pParentItem->GetOffset() + pParentItem->GetHeaderSize() + pParentItem->GetValLength();
         ret = JS_BIN_insertBin( &binMod, nPos, pData );
         if( ret != 0 ) goto end;
     }
     else
     {
-        int nPos = pParentItem->GetOffset() + pParentItem->GetItemSize();
+        nPos = pParentItem->GetOffset() + pParentItem->GetItemSize();
 
         ret = JS_BIN_insertBin( &binMod, nPos, pData );
         if( ret != 0 ) goto end;
     }
 
-//    ret = resizeParentHeader( nDiffLen, pParentItem, &binMod );
     ret = resizeHeadToTop( &binMod, pParentItem, pData->nLen );
     if( ret != 0 ) goto end;
     setBER( &binMod );
+    getItem( nPos, pNewItem );
+    pParentItem->appendRow( pNewItem );
 
 end :
     JS_BIN_reset( &binMod );
 
-    return ret;
+    if( ret == JSR_OK )
+    {
+        return pNewItem;
+    }
+    else
+    {
+        delete pNewItem;
+        return nullptr;
+    }
 }
 
 int BerModel::removeItem( BerItem *pItem )
@@ -596,8 +548,9 @@ int BerModel::removeItem( BerItem *pItem )
     BIN binMod = {0,0};
     BerItem *pParent = NULL;
 
+    if( pItem == NULL ) return JSR_ERR;
 
-    if( pItem == NULL ) return -1;
+    if( pItem->parent() == NULL ) JSR_ERR2;
 
     JS_BIN_copy( &binMod, &binBer_ );
 
@@ -614,6 +567,20 @@ int BerModel::removeItem( BerItem *pItem )
     }
 
     setBER( &binMod );
+
+    if( pParent )
+    {
+        int count = pParent->rowCount();
+        for( int i = 0; i < count; i++ )
+        {
+            BerItem *curItem = (BerItem *)pParent->child( i );
+            if( curItem == pItem )
+            {
+                pParent->removeRow( i );
+                break;
+            }
+        }
+    }
 
 end :
     JS_BIN_reset( &binMod );

@@ -24,9 +24,9 @@ public:
 
     const BIN& getBER() { return binBer_; };
     int getItem( int offset, BerItem *pItem );
-    int getItem( const BIN *pBer, BerItem *pItem );
+    int getItem( const BIN *pBer, int offset, BerItem *pItem );
 
-    int addItem( BerItem* pParentItem, const BIN *pData );
+    const BerItem* addItem( BerItem* pParentItem, const BIN *pData );
     int removeItem( BerItem *pItem );
     int modifyItem( BerItem *pItem, const BIN *pValue );
 

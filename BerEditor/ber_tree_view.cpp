@@ -703,6 +703,7 @@ void BerTreeView::ShowContextMenu(QPoint point)
     {
         QAction *pInsertAct = NULL;
         QAction *pEditAct = NULL;
+        QAction *pDeleteAct = NULL;
 
         if( item->isConstructed() )
         {
@@ -712,6 +713,9 @@ void BerTreeView::ShowContextMenu(QPoint point)
         {
             pEditAct = menu.addAction(tr("Edit value"), this, SLOT(EditValue()));
         }
+
+        if( item->parent() )
+            pDeleteAct = menu.addAction( tr("Delete BER" ), this, SLOT(DeleteBER()));
 
         if( berApplet->isLicense() == false )
         {
@@ -891,17 +895,18 @@ void BerTreeView::EditValue()
     editValueDlg.setItem( item );
     ret = editValueDlg.exec();
 
+/*
     if( ret == QDialog::Accepted )
     {
-        tree_model->parseTree( berApplet->settingsMgr()->autoExpand() );
-        viewRoot();
-        QModelIndex ri = tree_model->index(0,0);
-        expand(ri);
-/*
-        showTextView();
-        showXMLView();
-*/
+        this->clicked( index );
+        this->setCurrentIndex( index );
     }
+    else
+    {
+        berApplet->warningBox( tr("Modify failed, data will be retrieved again"), this );
+        berApplet->mainWindow()->reloadData();
+    }
+*/
 }
 
 void BerTreeView::InsertBER()
@@ -929,18 +934,70 @@ void BerTreeView::InsertBER()
         QString strData = makeBer.getData();
         JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
 
-        ret = tree_model->addItem( item, &binData );
-        if( ret != 0 ) goto end;
-
+        const BerItem* addItem = tree_model->addItem( item, &binData );
+        if( addItem == nullptr )
+        {
+            berApplet->warningBox( tr("Add failed, data will be retrieved again"), this );
+            berApplet->mainWindow()->reloadData();
+        }
+        else
+        {
+            QModelIndex idx = addItem->index();
+            this->clicked( idx );
+            this->setCurrentIndex( idx );
+        }
+/*
         tree_model->parseTree( berApplet->settingsMgr()->autoExpand() );
 
         viewRoot();
         QModelIndex ri = tree_model->index(0,0);
         expand(ri);
+*/
     }
 
 end:
     JS_BIN_reset( &binData );
+}
+
+void BerTreeView::DeleteBER()
+{
+    int ret = 0;
+    QModelIndex index = currentIndex();
+
+    BerModel *tree_model = (BerModel *)model();
+    BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
+    BerItem* parent = (BerItem *)item->parent();
+
+    if( item == NULL )
+    {
+        berApplet->warningBox( tr( "There is no item to select" ), this );
+        return;
+    }
+
+    if( item->parent() == nullptr )
+    {
+        berApplet->warningBox( tr( "Top-level items cannot be deleted" ), this );
+        return;
+    }
+
+    bool bVal = berApplet->yesOrCancelBox( tr("Are you sure you want to delete it?"), this, true );
+    if( bVal == false ) return;
+
+    ret = tree_model->removeItem( item );
+    if( ret == JSR_OK )
+    {
+        if( parent )
+        {
+            QModelIndex idx = parent->index();
+            this->clicked( idx );
+            this->setCurrentIndex( idx );
+        }
+    }
+    else
+    {
+        berApplet->warningBox( tr("Deletion failed: %1, data will be retrieved again").arg(JERR(ret)), this );
+        berApplet->mainWindow()->reloadData();
+    }
 }
 
 void BerTreeView::addEdit( int level, const QString& strMsg )

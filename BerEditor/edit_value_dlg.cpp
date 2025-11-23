@@ -10,6 +10,8 @@
 #include "ber_applet.h"
 #include "common.h"
 #include "make_value_dlg.h"
+#include "ber_tree_view.h"
+#include "mainwindow.h"
 
 
 EditValueDlg::EditValueDlg(QWidget *parent) :
@@ -18,7 +20,6 @@ EditValueDlg::EditValueDlg(QWidget *parent) :
     setupUi(this);
 
     connect( mAddBtn, SIGNAL(clicked()), this, SLOT(runAdd()));
-    connect( mDeleteBtn, SIGNAL(clicked()), this, SLOT(runDelete()));
     connect( mModifyBtn, SIGNAL(clicked()), this, SLOT(runChange()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
 
@@ -242,39 +243,27 @@ void EditValueDlg::runChange()
 
     ret = ber_model->modifyItem( ber_item_, &binNewVal );
 
+    if( ret == JSR_OK )
+    {
+        QModelIndex idx = ber_item_->index();
+        berApplet->mainWindow()->berTree()->clicked( idx );
+        berApplet->mainWindow()->berTree()->setCurrentIndex(idx);
+    }
+    else
+    {
+        berApplet->warningBox( tr("Modify failed, data will be retrieved again"), this );
+        berApplet->mainWindow()->reloadData();
+    }
+
 end :
     JS_BIN_reset( &binNewVal );
 
     if( ret == 0 )
         QDialog::accept();
     else
-    {
-        berApplet->warnLog( tr( "fail to modify: %1").arg(ret), this );
         reject();
-    }
 }
 
-
-void EditValueDlg::runDelete()
-{
-    int ret = 0;
-
-    BerModel *ber_model = (BerModel *)ber_item_->model();
-    BerItem *parentItem = (BerItem *)ber_item_->parent();
-    if( parentItem == NULL )
-    {
-        berApplet->warningBox( tr("Top-level item cannot be deleted"), this );
-        QDialog::reject();
-        return;
-    }
-
-    bool bVal = berApplet->yesOrCancelBox( tr( "Are you sure you want to delete it?" ), this, false );
-    if( bVal == false ) return;
-
-    ret = ber_model->removeItem( ber_item_ );
-
-    if( ret == 0 ) QDialog::accept();
-}
 
 void EditValueDlg::runAdd()
 {
@@ -285,6 +274,7 @@ void EditValueDlg::runAdd()
     BerItem *parentItem = (BerItem *)ber_item_->parent();
 
     QString strData = getData();
+    const BerItem *child = nullptr;
 
     if( parentItem == NULL )
     {
@@ -304,12 +294,26 @@ void EditValueDlg::runAdd()
     if( bVal == false ) return;
 
     JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
-    ret = ber_model->addItem( parentItem, &binData );
+    child = ber_model->addItem( parentItem, &binData );
+    if( child )
+    {
+        QModelIndex idx = child->index();
+        berApplet->mainWindow()->berTree()->clicked( idx );
+        berApplet->mainWindow()->berTree()->setCurrentIndex( idx );
+    }
+    else
+    {
+        berApplet->warningBox( tr("Add failed, data will be retrieved again"), this );
+        berApplet->mainWindow()->reloadData();
+    }
 
  end :
     JS_BIN_reset( &binData );
 
-    if( ret == 0 ) QDialog::accept();
+    if( ret == 0 )
+        QDialog::accept();
+    else
+        QDialog::reject();
 }
 
 void EditValueDlg::changeValueText()
