@@ -20,12 +20,14 @@ public:
     int parseTree();
     int parseConstruct( int offset, TTLVTreeItem *pParentItem );
 
-    int addItem( TTLVTreeItem* pParentItem, const BIN *pData );
+    const TTLVTreeItem* addItem( TTLVTreeItem* pParentItem, const BIN *pData );
     int removeItem( TTLVTreeItem *pItem );
     int modifyItem( TTLVTreeItem *pItem, const BIN *pValue );
 
 private:
     int getItem( int offset, TTLVTreeItem *pItem );
+    int getItem( BIN *pTTLV, int offset, TTLVTreeItem *pItem );
+
     int resizeParentHeader( int nDiffLen, const TTLVTreeItem *pItem, BIN* pTTLV );
 
     BIN binTTLV_;

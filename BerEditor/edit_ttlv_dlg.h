@@ -20,7 +20,6 @@ public:
 private slots:
     void clickModify();
     void clickAdd();
-    void clickDelete();
     void changeValue();
     void changeTTLV();
 

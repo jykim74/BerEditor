@@ -723,7 +723,7 @@ void FindDlg::clickEdit()
     if( berApplet->mainWindow()->isTTLV() )
     {
         TTLVTreeView* tree = berApplet->mainWindow()->ttlvTree();
-        tree->editItem();
+        tree->EditItem();
     }
     else
     {

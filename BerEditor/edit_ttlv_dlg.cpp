@@ -14,7 +14,6 @@ EditTTLVDlg::EditTTLVDlg(QWidget *parent) :
 
     connect( mModifyBtn, SIGNAL(clicked()), this, SLOT(clickModify()));
     connect( mAddBtn, SIGNAL(clicked()), this, SLOT(clickAdd()));
-    connect( mDeleteBtn, SIGNAL(clicked()), this, SLOT(clickDelete()));
 
     connect( mCancelBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mValueText, SIGNAL(textChanged()), this, SLOT(changeValue()));
@@ -157,7 +156,16 @@ void EditTTLVDlg::clickModify()
 
     if( ret == 0 )
     {
+        QModelIndex idx = pItem->index();
+        berApplet->mainWindow()->ttlvTree()->clicked( idx );
+        berApplet->mainWindow()->ttlvTree()->setCurrentIndex( idx );
         QDialog::accept();
+    }
+    else
+    {
+        berApplet->warningBox( tr("Add failed, data will be retrieved again"), this );
+        berApplet->mainWindow()->reloadTTLV();
+        QDialog::reject();
     }
 }
 
@@ -189,35 +197,20 @@ void EditTTLVDlg::clickAdd()
 
     JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
 
-    ret = pModel->addItem( pParentItem, &binData );
+    const TTLVTreeItem *pAddItem = pModel->addItem( pParentItem, &binData );
     JS_BIN_reset( &binData );
 
-    if( ret == 0 ) accept();
-}
-
-void EditTTLVDlg::clickDelete()
-{
-    int ret = 0;
-
-    TTLVTreeItem *pItem = berApplet->mainWindow()->ttlvTree()->currentItem();
-    if( pItem == NULL )
+    if( pAddItem )
     {
-        berApplet->warningBox( tr( "There is no selected item"), this );
-        return;
+        QModelIndex idx = pAddItem->index();
+        berApplet->mainWindow()->ttlvTree()->clicked( idx );
+        berApplet->mainWindow()->ttlvTree()->setCurrentIndex( idx );
+        QDialog::accept();
     }
-
-    bool bVal = berApplet->yesOrCancelBox( tr( "Are you sure you want to delete it?" ), this, false );
-    if( bVal == false ) return;
-
-    TTLVTreeItem *pParentItem = (TTLVTreeItem *)pItem->parent();
-    if( pParentItem == NULL )
+    else
     {
-        berApplet->warningBox( tr( "Top-level item cannot be added."), this );
-        return;
+        berApplet->warningBox( tr("Add failed, data will be retrieved again"), this );
+        berApplet->mainWindow()->reloadTTLV();
+        QDialog::reject();
     }
-
-    TTLVTreeModel *pModel = (TTLVTreeModel *)pItem->model();
-
-    ret = pModel->removeItem( pItem );
-    if( ret == 0 ) accept();
 }

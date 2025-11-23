@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>518</width>
+    <width>524</width>
     <height>442</height>
    </rect>
   </property>
@@ -564,19 +564,6 @@
       <number>0</number>
      </property>
      <item row="0" column="2">
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="3">
       <widget class="QPushButton" name="mModifyBtn">
        <property name="text">
         <string>Modify</string>
@@ -590,17 +577,23 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="4">
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="3">
       <widget class="QPushButton" name="mCancelBtn">
        <property name="text">
         <string>Cancel</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mDeleteBtn">
-       <property name="text">
-        <string>Delete</string>
        </property>
       </widget>
      </item>
@@ -620,7 +613,6 @@
   <tabstop>mTTLVLenText</tabstop>
   <tabstop>mTTLVText</tabstop>
   <tabstop>mAddBtn</tabstop>
-  <tabstop>mDeleteBtn</tabstop>
   <tabstop>mModifyBtn</tabstop>
   <tabstop>mCancelBtn</tabstop>
  </tabstops>

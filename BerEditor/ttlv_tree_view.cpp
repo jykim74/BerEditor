@@ -115,12 +115,17 @@ void TTLVTreeView::leftContextMenu( QPoint point )
 
     if( item != NULL )
     {
-        menu.addAction( tr("Edit"), this, &TTLVTreeView::editItem );
-
         if( item->isStructure() == true )
         {
-            menu.addAction( tr( "AddTTLV" ), this, &TTLVTreeView::AddTTLV );
+            menu.addAction( tr( "Insert TTLV" ), this, &TTLVTreeView::InsertTTLV );
         }
+        else
+        {
+            menu.addAction( tr("Edit"), this, &TTLVTreeView::EditItem );
+        }
+
+        if( item->parent() )
+            menu.addAction( tr( "Delete" ), this, &TTLVTreeView::DeleteItem );
     }
 
     menu.exec(QCursor::pos());
@@ -658,7 +663,7 @@ void TTLVTreeView::treeCollapseNode()
     collapse(index);
 }
 
-void TTLVTreeView::AddTTLV()
+void TTLVTreeView::InsertTTLV()
 {
     int ret = 0;
     BIN binData = {0,0};
@@ -684,26 +689,28 @@ void TTLVTreeView::AddTTLV()
         QString strData = makeTTLV.getData();
         JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
 
-        ret = ttlv_model->addItem( item, &binData );
+        const TTLVTreeItem *pAddItem = ttlv_model->addItem( item, &binData );
 
         JS_BIN_reset( &binData );
 
-        if( ret == 0 )
+        if( pAddItem )
         {
+            QModelIndex idx = pAddItem->index();
+            berApplet->mainWindow()->ttlvTree()->clicked( idx );
+            berApplet->mainWindow()->ttlvTree()->setCurrentIndex( idx );
+
+            /*
             ttlv_model->parseTree();
             viewRoot();
 
             QModelIndex ri = ttlv_model->index(0,0);
             expand(ri);
-/*
-            showTextView();
-            showXMLView();
-*/
+            */
         }
     }
 }
 
-void TTLVTreeView::editItem()
+void TTLVTreeView::EditItem()
 {
     int ret = 0;
 
@@ -718,6 +725,8 @@ void TTLVTreeView::editItem()
 
     EditTTLVDlg editTTLV;
     ret = editTTLV.exec();
+
+    /*
     if( ret == QDialog::Accepted )
     {
         TTLVTreeModel *ttlv_model = (TTLVTreeModel *)model();
@@ -726,10 +735,42 @@ void TTLVTreeView::editItem()
         viewRoot();
         QModelIndex ri = ttlv_model->index(0,0);
         expand(ri);
-/*
-        showTextView();
-        showXMLView();
-*/
+    }
+    */
+}
+
+void TTLVTreeView::DeleteItem()
+{
+    int ret = 0;
+
+    TTLVTreeItem *pItem = berApplet->mainWindow()->ttlvTree()->currentItem();
+    BIN binTTLV = berApplet->getTTLV();
+    TTLVTreeModel *ttlv_model = (TTLVTreeModel *)model();
+    const TTLVTreeItem *pParent = NULL;
+
+    if( pItem == NULL )
+    {
+        berApplet->warningBox( tr( "There is no item to select" ), this );
+        return;
+    }
+
+    if( pItem->parent() == nullptr )
+    {
+        berApplet->warningBox( tr( "Top-level items cannot be deleted" ), this );
+        return;
+    }
+
+    pParent = (TTLVTreeItem *)pItem->parent();
+
+    bool bVal = berApplet->yesOrCancelBox( tr("Are you sure you want to delete it?"), this, true );
+    if( bVal == false ) return;
+
+    ttlv_model->removeItem( pItem );
+    if( pParent )
+    {
+        QModelIndex idx = pParent->index();
+        berApplet->mainWindow()->ttlvTree()->clicked(idx);
+        berApplet->mainWindow()->ttlvTree()->setCurrentIndex( idx );
     }
 }
 

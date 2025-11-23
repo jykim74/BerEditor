@@ -110,6 +110,7 @@ public:
     int reloadData();
 
     int decodeTTLV( const BIN *pData );
+    int reloadTTLV();
     bool isTTLV();
 
     void runSignVerify( bool bSign, bool bEncPri, const QString strPriPath, const QString strCertPath );

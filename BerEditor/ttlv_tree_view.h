@@ -35,9 +35,10 @@ public slots:
     void treeCollapseAll();
     void treeCollapseNode();
 
-    void AddTTLV();
+    void InsertTTLV();
+    void EditItem();
+    void DeleteItem();
 
-    void editItem();
     const QString saveItem();
     void saveItemValue();
 

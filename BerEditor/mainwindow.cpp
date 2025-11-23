@@ -3758,6 +3758,16 @@ int MainWindow::decodeTTLV( const BIN *pData )
     return 0;
 }
 
+int MainWindow::reloadTTLV()
+{
+    ttlv_model_->parseTree();
+
+    ttlv_tree_->header()->setVisible(false);
+    ttlv_tree_->viewRoot();
+    QModelIndex ri = ttlv_model_->index(0,0);
+    ttlv_tree_->expand(ri);
+}
+
 void MainWindow::print()
 {
 #if QT_CONFIG(printdialog)

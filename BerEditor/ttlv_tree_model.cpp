@@ -36,7 +36,7 @@ int TTLVTreeModel::parseTree()
     offset = getItem( offset, pRootItem );
     insertRow( 0, pRootItem );
 
-    pRootItem->setText( pRootItem->getTitle( &binTTLV_ ));
+//    pRootItem->setText( pRootItem->getTitle( &binTTLV_ ));
 
     if( pRootItem->isStructure() ) // In case of structure
     {
@@ -64,7 +64,7 @@ int TTLVTreeModel::parseConstruct( int offset, TTLVTreeItem *pParentItem )
 
         next_offset = getItem( offset, pItem );
 
-        pItem->setText( pItem->getTitle( &binTTLV_ ) );
+//        pItem->setText( pItem->getTitle( &binTTLV_ ) );
         pParentItem->appendRow( pItem );
 
         if( pItem->isStructure() )
@@ -90,6 +90,11 @@ void TTLVTreeModel::setTTLV( const BIN *pTTLV )
 
 int TTLVTreeModel::getItem( int offset, TTLVTreeItem *pItem )
 {
+    return getItem( &binTTLV_, offset, pItem );
+}
+
+int TTLVTreeModel::getItem( BIN *pTTLV, int offset, TTLVTreeItem *pItem )
+{
     int     next_offset = 0;
     int     length = 0;
     int     pad = 0;
@@ -97,12 +102,15 @@ int TTLVTreeModel::getItem( int offset, TTLVTreeItem *pItem )
     if( binTTLV_.nLen <= 0 ) return -1;
 
     pItem->dataReset();
-    pItem->setHeader( &binTTLV_.pVal[offset], JS_TTLV_HEADER_SIZE );
+    pItem->setHeader( &pTTLV->pVal[offset], JS_TTLV_HEADER_SIZE );
+    pItem->setOffset( offset );
 
     length = pItem->getLengthInt();
 
     pad = 8 - (length % 8);
     if( pad == 8 ) pad = 0;
+
+    pItem->setText( pItem->getTitle( &binTTLV_ ));
 
     next_offset = offset + 8 + length + pad;
     return next_offset;
@@ -135,15 +143,16 @@ int TTLVTreeModel::resizeParentHeader( int nDiffLen, const TTLVTreeItem *pItem, 
     return 0;
 }
 
-int TTLVTreeModel::addItem( TTLVTreeItem* pParentItem, const BIN *pData )
+const TTLVTreeItem* TTLVTreeModel::addItem( TTLVTreeItem* pParentItem, const BIN *pData )
 {
     int ret = 0;
     BIN binMod = {0,0};
     BIN binHeader = {0,0};
     int nStart = 0;
     int nOrgLen = 0;
+    TTLVTreeItem *pChild = NULL;
 
-    if( pParentItem == NULL ) return -1;
+    if( pParentItem == NULL ) return nullptr;
 
     JS_BIN_copy( &binMod, &binTTLV_ );
 
@@ -163,14 +172,15 @@ int TTLVTreeModel::addItem( TTLVTreeItem* pParentItem, const BIN *pData )
     if( ret != 0 ) goto end;
 
     setTTLV( &binMod );
+    pChild = new TTLVTreeItem;
+    getItem( nStart, pChild );
+    pParentItem->appendRow( pChild );
 
 end :
-    if( ret != 0 ) pParentItem->setLength( nOrgLen );
-
     JS_BIN_reset( &binMod );
     JS_BIN_reset( &binHeader );
 
-    return ret;
+    return pChild;
 }
 
 int TTLVTreeModel::removeItem( TTLVTreeItem *pItem )
@@ -178,8 +188,11 @@ int TTLVTreeModel::removeItem( TTLVTreeItem *pItem )
     int ret = 0;
     int nDiffLen = 0;
     BIN binMod = {0,0};
+    TTLVTreeItem *pParent = NULL;
 
-    if( pItem == NULL ) return -1;
+    if( pItem == NULL ) return JSR_ERR;
+    if( pItem->parent() == NULL ) return JSR_ERR2;
+
     JS_BIN_copy( &binMod, &binTTLV_ );
 
     nDiffLen = pItem->getLengthTTLV();
@@ -187,10 +200,26 @@ int TTLVTreeModel::removeItem( TTLVTreeItem *pItem )
     ret = JS_BIN_removeBin( &binMod, pItem->getOffset(), nDiffLen );
     if( ret != 0 ) goto end;
 
+    pParent = (TTLVTreeItem *)pItem->parent();
+
     ret = resizeParentHeader( -nDiffLen, pItem, &binMod );
     if( ret != 0 ) goto end;
 
     setTTLV( &binMod );
+
+    if( pParent )
+    {
+        int count = pParent->rowCount();
+        for( int i = 0; i < count; i++ )
+        {
+            TTLVTreeItem *curItem = (TTLVTreeItem *)pParent->child( i );
+            if( curItem == pItem )
+            {
+                pParent->removeRow( i );
+                break;
+            }
+        }
+    }
 
 end :
     JS_BIN_reset( &binMod );
