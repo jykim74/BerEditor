@@ -174,6 +174,7 @@ const TTLVTreeItem* TTLVTreeModel::addItem( TTLVTreeItem* pParentItem, const BIN
     setTTLV( &binMod );
     pChild = new TTLVTreeItem;
     getItem( nStart, pChild );
+    pChild->setLevel( pParentItem->getLevel() + 1 );
     pParentItem->appendRow( pChild );
 
 end :

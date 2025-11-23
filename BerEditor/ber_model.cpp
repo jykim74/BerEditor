@@ -525,6 +525,7 @@ const BerItem* BerModel::addItem( BerItem* pParentItem, const BIN *pData )
     if( ret != 0 ) goto end;
     setBER( &binMod );
     getItem( nPos, pNewItem );
+    pNewItem->SetLevel( pParentItem->GetLevel() + 1 );
     pParentItem->appendRow( pNewItem );
 
 end :
