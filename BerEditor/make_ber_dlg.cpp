@@ -131,12 +131,9 @@ void MakeBerDlg::makeHeader()
     else if( strClass == "Private" )
         cTag |= JS_PRIVATE;
 
-    if( mConstructedCheck->isChecked() )
-    {
-        cTag |= JS_CONSTRUCTED;
-    }
 
-    if( cTag & JS_CONTEXT )
+
+    if( cTag == JS_CONTEXT )
     {
         unsigned char cNum = mNumText->text().toInt( nullptr, 16 );
         if( cNum > 0x1F )
@@ -147,15 +144,28 @@ void MakeBerDlg::makeHeader()
 
         cTag |= cNum;
     }
-    else if( cTag & JS_UNIVERSAL )
+    else if( cTag == JS_UNIVERSAL )
     {
-        cPrimitive = JS_BER_getPrimitiveTag( mPrimitiveCombo->currentText().toStdString().c_str() );
+        QString strPrimitive = mPrimitiveCombo->currentText();
+        if( strPrimitive == "None" )
+        {
+            mHeaderText->clear();
+            mBERText->clear();
+            return;
+        }
+
+        cPrimitive = JS_BER_getPrimitiveTag( strPrimitive.toStdString().c_str() );
         cTag |= cPrimitive;
     }
     else
     {
         unsigned char cNum = mNumText->text().toInt( nullptr, 16 );
         cTag |= cNum;
+    }
+
+    if( mConstructedCheck->isChecked() )
+    {
+        cTag |= JS_CONSTRUCTED;
     }
 
     JS_BIN_set( &binHeader, &cTag, 1 );

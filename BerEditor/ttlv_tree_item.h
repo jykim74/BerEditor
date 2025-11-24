@@ -54,7 +54,7 @@ public:
     void dataReset();
     bool isStructure();
 
-private:
+public:
     BIN     header_;
     int     offset_;
     int     level_;

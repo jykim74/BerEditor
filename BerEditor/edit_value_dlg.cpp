@@ -245,14 +245,16 @@ void EditValueDlg::runChange()
 
     if( ret == JSR_OK )
     {
-        QModelIndex idx = ber_item_->index();
-        berApplet->mainWindow()->berTree()->clicked( idx );
-        berApplet->mainWindow()->berTree()->setCurrentIndex(idx);
-    }
-    else
-    {
-        berApplet->warningBox( tr("Modify failed, data will be retrieved again"), this );
+        int nOffset = ber_item_->GetOffset();
+
         berApplet->mainWindow()->reloadData();
+        const BerItem *findItem = ber_model->findItemByOffset( nullptr, nOffset );
+        if( findItem )
+        {
+            QModelIndex idx = findItem->index();
+            berApplet->mainWindow()->berTree()->clicked( idx );
+            berApplet->mainWindow()->berTree()->setCurrentIndex( idx );
+        }
     }
 
 end :
@@ -297,14 +299,16 @@ void EditValueDlg::runAdd()
     child = ber_model->addItem( parentItem, &binData );
     if( child )
     {
-        QModelIndex idx = child->index();
-        berApplet->mainWindow()->berTree()->clicked( idx );
-        berApplet->mainWindow()->berTree()->setCurrentIndex( idx );
-    }
-    else
-    {
-        berApplet->warningBox( tr("Add failed, data will be retrieved again"), this );
+        int nOffset = child->offset_;
         berApplet->mainWindow()->reloadData();
+
+        const BerItem *findItem = ber_model->findItemByOffset( nullptr, nOffset );
+        if( findItem )
+        {
+            QModelIndex idx = findItem->index();
+            berApplet->mainWindow()->berTree()->clicked( idx );
+            berApplet->mainWindow()->berTree()->setCurrentIndex( idx );
+        }
     }
 
  end :

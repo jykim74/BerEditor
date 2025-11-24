@@ -23,6 +23,7 @@ public:
     const TTLVTreeItem* addItem( TTLVTreeItem* pParentItem, const BIN *pData );
     int removeItem( TTLVTreeItem *pItem );
     int modifyItem( TTLVTreeItem *pItem, const BIN *pValue );
+    const TTLVTreeItem* findItemByOffset( TTLVTreeItem* pParentItem, int nOffset );
 
 private:
     int getItem( int offset, TTLVTreeItem *pItem );

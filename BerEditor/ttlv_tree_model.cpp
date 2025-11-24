@@ -168,8 +168,7 @@ const TTLVTreeItem* TTLVTreeModel::addItem( TTLVTreeItem* pParentItem, const BIN
     ret = JS_BIN_insertBin( &binMod, nStart, pData );
     if( ret != 0 ) goto end;
 
-    ret = resizeParentHeader( pData->nLen, pParentItem, &binMod );
-    if( ret != 0 ) goto end;
+    resizeParentHeader( pData->nLen, pParentItem, &binMod );
 
     setTTLV( &binMod );
     pChild = new TTLVTreeItem;
@@ -203,9 +202,7 @@ int TTLVTreeModel::removeItem( TTLVTreeItem *pItem )
 
     pParent = (TTLVTreeItem *)pItem->parent();
 
-    ret = resizeParentHeader( -nDiffLen, pItem, &binMod );
-    if( ret != 0 ) goto end;
-
+    resizeParentHeader( -nDiffLen, pItem, &binMod );
     setTTLV( &binMod );
 
     if( pParent )
@@ -270,9 +267,7 @@ int TTLVTreeModel::modifyItem( TTLVTreeItem *pItem, const BIN *pValue )
     ret = JS_BIN_changeBin( &binMod, pItem->getOffset() + JS_TTLV_HEADER_SIZE, nOrgPadLen, &binNewValue );
     if( ret != 0 ) goto end;
 
-    ret = resizeParentHeader( nDiffLen, pItem, &binMod );
-    if( ret != 0 ) goto end;
-
+    resizeParentHeader( nDiffLen, pItem, &binMod );
     setTTLV( &binMod );
 
 end :
@@ -284,4 +279,41 @@ end :
     JS_BIN_reset( &binNewValue );
 
     return ret;
+}
+
+const TTLVTreeItem* TTLVTreeModel::findItemByOffset( TTLVTreeItem* pParentItem, int nOffset )
+{
+    TTLVTreeItem *pStartItem = NULL;
+    const TTLVTreeItem *pFoundItem = NULL;
+    if( pParentItem == nullptr )
+    {
+        QModelIndex idx = index(0,0);
+        pStartItem = (TTLVTreeItem *)itemFromIndex( idx );
+    }
+    else
+    {
+        pStartItem = pParentItem;
+    }
+
+    if( pStartItem == NULL ) return nullptr;
+
+    if( pStartItem->getOffset() == nOffset ) return pStartItem;
+
+    if( pStartItem->getOffset() > nOffset ) return nullptr;
+
+    if( pStartItem->hasChildren() == true )
+    {
+        int nCount = pStartItem->rowCount();
+
+        for( int i = 0; i < nCount; i++ )
+        {
+            TTLVTreeItem *pChild = (TTLVTreeItem *)pStartItem->child( i );
+            if( pChild->getOffset() > nOffset ) break;
+
+            pFoundItem = findItemByOffset( pChild, nOffset );
+            if( pFoundItem != nullptr ) return pFoundItem;
+        }
+    }
+
+    return nullptr;
 }

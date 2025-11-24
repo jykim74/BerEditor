@@ -501,7 +501,7 @@ const BerItem* BerModel::addItem( BerItem* pParentItem, const BIN *pData )
     int ret = 0;
     BIN binMod = {0,0};
     int nPos = 0;
-    BerItem *pNewItem = new BerItem;
+    BerItem *pNewItem = nullptr;
 
     if( pParentItem == NULL ) return nullptr;
 
@@ -521,25 +521,16 @@ const BerItem* BerModel::addItem( BerItem* pParentItem, const BIN *pData )
         if( ret != 0 ) goto end;
     }
 
-    ret = resizeHeadToTop( &binMod, pParentItem, pData->nLen );
-    if( ret != 0 ) goto end;
+    resizeHeadToTop( &binMod, pParentItem, pData->nLen );
     setBER( &binMod );
+    pNewItem = new BerItem;
     getItem( nPos, pNewItem );
     pNewItem->SetLevel( pParentItem->GetLevel() + 1 );
     pParentItem->appendRow( pNewItem );
 
 end :
     JS_BIN_reset( &binMod );
-
-    if( ret == JSR_OK )
-    {
-        return pNewItem;
-    }
-    else
-    {
-        delete pNewItem;
-        return nullptr;
-    }
+    return pNewItem;
 }
 
 int BerModel::removeItem( BerItem *pItem )
@@ -561,11 +552,7 @@ int BerModel::removeItem( BerItem *pItem )
     if( ret != 0 ) goto end;
 
     pParent = (BerItem *)pItem->parent();
-    if( pParent )
-    {
-        ret = resizeHeadToTop( &binMod, pParent, -nDiffLen );
-        if( ret != 0 ) goto end;
-    }
+    if( pParent ) resizeHeadToTop( &binMod, pParent, -nDiffLen );
 
     setBER( &binMod );
 
@@ -623,16 +610,53 @@ int BerModel::modifyItem( BerItem *pItem, const BIN *pValue )
     if( pParent )
     {
         int nModLen = binChange.nLen - nOrgLen;
-        ret = resizeHeadToTop( &binMod, pParent, nModLen );
-        if( ret != 0 ) goto end;
+        resizeHeadToTop( &binMod, pParent, nModLen );
     }
 
     setBER( &binMod );
 end :
+    if( ret != 0 ) pItem->changeLength( nOrgLen, &nDiffLen );
 
     JS_BIN_reset( &binMod );
     JS_BIN_reset( &binHeader );
     JS_BIN_reset( &binChange );
 
     return ret;
+}
+
+const BerItem* BerModel::findItemByOffset( BerItem* pParentItem, int nOffset )
+{
+    BerItem *pStartItem = NULL;
+    const BerItem *pFoundItem = NULL;
+    if( pParentItem == nullptr )
+    {
+        QModelIndex idx = index(0,0);
+        pStartItem = (BerItem *)itemFromIndex( idx );
+    }
+    else
+    {
+        pStartItem = pParentItem;
+    }
+
+    if( pStartItem == NULL ) return nullptr;
+
+    if( pStartItem->GetOffset() == nOffset ) return pStartItem;
+
+    if( pStartItem->GetOffset() > nOffset ) return nullptr;
+
+    if( pStartItem->hasChildren() == true )
+    {
+        int nCount = pStartItem->rowCount();
+
+        for( int i = 0; i < nCount; i++ )
+        {
+            BerItem *pChild = (BerItem *)pStartItem->child( i );
+            if( pChild->GetOffset() > nOffset ) break;
+
+            pFoundItem = findItemByOffset( pChild, nOffset );
+            if( pFoundItem != nullptr ) return pFoundItem;
+        }
+    }
+
+    return nullptr;
 }

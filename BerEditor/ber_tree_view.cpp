@@ -894,19 +894,6 @@ void BerTreeView::EditValue()
     editValueDlg.setHeadLabel( tr("Edit BER") );
     editValueDlg.setItem( item );
     ret = editValueDlg.exec();
-
-/*
-    if( ret == QDialog::Accepted )
-    {
-        this->clicked( index );
-        this->setCurrentIndex( index );
-    }
-    else
-    {
-        berApplet->warningBox( tr("Modify failed, data will be retrieved again"), this );
-        berApplet->mainWindow()->reloadData();
-    }
-*/
 }
 
 void BerTreeView::InsertBER()
@@ -934,25 +921,20 @@ void BerTreeView::InsertBER()
         QString strData = makeBer.getData();
         JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
 
-        const BerItem* addItem = tree_model->addItem( item, &binData );
-        if( addItem == nullptr )
+        const BerItem* newItem = tree_model->addItem( item, &binData );
+        if( newItem )
         {
-            berApplet->warningBox( tr("Add failed, data will be retrieved again"), this );
-            berApplet->mainWindow()->reloadData();
-        }
-        else
-        {
-            QModelIndex idx = addItem->index();
-            this->clicked( idx );
-            this->setCurrentIndex( idx );
-        }
-/*
-        tree_model->parseTree( berApplet->settingsMgr()->autoExpand() );
+            int nOffset = newItem->offset_;
 
-        viewRoot();
-        QModelIndex ri = tree_model->index(0,0);
-        expand(ri);
-*/
+            berApplet->mainWindow()->reloadData();
+            const BerItem *findItem = tree_model->findItemByOffset( nullptr, nOffset );
+            if( findItem )
+            {
+                QModelIndex idx = findItem->index();
+                this->clicked( idx );
+                this->setCurrentIndex( idx );
+            }
+        }
     }
 
 end:
@@ -988,15 +970,17 @@ void BerTreeView::DeleteBER()
     {
         if( parent )
         {
-            QModelIndex idx = parent->index();
-            this->clicked( idx );
-            this->setCurrentIndex( idx );
+            int nOffset = parent->GetOffset();
+
+            berApplet->mainWindow()->reloadData();
+            const BerItem *findItem = tree_model->findItemByOffset( nullptr, nOffset );
+            if( findItem )
+            {
+                QModelIndex idx = findItem->index();
+                this->clicked( idx );
+                this->setCurrentIndex( idx );
+            }
         }
-    }
-    else
-    {
-        berApplet->warningBox( tr("Deletion failed: %1, data will be retrieved again").arg(JERR(ret)), this );
-        berApplet->mainWindow()->reloadData();
     }
 }
 

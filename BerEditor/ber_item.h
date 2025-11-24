@@ -36,17 +36,17 @@ public:
     void SetLength( int length );
     void SetLevel( int level );
 
-    int GetId() { return id_; };
-    int GetTag() { return tag_; };
-    int GetIndefinite() { return indefinite_; };
-    int GetLength() { return length_; };
+    const int GetId() { return id_; };
+    const int GetTag() { return tag_; };
+    const int GetIndefinite() { return indefinite_; };
+    const int GetLength() { return length_; };
     int GetValLength();
-    int GetNonCanonical() { return non_canonical_; };
+    const int GetNonCanonical() { return non_canonical_; };
     BYTE* GetHeader() { return header_; };
-    int GetHeaderSize() { return header_size_; };
-    int GetOffset() { return offset_; };
-    int GetLevel() { return level_; };
-    int GetItemSize() { return (header_size_ + length_); };
+    const int GetHeaderSize() { return header_size_; };
+    const int GetOffset() { return offset_; };
+    const int GetLevel() { return level_; };
+    const int GetItemSize() { return (header_size_ + length_); };
 
 
     QString GetTagString();

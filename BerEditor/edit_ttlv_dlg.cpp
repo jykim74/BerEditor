@@ -154,17 +154,22 @@ void EditTTLVDlg::clickModify()
     ret = pModel->modifyItem( pItem, &binValue );
     JS_BIN_reset( &binValue );
 
-    if( ret == 0 )
+    if( ret == JSR_OK )
     {
-        QModelIndex idx = pItem->index();
-        berApplet->mainWindow()->ttlvTree()->clicked( idx );
-        berApplet->mainWindow()->ttlvTree()->setCurrentIndex( idx );
+        int nOffset = pItem->offset_;
+        berApplet->mainWindow()->reloadTTLV();
+        const TTLVTreeItem *findItem = pModel->findItemByOffset( nullptr, nOffset );
+        if( findItem )
+        {
+            QModelIndex idx = findItem->index();
+            berApplet->mainWindow()->ttlvTree()->clicked( idx );
+            berApplet->mainWindow()->ttlvTree()->setCurrentIndex( idx );
+        }
+
         QDialog::accept();
     }
     else
     {
-        berApplet->warningBox( tr("Add failed, data will be retrieved again"), this );
-        berApplet->mainWindow()->reloadTTLV();
         QDialog::reject();
     }
 }
@@ -202,15 +207,20 @@ void EditTTLVDlg::clickAdd()
 
     if( pAddItem )
     {
-        QModelIndex idx = pAddItem->index();
-        berApplet->mainWindow()->ttlvTree()->clicked( idx );
-        berApplet->mainWindow()->ttlvTree()->setCurrentIndex( idx );
+        int nOffset = pAddItem->offset_;
+        berApplet->mainWindow()->reloadTTLV();
+        const TTLVTreeItem *findItem = pModel->findItemByOffset( nullptr, nOffset );
+        if( findItem )
+        {
+            QModelIndex idx = findItem->index();
+            berApplet->mainWindow()->ttlvTree()->clicked( idx );
+            berApplet->mainWindow()->ttlvTree()->setCurrentIndex( idx );
+        }
+
         QDialog::accept();
     }
     else
     {
-        berApplet->warningBox( tr("Add failed, data will be retrieved again"), this );
-        berApplet->mainWindow()->reloadTTLV();
         QDialog::reject();
     }
 }

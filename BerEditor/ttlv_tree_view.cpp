@@ -689,23 +689,21 @@ void TTLVTreeView::InsertTTLV()
         QString strData = makeTTLV.getData();
         JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
 
-        const TTLVTreeItem *pAddItem = ttlv_model->addItem( item, &binData );
+        const TTLVTreeItem *pAddItem = (const TTLVTreeItem *)ttlv_model->addItem( item, &binData );
 
         JS_BIN_reset( &binData );
 
         if( pAddItem )
         {
-            QModelIndex idx = pAddItem->index();
-            berApplet->mainWindow()->ttlvTree()->clicked( idx );
-            berApplet->mainWindow()->ttlvTree()->setCurrentIndex( idx );
-
-            /*
-            ttlv_model->parseTree();
-            viewRoot();
-
-            QModelIndex ri = ttlv_model->index(0,0);
-            expand(ri);
-            */
+            int nOffset = pAddItem->offset_;
+            berApplet->mainWindow()->reloadTTLV();
+            const TTLVTreeItem *findItem = ttlv_model->findItemByOffset( nullptr, nOffset );
+            if( findItem )
+            {
+                QModelIndex idx = findItem->index();
+                this->clicked( idx );
+                this->setCurrentIndex( idx );
+            }
         }
     }
 }
@@ -725,18 +723,6 @@ void TTLVTreeView::EditItem()
 
     EditTTLVDlg editTTLV;
     ret = editTTLV.exec();
-
-    /*
-    if( ret == QDialog::Accepted )
-    {
-        TTLVTreeModel *ttlv_model = (TTLVTreeModel *)model();
-
-        ttlv_model->parseTree();
-        viewRoot();
-        QModelIndex ri = ttlv_model->index(0,0);
-        expand(ri);
-    }
-    */
 }
 
 void TTLVTreeView::DeleteItem()
@@ -765,12 +751,19 @@ void TTLVTreeView::DeleteItem()
     bool bVal = berApplet->yesOrCancelBox( tr("Are you sure you want to delete it?"), this, true );
     if( bVal == false ) return;
 
-    ttlv_model->removeItem( pItem );
-    if( pParent )
+    ret = ttlv_model->removeItem( pItem );
+    if( ret == JSR_OK )
     {
-        QModelIndex idx = pParent->index();
-        berApplet->mainWindow()->ttlvTree()->clicked(idx);
-        berApplet->mainWindow()->ttlvTree()->setCurrentIndex( idx );
+        int nOffset = pParent->offset_;
+        berApplet->mainWindow()->reloadTTLV();
+
+        const TTLVTreeItem *findItem = ttlv_model->findItemByOffset( nullptr, nOffset );
+        if( findItem )
+        {
+            QModelIndex idx = findItem->index();
+            this->clicked( idx );
+            this->setCurrentIndex( idx );
+        }
     }
 }
 

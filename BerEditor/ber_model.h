@@ -29,6 +29,7 @@ public:
     const BerItem* addItem( BerItem* pParentItem, const BIN *pData );
     int removeItem( BerItem *pItem );
     int modifyItem( BerItem *pItem, const BIN *pValue );
+    const BerItem* findItemByOffset( BerItem* pParentItem, int nOffset );
 
 private:
 //    int resizeParentHeader( int nDiffLen, const BerItem *pItem, BIN *pBER );
