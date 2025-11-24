@@ -701,6 +701,8 @@ void TTLVTreeView::InsertTTLV()
             const TTLVTreeItem *findItem = ttlv_model->findItemByOffset( nullptr, nOffset );
             if( findItem )
             {
+                if( findItem->parent() ) expand( findItem->parent()->index() );
+
                 QModelIndex idx = findItem->index();
                 clicked( idx );
                 setCurrentIndex( idx );
@@ -762,6 +764,8 @@ void TTLVTreeView::DeleteItem()
         const TTLVTreeItem *findItem = ttlv_model->findItemByOffset( nullptr, nOffset );
         if( findItem )
         {
+            if( findItem->parent() ) expand( findItem->parent()->index() );
+
             QModelIndex idx = findItem->index();
             clicked( idx );
             setCurrentIndex( idx );

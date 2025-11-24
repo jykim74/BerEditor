@@ -252,6 +252,9 @@ void EditValueDlg::runChange()
         if( findItem )
         {
             QModelIndex idx = findItem->index();
+            if( findItem->parent() )
+                berApplet->mainWindow()->berTree()->expand( findItem->parent()->index() );
+
             berApplet->mainWindow()->berTree()->clicked( idx );
             berApplet->mainWindow()->berTree()->setCurrentIndex( idx );
             berApplet->mainWindow()->berTree()->expand( idx );
@@ -309,6 +312,9 @@ void EditValueDlg::runAdd()
         if( findItem )
         {
             QModelIndex idx = findItem->index();
+            if( findItem->parent() )
+                berApplet->mainWindow()->berTree()->expand( findItem->parent()->index() );
+
             berApplet->mainWindow()->berTree()->clicked( idx );
             berApplet->mainWindow()->berTree()->setCurrentIndex( idx );
             berApplet->mainWindow()->berTree()->expand( idx );

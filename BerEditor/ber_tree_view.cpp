@@ -926,6 +926,8 @@ void BerTreeView::InsertBER()
             const BerItem *findItem = tree_model->findItemByOffset( nullptr, nOffset );
             if( findItem )
             {
+                if( findItem->parent() ) expand( findItem->parent()->index() );
+
                 QModelIndex idx = findItem->index();
                 clicked( idx );
                 setCurrentIndex( idx );
@@ -973,6 +975,8 @@ void BerTreeView::DeleteBER()
             const BerItem *findItem = tree_model->findItemByOffset( nullptr, nOffset );
             if( findItem )
             {
+                if( findItem->parent() ) expand( findItem->parent()->index() );
+
                 QModelIndex idx = findItem->index();
                 clicked( idx );
                 setCurrentIndex( idx );

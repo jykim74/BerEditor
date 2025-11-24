@@ -161,6 +161,9 @@ void EditTTLVDlg::clickModify()
         const TTLVTreeItem *findItem = pModel->findItemByOffset( nullptr, nOffset );
         if( findItem )
         {
+            if( findItem->parent() )
+                berApplet->mainWindow()->ttlvTree()->expand( findItem->parent()->index());
+
             QModelIndex idx = findItem->index();
             berApplet->mainWindow()->ttlvTree()->clicked( idx );
             berApplet->mainWindow()->ttlvTree()->setCurrentIndex( idx );
@@ -214,6 +217,9 @@ void EditTTLVDlg::clickAdd()
         const TTLVTreeItem *findItem = pModel->findItemByOffset( nullptr, nOffset );
         if( findItem )
         {
+            if( findItem->parent() )
+                berApplet->mainWindow()->ttlvTree()->expand( findItem->parent()->index());
+
             QModelIndex idx = findItem->index();
             berApplet->mainWindow()->ttlvTree()->clicked( idx );
             berApplet->mainWindow()->ttlvTree()->setCurrentIndex( idx );
