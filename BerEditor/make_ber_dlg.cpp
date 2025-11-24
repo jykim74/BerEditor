@@ -206,6 +206,20 @@ void MakeBerDlg::runMake()
         return;
     }
 
+    int ret = 0;
+    BIN binData = {0,0};
+    QString strValue = mValueText->toPlainText();
+    QString strType = mValueTypeCombo->currentText();
+
+    ret = getBINFromString( &binData, strType, strValue );
+    if( ret < 0 )
+    {
+        berApplet->formatWarn( ret, this );
+        mValueText->setFocus();
+        return;
+    }
+
+    JS_BIN_reset( &binData );
     QDialog::accept();
 }
 

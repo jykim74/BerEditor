@@ -248,10 +248,13 @@ QString BerItem::GetValueString( const BIN *pBer, int *pnType, int nWidth )
         }
         else if( tag_ == JS_BOOLEAN )
         {
-            if( binVal.pVal[0] == 0x00 )
-                strVal = "False";
-            else
-                strVal = "True";
+            if( binVal.nLen > 0 )
+            {
+                if( binVal.pVal[0] == 0x00 )
+                    strVal = "False";
+                else
+                    strVal = "True";
+            }
 
             if( pnType ) *pnType = JS_VALUE_BOOLEAN;
         }
