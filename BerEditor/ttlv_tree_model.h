@@ -20,7 +20,7 @@ public:
     int parseTree();
     int parseConstruct( int offset, TTLVTreeItem *pParentItem );
 
-    const TTLVTreeItem* addItem( TTLVTreeItem* pParentItem, const BIN *pData );
+    const TTLVTreeItem* addItem( TTLVTreeItem* pParentItem, bool bFirst, const BIN *pData );
     int removeItem( TTLVTreeItem *pItem );
     int modifyItem( TTLVTreeItem *pItem, const BIN *pValue );
     const TTLVTreeItem* findItemByOffset( TTLVTreeItem* pParentItem, int nOffset );

@@ -26,7 +26,7 @@ public:
     int getItem( int offset, BerItem *pItem );
     int getItem( const BIN *pBer, int offset, BerItem *pItem );
 
-    const BerItem* addItem( BerItem* pParentItem, const BIN *pData );
+    const BerItem* addItem( BerItem* pParentItem, bool bFirst, const BIN *pData );
     int removeItem( BerItem *pItem );
     int modifyItem( BerItem *pItem, const BIN *pValue );
     const BerItem* findItemByOffset( BerItem* pParentItem, int nOffset );

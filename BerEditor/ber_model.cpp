@@ -502,7 +502,7 @@ int BerModel::resizeHeadToTop( BIN *pBER, BerItem *pItem, int nModItemLen )
     return ret;
 }
 
-const BerItem* BerModel::addItem( BerItem* pParentItem, const BIN *pData )
+const BerItem* BerModel::addItem( BerItem* pParentItem, bool bFirst, const BIN *pData )
 {
     int ret = 0;
     BIN binMod = {0,0};
@@ -513,18 +513,27 @@ const BerItem* BerModel::addItem( BerItem* pParentItem, const BIN *pData )
 
     JS_BIN_copy( &binMod, &binBer_ );
 
-    if( pParentItem->GetIndefinite() == true )
+    if( bFirst == true )
     {
-        nPos = pParentItem->GetOffset() + pParentItem->GetHeaderSize() + pParentItem->GetValLength();
+        nPos = pParentItem->GetOffset() + pParentItem->GetHeaderSize();
         ret = JS_BIN_insertBin( &binMod, nPos, pData );
         if( ret != 0 ) goto end;
     }
     else
     {
-        nPos = pParentItem->GetOffset() + pParentItem->GetItemSize();
+        if( pParentItem->GetIndefinite() == true )
+        {
+            nPos = pParentItem->GetOffset() + pParentItem->GetHeaderSize() + pParentItem->GetValLength();
+            ret = JS_BIN_insertBin( &binMod, nPos, pData );
+            if( ret != 0 ) goto end;
+        }
+        else
+        {
+            nPos = pParentItem->GetOffset() + pParentItem->GetItemSize();
 
-        ret = JS_BIN_insertBin( &binMod, nPos, pData );
-        if( ret != 0 ) goto end;
+            ret = JS_BIN_insertBin( &binMod, nPos, pData );
+            if( ret != 0 ) goto end;
+        }
     }
 
     resizeHeadToTop( &binMod, pParentItem, pData->nLen );
@@ -532,7 +541,11 @@ const BerItem* BerModel::addItem( BerItem* pParentItem, const BIN *pData )
     pNewItem = new BerItem;
     getItem( nPos, pNewItem );
     pNewItem->SetLevel( pParentItem->GetLevel() + 1 );
-    pParentItem->appendRow( pNewItem );
+
+    if( bFirst == true )
+        pParentItem->insertRow( 0, pNewItem );
+    else
+        pParentItem->appendRow( pNewItem );
 
 end :
     JS_BIN_reset( &binMod );

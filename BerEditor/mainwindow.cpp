@@ -1452,6 +1452,8 @@ void MainWindow::runMakeBER()
     int ret = 0;
 
     MakeBerDlg makeBer;
+    makeBer.mFirstSetCheck->hide();
+
     ret = makeBer.exec();
 
     if( ret == QDialog::Accepted )
@@ -1489,10 +1491,20 @@ void MainWindow::runDecodeTTLV()
 void MainWindow::runMakeTTLV()
 {
     MakeTTLVDlg makeTTLV;
+    makeTTLV.mFirstSetCheck->hide();
+
     if( makeTTLV.exec() == QDialog::Accepted )
     {
         BIN binData = {0,0};
         QString strData = makeTTLV.getData();
+
+        BIN binTTLV = ttlv_model_->getTTLV();
+        if( binTTLV.nLen > 0 )
+        {
+            bool bVal = berApplet->yesOrCancelBox( tr("Existing data already exists. Would you like to change it?"), this, true );
+            if( bVal == false ) return;
+        }
+
         JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
         berApplet->decodeTTLV(&binData);
         JS_BIN_reset( &binData );

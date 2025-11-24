@@ -296,8 +296,10 @@ void EditValueDlg::runAdd()
     bool bVal = berApplet->yesOrCancelBox( tr( "Are you sure you want to add it?" ), this, false );
     if( bVal == false ) return;
 
+    bool bFirst = mFirstSetCheck->isChecked();
+
     JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
-    child = ber_model->addItem( parentItem, &binData );
+    child = ber_model->addItem( parentItem, bFirst, &binData );
     if( child )
     {
         int nOffset = child->offset_;

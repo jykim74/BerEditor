@@ -50,7 +50,7 @@ void MakeTTLVDlg::initialize()
     mTagText->setValidator( regVal );
     mTagText->setPlaceholderText( "4200XX" );
     mTypeCombo->addItems( kTTLVTypeList );
-    mTypeCombo->setCurrentIndex(1);
+    mTypeCombo->setCurrentText( "ByteString" );
     mValueCombo->addItems( kDataTypeList );
 }
 
@@ -144,7 +144,7 @@ end :
 void MakeTTLVDlg::clickOK()
 {
     QString strTag = mTagText->text();
-    QString strType = mTypeText->text();
+    QString strType = mTypeCombo->currentText();
     QString strData = getData();
 
     if( strTag.length() < 6 )
@@ -153,10 +153,31 @@ void MakeTTLVDlg::clickOK()
         return;
     }
 
-    if( strType.toInt() <= 0 )
+    if( strType.length() < 1 )
     {
         berApplet->warningBox( tr( "Select Type" ), this );
         return;
+    }
+
+    if( strType == "Structure" )
+    {
+        BIN binVal = {0,0};
+        QString strValue = mValueText->toPlainText();
+
+        getBINFromString( &binVal, mValueCombo->currentText(), strValue );
+
+        if( binVal.nLen > 0 )
+        {
+            if( JS_KMS_isTTLV( &binVal ) == false )
+            {
+                JS_BIN_reset( &binVal );
+                berApplet->warningBox( tr( "Structure input values ​​must be either absent or in TTLV format" ), this );
+                mValueText->setFocus();
+                return;
+            }
+        }
+
+        JS_BIN_reset( &binVal );
     }
 
     if( strData.length() > 8 )

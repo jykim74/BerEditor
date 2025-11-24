@@ -578,21 +578,7 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mCloseBtn">
-       <property name="text">
-        <string>Close</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
-      <widget class="QPushButton" name="mMakeBtn">
-       <property name="text">
-        <string>Make</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -604,6 +590,27 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="mCloseBtn">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="mMakeBtn">
+       <property name="text">
+        <string>Make</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QCheckBox" name="mFirstSetCheck">
+       <property name="text">
+        <string>First Set</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

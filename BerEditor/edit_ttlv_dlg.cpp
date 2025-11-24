@@ -203,7 +203,8 @@ void EditTTLVDlg::clickAdd()
 
     JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
 
-    const TTLVTreeItem *pAddItem = pModel->addItem( pParentItem, &binData );
+    bool bFirst = mFirstSetCheck->isChecked();
+    const TTLVTreeItem *pAddItem = pModel->addItem( pParentItem, bFirst, &binData );
     JS_BIN_reset( &binData );
 
     if( pAddItem )

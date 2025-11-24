@@ -819,7 +819,7 @@ void BerTreeView::ExpandValue()
     }
 
     // Expand case (BitString or OctetString )  definite value only
-    ret = tree_model->parseConstruct( start, item, false );
+    tree_model->parseConstruct( start, item, false );
 
 end :
     if( ret < 0 )
@@ -913,9 +913,11 @@ void BerTreeView::InsertBER()
         if( bVal == false ) return;
 
         QString strData = makeBer.getData();
+        bool bFirst = makeBer.mFirstSetCheck->isChecked();
+
         JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
 
-        const BerItem* newItem = tree_model->addItem( item, &binData );
+        const BerItem* newItem = tree_model->addItem( item, bFirst, &binData );
         if( newItem )
         {
             int nOffset = newItem->offset_;

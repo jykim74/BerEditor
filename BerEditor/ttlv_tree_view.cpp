@@ -689,7 +689,8 @@ void TTLVTreeView::InsertTTLV()
         QString strData = makeTTLV.getData();
         JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
 
-        const TTLVTreeItem *pAddItem = (const TTLVTreeItem *)ttlv_model->addItem( item, &binData );
+        bool bFirst = makeTTLV.mFirstSetCheck->isChecked();
+        const TTLVTreeItem *pAddItem = (const TTLVTreeItem *)ttlv_model->addItem( item, bFirst, &binData );
 
         JS_BIN_reset( &binData );
 

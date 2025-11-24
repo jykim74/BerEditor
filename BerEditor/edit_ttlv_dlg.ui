@@ -563,21 +563,28 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="2">
+     <item row="0" column="3">
       <widget class="QPushButton" name="mModifyBtn">
        <property name="text">
         <string>Modify</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
+     <item row="0" column="1">
       <widget class="QPushButton" name="mAddBtn">
        <property name="text">
         <string>Add</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mCancelBtn">
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -590,10 +597,10 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="mCancelBtn">
+     <item row="0" column="0">
+      <widget class="QCheckBox" name="mFirstSetCheck">
        <property name="text">
-        <string>Cancel</string>
+        <string>First Set</string>
        </property>
       </widget>
      </item>

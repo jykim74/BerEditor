@@ -812,7 +812,21 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="3">
+     <item row="0" column="5">
+      <widget class="QPushButton" name="mModifyBtn">
+       <property name="text">
+        <string>Modify</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="mAddBtn">
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -825,24 +839,17 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="mAddBtn">
-       <property name="text">
-        <string>Add</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
+     <item row="0" column="6">
       <widget class="QPushButton" name="mCloseBtn">
        <property name="text">
         <string>Close</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="mModifyBtn">
+     <item row="0" column="0">
+      <widget class="QCheckBox" name="mFirstSetCheck">
        <property name="text">
-        <string>Modify</string>
+        <string>First Set</string>
        </property>
       </widget>
      </item>
@@ -863,7 +870,6 @@
   <tabstop>mBERLenText</tabstop>
   <tabstop>mBERText</tabstop>
   <tabstop>mAddBtn</tabstop>
-  <tabstop>mModifyBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
  <resources/>

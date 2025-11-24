@@ -1448,85 +1448,85 @@ mailto : jykim74@gmail.com</translation>
     <message>
         <location filename="../ber_tree_view.cpp" line="263"/>
         <location filename="../ber_tree_view.cpp" line="645"/>
-        <location filename="../ber_tree_view.cpp" line="742"/>
-        <location filename="../ber_tree_view.cpp" line="764"/>
+        <location filename="../ber_tree_view.cpp" line="736"/>
+        <location filename="../ber_tree_view.cpp" line="758"/>
         <source>There are no items selected.</source>
         <translation>선택한 아이템이 없습니다</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="685"/>
+        <location filename="../ber_tree_view.cpp" line="691"/>
         <source>Copy Information</source>
         <translation>정보 복사</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="686"/>
+        <location filename="../ber_tree_view.cpp" line="692"/>
         <source>Copy as hex</source>
         <translation>Hex로 복사</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="687"/>
+        <location filename="../ber_tree_view.cpp" line="693"/>
         <source>Copy as base64</source>
         <translation>Base64로 복사</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="688"/>
+        <location filename="../ber_tree_view.cpp" line="694"/>
         <source>Save node</source>
         <translation>노드 저장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="689"/>
+        <location filename="../ber_tree_view.cpp" line="695"/>
         <source>Save node value</source>
         <translation>노드 값 저장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="714"/>
+        <location filename="../ber_tree_view.cpp" line="707"/>
         <source>Edit value</source>
         <translation>값 수정</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="718"/>
+        <location filename="../ber_tree_view.cpp" line="711"/>
         <source>Delete BER</source>
         <translation>BER 삭제</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="729"/>
+        <location filename="../ber_tree_view.cpp" line="723"/>
         <source>Expand value</source>
         <translation>확장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="833"/>
+        <location filename="../ber_tree_view.cpp" line="827"/>
         <source>This is not BER encoded data</source>
         <translation>BER 인코딩 데이타가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="889"/>
-        <location filename="../ber_tree_view.cpp" line="955"/>
+        <location filename="../ber_tree_view.cpp" line="883"/>
+        <location filename="../ber_tree_view.cpp" line="952"/>
         <source>There is no item to select</source>
         <translation>선택한 아이템이 없습니다.</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="894"/>
+        <location filename="../ber_tree_view.cpp" line="888"/>
         <source>Edit BER</source>
         <translation>BER 편집</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="918"/>
+        <location filename="../ber_tree_view.cpp" line="912"/>
         <source>Are you sure you want to add it?</source>
         <translation>정말로 추가 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="961"/>
+        <location filename="../ber_tree_view.cpp" line="958"/>
         <source>Top-level items cannot be deleted</source>
         <translation>최상위 아이템은 삭제 할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="965"/>
+        <location filename="../ber_tree_view.cpp" line="962"/>
         <source>Are you sure you want to delete it?</source>
         <translation>정말로 삭제 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="710"/>
-        <location filename="../ber_tree_view.cpp" line="912"/>
+        <location filename="../ber_tree_view.cpp" line="703"/>
+        <location filename="../ber_tree_view.cpp" line="906"/>
         <source>Insert BER</source>
         <translation>BER 추가</translation>
     </message>
@@ -7625,9 +7625,14 @@ mailto : jykim74@gmail.com</translation>
         <translation>추가</translation>
     </message>
     <message>
-        <location filename="../edit_ttlv_dlg.ui" line="596"/>
+        <location filename="../edit_ttlv_dlg.ui" line="583"/>
         <source>Cancel</source>
         <translation>취소</translation>
+    </message>
+    <message>
+        <location filename="../edit_ttlv_dlg.ui" line="603"/>
+        <source>First Set</source>
+        <translation>첫번째 설정</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -7635,7 +7640,7 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../edit_ttlv_dlg.cpp" line="138"/>
-        <location filename="../edit_ttlv_dlg.cpp" line="186"/>
+        <location filename="../edit_ttlv_dlg.cpp" line="187"/>
         <source>There is no selected item</source>
         <translation>선택한 아이템이 없습니다.</translation>
     </message>
@@ -7645,12 +7650,12 @@ mailto : jykim74@gmail.com</translation>
         <translation>정말로 변경 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../edit_ttlv_dlg.cpp" line="190"/>
+        <location filename="../edit_ttlv_dlg.cpp" line="191"/>
         <source>Are you sure you want to add it?</source>
         <translation>정말로 추가 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../edit_ttlv_dlg.cpp" line="196"/>
+        <location filename="../edit_ttlv_dlg.cpp" line="197"/>
         <source>Top-level item cannot be added.</source>
         <translation>최상위 노드는 추가 될 수 없습니다.</translation>
     </message>
@@ -7739,21 +7744,26 @@ mailto : jykim74@gmail.com</translation>
         <translation>BER</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="831"/>
+        <location filename="../edit_value_dlg.ui" line="825"/>
         <source>Add</source>
         <translation>추가</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="838"/>
+        <location filename="../edit_value_dlg.ui" line="845"/>
         <source>Close</source>
         <translation>닫기</translation>
+    </message>
+    <message>
+        <location filename="../edit_value_dlg.ui" line="852"/>
+        <source>First Set</source>
+        <translation>첫번째 설정</translation>
     </message>
     <message>
         <source>Delete</source>
         <translation type="vanished">삭제</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.ui" line="845"/>
+        <location filename="../edit_value_dlg.ui" line="818"/>
         <source>Modify</source>
         <translation>변경</translation>
     </message>
@@ -7811,17 +7821,17 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">정말로 삭제 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.cpp" line="283"/>
+        <location filename="../edit_value_dlg.cpp" line="284"/>
         <source>Top-level item cannot be added.</source>
         <translation>최상위 노드는 추가 될 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.cpp" line="290"/>
+        <location filename="../edit_value_dlg.cpp" line="291"/>
         <source>Parent item is not constructed.</source>
         <translation>상위 노드가 구조적이지 않습니다</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.cpp" line="295"/>
+        <location filename="../edit_value_dlg.cpp" line="296"/>
         <source>Are you sure you want to add it?</source>
         <translation>정말로 추가 하겠습니까?</translation>
     </message>
@@ -13138,38 +13148,38 @@ Use %2</source>
         <translation type="vanished">SSL 주소 체크</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1732"/>
+        <location filename="../mainwindow.cpp" line="1744"/>
         <source>This file is Public Key. Open it as Public Key?</source>
         <translation>이 파일은 공개키 입니다. 공개키로 열겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1746"/>
-        <location filename="../mainwindow.cpp" line="1776"/>
-        <location filename="../mainwindow.cpp" line="1823"/>
-        <location filename="../mainwindow.cpp" line="1853"/>
+        <location filename="../mainwindow.cpp" line="1758"/>
+        <location filename="../mainwindow.cpp" line="1788"/>
+        <location filename="../mainwindow.cpp" line="1835"/>
+        <location filename="../mainwindow.cpp" line="1865"/>
         <source>Do you want to change the original key to the changed key?</source>
         <translation>원래키를 변경된 키로 바꾸겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1750"/>
-        <location filename="../mainwindow.cpp" line="1780"/>
-        <location filename="../mainwindow.cpp" line="1827"/>
-        <location filename="../mainwindow.cpp" line="1857"/>
+        <location filename="../mainwindow.cpp" line="1762"/>
+        <location filename="../mainwindow.cpp" line="1792"/>
+        <location filename="../mainwindow.cpp" line="1839"/>
+        <location filename="../mainwindow.cpp" line="1869"/>
         <source>Key change saved.</source>
         <translation>키 변경이 저장 되었습니다</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1760"/>
+        <location filename="../mainwindow.cpp" line="1772"/>
         <source>Invalid Private Key</source>
         <translation>유효하지 않는 개인키</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1809"/>
+        <location filename="../mainwindow.cpp" line="1821"/>
         <source>This file is Private Key. Open it as Private Key?</source>
         <translation>이 파일은 개인키 입니다. 개인키로 열겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1837"/>
+        <location filename="../mainwindow.cpp" line="1849"/>
         <source>Invalid Public Key</source>
         <translation>유효하지 않는 개인키</translation>
     </message>
@@ -13178,22 +13188,22 @@ Use %2</source>
         <translation type="vanished">이 CMS 타입은 지원 하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2620"/>
+        <location filename="../mainwindow.cpp" line="2632"/>
         <source>The current data has been changed. Do you want to save the changed data?</source>
         <translation>현재  데이타가 변경 되었습니다. 변경된 데이타을 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3564"/>
+        <location filename="../mainwindow.cpp" line="3576"/>
         <source>Would you like to change to the initial toolbar view?</source>
         <translation>초기 툴바 상태로 변경 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3576"/>
+        <location filename="../mainwindow.cpp" line="3588"/>
         <source>You have changed toolbar settings. Restart to apply it?</source>
         <translation>툴바 설정을 변경 하였습니다. 다시 시작 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3742"/>
+        <location filename="../mainwindow.cpp" line="3754"/>
         <source>The data is not TTLV format</source>
         <translation>이 데이타는 TTLV 포맷이 아닙니다</translation>
     </message>
@@ -13272,27 +13282,27 @@ Use %2</source>
         <translation>질문과 답변하기</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1884"/>
+        <location filename="../mainwindow.cpp" line="1896"/>
         <source>This message is not CMS.</source>
         <translation>이 메세지는 CMS가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1998"/>
+        <location filename="../mainwindow.cpp" line="2010"/>
         <source>The BER is TTLV format. Do you open as TTLV format?</source>
         <translation>해당 BER은 TTLV 형식입니다. TTLV 형식으로 열겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2007"/>
+        <location filename="../mainwindow.cpp" line="2019"/>
         <source>TTLV decoding requires a license.</source>
         <translation>TTLV 디코딩은 라이선스가 필요합니다</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2014"/>
+        <location filename="../mainwindow.cpp" line="2026"/>
         <source>The data is not BER format</source>
         <translation>이 데이타는 잘못된 BER 포맷입니다</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2569"/>
+        <location filename="../mainwindow.cpp" line="2581"/>
         <source>Certificate Management</source>
         <translation>인증서 관리</translation>
     </message>
@@ -13301,13 +13311,13 @@ Use %2</source>
         <translation type="vanished">이파일은 CRL 파일 입니다. CRL 정보를 여시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1598"/>
-        <location filename="../mainwindow.cpp" line="1648"/>
+        <location filename="../mainwindow.cpp" line="1610"/>
+        <location filename="../mainwindow.cpp" line="1660"/>
         <source>This file is CSR. Open it as CSR information?</source>
         <translation>이파일은 CSR 파일입니다. CSR 정보를 여시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1608"/>
+        <location filename="../mainwindow.cpp" line="1620"/>
         <source>Invalid certificate file</source>
         <translation>잘못된 인증서 파일</translation>
     </message>
@@ -13316,13 +13326,13 @@ Use %2</source>
         <translation type="vanished">이 파일은 인증서 입니다. 인증서 정보로 열겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1658"/>
+        <location filename="../mainwindow.cpp" line="1670"/>
         <source>Invalid CRL file</source>
         <translation>잘못된 CRL 파일입니다</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1588"/>
-        <location filename="../mainwindow.cpp" line="1697"/>
+        <location filename="../mainwindow.cpp" line="1600"/>
+        <location filename="../mainwindow.cpp" line="1709"/>
         <source>This file is CRL. Open it as CRL information?</source>
         <translation>이파일은 CRL 입니다. CRL 정보를 여시겠습니까?</translation>
     </message>
@@ -13485,18 +13495,19 @@ Use %2</source>
         <translation>BerEditor 대해</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1465"/>
+        <location filename="../mainwindow.cpp" line="1467"/>
+        <location filename="../mainwindow.cpp" line="1504"/>
         <source>Existing data already exists. Would you like to change it?</source>
         <translation>존재하는 데이타가 이미 있습니다. 바꾸겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1638"/>
-        <location filename="../mainwindow.cpp" line="1687"/>
+        <location filename="../mainwindow.cpp" line="1650"/>
+        <location filename="../mainwindow.cpp" line="1699"/>
         <source>This file is certificate. Open it as certificate information?</source>
         <translation>이 파일은 인증서 입니다. 인증서 정보로 열겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1707"/>
+        <location filename="../mainwindow.cpp" line="1719"/>
         <source>Invalid CSR file</source>
         <translation>잘못된 CSR 파일</translation>
     </message>
@@ -13510,17 +13521,17 @@ Use %2</source>
         <translation type="vanished">[소스가 PEM 형식인 경우 또는 소스 DER 파일이 변경 됨] DER 형식으로 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2632"/>
+        <location filename="../mainwindow.cpp" line="2644"/>
         <source>Copy</source>
         <translation>복사</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2635"/>
+        <location filename="../mainwindow.cpp" line="2647"/>
         <source>Select All</source>
         <translation>전체 선택</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2638"/>
+        <location filename="../mainwindow.cpp" line="2650"/>
         <source>Unselect All</source>
         <translation>선택 해제</translation>
     </message>
@@ -13529,9 +13540,9 @@ Use %2</source>
         <translation type="vanished">라이선스가 변경 되었습니다.적용을 위해 다시 시작 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3696"/>
-        <location filename="../mainwindow.cpp" line="3722"/>
-        <location filename="../mainwindow.cpp" line="3736"/>
+        <location filename="../mainwindow.cpp" line="3708"/>
+        <location filename="../mainwindow.cpp" line="3734"/>
+        <location filename="../mainwindow.cpp" line="3748"/>
         <source>There is no data</source>
         <translation>데이타가 없습니다</translation>
     </message>
@@ -13729,7 +13740,7 @@ Use %2</source>
         <translation type="vanished">변경 데이타를 저장 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3601"/>
+        <location filename="../mainwindow.cpp" line="3613"/>
         <source>Do you want to overwrite %1 as BER file?</source>
         <translation>파일(%1)을 BER로 덮어 쓰겠습니까?</translation>
     </message>
@@ -13738,7 +13749,7 @@ Use %2</source>
         <translation type="vanished">다른 이름으로 저장...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3784"/>
+        <location filename="../mainwindow.cpp" line="3796"/>
         <source>Print Document</source>
         <translation>문서 인쇄</translation>
     </message>
@@ -14132,7 +14143,7 @@ Use %2</source>
     </message>
     <message>
         <location filename="../make_ber_dlg.ui" line="202"/>
-        <location filename="../make_ber_dlg.cpp" line="282"/>
+        <location filename="../make_ber_dlg.cpp" line="296"/>
         <source>Tag</source>
         <translation>태그</translation>
     </message>
@@ -14192,14 +14203,19 @@ Use %2</source>
         <translation>BER</translation>
     </message>
     <message>
-        <location filename="../make_ber_dlg.ui" line="584"/>
+        <location filename="../make_ber_dlg.ui" line="597"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../make_ber_dlg.ui" line="591"/>
+        <location filename="../make_ber_dlg.ui" line="604"/>
         <source>Make</source>
         <translation>만들기</translation>
+    </message>
+    <message>
+        <location filename="../make_ber_dlg.ui" line="611"/>
+        <source>First Set</source>
+        <translation>첫번째 설정</translation>
     </message>
     <message>
         <source>Insert</source>
@@ -14216,17 +14232,17 @@ Use %2</source>
         <translation>Tag 을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../make_ber_dlg.cpp" line="227"/>
+        <location filename="../make_ber_dlg.cpp" line="241"/>
         <source>SET and SEQUENCE cannot be changed</source>
         <translation>SET과 SEQUENCE는 바꿀 수 없습니다</translation>
     </message>
     <message>
-        <location filename="../make_ber_dlg.cpp" line="236"/>
+        <location filename="../make_ber_dlg.cpp" line="250"/>
         <source>Only SET and SEQUENCE are supported</source>
         <translation>SET과 SEQUENCE 만 지원 합니다</translation>
     </message>
     <message>
-        <location filename="../make_ber_dlg.cpp" line="291"/>
+        <location filename="../make_ber_dlg.cpp" line="305"/>
         <source>Number</source>
         <translation>번호</translation>
     </message>
@@ -14455,6 +14471,15 @@ Use %2</source>
         <translation>헤더</translation>
     </message>
     <message>
+        <location filename="../make_ttlv_dlg.ui" line="572"/>
+        <source>First Set</source>
+        <translation>첫번째 설정</translation>
+    </message>
+    <message>
+        <source>Fist Set</source>
+        <translation type="obsolete">첫번째 설정</translation>
+    </message>
+    <message>
         <location filename="../make_ttlv_dlg.ui" line="378"/>
         <source>TTLV</source>
         <translation>TTLV</translation>
@@ -14465,12 +14490,12 @@ Use %2</source>
         <translation>TTLV 만들기</translation>
     </message>
     <message>
-        <location filename="../make_ttlv_dlg.ui" line="558"/>
+        <location filename="../make_ttlv_dlg.ui" line="552"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
     <message>
-        <location filename="../make_ttlv_dlg.ui" line="565"/>
+        <location filename="../make_ttlv_dlg.ui" line="545"/>
         <source>OK</source>
         <translation>확인</translation>
     </message>
@@ -14483,6 +14508,11 @@ Use %2</source>
         <location filename="../make_ttlv_dlg.cpp" line="158"/>
         <source>Select Type</source>
         <translation>Type 을 선택하세요</translation>
+    </message>
+    <message>
+        <location filename="../make_ttlv_dlg.cpp" line="174"/>
+        <source>Structure input values ​​must be either absent or in TTLV format</source>
+        <translation>구조체 입력값은 없거나 TTLV 형식이어야 합니다</translation>
     </message>
 </context>
 <context>
@@ -20973,12 +21003,12 @@ Use %2</source>
         <translation>삭제</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="745"/>
+        <location filename="../ttlv_tree_view.cpp" line="747"/>
         <source>Top-level items cannot be deleted</source>
         <translation>최상위 아이템은 삭제 할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="751"/>
+        <location filename="../ttlv_tree_view.cpp" line="753"/>
         <source>Are you sure you want to delete it?</source>
         <translation>정말로 삭제 하겠습니까?</translation>
     </message>
@@ -21019,8 +21049,8 @@ Use %2</source>
         <translation>정말로 추가 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="720"/>
-        <location filename="../ttlv_tree_view.cpp" line="739"/>
+        <location filename="../ttlv_tree_view.cpp" line="722"/>
+        <location filename="../ttlv_tree_view.cpp" line="741"/>
         <source>There is no item to select</source>
         <translation></translation>
     </message>
