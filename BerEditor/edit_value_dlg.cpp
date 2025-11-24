@@ -254,6 +254,7 @@ void EditValueDlg::runChange()
             QModelIndex idx = findItem->index();
             berApplet->mainWindow()->berTree()->clicked( idx );
             berApplet->mainWindow()->berTree()->setCurrentIndex( idx );
+            berApplet->mainWindow()->berTree()->expand( idx );
         }
     }
 
@@ -308,6 +309,7 @@ void EditValueDlg::runAdd()
             QModelIndex idx = findItem->index();
             berApplet->mainWindow()->berTree()->clicked( idx );
             berApplet->mainWindow()->berTree()->setCurrentIndex( idx );
+            berApplet->mainWindow()->berTree()->expand( idx );
         }
     }
 

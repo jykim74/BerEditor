@@ -701,8 +701,9 @@ void TTLVTreeView::InsertTTLV()
             if( findItem )
             {
                 QModelIndex idx = findItem->index();
-                this->clicked( idx );
-                this->setCurrentIndex( idx );
+                clicked( idx );
+                setCurrentIndex( idx );
+                expand( idx );
             }
         }
     }
@@ -761,8 +762,9 @@ void TTLVTreeView::DeleteItem()
         if( findItem )
         {
             QModelIndex idx = findItem->index();
-            this->clicked( idx );
-            this->setCurrentIndex( idx );
+            clicked( idx );
+            setCurrentIndex( idx );
+            expand(idx);
         }
     }
 }

@@ -105,5 +105,6 @@
         <file>images/p7.png</file>
         <file>images/type_check.png</file>
         <file>images/loading.gif</file>
+        <file>images/decode_ttlv.png</file>
     </qresource>
 </RCC>

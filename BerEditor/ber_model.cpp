@@ -103,7 +103,7 @@ int BerModel::parseConstruct(int offset, BerItem *pParentItem, bool bExpand )
     int     start_offset = offset;
     int     level = pParentItem->GetLevel() + 1;
 
-    if( offset >= binBer_.nLen ) return -1;
+    if( offset >= binBer_.nLen || pParentItem->GetLength() <= 0 ) return -1;
 
     do {
         BerItem *pItem = new BerItem();
@@ -133,12 +133,14 @@ int BerModel::parseConstruct(int offset, BerItem *pParentItem, bool bExpand )
             }
             else
             {
-                if( pItem->length_ > 0 ) parseConstruct( offset + pItem->GetHeaderSize(), pItem, bExpand );
-
+                if( pItem->length_ > 0 )
+                    parseConstruct( offset + pItem->GetHeaderSize(), pItem, bExpand );
+/*
                 int end = start_offset + pParentItem->GetLength();
                 if( pParentItem->GetTag() == JS_BITSTRING ) end--;
 
                 if( next_offset >= end ) break;
+*/
             }
         }
         else
@@ -215,7 +217,10 @@ int BerModel::parseIndefiniteConstruct( int offset, BerItem *pParentItem, bool b
                 next_offset += ret;
             }
             else
-                parseConstruct( offset + pItem->GetHeaderSize(), pItem, bExpand );
+            {
+                if( pItem->GetLength() > 0 )
+                    ret = parseConstruct( offset + pItem->GetHeaderSize(), pItem, bExpand );
+            }
         }
         else
         {
@@ -245,13 +250,14 @@ int BerModel::parseIndefiniteConstruct( int offset, BerItem *pParentItem, bool b
                     }
                 }
             }
-        }
 
-        if( pItem->GetId() == 0 && pItem->GetLength() == 0 && pItem->GetTag() == 0 )
-        {
-            length = (pItem->GetOffset() + pItem->GetHeaderSize() - start_offset );
-            pParentItem->SetLength(length);
-            return length;
+            // Case EOC ( 00:00 )
+            if( pItem->GetId() == 0 && pItem->GetLength() == 0 && pItem->GetTag() == 0 )
+            {
+                length = (pItem->GetOffset() + pItem->GetHeaderSize() - start_offset );
+                pParentItem->SetLength(length);
+                return length;
+            }
         }
 
         offset = next_offset;

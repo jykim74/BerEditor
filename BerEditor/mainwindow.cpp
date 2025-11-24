@@ -1270,7 +1270,7 @@ void MainWindow::createActions()
     kmip_tool_->setIconSize( QSize(nWidth,nHeight));
     kmip_tool_->layout()->setSpacing(nSpacing);
 
-    const QIcon decodeKMIPIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/kms.png"));
+    const QIcon decodeKMIPIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/decode_ttlv.png"));
     ttlv_decode_act_ = new QAction(decodeKMIPIcon, tr("&Decode TTLV"), this);
     ttlv_decode_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_K));
     connect( ttlv_decode_act_, &QAction::triggered, this, &MainWindow::runDecodeTTLV );

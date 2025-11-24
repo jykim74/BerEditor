@@ -164,6 +164,7 @@ void EditTTLVDlg::clickModify()
             QModelIndex idx = findItem->index();
             berApplet->mainWindow()->ttlvTree()->clicked( idx );
             berApplet->mainWindow()->ttlvTree()->setCurrentIndex( idx );
+            berApplet->mainWindow()->ttlvTree()->expand(idx);
         }
 
         QDialog::accept();
@@ -215,6 +216,7 @@ void EditTTLVDlg::clickAdd()
             QModelIndex idx = findItem->index();
             berApplet->mainWindow()->ttlvTree()->clicked( idx );
             berApplet->mainWindow()->ttlvTree()->setCurrentIndex( idx );
+            berApplet->mainWindow()->ttlvTree()->expand(idx);
         }
 
         QDialog::accept();

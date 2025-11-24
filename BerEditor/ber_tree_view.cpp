@@ -682,25 +682,18 @@ void BerTreeView::treeExpandItem( int nRow, int nCol )
 void BerTreeView::ShowContextMenu(QPoint point)
 {
     QMenu menu(this);
-    menu.addAction(tr("Copy Information"), this, SLOT(copy()));
-    menu.addAction(tr("Copy as hex"), this, SLOT(CopyAsHex()));
-    menu.addAction(tr("Copy as base64"), this, SLOT(CopyAsBase64()));
-    menu.addAction(tr("Save node"), this, SLOT(SaveNode()));
-    menu.addAction(tr("Save node value"), this, SLOT(SaveNodeValue()));
-
-
-
-    /*
-    if( berApplet->isLicense() )
-        menu.addAction(tr("Edit value"), this, SLOT(EditValue()));
-    */
-
-
-
     BerItem* item = currentItem();
 
     if( item != NULL )
     {
+        if( item->GetTag() == 0x00 ) return;
+
+        menu.addAction(tr("Copy Information"), this, SLOT(copy()));
+        menu.addAction(tr("Copy as hex"), this, SLOT(CopyAsHex()));
+        menu.addAction(tr("Copy as base64"), this, SLOT(CopyAsBase64()));
+        menu.addAction(tr("Save node"), this, SLOT(SaveNode()));
+        menu.addAction(tr("Save node value"), this, SLOT(SaveNodeValue()));
+
         QAction *pInsertAct = NULL;
         QAction *pEditAct = NULL;
         QAction *pDeleteAct = NULL;
@@ -721,6 +714,7 @@ void BerTreeView::ShowContextMenu(QPoint point)
         {
             pInsertAct->setEnabled( false );
             pEditAct->setEnabled( false );
+            pDeleteAct->setEnabled( false );
         }
 
         if( item->GetTag() == JS_OCTETSTRING || item->GetTag() == JS_BITSTRING )
@@ -871,7 +865,7 @@ void BerTreeView::SaveNodeValue()
     BIN binData = {0,0};
     const BIN& binBer = tree_model->getBER();
 
-    JS_BIN_set( &binData, binBer.pVal + item->GetOffset() + item->GetHeaderSize(), item->GetLength() );
+    JS_BIN_set( &binData, binBer.pVal + item->GetOffset() + item->GetHeaderSize(), item->GetValLength() );
     JS_BIN_fileWrite( &binData, fileName.toLocal8Bit().toStdString().c_str());
     JS_BIN_reset(&binData);
 }
@@ -931,8 +925,9 @@ void BerTreeView::InsertBER()
             if( findItem )
             {
                 QModelIndex idx = findItem->index();
-                this->clicked( idx );
-                this->setCurrentIndex( idx );
+                clicked( idx );
+                setCurrentIndex( idx );
+                expand( idx );
             }
         }
     }
@@ -977,8 +972,9 @@ void BerTreeView::DeleteBER()
             if( findItem )
             {
                 QModelIndex idx = findItem->index();
-                this->clicked( idx );
-                this->setCurrentIndex( idx );
+                clicked( idx );
+                setCurrentIndex( idx );
+                expand( idx );
             }
         }
     }
