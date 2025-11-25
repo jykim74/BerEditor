@@ -25,6 +25,7 @@ public:
 
 private slots:
     void runMake();
+    void checkMoreType();
     void checkConstructed();
     void checkIndefinite();
     void valueChanged();

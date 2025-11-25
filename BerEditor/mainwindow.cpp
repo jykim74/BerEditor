@@ -1453,6 +1453,7 @@ void MainWindow::runMakeBER()
 
     MakeBerDlg makeBer;
     makeBer.mFirstSetCheck->hide();
+    makeBer.mPrimitiveCombo->setCurrentText(JS_NAME_SEQUENCE);
 
     ret = makeBer.exec();
 
@@ -1493,6 +1494,7 @@ void MainWindow::runMakeTTLV()
     MakeTTLVDlg makeTTLV;
     makeTTLV.setHeadLabel( tr( "Make TTLV [ Tag Type Length Value ]" ) );
     makeTTLV.mFirstSetCheck->hide();
+    makeTTLV.mTypeCombo->setCurrentText( "Structure" );
 
     if( makeTTLV.exec() == QDialog::Accepted )
     {

@@ -21,6 +21,14 @@ const QStringList kPrimitiveList = {
     JS_NAME_SET, JS_NAME_PRINTABLESTRING, JS_NAME_UTCTIME, JS_NAME_GENERALIZEDTIME
 };
 
+const QStringList kMoreType = {
+    JS_NAME_OBJDESCRIPTOR, JS_NAME_EXTERNAL, JS_NAME_REAL,
+    JS_NAME_ENUMERATED, JS_NAME_EMBEDDED_PDV, JS_NAME_NUMERICSTRING,
+    JS_NAME_PRINTABLESTRING, JS_NAME_T61STRING, JS_NAME_VIDEOTEXSTRING,
+    JS_NAME_IA5STRING, JS_NAME_GRAPHICSTRING, JS_NAME_VISIBLESTRING,
+    JS_NAME_GENERALSTRING, JS_NAME_UNIVERSALSTRING, JS_NAME_BMPSTRING
+};
+
 MakeBerDlg::MakeBerDlg(QWidget *parent) :
     QDialog(parent)
 {
@@ -28,6 +36,7 @@ MakeBerDlg::MakeBerDlg(QWidget *parent) :
     initUI();
 
     connect( mMakeBtn, SIGNAL(clicked()), this, SLOT(runMake()));
+    connect( mMoreTypeCheck, SIGNAL(clicked()), this, SLOT(checkMoreType()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mConstructedCheck, SIGNAL(clicked()), this, SLOT(checkConstructed()));
     connect( mIndefiniteCheck, SIGNAL(clicked()), this, SLOT(checkIndefinite()));
@@ -223,6 +232,16 @@ void MakeBerDlg::runMake()
     QDialog::accept();
 }
 
+void MakeBerDlg::checkMoreType()
+{
+    bool bVal = mMoreTypeCheck->isChecked();
+
+    mPrimitiveCombo->clear();
+    mPrimitiveCombo->addItems( kPrimitiveList );
+
+    if( bVal == true ) mPrimitiveCombo->addItems( kMoreType );
+}
+
 void MakeBerDlg::checkConstructed()
 {
     bool bVal = mConstructedCheck->isChecked();
@@ -296,6 +315,7 @@ void MakeBerDlg::classChanged(int index)
         mTagLabel->setText(tr("Tag"));
         primitiveChanged( index );
         mMakeValueBtn->show();
+        mMoreTypeCheck->setEnabled( true );
     }
     else
     {
@@ -304,6 +324,7 @@ void MakeBerDlg::classChanged(int index)
         mNumText->setReadOnly( false );
         mTagLabel->setText(tr("Number"));
         mMakeValueBtn->hide();
+        mMoreTypeCheck->setEnabled(false);
     }
 
     makeHeader();
