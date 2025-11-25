@@ -530,7 +530,7 @@ void EncDecDlg::fileRun()
     int nPartSize = berApplet->settingsMgr()->fileReadSize();
     qint64 nReadSize = 0;
     int nLeft = 0;
-    int nOffset = 0;
+    qint64 nOffset = 0;
     int nPercent = 0;
     int nUpdateCnt = 0;
     QString strSrcFile = mSrcFileText->text();

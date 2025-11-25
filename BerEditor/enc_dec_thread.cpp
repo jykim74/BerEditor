@@ -72,7 +72,7 @@ void EncDecThread::run()
     int nPartSize = berApplet->settingsMgr()->fileReadSize();
     qint64 nReadSize = 0;
     int nLeft = 0;
-    int nOffset = 0;
+    qint64 nOffset = 0;
     BIN binPart = {0,0};
     BIN binDst = {0,0};
 
