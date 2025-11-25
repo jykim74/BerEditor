@@ -2032,8 +2032,6 @@ int MainWindow::openBer( const BIN *pBer )
 
     left_tree_->header()->setVisible(false);
     left_tree_->viewRoot();
-    QModelIndex ri = ber_model_->index(0,0);
-    left_tree_->expand(ri);
 
     if( hsplitter_->widget(0) != left_tree_ )
         hsplitter_->replaceWidget(0, left_tree_ );
@@ -3716,14 +3714,10 @@ int MainWindow::decodeData( const BIN *pData, const QString strPath )
     return ret;
 }
 
-int MainWindow::reloadData()
+void MainWindow::reloadData()
 {
     ber_model_->parseTree( berApplet->settingsMgr()->autoExpand() );
-
-    left_tree_->header()->setVisible(false);
     left_tree_->viewRoot();
-    QModelIndex ri = ber_model_->index(0,0);
-    left_tree_->expand(ri);
 }
 
 int MainWindow::decodeTitle( const BIN *pData, const QString strTitle )
@@ -3760,8 +3754,6 @@ int MainWindow::decodeTTLV( const BIN *pData )
 
     ttlv_tree_->header()->setVisible(false);
     ttlv_tree_->viewRoot();
-    QModelIndex ri = ttlv_model_->index(0,0);
-    ttlv_tree_->expand(ri);
 
     if( hsplitter_->widget(0) != ttlv_tree_ )
         hsplitter_->replaceWidget(0, ttlv_tree_ );
@@ -3770,14 +3762,10 @@ int MainWindow::decodeTTLV( const BIN *pData )
     return 0;
 }
 
-int MainWindow::reloadTTLV()
+void MainWindow::reloadTTLV()
 {
     ttlv_model_->parseTree();
-
-    ttlv_tree_->header()->setVisible(false);
     ttlv_tree_->viewRoot();
-    QModelIndex ri = ttlv_model_->index(0,0);
-    ttlv_tree_->expand(ri);
 }
 
 void MainWindow::print()

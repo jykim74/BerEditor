@@ -589,6 +589,7 @@
   <tabstop>mHeaderText</tabstop>
   <tabstop>mTTLVLenText</tabstop>
   <tabstop>mTTLVText</tabstop>
+  <tabstop>mFirstSetCheck</tabstop>
   <tabstop>mOKBtn</tabstop>
   <tabstop>mCancelBtn</tabstop>
  </tabstops>

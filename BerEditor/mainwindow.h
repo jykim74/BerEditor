@@ -107,10 +107,10 @@ public:
 
     int decodeData( const BIN *pData, const QString strPath = "" );
     int decodeTitle( const BIN *pData, const QString strTitle = "" );
-    int reloadData();
+    void reloadData();
 
     int decodeTTLV( const BIN *pData );
-    int reloadTTLV();
+    void reloadTTLV();
     bool isTTLV();
 
     void runSignVerify( bool bSign, bool bEncPri, const QString strPriPath, const QString strCertPath );

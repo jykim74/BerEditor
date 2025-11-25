@@ -78,6 +78,7 @@ void BerTreeView::viewRoot()
     QModelIndex ri = tree_model->index(0,0);
     onItemClicked( ri );
     setExpanded( rootIndex(), true );
+    expand( ri );
 }
 
 void BerTreeView::viewCurrent()
@@ -700,7 +701,7 @@ void BerTreeView::ShowContextMenu(QPoint point)
 
         if( item->isConstructed() )
         {
-            pInsertAct = menu.addAction( tr( "Insert BER" ), this, SLOT(InsertBER()));
+            pInsertAct = menu.addAction( tr( "Insert value" ), this, SLOT(InsertBER()));
         }
         else
         {
@@ -708,7 +709,7 @@ void BerTreeView::ShowContextMenu(QPoint point)
         }
 
         if( item->parent() )
-            pDeleteAct = menu.addAction( tr("Delete BER" ), this, SLOT(DeleteBER()));
+            pDeleteAct = menu.addAction( tr("Delete value" ), this, SLOT(DeleteBER()));
 
         if( berApplet->isLicense() == false )
         {
@@ -972,6 +973,7 @@ void BerTreeView::DeleteBER()
             int nOffset = parent->GetOffset();
 
             berApplet->mainWindow()->reloadData();
+
             const BerItem *findItem = tree_model->findItemByOffset( nullptr, nOffset );
             if( findItem )
             {

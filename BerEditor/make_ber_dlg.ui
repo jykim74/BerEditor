@@ -618,18 +618,21 @@
  </widget>
  <tabstops>
   <tabstop>mClassCombo</tabstop>
+  <tabstop>mConstructedCheck</tabstop>
   <tabstop>mIndefiniteCheck</tabstop>
   <tabstop>mNumText</tabstop>
   <tabstop>mPrimitiveCombo</tabstop>
   <tabstop>mTagText</tabstop>
   <tabstop>mLenText</tabstop>
   <tabstop>mValueTypeCombo</tabstop>
+  <tabstop>mValueClearBtn</tabstop>
   <tabstop>mMakeValueBtn</tabstop>
   <tabstop>mValueLenText</tabstop>
   <tabstop>mValueText</tabstop>
   <tabstop>mHeaderText</tabstop>
   <tabstop>mBERLenText</tabstop>
   <tabstop>mBERText</tabstop>
+  <tabstop>mFirstSetCheck</tabstop>
   <tabstop>mMakeBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>

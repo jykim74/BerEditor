@@ -54,6 +54,7 @@ void TTLVTreeView::viewRoot()
     QModelIndex ri = tree_model->index(0,0);
     onItemClicked( ri );
     setExpanded( rootIndex(), true );
+    expand(ri);
 }
 
 void TTLVTreeView::viewCurrent()
