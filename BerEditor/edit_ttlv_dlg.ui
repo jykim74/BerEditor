@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="mHeadLabel">
      <property name="text">
       <string>Editing TTLV data</string>
      </property>

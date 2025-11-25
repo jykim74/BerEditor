@@ -16,6 +16,7 @@ public:
     explicit EditTTLVDlg(QWidget *parent = nullptr);
     ~EditTTLVDlg();
     QString getData();
+    void setHeadLabel( const QString strLabel );
 
 private slots:
     void clickModify();

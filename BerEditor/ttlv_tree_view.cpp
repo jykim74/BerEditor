@@ -71,6 +71,21 @@ void TTLVTreeView::viewCurrent()
     }
 }
 
+void TTLVTreeView::expandToTop( const TTLVTreeItem *pItem )
+{
+    TTLVTreeItem *pParent = nullptr;
+    if( pItem == NULL ) return;
+
+    expand( pItem->index() );
+    pParent = (TTLVTreeItem *)pItem->parent();
+
+    while( pParent )
+    {
+        expand( pParent->index() );
+        pParent = (TTLVTreeItem *)pParent->parent();
+    }
+}
+
 void TTLVTreeView::showRight()
 {
     TTLVTreeModel *left_model = (TTLVTreeModel *)model();
@@ -105,28 +120,27 @@ void TTLVTreeView::onItemClicked( const QModelIndex& index )
 void TTLVTreeView::leftContextMenu( QPoint point )
 {
     QMenu menu(this);
-
-    menu.addAction(tr("Copy Information"), this, SLOT(copy()));
-    menu.addAction(tr("Copy as hex"), this, SLOT(CopyAsHex()));
-    menu.addAction(tr("Copy as base64"), this, SLOT(CopyAsBase64()));
-    menu.addAction( tr("SaveItem"), this, &TTLVTreeView::saveItem );
-    menu.addAction( tr("SaveItemValue"), this, &TTLVTreeView::saveItemValue );
-
     TTLVTreeItem* item = currentItem();
 
     if( item != NULL )
     {
+        menu.addAction(tr("Copy Information"), this, SLOT(copy()));
+        menu.addAction(tr("Copy as hex"), this, SLOT(CopyAsHex()));
+        menu.addAction(tr("Copy as base64"), this, SLOT(CopyAsBase64()));
+        menu.addAction( tr("Save item"), this, &TTLVTreeView::saveItem );
+        menu.addAction( tr("Save item value"), this, &TTLVTreeView::saveItemValue );
+
         if( item->isStructure() == true )
         {
-            menu.addAction( tr( "Insert TTLV" ), this, &TTLVTreeView::InsertTTLV );
+            menu.addAction( tr( "Insert item" ), this, &TTLVTreeView::InsertTTLV );
         }
         else
         {
-            menu.addAction( tr("Edit"), this, &TTLVTreeView::EditItem );
+            menu.addAction( tr("Edit item"), this, &TTLVTreeView::EditItem );
         }
 
         if( item->parent() )
-            menu.addAction( tr( "Delete" ), this, &TTLVTreeView::DeleteItem );
+            menu.addAction( tr( "Delete item" ), this, &TTLVTreeView::DeleteItem );
     }
 
     menu.exec(QCursor::pos());
@@ -680,6 +694,7 @@ void TTLVTreeView::InsertTTLV()
     }
 
     MakeTTLVDlg makeTTLV;
+    makeTTLV.setHeadLabel( tr( "Insert TTLV [ Tag Type Length Value ]" ) );
     ret = makeTTLV.exec();
 
     if( ret == QDialog::Accepted )
@@ -702,12 +717,10 @@ void TTLVTreeView::InsertTTLV()
             const TTLVTreeItem *findItem = ttlv_model->findItemByOffset( nullptr, nOffset );
             if( findItem )
             {
-                if( findItem->parent() ) expand( findItem->parent()->index() );
-
                 QModelIndex idx = findItem->index();
+                expandToTop( findItem );
                 clicked( idx );
                 setCurrentIndex( idx );
-                expand( idx );
             }
         }
     }
@@ -727,6 +740,7 @@ void TTLVTreeView::EditItem()
     }
 
     EditTTLVDlg editTTLV;
+    editTTLV.setHeadLabel( tr( "Edit TTLV [ Tag Type Length Value ]" ) );
     ret = editTTLV.exec();
 }
 
@@ -765,12 +779,10 @@ void TTLVTreeView::DeleteItem()
         const TTLVTreeItem *findItem = ttlv_model->findItemByOffset( nullptr, nOffset );
         if( findItem )
         {
-            if( findItem->parent() ) expand( findItem->parent()->index() );
-
             QModelIndex idx = findItem->index();
+            expandToTop( findItem );
             clicked( idx );
             setCurrentIndex( idx );
-            expand(idx);
         }
     }
 }

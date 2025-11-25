@@ -13,16 +13,13 @@ public:
     TTLVTreeView( QWidget* parent = 0 );
     void viewRoot();
     void viewCurrent();
+    void expandToTop( const TTLVTreeItem *pItem );
 
     void showRight();
     void showRightFull( TTLVTreeItem *pItem );
     void showRightPart( TTLVTreeItem *pItem );
     void getInfoView( TTLVTreeItem *pItem, int nWidth );
     QString GetTextView();
-/*
-    void showTextView();
-    void showXMLView();
-*/
 
 
 public slots:

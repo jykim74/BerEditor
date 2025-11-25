@@ -1491,6 +1491,7 @@ void MainWindow::runDecodeTTLV()
 void MainWindow::runMakeTTLV()
 {
     MakeTTLVDlg makeTTLV;
+    makeTTLV.setHeadLabel( tr( "Make TTLV [ Tag Type Length Value ]" ) );
     makeTTLV.mFirstSetCheck->hide();
 
     if( makeTTLV.exec() == QDialog::Accepted )

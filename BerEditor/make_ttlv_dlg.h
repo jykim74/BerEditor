@@ -16,7 +16,7 @@ public:
     explicit MakeTTLVDlg(QWidget *parent = nullptr);
     ~MakeTTLVDlg();
     QString getData();
-    void setTitle( const QString strTitle );
+    void setHeadLabel( const QString strLabel );
 
 private slots:
     void changeType( int index );

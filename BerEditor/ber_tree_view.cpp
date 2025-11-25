@@ -377,9 +377,12 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
             rightTable->setItem( line, (i%16)+1, new QTableWidgetItem(hex));
             rightTable->item( line, (i%16) +1 )->setBackground(kValueColor);
 
-            if( i== 0 )
+            if( i == 0 )
             {
-                rightTable->item( line, 1)->setBackground(kTagColor);
+                if( binPart.pVal[i] == 0x00 )
+                    rightTable->item( line, 1)->setBackground(kEOCColor);
+                else
+                    rightTable->item( line, 1)->setBackground(kTagColor);
             }
             else if( i == 1 )
             {
@@ -390,7 +393,10 @@ void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
                 }
                 else
                 {
-                    rightTable->item( line, i + 1 )->setBackground(kLenColor);
+                    if( binPart.pVal[i-1] == 0x00 && binPart.pVal[i] == 0x00 )
+                        rightTable->item( line, i + 1)->setBackground(kEOCColor);
+                    else
+                        rightTable->item( line, i + 1 )->setBackground(kLenColor);
                 }
             }
             else if( i <= (1 + len_len))
@@ -576,13 +582,18 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
             hex = QString( "%1").arg( pBer->pVal[i], 2, 16, QLatin1Char('0') ).toUpper();
             pos = (i%16) + 1;
             rightTable->setItem( line, pos, new QTableWidgetItem(hex));
-            if( i== pItem->GetOffset() )
+
+            if( i == pItem->GetOffset() )
             {
-                rightTable->item( line, pos)->setBackground(kTagColor);
+                if( pBer->pVal[i] == 0x00 )
+                    rightTable->item( line, pos )->setBackground( kEOCColor );
+                else
+                    rightTable->item( line, pos)->setBackground(kTagColor);
+
                 start_row = line;
                 start_col = pos;
             }
-            else if( i== pItem->GetOffset()+1 )
+            else if( i == pItem->GetOffset()+1 )
             {
                 if( pBer->pVal[i] & JS_LEN_XTND )
                 {
@@ -591,7 +602,10 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
                 }
                 else
                 {
-                    rightTable->item( line, pos)->setBackground(kLenColor);
+                    if( pBer->pVal[i-1] == 0x00 && pBer->pVal[i] == 0x00 )
+                        rightTable->item( line, pos )->setBackground( kEOCColor );
+                    else
+                        rightTable->item( line, pos)->setBackground(kLenColor);
                 }
             }
             else if( (i > pItem->GetOffset() + 1 ) && (i <= (pItem->GetOffset() + 1 + len_len)))
@@ -701,15 +715,15 @@ void BerTreeView::ShowContextMenu(QPoint point)
 
         if( item->isConstructed() )
         {
-            pInsertAct = menu.addAction( tr( "Insert value" ), this, SLOT(InsertBER()));
+            pInsertAct = menu.addAction( tr( "Insert node" ), this, SLOT(InsertBER()));
         }
         else
         {
-            pEditAct = menu.addAction(tr("Edit value"), this, SLOT(EditValue()));
+            pEditAct = menu.addAction(tr("Edit node"), this, SLOT(EditValue()));
         }
 
         if( item->parent() )
-            pDeleteAct = menu.addAction( tr("Delete value" ), this, SLOT(DeleteBER()));
+            pDeleteAct = menu.addAction( tr("Delete node" ), this, SLOT(DeleteBER()));
 
         if( berApplet->isLicense() == false )
         {
@@ -721,7 +735,7 @@ void BerTreeView::ShowContextMenu(QPoint point)
         if( item->GetTag() == JS_OCTETSTRING || item->GetTag() == JS_BITSTRING )
         {
             if( item->hasChildren() == false )
-                menu.addAction( tr("Expand value"), this, SLOT(ExpandValue()));
+                menu.addAction( tr("Expand node"), this, SLOT(ExpandValue()));
         }
     }
 
@@ -833,6 +847,21 @@ end :
     expand( index );
 }
 
+void BerTreeView::expandToTop( const BerItem *pItem )
+{
+    BerItem *pParent = nullptr;
+    if( pItem == NULL ) return;
+
+    expand( pItem->index() );
+    pParent = (BerItem *)pItem->parent();
+
+    while( pParent )
+    {
+        expand( pParent->index() );
+        pParent = (BerItem *)pParent->parent();
+    }
+}
+
 const QString BerTreeView::SaveNode()
 {
     QString strPath;
@@ -927,12 +956,10 @@ void BerTreeView::InsertBER()
             const BerItem *findItem = tree_model->findItemByOffset( nullptr, nOffset );
             if( findItem )
             {
-                if( findItem->parent() ) expand( findItem->parent()->index() );
-
+                expandToTop( findItem );
                 QModelIndex idx = findItem->index();
                 clicked( idx );
                 setCurrentIndex( idx );
-                expand( idx );
             }
         }
     }
@@ -977,12 +1004,10 @@ void BerTreeView::DeleteBER()
             const BerItem *findItem = tree_model->findItemByOffset( nullptr, nOffset );
             if( findItem )
             {
-                if( findItem->parent() ) expand( findItem->parent()->index() );
-
+                expandToTop( findItem );
                 QModelIndex idx = findItem->index();
                 clicked( idx );
                 setCurrentIndex( idx );
-                expand( idx );
             }
         }
     }

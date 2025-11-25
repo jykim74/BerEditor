@@ -33,6 +33,11 @@ EditTTLVDlg::~EditTTLVDlg()
 
 }
 
+void EditTTLVDlg::setHeadLabel( const QString strLabel )
+{
+    mHeadLabel->setText( strLabel );
+}
+
 void EditTTLVDlg::initialize()
 {
     TTLVTreeItem *pItem = berApplet->mainWindow()->ttlvTree()->currentItem();
@@ -161,13 +166,10 @@ void EditTTLVDlg::clickModify()
         const TTLVTreeItem *findItem = pModel->findItemByOffset( nullptr, nOffset );
         if( findItem )
         {
-            if( findItem->parent() )
-                berApplet->mainWindow()->ttlvTree()->expand( findItem->parent()->index());
-
             QModelIndex idx = findItem->index();
+            berApplet->mainWindow()->ttlvTree()->expandToTop( findItem );
             berApplet->mainWindow()->ttlvTree()->clicked( idx );
             berApplet->mainWindow()->ttlvTree()->setCurrentIndex( idx );
-            berApplet->mainWindow()->ttlvTree()->expand(idx);
         }
 
         QDialog::accept();
@@ -217,13 +219,10 @@ void EditTTLVDlg::clickAdd()
         const TTLVTreeItem *findItem = pModel->findItemByOffset( nullptr, nOffset );
         if( findItem )
         {
-            if( findItem->parent() )
-                berApplet->mainWindow()->ttlvTree()->expand( findItem->parent()->index());
-
             QModelIndex idx = findItem->index();
+            berApplet->mainWindow()->ttlvTree()->expandToTop( findItem );
             berApplet->mainWindow()->ttlvTree()->clicked( idx );
             berApplet->mainWindow()->ttlvTree()->setCurrentIndex( idx );
-            berApplet->mainWindow()->ttlvTree()->expand(idx);
         }
 
         QDialog::accept();

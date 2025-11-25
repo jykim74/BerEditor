@@ -21,6 +21,7 @@ public:
 
     void viewRoot();
     void viewCurrent();
+    void expandToTop( const BerItem *pItem );
 
     QString GetTextView();
 
@@ -28,6 +29,7 @@ private slots:
     void onItemClicked( const QModelIndex& index );
     void ShowContextMenu( QPoint point );
     void ExpandValue();
+
 
 public slots:
     void CopyAsHex();

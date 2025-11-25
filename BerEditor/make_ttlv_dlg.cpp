@@ -37,9 +37,9 @@ MakeTTLVDlg::~MakeTTLVDlg()
 
 }
 
-void MakeTTLVDlg::setTitle( const QString strTitle )
+void MakeTTLVDlg::setHeadLabel( const QString strLabel )
 {
-    mTitleLabel->setText( strTitle );
+    mHeadLabel->setText( strLabel );
 }
 
 void MakeTTLVDlg::initialize()
