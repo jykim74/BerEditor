@@ -240,10 +240,10 @@ QString BerItem::GetValueString( const BIN *pBer, int *pnType, int nWidth )
             if( binVal.nLen > 0 )
             {
                 int iUnused = 0;
-                char *pBitStr = (char *)JS_malloc( binVal.nLen * 8 + 8 );
-                JS_PKI_getBitString( &binVal, &iUnused, pBitStr );
+                char *pBitStr = NULL;
+                JS_PKI_getBitString( &binVal, &iUnused, &pBitStr );
                 strVal = pBitStr;
-                JS_free(pBitStr);
+                if( pBitStr ) JS_free(pBitStr);
                 strVal = getHexStringArea( strVal, nWidth );
             }
 
@@ -318,19 +318,26 @@ QString BerItem::GetInfoString(const BIN *pBer)
         if( binVal.nLen > 0 )
         {
             QString tmpStr;
-            char* pTextBit = (char *)JS_malloc( binVal.nLen * 8 + 8 );
-            JS_PKI_getBitString( &binVal, &iUnused, pTextBit );
+            char* pTextBit = NULL;
+            JS_PKI_getBitString( &binVal, &iUnused, &pTextBit );
 
-            tmpStr = pTextBit;
-            if( tmpStr.length() > 16 )
+            if( pTextBit )
             {
-                tmpStr = tmpStr.mid(0,15);
-                tmpStr += "...";
-            }
+                tmpStr = pTextBit;
+                if( tmpStr.length() > 16 )
+                {
+                    tmpStr = tmpStr.mid(0,15);
+                    tmpStr += "...";
+                }
 
-            nBits = strlen( pTextBit );
-            if( pTextBit ) JS_free( pTextBit );
-            strMsg = QString( "%1(%2 bits) %3(unused %4)").arg( strTag ).arg( nBits ).arg( tmpStr ).arg(iUnused);
+                nBits = strlen( pTextBit );
+                if( pTextBit ) JS_free( pTextBit );
+                strMsg = QString( "%1(%2 bits) %3[unused %4]").arg( strTag ).arg( nBits ).arg( tmpStr ).arg(iUnused);
+            }
+            else
+            {
+                strMsg = QString( "%1 [bad unsued]" ).arg( strTag );
+            }
         }
         else
         {

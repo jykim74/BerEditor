@@ -540,7 +540,7 @@ static const QString _getFileFilter( int nType, QString& strFileType )
     else if( nType == JS_FILE_TYPE_BER )
     {
         strFileType = QObject::tr("BER Files");
-        strFilter = QString("%1 (*.ber *.der *.cer *.pem)").arg( strFileType );
+        strFilter = QString("%1 (*.ber *.der *.cer *.pem *.crt *.crl)").arg( strFileType );
     }
     else if( nType == JS_FILE_TYPE_CFG )
     {
