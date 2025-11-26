@@ -237,12 +237,15 @@ QString BerItem::GetValueString( const BIN *pBer, int *pnType, int nWidth )
         }
         else if( tag_ == JS_BITSTRING )
         {
-            int iUnused = 0;
-            char *pBitStr = (char *)JS_malloc( binVal.nLen * 8 + 8 );
-            JS_PKI_getBitString( &binVal, &iUnused, pBitStr );
-            strVal = pBitStr;
-            JS_free(pBitStr);
-            strVal = getHexStringArea( strVal, nWidth );
+            if( binVal.nLen > 0 )
+            {
+                int iUnused = 0;
+                char *pBitStr = (char *)JS_malloc( binVal.nLen * 8 + 8 );
+                JS_PKI_getBitString( &binVal, &iUnused, pBitStr );
+                strVal = pBitStr;
+                JS_free(pBitStr);
+                strVal = getHexStringArea( strVal, nWidth );
+            }
 
             if( pnType ) *pnType = JS_VALUE_BITSTRING;
         }
@@ -308,24 +311,35 @@ QString BerItem::GetInfoString(const BIN *pBer)
     {
         int iUnused = 0;
         BIN     binVal = {0,0};
-        char *pTextBit = NULL;
+        int nBits = 0;
 
         JS_BIN_set( &binVal, pBer->pVal + offset_ + header_size_, length_ );
 
-        pTextBit = (char *)JS_malloc( binVal.nLen * 8 + 8 );
-        JS_PKI_getBitString( &binVal, &iUnused, pTextBit );
-
-        QString tmpStr = pTextBit;
-        if( tmpStr.length() > 16 )
+        if( binVal.nLen > 0 )
         {
-            tmpStr = tmpStr.mid(0,15);
-            tmpStr += "...";
+            QString tmpStr;
+            char* pTextBit = (char *)JS_malloc( binVal.nLen * 8 + 8 );
+            JS_PKI_getBitString( &binVal, &iUnused, pTextBit );
+
+            tmpStr = pTextBit;
+            if( tmpStr.length() > 16 )
+            {
+                tmpStr = tmpStr.mid(0,15);
+                tmpStr += "...";
+            }
+
+            nBits = strlen( pTextBit );
+            if( pTextBit ) JS_free( pTextBit );
+            strMsg = QString( "%1(%2 bits) %3(unused %4)").arg( strTag ).arg( nBits ).arg( tmpStr ).arg(iUnused);
+        }
+        else
+        {
+            strMsg = QString( "%1" ).arg( strTag );
         }
 
-//        strMsg = QString( "%1 %2(unused %3)").arg( strTag ).arg(tmpStr).arg(iUnused);
-        strMsg = QString( "%1(%2 bits) %3(unused %4)").arg( strTag ).arg( strlen(pTextBit )).arg( tmpStr ).arg(iUnused);
+
         JS_BIN_reset(&binVal);
-        if( pTextBit ) JS_free( pTextBit );
+
     }
     else if( tag_ == JS_PRINTABLESTRING || tag_ == JS_IA5STRING || tag_ == JS_UTF8STRING \
              || tag_ == JS_UTCTIME || tag_ == JS_GENERALIZEDTIME )
@@ -336,7 +350,10 @@ QString BerItem::GetInfoString(const BIN *pBer)
     else if( tag_ == JS_BOOLEAN )
     {
         strVal = GetValueString( pBer );
-        strMsg = QString( "%1(%2)").arg( strTag ).arg( strVal );
+        if( strVal.length() > 0 )
+            strMsg = QString( "%1(%2)").arg( strTag ).arg( strVal );
+        else
+            strMsg = strTag;
     }
 
     if( tag_ == 0 && id_ == 0 && length_ == 0 )

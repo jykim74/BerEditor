@@ -1499,6 +1499,11 @@ mailto : jykim74@gmail.com</translation>
         <translation>노드 확장</translation>
     </message>
     <message>
+        <location filename="../ber_tree_view.cpp" line="1020"/>
+        <source>failed to delete: %1</source>
+        <translation>삭제에 실패 했습니다: %1</translation>
+    </message>
+    <message>
         <source>Edit value</source>
         <translation type="vanished">값 수정</translation>
     </message>
@@ -1517,7 +1522,7 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../ber_tree_view.cpp" line="913"/>
-        <location filename="../ber_tree_view.cpp" line="982"/>
+        <location filename="../ber_tree_view.cpp" line="986"/>
         <source>There is no item to select</source>
         <translation>선택한 아이템이 없습니다.</translation>
     </message>
@@ -1532,12 +1537,17 @@ mailto : jykim74@gmail.com</translation>
         <translation>정말로 추가 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="988"/>
+        <location filename="../ber_tree_view.cpp" line="967"/>
+        <source>failed to insert</source>
+        <translation>입력에 실패 했습니다</translation>
+    </message>
+    <message>
+        <location filename="../ber_tree_view.cpp" line="992"/>
         <source>Top-level items cannot be deleted</source>
         <translation>최상위 아이템은 삭제 할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="992"/>
+        <location filename="../ber_tree_view.cpp" line="996"/>
         <source>Are you sure you want to delete it?</source>
         <translation>정말로 삭제 하겠습니까?</translation>
     </message>
@@ -7656,7 +7666,7 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../edit_ttlv_dlg.cpp" line="143"/>
-        <location filename="../edit_ttlv_dlg.cpp" line="192"/>
+        <location filename="../edit_ttlv_dlg.cpp" line="193"/>
         <source>There is no selected item</source>
         <translation>선택한 아이템이 없습니다.</translation>
     </message>
@@ -7666,14 +7676,24 @@ mailto : jykim74@gmail.com</translation>
         <translation>정말로 변경 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../edit_ttlv_dlg.cpp" line="196"/>
+        <location filename="../edit_ttlv_dlg.cpp" line="179"/>
+        <source>failed to modify: %1</source>
+        <translation>변경에 실패 했습니다: %1</translation>
+    </message>
+    <message>
+        <location filename="../edit_ttlv_dlg.cpp" line="197"/>
         <source>Are you sure you want to add it?</source>
         <translation>정말로 추가 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../edit_ttlv_dlg.cpp" line="202"/>
+        <location filename="../edit_ttlv_dlg.cpp" line="203"/>
         <source>Top-level item cannot be added.</source>
         <translation>최상위 노드는 추가 될 수 없습니다.</translation>
+    </message>
+    <message>
+        <location filename="../edit_ttlv_dlg.cpp" line="233"/>
+        <source>failed to insert</source>
+        <translation>입력에 실패 했습니다</translation>
     </message>
     <message>
         <source>Are you sure you want to delete it?</source>
@@ -7825,6 +7845,16 @@ mailto : jykim74@gmail.com</translation>
         <translation>정말로 변경 하겠습니까?</translation>
     </message>
     <message>
+        <location filename="../edit_value_dlg.cpp" line="263"/>
+        <source>failed to modify: %1</source>
+        <translation>변경에 실패 했습니다: %1</translation>
+    </message>
+    <message>
+        <location filename="../edit_value_dlg.cpp" line="324"/>
+        <source>failed to insert</source>
+        <translation>입력에 실패 했습니다</translation>
+    </message>
+    <message>
         <source>fail to modify: %1</source>
         <translation type="vanished">변경 실패 : %1</translation>
     </message>
@@ -7837,17 +7867,17 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">정말로 삭제 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.cpp" line="285"/>
+        <location filename="../edit_value_dlg.cpp" line="289"/>
         <source>Top-level item cannot be added.</source>
         <translation>최상위 노드는 추가 될 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.cpp" line="292"/>
+        <location filename="../edit_value_dlg.cpp" line="296"/>
         <source>Parent item is not constructed.</source>
         <translation>상위 노드가 구조적이지 않습니다</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.cpp" line="297"/>
+        <location filename="../edit_value_dlg.cpp" line="301"/>
         <source>Are you sure you want to add it?</source>
         <translation>정말로 추가 하겠습니까?</translation>
     </message>
@@ -21026,12 +21056,12 @@ Use %2</source>
         <translation type="vanished">삭제</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="764"/>
+        <location filename="../ttlv_tree_view.cpp" line="768"/>
         <source>Top-level items cannot be deleted</source>
         <translation>최상위 아이템은 삭제 할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="770"/>
+        <location filename="../ttlv_tree_view.cpp" line="774"/>
         <source>Are you sure you want to delete it?</source>
         <translation>정말로 삭제 하겠습니까?</translation>
     </message>
@@ -21100,15 +21130,25 @@ Use %2</source>
         <translation>정말로 추가 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="738"/>
-        <location filename="../ttlv_tree_view.cpp" line="758"/>
+        <location filename="../ttlv_tree_view.cpp" line="728"/>
+        <source>failed to insert</source>
+        <translation>입력에 실패 했습니다</translation>
+    </message>
+    <message>
+        <location filename="../ttlv_tree_view.cpp" line="742"/>
+        <location filename="../ttlv_tree_view.cpp" line="762"/>
         <source>There is no item to select</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ttlv_tree_view.cpp" line="743"/>
+        <location filename="../ttlv_tree_view.cpp" line="747"/>
         <source>Edit TTLV [ Tag Type Length Value ]</source>
         <translation>TTLV 편집 [ Tag Type Length Value ]</translation>
+    </message>
+    <message>
+        <location filename="../ttlv_tree_view.cpp" line="794"/>
+        <source>failed to delete: %1</source>
+        <translation>삭제에 실패 했습니다: %1</translation>
     </message>
     <message>
         <source>Save as...</source>

@@ -258,6 +258,10 @@ void EditValueDlg::runChange()
             berApplet->mainWindow()->berTree()->setCurrentIndex( idx );
         }
     }
+    else
+    {
+        berApplet->warningBox( tr( "failed to modify: %1").arg(JERR(ret)), this );
+    }
 
 end :
     JS_BIN_reset( &binNewVal );
@@ -314,6 +318,10 @@ void EditValueDlg::runAdd()
             berApplet->mainWindow()->berTree()->clicked( idx );
             berApplet->mainWindow()->berTree()->setCurrentIndex( idx );
         }
+    }
+    else
+    {
+        berApplet->warningBox( tr( "failed to insert" ), this );
     }
 
  end :

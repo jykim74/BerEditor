@@ -723,6 +723,10 @@ void TTLVTreeView::InsertTTLV()
                 setCurrentIndex( idx );
             }
         }
+        else
+        {
+            berApplet->warningBox( tr( "failed to insert" ), this );
+        }
     }
 }
 
@@ -784,6 +788,10 @@ void TTLVTreeView::DeleteItem()
             clicked( idx );
             setCurrentIndex( idx );
         }
+    }
+    else
+    {
+        berApplet->warningBox( tr( "failed to delete: %1").arg( JERR(ret)), this );
     }
 }
 

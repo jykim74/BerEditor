@@ -195,7 +195,7 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
     {
         pItem->getValueBin( &binBer, &binVal );
 
-        if( nValueType == JS_VALUE_BITSTRING  )
+        if( nValueType == JS_VALUE_BITSTRING && binVal.nLen > 0 )
         {
             BIN binInt = {0,0};
             int nUnused = binVal.pVal[0];
@@ -962,6 +962,10 @@ void BerTreeView::InsertBER()
                 setCurrentIndex( idx );
             }
         }
+        else
+        {
+            berApplet->warningBox( tr( "failed to insert" ), this );
+        }
     }
 
 end:
@@ -1010,6 +1014,10 @@ void BerTreeView::DeleteBER()
                 setCurrentIndex( idx );
             }
         }
+    }
+    else
+    {
+        berApplet->warningBox( tr( "failed to delete: %1").arg( JERR(ret)), this );
     }
 }
 
