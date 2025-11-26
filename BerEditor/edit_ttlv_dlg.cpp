@@ -177,7 +177,6 @@ void EditTTLVDlg::clickModify()
     else
     {
         berApplet->warningBox( tr( "failed to modify: %1").arg(JERR(ret)), this );
-        QDialog::reject();
     }
 }
 
@@ -231,6 +230,5 @@ void EditTTLVDlg::clickAdd()
     else
     {
         berApplet->warningBox( tr( "failed to insert" ), this );
-        QDialog::reject();
     }
 }

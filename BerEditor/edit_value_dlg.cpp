@@ -238,8 +238,29 @@ void EditValueDlg::runChange()
     bool bVal = berApplet->yesOrCancelBox( tr( "Are you sure you want to modify it?" ), this, false );
     if( bVal == false ) return;
 
+    int nTag = ber_item_->GetTag();
+
     ret = getBINFromString( &binNewVal, mValueTypeCombo->currentText(), strValue );
     FORMAT_WARN_GO(ret);
+
+    if( nTag == JS_BOOLEAN && binNewVal.nLen > 1 )
+    {
+        berApplet->warningBox( tr( "In the boolean case, the input value is 1 byte." ), this );
+        mValueText->setFocus();
+        JS_BIN_reset( &binNewVal );
+        return;
+    }
+
+    if( nTag == JS_BITSTRING && binNewVal.nLen > 0 )
+    {
+        if( binNewVal.pVal[0] >= 0x08 )
+        {
+            berApplet->warningBox( tr( "The first byte of a bit string is between 0x00 and 0x07." ), this );
+            mValueText->setFocus();
+            JS_BIN_reset( &binNewVal );
+            return;
+        }
+    }
 
     ret = ber_model->modifyItem( ber_item_, &binNewVal );
 
@@ -266,10 +287,7 @@ void EditValueDlg::runChange()
 end :
     JS_BIN_reset( &binNewVal );
 
-    if( ret == 0 )
-        QDialog::accept();
-    else
-        reject();
+    if( ret == 0 ) QDialog::accept();
 }
 
 
@@ -281,8 +299,11 @@ void EditValueDlg::runAdd()
     BerModel *ber_model = (BerModel *)ber_item_->model();
     BerItem *parentItem = (BerItem *)ber_item_->parent();
 
-    QString strData = getData();
+    QString strValue = mValueText->toPlainText();
+
+    QString strData;
     const BerItem *child = nullptr;
+    BIN binVal = {0,0};
 
     if( parentItem == NULL )
     {
@@ -302,8 +323,34 @@ void EditValueDlg::runAdd()
     if( bVal == false ) return;
 
     bool bFirst = mFirstSetCheck->isChecked();
+    int nTag = ber_item_->GetTag();
 
+
+    ret = getBINFromString( &binVal, mValueTypeCombo->currentText(), strValue );
+    FORMAT_WARN_GO(ret);
+
+    if( nTag == JS_BOOLEAN && binVal.nLen > 1 )
+    {
+        berApplet->warningBox( tr( "In the boolean case, the input value is 1 byte." ), this );
+        mValueText->setFocus();
+        ret = JSR_ERR;
+        goto end;
+    }
+
+    if( nTag == JS_BITSTRING && binVal.nLen > 0 )
+    {
+        if( binData.pVal[0] >= 0x08 )
+        {
+            berApplet->warningBox( tr( "The first byte of a bit string is between 0x00 and 0x07." ), this );
+            mValueText->setFocus();
+            ret = JSR_ERR;
+            goto end;
+        }
+    }
+
+    strData = getData();
     JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
+
     child = ber_model->addItem( parentItem, bFirst, &binData );
     if( child )
     {
@@ -322,15 +369,15 @@ void EditValueDlg::runAdd()
     else
     {
         berApplet->warningBox( tr( "failed to insert" ), this );
+        ret = JSR_ERR;
+        goto end;
     }
 
  end :
     JS_BIN_reset( &binData );
+    JS_BIN_reset( &binVal );
 
-    if( ret == 0 )
-        QDialog::accept();
-    else
-        QDialog::reject();
+    if( ret == 0 ) QDialog::accept();
 }
 
 void EditValueDlg::changeValueText()

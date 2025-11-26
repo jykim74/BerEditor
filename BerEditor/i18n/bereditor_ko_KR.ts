@@ -1446,60 +1446,60 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">선택한 노드가 없습니다.</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="264"/>
-        <location filename="../ber_tree_view.cpp" line="660"/>
-        <location filename="../ber_tree_view.cpp" line="751"/>
-        <location filename="../ber_tree_view.cpp" line="773"/>
+        <location filename="../ber_tree_view.cpp" line="272"/>
+        <location filename="../ber_tree_view.cpp" line="668"/>
+        <location filename="../ber_tree_view.cpp" line="759"/>
+        <location filename="../ber_tree_view.cpp" line="781"/>
         <source>There are no items selected.</source>
         <translation>선택한 아이템이 없습니다</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="706"/>
+        <location filename="../ber_tree_view.cpp" line="714"/>
         <source>Copy Information</source>
         <translation>정보 복사</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="707"/>
+        <location filename="../ber_tree_view.cpp" line="715"/>
         <source>Copy as hex</source>
         <translation>Hex로 복사</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="708"/>
+        <location filename="../ber_tree_view.cpp" line="716"/>
         <source>Copy as base64</source>
         <translation>Base64로 복사</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="709"/>
+        <location filename="../ber_tree_view.cpp" line="717"/>
         <source>Save node</source>
         <translation>노드 저장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="710"/>
+        <location filename="../ber_tree_view.cpp" line="718"/>
         <source>Save node value</source>
         <translation>노드 값 저장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="718"/>
+        <location filename="../ber_tree_view.cpp" line="726"/>
         <source>Insert node</source>
         <translation>노드 입력</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="722"/>
+        <location filename="../ber_tree_view.cpp" line="730"/>
         <source>Edit node</source>
         <translation>노드 편집</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="726"/>
+        <location filename="../ber_tree_view.cpp" line="734"/>
         <source>Delete node</source>
         <translation>노드 삭제</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="738"/>
+        <location filename="../ber_tree_view.cpp" line="746"/>
         <source>Expand node</source>
         <translation>노드 확장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="1020"/>
+        <location filename="../ber_tree_view.cpp" line="1028"/>
         <source>failed to delete: %1</source>
         <translation>삭제에 실패 했습니다: %1</translation>
     </message>
@@ -1516,43 +1516,43 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">확장</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="842"/>
+        <location filename="../ber_tree_view.cpp" line="850"/>
         <source>This is not BER encoded data</source>
         <translation>BER 인코딩 데이타가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="913"/>
-        <location filename="../ber_tree_view.cpp" line="986"/>
+        <location filename="../ber_tree_view.cpp" line="921"/>
+        <location filename="../ber_tree_view.cpp" line="994"/>
         <source>There is no item to select</source>
         <translation>선택한 아이템이 없습니다.</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="918"/>
+        <location filename="../ber_tree_view.cpp" line="926"/>
         <source>Edit BER</source>
         <translation>BER 편집</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="942"/>
+        <location filename="../ber_tree_view.cpp" line="950"/>
         <source>Are you sure you want to add it?</source>
         <translation>정말로 추가 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="967"/>
+        <location filename="../ber_tree_view.cpp" line="975"/>
         <source>failed to insert</source>
         <translation>입력에 실패 했습니다</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="992"/>
+        <location filename="../ber_tree_view.cpp" line="1000"/>
         <source>Top-level items cannot be deleted</source>
         <translation>최상위 아이템은 삭제 할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="996"/>
+        <location filename="../ber_tree_view.cpp" line="1004"/>
         <source>Are you sure you want to delete it?</source>
         <translation>정말로 삭제 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../ber_tree_view.cpp" line="936"/>
+        <location filename="../ber_tree_view.cpp" line="944"/>
         <source>Insert BER</source>
         <translation>BER 추가</translation>
     </message>
@@ -7666,7 +7666,7 @@ mailto : jykim74@gmail.com</translation>
     </message>
     <message>
         <location filename="../edit_ttlv_dlg.cpp" line="143"/>
-        <location filename="../edit_ttlv_dlg.cpp" line="193"/>
+        <location filename="../edit_ttlv_dlg.cpp" line="192"/>
         <source>There is no selected item</source>
         <translation>선택한 아이템이 없습니다.</translation>
     </message>
@@ -7681,17 +7681,17 @@ mailto : jykim74@gmail.com</translation>
         <translation>변경에 실패 했습니다: %1</translation>
     </message>
     <message>
-        <location filename="../edit_ttlv_dlg.cpp" line="197"/>
+        <location filename="../edit_ttlv_dlg.cpp" line="196"/>
         <source>Are you sure you want to add it?</source>
         <translation>정말로 추가 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../edit_ttlv_dlg.cpp" line="203"/>
+        <location filename="../edit_ttlv_dlg.cpp" line="202"/>
         <source>Top-level item cannot be added.</source>
         <translation>최상위 노드는 추가 될 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../edit_ttlv_dlg.cpp" line="233"/>
+        <location filename="../edit_ttlv_dlg.cpp" line="232"/>
         <source>failed to insert</source>
         <translation>입력에 실패 했습니다</translation>
     </message>
@@ -7845,12 +7845,24 @@ mailto : jykim74@gmail.com</translation>
         <translation>정말로 변경 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.cpp" line="263"/>
+        <location filename="../edit_value_dlg.cpp" line="248"/>
+        <location filename="../edit_value_dlg.cpp" line="334"/>
+        <source>In the boolean case, the input value is 1 byte.</source>
+        <translation>Boolean 경우 입력 값은 1바이트 입니다</translation>
+    </message>
+    <message>
+        <location filename="../edit_value_dlg.cpp" line="258"/>
+        <location filename="../edit_value_dlg.cpp" line="344"/>
+        <source>The first byte of a bit string is between 0x00 and 0x07.</source>
+        <translation>비트스트링의 첫 바이트는 0x00 ~ 0x07 이내 입니다</translation>
+    </message>
+    <message>
+        <location filename="../edit_value_dlg.cpp" line="284"/>
         <source>failed to modify: %1</source>
         <translation>변경에 실패 했습니다: %1</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.cpp" line="324"/>
+        <location filename="../edit_value_dlg.cpp" line="371"/>
         <source>failed to insert</source>
         <translation>입력에 실패 했습니다</translation>
     </message>
@@ -7867,17 +7879,17 @@ mailto : jykim74@gmail.com</translation>
         <translation type="vanished">정말로 삭제 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.cpp" line="289"/>
+        <location filename="../edit_value_dlg.cpp" line="310"/>
         <source>Top-level item cannot be added.</source>
         <translation>최상위 노드는 추가 될 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.cpp" line="296"/>
+        <location filename="../edit_value_dlg.cpp" line="317"/>
         <source>Parent item is not constructed.</source>
         <translation>상위 노드가 구조적이지 않습니다</translation>
     </message>
     <message>
-        <location filename="../edit_value_dlg.cpp" line="301"/>
+        <location filename="../edit_value_dlg.cpp" line="322"/>
         <source>Are you sure you want to add it?</source>
         <translation>정말로 추가 하겠습니까?</translation>
     </message>
@@ -14194,7 +14206,7 @@ Use %2</source>
     </message>
     <message>
         <location filename="../make_ber_dlg.ui" line="229"/>
-        <location filename="../make_ber_dlg.cpp" line="315"/>
+        <location filename="../make_ber_dlg.cpp" line="339"/>
         <source>Tag</source>
         <translation>태그</translation>
     </message>
@@ -14283,22 +14295,32 @@ Use %2</source>
         <translation>유효하지 않는 번호: %1</translation>
     </message>
     <message>
-        <location filename="../make_ber_dlg.cpp" line="214"/>
+        <location filename="../make_ber_dlg.cpp" line="219"/>
         <source>Select Tag</source>
         <translation>Tag 을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../make_ber_dlg.cpp" line="260"/>
+        <location filename="../make_ber_dlg.cpp" line="238"/>
+        <source>In the boolean case, the input value is 1 byte.</source>
+        <translation>Boolean 경우 입력 값은 1바이트 입니다</translation>
+    </message>
+    <message>
+        <location filename="../make_ber_dlg.cpp" line="248"/>
+        <source>The first byte of a bit string is between 0x00 and 0x07.</source>
+        <translation>비트스트링의 첫 바이트는 0x00 ~ 0x07 이내 입니다</translation>
+    </message>
+    <message>
+        <location filename="../make_ber_dlg.cpp" line="284"/>
         <source>SET and SEQUENCE cannot be changed</source>
         <translation>SET과 SEQUENCE는 바꿀 수 없습니다</translation>
     </message>
     <message>
-        <location filename="../make_ber_dlg.cpp" line="269"/>
+        <location filename="../make_ber_dlg.cpp" line="293"/>
         <source>Only SET and SEQUENCE are supported</source>
         <translation>SET과 SEQUENCE 만 지원 합니다</translation>
     </message>
     <message>
-        <location filename="../make_ber_dlg.cpp" line="325"/>
+        <location filename="../make_ber_dlg.cpp" line="349"/>
         <source>Number</source>
         <translation>번호</translation>
     </message>
@@ -14599,13 +14621,13 @@ Use %2</source>
         <translation>확인</translation>
     </message>
     <message>
-        <location filename="../make_value_dlg.cpp" line="118"/>
-        <location filename="../make_value_dlg.cpp" line="125"/>
+        <location filename="../make_value_dlg.cpp" line="119"/>
+        <location filename="../make_value_dlg.cpp" line="126"/>
         <source>valid characters: %1</source>
         <translation>유효한 문자: %1</translation>
     </message>
     <message>
-        <location filename="../make_value_dlg.cpp" line="132"/>
+        <location filename="../make_value_dlg.cpp" line="133"/>
         <source>Object Identifier</source>
         <translation>객체 식별자</translation>
     </message>

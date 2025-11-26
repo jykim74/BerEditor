@@ -159,6 +159,7 @@ void MakeBerDlg::makeHeader()
         if( strPrimitive == "None" )
         {
             mHeaderText->clear();
+            mTagText->clear();
             mBERText->clear();
             return;
         }
@@ -209,7 +210,11 @@ end :
 
 void MakeBerDlg::runMake()
 {
-    if( mTagText->text().toInt() <= 0 )
+    int nTag = mTagText->text().toInt( nullptr, 2);
+#ifdef QT_DEBUG
+    berApplet->log( QString( "Tag = %1" ).arg( nTag ));
+#endif
+    if( nTag <= 0 )
     {
         berApplet->warningBox( tr( "Select Tag" ), this );
         return;
@@ -226,6 +231,25 @@ void MakeBerDlg::runMake()
         berApplet->formatWarn( ret, this );
         mValueText->setFocus();
         return;
+    }
+
+    if( nTag == JS_BOOLEAN && binData.nLen > 1 )
+    {
+        berApplet->warningBox( tr( "In the boolean case, the input value is 1 byte." ), this );
+        mValueText->setFocus();
+        JS_BIN_reset( &binData );
+        return;
+    }
+
+    if( nTag == JS_BITSTRING && binData.nLen > 0 )
+    {
+        if( binData.pVal[0] >= 0x08 )
+        {
+            berApplet->warningBox( tr( "The first byte of a bit string is between 0x00 and 0x07." ), this );
+            mValueText->setFocus();
+            JS_BIN_reset( &binData );
+            return;
+        }
     }
 
     JS_BIN_reset( &binData );
