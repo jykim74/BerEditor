@@ -200,10 +200,11 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
             BIN binInt = {0,0};
             int nUnused = binVal.pVal[0];
             int nBitBytes = binVal.nLen - 1;
-            int nBitLen = ( nBitBytes * 8 ) - nUnused;
+            int nBitLen = 0;
 
             if( nUnused >= 0 && nUnused < 8 )
             {
+                if( nBitBytes > 0 ) nBitLen = ( nBitBytes * 8 ) - nUnused;
                 JS_BIN_intToBin( nBitLen, &binInt );
 
                 berApplet->info( QString( "Unused Bits : 0x%1 = %2 Bits\n" ).arg(getHexString( &binVal.pVal[0], 1), nFieldWidth ).arg( nUnused));
