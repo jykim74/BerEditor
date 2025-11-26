@@ -45,7 +45,8 @@ void MakeValueDlg::setValue( const QString strType, const BIN *pValue )
     }
     else if( strType == "Bit" )
     {
-        JS_PKI_binToBit( pValue, &pData );
+        int nUnused = 0;
+        JS_PKI_getBitString( pValue, &nUnused, &pData );
     }
     else if( strType == "OID" )
     {
