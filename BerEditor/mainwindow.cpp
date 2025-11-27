@@ -3,6 +3,8 @@
  *
  * All rights reserved.
  */
+#include <QElapsedTimer>
+
 #include "mainwindow.h"
 // #include "ui_mainwindow.h"
 
@@ -2031,7 +2033,17 @@ int MainWindow::openBer( const BIN *pBer )
     }
 
     ber_model_->setBER( pBer );
-    ber_model_->parseTree( berApplet->settingsMgr()->autoExpand() );
+#ifdef QT_DEBUG
+    qint64 us = 0;
+    QElapsedTimer timer;
+    timer.start();
+#endif
+//    ber_model_->parseTree( berApplet->settingsMgr()->autoExpand() );
+    ber_model_->makeTree( berApplet->settingsMgr()->autoExpand() );
+#ifdef QT_DEBUG
+    us = timer.nsecsElapsed() / 1000;
+    berApplet->log( QString("ElapsedTime: %1").arg(getMS(us)));
+#endif
 
     left_tree_->header()->setVisible(false);
     left_tree_->viewRoot();

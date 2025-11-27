@@ -36,6 +36,8 @@ public:
     void SetLength( int length );
     void SetLevel( int level );
 
+    bool IsEOC();
+
     const int GetId() { return id_; };
     const int GetTag() { return tag_; };
     const int GetIndefinite() { return indefinite_; };

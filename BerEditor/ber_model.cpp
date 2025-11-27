@@ -3,12 +3,15 @@
  *
  * All rights reserved.
  */
+#include <QElapsedTimer>
+
 #include "ber_item.h"
 #include "ber_model.h"
 #include "js_bin.h"
 #include "js_error.h"
 #include "ber_applet.h"
 #include "common.h"
+#include "js_pki.h"
 
 #include <QStandardItemModel>
 
@@ -353,72 +356,236 @@ int BerModel::getItem( int offset, BerItem *pItem )
     return getItem( &binBer_, offset, pItem );
 }
 
-#if 0
-int BerModel::resizeParentHeader( int nDiffLen, const BerItem *pItem, BIN *pBER )
+int BerModel::getItemInfo( const BIN *pBER, int nOffset, BerItem *pItem )
 {
-    int nResizeLen = 0;
-    if( pItem == NULL ) return -1;
+    int nPosition = 0;
+    int nTag = 0;
+    int nLength = 0;
 
-#ifdef QT_DEBUG
-    berApplet->log( QString( "DiffLen: %1" ).arg( nDiffLen ));
-#endif
+    if( pBER == NULL || pItem == NULL || nOffset < 0 )
+        return JSR_BAD_ARG;
 
-    if( nDiffLen == 0 ) return 0;
+    if( nOffset > (pBER->nLen - 2) )
+        return JSR_BER_BAD_OFFSET;
 
-    nResizeLen = nDiffLen;
+    nTag = pBER->pVal[nOffset + nPosition];
 
-    BerItem *pParent = (BerItem *)pItem->parent();
+    pItem->SetId( nTag & ~JS_TAG_MASK );
+    pItem->SetOffset( nOffset );
+    pItem->SetHeaderByte( pBER->pVal[nOffset + nPosition], nPosition );
 
-#ifdef QT_DEBUG
-    if( pParent == NULL ) berApplet->log( "Current is top" );
-#endif
+    nTag &= JS_TAG_MASK;
+    nPosition++;
 
-    while( pParent )
+    if( nTag == JS_TAG_MASK )
     {
-        int nOldLen = 0;
-        int nOldHeaderLen = 0;
+        int nValue = 0;
+        /* Long tag encoded as sequence of 7-bit values.  This doesn't try to
+           handle tags > INT_MAX, it'd be pretty peculiar ASN.1 if it had to
+           use tags this large */
 
-        BIN binHeader = {0,0};
+        do {
+            nValue = pBER->pVal[nOffset + nPosition];
+            nTag = ( nTag << 7) | ( nValue & 0x7F );
+            pItem->SetHeaderByte( nValue, nPosition );
+            nPosition++;
+        } while( nValue & JS_LEN_XTND && nPosition < 5 );
 
-#ifdef QT_DEBUG
-        BIN binOrgHeader = {0,0};
-        int nLevel = pParent->GetLevel();
-        pParent->getHeaderBin( &binOrgHeader );
-        berApplet->log( "" );
-        berApplet->log( QString( "Org Header[%1] : %2" ).arg( nLevel ).arg( getHexString( &binOrgHeader)));
-        JS_BIN_reset( &binOrgHeader );
-#endif
-
-        nOldLen = pParent->GetLength();
-        nOldHeaderLen = pParent->GetHeaderSize();
-
-        pParent->changeLength( nOldLen + nResizeLen, &nResizeLen );
-
-        /* Indefinte 경우가 있어서 항상 끝까지 체크 햬야 함 */
-        if( nResizeLen == 0 )
-        {
-#ifdef QT_DEBUG
-            berApplet->log( "The size is the same" );
-#endif
-            continue;
-        }
-
-        pParent->getHeaderBin( &binHeader );
-
-#ifdef QT_DEBUG
-        berApplet->log( QString( "New Header[%1] : %2" ).arg( nLevel ).arg( getHexString( &binHeader)));
-#endif
-
-        JS_BIN_changeBin( pBER, pParent->GetOffset(), nOldHeaderLen, &binHeader );
-
-        JS_BIN_reset( &binHeader );
-
-        pParent = (BerItem *)pParent->parent();
+        if( nPosition >= 5 ) return JSR_BER_BAD_HEADER;
     }
 
-    return 0;
+    pItem->SetTag( nTag );
+    if( ( nOffset + nPosition ) > pBER->nLen ) return JSR_BER_BAD_OFFSET;
+
+    nLength = pBER->pVal[nOffset + nPosition];
+    pItem->SetHeaderByte( pBER->pVal[nOffset + nPosition], nPosition );
+    nPosition++;
+
+
+    if( nLength & JS_LEN_XTND )
+    {
+        nLength &= JS_LEN_MASK;
+        if( nLength > 4 ) return JSR_BER_BAD_LENGTH;
+
+        pItem->SetLength(0);
+
+        if( nLength == 0x00 )
+        {
+            pItem->SetHeaderSize( nPosition );
+            pItem->SetIndefinite( true );
+        }
+        else
+        {
+            pItem->SetIndefinite( false );
+
+            for( int i = 0; i < nLength; i++ )
+            {
+                int nCh = pBER->pVal[nOffset + nPosition];
+                pItem->SetLength( (pItem->length_ << 8) | nCh );
+                pItem->SetHeaderByte( pBER->pVal[nOffset + nPosition], nPosition );
+                nPosition++;
+            }
+
+            pItem->SetHeaderSize( nPosition );
+            if( pItem->GetLength() > JS_BER_MAX_SIZE )
+                return JSR_BER_OVER_MAXSIZE;
+        }
+    }
+    else
+    {
+        pItem->SetHeaderSize( nPosition );
+        pItem->SetIndefinite( false );
+        pItem->SetLength( nLength );
+    }
+
+    pItem->setText( pItem->GetInfoString( pBER ));
+
+    return JSR_OK;
 }
-#endif
+
+int BerModel::getConstructedItemInfo( const BIN *pBER, int nStart, BerItem *pItem, bool bExpand )
+{
+    int nRet = 0;
+
+    int nOffset = 0;
+    int nLevel = 0;
+    bool bConstructed = false;
+
+    if( pBER == NULL || pItem == NULL ) return JSR_BAD_ARG;
+
+    if( nStart >= pBER->nLen ) return JSR_BER_BAD_OFFSET;
+
+    nLevel = pItem->GetLevel() + 1;
+    nOffset = nStart;
+
+    do {
+        BerItem *pChild = new BerItem;
+        pChild->SetOffset( nOffset );
+        pChild->SetLevel( nLevel );
+
+        nRet = getItemInfo( pBER, nOffset, pChild );
+        if( nRet != 0 )
+        {
+            berApplet->elog( QString("failed to get item information: %1").arg(JERR(nRet)));
+            break;
+        }
+
+        pItem->appendRow( pChild );
+
+        if( pChild->isConstructed() == true )
+            bConstructed = true;
+        else
+            bConstructed = false;
+
+        if( bConstructed == true )
+        {
+            nRet = getConstructedItemInfo( pBER, nOffset + pChild->GetHeaderSize(), pChild, bExpand );
+            if( nRet != JSR_OK ) return nRet;
+        }
+        else
+        {
+            if( bExpand == true )
+            {
+                if( pChild->GetTag() == JS_OCTETSTRING || pChild->GetTag() == JS_BITSTRING )
+                {
+                    int nChildStart = -1;
+                    int nChildLen = -1;
+
+                    if( pChild->GetTag() == JS_OCTETSTRING )
+                    {
+                        nChildStart = nOffset + pChild->GetHeaderSize();
+                        nChildLen = pChild->GetLength();
+                    }
+                    else
+                    {
+                        nChildStart = nOffset + pChild->GetHeaderSize() + 1;
+                        nChildLen = pChild->GetLength() - 1;
+                    }
+
+                    if( JS_BER_isExpandable( &binBer_.pVal[nChildStart], nChildLen ) == 1 )
+                    {
+                        nRet = getConstructedItemInfo( pBER, nChildStart, pChild, bExpand );
+                    }
+                }
+            }
+        }
+
+        nOffset += pChild->GetItemSize();
+
+        if( pItem->GetIndefinite() == false )
+        {
+            if( nOffset >= (nStart + pItem->GetLength()) )
+                return JSR_OK;
+        }
+        else
+        {
+            if( pChild->IsEOC() == true )
+            {
+                int nLen = nOffset - nStart;
+                pItem->SetLength( nLen );
+                return JSR_OK;
+            }
+        }
+
+        if( nOffset >= (pBER->nLen - 1) ) return JSR_BER_BAD_OFFSET;
+
+    } while( 1 );
+
+    return nRet;
+}
+
+int BerModel::makeTree( bool bExpand )
+{
+    int ret = 0;
+    int offset = 0;
+
+    BerItem *pRootItem = new BerItem();
+
+    clear();
+    QStringList labels;
+    setHorizontalHeaderLabels( labels );
+
+    pRootItem->SetOffset(offset);
+    pRootItem->SetLevel(0);
+
+    ret = getItemInfo( &binBer_, 0, pRootItem );
+    if( ret < 0 ) return ret;
+
+    insertRow( 0, pRootItem );
+    if( pRootItem->isConstructed() == true )
+    {
+        ret = getConstructedItemInfo( &binBer_, pRootItem->GetHeaderSize(), pRootItem, bExpand );
+        if( ret != JSR_OK ) return ret;
+    }
+
+    if( bExpand == true )
+    {
+        if( pRootItem->GetTag() == JS_OCTETSTRING || pRootItem->GetTag() == JS_BITSTRING )
+        {
+            int nChildStart = -1;
+            int nChildLen = -1;
+
+            if( pRootItem->GetTag() == JS_OCTETSTRING )
+            {
+                nChildStart = pRootItem->GetHeaderSize();
+                nChildLen = pRootItem->GetLength();
+            }
+            else
+            {
+                nChildStart = pRootItem->GetHeaderSize() + 1;
+                nChildLen = pRootItem->GetLength() - 1;
+            }
+
+            if( JS_BER_isExpandable( &binBer_.pVal[nChildStart], nChildLen ) == 1 )
+            {
+                ret = getConstructedItemInfo( &binBer_, nChildStart, pRootItem, bExpand );
+                if( ret != JSR_OK ) return ret;
+            }
+        }
+    }
+
+    return ret;
+}
 
 int BerModel::resizeItemHead( BIN *pBER, BerItem *pItem, int nModItemLen )
 {

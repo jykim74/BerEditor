@@ -26,6 +26,10 @@ public:
     int getItem( int offset, BerItem *pItem );
     int getItem( const BIN *pBer, int offset, BerItem *pItem );
 
+    int getItemInfo( const BIN *pBER, int nOffset, BerItem *pItem );
+    int getConstructedItemInfo( const BIN *pBER, int nStart, BerItem *pItem, bool bExpand );
+    int makeTree( bool bExpand );
+
     const BerItem* addItem( BerItem* pParentItem, bool bFirst, const BIN *pData );
     int removeItem( BerItem *pItem );
     int modifyItem( BerItem *pItem, const BIN *pValue );

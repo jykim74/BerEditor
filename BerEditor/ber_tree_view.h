@@ -52,6 +52,12 @@ private:
     void GetTableView( const BIN *pBer, BerItem *pItem );
     void GetTableFullView( const BIN *pBer, BerItem *pItem );
 
+    void viewHex( const BIN *pBER, BerItem *pItem, bool bPart );
+    void viewXML( const BIN *pBER, BerItem *pItem, bool bPart );
+    void viewText( const BIN *pBER, BerItem *pItem, bool bPart );
+    void viewJSON( const BIN *pBER, BerItem *pItem, bool bPart );
+    void viewTable( const BIN *pBER, BerItem *pItem, bool bPart = false );
+
     void infoItem( BerItem *pItem, int nWidth );
     BerItem* currentItem();
 

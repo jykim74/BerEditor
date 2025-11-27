@@ -85,6 +85,14 @@ int BerItem::GetValLength()
         return length_;
 }
 
+bool BerItem::IsEOC()
+{
+    if( indefinite_ == false && header_[0] == 0x00 && header_[1] == 0x00 )
+        return true;
+
+    return false;
+}
+
 QString BerItem::GetTagString()
 {
     QString strRes;
