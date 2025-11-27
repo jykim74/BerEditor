@@ -39,6 +39,7 @@ void BerModel::setBER(const BIN *pBer )
     if( pBer != NULL ) JS_BIN_copy( &binBer_, pBer );
 }
 
+#ifdef OLD_TREE
 int BerModel::parseTree( bool bExpand )
 {
     int ret = 0;
@@ -355,6 +356,7 @@ int BerModel::getItem( int offset, BerItem *pItem )
 {
     return getItem( &binBer_, offset, pItem );
 }
+#endif
 
 int BerModel::getItemInfo( const BIN *pBER, int nOffset, BerItem *pItem )
 {
@@ -441,6 +443,11 @@ int BerModel::getItemInfo( const BIN *pBER, int nOffset, BerItem *pItem )
     pItem->setText( pItem->GetInfoString( pBER ));
 
     return JSR_OK;
+}
+
+int BerModel::getItemInfo( int nOffset, BerItem *pItem )
+{
+    return getItemInfo( &binBer_, nOffset, pItem );
 }
 
 int BerModel::getConstructedItemInfo( const BIN *pBER, int nStart, BerItem *pItem, bool bExpand )
@@ -706,7 +713,10 @@ const BerItem* BerModel::addItem( BerItem* pParentItem, bool bFirst, const BIN *
     resizeHeadToTop( &binMod, pParentItem, pData->nLen );
     setBER( &binMod );
     pNewItem = new BerItem;
+#ifdef OLD_TREE
     getItem( nPos, pNewItem );
+#endif
+    getItemInfo( nPos, pNewItem );
     pNewItem->SetLevel( pParentItem->GetLevel() + 1 );
 
     if( bFirst == true )

@@ -49,8 +49,10 @@ public slots:
     void treeExpandItem( int nRow, int nCol );
 
 private:
+#ifdef OLD_TREE
     void GetTableView( const BIN *pBer, BerItem *pItem );
     void GetTableFullView( const BIN *pBer, BerItem *pItem );
+#endif
 
     void viewHex( const BIN *pBER, BerItem *pItem, bool bPart );
     void viewXML( const BIN *pBER, BerItem *pItem, bool bPart );

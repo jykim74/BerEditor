@@ -67,7 +67,7 @@ void BerTreeView::onItemClicked(const QModelIndex& index )
     timer.start();
 #endif
 
-#if 0
+#ifdef OLD_TREE
     if( set_mgr->showPartOnly() )
     {
         GetTableView(&binBer, item );
@@ -302,7 +302,7 @@ QString BerTreeView::GetTextView()
     return strText;
 }
 
-
+#ifdef OLD_TREE
 void BerTreeView::GetTableView(const BIN *pBer, BerItem *pItem)
 {
     int table_idx = berApplet->mainWindow()->tableCurrentIndex();
@@ -674,6 +674,7 @@ void BerTreeView::GetTableFullView(const BIN *pBer, BerItem *pItem)
         rightTable->scrollToItem( item, ScrollHint::PositionAtCenter );
     }
 }
+#endif
 
 void BerTreeView::viewHex( const BIN *pBER, BerItem *pItem, bool bPart )
 {
@@ -1152,7 +1153,11 @@ void BerTreeView::ExpandValue()
     }
 
     // Expand case (BitString or OctetString )  definite value only
+#ifdef OLD_TREE
     tree_model->parseConstruct( start, item, false );
+#else
+    tree_model->getConstructedItemInfo( &binBER, start, item, false );
+#endif
 
 end :
     if( ret < 0 )
