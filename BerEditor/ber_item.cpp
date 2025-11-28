@@ -85,10 +85,20 @@ int BerItem::GetValLength()
         return length_;
 }
 
-bool BerItem::IsEOC()
+bool BerItem::isEOC()
 {
     if( indefinite_ == false && header_[0] == 0x00 && header_[1] == 0x00 )
         return true;
+
+    return false;
+}
+
+bool BerItem::isType( int nType )
+{
+    if( id_ & JS_CLASS_MASK )
+        return false;
+
+    if( tag_ == nType ) return true;
 
     return false;
 }

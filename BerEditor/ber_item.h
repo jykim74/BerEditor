@@ -36,7 +36,9 @@ public:
     void SetLength( int length );
     void SetLevel( int level );
 
-    bool IsEOC();
+    bool isEOC();
+    bool isType( int nType );
+    bool isConstructed();
 
     const int GetId() { return id_; };
     const int GetTag() { return tag_; };
@@ -62,7 +64,7 @@ public:
     int changeLength( int nNewLen, int *pnDiffLen );
     int getHeaderBin( BIN *pHeader );
     int getValueBin( const BIN *pBer, BIN *pValue );
-    bool isConstructed();
+
 
 public:
     int     id_;

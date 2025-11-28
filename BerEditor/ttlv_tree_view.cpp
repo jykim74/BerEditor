@@ -86,20 +86,8 @@ void TTLVTreeView::expandToTop( const TTLVTreeItem *pItem )
     }
 }
 
-void TTLVTreeView::showRight()
-{
-    TTLVTreeModel *left_model = (TTLVTreeModel *)model();
-    TTLVTreeItem  *rootItem = (TTLVTreeItem *)left_model->item(0);
 
-    SettingsMgr *setMgr = berApplet->settingsMgr();
 
-    if( setMgr->showPartOnly() == false )
-        showRightFull( rootItem );
-    else
-        showRightPart( rootItem );
-
-    setExpanded( rootIndex(), true );
-}
 
 void TTLVTreeView::onItemClicked( const QModelIndex& index )
 {
@@ -108,11 +96,14 @@ void TTLVTreeView::onItemClicked( const QModelIndex& index )
 
     SettingsMgr *setMgr = berApplet->settingsMgr();
     int nWidth = setMgr->getHexAreaWidth();
-
+#ifdef OLD_TREE
     if( setMgr->showPartOnly() == false )
         showRightFull( item );
     else
         showRightPart( item );
+#else
+    viewTable( item, setMgr->getShowPartOnly() );
+#endif
 
     getInfoView( item, nWidth );
 }
@@ -153,6 +144,22 @@ static char getch( unsigned char c )
     else {
         return '.';
     }
+}
+
+#ifdef OLD_TREE
+void TTLVTreeView::showRight()
+{
+    TTLVTreeModel *left_model = (TTLVTreeModel *)model();
+    TTLVTreeItem  *rootItem = (TTLVTreeItem *)left_model->item(0);
+
+    SettingsMgr *setMgr = berApplet->settingsMgr();
+
+    if( setMgr->showPartOnly() == false )
+        showRightFull( rootItem );
+    else
+        showRightPart( rootItem );
+
+    setExpanded( rootIndex(), true );
 }
 
 void TTLVTreeView::showRightFull( TTLVTreeItem *pItem )
@@ -516,6 +523,280 @@ void TTLVTreeView::showRightPart( TTLVTreeItem *pItem )
 
         JS_BIN_reset( &binPart );
     }
+}
+#endif
+
+void TTLVTreeView::viewTable( TTLVTreeItem *pItem, bool bPart )
+{
+    str_edit_.clear();
+    int table_idx = berApplet->mainWindow()->tableCurrentIndex();
+
+    if( table_idx == TABLE_IDX_XML )
+        viewXML( pItem, bPart );
+    else if( table_idx == TABLE_IDX_TXT )
+        viewText( pItem, bPart );
+    else if( table_idx == TABLE_IDX_JSON )
+        viewJSON( pItem, bPart );
+    else
+        viewHex( pItem, bPart );
+}
+
+void TTLVTreeView::viewXML( TTLVTreeItem *pItem, bool bPart )
+{
+    CodeEditor *xmlEdit = berApplet->mainWindow()->rightXML();
+    xmlEdit->clear();
+
+    QTextCursor xml_cursor = xmlEdit->textCursor();
+    QTextCharFormat format = xmlEdit->currentCharFormat();
+    //format.setFontWeight(QFont::Normal);
+    format.setForeground(Qt::black);
+    xml_cursor.setCharFormat( format );
+    xmlEdit->setTextCursor(xml_cursor);
+
+    addEdit( 0, "<!-- XML Decoded Message -->\n" );
+
+    if( bPart == false )
+    {
+        TTLVTreeModel *tree_model = (TTLVTreeModel *)model();
+        TTLVTreeItem *root = (TTLVTreeItem *)tree_model->item(0,0);
+
+        setItemXML( 0, root, pItem );
+        xmlEdit->setPlainText( str_edit_ );
+
+        if( pos_start_ >= 0 && pos_end_ > pos_start_ )
+        {
+            xml_cursor.setPosition( pos_start_ );
+            xml_cursor.setPosition( pos_end_, QTextCursor::KeepAnchor );
+
+            QTextCharFormat format = xmlEdit->currentCharFormat();
+        //            format.setFontWeight(QFont::Bold);
+            format.setForeground(Qt::blue);
+            xml_cursor.setCharFormat( format );
+            xml_cursor.clearSelection();
+            xml_cursor.setPosition( pos_start_ + 512 );
+            xmlEdit->setTextCursor(xml_cursor);
+        }
+    }
+    else
+    {
+        setItemXML( 0, pItem );
+        xmlEdit->setPlainText( str_edit_ );
+        xmlEdit->moveCursor(QTextCursor::Start);
+    }
+
+    xmlEdit->update();
+}
+
+void TTLVTreeView::viewText( TTLVTreeItem *pItem, bool bPart )
+{
+    CodeEditor *txtEdit = berApplet->mainWindow()->rightText();
+    txtEdit->clear();
+
+    QTextCursor cursor = txtEdit->textCursor();
+    QTextCharFormat format = txtEdit->currentCharFormat();
+    //format.setFontWeight(QFont::Normal);
+    format.setForeground(Qt::black);
+    cursor.setCharFormat( format );
+    txtEdit->setTextCursor(cursor);
+
+    addEdit( 0, "-- Text Decoded Message --\n" );
+
+    if( bPart == false )
+    {
+        TTLVTreeModel *tree_model = (TTLVTreeModel *)model();
+        TTLVTreeItem *root = (TTLVTreeItem *)tree_model->item(0,0);
+
+        setItemText( 0, root, pItem );
+        txtEdit->setPlainText( str_edit_ );
+
+        if( pos_start_ >= 0 && pos_end_ > pos_start_ )
+        {
+            cursor.setPosition( pos_start_ );
+            cursor.setPosition( pos_end_, QTextCursor::KeepAnchor );
+
+            QTextCharFormat format = txtEdit->currentCharFormat();
+            // format.setFontWeight(QFont::Bold);
+            format.setForeground(Qt::blue);
+            cursor.setCharFormat( format );
+            cursor.clearSelection();
+            cursor.setPosition( pos_start_ + 512 );
+            txtEdit->setTextCursor(cursor);
+        }
+    }
+    else
+    {
+        setItemText( 0, pItem );
+        txtEdit->setPlainText( str_edit_ );
+        txtEdit->moveCursor(QTextCursor::Start);
+    }
+
+    txtEdit->update();
+}
+
+void TTLVTreeView::viewJSON( TTLVTreeItem *pItem, bool bPart )
+{
+    CodeEditor *txtEdit = berApplet->mainWindow()->rightJSON();
+    txtEdit->clear();
+
+    QTextCursor cursor = txtEdit->textCursor();
+    QTextCharFormat format = txtEdit->currentCharFormat();
+    //format.setFontWeight(QFont::Normal);
+    format.setForeground(Qt::black);
+    cursor.setCharFormat( format );
+    txtEdit->setTextCursor(cursor);
+
+    if( bPart == false )
+    {
+        TTLVTreeModel *tree_model = (TTLVTreeModel *)model();
+        TTLVTreeItem *root = (TTLVTreeItem *)tree_model->item(0,0);
+
+        addEdit( 0, "[\n" );
+        setItemJSON( 1, root, false, pItem );
+        addEdit( 0, "]\n" );
+
+        txtEdit->setPlainText( str_edit_ );
+
+        if( pos_start_ >= 0 && pos_end_ > pos_start_ )
+        {
+            cursor.setPosition( pos_start_ );
+            cursor.setPosition( pos_end_, QTextCursor::KeepAnchor );
+
+            QTextCharFormat format = txtEdit->currentCharFormat();
+            // format.setFontWeight(QFont::Bold);
+            format.setForeground(Qt::blue);
+            cursor.setCharFormat( format );
+            cursor.clearSelection();
+            cursor.setPosition( pos_start_ + 512 );
+            txtEdit->setTextCursor(cursor);
+        }
+    }
+    else
+    {
+        addEdit( 0, "[\n" );
+        setItemJSON( 1, pItem, false );
+        addEdit( 0, "]\n" );
+        txtEdit->setPlainText( str_edit_ );
+
+        txtEdit->moveCursor(QTextCursor::Start);
+    }
+
+    txtEdit->update();
+}
+
+void TTLVTreeView::viewHex( TTLVTreeItem *pItem, bool bPart )
+{
+    int line = 0;
+    int start_col = 0;
+    int start_row = 0;
+
+    QString text;
+    QString hex;
+    QColor green(Qt::green);
+    QColor yellow(Qt::yellow);
+    QColor cyan(Qt::cyan);
+    QColor lightGray(Qt::lightGray);
+
+    QTableWidget* rightTable = berApplet->mainWindow()->rightTable();
+
+    int nStart = 0;
+    int nEnd = 0;
+    int nMod = 0;
+
+    TTLVTreeModel *left_model = (TTLVTreeModel *)model();
+    BIN TTLV = left_model->getTTLV();
+
+    if( bPart == false )
+    {
+        nStart = 0;
+        nEnd = TTLV.nLen;
+        nMod = 0;
+    }
+    else
+    {
+        nStart = pItem->getOffset();
+        nEnd = nStart + pItem->getLengthTTLV();
+        nMod = nStart % 16;
+    }
+
+    rightTable->setRowCount(0);
+
+    for( int i = nStart; i < nEnd; i++ )
+    {
+        int pos = 0;
+        int len = 0;
+        int pad = 0;
+
+        if( ((i-nMod) % 16) == 0 )
+        {
+            rightTable->insertRow(line);
+            rightTable->setRowHeight( line, 10 );
+
+            QString address;
+            address = QString( "%1" ).arg( i, 8, 16, QLatin1Char( '0' ));
+            QTableWidgetItem *addrItem = new QTableWidgetItem( address );
+            addrItem->setFlags(addrItem->flags() & ~Qt::ItemIsSelectable );
+            rightTable->setItem( line, 0, addrItem);
+            rightTable->item( line, 0 )->setBackgroundColor( QColor(220,220,250) );
+        }
+
+        hex = QString( "%1" ).arg( TTLV.pVal[i], 2, 16, QLatin1Char('0') ).toUpper();
+        pos = ((i-nMod)%16) + 1;
+        rightTable->setItem( line, pos, new QTableWidgetItem(hex));
+
+        len = pItem->getLengthInt();
+        pad = 8 - (len % 8);
+        if( pad == 8 ) pad = 0;
+
+        if( i >= pItem->getOffset() && i < pItem->getOffset() + 3 )
+        {
+            if( i == pItem->getOffset() )
+            {
+                start_row = line;
+                start_col = pos;
+            }
+            rightTable->item( line, pos )->setBackgroundColor(green);
+        }
+        else if( i == pItem->getOffset() + 3 )
+        {
+            rightTable->item( line, pos )->setBackgroundColor(yellow);
+        }
+        else if( i >= pItem->getOffset() + 4 && i < pItem->getOffset() + 8 )
+        {
+            rightTable->item( line, pos )->setBackgroundColor(cyan);
+        }
+        else if( i >= pItem->getOffset() + 8 && i < pItem->getOffset() + 8 + len )
+        {
+            rightTable->item( line, pos )->setBackgroundColor(kValueColor);
+        }
+        else if( i >= (pItem->getOffset() + 8 + len) && i < (pItem->getOffset() + 8 + len + pad ))
+        {
+            rightTable->item( line, pos )->setBackgroundColor(lightGray);
+        }
+
+
+        text += getch( TTLV.pVal[i] );
+
+        if( (i-nMod) % 16 - 15 == 0 )
+        {
+            QTableWidgetItem *textItem = new QTableWidgetItem( text );
+            textItem->setFlags(textItem->flags() & ~Qt::ItemIsSelectable );
+            rightTable->setItem( line, 17, textItem );
+            rightTable->item( line, 17 )->setBackgroundColor(QColor(210,240,210));
+            text.clear();
+            line++;
+        }
+    }
+
+    if( !text.isEmpty() )
+    {
+        QTableWidgetItem *textItem = new QTableWidgetItem( text );
+        textItem->setFlags(textItem->flags() & ~Qt::ItemIsSelectable );
+        rightTable->setItem( line, 17, textItem);
+        rightTable->item( line, 17 )->setBackgroundColor(QColor(210,240,210));
+    }
+
+    QTableWidgetItem *item = rightTable->item( start_row, start_col );
+    rightTable->scrollToItem( item, ScrollHint::PositionAtCenter );
 }
 
 void TTLVTreeView::getInfoView(TTLVTreeItem *pItem, int nWidth )

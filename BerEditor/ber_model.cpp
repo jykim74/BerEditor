@@ -493,12 +493,12 @@ int BerModel::getConstructedItemInfo( const BIN *pBER, int nStart, BerItem *pIte
         {
             if( bExpand == true )
             {
-                if( pChild->GetTag() == JS_OCTETSTRING || pChild->GetTag() == JS_BITSTRING )
+                if( pChild->isType( JS_OCTETSTRING ) || pChild->isType( JS_BITSTRING ) )
                 {
                     int nChildStart = -1;
                     int nChildLen = -1;
 
-                    if( pChild->GetTag() == JS_OCTETSTRING )
+                    if( pChild->isType( JS_OCTETSTRING ) )
                     {
                         nChildStart = nOffset + pChild->GetHeaderSize();
                         nChildLen = pChild->GetLength();
@@ -526,7 +526,7 @@ int BerModel::getConstructedItemInfo( const BIN *pBER, int nStart, BerItem *pIte
         }
         else
         {
-            if( pChild->IsEOC() == true )
+            if( pChild->isEOC() == true )
             {
                 int nLen = nOffset - nStart;
                 pItem->SetLength( nLen );
@@ -567,12 +567,12 @@ int BerModel::makeTree( bool bExpand )
 
     if( bExpand == true )
     {
-        if( pRootItem->GetTag() == JS_OCTETSTRING || pRootItem->GetTag() == JS_BITSTRING )
+        if( pRootItem->isType( JS_OCTETSTRING ) || pRootItem->isType( JS_BITSTRING ) )
         {
             int nChildStart = -1;
             int nChildLen = -1;
 
-            if( pRootItem->GetTag() == JS_OCTETSTRING )
+            if( pRootItem->isType( JS_OCTETSTRING ) )
             {
                 nChildStart = pRootItem->GetHeaderSize();
                 nChildLen = pRootItem->GetLength();

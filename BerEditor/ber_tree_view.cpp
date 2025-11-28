@@ -758,7 +758,14 @@ void BerTreeView::viewHex( const BIN *pBER, BerItem *pItem, bool bPart )
         }
         else if( (i > pItem->GetOffset() + 1 ) && ( i < pItem->GetOffset() + pItem->GetHeaderSize() + pItem->GetLength() ))
         {
-            rightTable->item(line, pos )->setBackground(kValueColor);
+            if( (i == pItem->GetOffset() + pItem->GetHeaderSize()) && pItem->isType( JS_BITSTRING) )
+            {
+                rightTable->item( line, pos )->setBackground(kUnusedColor);
+            }
+            else
+            {
+                rightTable->item( line, pos )->setBackground(kValueColor);
+            }
         }
 
         if( pItem->GetIndefinite() == true )

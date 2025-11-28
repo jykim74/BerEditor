@@ -238,12 +238,10 @@ void EditValueDlg::runChange()
     bool bVal = berApplet->yesOrCancelBox( tr( "Are you sure you want to modify it?" ), this, false );
     if( bVal == false ) return;
 
-    int nTag = ber_item_->GetTag();
-
     ret = getBINFromString( &binNewVal, mValueTypeCombo->currentText(), strValue );
     FORMAT_WARN_GO(ret);
 
-    if( nTag == JS_BOOLEAN && binNewVal.nLen > 1 )
+    if( ber_item_->isType( JS_BOOLEAN ) && binNewVal.nLen > 1 )
     {
         berApplet->warningBox( tr( "In the boolean case, the input value is 1 byte." ), this );
         mValueText->setFocus();
@@ -251,7 +249,7 @@ void EditValueDlg::runChange()
         return;
     }
 
-    if( nTag == JS_BITSTRING && binNewVal.nLen > 0 )
+    if( ber_item_->isType( JS_BITSTRING ) && binNewVal.nLen > 0 )
     {
         if( binNewVal.pVal[0] >= 0x08 )
         {
@@ -323,13 +321,12 @@ void EditValueDlg::runAdd()
     if( bVal == false ) return;
 
     bool bFirst = mFirstSetCheck->isChecked();
-    int nTag = ber_item_->GetTag();
 
 
     ret = getBINFromString( &binVal, mValueTypeCombo->currentText(), strValue );
     FORMAT_WARN_GO(ret);
 
-    if( nTag == JS_BOOLEAN && binVal.nLen > 1 )
+    if( ber_item_->isType( JS_BOOLEAN ) && binVal.nLen > 1 )
     {
         berApplet->warningBox( tr( "In the boolean case, the input value is 1 byte." ), this );
         mValueText->setFocus();
@@ -337,7 +334,7 @@ void EditValueDlg::runAdd()
         goto end;
     }
 
-    if( nTag == JS_BITSTRING && binVal.nLen > 0 )
+    if( ber_item_->isType( JS_BITSTRING ) && binVal.nLen > 0 )
     {
         if( binData.pVal[0] >= 0x08 )
         {

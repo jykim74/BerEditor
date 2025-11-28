@@ -15,9 +15,7 @@ public:
     void viewCurrent();
     void expandToTop( const TTLVTreeItem *pItem );
 
-    void showRight();
-    void showRightFull( TTLVTreeItem *pItem );
-    void showRightPart( TTLVTreeItem *pItem );
+
     void getInfoView( TTLVTreeItem *pItem, int nWidth );
     QString GetTextView();
 
@@ -49,6 +47,16 @@ private :
     void setItemJSON( int level, TTLVTreeItem* item, bool bNext, TTLVTreeItem *setItem = nullptr );
 
     void addEdit( int level, const QString& strMsg );
+#ifdef OLD_TREE
+    void showRight();
+    void showRightFull( TTLVTreeItem *pItem );
+    void showRightPart( TTLVTreeItem *pItem );
+#endif
+    void viewTable( TTLVTreeItem *pItem, bool bPart = false );
+    void viewHex( TTLVTreeItem *pItem, bool bPart );
+    void viewXML( TTLVTreeItem *pItem, bool bPart );
+    void viewText( TTLVTreeItem *pItem, bool bPart );
+    void viewJSON( TTLVTreeItem *pItem, bool bPart );
 
     QString str_edit_;
     int pos_start_;
