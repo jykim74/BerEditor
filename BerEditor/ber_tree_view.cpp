@@ -178,7 +178,7 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
     QString strOffset;
     strOffset = QString( "%1" ).arg( pItem->GetOffset(), 8, 16, QLatin1Char('0')).toUpper();
 
-    QString strTagHex = QString( "%1" ).arg( pItem->tag_, 2, 16, QLatin1Char('0')).toUpper();
+    QString strTagHex = QString( "%1" ).arg( pItem->GetTag(), 2, 16, QLatin1Char('0')).toUpper();
 
     berApplet->mainWindow()->infoText()->clear();
     berApplet->line();
@@ -300,6 +300,97 @@ QString BerTreeView::GetTextView()
     JS_BIN_reset( &binData );
 
     return strText;
+}
+
+BerItem* BerTreeView::getNext( BerItem *pItem )
+{
+    const BerItem *pParentItem = nullptr;
+    const BerItem *pCurItem = nullptr;
+    BerModel *tree_model = (BerModel *)model();
+
+    QModelIndex idx;
+    int nCurRow = 0;
+
+    if( pItem == NULL )
+        return (BerItem *)tree_model->item(0,0);
+
+    pCurItem = pItem;
+    if( pCurItem->hasChildren() == true )
+    {
+        return (BerItem *)pCurItem->child(0);
+    }
+
+    nCurRow = pCurItem->row();
+
+    QModelIndex newIdx = indexBelow( pCurItem->index() );
+    if( newIdx.row() >= 0 ) return (BerItem *)tree_model->itemFromIndex( newIdx );
+
+    while( pCurItem )
+    {
+        pParentItem = (BerItem *)pCurItem->parent();
+        if( pParentItem == nullptr ) return nullptr;
+
+        for( int i = (nCurRow + 1) ; i < pParentItem->rowCount(); i++ )
+        {
+            return (BerItem *)pParentItem->child( i );
+        }
+
+        nCurRow = pParentItem->row();
+        pCurItem = pParentItem;
+    }
+
+    return nullptr;
+}
+
+BerItem* BerTreeView::getPrev( BerItem *pItem )
+{
+    BerItem *pChildItem = nullptr;
+    BerItem *pCurItem = nullptr;
+
+    BerModel *tree_model = (BerModel *)model();
+
+    QModelIndex idx;
+    int nCurRow = 0;
+
+    if( pItem == NULL )
+        return (BerItem *)tree_model->item(0,0);
+
+    pCurItem = pItem;
+
+/*
+    QModelIndex newIdx = indexAbove( pCurItem->index() );
+    if( newIdx.row() < 0 )
+    {
+        return (BerItem *)pCurItem->parent();
+    }
+
+    pCurItem = (BerItem *)tree_model->itemFromIndex( newIdx );
+*/
+    BerItem *pParent = (BerItem *)pCurItem->parent();
+    if( pParent )
+    {
+        int nCurRow = pCurItem->row();
+        if( nCurRow > 0 )
+            pCurItem = (BerItem *)pParent->child( nCurRow - 1 );
+        else
+            return pParent;
+    }
+    else
+    {
+        return nullptr;
+    }
+
+    while( pCurItem )
+    {
+        if( pCurItem->hasChildren() == false ) return pCurItem;
+
+        nCurRow = pCurItem->rowCount();
+        pChildItem = (BerItem *)pCurItem->child( nCurRow - 1 );
+
+        pCurItem = pChildItem;
+    }
+
+    return nullptr;
 }
 
 #ifdef OLD_TREE

@@ -25,10 +25,7 @@ class BerItem : public QStandardItem
 public:
     BerItem();
 
-    void SetId( int id );
-    void SetTag( int tag );
     void SetIndefinite( int indefinite );
-    void SetNonCanonical( int non_cononical );
     void SetHeader( BYTE *pHeader, int len );
     void SetHeaderByte( BYTE ch, int pos );
     void SetOffset( int offset );
@@ -40,12 +37,11 @@ public:
     bool isType( int nType );
     bool isConstructed();
 
-    const int GetId() { return id_; };
-    const int GetTag() { return tag_; };
+    const BYTE GetId();
+    const BYTE GetTag();
     const int GetIndefinite() { return indefinite_; };
     const int GetLength() { return length_; };
     int GetValLength();
-    const int GetNonCanonical() { return non_canonical_; };
     BYTE* GetHeader() { return header_; };
     const int GetHeaderSize() { return header_size_; };
     const int GetOffset() { return offset_; };
@@ -67,11 +63,8 @@ public:
 
 
 public:
-    int     id_;
-    int     tag_;
     long    length_;
     int     indefinite_;
-    int     non_canonical_;
     BYTE    header_[16];
     int     header_size_;
     int     offset_;

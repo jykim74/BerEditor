@@ -38,6 +38,11 @@ public:
     int modifyItem( BerItem *pItem, const BIN *pValue );
     const BerItem* findItemByOffset( BerItem* pParentItem, int nOffset );
 
+    const BerItem* findNextItemByValue( const BerItem* pItem, const BIN *pValue, bool bMatched = false );
+    const BerItem* findPrevItemByValue( const BerItem* pItem, const BIN *pValue, bool bMatched = false );
+    const BerItem* findNextItemByValue( const BerItem* pItem, BYTE cTag, const BIN *pValue, bool bMatched = false );
+    const BerItem* findPrevItemByValue( const BerItem* pItem, BYTE cTag, const BIN *pValue, bool bMatched = false );
+
 private:
 //    int resizeParentHeader( int nDiffLen, const BerItem *pItem, BIN *pBER );
 

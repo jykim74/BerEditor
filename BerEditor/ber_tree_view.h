@@ -25,6 +25,10 @@ public:
 
     QString GetTextView();
 
+    BerItem* getNext( BerItem *pItem );
+    BerItem* getPrev( BerItem *pItem );
+    BerItem* currentItem();
+
 private slots:
     void onItemClicked( const QModelIndex& index );
     void ShowContextMenu( QPoint point );
@@ -61,7 +65,7 @@ private:
     void viewTable( const BIN *pBER, BerItem *pItem, bool bPart = false );
 
     void infoItem( BerItem *pItem, int nWidth );
-    BerItem* currentItem();
+
 
     void setItemText( int level, BerItem* item, BerItem* setItem = nullptr );
     void setItemXML( int level, BerItem* item, BerItem* setItem = nullptr );

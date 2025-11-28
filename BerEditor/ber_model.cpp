@@ -12,6 +12,8 @@
 #include "ber_applet.h"
 #include "common.h"
 #include "js_pki.h"
+#include "mainwindow.h"
+#include "ber_tree_view.h"
 
 #include <QStandardItemModel>
 
@@ -281,7 +283,7 @@ int BerModel::getItem(const BIN *pBer, int offset, BerItem *pItem)
 
     int tag = pBer->pVal[offset + position];
 
-    pItem->SetId( tag & ~JS_TAG_MASK );
+//    pItem->SetId( tag & ~JS_TAG_MASK );
     pItem->SetHeaderByte( pBer->pVal[offset + position], position );
     pItem->SetIndefinite(0);
     pItem->SetOffset( offset );
@@ -306,7 +308,7 @@ int BerModel::getItem(const BIN *pBer, int offset, BerItem *pItem)
         if( position >= 5 ) return -1;
     }
 
-    pItem->SetTag(tag);
+//    pItem->SetTag(tag);
 
     if( (offset + position) > pBer->nLen ) return -1;
 
@@ -372,7 +374,6 @@ int BerModel::getItemInfo( const BIN *pBER, int nOffset, BerItem *pItem )
 
     nTag = pBER->pVal[nOffset + nPosition];
 
-    pItem->SetId( nTag & ~JS_TAG_MASK );
     pItem->SetOffset( nOffset );
     pItem->SetHeaderByte( pBER->pVal[nOffset + nPosition], nPosition );
 
@@ -396,7 +397,6 @@ int BerModel::getItemInfo( const BIN *pBER, int nOffset, BerItem *pItem )
         if( nPosition >= 5 ) return JSR_BER_BAD_HEADER;
     }
 
-    pItem->SetTag( nTag );
     if( ( nOffset + nPosition ) > pBER->nLen ) return JSR_BER_BAD_OFFSET;
 
     nLength = pBER->pVal[nOffset + nPosition];
@@ -852,6 +852,201 @@ const BerItem* BerModel::findItemByOffset( BerItem* pParentItem, int nOffset )
             pFoundItem = findItemByOffset( pChild, nOffset );
             if( pFoundItem != nullptr ) return pFoundItem;
         }
+    }
+
+    return nullptr;
+}
+
+const BerItem* BerModel::findNextItemByValue( const BerItem* pItem, const BIN *pValue, bool bMatched )
+{
+    int ret = 0;
+    BIN binCurValue = {0,0};
+    BerTreeView viewTree = berApplet->mainWindow()->berTree();
+    BerItem *pCurItem = NULL;
+    QModelIndex ri;
+
+    if( pValue == NULL )
+        return nullptr;
+
+    if( pItem == NULL )
+    {
+        pCurItem = (BerItem *)item(0,0);
+    }
+    else
+    {
+        pCurItem = viewTree.getNext( (BerItem *)pItem );
+    }
+
+    if( pValue == NULL || pValue->nLen <= 0 ) return pCurItem;
+
+    while( pCurItem )
+    {
+        if( pCurItem->isConstructed() == false )
+        {
+            binCurValue.pVal = binBer_.pVal + pCurItem->GetOffset() + pCurItem->GetHeaderSize();
+            binCurValue.nLen = pCurItem->GetValLength();
+
+            if( bMatched == true )
+            {
+                ret = JS_BIN_cmp( &binCurValue, pValue );
+                if( ret == 0 ) return pCurItem;
+            }
+            else
+            {
+                ret = JS_BIN_memmem( &binCurValue, pValue );
+                if( ret >= 0 ) return pCurItem;
+            }
+        }
+
+        pCurItem = viewTree.getNext( pCurItem );
+    }
+
+    return nullptr;
+}
+
+const BerItem* BerModel::findPrevItemByValue( const BerItem* pItem, const BIN *pValue, bool bMatched )
+{
+    int ret = 0;
+    BIN binCurValue = {0,0};
+    BerTreeView viewTree = berApplet->mainWindow()->berTree();
+    BerItem *pCurItem = NULL;
+    QModelIndex ri;
+
+    if( pValue == NULL )
+        return nullptr;
+
+    if( pItem == NULL )
+    {
+        pCurItem = (BerItem *)item(0,0);
+    }
+    else
+    {
+        pCurItem = viewTree.getPrev( (BerItem *)pItem );
+    }
+
+    if( pValue == NULL || pValue->nLen <= 0 ) return pCurItem;
+
+    while( pCurItem )
+    {
+        if( pCurItem->isConstructed() == false )
+        {
+            binCurValue.pVal = binBer_.pVal + pCurItem->GetOffset() + pCurItem->GetHeaderSize();
+            binCurValue.nLen = pCurItem->GetValLength();
+
+            if( bMatched == true )
+            {
+                ret = JS_BIN_cmp( &binCurValue, pValue );
+                if( ret == 0 ) return pCurItem;
+            }
+            else
+            {
+                ret = JS_BIN_memmem( &binCurValue, pValue );
+                if( ret >= 0 ) return pCurItem;
+            }
+        }
+
+        pCurItem = viewTree.getPrev( pCurItem );
+    }
+
+    return nullptr;
+}
+
+
+const BerItem* BerModel::findNextItemByValue( const BerItem* pItem, BYTE cTag, const BIN *pValue, bool bMatched )
+{
+    int ret = 0;
+    BIN binCurValue = {0,0};
+    BerTreeView viewTree = berApplet->mainWindow()->berTree();
+    BerItem *pCurItem = NULL;
+    QModelIndex ri;
+
+    if( pValue == NULL )
+        return nullptr;
+
+    if( pItem == NULL )
+    {
+        pCurItem = (BerItem *)item(0,0);
+    }
+    else
+    {
+        pCurItem = viewTree.getNext( (BerItem *)pItem );
+    }
+
+    while( pCurItem )
+    {
+        if( pCurItem->isConstructed() == false )
+        {
+            if( cTag == pCurItem->GetTag() )
+            {
+                if( pValue == NULL || pValue->nLen == 0 ) return pCurItem;
+
+                binCurValue.pVal = binBer_.pVal + pCurItem->GetOffset() + pCurItem->GetHeaderSize();
+                binCurValue.nLen = pCurItem->GetValLength();
+
+                if( bMatched == true )
+                {
+                    ret = JS_BIN_cmp( &binCurValue, pValue );
+                    if( ret == 0 ) return pCurItem;
+                }
+                else
+                {
+                    ret = JS_BIN_memmem( &binCurValue, pValue );
+                    if( ret >= 0 ) return pCurItem;
+                }
+            }
+        }
+
+        pCurItem = viewTree.getNext( pCurItem );
+    }
+
+    return nullptr;
+}
+
+const BerItem* BerModel::findPrevItemByValue( const BerItem* pItem, BYTE cTag, const BIN *pValue, bool bMatched )
+{
+    int ret = 0;
+    BIN binCurValue = {0,0};
+    BerTreeView viewTree = berApplet->mainWindow()->berTree();
+    BerItem *pCurItem = NULL;
+    QModelIndex ri;
+
+    if( pValue == NULL )
+        return nullptr;
+
+    if( pItem == NULL )
+    {
+        pCurItem = (BerItem *)item(0,0);
+    }
+    else
+    {
+        pCurItem = viewTree.getPrev( (BerItem *)pItem );
+    }
+
+    while( pCurItem )
+    {
+        if( pCurItem->isConstructed() == false )
+        {
+            if( cTag == pCurItem->GetTag() )
+            {
+                if( pValue == NULL || pValue->nLen == 0 ) return pCurItem;
+
+                binCurValue.pVal = binBer_.pVal + pCurItem->GetOffset() + pCurItem->GetHeaderSize();
+                binCurValue.nLen = pCurItem->GetValLength();
+
+                if( bMatched == true )
+                {
+                    ret = JS_BIN_cmp( &binCurValue, pValue );
+                    if( ret == 0 ) return pCurItem;
+                }
+                else
+                {
+                    ret = JS_BIN_memmem( &binCurValue, pValue );
+                    if( ret >= 0 ) return pCurItem;
+                }
+            }
+        }
+
+        pCurItem = pCurItem = viewTree.getPrev( pCurItem );
     }
 
     return nullptr;

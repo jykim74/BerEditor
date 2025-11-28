@@ -166,7 +166,7 @@ void EditValueDlg::setItem(BerItem *pItem)
     {
         mConstructedLabel->setText( "Primitive" );
 
-        if( ber_item_->tag_ == JS_NULLTAG )
+        if( ber_item_->isType(JS_NULLTAG) )
         {
             mValueText->setReadOnly( true );
             mValueText->setStyleSheet( kReadOnlyStyle );
@@ -178,7 +178,7 @@ void EditValueDlg::setItem(BerItem *pItem)
             mModifyBtn->show();
         }
 
-        if( ber_item_->tag_ == JS_INTEGER || ber_item_->tag_ == JS_BITSTRING || ber_item_->tag_ == JS_OID )
+        if( ber_item_->isType(JS_INTEGER) || ber_item_->isType(JS_BITSTRING) || ber_item_->isType(JS_OID) )
             mMakeValueBtn->show();
     }
 
@@ -405,11 +405,11 @@ void EditValueDlg::clickMakeValue()
     QString strValue = mValueText->toPlainText();
     QString strType;
 
-    if( ber_item_->tag_ == JS_BITSTRING )
+    if( ber_item_->isType(JS_BITSTRING) )
         strType = "Bit";
-    else if( ber_item_->tag_ == JS_INTEGER )
+    else if( ber_item_->isType(JS_INTEGER) )
         strType = "Integer";
-    else if( ber_item_->tag_ == JS_OID )
+    else if( ber_item_->isType(JS_OID) )
         strType = "OID";
     else
         return;

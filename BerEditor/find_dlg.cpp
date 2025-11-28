@@ -96,7 +96,6 @@ void FindDlg::initialize()
     row_ = 0;
     find_list_.clear();
     mValueTypeCombo->clear();
-    mPreviousBtn->setDisabled(true);
     mEditBtn->setDisabled(true);
 
     if( berApplet->mainWindow()->isTTLV() == true )
@@ -239,11 +238,21 @@ bool FindDlg::isBerFind( BerItem *pItem )
 
             pItem->getValueBin( &model->getBER(), &binItemVal );
 
-            if( JS_BIN_cmp( &last_value_, &binItemVal ) == 0 )
+            if( mMatchedCheck->isChecked() )
             {
-                JS_BIN_reset( &binItemVal );
-
-                return true;
+                if( JS_BIN_cmp( &last_value_, &binItemVal ) == 0 )
+                {
+                    JS_BIN_reset( &binItemVal );
+                    return true;
+                }
+            }
+            else
+            {
+                if( JS_BIN_memmem( &last_value_, &binItemVal ) >= 0 )
+                {
+                    JS_BIN_reset( &binItemVal );
+                    return true;
+                }
             }
 
             JS_BIN_reset( &binItemVal );
@@ -304,11 +313,21 @@ bool FindDlg::isTTLVFind( TTLVTreeItem *pItem )
 
             pItem->getValue( &model->getTTLV(), &binItemVal );
 
-            if( JS_BIN_cmp( &last_value_, &binItemVal ) == 0 )
+            if( mMatchedCheck->isChecked() )
             {
-                JS_BIN_reset( &binItemVal );
-
-                return true;
+                if( JS_BIN_cmp( &last_value_, &binItemVal ) == 0 )
+                {
+                    JS_BIN_reset( &binItemVal );
+                    return true;
+                }
+            }
+            else
+            {
+                if( JS_BIN_memmem( &last_value_, &binItemVal ) >= 0 )
+                {
+                    JS_BIN_reset( &binItemVal );
+                    return true;
+                }
             }
 
             JS_BIN_reset( &binItemVal );
@@ -418,84 +437,68 @@ void FindDlg::changeBER_TagID()
 
 void FindDlg::findBER_Next()
 {
-    BerTreeView *tree = berApplet->mainWindow()->berTree();
+    BIN binValue = {0,0};
     BerModel* model = berApplet->mainWindow()->berModel();
-    QModelIndex ri = model->index(0,0);
+    BerTreeView *tree = berApplet->mainWindow()->berTree();
+    BerItem *pCurItem = tree->currentItem();
 
-    BerItem* root = (BerItem *)model->itemFromIndex(ri);
-    if( root == NULL )
+    getValueBIN( &binValue );
+
+    if( mHeadCheck->isChecked() == true )
     {
-        berApplet->warningBox( tr( "There is no node to find" ), this );
-        return;
+        BYTE cTag = mBER_HeaderText->text().toInt( nullptr, 16 );
+        pCurItem = (BerItem *)model->findNextItemByValue( pCurItem, cTag, &binValue, mMatchedCheck->isChecked() );
+    }
+    else
+    {
+        pCurItem = (BerItem *)model->findNextItemByValue( pCurItem, &binValue, mMatchedCheck->isChecked() );
     }
 
-    setBerCondition();
-
-    BerItem* curItem = (BerItem *)model->itemFromIndex( tree->currentIndex() );
-
-    tree->expandAll();
-    BerItem *findItem = NULL;
-
-    if( curItem ) findItem = getFoundBerItem( curItem );
-
-    if( findItem == NULL )
-        findItem = findBerItem( root, curItem );
-
-    if( findItem )
+    if( pCurItem )
     {
-        QModelIndex fi = findItem->index();
-
+        QModelIndex fi = pCurItem->index();
         tree->clicked( fi );
-        tree->setCurrentIndex(fi);
+        tree->setCurrentIndex( fi );
     }
     else
     {
         berApplet->warningBox( tr( "There is no node to find" ), this );
-        return;
     }
 
+    JS_BIN_reset( &binValue );
 }
 
 void FindDlg::findBER_Previous()
 {
-    BerTreeView *tree = berApplet->mainWindow()->berTree();
+    BIN binValue = {0,0};
     BerModel* model = berApplet->mainWindow()->berModel();
-    QModelIndex ri = tree->currentIndex();
+    BerTreeView *tree = berApplet->mainWindow()->berTree();
+    BerItem *pCurItem = tree->currentItem();
 
-    BerItem* item = (BerItem *)model->itemFromIndex( ri );
+    getValueBIN( &binValue );
 
-    if( item == NULL )
+    if( mHeadCheck->isChecked() == true )
     {
-        berApplet->warningBox( tr( "There is no node to find" ), this );
-        return;
+        BYTE cTag = mBER_HeaderText->text().toInt( nullptr, 16 );
+        pCurItem = (BerItem *)model->findPrevItemByValue( pCurItem, cTag, &binValue, mMatchedCheck->isChecked() );
+    }
+    else
+    {
+        pCurItem = (BerItem *)model->findPrevItemByValue( pCurItem, &binValue, mMatchedCheck->isChecked() );
     }
 
-    setBerCondition();
-
-    bool bExist = false;
-
-    for( int i = 1; i < find_list_.size(); i++ )
+    if( pCurItem )
     {
-        QModelIndex find_idx = find_list_.at(i);
-
-        if( find_idx == ri )
-        {
-            ri = find_list_.at( i - 1 );
-            bExist = true;
-        }
-    }
-
-    if( bExist == true )
-    {
-        tree->expandAll();
-        tree->clicked( ri );
-        tree->setCurrentIndex(ri);
+        QModelIndex fi = pCurItem->index();
+        tree->clicked( fi );
+        tree->setCurrentIndex( fi );
     }
     else
     {
         berApplet->warningBox( tr( "There is no node to find" ), this );
-        return;
     }
+
+    JS_BIN_reset( &binValue );
 }
 
 void FindDlg::setTTLVCondition()
@@ -695,21 +698,6 @@ void FindDlg::clickNext()
         findTTLV_Next();
     else
         findBER_Next();
-
-    if( find_list_.size() > 0 )
-    {
-        mEditBtn->setEnabled(true);
-
-        if( find_list_.size() > 1 )
-            mPreviousBtn->setEnabled( true );
-        else
-            mPreviousBtn->setEnabled( false );
-    }
-    else
-    {
-        mPreviousBtn->setEnabled( false );
-        mEditBtn->setEnabled(false);
-    }
 }
 
 void FindDlg::clickEdit()
@@ -805,6 +793,12 @@ BerItem* FindDlg::findBerItem( BerItem *pItem, const BerItem *pSelItem )
             BerItem* pChild = (BerItem *)pItem->child(i);
             if( pChild == NULL ) return NULL;
 
+            if( pChild->isConstructed() == true )
+            {
+                i++;
+                continue;
+            }
+
             BerItem* pFind = findBerItem( pChild, pSelItem );
             if( pFind ) return pFind;
 
@@ -851,6 +845,12 @@ TTLVTreeItem* FindDlg::findTTLVItem( TTLVTreeItem *pItem, const TTLVTreeItem *pS
         {
             TTLVTreeItem* pChild = (TTLVTreeItem *)pItem->child(i);
             if( pChild == NULL ) return NULL;
+
+            if( pChild->isStructure() == true )
+            {
+                i++;
+                continue;
+            }
 
             TTLVTreeItem* pFind = findTTLVItem( pChild, pSelItem );
             if( pFind ) return pFind;

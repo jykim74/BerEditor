@@ -19,6 +19,9 @@ public:
     void getInfoView( TTLVTreeItem *pItem, int nWidth );
     QString GetTextView();
 
+    TTLVTreeItem* getNext( TTLVTreeItem *pItem );
+    TTLVTreeItem* getPrev( TTLVTreeItem *pItem );
+    TTLVTreeItem* currentItem();
 
 public slots:
     void CopyAsHex();
@@ -60,10 +63,7 @@ private :
 
     QString str_edit_;
     int pos_start_;
-    int pos_end_;
-
-public:
-    TTLVTreeItem* currentItem();
+    int pos_end_;  
 };
 
 #endif // READERTREEVIEW_H

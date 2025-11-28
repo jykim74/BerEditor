@@ -48,6 +48,97 @@ TTLVTreeItem* TTLVTreeView::currentItem()
     return item;
 }
 
+TTLVTreeItem* TTLVTreeView::getNext( TTLVTreeItem *pItem )
+{
+    const TTLVTreeItem *pParentItem = nullptr;
+    const TTLVTreeItem *pCurItem = nullptr;
+    TTLVTreeModel *tree_model = (TTLVTreeModel *)model();
+
+    QModelIndex idx;
+    int nCurRow = 0;
+
+    if( pItem == NULL )
+        return (TTLVTreeItem *)tree_model->item(0,0);
+
+    pCurItem = pItem;
+    if( pCurItem->hasChildren() == true )
+    {
+        return (TTLVTreeItem *)pCurItem->child(0);
+    }
+
+    nCurRow = pCurItem->row();
+
+    QModelIndex newIdx = indexBelow( pCurItem->index() );
+    if( newIdx.row() >= 0 ) return (TTLVTreeItem *)tree_model->itemFromIndex( newIdx );
+
+    while( pCurItem )
+    {
+        pParentItem = (TTLVTreeItem *)pCurItem->parent();
+        if( pParentItem == nullptr ) return nullptr;
+
+        for( int i = (nCurRow + 1) ; i < pParentItem->rowCount(); i++ )
+        {
+            return (TTLVTreeItem *)pParentItem->child( i );
+        }
+
+        nCurRow = pParentItem->row();
+        pCurItem = pParentItem;
+    }
+
+    return nullptr;
+}
+
+TTLVTreeItem* TTLVTreeView::getPrev( TTLVTreeItem *pItem )
+{
+    TTLVTreeItem *pChildItem = nullptr;
+    TTLVTreeItem *pCurItem = nullptr;
+
+    TTLVTreeModel *tree_model = (TTLVTreeModel *)model();
+
+    QModelIndex idx;
+    int nCurRow = 0;
+
+    if( pItem == NULL )
+        return (TTLVTreeItem *)tree_model->item(0,0);
+
+    pCurItem = pItem;
+
+    /*
+    QModelIndex newIdx = indexAbove( pCurItem->index() );
+    if( newIdx.row() < 0 )
+    {
+        return (TTLVTreeItem *)pCurItem->parent();
+    }
+
+    pCurItem = (TTLVTreeItem *)tree_model->itemFromIndex( newIdx );
+*/
+    TTLVTreeItem *pParent = (TTLVTreeItem *)pCurItem->parent();
+    if( pParent )
+    {
+        int nCurRow = pCurItem->row();
+        if( nCurRow > 0 )
+            pCurItem = (TTLVTreeItem *)pParent->child( nCurRow - 1 );
+        else
+            return pParent;
+    }
+    else
+    {
+        return nullptr;
+    }
+
+    while( pCurItem )
+    {
+        if( pCurItem->hasChildren() == false ) return pCurItem;
+
+        nCurRow = pCurItem->rowCount();
+        pChildItem = (TTLVTreeItem *)pCurItem->child( nCurRow - 1 );
+
+        pCurItem = pChildItem;
+    }
+
+    return nullptr;
+}
+
 void TTLVTreeView::viewRoot()
 {
     TTLVTreeModel *tree_model = (TTLVTreeModel *)model();
