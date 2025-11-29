@@ -38,6 +38,7 @@ FindDlg::FindDlg(QWidget *parent) :
     connect( mNextBtn, SIGNAL(clicked()), this, SLOT(clickNext()));
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mEditBtn, SIGNAL(clicked()), this, SLOT(clickEdit()));
+    connect( mValueText, SIGNAL(textChanged(QString)), this, SLOT(changeValue()));
 
     initUI();
 
@@ -377,6 +378,14 @@ void FindDlg::changeValueType()
         mValueText->setValidator( regVal );
         mValueText->setPlaceholderText( tr("Object Identifier") );
     }
+}
+
+void FindDlg::changeValue()
+{
+    BIN binVal = {0,0};
+    getValueBIN( &binVal );
+    mValueHexText->setText( getHexString( &binVal ) );
+    JS_BIN_reset( &binVal );
 }
 
 void FindDlg::makeTTLV_Header()

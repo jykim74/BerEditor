@@ -883,8 +883,16 @@ const BerItem* BerModel::findNextItemByValue( const BerItem* pItem, const BIN *p
     {
         if( pCurItem->isConstructed() == false )
         {
-            binCurValue.pVal = binBer_.pVal + pCurItem->GetOffset() + pCurItem->GetHeaderSize();
-            binCurValue.nLen = pCurItem->GetValLength();
+            if( pCurItem->isType( JS_BITSTRING ))
+            {
+                binCurValue.pVal = binBer_.pVal + pCurItem->GetOffset() + pCurItem->GetHeaderSize() + 1;
+                binCurValue.nLen = pCurItem->GetValLength() - 1;
+            }
+            else
+            {
+                binCurValue.pVal = binBer_.pVal + pCurItem->GetOffset() + pCurItem->GetHeaderSize();
+                binCurValue.nLen = pCurItem->GetValLength();
+            }
 
             if( bMatched == true )
             {
@@ -930,8 +938,16 @@ const BerItem* BerModel::findPrevItemByValue( const BerItem* pItem, const BIN *p
     {
         if( pCurItem->isConstructed() == false )
         {
-            binCurValue.pVal = binBer_.pVal + pCurItem->GetOffset() + pCurItem->GetHeaderSize();
-            binCurValue.nLen = pCurItem->GetValLength();
+            if( pCurItem->isType( JS_BITSTRING ))
+            {
+                binCurValue.pVal = binBer_.pVal + pCurItem->GetOffset() + pCurItem->GetHeaderSize() + 1;
+                binCurValue.nLen = pCurItem->GetValLength() - 1;
+            }
+            else
+            {
+                binCurValue.pVal = binBer_.pVal + pCurItem->GetOffset() + pCurItem->GetHeaderSize();
+                binCurValue.nLen = pCurItem->GetValLength();
+            }
 
             if( bMatched == true )
             {
@@ -980,8 +996,16 @@ const BerItem* BerModel::findNextItemByValue( const BerItem* pItem, BYTE cTag, c
 
             if( pCurItem->isConstructed() == false )
             {
-                binCurValue.pVal = binBer_.pVal + pCurItem->GetOffset() + pCurItem->GetHeaderSize();
-                binCurValue.nLen = pCurItem->GetValLength();
+                if( pCurItem->isType( JS_BITSTRING ))
+                {
+                    binCurValue.pVal = binBer_.pVal + pCurItem->GetOffset() + pCurItem->GetHeaderSize() + 1;
+                    binCurValue.nLen = pCurItem->GetValLength() - 1;
+                }
+                else
+                {
+                    binCurValue.pVal = binBer_.pVal + pCurItem->GetOffset() + pCurItem->GetHeaderSize();
+                    binCurValue.nLen = pCurItem->GetValLength();
+                }
 
                 if( bMatched == true )
                 {
@@ -1030,8 +1054,16 @@ const BerItem* BerModel::findPrevItemByValue( const BerItem* pItem, BYTE cTag, c
 
             if( pCurItem->isConstructed() == false )
             {
-                binCurValue.pVal = binBer_.pVal + pCurItem->GetOffset() + pCurItem->GetHeaderSize();
-                binCurValue.nLen = pCurItem->GetValLength();
+                if( pCurItem->isType( JS_BITSTRING ))
+                {
+                    binCurValue.pVal = binBer_.pVal + pCurItem->GetOffset() + pCurItem->GetHeaderSize() + 1;
+                    binCurValue.nLen = pCurItem->GetValLength() - 1;
+                }
+                else
+                {
+                    binCurValue.pVal = binBer_.pVal + pCurItem->GetOffset() + pCurItem->GetHeaderSize();
+                    binCurValue.nLen = pCurItem->GetValLength();
+                }
 
                 if( bMatched == true )
                 {
