@@ -974,12 +974,12 @@ const BerItem* BerModel::findNextItemByValue( const BerItem* pItem, BYTE cTag, c
 
     while( pCurItem )
     {
-        if( pCurItem->isConstructed() == false )
+        if( cTag == pCurItem->GetTag() )
         {
-            if( cTag == pCurItem->GetTag() )
-            {
-                if( pValue == NULL || pValue->nLen == 0 ) return pCurItem;
+            if( pValue == NULL || pValue->nLen == 0 ) return pCurItem;
 
+            if( pCurItem->isConstructed() == false )
+            {
                 binCurValue.pVal = binBer_.pVal + pCurItem->GetOffset() + pCurItem->GetHeaderSize();
                 binCurValue.nLen = pCurItem->GetValLength();
 
@@ -1024,12 +1024,12 @@ const BerItem* BerModel::findPrevItemByValue( const BerItem* pItem, BYTE cTag, c
 
     while( pCurItem )
     {
-        if( pCurItem->isConstructed() == false )
+        if( cTag == pCurItem->GetTag() )
         {
-            if( cTag == pCurItem->GetTag() )
-            {
-                if( pValue == NULL || pValue->nLen == 0 ) return pCurItem;
+            if( pValue == NULL || pValue->nLen == 0 ) return pCurItem;
 
+            if( pCurItem->isConstructed() == false )
+            {
                 binCurValue.pVal = binBer_.pVal + pCurItem->GetOffset() + pCurItem->GetHeaderSize();
                 binCurValue.nLen = pCurItem->GetValLength();
 

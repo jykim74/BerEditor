@@ -446,27 +446,33 @@ const TTLVTreeItem* TTLVTreeModel::findNextItemByValue( const TTLVTreeItem* pIte
 
     while( pCurItem )
     {
-        if( pCurItem->isStructure() == false )
+        binCurHeader.pVal = binTTLV_.pVal + pCurItem->getOffset();
+        binCurHeader.nLen = JS_TTLV_HEADER_SIZE;
+
+        if( JS_BIN_cmp( &binCurHeader, pHeader ) == 0 )
         {
-            binCurHeader.pVal = binTTLV_.pVal + pCurItem->getOffset();
-            binCurHeader.nLen = JS_TTLV_HEADER_SIZE;
+            if( pValue == NULL || pValue->nLen <= 0 )
+                return pCurItem;
 
-            if( JS_BIN_cmp( &binCurHeader, pHeader ) == 0 )
+            if( pCurItem->isStructure() == false )
             {
-                if( pValue == NULL || pValue->nLen == 0 ) return pCurItem;
-
-                binCurValue.pVal = binTTLV_.pVal + pCurItem->getOffset() + JS_TTLV_HEADER_SIZE;
-                binCurValue.nLen = pCurItem->getLengthInt();
-
-                if( bMatched == true )
+                if( JS_BIN_cmp( &binCurHeader, pHeader ) == 0 )
                 {
-                    ret = JS_BIN_cmp( &binCurValue, pValue );
-                    if( ret == 0 ) return pCurItem;
-                }
-                else
-                {
-                    ret = JS_BIN_memmem( &binCurValue, pValue );
-                    if( ret >= 0 ) return pCurItem;
+                    if( pValue == NULL || pValue->nLen == 0 ) return pCurItem;
+
+                    binCurValue.pVal = binTTLV_.pVal + pCurItem->getOffset() + JS_TTLV_HEADER_SIZE;
+                    binCurValue.nLen = pCurItem->getLengthInt();
+
+                    if( bMatched == true )
+                    {
+                        ret = JS_BIN_cmp( &binCurValue, pValue );
+                        if( ret == 0 ) return pCurItem;
+                    }
+                    else
+                    {
+                        ret = JS_BIN_memmem( &binCurValue, pValue );
+                        if( ret >= 0 ) return pCurItem;
+                    }
                 }
             }
         }
@@ -501,27 +507,33 @@ const TTLVTreeItem* TTLVTreeModel::findPrevItemByValue( const TTLVTreeItem* pIte
 
     while( pCurItem )
     {
-        if( pCurItem->isStructure() == false )
+        binCurHeader.pVal = binTTLV_.pVal + pCurItem->getOffset();
+        binCurHeader.nLen = JS_TTLV_HEADER_SIZE;
+
+        if( JS_BIN_cmp( &binCurHeader, pHeader ) == 0 )
         {
-            binCurHeader.pVal = binTTLV_.pVal + pCurItem->getOffset();
-            binCurHeader.nLen = JS_TTLV_HEADER_SIZE;
+            if( pValue == NULL || pValue->nLen <= 0 )
+                return pCurItem;
 
-            if( JS_BIN_cmp( &binCurHeader, pHeader ) == 0 )
+            if( pCurItem->isStructure() == false )
             {
-                if( pValue == NULL || pValue->nLen == 0 ) return pCurItem;
-
-                binCurValue.pVal = binTTLV_.pVal + pCurItem->getOffset() + JS_TTLV_HEADER_SIZE;
-                binCurValue.nLen = pCurItem->getLengthInt();
-
-                if( bMatched == true )
+                if( JS_BIN_cmp( &binCurHeader, pHeader ) == 0 )
                 {
-                    ret = JS_BIN_cmp( &binCurValue, pValue );
-                    if( ret == 0 ) return pCurItem;
-                }
-                else
-                {
-                    ret = JS_BIN_memmem( &binCurValue, pValue );
-                    if( ret >= 0 ) return pCurItem;
+                    if( pValue == NULL || pValue->nLen == 0 ) return pCurItem;
+
+                    binCurValue.pVal = binTTLV_.pVal + pCurItem->getOffset() + JS_TTLV_HEADER_SIZE;
+                    binCurValue.nLen = pCurItem->getLengthInt();
+
+                    if( bMatched == true )
+                    {
+                        ret = JS_BIN_cmp( &binCurValue, pValue );
+                        if( ret == 0 ) return pCurItem;
+                    }
+                    else
+                    {
+                        ret = JS_BIN_memmem( &binCurValue, pValue );
+                        if( ret >= 0 ) return pCurItem;
+                    }
                 }
             }
         }
