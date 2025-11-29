@@ -435,6 +435,20 @@ void MainWindow::createViewActions()
     connect( editCollapseNodeAct, &QAction::triggered, this, &MainWindow::viewEditCollapseNode );
     editMenu->addAction( editCollapseNodeAct );
 
+    QAction *editPrevAct = new QAction( tr( "Previous Node"), this );
+    bVal = isView( ACT_EDIT_PREV_NODE );
+    editPrevAct->setCheckable(true);
+    editPrevAct->setChecked(bVal);
+    connect( editPrevAct, &QAction::triggered, this, &MainWindow::viewEditPrev );
+    editMenu->addAction( editPrevAct );
+
+    QAction *editNextAct = new QAction( tr( "Next Node"), this );
+    bVal = isView( ACT_EDIT_NEXT_NODE );
+    editNextAct->setCheckable(true);
+    editNextAct->setChecked(bVal);
+    connect( editNextAct, &QAction::triggered, this, &MainWindow::viewEditNext );
+    editMenu->addAction( editNextAct );
+
     QAction *editFindNodeAct = new QAction( tr( "Find"), this );
     bVal = isView( ACT_EDIT_FIND_NODE );
     editFindNodeAct->setCheckable(true);
@@ -928,6 +942,22 @@ void MainWindow::createActions()
     connect( collapse_node_act_, &QAction::triggered, this, &MainWindow::treeCollapseNode );
     editMenu->addAction(collapse_node_act_);
     if( isView( ACT_EDIT_COLLAPSE_NODE )) edit_tool_->addAction(collapse_node_act_ );
+
+    const QIcon prevIcon = QIcon::fromTheme("Prev", QIcon(":/images/prev.png"));
+    prev_act_ = new QAction( prevIcon, tr("&Previous Node"), this );
+    prev_act_->setStatusTip(tr("Previous Node"));
+    prev_act_->setShortcut( QKeySequence(Qt::CTRL | Qt::Key_Left));
+    connect( prev_act_, &QAction::triggered, this, &MainWindow::prevNode );
+    editMenu->addAction( prev_act_);
+    if( isView( ACT_EDIT_PREV_NODE )) edit_tool_->addAction( prev_act_ );
+
+    const QIcon nextIcon = QIcon::fromTheme("Next", QIcon(":/images/next.png"));
+    next_act_ = new QAction( nextIcon, tr("&Next Node"), this );
+    next_act_->setStatusTip(tr("Previous Node"));
+    next_act_->setShortcut( QKeySequence(Qt::CTRL | Qt::Key_Right));
+    connect( next_act_, &QAction::triggered, this, &MainWindow::nextNode );
+    editMenu->addAction( next_act_);
+    if( isView( ACT_EDIT_NEXT_NODE )) edit_tool_->addAction( next_act_ );
 
     const QIcon findIcon = QIcon::fromTheme("find", QIcon(":/images/find.png"));
     find_node_act_ = new QAction( findIcon, tr("&Find"), this );
@@ -2004,6 +2034,58 @@ void MainWindow::findNode()
     find_dlg_->activateWindow();
 }
 
+void MainWindow::prevNode()
+{
+    if( isTTLV() )
+    {
+        TTLVTreeItem* pItem = ttlv_tree_->currentItem();
+        TTLVTreeItem* pNewItem = ttlv_tree_->getPrev( pItem );
+        if( pNewItem )
+        {
+            QModelIndex idx = pNewItem->index();
+            ttlv_tree_->clicked(idx);
+            ttlv_tree_->setCurrentIndex(idx);
+        }
+    }
+    else
+    {
+        BerItem* pItem = left_tree_->currentItem();
+        BerItem* pNewItem = left_tree_->getPrev( pItem );
+        if( pNewItem )
+        {
+            QModelIndex idx = pNewItem->index();
+            left_tree_->clicked(idx);
+            left_tree_->setCurrentIndex(idx);
+        }
+    }
+}
+
+void MainWindow::nextNode()
+{
+    if( isTTLV() )
+    {
+        TTLVTreeItem* pItem = ttlv_tree_->currentItem();
+        TTLVTreeItem* pNewItem = ttlv_tree_->getNext( pItem );
+        if( pNewItem )
+        {
+            QModelIndex idx = pNewItem->index();
+            ttlv_tree_->clicked(idx);
+            ttlv_tree_->setCurrentIndex(idx);
+        }
+    }
+    else
+    {
+        BerItem* pItem = left_tree_->currentItem();
+        BerItem* pNewItem = left_tree_->getNext( pItem );
+        if( pNewItem )
+        {
+            QModelIndex idx = pNewItem->index();
+            left_tree_->clicked(idx);
+            left_tree_->setCurrentIndex(idx);
+        }
+    }
+}
+
 int MainWindow::openBer( const BIN *pBer )
 {
     int ret = 0;
@@ -2998,6 +3080,34 @@ void MainWindow::viewEditCollapseNode( bool bChecked )
     {
         edit_tool_->removeAction( collapse_node_act_ );
         unsetView( ACT_EDIT_COLLAPSE_NODE );
+    }
+}
+
+void MainWindow::viewEditPrev( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        edit_tool_->addAction( prev_act_ );
+        setView( ACT_EDIT_PREV_NODE );
+    }
+    else
+    {
+        edit_tool_->removeAction( prev_act_ );
+        unsetView( ACT_EDIT_PREV_NODE );
+    }
+}
+
+void MainWindow::viewEditNext( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        edit_tool_->addAction( next_act_ );
+        setView( ACT_EDIT_NEXT_NODE );
+    }
+    else
+    {
+        edit_tool_->removeAction( next_act_ );
+        unsetView( ACT_EDIT_NEXT_NODE );
     }
 }
 

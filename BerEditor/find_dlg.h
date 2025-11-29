@@ -49,26 +49,6 @@ private:
     void findTTLV_Previous();
 
     void getValueBIN( BIN *pBin );
-    bool isBerFind( BerItem *pItem );
-    bool isTTLVFind( TTLVTreeItem *pItem );
-    void setBerCondition();
-
-    void setTTLVCondition();
-
-    BerItem* findBerItem( BerItem *pItem, const BerItem *pSelItem );
-    BerItem* getFoundBerItem( BerItem *pSelItem );
-
-    TTLVTreeItem* findTTLVItem( TTLVTreeItem *pItem, const TTLVTreeItem *pSelItem  );
-    TTLVTreeItem* getFoundTTLVItem( TTLVTreeItem *pSelItem );
-
-private:
-    int col_;
-    int row_;
-    QModelIndexList find_list_;
-
-    QString last_head_;
-    BIN last_value_;
-    int last_level_;
 };
 
 #endif // FIND_DLG_H

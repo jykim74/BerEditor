@@ -126,7 +126,9 @@ static QString kSelectStyle =
 #define ACT_EDIT_EXPAND_NODE        VIEW_EDIT | 0x00000010
 #define ACT_EDIT_COLLAPSE_ALL       VIEW_EDIT | 0x00000020
 #define ACT_EDIT_COLLAPSE_NODE      VIEW_EDIT | 0x00000040
-#define ACT_EDIT_FIND_NODE          VIEW_EDIT | 0x00000080
+#define ACT_EDIT_PREV_NODE          VIEW_EDIT | 0x00000080
+#define ACT_EDIT_NEXT_NODE          VIEW_EDIT | 0x00000100
+#define ACT_EDIT_FIND_NODE          VIEW_EDIT | 0x00000200
 
 #define ACT_TOOL_DATA_CONVERTER     VIEW_TOOL | 0x00000001
 #define ACT_TOOL_NUM_CONVERTER      VIEW_TOOL | 0x00000002
@@ -192,13 +194,13 @@ static QString kSelectStyle =
 
 static const int kFileDefault = ACT_FILE_NEW | ACT_FILE_OPEN;
 
-static const int kEditDefault = ACT_EDIT_EXPAND_ALL | ACT_EDIT_EXPAND_NODE | ACT_EDIT_FIND_NODE;
+static const int kEditDefault = ACT_EDIT_EXPAND_ALL | ACT_EDIT_EXPAND_NODE | ACT_EDIT_PREV_NODE | ACT_EDIT_NEXT_NODE | ACT_EDIT_FIND_NODE;
 
 static const int kToolDefault = ACT_TOOL_DATA_CONVERTER | ACT_TOOL_OID_INFO | ACT_TOOL_MAKE_BER \
                          | ACT_TOOL_DECODE_DATA | ACT_TOOL_GET_URI;
 
 static const int kCryptDefault = ACT_CRYPT_HASH | ACT_CRYPT_MAC | ACT_CRYPT_ENC_DEC \
-                          | ACT_CRYPT_SIGN_VERIFY | ACT_CRYPT_KEY_AGREE | ACT_CRYPT_CERT_PVD | ACT_CRYPT_BN_CALC;
+                          | ACT_CRYPT_SIGN_VERIFY | ACT_CRYPT_CERT_PVD | ACT_CRYPT_BN_CALC;
 
 static const int kServiceDefault = ACT_SERVICE_KEY_PAIR_MAN | ACT_SERVICE_CERT_MAN | \
                                    ACT_SERVICE_KEY_LIST | ACT_SERVICE_SSL_CHECK | ACT_SERVICE_X509_COMP;

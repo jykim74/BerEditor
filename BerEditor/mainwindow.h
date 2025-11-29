@@ -131,6 +131,8 @@ public:
     void viewEditExpandNode( bool bChecked );
     void viewEditCollapseAll( bool bChecked );
     void viewEditCollapseNode( bool bChecked );
+    void viewEditPrev( bool bChecked );
+    void viewEditNext( bool bChecked );
     void viewEditFindNode( bool bChecked );
 
     void viewToolDataConverter( bool bChecked );
@@ -205,6 +207,8 @@ private slots:
     void treeExpandNode();
     void treeCollapseAll();
     void treeCollapseNode();
+    void prevNode();
+    void nextNode();
     void findNode();
 
     void about();
@@ -366,6 +370,8 @@ private:
     QAction* expand_node_act_;
     QAction* collapse_all_act_;
     QAction* collapse_node_act_;
+    QAction* prev_act_;
+    QAction* next_act_;
     QAction* find_node_act_;
 
     QToolBar* tool_tool_;

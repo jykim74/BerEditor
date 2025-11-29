@@ -106,5 +106,7 @@
         <file>images/type_check.png</file>
         <file>images/loading.gif</file>
         <file>images/decode_ttlv.png</file>
+        <file>images/prev.png</file>
+        <file>images/next.png</file>
     </qresource>
 </RCC>
