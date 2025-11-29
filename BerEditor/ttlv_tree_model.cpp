@@ -326,3 +326,208 @@ const TTLVTreeItem* TTLVTreeModel::findItemByOffset( TTLVTreeItem* pParentItem, 
 
     return nullptr;
 }
+
+const TTLVTreeItem* TTLVTreeModel::findNextItemByValue( const TTLVTreeItem* pItem, const BIN *pValue, bool bMatched )
+{
+    int ret = 0;
+    BIN binCurValue = {0,0};
+    TTLVTreeView viewTree = berApplet->mainWindow()->ttlvTree();
+    TTLVTreeItem *pCurItem = NULL;
+    QModelIndex ri;
+
+    if( pValue == NULL )
+        return nullptr;
+
+    if( pItem == NULL )
+    {
+        pCurItem = (TTLVTreeItem *)item(0,0);
+    }
+    else
+    {
+        pCurItem = viewTree.getNext( (TTLVTreeItem *)pItem );
+    }
+
+    if( pValue == NULL || pValue->nLen <= 0 ) return pCurItem;
+
+    while( pCurItem )
+    {
+        if( pCurItem->isStructure() == false )
+        {
+            binCurValue.pVal = binTTLV_.pVal + pCurItem->getOffset() + JS_TTLV_HEADER_SIZE;
+            binCurValue.nLen = pCurItem->getLengthInt();
+
+            if( bMatched == true )
+            {
+                ret = JS_BIN_cmp( &binCurValue, pValue );
+                if( ret == 0 ) return pCurItem;
+            }
+            else
+            {
+                ret = JS_BIN_memmem( &binCurValue, pValue );
+                if( ret >= 0 ) return pCurItem;
+            }
+        }
+
+        pCurItem = viewTree.getNext( pCurItem );
+    }
+
+    return nullptr;
+}
+
+const TTLVTreeItem* TTLVTreeModel::findPrevItemByValue( const TTLVTreeItem* pItem, const BIN *pValue, bool bMatched )
+{
+    int ret = 0;
+    BIN binCurValue = {0,0};
+    TTLVTreeView viewTree = berApplet->mainWindow()->berTree();
+    TTLVTreeItem *pCurItem = NULL;
+    QModelIndex ri;
+
+    if( pValue == NULL )
+        return nullptr;
+
+    if( pItem == NULL )
+    {
+        pCurItem = (TTLVTreeItem *)item(0,0);
+    }
+    else
+    {
+        pCurItem = viewTree.getPrev( (TTLVTreeItem *)pItem );
+    }
+
+    if( pValue == NULL || pValue->nLen <= 0 ) return pCurItem;
+
+    while( pCurItem )
+    {
+        if( pCurItem->isStructure() == false )
+        {
+            binCurValue.pVal = binTTLV_.pVal + pCurItem->getOffset() + JS_TTLV_HEADER_SIZE;
+            binCurValue.nLen = pCurItem->getLengthInt();
+
+            if( bMatched == true )
+            {
+                ret = JS_BIN_cmp( &binCurValue, pValue );
+                if( ret == 0 ) return pCurItem;
+            }
+            else
+            {
+                ret = JS_BIN_memmem( &binCurValue, pValue );
+                if( ret >= 0 ) return pCurItem;
+            }
+        }
+
+        pCurItem = viewTree.getPrev( pCurItem );
+    }
+
+    return nullptr;
+}
+
+
+const TTLVTreeItem* TTLVTreeModel::findNextItemByValue( const TTLVTreeItem* pItem, const BIN *pHeader, const BIN *pValue, bool bMatched )
+{
+    int ret = 0;
+    BIN binCurValue = {0,0};
+    BIN binCurHeader = {0,0};
+
+    TTLVTreeView viewTree = berApplet->mainWindow()->berTree();
+    TTLVTreeItem *pCurItem = NULL;
+    QModelIndex ri;
+
+    if( pValue == NULL )
+        return nullptr;
+
+    if( pItem == NULL )
+    {
+        pCurItem = (TTLVTreeItem *)item(0,0);
+    }
+    else
+    {
+        pCurItem = viewTree.getNext( (TTLVTreeItem *)pItem );
+    }
+
+    while( pCurItem )
+    {
+        if( pCurItem->isStructure() == false )
+        {
+            binCurHeader.pVal = binTTLV_.pVal + pCurItem->getOffset();
+            binCurHeader.nLen = JS_TTLV_HEADER_SIZE;
+
+            if( JS_BIN_cmp( &binCurHeader, pHeader ) == 0 )
+            {
+                if( pValue == NULL || pValue->nLen == 0 ) return pCurItem;
+
+                binCurValue.pVal = binTTLV_.pVal + pCurItem->getOffset() + JS_TTLV_HEADER_SIZE;
+                binCurValue.nLen = pCurItem->getLengthInt();
+
+                if( bMatched == true )
+                {
+                    ret = JS_BIN_cmp( &binCurValue, pValue );
+                    if( ret == 0 ) return pCurItem;
+                }
+                else
+                {
+                    ret = JS_BIN_memmem( &binCurValue, pValue );
+                    if( ret >= 0 ) return pCurItem;
+                }
+            }
+        }
+
+        pCurItem = viewTree.getNext( pCurItem );
+    }
+
+    return nullptr;
+}
+
+const TTLVTreeItem* TTLVTreeModel::findPrevItemByValue( const TTLVTreeItem* pItem, const BIN *pHeader, const BIN *pValue, bool bMatched )
+{
+    int ret = 0;
+    BIN binCurValue = {0,0};
+    BIN binCurHeader = {0,0};
+
+    TTLVTreeView viewTree = berApplet->mainWindow()->berTree();
+    TTLVTreeItem *pCurItem = NULL;
+    QModelIndex ri;
+
+    if( pValue == NULL )
+        return nullptr;
+
+    if( pItem == NULL )
+    {
+        pCurItem = (TTLVTreeItem *)item(0,0);
+    }
+    else
+    {
+        pCurItem = viewTree.getPrev( (TTLVTreeItem *)pItem );
+    }
+
+    while( pCurItem )
+    {
+        if( pCurItem->isStructure() == false )
+        {
+            binCurHeader.pVal = binTTLV_.pVal + pCurItem->getOffset();
+            binCurHeader.nLen = JS_TTLV_HEADER_SIZE;
+
+            if( JS_BIN_cmp( &binCurHeader, pHeader ) == 0 )
+            {
+                if( pValue == NULL || pValue->nLen == 0 ) return pCurItem;
+
+                binCurValue.pVal = binTTLV_.pVal + pCurItem->getOffset() + JS_TTLV_HEADER_SIZE;
+                binCurValue.nLen = pCurItem->getLengthInt();
+
+                if( bMatched == true )
+                {
+                    ret = JS_BIN_cmp( &binCurValue, pValue );
+                    if( ret == 0 ) return pCurItem;
+                }
+                else
+                {
+                    ret = JS_BIN_memmem( &binCurValue, pValue );
+                    if( ret >= 0 ) return pCurItem;
+                }
+            }
+        }
+
+        pCurItem = pCurItem = viewTree.getPrev( pCurItem );
+    }
+
+    return nullptr;
+}

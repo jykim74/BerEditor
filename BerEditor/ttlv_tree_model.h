@@ -25,6 +25,11 @@ public:
     int modifyItem( TTLVTreeItem *pItem, const BIN *pValue );
     const TTLVTreeItem* findItemByOffset( TTLVTreeItem* pParentItem, int nOffset );
 
+    const TTLVTreeItem* findNextItemByValue( const TTLVTreeItem* pItem, const BIN *pValue, bool bMatched = false );
+    const TTLVTreeItem* findPrevItemByValue( const TTLVTreeItem* pItem, const BIN *pValue, bool bMatched = false );
+    const TTLVTreeItem* findNextItemByValue( const TTLVTreeItem* pItem, const BIN *pHeader, const BIN *pValue, bool bMatched = false );
+    const TTLVTreeItem* findPrevItemByValue( const TTLVTreeItem* pItem, const BIN *pHeader, const BIN *pValue, bool bMatched = false );
+
 private:
     int getItem( int offset, TTLVTreeItem *pItem );
     int getItem( BIN *pTTLV, int offset, TTLVTreeItem *pItem );
