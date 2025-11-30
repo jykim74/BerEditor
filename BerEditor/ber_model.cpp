@@ -46,7 +46,7 @@ void BerModel::getTablePosition( int nOffset, int *pRow, int *pCol )
     if( nOffset < 0 ) return;
 
     int nRow = int( nOffset / 16 );
-    int nCol = (nOffset % 16) + 1;
+    int nCol = ( nOffset % 16) + 1;
 
     *pRow = nRow;
     *pCol = nCol;
@@ -1102,8 +1102,6 @@ void BerModel::selectValue( BerItem *pItem, const BIN *pValue, bool bPart )
     int nLen = 0;
     if( pItem == NULL) return;
 
-    int nMod = 0;
-
     if( pValue == NULL || pValue->nLen <= 0 )
     {
         if( bPart == true )
@@ -1135,13 +1133,12 @@ void BerModel::selectValue( BerItem *pItem, const BIN *pValue, bool bPart )
     }
 
     QTableWidget *pTable = berApplet->mainWindow()->rightTable();
-    if( bPart ) nMod = nStart % 16;
 
     for( int i = 0; i < nLen; i++ )
     {
         int nRow = 0;
         int nCol = 0;
-        getTablePosition( nStart - nMod + i, &nRow, &nCol );
+        getTablePosition( nStart + i, &nRow, &nCol );
         QTableWidgetItem *pTableItem = pTable->item( nRow, nCol );
         pTableItem->setSelected(true);
     }

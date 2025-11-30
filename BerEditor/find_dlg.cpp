@@ -2,6 +2,7 @@
 #include "mainwindow.h"
 #include "ber_applet.h"
 #include "common.h"
+#include "settings_mgr.h"
 
 #include "js_pki.h"
 #include "js_kms.h"
@@ -277,7 +278,7 @@ void FindDlg::findBER_Next()
         QModelIndex fi = pCurItem->index();
         tree->clicked( fi );
         tree->setCurrentIndex( fi );
-        model->selectValue( pCurItem, &binValue );
+        model->selectValue( pCurItem, &binValue, berApplet->settingsMgr()->showPartOnly() );
     }
     else
     {
@@ -311,7 +312,7 @@ void FindDlg::findBER_Previous()
         QModelIndex fi = pCurItem->index();
         tree->clicked( fi );
         tree->setCurrentIndex( fi );
-        model->selectValue( pCurItem, &binValue );
+        model->selectValue( pCurItem, &binValue, berApplet->settingsMgr()->showPartOnly() );
     }
     else
     {

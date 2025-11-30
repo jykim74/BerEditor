@@ -187,6 +187,7 @@ void MainWindow::initialize()
     right_table_->setEditTriggers(QAbstractItemView::NoEditTriggers);
     right_table_->setSelectionMode( QAbstractItemView::ExtendedSelection );
     right_table_->horizontalHeader()->setHighlightSections(false);
+    right_table_->setStyleSheet( kSelectStyle );
 
 //    right_table_->setSelectionMode(QAbstractItemView::ContiguousSelection);
 //    right_table_->setSelectionMode(QAbstractItemView::MultiSelection);
