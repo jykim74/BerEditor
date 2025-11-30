@@ -13,8 +13,6 @@ static const QStringList kTTLVTypeList = { "None", "Structure", "Integer", "Long
                                    "BigInteger", "Enumeration", "Boolean", "TextString",
                                    "ByteString", "DateTime", "Interval", "DateTimeExtented" };
 
-static const QStringList kLevelList = { "Any", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-
 static const QStringList kBerValueType = { "String", "Hex", "Decimal", "OID" };
 static const QStringList kTTLVValueType = { "String", "Hex", "Number" };
 
@@ -78,11 +76,8 @@ void FindDlg::initUI()
     mTTLV_TagText->setPlaceholderText( "4200XX" );
     mTTLV_TypeCombo->addItems( kTTLVTypeList );
 
-//    mPreviousBtn->setEnabled( false );
-    mLevelCombo->addItems( kLevelList );
     mValueTypeCombo->addItems( kBerValueType );
 
-//    mHeadCheck->setChecked(true);
     mBERGroup->setEnabled(false);
     mTTLVGroup->setEnabled(false);
 }
@@ -282,6 +277,7 @@ void FindDlg::findBER_Next()
         QModelIndex fi = pCurItem->index();
         tree->clicked( fi );
         tree->setCurrentIndex( fi );
+        model->selectValue( pCurItem, &binValue );
     }
     else
     {
@@ -315,6 +311,7 @@ void FindDlg::findBER_Previous()
         QModelIndex fi = pCurItem->index();
         tree->clicked( fi );
         tree->setCurrentIndex( fi );
+        model->selectValue( pCurItem, &binValue );
     }
     else
     {

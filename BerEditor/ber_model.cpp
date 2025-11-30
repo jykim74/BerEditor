@@ -41,6 +41,17 @@ void BerModel::setBER(const BIN *pBer )
     if( pBer != NULL ) JS_BIN_copy( &binBer_, pBer );
 }
 
+void BerModel::getTablePosition( int nOffset, int *pRow, int *pCol )
+{
+    if( nOffset < 0 ) return;
+
+    int nRow = int( nOffset / 16 );
+    int nCol = (nOffset % 16) + 1;
+
+    *pRow = nRow;
+    *pCol = nCol;
+}
+
 #ifdef OLD_TREE
 int BerModel::parseTree( bool bExpand )
 {
@@ -1082,4 +1093,56 @@ const BerItem* BerModel::findPrevItemByValue( const BerItem* pItem, BYTE cTag, c
     }
 
     return nullptr;
+}
+
+
+void BerModel::selectValue( BerItem *pItem, const BIN *pValue, bool bPart )
+{
+    int nStart = 0;
+    int nLen = 0;
+    if( pItem == NULL) return;
+
+    int nMod = 0;
+
+    if( pValue == NULL || pValue->nLen <= 0 )
+    {
+        if( bPart == true )
+        {
+            nStart = pItem->GetHeaderSize();
+        }
+        else
+        {
+            nStart = pItem->GetOffset() + pItem->GetHeaderSize();
+        }
+
+        nLen = pItem->GetLength();
+    }
+    else
+    {
+        BIN binCurValue;
+        binCurValue.pVal = binBer_.pVal + pItem->GetOffset() + pItem->GetHeaderSize();
+        binCurValue.nLen = pItem->GetValLength();
+
+        int ret = JS_BIN_memmem( &binCurValue, pValue );
+        if( ret < 0 ) return;
+
+        if( bPart == true )
+            nStart = pItem->GetHeaderSize() + ret;
+        else
+            nStart = pItem->GetOffset() + pItem->GetHeaderSize() + ret;
+
+        nLen = pValue->nLen;
+    }
+
+    QTableWidget *pTable = berApplet->mainWindow()->rightTable();
+    if( bPart ) nMod = nStart % 16;
+
+    for( int i = 0; i < nLen; i++ )
+    {
+        int nRow = 0;
+        int nCol = 0;
+        getTablePosition( nStart - nMod + i, &nRow, &nCol );
+        QTableWidgetItem *pTableItem = pTable->item( nRow, nCol );
+        pTableItem->setSelected(true);
+    }
 }

@@ -43,6 +43,8 @@ public:
     const BerItem* findNextItemByValue( const BerItem* pItem, BYTE cTag, const BIN *pValue, bool bMatched = false );
     const BerItem* findPrevItemByValue( const BerItem* pItem, BYTE cTag, const BIN *pValue, bool bMatched = false );
 
+    void selectValue( BerItem *pItem, const BIN *pValue, bool bPart = false );
+
 private:
 //    int resizeParentHeader( int nDiffLen, const BerItem *pItem, BIN *pBER );
 
@@ -50,6 +52,7 @@ private:
     int resizeHeadToTop( BIN *pBER, BerItem *pItem, int nModItemLen );
 
     void initialize();
+    void getTablePosition( int nOffset, int *pRow, int *pCol );
 
     BIN     binBer_;
 };
