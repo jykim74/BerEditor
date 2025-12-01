@@ -130,10 +130,6 @@ void FindDlg::getValueBIN( BIN *pBin )
     {
         getBINFromString( pBin, DATA_STRING, strValue );
     }
-    else if( strType == "Hex" )
-    {
-        getBINFromString( pBin, DATA_HEX, strValue );
-    }
     else if( strType == "Decimal" )
     {
         JS_PKI_decimalToBin( strValue.toStdString().c_str(), pBin );
@@ -158,21 +154,11 @@ void FindDlg::getValueBIN( BIN *pBin )
     {
         JS_PKI_getOIDValueFromString( strValue.toStdString().c_str(), pBin );
     }
-    else if( strType == "Number" )
+    else
     {
-        BIN binTmp = {0,0};
-        JS_PKI_decimalToBin( strValue.toStdString().c_str(), &binTmp );
-        int nLeft = 4 - binTmp.nLen % 4;
-
-        if( nLeft > 0 ) JS_BIN_setChar(pBin, 0x00, nLeft );
-        JS_BIN_appendBin( pBin, &binTmp );
-        JS_BIN_reset( &binTmp );
+        getBINFromString( pBin, DATA_HEX, strValue );
     }
 }
-
-
-
-
 
 void FindDlg::makeBER_Header()
 {
