@@ -142,13 +142,14 @@ int BerModel::getItemInfo( int nOffset, BerItem *pItem )
     return getItemInfo( &binBer_, nOffset, pItem );
 }
 
-int BerModel::getConstructedItemInfo( const BIN *pBER, int nStart, BerItem *pItem, bool bExpand )
+int BerModel::getConstructedItemInfo( const BIN *pBER, BerItem *pItem, bool bExpand )
 {
     int nRet = 0;
 
     int nOffset = 0;
     int nLevel = 0;
     bool bConstructed = false;
+    int nStart = pItem->GetOffset() + pItem->GetHeaderSize();
 
     if( pBER == NULL || pItem == NULL ) return JSR_BAD_ARG;
 
@@ -156,6 +157,9 @@ int BerModel::getConstructedItemInfo( const BIN *pBER, int nStart, BerItem *pIte
 
     nLevel = pItem->GetLevel() + 1;
     nOffset = nStart;
+
+    // BIT String Unused Bits 값 스킵
+    if( pItem->isType( JS_BITSTRING ) == true ) nOffset++;
 
     do {
         BerItem *pChild = new BerItem;
@@ -178,7 +182,7 @@ int BerModel::getConstructedItemInfo( const BIN *pBER, int nStart, BerItem *pIte
 
         if( bConstructed == true )
         {
-            nRet = getConstructedItemInfo( pBER, nOffset + pChild->GetHeaderSize(), pChild, bExpand );
+            nRet = getConstructedItemInfo( pBER, pChild, bExpand );
             if( nRet != JSR_OK ) return nRet;
         }
         else
@@ -187,23 +191,18 @@ int BerModel::getConstructedItemInfo( const BIN *pBER, int nStart, BerItem *pIte
             {
                 if( pChild->isType( JS_OCTETSTRING ) || pChild->isType( JS_BITSTRING ) )
                 {
-                    int nChildStart = -1;
-                    int nChildLen = -1;
+                    int nChildStart = pChild->GetOffset() + pChild->GetHeaderSize();
+                    int nChildLen = pChild->GetLength();;
 
-                    if( pChild->isType( JS_OCTETSTRING ) )
+                    if( pChild->isType( JS_BITSTRING ) )
                     {
-                        nChildStart = nOffset + pChild->GetHeaderSize();
-                        nChildLen = pChild->GetLength();
-                    }
-                    else
-                    {
-                        nChildStart = nOffset + pChild->GetHeaderSize() + 1;
-                        nChildLen = pChild->GetLength() - 1;
+                        nChildStart++;
+                        nChildLen--;
                     }
 
                     if( JS_BER_isExpandable( &binBer_.pVal[nChildStart], nChildLen ) == 1 )
                     {
-                        nRet = getConstructedItemInfo( pBER, nChildStart, pChild, bExpand );
+                        nRet = getConstructedItemInfo( pBER, pChild, bExpand );
                     }
                 }
             }
@@ -214,10 +213,6 @@ int BerModel::getConstructedItemInfo( const BIN *pBER, int nStart, BerItem *pIte
         if( pItem->GetIndefinite() == false )
         {
             int nEnd = nStart + pItem->GetLength();
-
-            // BITSTRING 경우는 Unused 표시 바이트 다음 부터여서 길이에서 1을 빼주어야 함
-            if( pItem->isType( JS_BITSTRING ) )
-                nEnd = nEnd - 1;
 
             if( nOffset >= nEnd )
                 return JSR_OK;
@@ -259,7 +254,7 @@ int BerModel::makeTree( bool bExpand )
     insertRow( 0, pRootItem );
     if( pRootItem->isConstructed() == true )
     {
-        ret = getConstructedItemInfo( &binBer_, pRootItem->GetHeaderSize(), pRootItem, bExpand );
+        ret = getConstructedItemInfo( &binBer_, pRootItem, bExpand );
         if( ret != JSR_OK ) return ret;
     }
 
@@ -267,23 +262,18 @@ int BerModel::makeTree( bool bExpand )
     {
         if( pRootItem->isType( JS_OCTETSTRING ) || pRootItem->isType( JS_BITSTRING ) )
         {
-            int nChildStart = -1;
-            int nChildLen = -1;
+            int nChildStart = pRootItem->GetHeaderSize();
+            int nChildLen = pRootItem->GetLength();
 
-            if( pRootItem->isType( JS_OCTETSTRING ) )
+            if( pRootItem->isType( JS_BITSTRING ) )
             {
-                nChildStart = pRootItem->GetHeaderSize();
-                nChildLen = pRootItem->GetLength();
-            }
-            else
-            {
-                nChildStart = pRootItem->GetHeaderSize() + 1;
-                nChildLen = pRootItem->GetLength() - 1;
+                nChildStart++;
+                nChildLen--;
             }
 
             if( JS_BER_isExpandable( &binBer_.pVal[nChildStart], nChildLen ) == 1 )
             {
-                ret = getConstructedItemInfo( &binBer_, nChildStart, pRootItem, bExpand );
+                ret = getConstructedItemInfo( &binBer_, pRootItem, bExpand );
                 if( ret != JSR_OK ) return ret;
             }
         }

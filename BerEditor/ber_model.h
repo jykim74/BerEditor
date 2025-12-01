@@ -21,7 +21,7 @@ public:
 
     int getItemInfo( const BIN *pBER, int nOffset, BerItem *pItem );
     int getItemInfo( int nOffset, BerItem *pItem );
-    int getConstructedItemInfo( const BIN *pBER, int nStart, BerItem *pItem, bool bExpand );
+    int getConstructedItemInfo( const BIN *pBER, BerItem *pItem, bool bExpand );
     int makeTree( bool bExpand );
 
     const BerItem* addItem( BerItem* pParentItem, bool bFirst, const BIN *pData );

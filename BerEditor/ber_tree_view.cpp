@@ -843,34 +843,28 @@ void BerTreeView::ExpandValue()
     // 기존에 열었던 아이템 먼저 제거
     item->removeRow(0);
 
-    int offset = item->GetOffset();
+    int offset = item->GetOffset() + item->GetHeaderSize();
     int len = item->GetLength();
-    int start = 0;
+
     binBER = tree_model->getBER();
 
     if( len <= 0 ) return;
 
-    if( item->GetTag() == JS_BITSTRING )
+    if( item->isType( JS_BITSTRING ) )
     {
         offset += 1; // skip unused bits
         len -= 1;
     }
 
-    start = offset;
-    start += item->GetHeaderSize();
-
-    if( JS_BER_isExpandable( &binBER.pVal[start], len ) != 1 )
+    if( JS_BER_isExpandable( &binBER.pVal[offset], len ) != 1 )
     {
         ret = -1;
         goto end;
     }
 
     // Expand case (BitString or OctetString )  definite value only
-#ifdef OLD_TREE
-    tree_model->parseConstruct( start, item, false );
-#else
-    tree_model->getConstructedItemInfo( &binBER, start, item, false );
-#endif
+
+    tree_model->getConstructedItemInfo( &binBER, item, false );
 
 end :
     if( ret < 0 )
