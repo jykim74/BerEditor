@@ -264,7 +264,7 @@ void FindDlg::findBER_Next()
         QModelIndex fi = pCurItem->index();
         tree->clicked( fi );
         tree->setCurrentIndex( fi );
-        model->selectValue( pCurItem, &binValue, berApplet->settingsMgr()->showPartOnly() );
+        model->selectValue( pCurItem, &binValue, berApplet->settingsMgr()->showBERSelOnly() );
     }
     else
     {
@@ -298,7 +298,7 @@ void FindDlg::findBER_Previous()
         QModelIndex fi = pCurItem->index();
         tree->clicked( fi );
         tree->setCurrentIndex( fi );
-        model->selectValue( pCurItem, &binValue, berApplet->settingsMgr()->showPartOnly() );
+        model->selectValue( pCurItem, &binValue, berApplet->settingsMgr()->showBERSelOnly() );
     }
     else
     {
@@ -415,7 +415,7 @@ void FindDlg::findTTLV_Next()
         QModelIndex fi = pCurItem->index();
         tree->clicked( fi );
         tree->setCurrentIndex( fi );
-        model->selectValue( pCurItem, &binValue, berApplet->settingsMgr()->showPartOnly() );
+        model->selectValue( pCurItem, &binValue, berApplet->settingsMgr()->showTTLVSelOnly() );
     }
     else
     {
@@ -452,7 +452,7 @@ void FindDlg::findTTLV_Previous()
         QModelIndex fi = pCurItem->index();
         tree->clicked( fi );
         tree->setCurrentIndex( fi );
-        model->selectValue( pCurItem, &binValue, berApplet->settingsMgr()->showPartOnly() );
+        model->selectValue( pCurItem, &binValue, berApplet->settingsMgr()->showTTLVSelOnly() );
     }
     else
     {

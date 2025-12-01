@@ -193,7 +193,7 @@ void TTLVTreeView::onItemClicked( const QModelIndex& index )
     else
         showRightPart( item );
 #else
-    viewTable( item, setMgr->getShowPartOnly() );
+    viewTable( item, setMgr->getShowTTLVSelOnly() );
 #endif
 
     getInfoView( item, nWidth );

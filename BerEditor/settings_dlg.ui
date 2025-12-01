@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>545</width>
-    <height>350</height>
+    <height>368</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,8 +34,25 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <item>
+        <layout class="QGridLayout" name="gridLayout_10">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <item row="1" column="0">
+          <widget class="QCheckBox" name="mCheckShowBERSelOnly">
+           <property name="text">
+            <string>Show only BER selection area</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QCheckBox" name="mCheckShowTTLVSelOnly">
+           <property name="text">
+            <string>Show only TTLV selection area</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
           <widget class="QCheckBox" name="mCheckBoxLatestVersion">
            <property name="minimumSize">
             <size>
@@ -48,14 +65,7 @@
            </property>
           </widget>
          </item>
-         <item>
-          <widget class="QCheckBox" name="mCheckShowPartOnly">
-           <property name="text">
-            <string>Show selected data only in body</string>
-           </property>
-          </widget>
-         </item>
-         <item>
+         <item row="3" column="0">
           <widget class="QCheckBox" name="mUseLogTabCheck">
            <property name="text">
             <string>Use log tab at startup</string>
@@ -566,9 +576,6 @@
  </widget>
  <tabstops>
   <tabstop>mTabWidget</tabstop>
-  <tabstop>mCheckBoxLatestVersion</tabstop>
-  <tabstop>mCheckShowPartOnly</tabstop>
-  <tabstop>mUseLogTabCheck</tabstop>
   <tabstop>mFontFamilyCombo</tabstop>
   <tabstop>mDefaultHashCombo</tabstop>
   <tabstop>mLangComboBox</tabstop>

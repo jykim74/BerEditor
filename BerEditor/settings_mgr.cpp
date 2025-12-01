@@ -11,7 +11,8 @@
 
 SettingsMgr::SettingsMgr(QObject *parent) : QObject(parent)
 {
-    show_part_ = false;
+    show_ber_sel_only_ = false;
+    show_ttlv_sel_only_ = false;
     default_hash_ = "";
     cert_path_ = "";
     hex_area_width_ = -1;
@@ -24,7 +25,8 @@ SettingsMgr::SettingsMgr(QObject *parent) : QObject(parent)
 
 void SettingsMgr::initialize()
 {
-    getShowPartOnly();
+    getShowBERSelOnly();
+    getShowTTLVSelOnly();
     getUseCertMan();
     getAutoExpand();
 
@@ -56,25 +58,46 @@ void SettingsMgr::removeSet( const QString& group, const QString& name )
     settings.endGroup();
 }
 
-void SettingsMgr::setShowPartOnly(bool val)
+void SettingsMgr::setShowBERSelOnly(bool val)
 {
     QSettings settings;
-    show_part_ = val;
+    show_ber_sel_only_ = val;
 
     settings.beginGroup(kBehaviorGroup);
-    settings.setValue( kShowPartOnly, show_part_ );
+    settings.setValue( kShowBERSelOnly, show_ber_sel_only_ );
     settings.endGroup();
 }
 
-bool SettingsMgr::getShowPartOnly()
+bool SettingsMgr::getShowBERSelOnly()
 {
     QSettings settings;
 
     settings.beginGroup(kBehaviorGroup);
-    show_part_ = settings.value(kShowPartOnly, false).toBool();
+    show_ber_sel_only_ = settings.value(kShowBERSelOnly, false).toBool();
     settings.endGroup();
 
-    return show_part_;
+    return show_ber_sel_only_;
+}
+
+void SettingsMgr::setShowTTLVSelOnly(bool val)
+{
+    QSettings settings;
+    show_ttlv_sel_only_ = val;
+
+    settings.beginGroup(kBehaviorGroup);
+    settings.setValue( kShowTTLVSelOnly, show_ttlv_sel_only_ );
+    settings.endGroup();
+}
+
+bool SettingsMgr::getShowTTLVSelOnly()
+{
+    QSettings settings;
+
+    settings.beginGroup(kBehaviorGroup);
+    show_ttlv_sel_only_ = settings.value(kShowTTLVSelOnly, false).toBool();
+    settings.endGroup();
+
+    return show_ttlv_sel_only_;
 }
 
 void SettingsMgr::setUseCertMan( bool val )

@@ -11,7 +11,8 @@
 
 namespace  {
 const char *kBehaviorGroup = "Behavior";
-const char *kShowPartOnly = "showPartOnly";
+const char *kShowBERSelOnly = "showBERSelOnly";
+const char *kShowTTLVSelOnly = "showTTLVSelOnly";
 const char *kOIDConfigPath = "OIDConfigPath";
 const char *kUseLogTab = "useLogTab";
 const char *kDefaultHash = "defaultHash";
@@ -47,9 +48,13 @@ public:
     SettingsMgr(QObject *parent = nullptr);
     void removeSet( const QString& group, const QString& name );
 
-    void setShowPartOnly( bool val );
-    bool getShowPartOnly();
-    bool showPartOnly() { return show_part_; };
+    void setShowBERSelOnly( bool val );
+    bool getShowBERSelOnly();
+    bool showBERSelOnly() { return show_ber_sel_only_; };
+
+    void setShowTTLVSelOnly( bool val );
+    bool getShowTTLVSelOnly();
+    bool showTTLVSelOnly() { return show_ttlv_sel_only_; };
 
     void setUseCertMan( bool val );
     bool getUseCertMan();
@@ -130,7 +135,9 @@ private:
     void initialize();
 
 private:
-    bool show_part_;
+    bool show_ber_sel_only_;
+    bool show_ttlv_sel_only_;
+
     QString default_hash_;
     int file_read_size_;
     QString cert_path_;

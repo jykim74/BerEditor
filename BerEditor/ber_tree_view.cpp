@@ -77,7 +77,7 @@ void BerTreeView::onItemClicked(const QModelIndex& index )
         GetTableFullView(&binBer, item);
     }
 #else
-    viewTable( &binBer, item, set_mgr->showPartOnly() );
+    viewTable( &binBer, item, set_mgr->showBERSelOnly() );
 #endif
 
 #ifdef QT_DEBUG
