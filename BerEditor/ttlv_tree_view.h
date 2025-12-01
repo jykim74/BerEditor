@@ -50,11 +50,7 @@ private :
     void setItemJSON( int level, TTLVTreeItem* item, bool bNext, TTLVTreeItem *setItem = nullptr );
 
     void addEdit( int level, const QString& strMsg );
-#ifdef OLD_TREE
-    void showRight();
-    void showRightFull( TTLVTreeItem *pItem );
-    void showRightPart( TTLVTreeItem *pItem );
-#endif
+
     void viewTable( TTLVTreeItem *pItem, bool bPart = false );
     void viewHex( TTLVTreeItem *pItem, bool bPart );
     void viewXML( TTLVTreeItem *pItem, bool bPart );

@@ -19,15 +19,6 @@ public:
     void setBER( const BIN *pBer );
     const BIN& getBER() { return binBer_; };
 
-#ifdef OLD_TREE
-    int parseTree( bool bExpand );
-    int parseConstruct( int offset, BerItem *pParentItem, bool bExpand );
-    int parseIndefiniteConstruct( int offset, BerItem *pParentItem, bool bExpand );
-
-    int getItem( int offset, BerItem *pItem );
-    int getItem( const BIN *pBer, int offset, BerItem *pItem );
-#endif
-
     int getItemInfo( const BIN *pBER, int nOffset, BerItem *pItem );
     int getItemInfo( int nOffset, BerItem *pItem );
     int getConstructedItemInfo( const BIN *pBER, int nStart, BerItem *pItem, bool bExpand );

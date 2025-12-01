@@ -2122,11 +2122,7 @@ int MainWindow::openBer( const BIN *pBer )
     timer.start();
 #endif
 
-#ifdef OLD_TREE
-    ber_model_->parseTree( berApplet->settingsMgr()->autoExpand() );
-#else
     ber_model_->makeTree( berApplet->settingsMgr()->autoExpand() );
-#endif
 
 #ifdef QT_DEBUG
     us = timer.nsecsElapsed() / 1000;

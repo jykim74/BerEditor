@@ -17,7 +17,6 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 add_definitions( -D_USE_LCN_SRV )
-#add_definitions( -DOLD_TREE )
 
 set( OPENSSL "openssl35" )
 

@@ -1562,7 +1562,7 @@ int CertManDlg::writeNameHash( const QString strPath, const BIN *pCert )
         if( QFileInfo::exists( strFilePath ) == false ) break;
     }
 
-    if( i > NAME_HASH_MAX_NUM ) return -1;
+    if( i > NAME_HASH_MAX_NUM ) return JSR_OVER_NAME_HASH_NUM;
 
     ret = JS_BIN_writePEM( pCert, JS_PEM_TYPE_CERTIFICATE, strFilePath.toLocal8Bit().toStdString().c_str() );
 
@@ -1593,7 +1593,7 @@ int CertManDlg::writeCRL( const QString strCRLPath, const BIN *pCRL )
         i++;
     }
 
-    if( i > NAME_HASH_MAX_NUM ) return JSR_ERR2;
+    if( i > NAME_HASH_MAX_NUM ) return JSR_OVER_NAME_HASH_NUM;
 
     ret = JS_BIN_writePEM( pCRL, JS_PEM_TYPE_CRL, strFilePath.toLocal8Bit().toStdString().c_str() );
 
