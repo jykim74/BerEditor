@@ -4,10 +4,15 @@
  * All rights reserved.
  */
 #include <QMenu>
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QMimeData>
 
 #include "cert_pvd_dlg.h"
 #include "js_pki.h"
 #include "js_pki_pvd.h"
+#include "js_pki_x509.h"
+#include "js_pki_tools.h"
 #include "js_util.h"
 #include "js_error.h"
 #include "common.h"
@@ -29,6 +34,7 @@ CertPVDDlg::CertPVDDlg(QWidget *parent) :
     QDialog(parent)
 {
     setupUi(this);
+    setAcceptDrops( true );
 
     connect( mPathTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotPathMenu(QPoint)));
     connect( mParamTable, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT( slotParamMenu(QPoint)));
@@ -94,6 +100,70 @@ CertPVDDlg::~CertPVDDlg()
 
 }
 
+void CertPVDDlg::dragEnterEvent(QDragEnterEvent *event)
+{
+    if (event->mimeData()->hasUrls() || event->mimeData()->hasText()) {
+        event->acceptProposedAction();  // 드랍 허용
+    }
+}
+
+void CertPVDDlg::dropEvent(QDropEvent *event)
+{
+    if (event->mimeData()->hasUrls()) {
+        QList<QUrl> urls = event->mimeData()->urls();
+
+        for (const QUrl &url : urls)
+        {
+            QString strPath = url.toLocalFile();
+            BIN binData = {0,0};
+            QString strType;
+            int nSelfSign = 0;
+            JCertInfo sCertInfo;
+
+            memset( &sCertInfo, 0x00, sizeof(sCertInfo));
+
+            JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), &binData );
+
+            if( JS_PKI_getCertInfo2( &binData, &sCertInfo, NULL, &nSelfSign) == JSR_OK )
+            {
+                if( mUseTrustListCheck->isChecked() == true )
+                {
+                    strType = kTypeUCert;
+                }
+                else
+                {
+                    if( nSelfSign == 1 )
+                        strType = kTypeTCert;
+                    else
+                        strType = kTypeUCert;
+                }
+            }
+            else
+            {
+                if( JS_PKI_isCRL( &binData ) == 1 )
+                {
+                    strType = kTypeCRL;
+                }
+                else
+                {
+                    JS_BIN_reset( &binData );
+                    continue;
+                }
+            }
+
+            mPathTable->insertRow( 0 );
+            mPathTable->setRowHeight( 0, 10 );
+            mPathTable->setItem( 0, 0, new QTableWidgetItem( strType ));
+            mPathTable->setItem( 0, 1, new QTableWidgetItem( strPath ));
+
+            JS_BIN_reset( &binData );
+            JS_PKI_resetCertInfo( &sCertInfo );
+        }
+    } else if (event->mimeData()->hasText()) {
+
+    }
+}
+
 void CertPVDDlg::initialize()
 {
     QStringList sPathLabels = { tr( "Type"), tr( "Path" ) };
@@ -141,10 +211,22 @@ void CertPVDDlg::slotPathMenu( QPoint pos )
 {
     QMenu *menu = new QMenu(this);
     QAction* delAct = new QAction( tr("Delete" ), this );
+    QAction* sendAct = new QAction( tr( "Send target" ), this );
+
+    QModelIndex idx = mPathTable->currentIndex();
+    QTableWidgetItem *pItem = mPathTable->item( idx.row(), 0 );
+    if( pItem == nullptr ) return;
+
+    QString strType = pItem->text();
 
     connect( delAct, SIGNAL(triggered(bool)), this, SLOT(delPath()));
+    connect( sendAct, SIGNAL(triggered(bool)), this, SLOT( sendTarget()));
+
+    if( strType == kTypeUCert )
+        menu->addAction( sendAct );
 
     menu->addAction( delAct );
+
     menu->popup( mPathTable->viewport()->mapToGlobal(pos));
 }
 
@@ -152,6 +234,10 @@ void CertPVDDlg::slotParamMenu( QPoint pos )
 {
     QMenu *menu = new QMenu(this);
     QAction* delAct = new QAction( tr("Delete" ), this );
+
+    QModelIndex idx = mParamTable->currentIndex();
+    QTableWidgetItem *pItem = mParamTable->item( idx.row(), 0 );
+    if( pItem == nullptr ) return;
 
     connect( delAct, SIGNAL(triggered(bool)), this, SLOT(delParam()));
 
@@ -165,6 +251,17 @@ void CertPVDDlg::delPath()
     QTableWidgetItem* item = mPathTable->item( idx.row(), 0 );
     if( item == NULL ) return;
 
+    mPathTable->removeRow( idx.row() );
+}
+
+void CertPVDDlg::sendTarget()
+{
+    QModelIndex idx = mPathTable->currentIndex();
+    QTableWidgetItem* item = mPathTable->item( idx.row(), 0 );
+    QTableWidgetItem* item1 = mPathTable->item( idx.row(), 1 );
+    if( item == NULL || item1 == NULL ) return;
+
+    mTargetPathText->setText( item1->text() );
     mPathTable->removeRow( idx.row() );
 }
 

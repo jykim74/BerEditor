@@ -22,10 +22,14 @@ public:
     ~CertPVDDlg();
 
 private slots:
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
+
     void slotPathMenu( QPoint pos );
     void slotParamMenu( QPoint pos );
 
     void delPath();
+    void sendTarget();
     void delParam();
 
     void clickViewCertCRL();
