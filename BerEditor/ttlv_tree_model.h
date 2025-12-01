@@ -30,9 +30,12 @@ public:
     const TTLVTreeItem* findNextItemByValue( const TTLVTreeItem* pItem, const BIN *pHeader, const BIN *pValue, bool bMatched = false );
     const TTLVTreeItem* findPrevItemByValue( const TTLVTreeItem* pItem, const BIN *pHeader, const BIN *pValue, bool bMatched = false );
 
+    void selectValue( TTLVTreeItem *pItem, const BIN *pValue, bool bPart = false );
+
 private:
     int getItem( int offset, TTLVTreeItem *pItem );
     int getItem( BIN *pTTLV, int offset, TTLVTreeItem *pItem );
+    void getTablePosition( int nOffset, int *pRow, int *pCol );
 
     int resizeParentHeader( int nDiffLen, const TTLVTreeItem *pItem, BIN* pTTLV );
 

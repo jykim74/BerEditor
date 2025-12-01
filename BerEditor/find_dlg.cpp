@@ -429,6 +429,7 @@ void FindDlg::findTTLV_Next()
         QModelIndex fi = pCurItem->index();
         tree->clicked( fi );
         tree->setCurrentIndex( fi );
+        model->selectValue( pCurItem, &binValue, berApplet->settingsMgr()->showPartOnly() );
     }
     else
     {
@@ -465,6 +466,7 @@ void FindDlg::findTTLV_Previous()
         QModelIndex fi = pCurItem->index();
         tree->clicked( fi );
         tree->setCurrentIndex( fi );
+        model->selectValue( pCurItem, &binValue, berApplet->settingsMgr()->showPartOnly() );
     }
     else
     {

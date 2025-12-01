@@ -1102,35 +1102,21 @@ void BerModel::selectValue( BerItem *pItem, const BIN *pValue, bool bPart )
     int nLen = 0;
     if( pItem == NULL) return;
 
-    if( pValue == NULL || pValue->nLen <= 0 )
-    {
-        if( bPart == true )
-        {
-            nStart = pItem->GetHeaderSize();
-        }
-        else
-        {
-            nStart = pItem->GetOffset() + pItem->GetHeaderSize();
-        }
+    if( pValue == NULL || pValue->nLen <= 0 ) return;
 
-        nLen = pItem->GetLength();
-    }
+    BIN binCurValue;
+    binCurValue.pVal = binBer_.pVal + pItem->GetOffset() + pItem->GetHeaderSize();
+    binCurValue.nLen = pItem->GetValLength();
+
+    int ret = JS_BIN_memmem( &binCurValue, pValue );
+    if( ret < 0 ) return;
+
+    if( bPart == true )
+        nStart = pItem->GetHeaderSize() + ret;
     else
-    {
-        BIN binCurValue;
-        binCurValue.pVal = binBer_.pVal + pItem->GetOffset() + pItem->GetHeaderSize();
-        binCurValue.nLen = pItem->GetValLength();
+        nStart = pItem->GetOffset() + pItem->GetHeaderSize() + ret;
 
-        int ret = JS_BIN_memmem( &binCurValue, pValue );
-        if( ret < 0 ) return;
-
-        if( bPart == true )
-            nStart = pItem->GetHeaderSize() + ret;
-        else
-            nStart = pItem->GetOffset() + pItem->GetHeaderSize() + ret;
-
-        nLen = pValue->nLen;
-    }
+    nLen = pValue->nLen;
 
     QTableWidget *pTable = berApplet->mainWindow()->rightTable();
 

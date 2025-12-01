@@ -194,7 +194,7 @@ static QString kSelectStyle =
 
 static const int kFileDefault = ACT_FILE_NEW | ACT_FILE_OPEN;
 
-static const int kEditDefault = ACT_EDIT_EXPAND_ALL | ACT_EDIT_EXPAND_NODE | ACT_EDIT_PREV_NODE | ACT_EDIT_NEXT_NODE | ACT_EDIT_FIND_NODE;
+static const int kEditDefault = ACT_EDIT_EXPAND_ALL | ACT_EDIT_EXPAND_NODE | ACT_EDIT_FIND_NODE;
 
 static const int kToolDefault = ACT_TOOL_DATA_CONVERTER | ACT_TOOL_OID_INFO | ACT_TOOL_MAKE_BER \
                          | ACT_TOOL_DECODE_DATA | ACT_TOOL_GET_URI;

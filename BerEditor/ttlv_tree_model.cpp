@@ -116,6 +116,17 @@ int TTLVTreeModel::getItem( BIN *pTTLV, int offset, TTLVTreeItem *pItem )
     return next_offset;
 }
 
+void TTLVTreeModel::getTablePosition( int nOffset, int *pRow, int *pCol )
+{
+    if( nOffset < 0 ) return;
+
+    int nRow = int( nOffset / 16 );
+    int nCol = ( nOffset % 16) + 1;
+
+    *pRow = nRow;
+    *pCol = nCol;
+}
+
 int TTLVTreeModel::resizeParentHeader( int nDiffLen, const TTLVTreeItem *pItem, BIN *pTTLV )
 {
     if( pItem == NULL ) return -1;
@@ -542,4 +553,38 @@ const TTLVTreeItem* TTLVTreeModel::findPrevItemByValue( const TTLVTreeItem* pIte
     }
 
     return nullptr;
+}
+
+void TTLVTreeModel::selectValue( TTLVTreeItem *pItem, const BIN *pValue, bool bPart )
+{
+    int nStart = 0;
+    int nLen = 0;
+    if( pItem == NULL) return;
+
+    if( pValue == NULL || pValue->nLen <= 0 ) return;
+
+    BIN binCurValue;
+    binCurValue.pVal = binTTLV_.pVal + pItem->getOffset() + JS_TTLV_HEADER_SIZE;
+    binCurValue.nLen = pItem->getLengthInt();
+
+    int ret = JS_BIN_memmem( &binCurValue, pValue );
+    if( ret < 0 ) return;
+
+    if( bPart == true )
+        nStart = JS_TTLV_HEADER_SIZE + ret;
+    else
+        nStart = pItem->getOffset() + JS_TTLV_HEADER_SIZE + ret;
+
+    nLen = pValue->nLen;
+
+    QTableWidget *pTable = berApplet->mainWindow()->rightTable();
+
+    for( int i = 0; i < nLen; i++ )
+    {
+        int nRow = 0;
+        int nCol = 0;
+        getTablePosition( nStart + i, &nRow, &nCol );
+        QTableWidgetItem *pTableItem = pTable->item( nRow, nCol );
+        pTableItem->setSelected(true);
+    }
 }
