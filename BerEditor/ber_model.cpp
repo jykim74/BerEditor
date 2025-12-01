@@ -213,7 +213,13 @@ int BerModel::getConstructedItemInfo( const BIN *pBER, int nStart, BerItem *pIte
 
         if( pItem->GetIndefinite() == false )
         {
-            if( nOffset >= (nStart + pItem->GetLength()) )
+            int nEnd = nStart + pItem->GetLength();
+
+            // BITSTRING 경우는 Unused 표시 바이트 다음 부터여서 길이에서 1을 빼주어야 함
+            if( pItem->isType( JS_BITSTRING ) )
+                nEnd = nEnd - 1;
+
+            if( nOffset >= nEnd )
                 return JSR_OK;
         }
         else
