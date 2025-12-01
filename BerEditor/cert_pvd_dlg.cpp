@@ -7,6 +7,8 @@
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QMimeData>
+#include <QDir>
+#include <QFileInfo>
 
 #include "cert_pvd_dlg.h"
 #include "js_pki.h"
@@ -730,11 +732,65 @@ void CertPVDDlg::clickPathValidation()
         JS_BIN_reset( &binUntrust );
     }
 
+    if( mIncludeCertManCACheck->isChecked() == true )
+    {
+        QString strPath = berApplet->settingsMgr()->CACertPath();
+        QDir dir( strPath );
+
+        for (const QFileInfo &file : dir.entryInfoList(QDir::Files))
+        {
+            BIN binCA = {0,0};
+            QString strName = file.baseName();
+            QString strSuffix = file.suffix();
+
+            if( strName.length() != 8 && strSuffix.length() != 1 ) continue;
+
+            JS_BIN_fileReadBER( file.absoluteFilePath().toLocal8Bit().toStdString().c_str(), &binCA );
+            if( binCA.nLen < 1 ) continue;
+
+            if( JS_PKI_isCert( &binCA ) != 1 )
+            {
+                JS_BIN_reset( &binCA );
+                continue;
+            }
+
+            JS_BIN_addList( &pUntrustList, &binCA );
+            JS_BIN_reset( &binCA );
+        }
+    }
+
     if( strCLRPath.length() > 1 )
     {
         JS_BIN_fileReadBER( strCLRPath.toLocal8Bit().toStdString().c_str(), &binCRL );
         JS_BIN_addList( &pCRLList, &binCRL );
         JS_BIN_reset( &binCRL );
+    }
+
+    if( mIncludeCertManCRLCheck->isChecked() == true )
+    {
+        QString strPath = berApplet->settingsMgr()->CRLPath();
+        QDir dir( strPath );
+
+        for (const QFileInfo &file : dir.entryInfoList(QDir::Files))
+        {
+            BIN binCRL = {0,0};
+            QString strName = file.baseName();
+            QString strSuffix = file.suffix();
+
+            if( strName.length() != 8 && strSuffix.length() != 1 ) continue;
+
+            JS_BIN_fileReadBER( file.absoluteFilePath().toLocal8Bit().toStdString().c_str(), &binCRL );
+            if( binCRL.nLen < 1 ) continue;
+
+            if( JS_PKI_isCRL( &binCRL ) != 1 )
+            {
+                JS_BIN_reset( &binCRL );
+                continue;
+            }
+
+            JS_BIN_addList( &pCRLList, &binCRL );
+            JS_BIN_reset( &binCRL );
+        }
     }
 
     QString strTargetPath = mTargetPathText->text();

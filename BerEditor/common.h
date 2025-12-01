@@ -95,6 +95,7 @@ static QString kSelectStyle =
 #define TOOL_BAR_WIDTH      24
 #define TOOL_BAR_HEIGHT     24
 
+#define NAME_HASH_MAX_NUM   9
 
 #define VIEW_FILE                   0x01000000
 #define VIEW_EDIT                   0x02000000

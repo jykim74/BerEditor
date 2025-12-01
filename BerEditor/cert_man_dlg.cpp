@@ -1556,13 +1556,13 @@ int CertManDlg::writeNameHash( const QString strPath, const BIN *pCert )
     ret = JS_PKI_getSubjectNameHash( pCert, &uHash );
     if( ret != 0 ) return ret;
 
-    for( i = 0; i < 100; i++ )
+    for( i = 0; i <= NAME_HASH_MAX_NUM; i++ )
     {
         strFilePath = QString( "%1/%2.%3").arg( strPath ).arg( uHash, 8, 16, QLatin1Char('0') ).arg( num + i );
         if( QFileInfo::exists( strFilePath ) == false ) break;
     }
 
-    if( i >= 99 ) return -1;
+    if( i > NAME_HASH_MAX_NUM ) return -1;
 
     ret = JS_BIN_writePEM( pCert, JS_PEM_TYPE_CERTIFICATE, strFilePath.toLocal8Bit().toStdString().c_str() );
 
@@ -1585,7 +1585,7 @@ int CertManDlg::writeCRL( const QString strCRLPath, const BIN *pCRL )
     ret = JS_PKI_getCRLIssuerNameHash( pCRL, &uHash );
     if( ret != 0 ) return ret;
 
-    while( i < 100 )
+    while( i <= NAME_HASH_MAX_NUM )
     {
         strFilePath = QString( "%1/%2.%3").arg( strCRLPath ).arg( uHash, 8, 16, QLatin1Char('0')  ).arg(i);
         if( QFileInfo::exists( strFilePath ) == false )
@@ -1593,7 +1593,7 @@ int CertManDlg::writeCRL( const QString strCRLPath, const BIN *pCRL )
         i++;
     }
 
-    if( i == 100 ) return JSR_ERR2;
+    if( i > NAME_HASH_MAX_NUM ) return JSR_ERR2;
 
     ret = JS_BIN_writePEM( pCRL, JS_PEM_TYPE_CRL, strFilePath.toLocal8Bit().toStdString().c_str() );
 
