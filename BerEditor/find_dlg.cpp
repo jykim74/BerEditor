@@ -128,11 +128,11 @@ void FindDlg::getValueBIN( BIN *pBin )
 
     if( strType == "String" )
     {
-        JS_BIN_set( pBin, (unsigned char *)strValue.toStdString().c_str(), strValue.toUtf8().length() );
+        getBINFromString( pBin, DATA_STRING, strValue );
     }
     else if( strType == "Hex" )
     {
-        JS_BIN_decodeHex( strValue.toStdString().c_str(), pBin );
+        getBINFromString( pBin, DATA_HEX, strValue );
     }
     else if( strType == "Decimal" )
     {
