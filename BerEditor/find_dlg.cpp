@@ -15,7 +15,7 @@ static const QStringList kTTLVTypeList = { "None", "Structure", "Integer", "Long
                                    "ByteString", "DateTime", "Interval", "DateTimeExtented" };
 
 static const QStringList kBerValueType = { "String", "Hex", "Decimal", "OID" };
-static const QStringList kTTLVValueType = { "String", "Hex", "Number" };
+static const QStringList kTTLVValueType = { "String", "Hex", "Number", "Decimal" };
 
 FindDlg::FindDlg(QWidget *parent) :
     QDialog(parent)
@@ -153,6 +153,16 @@ void FindDlg::getValueBIN( BIN *pBin )
     else if( strType == "OID" )
     {
         JS_PKI_getOIDValueFromString( strValue.toStdString().c_str(), pBin );
+    }
+    else if( strType == "Number" )
+    {
+        BIN binTmp = {0,0};
+        JS_PKI_decimalToBin( strValue.toStdString().c_str(), &binTmp );
+        int nLeft = 4 - binTmp.nLen % 4;
+
+        if( nLeft > 0 ) JS_BIN_setChar(pBin, 0x00, nLeft );
+        JS_BIN_appendBin( pBin, &binTmp );
+        JS_BIN_reset( &binTmp );
     }
     else
     {
@@ -348,7 +358,7 @@ void FindDlg::changeValueType()
         mValueText->setValidator( NULL );
         mValueText->setPlaceholderText( tr("all characters") );
     }
-    else if( strType == "Decimal" )
+    else if( strType == "Decimal" || strType == "Number" )
     {
         QRegExp regExp("^[0-9-]*$");
         QRegExpValidator* regVal = new QRegExpValidator( regExp );
@@ -361,6 +371,13 @@ void FindDlg::changeValueType()
         QRegExpValidator* regVal = new QRegExpValidator( regExp );
         mValueText->setValidator( regVal );
         mValueText->setPlaceholderText( tr("Object Identifier") );
+    }
+    else if( strType == "Bit" )
+    {
+        QRegExp regExp("^[0-1]*$");
+        QRegExpValidator* regVal = new QRegExpValidator( regExp );
+        mValueText->setValidator( regVal );
+        mValueText->setPlaceholderText( tr("valid characters: %1").arg( kBinaryChars ));
     }
 }
 

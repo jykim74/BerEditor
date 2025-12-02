@@ -319,10 +319,8 @@ BerItem* BerTreeView::getNext( BerItem *pItem )
         pParentItem = (BerItem *)pCurItem->parent();
         if( pParentItem == nullptr ) return nullptr;
 
-        for( int i = (nCurRow + 1) ; i < pParentItem->rowCount(); i++ )
-        {
-            return (BerItem *)pParentItem->child( i );
-        }
+        if( pParentItem->rowCount() > (nCurRow + 1 ) )
+            return (BerItem *)pParentItem->child( nCurRow + 1 );
 
         nCurRow = pParentItem->row();
         pCurItem = pParentItem;

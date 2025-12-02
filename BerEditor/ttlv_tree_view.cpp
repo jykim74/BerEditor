@@ -76,10 +76,8 @@ TTLVTreeItem* TTLVTreeView::getNext( TTLVTreeItem *pItem )
         pParentItem = (TTLVTreeItem *)pCurItem->parent();
         if( pParentItem == nullptr ) return nullptr;
 
-        for( int i = (nCurRow + 1) ; i < pParentItem->rowCount(); i++ )
-        {
-            return (TTLVTreeItem *)pParentItem->child( i );
-        }
+        if( pParentItem->rowCount() > (nCurRow + 1 ) )
+            return (TTLVTreeItem *)pParentItem->child( nCurRow + 1 );
 
         nCurRow = pParentItem->row();
         pCurItem = pParentItem;
