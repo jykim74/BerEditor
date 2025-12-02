@@ -359,10 +359,7 @@ void CRLInfoDlg::initialize()
     }
 
     JS_BIN_reset( &binFinger );
-    if( berApplet->isLicense() == true )
-        mSaveToManBtn->show();
-    else
-        mSaveToManBtn->hide();
+
 }
 
 void CRLInfoDlg::initUI()
@@ -403,6 +400,11 @@ void CRLInfoDlg::initUI()
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mCRLListTable, SIGNAL(clicked(QModelIndex)), this, SLOT(clickCRLField(QModelIndex)));
     connect( mRevokeListTable, SIGNAL(clicked(QModelIndex)), this, SLOT(clickRevokeField(QModelIndex)));
+
+    if( berApplet->isLicense() == true )
+        mSaveToManBtn->show();
+    else
+        mSaveToManBtn->hide();
 }
 
 void CRLInfoDlg::clearTable()

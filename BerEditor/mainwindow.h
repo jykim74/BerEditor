@@ -277,6 +277,15 @@ private slots:
     void rightTableUnselectAll();
 
 private:
+    void createFileActions();
+    void createEditActions();
+    void createToolActions();
+    void createCryptographyActions();
+    void createServiceActions();
+    void createProtocolActions();
+    void createKMIPActions();
+    void createHelpActions();
+
     void createActions();
     void createViewActions();
     void createStatusBar();

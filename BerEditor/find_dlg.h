@@ -36,6 +36,7 @@ private slots:
 
     void changeValueType();
     void changeValue();
+    void changeValueHex();
 
 private:
     void initUI();

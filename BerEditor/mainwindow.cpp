@@ -750,17 +750,13 @@ void MainWindow::createViewActions()
     viewMenu->addAction( setDefaultAct );
 }
 
-void MainWindow::createActions()
+void MainWindow::createFileActions()
 {
-    int nWidth = TOOL_BAR_WIDTH;
-    int nHeight = TOOL_BAR_HEIGHT;
-    int nSpacing = 0;
-
     QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
     file_tool_ = addToolBar(tr("File"));
 
-    file_tool_->setIconSize( QSize(nWidth,nHeight) );
-    file_tool_->layout()->setSpacing(nSpacing);
+    file_tool_->setIconSize( QSize(TOOL_BAR_WIDTH,TOOL_BAR_HEIGHT) );
+    file_tool_->layout()->setSpacing(0);
 
     const QIcon newIcon = QIcon::fromTheme("document-new", QIcon(":/images/new.png"));
     new_act_ = new QAction( newIcon, tr("&New"), this );
@@ -885,10 +881,20 @@ void MainWindow::createActions()
     connect( quit_act_, &QAction::triggered, this, &MainWindow::quit);
     fileMenu->addAction(quit_act_);
 
+    if( berApplet->isLicense() == false )
+    {
+        open_pri_key_act_->setEnabled(false);
+        open_pub_key_act_->setEnabled(false);
+        open_cms_act_->setEnabled( false );
+    }
+}
+
+void MainWindow::createEditActions()
+{
     QMenu *editMenu = menuBar()->addMenu(tr("&Edit"));
     edit_tool_ = addToolBar(tr("Edit"));
-    edit_tool_->setIconSize( QSize(nWidth,nHeight));
-    edit_tool_->layout()->setSpacing(nSpacing);
+    edit_tool_->setIconSize( QSize(TOOL_BAR_WIDTH,TOOL_BAR_HEIGHT));
+    edit_tool_->layout()->setSpacing(0);
 
     const QIcon copyIcon = QIcon::fromTheme("edit-copy", QIcon(":/images/copy.png"));
     copy_act_ = new QAction(copyIcon, tr("&Copy Information"), this);
@@ -972,13 +978,14 @@ void MainWindow::createActions()
     {
         find_node_act_->setEnabled( false );
     }
+}
 
-    if( berApplet->isLicense() ) createViewActions();
-
+void MainWindow::createToolActions()
+{
     QMenu *toolMenu = menuBar()->addMenu(tr("&Tool"));
     tool_tool_ = addToolBar(tr("Tool"));
-    tool_tool_->setIconSize( QSize(nWidth,nHeight));
-    tool_tool_->layout()->setSpacing(nSpacing);
+    tool_tool_->setIconSize( QSize(TOOL_BAR_WIDTH,TOOL_BAR_HEIGHT));
+    tool_tool_->layout()->setSpacing(0);
 
 
     const QIcon dataTransIcon = QIcon::fromTheme("data-trans", QIcon(":/images/data_trans.png"));
@@ -1021,12 +1028,6 @@ void MainWindow::createActions()
     toolMenu->addAction( ber_check_act_ );
     if( isView( ACT_TOOL_BER_CHECK ) ) tool_tool_->addAction( ber_check_act_ );
 
-    if( berApplet->isLicense() == false )
-    {
-        make_ber_act_->setEnabled( false );
-        ber_check_act_->setEnabled( false );
-    }
-
     const QIcon decodeIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/decode.png"));
     decode_data_act_ = new QAction(decodeIcon, tr("&Decode BER"), this);
     decode_data_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_D));
@@ -1045,10 +1046,19 @@ void MainWindow::createActions()
 
     menuBar()->addSeparator();
 
+    if( berApplet->isLicense() == false )
+    {
+        make_ber_act_->setEnabled( false );
+        ber_check_act_->setEnabled( false );
+    }
+}
+
+void MainWindow::createCryptographyActions()
+{
     QMenu *cryptMenu = menuBar()->addMenu(tr("&Cryptography"));
     crypt_tool_ = addToolBar( "Cryptography" );
-    crypt_tool_->setIconSize( QSize(nWidth,nHeight));
-    crypt_tool_->layout()->setSpacing(nSpacing);
+    crypt_tool_->setIconSize( QSize(TOOL_BAR_WIDTH,TOOL_BAR_HEIGHT));
+    crypt_tool_->layout()->setSpacing(0);
 
     const QIcon keyIcon = QIcon::fromTheme("key-man", QIcon(":/images/key.png"));
     key_man_act_ = new QAction( keyIcon, tr("&Key Manage"), this );
@@ -1155,10 +1165,30 @@ void MainWindow::createActions()
     cryptMenu->addAction( calc_act_ );
     if( isView( ACT_CRYPT_BN_CALC ) ) crypt_tool_->addAction( calc_act_ );
 
+    if( berApplet->isLicense() == false )
+    {
+        key_man_act_->setEnabled( false );
+        hash_act_->setEnabled( false );
+        mac_act_->setEnabled( false );
+        enc_dec_act_->setEnabled( false );
+        sign_verify_act_->setEnabled( false );
+        pub_enc_dec_act_->setEnabled( false );
+        key_agree_act_->setEnabled( false );
+        pkcs7_act_->setEnabled( false );
+        sss_act_->setEnabled( false );
+        cert_pvd_act_->setEnabled( false );
+        gen_otp_act_->setEnabled( false );
+        vid_act_->setEnabled( false );
+        calc_act_->setEnabled( false );
+    }
+}
+
+void MainWindow::createServiceActions()
+{
     QMenu *serviceMenu = menuBar()->addMenu( tr("&Service" ));
     service_tool_ = addToolBar( tr( "Service" ));
-    service_tool_->setIconSize( QSize(nWidth,nHeight));
-    service_tool_->layout()->setSpacing(nSpacing);
+    service_tool_->setIconSize( QSize(TOOL_BAR_WIDTH,TOOL_BAR_HEIGHT));
+    service_tool_->layout()->setSpacing(0);
 
     const QIcon keyPairIcon = QIcon::fromTheme("KeyPair Manage", QIcon(":/images/keypair.png"));
     key_pair_man_act_ = new QAction( keyPairIcon, tr( "Key&Pair Manage" ), this );
@@ -1218,22 +1248,6 @@ void MainWindow::createActions()
 
     if( berApplet->isLicense() == false )
     {
-        open_pri_key_act_->setEnabled(false);
-        open_pub_key_act_->setEnabled(false);
-        open_cms_act_->setEnabled( false );
-        key_man_act_->setEnabled( false );
-        hash_act_->setEnabled( false );
-        mac_act_->setEnabled( false );
-        enc_dec_act_->setEnabled( false );
-        sign_verify_act_->setEnabled( false );
-        pub_enc_dec_act_->setEnabled( false );
-        key_agree_act_->setEnabled( false );
-        pkcs7_act_->setEnabled( false );
-        sss_act_->setEnabled( false );
-        cert_pvd_act_->setEnabled( false );
-        gen_otp_act_->setEnabled( false );
-        vid_act_->setEnabled( false );
-        calc_act_->setEnabled( false );
         key_pair_man_act_->setEnabled( false );
         cert_man_act_->setEnabled( false );
         key_list_act_->setEnabled( false );
@@ -1243,11 +1257,14 @@ void MainWindow::createActions()
         doc_signer_act_->setEnabled( false );
     }
 
+}
 
+void MainWindow::createProtocolActions()
+{
     QMenu *protoMenu = menuBar()->addMenu( tr("&Protocol" ));
     proto_tool_ = addToolBar( tr( "Protocol" ));
-    proto_tool_->setIconSize( QSize(nWidth,nHeight));
-    proto_tool_->layout()->setSpacing(nSpacing);
+    proto_tool_->setIconSize( QSize(TOOL_BAR_WIDTH,TOOL_BAR_HEIGHT));
+    proto_tool_->layout()->setSpacing(0);
 
     const QIcon ocspIcon = QIcon::fromTheme( "ocsp_client", QIcon(":/images/ocsp.png"));
     ocsp_act_ = new QAction( ocspIcon, tr( "&OCSP client"), this );
@@ -1297,11 +1314,14 @@ void MainWindow::createActions()
         scep_act_->setEnabled( false );
         acme_act_->setEnabled( false );
     }
+}
 
+void MainWindow::createKMIPActions()
+{
     QMenu *kmipMenu = menuBar()->addMenu( tr("&KMIP" ));
     kmip_tool_ = addToolBar( tr( "KMIP" ));
-    kmip_tool_->setIconSize( QSize(nWidth,nHeight));
-    kmip_tool_->layout()->setSpacing(nSpacing);
+    kmip_tool_->setIconSize( QSize(TOOL_BAR_WIDTH,TOOL_BAR_HEIGHT));
+    kmip_tool_->layout()->setSpacing(0);
 
     const QIcon decodeKMIPIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/decode_ttlv.png"));
     ttlv_decode_act_ = new QAction(decodeKMIPIcon, tr("&Decode TTLV"), this);
@@ -1342,11 +1362,14 @@ void MainWindow::createActions()
         ttlv_encode_act_->setEnabled( false );
         ttlv_client_act_->setEnabled( false );
     }
+}
 
+void MainWindow::createHelpActions()
+{
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
     help_tool_ = addToolBar(tr("Help"));
-    help_tool_->setIconSize( QSize(nWidth,nHeight));
-    help_tool_->layout()->setSpacing(nSpacing);
+    help_tool_->setIconSize( QSize(TOOL_BAR_WIDTH,TOOL_BAR_HEIGHT));
+    help_tool_->layout()->setSpacing(0);
 
     const QIcon settingIcon = QIcon::fromTheme("berview-help", QIcon(":/images/setting.png"));
     setting_act_ = new QAction( settingIcon, tr("&Settings"), this );
@@ -1380,13 +1403,6 @@ void MainWindow::createActions()
     helpMenu->addAction( content_act_ );
     if( isView( ACT_HELP_CONTENT ) ) help_tool_->addAction( content_act_ );
 
-    if( berApplet->isLicense() == false )
-    {
-        clear_log_act_->setEnabled( false );
-        halt_log_act_->setEnabled( false );
-        content_act_->setEnabled( false );
-    }
-
     const QIcon lcnIcon = QIcon::fromTheme("berview-license", QIcon(":/images/license.png"));
     lcn_act_ = new QAction( lcnIcon, tr("License Information"), this);
     connect( lcn_act_, &QAction::triggered, this, &MainWindow::licenseInfo);
@@ -1414,6 +1430,28 @@ void MainWindow::createActions()
     about_act_->setStatusTip(tr("About BerEditor"));
     helpMenu->addAction( about_act_ );
     if( isView( ACT_HELP_ABOUT ) ) help_tool_->addAction( about_act_ );
+
+    if( berApplet->isLicense() == false )
+    {
+        clear_log_act_->setEnabled( false );
+        halt_log_act_->setEnabled( false );
+        content_act_->setEnabled( false );
+    }
+}
+
+void MainWindow::createActions()
+{
+    createFileActions();
+    createEditActions();
+
+    if( berApplet->isLicense() ) createViewActions();
+
+    createToolActions();
+    createCryptographyActions();
+    createServiceActions();
+    createProtocolActions();
+    createKMIPActions();
+    createHelpActions();
 
     menuBar()->show();
 }

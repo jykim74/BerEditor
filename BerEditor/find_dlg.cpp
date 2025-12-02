@@ -38,6 +38,7 @@ FindDlg::FindDlg(QWidget *parent) :
     connect( mCloseBtn, SIGNAL(clicked()), this, SLOT(close()));
     connect( mEditBtn, SIGNAL(clicked()), this, SLOT(clickEdit()));
     connect( mValueText, SIGNAL(textChanged(QString)), this, SLOT(changeValue()));
+    connect( mValueHexText, SIGNAL(textChanged(QString)), this, SLOT(changeValueHex()));
 
     initUI();
 
@@ -388,6 +389,14 @@ void FindDlg::changeValue()
     getValueBIN( &binVal );
     mValueHexText->setText( getHexString( &binVal ) );
     JS_BIN_reset( &binVal );
+}
+
+void FindDlg::changeValueHex()
+{
+    QString strHex = mValueHexText->text();
+    QString strLen = getDataLenString( DATA_HEX, strHex );
+
+    mValueHexLenText->setText( strLen );
 }
 
 void FindDlg::makeTTLV_Header()
