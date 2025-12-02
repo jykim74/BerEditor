@@ -10,7 +10,7 @@
 
 static const QStringList kClassList = { "Universal", "Application", "Content-Specific", "Private" };
 
-static const QStringList kTTLVTypeList = { "None", "Structure", "Integer", "LongInteger",
+static const QStringList kTTLVTypeList = { "Any", "Structure", "Integer", "LongInteger",
                                    "BigInteger", "Enumeration", "Boolean", "TextString",
                                    "ByteString", "DateTime", "Interval", "DateTimeExtented" };
 
@@ -219,16 +219,17 @@ void FindDlg::checkBER_Constructed()
 
 void FindDlg::changeBER_Class( int index )
 {
-    if( index == 2 )
+    if( index == 0 )
     {
-        mBER_TagCombo->setEnabled( false );
-        mBER_TagIDText->setReadOnly( false );
-        mBER_TagIDText->clear();
+        mBER_TagCombo->setEnabled( true );
+        mBER_TagIDText->setReadOnly( true );
+        mBER_TagIDText->setStyleSheet( kReadOnlyStyle );
     }
     else
     {
-        mBER_TagCombo->setEnabled(true);
-        mBER_TagIDText->setReadOnly( true );
+        mBER_TagCombo->setEnabled( false );
+        mBER_TagIDText->setReadOnly( false );
+        mBER_TagIDText->setStyleSheet( "" );
     }
 
     makeBER_Header();
@@ -398,9 +399,18 @@ void FindDlg::makeTTLV_Header()
         return;
     }
 
-    QString strHeader = QString( "%1%2" )
-                            .arg( strTag )
-                            .arg( mTTLV_TypeCombo->currentIndex(), 2, 16, QLatin1Char('0') );
+    QString strHeader;
+
+    if( mTTLV_TypeCombo->currentText() == "Any" )
+    {
+        strHeader = QString("%1").arg( strTag );
+    }
+    else
+    {
+        strHeader = QString( "%1%2" )
+                        .arg( strTag )
+                        .arg( mTTLV_TypeCombo->currentIndex(), 2, 16, QLatin1Char('0') );
+    }
 
     mTTLV_HeaderText->setText( strHeader.toUpper() );
 }
@@ -422,7 +432,7 @@ void FindDlg::findTTLV_Next()
 
         JS_BIN_decodeHex( strHeader.toStdString().c_str(), &binHeader );
 
-        if( strType == "None" ) binHeader.nLen = 3;
+        if( strType == "Any" ) binHeader.nLen = 3;
 
         pCurItem = (TTLVTreeItem *)model->findNextItemByValue( pCurItem, &binHeader, &binValue, mMatchedCheck->isChecked() );
         JS_BIN_reset( &binHeader );
@@ -464,7 +474,7 @@ void FindDlg::findTTLV_Previous()
 
         JS_BIN_decodeHex( strHeader.toStdString().c_str(), &binHeader );
 
-        if( strType == "None" ) binHeader.nLen = 3;
+        if( strType == "Any" ) binHeader.nLen = 3;
 
         pCurItem = (TTLVTreeItem *)model->findPrevItemByValue( pCurItem, &binHeader, &binValue, mMatchedCheck->isChecked() );
         JS_BIN_reset( &binHeader );
