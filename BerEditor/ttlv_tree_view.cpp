@@ -67,9 +67,19 @@ TTLVTreeItem* TTLVTreeView::getNext( TTLVTreeItem *pItem )
     }
 
     nCurRow = pCurItem->row();
-
+#if 0
     QModelIndex newIdx = indexBelow( pCurItem->index() );
-    if( newIdx.row() >= 0 ) return (TTLVTreeItem *)tree_model->itemFromIndex( newIdx );
+    if( newIdx.isValid() ) return (TTLVTreeItem *)tree_model->itemFromIndex( newIdx );
+#else
+    pParentItem = (TTLVTreeItem *)pCurItem->parent();
+    if( pParentItem == NULL ) return nullptr;
+
+    if( pParentItem->rowCount() > (nCurRow + 1) )
+        return (TTLVTreeItem *)pParentItem->child( nCurRow + 1 );
+
+    nCurRow = pParentItem->row();
+    pCurItem = pParentItem;
+#endif
 
     while( pCurItem )
     {
@@ -101,7 +111,7 @@ TTLVTreeItem* TTLVTreeView::getPrev( TTLVTreeItem *pItem )
 
     pCurItem = pItem;
 
-    /*
+#if 0
     QModelIndex newIdx = indexAbove( pCurItem->index() );
     if( newIdx.row() < 0 )
     {
@@ -109,20 +119,15 @@ TTLVTreeItem* TTLVTreeView::getPrev( TTLVTreeItem *pItem )
     }
 
     pCurItem = (TTLVTreeItem *)tree_model->itemFromIndex( newIdx );
-*/
+#else
     TTLVTreeItem *pParent = (TTLVTreeItem *)pCurItem->parent();
-    if( pParent )
-    {
-        int nCurRow = pCurItem->row();
-        if( nCurRow > 0 )
-            pCurItem = (TTLVTreeItem *)pParent->child( nCurRow - 1 );
-        else
-            return pParent;
-    }
-    else
-    {
-        return nullptr;
-    }
+    if( pParent == NULL ) return nullptr;
+
+    nCurRow = pCurItem->row();
+    if( nCurRow <= 0 ) return pParent;
+
+    pCurItem = (TTLVTreeItem *)pParent->child( nCurRow - 1 );
+#endif
 
     while( pCurItem )
     {
@@ -201,20 +206,20 @@ void TTLVTreeView::leftContextMenu( QPoint point )
         menu.addAction(tr("Copy Information"), this, SLOT(copy()));
         menu.addAction(tr("Copy as hex"), this, SLOT(CopyAsHex()));
         menu.addAction(tr("Copy as base64"), this, SLOT(CopyAsBase64()));
-        menu.addAction( tr("Save item"), this, &TTLVTreeView::saveItem );
-        menu.addAction( tr("Save item value"), this, &TTLVTreeView::saveItemValue );
+        menu.addAction( tr("Save node"), this, &TTLVTreeView::saveNode );
+        menu.addAction( tr("Save node value"), this, &TTLVTreeView::saveNodeValue );
 
         if( item->isStructure() == true )
         {
-            menu.addAction( tr( "Insert item" ), this, &TTLVTreeView::InsertTTLV );
+            menu.addAction( tr( "Insert node" ), this, &TTLVTreeView::insertNode );
         }
         else
         {
-            menu.addAction( tr("Edit item"), this, &TTLVTreeView::EditItem );
+            menu.addAction( tr("Edit node"), this, &TTLVTreeView::editNode );
         }
 
         if( item->parent() )
-            menu.addAction( tr( "Delete item" ), this, &TTLVTreeView::DeleteItem );
+            menu.addAction( tr( "Delete node" ), this, &TTLVTreeView::deleteNode );
     }
 
     menu.exec(QCursor::pos());
@@ -662,7 +667,7 @@ void TTLVTreeView::treeCollapseNode()
     collapse(index);
 }
 
-void TTLVTreeView::InsertTTLV()
+void TTLVTreeView::insertNode()
 {
     int ret = 0;
     BIN binData = {0,0};
@@ -714,7 +719,7 @@ void TTLVTreeView::InsertTTLV()
     }
 }
 
-void TTLVTreeView::EditItem()
+void TTLVTreeView::editNode()
 {
     int ret = 0;
 
@@ -732,7 +737,7 @@ void TTLVTreeView::EditItem()
     ret = editTTLV.exec();
 }
 
-void TTLVTreeView::DeleteItem()
+void TTLVTreeView::deleteNode()
 {
     int ret = 0;
 
@@ -779,7 +784,7 @@ void TTLVTreeView::DeleteItem()
     }
 }
 
-const QString TTLVTreeView::saveItem()
+const QString TTLVTreeView::saveNode()
 {
     QString strPath;
     QString fileName = berApplet->findSaveFile( this, JS_FILE_TYPE_BIN, strPath );
@@ -798,7 +803,7 @@ const QString TTLVTreeView::saveItem()
     return fileName;
 }
 
-void TTLVTreeView::saveItemValue()
+void TTLVTreeView::saveNodeValue()
 {
     QString strPath;
     QString fileName = berApplet->findSaveFile( this, JS_FILE_TYPE_BIN, strPath );

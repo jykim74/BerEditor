@@ -50,7 +50,7 @@ private:
     void findTTLV_Next();
     void findTTLV_Previous();
 
-    void getValueBIN( BIN *pBin );
+    int getValueBIN( BIN *pBin );
 };
 
 #endif // FIND_DLG_H

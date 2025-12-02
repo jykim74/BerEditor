@@ -311,8 +311,19 @@ BerItem* BerTreeView::getNext( BerItem *pItem )
 
     nCurRow = pCurItem->row();
 
+#if 0
     QModelIndex newIdx = indexBelow( pCurItem->index() );
-    if( newIdx.row() >= 0 ) return (BerItem *)tree_model->itemFromIndex( newIdx );
+    if( newIdx.isValid() ) return (BerItem *)tree_model->itemFromIndex( newIdx );
+#else
+    pParentItem = (BerItem *)pCurItem->parent();
+    if( pParentItem == NULL ) return nullptr;
+
+    if( pParentItem->rowCount() > (nCurRow + 1) )
+        return (BerItem *)pParentItem->child( nCurRow + 1 );
+
+    nCurRow = pParentItem->row();
+    pCurItem = pParentItem;
+#endif
 
     while( pCurItem )
     {
@@ -344,28 +355,23 @@ BerItem* BerTreeView::getPrev( BerItem *pItem )
 
     pCurItem = pItem;
 
-/*
+#if 0
     QModelIndex newIdx = indexAbove( pCurItem->index() );
-    if( newIdx.row() < 0 )
+    if( newIdx.isValid() )
     {
         return (BerItem *)pCurItem->parent();
     }
 
     pCurItem = (BerItem *)tree_model->itemFromIndex( newIdx );
-*/
+#else
     BerItem *pParent = (BerItem *)pCurItem->parent();
-    if( pParent )
-    {
-        int nCurRow = pCurItem->row();
-        if( nCurRow > 0 )
-            pCurItem = (BerItem *)pParent->child( nCurRow - 1 );
-        else
-            return pParent;
-    }
-    else
-    {
-        return nullptr;
-    }
+    if( pParent == NULL ) return nullptr;
+
+    nCurRow = pCurItem->row();
+    if( nCurRow <= 0 ) return pParent;
+
+    pCurItem = (BerItem *)pParent->child( nCurRow - 1 );
+#endif
 
     while( pCurItem )
     {

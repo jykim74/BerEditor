@@ -122,18 +122,19 @@ void FindDlg::checkHeader()
     mTTLVGroup->setEnabled(bVal);
 }
 
-void FindDlg::getValueBIN( BIN *pBin )
+int FindDlg::getValueBIN( BIN *pBin )
 {
+    int ret = 0;
     QString strType = mValueTypeCombo->currentText();
     QString strValue = mValueText->text();
 
     if( strType == "String" )
     {
-        getBINFromString( pBin, DATA_STRING, strValue );
+        ret = getBINFromString( pBin, DATA_STRING, strValue );
     }
     else if( strType == "Decimal" )
     {
-        JS_PKI_decimalToBin( strValue.toStdString().c_str(), pBin );
+        ret = JS_PKI_decimalToBin( strValue.toStdString().c_str(), pBin );
     }
     else if( strType == "Bit" )
     {
@@ -147,18 +148,18 @@ void FindDlg::getValueBIN( BIN *pBin )
         unsigned char cCh = nLeft;
         JS_BIN_setChar( pBin, cCh, 1 );
 
-        JS_PKI_bitToBin( strValue.toStdString().c_str(), &binVal );
+        ret = JS_PKI_bitToBin( strValue.toStdString().c_str(), &binVal );
         JS_BIN_appendBin( pBin, &binVal );
         JS_BIN_reset( &binVal );
     }
     else if( strType == "OID" )
     {
-        JS_PKI_getOIDValueFromString( strValue.toStdString().c_str(), pBin );
+        ret = JS_PKI_getOIDValueFromString( strValue.toStdString().c_str(), pBin );
     }
     else if( strType == "Number" )
     {
         BIN binTmp = {0,0};
-        JS_PKI_decimalToBin( strValue.toStdString().c_str(), &binTmp );
+        ret = JS_PKI_decimalToBin( strValue.toStdString().c_str(), &binTmp );
         int nLeft = 4 - binTmp.nLen % 4;
 
         if( nLeft > 0 ) JS_BIN_setChar(pBin, 0x00, nLeft );
@@ -167,8 +168,10 @@ void FindDlg::getValueBIN( BIN *pBin )
     }
     else
     {
-        getBINFromString( pBin, DATA_HEX, strValue );
+        ret = getBINFromString( pBin, DATA_HEX, strValue );
     }
+
+    return ret;
 }
 
 void FindDlg::makeBER_Header()
@@ -254,12 +257,20 @@ void FindDlg::changeBER_TagID()
 
 void FindDlg::findBER_Next()
 {
+    int ret = 0;
     BIN binValue = {0,0};
     BerModel* model = berApplet->mainWindow()->berModel();
     BerTreeView *tree = berApplet->mainWindow()->berTree();
     BerItem *pCurItem = tree->currentItem();
 
-    getValueBIN( &binValue );
+    ret = getValueBIN( &binValue );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr("There is an invalid input value: %1").arg( JERR(ret) ), this );
+        mValueText->setFocus();
+        JS_BIN_reset( &binValue );
+        return;
+    }
 
     if( mHeadCheck->isChecked() == true )
     {
@@ -288,12 +299,20 @@ void FindDlg::findBER_Next()
 
 void FindDlg::findBER_Previous()
 {
+    int ret = 0;
     BIN binValue = {0,0};
     BerModel* model = berApplet->mainWindow()->berModel();
     BerTreeView *tree = berApplet->mainWindow()->berTree();
     BerItem *pCurItem = tree->currentItem();
 
-    getValueBIN( &binValue );
+    ret = getValueBIN( &binValue );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr("There is an invalid input value: %1").arg( JERR(ret) ), this );
+        mValueText->setFocus();
+        JS_BIN_reset( &binValue );
+        return;
+    }
 
     if( mHeadCheck->isChecked() == true )
     {
@@ -426,13 +445,21 @@ void FindDlg::makeTTLV_Header()
 
 void FindDlg::findTTLV_Next()
 {
+    int ret = 0;
     BIN binValue = {0,0};
     BIN binHeader = {0,0};
     TTLVTreeModel* model = berApplet->mainWindow()->ttlvModel();
     TTLVTreeView *tree = berApplet->mainWindow()->ttlvTree();
     TTLVTreeItem *pCurItem = tree->currentItem();
 
-    getValueBIN( &binValue );
+    ret = getValueBIN( &binValue );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr("There is an invalid input value: %1").arg( JERR(ret) ), this );
+        mValueText->setFocus();
+        JS_BIN_reset( &binValue );
+        return;
+    }
 
     if( mHeadCheck->isChecked() == true )
     {
@@ -468,13 +495,21 @@ void FindDlg::findTTLV_Next()
 
 void FindDlg::findTTLV_Previous()
 {
+    int ret = 0;
     BIN binValue = {0,0};
     BIN binHeader = {0,0};
     TTLVTreeModel* model = berApplet->mainWindow()->ttlvModel();
     TTLVTreeView *tree = berApplet->mainWindow()->ttlvTree();
     TTLVTreeItem *pCurItem = tree->currentItem();
 
-    getValueBIN( &binValue );
+    ret = getValueBIN( &binValue );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr("There is an invalid input value: %1").arg( JERR(ret) ), this );
+        mValueText->setFocus();
+        JS_BIN_reset( &binValue );
+        return;
+    }
 
     if( mHeadCheck->isChecked() == true )
     {
@@ -529,7 +564,7 @@ void FindDlg::clickEdit()
     if( berApplet->mainWindow()->isTTLV() )
     {
         TTLVTreeView* tree = berApplet->mainWindow()->ttlvTree();
-        tree->EditItem();
+        tree->editNode();
     }
     else
     {

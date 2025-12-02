@@ -56,7 +56,7 @@ int TTLVTreeModel::parseConstruct( TTLVTreeItem *pParentItem )
     start_offset = pParentItem->getOffset() + JS_TTLV_HEADER_SIZE;
 
     offset = start_offset;
-    if( binTTLV_.nLen <= offset ) return JSR_ERR2;
+    if( binTTLV_.nLen <= offset ) return JSR_TTLV_BAD_OFFSET;
 
     do {
         TTLVTreeItem *pItem = new TTLVTreeItem();
@@ -80,6 +80,7 @@ int TTLVTreeModel::parseConstruct( TTLVTreeItem *pParentItem )
             break;
     } while ( next_offset > 0 && next_offset < binTTLV_.nLen );
 
+    ret = JSR_OK;
     return ret;
 }
 
@@ -101,7 +102,7 @@ int TTLVTreeModel::getItem( BIN *pTTLV, int offset, TTLVTreeItem *pItem )
     int     length = 0;
     int     pad = 0;
 
-    if( binTTLV_.nLen <= 0 ) return -1;
+    if( binTTLV_.nLen <= 0 ) return JSR_ERR;
 
     pItem->dataReset();
     pItem->setHeader( &pTTLV->pVal[offset], JS_TTLV_HEADER_SIZE );

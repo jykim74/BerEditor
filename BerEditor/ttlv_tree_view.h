@@ -33,12 +33,12 @@ public slots:
     void treeCollapseAll();
     void treeCollapseNode();
 
-    void InsertTTLV();
-    void EditItem();
-    void DeleteItem();
+    void insertNode();
+    void editNode();
+    void deleteNode();
 
-    const QString saveItem();
-    void saveItemValue();
+    const QString saveNode();
+    void saveNodeValue();
 
 private slots:
     void onItemClicked( const QModelIndex& index );

@@ -2922,7 +2922,8 @@ void MainWindow::viewFileNew( bool bChecked )
 
     if( bChecked == true )
     {
-        file_tool_->addAction( new_act_ );
+//        file_tool_->addAction( new_act_ );
+        file_tool_->insertAction( open_act_, new_act_ );
         setView( ACT_FILE_NEW );
     }
     else
@@ -2938,7 +2939,7 @@ void MainWindow::viewFileOpen( bool bChecked )
 
     if( bChecked == true )
     {
-        file_tool_->addAction( open_act_ );
+        file_tool_->insertAction( open_cert_act_, open_act_ );
         setView( ACT_FILE_OPEN );
     }
     else
@@ -2954,7 +2955,7 @@ void MainWindow::viewFileOpenCert( bool bChecked )
 
     if( bChecked == true )
     {
-        file_tool_->addAction( open_cert_act_ );
+        file_tool_->insertAction( open_crl_act_, open_cert_act_ );
         setView( ACT_FILE_OPEN_CERT );
     }
     else
@@ -2968,7 +2969,7 @@ void MainWindow::viewFileOpenCRL( bool bChecked )
 {
     if( bChecked == true )
     {
-        file_tool_->addAction( open_crl_act_ );
+        file_tool_->insertAction( open_csr_act_, open_crl_act_ );
         setView( ACT_FILE_OPEN_CRL );
     }
     else
@@ -2982,7 +2983,7 @@ void MainWindow::viewFileOpenCSR( bool bChecked )
 {
     if( bChecked == true )
     {
-        file_tool_->addAction( open_csr_act_ );
+        file_tool_->insertAction( open_pri_key_act_, open_csr_act_ );
         setView( ACT_FILE_OPEN_CSR );
     }
     else
@@ -2996,7 +2997,7 @@ void MainWindow::viewFileOpenPriKey( bool bChecked )
 {
     if( bChecked == true )
     {
-        file_tool_->addAction( open_pri_key_act_ );
+        file_tool_->insertAction( open_pub_key_act_, open_pri_key_act_ );
         setView( ACT_FILE_OPEN_PRI_KEY );
     }
     else
@@ -3010,7 +3011,7 @@ void MainWindow::viewFileOpenPubKey( bool bChecked )
 {
     if( bChecked == true )
     {
-        file_tool_->addAction( open_pub_key_act_ );
+        file_tool_->insertAction( open_cms_act_, open_pub_key_act_ );
         setView( ACT_FILE_OPEN_PUB_KEY );
     }
     else
@@ -3024,7 +3025,7 @@ void MainWindow::viewFileOpenCMS( bool bChecked )
 {
     if( bChecked == true )
     {
-        file_tool_->addAction( open_cms_act_ );
+        file_tool_->insertAction( save_act_, open_cms_act_ );
         setView( ACT_FILE_OPEN_CMS );
     }
     else
@@ -3038,7 +3039,7 @@ void MainWindow::viewFileSave( bool bChecked )
 {
     if( bChecked == true )
     {
-        file_tool_->addAction( save_act_ );
+        file_tool_->insertAction( save_as_act_, save_act_ );
         setView( ACT_FILE_SAVE );
     }
     else
@@ -3052,7 +3053,7 @@ void MainWindow::viewFilePrint( bool bChecked )
 {
     if( bChecked == true )
     {
-        file_tool_->addAction( print_act_ );
+        file_tool_->insertAction( print_pre_act_, print_act_ );
         setView( ACT_FILE_PRINT );
     }
     else
@@ -3066,7 +3067,7 @@ void MainWindow::viewEditExpandAll( bool bChecked )
 {
     if( bChecked == true )
     {
-        edit_tool_->addAction( expand_all_act_ );
+        edit_tool_->insertAction( expand_node_act_, expand_all_act_ );
         setView( ACT_EDIT_EXPAND_ALL );
     }
     else
@@ -3080,7 +3081,7 @@ void MainWindow::viewEditExpandNode( bool bChecked )
 {
     if( bChecked == true )
     {
-        edit_tool_->addAction( expand_node_act_ );
+        edit_tool_->insertAction( collapse_all_act_, expand_node_act_ );
         setView( ACT_EDIT_EXPAND_NODE );
     }
     else
@@ -3094,7 +3095,7 @@ void MainWindow::viewEditCollapseAll( bool bChecked )
 {
     if( bChecked == true )
     {
-        edit_tool_->addAction( collapse_all_act_ );
+        edit_tool_->insertAction( collapse_node_act_, collapse_all_act_ );
         setView( ACT_EDIT_COLLAPSE_ALL );
     }
     else
@@ -3108,7 +3109,7 @@ void MainWindow::viewEditCollapseNode( bool bChecked )
 {
     if( bChecked == true )
     {
-        edit_tool_->addAction( collapse_node_act_ );
+        edit_tool_->insertAction( prev_act_, collapse_node_act_ );
         setView( ACT_EDIT_COLLAPSE_NODE );
     }
     else
@@ -3122,7 +3123,7 @@ void MainWindow::viewEditPrev( bool bChecked )
 {
     if( bChecked == true )
     {
-        edit_tool_->addAction( prev_act_ );
+        edit_tool_->insertAction( next_act_, prev_act_ );
         setView( ACT_EDIT_PREV_NODE );
     }
     else
@@ -3136,7 +3137,7 @@ void MainWindow::viewEditNext( bool bChecked )
 {
     if( bChecked == true )
     {
-        edit_tool_->addAction( next_act_ );
+        edit_tool_->insertAction( find_node_act_, next_act_ );
         setView( ACT_EDIT_NEXT_NODE );
     }
     else
@@ -3164,7 +3165,7 @@ void MainWindow::viewToolDataConverter( bool bChecked )
 {
     if( bChecked == true )
     {
-        tool_tool_->addAction( data_encode_act_ );
+        tool_tool_->insertAction( num_converter_act_, data_encode_act_ );
         setView( ACT_TOOL_DATA_CONVERTER );
     }
     else
@@ -3178,7 +3179,7 @@ void MainWindow::viewToolNumConverter( bool bChecked )
 {
     if( bChecked == true )
     {
-        tool_tool_->addAction( num_converter_act_ );
+        tool_tool_->insertAction( oid_act_, num_converter_act_ );
         setView( ACT_TOOL_NUM_CONVERTER );
     }
     else
@@ -3192,7 +3193,7 @@ void MainWindow::viewToolOIDInfo( bool bChecked )
 {
     if( bChecked == true )
     {
-        tool_tool_->addAction( oid_act_ );
+        tool_tool_->insertAction( make_ber_act_, oid_act_ );
         setView( ACT_TOOL_OID_INFO );
     }
     else
@@ -3206,7 +3207,7 @@ void MainWindow::viewToolMakeBER( bool bChecked )
 {
     if( bChecked == true )
     {
-        tool_tool_->addAction( make_ber_act_ );
+        tool_tool_->insertAction( ber_check_act_, make_ber_act_ );
         setView( ACT_TOOL_MAKE_BER );
     }
     else
@@ -3220,7 +3221,7 @@ void MainWindow::viewToolBERCheck( bool bChecked )
 {
     if( bChecked == true )
     {
-        tool_tool_->addAction( ber_check_act_ );
+        tool_tool_->insertAction( decode_data_act_, ber_check_act_ );
         setView( ACT_TOOL_BER_CHECK );
     }
     else
@@ -3234,7 +3235,7 @@ void MainWindow::viewToolDecodeData( bool bChecked )
 {
     if( bChecked == true )
     {
-        tool_tool_->addAction( decode_data_act_ );
+        tool_tool_->insertAction( get_uri_act_, decode_data_act_ );
         setView( ACT_TOOL_DECODE_DATA );
     }
     else
@@ -3262,7 +3263,7 @@ void MainWindow::viewCryptKeyMan( bool bChecked )
 {
     if( bChecked == true )
     {
-        crypt_tool_->addAction( key_man_act_ );
+        crypt_tool_->insertAction( hash_act_, key_man_act_ );
         setView( ACT_CRYPT_KEY_MAN );
     }
     else
@@ -3276,7 +3277,7 @@ void MainWindow::viewCryptHash( bool bChecked )
 {
     if( bChecked == true )
     {
-        crypt_tool_->addAction( hash_act_ );
+        crypt_tool_->insertAction( mac_act_, hash_act_ );
         setView( ACT_CRYPT_HASH );
     }
     else
@@ -3290,7 +3291,7 @@ void MainWindow::viewCryptMAC( bool bChecked )
 {
     if( bChecked == true )
     {
-        crypt_tool_->addAction( mac_act_ );
+        crypt_tool_->insertAction( enc_dec_act_, mac_act_ );
         setView( ACT_CRYPT_MAC );
     }
     else
@@ -3304,7 +3305,7 @@ void MainWindow::viewCryptEncDec( bool bChecked )
 {
     if( bChecked == true )
     {
-        crypt_tool_->addAction( enc_dec_act_ );
+        crypt_tool_->insertAction( sign_verify_act_, enc_dec_act_ );
         setView( ACT_CRYPT_ENC_DEC );
     }
     else
@@ -3318,7 +3319,7 @@ void MainWindow::viewCryptSignVerify( bool bChecked )
 {
     if( bChecked == true )
     {
-        crypt_tool_->addAction( sign_verify_act_ );
+        crypt_tool_->insertAction( pub_enc_dec_act_, sign_verify_act_ );
         setView( ACT_CRYPT_SIGN_VERIFY );
     }
     else
@@ -3332,7 +3333,7 @@ void MainWindow::viewCryptPubEnc( bool bChecked )
 {
     if( bChecked == true )
     {
-        crypt_tool_->addAction( pub_enc_dec_act_ );
+        crypt_tool_->insertAction( key_agree_act_, pub_enc_dec_act_ );
         setView( ACT_CRYPT_PUB_ENC );
     }
     else
@@ -3346,7 +3347,7 @@ void MainWindow::viewCryptKeyAgree( bool bChecked )
 {
     if( bChecked == true )
     {
-        crypt_tool_->addAction( key_agree_act_ );
+        crypt_tool_->insertAction( pkcs7_act_, key_agree_act_ );
         setView( ACT_CRYPT_KEY_AGREE );
     }
     else
@@ -3360,7 +3361,7 @@ void MainWindow::viewCryptPKCS7( bool bChecked )
 {
     if( bChecked == true )
     {
-        crypt_tool_->addAction( pkcs7_act_ );
+        crypt_tool_->insertAction( sss_act_, pkcs7_act_ );
         setView( ACT_CRYPT_PKCS7 );
     }
     else
@@ -3374,7 +3375,7 @@ void MainWindow::viewCryptSSS( bool bChecked )
 {
     if( bChecked == true )
     {
-        crypt_tool_->addAction( sss_act_ );
+        crypt_tool_->insertAction( cert_pvd_act_, sss_act_ );
         setView( ACT_CRYPT_SSS );
     }
     else
@@ -3388,7 +3389,7 @@ void MainWindow::viewCryptCertPVD( bool bChecked )
 {
     if( bChecked == true )
     {
-        crypt_tool_->addAction( cert_pvd_act_ );
+        crypt_tool_->insertAction( gen_otp_act_, cert_pvd_act_ );
         setView( ACT_CRYPT_CERT_PVD );
     }
     else
@@ -3402,7 +3403,7 @@ void MainWindow::viewCryptOTPGen( bool bChecked )
 {
     if( bChecked == true )
     {
-        crypt_tool_->addAction( gen_otp_act_ );
+        crypt_tool_->insertAction( vid_act_, gen_otp_act_ );
         setView( ACT_CRYPT_OTP_GEN );
     }
     else
@@ -3416,7 +3417,7 @@ void MainWindow::viewCryptVID( bool bChecked )
 {
     if( bChecked == true )
     {
-        crypt_tool_->addAction( vid_act_ );
+        crypt_tool_->insertAction( calc_act_, vid_act_ );
         setView( ACT_CRYPT_VID );
     }
     else
@@ -3444,7 +3445,7 @@ void MainWindow::viewServiceKeyPairMan( bool bChecked )
 {
     if( bChecked == true )
     {
-        service_tool_->addAction( key_pair_man_act_ );
+        service_tool_->insertAction( cert_man_act_, key_pair_man_act_ );
         setView( ACT_SERVICE_KEY_PAIR_MAN );
     }
     else
@@ -3458,7 +3459,7 @@ void MainWindow::viewServiceCertMan( bool bChecked )
 {
     if( bChecked == true )
     {
-        service_tool_->addAction( cert_man_act_ );
+        service_tool_->insertAction( key_list_act_, cert_man_act_ );
         setView( ACT_SERVICE_CERT_MAN );
     }
     else
@@ -3472,13 +3473,55 @@ void MainWindow::viewServiceKeyList( bool bChecked )
 {
     if( bChecked == true )
     {
-        service_tool_->addAction( key_list_act_ );
+        service_tool_->insertAction( ssl_act_, key_list_act_ );
         setView( ACT_SERVICE_KEY_LIST );
     }
     else
     {
         service_tool_->removeAction( key_list_act_ );
         unsetView( ACT_SERVICE_KEY_LIST );
+    }
+}
+
+void MainWindow::viewServiceSSLCheck( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        service_tool_->insertAction( x509_comp_act_, ssl_act_ );
+        setView( ACT_SERVICE_SSL_CHECK );
+    }
+    else
+    {
+        service_tool_->removeAction( ssl_act_ );
+        unsetView( ACT_SERVICE_SSL_CHECK );
+    }
+}
+
+void MainWindow::viewServiceX509Comp( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        service_tool_->insertAction( doc_signer_act_, x509_comp_act_ );
+        setView( ACT_SERVICE_X509_COMP );
+    }
+    else
+    {
+        service_tool_->removeAction( x509_comp_act_ );
+        unsetView( ACT_SERVICE_X509_COMP );
+    }
+}
+
+void MainWindow::viewServiceDocSigner( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        service_tool_->insertAction( cavp_act_, doc_signer_act_ );
+        setView( ACT_SERVICE_DOC_SIGNER );
+    }
+    else
+    {
+        service_tool_->removeAction( doc_signer_act_ );
+        unsetView( ACT_SERVICE_DOC_SIGNER );
     }
 }
 
@@ -3496,53 +3539,12 @@ void MainWindow::viewServiceCAVP( bool bChecked )
     }
 }
 
-void MainWindow::viewServiceSSLCheck( bool bChecked )
-{
-    if( bChecked == true )
-    {
-        service_tool_->addAction( ssl_act_ );
-        setView( ACT_SERVICE_SSL_CHECK );
-    }
-    else
-    {
-        service_tool_->removeAction( ssl_act_ );
-        unsetView( ACT_SERVICE_SSL_CHECK );
-    }
-}
-
-void MainWindow::viewServiceX509Comp( bool bChecked )
-{
-    if( bChecked == true )
-    {
-        service_tool_->addAction( x509_comp_act_ );
-        setView( ACT_SERVICE_X509_COMP );
-    }
-    else
-    {
-        service_tool_->removeAction( x509_comp_act_ );
-        unsetView( ACT_SERVICE_X509_COMP );
-    }
-}
-
-void MainWindow::viewServiceDocSigner( bool bChecked )
-{
-    if( bChecked == true )
-    {
-        service_tool_->addAction( doc_signer_act_ );
-        setView( ACT_SERVICE_DOC_SIGNER );
-    }
-    else
-    {
-        service_tool_->removeAction( doc_signer_act_ );
-        unsetView( ACT_SERVICE_DOC_SIGNER );
-    }
-}
 
 void MainWindow::viewProtoOCSP( bool bChecked )
 {
     if( bChecked == true )
     {
-        proto_tool_->addAction( ocsp_act_ );
+        proto_tool_->insertAction( tsp_act_, ocsp_act_ );
         setView( ACT_PROTO_OCSP );
     }
     else
@@ -3556,7 +3558,7 @@ void MainWindow::viewProtoTSP( bool bChecked )
 {
     if( bChecked == true )
     {
-        proto_tool_->addAction( tsp_act_ );
+        proto_tool_->insertAction( cmp_act_, tsp_act_ );
         setView( ACT_PROTO_TSP );
     }
     else
@@ -3570,7 +3572,7 @@ void MainWindow::viewProtoCMP( bool bChecked )
 {
     if( bChecked == true )
     {
-        proto_tool_->addAction( cmp_act_ );
+        proto_tool_->insertAction( scep_act_, cmp_act_ );
         setView( ACT_PROTO_CMP );
     }
     else
@@ -3584,7 +3586,7 @@ void MainWindow::viewProtoSCEP( bool bChecked )
 {
     if( bChecked == true )
     {
-        proto_tool_->addAction( scep_act_ );
+        proto_tool_->insertAction( acme_act_, scep_act_ );
         setView( ACT_PROTO_SCEP );
     }
     else
@@ -3612,7 +3614,7 @@ void MainWindow::viewKMIPDecodeTTLV( bool bChecked )
 {
     if( bChecked == true )
     {
-        kmip_tool_->addAction( ttlv_decode_act_ );
+        kmip_tool_->insertAction( ttlv_make_act_, ttlv_decode_act_ );
         setView( ACT_KMIP_DECODE_TTLV );
     }
     else
@@ -3626,7 +3628,7 @@ void MainWindow::viewKMIPMakeTTLV( bool bChecked )
 {
     if( bChecked == true )
     {
-        kmip_tool_->addAction( ttlv_make_act_ );
+        kmip_tool_->insertAction( ttlv_encode_act_, ttlv_make_act_ );
         setView( ACT_KMIP_MAKE_TTLV );
     }
     else
@@ -3640,7 +3642,7 @@ void MainWindow::viewKMIPEncodeTTLV( bool bChecked )
 {
     if( bChecked == true )
     {
-        kmip_tool_->addAction( ttlv_encode_act_ );
+        kmip_tool_->insertAction( ttlv_client_act_, ttlv_encode_act_ );
         setView( ACT_KMIP_ENCODE_TTLV );
     }
     else
@@ -3668,7 +3670,7 @@ void MainWindow::viewHelpSettings( bool bChecked )
 {
     if( bChecked == true )
     {
-        help_tool_->addAction( setting_act_ );
+        help_tool_->insertAction( clear_log_act_, setting_act_ );
         setView( ACT_HELP_SETTINGS );
     }
     else
@@ -3682,7 +3684,7 @@ void MainWindow::viewHelpClearLog( bool bChecked )
 {
     if( bChecked == true )
     {
-        help_tool_->addAction( clear_log_act_ );
+        help_tool_->insertAction( halt_log_act_, clear_log_act_ );
         setView( ACT_HELP_CLEAR_LOG );
     }
     else
@@ -3696,7 +3698,7 @@ void MainWindow::viewHelpHaltLog( bool bChecked )
 {
     if( bChecked == true )
     {
-        help_tool_->addAction( halt_log_act_ );
+        help_tool_->insertAction( content_act_, halt_log_act_ );
         setView( ACT_HELP_HALT_LOG );
     }
     else
@@ -3710,7 +3712,7 @@ void MainWindow::viewHelpContent( bool bChecked )
 {
     if( bChecked == true )
     {
-        help_tool_->addAction( content_act_ );
+        help_tool_->insertAction( about_act_, content_act_ );
         setView( ACT_HELP_CONTENT );
     }
     else
@@ -3764,7 +3766,7 @@ void MainWindow::save()
     {
         if( hsplitter_->widget(0) == ttlv_tree_ )
         {
-            QString strFileName = ttlv_tree_->saveItem();
+            QString strFileName = ttlv_tree_->saveNode();
             if( strFileName.length() > 0 )
             {
                 file_path_ = strFileName;
@@ -3791,7 +3793,7 @@ void MainWindow::saveAs()
 
     if( hsplitter_->widget(0) == ttlv_tree_ )
     {
-        strFileName = ttlv_tree_->saveItem();
+        strFileName = ttlv_tree_->saveNode();
     }
     else
     {
