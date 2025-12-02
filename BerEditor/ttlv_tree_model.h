@@ -18,7 +18,7 @@ public:
     const BIN& getTTLV() { return binTTLV_; };
 
     int parseTree();
-    int parseConstruct( int offset, TTLVTreeItem *pParentItem );
+    int parseConstruct( TTLVTreeItem *pParentItem );
 
     const TTLVTreeItem* addItem( TTLVTreeItem* pParentItem, bool bFirst, const BIN *pData );
     int removeItem( TTLVTreeItem *pItem );

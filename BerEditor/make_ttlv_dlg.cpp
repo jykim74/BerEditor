@@ -150,12 +150,14 @@ void MakeTTLVDlg::clickOK()
     if( strTag.length() < 6 )
     {
         berApplet->warningBox( tr( "Tag value length is insufficient"), this );
+        mTagText->setFocus();
         return;
     }
 
     if( strType.length() < 1 )
     {
         berApplet->warningBox( tr( "Select Type" ), this );
+        mTypeCombo->setFocus();
         return;
     }
 

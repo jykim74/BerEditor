@@ -36,26 +36,27 @@ int TTLVTreeModel::parseTree()
     offset = getItem( offset, pRootItem );
     insertRow( 0, pRootItem );
 
-//    pRootItem->setText( pRootItem->getTitle( &binTTLV_ ));
-
     if( pRootItem->isStructure() ) // In case of structure
     {
-        ret = parseConstruct( 8, pRootItem );
+        ret = parseConstruct( pRootItem );
     }
 
     return 0;
 }
 
-int TTLVTreeModel::parseConstruct( int offset, TTLVTreeItem *pParentItem )
+int TTLVTreeModel::parseConstruct( TTLVTreeItem *pParentItem )
 {
     int         ret = 0;
+    int         offset = 0;
     int         next_offset = 0;
     int         start_offset = offset;
     int         level = pParentItem->getLevel() + 1;
 
-    if( binTTLV_.nLen == offset ) return 0;
+    if( pParentItem == NULL ) return JSR_ERR;
+    start_offset = pParentItem->getOffset() + JS_TTLV_HEADER_SIZE;
 
-    if( binTTLV_.nLen < offset ) return -1;
+    offset = start_offset;
+    if( binTTLV_.nLen <= offset ) return JSR_ERR2;
 
     do {
         TTLVTreeItem *pItem = new TTLVTreeItem();
@@ -63,13 +64,14 @@ int TTLVTreeModel::parseConstruct( int offset, TTLVTreeItem *pParentItem )
         pItem->setLevel( level );
 
         next_offset = getItem( offset, pItem );
+        if( next_offset < 0 ) return JSR_ERR3;
 
-//        pItem->setText( pItem->getTitle( &binTTLV_ ) );
         pParentItem->appendRow( pItem );
 
         if( pItem->isStructure() )
         {
-            parseConstruct( offset + 8, pItem );
+            ret = parseConstruct( pItem );
+            if( ret != JSR_OK ) return ret;
         }
 
         offset = next_offset;
@@ -78,7 +80,7 @@ int TTLVTreeModel::parseConstruct( int offset, TTLVTreeItem *pParentItem )
             break;
     } while ( next_offset > 0 && next_offset < binTTLV_.nLen );
 
-    return 0;
+    return ret;
 }
 
 void TTLVTreeModel::setTTLV( const BIN *pTTLV )
@@ -112,7 +114,7 @@ int TTLVTreeModel::getItem( BIN *pTTLV, int offset, TTLVTreeItem *pItem )
 
     pItem->setText( pItem->getTitle( &binTTLV_ ));
 
-    next_offset = offset + 8 + length + pad;
+    next_offset = offset + JS_TTLV_HEADER_SIZE + length + pad;
     return next_offset;
 }
 
@@ -460,30 +462,25 @@ const TTLVTreeItem* TTLVTreeModel::findNextItemByValue( const TTLVTreeItem* pIte
         binCurHeader.pVal = binTTLV_.pVal + pCurItem->getOffset();
         binCurHeader.nLen = JS_TTLV_HEADER_SIZE;
 
-        if( JS_BIN_cmp( &binCurHeader, pHeader ) == 0 )
+        if( JS_BIN_memmem( &binCurHeader, pHeader ) == 0 )
         {
             if( pValue == NULL || pValue->nLen <= 0 )
                 return pCurItem;
 
             if( pCurItem->isStructure() == false )
             {
-                if( JS_BIN_cmp( &binCurHeader, pHeader ) == 0 )
+                binCurValue.pVal = binTTLV_.pVal + pCurItem->getOffset() + JS_TTLV_HEADER_SIZE;
+                binCurValue.nLen = pCurItem->getLengthInt();
+
+                if( bMatched == true )
                 {
-                    if( pValue == NULL || pValue->nLen == 0 ) return pCurItem;
-
-                    binCurValue.pVal = binTTLV_.pVal + pCurItem->getOffset() + JS_TTLV_HEADER_SIZE;
-                    binCurValue.nLen = pCurItem->getLengthInt();
-
-                    if( bMatched == true )
-                    {
-                        ret = JS_BIN_cmp( &binCurValue, pValue );
-                        if( ret == 0 ) return pCurItem;
-                    }
-                    else
-                    {
-                        ret = JS_BIN_memmem( &binCurValue, pValue );
-                        if( ret >= 0 ) return pCurItem;
-                    }
+                    ret = JS_BIN_cmp( &binCurValue, pValue );
+                    if( ret == 0 ) return pCurItem;
+                }
+                else
+                {
+                    ret = JS_BIN_memmem( &binCurValue, pValue );
+                    if( ret >= 0 ) return pCurItem;
                 }
             }
         }
@@ -521,30 +518,25 @@ const TTLVTreeItem* TTLVTreeModel::findPrevItemByValue( const TTLVTreeItem* pIte
         binCurHeader.pVal = binTTLV_.pVal + pCurItem->getOffset();
         binCurHeader.nLen = JS_TTLV_HEADER_SIZE;
 
-        if( JS_BIN_cmp( &binCurHeader, pHeader ) == 0 )
+        if( JS_BIN_memmem( &binCurHeader, pHeader ) == 0 )
         {
             if( pValue == NULL || pValue->nLen <= 0 )
                 return pCurItem;
 
             if( pCurItem->isStructure() == false )
             {
-                if( JS_BIN_cmp( &binCurHeader, pHeader ) == 0 )
+                binCurValue.pVal = binTTLV_.pVal + pCurItem->getOffset() + JS_TTLV_HEADER_SIZE;
+                binCurValue.nLen = pCurItem->getLengthInt();
+
+                if( bMatched == true )
                 {
-                    if( pValue == NULL || pValue->nLen == 0 ) return pCurItem;
-
-                    binCurValue.pVal = binTTLV_.pVal + pCurItem->getOffset() + JS_TTLV_HEADER_SIZE;
-                    binCurValue.nLen = pCurItem->getLengthInt();
-
-                    if( bMatched == true )
-                    {
-                        ret = JS_BIN_cmp( &binCurValue, pValue );
-                        if( ret == 0 ) return pCurItem;
-                    }
-                    else
-                    {
-                        ret = JS_BIN_memmem( &binCurValue, pValue );
-                        if( ret >= 0 ) return pCurItem;
-                    }
+                    ret = JS_BIN_cmp( &binCurValue, pValue );
+                    if( ret == 0 ) return pCurItem;
+                }
+                else
+                {
+                    ret = JS_BIN_memmem( &binCurValue, pValue );
+                    if( ret >= 0 ) return pCurItem;
                 }
             }
         }

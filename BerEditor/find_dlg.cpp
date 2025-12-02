@@ -418,7 +418,12 @@ void FindDlg::findTTLV_Next()
     if( mHeadCheck->isChecked() == true )
     {
         QString strHeader = mTTLV_HeaderText->text();
+        QString strType = mTTLV_TypeCombo->currentText();
+
         JS_BIN_decodeHex( strHeader.toStdString().c_str(), &binHeader );
+
+        if( strType == "None" ) binHeader.nLen = 3;
+
         pCurItem = (TTLVTreeItem *)model->findNextItemByValue( pCurItem, &binHeader, &binValue, mMatchedCheck->isChecked() );
         JS_BIN_reset( &binHeader );
     }
@@ -455,7 +460,12 @@ void FindDlg::findTTLV_Previous()
     if( mHeadCheck->isChecked() == true )
     {
         QString strHeader = mTTLV_HeaderText->text();
+        QString strType = mTTLV_TypeCombo->currentText();
+
         JS_BIN_decodeHex( strHeader.toStdString().c_str(), &binHeader );
+
+        if( strType == "None" ) binHeader.nLen = 3;
+
         pCurItem = (TTLVTreeItem *)model->findPrevItemByValue( pCurItem, &binHeader, &binValue, mMatchedCheck->isChecked() );
         JS_BIN_reset( &binHeader );
     }
