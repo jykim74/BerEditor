@@ -15,7 +15,7 @@ static const QStringList kTTLVTypeList = { "None", "Structure", "Integer", "Long
                                    "ByteString", "DateTime", "Interval", "DateTimeExtented" };
 
 static const QStringList kBerValueType = { "String", "Hex", "Decimal", "OID" };
-static const QStringList kTTLVValueType = { "String", "Hex", "Number", "Decimal" };
+static const QStringList kTTLVValueType = { "String", "Hex", "Decimal" };
 
 FindDlg::FindDlg(QWidget *parent) :
     QDialog(parent)
