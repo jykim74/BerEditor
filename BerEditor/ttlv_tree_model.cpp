@@ -342,7 +342,7 @@ const TTLVTreeItem* TTLVTreeModel::findNextItemByValue( const TTLVTreeItem* pIte
 {
     int ret = 0;
     BIN binCurValue = {0,0};
-    TTLVTreeView viewTree = berApplet->mainWindow()->ttlvTree();
+    TTLVTreeView* viewTree = berApplet->mainWindow()->ttlvTree();
     TTLVTreeItem *pCurItem = NULL;
     QModelIndex ri;
 
@@ -355,7 +355,7 @@ const TTLVTreeItem* TTLVTreeModel::findNextItemByValue( const TTLVTreeItem* pIte
     }
     else
     {
-        pCurItem = viewTree.getNext( (TTLVTreeItem *)pItem );
+        pCurItem = viewTree->getNext( (TTLVTreeItem *)pItem );
     }
 
     if( pValue == NULL || pValue->nLen <= 0 ) return pCurItem;
@@ -379,7 +379,7 @@ const TTLVTreeItem* TTLVTreeModel::findNextItemByValue( const TTLVTreeItem* pIte
             }
         }
 
-        pCurItem = viewTree.getNext( pCurItem );
+        pCurItem = viewTree->getNext( pCurItem );
     }
 
     return nullptr;
@@ -389,7 +389,7 @@ const TTLVTreeItem* TTLVTreeModel::findPrevItemByValue( const TTLVTreeItem* pIte
 {
     int ret = 0;
     BIN binCurValue = {0,0};
-    TTLVTreeView viewTree = berApplet->mainWindow()->berTree();
+    TTLVTreeView* viewTree = berApplet->mainWindow()->ttlvTree();
     TTLVTreeItem *pCurItem = NULL;
     QModelIndex ri;
 
@@ -402,7 +402,7 @@ const TTLVTreeItem* TTLVTreeModel::findPrevItemByValue( const TTLVTreeItem* pIte
     }
     else
     {
-        pCurItem = viewTree.getPrev( (TTLVTreeItem *)pItem );
+        pCurItem = viewTree->getPrev( (TTLVTreeItem *)pItem );
     }
 
     if( pValue == NULL || pValue->nLen <= 0 ) return pCurItem;
@@ -426,7 +426,7 @@ const TTLVTreeItem* TTLVTreeModel::findPrevItemByValue( const TTLVTreeItem* pIte
             }
         }
 
-        pCurItem = viewTree.getPrev( pCurItem );
+        pCurItem = viewTree->getPrev( pCurItem );
     }
 
     return nullptr;
@@ -439,7 +439,7 @@ const TTLVTreeItem* TTLVTreeModel::findNextItemByValue( const TTLVTreeItem* pIte
     BIN binCurValue = {0,0};
     BIN binCurHeader = {0,0};
 
-    TTLVTreeView viewTree = berApplet->mainWindow()->berTree();
+    TTLVTreeView* viewTree = berApplet->mainWindow()->ttlvTree();
     TTLVTreeItem *pCurItem = NULL;
     QModelIndex ri;
 
@@ -452,7 +452,7 @@ const TTLVTreeItem* TTLVTreeModel::findNextItemByValue( const TTLVTreeItem* pIte
     }
     else
     {
-        pCurItem = viewTree.getNext( (TTLVTreeItem *)pItem );
+        pCurItem = viewTree->getNext( (TTLVTreeItem *)pItem );
     }
 
     while( pCurItem )
@@ -488,7 +488,7 @@ const TTLVTreeItem* TTLVTreeModel::findNextItemByValue( const TTLVTreeItem* pIte
             }
         }
 
-        pCurItem = viewTree.getNext( pCurItem );
+        pCurItem = viewTree->getNext( pCurItem );
     }
 
     return nullptr;
@@ -500,7 +500,7 @@ const TTLVTreeItem* TTLVTreeModel::findPrevItemByValue( const TTLVTreeItem* pIte
     BIN binCurValue = {0,0};
     BIN binCurHeader = {0,0};
 
-    TTLVTreeView viewTree = berApplet->mainWindow()->berTree();
+    TTLVTreeView* viewTree = berApplet->mainWindow()->ttlvTree();
     TTLVTreeItem *pCurItem = NULL;
     QModelIndex ri;
 
@@ -513,7 +513,7 @@ const TTLVTreeItem* TTLVTreeModel::findPrevItemByValue( const TTLVTreeItem* pIte
     }
     else
     {
-        pCurItem = viewTree.getPrev( (TTLVTreeItem *)pItem );
+        pCurItem = viewTree->getPrev( (TTLVTreeItem *)pItem );
     }
 
     while( pCurItem )
@@ -549,7 +549,7 @@ const TTLVTreeItem* TTLVTreeModel::findPrevItemByValue( const TTLVTreeItem* pIte
             }
         }
 
-        pCurItem = pCurItem = viewTree.getPrev( pCurItem );
+        pCurItem = pCurItem = viewTree->getPrev( pCurItem );
     }
 
     return nullptr;

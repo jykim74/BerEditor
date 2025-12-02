@@ -547,7 +547,7 @@ const BerItem* BerModel::findNextItemByValue( const BerItem* pItem, const BIN *p
 {
     int ret = 0;
     BIN binCurValue = {0,0};
-    BerTreeView viewTree = berApplet->mainWindow()->berTree();
+    BerTreeView* viewTree = berApplet->mainWindow()->berTree();
     BerItem *pCurItem = NULL;
     QModelIndex ri;
 
@@ -560,7 +560,7 @@ const BerItem* BerModel::findNextItemByValue( const BerItem* pItem, const BIN *p
     }
     else
     {
-        pCurItem = viewTree.getNext( (BerItem *)pItem );
+        pCurItem = viewTree->getNext( (BerItem *)pItem );
     }
 
     if( pValue == NULL || pValue->nLen <= 0 ) return pCurItem;
@@ -592,7 +592,7 @@ const BerItem* BerModel::findNextItemByValue( const BerItem* pItem, const BIN *p
             }
         }
 
-        pCurItem = viewTree.getNext( pCurItem );
+        pCurItem = viewTree->getNext( pCurItem );
     }
 
     return nullptr;
@@ -602,7 +602,7 @@ const BerItem* BerModel::findPrevItemByValue( const BerItem* pItem, const BIN *p
 {
     int ret = 0;
     BIN binCurValue = {0,0};
-    BerTreeView viewTree = berApplet->mainWindow()->berTree();
+    BerTreeView* viewTree = berApplet->mainWindow()->berTree();
     BerItem *pCurItem = NULL;
     QModelIndex ri;
 
@@ -615,7 +615,7 @@ const BerItem* BerModel::findPrevItemByValue( const BerItem* pItem, const BIN *p
     }
     else
     {
-        pCurItem = viewTree.getPrev( (BerItem *)pItem );
+        pCurItem = viewTree->getPrev( (BerItem *)pItem );
     }
 
     if( pValue == NULL || pValue->nLen <= 0 ) return pCurItem;
@@ -647,7 +647,7 @@ const BerItem* BerModel::findPrevItemByValue( const BerItem* pItem, const BIN *p
             }
         }
 
-        pCurItem = viewTree.getPrev( pCurItem );
+        pCurItem = viewTree->getPrev( pCurItem );
     }
 
     return nullptr;
@@ -658,7 +658,7 @@ const BerItem* BerModel::findNextItemByValue( const BerItem* pItem, BYTE cTag, c
 {
     int ret = 0;
     BIN binCurValue = {0,0};
-    BerTreeView viewTree = berApplet->mainWindow()->berTree();
+    BerTreeView* viewTree = berApplet->mainWindow()->berTree();
     BerItem *pCurItem = NULL;
     QModelIndex ri;
 
@@ -671,7 +671,7 @@ const BerItem* BerModel::findNextItemByValue( const BerItem* pItem, BYTE cTag, c
     }
     else
     {
-        pCurItem = viewTree.getNext( (BerItem *)pItem );
+        pCurItem = viewTree->getNext( (BerItem *)pItem );
     }
 
     while( pCurItem )
@@ -706,7 +706,7 @@ const BerItem* BerModel::findNextItemByValue( const BerItem* pItem, BYTE cTag, c
             }
         }
 
-        pCurItem = viewTree.getNext( pCurItem );
+        pCurItem = viewTree->getNext( pCurItem );
     }
 
     return nullptr;
@@ -716,7 +716,7 @@ const BerItem* BerModel::findPrevItemByValue( const BerItem* pItem, BYTE cTag, c
 {
     int ret = 0;
     BIN binCurValue = {0,0};
-    BerTreeView viewTree = berApplet->mainWindow()->berTree();
+    BerTreeView* viewTree = berApplet->mainWindow()->berTree();
     BerItem *pCurItem = NULL;
     QModelIndex ri;
 
@@ -729,7 +729,7 @@ const BerItem* BerModel::findPrevItemByValue( const BerItem* pItem, BYTE cTag, c
     }
     else
     {
-        pCurItem = viewTree.getPrev( (BerItem *)pItem );
+        pCurItem = viewTree->getPrev( (BerItem *)pItem );
     }
 
     while( pCurItem )
@@ -764,7 +764,7 @@ const BerItem* BerModel::findPrevItemByValue( const BerItem* pItem, BYTE cTag, c
             }
         }
 
-        pCurItem = pCurItem = viewTree.getPrev( pCurItem );
+        pCurItem = pCurItem = viewTree->getPrev( pCurItem );
     }
 
     return nullptr;
