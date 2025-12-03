@@ -763,12 +763,12 @@ void BerTreeView::ShowContextMenu(QPoint point)
 
         if( berApplet->isLicense() == false )
         {
-            pInsertAct->setEnabled( false );
-            pEditAct->setEnabled( false );
-            pDeleteAct->setEnabled( false );
+            if( pInsertAct != NULL ) pInsertAct->setEnabled( false );
+            if( pEditAct != NULL ) pEditAct->setEnabled( false );
+            if( pDeleteAct != NULL ) pDeleteAct->setEnabled( false );
         }
 
-        if( item->GetTag() == JS_OCTETSTRING || item->GetTag() == JS_BITSTRING )
+        if( item->isType( JS_OCTETSTRING ) || item->isType( JS_BITSTRING ) )
         {
             if( item->hasChildren() == false )
                 menu.addAction( tr("Expand node"), this, SLOT(ExpandValue()));

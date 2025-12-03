@@ -457,6 +457,13 @@ void MainWindow::createViewActions()
     connect( editFindNodeAct, &QAction::triggered, this, &MainWindow::viewEditFindNode );
     editMenu->addAction( editFindNodeAct );
 
+    QAction *toolDecodeDataAct = new QAction( tr( "Decode BER"), this );
+    bVal = isView( ACT_TOOL_DECODE_DATA );
+    toolDecodeDataAct->setCheckable(true);
+    toolDecodeDataAct->setChecked(bVal);
+    connect( toolDecodeDataAct, &QAction::triggered, this, &MainWindow::viewToolDecodeData );
+    toolMenu->addAction( toolDecodeDataAct );
+
     QAction *toolDataEncodeAct = new QAction( tr( "Data Converter"), this );
     bVal = isView( ACT_TOOL_DATA_CONVERTER );
     toolDataEncodeAct->setCheckable(true);
@@ -491,13 +498,6 @@ void MainWindow::createViewActions()
     toolBERCheckAct->setChecked(bVal);
     connect( toolBERCheckAct, &QAction::triggered, this, &MainWindow::viewToolBERCheck );
     toolMenu->addAction( toolBERCheckAct );
-
-    QAction *toolDecodeDataAct = new QAction( tr( "Decode BER"), this );
-    bVal = isView( ACT_TOOL_DECODE_DATA );
-    toolDecodeDataAct->setCheckable(true);
-    toolDecodeDataAct->setChecked(bVal);
-    connect( toolDecodeDataAct, &QAction::triggered, this, &MainWindow::viewToolDecodeData );
-    toolMenu->addAction( toolDecodeDataAct );
 
     QAction *toolGetURIAct = new QAction( tr( "Get BER from URI"), this );
     bVal = isView( ACT_TOOL_GET_URI );
@@ -987,6 +987,13 @@ void MainWindow::createToolActions()
     tool_tool_->setIconSize( QSize(TOOL_BAR_WIDTH,TOOL_BAR_HEIGHT));
     tool_tool_->layout()->setSpacing(0);
 
+    const QIcon decodeIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/decode.png"));
+    decode_data_act_ = new QAction(decodeIcon, tr("&Decode BER"), this);
+    decode_data_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_D));
+    connect( decode_data_act_, &QAction::triggered, this, &MainWindow::runDecodeData );
+    decode_data_act_->setStatusTip(tr("BER data decoding"));
+    toolMenu->addAction( decode_data_act_ );
+    if( isView( ACT_TOOL_DECODE_DATA ) ) tool_tool_->addAction( decode_data_act_ );
 
     const QIcon dataTransIcon = QIcon::fromTheme("data-trans", QIcon(":/images/data_trans.png"));
     data_encode_act_ = new QAction( dataTransIcon, tr("Data &Converter"), this );
@@ -1027,14 +1034,6 @@ void MainWindow::createToolActions()
     ber_check_act_->setStatusTip(tr("Check BER data"));
     toolMenu->addAction( ber_check_act_ );
     if( isView( ACT_TOOL_BER_CHECK ) ) tool_tool_->addAction( ber_check_act_ );
-
-    const QIcon decodeIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/decode.png"));
-    decode_data_act_ = new QAction(decodeIcon, tr("&Decode BER"), this);
-    decode_data_act_->setShortcut(QKeySequence(Qt::SHIFT | Qt::Key_D));
-    connect( decode_data_act_, &QAction::triggered, this, &MainWindow::runDecodeData );
-    decode_data_act_->setStatusTip(tr("BER data decoding"));
-    toolMenu->addAction( decode_data_act_ );
-    if( isView( ACT_TOOL_DECODE_DATA ) ) tool_tool_->addAction( decode_data_act_ );
 
     const QIcon uriIcon = QIcon::fromTheme("tool-insert", QIcon(":/images/uri.png"));
     get_uri_act_ = new QAction(uriIcon, tr("&Get BER from URI"), this);
@@ -3161,6 +3160,20 @@ void MainWindow::viewEditFindNode( bool bChecked )
     }
 }
 
+void MainWindow::viewToolDecodeData( bool bChecked )
+{
+    if( bChecked == true )
+    {
+        tool_tool_->insertAction( data_encode_act_, decode_data_act_ );
+        setView( ACT_TOOL_DECODE_DATA );
+    }
+    else
+    {
+        tool_tool_->removeAction( decode_data_act_ );
+        unsetView( ACT_TOOL_DECODE_DATA );
+    }
+}
+
 void MainWindow::viewToolDataConverter( bool bChecked )
 {
     if( bChecked == true )
@@ -3221,27 +3234,13 @@ void MainWindow::viewToolBERCheck( bool bChecked )
 {
     if( bChecked == true )
     {
-        tool_tool_->insertAction( decode_data_act_, ber_check_act_ );
+        tool_tool_->insertAction( get_uri_act_, ber_check_act_ );
         setView( ACT_TOOL_BER_CHECK );
     }
     else
     {
         tool_tool_->removeAction( ber_check_act_ );
         unsetView( ACT_TOOL_BER_CHECK );
-    }
-}
-
-void MainWindow::viewToolDecodeData( bool bChecked )
-{
-    if( bChecked == true )
-    {
-        tool_tool_->insertAction( get_uri_act_, decode_data_act_ );
-        setView( ACT_TOOL_DECODE_DATA );
-    }
-    else
-    {
-        tool_tool_->removeAction( decode_data_act_ );
-        unsetView( ACT_TOOL_DECODE_DATA );
     }
 }
 

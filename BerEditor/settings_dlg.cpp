@@ -62,6 +62,7 @@ void SettingsDlg::initialize()
     if( berApplet->isLicense() == false )
     {
         mDefaultHashGroup->setEnabled( false );
+        mCheckShowTTLVSelOnly->setEnabled( false );
         mFileReadSizeGroup->setEnabled( false );
         mUseLogTabCheck->setEnabled( false );
         mCertPathGroup->setEnabled( false );
@@ -220,8 +221,6 @@ void SettingsDlg::showEvent(QShowEvent *event)
 
     state = mgr->getShowBERSelOnly() ? Qt::Checked : Qt::Unchecked;
     mCheckShowBERSelOnly->setCheckState(state);
-
-
 
     state = mgr->getAutoExpand() ? Qt::Checked : Qt::Unchecked;
     mAutoExpandCheck->setCheckState( state );
