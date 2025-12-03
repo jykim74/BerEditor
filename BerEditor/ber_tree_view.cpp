@@ -868,7 +868,17 @@ void BerTreeView::ExpandValue()
 
     // Expand case (BitString or OctetString )  definite value only
 
-    tree_model->getConstructedItemInfo( &binBER, item, false );
+    ret = tree_model->getConstructedItemInfo( &binBER, item, false );
+    if( ret == JSR_OK )
+    {
+        if( item->hasChildren() == true )
+        {
+            for( int i = 0; i < item->rowCount(); i++ )
+            {
+                expand( item->child(i)->index() );
+            }
+        }
+    }
 
 end :
     if( ret < 0 )
