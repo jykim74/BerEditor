@@ -3818,11 +3818,13 @@ void MainWindow::toggleLog()
     {
         log_halt_ = false;
         log( "Log is enable" );
+        berApplet->messageBox( tr("Start logging"), this );
     }
     else
     {
         log( "Log is halt" );
         log_halt_ = true;
+        berApplet->messageBox( tr("Stop logging"), this );
     }
 }
 
