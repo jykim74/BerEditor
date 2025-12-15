@@ -3,6 +3,7 @@
 
 #include <QStandardItemModel>
 #include "js_bin.h"
+#include "ttlv_tree_view.h"
 
 class TTLVTreeItem;
 
@@ -16,6 +17,10 @@ public:
 
     void setTTLV( const BIN *pTTLV );
     const BIN& getTTLV() { return binTTLV_; };
+
+    TTLVTreeView *getTreeView() { return ttlv_view_; };
+    void setCurrentItem( const TTLVTreeItem *pItem );
+    TTLVTreeItem* currentItem();
 
     int parseTree();
     int parseConstruct( TTLVTreeItem *pParentItem );
@@ -32,6 +37,18 @@ public:
 
     void selectValue( TTLVTreeItem *pItem, const BIN *pValue, bool bPart = false );
 
+public slots:
+    void CopyAsHex();
+    void CopyAsBase64();
+    void copy();
+
+    void insertNode();
+    void editNode();
+    void deleteNode();
+
+    const QString saveNode();
+    void saveNodeValue();
+
 private:
     int getItem( int offset, TTLVTreeItem *pItem );
     int getItem( BIN *pTTLV, int offset, TTLVTreeItem *pItem );
@@ -40,6 +57,7 @@ private:
     int resizeParentHeader( int nDiffLen, const TTLVTreeItem *pItem, BIN* pTTLV );
 
     BIN binTTLV_;
+    TTLVTreeView* ttlv_view_;
 };
 
 #endif // TTLVTREEMODEL_H

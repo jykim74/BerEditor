@@ -8,6 +8,7 @@
 
 #include <QStandardItemModel>
 #include "ber_item.h"
+#include "ber_tree_view.h"
 #include "js_bin.h"
 
 class BerModel : public QStandardItemModel
@@ -15,9 +16,13 @@ class BerModel : public QStandardItemModel
     Q_OBJECT
 public:
     BerModel( QObject *parent = 0 );
+    ~BerModel();
 
     void setBER( const BIN *pBer );
     const BIN& getBER() { return binBer_; };
+    BerTreeView *getTreeView() { return tree_view_; };
+    void setCurrentItem( const BerItem *pItem );
+    BerItem* currentItem();
 
     int getItemInfo( const BIN *pBER, int nOffset, BerItem *pItem );
     int getItemInfo( int nOffset, BerItem *pItem );
@@ -36,6 +41,17 @@ public:
 
     void selectValue( BerItem *pItem, const BIN *pValue, bool bPart = false );
 
+public slots:
+    void CopyAsHex();
+    void CopyAsBase64();
+    void copy();
+
+    const QString SaveNode();
+    void SaveNodeValue();
+    void EditValue();
+    void InsertBER();
+    void DeleteBER();
+
 private:
 //    int resizeParentHeader( int nDiffLen, const BerItem *pItem, BIN *pBER );
 
@@ -46,6 +62,7 @@ private:
     void getTablePosition( int nOffset, int *pRow, int *pCol );
 
     BIN     binBer_;
+    BerTreeView* tree_view_;
 };
 
 #endif // BER_MODEL_H

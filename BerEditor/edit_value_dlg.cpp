@@ -268,14 +268,7 @@ void EditValueDlg::runChange()
 
         berApplet->mainWindow()->reloadData();
         const BerItem *findItem = ber_model->findItemByOffset( nullptr, nOffset );
-        if( findItem )
-        {
-            QModelIndex idx = findItem->index();
-
-            berApplet->mainWindow()->berTree()->expandToTop( findItem );
-            berApplet->mainWindow()->berTree()->clicked( idx );
-            berApplet->mainWindow()->berTree()->setCurrentIndex( idx );
-        }
+        if( findItem ) ber_model->setCurrentItem( findItem );
     }
     else
     {
@@ -355,13 +348,7 @@ void EditValueDlg::runAdd()
         berApplet->mainWindow()->reloadData();
 
         const BerItem *findItem = ber_model->findItemByOffset( nullptr, nOffset );
-        if( findItem )
-        {
-            QModelIndex idx = findItem->index();
-            berApplet->mainWindow()->berTree()->expandToTop( findItem );
-            berApplet->mainWindow()->berTree()->clicked( idx );
-            berApplet->mainWindow()->berTree()->setCurrentIndex( idx );
-        }
+        if( findItem ) ber_model->setCurrentItem( findItem );
     }
     else
     {

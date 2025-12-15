@@ -200,26 +200,27 @@ void TTLVTreeView::leftContextMenu( QPoint point )
 {
     QMenu menu(this);
     TTLVTreeItem* item = currentItem();
+    TTLVTreeModel* tree_model = (TTLVTreeModel *)model();
 
     if( item != NULL )
     {
-        menu.addAction(tr("Copy Information"), this, SLOT(copy()));
-        menu.addAction(tr("Copy as hex"), this, SLOT(CopyAsHex()));
-        menu.addAction(tr("Copy as base64"), this, SLOT(CopyAsBase64()));
-        menu.addAction( tr("Save node"), this, &TTLVTreeView::saveNode );
-        menu.addAction( tr("Save node value"), this, &TTLVTreeView::saveNodeValue );
+        menu.addAction(tr("Copy Information"), tree_model, SLOT(copy()));
+        menu.addAction(tr("Copy as hex"), tree_model, SLOT(CopyAsHex()));
+        menu.addAction(tr("Copy as base64"), tree_model, SLOT(CopyAsBase64()));
+        menu.addAction( tr("Save node"), tree_model, SLOT(saveNode()) );
+        menu.addAction( tr("Save node value"), tree_model, SLOT( saveNodeValue() ) );
 
         if( item->isStructure() == true )
         {
-            menu.addAction( tr( "Insert node" ), this, &TTLVTreeView::insertNode );
+            menu.addAction( tr( "Insert node" ), tree_model, SLOT(insertNode()) );
         }
         else
         {
-            menu.addAction( tr("Edit node"), this, &TTLVTreeView::editNode );
+            menu.addAction( tr("Edit node"), tree_model, SLOT(editNode()) );
         }
 
         if( item->parent() )
-            menu.addAction( tr( "Delete node" ), this, &TTLVTreeView::deleteNode );
+            menu.addAction( tr( "Delete node" ), tree_model, SLOT(deleteNode()) );
     }
 
     menu.exec(QCursor::pos());
@@ -587,64 +588,6 @@ QString TTLVTreeView::GetTextView()
     return strText;
 }
 
-void TTLVTreeView::CopyAsHex()
-{
-    char *pHex = NULL;
-    BIN binVal = {0,0};
-
-    TTLVTreeItem* item = currentItem();
-    if( item == NULL )
-    {
-        berApplet->warningBox( tr( "There is no selected item"), this );
-        return;
-    }
-
-    QClipboard *clipboard = QGuiApplication::clipboard();
-    BIN binTTLV = berApplet->getTTLV();
-
-    JS_BIN_set( &binVal, binTTLV.pVal + item->getOffset(), item->getLengthTTLV() );
-    JS_BIN_encodeHex( &binVal, &pHex );
-    clipboard->setText(pHex);
-    if( pHex ) JS_free(pHex);
-    JS_BIN_reset( &binVal );
-}
-
-void TTLVTreeView::CopyAsBase64()
-{
-    char *pBase64 = NULL;
-    BIN binVal = {0,0};
-    TTLVTreeItem* item = currentItem();
-    if( item == NULL )
-    {
-        berApplet->warningBox( tr( "There is no selected item"), this );
-        return;
-    }
-
-    BIN binTTLV = berApplet->getTTLV();
-    QClipboard *clipboard = QGuiApplication::clipboard();
-
-    JS_BIN_set( &binVal, binTTLV.pVal + item->getOffset(), item->getLengthTTLV() );
-    JS_BIN_encodeBase64( &binVal, &pBase64 );
-    clipboard->setText(pBase64);
-    if( pBase64 ) JS_free(pBase64);
-    JS_BIN_reset( &binVal );
-}
-
-void TTLVTreeView::copy()
-{
-    TTLVTreeItem* item = currentItem();
-    if( item == NULL )
-    {
-        berApplet->warningBox( tr( "There is no selected item"), this );
-        return;
-    }
-
-    QClipboard *clipboard = QGuiApplication::clipboard();
-
-    QString strLog = berApplet->mainWindow()->getInfo();
-    clipboard->setText(strLog);
-}
-
 void TTLVTreeView::treeExpandAll()
 {
     expandAll();
@@ -665,159 +608,6 @@ void TTLVTreeView::treeCollapseNode()
 {
     QModelIndex index = currentIndex();
     collapse(index);
-}
-
-void TTLVTreeView::insertNode()
-{
-    int ret = 0;
-    BIN binData = {0,0};
-
-
-    TTLVTreeModel *ttlv_model = (TTLVTreeModel *)model();
-    TTLVTreeItem* item = currentItem();
-
-    if( item->isStructure() == false )
-    {
-        berApplet->warningBox( tr( "The item is not structured" ), this );
-        return;
-    }
-
-    MakeTTLVDlg makeTTLV;
-    makeTTLV.setHeadLabel( tr( "Insert TTLV [ Tag Type Length Value ]" ) );
-    ret = makeTTLV.exec();
-
-    if( ret == QDialog::Accepted )
-    {
-        bool bVal = berApplet->yesOrCancelBox( tr( "Are you sure you want to add it?" ), this, false );
-        if( bVal == false ) return;
-
-        QString strData = makeTTLV.getData();
-        JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
-
-        bool bFirst = makeTTLV.mFirstSetCheck->isChecked();
-        const TTLVTreeItem *pAddItem = (const TTLVTreeItem *)ttlv_model->addItem( item, bFirst, &binData );
-
-        JS_BIN_reset( &binData );
-
-        if( pAddItem )
-        {
-            int nOffset = pAddItem->offset_;
-            berApplet->mainWindow()->reloadTTLV();
-            const TTLVTreeItem *findItem = ttlv_model->findItemByOffset( nullptr, nOffset );
-            if( findItem )
-            {
-                QModelIndex idx = findItem->index();
-                expandToTop( findItem );
-                clicked( idx );
-                setCurrentIndex( idx );
-            }
-        }
-        else
-        {
-            berApplet->warningBox( tr( "failed to insert" ), this );
-        }
-    }
-}
-
-void TTLVTreeView::editNode()
-{
-    int ret = 0;
-
-    TTLVTreeItem *pItem = berApplet->mainWindow()->ttlvTree()->currentItem();
-    BIN binTTLV = berApplet->getTTLV();
-
-    if( pItem == NULL )
-    {
-        berApplet->warningBox( tr( "There is no item to select" ), this );
-        return;
-    }
-
-    EditTTLVDlg editTTLV;
-    editTTLV.setHeadLabel( tr( "Edit TTLV [ Tag Type Length Value ]" ) );
-    ret = editTTLV.exec();
-}
-
-void TTLVTreeView::deleteNode()
-{
-    int ret = 0;
-
-    TTLVTreeItem *pItem = berApplet->mainWindow()->ttlvTree()->currentItem();
-    BIN binTTLV = berApplet->getTTLV();
-    TTLVTreeModel *ttlv_model = (TTLVTreeModel *)model();
-    const TTLVTreeItem *pParent = NULL;
-
-    if( pItem == NULL )
-    {
-        berApplet->warningBox( tr( "There is no item to select" ), this );
-        return;
-    }
-
-    if( pItem->parent() == nullptr )
-    {
-        berApplet->warningBox( tr( "Top-level items cannot be deleted" ), this );
-        return;
-    }
-
-    pParent = (TTLVTreeItem *)pItem->parent();
-
-    bool bVal = berApplet->yesOrCancelBox( tr("Are you sure you want to delete it?"), this, true );
-    if( bVal == false ) return;
-
-    ret = ttlv_model->removeItem( pItem );
-    if( ret == JSR_OK )
-    {
-        int nOffset = pParent->offset_;
-        berApplet->mainWindow()->reloadTTLV();
-
-        const TTLVTreeItem *findItem = ttlv_model->findItemByOffset( nullptr, nOffset );
-        if( findItem )
-        {
-            QModelIndex idx = findItem->index();
-            expandToTop( findItem );
-            clicked( idx );
-            setCurrentIndex( idx );
-        }
-    }
-    else
-    {
-        berApplet->warningBox( tr( "failed to delete: %1").arg( JERR(ret)), this );
-    }
-}
-
-const QString TTLVTreeView::saveNode()
-{
-    QString strPath;
-    QString fileName = berApplet->findSaveFile( this, JS_FILE_TYPE_BIN, strPath );
-    if( fileName.length() < 1 ) return "";
-
-    TTLVTreeItem *pItem = currentItem();
-    if( pItem == NULL ) return "";
-
-    BIN binData = {0,0};
-    BIN binTTLV = berApplet->getTTLV();
-
-    pItem->getDataAll( &binTTLV, &binData );
-    JS_BIN_fileWrite( &binData, fileName.toLocal8Bit().toStdString().c_str() );
-    JS_BIN_reset( &binData );
-
-    return fileName;
-}
-
-void TTLVTreeView::saveNodeValue()
-{
-    QString strPath;
-    QString fileName = berApplet->findSaveFile( this, JS_FILE_TYPE_BIN, strPath );
-    if( fileName.length() < 1 ) return;
-
-    TTLVTreeItem *pItem = currentItem();
-    if( pItem == NULL ) return;
-
-    BIN binData = {0,0};
-    BIN binTTLV = berApplet->getTTLV();
-
-    pItem->getValueWithPad( &binTTLV, &binData );
-    JS_BIN_fileWrite( &binData, fileName.toLocal8Bit().toStdString().c_str() );
-    JS_BIN_reset( &binData );
 }
 
 

@@ -119,10 +119,7 @@ MainWindow::~MainWindow()
     recent_file_list_.clear();
 
     delete ber_model_;
-    delete left_tree_;
-
     delete ttlv_model_;
-    delete ttlv_tree_;
 
     delete log_text_;
     delete info_text_;
@@ -169,13 +166,8 @@ void MainWindow::initialize()
     hsplitter_ = new QSplitter(Qt::Horizontal);
     vsplitter_ = new QSplitter(Qt::Vertical);
 
-    left_tree_ = new BerTreeView(this);
     ber_model_ = new BerModel(this);
-    left_tree_->setModel(ber_model_);
-
-    ttlv_tree_ = new TTLVTreeView;
-    ttlv_model_ = new TTLVTreeModel;
-    ttlv_tree_->setModel( ttlv_model_ );
+    ttlv_model_ = new TTLVTreeModel(this);
 
     log_text_ = new QPlainTextEdit();
     log_text_->setReadOnly(true);
@@ -196,14 +188,12 @@ void MainWindow::initialize()
     right_table_->setContextMenuPolicy(Qt::CustomContextMenu);
     connect( right_table_, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(rightTableCustomMenu(const QPoint&)));
 
-    hsplitter_->addWidget(left_tree_);
+    hsplitter_->addWidget(ber_model_->getTreeView());
     hsplitter_->addWidget(vsplitter_);
 
     table_tab_ = new QTabWidget;
     table_tab_->setTabPosition( QTabWidget::South );
     table_tab_->addTab( right_table_, tr( "Hex" ));
-
-
 
     right_xml_ = new CodeEditor;
     right_xml_->setReadOnly(true);
@@ -1509,11 +1499,11 @@ void MainWindow::changeTableTab()
 {
     if( isTTLV() == true )
     {
-        ttlv_tree_->viewCurrent();
+        ttlv_model_->getTreeView()->viewCurrent();
     }
     else
     {
-        left_tree_->viewCurrent();
+        ber_model_->getTreeView()->viewCurrent();
     }
 }
 
@@ -1980,85 +1970,85 @@ void MainWindow::openCMS()
 
 void MainWindow::copy()
 {
-    if( hsplitter_->widget(0) == ttlv_tree_)
+    if( hsplitter_->widget(0) == ttlv_model_->getTreeView() )
     {
-        ttlv_tree_->copy();
+        ttlv_model_->copy();
     }
     else
     {
-        left_tree_->copy();
+        ber_model_->copy();
     }
 }
 
 void MainWindow::copyAsHex()
 {
-    if( hsplitter_->widget(0) == ttlv_tree_)
+    if( hsplitter_->widget(0) == ttlv_model_->getTreeView() )
     {
-        ttlv_tree_->CopyAsHex();
+        ttlv_model_->CopyAsHex();
     }
     else
     {
-        left_tree_->CopyAsHex();
+        ber_model_->CopyAsHex();
     }
 }
 
 void MainWindow::copyAsBase64()
 {
-    if( hsplitter_->widget(0) == ttlv_tree_)
+    if( hsplitter_->widget(0) == ttlv_model_->getTreeView())
     {
-        ttlv_tree_->CopyAsBase64();
+        ttlv_model_->CopyAsBase64();
     }
     else
     {
-        left_tree_->CopyAsBase64();
+        ber_model_->CopyAsBase64();
     }
 }
 
 void MainWindow::treeExpandAll()
 {
-    if( hsplitter_->widget(0) == ttlv_tree_)
+    if( hsplitter_->widget(0) == ttlv_model_->getTreeView() )
     {
-        ttlv_tree_->treeExpandAll();
+        ttlv_model_->getTreeView()->treeExpandAll();
     }
     else
     {
-        left_tree_->treeExpandAll();
+        ber_model_->getTreeView()->treeExpandAll();
     }
 }
 
 void MainWindow::treeExpandNode()
 {
-    if( hsplitter_->widget(0) == ttlv_tree_)
+    if( hsplitter_->widget(0) == ttlv_model_->getTreeView() )
     {
-        ttlv_tree_->treeExpandNode();
+        ttlv_model_->getTreeView()->treeExpandNode();
     }
     else
     {
-        left_tree_->treeExpandNode();
+        ber_model_->getTreeView()->treeExpandNode();
     }
 }
 
 void MainWindow::treeCollapseAll()
 {
-    if( hsplitter_->widget(0) == ttlv_tree_)
+    if( hsplitter_->widget(0) == ttlv_model_->getTreeView() )
     {
-        ttlv_tree_->treeCollapseAll();
+        ttlv_model_->getTreeView()->treeCollapseAll();
     }
     else
     {
-        left_tree_->treeCollapseAll();
+        ber_model_->getTreeView()->treeCollapseAll();
     }
 }
 
 void MainWindow::treeCollapseNode()
 {
-    if( hsplitter_->widget(0) == ttlv_tree_)
+    if( hsplitter_->widget(0) == ttlv_model_->getTreeView())
     {
-        ttlv_tree_->treeCollapseNode();
+        ttlv_model_->getTreeView()->treeCollapseNode();
     }
     else
     {
-        left_tree_->treeCollapseNode();
+        ber_model_->getTreeView()->treeCollapseNode();
     }
 }
 
@@ -2076,25 +2066,15 @@ void MainWindow::prevNode()
 {
     if( isTTLV() )
     {
-        TTLVTreeItem* pItem = ttlv_tree_->currentItem();
-        TTLVTreeItem* pNewItem = ttlv_tree_->getPrev( pItem );
-        if( pNewItem )
-        {
-            QModelIndex idx = pNewItem->index();
-            ttlv_tree_->clicked(idx);
-            ttlv_tree_->setCurrentIndex(idx);
-        }
+        TTLVTreeItem* pItem = ttlv_model_->currentItem();
+        TTLVTreeItem* pNewItem = ttlv_model_->getTreeView()->getPrev( pItem );
+        if( pNewItem ) ttlv_model_->setCurrentItem( pNewItem );
     }
     else
     {
-        BerItem* pItem = left_tree_->currentItem();
-        BerItem* pNewItem = left_tree_->getPrev( pItem );
-        if( pNewItem )
-        {
-            QModelIndex idx = pNewItem->index();
-            left_tree_->clicked(idx);
-            left_tree_->setCurrentIndex(idx);
-        }
+        BerItem* pItem = ber_model_->getTreeView()->currentItem();
+        BerItem* pNewItem = ber_model_->getTreeView()->getPrev( pItem );
+        if( pNewItem ) ber_model_->setCurrentItem( pNewItem );
     }
 }
 
@@ -2102,25 +2082,15 @@ void MainWindow::nextNode()
 {
     if( isTTLV() )
     {
-        TTLVTreeItem* pItem = ttlv_tree_->currentItem();
-        TTLVTreeItem* pNewItem = ttlv_tree_->getNext( pItem );
-        if( pNewItem )
-        {
-            QModelIndex idx = pNewItem->index();
-            ttlv_tree_->clicked(idx);
-            ttlv_tree_->setCurrentIndex(idx);
-        }
+        TTLVTreeItem* pItem = ttlv_model_->currentItem();
+        TTLVTreeItem* pNewItem = ttlv_model_->getTreeView()->getNext( pItem );
+        if( pNewItem ) ttlv_model_->setCurrentItem( pNewItem );
     }
     else
     {
-        BerItem* pItem = left_tree_->currentItem();
-        BerItem* pNewItem = left_tree_->getNext( pItem );
-        if( pNewItem )
-        {
-            QModelIndex idx = pNewItem->index();
-            left_tree_->clicked(idx);
-            left_tree_->setCurrentIndex(idx);
-        }
+        BerItem* pItem = ber_model_->getTreeView()->currentItem();
+        BerItem* pNewItem = ber_model_->getTreeView()->getNext( pItem );
+        if( pNewItem ) ber_model_->setCurrentItem( pNewItem );
     }
 }
 
@@ -2166,11 +2136,8 @@ int MainWindow::openBer( const BIN *pBer )
     berApplet->log( QString("ElapsedTime: %1").arg(getMS(us)));
 #endif
 
-    left_tree_->header()->setVisible(false);
-    left_tree_->viewRoot();
-
-    if( hsplitter_->widget(0) != left_tree_ )
-        hsplitter_->replaceWidget(0, left_tree_ );
+    if( hsplitter_->widget(0) != ber_model_->getTreeView() )
+        hsplitter_->replaceWidget(0, ber_model_->getTreeView() );
 
     return 0;
 }
@@ -2844,7 +2811,7 @@ void MainWindow::rightTableUnselectAll()
 
 bool MainWindow::isTTLV()
 {
-    if( hsplitter_->widget(0) == ttlv_tree_ )
+    if( hsplitter_->widget(0) == ttlv_model_->getTreeView() )
         return true;
     else
         return false;
@@ -3763,9 +3730,9 @@ void MainWindow::save()
     }
     else
     {
-        if( hsplitter_->widget(0) == ttlv_tree_ )
+        if( hsplitter_->widget(0) == ttlv_model_->getTreeView() )
         {
-            QString strFileName = ttlv_tree_->saveNode();
+            QString strFileName = ttlv_model_->saveNode();
             if( strFileName.length() > 0 )
             {
                 file_path_ = strFileName;
@@ -3790,13 +3757,13 @@ void MainWindow::saveAs()
 {
     QString strFileName;
 
-    if( hsplitter_->widget(0) == ttlv_tree_ )
+    if( hsplitter_->widget(0) == ttlv_model_->getTreeView() )
     {
-        strFileName = ttlv_tree_->saveNode();
+        strFileName = ttlv_model_->saveNode();
     }
     else
     {
-        strFileName = left_tree_->SaveNode();
+        strFileName = ber_model_->SaveNode();
     }
 
     if( strFileName.length() > 0 )
@@ -3889,7 +3856,6 @@ void MainWindow::reloadData()
 #else
     ber_model_->makeTree( berApplet->settingsMgr()->autoExpand() );
 #endif
-    left_tree_->viewRoot();
 }
 
 int MainWindow::decodeTitle( const BIN *pData, const QString strTitle )
@@ -3924,11 +3890,8 @@ int MainWindow::decodeTTLV( const BIN *pData )
     ttlv_model_->setTTLV( pData );
     ttlv_model_->parseTree();
 
-    ttlv_tree_->header()->setVisible(false);
-    ttlv_tree_->viewRoot();
-
-    if( hsplitter_->widget(0) != ttlv_tree_ )
-        hsplitter_->replaceWidget(0, ttlv_tree_ );
+    if( hsplitter_->widget(0) != ttlv_model_->getTreeView() )
+        hsplitter_->replaceWidget(0, ttlv_model_->getTreeView() );
 
     setTitle( "TTLV" );
     return 0;
@@ -3937,7 +3900,7 @@ int MainWindow::decodeTTLV( const BIN *pData )
 void MainWindow::reloadTTLV()
 {
     ttlv_model_->parseTree();
-    ttlv_tree_->viewRoot();
+    ttlv_model_->getTreeView()->viewRoot();
 }
 
 void MainWindow::print()
@@ -3959,10 +3922,10 @@ void MainWindow::print()
         QTextEdit txtEdit;
         QString strText;
 
-        if( hsplitter_->widget(0) == ttlv_tree_)
-            strText = ttlv_tree_->GetTextView();
+        if( hsplitter_->widget(0) == ttlv_model_->getTreeView())
+            strText = ttlv_model_->getTreeView()->GetTextView();
         else
-            strText = left_tree_->GetTextView();
+            strText = ber_model_->getTreeView()->GetTextView();
 
         txtEdit.setText(strText);
         txtEdit.print(&printer);
@@ -3991,10 +3954,10 @@ void MainWindow::printPreview(QPrinter *printer)
     QTextEdit txtEdit;
     QString strText;
 
-    if( hsplitter_->widget(0) == ttlv_tree_)
-        strText = ttlv_tree_->GetTextView();
+    if( hsplitter_->widget(0) == ttlv_model_->getTreeView() )
+        strText = ttlv_model_->getTreeView()->GetTextView();
     else
-        strText = left_tree_->GetTextView();
+        strText = ber_model_->getTreeView()->GetTextView();
 
     txtEdit.setText(strText);
     txtEdit.print(printer);

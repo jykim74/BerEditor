@@ -36,21 +36,10 @@ private slots:
 
 
 public slots:
-    void CopyAsHex();
-    void CopyAsBase64();
-    void copy();
-
-    const QString SaveNode();
-    void SaveNodeValue();
-    void EditValue();
-    void InsertBER();
-    void DeleteBER();
-
     void treeExpandAll();
     void treeExpandNode();
     void treeCollapseAll();
     void treeCollapseNode();
-    void treeExpandItem( int nRow, int nCol );
 
 private:
     void viewHex( const BIN *pBER, BerItem *pItem, bool bPart );

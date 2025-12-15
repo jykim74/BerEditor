@@ -83,12 +83,8 @@ public:
     CodeEditor* rightXML() { return right_xml_; };
     CodeEditor* rightJSON() { return right_json_; };
 
-    BerTreeView* berTree() { return left_tree_; };
     BerModel* berModel() { return ber_model_; };
-
-    TTLVTreeView* ttlvTree() { return ttlv_tree_; };
     TTLVTreeModel* ttlvModel() { return ttlv_model_; };
-
 
     void showTextMsg( const QString& msg );
     int tableCurrentIndex();
@@ -307,10 +303,7 @@ private:
     QSplitter       *hsplitter_;
     QSplitter       *vsplitter_;
 
-    BerTreeView     *left_tree_;
     BerModel        *ber_model_;
-
-    TTLVTreeView    *ttlv_tree_;
     TTLVTreeModel   *ttlv_model_;
 
     QTabWidget      *table_tab_;

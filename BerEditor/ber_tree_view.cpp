@@ -688,20 +688,6 @@ void BerTreeView::viewTable( const BIN *pBER, BerItem *pItem, bool bPart )
         viewHex( pBER, pItem, bPart );
 }
 
-void BerTreeView::copy()
-{
-    BerItem* item = currentItem();
-    if( item == NULL )
-    {
-        berApplet->warningBox( tr( "There are no items selected."), this );
-        return;
-    }
-
-    QClipboard *clipboard = QGuiApplication::clipboard();
-
-    QString strLog = berApplet->mainWindow()->getInfo();
-    clipboard->setText(strLog);
-}
 
 void BerTreeView::treeExpandAll()
 {
@@ -725,25 +711,21 @@ void BerTreeView::treeCollapseNode()
     collapse(index);
 }
 
-void BerTreeView::treeExpandItem( int nRow, int nCol )
-{
-
-}
-
 void BerTreeView::ShowContextMenu(QPoint point)
 {
     QMenu menu(this);
     BerItem* item = currentItem();
+    BerModel *tree_model = (BerModel *)model();
 
     if( item != NULL )
     {
         if( item->GetTag() == 0x00 ) return;
 
-        menu.addAction(tr("Copy Information"), this, SLOT(copy()));
-        menu.addAction(tr("Copy as hex"), this, SLOT(CopyAsHex()));
-        menu.addAction(tr("Copy as base64"), this, SLOT(CopyAsBase64()));
-        menu.addAction(tr("Save node"), this, SLOT(SaveNode()));
-        menu.addAction(tr("Save node value"), this, SLOT(SaveNodeValue()));
+        menu.addAction(tr("Copy Information"), tree_model, SLOT(copy()) );
+        menu.addAction(tr("Copy as hex"), tree_model, SLOT(CopyAsHex()));
+        menu.addAction(tr("Copy as base64"), tree_model, SLOT(CopyAsBase64()));
+        menu.addAction(tr("Save node"), tree_model, SLOT(SaveNode()));
+        menu.addAction(tr("Save node value"), tree_model, SLOT(SaveNodeValue()));
 
         QAction *pInsertAct = NULL;
         QAction *pEditAct = NULL;
@@ -751,15 +733,15 @@ void BerTreeView::ShowContextMenu(QPoint point)
 
         if( item->isConstructed() )
         {
-            pInsertAct = menu.addAction( tr( "Insert node" ), this, SLOT(InsertBER()));
+            pInsertAct = menu.addAction( tr( "Insert node" ), tree_model, SLOT(InsertBER()));
         }
         else
         {
-            pEditAct = menu.addAction(tr("Edit node"), this, SLOT(EditValue()));
+            pEditAct = menu.addAction(tr("Edit node"), tree_model, SLOT(EditValue()));
         }
 
         if( item->parent() )
-            pDeleteAct = menu.addAction( tr("Delete node" ), this, SLOT(DeleteBER()));
+            pDeleteAct = menu.addAction( tr("Delete node" ), tree_model, SLOT(DeleteBER()));
 
         if( berApplet->isLicense() == false )
         {
@@ -778,49 +760,6 @@ void BerTreeView::ShowContextMenu(QPoint point)
     menu.exec(QCursor::pos());
 }
 
-void BerTreeView::CopyAsHex()
-{
-    char *pHex = NULL;
-    BerItem* item = currentItem();
-    if( item == NULL )
-    {
-        berApplet->warningBox( tr( "There are no items selected."), this );
-        return;
-    }
-
-    QClipboard *clipboard = QGuiApplication::clipboard();
-    BIN binData = {0,0};
-    BerModel *tree_model = (BerModel *)model();
-
-    const BIN& binBer = tree_model->getBER();
-    JS_BIN_set( &binData, binBer.pVal + item->GetOffset(), item->GetHeaderSize() + item->GetLength() );
-    JS_BIN_encodeHex( &binData, &pHex );
-    clipboard->setText(pHex);
-    if( pHex ) JS_free(pHex);
-    JS_BIN_reset(&binData);
-}
-
-void BerTreeView::CopyAsBase64()
-{
-    char *pBase64 = NULL;
-    BerItem* item = currentItem();
-    if( item == NULL )
-    {
-        berApplet->warningBox( tr( "There are no items selected."), this );
-        return;
-    }
-
-    QClipboard *clipboard = QGuiApplication::clipboard();
-    BIN binData = {0,0};
-    BerModel *tree_model = (BerModel *)model();
-
-    const BIN& binBer = tree_model->getBER();
-    JS_BIN_set( &binData, binBer.pVal + item->GetOffset(), item->GetHeaderSize() + item->GetLength() );
-    JS_BIN_encodeBase64( &binData, &pBase64 );
-    clipboard->setText(pBase64);
-    if( pBase64 ) JS_free(pBase64);
-    JS_BIN_reset(&binData);
-}
 
 BerItem* BerTreeView::currentItem()
 {
@@ -903,165 +842,6 @@ void BerTreeView::expandToTop( const BerItem *pItem )
     {
         expand( pParent->index() );
         pParent = (BerItem *)pParent->parent();
-    }
-}
-
-const QString BerTreeView::SaveNode()
-{
-    QString strPath;
-    QString fileName = berApplet->findSaveFile( this, JS_FILE_TYPE_BER, strPath );
-    if( fileName.length() < 1 ) return "";
-
-    QModelIndex index = currentIndex();
-
-    BerModel *tree_model = (BerModel *)model();
-    BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
-    BIN binData = {0,0};
-    const BIN& binBer = tree_model->getBER();
-
-    JS_BIN_set( &binData, binBer.pVal + item->GetOffset(), item->GetHeaderSize() + item->GetLength() );
-    JS_BIN_fileWrite( &binData, fileName.toLocal8Bit().toStdString().c_str());
-    JS_BIN_reset( &binData );
-
-    return fileName;
-}
-
-void BerTreeView::SaveNodeValue()
-{
-    QString strPath;
-    QString fileName = berApplet->findSaveFile( this, JS_FILE_TYPE_BER, strPath );
-    if( fileName.length() < 1 ) return;
-
-    QModelIndex index = currentIndex();
-
-    BerModel *tree_model = (BerModel *)model();
-    BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
-    BIN binData = {0,0};
-    const BIN& binBer = tree_model->getBER();
-
-    JS_BIN_set( &binData, binBer.pVal + item->GetOffset() + item->GetHeaderSize(), item->GetValLength() );
-    JS_BIN_fileWrite( &binData, fileName.toLocal8Bit().toStdString().c_str());
-    JS_BIN_reset(&binData);
-}
-
-void BerTreeView::EditValue()
-{
-    int ret = 0;
-    QModelIndex index = currentIndex();
-
-    BerModel *tree_model = (BerModel *)model();
-    BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
-
-    if( item == NULL )
-    {
-        berApplet->warningBox( tr( "There is no item to select" ), this );
-        return;
-    }
-
-    EditValueDlg editValueDlg;
-    editValueDlg.setHeadLabel( tr("Edit BER") );
-    editValueDlg.setItem( item );
-    ret = editValueDlg.exec();
-}
-
-void BerTreeView::InsertBER()
-{
-    int ret = 0;
-    BIN binData = {0,0};
-
-    QModelIndex index = currentIndex();
-
-    BerModel *tree_model = (BerModel *)model();
-    BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
-
-    if( item->isConstructed() == false ) return;
-
-    MakeBerDlg makeBer;
-    makeBer.setHeadLabel( tr( "Insert BER" ));
-
-    ret = makeBer.exec();
-
-    if( ret == QDialog::Accepted )
-    {
-        bool bVal = berApplet->yesOrCancelBox( tr( "Are you sure you want to add it?" ), this, false );
-        if( bVal == false ) return;
-
-        QString strData = makeBer.getData();
-        bool bFirst = makeBer.mFirstSetCheck->isChecked();
-
-        JS_BIN_decodeHex( strData.toStdString().c_str(), &binData );
-
-        const BerItem* newItem = tree_model->addItem( item, bFirst, &binData );
-        if( newItem )
-        {
-            int nOffset = newItem->offset_;
-
-            berApplet->mainWindow()->reloadData();
-            const BerItem *findItem = tree_model->findItemByOffset( nullptr, nOffset );
-            if( findItem )
-            {
-                expandToTop( findItem );
-                QModelIndex idx = findItem->index();
-                clicked( idx );
-                setCurrentIndex( idx );
-            }
-        }
-        else
-        {
-            berApplet->warningBox( tr( "failed to insert" ), this );
-        }
-    }
-
-end:
-    JS_BIN_reset( &binData );
-}
-
-void BerTreeView::DeleteBER()
-{
-    int ret = 0;
-    QModelIndex index = currentIndex();
-
-    BerModel *tree_model = (BerModel *)model();
-    BerItem *item = (BerItem *)tree_model->itemFromIndex(index);
-    BerItem* parent = (BerItem *)item->parent();
-
-    if( item == NULL )
-    {
-        berApplet->warningBox( tr( "There is no item to select" ), this );
-        return;
-    }
-
-    if( item->parent() == nullptr )
-    {
-        berApplet->warningBox( tr( "Top-level items cannot be deleted" ), this );
-        return;
-    }
-
-    bool bVal = berApplet->yesOrCancelBox( tr("Are you sure you want to delete it?"), this, true );
-    if( bVal == false ) return;
-
-    ret = tree_model->removeItem( item );
-    if( ret == JSR_OK )
-    {
-        if( parent )
-        {
-            int nOffset = parent->GetOffset();
-
-            berApplet->mainWindow()->reloadData();
-
-            const BerItem *findItem = tree_model->findItemByOffset( nullptr, nOffset );
-            if( findItem )
-            {
-                expandToTop( findItem );
-                QModelIndex idx = findItem->index();
-                clicked( idx );
-                setCurrentIndex( idx );
-            }
-        }
-    }
-    else
-    {
-        berApplet->warningBox( tr( "failed to delete: %1").arg( JERR(ret)), this );
     }
 }
 

@@ -11,10 +11,10 @@ class TTLVTreeView : public QTreeView
 
 public:
     TTLVTreeView( QWidget* parent = 0 );
+
     void viewRoot();
     void viewCurrent();
     void expandToTop( const TTLVTreeItem *pItem );
-
 
     void getInfoView( TTLVTreeItem *pItem, int nWidth );
     QString GetTextView();
@@ -24,21 +24,10 @@ public:
     TTLVTreeItem* currentItem();
 
 public slots:
-    void CopyAsHex();
-    void CopyAsBase64();
-    void copy();
-
     void treeExpandAll();
     void treeExpandNode();
     void treeCollapseAll();
     void treeCollapseNode();
-
-    void insertNode();
-    void editNode();
-    void deleteNode();
-
-    const QString saveNode();
-    void saveNodeValue();
 
 private slots:
     void onItemClicked( const QModelIndex& index );

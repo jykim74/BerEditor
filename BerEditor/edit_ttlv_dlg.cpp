@@ -40,7 +40,7 @@ void EditTTLVDlg::setHeadLabel( const QString strLabel )
 
 void EditTTLVDlg::initialize()
 {
-    TTLVTreeItem *pItem = berApplet->mainWindow()->ttlvTree()->currentItem();
+    TTLVTreeItem *pItem = berApplet->mainWindow()->ttlvModel()->currentItem();
     BIN binTTLV = berApplet->getTTLV();
 
     if( pItem == NULL ) return;
@@ -137,7 +137,7 @@ void EditTTLVDlg::clickModify()
 
     BIN     binValue = {0,0};
 
-    TTLVTreeItem *pItem = berApplet->mainWindow()->ttlvTree()->currentItem();
+    TTLVTreeItem *pItem = berApplet->mainWindow()->ttlvModel()->currentItem();
     if( pItem == NULL )
     {
         berApplet->warningBox( tr( "There is no selected item"), this );
@@ -164,13 +164,7 @@ void EditTTLVDlg::clickModify()
         int nOffset = pItem->offset_;
         berApplet->mainWindow()->reloadTTLV();
         const TTLVTreeItem *findItem = pModel->findItemByOffset( nullptr, nOffset );
-        if( findItem )
-        {
-            QModelIndex idx = findItem->index();
-            berApplet->mainWindow()->ttlvTree()->expandToTop( findItem );
-            berApplet->mainWindow()->ttlvTree()->clicked( idx );
-            berApplet->mainWindow()->ttlvTree()->setCurrentIndex( idx );
-        }
+        if( findItem ) pModel->setCurrentItem( findItem );
 
         QDialog::accept();
     }
@@ -186,7 +180,7 @@ void EditTTLVDlg::clickAdd()
     BIN binData = {0,0};
     QString strData;
 
-    TTLVTreeItem *pItem = berApplet->mainWindow()->ttlvTree()->currentItem();
+    TTLVTreeItem *pItem = berApplet->mainWindow()->ttlvModel()->currentItem();
     if( pItem == NULL )
     {
         berApplet->warningBox( tr( "There is no selected item"), this );
@@ -217,13 +211,7 @@ void EditTTLVDlg::clickAdd()
         int nOffset = pAddItem->offset_;
         berApplet->mainWindow()->reloadTTLV();
         const TTLVTreeItem *findItem = pModel->findItemByOffset( nullptr, nOffset );
-        if( findItem )
-        {
-            QModelIndex idx = findItem->index();
-            berApplet->mainWindow()->ttlvTree()->expandToTop( findItem );
-            berApplet->mainWindow()->ttlvTree()->clicked( idx );
-            berApplet->mainWindow()->ttlvTree()->setCurrentIndex( idx );
-        }
+        if( findItem ) pModel->setCurrentItem( findItem );
 
         QDialog::accept();
     }

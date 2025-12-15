@@ -260,8 +260,7 @@ void FindDlg::findBER_Next()
     int ret = 0;
     BIN binValue = {0,0};
     BerModel* model = berApplet->mainWindow()->berModel();
-    BerTreeView *tree = berApplet->mainWindow()->berTree();
-    BerItem *pCurItem = tree->currentItem();
+    BerItem *pCurItem = (BerItem *)model->currentItem();
 
     ret = getValueBIN( &binValue );
     if( ret < 0 )
@@ -284,9 +283,7 @@ void FindDlg::findBER_Next()
 
     if( pCurItem )
     {
-        QModelIndex fi = pCurItem->index();
-        tree->clicked( fi );
-        tree->setCurrentIndex( fi );
+        model->setCurrentItem( pCurItem );
         model->selectValue( pCurItem, &binValue, berApplet->settingsMgr()->showBERSelOnly() );
     }
     else
@@ -302,8 +299,7 @@ void FindDlg::findBER_Previous()
     int ret = 0;
     BIN binValue = {0,0};
     BerModel* model = berApplet->mainWindow()->berModel();
-    BerTreeView *tree = berApplet->mainWindow()->berTree();
-    BerItem *pCurItem = tree->currentItem();
+    BerItem *pCurItem = model->currentItem();
 
     ret = getValueBIN( &binValue );
     if( ret < 0 )
@@ -326,9 +322,7 @@ void FindDlg::findBER_Previous()
 
     if( pCurItem )
     {
-        QModelIndex fi = pCurItem->index();
-        tree->clicked( fi );
-        tree->setCurrentIndex( fi );
+        model->setCurrentItem( pCurItem );
         model->selectValue( pCurItem, &binValue, berApplet->settingsMgr()->showBERSelOnly() );
     }
     else
@@ -449,8 +443,7 @@ void FindDlg::findTTLV_Next()
     BIN binValue = {0,0};
     BIN binHeader = {0,0};
     TTLVTreeModel* model = berApplet->mainWindow()->ttlvModel();
-    TTLVTreeView *tree = berApplet->mainWindow()->ttlvTree();
-    TTLVTreeItem *pCurItem = tree->currentItem();
+    TTLVTreeItem *pCurItem = model->currentItem();
 
     ret = getValueBIN( &binValue );
     if( ret < 0 )
@@ -480,9 +473,7 @@ void FindDlg::findTTLV_Next()
 
     if( pCurItem )
     {
-        QModelIndex fi = pCurItem->index();
-        tree->clicked( fi );
-        tree->setCurrentIndex( fi );
+        model->setCurrentItem( pCurItem );
         model->selectValue( pCurItem, &binValue, berApplet->settingsMgr()->showTTLVSelOnly() );
     }
     else
@@ -499,8 +490,7 @@ void FindDlg::findTTLV_Previous()
     BIN binValue = {0,0};
     BIN binHeader = {0,0};
     TTLVTreeModel* model = berApplet->mainWindow()->ttlvModel();
-    TTLVTreeView *tree = berApplet->mainWindow()->ttlvTree();
-    TTLVTreeItem *pCurItem = tree->currentItem();
+    TTLVTreeItem *pCurItem = model->currentItem();
 
     ret = getValueBIN( &binValue );
     if( ret < 0 )
@@ -530,9 +520,7 @@ void FindDlg::findTTLV_Previous()
 
     if( pCurItem )
     {
-        QModelIndex fi = pCurItem->index();
-        tree->clicked( fi );
-        tree->setCurrentIndex( fi );
+        model->setCurrentItem( pCurItem );
         model->selectValue( pCurItem, &binValue, berApplet->settingsMgr()->showTTLVSelOnly() );
     }
     else
@@ -563,12 +551,12 @@ void FindDlg::clickEdit()
 {
     if( berApplet->mainWindow()->isTTLV() )
     {
-        TTLVTreeView* tree = berApplet->mainWindow()->ttlvTree();
-        tree->editNode();
+        TTLVTreeModel* model = berApplet->mainWindow()->ttlvModel();
+        model->editNode();
     }
     else
     {
-        BerTreeView *tree = berApplet->mainWindow()->berTree();
-        tree->EditValue();
+        BerModel *model = berApplet->mainWindow()->berModel();
+        model->EditValue();
     }
 }
