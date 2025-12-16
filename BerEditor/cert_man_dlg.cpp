@@ -1017,9 +1017,9 @@ void CertManDlg::loadOtherList()
         QTableWidgetItem *item = new QTableWidgetItem( sCertInfo.pSubjectName );
 
         if( now > sCertInfo.tNotAfter )
-            item->setIcon(QIcon(":/images/cert_expired.png" ));
+            item->setIcon(QIcon(":/images/im_cert_expired.png" ));
         else
-            item->setIcon(QIcon(":/images/cert.png" ));
+            item->setIcon(QIcon(":/images/im_cert.png" ));
 
         item->setData(Qt::UserRole, file.filePath() );
 

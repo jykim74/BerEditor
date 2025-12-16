@@ -110,5 +110,7 @@
         <file>images/cert_expired.png</file>
         <file>images/rca_expired.png</file>
         <file>images/rca.png</file>
+        <file>images/im_cert.png</file>
+        <file>images/im_cert_expired.png</file>
     </qresource>
 </RCC>
