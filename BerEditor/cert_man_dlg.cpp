@@ -902,7 +902,7 @@ void CertManDlg::loadEEList()
         QTableWidgetItem *item2 = new QTableWidgetItem( sCertInfo.pIssuerName );
 
         if( now > sCertInfo.tNotAfter )
-            item->setIcon(QIcon(":/images/cert_revoked.png" ));
+            item->setIcon(QIcon(":/images/cert_expired.png" ));
         else
             item->setIcon(QIcon(":/images/cert.png" ));
 
@@ -1017,7 +1017,7 @@ void CertManDlg::loadOtherList()
         QTableWidgetItem *item = new QTableWidgetItem( sCertInfo.pSubjectName );
 
         if( now > sCertInfo.tNotAfter )
-            item->setIcon(QIcon(":/images/cert_revoked.png" ));
+            item->setIcon(QIcon(":/images/cert_expired.png" ));
         else
             item->setIcon(QIcon(":/images/cert.png" ));
 
@@ -1129,9 +1129,9 @@ void CertManDlg::loadCAList()
         QTableWidgetItem *item = new QTableWidgetItem( sCertInfo.pSubjectName );
 
         if( now > sCertInfo.tNotAfter )
-            item->setIcon(QIcon(":/images/cert_revoked.png" ));
+            item->setIcon(QIcon(":/images/ca_expired.png" ));
         else
-            item->setIcon(QIcon(":/images/cert.png" ));
+            item->setIcon(QIcon(":/images/ca.png" ));
 
         item->setData(Qt::UserRole, file.filePath() );
 
@@ -1307,9 +1307,9 @@ void CertManDlg::loadTrustList()
         QTableWidgetItem *item = new QTableWidgetItem( strName );
 
         if( now > sCertInfo.tNotAfter )
-            item->setIcon(QIcon(":/images/cert_revoked.png" ));
+            item->setIcon(QIcon(":/images/rca_expired.png" ));
         else
-            item->setIcon(QIcon(":/images/cert.png" ));
+            item->setIcon(QIcon(":/images/rca.png" ));
 
         item->setData(Qt::UserRole, file.filePath() );
 
