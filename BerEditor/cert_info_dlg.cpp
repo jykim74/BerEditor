@@ -252,6 +252,7 @@ void CertInfoDlg::getFields()
     char    sNotAfter[64];
 
     int nType = mFieldTypeCombo->currentIndex();
+    time_t now_t = time(NULL);
 
     if( cert_bin_.nLen <= 0 )
     {
@@ -268,6 +269,12 @@ void CertInfoDlg::getFields()
         berApplet->warningBox( tr("failed to get certificate information"), this );
         this->hide();
         return;
+    }
+
+    if( now_t > cert_info_.tNotAfter )
+    {
+        mCertBtn->setIcon( QIcon( ":/images/cert_expired.png" ));
+        mHeadLabel->setText( tr("Certificate [Expired]" ) );
     }
 
     JS_PKI_getPubKeyFromCert( &cert_bin_, &binPub );
