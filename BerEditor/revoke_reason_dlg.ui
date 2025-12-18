@@ -15,11 +15,41 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Select revocation reason</string>
-     </property>
-    </widget>
+    <layout class="QGridLayout" name="gridLayout_3">
+     <item row="0" column="1">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Select revocation reason</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="pushButton">
+       <property name="minimumSize">
+        <size>
+         <width>16</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="bereditor.qrc">
+         <normaloff>:/images/revoke.png</normaloff>:/images/revoke.png</iconset>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="Line" name="line_2">
@@ -134,6 +164,8 @@
   <tabstop>mOKBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="bereditor.qrc"/>
+ </resources>
  <connections/>
 </ui>

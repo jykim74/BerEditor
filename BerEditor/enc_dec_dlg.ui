@@ -19,7 +19,14 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="3">
+     <item row="0" column="1">
+      <widget class="QLabel" name="mHeadLabel">
+       <property name="text">
+        <string>Symmetric Encryption Decryption</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -33,9 +40,28 @@
       </spacer>
      </item>
      <item row="0" column="0">
-      <widget class="QLabel" name="mHeadLabel">
+      <widget class="QPushButton" name="pushButton">
+       <property name="minimumSize">
+        <size>
+         <width>16</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="text">
-        <string>Symmetric Encryption Decryption</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="bereditor.qrc">
+         <normaloff>:/images/enc.png</normaloff>:/images/enc.png</iconset>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -1831,6 +1857,8 @@
   <tabstop>mClearDataAllBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="bereditor.qrc"/>
+ </resources>
  <connections/>
 </ui>

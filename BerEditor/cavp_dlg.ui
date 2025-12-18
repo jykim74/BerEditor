@@ -6,15 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>749</width>
-    <height>804</height>
+    <width>648</width>
+    <height>647</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>CAVP</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="3" column="0">
+   <item row="5" column="0">
     <layout class="QGridLayout" name="gridLayout_10">
      <property name="topMargin">
       <number>0</number>
@@ -42,6 +42,110 @@
     </layout>
    </item>
    <item row="2" column="0">
+    <widget class="QGroupBox" name="mRspGroup">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="title">
+      <string/>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <property name="spacing">
+       <number>5</number>
+      </property>
+      <property name="leftMargin">
+       <number>5</number>
+      </property>
+      <property name="topMargin">
+       <number>5</number>
+      </property>
+      <property name="rightMargin">
+       <number>5</number>
+      </property>
+      <property name="bottomMargin">
+       <number>5</number>
+      </property>
+      <item>
+       <layout class="QGridLayout" name="gridLayout_20">
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="mRspPathText"/>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_62">
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Rsp Path</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QPushButton" name="mRspPathFindBtn">
+          <property name="text">
+           <string>Find</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <layout class="QGridLayout" name="gridLayout_12">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="pushButton">
+       <property name="minimumSize">
+        <size>
+         <width>16</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="bereditor.qrc">
+         <normaloff>:/images/cavp.png</normaloff>:/images/cavp.png</iconset>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="label_65">
+       <property name="text">
+        <string>Cryptography Algorithm Validation Program</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="3" column="0">
+    <widget class="Line" name="line_22">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
       <number>2</number>
@@ -3721,50 +3825,8 @@
      </widget>
     </widget>
    </item>
-   <item row="0" column="0">
-    <widget class="QGroupBox" name="mRspGroup">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="title">
-      <string>Response Information</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_4">
-      <item>
-       <layout class="QGridLayout" name="gridLayout_20">
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="mRspPathText"/>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_62">
-          <property name="minimumSize">
-           <size>
-            <width>80</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Rsp Path</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QPushButton" name="mRspPathFindBtn">
-          <property name="text">
-           <string>Find</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item row="1" column="0">
-    <widget class="Line" name="line_22">
+    <widget class="Line" name="line_25">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -3904,6 +3966,8 @@
   <tabstop>mACVP_LDTRun</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="bereditor.qrc"/>
+ </resources>
  <connections/>
 </ui>

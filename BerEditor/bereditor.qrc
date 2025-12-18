@@ -112,5 +112,9 @@
         <file>images/rca.png</file>
         <file>images/im_cert.png</file>
         <file>images/im_cert_expired.png</file>
+        <file>images/export.png</file>
+        <file>images/json.png</file>
+        <file>images/passwd.png</file>
+        <file>images/revoke.png</file>
     </qresource>
 </RCC>

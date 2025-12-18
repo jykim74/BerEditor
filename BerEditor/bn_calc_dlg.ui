@@ -16,21 +16,24 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="2">
+     <item row="0" column="3">
       <widget class="QRadioButton" name="mBinCheck">
        <property name="text">
         <string>Binary</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_2">
+     <item row="0" column="8">
+      <widget class="QComboBox" name="mBaseGroupCombo"/>
+     </item>
+     <item row="0" column="7">
+      <widget class="QLabel" name="label_6">
        <property name="text">
-        <string>Numeric type</string>
+        <string>Base Group</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="5">
+     <item row="0" column="6">
       <spacer name="horizontalSpacer_5">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -43,27 +46,50 @@
        </property>
       </spacer>
      </item>
-     <item row="0" column="3">
+     <item row="0" column="4">
       <widget class="QRadioButton" name="mDecCheck">
        <property name="text">
         <string>Decimal</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="4">
+     <item row="0" column="5">
       <widget class="QRadioButton" name="mHexCheck">
        <property name="text">
         <string>Hex</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="7">
-      <widget class="QComboBox" name="mBaseGroupCombo"/>
-     </item>
-     <item row="0" column="6">
-      <widget class="QLabel" name="label_6">
+     <item row="0" column="1">
+      <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Base Group</string>
+        <string>Numeric type</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="pushButton">
+       <property name="minimumSize">
+        <size>
+         <width>16</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="bereditor.qrc">
+         <normaloff>:/images/bn_calc.png</normaloff>:/images/bn_calc.png</iconset>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -1576,6 +1602,8 @@
   <tabstop>mTestBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="bereditor.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -19,21 +19,7 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="0">
-      <widget class="QLabel" name="mHeadLabel">
-       <property name="text">
-        <string>Basic Encoding Rule Encode</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="2">
-      <widget class="QCheckBox" name="mMoreTypeCheck">
-       <property name="text">
-        <string>More Type</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
       <spacer name="horizontalSpacer_4">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -45,6 +31,46 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="3">
+      <widget class="QCheckBox" name="mMoreTypeCheck">
+       <property name="text">
+        <string>More Type</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="mHeadLabel">
+       <property name="text">
+        <string>Basic Encoding Rule Encode</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="pushButton">
+       <property name="minimumSize">
+        <size>
+         <width>16</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="bereditor.qrc">
+         <normaloff>:/images/ber.png</normaloff>:/images/ber.png</iconset>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -664,6 +690,8 @@
   <tabstop>mMakeBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="bereditor.qrc"/>
+ </resources>
  <connections/>
 </ui>
