@@ -422,17 +422,17 @@ void KeyPairManDlg:: loadKeyPairList()
         }
 
 
-        mKeyPairTable->insertRow(row);
-        mKeyPairTable->setRowHeight( row, 10 );
+        mKeyPairTable->insertRow(0);
+        mKeyPairTable->setRowHeight( 0, 10 );
         QTableWidgetItem *item = new QTableWidgetItem( folder.baseName() );
         item->setIcon(QIcon(":/images/keypair.png" ));
 
         item->setData(Qt::UserRole, folder.filePath() );
 
-        mKeyPairTable->setItem( row, 0, item );
-        mKeyPairTable->setItem( row, 1, new QTableWidgetItem(QString("%1").arg( strAlg)));
-        mKeyPairTable->setItem( row, 2, new QTableWidgetItem( QString("%1" ).arg( strOption )));
-        mKeyPairTable->setItem( row, 3, new QTableWidgetItem(QString("%1").arg( date.toString("yy-MM-dd HH:mm") )));
+        mKeyPairTable->setItem( 0, 0, item );
+        mKeyPairTable->setItem( 0, 1, new QTableWidgetItem(QString("%1").arg( strAlg)));
+        mKeyPairTable->setItem( 0, 2, new QTableWidgetItem( QString("%1" ).arg( strOption )));
+        mKeyPairTable->setItem( 0, 3, new QTableWidgetItem(QString("%1").arg( date.toString("yy-MM-dd HH:mm") )));
 
         JS_BIN_reset( &binPri );
         JS_BIN_reset( &binPub );

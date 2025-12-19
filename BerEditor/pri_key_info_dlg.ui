@@ -96,7 +96,7 @@
       </spacer>
      </item>
      <item row="0" column="0">
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="mKeyBtn">
        <property name="minimumSize">
         <size>
          <width>16</width>
@@ -114,7 +114,7 @@
        </property>
        <property name="icon">
         <iconset resource="bereditor.qrc">
-         <normaloff>:/images/keypair.png</normaloff>:/images/keypair.png</iconset>
+         <normaloff>:/images/pri_key.png</normaloff>:/images/pri_key.png</iconset>
        </property>
        <property name="flat">
         <bool>true</bool>

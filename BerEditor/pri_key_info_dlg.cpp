@@ -930,6 +930,7 @@ void PriKeyInfoDlg::setPrivateKey( const BIN *pPriKey, const QString strTitle )
     BIN binKID = {0,0};
     QString strLabel = tr( "Private Key Information" );
     mTitleLabel->setText( strLabel );
+    mKeyBtn->setIcon( QIcon(":/images/pri_key.png") );
 
     setTitle( true, strTitle );
 
@@ -995,6 +996,7 @@ void PriKeyInfoDlg::setPublicKey( const BIN *pPubKey, const QString strTitle )
     BIN binKID = {0,0};
 
     QString strLabel = tr( "Public Key Information" );
+    mKeyBtn->setIcon( QIcon(":/images/pub_key.png") );
 
     mTitleLabel->setText( strLabel );
     setTitle( false, strTitle );

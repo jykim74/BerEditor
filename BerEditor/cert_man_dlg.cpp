@@ -895,8 +895,8 @@ void CertManDlg::loadEEList()
         JS_UTIL_getDate( sCertInfo.tNotBefore, sNotBefore );
         JS_UTIL_getDate( sCertInfo.tNotAfter, sNotAfter );
 
-        mEE_CertTable->insertRow( row );
-        mEE_CertTable->setRowHeight( row, 10 );
+        mEE_CertTable->insertRow( 0 );
+        mEE_CertTable->setRowHeight( 0, 10 );
         QTableWidgetItem *item = new QTableWidgetItem( sCertInfo.pSubjectName );
         QTableWidgetItem *item1 = new QTableWidgetItem( sNotAfter );
         QTableWidgetItem *item2 = new QTableWidgetItem( sCertInfo.pIssuerName );
@@ -909,9 +909,9 @@ void CertManDlg::loadEEList()
         item->setData(Qt::UserRole, folder.filePath() );
         item1->setIcon(QIcon(":/images/keypair.png"));
 
-        mEE_CertTable->setItem( row, 0, item );
-        mEE_CertTable->setItem( row, 1, item1 );
-        mEE_CertTable->setItem( row, 2, item2 );
+        mEE_CertTable->setItem( 0, 0, item );
+        mEE_CertTable->setItem( 0, 1, item1 );
+        mEE_CertTable->setItem( 0, 2, item2 );
 
         JS_BIN_reset( &binCert );
         JS_PKI_resetCertInfo( &sCertInfo );
@@ -1011,8 +1011,8 @@ void CertManDlg::loadOtherList()
         JS_UTIL_getDate( sCertInfo.tNotBefore, sNotBefore );
         JS_UTIL_getDate( sCertInfo.tNotAfter, sNotAfter );
 
-        mOther_CertTable->insertRow( row );
-        mOther_CertTable->setRowHeight( row, 10 );
+        mOther_CertTable->insertRow( 0 );
+        mOther_CertTable->setRowHeight( 0, 10 );
 
         QTableWidgetItem *item = new QTableWidgetItem( sCertInfo.pSubjectName );
 
@@ -1023,9 +1023,9 @@ void CertManDlg::loadOtherList()
 
         item->setData(Qt::UserRole, file.filePath() );
 
-        mOther_CertTable->setItem( row, 0, item );
-        mOther_CertTable->setItem( row, 1, new QTableWidgetItem( sNotAfter ));
-        mOther_CertTable->setItem( row, 2, new QTableWidgetItem( sCertInfo.pIssuerName ));
+        mOther_CertTable->setItem( 0, 0, item );
+        mOther_CertTable->setItem( 0, 1, new QTableWidgetItem( sNotAfter ));
+        mOther_CertTable->setItem( 0, 2, new QTableWidgetItem( sCertInfo.pIssuerName ));
 
         JS_BIN_reset( &binCert );
         JS_PKI_resetCertInfo( &sCertInfo );
@@ -1124,8 +1124,8 @@ void CertManDlg::loadCAList()
         JS_UTIL_getDate( sCertInfo.tNotBefore, sNotBefore );
         JS_UTIL_getDate( sCertInfo.tNotAfter, sNotAfter );
 
-        mCA_CertTable->insertRow( row );
-        mCA_CertTable->setRowHeight( row, 10 );
+        mCA_CertTable->insertRow( 0 );
+        mCA_CertTable->setRowHeight( 0, 10 );
         QTableWidgetItem *item = new QTableWidgetItem( sCertInfo.pSubjectName );
 
         if( now > sCertInfo.tNotAfter )
@@ -1135,9 +1135,9 @@ void CertManDlg::loadCAList()
 
         item->setData(Qt::UserRole, file.filePath() );
 
-        mCA_CertTable->setItem( row, 0, item );
-        mCA_CertTable->setItem( row, 1, new QTableWidgetItem( sNotAfter ));
-        mCA_CertTable->setItem( row, 2, new QTableWidgetItem( sCertInfo.pIssuerName ));
+        mCA_CertTable->setItem( 0, 0, item );
+        mCA_CertTable->setItem( 0, 1, new QTableWidgetItem( sNotAfter ));
+        mCA_CertTable->setItem( 0, 2, new QTableWidgetItem( sCertInfo.pIssuerName ));
 
         JS_BIN_reset( &binCert );
         JS_PKI_resetCertInfo( &sCertInfo );
@@ -1190,8 +1190,8 @@ void CertManDlg::loadCRLList()
         JS_UTIL_getDate( sCRLInfo.tThisUpdate, sThisUpdate );
         JS_UTIL_getDate( sCRLInfo.tNextUpdate, sNextUpdate );
 
-        mCRL_Table->insertRow( row );
-        mCRL_Table->setRowHeight( row, 10 );
+        mCRL_Table->insertRow( 0 );
+        mCRL_Table->setRowHeight( 0, 10 );
         QTableWidgetItem *item = new QTableWidgetItem( sCRLInfo.pIssuerName );
 
         if( now > sCRLInfo.tNextUpdate )
@@ -1201,9 +1201,9 @@ void CertManDlg::loadCRLList()
 
         item->setData(Qt::UserRole, file.filePath() );
 
-        mCRL_Table->setItem( row, 0, item );
-        mCRL_Table->setItem( row, 1, new QTableWidgetItem( sThisUpdate ));
-        mCRL_Table->setItem( row, 2, new QTableWidgetItem( sNextUpdate ));
+        mCRL_Table->setItem( 0, 0, item );
+        mCRL_Table->setItem( 0, 1, new QTableWidgetItem( sThisUpdate ));
+        mCRL_Table->setItem( 0, 2, new QTableWidgetItem( sNextUpdate ));
 
         JS_BIN_reset( &binCRL );
         JS_PKI_resetCRLInfo( &sCRLInfo );
@@ -1302,8 +1302,8 @@ void CertManDlg::loadTrustList()
         JS_UTIL_getDate( sCertInfo.tNotBefore, sNotBefore );
         JS_UTIL_getDate( sCertInfo.tNotAfter, sNotAfter );
 
-        mRCA_CertTable->insertRow( row );
-        mRCA_CertTable->setRowHeight( row, 10 );
+        mRCA_CertTable->insertRow( 0 );
+        mRCA_CertTable->setRowHeight( 0, 10 );
         QTableWidgetItem *item = new QTableWidgetItem( strName );
 
         if( now > sCertInfo.tNotAfter )
@@ -1313,9 +1313,9 @@ void CertManDlg::loadTrustList()
 
         item->setData(Qt::UserRole, file.filePath() );
 
-        mRCA_CertTable->setItem( row, 0, item );
-        mRCA_CertTable->setItem( row, 1, new QTableWidgetItem( sCertInfo.pSubjectName ));
-        mRCA_CertTable->setItem( row, 2, new QTableWidgetItem( sNotAfter ));
+        mRCA_CertTable->setItem( 0, 0, item );
+        mRCA_CertTable->setItem( 0, 1, new QTableWidgetItem( sCertInfo.pSubjectName ));
+        mRCA_CertTable->setItem( 0, 2, new QTableWidgetItem( sNotAfter ));
 
         JS_BIN_reset( &binCert );
         JS_PKI_resetCertInfo( &sCertInfo );

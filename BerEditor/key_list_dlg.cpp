@@ -255,8 +255,8 @@ void KeyListDlg::loadKeyList()
             if( strSelType != strAlg ) continue;
         }
 
-        mKeyTable->insertRow(row);
-        mKeyTable->setRowHeight( row, 10 );
+        mKeyTable->insertRow( 0 );
+        mKeyTable->setRowHeight( 0, 10 );
         QTableWidgetItem *item = new QTableWidgetItem( strName );
 
 
@@ -272,11 +272,11 @@ void KeyListDlg::loadKeyList()
             item->setIcon(QIcon(":/images/key.png" ));
         }
 
-        mKeyTable->setItem( row, 0, item );
-        mKeyTable->setItem( row, 1, new QTableWidgetItem(QString("%1").arg( strAlg)));
-        mKeyTable->setItem( row, 2, new QTableWidgetItem(QString("%1 Bytes").arg( strKey.length() / 2 )));
-        mKeyTable->setItem( row, 3, new QTableWidgetItem(QString("%1").arg( strIV.length() > 0 ? "Y" : "N" )));
-        mKeyTable->setItem( row, 4, new QTableWidgetItem(QString("%1").arg( date.toString("yy-MM-dd hh:mm") )));
+        mKeyTable->setItem( 0, 0, item );
+        mKeyTable->setItem( 0, 1, new QTableWidgetItem(QString("%1").arg( strAlg)));
+        mKeyTable->setItem( 0, 2, new QTableWidgetItem(QString("%1 Bytes").arg( strKey.length() / 2 )));
+        mKeyTable->setItem( 0, 3, new QTableWidgetItem(QString("%1").arg( strIV.length() > 0 ? "Y" : "N" )));
+        mKeyTable->setItem( 0, 4, new QTableWidgetItem(QString("%1").arg( date.toString("yy-MM-dd hh:mm") )));
     }
 
     load_keylist_ = true;
