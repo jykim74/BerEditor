@@ -112,7 +112,7 @@
            </property>
            <property name="icon">
             <iconset resource="bereditor.qrc">
-             <normaloff>:/images/keypair.png</normaloff>:/images/keypair.png</iconset>
+             <normaloff>:/images/keypair2.png</normaloff>:/images/keypair2.png</iconset>
            </property>
            <property name="flat">
             <bool>true</bool>

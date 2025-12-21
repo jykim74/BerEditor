@@ -116,5 +116,6 @@
         <file>images/json.png</file>
         <file>images/passwd.png</file>
         <file>images/revoke.png</file>
+        <file>images/keypair2.png</file>
     </qresource>
 </RCC>

@@ -425,7 +425,7 @@ void KeyPairManDlg:: loadKeyPairList()
         mKeyPairTable->insertRow(0);
         mKeyPairTable->setRowHeight( 0, 10 );
         QTableWidgetItem *item = new QTableWidgetItem( folder.baseName() );
-        item->setIcon(QIcon(":/images/keypair.png" ));
+        item->setIcon(QIcon(":/images/keypair2.png" ));
 
         item->setData(Qt::UserRole, folder.filePath() );
 
