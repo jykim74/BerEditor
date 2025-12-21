@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>630</width>
-    <height>531</height>
+    <height>623</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -83,11 +83,17 @@
    </item>
    <item>
     <widget class="QTabWidget" name="mTabWidget">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="contextMenuPolicy">
       <enum>Qt::CustomContextMenu</enum>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="mEETab">
       <attribute name="title">
@@ -99,7 +105,7 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="0">
+         <item row="0" column="1">
           <widget class="QLabel" name="label_6">
            <property name="minimumSize">
             <size>
@@ -112,7 +118,7 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
+         <item row="0" column="2">
           <widget class="QLineEdit" name="mCertPathText">
            <property name="palette">
             <palette>
@@ -146,8 +152,34 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
+         <item row="0" column="3">
           <widget class="QComboBox" name="mKeyTypeCombo"/>
+         </item>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="pushButton_2">
+           <property name="minimumSize">
+            <size>
+             <width>16</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="bereditor.qrc">
+             <normaloff>:/images/cert.png</normaloff>:/images/cert.png</iconset>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -155,13 +187,6 @@
         <widget class="Line" name="line_3">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>Certficate List</string>
          </property>
         </widget>
        </item>
@@ -349,7 +374,7 @@
       <layout class="QVBoxLayout" name="verticalLayout_12">
        <item>
         <layout class="QGridLayout" name="gridLayout_16">
-         <item row="0" column="1">
+         <item row="0" column="2">
           <widget class="QLineEdit" name="mOtherCertPathText">
            <property name="palette">
             <palette>
@@ -383,15 +408,41 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
+         <item row="0" column="1">
           <widget class="QLabel" name="label_7">
            <property name="text">
             <string>Other Cert Path</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
+         <item row="0" column="3">
           <widget class="QComboBox" name="mOtherKeyTypeCombo"/>
+         </item>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="pushButton_3">
+           <property name="minimumSize">
+            <size>
+             <width>16</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="bereditor.qrc">
+             <normaloff>:/images/im_cert.png</normaloff>:/images/im_cert.png</iconset>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -399,13 +450,6 @@
         <widget class="Line" name="line_9">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_15">
-         <property name="text">
-          <string>Other certificate list</string>
          </property>
         </widget>
        </item>
@@ -518,14 +562,10 @@
       <layout class="QVBoxLayout" name="verticalLayout_8">
        <item>
         <layout class="QGridLayout" name="gridLayout_12">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_11">
-           <property name="text">
-            <string>CA Certificate Path</string>
-           </property>
-          </widget>
+         <item row="0" column="3">
+          <widget class="QComboBox" name="mCAKeyTypeCombo"/>
          </item>
-         <item row="0" column="1">
+         <item row="0" column="2">
           <widget class="QLineEdit" name="mCAPathText">
            <property name="palette">
             <palette>
@@ -559,8 +599,38 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
-          <widget class="QComboBox" name="mCAKeyTypeCombo"/>
+         <item row="0" column="1">
+          <widget class="QLabel" name="label_11">
+           <property name="text">
+            <string>CA Certificate Path</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="pushButton_4">
+           <property name="minimumSize">
+            <size>
+             <width>16</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="bereditor.qrc">
+             <normaloff>:/images/ca.png</normaloff>:/images/ca.png</iconset>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -568,13 +638,6 @@
         <widget class="Line" name="line_7">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_12">
-         <property name="text">
-          <string>CA Certificate List</string>
          </property>
         </widget>
        </item>
@@ -679,14 +742,14 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="0">
+         <item row="0" column="1">
           <widget class="QLabel" name="label_13">
            <property name="text">
             <string>CRL Path</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
+         <item row="0" column="2">
           <widget class="QLineEdit" name="mCRLPathText">
            <property name="palette">
             <palette>
@@ -720,19 +783,38 @@
            </property>
           </widget>
          </item>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="pushButton_5">
+           <property name="minimumSize">
+            <size>
+             <width>16</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="bereditor.qrc">
+             <normaloff>:/images/crl.png</normaloff>:/images/crl.png</iconset>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
         <widget class="Line" name="line_8">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_14">
-         <property name="text">
-          <string>CRL List</string>
          </property>
         </widget>
        </item>
@@ -827,7 +909,7 @@
          <property name="topMargin">
           <number>0</number>
          </property>
-         <item row="0" column="1">
+         <item row="0" column="2">
           <widget class="QLineEdit" name="mTrustRCAPathText">
            <property name="palette">
             <palette>
@@ -861,15 +943,41 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
+         <item row="0" column="3">
+          <widget class="QComboBox" name="mRCAKeyTypeCombo"/>
+         </item>
+         <item row="0" column="1">
           <widget class="QLabel" name="label">
            <property name="text">
             <string>TrustRootCA Path</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
-          <widget class="QComboBox" name="mRCAKeyTypeCombo"/>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="pushButton_6">
+           <property name="minimumSize">
+            <size>
+             <width>16</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="bereditor.qrc">
+             <normaloff>:/images/rca.png</normaloff>:/images/rca.png</iconset>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -877,13 +985,6 @@
         <widget class="Line" name="line_2">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_4">
-         <property name="text">
-          <string>Trust RootCA Certificate List</string>
          </property>
         </widget>
        </item>
