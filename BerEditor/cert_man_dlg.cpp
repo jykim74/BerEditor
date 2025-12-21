@@ -907,7 +907,6 @@ void CertManDlg::loadEEList()
             item->setIcon(QIcon(":/images/cert.png" ));
 
         item->setData(Qt::UserRole, folder.filePath() );
-        item1->setIcon(QIcon(":/images/keypair.png"));
 
         mEE_CertTable->setItem( 0, 0, item );
         mEE_CertTable->setItem( 0, 1, item1 );
