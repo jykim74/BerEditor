@@ -92,6 +92,8 @@ static QString kSelectStyle =
     "color: white; "
     "} ";
 
+const int kFileMax = 1048576; // 1024 * 1024
+
 #define TOOL_BAR_WIDTH      24
 #define TOOL_BAR_HEIGHT     24
 

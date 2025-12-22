@@ -1662,6 +1662,14 @@ void PKCS7Dlg::clickReadFile()
     {
         BIN binData = {0,0};
 
+        QFileInfo fileInfo( strFile );
+
+        if( fileInfo.size() >  kFileMax )
+        {
+            berApplet->warningBox( tr("The file size is too large(Max:1M)"), this );
+            return;
+        }
+
         if( mDecodeRadio->isChecked() == true )
             ret = JS_BIN_fileReadBER( strFile.toLocal8Bit().toStdString().c_str(), &binData );
         else

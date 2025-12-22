@@ -7,6 +7,7 @@
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QMimeData>
+#include <QFileInfo>
 
 #include "data_converter_dlg.h"
 #include "js_bin.h"
@@ -122,6 +123,14 @@ void DataConverterDlg::clickReadFile()
 
     if( strFile.length() > 0 )
     {
+        QFileInfo fileInfo( strFile );
+
+        if( fileInfo.size() >  kFileMax )
+        {
+            berApplet->warningBox( tr("The file size is too large(Max:1M)"), this );
+            return;
+        }
+
         mInputTypeHexCheck->setChecked(true);
         BIN binFile = {0,0};
         JS_BIN_fileRead( strFile.toLocal8Bit().toStdString().c_str(), &binFile );

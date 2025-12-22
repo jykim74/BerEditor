@@ -670,7 +670,15 @@ int DocSignerDlg::readCMSSrc( BIN *pData )
         {
             berApplet->warningBox( tr( "find a source" ), this );
             mSrcPathText->setFocus();
-            return -1;
+            return JSR_ERR;
+        }
+
+        QFileInfo fileInfo( strSrcPath );
+
+        if( fileInfo.size() >  kFileMax )
+        {
+            berApplet->warningBox( tr("The file size is too large(Max:1M)"), this );
+            return JSR_ERR2;
         }
 
         if( mCMSDecodeRadio->isChecked() == true )
@@ -1735,6 +1743,14 @@ void DocSignerDlg::clickJSON_CheckObject()
             return;
         }
 
+        QFileInfo fileInfo( strSrcPath );
+
+        if( fileInfo.size() >  kFileMax )
+        {
+            berApplet->warningBox( tr("The file size is too large(Max:1M)"), this );
+            return;
+        }
+
         JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
         JS_BIN_string( &binSrc, &pString );
 
@@ -1795,6 +1811,14 @@ void DocSignerDlg::clickJSON_ComputeSignature()
         {
             berApplet->warningBox( tr( "find a source json" ), this );
             mSrcPathText->setFocus();
+            return;
+        }
+
+        QFileInfo fileInfo( strSrcPath );
+
+        if( fileInfo.size() >  kFileMax )
+        {
+            berApplet->warningBox( tr("The file size is too large(Max:1M)"), this );
             return;
         }
 
@@ -1903,6 +1927,14 @@ void DocSignerDlg::clickJSON_VerifySignature()
         {
             berApplet->warningBox( tr( "find a source json" ), this );
             mSrcPathText->setFocus();
+            return;
+        }
+
+        QFileInfo fileInfo( strSrcPath );
+
+        if( fileInfo.size() >  kFileMax )
+        {
+            berApplet->warningBox( tr("The file size is too large(Max:1M)"), this );
             return;
         }
 
@@ -2079,6 +2111,14 @@ void DocSignerDlg::clickXML_Check()
             return;
         }
 
+        QFileInfo fileInfo( strSrcPath );
+
+        if( fileInfo.size() >  kFileMax )
+        {
+            berApplet->warningBox( tr("The file size is too large(Max:1M)"), this );
+            return;
+        }
+
         JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
     }
     else
@@ -2165,6 +2205,14 @@ void DocSignerDlg::clickXML_MakeSign()
         {
             berApplet->warningBox( tr( "find a source xml" ), this );
             mSrcPathText->setFocus();
+            return;
+        }
+
+        QFileInfo fileInfo( strSrcPath );
+
+        if( fileInfo.size() >  kFileMax )
+        {
+            berApplet->warningBox( tr("The file size is too large(Max:1M)"), this );
             return;
         }
 
@@ -2256,6 +2304,14 @@ void DocSignerDlg::clickXML_Encrypt()
         {
             berApplet->warningBox( tr( "find a source xml" ), this );
             mSrcPathText->setFocus();
+            return;
+        }
+
+        QFileInfo fileInfo( strSrcPath );
+
+        if( fileInfo.size() >  kFileMax )
+        {
+            berApplet->warningBox( tr("The file size is too large(Max:1M)"), this );
             return;
         }
 
@@ -2371,6 +2427,14 @@ void DocSignerDlg::clickXML_VerifySign()
             return;
         }
 
+        QFileInfo fileInfo( strSrcPath );
+
+        if( fileInfo.size() >  kFileMax )
+        {
+            berApplet->warningBox( tr("The file size is too large(Max:1M)"), this );
+            return;
+        }
+
         JS_BIN_fileRead( strSrcPath.toLocal8Bit().toStdString().c_str(), &binSrc );
     }
     else
@@ -2439,6 +2503,14 @@ void DocSignerDlg::clickXML_Decrypt()
         {
             berApplet->warningBox( tr( "find a source xml" ), this );
             mSrcPathText->setFocus();
+            return;
+        }
+
+        QFileInfo fileInfo( strSrcPath );
+
+        if( fileInfo.size() >  kFileMax )
+        {
+            berApplet->warningBox( tr("The file size is too large(Max:1M)"), this );
             return;
         }
 
