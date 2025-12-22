@@ -231,6 +231,8 @@ void CRLInfoDlg::initialize()
     char    sThisUpdate[64];
     char    sNextUpdate[64];
 
+    time_t now_t = time(NULL);
+
     tabWidget->setCurrentIndex(0);
 
     if( berApplet->isLicense() == false ) mManGroup->setEnabled( false );
@@ -253,6 +255,12 @@ void CRLInfoDlg::initialize()
         berApplet->warningBox( tr("failed to get CRL information"), this );
         close();
         return;
+    }
+
+    if( now_t > crl_info_.tNextUpdate )
+    {
+        mCRLBtn->setIcon( QIcon( ":/images/crl_expired.png" ) );
+        mHeadLabel->setText( tr( "Certificate Revocation List [Expired]" ));
     }
 
     JS_PKI_genHash( "SHA1", &crl_bin_, &binFinger );

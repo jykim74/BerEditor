@@ -907,6 +907,7 @@ void CertManDlg::loadEEList()
             item->setIcon(QIcon(":/images/cert.png" ));
 
         item->setData(Qt::UserRole, folder.filePath() );
+        item1->setData(Qt::UserRole, sCertInfo.tNotAfter );
 
         mEE_CertTable->setItem( 0, 0, item );
         mEE_CertTable->setItem( 0, 1, item1 );
@@ -1014,6 +1015,7 @@ void CertManDlg::loadOtherList()
         mOther_CertTable->setRowHeight( 0, 10 );
 
         QTableWidgetItem *item = new QTableWidgetItem( sCertInfo.pSubjectName );
+        QTableWidgetItem *item1 = new QTableWidgetItem( sNotAfter );
 
         if( now > sCertInfo.tNotAfter )
             item->setIcon(QIcon(":/images/im_cert_expired.png" ));
@@ -1021,9 +1023,10 @@ void CertManDlg::loadOtherList()
             item->setIcon(QIcon(":/images/im_cert.png" ));
 
         item->setData(Qt::UserRole, file.filePath() );
+        item1->setData(Qt::UserRole, sCertInfo.tNotAfter );
 
         mOther_CertTable->setItem( 0, 0, item );
-        mOther_CertTable->setItem( 0, 1, new QTableWidgetItem( sNotAfter ));
+        mOther_CertTable->setItem( 0, 1, item1 );
         mOther_CertTable->setItem( 0, 2, new QTableWidgetItem( sCertInfo.pIssuerName ));
 
         JS_BIN_reset( &binCert );
@@ -1126,6 +1129,7 @@ void CertManDlg::loadCAList()
         mCA_CertTable->insertRow( 0 );
         mCA_CertTable->setRowHeight( 0, 10 );
         QTableWidgetItem *item = new QTableWidgetItem( sCertInfo.pSubjectName );
+        QTableWidgetItem *item1 = new QTableWidgetItem( sNotAfter );
 
         if( now > sCertInfo.tNotAfter )
             item->setIcon(QIcon(":/images/ca_expired.png" ));
@@ -1133,9 +1137,10 @@ void CertManDlg::loadCAList()
             item->setIcon(QIcon(":/images/ca.png" ));
 
         item->setData(Qt::UserRole, file.filePath() );
+        item1->setData(Qt::UserRole, sCertInfo.tNotAfter );
 
         mCA_CertTable->setItem( 0, 0, item );
-        mCA_CertTable->setItem( 0, 1, new QTableWidgetItem( sNotAfter ));
+        mCA_CertTable->setItem( 0, 1, item1 );
         mCA_CertTable->setItem( 0, 2, new QTableWidgetItem( sCertInfo.pIssuerName ));
 
         JS_BIN_reset( &binCert );
@@ -1192,6 +1197,7 @@ void CertManDlg::loadCRLList()
         mCRL_Table->insertRow( 0 );
         mCRL_Table->setRowHeight( 0, 10 );
         QTableWidgetItem *item = new QTableWidgetItem( sCRLInfo.pIssuerName );
+        QTableWidgetItem *item2 = new QTableWidgetItem( sNextUpdate );
 
         if( now > sCRLInfo.tNextUpdate )
             item->setIcon(QIcon(":/images/crl_expired.png" ));
@@ -1199,10 +1205,11 @@ void CertManDlg::loadCRLList()
             item->setIcon(QIcon(":/images/crl.png" ));
 
         item->setData(Qt::UserRole, file.filePath() );
+        item2->setData(Qt::UserRole, sCRLInfo.tNextUpdate );
 
         mCRL_Table->setItem( 0, 0, item );
         mCRL_Table->setItem( 0, 1, new QTableWidgetItem( sThisUpdate ));
-        mCRL_Table->setItem( 0, 2, new QTableWidgetItem( sNextUpdate ));
+        mCRL_Table->setItem( 0, 2, item2 );
 
         JS_BIN_reset( &binCRL );
         JS_PKI_resetCRLInfo( &sCRLInfo );
@@ -1304,6 +1311,7 @@ void CertManDlg::loadTrustList()
         mRCA_CertTable->insertRow( 0 );
         mRCA_CertTable->setRowHeight( 0, 10 );
         QTableWidgetItem *item = new QTableWidgetItem( strName );
+        QTableWidgetItem *item1 = new QTableWidgetItem( sNotAfter );
 
         if( now > sCertInfo.tNotAfter )
             item->setIcon(QIcon(":/images/rca_expired.png" ));
@@ -1311,10 +1319,11 @@ void CertManDlg::loadTrustList()
             item->setIcon(QIcon(":/images/rca.png" ));
 
         item->setData(Qt::UserRole, file.filePath() );
+        item1->setData(Qt::UserRole, sCertInfo.tNotAfter );
 
         mRCA_CertTable->setItem( 0, 0, item );
         mRCA_CertTable->setItem( 0, 1, new QTableWidgetItem( sCertInfo.pSubjectName ));
-        mRCA_CertTable->setItem( 0, 2, new QTableWidgetItem( sNotAfter ));
+        mRCA_CertTable->setItem( 0, 2, item1 );
 
         JS_BIN_reset( &binCert );
         JS_PKI_resetCertInfo( &sCertInfo );
@@ -1439,10 +1448,14 @@ const QString CertManDlg::getSeletedCertPath()
     QString strPath;
     int nTabIdx = mTabWidget->currentIndex();
 
+    QTableWidgetItem* item = nullptr;
+    QTableWidgetItem* item1 = nullptr;
+
     if( nTabIdx == TAB_EE_IDX )
     {
         QModelIndex idx = mEE_CertTable->currentIndex();
-        QTableWidgetItem* item = mEE_CertTable->item( idx.row(), 0 );
+        item = mEE_CertTable->item( idx.row(), 0 );
+        item1 = mEE_CertTable->item( idx.row(), 1 );
 
         if( item )
         {
@@ -1453,9 +1466,22 @@ const QString CertManDlg::getSeletedCertPath()
     else if( nTabIdx == TAB_OTHER_IDX )
     {
         QModelIndex idx = mOther_CertTable->currentIndex();
-        QTableWidgetItem* item = mOther_CertTable->item( idx.row(), 0 );
+        item = mOther_CertTable->item( idx.row(), 0 );
+        item1 = mOther_CertTable->item( idx.row(), 1 );
 
         if( item ) strPath = item->data(Qt::UserRole).toString();
+    }
+
+    if( item1 )
+    {
+        time_t now_t = time(NULL);
+        time_t tAfter = item1->data(Qt::UserRole).toLongLong();
+
+        if( now_t > tAfter )
+        {
+            bool bVal = berApplet->yesOrCancelBox( tr("The certificate has expired. Do you want to continue?"), this, true );
+            if( bVal == false ) return "";
+        }
     }
 
     return strPath;
@@ -1470,11 +1496,24 @@ const QString CertManDlg::getSelectedPriPath()
     {
         QModelIndex idx = mEE_CertTable->currentIndex();
         QTableWidgetItem* item = mEE_CertTable->item( idx.row(), 0 );
+        QTableWidgetItem* item1 = mEE_CertTable->item( idx.row(), 1 );
 
         if( item )
         {
             QString strDir = item->data(Qt::UserRole).toString();
             strPath = QString( "%1/%2").arg( strDir ).arg( kPriKeyFile );
+        }
+
+        if( item1 )
+        {
+            time_t now_t = time(NULL);
+            time_t tAfter = item1->data(Qt::UserRole).toLongLong();
+
+            if( now_t > tAfter )
+            {
+                bool bVal = berApplet->yesOrCancelBox( tr("The certificate has expired. Do you want to continue?"), this, true );
+                if( bVal == false ) return "";
+            }
         }
     }
 
@@ -1485,20 +1524,36 @@ const QString CertManDlg::getSeletedCAPath()
 {
     QString strPath;
     int nTabIdx = mTabWidget->currentIndex();
+    QTableWidgetItem* item = nullptr;
+    QTableWidgetItem* item1 = nullptr;
 
     if( nTabIdx == TAB_CA_IDX )
     {
         QModelIndex idx = mCA_CertTable->currentIndex();
-        QTableWidgetItem* item = mCA_CertTable->item( idx.row(), 0 );
+        item = mCA_CertTable->item( idx.row(), 0 );
+        item1 = mCA_CertTable->item( idx.row(), 1 );
 
         if( item ) strPath = item->data(Qt::UserRole).toString();
     }
     else if( nTabIdx == TAB_TRUST_IDX )
     {
         QModelIndex idx = mRCA_CertTable->currentIndex();
-        QTableWidgetItem* item = mRCA_CertTable->item( idx.row(), 0 );
+        item = mRCA_CertTable->item( idx.row(), 0 );
+        item1 = mRCA_CertTable->item( idx.row(), 1 );
 
         if( item ) strPath = item->data(Qt::UserRole).toString();
+    }
+
+    if( item1 )
+    {
+        time_t now_t = time(NULL);
+        time_t tAfter = item1->data(Qt::UserRole).toLongLong();
+
+        if( now_t > tAfter )
+        {
+            bool bVal = berApplet->yesOrCancelBox( tr("The certificate has expired. Do you want to continue?"), this, true );
+            if( bVal == false ) return "";
+        }
     }
 
     return strPath;
@@ -1510,8 +1565,21 @@ const QString CertManDlg::getSeletedCRLPath()
 
     QModelIndex idx = mCRL_Table->currentIndex();
     QTableWidgetItem* item = mCRL_Table->item( idx.row(), 0 );
+    QTableWidgetItem* item2 = mCRL_Table->item( idx.row(), 2 );
 
     if( item ) strPath = item->data(Qt::UserRole).toString();
+
+    if( item2 )
+    {
+        time_t now_t = time(NULL);
+        time_t tAfter = item2->data(Qt::UserRole).toLongLong();
+
+        if( now_t > tAfter )
+        {
+            bool bVal = berApplet->yesOrCancelBox( tr("The CRL has expired. Do you want to continue?"), this, true );
+            if( bVal == false ) return "";
+        }
+    }
 
     return strPath;
 }
@@ -2209,6 +2277,8 @@ void CertManDlg::clickOK()
     BIN binCert = {0,0};
     BIN binCRL = {0,0};
     BIN binPriKey = {0,0};
+
+    time_t now_t = time(NULL);
 
     if( mode_ == ManModeSelCert )
     {

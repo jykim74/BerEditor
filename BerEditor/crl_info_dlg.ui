@@ -20,14 +20,14 @@
       <number>0</number>
      </property>
      <item row="0" column="1">
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="mHeadLabel">
        <property name="text">
         <string>Certificate Revocation List</string>
        </property>
       </widget>
      </item>
      <item row="0" column="0">
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="mCRLBtn">
        <property name="minimumSize">
         <size>
          <width>16</width>
