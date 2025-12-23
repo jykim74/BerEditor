@@ -909,7 +909,7 @@ void CertManDlg::loadEEList()
             item->setIcon(QIcon(":/images/cert.png" ));
 
         item->setData(Qt::UserRole, folder.filePath() );
-        item1->setData(Qt::UserRole, sCertInfo.tNotAfter );
+        item1->setData(Qt::UserRole, (qint64)sCertInfo.tNotAfter );
 
         mEE_CertTable->setItem( 0, 0, item );
         mEE_CertTable->setItem( 0, 1, item1 );
@@ -1025,7 +1025,7 @@ void CertManDlg::loadOtherList()
             item->setIcon(QIcon(":/images/im_cert.png" ));
 
         item->setData(Qt::UserRole, file.filePath() );
-        item1->setData(Qt::UserRole, sCertInfo.tNotAfter );
+        item1->setData(Qt::UserRole, (qint64)sCertInfo.tNotAfter );
 
         mOther_CertTable->setItem( 0, 0, item );
         mOther_CertTable->setItem( 0, 1, item1 );
@@ -1139,7 +1139,7 @@ void CertManDlg::loadCAList()
             item->setIcon(QIcon(":/images/ca.png" ));
 
         item->setData(Qt::UserRole, file.filePath() );
-        item1->setData(Qt::UserRole, sCertInfo.tNotAfter );
+        item1->setData(Qt::UserRole, (qint64)sCertInfo.tNotAfter );
 
         mCA_CertTable->setItem( 0, 0, item );
         mCA_CertTable->setItem( 0, 1, item1 );
@@ -1207,7 +1207,7 @@ void CertManDlg::loadCRLList()
             item->setIcon(QIcon(":/images/crl.png" ));
 
         item->setData(Qt::UserRole, file.filePath() );
-        item2->setData(Qt::UserRole, sCRLInfo.tNextUpdate );
+        item2->setData(Qt::UserRole, (qint64)sCRLInfo.tNextUpdate );
 
         mCRL_Table->setItem( 0, 0, item );
         mCRL_Table->setItem( 0, 1, new QTableWidgetItem( sThisUpdate ));
@@ -1321,7 +1321,7 @@ void CertManDlg::loadTrustList()
             item->setIcon(QIcon(":/images/rca.png" ));
 
         item->setData(Qt::UserRole, file.filePath() );
-        item1->setData(Qt::UserRole, sCertInfo.tNotAfter );
+        item1->setData(Qt::UserRole, (qint64)sCertInfo.tNotAfter );
 
         mRCA_CertTable->setItem( 0, 0, item );
         mRCA_CertTable->setItem( 0, 1, new QTableWidgetItem( sCertInfo.pSubjectName ));
