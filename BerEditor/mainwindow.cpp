@@ -1375,11 +1375,10 @@ void MainWindow::createHelpActions()
     helpMenu->addAction( clear_log_act_ );
     if( isView( ACT_HELP_CLEAR_LOG ) ) help_tool_->addAction( clear_log_act_ );
 
-    QIcon logIcon = QIcon::fromTheme( "log-halt", QIcon(":/images/log_halt.png" ));
+    QIcon logIcon = QIcon::fromTheme( "log-halt", QIcon(":/images/log_en.png" ));
     halt_log_act_ = new QAction( logIcon, tr( "&Log Halt" ), this );
     connect( halt_log_act_, &QAction::triggered, this, &MainWindow::toggleLog );
     halt_log_act_->setShortcut( QKeySequence(Qt::Key_F10));
-    halt_log_act_->setCheckable(true);
     halt_log_act_->setStatusTip( tr( "Halt logging in the log tab" ));
     helpMenu->addAction( halt_log_act_ );
     if( isView( ACT_HELP_HALT_LOG ) ) help_tool_->addAction( halt_log_act_ );
@@ -3791,12 +3790,14 @@ void MainWindow::toggleLog()
     {
         log_halt_ = false;
         log( "Log is enable" );
+        halt_log_act_->setIcon( QIcon( ":/images/log_en.png" ));
         berApplet->messageBox( tr("Start logging"), this );
     }
     else
     {
         log( "Log is halt" );
         log_halt_ = true;
+        halt_log_act_->setIcon( QIcon( ":/images/log_halt.png" ));
         berApplet->messageBox( tr("Stop logging"), this );
     }
 }

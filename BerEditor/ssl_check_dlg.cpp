@@ -331,7 +331,7 @@ void SSLCheckDlg::initUI()
 
     url_tree_root_ = new QTreeWidgetItem;
     url_tree_root_->setText( 0, "Certificate Authority" );
-    url_tree_root_->setIcon( 0, QIcon(":/images/ca.png"));
+    url_tree_root_->setIcon( 0, QIcon(":/images/ssl.png"));
 
     mURLTree->insertTopLevelItem( 0, url_tree_root_ );
 
@@ -703,6 +703,7 @@ const QTreeWidgetItem* SSLCheckDlg::createTree( const QString strHost, int nPort
     QTreeWidgetItem *last = NULL;
 
     BIN binCert = {0,0};
+    time_t now_t = time(NULL);
 
     if( pCertList == NULL ) return NULL;
 
@@ -758,11 +759,17 @@ const QTreeWidgetItem* SSLCheckDlg::createTree( const QString strHost, int nPort
 
                     if( bSelfSign == 1 )
                     {
-                        item->setIcon( 0, QIcon(":/images/root_cert.png"));
+                        if( now_t > sCertInfo.tNotAfter )
+                            item->setIcon( 0, QIcon(":/images/rca_expired.png" ));
+                        else
+                            item->setIcon( 0, QIcon(":/images/rca.png"));
                     }
                     else
                     {
-                        item->setIcon( 0, QIcon(":/images/cert.png"));
+                        if( now_t > sCertInfo.tNotAfter )
+                            item->setIcon( 0, QIcon(":/images/cert_expired.png" ));
+                        else
+                            item->setIcon( 0, QIcon(":/images/cert.png"));
                     }
 
                     item->addChild( last );

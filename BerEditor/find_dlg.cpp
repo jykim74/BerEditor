@@ -93,6 +93,7 @@ void FindDlg::initialize()
         mTitleLabel->setText( tr( "Find TTLV" ));
         mValueTypeCombo->addItems( kTTLVValueType );
 
+        mFindBtn->setIcon( QIcon( ":/images/kms.png") );
         tabWidget->setTabEnabled(0, false);
         tabWidget->setTabEnabled(1, true);
         tabWidget->setCurrentIndex(1);
@@ -102,6 +103,7 @@ void FindDlg::initialize()
         mTitleLabel->setText( tr( "Find BER" ));
         mValueTypeCombo->addItems( kBerValueType );
 
+        mFindBtn->setIcon( QIcon( ":/images/ber.png") );
         tabWidget->setTabEnabled(0, true);
         tabWidget->setTabEnabled(1, false);
         tabWidget->setCurrentIndex(0);

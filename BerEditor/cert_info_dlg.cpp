@@ -630,6 +630,7 @@ void CertInfoDlg::clickMakeTree()
     if( path_list_ ) JS_BIN_resetList( &path_list_ );
 
     JS_BIN_copy( &binCert, &cert_bin_ );
+    time_t now_t = time(NULL);
 
 
     while( 1 )
@@ -642,9 +643,19 @@ void CertInfoDlg::clickMakeTree()
         item->setText( 0, sCertInfo.pSubjectName );
 
         if( bSelfSign == true )
-            item->setIcon( 0, QIcon( ":/images/root_cert.png" ));
+        {
+            if( now_t > sCertInfo.tNotAfter )
+                item->setIcon( 0, QIcon(":/images/rca_expired.png" ));
+            else
+                item->setIcon( 0, QIcon( ":/images/rca.png" ));
+        }
         else
-            item->setIcon( 0, QIcon( ":/images/cert.png" ));
+        {
+            if( now_t > sCertInfo.tNotAfter )
+                item->setIcon( 0, QIcon(":/images/cert_expired.png" ));
+            else
+                item->setIcon( 0, QIcon( ":/images/cert.png" ));
+        }
 
         JS_BIN_addList( &path_list_, &binCert );
         item->addChild( child );

@@ -352,6 +352,7 @@ void CertPVDDlg::checkUseTrustList()
 {
     bool bVal = mUseTrustListCheck->isChecked();
 
+    mTrustBtn->setEnabled( !bVal );
     mTrustLabel->setEnabled( !bVal );
     mTrustPathText->setEnabled( !bVal );
     mTrustFindBtn->setEnabled( !bVal );

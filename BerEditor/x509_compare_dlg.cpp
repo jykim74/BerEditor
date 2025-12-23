@@ -110,7 +110,25 @@ void X509CompareDlg::dropEvent(QDropEvent *event)
 void X509CompareDlg::changeType()
 {
     QString strType = mTypeCombo->currentText();
+
+    if( strType == JS_PKI_BER_NAME_CRL )
+    {
+        mABtn->setIcon( QIcon( ":/images/crl.png") );
+        mBBtn->setIcon( QIcon( ":/images/crl.png") );
+    }
+    else if( strType == JS_PKI_BER_NAME_CSR )
+    {
+        mABtn->setIcon( QIcon( ":/images/csr.png") );
+        mBBtn->setIcon( QIcon( ":/images/csr.png") );
+    }
+    else
+    {
+        mABtn->setIcon( QIcon( ":/images/cert.png") );
+        mBBtn->setIcon( QIcon( ":/images/cert.png") );
+    }
+
     mTitleLabel->setText( tr( "%1 comparision" ).arg( strType ));
+
     mAPathLabel->setText( tr( "A %1 Path" ).arg( strType ));
     mBPathLabel->setText( tr( "B %1 Path" ).arg( strType ));
 

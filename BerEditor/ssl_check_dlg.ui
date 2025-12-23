@@ -244,7 +244,20 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout_13">
-         <item row="0" column="3">
+         <item row="0" column="6">
+          <widget class="QPushButton" name="mTrustCATypeBtn">
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>T</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
           <widget class="QPushButton" name="mTrustCAViewBtn">
            <property name="maximumSize">
             <size>
@@ -257,20 +270,14 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_3">
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>0</height>
-            </size>
-           </property>
+         <item row="0" column="3">
+          <widget class="QPushButton" name="mFindTrustCABtn">
            <property name="text">
-            <string>Trust CA</string>
+            <string>Find</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="4">
+         <item row="0" column="5">
           <widget class="QPushButton" name="mTrustCADecodeBtn">
            <property name="maximumSize">
             <size>
@@ -284,25 +291,44 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QLineEdit" name="mTrustCAPathText"/>
-         </item>
-         <item row="0" column="2">
-          <widget class="QPushButton" name="mFindTrustCABtn">
+          <widget class="QLabel" name="label_3">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
-            <string>Find</string>
+            <string>Trust CA</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="5">
-          <widget class="QPushButton" name="mTrustCATypeBtn">
+         <item row="0" column="2">
+          <widget class="QLineEdit" name="mTrustCAPathText"/>
+         </item>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="pushButton_2">
+           <property name="minimumSize">
+            <size>
+             <width>16</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="maximumSize">
             <size>
-             <width>20</width>
+             <width>16</width>
              <height>16777215</height>
             </size>
            </property>
            <property name="text">
-            <string>T</string>
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="bereditor.qrc">
+             <normaloff>:/images/rca.png</normaloff>:/images/rca.png</iconset>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
            </property>
           </widget>
          </item>

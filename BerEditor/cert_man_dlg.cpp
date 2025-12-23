@@ -596,11 +596,13 @@ void CertManDlg::initialize()
 
     if( mode_ == ManModeSelCert )
     {
+        mEE_PasswdBtn->setEnabled( false );
         mEE_PasswdLabel->setEnabled(false);
         mEE_PasswdText->setEnabled(false);
     }
     else
     {
+        mEE_PasswdBtn->setEnabled( true );
         mEE_PasswdLabel->setEnabled(true);
         mEE_PasswdText->setEnabled(true);
     }
