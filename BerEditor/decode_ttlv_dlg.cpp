@@ -140,13 +140,20 @@ void DecodeTTLVDlg::clearData()
 
 void DecodeTTLVDlg::findData()
 {
+    int ret = 0;
     BIN binData = {0,0};
     QString strPath;
 
     QString strFileName = berApplet->findFile( this, JS_FILE_TYPE_BIN, strPath );
     if( strFileName.length() < 1 ) return;
 
-    JS_BIN_fileReadBER( strFileName.toLocal8Bit().toStdString().c_str(), &binData );
+    ret = JS_BIN_fileReadTTLV( strFileName.toLocal8Bit().toStdString().c_str(), &binData );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr("This is not a TTLV file: %1").arg( JERR(ret)), this );
+        return;
+    }
+
     if( mHexRadio->isChecked() )
     {
         mDataText->setPlainText( getHexString( &binData ));

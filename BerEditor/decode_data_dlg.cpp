@@ -174,7 +174,12 @@ void DecodeDataDlg::findData()
     QString strFileName = berApplet->findFile( this, JS_FILE_TYPE_BER, strPath );
     if( strFileName.length() < 1 ) return;
 
-    JS_BIN_fileReadBER( strFileName.toLocal8Bit().toStdString().c_str(), &binData );
+    int ret = JS_BIN_fileReadBER( strFileName.toLocal8Bit().toStdString().c_str(), &binData );
+    if( ret < 0 )
+    {
+        berApplet->warningBox( tr("This is not a BER file: %1").arg( JERR(ret)), this );
+        return;
+    }
 
     if( mTypeHex->isChecked() )
     {

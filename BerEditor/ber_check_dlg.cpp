@@ -138,7 +138,8 @@ int BERCheckDlg::readSrc( BIN *pSrc )
             return -1;
         }
 
-        JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), pSrc );
+        ret = JS_BIN_fileReadBER( strPath.toLocal8Bit().toStdString().c_str(), pSrc );
+        if( ret < 0 ) return ret;
     }
     else
     {
@@ -221,7 +222,11 @@ void BERCheckDlg::clickCheckFormat()
     memset( sError, 0x00, sizeof(sError));
 
     ret = readSrc( &binSrc );
-    if( ret != 0 ) return;
+    if( ret != 0 )
+    {
+        berApplet->warningBox( tr( "Failed to read source: %1" ).arg(JERR(ret)), this );
+        return;
+    }
 
     if( ret == 0 && binSrc.nLen <= 0 )
     {

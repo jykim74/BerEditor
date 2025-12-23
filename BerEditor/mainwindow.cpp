@@ -2223,6 +2223,12 @@ int MainWindow::berFileOpen(const QString berPath)
 
     int ret = JS_BIN_fileReadBER( berPath.toLocal8Bit().toStdString().c_str(), &binRead );
 
+    if( berApplet->isLicense() == true )
+    {
+        if( ret == JSR_BAD_FILE_FORMAT )
+            ret = JS_BIN_fileReadTTLV( berPath.toLocal8Bit().toStdString().c_str(), &binRead );
+    }
+
     if( ret > 0 )
     {
         openBer( &binRead );
