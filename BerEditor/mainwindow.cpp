@@ -1376,7 +1376,7 @@ void MainWindow::createHelpActions()
     if( isView( ACT_HELP_CLEAR_LOG ) ) help_tool_->addAction( clear_log_act_ );
 
     QIcon logIcon = QIcon::fromTheme( "log-halt", QIcon(":/images/log_en.png" ));
-    halt_log_act_ = new QAction( logIcon, tr( "&Log Halt" ), this );
+    halt_log_act_ = new QAction( logIcon, tr( "&Log" ), this );
     connect( halt_log_act_, &QAction::triggered, this, &MainWindow::toggleLog );
     halt_log_act_->setShortcut( QKeySequence(Qt::Key_F10));
     halt_log_act_->setStatusTip( tr( "Halt logging in the log tab" ));
