@@ -1755,3 +1755,41 @@ void setLineEditHexOnly( QLineEdit *pEdit, const QString strPlaceHolder )
     QRegExpValidator* regVal = new QRegExpValidator( regExp );
     pEdit->setValidator( regVal );
 }
+
+const QString getShowFileSize( qint64 nFileSize )
+{
+    QString strSize;
+    const qint64 nKilo = 1024;
+    const qint64 nMega = 1024 * 1024;
+    const qint64 nGiga = 1024 * 1024 * 1024;
+
+    int nFirst = 0;
+    int nSecond = 0;
+
+    if( nFileSize >= nKilo && nFileSize < nMega )
+    {
+        nFirst = int( nFileSize / nKilo );
+        nSecond = nFileSize % nKilo;
+        strSize = QString( "%1.%2 KB" ).arg( nFirst ).arg( nSecond, 3, QChar('0') );
+    }
+    else if( nFileSize >= nMega && nFileSize < nGiga  )
+    {
+        nFirst = int( nFileSize / nMega );
+        nSecond = int( nFileSize / nKilo ) % nKilo;
+
+        strSize = QString( "%1.%2 MB" ).arg( nFirst ).arg( nSecond, 3, QChar('0') );
+    }
+    else if( nFileSize >= nGiga)
+    {
+        nFirst = int( nFileSize / nGiga );
+        nSecond = int( nFileSize / nMega ) % nKilo;
+
+        strSize = QString( "%1.%2 GB" ).arg( nFirst ).arg( nSecond, 3, QChar('0') );
+    }
+    else
+    {
+        strSize = QString( "%1 Byte" ).arg( nFileSize );
+    }
+
+    return strSize;
+}

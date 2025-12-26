@@ -398,5 +398,6 @@ const QString decodeBase64( const QString strBase64 );
 
 void setFixedLineText( QLineEdit *pEdit, const QString strText );
 void setLineEditHexOnly( QLineEdit *pEdit, const QString strPlaceHolder = "" );
+const QString getShowFileSize( qint64 nFileSize );
 
 #endif // COMMON_H

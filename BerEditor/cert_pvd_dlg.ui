@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>587</width>
-    <height>694</height>
+    <width>505</width>
+    <height>718</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -569,17 +569,24 @@
       <property name="spacing">
        <number>4</number>
       </property>
-      <item row="0" column="3">
-       <widget class="QCheckBox" name="mIgnoreCriticalCheck">
+      <item row="3" column="2">
+       <widget class="QCheckBox" name="mUseDeltasCheck">
         <property name="text">
-         <string>IgnoreCritical</string>
+         <string>UseDeltas</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="mUseCheckTimeCheck">
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="mNotifyPolicyCheck">
         <property name="text">
-         <string>UseCheckTime</string>
+         <string>NotifyPolicy</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QCheckBox" name="mExtendedCRLSupportCheck">
+        <property name="text">
+         <string>ExtendedCRLSupport</string>
         </property>
        </widget>
       </item>
@@ -590,6 +597,13 @@
         </property>
        </widget>
       </item>
+      <item row="3" column="3">
+       <widget class="QCheckBox" name="mCheckSSSignatureCheck">
+        <property name="text">
+         <string>CheckSSSignature</string>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="1">
        <widget class="QCheckBox" name="mCRLCheckCheck">
         <property name="text">
@@ -597,17 +611,24 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="4">
-       <widget class="QCheckBox" name="mX509StrictCheck">
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="mUseCheckTimeCheck">
         <property name="text">
-         <string>X509Strict</string>
+         <string>UseCheckTime</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QCheckBox" name="mIgnoreCriticalCheck">
+        <property name="text">
+         <string>IgnoreCritical</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QCheckBox" name="mAllowProxyCertsCheck">
+       <widget class="QCheckBox" name="mX509StrictCheck">
         <property name="text">
-         <string>AllowProxyCerts</string>
+         <string>X509Strict</string>
         </property>
        </widget>
       </item>
@@ -632,66 +653,45 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="4">
+      <item row="2" column="0">
        <widget class="QCheckBox" name="mInhibitMapCheck">
         <property name="text">
          <string>InhibitMap</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QCheckBox" name="mNotifyPolicyCheck">
-        <property name="text">
-         <string>NotifyPolicy</string>
-        </property>
-       </widget>
-      </item>
       <item row="2" column="1">
-       <widget class="QCheckBox" name="mExtendedCRLSupportCheck">
-        <property name="text">
-         <string>ExtendedCRLSupport</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="2">
-       <widget class="QCheckBox" name="mUseDeltasCheck">
-        <property name="text">
-         <string>UseDeltas</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="3">
-       <widget class="QCheckBox" name="mCheckSSSignatureCheck">
-        <property name="text">
-         <string>CheckSSSignature</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="4">
-       <widget class="QCheckBox" name="mTrustedFirstCheck">
-        <property name="text">
-         <string>TrustedFirst</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
        <widget class="QCheckBox" name="mNoCheckTimeCheck">
         <property name="text">
          <string>NoCheckTime</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="2" column="2">
        <widget class="QCheckBox" name="mPartialChainCheck">
         <property name="text">
          <string>PartialChain</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="2">
+      <item row="2" column="3">
+       <widget class="QCheckBox" name="mTrustedFirstCheck">
+        <property name="text">
+         <string>TrustedFirst</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
        <widget class="QCheckBox" name="mNoALTChainsCheck">
         <property name="text">
          <string>NoALTChains</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QCheckBox" name="mAllowProxyCertsCheck">
+        <property name="text">
+         <string>AllowProxyCerts</string>
         </property>
        </widget>
       </item>
@@ -819,7 +819,7 @@
       <widget class="QLabel" name="label_6">
        <property name="minimumSize">
         <size>
-         <width>80</width>
+         <width>0</width>
          <height>0</height>
         </size>
        </property>
@@ -966,18 +966,22 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>pushButton</tabstop>
   <tabstop>mUseTrustListCheck</tabstop>
   <tabstop>mTrustListBtn</tabstop>
+  <tabstop>mTrustBtn</tabstop>
   <tabstop>mTrustPathText</tabstop>
   <tabstop>mTrustFindBtn</tabstop>
   <tabstop>mTrustAddBtn</tabstop>
   <tabstop>mTrustInfoBtn</tabstop>
   <tabstop>mTrustDecodeBtn</tabstop>
+  <tabstop>pushButton_4</tabstop>
   <tabstop>mUntrustPathText</tabstop>
   <tabstop>mUntrustFindBtn</tabstop>
   <tabstop>mUntrustAddBtn</tabstop>
   <tabstop>mUntrustInfoBtn</tabstop>
   <tabstop>mUntrustDecodeBtn</tabstop>
+  <tabstop>pushButton_5</tabstop>
   <tabstop>mCRLPathText</tabstop>
   <tabstop>mCRLFindBtn</tabstop>
   <tabstop>mCRLAddBtn</tabstop>
@@ -996,24 +1000,25 @@
   <tabstop>mCRLCheckAllCheck</tabstop>
   <tabstop>mIgnoreCriticalCheck</tabstop>
   <tabstop>mX509StrictCheck</tabstop>
-  <tabstop>mAllowProxyCertsCheck</tabstop>
   <tabstop>mPolicyCheckCheck</tabstop>
   <tabstop>mExplicitPolicyCheck</tabstop>
   <tabstop>mInhibitAnyCheck</tabstop>
   <tabstop>mInhibitMapCheck</tabstop>
+  <tabstop>mNoCheckTimeCheck</tabstop>
+  <tabstop>mPartialChainCheck</tabstop>
+  <tabstop>mTrustedFirstCheck</tabstop>
   <tabstop>mNotifyPolicyCheck</tabstop>
   <tabstop>mExtendedCRLSupportCheck</tabstop>
   <tabstop>mUseDeltasCheck</tabstop>
   <tabstop>mCheckSSSignatureCheck</tabstop>
-  <tabstop>mTrustedFirstCheck</tabstop>
-  <tabstop>mNoCheckTimeCheck</tabstop>
-  <tabstop>mPartialChainCheck</tabstop>
   <tabstop>mNoALTChainsCheck</tabstop>
+  <tabstop>mAllowProxyCertsCheck</tabstop>
   <tabstop>mParamCombo</tabstop>
   <tabstop>mParamValueText</tabstop>
   <tabstop>mParamAddBtn</tabstop>
   <tabstop>mParamListClearBtn</tabstop>
   <tabstop>mParamTable</tabstop>
+  <tabstop>pushButton_2</tabstop>
   <tabstop>mTargetPathText</tabstop>
   <tabstop>mTargetFindBtn</tabstop>
   <tabstop>mTargetInfoBtn</tabstop>
