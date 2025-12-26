@@ -698,7 +698,7 @@ void EncDecDlg::fileRun()
             QDateTime cTime = fileInfo.lastModified();
 
             QString strInfo = QString("LastModified Time: %1").arg( cTime.toString( "yyyy-MM-dd HH:mm:ss" ));
-            mDstFileSizeText->setText( QString("%1").arg( fileSize ));
+            mDstFileSizeText->setText( getShowFileSize( fileSize ));
             mDstFileInfoText->setText( strInfo );
 
             ret = encDecFinal();
@@ -1463,7 +1463,7 @@ void EncDecDlg::setSrcFileInfo( const QString strFile )
         QString strInfo = QString("LastModified Time: %1").arg( cTime.toString( "yyyy-MM-dd HH:mm:ss" ));
 
         mSrcFileText->setText( strFile );
-        mSrcFileSizeText->setText( QString("%1").arg( fileSize ));
+        mSrcFileSizeText->setText( getShowFileSize( fileSize ));
         mSrcFileInfoText->setText( strInfo );
         mEncProgBar->setValue(0);
 
@@ -1604,7 +1604,7 @@ void EncDecDlg::onTaskFinished()
     QDateTime cTime = fileInfo.lastModified();
 
     QString strInfo = QString("LastModified Time: %1").arg( cTime.toString( "yyyy-MM-dd HH:mm:ss" ));
-    mDstFileSizeText->setText( QString("%1").arg( fileSize ));
+    mDstFileSizeText->setText( getShowFileSize( fileSize ));
     mDstFileInfoText->setText( strInfo );
 
     if( ret == 0 )

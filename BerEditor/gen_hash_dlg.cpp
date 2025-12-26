@@ -407,7 +407,7 @@ void GenHashDlg::setSrcFileInfo( const QString strFile )
         QString strInfo = QString("LastModified Time: %1").arg( cTime.toString( "yyyy-MM-dd HH:mm:ss" ));
 
         mSrcFileText->setText( strFile );
-        mSrcFileSizeText->setText( QString("%1").arg( fileSize ));
+        mSrcFileSizeText->setText( getShowFileSize( fileSize ));
         mSrcFileInfoText->setText( strInfo );
         mHashProgBar->setValue(0);
 
