@@ -118,5 +118,6 @@
         <file>images/revoke.png</file>
         <file>images/keypair2.png</file>
         <file>images/log_en.png</file>
+        <file>images/timer.png</file>
     </qresource>
 </RCC>

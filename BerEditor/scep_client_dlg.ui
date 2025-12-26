@@ -86,36 +86,10 @@
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_8">
-       <property name="minimumSize">
-        <size>
-         <width>80</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>CA Cert</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
+     <item row="0" column="2">
       <widget class="QLineEdit" name="mCACertPathText"/>
      </item>
      <item row="0" column="5">
-      <widget class="QPushButton" name="mCACertTypeBtn">
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>T</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
       <widget class="QPushButton" name="mCACertDecodeBtn">
        <property name="maximumSize">
         <size>
@@ -128,7 +102,40 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="6">
+      <widget class="QPushButton" name="mCACertTypeBtn">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>T</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="label_8">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>CA Cert</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="3">
+      <widget class="QPushButton" name="mFindCACertBtn">
+       <property name="text">
+        <string>Find</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
       <widget class="QPushButton" name="mCACertViewBtn">
        <property name="maximumSize">
         <size>
@@ -141,10 +148,29 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="mFindCACertBtn">
+     <item row="0" column="0">
+      <widget class="QPushButton" name="pushButton_2">
+       <property name="minimumSize">
+        <size>
+         <width>16</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="text">
-        <string>Find</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="bereditor.qrc">
+         <normaloff>:/images/ca.png</normaloff>:/images/ca.png</iconset>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
