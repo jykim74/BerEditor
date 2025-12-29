@@ -44,7 +44,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="bereditor.qrc">
          <normaloff>:/images/type_check.png</normaloff>:/images/type_check.png</iconset>
        </property>
        <property name="flat">
@@ -218,6 +218,9 @@
          <disabled/>
         </palette>
        </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="readOnly">
         <bool>true</bool>
        </property>
@@ -379,6 +382,8 @@
   <tabstop>mClearBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="bereditor.qrc"/>
+ </resources>
  <connections/>
 </ui>

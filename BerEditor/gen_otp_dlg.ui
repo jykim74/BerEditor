@@ -37,7 +37,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="bereditor.qrc">
          <normaloff>:/images/otp.png</normaloff>:/images/otp.png</iconset>
        </property>
       </widget>
@@ -154,6 +154,9 @@
          </inactive>
          <disabled/>
         </palette>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
        </property>
        <property name="readOnly">
         <bool>true</bool>
@@ -316,6 +319,9 @@
          </disabled>
         </palette>
        </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="readOnly">
         <bool>true</bool>
        </property>
@@ -387,6 +393,9 @@
        <property name="font">
         <font/>
        </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="readOnly">
         <bool>true</bool>
        </property>
@@ -455,6 +464,9 @@
        </property>
        <property name="font">
         <font/>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
        </property>
        <property name="readOnly">
         <bool>true</bool>
@@ -540,6 +552,8 @@
   <tabstop>mGenOTPBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="bereditor.qrc"/>
+ </resources>
  <connections/>
 </ui>

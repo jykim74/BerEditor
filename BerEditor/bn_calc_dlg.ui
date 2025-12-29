@@ -85,7 +85,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="bereditor.qrc">
          <normaloff>:/images/bn_calc.png</normaloff>:/images/bn_calc.png</iconset>
        </property>
        <property name="flat">
@@ -276,6 +276,9 @@
             </inactive>
             <disabled/>
            </palette>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
           </property>
           <property name="readOnly">
            <bool>true</bool>
@@ -470,6 +473,9 @@
             </inactive>
             <disabled/>
            </palette>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
           </property>
           <property name="readOnly">
            <bool>true</bool>
@@ -754,6 +760,9 @@
             <disabled/>
            </palette>
           </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
           <property name="readOnly">
            <bool>true</bool>
           </property>
@@ -985,6 +994,9 @@
          <disabled/>
         </palette>
        </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="readOnly">
         <bool>true</bool>
        </property>
@@ -1072,6 +1084,9 @@
        </inactive>
        <disabled/>
       </palette>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
      </property>
      <property name="acceptDrops">
       <bool>false</bool>
@@ -1256,6 +1271,9 @@
          <disabled/>
         </palette>
        </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
@@ -1350,6 +1368,9 @@
          <disabled/>
         </palette>
        </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
@@ -1376,7 +1397,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="bereditor.qrc">
          <normaloff>:/images/timer.png</normaloff>:/images/timer.png</iconset>
        </property>
        <property name="flat">
@@ -1630,6 +1651,8 @@
   <tabstop>mTestBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="bereditor.qrc"/>
+ </resources>
  <connections/>
 </ui>

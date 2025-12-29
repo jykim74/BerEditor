@@ -70,7 +70,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="bereditor.qrc">
          <normaloff>:/images/ocsp.png</normaloff>:/images/ocsp.png</iconset>
        </property>
        <property name="flat">
@@ -273,7 +273,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="bereditor.qrc">
          <normaloff>:/images/ca.png</normaloff>:/images/ca.png</iconset>
        </property>
        <property name="flat">
@@ -299,7 +299,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../../CryptokiMan/CryptokiMan/cryptokiman.qrc">
+        <iconset resource="bereditor.qrc">
          <normaloff>:/images/cert.png</normaloff>:/images/cert.png</iconset>
        </property>
        <property name="flat">
@@ -378,6 +378,9 @@
          </inactive>
          <disabled/>
         </palette>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
        </property>
        <property name="readOnly">
         <bool>true</bool>
@@ -624,6 +627,9 @@
          <disabled/>
         </palette>
        </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="readOnly">
         <bool>true</bool>
        </property>
@@ -807,6 +813,9 @@
          <disabled/>
         </palette>
        </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="readOnly">
         <bool>true</bool>
        </property>
@@ -889,6 +898,9 @@
        </inactive>
        <disabled/>
       </palette>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
      </property>
      <property name="readOnly">
       <bool>true</bool>
@@ -974,7 +986,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../../CryptokiMan/CryptokiMan/cryptokiman.qrc">
+        <iconset resource="bereditor.qrc">
          <normaloff>:/images/cert.png</normaloff>:/images/cert.png</iconset>
        </property>
        <property name="flat">
@@ -1083,6 +1095,8 @@
   <tabstop>mClearAllBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="bereditor.qrc"/>
+ </resources>
  <connections/>
 </ui>

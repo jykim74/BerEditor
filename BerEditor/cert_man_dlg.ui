@@ -64,7 +64,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="bereditor.qrc">
          <normaloff>:/images/cert_man.png</normaloff>:/images/cert_man.png</iconset>
        </property>
        <property name="flat">
@@ -88,6 +88,9 @@
        <width>0</width>
        <height>0</height>
       </size>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
      </property>
      <property name="contextMenuPolicy">
       <enum>Qt::CustomContextMenu</enum>
@@ -147,6 +150,9 @@
              <disabled/>
             </palette>
            </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -173,7 +179,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../../CryptokiMan/CryptokiMan/cryptokiman.qrc">
+            <iconset resource="bereditor.qrc">
              <normaloff>:/images/cert.png</normaloff>:/images/cert.png</iconset>
            </property>
            <property name="flat">
@@ -249,7 +255,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../../CryptokiMan/CryptokiMan/cryptokiman.qrc">
+            <iconset resource="bereditor.qrc">
              <normaloff>:/images/passwd.png</normaloff>:/images/passwd.png</iconset>
            </property>
            <property name="flat">
@@ -429,6 +435,9 @@
              <disabled/>
             </palette>
            </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -462,7 +471,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="bereditor.qrc">
              <normaloff>:/images/im_cert.png</normaloff>:/images/im_cert.png</iconset>
            </property>
            <property name="flat">
@@ -620,6 +629,9 @@
              <disabled/>
             </palette>
            </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -650,7 +662,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="bereditor.qrc">
              <normaloff>:/images/ca.png</normaloff>:/images/ca.png</iconset>
            </property>
            <property name="flat">
@@ -827,7 +839,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="bereditor.qrc">
              <normaloff>:/images/crl.png</normaloff>:/images/crl.png</iconset>
            </property>
            <property name="flat">
@@ -964,6 +976,9 @@
              <disabled/>
             </palette>
            </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -997,7 +1012,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="bereditor.qrc">
              <normaloff>:/images/rca.png</normaloff>:/images/rca.png</iconset>
            </property>
            <property name="flat">
@@ -1182,6 +1197,9 @@
              <disabled/>
             </palette>
            </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -1241,6 +1259,9 @@
              </inactive>
              <disabled/>
             </palette>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -1302,6 +1323,9 @@
              </inactive>
              <disabled/>
             </palette>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -1672,6 +1696,8 @@
   <tabstop>mOKBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="bereditor.qrc"/>
+ </resources>
  <connections/>
 </ui>

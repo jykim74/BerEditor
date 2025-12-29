@@ -44,7 +44,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="bereditor.qrc">
          <normaloff>:/images/keylist.png</normaloff>:/images/keylist.png</iconset>
        </property>
        <property name="flat">
@@ -92,6 +92,9 @@
          <disabled/>
         </palette>
        </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
        <property name="readOnly">
         <bool>true</bool>
        </property>
@@ -125,7 +128,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../../CryptokiMan/CryptokiMan/cryptokiman.qrc">
+        <iconset resource="bereditor.qrc">
          <normaloff>:/images/key.png</normaloff>:/images/key.png</iconset>
        </property>
        <property name="flat">
@@ -297,6 +300,8 @@
   <tabstop>mOKBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="bereditor.qrc"/>
+ </resources>
  <connections/>
 </ui>
