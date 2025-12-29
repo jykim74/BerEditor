@@ -113,7 +113,7 @@
    <item row="2" column="0" colspan="2">
     <widget class="QTabWidget" name="mTabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mDHTab">
       <attribute name="title">
@@ -1356,7 +1356,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="bereditor.qrc">
+        <iconset>
          <normaloff>:/images/agree.png</normaloff>:/images/agree.png</iconset>
        </property>
        <property name="flat">
@@ -1443,6 +1443,7 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>pushButton</tabstop>
   <tabstop>mTabWidget</tabstop>
   <tabstop>mParamLenCombo</tabstop>
   <tabstop>mImportParamBtn</tabstop>
@@ -1501,8 +1502,6 @@
   <tabstop>mClearDataAllBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
- <resources>
-  <include location="bereditor.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

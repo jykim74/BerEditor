@@ -61,7 +61,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="bereditor.qrc">
+        <iconset resource="../../CryptokiMan/CryptokiMan/cryptokiman.qrc">
          <normaloff>:/images/csr.png</normaloff>:/images/csr.png</iconset>
        </property>
        <property name="flat">
@@ -383,6 +383,20 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>pushButton</tabstop>
+  <tabstop>mChallengeText</tabstop>
+  <tabstop>mUnstructuredText</tabstop>
+  <tabstop>mEMAILADDRESSText</tabstop>
+  <tabstop>mCNText</tabstop>
+  <tabstop>mOUText</tabstop>
+  <tabstop>mOText</tabstop>
+  <tabstop>mLText</tabstop>
+  <tabstop>mSTText</tabstop>
+  <tabstop>mCText</tabstop>
+  <tabstop>mRDNNameCombo</tabstop>
+  <tabstop>mRDNValueText</tabstop>
+  <tabstop>mRDNAddBtn</tabstop>
+  <tabstop>mRDNTable</tabstop>
   <tabstop>mDNText</tabstop>
   <tabstop>mSANListBtn</tabstop>
   <tabstop>mSignHashCombo</tabstop>
@@ -390,8 +404,6 @@
   <tabstop>mOKBtn</tabstop>
   <tabstop>mCancelBtn</tabstop>
  </tabstops>
- <resources>
-  <include location="bereditor.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

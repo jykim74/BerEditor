@@ -44,7 +44,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="bereditor.qrc">
+        <iconset resource="../../CryptokiMan/CryptokiMan/cryptokiman.qrc">
          <normaloff>:/images/hash.png</normaloff>:/images/hash.png</iconset>
        </property>
        <property name="flat">
@@ -64,7 +64,7 @@
    <item>
     <widget class="QTabWidget" name="mInputTab">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mDataTab">
       <attribute name="title">
@@ -1084,6 +1084,7 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>pushButton</tabstop>
   <tabstop>mInputTab</tabstop>
   <tabstop>mInputTypeCombo</tabstop>
   <tabstop>mInputClearBtn</tabstop>
@@ -1112,8 +1113,6 @@
   <tabstop>mClearDataAllBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
- <resources>
-  <include location="bereditor.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

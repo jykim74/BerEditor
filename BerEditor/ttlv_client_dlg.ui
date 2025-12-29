@@ -67,7 +67,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="bereditor.qrc">
+        <iconset>
          <normaloff>:/images/kms_client.png</normaloff>:/images/kms_client.png</iconset>
        </property>
        <property name="flat">
@@ -169,7 +169,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="bereditor.qrc">
+        <iconset>
          <normaloff>:/images/ca.png</normaloff>:/images/ca.png</iconset>
        </property>
        <property name="flat">
@@ -732,8 +732,10 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>pushButton</tabstop>
   <tabstop>mURLCombo</tabstop>
   <tabstop>mURLClearBtn</tabstop>
+  <tabstop>pushButton_2</tabstop>
   <tabstop>mCACertPathText</tabstop>
   <tabstop>mFindCABtn</tabstop>
   <tabstop>mCACertViewBtn</tabstop>
@@ -767,8 +769,6 @@
   <tabstop>mClearAllBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
- <resources>
-  <include location="bereditor.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

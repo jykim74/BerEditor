@@ -44,7 +44,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="bereditor.qrc">
+        <iconset>
          <normaloff>:/images/keylist.png</normaloff>:/images/keylist.png</iconset>
        </property>
        <property name="flat">
@@ -125,7 +125,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="bereditor.qrc">
+        <iconset resource="../../CryptokiMan/CryptokiMan/cryptokiman.qrc">
          <normaloff>:/images/key.png</normaloff>:/images/key.png</iconset>
        </property>
        <property name="flat">
@@ -284,6 +284,8 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>pushButton</tabstop>
+  <tabstop>pushButton_2</tabstop>
   <tabstop>mSavePathText</tabstop>
   <tabstop>mKeyTypeCombo</tabstop>
   <tabstop>mKeyTable</tabstop>
@@ -295,8 +297,6 @@
   <tabstop>mOKBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
- <resources>
-  <include location="bereditor.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

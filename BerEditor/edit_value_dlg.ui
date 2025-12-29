@@ -44,7 +44,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="bereditor.qrc">
+        <iconset>
          <normaloff>:/images/ber.png</normaloff>:/images/ber.png</iconset>
        </property>
        <property name="flat">
@@ -891,6 +891,7 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>pushButton</tabstop>
   <tabstop>mClassText</tabstop>
   <tabstop>mOffsetText</tabstop>
   <tabstop>mLevelText</tabstop>
@@ -910,8 +911,6 @@
   <tabstop>mModifyBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
- <resources>
-  <include location="bereditor.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

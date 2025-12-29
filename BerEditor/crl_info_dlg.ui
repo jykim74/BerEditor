@@ -44,7 +44,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="bereditor.qrc">
+        <iconset>
          <normaloff>:/images/crl.png</normaloff>:/images/crl.png</iconset>
        </property>
        <property name="flat">
@@ -77,7 +77,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mCRLTab">
       <attribute name="title">
@@ -290,19 +290,18 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>mCRLBtn</tabstop>
   <tabstop>tabWidget</tabstop>
   <tabstop>mCRLListTable</tabstop>
-  <tabstop>mCRLDetailText</tabstop>
   <tabstop>mRevokeListTable</tabstop>
   <tabstop>mRevokeDetailTable</tabstop>
   <tabstop>mVerifyCRLBtn</tabstop>
   <tabstop>mDecodeCRLBtn</tabstop>
   <tabstop>mSaveToManBtn</tabstop>
-  <tabstop>mExportBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
+  <tabstop>mExportBtn</tabstop>
+  <tabstop>mCRLDetailText</tabstop>
  </tabstops>
- <resources>
-  <include location="bereditor.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

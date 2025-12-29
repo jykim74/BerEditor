@@ -64,7 +64,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="bereditor.qrc">
+        <iconset>
          <normaloff>:/images/cert_man.png</normaloff>:/images/cert_man.png</iconset>
        </property>
        <property name="flat">
@@ -93,7 +93,7 @@
       <enum>Qt::CustomContextMenu</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="mEETab">
       <attribute name="title">
@@ -173,7 +173,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="bereditor.qrc">
+            <iconset resource="../../CryptokiMan/CryptokiMan/cryptokiman.qrc">
              <normaloff>:/images/cert.png</normaloff>:/images/cert.png</iconset>
            </property>
            <property name="flat">
@@ -249,7 +249,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="bereditor.qrc">
+            <iconset resource="../../CryptokiMan/CryptokiMan/cryptokiman.qrc">
              <normaloff>:/images/passwd.png</normaloff>:/images/passwd.png</iconset>
            </property>
            <property name="flat">
@@ -462,7 +462,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="bereditor.qrc">
+            <iconset>
              <normaloff>:/images/im_cert.png</normaloff>:/images/im_cert.png</iconset>
            </property>
            <property name="flat">
@@ -650,7 +650,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="bereditor.qrc">
+            <iconset>
              <normaloff>:/images/ca.png</normaloff>:/images/ca.png</iconset>
            </property>
            <property name="flat">
@@ -827,7 +827,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="bereditor.qrc">
+            <iconset>
              <normaloff>:/images/crl.png</normaloff>:/images/crl.png</iconset>
            </property>
            <property name="flat">
@@ -997,7 +997,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="bereditor.qrc">
+            <iconset>
              <normaloff>:/images/rca.png</normaloff>:/images/rca.png</iconset>
            </property>
            <property name="flat">
@@ -1585,10 +1585,13 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>pushButton</tabstop>
   <tabstop>mTabWidget</tabstop>
+  <tabstop>pushButton_2</tabstop>
   <tabstop>mCertPathText</tabstop>
   <tabstop>mKeyTypeCombo</tabstop>
   <tabstop>mEE_CertTable</tabstop>
+  <tabstop>mEE_PasswdBtn</tabstop>
   <tabstop>mEE_PasswdText</tabstop>
   <tabstop>mViewCertBtn</tabstop>
   <tabstop>mViewPriKeyBtn</tabstop>
@@ -1604,6 +1607,7 @@
   <tabstop>mRunVerifyBtn</tabstop>
   <tabstop>mRunPubEncBtn</tabstop>
   <tabstop>mRunPubDecBtn</tabstop>
+  <tabstop>pushButton_3</tabstop>
   <tabstop>mOtherCertPathText</tabstop>
   <tabstop>mOtherKeyTypeCombo</tabstop>
   <tabstop>mOther_CertTable</tabstop>
@@ -1615,6 +1619,7 @@
   <tabstop>mExportOtherBtn</tabstop>
   <tabstop>mRunOtherVerifyBtn</tabstop>
   <tabstop>mRunOtherPubEncBtn</tabstop>
+  <tabstop>pushButton_4</tabstop>
   <tabstop>mCAPathText</tabstop>
   <tabstop>mCAKeyTypeCombo</tabstop>
   <tabstop>mCA_CertTable</tabstop>
@@ -1624,6 +1629,7 @@
   <tabstop>mDecodeCABtn</tabstop>
   <tabstop>mRemoveCABtn</tabstop>
   <tabstop>mExportCABtn</tabstop>
+  <tabstop>pushButton_5</tabstop>
   <tabstop>mCRLPathText</tabstop>
   <tabstop>mCRL_Table</tabstop>
   <tabstop>mViewCRLBtn</tabstop>
@@ -1631,6 +1637,7 @@
   <tabstop>mDecodeCRLBtn</tabstop>
   <tabstop>mRemoveCRLBtn</tabstop>
   <tabstop>mExportCRLBtn</tabstop>
+  <tabstop>pushButton_6</tabstop>
   <tabstop>mTrustRCAPathText</tabstop>
   <tabstop>mRCAKeyTypeCombo</tabstop>
   <tabstop>mRCA_CertTable</tabstop>
@@ -1640,6 +1647,7 @@
   <tabstop>mDecodeTrustBtn</tabstop>
   <tabstop>mRemoveTrustBtn</tabstop>
   <tabstop>mExportTrustBtn</tabstop>
+  <tabstop>mTLEncPriKeyCheck</tabstop>
   <tabstop>mTLPriKeyPathText</tabstop>
   <tabstop>mFindTLPriKeyBtn</tabstop>
   <tabstop>mTLViewPriKeyBtn</tabstop>
@@ -1663,10 +1671,7 @@
   <tabstop>mTLSavePFXBtn</tabstop>
   <tabstop>mOKBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
-  <tabstop>mTLEncPriKeyCheck</tabstop>
  </tabstops>
- <resources>
-  <include location="bereditor.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

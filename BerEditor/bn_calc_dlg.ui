@@ -85,7 +85,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="bereditor.qrc">
+        <iconset>
          <normaloff>:/images/bn_calc.png</normaloff>:/images/bn_calc.png</iconset>
        </property>
        <property name="flat">
@@ -1376,7 +1376,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="bereditor.qrc">
+        <iconset>
          <normaloff>:/images/timer.png</normaloff>:/images/timer.png</iconset>
        </property>
        <property name="flat">
@@ -1560,6 +1560,7 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>pushButton</tabstop>
   <tabstop>mBinCheck</tabstop>
   <tabstop>mDecCheck</tabstop>
   <tabstop>mHexCheck</tabstop>
@@ -1601,6 +1602,7 @@
   <tabstop>mResCopyBtn</tabstop>
   <tabstop>mResLenText</tabstop>
   <tabstop>mResText</tabstop>
+  <tabstop>pushButton_2</tabstop>
   <tabstop>mResTimeText</tabstop>
   <tabstop>mResTimeClearBtn</tabstop>
   <tabstop>mAutoSumCheck</tabstop>
@@ -1628,8 +1630,6 @@
   <tabstop>mTestBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
- <resources>
-  <include location="bereditor.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

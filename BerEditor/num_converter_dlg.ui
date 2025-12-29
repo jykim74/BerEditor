@@ -88,7 +88,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="bereditor.qrc">
+        <iconset>
          <normaloff>:/images/two.png</normaloff>:/images/two.png</iconset>
        </property>
        <property name="flat">
@@ -533,6 +533,11 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>pushButton</tabstop>
+  <tabstop>mBitBtn</tabstop>
+  <tabstop>mDecimalBtn</tabstop>
+  <tabstop>mHexBtn</tabstop>
+  <tabstop>mInputClearBtn</tabstop>
   <tabstop>mInputText</tabstop>
   <tabstop>mBinChangeBtn</tabstop>
   <tabstop>mBinOutputLenText</tabstop>
@@ -546,8 +551,6 @@
   <tabstop>mOutputClearBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
- <resources>
-  <include location="bereditor.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

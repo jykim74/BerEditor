@@ -71,7 +71,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="bereditor.qrc">
+        <iconset>
          <normaloff>:/images/ssl.png</normaloff>:/images/ssl.png</iconset>
        </property>
        <property name="flat">
@@ -100,7 +100,7 @@
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="mServerTab">
       <attribute name="title">
@@ -324,7 +324,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="bereditor.qrc">
+            <iconset>
              <normaloff>:/images/rca.png</normaloff>:/images/rca.png</iconset>
            </property>
            <property name="flat">
@@ -853,7 +853,7 @@
           <enum>QTabWidget::North</enum>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <property name="elideMode">
           <enum>Qt::ElideNone</enum>
@@ -988,18 +988,26 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>pushButton</tabstop>
   <tabstop>mViewTrustListBtn</tabstop>
   <tabstop>mUseMutualCheck</tabstop>
   <tabstop>mAuthTab</tabstop>
+  <tabstop>mNoSSL3Check</tabstop>
+  <tabstop>mNoTLS1Check</tabstop>
+  <tabstop>mNoTLS11Check</tabstop>
+  <tabstop>mNoTLS12Check</tabstop>
+  <tabstop>mNoTLS13Check</tabstop>
   <tabstop>mHostNameCheck</tabstop>
   <tabstop>mModeCombo</tabstop>
   <tabstop>mVerifyDepthText</tabstop>
+  <tabstop>pushButton_2</tabstop>
   <tabstop>mTrustCAPathText</tabstop>
   <tabstop>mFindTrustCABtn</tabstop>
   <tabstop>mTrustCAViewBtn</tabstop>
   <tabstop>mTrustCADecodeBtn</tabstop>
   <tabstop>mTrustCATypeBtn</tabstop>
   <tabstop>mFixCipherNameCheck</tabstop>
+  <tabstop>mCipherVersionCombo</tabstop>
   <tabstop>mCipherListCombo</tabstop>
   <tabstop>mCipherAddBtn</tabstop>
   <tabstop>mCipherClearBtn</tabstop>
@@ -1036,8 +1044,6 @@
   <tabstop>mShowInfoBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
- <resources>
-  <include location="bereditor.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

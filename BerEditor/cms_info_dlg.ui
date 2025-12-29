@@ -44,7 +44,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="bereditor.qrc">
+        <iconset>
          <normaloff>:/images/cms_open.png</normaloff>:/images/cms_open.png</iconset>
        </property>
        <property name="flat">
@@ -345,7 +345,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="mDataTab">
       <attribute name="title">
@@ -543,6 +543,7 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>pushButton</tabstop>
   <tabstop>mVersionText</tabstop>
   <tabstop>mTypeText</tabstop>
   <tabstop>mDecodeBtn</tabstop>
@@ -555,12 +556,11 @@
   <tabstop>mSignerTable</tabstop>
   <tabstop>mRecipTable</tabstop>
   <tabstop>mValueText</tabstop>
+  <tabstop>mExportBtn</tabstop>
   <tabstop>mViewTSPBtn</tabstop>
   <tabstop>mViewTSTBtn</tabstop>
   <tabstop>mCloseBtn</tabstop>
  </tabstops>
- <resources>
-  <include location="bereditor.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
