@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>558</width>
-    <height>323</height>
+    <height>325</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -741,6 +741,7 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>pushButton</tabstop>
   <tabstop>mHeadCheck</tabstop>
   <tabstop>mMatchedCheck</tabstop>
   <tabstop>tabWidget</tabstop>
@@ -753,6 +754,7 @@
   <tabstop>mTTLV_TagNameText</tabstop>
   <tabstop>mTTLV_TypeCombo</tabstop>
   <tabstop>mTTLV_HeaderText</tabstop>
+  <tabstop>mFindBtn</tabstop>
   <tabstop>mValueTypeCombo</tabstop>
   <tabstop>mValueText</tabstop>
   <tabstop>mValueHexText</tabstop>

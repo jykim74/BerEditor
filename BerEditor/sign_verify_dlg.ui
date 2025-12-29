@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>576</width>
-    <height>639</height>
+    <height>643</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1386,6 +1386,7 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>pushButton</tabstop>
   <tabstop>mUseCertManCheck</tabstop>
   <tabstop>mInputTab</tabstop>
   <tabstop>mInputTypeCombo</tabstop>

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>648</width>
-    <height>647</height>
+    <height>664</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -148,7 +148,7 @@
    <item row="4" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="mSymHashTab">
       <attribute name="title">
@@ -3835,6 +3835,7 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>pushButton</tabstop>
   <tabstop>mRspPathText</tabstop>
   <tabstop>mRspPathFindBtn</tabstop>
   <tabstop>tabWidget</tabstop>

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>629</width>
-    <height>711</height>
+    <height>715</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -971,6 +971,7 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>pushButton</tabstop>
   <tabstop>mUseCertManCheck</tabstop>
   <tabstop>mURLCombo</tabstop>
   <tabstop>mGetDirBtn</tabstop>

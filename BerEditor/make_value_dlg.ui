@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>418</width>
-    <height>230</height>
+    <height>240</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -235,6 +235,7 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>pushButton</tabstop>
   <tabstop>mTypeCombo</tabstop>
   <tabstop>mInputText</tabstop>
   <tabstop>mHexLenText</tabstop>

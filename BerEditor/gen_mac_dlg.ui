@@ -1251,6 +1251,7 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>pushButton</tabstop>
   <tabstop>mInputTab</tabstop>
   <tabstop>mInputTypeCombo</tabstop>
   <tabstop>mInputClearBtn</tabstop>
