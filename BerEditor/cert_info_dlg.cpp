@@ -658,7 +658,7 @@ void CertInfoDlg::clickMakeTree()
         }
 
         JS_BIN_addList( &path_list_, &binCert );
-        item->addChild( child );
+        if( child ) item->addChild( child );
         child = item;
 
         if( bSelfSign == 1 ) break;
