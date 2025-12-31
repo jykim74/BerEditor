@@ -730,7 +730,9 @@ void CertInfoDlg::clickGetCA()
         certInfo.exec();
     }
     else
-        berApplet->elog( QString("failed to get CA certificate [%1]").arg(ret));
+    {
+        berApplet->warningBox( QString("failed to get CA certificate: %1").arg(JERR(ret)), this );
+    }
 
     JS_BIN_reset( &binCA );
 }
@@ -751,7 +753,9 @@ void CertInfoDlg::clickGetCRL()
         crlInfo.exec();
     }
     else
-        berApplet->elog( QString("failed to get CRL [%1]").arg(ret));
+    {
+        berApplet->warningBox( QString("failed to get CRL: %1").arg(JERR(ret)), this );
+    }
 
     JS_BIN_reset( &binCRL );
 }
@@ -788,7 +792,7 @@ void CertInfoDlg::clickPathValidation()
 
     ret = JS_PKI_CertPVD( pTrustList, pUntrustList, pCRLList, NULL, &cert_bin_, sResMsg );
 
-    berApplet->messageBox( tr( "Path verification result : %1 (%2)").arg( sResMsg ).arg( ret ), this );
+    berApplet->messageBox( tr( "Path verification result : %1").arg( sResMsg ), this );
 
     if( pTrustList ) JS_BIN_resetList( &pTrustList );
     if( pUntrustList ) JS_BIN_resetList( &pUntrustList );
@@ -818,7 +822,7 @@ void CertInfoDlg::clickVerifyCert()
 
     ret = JS_PKI_CertVerifyByCA( &binCA, &binCRL, &cert_bin_, sMsg );
 
-    berApplet->messageBox( tr( "Verification results: %1(%2)").arg( sMsg ).arg( ret ), this );
+    berApplet->messageBox( tr( "Verification results: %1").arg( sMsg ), this );
 
 end :
     JS_BIN_reset( &binCA );
