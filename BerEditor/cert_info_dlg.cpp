@@ -98,8 +98,8 @@ CertInfoDlg::CertInfoDlg(QWidget *parent) :
     connect( mCRLCheckBtn, SIGNAL(clicked()), this, SLOT(clickCRLCheck()));
 
     connect( mOCSPClientBtn, SIGNAL(clicked()), this, SLOT(clickOCSPClient()));
-    connect( mGetCA_BERBtn, SIGNAL(clicked()), this, SLOT(clickGetCA_BER()));
-    connect( mGetCRL_BERBtn, SIGNAL(clicked()), this, SLOT(clickGetCRL_BER()));
+    connect( mGetURL_CABtn, SIGNAL(clicked()), this, SLOT(clickGetURL_CA()));
+    connect( mGetURL_CRLBtn, SIGNAL(clicked()), this, SLOT(clickGetURL_CRL()));
 
     connect( mCertTree, SIGNAL(itemClicked(QTreeWidgetItem*,int)), this, SLOT(clickTreeItem(QTreeWidgetItem*,int)));
 
@@ -196,25 +196,25 @@ void CertInfoDlg::showEvent(QShowEvent *event)
         mPathValidBtn->setEnabled( false );
         mMakeTreeBtn->setEnabled( false );
         mVerifyCertBtn->setEnabled( false );
-        mGetCA_BERBtn->setEnabled( false );
+        mGetURL_CABtn->setEnabled( false );
 
         mGetCABtn->setToolTip( tr( "There is no CA url" ));
         mOCSPCheckBtn->setToolTip( tr( "There is no CA url" ));
         mPathValidBtn->setToolTip( tr( "There is no CA url" ));
         mMakeTreeBtn->setToolTip( tr( "There is no CA url" ));
         mVerifyCertBtn->setToolTip( tr( "There is no CA url" ));
-        mGetCA_BERBtn->setToolTip( tr( "There is no CA url" ));
+        mGetURL_CABtn->setToolTip( tr( "There is no CA url" ));
     }
 
     if( strCRL.length() < 4 )
     {
         mGetCRLBtn->setEnabled( false );
         mCRLCheckBtn->setEnabled( false );
-        mGetCRL_BERBtn->setEnabled( false );
+        mGetURL_CRLBtn->setEnabled( false );
 
         mGetCRLBtn->setToolTip( tr( "There is no CRL url" ) );
         mCRLCheckBtn->setToolTip( tr( "There is no CRL url" ) );
-        mGetCRL_BERBtn->setToolTip( tr( "There is no CRL url" ));
+        mGetURL_CRLBtn->setToolTip( tr( "There is no CRL url" ));
     }
 
     if( strOCSP.length() < 4 )
@@ -938,7 +938,7 @@ void CertInfoDlg::clickOCSPClient()
     ocspClient.exec();
 }
 
-void CertInfoDlg::clickGetCA_BER()
+void CertInfoDlg::clickGetURL_CA()
 {
     QString strAIA = getValueFromExtList( kExtNameAIA );
     QString strCA = getCA_URIFromExt( strAIA );
@@ -949,7 +949,7 @@ void CertInfoDlg::clickGetCA_BER()
     getURI.exec();
 }
 
-void CertInfoDlg::clickGetCRL_BER()
+void CertInfoDlg::clickGetURL_CRL()
 {
     QString strCRLDP = getValueFromExtList( kExtNameCRLDP );
     QString strCRL = getCRL_URIFromExt( strCRLDP );

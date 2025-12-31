@@ -60,8 +60,8 @@ private slots:
     void clickTreeItem(QTreeWidgetItem* item, int index);
 
     void clickOCSPClient();
-    void clickGetCA_BER();
-    void clickGetCRL_BER();
+    void clickGetURL_CA();
+    void clickGetURL_CRL();
 private:
     void setTitle( const QString strName );
     int saveAsPEM( const BIN *pData );

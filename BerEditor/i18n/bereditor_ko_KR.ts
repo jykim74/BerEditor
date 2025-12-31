@@ -4215,6 +4215,16 @@ mailto : jykim74@gmail.com</translation>
         <translation>경로 정보</translation>
     </message>
     <message>
+        <location filename="../cert_info_dlg.ui" line="446"/>
+        <source>GetURL CA</source>
+        <translation>CA URL 가져오기</translation>
+    </message>
+    <message>
+        <location filename="../cert_info_dlg.ui" line="483"/>
+        <source>GetURL CRL</source>
+        <translation>CRL URL 가져오기</translation>
+    </message>
+    <message>
         <location filename="../cert_info_dlg.ui" line="490"/>
         <source>Get CRL and View CRL Information</source>
         <translation>CRL 가져와서 CRL 정보 보기</translation>
@@ -4285,14 +4295,12 @@ mailto : jykim74@gmail.com</translation>
         <translation>OCSP 클라이언트</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.ui" line="446"/>
         <source>Get CA BER</source>
-        <translation>CA BER 가져오기</translation>
+        <translation type="vanished">CA BER 가져오기</translation>
     </message>
     <message>
-        <location filename="../cert_info_dlg.ui" line="483"/>
         <source>Get CRL BER</source>
-        <translation>CRL BER 가져오기</translation>
+        <translation type="vanished">CRL BER 가져오기</translation>
     </message>
     <message>
         <location filename="../cert_info_dlg.ui" line="405"/>

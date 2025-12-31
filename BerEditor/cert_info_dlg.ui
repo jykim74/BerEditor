@@ -441,9 +441,9 @@
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QPushButton" name="mGetCA_BERBtn">
+             <widget class="QPushButton" name="mGetURL_CABtn">
               <property name="text">
-               <string>Get CA BER</string>
+               <string>GetURL CA</string>
               </property>
              </widget>
             </item>
@@ -478,9 +478,9 @@
              </widget>
             </item>
             <item row="2" column="0">
-             <widget class="QPushButton" name="mGetCRL_BERBtn">
+             <widget class="QPushButton" name="mGetURL_CRLBtn">
               <property name="text">
-               <string>Get CRL BER</string>
+               <string>GetURL CRL</string>
               </property>
              </widget>
             </item>
@@ -563,10 +563,10 @@
   <tabstop>mDecodeCertBtn</tabstop>
   <tabstop>mPathValidBtn</tabstop>
   <tabstop>mGetCABtn</tabstop>
-  <tabstop>mGetCA_BERBtn</tabstop>
+  <tabstop>mGetURL_CABtn</tabstop>
   <tabstop>mCRLCheckBtn</tabstop>
   <tabstop>mGetCRLBtn</tabstop>
-  <tabstop>mGetCRL_BERBtn</tabstop>
+  <tabstop>mGetURL_CRLBtn</tabstop>
   <tabstop>mOCSPCheckBtn</tabstop>
   <tabstop>mOCSPClientBtn</tabstop>
   <tabstop>mSaveToManBtn</tabstop>
