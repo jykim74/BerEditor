@@ -947,7 +947,7 @@ void KeyPairManDlg::clickLRunVerify()
     strPubKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPublicFile );
     strPriKeyPath = QString( "%1/%2" ).arg( strPath ).arg( kPrivateFile );
 
-    berApplet->mainWindow()->runSignVerify( false, false, strPubKeyPath, strPubKeyPath );
+    berApplet->mainWindow()->runSignVerify( false, false, strPriKeyPath, strPubKeyPath );
 }
 
 void KeyPairManDlg::clickLRunPubEnc()
