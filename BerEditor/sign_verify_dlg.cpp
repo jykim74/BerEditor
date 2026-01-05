@@ -596,10 +596,11 @@ void SignVerifyDlg::signVerifyFinal()
             berApplet->log( QString( "Signature : %1" ).arg( getHexString(&binSign)));
         }
 
-        if( ret == 0 )
+        if( ret == JSR_OK )
         {
             mStatusLabel->setText( "Final OK" );
             mFinalText->setText( "OK" );
+            berApplet->messageBox( tr("Signature creation successful"), this );
         }
         else
         {
@@ -607,6 +608,7 @@ void SignVerifyDlg::signVerifyFinal()
             mStatusLabel->setText( QString("%1").arg(JERR(ret)));
             mUpdateText->setText( QString("%1").arg(ret));
             berApplet->elog( strFail );
+            berApplet->warningBox( tr("Signature generation failed: %1").arg(JERR(ret)), this );
         }
     }
     else
@@ -615,12 +617,6 @@ void SignVerifyDlg::signVerifyFinal()
         JS_BIN_decodeHex( strOut.toStdString().c_str(), &binSign );
 
         ret = JS_PKI_verifyFinal( sctx_, &binSign );
-
-        if( ret == JSR_VERIFY )
-            berApplet->messageBox( tr("Verification successful"), this );
-        else {
-            berApplet->warningBox( tr("Verification failed [%1]").arg(ret), this );
-        }
 
         if( ret == JSR_VERIFY )
         {
@@ -633,6 +629,12 @@ void SignVerifyDlg::signVerifyFinal()
             mStatusLabel->setText( QString("%1").arg(JERR(ret)));
             mUpdateText->setText( QString("%1").arg(ret));
             berApplet->elog( strFail );
+        }
+
+        if( ret == JSR_VERIFY )
+            berApplet->messageBox( tr("Verification successful"), this );
+        else {
+            berApplet->warningBox( tr("Verification failed [%1]").arg(ret), this );
         }
     }
 

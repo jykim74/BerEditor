@@ -9131,8 +9131,8 @@ Use %2</source>
     </message>
     <message>
         <location filename="../gen_hash_dlg.ui" line="686"/>
-        <location filename="../gen_hash_dlg.cpp" line="255"/>
-        <location filename="../gen_hash_dlg.cpp" line="386"/>
+        <location filename="../gen_hash_dlg.cpp" line="257"/>
+        <location filename="../gen_hash_dlg.cpp" line="388"/>
         <source>Status</source>
         <translation>상태</translation>
     </message>
@@ -9231,38 +9231,48 @@ Use %2</source>
         <translation>대상 파일을 찾으세요</translation>
     </message>
     <message>
-        <location filename="../gen_hash_dlg.cpp" line="326"/>
+        <location filename="../gen_hash_dlg.cpp" line="224"/>
+        <source>Digest creation successful</source>
+        <translation>Digest 생성 성공</translation>
+    </message>
+    <message>
+        <location filename="../gen_hash_dlg.cpp" line="230"/>
+        <source>Digest generation failed: %1</source>
+        <translation>Digest 생성 실패: %1</translation>
+    </message>
+    <message>
+        <location filename="../gen_hash_dlg.cpp" line="328"/>
         <source>Digest value creation succeeded</source>
         <translation>다이제스트 생성 성공</translation>
     </message>
     <message>
-        <location filename="../gen_hash_dlg.cpp" line="331"/>
+        <location filename="../gen_hash_dlg.cpp" line="333"/>
         <source>Failed to generate Digest value : %1</source>
         <translation>다이제스트 값 생성 실패: %1</translation>
     </message>
     <message>
-        <location filename="../gen_hash_dlg.cpp" line="442"/>
+        <location filename="../gen_hash_dlg.cpp" line="444"/>
         <source>Select input file</source>
         <translation>입력 파일을 선택하세요</translation>
     </message>
     <message>
-        <location filename="../gen_hash_dlg.cpp" line="453"/>
-        <location filename="../gen_hash_dlg.cpp" line="560"/>
+        <location filename="../gen_hash_dlg.cpp" line="455"/>
+        <location filename="../gen_hash_dlg.cpp" line="562"/>
         <source>file is empty</source>
         <translation>파일이 비었습니다</translation>
     </message>
     <message>
-        <location filename="../gen_hash_dlg.cpp" line="468"/>
+        <location filename="../gen_hash_dlg.cpp" line="470"/>
         <source>failed to read file:%1</source>
         <translation>파일 읽기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../gen_hash_dlg.cpp" line="484"/>
+        <location filename="../gen_hash_dlg.cpp" line="486"/>
         <source>fail to read file: %1</source>
         <translation>파일 읽기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../gen_hash_dlg.cpp" line="549"/>
+        <location filename="../gen_hash_dlg.cpp" line="551"/>
         <source>Find source file</source>
         <translation>소스 파일을 찾으세요</translation>
     </message>
@@ -19699,7 +19709,7 @@ Only RSA is supported.</source>
     </message>
     <message>
         <location filename="../sign_verify_dlg.ui" line="919"/>
-        <location filename="../sign_verify_dlg.cpp" line="1366"/>
+        <location filename="../sign_verify_dlg.cpp" line="1368"/>
         <source>Status</source>
         <translation>상태</translation>
     </message>
@@ -19758,7 +19768,7 @@ Only RSA is supported.</source>
     </message>
     <message>
         <location filename="../sign_verify_dlg.ui" line="32"/>
-        <location filename="../sign_verify_dlg.cpp" line="1501"/>
+        <location filename="../sign_verify_dlg.cpp" line="1503"/>
         <source>Use KeyPairMan key</source>
         <translation>KeyPairMan 키 사용</translation>
     </message>
@@ -19816,7 +19826,7 @@ Only RSA is supported.</source>
     <message>
         <location filename="../sign_verify_dlg.ui" line="1220"/>
         <location filename="../sign_verify_dlg.ui" line="1227"/>
-        <location filename="../sign_verify_dlg.cpp" line="1155"/>
+        <location filename="../sign_verify_dlg.cpp" line="1157"/>
         <source>Sign</source>
         <translation>서명</translation>
     </message>
@@ -19845,7 +19855,7 @@ Only RSA is supported.</source>
         <translation type="vanished">개인키 및 인증서</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1345"/>
+        <location filename="../sign_verify_dlg.cpp" line="1347"/>
         <source>Certificate</source>
         <translation>인증서</translation>
     </message>
@@ -19947,7 +19957,7 @@ Only RSA is supported.</source>
     </message>
     <message>
         <location filename="../sign_verify_dlg.cpp" line="207"/>
-        <location filename="../sign_verify_dlg.cpp" line="1223"/>
+        <location filename="../sign_verify_dlg.cpp" line="1225"/>
         <source>select a private key</source>
         <translation>개인키를 선택하세요</translation>
     </message>
@@ -19992,7 +20002,7 @@ Only RSA is supported.</source>
     <message>
         <location filename="../sign_verify_dlg.cpp" line="179"/>
         <location filename="../sign_verify_dlg.cpp" line="353"/>
-        <location filename="../sign_verify_dlg.cpp" line="1285"/>
+        <location filename="../sign_verify_dlg.cpp" line="1287"/>
         <source>Select a certificate</source>
         <translation>인증서를 선택하세요</translation>
     </message>
@@ -20038,12 +20048,12 @@ Use %2</source>
         <translation>%1 은 [Init-Update-Final] 형식을 지원하지 않습니다\n%2를 사용하세요</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="620"/>
+        <location filename="../sign_verify_dlg.cpp" line="635"/>
         <source>Verification successful</source>
         <translation>검증 성공</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="622"/>
+        <location filename="../sign_verify_dlg.cpp" line="637"/>
         <source>Verification failed [%1]</source>
         <translation>검증 실패 [%1]</translation>
     </message>
@@ -20063,120 +20073,130 @@ Use %2</source>
     </message>
     <message>
         <location filename="../sign_verify_dlg.cpp" line="457"/>
-        <location filename="../sign_verify_dlg.cpp" line="735"/>
+        <location filename="../sign_verify_dlg.cpp" line="737"/>
         <source>SM2 must use SM3 hash. Would you like to change the hash to SM3?</source>
         <translation>SM2는 SM3해시를 사용해야 합니다. 해시를 SM3로 변경 하겠습니까?</translation>
     </message>
     <message>
         <location filename="../sign_verify_dlg.cpp" line="467"/>
-        <location filename="../sign_verify_dlg.cpp" line="725"/>
+        <location filename="../sign_verify_dlg.cpp" line="727"/>
         <source>Please specify a hash</source>
         <translation>해시를 지정하세요</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="807"/>
+        <location filename="../sign_verify_dlg.cpp" line="603"/>
+        <source>Signature creation successful</source>
+        <translation>서명 생성 성공</translation>
+    </message>
+    <message>
+        <location filename="../sign_verify_dlg.cpp" line="611"/>
+        <source>Signature generation failed: %1</source>
+        <translation>서명 생성 실패: %1</translation>
+    </message>
+    <message>
+        <location filename="../sign_verify_dlg.cpp" line="809"/>
         <source>Signature value creation succeeded</source>
         <translation>서명값 생성에 성공 하였습니다</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="813"/>
+        <location filename="../sign_verify_dlg.cpp" line="815"/>
         <source>Failed to generate Signature value : %1</source>
         <translation>서명값 생성에 실패 하였습니다: %1</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="873"/>
+        <location filename="../sign_verify_dlg.cpp" line="875"/>
         <source>Verification was successful</source>
         <translation>검증에 성공 하였습니다</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="879"/>
+        <location filename="../sign_verify_dlg.cpp" line="881"/>
         <source>Verification failed : %1</source>
         <translation>검증에 실패 하였습니다: %1</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="910"/>
+        <location filename="../sign_verify_dlg.cpp" line="912"/>
         <source>You have to find src file</source>
         <translation>소스 파일을 선택 하세요</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="952"/>
+        <location filename="../sign_verify_dlg.cpp" line="954"/>
         <source>fail to read file: %1</source>
         <translation>파일 읽기 실패: %1</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1034"/>
+        <location filename="../sign_verify_dlg.cpp" line="1036"/>
         <source>Enter your data</source>
         <translation>데이타를 입력하세요</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1045"/>
+        <location filename="../sign_verify_dlg.cpp" line="1047"/>
         <source>The input length(%1) and digest length(%2) do not match. Do you want to continue?</source>
         <translation>입력 길이(%1)과 다이제스트 길이(%2)가 맞지 않습니다. 계속 하겠습니까?</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1059"/>
-        <location filename="../sign_verify_dlg.cpp" line="1097"/>
+        <location filename="../sign_verify_dlg.cpp" line="1061"/>
+        <location filename="../sign_verify_dlg.cpp" line="1099"/>
         <source>This key algorithm (%1) is not supported</source>
         <translation>이 키 알고리즘은(%1)은 지원하지 않습니다</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1120"/>
+        <location filename="../sign_verify_dlg.cpp" line="1122"/>
         <source>VerifyDigest successful</source>
         <translation>VerifyDigest 성공</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1122"/>
+        <location filename="../sign_verify_dlg.cpp" line="1124"/>
         <source>VerifyDigest failure</source>
         <translation>VerifyDigest 실패</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1153"/>
+        <location filename="../sign_verify_dlg.cpp" line="1155"/>
         <source>Asymmetric Signature</source>
         <translation>비 대칭키 서명</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1172"/>
+        <location filename="../sign_verify_dlg.cpp" line="1174"/>
         <source>Asymmetric Verification</source>
         <translation>비 대칭키 검증</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1499"/>
+        <location filename="../sign_verify_dlg.cpp" line="1501"/>
         <source>Use CertMan key</source>
         <translation>CertMan 키 사용</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1508"/>
+        <location filename="../sign_verify_dlg.cpp" line="1510"/>
         <source>Use file key</source>
         <translation>파일 키 사용</translation>
     </message>
     <message>
         <location filename="../sign_verify_dlg.cpp" line="322"/>
-        <location filename="../sign_verify_dlg.cpp" line="1249"/>
+        <location filename="../sign_verify_dlg.cpp" line="1251"/>
         <source>Select a certificate or public key</source>
         <translation>인증서 또는 공개키를 선택하세요</translation>
     </message>
     <message>
         <location filename="../sign_verify_dlg.ui" line="1234"/>
-        <location filename="../sign_verify_dlg.cpp" line="1156"/>
+        <location filename="../sign_verify_dlg.cpp" line="1158"/>
         <source>SignDigest</source>
         <translation>SignDigest</translation>
     </message>
     <message>
         <location filename="../sign_verify_dlg.ui" line="1194"/>
-        <location filename="../sign_verify_dlg.cpp" line="1174"/>
+        <location filename="../sign_verify_dlg.cpp" line="1176"/>
         <source>Verify</source>
         <translation>검증</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1175"/>
+        <location filename="../sign_verify_dlg.cpp" line="1177"/>
         <source>VerifyDigest</source>
         <translation>VerifyDigest</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1232"/>
-        <location filename="../sign_verify_dlg.cpp" line="1257"/>
-        <location filename="../sign_verify_dlg.cpp" line="1294"/>
-        <location filename="../sign_verify_dlg.cpp" line="1338"/>
+        <location filename="../sign_verify_dlg.cpp" line="1234"/>
+        <location filename="../sign_verify_dlg.cpp" line="1259"/>
+        <location filename="../sign_verify_dlg.cpp" line="1296"/>
+        <location filename="../sign_verify_dlg.cpp" line="1340"/>
         <source>failed to read data</source>
         <translation>데이타 읽기 실패</translation>
     </message>
@@ -20185,22 +20205,22 @@ Use %2</source>
         <translation type="vanished">인증서가 아닙니다</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1329"/>
+        <location filename="../sign_verify_dlg.cpp" line="1331"/>
         <source>Select certificate or public key</source>
         <translation>인증서 또는 공개키를 선택하세요</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1350"/>
+        <location filename="../sign_verify_dlg.cpp" line="1352"/>
         <source>Public key</source>
         <translation>공개 키</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1354"/>
+        <location filename="../sign_verify_dlg.cpp" line="1356"/>
         <source>%1 type is %2</source>
         <translation>%1 타입은 %2 이다</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1443"/>
+        <location filename="../sign_verify_dlg.cpp" line="1445"/>
         <source>Find source file</source>
         <translation>소스 파일을 찾으세요</translation>
     </message>
@@ -20209,7 +20229,7 @@ Use %2</source>
         <translation type="vanished">데이타 읽기 실패</translation>
     </message>
     <message>
-        <location filename="../sign_verify_dlg.cpp" line="1312"/>
+        <location filename="../sign_verify_dlg.cpp" line="1314"/>
         <source>Private Key Type is %1</source>
         <translation>개인키 타입은 %1 이다</translation>
     </message>

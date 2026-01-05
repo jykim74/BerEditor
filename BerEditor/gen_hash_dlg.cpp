@@ -221,11 +221,13 @@ void GenHashDlg::hashFinal()
         mStatusLabel->setText( "Final OK" );
         mFinalText->setText( "OK" );
         berApplet->log( QString("Final Digest : %1").arg( getHexString(&binMD)));
+        berApplet->messageBox( tr( "Digest creation successful"), this );
     }
     else
     {
         mStatusLabel->setText( QString("%1").arg(JERR(ret)) );
         mFinalText->setText( QString("%1").arg(ret) );
+        berApplet->warningBox( tr("Digest generation failed: %1").arg(JERR(ret)), this );
     }
 
     JS_PKI_hashFree( &pctx_ );
