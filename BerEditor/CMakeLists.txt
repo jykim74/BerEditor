@@ -316,8 +316,8 @@ elseif(APPLE)
     target_compile_definitions( ${PROJECT_NAME} PRIVATE _AUTO_UPDATE )
 
 elseif(LINUX)
-    include_directories( ../../PKILib
-
+    include_directories(
+        ../../PKILib
         "/usr/local/include" )
 
     if(Debug)
