@@ -167,7 +167,7 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
     QString strOffset;
     strOffset = QString( "%1" ).arg( pItem->GetOffset(), 8, 16, QLatin1Char('0')).toUpper();
 
-    QString strTagHex = QString( "%1" ).arg( pItem->GetTag(), 2, 16, QLatin1Char('0')).toUpper();
+    QString strTypeHex = QString( "%1" ).arg( pItem->GetType(), 2, 16, QLatin1Char('0')).toUpper();
 
     berApplet->mainWindow()->infoText()->clear();
     berApplet->line();
@@ -178,10 +178,21 @@ void BerTreeView::infoItem( BerItem *pItem, int nWidth )
     berApplet->info( QString( "Class       : %1 = 0b%2\n").arg( pItem->GetClassString(), nFieldWidth -2).arg( sClassBit ));
     berApplet->info( QString( "ID          : 0x%1 = 0b%2\n").arg( getHexString( &cID, 1), nFieldWidth ).arg( sIDBit ));
     berApplet->info( QString( "P/C         : %1 = 0b%2\n").arg(strPC, nFieldWidth - 2).arg( sPCBit ));
-    berApplet->info( QString( "Tag         : %1 = 0b%2 (0x%3)\n")
+
+    if( pItem->GetClass() == JS_CONTEXT )
+    {
+    berApplet->info( QString( "Number      : %1 = 0b%2 (0x%3)\n")
+                            .arg( pItem->GetTagString(), nFieldWidth - 2 )
+                            .arg( sTagBit )
+                            .arg( strTypeHex ) );
+    }
+    else
+    {
+    berApplet->info( QString( "Type        : %1 = 0b%2 (0x%3)\n")
                         .arg( pItem->GetTagString(), nFieldWidth - 2 )
                         .arg( sTagBit )
-                        .arg( strTagHex ) );
+                        .arg( strTypeHex ) );
+    }
 
     if( pItem->GetIndefinite() == true )
     {

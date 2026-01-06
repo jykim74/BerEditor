@@ -77,6 +77,16 @@ int BerItem::GetValLength()
         return length_;
 }
 
+const int BerItem::GetType()
+{
+    return ( header_[0] & JS_TAG_MASK );
+}
+
+const int BerItem::GetClass()
+{
+    return ( header_[0] & JS_CLASS_MASK );
+}
+
 bool BerItem::isEOC()
 {
     if( indefinite_ == false && header_[0] == 0x00 && header_[1] == 0x00 )

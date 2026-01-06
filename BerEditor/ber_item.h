@@ -39,6 +39,8 @@ public:
 
     const BYTE GetId();
     const BYTE GetTag();
+    const int GetType();
+    const int GetClass();
     const int GetIndefinite() { return indefinite_; };
     const int GetLength() { return length_; };
     int GetValLength();
