@@ -609,6 +609,8 @@ void TSPClientDlg::clickVerifySigned()
     QString strCAManPath = berApplet->settingsMgr()->CACertPath();
     QString strTrustPath = berApplet->settingsMgr()->trustCertPath();
 
+    int nFlags = -1;
+
     if( strSrvCertPath.length() < 1 )
     {
         CertManDlg certMan;
@@ -648,7 +650,7 @@ void TSPClientDlg::clickVerifySigned()
         goto end;
     }
 
-    ret = JS_PKCS7_verifySignedData( &binSigned, &binSrvCert, &binMsg );
+    ret = JS_PKCS7_verifySignedData( &binSigned, &binSrvCert, nFlags, &binMsg );
 
     if( ret == JSR_VERIFY )
     {

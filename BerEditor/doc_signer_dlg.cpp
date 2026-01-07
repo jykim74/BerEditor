@@ -747,6 +747,11 @@ void DocSignerDlg::changeCMSCmd()
 {
     QString strCmd = mCMSCmdCombo->currentText();
 
+    if( strCmd == kCMSCmdSignedData || strCmd == kCMSCmdVerifyData || strCmd == kCMSCmdEnvelopedData || strCmd == kCMSCmdDevelopedData )
+        mCMSFlagGroup->setEnabled( true );
+    else
+        mCMSFlagGroup->setEnabled( false );
+
     if( strCmd == kCMSCmdEnvelopedData )
         mCMSCipherCombo->setEnabled( true );
     else
@@ -904,6 +909,44 @@ void DocSignerDlg::setDstFile()
 
         mDstPathText->setText( strDstPath );
     }
+}
+
+int DocSignerDlg::getCMSFlags()
+{
+    int nFlags = 0;
+
+    if( mCMSFlagGroup->isEnabled() == false )
+        return -1;
+
+    if( mCMSFlagGroup->isChecked() == false )
+        return -1;
+
+    if( mCMSFlagNOCERTSCheck->isChecked() )
+        nFlags |= JS_PKCS7_FLAG_NOCERTS;
+
+    if( mCMSFlagNOSIGSCheck->isChecked() )
+        nFlags |= JS_PKCS7_FLAG_NOSIGS;
+
+    if( mCMSFlagNOCHAINCheck->isChecked() )
+        nFlags |= JS_PKCS7_FLAG_NOCHAIN;
+
+    if( mCMSFlagNOINTERNCheck->isChecked() )
+        nFlags |= JS_PKCS7_FLAG_NOINTERN;
+
+    if( mCMSFlagNOVERIFYCheck->isChecked() )
+        nFlags |= JS_PKCS7_FLAG_NOVERIFY;
+
+    if( mCMSFlagDETACHEDCheck->isChecked() )
+        nFlags |= JS_PKCS7_FLAG_DETACHED;
+
+    if( mCMSFlagBINARYCheck->isChecked() )
+        nFlags |= JS_PKCS7_FLAG_BINARY;
+
+    if( mCMSFlagNOATTRCheck->isChecked() )
+        nFlags |= JS_PKCS7_FLAG_NOATTR;
+
+
+    return nFlags;
 }
 
 void DocSignerDlg::setEnableXMLData( bool bVal )
@@ -1183,6 +1226,7 @@ void DocSignerDlg::clickCMSMakeSign()
     BIN binSigned = {0,0};
 
     QString strHash = mHashCombo->currentText();
+    int nFlags = getCMSFlags();
 
     ret = readCMSSrc( &binSrc );
     if( ret != 0 ) goto end;
@@ -1202,6 +1246,7 @@ void DocSignerDlg::clickCMSMakeSign()
                                          &binPri,
                                          &binCert,
                                          &binTSP,
+                                         nFlags,
                                          &binSigned );
 #else
     ret = JS_CMS_makeSignedDataWithTSP( strHash.toStdString().c_str(),
@@ -1209,6 +1254,7 @@ void DocSignerDlg::clickCMSMakeSign()
                                          &binPri,
                                          &binCert,
                                          &binTSP,
+                                         nFlags,
                                          &binSigned );
 #endif
 
@@ -1262,6 +1308,7 @@ void DocSignerDlg::clickCMSVerifySign()
     BIN binCert = {0,0};
     BIN binSrc = {0,0};
     BIN binData = {0,0};
+    int nFlags = getCMSFlags();
 
     ret = readCMSSrc( &binSrc );
     if( ret != 0 ) goto end;
@@ -1277,9 +1324,9 @@ void DocSignerDlg::clickCMSVerifySign()
     }
 
 #if 0
-    ret = JS_PKCS7_verifySignedData( &binSrc, &binCert, &binData );
+    ret = JS_PKCS7_verifySignedData( &binSrc, &binCert, nFlags, &binData );
 #else
-    ret = JS_CMS_verifySignedData( &binSrc, &binCert, &binData );
+    ret = JS_CMS_verifySignedData( &binSrc, &binCert, nFlags, &binData );
 #endif
 
     if( binData.nLen > 0 )
@@ -1325,6 +1372,7 @@ void DocSignerDlg::clickCMSEnvelopedData()
     BIN binData = {0,0};
 
     QString strCipher = mCMSCipherCombo->currentText();
+    int nFlags = getCMSFlags();
 
     ret = readCMSSrc( &binSrc );
     if( ret != 0 ) goto end;
@@ -1332,7 +1380,7 @@ void DocSignerDlg::clickCMSEnvelopedData()
     ret = getCert( &binCert );
     if( ret != 0 ) goto end;
 
-    ret = JS_CMS_makeEnvelopedData( strCipher.toStdString().c_str(), &binSrc, &binCert, &binData );
+    ret = JS_CMS_makeEnvelopedData( strCipher.toStdString().c_str(), &binSrc, &binCert, nFlags, &binData );
 
     if( binData.nLen > 0 )
     {
@@ -1387,6 +1435,8 @@ void DocSignerDlg::clickCMSDevelopedData()
     BIN binSrc = {0,0};
     BIN binData = {0,0};
 
+    int nFlags = getCMSFlags();
+
     ret = readCMSSrc( &binSrc );
     if( ret != 0 ) goto end;
 
@@ -1401,9 +1451,9 @@ void DocSignerDlg::clickCMSDevelopedData()
     }
 
 #if 0
-    ret = JS_PKCS7_makeDevelopedData( &binSrc, &binPri, &binCert, &binData );
+    ret = JS_PKCS7_makeDevelopedData( &binSrc, &binPri, &binCert, nFlags, &binData );
 #else
-    ret = JS_CMS_makeDevelopedData( &binSrc, &binPri, &binCert, &binData );
+    ret = JS_CMS_makeDevelopedData( &binSrc, &binPri, &binCert, nFlags, &binData );
 #endif
 
     if( binData.nLen > 0 )

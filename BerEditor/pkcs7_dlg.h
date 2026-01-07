@@ -112,6 +112,7 @@ private:
     void initialize();
     int readSignPrivateKey( BIN *pPriKey );
     int readKMPrivateKey( BIN *pPriKey );
+    int getFlags();
 };
 
 #endif // CMS_DLG_H

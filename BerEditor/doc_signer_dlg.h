@@ -146,6 +146,7 @@ private:
     void setDstFile();
 
     void setEnableXMLData( bool bVal );
+    int getCMSFlags();
 
     ACMEObject json_obj_;
     QXmlStreamReader xml_;

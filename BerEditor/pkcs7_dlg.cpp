@@ -208,6 +208,44 @@ void PKCS7Dlg::initialize()
     mKMCertPathText->setPlaceholderText( tr( "Select CertMan certificate" ));
 }
 
+int PKCS7Dlg::getFlags()
+{
+    int nFlags = 0;
+
+    if( mFlagGroup->isEnabled() == false )
+        return -1;
+
+    if( mFlagGroup->isChecked() == false )
+        return -1;
+
+    if( mFlagNOCERTSCheck->isChecked() )
+        nFlags |= JS_PKCS7_FLAG_NOCERTS;
+
+    if( mFlagNOSIGSCheck->isChecked() )
+        nFlags |= JS_PKCS7_FLAG_NOSIGS;
+
+    if( mFlagNOCHAINCheck->isChecked() )
+        nFlags |= JS_PKCS7_FLAG_NOCHAIN;
+
+    if( mFlagNOINTERNCheck->isChecked() )
+        nFlags |= JS_PKCS7_FLAG_NOINTERN;
+
+    if( mFlagNOVERIFYCheck->isChecked() )
+        nFlags |= JS_PKCS7_FLAG_NOVERIFY;
+
+    if( mFlagDETACHEDCheck->isChecked() )
+        nFlags |= JS_PKCS7_FLAG_DETACHED;
+
+    if( mFlagBINARYCheck->isChecked() )
+        nFlags |= JS_PKCS7_FLAG_BINARY;
+
+    if( mFlagNOATTRCheck->isChecked() )
+        nFlags |= JS_PKCS7_FLAG_NOATTR;
+
+
+    return nFlags;
+}
+
 int PKCS7Dlg::readSignPrivateKey( BIN *pPriKey )
 {
     int ret = 0;
@@ -454,6 +492,8 @@ void PKCS7Dlg::clickSignedData()
     QString strSrcType = mSrcTypeCombo->currentText();
     QString strOutput;
 
+    int nFlags = getFlags();
+
     if( strInput.isEmpty() )
     {
         berApplet->warningBox( tr( "Please enter input value" ), this );
@@ -506,7 +546,7 @@ void PKCS7Dlg::clickSignedData()
     }
 
 
-    ret = JS_PKCS7_makeSignedData( strHash.toStdString().c_str(), &binSrc, &binPri, &binCert, &binOutput );
+    ret = JS_PKCS7_makeSignedData( strHash.toStdString().c_str(), &binSrc, &binPri, &binCert, nFlags, &binOutput );
     if( ret != 0 )
     {
         berApplet->warningBox( tr( "Failed to create SignedData [%1]").arg( JERR(ret) ), this );
@@ -554,6 +594,8 @@ void PKCS7Dlg::clickEnvelopedData()
     QString strCipher = mCipherCombo->currentText();
     QString strSrcType = mSrcTypeCombo->currentText();
     QString strOutput;
+
+    int nFlags = getFlags();
 
     if( strInput.isEmpty() )
     {
@@ -606,7 +648,7 @@ void PKCS7Dlg::clickEnvelopedData()
         goto end;
     }
 
-    ret = JS_PKCS7_makeEnvelopedData( strCipher.toStdString().c_str(), &binSrc, &binCert, &binOutput );
+    ret = JS_PKCS7_makeEnvelopedData( strCipher.toStdString().c_str(), &binSrc, &binCert, nFlags, &binOutput );
     if( ret != 0 )
     {
         berApplet->warningBox(tr( "Failed to create EnvelopedData [%1]").arg(JERR(ret)), this );
@@ -803,6 +845,8 @@ void PKCS7Dlg::clickVerifyData()
     QString strSrcType = mSrcTypeCombo->currentText();
     QString strSrc;
 
+    int nFlags = getFlags();
+
     if( strCMS.isEmpty() )
     {
         berApplet->warningBox( tr( "Please enter input value" ), this );
@@ -846,7 +890,7 @@ void PKCS7Dlg::clickVerifyData()
 
 
 
-    ret = JS_PKCS7_verifySignedData( &binCMS, &binCert, &binSrc );
+    ret = JS_PKCS7_verifySignedData( &binCMS, &binCert, nFlags, &binSrc );
     if( ret == JSR_VERIFY )
     {
         int nDataType = DATA_HEX;
@@ -890,6 +934,7 @@ void PKCS7Dlg::clickDevelopedData()
 
     QString strCMS = mSrcText->toPlainText();
     QString strSrcType = mSrcTypeCombo->currentText();
+    int nFlags = getFlags();
 
     if( strCMS.isEmpty() )
     {
@@ -945,7 +990,7 @@ void PKCS7Dlg::clickDevelopedData()
         goto end;
     }
 
-    ret = JS_PKCS7_makeDevelopedData( &binCMS, &binPri, &binCert, &binSrc );
+    ret = JS_PKCS7_makeDevelopedData( &binCMS, &binPri, &binCert, nFlags, &binSrc );
     berApplet->log( QString( "developedData results: %1").arg(ret));
 
     if( ret == 0 )
@@ -2008,6 +2053,11 @@ void PKCS7Dlg::clickOutputUp()
 void PKCS7Dlg::changeCmd()
 {
     QString strCmd = mCmdCombo->currentText();
+
+    if( strCmd == kCmdSignedData || strCmd == kCmdVerifyData || strCmd == kCmdEnvelopedData || strCmd == kCmdDevelopedData )
+        mFlagGroup->setEnabled( true );
+    else
+        mFlagGroup->setEnabled( false );
 
     if( strCmd == kCmdEnvelopedData || strCmd == kCmdSignedAndEnveloped )
     {
