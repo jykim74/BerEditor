@@ -235,7 +235,7 @@ int PKCS7Dlg::readPrivateKey( BIN *pPriKey )
 
     if( strPriPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "Select a private key for sign"), this );
+        berApplet->warningBox( tr( "Select a private key"), this );
         mPriKeyPathText->setFocus();
         return -1;
     }
@@ -406,7 +406,7 @@ void PKCS7Dlg::clickSignedData()
         QString strSignCertPath = mCertPathText->text();
         if( strSignCertPath.isEmpty() )
         {
-            berApplet->warningBox(tr("Select a certificate for signing" ), this );
+            berApplet->warningBox(tr("Select a certificate" ), this );
             return;
         }
 
@@ -615,7 +615,7 @@ void PKCS7Dlg::clickVerifyData()
         QString strSignCertPath = mCertPathText->text();
         if( strSignCertPath.isEmpty() )
         {
-            berApplet->warningBox(tr("Select a certificate for signing" ), this );
+            berApplet->warningBox(tr("Select a certificate" ), this );
             mCertPathText->setFocus();
             return;
         }
@@ -803,7 +803,7 @@ void PKCS7Dlg::clickAddSigner()
         QString strSignCertPath = mCertPathText->text();
         if( strSignCertPath.isEmpty() )
         {
-            berApplet->warningBox(tr("Select a certificate for signing" ), this );
+            berApplet->warningBox(tr("Select a certificate" ), this );
             return;
         }
 
@@ -903,7 +903,7 @@ void PKCS7Dlg::clickPriKeyDecode()
 
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "Select a private key for sign"), this );
+        berApplet->warningBox( tr( "Select a private key"), this );
         mPriKeyPathText->setFocus();
         return;
     }
@@ -1005,7 +1005,7 @@ void PKCS7Dlg::clickCertType()
 
     if( strPath.length() < 1 )
     {
-        berApplet->warningBox( tr( "Select a certificate for sign"), this );
+        berApplet->warningBox( tr( "Select a certificate"), this );
         mCertPathText->setFocus();
         return;
     }

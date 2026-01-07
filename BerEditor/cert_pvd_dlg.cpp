@@ -630,23 +630,26 @@ void CertPVDDlg::clickPolicyCheck()
     if( mCRLCheckCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_CRL_CHECK );
     if( mIgnoreCriticalCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_IGNORE_CRITICAL );
     if( mX509StrictCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_X509_STRICT );
-    if( mAllowProxyCertsCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_ALLOW_PROXY_CERTS );
+
     if( mPolicyCheckCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_POLICY_CHECK );
     if( mExplicitPolicyCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_EXPLICIT_POLICY );
     if( mInhibitAnyCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_INHIBIT_ANY );
     if( mInhibitMapCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_INHIBIT_MAP );
+    if( mTrustedFirstCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_TRUSTED_FIRST );
+
+    /*
+    if( mAllowProxyCertsCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_ALLOW_PROXY_CERTS );
     if( mNotifyPolicyCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_NOTIFY_POLICY );
     if( mExtendedCRLSupportCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_EXTENDED_CRL_SUPPORT );
     if( mUseDeltasCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_USE_DELTAS );
     if( mCheckSSSignatureCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_CHECK_SS_SIGNATURE );
-    if( mTrustedFirstCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_TRUSTED_FIRST );
-    /*
+    if( mNoALTChainsCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_NO_ALT_CHAINS );
     if( mSuiteB128LOSOnlyCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_SUITEB_128_LOS_ONLY );
     if( mSuiteB192LOSCheck->isChecked() ) _addParamFlag( &pParamList,JS_PVD_FLAG_SUITEB_192_LOS );
     if( mSuiteB128LOSCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_SUITEB_128_LOS );
     */
+
     if( mPartialChainCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_PARTIAL_CHAIN );
-    if( mNoALTChainsCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_NO_ALT_CHAINS );
     if( mNoCheckTimeCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_NO_CHECK_TIME );
 
     nCount = mParamTable->rowCount();
@@ -878,23 +881,26 @@ void CertPVDDlg::clickPathValidation()
     if( mCRLCheckCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_CRL_CHECK );
     if( mIgnoreCriticalCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_IGNORE_CRITICAL );
     if( mX509StrictCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_X509_STRICT );
-    if( mAllowProxyCertsCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_ALLOW_PROXY_CERTS );
+
     if( mPolicyCheckCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_POLICY_CHECK );
     if( mExplicitPolicyCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_EXPLICIT_POLICY );
     if( mInhibitAnyCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_INHIBIT_ANY );
     if( mInhibitMapCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_INHIBIT_MAP );
+
+    if( mTrustedFirstCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_TRUSTED_FIRST );
+    /*
+    if( mAllowProxyCertsCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_ALLOW_PROXY_CERTS );
     if( mNotifyPolicyCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_NOTIFY_POLICY );
     if( mExtendedCRLSupportCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_EXTENDED_CRL_SUPPORT );
     if( mUseDeltasCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_USE_DELTAS );
     if( mCheckSSSignatureCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_CHECK_SS_SIGNATURE );
-    if( mTrustedFirstCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_TRUSTED_FIRST );
-    /*
+    if( mNoALTChainsCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_NO_ALT_CHAINS );
     if( mSuiteB128LOSOnlyCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_SUITEB_128_LOS_ONLY );
     if( mSuiteB192LOSCheck->isChecked() ) _addParamFlag( &pParamList,JS_PVD_FLAG_SUITEB_192_LOS );
     if( mSuiteB128LOSCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_SUITEB_128_LOS );
     */
+
     if( mPartialChainCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_PARTIAL_CHAIN );
-    if( mNoALTChainsCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_NO_ALT_CHAINS );
     if( mNoCheckTimeCheck->isChecked() ) _addParamFlag( &pParamList, JS_PVD_FLAG_NO_CHECK_TIME );
 
     nCount = mParamTable->rowCount();
@@ -1270,22 +1276,25 @@ void CertPVDDlg::clickClearDataAll()
     mCRLCheckAllCheck->setChecked(false);
     mIgnoreCriticalCheck->setChecked(false);
     mX509StrictCheck->setChecked(false);
-    mAllowProxyCertsCheck->setChecked(false);
+
     mPolicyCheckCheck->setChecked(false);
     mExplicitPolicyCheck->setChecked(false);
     mInhibitAnyCheck->setChecked(false);
     mInhibitMapCheck->setChecked(false);
+    mTrustedFirstCheck->setChecked(false);
+
+    /*
     mNotifyPolicyCheck->setChecked(false);
     mExtendedCRLSupportCheck->setChecked(false);
     mUseDeltasCheck->setChecked(false);
     mCheckSSSignatureCheck->setChecked(false);
-    mTrustedFirstCheck->setChecked(false);
-    /*
+    mNoALTChainsCheck->setChecked(false);
+    mAllowProxyCertsCheck->setChecked(false);
     mSuiteB128LOSCheck->setChecked(false);
     mSuiteB192LOSCheck->setChecked(false);
     mSuiteB128LOSOnlyCheck->setChecked(false);
     */
+
     mPartialChainCheck->setChecked(false);
-    mNoALTChainsCheck->setChecked(false);
     mNoCheckTimeCheck->setChecked(false);
 }

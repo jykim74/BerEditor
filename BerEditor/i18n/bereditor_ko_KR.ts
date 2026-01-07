@@ -16046,10 +16046,8 @@ Use %2</source>
         <translation>인증서 관리자 인증서 선택</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="238"/>
-        <location filename="../pkcs7_dlg.cpp" line="906"/>
         <source>Select a private key for sign</source>
-        <translation>서명용 개인키를 선택하세요</translation>
+        <translation type="vanished">서명용 개인키를 선택하세요</translation>
     </message>
     <message>
         <location filename="../pkcs7_dlg.cpp" line="246"/>
@@ -16084,11 +16082,8 @@ Use %2</source>
         <translation>입력값을 입력하세요</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="409"/>
-        <location filename="../pkcs7_dlg.cpp" line="618"/>
-        <location filename="../pkcs7_dlg.cpp" line="806"/>
         <source>Select a certificate for signing</source>
-        <translation>서명용 인증서를 선택하세요</translation>
+        <translation type="vanished">서명용 인증서를 선택하세요</translation>
     </message>
     <message>
         <location filename="../pkcs7_dlg.cpp" line="419"/>
@@ -16184,6 +16179,14 @@ Use %2</source>
         <location filename="../pkcs7_dlg.cpp" line="311"/>
         <source>PKCS7 message decode</source>
         <translation>PKCS7 메세지 디코더</translation>
+    </message>
+    <message>
+        <location filename="../pkcs7_dlg.cpp" line="409"/>
+        <location filename="../pkcs7_dlg.cpp" line="618"/>
+        <location filename="../pkcs7_dlg.cpp" line="806"/>
+        <location filename="../pkcs7_dlg.cpp" line="1008"/>
+        <source>Select a certificate</source>
+        <translation>인증서를 선택하세요</translation>
     </message>
     <message>
         <location filename="../pkcs7_dlg.cpp" line="469"/>
@@ -16304,9 +16307,8 @@ Only RSA is supported.</source>
         <translation type="vanished">서명용 개인키 타입은 %1 이다</translation>
     </message>
     <message>
-        <location filename="../pkcs7_dlg.cpp" line="1008"/>
         <source>Select a certificate for sign</source>
-        <translation>서명용 인증서를 선택하세요</translation>
+        <translation type="vanished">서명용 인증서를 선택하세요</translation>
     </message>
     <message>
         <source>Certificate type for sign is %1</source>
@@ -16326,6 +16328,12 @@ Only RSA is supported.</source>
         <location filename="../pkcs7_dlg.cpp" line="1253"/>
         <source>This file is not in PKCS7 format</source>
         <translation>이 파일은 PKCS7 형식이 아닙니다</translation>
+    </message>
+    <message>
+        <location filename="../pkcs7_dlg.cpp" line="238"/>
+        <location filename="../pkcs7_dlg.cpp" line="906"/>
+        <source>Select a private key</source>
+        <translation>개인키를 선택하세요</translation>
     </message>
     <message>
         <location filename="../pkcs7_dlg.cpp" line="992"/>
